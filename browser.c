@@ -49,7 +49,6 @@
 #include "menu/lib.h"
 #include "send/lib.h"
 #include "format_flags.h"
-#include "keymap.h"
 #include "mutt_attach.h"
 #include "mutt_globals.h"
 #include "mutt_mailbox.h"

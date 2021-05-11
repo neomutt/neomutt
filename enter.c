@@ -40,6 +40,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "history/lib.h"
+#include "menu/lib.h"
 #include "pattern/lib.h"
 #include "browser.h"
 #include "enter_state.h"

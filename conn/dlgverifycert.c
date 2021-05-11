@@ -32,7 +32,6 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "menu/lib.h"
-#include "keymap.h"
 #include "opcodes.h"
 #include "options.h"
 #include "ssl.h"

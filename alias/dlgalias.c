@@ -45,7 +45,6 @@
 #include "alias.h"
 #include "format_flags.h"
 #include "gui.h"
-#include "keymap.h"
 #include "muttlib.h"
 #include "opcodes.h"
 

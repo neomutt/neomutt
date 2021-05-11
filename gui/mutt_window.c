@@ -34,7 +34,7 @@
 #include "core/lib.h"
 #include "mutt_window.h"
 #include "helpbar/lib.h"
-#include "keymap.h"
+#include "menu/lib.h"
 #include "mutt_curses.h"
 #include "opcodes.h"
 #include "options.h"

@@ -49,7 +49,6 @@
 #include "context.h"
 #include "format_flags.h"
 #include "gui.h"
-#include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "muttlib.h"

@@ -44,6 +44,7 @@
 #include "mutt.h"
 #include "command_parse.h"
 #include "imap/lib.h"
+#include "menu/lib.h"
 #include "init.h"
 #include "keymap.h"
 #include "monitor.h"
@@ -84,7 +85,7 @@ static bool is_function(const char *name)
 {
   for (enum MenuType i = 0; i < MENU_MAX; i++)
   {
-    const struct Binding *b = km_get_table(Menus[i].value);
+    const struct Binding *b = km_get_table(MenuNames[i].value);
     if (!b)
       continue;
 

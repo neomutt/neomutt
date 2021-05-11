@@ -154,6 +154,7 @@ main.c
 mbox/config.c
 mbox/mbox.c
 menu/menu.c
+menu/type.c
 monitor.c
 mutt/base64.c
 mutt/buffer.c

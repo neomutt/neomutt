@@ -33,7 +33,6 @@
 #include "core/lib.h"
 #include "lib.h"
 #include "menu/lib.h"
-#include "keymap.h"
 
 /**
  * dialog_config_observer - Listen for config changes affecting a Dialog - Implements ::observer_t

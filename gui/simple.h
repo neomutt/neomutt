@@ -23,8 +23,8 @@
 #ifndef MUTT_GUI_SIMPLE_H
 #define MUTT_GUI_SIMPLE_H
 
+#include "menu/lib.h"
 #include "mutt_window.h"
-#include "keymap.h"
 
 struct Mapping;
 

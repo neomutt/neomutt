@@ -49,7 +49,6 @@
 #include "pager/lib.h"
 #include "crypt_gpgme.h"
 #include "format_flags.h"
-#include "keymap.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "opcodes.h"

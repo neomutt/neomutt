@@ -38,7 +38,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "keymap.h"
+#include "type.h"
 
 typedef uint16_t MuttRedrawFlags;      ///< Flags, e.g. #REDRAW_INDEX
 #define REDRAW_NO_FLAGS             0  ///< No flags are set

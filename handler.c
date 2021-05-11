@@ -43,6 +43,7 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "handler.h"
+#include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "copy.h"

@@ -27,6 +27,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
+#include "menu/lib.h"
 #include "mutt_commands.h"
 
 #define MUTT_UNBIND  1<<0
@@ -64,36 +65,6 @@ struct KeyEvent
 {
   int ch; ///< raw key pressed
   int op; ///< function op
-};
-
-/**
- * enum MenuType - Types of GUI selections
- */
-enum MenuType
-{
-  MENU_ALIAS,            ///< Select an email address by its alias
-  MENU_ATTACH,           ///< Select an attachment
-  MENU_COMPOSE,          ///< Compose an email
-  MENU_EDITOR,           ///< Text entry area
-  MENU_FOLDER,           ///< General file/mailbox browser
-  MENU_GENERIC,          ///< Generic selection list
-  MENU_MAIN,             ///< Index panel (list of emails)
-  MENU_PAGER,            ///< Pager pager (email viewer)
-  MENU_POSTPONE,         ///< Select a postponed email
-  MENU_QUERY,            ///< Select from results of external query
-  MENU_PGP,              ///< PGP encryption menu
-  MENU_SMIME,            ///< SMIME encryption menu
-#ifdef CRYPT_BACKEND_GPGME
-  MENU_KEY_SELECT_PGP,   ///< Select a PGP key
-  MENU_KEY_SELECT_SMIME, ///< Select a SMIME key
-#endif
-#ifdef MIXMASTER
-  MENU_MIX,              ///< Create/edit a Mixmaster chain
-#endif
-#ifdef USE_AUTOCRYPT
-  MENU_AUTOCRYPT_ACCT,   ///< Autocrypt Account menu
-#endif
-  MENU_MAX,
 };
 
 int km_expand_key(char *s, size_t len, struct Keymap *map);

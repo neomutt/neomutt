@@ -27,7 +27,7 @@
 #include <signal.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include "mutt/lib.h"
-#include "keymap.h"
+#include "menu/lib.h"
 #include "where.h"
 
 #ifdef MAIN_C

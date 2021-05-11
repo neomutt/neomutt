@@ -37,6 +37,7 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "icommands.h"
+#include "menu/lib.h"
 #include "pager/lib.h"
 #include "functions.h"
 #include "init.h"
@@ -213,7 +214,7 @@ static void dump_all_menus(struct Buffer *buf, bool bind)
 {
   for (int i = 0; i < MENU_MAX; i++)
   {
-    const char *menu_name = mutt_map_get_name(i, Menus);
+    const char *menu_name = mutt_map_get_name(i, MenuNames);
     struct Mapping menu = { menu_name, i };
 
     const bool empty = dump_menu(buf, &menu, bind);
@@ -253,7 +254,7 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
   }
   else
   {
-    const int menu_index = mutt_map_get_value(buf->data, Menus);
+    const int menu_index = mutt_map_get_value(buf->data, MenuNames);
     if (menu_index == -1)
     {
       // L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'

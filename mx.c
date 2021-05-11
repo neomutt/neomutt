@@ -48,6 +48,7 @@
 #include "mx.h"
 #include "maildir/lib.h"
 #include "mbox/lib.h"
+#include "menu/lib.h"
 #include "commands.h"
 #include "copy.h"
 #include "hook.h"
