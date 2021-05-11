@@ -45,6 +45,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "commands.h"
+#include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "send/lib.h"

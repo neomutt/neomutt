@@ -37,7 +37,6 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "menu/lib.h"
-#include "keymap.h"
 #include "protos.h"
 
 /**

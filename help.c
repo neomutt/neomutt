@@ -37,6 +37,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "menu/lib.h"
 #include "pager/lib.h"
 #include "functions.h"
 #include "keymap.h"
@@ -396,7 +397,7 @@ void mutt_help(enum MenuType menu)
   mutt_buffer_mktemp(&t);
 
   const struct Binding *funcs = km_get_table(menu);
-  const char *desc = mutt_map_get_name(menu, Menus);
+  const char *desc = mutt_map_get_name(menu, MenuNames);
   if (!desc)
     desc = _("<UNKNOWN>");
 

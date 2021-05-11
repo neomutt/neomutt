@@ -47,7 +47,6 @@
 #include "format_flags.h"
 #include "handler.h"
 #include "hdrline.h"
-#include "keymap.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "muttlib.h"

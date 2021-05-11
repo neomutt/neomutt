@@ -30,8 +30,8 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "mutt.h"
+#include "menu/lib.h"
 #include "ncrypt/lib.h"
-#include "keymap.h"
 
 struct Email;
 struct EmailList;

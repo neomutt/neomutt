@@ -59,32 +59,6 @@
 #endif
 
 /**
- * Menus - Menu name lookup table
- */
-const struct Mapping Menus[] = {
-  { "alias", MENU_ALIAS },
-  { "attach", MENU_ATTACH },
-  { "browser", MENU_FOLDER },
-  { "compose", MENU_COMPOSE },
-  { "editor", MENU_EDITOR },
-  { "index", MENU_MAIN },
-  { "pager", MENU_PAGER },
-  { "postpone", MENU_POSTPONE },
-  { "pgp", MENU_PGP },
-  { "smime", MENU_SMIME },
-#ifdef CRYPT_BACKEND_GPGME
-  { "key_select_pgp", MENU_KEY_SELECT_PGP },
-  { "key_select_smime", MENU_KEY_SELECT_SMIME },
-#endif
-#ifdef MIXMASTER
-  { "mix", MENU_MIX },
-#endif
-  { "query", MENU_QUERY },
-  { "generic", MENU_GENERIC },
-  { NULL, 0 },
-};
-
-/**
  * KeyNames - Key name lookup table
  */
 static struct Mapping KeyNames[] = {
@@ -436,12 +410,12 @@ static enum CommandResult km_bind_err(const char *s, enum MenuType menu, int op,
         {
           /* err was passed, put the string there */
           snprintf(err->data, err->dsize, err_msg, old_binding, new_binding,
-                   mutt_map_get_name(menu, Menus), new_binding);
+                   mutt_map_get_name(menu, MenuNames), new_binding);
         }
         else
         {
           mutt_error(err_msg, old_binding, new_binding,
-                     mutt_map_get_name(menu, Menus), new_binding);
+                     mutt_map_get_name(menu, MenuNames), new_binding);
         }
         rc = MUTT_CMD_WARNING;
       }
@@ -601,9 +575,9 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
 
         /* See if it is a valid command
          * skip the '<' and the '>' when comparing */
-        for (enum MenuType j = 0; Menus[j].name; j++)
+        for (enum MenuType j = 0; MenuNames[j].name; j++)
         {
-          const struct Binding *binding = km_get_table(Menus[j].value);
+          const struct Binding *binding = km_get_table(MenuNames[j].value);
           if (binding)
           {
             op = get_op(binding, pp + 1, l - 2);
@@ -745,9 +719,9 @@ int km_dokey(enum MenuType menu)
 
       /* Sigh. Valid function but not in this context.
        * Find the literal string and push it back */
-      for (i = 0; Menus[i].name; i++)
+      for (i = 0; MenuNames[i].name; i++)
       {
-        bindings = km_get_table(Menus[i].value);
+        bindings = km_get_table(MenuNames[i].value);
         if (bindings)
         {
           func = mutt_get_func(bindings, tmp.op);
@@ -1248,7 +1222,7 @@ static char *parse_keymap(enum MenuType *menu, struct Buffer *s, int max_menus,
       if (q)
         *q = '\0';
 
-      int val = mutt_map_get_value(p, Menus);
+      int val = mutt_map_get_value(p, MenuNames);
       if (val == -1)
       {
         mutt_buffer_printf(err, _("%s: no such menu"), p);
@@ -1303,7 +1277,7 @@ static enum CommandResult try_bind(char *key, enum MenuType menu, char *func,
   if (err)
   {
     mutt_buffer_printf(err, _("Function '%s' not available for menu '%s'"),
-                       func, mutt_map_get_name(menu, Menus));
+                       func, mutt_map_get_name(menu, MenuNames));
   }
   return MUTT_CMD_ERROR; /* Couldn't find an existing function with this name */
 }
@@ -1367,7 +1341,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
 {
   const struct Binding *bindings = NULL;
-  enum MenuType menu[sizeof(Menus) / sizeof(struct Mapping) - 1];
+  enum MenuType menu[MenuNamesLen];
   int num_menus = 0;
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 
@@ -1452,7 +1426,7 @@ static void *parse_menu(bool *menu, char *s, struct Buffer *err)
 
   while ((menu_name = strsep(&marker, ",")))
   {
-    int value = mutt_map_get_value(menu_name, Menus);
+    int value = mutt_map_get_value(menu_name, MenuNames);
     if (value == -1)
     {
       mutt_buffer_printf(err, _("%s: no such menu"), menu_name);
@@ -1574,7 +1548,7 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
 enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
                                     intptr_t data, struct Buffer *err)
 {
-  enum MenuType menu[sizeof(Menus) / sizeof(struct Mapping) - 1];
+  enum MenuType menu[MenuNamesLen];
   int num_menus = 0;
   enum CommandResult rc = MUTT_CMD_ERROR;
 

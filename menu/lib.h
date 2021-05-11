@@ -27,7 +27,11 @@
  *
  * | File             | Description             |
  * | :--------------- | :---------------------- |
- * | menu/menu.h      | @subpage menu_menu      |
+ * | menu/draw.c      | @subpage menu_draw      |
+ * | menu/menu.c      | @subpage menu_menu      |
+ * | menu/move.c      | @subpage menu_move      |
+ * | menu/observer.c  | @subpage menu_observer  |
+ * | menu/window.c    | @subpage menu_window    |
  */
 
 #ifndef MUTT_MENU_LIB_H
@@ -38,7 +42,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "keymap.h"
+#include "type.h"
 
 typedef uint16_t MuttRedrawFlags;      ///< Flags, e.g. #REDRAW_INDEX
 #define REDRAW_NO_FLAGS             0  ///< No flags are set
@@ -136,27 +140,31 @@ struct Menu
   void (*mdata_free)(struct Menu *menu, void **ptr);
 };
 
-void         menu_bottom_page(struct Menu *menu);
-void         menu_check_recenter(struct Menu *menu);
-void         menu_current_bottom(struct Menu *menu);
-void         menu_current_middle(struct Menu *menu);
-void         menu_current_top(struct Menu *menu);
-void         menu_first_entry(struct Menu *menu);
-void         menu_half_down(struct Menu *menu);
-void         menu_half_up(struct Menu *menu);
-void         menu_last_entry(struct Menu *menu);
-void         menu_middle_page(struct Menu *menu);
-void         menu_next_line(struct Menu *menu);
-void         menu_next_page(struct Menu *menu);
-void         menu_prev_line(struct Menu *menu);
-void         menu_prev_page(struct Menu *menu);
+// Simple movement
+void menu_bottom_page   (struct Menu *menu);
+void menu_check_recenter(struct Menu *menu);
+void menu_current_bottom(struct Menu *menu);
+void menu_current_middle(struct Menu *menu);
+void menu_current_top   (struct Menu *menu);
+void menu_first_entry   (struct Menu *menu);
+void menu_half_down     (struct Menu *menu);
+void menu_half_up       (struct Menu *menu);
+void menu_last_entry    (struct Menu *menu);
+void menu_middle_page   (struct Menu *menu);
+void menu_next_entry    (struct Menu *menu);
+void menu_next_line     (struct Menu *menu);
+void menu_next_page     (struct Menu *menu);
+void menu_prev_entry    (struct Menu *menu);
+void menu_prev_line     (struct Menu *menu);
+void menu_prev_page     (struct Menu *menu);
+void menu_top_page      (struct Menu *menu);
+
 void         menu_redraw_current(struct Menu *menu);
 void         menu_redraw_full(struct Menu *menu);
 void         menu_redraw_index(struct Menu *menu);
 void         menu_redraw_motion(struct Menu *menu);
 void         menu_redraw_status(struct Menu *menu);
 int          menu_redraw(struct Menu *menu);
-void         menu_top_page(struct Menu *menu);
 
 void         menu_add_dialog_row(struct Menu *menu, const char *row);
 enum MenuType menu_get_current_type(void);

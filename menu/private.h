@@ -1,9 +1,9 @@
 /**
  * @file
- * Simple Dialog Windows
+ * Private Menu functions
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,15 +20,21 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_GUI_SIMPLE_H
-#define MUTT_GUI_SIMPLE_H
+#ifndef MUTT_MENU_PRIVATE_H
+#define MUTT_MENU_PRIVATE_H
 
-#include "menu/lib.h"
-#include "mutt_window.h"
+#include <stddef.h>
+#include "type.h"
 
-struct Mapping;
+struct Menu;
+struct MuttWindow;
 
-struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowType wtype, const struct Mapping *help_data);
-void               dialog_destroy_simple_index(struct MuttWindow **ptr);
+void         menu_free(struct Menu **ptr);
+struct Menu *menu_new (enum MenuType type, struct MuttWindow *win);
 
-#endif /* MUTT_GUI_SIMPLE_H */
+void menu_add_observers   (struct Menu *menu);
+void menu_remove_observers(struct Menu *menu);
+
+void menu_make_entry(struct Menu *menu, char *buf, size_t buflen, int i);
+
+#endif /* MUTT_MENU_PRIVATE_H */

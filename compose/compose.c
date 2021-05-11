@@ -57,7 +57,6 @@
 #include "context.h"
 #include "format_flags.h"
 #include "hook.h"
-#include "keymap.h"
 #include "mutt_attach.h"
 #include "mutt_globals.h"
 #include "mutt_header.h"

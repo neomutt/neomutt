@@ -39,7 +39,6 @@
 #include "lib.h"
 #include "menu/lib.h"
 #include "format_flags.h"
-#include "keymap.h"
 #include "muttlib.h"
 #include "opcodes.h"
 
