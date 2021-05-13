@@ -37,8 +37,8 @@
 #include "context.h"
 #include "mutt_commands.h"
 
-extern const struct Mapping Fields[];
-extern const struct Mapping ComposeFields[];
+extern const struct Mapping ColorFields[];
+extern const struct Mapping ComposeColorFields[];
 
 static const char *get_event_type(enum NotifyType type)
 {
