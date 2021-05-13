@@ -951,6 +951,7 @@ int index_color(struct Menu *menu, int line)
 
 /**
  * mutt_draw_statusline - Draw a highlighted status bar
+ * @param win    Window
  * @param cols   Maximum number of screen columns
  * @param buf    Message to be displayed
  * @param buflen Length of the buffer
@@ -961,7 +962,7 @@ int index_color(struct Menu *menu, int line)
  * Where regexes overlap, the one nearest the start will be used.
  * If two regexes start at the same place, the longer match will be used.
  */
-void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
+void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, size_t buflen)
 {
   if (!buf || !stdscr)
     return;
@@ -1032,7 +1033,7 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
   if ((chunks > 0) && (syntax[0].first > 0))
   {
     /* Text before the first highlight */
-    mutt_window_addnstr(buf, MIN(len, syntax[0].first));
+    mutt_window_addnstr(win, buf, MIN(len, syntax[0].first));
     attrset(mutt_color(MT_COLOR_STATUS));
     if (len <= syntax[0].first)
       goto dsl_finish; /* no more room */
@@ -1044,7 +1045,7 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
   {
     /* Highlighted text */
     attrset(syntax[i].color);
-    mutt_window_addnstr(buf + offset, MIN(len, syntax[i].last) - offset);
+    mutt_window_addnstr(win, buf + offset, MIN(len, syntax[i].last) - offset);
     if (len <= syntax[i].last)
       goto dsl_finish; /* no more room */
 
@@ -1060,7 +1061,7 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
 
     attrset(mutt_color(MT_COLOR_STATUS));
     offset = syntax[i].last;
-    mutt_window_addnstr(buf + offset, next - offset);
+    mutt_window_addnstr(win, buf + offset, next - offset);
 
     offset = next;
     if (offset >= len)
@@ -1071,14 +1072,14 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
   if (offset < len)
   {
     /* Text after the last highlight */
-    mutt_window_addnstr(buf + offset, len - offset);
+    mutt_window_addnstr(win, buf + offset, len - offset);
   }
 
   int width = mutt_strwidth(buf);
   if (width < cols)
   {
     /* Pad the rest of the line with whitespace */
-    mutt_paddstr(cols - width, "");
+    mutt_paddstr(win, cols - width, "");
   }
 dsl_finish:
   FREE(&syntax);
@@ -1122,7 +1123,7 @@ static void index_custom_redraw(struct Menu *menu)
                      NONULL(c_status_format));
     mutt_window_move(menu->win_ibar, 0, 0);
     mutt_curses_set_color(MT_COLOR_STATUS);
-    mutt_draw_statusline(menu->win_ibar->state.cols, buf, sizeof(buf));
+    mutt_draw_statusline(menu->win_ibar, menu->win_ibar->state.cols, buf, sizeof(buf));
     mutt_curses_set_color(MT_COLOR_NORMAL);
     menu->redraw &= ~MENU_REDRAW_STATUS;
     const bool c_ts_enabled = cs_subset_bool(shared->sub, "ts_enabled");

@@ -45,7 +45,7 @@ enum FormatJustify
   JUSTIFY_RIGHT = 1,  ///< Right justify the text
 };
 
-int          mutt_addwch(wchar_t wc);
+int          mutt_addwch(struct MuttWindow *win, wchar_t wc);
 int          mutt_any_key_to_continue(const char *s);
 void         mutt_beep(bool force);
 int          mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox, struct Mailbox *m, bool multiple, char ***files, int *numfiles, SelectFileFlags flags);
@@ -64,7 +64,7 @@ int          mutt_get_field(const char *field, char *buf, size_t buflen, Complet
 int          mutt_get_field_unbuffered(const char *msg, char *buf, size_t buflen, CompletionFlags flags);
 int          mutt_multi_choice(const char *prompt, const char *letters);
 void         mutt_need_hard_redraw(void);
-void         mutt_paddstr(int n, const char *s);
+void         mutt_paddstr(struct MuttWindow *win, int n, const char *s);
 void         mutt_perror_debug(const char *s);
 void         mutt_push_macro_event(int ch, int op);
 void         mutt_query_exit(void);

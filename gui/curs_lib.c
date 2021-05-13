@@ -271,7 +271,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
     }
     mutt_window_clearline(MessageWindow, 0);
     mutt_curses_set_color(MT_COLOR_PROMPT);
-    mutt_window_addstr(field);
+    mutt_window_addstr(MessageWindow, field);
     mutt_curses_set_color(MT_COLOR_NORMAL);
     mutt_refresh();
     mutt_window_get_coords(MessageWindow, &col, NULL);
@@ -435,8 +435,8 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
 
       mutt_window_move(MessageWindow, 0, 0);
       mutt_curses_set_color(MT_COLOR_PROMPT);
-      mutt_window_addnstr(msg, trunc_msg_len);
-      mutt_window_addstr(answer_string);
+      mutt_window_addnstr(MessageWindow, msg, trunc_msg_len);
+      mutt_window_addstr(MessageWindow, answer_string);
       mutt_curses_set_color(MT_COLOR_NORMAL);
       mutt_window_clrtoeol(MessageWindow);
     }
@@ -498,7 +498,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
   }
   else
   {
-    mutt_window_addstr((char *) ((def == MUTT_YES) ? yes : no));
+    mutt_window_addstr(MessageWindow, (char *) ((def == MUTT_YES) ? yes : no));
     mutt_refresh();
   }
   return def;
@@ -664,10 +664,10 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
 
   mutt_curses_set_color(MT_COLOR_PROMPT);
   mutt_window_mvaddstr(MessageWindow, 0, 0, prompt);
-  mutt_window_addstr(_(" ('?' for list): "));
+  mutt_window_addstr(MessageWindow, _(" ('?' for list): "));
   mutt_curses_set_color(MT_COLOR_NORMAL);
   if (!mutt_buffer_is_empty(fname))
-    mutt_window_addstr(mutt_buffer_string(fname));
+    mutt_window_addstr(MessageWindow, mutt_buffer_string(fname));
   mutt_window_clrtoeol(MessageWindow);
   mutt_refresh();
 
@@ -871,29 +871,29 @@ int mutt_multi_choice(const char *prompt, const char *letters)
         {
           // write the part between prompt and cur using MT_COLOR_PROMPT
           mutt_curses_set_color(MT_COLOR_PROMPT);
-          mutt_window_addnstr(prompt, cur - prompt);
+          mutt_window_addnstr(MessageWindow, prompt, cur - prompt);
 
           if (isalnum(cur[1]) && (cur[2] == ')'))
           {
             // we have a single letter within parentheses
             mutt_curses_set_color(MT_COLOR_OPTIONS);
-            mutt_window_addch(cur[1]);
+            mutt_window_addch(MessageWindow, cur[1]);
             prompt = cur + 3;
           }
           else
           {
             // we have a parenthesis followed by something else
-            mutt_window_addch(cur[0]);
+            mutt_window_addch(MessageWindow, cur[0]);
             prompt = cur + 1;
           }
         }
       }
 
       mutt_curses_set_color(MT_COLOR_PROMPT);
-      mutt_window_addstr(prompt);
+      mutt_window_addstr(MessageWindow, prompt);
       mutt_curses_set_color(MT_COLOR_NORMAL);
 
-      mutt_window_addch(' ');
+      mutt_window_addch(MessageWindow, ' ');
       mutt_window_clrtoeol(MessageWindow);
     }
 
@@ -942,11 +942,12 @@ int mutt_multi_choice(const char *prompt, const char *letters)
 
 /**
  * mutt_addwch - addwch would be provided by an up-to-date curses library
- * @param wc Wide char to display
+ * @param win Window
+ * @param wc  Wide char to display
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_addwch(wchar_t wc)
+int mutt_addwch(struct MuttWindow *win, wchar_t wc)
 {
   char buf[MB_LEN_MAX * 2];
   mbstate_t mbstate;
@@ -960,7 +961,7 @@ int mutt_addwch(wchar_t wc)
   }
   else
   {
-    return mutt_window_addstr(buf);
+    return mutt_window_addstr(win, buf);
   }
 }
 
@@ -1150,10 +1151,11 @@ void mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *
 
 /**
  * mutt_paddstr - Display a string on screen, padded if necessary
- * @param n Final width of field
- * @param s String to display
+ * @param win Window
+ * @param n   Final width of field
+ * @param s   String to display
  */
-void mutt_paddstr(int n, const char *s)
+void mutt_paddstr(struct MuttWindow *win, int n, const char *s)
 {
   wchar_t wc;
   size_t k;
@@ -1177,12 +1179,12 @@ void mutt_paddstr(int n, const char *s)
     {
       if (w > n)
         break;
-      mutt_window_addnstr((char *) s, k);
+      mutt_window_addnstr(win, (char *) s, k);
       n -= w;
     }
   }
   while (n-- > 0)
-    mutt_window_addch(' ');
+    mutt_window_addch(win, ' ');
 }
 
 /**

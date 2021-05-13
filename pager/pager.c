@@ -397,6 +397,7 @@ static int comp_syntax_t(const void *m1, const void *m2)
 
 /**
  * resolve_color - Set the colour for a line of text
+ * @param win       Window
  * @param line_info Line info array
  * @param n         Line Number (index into line_info)
  * @param cnt       If true, this is a continuation line
@@ -404,8 +405,8 @@ static int comp_syntax_t(const void *m1, const void *m2)
  * @param special   Flags, e.g. A_BOLD
  * @param a         ANSI attributes
  */
-static void resolve_color(struct Line *line_info, int n, int cnt,
-                          PagerFlags flags, int special, struct AnsiAttr *a)
+static void resolve_color(struct MuttWindow *win, struct Line *line_info, int n,
+                          int cnt, PagerFlags flags, int special, struct AnsiAttr *a)
 {
   int def_color;         /* color without syntax highlight */
   int color;             /* final color */
@@ -423,7 +424,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
     if (!cnt && c_markers)
     {
       mutt_curses_set_color(MT_COLOR_MARKERS);
-      mutt_window_addch('+');
+      mutt_window_addch(win, '+');
       last_color = mutt_color(MT_COLOR_MARKERS);
     }
     m = (line_info[n].syntax)[0].first;
@@ -1502,6 +1503,7 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
 
 /**
  * format_line - Display a line of text in the pager
+ * @param[in]  win       Window
  * @param[out] line_info Line info
  * @param[in]  n         Line number (index into line_info)
  * @param[in]  buf       Text to display
@@ -1515,9 +1517,9 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
  * @param[in]  width     Width of screen (to wrap to)
  * @retval num Number of characters displayed
  */
-static int format_line(struct Line **line_info, int n, unsigned char *buf,
-                       PagerFlags flags, struct AnsiAttr *pa, int cnt,
-                       int *pspace, int *pvch, int *pcol, int *pspecial, int width)
+static int format_line(struct MuttWindow *win, struct Line **line_info, int n,
+                       unsigned char *buf, PagerFlags flags, struct AnsiAttr *pa,
+                       int cnt, int *pspace, int *pvch, int *pcol, int *pspecial, int width)
 {
   int space = -1; /* index of the last space or TAB */
   const bool c_markers = cs_subset_bool(NeoMutt->sub, "markers");
@@ -1567,7 +1569,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
         break;
       col += 4;
       if (pa)
-        mutt_window_printf("\\%03o", buf[ch]);
+        mutt_window_printf(win, "\\%03o", buf[ch]);
       k = 1;
       continue;
     }
@@ -1628,7 +1630,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
     if (pa && ((flags & (MUTT_SHOWCOLOR | MUTT_SEARCH | MUTT_PAGER_MARKER)) ||
                special || last_special || pa->attr))
     {
-      resolve_color(*line_info, n, vch, flags, special, pa);
+      resolve_color(win, *line_info, n, vch, flags, special, pa);
       last_special = special;
     }
 
@@ -1644,7 +1646,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
         break;
       col += t;
       if (pa)
-        mutt_addwch(wc);
+        mutt_addwch(win, wc);
     }
     else if (wc == '\n')
       break;
@@ -1656,7 +1658,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
         break;
       if (pa)
         for (; col < t; col++)
-          mutt_window_addch(' ');
+          mutt_window_addch(win, ' ');
       else
         col = t;
     }
@@ -1666,7 +1668,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
         break;
       col += 2;
       if (pa)
-        mutt_window_printf("^%c", ('@' + wc) & 0x7f);
+        mutt_window_printf(win, "^%c", ('@' + wc) & 0x7f);
     }
     else if (wc < 0x100)
     {
@@ -1674,7 +1676,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
         break;
       col += 4;
       if (pa)
-        mutt_window_printf("\\%03o", wc);
+        mutt_window_printf(win, "\\%03o", wc);
     }
     else
     {
@@ -1682,7 +1684,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
         break;
       col += k;
       if (pa)
-        mutt_addwch(ReplacementChar);
+        mutt_addwch(win, ReplacementChar);
     }
   }
   *pspace = space;
@@ -1890,8 +1892,8 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
   }
 
   /* now chose a good place to break the line */
-  cnt = format_line(line_info, n, buf, flags, NULL, b_read, &ch, &vch, &col,
-                    &special, win_pager->state.cols);
+  cnt = format_line(win_pager, line_info, n, buf, flags, NULL, b_read, &ch,
+                    &vch, &col, &special, win_pager->state.cols);
   buf_ptr = buf + cnt;
 
   /* move the break point only if smart_wrap is set */
@@ -1939,21 +1941,21 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
   }
 
   /* display the line */
-  format_line(line_info, n, buf, flags, &a, cnt, &ch, &vch, &col, &special,
-              win_pager->state.cols);
+  format_line(win_pager, line_info, n, buf, flags, &a, cnt, &ch, &vch, &col,
+              &special, win_pager->state.cols);
 
 /* avoid a bug in ncurses... */
 #ifndef USE_SLANG_CURSES
   if (col == 0)
   {
     mutt_curses_set_color(MT_COLOR_NORMAL);
-    mutt_window_addch(' ');
+    mutt_window_addch(win_pager, ' ');
   }
 #endif
 
   /* end the last color pattern (needed by S-Lang) */
   if (special || ((col != win_pager->state.cols) && (flags & (MUTT_SHOWCOLOR | MUTT_SEARCH))))
-    resolve_color(*line_info, n, vch, flags, 0, &a);
+    resolve_color(win_pager, *line_info, n, vch, flags, 0, &a);
 
   /* Fill the blank space at the end of the line with the prevailing color.
    * ncurses does an implicit clrtoeol() when you do mutt_window_addch('\n') so we have
@@ -2186,7 +2188,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     {
       mutt_window_clrtoeol(rd->pview->win_pager);
       if (c_tilde)
-        mutt_window_addch('~');
+        mutt_window_addch(rd->pview->win_pager, '~');
       rd->lines++;
       mutt_window_move(rd->pview->win_pager, 0, rd->lines);
     }
@@ -2235,13 +2237,14 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       mutt_make_string(buf, buflen, rd->pview->win_pbar->state.cols,
                        NONULL(c_pager_format), m, rd->pview->pdata->ctx->msg_in_pager,
                        e, MUTT_FORMAT_NO_FLAGS, pager_progress_str);
-      mutt_draw_statusline(rd->pview->win_pbar->state.cols, buf, l2);
+      mutt_draw_statusline(rd->pview->win_pbar, rd->pview->win_pbar->state.cols, buf, l2);
     }
     else
     {
       char bn[256];
       snprintf(bn, sizeof(bn), "%s (%s)", rd->pview->banner, pager_progress_str);
-      mutt_draw_statusline(rd->pview->win_pbar->state.cols, bn, sizeof(bn));
+      mutt_draw_statusline(rd->pview->win_pbar, rd->pview->win_pbar->state.cols,
+                           bn, sizeof(bn));
     }
     mutt_curses_set_color(MT_COLOR_NORMAL);
     const bool c_ts_enabled = cs_subset_bool(NeoMutt->sub, "ts_enabled");
@@ -2274,7 +2277,8 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 
     mutt_window_move(rd->pview->win_ibar, 0, 0);
     mutt_curses_set_color(MT_COLOR_STATUS);
-    mutt_draw_statusline(rd->pview->win_ibar->state.cols, buf, sizeof(buf));
+    mutt_draw_statusline(rd->pview->win_pbar, rd->pview->win_ibar->state.cols,
+                         buf, sizeof(buf));
     mutt_curses_set_color(MT_COLOR_NORMAL);
   }
 

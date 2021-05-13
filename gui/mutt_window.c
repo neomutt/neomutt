@@ -482,23 +482,25 @@ int mutt_window_wrap_cols(int width, short wrap)
 
 /**
  * mutt_window_addch - Write one character to a Window
+ * @param win Window
  * @param ch  Character to write
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_window_addch(int ch)
+int mutt_window_addch(struct MuttWindow *win, int ch)
 {
   return addch(ch);
 }
 
 /**
  * mutt_window_addnstr - Write a partial string to a Window
+ * @param win Window
  * @param str String
  * @param num Maximum number of characters to write
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_window_addnstr(const char *str, int num)
+int mutt_window_addnstr(struct MuttWindow *win, const char *str, int num)
 {
   if (!str)
     return -1;
@@ -512,11 +514,12 @@ int mutt_window_addnstr(const char *str, int num)
 
 /**
  * mutt_window_addstr - Write a string to a Window
+ * @param win Window
  * @param str String
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_window_addstr(const char *str)
+int mutt_window_addstr(struct MuttWindow *win, const char *str)
 {
   if (!str)
     return -1;
@@ -540,11 +543,12 @@ void mutt_window_move_abs(int col, int row)
 
 /**
  * mutt_window_printf - Write a formatted string to a Window
+ * @param win Window
  * @param fmt Format string
  * @param ... Arguments
  * @retval num Number of characters written
  */
-int mutt_window_printf(const char *fmt, ...)
+int mutt_window_printf(struct MuttWindow *win, const char *fmt, ...)
 {
   va_list ap;
   va_start(ap, fmt);

@@ -102,14 +102,15 @@ static int get_color(int index, unsigned char *s)
 
 /**
  * print_enriched_string - Display a string with embedded colours and graphics
+ * @param win      Window
  * @param index    Index number
  * @param attr     Default colour for the line
  * @param s        String of embedded colour codes
  * @param do_color If true, apply colour
  * @param sub      Config items
  */
-static void print_enriched_string(int index, int attr, unsigned char *s,
-                                  bool do_color, struct ConfigSubset *sub)
+static void print_enriched_string(struct MuttWindow *win, int index, int attr,
+                                  unsigned char *s, bool do_color, struct ConfigSubset *sub)
 {
   wchar_t wc;
   size_t k;
@@ -137,112 +138,112 @@ static void print_enriched_string(int index, int attr, unsigned char *s,
         {
           case MUTT_TREE_LLCORNER:
             if (c_ascii_chars)
-              mutt_window_addch('`');
+              mutt_window_addch(win, '`');
 #ifdef WACS_LLCORNER
             else
               add_wch(WACS_LLCORNER);
 #else
             else if (CharsetIsUtf8)
-              mutt_window_addstr("\342\224\224"); /* WACS_LLCORNER */
+              mutt_window_addstr(win, "\342\224\224"); /* WACS_LLCORNER */
             else
-              mutt_window_addch(ACS_LLCORNER);
+              mutt_window_addch(win, ACS_LLCORNER);
 #endif
             break;
           case MUTT_TREE_ULCORNER:
             if (c_ascii_chars)
-              mutt_window_addch(',');
+              mutt_window_addch(win, ',');
 #ifdef WACS_ULCORNER
             else
               add_wch(WACS_ULCORNER);
 #else
             else if (CharsetIsUtf8)
-              mutt_window_addstr("\342\224\214"); /* WACS_ULCORNER */
+              mutt_window_addstr(win, "\342\224\214"); /* WACS_ULCORNER */
             else
-              mutt_window_addch(ACS_ULCORNER);
+              mutt_window_addch(win, ACS_ULCORNER);
 #endif
             break;
           case MUTT_TREE_LTEE:
             if (c_ascii_chars)
-              mutt_window_addch('|');
+              mutt_window_addch(win, '|');
 #ifdef WACS_LTEE
             else
               add_wch(WACS_LTEE);
 #else
             else if (CharsetIsUtf8)
-              mutt_window_addstr("\342\224\234"); /* WACS_LTEE */
+              mutt_window_addstr(win, "\342\224\234"); /* WACS_LTEE */
             else
-              mutt_window_addch(ACS_LTEE);
+              mutt_window_addch(win, ACS_LTEE);
 #endif
             break;
           case MUTT_TREE_HLINE:
             if (c_ascii_chars)
-              mutt_window_addch('-');
+              mutt_window_addch(win, '-');
 #ifdef WACS_HLINE
             else
               add_wch(WACS_HLINE);
 #else
             else if (CharsetIsUtf8)
-              mutt_window_addstr("\342\224\200"); /* WACS_HLINE */
+              mutt_window_addstr(win, "\342\224\200"); /* WACS_HLINE */
             else
-              mutt_window_addch(ACS_HLINE);
+              mutt_window_addch(win, ACS_HLINE);
 #endif
             break;
           case MUTT_TREE_VLINE:
             if (c_ascii_chars)
-              mutt_window_addch('|');
+              mutt_window_addch(win, '|');
 #ifdef WACS_VLINE
             else
               add_wch(WACS_VLINE);
 #else
             else if (CharsetIsUtf8)
-              mutt_window_addstr("\342\224\202"); /* WACS_VLINE */
+              mutt_window_addstr(win, "\342\224\202"); /* WACS_VLINE */
             else
-              mutt_window_addch(ACS_VLINE);
+              mutt_window_addch(win, ACS_VLINE);
 #endif
             break;
           case MUTT_TREE_TTEE:
             if (c_ascii_chars)
-              mutt_window_addch('-');
+              mutt_window_addch(win, '-');
 #ifdef WACS_TTEE
             else
               add_wch(WACS_TTEE);
 #else
             else if (CharsetIsUtf8)
-              mutt_window_addstr("\342\224\254"); /* WACS_TTEE */
+              mutt_window_addstr(win, "\342\224\254"); /* WACS_TTEE */
             else
-              mutt_window_addch(ACS_TTEE);
+              mutt_window_addch(win, ACS_TTEE);
 #endif
             break;
           case MUTT_TREE_BTEE:
             if (c_ascii_chars)
-              mutt_window_addch('-');
+              mutt_window_addch(win, '-');
 #ifdef WACS_BTEE
             else
               add_wch(WACS_BTEE);
 #else
             else if (CharsetIsUtf8)
-              mutt_window_addstr("\342\224\264"); /* WACS_BTEE */
+              mutt_window_addstr(win, "\342\224\264"); /* WACS_BTEE */
             else
-              mutt_window_addch(ACS_BTEE);
+              mutt_window_addch(win, ACS_BTEE);
 #endif
             break;
           case MUTT_TREE_SPACE:
-            mutt_window_addch(' ');
+            mutt_window_addch(win, ' ');
             break;
           case MUTT_TREE_RARROW:
-            mutt_window_addch('>');
+            mutt_window_addch(win, '>');
             break;
           case MUTT_TREE_STAR:
-            mutt_window_addch('*'); /* fake thread indicator */
+            mutt_window_addch(win, '*'); /* fake thread indicator */
             break;
           case MUTT_TREE_HIDDEN:
-            mutt_window_addch('&');
+            mutt_window_addch(win, '&');
             break;
           case MUTT_TREE_EQUALS:
-            mutt_window_addch('=');
+            mutt_window_addch(win, '=');
             break;
           case MUTT_TREE_MISSING:
-            mutt_window_addch('?');
+            mutt_window_addch(win, '?');
             break;
         }
         s++;
@@ -277,7 +278,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s,
     }
     else if ((k = mbrtowc(&wc, (char *) s, n, &mbstate)) > 0)
     {
-      mutt_window_addnstr((char *) s, k);
+      mutt_window_addnstr(win, (char *) s, k);
       s += k;
       n -= k;
     }
@@ -358,7 +359,7 @@ void menu_redraw_status(struct Menu *menu)
   snprintf(buf, sizeof(buf), "-- NeoMutt: %s", menu->title);
   mutt_curses_set_color(MT_COLOR_STATUS);
   mutt_window_move(menu->win_ibar, 0, 0);
-  mutt_paddstr(menu->win_ibar->state.cols, buf);
+  mutt_paddstr(menu->win_ibar, menu->win_ibar->state.cols, buf);
   mutt_curses_set_color(MT_COLOR_NORMAL);
   menu->redraw &= ~MENU_REDRAW_STATUS;
 }
@@ -394,9 +395,9 @@ void menu_redraw_index(struct Menu *menu)
         mutt_curses_set_color(MT_COLOR_INDICATOR);
         if (c_arrow_cursor)
         {
-          mutt_window_addstr(c_arrow_string);
+          mutt_window_addstr(menu->win_index, c_arrow_string);
           mutt_curses_set_attr(attr);
-          mutt_window_addch(' ');
+          mutt_window_addch(menu->win_index, ' ');
         }
         else
           do_color = false;
@@ -404,10 +405,11 @@ void menu_redraw_index(struct Menu *menu)
       else if (c_arrow_cursor)
       {
         /* Print space chars to match the screen width of `$arrow_string` */
-        mutt_window_printf("%*s", mutt_strwidth(c_arrow_string) + 1, "");
+        mutt_window_printf(menu->win_index, "%*s", mutt_strwidth(c_arrow_string) + 1, "");
       }
 
-      print_enriched_string(i, attr, (unsigned char *) buf, do_color, menu->sub);
+      print_enriched_string(menu->win_index, i, attr, (unsigned char *) buf,
+                            do_color, menu->sub);
     }
     else
     {
@@ -450,14 +452,14 @@ void menu_redraw_motion(struct Menu *menu)
   {
     /* clear the arrow */
     /* Print space chars to match the screen width of `$arrow_string` */
-    mutt_window_printf("%*s", mutt_strwidth(c_arrow_string) + 1, "");
+    mutt_window_printf(menu->win_index, "%*s", mutt_strwidth(c_arrow_string) + 1, "");
 
     menu_make_entry(menu, buf, sizeof(buf), menu->oldcurrent);
     menu_pad_string(menu, buf, sizeof(buf));
     mutt_window_move(menu->win_index, mutt_strwidth(c_arrow_string) + 1,
                      menu->oldcurrent - menu->top);
-    print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf,
-                          true, menu->sub);
+    print_enriched_string(menu->win_index, menu->oldcurrent, old_color,
+                          (unsigned char *) buf, true, menu->sub);
 
     /* now draw it in the new location */
     mutt_curses_set_color(MT_COLOR_INDICATOR);
@@ -468,8 +470,8 @@ void menu_redraw_motion(struct Menu *menu)
     /* erase the current indicator */
     menu_make_entry(menu, buf, sizeof(buf), menu->oldcurrent);
     menu_pad_string(menu, buf, sizeof(buf));
-    print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf,
-                          true, menu->sub);
+    print_enriched_string(menu->win_index, menu->oldcurrent, old_color,
+                          (unsigned char *) buf, true, menu->sub);
 
     /* now draw the new one to reflect the change */
     const int cur_color = menu->color(menu, menu->current);
@@ -477,7 +479,8 @@ void menu_redraw_motion(struct Menu *menu)
     menu_pad_string(menu, buf, sizeof(buf));
     mutt_curses_set_color(MT_COLOR_INDICATOR);
     mutt_window_move(menu->win_index, 0, menu->current - menu->top);
-    print_enriched_string(menu->current, cur_color, (unsigned char *) buf, false, menu->sub);
+    print_enriched_string(menu->win_index, menu->current, cur_color,
+                          (unsigned char *) buf, false, menu->sub);
   }
   menu->redraw &= MENU_REDRAW_STATUS;
   mutt_curses_set_color(MT_COLOR_NORMAL);
@@ -504,14 +507,16 @@ void menu_redraw_current(struct Menu *menu)
       cs_subset_string(menu->sub, "arrow_string");
   if (c_arrow_cursor)
   {
-    mutt_window_addstr(c_arrow_string);
+    mutt_window_addstr(menu->win_index, c_arrow_string);
     mutt_curses_set_attr(attr);
-    mutt_window_addch(' ');
+    mutt_window_addch(menu->win_index, ' ');
     menu_pad_string(menu, buf, sizeof(buf));
-    print_enriched_string(menu->current, attr, (unsigned char *) buf, true, menu->sub);
+    print_enriched_string(menu->win_index, menu->current, attr,
+                          (unsigned char *) buf, true, menu->sub);
   }
   else
-    print_enriched_string(menu->current, attr, (unsigned char *) buf, false, menu->sub);
+    print_enriched_string(menu->win_index, menu->current, attr,
+                          (unsigned char *) buf, false, menu->sub);
   menu->redraw &= MENU_REDRAW_STATUS;
   mutt_curses_set_color(MT_COLOR_NORMAL);
 

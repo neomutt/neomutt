@@ -440,7 +440,7 @@ static void draw_header_content(struct MuttWindow *win, int row,
                                 enum HeaderField field, const char *content)
 {
   mutt_window_move(win, HeaderPadding[field], row);
-  mutt_paddstr(win->state.cols - HeaderPadding[field], content);
+  mutt_paddstr(win, win->state.cols - HeaderPadding[field], content);
 }
 
 /**
@@ -592,23 +592,23 @@ static int redraw_crypt_lines(struct ComposeRedrawData *rd, int row)
   if ((e->security & (SEC_ENCRYPT | SEC_SIGN)) == (SEC_ENCRYPT | SEC_SIGN))
   {
     mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_BOTH);
-    mutt_window_addstr(_("Sign, Encrypt"));
+    mutt_window_addstr(rd->win_env, _("Sign, Encrypt"));
   }
   else if (e->security & SEC_ENCRYPT)
   {
     mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
-    mutt_window_addstr(_("Encrypt"));
+    mutt_window_addstr(rd->win_env, _("Encrypt"));
   }
   else if (e->security & SEC_SIGN)
   {
     mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_SIGN);
-    mutt_window_addstr(_("Sign"));
+    mutt_window_addstr(rd->win_env, _("Sign"));
   }
   else
   {
     /* L10N: This refers to the encryption of the email, e.g. "Security: None" */
     mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_NONE);
-    mutt_window_addstr(_("None"));
+    mutt_window_addstr(rd->win_env, _("None"));
     used = 1; // 'Sign as:' won't be needed
   }
   mutt_curses_set_color(MT_COLOR_NORMAL);
@@ -618,18 +618,18 @@ static int redraw_crypt_lines(struct ComposeRedrawData *rd, int row)
     if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
     {
       if ((e->security & SEC_INLINE))
-        mutt_window_addstr(_(" (inline PGP)"));
+        mutt_window_addstr(rd->win_env, _(" (inline PGP)"));
       else
-        mutt_window_addstr(_(" (PGP/MIME)"));
+        mutt_window_addstr(rd->win_env, _(" (PGP/MIME)"));
     }
     else if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
-      mutt_window_addstr(_(" (S/MIME)"));
+      mutt_window_addstr(rd->win_env, _(" (S/MIME)"));
   }
 
   const bool c_crypt_opportunistic_encrypt =
       cs_subset_bool(rd->sub, "crypt_opportunistic_encrypt");
   if (c_crypt_opportunistic_encrypt && (e->security & SEC_OPPENCRYPT))
-    mutt_window_addstr(_(" (OppEnc mode)"));
+    mutt_window_addstr(rd->win_env, _(" (OppEnc mode)"));
 
   mutt_window_clrtoeol(rd->win_env);
 
@@ -638,7 +638,7 @@ static int redraw_crypt_lines(struct ComposeRedrawData *rd, int row)
   {
     draw_header(rd->win_env, row++, HDR_CRYPTINFO);
     const char *const c_pgp_sign_as = cs_subset_string(rd->sub, "pgp_sign_as");
-    mutt_window_printf("%s", c_pgp_sign_as ? c_pgp_sign_as : _("<default>"));
+    mutt_window_printf(rd->win_env, "%s", c_pgp_sign_as ? c_pgp_sign_as : _("<default>"));
   }
 
   if (((WithCrypto & APPLICATION_SMIME) != 0) &&
@@ -647,7 +647,7 @@ static int redraw_crypt_lines(struct ComposeRedrawData *rd, int row)
     draw_header(rd->win_env, row++, HDR_CRYPTINFO);
     const char *const c_smime_sign_as =
         cs_subset_string(rd->sub, "pgp_sign_as");
-    mutt_window_printf("%s", c_smime_sign_as ? c_smime_sign_as : _("<default>"));
+    mutt_window_printf(rd->win_env, "%s", c_smime_sign_as ? c_smime_sign_as : _("<default>"));
   }
 
   const char *const c_smime_encrypt_with =
@@ -656,7 +656,7 @@ static int redraw_crypt_lines(struct ComposeRedrawData *rd, int row)
       (e->security & SEC_ENCRYPT) && c_smime_encrypt_with)
   {
     draw_floating(rd->win_env, 40, row - 1, _("Encrypt with: "));
-    mutt_window_printf("%s", NONULL(c_smime_encrypt_with));
+    mutt_window_printf(rd->win_env, "%s", NONULL(c_smime_encrypt_with));
   }
 
 #ifdef USE_AUTOCRYPT
@@ -667,19 +667,19 @@ static int redraw_crypt_lines(struct ComposeRedrawData *rd, int row)
     if (e->security & SEC_AUTOCRYPT)
     {
       mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
-      mutt_window_addstr(_("Encrypt"));
+      mutt_window_addstr(rd->win_env, _("Encrypt"));
     }
     else
     {
       mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_NONE);
-      mutt_window_addstr(_("Off"));
+      mutt_window_addstr(rd->win_env, _("Off"));
     }
 
     /* L10N: The autocrypt compose menu Recommendation field.
        Displays the output of the recommendation engine
        (Off, No, Discouraged, Available, Yes) */
     draw_floating(rd->win_env, 40, row, _("Recommendation: "));
-    mutt_window_printf("%s", _(AutocryptRecUiFlags[rd->autocrypt_rec]));
+    mutt_window_printf(rd->win_env, "%s", _(AutocryptRecUiFlags[rd->autocrypt_rec]));
 
     used++;
   }
@@ -744,7 +744,7 @@ static void redraw_mix_line(struct ListHead *chain, struct ComposeRedrawData *rd
 
   if (STAILQ_EMPTY(chain))
   {
-    mutt_window_addstr(_("<no chain defined>"));
+    mutt_window_addstr(rd->win_env, _("<no chain defined>"));
     mutt_window_clrtoeol(rd->win_env);
     return;
   }
@@ -760,9 +760,9 @@ static void redraw_mix_line(struct ListHead *chain, struct ComposeRedrawData *rd
     if (c + mutt_str_len(t) + 2 >= rd->win_env->state.cols)
       break;
 
-    mutt_window_addstr(NONULL(t));
+    mutt_window_addstr(rd->win_env, NONULL(t));
     if (STAILQ_NEXT(np, entries))
-      mutt_window_addstr(", ");
+      mutt_window_addstr(rd->win_env, ", ");
 
     c += mutt_str_len(t) + 2;
   }
@@ -887,14 +887,14 @@ static int draw_envelope_addr(int field, struct AddressList *al,
       {
         mutt_debug(LL_DEBUG3, "no more lines\n");
         mutt_debug(LL_DEBUG3, "truncating: %s\n", np->data);
-        mutt_paddstr(width_left, np->data);
+        mutt_paddstr(win, width_left, np->data);
         break;
       }
 
       if (width_left == (win->state.cols - MaxHeaderWidth))
       {
         mutt_debug(LL_DEBUG3, "couldn't print: %s\n", np->data);
-        mutt_paddstr(width_left, np->data);
+        mutt_paddstr(win, width_left, np->data);
         break;
       }
 
@@ -910,8 +910,8 @@ static int draw_envelope_addr(int field, struct AddressList *al,
     if (addr_len < width_left)
     {
       mutt_debug(LL_DEBUG3, "space for: %s\n", np->data);
-      mutt_window_addstr(np->data);
-      mutt_window_addstr(sep);
+      mutt_window_addstr(win, np->data);
+      mutt_window_addstr(win, sep);
       width_left -= addr_len;
     }
     mutt_debug(LL_DEBUG3, "%ld addresses remaining\n", count);
@@ -923,7 +923,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
   {
     mutt_window_move(win, win->state.cols - more_len, row);
     mutt_curses_set_color(MT_COLOR_BOLD);
-    mutt_window_addstr(more);
+    mutt_window_addstr(win, more);
     mutt_curses_set_color(MT_COLOR_NORMAL);
     mutt_debug(LL_DEBUG3, "%ld more (len %d)\n", count, more_len);
   }
@@ -958,7 +958,8 @@ static int draw_envelope_user_hdrs(const struct ComposeRedrawData *rd, int row)
 
   /* Draw first entry on same line as prompt */
   draw_header(rd->win_env, row, HDR_CUSTOM_HEADERS);
-  mutt_paddstr(rd->win_env->state.cols - (HeaderPadding[HDR_CUSTOM_HEADERS] +
+  mutt_paddstr(rd->win_env,
+               rd->win_env->state.cols - (HeaderPadding[HDR_CUSTOM_HEADERS] +
                                           mutt_strwidth(_(Prompts[HDR_CUSTOM_HEADERS]))),
                first->data);
   rows_used++;
@@ -999,16 +1000,16 @@ static void draw_envelope(struct ComposeRedrawData *rd)
   if (OptNewsSend)
   {
     draw_header(rd->win_env, row++, HDR_NEWSGROUPS);
-    mutt_paddstr(cols, NONULL(e->env->newsgroups));
+    mutt_paddstr(rd->win_env, cols, NONULL(e->env->newsgroups));
 
     draw_header(rd->win_env, row++, HDR_FOLLOWUPTO);
-    mutt_paddstr(cols, NONULL(e->env->followup_to));
+    mutt_paddstr(rd->win_env, cols, NONULL(e->env->followup_to));
 
     const bool c_x_comment_to = cs_subset_bool(rd->sub, "x_comment_to");
     if (c_x_comment_to)
     {
       draw_header(rd->win_env, row++, HDR_XCOMMENTTO);
-      mutt_paddstr(cols, NONULL(e->env->x_comment_to));
+      mutt_paddstr(rd->win_env, cols, NONULL(e->env->x_comment_to));
     }
   }
   else
@@ -1020,12 +1021,12 @@ static void draw_envelope(struct ComposeRedrawData *rd)
   }
 
   draw_header(rd->win_env, row++, HDR_SUBJECT);
-  mutt_paddstr(cols, NONULL(e->env->subject));
+  mutt_paddstr(rd->win_env, cols, NONULL(e->env->subject));
 
   row += draw_envelope_addr(HDR_REPLYTO, &e->env->reply_to, rd->win_env, row, 1);
 
   draw_header(rd->win_env, row++, HDR_FCC);
-  mutt_paddstr(cols, fcc);
+  mutt_paddstr(rd->win_env, cols, fcc);
 
   if (WithCrypto)
     row += redraw_crypt_lines(rd, row);
@@ -1352,7 +1353,7 @@ static void compose_custom_redraw(struct Menu *menu)
 
     mutt_window_move(menu->win_ibar, 0, 0);
     mutt_curses_set_color(MT_COLOR_STATUS);
-    mutt_draw_statusline(menu->win_ibar->state.cols, buf, sizeof(buf));
+    mutt_draw_statusline(menu->win_ibar, menu->win_ibar->state.cols, buf, sizeof(buf));
     mutt_curses_set_color(MT_COLOR_NORMAL);
     menu->redraw &= ~MENU_REDRAW_STATUS;
   }

@@ -68,7 +68,7 @@ static void message_bar(int percent, const char *fmt, ...)
 
   if (mutt_color(MT_COLOR_PROGRESS) == 0)
   {
-    mutt_window_addstr(buf2);
+    mutt_window_addstr(MessageWindow, buf2);
   }
   else
   {
@@ -76,11 +76,11 @@ static void message_bar(int percent, const char *fmt, ...)
     {
       /* The string fits within the colour bar */
       mutt_curses_set_color(MT_COLOR_PROGRESS);
-      mutt_window_addstr(buf2);
+      mutt_window_addstr(MessageWindow, buf2);
       w -= l;
       while (w-- > 0)
       {
-        mutt_window_addch(' ');
+        mutt_window_addch(MessageWindow, ' ');
       }
       mutt_curses_set_color(MT_COLOR_NORMAL);
     }
@@ -92,10 +92,10 @@ static void message_bar(int percent, const char *fmt, ...)
       char ch = buf2[off];
       buf2[off] = '\0';
       mutt_curses_set_color(MT_COLOR_PROGRESS);
-      mutt_window_addstr(buf2);
+      mutt_window_addstr(MessageWindow, buf2);
       buf2[off] = ch;
       mutt_curses_set_color(MT_COLOR_NORMAL);
-      mutt_window_addstr(&buf2[off]);
+      mutt_window_addstr(MessageWindow, &buf2[off]);
     }
   }
 

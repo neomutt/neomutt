@@ -214,9 +214,9 @@ void               mutt_window_set_root           (int cols, int rows);
 int                mutt_window_wrap_cols          (int width, short wrap);
 
 // Functions for drawing on the Window
-int  mutt_window_addch    (int ch);
-int  mutt_window_addnstr  (const char *str, int num);
-int  mutt_window_addstr   (const char *str);
+int  mutt_window_addch    (struct MuttWindow *win, int ch);
+int  mutt_window_addnstr  (struct MuttWindow *win, const char *str, int num);
+int  mutt_window_addstr   (struct MuttWindow *win, const char *str);
 void mutt_window_clearline(struct MuttWindow *win, int row);
 void mutt_window_clear    (struct MuttWindow *win);
 void mutt_window_clrtoeol (struct MuttWindow *win);
@@ -224,7 +224,7 @@ int  mutt_window_move     (struct MuttWindow *win, int col, int row);
 void mutt_window_move_abs (int col, int row);
 int  mutt_window_mvaddstr (struct MuttWindow *win, int col, int row, const char *str);
 int  mutt_window_mvprintw (struct MuttWindow *win, int col, int row, const char *fmt, ...);
-int  mutt_window_printf   (const char *format, ...);
+int  mutt_window_printf   (struct MuttWindow *win, const char *format, ...);
 bool mutt_window_is_visible(struct MuttWindow *win);
 
 void               mutt_winlist_free (struct MuttWindowList *head);

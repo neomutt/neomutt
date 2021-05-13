@@ -68,20 +68,21 @@ enum EnterRedrawFlags
 
 /**
  * my_addwch - Display one wide character on screen
- * @param wc Character to display
+ * @param win Window
+ * @param wc  Character to display
  * @retval OK  Success
  * @retval ERR Failure
  */
-static int my_addwch(wchar_t wc)
+static int my_addwch(struct MuttWindow *win, wchar_t wc)
 {
   int n = wcwidth(wc);
   if (IsWPrint(wc) && (n > 0))
-    return mutt_addwch(wc);
+    return mutt_addwch(win, wc);
   if (!(wc & ~0x7f))
-    return mutt_window_printf("^%c", ((int) wc + 0x40) & 0x7f);
+    return mutt_window_printf(win, "^%c", ((int) wc + 0x40) & 0x7f);
   if (!(wc & ~0xffff))
-    return mutt_window_printf("\\u%04x", (int) wc);
-  return mutt_window_printf("\\u%08x", (int) wc);
+    return mutt_window_printf(win, "\\u%04x", (int) wc);
+  return mutt_window_printf(win, "\\u%08x", (int) wc);
 }
 
 /**
@@ -217,7 +218,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
         w += mutt_mb_wcwidth(state->wbuf[i]);
         if (w > width)
           break;
-        my_addwch(state->wbuf[i]);
+        my_addwch(MessageWindow, state->wbuf[i]);
       }
       mutt_window_clrtoeol(MessageWindow);
       mutt_window_move(MessageWindow,

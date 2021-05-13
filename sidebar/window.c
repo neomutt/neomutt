@@ -786,13 +786,13 @@ static int draw_divider(struct SidebarWindowData *wdata, struct MuttWindow *win,
     switch (wdata->divider_type)
     {
       case SB_DIV_USER:
-        mutt_window_addstr(NONULL(c_sidebar_divider_char));
+        mutt_window_addstr(win, NONULL(c_sidebar_divider_char));
         break;
       case SB_DIV_ASCII:
-        mutt_window_addch('|');
+        mutt_window_addch(win, '|');
         break;
       case SB_DIV_UTF8:
-        mutt_window_addch(ACS_VLINE);
+        mutt_window_addch(win, ACS_VLINE);
         break;
     }
   }
@@ -826,7 +826,7 @@ static void fill_empty_space(struct MuttWindow *win, int first_row,
     mutt_window_move(win, div_width, first_row + r);
 
     for (int i = 0; i < num_cols; i++)
-      mutt_window_addch(' ');
+      mutt_window_addch(win, ' ');
   }
 }
 
@@ -864,7 +864,7 @@ int sb_repaint(struct MuttWindow *win)
       struct SbEntry *entry = (*sbep);
       mutt_window_move(win, col, row);
       mutt_curses_set_color(entry->color);
-      mutt_window_printf("%s", entry->display);
+      mutt_window_printf(win, "%s", entry->display);
       mutt_refresh();
       row++;
     }
