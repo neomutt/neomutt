@@ -694,6 +694,8 @@ distclean: clean
 		contrib/Makefile docs/Makefile docs/neomutt.1 html Makefile po/Makefile \
 		test/Makefile .clang_complete
 	$(RM) *.gc?? */*.gc?? test/*/*.gc??
+	$(RM) *.expand */*.expand test/*/*.expand
+	$(RM) compile_commands.*
 	$(RM) coverage.info coverage
 
 ###############################################################################

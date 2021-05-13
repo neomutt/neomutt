@@ -45,7 +45,7 @@ tags
 
 # Clangd
 .cache/clangd
-compile_commands.json
+compile_commands.*
 
 # Intellij IDEs
 .idea
