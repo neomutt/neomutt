@@ -100,9 +100,9 @@ static int sbar_color_observer(struct NotifyCallback *nc)
 }
 
 /**
- * sbar_data_free - Free the private data attached to the MuttWindow - Implements MuttWindow::wdata_free()
+ * sbar_wdata_free - Free the private data attached to the MuttWindow - Implements MuttWindow::wdata_free()
  */
-static void sbar_data_free(struct MuttWindow *win, void **ptr)
+static void sbar_wdata_free(struct MuttWindow *win, void **ptr)
 {
   if (!ptr || !*ptr)
     return;
@@ -138,7 +138,7 @@ struct MuttWindow *sbar_add(struct MuttWindow *parent)
                       MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
 
   win_sbar->wdata = sbar_data_new();
-  win_sbar->wdata_free = sbar_data_free;
+  win_sbar->wdata_free = sbar_wdata_free;
   win_sbar->recalc = sbar_recalc;
   win_sbar->repaint = sbar_repaint;
 

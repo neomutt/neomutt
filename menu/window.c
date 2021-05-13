@@ -64,9 +64,9 @@ static int menu_repaint(struct MuttWindow *win)
 }
 
 /**
- * menu_free_wdata - Destroy a Menu Window - Implements MuttWindow::wdata_free()
+ * menu_wdata_free - Destroy a Menu Window - Implements MuttWindow::wdata_free()
  */
-static void menu_free_wdata(struct MuttWindow *win, void **ptr)
+static void menu_wdata_free(struct MuttWindow *win, void **ptr)
 {
   menu_free((struct Menu **) ptr);
 }
@@ -88,7 +88,7 @@ struct MuttWindow *menu_new_window(enum MenuType type, struct ConfigSubset *sub)
   win->recalc = menu_recalc;
   win->repaint = menu_repaint;
   win->wdata = menu;
-  win->wdata_free = menu_free_wdata;
+  win->wdata_free = menu_wdata_free;
 
   return win;
 }
