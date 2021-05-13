@@ -532,16 +532,6 @@ int mutt_window_addstr(struct MuttWindow *win, const char *str)
 }
 
 /**
- * mutt_window_move_abs - Move the cursor to an absolute screen position
- * @param col Screen column (0-based)
- * @param row Screen row (0-based)
- */
-void mutt_window_move_abs(int col, int row)
-{
-  move(row, col);
-}
-
-/**
  * mutt_window_printf - Write a formatted string to a Window
  * @param win Window
  * @param fmt Format string

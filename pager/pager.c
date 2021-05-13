@@ -190,7 +190,7 @@ struct PagerRedrawData
 static int TopLine = 0;
 static struct Email *OldEmail = NULL;
 
-static int braille_line = -1;
+static int braille_row = -1;
 static int braille_col = -1;
 
 static struct Resize *Resize = NULL;
@@ -1024,6 +1024,7 @@ int mutt_is_quote_line(char *line, regmatch_t *pmatch)
 
 /**
  * resolve_types - Determine the style for a line of text
+ * @param[in]  win          Window
  * @param[in]  buf          Formatted text
  * @param[in]  raw          Raw text
  * @param[in]  line_info    Line info array
@@ -1034,9 +1035,9 @@ int mutt_is_quote_line(char *line, regmatch_t *pmatch)
  * @param[out] force_redraw Set to true if a screen redraw is needed
  * @param[in]  q_classify   If true, style the text
  */
-static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
-                          int last, struct QClass **quote_list, int *q_level,
-                          bool *force_redraw, bool q_classify)
+static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
+                          struct Line *line_info, int n, int last, struct QClass **quote_list,
+                          int *q_level, bool *force_redraw, bool q_classify)
 {
   struct ColorLine *color_line = NULL;
   struct ColorLineList *head = NULL;
@@ -1053,7 +1054,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
     if (buf[0] == '\n') /* end of header */
     {
       line_info[n].type = MT_COLOR_NORMAL;
-      getyx(stdscr, braille_line, braille_col);
+      mutt_window_get_coords(win, &braille_col, &braille_row);
     }
     else
     {
@@ -1788,7 +1789,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
         goto out;
       }
 
-      resolve_types((char *) fmt, (char *) buf, *line_info, n, *last,
+      resolve_types(win_pager, (char *) fmt, (char *) buf, *line_info, n, *last,
                     quote_list, q_level, force_redraw, flags & MUTT_SHOWCOLOR);
 
       /* avoid race condition for continuation lines when scrolling up */
@@ -2563,10 +2564,10 @@ int mutt_pager(struct PagerView *pview)
         cs_subset_bool(NeoMutt->sub, "braille_friendly");
     if (c_braille_friendly)
     {
-      if (braille_line != -1)
+      if (braille_row != -1)
       {
-        mutt_window_move_abs(0, braille_line + 1);
-        braille_line = -1;
+        mutt_window_move(rd.pview->win_pager, braille_col, braille_row + 1);
+        braille_row = -1;
       }
     }
     else
