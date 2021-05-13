@@ -170,6 +170,7 @@ void         menu_redraw_status(struct Menu *menu);
 int          menu_redraw(struct Menu *menu);
 
 void         menu_add_dialog_row(struct Menu *menu, const char *row);
+void         menu_cleanup(void);
 enum MenuType menu_get_current_type(void);
 void         menu_init(void);
 int          menu_loop(struct Menu *menu);
