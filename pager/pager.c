@@ -2447,7 +2447,7 @@ int mutt_pager(struct PagerView *pview)
   struct Menu *pager_menu = NULL;
   struct PagerRedrawData rd = { 0 };
   char buf[1024] = { 0 };
-  int ch = 0;
+  int op = 0;
   int rc = -1;
   int searchctx = 0;
   int index_space = m ? MIN(c_pager_index_lines, m->vcount) : c_pager_index_lines;
@@ -2548,7 +2548,7 @@ int mutt_pager(struct PagerView *pview)
   // ACT 3: Read user input and decide what to do with it
   //        ...but also do a whole lot of other things.
   //-------------------------------------------------------------------------
-  while (ch != -1)
+  while (op != -1)
   {
     mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
@@ -2686,14 +2686,14 @@ int mutt_pager(struct PagerView *pview)
         Resize->search_compiled = rd.search_compiled;
         Resize->search_back = rd.search_back;
 
-        ch = -1;
+        op = -1;
         rc = OP_REFORMAT_WINCH;
       }
       else
       {
         /* note: mutt_resize_screen() -> mutt_window_reflow() sets
          * MENU_REDRAW_FULL and MENU_REDRAW_FLOW */
-        ch = 0;
+        op = 0;
       }
       continue;
     }
@@ -2707,31 +2707,31 @@ int mutt_pager(struct PagerView *pview)
     // One of such functions is `mutt_enter_command()`
     // Some OP codes are not handled by pager, they cause pager to quit returning
     // OP code to index. Index hadles the operation and then restarts pager
-    ch = km_dokey(MENU_PAGER);
+    op = km_dokey(MENU_PAGER);
 
-    if (ch >= 0)
+    if (op >= 0)
     {
       mutt_clear_error();
-      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[ch][0], ch);
+      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
     }
     mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
-    if (ch < 0)
+    if (op < 0)
     {
-      ch = 0;
+      op = 0;
       mutt_timeout_hook();
       continue;
     }
 
-    rc = ch;
+    rc = op;
 
-    switch (ch)
+    switch (op)
     {
         //=======================================================================
 
       case OP_EXIT:
         rc = -1;
-        ch = -1;
+        op = -1;
         break;
 
         //=======================================================================
@@ -2743,7 +2743,7 @@ int mutt_pager(struct PagerView *pview)
         {
           /* avoid prompting again in the index menu */
           cs_subset_str_native_set(NeoMutt->sub, "quit", MUTT_YES, NULL);
-          ch = -1;
+          op = -1;
         }
         break;
       }
@@ -2764,7 +2764,7 @@ int mutt_pager(struct PagerView *pview)
         {
           /* end of the current message, so display the next message. */
           rc = OP_MAIN_NEXT_UNDELETED;
-          ch = -1;
+          op = -1;
         }
         break;
 
@@ -2849,7 +2849,7 @@ int mutt_pager(struct PagerView *pview)
         {
           /* end of the current message, so display the next message. */
           rc = OP_MAIN_NEXT_UNDELETED;
-          ch = -1;
+          op = -1;
         }
         break;
 
@@ -2867,8 +2867,8 @@ int mutt_pager(struct PagerView *pview)
             searchctx = 0;
 
         search_next:
-          if ((!rd.search_back && (ch == OP_SEARCH_NEXT)) ||
-              (rd.search_back && (ch == OP_SEARCH_OPPOSITE)))
+          if ((!rd.search_back && (op == OP_SEARCH_NEXT)) ||
+              (rd.search_back && (op == OP_SEARCH_OPPOSITE)))
           {
             /* searching forward */
             int i;
@@ -2939,7 +2939,7 @@ int mutt_pager(struct PagerView *pview)
       case OP_SEARCH:
       case OP_SEARCH_REVERSE:
         mutt_str_copy(buf, rd.searchbuf, sizeof(buf));
-        if (mutt_get_field(((ch == OP_SEARCH) || (ch == OP_SEARCH_NEXT)) ?
+        if (mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
                                _("Search for: ") :
                                _("Reverse search for: "),
                            buf, sizeof(buf), MUTT_CLEAR | MUTT_PATTERN, false,
@@ -2953,10 +2953,10 @@ int mutt_pager(struct PagerView *pview)
           if (rd.search_compiled)
           {
             /* do an implicit search-next */
-            if (ch == OP_SEARCH)
-              ch = OP_SEARCH_NEXT;
+            if (op == OP_SEARCH)
+              op = OP_SEARCH_NEXT;
             else
-              ch = OP_SEARCH_OPPOSITE;
+              op = OP_SEARCH_OPPOSITE;
 
             wrapped = false;
             goto search_next;
@@ -2968,10 +2968,10 @@ int mutt_pager(struct PagerView *pview)
 
         mutt_str_copy(rd.searchbuf, buf, sizeof(rd.searchbuf));
 
-        /* leave search_back alone if ch == OP_SEARCH_NEXT */
-        if (ch == OP_SEARCH)
+        /* leave search_back alone if op == OP_SEARCH_NEXT */
+        if (op == OP_SEARCH)
           rd.search_back = false;
-        else if (ch == OP_SEARCH_REVERSE)
+        else if (op == OP_SEARCH_REVERSE)
           rd.search_back = true;
 
         if (rd.search_compiled)
@@ -3083,10 +3083,10 @@ int mutt_pager(struct PagerView *pview)
       case OP_SORT_REVERSE:
         if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
           break;
-        if (mutt_select_sort(ch == OP_SORT_REVERSE))
+        if (mutt_select_sort(op == OP_SORT_REVERSE))
         {
           OptNeedResort = true;
-          ch = -1;
+          op = -1;
           rc = OP_DISPLAY_MESSAGE;
         }
         break;
@@ -3331,7 +3331,7 @@ int mutt_pager(struct PagerView *pview)
           break;
         if (!(pview->pdata->email->security & PGP_TRADITIONAL_CHECKED))
         {
-          ch = -1;
+          op = -1;
           rc = OP_CHECK_TRADITIONAL;
         }
         break;
@@ -3368,7 +3368,7 @@ int mutt_pager(struct PagerView *pview)
         }
 
         mutt_set_flag(m, pview->pdata->email, MUTT_DELETE, true);
-        mutt_set_flag(m, pview->pdata->email, MUTT_PURGE, (ch == OP_PURGE_MESSAGE));
+        mutt_set_flag(m, pview->pdata->email, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
         const bool c_delete_untag =
             cs_subset_bool(NeoMutt->sub, "delete_untag");
         if (c_delete_untag)
@@ -3377,7 +3377,7 @@ int mutt_pager(struct PagerView *pview)
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
         if (c_resolve)
         {
-          ch = -1;
+          op = -1;
           rc = OP_MAIN_NEXT_UNDELETED;
         }
         break;
@@ -3396,12 +3396,12 @@ int mutt_pager(struct PagerView *pview)
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         emaillist_add_email(&el, pview->pdata->email);
 
-        if (mutt_change_flag(m, &el, (ch == OP_MAIN_SET_FLAG)) == 0)
+        if (mutt_change_flag(m, &el, (op == OP_MAIN_SET_FLAG)) == 0)
           menu_queue_redraw(pager_menu, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
         if (pview->pdata->email->deleted && c_resolve)
         {
-          ch = -1;
+          op = -1;
           rc = OP_MAIN_NEXT_UNDELETED;
         }
         emaillist_clear(&el);
@@ -3427,11 +3427,11 @@ int mutt_pager(struct PagerView *pview)
           break;
         }
 
-        int subthread = (ch == OP_DELETE_SUBTHREAD);
+        int subthread = (op == OP_DELETE_SUBTHREAD);
         int r = mutt_thread_set_flag(m, pview->pdata->email, MUTT_DELETE, 1, subthread);
         if (r == -1)
           break;
-        if (ch == OP_PURGE_THREAD)
+        if (op == OP_PURGE_THREAD)
         {
           r = mutt_thread_set_flag(m, pview->pdata->email, MUTT_PURGE, true, subthread);
           if (r == -1)
@@ -3446,7 +3446,7 @@ int mutt_pager(struct PagerView *pview)
         if (c_resolve)
         {
           rc = OP_MAIN_NEXT_UNDELETED;
-          ch = -1;
+          op = -1;
         }
 
         if (!c_resolve && (c_pager_index_lines != 0))
@@ -3488,12 +3488,12 @@ int mutt_pager(struct PagerView *pview)
 
         if ((pager_menu->redraw & MENU_REDRAW_FLOW) && (pview->flags & MUTT_PAGER_RETWINCH))
         {
-          ch = -1;
+          op = -1;
           rc = OP_REFORMAT_WINCH;
           continue;
         }
 
-        ch = 0;
+        op = 0;
         break;
 
         //=======================================================================
@@ -3513,7 +3513,7 @@ int mutt_pager(struct PagerView *pview)
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
         if (c_resolve)
         {
-          ch = -1;
+          op = -1;
           rc = OP_MAIN_NEXT_UNDELETED;
         }
         break;
@@ -3700,11 +3700,11 @@ int mutt_pager(struct PagerView *pview)
           break;
 
         SendFlags replyflags = SEND_REPLY;
-        if (ch == OP_GROUP_REPLY)
+        if (op == OP_GROUP_REPLY)
           replyflags |= SEND_GROUP_REPLY;
-        else if (ch == OP_GROUP_CHAT_REPLY)
+        else if (op == OP_GROUP_CHAT_REPLY)
           replyflags |= SEND_GROUP_CHAT_REPLY;
-        else if (ch == OP_LIST_REPLY)
+        else if (op == OP_LIST_REPLY)
           replyflags |= SEND_LIST_REPLY;
 
         if (pview->mode == PAGER_MODE_ATTACH_E)
@@ -3774,7 +3774,7 @@ int mutt_pager(struct PagerView *pview)
       case OP_DECRYPT_SAVE:
         if (!WithCrypto)
         {
-          ch = -1;
+          op = -1;
           break;
         }
         /* fallthrough */
@@ -3795,9 +3795,9 @@ int mutt_pager(struct PagerView *pview)
       case OP_DECODE_COPY:
       case OP_DECRYPT_COPY:
       {
-        if (!(WithCrypto != 0) && (ch == OP_DECRYPT_COPY))
+        if (!(WithCrypto != 0) && (op == OP_DECRYPT_COPY))
         {
-          ch = -1;
+          op = -1;
           break;
         }
         if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
@@ -3806,13 +3806,13 @@ int mutt_pager(struct PagerView *pview)
         emaillist_add_email(&el, pview->pdata->email);
 
         const enum MessageSaveOpt save_opt =
-            ((ch == OP_SAVE) || (ch == OP_DECODE_SAVE) || (ch == OP_DECRYPT_SAVE)) ?
+            ((op == OP_SAVE) || (op == OP_DECODE_SAVE) || (op == OP_DECRYPT_SAVE)) ?
                 SAVE_MOVE :
                 SAVE_COPY;
 
         enum MessageTransformOpt transform_opt =
-            ((ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY)) ? TRANSFORM_DECODE :
-            ((ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY)) ? TRANSFORM_DECRYPT :
+            ((op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY)) ? TRANSFORM_DECODE :
+            ((op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY)) ? TRANSFORM_DECRYPT :
                                                                    TRANSFORM_NONE;
 
         const int rc2 = mutt_save_message(m, &el, save_opt, transform_opt);
@@ -3821,7 +3821,7 @@ int mutt_pager(struct PagerView *pview)
           const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
           if (c_resolve)
           {
-            ch = -1;
+            op = -1;
             rc = OP_MAIN_NEXT_UNDELETED;
           }
           else
@@ -3852,7 +3852,7 @@ int mutt_pager(struct PagerView *pview)
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
         if (c_resolve)
         {
-          ch = -1;
+          op = -1;
           rc = OP_NEXT_ENTRY;
         }
         break;
@@ -3880,7 +3880,7 @@ int mutt_pager(struct PagerView *pview)
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
         if (c_resolve)
         {
-          ch = -1;
+          op = -1;
           rc = OP_MAIN_NEXT_UNDELETED;
         }
         break;
@@ -3906,7 +3906,7 @@ int mutt_pager(struct PagerView *pview)
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
         if (c_resolve)
         {
-          ch = -1;
+          op = -1;
           rc = OP_NEXT_ENTRY;
         }
         break;
@@ -3931,19 +3931,19 @@ int mutt_pager(struct PagerView *pview)
         }
 
         int r = mutt_thread_set_flag(m, pview->pdata->email, MUTT_DELETE, false,
-                                     (ch != OP_UNDELETE_THREAD));
+                                     (op != OP_UNDELETE_THREAD));
         if (r != -1)
         {
           r = mutt_thread_set_flag(m, pview->pdata->email, MUTT_PURGE, false,
-                                   (ch != OP_UNDELETE_THREAD));
+                                   (op != OP_UNDELETE_THREAD));
         }
         if (r != -1)
         {
           const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
           if (c_resolve)
           {
-            rc = (ch == OP_DELETE_THREAD) ? OP_MAIN_NEXT_THREAD : OP_MAIN_NEXT_SUBTHREAD;
-            ch = -1;
+            rc = (op == OP_DELETE_THREAD) ? OP_MAIN_NEXT_THREAD : OP_MAIN_NEXT_SUBTHREAD;
+            op = -1;
           }
 
           if (!c_resolve && (c_pager_index_lines != 0))
@@ -3971,7 +3971,7 @@ int mutt_pager(struct PagerView *pview)
       case OP_VIEW_ATTACHMENTS:
         if (pview->flags & MUTT_PAGER_ATTACHMENT)
         {
-          ch = -1;
+          op = -1;
           rc = OP_ATTACH_COLLAPSE;
           break;
         }
@@ -3990,7 +3990,7 @@ int mutt_pager(struct PagerView *pview)
       {
         if (!(WithCrypto & APPLICATION_PGP))
         {
-          ch = -1;
+          op = -1;
           break;
         }
         if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
@@ -4044,7 +4044,7 @@ int mutt_pager(struct PagerView *pview)
       {
         if (!WithCrypto)
         {
-          ch = -1;
+          op = -1;
           break;
         }
         if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
@@ -4085,7 +4085,7 @@ int mutt_pager(struct PagerView *pview)
             mutt_window_find(dialog_find(rd.pview->win_pager), WT_SIDEBAR);
         if (!win_sidebar)
           break;
-        sb_change_mailbox(win_sidebar, ch);
+        sb_change_mailbox(win_sidebar, op);
         break;
       }
 
@@ -4100,12 +4100,12 @@ int mutt_pager(struct PagerView *pview)
 #endif
 
       default:
-        ch = -1;
+        op = -1;
         break;
     }
   }
   //-------------------------------------------------------------------------
-  // END OF ACT 3: Read user input loop - while (ch != -1)
+  // END OF ACT 3: Read user input loop - while (op != -1)
   //-------------------------------------------------------------------------
 
   mutt_file_fclose(&rd.fp);
