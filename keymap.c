@@ -875,9 +875,9 @@ int main_config_observer(struct NotifyCallback *nc)
   if (nc->event_type != NT_CONFIG)
     return 0;
 
-  struct EventConfig *ec = nc->event_data;
+  struct EventConfig *ev_c = nc->event_data;
 
-  if (!mutt_str_equal(ec->name, "abort_key"))
+  if (!mutt_str_equal(ev_c->name, "abort_key"))
     return 0;
 
   mutt_init_abort_key();
@@ -1365,8 +1365,8 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
       if (bindings)
       {
         int op = get_op(OpGeneric, buf->data, mutt_str_len(buf->data));
-        struct EventBinding ev_bind = { mtypes[i], key, op };
-        notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_DELETED, &ev_bind);
+        struct EventBinding ev_b = { mtypes[i], key, op };
+        notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_DELETED, &ev_b);
       }
     }
   }
@@ -1382,8 +1382,8 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
         if (rc == MUTT_CMD_SUCCESS)
         {
           int op = get_op(OpGeneric, buf->data, mutt_str_len(buf->data));
-          struct EventBinding ev_bind = { mtypes[i], key, op };
-          notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_NEW, &ev_bind);
+          struct EventBinding ev_b = { mtypes[i], key, op };
+          notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_NEW, &ev_b);
           continue;
         }
         if (rc == MUTT_CMD_WARNING)
@@ -1399,8 +1399,8 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
         if (rc == MUTT_CMD_SUCCESS)
         {
           int op = get_op(bindings, buf->data, mutt_str_len(buf->data));
-          struct EventBinding ev_bind = { mtypes[i], key, op };
-          notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_NEW, &ev_bind);
+          struct EventBinding ev_b = { mtypes[i], key, op };
+          notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_NEW, &ev_b);
           continue;
         }
       }
@@ -1523,17 +1523,17 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
         km_bindkey("?", i, OP_HELP);
         km_bindkey("q", i, OP_EXIT);
       }
-      struct EventBinding ev_bind = { i, NULL, OP_NULL };
+      struct EventBinding ev_b = { i, NULL, OP_NULL };
       notify_send(NeoMutt->notify, NT_BINDING,
                   (data & MUTT_UNMACRO) ? NT_MACRO_DELETE_ALL : NT_BINDING_DELETE_ALL,
-                  &ev_bind);
+                  &ev_b);
     }
     else
     {
       km_bindkey(key, i, OP_NULL);
-      struct EventBinding ev_bind = { i, key, OP_NULL };
+      struct EventBinding ev_b = { i, key, OP_NULL };
       notify_send(NeoMutt->notify, NT_BINDING,
-                  (data & MUTT_UNMACRO) ? NT_MACRO_DELETED : NT_BINDING_DELETED, &ev_bind);
+                  (data & MUTT_UNMACRO) ? NT_MACRO_DELETED : NT_BINDING_DELETED, &ev_b);
     }
   }
 
@@ -1580,8 +1580,8 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
           rc = km_bind(key, mtypes[i], OP_MACRO, seq, buf->data);
           if (rc == MUTT_CMD_SUCCESS)
           {
-            struct EventBinding ev_bind = { mtypes[i], key, OP_MACRO };
-            notify_send(NeoMutt->notify, NT_BINDING, NT_MACRO_NEW, &ev_bind);
+            struct EventBinding ev_b = { mtypes[i], key, OP_MACRO };
+            notify_send(NeoMutt->notify, NT_BINDING, NT_MACRO_NEW, &ev_b);
             continue;
           }
         }
@@ -1596,8 +1596,8 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
         rc = km_bind(key, mtypes[i], OP_MACRO, buf->data, NULL);
         if (rc == MUTT_CMD_SUCCESS)
         {
-          struct EventBinding ev_bind = { mtypes[i], key, OP_MACRO };
-          notify_send(NeoMutt->notify, NT_BINDING, NT_MACRO_NEW, &ev_bind);
+          struct EventBinding ev_b = { mtypes[i], key, OP_MACRO };
+          notify_send(NeoMutt->notify, NT_BINDING, NT_MACRO_NEW, &ev_b);
           continue;
         }
       }

@@ -184,10 +184,10 @@ static int sb_account_observer(struct NotifyCallback *nc)
 
   struct MuttWindow *win = nc->global_data;
   struct SidebarWindowData *wdata = sb_wdata_get(win);
-  struct EventAccount *ea = nc->event_data;
+  struct EventAccount *ev_a = nc->event_data;
 
   struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &ea->account->mailboxes, entries)
+  STAILQ_FOREACH(np, &ev_a->account->mailboxes, entries)
   {
     sb_add_mailbox(wdata, np->mailbox);
   }
@@ -263,24 +263,25 @@ static int sb_config_observer(struct NotifyCallback *nc)
   if (nc->event_subtype == NT_CONFIG_INITIAL_SET)
     return 0;
 
-  struct EventConfig *ec = nc->event_data;
+  struct EventConfig *ev_c = nc->event_data;
 
-  if (!mutt_strn_equal(ec->name, "sidebar_", 8) && !mutt_str_equal(ec->name, "ascii_chars") &&
-      !mutt_str_equal(ec->name, "folder") && !mutt_str_equal(ec->name, "spool_file"))
+  if (!mutt_strn_equal(ev_c->name, "sidebar_", 8) &&
+      !mutt_str_equal(ev_c->name, "ascii_chars") &&
+      !mutt_str_equal(ev_c->name, "folder") && !mutt_str_equal(ev_c->name, "spool_file"))
   {
     return 0;
   }
 
-  mutt_debug(LL_NOTIFY, "config: %s\n", ec->name);
+  mutt_debug(LL_NOTIFY, "config: %s\n", ev_c->name);
 
-  if (mutt_str_equal(ec->name, "sidebar_next_new_wrap"))
+  if (mutt_str_equal(ev_c->name, "sidebar_next_new_wrap"))
     return 0; // Affects the behaviour, but not the display
 
   struct MuttWindow *win = nc->global_data;
   const bool c_sidebar_visible =
       cs_subset_bool(NeoMutt->sub, "sidebar_visible");
 
-  if (mutt_str_equal(ec->name, "sidebar_visible"))
+  if (mutt_str_equal(ev_c->name, "sidebar_visible"))
   {
     window_set_visible(win, c_sidebar_visible);
     win->parent->actions |= WA_REFLOW;
@@ -288,20 +289,20 @@ static int sb_config_observer(struct NotifyCallback *nc)
   }
 
   const short c_sidebar_width = cs_subset_number(NeoMutt->sub, "sidebar_width");
-  if (mutt_str_equal(ec->name, "sidebar_width"))
+  if (mutt_str_equal(ev_c->name, "sidebar_width"))
   {
     win->req_cols = c_sidebar_width;
     win->parent->actions |= WA_REFLOW;
     return 0;
   }
 
-  if (mutt_str_equal(ec->name, "spool_file"))
+  if (mutt_str_equal(ev_c->name, "spool_file"))
   {
     win->actions |= WA_REPAINT;
     return 0;
   }
 
-  if (mutt_str_equal(ec->name, "sidebar_on_right"))
+  if (mutt_str_equal(ev_c->name, "sidebar_on_right"))
   {
     struct MuttWindow *parent = win->parent;
     struct MuttWindow *first = TAILQ_FIRST(&parent->children);
@@ -319,8 +320,8 @@ static int sb_config_observer(struct NotifyCallback *nc)
     return 0;
   }
 
-  if (mutt_str_equal(ec->name, "ascii_chars") ||
-      mutt_str_equal(ec->name, "sidebar_divider_char"))
+  if (mutt_str_equal(ev_c->name, "ascii_chars") ||
+      mutt_str_equal(ev_c->name, "sidebar_divider_char"))
   {
     struct SidebarWindowData *wdata = sb_wdata_get(win);
     WindowActionFlags action = calc_divider(wdata);
@@ -347,19 +348,19 @@ static int sb_mailbox_observer(struct NotifyCallback *nc)
   struct MuttWindow *win = nc->global_data;
 
   struct SidebarWindowData *wdata = sb_wdata_get(win);
-  struct EventMailbox *em = nc->event_data;
+  struct EventMailbox *ev_m = nc->event_data;
 
   if (nc->event_subtype == NT_MAILBOX_SWITCH)
   {
-    sb_set_current_mailbox(wdata, em->mailbox);
+    sb_set_current_mailbox(wdata, ev_m->mailbox);
   }
   else if (nc->event_subtype == NT_MAILBOX_ADD)
   {
-    sb_add_mailbox(wdata, em->mailbox);
+    sb_add_mailbox(wdata, ev_m->mailbox);
   }
   else if (nc->event_subtype == NT_MAILBOX_REMOVE)
   {
-    sb_remove_mailbox(wdata, em->mailbox);
+    sb_remove_mailbox(wdata, ev_m->mailbox);
   }
 
   mutt_debug(LL_NOTIFY, "mailbox\n");
@@ -387,8 +388,8 @@ static int sb_window_observer(struct NotifyCallback *nc)
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
-    struct EventWindow *ew = nc->event_data;
-    if (ew->win != win)
+    struct EventWindow *ev_w = nc->event_data;
+    if (ev_w->win != win)
       return 0;
 
     mutt_debug(LL_NOTIFY, "delete\n");
@@ -443,19 +444,19 @@ int sb_insertion_window_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_WINDOW) || (nc->event_subtype != NT_WINDOW_DIALOG))
     return 0;
 
-  struct EventWindow *ew = nc->event_data;
-  if (ew->win->type != WT_DLG_INDEX)
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win->type != WT_DLG_INDEX)
     return 0;
 
   mutt_debug(LL_NOTIFY, "insertion\n");
-  if (ew->flags & WN_VISIBLE)
+  if (ev_w->flags & WN_VISIBLE)
   {
-    struct MuttWindow *win_sidebar = sb_win_init(ew->win);
+    struct MuttWindow *win_sidebar = sb_win_init(ev_w->win);
     sb_init_data(win_sidebar);
   }
-  else if (ew->flags & WN_HIDDEN)
+  else if (ev_w->flags & WN_HIDDEN)
   {
-    sb_win_remove_observers(ew->win);
+    sb_win_remove_observers(ev_w->win);
   }
 
   return 0;

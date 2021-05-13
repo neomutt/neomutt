@@ -44,10 +44,10 @@ static int simple_config_observer(struct NotifyCallback *nc)
   if (nc->event_type != NT_CONFIG)
     return 0;
 
-  struct EventConfig *ec = nc->event_data;
+  struct EventConfig *ev_c = nc->event_data;
   struct MuttWindow *dlg = nc->global_data;
 
-  if (!mutt_str_equal(ec->name, "status_on_top"))
+  if (!mutt_str_equal(ev_c->name, "status_on_top"))
     return 0;
 
   struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);

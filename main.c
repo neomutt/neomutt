@@ -1251,8 +1251,8 @@ int main(int argc, char *argv[], char *envp[])
       struct MuttWindow *dlg = index_pager_init();
       dialog_push(dlg);
 
-      struct EventMailbox em = { m };
-      notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &em);
+      struct EventMailbox ev_m = { m };
+      notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &ev_m);
 
       mutt_index_menu(dlg, m);
       dialog_pop();

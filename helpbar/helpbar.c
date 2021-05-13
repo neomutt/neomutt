@@ -175,8 +175,8 @@ static int helpbar_binding_observer(struct NotifyCallback *nc)
   if (!wdata)
     return 0;
 
-  struct EventBinding *eb = nc->event_data;
-  if (wdata->help_menu != eb->menu)
+  struct EventBinding *ev_b = nc->event_data;
+  if (wdata->help_menu != ev_b->menu)
     return 0;
 
   mutt_debug(LL_NOTIFY, "binding");
@@ -212,8 +212,8 @@ static int helpbar_config_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_CONFIG) || !nc->event_data || !nc->global_data)
     return -1;
 
-  struct EventConfig *ec = nc->event_data;
-  if (!mutt_str_equal(ec->name, "help"))
+  struct EventConfig *ev_c = nc->event_data;
+  if (!mutt_str_equal(ev_c->name, "help"))
     return 0;
 
   struct MuttWindow *win_helpbar = nc->global_data;
@@ -244,8 +244,8 @@ static int helpbar_window_observer(struct NotifyCallback *nc)
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
-    struct EventWindow *ew = nc->event_data;
-    if (ew->win != win_helpbar)
+    struct EventWindow *ev_w = nc->event_data;
+    if (ev_w->win != win_helpbar)
       return 0;
 
     mutt_debug(LL_NOTIFY, "delete\n");

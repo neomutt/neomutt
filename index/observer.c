@@ -167,16 +167,16 @@ static int index_config_observer(struct NotifyCallback *nc)
   if (nc->event_type != NT_CONFIG)
     return 0;
 
-  struct EventConfig *ec = nc->event_data;
+  struct EventConfig *ev_c = nc->event_data;
   struct MuttWindow *dlg = nc->global_data;
 
-  if (mutt_str_equal(ec->name, "pager_index_lines"))
+  if (mutt_str_equal(ev_c->name, "pager_index_lines"))
     return config_pager_index_lines(dlg);
 
-  if (mutt_str_equal(ec->name, "reply_regex"))
+  if (mutt_str_equal(ev_c->name, "reply_regex"))
     return config_reply_regex(dlg);
 
-  if (mutt_str_equal(ec->name, "status_on_top"))
+  if (mutt_str_equal(ev_c->name, "status_on_top"))
     return config_status_on_top(dlg);
 
   return 0;

@@ -1409,10 +1409,10 @@ static int compose_config_observer(struct NotifyCallback *nc)
   if (nc->event_type != NT_CONFIG)
     return 0;
 
-  struct EventConfig *ec = nc->event_data;
+  struct EventConfig *ev_c = nc->event_data;
   struct MuttWindow *dlg = nc->global_data;
 
-  if (!mutt_str_equal(ec->name, "status_on_top"))
+  if (!mutt_str_equal(ev_c->name, "status_on_top"))
     return 0;
 
   struct MuttWindow *win_cbar = mutt_window_find(dlg, WT_INDEX_BAR);
@@ -1421,7 +1421,7 @@ static int compose_config_observer(struct NotifyCallback *nc)
 
   TAILQ_REMOVE(&dlg->children, win_cbar, entries);
 
-  const bool c_status_on_top = cs_subset_bool(ec->sub, "status_on_top");
+  const bool c_status_on_top = cs_subset_bool(ev_c->sub, "status_on_top");
   if (c_status_on_top)
     TAILQ_INSERT_HEAD(&dlg->children, win_cbar, entries);
   else
@@ -1439,20 +1439,20 @@ static int compose_header_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_HEADER) || !nc->event_data || !nc->global_data)
     return -1;
 
-  const struct EventHeader *event = nc->event_data;
+  const struct EventHeader *ev_h = nc->event_data;
   struct ComposeRedrawData *rd = nc->global_data;
   struct Envelope *env = rd->email->env;
   struct MuttWindow *dlg = rd->win_env->parent;
 
   if ((nc->event_subtype == NT_HEADER_ADD) || (nc->event_subtype == NT_HEADER_CHANGE))
   {
-    header_set(&env->userhdrs, event->header);
+    header_set(&env->userhdrs, ev_h->header);
     mutt_window_reflow(dlg);
     return 0;
   }
   if (nc->event_subtype == NT_HEADER_REMOVE)
   {
-    struct ListNode *removed = header_find(&env->userhdrs, event->header);
+    struct ListNode *removed = header_find(&env->userhdrs, ev_h->header);
     if (removed)
     {
       header_free(&env->userhdrs, removed);

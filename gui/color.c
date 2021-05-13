@@ -827,8 +827,8 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
   if (mutt_str_equal(buf->data, "*"))
   {
     colors_clear();
-    struct EventColor ec = { MT_COLOR_MAX };
-    notify_send(Colors.notify, NT_COLOR, NT_COLOR_RESET, &ec);
+    struct EventColor ev_c = { MT_COLOR_MAX };
+    notify_send(Colors.notify, NT_COLOR, NT_COLOR_RESET, &ev_c);
     return MUTT_CMD_SUCCESS;
   }
 
@@ -859,8 +859,8 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
     // Simple colours
     Colors.defs[object] = A_NORMAL;
 
-    struct EventColor ec = { object };
-    notify_send(Colors.notify, NT_COLOR, NT_COLOR_RESET, &ec);
+    struct EventColor ev_c = { object };
+    notify_send(Colors.notify, NT_COLOR, NT_COLOR_RESET, &ev_c);
     return MUTT_CMD_SUCCESS;
   }
 
@@ -909,8 +909,8 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
   if (changed)
   {
-    struct EventColor ec = { object };
-    notify_send(Colors.notify, NT_COLOR, NT_COLOR_RESET, &ec);
+    struct EventColor ev_c = { object };
+    notify_send(Colors.notify, NT_COLOR, NT_COLOR_RESET, &ev_c);
   }
 
   return MUTT_CMD_SUCCESS;
@@ -1343,8 +1343,8 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
 
   if (rc == MUTT_CMD_SUCCESS)
   {
-    struct EventColor ec = { object };
-    notify_send(Colors.notify, NT_COLOR, NT_COLOR_SET, &ec);
+    struct EventColor ev_c = { object };
+    notify_send(Colors.notify, NT_COLOR, NT_COLOR_SET, &ev_c);
   }
 
   return rc;

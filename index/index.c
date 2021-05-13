@@ -762,12 +762,12 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
     collapse_all(shared->ctx, menu, 0);
 
   struct MuttWindow *dlg = dialog_find(menu->win_index);
-  struct EventMailbox em = { shared->mailbox };
-  notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &em);
+  struct EventMailbox ev_m = { shared->mailbox };
+  notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &ev_m);
 
   mutt_clear_error();
   /* force the mailbox check after we have changed the folder */
-  mutt_mailbox_check(em.mailbox, MUTT_MAILBOX_CHECK_FORCE);
+  mutt_mailbox_check(ev_m.mailbox, MUTT_MAILBOX_CHECK_FORCE);
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
   OptSearchInvalid = true;
 }
