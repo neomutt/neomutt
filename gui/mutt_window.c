@@ -262,9 +262,9 @@ void mutt_window_clrtoeol(struct MuttWindow *win)
 }
 
 /**
- * mutt_dlg_rootwin_observer - Listen for config changes affecting the Root Window - Implements ::observer_t
+ * rootwin_config_observer - Listen for config changes affecting the Root Window - Implements ::observer_t
  */
-static int mutt_dlg_rootwin_observer(struct NotifyCallback *nc)
+static int rootwin_config_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data || !nc->global_data)
     return -1;
@@ -303,7 +303,7 @@ static int mutt_dlg_rootwin_observer(struct NotifyCallback *nc)
 void mutt_window_free_all(void)
 {
   if (NeoMutt)
-    notify_observer_remove(NeoMutt->notify, mutt_dlg_rootwin_observer, RootWindow);
+    notify_observer_remove(NeoMutt->notify, rootwin_config_observer, RootWindow);
   AllDialogsWindow = NULL;
   MessageWindow = NULL;
   mutt_window_free(&RootWindow);
@@ -368,7 +368,7 @@ void mutt_window_init(void)
   }
 
   mutt_window_add_child(RootWindow, MessageWindow);
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_dlg_rootwin_observer, RootWindow);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, rootwin_config_observer, RootWindow);
 }
 
 /**

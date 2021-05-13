@@ -56,9 +56,9 @@ void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
 }
 
 /**
- * mutt_hist_observer - Listen for config changes affecting the history - Implements ::observer_t
+ * main_hist_observer - Listen for config changes affecting the history - Implements ::observer_t
  */
-int mutt_hist_observer(struct NotifyCallback *nc)
+int main_hist_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data)
     return -1;

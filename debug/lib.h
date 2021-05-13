@@ -79,7 +79,7 @@ const char *get_content_encoding   (enum ContentEncoding enc);
 const char *get_content_type       (enum ContentType type);
 
 // Notify
-int debug_notify_observer(struct NotifyCallback *nc);
+int debug_all_observer(struct NotifyCallback *nc);
 
 // Parse Set
 void test_parse_set(void);

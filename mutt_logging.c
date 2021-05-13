@@ -318,9 +318,9 @@ int level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 }
 
 /**
- * mutt_log_observer - Listen for config changes affecting the log file - Implements ::observer_t
+ * main_log_observer - Listen for config changes affecting the log file - Implements ::observer_t
  */
-int mutt_log_observer(struct NotifyCallback *nc)
+int main_log_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data)
     return -1;

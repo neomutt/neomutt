@@ -82,7 +82,7 @@ bool select_next(struct SidebarWindowData *wdata);
 bool select_prev(struct SidebarWindowData *wdata);
 
 // observer.c
-int sb_insertion_observer(struct NotifyCallback *nc);
+int sb_insertion_window_observer(struct NotifyCallback *nc);
 void sb_win_add_observers(struct MuttWindow *win);
 
 // sort.c

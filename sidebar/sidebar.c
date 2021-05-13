@@ -193,7 +193,8 @@ void sb_init(void)
   COMMANDS_REGISTER(sb_commands);
 
   // Listen for dialog creation events
-  notify_observer_add(AllDialogsWindow->notify, NT_WINDOW, sb_insertion_observer, NULL);
+  notify_observer_add(AllDialogsWindow->notify, NT_WINDOW,
+                      sb_insertion_window_observer, NULL);
 }
 
 /**
@@ -202,6 +203,6 @@ void sb_init(void)
 void sb_shutdown(void)
 {
   if (AllDialogsWindow)
-    notify_observer_remove(AllDialogsWindow->notify, sb_insertion_observer, NULL);
+    notify_observer_remove(AllDialogsWindow->notify, sb_insertion_window_observer, NULL);
   mutt_list_free(&SidebarWhitelist);
 }

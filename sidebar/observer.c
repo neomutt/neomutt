@@ -436,9 +436,9 @@ void sb_win_remove_observers(struct MuttWindow *win)
 }
 
 /**
- * sb_insertion_observer - Listen for new Dialogs - Implements ::observer_t
+ * sb_insertion_window_observer - Listen for new Dialogs - Implements ::observer_t
  */
-int sb_insertion_observer(struct NotifyCallback *nc)
+int sb_insertion_window_observer(struct NotifyCallback *nc)
 {
   if ((nc->event_type != NT_WINDOW) || (nc->event_subtype != NT_WINDOW_DIALOG))
     return 0;

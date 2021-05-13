@@ -634,11 +634,11 @@ void mutt_update_index(struct Menu *menu, struct Context *ctx, enum MxStatus che
 }
 
 /**
- * mailbox_index_observer - Listen for Mailbox changes - Implements ::observer_t
+ * index_mailbox_observer - Listen for Mailbox changes - Implements ::observer_t
  *
  * If a Mailbox is closed, then set a pointer to NULL.
  */
-static int mailbox_index_observer(struct NotifyCallback *nc)
+static int index_mailbox_observer(struct NotifyCallback *nc)
 {
   if (!nc->global_data)
     return -1;
@@ -718,7 +718,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
   /* If the `folder-hook` were to call `unmailboxes`, then the Mailbox (`m`)
    * could be deleted, leaving `m` dangling. */
   // TODO: Refactor this function to avoid the need for an observer
-  notify_observer_add(m->notify, NT_MAILBOX, mailbox_index_observer, &m);
+  notify_observer_add(m->notify, NT_MAILBOX, index_mailbox_observer, &m);
   char *dup_path = mutt_str_dup(mailbox_path(m));
   char *dup_name = mutt_str_dup(m->name);
 
@@ -727,7 +727,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
   {
     /* `m` is still valid, but we won't need the observer again before the end
      * of the function. */
-    notify_observer_remove(m->notify, mailbox_index_observer, &m);
+    notify_observer_remove(m->notify, index_mailbox_observer, &m);
   }
 
   // Recreate the Mailbox as the folder-hook might have invoked `mailboxes`

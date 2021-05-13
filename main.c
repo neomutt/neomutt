@@ -581,7 +581,7 @@ int main(int argc, char *argv[], char *envp[])
   alternates_init();
 
 #ifdef USE_DEBUG_NOTIFY
-  notify_observer_add(NeoMutt->notify, NT_ALL, debug_notify_observer, NULL);
+  notify_observer_add(NeoMutt->notify, NT_ALL, debug_all_observer, NULL);
 #endif
 
   if (!get_user_info(cs))
@@ -827,9 +827,9 @@ int main(int argc, char *argv[], char *envp[])
     goto main_ok; // TEST22: neomutt -B
   }
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_hist_observer, NULL);
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_log_observer, NULL);
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_abort_key_config_observer, NULL);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, main_hist_observer, NULL);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, main_log_observer, NULL);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, main_config_observer, NULL);
 
   if (sendflags & SEND_POSTPONED)
   {
