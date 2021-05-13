@@ -1184,7 +1184,9 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 
   if (mutt_buffer_enter_fname(prompt, buf, false, NULL, false, NULL, NULL,
                               MUTT_SEL_NO_FLAGS) == -1)
+  {
     goto cleanup;
+  }
 
   size_t pathlen = mutt_buffer_len(buf);
   if (pathlen == 0)

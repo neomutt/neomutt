@@ -293,15 +293,21 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       }
       if ((chflags & CH_UPDATE_REFS) &&
           mutt_istr_startswith(buf, "References:"))
+      {
         continue;
+      }
       if ((chflags & CH_UPDATE_IRT) &&
           mutt_istr_startswith(buf, "In-Reply-To:"))
+      {
         continue;
+      }
       if ((chflags & CH_UPDATE_LABEL) && mutt_istr_startswith(buf, "X-Label:"))
         continue;
       if ((chflags & CH_UPDATE_SUBJECT) &&
           mutt_istr_startswith(buf, "Subject:"))
+      {
         continue;
+      }
 
       /* Find x -- the array entry where this header is to be saved */
       if (chflags & CH_REORDER)

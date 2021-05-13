@@ -948,7 +948,9 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in,
   {
     if (default_to(&out->to, in, flags & (SEND_GROUP_REPLY | SEND_GROUP_CHAT_REPLY),
                    (hmfupto == MUTT_YES), sub) == -1)
+    {
       return -1; /* abort */
+    }
 
     if ((flags & (SEND_GROUP_REPLY | SEND_GROUP_CHAT_REPLY)) &&
         (!followup_to || (hmfupto != MUTT_YES)))

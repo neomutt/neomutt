@@ -238,12 +238,16 @@ int mutt_autocrypt_account_init(bool prompt)
 
 cleanup:
   if (rc == 0)
+  {
     /* L10N: Message displayed after an autocrypt account is successfully created.  */
     mutt_message(_("Autocrypt account creation succeeded"));
+  }
   else
+  {
     /* L10N: Error message displayed if creating an autocrypt account failed
        or was aborted by the user.  */
     mutt_error(_("Autocrypt account creation aborted"));
+  }
 
   mutt_autocrypt_db_account_free(&account);
   mutt_addrlist_clear(&al);

@@ -3265,8 +3265,10 @@ int mutt_pager(struct PagerView *pview)
         if (assert_attach_msg_mode(OptAttachMsg))
           break;
         if (pview->mode == PAGER_MODE_ATTACH_E)
+        {
           mutt_attach_bounce(m, pview->pdata->fp, pview->pdata->actx,
                              pview->pdata->body);
+        }
         else
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
