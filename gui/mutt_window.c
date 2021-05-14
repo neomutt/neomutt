@@ -564,7 +564,7 @@ void mutt_window_add_child(struct MuttWindow *parent, struct MuttWindow *child)
   notify_set_parent(child->notify, parent->notify);
 
   struct EventWindow ev_w = { child, WN_NO_FLAGS };
-  notify_send(child->notify, NT_WINDOW, NT_WINDOW_NEW, &ev_w);
+  notify_send(child->notify, NT_WINDOW, NT_WINDOW_ADD, &ev_w);
 }
 
 /**

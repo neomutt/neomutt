@@ -30,6 +30,8 @@ struct Mailbox;
 
 /**
  * enum NotifyAttach - Attachments notification types
+ *
+ * @note Notifications are sent **after** the event.
  */
 enum NotifyAttach
 {

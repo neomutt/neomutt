@@ -109,16 +109,18 @@ struct EventBinding
  * enum NotifyBinding - Key Binding notification types
  *
  * Observers of #NT_BINDING will be passed an #EventBinding.
+ *
+ * @note Notifications are sent **after** the event.
  */
 enum NotifyBinding
 {
-  NT_BINDING_NEW = 1,    ///< A key binding has been created
-  NT_BINDING_DELETED,    ///< A key binding has been deleted
-  NT_BINDING_DELETE_ALL, ///< All key bindings are about to be deleted
+  NT_BINDING_ADD = 1,    ///< Key binding has been added
+  NT_BINDING_DELETE,     ///< Key binding has been deleted
+  NT_BINDING_DELETE_ALL, ///< All key bindings have been deleted
 
-  NT_MACRO_NEW,          ///< A key macro has been created
-  NT_MACRO_DELETED,      ///< A key macro has been deleted
-  NT_MACRO_DELETE_ALL,   ///< All key macros are about to be deleted
+  NT_MACRO_ADD,          ///< Key macro has been added
+  NT_MACRO_DELETE,       ///< Key macro has been deleted
+  NT_MACRO_DELETE_ALL,   ///< All key macros have been deleted
 };
 
 const struct Binding *km_get_table(enum MenuType menu);

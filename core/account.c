@@ -103,7 +103,7 @@ bool account_mailbox_remove(struct Account *a, struct Mailbox *m)
     if (!m || (np->mailbox == m))
     {
       struct EventMailbox ev_m = { np->mailbox };
-      notify_send(np->mailbox->notify, NT_MAILBOX, NT_MAILBOX_REMOVE, &ev_m);
+      notify_send(np->mailbox->notify, NT_MAILBOX, NT_MAILBOX_DELETE, &ev_m);
       STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);
       notify_set_parent(np->mailbox->notify, NULL);
       if (!m)

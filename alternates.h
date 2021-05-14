@@ -32,6 +32,8 @@ struct Mailbox;
 
 /**
  * enum NotifyAlternates - Alternates command notification types
+ *
+ * @note Notifications are sent **after** the event.
  */
 enum NotifyAlternates
 {

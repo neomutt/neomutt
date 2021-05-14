@@ -357,7 +357,7 @@ static int sb_mailbox_observer(struct NotifyCallback *nc)
   {
     sb_add_mailbox(wdata, ev_m->mailbox);
   }
-  else if (nc->event_subtype == NT_MAILBOX_REMOVE)
+  else if (nc->event_subtype == NT_MAILBOX_DELETE)
   {
     sb_remove_mailbox(wdata, ev_m->mailbox);
   }

@@ -56,12 +56,15 @@ TAILQ_HEAD(AccountList, Account);
  * enum NotifyAccount - Types of Account Event
  *
  * Observers of #NT_ACCOUNT will be passed an #EventAccount.
+ *
+ * @note Delete notifications are sent **before** the object is deleted.
+ * @note Other notifications are sent **after** the event.
  */
 enum NotifyAccount
 {
-  NT_ACCOUNT_ADD = 1, ///< A new Account has been created
-  NT_ACCOUNT_REMOVE,  ///< An Account is about to be destroyed
-  NT_ACCOUNT_CHANGED, ///< An Account has changed
+  NT_ACCOUNT_ADD = 1, ///< Account has been added
+  NT_ACCOUNT_DELETE,  ///< Account is about to be deleted
+  NT_ACCOUNT_CHANGE,  ///< Account has been changed
 };
 
 /**

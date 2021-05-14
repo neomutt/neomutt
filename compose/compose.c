@@ -1450,7 +1450,7 @@ static int compose_header_observer(struct NotifyCallback *nc)
     mutt_window_reflow(dlg);
     return 0;
   }
-  if (nc->event_subtype == NT_HEADER_REMOVE)
+  if (nc->event_subtype == NT_HEADER_DELETE)
   {
     struct ListNode *removed = header_find(&env->userhdrs, ev_h->header);
     if (removed)

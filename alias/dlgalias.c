@@ -159,7 +159,7 @@ static int alias_alias_observer(struct NotifyCallback *nc)
   struct AliasMenuData *mdata = menu->mdata;
   struct Alias *alias = ev_a->alias;
 
-  if (nc->event_subtype == NT_ALIAS_NEW)
+  if (nc->event_subtype == NT_ALIAS_ADD)
   {
     alias_array_alias_add(&mdata->ava, alias);
 
@@ -168,7 +168,7 @@ static int alias_alias_observer(struct NotifyCallback *nc)
       mutt_pattern_alias_func(MUTT_LIMIT, NULL, mdata, menu);
     }
   }
-  else if (nc->event_subtype == NT_ALIAS_DELETED)
+  else if (nc->event_subtype == NT_ALIAS_DELETE)
   {
     alias_array_alias_delete(&mdata->ava, alias);
 

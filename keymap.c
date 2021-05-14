@@ -1366,7 +1366,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
       {
         int op = get_op(OpGeneric, buf->data, mutt_str_len(buf->data));
         struct EventBinding ev_b = { mtypes[i], key, op };
-        notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_DELETED, &ev_b);
+        notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_DELETE, &ev_b);
       }
     }
   }
@@ -1383,7 +1383,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
         {
           int op = get_op(OpGeneric, buf->data, mutt_str_len(buf->data));
           struct EventBinding ev_b = { mtypes[i], key, op };
-          notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_NEW, &ev_b);
+          notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_ADD, &ev_b);
           continue;
         }
         if (rc == MUTT_CMD_WARNING)
@@ -1400,7 +1400,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
         {
           int op = get_op(bindings, buf->data, mutt_str_len(buf->data));
           struct EventBinding ev_b = { mtypes[i], key, op };
-          notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_NEW, &ev_b);
+          notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_ADD, &ev_b);
           continue;
         }
       }
@@ -1533,7 +1533,7 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
       km_bindkey(key, i, OP_NULL);
       struct EventBinding ev_b = { i, key, OP_NULL };
       notify_send(NeoMutt->notify, NT_BINDING,
-                  (data & MUTT_UNMACRO) ? NT_MACRO_DELETED : NT_BINDING_DELETED, &ev_b);
+                  (data & MUTT_UNMACRO) ? NT_MACRO_DELETE : NT_BINDING_DELETE, &ev_b);
     }
   }
 
@@ -1581,7 +1581,7 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
           if (rc == MUTT_CMD_SUCCESS)
           {
             struct EventBinding ev_b = { mtypes[i], key, OP_MACRO };
-            notify_send(NeoMutt->notify, NT_BINDING, NT_MACRO_NEW, &ev_b);
+            notify_send(NeoMutt->notify, NT_BINDING, NT_MACRO_ADD, &ev_b);
             continue;
           }
         }
@@ -1597,7 +1597,7 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
         if (rc == MUTT_CMD_SUCCESS)
         {
           struct EventBinding ev_b = { mtypes[i], key, OP_MACRO };
-          notify_send(NeoMutt->notify, NT_BINDING, NT_MACRO_NEW, &ev_b);
+          notify_send(NeoMutt->notify, NT_BINDING, NT_MACRO_ADD, &ev_b);
           continue;
         }
       }

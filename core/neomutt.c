@@ -115,7 +115,7 @@ bool neomutt_account_remove(struct NeoMutt *n, struct Account *a)
     if (!a || (np == a))
     {
       struct EventAccount ev_a = { np };
-      notify_send(n->notify, NT_ACCOUNT, NT_ACCOUNT_REMOVE, &ev_a);
+      notify_send(n->notify, NT_ACCOUNT, NT_ACCOUNT_DELETE, &ev_a);
 
       TAILQ_REMOVE(&n->accounts, np, entries);
       notify_set_parent(n->notify, NULL);

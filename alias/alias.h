@@ -45,12 +45,16 @@ extern struct AliasList Aliases;
  * enum NotifyAlias - Alias notification types
  *
  * Observers of #NT_ALIAS will be passed an #EventAlias.
+ *
+ * @note Delete notifications are sent **before** the object is deleted.
+ * @note Other notifications are sent **after** the event.
  */
 enum NotifyAlias
 {
-  NT_ALIAS_NEW = 1, ///< A new Alias has been created
-  NT_ALIAS_CHANGED, ///< An Alias has been changed
-  NT_ALIAS_DELETED, ///< An Alias is about to be deleted
+  NT_ALIAS_ADD = 1,    ///< Alias has been added
+  NT_ALIAS_DELETE,     ///< Alias is about to be deleted
+  NT_ALIAS_DELETE_ALL, ///< All Aliases are about to be deleted
+  NT_ALIAS_CHANGE,     ///< Alias has been changed
 };
 
 /**

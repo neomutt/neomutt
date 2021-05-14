@@ -49,7 +49,7 @@ void email_free(struct Email **ptr)
   struct Email *e = *ptr;
 
   struct EventEmail ev_e = { 1, &e };
-  notify_send(e->notify, NT_EMAIL, NT_EMAIL_REMOVE, &ev_e);
+  notify_send(e->notify, NT_EMAIL, NT_EMAIL_DELETE, &ev_e);
 
   if (e->edata && e->edata_free)
     e->edata_free(&e->edata);

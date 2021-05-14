@@ -71,7 +71,7 @@ static int index_shared_account_observer(struct NotifyCallback *nc)
   struct EventAccount *ev_a = nc->event_data;
   struct IndexSharedData *shared = nc->global_data;
 
-  if (nc->event_subtype != NT_ACCOUNT_REMOVE)
+  if (nc->event_subtype != NT_ACCOUNT_DELETE)
     return 0;
 
   if (ev_a->account != shared->account)
@@ -123,7 +123,7 @@ static int index_shared_email_observer(struct NotifyCallback *nc)
   struct EventEmail *ev_e = nc->event_data;
   struct IndexSharedData *shared = nc->global_data;
 
-  if (nc->event_subtype != NT_EMAIL_REMOVE)
+  if (nc->event_subtype != NT_EMAIL_DELETE)
     return 0;
 
   for (int i = 0; i < ev_e->num_emails; i++)

@@ -104,7 +104,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
     /* override the previous value */
     mutt_addrlist_clear(&tmp->addr);
     FREE(&tmp->comment);
-    event = NT_ALIAS_CHANGED;
+    event = NT_ALIAS_CHANGE;
   }
   else
   {
@@ -112,7 +112,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
     tmp = alias_new();
     tmp->name = name;
     TAILQ_INSERT_TAIL(&Aliases, tmp, entries);
-    event = NT_ALIAS_NEW;
+    event = NT_ALIAS_ADD;
   }
   tmp->addr = al;
 

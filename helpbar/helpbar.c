@@ -167,7 +167,7 @@ static int helpbar_binding_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_BINDING) || !nc->event_data || !nc->global_data)
     return -1;
 
-  if (nc->event_subtype >= NT_MACRO_NEW)
+  if (nc->event_subtype >= NT_MACRO_ADD)
     return 0;
 
   struct MuttWindow *win_helpbar = nc->global_data;

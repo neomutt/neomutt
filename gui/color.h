@@ -128,10 +128,12 @@ struct EventColor
  * enum NotifyColor - Types of Color Event
  *
  * Observers of #NT_COLOR will be passed an #EventColor.
+ *
+ * @note Notifications are sent **after** the event.
  */
 enum NotifyColor
 {
-  NT_COLOR_SET = 1, ///< A new Color has been set
+  NT_COLOR_SET = 1, ///< Color has been set
   NT_COLOR_RESET,   ///< Color has been reset/removed
 };
 

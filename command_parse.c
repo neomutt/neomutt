@@ -1546,7 +1546,7 @@ enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
       STAILQ_FOREACH(np, &UserHeader, entries)
       {
         struct EventHeader ev_h = { np->data };
-        notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_REMOVE, &ev_h);
+        notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_DELETE, &ev_h);
       }
       mutt_list_free(&UserHeader);
       continue;
@@ -1561,7 +1561,7 @@ enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
       if (mutt_istrn_equal(buf->data, np->data, l) && (np->data[l] == ':'))
       {
         struct EventHeader ev_h = { np->data };
-        notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_REMOVE, &ev_h);
+        notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_DELETE, &ev_h);
 
         header_free(&UserHeader, np);
       }

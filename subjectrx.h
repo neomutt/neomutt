@@ -33,11 +33,14 @@ struct Mailbox;
 
 /**
  * enum NotifySubjRx - Subject Regex notification types
+ *
+ * @note Notifications are sent **after** the event.
  */
 enum NotifySubjRx
 {
   NT_SUBJRX_ADD = 1,    ///< Subject Regex has been added
   NT_SUBJRX_DELETE,     ///< Subject Regex has been deleted
+  NT_SUBJRX_DELETE_ALL, ///< All Subject Regexes have been deleted
 };
 
 void subjrx_init(void);

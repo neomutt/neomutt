@@ -130,7 +130,7 @@ static const char *get_mailbox_event(int id)
   {
     case NT_MAILBOX_ADD:
       return "add";
-    case NT_MAILBOX_REMOVE:
+    case NT_MAILBOX_DELETE:
       return "remove";
     case NT_MAILBOX_CLOSED:
       return "closed";

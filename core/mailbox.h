@@ -160,21 +160,25 @@ STAILQ_HEAD(MailboxList, MailboxNode);
  * enum NotifyMailbox - Types of Mailbox Event
  *
  * Observers of #NT_MAILBOX will be passed an #EventMailbox.
+ *
+ * @note Delete notifications are sent **before** the object is deleted.
+ * @note Other notifications are sent **after** the event.
  */
 enum NotifyMailbox
 {
-  NT_MAILBOX_ADD = 1, ///< A new Mailbox has been created
-  NT_MAILBOX_REMOVE,  ///< A Mailbox is about to be destroyed
-  NT_MAILBOX_CHANGED, ///< Mailbox data has changed
+  NT_MAILBOX_ADD = 1,    ///< Mailbox has been added
+  NT_MAILBOX_DELETE,     ///< Mailbox is about to be deleted
+  NT_MAILBOX_DELETE_ALL, ///< All Mailboxes are about to be deleted
+  NT_MAILBOX_CHANGE,     ///< Mailbox has been changed
 
   /* These don't really belong here as they are tied to GUI operations.
    * Eventually, they'll be eliminated. */
-  NT_MAILBOX_CLOSED,  ///< Mailbox was closed
-  NT_MAILBOX_INVALID, ///< Email list was changed
-  NT_MAILBOX_RESORT,  ///< Email list needs resorting
-  NT_MAILBOX_SWITCH,  ///< Current Mailbox has changed
-  NT_MAILBOX_UPDATE,  ///< Update internal tables
-  NT_MAILBOX_UNTAG,   ///< Clear the 'last-tagged' pointer
+  NT_MAILBOX_CLOSED,     ///< Mailbox was closed
+  NT_MAILBOX_INVALID,    ///< Email list was changed
+  NT_MAILBOX_RESORT,     ///< Email list needs resorting
+  NT_MAILBOX_SWITCH,     ///< Current Mailbox has changed
+  NT_MAILBOX_UPDATE,     ///< Update internal tables
+  NT_MAILBOX_UNTAG,      ///< Clear the 'last-tagged' pointer
 };
 
 /**
