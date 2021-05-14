@@ -86,7 +86,7 @@
 #endif
 
 // clang-format off
-static struct Mapping MboxTypeMap[] = {
+static const struct Mapping MboxTypeMap[] = {
   { "mbox",    MUTT_MBOX,    },
   { "MMDF",    MUTT_MMDF,    },
   { "MH",      MUTT_MH,      },

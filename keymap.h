@@ -73,7 +73,7 @@ void km_init(void);
 void km_error_key(enum MenuType menu);
 void mutt_what_key(void);
 void mutt_init_abort_key(void);
-int mutt_abort_key_config_observer(struct NotifyCallback *nc);
+int main_config_observer(struct NotifyCallback *nc);
 
 enum CommandResult km_bind(char *s, enum MenuType menu, int op, char *macro, char *desc);
 int km_dokey(enum MenuType menu);

@@ -103,6 +103,15 @@ static int generic_search(struct Menu *menu, regex_t *rx, int line)
 }
 
 /**
+ * menu_cleanup - Free the saved Menu searches
+ */
+void menu_cleanup(void)
+{
+  for (int i = 0; i < MENU_MAX; i++)
+    FREE(&SearchBuffers[i]);
+}
+
+/**
  * menu_init - Initialise all the Menus
  */
 void menu_init(void)

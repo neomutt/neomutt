@@ -154,10 +154,10 @@ static int alias_alias_observer(struct NotifyCallback *nc)
   if (nc->event_type != NT_ALIAS)
     return 0;
 
-  struct EventAlias *ea = nc->event_data;
+  struct EventAlias *ev_a = nc->event_data;
   struct Menu *menu = nc->global_data;
   struct AliasMenuData *mdata = menu->mdata;
-  struct Alias *alias = ea->alias;
+  struct Alias *alias = ev_a->alias;
 
   if (nc->event_subtype == NT_ALIAS_NEW)
   {

@@ -1523,7 +1523,9 @@ static struct Body *parse_multipart(FILE *fp, const char *boundary,
           int lines = 0;
           if (mutt_str_atoi(
                   mutt_param_get(&new_body->parameter, "content-lines"), &lines) < 0)
+          {
             lines = 0;
+          }
           for (; lines > 0; lines--)
             if ((ftello(fp) >= end_off) || !fgets(buf, sizeof(buf), fp))
               break;

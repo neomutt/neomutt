@@ -788,7 +788,9 @@ int mutt_autocrypt_db_peer_history_insert(struct Address *addr,
     goto cleanup;
   if (sqlite3_bind_text(PeerHistoryInsertStmt, 2, peerhist->email_msgid, -1,
                         SQLITE_STATIC) != SQLITE_OK)
+  {
     goto cleanup;
+  }
   if (sqlite3_bind_int64(PeerHistoryInsertStmt, 3, peerhist->timestamp) != SQLITE_OK)
     goto cleanup;
   if (sqlite3_bind_text(PeerHistoryInsertStmt, 4, peerhist->keydata, -1, SQLITE_STATIC) != SQLITE_OK)

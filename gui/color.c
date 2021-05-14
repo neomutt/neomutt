@@ -153,7 +153,7 @@ static const struct Mapping ColorNames[] = {
 #endif /* HAVE_COLOR */
 
 // clang-format off
-const struct Mapping Fields[] = {
+static const struct Mapping ColorFields[] = {
   { "attachment",        MT_COLOR_ATTACHMENT },
   { "attach_headers",    MT_COLOR_ATTACH_HEADERS },
   { "body",              MT_COLOR_BODY },
@@ -200,7 +200,7 @@ const struct Mapping Fields[] = {
   { NULL,                0 },
 };
 
-const struct Mapping ComposeFields[] = {
+static const struct Mapping ComposeColorFields[] = {
   { "header",            MT_COLOR_COMPOSE_HEADER },
   { "security_encrypt",  MT_COLOR_COMPOSE_SECURITY_ENCRYPT },
   { "security_sign",     MT_COLOR_COMPOSE_SECURITY_SIGN },
@@ -739,7 +739,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
 
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
-    rc = mutt_map_get_value(buf->data, ComposeFields);
+    rc = mutt_map_get_value(buf->data, ComposeColorFields);
     if (rc == -1)
     {
       mutt_buffer_printf(err, _("%s: no such object"), buf->data);
@@ -750,7 +750,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_SUCCESS;
   }
 
-  rc = mutt_map_get_value(buf->data, Fields);
+  rc = mutt_map_get_value(buf->data, ColorFields);
   if (rc == -1)
   {
     mutt_buffer_printf(err, _("%s: no such object"), buf->data);
@@ -827,8 +827,8 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
   if (mutt_str_equal(buf->data, "*"))
   {
     colors_clear();
-    struct EventColor ec = { MT_COLOR_MAX };
-    notify_send(Colors.notify, NT_COLOR, NT_COLOR_RESET, &ec);
+    struct EventColor ev_c = { MT_COLOR_MAX };
+    notify_send(Colors.notify, NT_COLOR, NT_COLOR_RESET, &ev_c);
     return MUTT_CMD_SUCCESS;
   }
 
@@ -859,8 +859,8 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
     // Simple colours
     Colors.defs[object] = A_NORMAL;
 
-    struct EventColor ec = { object };
-    notify_send(Colors.notify, NT_COLOR, NT_COLOR_RESET, &ec);
+    struct EventColor ev_c = { object };
+    notify_send(Colors.notify, NT_COLOR, NT_COLOR_RESET, &ev_c);
     return MUTT_CMD_SUCCESS;
   }
 
@@ -909,8 +909,8 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
   if (changed)
   {
-    struct EventColor ec = { object };
-    notify_send(Colors.notify, NT_COLOR, NT_COLOR_RESET, &ec);
+    struct EventColor ev_c = { object };
+    notify_send(Colors.notify, NT_COLOR, NT_COLOR_RESET, &ev_c);
   }
 
   return MUTT_CMD_SUCCESS;
@@ -1343,8 +1343,8 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
 
   if (rc == MUTT_CMD_SUCCESS)
   {
-    struct EventColor ec = { object };
-    notify_send(Colors.notify, NT_COLOR, NT_COLOR_SET, &ec);
+    struct EventColor ev_c = { object };
+    notify_send(Colors.notify, NT_COLOR, NT_COLOR_SET, &ev_c);
   }
 
   return rc;

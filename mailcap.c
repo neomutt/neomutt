@@ -331,7 +331,9 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
         {
           if (get_field_text(field + plen, entry ? &entry->editcommand : NULL,
                              type, filename, line))
+          {
             editcommand = true;
+          }
         }
         else if ((plen = mutt_istr_startswith(field, "nametemplate")))
         {

@@ -321,7 +321,9 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
       cs_subset_string(NeoMutt->sub, "nm_query_window_current_search");
   if (!c_nm_query_window_current_search ||
       (strcmp(query, c_nm_query_window_current_search) != 0))
+  {
     query_window_reset();
+  }
 
   const char *const c_nm_query_window_timebase =
       cs_subset_string(NeoMutt->sub, "nm_query_window_timebase");

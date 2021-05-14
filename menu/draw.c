@@ -124,6 +124,7 @@ static void print_enriched_string(struct MuttWindow *win, int index, int attr,
     if (*s < MUTT_TREE_MAX)
     {
       if (do_color)
+      {
 #if defined(HAVE_COLOR) && defined(HAVE_USE_DEFAULT_COLORS)
         /* Combining tree fg color and another bg color requires having
          * use_default_colors, because the other bg color may be undefined. */
@@ -131,6 +132,7 @@ static void print_enriched_string(struct MuttWindow *win, int index, int attr,
 #else
         mutt_curses_set_color(MT_COLOR_TREE);
 #endif
+      }
 
       while (*s && (*s < MUTT_TREE_MAX))
       {

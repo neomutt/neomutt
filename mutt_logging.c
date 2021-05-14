@@ -318,22 +318,22 @@ int level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 }
 
 /**
- * mutt_log_observer - Listen for config changes affecting the log file - Implements ::observer_t
+ * main_log_observer - Listen for config changes affecting the log file - Implements ::observer_t
  */
-int mutt_log_observer(struct NotifyCallback *nc)
+int main_log_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data)
     return -1;
   if (nc->event_type != NT_CONFIG)
     return 0;
 
-  struct EventConfig *ec = nc->event_data;
+  struct EventConfig *ev_c = nc->event_data;
 
   const char *const c_debug_file = cs_subset_path(NeoMutt->sub, "debug_file");
   const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
-  if (mutt_str_equal(ec->name, "debug_file"))
+  if (mutt_str_equal(ev_c->name, "debug_file"))
     mutt_log_set_file(c_debug_file, true);
-  else if (mutt_str_equal(ec->name, "debug_level"))
+  else if (mutt_str_equal(ev_c->name, "debug_level"))
     mutt_log_set_level(c_debug_level, true);
 
   return 0;

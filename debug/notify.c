@@ -37,8 +37,8 @@
 #include "context.h"
 #include "mutt_commands.h"
 
-extern const struct Mapping Fields[];
-extern const struct Mapping ComposeFields[];
+extern const struct Mapping ColorFields[];
+extern const struct Mapping ComposeColorFields[];
 
 static const char *get_event_type(enum NotifyType type)
 {
@@ -319,7 +319,7 @@ static void notify_dump_window_focus(struct NotifyCallback *nc)
   mutt_buffer_dealloc(&buf);
 }
 
-int debug_notify_observer(struct NotifyCallback *nc)
+int debug_all_observer(struct NotifyCallback *nc)
 {
   mutt_debug(LL_DEBUG1, "\033[1;31mNotification:\033[0m %s\n", get_event_type(nc->event_type));
 

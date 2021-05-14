@@ -98,9 +98,9 @@ static int menu_config_observer(struct NotifyCallback *nc)
   if (nc->event_type != NT_CONFIG)
     return 0;
 
-  struct EventConfig *ec = nc->event_data;
+  struct EventConfig *ev_c = nc->event_data;
 
-  const struct ConfigDef *cdef = ec->he->data;
+  const struct ConfigDef *cdef = ev_c->he->data;
   ConfigRedrawFlags flags = cdef->type & R_REDRAW_MASK;
 
   if (flags == R_REDRAW_NO_FLAGS)

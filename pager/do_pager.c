@@ -40,19 +40,19 @@
 #include "protos.h"
 
 /**
- * mutt_dlg_dopager_observer - Listen for config changes affecting the dopager menus - Implements ::observer_t
+ * dopager_config_observer - Listen for config changes affecting the dopager menus - Implements ::observer_t
  */
-static int mutt_dlg_dopager_observer(struct NotifyCallback *nc)
+static int dopager_config_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data || !nc->global_data)
     return -1;
   if (nc->event_type != NT_CONFIG)
     return 0;
 
-  struct EventConfig *ec = nc->event_data;
+  struct EventConfig *ev_c = nc->event_data;
   struct MuttWindow *dlg = nc->global_data;
 
-  if (!mutt_str_equal(ec->name, "status_on_top"))
+  if (!mutt_str_equal(ev_c->name, "status_on_top"))
     return 0;
 
   struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
@@ -109,7 +109,7 @@ int mutt_do_pager(struct PagerView *pview)
     mutt_window_add_child(dlg, win_pbar);
   }
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_dlg_dopager_observer, dlg);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, dopager_config_observer, dlg);
   dialog_push(dlg);
 
   pview->win_ibar = NULL;
@@ -142,7 +142,7 @@ int mutt_do_pager(struct PagerView *pview)
   }
 
   dialog_pop();
-  notify_observer_remove(NeoMutt->notify, mutt_dlg_dopager_observer, dlg);
+  notify_observer_remove(NeoMutt->notify, dopager_config_observer, dlg);
   mutt_window_free(&dlg);
   return rc;
 }

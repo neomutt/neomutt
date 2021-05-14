@@ -637,18 +637,18 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_WARNING;
   }
 
-  struct EventHeader event = { buf->data };
+  struct EventHeader ev_h = { buf->data };
   struct ListNode *n = header_find(&UserHeader, buf->data);
 
   if (n)
   {
     header_update(n, buf->data);
-    notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_CHANGE, &event);
+    notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_CHANGE, &ev_h);
   }
   else
   {
     header_add(&UserHeader, buf->data);
-    notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_ADD, &event);
+    notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_ADD, &ev_h);
   }
 
   return MUTT_CMD_SUCCESS;
@@ -1468,8 +1468,8 @@ static void do_unmailboxes(struct Mailbox *m)
   m->gen = -1;
   if (m->opened)
   {
-    struct EventMailbox em = { NULL };
-    notify_send(NeoMutt->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &em);
+    struct EventMailbox ev_m = { NULL };
+    notify_send(NeoMutt->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &ev_m);
   }
   else
   {
@@ -1545,8 +1545,8 @@ enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
       /* Clear all headers, send a notification for each header */
       STAILQ_FOREACH(np, &UserHeader, entries)
       {
-        struct EventHeader event = { np->data };
-        notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_REMOVE, &event);
+        struct EventHeader ev_h = { np->data };
+        notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_REMOVE, &ev_h);
       }
       mutt_list_free(&UserHeader);
       continue;
@@ -1560,8 +1560,8 @@ enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
     {
       if (mutt_istrn_equal(buf->data, np->data, l) && (np->data[l] == ':'))
       {
-        struct EventHeader event = { np->data };
-        notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_REMOVE, &event);
+        struct EventHeader ev_h = { np->data };
+        notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_REMOVE, &ev_h);
 
         header_free(&UserHeader, np);
       }

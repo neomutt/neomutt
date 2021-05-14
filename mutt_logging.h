@@ -38,7 +38,8 @@ int  mutt_log_start(void);
 void mutt_log_stop(void);
 int  mutt_log_set_level(enum LogLevel level, bool verbose);
 int  mutt_log_set_file(const char *file, bool verbose);
-int  mutt_log_observer(struct NotifyCallback *nc);
+
+int  main_log_observer(struct NotifyCallback *nc);
 int  level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 
 void mutt_clear_error(void);

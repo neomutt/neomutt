@@ -634,11 +634,11 @@ void mutt_update_index(struct Menu *menu, struct Context *ctx, enum MxStatus che
 }
 
 /**
- * mailbox_index_observer - Listen for Mailbox changes - Implements ::observer_t
+ * index_mailbox_observer - Listen for Mailbox changes - Implements ::observer_t
  *
  * If a Mailbox is closed, then set a pointer to NULL.
  */
-static int mailbox_index_observer(struct NotifyCallback *nc)
+static int index_mailbox_observer(struct NotifyCallback *nc)
 {
   if (!nc->global_data)
     return -1;
@@ -718,7 +718,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
   /* If the `folder-hook` were to call `unmailboxes`, then the Mailbox (`m`)
    * could be deleted, leaving `m` dangling. */
   // TODO: Refactor this function to avoid the need for an observer
-  notify_observer_add(m->notify, NT_MAILBOX, mailbox_index_observer, &m);
+  notify_observer_add(m->notify, NT_MAILBOX, index_mailbox_observer, &m);
   char *dup_path = mutt_str_dup(mailbox_path(m));
   char *dup_name = mutt_str_dup(m->name);
 
@@ -727,7 +727,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
   {
     /* `m` is still valid, but we won't need the observer again before the end
      * of the function. */
-    notify_observer_remove(m->notify, mailbox_index_observer, &m);
+    notify_observer_remove(m->notify, index_mailbox_observer, &m);
   }
 
   // Recreate the Mailbox as the folder-hook might have invoked `mailboxes`
@@ -762,12 +762,12 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
     collapse_all(shared->ctx, menu, 0);
 
   struct MuttWindow *dlg = dialog_find(menu->win_index);
-  struct EventMailbox em = { shared->mailbox };
-  notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &em);
+  struct EventMailbox ev_m = { shared->mailbox };
+  notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &ev_m);
 
   mutt_clear_error();
   /* force the mailbox check after we have changed the folder */
-  mutt_mailbox_check(em.mailbox, MUTT_MAILBOX_CHECK_FORCE);
+  mutt_mailbox_check(ev_m.mailbox, MUTT_MAILBOX_CHECK_FORCE);
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
   OptSearchInvalid = true;
 }
@@ -2041,7 +2041,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_ATTACH))
+        {
           break;
+        }
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
         mutt_send_message(SEND_TO_SENDER, NULL, NULL, shared->mailbox, &el,
@@ -2271,7 +2273,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         }
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
+        {
           break;
+        }
         if (!shared->email)
           break;
         char *tags = NULL;
@@ -2725,7 +2729,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
+        {
           break;
+        }
         /* L10N: CHECK_ACL */
         if (!check_acl(shared->mailbox, MUTT_ACL_WRITE, _("Can't break thread")))
           break;
@@ -2768,7 +2774,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
+        {
           break;
+        }
         /* L10N: CHECK_ACL */
         if (!check_acl(shared->mailbox, MUTT_ACL_WRITE, _("Can't link threads")))
           break;
@@ -2815,7 +2823,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_ATTACH))
+        {
           break;
+        }
         if (!shared->email)
           break;
         mutt_edit_content_type(shared->email, shared->email->body, NULL);
@@ -3115,7 +3125,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
+        {
           break;
+        }
         /* L10N: CHECK_ACL */
         if (!check_acl(shared->mailbox, MUTT_ACL_WRITE, _("Can't flag message")))
           break;
@@ -3164,7 +3176,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
+        {
           break;
+        }
         /* L10N: CHECK_ACL */
         if (!check_acl(shared->mailbox, MUTT_ACL_SEEN, _("Can't toggle new")))
           break;
@@ -3305,7 +3319,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
+        {
           break;
+        }
         /* check_acl(MUTT_ACL_WRITE); */
 
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -3401,7 +3417,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_ATTACH))
+        {
           break;
+        }
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
         ci_bounce_message(shared->mailbox, &el);
@@ -3430,7 +3448,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
+        {
           break;
+        }
         /* L10N: CHECK_ACL */
         if (!check_acl(shared->mailbox, MUTT_ACL_DELETE, _("Can't delete message")))
           break;
@@ -3482,7 +3502,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
+        {
           break;
+        }
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
            delete zero, 1, 12, ... messages. So in English we use
@@ -3524,7 +3546,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       case OP_CATCHUP:
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_ATTACH))
+        {
           break;
+        }
         if (shared->mailbox && (shared->mailbox->type == MUTT_NNTP))
         {
           struct NntpMboxData *mdata = shared->mailbox->mdata;
@@ -3558,7 +3582,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         /* TODO split this into 3 cases? */
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_ATTACH))
+        {
           break;
+        }
         bool edit;
         if (op == OP_EDIT_RAW_MESSAGE)
         {
@@ -3600,7 +3626,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_ATTACH))
+        {
           break;
+        }
         if (!shared->email)
           break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -3633,7 +3661,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           replyflags |= SEND_GROUP_CHAT_REPLY;
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_ATTACH))
+        {
           break;
+        }
         if (!shared->email)
           break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -3656,7 +3686,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
+        {
           break;
+        }
 
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
@@ -3686,7 +3718,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_ATTACH))
+        {
           break;
+        }
         if (!shared->email)
           break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -3811,7 +3845,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
+        {
           break;
+        }
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
            mark zero, 1, 12, ... messages as read. So in English we use
@@ -3903,7 +3939,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       case OP_RESEND:
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_ATTACH))
+        {
           break;
+        }
 
         if (priv->tag)
         {
@@ -3975,7 +4013,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_ATTACH))
+        {
           break;
+        }
         if (!shared->email)
           break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -4034,7 +4074,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
+        {
           break;
+        }
         /* L10N: CHECK_ACL */
         if (!check_acl(shared->mailbox, MUTT_ACL_DELETE, _("Can't undelete message")))
           break;
@@ -4071,7 +4113,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
+        {
           break;
+        }
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
             undelete zero, 1, 12, ... messages. So in English we use

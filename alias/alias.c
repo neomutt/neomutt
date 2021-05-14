@@ -632,8 +632,8 @@ void alias_free(struct Alias **ptr)
 
   struct Alias *alias = *ptr;
 
-  struct EventAlias ea = { alias };
-  notify_send(NeoMutt->notify, NT_ALIAS, NT_ALIAS_DELETED, &ea);
+  struct EventAlias ev_a = { alias };
+  notify_send(NeoMutt->notify, NT_ALIAS, NT_ALIAS_DELETED, &ev_a);
 
   FREE(&alias->name);
   FREE(&alias->comment);

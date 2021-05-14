@@ -35,19 +35,19 @@
 #include "menu/lib.h"
 
 /**
- * dialog_config_observer - Listen for config changes affecting a Dialog - Implements ::observer_t
+ * simple_config_observer - Listen for config changes affecting a Dialog - Implements ::observer_t
  */
-static int dialog_config_observer(struct NotifyCallback *nc)
+static int simple_config_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data || !nc->global_data)
     return -1;
   if (nc->event_type != NT_CONFIG)
     return 0;
 
-  struct EventConfig *ec = nc->event_data;
+  struct EventConfig *ev_c = nc->event_data;
   struct MuttWindow *dlg = nc->global_data;
 
-  if (!mutt_str_equal(ec->name, "status_on_top"))
+  if (!mutt_str_equal(ev_c->name, "status_on_top"))
     return 0;
 
   struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
@@ -97,7 +97,7 @@ struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowTy
     sbar_add(dlg);
   }
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, dialog_config_observer, dlg);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, simple_config_observer, dlg);
   dialog_push(dlg);
 
   return dlg;
@@ -115,6 +115,6 @@ void dialog_destroy_simple_index(struct MuttWindow **ptr)
   struct MuttWindow *dlg = *ptr;
 
   dialog_pop();
-  notify_observer_remove(NeoMutt->notify, dialog_config_observer, dlg);
+  notify_observer_remove(NeoMutt->notify, simple_config_observer, dlg);
   mutt_window_free(ptr);
 }

@@ -222,8 +222,8 @@ void cs_subset_notify_observers(const struct ConfigSubset *sub,
     return;
 
   struct HashElem *he_base = cs_get_base(he);
-  struct EventConfig ec = { sub, he_base->key.strkey, he };
-  notify_send(sub->notify, NT_CONFIG, ev, &ec);
+  struct EventConfig ev_c = { sub, he_base->key.strkey, he };
+  notify_send(sub->notify, NT_CONFIG, ev, &ev_c);
 }
 
 /**

@@ -581,7 +581,7 @@ int main(int argc, char *argv[], char *envp[])
   alternates_init();
 
 #ifdef USE_DEBUG_NOTIFY
-  notify_observer_add(NeoMutt->notify, NT_ALL, debug_notify_observer, NULL);
+  notify_observer_add(NeoMutt->notify, NT_ALL, debug_all_observer, NULL);
 #endif
 
   if (!get_user_info(cs))
@@ -827,9 +827,9 @@ int main(int argc, char *argv[], char *envp[])
     goto main_ok; // TEST22: neomutt -B
   }
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_hist_observer, NULL);
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_log_observer, NULL);
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, mutt_abort_key_config_observer, NULL);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, main_hist_observer, NULL);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, main_log_observer, NULL);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, main_config_observer, NULL);
 
   if (sendflags & SEND_POSTPONED)
   {
@@ -1251,8 +1251,8 @@ int main(int argc, char *argv[], char *envp[])
       struct MuttWindow *dlg = index_pager_init();
       dialog_push(dlg);
 
-      struct EventMailbox em = { m };
-      notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &em);
+      struct EventMailbox ev_m = { m };
+      notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &ev_m);
 
       mutt_index_menu(dlg, m);
       dialog_pop();
@@ -1294,6 +1294,7 @@ main_exit:
   mutt_envlist_free();
   mutt_browser_cleanup();
   mutt_commands_cleanup();
+  menu_cleanup();
   crypt_cleanup();
   mutt_opts_free();
   subjrx_free();
