@@ -1395,13 +1395,13 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
   // only now do we have a valid state to attach
   menu->mdata = &state.entry;
 
-  int last_browser_position = -1;
+  int last_selected_mailbox = -1;
 
   while (true)
   {
-    if (mailbox && last_browser_position >= 0 && last_browser_position < menu->max)
+    if (mailbox && last_selected_mailbox >= 0 && last_selected_mailbox < menu->max)
     {
-      menu_set_index(menu, last_browser_position);
+      menu_set_index(menu, last_selected_mailbox);
     }
     int op = menu_loop(menu);
     if (op >= 0)
@@ -1926,15 +1926,15 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
       case OP_TOGGLE_MAILBOXES:
       case OP_BROWSER_GOTO_FOLDER:
       case OP_CHECK_NEW:
+        if (mailbox)
+        {
+          last_selected_mailbox = menu->current;
+        }
+
         if (op == OP_TOGGLE_MAILBOXES)
         {
           mailbox = !mailbox;
           state.is_mailbox_list = mailbox;
-        }
-
-        if (!mailbox)
-        {
-          last_browser_position = menu->current;
         }
 
         if (op == OP_BROWSER_GOTO_FOLDER)
