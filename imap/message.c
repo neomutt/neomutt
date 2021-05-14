@@ -808,6 +808,9 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
   struct ImapMboxData *mdata = adata->mailbox->mdata;
   unsigned int msn = 1;
 
+  if (m->verbose)
+    mutt_message(_("Evaluating cache..."));
+
   struct SeqsetIterator *iter = mutt_seqset_iterator_new(uid_seqset);
   if (!iter)
     return -1;
