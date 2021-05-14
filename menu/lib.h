@@ -68,7 +68,6 @@ struct Menu
   enum MenuType type;     ///< Menu definition for keymap entries
   int pagelen;            ///< Number of entries per screen
   bool tagprefix : 1;
-  bool is_mailbox_list : 1;
   struct MuttWindow *win_index;
   struct MuttWindow *win_ibar;
   struct ConfigSubset *sub; ///< Inherited config items

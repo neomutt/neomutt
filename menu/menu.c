@@ -281,16 +281,7 @@ static int menu_dialog_dokey(struct Menu *menu, int *ip)
  */
 int menu_loop(struct Menu *menu)
 {
-  static int last_position = -1;
   int op = OP_NULL;
-
-  if (menu->max && menu->is_mailbox_list)
-  {
-    if (last_position > (menu->max - 1))
-      last_position = -1;
-    else if (last_position >= 0)
-      menu_set_index(menu, last_position);
-  }
 
   while (true)
   {
@@ -530,8 +521,6 @@ int menu_loop(struct Menu *menu)
         break;
 
       default:
-        if (menu->is_mailbox_list)
-          last_position = menu->current;
         return op;
     }
   }

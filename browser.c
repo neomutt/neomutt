@@ -621,7 +621,7 @@ static void add_folder(struct Menu *menu, struct BrowserState *state,
                        const char *name, const char *desc, const struct stat *s,
                        struct Mailbox *m, void *data)
 {
-  if ((!menu || menu->is_mailbox_list) && m && (m->flags & MB_HIDDEN))
+  if ((!menu || state->is_mailbox_list) && m && (m->flags & MB_HIDDEN))
   {
     return;
   }
@@ -1036,13 +1036,13 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
   {
     if (mailbox)
     {
-      menu->is_mailbox_list = true;
+      state->is_mailbox_list = true;
       snprintf(title, sizeof(title), _("Mailboxes [%d]"), mutt_mailbox_check(m, 0));
     }
     else
     {
       struct Buffer *path = mutt_buffer_pool_get();
-      menu->is_mailbox_list = false;
+      state->is_mailbox_list = false;
       mutt_buffer_copy(path, &LastDir);
       mutt_buffer_pretty_mailbox(path);
       const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
@@ -1395,8 +1395,14 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
   // only now do we have a valid state to attach
   menu->mdata = &state.entry;
 
+  int last_browser_position = -1;
+
   while (true)
   {
+    if (mailbox && last_browser_position >= 0 && last_browser_position < menu->max)
+    {
+      menu_set_index(menu, last_browser_position);
+    }
     int op = menu_loop(menu);
     if (op >= 0)
       mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
@@ -1923,7 +1929,12 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         if (op == OP_TOGGLE_MAILBOXES)
         {
           mailbox = !mailbox;
-          menu->is_mailbox_list = mailbox;
+          state.is_mailbox_list = mailbox;
+        }
+
+        if (!mailbox)
+        {
+          last_browser_position = menu->current;
         }
 
         if (op == OP_BROWSER_GOTO_FOLDER)
