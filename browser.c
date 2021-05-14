@@ -1035,13 +1035,11 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
   {
     if (state->is_mailbox_list)
     {
-      state->is_mailbox_list = true;
       snprintf(title, sizeof(title), _("Mailboxes [%d]"), mutt_mailbox_check(m, 0));
     }
     else
     {
       struct Buffer *path = mutt_buffer_pool_get();
-      state->is_mailbox_list = false;
       mutt_buffer_copy(path, &LastDir);
       mutt_buffer_pretty_mailbox(path);
       const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
