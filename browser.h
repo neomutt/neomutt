@@ -95,6 +95,7 @@ struct BrowserState
   bool imap_browse;
   char *folder;
 #endif
+  bool is_mailbox_list;
 };
 
 void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags, struct Mailbox *m, char ***files, int *numfiles);
