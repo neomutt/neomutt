@@ -2132,6 +2132,15 @@
 ** a "$mbox-hook" command.
 */
 
+{ "local_date_header", DT_BOOL, true },
+/*
+** .pp
+** If \fIset\fP, convert the date in the Date header of sent emails into the
+** local timezone of the sender. When \fIunset\fP, use UTC instead.
+** This is meant for privacy-conscious users that do not want to disclose their
+** time zone when they send mail.
+*/
+
 { "mail_check", DT_NUMBER, 5 },
 /*
 ** .pp

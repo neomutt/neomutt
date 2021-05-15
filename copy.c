@@ -661,7 +661,8 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
 
       quoted_date = mutt_buffer_pool_get();
       mutt_buffer_addch(quoted_date, '"');
-      mutt_date_make_date(quoted_date);
+      mutt_date_make_date(quoted_date,
+                          cs_subset_bool(NeoMutt->sub, "local_date_header"));
       mutt_buffer_addch(quoted_date, '"');
 
       /* Count the number of lines and bytes to be deleted */

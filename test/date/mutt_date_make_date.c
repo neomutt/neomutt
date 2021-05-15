@@ -29,16 +29,21 @@ void test_mutt_date_make_date(void)
 {
   // void mutt_date_make_date(struct Buffer *buf);
 
+  bool local = true;
+  do
   {
-    mutt_date_make_date(NULL);
-    TEST_CHECK_(1, "mutt_date_make_date(NULL)");
-  }
+    {
+      mutt_date_make_date(NULL, local);
+      TEST_CHECK_(1, "mutt_date_make_date(NULL, %s)", local ? "true" : "false");
+    }
 
-  {
-    struct Buffer buf = mutt_buffer_make(32);
-    mutt_date_make_date(&buf);
-    TEST_CHECK(mutt_buffer_len(&buf) != 0);
-    TEST_MSG("%s", buf);
-    mutt_buffer_dealloc(&buf);
-  }
+    {
+      struct Buffer buf = mutt_buffer_make(32);
+      mutt_date_make_date(&buf, local);
+      TEST_CHECK(mutt_buffer_len(&buf) != 0);
+      TEST_MSG("%s", buf);
+      mutt_buffer_dealloc(&buf);
+    }
+    local = !local;
+  } while (!local); // test the same with local == false
 }
