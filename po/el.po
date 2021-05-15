@@ -1265,7 +1265,7 @@ msgstr ""
 
 #: compose/compose.c:578
 msgid "Sign, Encrypt"
-msgstr "Υπογραφή, κρυπτογράφηση"
+msgstr "Υπογραφή, Κρυπτογράφηση"
 
 #: compose/compose.c:583 compose/compose.c:653
 msgid "Encrypt"
@@ -1645,18 +1645,16 @@ msgstr "Η εντολή επέστρεψε άδειο αλφαριθμητικό
 #: conn/connaccount.c:199
 #, c-format
 msgid "OAUTH token is too big: %ld"
-msgstr ""
+msgstr "Το OAUTH token είναι πολύ μεγάλο: %ld"
 
 #: conn/dlgverifycert.c:89
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(r)απόρριψη, (o)αποδοχή μια φορά, (a)αποδοχή πάντα"
+msgstr "(r)απόρριψη, (o)αποδοχή μια φορά, (a)αποδοχή πάντα, (s)παράλειψη"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
 #: conn/dlgverifycert.c:93
-#, fuzzy
 msgid "roas"
 msgstr "roas"
 
@@ -1672,15 +1670,13 @@ msgid "roa"
 msgstr "roa"
 
 #: conn/dlgverifycert.c:108
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(r)απόρριψη, (o)αποδοχή μια φορά"
+msgstr "(r)απόρριψη, (o)αποδοχή μια φορά, (s)παράλειψη"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
 #: conn/dlgverifycert.c:112
-#, fuzzy
 msgid "ros"
 msgstr "ros"
 
@@ -1702,7 +1698,7 @@ msgstr "Αδυναμία στη λήψη πιστοποιητικού από τ�
 #: conn/gnutls.c:146
 #, c-format
 msgid "Certificate verification error (%s)"
-msgstr ""
+msgstr "Σφάλμα επαλήθευσης πιστοποιητικού (%s)"
 
 #: conn/gnutls.c:168 conn/openssl.c:390
 #, c-format
@@ -1710,13 +1706,12 @@ msgid "[unable to calculate]"
 msgstr "[αδυναμία υπολογισμού]"
 
 #: conn/gnutls.c:323 conn/gnutls.c:490
-#, fuzzy
 msgid "Error initialising gnutls certificate data"
-msgstr "Λάθος κατά την αρχικοποίηση του τερματικού."
+msgstr "Σφάλμα κατά την αρχικοποίηση των δεδομένων πιστοποιητικού gnutls"
 
 #: conn/gnutls.c:329 conn/gnutls.c:496
 msgid "Error processing certificate data"
-msgstr ""
+msgstr "Σφάλμα κατά την επεξεργασία των δεδομένων πιστοποιητικού"
 
 #: conn/gnutls.c:501 conn/openssl.c:898
 msgid "This certificate belongs to:"
@@ -1724,7 +1719,7 @@ msgstr "Αυτό το πιστοποιητικό ανήκει στο:"
 
 #: conn/gnutls.c:503 conn/openssl.c:900
 msgid "This certificate was issued by:"
-msgstr "Αυτό το πιστοποιητικό εκδόθηκε από το:"
+msgstr "Αυτό το πιστοποιητικό εκδόθηκε από:"
 
 #: conn/gnutls.c:506 conn/openssl.c:904
 msgid "This certificate is valid"
@@ -1738,50 +1733,45 @@ msgstr "   από  %s"
 #: conn/gnutls.c:516 conn/openssl.c:907
 #, c-format
 msgid "     to %s"
-msgstr "    προς %s"
+msgstr "     προς %s"
 
 #: conn/gnutls.c:522 conn/openssl.c:913
-#, fuzzy, c-format
+#, c-format
 msgid "SHA1 Fingerprint: %s"
-msgstr "Αποτύπωμα: %s"
+msgstr "Αποτύπωμα SHA1: %s"
 
 #: conn/gnutls.c:528 conn/gnutls.c:530 conn/openssl.c:919 conn/openssl.c:922
-#, fuzzy
 msgid "SHA256 Fingerprint: "
-msgstr "Αποτύπωμα: %s"
+msgstr "Αποτύπωμα SHA256: "
 
 #: conn/gnutls.c:540
-#, fuzzy
 msgid "WARNING: Server certificate is not yet valid"
-msgstr "Η πιστοποίηση του διακομιστή δεν είναι ακόμα έγκυρη"
+msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Το πιστοποιητικό του διακομιστή δεν είναι ακόμα έγκυρο"
 
 #: conn/gnutls.c:545
-#, fuzzy
 msgid "WARNING: Server certificate has expired"
-msgstr "Το πιστοποιητικό του διακομιστή έληξε"
+msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Το πιστοποιητικό του διακομιστή έληξε"
 
 #: conn/gnutls.c:550
-#, fuzzy
 msgid "WARNING: Server certificate has been revoked"
-msgstr "Το πιστοποιητικό του διακομιστή έληξε"
+msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Το πιστοποιητικό του διακομιστή έχει ανακληθεί"
 
 #: conn/gnutls.c:556
 msgid "WARNING: Server hostname does not match certificate"
-msgstr ""
+msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Το όνομα του διακομιστή δεν ταιριάζει με το πιστοποιητικό"
 
 #: conn/gnutls.c:562
-#, fuzzy
 msgid "WARNING: Signer of server certificate is not a CA"
-msgstr "Η πιστοποίηση του διακομιστή δεν είναι ακόμα έγκυρη"
+msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: О υπογράφων του πιστοποιητικού του διακομιστή δεν είναι CA"
 
 #: conn/gnutls.c:567 conn/gnutls.c:875
 msgid "Warning: Server certificate was signed using an insecure algorithm"
-msgstr ""
+msgstr "Προειδοποίηση: Το πιστοποιητικό του διακομιστή έχει υπογραφεί με μη ασφαλή αλγόριθμο"
 
 #: conn/gnutls.c:572 conn/openssl.c:936
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr ""
+msgstr "Έλεγχος πιστοποιητικού SSL (πιστοποιητικό %zu απο %zu στην αλυσίδα)"
 
 #: conn/gnutls.c:608 conn/openssl.c:971
 msgid "Certificate saved"
@@ -1793,9 +1783,10 @@ msgstr "Προειδοποίηση: Αδυναμία αποθήκευσης πι
 
 #: conn/gnutls.c:813 conn/gnutls.c:861
 msgid "All available protocols for TLS/SSL connection disabled"
-msgstr ""
+msgstr "Όλα τα διαθέσιμα προτόκολλα για σύνδεση TLS/SSL απενεργοποιήθηκαν"
 
 #: conn/gnutls.c:870
+#, fuzzy
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr ""
 
