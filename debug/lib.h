@@ -28,7 +28,6 @@
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | debug/backtrace.c   | @subpage debug_backtrace   |
- * | debug/common.c      | @subpage debug_common      |
  * | debug/email.c       | @subpage debug_email       |
  * | debug/graphviz.c    | @subpage debug_graphviz    |
  * | debug/notify.c      | @subpage debug_notify      |
@@ -42,6 +41,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "email/lib.h"
+#include "core/lib.h"
 
 struct AddressList;
 struct Buffer;
@@ -52,9 +52,6 @@ struct NotifyCallback;
 
 // Backtrace
 void show_backtrace(void);
-
-// Common
-const char *win_name(const struct MuttWindow *win);
 
 // Email
 void        add_flag               (struct Buffer *buf, bool is_set, const char *name);
@@ -80,6 +77,7 @@ const char *get_content_type       (enum ContentType type);
 
 // Notify
 int debug_all_observer(struct NotifyCallback *nc);
+const char *get_mailbox_type(enum MailboxType type);
 
 // Parse Set
 void test_parse_set(void);

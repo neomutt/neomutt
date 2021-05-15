@@ -38,6 +38,18 @@
 struct Notify;
 
 /**
+ * ConfigEventNames - Names for logging
+ */
+const struct Mapping ConfigEventNames[] = {
+  // clang-format off
+  { "NT_CONFIG_SET",         NT_CONFIG_SET         },
+  { "NT_CONFIG_RESET",       NT_CONFIG_RESET       },
+  { "NT_CONFIG_INITIAL_SET", NT_CONFIG_INITIAL_SET },
+  // clang-format on
+  { NULL, 0 },
+};
+
+/**
  * elem_list_sort - Sort two HashElem pointers to config
  * @param a First HashElem
  * @param b Second HashElem

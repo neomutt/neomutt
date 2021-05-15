@@ -885,6 +885,30 @@ int main_config_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * km_expand_key_string - Get a human-readable key string
+ * @param str    Raw key string
+ * @param buf    Buffer for the key string
+ * @param buflen Length of buffer
+ * @retval num Length of string
+ */
+int km_expand_key_string(char *str, char *buf, size_t buflen)
+{
+  size_t len = 0;
+  for (; *str; str++)
+  {
+    const char *key = km_keyname(*str);
+    size_t keylen = mutt_str_len(key);
+
+    mutt_str_copy(buf, key, buflen);
+    buf += keylen;
+    buflen -= keylen;
+    len += keylen;
+  }
+
+  return len;
+}
+
+/**
  * km_expand_key - Get the key string bound to a Keymap
  * @param s   Buffer for the key string
  * @param len Length of buffer

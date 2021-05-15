@@ -36,6 +36,22 @@
 #include "mailbox.h"
 #include "neomutt.h"
 
+/// Lookups for Mailbox types
+static const struct Mapping MailboxTypes[] = {
+  // clang-format off
+  { "compressed", MUTT_COMPRESSED },
+  { "imap",       MUTT_IMAP },
+  { "maildir",    MUTT_MAILDIR },
+  { "mbox",       MUTT_MBOX },
+  { "mh",         MUTT_MH },
+  { "mmdf",       MUTT_MMDF },
+  { "nntp",       MUTT_NNTP },
+  { "notmuch",    MUTT_NOTMUCH },
+  { "pop",        MUTT_POP },
+  // clang-format off
+  { NULL, 0 },
+};
+
 /**
  * mailbox_gen - Get the next generation number
  */
@@ -249,7 +265,7 @@ void mailbox_gc_add(struct Email *e)
   gc.arr[gc.idx++] = e;
 }
 
-/*
+/**
  * mailbox_gc_run - Run the garbage-collection
  */
 void mailbox_gc_run(void)
@@ -259,4 +275,17 @@ void mailbox_gc_run(void)
     email_free(&gc.arr[i]);
   }
   gc.idx = 0;
+}
+
+/**
+ * mailbox_get_type_name - Get the type of a Mailbox
+ * @param type Mailbox type, e.g. #MUTT_IMAP
+ * @retval ptr  String describing Mailbox type
+ */
+const char *mailbox_get_type_name(enum MailboxType type)
+{
+  const char *name = mutt_map_get_name(type, MailboxTypes);
+  if (name)
+    return name;
+  return "UNKNOWN";
 }

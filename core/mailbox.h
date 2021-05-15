@@ -202,6 +202,8 @@ void            mailbox_update    (struct Mailbox *m);
 void            mailbox_gc_add    (struct Email *e);
 void            mailbox_gc_run    (void);
 
+const char *mailbox_get_type_name(enum MailboxType type);
+
 /**
  * mailbox_path - Get the Mailbox's path string
  * @param m Mailbox

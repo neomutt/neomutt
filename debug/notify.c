@@ -67,7 +67,7 @@ static const char *get_event_type(enum NotifyType type)
   }
 }
 
-static const char *get_mailbox_type(enum MailboxType type)
+const char *get_mailbox_type(enum MailboxType type)
 {
   switch (type)
   {
@@ -261,7 +261,7 @@ static void notify_dump_window_state(struct NotifyCallback *nc)
 
   struct Buffer buf = mutt_buffer_make(128);
 
-  mutt_buffer_add_printf(&buf, "[%s] ", win_name(win));
+  mutt_buffer_add_printf(&buf, "[%s] ", mutt_window_win_name(win));
 
   if (flags & WN_VISIBLE)
     mutt_buffer_addstr(&buf, "visible ");
@@ -302,9 +302,9 @@ static void notify_dump_window_focus(struct NotifyCallback *nc)
   {
     struct MuttWindow *dlg = dialog_find(win);
     if (dlg && (dlg != win))
-      mutt_buffer_add_printf(&buf, "%s:", win_name(dlg));
+      mutt_buffer_add_printf(&buf, "%s:", mutt_window_win_name(dlg));
 
-    mutt_buffer_add_printf(&buf, "%s ", win_name(win));
+    mutt_buffer_add_printf(&buf, "%s ", mutt_window_win_name(win));
 
     mutt_buffer_add_printf(&buf, "(C%d,R%d) [%dx%d]", win->state.col_offset,
                            win->state.row_offset, win->state.cols, win->state.rows);

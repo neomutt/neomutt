@@ -807,6 +807,33 @@ static bool do_uncolor(struct Buffer *buf, struct Buffer *s,
   return rc;
 }
 
+
+/**
+ * get_colorid_name - Get the name of a color id
+ * @param color_id Colour, e.g. #MT_COLOR_HEADER
+ * @param buf      Buffer for result
+ */
+void get_colorid_name(unsigned int color_id, struct Buffer *buf)
+{
+  const char *name = NULL;
+
+  if ((color_id >= MT_COLOR_COMPOSE_HEADER) && (color_id <= MT_COLOR_COMPOSE_SECURITY_SIGN))
+  {
+    name = mutt_map_get_name(color_id, ComposeColorFields);
+    if (name)
+    {
+      mutt_buffer_printf(buf, "compose %s", name);
+      return;
+    }
+  }
+
+  name = mutt_map_get_name(color_id, ColorFields);
+  if (name)
+    mutt_buffer_printf(buf, "%s", name);
+  else
+    mutt_buffer_printf(buf, "UNKNOWN %d", color_id);
+}
+
 /**
  * parse_uncolor - Parse an 'uncolor' command
  * @param buf     Temporary Buffer space

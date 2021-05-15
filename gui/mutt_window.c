@@ -59,6 +59,40 @@ static const struct Mapping EditorHelp[] = {
   // clang-format off
 };
 
+/// Lookups for Window Names
+static const struct Mapping WindowNames[] = {
+  // clang-format off
+  { "WT_ALL_DIALOGS",     WT_ALL_DIALOGS },
+  { "WT_CONTAINER",       WT_CONTAINER },
+  { "WT_CUSTOM",          WT_CUSTOM },
+  { "WT_DLG_ALIAS",       WT_DLG_ALIAS },
+  { "WT_DLG_ATTACH",      WT_DLG_ATTACH },
+  { "WT_DLG_AUTOCRYPT",   WT_DLG_AUTOCRYPT },
+  { "WT_DLG_BROWSER",     WT_DLG_BROWSER },
+  { "WT_DLG_CERTIFICATE", WT_DLG_CERTIFICATE },
+  { "WT_DLG_COMPOSE",     WT_DLG_COMPOSE },
+  { "WT_DLG_CRYPT_GPGME", WT_DLG_CRYPT_GPGME },
+  { "WT_DLG_DO_PAGER",    WT_DLG_DO_PAGER },
+  { "WT_DLG_HISTORY",     WT_DLG_HISTORY },
+  { "WT_DLG_INDEX",       WT_DLG_INDEX },
+  { "WT_DLG_PGP",         WT_DLG_PGP },
+  { "WT_DLG_POSTPONE",    WT_DLG_POSTPONE },
+  { "WT_DLG_QUERY",       WT_DLG_QUERY },
+  { "WT_DLG_REMAILER",    WT_DLG_REMAILER },
+  { "WT_DLG_SMIME",       WT_DLG_SMIME },
+  { "WT_HELP_BAR",        WT_HELP_BAR },
+  { "WT_INDEX",           WT_INDEX },
+  { "WT_INDEX_BAR",       WT_INDEX_BAR },
+  { "WT_MENU",            WT_MENU },
+  { "WT_MESSAGE",         WT_MESSAGE },
+  { "WT_PAGER",           WT_PAGER },
+  { "WT_PAGER_BAR",       WT_PAGER_BAR },
+  { "WT_ROOT",            WT_ROOT },
+  { "WT_SIDEBAR",         WT_SIDEBAR },
+  // clang-format off
+  { NULL, 0 },
+};
+
 /**
  * window_was_visible - Was the Window visible?
  * @param win Window
@@ -818,3 +852,19 @@ void mutt_window_clear(struct MuttWindow *win)
     mutt_window_clearline(win, i);
 }
 
+/**
+ * mutt_window_win_name - Get the name of a Window
+ * @param win Window
+ * @retval ptr  String describing Window
+ * @retval NULL Error, or unknown
+ */
+const char *mutt_window_win_name(const struct MuttWindow *win)
+{
+  if (!win)
+    return "UNKNOWN";
+
+  const char *name = mutt_map_get_name(win->type, WindowNames);
+  if (name)
+    return name;
+  return "UNKNOWN";
+}
