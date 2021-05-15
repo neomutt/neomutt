@@ -582,7 +582,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
       !privacy)
   {
     struct Buffer *date = mutt_buffer_pool_get();
-    mutt_date_make_date(date);
+    mutt_date_make_date(date, cs_subset_bool(sub, "local_date_header"));
     fprintf(fp, "Date: %s\n", mutt_buffer_string(date));
     mutt_buffer_pool_release(&date);
   }

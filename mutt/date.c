@@ -369,19 +369,30 @@ void mutt_date_normalize_time(struct tm *tm)
 
 /**
  * mutt_date_make_date - Write a date in RFC822 format to a buffer
- * @param buf Buffer for result
+ * @param buf   Buffer for result
+ * @param local If true, use the local timezone.  Otherwise use UTC.
  *
  * Appends the date to the passed in buffer.
  * The buffer is not cleared because some callers prepend quotes.
  */
-void mutt_date_make_date(struct Buffer *buf)
+void mutt_date_make_date(struct Buffer *buf, bool local)
 {
   if (!buf)
     return;
 
+  struct tm tm;
+  time_t tz = 0;
+
   time_t t = mutt_date_epoch();
-  struct tm tm = mutt_date_localtime(t);
-  time_t tz = mutt_date_local_tz(t);
+  if (local)
+  {
+    tm = mutt_date_localtime(t);
+    tz = mutt_date_local_tz(t);
+  }
+  else
+  {
+    tm = mutt_date_gmtime(t);
+  }
 
   tz /= 60;
 

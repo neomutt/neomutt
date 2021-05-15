@@ -378,6 +378,9 @@ static struct ConfigDef MainVars[] = {
   { "keep_flagged", DT_BOOL, false, 0, NULL,
     "Don't move flagged messages from `$spool_file` to `$mbox`"
   },
+  { "local_date_header", DT_BOOL, true, 0, NULL,
+    "Convert the date in the Date header of sent emails into local timezone, UTC otherwise"
+  },
   { "mail_check", DT_NUMBER|DT_NOT_NEGATIVE, 5, 0, NULL,
     "Number of seconds before NeoMutt checks for new mail"
   },

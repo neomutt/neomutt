@@ -1329,7 +1329,7 @@ static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
     fprintf(fp_tmp, "Resent-From: %s\n", resent_from);
 
     struct Buffer *date = mutt_buffer_pool_get();
-    mutt_date_make_date(date);
+    mutt_date_make_date(date, cs_subset_bool(sub, "local_date_header"));
     fprintf(fp_tmp, "Resent-Date: %s\n", mutt_buffer_string(date));
     mutt_buffer_pool_release(&date);
 
