@@ -111,6 +111,7 @@ enum CommandResult parse_alternates(struct Buffer *buf, struct Buffer *s,
 
   mutt_grouplist_destroy(&gl);
 
+  mutt_debug(LL_NOTIFY, "NT_ALTERN_ADD: %s\n", buf->data);
   notify_send(AlternatesNotify, NT_ALTERN, NT_ALTERN_ADD, NULL);
 
   return MUTT_CMD_SUCCESS;
@@ -139,6 +140,7 @@ enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *s,
 
   } while (MoreArgs(s));
 
+  mutt_debug(LL_NOTIFY, "NT_ALTERN_DELETE: %s\n", buf->data);
   notify_send(AlternatesNotify, NT_ALTERN, NT_ALTERN_DELETE, NULL);
 
   return MUTT_CMD_SUCCESS;

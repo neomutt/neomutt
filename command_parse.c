@@ -643,11 +643,13 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
   if (n)
   {
     header_update(n, buf->data);
+    mutt_debug(LL_NOTIFY, "NT_HEADER_CHANGE: %s\n", buf->data);
     notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_CHANGE, &ev_h);
   }
   else
   {
     header_add(&UserHeader, buf->data);
+    mutt_debug(LL_NOTIFY, "NT_HEADER_ADD: %s\n", buf->data);
     notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_ADD, &ev_h);
   }
 
@@ -1469,6 +1471,7 @@ static void do_unmailboxes(struct Mailbox *m)
   if (m->opened)
   {
     struct EventMailbox ev_m = { NULL };
+    mutt_debug(LL_NOTIFY, "NT_MAILBOX_SWITCH: NULL\n");
     notify_send(NeoMutt->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &ev_m);
   }
   else
@@ -1545,6 +1548,7 @@ enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
       /* Clear all headers, send a notification for each header */
       STAILQ_FOREACH(np, &UserHeader, entries)
       {
+        mutt_debug(LL_NOTIFY, "NT_HEADER_DELETE: %s\n", np->data);
         struct EventHeader ev_h = { np->data };
         notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_DELETE, &ev_h);
       }
@@ -1560,6 +1564,7 @@ enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
     {
       if (mutt_istrn_equal(buf->data, np->data, l) && (np->data[l] == ':'))
       {
+        mutt_debug(LL_NOTIFY, "NT_HEADER_DELETE: %s\n", np->data);
         struct EventHeader ev_h = { np->data };
         notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_DELETE, &ev_h);
 

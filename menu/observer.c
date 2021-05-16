@@ -84,6 +84,7 @@ static int menu_color_observer(struct NotifyCallback *nc)
 
   struct Menu *menu = nc->global_data;
   menu->redraw = MENU_REDRAW_FULL;
+  mutt_debug(LL_DEBUG5, "color done, request MENU_REDRAW_FULL\n");
 
   return 0;
 }
@@ -128,6 +129,7 @@ static int menu_config_observer(struct NotifyCallback *nc)
   if (flags & R_MENU)
     menu->redraw |= MENU_REDRAW_FULL;
 
+  mutt_debug(LL_DEBUG5, "config done, request MENU_REDRAW_FULL\n");
   return 0;
 }
 
@@ -149,6 +151,7 @@ static int menu_window_observer(struct NotifyCallback *nc)
 
   menu->pagelen = win->state.rows;
   menu->redraw = MENU_REDRAW_FULL;
+  mutt_debug(LL_DEBUG5, "window done, request MENU_REDRAW_FULL\n");
 
   return 0;
 }

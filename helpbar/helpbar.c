@@ -120,16 +120,15 @@ static int helpbar_recalc(struct MuttWindow *win)
   if (!wdata)
     return 0;
 
-  mutt_debug(LL_NOTIFY, "recalc\n");
-
   char helpstr[1024] = { 0 };
   compile_help(helpstr, sizeof(helpstr), win_focus->help_menu, win_focus->help_data);
 
   wdata->help_menu = win_focus->help_menu;
   wdata->help_data = win_focus->help_data;
   mutt_str_replace(&wdata->help_str, helpstr);
-  win->actions |= WA_REPAINT;
 
+  win->actions |= WA_REPAINT;
+  mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
   return 0;
 }
 
@@ -149,13 +148,12 @@ static int helpbar_repaint(struct MuttWindow *win)
   if (!wdata)
     return 0;
 
-  mutt_debug(LL_NOTIFY, "repaint\n");
-
   mutt_curses_set_color(MT_COLOR_STATUS);
   mutt_window_move(win, 0, 0);
   mutt_paddstr(win, win->state.cols, wdata->help_str);
   mutt_curses_set_color(MT_COLOR_NORMAL);
 
+  mutt_debug(LL_DEBUG5, "repaint done\n");
   return 0;
 }
 
@@ -179,8 +177,8 @@ static int helpbar_binding_observer(struct NotifyCallback *nc)
   if (wdata->help_menu != ev_b->menu)
     return 0;
 
-  mutt_debug(LL_NOTIFY, "binding");
   win_helpbar->actions |= WA_RECALC;
+  mutt_debug(LL_DEBUG5, "binding done, request WA_RECALC\n");
   return 0;
 }
 
@@ -199,8 +197,8 @@ static int helpbar_color_observer(struct NotifyCallback *nc)
 
   struct MuttWindow *win_helpbar = nc->global_data;
 
-  mutt_debug(LL_NOTIFY, "color\n");
   win_helpbar->actions |= WA_REPAINT;
+  mutt_debug(LL_DEBUG5, "color done, request WA_REPAINT\n");
   return 0;
 }
 
@@ -219,8 +217,8 @@ static int helpbar_config_observer(struct NotifyCallback *nc)
   struct MuttWindow *win_helpbar = nc->global_data;
   win_helpbar->state.visible = cs_subset_bool(NeoMutt->sub, "help");
 
-  mutt_debug(LL_NOTIFY, "config\n");
   win_helpbar->parent->actions |= WA_REFLOW;
+  mutt_debug(LL_DEBUG5, "config: '%s', request WA_REFLOW on parent\n", ev_c->name);
   return 0;
 }
 
@@ -248,11 +246,11 @@ static int helpbar_window_observer(struct NotifyCallback *nc)
     if (ev_w->win != win_helpbar)
       return 0;
 
-    mutt_debug(LL_NOTIFY, "delete\n");
     notify_observer_remove(NeoMutt->notify, helpbar_binding_observer, win_helpbar);
     notify_observer_remove(NeoMutt->notify, helpbar_color_observer, win_helpbar);
     notify_observer_remove(NeoMutt->notify, helpbar_config_observer, win_helpbar);
     notify_observer_remove(NeoMutt->notify, helpbar_window_observer, win_helpbar);
+    mutt_debug(LL_DEBUG5, "window delete done\n");
   }
   return 0;
 }

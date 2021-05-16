@@ -204,6 +204,7 @@ void mailbox_changed(struct Mailbox *m, enum NotifyMailbox action)
   if (!m)
     return;
 
+  mutt_debug(LL_NOTIFY, "NT_MAILBOX_CHANGE: %s %p\n", mailbox_get_type_name(m->type), m);
   struct EventMailbox ev_m = { m };
   notify_send(m->notify, NT_MAILBOX, action, &ev_m);
 }

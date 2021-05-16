@@ -1428,6 +1428,7 @@ static int compose_config_observer(struct NotifyCallback *nc)
     TAILQ_INSERT_TAIL(&dlg->children, win_cbar, entries);
 
   mutt_window_reflow(dlg);
+  mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
   return 0;
 }
 
@@ -1448,8 +1449,10 @@ static int compose_header_observer(struct NotifyCallback *nc)
   {
     header_set(&env->userhdrs, ev_h->header);
     mutt_window_reflow(dlg);
+    mutt_debug(LL_DEBUG5, "header done, request WA_REFLOW\n");
     return 0;
   }
+
   if (nc->event_subtype == NT_HEADER_DELETE)
   {
     struct ListNode *removed = header_find(&env->userhdrs, ev_h->header);
@@ -1457,6 +1460,7 @@ static int compose_header_observer(struct NotifyCallback *nc)
     {
       header_free(&env->userhdrs, removed);
       mutt_window_reflow(dlg);
+      mutt_debug(LL_DEBUG5, "header done, request WA_REFLOW\n");
     }
     return 0;
   }

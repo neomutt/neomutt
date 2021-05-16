@@ -169,6 +169,7 @@ enum CommandResult parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
   rc = parse_replace_list(buf, s, &SubjectRegexList, err);
   if (rc == MUTT_CMD_SUCCESS)
   {
+    mutt_debug(LL_NOTIFY, "NT_SUBJRX_ADD: %s\n", buf->data);
     notify_send(SubjRxNotify, NT_SUBJRX, NT_SUBJRX_ADD, NULL);
   }
   return rc;
@@ -185,6 +186,7 @@ enum CommandResult parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
   rc = parse_unreplace_list(buf, s, &SubjectRegexList, err);
   if (rc == MUTT_CMD_SUCCESS)
   {
+    mutt_debug(LL_NOTIFY, "NT_SUBJRX_DELETE: %s\n", buf->data);
     notify_send(SubjRxNotify, NT_SUBJRX, NT_SUBJRX_DELETE, NULL);
   }
   return rc;

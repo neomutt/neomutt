@@ -632,6 +632,7 @@ void alias_free(struct Alias **ptr)
 
   struct Alias *alias = *ptr;
 
+  mutt_debug(LL_NOTIFY, "NT_ALIAS_DELETE: %s\n", alias->name);
   struct EventAlias ev_a = { alias };
   notify_send(NeoMutt->notify, NT_ALIAS, NT_ALIAS_DELETE, &ev_a);
 

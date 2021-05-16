@@ -422,6 +422,7 @@ void menu_redraw_index(struct Menu *menu)
   mutt_curses_set_color(MT_COLOR_NORMAL);
   menu->redraw = MENU_REDRAW_NO_FLAGS;
 
+  mutt_debug(LL_NOTIFY, "NT_MENU\n");
   notify_send(menu->notify, NT_MENU, 0, NULL);
 }
 
@@ -487,6 +488,7 @@ void menu_redraw_motion(struct Menu *menu)
   menu->redraw &= MENU_REDRAW_STATUS;
   mutt_curses_set_color(MT_COLOR_NORMAL);
 
+  mutt_debug(LL_NOTIFY, "NT_MENU\n");
   notify_send(menu->notify, NT_MENU, 0, NULL);
 }
 
@@ -522,6 +524,7 @@ void menu_redraw_current(struct Menu *menu)
   menu->redraw &= MENU_REDRAW_STATUS;
   mutt_curses_set_color(MT_COLOR_NORMAL);
 
+  mutt_debug(LL_NOTIFY, "NT_MENU\n");
   notify_send(menu->notify, NT_MENU, 0, NULL);
 }
 
@@ -546,6 +549,7 @@ static void menu_redraw_prompt(struct Menu *menu)
   mutt_window_mvaddstr(MessageWindow, 0, 0, menu->prompt);
   mutt_window_clrtoeol(MessageWindow);
 
+  mutt_debug(LL_NOTIFY, "NT_MENU\n");
   notify_send(menu->notify, NT_MENU, 0, NULL);
 }
 

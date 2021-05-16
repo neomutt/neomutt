@@ -77,6 +77,7 @@ bool account_mailbox_add(struct Account *a, struct Mailbox *m)
   mailbox_set_subset(m, a->sub);
   notify_set_parent(m->notify, a->notify);
 
+  mutt_debug(LL_NOTIFY, "NT_MAILBOX_ADD: %s %p\n", mailbox_get_type_name(m->type), m);
   struct EventMailbox ev_m = { m };
   notify_send(a->notify, NT_MAILBOX, NT_MAILBOX_ADD, &ev_m);
   return true;
@@ -102,6 +103,8 @@ bool account_mailbox_remove(struct Account *a, struct Mailbox *m)
   {
     if (!m || (np->mailbox == m))
     {
+      mutt_debug(LL_NOTIFY, "NT_MAILBOX_DELETE: %s %p\n",
+                 mailbox_get_type_name(np->mailbox->type), np->mailbox);
       struct EventMailbox ev_m = { np->mailbox };
       notify_send(np->mailbox->notify, NT_MAILBOX, NT_MAILBOX_DELETE, &ev_m);
       STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);

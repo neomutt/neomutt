@@ -53,6 +53,7 @@ int alias_config_observer(struct NotifyCallback *nc)
   struct AliasMenuData *mdata = nc->global_data;
 
   alias_array_sort(&mdata->ava, mdata->sub);
+  mutt_debug(LL_DEBUG5, "config done\n");
 
   return 0;
 }
@@ -67,6 +68,7 @@ int alias_color_observer(struct NotifyCallback *nc)
 
   struct Menu *menu = nc->global_data;
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  mutt_debug(LL_DEBUG5, "color done, request MENU_REDRAW_FULL\n");
 
   return 0;
 }

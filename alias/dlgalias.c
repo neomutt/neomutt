@@ -182,6 +182,7 @@ static int alias_alias_observer(struct NotifyCallback *nc)
 
   menu->max = alias_array_count_visible(&mdata->ava);
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  mutt_debug(LL_DEBUG5, "alias done, request MENU_REDRAW_FULL\n");
 
   return 0;
 }

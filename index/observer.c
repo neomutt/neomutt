@@ -78,6 +78,7 @@ static int config_pager_index_lines(struct MuttWindow *dlg)
   }
 
   mutt_window_reflow(dlg);
+  mutt_debug(LL_DEBUG5, "config, request WA_REFLOW\n");
   return 0;
 }
 
@@ -154,6 +155,7 @@ static int config_status_on_top(struct MuttWindow *dlg)
   }
 
   mutt_window_reflow(dlg);
+  mutt_debug(LL_DEBUG5, "config, request WA_REFLOW\n");
   return 0;
 }
 
@@ -179,6 +181,7 @@ static int index_config_observer(struct NotifyCallback *nc)
   if (mutt_str_equal(ev_c->name, "status_on_top"))
     return config_status_on_top(dlg);
 
+  mutt_debug(LL_DEBUG5, "config done\n");
   return 0;
 }
 
@@ -196,6 +199,7 @@ static int index_subjrx_observer(struct NotifyCallback *nc)
   struct IndexSharedData *shared = dlg->wdata;
 
   subjrx_clear_mods(shared->mailbox);
+  mutt_debug(LL_DEBUG5, "subjectrx done\n");
   return 0;
 }
 
@@ -213,6 +217,7 @@ static int index_attach_observer(struct NotifyCallback *nc)
   struct IndexSharedData *shared = dlg->wdata;
 
   mutt_attachments_reset(shared->mailbox);
+  mutt_debug(LL_DEBUG5, "attachments done\n");
   return 0;
 }
 
@@ -230,6 +235,7 @@ static int index_altern_observer(struct NotifyCallback *nc)
   struct IndexSharedData *shared = dlg->wdata;
 
   mutt_alternates_reset(shared->mailbox);
+  mutt_debug(LL_DEBUG5, "alternates done\n");
   return 0;
 }
 
@@ -260,6 +266,7 @@ static int index_score_observer(struct NotifyCallback *nc)
     e->pair = 0; // Force recalc of colour
   }
 
+  mutt_debug(LL_DEBUG5, "score done\n");
   return 0;
 }
 

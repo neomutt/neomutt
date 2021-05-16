@@ -364,5 +364,6 @@ int debug_all_observer(struct NotifyCallback *nc)
 
   mutt_debug(LL_DEBUG1, "    Global Data: %p\n", nc->global_data);
 
+  mutt_debug(LL_DEBUG5, "debug done\n");
   return 0;
 }

@@ -66,9 +66,10 @@ static int dopager_config_observer(struct NotifyCallback *nc)
     // Swap the Index and the IndexBar Windows
     TAILQ_REMOVE(&dlg->children, win_first, entries);
     TAILQ_INSERT_TAIL(&dlg->children, win_first, entries);
+    mutt_window_reflow(dlg);
+    mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
   }
 
-  mutt_window_reflow(dlg);
   return 0;
 }
 

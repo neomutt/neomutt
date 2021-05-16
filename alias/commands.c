@@ -144,6 +144,8 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
 
   alias_reverse_add(tmp);
 
+  mutt_debug(LL_NOTIFY, "%s: %s\n",
+             (event == NT_ALIAS_ADD) ? "NT_ALIAS_ADD" : "NT_ALIAS_CHANGE", tmp->name);
   struct EventAlias ev_a = { tmp };
   notify_send(NeoMutt->notify, NT_ALIAS, event, &ev_a);
 

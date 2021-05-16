@@ -62,6 +62,7 @@ static int simple_config_observer(struct NotifyCallback *nc)
   }
 
   mutt_window_reflow(dlg);
+  mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
   return 0;
 }
 

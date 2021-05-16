@@ -370,6 +370,7 @@ static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s
     mutt_list_insert_tail(head, (char *) a);
   } while (MoreArgs(s));
 
+  mutt_debug(LL_NOTIFY, "NT_ATTACH_ADD: %s/%s\n", a->major, a->minor);
   notify_send(AttachmentsNotify, NT_ATTACH, NT_ATTACH_ADD, NULL);
 
   return MUTT_CMD_SUCCESS;
@@ -423,6 +424,8 @@ static enum CommandResult parse_unattach_list(struct Buffer *buf, struct Buffer 
       if ((a->major_int == major) && mutt_istr_equal(minor, a->minor))
       {
         mutt_debug(LL_DEBUG3, "removed %s/%s [%d]\n", a->major, a->minor, a->major_int);
+        mutt_debug(LL_NOTIFY, "NT_ATTACH_DELETE: %s/%s\n", a->major, a->minor);
+
         regfree(&a->minor_regex);
         FREE(&a->major);
         STAILQ_REMOVE(head, np, ListNode, entries);
@@ -546,7 +549,8 @@ enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer *s,
     mutt_list_free_type(&InlineAllow, (list_free_t) attachmatch_free);
     mutt_list_free_type(&InlineExclude, (list_free_t) attachmatch_free);
 
-    notify_send(AttachmentsNotify, NT_ATTACH, NT_ATTACH_DELETE, NULL);
+    mutt_debug(LL_NOTIFY, "NT_ATTACH_DELETE_ALL\n");
+    notify_send(AttachmentsNotify, NT_ATTACH, NT_ATTACH_DELETE_ALL, NULL);
     return 0;
   }
 

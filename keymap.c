@@ -881,6 +881,7 @@ int main_config_observer(struct NotifyCallback *nc)
     return 0;
 
   mutt_init_abort_key();
+  mutt_debug(LL_DEBUG5, "config done\n");
   return 0;
 }
 
@@ -891,7 +892,7 @@ int main_config_observer(struct NotifyCallback *nc)
  * @param buflen Length of buffer
  * @retval num Length of string
  */
-int km_expand_key_string(char *str, char *buf, size_t buflen)
+static int km_expand_key_string(char *str, char *buf, size_t buflen)
 {
   size_t len = 0;
   for (; *str; str++)
@@ -1388,6 +1389,11 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
       bindings = km_get_table(mtypes[i]);
       if (bindings)
       {
+        char keystr[32] = { 0 };
+        km_expand_key_string(key, keystr, sizeof(keystr));
+        const char *mname = mutt_map_get_name(mtypes[i], MenuNames);
+        mutt_debug(LL_NOTIFY, "NT_BINDING_DELETE: %s %s\n", mname, keystr);
+
         int op = get_op(OpGeneric, buf->data, mutt_str_len(buf->data));
         struct EventBinding ev_b = { mtypes[i], key, op };
         notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_DELETE, &ev_b);
@@ -1405,6 +1411,11 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
         rc = try_bind(key, mtypes[i], buf->data, OpGeneric, err);
         if (rc == MUTT_CMD_SUCCESS)
         {
+          char keystr[32] = { 0 };
+          km_expand_key_string(key, keystr, sizeof(keystr));
+          const char *mname = mutt_map_get_name(mtypes[i], MenuNames);
+          mutt_debug(LL_NOTIFY, "NT_BINDING_NEW: %s %s\n", mname, keystr);
+
           int op = get_op(OpGeneric, buf->data, mutt_str_len(buf->data));
           struct EventBinding ev_b = { mtypes[i], key, op };
           notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_ADD, &ev_b);
@@ -1422,6 +1433,11 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
         rc = try_bind(key, mtypes[i], buf->data, bindings, err);
         if (rc == MUTT_CMD_SUCCESS)
         {
+          char keystr[32] = { 0 };
+          km_expand_key_string(key, keystr, sizeof(keystr));
+          const char *mname = mutt_map_get_name(mtypes[i], MenuNames);
+          mutt_debug(LL_NOTIFY, "NT_BINDING_NEW: %s %s\n", mname, keystr);
+
           int op = get_op(bindings, buf->data, mutt_str_len(buf->data));
           struct EventBinding ev_b = { mtypes[i], key, op };
           notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_ADD, &ev_b);
@@ -1547,6 +1563,10 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
         km_bindkey("?", i, OP_HELP);
         km_bindkey("q", i, OP_EXIT);
       }
+
+      const char *mname = mutt_map_get_name(i, MenuNames);
+      mutt_debug(LL_NOTIFY, "NT_MACRO_DELETE_ALL: %s\n", mname);
+
       struct EventBinding ev_b = { i, NULL, OP_NULL };
       notify_send(NeoMutt->notify, NT_BINDING,
                   (data & MUTT_UNMACRO) ? NT_MACRO_DELETE_ALL : NT_BINDING_DELETE_ALL,
@@ -1554,6 +1574,11 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
     }
     else
     {
+      char keystr[32] = { 0 };
+      km_expand_key_string(key, keystr, sizeof(keystr));
+      const char *mname = mutt_map_get_name(i, MenuNames);
+      mutt_debug(LL_NOTIFY, "NT_MACRO_DELETE: %s %s\n", mname, keystr);
+
       km_bindkey(key, i, OP_NULL);
       struct EventBinding ev_b = { i, key, OP_NULL };
       notify_send(NeoMutt->notify, NT_BINDING,
@@ -1604,6 +1629,11 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
           rc = km_bind(key, mtypes[i], OP_MACRO, seq, buf->data);
           if (rc == MUTT_CMD_SUCCESS)
           {
+            char keystr[32] = { 0 };
+            km_expand_key_string(key, keystr, sizeof(keystr));
+            const char *mname = mutt_map_get_name(mtypes[i], MenuNames);
+            mutt_debug(LL_NOTIFY, "NT_MACRO_NEW: %s %s\n", mname, keystr);
+
             struct EventBinding ev_b = { mtypes[i], key, OP_MACRO };
             notify_send(NeoMutt->notify, NT_BINDING, NT_MACRO_ADD, &ev_b);
             continue;
@@ -1620,6 +1650,11 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
         rc = km_bind(key, mtypes[i], OP_MACRO, buf->data, NULL);
         if (rc == MUTT_CMD_SUCCESS)
         {
+          char keystr[32] = { 0 };
+          km_expand_key_string(key, keystr, sizeof(keystr));
+          const char *mname = mutt_map_get_name(mtypes[i], MenuNames);
+          mutt_debug(LL_NOTIFY, "NT_MACRO_NEW: %s %s\n", mname, keystr);
+
           struct EventBinding ev_b = { mtypes[i], key, OP_MACRO };
           notify_send(NeoMutt->notify, NT_BINDING, NT_MACRO_ADD, &ev_b);
           continue;

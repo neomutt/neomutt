@@ -336,5 +336,6 @@ int main_log_observer(struct NotifyCallback *nc)
   else if (mutt_str_equal(ev_c->name, "debug_level"))
     mutt_log_set_level(c_debug_level, true);
 
+  mutt_debug(LL_DEBUG5, "log done\n");
   return 0;
 }

@@ -1232,6 +1232,7 @@ int main(int argc, char *argv[], char *envp[])
 
     mutt_folder_hook(mutt_buffer_string(&folder), NULL);
     mutt_startup_shutdown_hook(MUTT_STARTUP_HOOK);
+    mutt_debug(LL_NOTIFY, "NT_GLOBAL_STARTUP\n");
     notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_STARTUP, NULL);
 
     repeat_error = true;
@@ -1252,6 +1253,7 @@ int main(int argc, char *argv[], char *envp[])
       dialog_push(dlg);
 
       struct EventMailbox ev_m = { m };
+      mutt_debug(LL_NOTIFY, "NT_MAILBOX_SWITCH: %p\n", m);
       notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &ev_m);
 
       mutt_index_menu(dlg, m);

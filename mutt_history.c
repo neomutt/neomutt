@@ -71,5 +71,6 @@ int main_hist_observer(struct NotifyCallback *nc)
     return 0;
 
   mutt_hist_init();
+  mutt_debug(LL_DEBUG5, "history done\n");
   return 0;
 }

@@ -650,6 +650,7 @@ static int index_mailbox_observer(struct NotifyCallback *nc)
     return 0;
 
   *ptr = NULL;
+  mutt_debug(LL_DEBUG5, "mailbox done\n");
   return 0;
 }
 
@@ -763,6 +764,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
 
   struct MuttWindow *dlg = dialog_find(menu->win_index);
   struct EventMailbox ev_m = { shared->mailbox };
+  mutt_debug(LL_NOTIFY, "NT_MAILBOX_SWITCH: %p\n", shared->mailbox);
   notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &ev_m);
 
   mutt_clear_error();
@@ -1899,6 +1901,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           priv->oldcount = shared->mailbox ? shared->mailbox->msg_count : 0;
 
           mutt_startup_shutdown_hook(MUTT_SHUTDOWN_HOOK);
+          mutt_debug(LL_NOTIFY, "NT_GLOBAL_SHUTDOWN\n");
           notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_SHUTDOWN, NULL);
 
           enum MxStatus check = MX_STATUS_OK;
