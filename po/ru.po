@@ -9,14 +9,15 @@
 # Alexey Vyskubov <alexey@pepper.spb.ru>, 2001-2010,2012,2014,2016
 # Vsevolod Volkov <vvv@mutt.org.ua>, 2002-2010, 2012, 2014-2019
 # Valeri Sergeev <valsy@mail.ru>, 2020
+# Ivan Shmakov <ivan at siamics dot net>, 2021, copyright disclaimed per CC0
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2021-05-08 23:41+0100\n"
-"PO-Revision-Date: 2019-05-10 19:58+0300\n"
-"Last-Translator: Valeri Sergeev\n"
+"PO-Revision-Date: 2021-05-16 19:33+0000\n"
+"Last-Translator: Ivan Shmakov\n"
 "Language-Team: \n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -52,9 +53,8 @@ msgid "Personal name: "
 msgstr "Полное имя: "
 
 #: alias/alias.c:470
-#, fuzzy
 msgid "Comment: "
-msgstr "изменить поле \"Reply-To:\""
+msgstr "Комментарий: "
 
 #: alias/alias.c:481 alias/alias.c:485
 msgid "Accept?"
@@ -86,9 +86,9 @@ msgid "alias: no address"
 msgstr "псевдоним: отсутствует адрес"
 
 #: alias/commands.c:78
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: Bad address '%s' in alias '%s'"
-msgstr "Предупреждение: некорректный IDN \"%s\" в псевдониме \"%s\""
+msgstr "Предупреждение: некорректный адрес «%s» в псевдониме «%s»"
 
 #: alias/commands.c:87
 #, c-format
@@ -187,9 +187,8 @@ msgid "Query: "
 msgstr "Запрос: "
 
 #: alias/dlgquery.c:531
-#, fuzzy
 msgid "Query"
-msgstr "Запрос: "
+msgstr "Запрос"
 
 #: alias/dlgquery.c:618 alias/dlgquery.c:658
 msgid "Query command not defined"
@@ -206,9 +205,8 @@ msgid "attachments: no disposition"
 msgstr "attachments: отсутствует параметр disposition"
 
 #: attachments.c:484
-#, fuzzy
 msgid "Current attachments settings:"
-msgstr "изменить описание вложения"
+msgstr "Текущие настройки вложения:"
 
 #: attachments.c:516
 msgid "attachments: invalid disposition"
@@ -465,9 +463,9 @@ msgid "Autocrypt database version is too new"
 msgstr "Версия базы данных autocrypt слишком новая"
 
 #: bcache/bcache.c:76
-#, fuzzy, c-format
+#, c-format
 msgid "Cache disabled, $message_cachedir isn't a directory: %s"
-msgstr "Кэш сообщений не является каталогом: %s"
+msgstr "Кэш отключен, $message_cachedir не является каталогом: %s"
 
 #: bcache/bcache.c:220
 #, c-format
@@ -587,15 +585,13 @@ msgstr "Маска файла: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1865
-#, fuzzy
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
-msgstr "Обратный порядок по (d)дате, (a)имени, (z)размеру или (n)отсутствует?"
+msgstr "Обратный порядок по (d)дате, (a)имени, (z)размеру, (c)количеству, (w)новых, или (n)не упорядочивать?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1868
-#, fuzzy
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
-msgstr "Упорядочить по (d)дате, (a)имени, (z)размеру или (n)отсутствует?"
+msgstr "Упорядочить по (d)дате, (a)имени, (z)размеру, (c)количеству, (w)новых, или (n)не упорядочивать?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:1871
@@ -615,19 +611,18 @@ msgid "Error trying to view file"
 msgstr "Ошибка при попытке просмотра файла"
 
 #: browser.c:2123
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribe pattern: "
-msgstr "Подключено к %s"
+msgstr "Подписаться по шаблону: "
 
 #: browser.c:2125
-#, fuzzy, c-format
+#, c-format
 msgid "Unsubscribe pattern: "
-msgstr "Отключено от %s"
+msgstr "Отписаться по шаблону: "
 
 #: browser.c:2146
-#, fuzzy
 msgid "No newsgroups match the mask"
-msgstr "Нет файлов, удовлетворяющих данной маске"
+msgstr "Нет групп удовлетворяющих данной маске"
 
 #: command_parse.c:114
 msgid "-group: no group name"
@@ -645,7 +640,7 @@ msgstr ""
 #: command_parse.c:177
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
-msgstr ""
+msgstr "Ошибка: Циклическое source-включение файла «%s»"
 
 #: command_parse.c:218
 #, c-format
@@ -653,9 +648,9 @@ msgid "Error in %s, line %d: %s"
 msgstr "Ошибка в %s: строка %d: %s"
 
 #: command_parse.c:229
-#, fuzzy, c-format
+#, c-format
 msgid "Warning in %s, line %d: %s"
-msgstr "Ошибка в %s: строка %d: %s"
+msgstr "Предупреждение в %s, строке %d: %s"
 
 #: command_parse.c:254
 #, c-format
@@ -668,12 +663,12 @@ msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: чтение прервано из-за большого количества ошибок в %s"
 
 #: command_parse.c:263
-#, fuzzy, c-format
+#, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
-msgstr[0] "source: ошибки в %s"
-msgstr[1] "source: ошибки в %s"
-msgstr[2] "source: ошибки в %s"
+msgstr[0] "source: %d предупреждение в %s"
+msgstr[1] "source: %d предупреждения в %s"
+msgstr[2] "source: %d предупреждений в %s"
 
 #: command_parse.c:296 command_parse.c:318 command_parse.c:463
 #: command_parse.c:1036 command_parse.c:1120 gui/color.c:736 gui/color.c:869
@@ -704,7 +699,7 @@ msgstr "%sgroup: предупреждение: некорректный IDN \"%s
 #: command_parse.c:474
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Ошибка: %s"
 
 #: command_parse.c:635
 msgid "invalid header field"
@@ -713,7 +708,7 @@ msgstr "недопустимое поле в заголовке"
 #: command_parse.c:704
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
-msgstr ""
+msgstr "Недопустимо использовать inv, no, & или ? с командой «%s»"
 
 #: command_parse.c:738 command_parse.c:877 command_parse.c:979
 #, c-format
@@ -721,26 +716,27 @@ msgid "%s: unknown variable"
 msgstr "%s: неизвестная переменная"
 
 #: command_parse.c:754 command_parse.c:1067
+#, fuzzy
 msgid "Can't use a prefix when querying a variable"
-msgstr ""
+msgstr "Недопустимо использовать префикс при обращении к переменной"
 
 #: command_parse.c:760 command_parse.c:1047 command_parse.c:1061
-#, c-format
+#, fuzzy, c-format
 msgid "Can't query a variable with the '%s' command"
-msgstr ""
+msgstr "Недопустимо обращаться к переменной в команде «%s»"
 
 #: command_parse.c:774
 msgid "Can't use prefix when incrementing or decrementing a variable"
-msgstr ""
+msgstr "Недопустимо использовать префикс при инкременте или декременте переменной"
 
 #: command_parse.c:780 command_parse.c:806
 #, c-format
 msgid "Can't set a variable with the '%s' command"
-msgstr ""
+msgstr "Недопустимо устанавливать переменную командой «%s»"
 
 #: command_parse.c:800
 msgid "Can't use prefix when setting a variable"
-msgstr ""
+msgstr "Недопустимо использовать префикс при установке переменной"
 
 #: command_parse.c:819
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
@@ -762,17 +758,17 @@ msgid "source: error at %s"
 msgstr "source: ошибка в %s"
 
 #: command_parse.c:1152
-#, fuzzy, c-format
+#, c-format
 msgid "source: file %s could not be sourced"
-msgstr "Не удалось напечатать сообщения"
+msgstr "source: файл %s не может быть прочитан"
 
 #: command_parse.c:1175
 msgid "spam: no matching pattern"
-msgstr "спам: образец не найден"
+msgstr "spam: образец не найден"
 
 #: command_parse.c:1177
 msgid "nospam: no matching pattern"
-msgstr "не спам: образец не найден"
+msgstr "nospam: образец не найден"
 
 #: command_parse.c:1319 imap/imap.c:1322
 #, c-format
@@ -780,14 +776,13 @@ msgid "Subscribed to %s"
 msgstr "Подключено к %s"
 
 #: command_parse.c:1323
-#, fuzzy, c-format
+#, c-format
 msgid "Could not subscribe to %s"
 msgstr "Подключено к %s"
 
 #: command_parse.c:1331 command_parse.c:1658
-#, fuzzy
 msgid "No folder specified"
-msgstr "Тема сообщения не указана."
+msgstr "Ящик не указан"
 
 #: command_parse.c:1646 imap/imap.c:1324
 #, c-format
@@ -795,9 +790,9 @@ msgid "Unsubscribed from %s"
 msgstr "Отключено от %s"
 
 #: command_parse.c:1650
-#, fuzzy, c-format
+#, c-format
 msgid "Could not unsubscribe from %s"
-msgstr "Отключено от %s"
+msgstr ""
 
 #: commands.c:247
 msgid "Verify signature?"
@@ -906,17 +901,14 @@ msgid "No printing command has been defined"
 msgstr "Команда для печати не определена"
 
 #: commands.c:810
-#, fuzzy
 msgid "Print message?"
 msgstr "Напечатать сообщение?"
 
 #: commands.c:811
-#, fuzzy
 msgid "Print tagged messages?"
 msgstr "Напечатать отмеченные сообщения?"
 
 #: commands.c:819
-#, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Сообщение напечатано"
@@ -924,7 +916,6 @@ msgstr[1] "Сообщения напечатаны"
 msgstr[2] "Сообщения напечатаны"
 
 #: commands.c:822
-#, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Не удалось напечатать сообщение"
@@ -952,9 +943,8 @@ msgstr "Программа: "
 
 #. L10N: Progress meter message when copying tagged messages
 #: commands.c:1142
-#, fuzzy
 msgid "Copying tagged messages..."
-msgstr "%d сообщений копируются в %s..."
+msgstr "Копирую отмеченные сообщения..."
 
 #: commands.c:1146
 #, fuzzy
@@ -988,9 +978,8 @@ msgstr "Декодировать и копировать в почтовый я�
 
 #. L10N: Progress meter message when saving tagged messages
 #: commands.c:1161
-#, fuzzy
 msgid "Saving tagged messages..."
-msgstr "Напечатать отмеченные сообщения?"
+msgstr "Сохраняю отмеченные сообщения..."
 
 #: commands.c:1165
 #, fuzzy
@@ -1029,33 +1018,28 @@ msgstr "Копируется в %s..."
 
 #. L10N: Message when an index tagged save operation fails for some reason
 #: commands.c:1359
-#, fuzzy
 msgid "Error saving tagged messages"
-msgstr "Напечатать отмеченные сообщения?"
+msgstr "Ошибка сохранения отмеченных сообщений"
 
 #. L10N: Message when an index/pager save operation fails for some reason
 #: commands.c:1364
-#, fuzzy
 msgid "Error saving message"
-msgstr "Ошибка отправки сообщения"
+msgstr "Ошибка сохранения сообщения"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
 #: commands.c:1371
-#, fuzzy
 msgid "Error copying tagged messages"
-msgstr "%d сообщений копируются в %s..."
+msgstr "Ошибка копирования отмеченных сообщений"
 
 #. L10N: Message when an index/pager copy operation fails for some reason
 #: commands.c:1376
-#, fuzzy
 msgid "Error copying message"
-msgstr "Ошибка перенаправления сообщения"
+msgstr "Ошибка копирования сообщения"
 
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
 #: commands.c:1423
-#, fuzzy
 msgid "Content type is too long"
-msgstr "Значение Content-Type изменено на %s"
+msgstr "Значение Content-Type слишком длинное"
 
 #: commands.c:1451
 #, c-format
@@ -1196,15 +1180,13 @@ msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose/compose.c:196
-#, fuzzy
 msgid "Followup-To: "
-msgstr "Отвечать по %s%s?"
+msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose/compose.c:198
-#, fuzzy
 msgid "X-Comment-To: "
-msgstr "изменить поле \"Reply-To:\""
+msgstr ""
 
 #: compose/compose.c:200
 msgid "Headers: "
@@ -1389,19 +1371,16 @@ msgid "Bad IDN in '%s': '%s'"
 msgstr "Некорректный IDN в '%s': %s."
 
 #: compose/compose.c:1811
-#, fuzzy
 msgid "Attachment is already at top"
-msgstr "Вложение сохранено"
+msgstr "Вложение уже в самом верху"
 
 #: compose/compose.c:1816 compose/compose.c:1835
-#, fuzzy
 msgid "The fundamental part can't be moved"
-msgstr "Текущее вложение не будет перекодировано"
+msgstr ""
 
 #: compose/compose.c:1830
-#, fuzzy
 msgid "Attachment is already at bottom"
-msgstr "Вложение обработано"
+msgstr "Вложение уже в самом низу"
 
 #: compose/compose.c:1849
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
@@ -1413,12 +1392,11 @@ msgstr ""
 
 #: compose/compose.c:1943
 msgid "Not all parts have 'Content-Language' set, continue?"
-msgstr ""
+msgstr "Не для всех частей указано поле Content-Language, продолжить?"
 
 #: compose/compose.c:1945
-#, fuzzy
 msgid "Not sending this message"
-msgstr "Ошибка отправки сообщения"
+msgstr "Не отправляю это сообщение"
 
 #: compose/compose.c:2044
 msgid "Attaching selected file..."
@@ -1437,9 +1415,8 @@ msgid "Open mailbox to attach message from"
 msgstr "Вложить сообщение из почтового ящика"
 
 #: compose/compose.c:2095
-#, fuzzy
 msgid "Open newsgroup to attach message from"
-msgstr "Вложить сообщение из почтового ящика"
+msgstr "Открыть группу для вложения сообщения из"
 
 #: compose/compose.c:2149 main.c:1244
 #, c-format
@@ -1460,7 +1437,7 @@ msgstr "Не удалось создать вложение"
 
 #: compose/compose.c:2247
 msgid "Recoding only affects text attachments"
-msgstr "Перекодирование допустимо только для текстовых вложений"
+msgstr "Перекодирование применимо только для текстовых вложений"
 
 #: compose/compose.c:2252
 msgid "The current attachment won't be converted"
@@ -1472,7 +1449,7 @@ msgstr "Текущее вложение будет перекодировано"
 
 #: compose/compose.c:2355
 msgid "Empty 'Content-Language'"
-msgstr ""
+msgstr "Поле «Content-Language» пусто"
 
 #: compose/compose.c:2381
 msgid "Invalid encoding"
@@ -1564,98 +1541,98 @@ msgstr "Неверное логическое значение: %ld"
 
 #: config/charset.c:50
 msgid "'charset' must contain exactly one character set name"
-msgstr ""
+msgstr "параметр «charset» должен содержать единственное имя кодировки"
 
 #: config/charset.c:66 hcache/config.c:53 hcache/config.c:72 hcache/config.c:94
 #: mutt_config.c:128
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %s"
-msgstr "Неверное значение для параметра %s: \"%s\""
+msgstr "Неверное значение для опции %s: %s"
 
 #: config/enum.c:57
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid enum value: %s"
-msgstr "Ошибка: score: неверное значение"
+msgstr ""
 
 #: config/enum.c:131
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid enum value: %ld"
-msgstr "Неверное значение для параметра %s: \"%s\""
+msgstr ""
 
 #: config/long.c:47 config/number.c:48 config/path.c:93 config/path.c:166
 #: config/sort.c:54 config/string.c:65 config/string.c:139
 #, c-format
 msgid "Option %s may not be empty"
-msgstr ""
+msgstr "Опция %s не может быть пуста"
 
 #: config/long.c:54 config/long.c:150 config/long.c:186
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid long: %s"
-msgstr "Неверное название месяца: %s"
+msgstr "Недопустимое длинное целое: %s"
 
 #: config/long.c:60 config/long.c:112 config/long.c:157 config/long.c:193
 #: config/number.c:67 config/number.c:126 config/number.c:177
 #: config/number.c:216
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be negative"
-msgstr "В режиме \"вложить сообщение\" функция недоступна."
+msgstr "Опция %s не может быть отрицательна"
 
 #: config/number.c:55 config/number.c:164 config/number.c:203
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid number: %s"
-msgstr "Ошибка: score: неверное значение"
+msgstr "Недопустимое число: %s"
 
 #: config/number.c:61 config/number.c:171 config/number.c:210
 #, c-format
 msgid "Number is too big: %s"
-msgstr ""
+msgstr "Число слишком велико: %s"
 
 #: config/number.c:120
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid number: %ld"
-msgstr "Ошибка: score: неверное значение"
+msgstr "Недопустимое число: %ld"
 
 #: config/quad.c:73
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid quad value: %s"
-msgstr "Неверно указана относительная дата: %s"
+msgstr ""
 
 #: config/quad.c:131
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid quad value: %ld"
-msgstr "Неверное значение для параметра %s: \"%s\""
+msgstr ""
 
 #: config/set.c:104 init.c:1076
 #, c-format
 msgid "No such variable: %s"
-msgstr ""
+msgstr "Нет такой переменной: %s"
 
 #: config/set.c:136 config/set.c:826
-#, fuzzy, c-format
+#, c-format
 msgid "Variable '%s' has an invalid type %d"
-msgstr "Ошибка: неверное значение \"%s\" для -d"
+msgstr "Переменная «%s» имеет недопустимый тип %d"
 
 #: config/set.c:401 config/set.c:467 config/set.c:528 config/set.c:604
 #: config/set.c:670 config/set.c:746 config/set.c:926 config/set.c:1009
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown variable '%s'"
-msgstr "%s: неизвестная переменная"
+msgstr "Неизвестная переменная «%s»"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #: config/set.c:895 config/set.c:978
 #, c-format
 msgid "Type '%s' doesn't support operation '%s'"
-msgstr ""
+msgstr "Тип «%s» не поддерживает оператор «%s»"
 
 #: config/sort.c:84
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid sort name: %s"
-msgstr "Неверно указана относительная дата: %s"
+msgstr "Недопустимое имя типа сортировки: %s"
 
 #: config/sort.c:160
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid sort type: %ld"
-msgstr "Неверно указана относительная дата: %s"
+msgstr "Недопустимый тип сортировки: %ld"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:64
@@ -1673,22 +1650,21 @@ msgstr "Пароль для %s@%s: "
 #. $*_oauth_refresh_command defined. So the message does not mean "None of
 #. your $*_oauth_refresh_command's are defined."
 #: conn/connaccount.c:173
-#, fuzzy
 msgid "No OAUTH refresh command defined"
-msgstr "Команда запроса не определена"
+msgstr "Команда обновления OAUTH не определена"
 
 #: conn/connaccount.c:181
 msgid "Unable to run refresh command"
-msgstr ""
+msgstr "Не могу выполнить команду обновления"
 
 #: conn/connaccount.c:192
 msgid "Command returned empty string"
-msgstr ""
+msgstr "Команда вернула пустую строку"
 
 #: conn/connaccount.c:199
 #, c-format
 msgid "OAUTH token is too big: %ld"
-msgstr ""
+msgstr "Токен OAUTH слишком большой: %ld"
 
 #: conn/dlgverifycert.c:88
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
@@ -1781,12 +1757,11 @@ msgstr "     по %s"
 #: conn/gnutls.c:522 conn/openssl.c:913
 #, c-format
 msgid "SHA1 Fingerprint: %s"
-msgstr "SHA1-отпечаток пальца: %s"
+msgstr "SHA1-отпечаток: %s"
 
 #: conn/gnutls.c:528 conn/gnutls.c:530 conn/openssl.c:919 conn/openssl.c:922
-#, fuzzy
 msgid "SHA256 Fingerprint: "
-msgstr "SHA1-отпечаток пальца: %s"
+msgstr "SHA256-отпечаток: %s"
 
 #: conn/gnutls.c:540
 msgid "WARNING: Server certificate is not yet valid"
@@ -1949,7 +1924,7 @@ msgstr "Ошибка при взаимодействии с %s (%s)"
 #: conn/raw.c:286
 #, fuzzy, c-format
 msgid "Connection to %s has been aborted"
-msgstr "Соединение с %s закрыто"
+msgstr "Соединение с %s было прервано"
 
 #: conn/sasl.c:618
 msgid "Unknown SASL profile"
@@ -2032,7 +2007,7 @@ msgstr "Сообщение не изменилось"
 
 #: editmsg.c:172
 msgid "Message of read-only mailbox modified! Ignoring changes."
-msgstr ""
+msgstr "Сообщение в ящике только для чтения изменилось! Игнорируем изменения."
 
 #: editmsg.c:188
 #, c-format
@@ -2089,12 +2064,12 @@ msgstr "цвета по умолчанию не поддерживаются"
 #: gui/color.c:1285
 #, c-format
 msgid "Maximum quoting level is %d"
-msgstr ""
+msgstr "Предельный уровень цитирования: %d"
 
 #: gui/color.c:1322
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid number: %s"
-msgstr "Ошибка: score: неверное значение"
+msgstr "%s: недопустимое число: %s"
 
 #: gui/curs_lib.c:379
 msgid "yes"
@@ -2129,9 +2104,8 @@ msgid "Hist Down"
 msgstr ""
 
 #: gui/mutt_window.c:55
-#, fuzzy
 msgid "Hist Search"
-msgstr "Искать"
+msgstr ""
 
 #: gui/mutt_window.c:56
 msgid "Begin Line"
@@ -2150,14 +2124,14 @@ msgid "Kill Word"
 msgstr ""
 
 #: handler.c:93
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Тип: %s/%s, кодировка: %s, размер: %s --]\n"
+msgstr "[-- Тип: %s/%s%s%s, кодировка: %s, размер: %s --]\n"
 
 #: handler.c:99
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Тип: %s/%s, кодировка: %s, размер: %s --]\n"
+msgstr "[-- Альтернативный тип #%d: %s/%s%s%s, кодировка: %s, размер: %s --]\n"
 
 #: handler.c:553
 #, c-format
@@ -2374,7 +2348,7 @@ msgstr "[-- тип %s/%s не поддерживается --]\n"
 #: hcache/config.c:86
 #, c-format
 msgid "Set option %s before setting %s"
-msgstr ""
+msgstr "Установите опцию %s перед установкой %s"
 
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
@@ -2382,7 +2356,7 @@ msgstr ""
 #: hcache/config.c:103 send/config.c:51
 #, c-format
 msgid "Option %s must be between %d and %d inclusive"
-msgstr ""
+msgstr "Опция %s должна быть в интервале от %d до %d включительно"
 
 #: help.c:343
 msgid "ERROR: please report this bug"
@@ -2406,9 +2380,9 @@ msgid "Help for %s"
 msgstr "Справка для %s"
 
 #: history/dlghistory.c:100
-#, fuzzy, c-format
+#, c-format
 msgid "History '%s'"
-msgstr "Запрос \"%s\""
+msgstr "История «%s»"
 
 #: history/history.c:229 history/history.c:271 history/history.c:620
 #, c-format
@@ -2466,14 +2440,14 @@ msgstr "%s: нет такого меню"
 #. L10N: '%s' is the name of the menu, e.g. 'index' or 'pager',
 #. it might also be 'all' when all menus are affected.
 #: icommands.c:274
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no binds for this menu"
-msgstr "%s: нет такого меню"
+msgstr "%s: нет назначений для этого меню"
 
 #: icommands.c:274
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no macros for this menu"
-msgstr "%s: нет такого меню"
+msgstr "%s: нет макросов для этого меню"
 
 #. L10N: '%s' is the file name of the temporary file
 #: icommands.c:285 icommands.c:306 icommands.c:332 icommands.c:370
@@ -2485,7 +2459,7 @@ msgstr "Не удалось создать временный файл %s"
 #: imap/auth.c:150
 #, fuzzy
 msgid "No authenticators available or wrong credentials"
-msgstr "Нет доступных методов аутентификации."
+msgstr "Нет доступных методов аутентификации или указаны неверные данные"
 
 #. L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:56 imap/auth_cram.c:106 imap/auth_gss.c:168
@@ -2499,9 +2473,9 @@ msgstr "Аутентификация (%s)..."
 #: imap/auth_anon.c:89 imap/auth_cram.c:180 imap/auth_gss.c:347
 #: imap/auth_oauth.c:99 imap/auth_sasl.c:257 nntp/nntp.c:664 pop/auth.c:196
 #: pop/auth.c:264 send/smtp.c:619 send/smtp.c:693 send/smtp.c:782
-#, fuzzy, c-format
+#, c-format
 msgid "%s authentication failed"
-msgstr "Ошибка SASL-аутентификации"
+msgstr "%s ошибка аутентификации"
 
 #: imap/auth_login.c:51
 msgid "LOGIN disabled on this server"
@@ -2566,9 +2540,9 @@ msgid "Mailbox %s@%s closed"
 msgstr "Почтовый ящик %s@%s закрыт"
 
 #: imap/command.c:1175
-#, fuzzy, c-format
+#, c-format
 msgid "IMAP command failed: %s"
-msgstr "Ошибка команды упаковки: %s"
+msgstr "Ошибка команды IMAP: %s"
 
 #: imap/command.c:1276 imap/command.c:1398
 #, c-format
@@ -2578,7 +2552,7 @@ msgstr "Превышено время ожидания соединение с %
 #: imap/config.c:57 pop/config.c:57 send/config.c:75
 #, c-format
 msgid "Option %s: %s is not a valid authenticator"
-msgstr ""
+msgstr "Опция %s: %s не является действительным методом аутентикации"
 
 # "neomutt не поддерживает версию протокола, используемый на этом сервере"
 #: imap/imap.c:102
@@ -2677,19 +2651,17 @@ msgid "Error opening mailbox"
 msgstr "Ошибка открытия почтового ящика"
 
 #: imap/imap.c:2260
-#, fuzzy
 msgid "IMAP server doesn't support custom flags"
-msgstr "SMTP сервер не поддерживает аутентификацию"
+msgstr "IMAP-сервер не поддерживает пользовательские флаги"
 
 #: imap/imap.c:2304
-#, fuzzy
 msgid "Invalid IMAP flags"
-msgstr "Неправильный "
+msgstr "Недопустимые флаги IMAP"
 
 #. L10N: This prompt is made if the user hits Ctrl-C when opening an IMAP mailbox
 #: imap/message.c:490
 msgid "Abort download and close mailbox?"
-msgstr ""
+msgstr "Прекратить загрузку и закрыть ящик?"
 
 #. L10N: Comparing the cached data with the IMAP server's data
 #: imap/message.c:673
@@ -2698,17 +2670,15 @@ msgstr "Загрузка кэша..."
 
 #. L10N: Fetching IMAP flag changes, using the CONDSTORE extension
 #: imap/message.c:884
-#, fuzzy
 msgid "Fetching flag updates..."
-msgstr "Получение заголовков сообщений..."
+msgstr "Получение обновленных флагов..."
 
 #. L10N: After opening an IMAP mailbox using QRESYNC, Mutt performs a quick
 #. sanity check.  If that fails, Mutt reopens the mailbox using a normal
 #. download.
 #: imap/message.c:1020
-#, fuzzy
 msgid "QRESYNC failed.  Reopening mailbox."
-msgstr "Не удалось заново открыть почтовый ящик"
+msgstr "Сбой QRESYNC.  Заново открываем почтовый ящик."
 
 #: imap/message.c:1090
 #, fuzzy
@@ -2777,9 +2747,8 @@ msgid "Post"
 msgstr ""
 
 #: index/index.c:129 pager/pager.c:248
-#, fuzzy
 msgid "Followup"
-msgstr "Отвечать по %s%s?"
+msgstr ""
 
 #: index/index.c:166 index/index.c:1428
 msgid "No mailbox is open"
@@ -2820,8 +2789,9 @@ msgid "Changes to folder will not be written"
 msgstr "Изменения в состояние почтового ящика не будут внесены"
 
 #: index/index.c:789
+#, fuzzy
 msgid "Failed to create query, aborting"
-msgstr ""
+msgstr "Не удалось создать запрос, отменено"
 
 #: index/index.c:837 muttlib.c:1403 mx.c:220 mx.c:358
 #, c-format
@@ -2845,41 +2815,43 @@ msgid "No tagged messages"
 msgstr "Нет отмеченных сообщений"
 
 #: index/index.c:1439 index/index.c:1709 menu.c:1393
+#, fuzzy
 msgid "Nothing to do"
-msgstr "Нет помеченных сообщений"
+msgstr "Нет отмеченных сообщений"
 
 #: index/index.c:1528
 #, fuzzy
 msgid "Enter Message-Id: "
-msgstr "Введите идентификатор ключа: "
+msgstr "Введите Message-Id: "
 
 #: index/index.c:1539
+#, fuzzy
 msgid "Article has no parent reference"
-msgstr ""
+msgstr "В сообщении нет ссылки на предыдущее в теме"
 
 #: index/index.c:1561
 #, fuzzy
 msgid "Message is not visible in limited view"
-msgstr "Корневое сообщение не видимо при просмотре с ограничением"
+msgstr "Сообщение не видимо при просмотре с ограничением"
 
 #: index/index.c:1565
-#, fuzzy, c-format
+#, c-format
 msgid "Fetching %s from server..."
-msgstr "Удаление сообщений с сервера..."
+msgstr "Получение %s с сервера..."
 
 #: index/index.c:1576 nntp/nntp.c:2644
 #, c-format
 msgid "Article %s not found on the server"
-msgstr ""
+msgstr "Сообщение %s не найдено на сервере"
 
 #: index/index.c:1603
 msgid "No Message-Id. Unable to perform operation."
-msgstr ""
+msgstr "Нет Message-Id. Не могу выполнить действие."
 
 #: index/index.c:1684
 #, fuzzy
 msgid "No deleted messages found in the thread"
-msgstr "удалить все сообщения в дискуссии"
+msgstr "Не найдено удаленных сообщений в дискуссии"
 
 #: index/index.c:1705
 msgid "Jump to message: "
@@ -2948,9 +2920,8 @@ msgid "Logged out of IMAP servers"
 msgstr "Соединения с IMAP-серверами отключены"
 
 #: index/index.c:2204
-#, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
-msgstr "Нет темы письма, отказ"
+msgstr ""
 
 #: index/index.c:2224
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
@@ -2961,9 +2932,8 @@ msgid "Failed to read thread, aborting"
 msgstr ""
 
 #: index/index.c:2266 mx.c:1277 mx.c:1297
-#, fuzzy
 msgid "Folder doesn't support tagging, aborting"
-msgstr "SMTP сервер не поддерживает аутентификацию"
+msgstr ""
 
 #: index/index.c:2284
 #, fuzzy
@@ -2981,7 +2951,7 @@ msgstr ""
 #: index/index.c:2385
 #, fuzzy
 msgid "No query, aborting"
-msgstr "Нет темы письма, отказ"
+msgstr "Нет запроса, отказ"
 
 #: index/index.c:2416 index/index.c:2441
 msgid "Windowed queries disabled"
@@ -3004,13 +2974,12 @@ msgid "Open mailbox"
 msgstr "Открыть почтовый ящик"
 
 #: index/index.c:2575
-#, fuzzy
 msgid "Open newsgroup in read-only mode"
-msgstr "Открыть почтовый ящик только для чтения"
+msgstr "Открыть группу в режиме только для чтения"
 
 #: index/index.c:2580
 msgid "Open newsgroup"
-msgstr ""
+msgstr "Открыть группу"
 
 #: index/index.c:2708
 #, fuzzy
@@ -3021,7 +2990,7 @@ msgstr "Выйти из NeoMutt без сохранения изменений?"
 #: index/index.c:2727
 #, fuzzy
 msgid "Can't break thread"
-msgstr "Не удалось соединить дискуссии"
+msgstr "Не удалось разъединить дискуссии"
 
 #: index/index.c:2746
 msgid "Thread broken"
@@ -3174,7 +3143,7 @@ msgstr "Нет Message-ID для создания макроса"
 
 #: index/index.c:3936 pager/pager.c:3659 recvattach.c:1918
 msgid "Reply by mail as poster prefers?"
-msgstr ""
+msgstr "Ответить почтой согласно предпочтению отправителя?"
 
 #: index/index.c:3941 pager/pager.c:3591 pager/pager.c:3616 pager/pager.c:3664
 msgid "Posting to this group not allowed, may be moderated. Continue?"
@@ -3191,9 +3160,9 @@ msgid "Error in command line: %s"
 msgstr "Ошибка в командной строке: %s"
 
 #: init.c:218
-#, fuzzy, c-format
+#, c-format
 msgid "Warning in command line: %s"
-msgstr "Ошибка в командной строке: %s"
+msgstr "Предупреждение в командной строке: %s"
 
 #: init.c:328
 msgid "unable to determine nodename via uname()"
@@ -3244,7 +3213,7 @@ msgstr "%s: последовательность клавиш пуста"
 #: keymap.c:1305
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
-msgstr ""
+msgstr "Функция «%s» не доступна для меню «%s»"
 
 #: keymap.c:1589
 msgid "macro: empty key sequence"
@@ -3262,7 +3231,7 @@ msgstr "%s: нет такой функции"
 #: keymap.c:1691
 #, fuzzy, c-format
 msgid "Enter keys (%s to abort): "
-msgstr "Введите ключи (^G - прерывание ввода): "
+msgstr "Введите ключи (%s - прерывание ввода): "
 
 #: keymap.c:1698
 #, c-format
@@ -3327,7 +3296,7 @@ msgstr "Пишется %s..."
 #. L10N: Try to limit to 80 columns
 #: main.c:158
 msgid "usage:"
-msgstr ""
+msgstr "использование:"
 
 #: main.c:159
 msgid ""
@@ -3392,9 +3361,8 @@ msgstr ""
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
 #: main.c:178
-#, fuzzy
 msgid "options:"
-msgstr "Параметры по умолчанию:"
+msgstr "опции:"
 
 #: main.c:179
 msgid ""
@@ -3504,9 +3472,8 @@ msgid ""
 msgstr ""
 
 #: main.c:209
-#, fuzzy
 msgid "  -R            Open mailbox in read-only mode"
-msgstr "Открыть почтовый ящик только для чтения"
+msgstr "  -R            Открыть почтовый ящик только для чтения"
 
 #: main.c:210
 msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
@@ -3568,7 +3535,7 @@ msgstr "Невозможно использовать ключ -E с stdin"
 #: main.c:992
 #, fuzzy, c-format
 msgid "Can't parse message template: %s"
-msgstr "Не удалось открыть файл сообщения: %s"
+msgstr "Не удалось разобрать шаблон: %s"
 
 #: main.c:1059 mutt_header.c:338
 #, c-format
@@ -3712,22 +3679,22 @@ msgstr "Попытка flock-блокировки файла... %d"
 #: mutt/logging.c:107
 #, fuzzy, c-format
 msgid "Closed log file: %s"
-msgstr "Не удалось открыть файл сообщения: %s"
+msgstr "Закрыт файл протокола: %s"
 
 #: mutt/logging.c:138
-#, fuzzy, c-format
+#, c-format
 msgid "Debugging at level %d to file '%s'"
-msgstr "Отладка на уровне %d.\n"
+msgstr "Отладка на уровне %d в файл «%s»"
 
 #: mutt/logging.c:192
 #, fuzzy, c-format
 msgid "Logging at level %d to file '%s'"
-msgstr "Отладка на уровне %d.\n"
+msgstr "Протоколирование на уровне %d в файл «%s»"
 
 #: mutt/path.c:423
 #, fuzzy
 msgid "Error: converting path to absolute"
-msgstr "Ошибка при установлении соединения: %s"
+msgstr "Ошибка: преобразование пути в абсолютный"
 
 #: mutt/random.c:59
 #, c-format
@@ -3842,32 +3809,32 @@ msgid "Option %s may not be set or reset from the pager"
 msgstr ""
 
 #: mutt_config.c:161
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be set when in attach-message mode"
-msgstr "В режиме \"вложить сообщение\" функция недоступна."
+msgstr "Опция %s не может быть установления в режиме вложения сообщения"
 
 #: mutt_logging.c:313
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %ld"
-msgstr "Неверное значение для параметра %s: \"%s\""
+msgstr "Неверное значение для параметра %s: %ld"
 
 #: mutt_lua.c:436
 msgid "Error: Couldn't load the lua interpreter"
 msgstr ""
 
 #: mutt_lua.c:506
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't source lua source: %s"
-msgstr "Не удалось заблокировать %s\n"
+msgstr ""
 
 #: mutt_mailbox.c:233
 msgid "New mail in "
 msgstr "Новая почта в "
 
 #: mutt_socket.c:71
-#, fuzzy, c-format
+#, c-format
 msgid "SSL is unavailable, can't connect to %s"
-msgstr "SSL-протокол недоступен."
+msgstr "SSL недоступен, не могу подключиться к %s"
 
 #: mutt_thread.c:1231
 msgid "Parent message is not available"
@@ -3921,20 +3888,19 @@ msgid "Append messages to %s?"
 msgstr "Добавить сообщения к %s?"
 
 #: muttlib.c:1394
-#, fuzzy
 msgid "Can't save message to news server"
-msgstr "Невозможно оставить сообщения на сервере"
+msgstr "Невозможно сохранить сообщение на новостном сервере"
 
 #: mx.c:403
-#, fuzzy, c-format
+#, c-format
 msgid "Reading from %s interrupted..."
-msgstr "Поиск прерван."
+msgstr "Чтение из %s прервано..."
 
 #. L10N: Displayed if a mailbox sync fails
 #: mx.c:488
 #, fuzzy, c-format
 msgid "Unable to write %s"
-msgstr "Не удалось вложить %s"
+msgstr "Не удалось записать %s"
 
 #. L10N: Although we know the precise number of messages, we do not show it to the user.
 #. So feel free to use a "generic plural" as plural translation if your language has one.
@@ -3957,12 +3923,12 @@ msgstr ""
 #. L10N: The first argument is the number of read messages to be
 #. moved, the second argument is the target mailbox.
 #: mx.c:694
-#, fuzzy, c-format
+#, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
-msgstr[0] "Переместить прочитанные сообщения в %s?"
-msgstr[1] "Переместить прочитанные сообщения в %s?"
-msgstr[2] "Переместить прочитанные сообщения в %s?"
+msgstr[0] "Переместить %d прочитанное сообщения в %s?"
+msgstr[1] "Переместить %d прочитанных сообщения в %s?"
+msgstr[2] "Переместить %d прочитанных сообщения в %s?"
 
 #: mx.c:709 mx.c:953
 #, fuzzy, c-format
@@ -4012,7 +3978,7 @@ msgstr "Почтовый ящик обновлен"
 #: mx.c:1342
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
-msgstr "Не удалось открыть файл сообщения: %s"
+msgstr "Не удалось открыть %s: это pipe"
 
 #: ncrypt/crypt.c:80
 #, c-format
@@ -4331,9 +4297,9 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2690
-#, fuzzy, c-format
+#, c-format
 msgid "Error importing key: %s"
-msgstr "Ошибка экспорта ключа: %s"
+msgstr "Ошибка импорта ключа: %s"
 
 #: ncrypt/crypt_gpgme.c:2929
 #, c-format
@@ -4538,7 +4504,7 @@ msgstr "S/MIME (e)шифр, (s)подпись, (a)подпись как, (b)об
 #: ncrypt/crypt_gpgme.c:4234
 #, fuzzy
 msgid "esabpco"
-msgstr "esabpc"
+msgstr "esabpco"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4240
@@ -5147,13 +5113,14 @@ msgid "Loading list of groups from cache..."
 msgstr ""
 
 #: nntp/newsrc.c:1027
+#, fuzzy
 msgid "No news server defined"
-msgstr ""
+msgstr "Новостной сервер не определен"
 
 #: nntp/newsrc.c:1045
 #, fuzzy, c-format
 msgid "%s is an invalid news server specification"
-msgstr "Неверно указано имя POP-ящика: %s"
+msgstr "%s не является допустимым определением новостного сервера"
 
 #: nntp/nntp.c:129 nntp/nntp.c:675 pop/lib.c:410 pop/pop.c:688
 msgid "Server closed connection"
@@ -5162,16 +5129,16 @@ msgstr "Сервер закрыл соединение"
 #: nntp/nntp.c:233
 #, fuzzy
 msgid "Server doesn't support reader mode"
-msgstr "SMTP сервер не поддерживает аутентификацию"
+msgstr "Сервер не поддерживает READER-режим"
 
 #: nntp/nntp.c:472 pop/auth.c:527 send/smtp.c:786
 msgid "No authenticators available"
 msgstr "Нет доступных методов аутентификации."
 
 #: nntp/nntp.c:724
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s lost. Reconnect?"
-msgstr "Соединение с %s закрыто"
+msgstr "Соединение с %s потеряно. Восстановить?"
 
 #: nntp/nntp.c:1183
 #, fuzzy
@@ -5185,41 +5152,38 @@ msgstr "Проверка наличия новых сообщений..."
 #: nntp/nntp.c:1759 nntp/nntp.c:1855
 #, fuzzy
 msgid "Could not switch to reader mode"
-msgstr "ошибка записи во временный почтовый ящик: %s"
+msgstr "Не удалось переключиться в READER-режим"
 
 #: nntp/nntp.c:1772
 #, fuzzy, c-format
 msgid "Connected to %s. %s"
-msgstr "Устанавливается соединение с %s..."
+msgstr "Соединение с %s. %s"
 
 #: nntp/nntp.c:1773
 msgid "Posting is NOT ok"
-msgstr ""
+msgstr "Отправка сообщений НЕ разрешена"
 
 #: nntp/nntp.c:1773
-#, fuzzy
 msgid "Posting is ok"
-msgstr "Нет помеченных сообщений"
+msgstr "Отправка сообщений разрешена"
 
 #: nntp/nntp.c:1911 nntp/nntp.c:1946
-#, fuzzy, c-format
+#, c-format
 msgid "Can't post article: %s"
-msgstr "Не удалось получить информацию о %s: %s"
+msgstr "Не удалось отправить сообщение: %s"
 
 #: nntp/nntp.c:1967
-#, fuzzy, c-format
+#, c-format
 msgid "Loading list of groups from server %s..."
-msgstr "Удаление сообщений с сервера..."
+msgstr "Получение списка групп с сервера %s..."
 
 #: nntp/nntp.c:2011 nntp/nntp.c:2106
-#, fuzzy
 msgid "Loading descriptions..."
-msgstr "Регистрация..."
+msgstr "Получение описаний..."
 
 #: nntp/nntp.c:2033
-#, fuzzy
 msgid "Checking for new newsgroups..."
-msgstr "Проверка наличия новых сообщений..."
+msgstr "Проверка наличия новых групп..."
 
 #: nntp/nntp.c:2239
 msgid "Unable to find child articles because server does not support XPAT command"
@@ -5228,17 +5192,17 @@ msgstr ""
 #: nntp/nntp.c:2321
 #, fuzzy, c-format
 msgid "%s is an invalid newsgroup specification"
-msgstr "Неверно указано имя POP-ящика: %s"
+msgstr "%s не является допустимым определением группы новостей"
 
 #: nntp/nntp.c:2360
 #, c-format
 msgid "Newsgroup %s not found on the server"
-msgstr ""
+msgstr "Группа %s не найдена на сервере"
 
 #: nntp/nntp.c:2384
 #, c-format
 msgid "Newsgroup %s has been removed from the server"
-msgstr ""
+msgstr "Группа %s была удалена с сервера"
 
 #: notmuch/config.c:57
 #, c-format
@@ -5246,9 +5210,9 @@ msgid "nm_default_url must be: notmuch://<absolute path> . Current: %s"
 msgstr ""
 
 #: notmuch/db.c:136
-#, fuzzy, c-format
+#, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
-msgstr "Попытка fcntl-блокировки файла... %d"
+msgstr ""
 
 #: notmuch/db.c:154
 #, c-format
@@ -5261,33 +5225,31 @@ msgid "unknown reason"
 msgstr "неизвестная ошибка"
 
 #: notmuch/mdata.c:83 notmuch/notmuch.c:1847
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse notmuch url: %s"
-msgstr "Не удалось распознать ссылку mailto:\n"
+msgstr ""
 
 #: notmuch/notmuch.c:330
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)"
 msgstr ""
 
 #: notmuch/notmuch.c:392
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse notmuch limit: %s"
-msgstr "Не удалось распознать ссылку mailto:\n"
+msgstr ""
 
 #: notmuch/notmuch.c:742
-#, fuzzy
 msgid "Reading messages..."
-msgstr "Сообщение отправляется..."
+msgstr "Чтение сообщений..."
 
 #: notmuch/notmuch.c:1631
-#, fuzzy
 msgid "No more messages in the thread"
-msgstr "Нет новых сообщений при просмотре с ограничением"
+msgstr ""
 
 #: notmuch/notmuch.c:1860
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse limit: %s"
-msgstr "Не удалось распознать ссылку mailto:\n"
+msgstr ""
 
 #: notmuch/notmuch.c:2384
 #, c-format
@@ -5300,7 +5262,7 @@ msgstr[2] ""
 #: notmuch/notmuch.c:2446
 #, fuzzy
 msgid "Can't write to virtual folder"
-msgstr "Не удалось открыть мусорную корзину"
+msgstr "Не удалось записать в виртуальный ящик"
 
 #: notmuch/query.c:99
 #, c-format
@@ -5340,9 +5302,8 @@ msgid "force viewing of attachment using mailcap"
 msgstr "форсировать использование базы mailcap для просмотра вложения"
 
 #: opcodes.h:45
-#, fuzzy
 msgid "view attachment in pager using copiousoutput mailcap"
-msgstr "форсировать использование базы mailcap для просмотра вложения"
+msgstr ""
 
 #: opcodes.h:46
 msgid "view attachment as text"
@@ -5367,7 +5328,7 @@ msgstr "указать новый файл в этом каталоге"
 #: opcodes.h:51
 #, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
-msgstr "подключиться к текущему почтовому ящику (только IMAP)"
+msgstr "подключиться к текущему почтовому ящику (только IMAP/NNTP)"
 
 #: opcodes.h:52
 msgid "display the currently selected file's name"
@@ -5380,7 +5341,7 @@ msgstr "переключиться между режимами просмотр�
 #: opcodes.h:54
 #, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-msgstr "отключиться от текущего почтового ящика (только IMAP)"
+msgstr "отключиться от текущего почтового ящика (только IMAP/NNTP)"
 
 #: opcodes.h:55
 msgid "view file"
@@ -5399,9 +5360,8 @@ msgid "check mailboxes for new mail"
 msgstr "проверить почтовые ящики на наличие новой почты"
 
 #: opcodes.h:59
-#, fuzzy
 msgid "calculate message statistics for all mailboxes"
-msgstr "сохранить сообщение/вложение в ящик/файл"
+msgstr "вычислить статистику по сообщениям для всех ящиков"
 
 #: opcodes.h:60
 #, fuzzy
@@ -5416,7 +5376,7 @@ msgstr "вложить сообщения в это сообщение"
 #: opcodes.h:62
 #, fuzzy
 msgid "attach news articles to this message"
-msgstr "вложить файлы в это сообщение"
+msgstr "вложить сообщения из групп новостей в это сообщение"
 
 #: opcodes.h:63
 msgid "edit the BCC list"
@@ -5445,7 +5405,7 @@ msgstr "изменить вложенный файл"
 #: opcodes.h:69
 #, fuzzy
 msgid "edit the Followup-To field"
-msgstr "изменить поле \"Reply-To:\""
+msgstr "изменить поле \"Followup-To:\""
 
 #: opcodes.h:70
 msgid "edit the from field"
@@ -5458,7 +5418,7 @@ msgstr "редактировать сообщение вместе с загол
 #: opcodes.h:72
 #, fuzzy
 msgid "edit the 'Content-Language' of the attachment"
-msgstr "изменить вложенный файл"
+msgstr "изменить поле Content-Language вложения"
 
 #: opcodes.h:73
 msgid "edit the message"
@@ -5469,9 +5429,8 @@ msgid "edit attachment using mailcap entry"
 msgstr "редактировать вложение в соответствии с записью в mailcap"
 
 #: opcodes.h:75
-#, fuzzy
 msgid "edit the newsgroups list"
-msgstr "изменить список \"CC:\""
+msgstr "изменить список групп"
 
 #: opcodes.h:76
 msgid "edit the Reply-To field"
@@ -5488,7 +5447,7 @@ msgstr "изменить список \"To:\""
 #: opcodes.h:79
 #, fuzzy
 msgid "edit the X-Comment-To field"
-msgstr "изменить поле \"Reply-To:\""
+msgstr "изменить поле \"X-Comment-To:\""
 
 #: opcodes.h:80
 msgid "get a temporary copy of an attachment"
@@ -5507,14 +5466,12 @@ msgid "run ispell on the message"
 msgstr "проверить правописание"
 
 #: opcodes.h:84
-#, fuzzy
 msgid "move an attachment down in the attachment list"
-msgstr "Отправить вложение с именем: "
+msgstr ""
 
 #: opcodes.h:85
-#, fuzzy
 msgid "move an attachment up in the attachment list"
-msgstr "Отправить вложение с именем: "
+msgstr ""
 
 #: opcodes.h:86
 msgid "compose new attachment using mailcap entry"
@@ -5551,7 +5508,7 @@ msgstr "удалить/оставить файл после отправки"
 #: opcodes.h:94
 #, fuzzy
 msgid "compose new message to the current message sender"
-msgstr "создать новое сообщение"
+msgstr "создать новое сообщение адресованное отправителю данного сообщения"
 
 #: opcodes.h:95
 msgid "update an attachment's encoding info"
@@ -5678,9 +5635,8 @@ msgid "scroll down through the history list"
 msgstr "прокрутить вниз список истории"
 
 #: opcodes.h:126
-#, fuzzy
 msgid "search through the history list"
-msgstr "прокрутить вверх список истории"
+msgstr "поиск по списку истории"
 
 #: opcodes.h:127
 msgid "scroll up through the history list"
@@ -5763,9 +5719,8 @@ msgid "toggle a message's 'important' flag"
 msgstr "установить/сбросить флаг \"важное\" для сообщения"
 
 #: opcodes.h:147
-#, fuzzy
 msgid "followup to newsgroup"
-msgstr "Отвечать по %s%s?"
+msgstr "ответить в группу"
 
 #: opcodes.h:148
 msgid "forward a message with comments"
@@ -5782,22 +5737,21 @@ msgstr "выбрать текущую запись"
 #: opcodes.h:151
 #, fuzzy
 msgid "get all children of the current message"
-msgstr "создать макрос для текущего сообщения"
+msgstr "получить все ответы на данное сообщение"
 
 #: opcodes.h:152
 #, fuzzy
 msgid "get message with Message-Id"
-msgstr "редактировать сообщение вместе с заголовками"
+msgstr "получить сообщение по Message-Id"
 
 #: opcodes.h:153
 #, fuzzy
 msgid "get parent of the current message"
-msgstr "создать макрос для текущего сообщения"
+msgstr "получить сообщение, на которое данное является ответом"
 
 #: opcodes.h:154
-#, fuzzy
 msgid "go to parent directory"
-msgstr "%s не является каталогом."
+msgstr "идти в родительский каталог"
 
 #: opcodes.h:155
 msgid "reply to all recipients preserving To/Cc"
@@ -5828,9 +5782,8 @@ msgid "move to the last entry"
 msgstr "последняя запись"
 
 #: opcodes.h:162
-#, fuzzy
 msgid "limit view to current thread"
-msgstr "пометить текущую дискуссию"
+msgstr ""
 
 #: opcodes.h:163
 msgid "reply to specified mailing list"
@@ -5865,14 +5818,12 @@ msgid "open a different folder in read only mode"
 msgstr "открыть другой почтовый ящик/файл в режиме \"только для чтения\""
 
 #: opcodes.h:171
-#, fuzzy
 msgid "open a different newsgroup"
-msgstr "открыть другой почтовый ящик/файл"
+msgstr "открыть другую группу новостей"
 
 #: opcodes.h:172
-#, fuzzy
 msgid "open a different newsgroup in read only mode"
-msgstr "открыть другой почтовый ящик/файл в режиме \"только для чтения\""
+msgstr "открыть другую группу новостей в режиме «только для чтения»"
 
 #: opcodes.h:173
 msgid "clear a status flag from a message"
@@ -5915,9 +5866,8 @@ msgid "modify (notmuch/imap) tags"
 msgstr ""
 
 #: opcodes.h:183
-#, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
-msgstr "Это первое сообщение."
+msgstr ""
 
 #: opcodes.h:184
 msgid "jump to the next new message"
@@ -6048,9 +5998,8 @@ msgid "skip beyond quoted text"
 msgstr "пропустить цитируемый текст"
 
 #: opcodes.h:216
-#, fuzzy
 msgid "skip beyond headers"
-msgstr "пропустить цитируемый текст"
+msgstr "пропустить заголовки"
 
 #: opcodes.h:217
 msgid "jump to the top of the message"
@@ -6061,9 +6010,8 @@ msgid "pipe message/attachment to a shell command"
 msgstr "передать сообщение/вложение внешней программе"
 
 #: opcodes.h:219
-#, fuzzy
 msgid "post message to newsgroup"
-msgstr "Нет Message-ID для создания макроса."
+msgstr "отправить сообщение в группу новостей"
 
 #: opcodes.h:220
 msgid "move to the previous entry"
@@ -6107,9 +6055,8 @@ msgid "recall a postponed message"
 msgstr "продолжить отложенное сообщение"
 
 #: opcodes.h:230
-#, fuzzy
 msgid "reconstruct thread containing current message"
-msgstr "В дискуссии присутствуют непрочитанные сообщения."
+msgstr ""
 
 #: opcodes.h:231
 msgid "clear and redraw the screen"
@@ -6162,7 +6109,7 @@ msgstr "запустить внешнюю программу"
 #: opcodes.h:243
 #, fuzzy
 msgid "show log (and debug) messages"
-msgstr "сортировать сообщения"
+msgstr "показать сообщения протокола (включая отладочные)"
 
 #: opcodes.h:244
 msgid "sort messages"
@@ -6175,7 +6122,7 @@ msgstr "сортировать сообщения в обратном поряд
 #: opcodes.h:246
 #, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
-msgstr "снять пометку с сообщений по образцу"
+msgstr "подписаться на группы по образцу"
 
 #: opcodes.h:247
 msgid "tag the current entry"
@@ -6206,9 +6153,8 @@ msgid "toggle a message's 'new' flag"
 msgstr "установить/сбросить флаг \"новое\" для сообщения"
 
 #: opcodes.h:254
-#, fuzzy
 msgid "toggle view of read messages"
-msgstr "предыдущее новое или непрочитанное сообщение"
+msgstr ""
 
 #: opcodes.h:255
 msgid "toggle whether the mailbox will be rewritten"
@@ -6237,7 +6183,7 @@ msgstr "восстановить все сообщения в дискуссии
 #: opcodes.h:261
 #, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
-msgstr "снять пометку с сообщений по образцу"
+msgstr "отписаться от групп по образцу"
 
 #: opcodes.h:262
 msgid "show the NeoMutt version number and date"
@@ -6254,7 +6200,7 @@ msgstr "показать вложения"
 #: opcodes.h:265
 #, fuzzy
 msgid "show the raw message"
-msgstr "\"низкоуровневое\" редактирование сообщения"
+msgstr "«низкоуровневый» показ сообщения"
 
 #: opcodes.h:266
 msgid "display the keycode for a key press"
@@ -6311,9 +6257,8 @@ msgid "open a different virtual folder"
 msgstr "открыть другой почтовый ящик/файл"
 
 #: opcodes.h:290
-#, fuzzy
 msgid "read entire thread of the current message"
-msgstr "создать макрос для текущего сообщения"
+msgstr ""
 
 #: opcodes.h:291
 msgid "generate virtual folder from query"
@@ -6356,14 +6301,12 @@ msgid "view the key's user id"
 msgstr "показать идентификатор владельца ключа"
 
 #: opcodes.h:308
-#, fuzzy
 msgid "move the highlight to the first mailbox"
-msgstr "переместить указатель на следующий почтовый ящик"
+msgstr "переместить указатель на первый почтовый ящик"
 
 #: opcodes.h:309
-#, fuzzy
 msgid "move the highlight to the last mailbox"
-msgstr "переместить указатель на следующий почтовый ящик"
+msgstr "переместить указатель на последний почтовый ящик"
 
 #: opcodes.h:310
 msgid "move the highlight to next mailbox"
@@ -6488,12 +6431,12 @@ msgstr "Пустое выражение"
 #: pattern/compile.c:166
 #, fuzzy
 msgid "No search command defined"
-msgstr "Команда запроса не определена"
+msgstr "Команда поиска не определена"
 
 #: pattern/compile.c:205
 #, fuzzy, c-format
 msgid "Running search command: %s ..."
-msgstr "Запускается программа автопросмотра: %s"
+msgstr "Выполняется команда поиска: %s"
 
 #: pattern/compile.c:319 pattern/compile.c:334
 #, c-format
@@ -6511,9 +6454,8 @@ msgid "Invalid relative date: %s"
 msgstr "Неверно указана относительная дата: %s"
 
 #: pattern/compile.c:761 pattern/compile.c:902
-#, fuzzy
 msgid "No current message"
-msgstr "Нет непрочитанных сообщений."
+msgstr "Нет текущего сообщения"
 
 #: pattern/compile.c:938
 msgid "No Context"
@@ -6626,12 +6568,12 @@ msgstr "ошибка: неизвестная операция %d (сообщит
 #: pattern/exec.c:143
 #, fuzzy
 msgid "Error opening 'memory stream'"
-msgstr "Ошибка открытия почтового ящика"
+msgstr "Ошибка открытия «потока памяти»"
 
 #: pattern/exec.c:190
 #, fuzzy
 msgid "Error re-opening 'memory stream'"
-msgstr "Ошибка открытия почтового ящика"
+msgstr "Ошибка повторного открытия «потока памяти»"
 
 #: pattern/exec.c:200
 #, fuzzy
@@ -6644,9 +6586,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~A
 #: pattern/flags.c:44
-#, fuzzy
 msgid "all messages"
-msgstr "сортировать сообщения"
+msgstr "все сообщения"
 
 #. L10N: Pattern Completion Menu description for ~b
 #: pattern/flags.c:47
@@ -6675,9 +6616,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~D
 #: pattern/flags.c:62
-#, fuzzy
 msgid "deleted messages"
-msgstr "Нет восстановленных сообщений"
+msgstr "удаленные сообщения"
 
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:65
@@ -6686,9 +6626,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:68
-#, fuzzy
 msgid "expired messages"
-msgstr "Нет непрочитанных сообщений"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~f
 #: pattern/flags.c:71
@@ -6697,21 +6636,18 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:74
-#, fuzzy
 msgid "flagged messages"
-msgstr "Нет отмеченных сообщений"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~g
 #: pattern/flags.c:77
-#, fuzzy
 msgid "cryptographically signed messages"
-msgstr "продолжить отложенное сообщение"
+msgstr "криптографически подписанные сообщения"
 
 #. L10N: Pattern Completion Menu description for ~G
 #: pattern/flags.c:80
-#, fuzzy
 msgid "cryptographically encrypted messages"
-msgstr "Не удалось расшифровать зашифрованное сообщение"
+msgstr "криптографически зашифрованные сообщения"
 
 #. L10N: Pattern Completion Menu description for ~h
 #: pattern/flags.c:83
@@ -6725,9 +6661,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:89
-#, fuzzy
 msgid "messages whose Message-ID matches EXPR"
-msgstr "редактировать сообщение вместе с заголовками"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:92
@@ -6736,9 +6671,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~k
 #: pattern/flags.c:95
-#, fuzzy
 msgid "messages which contain PGP key"
-msgstr "макрос сообщения"
+msgstr "сообщения содержащие PGP-ключ"
 
 #. L10N: Pattern Completion Menu description for ~l
 #: pattern/flags.c:98
@@ -6767,15 +6701,13 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~N
 #: pattern/flags.c:113
-#, fuzzy
 msgid "new messages"
-msgstr "Нет новых сообщений"
+msgstr "новые сообщения"
 
 #. L10N: Pattern Completion Menu description for ~O
 #: pattern/flags.c:116
-#, fuzzy
 msgid "old messages"
-msgstr "сортировать сообщения"
+msgstr "старые сообщения"
 
 #. L10N: Pattern Completion Menu description for ~p
 #: pattern/flags.c:119
@@ -6784,14 +6716,13 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~P
 #: pattern/flags.c:122
-#, fuzzy
 msgid "messages from you"
-msgstr "макрос сообщения"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~Q
 #: pattern/flags.c:125
 msgid "messages which have been replied to"
-msgstr ""
+msgstr "отвеченные сообщения"
 
 #. L10N: Pattern Completion Menu description for ~r
 #: pattern/flags.c:128
@@ -6802,7 +6733,7 @@ msgstr ""
 #: pattern/flags.c:131
 #, fuzzy
 msgid "already read messages"
-msgstr "Нет непрочитанных сообщений"
+msgstr "уже прочитанные сообщения"
 
 #. L10N: Pattern Completion Menu description for ~s
 #: pattern/flags.c:134
@@ -6811,9 +6742,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~S
 #: pattern/flags.c:137
-#, fuzzy
 msgid "superseded messages"
-msgstr "Нет непрочитанных сообщений"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~t
 #: pattern/flags.c:140
@@ -6822,39 +6752,34 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~T
 #: pattern/flags.c:143
-#, fuzzy
 msgid "tagged messages"
-msgstr "Нет отмеченных сообщений"
+msgstr "отмеченные сообщения"
 
 #. L10N: Pattern Completion Menu description for ~u
 #: pattern/flags.c:146
-#, fuzzy
 msgid "messages addressed to subscribed mailing lists"
-msgstr "ответить в указанный список рассылки"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~U
 #: pattern/flags.c:149
-#, fuzzy
 msgid "unread messages"
-msgstr "Нет непрочитанных сообщений"
+msgstr "непрочитанные сообщения"
 
 #. L10N: Pattern Completion Menu description for ~v
 #: pattern/flags.c:152
-#, fuzzy
 msgid "messages in collapsed threads"
-msgstr "Нет новых сообщений при просмотре с ограничением"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~V
 #: pattern/flags.c:155
 #, fuzzy
 msgid "cryptographically verified messages"
-msgstr "предыдущее новое или непрочитанное сообщение"
+msgstr "криптографически проверенные сообщения"
 
 #. L10N: Pattern Completion Menu description for ~w
 #: pattern/flags.c:159
-#, fuzzy
 msgid "newsgroups matching EXPR"
-msgstr "Нет файлов, удовлетворяющих данной маске"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:163
@@ -6863,9 +6788,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~X
 #: pattern/flags.c:166
-#, fuzzy
 msgid "messages with RANGE attachments"
-msgstr "показать вложения"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~y
 #: pattern/flags.c:169
@@ -6884,21 +6808,18 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~=
 #: pattern/flags.c:178
-#, fuzzy
 msgid "duplicated messages"
-msgstr "Нет восстановленных сообщений"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~$
 #: pattern/flags.c:181
-#, fuzzy
 msgid "unreferenced messages"
-msgstr "Нет непрочитанных сообщений"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~#
 #: pattern/flags.c:184
-#, fuzzy
 msgid "broken threads"
-msgstr "Нет больше дискуссий"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for =/
 #: pattern/flags.c:187
@@ -6943,9 +6864,8 @@ msgid "Command USER is not supported by server"
 msgstr "Команда USER сервером не поддерживается"
 
 #: pop/auth.c:379
-#, fuzzy
 msgid "Authentication failed"
-msgstr "Ошибка SASL-аутентификации"
+msgstr "Ошибка аутентификации"
 
 #: pop/lib.c:96
 #, c-format
@@ -7077,12 +6997,12 @@ msgid "Saving..."
 msgstr "Сохраняется..."
 
 #: recvattach.c:673 recvattach.c:855
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
-msgstr[0] "Вложение сохранено"
-msgstr[1] "Вложение сохранено"
-msgstr[2] "Вложение сохранено"
+msgstr[0] "%d вложение сохранено"
+msgstr[1] "%d вложений сохранено"
+msgstr[2] "%d вложений сохранено"
 
 #: recvattach.c:880
 #, c-format
@@ -7112,12 +7032,12 @@ msgstr "Неизвестно как печатать %s вложения"
 #. do not show it to the user.  So feel free to use a "generic
 #. plural" as plural translation if your language has one.
 #: recvattach.c:1217
-#, fuzzy, c-format
+#, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
-msgstr[0] "Напечатать отмеченные вложения?"
-msgstr[1] "Напечатать отмеченные вложения?"
-msgstr[2] "Напечатать отмеченные вложения?"
+msgstr[0] "Напечатать %d отмеченное вложение?"
+msgstr[1] "Напечатать %d отмеченных вложения?"
+msgstr[2] "Напечатать %d отмеченных вложения?"
 
 #: recvattach.c:1218
 #, c-format
@@ -7147,7 +7067,7 @@ msgstr "Удаление вложений не поддерживается POP-
 #: recvattach.c:1774
 #, fuzzy
 msgid "Can't delete attachment from news server"
-msgstr "Удаление вложений не поддерживается POP-сервером"
+msgstr "Удаление вложений не поддерживается сервером новостей"
 
 #: recvattach.c:1781
 msgid "Deletion of attachments from encrypted messages is unsupported"
