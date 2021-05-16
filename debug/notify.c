@@ -180,11 +180,11 @@ static void notify_dump_color(struct NotifyCallback *nc)
     color = "ALL";
 
   if (!color)
-    color = mutt_map_get_name(ev_c->color, Fields);
+    color = mutt_map_get_name(ev_c->color, ColorFields);
 
   if (!color)
   {
-    color = mutt_map_get_name(ev_c->color, ComposeFields);
+    color = mutt_map_get_name(ev_c->color, ComposeColorFields);
     scope = "compose ";
   }
 

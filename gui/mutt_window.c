@@ -244,7 +244,7 @@ void mutt_window_clrtoeol(struct MuttWindow *win)
   if (!win || !stdscr)
     return;
 
-  if (win->state.col_offset + win->state.cols == COLS)
+  if ((win->state.col_offset + win->state.cols) == COLS)
     clrtoeol();
   else
   {
@@ -284,7 +284,7 @@ static int rootwin_config_observer(struct NotifyCallback *nc)
     if ((c_status_on_top && (first->type == WT_HELP_BAR)) ||
         (!c_status_on_top && (first->type != WT_HELP_BAR)))
     {
-      // Swap the HelpLine and the Dialogs Container
+      // Swap the HelpBar and the AllDialogsWindow
       struct MuttWindow *next = TAILQ_NEXT(first, entries);
       if (!next)
         return -1;

@@ -644,7 +644,9 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
             state_attach_puts(s, _("[-- End of PGP output --]\n\n"));
           }
           if (pgp_use_gpg_agent())
+          {
             mutt_need_hard_redraw();
+          }
         }
 
         /* treat empty result as sign of failure */
@@ -1093,7 +1095,9 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   rewind(fp_out);
 
   if (pgp_use_gpg_agent())
+  {
     mutt_need_hard_redraw();
+  }
 
   if (fgetc(fp_out) == EOF)
   {

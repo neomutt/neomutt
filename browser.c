@@ -1329,7 +1329,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
     }
 
 #ifdef USE_IMAP
-    if (!state.is_mailbox_list && (imap_path_probe(mutt_buffer_string(&LastDir), NULL) == MUTT_IMAP))
+    if (!state.is_mailbox_list &&
+        (imap_path_probe(mutt_buffer_string(&LastDir), NULL) == MUTT_IMAP))
     {
       init_state(&state, NULL);
       state.imap_browse = true;
@@ -1394,8 +1395,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
   while (true)
   {
-    if (state.is_mailbox_list &&
-        (last_selected_mailbox >= 0) && (last_selected_mailbox < menu->max))
+    if (state.is_mailbox_list && (last_selected_mailbox >= 0) &&
+        (last_selected_mailbox < menu->max))
     {
       menu_set_index(menu, last_selected_mailbox);
     }

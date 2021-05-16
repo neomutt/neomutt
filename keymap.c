@@ -1474,7 +1474,7 @@ static void km_unbind_all(struct KeymapList *km_list, unsigned long mode)
 enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
                                      intptr_t data, struct Buffer *err)
 {
-  bool menus[MENU_MAX] = { 0 };
+  bool menu_matches[MENU_MAX] = { 0 };
   bool all_keys = false;
   char *key = NULL;
 
@@ -1482,10 +1482,10 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
   if (mutt_str_equal(buf->data, "*"))
   {
     for (enum MenuType i = 0; i < MENU_MAX; i++)
-      menus[i] = true;
+      menu_matches[i] = true;
   }
   else
-    parse_menu(menus, buf->data, err);
+    parse_menu(menu_matches, buf->data, err);
 
   if (MoreArgs(s))
   {
@@ -1505,7 +1505,7 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
 
   for (enum MenuType i = 0; i < MENU_MAX; i++)
   {
-    if (!menus[i])
+    if (!menu_matches[i])
       continue;
     if (all_keys)
     {

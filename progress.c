@@ -99,7 +99,7 @@ static void message_bar(int percent, const char *fmt, ...)
     }
   }
 
-  clrtoeol();
+  mutt_window_clrtoeol(MessageWindow);
   mutt_refresh();
 }
 

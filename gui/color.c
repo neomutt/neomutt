@@ -153,7 +153,7 @@ static const struct Mapping ColorNames[] = {
 #endif /* HAVE_COLOR */
 
 // clang-format off
-static const struct Mapping ColorFields[] = {
+const struct Mapping ColorFields[] = {
   { "attachment",        MT_COLOR_ATTACHMENT },
   { "attach_headers",    MT_COLOR_ATTACH_HEADERS },
   { "body",              MT_COLOR_BODY },
@@ -200,7 +200,7 @@ static const struct Mapping ColorFields[] = {
   { NULL,                0 },
 };
 
-static const struct Mapping ComposeColorFields[] = {
+const struct Mapping ComposeColorFields[] = {
   { "header",            MT_COLOR_COMPOSE_HEADER },
   { "security_encrypt",  MT_COLOR_COMPOSE_SECURITY_ENCRYPT },
   { "security_sign",     MT_COLOR_COMPOSE_SECURITY_SIGN },
