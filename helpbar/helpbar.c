@@ -249,10 +249,10 @@ static int helpbar_window_observer(struct NotifyCallback *nc)
       return 0;
 
     mutt_debug(LL_NOTIFY, "delete\n");
-    notify_observer_remove(nc->current, helpbar_binding_observer, win_helpbar);
-    notify_observer_remove(nc->current, helpbar_color_observer, win_helpbar);
-    notify_observer_remove(nc->current, helpbar_config_observer, win_helpbar);
-    notify_observer_remove(nc->current, helpbar_window_observer, win_helpbar);
+    notify_observer_remove(NeoMutt->notify, helpbar_binding_observer, win_helpbar);
+    notify_observer_remove(NeoMutt->notify, helpbar_color_observer, win_helpbar);
+    notify_observer_remove(NeoMutt->notify, helpbar_config_observer, win_helpbar);
+    notify_observer_remove(NeoMutt->notify, helpbar_window_observer, win_helpbar);
   }
   return 0;
 }

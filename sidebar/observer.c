@@ -324,11 +324,10 @@ static int sb_config_observer(struct NotifyCallback *nc)
       mutt_str_equal(ev_c->name, "sidebar_divider_char"))
   {
     struct SidebarWindowData *wdata = sb_wdata_get(win);
-    WindowActionFlags action = calc_divider(wdata);
-    if (action == WA_REFLOW)
+    if (calc_divider(wdata))
+    {
       win->parent->actions |= WA_REFLOW;
-    else
-      win->actions |= action;
+    }
     return 0;
   }
 

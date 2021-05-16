@@ -695,10 +695,8 @@ static void window_recalc(struct MuttWindow *win)
     return;
 
   if (win->recalc)
-  {
     win->recalc(win);
-    win->actions &= ~WA_RECALC;
-  }
+  win->actions &= ~WA_RECALC;
 
   struct MuttWindow *np = NULL;
   TAILQ_FOREACH(np, &win->children, entries)
@@ -718,10 +716,8 @@ static void window_repaint(struct MuttWindow *win, bool force)
     return;
 
   if (win->repaint && (force || (win->actions & WA_REPAINT)))
-  {
     win->repaint(win);
-    win->actions &= ~WA_REPAINT;
-  }
+  win->actions &= ~WA_REPAINT;
 
   struct MuttWindow *np = NULL;
   TAILQ_FOREACH(np, &win->children, entries)
