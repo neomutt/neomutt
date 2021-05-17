@@ -47,7 +47,6 @@ struct AddressList;
 struct Buffer;
 struct Context;
 struct ListHead;
-struct MuttWindow;
 struct NotifyCallback;
 
 // Backtrace

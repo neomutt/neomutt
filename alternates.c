@@ -36,7 +36,6 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "alternates.h"
-#include "attachments.h"
 #include "command_parse.h"
 #include "init.h"
 #include "mutt_commands.h"

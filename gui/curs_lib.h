@@ -32,6 +32,7 @@
 
 struct Buffer;
 struct Mailbox;
+struct MuttWindow;
 
 extern int MuttGetchTimeout; ///< Timeout in ms for mutt_getch()
 

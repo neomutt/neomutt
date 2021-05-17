@@ -32,6 +32,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "debug/lib.h"
 #include "mutt_window.h"
 #include "helpbar/lib.h"
 #include "menu/lib.h"
