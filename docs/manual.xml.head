@@ -827,13 +827,6 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                     </entry>
                   </row>
                   <row>
-                    <entry>%Z</entry>
-                    <entry>* †</entry>
-                    <entry>
-                      Number of new messages in the mailbox (unread, unseen)
-                    </entry>
-                  </row>
-                  <row>
                     <entry>%!</entry>
                     <entry></entry>
                     <entry>
