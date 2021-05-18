@@ -1682,29 +1682,34 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         break;
 
       case OP_CREATE_MAILBOX:
+      {
         if (create_mailbox(&state, mailbox_find(CurrentFolder)))
         {
           /* TODO: find a way to detect if the new folder would appear in
            *   this window, and insert it without starting over. */
 #ifdef USE_IMAP
-          /* Preserve the value of 'imap_browse' which is cleared by init_state */
-          const bool imap_create = state.imap_browse;
-#endif /* USE_IMAP */
-          destroy_state(&state);
-          init_state(&state, NULL);
-#ifdef USE_IMAP
-          if (imap_create)
+          /* IMAP creation */
+          if (state.imap_browse)
           {
+            destroy_state(&state);
+            init_state(&state, NULL);
             state.imap_browse = true;
             imap_browse(mutt_buffer_string(&LastDir), &state);
+            browser_sort(&state);
+            menu->mdata = &state.entry;
+            browser_highlight_default(&state, menu);
+            init_menu(&state, menu, m, sbar);
+            break;
           }
 #endif /* USE_IMAP */
-          browser_sort(&state);
-          menu->mdata = &state.entry;
+          examine_directory(m, menu, &state, CurrentFolder, mutt_buffer_string(prefix));
+          examine_mailboxes(m, NULL, &state);
           browser_highlight_default(&state, menu);
+          state.is_mailbox_list = true;
           init_menu(&state, menu, m, sbar);
         }
         break;
+      }
 
 #ifdef USE_IMAP
       case OP_BROWSER_TOGGLE_LSUB:
