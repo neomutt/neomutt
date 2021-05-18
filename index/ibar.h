@@ -1,6 +1,6 @@
 /**
  * @file
- * Simple Bar
+ * Index Bar (status)
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -20,12 +20,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_SIMPLE_IBAR_H
-#define MUTT_SIMPLE_IBAR_H
+#ifndef MUTT_INDEX_IBAR_H
+#define MUTT_INDEX_IBAR_H
 
+struct IndexPrivateData;
+struct IndexSharedData;
 struct MuttWindow;
 
-struct MuttWindow *sbar_create(struct MuttWindow *parent);
-void sbar_set_title(struct MuttWindow *win, const char *title);
+struct MuttWindow *ibar_create(struct MuttWindow *parent, struct IndexSharedData *shared, struct IndexPrivateData *priv);
 
-#endif /* MUTT_SIMPLE_IBAR_H */
+#endif /* MUTT_INDEX_IBAR_H */

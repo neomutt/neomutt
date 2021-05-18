@@ -1,6 +1,6 @@
 /**
  * @file
- * Simple Bar
+ * Pager Bar
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -20,12 +20,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_SIMPLE_IBAR_H
-#define MUTT_SIMPLE_IBAR_H
+#ifndef MUTT_PAGER_PBAR_H
+#define MUTT_PAGER_PBAR_H
 
+struct IndexSharedData;
 struct MuttWindow;
+struct PagerPrivateData;
 
-struct MuttWindow *sbar_create(struct MuttWindow *parent);
-void sbar_set_title(struct MuttWindow *win, const char *title);
+struct MuttWindow *pbar_create(struct MuttWindow *parent, struct IndexSharedData *shared, struct PagerPrivateData *priv);
 
-#endif /* MUTT_SIMPLE_IBAR_H */
+#endif /* MUTT_PAGER_PBAR_H */

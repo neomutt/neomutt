@@ -129,10 +129,11 @@ static struct SBarPrivateData *sbar_data_new(void)
 }
 
 /**
- * sbar_add - Add the Simple Bar (status)
+ * sbar_create - Add the Simple Bar (status)
  * @param parent Parent Window
+ * @retval ptr New Simple Bar
  */
-struct MuttWindow *sbar_add(struct MuttWindow *parent)
+struct MuttWindow *sbar_create(struct MuttWindow *parent)
 {
   struct MuttWindow *win_sbar =
       mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
@@ -142,8 +143,6 @@ struct MuttWindow *sbar_add(struct MuttWindow *parent)
   win_sbar->wdata_free = sbar_wdata_free;
   win_sbar->recalc = sbar_recalc;
   win_sbar->repaint = sbar_repaint;
-
-  mutt_window_add_child(parent, win_sbar);
 
   notify_observer_add(NeoMutt->notify, NT_COLOR, sbar_color_observer, win_sbar);
 

@@ -86,16 +86,17 @@ struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowTy
   dlg->focus = win_index;
   dlg->wdata = win_index->wdata;
 
+  struct MuttWindow *win_sbar = sbar_create(dlg);
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)
   {
-    sbar_add(dlg);
+    mutt_window_add_child(dlg, win_sbar);
     mutt_window_add_child(dlg, win_index);
   }
   else
   {
     mutt_window_add_child(dlg, win_index);
-    sbar_add(dlg);
+    mutt_window_add_child(dlg, win_sbar);
   }
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, simple_config_observer, dlg);

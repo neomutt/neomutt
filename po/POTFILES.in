@@ -24,6 +24,7 @@ commands.c
 command_parse.c
 complete.c
 compmbox/compress.c
+compose/cbar.c
 compose/compose.c
 compose/config.c
 compress/compress.c
@@ -134,6 +135,7 @@ imap/search.c
 imap/utf7.c
 imap/util.c
 index/config.c
+index/ibar.c
 index/index.c
 index/observer.c
 index/private_data.c
@@ -241,6 +243,8 @@ opcodes.h
 pager/config.c
 pager/do_pager.c
 pager/pager.c
+pager/pbar.c
+pager/private_data.c
 pattern/compile.c
 pattern/config.c
 pattern/dlgpattern.c

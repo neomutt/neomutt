@@ -1,6 +1,6 @@
 /**
  * @file
- * Simple Bar
+ * Compose Bar
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -20,12 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_SIMPLE_IBAR_H
-#define MUTT_SIMPLE_IBAR_H
+#ifndef MUTT_COMPOSE_CBAR_H
+#define MUTT_COMPOSE_CBAR_H
 
+struct ComposeRedrawData;
 struct MuttWindow;
 
-struct MuttWindow *sbar_create(struct MuttWindow *parent);
-void sbar_set_title(struct MuttWindow *win, const char *title);
+struct MuttWindow *cbar_create(struct MuttWindow *parent, struct ComposeRedrawData *rd);
 
-#endif /* MUTT_SIMPLE_IBAR_H */
+#endif /* MUTT_COMPOSE_CBAR_H */

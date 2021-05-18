@@ -647,23 +647,23 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
       mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                       MUTT_WIN_SIZE_UNLIMITED, 4);
 
-  struct MuttWindow *win_cbar = NULL;
-  struct MuttWindow *win_rbar = NULL;
+  struct MuttWindow *win_cbar = sbar_create(dlg);
+  struct MuttWindow *win_rbar = sbar_create(dlg);
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)
   {
-    win_rbar = sbar_add(dlg);
+    mutt_window_add_child(dlg, win_rbar);
     mutt_window_add_child(dlg, win_hosts);
-    win_cbar = sbar_add(dlg);
+    mutt_window_add_child(dlg, win_cbar);
     mutt_window_add_child(dlg, win_chain);
   }
   else
   {
     mutt_window_add_child(dlg, win_hosts);
-    win_cbar = sbar_add(dlg);
+    mutt_window_add_child(dlg, win_cbar);
     mutt_window_add_child(dlg, win_chain);
-    win_rbar = sbar_add(dlg);
+    mutt_window_add_child(dlg, win_rbar);
   }
   sbar_set_title(win_rbar, _("Select a remailer chain"));
 

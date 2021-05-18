@@ -1,6 +1,6 @@
 /**
  * @file
- * Simple Bar
+ * Private state data for the Pager
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -20,12 +20,38 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_SIMPLE_IBAR_H
-#define MUTT_SIMPLE_IBAR_H
+/**
+ * @page pager_private_data Private state data for the Pager
+ *
+ * Private state data for the Pager
+ */
 
-struct MuttWindow;
+#include "config.h"
+#include "mutt/lib.h"
+#include "private_data.h"
 
-struct MuttWindow *sbar_create(struct MuttWindow *parent);
-void sbar_set_title(struct MuttWindow *win, const char *title);
+/**
+ * pager_private_data_free - Free Pager Data
+ * @param win Window
+ * @param ptr Pager Data to free
+ */
+void pager_private_data_free(struct MuttWindow *win, void **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
 
-#endif /* MUTT_SIMPLE_IBAR_H */
+  // struct PagerPrivateData *priv = *ptr;
+
+  FREE(ptr);
+}
+
+/**
+ * pager_private_data_new - Create new Pager Data
+ * @retval ptr New PagerPrivateData
+ */
+struct PagerPrivateData *pager_private_data_new(void)
+{
+  struct PagerPrivateData *priv = mutt_mem_calloc(1, sizeof(struct PagerPrivateData));
+
+  return priv;
+}
