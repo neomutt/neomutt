@@ -422,7 +422,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
   char *fname = NULL;
   struct MailcapEntry *entry = NULL;
   int rc = -1;
-  bool unlink_tempfile = false;
+  bool has_tempfile = false;
   bool unlink_pagerfile = false;
 
   bool is_message = mutt_is_message_type(a->type, a->subtype);
@@ -483,7 +483,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
 
     if (mutt_save_attachment(fp, a, mutt_buffer_string(tmpfile), 0, NULL) == -1)
       goto return_error;
-    unlink_tempfile = true;
+    has_tempfile = true;
 
     mutt_rfc3676_space_unstuff_attachment(a, mutt_buffer_string(tmpfile));
 
@@ -681,14 +681,10 @@ return_error:
 
   if (!entry || !entry->xneomuttkeep)
   {
-    if (fp && !mutt_buffer_is_empty(tmpfile))
+    if ((fp && !mutt_buffer_is_empty(tmpfile)) || has_tempfile)
     {
       /* add temporary file to TempAttachmentsList to be deleted on timeout hook */
       mutt_add_temp_attachment(mutt_buffer_string(tmpfile));
-    }
-    else if (unlink_tempfile)
-    {
-      unlink(mutt_buffer_string(tmpfile));
     }
   }
 
