@@ -40,7 +40,7 @@
 #include <stdio.h>
 
 struct Buffer;
-struct MuttWindow;
+struct IndexSharedData;
 
 typedef uint16_t PagerFlags;              ///< Flags for mutt_pager(), e.g. #MUTT_SHOWFLAT
 #define MUTT_PAGER_NO_FLAGS         0     ///< No flags are set
@@ -161,7 +161,7 @@ struct PagerView
 int mutt_pager(struct PagerView *pview);
 int mutt_do_pager(struct PagerView *pview);
 void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src, bool strip_markers);
-struct MuttWindow *add_panel_pager(struct MuttWindow *parent, bool status_on_top);
+struct MuttWindow *create_panel_pager(bool status_on_top, struct IndexSharedData *shared);
 
 void mutt_clear_pager_position(void);
 
