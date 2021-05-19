@@ -1783,7 +1783,7 @@ msgstr "Προειδοποίηση: Αδυναμία αποθήκευσης πι
 
 #: conn/gnutls.c:813 conn/gnutls.c:861
 msgid "All available protocols for TLS/SSL connection disabled"
-msgstr "Όλα τα διαθέσιμα προτόκολλα για σύνδεση TLS/SSL απενεργοποιήθηκαν"
+msgstr "Όλα τα διαθέσιμα προτόκολλα για TLS/SSL σύνδεση απενεργοποιήθηκαν"
 
 #: conn/gnutls.c:870
 #, fuzzy
@@ -1795,21 +1795,21 @@ msgstr ""
 #. * the correct certificate if it supports multiple hosts.
 #: conn/gnutls.c:949 conn/openssl.c:1160
 msgid "Warning: unable to set TLS SNI host name"
-msgstr ""
+msgstr "Προειδοποίηση: αδυναμία ορισμού TLS SNI ονόματος host"
 
 #: conn/gnutls.c:996
-#, fuzzy, c-format
+#, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
-msgstr "Σύνδεση SSL χρησιμοποιώντας το %s (%s)"
+msgstr "SSL σύνδεση χρησιμοποιώντας %s (%s/%s/%s)"
 
 #: conn/gnutls.c:1078 conn/gnutls.c:1107
 msgid "Error: no TLS socket open"
-msgstr ""
+msgstr "Σφάλμα: δεν υπάρχει ανοιχτό SSL socket"
 
 #: conn/openssl.c:211
 #, c-format
 msgid "Filling entropy pool: %s..."
-msgstr "Αποθήκευση εντροπίας: %s..."
+msgstr "Γέμισμα ομάδας εντροπίας: %s..."
 
 #: conn/openssl.c:217
 #, c-format
@@ -1817,9 +1817,8 @@ msgid "%s has insecure permissions"
 msgstr "Το %s έχει ανασφαλή δικαιώματα"
 
 #: conn/openssl.c:354
-#, fuzzy
 msgid "SSL disabled due to the lack of entropy"
-msgstr "Το SSL απενεργοποιήθηκε λόγω λήψης εντροπίας"
+msgstr "Το SSL απενεργοποιήθηκε λόγω έλλειψης εντροπίας"
 
 #: conn/openssl.c:415
 msgid "[invalid date]"
@@ -1827,35 +1826,33 @@ msgstr "[μη έγκυρη ημερομηνία]"
 
 #: conn/openssl.c:477
 msgid "Server certificate is not yet valid"
-msgstr "Η πιστοποίηση του διακομιστή δεν είναι ακόμα έγκυρη"
+msgstr "Το πιστοποιητικό του διακομιστή δεν είναι έγκυρο ακόμη"
 
 #: conn/openssl.c:487
 msgid "Server certificate has expired"
-msgstr "Το πιστοποιητικό του διακομιστή έληξε"
+msgstr "Το πιστοποιητικό του διακομιστή έχει λήξει"
 
 #: conn/openssl.c:578
 msgid "Failed to find enough entropy on your system"
 msgstr "Αποτυχία στην εύρεση αρκετής εντροπίας στο σύστημα σας"
 
 #: conn/openssl.c:773
-#, fuzzy
 msgid "can't get certificate subject"
-msgstr "Αδυναμία στη λήψη πιστοποιητικού από το ταίρι"
+msgstr "αδυναμία στη λήψη θέματος πιστοποιητικού"
 
 #: conn/openssl.c:782 conn/openssl.c:790
-#, fuzzy
 msgid "can't get certificate common name"
-msgstr "Αδυναμία στη λήψη πιστοποιητικού από το ταίρι"
+msgstr "αδυναμία στη λήψη κοινού ονόματος πιστοποιητικού"
 
 #: conn/openssl.c:804
-#, fuzzy, c-format
+#, c-format
 msgid "certificate owner does not match hostname %s"
-msgstr "Ο ιδιοκτήτης του πιστοποιητικού S/MIME δεν ταιριάζει με τον αποστολέα."
+msgstr "ο ιδιοκτήτης του πιστοποιητικού δεν ταιριάζει με το hostname %s"
 
 #: conn/openssl.c:1077
 #, fuzzy, c-format
 msgid "Certificate host check failed: %s"
-msgstr "Το πιστοποιητικό αποθηκεύτηκε"
+msgstr "Ο έλεγχος του διακομιστή πιστοποιητικού απέτυχε: %s"
 
 #: conn/openssl.c:1171
 msgid "I/O error"
@@ -1874,13 +1871,12 @@ msgstr "SSL απέτυχε: %s"
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
 #: conn/openssl.c:1216
-#, fuzzy
 msgid "Unable to create SSL context"
-msgstr "Σφάλμα: αδυναμία δημιουργίας υποδιεργασίας OpenSSL!"
+msgstr "Αδυναμία στην δημιουργία περιεχομένου SSL"
 
 #: conn/openssl.c:1284
 msgid "Warning: error enabling ssl_verify_partial_chains"
-msgstr ""
+msgstr "Προειδοποίηση: σφάλμα κατά την ενεργοποίηση του ssl_verify_partial_chains"
 
 #: conn/raw.c:159 conn/raw.c:216
 #, c-format
@@ -1905,33 +1901,32 @@ msgstr "Αδυναμία σύνδεσης στο %s (%s)"
 #: conn/raw.c:279 conn/raw.c:312
 #, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Σφάλμα στη συνομιλία με το %s (%s)"
+msgstr "Σφάλμα στη συνομιλία με %s (%s)"
 
 #: conn/raw.c:286
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s has been aborted"
-msgstr "Έκλεισε η σύνδεση στο %s"
+msgstr "Η σύνδεση στο %s ματαιώθηκε"
 
 #: conn/sasl.c:618
 msgid "Unknown SASL profile"
-msgstr ""
+msgstr "Άγνωστο προφίλ SASL"
 
 #: conn/sasl.c:651
-#, fuzzy
 msgid "Error allocating SASL connection"
-msgstr "σφάλμα στο μοντέλο στο: %s"
+msgstr "Σφάλμα κατά την κατανομή σύνδεσης SASL"
 
 #: conn/sasl.c:661
 msgid "Error setting SASL security properties"
-msgstr ""
+msgstr "Σφάλμα κατά τον ορισμό ιδιοτήτων ασφαλείας SASL"
 
 #: conn/sasl.c:672
 msgid "Error setting SASL external security strength"
-msgstr ""
+msgstr "Σφάλμα κατά τον ορισμό εξωτερικής ισχύς ασφαλείας SASL"
 
 #: conn/sasl.c:682
 msgid "Error setting SASL external user name"
-msgstr ""
+msgstr "Σφάλμα κατά τον ορισμό ονόματος χρήστη SASL"
 
 #: conn/socket.c:62
 msgid "Preconnect command failed"
@@ -1943,30 +1938,30 @@ msgid "Connection to %s closed"
 msgstr "Έκλεισε η σύνδεση στο %s"
 
 #: conn/tunnel.c:65
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting with \"%s\"..."
-msgstr "Σύνδεση στο %s..."
+msgstr "Σύνδεση με \"%s\"..."
 
 #: conn/tunnel.c:149 conn/tunnel.c:174
-#, fuzzy, c-format
+#, c-format
 msgid "Tunnel error talking to %s: %s"
-msgstr "Σφάλμα στη συνομιλία με το %s (%s)"
+msgstr "Σφάλμα tunnel κατά την συνομιλία με %s: %s"
 
 #: conn/tunnel.c:219
 #, c-format
 msgid "Tunnel to %s returned error %d (%s)"
-msgstr ""
+msgstr "Το tunnel για %s έπεστρεψε σφάλμα %d (%s)"
 
 #: copy.c:691
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ο υπολογισμός μήκους ήταν λάθος για %ld byte"
+msgstr[1] "Ο υπολογισμός μήκους ήταν λάθος για %ld bytes"
 
 #: copy.c:779
 msgid "No decryption engine available for message"
-msgstr ""
+msgstr "Δεν υπάρχει διάθεσιμη μηχανή αποκρυπτογράφησης για το μήνυμα"
 
 #: editmsg.c:75
 #, c-format
@@ -1993,27 +1988,27 @@ msgstr "Το μήνυμα δεν τροποποιήθηκε"
 
 #: editmsg.c:172
 msgid "Message of read-only mailbox modified! Ignoring changes."
-msgstr ""
+msgstr "Τροποποιήθηκε μήνυμα σε γραμματοκιβώτιο ανάγνωσης-μόνο! Αγνόηση αλλαγών."
 
 #: editmsg.c:188
 #, c-format
 msgid "Can't open message file: %s"
-msgstr "Αδυναμία πρόσβασης στο αρχείο μηνυμάτων: %s"
+msgstr "Αδυναμία ανοίγματος αρχείου μηνυμάτων: %s"
 
 #. L10N: %s is from strerror(errno)
 #: editmsg.c:196 editmsg.c:225
 #, c-format
 msgid "Can't append to folder: %s"
-msgstr "Αδυναμία πρόσθεσης στο φάκελο: %s"
+msgstr "Αδυναμία προσάρτησης στο φάκελο: %s"
 
 #: email/parse.c:1478
 msgid "multipart message has no boundary parameter"
-msgstr "το πολυμερές μήνυμα δεν έχει οριοθέτουσα παράμετρο"
+msgstr "το πολυμερές μήνυμα δεν έχει παράμετρο ορίων"
 
 #: flags.c:383 index/index.c:2735 index/index.c:2778 index/index.c:3315
 #: index/index.c:3355 mutt_thread.c:1143 mutt_thread.c:1210 mutt_thread.c:1296
 msgid "Threading is not enabled"
-msgstr "Η χρήση συζητήσεων δεν έχει ενεργοποιηθεί"
+msgstr "Η χρήση νημάτων δεν έχει ενεργοποιηθεί"
 
 #: flags.c:443
 msgid "Clear flag"
@@ -2026,7 +2021,7 @@ msgstr "Ορίστε σημαία"
 #: gui/color.c:635 gui/color.c:646
 #, c-format
 msgid "%s: color not supported by term"
-msgstr "%s: το τερματικό δεν υποστηρίζει χρώμα"
+msgstr "%s: το τερματικό δεν υποστηρίζει αυτό το χρώμα"
 
 #: gui/color.c:654
 #, c-format
@@ -2048,22 +2043,22 @@ msgid "default colors not supported"
 msgstr "δεν υποστηρίζονται τα εξ'ορισμού χρώματα"
 
 #: gui/color.c:1277
-#, c-format
+#, fuzzy, c-format
 msgid "Maximum quoting level is %d"
 msgstr ""
 
 #: gui/color.c:1314
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid number: %s"
-msgstr "%d: μη έγκυρος αριθμός μηνύματος.\n"
+msgstr "%s: μη έγκυρος αριθμός: %s"
 
 #: gui/curs_lib.c:382
 msgid "yes"
-msgstr "y(ναι)"
+msgstr "ναι"
 
 #: gui/curs_lib.c:383
 msgid "no"
-msgstr "n(όχι)"
+msgstr "όχι"
 
 #: gui/curs_lib.c:546
 msgid "Exit NeoMutt?"
@@ -2075,50 +2070,49 @@ msgstr "Πατήστε ένα πλήκτρο για να συνεχίσετε...
 
 #: gui/curs_lib.c:781
 msgid " ('?' for list): "
-msgstr "('?' για λίστα): "
+msgstr " ('?' για λίστα): "
 
 #: gui/mutt_window.c:52
 msgid "Complete"
-msgstr ""
+msgstr "Έτοιμο"
 
 #: gui/mutt_window.c:53
 msgid "Hist Up"
-msgstr ""
+msgstr "Ιστ. Πάνω"
 
 #: gui/mutt_window.c:54
 msgid "Hist Down"
-msgstr ""
+msgstr "Ιστ. Κάτω"
 
 #: gui/mutt_window.c:55
-#, fuzzy
 msgid "Hist Search"
-msgstr "Αναζήτηση"
+msgstr "Αναζήτηση Ιστ."
 
 #: gui/mutt_window.c:56
 msgid "Begin Line"
-msgstr ""
+msgstr "Ξεκινήστε γραμμή"
 
 #: gui/mutt_window.c:57
 msgid "End Line"
-msgstr ""
+msgstr "Τελειώστε γραμμή"
 
 #: gui/mutt_window.c:58
 msgid "Kill Line"
-msgstr ""
+msgstr "Σκοτώστε γραμμή"
 
 #: gui/mutt_window.c:59
 msgid "Kill Word"
-msgstr ""
+msgstr "Σκοτώστε λέξη"
 
 #: handler.c:93
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Τύπος: %s/%s, Κωδικοποίηση: %s, Μέγεθος: %s --]\n"
+msgstr "[-- Τύπος: %s/%s%s%s, Κωδικοποίηση: %s, Μέγεθος: %s --]\n"
 
 #: handler.c:99
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Τύπος: %s/%s, Κωδικοποίηση: %s, Μέγεθος: %s --]\n"
+msgstr "[-- Εναλλακτικός Τύπος: #%d: %s/%s%s%s, Κωδικοποίηση: %s, Μέγεθος: %s --]\n"
 
 #: handler.c:553
 #, c-format
@@ -2165,7 +2159,7 @@ msgstr "[-- Σφάλμα: το μήνυμα/εξωτερικό-σώμα δεν �
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
 #: handler.c:810
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 "[-- on %s --]\n"
@@ -2173,10 +2167,10 @@ msgid_plural ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
 msgstr[0] ""
-"[-- Αυτή η %s/%s προσάρτηση (μέγεθος %s bytes) έχει διαγραφεί --]\n"
+"[-- Αυτό το %s/%s συνημμένο (μέγεθος %s byte) έχει διαγραφεί --]\n"
 "[-- στις %s --]\n"
 msgstr[1] ""
-"[-- Αυτή η %s/%s προσάρτηση (μέγεθος %s bytes) έχει διαγραφεί --]\n"
+"[-- Αυτό τό %s/%s συνημμένο (μέγεθος %s bytes) έχει διαγραφεί --]\n"
 "[-- στις %s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
@@ -2194,11 +2188,11 @@ msgstr[1] ""
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
 #: handler.c:833
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 msgid_plural "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-msgstr[0] "[-- Αυτή η %s/%s προσάρτηση (μέγεθος %s bytes) έχει διαγραφεί --]\n"
-msgstr[1] "[-- Αυτή η %s/%s προσάρτηση (μέγεθος %s bytes) έχει διαγραφεί --]\n"
+msgstr[0] "[-- Αυτό το %s/%s συνημμένο (μέγεθος %s byte) έχει διαγραφεί --]\n"
+msgstr[1] "[-- Αυτό το %s/%s συνημμένο (μέγεθος %s bytes) έχει διαγραφεί --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2208,26 +2202,28 @@ msgstr[1] "[-- Αυτή η %s/%s προσάρτηση (μέγεθος %s bytes) 
 #. Caution: Argument three %3$ is also defined but should not be used
 #. in this translation!
 #: handler.c:851
-#, fuzzy
+#, c-format
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
 msgstr ""
-"[-- Αυτή η %s/%s προσάρτηση έχει διαγραφεί --]\n"
+"[-- Αυτό το %s/%s συνημμένο έχει διαγραφεί --]\n"
 "[-- στις %4$s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
 #: handler.c:859
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
-msgstr "[-- Αυτή η %s/%s προσάρτηση έχει διαγραφεί --]\n"
+msgstr "[-- Αυτό το %s/%s συνημμένο έχει διαγραφεί --]\n"
 
 #: handler.c:869
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- όνομα: %s --]\n"
+
+# TODO: CONTINUE
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
