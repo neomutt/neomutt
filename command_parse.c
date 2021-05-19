@@ -83,7 +83,7 @@ enum GroupState
  */
 static bool is_function(const char *name)
 {
-  for (enum MenuType i = 0; i < MENU_MAX; i++)
+  for (size_t i = 0; MenuNames[i].name; i++)
   {
     const struct Binding *b = km_get_table(MenuNames[i].value);
     if (!b)
