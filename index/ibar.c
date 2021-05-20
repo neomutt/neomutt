@@ -180,22 +180,6 @@ static int ibar_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * ibar_email_observer - Listen for changes to the Email - Implements ::observer_t
- */
-static int ibar_email_observer(struct NotifyCallback *nc)
-{
-  if (!nc->global_data)
-    return -1;
-  if (nc->event_type != NT_EMAIL)
-    return 0;
-
-  struct MuttWindow *win_ibar = nc->global_data;
-  win_ibar->actions |= WA_RECALC;
-
-  return 0;
-}
-
-/**
  * ibar_mailbox_observer - Listen for changes to the Mailbox - Implements ::observer_t
  */
 static int ibar_mailbox_observer(struct NotifyCallback *nc)
@@ -244,10 +228,6 @@ static int ibar_index_observer(struct NotifyCallback *nc)
 
   if (nc->event_subtype & NT_INDEX_EMAIL)
   {
-    if (old_shared->email)
-      notify_observer_remove(old_shared->email->notify, ibar_email_observer, win_ibar);
-    if (new_shared->email)
-      notify_observer_add(new_shared->email->notify, NT_EMAIL, ibar_email_observer, win_ibar);
     win_ibar->actions |= WA_RECALC;
   }
 
@@ -289,8 +269,6 @@ static void ibar_data_free(struct MuttWindow *win, void **ptr)
 
   if (shared->mailbox)
     notify_observer_remove(shared->mailbox->notify, ibar_mailbox_observer, win);
-  if (shared->email)
-    notify_observer_remove(shared->email->notify, ibar_email_observer, win);
 
   FREE(&ibar_data->status_format);
   FREE(&ibar_data->ts_status_format);
@@ -339,8 +317,6 @@ struct MuttWindow *ibar_create(struct MuttWindow *parent, struct IndexSharedData
 
   if (shared->mailbox)
     notify_observer_add(shared->mailbox->notify, NT_MAILBOX, ibar_mailbox_observer, win_ibar);
-  if (shared->email)
-    notify_observer_add(shared->email->notify, NT_EMAIL, ibar_email_observer, win_ibar);
 
   return win_ibar;
 }

@@ -177,7 +177,9 @@ void index_shared_data_set_context(struct IndexSharedData *shared, struct Contex
   if (shared->mailbox != m)
   {
     shared->mailbox = m;
-    subtype |= NT_INDEX_MAILBOX;
+    shared->email = NULL;
+    shared->email_seq = 0;
+    subtype |= NT_INDEX_MAILBOX | NT_INDEX_EMAIL;
   }
 
   struct Account *a = m ? m->account : NULL;
