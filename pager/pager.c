@@ -2234,25 +2234,6 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     }
   }
 
-  if ((pager_menu->redraw & MENU_REDRAW_INDEX) && rd->menu && (c_pager_index_lines != 0))
-  {
-    /* redraw the pager_index indicator, because the
-     * flags for this message might have changed. */
-    if (rd->pview->win_index->state.rows > 0)
-      menu_redraw_current(rd->menu);
-
-    /* print out the index status bar */
-    const char *const c_status_format =
-        cs_subset_string(NeoMutt->sub, "status_format");
-    menu_status_line(buf, sizeof(buf), shared, rd->menu, sizeof(buf), NONULL(c_status_format));
-
-    mutt_window_move(rd->pview->win_ibar, 0, 0);
-    mutt_curses_set_color(MT_COLOR_STATUS);
-    mutt_draw_statusline(rd->pview->win_pbar, rd->pview->win_ibar->state.cols,
-                         buf, sizeof(buf));
-    mutt_curses_set_color(MT_COLOR_NORMAL);
-  }
-
   pager_menu->redraw = MENU_REDRAW_NO_FLAGS;
 }
 
