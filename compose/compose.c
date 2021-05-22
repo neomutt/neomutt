@@ -1436,6 +1436,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       redraw_env = false;
       win_env->req_rows = calc_envelope(rd);
       mutt_window_reflow(dlg);
+      draw_envelope(rd);
     }
 
     if (redraw_cbar)
