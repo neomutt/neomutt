@@ -1131,10 +1131,11 @@ static int file_tag(struct Menu *menu, int sel, int act)
  * create_mailbox - Create a new mailbox
  * @param state State used for handling IMAP case
  * @param m_current The current mailbox to create the new mailbox under
- * @retval true Successful creation
- * @retval true Creation failed
+ * @retval 0 Successful creation
+ * @retval 1 Creation failed
+ * @retval 2 Creation aborted by user
 */
-static bool create_mailbox(struct BrowserState *state, struct Mailbox *m_current)
+static int create_mailbox(struct BrowserState *state, struct Mailbox *m_current)
 {
   int create_rc;
   /* PATH_MAX used for local mailboxes, e.g. maildir, but should also be
@@ -1147,27 +1148,28 @@ static bool create_mailbox(struct BrowserState *state, struct Mailbox *m_current
     if (imap_mailbox_create(mutt_buffer_string(&LastDir)) == 0)
     {
       mutt_message(_("Mailbox created"));
-      return true;
+      return 0;
     }
     else
     {
       mutt_error(_("Mailbox creation failed"));
-      return false;
+      return 1;
     }
   }
 #endif /* USE_IMAP */
 
   if (!m_current)
-    return false;
+    return 1;
 
   if (m_current->mx_ops->mbox_create == NULL)
   {
     mutt_error(_("Create is not supported for %s mailboxes"), m_current->mx_ops->name);
-    return false;
+    return 1;
   }
 
-  mutt_get_field(_("Create mailbox: "), path, sizeof(path), MUTT_COMP_NO_FLAGS,
-                 false, NULL, NULL);
+  if (mutt_get_field(_("Create mailbox: "), path, sizeof(path), MUTT_COMP_NO_FLAGS,
+                 false, NULL, NULL) == -1)
+    return 2;
   struct Mailbox *new_mailbox = mutt_mem_malloc(sizeof(struct Mailbox));
 
   create_rc = m_current->mx_ops->mbox_create(m_current->account, m_current, path, &new_mailbox);
@@ -1176,7 +1178,7 @@ static bool create_mailbox(struct BrowserState *state, struct Mailbox *m_current
   {
     case MX_CREATE_OK: /* = 0 (for imap_mailbox_create) */
       mutt_message(_("Mailbox created"));
-      return true;
+      return 0;
     case MX_CREATE_EXISTS:
       mutt_error(_("A %s mailbox already exists under %s"), m_current->mx_ops->name, path);
       break;
@@ -1194,7 +1196,7 @@ static bool create_mailbox(struct BrowserState *state, struct Mailbox *m_current
 
   /* Creation failed, cleanup */
   mutt_mem_free(&new_mailbox);
-  return false;
+  return 1;
 }
 
 /**
