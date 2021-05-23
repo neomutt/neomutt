@@ -304,9 +304,9 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
     }
     case NM_WINDOW_QUERY_INVALID_TIMEBASE:
     {
-      // L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
-      //       They should not be translated.
       mutt_message(
+          // L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
+          //       They should not be translated.
           _("Invalid nm_query_window_timebase value (valid values are: "
             "hour, day, week, month, year)"));
       mutt_debug(LL_DEBUG2, "Invalid nm_query_window_timebase value\n");
