@@ -79,9 +79,9 @@ static int nm_query_window_timebase_validator(const struct ConfigSet *cs,
   const char *timebase = (const char *) value;
   if (!nm_query_window_check_timebase(timebase))
   {
-    // L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
-    //       They should not be translated.
     mutt_buffer_printf(
+        // L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
+        //       They should not be translated.
         err, _("Invalid nm_query_window_timebase value (valid values are: "
                "hour, day, week, month, year)"));
     return CSR_ERR_INVALID;
