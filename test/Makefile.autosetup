@@ -351,7 +351,8 @@ NOTIFY_OBJS	= test/notify/notify_free.o \
 		  test/notify/notify_set_parent.o
 
 @if USE_NOTMUCH
-NOTMUCH_OBJS	= test/notmuch/query_type.o
+NOTMUCH_OBJS	= test/notmuch/query_type.o \
+		  test/notmuch/window_query.o
 @endif
 
 PARAMETER_OBJS	= test/parameter/mutt_param_cmp_strict.o \
