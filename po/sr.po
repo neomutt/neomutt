@@ -4274,17 +4274,17 @@ msgid ""
 "WARNING: We have NO indication whether the key belongs to the person named "
 "as shown above\n"
 msgstr ""
-"УПОЗОРЕЊЕ: НЕ постоје индиције да ли кључ припада гореименованој особи\n"
+"УПОЗОРЕЊЕ: НЕ постоје индиције да кључ припада наведеној особи\n"
 
 #: ncrypt/crypt_gpgme.c:1684
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
-msgstr "УПОЗОРЕЊЕ: Кључ НЕ ПРИПАДА гореименованој особи\n"
+msgstr "УПОЗОРЕЊЕ: Кључ НЕ ПРИПАДА наведеној особи\n"
 
 #: ncrypt/crypt_gpgme.c:1688
 msgid ""
 "WARNING: It is NOT certain that the key belongs to the person named as shown "
 "above\n"
-msgstr "УПОЗОРЕЊЕ: НИЈЕ извесно да кључ припада гореименованој особи\n"
+msgstr "УПОЗОРЕЊЕ: НИЈЕ извесно да кључ припада наведеној особи\n"
 
 #: ncrypt/crypt_gpgme.c:1724 ncrypt/crypt_gpgme.c:1729 ncrypt/dlggpgme.c:94
 msgid "aka: "
