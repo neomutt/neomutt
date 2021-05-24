@@ -56,6 +56,7 @@ static int sbar_recalc(struct MuttWindow *win)
   FREE(&priv->display);
   priv->display = str;
 
+  win->actions |= WA_REPAINT;
   return 0;
 }
 
