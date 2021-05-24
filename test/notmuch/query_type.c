@@ -46,6 +46,10 @@ void test_nm_parse_type_from_query(void)
     { "type=non-existent", NM_QUERY_TYPE_MESGS },
     { "type=threads&type=non-existent", NM_QUERY_TYPE_THREADS },
     { "type=messages&type=non-existent", NM_QUERY_TYPE_MESGS },
+    { "type=messages&type=threads", NM_QUERY_TYPE_THREADS },
+    { "type=messages&type=threads&type=messages", NM_QUERY_TYPE_MESGS },
+    { "type=messages&type=threads&type=messages&type=threads", NM_QUERY_TYPE_THREADS },
+    { "type=messages&type=threads&type=messages&type=threads&type=non-existent", NM_QUERY_TYPE_THREADS },
   };
 
   // Degenerate test

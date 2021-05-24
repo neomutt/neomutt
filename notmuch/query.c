@@ -48,22 +48,36 @@ enum NmQueryType nm_parse_type_from_query(char *buf)
   if (!buf)
     return NM_QUERY_TYPE_MESGS;
 
-  // The six variations of how type= could appear.
+  enum NmQueryType query_type = NM_QUERY_TYPE_MESGS;
+
+  size_t buf_len = mutt_str_len(buf);
+  const char *message_ptr = mutt_istrn_rfind(buf, buf_len, "type=messages");
+  const char *thread_ptr = mutt_istrn_rfind(buf, buf_len, "type=threads");
+
+  // No valid type statement found.
+  if (!message_ptr && !thread_ptr)
+    return query_type;
+
+  // Determine the last valid "type=" statement.
+  if ((!message_ptr && thread_ptr) || (thread_ptr > message_ptr))
+  {
+    query_type = NM_QUERY_TYPE_THREADS;
+  }
+  else
+  {
+    query_type = NM_QUERY_TYPE_MESGS;
+  }
+
+  // Clean-up any valid "type=" statements.
+  // The six variations of how "type=" could appear.
   const char *variants[6] = { "&type=threads", "&type=messages",
                               "type=threads&", "type=messages&",
                               "type=threads",  "type=messages" };
-
-  enum NmQueryType query_type = NM_QUERY_TYPE_MESGS;
   int variants_size = mutt_array_size(variants);
+
   for (int i = 0; i < variants_size; i++)
   {
-    if (mutt_istr_find(buf, variants[i]) != NULL)
-    {
-      // variants[] is setup such that type can be determined via modulo 2.
-      query_type = ((i % 2) == 0) ? NM_QUERY_TYPE_THREADS : NM_QUERY_TYPE_MESGS;
-
-      mutt_istr_remall(buf, variants[i]);
-    }
+    mutt_istr_remall(buf, variants[i]);
   }
 
   return query_type;
