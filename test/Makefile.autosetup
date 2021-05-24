@@ -488,6 +488,7 @@ STRING_OBJS	= test/string/mutt_istr_equal.o \
 		  test/string/mutt_istr_remall.o \
 		  test/string/mutt_istrn_cmp.o \
 		  test/string/mutt_istrn_equal.o \
+		  test/string/mutt_istrn_rfind.o \
 		  test/string/mutt_str_adjust.o \
 		  test/string/mutt_str_append_item.o \
 		  test/string/mutt_str_asprintf.o \

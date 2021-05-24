@@ -105,5 +105,6 @@ size_t      mutt_istr_startswith(const char *str, const char *prefix);
 /* case-insensitive, length-bound flavours */
 int         mutt_istrn_cmp(const char *a, const char *b, size_t num);
 bool        mutt_istrn_equal(const char *a, const char *b, size_t num);
+const char *mutt_istrn_rfind(const char *haystack, size_t haystack_length, const char *needle);
 
 #endif /* MUTT_LIB_STRING_H */

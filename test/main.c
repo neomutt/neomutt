@@ -506,6 +506,7 @@
   NEOMUTT_TEST_ITEM(test_mutt_istr_remall)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_istrn_cmp)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_istrn_equal)                                     \
+  NEOMUTT_TEST_ITEM(test_mutt_istrn_rfind)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_adjust)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_append_item)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_str_asprintf)                                    \

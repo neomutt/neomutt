@@ -624,6 +624,39 @@ bool mutt_istrn_equal(const char *a, const char *b, size_t num)
 }
 
 /**
+ * mutt_istrn_rfind - Find last instance of a substring, ignoring case
+ * @param haystack        String to search through
+ * @param haystack_length Length of the string
+ * @param needle          String to find
+ * @retval NULL String not found
+ * @retval ptr  Location of string
+ *
+ * Return the last instance of needle in the haystack, or NULL.
+ * Like strcasestr(), only backwards, and for a limited haystack length.
+ */
+const char *mutt_istrn_rfind(const char *haystack, size_t haystack_length, const char *needle)
+{
+  if (!haystack || (haystack_length == 0) || !needle)
+    return NULL;
+
+  int needle_length = strlen(needle);
+  const char *haystack_end = haystack + haystack_length - needle_length;
+
+  for (const char *p = haystack_end; p >= haystack; --p)
+  {
+    for (size_t i = 0; i < needle_length; i++)
+    {
+      if ((tolower((unsigned char) p[i]) != tolower((unsigned char) needle[i])))
+        goto next;
+    }
+    return p;
+
+  next:;
+  }
+  return NULL;
+}
+
+/**
  * mutt_str_len - Calculate the length of a string, safely
  * @param a String to measure
  * @retval num Length in bytes
