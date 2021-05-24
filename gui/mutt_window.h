@@ -238,6 +238,7 @@ struct MuttWindow *window_get_focus  (void);
 struct MuttWindow *window_get_dialog (void);
 
 void window_redraw(struct MuttWindow *win, bool force);
+void window_invalidate_all(void);
 const char *mutt_window_win_name(const struct MuttWindow *win);
 
 #endif /* MUTT_MUTT_WINDOW_H */

@@ -888,3 +888,31 @@ const char *mutt_window_win_name(const struct MuttWindow *win)
     return name;
   return "UNKNOWN";
 }
+
+/**
+ * window_invalidate - Mark a window as in need of repaint
+ * @param win   Window to start at
+ */
+static void window_invalidate(struct MuttWindow *win)
+{
+  if (!win)
+    return;
+
+  win->actions |= WA_REPAINT;
+
+  struct MuttWindow *np = NULL;
+  TAILQ_FOREACH(np, &win->children, entries)
+  {
+    window_invalidate(np);
+  }
+}
+
+/**
+ * window_invalidate_all - Mark all windows as in need of repaint
+ */
+void window_invalidate_all(void)
+{
+  window_invalidate(RootWindow);
+  clearok(stdscr, true);
+  keypad(stdscr, true);
+}
