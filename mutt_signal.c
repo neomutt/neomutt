@@ -71,11 +71,11 @@ static void curses_signal_handler(int sig)
       mutt_curses_set_cursor(MUTT_CURSOR_RESTORE_LAST);
       /* We don't receive SIGWINCH when suspended; however, no harm is done by
        * just assuming we received one, and triggering the 'resize' anyway. */
-      SigWinch = 1;
+      SigWinch = true;
       break;
 
     case SIGWINCH:
-      SigWinch = 1;
+      SigWinch = true;
       break;
 
     case SIGINT:

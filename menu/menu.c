@@ -361,7 +361,7 @@ int menu_loop(struct Menu *menu)
 
     if (SigWinch)
     {
-      SigWinch = 0;
+      SigWinch = false;
       mutt_resize_screen();
       clearok(stdscr, true); /* force complete redraw */
     }

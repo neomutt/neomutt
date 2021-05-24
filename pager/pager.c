@@ -2630,7 +2630,7 @@ int mutt_pager(struct PagerView *pview)
 
     if (SigWinch)
     {
-      SigWinch = 0;
+      SigWinch = false;
       mutt_resize_screen();
       clearok(stdscr, true); /* force complete redraw */
       mutt_window_clearline(MessageWindow, 0);

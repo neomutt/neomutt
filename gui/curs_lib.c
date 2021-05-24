@@ -264,7 +264,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
   {
     if (SigWinch)
     {
-      SigWinch = 0;
+      SigWinch = false;
       mutt_resize_screen();
       clearok(stdscr, true);
       window_redraw(RootWindow, true);
@@ -411,7 +411,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
       redraw = false;
       if (SigWinch)
       {
-        SigWinch = 0;
+        SigWinch = false;
         mutt_resize_screen();
         clearok(stdscr, true);
         window_redraw(RootWindow, true);
@@ -838,7 +838,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
       redraw = false;
       if (SigWinch)
       {
-        SigWinch = 0;
+        SigWinch = false;
         mutt_resize_screen();
         clearok(stdscr, true);
         window_redraw(RootWindow, true);
