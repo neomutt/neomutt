@@ -694,7 +694,7 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
 
     c_old = c_cur;
 
-    window_redraw(dlg, true);
+    window_redraw(dlg);
     const int op = menu_loop(menu);
     switch (op)
     {

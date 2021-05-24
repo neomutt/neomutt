@@ -1333,7 +1333,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     else
     {
       index_custom_redraw(priv->menu);
-      window_redraw(RootWindow, false);
+      window_redraw(RootWindow);
 
       /* give visual indication that the next command is a tag- command */
       if (priv->tag)

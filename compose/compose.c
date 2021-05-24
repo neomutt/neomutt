@@ -1442,7 +1442,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
     if (redraw_cbar)
     {
       rd->win_cbar->actions |= WA_RECALC;
-      window_redraw(rd->win_cbar, false);
+      window_redraw(rd->win_cbar);
       redraw_cbar = false;
     }
 

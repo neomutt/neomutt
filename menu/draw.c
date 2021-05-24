@@ -339,7 +339,7 @@ void menu_redraw_full(struct Menu *menu)
   mutt_curses_set_color(MT_COLOR_NORMAL);
   mutt_window_clear(menu->win_index);
 
-  window_redraw(RootWindow, true);
+  window_redraw(RootWindow);
   menu->pagelen = menu->win_index->state.rows;
 
   mutt_show_error();

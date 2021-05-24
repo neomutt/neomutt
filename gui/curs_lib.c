@@ -125,7 +125,7 @@ void mutt_need_hard_redraw(void)
 {
   keypad(stdscr, true);
   clearok(stdscr, true);
-  window_redraw(RootWindow, true);
+  window_redraw(RootWindow);
 }
 
 /**
@@ -267,7 +267,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
       SigWinch = false;
       mutt_resize_screen();
       clearok(stdscr, true);
-      window_redraw(RootWindow, true);
+      window_redraw(RootWindow);
     }
     mutt_window_clearline(MessageWindow, 0);
     mutt_curses_set_color(MT_COLOR_PROMPT);
@@ -414,7 +414,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
         SigWinch = false;
         mutt_resize_screen();
         clearok(stdscr, true);
-        window_redraw(RootWindow, true);
+        window_redraw(RootWindow);
       }
       if (MessageWindow->state.cols)
       {
@@ -425,7 +425,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
       if (prompt_lines != MessageWindow->state.rows)
       {
         mutt_window_reflow_message_rows(prompt_lines);
-        window_redraw(RootWindow, true);
+        window_redraw(RootWindow);
       }
 
       /* maxlen here is sort of arbitrary, so pick a reasonable upper bound */
@@ -487,7 +487,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
   else
   {
     mutt_window_reflow_message_rows(1);
-    window_redraw(RootWindow, true);
+    window_redraw(RootWindow);
   }
 
   if (def == MUTT_ABORT)
@@ -841,7 +841,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
         SigWinch = false;
         mutt_resize_screen();
         clearok(stdscr, true);
-        window_redraw(RootWindow, true);
+        window_redraw(RootWindow);
       }
       if (MessageWindow->state.cols)
       {
@@ -858,7 +858,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
       if (prompt_lines != MessageWindow->state.rows)
       {
         mutt_window_reflow_message_rows(prompt_lines);
-        window_redraw(RootWindow, true);
+        window_redraw(RootWindow);
       }
 
       mutt_window_move(MessageWindow, 0, 0);
@@ -934,7 +934,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
   else
   {
     mutt_window_reflow_message_rows(1);
-    window_redraw(RootWindow, true);
+    window_redraw(RootWindow);
   }
   mutt_refresh();
   return choice;

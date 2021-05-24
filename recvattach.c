@@ -1653,7 +1653,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
   {
     if (op == OP_NULL)
       op = menu_loop(menu);
-    window_redraw(dlg, true);
+    window_redraw(dlg);
     if (!m)
       return;
     switch (op)

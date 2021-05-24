@@ -946,7 +946,7 @@ void mutt_enter_command(void)
   char buf[1024] = { 0 };
 
   window_set_focus(MessageWindow);
-  window_redraw(RootWindow, true);
+  window_redraw(RootWindow);
   /* if enter is pressed after : with no command, just return */
   if ((mutt_get_field(":", buf, sizeof(buf), MUTT_COMMAND, false, NULL, NULL) != 0) ||
       (buf[0] == '\0'))

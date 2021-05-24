@@ -36,6 +36,7 @@
 #include "mutt_window.h"
 #include "helpbar/lib.h"
 #include "menu/lib.h"
+#include "curs_lib.h"
 #include "mutt_curses.h"
 #include "opcodes.h"
 #include "options.h"
@@ -503,7 +504,7 @@ void mutt_window_reflow_message_rows(int mw_rows)
 
   /* We don't also set MENU_REDRAW_FLOW because this function only
    * changes rows and is a temporary adjustment. */
-  window_redraw(RootWindow, true);
+  window_redraw(RootWindow);
 }
 
 /**
@@ -753,30 +754,28 @@ static void window_recalc(struct MuttWindow *win)
 /**
  * window_repaint - Repaint a tree of Windows
  * @param win   Window to start at
- * @param force Repaint everything
  */
-static void window_repaint(struct MuttWindow *win, bool force)
+static void window_repaint(struct MuttWindow *win)
 {
   if (!win)
     return;
 
-  if (win->repaint && (force || (win->actions & WA_REPAINT)))
+  if (win->repaint && (win->actions & WA_REPAINT))
     win->repaint(win);
   win->actions &= ~WA_REPAINT;
 
   struct MuttWindow *np = NULL;
   TAILQ_FOREACH(np, &win->children, entries)
   {
-    window_repaint(np, force);
+    window_repaint(np);
   }
 }
 
 /**
  * window_redraw - Reflow, recalc and repaint a tree of Windows
  * @param win   Window to start at
- * @param force Repaint everything
  */
-void window_redraw(struct MuttWindow *win, bool force)
+void window_redraw(struct MuttWindow *win)
 {
   if (!win)
     return;
@@ -785,7 +784,8 @@ void window_redraw(struct MuttWindow *win, bool force)
   window_notify_all(win);
 
   window_recalc(win);
-  window_repaint(win, force);
+  window_repaint(win);
+  mutt_refresh();
 }
 
 /**
