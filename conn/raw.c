@@ -103,7 +103,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
   {
     save_errno = errno;
     mutt_debug(LL_DEBUG2, "Connection failed. errno: %d\n", errno);
-    SigInt = 0; /* reset in case we caught SIGINTR while in connect() */
+    SigInt = false; /* reset in case we caught SIGINTR while in connect() */
   }
 
   if (c_connect_timeout > 0)
@@ -277,14 +277,14 @@ int raw_socket_read(struct Connection *conn, char *buf, size_t count)
   if (rc < 0)
   {
     mutt_error(_("Error talking to %s (%s)"), conn->account.host, strerror(errno));
-    SigInt = 0;
+    SigInt = false;
   }
   mutt_sig_allow_interrupt(false);
 
   if (SigInt)
   {
     mutt_error(_("Connection to %s has been aborted"), conn->account.host);
-    SigInt = 0;
+    SigInt = false;
     rc = -1;
   }
 
@@ -315,7 +315,7 @@ int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
     }
 
     sent += rc;
-  } while ((sent < count) && (SigInt == 0));
+  } while ((sent < count) && !SigInt);
 
   mutt_sig_allow_interrupt(false);
   return sent;

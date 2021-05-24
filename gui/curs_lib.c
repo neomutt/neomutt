@@ -192,7 +192,7 @@ struct KeyEvent mutt_getch(void)
   if (!OptIgnoreMacroEvents && MacroBufferCount)
     return MacroEvents[--MacroBufferCount];
 
-  SigInt = 0;
+  SigInt = false;
 
   mutt_sig_allow_interrupt(true);
 #ifdef KEY_RESIZE
@@ -545,7 +545,7 @@ void mutt_query_exit(void)
   }
   mutt_clear_error();
   mutt_curses_set_cursor(MUTT_CURSOR_RESTORE_LAST);
-  SigInt = 0;
+  SigInt = false;
 }
 
 /**

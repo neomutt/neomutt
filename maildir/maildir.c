@@ -528,7 +528,7 @@ int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
     goto cleanup;
   }
 
-  while (((de = readdir(dirp))) && (SigInt != 1))
+  while (((de = readdir(dirp))) && !SigInt)
   {
     if (*de->d_name == '.')
       continue;
@@ -557,9 +557,9 @@ int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
 
   closedir(dirp);
 
-  if (SigInt == 1)
+  if (SigInt)
   {
-    SigInt = 0;
+    SigInt = false;
     return -2; /* action aborted */
   }
 

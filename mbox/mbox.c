@@ -221,7 +221,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
     if (!fgets(buf, sizeof(buf) - 1, adata->fp))
       break;
 
-    if (SigInt == 1)
+    if (SigInt)
       break;
 
     if (mutt_str_equal(buf, MMDF_SEP))
@@ -321,9 +321,9 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
     }
   }
 
-  if (SigInt == 1)
+  if (SigInt)
   {
-    SigInt = 0;
+    SigInt = false;
     return MX_OPEN_ABORT; /* action aborted */
   }
 
@@ -380,7 +380,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
   }
 
   loc = ftello(adata->fp);
-  while ((fgets(buf, sizeof(buf), adata->fp)) && (SigInt != 1))
+  while ((fgets(buf, sizeof(buf), adata->fp)) && !SigInt)
   {
     if (is_from(buf, return_path, sizeof(return_path), &t))
     {
@@ -515,9 +515,9 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
       e->lines = lines ? lines - 1 : 0;
   }
 
-  if (SigInt == 1)
+  if (SigInt)
   {
-    SigInt = 0;
+    SigInt = false;
     return MX_OPEN_ABORT; /* action aborted */
   }
 

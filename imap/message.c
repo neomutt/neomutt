@@ -492,7 +492,7 @@ static bool query_abort_header_download(struct ImapAccountData *adata)
     abort = true;
     imap_close_connection(adata);
   }
-  SigInt = 0;
+  SigInt = false;
 
   return abort;
 }

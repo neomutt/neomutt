@@ -968,10 +968,10 @@ static bool read_mesgs_query(struct Mailbox *m, notmuch_query_t *q, bool dedup)
   for (; notmuch_messages_valid(msgs) && ((limit == 0) || (m->msg_count < limit));
        notmuch_messages_move_to_next(msgs))
   {
-    if (SigInt == 1)
+    if (SigInt)
     {
       nm_hcache_close(h);
-      SigInt = 0;
+      SigInt = false;
       return false;
     }
     notmuch_message_t *nm = notmuch_messages_get(msgs);
@@ -1035,10 +1035,10 @@ static bool read_threads_query(struct Mailbox *m, notmuch_query_t *q, bool dedup
   for (; notmuch_threads_valid(threads) && ((limit == 0) || (m->msg_count < limit));
        notmuch_threads_move_to_next(threads))
   {
-    if (SigInt == 1)
+    if (SigInt)
     {
       nm_hcache_close(h);
-      SigInt = 0;
+      SigInt = false;
       return false;
     }
     notmuch_thread_t *thread = notmuch_threads_get(threads);

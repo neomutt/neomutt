@@ -79,7 +79,7 @@ static void curses_signal_handler(int sig)
       break;
 
     case SIGINT:
-      SigInt = 1;
+      SigInt = true;
       break;
   }
   errno = save_errno;

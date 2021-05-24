@@ -623,7 +623,7 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
     if (SigInt)
     {
       mutt_error(_("Search interrupted"));
-      SigInt = 0;
+      SigInt = false;
       return -1;
     }
 
@@ -775,7 +775,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
     if (SigInt)
     {
       mutt_error(_("Search interrupted"));
-      SigInt = 0;
+      SigInt = false;
       return -1;
     }
 
