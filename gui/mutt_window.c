@@ -789,6 +789,20 @@ void window_redraw(struct MuttWindow *win, bool force)
 }
 
 /**
+ * window_get_focus - Get the currently focussed Window
+ * @retval ptr Window with focus
+ */
+struct MuttWindow *window_get_focus(void)
+{
+  struct MuttWindow *win = RootWindow;
+
+  while (win && win->focus)
+    win = win->focus;
+
+  return win;
+}
+
+/**
  * window_set_focus - Set the Window focus
  * @param win Window to focus
  */
@@ -814,20 +828,6 @@ void window_set_focus(struct MuttWindow *win)
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
 #endif
-}
-
-/**
- * window_get_focus - Get the currently focussed Window
- * @retval ptr Window with focus
- */
-struct MuttWindow *window_get_focus(void)
-{
-  struct MuttWindow *win = RootWindow;
-
-  while (win && win->focus)
-    win = win->focus;
-
-  return win;
 }
 
 /**

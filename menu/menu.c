@@ -251,7 +251,7 @@ static int menu_dialog_dokey(struct Menu *menu, int *ip)
   do
   {
     ch = mutt_getch();
-  } while (ch.ch == -2);
+  } while (ch.ch == -2); // Timeout
 
   if (ch.ch < 0)
   {

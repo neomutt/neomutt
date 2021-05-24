@@ -199,12 +199,12 @@ struct KeyEvent mutt_getch(void)
   /* ncurses 4.2 sends this when the screen is resized */
   ch = KEY_RESIZE;
   while (ch == KEY_RESIZE)
-#endif /* KEY_RESIZE */
+#endif
 #ifdef USE_INOTIFY
     ch = mutt_monitor_getch();
 #else
   ch = getch();
-#endif /* USE_INOTIFY */
+#endif
   mutt_sig_allow_interrupt(false);
 
   if (SigInt)
@@ -446,7 +446,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
     mutt_getch_timeout(30 * 1000);
     ch = mutt_getch();
     mutt_getch_timeout(-1);
-    if (ch.ch == -2)
+    if (ch.ch == -2) // Timeout
       continue;
     if (CI_is_return(ch.ch))
       break;
@@ -674,7 +674,7 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
   do
   {
     ch = mutt_getch();
-  } while (ch.ch == -2);
+  } while (ch.ch == -2); // Timeout
   if (ch.ch < 0)
   {
     mutt_window_clearline(MessageWindow, 0);
@@ -902,7 +902,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
     mutt_getch_timeout(30 * 1000);
     ch = mutt_getch();
     mutt_getch_timeout(-1);
-    if (ch.ch == -2)
+    if (ch.ch == -2) // Timeout
       continue;
     /* (ch.ch == 0) is technically possible.  Treat the same as < 0 (abort) */
     if ((ch.ch <= 0) || CI_is_return(ch.ch))

@@ -447,17 +447,14 @@ int mutt_change_flag(struct Mailbox *m, struct EmailList *el, bool bf)
   do
   {
     event = mutt_getch();
-  } while (event.ch == -2);
-  int i = event.ch;
-  if (i < 0)
-  {
-    mutt_window_clearline(MessageWindow, 0);
-    return -1;
-  }
+  } while (event.ch == -2); // Timeout
 
   mutt_window_clearline(MessageWindow, 0);
 
-  switch (i)
+  if (event.ch < 0) // SIGINT, Abort key (Ctrl-G)
+    return -1;
+
+  switch (event.ch)
   {
     case 'd':
     case 'D':

@@ -695,7 +695,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
           do
           {
             event = mutt_getch();
-          } while (event.ch == -2);
+          } while (event.ch == -2); // Timeout
           if (event.ch >= 0)
           {
             LastKey = event.ch;
