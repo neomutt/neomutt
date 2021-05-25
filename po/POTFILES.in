@@ -93,6 +93,7 @@ functions.c
 gui/color.c
 gui/curs_lib.c
 gui/dialog.c
+gui/msgwin.c
 gui/mutt_curses.c
 gui/mutt_window.c
 gui/reflow.c

@@ -34,10 +34,9 @@
 #include "core/lib.h"
 #include "mutt_window.h"
 #include "helpbar/lib.h"
-#include "menu/lib.h"
 #include "curs_lib.h"
+#include "msgwin.h"
 #include "mutt_curses.h"
-#include "opcodes.h"
 #include "options.h"
 #include "reflow.h"
 #ifdef USE_DEBUG_WINDOW
@@ -377,8 +376,7 @@ void mutt_window_init(void)
                                      MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
                                      MUTT_WIN_SIZE_UNLIMITED);
 
-  MessageWindow = mutt_window_new(WT_MESSAGE, MUTT_WIN_ORIENT_VERTICAL,
-                                  MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
+  MessageWindow = msgwin_create();
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)
