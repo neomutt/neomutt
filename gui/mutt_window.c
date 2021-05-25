@@ -805,11 +805,15 @@ struct MuttWindow *window_get_focus(void)
 /**
  * window_set_focus - Set the Window focus
  * @param win Window to focus
+ * @retval ptr  Old focussed Window
+ * @retval NULL Error, or focus not changed
  */
-void window_set_focus(struct MuttWindow *win)
+struct MuttWindow *window_set_focus(struct MuttWindow *win)
 {
   if (!win)
-    return;
+    return NULL;
+
+  struct MuttWindow *old_focus = window_get_focus();
 
   struct MuttWindow *parent = win->parent;
   struct MuttWindow *child = win;
@@ -822,12 +826,16 @@ void window_set_focus(struct MuttWindow *win)
   while (win && win->focus)
     win = win->focus;
 
+  if (win == old_focus)
+    return NULL;
+
   mutt_debug(LL_NOTIFY, "NT_WINDOW_FOCUS: %s, %p\n", mutt_window_win_name(win), win);
   struct EventWindow ev_w = { win, WN_NO_FLAGS };
   notify_send(win->notify, NT_WINDOW, NT_WINDOW_FOCUS, &ev_w);
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
 #endif
+  return old_focus;
 }
 
 /**

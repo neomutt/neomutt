@@ -233,7 +233,7 @@ void               mutt_winlist_free (struct MuttWindowList *head);
 struct MuttWindow *mutt_window_find  (struct MuttWindow *root, enum WindowType type);
 void               window_notify_all (struct MuttWindow *win);
 void               window_set_visible(struct MuttWindow *win, bool visible);
-void               window_set_focus  (struct MuttWindow *win);
+struct MuttWindow *window_set_focus  (struct MuttWindow *win);
 struct MuttWindow *window_get_focus  (void);
 struct MuttWindow *window_get_dialog (void);
 
