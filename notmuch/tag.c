@@ -43,7 +43,7 @@ void nm_tag_array_free(struct TagArray *tags)
 }
 
 /**
- * nm_tag_string_to_tags - Converts a comma and/or space-delimited string of tags into an array
+ * nm_tag_str_to_tags - Converts a comma and/or space-delimited string of tags into an array
  * @param tag_str String containing a list of tags, comma- and/or space-delimited
  * @retval obj Array containing tags represented as strings
  */

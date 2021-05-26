@@ -1094,36 +1094,23 @@ static void sync_email_path_with_nm(struct Email *e, notmuch_message_t *msg)
 
 /**
  * update_tags - Update the tags on a message
- * @param msg  Notmuch message
- * @param tags String of tags (space separated)
+ * @param msg     Notmuch message
+ * @param tag_str String of tags (space separated)
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int update_tags(notmuch_message_t *msg, const char *tags)
+static int update_tags(notmuch_message_t *msg, const char *tag_str)
 {
-  char *buf = mutt_str_dup(tags);
-  if (!buf)
+  if (!tag_str)
     return -1;
 
   notmuch_message_freeze(msg);
 
-  char *tag = NULL, *end = NULL;
-  for (char *p = buf; p && *p; p++)
+  struct TagArray tags = nm_tag_str_to_tags(tag_str);
+  char **tag_elem = NULL;
+  ARRAY_FOREACH(tag_elem, &tags.tags)
   {
-    if (!tag && isspace(*p))
-      continue;
-    if (!tag)
-      tag = p; /* begin of the tag */
-    if ((p[0] == ',') || (p[0] == ' '))
-      end = p; /* terminate the tag */
-    else if (p[1] == '\0')
-      end = p + 1; /* end of optstr */
-    if (!tag || !end)
-      continue;
-    if (tag >= end)
-      break;
-
-    end[0] = '\0';
+    char *tag = *tag_elem;
 
     if (tag[0] == '-')
     {
@@ -1147,57 +1134,43 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
       mutt_debug(LL_DEBUG1, "nm: add tag: '%s'\n", (tag[0] == '+') ? tag + 1 : tag);
       notmuch_message_add_tag(msg, (tag[0] == '+') ? tag + 1 : tag);
     }
-    end = NULL;
-    tag = NULL;
   }
 
   notmuch_message_thaw(msg);
-  FREE(&buf);
+  nm_tag_array_free(&tags);
+
   return 0;
 }
 
 /**
  * update_email_flags - Update the Email's flags
- * @param m   Mailbox
- * @param e   Email
- * @param tags String of tags (space separated)
+ * @param m       Mailbox
+ * @param e       Email
+ * @param tag_str String of tags (space separated)
  * @retval  0 Success
  * @retval -1 Failure
  *
- * TODO: extract parsing of string to separate function, join
- * update_email_tags and update_email_flags, which are given an array of
- * tags.
+ * TODO: join update_email_tags and update_email_flags, which are given an
+ * array of tags.
  */
-static int update_email_flags(struct Mailbox *m, struct Email *e, const char *tags)
+static int update_email_flags(struct Mailbox *m, struct Email *e, const char *tag_str)
 {
-  char *buf = mutt_str_dup(tags);
-  if (!buf)
+  if (!tag_str)
     return -1;
 
-  char *tag = NULL, *end = NULL;
-  for (char *p = buf; p && *p; p++)
+  const char *const c_nm_unread_tag =
+      cs_subset_string(NeoMutt->sub, "nm_unread_tag");
+  const char *const c_nm_replied_tag =
+      cs_subset_string(NeoMutt->sub, "nm_replied_tag");
+  const char *const c_nm_flagged_tag =
+      cs_subset_string(NeoMutt->sub, "nm_flagged_tag");
+
+  struct TagArray tags = nm_tag_str_to_tags(tag_str);
+  char **tag_elem = NULL;
+  ARRAY_FOREACH(tag_elem, &tags.tags)
   {
-    if (!tag && isspace(*p))
-      continue;
-    if (!tag)
-      tag = p; /* begin of the tag */
-    if ((p[0] == ',') || (p[0] == ' '))
-      end = p; /* terminate the tag */
-    else if (p[1] == '\0')
-      end = p + 1; /* end of optstr */
-    if (!tag || !end)
-      continue;
-    if (tag >= end)
-      break;
+    char *tag = *tag_elem;
 
-    end[0] = '\0';
-
-    const char *const c_nm_unread_tag =
-        cs_subset_string(NeoMutt->sub, "nm_unread_tag");
-    const char *const c_nm_replied_tag =
-        cs_subset_string(NeoMutt->sub, "nm_replied_tag");
-    const char *const c_nm_flagged_tag =
-        cs_subset_string(NeoMutt->sub, "nm_flagged_tag");
     if (tag[0] == '-')
     {
       tag++;
@@ -1218,11 +1191,10 @@ static int update_email_flags(struct Mailbox *m, struct Email *e, const char *ta
       else if (strcmp(tag, c_nm_flagged_tag) == 0)
         mutt_set_flag(m, e, MUTT_FLAG, true);
     }
-    end = NULL;
-    tag = NULL;
   }
 
-  FREE(&buf);
+  nm_tag_array_free(&tags);
+
   return 0;
 }
 
