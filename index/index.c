@@ -3549,7 +3549,6 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
       case OP_ENTER_COMMAND:
         mutt_enter_command();
-        window_set_focus(priv->win_index);
         mutt_check_rescore(shared->mailbox);
         menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;

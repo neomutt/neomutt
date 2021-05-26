@@ -455,7 +455,6 @@ int menu_loop(struct Menu *menu)
 
       case OP_ENTER_COMMAND:
         mutt_enter_command();
-        window_set_focus(menu->win_index);
         window_redraw(RootWindow);
         break;
 

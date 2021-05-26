@@ -66,19 +66,16 @@
 
 /* not possible to unget more than one char under some curses libs, and it
  * is impossible to unget function keys in SLang, so roll our own input
- * buffering routines.
- */
+ * buffering routines.  */
 
 /* These are used for macros and exec/push commands.
- * They can be temporarily ignored by setting OptIgnoreMacroEvents
- */
+ * They can be temporarily ignored by setting OptIgnoreMacroEvents */
 static size_t MacroBufferCount = 0;
 static size_t MacroBufferLen = 0;
 static struct KeyEvent *MacroEvents;
 
 /* These are used in all other "normal" situations, and are not
- * ignored when setting OptIgnoreMacroEvents
- */
+ * ignored when setting OptIgnoreMacroEvents */
 static size_t UngetCount = 0;
 static size_t UngetLen = 0;
 static struct KeyEvent *UngetKeyEvents;
@@ -260,6 +257,8 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
 
   struct EnterState *es = mutt_enter_state_new();
 
+  struct MuttWindow *old_focus = window_set_focus(MessageWindow);
+  window_redraw(RootWindow);
   do
   {
     if (SigWinch)
@@ -278,6 +277,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
     ret = mutt_enter_string_full(buf->data, buf->dsize, col, complete, multiple,
                                  m, files, numfiles, es);
   } while (ret == 1);
+  window_set_focus(old_focus);
 
   if (ret == 0)
     mutt_buffer_fix_dptr(buf);
@@ -404,6 +404,8 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
   answer_string_wid = mutt_strwidth(answer_string);
   msg_wid = mutt_strwidth(msg);
 
+  struct MuttWindow *old_focus = window_set_focus(MessageWindow);
+  window_redraw(RootWindow);
   while (true)
   {
     if (redraw || SigWinch)
@@ -472,6 +474,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
       mutt_beep(false);
     }
   }
+  window_set_focus(old_focus);
 
   FREE(&answer_string);
 
@@ -831,6 +834,8 @@ int mutt_multi_choice(const char *prompt, const char *letters)
   const bool opt_cols = ((mutt_color(MT_COLOR_OPTIONS) != 0) &&
                          (mutt_color(MT_COLOR_OPTIONS) != mutt_color(MT_COLOR_PROMPT)));
 
+  struct MuttWindow *old_focus = window_set_focus(MessageWindow);
+  window_redraw(RootWindow);
   while (true)
   {
     if (redraw || SigWinch)
@@ -936,6 +941,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
     mutt_window_reflow_message_rows(1);
     window_redraw(RootWindow);
   }
+  window_set_focus(old_focus);
   mutt_refresh();
   return choice;
 }
