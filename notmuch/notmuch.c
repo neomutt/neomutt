@@ -75,6 +75,7 @@
 #include "progress.h"
 #include "protos.h"
 #include "query.h"
+#include "tag.h"
 
 struct stat;
 
@@ -410,33 +411,17 @@ static void apply_exclude_tags(notmuch_query_t *query)
   if (!c_nm_exclude_tags || !query)
     return;
 
-  char *end = NULL, *tag = NULL;
+  struct TagArray tags = nm_tag_str_to_tags(c_nm_exclude_tags);
 
-  char *buf = mutt_str_dup(c_nm_exclude_tags);
-
-  for (char *p = buf; p && (p[0] != '\0'); p++)
+  char **tag = NULL;
+  ARRAY_FOREACH(tag, &tags.tags)
   {
-    if (!tag && isspace(*p))
-      continue;
-    if (!tag)
-      tag = p; /* begin of the tag */
-    if ((p[0] == ',') || (p[0] == ' '))
-      end = p; /* terminate the tag */
-    else if (p[1] == '\0')
-      end = p + 1; /* end of optstr */
-    if (!tag || !end)
-      continue;
-    if (tag >= end)
-      break;
-    *end = '\0';
-
-    mutt_debug(LL_DEBUG2, "nm: query exclude tag '%s'\n", tag);
-    notmuch_query_add_tag_exclude(query, tag);
-    end = NULL;
-    tag = NULL;
+    mutt_debug(LL_DEBUG2, "nm: query exclude tag '%s'\n", *tag);
+    notmuch_query_add_tag_exclude(query, *tag);
   }
+
   notmuch_query_set_omit_excluded(query, 1);
-  FREE(&buf);
+  nm_tag_array_free(&tags);
 }
 
 /**

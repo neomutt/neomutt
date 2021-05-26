@@ -504,7 +504,7 @@ $(PWD)/nntp:
 LIBNOTMUCH=	libnotmuch.a
 LIBNOTMUCHOBJS=	notmuch/config.o notmuch/db.o notmuch/notmuch.o \
 		notmuch/adata.o notmuch/edata.o notmuch/mdata.o \
-		notmuch/query.o
+		notmuch/query.o notmuch/tag.o
 CLEANFILES+=	$(LIBNOTMUCH) $(LIBNOTMUCHOBJS)
 ALLOBJS+=	$(LIBNOTMUCHOBJS)
 
