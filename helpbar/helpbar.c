@@ -102,8 +102,11 @@ static char *compile_help(char *buf, size_t buflen, enum MenuType menu,
  */
 static int helpbar_recalc(struct MuttWindow *win)
 {
-  if (!win)
-    return -1;
+  struct HelpbarWindowData *wdata = helpbar_wdata_get(win);
+  if (!wdata)
+    return 0;
+
+  FREE(&wdata->help_str);
 
   struct MuttWindow *win_focus = window_get_focus();
   if (!win_focus)
@@ -116,16 +119,12 @@ static int helpbar_recalc(struct MuttWindow *win)
   if (!win_focus)
     return 0;
 
-  struct HelpbarWindowData *wdata = helpbar_wdata_get(win);
-  if (!wdata)
-    return 0;
-
   char helpstr[1024] = { 0 };
   compile_help(helpstr, sizeof(helpstr), win_focus->help_menu, win_focus->help_data);
 
   wdata->help_menu = win_focus->help_menu;
   wdata->help_data = win_focus->help_data;
-  mutt_str_replace(&wdata->help_str, helpstr);
+  wdata->help_str = mutt_str_dup(helpstr);
 
   win->actions |= WA_REPAINT;
   mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
