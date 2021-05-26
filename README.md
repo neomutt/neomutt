@@ -77,7 +77,7 @@ source. Please refer to the instructions on the
 - Releases:        https://github.com/neomutt/neomutt/releases/latest
 - Questions/Bugs:  https://github.com/neomutt/neomutt/issues
 - Website:         https://neomutt.org
-- IRC:             [irc://irc.freenode.net/neomutt](https://webchat.freenode.net/ "IRC Web Client") - please be patient.
+- IRC:             [irc://irc.libera.chat/neomutt](https://kiwiirc.com/nextclient/irc.libera.chat/#neomutt "IRC Web Client") - please be patient.
   We're a small group, so our answer might take some time.
 - Mailinglists:    [neomutt-users](mailto:neomutt-users-request@neomutt.org?subject=subscribe)
   and [neomutt-devel](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)
