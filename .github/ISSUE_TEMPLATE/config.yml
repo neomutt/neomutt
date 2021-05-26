@@ -1,7 +1,7 @@
 blank_issues_enabled: true
 contact_links:
-  - name: "🗪  IRC #neomutt on irc.freenode.net"
-    url: https://webchat.freenode.net/#neomutt
+  - name: "🗪  IRC #neomutt on irc.libera.chat"
+    url: https://kiwiirc.com/nextclient/irc.libera.chat/#neomutt
     about: Chat with NeoMutt users
   - name: "🖂  Mailing Lists"
     url: https://neomutt.org/#mailing-lists
