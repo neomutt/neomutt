@@ -344,6 +344,7 @@ static bool get_hostname(struct ConfigSet *cs)
   char *fqdn = mutt_str_dup(c_hostname);
   if (!fqdn)
   {
+    mutt_debug(LL_DEBUG1, "Setting $hostname\n");
     /* now get FQDN.  Use configured domain first, DNS next, then uname */
 #ifdef DOMAIN
     /* we have a compile-time domain name, use that for `$hostname` */
@@ -371,6 +372,7 @@ static bool get_hostname(struct ConfigSet *cs)
         fqdn = mutt_str_dup(utsname.nodename);
       }
       mutt_buffer_pool_release(&domain);
+      mutt_debug(LL_DEBUG1, "Hostname: %s\n", NONULL(fqdn));
     }
 #endif
   }

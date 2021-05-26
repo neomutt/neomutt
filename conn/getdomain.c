@@ -147,7 +147,6 @@ int getdnsdomainname(struct Buffer *result)
   {
     mutt_buffer_strcpy(result, ++hostname);
     rc = 0;
-    mutt_debug(LL_DEBUG1, "Hostname: %s\n", mutt_buffer_string(result));
   }
   freeaddrinfo(lookup_result);
 #endif
