@@ -737,17 +737,25 @@ static int msg_search_sendmode(struct Email *e, struct Pattern *pat)
 
 /**
  * pattern_needs_msg - Check whether a pattern needs a full message
+ * @param m Mailbox
  * @param pat Pattern
  * @retval true The pattern needs a full message
  * @retval false The pattern does not need a full message
  */
-static bool pattern_needs_msg(const struct Pattern *pat)
+static bool pattern_needs_msg(const struct Mailbox *m, const struct Pattern *pat)
 {
-  if ((pat->op == MUTT_PAT_MIMETYPE) || (pat->op == MUTT_PAT_WHOLE_MSG) ||
-      (pat->op == MUTT_PAT_MIMEATTACH) || (pat->op == MUTT_PAT_BODY) ||
-      (pat->op == MUTT_PAT_HEADER))
+  if ((pat->op == MUTT_PAT_MIMETYPE) || (pat->op == MUTT_PAT_MIMEATTACH))
   {
     return true;
+  }
+
+  if ((pat->op == MUTT_PAT_WHOLE_MSG) || (pat->op == MUTT_PAT_BODY) || (pat->op == MUTT_PAT_HEADER))
+  {
+#ifdef USE_IMAP
+    return !((m->type == MUTT_IMAP) && pat->string_match);
+#else
+    return true;
+#endif
   }
 
   if ((pat->op == MUTT_PAT_AND) || (pat->op == MUTT_PAT_OR))
@@ -755,7 +763,7 @@ static bool pattern_needs_msg(const struct Pattern *pat)
     struct Pattern *p = NULL;
     SLIST_FOREACH(p, pat->child, entries)
     {
-      if (pattern_needs_msg(p))
+      if (pattern_needs_msg(m, p))
       {
         return true;
       }
@@ -1089,7 +1097,7 @@ static int pattern_exec(struct Pattern *pat, PatternExecFlags flags,
 int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
                       struct Mailbox *m, struct Email *e, struct PatternCache *cache)
 {
-  struct Message *msg = pattern_needs_msg(pat) ? mx_msg_open(m, e->msgno) : NULL;
+  struct Message *msg = pattern_needs_msg(m, pat) ? mx_msg_open(m, e->msgno) : NULL;
   const int rc = pattern_exec(pat, flags, m, e, msg, cache);
   mx_msg_close(m, &msg);
   return rc;
