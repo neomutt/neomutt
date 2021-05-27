@@ -5163,9 +5163,8 @@ msgstr "nm_default_url мора бити: notmuch://<апсолутна пута
 #. L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
 #. They should not be translated.
 #: notmuch/config.c:85 notmuch/notmuch.c:310
-#, fuzzy
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
-msgstr "Неисправна вредност nm_query_window_timebase (исправне вредности су: hour, day, week, month или year)"
+msgstr "Неисправна вредност nm_query_window_timebase (исправне вредности су: hour, day, week, month, year)"
 
 #: notmuch/db.c:136
 #, c-format
