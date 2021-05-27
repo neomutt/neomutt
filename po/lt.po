@@ -5158,9 +5158,8 @@ msgstr "nm_default_url turi būti notmuch://<absoliutus kelias> .  Dabar: %s"
 #. L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
 #. They should not be translated.
 #: notmuch/config.c:85 notmuch/notmuch.c:310
-#, fuzzy
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
-msgstr "Bloga nm_query_window_timebase reikšmė (geros reikšmės: hour, day, week, month arba year)"
+msgstr "Bloga nm_query_window_timebase reikšmė (geros reikšmės: hour, day, week, month, year)"
 
 #: notmuch/db.c:136
 #, c-format
