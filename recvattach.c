@@ -1641,7 +1641,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
   menu->make_entry = attach_make_entry;
   menu->tag = attach_tag;
 
-  struct MuttWindow *sbar = mutt_window_find(dlg, WT_INDEX_BAR);
+  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
   sbar_set_title(sbar, _("Attachments"));
 
   struct AttachCtx *actx = mutt_actx_new();

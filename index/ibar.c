@@ -319,7 +319,7 @@ struct MuttWindow *ibar_create(struct MuttWindow *parent, struct IndexSharedData
                                struct IndexPrivateData *priv)
 {
   struct MuttWindow *win_ibar =
-      mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
+      mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,
                       MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
 
   win_ibar->wdata = ibar_data_new(shared, priv);

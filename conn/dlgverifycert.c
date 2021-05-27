@@ -71,7 +71,7 @@ int dlg_verify_certificate(const char *title, struct ListHead *list,
 
   struct Menu *menu = dlg->wdata;
 
-  struct MuttWindow *sbar = mutt_window_find(dlg, WT_INDEX_BAR);
+  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
   sbar_set_title(sbar, title);
 
   struct ListNode *np = NULL;

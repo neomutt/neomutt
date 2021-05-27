@@ -213,7 +213,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
   menu->max = alias_array_count_visible(&mdata->ava);
   menu->mdata = mdata;
 
-  struct MuttWindow *sbar = mutt_window_find(dlg, WT_INDEX_BAR);
+  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
 
   char *title = menu_create_alias_title(_("Aliases"), mdata->str);
   sbar_set_title(sbar, title);

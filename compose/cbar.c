@@ -286,7 +286,7 @@ static struct CBarPrivateData *cbar_data_new(struct ComposeRedrawData *rd)
 struct MuttWindow *cbar_create(struct MuttWindow *parent, struct ComposeRedrawData *rd)
 {
   struct MuttWindow *win_cbar =
-      mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
+      mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,
                       MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
 
   win_cbar->wdata = cbar_data_new(rd);

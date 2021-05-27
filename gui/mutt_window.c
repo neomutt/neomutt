@@ -87,13 +87,12 @@ static const struct Mapping WindowNames[] = {
   { "WT_DLG_SMIME",       WT_DLG_SMIME },
   { "WT_HELP_BAR",        WT_HELP_BAR },
   { "WT_INDEX",           WT_INDEX },
-  { "WT_INDEX_BAR",       WT_INDEX_BAR },
   { "WT_MENU",            WT_MENU },
   { "WT_MESSAGE",         WT_MESSAGE },
   { "WT_PAGER",           WT_PAGER },
-  { "WT_PAGER_BAR",       WT_PAGER_BAR },
   { "WT_ROOT",            WT_ROOT },
   { "WT_SIDEBAR",         WT_SIDEBAR },
+  { "WT_STATUS_BAR",      WT_STATUS_BAR },
   // clang-format off
   { NULL, 0 },
 };
@@ -708,7 +707,7 @@ bool mutt_window_is_visible(struct MuttWindow *win)
 /**
  * mutt_window_find - Find a Window of a given type
  * @param root Window to start searching
- * @param type Window type to find, e.g. #WT_INDEX_BAR
+ * @param type Window type to find, e.g. #WT_STATUS_BAR
  * @retval ptr  Matching Window
  * @retval NULL No match
  */

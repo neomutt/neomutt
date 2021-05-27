@@ -137,7 +137,7 @@ static struct SBarPrivateData *sbar_data_new(void)
 struct MuttWindow *sbar_create(struct MuttWindow *parent)
 {
   struct MuttWindow *win_sbar =
-      mutt_window_new(WT_INDEX_BAR, MUTT_WIN_ORIENT_VERTICAL,
+      mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,
                       MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
 
   win_sbar->wdata = sbar_data_new();
@@ -159,7 +159,7 @@ struct MuttWindow *sbar_create(struct MuttWindow *parent)
  */
 void sbar_set_title(struct MuttWindow *win, const char *title)
 {
-  if (!win || !win->wdata || (win->type != WT_INDEX_BAR))
+  if (!win || !win->wdata || (win->type != WT_STATUS_BAR))
     return;
 
   struct SBarPrivateData *priv = win->wdata;

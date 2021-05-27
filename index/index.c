@@ -1140,9 +1140,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   struct IndexPrivateData *priv = panel_index->wdata;
   priv->attach_msg = OptAttachMsg;
   priv->win_index = mutt_window_find(panel_index, WT_MENU);
-  priv->win_ibar = mutt_window_find(panel_index, WT_INDEX_BAR);
+  priv->win_ibar = mutt_window_find(panel_index, WT_STATUS_BAR);
   priv->win_pager = mutt_window_find(panel_pager, WT_MENU);
-  priv->win_pbar = mutt_window_find(panel_pager, WT_PAGER_BAR);
+  priv->win_pbar = mutt_window_find(panel_pager, WT_STATUS_BAR);
 
   int op = OP_NULL;
 

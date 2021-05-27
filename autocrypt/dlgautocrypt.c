@@ -176,7 +176,7 @@ static struct Menu *create_menu(struct MuttWindow *dlg)
   menu->make_entry = account_make_entry;
   /* menu->tag = account_tag; */
 
-  struct MuttWindow *sbar = mutt_window_find(dlg, WT_INDEX_BAR);
+  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
   // L10N: Autocrypt Account Management Menu title
   sbar_set_title(sbar, _("Autocrypt Accounts"));
 
