@@ -82,6 +82,21 @@ static struct KeyEvent *UngetKeyEvents;
 
 int MuttGetchTimeout = -1;
 
+/// Help Bar for the Command Line Editor
+static const struct Mapping EditorHelp[] = {
+  // clang-format off
+  { N_("Complete"),    OP_EDITOR_COMPLETE },
+  { N_("Hist Up"),     OP_EDITOR_HISTORY_UP },
+  { N_("Hist Down"),   OP_EDITOR_HISTORY_DOWN },
+  { N_("Hist Search"), OP_EDITOR_HISTORY_SEARCH },
+  { N_("Begin Line"),  OP_EDITOR_BOL },
+  { N_("End Line"),    OP_EDITOR_EOL },
+  { N_("Kill Line"),   OP_EDITOR_KILL_LINE },
+  { N_("Kill Word"),   OP_EDITOR_KILL_WORD },
+  { NULL, 0 },
+  // clang-format off
+};
+
 /**
  * mutt_beep - Irritate the user
  * @param force If true, ignore the "$beep" config variable
@@ -257,7 +272,13 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
 
   struct EnterState *es = mutt_enter_state_new();
 
+  const struct Mapping *old_help = MessageWindow->help_data;
+  int old_menu = MessageWindow->help_menu;
+
+  MessageWindow->help_data = EditorHelp;
+  MessageWindow->help_menu = MENU_EDITOR;
   struct MuttWindow *old_focus = window_set_focus(MessageWindow);
+
   window_redraw(RootWindow);
   do
   {
@@ -277,6 +298,9 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
     ret = mutt_enter_string_full(buf->data, buf->dsize, col, complete, multiple,
                                  m, files, numfiles, es);
   } while (ret == 1);
+
+  MessageWindow->help_data = old_help;
+  MessageWindow->help_menu = old_menu;
   window_set_focus(old_focus);
 
   if (ret == 0)

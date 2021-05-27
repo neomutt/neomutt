@@ -48,21 +48,6 @@ struct MuttWindow *RootWindow = NULL;       ///< Parent of all Windows
 struct MuttWindow *AllDialogsWindow = NULL; ///< Parent of all Dialogs
 struct MuttWindow *MessageWindow = NULL;    ///< Message Window, ":set", etc
 
-/// Help Bar for the Command Line Editor
-static const struct Mapping EditorHelp[] = {
-  // clang-format off
-  { N_("Complete"),    OP_EDITOR_COMPLETE },
-  { N_("Hist Up"),     OP_EDITOR_HISTORY_UP },
-  { N_("Hist Down"),   OP_EDITOR_HISTORY_DOWN },
-  { N_("Hist Search"), OP_EDITOR_HISTORY_SEARCH },
-  { N_("Begin Line"),  OP_EDITOR_BOL },
-  { N_("End Line"),    OP_EDITOR_EOL },
-  { N_("Kill Line"),   OP_EDITOR_KILL_LINE },
-  { N_("Kill Word"),   OP_EDITOR_KILL_WORD },
-  { NULL, 0 },
-  // clang-format off
-};
-
 /// Lookups for Window Names
 static const struct Mapping WindowNames[] = {
   // clang-format off
@@ -394,8 +379,6 @@ void mutt_window_init(void)
 
   MessageWindow = mutt_window_new(WT_MESSAGE, MUTT_WIN_ORIENT_VERTICAL,
                                   MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-  MessageWindow->help_data = EditorHelp;
-  MessageWindow->help_menu = MENU_EDITOR;
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)
