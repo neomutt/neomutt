@@ -941,5 +941,6 @@ bool window_status_on_top(struct MuttWindow *panel, struct ConfigSubset *sub)
   TAILQ_INSERT_TAIL(&panel->children, win_first, entries);
 
   mutt_window_reflow(panel);
+  mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
   return true;
 }

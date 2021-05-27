@@ -50,26 +50,11 @@ static int dopager_config_observer(struct NotifyCallback *nc)
     return 0;
 
   struct EventConfig *ev_c = nc->event_data;
-  struct MuttWindow *dlg = nc->global_data;
-
   if (!mutt_str_equal(ev_c->name, "status_on_top"))
     return 0;
 
-  struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
-  if (!win_first)
-    return -1;
-
-  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
-  if ((c_status_on_top && (win_first->type == WT_PAGER)) ||
-      (!c_status_on_top && (win_first->type != WT_PAGER)))
-  {
-    // Swap the Index and the IndexBar Windows
-    TAILQ_REMOVE(&dlg->children, win_first, entries);
-    TAILQ_INSERT_TAIL(&dlg->children, win_first, entries);
-    mutt_window_reflow(dlg);
-    mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
-  }
-
+  struct MuttWindow *dlg = nc->global_data;
+  window_status_on_top(dlg, NeoMutt->sub);
   return 0;
 }
 
