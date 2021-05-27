@@ -32,7 +32,6 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "debug/lib.h"
 #include "mutt_window.h"
 #include "helpbar/lib.h"
 #include "menu/lib.h"
@@ -914,4 +913,33 @@ void window_invalidate_all(void)
   window_invalidate(RootWindow);
   clearok(stdscr, true);
   keypad(stdscr, true);
+}
+
+/**
+ * window_status_on_top - Organise windows according to config variable
+ * @param panel Window containing WT_MENU and WT_STATUS_BAR
+ * @param sub   Config Subset
+ * @retval true Window order was changed
+ *
+ * Set the positions of two Windows based on a config variable `$status_on_top`.
+ *
+ * @note The children are expected to have types: #WT_MENU, #WT_STATUS_BAR
+ */
+bool window_status_on_top(struct MuttWindow *panel, struct ConfigSubset *sub)
+{
+  const bool c_status_on_top = cs_subset_bool(sub, "status_on_top");
+
+  struct MuttWindow *win_first = TAILQ_FIRST(&panel->children);
+
+  if ((c_status_on_top && (win_first->type == WT_STATUS_BAR)) ||
+      (!c_status_on_top && (win_first->type != WT_STATUS_BAR)))
+  {
+    return false;
+  }
+
+  TAILQ_REMOVE(&panel->children, win_first, entries);
+  TAILQ_INSERT_TAIL(&panel->children, win_first, entries);
+
+  mutt_window_reflow(panel);
+  return true;
 }
