@@ -12,4 +12,7 @@
     </xsl:element>
   </xsl:template>
   <xsl:param name="admon.style"/>
+  <xsl:template match="sect1[@id = 'variables']" mode="toc">
+    <xsl:call-template name="subtoc"/>
+  </xsl:template>
 </xsl:stylesheet>
