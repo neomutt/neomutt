@@ -84,9 +84,9 @@ static int pbar_recalc(struct MuttWindow *win)
     mutt_str_copy(pager_progress_str, msg, sizeof(pager_progress_str));
   }
 
-  if (rd->pview->mode == PAGER_MODE_EMAIL || rd->pview->mode == PAGER_MODE_ATTACH_E)
+  if ((rd->pview->mode == PAGER_MODE_EMAIL) || (rd->pview->mode == PAGER_MODE_ATTACH_E))
   {
-    int msg_in_pager = shared->ctx->msg_in_pager;
+    int msg_in_pager = shared->ctx ? shared->ctx->msg_in_pager : -1;
 
     const char *c_pager_format = cs_subset_string(shared->sub, "pager_format");
     mutt_make_string(buf, sizeof(buf), win->state.cols, NONULL(c_pager_format),
