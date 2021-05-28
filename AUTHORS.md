@@ -22,6 +22,7 @@ Here's a list of everyone who's helped NeoMutt:
 [Antoine Beaupré](https://github.com/anarcat "anarcat"),
 [Antonio Radici](https://github.com/aradici "aradici"),
 [Anton Rieger](https://github.com/inrin "inrin"),
+[Ashish Panigrahi](https://github.com/paniash "paniash"),
 [Austin Ray](https://github.com/austin-ray "austin-ray"),
 [Baptiste Daroussin](https://github.com/bapt "bapt"),
 [Benjamin Mako Hill](https://github.com/makoshark "makoshark"),
