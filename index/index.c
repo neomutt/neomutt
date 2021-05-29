@@ -1094,10 +1094,7 @@ dsl_finish:
 static void index_custom_redraw(struct Menu *menu)
 {
   if (menu->redraw & MENU_REDRAW_FULL)
-  {
     menu_redraw_full(menu);
-    mutt_show_error();
-  }
 
   struct IndexSharedData *shared = menu->mdata;
   struct Mailbox *m = shared->mailbox;
@@ -1337,10 +1334,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
       /* give visual indication that the next command is a tag- command */
       if (priv->tag)
-      {
-        mutt_window_mvaddstr(MessageWindow, 0, 0, "tag-");
-        mutt_window_clrtoeol(MessageWindow);
-      }
+        msgwin_set_text(MT_COLOR_NORMAL, "tag-");
 
       const bool c_arrow_cursor = cs_subset_bool(shared->sub, "arrow_cursor");
       const bool c_braille_friendly =
@@ -1373,6 +1367,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         continue;
       }
 
+      window_redraw(RootWindow);
       op = km_dokey(MENU_MAIN);
 
       /* either user abort or timeout */

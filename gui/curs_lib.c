@@ -577,20 +577,6 @@ void mutt_query_exit(void)
 }
 
 /**
- * mutt_show_error - Show the user an error message
- */
-void mutt_show_error(void)
-{
-  if (OptKeepQuiet || !ErrorBufMessage)
-    return;
-
-  mutt_curses_set_color(OptMsgErr ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
-  mutt_window_mvaddstr(MessageWindow, 0, 0, ErrorBuf);
-  mutt_curses_set_color(MT_COLOR_NORMAL);
-  mutt_window_clrtoeol(MessageWindow);
-}
-
-/**
  * mutt_endwin - Shutdown curses/slang
  */
 void mutt_endwin(void)

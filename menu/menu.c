@@ -300,10 +300,7 @@ int menu_loop(struct Menu *menu)
 
     /* give visual indication that the next command is a tag- command */
     if (menu->tagprefix)
-    {
-      mutt_window_mvaddstr(MessageWindow, 0, 0, "tag-");
-      mutt_window_clrtoeol(MessageWindow);
-    }
+      msgwin_set_text(MT_COLOR_NORMAL, "tag-");
 
     const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
     const bool c_braille_friendly =

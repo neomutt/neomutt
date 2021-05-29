@@ -2082,7 +2082,6 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     }
 
     menu_queue_redraw(pager_menu, MENU_REDRAW_BODY | MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
-    mutt_show_error();
   }
 
   if (pager_menu->redraw & MENU_REDRAW_FLOW)
