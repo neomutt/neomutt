@@ -487,9 +487,10 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   snprintf(scratch, sizeof(scratch),
            ngettext("Bounce message to %s?", "Bounce messages to %s?", msg_count), buf);
 
-  if (mutt_strwidth(scratch) > (MessageWindow->state.cols - EXTRA_SPACE))
+  const size_t width = msgwin_get_width();
+  if (mutt_strwidth(scratch) > (width - EXTRA_SPACE))
   {
-    mutt_simple_format(prompt, sizeof(prompt), 0, MessageWindow->state.cols - EXTRA_SPACE,
+    mutt_simple_format(prompt, sizeof(prompt), 0, width - EXTRA_SPACE,
                        JUSTIFY_LEFT, 0, scratch, sizeof(scratch), false);
     mutt_str_cat(prompt, sizeof(prompt), "...?");
   }
