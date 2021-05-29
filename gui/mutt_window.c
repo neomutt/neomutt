@@ -45,7 +45,6 @@
 
 struct MuttWindow *RootWindow = NULL;       ///< Parent of all Windows
 struct MuttWindow *AllDialogsWindow = NULL; ///< Parent of all Dialogs
-struct MuttWindow *MessageWindow = NULL;    ///< Message Window, ":set", etc
 
 /// Lookups for Window Names
 static const struct Mapping WindowNames[] = {
@@ -331,7 +330,6 @@ void mutt_window_free_all(void)
   if (NeoMutt)
     notify_observer_remove(NeoMutt->notify, rootwin_config_observer, RootWindow);
   AllDialogsWindow = NULL;
-  MessageWindow = NULL;
   mutt_window_free(&RootWindow);
 }
 
@@ -376,7 +374,7 @@ void mutt_window_init(void)
                                      MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
                                      MUTT_WIN_SIZE_UNLIMITED);
 
-  MessageWindow = msgwin_create();
+  struct MuttWindow *win_msg = msgwin_create();
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)
@@ -390,7 +388,7 @@ void mutt_window_init(void)
     mutt_window_add_child(RootWindow, AllDialogsWindow);
   }
 
-  mutt_window_add_child(RootWindow, MessageWindow);
+  mutt_window_add_child(RootWindow, win_msg);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, rootwin_config_observer, RootWindow);
 }
 

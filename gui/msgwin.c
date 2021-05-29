@@ -35,6 +35,8 @@
 #include "mutt_curses.h"
 #include "mutt_window.h"
 
+struct MuttWindow *MessageWindow = NULL; ///< Message Window, ":set", etc
+
 /**
  * struct MsgWinPrivateData - Private data for the Message Window
  */
@@ -119,6 +121,7 @@ static int msgwin_window_observer(struct NotifyCallback *nc)
       return 0;
 
     notify_observer_remove(NeoMutt->notify, msgwin_window_observer, win_msg);
+    MessageWindow = NULL;
     mutt_debug(LL_DEBUG5, "window delete done\n");
   }
   return 0;
@@ -169,6 +172,8 @@ struct MuttWindow *msgwin_create(void)
   win->repaint = msgwin_repaint;
 
   notify_observer_add(win->notify, NT_WINDOW, msgwin_window_observer, win);
+
+  MessageWindow = win;
   return win;
 }
 

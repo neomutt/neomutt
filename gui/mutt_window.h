@@ -202,7 +202,6 @@ struct EventWindow
 
 extern struct MuttWindow *RootWindow;
 extern struct MuttWindow *AllDialogsWindow;
-extern struct MuttWindow *MessageWindow;
 
 // Functions that deal with the Window
 void               mutt_window_add_child          (struct MuttWindow *parent, struct MuttWindow *child);
