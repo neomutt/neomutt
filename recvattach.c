@@ -878,7 +878,7 @@ static void query_pipe_attachment(const char *command, FILE *fp, struct Body *bo
              _("WARNING!  You are about to overwrite %s, continue?"), body->filename);
     if (mutt_yesorno(warning, MUTT_NO) != MUTT_YES)
     {
-      mutt_window_clearline(MessageWindow, 0);
+      msgwin_clear_text();
       return;
     }
     mutt_mktemp(tfile, sizeof(tfile));

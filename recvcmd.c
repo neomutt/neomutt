@@ -250,12 +250,12 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   const enum QuadOption c_bounce = cs_subset_quad(NeoMutt->sub, "bounce");
   if (query_quadoption(c_bounce, prompt) != MUTT_YES)
   {
-    mutt_window_clearline(MessageWindow, 0);
+    msgwin_clear_text();
     mutt_message(ngettext("Message not bounced", "Messages not bounced", p));
     goto end;
   }
 
-  mutt_window_clearline(MessageWindow, 0);
+  msgwin_clear_text();
 
   if (cur)
     ret = mutt_bounce_message(fp, m, cur->email, &al, NeoMutt->sub);

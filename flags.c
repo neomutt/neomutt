@@ -451,7 +451,7 @@ int mutt_change_flag(struct Mailbox *m, struct EmailList *el, bool bf)
     event = mutt_getch();
   } while (event.ch == -2); // Timeout
 
-  mutt_window_clearline(MessageWindow, 0);
+  msgwin_clear_text();
   window_set_focus(old_focus);
 
   if (event.ch < 0) // SIGINT, Abort key (Ctrl-G)

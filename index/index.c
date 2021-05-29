@@ -1369,7 +1369,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         /* force a real complete redraw.  clrtobot() doesn't seem to be able
          * to handle every case without this.  */
         clearok(stdscr, true);
-        mutt_window_clearline(MessageWindow, 0);
+        msgwin_clear_text();
         continue;
       }
 
@@ -1380,7 +1380,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         mutt_timeout_hook();
         if (priv->tag)
-          mutt_window_clearline(MessageWindow, 0);
+          msgwin_clear_text();
         continue;
       }
 
@@ -1396,7 +1396,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         if (priv->tag)
         {
           priv->tag = false;
-          mutt_window_clearline(MessageWindow, 0);
+          msgwin_clear_text();
           continue;
         }
 
@@ -2518,7 +2518,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
         if (mutt_buffer_is_empty(folderbuf))
         {
-          mutt_window_clearline(MessageWindow, 0);
+          msgwin_clear_text();
           goto changefoldercleanup;
         }
 
@@ -2594,7 +2594,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
         if (mutt_buffer_is_empty(folderbuf))
         {
-          mutt_window_clearline(MessageWindow, 0);
+          msgwin_clear_text();
           goto changefoldercleanup2;
         }
 

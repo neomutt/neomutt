@@ -333,7 +333,7 @@ int menu_loop(struct Menu *menu)
       if (menu->tagprefix)
       {
         menu->tagprefix = false;
-        mutt_window_clearline(MessageWindow, 0);
+        msgwin_clear_text();
         continue;
       }
 
@@ -369,7 +369,7 @@ int menu_loop(struct Menu *menu)
     if (op < 0)
     {
       if (menu->tagprefix)
-        mutt_window_clearline(MessageWindow, 0);
+        msgwin_clear_text();
       continue;
     }
 

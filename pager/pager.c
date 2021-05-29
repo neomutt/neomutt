@@ -2633,7 +2633,7 @@ int mutt_pager(struct PagerView *pview)
       SigWinch = false;
       mutt_resize_screen();
       clearok(stdscr, true); /* force complete redraw */
-      mutt_window_clearline(MessageWindow, 0);
+      msgwin_clear_text();
 
       if (pview->flags & MUTT_PAGER_RETWINCH)
       {

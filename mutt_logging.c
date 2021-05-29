@@ -117,7 +117,7 @@ void mutt_clear_error(void)
 
   ErrorBufMessage = false;
   if (!OptNoCurses)
-    mutt_window_clearline(MessageWindow, 0);
+    msgwin_clear_text();
 }
 
 /**

@@ -501,12 +501,12 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   if (query_quadoption(c_bounce, prompt) != MUTT_YES)
   {
     mutt_addrlist_clear(&al);
-    mutt_window_clearline(MessageWindow, 0);
+    msgwin_clear_text();
     mutt_message(ngettext("Message not bounced", "Messages not bounced", msg_count));
     return;
   }
 
-  mutt_window_clearline(MessageWindow, 0);
+  msgwin_clear_text();
 
   struct Message *msg = NULL;
   STAILQ_FOREACH(en, el, entries)
@@ -925,7 +925,7 @@ bool mutt_shell_escape(void)
     return false;
   }
 
-  mutt_window_clearline(MessageWindow, 0);
+  msgwin_clear_text();
   mutt_endwin();
   fflush(stdout);
   int rc = mutt_system(buf);
