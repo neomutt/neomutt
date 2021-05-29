@@ -49,6 +49,7 @@
 #include "color.h"
 #include "enter_state.h"
 #include "keymap.h"
+#include "msgwin.h"
 #include "mutt_curses.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
@@ -450,7 +451,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
       }
       if (prompt_lines != MessageWindow->state.rows)
       {
-        mutt_window_reflow_message_rows(prompt_lines);
+        msgwin_set_height(prompt_lines);
         window_redraw(RootWindow);
       }
 
@@ -513,7 +514,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
   }
   else
   {
-    mutt_window_reflow_message_rows(1);
+    msgwin_set_height(1);
     window_redraw(RootWindow);
   }
 
@@ -886,7 +887,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
       }
       if (prompt_lines != MessageWindow->state.rows)
       {
-        mutt_window_reflow_message_rows(prompt_lines);
+        msgwin_set_height(prompt_lines);
         window_redraw(RootWindow);
       }
 
@@ -962,7 +963,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
   }
   else
   {
-    mutt_window_reflow_message_rows(1);
+    msgwin_set_height(1);
     window_redraw(RootWindow);
   }
   window_set_focus(old_focus);

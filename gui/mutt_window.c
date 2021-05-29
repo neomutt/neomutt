@@ -471,22 +471,6 @@ void mutt_window_reflow(struct MuttWindow *win)
 }
 
 /**
- * mutt_window_reflow_message_rows - Resize the Message Window
- * @param mw_rows Number of rows required
- *
- * Resize the other Windows to allow a multi-line message to be displayed.
- */
-void mutt_window_reflow_message_rows(int mw_rows)
-{
-  MessageWindow->req_rows = mw_rows;
-  mutt_window_reflow(MessageWindow->parent);
-
-  /* We don't also set MENU_REDRAW_FLOW because this function only
-   * changes rows and is a temporary adjustment. */
-  window_redraw(RootWindow);
-}
-
-/**
  * mutt_window_wrap_cols - Calculate the wrap column for a given screen width
  * @param width Screen width
  * @param wrap  Wrap config
