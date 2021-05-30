@@ -32,7 +32,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
@@ -41,6 +40,20 @@
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "options.h"
+
+/**
+ * struct Progress - A Progress Bar
+ */
+struct Progress
+{
+  char msg[1024];     ///< Message to display
+  char sizestr[24];   ///< String for percentage/size
+  size_t pos;         ///< Current postion
+  size_t size;        ///< Total expected size
+  size_t inc;         ///< Increment size
+  uint64_t timestamp; ///< Time of last update
+  bool is_bytes;      ///< true if measuring bytes
+};
 
 /**
  * message_bar - Draw a colourful progress bar
@@ -145,59 +158,6 @@ static bool time_needs_update(const struct Progress *progress, size_t now)
 }
 
 /**
- * progress_init - Set up a progress bar
- * @param progress Progress bar
- * @param msg      Message to display; this is copied into the Progress object
- * @param type     Type, e.g. #MUTT_PROGRESS_READ
- * @param size     Total size of expected file / traffic
- */
-void progress_init(struct Progress *progress, const char *msg,
-                   enum ProgressType type, size_t size)
-{
-  if (!progress || OptNoCurses)
-    return;
-
-  /* Initialize Progress structure */
-  memset(progress, 0, sizeof(struct Progress));
-  mutt_str_copy(progress->msg, msg, sizeof(progress->msg));
-  progress->size = size;
-  progress->inc = choose_increment(type);
-  progress->is_bytes = (type == MUTT_PROGRESS_NET);
-
-  /* Generate the size string, if a total size was specified */
-  if (progress->size != 0)
-  {
-    if (progress->is_bytes)
-    {
-      mutt_str_pretty_size(progress->sizestr, sizeof(progress->sizestr),
-                           progress->size);
-    }
-    else
-    {
-      snprintf(progress->sizestr, sizeof(progress->sizestr), "%zu", progress->size);
-    }
-  }
-
-  if (progress->inc == 0)
-  {
-    /* This progress bar does not increment - write the initial message */
-    if (progress->size == 0)
-    {
-      mutt_message(progress->msg);
-    }
-    else
-    {
-      mutt_message("%s (%s)", progress->msg, progress->sizestr);
-    }
-  }
-  else
-  {
-    /* This progress bar does increment - perform the initial update */
-    progress_update(progress, 0, 0);
-  }
-}
-
-/**
  * progress_update - Update the state of the progress bar
  * @param progress Progress bar
  * @param pos      Position, or count
@@ -285,8 +245,47 @@ void progress_free(struct Progress **ptr)
  */
 struct Progress *progress_new(const char *msg, enum ProgressType type, size_t size)
 {
+  if (OptNoCurses)
+    return NULL;
+
   struct Progress *progress = mutt_mem_calloc(1, sizeof(struct Progress));
 
-  progress_init(progress, msg, type, size);
+  /* Initialize Progress structure */
+  mutt_str_copy(progress->msg, msg, sizeof(progress->msg));
+  progress->size = size;
+  progress->inc = choose_increment(type);
+  progress->is_bytes = (type == MUTT_PROGRESS_NET);
+
+  /* Generate the size string, if a total size was specified */
+  if (progress->size != 0)
+  {
+    if (progress->is_bytes)
+    {
+      mutt_str_pretty_size(progress->sizestr, sizeof(progress->sizestr),
+                           progress->size);
+    }
+    else
+    {
+      snprintf(progress->sizestr, sizeof(progress->sizestr), "%zu", progress->size);
+    }
+  }
+
+  if (progress->inc == 0)
+  {
+    /* This progress bar does not increment - write the initial message */
+    if (progress->size == 0)
+    {
+      mutt_message(progress->msg);
+    }
+    else
+    {
+      mutt_message("%s (%s)", progress->msg, progress->sizestr);
+    }
+  }
+  else
+  {
+    /* This progress bar does increment - perform the initial update */
+    progress_update(progress, 0, 0);
+  }
   return progress;
 }

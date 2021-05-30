@@ -34,9 +34,9 @@
 #ifndef MUTT_PROGRESS_LIB_H
 #define MUTT_PROGRESS_LIB_H
 
-#include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
+
+struct Progress;
 
 /**
  * enum ProgressType - What kind of operation is this progress tracking?
@@ -48,24 +48,8 @@ enum ProgressType
   MUTT_PROGRESS_NET    ///< Progress tracks bytes, according to `$net_inc`
 };
 
-/**
- * struct Progress - A progress bar
- */
-struct Progress
-{
-  char msg[1024];
-  char sizestr[24];
-  size_t pos;
-  size_t size;
-  size_t inc;
-  uint64_t timestamp;
-  bool is_bytes;
-};
-
-void progress_init(struct Progress *progress, const char *msg, enum ProgressType type, size_t size);
-void progress_update(struct Progress *progress, size_t pos, int percent);
-
-void progress_free(struct Progress **ptr);
-struct Progress *progress_new (const char *msg, enum ProgressType type, size_t size);
+void             progress_free  (struct Progress **ptr);
+struct Progress *progress_new   (const char *msg, enum ProgressType type, size_t size);
+void             progress_update(struct Progress *progress, size_t pos, int percent);
 
 #endif /* MUTT_PROGRESS_LIB_H */
