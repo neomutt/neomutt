@@ -1297,7 +1297,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   else
   {
     rc = 0;
-    mutt_progress_init(&progress, progress_msg, MUTT_PROGRESS_WRITE, msg_count);
+    progress_init(&progress, progress_msg, MUTT_PROGRESS_WRITE, msg_count);
 
 #ifdef USE_NOTMUCH
     if (m->type == MUTT_NOTMUCH)
@@ -1305,7 +1305,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 #endif
     STAILQ_FOREACH(en, el, entries)
     {
-      mutt_progress_update(&progress, ++tagged_progress_count, -1);
+      progress_update(&progress, ++tagged_progress_count, -1);
       mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
       rc = mutt_save_message_ctx(m, en->email, save_opt, transform_opt, m_save);
       if (rc != 0)

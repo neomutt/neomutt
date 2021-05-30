@@ -284,14 +284,14 @@ int mutt_pattern_alias_func(int op, char *prompt, struct AliasMenuData *mdata,
     match_all = true;
   }
 
-  mutt_progress_init(&progress, _("Executing command on matching messages..."),
-                     MUTT_PROGRESS_READ, ARRAY_SIZE(&mdata->ava));
+  progress_init(&progress, _("Executing command on matching messages..."),
+                MUTT_PROGRESS_READ, ARRAY_SIZE(&mdata->ava));
 
   int vcounter = 0;
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, &mdata->ava)
   {
-    mutt_progress_update(&progress, ARRAY_FOREACH_IDX, -1);
+    progress_update(&progress, ARRAY_FOREACH_IDX, -1);
 
     if (match_all ||
         mutt_pattern_alias_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, avp, NULL))
@@ -389,8 +389,8 @@ int mutt_pattern_func(struct Context *ctx, int op, char *prompt)
     goto bail;
 #endif
 
-  mutt_progress_init(&progress, _("Executing command on matching messages..."),
-                     MUTT_PROGRESS_READ, (op == MUTT_LIMIT) ? m->msg_count : m->vcount);
+  progress_init(&progress, _("Executing command on matching messages..."),
+                MUTT_PROGRESS_READ, (op == MUTT_LIMIT) ? m->msg_count : m->vcount);
 
   if (op == MUTT_LIMIT)
   {
@@ -405,7 +405,7 @@ int mutt_pattern_func(struct Context *ctx, int op, char *prompt)
       if (!e)
         break;
 
-      mutt_progress_update(&progress, i, -1);
+      progress_update(&progress, i, -1);
       /* new limit pattern implicitly uncollapses all threads */
       e->vnum = -1;
       e->visible = false;
@@ -430,7 +430,7 @@ int mutt_pattern_func(struct Context *ctx, int op, char *prompt)
       struct Email *e = mutt_get_virt_email(m, i);
       if (!e)
         continue;
-      mutt_progress_update(&progress, i, -1);
+      progress_update(&progress, i, -1);
       if (mutt_pattern_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, m, e, NULL))
       {
         switch (op)
@@ -563,12 +563,12 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
   if (op == OP_SEARCH_OPPOSITE)
     incr = -incr;
 
-  mutt_progress_init(&progress, _("Searching..."), MUTT_PROGRESS_READ, m->vcount);
+  progress_init(&progress, _("Searching..."), MUTT_PROGRESS_READ, m->vcount);
 
   for (int i = cur + incr, j = 0; j != m->vcount; j++)
   {
     const char *msg = NULL;
-    mutt_progress_update(&progress, j, -1);
+    progress_update(&progress, j, -1);
     const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
     if (i > m->vcount - 1)
     {
@@ -715,12 +715,12 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
   if (op == OP_SEARCH_OPPOSITE)
     incr = -incr;
 
-  mutt_progress_init(&progress, _("Searching..."), MUTT_PROGRESS_READ, ARRAY_SIZE(ava));
+  progress_init(&progress, _("Searching..."), MUTT_PROGRESS_READ, ARRAY_SIZE(ava));
 
   for (int i = cur + incr, j = 0; j != ARRAY_SIZE(ava); j++)
   {
     const char *msg = NULL;
-    mutt_progress_update(&progress, j, -1);
+    progress_update(&progress, j, -1);
     const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
     if (i > ARRAY_SIZE(ava) - 1)
     {

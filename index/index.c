@@ -2273,8 +2273,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
           if (m->verbose)
           {
-            mutt_progress_init(&progress, _("Update tags..."),
-                               MUTT_PROGRESS_WRITE, m->msg_tagged);
+            progress_init(&progress, _("Update tags..."), MUTT_PROGRESS_WRITE, m->msg_tagged);
           }
 
 #ifdef USE_NOTMUCH
@@ -2290,7 +2289,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               continue;
 
             if (m->verbose)
-              mutt_progress_update(&progress, ++px, -1);
+              progress_update(&progress, ++px, -1);
             mx_tags_commit(m, e, buf);
             if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
             {

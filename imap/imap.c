@@ -632,7 +632,7 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
     fputc(c, fp);
 
     if (pbar && !(pos % 1024))
-      mutt_progress_update(pbar, pos, -1);
+      progress_update(pbar, pos, -1);
     if (c_debug_level >= IMAP_LOG_LTRL)
       mutt_buffer_addch(&buf, c);
   }

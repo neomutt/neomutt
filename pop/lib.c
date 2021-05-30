@@ -545,7 +545,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
     else
     {
       if (progress)
-        mutt_progress_update(progress, pos, -1);
+        progress_update(progress, pos, -1);
       if ((rc == 0) && (callback(inbuf, data) < 0))
         rc = -3;
       lenbuf = 0;
@@ -614,7 +614,7 @@ int pop_reconnect(struct Mailbox *m)
     if (ret == 0)
     {
       struct Progress progress;
-      mutt_progress_init(&progress, _("Verifying message indexes..."), MUTT_PROGRESS_NET, 0);
+      progress_init(&progress, _("Verifying message indexes..."), MUTT_PROGRESS_NET, 0);
 
       for (int i = 0; i < m->msg_count; i++)
       {

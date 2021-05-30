@@ -364,8 +364,8 @@ static int pop_fetch_headers(struct Mailbox *m)
 
   if (m->verbose)
   {
-    mutt_progress_init(&progress, _("Fetching message headers..."),
-                       MUTT_PROGRESS_READ, new_count - old_count);
+    progress_init(&progress, _("Fetching message headers..."),
+                  MUTT_PROGRESS_READ, new_count - old_count);
   }
 
   if (rc == 0)
@@ -392,7 +392,7 @@ static int pop_fetch_headers(struct Mailbox *m)
     for (i = old_count; i < new_count; i++)
     {
       if (m->verbose)
-        mutt_progress_update(&progress, i + 1 - old_count, -1);
+        progress_update(&progress, i + 1 - old_count, -1);
       struct PopEmailData *edata = pop_edata_get(m->emails[i]);
 #ifdef USE_HCACHE
       struct HCacheEntry hce = mutt_hcache_fetch(hc, edata->uid, strlen(edata->uid), 0);
@@ -883,8 +883,7 @@ static enum MxStatus pop_mbox_sync(struct Mailbox *m)
     if (pop_reconnect(m) < 0)
       return MX_STATUS_ERROR;
 
-    mutt_progress_init(&progress, _("Marking messages deleted..."),
-                       MUTT_PROGRESS_WRITE, num_deleted);
+    progress_init(&progress, _("Marking messages deleted..."), MUTT_PROGRESS_WRITE, num_deleted);
 
 #ifdef USE_HCACHE
     hc = pop_hcache_open(adata, mailbox_path(m));
@@ -897,7 +896,7 @@ static enum MxStatus pop_mbox_sync(struct Mailbox *m)
       {
         j++;
         if (m->verbose)
-          mutt_progress_update(&progress, j, -1);
+          progress_update(&progress, j, -1);
         snprintf(buf, sizeof(buf), "DELE %d\r\n", edata->refno);
         rc = pop_query(adata, buf, sizeof(buf));
         if (rc == 0)
@@ -1028,8 +1027,8 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
       goto cleanup;
     }
 
-    mutt_progress_init(&progress, _("Fetching message..."), MUTT_PROGRESS_NET,
-                       e->body->length + e->body->offset - 1);
+    progress_init(&progress, _("Fetching message..."), MUTT_PROGRESS_NET,
+                  e->body->length + e->body->offset - 1);
 
     /* see if we can put in body cache; use our cache as fallback */
     msg->fp = mutt_bcache_put(adata->bcache, cache_id(edata->uid));

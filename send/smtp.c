@@ -247,7 +247,7 @@ static int smtp_data(struct SmtpAccountData *adata, const char *msgfile)
   }
   stat(msgfile, &st);
   unlink(msgfile);
-  mutt_progress_init(&progress, _("Sending message..."), MUTT_PROGRESS_NET, st.st_size);
+  progress_init(&progress, _("Sending message..."), MUTT_PROGRESS_NET, st.st_size);
 
   snprintf(buf, sizeof(buf), "DATA\r\n");
   if (mutt_socket_send(adata->conn, buf) == -1)
@@ -281,7 +281,7 @@ static int smtp_data(struct SmtpAccountData *adata, const char *msgfile)
       mutt_file_fclose(&fp);
       return SMTP_ERR_WRITE;
     }
-    mutt_progress_update(&progress, ftell(fp), -1);
+    progress_update(&progress, ftell(fp), -1);
   }
   if (!term && buflen &&
       (mutt_socket_send_d(adata->conn, "\r\n", MUTT_SOCK_LOG_FULL) == -1))

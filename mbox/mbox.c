@@ -213,7 +213,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
-    mutt_progress_init(&progress, msg, MUTT_PROGRESS_READ, 0);
+    progress_init(&progress, msg, MUTT_PROGRESS_READ, 0);
   }
 
   while (true)
@@ -232,7 +232,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
 
       count++;
       if (m->verbose)
-        mutt_progress_update(&progress, count, (int) (loc / (m->size / 100 + 1)));
+        progress_update(&progress, count, (int) (loc / (m->size / 100 + 1)));
 
       if (m->msg_count == m->email_max)
         mx_alloc_memory(m);
@@ -376,7 +376,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
-    mutt_progress_init(&progress, msg, MUTT_PROGRESS_READ, 0);
+    progress_init(&progress, msg, MUTT_PROGRESS_READ, 0);
   }
 
   loc = ftello(adata->fp);
@@ -402,8 +402,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
 
       if (m->verbose)
       {
-        mutt_progress_update(&progress, count,
-                             (int) (ftello(adata->fp) / (m->size / 100 + 1)));
+        progress_update(&progress, count, (int) (ftello(adata->fp) / (m->size / 100 + 1)));
       }
 
       if (m->msg_count == m->email_max)
@@ -1249,13 +1248,13 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Writing %s..."), mailbox_path(m));
-    mutt_progress_init(&progress, msg, MUTT_PROGRESS_WRITE, m->msg_count);
+    progress_init(&progress, msg, MUTT_PROGRESS_WRITE, m->msg_count);
   }
 
   for (i = first, j = 0; i < m->msg_count; i++)
   {
     if (m->verbose)
-      mutt_progress_update(&progress, i, i / (m->msg_count / 100 + 1));
+      progress_update(&progress, i, i / (m->msg_count / 100 + 1));
     /* back up some information which is needed to restore offsets when
      * something fails.  */
 

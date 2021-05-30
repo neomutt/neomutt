@@ -106,11 +106,11 @@ static void message_bar(int percent, const char *fmt, ...)
 }
 
 /**
- * progress_choose_increment - Choose the right increment given a ProgressType
+ * choose_increment - Choose the right increment given a ProgressType
  * @param type ProgressType
  * @retval Increment value
  */
-static size_t progress_choose_increment(enum ProgressType type)
+static size_t choose_increment(enum ProgressType type)
 {
   const short c_read_inc = cs_subset_number(NeoMutt->sub, "read_inc");
   const short c_write_inc = cs_subset_number(NeoMutt->sub, "write_inc");
@@ -120,24 +120,24 @@ static size_t progress_choose_increment(enum ProgressType type)
 }
 
 /**
- * progress_pos_needs_update - Do we need to update, given the current pos?
+ * pos_needs_update - Do we need to update, given the current pos?
  * @param progress Progress
  * @param pos      Current pos
  * @retval true Progress needs an update
  */
-static bool progress_pos_needs_update(const struct Progress *progress, long pos)
+static bool pos_needs_update(const struct Progress *progress, long pos)
 {
   const unsigned shift = progress->is_bytes ? 10 : 0;
   return pos >= (progress->pos + (progress->inc << shift));
 }
 
 /**
- * progress_time_needs_update - Do we need to update, given the current time?
+ * time_needs_update - Do we need to update, given the current time?
  * @param progress Progress
  * @param now      Current time
  * @retval true Progress needs an update
  */
-static bool progress_time_needs_update(const struct Progress *progress, size_t now)
+static bool time_needs_update(const struct Progress *progress, size_t now)
 {
   const size_t elapsed = (now - progress->timestamp);
   const short c_time_inc = cs_subset_number(NeoMutt->sub, "time_inc");
@@ -145,14 +145,14 @@ static bool progress_time_needs_update(const struct Progress *progress, size_t n
 }
 
 /**
- * mutt_progress_init - Set up a progress bar
+ * progress_init - Set up a progress bar
  * @param progress Progress bar
  * @param msg      Message to display; this is copied into the Progress object
  * @param type     Type, e.g. #MUTT_PROGRESS_READ
  * @param size     Total size of expected file / traffic
  */
-void mutt_progress_init(struct Progress *progress, const char *msg,
-                        enum ProgressType type, size_t size)
+void progress_init(struct Progress *progress, const char *msg,
+                   enum ProgressType type, size_t size)
 {
   if (!progress || OptNoCurses)
     return;
@@ -161,7 +161,7 @@ void mutt_progress_init(struct Progress *progress, const char *msg,
   memset(progress, 0, sizeof(struct Progress));
   mutt_str_copy(progress->msg, msg, sizeof(progress->msg));
   progress->size = size;
-  progress->inc = progress_choose_increment(type);
+  progress->inc = choose_increment(type);
   progress->is_bytes = (type == MUTT_PROGRESS_NET);
 
   /* Generate the size string, if a total size was specified */
@@ -193,12 +193,12 @@ void mutt_progress_init(struct Progress *progress, const char *msg,
   else
   {
     /* This progress bar does increment - perform the initial update */
-    mutt_progress_update(progress, 0, 0);
+    progress_update(progress, 0, 0);
   }
 }
 
 /**
- * mutt_progress_update - Update the state of the progress bar
+ * progress_update - Update the state of the progress bar
  * @param progress Progress bar
  * @param pos      Position, or count
  * @param percent  Percentage complete
@@ -210,16 +210,16 @@ void mutt_progress_init(struct Progress *progress, const char *msg,
  * percentage is calculated from progress->size and pos if progress
  * was initialized with positive size, otherwise no percentage is shown
  */
-void mutt_progress_update(struct Progress *progress, size_t pos, int percent)
+void progress_update(struct Progress *progress, size_t pos, int percent)
 {
   if (OptNoCurses)
     return;
 
   const uint64_t now = mutt_date_epoch_ms();
 
-  const bool update = (pos == 0) /* always show the first update */ ||
-                      (progress_pos_needs_update(progress, pos) &&
-                       progress_time_needs_update(progress, now));
+  const bool update =
+      (pos == 0) /* always show the first update */ ||
+      (pos_needs_update(progress, pos) && time_needs_update(progress, now));
 
   if ((progress->inc != 0) && update)
   {

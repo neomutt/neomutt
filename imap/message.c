@@ -670,7 +670,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
   if (m->verbose)
   {
     /* L10N: Comparing the cached data with the IMAP server's data */
-    mutt_progress_init(&progress, _("Evaluating cache..."), MUTT_PROGRESS_READ, msn_end);
+    progress_init(&progress, _("Evaluating cache..."), MUTT_PROGRESS_READ, msn_end);
   }
 
   /* If we are using CONDSTORE's "FETCH CHANGEDSINCE", then we keep
@@ -690,7 +690,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
       return -1;
 
     if (m->verbose)
-      mutt_progress_update(&progress, msgno, -1);
+      progress_update(&progress, msgno, -1);
 
     memset(&h, 0, sizeof(h));
     h.edata = imap_edata_new();
@@ -884,7 +884,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
   if (m->verbose)
   {
     /* L10N: Fetching IMAP flag changes, using the CONDSTORE extension */
-    mutt_progress_init(&progress, _("Fetching flag updates..."), MUTT_PROGRESS_READ, msn_end);
+    progress_init(&progress, _("Fetching flag updates..."), MUTT_PROGRESS_READ, msn_end);
   }
 
   snprintf(buf, sizeof(buf), "UID FETCH 1:%u (FLAGS) (CHANGEDSINCE %llu%s)",
@@ -899,7 +899,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
       return -1;
 
     if (m->verbose)
-      mutt_progress_update(&progress, msgno, -1);
+      progress_update(&progress, msgno, -1);
 
     /* cmd_parse_fetch will update the flags */
     rc = imap_cmd_step(adata);
@@ -1111,8 +1111,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
   if (m->verbose)
   {
-    mutt_progress_init(&progress, _("Fetching message headers..."),
-                       MUTT_PROGRESS_READ, msn_end);
+    progress_init(&progress, _("Fetching message headers..."), MUTT_PROGRESS_READ, msn_end);
   }
 
   buf = mutt_buffer_pool_get();
@@ -1143,7 +1142,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         goto bail;
 
       if (m->verbose)
-        mutt_progress_update(&progress, msgno, -1);
+        progress_update(&progress, msgno, -1);
 
       rewind(fp);
       memset(&h, 0, sizeof(h));
@@ -1540,7 +1539,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   rewind(fp);
 
   if (m->verbose)
-    mutt_progress_init(&progress, _("Uploading message..."), MUTT_PROGRESS_NET, len);
+    progress_init(&progress, _("Uploading message..."), MUTT_PROGRESS_NET, len);
 
   mutt_date_make_imap(internaldate, sizeof(internaldate), msg->received);
 
@@ -1582,7 +1581,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
       if (flush_buffer(buf, &len, adata->conn) < 0)
         goto fail;
       if (m->verbose)
-        mutt_progress_update(&progress, sent, -1);
+        progress_update(&progress, sent, -1);
     }
   }
 
@@ -2015,7 +2014,7 @@ bool imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
           }
           if (output_progress)
           {
-            mutt_progress_init(&progress, _("Fetching message..."), MUTT_PROGRESS_NET, bytes);
+            progress_init(&progress, _("Fetching message..."), MUTT_PROGRESS_NET, bytes);
           }
           if (imap_read_literal(msg->fp, adata, bytes, output_progress ? &progress : NULL) < 0)
           {

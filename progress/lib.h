@@ -62,7 +62,7 @@ struct Progress
   bool is_bytes;
 };
 
-void mutt_progress_init(struct Progress *progress, const char *msg, enum ProgressType type, size_t size);
-void mutt_progress_update(struct Progress *progress, size_t pos, int percent);
+void progress_init(struct Progress *progress, const char *msg, enum ProgressType type, size_t size);
+void progress_update(struct Progress *progress, size_t pos, int percent);
 
 #endif /* MUTT_PROGRESS_LIB_H */
