@@ -45,6 +45,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "progress/lib.h"
 #include "adata.h"
 #include "auth.h"
 #include "command_parse.h"
@@ -59,7 +60,6 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "progress.h"
 #include "sort.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

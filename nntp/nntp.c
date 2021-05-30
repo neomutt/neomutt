@@ -50,6 +50,7 @@
 #include "bcache/lib.h"
 #include "hcache/lib.h"
 #include "ncrypt/lib.h"
+#include "progress/lib.h"
 #include "adata.h"
 #include "attachments.h"
 #include "edata.h"
@@ -59,7 +60,6 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "progress.h"
 #include "sort.h"
 #ifdef USE_HCACHE
 #include "protos.h"

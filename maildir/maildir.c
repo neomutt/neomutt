@@ -49,6 +49,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "lib.h"
+#include "progress/lib.h"
 #include "copy.h"
 #include "edata.h"
 #include "mdata.h"
@@ -56,7 +57,6 @@
 #include "monitor.h"
 #include "mutt_globals.h"
 #include "mx.h"
-#include "progress.h"
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
 #endif

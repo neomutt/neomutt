@@ -46,6 +46,7 @@
 #include "lib.h"
 #include "bcache/lib.h"
 #include "ncrypt/lib.h"
+#include "progress/lib.h"
 #include "adata.h"
 #include "edata.h"
 #include "hook.h"
@@ -55,7 +56,6 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "progress.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

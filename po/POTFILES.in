@@ -259,7 +259,7 @@ pop/edata.c
 pop/lib.c
 pop/pop.c
 postpone.c
-progress.c
+progress/progress.c
 recvattach.c
 recvcmd.c
 remailer.c

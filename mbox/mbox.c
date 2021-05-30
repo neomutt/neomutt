@@ -49,12 +49,12 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "progress/lib.h"
 #include "copy.h"
 #include "mutt_globals.h"
 #include "mutt_header.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "progress.h"
 #include "protos.h"
 
 /**

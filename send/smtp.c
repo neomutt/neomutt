@@ -47,10 +47,10 @@
 #include "gui/lib.h"
 #include "smtp.h"
 #include "lib.h"
+#include "progress/lib.h"
 #include "mutt_account.h"
 #include "mutt_globals.h"
 #include "mutt_socket.h"
-#include "progress.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>

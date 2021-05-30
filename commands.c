@@ -48,6 +48,7 @@
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
+#include "progress/lib.h"
 #include "send/lib.h"
 #include "attachments.h"
 #include "browser.h"
@@ -66,7 +67,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "options.h"
-#include "progress.h"
 #include "protos.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"

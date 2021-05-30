@@ -42,12 +42,12 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
+#include "progress/lib.h"
 #include "adata.h"
 #include "edata.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
-#include "progress.h"
 
 /**
  * pop_get_field - Get connection login credentials - Implements ConnAccount::get_field()

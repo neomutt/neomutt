@@ -42,13 +42,13 @@
 #include "mutt.h"
 #include "lib.h"
 #include "menu/lib.h"
+#include "progress/lib.h"
 #include "context.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mx.h"
 #include "opcodes.h"
 #include "options.h"
-#include "progress.h"
 #include "protos.h"
 #ifndef USE_FMEMOPEN
 #include <sys/stat.h>

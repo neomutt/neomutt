@@ -24,7 +24,7 @@
 #define MUTT_NOTMUCH_MDATA_H
 
 #include <stdbool.h>
-#include "progress.h"
+#include "progress/lib.h"
 #include "query.h" // IWYU pragma: keep
 
 struct Mailbox;

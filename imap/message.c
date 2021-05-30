@@ -48,6 +48,7 @@
 #include "message.h"
 #include "lib.h"
 #include "bcache/lib.h"
+#include "progress/lib.h"
 #include "adata.h"
 #include "commands.h"
 #include "edata.h"
@@ -58,7 +59,6 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "progress.h"
 #include "protos.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

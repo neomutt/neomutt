@@ -3,7 +3,7 @@
  * Progress bar
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2021 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_progress Progress bar
+ * @page progress_progress Progress Bar
  *
  * Progress bar
  */
@@ -30,12 +30,14 @@
 #include "config.h"
 #include <stdarg.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "progress.h"
+#include "lib.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "options.h"
@@ -219,7 +221,7 @@ void mutt_progress_update(struct Progress *progress, size_t pos, int percent)
                       (progress_pos_needs_update(progress, pos) &&
                        progress_time_needs_update(progress, now));
 
-  if (progress->inc != 0 && update)
+  if ((progress->inc != 0) && update)
   {
     progress->pos = pos;
     progress->timestamp = now;
