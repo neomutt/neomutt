@@ -613,8 +613,8 @@ int pop_reconnect(struct Mailbox *m)
     int ret = pop_open_connection(adata);
     if (ret == 0)
     {
-      struct Progress progress;
-      progress_init(&progress, _("Verifying message indexes..."), MUTT_PROGRESS_NET, 0);
+      struct Progress *progress =
+          progress_new(_("Verifying message indexes..."), MUTT_PROGRESS_NET, 0);
 
       for (int i = 0; i < m->msg_count; i++)
       {
@@ -622,12 +622,14 @@ int pop_reconnect(struct Mailbox *m)
         edata->refno = -1;
       }
 
-      ret = pop_fetch_data(adata, "UIDL\r\n", &progress, check_uidl, m);
+      ret = pop_fetch_data(adata, "UIDL\r\n", progress, check_uidl, m);
+      progress_free(&progress);
       if (ret == -2)
       {
         mutt_error("%s", adata->err_msg);
       }
     }
+
     if (ret == 0)
       return 0;
 

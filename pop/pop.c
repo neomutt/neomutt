@@ -323,7 +323,7 @@ static int pop_fetch_headers(struct Mailbox *m)
     return -1;
 
   struct PopAccountData *adata = pop_adata_get(m);
-  struct Progress progress;
+  struct Progress *progress = NULL;
 
 #ifdef USE_HCACHE
   struct HeaderCache *hc = pop_hcache_open(adata, mailbox_path(m));
@@ -364,8 +364,8 @@ static int pop_fetch_headers(struct Mailbox *m)
 
   if (m->verbose)
   {
-    progress_init(&progress, _("Fetching message headers..."),
-                  MUTT_PROGRESS_READ, new_count - old_count);
+    progress = progress_new(_("Fetching message headers..."),
+                            MUTT_PROGRESS_READ, new_count - old_count);
   }
 
   if (rc == 0)
@@ -392,7 +392,7 @@ static int pop_fetch_headers(struct Mailbox *m)
     for (i = old_count; i < new_count; i++)
     {
       if (m->verbose)
-        progress_update(&progress, i + 1 - old_count, -1);
+        progress_update(progress, i + 1 - old_count, -1);
       struct PopEmailData *edata = pop_edata_get(m->emails[i]);
 #ifdef USE_HCACHE
       struct HCacheEntry hce = mutt_hcache_fetch(hc, edata->uid, strlen(edata->uid), 0);
@@ -461,6 +461,7 @@ static int pop_fetch_headers(struct Mailbox *m)
       m->msg_count++;
     }
   }
+  progress_free(&progress);
 
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);
@@ -864,7 +865,6 @@ static enum MxStatus pop_mbox_sync(struct Mailbox *m)
   int i, j, rc = 0;
   char buf[1024];
   struct PopAccountData *adata = pop_adata_get(m);
-  struct Progress progress;
 #ifdef USE_HCACHE
   struct HeaderCache *hc = NULL;
 #endif
@@ -883,11 +883,16 @@ static enum MxStatus pop_mbox_sync(struct Mailbox *m)
     if (pop_reconnect(m) < 0)
       return MX_STATUS_ERROR;
 
-    progress_init(&progress, _("Marking messages deleted..."), MUTT_PROGRESS_WRITE, num_deleted);
-
 #ifdef USE_HCACHE
     hc = pop_hcache_open(adata, mailbox_path(m));
 #endif
+
+    struct Progress *progress = NULL;
+    if (m->verbose)
+    {
+      progress = progress_new(_("Marking messages deleted..."),
+                              MUTT_PROGRESS_WRITE, num_deleted);
+    }
 
     for (i = 0, j = 0, rc = 0; (rc == 0) && (i < m->msg_count); i++)
     {
@@ -896,7 +901,7 @@ static enum MxStatus pop_mbox_sync(struct Mailbox *m)
       {
         j++;
         if (m->verbose)
-          progress_update(&progress, j, -1);
+          progress_update(progress, j, -1);
         snprintf(buf, sizeof(buf), "DELE %d\r\n", edata->refno);
         rc = pop_query(adata, buf, sizeof(buf));
         if (rc == 0)
@@ -915,6 +920,7 @@ static enum MxStatus pop_mbox_sync(struct Mailbox *m)
       }
 #endif
     }
+    progress_free(&progress);
 
 #ifdef USE_HCACHE
     mutt_hcache_close(hc);
@@ -975,7 +981,6 @@ static enum MxStatus pop_mbox_close(struct Mailbox *m)
 static bool pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
   char buf[1024];
-  struct Progress progress;
   struct PopAccountData *adata = pop_adata_get(m);
   struct Email *e = m->emails[msgno];
   struct PopEmailData *edata = pop_edata_get(e);
@@ -1027,9 +1032,6 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
       goto cleanup;
     }
 
-    progress_init(&progress, _("Fetching message..."), MUTT_PROGRESS_NET,
-                  e->body->length + e->body->offset - 1);
-
     /* see if we can put in body cache; use our cache as fallback */
     msg->fp = mutt_bcache_put(adata->bcache, cache_id(edata->uid));
     if (!msg->fp)
@@ -1047,7 +1049,11 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 
     snprintf(buf, sizeof(buf), "RETR %d\r\n", edata->refno);
 
-    const int ret = pop_fetch_data(adata, buf, &progress, fetch_message, msg->fp);
+    struct Progress *progress = progress_new(_("Fetching message..."), MUTT_PROGRESS_NET,
+                                             e->body->length + e->body->offset - 1);
+    const int ret = pop_fetch_data(adata, buf, progress, fetch_message, msg->fp);
+    progress_free(&progress);
+
     if (ret == 0)
       break;
 

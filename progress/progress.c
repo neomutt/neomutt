@@ -212,7 +212,7 @@ void progress_init(struct Progress *progress, const char *msg,
  */
 void progress_update(struct Progress *progress, size_t pos, int percent)
 {
-  if (OptNoCurses)
+  if (!progress || OptNoCurses)
     return;
 
   const uint64_t now = mutt_date_epoch_ms();

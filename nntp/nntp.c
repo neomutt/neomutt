@@ -95,7 +95,7 @@ struct FetchCtx
   anum_t last;
   bool restore;
   unsigned char *messages;
-  struct Progress progress;
+  struct Progress *progress;
   struct HeaderCache *hc;
 };
 
@@ -776,10 +776,7 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
     char *line = NULL;
     unsigned int lines = 0;
     size_t off = 0;
-    struct Progress progress;
-
-    if (msg)
-      progress_init(&progress, msg, MUTT_PROGRESS_READ, 0);
+    struct Progress *progress = NULL;
 
     mutt_str_copy(buf, query, sizeof(buf));
     if (nntp_query(mdata, buf, sizeof(buf)) < 0)
@@ -792,6 +789,9 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
 
     line = mutt_mem_malloc(sizeof(buf));
     rc = 0;
+
+    if (msg)
+      progress = progress_new(msg, MUTT_PROGRESS_READ, 0);
 
     while (true)
     {
@@ -822,7 +822,7 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
       else
       {
         if (msg)
-          progress_update(&progress, ++lines, -1);
+          progress_update(progress, ++lines, -1);
 
         if ((rc == 0) && (func(line, data) < 0))
           rc = -2;
@@ -833,7 +833,9 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
     }
     FREE(&line);
     func(NULL, data);
+    progress_free(&progress);
   }
+
   return rc;
 }
 
@@ -1023,7 +1025,7 @@ static int parse_overview_line(char *line, void *data)
   {
     /* progress */
     if (m->verbose)
-      progress_update(&fc->progress, anum - fc->first + 1, -1);
+      progress_update(fc->progress, anum - fc->first + 1, -1);
     return 0;
   }
 
@@ -1134,7 +1136,7 @@ static int parse_overview_line(char *line, void *data)
 
   /* progress */
   if (m->verbose)
-    progress_update(&fc->progress, anum - fc->first + 1, -1);
+    progress_update(fc->progress, anum - fc->first + 1, -1);
   return 0;
 }
 
@@ -1223,13 +1225,13 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   /* fetching header from cache or server, or fallback to fetch overview */
   if (m->verbose)
   {
-    progress_init(&fc.progress, _("Fetching message headers..."),
-                  MUTT_PROGRESS_READ, last - first + 1);
+    fc.progress = progress_new(_("Fetching message headers..."),
+                               MUTT_PROGRESS_READ, last - first + 1);
   }
   for (current = first; (current <= last) && (rc == 0); current++)
   {
     if (m->verbose)
-      progress_update(&fc.progress, current - first + 1, -1);
+      progress_update(fc.progress, current - first + 1, -1);
 
 #ifdef USE_HCACHE
     snprintf(buf, sizeof(buf), "%u", current);
@@ -1367,6 +1369,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   }
 
   FREE(&fc.messages);
+  progress_free(&fc.progress);
   if (rc != 0)
     return -1;
   mutt_clear_error();
@@ -2101,18 +2104,21 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
     if (c_nntp_load_description)
     {
       unsigned int count = 0;
-      struct Progress progress;
+      struct Progress *progress = progress_new(
+          _("Loading descriptions..."), MUTT_PROGRESS_READ, adata->groups_num - i);
 
-      progress_init(&progress, _("Loading descriptions..."), MUTT_PROGRESS_READ,
-                    adata->groups_num - i);
       for (i = groups_num; i < adata->groups_num; i++)
       {
         struct NntpMboxData *mdata = adata->groups_list[i];
 
         if (get_description(mdata, NULL, NULL) < 0)
+        {
+          progress_free(&progress);
           return -1;
-        progress_update(&progress, ++count, -1);
+        }
+        progress_update(progress, ++count, -1);
       }
+      progress_free(&progress);
     }
     update_active = true;
     rc = 1;
