@@ -237,6 +237,7 @@ notmuch/edata.c
 notmuch/mdata.c
 notmuch/notmuch.c
 notmuch/query.c
+notmuch/tag.c
 opcodes.c
 opcodes.h
 pager/config.c

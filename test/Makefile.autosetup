@@ -352,6 +352,7 @@ NOTIFY_OBJS	= test/notify/notify_free.o \
 
 @if USE_NOTMUCH
 NOTMUCH_OBJS	= test/notmuch/query_type.o \
+		  test/notmuch/tag.o \
 		  test/notmuch/window_query.o
 @endif
 

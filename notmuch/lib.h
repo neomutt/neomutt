@@ -34,6 +34,7 @@
  * | notmuch/mdata.c    | @subpage nm_mdata   |
  * | notmuch/notmuch.c  | @subpage nm_notmuch |
  * | notmuch/query.c    | @subpage nm_query   |
+ * | notmuch/tag.c      | @subpage nm_tag     |
  */
 
 #ifndef MUTT_NOTMUCH_LIB_H
