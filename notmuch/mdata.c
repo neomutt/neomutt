@@ -33,6 +33,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mdata.h"
+#include "progress/lib.h"
 #include "query.h"
 
 /**
@@ -53,6 +54,7 @@ void nm_mdata_free(void **ptr)
 
   url_free(&mdata->db_url);
   FREE(&mdata->db_query);
+  progress_free(&mdata->progress);
   FREE(ptr);
 }
 

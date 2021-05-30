@@ -23,9 +23,7 @@
 #ifndef MUTT_NOTMUCH_MDATA_H
 #define MUTT_NOTMUCH_MDATA_H
 
-#include <stdbool.h>
-#include "progress/lib.h"
-#include "query.h" // IWYU pragma: keep
+#include "query.h"
 
 struct Mailbox;
 
@@ -39,12 +37,9 @@ struct NmMboxData
   int db_limit;                ///< Maximum number of results to return
   enum NmQueryType query_type; ///< Messages or Threads
 
-  struct Progress progress;    ///< A progress bar
+  struct Progress *progress;   ///< A progress bar
   int oldmsgcount;
   int ignmsgcount;             ///< Ignored messages
-
-  bool noprogress : 1;         ///< Don't show the progress bar
-  bool progress_ready : 1;     ///< A progress bar has been initialised
 };
 
 void                  nm_mdata_free(void **ptr);
