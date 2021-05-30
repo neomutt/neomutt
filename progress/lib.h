@@ -65,4 +65,7 @@ struct Progress
 void progress_init(struct Progress *progress, const char *msg, enum ProgressType type, size_t size);
 void progress_update(struct Progress *progress, size_t pos, int percent);
 
+void progress_free(struct Progress **ptr);
+struct Progress *progress_new (const char *msg, enum ProgressType type, size_t size);
+
 #endif /* MUTT_PROGRESS_LIB_H */

@@ -261,3 +261,32 @@ void progress_update(struct Progress *progress, size_t pos, int percent)
   if (progress->pos >= progress->size)
     mutt_clear_error();
 }
+
+/**
+ * progress_free - Free a Progress Bar
+ * @param ptr Progress Bar to free
+ */
+void progress_free(struct Progress **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  // struct Progress *progress = *ptr;
+
+  FREE(ptr);
+}
+
+/**
+ * progress_new - Create a new Progress Bar
+ * @param msg  Message to display; this is copied into the Progress object
+ * @param type Type, e.g. #MUTT_PROGRESS_READ
+ * @param size Total size of expected file / traffic
+ * @retval ptr New Progress Bar
+ */
+struct Progress *progress_new(const char *msg, enum ProgressType type, size_t size)
+{
+  struct Progress *progress = mutt_mem_calloc(1, sizeof(struct Progress));
+
+  progress_init(progress, msg, type, size);
+  return progress;
+}
