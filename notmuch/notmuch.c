@@ -63,6 +63,7 @@
 #include "hcache/lib.h"
 #include "index/lib.h"
 #include "maildir/lib.h"
+#include "progress/lib.h"
 #include "adata.h"
 #include "command_parse.h"
 #include "edata.h"
@@ -72,7 +73,6 @@
 #include "mutt_globals.h"
 #include "mutt_thread.h"
 #include "mx.h"
-#include "progress.h"
 #include "protos.h"
 #include "query.h"
 #include "tag.h"
@@ -656,10 +656,10 @@ static const char *get_message_last_filename(notmuch_message_t *msg)
 }
 
 /**
- * progress_reset - Reset the progress counter
+ * progress_setup - Set up the Progress Bar
  * @param m Mailbox
  */
-static void progress_reset(struct Mailbox *m)
+static void progress_setup(struct Mailbox *m)
 {
   if (!m->verbose)
     return;
@@ -668,37 +668,24 @@ static void progress_reset(struct Mailbox *m)
   if (!mdata)
     return;
 
-  memset(&mdata->progress, 0, sizeof(mdata->progress));
   mdata->oldmsgcount = m->msg_count;
   mdata->ignmsgcount = 0;
-  mdata->noprogress = false;
-  mdata->progress_ready = false;
+  mdata->progress =
+      progress_new(_("Reading messages..."), MUTT_PROGRESS_READ, mdata->oldmsgcount);
 }
 
 /**
- * progress_update - Update the progress counter
+ * nm_progress_update - Update the progress counter
  * @param m Mailbox
- * @param q   Notmuch query
  */
-static void progress_update(struct Mailbox *m, notmuch_query_t *q)
+static void nm_progress_update(struct Mailbox *m)
 {
   struct NmMboxData *mdata = nm_mdata_get(m);
 
-  if (!m->verbose || !mdata || mdata->noprogress)
+  if (!m->verbose || !mdata || !mdata->progress)
     return;
 
-  if (!mdata->progress_ready && q)
-  {
-    // The total mail count is in oldmsgcount, so use that instead of recounting.
-    mutt_progress_init(&mdata->progress, _("Reading messages..."),
-                       MUTT_PROGRESS_READ, mdata->oldmsgcount);
-    mdata->progress_ready = true;
-  }
-
-  if (mdata->progress_ready)
-  {
-    mutt_progress_update(&mdata->progress, m->msg_count + mdata->ignmsgcount, -1);
-  }
+  progress_update(mdata->progress, m->msg_count + mdata->ignmsgcount, -1);
 }
 
 /**
@@ -757,7 +744,7 @@ static void append_message(struct HeaderCache *h, struct Mailbox *m,
   if (dedup && get_mutt_email(m, msg))
   {
     mdata->ignmsgcount++;
-    progress_update(m, q);
+    nm_progress_update(m);
     mutt_debug(LL_DEBUG2, "nm: ignore id=%s, already in the m\n",
                notmuch_message_get_message_id(msg));
     return;
@@ -841,7 +828,7 @@ static void append_message(struct HeaderCache *h, struct Mailbox *m,
       edata->oldpath = mutt_str_dup(path);
     }
   }
-  progress_update(m, q);
+  nm_progress_update(m);
 done:
   FREE(&newpath);
 }
@@ -1521,7 +1508,7 @@ int nm_read_entire_thread(struct Mailbox *m, struct Email *e)
   mutt_debug(LL_DEBUG1, "nm: reading entire-thread messages...[current count=%d]\n",
              m->msg_count);
 
-  progress_reset(m);
+  progress_setup(m);
   const char *id = notmuch_message_get_thread_id(msg);
   if (!id)
     goto done;
@@ -1556,6 +1543,7 @@ done:
   mdata->oldmsgcount = 0;
   mutt_debug(LL_DEBUG1, "nm: reading entire-thread messages... done [rc=%d, count=%d]\n",
              rc, m->msg_count);
+  progress_free(&mdata->progress);
   return rc;
 }
 
@@ -2035,8 +2023,7 @@ static enum MxOpenReturns nm_mbox_open(struct Mailbox *m)
 
   mutt_debug(LL_DEBUG1, "nm: reading messages...[current count=%d]\n", m->msg_count);
 
-  progress_reset(m);
-
+  progress_setup(m);
   enum MxOpenReturns rc = MX_OPEN_ERROR;
 
   notmuch_query_t *q = get_query(m, false);
@@ -2066,6 +2053,7 @@ static enum MxOpenReturns nm_mbox_open(struct Mailbox *m)
   mdata->oldmsgcount = 0;
 
   mutt_debug(LL_DEBUG1, "nm: reading messages... done [rc=%d, count=%d]\n", rc, m->msg_count);
+  progress_free(&mdata->progress);
   return rc;
 }
 
@@ -2099,7 +2087,6 @@ static enum MxStatus nm_mbox_check(struct Mailbox *m)
 
   mutt_debug(LL_DEBUG1, "nm: start checking (count=%d)\n", m->msg_count);
   mdata->oldmsgcount = m->msg_count;
-  mdata->noprogress = true;
 
   for (int i = 0; i < m->msg_count; i++)
   {
@@ -2216,7 +2203,7 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
     return MX_STATUS_ERROR;
 
   enum MxStatus rc = MX_STATUS_OK;
-  struct Progress progress;
+  struct Progress *progress = NULL;
   char *url = mutt_str_dup(mailbox_path(m));
   bool changed = false;
 
@@ -2227,7 +2214,7 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
     /* all is in this function so we don't use data->progress here */
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Writing %s..."), mailbox_path(m));
-    mutt_progress_init(&progress, msg, MUTT_PROGRESS_WRITE, m->msg_count);
+    progress = progress_new(msg, MUTT_PROGRESS_WRITE, m->msg_count);
   }
 
   struct HeaderCache *h = nm_hcache_open(m);
@@ -2243,7 +2230,7 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
     struct NmEmailData *edata = nm_edata_get(e);
 
     if (m->verbose)
-      mutt_progress_update(&progress, i, -1);
+      progress_update(progress, i, -1);
 
     *old_file = '\0';
     *new_file = '\0';
@@ -2322,6 +2309,7 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
 
   nm_hcache_close(h);
 
+  progress_free(&progress);
   FREE(&url);
   mutt_debug(LL_DEBUG1, "nm: .... sync done [rc=%d]\n", rc);
   return rc;

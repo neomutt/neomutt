@@ -49,12 +49,12 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "progress/lib.h"
 #include "copy.h"
 #include "mutt_globals.h"
 #include "mutt_header.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "progress.h"
 #include "protos.h"
 
 /**
@@ -196,12 +196,13 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
   LOFF_T loc, tmploc;
   struct Email *e = NULL;
   struct stat sb;
-  struct Progress progress;
+  struct Progress *progress = NULL;
+  enum MxOpenReturns rc = MX_OPEN_ERROR;
 
   if (stat(mailbox_path(m), &sb) == -1)
   {
     mutt_perror(mailbox_path(m));
-    return MX_OPEN_ERROR;
+    goto fail;
   }
   mutt_file_get_stat_timespec(&adata->atime, &sb, MUTT_STAT_ATIME);
   mutt_file_get_stat_timespec(&m->mtime, &sb, MUTT_STAT_MTIME);
@@ -213,7 +214,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
-    mutt_progress_init(&progress, msg, MUTT_PROGRESS_READ, 0);
+    progress = progress_new(msg, MUTT_PROGRESS_READ, 0);
   }
 
   while (true)
@@ -228,11 +229,11 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
     {
       loc = ftello(adata->fp);
       if (loc < 0)
-        return MX_OPEN_ERROR;
+        goto fail;
 
       count++;
       if (m->verbose)
-        mutt_progress_update(&progress, count, (int) (loc / (m->size / 100 + 1)));
+        progress_update(progress, count, (int) (loc / (m->size / 100 + 1)));
 
       if (m->msg_count == m->email_max)
         mx_alloc_memory(m);
@@ -256,7 +257,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
         {
           mutt_debug(LL_DEBUG1, "#1 fseek() failed\n");
           mutt_error(_("Mailbox is corrupt"));
-          return MX_OPEN_ERROR;
+          goto fail;
         }
       }
       else
@@ -266,7 +267,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
 
       loc = ftello(adata->fp);
       if (loc < 0)
-        return MX_OPEN_ERROR;
+        goto fail;
 
       if ((e->body->length > 0) && (e->lines > 0))
       {
@@ -295,7 +296,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
         {
           loc = ftello(adata->fp);
           if (loc < 0)
-            return MX_OPEN_ERROR;
+            goto fail;
           if (!fgets(buf, sizeof(buf) - 1, adata->fp))
             break;
           lines++;
@@ -317,17 +318,21 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
     {
       mutt_debug(LL_DEBUG1, "corrupt mailbox\n");
       mutt_error(_("Mailbox is corrupt"));
-      return MX_OPEN_ERROR;
+      goto fail;
     }
   }
 
   if (SigInt)
   {
     SigInt = false;
-    return MX_OPEN_ABORT; /* action aborted */
+    rc = MX_OPEN_ABORT; /* action aborted */
+    goto fail;
   }
 
-  return MX_OPEN_OK;
+  rc = MX_OPEN_OK;
+fail:
+  progress_free(&progress);
+  return rc;
 }
 
 /**
@@ -356,13 +361,14 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
   time_t t;
   int count = 0, lines = 0;
   LOFF_T loc;
-  struct Progress progress;
+  struct Progress *progress = NULL;
+  enum MxOpenReturns rc = MX_OPEN_ERROR;
 
   /* Save information about the folder at the time we opened it. */
   if (stat(mailbox_path(m), &sb) == -1)
   {
     mutt_perror(mailbox_path(m));
-    return MX_OPEN_ERROR;
+    goto fail;
   }
 
   m->size = sb.st_size;
@@ -376,7 +382,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
-    mutt_progress_init(&progress, msg, MUTT_PROGRESS_READ, 0);
+    progress = progress_new(msg, MUTT_PROGRESS_READ, 0);
   }
 
   loc = ftello(adata->fp);
@@ -402,8 +408,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
 
       if (m->verbose)
       {
-        mutt_progress_update(&progress, count,
-                             (int) (ftello(adata->fp) / (m->size / 100 + 1)));
+        progress_update(progress, count, (int) (ftello(adata->fp) / (m->size / 100 + 1)));
       }
 
       if (m->msg_count == m->email_max)
@@ -518,10 +523,14 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
   if (SigInt)
   {
     SigInt = false;
-    return MX_OPEN_ABORT; /* action aborted */
+    rc = MX_OPEN_ABORT;
+    goto fail; /* action aborted */
   }
 
-  return MX_OPEN_OK;
+  rc = MX_OPEN_OK;
+fail:
+  progress_free(&progress);
+  return rc;
 }
 
 /**
@@ -1151,7 +1160,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   struct MUpdate *new_offset = NULL;
   struct MUpdate *old_offset = NULL;
   FILE *fp = NULL;
-  struct Progress progress;
+  struct Progress *progress = NULL;
   enum MxStatus rc = MX_STATUS_ERROR;
 
   /* sort message by their position in the mailbox on disk */
@@ -1249,13 +1258,13 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Writing %s..."), mailbox_path(m));
-    mutt_progress_init(&progress, msg, MUTT_PROGRESS_WRITE, m->msg_count);
+    progress = progress_new(msg, MUTT_PROGRESS_WRITE, m->msg_count);
   }
 
   for (i = first, j = 0; i < m->msg_count; i++)
   {
     if (m->verbose)
-      mutt_progress_update(&progress, i, i / (m->msg_count / 100 + 1));
+      progress_update(progress, i, i / (m->msg_count / 100 + 1));
     /* back up some information which is needed to restore offsets when
      * something fails.  */
 
@@ -1457,6 +1466,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
       mailbox_update(m_tmp);
   }
 
+  progress_free(&progress);
   return 0; /* signal success */
 
 bail: /* Come here in case of disaster */
@@ -1504,6 +1514,7 @@ bail: /* Come here in case of disaster */
 
 fatal:
   mutt_buffer_pool_release(&tempfile);
+  progress_free(&progress);
   return rc;
 }
 

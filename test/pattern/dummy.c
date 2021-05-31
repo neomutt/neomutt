@@ -126,11 +126,7 @@ void mutt_parse_mime_message(struct Mailbox *m, struct Email *e, FILE *msg)
 {
 }
 
-void mutt_progress_init(struct Progress *progress, const char *msg, int type, size_t size)
-{
-}
-
-void mutt_progress_update(struct Progress *progress, long pos, int percent)
+void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
 {
 }
 

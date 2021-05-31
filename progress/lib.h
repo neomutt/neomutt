@@ -3,7 +3,7 @@
  * Progress bar
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2021 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
@@ -21,12 +21,22 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_PROGRESS_H
-#define MUTT_PROGRESS_H
+/**
+ * @page lib_progress PROGRESS: Progress Bar
+ *
+ * Progress Bar
+ *
+ * | File                | Description                |
+ * | :------------------ | :------------------------- |
+ * | progress/progress.c | @subpage progress_progress |
+ */
 
-#include <stdbool.h>
-#include <stdint.h>
+#ifndef MUTT_PROGRESS_LIB_H
+#define MUTT_PROGRESS_LIB_H
+
 #include <stdio.h>
+
+struct Progress;
 
 /**
  * enum ProgressType - What kind of operation is this progress tracking?
@@ -38,21 +48,8 @@ enum ProgressType
   MUTT_PROGRESS_NET    ///< Progress tracks bytes, according to `$net_inc`
 };
 
-/**
- * struct Progress - A progress bar
- */
-struct Progress
-{
-  char msg[1024];
-  char sizestr[24];
-  size_t pos;
-  size_t size;
-  size_t inc;
-  uint64_t timestamp;
-  bool is_bytes;
-};
+void             progress_free  (struct Progress **ptr);
+struct Progress *progress_new   (const char *msg, enum ProgressType type, size_t size);
+void             progress_update(struct Progress *progress, size_t pos, int percent);
 
-void mutt_progress_init(struct Progress *progress, const char *msg, enum ProgressType type, size_t size);
-void mutt_progress_update(struct Progress *progress, size_t pos, int percent);
-
-#endif /* MUTT_PROGRESS_H */
+#endif /* MUTT_PROGRESS_LIB_H */

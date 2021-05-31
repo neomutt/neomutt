@@ -49,6 +49,7 @@
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "pattern/lib.h"
+#include "progress/lib.h"
 #include "send/lib.h"
 #include "browser.h"
 #include "commands.h"
@@ -68,7 +69,6 @@
 #include "opcodes.h"
 #include "options.h"
 #include "private_data.h"
-#include "progress.h"
 #include "protos.h"
 #include "recvattach.h"
 #include "score.h"
@@ -2269,12 +2269,11 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
         if (priv->tag)
         {
-          struct Progress progress;
+          struct Progress *progress = NULL;
 
           if (m->verbose)
           {
-            mutt_progress_init(&progress, _("Update tags..."),
-                               MUTT_PROGRESS_WRITE, m->msg_tagged);
+            progress = progress_new(_("Update tags..."), MUTT_PROGRESS_WRITE, m->msg_tagged);
           }
 
 #ifdef USE_NOTMUCH
@@ -2290,7 +2289,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               continue;
 
             if (m->verbose)
-              mutt_progress_update(&progress, ++px, -1);
+              progress_update(progress, ++px, -1);
             mx_tags_commit(m, e, buf);
             if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
             {
@@ -2303,6 +2302,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               m->changed = true;
             }
           }
+          progress_free(&progress);
 #ifdef USE_NOTMUCH
           if (m->type == MUTT_NOTMUCH)
             nm_db_longrun_done(m);

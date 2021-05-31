@@ -42,13 +42,13 @@
 #include "mutt.h"
 #include "lib.h"
 #include "menu/lib.h"
+#include "progress/lib.h"
 #include "context.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mx.h"
 #include "opcodes.h"
 #include "options.h"
-#include "progress.h"
 #include "protos.h"
 #ifndef USE_FMEMOPEN
 #include <sys/stat.h>
@@ -242,7 +242,7 @@ int mutt_pattern_alias_func(int op, char *prompt, struct AliasMenuData *mdata,
                             struct Menu *menu)
 {
   int rc = -1;
-  struct Progress progress;
+  struct Progress *progress = NULL;
   struct Buffer *buf = mutt_buffer_pool_get();
 
   mutt_buffer_strcpy(buf, mdata->str);
@@ -284,14 +284,14 @@ int mutt_pattern_alias_func(int op, char *prompt, struct AliasMenuData *mdata,
     match_all = true;
   }
 
-  mutt_progress_init(&progress, _("Executing command on matching messages..."),
-                     MUTT_PROGRESS_READ, ARRAY_SIZE(&mdata->ava));
+  progress = progress_new(_("Executing command on matching messages..."),
+                          MUTT_PROGRESS_READ, ARRAY_SIZE(&mdata->ava));
 
   int vcounter = 0;
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, &mdata->ava)
   {
-    mutt_progress_update(&progress, ARRAY_FOREACH_IDX, -1);
+    progress_update(progress, ARRAY_FOREACH_IDX, -1);
 
     if (match_all ||
         mutt_pattern_alias_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, avp, NULL))
@@ -304,6 +304,7 @@ int mutt_pattern_alias_func(int op, char *prompt, struct AliasMenuData *mdata,
       avp->is_visible = false;
     }
   }
+  progress_free(&progress);
 
   FREE(&mdata->str);
   if (!match_all)
@@ -347,7 +348,7 @@ int mutt_pattern_func(struct Context *ctx, int op, char *prompt)
 
   struct Buffer err;
   int rc = -1;
-  struct Progress progress;
+  struct Progress *progress = NULL;
   struct Buffer *buf = mutt_buffer_pool_get();
 
   mutt_buffer_strcpy(buf, NONULL(ctx->pattern));
@@ -389,8 +390,8 @@ int mutt_pattern_func(struct Context *ctx, int op, char *prompt)
     goto bail;
 #endif
 
-  mutt_progress_init(&progress, _("Executing command on matching messages..."),
-                     MUTT_PROGRESS_READ, (op == MUTT_LIMIT) ? m->msg_count : m->vcount);
+  progress = progress_new(_("Executing command on matching messages..."), MUTT_PROGRESS_READ,
+                          (op == MUTT_LIMIT) ? m->msg_count : m->vcount);
 
   if (op == MUTT_LIMIT)
   {
@@ -405,7 +406,7 @@ int mutt_pattern_func(struct Context *ctx, int op, char *prompt)
       if (!e)
         break;
 
-      mutt_progress_update(&progress, i, -1);
+      progress_update(progress, i, -1);
       /* new limit pattern implicitly uncollapses all threads */
       e->vnum = -1;
       e->visible = false;
@@ -430,7 +431,7 @@ int mutt_pattern_func(struct Context *ctx, int op, char *prompt)
       struct Email *e = mutt_get_virt_email(m, i);
       if (!e)
         continue;
-      mutt_progress_update(&progress, i, -1);
+      progress_update(progress, i, -1);
       if (mutt_pattern_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, m, e, NULL))
       {
         switch (op)
@@ -449,6 +450,7 @@ int mutt_pattern_func(struct Context *ctx, int op, char *prompt)
       }
     }
   }
+  progress_free(&progress);
 
   mutt_clear_error();
 
@@ -493,7 +495,8 @@ bail:
  */
 int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
 {
-  struct Progress progress;
+  struct Progress *progress = NULL;
+  int rc = -1;
 
   if ((*LastSearch == '\0') || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
@@ -563,12 +566,12 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
   if (op == OP_SEARCH_OPPOSITE)
     incr = -incr;
 
-  mutt_progress_init(&progress, _("Searching..."), MUTT_PROGRESS_READ, m->vcount);
+  progress = progress_new(_("Searching..."), MUTT_PROGRESS_READ, m->vcount);
 
   for (int i = cur + incr, j = 0; j != m->vcount; j++)
   {
     const char *msg = NULL;
-    mutt_progress_update(&progress, j, -1);
+    progress_update(progress, j, -1);
     const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
     if (i > m->vcount - 1)
     {
@@ -578,7 +581,7 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
       else
       {
         mutt_message(_("Search hit bottom without finding match"));
-        return -1;
+        goto done;
       }
     }
     else if (i < 0)
@@ -589,7 +592,7 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
       else
       {
         mutt_message(_("Search hit top without finding match"));
-        return -1;
+        goto done;
       }
     }
 
@@ -602,7 +605,8 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
         mutt_clear_error();
         if (msg && *msg)
           mutt_message(msg);
-        return i;
+        rc = i;
+        goto done;
       }
     }
     else
@@ -616,7 +620,8 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
         mutt_clear_error();
         if (msg && *msg)
           mutt_message(msg);
-        return i;
+        rc = i;
+        goto done;
       }
     }
 
@@ -624,14 +629,16 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
     {
       mutt_error(_("Search interrupted"));
       SigInt = false;
-      return -1;
+      goto done;
     }
 
     i += incr;
   }
 
   mutt_error(_("Not found"));
-  return -1;
+done:
+  progress_free(&progress);
+  return rc;
 }
 
 /**
@@ -644,10 +651,10 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
  */
 int mutt_search_alias_command(struct Menu *menu, int cur, int op)
 {
-  struct Progress progress;
-
+  struct Progress *progress = NULL;
   const struct AliasMenuData *mdata = menu->mdata;
   const struct AliasViewArray *ava = &mdata->ava;
+  int rc = -1;
 
   if ((*LastSearch == '\0') || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
@@ -715,12 +722,12 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
   if (op == OP_SEARCH_OPPOSITE)
     incr = -incr;
 
-  mutt_progress_init(&progress, _("Searching..."), MUTT_PROGRESS_READ, ARRAY_SIZE(ava));
+  progress = progress_new(_("Searching..."), MUTT_PROGRESS_READ, ARRAY_SIZE(ava));
 
   for (int i = cur + incr, j = 0; j != ARRAY_SIZE(ava); j++)
   {
     const char *msg = NULL;
-    mutt_progress_update(&progress, j, -1);
+    progress_update(progress, j, -1);
     const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
     if (i > ARRAY_SIZE(ava) - 1)
     {
@@ -730,7 +737,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
       else
       {
         mutt_message(_("Search hit bottom without finding match"));
-        return -1;
+        goto done;
       }
     }
     else if (i < 0)
@@ -741,7 +748,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
       else
       {
         mutt_message(_("Search hit top without finding match"));
-        return -1;
+        goto done;
       }
     }
 
@@ -754,7 +761,8 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
         mutt_clear_error();
         if (msg && *msg)
           mutt_message(msg);
-        return i;
+        rc = i;
+        goto done;
       }
     }
     else
@@ -768,7 +776,8 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
         mutt_clear_error();
         if (msg && *msg)
           mutt_message(msg);
-        return i;
+        rc = i;
+        goto done;
       }
     }
 
@@ -776,12 +785,14 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
     {
       mutt_error(_("Search interrupted"));
       SigInt = false;
-      return -1;
+      goto done;
     }
 
     i += incr;
   }
 
   mutt_error(_("Not found"));
-  return -1;
+done:
+  progress_free(&progress);
+  return rc;
 }

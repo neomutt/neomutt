@@ -42,12 +42,12 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
+#include "progress/lib.h"
 #include "adata.h"
 #include "edata.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
-#include "progress.h"
 
 /**
  * pop_get_field - Get connection login credentials - Implements ConnAccount::get_field()
@@ -545,7 +545,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
     else
     {
       if (progress)
-        mutt_progress_update(progress, pos, -1);
+        progress_update(progress, pos, -1);
       if ((rc == 0) && (callback(inbuf, data) < 0))
         rc = -3;
       lenbuf = 0;
@@ -613,8 +613,8 @@ int pop_reconnect(struct Mailbox *m)
     int ret = pop_open_connection(adata);
     if (ret == 0)
     {
-      struct Progress progress;
-      mutt_progress_init(&progress, _("Verifying message indexes..."), MUTT_PROGRESS_NET, 0);
+      struct Progress *progress =
+          progress_new(_("Verifying message indexes..."), MUTT_PROGRESS_NET, 0);
 
       for (int i = 0; i < m->msg_count; i++)
       {
@@ -622,12 +622,14 @@ int pop_reconnect(struct Mailbox *m)
         edata->refno = -1;
       }
 
-      ret = pop_fetch_data(adata, "UIDL\r\n", &progress, check_uidl, m);
+      ret = pop_fetch_data(adata, "UIDL\r\n", progress, check_uidl, m);
+      progress_free(&progress);
       if (ret == -2)
       {
         mutt_error("%s", adata->err_msg);
       }
     }
+
     if (ret == 0)
       return 0;
 

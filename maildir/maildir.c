@@ -49,6 +49,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "lib.h"
+#include "progress/lib.h"
 #include "copy.h"
 #include "edata.h"
 #include "mdata.h"
@@ -56,7 +57,6 @@
 #include "monitor.h"
 #include "mutt_globals.h"
 #include "mx.h"
-#include "progress.h"
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
 #endif
@@ -544,7 +544,7 @@ int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
     maildir_parse_flags(e, de->d_name);
 
     if (m->verbose && progress)
-      mutt_progress_update(progress, ARRAY_SIZE(mda) + 1, -1);
+      progress_update(progress, ARRAY_SIZE(mda) + 1, -1);
 
     mutt_buffer_printf(buf, "%s/%s", subdir, de->d_name);
     e->path = mutt_buffer_strdup(buf);
@@ -610,7 +610,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
       continue;
 
     if (m->verbose && progress)
-      mutt_progress_update(progress, ARRAY_FOREACH_IDX, -1);
+      progress_update(progress, ARRAY_FOREACH_IDX, -1);
 
     snprintf(fn, sizeof(fn), "%s/%s", mailbox_path(m), md->email->path);
 
@@ -671,13 +671,13 @@ int maildir_read_dir(struct Mailbox *m, const char *subdir)
   if (!m)
     return -1;
 
-  struct Progress progress;
+  struct Progress *progress = NULL;
 
   if (m->verbose)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Scanning %s..."), mailbox_path(m));
-    mutt_progress_init(&progress, msg, MUTT_PROGRESS_READ, 0);
+    progress = progress_new(msg, MUTT_PROGRESS_READ, 0);
   }
 
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
@@ -689,16 +689,19 @@ int maildir_read_dir(struct Mailbox *m, const char *subdir)
   }
 
   struct MdEmailArray mda = ARRAY_HEAD_INITIALIZER;
-  if (maildir_parse_dir(m, &mda, subdir, &progress) < 0)
+  int rc = maildir_parse_dir(m, &mda, subdir, progress);
+  progress_free(&progress);
+  if (rc < 0)
     return -1;
 
   if (m->verbose)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
-    mutt_progress_init(&progress, msg, MUTT_PROGRESS_READ, ARRAY_SIZE(&mda));
+    progress = progress_new(msg, MUTT_PROGRESS_READ, ARRAY_SIZE(&mda));
   }
-  maildir_delayed_parsing(m, &mda, &progress);
+  maildir_delayed_parsing(m, &mda, progress);
+  progress_free(&progress);
 
   maildir_move_to_mailbox(m, &mda);
 
@@ -1377,22 +1380,26 @@ enum MxStatus maildir_mbox_sync(struct Mailbox *m)
     hc = mutt_hcache_open(c_header_cache, mailbox_path(m), NULL);
 #endif
 
-  struct Progress progress;
+  struct Progress *progress = NULL;
   if (m->verbose)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Writing %s..."), mailbox_path(m));
-    mutt_progress_init(&progress, msg, MUTT_PROGRESS_WRITE, m->msg_count);
+    progress = progress_new(msg, MUTT_PROGRESS_WRITE, m->msg_count);
   }
 
   for (int i = 0; i < m->msg_count; i++)
   {
     if (m->verbose)
-      mutt_progress_update(&progress, i, -1);
+      progress_update(progress, i, -1);
 
     if (!maildir_sync_mailbox_message(m, i, hc))
+    {
+      progress_free(&progress);
       goto err;
+    }
   }
+  progress_free(&progress);
 
 #ifdef USE_HCACHE
   if (m->type == MUTT_MAILDIR)

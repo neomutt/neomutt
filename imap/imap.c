@@ -45,6 +45,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "progress/lib.h"
 #include "adata.h"
 #include "auth.h"
 #include "command_parse.h"
@@ -59,7 +60,6 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "progress.h"
 #include "sort.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
@@ -632,7 +632,7 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
     fputc(c, fp);
 
     if (pbar && !(pos % 1024))
-      mutt_progress_update(pbar, pos, -1);
+      progress_update(pbar, pos, -1);
     if (c_debug_level >= IMAP_LOG_LTRL)
       mutt_buffer_addch(&buf, c);
   }

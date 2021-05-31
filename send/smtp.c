@@ -47,10 +47,10 @@
 #include "gui/lib.h"
 #include "smtp.h"
 #include "lib.h"
+#include "progress/lib.h"
 #include "mutt_account.h"
 #include "mutt_globals.h"
 #include "mutt_socket.h"
-#include "progress.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
@@ -234,9 +234,10 @@ static int smtp_rcpt_to(struct SmtpAccountData *adata, const struct AddressList 
 static int smtp_data(struct SmtpAccountData *adata, const char *msgfile)
 {
   char buf[1024];
-  struct Progress progress;
+  struct Progress *progress = NULL;
   struct stat st;
-  int rc, term = 0;
+  int rc = SMTP_ERR_WRITE;
+  int term = 0;
   size_t buflen = 0;
 
   FILE *fp = fopen(msgfile, "r");
@@ -247,21 +248,22 @@ static int smtp_data(struct SmtpAccountData *adata, const char *msgfile)
   }
   stat(msgfile, &st);
   unlink(msgfile);
-  mutt_progress_init(&progress, _("Sending message..."), MUTT_PROGRESS_NET, st.st_size);
+  progress = progress_new(_("Sending message..."), MUTT_PROGRESS_NET, st.st_size);
 
   snprintf(buf, sizeof(buf), "DATA\r\n");
   if (mutt_socket_send(adata->conn, buf) == -1)
   {
     mutt_file_fclose(&fp);
-    return SMTP_ERR_WRITE;
+    goto done;
   }
   rc = smtp_get_resp(adata);
   if (rc != 0)
   {
     mutt_file_fclose(&fp);
-    return rc;
+    goto done;
   }
 
+  rc = SMTP_ERR_WRITE;
   while (fgets(buf, sizeof(buf) - 1, fp))
   {
     buflen = mutt_str_len(buf);
@@ -273,33 +275,33 @@ static int smtp_data(struct SmtpAccountData *adata, const char *msgfile)
       if (mutt_socket_send_d(adata->conn, ".", MUTT_SOCK_LOG_FULL) == -1)
       {
         mutt_file_fclose(&fp);
-        return SMTP_ERR_WRITE;
+        goto done;
       }
     }
     if (mutt_socket_send_d(adata->conn, buf, MUTT_SOCK_LOG_FULL) == -1)
     {
       mutt_file_fclose(&fp);
-      return SMTP_ERR_WRITE;
+      goto done;
     }
-    mutt_progress_update(&progress, ftell(fp), -1);
+    progress_update(progress, ftell(fp), -1);
   }
   if (!term && buflen &&
       (mutt_socket_send_d(adata->conn, "\r\n", MUTT_SOCK_LOG_FULL) == -1))
   {
     mutt_file_fclose(&fp);
-    return SMTP_ERR_WRITE;
+    goto done;
   }
   mutt_file_fclose(&fp);
 
   /* terminate the message body */
   if (mutt_socket_send(adata->conn, ".\r\n") == -1)
-    return SMTP_ERR_WRITE;
+    goto done;
 
   rc = smtp_get_resp(adata);
-  if (rc != 0)
-    return rc;
 
-  return 0;
+done:
+  progress_free(&progress);
+  return rc;
 }
 
 /**
