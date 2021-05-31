@@ -23,6 +23,14 @@
 #ifndef MUTT_MSGWIN_H
 #define MUTT_MSGWIN_H
 
+#include <stdio.h>
+#include "color.h"
+
+void               msgwin_clear_text(void);
 struct MuttWindow *msgwin_create    (void);
+size_t             msgwin_get_width (void);
+struct MuttWindow *msgwin_get_window(void);
+void               msgwin_set_height(short height);
+void               msgwin_set_text  (enum ColorId color, const char *text);
 
 #endif /* MUTT_MSGWIN_H */

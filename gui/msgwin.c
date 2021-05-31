@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "color.h"
@@ -169,4 +170,75 @@ struct MuttWindow *msgwin_create(void)
 
   notify_observer_add(win->notify, NT_WINDOW, msgwin_window_observer, win);
   return win;
+}
+
+/**
+ * msgwin_set_text - Set the text for the Message Window
+ * @param color Colour, e.g. #MT_COLOR_MESSAGE
+ * @param text  Text to set
+ *
+ * @note The text string will be copied
+ */
+void msgwin_set_text(enum ColorId color, const char *text)
+{
+  if (!MessageWindow)
+    return;
+
+  struct MsgWinPrivateData *priv = MessageWindow->wdata;
+
+  priv->color = color;
+  mutt_str_replace(&priv->text, text);
+
+  MessageWindow->actions |= WA_RECALC;
+}
+
+/**
+ * msgwin_clear_text - Clear the text in the Message Window
+ */
+void msgwin_clear_text(void)
+{
+  msgwin_set_text(MT_COLOR_NORMAL, NULL);
+}
+
+/**
+ * msgwin_get_window - Get the Message Window pointer
+ * @retval ptr Message Window
+ *
+ * Allow some users direct access to the Message Window.
+ */
+struct MuttWindow *msgwin_get_window(void)
+{
+  return MessageWindow;
+}
+
+/**
+ * msgwin_get_width - Get the width of the Message Window
+ * @retval num Width of Message Window
+ */
+size_t msgwin_get_width(void)
+{
+  if (!MessageWindow)
+    return 0;
+
+  return MessageWindow->state.cols;
+}
+
+/**
+ * msgwin_set_height - Resize the Message Window
+ * @param height Number of rows required
+ *
+ * Resize the other Windows to allow a multi-line message to be displayed.
+ */
+void msgwin_set_height(short height)
+{
+  if (!MessageWindow)
+    return;
+
+  if (height < 1)
+    height = 1;
+  else if (height > 3)
+    height = 3;
+
+  MessageWindow->req_rows = height;
+  mutt_window_reflow(MessageWindow->parent);
 }
