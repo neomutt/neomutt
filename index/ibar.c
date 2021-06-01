@@ -251,6 +251,22 @@ static int ibar_menu_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * ibar_window_observer - Listen for changes to the Window - Implements ::observer_t
+ */
+static int ibar_window_observer(struct NotifyCallback *nc)
+{
+  if (!nc->global_data)
+    return -1;
+  if (nc->event_type != NT_WINDOW)
+    return 0;
+
+  struct MuttWindow *win_ibar = nc->global_data;
+  win_ibar->actions |= WA_REPAINT;
+
+  return 0;
+}
+
+/**
  * ibar_data_free - Free the private data attached to the MuttWindow - Implements MuttWindow::wdata_free()
  */
 static void ibar_data_free(struct MuttWindow *win, void **ptr)
@@ -266,6 +282,7 @@ static void ibar_data_free(struct MuttWindow *win, void **ptr)
   notify_observer_remove(NeoMutt->notify, ibar_config_observer, win);
   notify_observer_remove(shared->notify, ibar_index_observer, win);
   notify_observer_remove(priv->win_ibar->parent->notify, ibar_menu_observer, win);
+  notify_observer_remove(win->notify, ibar_window_observer, win);
 
   if (shared->mailbox)
     notify_observer_remove(shared->mailbox->notify, ibar_mailbox_observer, win);
@@ -314,6 +331,7 @@ struct MuttWindow *ibar_create(struct MuttWindow *parent, struct IndexSharedData
   notify_observer_add(NeoMutt->notify, NT_CONFIG, ibar_config_observer, win_ibar);
   notify_observer_add(shared->notify, NT_INDEX, ibar_index_observer, win_ibar);
   notify_observer_add(parent->notify, NT_MENU, ibar_menu_observer, win_ibar);
+  notify_observer_add(win_ibar->notify, NT_WINDOW, ibar_window_observer, win_ibar);
 
   if (shared->mailbox)
     notify_observer_add(shared->mailbox->notify, NT_MAILBOX, ibar_mailbox_observer, win_ibar);
