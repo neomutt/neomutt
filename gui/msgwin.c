@@ -52,18 +52,9 @@ struct MsgWinPrivateData
  */
 static int msgwin_recalc(struct MuttWindow *win)
 {
-  if (!win)
-    return -1;
-
-  struct MuttWindow *win_focus = window_get_focus();
-  if (!win_focus)
+  if (window_is_focused(win)) // Someone else is using it
     return 0;
 
-  // If the MessageWindow is focussed, then someone else is actively using it.
-  if (win_focus == win)
-    return 0;
-
-  // If nobody is using it, we'll take charge
   win->actions |= WA_REPAINT;
   mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
   return 0;
@@ -75,15 +66,7 @@ static int msgwin_recalc(struct MuttWindow *win)
  */
 static int msgwin_repaint(struct MuttWindow *win)
 {
-  if (!mutt_window_is_visible(win))
-    return 0;
-
-  struct MuttWindow *win_focus = window_get_focus();
-  if (!win_focus)
-    return 0;
-
-  // If the MessageWindow is focussed, then someone else is actively using it.
-  if (win_focus == win)
+  if (!mutt_window_is_visible(win) || window_is_focused(win)) // or someone else is using it
     return 0;
 
   struct MsgWinPrivateData *priv = win->wdata;

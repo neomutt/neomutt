@@ -750,6 +750,21 @@ void window_redraw(struct MuttWindow *win)
 }
 
 /**
+ * window_is_focused - Does the given Window have the focus?
+ * @param win Window to check
+ * @retval true Window has focus
+ */
+bool window_is_focused(struct MuttWindow *win)
+{
+  if (!win)
+    return false;
+
+  struct MuttWindow *win_focus = window_get_focus();
+
+  return (win_focus == win);
+}
+
+/**
  * window_get_focus - Get the currently focussed Window
  * @retval ptr Window with focus
  */
