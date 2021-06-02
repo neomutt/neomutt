@@ -38,18 +38,19 @@
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "send/lib.h"
+#include "attach_data.h"
 #include "format_flags.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
-#include "redraw.h"
+#include "shared_data.h"
 
 /**
  * struct CBarPrivateData - Data to draw the Compose Bar
  */
 struct CBarPrivateData
 {
-  struct ComposeRedrawData *rd; ///< Shared Compose data
-  char *compose_format;         ///< Cached status string
+  struct ComposeSharedData *shared; ///< Shared Compose data
+  char *compose_format;             ///< Cached status string
 };
 
 /**
@@ -65,10 +66,10 @@ static unsigned long cum_attachs_size(struct Menu *menu)
   size_t s = 0;
   struct Content *info = NULL;
   struct Body *b = NULL;
-  struct ComposeRedrawData *rd = menu->mdata;
-  struct AttachCtx *actx = rd->actx;
+  struct ComposeSharedData *shared = menu->mdata;
+  struct AttachCtx *actx = shared->adata->actx;
   struct AttachPtr **idx = actx->idx;
-  struct ConfigSubset *sub = rd->sub;
+  struct ConfigSubset *sub = shared->sub;
 
   for (unsigned short i = 0; i < actx->idxlen; i++)
   {
@@ -165,13 +166,14 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
 static int cbar_recalc(struct MuttWindow *win)
 {
   struct CBarPrivateData *cbar_data = win->wdata;
-  struct ComposeRedrawData *rd = cbar_data->rd;
-
   char buf[1024] = { 0 };
+  struct ComposeSharedData *shared = win->parent->wdata;
+
   const char *const c_compose_format =
-      cs_subset_string(rd->sub, "compose_format");
-  mutt_expando_format(buf, sizeof(buf), 0, win->state.cols, NONULL(c_compose_format),
-                      compose_format_str, (intptr_t) rd->menu, MUTT_FORMAT_NO_FLAGS);
+      cs_subset_string(shared->sub, "compose_format");
+  mutt_expando_format(buf, sizeof(buf), 0, win->state.cols,
+                      NONULL(c_compose_format), compose_format_str,
+                      (intptr_t) shared->adata->menu, MUTT_FORMAT_NO_FLAGS);
 
   if (!mutt_str_equal(buf, cbar_data->compose_format))
   {
@@ -269,11 +271,11 @@ static void cbar_data_free(struct MuttWindow *win, void **ptr)
 /**
  * cbar_data_new - Free the private data attached to the MuttWindow
  */
-static struct CBarPrivateData *cbar_data_new(struct ComposeRedrawData *rd)
+static struct CBarPrivateData *cbar_data_new(struct ComposeSharedData *shared)
 {
   struct CBarPrivateData *cbar_data = mutt_mem_calloc(1, sizeof(struct CBarPrivateData));
 
-  cbar_data->rd = rd;
+  cbar_data->shared = shared;
 
   return cbar_data;
 }
@@ -281,15 +283,15 @@ static struct CBarPrivateData *cbar_data_new(struct ComposeRedrawData *rd)
 /**
  * cbar_new - Create the Compose Bar (status)
  * @param parent Parent Window
- * @param rd     Redraw data
+ * @param shared Shared compose data
  */
-struct MuttWindow *cbar_new(struct MuttWindow *parent, struct ComposeRedrawData *rd)
+struct MuttWindow *cbar_new(struct MuttWindow *parent, struct ComposeSharedData *shared)
 {
   struct MuttWindow *win_cbar =
       mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,
                       MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
 
-  win_cbar->wdata = cbar_data_new(rd);
+  win_cbar->wdata = cbar_data_new(shared);
   win_cbar->wdata_free = cbar_data_free;
   win_cbar->recalc = cbar_recalc;
   win_cbar->repaint = cbar_repaint;

@@ -1,6 +1,6 @@
 /**
  * @file
- * Compose Bar
+ * Compose Attach Data
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -20,12 +20,37 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMPOSE_CBAR_H
-#define MUTT_COMPOSE_CBAR_H
+/**
+ * @page compose_attach_data Compose Attach Data
+ *
+ * Compose Attach Data
+ */
 
-struct ComposeSharedData;
-struct MuttWindow;
+#include "config.h"
+#include "mutt/lib.h"
+#include "attach_data.h"
 
-struct MuttWindow *cbar_new(struct MuttWindow *parent, struct ComposeSharedData *shared);
+/**
+ * attach_data_free - Free the Compose Attach Data - Implements MuttWindow::wdata_free()
+ */
+void attach_data_free(struct MuttWindow *win, void **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
 
-#endif /* MUTT_COMPOSE_CBAR_H */
+  // struct ComposeAttachData *attach_data = *ptr;
+
+  FREE(ptr);
+}
+
+/**
+ * attach_data_new - Create new Compose Attach Data
+ * @retval ptr New Compose Attach Data
+ */
+struct ComposeAttachData *attach_data_new(void)
+{
+  struct ComposeAttachData *attach_data =
+      mutt_mem_calloc(1, sizeof(struct ComposeAttachData));
+
+  return attach_data;
+}

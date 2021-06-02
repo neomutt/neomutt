@@ -25,10 +25,14 @@
  *
  * Display the mailboxes in a side panel
  *
- * | File                | Description                |
- * | :------------------ | :------------------------- |
- * | compose/compose.c   | @subpage compose_compose   |
- * | compose/config.c    | @subpage compose_config    |
+ * | File                   | Description                    |
+ * | :--------------------- | :----------------------------- |
+ * | compose/attach_data.c  | @subpage compose_attach_data   |
+ * | compose/cbar.c         | @subpage compose_cbar          |
+ * | compose/compose.c      | @subpage compose_compose       |
+ * | compose/config.c       | @subpage compose_config        |
+ * | compose/env_data.c     | @subpage compose_env_data      |
+ * | compose/shared_data.c  | @subpage compose_shared_data   |
  */
 
 #ifndef MUTT_COMPOSE_LIB_H

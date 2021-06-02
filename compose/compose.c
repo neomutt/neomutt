@@ -53,10 +53,12 @@
 #include "ncrypt/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
+#include "attach_data.h"
 #include "browser.h"
 #include "cbar.h"
 #include "commands.h"
 #include "context.h"
+#include "env_data.h"
 #include "format_flags.h"
 #include "hook.h"
 #include "mutt_attach.h"
@@ -69,8 +71,8 @@
 #include "options.h"
 #include "protos.h"
 #include "recvattach.h"
-#include "redraw.h"
 #include "rfc3676.h"
+#include "shared_data.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -320,9 +322,9 @@ static void init_header_padding(void)
  */
 static void compose_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
-  const struct ComposeRedrawData *rd = menu->mdata;
-  struct AttachCtx *actx = rd->actx;
-  const struct ConfigSubset *sub = rd->sub;
+  struct ComposeSharedData *shared = menu->mdata;
+  struct AttachCtx *actx = shared->adata->actx;
+  struct ConfigSubset *sub = shared->sub;
 
   const char *const c_attach_format = cs_subset_string(sub, "attach_format");
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(c_attach_format),
@@ -509,38 +511,41 @@ static int calc_user_hdrs(const struct ListHead *hdrs)
 
 /**
  * calc_envelope - Calculate how many rows the envelope will need
- * @param rd Email and other compose data
+ * @param win    Window to draw on
+ * @param shared Shared compose data
+ * @param edata  Envelope data
  * @retval num Rows needed
  */
-static int calc_envelope(struct ComposeRedrawData *rd)
+static int calc_envelope(struct MuttWindow *win, struct ComposeSharedData *shared,
+                         struct ComposeEnvelopeData *edata)
 {
   int rows = 4; // 'From:', 'Subject:', 'Reply-To:', 'Fcc:'
 #ifdef MIXMASTER
   rows++;
 #endif
 
-  struct Email *e = rd->email;
+  struct Email *e = shared->email;
   struct Envelope *env = e->env;
-  const int cols = rd->win_env->state.cols - MaxHeaderWidth;
+  const int cols = win->state.cols - MaxHeaderWidth;
 
 #ifdef USE_NNTP
   if (OptNewsSend)
   {
     rows += 2; // 'Newsgroups:' and 'Followup-To:'
-    const bool c_x_comment_to = cs_subset_bool(rd->sub, "x_comment_to");
+    const bool c_x_comment_to = cs_subset_bool(shared->sub, "x_comment_to");
     if (c_x_comment_to)
       rows++;
   }
   else
 #endif
   {
-    rows += calc_address(&env->to, &rd->to_list, cols, &rd->to_rows);
-    rows += calc_address(&env->cc, &rd->cc_list, cols, &rd->cc_rows);
-    rows += calc_address(&env->bcc, &rd->bcc_list, cols, &rd->bcc_rows);
+    rows += calc_address(&env->to, &edata->to_list, cols, &edata->to_rows);
+    rows += calc_address(&env->cc, &edata->cc_list, cols, &edata->cc_rows);
+    rows += calc_address(&env->bcc, &edata->bcc_list, cols, &edata->bcc_rows);
   }
-  rows += calc_security(e, &rd->sec_rows, rd->sub);
+  rows += calc_security(e, &edata->sec_rows, shared->sub);
   const bool c_compose_show_user_headers =
-      cs_subset_bool(rd->sub, "compose_show_user_headers");
+      cs_subset_bool(shared->sub, "compose_show_user_headers");
   if (c_compose_show_user_headers)
     rows += calc_user_hdrs(&env->userhdrs);
 
@@ -549,14 +554,17 @@ static int calc_envelope(struct ComposeRedrawData *rd)
 
 /**
  * redraw_crypt_lines - Update the encryption info in the compose window
- * @param rd  Email and other compose data
- * @param row Window row to start drawing
+ * @param win    Window to draw on
+ * @param shared Shared compose data
+ * @param edata  Envelope data
+ * @param row    Window row to start drawing
  */
-static int redraw_crypt_lines(struct ComposeRedrawData *rd, int row)
+static int redraw_crypt_lines(struct MuttWindow *win, struct ComposeSharedData *shared,
+                              struct ComposeEnvelopeData *edata, int row)
 {
-  struct Email *e = rd->email;
+  struct Email *e = shared->email;
 
-  draw_header(rd->win_env, row++, HDR_CRYPT);
+  draw_header(win, row++, HDR_CRYPT);
 
   if ((WithCrypto & (APPLICATION_PGP | APPLICATION_SMIME)) == 0)
     return 0;
@@ -566,23 +574,23 @@ static int redraw_crypt_lines(struct ComposeRedrawData *rd, int row)
   if ((e->security & (SEC_ENCRYPT | SEC_SIGN)) == (SEC_ENCRYPT | SEC_SIGN))
   {
     mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_BOTH);
-    mutt_window_addstr(rd->win_env, _("Sign, Encrypt"));
+    mutt_window_addstr(win, _("Sign, Encrypt"));
   }
   else if (e->security & SEC_ENCRYPT)
   {
     mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
-    mutt_window_addstr(rd->win_env, _("Encrypt"));
+    mutt_window_addstr(win, _("Encrypt"));
   }
   else if (e->security & SEC_SIGN)
   {
     mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_SIGN);
-    mutt_window_addstr(rd->win_env, _("Sign"));
+    mutt_window_addstr(win, _("Sign"));
   }
   else
   {
     /* L10N: This refers to the encryption of the email, e.g. "Security: None" */
     mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_NONE);
-    mutt_window_addstr(rd->win_env, _("None"));
+    mutt_window_addstr(win, _("None"));
     used = 1; // 'Sign as:' won't be needed
   }
   mutt_curses_set_color(MT_COLOR_NORMAL);
@@ -592,68 +600,69 @@ static int redraw_crypt_lines(struct ComposeRedrawData *rd, int row)
     if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
     {
       if ((e->security & SEC_INLINE))
-        mutt_window_addstr(rd->win_env, _(" (inline PGP)"));
+        mutt_window_addstr(win, _(" (inline PGP)"));
       else
-        mutt_window_addstr(rd->win_env, _(" (PGP/MIME)"));
+        mutt_window_addstr(win, _(" (PGP/MIME)"));
     }
     else if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
-      mutt_window_addstr(rd->win_env, _(" (S/MIME)"));
+      mutt_window_addstr(win, _(" (S/MIME)"));
   }
 
   const bool c_crypt_opportunistic_encrypt =
-      cs_subset_bool(rd->sub, "crypt_opportunistic_encrypt");
+      cs_subset_bool(shared->sub, "crypt_opportunistic_encrypt");
   if (c_crypt_opportunistic_encrypt && (e->security & SEC_OPPENCRYPT))
-    mutt_window_addstr(rd->win_env, _(" (OppEnc mode)"));
+    mutt_window_addstr(win, _(" (OppEnc mode)"));
 
-  mutt_window_clrtoeol(rd->win_env);
+  mutt_window_clrtoeol(win);
 
   if (((WithCrypto & APPLICATION_PGP) != 0) &&
       (e->security & APPLICATION_PGP) && (e->security & SEC_SIGN))
   {
-    draw_header(rd->win_env, row++, HDR_CRYPTINFO);
-    const char *const c_pgp_sign_as = cs_subset_string(rd->sub, "pgp_sign_as");
-    mutt_window_printf(rd->win_env, "%s", c_pgp_sign_as ? c_pgp_sign_as : _("<default>"));
+    draw_header(win, row++, HDR_CRYPTINFO);
+    const char *const c_pgp_sign_as =
+        cs_subset_string(shared->sub, "pgp_sign_as");
+    mutt_window_printf(win, "%s", c_pgp_sign_as ? c_pgp_sign_as : _("<default>"));
   }
 
   if (((WithCrypto & APPLICATION_SMIME) != 0) &&
       (e->security & APPLICATION_SMIME) && (e->security & SEC_SIGN))
   {
-    draw_header(rd->win_env, row++, HDR_CRYPTINFO);
+    draw_header(win, row++, HDR_CRYPTINFO);
     const char *const c_smime_sign_as =
-        cs_subset_string(rd->sub, "pgp_sign_as");
-    mutt_window_printf(rd->win_env, "%s", c_smime_sign_as ? c_smime_sign_as : _("<default>"));
+        cs_subset_string(shared->sub, "pgp_sign_as");
+    mutt_window_printf(win, "%s", c_smime_sign_as ? c_smime_sign_as : _("<default>"));
   }
 
   const char *const c_smime_encrypt_with =
-      cs_subset_string(rd->sub, "smime_encrypt_with");
+      cs_subset_string(shared->sub, "smime_encrypt_with");
   if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME) &&
       (e->security & SEC_ENCRYPT) && c_smime_encrypt_with)
   {
-    draw_floating(rd->win_env, 40, row - 1, _("Encrypt with: "));
-    mutt_window_printf(rd->win_env, "%s", NONULL(c_smime_encrypt_with));
+    draw_floating(win, 40, row - 1, _("Encrypt with: "));
+    mutt_window_printf(win, "%s", NONULL(c_smime_encrypt_with));
   }
 
 #ifdef USE_AUTOCRYPT
-  const bool c_autocrypt = cs_subset_bool(rd->sub, "autocrypt");
+  const bool c_autocrypt = cs_subset_bool(shared->sub, "autocrypt");
   if (c_autocrypt)
   {
-    draw_header(rd->win_env, row, HDR_AUTOCRYPT);
+    draw_header(win, row, HDR_AUTOCRYPT);
     if (e->security & SEC_AUTOCRYPT)
     {
       mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
-      mutt_window_addstr(rd->win_env, _("Encrypt"));
+      mutt_window_addstr(win, _("Encrypt"));
     }
     else
     {
       mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_NONE);
-      mutt_window_addstr(rd->win_env, _("Off"));
+      mutt_window_addstr(win, _("Off"));
     }
 
     /* L10N: The autocrypt compose menu Recommendation field.
        Displays the output of the recommendation engine
        (Off, No, Discouraged, Available, Yes) */
-    draw_floating(rd->win_env, 40, row, _("Recommendation: "));
-    mutt_window_printf(rd->win_env, "%s", _(AutocryptRecUiFlags[rd->autocrypt_rec]));
+    draw_floating(win, 40, row, _("Recommendation: "));
+    mutt_window_printf(win, "%s", _(AutocryptRecUiFlags[edata->autocrypt_rec]));
 
     used++;
   }
@@ -663,23 +672,24 @@ static int redraw_crypt_lines(struct ComposeRedrawData *rd, int row)
 
 /**
  * update_crypt_info - Update the crypto info
- * @param rd Email and other compose data
- * @param m  Current Mailbox
+ * @param shared Shared compose data
  */
-static void update_crypt_info(struct ComposeRedrawData *rd, struct Mailbox *m)
+static void update_crypt_info(struct ComposeSharedData *shared)
 {
-  struct Email *e = rd->email;
+  struct Email *e = shared->email;
+  struct Mailbox *m = shared->mailbox;
+  struct ComposeEnvelopeData *edata = shared->edata;
 
   const bool c_crypt_opportunistic_encrypt =
-      cs_subset_bool(rd->sub, "crypt_opportunistic_encrypt");
+      cs_subset_bool(shared->sub, "crypt_opportunistic_encrypt");
   if (c_crypt_opportunistic_encrypt)
     crypt_opportunistic_encrypt(m, e);
 
 #ifdef USE_AUTOCRYPT
-  const bool c_autocrypt = cs_subset_bool(rd->sub, "autocrypt");
+  const bool c_autocrypt = cs_subset_bool(shared->sub, "autocrypt");
   if (c_autocrypt)
   {
-    rd->autocrypt_rec = mutt_autocrypt_ui_recommendation(m, e, NULL);
+    edata->autocrypt_rec = mutt_autocrypt_ui_recommendation(m, e, NULL);
 
     /* Anything that enables SEC_ENCRYPT or SEC_SIGN, or turns on SMIME
      * overrides autocrypt, be it oppenc or the user having turned on
@@ -690,7 +700,7 @@ static void update_crypt_info(struct ComposeRedrawData *rd, struct Mailbox *m)
     {
       if (!(e->security & SEC_AUTOCRYPT_OVERRIDE))
       {
-        if (rd->autocrypt_rec == AUTOCRYPT_REC_YES)
+        if (edata->autocrypt_rec == AUTOCRYPT_REC_YES)
         {
           e->security |= (SEC_AUTOCRYPT | APPLICATION_PGP);
           e->security &= ~(SEC_INLINE | APPLICATION_SMIME);
@@ -707,19 +717,19 @@ static void update_crypt_info(struct ComposeRedrawData *rd, struct Mailbox *m)
 /**
  * redraw_mix_line - Redraw the Mixmaster chain
  * @param chain List of chain links
- * @param rd    Email and other compose data
+ * @param win   Window to draw on
  * @param row   Window row to start drawing
  */
-static void redraw_mix_line(struct ListHead *chain, struct ComposeRedrawData *rd, int row)
+static void redraw_mix_line(struct ListHead *chain, struct MuttWindow *win, int row)
 {
   char *t = NULL;
 
-  draw_header(rd->win_env, row, HDR_MIX);
+  draw_header(win, row, HDR_MIX);
 
   if (STAILQ_EMPTY(chain))
   {
-    mutt_window_addstr(rd->win_env, _("<no chain defined>"));
-    mutt_window_clrtoeol(rd->win_env);
+    mutt_window_addstr(win, _("<no chain defined>"));
+    mutt_window_clrtoeol(win);
     return;
   }
 
@@ -731,12 +741,12 @@ static void redraw_mix_line(struct ListHead *chain, struct ComposeRedrawData *rd
     if (t && (t[0] == '0') && (t[1] == '\0'))
       t = "<random>";
 
-    if (c + mutt_str_len(t) + 2 >= rd->win_env->state.cols)
+    if (c + mutt_str_len(t) + 2 >= win->state.cols)
       break;
 
-    mutt_window_addstr(rd->win_env, NONULL(t));
+    mutt_window_addstr(win, NONULL(t));
     if (STAILQ_NEXT(np, entries))
-      mutt_window_addstr(rd->win_env, ", ");
+      mutt_window_addstr(win, ", ");
 
     c += mutt_str_len(t) + 2;
   }
@@ -918,23 +928,25 @@ static int draw_envelope_addr(int field, struct AddressList *al,
 
 /**
  * draw_envelope_user_hdrs - Write user-defined headers to the compose window
- * @param rd  Email and other compose data
- * @param row Window row to start drawing from
+ * @param win    Window to draw on
+ * @param shared Shared compose data
+ * @param row    Window row to start drawing from
  */
-static int draw_envelope_user_hdrs(const struct ComposeRedrawData *rd, int row)
+static int draw_envelope_user_hdrs(struct MuttWindow *win,
+                                   struct ComposeSharedData *shared, int row)
 {
   const char *overflow_text = "...";
   int rows_used = 0;
 
-  struct ListNode *first = STAILQ_FIRST(&rd->email->env->userhdrs);
+  struct ListNode *first = STAILQ_FIRST(&shared->email->env->userhdrs);
   if (!first)
     return rows_used;
 
   /* Draw first entry on same line as prompt */
-  draw_header(rd->win_env, row, HDR_CUSTOM_HEADERS);
-  mutt_paddstr(rd->win_env,
-               rd->win_env->state.cols - (HeaderPadding[HDR_CUSTOM_HEADERS] +
-                                          mutt_strwidth(_(Prompts[HDR_CUSTOM_HEADERS]))),
+  draw_header(win, row, HDR_CUSTOM_HEADERS);
+  mutt_paddstr(win,
+               win->state.cols - (HeaderPadding[HDR_CUSTOM_HEADERS] +
+                                  mutt_strwidth(_(Prompts[HDR_CUSTOM_HEADERS]))),
                first->data);
   rows_used++;
 
@@ -943,15 +955,15 @@ static int draw_envelope_user_hdrs(const struct ComposeRedrawData *rd, int row)
   if (!np)
     return rows_used;
 
-  STAILQ_FOREACH_FROM(np, &rd->email->env->userhdrs, entries)
+  STAILQ_FOREACH_FROM(np, &shared->email->env->userhdrs, entries)
   {
     if ((rows_used == (MAX_USER_HDR_ROWS - 1)) && STAILQ_NEXT(np, entries))
     {
-      draw_header_content(rd->win_env, row + rows_used, HDR_CUSTOM_HEADERS, overflow_text);
+      draw_header_content(win, row + rows_used, HDR_CUSTOM_HEADERS, overflow_text);
       rows_used++;
       break;
     }
-    draw_header_content(rd->win_env, row + rows_used, HDR_CUSTOM_HEADERS, np->data);
+    draw_header_content(win, row + rows_used, HDR_CUSTOM_HEADERS, np->data);
     rows_used++;
   }
   return rows_used;
@@ -959,59 +971,62 @@ static int draw_envelope_user_hdrs(const struct ComposeRedrawData *rd, int row)
 
 /**
  * draw_envelope - Write the email headers to the compose window
- * @param rd  Email and other compose data
+ * @param win    Window to draw on
+ * @param shared Shared compose data
+ * @param edata  Envelope data
  */
-static void draw_envelope(struct ComposeRedrawData *rd)
+static void draw_envelope(struct MuttWindow *win, struct ComposeSharedData *shared,
+                          struct ComposeEnvelopeData *edata)
 {
-  struct Email *e = rd->email;
-  const char *fcc = mutt_buffer_string(rd->fcc);
-  const int cols = rd->win_env->state.cols - MaxHeaderWidth;
+  struct Email *e = shared->email;
+  const char *fcc = mutt_buffer_string(edata->fcc);
+  const int cols = win->state.cols - MaxHeaderWidth;
 
-  mutt_window_clear(rd->win_env);
-  int row = draw_envelope_addr(HDR_FROM, &e->env->from, rd->win_env, 0, 1);
+  mutt_window_clear(win);
+  int row = draw_envelope_addr(HDR_FROM, &e->env->from, win, 0, 1);
 
 #ifdef USE_NNTP
   if (OptNewsSend)
   {
-    draw_header(rd->win_env, row++, HDR_NEWSGROUPS);
-    mutt_paddstr(rd->win_env, cols, NONULL(e->env->newsgroups));
+    draw_header(win, row++, HDR_NEWSGROUPS);
+    mutt_paddstr(win, cols, NONULL(e->env->newsgroups));
 
-    draw_header(rd->win_env, row++, HDR_FOLLOWUPTO);
-    mutt_paddstr(rd->win_env, cols, NONULL(e->env->followup_to));
+    draw_header(win, row++, HDR_FOLLOWUPTO);
+    mutt_paddstr(win, cols, NONULL(e->env->followup_to));
 
-    const bool c_x_comment_to = cs_subset_bool(rd->sub, "x_comment_to");
+    const bool c_x_comment_to = cs_subset_bool(shared->sub, "x_comment_to");
     if (c_x_comment_to)
     {
-      draw_header(rd->win_env, row++, HDR_XCOMMENTTO);
-      mutt_paddstr(rd->win_env, cols, NONULL(e->env->x_comment_to));
+      draw_header(win, row++, HDR_XCOMMENTTO);
+      mutt_paddstr(win, cols, NONULL(e->env->x_comment_to));
     }
   }
   else
 #endif
   {
-    row += draw_envelope_addr(HDR_TO, &e->env->to, rd->win_env, row, rd->to_rows);
-    row += draw_envelope_addr(HDR_CC, &e->env->cc, rd->win_env, row, rd->cc_rows);
-    row += draw_envelope_addr(HDR_BCC, &e->env->bcc, rd->win_env, row, rd->bcc_rows);
+    row += draw_envelope_addr(HDR_TO, &e->env->to, win, row, edata->to_rows);
+    row += draw_envelope_addr(HDR_CC, &e->env->cc, win, row, edata->cc_rows);
+    row += draw_envelope_addr(HDR_BCC, &e->env->bcc, win, row, edata->bcc_rows);
   }
 
-  draw_header(rd->win_env, row++, HDR_SUBJECT);
-  mutt_paddstr(rd->win_env, cols, NONULL(e->env->subject));
+  draw_header(win, row++, HDR_SUBJECT);
+  mutt_paddstr(win, cols, NONULL(e->env->subject));
 
-  row += draw_envelope_addr(HDR_REPLYTO, &e->env->reply_to, rd->win_env, row, 1);
+  row += draw_envelope_addr(HDR_REPLYTO, &e->env->reply_to, win, row, 1);
 
-  draw_header(rd->win_env, row++, HDR_FCC);
-  mutt_paddstr(rd->win_env, cols, fcc);
+  draw_header(win, row++, HDR_FCC);
+  mutt_paddstr(win, cols, fcc);
 
   if (WithCrypto)
-    row += redraw_crypt_lines(rd, row);
+    row += redraw_crypt_lines(win, shared, edata, row);
 
 #ifdef MIXMASTER
-  redraw_mix_line(&e->chain, rd, row++);
+  redraw_mix_line(&e->chain, win, row++);
 #endif
   const bool c_compose_show_user_headers =
-      cs_subset_bool(rd->sub, "compose_show_user_headers");
+      cs_subset_bool(shared->sub, "compose_show_user_headers");
   if (c_compose_show_user_headers)
-    row += draw_envelope_user_hdrs(rd, row);
+    row += draw_envelope_user_hdrs(win, shared, row);
 
   mutt_curses_set_color(MT_COLOR_STATUS);
   mutt_curses_set_color(MT_COLOR_NORMAL);
@@ -1148,8 +1163,8 @@ static void update_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
     gen_attach_list(actx, actx->email->body, -1, 0);
     mutt_attach_init(actx);
 
-    struct ComposeRedrawData *rd = menu->mdata;
-    rd->actx = actx;
+    struct ComposeAttachData *adata = menu->mdata;
+    adata->actx = actx;
   }
 
   mutt_update_tree(actx);
@@ -1189,27 +1204,24 @@ static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachP
  */
 static void compose_custom_redraw(struct Menu *menu)
 {
-  struct ComposeRedrawData *rd = menu->mdata;
-  if (!rd)
-    return;
+  // menu->redraw |= MENU_REDRAW_FULL;
 
   if (menu->redraw & MENU_REDRAW_FLOW)
   {
-    rd->win_env->req_rows = calc_envelope(rd);
-    mutt_window_reflow(dialog_find(rd->win_env));
+    mutt_window_reflow(dialog_find(menu->win_index));
   }
 
   if (menu->redraw & MENU_REDRAW_FULL)
   {
     menu_redraw_full(menu);
-    draw_envelope(rd);
+    menu->pagelen = menu->win_index->state.rows;
   }
 
   menu_check_recenter(menu);
 
   if (menu->redraw & MENU_REDRAW_INDEX)
     menu_redraw_index(menu);
-  else if (menu->redraw & MENU_REDRAW_MOTION)
+  else if (menu->redraw & (MENU_REDRAW_MOTION | MENU_REDRAW_MOTION))
     menu_redraw_motion(menu);
   else if (menu->redraw == MENU_REDRAW_CURRENT)
     menu_redraw_current(menu);
@@ -1290,9 +1302,12 @@ static int compose_header_observer(struct NotifyCallback *nc)
     return -1;
 
   const struct EventHeader *ev_h = nc->event_data;
-  struct ComposeRedrawData *rd = nc->global_data;
-  struct Envelope *env = rd->email->env;
-  struct MuttWindow *dlg = rd->win_env->parent;
+  struct MuttWindow *win_env = nc->global_data;
+  // struct ComposeEnvelopeData *edata = win_env->wdata;
+  struct MuttWindow *dlg = win_env->parent;
+  struct ComposeSharedData *shared = dlg->wdata;
+
+  struct Envelope *env = shared->email->env;
 
   if ((nc->event_subtype == NT_HEADER_ADD) || (nc->event_subtype == NT_HEADER_CHANGE))
   {
@@ -1322,8 +1337,9 @@ static int compose_header_observer(struct NotifyCallback *nc)
  */
 static int compose_attach_tag(struct Menu *menu, int sel, int act)
 {
-  struct ComposeRedrawData *rd = menu->mdata;
-  struct AttachCtx *actx = rd->actx;
+  struct ComposeSharedData *shared = menu->mdata;
+  struct ComposeAttachData *adata = shared->adata;
+  struct AttachCtx *actx = adata->actx;
   struct Body *cur = actx->idx[actx->v2r[sel]]->body;
   bool ot = cur->tagged;
 
@@ -1348,14 +1364,15 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   int rc = -1;
   bool loop = true;
   bool fcc_set = false; /* has the user edited the Fcc: field ? */
-  struct ComposeRedrawData redraw = { 0 };
   struct Mailbox *m = ctx_mailbox(Context);
 
-  STAILQ_INIT(&redraw.to_list);
-  STAILQ_INIT(&redraw.cc_list);
-  STAILQ_INIT(&redraw.bcc_list);
+  struct ComposeSharedData *shared = compose_shared_data_new();
+  shared->sub = sub;
+  shared->email = e;
+  shared->edata = env_data_new();
+  shared->edata->fcc = fcc;
+  shared->adata = attach_data_new();
 
-  struct ComposeRedrawData *rd = &redraw;
 #ifdef USE_NNTP
   bool news = OptNewsSend; /* is it a news article ? */
 #endif
@@ -1365,6 +1382,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   struct MuttWindow *dlg =
       mutt_window_new(WT_DLG_COMPOSE, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->wdata = shared;
 
   struct MuttWindow *win_env =
       mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
@@ -1373,17 +1391,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   struct MuttWindow *win_attach = menu_new_window(MENU_COMPOSE, NeoMutt->sub);
   dlg->focus = win_attach;
 
-  rd->email = e;
-  rd->fcc = fcc;
-  rd->win_env = win_env;
-  rd->sub = sub;
-  rd->win_cbar = cbar_new(dlg, rd);
+  struct MuttWindow *win_cbar = cbar_new(dlg, shared);
 
   struct MuttWindow *win_abar = sbar_new(dlg);
   const bool c_status_on_top = cs_subset_bool(sub, "status_on_top");
   if (c_status_on_top)
   {
-    mutt_window_add_child(dlg, rd->win_cbar);
+    mutt_window_add_child(dlg, win_cbar);
     mutt_window_add_child(dlg, win_env);
     mutt_window_add_child(dlg, win_abar);
     mutt_window_add_child(dlg, win_attach);
@@ -1393,12 +1407,12 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
     mutt_window_add_child(dlg, win_env);
     mutt_window_add_child(dlg, win_abar);
     mutt_window_add_child(dlg, win_attach);
-    mutt_window_add_child(dlg, rd->win_cbar);
+    mutt_window_add_child(dlg, win_cbar);
   }
   sbar_set_title(win_abar, _("-- Attachments"));
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, compose_config_observer, dlg);
-  notify_observer_add(NeoMutt->notify, NT_HEADER, compose_header_observer, rd);
+  notify_observer_add(NeoMutt->notify, NT_HEADER, compose_header_observer, win_env);
   dialog_push(dlg);
 
 #ifdef USE_NNTP
@@ -1409,21 +1423,21 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
     dlg->help_data = ComposeHelp;
   dlg->help_menu = MENU_COMPOSE;
 
-  win_env->req_rows = calc_envelope(rd);
+  win_env->req_rows = calc_envelope(win_env, shared, shared->edata);
   mutt_window_reflow(dlg);
 
   struct Menu *menu = win_attach->wdata;
-  rd->menu = menu;
+  shared->adata->menu = menu;
   menu->make_entry = compose_make_entry;
   menu->tag = compose_attach_tag;
   menu->custom_redraw = compose_custom_redraw;
-  menu->mdata = rd;
+  menu->mdata = shared;
 
   struct AttachCtx *actx = mutt_actx_new();
   actx->email = e;
   update_menu(actx, menu, true);
 
-  update_crypt_info(rd, m);
+  update_crypt_info(shared);
 
   /* Since this is rather long lived, we don't use the pool */
   struct Buffer fname = mutt_buffer_make(PATH_MAX);
@@ -1435,21 +1449,22 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
     if (redraw_env)
     {
       redraw_env = false;
-      win_env->req_rows = calc_envelope(rd);
+      win_env->req_rows = calc_envelope(win_env, shared, shared->edata);
       mutt_window_reflow(dlg);
-      draw_envelope(rd);
+      draw_envelope(win_env, shared, shared->edata);
     }
 
     if (redraw_cbar)
     {
-      rd->win_cbar->actions |= WA_RECALC;
-      window_redraw(rd->win_cbar);
+      win_cbar->actions |= WA_RECALC;
+      window_redraw(win_cbar);
       redraw_cbar = false;
     }
 
 #ifdef USE_NNTP
     OptNews = false; /* for any case */
 #endif
+    window_redraw(NULL);
     const int op = menu_loop(menu);
     if (op >= 0)
       mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
@@ -1458,7 +1473,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       case OP_COMPOSE_EDIT_FROM:
         if (edit_address_list(HDR_FROM, &e->env->from))
         {
-          update_crypt_info(rd, m);
+          update_crypt_info(shared);
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           redraw_env = true;
         }
@@ -1472,7 +1487,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 #endif
         if (edit_address_list(HDR_TO, &e->env->to))
         {
-          update_crypt_info(rd, m);
+          update_crypt_info(shared);
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           redraw_env = true;
         }
@@ -1487,7 +1502,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 #endif
         if (edit_address_list(HDR_BCC, &e->env->bcc))
         {
-          update_crypt_info(rd, m);
+          update_crypt_info(shared);
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           redraw_env = true;
         }
@@ -1502,7 +1517,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 #endif
         if (edit_address_list(HDR_CC, &e->env->cc))
         {
-          update_crypt_info(rd, m);
+          update_crypt_info(shared);
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           redraw_env = true;
         }
@@ -1619,7 +1634,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           mutt_error(_("Bad IDN in '%s': '%s'"), tag, err);
           FREE(&err);
         }
-        update_crypt_info(rd, m);
+        update_crypt_info(shared);
         redraw_env = true;
 
         mutt_rfc3676_space_stuff(e);
@@ -2610,10 +2625,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           }
           e->security &= ~APPLICATION_SMIME;
           e->security |= APPLICATION_PGP;
-          update_crypt_info(rd, m);
+          update_crypt_info(shared);
         }
         e->security = crypt_pgp_send_menu(m, e);
-        update_crypt_info(rd, m);
+        update_crypt_info(shared);
         if (old_flags != e->security)
         {
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
@@ -2650,10 +2665,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           }
           e->security &= ~APPLICATION_PGP;
           e->security |= APPLICATION_SMIME;
-          update_crypt_info(rd, m);
+          update_crypt_info(shared);
         }
         e->security = crypt_smime_send_menu(m, e);
-        update_crypt_info(rd, m);
+        update_crypt_info(shared);
         if (old_flags != e->security)
         {
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
@@ -2691,10 +2706,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           }
           e->security &= ~APPLICATION_SMIME;
           e->security |= APPLICATION_PGP;
-          update_crypt_info(rd, m);
+          update_crypt_info(shared);
         }
         autocrypt_compose_menu(e, sub);
-        update_crypt_info(rd, m);
+        update_crypt_info(shared);
         if (old_flags != e->security)
         {
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
@@ -2719,7 +2734,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
   dialog_pop();
   notify_observer_remove(NeoMutt->notify, compose_config_observer, dlg);
-  notify_observer_remove(NeoMutt->notify, compose_header_observer, rd);
+  notify_observer_remove(NeoMutt->notify, compose_header_observer, shared);
   mutt_window_free(&dlg);
 
   if (actx->idxlen)
@@ -2729,8 +2744,6 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
   mutt_actx_free(&actx);
 
-  mutt_list_free(&redraw.to_list);
-  mutt_list_free(&redraw.cc_list);
-  mutt_list_free(&redraw.bcc_list);
+  compose_shared_data_free(NULL, (void **) &shared);
   return rc;
 }

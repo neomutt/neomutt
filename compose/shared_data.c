@@ -1,6 +1,6 @@
 /**
  * @file
- * Shared Compose Data
+ * Compose Shared Data
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -20,41 +20,36 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMPOSE_REDRAW_H
-#define MUTT_COMPOSE_REDRAW_H
+/**
+ * @page compose_shared_data Compose Shared Data
+ *
+ * Compose Shared Data
+ */
 
 #include "config.h"
 #include "mutt/lib.h"
-#ifdef USE_AUTOCRYPT
-#include "autocrypt/lib.h"
-#endif
+#include "shared_data.h"
 
 /**
- * struct ComposeRedrawData - Keep track when the compose screen needs redrawing
+ * compose_shared_data_free - Create the compose shared data - Implements MuttWindow::wdata_free()
  */
-struct ComposeRedrawData
+void compose_shared_data_free(struct MuttWindow *win, void **ptr)
 {
-  struct Email *email;
-  struct Buffer *fcc;
+  if (!ptr || !*ptr)
+    return;
 
-  struct ListHead to_list;
-  struct ListHead cc_list;
-  struct ListHead bcc_list;
+  // struct ComposeSharedData *shared = *ptr;
 
-  short to_rows;
-  short cc_rows;
-  short bcc_rows;
-  short sec_rows;
+  FREE(ptr);
+}
 
-#ifdef USE_AUTOCRYPT
-  enum AutocryptRec autocrypt_rec;
-#endif
-  struct MuttWindow *win_env;  ///< Envelope: From, To, etc
-  struct MuttWindow *win_cbar; ///< Compose bar
+/**
+ * compose_shared_data_new - Free the compose shared data
+ * @retval ptr New compose shared data
+ */
+struct ComposeSharedData *compose_shared_data_new(void)
+{
+  struct ComposeSharedData *shared = mutt_mem_calloc(1, sizeof(struct ComposeSharedData));
 
-  struct Menu *menu;
-  struct AttachCtx *actx;   ///< Attachments
-  struct ConfigSubset *sub; ///< Inherited config items
-};
-
-#endif /* MUTT_COMPOSE_REDRAW_H */
+  return shared;
+}
