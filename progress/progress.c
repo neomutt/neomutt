@@ -46,29 +46,31 @@
  */
 struct Progress
 {
-  char msg[1024];     ///< Message to display
-  char sizestr[24];   ///< String for percentage/size
-  size_t pos;         ///< Current postion
-  size_t size;        ///< Total expected size
-  size_t inc;         ///< Increment size
-  uint64_t timestamp; ///< Time of last update
-  bool is_bytes;      ///< true if measuring bytes
+  struct MuttWindow *win; ///< Window to draw on
+  char msg[1024];         ///< Message to display
+  char sizestr[24];       ///< String for percentage/size
+  size_t pos;             ///< Current postion
+  size_t size;            ///< Total expected size
+  size_t inc;             ///< Increment size
+  uint64_t timestamp;     ///< Time of last update
+  bool is_bytes;          ///< true if measuring bytes
 };
 
 /**
  * message_bar - Draw a colourful progress bar
+ * @param win     Window to draw on
  * @param percent %age complete
  * @param fmt     printf(1)-like formatting string
  * @param ...     Arguments to formatting string
  */
-static void message_bar(int percent, const char *fmt, ...)
+static void message_bar(struct MuttWindow *win, int percent, const char *fmt, ...)
 {
-  if (!fmt || !MessageWindow)
+  if (!fmt || !win)
     return;
 
   va_list ap;
   char buf[256], buf2[256];
-  int w = (percent * MessageWindow->state.cols) / 100;
+  int w = (percent * win->state.cols) / 100;
   size_t l;
 
   va_start(ap, fmt);
@@ -76,14 +78,14 @@ static void message_bar(int percent, const char *fmt, ...)
   l = mutt_strwidth(buf);
   va_end(ap);
 
-  mutt_simple_format(buf2, sizeof(buf2), 0, MessageWindow->state.cols - 2,
-                     JUSTIFY_LEFT, 0, buf, sizeof(buf), false);
+  mutt_simple_format(buf2, sizeof(buf2), 0, win->state.cols - 2, JUSTIFY_LEFT,
+                     0, buf, sizeof(buf), false);
 
-  mutt_window_move(MessageWindow, 0, 0);
+  mutt_window_move(win, 0, 0);
 
   if (mutt_color(MT_COLOR_PROGRESS) == 0)
   {
-    mutt_window_addstr(MessageWindow, buf2);
+    mutt_window_addstr(win, buf2);
   }
   else
   {
@@ -91,11 +93,11 @@ static void message_bar(int percent, const char *fmt, ...)
     {
       /* The string fits within the colour bar */
       mutt_curses_set_color(MT_COLOR_PROGRESS);
-      mutt_window_addstr(MessageWindow, buf2);
+      mutt_window_addstr(win, buf2);
       w -= l;
       while (w-- > 0)
       {
-        mutt_window_addch(MessageWindow, ' ');
+        mutt_window_addch(win, ' ');
       }
       mutt_curses_set_color(MT_COLOR_NORMAL);
     }
@@ -107,14 +109,14 @@ static void message_bar(int percent, const char *fmt, ...)
       char ch = buf2[off];
       buf2[off] = '\0';
       mutt_curses_set_color(MT_COLOR_PROGRESS);
-      mutt_window_addstr(MessageWindow, buf2);
+      mutt_window_addstr(win, buf2);
       buf2[off] = ch;
       mutt_curses_set_color(MT_COLOR_NORMAL);
-      mutt_window_addstr(MessageWindow, &buf2[off]);
+      mutt_window_addstr(win, &buf2[off]);
     }
   }
 
-  mutt_window_clrtoeol(MessageWindow);
+  mutt_window_clrtoeol(win);
   mutt_refresh();
 }
 
@@ -206,13 +208,13 @@ void progress_update(struct Progress *progress, size_t pos, int percent)
       {
         percent = 100.0 * progress->pos / progress->size;
       }
-      message_bar(percent, "%s %s/%s (%d%%)", progress->msg, posstr,
-                  progress->sizestr, percent);
+      message_bar(progress->win, percent, "%s %s/%s (%d%%)", progress->msg,
+                  posstr, progress->sizestr, percent);
     }
     else
     {
       if (percent > 0)
-        message_bar(percent, "%s %s (%d%%)", progress->msg, posstr, percent);
+        message_bar(progress->win, percent, "%s %s (%d%%)", progress->msg, posstr, percent);
       else
         mutt_message("%s %s", progress->msg, posstr);
     }
@@ -251,6 +253,7 @@ struct Progress *progress_new(const char *msg, enum ProgressType type, size_t si
   struct Progress *progress = mutt_mem_calloc(1, sizeof(struct Progress));
 
   /* Initialize Progress structure */
+  progress->win = msgwin_get_window();
   mutt_str_copy(progress->msg, msg, sizeof(progress->msg));
   progress->size = size;
   progress->inc = choose_increment(type);

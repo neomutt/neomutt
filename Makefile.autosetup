@@ -308,9 +308,9 @@ $(PWD)/email:
 ###############################################################################
 # libgui
 LIBGUI=		libgui.a
-LIBGUIOBJS=	gui/color.o gui/curs_lib.o gui/dialog.o gui/mutt_curses.o \
-		gui/mutt_window.o gui/reflow.o gui/sbar.o gui/simple.o \
-		gui/terminal.o
+LIBGUIOBJS=	gui/color.o gui/curs_lib.o gui/dialog.o gui/msgwin.o \
+		gui/mutt_curses.o gui/mutt_window.o gui/reflow.o gui/sbar.o \
+		gui/simple.o gui/terminal.o
 CLEANFILES+=	$(LIBGUI) $(LIBGUIOBJS)
 ALLOBJS+=	$(LIBGUIOBJS)
 

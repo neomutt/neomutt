@@ -117,7 +117,7 @@ void mutt_clear_error(void)
 
   ErrorBufMessage = false;
   if (!OptNoCurses)
-    mutt_window_clearline(MessageWindow, 0);
+    msgwin_clear_text();
 }
 
 /**
@@ -166,30 +166,29 @@ int log_disp_curses(time_t stamp, const char *file, int line,
   if ((level > LL_ERROR) && OptMsgErr && !dupe)
     error_pause();
 
-  mutt_simple_format(ErrorBuf, sizeof(ErrorBuf), 0,
-                     MessageWindow ? MessageWindow->state.cols : sizeof(ErrorBuf),
+  size_t width = msgwin_get_width();
+  mutt_simple_format(ErrorBuf, sizeof(ErrorBuf), 0, width ? width : sizeof(ErrorBuf),
                      JUSTIFY_LEFT, 0, buf, sizeof(buf), false);
   ErrorBufMessage = true;
 
   if (!OptKeepQuiet)
   {
+    enum ColorId color = MT_COLOR_NORMAL;
     switch (level)
     {
       case LL_ERROR:
         mutt_beep(false);
-        mutt_curses_set_color(MT_COLOR_ERROR);
+        color = MT_COLOR_ERROR;
         break;
       case LL_WARNING:
-        mutt_curses_set_color(MT_COLOR_WARNING);
+        color = MT_COLOR_WARNING;
         break;
       default:
-        mutt_curses_set_color(MT_COLOR_MESSAGE);
+        color = MT_COLOR_MESSAGE;
         break;
     }
 
-    mutt_window_mvaddstr(MessageWindow, 0, 0, ErrorBuf);
-    mutt_curses_set_color(MT_COLOR_NORMAL);
-    mutt_window_clrtoeol(MessageWindow);
+    msgwin_set_text(color, ErrorBuf);
     mutt_refresh();
   }
 

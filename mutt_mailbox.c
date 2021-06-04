@@ -243,8 +243,8 @@ bool mutt_mailbox_list(void)
     mutt_buffer_strcpy(path, mailbox_path(np->mailbox));
     mutt_buffer_pretty_mailbox(path);
 
-    if (!first && (MessageWindow->state.cols >= 7) &&
-        ((pos + mutt_buffer_len(path)) >= ((size_t) MessageWindow->state.cols - 7)))
+    const size_t width = msgwin_get_width();
+    if (!first && (width >= 7) && ((pos + mutt_buffer_len(path)) >= (width - 7)))
     {
       break;
     }

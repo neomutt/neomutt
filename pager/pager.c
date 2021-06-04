@@ -2082,7 +2082,6 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     }
 
     menu_queue_redraw(pager_menu, MENU_REDRAW_BODY | MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
-    mutt_show_error();
   }
 
   if (pager_menu->redraw & MENU_REDRAW_FLOW)
@@ -2633,7 +2632,7 @@ int mutt_pager(struct PagerView *pview)
       SigWinch = false;
       mutt_resize_screen();
       clearok(stdscr, true); /* force complete redraw */
-      mutt_window_clearline(MessageWindow, 0);
+      msgwin_clear_text();
 
       if (pview->flags & MUTT_PAGER_RETWINCH)
       {

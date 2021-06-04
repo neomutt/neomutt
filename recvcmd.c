@@ -237,9 +237,10 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   snprintf(prompt, sizeof(prompt) - 4,
            ngettext("Bounce message to %s?", "Bounce messages to %s?", p), buf);
 
-  if (mutt_strwidth(prompt) > MessageWindow->state.cols - EXTRA_SPACE)
+  const size_t width = msgwin_get_width();
+  if (mutt_strwidth(prompt) > (width - EXTRA_SPACE))
   {
-    mutt_simple_format(prompt, sizeof(prompt) - 4, 0, MessageWindow->state.cols - EXTRA_SPACE,
+    mutt_simple_format(prompt, sizeof(prompt) - 4, 0, width - EXTRA_SPACE,
                        JUSTIFY_LEFT, 0, prompt, sizeof(prompt), false);
     mutt_str_cat(prompt, sizeof(prompt), "...?");
   }
@@ -249,12 +250,12 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   const enum QuadOption c_bounce = cs_subset_quad(NeoMutt->sub, "bounce");
   if (query_quadoption(c_bounce, prompt) != MUTT_YES)
   {
-    mutt_window_clearline(MessageWindow, 0);
+    msgwin_clear_text();
     mutt_message(ngettext("Message not bounced", "Messages not bounced", p));
     goto end;
   }
 
-  mutt_window_clearline(MessageWindow, 0);
+  msgwin_clear_text();
 
   if (cur)
     ret = mutt_bounce_message(fp, m, cur->email, &al, NeoMutt->sub);

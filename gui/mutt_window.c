@@ -34,10 +34,9 @@
 #include "core/lib.h"
 #include "mutt_window.h"
 #include "helpbar/lib.h"
-#include "menu/lib.h"
 #include "curs_lib.h"
+#include "msgwin.h"
 #include "mutt_curses.h"
-#include "opcodes.h"
 #include "options.h"
 #include "reflow.h"
 #ifdef USE_DEBUG_WINDOW
@@ -46,7 +45,6 @@
 
 struct MuttWindow *RootWindow = NULL;       ///< Parent of all Windows
 struct MuttWindow *AllDialogsWindow = NULL; ///< Parent of all Dialogs
-struct MuttWindow *MessageWindow = NULL;    ///< Message Window, ":set", etc
 
 /// Lookups for Window Names
 static const struct Mapping WindowNames[] = {
@@ -332,7 +330,6 @@ void mutt_window_free_all(void)
   if (NeoMutt)
     notify_observer_remove(NeoMutt->notify, rootwin_config_observer, RootWindow);
   AllDialogsWindow = NULL;
-  MessageWindow = NULL;
   mutt_window_free(&RootWindow);
 }
 
@@ -377,8 +374,7 @@ void mutt_window_init(void)
                                      MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
                                      MUTT_WIN_SIZE_UNLIMITED);
 
-  MessageWindow = mutt_window_new(WT_MESSAGE, MUTT_WIN_ORIENT_VERTICAL,
-                                  MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
+  struct MuttWindow *win_msg = msgwin_create();
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)
@@ -392,7 +388,7 @@ void mutt_window_init(void)
     mutt_window_add_child(RootWindow, AllDialogsWindow);
   }
 
-  mutt_window_add_child(RootWindow, MessageWindow);
+  mutt_window_add_child(RootWindow, win_msg);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, rootwin_config_observer, RootWindow);
 }
 
@@ -470,22 +466,6 @@ void mutt_window_reflow(struct MuttWindow *win)
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
 #endif
-}
-
-/**
- * mutt_window_reflow_message_rows - Resize the Message Window
- * @param mw_rows Number of rows required
- *
- * Resize the other Windows to allow a multi-line message to be displayed.
- */
-void mutt_window_reflow_message_rows(int mw_rows)
-{
-  MessageWindow->req_rows = mw_rows;
-  mutt_window_reflow(MessageWindow->parent);
-
-  /* We don't also set MENU_REDRAW_FLOW because this function only
-   * changes rows and is a temporary adjustment. */
-  window_redraw(RootWindow);
 }
 
 /**
@@ -767,6 +747,21 @@ void window_redraw(struct MuttWindow *win)
   window_recalc(win);
   window_repaint(win);
   mutt_refresh();
+}
+
+/**
+ * window_is_focused - Does the given Window have the focus?
+ * @param win Window to check
+ * @retval true Window has focus
+ */
+bool window_is_focused(struct MuttWindow *win)
+{
+  if (!win)
+    return false;
+
+  struct MuttWindow *win_focus = window_get_focus();
+
+  return (win_focus == win);
 }
 
 /**

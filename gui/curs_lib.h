@@ -70,7 +70,6 @@ void         mutt_perror_debug(const char *s);
 void         mutt_push_macro_event(int ch, int op);
 void         mutt_query_exit(void);
 void         mutt_refresh(void);
-void         mutt_show_error(void);
 void         mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width, enum FormatJustify justify, char pad_char, const char *s, size_t n, bool arboreal);
 int          mutt_strwidth(const char *s);
 int          mutt_strnwidth(const char *s, size_t len);

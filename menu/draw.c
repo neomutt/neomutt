@@ -342,8 +342,6 @@ void menu_redraw_full(struct Menu *menu)
   window_redraw(RootWindow);
   menu->pagelen = menu->win_index->state.rows;
 
-  mutt_show_error();
-
   menu->redraw = MENU_REDRAW_INDEX | MENU_REDRAW_STATUS;
 }
 
@@ -546,8 +544,7 @@ static void menu_redraw_prompt(struct Menu *menu)
   if (ErrorBufMessage)
     mutt_clear_error();
 
-  mutt_window_mvaddstr(MessageWindow, 0, 0, menu->prompt);
-  mutt_window_clrtoeol(MessageWindow);
+  msgwin_set_text(MT_COLOR_NORMAL, menu->prompt);
 
   mutt_debug(LL_NOTIFY, "NT_MENU\n");
   notify_send(menu->notify, NT_MENU, 0, NULL);
