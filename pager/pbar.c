@@ -318,7 +318,7 @@ struct MuttWindow *pbar_create(struct MuttWindow *parent, struct IndexSharedData
                                struct PagerPrivateData *priv)
 {
   struct MuttWindow *win_pbar =
-      mutt_window_new(WT_PAGER_BAR, MUTT_WIN_ORIENT_VERTICAL,
+      mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,
                       MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
 
   win_pbar->wdata = pbar_data_new(shared, priv);

@@ -32,7 +32,6 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "debug/lib.h"
 #include "mutt_window.h"
 #include "helpbar/lib.h"
 #include "menu/lib.h"
@@ -48,21 +47,6 @@
 struct MuttWindow *RootWindow = NULL;       ///< Parent of all Windows
 struct MuttWindow *AllDialogsWindow = NULL; ///< Parent of all Dialogs
 struct MuttWindow *MessageWindow = NULL;    ///< Message Window, ":set", etc
-
-/// Help Bar for the Command Line Editor
-static const struct Mapping EditorHelp[] = {
-  // clang-format off
-  { N_("Complete"),    OP_EDITOR_COMPLETE },
-  { N_("Hist Up"),     OP_EDITOR_HISTORY_UP },
-  { N_("Hist Down"),   OP_EDITOR_HISTORY_DOWN },
-  { N_("Hist Search"), OP_EDITOR_HISTORY_SEARCH },
-  { N_("Begin Line"),  OP_EDITOR_BOL },
-  { N_("End Line"),    OP_EDITOR_EOL },
-  { N_("Kill Line"),   OP_EDITOR_KILL_LINE },
-  { N_("Kill Word"),   OP_EDITOR_KILL_WORD },
-  { NULL, 0 },
-  // clang-format off
-};
 
 /// Lookups for Window Names
 static const struct Mapping WindowNames[] = {
@@ -87,13 +71,12 @@ static const struct Mapping WindowNames[] = {
   { "WT_DLG_SMIME",       WT_DLG_SMIME },
   { "WT_HELP_BAR",        WT_HELP_BAR },
   { "WT_INDEX",           WT_INDEX },
-  { "WT_INDEX_BAR",       WT_INDEX_BAR },
   { "WT_MENU",            WT_MENU },
   { "WT_MESSAGE",         WT_MESSAGE },
   { "WT_PAGER",           WT_PAGER },
-  { "WT_PAGER_BAR",       WT_PAGER_BAR },
   { "WT_ROOT",            WT_ROOT },
   { "WT_SIDEBAR",         WT_SIDEBAR },
+  { "WT_STATUS_BAR",      WT_STATUS_BAR },
   // clang-format off
   { NULL, 0 },
 };
@@ -396,8 +379,6 @@ void mutt_window_init(void)
 
   MessageWindow = mutt_window_new(WT_MESSAGE, MUTT_WIN_ORIENT_VERTICAL,
                                   MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-  MessageWindow->help_data = EditorHelp;
-  MessageWindow->help_menu = MENU_EDITOR;
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)
@@ -708,7 +689,7 @@ bool mutt_window_is_visible(struct MuttWindow *win)
 /**
  * mutt_window_find - Find a Window of a given type
  * @param root Window to start searching
- * @param type Window type to find, e.g. #WT_INDEX_BAR
+ * @param type Window type to find, e.g. #WT_STATUS_BAR
  * @retval ptr  Matching Window
  * @retval NULL No match
  */
@@ -915,4 +896,34 @@ void window_invalidate_all(void)
   window_invalidate(RootWindow);
   clearok(stdscr, true);
   keypad(stdscr, true);
+}
+
+/**
+ * window_status_on_top - Organise windows according to config variable
+ * @param panel Window containing WT_MENU and WT_STATUS_BAR
+ * @param sub   Config Subset
+ * @retval true Window order was changed
+ *
+ * Set the positions of two Windows based on a config variable `$status_on_top`.
+ *
+ * @note The children are expected to have types: #WT_MENU, #WT_STATUS_BAR
+ */
+bool window_status_on_top(struct MuttWindow *panel, struct ConfigSubset *sub)
+{
+  const bool c_status_on_top = cs_subset_bool(sub, "status_on_top");
+
+  struct MuttWindow *win_first = TAILQ_FIRST(&panel->children);
+
+  if ((c_status_on_top && (win_first->type == WT_STATUS_BAR)) ||
+      (!c_status_on_top && (win_first->type != WT_STATUS_BAR)))
+  {
+    return false;
+  }
+
+  TAILQ_REMOVE(&panel->children, win_first, entries);
+  TAILQ_INSERT_TAIL(&panel->children, win_first, entries);
+
+  mutt_window_reflow(panel);
+  mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
+  return true;
 }

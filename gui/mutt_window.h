@@ -28,6 +28,8 @@
 #include <stdint.h>
 #include "mutt/lib.h"
 
+struct ConfigSubset;
+
 /**
  * enum MuttWindowOrientation - Which way does the Window expand?
  */
@@ -93,12 +95,11 @@ enum WindowType
   WT_CUSTOM,          ///< Window with a custom drawing function
   WT_HELP_BAR,        ///< Help Bar containing list of useful key bindings
   WT_INDEX,           ///< A panel containing the Index Window
-  WT_INDEX_BAR,       ///< Index Bar containing status info about the Index
   WT_MENU,            ///< An Window containing a Menu
   WT_MESSAGE,         ///< Window for messages/errors and command entry
   WT_PAGER,           ///< A panel containing the Pager Window
-  WT_PAGER_BAR,       ///< Pager Bar containing status info about the Pager
   WT_SIDEBAR,         ///< Side panel containing Accounts or groups of data
+  WT_STATUS_BAR,      ///< Status Bar containing extra info about the Index/Pager/etc
 };
 
 TAILQ_HEAD(MuttWindowList, MuttWindow);
@@ -240,5 +241,6 @@ struct MuttWindow *window_get_dialog (void);
 void window_redraw(struct MuttWindow *win);
 void window_invalidate_all(void);
 const char *mutt_window_win_name(const struct MuttWindow *win);
+bool window_status_on_top(struct MuttWindow *panel, struct ConfigSubset *sub);
 
 #endif /* MUTT_MUTT_WINDOW_H */

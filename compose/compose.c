@@ -1263,7 +1263,7 @@ static int compose_config_observer(struct NotifyCallback *nc)
   if (!mutt_str_equal(ev_c->name, "status_on_top"))
     return 0;
 
-  struct MuttWindow *win_cbar = mutt_window_find(dlg, WT_INDEX_BAR);
+  struct MuttWindow *win_cbar = mutt_window_find(dlg, WT_STATUS_BAR);
   if (!win_cbar)
     return 0;
 

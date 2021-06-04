@@ -3440,7 +3440,6 @@ int mutt_pager(struct PagerView *pview)
 
       case OP_ENTER_COMMAND:
         mutt_enter_command();
-        window_set_focus(rd.pview->win_pager);
         menu_queue_redraw(pager_menu, MENU_REDRAW_FULL);
 
         if (OptNeedResort)

@@ -567,28 +567,11 @@ static int remailer_config_observer(struct NotifyCallback *nc)
     return 0;
 
   struct EventConfig *ev_c = nc->event_data;
-  struct MuttWindow *dlg = nc->global_data;
-
   if (!mutt_str_equal(ev_c->name, "status_on_top"))
     return 0;
 
-  const bool c_status_on_top = cs_subset_bool(ev_c->sub, "status_on_top");
-  struct MuttWindow *win_move = NULL;
-  if (c_status_on_top)
-  {
-    win_move = TAILQ_LAST(&dlg->children, MuttWindowList);
-    TAILQ_REMOVE(&dlg->children, win_move, entries);
-    TAILQ_INSERT_HEAD(&dlg->children, win_move, entries);
-  }
-  else
-  {
-    win_move = TAILQ_FIRST(&dlg->children);
-    TAILQ_REMOVE(&dlg->children, win_move, entries);
-    TAILQ_INSERT_TAIL(&dlg->children, win_move, entries);
-  }
-
-  mutt_window_reflow(dlg);
-  mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
+  struct MuttWindow *dlg = nc->global_data;
+  window_status_on_top(dlg, NeoMutt->sub);
   return 0;
 }
 

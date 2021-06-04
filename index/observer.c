@@ -136,28 +136,8 @@ static int config_status_on_top(struct MuttWindow *dlg)
   if (!win_index || !win_pager)
     return -1;
 
-  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
-
-  struct MuttWindow *first = TAILQ_FIRST(&win_index->children);
-  if ((c_status_on_top && (first->type == WT_MENU)) ||
-      (!c_status_on_top && (first->type != WT_MENU)))
-  {
-    // Swap the Index and the Index Bar Windows
-    TAILQ_REMOVE(&win_index->children, first, entries);
-    TAILQ_INSERT_TAIL(&win_index->children, first, entries);
-  }
-
-  first = TAILQ_FIRST(&win_pager->children);
-  if ((c_status_on_top && (first->type == WT_MENU)) ||
-      (!c_status_on_top && (first->type != WT_MENU)))
-  {
-    // Swap the Pager and Pager Bar Windows
-    TAILQ_REMOVE(&win_pager->children, first, entries);
-    TAILQ_INSERT_TAIL(&win_pager->children, first, entries);
-  }
-
-  mutt_window_reflow(dlg);
-  mutt_debug(LL_DEBUG5, "config, request WA_REFLOW\n");
+  window_status_on_top(win_index, NeoMutt->sub);
+  window_status_on_top(win_pager, NeoMutt->sub);
   return 0;
 }
 
