@@ -11,9 +11,9 @@ MSGMERGE_UPDATE = @MSGMERGE@ --update --no-wrap --sort-by-file
 MOFILES		= po/bg.mo po/ca.mo po/cs.mo po/da.mo po/de.mo po/el.mo \
 		po/en_GB.mo po/eo.mo po/es.mo po/et.mo po/eu.mo po/fi.mo \
 		po/fr.mo po/ga.mo po/gl.mo po/hu.mo po/id.mo po/it.mo po/ja.mo \
-		po/ko.mo po/lt.mo po/nl.mo po/pl.mo po/pt_BR.mo po/ru.mo \
-		po/sk.mo po/sr.mo po/sv.mo po/tr.mo po/uk.mo po/zh_CN.mo \
-		po/zh_TW.mo
+		po/ko.mo po/lt.mo po/nb_NO.mo po/nl.mo po/pl.mo po/pt_BR.mo \
+		po/ru.mo po/sk.mo po/sr.mo po/sv.mo po/tr.mo po/uk.mo \
+		po/zh_CN.mo po/zh_TW.mo
 POTFILE		= po/$(PACKAGE).pot
 
 all-po:	po $(MOFILES)
