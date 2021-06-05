@@ -51,6 +51,7 @@
 #include "mutt.h"
 #include "muttlib.h"
 #include "ncrypt/lib.h"
+#include "question/lib.h"
 #include "format_flags.h"
 #include "hook.h"
 #include "init.h"

@@ -25,7 +25,6 @@
 
 #include <stdbool.h>
 #include <wchar.h> // IWYU pragma: keep
-#include "config/lib.h"
 #include "mutt.h"
 #include "browser.h"
 #include "keymap.h"
@@ -63,7 +62,6 @@ void         mutt_getch_timeout(int delay);
 struct KeyEvent mutt_getch(void);
 int          mutt_get_field(const char *field, char *buf, size_t buflen, CompletionFlags complete, bool multiple, char ***files, int *numfiles);
 int          mutt_get_field_unbuffered(const char *msg, char *buf, size_t buflen, CompletionFlags flags);
-int          mutt_multi_choice(const char *prompt, const char *letters);
 void         mutt_need_hard_redraw(void);
 void         mutt_paddstr(struct MuttWindow *win, int n, const char *s);
 void         mutt_perror_debug(const char *s);
@@ -76,7 +74,5 @@ int          mutt_strnwidth(const char *s, size_t len);
 void         mutt_unget_event(int ch, int op);
 void         mutt_unget_string(const char *s);
 size_t       mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width);
-enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def);
-enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt);
 
 #endif /* MUTT_CURS_LIB_H */

@@ -41,7 +41,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "conn/lib.h"
-#include "gui/lib.h"
+#include "question/lib.h"
 #include "progress/lib.h"
 #include "adata.h"
 #include "edata.h"

@@ -49,6 +49,7 @@
 #include "lib.h"
 #include "bcache/lib.h"
 #include "progress/lib.h"
+#include "question/lib.h"
 #include "adata.h"
 #include "commands.h"
 #include "edata.h"

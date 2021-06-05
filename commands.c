@@ -49,6 +49,7 @@
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "progress/lib.h"
+#include "question/lib.h"
 #include "send/lib.h"
 #include "attachments.h"
 #include "browser.h"

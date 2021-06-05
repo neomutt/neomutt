@@ -50,6 +50,7 @@
 #include "pager/lib.h"
 #include "pattern/lib.h"
 #include "progress/lib.h"
+#include "question/lib.h"
 #include "send/lib.h"
 #include "browser.h"
 #include "commands.h"

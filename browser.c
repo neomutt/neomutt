@@ -47,6 +47,7 @@
 #include "mutt.h"
 #include "browser.h"
 #include "menu/lib.h"
+#include "question/lib.h"
 #include "send/lib.h"
 #include "format_flags.h"
 #include "mutt_attach.h"

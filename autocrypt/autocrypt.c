@@ -42,6 +42,7 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "ncrypt/lib.h"
+#include "question/lib.h"
 #include "send/lib.h"
 #include "browser.h"
 #include "muttlib.h"

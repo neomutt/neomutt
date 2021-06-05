@@ -52,6 +52,7 @@
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
+#include "question/lib.h"
 #include "send/lib.h"
 #include "commands.h"
 #include "context.h"

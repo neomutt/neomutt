@@ -42,6 +42,7 @@
 #include "lib.h"
 #include "menu/lib.h"
 #include "pager/lib.h"
+#include "question/lib.h"
 #include "format_flags.h"
 #include "mutt_logging.h"
 #include "muttlib.h"

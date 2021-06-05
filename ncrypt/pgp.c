@@ -48,6 +48,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "question/lib.h"
 #include "send/lib.h"
 #include "crypt.h"
 #include "cryptglue.h"

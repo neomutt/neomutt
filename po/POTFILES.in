@@ -261,6 +261,7 @@ pop/lib.c
 pop/pop.c
 postpone.c
 progress/progress.c
+question/question.c
 recvattach.c
 recvcmd.c
 remailer.c

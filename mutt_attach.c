@@ -44,6 +44,7 @@
 #include "mutt_attach.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
+#include "question/lib.h"
 #include "send/lib.h"
 #include "copy.h"
 #include "handler.h"

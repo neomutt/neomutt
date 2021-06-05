@@ -570,6 +570,19 @@ $(PWD)/progress:
 	$(MKDIR_P) $(PWD)/progress
 
 ###############################################################################
+# libquestion
+LIBQUESTION=	libquestion.a
+LIBQUESTIONOBJS=question/question.o
+CLEANFILES+=	$(LIBQUESTION) $(LIBQUESTIONOBJS)
+ALLOBJS+=	$(LIBQUESTIONOBJS)
+
+$(LIBQUESTION): $(PWD)/question $(LIBQUESTIONOBJS)
+	$(AR) cr $@ $(LIBQUESTIONOBJS)
+	$(RANLIB) $@
+$(PWD)/question:
+	$(MKDIR_P) $(PWD)/question
+
+###############################################################################
 # libsend
 LIBSEND=	libsend.a
 LIBSENDOBJS=	send/body.o send/config.o send/header.o send/multipart.o send/send.o send/sendlib.o send/sendmail.o send/smtp.o
@@ -662,7 +675,7 @@ $(ALLOBJS):
 # The order of these libraries depends on their dependencies.
 # The libraries with the most dependencies will come first.
 MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) $(LIBNNTP) \
-		$(LIBCOMPMBOX) $(LIBSTORE) $(LIBPATTERN) $(LIBPROGRESS) \
+		$(LIBCOMPMBOX) $(LIBSTORE) $(LIBPATTERN) $(LIBPROGRESS) $(LIBQUESTION)\
 		$(LIBGUI) $(LIBHELPBAR) $(LIBMENU) $(LIBMBOX) $(LIBNOTMUCH) \
 		$(LIBMAILDIR) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
 		$(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) \

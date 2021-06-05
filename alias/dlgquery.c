@@ -44,6 +44,7 @@
 #include "lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
+#include "question/lib.h"
 #include "send/lib.h"
 #include "alias.h"
 #include "context.h"

@@ -47,6 +47,7 @@
 #include "mutt.h"
 #include "crypt.h"
 #include "lib.h"
+#include "question/lib.h"
 #include "send/lib.h"
 #include "attachments.h"
 #include "copy.h"

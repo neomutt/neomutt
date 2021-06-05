@@ -43,6 +43,7 @@
 #include "recvattach.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
+#include "question/lib.h"
 #include "send/lib.h"
 #include "attachments.h"
 #include "commands.h"

@@ -35,6 +35,7 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "menu/lib.h"
+#include "question/lib.h"
 #include "mutt_logging.h"
 #include "opcodes.h"
 #include "smime.h"

@@ -42,6 +42,7 @@
 #include "lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
+#include "question/lib.h"
 #include "alias.h"
 #include "format_flags.h"
 #include "gui.h"

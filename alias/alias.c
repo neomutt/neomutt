@@ -46,6 +46,7 @@
 #include "mutt.h"
 #include "alias.h"
 #include "lib.h"
+#include "question/lib.h"
 #include "send/lib.h"
 #include "alternates.h"
 #include "maillist.h"

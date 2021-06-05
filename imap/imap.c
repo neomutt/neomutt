@@ -46,6 +46,7 @@
 #include "mutt.h"
 #include "lib.h"
 #include "progress/lib.h"
+#include "question/lib.h"
 #include "adata.h"
 #include "auth.h"
 #include "command_parse.h"

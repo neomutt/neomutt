@@ -38,6 +38,7 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "menu/lib.h"
+#include "question/lib.h"
 #include "format_flags.h"
 #include "muttlib.h"
 #include "opcodes.h"
