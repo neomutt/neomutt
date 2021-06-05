@@ -62,6 +62,8 @@
 #include "hcache/lib.h"
 #endif
 
+struct Progress;
+
 /**
  * mh_mkstemp - Create a temporary file
  * @param[in]  m   Mailbox to create the file in

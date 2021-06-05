@@ -65,6 +65,7 @@
 #include <libintl.h>
 #endif
 
+struct Progress;
 struct stat;
 
 static const struct Command imap_commands[] = {

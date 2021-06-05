@@ -64,6 +64,8 @@
 #include "notmuch/lib.h"
 #endif
 
+struct Progress;
+
 // Flags for maildir_mbox_check()
 #define MMC_NO_DIRS 0        ///< No directories changed
 #define MMC_NEW_DIR (1 << 0) ///< 'new' directory changed

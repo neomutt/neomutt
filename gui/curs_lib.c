@@ -45,6 +45,7 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "curs_lib.h"
+#include "menu/lib.h"
 #include "browser.h"
 #include "color.h"
 #include "enter_state.h"

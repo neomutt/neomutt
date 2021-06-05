@@ -49,6 +49,8 @@
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 
+struct Progress;
+
 /**
  * pop_get_field - Get connection login credentials - Implements ConnAccount::get_field()
  */
