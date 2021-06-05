@@ -9863,7 +9863,8 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
           showing the files specified by the <command>mailboxes</command>
           command, and indicate which contain new messages. NeoMutt will
           automatically enter this mode when invoked from the command line with
-          the <literal>-y</literal> option.
+          the <literal>-y</literal> option, or from the index/pager via the
+          <literal>&lt;browse-mailboxes&gt;</literal> function.
         </para>
         <para>
           For the pager, index and directory browser menus, NeoMutt contains
