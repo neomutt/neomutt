@@ -137,3 +137,8 @@ struct MuttWindow *add_panel_pager(struct MuttWindow *parent, bool status_on_top
 {
   return NULL;
 }
+
+enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
+{
+  return MUTT_YES;
+}
