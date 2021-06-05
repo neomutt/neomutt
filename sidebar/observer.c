@@ -385,9 +385,6 @@ static int sb_window_observer(struct NotifyCallback *nc)
 
   if (nc->event_subtype == NT_WINDOW_FOCUS)
   {
-    if (!mutt_window_is_visible(win))
-      return 0;
-
     win->actions |= WA_RECALC;
     mutt_debug(LL_DEBUG5, "window focus done, required WA_RECALC\n");
   }

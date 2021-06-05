@@ -575,7 +575,7 @@ struct MuttWindow *mutt_window_find(struct MuttWindow *root, enum WindowType typ
  */
 static void window_recalc(struct MuttWindow *win)
 {
-  if (!win)
+  if (!win || !win->state.visible)
     return;
 
   if (win->recalc && (win->actions & WA_RECALC))
@@ -595,7 +595,7 @@ static void window_recalc(struct MuttWindow *win)
  */
 static void window_repaint(struct MuttWindow *win)
 {
-  if (!win)
+  if (!win || !win->state.visible)
     return;
 
   if (win->repaint && (win->actions & WA_REPAINT))
