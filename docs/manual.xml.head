@@ -672,7 +672,7 @@ bind index,pager B sidebar-toggle-visible   <emphasis role="comment"># Use 'B' t
             <para>
               Finally, you might want to change the divider character. By
               default, Sidebar draws an ASCII line between it and the Index
-              panel If your terminal supports it, you can use a Unicode
+              panel. If your terminal supports it, you can use a Unicode
               line-drawing character.
             </para>
 
