@@ -189,7 +189,6 @@ int log_disp_curses(time_t stamp, const char *file, int line,
     }
 
     msgwin_set_text(color, ErrorBuf);
-    mutt_refresh();
   }
 
   if ((level <= LL_ERROR) && !dupe)
