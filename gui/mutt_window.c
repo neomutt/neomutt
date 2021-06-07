@@ -701,7 +701,7 @@ static void window_recalc(struct MuttWindow *win)
   if (!win)
     return;
 
-  if (win->recalc)
+  if (win->recalc && (win->actions & WA_RECALC))
     win->recalc(win);
   win->actions &= ~WA_RECALC;
 
