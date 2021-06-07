@@ -120,8 +120,12 @@ void dialog_pop(void)
   {
     last->state.visible = true;
     mutt_window_reflow(AllDialogsWindow);
+    window_set_focus(last);
   }
-  window_set_focus(last);
+  else
+  {
+    AllDialogsWindow->focus = NULL;
+  }
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
 #endif
