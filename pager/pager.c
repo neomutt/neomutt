@@ -2721,7 +2721,7 @@ int mutt_pager(struct PagerView *pview)
         else if (c_pager_stop)
         {
           /* emulate "less -q" and don't go on to the next message. */
-          mutt_error(_("Bottom of message is shown"));
+          mutt_message(_("Bottom of message is shown"));
         }
         else
         {
@@ -2770,7 +2770,7 @@ int mutt_pager(struct PagerView *pview)
         if (rd.topline)
           rd.topline = up_n_lines(1, rd.line_info, rd.topline, rd.hide_quoted);
         else
-          mutt_error(_("Top of message is shown"));
+          mutt_message(_("Top of message is shown"));
         break;
 
         //=======================================================================
@@ -2779,7 +2779,7 @@ int mutt_pager(struct PagerView *pview)
         if (rd.topline)
           rd.topline = 0;
         else
-          mutt_error(_("Top of message is shown"));
+          mutt_message(_("Top of message is shown"));
         break;
 
         //=======================================================================
@@ -2792,7 +2792,7 @@ int mutt_pager(struct PagerView *pview)
                                   rd.line_info, rd.topline, rd.hide_quoted);
         }
         else
-          mutt_error(_("Top of message is shown"));
+          mutt_message(_("Top of message is shown"));
         break;
 
         //=======================================================================
@@ -2806,7 +2806,7 @@ int mutt_pager(struct PagerView *pview)
         else if (c_pager_stop)
         {
           /* emulate "less -q" and don't go on to the next message. */
-          mutt_error(_("Bottom of message is shown"));
+          mutt_message(_("Bottom of message is shown"));
         }
         else
         {
@@ -3191,7 +3191,7 @@ int mutt_pager(struct PagerView *pview)
       case OP_PAGER_BOTTOM: /* move to the end of the file */
         if (!jump_to_bottom(&rd, pview))
         {
-          mutt_error(_("Bottom of message is shown"));
+          mutt_message(_("Bottom of message is shown"));
         }
         break;
 
