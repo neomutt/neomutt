@@ -233,9 +233,7 @@ struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
 
   struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
 
-  char *title = menu_create_alias_title(_("Aliases"), mdata->str);
-  sbar_set_title(sbar, title);
-  FREE(&title);
+  alias_set_title(sbar, _("Aliases"), mdata->str);
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->notify, NT_ALIAS, alias_alias_observer, menu);
@@ -365,9 +363,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
                                          mdata, menu);
         if (rc == 0)
         {
-          char *title2 = menu_create_alias_title(_("Aliases"), mdata->str);
-          sbar_set_title(sbar, title2);
-          FREE(&title2);
+          alias_set_title(sbar, _("Aliases"), mdata->str);
           menu_queue_redraw(menu, MENU_REDRAW_FULL);
         }
 

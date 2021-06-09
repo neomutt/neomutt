@@ -527,9 +527,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
         if (rc == 0)
         {
           alias_array_sort(&mdata.ava, mdata.sub);
-          char *title2 = menu_create_alias_title(_("Query"), mdata.str);
-          sbar_set_title(sbar, title2);
-          FREE(&title2);
+          alias_set_title(sbar, _("Query"), mdata.str);
           menu_queue_redraw(menu, MENU_REDRAW_FULL);
         }
 

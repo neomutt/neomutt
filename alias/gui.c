@@ -60,30 +60,26 @@ int alias_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * menu_create_alias_title - Create a title string for the Menu
+ * alias_set_title - Create a title string for the Menu
+ * @param sbar      Simple Bar Window
  * @param menu_name Menu name
  * @param limit     Limit being applied
- *
- * @note Caller must free the returned string
  */
-char *menu_create_alias_title(char *menu_name, char *limit)
+void alias_set_title(struct MuttWindow *sbar, char *menu_name, char *limit)
 {
-  if (limit)
+  if (!limit)
   {
-    char *tmp_str = NULL;
-    char *new_title = NULL;
-
-    mutt_str_asprintf(&tmp_str, _("Limit: %s"), limit);
-    mutt_str_asprintf(&new_title, "%s - %s", menu_name, tmp_str);
-
-    FREE(&tmp_str);
-
-    return new_title;
+    sbar_set_title(sbar, menu_name);
+    return;
   }
-  else
-  {
-    return strdup(menu_name);
-  }
+
+  char buf[256] = { 0 };
+
+  int len = snprintf(buf, sizeof(buf), "%s - ", menu_name);
+
+  snprintf(buf + len, sizeof(buf) - len, _("Limit: %s"), limit);
+
+  sbar_set_title(sbar, buf);
 }
 
 /**
