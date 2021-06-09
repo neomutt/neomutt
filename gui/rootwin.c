@@ -49,11 +49,11 @@ static int rootwin_config_observer(struct NotifyCallback *nc)
     return 0;
 
   struct EventConfig *ev_c = nc->event_data;
-  struct MuttWindow *root_win = nc->global_data;
+  struct MuttWindow *win_root = nc->global_data;
 
   if (mutt_str_equal(ev_c->name, "status_on_top"))
   {
-    struct MuttWindow *first = TAILQ_FIRST(&root_win->children);
+    struct MuttWindow *first = TAILQ_FIRST(&win_root->children);
     if (!first)
       return -1;
 
@@ -66,14 +66,40 @@ static int rootwin_config_observer(struct NotifyCallback *nc)
       struct MuttWindow *next = TAILQ_NEXT(first, entries);
       if (!next)
         return -1;
-      TAILQ_REMOVE(&root_win->children, next, entries);
-      TAILQ_INSERT_HEAD(&root_win->children, next, entries);
+      TAILQ_REMOVE(&win_root->children, next, entries);
+      TAILQ_INSERT_HEAD(&win_root->children, next, entries);
 
       mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
     }
   }
 
-  mutt_window_reflow(root_win);
+  mutt_window_reflow(win_root);
+  return 0;
+}
+
+/**
+ * rootwin_window_observer - Listen for window changes affecting the Root Window - Implements ::observer_t
+ */
+static int rootwin_window_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_WINDOW) || (nc->event_subtype != NT_WINDOW_DELETE) ||
+      !nc->event_data || !nc->global_data)
+  {
+    return 0;
+  }
+
+  struct MuttWindow *win_root = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != win_root)
+    return 0;
+
+  if (NeoMutt)
+  {
+    notify_observer_remove(NeoMutt->notify, rootwin_config_observer, win_root);
+    notify_observer_remove(NeoMutt->notify, rootwin_window_observer, win_root);
+  }
+
+  mutt_debug(LL_DEBUG5, "window delete done\n");
   return 0;
 }
 
@@ -82,9 +108,6 @@ static int rootwin_config_observer(struct NotifyCallback *nc)
  */
 void rootwin_free(void)
 {
-  if (NeoMutt)
-    notify_observer_remove(NeoMutt->notify, rootwin_config_observer, RootWindow);
-  AllDialogsWindow = NULL;
   mutt_window_free(&RootWindow);
 }
 
@@ -95,12 +118,9 @@ void rootwin_free(void)
  */
 void rootwin_new(void)
 {
-  if (RootWindow)
-    return;
-
-  RootWindow =
+  struct MuttWindow *win_root =
       mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 0, 0);
-  notify_set_parent(RootWindow->notify, NeoMutt->notify);
+  notify_set_parent(win_root->notify, NeoMutt->notify);
 
   struct MuttWindow *win_helpbar = helpbar_new();
 
@@ -113,17 +133,21 @@ void rootwin_new(void)
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)
   {
-    mutt_window_add_child(RootWindow, AllDialogsWindow);
-    mutt_window_add_child(RootWindow, win_helpbar);
+    mutt_window_add_child(win_root, AllDialogsWindow);
+    mutt_window_add_child(win_root, win_helpbar);
   }
   else
   {
-    mutt_window_add_child(RootWindow, win_helpbar);
-    mutt_window_add_child(RootWindow, AllDialogsWindow);
+    mutt_window_add_child(win_root, win_helpbar);
+    mutt_window_add_child(win_root, AllDialogsWindow);
   }
 
-  mutt_window_add_child(RootWindow, win_msg);
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, rootwin_config_observer, RootWindow);
+  mutt_window_add_child(win_root, win_msg);
+
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, rootwin_config_observer, win_root);
+  notify_observer_add(NeoMutt->notify, NT_WINDOW, rootwin_window_observer, win_root);
+
+  RootWindow = win_root;
 }
 
 /**
