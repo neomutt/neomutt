@@ -183,7 +183,7 @@ static int alias_alias_observer(struct NotifyCallback *nc)
 
   menu->max = alias_array_count_visible(&mdata->ava);
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
-  mutt_debug(LL_DEBUG5, "alias done, request MENU_REDRAW_FULL\n");
+  mutt_debug(LL_DEBUG5, "alias done, request WA_RECALC, MENU_REDRAW_FULL\n");
 
   return 0;
 }
@@ -203,7 +203,7 @@ int alias_window_observer(struct NotifyCallback *nc)
   struct Menu *menu = win_menu->wdata;
 
   notify_observer_remove(NeoMutt->notify, alias_alias_observer, menu);
-  notify_observer_remove(NeoMutt->notify, alias_config_observer, menu->mdata);
+  notify_observer_remove(NeoMutt->notify, alias_config_observer, menu);
   notify_observer_remove(win_menu->notify, alias_window_observer, win_menu);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -226,17 +226,20 @@ struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
   menu->max = alias_array_count_visible(&mdata->ava);
   menu->mdata = mdata;
 
+  struct MuttWindow *win_menu = menu->win_index;
+
+  // Override the Simple Dialog's recalc()
+  win_menu->recalc = alias_recalc;
+
   struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
 
   char *title = menu_create_alias_title(_("Aliases"), mdata->str);
   sbar_set_title(sbar, title);
   FREE(&title);
 
-  struct MuttWindow *win_menu = menu->win_index;
-
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->notify, NT_ALIAS, alias_alias_observer, menu);
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, alias_config_observer, mdata);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, alias_config_observer, menu);
   notify_observer_add(win_menu->notify, NT_WINDOW, alias_window_observer, win_menu);
 
   return dlg;
@@ -337,8 +340,8 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
         {
           sort |= reverse ? SORT_REVERSE : 0;
 
+          // This will trigger a WA_RECALC
           cs_subset_str_native_set(mdata->sub, "sort_alias", sort, NULL);
-          menu_queue_redraw(menu, MENU_REDRAW_FULL);
         }
 
         break;
@@ -362,7 +365,6 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
                                          mdata, menu);
         if (rc == 0)
         {
-          alias_array_sort(&mdata->ava, mdata->sub);
           char *title2 = menu_create_alias_title(_("Aliases"), mdata->str);
           sbar_set_title(sbar, title2);
           FREE(&title2);

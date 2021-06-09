@@ -31,6 +31,7 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "gui/lib.h"
 #include "gui.h"
 #include "lib.h"
 #include "menu/lib.h"
@@ -50,10 +51,10 @@ int alias_config_observer(struct NotifyCallback *nc)
   if (!mutt_str_equal(ev_c->name, "sort_alias"))
     return 0;
 
-  struct AliasMenuData *mdata = nc->global_data;
+  struct Menu *menu = nc->global_data;
 
-  alias_array_sort(&mdata->ava, mdata->sub);
-  mutt_debug(LL_DEBUG5, "config done\n");
+  menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  mutt_debug(LL_DEBUG5, "config done, request WA_RECALC, MENU_REDRAW_FULL\n");
 
   return 0;
 }
@@ -83,4 +84,19 @@ char *menu_create_alias_title(char *menu_name, char *limit)
   {
     return strdup(menu_name);
   }
+}
+
+/**
+ * alias_recalc - Recalculate the display of the Alias Window - Implements MuttWindow::recalc()
+ */
+int alias_recalc(struct MuttWindow *win)
+{
+  struct Menu *menu = win->wdata;
+  struct AliasMenuData *mdata = menu->mdata;
+
+  alias_array_sort(&mdata->ava, mdata->sub);
+
+  win->actions |= WA_REPAINT;
+  mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
+  return 0;
 }

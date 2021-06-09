@@ -27,6 +27,7 @@
 #include "mutt/lib.h"
 
 struct Alias;
+struct MuttWindow;
 
 /**
  * AliasView - GUI data wrapping an Alias
@@ -62,5 +63,6 @@ int  alias_array_alias_delete (struct AliasViewArray *ava, struct Alias *alias);
 int  alias_array_count_visible(struct AliasViewArray *ava);
 
 char *menu_create_alias_title(char *menu_name, char *limit);
+int alias_recalc(struct MuttWindow *win);
 
 #endif /* MUTT_ALIAS_GUI_H */

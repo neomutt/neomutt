@@ -338,7 +338,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
   menu->max = ARRAY_SIZE(&mdata.ava);
   menu->mdata = &mdata;
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, alias_config_observer, &mdata);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, alias_config_observer, menu);
 
   short sort_alias = cs_subset_sort(sub, "sort_alias");
 
