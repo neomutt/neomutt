@@ -89,8 +89,13 @@ static int sbar_color_observer(struct NotifyCallback *nc)
     return -1;
   if (nc->event_type != NT_COLOR)
     return 0;
-  if (nc->event_subtype != MT_COLOR_STATUS)
+
+  struct EventColor *ev_c = nc->event_data;
+
+  // MT_COLOR_MAX is sent on `uncolor *`
+  if ((ev_c->color != MT_COLOR_INDICATOR) && (ev_c->color != MT_COLOR_MAX))
     return 0;
+
   struct MuttWindow *win_sbar = nc->global_data;
   if (!win_sbar)
     return 0;
@@ -102,14 +107,38 @@ static int sbar_color_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * sbar_window_observer - Listen for changes to the Windows - Implements ::observer_t
+ */
+static int sbar_window_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data || !nc->global_data)
+    return -1;
+  if (nc->event_type != NT_WINDOW)
+    return 0;
+
+  struct MuttWindow *win_sbar = nc->global_data;
+  if (nc->event_subtype == NT_WINDOW_STATE)
+  {
+    win_sbar->actions |= WA_REPAINT;
+    mutt_debug(LL_DEBUG5, "state done, request WA_REPAINT\n");
+  }
+  else if (nc->event_subtype == NT_WINDOW_DELETE)
+  {
+    notify_observer_remove(NeoMutt->notify, sbar_color_observer, win_sbar);
+    notify_observer_remove(win_sbar->notify, sbar_window_observer, win_sbar);
+    mutt_debug(LL_DEBUG5, "delete done\n");
+  }
+
+  return 0;
+}
+
+/**
  * sbar_wdata_free - Free the private data attached to the MuttWindow - Implements MuttWindow::wdata_free()
  */
 static void sbar_wdata_free(struct MuttWindow *win, void **ptr)
 {
   if (!ptr || !*ptr)
     return;
-
-  notify_observer_remove(NeoMutt->notify, sbar_color_observer, win);
 
   struct SBarPrivateData *priv = *ptr;
 
@@ -146,6 +175,7 @@ struct MuttWindow *sbar_new(struct MuttWindow *parent)
   win_sbar->repaint = sbar_repaint;
 
   notify_observer_add(NeoMutt->notify, NT_COLOR, sbar_color_observer, win_sbar);
+  notify_observer_add(win_sbar->notify, NT_WINDOW, sbar_window_observer, win_sbar);
 
   return win_sbar;
 }
