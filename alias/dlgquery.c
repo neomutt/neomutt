@@ -305,6 +305,63 @@ static int query_run(char *s, bool verbose, struct AliasList *al,
 }
 
 /**
+ * query_window_observer - Listen for window changes - Implements ::observer_t
+ */
+int query_window_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
+    return 0;
+
+  if (nc->event_subtype != NT_WINDOW_DELETE)
+    return 0;
+
+  struct MuttWindow *win_menu = nc->global_data;
+  struct Menu *menu = win_menu->wdata;
+
+  notify_observer_remove(NeoMutt->notify, alias_config_observer, menu);
+  notify_observer_remove(win_menu->notify, query_window_observer, win_menu);
+
+  mutt_debug(LL_DEBUG5, "window delete done\n");
+  return 0;
+}
+
+/**
+ * query_dialog_new - Create an Query Selection Dialog
+ * @param mdata Menu data holding Aliases
+ * @param query Initial query string
+ * @retval ptr New Dialog
+ */
+struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, char *query)
+{
+  struct MuttWindow *dlg = simple_dialog_new(MENU_QUERY, WT_DLG_QUERY, QueryHelp);
+  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
+
+  struct Menu *menu = dlg->wdata;
+
+  menu->make_entry = query_make_entry;
+  menu->search = query_search;
+  menu->custom_search = true;
+  menu->tag = query_tag;
+  menu->max = ARRAY_SIZE(&mdata->ava);
+  menu->mdata = mdata;
+
+  struct MuttWindow *win_menu = menu->win_index;
+
+  // Override the Simple Dialog's recalc()
+  win_menu->recalc = alias_recalc;
+
+  char title[256];
+  snprintf(title, sizeof(title), "%s%s", _("Query: "), query);
+  sbar_set_title(sbar, title);
+
+  // NT_COLOR is handled by the SimpleDialog
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, alias_config_observer, menu);
+  notify_observer_add(win_menu->notify, NT_WINDOW, query_window_observer, win_menu);
+
+  return dlg;
+}
+
+/**
  * dlg_select_query - Get the user to enter an Address Query
  * @param buf    Buffer for the query
  * @param buflen Length of buffer
@@ -316,7 +373,6 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
                              bool retbuf, struct ConfigSubset *sub)
 {
   struct AliasMenuData mdata = { NULL, ARRAY_HEAD_INITIALIZER, sub };
-
   struct Alias *np = NULL;
   TAILQ_FOREACH(np, all, entries)
   {
@@ -324,23 +380,9 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
   }
   alias_array_sort(&mdata.ava, mdata.sub);
 
-  char title[256];
-  snprintf(title, sizeof(title), "%s%s", _("Query: "), buf);
-
-  struct MuttWindow *dlg = simple_dialog_new(MENU_QUERY, WT_DLG_QUERY, QueryHelp);
-  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
-
+  struct MuttWindow *dlg = query_dialog_new(&mdata, buf);
   struct Menu *menu = dlg->wdata;
-  menu->make_entry = query_make_entry;
-  menu->search = query_search;
-  menu->custom_search = true;
-  menu->tag = query_tag;
-  menu->max = ARRAY_SIZE(&mdata.ava);
-  menu->mdata = &mdata;
-
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, alias_config_observer, menu);
-
-  short sort_alias = cs_subset_sort(sub, "sort_alias");
+  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
 
   int done = 0;
   while (done == 0)
@@ -367,6 +409,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
         struct AliasList al = TAILQ_HEAD_INITIALIZER(al);
         query_run(buf, true, &al, sub);
         menu_queue_redraw(menu, MENU_REDRAW_FULL);
+        char title[256];
         snprintf(title, sizeof(title), "%s%s", _("Query: "), buf);
         sbar_set_title(sbar, title);
 
@@ -466,7 +509,8 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
       case OP_SORT:
       case OP_SORT_REVERSE:
       {
-        int sort = sort_alias;
+        int sort = cs_subset_sort(sub, "sort_alias");
+
         bool resort = true;
         bool reverse = (op == OP_SORT_REVERSE);
 
@@ -592,8 +636,6 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
       }
     }
   }
-
-  notify_observer_remove(NeoMutt->notify, alias_config_observer, &mdata);
 
   simple_dialog_free(&dlg);
   ARRAY_FREE(&mdata.ava);
