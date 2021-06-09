@@ -205,7 +205,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
   int t = -1;
   bool done = false;
 
-  struct MuttWindow *dlg = dialog_create_simple_index(MENU_ALIAS, WT_DLG_ALIAS, AliasHelp);
+  struct MuttWindow *dlg = simple_dialog_new(MENU_ALIAS, WT_DLG_ALIAS, AliasHelp);
 
   struct Menu *menu = dlg->wdata;
   menu->make_entry = alias_make_entry;
@@ -363,7 +363,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
   notify_observer_remove(NeoMutt->notify, alias_config_observer, mdata);
   notify_observer_remove(NeoMutt->notify, alias_color_observer, menu);
 
-  dialog_destroy_simple_index(&dlg);
+  simple_dialog_free(&dlg);
 }
 
 /**

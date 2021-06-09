@@ -251,8 +251,7 @@ static void free_pattern_menu(struct Menu *menu)
  */
 bool dlg_select_pattern(char *buf, size_t buflen)
 {
-  struct MuttWindow *dlg =
-      dialog_create_simple_index(MENU_GENERIC, WT_DLG_PATTERN, PatternHelp);
+  struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_PATTERN, PatternHelp);
   struct Menu *menu = create_pattern_menu(dlg);
 
   bool rc = false;
@@ -278,6 +277,6 @@ bool dlg_select_pattern(char *buf, size_t buflen)
   }
 
   free_pattern_menu(menu);
-  dialog_destroy_simple_index(&dlg);
+  simple_dialog_free(&dlg);
   return rc;
 }

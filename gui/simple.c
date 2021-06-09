@@ -54,14 +54,14 @@ static int simple_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * dialog_create_simple_index - Create a simple index Dialog
+ * simple_dialog_new - Create a simple index Dialog
  * @param mtype     Menu type, e.g. #MENU_ALIAS
  * @param wtype     Dialog type, e.g. #WT_DLG_ALIAS
  * @param help_data Data for the Help Bar
  * @retval ptr New Dialog Window
  */
-struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowType wtype,
-                                              const struct Mapping *help_data)
+struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype,
+                                     const struct Mapping *help_data)
 {
   struct MuttWindow *dlg =
       mutt_window_new(wtype, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
@@ -93,10 +93,10 @@ struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowTy
 }
 
 /**
- * dialog_destroy_simple_index - Destroy a simple index Dialog
+ * simple_dialog_free - Destroy a simple index Dialog
  * @param ptr Dialog Window to destroy
  */
-void dialog_destroy_simple_index(struct MuttWindow **ptr)
+void simple_dialog_free(struct MuttWindow **ptr)
 {
   if (!ptr || !*ptr)
     return;

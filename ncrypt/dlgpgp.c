@@ -550,7 +550,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
   }
   qsort(key_table, i, sizeof(struct PgpUid *), f);
 
-  struct MuttWindow *dlg = dialog_create_simple_index(MENU_PGP, WT_DLG_PGP, PgpHelp);
+  struct MuttWindow *dlg = simple_dialog_new(MENU_PGP, WT_DLG_PGP, PgpHelp);
 
   menu = dlg->wdata;
   menu->max = i;
@@ -705,7 +705,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
     }
   }
 
-  dialog_destroy_simple_index(&dlg);
+  simple_dialog_free(&dlg);
   FREE(&key_table);
 
   return kp;

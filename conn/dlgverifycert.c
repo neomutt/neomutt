@@ -66,8 +66,7 @@ static const struct Mapping VerifyHelp[] = {
 int dlg_verify_certificate(const char *title, struct ListHead *list,
                            bool allow_always, bool allow_skip)
 {
-  struct MuttWindow *dlg =
-      dialog_create_simple_index(MENU_GENERIC, WT_DLG_CERTIFICATE, VerifyHelp);
+  struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_CERTIFICATE, VerifyHelp);
 
   struct Menu *menu = dlg->wdata;
 
@@ -145,7 +144,7 @@ int dlg_verify_certificate(const char *title, struct ListHead *list,
   }
   OptIgnoreMacroEvents = old_ime;
 
-  dialog_destroy_simple_index(&dlg);
+  simple_dialog_free(&dlg);
 
   return rc;
 }
