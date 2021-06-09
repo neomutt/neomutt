@@ -37,7 +37,6 @@
  */
 struct SBarPrivateData
 {
-  char *title;   ///< Title string
   char *display; ///< Cached display string
 };
 
@@ -48,13 +47,6 @@ static int sbar_recalc(struct MuttWindow *win)
 {
   if (!win)
     return -1;
-
-  struct SBarPrivateData *priv = win->wdata;
-
-  char *str = NULL;
-  mutt_str_asprintf(&str, "-- NeoMutt: %s", NONULL(priv->title));
-  FREE(&priv->display);
-  priv->display = str;
 
   win->actions |= WA_REPAINT;
   return 0;
@@ -142,7 +134,6 @@ static void sbar_wdata_free(struct MuttWindow *win, void **ptr)
 
   struct SBarPrivateData *priv = *ptr;
 
-  FREE(&priv->title);
   FREE(&priv->display);
 
   FREE(ptr);
@@ -193,7 +184,7 @@ void sbar_set_title(struct MuttWindow *win, const char *title)
     return;
 
   struct SBarPrivateData *priv = win->wdata;
-  mutt_str_replace(&priv->title, title);
+  mutt_str_replace(&priv->display, title);
 
-  win->actions |= WA_RECALC;
+  win->actions |= WA_REPAINT;
 }
