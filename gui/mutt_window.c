@@ -613,12 +613,14 @@ static void window_repaint(struct MuttWindow *win)
 
 /**
  * window_redraw - Reflow, recalc and repaint a tree of Windows
- * @param win   Window to start at
+ * @param win Window to start at
+ *
+ * @note If win is NULL, all windows will be redrawn
  */
 void window_redraw(struct MuttWindow *win)
 {
   if (!win)
-    return;
+    win = RootWindow;
 
   window_reflow(win);
   window_notify_all(win);

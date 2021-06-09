@@ -657,7 +657,7 @@ int main(int argc, char *argv[], char *envp[])
 
   /* Always create the mutt_windows because batch mode has some shared code
    * paths that end up referencing them. */
-  mutt_window_init();
+  rootwin_new();
 
   /* This must come before mutt_init() because curses needs to be started
    * before calling the init_pair() function to set the color scheme.  */
@@ -669,7 +669,7 @@ int main(int argc, char *argv[], char *envp[])
 
     /* check whether terminal status is supported (must follow curses init) */
     TsSupported = mutt_ts_capability();
-    mutt_window_set_root(COLS, LINES);
+    rootwin_set_size(COLS, LINES);
   }
 
   /* set defaults and read init files */
@@ -1130,7 +1130,7 @@ int main(int argc, char *argv[], char *envp[])
     if (!mutt_buffer_is_empty(&tempfile))
       unlink(mutt_buffer_string(&tempfile));
 
-    mutt_window_free_all();
+    rootwin_free();
 
     if (rv != 0)
       goto main_curses; // TEST36: neomutt -H existing -s test john@example.com -E (cancel sending)
@@ -1290,7 +1290,7 @@ main_exit:
   mutt_buffer_dealloc(&tempfile);
   mutt_list_free(&queries);
   crypto_module_free();
-  mutt_window_free_all();
+  rootwin_free();
   mutt_buffer_pool_free();
   mutt_envlist_free();
   mutt_browser_cleanup();

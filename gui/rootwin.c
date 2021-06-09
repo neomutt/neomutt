@@ -78,9 +78,9 @@ static int rootwin_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * mutt_window_free_all - Free all the default Windows
+ * rootwin_free - Free all the default Windows
  */
-void mutt_window_free_all(void)
+void rootwin_free(void)
 {
   if (NeoMutt)
     notify_observer_remove(NeoMutt->notify, rootwin_config_observer, RootWindow);
@@ -89,11 +89,11 @@ void mutt_window_free_all(void)
 }
 
 /**
- * mutt_window_init - Create the default Windows
+ * rootwin_new - Create the default Windows
  *
  * Create the Help, Index, Status, Message and Sidebar Windows.
  */
-void mutt_window_init(void)
+void rootwin_new(void)
 {
   if (RootWindow)
     return;
@@ -127,11 +127,11 @@ void mutt_window_init(void)
 }
 
 /**
- * mutt_window_set_root - Set the dimensions of the Root Window
+ * rootwin_set_size - Set the dimensions of the Root Window
  * @param rows
  * @param cols
  */
-void mutt_window_set_root(int cols, int rows)
+void rootwin_set_size(int cols, int rows)
 {
   if (!RootWindow)
     return;

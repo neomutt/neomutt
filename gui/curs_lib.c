@@ -139,7 +139,7 @@ void mutt_need_hard_redraw(void)
 {
   keypad(stdscr, true);
   clearok(stdscr, true);
-  window_redraw(RootWindow);
+  window_redraw(NULL);
 }
 
 /**
@@ -285,7 +285,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
   win->help_menu = MENU_EDITOR;
   struct MuttWindow *old_focus = window_set_focus(win);
 
-  window_redraw(RootWindow);
+  window_redraw(NULL);
   do
   {
     if (SigWinch)
@@ -293,7 +293,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
       SigWinch = false;
       mutt_resize_screen();
       clearok(stdscr, true);
-      window_redraw(RootWindow);
+      window_redraw(NULL);
     }
     mutt_window_clearline(win, 0);
     mutt_curses_set_color(MT_COLOR_PROMPT);

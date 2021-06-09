@@ -452,7 +452,7 @@ int menu_loop(struct Menu *menu)
 
       case OP_ENTER_COMMAND:
         mutt_enter_command();
-        window_redraw(RootWindow);
+        window_redraw(NULL);
         break;
 
       case OP_TAG:

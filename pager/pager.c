@@ -2515,7 +2515,7 @@ int mutt_pager(struct PagerView *pview)
   {
     mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
-    window_redraw(RootWindow);
+    window_redraw(NULL);
     pager_custom_redraw(pager_menu);
 
     const bool c_braille_friendly =

@@ -25,8 +25,8 @@
 
 extern struct MuttWindow *RootWindow;
 
-void mutt_window_free_all(void);
-void mutt_window_init(void);
-void mutt_window_set_root(int cols, int rows);
+void rootwin_free(void);
+void rootwin_new(void);
+void rootwin_set_size(int cols, int rows);
 
 #endif /* MUTT_WINDOW_ROOTWIN_H */

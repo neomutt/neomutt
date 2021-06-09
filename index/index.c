@@ -1331,7 +1331,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     else
     {
       index_custom_redraw(priv->menu);
-      window_redraw(RootWindow);
+      window_redraw(NULL);
 
       /* give visual indication that the next command is a tag- command */
       if (priv->tag)
@@ -1368,7 +1368,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         continue;
       }
 
-      window_redraw(RootWindow);
+      window_redraw(NULL);
       op = km_dokey(MENU_MAIN);
 
       /* either user abort or timeout */
