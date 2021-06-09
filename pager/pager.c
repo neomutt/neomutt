@@ -4140,7 +4140,7 @@ struct MuttWindow *create_panel_pager(bool status_on_top, struct IndexSharedData
   panel_pager->wdata = priv;
   panel_pager->wdata_free = pager_private_data_free;
 
-  struct MuttWindow *win_pbar = pbar_create(panel_pager, shared, priv);
+  struct MuttWindow *win_pbar = pbar_new(panel_pager, shared, priv);
   if (status_on_top)
   {
     mutt_window_add_child(panel_pager, win_pbar);

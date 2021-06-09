@@ -1377,9 +1377,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   rd->fcc = fcc;
   rd->win_env = win_env;
   rd->sub = sub;
-  rd->win_cbar = cbar_create(dlg, rd);
+  rd->win_cbar = cbar_new(dlg, rd);
 
-  struct MuttWindow *win_abar = sbar_create(dlg);
+  struct MuttWindow *win_abar = sbar_new(dlg);
   const bool c_status_on_top = cs_subset_bool(sub, "status_on_top");
   if (c_status_on_top)
   {

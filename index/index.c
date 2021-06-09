@@ -4259,7 +4259,7 @@ static struct MuttWindow *create_panel_index(bool status_on_top, struct IndexSha
   panel_index->wdata = priv;
   panel_index->wdata_free = index_private_data_free;
 
-  struct MuttWindow *win_ibar = ibar_create(panel_index, shared, priv);
+  struct MuttWindow *win_ibar = ibar_new(panel_index, shared, priv);
   if (status_on_top)
   {
     mutt_window_add_child(panel_index, win_ibar);

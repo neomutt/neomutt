@@ -26,6 +26,6 @@
 struct ComposeRedrawData;
 struct MuttWindow;
 
-struct MuttWindow *cbar_create(struct MuttWindow *parent, struct ComposeRedrawData *rd);
+struct MuttWindow *cbar_new(struct MuttWindow *parent, struct ComposeRedrawData *rd);
 
 #endif /* MUTT_COMPOSE_CBAR_H */

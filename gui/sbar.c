@@ -130,11 +130,11 @@ static struct SBarPrivateData *sbar_data_new(void)
 }
 
 /**
- * sbar_create - Add the Simple Bar (status)
+ * sbar_new - Add the Simple Bar (status)
  * @param parent Parent Window
  * @retval ptr New Simple Bar
  */
-struct MuttWindow *sbar_create(struct MuttWindow *parent)
+struct MuttWindow *sbar_new(struct MuttWindow *parent)
 {
   struct MuttWindow *win_sbar =
       mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,

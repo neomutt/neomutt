@@ -368,13 +368,13 @@ void mutt_window_init(void)
       mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 0, 0);
   notify_set_parent(RootWindow->notify, NeoMutt->notify);
 
-  struct MuttWindow *win_helpbar = helpbar_create();
+  struct MuttWindow *win_helpbar = helpbar_new();
 
   AllDialogsWindow = mutt_window_new(WT_ALL_DIALOGS, MUTT_WIN_ORIENT_VERTICAL,
                                      MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
                                      MUTT_WIN_SIZE_UNLIMITED);
 
-  struct MuttWindow *win_msg = msgwin_create();
+  struct MuttWindow *win_msg = msgwin_new();
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)

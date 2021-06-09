@@ -308,14 +308,14 @@ static struct IBarPrivateData *ibar_data_new(struct IndexSharedData *shared,
 }
 
 /**
- * ibar_create - Create the Index Bar (status)
+ * ibar_new - Create the Index Bar (status)
  * @param parent Parent Window
  * @param shared Shared Index data
  * @param priv   Private Index data
  * @retval ptr New Index Bar
  */
-struct MuttWindow *ibar_create(struct MuttWindow *parent, struct IndexSharedData *shared,
-                               struct IndexPrivateData *priv)
+struct MuttWindow *ibar_new(struct MuttWindow *parent, struct IndexSharedData *shared,
+                            struct IndexPrivateData *priv)
 {
   struct MuttWindow *win_ibar =
       mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,

@@ -255,10 +255,10 @@ static int helpbar_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * helpbar_create - Create the Help Bar Window
+ * helpbar_new - Create the Help Bar Window
  * @retval ptr New Window
  */
-struct MuttWindow *helpbar_create(void)
+struct MuttWindow *helpbar_new(void)
 {
   struct MuttWindow *win =
       mutt_window_new(WT_HELP_BAR, MUTT_WIN_ORIENT_VERTICAL,
