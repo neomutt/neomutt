@@ -339,7 +339,6 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
   menu->mdata = &mdata;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, alias_config_observer, &mdata);
-  notify_observer_add(NeoMutt->notify, NT_COLOR, alias_color_observer, menu);
 
   short sort_alias = cs_subset_sort(sub, "sort_alias");
 
@@ -597,7 +596,6 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
   }
 
   notify_observer_remove(NeoMutt->notify, alias_config_observer, &mdata);
-  notify_observer_remove(NeoMutt->notify, alias_color_observer, menu);
 
   simple_dialog_free(&dlg);
   ARRAY_FREE(&mdata.ava);

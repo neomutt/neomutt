@@ -56,7 +56,6 @@ struct AliasMenuData
 };
 
 int alias_config_observer(struct NotifyCallback *nc);
-int alias_color_observer (struct NotifyCallback *nc);
 
 int  alias_array_alias_add    (struct AliasViewArray *ava, struct Alias *alias);
 int  alias_array_alias_delete (struct AliasViewArray *ava, struct Alias *alias);

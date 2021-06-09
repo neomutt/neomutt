@@ -189,22 +189,34 @@ static int alias_alias_observer(struct NotifyCallback *nc)
 }
 
 /**
- * dlg_select_alias - Display a menu of Aliases
- * @param buf    Buffer for expanded aliases
- * @param buflen Length of buffer
- * @param mdata  Menu data holding Aliases
+ * alias_window_observer - Listen for window changes - Implements ::observer_t
  */
-static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mdata)
+int alias_window_observer(struct NotifyCallback *nc)
 {
-  if (ARRAY_EMPTY(&mdata->ava))
-  {
-    mutt_warning(_("You have no aliases"));
-    return;
-  }
+  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
+    return 0;
 
-  int t = -1;
-  bool done = false;
+  if (nc->event_subtype != NT_WINDOW_DELETE)
+    return 0;
 
+  struct MuttWindow *win_menu = nc->global_data;
+  struct Menu *menu = win_menu->wdata;
+
+  notify_observer_remove(NeoMutt->notify, alias_alias_observer, menu);
+  notify_observer_remove(NeoMutt->notify, alias_config_observer, menu->mdata);
+  notify_observer_remove(win_menu->notify, alias_window_observer, win_menu);
+
+  mutt_debug(LL_DEBUG5, "window delete done\n");
+  return 0;
+}
+
+/**
+ * alias_dialog_new - Create an Alias Selection Dialog
+ * @param mdata Menu data holding Aliases
+ * @retval ptr New Dialog
+ */
+struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
+{
   struct MuttWindow *dlg = simple_dialog_new(MENU_ALIAS, WT_DLG_ALIAS, AliasHelp);
 
   struct Menu *menu = dlg->wdata;
@@ -220,9 +232,36 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
   sbar_set_title(sbar, title);
   FREE(&title);
 
+  struct MuttWindow *win_menu = menu->win_index;
+
+  // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->notify, NT_ALIAS, alias_alias_observer, menu);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, alias_config_observer, mdata);
-  notify_observer_add(NeoMutt->notify, NT_COLOR, alias_color_observer, menu);
+  notify_observer_add(win_menu->notify, NT_WINDOW, alias_window_observer, win_menu);
+
+  return dlg;
+}
+
+/**
+ * dlg_select_alias - Display a menu of Aliases
+ * @param buf    Buffer for expanded aliases
+ * @param buflen Length of buffer
+ * @param mdata  Menu data holding Aliases
+ */
+static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mdata)
+{
+  if (ARRAY_EMPTY(&mdata->ava))
+  {
+    mutt_warning(_("You have no aliases"));
+    return;
+  }
+
+  struct MuttWindow *dlg = alias_dialog_new(mdata);
+  struct Menu *menu = dlg->wdata;
+  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
+
+  int t = -1;
+  bool done = false;
 
   alias_array_sort(&mdata->ava, mdata->sub);
 
@@ -358,10 +397,6 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
   {
     mutt_addrlist_write(&ARRAY_GET(&mdata->ava, t)->alias->addr, buf, buflen, true);
   }
-
-  notify_observer_remove(NeoMutt->notify, alias_alias_observer, menu);
-  notify_observer_remove(NeoMutt->notify, alias_config_observer, mdata);
-  notify_observer_remove(NeoMutt->notify, alias_color_observer, menu);
 
   simple_dialog_free(&dlg);
 }

@@ -36,7 +36,7 @@
 #include "menu/lib.h"
 
 /**
- * alias_config_observer - Listen for `sort_alias` configuration changes and reorders menu items accordingly
+ * alias_config_observer - Listen for config changes - Implements ::observer_t
  */
 int alias_config_observer(struct NotifyCallback *nc)
 {
@@ -54,21 +54,6 @@ int alias_config_observer(struct NotifyCallback *nc)
 
   alias_array_sort(&mdata->ava, mdata->sub);
   mutt_debug(LL_DEBUG5, "config done\n");
-
-  return 0;
-}
-
-/**
- * alias_color_observer - Listen for color configuration changes and refreshes the menu
- */
-int alias_color_observer(struct NotifyCallback *nc)
-{
-  if ((nc->event_type != NT_COLOR) || !nc->event_data || !nc->global_data)
-    return -1;
-
-  struct Menu *menu = nc->global_data;
-  menu_queue_redraw(menu, MENU_REDRAW_FULL);
-  mutt_debug(LL_DEBUG5, "color done, request MENU_REDRAW_FULL\n");
 
   return 0;
 }
