@@ -200,19 +200,15 @@ struct EventWindow
   WindowNotifyFlags flags; ///< Attributes of Window that changed
 };
 
-extern struct MuttWindow *RootWindow;
 extern struct MuttWindow *AllDialogsWindow;
 
 // Functions that deal with the Window
 void               mutt_window_add_child          (struct MuttWindow *parent, struct MuttWindow *child);
 void               mutt_window_free               (struct MuttWindow **ptr);
-void               mutt_window_free_all           (void);
 void               mutt_window_get_coords         (struct MuttWindow *win, int *col, int *row);
-void               mutt_window_init               (void);
 struct MuttWindow *mutt_window_new                (enum WindowType type, enum MuttWindowOrientation orient, enum MuttWindowSize size, int cols, int rows);
 void               mutt_window_reflow             (struct MuttWindow *win);
 struct MuttWindow *mutt_window_remove_child       (struct MuttWindow *parent, struct MuttWindow *child);
-void               mutt_window_set_root           (int cols, int rows);
 int                mutt_window_wrap_cols          (int width, short wrap);
 
 // Functions for drawing on the Window

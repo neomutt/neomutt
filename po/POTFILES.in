@@ -97,6 +97,7 @@ gui/msgwin.c
 gui/mutt_curses.c
 gui/mutt_window.c
 gui/reflow.c
+gui/rootwin.c
 gui/sbar.c
 gui/simple.c
 gui/terminal.c
