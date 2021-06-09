@@ -1161,6 +1161,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 {
   struct BrowserState state = { { 0 } };
   struct Menu *menu = NULL;
+  struct MuttWindow *dlg = NULL;
   bool kill_prefix = false;
   bool multiple = (flags & MUTT_SEL_MULTI);
   bool folder = (flags & MUTT_SEL_FOLDER);
@@ -1360,7 +1361,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 #endif
     help_data = FolderHelp;
 
-  struct MuttWindow *dlg = simple_dialog_new(MENU_FOLDER, WT_DLG_BROWSER, help_data);
+  dlg = simple_dialog_new(MENU_FOLDER, WT_DLG_BROWSER, help_data);
 
   menu = dlg->wdata;
   menu->make_entry = folder_make_entry;
@@ -2224,8 +2225,7 @@ bail:
   mutt_buffer_pool_release(&buf);
   mutt_buffer_pool_release(&prefix);
 
-  if (menu)
-    simple_dialog_free(&dlg);
+  simple_dialog_free(&dlg);
 
   goto_swapper[0] = '\0';
 }

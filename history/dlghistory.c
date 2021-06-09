@@ -93,14 +93,11 @@ static void history_make_entry(struct Menu *menu, char *buf, size_t buflen, int 
  */
 void dlg_select_history(char *buf, size_t buflen, char **matches, int match_count)
 {
-  bool done = false;
-  char title[256];
-
-  snprintf(title, sizeof(title), _("History '%s'"), buf);
-
   struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_HISTORY, HistoryHelp);
 
   struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
+  char title[256];
+  snprintf(title, sizeof(title), _("History '%s'"), buf);
   sbar_set_title(sbar, title);
 
   struct Menu *menu = dlg->wdata;
@@ -108,6 +105,7 @@ void dlg_select_history(char *buf, size_t buflen, char **matches, int match_coun
   menu->max = match_count;
   menu->mdata = matches;
 
+  bool done = false;
   while (!done)
   {
     switch (menu_loop(menu))
@@ -116,8 +114,9 @@ void dlg_select_history(char *buf, size_t buflen, char **matches, int match_coun
       {
         const int index = menu_get_index(menu);
         mutt_str_copy(buf, matches[index], buflen);
+        done = true;
+        break;
       }
-        /* fall through */
 
       case OP_EXIT:
         done = true;
