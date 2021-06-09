@@ -554,7 +554,6 @@ void menu_free(struct Menu **ptr)
 {
   struct Menu *menu = *ptr;
 
-  menu_remove_observers(menu);
   notify_free(&menu->notify);
 
   if (menu->mdata && menu->mdata_free)
