@@ -50,6 +50,27 @@ static int simple_config_observer(struct NotifyCallback *nc)
 
   struct MuttWindow *dlg = nc->global_data;
   window_status_on_top(dlg, NeoMutt->sub);
+  mutt_debug(LL_DEBUG5, "config done\n");
+  return 0;
+}
+
+/**
+ * simple_window_observer - Listen for window changes affecting a Dialog - Implements ::observer_t
+ */
+static int simple_window_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
+    return 0;
+
+  struct MuttWindow *dlg = nc->global_data;
+
+  if (nc->event_subtype != NT_WINDOW_DELETE)
+    return 0;
+
+  notify_observer_remove(NeoMutt->notify, simple_config_observer, dlg);
+  notify_observer_remove(dlg->notify, simple_window_observer, dlg);
+
+  mutt_debug(LL_DEBUG5, "window delete done\n");
   return 0;
 }
 
@@ -87,6 +108,7 @@ struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype,
   }
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, simple_config_observer, dlg);
+  notify_observer_add(dlg->notify, NT_WINDOW, simple_window_observer, dlg);
   dialog_push(dlg);
 
   return dlg;
@@ -101,9 +123,6 @@ void simple_dialog_free(struct MuttWindow **ptr)
   if (!ptr || !*ptr)
     return;
 
-  struct MuttWindow *dlg = *ptr;
-
   dialog_pop();
-  notify_observer_remove(NeoMutt->notify, simple_config_observer, dlg);
   mutt_window_free(ptr);
 }
