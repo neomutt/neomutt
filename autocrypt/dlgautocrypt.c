@@ -161,6 +161,25 @@ static void account_make_entry(struct Menu *menu, char *buf, size_t buflen, int 
 }
 
 /**
+ * ac_menu_free - Free the Autocrypt account Menu - Implements Menu:mdata_free()
+ */
+static void ac_menu_free(struct Menu *menu, void **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct AccountEntry *entries = *ptr;
+
+  for (size_t i = 0; i < menu->max; i++)
+  {
+    mutt_autocrypt_db_account_free(&entries[i].account);
+    mutt_addr_free(&entries[i].addr);
+  }
+
+  FREE(ptr);
+}
+
+/**
  * create_menu - Create the Autocrypt account Menu
  * @param dlg Dialog holding the Menu
  * @retval ptr New Menu
@@ -184,6 +203,7 @@ static struct Menu *create_menu(struct MuttWindow *dlg)
   struct AccountEntry *entries =
       mutt_mem_calloc(num_accounts, sizeof(struct AccountEntry));
   menu->mdata = entries;
+  menu->mdata_free = ac_menu_free;
   menu->max = num_accounts;
 
   for (int i = 0; i < num_accounts; i++)
@@ -201,22 +221,6 @@ static struct Menu *create_menu(struct MuttWindow *dlg)
   FREE(&accounts);
 
   return menu;
-}
-
-/**
- * ac_menu_free - Free the Autocrypt account Menu
- * @param menu Menu to free
- */
-static void ac_menu_free(struct Menu **menu)
-{
-  struct AccountEntry *entries = (struct AccountEntry *) (*menu)->mdata;
-
-  for (int i = 0; i < (*menu)->max; i++)
-  {
-    mutt_autocrypt_db_account_free(&entries[i].account);
-    mutt_addr_free(&entries[i].addr);
-  }
-  FREE(&(*menu)->mdata);
 }
 
 /**
@@ -279,7 +283,6 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
         if (mutt_autocrypt_account_init(false))
           break;
 
-        ac_menu_free(&menu);
         simple_dialog_free(&dlg);
         dlg = simple_dialog_new(MENU_AUTOCRYPT_ACCT, WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
         menu = create_menu(dlg);
@@ -301,7 +304,6 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
 
         if (!mutt_autocrypt_db_account_delete(entry->account))
         {
-          ac_menu_free(&menu);
           simple_dialog_free(&dlg);
           dlg = simple_dialog_new(MENU_AUTOCRYPT_ACCT, WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
           menu = create_menu(dlg);
@@ -335,6 +337,5 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
     }
   }
 
-  ac_menu_free(&menu);
   simple_dialog_free(&dlg);
 }
