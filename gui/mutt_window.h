@@ -200,8 +200,6 @@ struct EventWindow
   WindowNotifyFlags flags; ///< Attributes of Window that changed
 };
 
-extern struct MuttWindow *AllDialogsWindow;
-
 // Functions that deal with the Window
 void               mutt_window_add_child          (struct MuttWindow *parent, struct MuttWindow *child);
 void               mutt_window_free               (struct MuttWindow **ptr);
@@ -231,7 +229,6 @@ void               window_set_visible(struct MuttWindow *win, bool visible);
 struct MuttWindow *window_set_focus  (struct MuttWindow *win);
 struct MuttWindow *window_get_focus  (void);
 bool               window_is_focused (struct MuttWindow *win);
-struct MuttWindow *window_get_dialog (void);
 
 void window_redraw(struct MuttWindow *win);
 void window_invalidate_all(void);

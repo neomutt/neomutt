@@ -33,6 +33,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "helpbar/lib.h"
+#include "dialog.h"
 #include "msgwin.h"
 #include "mutt_window.h"
 
@@ -123,23 +124,19 @@ void rootwin_new(void)
   notify_set_parent(win_root->notify, NeoMutt->notify);
 
   struct MuttWindow *win_helpbar = helpbar_new();
-
-  AllDialogsWindow = mutt_window_new(WT_ALL_DIALOGS, MUTT_WIN_ORIENT_VERTICAL,
-                                     MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
-                                     MUTT_WIN_SIZE_UNLIMITED);
-
+  struct MuttWindow *win_alldlgs = alldialogs_new();
   struct MuttWindow *win_msg = msgwin_new();
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)
   {
-    mutt_window_add_child(win_root, AllDialogsWindow);
+    mutt_window_add_child(win_root, win_alldlgs);
     mutt_window_add_child(win_root, win_helpbar);
   }
   else
   {
     mutt_window_add_child(win_root, win_helpbar);
-    mutt_window_add_child(win_root, AllDialogsWindow);
+    mutt_window_add_child(win_root, win_alldlgs);
   }
 
   mutt_window_add_child(win_root, win_msg);

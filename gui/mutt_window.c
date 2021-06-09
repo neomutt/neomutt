@@ -41,8 +41,6 @@
 #include "debug/lib.h"
 #endif
 
-struct MuttWindow *AllDialogsWindow = NULL; ///< Parent of all Dialogs
-
 /// Lookups for Window Names
 static const struct Mapping WindowNames[] = {
   // clang-format off
@@ -693,25 +691,6 @@ struct MuttWindow *window_set_focus(struct MuttWindow *win)
   debug_win_dump();
 #endif
   return old_focus;
-}
-
-/**
- * window_get_dialog - Get the currently active Dialog
- * @retval ptr Active Dialog
- */
-struct MuttWindow *window_get_dialog(void)
-{
-  if (!AllDialogsWindow)
-    return NULL;
-
-  struct MuttWindow *np = NULL;
-  TAILQ_FOREACH(np, &AllDialogsWindow->children, entries)
-  {
-    if (mutt_window_is_visible(np))
-      return np;
-  }
-
-  return NULL;
 }
 
 /**

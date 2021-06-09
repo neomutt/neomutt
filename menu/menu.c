@@ -529,7 +529,7 @@ int menu_loop(struct Menu *menu)
  */
 enum MenuType menu_get_current_type(void)
 {
-  struct MuttWindow *win = window_get_dialog();
+  struct MuttWindow *win = alldialogs_get_current();
   while (win && win->focus)
     win = win->focus;
 
