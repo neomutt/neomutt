@@ -153,18 +153,15 @@ static int index_color_observer(struct NotifyCallback *nc)
 
   struct EventColor *ev_c = nc->event_data;
 
-  int c = ev_c->color;
+  const int c = ev_c->color;
 
-  // MT_COLOR_MAX is sent on `uncolor *`
   bool simple = (c == MT_COLOR_INDEX_COLLAPSED) || (c == MT_COLOR_INDEX_DATE) ||
                 (c == MT_COLOR_INDEX_LABEL) || (c == MT_COLOR_INDEX_NUMBER) ||
-                (c == MT_COLOR_INDEX_SIZE) || (c == MT_COLOR_INDEX_TAGS) ||
-                (c == MT_COLOR_MAX);
-  bool lists = (c == MT_COLOR_ATTACH_HEADERS) || (c == MT_COLOR_BODY) ||
-               (c == MT_COLOR_HEADER) || (c == MT_COLOR_INDEX) ||
-               (c == MT_COLOR_INDEX_AUTHOR) || (c == MT_COLOR_INDEX_FLAGS) ||
-               (c == MT_COLOR_INDEX_SUBJECT) || (c == MT_COLOR_INDEX_TAG) ||
-               (c == MT_COLOR_MAX);
+                (c == MT_COLOR_INDEX_SIZE) || (c == MT_COLOR_INDEX_TAGS);
+
+  bool lists = (c == MT_COLOR_INDEX) || (c == MT_COLOR_INDEX_AUTHOR) ||
+               (c == MT_COLOR_INDEX_FLAGS) || (c == MT_COLOR_INDEX_SUBJECT) ||
+               (c == MT_COLOR_INDEX_TAG);
 
   // The changes aren't relevant to the index menu
   if (!simple && !lists)
@@ -180,7 +177,7 @@ static int index_color_observer(struct NotifyCallback *nc)
   // Colour deleted from a list
   if ((nc->event_subtype == NT_COLOR_RESET) && lists)
   {
-    // Force re-caching of index colors
+    // Force re-caching of index colours
     for (int i = 0; i < m->msg_count; i++)
     {
       struct Email *e = m->emails[i];
