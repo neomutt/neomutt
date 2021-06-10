@@ -44,6 +44,7 @@
 #include "ncrypt/lib.h"
 #include "pattern/lib.h"
 #include "send/lib.h"
+#include "context.h"
 #include "format_flags.h"
 #include "handler.h"
 #include "hdrline.h"
@@ -333,6 +334,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
   int rc = SEND_POSTPONED;
   const char *p = NULL;
 
+  struct Context *ctx = NULL;
   struct Mailbox *m = mx_path_resolve(c_postponed);
   if (m_cur != m)
   {
@@ -343,6 +345,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
       mailbox_free(&m);
       return -1;
     }
+    ctx = ctx_new(m);
   }
 
   /* TODO:
@@ -360,10 +363,9 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
   if (m->msg_count == 0)
   {
     PostCount = 0;
-    if (m_cur != m)
-      mx_fastclose_mailbox(m);
     mutt_error(_("No postponed messages"));
-    return -1;
+    rc = -1;
+    goto cleanup;
   }
 
   if (m->msg_count == 1)
@@ -373,20 +375,14 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
   }
   else if (!(e = dlg_select_postponed_email(m)))
   {
-    if (m_cur != m)
-    {
-      hardclose(m);
-    }
-    return -1;
+    rc = -1;
+    goto cleanup;
   }
 
   if (mutt_prepare_template(NULL, m, hdr, e, false) < 0)
   {
-    if (m_cur != m)
-    {
-      hardclose(m);
-    }
-    return -1;
+    rc = -1;
+    goto cleanup;
   }
 
   /* finished with this message, so delete it. */
@@ -399,10 +395,6 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
   /* avoid the "purge deleted messages" prompt */
   const enum QuadOption c_delete = cs_subset_quad(NeoMutt->sub, "delete");
   cs_subset_str_native_set(NeoMutt->sub, "delete", MUTT_YES, NULL);
-  if (m_cur != m)
-  {
-    hardclose(m);
-  }
   cs_subset_str_native_set(NeoMutt->sub, "delete", c_delete, NULL);
 
   struct ListNode *np = NULL, *tmp = NULL;
@@ -478,6 +470,19 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
   if (c_crypt_opportunistic_encrypt)
     crypt_opportunistic_encrypt(m_cur, hdr);
 
+cleanup:
+  if (m_cur != m)
+  {
+    if (e)
+    {
+      mx_fastclose_mailbox(m);
+    }
+    else
+    {
+      hardclose(m);
+    }
+    ctx_free(&ctx);
+  }
   return rc;
 }
 
