@@ -44,6 +44,7 @@
 #include "ncrypt/lib.h"
 #include "pattern/lib.h"
 #include "send/lib.h"
+#include "context.h"
 #include "format_flags.h"
 #include "handler.h"
 #include "hdrline.h"
@@ -333,6 +334,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
   int rc = SEND_POSTPONED;
   const char *p = NULL;
 
+  struct Context *ctx = NULL;
   struct Mailbox *m = mx_path_resolve(c_postponed);
   if (m_cur != m)
   {
@@ -343,6 +345,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
       mailbox_free(&m);
       return -1;
     }
+    ctx = ctx_new(m);
   }
 
   /* TODO:
@@ -361,7 +364,10 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
   {
     PostCount = 0;
     if (m_cur != m)
+    {
       mx_fastclose_mailbox(m);
+      ctx_free(&ctx);
+    }
     mutt_error(_("No postponed messages"));
     return -1;
   }
@@ -376,6 +382,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
     if (m_cur != m)
     {
       hardclose(m);
+      ctx_free(&ctx);
     }
     return -1;
   }
@@ -385,6 +392,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
     if (m_cur != m)
     {
       hardclose(m);
+      ctx_free(&ctx);
     }
     return -1;
   }
@@ -402,6 +410,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
   if (m_cur != m)
   {
     hardclose(m);
+    ctx_free(&ctx);
   }
   cs_subset_str_native_set(NeoMutt->sub, "delete", c_delete, NULL);
 
