@@ -576,6 +576,26 @@ static int remailer_config_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * remailer_window_observer - Listen for window changes affecting the remailer - Implements ::observer_t
+ */
+static int remailer_window_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
+    return 0;
+
+  if (nc->event_subtype != NT_WINDOW_DELETE)
+    return 0;
+
+  struct MuttWindow *dlg = nc->global_data;
+
+  notify_observer_remove(NeoMutt->notify, remailer_config_observer, dlg);
+  notify_observer_remove(dlg->notify, remailer_window_observer, dlg);
+  mutt_debug(LL_DEBUG5, "window delete done\n");
+
+  return 0;
+}
+
+/**
  * dlg_select_mixmaster_chain - Create a Mixmaster chain
  * @param chainhead List of chain links
  *
@@ -659,6 +679,7 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
   menu->mdata = type2_list;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, remailer_config_observer, dlg);
+  notify_observer_add(dlg->notify, NT_WINDOW, remailer_window_observer, dlg);
   dialog_push(dlg);
 
   while (loop)
@@ -793,7 +814,6 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
   }
 
   dialog_pop();
-  notify_observer_remove(NeoMutt->notify, remailer_config_observer, dlg);
 
   /* construct the remailer list */
 
