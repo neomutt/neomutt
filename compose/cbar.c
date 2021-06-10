@@ -217,9 +217,25 @@ static int cbar_color_observer(struct NotifyCallback *nc)
     return 0;
 
   struct EventColor *ev_c = nc->event_data;
-  enum ColorId color = ev_c->color;
 
-  if (color != MT_COLOR_STATUS)
+  // MT_COLOR_MAX is sent on `uncolor *`
+  if ((ev_c->color != MT_COLOR_STATUS) && (ev_c->color != MT_COLOR_MAX))
+    return 0;
+
+  struct MuttWindow *win_cbar = nc->global_data;
+  win_cbar->actions |= WA_REPAINT;
+
+  return 0;
+}
+
+/**
+ * cbar_compose_observer - Listen for changes to the Colours - Implements ::observer_t
+ */
+int cbar_compose_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data || !nc->global_data)
+    return -1;
+  if (nc->event_type != NT_COMPOSE)
     return 0;
 
   struct MuttWindow *win_cbar = nc->global_data;
@@ -281,6 +297,36 @@ static struct CBarPrivateData *cbar_data_new(struct ComposeSharedData *shared)
 }
 
 /**
+ * cbar_window_observer - Listen for changes to the Window - Implements ::observer_t
+ */
+int cbar_window_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
+    return -1;
+
+  struct MuttWindow *win_cbar = nc->global_data;
+
+  if (nc->event_subtype == NT_WINDOW_STATE)
+  {
+    win_cbar->actions |= WA_RECALC;
+    mutt_debug(LL_NOTIFY, "state change, request WA_RECALC\n");
+  }
+  else if (nc->event_subtype == NT_WINDOW_DELETE)
+  {
+    struct MuttWindow *dlg = win_cbar->parent;
+    struct ComposeSharedData *shared = dlg->wdata;
+
+    notify_observer_remove(NeoMutt->notify, cbar_color_observer, win_cbar);
+    notify_observer_remove(shared->notify, cbar_compose_observer, win_cbar);
+    notify_observer_remove(NeoMutt->notify, cbar_config_observer, win_cbar);
+    notify_observer_remove(win_cbar->notify, cbar_window_observer, win_cbar);
+
+    mutt_debug(LL_DEBUG5, "window delete done\n");
+  }
+  return 0;
+}
+
+/**
  * cbar_new - Create the Compose Bar (status)
  * @param parent Parent Window
  * @param shared Shared compose data
@@ -297,7 +343,9 @@ struct MuttWindow *cbar_new(struct MuttWindow *parent, struct ComposeSharedData 
   win_cbar->repaint = cbar_repaint;
 
   notify_observer_add(NeoMutt->notify, NT_COLOR, cbar_color_observer, win_cbar);
+  notify_observer_add(shared->notify, NT_COMPOSE, cbar_compose_observer, win_cbar);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, cbar_config_observer, win_cbar);
+  notify_observer_add(win_cbar->notify, NT_WINDOW, cbar_window_observer, win_cbar);
 
   return win_cbar;
 }

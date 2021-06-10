@@ -33,6 +33,7 @@ struct ComposeSharedData
   struct Email *email;               ///< Email being composed
   struct ComposeAttachData *adata;   ///< Attachments
   struct ComposeEnvelopeData *edata; ///< Envelope data
+  struct Notify *notify;             ///< Notifications: #NotifyCompose
 };
 
 struct MuttWindow;

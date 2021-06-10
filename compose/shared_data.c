@@ -38,7 +38,9 @@ void compose_shared_data_free(struct MuttWindow *win, void **ptr)
   if (!ptr || !*ptr)
     return;
 
-  // struct ComposeSharedData *shared = *ptr;
+  struct ComposeSharedData *shared = *ptr;
+
+  notify_free(&shared->notify);
 
   FREE(ptr);
 }
@@ -50,6 +52,8 @@ void compose_shared_data_free(struct MuttWindow *win, void **ptr)
 struct ComposeSharedData *compose_shared_data_new(void)
 {
   struct ComposeSharedData *shared = mutt_mem_calloc(1, sizeof(struct ComposeSharedData));
+
+  shared->notify = notify_new();
 
   return shared;
 }
