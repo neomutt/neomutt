@@ -1,6 +1,6 @@
 /**
  * @file
- * Compose Attach Data
+ * Compose Bar Data
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -21,42 +21,43 @@
  */
 
 /**
- * @page compose_attach_data Compose Attach Data
+ * @page compose_cbar_data Compose Bar Data
  *
- * Compose Attach Data
+ * Compose Bar Data
  */
 
 #include "config.h"
 #include "mutt/lib.h"
-#include "email/lib.h"
-#include "attach_data.h"
+#include "core/lib.h"
+#include "cbar_data.h"
+
+int cbar_color_observer(struct NotifyCallback *nc);
+int cbar_config_observer(struct NotifyCallback *nc);
 
 /**
- * attach_data_free - Free the Compose Attach Data - Implements Menu::mdata_free()
+ * cbar_data_free - Free the private data attached to the MuttWindow - Implements MuttWindow::wdata_free()
  */
-void attach_data_free(struct Menu *menu, void **ptr)
+void cbar_data_free(struct MuttWindow *win, void **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
-  struct ComposeAttachData *attach_data = *ptr;
+  struct ComposeBarData *cbar_data = *ptr;
 
-  mutt_actx_free(&attach_data->actx);
+  notify_observer_remove(NeoMutt->notify, cbar_color_observer, win);
+  notify_observer_remove(NeoMutt->notify, cbar_config_observer, win);
+
+  FREE(&cbar_data->compose_format);
 
   FREE(ptr);
 }
 
 /**
- * attach_data_new - Create new Compose Attach Data
- * @retval ptr New Compose Attach Data
+ * cbar_data_new - Free the private data attached to the MuttWindow
  */
-struct ComposeAttachData *attach_data_new(struct Email *e)
+struct ComposeBarData *cbar_data_new(void)
 {
-  struct ComposeAttachData *attach_data =
-      mutt_mem_calloc(1, sizeof(struct ComposeAttachData));
+  struct ComposeBarData *cbar_data = mutt_mem_calloc(1, sizeof(struct ComposeBarData));
 
-  attach_data->actx = mutt_actx_new();
-  attach_data->actx->email = e;
-
-  return attach_data;
+  return cbar_data;
 }

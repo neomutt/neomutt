@@ -24,7 +24,7 @@
  */
 
 /**
- * @page compose_compose GUI editor for an email's headers
+ * @page compose_dialog GUI editor for an email's headers
  *
  * GUI editor for an email's headers
  */
@@ -38,6 +38,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
@@ -59,7 +60,6 @@
 #include "commands.h"
 #include "context.h"
 #include "env_data.h"
-#include "format_flags.h"
 #include "hook.h"
 #include "mutt_attach.h"
 #include "mutt_globals.h"
@@ -93,47 +93,10 @@
 #include "autocrypt/lib.h"
 #endif
 
-/// Maximum number of rows to use for the To:, Cc:, Bcc: fields
-#define MAX_ADDR_ROWS 5
+int HeaderPadding[HDR_ATTACH_TITLE] = { 0 };
+int MaxHeaderWidth = 0;
 
-/// Maximum number of rows to use for the Headers: field
-#define MAX_USER_HDR_ROWS 5
-
-/**
- * enum HeaderField - Ordered list of headers for the compose screen
- *
- * The position of various fields on the compose screen.
- */
-enum HeaderField
-{
-  HDR_FROM,    ///< "From:" field
-  HDR_TO,      ///< "To:" field
-  HDR_CC,      ///< "Cc:" field
-  HDR_BCC,     ///< "Bcc:" field
-  HDR_SUBJECT, ///< "Subject:" field
-  HDR_REPLYTO, ///< "Reply-To:" field
-  HDR_FCC,     ///< "Fcc:" (save folder) field
-#ifdef MIXMASTER
-  HDR_MIX, ///< "Mix:" field (Mixmaster chain)
-#endif
-  HDR_CRYPT,     ///< "Security:" field (encryption/signing info)
-  HDR_CRYPTINFO, ///< "Sign as:" field (encryption/signing info)
-#ifdef USE_AUTOCRYPT
-  HDR_AUTOCRYPT, ///< "Autocrypt:" and "Recommendation:" fields
-#endif
-#ifdef USE_NNTP
-  HDR_NEWSGROUPS, ///< "Newsgroups:" field
-  HDR_FOLLOWUPTO, ///< "Followup-To:" field
-  HDR_XCOMMENTTO, ///< "X-Comment-To:" field
-#endif
-  HDR_CUSTOM_HEADERS, ///< "Headers:" field
-  HDR_ATTACH_TITLE,   ///< The "-- Attachments" line
-};
-
-static int HeaderPadding[HDR_ATTACH_TITLE] = { 0 };
-static int MaxHeaderWidth = 0;
-
-static const char *const Prompts[] = {
+const char *const Prompts[] = {
   /* L10N: Compose menu field.  May not want to translate. */
   N_("From: "),
   /* L10N: Compose menu field.  May not want to translate. */
@@ -209,61 +172,6 @@ static const struct Mapping ComposeNewsHelp[] = {
 };
 #endif
 
-#ifdef USE_AUTOCRYPT
-static const char *const AutocryptRecUiFlags[] = {
-  /* L10N: Autocrypt recommendation flag: off.
-     This is displayed when Autocrypt is turned off. */
-  N_("Off"),
-  /* L10N: Autocrypt recommendation flag: no.
-     This is displayed when Autocrypt cannot encrypt to the recipients. */
-  N_("No"),
-  /* L10N: Autocrypt recommendation flag: discouraged.
-     This is displayed when Autocrypt believes encryption should not be used.
-     This might occur if one of the recipient Autocrypt Keys has not been
-     used recently, or if the only key available is a Gossip Header key. */
-  N_("Discouraged"),
-  /* L10N: Autocrypt recommendation flag: available.
-     This is displayed when Autocrypt believes encryption is possible, but
-     leaves enabling it up to the sender.  Probably because "prefer encrypt"
-     is not set in both the sender and recipient keys. */
-  N_("Available"),
-  /* L10N: Autocrypt recommendation flag: yes.
-     This is displayed when Autocrypt would normally enable encryption
-     automatically. */
-  N_("Yes"),
-};
-#endif
-
-/**
- * check_count - Check if there are any attachments
- * @param actx Attachment context
- * @retval true There are attachments
- */
-static bool check_count(struct AttachCtx *actx)
-{
-  if (actx->idxlen == 0)
-  {
-    mutt_error(_("There are no attachments"));
-    return false;
-  }
-
-  return true;
-}
-
-/**
- * current_attachment - Get the current attachment
- * @param actx Attachment context
- * @param menu Menu
- * @retval ptr Current Attachment
- */
-static struct AttachPtr *current_attachment(struct AttachCtx *actx, struct Menu *menu)
-{
-  const int virt = menu_get_index(menu);
-  const int index = actx->v2r[virt];
-
-  return actx->idx[index];
-}
-
 /**
  * calc_header_width_padding - Calculate the width needed for the compose labels
  * @param idx      Store the result at this index of HeaderPadding
@@ -318,18 +226,92 @@ static void init_header_padding(void)
 }
 
 /**
- * compose_make_entry - Format a menu item for the attachment list - Implements Menu::make_entry()
+ * compose_config_observer - Listen for config changes affecting the Compose menu - Implements ::observer_t
  */
-static void compose_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+static int compose_config_observer(struct NotifyCallback *nc)
 {
-  struct ComposeSharedData *shared = menu->mdata;
-  struct AttachCtx *actx = shared->adata->actx;
-  struct ConfigSubset *sub = shared->sub;
+  if (!nc->event_data || !nc->global_data)
+    return -1;
+  if (nc->event_type != NT_CONFIG)
+    return 0;
 
-  const char *const c_attach_format = cs_subset_string(sub, "attach_format");
-  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(c_attach_format),
-                      attach_format_str, (intptr_t) (actx->idx[actx->v2r[line]]),
-                      MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
+  struct EventConfig *ev_c = nc->event_data;
+  struct MuttWindow *dlg = nc->global_data;
+
+  if (!mutt_str_equal(ev_c->name, "status_on_top"))
+    return 0;
+
+  struct MuttWindow *win_cbar = mutt_window_find(dlg, WT_STATUS_BAR);
+  if (!win_cbar)
+    return 0;
+
+  TAILQ_REMOVE(&dlg->children, win_cbar, entries);
+
+  const bool c_status_on_top = cs_subset_bool(ev_c->sub, "status_on_top");
+  if (c_status_on_top)
+    TAILQ_INSERT_HEAD(&dlg->children, win_cbar, entries);
+  else
+    TAILQ_INSERT_TAIL(&dlg->children, win_cbar, entries);
+
+  mutt_window_reflow(dlg);
+  mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
+  return 0;
+}
+
+/**
+ * compose_window_observer - Listen for window changes affecting the Compose menu - Implements ::observer_t
+ */
+static int compose_window_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data || !nc->global_data)
+    return -1;
+  if (nc->event_type != NT_WINDOW)
+    return 0;
+
+  if (nc->event_subtype != NT_WINDOW_DELETE)
+    return 0;
+
+  struct MuttWindow *dlg = nc->global_data;
+
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != dlg)
+    return 0;
+
+  notify_observer_remove(NeoMutt->notify, compose_config_observer, dlg);
+  notify_observer_remove(dlg->notify, compose_window_observer, dlg);
+  mutt_debug(LL_DEBUG5, "window delete done\n");
+
+  return 0;
+}
+
+/**
+ * check_count - Check if there are any attachments
+ * @param actx Attachment context
+ * @retval true There are attachments
+ */
+static bool check_count(struct AttachCtx *actx)
+{
+  if (actx->idxlen == 0)
+  {
+    mutt_error(_("There are no attachments"));
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * current_attachment - Get the current attachment
+ * @param actx Attachment context
+ * @param menu Menu
+ * @retval ptr Current Attachment
+ */
+static struct AttachPtr *current_attachment(struct AttachCtx *actx, struct Menu *menu)
+{
+  const int virt = menu_get_index(menu);
+  const int index = actx->v2r[virt];
+
+  return actx->idx[index];
 }
 
 #ifdef USE_AUTOCRYPT
@@ -377,300 +359,6 @@ static void autocrypt_compose_menu(struct Email *e, const struct ConfigSubset *s
 #endif
 
 /**
- * draw_floating - Draw a floating label
- * @param win  Window to draw on
- * @param col  Column to draw at
- * @param row  Row to draw at
- * @param text Text to display
- */
-static void draw_floating(struct MuttWindow *win, int col, int row, const char *text)
-{
-  mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(win, col, row, "%s", text);
-  mutt_curses_set_color(MT_COLOR_NORMAL);
-}
-
-/**
- * draw_header - Draw an aligned label
- * @param win   Window to draw on
- * @param row   Row to draw at
- * @param field Field to display, e.g. #HDR_FROM
- */
-static void draw_header(struct MuttWindow *win, int row, enum HeaderField field)
-{
-  mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(win, 0, row, "%*s", HeaderPadding[field], _(Prompts[field]));
-  mutt_curses_set_color(MT_COLOR_NORMAL);
-}
-
-/**
- * draw_header_content - Draw content on a separate line aligned to header prompt
- * @param win     Window to draw on
- * @param row     Row to draw at
- * @param field   Field to display, e.g. #HDR_FROM
- * @param content Text to display
- *
- * Content will be truncated if it is wider than the window.
- */
-static void draw_header_content(struct MuttWindow *win, int row,
-                                enum HeaderField field, const char *content)
-{
-  mutt_window_move(win, HeaderPadding[field], row);
-  mutt_paddstr(win, win->state.cols - HeaderPadding[field], content);
-}
-
-/**
- * calc_address - Calculate how many rows an AddressList will need
- * @param[in]  al    Address List
- * @param[out] slist String list
- * @param[in]  cols Screen columns available
- * @param[out] srows Rows needed
- * @retval num Rows needed
- *
- * @note Number of rows is capped at #MAX_ADDR_ROWS
- */
-static int calc_address(struct AddressList *al, struct ListHead *slist,
-                        short cols, short *srows)
-{
-  mutt_list_free(slist);
-  mutt_addrlist_write_list(al, slist);
-
-  int rows = 1;
-  int addr_len;
-  int width_left = cols;
-  struct ListNode *next = NULL;
-  struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, slist, entries)
-  {
-    next = STAILQ_NEXT(np, entries);
-    addr_len = mutt_strwidth(np->data);
-    if (next)
-      addr_len += 2; // ", "
-
-  try_again:
-    if (addr_len >= width_left)
-    {
-      if (width_left == cols)
-        break;
-
-      rows++;
-      width_left = cols;
-      goto try_again;
-    }
-
-    if (addr_len < width_left)
-      width_left -= addr_len;
-  }
-
-  *srows = MIN(rows, MAX_ADDR_ROWS);
-  return *srows;
-}
-
-/**
- * calc_security - Calculate how many rows the security info will need
- * @param e    Email
- * @param rows Rows needed
- * @param sub  ConfigSubset
- * @retval num Rows needed
- */
-static int calc_security(struct Email *e, short *rows, const struct ConfigSubset *sub)
-{
-  if ((WithCrypto & (APPLICATION_PGP | APPLICATION_SMIME)) == 0)
-    *rows = 0; // Neither PGP nor SMIME are built into NeoMutt
-  else if ((e->security & (SEC_ENCRYPT | SEC_SIGN)) != 0)
-    *rows = 2; // 'Security:' and 'Sign as:'
-  else
-    *rows = 1; // Just 'Security:'
-
-#ifdef USE_AUTOCRYPT
-  const bool c_autocrypt = cs_subset_bool(sub, "autocrypt");
-  if (c_autocrypt)
-    *rows += 1;
-#endif
-
-  return *rows;
-}
-
-/**
- * calc_user_hdrs - Calculate how many rows are needed for user-defined headers
- * @param hdrs Header List
- * @retval num Rows needed, limited to #MAX_USER_HDR_ROWS
- */
-static int calc_user_hdrs(const struct ListHead *hdrs)
-{
-  int rows = 0; /* Don't print at all if no custom headers*/
-  struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, hdrs, entries)
-  {
-    if (rows == MAX_USER_HDR_ROWS)
-      break;
-    rows++;
-  }
-  return rows;
-}
-
-/**
- * calc_envelope - Calculate how many rows the envelope will need
- * @param win    Window to draw on
- * @param shared Shared compose data
- * @param edata  Envelope data
- * @retval num Rows needed
- */
-static int calc_envelope(struct MuttWindow *win, struct ComposeSharedData *shared,
-                         struct ComposeEnvelopeData *edata)
-{
-  int rows = 4; // 'From:', 'Subject:', 'Reply-To:', 'Fcc:'
-#ifdef MIXMASTER
-  rows++;
-#endif
-
-  struct Email *e = shared->email;
-  struct Envelope *env = e->env;
-  const int cols = win->state.cols - MaxHeaderWidth;
-
-#ifdef USE_NNTP
-  if (OptNewsSend)
-  {
-    rows += 2; // 'Newsgroups:' and 'Followup-To:'
-    const bool c_x_comment_to = cs_subset_bool(shared->sub, "x_comment_to");
-    if (c_x_comment_to)
-      rows++;
-  }
-  else
-#endif
-  {
-    rows += calc_address(&env->to, &edata->to_list, cols, &edata->to_rows);
-    rows += calc_address(&env->cc, &edata->cc_list, cols, &edata->cc_rows);
-    rows += calc_address(&env->bcc, &edata->bcc_list, cols, &edata->bcc_rows);
-  }
-  rows += calc_security(e, &edata->sec_rows, shared->sub);
-  const bool c_compose_show_user_headers =
-      cs_subset_bool(shared->sub, "compose_show_user_headers");
-  if (c_compose_show_user_headers)
-    rows += calc_user_hdrs(&env->userhdrs);
-
-  return rows;
-}
-
-/**
- * redraw_crypt_lines - Update the encryption info in the compose window
- * @param win    Window to draw on
- * @param shared Shared compose data
- * @param edata  Envelope data
- * @param row    Window row to start drawing
- */
-static int redraw_crypt_lines(struct MuttWindow *win, struct ComposeSharedData *shared,
-                              struct ComposeEnvelopeData *edata, int row)
-{
-  struct Email *e = shared->email;
-
-  draw_header(win, row++, HDR_CRYPT);
-
-  if ((WithCrypto & (APPLICATION_PGP | APPLICATION_SMIME)) == 0)
-    return 0;
-
-  // We'll probably need two lines for 'Security:' and 'Sign as:'
-  int used = 2;
-  if ((e->security & (SEC_ENCRYPT | SEC_SIGN)) == (SEC_ENCRYPT | SEC_SIGN))
-  {
-    mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_BOTH);
-    mutt_window_addstr(win, _("Sign, Encrypt"));
-  }
-  else if (e->security & SEC_ENCRYPT)
-  {
-    mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
-    mutt_window_addstr(win, _("Encrypt"));
-  }
-  else if (e->security & SEC_SIGN)
-  {
-    mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_SIGN);
-    mutt_window_addstr(win, _("Sign"));
-  }
-  else
-  {
-    /* L10N: This refers to the encryption of the email, e.g. "Security: None" */
-    mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_NONE);
-    mutt_window_addstr(win, _("None"));
-    used = 1; // 'Sign as:' won't be needed
-  }
-  mutt_curses_set_color(MT_COLOR_NORMAL);
-
-  if ((e->security & (SEC_ENCRYPT | SEC_SIGN)))
-  {
-    if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
-    {
-      if ((e->security & SEC_INLINE))
-        mutt_window_addstr(win, _(" (inline PGP)"));
-      else
-        mutt_window_addstr(win, _(" (PGP/MIME)"));
-    }
-    else if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
-      mutt_window_addstr(win, _(" (S/MIME)"));
-  }
-
-  const bool c_crypt_opportunistic_encrypt =
-      cs_subset_bool(shared->sub, "crypt_opportunistic_encrypt");
-  if (c_crypt_opportunistic_encrypt && (e->security & SEC_OPPENCRYPT))
-    mutt_window_addstr(win, _(" (OppEnc mode)"));
-
-  mutt_window_clrtoeol(win);
-
-  if (((WithCrypto & APPLICATION_PGP) != 0) &&
-      (e->security & APPLICATION_PGP) && (e->security & SEC_SIGN))
-  {
-    draw_header(win, row++, HDR_CRYPTINFO);
-    const char *const c_pgp_sign_as =
-        cs_subset_string(shared->sub, "pgp_sign_as");
-    mutt_window_printf(win, "%s", c_pgp_sign_as ? c_pgp_sign_as : _("<default>"));
-  }
-
-  if (((WithCrypto & APPLICATION_SMIME) != 0) &&
-      (e->security & APPLICATION_SMIME) && (e->security & SEC_SIGN))
-  {
-    draw_header(win, row++, HDR_CRYPTINFO);
-    const char *const c_smime_sign_as =
-        cs_subset_string(shared->sub, "pgp_sign_as");
-    mutt_window_printf(win, "%s", c_smime_sign_as ? c_smime_sign_as : _("<default>"));
-  }
-
-  const char *const c_smime_encrypt_with =
-      cs_subset_string(shared->sub, "smime_encrypt_with");
-  if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME) &&
-      (e->security & SEC_ENCRYPT) && c_smime_encrypt_with)
-  {
-    draw_floating(win, 40, row - 1, _("Encrypt with: "));
-    mutt_window_printf(win, "%s", NONULL(c_smime_encrypt_with));
-  }
-
-#ifdef USE_AUTOCRYPT
-  const bool c_autocrypt = cs_subset_bool(shared->sub, "autocrypt");
-  if (c_autocrypt)
-  {
-    draw_header(win, row, HDR_AUTOCRYPT);
-    if (e->security & SEC_AUTOCRYPT)
-    {
-      mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
-      mutt_window_addstr(win, _("Encrypt"));
-    }
-    else
-    {
-      mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_NONE);
-      mutt_window_addstr(win, _("Off"));
-    }
-
-    /* L10N: The autocrypt compose menu Recommendation field.
-       Displays the output of the recommendation engine
-       (Off, No, Discouraged, Available, Yes) */
-    draw_floating(win, 40, row, _("Recommendation: "));
-    mutt_window_printf(win, "%s", _(AutocryptRecUiFlags[edata->autocrypt_rec]));
-
-    used++;
-  }
-#endif
-  return used;
-}
-
-/**
  * update_crypt_info - Update the crypto info
  * @param shared Shared compose data
  */
@@ -712,46 +400,6 @@ static void update_crypt_info(struct ComposeSharedData *shared)
   }
 #endif
 }
-
-#ifdef MIXMASTER
-/**
- * redraw_mix_line - Redraw the Mixmaster chain
- * @param chain List of chain links
- * @param win   Window to draw on
- * @param row   Window row to start drawing
- */
-static void redraw_mix_line(struct ListHead *chain, struct MuttWindow *win, int row)
-{
-  char *t = NULL;
-
-  draw_header(win, row, HDR_MIX);
-
-  if (STAILQ_EMPTY(chain))
-  {
-    mutt_window_addstr(win, _("<no chain defined>"));
-    mutt_window_clrtoeol(win);
-    return;
-  }
-
-  int c = 12;
-  struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, chain, entries)
-  {
-    t = np->data;
-    if (t && (t[0] == '0') && (t[1] == '\0'))
-      t = "<random>";
-
-    if (c + mutt_str_len(t) + 2 >= win->state.cols)
-      break;
-
-    mutt_window_addstr(win, NONULL(t));
-    if (STAILQ_NEXT(np, entries))
-      mutt_window_addstr(win, ", ");
-
-    c += mutt_str_len(t) + 2;
-  }
-}
-#endif
 
 /**
  * check_attachments - Check if any attachments have changed or been deleted
@@ -815,221 +463,6 @@ cleanup:
   mutt_buffer_pool_release(&pretty);
   mutt_buffer_pool_release(&msg);
   return rc;
-}
-
-/**
- * draw_envelope_addr - Write addresses to the compose window
- * @param field     Field to display, e.g. #HDR_FROM
- * @param al        Address list to write
- * @param win       Window
- * @param row       Window row to start drawing
- * @param max_lines How many lines may be used
- */
-static int draw_envelope_addr(int field, struct AddressList *al,
-                              struct MuttWindow *win, int row, size_t max_lines)
-{
-  draw_header(win, row, field);
-
-  struct ListHead list = STAILQ_HEAD_INITIALIZER(list);
-  int count = mutt_addrlist_write_list(al, &list);
-
-  int lines_used = 1;
-  int width_left = win->state.cols - MaxHeaderWidth;
-  char more[32];
-  int more_len = 0;
-
-  char *sep = NULL;
-  struct ListNode *next = NULL;
-  struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, &list, entries)
-  {
-    next = STAILQ_NEXT(np, entries);
-    int addr_len = mutt_strwidth(np->data);
-    if (next)
-    {
-      sep = ", ";
-      addr_len += 2;
-    }
-    else
-    {
-      sep = "";
-    }
-
-    count--;
-  try_again:
-    more_len = snprintf(more, sizeof(more),
-                        ngettext("(+%d more)", "(+%d more)", count), count);
-    mutt_debug(LL_DEBUG3, "text: '%s'  len: %d\n", more, more_len);
-
-    int reserve = ((count > 0) && (lines_used == max_lines)) ? more_len : 0;
-    mutt_debug(LL_DEBUG3, "processing: %s (al:%ld, wl:%d, r:%d, lu:%ld)\n",
-               np->data, addr_len, width_left, reserve, lines_used);
-    if (addr_len >= (width_left - reserve))
-    {
-      mutt_debug(LL_DEBUG3, "not enough space\n");
-      if (lines_used == max_lines)
-      {
-        mutt_debug(LL_DEBUG3, "no more lines\n");
-        mutt_debug(LL_DEBUG3, "truncating: %s\n", np->data);
-        mutt_paddstr(win, width_left, np->data);
-        break;
-      }
-
-      if (width_left == (win->state.cols - MaxHeaderWidth))
-      {
-        mutt_debug(LL_DEBUG3, "couldn't print: %s\n", np->data);
-        mutt_paddstr(win, width_left, np->data);
-        break;
-      }
-
-      mutt_debug(LL_DEBUG3, "start a new line\n");
-      mutt_window_clrtoeol(win);
-      row++;
-      lines_used++;
-      width_left = win->state.cols - MaxHeaderWidth;
-      mutt_window_move(win, MaxHeaderWidth, row);
-      goto try_again;
-    }
-
-    if (addr_len < width_left)
-    {
-      mutt_debug(LL_DEBUG3, "space for: %s\n", np->data);
-      mutt_window_addstr(win, np->data);
-      mutt_window_addstr(win, sep);
-      width_left -= addr_len;
-    }
-    mutt_debug(LL_DEBUG3, "%ld addresses remaining\n", count);
-    mutt_debug(LL_DEBUG3, "%ld lines remaining\n", max_lines - lines_used);
-  }
-  mutt_list_free(&list);
-
-  if (count > 0)
-  {
-    mutt_window_move(win, win->state.cols - more_len, row);
-    mutt_curses_set_color(MT_COLOR_BOLD);
-    mutt_window_addstr(win, more);
-    mutt_curses_set_color(MT_COLOR_NORMAL);
-    mutt_debug(LL_DEBUG3, "%ld more (len %d)\n", count, more_len);
-  }
-  else
-  {
-    mutt_window_clrtoeol(win);
-  }
-
-  for (int i = lines_used; i < max_lines; i++)
-  {
-    mutt_window_move(win, 0, row + i);
-    mutt_window_clrtoeol(win);
-  }
-
-  mutt_debug(LL_DEBUG3, "used %d lines\n", lines_used);
-  return lines_used;
-}
-
-/**
- * draw_envelope_user_hdrs - Write user-defined headers to the compose window
- * @param win    Window to draw on
- * @param shared Shared compose data
- * @param row    Window row to start drawing from
- */
-static int draw_envelope_user_hdrs(struct MuttWindow *win,
-                                   struct ComposeSharedData *shared, int row)
-{
-  const char *overflow_text = "...";
-  int rows_used = 0;
-
-  struct ListNode *first = STAILQ_FIRST(&shared->email->env->userhdrs);
-  if (!first)
-    return rows_used;
-
-  /* Draw first entry on same line as prompt */
-  draw_header(win, row, HDR_CUSTOM_HEADERS);
-  mutt_paddstr(win,
-               win->state.cols - (HeaderPadding[HDR_CUSTOM_HEADERS] +
-                                  mutt_strwidth(_(Prompts[HDR_CUSTOM_HEADERS]))),
-               first->data);
-  rows_used++;
-
-  /* Draw any following entries on their own line */
-  struct ListNode *np = STAILQ_NEXT(first, entries);
-  if (!np)
-    return rows_used;
-
-  STAILQ_FOREACH_FROM(np, &shared->email->env->userhdrs, entries)
-  {
-    if ((rows_used == (MAX_USER_HDR_ROWS - 1)) && STAILQ_NEXT(np, entries))
-    {
-      draw_header_content(win, row + rows_used, HDR_CUSTOM_HEADERS, overflow_text);
-      rows_used++;
-      break;
-    }
-    draw_header_content(win, row + rows_used, HDR_CUSTOM_HEADERS, np->data);
-    rows_used++;
-  }
-  return rows_used;
-}
-
-/**
- * draw_envelope - Write the email headers to the compose window
- * @param win    Window to draw on
- * @param shared Shared compose data
- * @param edata  Envelope data
- */
-static void draw_envelope(struct MuttWindow *win, struct ComposeSharedData *shared,
-                          struct ComposeEnvelopeData *edata)
-{
-  struct Email *e = shared->email;
-  const char *fcc = mutt_buffer_string(edata->fcc);
-  const int cols = win->state.cols - MaxHeaderWidth;
-
-  mutt_window_clear(win);
-  int row = draw_envelope_addr(HDR_FROM, &e->env->from, win, 0, 1);
-
-#ifdef USE_NNTP
-  if (OptNewsSend)
-  {
-    draw_header(win, row++, HDR_NEWSGROUPS);
-    mutt_paddstr(win, cols, NONULL(e->env->newsgroups));
-
-    draw_header(win, row++, HDR_FOLLOWUPTO);
-    mutt_paddstr(win, cols, NONULL(e->env->followup_to));
-
-    const bool c_x_comment_to = cs_subset_bool(shared->sub, "x_comment_to");
-    if (c_x_comment_to)
-    {
-      draw_header(win, row++, HDR_XCOMMENTTO);
-      mutt_paddstr(win, cols, NONULL(e->env->x_comment_to));
-    }
-  }
-  else
-#endif
-  {
-    row += draw_envelope_addr(HDR_TO, &e->env->to, win, row, edata->to_rows);
-    row += draw_envelope_addr(HDR_CC, &e->env->cc, win, row, edata->cc_rows);
-    row += draw_envelope_addr(HDR_BCC, &e->env->bcc, win, row, edata->bcc_rows);
-  }
-
-  draw_header(win, row++, HDR_SUBJECT);
-  mutt_paddstr(win, cols, NONULL(e->env->subject));
-
-  row += draw_envelope_addr(HDR_REPLYTO, &e->env->reply_to, win, row, 1);
-
-  draw_header(win, row++, HDR_FCC);
-  mutt_paddstr(win, cols, fcc);
-
-  if (WithCrypto)
-    row += redraw_crypt_lines(win, shared, edata, row);
-
-#ifdef MIXMASTER
-  redraw_mix_line(&e->chain, win, row++);
-#endif
-  const bool c_compose_show_user_headers =
-      cs_subset_bool(shared->sub, "compose_show_user_headers");
-  if (c_compose_show_user_headers)
-    row += draw_envelope_user_hdrs(win, shared, row);
-
-  mutt_curses_set_color(MT_COLOR_STATUS);
-  mutt_curses_set_color(MT_COLOR_NORMAL);
 }
 
 /**
@@ -1156,7 +589,7 @@ static void gen_attach_list(struct AttachCtx *actx, struct Body *m, int parent_t
  * @param menu Current menu
  * @param init If true, initialise the attachment list
  */
-static void update_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
+void update_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
 {
   if (init)
   {
@@ -1200,35 +633,6 @@ static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachP
 }
 
 /**
- * compose_custom_redraw - Redraw the compose menu - Implements Menu::custom_redraw()
- */
-static void compose_custom_redraw(struct Menu *menu)
-{
-  // menu->redraw |= MENU_REDRAW_FULL;
-
-  if (menu->redraw & MENU_REDRAW_FLOW)
-  {
-    mutt_window_reflow(dialog_find(menu->win_index));
-  }
-
-  if (menu->redraw & MENU_REDRAW_FULL)
-  {
-    menu_redraw_full(menu);
-    menu->pagelen = menu->win_index->state.rows;
-  }
-
-  menu_check_recenter(menu);
-
-  if (menu->redraw & MENU_REDRAW_INDEX)
-    menu_redraw_index(menu);
-  else if (menu->redraw & (MENU_REDRAW_MOTION | MENU_REDRAW_MOTION))
-    menu_redraw_motion(menu);
-  else if (menu->redraw == MENU_REDRAW_CURRENT)
-    menu_redraw_current(menu);
-  menu->redraw = MENU_REDRAW_NO_FLAGS;
-}
-
-/**
  * compose_attach_swap - Swap two adjacent entries in the attachment list
  * @param[in]  msg   Body of email
  * @param[out] idx   Array of Attachments
@@ -1261,139 +665,27 @@ static void compose_attach_swap(struct Body *msg, struct AttachPtr **idx, short 
 }
 
 /**
- * compose_config_observer - Listen for config changes affecting the Compose menu - Implements ::observer_t
+ * compose_dlg_init - Allocate the Windows for Compose
+ * @retval ptr Dialog containing nested Windows
  */
-static int compose_config_observer(struct NotifyCallback *nc)
+static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub, struct Email *e)
 {
-  if (!nc->event_data || !nc->global_data)
-    return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
-
-  struct EventConfig *ev_c = nc->event_data;
-  struct MuttWindow *dlg = nc->global_data;
-
-  if (!mutt_str_equal(ev_c->name, "status_on_top"))
-    return 0;
-
-  struct MuttWindow *win_cbar = mutt_window_find(dlg, WT_STATUS_BAR);
-  if (!win_cbar)
-    return 0;
-
-  TAILQ_REMOVE(&dlg->children, win_cbar, entries);
-
-  const bool c_status_on_top = cs_subset_bool(ev_c->sub, "status_on_top");
-  if (c_status_on_top)
-    TAILQ_INSERT_HEAD(&dlg->children, win_cbar, entries);
-  else
-    TAILQ_INSERT_TAIL(&dlg->children, win_cbar, entries);
-
-  mutt_window_reflow(dlg);
-  mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
-  return 0;
-}
-
-/**
- * compose_header_observer - Listen for header changes - Implements ::observer_t
- */
-static int compose_header_observer(struct NotifyCallback *nc)
-{
-  if ((nc->event_type != NT_HEADER) || !nc->event_data || !nc->global_data)
-    return -1;
-
-  const struct EventHeader *ev_h = nc->event_data;
-  struct MuttWindow *win_env = nc->global_data;
-  // struct ComposeEnvelopeData *edata = win_env->wdata;
-  struct MuttWindow *dlg = win_env->parent;
-  struct ComposeSharedData *shared = dlg->wdata;
-
-  struct Envelope *env = shared->email->env;
-
-  if ((nc->event_subtype == NT_HEADER_ADD) || (nc->event_subtype == NT_HEADER_CHANGE))
-  {
-    header_set(&env->userhdrs, ev_h->header);
-    mutt_window_reflow(dlg);
-    mutt_debug(LL_DEBUG5, "header done, request WA_REFLOW\n");
-    return 0;
-  }
-
-  if (nc->event_subtype == NT_HEADER_DELETE)
-  {
-    struct ListNode *removed = header_find(&env->userhdrs, ev_h->header);
-    if (removed)
-    {
-      header_free(&env->userhdrs, removed);
-      mutt_window_reflow(dlg);
-      mutt_debug(LL_DEBUG5, "header done, request WA_REFLOW\n");
-    }
-    return 0;
-  }
-
-  return -1;
-}
-
-/**
- * compose_attach_tag - Tag an attachment - Implements Menu::tag()
- */
-static int compose_attach_tag(struct Menu *menu, int sel, int act)
-{
-  struct ComposeSharedData *shared = menu->mdata;
-  struct ComposeAttachData *adata = shared->adata;
-  struct AttachCtx *actx = adata->actx;
-  struct Body *cur = actx->idx[actx->v2r[sel]]->body;
-  bool ot = cur->tagged;
-
-  cur->tagged = ((act >= 0) ? act : !cur->tagged);
-  return cur->tagged - ot;
-}
-
-/**
- * mutt_compose_menu - Allow the user to edit the message envelope
- * @param e      Email to fill
- * @param fcc    Buffer to save FCC
- * @param flags  Flags, e.g. #MUTT_COMPOSE_NOFREEHEADER
- * @param sub    ConfigSubset
- * @retval  1 Message should be postponed
- * @retval  0 Normal exit
- * @retval -1 Abort message
- */
-int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
-                      struct ConfigSubset *sub)
-{
-  char buf[PATH_MAX];
-  int rc = -1;
-  bool loop = true;
-  bool fcc_set = false; /* has the user edited the Fcc: field ? */
-  struct Mailbox *m = ctx_mailbox(Context);
-
   struct ComposeSharedData *shared = compose_shared_data_new();
   shared->sub = sub;
   shared->email = e;
-  shared->edata = env_data_new();
-  shared->edata->fcc = fcc;
-  shared->adata = attach_data_new();
-
-#ifdef USE_NNTP
-  bool news = OptNewsSend; /* is it a news article ? */
-#endif
-
-  init_header_padding();
 
   struct MuttWindow *dlg =
       mutt_window_new(WT_DLG_COMPOSE, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   dlg->wdata = shared;
+  dlg->wdata_free = compose_shared_data_free;
 
-  struct MuttWindow *win_env =
-      mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                      MUTT_WIN_SIZE_UNLIMITED, HDR_ATTACH_TITLE - 1);
-
-  struct MuttWindow *win_attach = menu_new_window(MENU_COMPOSE, NeoMutt->sub);
-  dlg->focus = win_attach;
-
+  struct MuttWindow *win_env = compose_env_new(dlg, shared);
+  struct MuttWindow *win_attach = attach_new(dlg, shared);
   struct MuttWindow *win_cbar = cbar_new(dlg, shared);
-
   struct MuttWindow *win_abar = sbar_new(dlg);
+  sbar_set_title(win_abar, _("-- Attachments"));
+
   const bool c_status_on_top = cs_subset_bool(sub, "status_on_top");
   if (c_status_on_top)
   {
@@ -1409,10 +701,45 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
     mutt_window_add_child(dlg, win_attach);
     mutt_window_add_child(dlg, win_cbar);
   }
-  sbar_set_title(win_abar, _("-- Attachments"));
 
+  dlg->help_data = ComposeHelp;
+  dlg->help_menu = MENU_COMPOSE;
+
+  return dlg;
+}
+
+/**
+ * mutt_compose_menu - Allow the user to edit the message envelope
+ * @param e      Email to fill
+ * @param fcc    Buffer to save FCC
+ * @param flags  Flags, e.g. #MUTT_COMPOSE_NOFREEHEADER
+ * @param sub    ConfigSubset
+ * @retval  1 Message should be postponed
+ * @retval  0 Normal exit
+ * @retval -1 Abort message
+ */
+int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
+                      struct ConfigSubset *sub)
+{
+  init_header_padding();
+
+  char buf[PATH_MAX];
+  int rc = -1;
+  bool loop = true;
+  bool fcc_set = false; /* has the user edited the Fcc: field ? */
+  struct Mailbox *m = ctx_mailbox(Context);
+
+#ifdef USE_NNTP
+  bool news = OptNewsSend; /* is it a news article ? */
+#endif
+
+  struct MuttWindow *dlg = compose_dlg_init(sub, e);
+#ifdef USE_NNTP
+  if (news)
+    dlg->help_data = ComposeNewsHelp;
+#endif
   notify_observer_add(NeoMutt->notify, NT_CONFIG, compose_config_observer, dlg);
-  notify_observer_add(NeoMutt->notify, NT_HEADER, compose_header_observer, win_env);
+  notify_observer_add(dlg->notify, NT_WINDOW, compose_window_observer, dlg);
   dialog_push(dlg);
 
 #ifdef USE_NNTP
@@ -1423,44 +750,22 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
     dlg->help_data = ComposeHelp;
   dlg->help_menu = MENU_COMPOSE;
 
-  win_env->req_rows = calc_envelope(win_env, shared, shared->edata);
-  mutt_window_reflow(dlg);
+  struct ComposeSharedData *shared = dlg->wdata;
 
-  struct Menu *menu = win_attach->wdata;
-  shared->adata->menu = menu;
-  menu->make_entry = compose_make_entry;
-  menu->tag = compose_attach_tag;
-  menu->custom_redraw = compose_custom_redraw;
-  menu->mdata = shared;
+  // win_env->req_rows = calc_envelope(win_env, shared, shared->edata);
 
-  struct AttachCtx *actx = mutt_actx_new();
-  actx->email = e;
-  update_menu(actx, menu, true);
+  struct Menu *menu = shared->adata->menu;
+
+  update_menu(shared->adata->actx, menu, true);
+  struct AttachCtx *actx = shared->adata->actx;
 
   update_crypt_info(shared);
 
   /* Since this is rather long lived, we don't use the pool */
   struct Buffer fname = mutt_buffer_make(PATH_MAX);
 
-  bool redraw_env = false;
-  bool redraw_cbar = false;
   while (loop)
   {
-    if (redraw_env)
-    {
-      redraw_env = false;
-      win_env->req_rows = calc_envelope(win_env, shared, shared->edata);
-      mutt_window_reflow(dlg);
-      draw_envelope(win_env, shared, shared->edata);
-    }
-
-    if (redraw_cbar)
-    {
-      win_cbar->actions |= WA_RECALC;
-      window_redraw(win_cbar);
-      redraw_cbar = false;
-    }
-
 #ifdef USE_NNTP
     OptNews = false; /* for any case */
 #endif
@@ -1475,7 +780,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         {
           update_crypt_info(shared);
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
-          redraw_env = true;
+          notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
 
@@ -1489,7 +794,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         {
           update_crypt_info(shared);
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
-          redraw_env = true;
+          notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
       }
@@ -1504,7 +809,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         {
           update_crypt_info(shared);
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
-          redraw_env = true;
+          notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
       }
@@ -1519,7 +824,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         {
           update_crypt_info(shared);
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
-          redraw_env = true;
+          notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
       }
@@ -1533,7 +838,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
           mutt_str_replace(&e->env->newsgroups, buf);
-          redraw_env = true;
+          notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
 
@@ -1545,7 +850,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
           mutt_str_replace(&e->env->followup_to, buf);
-          redraw_env = true;
+          notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
 
@@ -1559,7 +864,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
           mutt_str_replace(&e->env->x_comment_to, buf);
-          redraw_env = true;
+          notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
       }
@@ -1573,7 +878,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           if (!mutt_str_equal(e->env->subject, buf))
           {
             mutt_str_replace(&e->env->subject, buf);
-            redraw_env = true;
+            notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
             mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           }
         }
@@ -1583,7 +888,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         if (edit_address_list(HDR_REPLYTO, &e->env->reply_to))
         {
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
-          redraw_env = true;
+          notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
 
@@ -1597,7 +902,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
             mutt_buffer_copy(fcc, &fname);
             mutt_buffer_pretty_mailbox(fcc);
             fcc_set = true;
-            redraw_env = true;
+            notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
             mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           }
         }
@@ -1635,7 +940,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           FREE(&err);
         }
         update_crypt_info(shared);
-        redraw_env = true;
+        notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
 
         mutt_rfc3676_space_stuff(e);
         mutt_update_encoding(e->body, sub);
@@ -1668,7 +973,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         else
           FREE(&ap);
 
-        redraw_cbar = true;
+        notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
         break;
       }
 
@@ -1938,7 +1243,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           mutt_clear_error();
 
         menu_queue_redraw(menu, MENU_REDRAW_INDEX);
-        redraw_cbar = true;
+        notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
         if (added_attachment)
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
@@ -2047,7 +1352,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           cs_subset_str_native_set(sub, "sort", old_sort, NULL);
           cs_subset_str_native_set(sub, "sort_aux", old_sort_aux, NULL);
           menu_queue_redraw(menu, MENU_REDRAW_INDEX);
-          redraw_cbar = true;
+          notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
           break;
         }
 
@@ -2100,7 +1405,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         if (delete_attachment(actx, index) == -1)
           break;
         update_menu(actx, menu, false);
-        redraw_cbar = true;
+        notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
         index = menu_get_index(menu);
         if (index == 0)
           e->body = actx->idx[0]->body;
@@ -2173,7 +1478,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           mutt_update_encoding(cur_att->body, sub);
           encoding_updated = true;
           menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
-          redraw_cbar = true;
+          notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
         }
         if (encoding_updated)
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
@@ -2220,7 +1525,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           {
             cur_att->body->language = mutt_str_dup(buf);
             menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
-            redraw_cbar = true;
+            notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
             mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
           }
           mutt_clear_error();
@@ -2247,7 +1552,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
             {
               cur_att->body->encoding = enc;
               menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
-              redraw_cbar = true;
+              notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
               mutt_clear_error();
               mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
             }
@@ -2296,7 +1601,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         mutt_edit_file(NONULL(c_editor), cur_att->body->filename);
         mutt_update_encoding(cur_att->body, sub);
         menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
-        redraw_cbar = true;
+        notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
         /* Unconditional hook since editor was invoked */
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
@@ -2449,7 +1754,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         mutt_str_replace(&cur_att->body->subtype, p);
         cur_att->body->unlink = true;
         menu_queue_redraw(menu, MENU_REDRAW_INDEX);
-        redraw_cbar = true;
+        notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
 
         if (mutt_compose_attachment(cur_att->body))
         {
@@ -2513,7 +1818,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
                                   (op == OP_FILTER));
         if (op == OP_FILTER) /* cte might have changed */
           menu_queue_redraw(menu, menu->tagprefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
-        redraw_cbar = true;
+        notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
       }
@@ -2571,7 +1876,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         else
         {
           mutt_update_encoding(e->body, sub);
-          redraw_cbar = true;
+          notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
         }
         break;
       }
@@ -2632,7 +1937,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         if (old_flags != e->security)
         {
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
-          redraw_env = true;
+          notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
       }
@@ -2672,7 +1977,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         if (old_flags != e->security)
         {
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
-          redraw_env = true;
+          notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
       }
@@ -2681,7 +1986,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       case OP_COMPOSE_MIX:
         dlg_select_mixmaster_chain(&e->chain);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
-        redraw_env = true;
+        notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         break;
 #endif
 
@@ -2713,7 +2018,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         if (old_flags != e->security)
         {
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
-          redraw_env = true;
+          notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
       }
@@ -2732,18 +2037,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
     e->security &= ~SEC_AUTOCRYPT;
 #endif
 
-  dialog_pop();
-  notify_observer_remove(NeoMutt->notify, compose_config_observer, dlg);
-  notify_observer_remove(NeoMutt->notify, compose_header_observer, shared);
-  mutt_window_free(&dlg);
-
   if (actx->idxlen)
     e->body = actx->idx[0]->body;
   else
     e->body = NULL;
 
-  mutt_actx_free(&actx);
+  dialog_pop();
+  mutt_window_free(&dlg);
 
-  compose_shared_data_free(NULL, (void **) &shared);
   return rc;
 }

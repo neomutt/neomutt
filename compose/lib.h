@@ -27,11 +27,14 @@
  *
  * | File                   | Description                    |
  * | :--------------------- | :----------------------------- |
+ * | compose/attach.c       | @subpage compose_attach        |
  * | compose/attach_data.c  | @subpage compose_attach_data   |
  * | compose/cbar.c         | @subpage compose_cbar          |
- * | compose/compose.c      | @subpage compose_compose       |
+ * | compose/cbar_data.c    | @subpage compose_cbar_data     |
+ * | compose/compose.c      | @subpage compose_dialog        |
  * | compose/config.c       | @subpage compose_config        |
  * | compose/env_data.c     | @subpage compose_env_data      |
+ * | compose/envelope.c     | @subpage compose_envelope      |
  * | compose/shared_data.c  | @subpage compose_shared_data   |
  */
 
