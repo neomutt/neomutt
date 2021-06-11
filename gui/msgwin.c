@@ -140,10 +140,10 @@ static struct MsgWinPrivateData *msgwin_wdata_new(void)
 }
 
 /**
- * msgwin_create - Create the Message Window
+ * msgwin_new - Create the Message Window
  * @retval ptr New Window
  */
-struct MuttWindow *msgwin_create(void)
+struct MuttWindow *msgwin_new(void)
 {
   struct MuttWindow *win =
       mutt_window_new(WT_MESSAGE, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,

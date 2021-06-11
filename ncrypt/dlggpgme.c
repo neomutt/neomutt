@@ -1279,8 +1279,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   else if (app & APPLICATION_SMIME)
     menu_to_use = MENU_KEY_SELECT_SMIME;
 
-  struct MuttWindow *dlg =
-      dialog_create_simple_index(menu_to_use, WT_DLG_CRYPT_GPGME, GpgmeHelp);
+  struct MuttWindow *dlg = simple_dialog_new(menu_to_use, WT_DLG_CRYPT_GPGME, GpgmeHelp);
 
   struct Menu *menu = dlg->wdata;
   menu->max = i;
@@ -1425,7 +1424,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
     }
   }
 
-  dialog_destroy_simple_index(&dlg);
+  simple_dialog_free(&dlg);
   FREE(&key_table);
 
   return k;

@@ -31,20 +31,15 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "core/lib.h"
 #include "mutt_window.h"
-#include "helpbar/lib.h"
 #include "curs_lib.h"
-#include "msgwin.h"
 #include "mutt_curses.h"
 #include "options.h"
 #include "reflow.h"
+#include "rootwin.h"
 #ifdef USE_DEBUG_WINDOW
 #include "debug/lib.h"
 #endif
-
-struct MuttWindow *RootWindow = NULL;       ///< Parent of all Windows
-struct MuttWindow *AllDialogsWindow = NULL; ///< Parent of all Dialogs
 
 /// Lookups for Window Names
 static const struct Mapping WindowNames[] = {
@@ -284,56 +279,6 @@ void mutt_window_clrtoeol(struct MuttWindow *win)
 }
 
 /**
- * rootwin_config_observer - Listen for config changes affecting the Root Window - Implements ::observer_t
- */
-static int rootwin_config_observer(struct NotifyCallback *nc)
-{
-  if (!nc->event_data || !nc->global_data)
-    return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
-
-  struct EventConfig *ev_c = nc->event_data;
-  struct MuttWindow *root_win = nc->global_data;
-
-  if (mutt_str_equal(ev_c->name, "status_on_top"))
-  {
-    struct MuttWindow *first = TAILQ_FIRST(&root_win->children);
-    if (!first)
-      return -1;
-
-    mutt_debug(LL_DEBUG5, "config: '%s'\n", ev_c->name);
-    const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
-    if ((c_status_on_top && (first->type == WT_HELP_BAR)) ||
-        (!c_status_on_top && (first->type != WT_HELP_BAR)))
-    {
-      // Swap the HelpBar and the AllDialogsWindow
-      struct MuttWindow *next = TAILQ_NEXT(first, entries);
-      if (!next)
-        return -1;
-      TAILQ_REMOVE(&root_win->children, next, entries);
-      TAILQ_INSERT_HEAD(&root_win->children, next, entries);
-
-      mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
-    }
-  }
-
-  mutt_window_reflow(root_win);
-  return 0;
-}
-
-/**
- * mutt_window_free_all - Free all the default Windows
- */
-void mutt_window_free_all(void)
-{
-  if (NeoMutt)
-    notify_observer_remove(NeoMutt->notify, rootwin_config_observer, RootWindow);
-  AllDialogsWindow = NULL;
-  mutt_window_free(&RootWindow);
-}
-
-/**
  * mutt_window_get_coords - Get the cursor position in the Window
  * @param[in]  win Window
  * @param[out] col Column in Window
@@ -352,44 +297,6 @@ void mutt_window_get_coords(struct MuttWindow *win, int *col, int *row)
     *col = x - win->state.col_offset;
   if (row)
     *row = y - win->state.row_offset;
-}
-
-/**
- * mutt_window_init - Create the default Windows
- *
- * Create the Help, Index, Status, Message and Sidebar Windows.
- */
-void mutt_window_init(void)
-{
-  if (RootWindow)
-    return;
-
-  RootWindow =
-      mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 0, 0);
-  notify_set_parent(RootWindow->notify, NeoMutt->notify);
-
-  struct MuttWindow *win_helpbar = helpbar_create();
-
-  AllDialogsWindow = mutt_window_new(WT_ALL_DIALOGS, MUTT_WIN_ORIENT_VERTICAL,
-                                     MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
-                                     MUTT_WIN_SIZE_UNLIMITED);
-
-  struct MuttWindow *win_msg = msgwin_create();
-
-  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
-  if (c_status_on_top)
-  {
-    mutt_window_add_child(RootWindow, AllDialogsWindow);
-    mutt_window_add_child(RootWindow, win_helpbar);
-  }
-  else
-  {
-    mutt_window_add_child(RootWindow, win_helpbar);
-    mutt_window_add_child(RootWindow, AllDialogsWindow);
-  }
-
-  mutt_window_add_child(RootWindow, win_msg);
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, rootwin_config_observer, RootWindow);
 }
 
 /**
@@ -615,36 +522,6 @@ void mutt_winlist_free(struct MuttWindowList *head)
 }
 
 /**
- * mutt_window_set_root - Set the dimensions of the Root Window
- * @param rows
- * @param cols
- */
-void mutt_window_set_root(int cols, int rows)
-{
-  if (!RootWindow)
-    return;
-
-  bool changed = false;
-
-  if (RootWindow->state.rows != rows)
-  {
-    RootWindow->state.rows = rows;
-    changed = true;
-  }
-
-  if (RootWindow->state.cols != cols)
-  {
-    RootWindow->state.cols = cols;
-    changed = true;
-  }
-
-  if (changed)
-  {
-    mutt_window_reflow(RootWindow);
-  }
-}
-
-/**
  * mutt_window_is_visible - Is the Window visible?
  * @param win Window
  * @retval true The Window is visible
@@ -734,12 +611,14 @@ static void window_repaint(struct MuttWindow *win)
 
 /**
  * window_redraw - Reflow, recalc and repaint a tree of Windows
- * @param win   Window to start at
+ * @param win Window to start at
+ *
+ * @note If win is NULL, all windows will be redrawn
  */
 void window_redraw(struct MuttWindow *win)
 {
   if (!win)
-    return;
+    win = RootWindow;
 
   window_reflow(win);
   window_notify_all(win);
@@ -812,25 +691,6 @@ struct MuttWindow *window_set_focus(struct MuttWindow *win)
   debug_win_dump();
 #endif
   return old_focus;
-}
-
-/**
- * window_get_dialog - Get the currently active Dialog
- * @retval ptr Active Dialog
- */
-struct MuttWindow *window_get_dialog(void)
-{
-  if (!AllDialogsWindow)
-    return NULL;
-
-  struct MuttWindow *np = NULL;
-  TAILQ_FOREACH(np, &AllDialogsWindow->children, entries)
-  {
-    if (mutt_window_is_visible(np))
-      return np;
-  }
-
-  return NULL;
 }
 
 /**

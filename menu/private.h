@@ -34,7 +34,6 @@ void         menu_free(struct Menu **ptr);
 struct Menu *menu_new(enum MenuType type, struct MuttWindow *win, struct ConfigSubset *sub);
 
 void menu_add_observers   (struct Menu *menu);
-void menu_remove_observers(struct Menu *menu);
 
 void menu_make_entry(struct Menu *menu, char *buf, size_t buflen, int i);
 

@@ -630,8 +630,8 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
       mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                       MUTT_WIN_SIZE_UNLIMITED, 4);
 
-  struct MuttWindow *win_cbar = sbar_create(dlg);
-  struct MuttWindow *win_rbar = sbar_create(dlg);
+  struct MuttWindow *win_cbar = sbar_new(dlg);
+  struct MuttWindow *win_rbar = sbar_new(dlg);
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)

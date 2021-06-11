@@ -37,7 +37,6 @@
  */
 struct SBarPrivateData
 {
-  char *title;   ///< Title string
   char *display; ///< Cached display string
 };
 
@@ -48,13 +47,6 @@ static int sbar_recalc(struct MuttWindow *win)
 {
   if (!win)
     return -1;
-
-  struct SBarPrivateData *priv = win->wdata;
-
-  char *str = NULL;
-  mutt_str_asprintf(&str, "-- NeoMutt: %s", NONULL(priv->title));
-  FREE(&priv->display);
-  priv->display = str;
 
   win->actions |= WA_REPAINT;
   return 0;
@@ -89,14 +81,45 @@ static int sbar_color_observer(struct NotifyCallback *nc)
     return -1;
   if (nc->event_type != NT_COLOR)
     return 0;
-  if (nc->event_subtype != MT_COLOR_STATUS)
+
+  struct EventColor *ev_c = nc->event_data;
+
+  // MT_COLOR_MAX is sent on `uncolor *`
+  if ((ev_c->color != MT_COLOR_INDICATOR) && (ev_c->color != MT_COLOR_MAX))
     return 0;
+
   struct MuttWindow *win_sbar = nc->global_data;
   if (!win_sbar)
     return 0;
 
   win_sbar->actions |= WA_REPAINT;
   mutt_debug(LL_DEBUG5, "color done, request WA_REPAINT\n");
+
+  return 0;
+}
+
+/**
+ * sbar_window_observer - Listen for changes to the Windows - Implements ::observer_t
+ */
+static int sbar_window_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data || !nc->global_data)
+    return -1;
+  if (nc->event_type != NT_WINDOW)
+    return 0;
+
+  struct MuttWindow *win_sbar = nc->global_data;
+  if (nc->event_subtype == NT_WINDOW_STATE)
+  {
+    win_sbar->actions |= WA_REPAINT;
+    mutt_debug(LL_DEBUG5, "state done, request WA_REPAINT\n");
+  }
+  else if (nc->event_subtype == NT_WINDOW_DELETE)
+  {
+    notify_observer_remove(NeoMutt->notify, sbar_color_observer, win_sbar);
+    notify_observer_remove(win_sbar->notify, sbar_window_observer, win_sbar);
+    mutt_debug(LL_DEBUG5, "delete done\n");
+  }
 
   return 0;
 }
@@ -109,11 +132,8 @@ static void sbar_wdata_free(struct MuttWindow *win, void **ptr)
   if (!ptr || !*ptr)
     return;
 
-  notify_observer_remove(NeoMutt->notify, sbar_color_observer, win);
-
   struct SBarPrivateData *priv = *ptr;
 
-  FREE(&priv->title);
   FREE(&priv->display);
 
   FREE(ptr);
@@ -130,11 +150,11 @@ static struct SBarPrivateData *sbar_data_new(void)
 }
 
 /**
- * sbar_create - Add the Simple Bar (status)
+ * sbar_new - Add the Simple Bar (status)
  * @param parent Parent Window
  * @retval ptr New Simple Bar
  */
-struct MuttWindow *sbar_create(struct MuttWindow *parent)
+struct MuttWindow *sbar_new(struct MuttWindow *parent)
 {
   struct MuttWindow *win_sbar =
       mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,
@@ -146,6 +166,7 @@ struct MuttWindow *sbar_create(struct MuttWindow *parent)
   win_sbar->repaint = sbar_repaint;
 
   notify_observer_add(NeoMutt->notify, NT_COLOR, sbar_color_observer, win_sbar);
+  notify_observer_add(win_sbar->notify, NT_WINDOW, sbar_window_observer, win_sbar);
 
   return win_sbar;
 }
@@ -163,7 +184,7 @@ void sbar_set_title(struct MuttWindow *win, const char *title)
     return;
 
   struct SBarPrivateData *priv = win->wdata;
-  mutt_str_replace(&priv->title, title);
+  mutt_str_replace(&priv->display, title);
 
-  win->actions |= WA_RECALC;
+  win->actions |= WA_REPAINT;
 }

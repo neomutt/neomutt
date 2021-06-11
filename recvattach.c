@@ -1635,8 +1635,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
   mutt_parse_mime_message(m, e, fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
-  struct MuttWindow *dlg =
-      dialog_create_simple_index(MENU_ATTACH, WT_DLG_ATTACH, AttachHelp);
+  struct MuttWindow *dlg = simple_dialog_new(MENU_ATTACH, WT_DLG_ATTACH, AttachHelp);
 
   struct Menu *menu = dlg->wdata;
   menu->make_entry = attach_make_entry;
@@ -1978,7 +1977,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
 
         mutt_actx_free(&actx);
 
-        dialog_destroy_simple_index(&dlg);
+        simple_dialog_free(&dlg);
         return;
     }
 

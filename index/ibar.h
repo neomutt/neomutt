@@ -27,6 +27,6 @@ struct IndexPrivateData;
 struct IndexSharedData;
 struct MuttWindow;
 
-struct MuttWindow *ibar_create(struct MuttWindow *parent, struct IndexSharedData *shared, struct IndexPrivateData *priv);
+struct MuttWindow *ibar_new(struct MuttWindow *parent, struct IndexSharedData *shared, struct IndexPrivateData *priv);
 
 #endif /* MUTT_INDEX_IBAR_H */

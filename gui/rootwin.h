@@ -1,6 +1,6 @@
 /**
  * @file
- * Message Window
+ * Root Window
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -20,17 +20,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MSGWIN_H
-#define MUTT_MSGWIN_H
+#ifndef MUTT_WINDOW_ROOTWIN_H
+#define MUTT_WINDOW_ROOTWIN_H
 
-#include <stdio.h>
-#include "color.h"
+extern struct MuttWindow *RootWindow;
 
-void               msgwin_clear_text(void);
-struct MuttWindow *msgwin_new    (void);
-size_t             msgwin_get_width (void);
-struct MuttWindow *msgwin_get_window(void);
-void               msgwin_set_height(short height);
-void               msgwin_set_text  (enum ColorId color, const char *text);
+void rootwin_free(void);
+void rootwin_new(void);
+void rootwin_set_size(int cols, int rows);
 
-#endif /* MUTT_MSGWIN_H */
+#endif /* MUTT_WINDOW_ROOTWIN_H */

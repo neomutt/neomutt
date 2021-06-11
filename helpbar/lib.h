@@ -36,6 +36,6 @@
 #ifndef MUTT_HELPBAR_LIB_H
 #define MUTT_HELPBAR_LIB_H
 
-struct MuttWindow *helpbar_create(void);
+struct MuttWindow *helpbar_new(void);
 
 #endif /* MUTT_HELPBAR_LIB_H */

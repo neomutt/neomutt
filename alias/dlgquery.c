@@ -327,7 +327,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
   char title[256];
   snprintf(title, sizeof(title), "%s%s", _("Query: "), buf);
 
-  struct MuttWindow *dlg = dialog_create_simple_index(MENU_QUERY, WT_DLG_QUERY, QueryHelp);
+  struct MuttWindow *dlg = simple_dialog_new(MENU_QUERY, WT_DLG_QUERY, QueryHelp);
   struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
 
   struct Menu *menu = dlg->wdata;
@@ -599,7 +599,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
   notify_observer_remove(NeoMutt->notify, alias_config_observer, &mdata);
   notify_observer_remove(NeoMutt->notify, alias_color_observer, menu);
 
-  dialog_destroy_simple_index(&dlg);
+  simple_dialog_free(&dlg);
   ARRAY_FREE(&mdata.ava);
 }
 

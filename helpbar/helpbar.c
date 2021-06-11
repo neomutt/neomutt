@@ -191,7 +191,8 @@ static int helpbar_color_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_COLOR) || !nc->event_data || !nc->global_data)
     return -1;
 
-  if (ev_c->color != MT_COLOR_STATUS)
+  // MT_COLOR_MAX is sent on `uncolor *`
+  if ((ev_c->color != MT_COLOR_STATUS) && (ev_c->color != MT_COLOR_MAX))
     return 0;
 
   struct MuttWindow *win_helpbar = nc->global_data;
@@ -216,7 +217,7 @@ static int helpbar_config_observer(struct NotifyCallback *nc)
   struct MuttWindow *win_helpbar = nc->global_data;
   win_helpbar->state.visible = cs_subset_bool(NeoMutt->sub, "help");
 
-  win_helpbar->parent->actions |= WA_REFLOW;
+  win_helpbar->actions |= WA_RECALC;
   mutt_debug(LL_DEBUG5, "config: '%s', request WA_REFLOW on parent\n", ev_c->name);
   return 0;
 }
@@ -227,7 +228,7 @@ static int helpbar_config_observer(struct NotifyCallback *nc)
 static int helpbar_window_observer(struct NotifyCallback *nc)
 {
   if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
-    return -1;
+    return 0;
 
   struct MuttWindow *win_helpbar = nc->global_data;
 
@@ -239,26 +240,27 @@ static int helpbar_window_observer(struct NotifyCallback *nc)
     mutt_debug(LL_NOTIFY, "focus\n");
     win_helpbar->actions |= WA_RECALC;
   }
+  else if (nc->event_subtype == NT_WINDOW_STATE)
+  {
+    mutt_debug(LL_NOTIFY, "state\n");
+    win_helpbar->actions |= WA_REPAINT;
+  }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
-    struct EventWindow *ev_w = nc->event_data;
-    if (ev_w->win != win_helpbar)
-      return 0;
-
     notify_observer_remove(NeoMutt->notify, helpbar_binding_observer, win_helpbar);
     notify_observer_remove(NeoMutt->notify, helpbar_color_observer, win_helpbar);
     notify_observer_remove(NeoMutt->notify, helpbar_config_observer, win_helpbar);
-    notify_observer_remove(NeoMutt->notify, helpbar_window_observer, win_helpbar);
+    notify_observer_remove(win_helpbar->notify, helpbar_window_observer, win_helpbar);
     mutt_debug(LL_DEBUG5, "window delete done\n");
   }
   return 0;
 }
 
 /**
- * helpbar_create - Create the Help Bar Window
+ * helpbar_new - Create the Help Bar Window
  * @retval ptr New Window
  */
-struct MuttWindow *helpbar_create(void)
+struct MuttWindow *helpbar_new(void)
 {
   struct MuttWindow *win =
       mutt_window_new(WT_HELP_BAR, MUTT_WIN_ORIENT_VERTICAL,
@@ -274,6 +276,6 @@ struct MuttWindow *helpbar_create(void)
   notify_observer_add(NeoMutt->notify, NT_BINDING, helpbar_binding_observer, win);
   notify_observer_add(NeoMutt->notify, NT_COLOR, helpbar_color_observer, win);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, helpbar_config_observer, win);
-  notify_observer_add(NeoMutt->notify, NT_WINDOW, helpbar_window_observer, win);
+  notify_observer_add(win->notify, NT_WINDOW, helpbar_window_observer, win);
   return win;
 }

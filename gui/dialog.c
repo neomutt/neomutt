@@ -30,10 +30,13 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "lib.h"
 #ifdef USE_DEBUG_WINDOW
 #include "debug/lib.h"
 #endif
+
+struct MuttWindow *AllDialogsWindow = NULL; ///< Parent of all Dialogs
 
 /**
  * dialog_find - Find the parent Dialog of a Window
@@ -129,4 +132,65 @@ void dialog_pop(void)
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
 #endif
+}
+
+/**
+ * alldialogs_window_observer - Listen for window changes affecting the AllDialogs Window - Implements ::observer_t
+ */
+static int alldialogs_window_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_WINDOW) || (nc->event_subtype != NT_WINDOW_DELETE) ||
+      !nc->event_data || !nc->global_data)
+  {
+    return 0;
+  }
+
+  struct MuttWindow *win_alldlgs = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != win_alldlgs)
+    return 0;
+
+  notify_observer_remove(NeoMutt->notify, alldialogs_window_observer, win_alldlgs);
+
+  AllDialogsWindow = NULL;
+  mutt_debug(LL_DEBUG5, "window delete done\n");
+  return 0;
+}
+
+/**
+ * alldialogs_new - Create the AllDialogs Window
+ * @retval ptr New AllDialogs Window
+ *
+ * Create the container for all the Dialogs.
+ */
+struct MuttWindow *alldialogs_new(void)
+{
+  struct MuttWindow *win_alldlgs =
+      mutt_window_new(WT_ALL_DIALOGS, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+
+  notify_observer_add(NeoMutt->notify, NT_WINDOW, alldialogs_window_observer, win_alldlgs);
+
+  AllDialogsWindow = win_alldlgs;
+
+  return win_alldlgs;
+}
+
+/**
+ * alldialogs_get_current - Get the currently active Dialog
+ * @retval ptr Active Dialog
+ */
+struct MuttWindow *alldialogs_get_current(void)
+{
+  if (!AllDialogsWindow)
+    return NULL;
+
+  struct MuttWindow *np = NULL;
+  TAILQ_FOREACH(np, &AllDialogsWindow->children, entries)
+  {
+    if (mutt_window_is_visible(np))
+      return np;
+  }
+
+  return NULL;
 }

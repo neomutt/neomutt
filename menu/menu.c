@@ -452,7 +452,7 @@ int menu_loop(struct Menu *menu)
 
       case OP_ENTER_COMMAND:
         mutt_enter_command();
-        window_redraw(RootWindow);
+        window_redraw(NULL);
         break;
 
       case OP_TAG:
@@ -529,7 +529,7 @@ int menu_loop(struct Menu *menu)
  */
 enum MenuType menu_get_current_type(void)
 {
-  struct MuttWindow *win = window_get_dialog();
+  struct MuttWindow *win = alldialogs_get_current();
   while (win && win->focus)
     win = win->focus;
 
@@ -554,7 +554,6 @@ void menu_free(struct Menu **ptr)
 {
   struct Menu *menu = *ptr;
 
-  menu_remove_observers(menu);
   notify_free(&menu->notify);
 
   if (menu->mdata && menu->mdata_free)

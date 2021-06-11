@@ -1331,7 +1331,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     else
     {
       index_custom_redraw(priv->menu);
-      window_redraw(RootWindow);
+      window_redraw(NULL);
 
       /* give visual indication that the next command is a tag- command */
       if (priv->tag)
@@ -1368,7 +1368,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         continue;
       }
 
-      window_redraw(RootWindow);
+      window_redraw(NULL);
       op = km_dokey(MENU_MAIN);
 
       /* either user abort or timeout */
@@ -4259,7 +4259,7 @@ static struct MuttWindow *create_panel_index(bool status_on_top, struct IndexSha
   panel_index->wdata = priv;
   panel_index->wdata_free = index_private_data_free;
 
-  struct MuttWindow *win_ibar = ibar_create(panel_index, shared, priv);
+  struct MuttWindow *win_ibar = ibar_new(panel_index, shared, priv);
   if (status_on_top)
   {
     mutt_window_add_child(panel_index, win_ibar);

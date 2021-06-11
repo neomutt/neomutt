@@ -48,25 +48,18 @@ static int menu_color_observer(struct NotifyCallback *nc)
 
   struct EventColor *ev_c = nc->event_data;
 
-  int c = ev_c->color;
-
   // MT_COLOR_MAX is sent on `uncolor *`
-  bool simple = (c == MT_COLOR_INDEX_COLLAPSED) || (c == MT_COLOR_INDEX_DATE) ||
-                (c == MT_COLOR_INDEX_LABEL) || (c == MT_COLOR_INDEX_NUMBER) ||
-                (c == MT_COLOR_INDEX_SIZE) || (c == MT_COLOR_INDEX_TAGS) ||
-                (c == MT_COLOR_MAX);
-  bool lists = (c == MT_COLOR_ATTACH_HEADERS) || (c == MT_COLOR_BODY) ||
-               (c == MT_COLOR_HEADER) || (c == MT_COLOR_INDEX) ||
-               (c == MT_COLOR_INDEX_AUTHOR) || (c == MT_COLOR_INDEX_FLAGS) ||
-               (c == MT_COLOR_INDEX_SUBJECT) || (c == MT_COLOR_INDEX_TAG) ||
-               (c == MT_COLOR_MAX);
-
-  // The changes aren't relevant to the index menu
-  if (!simple && !lists)
+  if ((ev_c->color != MT_COLOR_NORMAL) && (ev_c->color != MT_COLOR_INDICATOR) &&
+      (ev_c->color != MT_COLOR_MAX))
+  {
     return 0;
+  }
 
   struct Menu *menu = nc->global_data;
+  struct MuttWindow *win_menu = menu->win_index;
+
   menu->redraw = MENU_REDRAW_FULL;
+  win_menu->actions |= WA_REPAINT;
   mutt_debug(LL_DEBUG5, "color done, request MENU_REDRAW_FULL\n");
 
   return 0;
@@ -83,36 +76,16 @@ static int menu_config_observer(struct NotifyCallback *nc)
     return 0;
 
   struct EventConfig *ev_c = nc->event_data;
-
-  const struct ConfigDef *cdef = ev_c->he->data;
-  ConfigRedrawFlags flags = cdef->type & R_REDRAW_MASK;
-
-  if (flags == R_REDRAW_NO_FLAGS)
+  if (!mutt_str_startswith(ev_c->name, "arrow_") && !mutt_str_startswith(ev_c->name, "menu_"))
     return 0;
 
   struct Menu *menu = nc->global_data;
-  if ((menu->type == MENU_MAIN) && (flags & R_INDEX))
-    menu->redraw |= MENU_REDRAW_FULL;
-  if ((menu->type == MENU_PAGER) && (flags & R_PAGER))
-    menu->redraw |= MENU_REDRAW_FULL;
-  if (flags & R_PAGER_FLOW)
-  {
-    menu->redraw |= MENU_REDRAW_FULL | MENU_REDRAW_FLOW;
-  }
+  struct MuttWindow *win_menu = menu->win_index;
 
-  if (flags & R_RESORT_SUB)
-    OptSortSubthreads = true;
-  if (flags & R_RESORT)
-    OptNeedResort = true;
-  if (flags & R_RESORT_INIT)
-    OptResortInit = true;
-  if (flags & R_TREE)
-    OptRedrawTree = true;
+  menu->redraw |= MENU_REDRAW_INDEX;
+  win_menu->actions |= WA_RECALC;
 
-  if (flags & R_MENU)
-    menu->redraw |= MENU_REDRAW_FULL;
-
-  mutt_debug(LL_DEBUG5, "config done, request MENU_REDRAW_FULL\n");
+  mutt_debug(LL_DEBUG5, "config done, request WA_RECALC\n");
   return 0;
 }
 
@@ -125,16 +98,27 @@ static int menu_window_observer(struct NotifyCallback *nc)
     return -1;
   if (nc->event_type != NT_WINDOW)
     return 0;
-  if (nc->event_subtype != NT_WINDOW_STATE)
-    return 0;
 
   struct Menu *menu = nc->global_data;
-  struct EventWindow *ev_w = nc->event_data;
-  struct MuttWindow *win = ev_w->win;
+  if (nc->event_subtype == NT_WINDOW_STATE)
+  {
+    struct EventWindow *ev_w = nc->event_data;
+    struct MuttWindow *win = ev_w->win;
 
-  menu->pagelen = win->state.rows;
-  menu->redraw = MENU_REDRAW_FULL;
-  mutt_debug(LL_DEBUG5, "window done, request MENU_REDRAW_FULL\n");
+    menu->pagelen = win->state.rows;
+    menu->redraw |= MENU_REDRAW_INDEX;
+
+    win->actions |= WA_REPAINT;
+    mutt_debug(LL_DEBUG5,
+               "window done, request MENU_REDRAW_INDEX, WA_REPAINT\n");
+  }
+  else if (nc->event_subtype == NT_WINDOW_DELETE)
+  {
+    notify_observer_remove(NeoMutt->notify, menu_config_observer, menu);
+    notify_observer_remove(menu->win_index->notify, menu_window_observer, menu);
+    mutt_color_observer_remove(menu_color_observer, menu);
+    mutt_debug(LL_DEBUG5, "window delete done\n");
+  }
 
   return 0;
 }
@@ -148,15 +132,4 @@ void menu_add_observers(struct Menu *menu)
   notify_observer_add(NeoMutt->notify, NT_CONFIG, menu_config_observer, menu);
   notify_observer_add(menu->win_index->notify, NT_WINDOW, menu_window_observer, menu);
   mutt_color_observer_add(menu_color_observer, menu);
-}
-
-/**
- * menu_remove_observers - Remove the notification observers
- * @param menu Menu
- */
-void menu_remove_observers(struct Menu *menu)
-{
-  notify_observer_remove(NeoMutt->notify, menu_config_observer, menu);
-  notify_observer_remove(menu->win_index->notify, menu_window_observer, menu);
-  mutt_color_observer_remove(menu_color_observer, menu);
 }

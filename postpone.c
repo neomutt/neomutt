@@ -223,8 +223,7 @@ static struct Email *dlg_select_postponed_email(struct Mailbox *m)
   int r = -1;
   bool done = false;
 
-  struct MuttWindow *dlg =
-      dialog_create_simple_index(MENU_POSTPONE, WT_DLG_POSTPONE, PostponeHelp);
+  struct MuttWindow *dlg = simple_dialog_new(MENU_POSTPONE, WT_DLG_POSTPONE, PostponeHelp);
 
   struct Menu *menu = dlg->wdata;
   menu->make_entry = post_make_entry;
@@ -293,7 +292,7 @@ static struct Email *dlg_select_postponed_email(struct Mailbox *m)
   }
 
   cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
-  dialog_destroy_simple_index(&dlg);
+  simple_dialog_free(&dlg);
 
   return (r > -1) ? m->emails[r] : NULL;
 }

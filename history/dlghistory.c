@@ -98,8 +98,7 @@ void dlg_select_history(char *buf, size_t buflen, char **matches, int match_coun
 
   snprintf(title, sizeof(title), _("History '%s'"), buf);
 
-  struct MuttWindow *dlg =
-      dialog_create_simple_index(MENU_GENERIC, WT_DLG_HISTORY, HistoryHelp);
+  struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_HISTORY, HistoryHelp);
 
   struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
   sbar_set_title(sbar, title);
@@ -126,5 +125,5 @@ void dlg_select_history(char *buf, size_t buflen, char **matches, int match_coun
     }
   }
 
-  dialog_destroy_simple_index(&dlg);
+  simple_dialog_free(&dlg);
 }

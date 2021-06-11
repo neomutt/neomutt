@@ -50,18 +50,39 @@ static int simple_config_observer(struct NotifyCallback *nc)
 
   struct MuttWindow *dlg = nc->global_data;
   window_status_on_top(dlg, NeoMutt->sub);
+  mutt_debug(LL_DEBUG5, "config done\n");
   return 0;
 }
 
 /**
- * dialog_create_simple_index - Create a simple index Dialog
+ * simple_window_observer - Listen for window changes affecting a Dialog - Implements ::observer_t
+ */
+static int simple_window_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
+    return 0;
+
+  struct MuttWindow *dlg = nc->global_data;
+
+  if (nc->event_subtype != NT_WINDOW_DELETE)
+    return 0;
+
+  notify_observer_remove(NeoMutt->notify, simple_config_observer, dlg);
+  notify_observer_remove(dlg->notify, simple_window_observer, dlg);
+
+  mutt_debug(LL_DEBUG5, "window delete done\n");
+  return 0;
+}
+
+/**
+ * simple_dialog_new - Create a simple index Dialog
  * @param mtype     Menu type, e.g. #MENU_ALIAS
  * @param wtype     Dialog type, e.g. #WT_DLG_ALIAS
  * @param help_data Data for the Help Bar
  * @retval ptr New Dialog Window
  */
-struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowType wtype,
-                                              const struct Mapping *help_data)
+struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype,
+                                     const struct Mapping *help_data)
 {
   struct MuttWindow *dlg =
       mutt_window_new(wtype, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
@@ -73,7 +94,7 @@ struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowTy
   dlg->focus = win_index;
   dlg->wdata = win_index->wdata;
 
-  struct MuttWindow *win_sbar = sbar_create(dlg);
+  struct MuttWindow *win_sbar = sbar_new(dlg);
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)
   {
@@ -87,23 +108,21 @@ struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowTy
   }
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, simple_config_observer, dlg);
+  notify_observer_add(dlg->notify, NT_WINDOW, simple_window_observer, dlg);
   dialog_push(dlg);
 
   return dlg;
 }
 
 /**
- * dialog_destroy_simple_index - Destroy a simple index Dialog
+ * simple_dialog_free - Destroy a simple index Dialog
  * @param ptr Dialog Window to destroy
  */
-void dialog_destroy_simple_index(struct MuttWindow **ptr)
+void simple_dialog_free(struct MuttWindow **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
-  struct MuttWindow *dlg = *ptr;
-
   dialog_pop();
-  notify_observer_remove(NeoMutt->notify, simple_config_observer, dlg);
   mutt_window_free(ptr);
 }

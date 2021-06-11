@@ -1360,8 +1360,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 #endif
     help_data = FolderHelp;
 
-  struct MuttWindow *dlg =
-      dialog_create_simple_index(MENU_FOLDER, WT_DLG_BROWSER, help_data);
+  struct MuttWindow *dlg = simple_dialog_new(MENU_FOLDER, WT_DLG_BROWSER, help_data);
 
   menu = dlg->wdata;
   menu->make_entry = folder_make_entry;
@@ -2226,7 +2225,7 @@ bail:
   mutt_buffer_pool_release(&prefix);
 
   if (menu)
-    dialog_destroy_simple_index(&dlg);
+    simple_dialog_free(&dlg);
 
   goto_swapper[0] = '\0';
 }

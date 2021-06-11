@@ -263,7 +263,7 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
     return;
 
   struct MuttWindow *dlg =
-      dialog_create_simple_index(MENU_AUTOCRYPT_ACCT, WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
+      simple_dialog_new(MENU_AUTOCRYPT_ACCT, WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
   struct Menu *menu = create_menu(dlg);
 
   bool done = false;
@@ -280,8 +280,8 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
           break;
 
         ac_menu_free(&menu);
-        dialog_destroy_simple_index(&dlg);
-        dlg = dialog_create_simple_index(MENU_AUTOCRYPT_ACCT, WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
+        simple_dialog_free(&dlg);
+        dlg = simple_dialog_new(MENU_AUTOCRYPT_ACCT, WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
         menu = create_menu(dlg);
         break;
 
@@ -302,9 +302,8 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
         if (!mutt_autocrypt_db_account_delete(entry->account))
         {
           ac_menu_free(&menu);
-          dialog_destroy_simple_index(&dlg);
-          dlg = dialog_create_simple_index(MENU_AUTOCRYPT_ACCT,
-                                           WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
+          simple_dialog_free(&dlg);
+          dlg = simple_dialog_new(MENU_AUTOCRYPT_ACCT, WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
           menu = create_menu(dlg);
         }
         break;
@@ -337,5 +336,5 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
   }
 
   ac_menu_free(&menu);
-  dialog_destroy_simple_index(&dlg);
+  simple_dialog_free(&dlg);
 }

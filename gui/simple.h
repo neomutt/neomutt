@@ -28,7 +28,7 @@
 
 struct Mapping;
 
-struct MuttWindow *dialog_create_simple_index(enum MenuType mtype, enum WindowType wtype, const struct Mapping *help_data);
-void               dialog_destroy_simple_index(struct MuttWindow **ptr);
+struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype, const struct Mapping *help_data);
+void               simple_dialog_free(struct MuttWindow **ptr);
 
 #endif /* MUTT_GUI_SIMPLE_H */

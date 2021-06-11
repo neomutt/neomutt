@@ -174,7 +174,7 @@ struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, char *query)
     table[table_index++] = key;
   }
 
-  struct MuttWindow *dlg = dialog_create_simple_index(MENU_SMIME, WT_DLG_SMIME, SmimeHelp);
+  struct MuttWindow *dlg = simple_dialog_new(MENU_SMIME, WT_DLG_SMIME, SmimeHelp);
 
   struct Menu *menu = dlg->wdata;
   menu->max = table_index;
@@ -237,7 +237,7 @@ struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, char *query)
     }
   }
 
-  dialog_destroy_simple_index(&dlg);
+  simple_dialog_free(&dlg);
   FREE(&table);
 
   return selected_key;
