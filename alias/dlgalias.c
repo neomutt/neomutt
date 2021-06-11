@@ -183,9 +183,64 @@ static int alias_alias_observer(struct NotifyCallback *nc)
 
   menu->max = alias_array_count_visible(&mdata->ava);
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
-  mutt_debug(LL_DEBUG5, "alias done, request MENU_REDRAW_FULL\n");
+  mutt_debug(LL_DEBUG5, "alias done, request WA_RECALC, MENU_REDRAW_FULL\n");
 
   return 0;
+}
+
+/**
+ * alias_window_observer - Listen for window changes - Implements ::observer_t
+ */
+int alias_window_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
+    return 0;
+
+  if (nc->event_subtype != NT_WINDOW_DELETE)
+    return 0;
+
+  struct MuttWindow *win_menu = nc->global_data;
+  struct Menu *menu = win_menu->wdata;
+
+  notify_observer_remove(NeoMutt->notify, alias_alias_observer, menu);
+  notify_observer_remove(NeoMutt->notify, alias_config_observer, menu);
+  notify_observer_remove(win_menu->notify, alias_window_observer, win_menu);
+
+  mutt_debug(LL_DEBUG5, "window delete done\n");
+  return 0;
+}
+
+/**
+ * alias_dialog_new - Create an Alias Selection Dialog
+ * @param mdata Menu data holding Aliases
+ * @retval ptr New Dialog
+ */
+struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
+{
+  struct MuttWindow *dlg = simple_dialog_new(MENU_ALIAS, WT_DLG_ALIAS, AliasHelp);
+
+  struct Menu *menu = dlg->wdata;
+  menu->make_entry = alias_make_entry;
+  menu->custom_search = true;
+  menu->tag = alias_tag;
+  menu->max = alias_array_count_visible(&mdata->ava);
+  menu->mdata = mdata;
+
+  struct MuttWindow *win_menu = menu->win_index;
+
+  // Override the Simple Dialog's recalc()
+  win_menu->recalc = alias_recalc;
+
+  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
+
+  alias_set_title(sbar, _("Aliases"), mdata->str);
+
+  // NT_COLOR is handled by the SimpleDialog
+  notify_observer_add(NeoMutt->notify, NT_ALIAS, alias_alias_observer, menu);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, alias_config_observer, menu);
+  notify_observer_add(win_menu->notify, NT_WINDOW, alias_window_observer, win_menu);
+
+  return dlg;
 }
 
 /**
@@ -202,27 +257,12 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
     return;
   }
 
-  int t = -1;
-  bool done = false;
-
-  struct MuttWindow *dlg = simple_dialog_new(MENU_ALIAS, WT_DLG_ALIAS, AliasHelp);
-
+  struct MuttWindow *dlg = alias_dialog_new(mdata);
   struct Menu *menu = dlg->wdata;
-  menu->make_entry = alias_make_entry;
-  menu->custom_search = true;
-  menu->tag = alias_tag;
-  menu->max = alias_array_count_visible(&mdata->ava);
-  menu->mdata = mdata;
-
   struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
 
-  char *title = menu_create_alias_title(_("Aliases"), mdata->str);
-  sbar_set_title(sbar, title);
-  FREE(&title);
-
-  notify_observer_add(NeoMutt->notify, NT_ALIAS, alias_alias_observer, menu);
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, alias_config_observer, mdata);
-  notify_observer_add(NeoMutt->notify, NT_COLOR, alias_color_observer, menu);
+  int t = -1;
+  bool done = false;
 
   alias_array_sort(&mdata->ava, mdata->sub);
 
@@ -298,8 +338,8 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
         {
           sort |= reverse ? SORT_REVERSE : 0;
 
+          // This will trigger a WA_RECALC
           cs_subset_str_native_set(mdata->sub, "sort_alias", sort, NULL);
-          menu_queue_redraw(menu, MENU_REDRAW_FULL);
         }
 
         break;
@@ -323,10 +363,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
                                          mdata, menu);
         if (rc == 0)
         {
-          alias_array_sort(&mdata->ava, mdata->sub);
-          char *title2 = menu_create_alias_title(_("Aliases"), mdata->str);
-          sbar_set_title(sbar, title2);
-          FREE(&title2);
+          alias_set_title(sbar, _("Aliases"), mdata->str);
           menu_queue_redraw(menu, MENU_REDRAW_FULL);
         }
 
@@ -358,10 +395,6 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
   {
     mutt_addrlist_write(&ARRAY_GET(&mdata->ava, t)->alias->addr, buf, buflen, true);
   }
-
-  notify_observer_remove(NeoMutt->notify, alias_alias_observer, menu);
-  notify_observer_remove(NeoMutt->notify, alias_config_observer, mdata);
-  notify_observer_remove(NeoMutt->notify, alias_color_observer, menu);
 
   simple_dialog_free(&dlg);
 }

@@ -31,12 +31,13 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "gui/lib.h"
 #include "gui.h"
 #include "lib.h"
 #include "menu/lib.h"
 
 /**
- * alias_config_observer - Listen for `sort_alias` configuration changes and reorders menu items accordingly
+ * alias_config_observer - Listen for config changes - Implements ::observer_t
  */
 int alias_config_observer(struct NotifyCallback *nc)
 {
@@ -50,52 +51,48 @@ int alias_config_observer(struct NotifyCallback *nc)
   if (!mutt_str_equal(ev_c->name, "sort_alias"))
     return 0;
 
-  struct AliasMenuData *mdata = nc->global_data;
-
-  alias_array_sort(&mdata->ava, mdata->sub);
-  mutt_debug(LL_DEBUG5, "config done\n");
-
-  return 0;
-}
-
-/**
- * alias_color_observer - Listen for color configuration changes and refreshes the menu
- */
-int alias_color_observer(struct NotifyCallback *nc)
-{
-  if ((nc->event_type != NT_COLOR) || !nc->event_data || !nc->global_data)
-    return -1;
-
   struct Menu *menu = nc->global_data;
+
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
-  mutt_debug(LL_DEBUG5, "color done, request MENU_REDRAW_FULL\n");
+  mutt_debug(LL_DEBUG5, "config done, request WA_RECALC, MENU_REDRAW_FULL\n");
 
   return 0;
 }
 
 /**
- * menu_create_alias_title - Create a title string for the Menu
+ * alias_set_title - Create a title string for the Menu
+ * @param sbar      Simple Bar Window
  * @param menu_name Menu name
  * @param limit     Limit being applied
- *
- * @note Caller must free the returned string
  */
-char *menu_create_alias_title(char *menu_name, char *limit)
+void alias_set_title(struct MuttWindow *sbar, char *menu_name, char *limit)
 {
-  if (limit)
+  if (!limit)
   {
-    char *tmp_str = NULL;
-    char *new_title = NULL;
-
-    mutt_str_asprintf(&tmp_str, _("Limit: %s"), limit);
-    mutt_str_asprintf(&new_title, "%s - %s", menu_name, tmp_str);
-
-    FREE(&tmp_str);
-
-    return new_title;
+    sbar_set_title(sbar, menu_name);
+    return;
   }
-  else
-  {
-    return strdup(menu_name);
-  }
+
+  char buf[256] = { 0 };
+
+  int len = snprintf(buf, sizeof(buf), "%s - ", menu_name);
+
+  snprintf(buf + len, sizeof(buf) - len, _("Limit: %s"), limit);
+
+  sbar_set_title(sbar, buf);
+}
+
+/**
+ * alias_recalc - Recalculate the display of the Alias Window - Implements MuttWindow::recalc()
+ */
+int alias_recalc(struct MuttWindow *win)
+{
+  struct Menu *menu = win->wdata;
+  struct AliasMenuData *mdata = menu->mdata;
+
+  alias_array_sort(&mdata->ava, mdata->sub);
+
+  win->actions |= WA_REPAINT;
+  mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
+  return 0;
 }
