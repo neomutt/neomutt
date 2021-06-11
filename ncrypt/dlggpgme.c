@@ -1202,6 +1202,18 @@ static void crypt_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
 }
 
 /**
+ * key_table_free - Free the key table - Implements Menu::mdata_free()
+ *
+ * @note The keys are owned by the caller of the dialog
+ */
+static void key_table_free(struct Menu *menu, void **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+  FREE(ptr);
+}
+
+/**
  * dlg_select_gpgme_key - Get the user to select a key
  * @param[in]  keys         List of keys to select from
  * @param[in]  p            Address to match
@@ -1285,6 +1297,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   menu->max = i;
   menu->make_entry = crypt_make_entry;
   menu->mdata = key_table;
+  menu->mdata_free = key_table_free;
 
   {
     const char *ts = NULL;
@@ -1425,7 +1438,5 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   }
 
   simple_dialog_free(&dlg);
-  FREE(&key_table);
-
   return k;
 }

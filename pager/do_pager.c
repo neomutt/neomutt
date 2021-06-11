@@ -59,6 +59,26 @@ static int dopager_config_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * dopager_window_observer - Listen for window changes affecting the dopager menus - Implements ::observer_t
+ */
+static int dopager_window_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
+    return 0;
+
+  if (nc->event_subtype != NT_WINDOW_DELETE)
+    return 0;
+
+  struct MuttWindow *dlg = nc->global_data;
+
+  notify_observer_remove(NeoMutt->notify, dopager_config_observer, dlg);
+  notify_observer_remove(dlg->notify, dopager_config_observer, dlg);
+  mutt_debug(LL_DEBUG5, "window delete done\n");
+
+  return 0;
+}
+
+/**
  * mutt_do_pager - Display some page-able text to the user (help or attachment)
  * @param pview PagerView to construct Pager object
  * @retval  0 Success
@@ -88,6 +108,7 @@ int mutt_do_pager(struct PagerView *pview)
   mutt_window_add_child(dlg, panel_pager);
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, dopager_config_observer, dlg);
+  notify_observer_add(dlg->notify, NT_WINDOW, dopager_window_observer, dlg);
   dialog_push(dlg);
 
   pview->win_ibar = NULL;
@@ -120,7 +141,6 @@ int mutt_do_pager(struct PagerView *pview)
   }
 
   dialog_pop();
-  notify_observer_remove(NeoMutt->notify, dopager_config_observer, dlg);
   mutt_window_free(&dlg);
   return rc;
 }

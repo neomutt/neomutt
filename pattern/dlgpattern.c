@@ -115,13 +115,32 @@ static void make_pattern_entry(struct Menu *menu, char *buf, size_t buflen, int 
 }
 
 /**
+ * free_pattern_menu - Free the Pattern Completion menu - Implements Menu::mdata_free()
+ */
+static void free_pattern_menu(struct Menu *menu, void **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct PatternEntry *entries = *ptr;
+
+  for (size_t i = 0; i < menu->max; i++)
+  {
+    FREE(&entries[i].tag);
+    FREE(&entries[i].expr);
+    FREE(&entries[i].desc);
+  }
+
+  FREE(ptr);
+}
+
+/**
  * create_pattern_menu - Create the Pattern Completion menu
  * @param dlg Dialog holding the Menu
  * @retval ptr New Menu
  */
 static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
 {
-  struct PatternEntry *entries = NULL;
   int num_entries = 0, i = 0;
   struct Buffer *entrybuf = NULL;
 
@@ -129,10 +148,13 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
     num_entries++;
   /* Add three more hard-coded entries */
   num_entries += 3;
+  struct PatternEntry *entries =
+      mutt_mem_calloc(num_entries, sizeof(struct PatternEntry));
 
   struct Menu *menu = dlg->wdata;
   menu->make_entry = make_pattern_entry;
-  menu->mdata = entries = mutt_mem_calloc(num_entries, sizeof(struct PatternEntry));
+  menu->mdata = entries;
+  menu->mdata_free = free_pattern_menu;
   menu->max = num_entries;
 
   struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
@@ -227,23 +249,6 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
 }
 
 /**
- * free_pattern_menu - Free the Pattern Completion menu
- * @param menu Menu to free
- */
-static void free_pattern_menu(struct Menu *menu)
-{
-  struct PatternEntry *entries = menu->mdata;
-  while (menu->max)
-  {
-    menu->max--;
-    FREE(&entries[menu->max].tag);
-    FREE(&entries[menu->max].expr);
-    FREE(&entries[menu->max].desc);
-  }
-  FREE(&menu->mdata);
-}
-
-/**
  * dlg_select_pattern - Show menu to select a Pattern
  * @param buf    Buffer for the selected Pattern
  * @param buflen Length of buffer
@@ -276,7 +281,6 @@ bool dlg_select_pattern(char *buf, size_t buflen)
     }
   }
 
-  free_pattern_menu(menu);
   simple_dialog_free(&dlg);
   return rc;
 }
