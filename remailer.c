@@ -264,7 +264,7 @@ static void mix_type2_list_free(struct Remailer ***ttlp)
   for (int i = 0; type2_list[i]; i++)
     remailer_free(&type2_list[i]);
 
-  FREE(type2_list);
+  FREE(ttlp);
 }
 
 /**
@@ -814,6 +814,7 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
   }
 
   dialog_pop();
+  mutt_window_free(&dlg);
 
   /* construct the remailer list */
 
