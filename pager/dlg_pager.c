@@ -4120,38 +4120,3 @@ int mutt_pager(struct PagerView *pview)
 
   return (rc != -1) ? rc : 0;
 }
-
-/**
- * create_panel_pager - Create the Windows for the Pager panel
- * @param status_on_top true, if the Pager bar should be on top
- * @param shared        Shared Index data
- * @retval ptr New Pager Panel
- */
-struct MuttWindow *create_panel_pager(bool status_on_top, struct IndexSharedData *shared)
-{
-  struct MuttWindow *panel_pager =
-      mutt_window_new(WT_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  panel_pager->state.visible = false; // The Pager and Pager Bar are initially hidden
-
-  struct MuttWindow *win_pager = menu_new_window(MENU_PAGER, NeoMutt->sub);
-  panel_pager->focus = win_pager;
-
-  struct PagerPrivateData *priv = pager_private_data_new();
-  panel_pager->wdata = priv;
-  panel_pager->wdata_free = pager_private_data_free;
-
-  struct MuttWindow *win_pbar = pbar_new(panel_pager, shared, priv);
-  if (status_on_top)
-  {
-    mutt_window_add_child(panel_pager, win_pbar);
-    mutt_window_add_child(panel_pager, win_pager);
-  }
-  else
-  {
-    mutt_window_add_child(panel_pager, win_pager);
-    mutt_window_add_child(panel_pager, win_pbar);
-  }
-
-  return panel_pager;
-}

@@ -30,7 +30,9 @@
  * | pager/config.c       | @subpage pager_config       |
  * | pager/dlg_pager.c    | @subpage pager_pager        |
  * | pager/do_pager.c     | @subpage pager_dopager      |
+ * | pager/pager.c        | @subpage pager_pager        |
  * | pager/pbar.c         | @subpage pager_pbar         |
+ * | pager/ppanel.c       | @subpage pager_ppanel       |
  * | pager/private_data.c | @subpage pager_private_data |
  */
 
@@ -207,7 +209,7 @@ typedef uint8_t NotifyPager;         ///< Flags, e.g. #NT_PAGER_ACCOUNT
 int mutt_pager(struct PagerView *pview);
 int mutt_do_pager(struct PagerView *pview);
 void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src, bool strip_markers);
-struct MuttWindow *create_panel_pager(bool status_on_top, struct IndexSharedData *shared);
+struct MuttWindow *ppanel_new(bool status_on_top, struct IndexSharedData *shared);
 
 void mutt_clear_pager_position(void);
 

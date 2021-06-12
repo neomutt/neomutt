@@ -103,7 +103,7 @@ int mutt_do_pager(struct PagerView *pview)
   dlg->wdata_free = index_shared_data_free;
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
-  struct MuttWindow *panel_pager = create_panel_pager(c_status_on_top, shared);
+  struct MuttWindow *panel_pager = ppanel_new(c_status_on_top, shared);
   dlg->focus = panel_pager;
   mutt_window_add_child(dlg, panel_pager);
 
