@@ -1,6 +1,6 @@
 /**
  * @file
- * Compose Bar
+ * Compose Attach Data
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -20,12 +20,22 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMPOSE_CBAR_H
-#define MUTT_COMPOSE_CBAR_H
+#ifndef MUTT_COMPOSE_ATTACH_DATA_H
+#define MUTT_COMPOSE_ATTACH_DATA_H
 
-struct ComposeSharedData;
-struct MuttWindow;
+struct Email;
+struct Menu;
 
-struct MuttWindow *cbar_new(struct MuttWindow *parent, struct ComposeSharedData *shared);
+/**
+ * struct ComposeAttachData - Data to fill the Compose Attach Window
+ */
+struct ComposeAttachData
+{
+  struct AttachCtx *actx;
+  struct Menu *menu;
+};
 
-#endif /* MUTT_COMPOSE_CBAR_H */
+void                      attach_data_free(struct Menu *menu, void **ptr);
+struct ComposeAttachData *attach_data_new (struct Email *e);
+
+#endif /* MUTT_COMPOSE_ATTACH_DATA_H */

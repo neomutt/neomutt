@@ -1,6 +1,6 @@
 /**
  * @file
- * Shared Compose Data
+ * Compose Attach Data
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -20,41 +20,43 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMPOSE_REDRAW_H
-#define MUTT_COMPOSE_REDRAW_H
+/**
+ * @page compose_attach_data Compose Attach Data
+ *
+ * Compose Attach Data
+ */
 
 #include "config.h"
 #include "mutt/lib.h"
-#ifdef USE_AUTOCRYPT
-#include "autocrypt/lib.h"
-#endif
+#include "email/lib.h"
+#include "attach_data.h"
 
 /**
- * struct ComposeRedrawData - Keep track when the compose screen needs redrawing
+ * attach_data_free - Free the Compose Attach Data - Implements Menu::mdata_free()
  */
-struct ComposeRedrawData
+void attach_data_free(struct Menu *menu, void **ptr)
 {
-  struct Email *email;
-  struct Buffer *fcc;
+  if (!ptr || !*ptr)
+    return;
 
-  struct ListHead to_list;
-  struct ListHead cc_list;
-  struct ListHead bcc_list;
+  struct ComposeAttachData *attach_data = *ptr;
 
-  short to_rows;
-  short cc_rows;
-  short bcc_rows;
-  short sec_rows;
+  mutt_actx_free(&attach_data->actx);
 
-#ifdef USE_AUTOCRYPT
-  enum AutocryptRec autocrypt_rec;
-#endif
-  struct MuttWindow *win_env;  ///< Envelope: From, To, etc
-  struct MuttWindow *win_cbar; ///< Compose bar
+  FREE(ptr);
+}
 
-  struct Menu *menu;
-  struct AttachCtx *actx;   ///< Attachments
-  struct ConfigSubset *sub; ///< Inherited config items
-};
+/**
+ * attach_data_new - Create new Compose Attach Data
+ * @retval ptr New Compose Attach Data
+ */
+struct ComposeAttachData *attach_data_new(struct Email *e)
+{
+  struct ComposeAttachData *attach_data =
+      mutt_mem_calloc(1, sizeof(struct ComposeAttachData));
 
-#endif /* MUTT_COMPOSE_REDRAW_H */
+  attach_data->actx = mutt_actx_new();
+  attach_data->actx->email = e;
+
+  return attach_data;
+}

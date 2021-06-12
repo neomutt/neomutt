@@ -1,6 +1,6 @@
 /**
  * @file
- * Compose Bar
+ * Compose Shared Data
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -20,12 +20,25 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMPOSE_CBAR_H
-#define MUTT_COMPOSE_CBAR_H
+#ifndef MUTT_COMPOSE_SHARED_DATA_H
+#define MUTT_COMPOSE_SHARED_DATA_H
 
-struct ComposeSharedData;
+/**
+ * struct ComposeSharedData - Shared Compose Data
+ */
+struct ComposeSharedData
+{
+  struct ConfigSubset *sub;          ///< Config set to use
+  struct Mailbox *mailbox;           ///< Current Mailbox
+  struct Email *email;               ///< Email being composed
+  struct ComposeAttachData *adata;   ///< Attachments
+  struct ComposeEnvelopeData *edata; ///< Envelope data
+  struct Notify *notify;             ///< Notifications: #NotifyCompose
+};
+
 struct MuttWindow;
 
-struct MuttWindow *cbar_new(struct MuttWindow *parent, struct ComposeSharedData *shared);
+void compose_shared_data_free(struct MuttWindow *win, void **ptr);
+struct ComposeSharedData *compose_shared_data_new(void);
 
-#endif /* MUTT_COMPOSE_CBAR_H */
+#endif /* MUTT_COMPOSE_SHARED_DATA_H */

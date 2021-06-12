@@ -30,72 +30,30 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
-#include "send/lib.h"
+#include "attach_data.h"
+#include "cbar_data.h"
 #include "format_flags.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
-#include "redraw.h"
+#include "shared_data.h"
 
 /**
- * struct CBarPrivateData - Data to draw the Compose Bar
+ * num_attachments - Count the number of attachments
+ * @param adata Attachment data
+ * @retval num Number of attachments
  */
-struct CBarPrivateData
+int num_attachments(struct ComposeAttachData *adata)
 {
-  struct ComposeRedrawData *rd; ///< Shared Compose data
-  char *compose_format;         ///< Cached status string
-};
-
-/**
- * cum_attachs_size - Cumulative Attachments Size
- * @param menu Menu listing attachments
- * @retval num Bytes in attachments
- *
- * Returns the total number of bytes used by the attachments in the attachment
- * list _after_ content-transfer-encodings have been applied.
- */
-static unsigned long cum_attachs_size(struct Menu *menu)
-{
-  size_t s = 0;
-  struct Content *info = NULL;
-  struct Body *b = NULL;
-  struct ComposeRedrawData *rd = menu->mdata;
-  struct AttachCtx *actx = rd->actx;
-  struct AttachPtr **idx = actx->idx;
-  struct ConfigSubset *sub = rd->sub;
-
-  for (unsigned short i = 0; i < actx->idxlen; i++)
-  {
-    b = idx[i]->body;
-
-    if (!b->content)
-      b->content = mutt_get_content_info(b->filename, b, sub);
-
-    info = b->content;
-    if (info)
-    {
-      switch (b->encoding)
-      {
-        case ENC_QUOTED_PRINTABLE:
-          s += 3 * (info->lobin + info->hibin) + info->ascii + info->crlf;
-          break;
-        case ENC_BASE64:
-          s += (4 * (info->lobin + info->hibin + info->ascii + info->crlf)) / 3;
-          break;
-        default:
-          s += info->lobin + info->hibin + info->ascii + info->crlf;
-          break;
-      }
-    }
-  }
-
-  return s;
+  if (!adata || !adata->menu)
+    return 0;
+  return adata->menu->max;
 }
 
 /**
@@ -115,14 +73,14 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
 {
   char fmt[128], tmp[128];
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
-  struct Menu *menu = (struct Menu *) data;
+  struct ComposeSharedData *shared = (struct ComposeSharedData *) data;
 
   *buf = '\0';
   switch (op)
   {
     case 'a': /* total number of attachments */
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-      snprintf(buf, buflen, fmt, menu->max);
+      snprintf(buf, buflen, fmt, num_attachments(shared->adata));
       break;
 
     case 'h': /* hostname */
@@ -132,7 +90,8 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
 
     case 'l': /* approx length of current message in bytes */
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      mutt_str_pretty_size(tmp, sizeof(tmp), menu ? cum_attachs_size(menu) : 0);
+      mutt_str_pretty_size(tmp, sizeof(tmp),
+                           cum_attachs_size(shared->sub, shared->adata));
       snprintf(buf, buflen, fmt, tmp);
       break;
 
@@ -164,15 +123,15 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
  */
 static int cbar_recalc(struct MuttWindow *win)
 {
-  struct CBarPrivateData *cbar_data = win->wdata;
-  struct ComposeRedrawData *rd = cbar_data->rd;
-
   char buf[1024] = { 0 };
-  const char *const c_compose_format =
-      cs_subset_string(rd->sub, "compose_format");
-  mutt_expando_format(buf, sizeof(buf), 0, win->state.cols, NONULL(c_compose_format),
-                      compose_format_str, (intptr_t) rd->menu, MUTT_FORMAT_NO_FLAGS);
+  struct ComposeSharedData *shared = win->parent->wdata;
 
+  const char *const c_compose_format =
+      cs_subset_string(shared->sub, "compose_format");
+  mutt_expando_format(buf, sizeof(buf), 0, win->state.cols, NONULL(c_compose_format),
+                      compose_format_str, (intptr_t) shared, MUTT_FORMAT_NO_FLAGS);
+
+  struct ComposeBarData *cbar_data = win->wdata;
   if (!mutt_str_equal(buf, cbar_data->compose_format))
   {
     mutt_str_replace(&cbar_data->compose_format, buf);
@@ -190,7 +149,7 @@ static int cbar_repaint(struct MuttWindow *win)
   if (!mutt_window_is_visible(win))
     return 0;
 
-  struct CBarPrivateData *cbar_data = win->wdata;
+  struct ComposeBarData *cbar_data = win->wdata;
 
   mutt_window_move(win, 0, 0);
   mutt_curses_set_color(MT_COLOR_STATUS);
@@ -207,7 +166,7 @@ static int cbar_repaint(struct MuttWindow *win)
 /**
  * cbar_color_observer - Listen for changes to the Colours - Implements ::observer_t
  */
-static int cbar_color_observer(struct NotifyCallback *nc)
+int cbar_color_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data || !nc->global_data)
     return -1;
@@ -215,9 +174,25 @@ static int cbar_color_observer(struct NotifyCallback *nc)
     return 0;
 
   struct EventColor *ev_c = nc->event_data;
-  enum ColorId color = ev_c->color;
 
-  if (color != MT_COLOR_STATUS)
+  // MT_COLOR_MAX is sent on `uncolor *`
+  if ((ev_c->color != MT_COLOR_STATUS) && (ev_c->color != MT_COLOR_MAX))
+    return 0;
+
+  struct MuttWindow *win_cbar = nc->global_data;
+  win_cbar->actions |= WA_REPAINT;
+
+  return 0;
+}
+
+/**
+ * cbar_compose_observer - Listen for changes to the Colours - Implements ::observer_t
+ */
+int cbar_compose_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data || !nc->global_data)
+    return -1;
+  if (nc->event_type != NT_COMPOSE)
     return 0;
 
   struct MuttWindow *win_cbar = nc->global_data;
@@ -229,7 +204,7 @@ static int cbar_color_observer(struct NotifyCallback *nc)
 /**
  * cbar_config_observer - Listen for changes to the Config - Implements ::observer_t
  */
-static int cbar_config_observer(struct NotifyCallback *nc)
+int cbar_config_observer(struct NotifyCallback *nc)
 {
   if (!nc->event_data || !nc->global_data)
     return -1;
@@ -249,53 +224,55 @@ static int cbar_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * cbar_data_free - Free the private data attached to the MuttWindow - Implements MuttWindow::wdata_free()
+ * cbar_window_observer - Listen for changes to the Window - Implements ::observer_t
  */
-static void cbar_data_free(struct MuttWindow *win, void **ptr)
+int cbar_window_observer(struct NotifyCallback *nc)
 {
-  if (!ptr || !*ptr)
-    return;
+  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
+    return -1;
 
-  struct CBarPrivateData *cbar_data = *ptr;
+  struct MuttWindow *win_cbar = nc->global_data;
 
-  notify_observer_remove(NeoMutt->notify, cbar_color_observer, win);
-  notify_observer_remove(NeoMutt->notify, cbar_config_observer, win);
+  if (nc->event_subtype == NT_WINDOW_STATE)
+  {
+    win_cbar->actions |= WA_RECALC;
+    mutt_debug(LL_NOTIFY, "state change, request WA_RECALC\n");
+  }
+  else if (nc->event_subtype == NT_WINDOW_DELETE)
+  {
+    struct MuttWindow *dlg = win_cbar->parent;
+    struct ComposeSharedData *shared = dlg->wdata;
 
-  FREE(&cbar_data->compose_format);
+    notify_observer_remove(NeoMutt->notify, cbar_color_observer, win_cbar);
+    notify_observer_remove(shared->notify, cbar_compose_observer, win_cbar);
+    notify_observer_remove(NeoMutt->notify, cbar_config_observer, win_cbar);
+    notify_observer_remove(win_cbar->notify, cbar_window_observer, win_cbar);
 
-  FREE(ptr);
-}
-
-/**
- * cbar_data_new - Free the private data attached to the MuttWindow
- */
-static struct CBarPrivateData *cbar_data_new(struct ComposeRedrawData *rd)
-{
-  struct CBarPrivateData *cbar_data = mutt_mem_calloc(1, sizeof(struct CBarPrivateData));
-
-  cbar_data->rd = rd;
-
-  return cbar_data;
+    mutt_debug(LL_DEBUG5, "window delete done\n");
+  }
+  return 0;
 }
 
 /**
  * cbar_new - Create the Compose Bar (status)
  * @param parent Parent Window
- * @param rd     Redraw data
+ * @param shared Shared compose data
  */
-struct MuttWindow *cbar_new(struct MuttWindow *parent, struct ComposeRedrawData *rd)
+struct MuttWindow *cbar_new(struct MuttWindow *parent, struct ComposeSharedData *shared)
 {
   struct MuttWindow *win_cbar =
       mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,
                       MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
 
-  win_cbar->wdata = cbar_data_new(rd);
+  win_cbar->wdata = cbar_data_new();
   win_cbar->wdata_free = cbar_data_free;
   win_cbar->recalc = cbar_recalc;
   win_cbar->repaint = cbar_repaint;
 
   notify_observer_add(NeoMutt->notify, NT_COLOR, cbar_color_observer, win_cbar);
+  notify_observer_add(shared->notify, NT_COMPOSE, cbar_compose_observer, win_cbar);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, cbar_config_observer, win_cbar);
+  notify_observer_add(win_cbar->notify, NT_WINDOW, cbar_window_observer, win_cbar);
 
   return win_cbar;
 }

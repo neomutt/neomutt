@@ -1,6 +1,6 @@
 /**
  * @file
- * Compose Bar
+ * Compose Bar Data
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -20,12 +20,22 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMPOSE_CBAR_H
-#define MUTT_COMPOSE_CBAR_H
+#ifndef MUTT_COMPOSE_CBAR_DATA_H
+#define MUTT_COMPOSE_CBAR_DATA_H
 
-struct ComposeSharedData;
+#include "config.h"
+
 struct MuttWindow;
 
-struct MuttWindow *cbar_new(struct MuttWindow *parent, struct ComposeSharedData *shared);
+/**
+ * struct ComposeBarData - Data to fill the Compose Bar Window
+ */
+struct ComposeBarData
+{
+  char *compose_format;         ///< Cached status string
+};
 
-#endif /* MUTT_COMPOSE_CBAR_H */
+void cbar_data_free(struct MuttWindow *win, void **ptr);
+struct ComposeBarData *cbar_data_new(void);
+
+#endif /* MUTT_COMPOSE_CBAR_DATA_H */
