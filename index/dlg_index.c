@@ -56,10 +56,8 @@
 #include "commands.h"
 #include "context.h"
 #include "format_flags.h"
-#include "functions.h"
 #include "hdrline.h"
 #include "hook.h"
-#include "ibar.h"
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_header.h"
@@ -4242,40 +4240,6 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
 }
 
 /**
- * create_panel_index - Create the Windows for the Index panel
- * @param status_on_top true, if the Index bar should be on top
- * @param shared        Shared Index data
- * @retval ptr New Index Panel
- */
-static struct MuttWindow *create_panel_index(bool status_on_top, struct IndexSharedData *shared)
-{
-  struct MuttWindow *panel_index =
-      mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-
-  struct MuttWindow *win_index = menu_new_window(MENU_MAIN, NeoMutt->sub);
-  panel_index->focus = win_index;
-
-  struct IndexPrivateData *priv = index_private_data_new();
-  panel_index->wdata = priv;
-  panel_index->wdata_free = index_private_data_free;
-
-  struct MuttWindow *win_ibar = ibar_new(panel_index, shared, priv);
-  if (status_on_top)
-  {
-    mutt_window_add_child(panel_index, win_ibar);
-    mutt_window_add_child(panel_index, win_index);
-  }
-  else
-  {
-    mutt_window_add_child(panel_index, win_index);
-    mutt_window_add_child(panel_index, win_ibar);
-  }
-
-  return panel_index;
-}
-
-/**
  * index_pager_init - Allocate the Windows for the Index/Pager
  * @retval ptr Dialog containing nested Windows
  */
@@ -4293,7 +4257,7 @@ struct MuttWindow *index_pager_init(void)
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
 
-  struct MuttWindow *panel_index = create_panel_index(c_status_on_top, shared);
+  struct MuttWindow *panel_index = ipanel_new(c_status_on_top, shared);
   struct MuttWindow *panel_pager = create_panel_pager(c_status_on_top, shared);
 
   mutt_window_add_child(dlg, panel_index);
@@ -4301,15 +4265,5 @@ struct MuttWindow *index_pager_init(void)
 
   dlg->focus = panel_index;
 
-  index_add_observers(dlg);
   return dlg;
-}
-
-/**
- * index_pager_shutdown - Clear up any non-Window parts
- * @param dlg Dialog
- */
-void index_pager_shutdown(struct MuttWindow *dlg)
-{
-  index_remove_observers(dlg);
 }

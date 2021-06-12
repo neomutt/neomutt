@@ -1342,7 +1342,6 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         dialog_push(dlg_index);
         struct Mailbox *m_attach_new = mutt_index_menu(dlg_index, m_attach);
         dialog_pop();
-        index_pager_shutdown(dlg_index);
         mutt_window_free(&dlg_index);
         OptAttachMsg = false;
 

@@ -1257,7 +1257,6 @@ int main(int argc, char *argv[], char *envp[])
 
       mutt_index_menu(dlg, m);
       dialog_pop();
-      index_pager_shutdown(dlg);
       mutt_window_free(&dlg);
       log_queue_empty();
       repeat_error = false;

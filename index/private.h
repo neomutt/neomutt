@@ -23,9 +23,12 @@
 #ifndef MUTT_INDEX_PRIVATE_H
 #define MUTT_INDEX_PRIVATE_H
 
+#include <stdbool.h>
+
+struct IndexSharedData;
 struct MuttWindow;
 
-void index_add_observers   (struct MuttWindow *win);
-void index_remove_observers(struct MuttWindow *win);
+struct MuttWindow *index_window_new(void);
+struct MuttWindow *ipanel_new(bool status_on_top, struct IndexSharedData *shared);
 
 #endif /* MUTT_INDEX_PRIVATE_H */

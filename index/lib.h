@@ -30,6 +30,8 @@
  * | index/config.c       | @subpage index_config       |
  * | index/dlg_index.c    | @subpage index_dialog       |
  * | index/ibar.c         | @subpage index_ibar         |
+ * | index/index.c        | @subpage index_index        |
+ * | index/ipanel.c       | @subpage index_ipanel       |
  * | index/observer.c     | @subpage index_observer     |
  * | index/private_data.c | @subpage index_private_data |
  * | index/shared_data.c  | @subpage index_shared_data  |
@@ -66,6 +68,5 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m);
 void mutt_set_header_color(struct Mailbox *m, struct Email *e);
 void mutt_update_index(struct Menu *menu, struct Context *ctx, enum MxStatus check, int oldcount, struct IndexSharedData *shared);
 struct MuttWindow *index_pager_init(void);
-void index_pager_shutdown(struct MuttWindow *dlg);
 
 #endif /* MUTT_INDEX_LIB_H */

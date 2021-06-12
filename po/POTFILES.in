@@ -144,6 +144,8 @@ imap/util.c
 index/config.c
 index/dlg_index.c
 index/ibar.c
+index/index.c
+index/ipanel.c
 index/observer.c
 index/private_data.c
 index/shared_data.c
