@@ -139,7 +139,7 @@ struct MuttWindow *ppanel_new(bool status_on_top, struct IndexSharedData *shared
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   panel_pager->state.visible = false; // The Pager and Pager Bar are initially hidden
 
-  struct MuttWindow *win_pager = menu_new_window(MENU_PAGER, NeoMutt->sub);
+  struct MuttWindow *win_pager = pager_window_new();
   panel_pager->focus = win_pager;
 
   struct PagerPrivateData *priv = pager_private_data_new();

@@ -210,6 +210,7 @@ int mutt_pager(struct PagerView *pview);
 int mutt_do_pager(struct PagerView *pview);
 void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src, bool strip_markers);
 struct MuttWindow *ppanel_new(bool status_on_top, struct IndexSharedData *shared);
+struct MuttWindow *pager_window_new(void);
 
 void mutt_clear_pager_position(void);
 

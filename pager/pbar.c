@@ -165,7 +165,7 @@ static int pbar_config_observer(struct NotifyCallback *nc)
     return 0;
 
   struct EventConfig *ev_c = nc->event_data;
-  if ((ev_c->name[0] != 's') && (ev_c->name[0] != 't'))
+  if (!mutt_str_equal(ev_c->name, "pager_format"))
     return 0;
 
   struct MuttWindow *win_pbar = nc->global_data;
