@@ -25,11 +25,13 @@
  *
  * GUI Display contents of an email or help
  *
- * | File               | Description              |
- * | :----------------- | :----------------------- |
- * | pager/config.c     | @subpage pager_config    |
- * | pager/do_pager.c   | @subpage pager_dopager   |
- * | pager/pager.c      | @subpage pager_pager     |
+ * | File                 | Description                 |
+ * | :------------------- | :-------------------------- |
+ * | pager/config.c       | @subpage pager_config       |
+ * | pager/dlg_pager.c    | @subpage pager_pager        |
+ * | pager/do_pager.c     | @subpage pager_dopager      |
+ * | pager/pbar.c         | @subpage pager_pbar         |
+ * | pager/private_data.c | @subpage pager_private_data |
  */
 
 #ifndef MUTT_PAGER_LIB_H
