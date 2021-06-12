@@ -22,7 +22,7 @@
  */
 
 /**
- * @page index_index GUI manage the main index (list of emails)
+ * @page index_dialog GUI manage the main index (list of emails)
  *
  * GUI manage the main index (list of emails)
  */
