@@ -36,9 +36,6 @@
  */
 void maildir_mdata_free(void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
-
   // struct MaildirMboxData *mdata = *ptr;
   FREE(ptr);
 }

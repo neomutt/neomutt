@@ -113,6 +113,10 @@ struct Email
   /**
    * edata_free - Free the private data attached to the Email
    * @param ptr Private data to be freed
+   *
+   * **Contract**
+   * - @a ptr  is not NULL
+   * - @a *ptr is not NULL
    */
   void (*edata_free)(void **ptr);
 

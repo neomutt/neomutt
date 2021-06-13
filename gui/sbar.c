@@ -129,9 +129,6 @@ static int sbar_window_observer(struct NotifyCallback *nc)
  */
 static void sbar_wdata_free(struct MuttWindow *win, void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
-
   struct SBarPrivateData *priv = *ptr;
 
   FREE(&priv->display);

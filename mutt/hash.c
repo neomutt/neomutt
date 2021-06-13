@@ -458,7 +458,7 @@ void mutt_hash_free(struct HashTable **ptr)
     {
       tmp = elem;
       elem = elem->next;
-      if (table->hdata_free)
+      if (table->hdata_free && tmp->data)
         table->hdata_free(tmp->type, tmp->data, table->hdata);
       if (table->strdup_keys)
         FREE(&tmp->key.strkey);

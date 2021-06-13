@@ -138,6 +138,10 @@ struct Mailbox
   /**
    * mdata_free - Free the private data attached to the Mailbox
    * @param ptr Private data to be freed
+   *
+   * **Contract**
+   * - @a ptr  is not NULL
+   * - @a *ptr is not NULL
    */
   void (*mdata_free)(void **ptr);
 

@@ -138,6 +138,11 @@ struct Menu
    * mdata_free - Free the private data attached to the Menu
    * @param menu Menu
    * @param ptr Menu data to free
+   *
+   * **Contract**
+   * - @a menu is not NULL
+   * - @a ptr  is not NULL
+   * - @a *ptr is not NULL
    */
   void (*mdata_free)(struct Menu *menu, void **ptr);
 };

@@ -119,9 +119,6 @@ static void make_pattern_entry(struct Menu *menu, char *buf, size_t buflen, int 
  */
 static void free_pattern_menu(struct Menu *menu, void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
-
   struct PatternEntry *entries = *ptr;
 
   for (size_t i = 0; i < menu->max; i++)

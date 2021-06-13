@@ -161,13 +161,10 @@ static void account_make_entry(struct Menu *menu, char *buf, size_t buflen, int 
 }
 
 /**
- * ac_menu_free - Free the Autocrypt account Menu - Implements Menu:mdata_free()
+ * ac_menu_free - Free the Autocrypt account Menu - Implements Menu::mdata_free()
  */
 static void ac_menu_free(struct Menu *menu, void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
-
   struct AccountEntry *entries = *ptr;
 
   for (size_t i = 0; i < menu->max; i++)

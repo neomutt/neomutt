@@ -74,9 +74,6 @@ struct MUpdate
  */
 static void mbox_adata_free(void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
-
   struct MboxAccountData *m = *ptr;
 
   mutt_file_fclose(&m->fp);

@@ -115,9 +115,6 @@ static int msgwin_window_observer(struct NotifyCallback *nc)
  */
 static void msgwin_wdata_free(struct MuttWindow *win, void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
-
   struct MsgWinPrivateData *priv = *ptr;
 
   FREE(&priv->text);

@@ -147,14 +147,12 @@ static void smime_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
 }
 
 /**
- * key_table_free - Free the key table - Implements Menu::mdata_free()
+ * smime_key_table_free - Free the key table - Implements Menu::mdata_free()
  *
  * @note The keys are owned by the caller of the dialog
  */
-static void key_table_free(struct Menu *menu, void **ptr)
+static void smime_key_table_free(struct Menu *menu, void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
   FREE(ptr);
 }
 
@@ -192,7 +190,7 @@ struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, char *query)
   menu->max = table_index;
   menu->make_entry = smime_make_entry;
   menu->mdata = table;
-  menu->mdata_free = key_table_free;
+  menu->mdata_free = smime_key_table_free;
   /* sorting keys might be done later - TODO */
 
   char title[256];

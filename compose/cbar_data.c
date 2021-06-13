@@ -39,9 +39,6 @@ int cbar_config_observer(struct NotifyCallback *nc);
  */
 void cbar_data_free(struct MuttWindow *win, void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
-
   struct ComposeBarData *cbar_data = *ptr;
 
   notify_observer_remove(NeoMutt->notify, cbar_color_observer, win);

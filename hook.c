@@ -341,9 +341,9 @@ void mutt_delete_hooks(HookFlags type)
 }
 
 /**
- * delete_idxfmt_hooklist - Delete a index-format-hook from the Hash Table - Implements ::hash_hdata_free_t
+ * idxfmt_hashelem_free - Delete an index-format-hook from the Hash Table - Implements ::hash_hdata_free_t
  */
-static void delete_idxfmt_hooklist(int type, void *obj, intptr_t data)
+static void idxfmt_hashelem_free(int type, void *obj, intptr_t data)
 {
   struct HookList *hl = obj;
   struct Hook *h = NULL;
@@ -382,7 +382,7 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
   if (!IdxFmtHooks)
   {
     IdxFmtHooks = mutt_hash_new(30, MUTT_HASH_STRDUP_KEYS);
-    mutt_hash_set_destructor(IdxFmtHooks, delete_idxfmt_hooklist, 0);
+    mutt_hash_set_destructor(IdxFmtHooks, idxfmt_hashelem_free, 0);
   }
 
   if (!MoreArgs(s))

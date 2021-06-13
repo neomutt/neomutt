@@ -53,6 +53,9 @@ struct HashElem
  * @param type Hash Type
  * @param obj  Object to free
  * @param data Data associated with the Hash
+   *
+   * **Contract**
+   * - @a obj is not NULL
  */
 typedef void (*hash_hdata_free_t)(int type, void *obj, intptr_t data);
 

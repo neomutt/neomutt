@@ -144,6 +144,11 @@ struct MuttWindow
    * wdata_free - Free the private data attached to the MuttWindow
    * @param win Window
    * @param ptr Window data to free
+   *
+   * **Contract**
+   * - @a win  is not NULL
+   * - @a ptr  is not NULL
+   * - @a *ptr is not NULL
    */
   void (*wdata_free)(struct MuttWindow *win, void **ptr);
 

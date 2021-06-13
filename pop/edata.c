@@ -40,9 +40,6 @@
  */
 void pop_edata_free(void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
-
   struct PopEmailData *edata = *ptr;
   FREE(&edata->uid);
   FREE(ptr);

@@ -45,9 +45,6 @@
  */
 void nm_mdata_free(void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
-
   struct NmMboxData *mdata = *ptr;
 
   mutt_debug(LL_DEBUG1, "nm: freeing context data %p\n", mdata);

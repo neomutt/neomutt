@@ -271,9 +271,6 @@ static int ibar_window_observer(struct NotifyCallback *nc)
  */
 static void ibar_data_free(struct MuttWindow *win, void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
-
   struct IBarPrivateData *ibar_data = *ptr;
   struct IndexSharedData *shared = ibar_data->shared;
   struct IndexPrivateData *priv = ibar_data->priv;

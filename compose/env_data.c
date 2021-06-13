@@ -35,9 +35,6 @@
  */
 void env_data_free(struct MuttWindow *win, void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
-
   struct ComposeEnvelopeData *env_data = *ptr;
 
   mutt_list_free(&env_data->to_list);

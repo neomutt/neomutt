@@ -213,7 +213,7 @@ void mutt_window_free(struct MuttWindow **ptr)
 
   mutt_winlist_free(&win->children);
 
-  if (win->wdata && win->wdata_free)
+  if (win->wdata_free && win->wdata)
     win->wdata_free(win, &win->wdata); // Custom function to free private data
 
   notify_free(&win->notify);

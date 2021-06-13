@@ -556,7 +556,7 @@ void menu_free(struct Menu **ptr)
 
   notify_free(&menu->notify);
 
-  if (menu->mdata && menu->mdata_free)
+  if (menu->mdata_free && menu->mdata)
     menu->mdata_free(menu, &menu->mdata); // Custom function to free private data
 
   char **line = NULL;

@@ -52,7 +52,7 @@ void email_free(struct Email **ptr)
   struct EventEmail ev_e = { 1, &e };
   notify_send(e->notify, NT_EMAIL, NT_EMAIL_DELETE, &ev_e);
 
-  if (e->edata && e->edata_free)
+  if (e->edata_free && e->edata)
     e->edata_free(&e->edata);
 
   mutt_env_free(&e->env);

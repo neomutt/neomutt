@@ -93,7 +93,7 @@ void mailbox_free(struct Mailbox **ptr)
 
   mailbox_changed(m, NT_MAILBOX_CLOSED);
 
-  if (m->mdata && m->mdata_free)
+  if (m->mdata_free && m->mdata)
     m->mdata_free(&m->mdata);
 
   for (size_t i = 0; i < m->email_max; i++)

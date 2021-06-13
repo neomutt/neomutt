@@ -46,9 +46,6 @@ struct HelpbarWindowData *helpbar_wdata_new(void)
  */
 void helpbar_wdata_free(struct MuttWindow *win, void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
-
   struct HelpbarWindowData *wdata = *ptr;
 
   // We don't own the help_data

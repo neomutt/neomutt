@@ -48,9 +48,6 @@ struct SidebarWindowData *sb_wdata_new(void)
  */
 void sb_wdata_free(struct MuttWindow *win, void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
-
   struct SidebarWindowData *wdata = *ptr;
 
   struct SbEntry **sbep = NULL;

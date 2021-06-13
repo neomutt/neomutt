@@ -42,9 +42,6 @@ struct Connection;
  */
 void nntp_adata_free(void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
-
   struct NntpAccountData *adata = *ptr;
 
   mutt_file_fclose(&adata->fp_newsrc);

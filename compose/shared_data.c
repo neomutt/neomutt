@@ -35,9 +35,6 @@
  */
 void compose_shared_data_free(struct MuttWindow *win, void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
-
   struct ComposeSharedData *shared = *ptr;
 
   notify_free(&shared->notify);

@@ -270,9 +270,6 @@ static int pbar_menu_observer(struct NotifyCallback *nc)
  */
 static void pbar_data_free(struct MuttWindow *win, void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
-
   struct PBarPrivateData *pbar_data = *ptr;
   struct IndexSharedData *shared = pbar_data->shared;
   struct PagerPrivateData *priv = pbar_data->priv;

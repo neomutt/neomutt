@@ -37,9 +37,6 @@
  */
 void nntp_mdata_free(void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
-
   struct NntpMboxData *mdata = *ptr;
 
   nntp_acache_free(mdata);

@@ -474,14 +474,12 @@ static void pgp_make_entry(struct Menu *menu, char *buf, size_t buflen, int line
 }
 
 /**
- * key_table_free - Free the key table - Implements Menu::mdata_free()
+ * pgp_key_table_free - Free the key table - Implements Menu::mdata_free()
  *
  * @note The keys are owned by the caller of the dialog
  */
-static void key_table_free(struct Menu *menu, void **ptr)
+static void pgp_key_table_free(struct Menu *menu, void **ptr)
 {
-  if (!ptr || !*ptr)
-    return;
   FREE(ptr);
 }
 
@@ -568,7 +566,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
   menu->max = i;
   menu->make_entry = pgp_make_entry;
   menu->mdata = key_table;
-  menu->mdata_free = key_table_free;
+  menu->mdata_free = pgp_key_table_free;
 
   if (p)
     snprintf(buf, sizeof(buf), _("PGP keys matching <%s>"), p->mailbox);
