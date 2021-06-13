@@ -2515,6 +2515,7 @@ int mutt_pager(struct PagerView *pview)
   {
     mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
+    menu_queue_redraw(pager_menu, MENU_REDRAW_FULL);
     window_redraw(NULL);
     pager_custom_redraw(pager_menu);
 
