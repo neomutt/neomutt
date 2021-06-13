@@ -171,8 +171,8 @@ int attach_config_observer(struct NotifyCallback *nc)
   if (nc->event_subtype == NT_CONFIG_INITIAL_SET)
     return 0;
 
-  struct EventConfig *ec = nc->event_data;
-  if (!mutt_str_equal(ec->name, "attach_format"))
+  struct EventConfig *ev_c = nc->event_data;
+  if (!mutt_str_equal(ev_c->name, "attach_format"))
     return 0;
 
   struct MuttWindow *win_attach = nc->global_data;

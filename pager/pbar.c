@@ -164,8 +164,8 @@ static int pbar_config_observer(struct NotifyCallback *nc)
   if (nc->event_subtype == NT_CONFIG_INITIAL_SET)
     return 0;
 
-  struct EventConfig *ec = nc->event_data;
-  if ((ec->name[0] != 's') && (ec->name[0] != 't'))
+  struct EventConfig *ev_c = nc->event_data;
+  if ((ev_c->name[0] != 's') && (ev_c->name[0] != 't'))
     return 0;
 
   struct MuttWindow *win_pbar = nc->global_data;

@@ -161,13 +161,14 @@ static int ibar_config_observer(struct NotifyCallback *nc)
   if (nc->event_subtype == NT_CONFIG_INITIAL_SET)
     return 0;
 
-  struct EventConfig *ec = nc->event_data;
-  if ((ec->name[0] != 's') && (ec->name[0] != 't'))
+  struct EventConfig *ev_c = nc->event_data;
+  if ((ev_c->name[0] != 's') && (ev_c->name[0] != 't'))
     return 0;
 
-  if (!mutt_str_equal(ec->name, "status_format") && !mutt_str_equal(ec->name, "ts_enabled") &&
-      !mutt_str_equal(ec->name, "ts_icon_format") &&
-      !mutt_str_equal(ec->name, "ts_status_format"))
+  if (!mutt_str_equal(ev_c->name, "status_format") &&
+      !mutt_str_equal(ev_c->name, "ts_enabled") &&
+      !mutt_str_equal(ev_c->name, "ts_icon_format") &&
+      !mutt_str_equal(ev_c->name, "ts_status_format"))
   {
     return 0;
   }

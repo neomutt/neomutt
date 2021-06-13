@@ -721,32 +721,32 @@ static int env_config_observer(struct NotifyCallback *nc)
   if (nc->event_type != NT_CONFIG)
     return 0;
 
-  struct EventConfig *ec = nc->event_data;
+  struct EventConfig *ev_c = nc->event_data;
   struct MuttWindow *win_env = nc->global_data;
 
-  switch (ec->name[0])
+  switch (ev_c->name[0])
   {
     case 'a':
-      if (mutt_str_equal(ec->name, "autocrypt"))
+      if (mutt_str_equal(ev_c->name, "autocrypt"))
         break;
       return 0;
     case 'c':
-      if (mutt_str_equal(ec->name, "compose_show_user_headers") ||
-          mutt_str_equal(ec->name, "crypt_opportunistic_encrypt"))
+      if (mutt_str_equal(ev_c->name, "compose_show_user_headers") ||
+          mutt_str_equal(ev_c->name, "crypt_opportunistic_encrypt"))
       {
         break;
       }
       return 0;
     case 'p':
-      if (mutt_str_equal(ec->name, "pgp_sign_as"))
+      if (mutt_str_equal(ev_c->name, "pgp_sign_as"))
         break;
       return 0;
     case 's':
-      if (mutt_str_equal(ec->name, "smime_encrypt_with"))
+      if (mutt_str_equal(ev_c->name, "smime_encrypt_with"))
         break;
       return 0;
     case 'x':
-      if (mutt_str_equal(ec->name, "x_comment_to"))
+      if (mutt_str_equal(ev_c->name, "x_comment_to"))
         break;
       return 0;
     default:
@@ -766,7 +766,7 @@ static int env_header_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_HEADER) || !nc->event_data || !nc->global_data)
     return -1;
 
-  const struct EventHeader *event = nc->event_data;
+  const struct EventHeader *ev_h = nc->event_data;
   struct MuttWindow *win_env = nc->global_data;
   // struct ComposeEnvelopeData *edata = win_env->wdata;
   struct MuttWindow *dlg = win_env->parent;
@@ -776,7 +776,7 @@ static int env_header_observer(struct NotifyCallback *nc)
 
   if ((nc->event_subtype == NT_HEADER_ADD) || (nc->event_subtype == NT_HEADER_CHANGE))
   {
-    header_set(&env->userhdrs, event->header);
+    header_set(&env->userhdrs, ev_h->header);
     mutt_debug(LL_DEBUG5, "header, reflow\n");
     env_recalc(win_env);
     return 0;
@@ -784,7 +784,7 @@ static int env_header_observer(struct NotifyCallback *nc)
 
   if (nc->event_subtype == NT_HEADER_DELETE)
   {
-    struct ListNode *removed = header_find(&env->userhdrs, event->header);
+    struct ListNode *removed = header_find(&env->userhdrs, ev_h->header);
     if (removed)
     {
       header_free(&env->userhdrs, removed);

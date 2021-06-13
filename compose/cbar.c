@@ -213,8 +213,8 @@ int cbar_config_observer(struct NotifyCallback *nc)
   if (nc->event_subtype == NT_CONFIG_INITIAL_SET)
     return 0;
 
-  struct EventConfig *ec = nc->event_data;
-  if (!mutt_str_equal(ec->name, "compose_format"))
+  struct EventConfig *ev_c = nc->event_data;
+  if (!mutt_str_equal(ev_c->name, "compose_format"))
     return 0;
 
   struct MuttWindow *win_cbar = nc->global_data;
