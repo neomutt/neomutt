@@ -2777,6 +2777,18 @@
 ** $$pager_index_lines, then the index will only use as many lines as it needs.
 */
 
+{ "pager_read_delay", DT_NUMBER, 0 },
+/*
+** .pp
+** Determines the number of seconds that must elapse after first
+** opening a new message in the pager before that message will be
+** marked as read.  A value of 0 results in the message being marked
+** read unconditionally; for other values, navigating to another
+** message or exiting the pager before the timeout will leave the
+** message marked unread.  This setting is ignored if $$pager is not
+** \fBbuiltin\fP.
+*/
+
 { "pager_stop", DT_BOOL, false },
 /*
 ** .pp

@@ -2307,7 +2307,23 @@ static bool jump_to_bottom(struct PagerPrivateData *priv, struct PagerView *pvie
 }
 
 /**
- * mutt_pager - Display a an email, attachment, or help, in a window
+ * check_read_delay - Is it time to mark the message read?
+ * @param timestamp Time when message should be marked read, or 0
+ * @retval  true Message should be marked read
+ * @retval false No action necessary
+ */
+static bool check_read_delay(uint64_t *timestamp)
+{
+  if ((*timestamp != 0) && (mutt_date_epoch_ms() > *timestamp))
+  {
+    *timestamp = 0;
+    return true;
+  }
+  return false;
+}
+
+/**
+ * mutt_pager - Display an email, attachment, or help, in a window
  * @param pview Pager view settings
  * @retval  0 Success
  * @retval -1 Error
@@ -2395,6 +2411,8 @@ int mutt_pager(struct PagerView *pview)
   const short c_pager_context = cs_subset_number(NeoMutt->sub, "pager_context");
   const short c_pager_index_lines =
       cs_subset_number(NeoMutt->sub, "pager_index_lines");
+  const short c_pager_read_delay =
+      cs_subset_number(NeoMutt->sub, "pager_read_delay");
   const short c_search_context =
       cs_subset_number(NeoMutt->sub, "search_context");
   const short c_skip_quoted_offset =
@@ -2413,6 +2431,7 @@ int mutt_pager(struct PagerView *pview)
   bool first = true;
   bool wrapped = false;
   enum MailboxType mailbox_type = m ? m->type : MUTT_UNKNOWN;
+  uint64_t delay_read_timestamp = 0;
 
   struct PagerPrivateData *priv = pview->win_pager->parent->wdata;
   priv->win_pbar = pview->win_pbar;
@@ -2425,7 +2444,14 @@ int mutt_pager(struct PagerView *pview)
   {
     pview->pdata->ctx->msg_in_pager = pview->pdata->email->msgno;
     priv->win_pbar->actions |= WA_RECALC;
-    mutt_set_flag(m, pview->pdata->email, MUTT_READ, true);
+    if (c_pager_read_delay == 0)
+    {
+      mutt_set_flag(m, pview->pdata->email, MUTT_READ, true);
+    }
+    else
+    {
+      delay_read_timestamp = mutt_date_epoch_ms() + 1000 * c_pager_read_delay;
+    }
   }
   //---------- setup help menu ------------------------------------------------
   pview->win_pager->help_data = pager_resolve_help_mapping(pview->mode, mailbox_type);
@@ -2515,6 +2541,10 @@ int mutt_pager(struct PagerView *pview)
   //-------------------------------------------------------------------------
   while (op != -1)
   {
+    if (check_read_delay(&delay_read_timestamp))
+    {
+      mutt_set_flag(m, pview->pdata->email, MUTT_READ, true);
+    }
     mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
     menu_queue_redraw(pager_menu, MENU_REDRAW_FULL);
@@ -2540,7 +2570,7 @@ int mutt_pager(struct PagerView *pview)
     //-------------------------------------------------------------------------
     // Check if information in the status bar needs an update
     // This is done because pager is a single-threaded application, which
-    // tries to emulate cuncurency.
+    // tries to emulate concurrency.
     //-------------------------------------------------------------------------
     bool do_new_mail = false;
     if (m && !OptAttachMsg)
@@ -4079,6 +4109,10 @@ int mutt_pager(struct PagerView *pview)
   // END OF ACT 3: Read user input loop - while (op != -1)
   //-------------------------------------------------------------------------
 
+  if (check_read_delay(&delay_read_timestamp))
+  {
+    mutt_set_flag(m, pview->pdata->email, MUTT_READ, true);
+  }
   mutt_file_fclose(&priv->fp);
   if (pview->mode == PAGER_MODE_EMAIL)
   {
