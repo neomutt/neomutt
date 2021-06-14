@@ -91,12 +91,12 @@ struct MuttWindow *ipanel_new(bool status_on_top, struct IndexSharedData *shared
       mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
 
-  struct MuttWindow *win_index = index_window_new();
-  panel_index->focus = win_index;
-
-  struct IndexPrivateData *priv = index_private_data_new();
+  struct IndexPrivateData *priv = index_private_data_new(shared);
   panel_index->wdata = priv;
   panel_index->wdata_free = index_private_data_free;
+
+  struct MuttWindow *win_index = index_window_new(shared, priv);
+  panel_index->focus = win_index;
 
   struct MuttWindow *win_ibar = ibar_new(panel_index, shared, priv);
   if (status_on_top)

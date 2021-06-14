@@ -857,7 +857,8 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
   buf[0] = '\0';
 
-  struct IndexSharedData *shared = menu->mdata;
+  struct IndexPrivateData *priv = menu->mdata;
+  struct IndexSharedData *shared = priv->shared;
   struct Mailbox *m = shared->mailbox;
 
   if (!m || !menu || (line < 0) || (line >= m->email_max))
@@ -936,7 +937,8 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
  */
 int index_color(struct Menu *menu, int line)
 {
-  struct IndexSharedData *shared = menu->mdata;
+  struct IndexPrivateData *priv = menu->mdata;
+  struct IndexSharedData *shared = priv->shared;
   struct Mailbox *m = shared->mailbox;
   if (!m || (line < 0))
     return 0;
@@ -1096,7 +1098,8 @@ static void index_custom_redraw(struct Menu *menu)
   if (menu->redraw & MENU_REDRAW_FULL)
     menu_redraw_full(menu);
 
-  struct IndexSharedData *shared = menu->mdata;
+  struct IndexPrivateData *priv = menu->mdata;
+  struct IndexSharedData *shared = priv->shared;
   struct Mailbox *m = shared->mailbox;
   const int index = menu_get_index(menu);
   if (m && m->emails && (index < m->vcount))
@@ -1152,7 +1155,6 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   dlg->help_menu = MENU_MAIN;
 
   priv->menu = priv->win_index->wdata;
-  priv->menu->mdata = shared;
   priv->menu->make_entry = index_make_entry;
   priv->menu->color = index_color;
   priv->menu->custom_redraw = index_custom_redraw;
