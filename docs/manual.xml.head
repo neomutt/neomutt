@@ -1929,7 +1929,12 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
         </para>
         <para>
           Also, the internal pager supports a couple other advanced features.
-          For one, it will accept and translate the <quote>standard</quote>
+          For one, you can set <link
+          linkend="pager_read_delay">$pager_read_delay</link> to
+          operate in a preview mode, where new messages are not marked
+          read unless you remain on the message for a certain length
+          of time. Additionally,
+          it will accept and translate the <quote>standard</quote>
           nroff sequences for bold and underline. These sequences are a series
           of either the letter, backspace (<quote>^H</quote>), the letter
           again for bold or the letter, backspace, <quote>_</quote> for
