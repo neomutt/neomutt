@@ -60,6 +60,7 @@ set move=yes			# don't ask about moving messages, just do it
 #set pager_context=3		# no. of lines of context to give when scrolling
 #set pager_format="-%S- %-20.20f %s"	# format of the pager status bar
 set pager_index_lines=6		# how many index lines to show in the pager
+#set pager_read_delay=5		# seconds to wait before marking message read
 #set pager_stop			# don't move to the next message on next-page
 #set pgp_strict_enc		# use Q-P encoding when needed for PGP
 set postponed=+postponed	# mailbox to store postponed messages in
