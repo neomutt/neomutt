@@ -366,7 +366,6 @@ static void update_crypt_info(struct ComposeSharedData *shared)
 {
   struct Email *e = shared->email;
   struct Mailbox *m = shared->mailbox;
-  struct ComposeEnvelopeData *edata = shared->edata;
 
   const bool c_crypt_opportunistic_encrypt =
       cs_subset_bool(shared->sub, "crypt_opportunistic_encrypt");
@@ -377,6 +376,7 @@ static void update_crypt_info(struct ComposeSharedData *shared)
   const bool c_autocrypt = cs_subset_bool(shared->sub, "autocrypt");
   if (c_autocrypt)
   {
+    struct ComposeEnvelopeData *edata = shared->edata;
     edata->autocrypt_rec = mutt_autocrypt_ui_recommendation(m, e, NULL);
 
     /* Anything that enables SEC_ENCRYPT or SEC_SIGN, or turns on SMIME
