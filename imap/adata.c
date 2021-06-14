@@ -39,6 +39,9 @@
  */
 void imap_adata_free(void **ptr)
 {
+  if (!ptr || !*ptr)
+    return;
+
   struct ImapAccountData *adata = *ptr;
 
   FREE(&adata->capstr);

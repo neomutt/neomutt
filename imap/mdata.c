@@ -39,6 +39,9 @@
  */
 void imap_mdata_free(void **ptr)
 {
+  if (!ptr || !*ptr)
+    return;
+
   struct ImapMboxData *mdata = *ptr;
 
   imap_mdata_cache_reset(mdata);

@@ -37,6 +37,9 @@
  */
 void maildir_edata_free(void **ptr)
 {
+  if (!ptr || !*ptr)
+    return;
+
   struct MaildirEmailData *edata = *ptr;
   FREE(&edata->maildir_flags);
 

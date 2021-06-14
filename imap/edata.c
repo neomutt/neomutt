@@ -37,6 +37,9 @@
  */
 void imap_edata_free(void **ptr)
 {
+  if (!ptr || !*ptr)
+    return;
+
   struct ImapEmailData *edata = *ptr;
   /* this should be safe even if the list wasn't used */
   FREE(&edata->flags_system);
