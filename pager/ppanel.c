@@ -129,7 +129,7 @@ static int ppanel_window_observer(struct NotifyCallback *nc)
 /**
  * ppanel_new - Create the Windows for the Pager panel
  * @param status_on_top true, if the Pager bar should be on top
- * @param shared        Shared Pager data
+ * @param shared        Shared Index data
  * @retval ptr New Pager Panel
  */
 struct MuttWindow *ppanel_new(bool status_on_top, struct IndexSharedData *shared)
@@ -139,7 +139,7 @@ struct MuttWindow *ppanel_new(bool status_on_top, struct IndexSharedData *shared
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   panel_pager->state.visible = false; // The Pager and Pager Bar are initially hidden
 
-  struct MuttWindow *win_pager = pager_window_new();
+  struct MuttWindow *win_pager = pager_window_new(panel_pager, shared);
   panel_pager->focus = win_pager;
 
   struct PagerPrivateData *priv = pager_private_data_new();

@@ -172,15 +172,96 @@ static int pager_window_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * pager_color_observer - Listen for color changes affecting the Pager - Implements ::observer_t
+ */
+static int pager_color_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data || !nc->global_data)
+    return -1;
+  if (nc->event_type != NT_COLOR)
+    return 0;
+
+  mutt_debug(LL_DEBUG5, "color done\n");
+  return 0;
+}
+
+/**
+ * pager_pager_observer - Listen for pager changes affecting the Pager - Implements ::observer_t
+ */
+static int pager_pager_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data || !nc->global_data)
+    return -1;
+  if (nc->event_type != NT_PAGER)
+    return 0;
+
+  mutt_debug(LL_DEBUG5, "pager done\n");
+  return 0;
+}
+
+/**
+ * pager_menu_observer - Listen for menu changes affecting the Pager - Implements ::observer_t
+ */
+static int pager_menu_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data || !nc->global_data)
+    return -1;
+  if (nc->event_type != NT_MENU)
+    return 0;
+
+  mutt_debug(LL_DEBUG5, "menu done\n");
+  return 0;
+}
+
+/**
+ * pager_mailbox_observer - Listen for mailbox changes affecting the Pager - Implements ::observer_t
+ */
+static int pager_mailbox_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data || !nc->global_data)
+    return -1;
+  if (nc->event_type != NT_MAILBOX)
+    return 0;
+
+  mutt_debug(LL_DEBUG5, "mailbox done\n");
+  return 0;
+}
+
+/**
+ * pager_email_observer - Listen for email changes affecting the Pager - Implements ::observer_t
+ */
+static int pager_email_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data || !nc->global_data)
+    return -1;
+  if (nc->event_type != NT_EMAIL)
+    return 0;
+
+  mutt_debug(LL_DEBUG5, "email done\n");
+  return 0;
+}
+
+/**
  * pager_window_new - Create a new Pager Window (list of Emails)
+ * @param parent Parent Window
+ * @param shared Shared Index Data
  * @retval ptr New Window
  */
-struct MuttWindow *pager_window_new(void)
+struct MuttWindow *pager_window_new(struct MuttWindow *parent, struct IndexSharedData *shared)
 {
   struct MuttWindow *win = menu_new_window(MENU_PAGER, NeoMutt->sub);
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, pager_config_observer, win);
   notify_observer_add(win->notify, NT_WINDOW, pager_window_observer, win);
+
+  notify_observer_add(NeoMutt->notify, NT_COLOR, pager_color_observer, win);
+  notify_observer_add(shared->notify, NT_PAGER, pager_pager_observer, win);
+  notify_observer_add(parent->notify, NT_MENU, pager_menu_observer, win);
+
+  if (shared->mailbox)
+    notify_observer_add(shared->mailbox->notify, NT_MAILBOX, pager_mailbox_observer, win);
+  if (shared->email)
+    notify_observer_add(shared->email->notify, NT_EMAIL, pager_email_observer, win);
 
   return win;
 }
