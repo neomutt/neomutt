@@ -66,17 +66,16 @@ static int pbar_recalc(struct MuttWindow *win)
   struct PBarPrivateData *pbar_data = win->wdata;
   struct IndexSharedData *shared = pbar_data->shared;
   struct PagerPrivateData *priv = pbar_data->priv;
-  struct PagerRedrawData *rd = priv->rd;
 
   char pager_progress_str[65]; /* Lots of space for translations */
-  if (rd->last_pos < rd->sb.st_size - 1)
+  if (priv->last_pos < priv->sb.st_size - 1)
   {
     snprintf(pager_progress_str, sizeof(pager_progress_str), OFF_T_FMT "%%",
-             (100 * rd->last_offset / rd->sb.st_size));
+             (100 * priv->last_offset / priv->sb.st_size));
   }
   else
   {
-    const char *msg = (rd->topline == 0) ?
+    const char *msg = (priv->topline == 0) ?
                           /* L10N: Status bar message: the entire email is visible in the pager */
                           _("all") :
                           /* L10N: Status bar message: the end of the email is visible in the pager */
@@ -84,7 +83,7 @@ static int pbar_recalc(struct MuttWindow *win)
     mutt_str_copy(pager_progress_str, msg, sizeof(pager_progress_str));
   }
 
-  if ((rd->pview->mode == PAGER_MODE_EMAIL) || (rd->pview->mode == PAGER_MODE_ATTACH_E))
+  if ((priv->pview->mode == PAGER_MODE_EMAIL) || (priv->pview->mode == PAGER_MODE_ATTACH_E))
   {
     int msg_in_pager = shared->ctx ? shared->ctx->msg_in_pager : -1;
 
@@ -95,7 +94,7 @@ static int pbar_recalc(struct MuttWindow *win)
   }
   else
   {
-    snprintf(buf, sizeof(buf), "%s (%s)", rd->pview->banner, pager_progress_str);
+    snprintf(buf, sizeof(buf), "%s (%s)", priv->pview->banner, pager_progress_str);
   }
 
   if (!mutt_str_equal(buf, pbar_data->pager_format))

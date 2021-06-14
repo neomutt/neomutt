@@ -23,6 +23,9 @@
 #ifndef MUTT_PAGER_PRIVATE_DATA_H
 #define MUTT_PAGER_PRIVATE_DATA_H
 
+#include <sys/stat.h>
+#include "lib.h"
+
 struct MuttWindow;
 
 /**
@@ -32,7 +35,31 @@ struct PagerPrivateData
 {
   struct Menu *menu;
   struct MuttWindow *win_pbar;
-  struct PagerRedrawData *rd;
+
+  struct PagerView *pview;
+  int indexlen;
+  int indicator; ///< the indicator line of the PI
+  int oldtopline;
+  int lines;
+  int max_line;
+  int last_line;
+  int curline;
+  int topline;
+  bool force_redraw;
+  int has_types;
+  PagerFlags hide_quoted;
+  int q_level;
+  struct QClass *quote_list;
+  LOFF_T last_pos;
+  LOFF_T last_offset;
+  regex_t search_re;
+  bool search_compiled;
+  PagerFlags search_flag;
+  bool search_back;
+  char searchbuf[256];
+  struct Line *line_info;
+  FILE *fp;
+  struct stat sb;
 };
 
 void                     pager_private_data_free(struct MuttWindow *win, void **ptr);

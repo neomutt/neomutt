@@ -245,11 +245,17 @@ static int pager_email_observer(struct NotifyCallback *nc)
  * pager_window_new - Create a new Pager Window (list of Emails)
  * @param parent Parent Window
  * @param shared Shared Index Data
+ * @param priv   Private Pager Data
  * @retval ptr New Window
  */
-struct MuttWindow *pager_window_new(struct MuttWindow *parent, struct IndexSharedData *shared)
+struct MuttWindow *pager_window_new(struct MuttWindow *parent, struct IndexSharedData *shared,
+                                    struct PagerPrivateData *priv)
 {
   struct MuttWindow *win = menu_new_window(MENU_PAGER, NeoMutt->sub);
+
+  struct Menu *menu = win->wdata;
+  menu->mdata = priv;
+  priv->menu = menu;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, pager_config_observer, win);
   notify_observer_add(win->notify, NT_WINDOW, pager_window_observer, win);
