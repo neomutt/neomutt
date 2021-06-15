@@ -68,6 +68,7 @@ static int ibar_recalc(struct MuttWindow *win)
   {
     mutt_str_replace(&ibar_data->status_format, buf);
     win->actions |= WA_REPAINT;
+    mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
   }
 
   const bool c_ts_enabled = cs_subset_bool(shared->sub, "ts_enabled");
@@ -81,6 +82,7 @@ static int ibar_recalc(struct MuttWindow *win)
     {
       mutt_str_replace(&ibar_data->ts_status_format, buf);
       win->actions |= WA_REPAINT;
+      mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
     }
 
     const char *c_ts_icon_format =
@@ -91,6 +93,7 @@ static int ibar_recalc(struct MuttWindow *win)
     {
       mutt_str_replace(&ibar_data->ts_icon_format, buf);
       win->actions |= WA_REPAINT;
+      mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
     }
   }
 
@@ -124,6 +127,7 @@ static int ibar_repaint(struct MuttWindow *win)
     mutt_ts_icon(ibar_data->ts_icon_format);
   }
 
+  mutt_debug(LL_DEBUG5, "repaint done\n");
   return 0;
 }
 

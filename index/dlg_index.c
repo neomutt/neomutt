@@ -1118,6 +1118,7 @@ static void index_custom_redraw(struct Menu *menu)
   }
 
   menu->redraw = MENU_REDRAW_NO_FLAGS;
+  mutt_debug(LL_DEBUG5, "repaint done\n");
 }
 
 /**

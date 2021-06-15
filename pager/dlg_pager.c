@@ -2237,6 +2237,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
   }
 
   pager_menu->redraw = MENU_REDRAW_NO_FLAGS;
+  mutt_debug(LL_DEBUG5, "repaint done\n");
 }
 
 /**

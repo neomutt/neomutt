@@ -136,6 +136,7 @@ static int cbar_recalc(struct MuttWindow *win)
   {
     mutt_str_replace(&cbar_data->compose_format, buf);
     win->actions |= WA_REPAINT;
+    mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
   }
 
   return 0;
@@ -159,6 +160,7 @@ static int cbar_repaint(struct MuttWindow *win)
   mutt_draw_statusline(win, win->state.cols, cbar_data->compose_format,
                        mutt_str_len(cbar_data->compose_format));
   mutt_curses_set_color(MT_COLOR_NORMAL);
+  mutt_debug(LL_DEBUG5, "repaint done\n");
 
   return 0;
 }

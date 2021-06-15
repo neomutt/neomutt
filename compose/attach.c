@@ -114,6 +114,7 @@ int attach_recalc(struct MuttWindow *win)
   }
 #endif
   win->actions |= WA_REPAINT;
+  mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
   return 0;
 }
 
@@ -136,6 +137,7 @@ int attach_repaint(struct MuttWindow *win)
                        mutt_str_len(attach_data->compose_format));
   mutt_curses_set_color(MT_COLOR_NORMAL);
 #endif
+  mutt_debug(LL_DEBUG5, "repaint done\n");
   return 0;
 }
 
@@ -233,6 +235,7 @@ static void compose_custom_redraw(struct Menu *menu)
   else if (menu->redraw == MENU_REDRAW_CURRENT)
     menu_redraw_current(menu);
   menu->redraw = MENU_REDRAW_NO_FLAGS;
+  mutt_debug(LL_DEBUG5, "repaint done\n");
 }
 
 /**

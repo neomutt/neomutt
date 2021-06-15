@@ -744,6 +744,7 @@ int sb_recalc(struct MuttWindow *win)
   }
 
   win->actions |= WA_REPAINT;
+  mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
   return 0;
 }
 
@@ -874,5 +875,6 @@ int sb_repaint(struct MuttWindow *win)
                    num_cols - wdata->divider_width);
   draw_divider(wdata, win, num_rows, num_cols);
 
+  mutt_debug(LL_DEBUG5, "repaint done\n");
   return 0;
 }

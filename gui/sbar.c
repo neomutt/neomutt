@@ -49,6 +49,7 @@ static int sbar_recalc(struct MuttWindow *win)
     return -1;
 
   win->actions |= WA_REPAINT;
+  mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
   return 0;
 }
 
@@ -69,6 +70,7 @@ static int sbar_repaint(struct MuttWindow *win)
   mutt_paddstr(win, win->state.cols, priv->display);
   mutt_curses_set_color(MT_COLOR_NORMAL);
 
+  mutt_debug(LL_DEBUG5, "repaint done\n");
   return 0;
 }
 

@@ -639,6 +639,7 @@ static int env_recalc(struct MuttWindow *win)
   }
 
   win->actions |= WA_REPAINT;
+  mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
   return 0;
 }
 
@@ -654,6 +655,7 @@ static int env_repaint(struct MuttWindow *win)
   struct ComposeEnvelopeData *edata = win->wdata;
 
   draw_envelope(win, shared, edata);
+  mutt_debug(LL_DEBUG5, "repaint done\n");
   return 0;
 }
 

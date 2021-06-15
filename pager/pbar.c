@@ -126,6 +126,7 @@ static int pbar_repaint(struct MuttWindow *win)
                        mutt_str_len(pbar_data->pager_format));
   mutt_curses_set_color(MT_COLOR_NORMAL);
 
+  mutt_debug(LL_DEBUG5, "repaint done\n");
   return 0;
 }
 

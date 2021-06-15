@@ -45,6 +45,7 @@ static int menu_recalc(struct MuttWindow *win)
   // struct Menu *menu = win->wdata;
 
   win->actions |= WA_REPAINT;
+  mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
   return 0;
 }
 
@@ -60,6 +61,7 @@ static int menu_repaint(struct MuttWindow *win)
   // menu_redraw(menu);
   // menu->redraw = MENU_REDRAW_NO_FLAGS;
 
+  mutt_debug(LL_DEBUG5, "repaint done\n");
   return 0;
 }
 
