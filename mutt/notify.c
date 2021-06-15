@@ -34,6 +34,16 @@
 #include "memory.h"
 #include "queue.h"
 
+/// Lookup table for NotifyType
+/// Must be the same size and order as #NotifyType
+static char *NotifyTypeNames[] = {
+  "NT_ALL",     "NT_ACCOUNT", "NT_ALIAS",   "NT_ALTERN",  "NT_ATTACH",
+  "NT_BINDING", "NT_COLOR",   "NT_COMMAND", "NT_COMPOSE", "NT_CONFIG",
+  "NT_CONTEXT", "NT_EMAIL",   "NT_GLOBAL",  "NT_HEADER",  "NT_INDEX",
+  "NT_MAILBOX", "NT_MENU",    "NT_PAGER",   "NT_SCORE",   "NT_SUBJRX",
+  "NT_WINDOW",
+};
+
 /**
  * struct Notify - Notification API
  */
@@ -125,8 +135,8 @@ static bool send(struct Notify *source, struct Notify *current,
                                    event_data, o->global_data };
       if (o->callback(&nc) < 0)
       {
-        mutt_debug(LL_DEBUG1, "failed to send notification: type %d, subtype %d, global %p, event %p\n",
-                   event_type, event_subtype, o->global_data, event_data);
+        mutt_debug(LL_DEBUG1, "failed to send notification: %s/%d, global %p, event %p\n",
+                   NotifyTypeNames[event_type], event_subtype, o->global_data, event_data);
       }
     }
   }
@@ -161,6 +171,7 @@ static bool send(struct Notify *source, struct Notify *current,
 bool notify_send(struct Notify *notify, enum NotifyType event_type,
                  int event_subtype, void *event_data)
 {
+  mutt_debug(LL_NOTIFY, "sending: %s/%d\n", NotifyTypeNames[event_type], event_subtype);
   return send(notify, notify, event_type, event_subtype, event_data);
 }
 
