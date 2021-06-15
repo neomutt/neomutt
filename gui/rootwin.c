@@ -53,27 +53,26 @@ static int rootwin_config_observer(struct NotifyCallback *nc)
   struct EventConfig *ev_c = nc->event_data;
   struct MuttWindow *win_root = nc->global_data;
 
-  if (mutt_str_equal(ev_c->name, "status_on_top"))
+  if (!mutt_str_equal(ev_c->name, "status_on_top"))
+    return 0;
+
+  struct MuttWindow *first = TAILQ_FIRST(&win_root->children);
+  if (!first)
+    return 0;
+
+  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
+  if ((c_status_on_top && (first->type == WT_HELP_BAR)) ||
+      (!c_status_on_top && (first->type != WT_HELP_BAR)))
   {
-    struct MuttWindow *first = TAILQ_FIRST(&win_root->children);
-    if (!first)
+    // Swap the HelpBar and the AllDialogsWindow
+    struct MuttWindow *next = TAILQ_NEXT(first, entries);
+    if (!next)
       return 0;
+    TAILQ_REMOVE(&win_root->children, next, entries);
+    TAILQ_INSERT_HEAD(&win_root->children, next, entries);
 
-    mutt_debug(LL_DEBUG5, "config: '%s'\n", ev_c->name);
-    const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
-    if ((c_status_on_top && (first->type == WT_HELP_BAR)) ||
-        (!c_status_on_top && (first->type != WT_HELP_BAR)))
-    {
-      // Swap the HelpBar and the AllDialogsWindow
-      struct MuttWindow *next = TAILQ_NEXT(first, entries);
-      if (!next)
-        return 0;
-      TAILQ_REMOVE(&win_root->children, next, entries);
-      TAILQ_INSERT_HEAD(&win_root->children, next, entries);
-
-      mutt_window_reflow(win_root);
-      mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
-    }
+    mutt_window_reflow(win_root);
+    mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
   }
 
   return 0;

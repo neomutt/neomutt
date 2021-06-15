@@ -89,8 +89,6 @@ static int sbar_color_observer(struct NotifyCallback *nc)
     return 0;
 
   struct MuttWindow *win_sbar = nc->global_data;
-  if (!win_sbar)
-    return 0;
 
   win_sbar->actions |= WA_REPAINT;
   mutt_debug(LL_DEBUG5, "color done, request WA_REPAINT\n");

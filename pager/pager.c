@@ -144,9 +144,11 @@ static int pager_config_observer(struct NotifyCallback *nc)
   struct MuttWindow *win_pager = nc->global_data;
 
   if (mutt_str_equal(ev_c->name, "pager_index_lines"))
-    return config_pager_index_lines(win_pager);
+  {
+    config_pager_index_lines(win_pager);
+    mutt_debug(LL_DEBUG5, "config done\n");
+  }
 
-  mutt_debug(LL_DEBUG5, "config done\n");
   return 0;
 }
 

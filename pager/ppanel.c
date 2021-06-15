@@ -100,9 +100,11 @@ static int ppanel_config_observer(struct NotifyCallback *nc)
   struct MuttWindow *panel_pager = nc->global_data;
 
   if (mutt_str_equal(ev_c->name, "status_on_top"))
+  {
     window_status_on_top(panel_pager, NeoMutt->sub);
+    mutt_debug(LL_DEBUG5, "config done\n");
+  }
 
-  mutt_debug(LL_DEBUG5, "config done\n");
   return 0;
 }
 

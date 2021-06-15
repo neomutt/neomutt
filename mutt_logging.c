@@ -328,12 +328,20 @@ int main_log_observer(struct NotifyCallback *nc)
 
   struct EventConfig *ev_c = nc->event_data;
 
-  const char *const c_debug_file = cs_subset_path(NeoMutt->sub, "debug_file");
-  const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
   if (mutt_str_equal(ev_c->name, "debug_file"))
+  {
+    const char *const c_debug_file = cs_subset_path(NeoMutt->sub, "debug_file");
     mutt_log_set_file(c_debug_file, true);
+  }
   else if (mutt_str_equal(ev_c->name, "debug_level"))
+  {
+    const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
     mutt_log_set_level(c_debug_level, true);
+  }
+  else
+  {
+    return 0;
+  }
 
   mutt_debug(LL_DEBUG5, "log done\n");
   return 0;

@@ -272,26 +272,27 @@ static int sb_config_observer(struct NotifyCallback *nc)
     return 0;
   }
 
-  mutt_debug(LL_DEBUG5, "config: %s\n", ev_c->name);
-
   if (mutt_str_equal(ev_c->name, "sidebar_next_new_wrap"))
     return 0; // Affects the behaviour, but not the display
 
+  mutt_debug(LL_DEBUG5, "config: %s\n", ev_c->name);
+
   struct MuttWindow *win = nc->global_data;
-  const bool c_sidebar_visible =
-      cs_subset_bool(NeoMutt->sub, "sidebar_visible");
 
   if (mutt_str_equal(ev_c->name, "sidebar_visible"))
   {
+    const bool c_sidebar_visible =
+        cs_subset_bool(NeoMutt->sub, "sidebar_visible");
     window_set_visible(win, c_sidebar_visible);
     window_reflow(win->parent);
     mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
     return 0;
   }
 
-  const short c_sidebar_width = cs_subset_number(NeoMutt->sub, "sidebar_width");
   if (mutt_str_equal(ev_c->name, "sidebar_width"))
   {
+    const short c_sidebar_width =
+        cs_subset_number(NeoMutt->sub, "sidebar_width");
     win->req_cols = c_sidebar_width;
     win->parent->actions |= WA_REFLOW;
     mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");

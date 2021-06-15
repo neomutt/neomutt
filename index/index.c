@@ -181,9 +181,11 @@ static int index_config_observer(struct NotifyCallback *nc)
   struct MuttWindow *dlg = nc->global_data;
 
   if (mutt_str_equal(ev_c->name, "reply_regex"))
-    return config_reply_regex(dlg);
+  {
+    config_reply_regex(dlg);
+    mutt_debug(LL_DEBUG5, "config done\n");
+  }
 
-  mutt_debug(LL_DEBUG5, "config done\n");
   return 0;
 }
 

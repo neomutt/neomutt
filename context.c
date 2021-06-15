@@ -331,6 +331,8 @@ int ctx_mailbox_observer(struct NotifyCallback *nc)
     case NT_MAILBOX_RESORT:
       mutt_sort_headers(ctx->mailbox, ctx->threads, true, &ctx->vsize);
       break;
+    default:
+      return 0;
   }
 
   mutt_debug(LL_DEBUG5, "mailbox done\n");
