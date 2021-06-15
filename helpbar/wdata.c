@@ -21,9 +21,9 @@
  */
 
 /**
- * @page helpbar_wdata Help Bar Window data
+ * @page helpbar_wdata Private data for the Help Bar
  *
- * Help Bar Window data
+ * #HelpbarWindowData stores the state of the Help Bar.
  */
 
 #include "config.h"

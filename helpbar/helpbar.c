@@ -23,7 +23,24 @@
 /**
  * @page helpbar_helpbar Help Bar
  *
- * Help Bar
+ * The Help Bar Window displays some helpful key bindings for the current screen.
+ *
+ * Windows can declare what should be displayed, when they have focus, by setting:
+ * - MuttWindow::help_menu, e.g. #MENU_PAGER
+ * - MuttWindow::help_data, a Mapping of names to opcodes, e.g. #PagerNormalHelp
+ *
+ * The Help Bar looks up which bindings correspond to the function names.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type  | Handler                    |
+ * | :---------- | :------------------------- | 
+ * | #NT_BINDING | helpbar_binding_observer() |
+ * | #NT_COLOR   | helpbar_color_observer()   |
+ * | #NT_CONFIG  | helpbar_config_observer()  |
+ * | #NT_WINDOW  | helpbar_window_observer()  |
  */
 
 #include "config.h"
@@ -40,7 +57,7 @@
 #include "keymap.h"
 
 /**
- * make_help - Create one entry for the help bar
+ * make_help - Create one entry for the Help Bar
  * @param buf    Buffer for the result
  * @param buflen Length of buffer
  * @param txt    Text part, e.g. "delete"
@@ -70,7 +87,7 @@ static bool make_help(char *buf, size_t buflen, const char *txt, enum MenuType m
  * @param buf    Buffer for the result
  * @param buflen Length of buffer
  * @param menu   Current Menu, e.g. #MENU_PAGER
- * @param items  Map of functions to display in the help bar
+ * @param items  Map of functions to display in the Help Bar
  * @retval ptr Buffer containing result
  */
 static char *compile_help(char *buf, size_t buflen, enum MenuType menu,
@@ -98,6 +115,7 @@ static char *compile_help(char *buf, size_t buflen, enum MenuType menu,
  * helpbar_recalc - Recalculate the display of the Help Bar
  * @param win Help Bar Window
  *
+ * Generate the help string from data on the focused Window.
  * The Help Bar isn't drawn, yet.
  */
 static int helpbar_recalc(struct MuttWindow *win)
@@ -158,6 +176,9 @@ static int helpbar_repaint(struct MuttWindow *win)
 
 /**
  * helpbar_binding_observer - Notification that a Key Binding has changed - Implements ::observer_t
+ *
+ * This function is triggered by changes to the key bindings, from either of
+ * the `bind` or `macro` commands.
  */
 static int helpbar_binding_observer(struct NotifyCallback *nc)
 {
@@ -183,6 +204,9 @@ static int helpbar_binding_observer(struct NotifyCallback *nc)
 
 /**
  * helpbar_color_observer - Notification that a Color has changed - Implements ::observer_t
+ *
+ * This function is triggered by changes to the colour settings, from the
+ * `color` or `uncolor`, `mono` or `unmono` commands.
  */
 static int helpbar_color_observer(struct NotifyCallback *nc)
 {
@@ -204,6 +228,9 @@ static int helpbar_color_observer(struct NotifyCallback *nc)
 
 /**
  * helpbar_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ *
+ * This function is triggered by changes to the config by the `set`, `unset`,
+ * `reset`, `toggle`, etc commands.
  */
 static int helpbar_config_observer(struct NotifyCallback *nc)
 {
@@ -224,6 +251,12 @@ static int helpbar_config_observer(struct NotifyCallback *nc)
 
 /**
  * helpbar_window_observer - Notification that a Window has changed - Implements ::observer_t
+ *
+ * This function is triggered by changes to the windows.
+ *
+ * - Focus (global): regenerate the list of key bindings
+ * - State (this window): regenerate the list of key bindings
+ * - Delete (this window): clean up the resources held by the Help Bar
  */
 static int helpbar_window_observer(struct NotifyCallback *nc)
 {
@@ -238,27 +271,37 @@ static int helpbar_window_observer(struct NotifyCallback *nc)
       return 0;
 
     win_helpbar->actions |= WA_RECALC;
-    mutt_debug(LL_NOTIFY, "window focus done, request WA_RECALC\n");
+    mutt_debug(LL_DEBUG5, "window focus: request WA_RECALC\n");
+    return 0;
   }
-  else if (nc->event_subtype == NT_WINDOW_STATE)
+
+  // The next two notifications must be specifically for us
+  struct EventWindow *ew = nc->event_data;
+  if (ew->win != win_helpbar)
+    return 0;
+
+  if (nc->event_subtype == NT_WINDOW_STATE)
   {
-    win_helpbar->actions |= WA_REPAINT;
-    mutt_debug(LL_NOTIFY, "window state done, request WA_REPAINT\n");
+    win_helpbar->actions |= WA_RECALC;
+    mutt_debug(LL_DEBUG5, "window state: request WA_RECALC\n");
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
     notify_observer_remove(NeoMutt->notify, helpbar_binding_observer, win_helpbar);
     notify_observer_remove(NeoMutt->notify, helpbar_color_observer, win_helpbar);
     notify_observer_remove(NeoMutt->notify, helpbar_config_observer, win_helpbar);
-    notify_observer_remove(win_helpbar->notify, helpbar_window_observer, win_helpbar);
+    notify_observer_remove(NeoMutt->notify, helpbar_window_observer, win_helpbar);
     mutt_debug(LL_DEBUG5, "window delete done\n");
   }
+
   return 0;
 }
 
 /**
  * helpbar_new - Create the Help Bar Window
  * @retval ptr New Window
+ *
+ * @note The Window can be freed with mutt_window_free().
  */
 struct MuttWindow *helpbar_new(void)
 {
@@ -276,6 +319,6 @@ struct MuttWindow *helpbar_new(void)
   notify_observer_add(NeoMutt->notify, NT_BINDING, helpbar_binding_observer, win);
   notify_observer_add(NeoMutt->notify, NT_COLOR, helpbar_color_observer, win);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, helpbar_config_observer, win);
-  notify_observer_add(win->notify, NT_WINDOW, helpbar_window_observer, win);
+  notify_observer_add(NeoMutt->notify, NT_WINDOW, helpbar_window_observer, win);
   return win;
 }
