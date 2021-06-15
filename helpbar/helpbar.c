@@ -157,11 +157,11 @@ static int helpbar_repaint(struct MuttWindow *win)
 }
 
 /**
- * helpbar_binding_observer - Key binding has changed - Implements ::observer_t
+ * helpbar_binding_observer - Notification that a Key Binding has changed - Implements ::observer_t
  */
 static int helpbar_binding_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_BINDING) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_BINDING) || !nc->global_data || !nc->event_data)
     return -1;
 
   if (nc->event_subtype >= NT_MACRO_ADD)
@@ -182,14 +182,14 @@ static int helpbar_binding_observer(struct NotifyCallback *nc)
 }
 
 /**
- * helpbar_color_observer - Color has changed - Implements ::observer_t
+ * helpbar_color_observer - Notification that a Color has changed - Implements ::observer_t
  */
 static int helpbar_color_observer(struct NotifyCallback *nc)
 {
-  struct EventColor *ev_c = nc->event_data;
-
-  if ((nc->event_type != NT_COLOR) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_COLOR) || !nc->global_data || !nc->event_data)
     return -1;
+
+  struct EventColor *ev_c = nc->event_data;
 
   // MT_COLOR_MAX is sent on `uncolor *`
   if ((ev_c->color != MT_COLOR_STATUS) && (ev_c->color != MT_COLOR_MAX))
@@ -203,11 +203,11 @@ static int helpbar_color_observer(struct NotifyCallback *nc)
 }
 
 /**
- * helpbar_config_observer - Config has changed - Implements ::observer_t
+ * helpbar_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
  */
 static int helpbar_config_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_CONFIG) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
     return -1;
 
   struct EventConfig *ev_c = nc->event_data;
@@ -217,18 +217,18 @@ static int helpbar_config_observer(struct NotifyCallback *nc)
   struct MuttWindow *win_helpbar = nc->global_data;
   win_helpbar->state.visible = cs_subset_bool(NeoMutt->sub, "help");
 
-  win_helpbar->actions |= WA_RECALC;
-  mutt_debug(LL_DEBUG5, "config: '%s', request WA_REFLOW on parent\n", ev_c->name);
+  mutt_window_reflow(win_helpbar->parent);
+  mutt_debug(LL_DEBUG5, "config done: '%s', request WA_REFLOW on parent\n", ev_c->name);
   return 0;
 }
 
 /**
- * helpbar_window_observer - Window has changed - Implements ::observer_t
+ * helpbar_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 static int helpbar_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
-    return 0;
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
+    return -1;
 
   struct MuttWindow *win_helpbar = nc->global_data;
 
@@ -237,13 +237,13 @@ static int helpbar_window_observer(struct NotifyCallback *nc)
     if (!mutt_window_is_visible(win_helpbar))
       return 0;
 
-    mutt_debug(LL_NOTIFY, "focus\n");
     win_helpbar->actions |= WA_RECALC;
+    mutt_debug(LL_NOTIFY, "window focus done, request WA_RECALC\n");
   }
   else if (nc->event_subtype == NT_WINDOW_STATE)
   {
-    mutt_debug(LL_NOTIFY, "state\n");
     win_helpbar->actions |= WA_REPAINT;
+    mutt_debug(LL_NOTIFY, "window state done, request WA_REPAINT\n");
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {

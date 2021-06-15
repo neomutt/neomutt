@@ -305,12 +305,12 @@ static int query_run(char *s, bool verbose, struct AliasList *al,
 }
 
 /**
- * query_window_observer - Listen for window changes - Implements ::observer_t
+ * query_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 int query_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
-    return 0;
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
+    return -1;
 
   if (nc->event_subtype != NT_WINDOW_DELETE)
     return 0;

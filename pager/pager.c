@@ -130,14 +130,12 @@ static int config_pager_index_lines(struct MuttWindow *win)
 }
 
 /**
- * pager_config_observer - Listen for config changes affecting the Pager - Implements ::observer_t
+ * pager_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
  */
 static int pager_config_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
 
   struct EventConfig *ev_c = nc->event_data;
   struct MuttWindow *win_pager = nc->global_data;
@@ -150,14 +148,13 @@ static int pager_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * pager_window_observer - Listen for window changes affecting the Pager - Implements ::observer_t
+ * pager_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 static int pager_window_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_WINDOW)
-    return 0;
+
   if (nc->event_subtype != NT_WINDOW_DELETE)
     return 0;
 
@@ -172,70 +169,60 @@ static int pager_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * pager_color_observer - Listen for color changes affecting the Pager - Implements ::observer_t
+ * pager_color_observer - Notification that a Color has changed - Implements ::observer_t
  */
 static int pager_color_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_COLOR) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_COLOR)
-    return 0;
 
   mutt_debug(LL_DEBUG5, "color done\n");
   return 0;
 }
 
 /**
- * pager_pager_observer - Listen for pager changes affecting the Pager - Implements ::observer_t
+ * pager_pager_observer - Notification that the Pager has changed - Implements ::observer_t
  */
 static int pager_pager_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_PAGER) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_PAGER)
-    return 0;
 
   mutt_debug(LL_DEBUG5, "pager done\n");
   return 0;
 }
 
 /**
- * pager_menu_observer - Listen for menu changes affecting the Pager - Implements ::observer_t
+ * pager_menu_observer - Notification that a Menu has changed - Implements ::observer_t
  */
 static int pager_menu_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_MENU) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_MENU)
-    return 0;
 
   mutt_debug(LL_DEBUG5, "menu done\n");
   return 0;
 }
 
 /**
- * pager_mailbox_observer - Listen for mailbox changes affecting the Pager - Implements ::observer_t
+ * pager_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t
  */
 static int pager_mailbox_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_MAILBOX) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_MAILBOX)
-    return 0;
 
   mutt_debug(LL_DEBUG5, "mailbox done\n");
   return 0;
 }
 
 /**
- * pager_email_observer - Listen for email changes affecting the Pager - Implements ::observer_t
+ * pager_email_observer - Notification that an Email has changed - Implements ::observer_t
  */
 static int pager_email_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_EMAIL) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_EMAIL)
-    return 0;
 
   mutt_debug(LL_DEBUG5, "email done\n");
   return 0;

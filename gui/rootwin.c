@@ -40,14 +40,12 @@
 struct MuttWindow *RootWindow = NULL; ///< Parent of all Windows
 
 /**
- * rootwin_config_observer - Listen for config changes affecting the Root Window - Implements ::observer_t
+ * rootwin_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
  */
 static int rootwin_config_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
 
   struct EventConfig *ev_c = nc->event_data;
   struct MuttWindow *win_root = nc->global_data;
@@ -56,7 +54,7 @@ static int rootwin_config_observer(struct NotifyCallback *nc)
   {
     struct MuttWindow *first = TAILQ_FIRST(&win_root->children);
     if (!first)
-      return -1;
+      return 0;
 
     mutt_debug(LL_DEBUG5, "config: '%s'\n", ev_c->name);
     const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
@@ -66,28 +64,28 @@ static int rootwin_config_observer(struct NotifyCallback *nc)
       // Swap the HelpBar and the AllDialogsWindow
       struct MuttWindow *next = TAILQ_NEXT(first, entries);
       if (!next)
-        return -1;
+        return 0;
       TAILQ_REMOVE(&win_root->children, next, entries);
       TAILQ_INSERT_HEAD(&win_root->children, next, entries);
 
+      mutt_window_reflow(win_root);
       mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
     }
   }
 
-  mutt_window_reflow(win_root);
   return 0;
 }
 
 /**
- * rootwin_window_observer - Listen for window changes affecting the Root Window - Implements ::observer_t
+ * rootwin_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 static int rootwin_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || (nc->event_subtype != NT_WINDOW_DELETE) ||
-      !nc->event_data || !nc->global_data)
-  {
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
+    return -1;
+
+  if (nc->event_subtype != NT_WINDOW_DELETE)
     return 0;
-  }
 
   struct MuttWindow *win_root = nc->global_data;
   struct EventWindow *ev_w = nc->event_data;

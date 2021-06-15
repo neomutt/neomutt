@@ -307,14 +307,12 @@ static void update_tables(struct Context *ctx)
 }
 
 /**
- * ctx_mailbox_observer - Watch for changes affecting the Context - Implements ::observer_t
+ * ctx_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t
  */
 int ctx_mailbox_observer(struct NotifyCallback *nc)
 {
-  if (!nc->global_data)
+  if ((nc->event_type != NT_MAILBOX) || !nc->global_data)
     return -1;
-  if (nc->event_type != NT_MAILBOX)
-    return 0;
 
   struct Context *ctx = nc->global_data;
 

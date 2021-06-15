@@ -140,34 +140,32 @@ int attach_repaint(struct MuttWindow *win)
 }
 
 /**
- * attach_compose_observer - Listen for compose changes affecting the attachments - Implements ::observer_t
+ * attach_compose_observer - Notification that the Compose data has changed - Implements ::observer_t
  */
 static int attach_compose_observer(struct NotifyCallback *nc)
 {
-  if (!nc->global_data)
+  if ((nc->event_type != NT_COMPOSE) || !nc->global_data)
     return -1;
-  if (nc->event_type != NT_COMPOSE)
-    return 0;
+
   if (nc->event_subtype != NT_COMPOSE_ATTACH)
     return 0;
 
   struct MuttWindow *win_attach = nc->global_data;
 
   win_attach->actions |= WA_RECALC;
-  mutt_debug(LL_DEBUG5, "compose, request WA_RECALC\n");
+  mutt_debug(LL_DEBUG5, "compose done, request WA_RECALC\n");
 
   return 0;
 }
 
 /**
- * attach_config_observer - Listen for changes to the Config - Implements ::observer_t
+ * attach_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
  */
 int attach_config_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
+
   if (nc->event_subtype == NT_CONFIG_INITIAL_SET)
     return 0;
 
@@ -183,26 +181,26 @@ int attach_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * attach_window_observer - Listen for window changes affecting the attachelope - Implements ::observer_t
+ * attach_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 static int attach_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
     return -1;
 
   struct MuttWindow *win_attach = nc->global_data;
 
   if (nc->event_subtype == NT_WINDOW_STATE)
   {
-    mutt_debug(LL_DEBUG5, "state, request WA_RECALC\n");
     win_attach->actions |= WA_RECALC;
+    mutt_debug(LL_DEBUG5, "window state done, request WA_RECALC\n");
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
-    mutt_debug(LL_DEBUG5, "delete\n");
     notify_observer_remove(nc->current, attach_compose_observer, win_attach);
     notify_observer_remove(nc->current, attach_config_observer, win_attach);
     notify_observer_remove(nc->current, attach_window_observer, win_attach);
+    mutt_debug(LL_DEBUG5, "window delete done\n");
   }
 
   return 0;

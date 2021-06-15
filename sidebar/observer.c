@@ -175,11 +175,11 @@ static void sb_init_data(struct MuttWindow *win)
 }
 
 /**
- * sb_account_observer - Account has changed - Implements ::observer_t
+ * sb_account_observer - Notification that an Account has changed - Implements ::observer_t
  */
 static int sb_account_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_ACCOUNT) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_ACCOUNT) || !nc->global_data || !nc->event_data)
     return -1;
 
   struct MuttWindow *win = nc->global_data;
@@ -198,11 +198,11 @@ static int sb_account_observer(struct NotifyCallback *nc)
 }
 
 /**
- * sb_color_observer - Color has changed - Implements ::observer_t
+ * sb_color_observer - Notification that a Color has changed - Implements ::observer_t
  */
 static int sb_color_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_COLOR) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_COLOR) || !nc->global_data || !nc->event_data)
     return -1;
 
   struct EventColor *ev_c = nc->event_data;
@@ -234,11 +234,11 @@ static int sb_color_observer(struct NotifyCallback *nc)
 }
 
 /**
- * sb_command_observer - Command has changed - Implements ::observer_t
+ * sb_command_observer - Notification that a Command has occurred - Implements ::observer_t
  */
 static int sb_command_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_COMMAND) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_COMMAND) || !nc->global_data || !nc->event_data)
     return -1;
 
   struct Command *cmd = nc->event_data;
@@ -253,11 +253,11 @@ static int sb_command_observer(struct NotifyCallback *nc)
 }
 
 /**
- * sb_config_observer - Config has changed - Implements ::observer_t
+ * sb_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
  */
 static int sb_config_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_CONFIG) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
     return -1;
 
   if (nc->event_subtype == NT_CONFIG_INITIAL_SET)
@@ -284,7 +284,7 @@ static int sb_config_observer(struct NotifyCallback *nc)
   if (mutt_str_equal(ev_c->name, "sidebar_visible"))
   {
     window_set_visible(win, c_sidebar_visible);
-    win->parent->actions |= WA_REFLOW;
+    window_reflow(win->parent);
     mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
     return 0;
   }
@@ -343,11 +343,11 @@ static int sb_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * sb_mailbox_observer - Mailbox has changed - Implements ::observer_t
+ * sb_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t
  */
 static int sb_mailbox_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_MAILBOX) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_MAILBOX) || !nc->global_data || !nc->event_data)
     return -1;
 
   struct MuttWindow *win = nc->global_data;
@@ -374,11 +374,11 @@ static int sb_mailbox_observer(struct NotifyCallback *nc)
 }
 
 /**
- * sb_window_observer - Window has changed - Implements ::observer_t
+ * sb_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 static int sb_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
     return -1;
 
   struct MuttWindow *win = nc->global_data;
@@ -386,7 +386,7 @@ static int sb_window_observer(struct NotifyCallback *nc)
   if (nc->event_subtype == NT_WINDOW_FOCUS)
   {
     win->actions |= WA_RECALC;
-    mutt_debug(LL_DEBUG5, "window focus done, required WA_RECALC\n");
+    mutt_debug(LL_DEBUG5, "window focus done, request WA_RECALC\n");
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
@@ -399,7 +399,8 @@ static int sb_window_observer(struct NotifyCallback *nc)
   }
   else if (nc->event_subtype == NT_WINDOW_STATE)
   {
-    mutt_debug(LL_DEBUG5, "window state done\n");
+    win->actions |= WA_RECALC;
+    mutt_debug(LL_DEBUG5, "window state done, request WA_RECALC\n");
   }
   return 0;
 }
@@ -439,11 +440,14 @@ void sb_win_remove_observers(struct MuttWindow *win)
 }
 
 /**
- * sb_insertion_window_observer - Listen for new Dialogs - Implements ::observer_t
+ * sb_insertion_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 int sb_insertion_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || (nc->event_subtype != NT_WINDOW_DIALOG))
+  if ((nc->event_type != NT_WINDOW) || !nc->event_data)
+    return -1;
+
+  if (nc->event_subtype != NT_WINDOW_DIALOG)
     return 0;
 
   struct EventWindow *ev_w = nc->event_data;

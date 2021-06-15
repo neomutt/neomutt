@@ -37,11 +37,11 @@
 #include "mutt_globals.h"
 
 /**
- * index_shared_context_observer - Context has changed - Implements ::observer_t
+ * index_shared_context_observer - Notification that the Context has changed - Implements ::observer_t
  */
 static int index_shared_context_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_CONTEXT) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_CONTEXT) || !nc->global_data || !nc->event_data)
     return -1;
 
   struct EventContext *ev_c = nc->event_data;
@@ -63,11 +63,11 @@ static int index_shared_context_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_shared_account_observer - Account has changed - Implements ::observer_t
+ * index_shared_account_observer - Notification that an Account has changed - Implements ::observer_t
  */
 static int index_shared_account_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_ACCOUNT) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_ACCOUNT) || !nc->global_data || !nc->event_data)
     return -1;
 
   struct EventAccount *ev_a = nc->event_data;
@@ -93,11 +93,11 @@ static int index_shared_account_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_shared_mailbox_observer - Mailbox has changed - Implements ::observer_t
+ * index_shared_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t
  */
 static int index_shared_mailbox_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_MAILBOX) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_MAILBOX) || !nc->global_data || !nc->event_data)
     return -1;
 
   struct EventMailbox *ev_m = nc->event_data;
@@ -121,11 +121,11 @@ static int index_shared_mailbox_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_shared_email_observer - Email has changed - Implements ::observer_t
+ * index_shared_email_observer - Notification that an Email has changed - Implements ::observer_t
  */
 static int index_shared_email_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_EMAIL) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_EMAIL) || !nc->global_data || !nc->event_data)
     return -1;
 
   struct EventEmail *ev_e = nc->event_data;

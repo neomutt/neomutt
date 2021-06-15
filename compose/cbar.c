@@ -164,14 +164,12 @@ static int cbar_repaint(struct MuttWindow *win)
 }
 
 /**
- * cbar_color_observer - Listen for changes to the Colours - Implements ::observer_t
+ * cbar_color_observer - Notification that a Color has changed - Implements ::observer_t
  */
 int cbar_color_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_COLOR) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_COLOR)
-    return 0;
 
   struct EventColor *ev_c = nc->event_data;
 
@@ -181,35 +179,34 @@ int cbar_color_observer(struct NotifyCallback *nc)
 
   struct MuttWindow *win_cbar = nc->global_data;
   win_cbar->actions |= WA_REPAINT;
+  mutt_debug(LL_DEBUG5, "color done, request WA_REPAINT\n");
 
   return 0;
 }
 
 /**
- * cbar_compose_observer - Listen for changes to the Colours - Implements ::observer_t
+ * cbar_compose_observer - Notification that the Compose data has changed - Implements ::observer_t
  */
 int cbar_compose_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_COMPOSE) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_COMPOSE)
-    return 0;
 
   struct MuttWindow *win_cbar = nc->global_data;
   win_cbar->actions |= WA_REPAINT;
+  mutt_debug(LL_DEBUG5, "compose done, request WA_REPAINT\n");
 
   return 0;
 }
 
 /**
- * cbar_config_observer - Listen for changes to the Config - Implements ::observer_t
+ * cbar_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
  */
 int cbar_config_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
+
   if (nc->event_subtype == NT_CONFIG_INITIAL_SET)
     return 0;
 
@@ -219,16 +216,17 @@ int cbar_config_observer(struct NotifyCallback *nc)
 
   struct MuttWindow *win_cbar = nc->global_data;
   win_cbar->actions |= WA_RECALC;
+  mutt_debug(LL_DEBUG5, "config done, request WA_RECALC\n");
 
   return 0;
 }
 
 /**
- * cbar_window_observer - Listen for changes to the Window - Implements ::observer_t
+ * cbar_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 int cbar_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
     return -1;
 
   struct MuttWindow *win_cbar = nc->global_data;
@@ -236,7 +234,7 @@ int cbar_window_observer(struct NotifyCallback *nc)
   if (nc->event_subtype == NT_WINDOW_STATE)
   {
     win_cbar->actions |= WA_RECALC;
-    mutt_debug(LL_NOTIFY, "state change, request WA_RECALC\n");
+    mutt_debug(LL_DEBUG5, "window state done, request WA_RECALC\n");
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {

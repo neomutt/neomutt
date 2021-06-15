@@ -635,15 +635,16 @@ void mutt_update_index(struct Menu *menu, struct Context *ctx, enum MxStatus che
 }
 
 /**
- * index_mailbox_observer - Listen for Mailbox changes - Implements ::observer_t
+ * index_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t
  *
  * If a Mailbox is closed, then set a pointer to NULL.
  */
 static int index_mailbox_observer(struct NotifyCallback *nc)
 {
-  if (!nc->global_data)
+  if ((nc->event_type != NT_MAILBOX) || !nc->global_data)
     return -1;
-  if ((nc->event_type != NT_MAILBOX) || (nc->event_subtype != NT_MAILBOX_CLOSED))
+
+  if (nc->event_subtype != NT_MAILBOX_CLOSED)
     return 0;
 
   struct Mailbox **ptr = nc->global_data;

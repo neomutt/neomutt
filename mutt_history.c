@@ -56,14 +56,12 @@ void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
 }
 
 /**
- * main_hist_observer - Listen for config changes affecting the history - Implements ::observer_t
+ * main_hist_observer - Notification that a Config Variable has changed - Implements ::observer_t
  */
 int main_hist_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data)
+  if ((nc->event_type != NT_CONFIG) || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
 
   struct EventConfig *ev_c = nc->event_data;
 

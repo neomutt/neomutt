@@ -135,15 +135,15 @@ void dialog_pop(void)
 }
 
 /**
- * alldialogs_window_observer - Listen for window changes affecting the AllDialogs Window - Implements ::observer_t
+ * alldialogs_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 static int alldialogs_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || (nc->event_subtype != NT_WINDOW_DELETE) ||
-      !nc->event_data || !nc->global_data)
-  {
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
+    return -1;
+
+  if (nc->event_subtype != NT_WINDOW_DELETE)
     return 0;
-  }
 
   struct MuttWindow *win_alldlgs = nc->global_data;
   struct EventWindow *ev_w = nc->event_data;

@@ -73,14 +73,12 @@ static int sbar_repaint(struct MuttWindow *win)
 }
 
 /**
- * sbar_color_observer - Listen for changes to the Colors - Implements ::observer_t
+ * sbar_color_observer - Notification that a Color has changed - Implements ::observer_t
  */
 static int sbar_color_observer(struct NotifyCallback *nc)
 {
-  if (!nc->global_data)
+  if ((nc->event_type != NT_COLOR) || !nc->global_data)
     return -1;
-  if (nc->event_type != NT_COLOR)
-    return 0;
 
   struct EventColor *ev_c = nc->event_data;
 
@@ -99,26 +97,24 @@ static int sbar_color_observer(struct NotifyCallback *nc)
 }
 
 /**
- * sbar_window_observer - Listen for changes to the Windows - Implements ::observer_t
+ * sbar_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 static int sbar_window_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_WINDOW)
-    return 0;
 
   struct MuttWindow *win_sbar = nc->global_data;
   if (nc->event_subtype == NT_WINDOW_STATE)
   {
     win_sbar->actions |= WA_REPAINT;
-    mutt_debug(LL_DEBUG5, "state done, request WA_REPAINT\n");
+    mutt_debug(LL_DEBUG5, "window state done, request WA_REPAINT\n");
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
     notify_observer_remove(NeoMutt->notify, sbar_color_observer, win_sbar);
     notify_observer_remove(win_sbar->notify, sbar_window_observer, win_sbar);
-    mutt_debug(LL_DEBUG5, "delete done\n");
+    mutt_debug(LL_DEBUG5, "window delete done\n");
   }
 
   return 0;

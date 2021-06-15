@@ -37,14 +37,12 @@
 #include "menu/lib.h"
 
 /**
- * alias_config_observer - Listen for config changes - Implements ::observer_t
+ * alias_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
  */
 int alias_config_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data)
+  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
 
   struct EventConfig *ev_c = nc->event_data;
 

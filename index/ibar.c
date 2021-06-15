@@ -128,14 +128,12 @@ static int ibar_repaint(struct MuttWindow *win)
 }
 
 /**
- * ibar_color_observer - Listen for changes to the Colours - Implements ::observer_t
+ * ibar_color_observer - Notification that a Color has changed - Implements ::observer_t
  */
 static int ibar_color_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_COLOR) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_COLOR)
-    return 0;
 
   struct EventColor *ev_c = nc->event_data;
   enum ColorId color = ev_c->color;
@@ -145,19 +143,19 @@ static int ibar_color_observer(struct NotifyCallback *nc)
 
   struct MuttWindow *win_ibar = nc->global_data;
   win_ibar->actions |= WA_REPAINT;
+  mutt_debug(LL_DEBUG5, "color done, request WA_REPAINT\n");
 
   return 0;
 }
 
 /**
- * ibar_config_observer - Listen for changes to the Config - Implements ::observer_t
+ * ibar_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
  */
 static int ibar_config_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
+
   if (nc->event_subtype == NT_CONFIG_INITIAL_SET)
     return 0;
 
@@ -175,35 +173,33 @@ static int ibar_config_observer(struct NotifyCallback *nc)
 
   struct MuttWindow *win_ibar = nc->global_data;
   win_ibar->actions |= WA_RECALC;
+  mutt_debug(LL_DEBUG5, "config done, request WA_RECALC\n");
 
   return 0;
 }
 
 /**
- * ibar_mailbox_observer - Listen for changes to the Mailbox - Implements ::observer_t
+ * ibar_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t
  */
 static int ibar_mailbox_observer(struct NotifyCallback *nc)
 {
-  if (!nc->global_data)
+  if ((nc->event_type != NT_MAILBOX) || !nc->global_data)
     return -1;
-  if (nc->event_type != NT_MAILBOX)
-    return 0;
 
   struct MuttWindow *win_ibar = nc->global_data;
   win_ibar->actions |= WA_RECALC;
+  mutt_debug(LL_DEBUG5, "mailbox done, request WA_RECALC\n");
 
   return 0;
 }
 
 /**
- * ibar_index_observer - Listen for changes to the Index - Implements ::observer_t
+ * ibar_index_observer - Notification that the Index has changed - Implements ::observer_t
  */
 static int ibar_index_observer(struct NotifyCallback *nc)
 {
-  if (!nc->global_data)
+  if ((nc->event_type != NT_INDEX) || !nc->global_data)
     return -1;
-  if (nc->event_type != NT_INDEX)
-    return 0;
 
   struct MuttWindow *win_ibar = nc->global_data;
   if (!win_ibar)
@@ -224,44 +220,47 @@ static int ibar_index_observer(struct NotifyCallback *nc)
       notify_observer_add(new_shared->mailbox->notify, NT_MAILBOX,
                           ibar_mailbox_observer, win_ibar);
     win_ibar->actions |= WA_RECALC;
+    mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
   }
 
   if (nc->event_subtype & NT_INDEX_EMAIL)
   {
     win_ibar->actions |= WA_RECALC;
+    mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
   }
 
   return 0;
 }
 
 /**
- * ibar_menu_observer - Listen for changes to the Menu - Implements ::observer_t
+ * ibar_menu_observer - Notification that a Menu has changed - Implements ::observer_t
  */
 static int ibar_menu_observer(struct NotifyCallback *nc)
 {
-  if (!nc->global_data)
+  if ((nc->event_type != NT_MENU) || !nc->global_data)
     return -1;
-  if (nc->event_type != NT_MENU)
-    return 0;
 
   struct MuttWindow *win_ibar = nc->global_data;
   win_ibar->actions |= WA_RECALC;
+  mutt_debug(LL_DEBUG5, "menu done, request WA_RECALC\n");
 
   return 0;
 }
 
 /**
- * ibar_window_observer - Listen for changes to the Window - Implements ::observer_t
+ * ibar_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 static int ibar_window_observer(struct NotifyCallback *nc)
 {
-  if (!nc->global_data)
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data)
     return -1;
-  if (nc->event_type != NT_WINDOW)
+
+  if (nc->event_subtype != NT_WINDOW_STATE)
     return 0;
 
   struct MuttWindow *win_ibar = nc->global_data;
   win_ibar->actions |= WA_REPAINT;
+  mutt_debug(LL_DEBUG5, "window state done, request WA_REPAINT\n");
 
   return 0;
 }

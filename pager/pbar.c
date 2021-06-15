@@ -130,14 +130,12 @@ static int pbar_repaint(struct MuttWindow *win)
 }
 
 /**
- * pbar_color_observer - Listen for changes to the Colours - Implements ::observer_t
+ * pbar_color_observer - Notification that a Color has changed - Implements ::observer_t
  */
 static int pbar_color_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_COLOR) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_COLOR)
-    return 0;
 
   struct EventColor *ev_c = nc->event_data;
   enum ColorId color = ev_c->color;
@@ -147,19 +145,19 @@ static int pbar_color_observer(struct NotifyCallback *nc)
 
   struct MuttWindow *win_pbar = nc->global_data;
   win_pbar->actions |= WA_REPAINT;
+  mutt_debug(LL_DEBUG5, "color done, request WA_REPAINT\n");
 
   return 0;
 }
 
 /**
- * pbar_config_observer - Listen for changes to the Config - Implements ::observer_t
+ * pbar_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
  */
 static int pbar_config_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
+
   if (nc->event_subtype == NT_CONFIG_INITIAL_SET)
     return 0;
 
@@ -169,51 +167,48 @@ static int pbar_config_observer(struct NotifyCallback *nc)
 
   struct MuttWindow *win_pbar = nc->global_data;
   win_pbar->actions |= WA_RECALC;
+  mutt_debug(LL_DEBUG5, "config done, request WA_RECALC\n");
 
   return 0;
 }
 
 /**
- * pbar_email_observer - Listen for changes to the Email - Implements ::observer_t
+ * pbar_email_observer - Notification that an Email has changed - Implements ::observer_t
  */
 static int pbar_email_observer(struct NotifyCallback *nc)
 {
-  if (!nc->global_data)
+  if ((nc->event_type != NT_EMAIL) || !nc->global_data)
     return -1;
-  if (nc->event_type != NT_EMAIL)
-    return 0;
 
   struct MuttWindow *win_pbar = nc->global_data;
   win_pbar->actions |= WA_RECALC;
+  mutt_debug(LL_DEBUG5, "email done, request WA_RECALC\n");
 
   return 0;
 }
 
 /**
- * pbar_mailbox_observer - Listen for changes to the Mailbox - Implements ::observer_t
+ * pbar_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t
  */
 static int pbar_mailbox_observer(struct NotifyCallback *nc)
 {
-  if (!nc->global_data)
+  if ((nc->event_type != NT_MAILBOX) || !nc->global_data)
     return -1;
-  if (nc->event_type != NT_MAILBOX)
-    return 0;
 
   struct MuttWindow *win_pbar = nc->global_data;
   win_pbar->actions |= WA_RECALC;
+  mutt_debug(LL_DEBUG5, "mailbox done, request WA_RECALC\n");
 
   return 0;
 }
 
 /**
- * pbar_pager_observer - Listen for changes to the Pager - Implements ::observer_t
+ * pbar_pager_observer - Notification that the Pager has changed - Implements ::observer_t
  */
 static int pbar_pager_observer(struct NotifyCallback *nc)
 {
-  if (!nc->global_data)
+  if ((nc->event_type != NT_PAGER) || !nc->global_data)
     return -1;
-  if (nc->event_type != NT_PAGER)
-    return 0;
 
   struct MuttWindow *win_pbar = nc->global_data;
   if (!win_pbar)
@@ -234,6 +229,7 @@ static int pbar_pager_observer(struct NotifyCallback *nc)
       notify_observer_add(new_shared->mailbox->notify, NT_MAILBOX,
                           pbar_mailbox_observer, win_pbar);
     win_pbar->actions |= WA_RECALC;
+    mutt_debug(LL_DEBUG5, "pager done, request WA_RECALC\n");
   }
 
   if (nc->event_subtype & NT_PAGER_EMAIL)
@@ -243,43 +239,41 @@ static int pbar_pager_observer(struct NotifyCallback *nc)
     if (new_shared->email)
       notify_observer_add(new_shared->email->notify, NT_EMAIL, pbar_email_observer, win_pbar);
     win_pbar->actions |= WA_RECALC;
+    mutt_debug(LL_DEBUG5, "pager done, request WA_RECALC\n");
   }
 
   return 0;
 }
 
 /**
- * pbar_menu_observer - Listen for changes to the Menu - Implements ::observer_t
+ * pbar_menu_observer - Notification that a Menu has changed - Implements ::observer_t
  */
 static int pbar_menu_observer(struct NotifyCallback *nc)
 {
-  if (!nc->global_data)
+  if ((nc->event_type != NT_MENU) || !nc->global_data)
     return -1;
-  if (nc->event_type != NT_MENU)
-    return 0;
 
   struct MuttWindow *win_pbar = nc->global_data;
   win_pbar->actions |= WA_RECALC;
+  mutt_debug(LL_DEBUG5, "menu done, request WA_RECALC\n");
 
   return 0;
 }
 
 /**
- * pbar_window_observer - Listen for changes to the Window - Implements ::observer_t
+ * pbar_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 static int pbar_window_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_WINDOW)
-    return 0;
 
   struct MuttWindow *win_pbar = nc->global_data;
 
   if (nc->event_subtype == NT_WINDOW_STATE)
   {
     win_pbar->actions |= WA_RECALC;
-    mutt_debug(LL_NOTIFY, "state change, request WA_RECALC\n");
+    mutt_debug(LL_NOTIFY, "window state done, request WA_RECALC\n");
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {

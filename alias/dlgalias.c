@@ -146,14 +146,12 @@ static int alias_tag(struct Menu *menu, int sel, int act)
 }
 
 /**
- * alias_alias_observer - Listen for data changes affecting the Alias menu - Implements ::observer_t
+ * alias_alias_observer - Notification that an Alias has changed - Implements ::observer_t
  */
 static int alias_alias_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_ALIAS) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_ALIAS)
-    return 0;
 
   struct EventAlias *ev_a = nc->event_data;
   struct Menu *menu = nc->global_data;
@@ -189,12 +187,12 @@ static int alias_alias_observer(struct NotifyCallback *nc)
 }
 
 /**
- * alias_window_observer - Listen for window changes - Implements ::observer_t
+ * alias_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 int alias_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
-    return 0;
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
+    return -1;
 
   if (nc->event_subtype != NT_WINDOW_DELETE)
     return 0;

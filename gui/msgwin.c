@@ -83,11 +83,11 @@ static int msgwin_repaint(struct MuttWindow *win)
 }
 
 /**
- * msgwin_window_observer - Window has changed - Implements ::observer_t
+ * msgwin_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 static int msgwin_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
     return -1;
 
   struct MuttWindow *win_msg = nc->global_data;
@@ -95,7 +95,7 @@ static int msgwin_window_observer(struct NotifyCallback *nc)
   if (nc->event_subtype == NT_WINDOW_STATE)
   {
     win_msg->actions |= WA_RECALC;
-    mutt_debug(LL_NOTIFY, "state change, request WA_RECALC\n");
+    mutt_debug(LL_NOTIFY, "window state done, request WA_RECALC\n");
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {

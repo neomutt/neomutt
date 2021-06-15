@@ -82,14 +82,12 @@ static int config_reply_regex(struct MuttWindow *dlg)
 }
 
 /**
- * index_altern_observer - Listen for alternates command changes affecting the Index - Implements ::observer_t
+ * index_altern_observer - Notification that an 'alternates' command has occurred - Implements ::observer_t
  */
 static int index_altern_observer(struct NotifyCallback *nc)
 {
-  if (!nc->global_data)
+  if ((nc->event_type != NT_ALTERN) || !nc->global_data)
     return -1;
-  if (nc->event_type != NT_ALTERN)
-    return 0;
 
   struct MuttWindow *dlg = nc->global_data;
   struct IndexSharedData *shared = dlg->wdata;
@@ -100,14 +98,12 @@ static int index_altern_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_attach_observer - Listen for attachment command changes affecting the Index - Implements ::observer_t
+ * index_attach_observer - Notification that an 'attachments' command has occurred - Implements ::observer_t
  */
 static int index_attach_observer(struct NotifyCallback *nc)
 {
-  if (!nc->global_data)
+  if ((nc->event_type != NT_ATTACH) || !nc->global_data)
     return -1;
-  if (nc->event_type != NT_ATTACH)
-    return 0;
 
   struct MuttWindow *dlg = nc->global_data;
   struct IndexSharedData *shared = dlg->wdata;
@@ -118,14 +114,12 @@ static int index_attach_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_color_observer - Listen for color changes affecting the Index - Implements ::observer_t
+ * index_color_observer - Notification that a Color has changed - Implements ::observer_t
  */
 static int index_color_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_COLOR) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_COLOR)
-    return 0;
 
   struct EventColor *ev_c = nc->event_data;
 
@@ -167,19 +161,18 @@ static int index_color_observer(struct NotifyCallback *nc)
   struct IndexPrivateData *priv = panel_index->wdata;
   struct Menu *menu = priv->menu;
   menu->redraw = MENU_REDRAW_FULL;
+  mutt_debug(LL_DEBUG5, "color done, request MENU_REDRAW_FULL\n");
 
   return 0;
 }
 
 /**
- * index_config_observer - Listen for config changes affecting the Index - Implements ::observer_t
+ * index_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
  */
 static int index_config_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
 
   struct EventConfig *ev_c = nc->event_data;
   struct MuttWindow *dlg = nc->global_data;
@@ -192,14 +185,12 @@ static int index_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_score_observer - Listen for Mailbox changes affecting the Index - Implements ::observer_t
+ * index_score_observer - Notification that a 'score' command has occurred - Implements ::observer_t
  */
 static int index_score_observer(struct NotifyCallback *nc)
 {
-  if (!nc->global_data)
+  if ((nc->event_type != NT_SCORE) || !nc->global_data)
     return -1;
-  if (nc->event_type != NT_SCORE)
-    return 0;
 
   struct MuttWindow *dlg = nc->global_data;
   struct IndexSharedData *shared = dlg->wdata;
@@ -223,14 +214,12 @@ static int index_score_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_subjrx_observer - Listen for subject regex changes affecting the Index - Implements ::observer_t
+ * index_subjrx_observer - Notification that a 'subjectrx' command has occurred - Implements ::observer_t
  */
 static int index_subjrx_observer(struct NotifyCallback *nc)
 {
-  if (!nc->global_data)
+  if ((nc->event_type != NT_SUBJRX) || !nc->global_data)
     return -1;
-  if (nc->event_type != NT_SUBJRX)
-    return 0;
 
   struct MuttWindow *dlg = nc->global_data;
   struct IndexSharedData *shared = dlg->wdata;
@@ -241,14 +230,13 @@ static int index_subjrx_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_window_observer - Listen for window changes affecting the Index - Implements ::observer_t
+ * index_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 static int index_window_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_WINDOW)
-    return 0;
+
   if (nc->event_subtype != NT_WINDOW_DELETE)
     return 0;
 
@@ -263,7 +251,6 @@ static int index_window_observer(struct NotifyCallback *nc)
   notify_observer_remove(win->notify, index_window_observer, win);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
-
   return 0;
 }
 

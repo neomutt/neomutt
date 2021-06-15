@@ -658,11 +658,11 @@ static int env_repaint(struct MuttWindow *win)
 }
 
 /**
- * env_color_observer - Listen for color changes affecting the envelope - Implements ::observer_t
+ * env_color_observer - Notification that a Color has changed - Implements ::observer_t
  */
 static int env_color_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_COLOR) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_COLOR) || !nc->global_data || !nc->event_data)
     return -1;
 
   struct EventColor *ev_c = nc->event_data;
@@ -681,7 +681,7 @@ static int env_color_observer(struct NotifyCallback *nc)
     case MT_COLOR_NORMAL:
     case MT_COLOR_STATUS:
     case MT_COLOR_MAX: // Sent on `uncolor *`
-      mutt_debug(LL_DEBUG5, "color, request WA_REPAINT\n");
+      mutt_debug(LL_DEBUG5, "color done, request WA_REPAINT\n");
       win_env->actions |= WA_REPAINT;
       break;
 
@@ -692,34 +692,31 @@ static int env_color_observer(struct NotifyCallback *nc)
 }
 
 /**
- * env_compose_observer - Listen for compose changes affecting the envelope - Implements ::observer_t
+ * env_compose_observer - Notification that the Compose data has changed - Implements ::observer_t
  */
 static int env_compose_observer(struct NotifyCallback *nc)
 {
-  if (!nc->global_data)
+  if ((nc->event_type != NT_COMPOSE) || !nc->global_data)
     return -1;
-  if (nc->event_type != NT_COMPOSE)
-    return 0;
+
   if (nc->event_subtype != NT_COMPOSE_ENVELOPE)
     return 0;
 
   struct MuttWindow *win_env = nc->global_data;
 
-  mutt_debug(LL_DEBUG5, "compose, request WA_RECALC\n");
   win_env->actions |= WA_RECALC;
+  mutt_debug(LL_DEBUG5, "compose done, request WA_RECALC\n");
 
   return 0;
 }
 
 /**
- * env_config_observer - Listen for config changes affecting the envelope - Implements ::observer_t
+ * env_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
  */
 static int env_config_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
 
   struct EventConfig *ev_c = nc->event_data;
   struct MuttWindow *win_env = nc->global_data;
@@ -754,16 +751,16 @@ static int env_config_observer(struct NotifyCallback *nc)
   }
 
   win_env->actions |= WA_RECALC;
-  mutt_debug(LL_DEBUG5, "config, request WA_RECALC\n");
+  mutt_debug(LL_DEBUG5, "config done, request WA_RECALC\n");
   return 0;
 }
 
 /**
- * env_header_observer - Listen for header changes - Implements ::observer_t
+ * env_header_observer - Notification that a User Header has changed - Implements ::observer_t
  */
 static int env_header_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_HEADER) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_HEADER) || !nc->global_data || !nc->event_data)
     return -1;
 
   const struct EventHeader *ev_h = nc->event_data;
@@ -777,7 +774,7 @@ static int env_header_observer(struct NotifyCallback *nc)
   if ((nc->event_subtype == NT_HEADER_ADD) || (nc->event_subtype == NT_HEADER_CHANGE))
   {
     header_set(&env->userhdrs, ev_h->header);
-    mutt_debug(LL_DEBUG5, "header, reflow\n");
+    mutt_debug(LL_DEBUG5, "header done, request reflow\n");
     env_recalc(win_env);
     return 0;
   }
@@ -788,7 +785,7 @@ static int env_header_observer(struct NotifyCallback *nc)
     if (removed)
     {
       header_free(&env->userhdrs, removed);
-      mutt_debug(LL_DEBUG5, "header, reflow\n");
+      mutt_debug(LL_DEBUG5, "header done, request reflow\n");
       env_recalc(win_env);
     }
     return 0;
@@ -798,30 +795,30 @@ static int env_header_observer(struct NotifyCallback *nc)
 }
 
 /**
- * env_window_observer - Listen for window changes affecting the envelope - Implements ::observer_t
+ * env_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 static int env_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
     return -1;
 
   struct MuttWindow *win_env = nc->global_data;
 
   if (nc->event_subtype == NT_WINDOW_STATE)
   {
-    mutt_debug(LL_DEBUG5, "state, request WA_RECALC\n");
     win_env->actions |= WA_RECALC;
+    mutt_debug(LL_DEBUG5, "window state done, request WA_RECALC\n");
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
     struct ComposeSharedData *shared = win_env->parent->wdata;
 
-    mutt_debug(LL_DEBUG5, "delete\n");
     notify_observer_remove(NeoMutt->notify, env_color_observer, win_env);
     notify_observer_remove(shared->notify, env_compose_observer, win_env);
     notify_observer_remove(NeoMutt->notify, env_config_observer, win_env);
     notify_observer_remove(NeoMutt->notify, env_header_observer, win_env);
     notify_observer_remove(win_env->notify, env_window_observer, win_env);
+    mutt_debug(LL_DEBUG5, "window delete done\n");
   }
 
   return 0;

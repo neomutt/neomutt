@@ -30,6 +30,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "notify.h"
+#include "logging.h"
 #include "memory.h"
 #include "queue.h"
 
@@ -110,7 +111,7 @@ static bool send(struct Notify *source, struct Notify *current,
   if (!source || !current)
     return false;
 
-  // mutt_debug(LL_NOTIFY, "send: %d, %ld\n", event_type, event_data);
+  mutt_debug(LL_NOTIFY, "send: %d, %ld\n", event_type, event_data);
   struct ObserverNode *np = NULL;
   STAILQ_FOREACH(np, &current->observers, entries)
   {
@@ -122,7 +123,11 @@ static bool send(struct Notify *source, struct Notify *current,
     {
       struct NotifyCallback nc = { current, event_type, event_subtype,
                                    event_data, o->global_data };
-      o->callback(&nc);
+      if (o->callback(&nc) < 0)
+      {
+        mutt_debug(LL_DEBUG1, "failed to send notification: type %d, subtype %d, global %p, event %p\n",
+                   event_type, event_subtype, o->global_data, event_data);
+      }
     }
   }
 

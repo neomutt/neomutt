@@ -86,14 +86,12 @@
 #endif
 
 /**
- * ppanel_config_observer - Listen for config changes affecting the Pager Panel - Implements ::observer_t
+ * ppanel_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
  */
 static int ppanel_config_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
 
   struct EventConfig *ev_c = nc->event_data;
   struct MuttWindow *panel_pager = nc->global_data;
@@ -106,14 +104,13 @@ static int ppanel_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * ppanel_window_observer - Listen for window changes affecting the Pager Panel - Implements ::observer_t
+ * ppanel_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 static int ppanel_window_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_WINDOW)
-    return 0;
+
   if (nc->event_subtype != NT_WINDOW_DELETE)
     return 0;
 

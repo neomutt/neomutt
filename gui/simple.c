@@ -35,14 +35,12 @@
 #include "menu/lib.h"
 
 /**
- * simple_config_observer - Listen for config changes affecting a Dialog - Implements ::observer_t
+ * simple_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
  */
 static int simple_config_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
 
   struct EventConfig *ev_c = nc->event_data;
   if (!mutt_str_equal(ev_c->name, "status_on_top"))
@@ -55,12 +53,12 @@ static int simple_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * simple_window_observer - Listen for window changes affecting a Dialog - Implements ::observer_t
+ * simple_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 static int simple_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || !nc->event_data || !nc->global_data)
-    return 0;
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
+    return -1;
 
   struct MuttWindow *dlg = nc->global_data;
 

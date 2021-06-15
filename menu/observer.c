@@ -37,14 +37,12 @@
 #include "type.h"
 
 /**
- * menu_color_observer - Listen for colour changes affecting the menu - Implements ::observer_t
+ * menu_color_observer - Notification that a Color has changed - Implements ::observer_t
  */
 static int menu_color_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_COLOR) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_COLOR)
-    return 0;
 
   struct EventColor *ev_c = nc->event_data;
 
@@ -60,20 +58,18 @@ static int menu_color_observer(struct NotifyCallback *nc)
 
   menu->redraw = MENU_REDRAW_FULL;
   win_menu->actions |= WA_REPAINT;
-  mutt_debug(LL_DEBUG5, "color done, request MENU_REDRAW_FULL\n");
+  mutt_debug(LL_DEBUG5, "color done, request WA_REPAINT, MENU_REDRAW_FULL\n");
 
   return 0;
 }
 
 /**
- * menu_config_observer - Listen for config changes affecting the menu - Implements ::observer_t
+ * menu_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
  */
 static int menu_config_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_CONFIG)
-    return 0;
 
   struct EventConfig *ev_c = nc->event_data;
   if (!mutt_str_startswith(ev_c->name, "arrow_") && !mutt_str_startswith(ev_c->name, "menu_"))
@@ -84,20 +80,17 @@ static int menu_config_observer(struct NotifyCallback *nc)
 
   menu->redraw |= MENU_REDRAW_INDEX;
   win_menu->actions |= WA_RECALC;
-
-  mutt_debug(LL_DEBUG5, "config done, request WA_RECALC\n");
+  mutt_debug(LL_DEBUG5, "config done, request WA_RECALC, MENU_REDRAW_INDEX\n");
   return 0;
 }
 
 /**
- * menu_window_observer - Listen for Window changes affecting the menu - Implements ::observer_t
+ * menu_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 static int menu_window_observer(struct NotifyCallback *nc)
 {
-  if (!nc->event_data || !nc->global_data)
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_type != NT_WINDOW)
-    return 0;
 
   struct Menu *menu = nc->global_data;
   if (nc->event_subtype == NT_WINDOW_STATE)
@@ -110,7 +103,7 @@ static int menu_window_observer(struct NotifyCallback *nc)
 
     win->actions |= WA_REPAINT;
     mutt_debug(LL_DEBUG5,
-               "window done, request MENU_REDRAW_INDEX, WA_REPAINT\n");
+               "window state done, request MENU_REDRAW_INDEX, WA_REPAINT\n");
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
