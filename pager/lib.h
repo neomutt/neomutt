@@ -25,11 +25,15 @@
  *
  * GUI Display contents of an email or help
  *
- * | File               | Description              |
- * | :----------------- | :----------------------- |
- * | pager/config.c     | @subpage pager_config    |
- * | pager/do_pager.c   | @subpage pager_dopager   |
- * | pager/pager.c      | @subpage pager_pager     |
+ * | File                 | Description                 |
+ * | :------------------- | :-------------------------- |
+ * | pager/config.c       | @subpage pager_config       |
+ * | pager/dlg_pager.c    | @subpage pager_pager        |
+ * | pager/do_pager.c     | @subpage pager_dopager      |
+ * | pager/pager.c        | @subpage pager_pager        |
+ * | pager/pbar.c         | @subpage pager_pbar         |
+ * | pager/ppanel.c       | @subpage pager_ppanel       |
+ * | pager/private_data.c | @subpage pager_private_data |
  */
 
 #ifndef MUTT_PAGER_LIB_H
@@ -43,6 +47,7 @@
 #include "mutt/lib.h"
 
 struct IndexSharedData;
+struct PagerPrivateData;
 
 typedef uint16_t PagerFlags;              ///< Flags for mutt_pager(), e.g. #MUTT_SHOWFLAT
 #define MUTT_PAGER_NO_FLAGS         0     ///< No flags are set
@@ -160,38 +165,6 @@ struct PagerView
   struct MuttWindow *win_pager;
 };
 
-/**
- * struct PagerRedrawData - Keep track when the pager needs redrawing
- */
-struct PagerRedrawData
-{
-  struct PagerView *pview;
-  int indexlen;
-  int indicator; ///< the indicator line of the PI
-  int oldtopline;
-  int lines;
-  int max_line;
-  int last_line;
-  int curline;
-  int topline;
-  bool force_redraw;
-  int has_types;
-  PagerFlags hide_quoted;
-  int q_level;
-  struct QClass *quote_list;
-  LOFF_T last_pos;
-  LOFF_T last_offset;
-  struct Menu *menu; ///< the Pager Index (PI)
-  regex_t search_re;
-  bool search_compiled;
-  PagerFlags search_flag;
-  bool search_back;
-  char searchbuf[256];
-  struct Line *line_info;
-  FILE *fp;
-  struct stat sb;
-};
-
 typedef uint8_t NotifyPager;         ///< Flags, e.g. #NT_PAGER_ACCOUNT
 #define NT_PAGER_NO_FLAGS        0   ///< No flags are set
 #define NT_PAGER_CONFIG    (1 << 0)  ///< Config subset has changed
@@ -205,7 +178,8 @@ typedef uint8_t NotifyPager;         ///< Flags, e.g. #NT_PAGER_ACCOUNT
 int mutt_pager(struct PagerView *pview);
 int mutt_do_pager(struct PagerView *pview);
 void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src, bool strip_markers);
-struct MuttWindow *create_panel_pager(bool status_on_top, struct IndexSharedData *shared);
+struct MuttWindow *ppanel_new(bool status_on_top, struct IndexSharedData *shared);
+struct MuttWindow *pager_window_new(struct MuttWindow *parent, struct IndexSharedData *shared, struct PagerPrivateData *priv);
 
 void mutt_clear_pager_position(void);
 

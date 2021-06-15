@@ -66,17 +66,16 @@ static int pbar_recalc(struct MuttWindow *win)
   struct PBarPrivateData *pbar_data = win->wdata;
   struct IndexSharedData *shared = pbar_data->shared;
   struct PagerPrivateData *priv = pbar_data->priv;
-  struct PagerRedrawData *rd = priv->rd;
 
   char pager_progress_str[65]; /* Lots of space for translations */
-  if (rd->last_pos < rd->sb.st_size - 1)
+  if (priv->last_pos < priv->sb.st_size - 1)
   {
     snprintf(pager_progress_str, sizeof(pager_progress_str), OFF_T_FMT "%%",
-             (100 * rd->last_offset / rd->sb.st_size));
+             (100 * priv->last_offset / priv->sb.st_size));
   }
   else
   {
-    const char *msg = (rd->topline == 0) ?
+    const char *msg = (priv->topline == 0) ?
                           /* L10N: Status bar message: the entire email is visible in the pager */
                           _("all") :
                           /* L10N: Status bar message: the end of the email is visible in the pager */
@@ -84,7 +83,7 @@ static int pbar_recalc(struct MuttWindow *win)
     mutt_str_copy(pager_progress_str, msg, sizeof(pager_progress_str));
   }
 
-  if ((rd->pview->mode == PAGER_MODE_EMAIL) || (rd->pview->mode == PAGER_MODE_ATTACH_E))
+  if ((priv->pview->mode == PAGER_MODE_EMAIL) || (priv->pview->mode == PAGER_MODE_ATTACH_E))
   {
     int msg_in_pager = shared->ctx ? shared->ctx->msg_in_pager : -1;
 
@@ -95,7 +94,7 @@ static int pbar_recalc(struct MuttWindow *win)
   }
   else
   {
-    snprintf(buf, sizeof(buf), "%s (%s)", rd->pview->banner, pager_progress_str);
+    snprintf(buf, sizeof(buf), "%s (%s)", priv->pview->banner, pager_progress_str);
   }
 
   if (!mutt_str_equal(buf, pbar_data->pager_format))
@@ -165,7 +164,7 @@ static int pbar_config_observer(struct NotifyCallback *nc)
     return 0;
 
   struct EventConfig *ev_c = nc->event_data;
-  if ((ev_c->name[0] != 's') && (ev_c->name[0] != 't'))
+  if (!mutt_str_equal(ev_c->name, "pager_format"))
     return 0;
 
   struct MuttWindow *win_pbar = nc->global_data;
@@ -266,24 +265,52 @@ static int pbar_menu_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * pbar_window_observer - Listen for changes to the Window - Implements ::observer_t
+ */
+static int pbar_window_observer(struct NotifyCallback *nc)
+{
+  if (!nc->event_data || !nc->global_data)
+    return -1;
+  if (nc->event_type != NT_WINDOW)
+    return 0;
+
+  struct MuttWindow *win_pbar = nc->global_data;
+
+  if (nc->event_subtype == NT_WINDOW_STATE)
+  {
+    win_pbar->actions |= WA_RECALC;
+    mutt_debug(LL_NOTIFY, "state change, request WA_RECALC\n");
+  }
+  else if (nc->event_subtype == NT_WINDOW_DELETE)
+  {
+    struct PBarPrivateData *pbar_data = win_pbar->wdata;
+
+    struct IndexSharedData *shared = pbar_data->shared;
+    struct PagerPrivateData *priv = pbar_data->priv;
+
+    notify_observer_remove(NeoMutt->notify, pbar_color_observer, win_pbar);
+    notify_observer_remove(NeoMutt->notify, pbar_config_observer, win_pbar);
+    notify_observer_remove(shared->notify, pbar_pager_observer, win_pbar);
+    if (priv->win_pbar)
+      notify_observer_remove(priv->win_pbar->parent->notify, pbar_menu_observer, win_pbar);
+
+    if (shared->mailbox)
+      notify_observer_remove(shared->mailbox->notify, pbar_mailbox_observer, win_pbar);
+    if (shared->email)
+      notify_observer_remove(shared->email->notify, pbar_email_observer, win_pbar);
+
+    mutt_debug(LL_DEBUG5, "window delete done\n");
+  }
+
+  return 0;
+}
+
+/**
  * pbar_data_free - Free the private data attached to the MuttWindow - Implements MuttWindow::wdata_free()
  */
 static void pbar_data_free(struct MuttWindow *win, void **ptr)
 {
   struct PBarPrivateData *pbar_data = *ptr;
-  struct IndexSharedData *shared = pbar_data->shared;
-  struct PagerPrivateData *priv = pbar_data->priv;
-
-  notify_observer_remove(NeoMutt->notify, pbar_color_observer, win);
-  notify_observer_remove(NeoMutt->notify, pbar_config_observer, win);
-  notify_observer_remove(shared->notify, pbar_pager_observer, win);
-  if (priv->win_pbar)
-    notify_observer_remove(priv->win_pbar->parent->notify, pbar_menu_observer, win);
-
-  if (shared->mailbox)
-    notify_observer_remove(shared->mailbox->notify, pbar_mailbox_observer, win);
-  if (shared->email)
-    notify_observer_remove(shared->email->notify, pbar_email_observer, win);
 
   FREE(&pbar_data->pager_format);
 
@@ -327,6 +354,7 @@ struct MuttWindow *pbar_new(struct MuttWindow *parent, struct IndexSharedData *s
   notify_observer_add(NeoMutt->notify, NT_CONFIG, pbar_config_observer, win_pbar);
   notify_observer_add(shared->notify, NT_PAGER, pbar_pager_observer, win_pbar);
   notify_observer_add(parent->notify, NT_MENU, pbar_menu_observer, win_pbar);
+  notify_observer_add(win_pbar->notify, NT_WINDOW, pbar_window_observer, win_pbar);
 
   if (shared->mailbox)
     notify_observer_add(shared->mailbox->notify, NT_MAILBOX, pbar_mailbox_observer, win_pbar);

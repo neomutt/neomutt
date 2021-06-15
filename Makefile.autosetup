@@ -392,7 +392,8 @@ $(PWD)/imap:
 ###############################################################################
 # libindex
 LIBINDEX=	libindex.a
-LIBINDEXOBJS=	index/ibar.o index/config.o index/index.o index/private_data.o index/shared_data.o index/observer.o
+LIBINDEXOBJS=	index/config.o index/dlg_index.o index/ibar.o index/index.o \
+		index/ipanel.o index/private_data.o index/shared_data.o
 CLEANFILES+=	$(LIBINDEX) $(LIBINDEXOBJS)
 ALLOBJS+=	$(LIBINDEXOBJS)
 
@@ -521,7 +522,8 @@ $(PWD)/notmuch:
 ###############################################################################
 # libpager
 LIBPAGER=	libpager.a
-LIBPAGEROBJS=	pager/config.o pager/do_pager.o pager/pager.o pager/pbar.o pager/private_data.o
+LIBPAGEROBJS=	pager/config.o pager/dlg_pager.o pager/do_pager.o \
+		pager/pager.o pager/pbar.o pager/ppanel.o pager/private_data.o
 CLEANFILES+=	$(LIBPAGER) $(LIBPAGEROBJS)
 ALLOBJS+=	$(LIBPAGEROBJS)
 

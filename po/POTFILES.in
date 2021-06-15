@@ -142,9 +142,10 @@ imap/search.c
 imap/utf7.c
 imap/util.c
 index/config.c
+index/dlg_index.c
 index/ibar.c
 index/index.c
-index/observer.c
+index/ipanel.c
 index/private_data.c
 index/shared_data.c
 init.c
@@ -249,9 +250,11 @@ notmuch/tag.c
 opcodes.c
 opcodes.h
 pager/config.c
+pager/dlg_pager.c
 pager/do_pager.c
 pager/pager.c
 pager/pbar.c
+pager/ppanel.c
 pager/private_data.c
 pattern/compile.c
 pattern/config.c
