@@ -140,9 +140,9 @@ static int ibar_color_observer(struct NotifyCallback *nc)
     return -1;
 
   struct EventColor *ev_c = nc->event_data;
-  enum ColorId color = ev_c->color;
 
-  if (color != MT_COLOR_STATUS)
+  // MT_COLOR_MAX is sent on `uncolor *`
+  if ((ev_c->color != MT_COLOR_STATUS) && (ev_c->color != MT_COLOR_MAX))
     return 0;
 
   struct MuttWindow *win_ibar = nc->global_data;
