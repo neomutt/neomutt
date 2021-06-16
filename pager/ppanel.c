@@ -121,8 +121,12 @@ static int ppanel_window_observer(struct NotifyCallback *nc)
 
   struct MuttWindow *panel_pager = nc->global_data;
 
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != panel_pager)
+    return 0;
+
   notify_observer_remove(NeoMutt->notify, ppanel_config_observer, panel_pager);
-  notify_observer_remove(NeoMutt->notify, ppanel_window_observer, panel_pager);
+  notify_observer_remove(panel_pager->notify, ppanel_window_observer, panel_pager);
   mutt_debug(LL_DEBUG5, "window delete done\n");
 
   return 0;
@@ -161,7 +165,7 @@ struct MuttWindow *ppanel_new(bool status_on_top, struct IndexSharedData *shared
   }
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, ppanel_config_observer, panel_pager);
-  notify_observer_add(NeoMutt->notify, NT_WINDOW, ppanel_window_observer, panel_pager);
+  notify_observer_add(panel_pager->notify, NT_WINDOW, ppanel_window_observer, panel_pager);
 
   return panel_pager;
 }

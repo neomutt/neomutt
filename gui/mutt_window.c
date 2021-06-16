@@ -490,10 +490,7 @@ struct MuttWindow *mutt_window_remove_child(struct MuttWindow *parent, struct Mu
   if (!parent || !child)
     return NULL;
 
-  mutt_debug(LL_NOTIFY, "NT_WINDOW_DELETE: %s, %p\n", mutt_window_win_name(child), child);
-  struct EventWindow ev_w = { child, WN_NO_FLAGS };
-  notify_send(child->notify, NT_WINDOW, NT_WINDOW_DELETE, &ev_w);
-
+  // A notification will be sent when the Window is freed
   TAILQ_REMOVE(&parent->children, child, entries);
   child->parent = NULL;
 
