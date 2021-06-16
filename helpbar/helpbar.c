@@ -112,8 +112,7 @@ static char *compile_help(char *buf, size_t buflen, enum MenuType menu,
 }
 
 /**
- * helpbar_recalc - Recalculate the display of the Help Bar
- * @param win Help Bar Window
+ * helpbar_recalc - Recalculate the display of the Help Bar - Implements MuttWindow::recalc()
  *
  * Generate the help string from data on the focused Window.
  * The Help Bar isn't drawn, yet.
@@ -150,8 +149,7 @@ static int helpbar_recalc(struct MuttWindow *win)
 }
 
 /**
- * helpbar_repaint - Redraw the Help Bar
- * @param win Help Bar Window
+ * helpbar_repaint - Redraw the Help Bar - Implements MuttWindow::repaint()
  *
  * The Help Bar is drawn from the data cached in the HelpbarWindowData.
  * No calculation is performed.

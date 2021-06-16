@@ -47,8 +47,7 @@ struct MsgWinPrivateData
 };
 
 /**
- * msgwin_recalc - Recalculate the display of the Message Window
- * @param win Message Window
+ * msgwin_recalc - Recalculate the display of the Message Window - Implements MuttWindow::recalc()
  */
 static int msgwin_recalc(struct MuttWindow *win)
 {
@@ -61,8 +60,7 @@ static int msgwin_recalc(struct MuttWindow *win)
 }
 
 /**
- * msgwin_repaint - Redraw the Message Window
- * @param win Message Window
+ * msgwin_repaint - Redraw the Message Window - Implements MuttWindow::repaint()
  */
 static int msgwin_repaint(struct MuttWindow *win)
 {
