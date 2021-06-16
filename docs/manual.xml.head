@@ -16198,6 +16198,89 @@ bind index &gt; vfolder-window-forward
       </sect2>
     </sect1>
 
+    <sect1 id="pager-read-delay-feature">
+      <title>Pager Read Delay Feature</title>
+      <subtitle>Delay when the pager marks a previewed message as
+      read</subtitle>
+
+      <sect2 id="pager-read-delay-support">
+        <title>Support</title>
+        <para>
+          <emphasis role="bold">Since:</emphasis> NeoMutt 2021-06-16
+        </para>
+        <para>
+          <emphasis role="bold">Dependencies:</emphasis> None
+        </para>
+      </sect2>
+
+      <sect2 id="pager-read-delay-intro">
+        <title>Introduction</title>
+        <para>
+          The <quote>Pager Read Delay</quote> feature adds a new
+          config variable to allow the pager to operate in a preview
+          mode.  A new message is not marked as read merely because
+          the pager opened it, but only after the pager remains on the
+          message for a given length of time.
+        </para>
+      </sect2>
+
+      <sect2 id="pager-read-delay-functions">
+        <title>Functions</title>
+        <para>
+          The <quote>Pager Read Delay</quote> feature adds no new
+          functions NeoMutt.  Existing pager functions for navigating
+          to a different message now check whether to mark a message
+          as read.
+        </para>
+      </sect2>
+
+      <sect2 id="pager-read-delay-variables">
+        <title>Variables</title>
+        <para>
+          The <quote>Pager Read Delay</quote> feature adds one new
+          config variable,
+          <link linkend="pager-read-delay">$pager_read_delay</link>, which
+          is an integer for how many seconds the pager must remain on
+          a given message before marking it as read.  The variable
+          defaults to 0 for the original behavior of marking a message
+          as read the moment the pager visits it.
+        </para>
+      </sect2>
+
+      <sect2 id="pager-read-delay-neomuttrc">
+        <title>neomuttrc</title>
+
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the pager-read-delay feature.</emphasis>
+
+<emphasis role="comment"># Stay at least 5 seconds on a message before
+the pager marks it as read</emphasis>
+set pager_read_delay = 5
+
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+</screen>
+
+      </sect2>
+
+      <sect2 id="pager-read-delay-known-bugs">
+        <title>Known Bugs</title>
+        <para>
+          When <link linkend="pager-index-lines">$pager_index_lines</link> is
+          non-zero, the <quote>N</quote> status indicator from the
+          <quote>%Z</quote> expando of <link
+          linkend="index-format">$index_format</link> does not
+          actively reflect the current new/read status of the message.
+        </para>
+      </sect2>
+
+      <sect2 id="pager-read-delay-credits">
+        <title>Credits</title>
+        <para>
+          Eric Blake
+        </para>
+      </sect2>
+    </sect1>
+
     <sect1 id="progress">
       <title>Progress Bar Feature</title>
       <subtitle>Show a visual progress bar on slow operations</subtitle>
