@@ -63,9 +63,12 @@ static int simple_window_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
     return -1;
 
-  struct MuttWindow *dlg = nc->global_data;
-
   if (nc->event_subtype != NT_WINDOW_DELETE)
+    return 0;
+
+  struct MuttWindow *dlg = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != dlg)
     return 0;
 
   notify_observer_remove(NeoMutt->notify, simple_config_observer, dlg);

@@ -256,6 +256,9 @@ static int index_window_observer(struct NotifyCallback *nc)
     return 0;
 
   struct MuttWindow *win = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != win)
+    return 0;
 
   notify_observer_remove(NeoMutt->notify, index_altern_observer, win);
   notify_observer_remove(NeoMutt->notify, index_attach_observer, win);

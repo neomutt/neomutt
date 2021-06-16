@@ -291,7 +291,7 @@ static int helpbar_window_observer(struct NotifyCallback *nc)
     notify_observer_remove(NeoMutt->notify, helpbar_binding_observer, win_helpbar);
     notify_observer_remove(NeoMutt->notify, helpbar_color_observer, win_helpbar);
     notify_observer_remove(NeoMutt->notify, helpbar_config_observer, win_helpbar);
-    notify_observer_remove(NeoMutt->notify, helpbar_window_observer, win_helpbar);
+    notify_observer_remove(RootWindow->notify, helpbar_window_observer, win_helpbar);
     mutt_debug(LL_DEBUG5, "window delete done\n");
   }
 
@@ -320,6 +320,6 @@ struct MuttWindow *helpbar_new(void)
   notify_observer_add(NeoMutt->notify, NT_BINDING, helpbar_binding_observer, win);
   notify_observer_add(NeoMutt->notify, NT_COLOR, helpbar_color_observer, win);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, helpbar_config_observer, win);
-  notify_observer_add(NeoMutt->notify, NT_WINDOW, helpbar_window_observer, win);
+  notify_observer_add(RootWindow->notify, NT_WINDOW, helpbar_window_observer, win);
   return win;
 }

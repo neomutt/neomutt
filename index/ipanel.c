@@ -73,7 +73,6 @@ static int ipanel_window_observer(struct NotifyCallback *nc)
     return 0;
 
   struct MuttWindow *panel_index = nc->global_data;
-
   struct EventWindow *ev_w = nc->event_data;
   if (ev_w->win != panel_index)
     return 0;

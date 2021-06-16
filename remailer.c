@@ -589,6 +589,9 @@ static int remailer_window_observer(struct NotifyCallback *nc)
     return 0;
 
   struct MuttWindow *dlg = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != dlg)
+    return 0;
 
   notify_observer_remove(NeoMutt->notify, remailer_config_observer, dlg);
   notify_observer_remove(dlg->notify, remailer_window_observer, dlg);

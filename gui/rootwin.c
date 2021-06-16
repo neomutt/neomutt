@@ -94,11 +94,9 @@ static int rootwin_window_observer(struct NotifyCallback *nc)
   if (ev_w->win != win_root)
     return 0;
 
+  notify_observer_remove(win_root->notify, rootwin_window_observer, win_root);
   if (NeoMutt)
-  {
     notify_observer_remove(NeoMutt->notify, rootwin_config_observer, win_root);
-    notify_observer_remove(NeoMutt->notify, rootwin_window_observer, win_root);
-  }
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
   return 0;
@@ -122,6 +120,7 @@ void rootwin_new(void)
   struct MuttWindow *win_root =
       mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 0, 0);
   notify_set_parent(win_root->notify, NeoMutt->notify);
+  RootWindow = win_root;
 
   struct MuttWindow *win_helpbar = helpbar_new();
   struct MuttWindow *win_alldlgs = alldialogs_new();
@@ -142,9 +141,7 @@ void rootwin_new(void)
   mutt_window_add_child(win_root, win_msg);
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, rootwin_config_observer, win_root);
-  notify_observer_add(NeoMutt->notify, NT_WINDOW, rootwin_window_observer, win_root);
-
-  RootWindow = win_root;
+  notify_observer_add(win_root->notify, NT_WINDOW, rootwin_window_observer, win_root);
 }
 
 /**

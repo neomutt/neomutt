@@ -270,6 +270,9 @@ static int pbar_window_observer(struct NotifyCallback *nc)
     return -1;
 
   struct MuttWindow *win_pbar = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != win_pbar)
+    return 0;
 
   if (nc->event_subtype == NT_WINDOW_STATE)
   {
@@ -279,15 +282,13 @@ static int pbar_window_observer(struct NotifyCallback *nc)
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
     struct PBarPrivateData *pbar_data = win_pbar->wdata;
-
     struct IndexSharedData *shared = pbar_data->shared;
-    struct PagerPrivateData *priv = pbar_data->priv;
 
     notify_observer_remove(NeoMutt->notify, pbar_color_observer, win_pbar);
     notify_observer_remove(NeoMutt->notify, pbar_config_observer, win_pbar);
     notify_observer_remove(shared->notify, pbar_pager_observer, win_pbar);
-    if (priv->win_pbar)
-      notify_observer_remove(priv->win_pbar->parent->notify, pbar_menu_observer, win_pbar);
+    notify_observer_remove(win_pbar->parent->notify, pbar_menu_observer, win_pbar);
+    notify_observer_remove(win_pbar->notify, pbar_window_observer, win_pbar);
 
     if (shared->mailbox)
       notify_observer_remove(shared->mailbox->notify, pbar_mailbox_observer, win_pbar);

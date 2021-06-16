@@ -198,6 +198,10 @@ int alias_window_observer(struct NotifyCallback *nc)
     return 0;
 
   struct MuttWindow *win_menu = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != win_menu)
+    return 0;
+
   struct Menu *menu = win_menu->wdata;
 
   notify_observer_remove(NeoMutt->notify, alias_alias_observer, menu);
