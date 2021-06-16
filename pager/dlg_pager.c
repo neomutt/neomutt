@@ -2375,8 +2375,6 @@ int mutt_pager(struct PagerView *pview)
       //  - fp and body->email in special case of viewing an attached email.
       assert(pview->pdata->email); // This should point to the top level email
       assert(pview->pdata->body);
-      assert(pview->pdata->ctx);
-      assert(pview->pdata->ctx->mailbox);
       if (pview->pdata->fp && pview->pdata->body->email)
       {
         // Special case: attachment is a full-blown email message.
