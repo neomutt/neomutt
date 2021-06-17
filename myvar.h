@@ -41,6 +41,7 @@ extern struct MyVarList MyVars; ///< List of all the user's custom config variab
 void        myvar_del(const char *var);
 const char *myvar_get(const char *var);
 void        myvar_set(const char *var, const char *val);
+void        myvar_append(const char *var, const char *val);
 
 void myvarlist_free(struct MyVarList *list);
 

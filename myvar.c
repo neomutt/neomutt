@@ -121,6 +121,25 @@ void myvar_set(const char *var, const char *val)
 }
 
 /**
+ * myvar_append - Append to the value of a "my_" variable
+ * @param var Variable name
+ * @param val Value to append
+ */
+void myvar_append(const char *var, const char *val)
+{
+  struct MyVar *myv = myvar_find(var);
+
+  if (myv)
+  {
+    mutt_str_append_item(&myv->value, val, '\0');
+    return;
+  }
+
+  myv = myvar_new(var, val);
+  TAILQ_INSERT_TAIL(&MyVars, myv, entries);
+}
+
+/**
  * myvar_del - Unset the value of a "my_" variable
  * @param var Variable name
  */

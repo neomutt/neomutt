@@ -29,6 +29,7 @@
  */
 
 #include "config.h"
+#include <assert.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
@@ -789,6 +790,11 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       else
         decrement = true;
 
+      if (my && decrement)
+      {
+        mutt_buffer_printf(err, _("Can't decrement a my_ variable"), set_commands[data]);
+        return MUTT_CMD_WARNING;
+      }
       s->dptr++;
       if (*s->dptr == '=')
       {
@@ -894,7 +900,15 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
         mutt_extract_token(buf, s, MUTT_TOKEN_BACKTICK_VARS);
         if (my)
         {
-          myvar_set(name, buf->data);
+          assert(!decrement);
+          if (increment)
+          {
+            myvar_append(name, buf->data);
+          }
+          else
+          {
+            myvar_set(name, buf->data);
+          }
           FREE(&name);
         }
         else
