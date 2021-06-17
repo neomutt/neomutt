@@ -2434,6 +2434,11 @@ int mutt_pager(struct PagerView *pview)
   uint64_t delay_read_timestamp = 0;
 
   struct PagerPrivateData *priv = pview->win_pager->parent->wdata;
+
+  // Wipe any previous state info
+  struct Menu *menu = priv->menu;
+  memset(priv, 0, sizeof(*priv));
+  priv->menu = menu;
   priv->win_pbar = pview->win_pbar;
 
   //---------- setup flags ----------------------------------------------------
