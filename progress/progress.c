@@ -219,9 +219,6 @@ void progress_update(struct Progress *progress, size_t pos, int percent)
         mutt_message("%s %s", progress->msg, posstr);
     }
   }
-
-  if (progress->pos >= progress->size)
-    mutt_clear_error();
 }
 
 /**
@@ -233,6 +230,7 @@ void progress_free(struct Progress **ptr)
   if (!ptr || !*ptr)
     return;
 
+  mutt_clear_error();
   // struct Progress *progress = *ptr;
 
   FREE(ptr);
