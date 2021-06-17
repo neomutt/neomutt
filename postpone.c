@@ -333,7 +333,6 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
   int rc = SEND_POSTPONED;
   const char *p = NULL;
 
-  struct Context *ctx = NULL;
   struct Mailbox *m = mx_path_resolve(c_postponed);
   if (m_cur != m)
   {
@@ -344,29 +343,26 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
       mailbox_free(&m);
       return -1;
     }
-    ctx = ctx_new(m);
   }
 
-  /* TODO:
-   * mx_mbox_open() for IMAP leaves IMAP_REOPEN_ALLOW set.  For the
-   * index this is papered-over because it calls mx_check_mailbox()
-   * every event loop(which resets that flag).
-   *
-   * For a stable-branch fix, I'm doing the same here, to prevent
-   * context changes from occuring behind the scenes and causing
-   * segvs, but probably the flag needs to be reset after downloading
-   * headers in imap_open_mailbox().
-   */
   mx_mbox_check(m);
 
   if (m->msg_count == 0)
   {
     PostCount = 0;
     mutt_error(_("No postponed messages"));
-    rc = -1;
-    goto cleanup;
+    if (m_cur != m)
+    {
+      mx_fastclose_mailbox(m);
+    }
+    return -1;
   }
 
+  /* avoid the "purge deleted messages" prompt */
+  const enum QuadOption c_delete = cs_subset_quad(NeoMutt->sub, "delete");
+  cs_subset_str_native_set(NeoMutt->sub, "delete", MUTT_YES, NULL);
+
+  struct Context *ctx = (m_cur != m) ? ctx_new(m) : NULL;
   if (m->msg_count == 1)
   {
     /* only one message, so just use that one. */
@@ -390,11 +386,6 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
 
   /* update the count for the status display */
   PostCount = m->msg_count - m->msg_deleted;
-
-  /* avoid the "purge deleted messages" prompt */
-  const enum QuadOption c_delete = cs_subset_quad(NeoMutt->sub, "delete");
-  cs_subset_str_native_set(NeoMutt->sub, "delete", MUTT_YES, NULL);
-  cs_subset_str_native_set(NeoMutt->sub, "delete", c_delete, NULL);
 
   struct ListNode *np = NULL, *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &hdr->env->userhdrs, entries, tmp)
@@ -472,16 +463,11 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
 cleanup:
   if (m_cur != m)
   {
-    if (e)
-    {
-      mx_fastclose_mailbox(m);
-    }
-    else
-    {
-      hardclose(m);
-    }
+    hardclose(m);
     ctx_free(&ctx);
   }
+
+  cs_subset_str_native_set(NeoMutt->sub, "delete", c_delete, NULL);
   return rc;
 }
 
