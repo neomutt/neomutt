@@ -833,9 +833,11 @@ static int env_window_observer(struct NotifyCallback *nc)
  * compose_env_new - Create the Envelope Window
  * @param parent Parent Window
  * @param shared Shared compose data
+ * @param fcc    Buffer to save FCC
  * @retval ptr New Window
  */
-struct MuttWindow *compose_env_new(struct MuttWindow *parent, struct ComposeSharedData *shared)
+struct MuttWindow *compose_env_new(struct MuttWindow *parent,
+                                   struct ComposeSharedData *shared, struct Buffer *fcc)
 {
   struct MuttWindow *win_env =
       mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
@@ -848,6 +850,7 @@ struct MuttWindow *compose_env_new(struct MuttWindow *parent, struct ComposeShar
   notify_observer_add(win_env->notify, NT_WINDOW, env_window_observer, win_env);
 
   struct ComposeEnvelopeData *env_data = env_data_new();
+  env_data->fcc = fcc;
 
   shared->edata = env_data;
 

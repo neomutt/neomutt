@@ -68,13 +68,14 @@ enum HeaderField
 };
 
 struct AttachCtx;
-struct ConfigSubset;
+struct Buffer;
 struct ComposeAttachData;
 struct ComposeSharedData;
-struct MuttWindow;
+struct ConfigSubset;
 struct Menu;
+struct MuttWindow;
 
-struct MuttWindow *compose_env_new(struct MuttWindow *parent, struct ComposeSharedData *shared);
+struct MuttWindow *compose_env_new(struct MuttWindow *parent, struct ComposeSharedData *shared, struct Buffer *fcc);
 struct MuttWindow *attach_new(struct MuttWindow *parent, struct ComposeSharedData *shared);
 unsigned long cum_attachs_size(struct ConfigSubset *sub, struct ComposeAttachData *adata);
 int num_attachments(struct ComposeAttachData *adata);

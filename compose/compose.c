@@ -665,9 +665,13 @@ static void compose_attach_swap(struct Body *msg, struct AttachPtr **idx, short 
 
 /**
  * compose_dlg_init - Allocate the Windows for Compose
+ * @param sub  ConfigSubset
+ * @param e    Email
+ * @param fcc  Buffer to save FCC
  * @retval ptr Dialog containing nested Windows
  */
-static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub, struct Email *e)
+static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
+                                           struct Email *e, struct Buffer *fcc)
 {
   struct ComposeSharedData *shared = compose_shared_data_new();
   shared->sub = sub;
@@ -679,7 +683,7 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub, struct Emai
   dlg->wdata = shared;
   dlg->wdata_free = compose_shared_data_free;
 
-  struct MuttWindow *win_env = compose_env_new(dlg, shared);
+  struct MuttWindow *win_env = compose_env_new(dlg, shared, fcc);
   struct MuttWindow *win_attach = attach_new(dlg, shared);
   struct MuttWindow *win_cbar = cbar_new(dlg, shared);
   struct MuttWindow *win_abar = sbar_new(dlg);
@@ -732,7 +736,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   bool news = OptNewsSend; /* is it a news article ? */
 #endif
 
-  struct MuttWindow *dlg = compose_dlg_init(sub, e);
+  struct MuttWindow *dlg = compose_dlg_init(sub, e, fcc);
 #ifdef USE_NNTP
   if (news)
     dlg->help_data = ComposeNewsHelp;
