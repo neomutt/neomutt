@@ -992,7 +992,8 @@ static int imap_verify_qresync(struct Mailbox *m)
   for (int i = 0; i < m->msg_count; i++)
   {
     e = m->emails[i];
-    if (!e)
+    const struct ImapEmailData *edata = imap_edata_get(e);
+    if (!edata)
       goto fail;
 
     msn = imap_edata_get(e)->msn;
