@@ -421,8 +421,10 @@ void mutt_hash_delete(struct HashTable *table, const char *strkey, const void *d
   if (!table || !strkey)
     return;
   union HashKey key;
-  key.strkey = strkey;
+  // Copy the key because union_hash_delete() may use it after the HashElem is freed.
+  key.strkey = mutt_str_dup(strkey);
   union_hash_delete(table, key, data);
+  FREE(&key.strkey);
 }
 
 /**
