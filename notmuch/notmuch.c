@@ -2250,6 +2250,7 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
     if (!ok)
     {
       // Syncing file failed, query notmuch for new filepath.
+      m->type = MUTT_NOTMUCH;
       notmuch_database_t *db = nm_db_get(m, true);
       if (db)
       {
@@ -2257,9 +2258,13 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
 
         sync_email_path_with_nm(e, msg);
 
+        mutt_buffer_strcpy(&m->pathbuf, edata->folder);
+        m->type = edata->type;
         ok = maildir_sync_mailbox_message(m, i, h);
+        m->type = MUTT_NOTMUCH;
       }
       nm_db_release(m);
+      m->type = edata->type;
     }
 
     mutt_buffer_strcpy(&m->pathbuf, url);
@@ -2268,7 +2273,6 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
     if (!ok)
     {
       mh_sync_errors += 1;
-      rc = MX_STATUS_ERROR;
       continue;
     }
 
