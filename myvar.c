@@ -65,6 +65,25 @@ static void myvar_free(struct MyVar **ptr)
 }
 
 /**
+ * myvar_find - Locate a "my_" variable
+ * @param var Variable name
+ * @retval ptr  Success, variable exists
+ * @retval NULL Error, variable doesn't exist
+ */
+static struct MyVar *myvar_find(const char *var)
+{
+  struct MyVar *myv = NULL;
+
+  TAILQ_FOREACH(myv, &MyVars, entries)
+  {
+    if (mutt_str_equal(myv->name, var))
+      return myv;
+  }
+
+  return NULL;
+}
+
+/**
  * myvar_get - Get the value of a "my_" variable
  * @param var Variable name
  * @retval ptr  Success, value of variable
@@ -72,12 +91,11 @@ static void myvar_free(struct MyVar **ptr)
  */
 const char *myvar_get(const char *var)
 {
-  struct MyVar *myv = NULL;
+  struct MyVar *myv = myvar_find(var);
 
-  TAILQ_FOREACH(myv, &MyVars, entries)
+  if (myv)
   {
-    if (mutt_str_equal(myv->name, var))
-      return NONULL(myv->value);
+    return NONULL(myv->value);
   }
 
   return NULL;
@@ -90,15 +108,12 @@ const char *myvar_get(const char *var)
  */
 void myvar_set(const char *var, const char *val)
 {
-  struct MyVar *myv = NULL;
+  struct MyVar *myv = myvar_find(var);
 
-  TAILQ_FOREACH(myv, &MyVars, entries)
+  if (myv)
   {
-    if (mutt_str_equal(myv->name, var))
-    {
-      mutt_str_replace(&myv->value, val);
-      return;
-    }
+    mutt_str_replace(&myv->value, val);
+    return;
   }
 
   myv = myvar_new(var, val);
@@ -111,16 +126,12 @@ void myvar_set(const char *var, const char *val)
  */
 void myvar_del(const char *var)
 {
-  struct MyVar *myv = NULL;
+  struct MyVar *myv = myvar_find(var);
 
-  TAILQ_FOREACH(myv, &MyVars, entries)
+  if (myv)
   {
-    if (mutt_str_equal(myv->name, var))
-    {
-      TAILQ_REMOVE(&MyVars, myv, entries);
-      myvar_free(&myv);
-      return;
-    }
+    TAILQ_REMOVE(&MyVars, myv, entries);
+    myvar_free(&myv);
   }
 }
 
