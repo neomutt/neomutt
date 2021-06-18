@@ -567,6 +567,23 @@ struct MuttWindow *window_find_child(struct MuttWindow *win, enum WindowType typ
 }
 
 /**
+ * window_find_parent - Find a (grand-)parent of a Window by type
+ * @param win  Window
+ * @param type Window type, e.g. #WT_DLG_INDEX
+ * @retval ptr Window
+ */
+struct MuttWindow *window_find_parent(struct MuttWindow *win, enum WindowType type)
+{
+  for (; win; win = win->parent)
+  {
+    if (win->type == type)
+      return win;
+  }
+
+  return NULL;
+}
+
+/**
  * window_recalc - Recalculate a tree of Windows
  * @param win Window to start at
  */
