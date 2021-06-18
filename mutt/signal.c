@@ -262,3 +262,30 @@ void mutt_sig_allow_interrupt(bool allow)
 #endif
   sigaction(SIGINT, &sa, NULL);
 }
+
+/**
+ * mutt_sig_reset_child_signals - Reset ignored signals back to the default
+ *
+ * See sigaction(2):
+ *   A child created via fork(2) inherits a copy of its parent's
+ *   signal dispositions.  During an execve(2), the dispositions of
+ *   handled signals are reset to the default; the dispositions of
+ *   ignored signals are left unchanged.
+ */
+void mutt_sig_reset_child_signals(void)
+{
+  struct sigaction sa = { 0 };
+
+  sa.sa_handler = SIG_DFL;
+  sa.sa_flags = 0;
+  sigemptyset(&sa.sa_mask);
+
+  /* These signals are set to SIG_IGN and must be reset */
+  sigaction(SIGPIPE, &sa, NULL);
+
+  /* These technically don't need to be reset, but the code has been
+   * doing so for a long time. */
+  sigaction(SIGTERM, &sa, NULL);
+  sigaction(SIGTSTP, &sa, NULL);
+  sigaction(SIGCONT, &sa, NULL);
+}

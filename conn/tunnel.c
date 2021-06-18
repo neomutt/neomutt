@@ -88,6 +88,7 @@ static int tunnel_socket_open(struct Connection *conn)
   if (pid == 0)
   {
     mutt_sig_unblock_system(false);
+    mutt_sig_reset_child_signals();
     const int fd_null = open("/dev/null", O_RDWR);
     if ((fd_null < 0) || (dup2(pout[0], STDIN_FILENO) < 0) ||
         (dup2(pin[1], STDOUT_FILENO) < 0) || (dup2(fd_null, STDERR_FILENO) < 0))

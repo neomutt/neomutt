@@ -110,6 +110,7 @@ pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_e
   if (pid == 0)
   {
     mutt_sig_unblock_system(false);
+    mutt_sig_reset_child_signals();
 
     if (fp_in)
     {
