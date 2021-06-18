@@ -96,6 +96,9 @@
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
+#ifdef USE_DEBUG_NOTIFY
+#include "debug/lib.h"
+#endif
 
 // clang-format off
 typedef uint8_t CliFlags;         ///< Flags for command line options, e.g. #MUTT_CLI_IGNORE

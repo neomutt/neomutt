@@ -2418,7 +2418,8 @@ int mutt_pager(struct PagerView *pview)
 
   //---------- local variables ------------------------------------------------
   struct Mailbox *m = pview->pdata->ctx ? pview->pdata->ctx->mailbox : NULL;
-  struct IndexSharedData *shared = dialog_find(pview->win_pager)->wdata;
+  struct MuttWindow *dlg = dialog_find(pview->win_pager);
+  struct IndexSharedData *shared = dlg->wdata;
 
   struct Menu *pager_menu = NULL;
   char buf[1024] = { 0 };
@@ -2529,7 +2530,7 @@ int mutt_pager(struct PagerView *pview)
     window_set_visible(priv->pview->win_index->parent, (index_space > 0));
   }
   window_set_visible(priv->pview->win_pager->parent, true);
-  mutt_window_reflow(dialog_find(priv->pview->win_pager));
+  mutt_window_reflow(dlg);
   window_set_focus(pview->win_pager);
 
   //---------- jump to the bottom if requested ------------------------------
@@ -4085,8 +4086,7 @@ int mutt_pager(struct PagerView *pview)
       case OP_SIDEBAR_PREV:
       case OP_SIDEBAR_PREV_NEW:
       {
-        struct MuttWindow *win_sidebar =
-            mutt_window_find(dialog_find(priv->pview->win_pager), WT_SIDEBAR);
+        struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
         if (!win_sidebar)
           break;
         sb_change_mailbox(win_sidebar, op);
@@ -4097,7 +4097,7 @@ int mutt_pager(struct PagerView *pview)
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
         bool_str_toggle(NeoMutt->sub, "sidebar_visible", NULL);
-        mutt_window_reflow(dialog_find(priv->pview->win_pager));
+        mutt_window_reflow(dlg);
         break;
 
         //=======================================================================
@@ -4158,7 +4158,7 @@ int mutt_pager(struct PagerView *pview)
     window_set_visible(priv->pview->win_index->parent, true);
   }
   window_set_visible(priv->pview->win_pager->parent, false);
-  mutt_window_reflow(dialog_find(priv->pview->win_pager));
+  mutt_window_reflow(dlg);
 
   return (rc != -1) ? rc : 0;
 }

@@ -38,6 +38,9 @@
 #include "mutt_attach.h"
 #include "mutt_globals.h"
 #include "protos.h" // IWYU pragma: keep
+#ifdef USE_DEBUG_GRAPHVIZ
+#include "debug/lib.h"
+#endif
 
 static int IsEndwin = 0;
 
