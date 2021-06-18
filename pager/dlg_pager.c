@@ -2404,17 +2404,11 @@ int mutt_pager(struct PagerView *pview)
   // ACT 2 - Declare, initialize local variables, read config, etc.
   //===========================================================================
 
-  //---------- reading config values ------------------------------------------
-  const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
-  const short c_pager_context = cs_subset_number(NeoMutt->sub, "pager_context");
+  //---------- reading config values needed now--------------------------------
   const short c_pager_index_lines =
       cs_subset_number(NeoMutt->sub, "pager_index_lines");
   const short c_pager_read_delay =
       cs_subset_number(NeoMutt->sub, "pager_read_delay");
-  const short c_search_context =
-      cs_subset_number(NeoMutt->sub, "search_context");
-  const short c_skip_quoted_offset =
-      cs_subset_number(NeoMutt->sub, "skip_quoted_offset");
 
   //---------- local variables ------------------------------------------------
   struct Mailbox *m = pview->pdata->ctx ? pview->pdata->ctx->mailbox : NULL;
@@ -2751,8 +2745,12 @@ int mutt_pager(struct PagerView *pview)
         //=======================================================================
 
       case OP_NEXT_PAGE:
+      {
+        const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
         if (priv->line_info[priv->curline].offset < (priv->sb.st_size - 1))
         {
+          const short c_pager_context =
+              cs_subset_number(NeoMutt->sub, "pager_context");
           priv->topline = up_n_lines(c_pager_context, priv->line_info,
                                      priv->curline, priv->hide_quoted);
         }
@@ -2768,6 +2766,7 @@ int mutt_pager(struct PagerView *pview)
           op = -1;
         }
         break;
+      }
 
         //=======================================================================
 
@@ -2778,6 +2777,8 @@ int mutt_pager(struct PagerView *pview)
         }
         else
         {
+          const short c_pager_context =
+              cs_subset_number(NeoMutt->sub, "pager_context");
           priv->topline =
               up_n_lines(priv->pview->win_pager->state.rows - c_pager_context,
                          priv->line_info, priv->topline, priv->hide_quoted);
@@ -2837,6 +2838,8 @@ int mutt_pager(struct PagerView *pview)
         //=======================================================================
 
       case OP_HALF_DOWN:
+      {
+        const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
         if (priv->line_info[priv->curline].offset < (priv->sb.st_size - 1))
         {
           priv->topline = up_n_lines(priv->pview->win_pager->state.rows / 2,
@@ -2854,6 +2857,7 @@ int mutt_pager(struct PagerView *pview)
           op = -1;
         }
         break;
+      }
 
         //=======================================================================
 
@@ -2861,6 +2865,8 @@ int mutt_pager(struct PagerView *pview)
       case OP_SEARCH_OPPOSITE:
         if (priv->search_compiled)
         {
+          const short c_search_context =
+              cs_subset_number(NeoMutt->sub, "search_context");
           wrapped = false;
 
           if (c_search_context < priv->pview->win_pager->state.rows)
@@ -3056,6 +3062,8 @@ int mutt_pager(struct PagerView *pview)
           }
           else
           {
+            const short c_search_context =
+                cs_subset_number(NeoMutt->sub, "search_context");
             priv->search_flag = MUTT_SEARCH;
             /* give some context for search results */
             if (c_search_context < priv->pview->win_pager->state.rows)
@@ -3126,6 +3134,8 @@ int mutt_pager(struct PagerView *pview)
         if (!priv->has_types)
           break;
 
+        const short c_skip_quoted_offset =
+            cs_subset_number(NeoMutt->sub, "skip_quoted_offset");
         int dretval = 0;
         int new_topline = priv->topline;
 
@@ -3454,7 +3464,8 @@ int mutt_pager(struct PagerView *pview)
           op = -1;
         }
 
-        if (!c_resolve && (c_pager_index_lines != 0))
+        if (!c_resolve &&
+            (cs_subset_number(NeoMutt->sub, "pager_index_lines") != 0))
           menu_queue_redraw(pager_menu, MENU_REDRAW_FULL);
         else
           menu_queue_redraw(pager_menu, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
@@ -3951,7 +3962,8 @@ int mutt_pager(struct PagerView *pview)
             op = -1;
           }
 
-          if (!c_resolve && (c_pager_index_lines != 0))
+          if (!c_resolve &&
+              (cs_subset_number(NeoMutt->sub, "pager_index_lines") != 0))
             menu_queue_redraw(pager_menu, MENU_REDRAW_FULL);
           else
             menu_queue_redraw(pager_menu, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
