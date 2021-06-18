@@ -3887,8 +3887,9 @@ int mutt_pager(struct PagerView *pview)
 
         if (pview->pdata->email->read || pview->pdata->email->old)
           mutt_set_flag(m, pview->pdata->email, MUTT_NEW, true);
-        else if (!first)
+        else if (!first || delay_read_timestamp != 0)
           mutt_set_flag(m, pview->pdata->email, MUTT_READ, true);
+        delay_read_timestamp = 0;
         first = false;
         pview->pdata->ctx->msg_in_pager = -1;
         priv->win_pbar->actions |= WA_RECALC;
