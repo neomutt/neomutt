@@ -181,7 +181,7 @@ vim: ts=2 sw=2 sts=2 expandtab:
     <sect1 id="copyright">
       <title>Copyright</title>
       <para>
-        NeoMutt is Copyright © 1996-2020 Michael R. Elkins
+        NeoMutt is Copyright © 1996-2021 Michael R. Elkins
         <email>me@neomutt.org</email> and others.
       </para>
       <para>
@@ -440,13 +440,13 @@ Seas          1/7|  4      Sep 25  Grace Hall       ( 27)  Capybara
           </para>
 
 <screen>
-bind index,pager \CP sidebar-prev       <emphasis role="comment"># Ctrl-Shift-P – Previous Mailbox</emphasis>
-bind index,pager \CN sidebar-next       <emphasis role="comment"># Ctrl-Shift-N – Next Mailbox</emphasis>
-bind index,pager \CO sidebar-open       <emphasis role="comment"># Ctrl-Shift-O – Open Highlighted Mailbox</emphasis>
+bind index,pager \CP sidebar-prev       <emphasis role="comment"># Ctrl-P – Previous Mailbox</emphasis>
+bind index,pager \CN sidebar-next       <emphasis role="comment"># Ctrl-N – Next Mailbox</emphasis>
+bind index,pager \CO sidebar-open       <emphasis role="comment"># Ctrl-O – Open Highlighted Mailbox</emphasis>
 </screen>
 
           <para>
-            Press <quote>Ctrl-Shift-N</quote> (Next mailbox) twice will move
+            Pressing <quote>Ctrl-N</quote> (Next mailbox) twice will move
             the Sidebar <emphasis role="bold">highlight</emphasis> to down to
             the <quote>Seas</quote> mailbox.
           </para>
@@ -473,7 +473,7 @@ Cars            4|  3    ! Aug 16  Ewan Brown       (333)  Hummingbird
             </para>
           </note>
           <para>
-            Press <quote>Ctrl-Shift-O</quote>
+            Press <quote>Ctrl-O</quote>
             (<literal>&lt;sidebar-open&gt;</literal>) to open the highlighted
             mailbox.
           </para>
@@ -1217,7 +1217,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
         <title>Compose Menu</title>
         <para>
           The compose menu features a split screen containing the information
-          which really matter before actually sending a message by mail: who
+          which really matters before actually sending a message by mail: who
           gets the message as what (recipients and who gets what kind of copy).
           Additionally, users may set security options like deciding whether to
           sign, encrypt or sign and encrypt a message with/for what keys. Also,
@@ -1248,7 +1248,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           receiving messages of arbitrary MIME types. The attachment menu
           displays a message's structure in detail: what content parts are
           attached to which parent part (which gives a true tree structure),
-          which type is of what type and what size. Single parts may saved,
+          which part is of what type and what size. Single parts may saved,
           deleted or modified to offer great and easy access to message's
           internals.
         </para>
@@ -2528,12 +2528,6 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
               <para>
                 This function will skip past the headers of the current message.
               </para>
-              <para>
-                The variable
-                <link linkend="toggle-quoted-show-levels">$toggle_quoted_show_levels</link>
-                can be used to show some context by continuing to show that number of levels
-                rather than hiding all quoted levels.
-              </para>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -2580,6 +2574,12 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
                 This function toggles the display of the quoted material in the message.
                 It is particularly useful when being interested in just the response and
                 there is a large amount of quoted text in the way.
+              </para>
+              <para>
+                The variable
+                <link linkend="toggle-quoted-show-levels">$toggle_quoted_show_levels</link>
+                can be used to show some context by continuing to show that number of levels
+                rather than hiding all quoted levels.
               </para>
             </listitem>
           </varlistentry>
@@ -16235,7 +16235,7 @@ bind index &gt; vfolder-window-forward
         <title>Functions</title>
         <para>
           The <quote>Pager Read Delay</quote> feature adds no new
-          functions NeoMutt.  Existing pager functions for navigating
+          functions to NeoMutt.  Existing pager functions for navigating
           to a different message now check whether to mark a message
           as read.
         </para>
@@ -16260,8 +16260,7 @@ bind index &gt; vfolder-window-forward
 <screen>
 <emphasis role="comment"># Example NeoMutt config file for the pager-read-delay feature.</emphasis>
 
-<emphasis role="comment"># Stay at least 5 seconds on a message before
-the pager marks it as read</emphasis>
+<emphasis role="comment"># Stay at least 5 seconds on a message before the pager marks it as read</emphasis>
 set pager_read_delay = 5
 
 <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
