@@ -2559,8 +2559,17 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             </term>
             <listitem>
               <para>
-                This function will go to the next line of non-quoted text which
-                comes after a line of quoted text in the internal pager.
+                This function will make the internal pager go forward
+                to the next segment of non-quoted body text (whether
+                the first line of the body after headers, or following
+                a line of quoted text), or print a message if no
+                further unquoted text can be found.
+              </para>
+              <para>
+                The variable
+                <link linkend="pager-skip-quoted-context">$pager_skip_quoted_context</link>
+                can be used to show some quoted context prior to the
+                selected line.
               </para>
             </listitem>
           </varlistentry>
@@ -17173,9 +17182,10 @@ color sidebar_unread color136 default
         <title>Support</title>
         <para>
           <emphasis role="bold">Since:</emphasis>
-            <literal>$skip_quoted_offset</literal> in NeoMutt
-            2016-03-28, <literal>&lt;skip-headers&gt;</literal> in
-            NeoMutt 2021-02-05
+          <literal>$skip_quoted_offset</literal> in NeoMutt
+          2016-03-28, <literal>$toggle_quoted_show_levels</literal> in
+          NeoMutt 2019-10-25, <literal>&lt;skip-headers&gt;</literal>
+          in NeoMutt 2021-02-05
         </para>
         <para>
           <emphasis role="bold">Dependencies:</emphasis> None
@@ -17185,14 +17195,21 @@ color sidebar_unread color136 default
       <sect2 id="skip-quoted-intro">
         <title>Introduction</title>
         <para>
-          When viewing an email, the <literal>&lt;skip-quoted&gt;</literal>
-          function (by default the <literal>S</literal> key) will scroll past
-          any email headers or quoted text. Sometimes, a little context is
-          useful.
+          When viewing an email, the
+          <literal>&lt;skip-quoted&gt;</literal> function (by default
+          the <literal>S</literal> key) will scroll past any email
+          headers or quoted text. Sometimes, a little context is
+          useful.  By setting the
+          <literal>$skip_quoted_offset</literal> variable, you can
+          select how much of the quoted text is left visible.
         </para>
         <para>
-          By setting the <literal>$skip_quoted_offset</literal> variable, you
-          can select how much of the quoted text is left visible.
+          When using the <literal>&lt;toggle-quoted&gt;</literal>
+          function (by default the <literal>T</literal> key), it can
+          be convenient to hide text that has been quoted multiple
+          times while still leaving quoted text that is relevant to
+          the unquoted reply intact.  This can be done by setting the
+          <literal>$toggle_quoted_show_levels</literal> variable.
         </para>
         <para>
           Also, it can be handy to jump directly to the start of the
@@ -17244,7 +17261,17 @@ color sidebar_unread color136 default
             </thead>
             <tbody>
               <row>
+                <entry><literal>pager_skip_quoted_context</literal></entry>
+                <entry>number</entry>
+                <entry>0</entry>
+              </row>
+              <row>
                 <entry><literal>skip_quoted_offset</literal></entry>
+                <entry>synonym</entry>
+                <entry>pager_skip_quoted_context</entry>
+              </row>
+              <row>
+                <entry><literal>toggle_quoted_show_levels</literal></entry>
                 <entry>number</entry>
                 <entry>0</entry>
               </row>
@@ -17260,11 +17287,17 @@ color sidebar_unread color136 default
 <emphasis role="comment"># Example NeoMutt config file for the skip-quoted feature.</emphasis>
 
 <emphasis role="comment"># The 'S' (skip-quoted) command scrolls the pager past the quoted text (usually</emphasis>
-<emphasis role="comment"># indented with '&gt; '. Setting 'skip_quoted_offset' leaves some lines of quoted</emphasis>
-<emphasis role="comment"># text on screen for context.</emphasis>
+<emphasis role="comment"># indented with '&gt; '. Setting 'pager_skip_quoted_context leaves some lines</emphasis>
+<emphasis role="comment"># of quoted text on screen for context.</emphasis>
 
 <emphasis role="comment"># Show three quoted lines before the reply</emphasis>
-set skip_quoted_offset = 3
+set pager_skip_quoted_context = 3
+
+<emphasis role="comment"># The 'T' (toggle-quoted) command hides quoted text, but can</emphasis>
+<emphasis role="comment"># be limited to only hiding deeply-nested quotes.</emphasis>
+
+<emphasis role="comment"># Preserve the first level of quoted text</emphasis>
+set toggle_quoted_show_levels = 1
 
 <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>

@@ -3134,12 +3134,13 @@ int mutt_pager(struct PagerView *pview)
         if (!priv->has_types)
           break;
 
-        const short c_skip_quoted_offset =
-            cs_subset_number(NeoMutt->sub, "skip_quoted_offset");
+        const short c_skip_quoted_context =
+            cs_subset_number(NeoMutt->sub, "pager_skip_quoted_context");
         int dretval = 0;
         int new_topline = priv->topline;
+        int num_quoted = 0;
 
-        /* Skip all the email headers */
+        /* In a header? Skip all the email headers, and done */
         if (mutt_color_is_header(priv->line_info[new_topline].type))
         {
           while (((new_topline < priv->last_line) ||
@@ -3157,40 +3158,71 @@ int mutt_pager(struct PagerView *pview)
           break;
         }
 
-        while ((((new_topline + c_skip_quoted_offset) < priv->last_line) ||
-                (0 == (dretval = display_line(
-                           priv->fp, &priv->last_pos, &priv->line_info, new_topline, &priv->last_line,
-                           &priv->max_line, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
-                           &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                           &priv->search_re, priv->pview->win_pager)))) &&
-               (priv->line_info[new_topline + c_skip_quoted_offset].type != MT_COLOR_QUOTED))
+        /* Already in the body? Skip past previous "context" quoted lines */
+        if (c_skip_quoted_context > 0)
         {
-          new_topline++;
+          while (((new_topline < priv->last_line) ||
+                  (0 == (dretval = display_line(
+                             priv->fp, &priv->last_pos, &priv->line_info,
+                             new_topline, &priv->last_line, &priv->max_line,
+                             MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
+                             &priv->quote_list, &priv->q_level, &priv->force_redraw,
+                             &priv->search_re, priv->pview->win_pager)))) &&
+                 (priv->line_info[new_topline].type == MT_COLOR_QUOTED))
+          {
+            new_topline++;
+            num_quoted++;
+          }
+
+          if (dretval < 0)
+          {
+            mutt_error(_("No more unquoted text after quoted text"));
+            break;
+          }
         }
 
-        if (dretval < 0)
+        if (num_quoted <= c_skip_quoted_context)
         {
-          mutt_error(_("No more quoted text"));
-          break;
-        }
+          num_quoted = 0;
 
-        while ((((new_topline + c_skip_quoted_offset) < priv->last_line) ||
-                (0 == (dretval = display_line(
-                           priv->fp, &priv->last_pos, &priv->line_info, new_topline, &priv->last_line,
-                           &priv->max_line, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
-                           &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                           &priv->search_re, priv->pview->win_pager)))) &&
-               (priv->line_info[new_topline + c_skip_quoted_offset].type == MT_COLOR_QUOTED))
-        {
-          new_topline++;
-        }
+          while (((new_topline < priv->last_line) ||
+                  (0 == (dretval = display_line(
+                             priv->fp, &priv->last_pos, &priv->line_info,
+                             new_topline, &priv->last_line, &priv->max_line,
+                             MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
+                             &priv->quote_list, &priv->q_level, &priv->force_redraw,
+                             &priv->search_re, priv->pview->win_pager)))) &&
+                 (priv->line_info[new_topline].type != MT_COLOR_QUOTED))
+          {
+            new_topline++;
+          }
 
-        if (dretval < 0)
-        {
-          mutt_error(_("No more unquoted text after quoted text"));
-          break;
+          if (dretval < 0)
+          {
+            mutt_error(_("No more quoted text"));
+            break;
+          }
+
+          while (((new_topline < priv->last_line) ||
+                  (0 == (dretval = display_line(
+                             priv->fp, &priv->last_pos, &priv->line_info,
+                             new_topline, &priv->last_line, &priv->max_line,
+                             MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
+                             &priv->quote_list, &priv->q_level, &priv->force_redraw,
+                             &priv->search_re, priv->pview->win_pager)))) &&
+                 (priv->line_info[new_topline].type == MT_COLOR_QUOTED))
+          {
+            new_topline++;
+            num_quoted++;
+          }
+
+          if (dretval < 0)
+          {
+            mutt_error(_("No more unquoted text after quoted text"));
+            break;
+          }
         }
-        priv->topline = new_topline;
+        priv->topline = new_topline - MIN(c_skip_quoted_context, num_quoted);
         break;
       }
 
