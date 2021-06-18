@@ -2526,7 +2526,9 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             </term>
             <listitem>
               <para>
-                This function will skip past the headers of the current message.
+                This function will skip to the first line of the body,
+                past the headers of the current message, regardless of
+                current position.
               </para>
             </listitem>
           </varlistentry>
@@ -17165,12 +17167,15 @@ color sidebar_unread color136 default
 
     <sect1 id="skip-quoted-patch">
       <title>Skip Quoted Feature</title>
-      <subtitle>Leave some context visible</subtitle>
+      <subtitle>Managing quoted text in the pager</subtitle>
 
       <sect2 id="skip-quoted-support">
         <title>Support</title>
         <para>
-          <emphasis role="bold">Since:</emphasis> NeoMutt 2016-03-28
+          <emphasis role="bold">Since:</emphasis>
+            <literal>$skip_quoted_offset</literal> in NeoMutt
+            2016-03-28, <literal>&lt;skip-headers&gt;</literal> in
+            NeoMutt 2021-02-05
         </para>
         <para>
           <emphasis role="bold">Dependencies:</emphasis> None
@@ -17180,7 +17185,7 @@ color sidebar_unread color136 default
       <sect2 id="skip-quoted-intro">
         <title>Introduction</title>
         <para>
-          When viewing an email, the <literal>&lt;skip-to-quoted&gt;</literal>
+          When viewing an email, the <literal>&lt;skip-quoted&gt;</literal>
           function (by default the <literal>S</literal> key) will scroll past
           any email headers or quoted text. Sometimes, a little context is
           useful.
@@ -17189,6 +17194,39 @@ color sidebar_unread color136 default
           By setting the <literal>$skip_quoted_offset</literal> variable, you
           can select how much of the quoted text is left visible.
         </para>
+        <para>
+          Also, it can be handy to jump directly to the start of the
+          email body with the <literal>&lt;skip-headers&gt;</literal>
+          function (by default the <literal>H</literal>key).
+        </para>
+      </sect2>
+
+      <sect2 id="skip-quoted-functions">
+        <title>Functions</title>
+
+        <table id="table-quoted-functions">
+          <title>Skip Quoted Functions</title>
+          <tgroup cols="4">
+            <thead>
+              <row>
+                <entry>Menus</entry>
+                <entry>Default Key</entry>
+                <entry>Function</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>pager</entry>
+                <entry>H</entry>
+                <entry><literal>&lt;skip-headers&gt;</literal></entry>
+                <entry>
+                  jump to first line after headers
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
       </sect2>
 
       <sect2 id="skip-quoted-variables">
