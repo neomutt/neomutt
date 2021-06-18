@@ -2540,6 +2540,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           op = OP_DISPLAY_MESSAGE;
           continue;
         }
+        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         break;
       }
 
