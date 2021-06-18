@@ -334,7 +334,7 @@ int query_window_observer(struct NotifyCallback *nc)
 struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, char *query)
 {
   struct MuttWindow *dlg = simple_dialog_new(MENU_QUERY, WT_DLG_QUERY, QueryHelp);
-  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
+  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
 
   struct Menu *menu = dlg->wdata;
 
@@ -382,7 +382,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
 
   struct MuttWindow *dlg = query_dialog_new(&mdata, buf);
   struct Menu *menu = dlg->wdata;
-  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
+  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
 
   int done = 0;
   while (done == 0)

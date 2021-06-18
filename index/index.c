@@ -157,7 +157,7 @@ static int index_color_observer(struct NotifyCallback *nc)
     }
   }
 
-  struct MuttWindow *panel_index = mutt_window_find(dlg, WT_INDEX);
+  struct MuttWindow *panel_index = window_find_child(dlg, WT_INDEX);
   struct IndexPrivateData *priv = panel_index->wdata;
   struct Menu *menu = priv->menu;
   menu->redraw = MENU_REDRAW_FULL;

@@ -4086,7 +4086,7 @@ int mutt_pager(struct PagerView *pview)
       case OP_SIDEBAR_PREV:
       case OP_SIDEBAR_PREV_NEW:
       {
-        struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
+        struct MuttWindow *win_sidebar = window_find_child(dlg, WT_SIDEBAR);
         if (!win_sidebar)
           break;
         sb_change_mailbox(win_sidebar, op);

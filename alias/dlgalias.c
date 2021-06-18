@@ -229,7 +229,7 @@ struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
   // Override the Simple Dialog's recalc()
   win_menu->recalc = alias_recalc;
 
-  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
+  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
 
   alias_set_title(sbar, _("Aliases"), mdata->str);
 
@@ -257,7 +257,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
 
   struct MuttWindow *dlg = alias_dialog_new(mdata);
   struct Menu *menu = dlg->wdata;
-  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
+  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
 
   int t = -1;
   bool done = false;

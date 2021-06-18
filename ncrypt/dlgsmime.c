@@ -194,7 +194,7 @@ struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, char *query)
   /* sorting keys might be done later - TODO */
 
   char title[256];
-  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
+  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   snprintf(title, sizeof(title), _("S/MIME certificates matching \"%s\""), query);
   sbar_set_title(sbar, title);
 

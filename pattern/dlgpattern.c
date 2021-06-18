@@ -154,7 +154,7 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
   menu->mdata_free = free_pattern_menu;
   menu->max = num_entries;
 
-  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
+  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   // L10N: Pattern completion menu title
   sbar_set_title(sbar, _("Patterns"));
 

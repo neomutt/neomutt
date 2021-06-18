@@ -95,7 +95,7 @@ void dlg_select_history(char *buf, size_t buflen, char **matches, int match_coun
 {
   struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_HISTORY, HistoryHelp);
 
-  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
+  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   char title[256];
   snprintf(title, sizeof(title), _("History '%s'"), buf);
   sbar_set_title(sbar, title);

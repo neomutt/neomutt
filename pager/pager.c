@@ -97,8 +97,8 @@ static int config_pager_index_lines(struct MuttWindow *win)
     return 0;
 
   struct MuttWindow *dlg = dialog_find(win);
-  struct MuttWindow *panel_index = mutt_window_find(dlg, WT_INDEX);
-  struct MuttWindow *win_index = mutt_window_find(panel_index, WT_MENU);
+  struct MuttWindow *panel_index = window_find_child(dlg, WT_INDEX);
+  struct MuttWindow *win_index = window_find_child(panel_index, WT_MENU);
   if (!win_index)
     return -1;
 

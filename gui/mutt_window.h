@@ -228,7 +228,7 @@ int  mutt_window_printf   (struct MuttWindow *win, const char *format, ...);
 bool mutt_window_is_visible(struct MuttWindow *win);
 
 void               mutt_winlist_free (struct MuttWindowList *head);
-struct MuttWindow *mutt_window_find  (struct MuttWindow *root, enum WindowType type);
+struct MuttWindow *window_find_child (struct MuttWindow *win, enum WindowType type);
 void               window_notify_all (struct MuttWindow *win);
 void               window_set_visible(struct MuttWindow *win, bool visible);
 struct MuttWindow *window_set_focus  (struct MuttWindow *win);

@@ -1323,7 +1323,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
       snprintf(buf, sizeof(buf), _("%s \"%s\""), ts, s);
     }
 
-    struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
+    struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
     sbar_set_title(sbar, buf);
   }
 

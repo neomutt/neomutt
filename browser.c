@@ -1369,7 +1369,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
   if (multiple)
     menu->tag = file_tag;
 
-  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
+  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
 
   if (state.is_mailbox_list)
   {

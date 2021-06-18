@@ -573,7 +573,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
   else
     snprintf(buf, sizeof(buf), _("PGP keys matching \"%s\""), s);
 
-  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
+  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   sbar_set_title(sbar, buf);
 
   kp = NULL;

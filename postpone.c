@@ -231,7 +231,7 @@ static struct Email *dlg_select_postponed_email(struct Mailbox *m)
   menu->mdata = m;
   menu->custom_search = true;
 
-  struct MuttWindow *sbar = mutt_window_find(dlg, WT_STATUS_BAR);
+  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   sbar_set_title(sbar, _("Postponed Messages"));
 
   /* The postponed mailbox is setup to have sorting disabled, but the global

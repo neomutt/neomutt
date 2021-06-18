@@ -1136,15 +1136,15 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   struct IndexSharedData *shared = dlg->wdata;
   index_shared_data_set_context(shared, ctx_new(m_init));
 
-  struct MuttWindow *panel_index = mutt_window_find(dlg, WT_INDEX);
-  struct MuttWindow *panel_pager = mutt_window_find(dlg, WT_PAGER);
+  struct MuttWindow *panel_index = window_find_child(dlg, WT_INDEX);
+  struct MuttWindow *panel_pager = window_find_child(dlg, WT_PAGER);
 
   struct IndexPrivateData *priv = panel_index->wdata;
   priv->attach_msg = OptAttachMsg;
-  priv->win_index = mutt_window_find(panel_index, WT_MENU);
-  priv->win_ibar = mutt_window_find(panel_index, WT_STATUS_BAR);
-  priv->win_pager = mutt_window_find(panel_pager, WT_MENU);
-  priv->win_pbar = mutt_window_find(panel_pager, WT_STATUS_BAR);
+  priv->win_index = window_find_child(panel_index, WT_MENU);
+  priv->win_ibar = window_find_child(panel_index, WT_STATUS_BAR);
+  priv->win_pager = window_find_child(panel_pager, WT_MENU);
+  priv->win_pbar = window_find_child(panel_pager, WT_STATUS_BAR);
 
   int op = OP_NULL;
 
@@ -2444,7 +2444,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 #ifdef USE_SIDEBAR
       case OP_SIDEBAR_OPEN:
       {
-        struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
+        struct MuttWindow *win_sidebar = window_find_child(dlg, WT_SIDEBAR);
         change_folder_mailbox(priv->menu, sb_get_highlight(win_sidebar),
                               &priv->oldcount, shared, false);
         break;
@@ -4172,7 +4172,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       case OP_SIDEBAR_PREV:
       case OP_SIDEBAR_PREV_NEW:
       {
-        struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
+        struct MuttWindow *win_sidebar = window_find_child(dlg, WT_SIDEBAR);
         if (!win_sidebar)
           break;
         sb_change_mailbox(win_sidebar, op);

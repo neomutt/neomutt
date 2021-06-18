@@ -541,24 +541,24 @@ bool mutt_window_is_visible(struct MuttWindow *win)
 }
 
 /**
- * mutt_window_find - Find a Window of a given type
- * @param root Window to start searching
+ * window_find_child - Recursively find a child Window of a given type
+ * @param win  Window to start searching
  * @param type Window type to find, e.g. #WT_STATUS_BAR
  * @retval ptr  Matching Window
  * @retval NULL No match
  */
-struct MuttWindow *mutt_window_find(struct MuttWindow *root, enum WindowType type)
+struct MuttWindow *window_find_child(struct MuttWindow *win, enum WindowType type)
 {
-  if (!root)
+  if (!win)
     return NULL;
-  if (root->type == type)
-    return root;
+  if (win->type == type)
+    return win;
 
   struct MuttWindow *np = NULL;
   struct MuttWindow *match = NULL;
-  TAILQ_FOREACH(np, &root->children, entries)
+  TAILQ_FOREACH(np, &win->children, entries)
   {
-    match = mutt_window_find(np, type);
+    match = window_find_child(np, type);
     if (match)
       return match;
   }
