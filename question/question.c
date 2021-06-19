@@ -184,28 +184,50 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
     return MUTT_ABORT;
 
   struct KeyEvent ch;
-  char *yes = _("yes");
-  char *no = _("no");
   char *answer_string = NULL;
   int answer_string_wid, msg_wid;
   size_t trunc_msg_len;
   bool redraw = true;
   int prompt_lines = 1;
+  char answer[2] = { 0 };
+
+  char *yes = "yes";  // English versions.  Do not translate
+  char *no = "no";
+  char *trans_yes = _(yes);
+  char *trans_no = _(no);
 
   char *expr = NULL;
   regex_t reyes;
   regex_t reno;
-  char answer[2];
-
-  answer[1] = '\0';
 
   bool reyes_ok = (expr = nl_langinfo(YESEXPR)) && (expr[0] == '^') &&
                   (REG_COMP(&reyes, expr, REG_NOSUB) == 0);
   bool reno_ok = (expr = nl_langinfo(NOEXPR)) && (expr[0] == '^') &&
                  (REG_COMP(&reno, expr, REG_NOSUB) == 0);
 
+  if ((yes != trans_yes) && (no != trans_no) && reyes_ok && reno_ok)
+  {
+    // If all parts of the translation succeeded...
+    yes = trans_yes;
+    no = trans_no;
+  }
+  else
+  {
+    // otherwise, fallback to English
+    if (reyes_ok)
+    {
+      regfree(&reyes);
+      reyes_ok = false;
+    }
+    if (reno_ok)
+    {
+      regfree(&reno);
+      reno_ok = false;
+    }
+  }
+
   /* In order to prevent the default answer to the question to wrapped
-   * around the screen in the even the question is wider than the screen,
+   * around the screen in the event the question is wider than the screen,
    * ensure there is enough room for the answer and truncate the question
    * to fit.  */
   mutt_str_asprintf(&answer_string, " ([%s]/%s): ", (def == MUTT_YES) ? yes : no,
