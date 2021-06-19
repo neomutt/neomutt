@@ -1,15 +1,10 @@
 notifications:
   email: false
 
-branches:
-  except:
-  - /flatcap\/.*/
-
 dist: bionic
 
 language: c
 compiler: gcc
-cache: ccache
 
 git:
   depth: 3
@@ -17,55 +12,16 @@ git:
 addons:
   apt:
     packages:
-      - autopoint
-      - docbook-simple
-      - docbook-xsl
       - gettext
-      - gpgsm
-      - graphviz
-      - jimsh
-      - libdb-dev
-      - libgdbm-dev
-      - libgnutls28-dev
-      - libgpgme11-dev
-      - libgss-dev
-      - libidn2-0-dev
-      - libkyotocabinet-dev
-      - liblmdb-dev
-      - liblua5.2-dev
-      - liblz4-dev
-      - libncursesw5-dev
-      - libnotmuch-dev
-      - libqdbm-dev
-      - librocksdb-dev
-      - libsasl2-dev
-      - libslang2-dev
-      - libssl-dev
-      - libtdb-dev
-      - libtokyocabinet-dev
-      - libxml2-utils
-      - libzstd-dev
-      - lua5.2
-      - lynx
-      - xsltproc
 
-install:
-  - git clone --depth 1 https://github.com/neomutt/travis-build.git ~/config
-  - git clone --depth 1 https://github.com/neomutt/neomutt-test-files.git ~/test-files
-
-before_script:
-  - ccache --zero-stats
-  - export ANSI_CLEAR
-  - export -f travis_fold
-  - export -f travis_nanoseconds
-  - export -f travis_time_finish
-  - export -f travis_time_start
-  - export NEOMUTT_TEST_DIR="$HOME/test-files"
-  - (cd ~/test-files && ./setup.sh)
+env:
+  global:
+  - DEPLOY_REPO="git@github.com:neomutt/neomutt.github.io.git"
+  - DEPLOY_DIR="~/website"
+  - DEPLOY_FILE="translate.html"
 
 script:
-  - ~/config/build
+- .travis/stats.sh
 
-after_script:
-  - ccache --show-stats
-
+after_success:
+- .travis/deploy.sh
