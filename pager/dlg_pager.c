@@ -2505,11 +2505,11 @@ int mutt_pager(struct PagerView *pview)
   priv->menu = pager_menu;
 
   //---------- restore global state if needed ---------------------------------
-  while (pview->mode == PAGER_MODE_EMAIL && (OldEmail == pview->pdata->email) // are we "resuming" to the same Email?
-         && (TopLine != priv->topline) // is saved offset different?
-         && priv->line_info[priv->curline].offset < (priv->sb.st_size - 1))
+  while ((pview->mode == PAGER_MODE_EMAIL) && (OldEmail == pview->pdata->email) && // are we "resuming" to the same Email?
+         (TopLine != priv->topline) && // is saved offset different?
+         (priv->line_info[priv->curline].offset < (priv->sb.st_size - 1)))
   {
-    // needed to avoid SIGSEGV
+    menu_queue_redraw(pager_menu, MENU_REDRAW_FULL);
     pager_custom_redraw(pager_menu);
     // trick user, as if nothing happened
     // scroll down to previosly saved offset
