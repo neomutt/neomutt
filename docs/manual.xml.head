@@ -17799,6 +17799,13 @@ bind index D purge-message
           thread root.  The <literal>last-</literal> prefix is ignored
           when <literal>use_threads=flat</literal>.
         </para>
+        <para>
+          The <quote>Use Threads</quote> feature also modifies the
+          existing config variable <link
+          linkend="status-format">$status_format</link>, adding the
+          <literal>%T</literal> expando which shows the current
+          threading method.
+        </para>
       </sect2>
 
       <sect2 id="use-threads-neomuttrc">

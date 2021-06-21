@@ -101,6 +101,16 @@ enum UseThreads mutt_thread_style(void)
 }
 
 /**
+ * get_use_threads_str - Convert UseThreads enum to string
+ * @param value Value to convert
+ * @retval string form of value
+ */
+const char *get_use_threads_str(enum UseThreads value)
+{
+  return mutt_map_get_name(value, UseThreadsMethods);
+}
+
+/**
  * sort_validator - Validate values of "sort" - Implements ConfigDef::validator()
  */
 int sort_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,

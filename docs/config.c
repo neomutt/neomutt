@@ -4968,7 +4968,7 @@
 ** .de
 */
 
-{ "status_format", DT_STRING, "-%r-NeoMutt: %D [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
+{ "status_format", DT_STRING, "-%r-NeoMutt: %D [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%?T?%T/?%s/%S)-%>-(%P)---" },
 /*
 ** .pp
 ** Controls the format of the status line displayed in the "index"
@@ -4996,6 +4996,7 @@
 ** .dt %s  .dd   .dd Current sorting mode ($$sort)
 ** .dt %S  .dd   .dd Current aux sorting method ($$sort_aux)
 ** .dt %t  .dd * .dd Number of tagged messages in the mailbox
+** .dt %T  .dd * .dd Current threading mode ($$use_threads)
 ** .dt %u  .dd * .dd Number of unread messages in the mailbox (seen or unseen)
 ** .dt %v  .dd   .dd NeoMutt version string
 ** .dt %V  .dd * .dd Currently active limit pattern, if any
@@ -5033,6 +5034,12 @@
 ** .pp
 ** If the value of \fIsequence_char\fP is non-zero, \fIif_string\fP will
 ** be expanded, otherwise \fIelse_string\fP will be expanded.
+** .pp
+** As another example, here is how to show either $$sort and
+** $$sort_aux or $$use_threads and $$sort, based on whether threads
+** are enabled with $$use_threads:
+** .pp
+** \fC%?T?%s/%S&%T/s?\fP
 ** .pp
 ** You can force the result of any \fCprintf(3)\fP-like sequence to be lowercase
 ** by prefixing the sequence character with an underscore ("_") sign.
