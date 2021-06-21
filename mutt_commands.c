@@ -38,14 +38,12 @@
 #include "mutt.h"
 #include "mutt_commands.h"
 #include "command_parse.h"
-#include "hook.h"
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "score.h"
 
 static const struct Command mutt_commands[] = {
   // clang-format off
-  { "account-hook",        mutt_parse_hook,        MUTT_ACCOUNT_HOOK },
   { "alias",               parse_alias,            0 },
   { "alternates",          parse_alternates,       0 },
   { "alternative_order",   parse_stailq,           IP &AlternativeOrderList },
@@ -53,54 +51,37 @@ static const struct Command mutt_commands[] = {
   { "auto_view",           parse_stailq,           IP &AutoViewList },
   { "bind",                mutt_parse_bind,        0 },
   { "cd",                  parse_cd,               0 },
-  { "charset-hook",        mutt_parse_hook,        MUTT_CHARSET_HOOK },
 #ifdef HAVE_COLOR
   { "color",               mutt_parse_color,       0 },
 #endif
-  { "crypt-hook",          mutt_parse_hook,        MUTT_CRYPT_HOOK },
   { "echo",                parse_echo,             0 },
   { "exec",                mutt_parse_exec,        0 },
-  { "fcc-hook",            mutt_parse_hook,        MUTT_FCC_HOOK },
-  { "fcc-save-hook",       mutt_parse_hook,        MUTT_FCC_HOOK | MUTT_SAVE_HOOK },
   { "finish",              parse_finish,           0 },
-  { "folder-hook",         mutt_parse_hook,        MUTT_FOLDER_HOOK },
   { "group",               parse_group,            MUTT_GROUP },
   { "hdr_order",           parse_stailq,           IP &HeaderOrderList },
-  { "iconv-hook",          mutt_parse_hook,        MUTT_ICONV_HOOK },
   { "ifdef",               parse_ifdef,            0 },
   { "ifndef",              parse_ifdef,            1 },
   { "ignore",              parse_ignore,           0 },
-  { "index-format-hook",   mutt_parse_idxfmt_hook, 0 },
   { "lists",               parse_lists,            0 },
   { "macro",               mutt_parse_macro,       0 },
   { "mailboxes",           parse_mailboxes,        0 },
   { "mailto_allow",        parse_stailq,           IP &MailToAllow },
-  { "mbox-hook",           mutt_parse_hook,        MUTT_MBOX_HOOK },
-  { "message-hook",        mutt_parse_hook,        MUTT_MESSAGE_HOOK },
   { "mime_lookup",         parse_stailq,           IP &MimeLookupList },
   { "mono",                mutt_parse_mono,        0 },
   { "my_hdr",              parse_my_hdr,           0 },
   { "named-mailboxes",     parse_mailboxes,        MUTT_NAMED },
   { "nospam",              parse_spam_list,        MUTT_NOSPAM },
-  { "pgp-hook",            mutt_parse_hook,        MUTT_CRYPT_HOOK },
   { "push",                mutt_parse_push,        0 },
-  { "reply-hook",          mutt_parse_hook,        MUTT_REPLY_HOOK },
   { "reset",               parse_set,              MUTT_SET_RESET },
-  { "save-hook",           mutt_parse_hook,        MUTT_SAVE_HOOK },
   { "score",               mutt_parse_score,       0 },
-  { "send-hook",           mutt_parse_hook,        MUTT_SEND_HOOK },
-  { "send2-hook",          mutt_parse_hook,        MUTT_SEND2_HOOK },
   { "set",                 parse_set,              MUTT_SET_SET },
   { "setenv",              parse_setenv,           MUTT_SET_SET },
-  { "shutdown-hook",       mutt_parse_hook,        MUTT_SHUTDOWN_HOOK | MUTT_GLOBAL_HOOK },
   { "source",              parse_source,           0 },
   { "spam",                parse_spam_list,        MUTT_SPAM },
-  { "startup-hook",        mutt_parse_hook,        MUTT_STARTUP_HOOK | MUTT_GLOBAL_HOOK },
   { "subjectrx",           parse_subjectrx_list,   0 },
   { "subscribe",           parse_subscribe,        0 },
   { "tag-formats",         parse_tag_formats,      0 },
   { "tag-transforms",      parse_tag_transforms,   0 },
-  { "timeout-hook",        mutt_parse_hook,        MUTT_TIMEOUT_HOOK | MUTT_GLOBAL_HOOK },
   { "toggle",              parse_set,              MUTT_SET_INV },
   { "unalias",             parse_unalias,          0 },
   { "unalternates",        parse_unalternates,     0 },
@@ -113,7 +94,6 @@ static const struct Command mutt_commands[] = {
 #endif
   { "ungroup",             parse_group,            MUTT_UNGROUP },
   { "unhdr_order",         parse_unstailq,         IP &HeaderOrderList },
-  { "unhook",              mutt_parse_unhook,      0 },
   { "unignore",            parse_unignore,         0 },
   { "unlists",             parse_unlists,          0 },
   { "unmacro",             mutt_parse_unbind,      MUTT_UNMACRO },

@@ -39,9 +39,11 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
+#include "gui/lib.h"
 #include "mutt.h"
 #include "hook.h"
 #include "ncrypt/lib.h"
+#include "pager/lib.h"
 #include "pattern/lib.h"
 #include "context.h"
 #include "format_flags.h"
@@ -52,6 +54,7 @@
 #include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "pattern/pattern.c" // well I need quote_simple but this seems weird
 #ifdef USE_COMP_MBOX
 #include "compmbox/lib.h"
 #endif
@@ -73,6 +76,229 @@ static struct HookList Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 
 static struct HashTable *IdxFmtHooks = NULL;
 static HookFlags current_hook_type = MUTT_HOOK_NO_FLAGS;
+
+const struct Command hook_commands[] = {
+  // clang-format off
+  { "account-hook",        mutt_parse_hook,        MUTT_ACCOUNT_HOOK },
+  { "charset-hook",        mutt_parse_hook,        MUTT_CHARSET_HOOK },
+  { "crypt-hook",          mutt_parse_hook,        MUTT_CRYPT_HOOK },
+  { "fcc-hook",            mutt_parse_hook,        MUTT_FCC_HOOK },
+  { "fcc-save-hook",       mutt_parse_hook,        MUTT_FCC_HOOK | MUTT_SAVE_HOOK },
+  { "folder-hook",         mutt_parse_hook,        MUTT_FOLDER_HOOK },
+  { "hooks",               mutt_parse_hooks,       0 },
+  { "iconv-hook",          mutt_parse_hook,        MUTT_ICONV_HOOK },
+  { "index-format-hook",   mutt_parse_idxfmt_hook, 0 },
+  { "mbox-hook",           mutt_parse_hook,        MUTT_MBOX_HOOK },
+  { "message-hook",        mutt_parse_hook,        MUTT_MESSAGE_HOOK },
+  { "pgp-hook",            mutt_parse_hook,        MUTT_CRYPT_HOOK },
+  { "reply-hook",          mutt_parse_hook,        MUTT_REPLY_HOOK },
+  { "save-hook",           mutt_parse_hook,        MUTT_SAVE_HOOK },
+  { "send-hook",           mutt_parse_hook,        MUTT_SEND_HOOK },
+  { "send2-hook",          mutt_parse_hook,        MUTT_SEND2_HOOK },
+  { "shutdown-hook",       mutt_parse_hook,        MUTT_SHUTDOWN_HOOK | MUTT_GLOBAL_HOOK },
+  { "startup-hook",        mutt_parse_hook,        MUTT_STARTUP_HOOK | MUTT_GLOBAL_HOOK },
+  { "timeout-hook",        mutt_parse_hook,        MUTT_TIMEOUT_HOOK | MUTT_GLOBAL_HOOK },
+  { "unhook",              mutt_parse_unhook,      0 },
+  // clang-format on
+};
+
+/**
+ * hook_init - Set up hooks
+ */
+void hook_init(void)
+{
+  COMMANDS_REGISTER(hook_commands);
+}
+
+/**
+ * get_hook_cmd_by_flag - Find a hook by name
+ * @param flag Hook type to find, e.g. #MUTT_FOLDER_HOOK
+ * @retval ptr Hook name
+ */
+const char *get_hook_cmd_by_flag(HookFlags flag)
+{
+  const struct Command *hc = &hook_commands[0];
+  while (hc)
+  {
+    if (!hc->name)
+      return MUTT_HOOK_NO_FLAGS;
+
+    if (flag == hc->data)
+      return hc->name;
+    else
+      hc++;
+  }
+
+  return NULL;
+}
+
+/**
+ * get_hook_flag_by_cmd - Find a hook by name
+ * @param name Name to find
+ * @retval num                 Hook ID, e.g. #MUTT_FOLDER_HOOK
+ * @retval #MUTT_HOOK_NO_FLAGS Error, no matching hook
+ */
+HookFlags get_hook_flag_by_cmd(const char *name)
+{
+  const struct Command *hc = &hook_commands[0];
+  while (hc)
+  {
+    if (!hc->name)
+      return MUTT_HOOK_NO_FLAGS;
+
+    if (mutt_str_equal(name, hc->name))
+    {
+      return hc->data;
+    }
+    else
+      hc++;
+  }
+
+  return MUTT_HOOK_NO_FLAGS;
+}
+
+/**
+ * dump_hooks - Dump hooks to a buffer
+ * @param buf  Output buffer
+ * @param h    Hook to dump
+ */
+static void dump_hooks(struct Buffer *buf, struct Hook *h)
+{
+  struct Buffer *cmd = mutt_buffer_pool_get();
+  quote_simple(h->command, cmd);
+
+  // TODO: there might be missing printfs for some hook types or edge cases
+  // TODO: not displaying charset-hook
+  // TODO: not displaying iconv-hook
+  // TODO: not displaying index-format-hook
+  // TODO: append-hook is missing hook command name
+  // TODO: close-hook is missing hook command name
+  // TODO: open-hook is missing hook command name
+
+  //print hook-type (1)
+  mutt_buffer_add_printf(buf, "%-14s", get_hook_cmd_by_flag(h->type));
+
+  //print regex pattern (2)
+  if (h->type & (MUTT_ACCOUNT_HOOK | MUTT_FOLDER_HOOK | MUTT_CRYPT_HOOK |
+                 MUTT_MBOX_HOOK | MUTT_APPEND_HOOK | MUTT_CLOSE_HOOK | MUTT_OPEN_HOOK |
+                 MUTT_MESSAGE_HOOK | MUTT_REPLY_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK |
+                 MUTT_FCC_HOOK | MUTT_FCC_HOOK | MUTT_SAVE_HOOK | MUTT_SAVE_HOOK))
+  {
+    struct Buffer *pat = mutt_buffer_pool_get();
+    quote_simple(h->regex.pattern, pat);
+    mutt_buffer_add_printf(buf, "%s%-80s\t", h->regex.pat_not ? "!" : "",
+                           mutt_buffer_string(pat));
+    mutt_buffer_pool_release(&pat);
+  }
+
+  //print mailbox (3)
+  if (h->type & (MUTT_FCC_HOOK | MUTT_SAVE_HOOK | MUTT_MBOX_HOOK))
+    mutt_buffer_add_printf(buf, "%s", mutt_path_escape(mutt_buffer_string(cmd)));
+  //print command-only for global hooks (2)
+  else if (h->type & (MUTT_GLOBAL_HOOK | MUTT_MESSAGE_HOOK | MUTT_REPLY_HOOK | MUTT_SEND_HOOK |
+                      MUTT_SEND2_HOOK | MUTT_ACCOUNT_HOOK | MUTT_FOLDER_HOOK | MUTT_APPEND_HOOK |
+                      MUTT_CLOSE_HOOK | MUTT_OPEN_HOOK | MUTT_CRYPT_HOOK))
+  {
+    mutt_buffer_add_printf(buf, "%s", mutt_buffer_string(cmd));
+  }
+
+  mutt_buffer_add_printf(buf, "\n");
+
+  mutt_buffer_pool_release(&cmd);
+}
+
+/**
+ * mutt_parse_hooks - Parse 'hooks' commands - Implements Command::parse()
+ */
+enum CommandResult mutt_parse_hooks(struct Buffer *buf, struct Buffer *s,
+                                    intptr_t data, struct Buffer *err)
+{
+  int rc = MUTT_CMD_SUCCESS;
+
+  FILE *fp_out = NULL;
+  char tempfile[PATH_MAX];
+  bool dump_all = false;
+
+  struct Hook *h = NULL;
+  struct Command *cmd = NULL;
+
+  if (!MoreArgs(s))
+    dump_all = true;
+  else
+  {
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+    if (mutt_istr_equal(buf->data, "all"))
+      dump_all = true;
+  }
+
+  if (MoreArgs(s))
+    return MUTT_CMD_ERROR;
+
+  struct Buffer filebuf = mutt_buffer_make(4096);
+
+  int last = 0;
+  TAILQ_FOREACH(h, &Hooks, entries)
+  {
+    cmd = mutt_command_get(buf->data);
+    if (!cmd && !dump_all)
+    {
+      mutt_buffer_printf(err, _("%s: unknown hook type"), buf->data);
+      return MUTT_CMD_ERROR;
+    }
+
+    if (dump_all || (h->type == cmd->data))
+    {
+      if (last != h->type) //newline between hook types and leading comments
+      {
+        if (last != 0)
+          mutt_buffer_add_printf(&filebuf, "\n");
+        mutt_buffer_add_printf(&filebuf, "# %ss\n", get_hook_cmd_by_flag(h->type));
+        last = h->type;
+      }
+      dump_hooks(&filebuf, h);
+    }
+  }
+
+  if (mutt_buffer_is_empty(&filebuf))
+  {
+    mutt_buffer_printf(err, _("%s: no hooks for this hook type"),
+                       dump_all ? "all" : buf->data);
+    mutt_buffer_dealloc(&filebuf);
+    return MUTT_CMD_ERROR;
+  }
+
+  mutt_mktemp(tempfile, sizeof(tempfile));
+  fp_out = mutt_file_fopen(tempfile, "w");
+  if (!fp_out)
+  {
+    // L10N: '%s' is the file name of the temporary file
+    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
+    mutt_buffer_dealloc(&filebuf);
+    return MUTT_CMD_ERROR;
+  }
+  fputs(filebuf.data, fp_out);
+
+  mutt_file_fclose(&fp_out);
+  mutt_buffer_dealloc(&filebuf);
+
+  struct PagerData pdata = { 0 };
+  struct PagerView pview = { &pdata };
+
+  pdata.fname = tempfile;
+
+  pview.banner = "hooks";
+  pview.flags = MUTT_PAGER_NO_FLAGS;
+  pview.mode = PAGER_MODE_OTHER;
+
+  if (mutt_do_pager(&pview) == -1)
+  {
+    // L10N: '%s' is the file name of the temporary file
+    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
+    return MUTT_CMD_ERROR;
+  }
+
+  return rc;
+}
 
 /**
  * mutt_parse_hook - Parse the 'hook' family of commands - Implements Command::parse()
@@ -494,7 +720,7 @@ enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
     }
     else
     {
-      HookFlags type = mutt_get_hook_type(buf->data);
+      HookFlags type = get_hook_flag_by_cmd(buf->data);
 
       if (type == MUTT_HOOK_NO_FLAGS)
       {
@@ -757,9 +983,7 @@ static void list_hook(struct ListHead *matches, const char *match, HookFlags hoo
   TAILQ_FOREACH(tmp, &Hooks, entries)
   {
     if ((tmp->type & hook) && mutt_regex_match(&tmp->regex, match))
-    {
-      mutt_list_insert_tail(matches, mutt_str_dup(tmp->command));
-    }
+      mutt_list_insert_tail(matches, (char *) get_hook_cmd_by_flag(tmp->type));
   }
 }
 

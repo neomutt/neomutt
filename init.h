@@ -38,7 +38,6 @@ struct ListHead;
 void                  init_config            (struct ConfigSet *cs);
 int                   mutt_command_complete  (char *buf, size_t buflen, int pos, int numtabs);
 int                   mutt_extract_token     (struct Buffer *dest, struct Buffer *tok, TokenFlags flags);
-HookFlags             mutt_get_hook_type     (const char *name);
 int                   mutt_init              (struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands);
 int                   mutt_label_complete    (char *buf, size_t buflen, int numtabs);
 bool                  mutt_nm_query_complete (char *buf, size_t buflen, int pos, int numtabs);

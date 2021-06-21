@@ -52,6 +52,7 @@
 #include "command_parse.h"
 #include "context.h"
 #include "functions.h"
+#include "hook.h"
 #include "keymap.h"
 #include "mutt_commands.h"
 #include "mutt_globals.h"
@@ -685,26 +686,6 @@ void mutt_opts_free(void)
 }
 
 /**
- * mutt_get_hook_type - Find a hook by name
- * @param name Name to find
- * @retval num                 Hook ID, e.g. #MUTT_FOLDER_HOOK
- * @retval #MUTT_HOOK_NO_FLAGS Error, no matching hook
- */
-HookFlags mutt_get_hook_type(const char *name)
-{
-  struct Command *c = NULL;
-  for (size_t i = 0, size = mutt_commands_array(&c); i < size; i++)
-  {
-    if (((c[i].parse == mutt_parse_hook) || (c[i].parse == mutt_parse_idxfmt_hook)) &&
-        mutt_istr_equal(c[i].name, name))
-    {
-      return c[i].data;
-    }
-  }
-  return MUTT_HOOK_NO_FLAGS;
-}
-
-/**
  * mutt_init - Initialise NeoMutt
  * @param cs          Config Set
  * @param skip_sys_rc If true, don't read the system config file
@@ -735,6 +716,7 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   TagFormats = mutt_hash_new(64, MUTT_HASH_NO_FLAGS);
 
   menu_init();
+  hook_init();
 #ifdef USE_SIDEBAR
   sb_init();
 #endif
