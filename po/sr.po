@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: neomutt 20210205\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2021-06-19 23:57+0100\n"
-"PO-Revision-Date: 2021-05-09 12:32+0200\n"
+"PO-Revision-Date: 2021-06-21 08:12+0200\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 3.0\n"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:397
@@ -730,9 +730,8 @@ msgid "Can't set a variable with the '%s' command"
 msgstr "Не може се поставити променљива наредбом „%s“"
 
 #: command_parse.c:795
-#, fuzzy
 msgid "Can't decrement a my_ variable"
-msgstr "Не може се користити префикс при постављању променљиве"
+msgstr "Не може се умањити my_ променљива"
 
 #: command_parse.c:809
 msgid "Can't use prefix when setting a variable"
