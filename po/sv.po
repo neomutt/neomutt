@@ -7143,6 +7143,14 @@ msgstr "Otillåtet krypto-huvud"
 msgid "Decrypting message..."
 msgstr "Avkrypterar meddelande..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "ja"
+
+#: question/question.c:195
+msgid "no"
+msgstr "nej"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Rör"
@@ -7718,9 +7726,3 @@ msgstr "Kompileringsval:"
 
 #~ msgid "Select  "
 #~ msgstr "Välj  "
-
-#~ msgid "no"
-#~ msgstr "nej"
-
-#~ msgid "yes"
-#~ msgstr "ja"

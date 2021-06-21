@@ -7176,6 +7176,14 @@ msgstr "Невалидна PGP заглавна част"
 msgid "Decrypting message..."
 msgstr "Изтегляне на писмо..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "yes"
+
+#: question/question.c:195
+msgid "no"
+msgstr "no"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Pipe"
@@ -7733,9 +7741,3 @@ msgstr "Опции при компилация:"
 
 #~ msgid "Select  "
 #~ msgstr "Избор "
-
-#~ msgid "no"
-#~ msgstr "no"
-
-#~ msgid "yes"
-#~ msgstr "yes"

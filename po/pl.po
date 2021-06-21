@@ -6895,6 +6895,14 @@ msgstr "Szyfrowanie: nieprawidłowy nagłówek"
 msgid "Decrypting message..."
 msgstr "Odszyfrowywanie listu..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "tak"
+
+#: question/question.c:195
+msgid "no"
+msgstr "nie"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Potok"
@@ -7454,9 +7462,3 @@ msgstr "Parametry kompilacji:"
 
 #~ msgid "Select  "
 #~ msgstr "Wybór  "
-
-#~ msgid "no"
-#~ msgstr "nie"
-
-#~ msgid "yes"
-#~ msgstr "tak"

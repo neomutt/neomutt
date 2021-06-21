@@ -7008,6 +7008,14 @@ msgstr "İzin verilmeyen kripto üstbilgisi"
 msgid "Decrypting message..."
 msgstr "İleti çözülüyor..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "evet"
+
+#: question/question.c:195
+msgid "no"
+msgstr "hayır"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Boru"
@@ -7562,9 +7570,3 @@ msgstr "Varsayılan seçenekler:"
 #: version.c:514
 msgid "Compile options:"
 msgstr "İnşa seçenekleri:"
-
-#~ msgid "no"
-#~ msgstr "hayır"
-
-#~ msgid "yes"
-#~ msgstr "evet"

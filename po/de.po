@@ -6889,6 +6889,14 @@ msgstr "Unzulässiger Krypto-Header"
 msgid "Decrypting message..."
 msgstr "Entschlüssle Nachricht..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "ja"
+
+#: question/question.c:195
+msgid "no"
+msgstr "nein"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Filtern"
@@ -7455,9 +7463,3 @@ msgstr "Einstellungen bei der Kompilierung:"
 
 #~ msgid "Select  "
 #~ msgstr "Auswahl  "
-
-#~ msgid "no"
-#~ msgstr "nein"
-
-#~ msgid "yes"
-#~ msgstr "ja"

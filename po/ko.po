@@ -7156,6 +7156,14 @@ msgstr "잘못된 PGP 헤더"
 msgid "Decrypting message..."
 msgstr "메세지 가져오는 중..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "yes"
+
+#: question/question.c:195
+msgid "no"
+msgstr "no"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "연결"
@@ -7709,9 +7717,3 @@ msgstr "컴파일 선택사항:"
 
 #~ msgid "Select  "
 #~ msgstr "선택  "
-
-#~ msgid "no"
-#~ msgstr "no"
-
-#~ msgid "yes"
-#~ msgstr "yes"

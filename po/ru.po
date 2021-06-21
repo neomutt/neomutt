@@ -6993,6 +6993,14 @@ msgstr "Неверный crypto-заголовок"
 msgid "Decrypting message..."
 msgstr "Расшифровка сообщения..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "да"
+
+#: question/question.c:195
+msgid "no"
+msgstr "нет"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Передать программе"
@@ -7560,9 +7568,3 @@ msgstr "Параметры компиляции:"
 
 #~ msgid "Select  "
 #~ msgstr "Выбрать "
-
-#~ msgid "no"
-#~ msgstr "нет"
-
-#~ msgid "yes"
-#~ msgstr "да"

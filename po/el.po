@@ -7100,6 +7100,14 @@ msgstr "Ακατάλληλη επικεφαλίδα PGP"
 msgid "Decrypting message..."
 msgstr "Αποκρυπτογράφηση μηνύματος..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "ναι"
+
+#: question/question.c:195
+msgid "no"
+msgstr "όχι"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Διοχέτευση"
@@ -7656,9 +7664,3 @@ msgstr "Παράμετροι μεταγλώττισης:"
 
 #~ msgid "Select  "
 #~ msgstr "Διαλέξτε "
-
-#~ msgid "no"
-#~ msgstr "όχι"
-
-#~ msgid "yes"
-#~ msgstr "ναι"

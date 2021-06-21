@@ -7202,6 +7202,14 @@ msgstr "不合規定的 PGP 標頭"
 msgid "Decrypting message..."
 msgstr "拿取信件中…"
 
+#: question/question.c:194
+msgid "yes"
+msgstr ""
+
+#: question/question.c:195
+msgid "no"
+msgstr ""
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "管線"

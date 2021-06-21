@@ -7139,6 +7139,14 @@ msgstr "Kriptografia baliogabeko burukoa"
 msgid "Decrypting message..."
 msgstr "Mezua desenkriptatzen..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "bai"
+
+#: question/question.c:195
+msgid "no"
+msgstr "ez"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Hodia"
@@ -7693,9 +7701,3 @@ msgstr "Konpilazio aukerak:"
 
 #~ msgid "Select  "
 #~ msgstr "Aukeratu  "
-
-#~ msgid "no"
-#~ msgstr "ez"
-
-#~ msgid "yes"
-#~ msgstr "bai"

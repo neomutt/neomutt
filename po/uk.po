@@ -7073,6 +7073,14 @@ msgstr "Неправильний заголовок шифрування"
 msgid "Decrypting message..."
 msgstr "Розшифровка листа..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "так"
+
+#: question/question.c:195
+msgid "no"
+msgstr "ні"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Передати"
@@ -7640,9 +7648,3 @@ msgstr "Параметри компіляції:"
 
 #~ msgid "Select  "
 #~ msgstr "Вибір  "
-
-#~ msgid "no"
-#~ msgstr "ні"
-
-#~ msgid "yes"
-#~ msgstr "так"

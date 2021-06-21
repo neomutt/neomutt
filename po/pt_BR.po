@@ -6911,6 +6911,14 @@ msgstr "Cabeçalho cripto ilegal"
 msgid "Decrypting message..."
 msgstr "Desencriptando mensagem..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "sim"
+
+#: question/question.c:195
+msgid "no"
+msgstr "não"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Cano"
@@ -7482,9 +7490,3 @@ msgstr "Opções de compilação:"
 
 #~ msgid "Select  "
 #~ msgstr "Escolher  "
-
-#~ msgid "no"
-#~ msgstr "não"
-
-#~ msgid "yes"
-#~ msgstr "sim"

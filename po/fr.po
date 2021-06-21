@@ -7208,6 +7208,14 @@ msgstr "En-tête crypto illégal"
 msgid "Decrypting message..."
 msgstr "Déchiffrage du message..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "oui"
+
+#: question/question.c:195
+msgid "no"
+msgstr "non"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Pipe"
@@ -7790,9 +7798,3 @@ msgstr "Options de compilation :"
 
 #~ msgid "Select  "
 #~ msgstr "Sélectionner  "
-
-#~ msgid "no"
-#~ msgstr "non"
-
-#~ msgid "yes"
-#~ msgstr "oui"
