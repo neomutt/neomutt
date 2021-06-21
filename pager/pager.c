@@ -153,27 +153,6 @@ static int pager_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * pager_window_observer - Notification that a Window has changed - Implements ::observer_t
- */
-static int pager_window_observer(struct NotifyCallback *nc)
-{
-  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
-    return -1;
-
-  if (nc->event_subtype != NT_WINDOW_DELETE)
-    return 0;
-
-  struct MuttWindow *win = nc->global_data;
-
-  notify_observer_remove(NeoMutt->notify, pager_config_observer, win);
-  notify_observer_remove(win->notify, pager_window_observer, win);
-
-  mutt_debug(LL_DEBUG5, "window delete done\n");
-
-  return 0;
-}
-
-/**
  * pager_color_observer - Notification that a Color has changed - Implements ::observer_t
  */
 static int pager_color_observer(struct NotifyCallback *nc)
@@ -230,6 +209,45 @@ static int pager_email_observer(struct NotifyCallback *nc)
     return -1;
 
   mutt_debug(LL_DEBUG5, "email done\n");
+  return 0;
+}
+
+/**
+ * pager_window_observer - Notification that a Window has changed - Implements ::observer_t
+ */
+static int pager_window_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
+    return -1;
+
+  if (nc->event_subtype != NT_WINDOW_DELETE)
+    return 0;
+
+  struct MuttWindow *win_pager = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != win_pager)
+    return 0;
+
+  struct MuttWindow *parent = win_pager->parent;
+  struct MuttWindow *dlg = window_find_parent(win_pager, WT_DLG_INDEX);
+  if (!dlg)
+    dlg = window_find_parent(win_pager, WT_DLG_DO_PAGER);
+
+  struct IndexSharedData *shared = dlg->wdata;
+
+  notify_observer_remove(NeoMutt->notify, pager_config_observer, win_pager);
+  notify_observer_remove(win_pager->notify, pager_window_observer, win_pager);
+  notify_observer_remove(NeoMutt->notify, pager_color_observer, win_pager);
+  notify_observer_remove(shared->notify, pager_pager_observer, win_pager);
+  notify_observer_remove(parent->notify, pager_menu_observer, win_pager);
+
+  if (shared->mailbox)
+    notify_observer_remove(shared->mailbox->notify, pager_mailbox_observer, win_pager);
+  if (shared->email)
+    notify_observer_remove(shared->email->notify, pager_email_observer, win_pager);
+
+  mutt_debug(LL_DEBUG5, "window delete done\n");
+
   return 0;
 }
 

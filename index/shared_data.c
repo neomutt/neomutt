@@ -131,23 +131,30 @@ static int index_shared_email_observer(struct NotifyCallback *nc)
   struct EventEmail *ev_e = nc->event_data;
   struct IndexSharedData *shared = nc->global_data;
 
-  if (nc->event_subtype != NT_EMAIL_DELETE)
+  if (nc->event_subtype == NT_EMAIL_ADD)
     return 0;
 
+  bool match = false;
   for (int i = 0; i < ev_e->num_emails; i++)
   {
     if (ev_e->emails[i] == shared->email)
     {
-      struct IndexSharedData old_shared = *shared;
-      shared->email = NULL;
-
-      // Relay the message
-      mutt_debug(LL_NOTIFY, "NT_INDEX_EMAIL: %p\n", shared->email);
-      notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, &old_shared);
-      return 0;
+      match = true;
+      break;
     }
   }
 
+  if (!match)
+    return 0;
+
+  if (nc->event_subtype == NT_EMAIL_DELETE)
+  {
+    shared->email = NULL;
+  }
+
+  // Relay the message
+  mutt_debug(LL_NOTIFY, "NT_INDEX_EMAIL: %p\n", shared->email);
+  notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, shared);
   return 0;
 }
 

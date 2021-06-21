@@ -259,12 +259,32 @@ static int ibar_window_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_WINDOW) || !nc->global_data)
     return -1;
 
-  if (nc->event_subtype != NT_WINDOW_STATE)
+  struct MuttWindow *win_ibar = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != win_ibar)
     return 0;
 
-  struct MuttWindow *win_ibar = nc->global_data;
-  win_ibar->actions |= WA_REPAINT;
-  mutt_debug(LL_DEBUG5, "window state done, request WA_REPAINT\n");
+  if (nc->event_subtype == NT_WINDOW_STATE)
+  {
+    win_ibar->actions |= WA_REPAINT;
+    mutt_debug(LL_DEBUG5, "window state done, request WA_REPAINT\n");
+  }
+  else if (nc->event_subtype == NT_WINDOW_DELETE)
+  {
+    struct MuttWindow *dlg = window_find_parent(win_ibar, WT_DLG_INDEX);
+    struct IndexSharedData *shared = dlg->wdata;
+
+    notify_observer_remove(NeoMutt->notify, ibar_color_observer, win_ibar);
+    notify_observer_remove(NeoMutt->notify, ibar_config_observer, win_ibar);
+    notify_observer_remove(shared->notify, ibar_index_observer, win_ibar);
+    notify_observer_remove(win_ibar->parent->notify, ibar_menu_observer, win_ibar);
+    notify_observer_remove(win_ibar->notify, ibar_window_observer, win_ibar);
+
+    if (shared->mailbox)
+      notify_observer_remove(shared->mailbox->notify, ibar_mailbox_observer, win_ibar);
+
+    mutt_debug(LL_DEBUG5, "window delete done\n");
+  }
 
   return 0;
 }
@@ -275,17 +295,6 @@ static int ibar_window_observer(struct NotifyCallback *nc)
 static void ibar_data_free(struct MuttWindow *win, void **ptr)
 {
   struct IBarPrivateData *ibar_data = *ptr;
-  struct IndexSharedData *shared = ibar_data->shared;
-  struct IndexPrivateData *priv = ibar_data->priv;
-
-  notify_observer_remove(NeoMutt->notify, ibar_color_observer, win);
-  notify_observer_remove(NeoMutt->notify, ibar_config_observer, win);
-  notify_observer_remove(shared->notify, ibar_index_observer, win);
-  notify_observer_remove(priv->win_ibar->parent->notify, ibar_menu_observer, win);
-  notify_observer_remove(win->notify, ibar_window_observer, win);
-
-  if (shared->mailbox)
-    notify_observer_remove(shared->mailbox->notify, ibar_mailbox_observer, win);
 
   FREE(&ibar_data->status_format);
   FREE(&ibar_data->ts_status_format);
