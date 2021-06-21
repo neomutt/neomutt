@@ -515,6 +515,20 @@ static int delete_attachment(struct AttachCtx *actx, int x)
     return -1;
   }
 
+  if (idx[rindex]->parent_type == TYPE_MULTIPART)
+  {
+    mutt_error(_("You may not delete children of a multipart attachment"));
+    idx[rindex]->body->tagged = false;
+    return -1;
+  }
+
+  if (idx[rindex]->body->type == TYPE_MULTIPART)
+  {
+    mutt_error(_("You may not delete a multipart attachment"));
+    idx[rindex]->body->tagged = false;
+    return -1;
+  }
+
   for (int y = 0; y < actx->idxlen; y++)
   {
     if (idx[y]->body->next == idx[rindex]->body)
@@ -563,21 +577,16 @@ static void gen_attach_list(struct AttachCtx *actx, struct Body *m, int parent_t
 {
   for (; m; m = m->next)
   {
+    struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
+    mutt_actx_add_attach(actx, ap);
+    ap->body = m;
+    m->aptr = ap;
+    ap->parent_type = parent_type;
+    ap->level = level;
     if ((m->type == TYPE_MULTIPART) && m->parts &&
         (!(WithCrypto & APPLICATION_PGP) || !mutt_is_multipart_encrypted(m)))
     {
-      gen_attach_list(actx, m->parts, m->type, level);
-    }
-    else
-    {
-      struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
-      mutt_actx_add_attach(actx, ap);
-      ap->body = m;
-      m->aptr = ap;
-      ap->parent_type = parent_type;
-      ap->level = level;
-
-      /* We don't support multipart messages in the compose menu yet */
+      gen_attach_list(actx, m->parts, m->type, level + 1);
     }
   }
 }
@@ -622,9 +631,16 @@ void update_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
  */
 static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachPtr *ap)
 {
-  ap->level = (actx->idxlen > 0) ? actx->idx[actx->idxlen - 1]->level : 0;
-  if (actx->idxlen)
-    actx->idx[actx->idxlen - 1]->body->next = ap->body;
+  ap->level = 0;
+  for (short i = actx->idxlen; i > 0; i--)
+  {
+    if (ap->level == actx->idx[i - 1]->level)
+    {
+      actx->idx[i - 1]->body->next = ap->body;
+      break;
+    }
+  }
+
   ap->body->aptr = ap;
   mutt_actx_add_attach(actx, ap);
   update_menu(actx, menu, false);
@@ -633,34 +649,71 @@ static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachP
 
 /**
  * compose_attach_swap - Swap two adjacent entries in the attachment list
- * @param[in]  msg   Body of email
- * @param[out] idx   Array of Attachments
- * @param[in]  first Index of first attachment to swap
+ * @param[in]  msg    Body of email
+ * @param[out] actx   Attachment information
+ * @param[in]  first  Index of first attachment to swap
+ * @param[in]  second Index of second attachment to swap
  */
-static void compose_attach_swap(struct Body *msg, struct AttachPtr **idx, short first)
+static void compose_attach_swap(struct Body *msg, struct AttachCtx *actx,
+                                short first, short second)
 {
+  struct AttachPtr **idx = actx->idx;
+
+  /* check that attachments really are adjacent */
+  if (idx[first]->body->next != idx[second]->body)
+    return;
+
   /* Reorder Body pointers.
    * Must traverse msg from top since Body has no previous ptr.  */
   for (struct Body *part = msg; part; part = part->next)
   {
     if (part->next == idx[first]->body)
     {
-      idx[first]->body->next = idx[first + 1]->body->next;
-      idx[first + 1]->body->next = idx[first]->body;
-      part->next = idx[first + 1]->body;
+      idx[first]->body->next = idx[second]->body->next;
+      idx[second]->body->next = idx[first]->body;
+      part->next = idx[second]->body;
+      break;
+    }
+    /* also check for multipart groups */
+    if (part->parts == idx[first]->body)
+    {
+      idx[first]->body->next = idx[second]->body->next;
+      idx[second]->body->next = idx[first]->body;
+      part->parts = idx[second]->body;
       break;
     }
   }
 
-  /* Reorder index */
-  struct AttachPtr *saved = idx[first];
-  idx[first] = idx[first + 1];
-  idx[first + 1] = saved;
+  /* Reorder index and ptr->num */
+  struct AttachPtr *savedptr = idx[second];
+  for (int i = second; i > first; i--)
+  {
+    idx[i] = idx[i - 1];
+    idx[i]->num = i;
+  }
+  idx[first] = savedptr;
+  idx[first]->num = first;
 
-  /* Swap ptr->num */
-  int i = idx[first]->num;
-  idx[first]->num = idx[first + 1]->num;
-  idx[first + 1]->num = i;
+  /* if moved attachment is a group then move subparts too */
+  if (idx[first]->body->type == TYPE_MULTIPART)
+  {
+    int i = second + 1;
+    while (idx[i]->level > idx[first]->level)
+    {
+      savedptr = idx[i];
+      int destidx = i - second + first;
+      for (int j = i; j > destidx; j--)
+      {
+        idx[j] = idx[j - 1];
+        idx[j]->num = j;
+      }
+      idx[destidx] = savedptr;
+      idx[destidx]->num = destidx;
+      i++;
+      if (i >= actx->idxlen)
+        break;
+    }
+  }
 }
 
 /**
@@ -709,6 +762,101 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
   dlg->help_menu = MENU_COMPOSE;
 
   return dlg;
+}
+
+/**
+ * insert_idx - Insert a new attachment into the message at specified index position
+ * @param menu Current menu
+ * @param actx Attachment context
+ * @param ap   Attachment to add
+ * @param aidx Index position to insert attachment
+ */
+static void insert_idx(struct Menu *menu, struct AttachCtx *actx,
+                       struct AttachPtr *ap, short aidx)
+{
+  ap->level = 0;
+  /* set body pointers */
+  if (aidx > 0)
+  {
+    for (short i = aidx; i > 0; i--)
+    {
+      if (ap->level == actx->idx[i - 1]->level)
+      {
+        actx->idx[i - 1]->body->next = ap->body;
+        break;
+      }
+    }
+  }
+  if (aidx < actx->idxlen)
+  {
+    for (short i = aidx; i < actx->idxlen; i++)
+    {
+      if (ap->level == actx->idx[i]->level)
+      {
+        ap->body->next = actx->idx[i]->body;
+        break;
+      }
+    }
+  }
+
+  ap->body->aptr = ap;
+  mutt_actx_ins_attach(actx, ap, aidx);
+  update_menu(actx, menu, false);
+  menu->current = aidx;
+}
+
+/**
+ * ungroup_attachment - Ungroup multipart attachment at specified position
+ * @param e    Email
+ * @param actx Attachment context
+ * @param aidx Index position of multipart attachment
+ */
+static void ungroup_attachment(struct Email *e, struct AttachCtx *actx, short aidx)
+{
+  struct Body *bptr = actx->idx[aidx]->body;
+  struct Body *bptr_next = bptr->next;
+  struct Body *bptr_previous = NULL;
+  int parent_type = actx->idx[aidx]->parent_type;
+
+  /* traverse attachments to find previous body pointer */
+  if (bptr != e->body)
+  {
+    for (struct Body *b = e->body; b; b = b->next)
+    {
+      if (b->next == bptr)
+      {
+        bptr_previous = b;
+        break;
+      }
+    }
+  }
+
+  /* reorder body pointers */
+  bptr = mutt_remove_multipart(bptr);
+  if (bptr_previous)
+    bptr_previous->next = bptr;
+  else
+    e->body = bptr;
+
+  for (short i = aidx + 1; i < actx->idxlen; i++)
+  {
+    actx->idx[i]->parent_type = parent_type;
+    actx->idx[i]->level -= 1;
+    if (actx->idx[i]->body->next == NULL)
+    {
+      actx->idx[i]->body->next = bptr_next;
+      break;
+    }
+  }
+
+  /* reorder actx */
+  actx->idx[aidx]->body->parts = NULL;
+  FREE(&actx->idx[aidx]->tree);
+  FREE(&actx->idx[aidx]);
+  for (short i = aidx; i < actx->idxlen - 1; i++)
+    actx->idx[i] = actx->idx[i + 1];
+  actx->idx[actx->idxlen - 1] = NULL;
+  actx->idxlen--;
 }
 
 /**
@@ -936,7 +1084,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         char *err = NULL;
         mutt_env_to_local(e->env);
         const char *const c_editor = cs_subset_string(sub, "editor");
-        mutt_edit_headers(NONULL(c_editor), e->body->filename, e, fcc);
+        if (e->body->type == TYPE_MULTIPART)
+          mutt_edit_headers(NONULL(c_editor), e->body->parts->filename, e, fcc);
+        else
+          mutt_edit_headers(NONULL(c_editor), e->body->filename, e, fcc);
         if (mutt_env_to_intl(e->env, &tag, &err))
         {
           mutt_error(_("Bad IDN in '%s': '%s'"), tag, err);
@@ -993,9 +1144,25 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           mutt_error(_("The fundamental part can't be moved"));
           break;
         }
-        compose_attach_swap(e->body, actx->idx, index - 1);
+        if (actx->idx[index - 1]->level < actx->idx[index]->level)
+        {
+          mutt_error(_("Attachment can't be moved out of group"));
+          break;
+        }
+        /* Find previous attachment at current level */
+        short previdx = index - 1;
+        while (previdx > 0 &&
+               actx->idx[previdx]->level > actx->idx[index]->level)
+          previdx--;
+        if (previdx == 0)
+        {
+          mutt_error(_("The fundamental part can't be moved"));
+          break;
+        }
+        compose_attach_swap(e->body, actx, previdx, index);
+        mutt_update_tree(actx);
         menu_queue_redraw(menu, MENU_REDRAW_INDEX);
-        menu_set_index(menu, index - 1);
+        menu_set_index(menu, previdx);
         break;
       }
 
@@ -1012,9 +1179,42 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           mutt_error(_("The fundamental part can't be moved"));
           break;
         }
-        compose_attach_swap(e->body, actx->idx, index);
+        if (actx->idx[index + 1]->level < actx->idx[index]->level)
+        {
+          mutt_error(_("Attachment can't be moved out of group"));
+          break;
+        }
+        /* Find next attachment at current level */
+        short nextidx = index + 1;
+        while (nextidx < actx->idxlen &&
+               actx->idx[nextidx]->level > actx->idx[index]->level)
+          nextidx++;
+        if (nextidx == actx->idxlen)
+        {
+          mutt_error(_("Attachment is already at bottom"));
+          break;
+        }
+        /* If next attachment is multipart find final position */
+        short finalidx = nextidx;
+        if (actx->idx[finalidx]->body->type == TYPE_MULTIPART)
+        {
+          finalidx++;
+          while (actx->idx[finalidx]->level > actx->idx[index + 1]->level)
+          {
+            finalidx++;
+            if (finalidx >= actx->idxlen)
+              break;
+          }
+          finalidx--;
+        }
+        else
+        {
+          finalidx = menu->current + 1;
+        }
+        compose_attach_swap(e->body, actx, index, nextidx);
+        mutt_update_tree(actx);
         menu_queue_redraw(menu, MENU_REDRAW_INDEX);
-        menu_set_index(menu, index + 1);
+        menu_set_index(menu, finalidx);
         break;
       }
 
@@ -1027,6 +1227,36 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           break;
         }
 
+        /* All tagged attachments must be at top level and can't have children */
+        bool taggedtoplevel = true;
+        bool taggednochildren = true;
+        for (int i = 0; i < actx->idxlen; i++)
+        {
+          if (actx->idx[i]->body->tagged)
+          {
+            if (actx->idx[i]->level > 0)
+            {
+              taggedtoplevel = false;
+              break;
+            }
+            if (actx->idx[i]->body->type == TYPE_MULTIPART)
+            {
+              taggednochildren = false;
+              break;
+            }
+          }
+        }
+        if (!taggedtoplevel)
+        {
+          mutt_error(_("Attachments to be grouped must be at top level"));
+          break;
+        }
+        if (!taggednochildren)
+        {
+          mutt_error(_("Attachments to be grouped can not be multipart"));
+          break;
+        }
+
         struct Body *group = mutt_body_new();
         group->type = TYPE_MULTIPART;
         group->subtype = mutt_str_dup("alternative");
@@ -1034,9 +1264,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
         struct Body *alts = NULL;
         /* group tagged message into a multipart/alternative */
-        struct Body *bptr = e->body;
-        for (int i = 0; bptr;)
+        struct Body *bptr = NULL;
+        int gidx = 0;
+        int glastidx = 0;
+        int glevel = 0;
+        for (int i = 0; i < actx->idxlen; i++)
         {
+          bptr = actx->idx[i]->body;
           if (bptr->tagged)
           {
             bptr->tagged = false;
@@ -1059,33 +1293,46 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
             if (alts)
             {
               alts->next = bptr;
-              bptr = bptr->next;
               alts = alts->next;
               alts->next = NULL;
+              // make grouped attachments consecutive
+              if (i > glastidx + 1)
+              {
+                struct AttachPtr *saved = actx->idx[i];
+                int saved_num = actx->idx[i]->num;
+                for (int j = i; j > glastidx + 1; j--)
+                {
+                  actx->idx[j]->num += 1;
+                  actx->idx[j] = actx->idx[j - 1];
+                }
+                actx->idx[glastidx + 1] = saved;
+                actx->idx[glastidx + 1]->num = saved_num;
+                if (actx->idxlen - 1 > i)
+                  actx->idx[i]->body->next = actx->idx[i + 1]->body;
+                else
+                  actx->idx[i]->body->next = NULL;
+              }
+              glastidx++;
             }
             else
             {
+              gidx = i;
+              glastidx = i;
+              glevel = actx->idx[i]->level;
               group->parts = bptr;
               alts = bptr;
-              bptr = bptr->next;
               alts->next = NULL;
             }
 
-            for (int j = i; j < actx->idxlen - 1; j++)
-            {
-              actx->idx[j] = actx->idx[j + 1];
-              actx->idx[j + 1] = NULL; /* for debug reason */
-            }
-            actx->idxlen--;
-          }
-          else
-          {
-            bptr = bptr->next;
-            i++;
+            actx->idx[glastidx]->level = glevel + 1;
+            actx->idx[glastidx]->parent_type = TYPE_MULTIPART;
           }
         }
 
-        group->next = NULL;
+        if (actx->idxlen - 1 > glastidx)
+          group->next = actx->idx[glastidx + 1]->body;
+        else
+          group->next = NULL;
         mutt_generate_boundary(&group->parameter);
 
         /* if no group desc yet, make one up */
@@ -1094,7 +1341,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
         struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
         gptr->body = group;
-        update_idx(menu, actx, gptr);
+        gptr->level = glevel;
+        insert_idx(menu, actx, gptr, gidx);
+
+        /* update e->body pointer */
+        e->body = actx->idx[0]->body;
+
+        menu->current = gidx;
         menu_queue_redraw(menu, MENU_REDRAW_INDEX);
         break;
       }
@@ -1193,6 +1446,18 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         gptr->body = group;
         update_idx(menu, actx, gptr);
         menu_queue_redraw(menu, MENU_REDRAW_INDEX);
+        break;
+      }
+
+      case OP_COMPOSE_UNGROUP_ATTACHMENT:
+      {
+        if (actx->idx[menu->current]->body->type != TYPE_MULTIPART)
+        {
+          mutt_error(_("Attachment is not 'multipart'"));
+          break;
+        }
+        ungroup_attachment(e, actx, menu->current);
+        update_menu(actx, menu, false);
         break;
       }
 

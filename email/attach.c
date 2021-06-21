@@ -42,6 +42,23 @@ void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach)
   if (!actx || !attach)
     return;
 
+  mutt_actx_ins_attach(actx, attach, actx->idxlen);
+}
+
+/**
+ * mutt_actx_ins_attach - Insert an Attachment into an Attachment Context at Specified Index
+ * @param actx   Attachment context
+ * @param attach Attachment to insert
+ * @param aidx   Index to insert attachment at
+ */
+void mutt_actx_ins_attach(struct AttachCtx *actx, struct AttachPtr *attach, short aidx)
+{
+  if (!actx || !attach)
+    return;
+
+  if (aidx < 0 || aidx > actx->idxmax)
+    return;
+
   if (actx->idxlen == actx->idxmax)
   {
     actx->idxmax += 5;
@@ -51,7 +68,12 @@ void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach)
       actx->idx[i] = NULL;
   }
 
-  actx->idx[actx->idxlen++] = attach;
+  actx->idxlen++;
+
+  for (short i = actx->idxlen - 1; i > aidx; i--)
+    actx->idx[i] = actx->idx[i - 1];
+
+  actx->idx[aidx] = attach;
 }
 
 /**
