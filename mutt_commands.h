@@ -71,7 +71,8 @@ enum MuttSetCommand
 };
 
 /* parameter to parse_mailboxes */
-#define MUTT_NAMED   (1 << 0)
+#define MUTT_NAMED              (1 << 0)
+#define MUTT_COMMAND_DEPRECATED (1 << 1)
 
 /* command registry functions */
 #define COMMANDS_REGISTER(cmds) commands_register(cmds, mutt_array_size(cmds))

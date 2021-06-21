@@ -69,6 +69,10 @@ const char *mutt_idxfmt_hook(const char *name, struct Mailbox *m, struct Email *
 void  mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type);
 enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult mutt_parse_hook_charset(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult mutt_parse_hook_command(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult mutt_parse_hook_regex(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult mutt_parse_hook_pattern(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 void  mutt_select_fcc(struct Buffer *path, struct Email *e);
 void  mutt_startup_shutdown_hook(HookFlags type);
