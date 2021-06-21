@@ -6908,6 +6908,14 @@ msgstr "Neleistina šifro antraštė"
 msgid "Decrypting message..."
 msgstr "Iššifruoju laišką..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "taip"
+
+#: question/question.c:195
+msgid "no"
+msgstr "ne"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Pipe"
@@ -7475,9 +7483,3 @@ msgstr "Kompiliavimo parinktys:"
 
 #~ msgid "Select  "
 #~ msgstr "Pasirink  "
-
-#~ msgid "no"
-#~ msgstr "ne"
-
-#~ msgid "yes"
-#~ msgstr "taip"

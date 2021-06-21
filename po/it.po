@@ -7125,6 +7125,14 @@ msgstr "Header crittografico non consentito"
 msgid "Decrypting message..."
 msgstr "Decifratura messaggio..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "sì"
+
+#: question/question.c:195
+msgid "no"
+msgstr "no"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Pipe"
@@ -7684,9 +7692,3 @@ msgstr "Opzioni di compilazione:"
 
 #~ msgid "Select  "
 #~ msgstr "Seleziona  "
-
-#~ msgid "no"
-#~ msgstr "no"
-
-#~ msgid "yes"
-#~ msgstr "sì"

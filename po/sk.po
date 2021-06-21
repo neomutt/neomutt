@@ -7031,6 +7031,14 @@ msgstr "Nedovolená šifrovací hlavička"
 msgid "Decrypting message..."
 msgstr "Dešifrujem správu…"
 
+#: question/question.c:194
+msgid "yes"
+msgstr "áno"
+
+#: question/question.c:195
+msgid "no"
+msgstr "nie"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Poslať rourou"
@@ -7599,9 +7607,3 @@ msgstr "Nastavenia kompilácie:"
 
 #~ msgid "Select  "
 #~ msgstr "Označiť  "
-
-#~ msgid "no"
-#~ msgstr "nie"
-
-#~ msgid "yes"
-#~ msgstr "áno"

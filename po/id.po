@@ -7116,6 +7116,14 @@ msgstr "Header crypto tidak betul"
 msgid "Decrypting message..."
 msgstr "Mendekripsi surat..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "ya"
+
+#: question/question.c:195
+msgid "no"
+msgstr "nggak"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Pipa"
@@ -7672,9 +7680,3 @@ msgstr "Opsi2 saat kompilasi:"
 
 #~ msgid "Select  "
 #~ msgstr "Pilih  "
-
-#~ msgid "no"
-#~ msgstr "nggak"
-
-#~ msgid "yes"
-#~ msgstr "ya"

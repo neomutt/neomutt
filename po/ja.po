@@ -7021,6 +7021,14 @@ msgstr "不正なセキュリティヘッダ"
 msgid "Decrypting message..."
 msgstr "メッセージ復号化中..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "yes"
+
+#: question/question.c:195
+msgid "no"
+msgstr "no"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "パイプ"
@@ -7585,9 +7593,3 @@ msgstr "コンパイル時オプション:"
 
 #~ msgid "Select  "
 #~ msgstr "選択  "
-
-#~ msgid "no"
-#~ msgstr "no"
-
-#~ msgid "yes"
-#~ msgstr "yes"

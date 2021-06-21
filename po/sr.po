@@ -6912,6 +6912,14 @@ msgstr "Недозвољено крипто заглавље"
 msgid "Decrypting message..."
 msgstr "Дешифровање поруке..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "да (y)"
+
+#: question/question.c:195
+msgid "no"
+msgstr "не (n)"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Проследи"
@@ -7462,9 +7470,3 @@ msgstr "Подразумеване опције:"
 #: version.c:514
 msgid "Compile options:"
 msgstr "Опције за компајлирање:"
-
-#~ msgid "no"
-#~ msgstr "не (n)"
-
-#~ msgid "yes"
-#~ msgstr "да (y)"

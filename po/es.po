@@ -6913,6 +6913,14 @@ msgstr "Cabecera crypto errónea"
 msgid "Decrypting message..."
 msgstr "Descifrando mensaje..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "sí"
+
+#: question/question.c:195
+msgid "no"
+msgstr "no"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Redirigir"
@@ -7477,9 +7485,3 @@ msgstr "Opciones especificadas al compilar:"
 
 #~ msgid "Select  "
 #~ msgstr "Seleccionar  "
-
-#~ msgid "no"
-#~ msgstr "no"
-
-#~ msgid "yes"
-#~ msgstr "sí"

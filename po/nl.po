@@ -7078,6 +7078,14 @@ msgstr "Ongeldige crypto header"
 msgid "Decrypting message..."
 msgstr "Bericht wordt ontsleuteld..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "ja"
+
+#: question/question.c:195
+msgid "no"
+msgstr "nee"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Filteren"
@@ -7649,9 +7657,3 @@ msgstr "Opties tijdens compileren:"
 
 #~ msgid "Select  "
 #~ msgstr "Selecteer  "
-
-#~ msgid "no"
-#~ msgstr "nee"
-
-#~ msgid "yes"
-#~ msgstr "ja"

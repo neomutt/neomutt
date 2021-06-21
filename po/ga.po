@@ -7218,6 +7218,14 @@ msgstr "Ceanntásc neamhcheadaithe criptithe"
 msgid "Decrypting message..."
 msgstr "Teachtaireacht á díchriptiú..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "is sea"
+
+#: question/question.c:195
+msgid "no"
+msgstr "ní hea"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Píopa"
@@ -7800,9 +7808,3 @@ msgstr "Roghanna tiomsaithe:"
 
 #~ msgid "Select  "
 #~ msgstr "Roghnaigh  "
-
-#~ msgid "no"
-#~ msgstr "ní hea"
-
-#~ msgid "yes"
-#~ msgstr "is sea"

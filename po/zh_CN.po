@@ -6892,6 +6892,16 @@ msgstr "非法的加密(crypto)信件头"
 msgid "Decrypting message..."
 msgstr "正在解密信件..."
 
+# Don't translate this!!
+#: question/question.c:194
+msgid "yes"
+msgstr "yes"
+
+# Don't translate this!!
+#: question/question.c:195
+msgid "no"
+msgstr "no"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "管道"
@@ -7448,11 +7458,3 @@ msgstr "编译选项："
 
 #~ msgid "Select  "
 #~ msgstr "选择  "
-
-# Don't translate this!!
-#~ msgid "no"
-#~ msgstr "no"
-
-# Don't translate this!!
-#~ msgid "yes"
-#~ msgstr "yes"

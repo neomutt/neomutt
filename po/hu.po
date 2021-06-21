@@ -7173,6 +7173,14 @@ msgstr "Érvénytelen PGP fejléc"
 msgid "Decrypting message..."
 msgstr "Levél letöltése..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "igen"
+
+#: question/question.c:195
+msgid "no"
+msgstr "nem"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Átküld"
@@ -7729,9 +7737,3 @@ msgstr "Fordítási opciók:"
 
 #~ msgid "Select  "
 #~ msgstr "Választ  "
-
-#~ msgid "no"
-#~ msgstr "nem"
-
-#~ msgid "yes"
-#~ msgstr "igen"

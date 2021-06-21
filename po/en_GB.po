@@ -6878,6 +6878,14 @@ msgstr "Illegal crypto header"
 msgid "Decrypting message..."
 msgstr "Decrypting message..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "yes"
+
+#: question/question.c:195
+msgid "no"
+msgstr "no"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Pipe"
@@ -7436,9 +7444,3 @@ msgstr "Compile options:"
 #, c-format
 #~ msgid "SMTP authentication method %s requires SASL"
 #~ msgstr "SMTP authentication method %s requires SASL"
-
-#~ msgid "no"
-#~ msgstr "no"
-
-#~ msgid "yes"
-#~ msgstr "yes"

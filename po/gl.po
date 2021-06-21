@@ -7231,6 +7231,14 @@ msgstr "Cabeceira PGP ilegal"
 msgid "Decrypting message..."
 msgstr "Recollendo mensaxe..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "sí"
+
+#: question/question.c:195
+msgid "no"
+msgstr "non"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Canalizar"
@@ -7795,9 +7803,3 @@ msgstr "Opcións de compilación:"
 
 #~ msgid "Select  "
 #~ msgstr "Seleccionar  "
-
-#~ msgid "no"
-#~ msgstr "non"
-
-#~ msgid "yes"
-#~ msgstr "sí"

@@ -7325,6 +7325,14 @@ msgstr "La capçalera criptogràfica no és permesa."
 msgid "Decrypting message..."
 msgstr "S’està desxifrant el missatge…"
 
+#: question/question.c:194
+msgid "yes"
+msgstr "sí"
+
+#: question/question.c:195
+msgid "no"
+msgstr "no"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Redirigeix"
@@ -7919,9 +7927,3 @@ msgstr "Opcions de compilació:"
 # Aquest menú no està massa poblat.  -- ivb
 #~ msgid "Select  "
 #~ msgstr "Selecciona  "
-
-#~ msgid "no"
-#~ msgstr "no"
-
-#~ msgid "yes"
-#~ msgstr "sí"

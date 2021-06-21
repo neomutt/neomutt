@@ -6944,6 +6944,14 @@ msgstr "Viallinen crypto-otsake"
 msgid "Decrypting message..."
 msgstr "Puretaan viestin salausta..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "kyllä"
+
+#: question/question.c:195
+msgid "no"
+msgstr "ei"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Putki"
@@ -7505,9 +7513,3 @@ msgstr "Käännösaikaiset asetukset:"
 
 #~ msgid "Select  "
 #~ msgstr "Valitse  "
-
-#~ msgid "no"
-#~ msgstr "ei"
-
-#~ msgid "yes"
-#~ msgstr "kyllä"

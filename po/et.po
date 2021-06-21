@@ -7176,6 +7176,14 @@ msgstr "Vigane PGP päis"
 msgid "Decrypting message..."
 msgstr "Laen teadet..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "jah"
+
+#: question/question.c:195
+msgid "no"
+msgstr "ei"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Toru"
@@ -7732,9 +7740,3 @@ msgstr "Kompileerimise võtmed:"
 
 #~ msgid "Select  "
 #~ msgstr "Vali  "
-
-#~ msgid "no"
-#~ msgstr "ei"
-
-#~ msgid "yes"
-#~ msgstr "jah"

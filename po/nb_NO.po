@@ -7026,6 +7026,14 @@ msgstr "Ugyldig krypto-hode"
 msgid "Decrypting message..."
 msgstr "Dekrypterer melding …"
 
+#: question/question.c:194
+msgid "yes"
+msgstr "ja"
+
+#: question/question.c:195
+msgid "no"
+msgstr "nei"
+
 #: recvattach.c:74
 #, fuzzy
 msgid "Pipe"
@@ -7595,9 +7603,3 @@ msgstr "Kompileringstilvalg:"
 
 #~ msgid "Select  "
 #~ msgstr "Velg  "
-
-#~ msgid "no"
-#~ msgstr "nei"
-
-#~ msgid "yes"
-#~ msgstr "ja"

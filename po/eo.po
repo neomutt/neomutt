@@ -7056,6 +7056,14 @@ msgstr "Nevalida kripto-ĉapo"
 msgid "Decrypting message..."
 msgstr "Malĉifras mesaĝon..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "jes"
+
+#: question/question.c:195
+msgid "no"
+msgstr "ne"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Tubo"
@@ -7626,9 +7634,3 @@ msgstr "Parametroj de la tradukaĵo:"
 
 #~ msgid "Select  "
 #~ msgstr "Elekti  "
-
-#~ msgid "no"
-#~ msgstr "ne"
-
-#~ msgid "yes"
-#~ msgstr "jes"

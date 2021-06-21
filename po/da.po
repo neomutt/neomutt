@@ -7030,6 +7030,14 @@ msgstr "Ugyldig crypto-header"
 msgid "Decrypting message..."
 msgstr "Dekrypterer brev ..."
 
+#: question/question.c:194
+msgid "yes"
+msgstr "ja"
+
+#: question/question.c:195
+msgid "no"
+msgstr "nej"
+
 #: recvattach.c:74
 msgid "Pipe"
 msgstr "Overfør til program"
@@ -7598,9 +7606,3 @@ msgstr "Tilvalg ved oversættelsen:"
 
 #~ msgid "Select  "
 #~ msgstr "Udvælg  "
-
-#~ msgid "no"
-#~ msgstr "nej"
-
-#~ msgid "yes"
-#~ msgstr "ja"
