@@ -60,6 +60,7 @@ void ctx_free(struct Context **ptr)
   if (ctx->mailbox)
     notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer, ctx);
 
+  mutt_clear_threads(ctx->mailbox, ctx->threads);
   mutt_thread_ctx_free(&ctx->threads);
   notify_free(&ctx->notify);
   FREE(&ctx->pattern);
@@ -89,7 +90,7 @@ struct Context *ctx_new(struct Mailbox *m)
   notify_observer_add(m->notify, NT_MAILBOX, ctx_mailbox_observer, ctx);
 
   ctx->mailbox = m;
-  ctx->threads = mutt_thread_ctx_init(m);
+  ctx->threads = mutt_thread_ctx_init();
   ctx->msg_in_pager = -1;
   ctx->collapsed = false;
   ctx_update(ctx);
@@ -105,14 +106,14 @@ static void ctx_cleanup(struct Context *ctx)
 {
   FREE(&ctx->pattern);
   mutt_pattern_free(&ctx->limit_pattern);
+  mutt_clear_threads(ctx->mailbox, ctx->threads);
+  mutt_thread_ctx_free(&ctx->threads);
   if (ctx->mailbox)
     notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer, ctx);
 
   struct Notify *notify = ctx->notify;
-  struct Mailbox *m = ctx->mailbox;
   memset(ctx, 0, sizeof(struct Context));
   ctx->notify = notify;
-  ctx->mailbox = m;
 }
 
 /**
@@ -140,7 +141,7 @@ void ctx_update(struct Context *ctx)
   m->vcount = 0;
   m->changed = false;
 
-  mutt_clear_threads(ctx->threads);
+  mutt_clear_threads(ctx->mailbox, ctx->threads);
 
   const bool c_score = cs_subset_bool(NeoMutt->sub, "score");
   struct Email *e = NULL;
@@ -319,7 +320,6 @@ int ctx_mailbox_observer(struct NotifyCallback *nc)
   switch (nc->event_subtype)
   {
     case NT_MAILBOX_CLOSED:
-      mutt_clear_threads(ctx->threads);
       ctx_cleanup(ctx);
       break;
     case NT_MAILBOX_INVALID:

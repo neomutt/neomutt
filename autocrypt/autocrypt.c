@@ -959,7 +959,7 @@ void mutt_autocrypt_scan_mailboxes(struct Mailbox *m)
        * as they can do all sorts of things like push into the getch() buffer.
        * Authentication should be in account-hooks. */
       mx_mbox_open(m_ac, MUTT_READONLY);
-      mx_mbox_close(m_ac);
+      mx_mbox_close(&m_ac);
       mutt_buffer_reset(folderbuf);
     }
 

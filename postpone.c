@@ -182,7 +182,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
       mailbox_free(&m_post);
       PostCount = 0;
     }
-    mx_fastclose_mailbox(m_post);
+    mx_fastclose_mailbox(&m_post);
 #ifdef USE_NNTP
     if (optnews)
       OptNews = true;
@@ -305,11 +305,11 @@ static void hardclose(struct Mailbox *m)
 {
   /* messages might have been marked for deletion.
    * try once more on reopen before giving up. */
-  enum MxStatus rc = mx_mbox_close(m);
+  enum MxStatus rc = mx_mbox_close(&m);
   if (rc != MX_STATUS_ERROR && rc != MX_STATUS_OK)
-    rc = mx_mbox_close(m);
+    rc = mx_mbox_close(&m);
   if (rc != MX_STATUS_OK)
-    mx_fastclose_mailbox(m);
+    mx_fastclose_mailbox(&m);
 }
 
 /**
@@ -353,7 +353,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
     mutt_error(_("No postponed messages"));
     if (m_cur != m)
     {
-      mx_fastclose_mailbox(m);
+      mx_fastclose_mailbox(&m);
     }
     return -1;
   }

@@ -416,21 +416,22 @@ bool mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   return true;
 
 error:
-  mx_fastclose_mailbox(m);
   if (newly_linked_account)
     account_mailbox_remove(m->account, m);
+  mx_fastclose_mailbox(&m);
   return false;
 }
 
 /**
  * mx_fastclose_mailbox - free up memory associated with the Mailbox
- * @param m Mailbox
+ * @param ptr Mailbox
  */
-void mx_fastclose_mailbox(struct Mailbox *m)
+void mx_fastclose_mailbox(struct Mailbox **ptr)
 {
-  if (!m)
+  if (!ptr || !*ptr)
     return;
 
+  struct Mailbox *m = *ptr;
   m->opened--;
   if (m->opened != 0)
     return;
@@ -460,6 +461,7 @@ void mx_fastclose_mailbox(struct Mailbox *m)
   if (m->flags & MB_HIDDEN)
   {
     mx_ac_remove(m);
+    mailbox_free(ptr);
   }
 }
 
@@ -580,22 +582,24 @@ static int trash_append(struct Mailbox *m)
     {
       if (mutt_append_message(m_trash, m, e, NULL, MUTT_CM_NO_FLAGS, CH_NO_FLAGS) == -1)
       {
-        mx_mbox_close(m_trash);
-        m_trash->append = old_append;
+        mx_mbox_close(&m_trash);
+        if (m_trash)
+          m_trash->append = old_append;
         return -1;
       }
     }
   }
 
-  mx_mbox_close(m_trash);
-  m_trash->append = old_append;
+  mx_mbox_close(&m_trash);
+  if (m_trash)
+    m_trash->append = old_append;
 
   return 0;
 }
 
 /**
  * mx_mbox_close - Save changes and close mailbox
- * @param m Mailbox
+ * @param ptr Mailbox
  * @retval enum #MxStatus
  *
  * @note The flag retvals come from a call to a backend sync function
@@ -607,10 +611,12 @@ static int trash_append(struct Mailbox *m)
  *       mx_fastclose_mailbox(), so for most of NeoMutt's code you won't see
  *       return value checks for temporary contexts.
  */
-enum MxStatus mx_mbox_close(struct Mailbox *m)
+enum MxStatus mx_mbox_close(struct Mailbox **ptr)
 {
-  if (!m)
+  if (!ptr || !*ptr)
     return MX_STATUS_ERROR;
+
+  struct Mailbox *m = *ptr;
 
   const bool c_mail_check_recent =
       cs_subset_bool(NeoMutt->sub, "mail_check_recent");
@@ -619,7 +625,7 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
 
   if (m->readonly || m->dontwrite || m->append || m->peekonly)
   {
-    mx_fastclose_mailbox(m);
+    mx_fastclose_mailbox(ptr);
     return 0;
   }
 
@@ -789,13 +795,13 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
           }
           else
           {
-            mx_mbox_close(m_read);
+            mx_mbox_close(&m_read);
             goto cleanup;
           }
         }
       }
 
-      mx_mbox_close(m_read);
+      mx_mbox_close(&m_read);
     }
   }
   else if (!m->changed && (m->msg_deleted == 0))
@@ -804,7 +810,7 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
       mutt_message(_("Mailbox is unchanged"));
     if ((m->type == MUTT_MBOX) || (m->type == MUTT_MMDF))
       mbox_reset_atime(m, NULL);
-    mx_fastclose_mailbox(m);
+    mx_fastclose_mailbox(&m);
     rc = MX_STATUS_OK;
     goto cleanup;
   }
@@ -896,7 +902,7 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
   }
 #endif
 
-  mx_fastclose_mailbox(m);
+  mx_fastclose_mailbox(&m);
 
   rc = MX_STATUS_OK;
 
@@ -1020,7 +1026,7 @@ enum MxStatus mx_mbox_sync(struct Mailbox *m)
         !mutt_is_spool(mailbox_path(m)) && !c_save_empty)
     {
       unlink(mailbox_path(m));
-      mx_fastclose_mailbox(m);
+      mx_fastclose_mailbox(&m);
       return MX_STATUS_OK;
     }
 

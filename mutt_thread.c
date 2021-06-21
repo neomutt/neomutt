@@ -49,7 +49,6 @@ static sort_t sort_func = NULL;
  */
 struct ThreadsContext
 {
-  struct Mailbox *mailbox; ///< Current mailbox
   struct MuttThread *tree; ///< Top of thread tree
   struct HashTable *hash;  ///< Hash table for threads
 };
@@ -61,7 +60,7 @@ struct ThreadsContext
  */
 static bool is_visible(struct Email *e)
 {
-  return e->vnum >= 0 || (e->collapsed && e->visible);
+  return (e->vnum >= 0) || (e->collapsed && e->visible);
 }
 
 /**
@@ -117,14 +116,13 @@ static bool need_display_subject(struct Email *e)
 
 /**
  * linearize_tree - Flatten an email thread
+ * @param m    Mailbox
  * @param tctx Threading context
  */
-static void linearize_tree(struct ThreadsContext *tctx)
+static void linearize_tree(struct Mailbox *m, struct ThreadsContext *tctx)
 {
-  if (!tctx || !tctx->mailbox)
+  if (!m || !tctx)
     return;
-
-  struct Mailbox *m = tctx->mailbox;
 
   const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   struct MuttThread *tree = tctx->tree;
@@ -280,13 +278,11 @@ static void calculate_visibility(struct MuttThread *tree, int *max_depth)
 
 /**
  * mutt_thread_ctx_init - Initialize a threading context
- * @param m     Current mailbox
  * @retval tctx Threading context
  */
-struct ThreadsContext *mutt_thread_ctx_init(struct Mailbox *m)
+struct ThreadsContext *mutt_thread_ctx_init(void)
 {
   struct ThreadsContext *tctx = mutt_mem_calloc(1, sizeof(struct ThreadsContext));
-  tctx->mailbox = m;
   tctx->tree = NULL;
   tctx->hash = NULL;
   return tctx;
@@ -298,7 +294,8 @@ struct ThreadsContext *mutt_thread_ctx_init(struct Mailbox *m)
  */
 void mutt_thread_ctx_free(struct ThreadsContext **tctx)
 {
-  (*tctx)->mailbox = NULL;
+  if (!tctx || !*tctx)
+    return;
   mutt_hash_free(&(*tctx)->hash);
   FREE(tctx);
 }
@@ -566,16 +563,15 @@ static struct HashTable *make_subj_hash(struct Mailbox *m)
 
 /**
  * pseudo_threads - Thread messages by subject
+ * @param m    Mailbox
  * @param tctx Threading context
  *
  * Thread by subject things that didn't get threaded by message-id
  */
-static void pseudo_threads(struct ThreadsContext *tctx)
+static void pseudo_threads(struct Mailbox *m, struct ThreadsContext *tctx)
 {
-  if (!tctx || !tctx->mailbox)
+  if (!m || !tctx)
     return;
-
-  struct Mailbox *m = tctx->mailbox;
 
   struct MuttThread *tree = tctx->tree;
   struct MuttThread *top = tree;
@@ -639,16 +635,17 @@ static void pseudo_threads(struct ThreadsContext *tctx)
 
 /**
  * mutt_clear_threads - Clear the threading of message in a mailbox
+ * @param m    Mailbox
  * @param tctx Threading context
  */
-void mutt_clear_threads(struct ThreadsContext *tctx)
+void mutt_clear_threads(struct Mailbox *m, struct ThreadsContext *tctx)
 {
-  if (!tctx || !tctx->mailbox || !tctx->mailbox->emails || !tctx->tree)
+  if (!m || !m->emails || !tctx || !tctx->tree)
     return;
 
-  for (int i = 0; i < tctx->mailbox->msg_count; i++)
+  for (int i = 0; i < m->msg_count; i++)
   {
-    struct Email *e = tctx->mailbox->emails[i];
+    struct Email *e = m->emails[i];
     if (!e)
       break;
 
@@ -676,10 +673,11 @@ static int compare_threads(const void *a, const void *b)
 
 /**
  * mutt_sort_subthreads - Sort the children of a thread
+ * @param m    Mailbox
  * @param tctx Threading context
  * @param init If true, rebuild the thread
  */
-void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
+void mutt_sort_subthreads(struct Mailbox *m, struct ThreadsContext *tctx, bool init)
 {
   struct MuttThread *thread = tctx->tree;
   if (!thread)
@@ -699,7 +697,7 @@ void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
   cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
   OptNeedResort = oldresort;
 
-  sort_func = mutt_get_sort_func(c_sort & SORT_MASK, mx_type(tctx->mailbox));
+  sort_func = mutt_get_sort_func(c_sort & SORT_MASK, mx_type(m));
   if (!sort_func)
   {
     return;
@@ -870,15 +868,14 @@ static void check_subjects(struct Mailbox *m, bool init)
 
 /**
  * mutt_sort_threads - Sort email threads
+ * @param m    Current mailbox
  * @param tctx Threading context
  * @param init If true, rebuild the thread
  */
-void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
+void mutt_sort_threads(struct Mailbox *m, struct ThreadsContext *tctx, bool init)
 {
-  if (!tctx || !tctx->mailbox)
+  if (!m || !tctx)
     return;
-
-  struct Mailbox *m = tctx->mailbox;
 
   struct Email *e = NULL;
   int i, oldsort, using_refs = 0;
@@ -1102,15 +1099,15 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
   }
   tctx->tree = top.child;
 
-  check_subjects(tctx->mailbox, init);
+  check_subjects(m, init);
 
   const bool c_strict_threads = cs_subset_bool(NeoMutt->sub, "strict_threads");
   if (!c_strict_threads)
-    pseudo_threads(tctx);
+    pseudo_threads(m, tctx);
 
   if (tctx->tree)
   {
-    mutt_sort_subthreads(tctx, init);
+    mutt_sort_subthreads(m, tctx, init);
 
     /* restore the oldsort order. */
     oldresort = OptNeedResort;
@@ -1118,7 +1115,7 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
     OptNeedResort = oldresort;
 
     /* Put the list into an array. */
-    linearize_tree(tctx);
+    linearize_tree(m, tctx);
 
     /* Draw the thread tree. */
     mutt_draw_tree(tctx);

@@ -231,14 +231,11 @@ static void union_hash_delete(struct HashTable *table, union HashKey key, const 
       if (table->strdup_keys)
         FREE(&he->key.strkey);
       FREE(&he);
+      return;
+    }
 
-      he = *last;
-    }
-    else
-    {
-      last = &he->next;
-      he = he->next;
-    }
+    last = &he->next;
+    he = he->next;
   }
 }
 

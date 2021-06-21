@@ -85,7 +85,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   rc = mutt_append_message(m_fname, m, e, NULL, MUTT_CM_NO_FLAGS, chflags);
   int oerrno = errno;
 
-  mx_mbox_close(m_fname);
+  mx_mbox_close(&m_fname);
 
   if (rc == -1)
   {
@@ -223,7 +223,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   {
     rc = -1;
     mutt_error(_("Can't append to folder: %s"), strerror(errno));
-    mx_mbox_close(m);
+    mx_mbox_close(&m);
     goto bail;
   }
 
@@ -237,7 +237,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   rc = mx_msg_commit(m, msg);
   mx_msg_close(m, &msg);
 
-  mx_mbox_close(m);
+  mx_mbox_close(&m);
 
 bail:
   mutt_file_fclose(&fp);
@@ -258,7 +258,8 @@ bail:
   else if (rc == -1)
     mutt_message(_("Error. Preserving temporary file: %s"), mutt_buffer_string(fname));
 
-  m->append = old_append;
+  if (m)
+    m->append = old_append;
 
   mutt_buffer_pool_release(&fname);
   return rc;
