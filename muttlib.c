@@ -981,7 +981,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         src++;
         cp = prefix;
         count = 0;
-        while ((count < sizeof(prefix)) && (*src != '?'))
+        while ((count < (sizeof(prefix) - 1)) && (*src != '\0') && (*src != '?'))
         {
           *cp++ = *src++;
           count++;
@@ -995,8 +995,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         /* eat the format string */
         cp = prefix;
         count = 0;
-        while ((count < sizeof(prefix)) && (isdigit((unsigned char) *src) || (*src == '.') ||
-                                            (*src == '-') || (*src == '=')))
+        while ((count < (sizeof(prefix) - 1)) && strchr("0123456789.-=", *src))
         {
           *cp++ = *src++;
           count++;
