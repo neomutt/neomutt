@@ -191,8 +191,8 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
   int prompt_lines = 1;
   char answer[2] = { 0 };
 
-  char *yes = "yes";  // English versions.  Do not translate
-  char *no = "no";
+  char *yes = N_("yes");
+  char *no = N_("no");
   char *trans_yes = _(yes);
   char *trans_no = _(no);
 
