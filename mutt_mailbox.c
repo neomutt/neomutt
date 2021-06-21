@@ -315,7 +315,7 @@ struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
 {
   mutt_buffer_expand_path(s);
 
-  if (mutt_mailbox_check(m_cur, 0) > 0)
+  if (m_cur)
   {
     bool found = false;
     for (int pass = 0; pass < 2; pass++)
@@ -325,12 +325,15 @@ struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
       struct MailboxNode *np = NULL;
       STAILQ_FOREACH(np, &ml, entries)
       {
-        if (np->mailbox->type == MUTT_NOTMUCH) /* only match real mailboxes */
-          continue;
         mutt_buffer_expand_path(&np->mailbox->pathbuf);
-        if ((found || (pass > 0)) && np->mailbox->has_new)
+        if ((found || (pass > 0)) && np->mailbox->msg_unread != 0)
         {
-          mutt_buffer_strcpy(s, mailbox_path(np->mailbox));
+          // If there's a mailbox name, use it over path.
+          if (np->mailbox->name)
+            mutt_buffer_strcpy(s, np->mailbox->name);
+          else
+            mutt_buffer_strcpy(s, mailbox_path(np->mailbox));
+
           mutt_buffer_pretty_mailbox(s);
           struct Mailbox *m_result = np->mailbox;
           neomutt_mailboxlist_clear(&ml);
