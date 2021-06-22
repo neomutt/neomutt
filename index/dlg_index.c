@@ -268,6 +268,7 @@ static void collapse_all(struct Context *ctx, struct Menu *menu, int toggle)
 
   /* Restore the cursor */
   mutt_set_vnum(ctx->mailbox);
+  menu->max = ctx->mailbox->vcount;
   for (int i = 0; i < ctx->mailbox->vcount; i++)
   {
     struct Email *e = mutt_get_virt_email(ctx->mailbox, i);
@@ -1160,6 +1161,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   priv->menu->make_entry = index_make_entry;
   priv->menu->color = index_color;
   priv->menu->custom_redraw = index_custom_redraw;
+  priv->menu->max = shared->mailbox ? shared->mailbox->vcount : 0;
   menu_set_index(priv->menu, ci_first_message(shared->mailbox));
   mutt_window_reflow(NULL);
 
