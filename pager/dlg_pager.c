@@ -2404,17 +2404,11 @@ int mutt_pager(struct PagerView *pview)
   // ACT 2 - Declare, initialize local variables, read config, etc.
   //===========================================================================
 
-  //---------- reading config values ------------------------------------------
-  const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
-  const short c_pager_context = cs_subset_number(NeoMutt->sub, "pager_context");
+  //---------- reading config values needed now--------------------------------
   const short c_pager_index_lines =
       cs_subset_number(NeoMutt->sub, "pager_index_lines");
   const short c_pager_read_delay =
       cs_subset_number(NeoMutt->sub, "pager_read_delay");
-  const short c_search_context =
-      cs_subset_number(NeoMutt->sub, "search_context");
-  const short c_skip_quoted_offset =
-      cs_subset_number(NeoMutt->sub, "skip_quoted_offset");
 
   //---------- local variables ------------------------------------------------
   struct Mailbox *m = pview->pdata->ctx ? pview->pdata->ctx->mailbox : NULL;
@@ -2751,8 +2745,12 @@ int mutt_pager(struct PagerView *pview)
         //=======================================================================
 
       case OP_NEXT_PAGE:
+      {
+        const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
         if (priv->line_info[priv->curline].offset < (priv->sb.st_size - 1))
         {
+          const short c_pager_context =
+              cs_subset_number(NeoMutt->sub, "pager_context");
           priv->topline = up_n_lines(c_pager_context, priv->line_info,
                                      priv->curline, priv->hide_quoted);
         }
@@ -2768,6 +2766,7 @@ int mutt_pager(struct PagerView *pview)
           op = -1;
         }
         break;
+      }
 
         //=======================================================================
 
@@ -2778,6 +2777,8 @@ int mutt_pager(struct PagerView *pview)
         }
         else
         {
+          const short c_pager_context =
+              cs_subset_number(NeoMutt->sub, "pager_context");
           priv->topline =
               up_n_lines(priv->pview->win_pager->state.rows - c_pager_context,
                          priv->line_info, priv->topline, priv->hide_quoted);
@@ -2837,6 +2838,8 @@ int mutt_pager(struct PagerView *pview)
         //=======================================================================
 
       case OP_HALF_DOWN:
+      {
+        const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
         if (priv->line_info[priv->curline].offset < (priv->sb.st_size - 1))
         {
           priv->topline = up_n_lines(priv->pview->win_pager->state.rows / 2,
@@ -2854,6 +2857,7 @@ int mutt_pager(struct PagerView *pview)
           op = -1;
         }
         break;
+      }
 
         //=======================================================================
 
@@ -2861,6 +2865,8 @@ int mutt_pager(struct PagerView *pview)
       case OP_SEARCH_OPPOSITE:
         if (priv->search_compiled)
         {
+          const short c_search_context =
+              cs_subset_number(NeoMutt->sub, "search_context");
           wrapped = false;
 
           if (c_search_context < priv->pview->win_pager->state.rows)
@@ -3056,6 +3062,8 @@ int mutt_pager(struct PagerView *pview)
           }
           else
           {
+            const short c_search_context =
+                cs_subset_number(NeoMutt->sub, "search_context");
             priv->search_flag = MUTT_SEARCH;
             /* give some context for search results */
             if (c_search_context < priv->pview->win_pager->state.rows)
@@ -3126,10 +3134,13 @@ int mutt_pager(struct PagerView *pview)
         if (!priv->has_types)
           break;
 
+        const short c_skip_quoted_context =
+            cs_subset_number(NeoMutt->sub, "pager_skip_quoted_context");
         int dretval = 0;
         int new_topline = priv->topline;
+        int num_quoted = 0;
 
-        /* Skip all the email headers */
+        /* In a header? Skip all the email headers, and done */
         if (mutt_color_is_header(priv->line_info[new_topline].type))
         {
           while (((new_topline < priv->last_line) ||
@@ -3147,40 +3158,71 @@ int mutt_pager(struct PagerView *pview)
           break;
         }
 
-        while ((((new_topline + c_skip_quoted_offset) < priv->last_line) ||
-                (0 == (dretval = display_line(
-                           priv->fp, &priv->last_pos, &priv->line_info, new_topline, &priv->last_line,
-                           &priv->max_line, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
-                           &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                           &priv->search_re, priv->pview->win_pager)))) &&
-               (priv->line_info[new_topline + c_skip_quoted_offset].type != MT_COLOR_QUOTED))
+        /* Already in the body? Skip past previous "context" quoted lines */
+        if (c_skip_quoted_context > 0)
         {
-          new_topline++;
+          while (((new_topline < priv->last_line) ||
+                  (0 == (dretval = display_line(
+                             priv->fp, &priv->last_pos, &priv->line_info,
+                             new_topline, &priv->last_line, &priv->max_line,
+                             MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
+                             &priv->quote_list, &priv->q_level, &priv->force_redraw,
+                             &priv->search_re, priv->pview->win_pager)))) &&
+                 (priv->line_info[new_topline].type == MT_COLOR_QUOTED))
+          {
+            new_topline++;
+            num_quoted++;
+          }
+
+          if (dretval < 0)
+          {
+            mutt_error(_("No more unquoted text after quoted text"));
+            break;
+          }
         }
 
-        if (dretval < 0)
+        if (num_quoted <= c_skip_quoted_context)
         {
-          mutt_error(_("No more quoted text"));
-          break;
-        }
+          num_quoted = 0;
 
-        while ((((new_topline + c_skip_quoted_offset) < priv->last_line) ||
-                (0 == (dretval = display_line(
-                           priv->fp, &priv->last_pos, &priv->line_info, new_topline, &priv->last_line,
-                           &priv->max_line, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
-                           &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                           &priv->search_re, priv->pview->win_pager)))) &&
-               (priv->line_info[new_topline + c_skip_quoted_offset].type == MT_COLOR_QUOTED))
-        {
-          new_topline++;
-        }
+          while (((new_topline < priv->last_line) ||
+                  (0 == (dretval = display_line(
+                             priv->fp, &priv->last_pos, &priv->line_info,
+                             new_topline, &priv->last_line, &priv->max_line,
+                             MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
+                             &priv->quote_list, &priv->q_level, &priv->force_redraw,
+                             &priv->search_re, priv->pview->win_pager)))) &&
+                 (priv->line_info[new_topline].type != MT_COLOR_QUOTED))
+          {
+            new_topline++;
+          }
 
-        if (dretval < 0)
-        {
-          mutt_error(_("No more unquoted text after quoted text"));
-          break;
+          if (dretval < 0)
+          {
+            mutt_error(_("No more quoted text"));
+            break;
+          }
+
+          while (((new_topline < priv->last_line) ||
+                  (0 == (dretval = display_line(
+                             priv->fp, &priv->last_pos, &priv->line_info,
+                             new_topline, &priv->last_line, &priv->max_line,
+                             MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
+                             &priv->quote_list, &priv->q_level, &priv->force_redraw,
+                             &priv->search_re, priv->pview->win_pager)))) &&
+                 (priv->line_info[new_topline].type == MT_COLOR_QUOTED))
+          {
+            new_topline++;
+            num_quoted++;
+          }
+
+          if (dretval < 0)
+          {
+            mutt_error(_("No more unquoted text after quoted text"));
+            break;
+          }
         }
-        priv->topline = new_topline;
+        priv->topline = new_topline - MIN(c_skip_quoted_context, num_quoted);
         break;
       }
 
@@ -3192,15 +3234,7 @@ int mutt_pager(struct PagerView *pview)
           break;
 
         int dretval = 0;
-        int new_topline = priv->topline;
-
-        if (!mutt_color_is_header(priv->line_info[new_topline].type))
-        {
-          /* L10N: Displayed if <skip-headers> is invoked in the pager, but we
-             are already past the headers */
-          mutt_message(_("Already skipped past headers"));
-          break;
-        }
+        int new_topline = 0;
 
         while (((new_topline < priv->last_line) ||
                 (0 == (dretval = display_line(
@@ -3454,7 +3488,8 @@ int mutt_pager(struct PagerView *pview)
           op = -1;
         }
 
-        if (!c_resolve && (c_pager_index_lines != 0))
+        if (!c_resolve &&
+            (cs_subset_number(NeoMutt->sub, "pager_index_lines") != 0))
           menu_queue_redraw(pager_menu, MENU_REDRAW_FULL);
         else
           menu_queue_redraw(pager_menu, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
@@ -3876,8 +3911,9 @@ int mutt_pager(struct PagerView *pview)
 
         if (pview->pdata->email->read || pview->pdata->email->old)
           mutt_set_flag(m, pview->pdata->email, MUTT_NEW, true);
-        else if (!first)
+        else if (!first || delay_read_timestamp != 0)
           mutt_set_flag(m, pview->pdata->email, MUTT_READ, true);
+        delay_read_timestamp = 0;
         first = false;
         pview->pdata->ctx->msg_in_pager = -1;
         priv->win_pbar->actions |= WA_RECALC;
@@ -3951,7 +3987,8 @@ int mutt_pager(struct PagerView *pview)
             op = -1;
           }
 
-          if (!c_resolve && (c_pager_index_lines != 0))
+          if (!c_resolve &&
+              (cs_subset_number(NeoMutt->sub, "pager_index_lines") != 0))
             menu_queue_redraw(pager_menu, MENU_REDRAW_FULL);
           else
             menu_queue_redraw(pager_menu, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);

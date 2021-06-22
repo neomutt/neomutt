@@ -2789,6 +2789,19 @@
 ** \fBbuiltin\fP.
 */
 
+{ "pager_skip_quoted_context", DT_NUMBER, 0 },
+/*
+** .pp
+** Determines the number of lines of context to show before the
+** unquoted text when using the \fC<skip-quoted>\fP function. When set
+** to a positive number at most that many lines of the previous quote
+** are displayed. If the previous quote is shorter the whole quote is
+** displayed.
+** .pp
+** The (now deprecated) \fIskip_quoted_offset\fP is an alias for this
+** variable, and should no longer be used.
+*/
+
 { "pager_stop", DT_BOOL, false },
 /*
 ** .pp
@@ -4274,13 +4287,6 @@
 ** .pp
 ** If \fIset\fP, message sizes units will be displayed to the left of the number.
 ** See $formatstrings-size.
-*/
-
-{ "skip_quoted_offset", DT_NUMBER, 0 },
-/*
-** .pp
-** Lines of quoted text that are displayed before the unquoted text after
-** "skip to quoted" command (S)
 */
 
 { "sleep_time", DT_NUMBER, 1 },

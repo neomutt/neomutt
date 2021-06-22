@@ -213,7 +213,7 @@
   _fmt(OP_PAGER_BOTTOM,                   N_("jump to the bottom of the message")) \
   _fmt(OP_PAGER_HIDE_QUOTED,              N_("toggle display of quoted text")) \
   _fmt(OP_PAGER_SKIP_QUOTED,              N_("skip beyond quoted text")) \
-  _fmt(OP_PAGER_SKIP_HEADERS,             N_("skip beyond headers")) \
+  _fmt(OP_PAGER_SKIP_HEADERS,             N_("jump to first line after headers")) \
   _fmt(OP_PAGER_TOP,                      N_("jump to the top of the message")) \
   _fmt(OP_PIPE,                           N_("pipe message/attachment to a shell command")) \
   _fmt(OP_POST,                           N_("post message to newsgroup")) \

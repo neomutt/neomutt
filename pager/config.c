@@ -48,14 +48,14 @@ static struct ConfigDef PagerVars[] = {
   { "pager_read_delay", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
     "Number of seconds to wait before marking a message read"
   },
+  { "pager_skip_quoted_context", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+    "Lines of context to show when skipping quoted text"
+  },
   { "pager_stop", DT_BOOL, false, 0, NULL,
     "Don't automatically open the next message when at the end of a message"
   },
   { "search_context", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
     "Context to display around search matches"
-  },
-  { "skip_quoted_offset", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
-    "Lines of context to show when skipping quoted text"
   },
   { "smart_wrap", DT_BOOL|R_PAGER_FLOW, true, 0, NULL,
     "Wrap text at word boundaries"
@@ -66,6 +66,8 @@ static struct ConfigDef PagerVars[] = {
   { "tilde", DT_BOOL|R_PAGER, false, 0, NULL,
     "Character to pad blank lines in the pager"
   },
+
+  { "skip_quoted_offset", DT_SYNONYM, IP "pager_skip_quoted_context",    },
 
   { NULL },
   // clang-format on
