@@ -137,7 +137,8 @@ static int index_color_observer(struct NotifyCallback *nc)
   if (!simple && !lists)
     return 0;
 
-  struct MuttWindow *dlg = nc->global_data;
+  struct MuttWindow *win_index = nc->global_data;
+  struct MuttWindow *dlg = dialog_find(win_index);
   struct IndexSharedData *shared = dlg->wdata;
 
   struct Mailbox *m = shared->mailbox;
