@@ -2965,6 +2965,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         const int saved_current = menu_get_index(priv->menu);
         int mcur = saved_current;
         int index = -1;
+        const short c_sort = cs_subset_sort(shared->sub, "sort");
+        const bool threaded = ((c_sort & SORT_MASK) == SORT_THREADS);
         for (size_t i = 0; i != shared->mailbox->vcount; i++)
         {
           if ((op == OP_MAIN_NEXT_NEW) || (op == OP_MAIN_NEXT_UNREAD) ||
@@ -2988,8 +2990,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           struct Email *e = mutt_get_virt_email(shared->mailbox, mcur);
           if (!e)
             break;
-          const short c_sort = cs_subset_sort(shared->sub, "sort");
-          if (e->collapsed && ((c_sort & SORT_MASK) == SORT_THREADS))
+          if (e->collapsed && threaded)
           {
             int unread = mutt_thread_contains_unread(e);
             if ((unread != 0) && (first_unread == -1))
@@ -3007,7 +3008,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
           if (((op == OP_MAIN_NEXT_UNREAD) || (op == OP_MAIN_PREV_UNREAD)) &&
               (first_unread != -1))
+          {
             break;
+          }
           if (((op == OP_MAIN_NEXT_NEW) || (op == OP_MAIN_PREV_NEW) ||
                (op == OP_MAIN_NEXT_NEW_THEN_UNREAD) || (op == OP_MAIN_PREV_NEW_THEN_UNREAD)) &&
               (first_new != -1))
