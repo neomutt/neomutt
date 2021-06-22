@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <assert.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -687,7 +688,8 @@ void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
 
   struct MuttThread **array = NULL, *sort_key = NULL, *top = NULL, *tmp = NULL;
   struct Email *oldsort_key = NULL;
-  int i, array_size, sort_top = 0;
+  int i, array_size;
+  bool sort_top = false;
 
   /* we put things into the array backwards to save some cycles,
    * but we want to have to move less stuff around if we're
@@ -718,7 +720,7 @@ void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
       if (thread->parent)
         thread->parent->sort_children = true;
       else
-        sort_top = 1;
+        sort_top = true;
     }
 
     if (thread->child)
@@ -807,7 +809,7 @@ void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
             if (thread->parent)
               thread->parent->sort_children = true;
             else
-              sort_top = 1;
+              sort_top = true;
           }
         }
       }
@@ -888,6 +890,7 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
 
   /* Set `$sort` to the secondary method to support the set sort_aux=reverse-*
    * settings.  The sorting functions just look at the value of SORT_REVERSE */
+  assert(m->msg_count > 0);
   short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   short c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
   oldsort = c_sort;
@@ -920,6 +923,8 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
    * exists.  otherwise, if there is a MuttThread that already has a message, thread
    * new message as an identical child.  if we didn't attach the message to a
    * MuttThread, make a new one for it. */
+  const bool c_duplicate_threads =
+      cs_subset_bool(NeoMutt->sub, "duplicate_threads");
   for (i = 0; i < m->msg_count; i++)
   {
     e = m->emails[i];
@@ -928,8 +933,6 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
 
     if (!e->thread)
     {
-      const bool c_duplicate_threads =
-          cs_subset_bool(NeoMutt->sub, "duplicate_threads");
       if ((!init || c_duplicate_threads) && e->env->message_id)
         thread = mutt_hash_find(tctx->hash, e->env->message_id);
       else
@@ -1108,21 +1111,19 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
   if (!c_strict_threads)
     pseudo_threads(tctx);
 
-  if (tctx->tree)
-  {
-    mutt_sort_subthreads(tctx, init);
+  assert(tctx->tree);
+  mutt_sort_subthreads(tctx, init);
 
-    /* restore the oldsort order. */
-    oldresort = OptNeedResort;
-    cs_subset_str_native_set(NeoMutt->sub, "sort", oldsort, NULL);
-    OptNeedResort = oldresort;
+  /* restore the oldsort order. */
+  oldresort = OptNeedResort;
+  cs_subset_str_native_set(NeoMutt->sub, "sort", oldsort, NULL);
+  OptNeedResort = oldresort;
 
-    /* Put the list into an array. */
-    linearize_tree(tctx);
+  /* Put the list into an array. */
+  linearize_tree(tctx);
 
-    /* Draw the thread tree. */
-    mutt_draw_tree(tctx);
-  }
+  /* Draw the thread tree. */
+  mutt_draw_tree(tctx);
 }
 
 /**
