@@ -43,8 +43,6 @@
 #include "protos.h"
 #include "sort.h"
 
-static sort_t sort_func = NULL;
-
 /**
  * struct ThreadsContext - The "current" threading state
  */
@@ -53,6 +51,7 @@ struct ThreadsContext
   struct Mailbox *mailbox; ///< Current mailbox
   struct MuttThread *tree; ///< Top of thread tree
   struct HashTable *hash;  ///< Hash table for threads
+  short c_sort;            ///< Sort method
 };
 
 /**
@@ -662,17 +661,23 @@ void mutt_clear_threads(struct ThreadsContext *tctx)
 }
 
 /**
- * compare_threads - Sorting function for email threads
- * @param a First thread to compare
- * @param b Second thread to compare
- * @retval -1 a precedes b
+ * compare_threads - qsort_r function for comparing email threads
+ * @param a   First thread to compare
+ * @param b   Second thread to compare
+ * @param arg ThreadsContext for how to compare
+ * @retval <0 a precedes b
  * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * @retval >0 b precedes a
  */
-static int compare_threads(const void *a, const void *b)
+static int compare_threads(const void *a, const void *b, void *arg)
 {
-  return (*sort_func)(&(*((struct MuttThread const *const *) a))->sort_key,
-                      &(*((struct MuttThread const *const *) b))->sort_key);
+  const struct MuttThread *ta = *(struct MuttThread const *const *) a;
+  const struct MuttThread *tb = *(struct MuttThread const *const *) b;
+  const struct ThreadsContext *tctx = arg;
+  /* If c_sort ties, remember we are building the thread array in
+   * reverse from the index the mails had in the mailbox.  */
+  return mutt_compare_emails(ta->sort_key, tb->sort_key, mx_type(tctx->mailbox),
+                             tctx->c_sort, SORT_REVERSE | SORT_ORDER);
 }
 
 /**
@@ -695,17 +700,9 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
    * but we want to have to move less stuff around if we're
    * resorting, so we sort backwards and then put them back
    * in reverse order so they're forwards */
-  short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  short c_sort = cs_subset_sort(NeoMutt->sub, "sort_aux");
   c_sort ^= SORT_REVERSE;
-  bool oldresort = OptNeedResort;
-  cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
-  OptNeedResort = oldresort;
-
-  sort_func = mutt_get_sort_func(c_sort & SORT_MASK, mx_type(tctx->mailbox));
-  if (!sort_func)
-  {
-    return;
-  }
+  tctx->c_sort = c_sort;
 
   top = thread;
 
@@ -754,7 +751,7 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
           array[i] = thread;
         }
 
-        qsort((void *) array, i, sizeof(struct MuttThread *), *compare_threads);
+        mutt_qsort_r((void *) array, i, sizeof(struct MuttThread *), compare_threads, tctx);
 
         /* attach them back together.  make thread the last sibling. */
         thread = array[0];
@@ -795,7 +792,7 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
           {
             if (!thread->sort_key ||
                 ((((c_sort & SORT_REVERSE) ? 1 : -1) *
-                  compare_threads((void *) &thread, (void *) &sort_key)) > 0))
+                  compare_threads((void *) &thread, (void *) &sort_key, tctx)) > 0))
             {
               thread->sort_key = sort_key->sort_key;
             }
@@ -815,10 +812,6 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
       }
       else
       {
-        oldresort = OptNeedResort;
-        c_sort ^= SORT_REVERSE;
-        cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
-        OptNeedResort = oldresort;
         FREE(&array);
         tctx->tree = top;
         return;
@@ -883,22 +876,12 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
   struct Mailbox *m = tctx->mailbox;
 
   struct Email *e = NULL;
-  int i, oldsort, using_refs = 0;
+  int i, using_refs = 0;
   struct MuttThread *thread = NULL, *tnew = NULL, *tmp = NULL;
   struct MuttThread top = { 0 };
   struct ListNode *ref = NULL;
 
-  /* Set `$sort` to the secondary method to support the set sort_aux=reverse-*
-   * settings.  The sorting functions just look at the value of SORT_REVERSE */
   assert(m->msg_count > 0);
-  short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  short c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
-  oldsort = c_sort;
-  c_sort = c_sort_aux;
-  bool oldresort = OptNeedResort;
-  cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
-  OptNeedResort = oldresort;
-
   if (!tctx->hash)
     init = true;
 
@@ -1116,11 +1099,6 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
   assert(tctx->tree);
   mutt_sort_subthreads(tctx, init || OptSortSubthreads);
   OptSortSubthreads = false;
-
-  /* restore the oldsort order. */
-  oldresort = OptNeedResort;
-  cs_subset_str_native_set(NeoMutt->sub, "sort", oldsort, NULL);
-  OptNeedResort = oldresort;
 
   /* Put the list into an array. */
   linearize_tree(tctx);
