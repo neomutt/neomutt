@@ -54,8 +54,8 @@ void ctx_free(struct Context **ptr)
   struct Context *ctx = *ptr;
 
   struct EventContext ev_c = { ctx };
-  mutt_debug(LL_NOTIFY, "NT_CONTEXT_CLOSE: %p\n", ctx);
-  notify_send(ctx->notify, NT_CONTEXT, NT_CONTEXT_CLOSE, &ev_c);
+  mutt_debug(LL_NOTIFY, "NT_CONTEXT_DELETE: %p\n", ctx);
+  notify_send(ctx->notify, NT_CONTEXT, NT_CONTEXT_DELETE, &ev_c);
 
   if (ctx->mailbox)
     notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer, ctx);
@@ -83,8 +83,8 @@ struct Context *ctx_new(struct Mailbox *m)
   ctx->notify = notify_new();
   notify_set_parent(ctx->notify, NeoMutt->notify);
   struct EventContext ev_c = { ctx };
-  mutt_debug(LL_NOTIFY, "NT_CONTEXT_OPEN: %p\n", ctx);
-  notify_send(ctx->notify, NT_CONTEXT, NT_CONTEXT_OPEN, &ev_c);
+  mutt_debug(LL_NOTIFY, "NT_CONTEXT_ADD: %p\n", ctx);
+  notify_send(ctx->notify, NT_CONTEXT, NT_CONTEXT_ADD, &ev_c);
   // If the Mailbox is closed, ctx->mailbox must be set to NULL
   notify_observer_add(m->notify, NT_MAILBOX, ctx_mailbox_observer, ctx);
 

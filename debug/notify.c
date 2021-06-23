@@ -151,10 +151,10 @@ static const char *get_context(int id)
 {
   switch (id)
   {
-    case NT_CONTEXT_CLOSE:
-      return "close";
-    case NT_CONTEXT_OPEN:
-      return "open";
+    case NT_CONTEXT_DELETE:
+      return "delete";
+    case NT_CONTEXT_ADD:
+      return "add";
     default:
       return "UNKNOWN";
   }

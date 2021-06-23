@@ -47,7 +47,7 @@ static int index_shared_context_observer(struct NotifyCallback *nc)
   struct EventContext *ev_c = nc->event_data;
   struct IndexSharedData *shared = nc->global_data;
 
-  if (nc->event_subtype != NT_CONTEXT_CLOSE)
+  if (nc->event_subtype != NT_CONTEXT_DELETE)
     return 0;
 
   if (ev_c->ctx != shared->ctx)

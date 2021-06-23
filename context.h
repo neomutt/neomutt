@@ -57,8 +57,8 @@ struct Context
  */
 enum NotifyContext
 {
-  NT_CONTEXT_OPEN = 1, ///< The Context has been opened
-  NT_CONTEXT_CLOSE,    ///< The Context is about to be destroyed
+  NT_CONTEXT_ADD = 1, ///< The Context has been opened
+  NT_CONTEXT_DELETE,  ///< The Context is about to be destroyed
 };
 
 /**
