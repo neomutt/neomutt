@@ -426,15 +426,6 @@ void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads,
   if ((c_sort & SORT_MASK) == SORT_THREADS)
   {
     AuxSort = NULL;
-    /* if $sort_aux changed after the mailbox is sorted, then all the
-     * subthreads need to be resorted */
-    if (OptSortSubthreads)
-    {
-      cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort_aux, NULL);
-      mutt_sort_subthreads(threads, true);
-      cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
-      OptSortSubthreads = false;
-    }
     mutt_sort_threads(threads, init);
   }
   else if (!(sortfunc = mutt_get_sort_func(c_sort & SORT_MASK, mx_type(m))) ||

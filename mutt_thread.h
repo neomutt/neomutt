@@ -97,7 +97,6 @@ struct HashTable *     mutt_make_id_hash      (struct Mailbox *m);
 int                    mutt_messages_in_thread(struct Mailbox *m, struct Email *e, enum MessageInThread mit);
 int                    mutt_parent_message    (struct Email *e, bool find_root);
 off_t                  mutt_set_vnum          (struct Mailbox *m);
-void                   mutt_sort_subthreads   (struct ThreadsContext *tctx, bool init);
 void                   mutt_sort_threads      (struct ThreadsContext *tctx, bool init);
 
 #endif /* MUTT_MUTT_THREAD_H */

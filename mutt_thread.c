@@ -680,7 +680,7 @@ static int compare_threads(const void *a, const void *b)
  * @param tctx Threading context
  * @param init If true, rebuild the thread
  */
-void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
+static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
 {
   struct MuttThread *thread = tctx->tree;
   if (!thread)
@@ -1111,8 +1111,11 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
   if (!c_strict_threads)
     pseudo_threads(tctx);
 
+  /* if $sort_aux or similar changed after the mailbox is sorted, then
+   * all the subthreads need to be resorted */
   assert(tctx->tree);
-  mutt_sort_subthreads(tctx, init);
+  mutt_sort_subthreads(tctx, init || OptSortSubthreads);
+  OptSortSubthreads = false;
 
   /* restore the oldsort order. */
   oldresort = OptNeedResort;
