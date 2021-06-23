@@ -260,8 +260,8 @@ void index_shared_data_free(struct MuttWindow *win, void **ptr)
 
   struct IndexSharedData *shared = *ptr;
 
-  mutt_debug(LL_NOTIFY, "NT_INDEX_CLOSING: %p\n", shared);
-  notify_send(shared->notify, NT_INDEX, NT_INDEX_CLOSING, shared);
+  mutt_debug(LL_NOTIFY, "NT_INDEX_DELETE: %p\n", shared);
+  notify_send(shared->notify, NT_INDEX, NT_INDEX_DELETE, shared);
   notify_free(&shared->notify);
 
   notify_observer_remove(NeoMutt->notify, index_shared_context_observer, shared);
@@ -287,6 +287,9 @@ struct IndexSharedData *index_shared_data_new(void)
   notify_observer_add(NeoMutt->notify, NT_ACCOUNT, index_shared_account_observer, shared);
   notify_observer_add(NeoMutt->notify, NT_MAILBOX, index_shared_mailbox_observer, shared);
   notify_observer_add(NeoMutt->notify, NT_EMAIL, index_shared_email_observer, shared);
+
+  mutt_debug(LL_NOTIFY, "NT_INDEX_ADD: %p\n", shared);
+  notify_send(shared->notify, NT_INDEX, NT_INDEX_ADD, shared);
 
   return shared;
 }
