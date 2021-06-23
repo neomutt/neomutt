@@ -45,18 +45,18 @@ static int index_shared_context_observer(struct NotifyCallback *nc)
     return -1;
 
   struct EventContext *ev_c = nc->event_data;
-  struct IndexSharedData *shared = nc->global_data;
-
-  if (nc->event_subtype != NT_CONTEXT_DELETE)
+  if (nc->event_subtype == NT_CONTEXT_ADD)
     return 0;
 
+  struct IndexSharedData *shared = nc->global_data;
   if (ev_c->ctx != shared->ctx)
     return 0;
 
-  shared->ctx = NULL;
+  if (nc->event_subtype == NT_CONTEXT_DELETE)
+    shared->ctx = NULL;
 
   // Relay the message
-  mutt_debug(LL_NOTIFY, "NT_INDEX_CONTEXT: %p\n", shared->ctx);
+  mutt_debug(LL_NOTIFY, "NT_INDEX_CONTEXT\n");
   notify_send(shared->notify, NT_INDEX, NT_INDEX_CONTEXT, shared);
   return 0;
 }
@@ -70,23 +70,19 @@ static int index_shared_account_observer(struct NotifyCallback *nc)
     return -1;
 
   struct EventAccount *ev_a = nc->event_data;
-  struct IndexSharedData *shared = nc->global_data;
-
-  if (nc->event_subtype != NT_ACCOUNT_DELETE)
+  if (nc->event_subtype == NT_ACCOUNT_ADD)
     return 0;
 
+  struct IndexSharedData *shared = nc->global_data;
   if (ev_a->account != shared->account)
     return 0;
 
-  shared->account = NULL;
-  shared->mailbox = NULL;
-  shared->email = NULL;
+  if (nc->event_subtype != NT_ACCOUNT_DELETE)
+    shared->account = NULL;
 
   // Relay the message
-  mutt_debug(LL_NOTIFY, "NT_INDEX_ACCOUNT: %p, NT_INDEX_MAILBOX: %p, NT_INDEX_EMAIL: %p\n",
-             shared->account, shared->mailbox, shared->email);
-  notify_send(shared->notify, NT_INDEX,
-              NT_INDEX_ACCOUNT | NT_INDEX_MAILBOX | NT_INDEX_EMAIL, shared);
+  mutt_debug(LL_NOTIFY, "NT_INDEX_ACCOUNT\n");
+  notify_send(shared->notify, NT_INDEX, NT_INDEX_ACCOUNT, shared);
   return 0;
 }
 
@@ -99,21 +95,19 @@ static int index_shared_mailbox_observer(struct NotifyCallback *nc)
     return -1;
 
   struct EventMailbox *ev_m = nc->event_data;
-  struct IndexSharedData *shared = nc->global_data;
-
-  if (nc->event_subtype != NT_MAILBOX_DELETE)
+  if (nc->event_subtype == NT_MAILBOX_ADD)
     return 0;
 
+  struct IndexSharedData *shared = nc->global_data;
   if (ev_m->mailbox != shared->mailbox)
     return 0;
 
-  shared->mailbox = NULL;
-  shared->email = NULL;
+  if (nc->event_subtype == NT_MAILBOX_DELETE)
+    shared->mailbox = NULL;
 
   // Relay the message
-  mutt_debug(LL_NOTIFY, "NT_INDEX_MAILBOX: %p, NT_INDEX_EMAIL: %p\n",
-             shared->mailbox, shared->email);
-  notify_send(shared->notify, NT_INDEX, NT_INDEX_MAILBOX | NT_INDEX_EMAIL, shared);
+  mutt_debug(LL_NOTIFY, "NT_INDEX_MAILBOX\n");
+  notify_send(shared->notify, NT_INDEX, NT_INDEX_MAILBOX, shared);
   return 0;
 }
 
@@ -126,11 +120,10 @@ static int index_shared_email_observer(struct NotifyCallback *nc)
     return -1;
 
   struct EventEmail *ev_e = nc->event_data;
-  struct IndexSharedData *shared = nc->global_data;
-
   if (nc->event_subtype == NT_EMAIL_ADD)
     return 0;
 
+  struct IndexSharedData *shared = nc->global_data;
   bool match = false;
   for (int i = 0; i < ev_e->num_emails; i++)
   {
@@ -145,9 +138,7 @@ static int index_shared_email_observer(struct NotifyCallback *nc)
     return 0;
 
   if (nc->event_subtype == NT_EMAIL_DELETE)
-  {
     shared->email = NULL;
-  }
 
   // Relay the message
   mutt_debug(LL_NOTIFY, "NT_INDEX_EMAIL: %p\n", shared->email);
@@ -169,8 +160,14 @@ void index_shared_data_set_context(struct IndexSharedData *shared, struct Contex
 
   if (shared->ctx != ctx)
   {
+    if (shared->ctx)
+      notify_observer_remove(shared->ctx->notify, index_shared_context_observer, shared);
+
     shared->ctx = ctx;
     subtype |= NT_INDEX_CONTEXT;
+
+    if (ctx)
+      notify_observer_add(ctx->notify, NT_CONTEXT, index_shared_context_observer, shared);
 
     Context = ctx;
   }
@@ -178,17 +175,29 @@ void index_shared_data_set_context(struct IndexSharedData *shared, struct Contex
   struct Mailbox *m = ctx_mailbox(ctx);
   if (shared->mailbox != m)
   {
+    if (shared->mailbox)
+      notify_observer_remove(shared->mailbox->notify, index_shared_mailbox_observer, shared);
+
     shared->mailbox = m;
     shared->email = NULL;
     shared->email_seq = 0;
     subtype |= NT_INDEX_MAILBOX | NT_INDEX_EMAIL;
+
+    if (m)
+      notify_observer_add(m->notify, NT_MAILBOX, index_shared_mailbox_observer, shared);
   }
 
   struct Account *a = m ? m->account : NULL;
   if (shared->account != a)
   {
+    if (shared->account)
+      notify_observer_remove(shared->account->notify, index_shared_account_observer, shared);
+
     shared->account = a;
     subtype |= NT_INDEX_ACCOUNT;
+
+    if (a)
+      notify_observer_add(a->notify, NT_ACCOUNT, index_shared_account_observer, shared);
   }
 
   struct ConfigSubset *sub = NeoMutt->sub;
@@ -222,8 +231,14 @@ void index_shared_data_set_email(struct IndexSharedData *shared, struct Email *e
   size_t seq = e ? e->sequence : 0;
   if ((shared->email != e) || (shared->email_seq != seq))
   {
+    if (shared->email)
+      notify_observer_remove(shared->email->notify, index_shared_email_observer, shared);
+
     shared->email = e;
     shared->email_seq = seq;
+
+    if (e)
+      notify_observer_add(e->notify, NT_EMAIL, index_shared_email_observer, shared);
 
     mutt_debug(LL_NOTIFY, "NT_INDEX_EMAIL: %p\n", shared->email);
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, shared);
@@ -264,10 +279,14 @@ void index_shared_data_free(struct MuttWindow *win, void **ptr)
   notify_send(shared->notify, NT_INDEX, NT_INDEX_DELETE, shared);
   notify_free(&shared->notify);
 
-  notify_observer_remove(NeoMutt->notify, index_shared_context_observer, shared);
-  notify_observer_remove(NeoMutt->notify, index_shared_account_observer, shared);
-  notify_observer_remove(NeoMutt->notify, index_shared_mailbox_observer, shared);
-  notify_observer_remove(NeoMutt->notify, index_shared_email_observer, shared);
+  if (shared->account)
+    notify_observer_remove(shared->account->notify, index_shared_account_observer, shared);
+  if (shared->ctx)
+    notify_observer_remove(shared->ctx->notify, index_shared_context_observer, shared);
+  if (shared->mailbox)
+    notify_observer_remove(shared->mailbox->notify, index_shared_mailbox_observer, shared);
+  if (shared->email)
+    notify_observer_remove(shared->email->notify, index_shared_email_observer, shared);
 
   FREE(ptr);
 }
@@ -282,11 +301,6 @@ struct IndexSharedData *index_shared_data_new(void)
 
   shared->notify = notify_new();
   shared->sub = NeoMutt->sub;
-
-  notify_observer_add(NeoMutt->notify, NT_CONTEXT, index_shared_context_observer, shared);
-  notify_observer_add(NeoMutt->notify, NT_ACCOUNT, index_shared_account_observer, shared);
-  notify_observer_add(NeoMutt->notify, NT_MAILBOX, index_shared_mailbox_observer, shared);
-  notify_observer_add(NeoMutt->notify, NT_EMAIL, index_shared_email_observer, shared);
 
   mutt_debug(LL_NOTIFY, "NT_INDEX_ADD: %p\n", shared);
   notify_send(shared->notify, NT_INDEX, NT_INDEX_ADD, shared);

@@ -65,7 +65,8 @@ void ctx_free(struct Context **ptr)
   FREE(&ctx->pattern);
   mutt_pattern_free(&ctx->limit_pattern);
 
-  FREE(ptr);
+  FREE(&ctx);
+  *ptr = NULL;
 }
 
 /**

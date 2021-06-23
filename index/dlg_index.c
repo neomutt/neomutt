@@ -674,9 +674,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
   /* keepalive failure in mutt_enter_fname may kill connection. */
   if (shared->mailbox && (mutt_buffer_is_empty(&shared->mailbox->pathbuf)))
   {
-    struct Context *ctx = shared->ctx;
-    index_shared_data_set_context(shared, NULL);
-    ctx_free(&ctx);
+    ctx_free(&shared->ctx);
   }
 
   if (shared->mailbox)
@@ -696,9 +694,7 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
     const enum MxStatus check = mx_mbox_close(shared->mailbox);
     if (check == MX_STATUS_OK)
     {
-      struct Context *ctx = shared->ctx;
-      index_shared_data_set_context(shared, NULL);
-      ctx_free(&ctx);
+      ctx_free(&shared->ctx);
     }
     else
     {
@@ -1229,9 +1225,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         if (mutt_buffer_is_empty(&shared->mailbox->pathbuf))
         {
           /* fatal error occurred */
-          struct Context *ctx = shared->ctx;
-          index_shared_data_set_context(shared, NULL);
-          ctx_free(&ctx);
+          ctx_free(&shared->ctx);
           menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         }
 
@@ -1880,9 +1874,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           enum MxStatus check = MX_STATUS_OK;
           if (!shared->ctx || ((check = mx_mbox_close(shared->mailbox)) == MX_STATUS_OK))
           {
-            struct Context *ctx = shared->ctx;
-            index_shared_data_set_context(shared, NULL);
-            ctx_free(&ctx);
+            ctx_free(&shared->ctx);
             priv->done = true;
           }
           else
@@ -2045,9 +2037,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           const enum MxStatus check = mx_mbox_close(shared->mailbox);
           if (check == MX_STATUS_OK)
           {
-            struct Context *ctx = shared->ctx;
-            index_shared_data_set_context(shared, NULL);
-            ctx_free(&ctx);
+            ctx_free(&shared->ctx);
           }
           else
           {
@@ -2129,9 +2119,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         /* check for a fatal error, or all messages deleted */
         if (shared->mailbox && mutt_buffer_is_empty(&shared->mailbox->pathbuf))
         {
-          struct Context *ctx = shared->ctx;
-          index_shared_data_set_context(shared, NULL);
-          ctx_free(&ctx);
+          ctx_free(&shared->ctx);
         }
 
         /* if we were in the pager, redisplay the message */
@@ -2697,10 +2685,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         {
           if (shared->ctx)
           {
-            struct Context *ctx = shared->ctx;
-            index_shared_data_set_context(shared, NULL);
             mx_fastclose_mailbox(shared->mailbox);
-            ctx_free(&ctx);
+            ctx_free(&shared->ctx);
           }
           priv->done = true;
         }
@@ -4213,12 +4199,10 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       break;
   }
 
-  struct Context *ctx = shared->ctx;
-  struct Mailbox *m = ctx_mailbox(ctx);
-  index_shared_data_set_context(shared, ctx_old);
-  ctx_free(&ctx);
+  ctx_free(&shared->ctx);
+  Context = ctx_old;
 
-  return m;
+  return shared->mailbox;
 }
 
 /**
