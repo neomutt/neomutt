@@ -53,12 +53,11 @@ static int index_shared_context_observer(struct NotifyCallback *nc)
   if (ev_c->ctx != shared->ctx)
     return 0;
 
-  struct IndexSharedData old_shared = *shared;
   shared->ctx = NULL;
 
   // Relay the message
   mutt_debug(LL_NOTIFY, "NT_INDEX_CONTEXT: %p\n", shared->ctx);
-  notify_send(shared->notify, NT_INDEX, NT_INDEX_CONTEXT, &old_shared);
+  notify_send(shared->notify, NT_INDEX, NT_INDEX_CONTEXT, shared);
   return 0;
 }
 
@@ -79,7 +78,6 @@ static int index_shared_account_observer(struct NotifyCallback *nc)
   if (ev_a->account != shared->account)
     return 0;
 
-  struct IndexSharedData old_shared = *shared;
   shared->account = NULL;
   shared->mailbox = NULL;
   shared->email = NULL;
@@ -88,7 +86,7 @@ static int index_shared_account_observer(struct NotifyCallback *nc)
   mutt_debug(LL_NOTIFY, "NT_INDEX_ACCOUNT: %p, NT_INDEX_MAILBOX: %p, NT_INDEX_EMAIL: %p\n",
              shared->account, shared->mailbox, shared->email);
   notify_send(shared->notify, NT_INDEX,
-              NT_INDEX_ACCOUNT | NT_INDEX_MAILBOX | NT_INDEX_EMAIL, &old_shared);
+              NT_INDEX_ACCOUNT | NT_INDEX_MAILBOX | NT_INDEX_EMAIL, shared);
   return 0;
 }
 
@@ -109,14 +107,13 @@ static int index_shared_mailbox_observer(struct NotifyCallback *nc)
   if (ev_m->mailbox != shared->mailbox)
     return 0;
 
-  struct IndexSharedData old_shared = *shared;
   shared->mailbox = NULL;
   shared->email = NULL;
 
   // Relay the message
   mutt_debug(LL_NOTIFY, "NT_INDEX_MAILBOX: %p, NT_INDEX_EMAIL: %p\n",
              shared->mailbox, shared->email);
-  notify_send(shared->notify, NT_INDEX, NT_INDEX_MAILBOX | NT_INDEX_EMAIL, &old_shared);
+  notify_send(shared->notify, NT_INDEX, NT_INDEX_MAILBOX | NT_INDEX_EMAIL, shared);
   return 0;
 }
 
@@ -168,8 +165,6 @@ void index_shared_data_set_context(struct IndexSharedData *shared, struct Contex
   if (!shared)
     return;
 
-  struct IndexSharedData old_shared = *shared;
-
   NotifyIndex subtype = NT_INDEX_NO_FLAGS;
 
   if (shared->ctx != ctx)
@@ -210,7 +205,7 @@ void index_shared_data_set_context(struct IndexSharedData *shared, struct Contex
   if (subtype != NT_INDEX_NO_FLAGS)
   {
     mutt_debug(LL_NOTIFY, "NT_INDEX: %p\n", shared);
-    notify_send(shared->notify, NT_INDEX, subtype, &old_shared);
+    notify_send(shared->notify, NT_INDEX, subtype, shared);
   }
 }
 
@@ -224,8 +219,6 @@ void index_shared_data_set_email(struct IndexSharedData *shared, struct Email *e
   if (!shared)
     return;
 
-  struct IndexSharedData old_shared = *shared;
-
   size_t seq = e ? e->sequence : 0;
   if ((shared->email != e) || (shared->email_seq != seq))
   {
@@ -233,7 +226,7 @@ void index_shared_data_set_email(struct IndexSharedData *shared, struct Email *e
     shared->email_seq = seq;
 
     mutt_debug(LL_NOTIFY, "NT_INDEX_EMAIL: %p\n", shared->email);
-    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, &old_shared);
+    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, shared);
   }
 }
 

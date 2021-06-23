@@ -189,30 +189,6 @@ static int pager_menu_observer(struct NotifyCallback *nc)
 }
 
 /**
- * pager_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t
- */
-static int pager_mailbox_observer(struct NotifyCallback *nc)
-{
-  if ((nc->event_type != NT_MAILBOX) || !nc->global_data || !nc->event_data)
-    return -1;
-
-  mutt_debug(LL_DEBUG5, "mailbox done\n");
-  return 0;
-}
-
-/**
- * pager_email_observer - Notification that an Email has changed - Implements ::observer_t
- */
-static int pager_email_observer(struct NotifyCallback *nc)
-{
-  if ((nc->event_type != NT_EMAIL) || !nc->global_data || !nc->event_data)
-    return -1;
-
-  mutt_debug(LL_DEBUG5, "email done\n");
-  return 0;
-}
-
-/**
  * pager_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 static int pager_window_observer(struct NotifyCallback *nc)
@@ -241,11 +217,6 @@ static int pager_window_observer(struct NotifyCallback *nc)
   notify_observer_remove(shared->notify, pager_pager_observer, win_pager);
   notify_observer_remove(parent->notify, pager_menu_observer, win_pager);
 
-  if (shared->mailbox)
-    notify_observer_remove(shared->mailbox->notify, pager_mailbox_observer, win_pager);
-  if (shared->email)
-    notify_observer_remove(shared->email->notify, pager_email_observer, win_pager);
-
   mutt_debug(LL_DEBUG5, "window delete done\n");
 
   return 0;
@@ -272,11 +243,6 @@ struct MuttWindow *pager_window_new(struct MuttWindow *parent, struct IndexShare
   notify_observer_add(NeoMutt->notify, NT_COLOR, pager_color_observer, win);
   notify_observer_add(shared->notify, NT_PAGER, pager_pager_observer, win);
   notify_observer_add(parent->notify, NT_MENU, pager_menu_observer, win);
-
-  if (shared->mailbox)
-    notify_observer_add(shared->mailbox->notify, NT_MAILBOX, pager_mailbox_observer, win);
-  if (shared->email)
-    notify_observer_add(shared->email->notify, NT_EMAIL, pager_email_observer, win);
 
   return win;
 }

@@ -183,21 +183,6 @@ static int ibar_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * ibar_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t
- */
-static int ibar_mailbox_observer(struct NotifyCallback *nc)
-{
-  if ((nc->event_type != NT_MAILBOX) || !nc->global_data)
-    return -1;
-
-  struct MuttWindow *win_ibar = nc->global_data;
-  win_ibar->actions |= WA_RECALC;
-  mutt_debug(LL_DEBUG5, "mailbox done, request WA_RECALC\n");
-
-  return 0;
-}
-
-/**
  * ibar_index_observer - Notification that the Index has changed - Implements ::observer_t
  */
 static int ibar_index_observer(struct NotifyCallback *nc)
@@ -209,20 +194,12 @@ static int ibar_index_observer(struct NotifyCallback *nc)
   if (!win_ibar)
     return 0;
 
-  struct IndexSharedData *old_shared = nc->event_data;
-  if (!old_shared)
+  struct IndexSharedData *shared = nc->event_data;
+  if (!shared)
     return 0;
-
-  struct IBarPrivateData *ibar_data = win_ibar->wdata;
-  struct IndexSharedData *new_shared = ibar_data->shared;
 
   if (nc->event_subtype & NT_INDEX_MAILBOX)
   {
-    if (old_shared->mailbox)
-      notify_observer_remove(old_shared->mailbox->notify, ibar_mailbox_observer, win_ibar);
-    if (new_shared->mailbox)
-      notify_observer_add(new_shared->mailbox->notify, NT_MAILBOX,
-                          ibar_mailbox_observer, win_ibar);
     win_ibar->actions |= WA_RECALC;
     mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
   }
@@ -279,9 +256,6 @@ static int ibar_window_observer(struct NotifyCallback *nc)
     notify_observer_remove(shared->notify, ibar_index_observer, win_ibar);
     notify_observer_remove(win_ibar->parent->notify, ibar_menu_observer, win_ibar);
     notify_observer_remove(win_ibar->notify, ibar_window_observer, win_ibar);
-
-    if (shared->mailbox)
-      notify_observer_remove(shared->mailbox->notify, ibar_mailbox_observer, win_ibar);
 
     mutt_debug(LL_DEBUG5, "window delete done\n");
   }
@@ -341,9 +315,6 @@ struct MuttWindow *ibar_new(struct MuttWindow *parent, struct IndexSharedData *s
   notify_observer_add(shared->notify, NT_INDEX, ibar_index_observer, win_ibar);
   notify_observer_add(parent->notify, NT_MENU, ibar_menu_observer, win_ibar);
   notify_observer_add(win_ibar->notify, NT_WINDOW, ibar_window_observer, win_ibar);
-
-  if (shared->mailbox)
-    notify_observer_add(shared->mailbox->notify, NT_MAILBOX, ibar_mailbox_observer, win_ibar);
 
   return win_ibar;
 }
