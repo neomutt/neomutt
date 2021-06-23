@@ -180,6 +180,15 @@ static int index_config_observer(struct NotifyCallback *nc)
 
   struct EventConfig *ev_c = nc->event_data;
   struct MuttWindow *dlg = nc->global_data;
+  const struct ConfigDef *cdef = ev_c->he->data;
+  ConfigRedrawFlags flags = cdef->type & R_REDRAW_MASK;
+
+  if (flags & R_RESORT_SUB)
+    OptSortSubthreads = true;
+  if (flags & R_RESORT)
+    OptNeedResort = true;
+  if (flags & R_RESORT_INIT)
+    OptResortInit = true;
 
   if (mutt_str_equal(ev_c->name, "reply_regex"))
   {
