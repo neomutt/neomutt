@@ -48,6 +48,7 @@
  * | mutt/path.c      | @subpage mutt_path      |
  * | mutt/pool.c      | @subpage mutt_pool      |
  * | mutt/prex.c      | @subpage mutt_prex      |
+ * | mutt/qsort_r.c   | @subpage mutt_qsort_r   |
  * | mutt/random.c    | @subpage mutt_random    |
  * | mutt/regex.c     | @subpage mutt_regex     |
  * | mutt/slist.c     | @subpage mutt_slist     |
@@ -86,6 +87,7 @@
 #include "path.h"
 #include "pool.h"
 #include "prex.h"
+#include "qsort_r.h"
 #include "queue.h"
 #include "random.h"
 #include "regex3.h"

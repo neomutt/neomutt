@@ -337,6 +337,8 @@ if {1} {
     getsid \
     iswblank \
     mkdtemp \
+    qsort_r \
+    qsort_s \
     strsep \
     utimesnsat \
     vasprintf \

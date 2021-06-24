@@ -500,6 +500,9 @@
   NEOMUTT_TEST_ITEM(test_slist_remove_string)                                  \
   NEOMUTT_TEST_ITEM(test_slist_to_buffer)                                      \
                                                                                \
+  /* sort */                                                                   \
+  NEOMUTT_TEST_ITEM(test_mutt_qsort_r)                                         \
+                                                                               \
   /* string */                                                                 \
   NEOMUTT_TEST_ITEM(test_mutt_istr_equal)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_istr_find)                                       \

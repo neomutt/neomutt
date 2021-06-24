@@ -451,8 +451,8 @@ LIBMUTTOBJS=	mutt/base64.o mutt/buffer.o mutt/charset.o mutt/date.o \
 		mutt/envlist.o mutt/exit.o mutt/file.o mutt/filter.o \
 		mutt/hash.o mutt/list.o mutt/logging.o mutt/mapping.o \
 		mutt/mbyte.o mutt/md5.o mutt/memory.o mutt/notify.o \
-		mutt/path.o mutt/pool.o mutt/prex.o mutt/random.o mutt/regex.o \
-		mutt/signal.o mutt/slist.o mutt/state.o mutt/string.o
+		mutt/path.o mutt/pool.o mutt/prex.o mutt/qsort_r.o mutt/random.o \
+		mutt/regex.o mutt/signal.o mutt/slist.o mutt/state.o mutt/string.o
 CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)
 ALLOBJS+=	$(LIBMUTTOBJS)
 
