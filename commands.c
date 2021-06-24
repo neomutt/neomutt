@@ -830,7 +830,7 @@ void mutt_print_message(struct Mailbox *m, struct EmailList *el)
 /**
  * mutt_select_sort - Ask the user for a sort method
  * @param reverse If true make it a reverse sort
- * @retval num Sort type, see #SortType
+ * @retval true The sort type changed
  */
 bool mutt_select_sort(bool reverse)
 {
