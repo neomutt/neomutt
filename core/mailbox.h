@@ -177,7 +177,6 @@ enum NotifyMailbox
 
   /* These don't really belong here as they are tied to GUI operations.
    * Eventually, they'll be eliminated. */
-  NT_MAILBOX_CLOSED,     ///< Mailbox was closed
   NT_MAILBOX_INVALID,    ///< Email list was changed
   NT_MAILBOX_RESORT,     ///< Email list needs resorting
   NT_MAILBOX_SWITCH,     ///< Current Mailbox has changed

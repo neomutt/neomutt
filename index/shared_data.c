@@ -103,7 +103,7 @@ static int index_shared_mailbox_observer(struct NotifyCallback *nc)
   struct EventMailbox *ev_m = nc->event_data;
   struct IndexSharedData *shared = nc->global_data;
 
-  if (nc->event_subtype != NT_MAILBOX_CLOSED)
+  if (nc->event_subtype != NT_MAILBOX_DELETE)
     return 0;
 
   if (ev_m->mailbox != shared->mailbox)

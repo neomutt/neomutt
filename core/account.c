@@ -93,29 +93,31 @@ bool account_mailbox_add(struct Account *a, struct Mailbox *m)
  */
 bool account_mailbox_remove(struct Account *a, struct Mailbox *m)
 {
-  if (!a)
+  if (!a || STAILQ_EMPTY(&a->mailboxes))
     return false;
+
+  if (!m)
+  {
+    mutt_debug(LL_NOTIFY, "NT_MAILBOX_DELETE_ALL\n");
+    struct EventMailbox ev_m = { NULL };
+    notify_send(a->notify, NT_MAILBOX, NT_MAILBOX_DELETE_ALL, &ev_m);
+  }
 
   bool result = false;
   struct MailboxNode *np = NULL;
   struct MailboxNode *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &a->mailboxes, entries, tmp)
   {
-    if (!m || (np->mailbox == m))
-    {
-      mutt_debug(LL_NOTIFY, "NT_MAILBOX_DELETE: %s %p\n",
-                 mailbox_get_type_name(np->mailbox->type), np->mailbox);
-      struct EventMailbox ev_m = { np->mailbox };
-      notify_send(np->mailbox->notify, NT_MAILBOX, NT_MAILBOX_DELETE, &ev_m);
-      STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);
-      notify_set_parent(np->mailbox->notify, NULL);
-      if (!m)
-        mailbox_free(&np->mailbox);
-      FREE(&np);
-      result = true;
-      if (m)
-        break;
-    }
+    if (m && (np->mailbox != m))
+      continue;
+
+    STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);
+    if (!m)
+      mailbox_free(&np->mailbox);
+    FREE(&np);
+    result = true;
+    if (m)
+      break;
   }
 
   return result;
@@ -132,10 +134,15 @@ void account_free(struct Account **ptr)
 
   struct Account *a = *ptr;
 
-  if (a->adata_free && a->adata)
-    a->adata_free(&a->adata);
+  mutt_debug(LL_NOTIFY, "NT_ACCOUNT_DELETE: %s %p\n", mailbox_get_type_name(a->type), a);
+  struct EventAccount ev_a = { a };
+  notify_send(a->notify, NT_ACCOUNT, NT_ACCOUNT_DELETE, &ev_a);
 
   account_mailbox_remove(a, NULL);
+
+  if (a->adata && a->adata_free)
+    a->adata_free(&a->adata);
+
   cs_subset_free(&a->sub);
   FREE(&a->name);
   notify_free(&a->notify);

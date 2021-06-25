@@ -645,7 +645,7 @@ static int index_mailbox_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_MAILBOX) || !nc->global_data)
     return -1;
 
-  if (nc->event_subtype != NT_MAILBOX_CLOSED)
+  if (nc->event_subtype != NT_MAILBOX_DELETE)
     return 0;
 
   struct Mailbox **ptr = nc->global_data;

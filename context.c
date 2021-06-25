@@ -318,7 +318,7 @@ int ctx_mailbox_observer(struct NotifyCallback *nc)
 
   switch (nc->event_subtype)
   {
-    case NT_MAILBOX_CLOSED:
+    case NT_MAILBOX_DELETE:
       mutt_clear_threads(ctx->threads);
       ctx_cleanup(ctx);
       break;

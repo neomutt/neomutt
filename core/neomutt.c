@@ -105,28 +105,29 @@ bool neomutt_account_add(struct NeoMutt *n, struct Account *a)
  */
 bool neomutt_account_remove(struct NeoMutt *n, struct Account *a)
 {
-  if (!n)
+  if (!n || TAILQ_EMPTY(&n->accounts))
     return false;
+
+  if (!a)
+  {
+    mutt_debug(LL_NOTIFY, "NT_ACCOUNT_DELETE_ALL\n");
+    struct EventAccount ev_a = { NULL };
+    notify_send(n->notify, NT_ACCOUNT, NT_ACCOUNT_DELETE_ALL, &ev_a);
+  }
 
   bool result = false;
   struct Account *np = NULL;
   struct Account *tmp = NULL;
   TAILQ_FOREACH_SAFE(np, &n->accounts, entries, tmp)
   {
-    if (!a || (np == a))
-    {
-      mutt_debug(LL_NOTIFY, "NT_ACCOUNT_DELETE: %s %p\n",
-                 mailbox_get_type_name(np->type), np);
-      struct EventAccount ev_a = { np };
-      notify_send(n->notify, NT_ACCOUNT, NT_ACCOUNT_DELETE, &ev_a);
+    if (a && (np != a))
+      continue;
 
-      TAILQ_REMOVE(&n->accounts, np, entries);
-      notify_set_parent(n->notify, NULL);
-      account_free(&np);
-      result = true;
-      if (a)
-        break;
-    }
+    TAILQ_REMOVE(&n->accounts, np, entries);
+    account_free(&np);
+    result = true;
+    if (a)
+      break;
   }
   return result;
 }
