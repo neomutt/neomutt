@@ -441,9 +441,6 @@ int log_disp_queue(time_t stamp, const char *file, int line,
 int log_disp_terminal(time_t stamp, const char *file, int line,
                       const char *function, enum LogLevel level, ...)
 {
-  if ((level < LL_PERROR) || (level > LL_MESSAGE))
-    return 0;
-
   char buf[1024];
 
   va_list ap;
@@ -453,6 +450,9 @@ int log_disp_terminal(time_t stamp, const char *file, int line,
   va_end(ap);
 
   log_disp_file(stamp, file, line, function, level, "%s", buf);
+
+  if ((level < LL_PERROR) || (level > LL_MESSAGE))
+    return 0;
 
   FILE *fp = (level < LL_MESSAGE) ? stderr : stdout;
   int err = errno;
