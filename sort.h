@@ -34,22 +34,31 @@ struct Address;
 struct ThreadsContext;
 
 /**
- * typedef sort_t - Prototype for a function to compare two emails
- * @param a First email
- * @param b Second email
- * @retval -1 a precedes b
+ * typedef sort_t - Prototype for generic comparison function, compatible with qsort
+ * @param a First item
+ * @param b Second item
+ * @retval <0 a precedes b
  * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * @retval >0 b precedes a
  */
 typedef int (*sort_t)(const void *a, const void *b);
 
-sort_t mutt_get_sort_func(enum SortType method, enum MailboxType type);
+/**
+ * typedef sort_mail_t - Prototype for comparing two emails
+ * @param a       First item
+ * @param b       Second item
+ * @param reverse true if this is a reverse sort (smaller b precedes a)
+ * @retval <0 a precedes b
+ * @retval  0 a and b are identical
+ * @retval >0 b precedes a
+ */
+typedef int (*sort_mail_t)(const struct Email *a, const struct Email *b, bool reverse);
+
+int mutt_compare_emails(const struct Email *a, const struct Email *b,
+                        enum MailboxType type, short sort, short sort_aux);
 
 void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads, bool init, off_t *vsize);
-int perform_auxsort(int retval, const void *a, const void *b);
 
 const char *mutt_get_name(const struct Address *a);
-
-int sort_code(int rc);
 
 #endif /* MUTT_SORT_H */

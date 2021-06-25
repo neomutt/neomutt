@@ -1648,8 +1648,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
     memcpy(m->emails, emails, m->msg_count * sizeof(struct Email *));
 
     cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
-    qsort(m->emails, m->msg_count, sizeof(struct Email *),
-          mutt_get_sort_func(SORT_ORDER, MUTT_IMAP));
+    qsort(m->emails, m->msg_count, sizeof(struct Email *), compare_uid);
   }
 
   rc = sync_helper(m, MUTT_ACL_DELETE, MUTT_DELETED, "\\Deleted");

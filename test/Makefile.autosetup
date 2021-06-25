@@ -456,6 +456,8 @@ SLIST_OBJS	= test/slist/slist_add_list.o \
 		  test/slist/slist_remove_string.o \
 		  test/slist/slist_to_buffer.o
 
+SORT_OBJS	= test/sort/mutt_qsort_r.o
+
 @if HAVE_BDB || HAVE_GDBM || HAVE_KC || HAVE_LMDB || HAVE_QDBM || HAVE_ROCKSDB || HAVE_TDB || HAVE_TC
 STORE_OBJS	+= test/store/common.o test/store/store.o
 @endif
@@ -564,8 +566,8 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/path $(PWD)/test/pattern $(PWD)/test/pool \
 		  $(PWD)/test/prex $(PWD)/test/regex $(PWD)/test/rfc2047 \
 		  $(PWD)/test/rfc2231 $(PWD)/test/signal $(PWD)/test/slist \
-		  $(PWD)/test/store $(PWD)/test/string $(PWD)/test/tags \
-		  $(PWD)/test/thread $(PWD)/test/url
+		  $(PWD)/test/sort $(PWD)/test/store $(PWD)/test/string \
+		  $(PWD)/test/tags $(PWD)/test/thread $(PWD)/test/url
 
 TEST_OBJS	= test/main.o test/common.o \
 		  $(ACCOUNT_OBJS) \
@@ -611,6 +613,7 @@ TEST_OBJS	= test/main.o test/common.o \
 		  $(RFC2231_OBJS) \
 		  $(SIGNAL_OBJS) \
 		  $(SLIST_OBJS) \
+		  $(SORT_OBJS) \
 		  $(STORE_OBJS) \
 		  $(STRING_OBJS) \
 		  $(TAGS_OBJS) \

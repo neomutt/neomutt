@@ -2274,18 +2274,14 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
 }
 
 /**
- * nntp_compare_order - Sort to mailbox order - Implements ::sort_t
+ * nntp_compare_order - Sort to mailbox order - Implements ::sort_mail_t
  */
-int nntp_compare_order(const void *a, const void *b)
+int nntp_compare_order(const struct Email *a, const struct Email *b, bool reverse)
 {
-  const struct Email *ea = *(struct Email const *const *) a;
-  const struct Email *eb = *(struct Email const *const *) b;
-
-  anum_t na = nntp_edata_get((struct Email *) ea)->article_num;
-  anum_t nb = nntp_edata_get((struct Email *) eb)->article_num;
+  anum_t na = nntp_edata_get((struct Email *) a)->article_num;
+  anum_t nb = nntp_edata_get((struct Email *) b)->article_num;
   int result = (na == nb) ? 0 : (na > nb) ? 1 : -1;
-  result = perform_auxsort(result, a, b);
-  return sort_code(result);
+  return reverse ? -result : result;
 }
 
 /**
