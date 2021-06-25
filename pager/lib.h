@@ -28,7 +28,7 @@
  * | File                 | Description                 |
  * | :------------------- | :-------------------------- |
  * | pager/config.c       | @subpage pager_config       |
- * | pager/dlg_pager.c    | @subpage pager_pager        |
+ * | pager/dlg_pager.c    | @subpage pager_dialog       |
  * | pager/do_pager.c     | @subpage pager_dopager      |
  * | pager/pager.c        | @subpage pager_pager        |
  * | pager/pbar.c         | @subpage pager_pbar         |

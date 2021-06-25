@@ -22,7 +22,7 @@
  */
 
 /**
- * @page pager_pager GUI display a file/email/help in a viewport with paging
+ * @page pager_dialog GUI display a file/email/help in a viewport with paging
  *
  * GUI display a file/email/help in a viewport with paging
  */

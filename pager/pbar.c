@@ -174,6 +174,37 @@ static int pbar_config_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * pbar_index_observer - Notification that the Index has changed - Implements ::observer_t
+ */
+static int pbar_index_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_INDEX) || !nc->global_data)
+    return -1;
+
+  struct MuttWindow *win_ibar = nc->global_data;
+  if (!win_ibar)
+    return 0;
+
+  struct IndexSharedData *shared = nc->event_data;
+  if (!shared)
+    return 0;
+
+  if (nc->event_subtype & NT_INDEX_MAILBOX)
+  {
+    win_ibar->actions |= WA_RECALC;
+    mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
+  }
+
+  if (nc->event_subtype & NT_INDEX_EMAIL)
+  {
+    win_ibar->actions |= WA_RECALC;
+    mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
+  }
+
+  return 0;
+}
+
+/**
  * pbar_pager_observer - Notification that the Pager has changed - Implements ::observer_t
  */
 static int pbar_pager_observer(struct NotifyCallback *nc)
@@ -244,6 +275,7 @@ static int pbar_window_observer(struct NotifyCallback *nc)
 
     notify_observer_remove(NeoMutt->notify, pbar_color_observer, win_pbar);
     notify_observer_remove(NeoMutt->notify, pbar_config_observer, win_pbar);
+    notify_observer_remove(shared->notify, pbar_index_observer, win_pbar);
     notify_observer_remove(shared->notify, pbar_pager_observer, win_pbar);
     notify_observer_remove(win_pbar->parent->notify, pbar_menu_observer, win_pbar);
     notify_observer_remove(win_pbar->notify, pbar_window_observer, win_pbar);
@@ -281,7 +313,7 @@ static struct PBarPrivateData *pbar_data_new(struct IndexSharedData *shared,
 }
 
 /**
- * pbar_new - Add the Pager Bar
+ * pbar_new - Create the Pager Bar
  * @param parent Parent Window
  * @param shared Shared Pager data
  * @param priv   Private Pager data
@@ -301,6 +333,7 @@ struct MuttWindow *pbar_new(struct MuttWindow *parent, struct IndexSharedData *s
 
   notify_observer_add(NeoMutt->notify, NT_COLOR, pbar_color_observer, win_pbar);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, pbar_config_observer, win_pbar);
+  notify_observer_add(shared->notify, NT_INDEX, pbar_index_observer, win_pbar);
   notify_observer_add(shared->notify, NT_PAGER, pbar_pager_observer, win_pbar);
   notify_observer_add(parent->notify, NT_MENU, pbar_menu_observer, win_pbar);
   notify_observer_add(win_pbar->notify, NT_WINDOW, pbar_window_observer, win_pbar);
