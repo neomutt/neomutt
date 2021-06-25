@@ -674,6 +674,7 @@ static int compare_threads(const void *a, const void *b, void *arg)
   const struct MuttThread *ta = *(struct MuttThread const *const *) a;
   const struct MuttThread *tb = *(struct MuttThread const *const *) b;
   const struct ThreadsContext *tctx = arg;
+  assert(ta->parent == tb->parent);
   /* If c_sort ties, remember we are building the thread array in
    * reverse from the index the mails had in the mailbox.  */
   return mutt_compare_emails(ta->sort_key, tb->sort_key, mx_type(tctx->mailbox),
@@ -691,8 +692,8 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
   if (!thread)
     return;
 
-  struct MuttThread **array = NULL, *sort_key = NULL, *top = NULL, *tmp = NULL;
-  struct Email *oldsort_key = NULL;
+  struct MuttThread **array = NULL, *top = NULL, *tmp = NULL;
+  struct Email *sort_key = NULL, *oldsort_key = NULL;
   int i, array_size;
   bool sort_top = false;
 
@@ -779,8 +780,8 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
         {
           /* make sort_key the first or last sibling, as appropriate */
           sort_key = ((!(c_sort & SORT_LAST)) ^ (!(c_sort & SORT_REVERSE))) ?
-                         thread->child :
-                         tmp;
+                         thread->child->sort_key :
+                         tmp->sort_key;
 
           /* we just sorted its children */
           thread->sort_children = false;
@@ -791,14 +792,14 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
           if (c_sort & SORT_LAST)
           {
             if (!thread->sort_key ||
-                ((((c_sort & SORT_REVERSE) ? 1 : -1) *
-                  compare_threads((void *) &thread, (void *) &sort_key, tctx)) > 0))
+                (mutt_compare_emails(thread->sort_key, sort_key, mx_type(tctx->mailbox),
+                                     c_sort | SORT_REVERSE, SORT_ORDER) > 0))
             {
-              thread->sort_key = sort_key->sort_key;
+              thread->sort_key = sort_key;
             }
           }
           else if (!thread->sort_key)
-            thread->sort_key = sort_key->sort_key;
+            thread->sort_key = sort_key;
 
           /* if its sort_key has changed, we need to resort it and siblings */
           if (oldsort_key != thread->sort_key)
