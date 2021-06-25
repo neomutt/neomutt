@@ -35,7 +35,7 @@
 
 typedef int (*qsort_compar_t)(const void *a, const void *b);
 
-#if !defined(HAVE_QSORT_S) && (!defined(HAVE_QSORT_R) || defined(__FreeBSD__))
+#if !defined(HAVE_QSORT_S) && !defined(HAVE_QSORT_R)
 /// Original comparator in fallback implementation
 static qsort_r_compar_t global_compar = NULL;
 /// Original opaque data in fallback implementation
@@ -71,9 +71,8 @@ void mutt_qsort_r(void *base, size_t nmemb, size_t size, qsort_r_compar_t compar
 #ifdef HAVE_QSORT_S
   /* FreeBSD 13, where qsort_r had incompatible signature but qsort_s works */
   qsort_s(base, nmemb, size, compar, arg);
-#elif defined(HAVE_QSORT_R) && !defined(__FreeBSD__)
+#elif defined(HAVE_QSORT_R)
   /* glibc, POSIX (https://www.austingroupbugs.net/view.php?id=900) */
-  /* Avoid FreeBSD 12, where qsort_r has wrong signature but lacks qsort_s */
   qsort_r(base, nmemb, size, compar, arg);
 #else
   /* This fallback is not re-entrant. */

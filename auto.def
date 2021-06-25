@@ -196,7 +196,9 @@ if {1} {
 
   # Get the value of a macro by preprocessing a header file that defines it
   proc check-define-value {incfile macro} {
-    set code "#include \"$incfile\"\n$macro"
+    if {$incfile ne {}} {
+      set code "#include \"$incfile\"\n$macro"
+    }
     if {[catch {exec {*}[get-define CC] {*}[get-define CFLAGS] -xc - -E | tail -1 << $code} out]} {
       user-notice $out
       set out ""
@@ -337,12 +339,17 @@ if {1} {
     getsid \
     iswblank \
     mkdtemp \
-    qsort_r \
     qsort_s \
     strsep \
     utimesnsat \
     vasprintf \
     wcscasecmp
+
+  # The following systems have known-bad qsort_r with reversed arguments
+  if {[check-define-value sys/param.h __FreeBSD_version] eq {} &&
+      [check-define-value {} __APPLE__] eq {}} {
+    cc-check-functions qsort_r
+  }
 
   cc-check-function-in-lib gethostent nsl
   cc-check-function-in-lib setsockopt socket
