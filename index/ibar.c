@@ -183,21 +183,6 @@ static int ibar_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * ibar_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t
- */
-static int ibar_mailbox_observer(struct NotifyCallback *nc)
-{
-  if ((nc->event_type != NT_MAILBOX) || !nc->global_data)
-    return -1;
-
-  struct MuttWindow *win_ibar = nc->global_data;
-  win_ibar->actions |= WA_RECALC;
-  mutt_debug(LL_DEBUG5, "mailbox done, request WA_RECALC\n");
-
-  return 0;
-}
-
-/**
  * ibar_index_observer - Notification that the Index has changed - Implements ::observer_t
  */
 static int ibar_index_observer(struct NotifyCallback *nc)
@@ -209,20 +194,12 @@ static int ibar_index_observer(struct NotifyCallback *nc)
   if (!win_ibar)
     return 0;
 
-  struct IndexSharedData *old_shared = nc->event_data;
-  if (!old_shared)
+  struct IndexSharedData *shared = nc->event_data;
+  if (!shared)
     return 0;
-
-  struct IBarPrivateData *ibar_data = win_ibar->wdata;
-  struct IndexSharedData *new_shared = ibar_data->shared;
 
   if (nc->event_subtype & NT_INDEX_MAILBOX)
   {
-    if (old_shared->mailbox)
-      notify_observer_remove(old_shared->mailbox->notify, ibar_mailbox_observer, win_ibar);
-    if (new_shared->mailbox)
-      notify_observer_add(new_shared->mailbox->notify, NT_MAILBOX,
-                          ibar_mailbox_observer, win_ibar);
     win_ibar->actions |= WA_RECALC;
     mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
   }
@@ -259,12 +236,29 @@ static int ibar_window_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_WINDOW) || !nc->global_data)
     return -1;
 
-  if (nc->event_subtype != NT_WINDOW_STATE)
+  struct MuttWindow *win_ibar = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != win_ibar)
     return 0;
 
-  struct MuttWindow *win_ibar = nc->global_data;
-  win_ibar->actions |= WA_REPAINT;
-  mutt_debug(LL_DEBUG5, "window state done, request WA_REPAINT\n");
+  if (nc->event_subtype == NT_WINDOW_STATE)
+  {
+    win_ibar->actions |= WA_REPAINT;
+    mutt_debug(LL_DEBUG5, "window state done, request WA_REPAINT\n");
+  }
+  else if (nc->event_subtype == NT_WINDOW_DELETE)
+  {
+    struct MuttWindow *dlg = window_find_parent(win_ibar, WT_DLG_INDEX);
+    struct IndexSharedData *shared = dlg->wdata;
+
+    notify_observer_remove(NeoMutt->notify, ibar_color_observer, win_ibar);
+    notify_observer_remove(NeoMutt->notify, ibar_config_observer, win_ibar);
+    notify_observer_remove(shared->notify, ibar_index_observer, win_ibar);
+    notify_observer_remove(win_ibar->parent->notify, ibar_menu_observer, win_ibar);
+    notify_observer_remove(win_ibar->notify, ibar_window_observer, win_ibar);
+
+    mutt_debug(LL_DEBUG5, "window delete done\n");
+  }
 
   return 0;
 }
@@ -275,17 +269,6 @@ static int ibar_window_observer(struct NotifyCallback *nc)
 static void ibar_data_free(struct MuttWindow *win, void **ptr)
 {
   struct IBarPrivateData *ibar_data = *ptr;
-  struct IndexSharedData *shared = ibar_data->shared;
-  struct IndexPrivateData *priv = ibar_data->priv;
-
-  notify_observer_remove(NeoMutt->notify, ibar_color_observer, win);
-  notify_observer_remove(NeoMutt->notify, ibar_config_observer, win);
-  notify_observer_remove(shared->notify, ibar_index_observer, win);
-  notify_observer_remove(priv->win_ibar->parent->notify, ibar_menu_observer, win);
-  notify_observer_remove(win->notify, ibar_window_observer, win);
-
-  if (shared->mailbox)
-    notify_observer_remove(shared->mailbox->notify, ibar_mailbox_observer, win);
 
   FREE(&ibar_data->status_format);
   FREE(&ibar_data->ts_status_format);
@@ -332,9 +315,6 @@ struct MuttWindow *ibar_new(struct MuttWindow *parent, struct IndexSharedData *s
   notify_observer_add(shared->notify, NT_INDEX, ibar_index_observer, win_ibar);
   notify_observer_add(parent->notify, NT_MENU, ibar_menu_observer, win_ibar);
   notify_observer_add(win_ibar->notify, NT_WINDOW, ibar_window_observer, win_ibar);
-
-  if (shared->mailbox)
-    notify_observer_add(shared->mailbox->notify, NT_MAILBOX, ibar_mailbox_observer, win_ibar);
 
   return win_ibar;
 }

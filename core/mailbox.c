@@ -91,13 +91,19 @@ void mailbox_free(struct Mailbox **ptr)
 
   struct Mailbox *m = *ptr;
 
-  mailbox_changed(m, NT_MAILBOX_CLOSED);
+  mutt_debug(LL_NOTIFY, "NT_MAILBOX_DELETE: %s %p\n", mailbox_get_type_name(m->type), m);
+  struct EventMailbox ev_m = { m };
+  notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_DELETE, &ev_m);
 
-  if (m->mdata_free && m->mdata)
-    m->mdata_free(&m->mdata);
+  mutt_debug(LL_NOTIFY, "NT_EMAIL_DELETE_ALL\n");
+  struct EventEmail ev_e = { 0, NULL };
+  notify_send(m->notify, NT_EMAIL, NT_EMAIL_DELETE_ALL, &ev_e);
 
   for (size_t i = 0; i < m->email_max; i++)
     email_free(&m->emails[i]);
+
+  if (m->mdata_free && m->mdata)
+    m->mdata_free(&m->mdata);
 
   mutt_buffer_dealloc(&m->pathbuf);
   cs_subset_free(&m->sub);

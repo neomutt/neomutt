@@ -808,6 +808,9 @@ static int env_window_observer(struct NotifyCallback *nc)
     return -1;
 
   struct MuttWindow *win_env = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != win_env)
+    return 0;
 
   if (nc->event_subtype == NT_WINDOW_STATE)
   {

@@ -52,13 +52,13 @@ struct MuttWindow;
 
 typedef uint8_t NotifyIndex;         ///< Flags, e.g. #NT_INDEX_ACCOUNT
 #define NT_INDEX_NO_FLAGS        0   ///< No flags are set
-#define NT_INDEX_CONFIG    (1 << 0)  ///< Config subset has changed
-#define NT_INDEX_CONTEXT   (1 << 1)  ///< Context has changed
-#define NT_INDEX_ACCOUNT   (1 << 2)  ///< Account has changed
-#define NT_INDEX_MAILBOX   (1 << 3)  ///< Mailbox has changed
-#define NT_INDEX_EMAIL     (1 << 4)  ///< Email has changed
-#define NT_INDEX_CLOSING   (1 << 5)  ///< The Index is about to close
-#define NT_INDEX_SUBSET    (1 << 6)  ///< Config Subset has changed
+#define NT_INDEX_ADD       (1 << 0)  ///< New Index Shared Data has been created
+#define NT_INDEX_DELETE    (1 << 1)  ///< Index Shared Data is about to be freed
+#define NT_INDEX_SUBSET    (1 << 2)  ///< Config Subset has changed
+#define NT_INDEX_ACCOUNT   (1 << 3)  ///< Account has changed
+#define NT_INDEX_CONTEXT   (1 << 4)  ///< Context has changed
+#define NT_INDEX_MAILBOX   (1 << 5)  ///< Mailbox has changed
+#define NT_INDEX_EMAIL     (1 << 6)  ///< Email has changed
 
 int  index_color(struct Menu *menu, int line);
 void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line);

@@ -35,6 +35,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "index/lib.h"
 #include "mutt_commands.h"
 
 void sb_win_remove_observers(struct MuttWindow *win);
@@ -124,7 +125,9 @@ static struct MuttWindow *sb_win_init(struct MuttWindow *dlg)
   const bool c_sidebar_visible =
       cs_subset_bool(NeoMutt->sub, "sidebar_visible");
   win_sidebar->state.visible = c_sidebar_visible && (c_sidebar_width > 0);
-  win_sidebar->wdata = sb_wdata_new();
+
+  struct IndexSharedData *shared = dlg->wdata;
+  win_sidebar->wdata = sb_wdata_new(shared);
   win_sidebar->wdata_free = sb_wdata_free;
 
   calc_divider(win_sidebar->wdata);
@@ -344,6 +347,34 @@ static int sb_config_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * sb_index_observer - Notification that the Index has changed - Implements ::observer_t
+ */
+static int sb_index_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_INDEX) || !nc->global_data)
+    return -1;
+
+  struct MuttWindow *win_ibar = nc->global_data;
+  if (!win_ibar)
+    return 0;
+
+  struct IndexSharedData *shared = nc->event_data;
+  if (!shared)
+    return 0;
+
+  if (nc->event_subtype & NT_INDEX_MAILBOX)
+  {
+    struct SidebarWindowData *wdata = sb_wdata_get(win_ibar);
+    sb_set_current_mailbox(wdata, shared->mailbox);
+
+    win_ibar->actions |= WA_RECALC;
+    mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
+  }
+
+  return 0;
+}
+
+/**
  * sb_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t
  */
 static int sb_mailbox_observer(struct NotifyCallback *nc)
@@ -383,25 +414,19 @@ static int sb_window_observer(struct NotifyCallback *nc)
     return -1;
 
   struct MuttWindow *win = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != win)
+    return 0;
 
-  if (nc->event_subtype == NT_WINDOW_FOCUS)
-  {
-    win->actions |= WA_RECALC;
-    mutt_debug(LL_DEBUG5, "window focus done, request WA_RECALC\n");
-  }
-  else if (nc->event_subtype == NT_WINDOW_DELETE)
-  {
-    struct EventWindow *ev_w = nc->event_data;
-    if (ev_w->win != win)
-      return 0;
-
-    mutt_debug(LL_DEBUG5, "window delete done\n");
-    sb_win_remove_observers(win);
-  }
-  else if (nc->event_subtype == NT_WINDOW_STATE)
+  if (nc->event_subtype == NT_WINDOW_STATE)
   {
     win->actions |= WA_RECALC;
     mutt_debug(LL_DEBUG5, "window state done, request WA_RECALC\n");
+  }
+  else if (nc->event_subtype == NT_WINDOW_DELETE)
+  {
+    mutt_debug(LL_DEBUG5, "window delete done\n");
+    sb_win_remove_observers(win);
   }
   return 0;
 }
@@ -419,8 +444,9 @@ void sb_win_add_observers(struct MuttWindow *win)
   notify_observer_add(NeoMutt->notify, NT_COLOR, sb_color_observer, win);
   notify_observer_add(NeoMutt->notify, NT_COMMAND, sb_command_observer, win);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, sb_config_observer, win);
+  notify_observer_add(NeoMutt->notify, NT_INDEX, sb_index_observer, win);
   notify_observer_add(NeoMutt->notify, NT_MAILBOX, sb_mailbox_observer, win);
-  notify_observer_add(NeoMutt->notify, NT_WINDOW, sb_window_observer, win);
+  notify_observer_add(win->notify, NT_WINDOW, sb_window_observer, win);
 }
 
 /**
@@ -436,8 +462,9 @@ void sb_win_remove_observers(struct MuttWindow *win)
   notify_observer_remove(NeoMutt->notify, sb_color_observer, win);
   notify_observer_remove(NeoMutt->notify, sb_command_observer, win);
   notify_observer_remove(NeoMutt->notify, sb_config_observer, win);
+  notify_observer_remove(NeoMutt->notify, sb_index_observer, win);
   notify_observer_remove(NeoMutt->notify, sb_mailbox_observer, win);
-  notify_observer_remove(NeoMutt->notify, sb_window_observer, win);
+  notify_observer_remove(win->notify, sb_window_observer, win);
 }
 
 /**

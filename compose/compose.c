@@ -271,7 +271,6 @@ static int compose_window_observer(struct NotifyCallback *nc)
     return 0;
 
   struct MuttWindow *dlg = nc->global_data;
-
   struct EventWindow *ev_w = nc->event_data;
   if (ev_w->win != dlg)
     return 0;

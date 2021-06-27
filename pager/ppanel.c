@@ -120,7 +120,6 @@ static int ppanel_window_observer(struct NotifyCallback *nc)
     return 0;
 
   struct MuttWindow *panel_pager = nc->global_data;
-
   struct EventWindow *ev_w = nc->event_data;
   if (ev_w->win != panel_pager)
     return 0;

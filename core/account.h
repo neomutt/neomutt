@@ -66,9 +66,10 @@ TAILQ_HEAD(AccountList, Account);
  */
 enum NotifyAccount
 {
-  NT_ACCOUNT_ADD = 1, ///< Account has been added
-  NT_ACCOUNT_DELETE,  ///< Account is about to be deleted
-  NT_ACCOUNT_CHANGE,  ///< Account has been changed
+  NT_ACCOUNT_ADD = 1,    ///< Account has been added
+  NT_ACCOUNT_DELETE,     ///< Account is about to be deleted
+  NT_ACCOUNT_DELETE_ALL, ///< All Accounts are about to be deleted
+  NT_ACCOUNT_CHANGE,     ///< Account has been changed
 };
 
 /**

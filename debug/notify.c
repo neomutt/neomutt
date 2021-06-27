@@ -131,9 +131,7 @@ static const char *get_mailbox_event(int id)
     case NT_MAILBOX_ADD:
       return "add";
     case NT_MAILBOX_DELETE:
-      return "remove";
-    case NT_MAILBOX_CLOSED:
-      return "closed";
+      return "delete";
     case NT_MAILBOX_INVALID:
       return "invalid";
     case NT_MAILBOX_RESORT:
@@ -151,10 +149,10 @@ static const char *get_context(int id)
 {
   switch (id)
   {
-    case NT_CONTEXT_CLOSE:
-      return "close";
-    case NT_CONTEXT_OPEN:
-      return "open";
+    case NT_CONTEXT_DELETE:
+      return "delete";
+    case NT_CONTEXT_ADD:
+      return "add";
     default:
       return "UNKNOWN";
   }

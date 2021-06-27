@@ -28,6 +28,7 @@
 #include "config/lib.h"
 #include "gui/lib.h"
 
+struct IndexSharedData;
 struct Mailbox;
 
 extern struct ListHead SidebarWhitelist;
@@ -60,6 +61,7 @@ enum DivType
  */
 struct SidebarWindowData
 {
+  struct IndexSharedData *shared;         /// Shared Index Data
   ARRAY_HEAD(, struct SbEntry *) entries; ///< Items to display in the sidebar
 
   int top_index;             ///< First mailbox visible in sidebar
@@ -91,7 +93,7 @@ void sb_sort_entries(struct SidebarWindowData *wdata, enum SortType sort);
 // wdata.c
 void                      sb_wdata_free(struct MuttWindow *win, void **ptr);
 struct SidebarWindowData *sb_wdata_get(struct MuttWindow *win);
-struct SidebarWindowData *sb_wdata_new(void);
+struct SidebarWindowData *sb_wdata_new(struct IndexSharedData *shared);
 
 // window.c
 int sb_recalc(struct MuttWindow *win);

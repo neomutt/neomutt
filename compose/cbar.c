@@ -232,6 +232,9 @@ int cbar_window_observer(struct NotifyCallback *nc)
     return -1;
 
   struct MuttWindow *win_cbar = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != win_cbar)
+    return 0;
 
   if (nc->event_subtype == NT_WINDOW_STATE)
   {
@@ -250,6 +253,7 @@ int cbar_window_observer(struct NotifyCallback *nc)
 
     mutt_debug(LL_DEBUG5, "window delete done\n");
   }
+
   return 0;
 }
 

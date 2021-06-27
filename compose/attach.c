@@ -191,6 +191,9 @@ static int attach_window_observer(struct NotifyCallback *nc)
     return -1;
 
   struct MuttWindow *win_attach = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != win_attach)
+    return 0;
 
   if (nc->event_subtype == NT_WINDOW_STATE)
   {
@@ -199,9 +202,9 @@ static int attach_window_observer(struct NotifyCallback *nc)
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
-    notify_observer_remove(nc->current, attach_compose_observer, win_attach);
-    notify_observer_remove(nc->current, attach_config_observer, win_attach);
-    notify_observer_remove(nc->current, attach_window_observer, win_attach);
+    notify_observer_remove(win_attach->parent->notify, attach_compose_observer, win_attach);
+    notify_observer_remove(NeoMutt->notify, attach_config_observer, win_attach);
+    notify_observer_remove(win_attach->notify, attach_window_observer, win_attach);
     mutt_debug(LL_DEBUG5, "window delete done\n");
   }
 

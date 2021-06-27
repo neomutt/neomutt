@@ -36,9 +36,10 @@
  * sb_wdata_new - Create new Window data for the Sidebar
  * @retval ptr New Window data
  */
-struct SidebarWindowData *sb_wdata_new(void)
+struct SidebarWindowData *sb_wdata_new(struct IndexSharedData *shared)
 {
   struct SidebarWindowData *wdata = mutt_mem_calloc(1, sizeof(struct SidebarWindowData));
+  wdata->shared = shared;
   ARRAY_INIT(&wdata->entries);
   return wdata;
 }

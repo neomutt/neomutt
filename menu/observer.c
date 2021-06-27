@@ -96,22 +96,24 @@ static int menu_window_observer(struct NotifyCallback *nc)
     return -1;
 
   struct Menu *menu = nc->global_data;
+  struct MuttWindow *win_menu = menu->win_index;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != win_menu)
+    return 0;
+
   if (nc->event_subtype == NT_WINDOW_STATE)
   {
-    struct EventWindow *ev_w = nc->event_data;
-    struct MuttWindow *win = ev_w->win;
-
-    menu->pagelen = win->state.rows;
+    menu->pagelen = win_menu->state.rows;
     menu->redraw |= MENU_REDRAW_INDEX;
 
-    win->actions |= WA_REPAINT;
+    win_menu->actions |= WA_REPAINT;
     mutt_debug(LL_DEBUG5,
                "window state done, request MENU_REDRAW_INDEX, WA_REPAINT\n");
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
     notify_observer_remove(NeoMutt->notify, menu_config_observer, menu);
-    notify_observer_remove(menu->win_index->notify, menu_window_observer, menu);
+    notify_observer_remove(win_menu->notify, menu_window_observer, menu);
     mutt_color_observer_remove(menu_color_observer, menu);
     mutt_debug(LL_DEBUG5, "window delete done\n");
   }
@@ -125,7 +127,9 @@ static int menu_window_observer(struct NotifyCallback *nc)
  */
 void menu_add_observers(struct Menu *menu)
 {
+  struct MuttWindow *win_menu = menu->win_index;
+
   notify_observer_add(NeoMutt->notify, NT_CONFIG, menu_config_observer, menu);
-  notify_observer_add(menu->win_index->notify, NT_WINDOW, menu_window_observer, menu);
+  notify_observer_add(win_menu->notify, NT_WINDOW, menu_window_observer, menu);
   mutt_color_observer_add(menu_color_observer, menu);
 }
