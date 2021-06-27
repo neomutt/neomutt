@@ -38,6 +38,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "index/lib.h"
 #include "context.h"
 #include "mutt_commands.h"
 #include "mutt_globals.h"
@@ -90,6 +91,7 @@ void sb_add_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
   /* Any new/deleted mailboxes will cause a refresh.  As long as
    * they're valid, our pointers will be updated in prepare_sidebar() */
 
+  struct IndexSharedData *shared = wdata->shared;
   struct SbEntry *entry = mutt_mem_calloc(1, sizeof(struct SbEntry));
   entry->mailbox = m;
 
@@ -97,8 +99,8 @@ void sb_add_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
     wdata->top_index = ARRAY_SIZE(&wdata->entries);
   if (wdata->bot_index < 0)
     wdata->bot_index = ARRAY_SIZE(&wdata->entries);
-  if ((wdata->opn_index < 0) && Context &&
-      mutt_str_equal(m->realpath, Context->mailbox->realpath))
+  if ((wdata->opn_index < 0) && shared->mailbox &&
+      mutt_str_equal(m->realpath, shared->mailbox->realpath))
   {
     wdata->opn_index = ARRAY_SIZE(&wdata->entries);
   }

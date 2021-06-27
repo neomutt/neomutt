@@ -125,7 +125,9 @@ static struct MuttWindow *sb_win_init(struct MuttWindow *dlg)
   const bool c_sidebar_visible =
       cs_subset_bool(NeoMutt->sub, "sidebar_visible");
   win_sidebar->state.visible = c_sidebar_visible && (c_sidebar_width > 0);
-  win_sidebar->wdata = sb_wdata_new();
+
+  struct IndexSharedData *shared = dlg->wdata;
+  win_sidebar->wdata = sb_wdata_new(shared);
   win_sidebar->wdata_free = sb_wdata_free;
 
   calc_divider(win_sidebar->wdata);
