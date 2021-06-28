@@ -77,7 +77,7 @@ static int index_shared_account_observer(struct NotifyCallback *nc)
   if (ev_a->account != shared->account)
     return 0;
 
-  if (nc->event_subtype != NT_ACCOUNT_DELETE)
+  if (nc->event_subtype == NT_ACCOUNT_DELETE)
     shared->account = NULL;
 
   // Relay the message
