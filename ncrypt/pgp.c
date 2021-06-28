@@ -1081,7 +1081,13 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   }
 
   mutt_file_fclose(&fp_pgp_out);
+
   rv = filter_wait(pid);
+  const bool c_pgp_use_gpg_agent =
+      cs_subset_bool(NeoMutt->sub, "pgp_use_gpg_agent");
+  if (c_pgp_use_gpg_agent)
+    mutt_need_hard_redraw();
+
   mutt_file_unlink(mutt_buffer_string(pgptmpfile));
 
   fflush(fp_pgp_err);
@@ -1107,11 +1113,6 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
 
   fflush(fp_out);
   rewind(fp_out);
-
-  if (pgp_use_gpg_agent())
-  {
-    mutt_need_hard_redraw();
-  }
 
   if (fgetc(fp_out) == EOF)
   {
