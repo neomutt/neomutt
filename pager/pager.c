@@ -71,8 +71,7 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "index/lib.h"
-
-struct PagerPrivateData;
+#include "private_data.h"
 
 /**
  * config_pager_index_lines - React to changes to $pager_index_lines
@@ -119,6 +118,18 @@ static int config_pager_index_lines(struct MuttWindow *win)
 }
 
 /**
+ * pager_color_observer - Notification that a Color has changed - Implements ::observer_t
+ */
+static int pager_color_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_COLOR) || !nc->global_data || !nc->event_data)
+    return -1;
+
+  mutt_debug(LL_DEBUG5, "color done\n");
+  return 0;
+}
+
+/**
  * pager_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
  */
 static int pager_config_observer(struct NotifyCallback *nc)
@@ -139,14 +150,39 @@ static int pager_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * pager_color_observer - Notification that a Color has changed - Implements ::observer_t
+ * pager_index_observer - Notification that the Index has changed - Implements ::observer_t
  */
-static int pager_color_observer(struct NotifyCallback *nc)
+static int pager_index_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_COLOR) || !nc->global_data || !nc->event_data)
+  if ((nc->event_type != NT_INDEX) || !nc->global_data)
     return -1;
 
-  mutt_debug(LL_DEBUG5, "color done\n");
+  struct MuttWindow *win_pager = nc->global_data;
+  if (!win_pager)
+    return 0;
+
+  struct IndexSharedData *shared = nc->event_data;
+  if (!shared)
+    return 0;
+
+  struct PagerPrivateData *priv = win_pager->wdata;
+  if (!priv)
+    return 0;
+
+  if (nc->event_subtype & NT_INDEX_MAILBOX)
+  {
+    menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+    win_pager->actions |= WA_RECALC;
+    mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
+  }
+
+  if (nc->event_subtype & NT_INDEX_EMAIL)
+  {
+    menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+    win_pager->actions |= WA_RECALC;
+    mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
+  }
+
   return 0;
 }
 
@@ -184,10 +220,11 @@ static int pager_window_observer(struct NotifyCallback *nc)
 
   struct IndexSharedData *shared = dlg->wdata;
 
-  notify_observer_remove(NeoMutt->notify, pager_config_observer, win_pager);
-  notify_observer_remove(win_pager->notify, pager_window_observer, win_pager);
   notify_observer_remove(NeoMutt->notify, pager_color_observer, win_pager);
+  notify_observer_remove(NeoMutt->notify, pager_config_observer, win_pager);
+  notify_observer_remove(shared->notify, pager_index_observer, win_pager);
   notify_observer_remove(shared->notify, pager_pager_observer, win_pager);
+  notify_observer_remove(win_pager->notify, pager_window_observer, win_pager);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
 
@@ -209,10 +246,11 @@ struct MuttWindow *pager_window_new(struct MuttWindow *parent, struct IndexShare
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   win->wdata = priv;
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, pager_config_observer, win);
-  notify_observer_add(win->notify, NT_WINDOW, pager_window_observer, win);
   notify_observer_add(NeoMutt->notify, NT_COLOR, pager_color_observer, win);
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, pager_config_observer, win);
+  notify_observer_add(shared->notify, NT_INDEX, pager_index_observer, win);
   notify_observer_add(shared->notify, NT_PAGER, pager_pager_observer, win);
+  notify_observer_add(win->notify, NT_WINDOW, pager_window_observer, win);
 
   return win;
 }
