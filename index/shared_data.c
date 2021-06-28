@@ -201,10 +201,12 @@ void index_shared_data_set_context(struct IndexSharedData *shared, struct Contex
   }
 
   struct ConfigSubset *sub = NeoMutt->sub;
+#if 0
   if (m)
     sub = m->sub;
   else if (a)
     sub = a->sub;
+#endif
   if (shared->sub != sub)
   {
     shared->sub = sub;
