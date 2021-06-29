@@ -32,8 +32,6 @@
 #include "config/lib.h"
 #include "lib.h"
 
-#define DIRECTION ((neg * 2) + 1)
-
 /**
  * menu_length_jump - Calculate the destination of a jump
  * @param menu    Current Menu
@@ -57,21 +55,22 @@ static void menu_length_jump(struct Menu *menu, int jumplen)
 
   const int neg = (jumplen >= 0) ? 0 : -1;
   const int c = MIN(c_menu_context, (menu->pagelen / 2));
+  const int direction = ((neg * 2) + 1);
 
   /* possible to scroll? */
   int tmp;
   int index = menu->current;
-  if ((DIRECTION * menu->top) <
+  if ((direction * menu->top) <
       (tmp = (neg ? 0 : (menu->max /* -1 */) - (menu->pagelen /* -1 */))))
   {
     menu->top += jumplen;
 
     /* jumped too long? */
-    if ((neg || !c_menu_move_off) && ((DIRECTION * menu->top) > tmp))
+    if ((neg || !c_menu_move_off) && ((direction * menu->top) > tmp))
       menu->top = tmp;
 
     /* need to move the cursor? */
-    if ((DIRECTION *
+    if ((direction *
          (tmp = (menu->current - (menu->top + (neg ? (menu->pagelen - 1) - c : c))))) < 0)
     {
       index -= tmp;
