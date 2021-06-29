@@ -163,6 +163,7 @@ maillist.c
 main.c
 mbox/config.c
 mbox/mbox.c
+menu/config.c
 menu/draw.c
 menu/menu.c
 menu/move.c
@@ -189,6 +190,7 @@ mutt/notify.c
 mutt/path.c
 mutt/pool.c
 mutt/prex.c
+mutt/qsort_r.c
 mutt/random.c
 mutt/regex.c
 mutt/signal.c

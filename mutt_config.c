@@ -414,15 +414,6 @@ static struct ConfigDef MainVars[] = {
   { "mbox_type", DT_ENUM, MUTT_MBOX, IP &MboxTypeDef, NULL,
     "Default type for creating new mailboxes"
   },
-  { "menu_context", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
-    "Number of lines of overlap when changing pages in the index"
-  },
-  { "menu_move_off", DT_BOOL, true, 0, NULL,
-    "Allow the last menu item to move off the bottom of the screen"
-  },
-  { "menu_scroll", DT_BOOL, false, 0, NULL,
-    "Scroll the menu/index by one line, rather than a page"
-  },
   { "message_cache_clean", DT_BOOL, false, 0, NULL,
     "(imap/pop) Clean out obsolete entries from the message cache"
   },
@@ -769,6 +760,7 @@ static void init_variables(struct ConfigSet *cs)
 #endif
   CONFIG_INIT_VARS(cs, maildir);
   CONFIG_INIT_VARS(cs, mbox);
+  CONFIG_INIT_VARS(cs, menu);
   CONFIG_INIT_VARS(cs, ncrypt);
 #ifdef USE_NNTP
   CONFIG_INIT_VARS(cs, nntp);
