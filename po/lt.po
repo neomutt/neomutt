@@ -731,9 +731,8 @@ msgid "Can't set a variable with the '%s' command"
 msgstr "Negalima nustatyti kintamojo reikšmės su komanda '%s'"
 
 #: command_parse.c:795
-#, fuzzy
 msgid "Can't decrement a my_ variable"
-msgstr "Negalima naudoti prefikso nustatant kintamojo reikšmę"
+msgstr "Negalima sumažinti my_ kintamojo"
 
 #: command_parse.c:809
 msgid "Can't use prefix when setting a variable"
