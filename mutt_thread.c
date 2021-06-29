@@ -1096,15 +1096,17 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
 
   /* if $sort_aux or similar changed after the mailbox is sorted, then
    * all the subthreads need to be resorted */
-  assert(tctx->tree);
-  mutt_sort_subthreads(tctx, init || OptSortSubthreads);
-  OptSortSubthreads = false;
+  if (tctx->tree)
+  {
+    mutt_sort_subthreads(tctx, init || OptSortSubthreads);
+    OptSortSubthreads = false;
 
-  /* Put the list into an array. */
-  linearize_tree(tctx);
+    /* Put the list into an array. */
+    linearize_tree(tctx);
 
-  /* Draw the thread tree. */
-  mutt_draw_tree(tctx);
+    /* Draw the thread tree. */
+    mutt_draw_tree(tctx);
+  }
 }
 
 /**
