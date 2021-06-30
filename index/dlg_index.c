@@ -2429,6 +2429,33 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         change_folder_notmuch(priv->menu, buf, sizeof(buf), &priv->oldcount, shared, false);
         break;
       }
+
+      case OP_MAIN_WINDOWED_VFOLDER_RESET:
+      {
+        if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX))
+          break;
+        const short c_nm_query_window_duration =
+            cs_subset_number(shared->sub, "nm_query_window_duration");
+        const bool c_nm_query_window_enable =
+            cs_subset_bool(shared->sub, "nm_query_window_enable");
+        if (!c_nm_query_window_enable && (c_nm_query_window_duration <= 0))
+        {
+          mutt_message(_("Windowed queries disabled"));
+          break;
+        }
+        const char *const c_nm_query_window_current_search =
+            cs_subset_string(shared->sub, "nm_query_window_current_search");
+        if (!c_nm_query_window_current_search)
+        {
+          mutt_message(_("No notmuch vfolder currently loaded"));
+          break;
+        }
+        nm_query_window_reset();
+        char buf[PATH_MAX] = { 0 };
+        mutt_str_copy(buf, c_nm_query_window_current_search, sizeof(buf));
+        change_folder_notmuch(priv->menu, buf, sizeof(buf), &priv->oldcount, shared, false);
+        break;
+      }
 #endif
 
 #ifdef USE_SIDEBAR

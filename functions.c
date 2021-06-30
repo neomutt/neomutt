@@ -248,6 +248,7 @@ const struct Binding OpMain[] = { /* map: index */
   { "vfolder-from-query-readonly", OP_MAIN_VFOLDER_FROM_QUERY_READONLY, NULL },
   { "vfolder-window-backward",   OP_MAIN_WINDOWED_VFOLDER_BACKWARD, NULL },
   { "vfolder-window-forward",    OP_MAIN_WINDOWED_VFOLDER_FORWARD,  NULL },
+  { "vfolder-window-reset",      OP_MAIN_WINDOWED_VFOLDER_RESET,    NULL },
 #endif
   { "view-attachments",          OP_VIEW_ATTACHMENTS,               "v" },
   { "view-raw-message",          OP_VIEW_RAW_MESSAGE,               NULL },

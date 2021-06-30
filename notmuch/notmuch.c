@@ -1647,6 +1647,15 @@ void nm_query_window_backward(void)
 }
 
 /**
+ * nm_query_window_reset - Resets the vfolder window position to the present.
+ */
+void nm_query_window_reset(void)
+{
+  cs_subset_str_native_set(NeoMutt->sub, "nm_query_window_current_position", 0, NULL);
+  mutt_debug(LL_DEBUG2, "Reset nm_query_window_current_position to 0\n");
+}
+
+/**
  * nm_message_is_still_queried - Is a message still visible in the query?
  * @param m Mailbox
  * @param e Email
