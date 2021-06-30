@@ -194,16 +194,28 @@ if {1} {
     have-feature $name
   }
 
-  # Get the value of a macro by preprocessing a header file that defines it
-  proc check-define-value {incfile macro} {
+  proc check-define {incfile macro} {
+    set code {}
     if {$incfile ne {}} {
-      set code "#include \"$incfile\"\n$macro"
+      append code "#include \"$incfile\"\n"
     }
+    append code "#ifndef $macro\n#error \"$macro not defined\"\n#endif\n$macro"
     if {[catch {exec {*}[get-define CC] {*}[get-define CFLAGS] -xc - -E | tail -1 << $code} out]} {
-      user-notice $out
-      set out ""
+      error
     }
     set out
+  }
+
+  # Check whether a macro is defined after preprocessing a header file
+  proc has-define {incfile macro} {
+    expr {[catch {check-define $incfile $macro}] == 0}
+  }
+
+  # Get the value of a macro by preprocessing a header file that defines it
+  proc get-define-value {incfile macro} {
+    if {![catch {check-define $incfile $macro} out]} {
+      return $out
+    }
   }
 
   # Convert a string into a representation suitable for a C char[]
@@ -346,8 +358,8 @@ if {1} {
     wcscasecmp
 
   # The following systems have known-bad qsort_r with reversed arguments
-  if {[check-define-value sys/param.h __FreeBSD_version] eq {} &&
-      [check-define-value {} __APPLE__] eq {}} {
+  if {![has-define sys/param.h __FreeBSD_version] &&
+      ![has-define {} __APPLE__]} {
     cc-check-functions qsort_r
   }
 
@@ -966,8 +978,8 @@ if {[get-define want-bdb]} {
     }
 
     # Version is coherent?
-    set inc_maj [check-define-value $ver_inc_file DB_VERSION_MAJOR]
-    set inc_min [check-define-value $ver_inc_file DB_VERSION_MINOR]
+    set inc_maj [get-define-value $ver_inc_file DB_VERSION_MAJOR]
+    set inc_min [get-define-value $ver_inc_file DB_VERSION_MINOR]
     if {$inc_maj eq {}   || $inc_min eq {} ||
         $inc_maj != $maj || $inc_min != $min} {
       msg-result "no (expecting $maj.$min, got $inc_maj.$inc_min)"
