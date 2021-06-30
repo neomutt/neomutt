@@ -2380,11 +2380,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX))
           break;
-        const short c_nm_query_window_duration =
-            cs_subset_number(shared->sub, "nm_query_window_duration");
-        const bool c_nm_query_window_enable =
-            cs_subset_bool(shared->sub, "nm_query_window_enable");
-        if (!c_nm_query_window_enable && (c_nm_query_window_duration <= 0))
+        if (!nm_query_window_available())
         {
           mutt_message(_("Windowed queries disabled"));
           break;
@@ -2407,11 +2403,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX))
           break;
-        const short c_nm_query_window_duration =
-            cs_subset_number(shared->sub, "nm_query_window_duration");
-        const bool c_nm_query_window_enable =
-            cs_subset_bool(shared->sub, "nm_query_window_enable");
-        if (!c_nm_query_window_enable && (c_nm_query_window_duration <= 0))
+        if (!nm_query_window_available())
         {
           mutt_message(_("Windowed queries disabled"));
           break;
@@ -2434,11 +2426,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX))
           break;
-        const short c_nm_query_window_duration =
-            cs_subset_number(shared->sub, "nm_query_window_duration");
-        const bool c_nm_query_window_enable =
-            cs_subset_bool(shared->sub, "nm_query_window_enable");
-        if (!c_nm_query_window_enable && (c_nm_query_window_duration <= 0))
+        if (!nm_query_window_available())
         {
           mutt_message(_("Windowed queries disabled"));
           break;

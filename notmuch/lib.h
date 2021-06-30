@@ -58,6 +58,7 @@ char *nm_email_get_folder_rel_db (struct Mailbox *m, struct Email *e);
 int   nm_get_all_tags            (struct Mailbox *m, char **tag_list, int *tag_count);
 bool  nm_message_is_still_queried(struct Mailbox *m, struct Email *e);
 enum MailboxType nm_path_probe   (const char *path, const struct stat *st);
+bool  nm_query_window_available  (void);
 void  nm_query_window_backward   (void);
 void  nm_query_window_forward    (void);
 void  nm_query_window_reset      (void);
