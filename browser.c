@@ -1199,6 +1199,47 @@ static int create_mailbox(struct BrowserState *state, struct Mailbox *m_current)
   return 1;
 }
 
+/*
+ * get_selected_dir - Get the (expanded) directory currently selected in the
+ * browser
+ * @param state Current browser state
+ * @param ff Representation of the currently highlighted entry
+ * @param last_dir The previous directory
+ * @param[out] buf Buffer to store the path in
+ * @retval 0 Success
+ * @retval -1 Highlighted entry is not a directory
+ * */
+int get_selected_dir(const struct BrowserState *state, const struct FolderFile *ff,
+                     const struct Buffer *last_dir, struct Buffer *buf)
+{
+  if (S_ISDIR(ff->mode) ||
+      (S_ISLNK(ff->mode) && link_is_dir(mutt_buffer_string(last_dir), ff->name))
+#ifdef USE_IMAP
+      || ff->inferiors
+#endif
+  )
+  {
+    if (state->is_mailbox_list)
+    {
+      mutt_buffer_strcpy(buf, ff->name);
+      mutt_buffer_expand_path(buf);
+    }
+#ifdef USE_IMAP
+    else if (state->imap_browse)
+    {
+      mutt_buffer_strcpy(buf, ff->name);
+    }
+#endif
+    else
+    {
+      mutt_buffer_concat_path(buf, mutt_buffer_string(last_dir), ff->name);
+    }
+    return 0;
+  }
+  else
+    return -1;
+}
+
 /**
  * mutt_browser_select_dir - Remember the last directory selected
  * @param f Directory name to save
@@ -1490,30 +1531,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           break;
         }
 
-        if (S_ISDIR(ff->mode) ||
-            (S_ISLNK(ff->mode) && link_is_dir(mutt_buffer_string(&LastDir), ff->name))
-#ifdef USE_IMAP
-            || ff->inferiors
-#endif
-        )
+        if (get_selected_dir(&state, ff, &LastDir, buf) == 0)
         {
-          /* make sure this isn't a MH or maildir mailbox */
-          if (state.is_mailbox_list)
-          {
-            mutt_buffer_strcpy(buf, ff->name);
-            mutt_buffer_expand_path(buf);
-          }
-#ifdef USE_IMAP
-          else if (state.imap_browse)
-          {
-            mutt_buffer_strcpy(buf, ff->name);
-          }
-#endif
-          else
-          {
-            mutt_buffer_concat_path(buf, mutt_buffer_string(&LastDir), ff->name);
-          }
-
           enum MailboxType type = mx_path_probe(mutt_buffer_string(buf));
           if ((op == OP_DESCEND_DIRECTORY) || (type == MUTT_MAILBOX_ERROR) ||
               (type == MUTT_UNKNOWN)
