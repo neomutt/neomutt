@@ -1704,7 +1704,12 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
       case OP_CREATE_MAILBOX:
       {
-        if (create_mailbox(&state, mailbox_find(CurrentFolder)))
+        if (get_selected_dir(&state, ff, &LastDir, buf) == -1)
+        {
+          mutt_error(_("%s isn't a directory"), ff->name);
+          break;
+        }
+        if (create_mailbox(&state, mailbox_find(mutt_buffer_string(buf))))
         {
           /* TODO: find a way to detect if the new folder would appear in
            *   this window, and insert it without starting over. */
