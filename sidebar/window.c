@@ -42,9 +42,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "index/lib.h"
-#include "context.h"
 #include "format_flags.h"
-#include "mutt_globals.h"
 #include "muttlib.h"
 
 /**

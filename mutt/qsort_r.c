@@ -28,14 +28,13 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <assert.h>
 #include <stdlib.h>
-#include <sys/types.h>
 #include "qsort_r.h"
 
 typedef int (*qsort_compar_t)(const void *a, const void *b);
 
 #if !defined(HAVE_QSORT_S) && !defined(HAVE_QSORT_R)
+#include <assert.h>
 /// Original comparator in fallback implementation
 static qsort_r_compar_t global_compar = NULL;
 /// Original opaque data in fallback implementation

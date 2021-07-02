@@ -75,6 +75,9 @@
 #include "protos.h"
 #include "query.h"
 #include "tag.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 struct stat;
 

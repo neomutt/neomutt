@@ -58,7 +58,6 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
-#include "rootwin.h"
 #ifdef HAVE_ISWBLANK
 #include <wctype.h>
 #endif

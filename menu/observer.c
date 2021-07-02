@@ -27,14 +27,11 @@
  */
 
 #include "config.h"
-#include <stdbool.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "menu/lib.h"
-#include "options.h"
-#include "type.h"
 
 /**
  * menu_color_observer - Notification that a Color has changed - Implements ::observer_t

@@ -32,6 +32,8 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 
+struct IndexSharedData;
+
 /**
  * sb_wdata_new - Create new Window data for the Sidebar
  * @retval ptr New Window data

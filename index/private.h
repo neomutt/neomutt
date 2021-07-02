@@ -27,7 +27,6 @@
 
 struct IndexPrivateData;
 struct IndexSharedData;
-struct MuttWindow;
 
 struct MuttWindow *index_window_new(struct IndexSharedData *shared, struct IndexPrivateData *priv);
 struct MuttWindow *ipanel_new(bool status_on_top, struct IndexSharedData *shared);

@@ -61,7 +61,6 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "sort.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

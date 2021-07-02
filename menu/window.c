@@ -28,6 +28,7 @@
 
 #include "config.h"
 #include "private.h"
+#include "mutt/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
 #include "type.h"

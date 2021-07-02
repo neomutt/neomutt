@@ -26,11 +26,11 @@
 
 #include <stdbool.h>
 #include <sys/types.h>
-#include "config/lib.h"
 #include "core/lib.h"
 #include "options.h" // IWYU pragma: keep
 
 struct Address;
+struct Email;
 struct ThreadsContext;
 
 /**

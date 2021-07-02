@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 
+struct IndexSharedData;
 struct MuttWindow;
 
 /**

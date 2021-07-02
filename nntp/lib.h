@@ -49,6 +49,7 @@
 #include "format_flags.h"
 
 struct ConnAccount;
+struct Email;
 struct NntpAccountData;
 struct stat;
 

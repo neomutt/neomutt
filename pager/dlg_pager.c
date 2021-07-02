@@ -69,7 +69,6 @@
 #include "mx.h"
 #include "opcodes.h"
 #include "options.h"
-#include "pbar.h"
 #include "private_data.h"
 #include "protos.h"
 #include "recvattach.h"

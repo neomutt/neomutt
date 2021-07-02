@@ -40,6 +40,10 @@
 #include "env_data.h"
 #include "options.h"
 #include "shared_data.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
+
 
 /// Maximum number of rows to use for the To:, Cc:, Bcc: fields
 #define MAX_ADDR_ROWS 5

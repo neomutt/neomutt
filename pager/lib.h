@@ -43,10 +43,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <sys/stat.h>
-#include "mutt/lib.h"
 
+struct Buffer;
 struct IndexSharedData;
+struct MuttWindow;
 struct PagerPrivateData;
 
 typedef uint16_t PagerFlags;              ///< Flags for mutt_pager(), e.g. #MUTT_SHOWFLAT

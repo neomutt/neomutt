@@ -27,63 +27,17 @@
  */
 
 #include "config.h"
-#include <assert.h>
-#include <ctype.h>
-#include <errno.h>
 #include <inttypes.h> // IWYU pragma: keep
-#include <limits.h>
 #include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <wchar.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
-#include "alias/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "lib.h"
-#include "menu/lib.h"
-#include "ncrypt/lib.h"
-#include "pager/lib.h"
-#include "question/lib.h"
-#include "send/lib.h"
-#include "commands.h"
-#include "context.h"
-#include "format_flags.h"
-#include "hdrline.h"
-#include "hook.h"
-#include "keymap.h"
-#include "mutt_attach.h"
-#include "mutt_globals.h"
-#include "mutt_header.h"
-#include "mutt_logging.h"
-#include "mutt_mailbox.h"
-#include "muttlib.h"
-#include "mx.h"
-#include "opcodes.h"
-#include "options.h"
 #include "pbar.h"
 #include "private_data.h"
-#include "protos.h"
-#include "recvattach.h"
-#include "recvcmd.h"
-#include "status.h"
-#ifdef USE_SIDEBAR
-#include "sidebar/lib.h"
-#endif
-#ifdef USE_NNTP
-#include "nntp/lib.h"
-#include "nntp/mdata.h" // IWYU pragma: keep
-#endif
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
+
+struct IndexSharedData;
 
 /**
  * ppanel_config_observer - Notification that a Config Variable has changed - Implements ::observer_t

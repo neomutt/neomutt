@@ -27,8 +27,7 @@
  */
 
 #include "config.h"
-#include <stdlib.h>
-#include <string.h>
+#include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "gui/lib.h"

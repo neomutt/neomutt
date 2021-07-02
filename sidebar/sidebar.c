@@ -39,9 +39,7 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "index/lib.h"
-#include "context.h"
 #include "mutt_commands.h"
-#include "mutt_globals.h"
 
 struct ListHead SidebarWhitelist = STAILQ_HEAD_INITIALIZER(SidebarWhitelist); ///< List of mailboxes to always display in the sidebar
 
