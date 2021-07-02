@@ -16040,6 +16040,14 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                   backward
                 </entry>
               </row>
+              <row>
+                <entry>index</entry>
+                <entry><literal>&lt;vfolder-window-reset&gt;</literal></entry>
+                <entry>
+                  generate virtual folder by moving the query's time window to
+                  the present
+                </entry>
+              </row>
             </tbody>
           </tgroup>
         </table>

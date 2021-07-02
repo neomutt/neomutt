@@ -2377,41 +2377,13 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       }
 
       case OP_MAIN_WINDOWED_VFOLDER_BACKWARD:
-      {
-        if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX))
-          break;
-        const short c_nm_query_window_duration =
-            cs_subset_number(shared->sub, "nm_query_window_duration");
-        const bool c_nm_query_window_enable =
-            cs_subset_bool(shared->sub, "nm_query_window_enable");
-        if (!c_nm_query_window_enable && (c_nm_query_window_duration <= 0))
-        {
-          mutt_message(_("Windowed queries disabled"));
-          break;
-        }
-        const char *const c_nm_query_window_current_search =
-            cs_subset_string(shared->sub, "nm_query_window_current_search");
-        if (!c_nm_query_window_current_search)
-        {
-          mutt_message(_("No notmuch vfolder currently loaded"));
-          break;
-        }
-        nm_query_window_backward();
-        char buf[PATH_MAX] = { 0 };
-        mutt_str_copy(buf, c_nm_query_window_current_search, sizeof(buf));
-        change_folder_notmuch(priv->menu, buf, sizeof(buf), &priv->oldcount, shared, false);
-        break;
-      }
-
       case OP_MAIN_WINDOWED_VFOLDER_FORWARD:
+      case OP_MAIN_WINDOWED_VFOLDER_RESET:
       {
+        // Common guard clauses.
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX))
           break;
-        const short c_nm_query_window_duration =
-            cs_subset_number(shared->sub, "nm_query_window_duration");
-        const bool c_nm_query_window_enable =
-            cs_subset_bool(shared->sub, "nm_query_window_enable");
-        if (!c_nm_query_window_enable && (c_nm_query_window_duration <= 0))
+        if (!nm_query_window_available())
         {
           mutt_message(_("Windowed queries disabled"));
           break;
@@ -2423,7 +2395,22 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           mutt_message(_("No notmuch vfolder currently loaded"));
           break;
         }
-        nm_query_window_forward();
+
+        // Call the specific operation.
+        switch (op)
+        {
+          case OP_MAIN_WINDOWED_VFOLDER_BACKWARD:
+            nm_query_window_backward();
+            break;
+          case OP_MAIN_WINDOWED_VFOLDER_FORWARD:
+            nm_query_window_forward();
+            break;
+          case OP_MAIN_WINDOWED_VFOLDER_RESET:
+            nm_query_window_reset();
+            break;
+        }
+
+        // Common query window folder change.
         char buf[PATH_MAX] = { 0 };
         mutt_str_copy(buf, c_nm_query_window_current_search, sizeof(buf));
         change_folder_notmuch(priv->menu, buf, sizeof(buf), &priv->oldcount, shared, false);

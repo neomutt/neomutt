@@ -291,7 +291,8 @@
   _fmt(OP_MAIN_VFOLDER_FROM_QUERY,        N_("generate virtual folder from query")) \
   _fmt(OP_MAIN_VFOLDER_FROM_QUERY_READONLY, N_("generate a read-only virtual folder from query")) \
   _fmt(OP_MAIN_WINDOWED_VFOLDER_BACKWARD, N_("shifts virtual folder time window backwards")) \
-  _fmt(OP_MAIN_WINDOWED_VFOLDER_FORWARD,  N_("shifts virtual folder time window forwards"))
+  _fmt(OP_MAIN_WINDOWED_VFOLDER_FORWARD,  N_("shifts virtual folder time window forwards")) \
+  _fmt(OP_MAIN_WINDOWED_VFOLDER_RESET,    N_("resets virtual folder time window to the present"))
 #else
 #define OPS_NOTMUCH(_)
 #endif

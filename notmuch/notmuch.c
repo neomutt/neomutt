@@ -1608,6 +1608,20 @@ char *nm_url_from_query(struct Mailbox *m, char *buf, size_t buflen)
 }
 
 /**
+ * nm_query_window_available - Are windowed queries enabled for use?
+ * @retval true Windowed queries in use
+ */
+bool nm_query_window_available(void)
+{
+  const short c_nm_query_window_duration =
+      cs_subset_number(NeoMutt->sub, "nm_query_window_duration");
+  const bool c_nm_query_window_enable =
+      cs_subset_bool(NeoMutt->sub, "nm_query_window_enable");
+
+  return c_nm_query_window_enable || (c_nm_query_window_duration > 0);
+}
+
+/**
  * nm_query_window_forward - Function to move the current search window forward in time
  *
  * Updates `nm_query_window_current_position` by decrementing it by 1, or does nothing
@@ -1644,6 +1658,15 @@ void nm_query_window_backward(void)
   cs_subset_str_native_set(NeoMutt->sub, "nm_query_window_current_position",
                            c_nm_query_window_current_position + 1, NULL);
   mutt_debug(LL_DEBUG2, "(%d)\n", c_nm_query_window_current_position + 1);
+}
+
+/**
+ * nm_query_window_reset - Resets the vfolder window position to the present.
+ */
+void nm_query_window_reset(void)
+{
+  cs_subset_str_native_set(NeoMutt->sub, "nm_query_window_current_position", 0, NULL);
+  mutt_debug(LL_DEBUG2, "Reset nm_query_window_current_position to 0\n");
 }
 
 /**
