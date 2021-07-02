@@ -1061,7 +1061,7 @@ msgstr "Декомпресија %s"
 
 #: compmbox/compress.c:467
 msgid "Can't identify the contents of the compressed file"
-msgstr "Не може се идентификовати садежај компресоване датотеке"
+msgstr "Не може се идентификовати садржај компресоване датотеке"
 
 #: compmbox/compress.c:474 compmbox/compress.c:548
 #, c-format
