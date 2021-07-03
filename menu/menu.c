@@ -635,7 +635,7 @@ bool menu_set_index(struct Menu *menu, int index)
  * @param menu  Menu
  * @param redraw Item to redraw, e.g. #MENU_REDRAW_CURRENT
  */
-void menu_queue_redraw(struct Menu *menu, MuttRedrawFlags redraw)
+void menu_queue_redraw(struct Menu *menu, MenuRedrawFlags redraw)
 {
   if (!menu)
     return;

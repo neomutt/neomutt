@@ -23,7 +23,29 @@
 /**
  * @page menu_move Change the Menu's position/selection
  *
- * Change the Menu's position/selection
+ * There are two types of movement function:
+ *
+ * - Those that change the selection:
+ *   - menu_top_page()
+ *   - menu_middle_page()
+ *   - menu_bottom_page()
+ *   - menu_prev_entry()
+ *   - menu_next_entry()
+ *   - menu_first_entry()
+ *   - menu_last_entry()
+ *
+ * - Those that change the view:
+ *   - menu_current_top()
+ *   - menu_current_middle()
+ *   - menu_current_bottom()
+ *   - menu_half_up()
+ *   - menu_half_down()
+ *   - menu_prev_line()
+ *   - menu_next_line()
+ *   - menu_prev_page()
+ *   - menu_next_page()
+ *
+ * Changing the selection may cause the view to move and vice versa.
  */
 
 #include "config.h"

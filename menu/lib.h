@@ -47,7 +47,7 @@
 
 struct ConfigSubset;
 
-typedef uint8_t MuttRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX
+typedef uint8_t MenuRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX
 #define MENU_REDRAW_NO_FLAGS        0  ///< No flags are set
 #define MENU_REDRAW_INDEX     (1 << 0) ///< Redraw the index
 #define MENU_REDRAW_MOTION    (1 << 1) ///< Redraw after moving the menu list
@@ -65,7 +65,7 @@ struct Menu
   const char *title;      ///< Title of this menu
   int current;            ///< Current entry
   int max;                ///< Number of entries in the menu
-  MuttRedrawFlags redraw; ///< When to redraw the screen
+  MenuRedrawFlags redraw; ///< When to redraw the screen
   enum MenuType type;     ///< Menu definition for keymap entries
   int pagelen;            ///< Number of entries per screen
   bool tagprefix : 1;
@@ -184,6 +184,6 @@ struct MuttWindow *menu_new_window(enum MenuType type, struct ConfigSubset *sub)
 
 int  menu_get_index(struct Menu *menu);
 bool menu_set_index(struct Menu *menu, int index);
-void menu_queue_redraw(struct Menu *menu, MuttRedrawFlags redraw);
+void menu_queue_redraw(struct Menu *menu, MenuRedrawFlags redraw);
 
 #endif /* MUTT_MENU_LIB_H */
