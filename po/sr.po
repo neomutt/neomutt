@@ -662,9 +662,9 @@ msgstr "source: читање прекинуто због превише греш
 #, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
-msgstr[0] "source: %d грешка у %s"
-msgstr[1] "source: %d грешке у %s"
-msgstr[2] "source: %d грешака у %s"
+msgstr[0] "source: %d упозорење у %s"
+msgstr[1] "source: %d упозорења у %s"
+msgstr[2] "source: %d упозорења у %s"
 
 #: command_parse.c:298 command_parse.c:320 command_parse.c:465
 #: command_parse.c:1053 command_parse.c:1137 gui/color.c:736 gui/color.c:899
