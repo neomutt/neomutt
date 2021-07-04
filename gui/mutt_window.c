@@ -80,7 +80,7 @@ static const struct Mapping WindowNames[] = {
  * @retval true The Window was visible
  *
  * Using the `WindowState old`, check if a Window used to be visible.
- * For a Window to be visible, *it* must have been visible and it's parent and
+ * For a Window to be visible, *it* must have been visible and its parent and
  * grandparent, etc.
  */
 static bool window_was_visible(struct MuttWindow *win)
@@ -523,7 +523,7 @@ void mutt_winlist_free(struct MuttWindowList *head)
  * @param win Window
  * @retval true The Window is visible
  *
- * For a Window to be visible, *it* must be visible and it's parent and
+ * For a Window to be visible, *it* must be visible and its parent and
  * grandparent, etc.
  */
 bool mutt_window_is_visible(struct MuttWindow *win)

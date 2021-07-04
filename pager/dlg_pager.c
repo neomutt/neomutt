@@ -1275,7 +1275,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
  */
 static bool is_ansi(const char *str)
 {
-  while (*str && (isdigit(*str) || *str == ';'))
+  while (*str && (isdigit(*str) || (*str == ';')))
     str++;
   return (*str == 'm');
 }
@@ -2021,9 +2021,9 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
   //
   // Additionally, while refactoring is still in progress the following checks
   // are still here to ensure data model consistency.
-  assert(priv);        // Redraw function can't be called without it's data.
+  assert(priv);        // Redraw function can't be called without its data.
   assert(priv->pview); // Redraw data can't exist separately without the view.
-  assert(priv->pview->pdata); // View can't exist without it's data
+  assert(priv->pview->pdata); // View can't exist without its data
   //---------------------------------------------------------------------------
 
   char buf[1024] = { 0 };
@@ -2457,7 +2457,7 @@ int mutt_pager(struct PagerView *pview)
     }
     else
     {
-      delay_read_timestamp = mutt_date_epoch_ms() + 1000 * c_pager_read_delay;
+      delay_read_timestamp = mutt_date_epoch_ms() + (1000 * c_pager_read_delay);
     }
   }
   //---------- setup help menu ------------------------------------------------
@@ -2703,7 +2703,7 @@ int mutt_pager(struct PagerView *pview)
     // OP codes inserted into the MacroBuffer by various functions.
     // One of such functions is `mutt_enter_command()`
     // Some OP codes are not handled by pager, they cause pager to quit returning
-    // OP code to index. Index hadles the operation and then restarts pager
+    // OP code to index. Index handles the operation and then restarts pager
     op = km_dokey(MENU_PAGER);
 
     if (op >= 0)
@@ -3914,7 +3914,7 @@ int mutt_pager(struct PagerView *pview)
 
         if (pview->pdata->email->read || pview->pdata->email->old)
           mutt_set_flag(m, pview->pdata->email, MUTT_NEW, true);
-        else if (!first || delay_read_timestamp != 0)
+        else if (!first || (delay_read_timestamp != 0))
           mutt_set_flag(m, pview->pdata->email, MUTT_READ, true);
         delay_read_timestamp = 0;
         first = false;
