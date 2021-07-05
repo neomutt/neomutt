@@ -235,21 +235,6 @@ static int pbar_pager_observer(struct NotifyCallback *nc)
 }
 
 /**
- * pbar_menu_observer - Notification that a Menu has changed - Implements ::observer_t
- */
-static int pbar_menu_observer(struct NotifyCallback *nc)
-{
-  if ((nc->event_type != NT_MENU) || !nc->global_data)
-    return -1;
-
-  struct MuttWindow *win_pbar = nc->global_data;
-  win_pbar->actions |= WA_RECALC;
-  mutt_debug(LL_DEBUG5, "menu done, request WA_RECALC\n");
-
-  return 0;
-}
-
-/**
  * pbar_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 static int pbar_window_observer(struct NotifyCallback *nc)
@@ -276,7 +261,6 @@ static int pbar_window_observer(struct NotifyCallback *nc)
     notify_observer_remove(NeoMutt->notify, pbar_config_observer, win_pbar);
     notify_observer_remove(shared->notify, pbar_index_observer, win_pbar);
     notify_observer_remove(shared->notify, pbar_pager_observer, win_pbar);
-    notify_observer_remove(win_pbar->parent->notify, pbar_menu_observer, win_pbar);
     notify_observer_remove(win_pbar->notify, pbar_window_observer, win_pbar);
 
     mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -334,7 +318,6 @@ struct MuttWindow *pbar_new(struct MuttWindow *parent, struct IndexSharedData *s
   notify_observer_add(NeoMutt->notify, NT_CONFIG, pbar_config_observer, win_pbar);
   notify_observer_add(shared->notify, NT_INDEX, pbar_index_observer, win_pbar);
   notify_observer_add(shared->notify, NT_PAGER, pbar_pager_observer, win_pbar);
-  notify_observer_add(parent->notify, NT_MENU, pbar_menu_observer, win_pbar);
   notify_observer_add(win_pbar->notify, NT_WINDOW, pbar_window_observer, win_pbar);
 
   return win_pbar;

@@ -119,7 +119,7 @@ int mutt_do_pager(struct PagerView *pview)
   pview->win_ibar = NULL;
   pview->win_index = NULL;
   pview->win_pbar = window_find_child(panel_pager, WT_STATUS_BAR);
-  pview->win_pager = window_find_child(panel_pager, WT_MENU);
+  pview->win_pager = window_find_child(panel_pager, WT_CUSTOM);
 
   int rc;
 

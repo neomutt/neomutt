@@ -536,6 +536,9 @@ enum MenuType menu_get_current_type(void)
   if (!win)
     return MENU_GENERIC;
 
+  if ((win->type == WT_CUSTOM) && (win->parent->type == WT_PAGER))
+    return MENU_PAGER;
+
   if (win->type != WT_MENU)
     return MENU_GENERIC;
 

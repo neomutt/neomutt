@@ -35,8 +35,8 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "index/lib.h"
-#include "menu/lib.h"
-#include "private_data.h"
+
+struct PagerPrivateData;
 
 /**
  * config_pager_index_lines - React to changes to $pager_index_lines
@@ -130,18 +130,6 @@ static int pager_pager_observer(struct NotifyCallback *nc)
 }
 
 /**
- * pager_menu_observer - Notification that a Menu has changed - Implements ::observer_t
- */
-static int pager_menu_observer(struct NotifyCallback *nc)
-{
-  if ((nc->event_type != NT_MENU) || !nc->global_data || !nc->event_data)
-    return -1;
-
-  mutt_debug(LL_DEBUG5, "menu done\n");
-  return 0;
-}
-
-/**
  * pager_window_observer - Notification that a Window has changed - Implements ::observer_t
  */
 static int pager_window_observer(struct NotifyCallback *nc)
@@ -157,7 +145,6 @@ static int pager_window_observer(struct NotifyCallback *nc)
   if (ev_w->win != win_pager)
     return 0;
 
-  struct MuttWindow *parent = win_pager->parent;
   struct MuttWindow *dlg = window_find_parent(win_pager, WT_DLG_INDEX);
   if (!dlg)
     dlg = window_find_parent(win_pager, WT_DLG_DO_PAGER);
@@ -168,7 +155,6 @@ static int pager_window_observer(struct NotifyCallback *nc)
   notify_observer_remove(win_pager->notify, pager_window_observer, win_pager);
   notify_observer_remove(NeoMutt->notify, pager_color_observer, win_pager);
   notify_observer_remove(shared->notify, pager_pager_observer, win_pager);
-  notify_observer_remove(parent->notify, pager_menu_observer, win_pager);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
 
@@ -185,17 +171,15 @@ static int pager_window_observer(struct NotifyCallback *nc)
 struct MuttWindow *pager_window_new(struct MuttWindow *parent, struct IndexSharedData *shared,
                                     struct PagerPrivateData *priv)
 {
-  struct MuttWindow *win = menu_new_window(MENU_PAGER, NeoMutt->sub);
-
-  struct Menu *menu = win->wdata;
-  menu->mdata = priv;
-  priv->menu = menu;
+  struct MuttWindow *win =
+      mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  win->wdata = priv;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, pager_config_observer, win);
   notify_observer_add(win->notify, NT_WINDOW, pager_window_observer, win);
   notify_observer_add(NeoMutt->notify, NT_COLOR, pager_color_observer, win);
   notify_observer_add(shared->notify, NT_PAGER, pager_pager_observer, win);
-  notify_observer_add(parent->notify, NT_MENU, pager_menu_observer, win);
 
   return win;
 }

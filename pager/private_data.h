@@ -29,6 +29,7 @@
 #include <sys/stat.h>
 #include "mutt/lib.h"
 #include "lib.h"
+#include "menu/lib.h"
 
 struct MuttWindow;
 
@@ -64,6 +65,8 @@ struct PagerPrivateData
   struct Line *line_info;
   FILE *fp;
   struct stat sb;
+
+  MenuRedrawFlags redraw; ///< When to redraw the screen
 };
 
 void                     pager_private_data_free(struct MuttWindow *win, void **ptr);
