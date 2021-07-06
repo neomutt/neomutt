@@ -56,67 +56,6 @@
 #include "lib.h"
 
 /**
- * menu_length_jump - Calculate the destination of a jump
- * @param menu    Current Menu
- * @param jumplen Number of lines to jump
- *
- * * pageup:   jumplen == -pagelen
- * * pagedown: jumplen == pagelen
- * * halfup:   jumplen == -pagelen/2
- * * halfdown: jumplen == pagelen/2
- */
-static void menu_length_jump(struct Menu *menu, int jumplen)
-{
-  if (menu->max == 0)
-  {
-    mutt_error(_("No entries"));
-    return;
-  }
-
-  const short c_menu_context = cs_subset_number(menu->sub, "menu_context");
-  const bool c_menu_move_off = cs_subset_bool(menu->sub, "menu_move_off");
-
-  const int neg = (jumplen >= 0) ? 0 : -1;
-  const int c = MIN(c_menu_context, (menu->pagelen / 2));
-  const int direction = ((neg * 2) + 1);
-
-  /* possible to scroll? */
-  int tmp;
-  int index = menu->current;
-  if ((direction * menu->top) <
-      (tmp = (neg ? 0 : (menu->max /* -1 */) - (menu->pagelen /* -1 */))))
-  {
-    menu->top += jumplen;
-
-    /* jumped too long? */
-    if ((neg || !c_menu_move_off) && ((direction * menu->top) > tmp))
-      menu->top = tmp;
-
-    /* need to move the cursor? */
-    if ((direction *
-         (tmp = (menu->current - (menu->top + (neg ? (menu->pagelen - 1) - c : c))))) < 0)
-    {
-      index -= tmp;
-    }
-
-    menu->redraw = MENU_REDRAW_INDEX;
-  }
-  else if ((menu->current != (neg ? 0 : menu->max - 1)) && ARRAY_EMPTY(&menu->dialog))
-  {
-    index += jumplen;
-  }
-  else
-  {
-    mutt_message(neg ? _("You are on the first page") : _("You are on the last page"));
-  }
-
-  // Range check
-  index = MIN(index, menu->max - 1);
-  index = MAX(index, 0);
-  menu_set_index(menu, index);
-}
-
-/**
  * menu_set_and_notify - Set the Menu selection/view and notify others
  * @param menu  Menu
  * @param top   Index of item at the top of the view
@@ -380,10 +319,7 @@ void menu_adjust(struct Menu *menu)
  */
 void menu_top_page(struct Menu *menu)
 {
-  if (menu->current == menu->top)
-    return;
-
-  menu_set_index(menu, menu->top);
+  menu_move_selection(menu, menu->top);
 }
 
 /**
@@ -402,7 +338,7 @@ void menu_middle_page(struct Menu *menu)
   if (i > (menu->max - 1))
     i = menu->max - 1;
 
-  menu_set_index(menu, menu->top + (i - menu->top) / 2);
+  menu_move_selection(menu, menu->top + (i - menu->top) / 2);
 }
 
 /**
@@ -420,7 +356,7 @@ void menu_bottom_page(struct Menu *menu)
   int index = menu->top + menu->pagelen - 1;
   if (index > (menu->max - 1))
     index = menu->max - 1;
-  menu_set_index(menu, index);
+  menu_move_selection(menu, index);
 }
 
 /**
@@ -429,12 +365,13 @@ void menu_bottom_page(struct Menu *menu)
  */
 void menu_prev_entry(struct Menu *menu)
 {
-  if (menu->current)
+  if (menu->current > 0)
   {
-    menu_set_index(menu, menu->current - 1);
+    menu_move_selection(menu, menu->current - 1);
+    return;
   }
-  else
-    mutt_message(_("You are on the first entry"));
+
+  mutt_message(_("You are on the first entry"));
 }
 
 /**
@@ -445,10 +382,11 @@ void menu_next_entry(struct Menu *menu)
 {
   if (menu->current < (menu->max - 1))
   {
-    menu_set_index(menu, menu->current + 1);
+    menu_move_selection(menu, menu->current + 1);
+    return;
   }
-  else
-    mutt_message(_("You are on the last entry"));
+
+  mutt_message(_("You are on the last entry"));
 }
 
 /**
@@ -463,7 +401,7 @@ void menu_first_entry(struct Menu *menu)
     return;
   }
 
-  menu_set_index(menu, 0);
+  menu_move_selection(menu, 0);
 }
 
 /**
@@ -478,7 +416,7 @@ void menu_last_entry(struct Menu *menu)
     return;
   }
 
-  menu_set_index(menu, menu->max - 1);
+  menu_move_selection(menu, menu->max - 1);
 }
 
 // These functions move the view (and may cause the selection to move)
@@ -494,8 +432,12 @@ void menu_current_top(struct Menu *menu)
     return;
   }
 
-  menu->top = menu->current;
-  menu->redraw = MENU_REDRAW_INDEX;
+  short context = cs_subset_number(menu->sub, "menu_context");
+  if (context > (menu->pagelen / 2))
+    return;
+
+  context = MIN(context, (menu->pagelen / 2));
+  menu_move_view_relative(menu, menu->current - menu->top - context);
 }
 
 /**
@@ -510,10 +452,11 @@ void menu_current_middle(struct Menu *menu)
     return;
   }
 
-  menu->top = menu->current - (menu->pagelen / 2);
-  if (menu->top < 0)
-    menu->top = 0;
-  menu->redraw = MENU_REDRAW_INDEX;
+  short context = cs_subset_number(menu->sub, "menu_context");
+  if (context > (menu->pagelen / 2))
+    return;
+
+  menu_move_view_relative(menu, menu->current - (menu->top + (menu->pagelen / 2)));
 }
 
 /**
@@ -528,10 +471,12 @@ void menu_current_bottom(struct Menu *menu)
     return;
   }
 
-  menu->top = menu->current - menu->pagelen + 1;
-  if (menu->top < 0)
-    menu->top = 0;
-  menu->redraw = MENU_REDRAW_INDEX;
+  short context = cs_subset_number(menu->sub, "menu_context");
+  if (context > (menu->pagelen / 2))
+    return;
+
+  context = MIN(context, (menu->pagelen / 2));
+  menu_move_view_relative(menu, 0 - (menu->top + menu->pagelen - 1 - menu->current - context));
 }
 
 /**
@@ -540,7 +485,7 @@ void menu_current_bottom(struct Menu *menu)
  */
 void menu_half_up(struct Menu *menu)
 {
-  menu_length_jump(menu, 0 - (menu->pagelen / 2));
+  menu_move_view_relative(menu, 0 - (menu->pagelen / 2));
 }
 
 /**
@@ -549,7 +494,7 @@ void menu_half_up(struct Menu *menu)
  */
 void menu_half_down(struct Menu *menu)
 {
-  menu_length_jump(menu, (menu->pagelen / 2));
+  menu_move_view_relative(menu, (menu->pagelen / 2));
 }
 
 /**
@@ -558,19 +503,9 @@ void menu_half_down(struct Menu *menu)
  */
 void menu_prev_line(struct Menu *menu)
 {
-  if (menu->top < 1)
-  {
+  MenuRedrawFlags flags = menu_move_view_relative(menu, -1);
+  if (flags == MENU_REDRAW_NO_FLAGS)
     mutt_message(_("You can't scroll up farther"));
-    return;
-  }
-
-  const short c_menu_context = cs_subset_number(menu->sub, "menu_context");
-  int c = MIN(c_menu_context, (menu->pagelen / 2));
-
-  menu->top--;
-  if ((menu->current >= (menu->top + menu->pagelen - c)) && (menu->current > 1))
-    menu_set_index(menu, menu->current - 1);
-  menu->redraw = MENU_REDRAW_INDEX;
 }
 
 /**
@@ -579,26 +514,8 @@ void menu_prev_line(struct Menu *menu)
  */
 void menu_next_line(struct Menu *menu)
 {
-  if (menu->max == 0)
-  {
-    mutt_error(_("No entries"));
-    return;
-  }
-
-  const short c_menu_context = cs_subset_number(menu->sub, "menu_context");
-  const bool c_menu_move_off = cs_subset_bool(menu->sub, "menu_move_off");
-  int c = MIN(c_menu_context, (menu->pagelen / 2));
-
-  if (((menu->top + 1) < (menu->max - c)) &&
-      (c_menu_move_off ||
-       ((menu->max > menu->pagelen) && (menu->top < (menu->max - menu->pagelen)))))
-  {
-    menu->top++;
-    if ((menu->current < (menu->top + c)) && (menu->current < (menu->max - 1)))
-      menu_set_index(menu, menu->current + 1);
-    menu->redraw = MENU_REDRAW_INDEX;
-  }
-  else
+  MenuRedrawFlags flags = menu_move_view_relative(menu, 1);
+  if (flags == MENU_REDRAW_NO_FLAGS)
     mutt_message(_("You can't scroll down farther"));
 }
 
@@ -608,7 +525,7 @@ void menu_next_line(struct Menu *menu)
  */
 void menu_prev_page(struct Menu *menu)
 {
-  menu_length_jump(menu, 0 - MAX(menu->pagelen /* - MenuOverlap */, 0));
+  menu_move_view_relative(menu, 0 - menu->pagelen);
 }
 
 /**
@@ -617,5 +534,5 @@ void menu_prev_page(struct Menu *menu)
  */
 void menu_next_page(struct Menu *menu)
 {
-  menu_length_jump(menu, MAX(menu->pagelen /* - MenuOverlap */, 0));
+  menu_move_view_relative(menu, menu->pagelen);
 }

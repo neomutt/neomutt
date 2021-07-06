@@ -301,7 +301,7 @@ void menu_make_entry(struct Menu *menu, char *buf, size_t buflen, int i)
   if (!ARRAY_EMPTY(&menu->dialog))
   {
     mutt_str_copy(buf, NONULL(*ARRAY_GET(&menu->dialog, i)), buflen);
-    menu_set_index(menu, -1); /* hide menubar */
+    menu->current = -1; /* hide menubar */
   }
   else
     menu->make_entry(menu, buf, buflen, i);
