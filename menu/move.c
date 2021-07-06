@@ -316,223 +316,238 @@ void menu_adjust(struct Menu *menu)
 /**
  * menu_top_page - Move the focus to the top of the page
  * @param menu Current Menu
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-void menu_top_page(struct Menu *menu)
+MenuRedrawFlags menu_top_page(struct Menu *menu)
 {
-  menu_move_selection(menu, menu->top);
+  return menu_move_selection(menu, menu->top);
 }
 
 /**
  * menu_middle_page - Move the focus to the centre of the page
  * @param menu Current Menu
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-void menu_middle_page(struct Menu *menu)
+MenuRedrawFlags menu_middle_page(struct Menu *menu)
 {
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
-    return;
+    return MENU_REDRAW_NO_FLAGS;
   }
 
   int i = menu->top + menu->pagelen;
   if (i > (menu->max - 1))
     i = menu->max - 1;
 
-  menu_move_selection(menu, menu->top + (i - menu->top) / 2);
+  return menu_move_selection(menu, menu->top + (i - menu->top) / 2);
 }
 
 /**
  * menu_bottom_page - Move the focus to the bottom of the page
  * @param menu Current Menu
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-void menu_bottom_page(struct Menu *menu)
+MenuRedrawFlags menu_bottom_page(struct Menu *menu)
 {
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
-    return;
+    return MENU_REDRAW_NO_FLAGS;
   }
 
   int index = menu->top + menu->pagelen - 1;
   if (index > (menu->max - 1))
     index = menu->max - 1;
-  menu_move_selection(menu, index);
+  return menu_move_selection(menu, index);
 }
 
 /**
  * menu_prev_entry - Move the focus to the previous item in the menu
  * @param menu Current Menu
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-void menu_prev_entry(struct Menu *menu)
+MenuRedrawFlags menu_prev_entry(struct Menu *menu)
 {
   if (menu->current > 0)
-  {
-    menu_move_selection(menu, menu->current - 1);
-    return;
-  }
+    return menu_move_selection(menu, menu->current - 1);
 
   mutt_message(_("You are on the first entry"));
+  return MENU_REDRAW_NO_FLAGS;
 }
 
 /**
  * menu_next_entry - Move the focus to the next item in the menu
  * @param menu Current Menu
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-void menu_next_entry(struct Menu *menu)
+MenuRedrawFlags menu_next_entry(struct Menu *menu)
 {
   if (menu->current < (menu->max - 1))
-  {
-    menu_move_selection(menu, menu->current + 1);
-    return;
-  }
+    return menu_move_selection(menu, menu->current + 1);
 
   mutt_message(_("You are on the last entry"));
+  return MENU_REDRAW_NO_FLAGS;
 }
 
 /**
  * menu_first_entry - Move the focus to the first entry in the menu
  * @param menu Current Menu
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-void menu_first_entry(struct Menu *menu)
+MenuRedrawFlags menu_first_entry(struct Menu *menu)
 {
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
-    return;
+    return MENU_REDRAW_NO_FLAGS;
   }
 
-  menu_move_selection(menu, 0);
+  return menu_move_selection(menu, 0);
 }
 
 /**
  * menu_last_entry - Move the focus to the last entry in the menu
  * @param menu Current Menu
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-void menu_last_entry(struct Menu *menu)
+MenuRedrawFlags menu_last_entry(struct Menu *menu)
 {
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
-    return;
+    return MENU_REDRAW_NO_FLAGS;
   }
 
-  menu_move_selection(menu, menu->max - 1);
+  return menu_move_selection(menu, menu->max - 1);
 }
 
 // These functions move the view (and may cause the selection to move)
 /**
  * menu_current_top - Move the current selection to the top of the window
  * @param menu Current Menu
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-void menu_current_top(struct Menu *menu)
+MenuRedrawFlags menu_current_top(struct Menu *menu)
 {
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
-    return;
+    return MENU_REDRAW_NO_FLAGS;
   }
 
   short context = cs_subset_number(menu->sub, "menu_context");
   if (context > (menu->pagelen / 2))
-    return;
+    return MENU_REDRAW_NO_FLAGS;
 
   context = MIN(context, (menu->pagelen / 2));
-  menu_move_view_relative(menu, menu->current - menu->top - context);
+  return menu_move_view_relative(menu, menu->current - menu->top - context);
 }
 
 /**
  * menu_current_middle - Move the current selection to the centre of the window
  * @param menu Current Menu
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-void menu_current_middle(struct Menu *menu)
+MenuRedrawFlags menu_current_middle(struct Menu *menu)
 {
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
-    return;
+    return MENU_REDRAW_NO_FLAGS;
   }
 
   short context = cs_subset_number(menu->sub, "menu_context");
   if (context > (menu->pagelen / 2))
-    return;
+    return MENU_REDRAW_NO_FLAGS;
 
-  menu_move_view_relative(menu, menu->current - (menu->top + (menu->pagelen / 2)));
+  return menu_move_view_relative(menu, menu->current - (menu->top + (menu->pagelen / 2)));
 }
 
 /**
  * menu_current_bottom - Move the current selection to the bottom of the window
  * @param menu Current Menu
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-void menu_current_bottom(struct Menu *menu)
+MenuRedrawFlags menu_current_bottom(struct Menu *menu)
 {
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
-    return;
+    return MENU_REDRAW_NO_FLAGS;
   }
 
   short context = cs_subset_number(menu->sub, "menu_context");
   if (context > (menu->pagelen / 2))
-    return;
+    return MENU_REDRAW_NO_FLAGS;
 
   context = MIN(context, (menu->pagelen / 2));
-  menu_move_view_relative(menu, 0 - (menu->top + menu->pagelen - 1 - menu->current - context));
+  return menu_move_view_relative(
+      menu, 0 - (menu->top + menu->pagelen - 1 - menu->current - context));
 }
 
 /**
  * menu_half_up - Move the focus up half a page in the menu
  * @param menu Current Menu
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-void menu_half_up(struct Menu *menu)
+MenuRedrawFlags menu_half_up(struct Menu *menu)
 {
-  menu_move_view_relative(menu, 0 - (menu->pagelen / 2));
+  return menu_move_view_relative(menu, 0 - (menu->pagelen / 2));
 }
 
 /**
  * menu_half_down - Move the focus down half a page in the menu
  * @param menu Current Menu
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-void menu_half_down(struct Menu *menu)
+MenuRedrawFlags menu_half_down(struct Menu *menu)
 {
-  menu_move_view_relative(menu, (menu->pagelen / 2));
+  return menu_move_view_relative(menu, (menu->pagelen / 2));
 }
 
 /**
  * menu_prev_line - Move the view up one line, keeping the selection the same
  * @param menu Current Menu
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-void menu_prev_line(struct Menu *menu)
+MenuRedrawFlags menu_prev_line(struct Menu *menu)
 {
   MenuRedrawFlags flags = menu_move_view_relative(menu, -1);
   if (flags == MENU_REDRAW_NO_FLAGS)
     mutt_message(_("You can't scroll up farther"));
+  return flags;
 }
 
 /**
  * menu_next_line - Move the view down one line, keeping the selection the same
  * @param menu Current Menu
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-void menu_next_line(struct Menu *menu)
+MenuRedrawFlags menu_next_line(struct Menu *menu)
 {
   MenuRedrawFlags flags = menu_move_view_relative(menu, 1);
   if (flags == MENU_REDRAW_NO_FLAGS)
     mutt_message(_("You can't scroll down farther"));
+  return flags;
 }
 
 /**
  * menu_prev_page - Move the focus to the previous page in the menu
  * @param menu Current Menu
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-void menu_prev_page(struct Menu *menu)
+MenuRedrawFlags menu_prev_page(struct Menu *menu)
 {
-  menu_move_view_relative(menu, 0 - menu->pagelen);
+  return menu_move_view_relative(menu, 0 - menu->pagelen);
 }
 
 /**
  * menu_next_page - Move the focus to the next page in the menu
  * @param menu Current Menu
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-void menu_next_page(struct Menu *menu)
+MenuRedrawFlags menu_next_page(struct Menu *menu)
 {
-  menu_move_view_relative(menu, menu->pagelen);
+  return menu_move_view_relative(menu, menu->pagelen);
 }
