@@ -52,6 +52,7 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "gui/lib.h"
 #include "lib.h"
 
 /**
@@ -113,6 +114,263 @@ static void menu_length_jump(struct Menu *menu, int jumplen)
   index = MIN(index, menu->max - 1);
   index = MAX(index, 0);
   menu_set_index(menu, index);
+}
+
+/**
+ * menu_set_and_notify - Set the Menu selection/view and notify others
+ * @param menu  Menu
+ * @param top   Index of item at the top of the view
+ * @param index Selected item
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ */
+MenuRedrawFlags menu_set_and_notify(struct Menu *menu, int top, int index)
+{
+  MenuRedrawFlags flags = MENU_REDRAW_NO_FLAGS;
+
+  if (top != menu->top)
+  {
+    menu->top = top;
+    flags |= MENU_REDRAW_FULL;
+  }
+
+  if (index != menu->current)
+  {
+    menu->oldcurrent = menu->current;
+    menu->current = index;
+
+    if (menu->redraw == MENU_REDRAW_NO_FLAGS)
+    {
+      // If this is the only change
+      flags |= MENU_REDRAW_CURRENT;
+    }
+    else
+    {
+      // otherwise, redraw completely
+      flags |= MENU_REDRAW_FULL;
+    }
+  }
+
+  menu->redraw |= flags;
+  menu->win->actions |= WA_REPAINT;
+
+  mutt_debug(LL_NOTIFY, "NT_MENU\n");
+  notify_send(menu->notify, NT_MENU, flags, NULL);
+  return flags;
+}
+
+/**
+ * menu_drag_view - Move the view around the selection
+ * @param menu  Menu
+ * @param top   Index of item at the top of the view
+ * @param index Current selection
+ */
+static int menu_drag_view(struct Menu *menu, int top, int index)
+{
+  if (menu->max <= menu->pagelen) // fewer entries than lines
+    return 0;
+
+  const int page = menu->pagelen;
+
+  short context = cs_subset_number(menu->sub, "menu_context");
+  context = MIN(context, (page / 2));
+
+  const bool c_menu_scroll = cs_subset_bool(menu->sub, "menu_scroll");
+  if (c_menu_scroll)
+  {
+    int bottom = top + page;
+    // Scroll the view to make the selection visible
+    if (index < top + context) // scroll=YES, moving UP
+      top = index - context;
+    else if (index >= (bottom - context)) // scroll=YES, moving DOWN
+      top = index - page + context + 1;
+  }
+  else
+  {
+    if ((index < top) || (index >= (top + page)))
+      top = (index / page) * page; // Round down to a page size
+    int bottom = top + page;
+
+    // Page up/down to make the selection visible
+    if (index < (top + context)) // scroll=NO, moving UP
+      top = index - page + context + 1;
+    else if (index >= (bottom - context)) // scroll=NO, moving DOWN
+      top = index - context;
+  }
+
+  if (top < 0)
+    top = 0;
+
+  // Tie the last entry to the bottom of the screen
+  const bool c_menu_move_off = cs_subset_bool(menu->sub, "menu_move_off");
+  if (!c_menu_move_off && (top >= (menu->max - page)))
+  {
+    top = menu->max - page;
+  }
+
+  return top;
+}
+
+/**
+ * calc_fit_selection_to_view - Move the selection into the view
+ * @param menu  Menu
+ * @param top   First entry visible in the view
+ * @param index Current selection
+ */
+static int calc_fit_selection_to_view(struct Menu *menu, int top, int index)
+{
+  short context = cs_subset_number(menu->sub, "menu_context");
+  context = MIN(context, (menu->pagelen / 2));
+
+  int min = top;
+  if (top != 0)
+    min += context;
+
+  int max = top + menu->pagelen - 1;
+  if (max < (menu->max - 1))
+    max -= context;
+  else
+    max = menu->max - 1;
+
+  if (index < min)
+    index = min;
+  else if (index > max)
+    index = max;
+
+  return index;
+}
+
+/**
+ * calc_move_view - Move the view
+ * @param menu     Menu
+ * @param relative Relative number of lines to move
+ */
+static int calc_move_view(struct Menu *menu, int relative)
+{
+  if (menu->max <= menu->pagelen) // fewer entries than lines
+    return 0;
+
+  short context = cs_subset_number(menu->sub, "menu_context");
+  context = MIN(context, (menu->pagelen / 2));
+
+  int index = menu->current;
+  if (index < context)
+    return 0;
+
+  int top = menu->top + relative;
+  if (top < 0)
+    return 0;
+
+  if ((menu->top + menu->pagelen) < menu->max)
+    return top;
+
+  int max = menu->max - 1;
+  const bool c_menu_move_off = cs_subset_bool(menu->sub, "menu_move_off");
+  if (c_menu_move_off)
+  {
+    max -= context;
+  }
+  else
+  {
+    max -= menu->pagelen - 1;
+  }
+
+  if (top > max)
+    top = max;
+
+  return top;
+}
+
+/**
+ * menu_move_selection - Move the selection
+ * @param menu  Menu
+ * @param index New selection
+ */
+MenuRedrawFlags menu_move_selection(struct Menu *menu, int index)
+{
+  if (index < 0)
+    index = 0;
+  else if (index >= menu->max)
+    index = menu->max - 1;
+
+  int top = menu_drag_view(menu, menu->top, index);
+
+  return menu_set_and_notify(menu, top, index);
+}
+
+/**
+ * menu_move_view_relative - Move the view relatively
+ * @param menu     Menu
+ * @param relative Relative number of lines to move
+ */
+MenuRedrawFlags menu_move_view_relative(struct Menu *menu, int relative)
+{
+  const bool c_menu_move_off = cs_subset_bool(menu->sub, "menu_move_off");
+
+  short context = cs_subset_number(menu->sub, "menu_context");
+  context = MIN(context, (menu->pagelen / 2));
+
+  // Move and range-check the view
+  int top = menu->top + relative;
+  if (top < 0)
+  {
+    top = 0;
+  }
+  else if (c_menu_move_off && (top >= (menu->max - context)))
+  {
+    top = menu->max - context - 1;
+  }
+  else if (!c_menu_move_off && ((top + menu->pagelen) >= menu->max))
+  {
+    top = menu->max - menu->pagelen;
+  }
+
+  // Move the selection on-screen
+  int index = menu->current;
+  if (index < top)
+    index = top;
+  else if (index >= (top + menu->pagelen))
+    index = top + menu->pagelen - 1;
+
+  // Check for top/bottom limits
+  if (index < context)
+  {
+    top = 0;
+    index = menu->current;
+  }
+  else if (!c_menu_move_off && (index > (menu->max - context)))
+  {
+    top = menu->max - menu->pagelen;
+    index = menu->current;
+  }
+
+  if (top == menu->top)
+  {
+    // Can't move the view; move the selection
+    index = calc_fit_selection_to_view(menu, top, index + relative);
+  }
+  else if (index > (top + menu->pagelen - context - 1))
+  {
+    index = calc_fit_selection_to_view(menu, top, index + relative);
+  }
+  else
+  {
+    // Drag the selection into the view
+    index = calc_fit_selection_to_view(menu, top, index);
+  }
+
+  return menu_set_and_notify(menu, top, index);
+}
+
+/**
+ * menu_adjust - Reapply the config to the Menu
+ * @param menu Menu
+ */
+void menu_adjust(struct Menu *menu)
+{
+  int top = calc_move_view(menu, 0);
+  top = menu_drag_view(menu, top, menu->current);
+
+  menu_set_and_notify(menu, top, menu->current);
 }
 
 // These functions move the selection (and may cause the view to move)

@@ -184,5 +184,8 @@ struct MuttWindow *menu_new_window(enum MenuType type, struct ConfigSubset *sub)
 int  menu_get_index(struct Menu *menu);
 bool menu_set_index(struct Menu *menu, int index);
 void menu_queue_redraw(struct Menu *menu, MenuRedrawFlags redraw);
+MenuRedrawFlags menu_move_view_relative(struct Menu *menu, int relative);
+MenuRedrawFlags menu_set_and_notify(struct Menu *menu, int top, int index);
+void menu_adjust(struct Menu *menu);
 
 #endif /* MUTT_MENU_LIB_H */

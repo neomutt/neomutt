@@ -46,7 +46,7 @@ enum NotifyType
   NT_HEADER,  ///< A header has changed,        #NotifyHeader   #EventHeader
   NT_INDEX,   ///< Index data has changed,      #NotifyIndex,   #IndexSharedData
   NT_MAILBOX, ///< Mailbox has changed,         #NotifyMailbox, #EventMailbox
-  NT_MENU,    ///< Menu has changed,
+  NT_MENU,    ///< Menu has changed,            #MenuRedrawFlags
   NT_PAGER,   ///< Pager data has changed,      #NotifyPager,   #IndexSharedData
   NT_SCORE,   ///< Email scoring has changed
   NT_SUBJRX,  ///< Subject Regex has changed,   #NotifySubjRx
