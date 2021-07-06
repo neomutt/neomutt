@@ -115,60 +115,6 @@ static void menu_length_jump(struct Menu *menu, int jumplen)
   menu_set_index(menu, index);
 }
 
-/**
- * menu_check_recenter - Recentre the menu on screen
- * @param menu Current Menu
- */
-void menu_check_recenter(struct Menu *menu)
-{
-  const short c_menu_context = cs_subset_number(menu->sub, "menu_context");
-  const bool c_menu_move_off = cs_subset_bool(menu->sub, "menu_move_off");
-  const bool c_menu_scroll = cs_subset_bool(menu->sub, "menu_scroll");
-
-  int c = MIN(c_menu_context, (menu->pagelen / 2));
-  int old_top = menu->top;
-
-  if (!c_menu_move_off && (menu->max <= menu->pagelen)) // fewer entries than lines
-  {
-    if (menu->top != 0)
-    {
-      menu->top = 0;
-      menu->redraw |= MENU_REDRAW_INDEX;
-    }
-  }
-  else
-  {
-    if (c_menu_scroll || (menu->pagelen <= 0) || (c < c_menu_context))
-    {
-      if (menu->current < (menu->top + c))
-        menu->top = menu->current - c;
-      else if (menu->current >= (menu->top + menu->pagelen - c))
-        menu->top = menu->current - menu->pagelen + c + 1;
-    }
-    else
-    {
-      if (menu->current < (menu->top + c))
-      {
-        menu->top -= (menu->pagelen - c) * ((menu->top + menu->pagelen - 1 - menu->current) /
-                                            (menu->pagelen - c)) -
-                     c;
-      }
-      else if ((menu->current >= (menu->top + menu->pagelen - c)))
-      {
-        menu->top +=
-            (menu->pagelen - c) * ((menu->current - menu->top) / (menu->pagelen - c)) - c;
-      }
-    }
-  }
-
-  if (!c_menu_move_off) /* make entries stick to bottom */
-    menu->top = MIN(menu->top, menu->max - menu->pagelen);
-  menu->top = MAX(menu->top, 0);
-
-  if (menu->top != old_top)
-    menu->redraw |= MENU_REDRAW_INDEX;
-}
-
 // These functions move the selection (and may cause the view to move)
 /**
  * menu_top_page - Move the focus to the top of the page

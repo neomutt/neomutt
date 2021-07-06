@@ -2502,7 +2502,6 @@ static int op_get_children(struct IndexSharedData *shared,
           menu_set_index(priv->menu, e->vnum);
           /* as an added courtesy, recenter the menu
            * with the current entry at the middle of the screen */
-          menu_check_recenter(priv->menu);
           menu_current_middle(priv->menu);
         }
       }

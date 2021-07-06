@@ -1093,8 +1093,6 @@ static void index_custom_redraw(struct Menu *menu)
   const int index = menu_get_index(menu);
   if (m && m->emails && (index < m->vcount))
   {
-    menu_check_recenter(menu);
-
     if (menu->redraw & MENU_REDRAW_INDEX)
     {
       menu_redraw_index(menu);

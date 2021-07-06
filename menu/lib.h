@@ -150,7 +150,6 @@ struct Menu
 
 // Simple movement
 void menu_bottom_page   (struct Menu *menu);
-void menu_check_recenter(struct Menu *menu);
 void menu_current_bottom(struct Menu *menu);
 void menu_current_middle(struct Menu *menu);
 void menu_current_top   (struct Menu *menu);

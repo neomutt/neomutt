@@ -571,9 +571,6 @@ int menu_redraw(struct Menu *menu)
     return OP_REDRAW;
   }
 
-  if (ARRAY_EMPTY(&menu->dialog))
-    menu_check_recenter(menu);
-
   if (menu->redraw & MENU_REDRAW_STATUS)
     menu_redraw_status(menu);
   if (menu->redraw & MENU_REDRAW_INDEX)

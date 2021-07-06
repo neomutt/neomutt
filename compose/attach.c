@@ -259,8 +259,6 @@ static void compose_custom_redraw(struct Menu *menu)
     menu->pagelen = menu->win->state.rows;
   }
 
-  menu_check_recenter(menu);
-
   if (menu->redraw & MENU_REDRAW_INDEX)
     menu_redraw_index(menu);
   else if (menu->redraw & (MENU_REDRAW_MOTION | MENU_REDRAW_MOTION))
