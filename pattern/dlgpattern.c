@@ -150,9 +150,8 @@ static void make_pattern_entry(struct Menu *menu, char *buf, size_t buflen, int 
 
   const char *const c_pattern_format =
       cs_subset_string(NeoMutt->sub, "pattern_format");
-  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
-                      NONULL(c_pattern_format), pattern_format_str,
-                      (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
+  mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_pattern_format),
+                      pattern_format_str, (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
@@ -348,7 +347,7 @@ bool dlg_select_pattern(char *buf, size_t buflen)
   struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_PATTERN, PatternHelp);
   struct Menu *menu = create_pattern_menu(dlg);
 
-  struct MuttWindow *win_menu = menu->win_index;
+  struct MuttWindow *win_menu = menu->win;
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->notify, NT_CONFIG, pattern_config_observer, menu);

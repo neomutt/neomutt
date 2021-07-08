@@ -194,7 +194,7 @@ static void autocrypt_make_entry(struct Menu *menu, char *buf, size_t buflen, in
 
   const char *const c_autocrypt_acct_format =
       cs_subset_string(NeoMutt->sub, "autocrypt_acct_format");
-  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
+  mutt_expando_format(buf, buflen, 0, menu->win->state.cols,
                       NONULL(c_autocrypt_acct_format), autocrypt_format_str,
                       (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
 }
@@ -362,7 +362,7 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
   // L10N: Autocrypt Account Management Menu title
   sbar_set_title(sbar, _("Autocrypt Accounts"));
 
-  struct MuttWindow *win_menu = menu->win_index;
+  struct MuttWindow *win_menu = menu->win;
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->notify, NT_CONFIG, autocrypt_config_observer, menu);

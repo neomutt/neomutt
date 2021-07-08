@@ -548,7 +548,7 @@ static void mix_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
   struct Remailer **type2_list = menu->mdata;
   const char *const c_mix_entry_format =
       cs_subset_string(NeoMutt->sub, "mix_entry_format");
-  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
+  mutt_expando_format(buf, buflen, 0, menu->win->state.cols,
                       NONULL(c_mix_entry_format), mix_format_str,
                       (intptr_t) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
 }
@@ -742,7 +742,7 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
       case OP_REDRAW:
       {
         mix_redraw_head(win_cbar, chain);
-        mix_screen_coordinates(menu->win_index, type2_list, &coords, chain, 0);
+        mix_screen_coordinates(menu->win, type2_list, &coords, chain, 0);
         mix_redraw_chain(win_chain, type2_list, coords, chain, c_cur);
         break;
       }
@@ -760,7 +760,7 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
         {
           chain->cl++;
           chain->ch[0] = menu_get_index(menu);
-          mix_screen_coordinates(menu->win_index, type2_list, &coords, chain, c_cur);
+          mix_screen_coordinates(menu->win, type2_list, &coords, chain, c_cur);
           c_redraw = true;
         }
 
@@ -794,7 +794,7 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
             chain->ch[i] = chain->ch[i - 1];
 
           chain->ch[c_cur] = menu_get_index(menu);
-          mix_screen_coordinates(menu->win_index, type2_list, &coords, chain, c_cur);
+          mix_screen_coordinates(menu->win, type2_list, &coords, chain, c_cur);
           c_redraw = true;
         }
         else
@@ -818,7 +818,7 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
           if ((c_cur == chain->cl) && c_cur)
             c_cur--;
 
-          mix_screen_coordinates(menu->win_index, type2_list, &coords, chain, c_cur);
+          mix_screen_coordinates(menu->win, type2_list, &coords, chain, c_cur);
           c_redraw = true;
         }
         else

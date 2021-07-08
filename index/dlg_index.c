@@ -754,7 +754,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
   if (mutt_using_threads() && c_collapse_all)
     collapse_all(shared->ctx, menu, 0);
 
-  struct MuttWindow *dlg = dialog_find(menu->win_index);
+  struct MuttWindow *dlg = dialog_find(menu->win);
   struct EventMailbox ev_m = { shared->mailbox };
   mutt_debug(LL_NOTIFY, "NT_MAILBOX_SWITCH: %p\n", shared->mailbox);
   notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &ev_m);
@@ -917,7 +917,7 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 
   const char *const c_index_format =
       cs_subset_string(shared->sub, "index_format");
-  mutt_make_string(buf, buflen, menu->win_index->state.cols, NONULL(c_index_format),
+  mutt_make_string(buf, buflen, menu->win->state.cols, NONULL(c_index_format),
                    m, shared->ctx->msg_in_pager, e, flags, NULL);
 }
 
@@ -1331,15 +1331,15 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       const int index = menu_get_index(priv->menu);
       if (c_arrow_cursor)
       {
-        mutt_window_move(priv->menu->win_index, 2, index - priv->menu->top);
+        mutt_window_move(priv->menu->win, 2, index - priv->menu->top);
       }
       else if (c_braille_friendly)
       {
-        mutt_window_move(priv->menu->win_index, 0, index - priv->menu->top);
+        mutt_window_move(priv->menu->win, 0, index - priv->menu->top);
       }
       else
       {
-        mutt_window_move(priv->menu->win_index, priv->menu->win_index->state.cols - 1,
+        mutt_window_move(priv->menu->win, priv->menu->win->state.cols - 1,
                          index - priv->menu->top);
       }
       mutt_refresh();

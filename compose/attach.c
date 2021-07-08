@@ -250,13 +250,13 @@ static void compose_custom_redraw(struct Menu *menu)
 
   if (menu->redraw & MENU_REDRAW_FLOW)
   {
-    mutt_window_reflow(dialog_find(menu->win_index));
+    mutt_window_reflow(dialog_find(menu->win));
   }
 
   if (menu->redraw & MENU_REDRAW_FULL)
   {
     menu_redraw_full(menu);
-    menu->pagelen = menu->win_index->state.rows;
+    menu->pagelen = menu->win->state.rows;
   }
 
   menu_check_recenter(menu);
@@ -292,11 +292,11 @@ static void compose_make_entry(struct Menu *menu, char *buf, size_t buflen, int 
 {
   struct ComposeAttachData *adata = menu->mdata;
   struct AttachCtx *actx = adata->actx;
-  struct ComposeSharedData *shared = menu->win_index->parent->wdata;
+  struct ComposeSharedData *shared = menu->win->parent->wdata;
   struct ConfigSubset *sub = shared->sub;
 
   const char *const c_attach_format = cs_subset_string(sub, "attach_format");
-  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(c_attach_format),
+  mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_attach_format),
                       attach_format_str, (intptr_t) (actx->idx[actx->v2r[line]]),
                       MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
 }
@@ -324,7 +324,7 @@ struct MuttWindow *attach_new(struct MuttWindow *parent, struct ComposeSharedDat
 
   struct Menu *menu = win_attach->wdata;
   menu->pagelen = win_attach->state.rows;
-  menu->win_index = win_attach;
+  menu->win = win_attach;
 
   menu->make_entry = compose_make_entry;
   menu->tag = compose_attach_tag;

@@ -308,13 +308,12 @@ int menu_loop(struct Menu *menu)
 
     /* move the cursor out of the way */
     if (c_arrow_cursor)
-      mutt_window_move(menu->win_index, 2, menu->current - menu->top);
+      mutt_window_move(menu->win, 2, menu->current - menu->top);
     else if (c_braille_friendly)
-      mutt_window_move(menu->win_index, 0, menu->current - menu->top);
+      mutt_window_move(menu->win, 0, menu->current - menu->top);
     else
     {
-      mutt_window_move(menu->win_index, menu->win_index->state.cols - 1,
-                       menu->current - menu->top);
+      mutt_window_move(menu->win, menu->win->state.cols - 1, menu->current - menu->top);
     }
 
     mutt_refresh();
@@ -588,7 +587,7 @@ struct Menu *menu_new(enum MenuType type, struct MuttWindow *win, struct ConfigS
   menu->color = default_color;
   menu->search = generic_search;
   menu->notify = notify_new();
-  menu->win_index = win;
+  menu->win = win;
   menu->pagelen = win->state.rows;
   menu->sub = sub;
 
@@ -644,5 +643,5 @@ void menu_queue_redraw(struct Menu *menu, MenuRedrawFlags redraw)
     return;
 
   menu->redraw |= redraw;
-  menu->win_index->actions |= WA_RECALC;
+  menu->win->actions |= WA_RECALC;
 }

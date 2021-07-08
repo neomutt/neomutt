@@ -51,7 +51,7 @@ static int menu_color_observer(struct NotifyCallback *nc)
   }
 
   struct Menu *menu = nc->global_data;
-  struct MuttWindow *win_menu = menu->win_index;
+  struct MuttWindow *win_menu = menu->win;
 
   menu->redraw = MENU_REDRAW_FULL;
   win_menu->actions |= WA_REPAINT;
@@ -73,7 +73,7 @@ static int menu_config_observer(struct NotifyCallback *nc)
     return 0;
 
   struct Menu *menu = nc->global_data;
-  struct MuttWindow *win_menu = menu->win_index;
+  struct MuttWindow *win_menu = menu->win;
 
   menu->redraw |= MENU_REDRAW_INDEX;
   win_menu->actions |= WA_RECALC;
@@ -90,7 +90,7 @@ static int menu_window_observer(struct NotifyCallback *nc)
     return -1;
 
   struct Menu *menu = nc->global_data;
-  struct MuttWindow *win_menu = menu->win_index;
+  struct MuttWindow *win_menu = menu->win;
   struct EventWindow *ev_w = nc->event_data;
   if (ev_w->win != win_menu)
     return 0;
@@ -121,7 +121,7 @@ static int menu_window_observer(struct NotifyCallback *nc)
  */
 void menu_add_observers(struct Menu *menu)
 {
-  struct MuttWindow *win_menu = menu->win_index;
+  struct MuttWindow *win_menu = menu->win;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, menu_config_observer, menu);
   notify_observer_add(win_menu->notify, NT_WINDOW, menu_window_observer, menu);

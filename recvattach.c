@@ -508,9 +508,9 @@ static void attach_make_entry(struct Menu *menu, char *buf, size_t buflen, int l
 
   const char *const c_attach_format =
       cs_subset_string(NeoMutt->sub, "attach_format");
-  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
-                      NONULL(c_attach_format), attach_format_str,
-                      (intptr_t) (actx->idx[actx->v2r[line]]), MUTT_FORMAT_ARROWCURSOR);
+  mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_attach_format),
+                      attach_format_str, (intptr_t) (actx->idx[actx->v2r[line]]),
+                      MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
@@ -1387,7 +1387,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         op = mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_REGULAR,
-                                  e, actx, menu->win_index);
+                                  e, actx, menu->win);
         break;
       }
 
@@ -1733,7 +1733,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
   menu->make_entry = attach_make_entry;
   menu->tag = attach_tag;
 
-  struct MuttWindow *win_menu = menu->win_index;
+  struct MuttWindow *win_menu = menu->win;
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->notify, NT_CONFIG, attach_config_observer, menu);
@@ -1760,7 +1760,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_MAILCAP, e,
-                             actx, menu->win_index);
+                             actx, menu->win);
         menu_queue_redraw(menu, MENU_REDRAW_FULL);
         break;
       }
@@ -1769,7 +1769,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_AS_TEXT, e,
-                             actx, menu->win_index);
+                             actx, menu->win);
         menu_queue_redraw(menu, MENU_REDRAW_FULL);
         break;
       }
@@ -1777,8 +1777,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
       case OP_ATTACH_VIEW_PAGER:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
-        mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_PAGER, e, actx,
-                             menu->win_index);
+        mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_PAGER, e, actx, menu->win);
         menu_queue_redraw(menu, MENU_REDRAW_FULL);
         break;
       }

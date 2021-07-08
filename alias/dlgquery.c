@@ -252,7 +252,7 @@ static void query_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
 
   const char *const query_format = cs_subset_string(mdata->sub, "query_format");
 
-  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(query_format),
+  mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(query_format),
                       query_format_str, (intptr_t) av, MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -391,7 +391,7 @@ struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, char *query)
   menu->max = ARRAY_SIZE(&mdata->ava);
   menu->mdata = mdata;
 
-  struct MuttWindow *win_menu = menu->win_index;
+  struct MuttWindow *win_menu = menu->win;
 
   // Override the Simple Dialog's recalc()
   win_menu->recalc = alias_recalc;

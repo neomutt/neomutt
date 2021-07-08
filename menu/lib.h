@@ -62,14 +62,14 @@ typedef uint8_t MenuRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX
  */
 struct Menu
 {
-  const char *title;      ///< Title of this menu
-  int current;            ///< Current entry
-  int max;                ///< Number of entries in the menu
-  MenuRedrawFlags redraw; ///< When to redraw the screen
-  enum MenuType type;     ///< Menu definition for keymap entries
-  int pagelen;            ///< Number of entries per screen
-  bool tagprefix : 1;
-  struct MuttWindow *win_index;
+  const char *title;        ///< Title of this menu
+  int current;              ///< Current entry
+  int max;                  ///< Number of entries in the menu
+  MenuRedrawFlags redraw;   ///< When to redraw the screen
+  enum MenuType type;       ///< Menu definition for keymap entries
+  int pagelen;              ///< Number of entries per screen
+  bool tagprefix : 1;       ///< User has pressed <tag-prefix>
+  struct MuttWindow *win;   ///< Window holding the Menu
   struct MuttWindow *win_ibar;
   struct ConfigSubset *sub; ///< Inherited config items
 
@@ -77,9 +77,9 @@ struct Menu
    * In dialog mode menubar is hidden and prompt keys are checked before
    * normal menu movement keys. This can cause problems with scrolling, if
    * prompt keys override movement keys.  */
-  ARRAY_HEAD(,char*) dialog; ///< Dialog lines themselves
-  char *prompt;           ///< Prompt for user, similar to mutt_multi_choice
-  char *keys;             ///< Keys used in the prompt
+  ARRAY_HEAD(, char *) dialog; ///< Dialog lines themselves
+  char *prompt;                ///< Prompt for user, similar to mutt_multi_choice
+  char *keys;                  ///< Keys used in the prompt
 
   /* the following are used only by menu_loop() */
   int top;                ///< Entry that is the top of the current page

@@ -251,7 +251,7 @@ static void post_make_entry(struct Menu *menu, char *buf, size_t buflen, int lin
 
   const char *const c_index_format =
       cs_subset_string(NeoMutt->sub, "index_format");
-  mutt_make_string(buf, buflen, menu->win_index->state.cols, NONULL(c_index_format),
+  mutt_make_string(buf, buflen, menu->win->state.cols, NONULL(c_index_format),
                    m, -1, m->emails[line], MUTT_FORMAT_ARROWCURSOR, NULL);
 }
 
@@ -324,7 +324,7 @@ static struct Email *dlg_select_postponed_email(struct Mailbox *m)
   menu->mdata = m;
   menu->custom_search = true;
 
-  struct MuttWindow *win_menu = menu->win_index;
+  struct MuttWindow *win_menu = menu->win;
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->notify, NT_CONFIG, postponed_config_observer, menu);

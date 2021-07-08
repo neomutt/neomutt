@@ -170,7 +170,7 @@ static void alias_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
 
   const char *const alias_format = cs_subset_string(mdata->sub, "alias_format");
 
-  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, NONULL(alias_format),
+  mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(alias_format),
                       alias_format_str, (intptr_t) av, MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -277,7 +277,7 @@ struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
   menu->max = alias_array_count_visible(&mdata->ava);
   menu->mdata = mdata;
 
-  struct MuttWindow *win_menu = menu->win_index;
+  struct MuttWindow *win_menu = menu->win;
 
   // Override the Simple Dialog's recalc()
   win_menu->recalc = alias_recalc;
