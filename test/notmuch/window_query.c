@@ -33,6 +33,7 @@ struct TestCase
   int cur_pos;
   char *curr_search;
   char *timebase;
+  char *or_terms;
   char *expected;
 };
 
@@ -42,7 +43,7 @@ void test_nm_windowed_query_from_query(void)
   {
     char buf[1024] = "\0";
     enum NmWindowQueryRc rc =
-        nm_windowed_query_from_query(buf, 1024, false, 0, 0, "tag:inbox", "month");
+        nm_windowed_query_from_query(buf, 1024, false, 0, 0, "tag:inbox", "month", "");
     TEST_CHECK(rc == NM_WINDOW_QUERY_INVALID_DURATION);
   }
 
@@ -50,18 +51,26 @@ void test_nm_windowed_query_from_query(void)
   {
     char buf[1024] = "\0";
     enum NmWindowQueryRc rc =
-        nm_windowed_query_from_query(buf, 1024, false, 3, 3, "tag:inbox", "months");
+        nm_windowed_query_from_query(buf, 1024, false, 3, 3, "tag:inbox", "months", "");
     TEST_CHECK(rc == NM_WINDOW_QUERY_INVALID_TIMEBASE);
   }
 
   static const struct TestCase tests[] = {
-    { false, 1, 0, "tag:inbox", "month", "date:1month.. and tag:inbox" },
-    { false, 1, 1, "tag:inbox", "month", "date:2month..1month and tag:inbox" },
-    { false, 1, 3, "tag:inbox", "month", "date:4month..3month and tag:inbox" },
-    { false, 3, 3, "tag:inbox", "month", "date:12month..9month and tag:inbox" },
-    { true, 0, 0, "tag:inbox", "month", "date:0month.. and tag:inbox" },
-    { true, 0, 1, "tag:inbox", "month", "date:1month..1month and tag:inbox" },
-    { true, 0, 3, "tag:inbox", "month", "date:3month..3month and tag:inbox" },
+    { false, 1, 0, "tag:inbox", "month", "", "date:1month.. and tag:inbox" },
+    { false, 1, 1, "tag:inbox", "month", "", "date:2month..1month and tag:inbox" },
+    { false, 1, 3, "tag:inbox", "month", "", "date:4month..3month and tag:inbox" },
+    { false, 3, 3, "tag:inbox", "month", "", "date:12month..9month and tag:inbox" },
+    { true, 0, 0, "tag:inbox", "month", "", "date:0month.. and tag:inbox" },
+    { true, 0, 1, "tag:inbox", "month", "", "date:1month..1month and tag:inbox" },
+    { true, 0, 3, "tag:inbox", "month", "", "date:3month..3month and tag:inbox" },
+    { false, 3, 3, "tag:inbox", "month", "tag:unread",
+      "(date:12month..9month or (tag:unread)) and tag:inbox" },
+    { true, 0, 3, "tag:inbox", "month", "tag:unread",
+      "(date:3month..3month or (tag:unread)) and tag:inbox" },
+    { false, 3, 3, "tag:inbox", "month", "tag:unread and tag:flagged",
+      "(date:12month..9month or (tag:unread and tag:flagged)) and tag:inbox" },
+    { true, 0, 3, "tag:inbox", "month", "tag:unread and tag:flagged",
+      "(date:3month..3month or (tag:unread and tag:flagged)) and tag:inbox" },
   };
 
   for (int i = 0; i < mutt_array_size(tests); i++)
@@ -71,7 +80,7 @@ void test_nm_windowed_query_from_query(void)
 
     enum NmWindowQueryRc rc =
         nm_windowed_query_from_query(buf, 1024, t->force_enable, t->duration,
-                                     t->cur_pos, t->curr_search, t->timebase);
+                                     t->cur_pos, t->curr_search, t->timebase, t->or_terms);
 
     TEST_CHECK(rc == NM_WINDOW_QUERY_SUCCESS);
     TEST_CHECK_(mutt_str_equal(buf, t->expected),

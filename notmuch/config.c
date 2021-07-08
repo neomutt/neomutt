@@ -122,6 +122,10 @@ static struct ConfigDef NotmuchVars[] = {
   { "nm_query_window_enable", DT_BOOL, false, 0, NULL,
     "(notmuch) Enable query windows"
   },
+  {
+    "nm_query_window_or_terms", DT_STRING, 0, 0, NULL,
+    "(notmuch) additional notmuch search terms for messages to be shown regardless of date."
+  },
   { "nm_query_window_timebase", DT_STRING, IP "week", 0, nm_query_window_timebase_validator,
     "(notmuch) Units for the time duration"
   },

@@ -280,6 +280,8 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
       cs_subset_string(NeoMutt->sub, "nm_query_window_current_search");
   const char *const c_nm_query_window_timebase =
       cs_subset_string(NeoMutt->sub, "nm_query_window_timebase");
+  const char *const c_nm_query_window_or_terms =
+      cs_subset_string(NeoMutt->sub, "nm_query_window_or_terms");
 
   /* if the query has changed, reset the window position */
   if (!c_nm_query_window_current_search ||
@@ -291,7 +293,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
   enum NmWindowQueryRc rc = nm_windowed_query_from_query(
       buf, buflen, c_nm_query_window_enable, c_nm_query_window_duration,
       c_nm_query_window_current_position, c_nm_query_window_current_search,
-      c_nm_query_window_timebase);
+      c_nm_query_window_timebase, c_nm_query_window_or_terms);
 
   switch (rc)
   {
