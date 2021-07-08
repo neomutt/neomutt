@@ -51,10 +51,10 @@ static int menu_color_observer(struct NotifyCallback *nc)
   }
 
   struct Menu *menu = nc->global_data;
-  struct MuttWindow *win_menu = menu->win;
+  struct MuttWindow *win = menu->win;
 
   menu->redraw = MENU_REDRAW_FULL;
-  win_menu->actions |= WA_REPAINT;
+  win->actions |= WA_REPAINT;
   mutt_debug(LL_DEBUG5, "color done, request WA_REPAINT, MENU_REDRAW_FULL\n");
 
   return 0;
@@ -91,24 +91,24 @@ static int menu_window_observer(struct NotifyCallback *nc)
     return -1;
 
   struct Menu *menu = nc->global_data;
-  struct MuttWindow *win_menu = menu->win;
+  struct MuttWindow *win = menu->win;
   struct EventWindow *ev_w = nc->event_data;
-  if (ev_w->win != win_menu)
+  if (ev_w->win != win)
     return 0;
 
   if (nc->event_subtype == NT_WINDOW_STATE)
   {
-    menu->pagelen = win_menu->state.rows;
-    menu->redraw |= MENU_REDRAW_INDEX;
+    menu->pagelen = win->state.rows;
+    menu->redraw |= MENU_REDRAW_FULL;
 
-    win_menu->actions |= WA_RECALC | WA_REPAINT;
+    win->actions |= WA_RECALC | WA_REPAINT;
     mutt_debug(LL_DEBUG5,
                "window state done, request MENU_REDRAW_INDEX, WA_REPAINT\n");
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
     notify_observer_remove(NeoMutt->notify, menu_config_observer, menu);
-    notify_observer_remove(win_menu->notify, menu_window_observer, menu);
+    notify_observer_remove(win->notify, menu_window_observer, menu);
     mutt_color_observer_remove(menu_color_observer, menu);
     mutt_debug(LL_DEBUG5, "window delete done\n");
   }
@@ -122,9 +122,9 @@ static int menu_window_observer(struct NotifyCallback *nc)
  */
 void menu_add_observers(struct Menu *menu)
 {
-  struct MuttWindow *win_menu = menu->win;
+  struct MuttWindow *win = menu->win;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, menu_config_observer, menu);
-  notify_observer_add(win_menu->notify, NT_WINDOW, menu_window_observer, menu);
+  notify_observer_add(win->notify, NT_WINDOW, menu_window_observer, menu);
   mutt_color_observer_add(menu_color_observer, menu);
 }
