@@ -55,7 +55,8 @@ const char *nm_query_type_to_string(enum NmQueryType query_type);
 enum NmWindowQueryRc
 nm_windowed_query_from_query(char *buf, size_t buflen, const bool force_enable,
                              const short duration, const short current_pos,
-                             const char *current_search, const char *timebase);
+                             const char *current_search, const char *timebase,
+                             const char *or_terms);
 bool nm_query_window_check_timebase(const char *timebase);
 
 #endif /* MUTT_NOTMUCH_QUERY_H */

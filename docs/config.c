@@ -2621,6 +2621,20 @@
 ** Accepted values all non negative integers. A value of 0 disables the feature.
 */
 
+{ "nm_query_window_or_terms", DT_STRING, 0 },
+/*
+** .pp
+** This variable contains additional notmuch search terms for messages to be
+** shown regardless of date.
+** .pp
+** Example:
+** .pp
+** Using "notmuch://?query=tag:inbox" as the mailbox and "tag:flagged and
+** tag:unread" as the or terms, NeoMutt will produce a query window such as:
+** .pp
+** notmuch://?query=tag:inbox and (date:... or (tag:flagged and tag:unread))
+*/
+
 { "nm_query_window_timebase", DT_STRING, "week" },
 /*
 ** .pp

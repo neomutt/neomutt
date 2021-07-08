@@ -15947,6 +15947,20 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 </entry>
               </row>
               <row>
+                <entry><literal>nm_query_window_or_terms</literal></entry>
+                <entry>string</entry>
+                <entry><literal>(empty)</literal></entry>
+                <entry>
+                  Additional notmuch search terms to always include in the
+                  window even if they're outside the date range. This turns the
+                  window from <literal>date:...</literal> to 
+                  <literal>date:... or (additional search terms.)</literal>
+
+                  For example, to always include flagged, unread emails, set to
+                  <literal>tag:flagged and tag:unread</literal>
+                </entry>
+              </row>
+              <row>
                 <entry><literal>nm_query_window_timebase</literal></entry>
                 <entry>string</entry>
                 <entry><literal>week</literal></entry>
@@ -16164,6 +16178,8 @@ set virtual_spool_file = no
 set nm_query_window_enable=yes
 set nm_query_window_duration=2
 set nm_query_window_timebase="week" # or "hour", "day", "week", "month", "year"
+<emphasis role="comment"># Extend query window to always show mail matching these terms.</emphasis>
+set nm_query_window_or_terms="tag:unread and tag:flagged"
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 <emphasis role="comment"># FUNCTIONS – shown with an example mapping</emphasis>
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
