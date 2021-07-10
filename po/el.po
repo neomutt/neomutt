@@ -7428,15 +7428,15 @@ msgstr "Κανένα γραμματοκιβώτιο.\n"
 
 #: send/send.c:1956
 msgid "Can't postpone.  $postponed is unset"
-msgstr ""
+msgstr "Δεν είναι δυνατή η αναβολή. Το $postponed δεν έχει τεθεί."
 
 #: send/send.c:1995 send/send.c:2011
 msgid "Error encrypting message. Check your crypt settings."
-msgstr ""
+msgstr "Σφάλμα κατά την κρυπτογράφηση του μηνύματος. Ελέγξατε τις ρυθμίσεις crypto σας."
 
 #: send/send.c:2104
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
-msgstr ""
+msgstr "Το μύνημα περιέχει κείμενο που ταιριάζει το \"$abort_noattach_regex\". Δεν εστάλει."
 
 #: send/send.c:2110
 #, fuzzy
@@ -7449,11 +7449,11 @@ msgstr "Ανάκληση αναβληθέντος μηνύματος;"
 
 #: send/send.c:2419
 msgid "Refusing to send an empty email"
-msgstr ""
+msgstr "Αδύνατον να σταλεί κενό email"
 
 #: send/send.c:2420
 msgid "Try: echo | neomutt -s 'subject' user@example.com"
-msgstr ""
+msgstr "Δοκιμάστε: echo | neomutt -s 'θέμα' user@example.com "
 
 #: send/send.c:2505
 msgid "Edit forwarded message?"
@@ -7507,7 +7507,7 @@ msgstr "Αποστολή στο παρασκήνιο"
 
 #: send/send.c:2908
 msgid "Article posted"
-msgstr ""
+msgstr "Το άρθρο δημοσιεύτηκε"
 
 #: send/send.c:2909
 msgid "Mail sent"
@@ -7535,7 +7535,7 @@ msgstr "Λανθασμένη διεθνής διεύθυνση IDN %s κατά �
 
 #: send/sendmail.c:324
 msgid "$sendmail must be set in order to send mail"
-msgstr ""
+msgstr "Το $sendmail πρέπει να έχε τεθεί για να σταλεί mail"
 
 #: send/sendmail.c:432
 #, c-format
@@ -7568,7 +7568,7 @@ msgstr "Αυθεντικοποίηση GSSAPI απέτυχε"
 
 #: send/smtp.c:860
 msgid "SMTP server does not support authentication"
-msgstr ""
+msgstr "Ο διακομιστής SMTP δεν υποστιρίζει την αυθεντικοποίηση"
 
 #: send/smtp.c:908
 msgid "No from address given"
@@ -7576,15 +7576,15 @@ msgstr ""
 
 #: send/smtp.c:975
 msgid "SMTP session failed: read error"
-msgstr ""
+msgstr "Απέτυχε η συνεδρία SMTP: σφάλμα read"
 
 #: send/smtp.c:977
 msgid "SMTP session failed: write error"
-msgstr ""
+msgstr "Απέτυχε η συνεδρία SMTP: σφάλμα write"
 
 #: send/smtp.c:979
 msgid "Invalid server response"
-msgstr ""
+msgstr "Μη έγκυρη απάντηση από τον διακομιστή"
 
 #: sort.c:400
 msgid "Sorting mailbox..."
@@ -7602,7 +7602,8 @@ msgstr "(κανένα γραμματοκιβώτιο)"
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
-msgstr ""
+msgstr "Πολλοί άλλοι που δεν αναφέρονται εδώ έχουν συνεισφέρει\n"
+"κώδικα, διορθώσεις και προτάσεις.\n"
 
 #: version.c:89
 msgid ""
