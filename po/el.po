@@ -2334,7 +2334,7 @@ msgstr "Ορίστε την επιλογή %s πριν ορίσετε την %s"
 #: hcache/config.c:103 send/config.c:51
 #, c-format
 msgid "Option %s must be between %d and %d inclusive"
-msgstr "Η επιλογή πρέπει να είναι από %d έως %d"
+msgstr "Η επιλογή %s πρέπει να είναι από %d έως %d"
 
 #: help.c:344
 msgid "ERROR: please report this bug"
