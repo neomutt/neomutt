@@ -8,7 +8,7 @@
 # Simos Xenitellis <S.Xenitellis@rhbnc.ac.uk>, 2005
 # kromJx <kromJx@crosswinds.net>, 2005
 # ta_panta_rei <ta_panta_rei@flashmail.com>, 2005
-# Christos Margiolis <christos@christosmarg.xyz>, 2021
+# Christos Margiolis <christos@margiolis.net>, 2021
 #
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2021-06-19 23:57+0100\n"
 "PO-Revision-Date: 2021-05-09 00:47GMT+3\n"
-"Last-Translator: Christos Margiolis <christos@christosmarg.xyz>\n"
+"Last-Translator: Christos Margiolis <christos@margiolis.net>\n"
 "Language-Team: Greek <EL@li.org>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
@@ -2225,13 +2225,13 @@ msgstr "[-- όνομα: %s --]\n"
 #. each line should start with "[-- " and end with " --]".
 #. The "%s/%s" is a MIME type, e.g. "text/plain".
 #: handler.c:888
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr ""
-"[-- Αυτή η %s/%s προσάρτηση δεν περιλαμβάνετε, --]\n"
+"[-- Αυτό το %s/%s συνημμένο δεν περιλαμβάνεται, --]\n"
 "[-- και η ενδεδειγμένη εξωτερική πηγή έχει --]\n"
 "[-- λήξει. --]\n"
 
@@ -2241,13 +2241,13 @@ msgstr ""
 #. access-type is an access-type as defined by the MIME RFCs, e.g. "FTP",
 #. "LOCAL-FILE", "MAIL-SERVER".
 #: handler.c:909
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
-"[-- Αυτή η %s/%s προσάρτηση δεν περιλαμβάνετε, --]\n"
-"[-- και το ενδεδειγμένο access-type %s δεν υποστηρίζεται --]\n"
+"[-- Αυτό το %s/%s συνημμένο δεν περιλαμβάνεται, --]\n"
+"[-- και ο ενδεδειγμένος τύπος πρόσβασης %s δεν υποστηρίζεται --]\n"
 
 #: handler.c:1102
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
@@ -2255,14 +2255,14 @@ msgstr "[-- Σφάλμα: Αδυναμία απεικόνισης σε όλα τ
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1245
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Attachment #%d: %s --]\n"
-msgstr "[-- Προσάρτηση #%d: %s --]\n"
+msgstr "[-- Συνημμένο #%d: %s --]\n"
 
 #: handler.c:1251
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Attachment #%d --]\n"
-msgstr "[-- Προσάρτηση #%d --]\n"
+msgstr "[-- Συνημμένο #%d --]\n"
 
 #: handler.c:1270
 #, fuzzy
