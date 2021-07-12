@@ -69,8 +69,8 @@ const int dialog_row_len = 128;
  * 3.4 (2015-04).  TLS 1.3 support wasn't added until version 3.6.5.
  * Therefore, no attempt is made to support $ssl_use_tlsv1_3 in this code.
  */
-static const int protocol_priority[] = { GNUTLS_TLS1_2, GNUTLS_TLS1_1,
-                                         GNUTLS_TLS1, GNUTLS_SSL3, 0 };
+static int protocol_priority[] = { GNUTLS_TLS1_2, GNUTLS_TLS1_1, GNUTLS_TLS1,
+                                   GNUTLS_SSL3, 0 };
 #endif
 
 /**
@@ -868,12 +868,6 @@ static int tls_set_priority(struct TlsSockData *data)
   {
     mutt_error(
         _("Explicit ciphersuite selection via $ssl_ciphers not supported"));
-  }
-  if (certerr & CERTERR_INSECUREALG)
-  {
-    row++;
-    strfcpy(menu->dialog[row], _("Warning: Server certificate was signed using an insecure algorithm"),
-            dialog_row_len);
   }
 
   /* We use default priorities (see gnutls documentation),
