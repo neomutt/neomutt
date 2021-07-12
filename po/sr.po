@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: neomutt 20210205\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2021-06-19 23:57+0100\n"
-"PO-Revision-Date: 2021-06-21 08:12+0200\n"
+"PO-Revision-Date: 2021-07-12 16:48+0200\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: poe v0.5-alpha-12-gf812d1c\n"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:397
@@ -739,12 +739,12 @@ msgstr "Не може се користити префикс при постав
 
 #: command_parse.c:828
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
-msgstr "Префикси „no“ и „inv“ се могу користити само са bool/quad променљивама"
+msgstr "Префикси „no“ и „inv“ се могу користити само са bool/quad променљивим"
 
 #: command_parse.c:833
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
-msgstr "Наредба „%s“ се може користити само са bool/quad променљивама"
+msgstr "Наредба „%s“ се може користити само са bool/quad променљивим"
 
 #: command_parse.c:1116
 #, c-format
@@ -4021,45 +4021,25 @@ msgstr "Покушај извлачења S/MIME сертификата..."
 
 #: ncrypt/crypt.c:1174
 #, c-format
-msgid ""
-"[-- Error: Unknown multipart/signed protocol %s --]\n"
-"\n"
-msgstr ""
-"[-- Грешка: Непознати multipart/signed протокол %s --]\n"
-"\n"
+msgid "[-- Error: Unknown multipart/signed protocol %s --]\n\n"
+msgstr "[-- Грешка: Непознати multipart/signed протокол %s --]\n\n"
 
 #: ncrypt/crypt.c:1213
-msgid ""
-"[-- Error: Missing or bad-format multipart/signed signature --]\n"
-"\n"
-msgstr ""
-"[-- Грешка: multipart/signed потпис је непостојећи или лошег формата --]\n"
-"\n"
+msgid "[-- Error: Missing or bad-format multipart/signed signature --]\n\n"
+msgstr "[-- Грешка: multipart/signed потпис је непостојећи или лошег формата --]\n\n"
 
 #: ncrypt/crypt.c:1253
 #, c-format
-msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Упозорење: Потписи %s/%s се не могу верификовати. --]\n"
-"\n"
+msgid "[-- Warning: We can't verify %s/%s signatures. --]\n\n"
+msgstr "[-- Упозорење: Потписи %s/%s се не могу верификовати. --]\n\n"
 
 #: ncrypt/crypt.c:1266
-msgid ""
-"[-- The following data is signed --]\n"
-"\n"
-msgstr ""
-"[-- Следећи подаци су потписани --]\n"
-"\n"
+msgid "[-- The following data is signed --]\n\n"
+msgstr "[-- Следећи подаци су потписани --]\n\n"
 
 #: ncrypt/crypt.c:1275
-msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Упозорење: Није пронађен ниједан потпис. --]\n"
-"\n"
+msgid "[-- Warning: Can't find any signatures. --]\n\n"
+msgstr "[-- Упозорење: Није пронађен ниједан потпис. --]\n\n"
 
 #: ncrypt/crypt.c:1282
 msgid ""
@@ -4260,21 +4240,13 @@ msgstr "*** Крај нотације ***\n"
 
 #: ncrypt/crypt_gpgme.c:2018 ncrypt/crypt_gpgme.c:2176
 #: ncrypt/crypt_gpgme.c:2966
-msgid ""
-"[-- End signature information --]\n"
-"\n"
-msgstr ""
-"[-- Крај информација о потпису --]\n"
-"\n"
+msgid "[-- End signature information --]\n\n"
+msgstr "[-- Крај информација о потпису --]\n\n"
 
 #: ncrypt/crypt_gpgme.c:2136
 #, c-format
-msgid ""
-"[-- Error: decryption failed: %s --]\n"
-"\n"
-msgstr ""
-"[-- Грешка: дешифровање неуспешно: %s --]\n"
-"\n"
+msgid "[-- Error: decryption failed: %s --]\n\n"
+msgstr "[-- Грешка: дешифровање неуспешно: %s --]\n\n"
 
 #: ncrypt/crypt_gpgme.c:2691
 #, c-format
@@ -4296,24 +4268,16 @@ msgid "Error: copy data failed\n"
 msgstr "Грешка: неуспешно копирање података\n"
 
 #: ncrypt/crypt_gpgme.c:2991 ncrypt/pgp.c:678
-msgid ""
-"[-- BEGIN PGP MESSAGE --]\n"
-"\n"
-msgstr ""
-"[-- ПОЧЕТАК PGP ПОРУКЕ --]\n"
-"\n"
+msgid "[-- BEGIN PGP MESSAGE --]\n\n"
+msgstr "[-- ПОЧЕТАК PGP ПОРУКЕ --]\n\n"
 
 #: ncrypt/crypt_gpgme.c:2993 ncrypt/pgp.c:680
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- ПОЧЕТАК PGP БЛОКА ЈАВНОГ КЉУЧА --]\n"
 
 #: ncrypt/crypt_gpgme.c:2995 ncrypt/pgp.c:682
-msgid ""
-"[-- BEGIN PGP SIGNED MESSAGE --]\n"
-"\n"
-msgstr ""
-"[-- ПОЧЕТАК PGP ПОТПИСАНЕ ПОРУКЕ --]\n"
-"\n"
+msgid "[-- BEGIN PGP SIGNED MESSAGE --]\n\n"
+msgstr "[-- ПОЧЕТАК PGP ПОТПИСАНЕ ПОРУКЕ --]\n\n"
 
 #: ncrypt/crypt_gpgme.c:3022 ncrypt/pgp.c:720
 msgid "[-- END PGP MESSAGE --]\n"
@@ -4328,32 +4292,20 @@ msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- КРАЈ PGP ПОТПИСАНЕ ПОРУКЕ --]\n"
 
 #: ncrypt/crypt_gpgme.c:3047 ncrypt/pgp.c:769
-msgid ""
-"[-- Error: could not find beginning of PGP message --]\n"
-"\n"
-msgstr ""
-"[-- Грешка: не може се одредити почетак PGP поруке --]\n"
-"\n"
+msgid "[-- Error: could not find beginning of PGP message --]\n\n"
+msgstr "[-- Грешка: не може се одредити почетак PGP поруке --]\n\n"
 
 #: ncrypt/crypt_gpgme.c:3075 ncrypt/crypt_gpgme.c:3175 ncrypt/pgp.c:1226
 msgid "[-- Error: could not create temporary file --]\n"
 msgstr "[-- Грешка: не може се креирати привремена датотека --]\n"
 
 #: ncrypt/crypt_gpgme.c:3089
-msgid ""
-"[-- The following data is PGP/MIME signed and encrypted --]\n"
-"\n"
-msgstr ""
-"[-- Следећи подаци су потписани и шифровани преко PGP/MIME-а --]\n"
-"\n"
+msgid "[-- The following data is PGP/MIME signed and encrypted --]\n\n"
+msgstr "[-- Следећи подаци су потписани и шифровани преко PGP/MIME-а --]\n\n"
 
 #: ncrypt/crypt_gpgme.c:3091 ncrypt/pgp.c:1240
-msgid ""
-"[-- The following data is PGP/MIME encrypted --]\n"
-"\n"
-msgstr ""
-"[-- Следећи подаци су шифровани преко PGP/MIME-а --]\n"
-"\n"
+msgid "[-- The following data is PGP/MIME encrypted --]\n\n"
+msgstr "[-- Следећи подаци су шифровани преко PGP/MIME-а --]\n\n"
 
 #: ncrypt/crypt_gpgme.c:3131
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
@@ -4369,20 +4321,12 @@ msgid "Could not decrypt PGP message"
 msgstr "Дешифровање PGP поруке није могуће"
 
 #: ncrypt/crypt_gpgme.c:3189
-msgid ""
-"[-- The following data is S/MIME signed --]\n"
-"\n"
-msgstr ""
-"[-- Следећи подаци су потписани преко S/MIME-а--]\n"
-"\n"
+msgid "[-- The following data is S/MIME signed --]\n\n"
+msgstr "[-- Следећи подаци су потписани преко S/MIME-а--]\n\n"
 
 #: ncrypt/crypt_gpgme.c:3190
-msgid ""
-"[-- The following data is S/MIME encrypted --]\n"
-"\n"
-msgstr ""
-"[-- Следећи подаци су шифровани преко S/MIME-а --]\n"
-"\n"
+msgid "[-- The following data is S/MIME encrypted --]\n\n"
+msgstr "[-- Следећи подаци су шифровани преко S/MIME-а --]\n\n"
 
 #: ncrypt/crypt_gpgme.c:3237
 msgid "[-- End of S/MIME signed data --]\n"
@@ -4796,12 +4740,8 @@ msgid "[-- Error: unable to create PGP subprocess --]\n"
 msgstr "[-- Грешка: не може се креирати PGP потпроцес --]\n"
 
 #: ncrypt/pgp.c:645 ncrypt/pgp.c:931 ncrypt/pgp.c:1091
-msgid ""
-"[-- End of PGP output --]\n"
-"\n"
-msgstr ""
-"[-- Крај PGP излаза --]\n"
-"\n"
+msgid "[-- End of PGP output --]\n\n"
+msgstr "[-- Крај PGP излаза --]\n\n"
 
 #. L10N: You will see this error message if (1) you are decrypting
 #. (not encrypting) something and (2) it is a plaintext. So the
@@ -4815,12 +4755,8 @@ msgid "Internal error.  Please submit a bug report."
 msgstr "Интерна грешка:  Пошаљите пријаву грешке."
 
 #: ncrypt/pgp.c:1048
-msgid ""
-"[-- Error: could not create a PGP subprocess --]\n"
-"\n"
-msgstr ""
-"[-- Грешка: не може се креирати PGP потпроцес --]\n"
-"\n"
+msgid "[-- Error: could not create a PGP subprocess --]\n\n"
+msgstr "[-- Грешка: не може се креирати PGP потпроцес --]\n\n"
 
 #: ncrypt/pgp.c:1078 ncrypt/pgp.c:1105 ncrypt/smime.c:1967 postpone.c:797
 #: postpone.c:825
@@ -4965,12 +4901,8 @@ msgid "Can't open OpenSSL subprocess"
 msgstr "Не може се отворити OpenSSL потпроцес"
 
 #: ncrypt/smime.c:1827 ncrypt/smime.c:1947
-msgid ""
-"[-- End of OpenSSL output --]\n"
-"\n"
-msgstr ""
-"[-- Крај OpenSSL излаза --]\n"
-"\n"
+msgid "[-- End of OpenSSL output --]\n\n"
+msgstr "[-- Крај OpenSSL излаза --]\n\n"
 
 #: ncrypt/smime.c:1904 ncrypt/smime.c:1917
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
@@ -7470,3 +7402,4 @@ msgstr "Подразумеване опције:"
 #: version.c:514
 msgid "Compile options:"
 msgstr "Опције за компајлирање:"
+
