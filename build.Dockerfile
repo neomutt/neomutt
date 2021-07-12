@@ -1,4 +1,4 @@
-FROM  ghcr.io/nixmark/neomutt-base:latest
+FROM  ghcr.io/neomutt/neomutt-base:latest
 
 ENV NEOMUTT_TEST_DIR="/neomutt/neomutt-test-files"
 
