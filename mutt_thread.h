@@ -71,12 +71,25 @@ enum MessageInThread
   MIT_POSITION,     // Our position in the thread
 };
 
+/**
+ * enum UseThreads - Which threading style is active
+ */
+enum UseThreads
+{
+  UT_FLAT,      ///< Unthreaded
+  UT_THREADS,   ///< Normal threading (root above subthreads)
+  UT_REVERSE,   ///< Reverse threading (subthreads above root)
+};
+
 int mutt_traverse_thread(struct Email *e, MuttThreadFlags flag);
 #define mutt_collapse_thread(e)         mutt_traverse_thread(e, MUTT_THREAD_COLLAPSE)
 #define mutt_uncollapse_thread(e)       mutt_traverse_thread(e, MUTT_THREAD_UNCOLLAPSE)
 #define mutt_thread_contains_unread(e)  mutt_traverse_thread(e, MUTT_THREAD_UNREAD)
 #define mutt_thread_contains_flagged(e) mutt_traverse_thread(e, MUTT_THREAD_FLAGGED)
 #define mutt_thread_next_unread(e)      mutt_traverse_thread(e, MUTT_THREAD_NEXT_UNREAD)
+
+enum UseThreads mutt_thread_style(void);
+#define mutt_using_threads() (mutt_thread_style() > UT_FLAT)
 
 int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads);
 #define mutt_next_thread(e)        mutt_aside_thread(e, true,  false)

@@ -37,6 +37,7 @@
 #include "mutt.h"
 #include "index/lib.h"
 #include "keymap.h"
+#include "mutt_thread.h"
 #include "protos.h"
 
 /**
@@ -377,8 +378,7 @@ int mutt_thread_set_flag(struct Mailbox *m, struct Email *e,
   struct MuttThread *start = NULL;
   struct MuttThread *cur = e->thread;
 
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if ((c_sort & SORT_MASK) != SORT_THREADS)
+  if (!mutt_using_threads())
   {
     mutt_error(_("Threading is not enabled"));
     return -1;

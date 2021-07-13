@@ -446,8 +446,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
   char fmt[128], tmp[1024];
   char *p = NULL, *tags = NULL;
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  int threads = ((c_sort & SORT_MASK) == SORT_THREADS);
+  const bool threads = mutt_using_threads();
   int is_index = (flags & MUTT_FORMAT_INDEX);
   size_t colorlen;
 

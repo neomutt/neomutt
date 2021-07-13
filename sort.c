@@ -397,9 +397,8 @@ void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads,
   if (init)
     mutt_clear_threads(threads);
 
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  const short c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
-  if ((c_sort & SORT_MASK) == SORT_THREADS)
+  const bool threaded = mutt_using_threads();
+  if (threaded)
   {
     mutt_sort_threads(threads, init);
   }
@@ -407,8 +406,8 @@ void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads,
   {
     struct EmailCompare cmp;
     cmp.type = mx_type(m);
-    cmp.sort = c_sort;
-    cmp.sort_aux = c_sort_aux;
+    cmp.sort = cs_subset_sort(NeoMutt->sub, "sort");
+    cmp.sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
     mutt_qsort_r((void *) m->emails, m->msg_count, sizeof(struct Email *),
                  compare_email_shim, &cmp);
   }
@@ -431,7 +430,7 @@ void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads,
   }
 
   /* re-collapse threads marked as collapsed */
-  if ((c_sort & SORT_MASK) == SORT_THREADS)
+  if (threaded)
   {
     mutt_thread_collapse_collapsed(threads);
     *vsize = mutt_set_vnum(m);

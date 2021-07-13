@@ -55,6 +55,22 @@ struct ThreadsContext
 };
 
 /**
+ * mutt_thread_style - Which threading style is active?
+ * @retval UT_FLAT    No threading in use
+ * @retval UT_THREADS Normal threads (root above subthread)
+ * @retval UT_REVERSE Reverse threads (subthread above root)
+ */
+enum UseThreads mutt_thread_style(void)
+{
+  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  if ((c_sort & SORT_MASK) != SORT_THREADS)
+    return UT_FLAT;
+  if (c_sort & SORT_REVERSE)
+    return UT_REVERSE;
+  return UT_THREADS;
+}
+
+/**
  * is_visible - Is the message visible?
  * @param e   Email
  * @retval true The message is not hidden in some way
@@ -126,9 +142,9 @@ static void linearize_tree(struct ThreadsContext *tctx)
 
   struct Mailbox *m = tctx->mailbox;
 
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const bool reverse = (mutt_thread_style() == UT_REVERSE);
   struct MuttThread *tree = tctx->tree;
-  struct Email **array = m->emails + ((c_sort & SORT_REVERSE) ? m->msg_count - 1 : 0);
+  struct Email **array = m->emails + (reverse ? m->msg_count - 1 : 0);
 
   while (tree)
   {
@@ -136,7 +152,7 @@ static void linearize_tree(struct ThreadsContext *tctx)
       tree = tree->child;
 
     *array = tree->message;
-    array += (c_sort & SORT_REVERSE) ? -1 : 1;
+    array += reverse ? -1 : 1;
 
     if (tree->child)
       tree = tree->child;
@@ -318,9 +334,9 @@ void mutt_thread_ctx_free(struct ThreadsContext **tctx)
 void mutt_draw_tree(struct ThreadsContext *tctx)
 {
   char *pfx = NULL, *mypfx = NULL, *arrow = NULL, *myarrow = NULL, *new_tree = NULL;
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  enum TreeChar corner = (c_sort & SORT_REVERSE) ? MUTT_TREE_ULCORNER : MUTT_TREE_LLCORNER;
-  enum TreeChar vtee = (c_sort & SORT_REVERSE) ? MUTT_TREE_BTEE : MUTT_TREE_TTEE;
+  const bool reverse = (mutt_thread_style() == UT_REVERSE);
+  enum TreeChar corner = reverse ? MUTT_TREE_ULCORNER : MUTT_TREE_LLCORNER;
+  enum TreeChar vtee = reverse ? MUTT_TREE_BTEE : MUTT_TREE_TTEE;
   const bool c_narrow_tree = cs_subset_bool(NeoMutt->sub, "narrow_tree");
   int depth = 0, start_depth = 0, max_depth = 0, width = c_narrow_tree ? 1 : 2;
   struct MuttThread *nextdisp = NULL, *pseudo = NULL, *parent = NULL;
@@ -1122,8 +1138,8 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
   struct MuttThread *cur = NULL;
   struct Email *e_tmp = NULL;
 
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if ((c_sort & SORT_MASK) != SORT_THREADS)
+  const enum UseThreads threaded = mutt_thread_style();
+  if (threaded == UT_FLAT)
   {
     mutt_error(_("Threading is not enabled"));
     return e->vnum;
@@ -1133,7 +1149,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
 
   if (subthreads)
   {
-    if (forwards ^ ((c_sort & SORT_REVERSE) != 0))
+    if (forwards ^ (threaded == UT_REVERSE))
     {
       while (!cur->next && cur->parent)
         cur = cur->parent;
@@ -1150,7 +1166,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
       cur = cur->parent;
   }
 
-  if (forwards ^ ((c_sort & SORT_REVERSE) != 0))
+  if (forwards ^ (threaded == UT_REVERSE))
   {
     do
     {
@@ -1189,8 +1205,7 @@ int mutt_parent_message(struct Email *e, bool find_root)
   struct MuttThread *thread = NULL;
   struct Email *e_parent = NULL;
 
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if ((c_sort & SORT_MASK) != SORT_THREADS)
+  if (!mutt_using_threads())
   {
     mutt_error(_("Threading is not enabled"));
     return e->vnum;
@@ -1270,13 +1285,13 @@ int mutt_traverse_thread(struct Email *e_cur, MuttThreadFlags flag)
 {
   struct MuttThread *thread = NULL, *top = NULL;
   struct Email *e_root = NULL;
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  int final, reverse = (c_sort & SORT_REVERSE), minmsgno;
+  const enum UseThreads threaded = mutt_thread_style();
+  int final, reverse = (threaded == UT_REVERSE), minmsgno;
   int num_hidden = 0, new_mail = 0, old_mail = 0;
   bool flagged = false;
   int min_unread_msgno = INT_MAX, min_unread = e_cur->vnum;
 
-  if ((c_sort & SORT_MASK) != SORT_THREADS)
+  if (threaded == UT_FLAT)
   {
     mutt_error(_("Threading is not enabled"));
     return e_cur->vnum;
@@ -1485,8 +1500,8 @@ int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, enum MessageInTh
   struct MuttThread *threads[2];
   int rc;
 
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if (((c_sort & SORT_MASK) != SORT_THREADS) || !e->thread)
+  const enum UseThreads threaded = mutt_thread_style();
+  if ((threaded == UT_FLAT) || !e->thread)
     return 1;
 
   threads[0] = e->thread;
@@ -1501,7 +1516,7 @@ int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, enum MessageInTh
       threads[i] = threads[i]->child;
   }
 
-  if (c_sort & SORT_REVERSE)
+  if (threaded == UT_REVERSE)
     rc = threads[0]->message->msgno - (threads[1] ? threads[1]->message->msgno : -1);
   else
   {
