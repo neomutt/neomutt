@@ -357,7 +357,7 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
   if (!buf || !name)
     return;
 
-  char in[1024], scratch[1024];
+  char in[1024], scratch[1024 + 10];
 
   mutt_str_copy(in, name, sizeof(in));
   char *ext = strchr(in, '/');
