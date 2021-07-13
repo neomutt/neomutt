@@ -451,7 +451,13 @@ char *mutt_ch_get_default_charset(void)
   if (c)
   {
     c1 = strchr(c, ':');
-    mutt_str_copy(fcharset, c, c1 ? (c1 - c + 1) : sizeof(fcharset));
+
+    size_t copysize;
+    if (c1)
+      copysize = MIN((c1 - c + 1), sizeof(fcharset));
+    else
+      copysize = sizeof(fcharset);
+    mutt_str_copy(fcharset, c, copysize);
     return fcharset;
   }
   return strcpy(fcharset, "us-ascii");
