@@ -82,7 +82,7 @@ static const struct Mapping AutocryptAcctHelp[] = {
 };
 
 /**
- * account_format_str - Format a string for the Autocrypt account list - Implements ::format_t
+ * autocrypt_format_str - Format a string for the Autocrypt account list - Implements ::format_t
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------
@@ -92,10 +92,10 @@ static const struct Mapping AutocryptAcctHelp[] = {
  * | \%p     | Prefer-encrypt flag
  * | \%s     | Status flag (active/inactive)
  */
-static const char *account_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                      char op, const char *src, const char *prec,
-                                      const char *if_str, const char *else_str,
-                                      intptr_t data, MuttFormatFlags flags)
+static const char *autocrypt_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                        char op, const char *src, const char *prec,
+                                        const char *if_str, const char *else_str,
+                                        intptr_t data, MuttFormatFlags flags)
 {
   struct AccountEntry *entry = (struct AccountEntry *) data;
   char tmp[128];
@@ -147,23 +147,23 @@ static const char *account_format_str(char *buf, size_t buflen, size_t col, int 
 }
 
 /**
- * account_make_entry - Create a line for the Autocrypt account menu - Implements Menu::make_entry()
+ * autocrypt_make_entry - Create a line for the Autocrypt account menu - Implements Menu::make_entry()
  */
-static void account_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
+static void autocrypt_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
 {
   struct AccountEntry *entry = &((struct AccountEntry *) menu->mdata)[num];
 
   const char *const c_autocrypt_acct_format =
       cs_subset_string(NeoMutt->sub, "autocrypt_acct_format");
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
-                      NONULL(c_autocrypt_acct_format), account_format_str,
+                      NONULL(c_autocrypt_acct_format), autocrypt_format_str,
                       (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
- * ac_menu_free - Free the Autocrypt account Menu - Implements Menu::mdata_free()
+ * autocrypt_menu_free - Free the Autocrypt account Menu - Implements Menu::mdata_free()
  */
-static void ac_menu_free(struct Menu *menu, void **ptr)
+static void autocrypt_menu_free(struct Menu *menu, void **ptr)
 {
   struct AccountEntry *entries = *ptr;
 
@@ -190,7 +190,7 @@ static struct Menu *create_menu(struct MuttWindow *dlg)
     return NULL;
 
   struct Menu *menu = dlg->wdata;
-  menu->make_entry = account_make_entry;
+  menu->make_entry = autocrypt_make_entry;
   /* menu->tag = account_tag; */
 
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
@@ -200,7 +200,7 @@ static struct Menu *create_menu(struct MuttWindow *dlg)
   struct AccountEntry *entries =
       mutt_mem_calloc(num_accounts, sizeof(struct AccountEntry));
   menu->mdata = entries;
-  menu->mdata_free = ac_menu_free;
+  menu->mdata_free = autocrypt_menu_free;
   menu->max = num_accounts;
 
   for (int i = 0; i < num_accounts; i++)
@@ -208,7 +208,7 @@ static struct Menu *create_menu(struct MuttWindow *dlg)
     entries[i].num = i + 1;
     /* note: we are transferring the account pointer to the entries
      * array, and freeing the accounts array below.  the account
-     * will be freed in ac_menu_free().  */
+     * will be freed in autocrypt_menu_free().  */
     entries[i].account = accounts[i];
 
     entries[i].addr = mutt_addr_new();
