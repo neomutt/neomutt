@@ -1534,7 +1534,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
 
   FILE *fp = NULL;
   char buf[2048] = { 0 };
-  char internaldate[IMAP_DATELEN] = { 0 };
+  struct Buffer *internaldate = NULL;
   char imap_flags[128] = { 0 };
   size_t len;
   struct Progress *progress = NULL;
@@ -1573,7 +1573,8 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
     progress_set_message(progress, _("Uploading message..."));
   }
 
-  mutt_date_make_imap(internaldate, sizeof(internaldate), msg->received);
+  internaldate = buf_pool_get();
+  mutt_date_make_imap(internaldate, msg->received);
 
   imap_flags[0] = '\0';
   imap_flags[1] = '\0';
@@ -1588,7 +1589,8 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
     mutt_str_cat(imap_flags, sizeof(imap_flags), " \\Draft");
 
   snprintf(buf, sizeof(buf), "APPEND %s (%s) \"%s\" {%lu}", mdata->munge_name,
-           imap_flags + 1, internaldate, (unsigned long) len);
+           imap_flags + 1, buf_string(internaldate), (unsigned long) len);
+  buf_pool_release(&internaldate);
 
   imap_cmd_start(adata, buf);
 

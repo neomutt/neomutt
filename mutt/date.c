@@ -804,13 +804,10 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
 /**
  * mutt_date_make_imap - Format date in IMAP style: DD-MMM-YYYY HH:MM:SS +ZZzz
  * @param buf       Buffer to store the results
- * @param buflen    Length of buffer
  * @param timestamp Time to format
  * @retval num Characters written to buf
- *
- * Caller should provide a buffer of at least 27 bytes.
  */
-int mutt_date_make_imap(char *buf, size_t buflen, time_t timestamp)
+int mutt_date_make_imap(struct Buffer *buf, time_t timestamp)
 {
   if (!buf)
     return -1;
@@ -820,9 +817,9 @@ int mutt_date_make_imap(char *buf, size_t buflen, time_t timestamp)
 
   tz /= 60;
 
-  return snprintf(buf, buflen, "%02d-%s-%d %02d:%02d:%02d %+03d%02d",
-                  tm.tm_mday, Months[tm.tm_mon], tm.tm_year + 1900, tm.tm_hour,
-                  tm.tm_min, tm.tm_sec, tz / 60, abs(tz) % 60);
+  return buf_printf(buf, "%02d-%s-%d %02d:%02d:%02d %+03d%02d", tm.tm_mday,
+                    Months[tm.tm_mon], tm.tm_year + 1900, tm.tm_hour, tm.tm_min,
+                    tm.tm_sec, tz / 60, abs(tz) % 60);
 }
 
 /**

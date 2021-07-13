@@ -64,7 +64,7 @@ size_t    mutt_date_localtime_format_locale(char *buf, size_t buflen, const char
 struct tm mutt_date_localtime(time_t t);
 int       mutt_date_local_tz(time_t t);
 void      mutt_date_make_date(struct Buffer *buf, bool local);
-int       mutt_date_make_imap(char *buf, size_t buflen, time_t timestamp);
+int       mutt_date_make_imap(struct Buffer *buf, time_t timestamp);
 time_t    mutt_date_make_time(struct tm *t, bool local);
 int       mutt_date_make_tls(char *buf, size_t buflen, time_t timestamp);
 void      mutt_date_normalize_time(struct tm *tm);
