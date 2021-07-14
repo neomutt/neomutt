@@ -136,11 +136,11 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
  */
 int mutt_mailbox_check(struct Mailbox *m_cur, int force)
 {
-  struct stat contex_sb;
+  struct stat ctx_st;
   time_t t;
   bool check_stats = false;
-  contex_sb.st_dev = 0;
-  contex_sb.st_ino = 0;
+  ctx_st.st_dev = 0;
+  ctx_st.st_ino = 0;
 
 #ifdef USE_IMAP
   /* update postponed count as well, on force */
@@ -178,10 +178,10 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
 #ifdef USE_NNTP
       || (m_cur->type == MUTT_NNTP)
 #endif
-      || stat(mailbox_path(m_cur), &contex_sb) != 0)
+      || stat(mailbox_path(m_cur), &ctx_st) != 0)
   {
-    contex_sb.st_dev = 0;
-    contex_sb.st_ino = 0;
+    ctx_st.st_dev = 0;
+    ctx_st.st_ino = 0;
   }
 
   struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
@@ -192,7 +192,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
     if (np->mailbox->flags & MB_HIDDEN)
       continue;
 
-    mailbox_check(m_cur, np->mailbox, &contex_sb,
+    mailbox_check(m_cur, np->mailbox, &ctx_st,
                   check_stats || (!np->mailbox->first_check_stats_done && c_mail_check_stats));
     np->mailbox->first_check_stats_done = true;
   }
