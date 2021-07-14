@@ -2625,7 +2625,7 @@ msgstr "Σφάλμα κατά  το άνοιγμα του γραμματοκιβ
 
 #: imap/imap.c:2262
 msgid "IMAP server doesn't support custom flags"
-msgstr ""
+msgstr "Ο διακομιστής IMAP δεν υποστηρίζει προσαρμοσμένες σημαίες"
 
 #: imap/imap.c:2306
 msgid "Invalid IMAP flags"
@@ -2634,7 +2634,7 @@ msgstr "Μη έγκυρες σημαίες IMAP"
 #. L10N: This prompt is made if the user hits Ctrl-C when opening an IMAP mailbox
 #: imap/message.c:491
 msgid "Abort download and close mailbox?"
-msgstr ""
+msgstr "Ματαίωση λήψης και κλήσιμο του γραμματοκιβωτίου;"
 
 #. L10N: Comparing the cached data with the IMAP server's data
 #: imap/message.c:675 imap/message.c:817
@@ -2697,7 +2697,7 @@ msgstr ""
 #: imap/search.c:186
 #, c-format
 msgid "Server-side custom search not supported: %s"
-msgstr ""
+msgstr "H πλευρά του διακομιστή δεν υποστηρίζει εξατομικευμένη αναζήτηση: %s"
 
 #: imap/util.c:657
 msgid "Continue?"
@@ -2721,12 +2721,11 @@ msgstr "Ομάδα"
 
 #: index/dlg_index.c:131 pager/dlg_pager.c:218
 msgid "Post"
-msgstr ""
+msgstr "Δημοσίευση"
 
 #: index/dlg_index.c:132 pager/dlg_pager.c:219
-#, fuzzy
 msgid "Followup"
-msgstr "Συνέχεια στο %s%s;"
+msgstr "Συνέχεια"
 
 #: index/dlg_index.c:169 index/dlg_index.c:1404
 msgid "No mailbox is open"
@@ -2752,7 +2751,7 @@ msgstr "Η λειτουργία απαγορεύεται στην κατάστα
 #: index/dlg_index.c:219 pager/dlg_pager.c:305
 #, c-format
 msgid "%s: Operation not permitted by ACL"
-msgstr ""
+msgstr "%s: Η λειτουργία δεν επιτρέπεται από το ACL"
 
 #: index/dlg_index.c:395
 msgid "Can't toggle write on a readonly mailbox"
@@ -2768,7 +2767,7 @@ msgstr "Οι αλλαγές στο φάκελο δεν θα γραφούν"
 
 #: index/dlg_index.c:795
 msgid "Failed to create query, aborting"
-msgstr ""
+msgstr "Σφάλμα κατά την δημιουργία ερωτήματος. Ματαίωση"
 
 #: index/dlg_index.c:843 muttlib.c:1404 mx.c:221 mx.c:359
 #, c-format
@@ -2817,11 +2816,11 @@ msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή
 #: index/dlg_index.c:1552 nntp/nntp.c:2650
 #, c-format
 msgid "Article %s not found on the server"
-msgstr ""
+msgstr "Το άρθρο %s δεν μπορεί να βρεθεί στον διακομιστή"
 
 #: index/dlg_index.c:1579
 msgid "No Message-Id. Unable to perform operation."
-msgstr ""
+msgstr "Δεν υπάρχει Message-id. Αδυναμία εκτέλεσης της λειτουργίας."
 
 #: index/dlg_index.c:1660
 #, fuzzy
@@ -2910,7 +2909,7 @@ msgstr ""
 
 #: index/dlg_index.c:2245 mx.c:1278 mx.c:1298
 msgid "Folder doesn't support tagging, aborting"
-msgstr ""
+msgstr "Ο φάκελος δεν υποστηρίζει τις ετικέτες. Ματαίωση"
 
 #: index/dlg_index.c:2265
 #, fuzzy
@@ -2919,16 +2918,16 @@ msgstr "Δεν υπάρχει θέμα, εγκατάλειψη"
 
 #: index/dlg_index.c:2275
 msgid "Update tags..."
-msgstr ""
+msgstr "Ανανέωση "
 
 #: index/dlg_index.c:2315
 msgid "Failed to modify tags, aborting"
-msgstr ""
+msgstr "Σφάλμα κατά την τροποποίηση των ετικετών. Ματαίωση"
 
 #: index/dlg_index.c:2366
 #, fuzzy
 msgid "No query, aborting"
-msgstr "Δεν υπάρχει θέμα, εγκατάλειψη"
+msgstr "Δεν υπάρχει ερώτημα. Ματαίωση"
 
 #: index/dlg_index.c:2399 index/dlg_index.c:2426
 msgid "Windowed queries disabled"
@@ -2939,13 +2938,12 @@ msgid "No notmuch vfolder currently loaded"
 msgstr ""
 
 #: index/dlg_index.c:2468
-#, fuzzy
 msgid "No mailboxes have new mail"
 msgstr "Δεν υπάρχει νέα αλληλογραφία σε κανένα γραμματοκιβώτιο."
 
 #: index/dlg_index.c:2491
 msgid "Open mailbox in read-only mode"
-msgstr "Ανοίξτε το γραμματοκιβώτιο σε κατάσταση μόνο για εγγραφή"
+msgstr "Ανοίξτε το γραμματοκιβώτιο σε κατάσταση ανάγνωσης μόνο"
 
 #: index/dlg_index.c:2496
 msgid "Open mailbox"
@@ -2954,7 +2952,7 @@ msgstr "Ανοίξτε το γραμματοκιβώτιο"
 #: index/dlg_index.c:2561
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
-msgstr "Ανοίξτε το γραμματοκιβώτιο σε κατάσταση μόνο για εγγραφή"
+msgstr "Ανοίξτε το γραμματοκιβώτιο σε κατάσταση ανάγνωσης μόνο"
 
 #: index/dlg_index.c:2566
 msgid "Open newsgroup"
@@ -2990,11 +2988,11 @@ msgstr ""
 
 #: index/dlg_index.c:2782
 msgid "Threads linked"
-msgstr ""
+msgstr "Τα νήματα συνδέθηκαν"
 
 #: index/dlg_index.c:2785
 msgid "No thread linked"
-msgstr ""
+msgstr "Δεν συνδέδηκε νήμα"
 
 #: index/dlg_index.c:2830 index/dlg_index.c:2860
 msgid "You are on the last message"
@@ -3009,24 +3007,20 @@ msgid "You are on the first message"
 msgstr "Είστε στο πρώτο μήνυμα"
 
 #: index/dlg_index.c:3062
-#, fuzzy
 msgid "No new messages in this limited view"
-msgstr "Το τρέχον μήνυμα δεν είναι ορατό σε αυτή τη περιορισμένη όψη"
+msgstr "Δεν υπάρχουν νέα μηνύματα σε αυτή τη περιορισμένη όψη"
 
 #: index/dlg_index.c:3064
-#, fuzzy
 msgid "No new messages"
 msgstr "Δεν υπάρχουν νέα μηνύματα"
 
 #: index/dlg_index.c:3069
-#, fuzzy
 msgid "No unread messages in this limited view"
-msgstr "Το τρέχον μήνυμα δεν είναι ορατό σε αυτή τη περιορισμένη όψη"
+msgstr "Δεν υπάρχουν αδιάβαστα μηνύματα σε αυτή τη περιορισμένη όψη"
 
 #: index/dlg_index.c:3071
-#, fuzzy
 msgid "No unread messages"
-msgstr "Δεν υπάρχουν μη αναγνωσμένα μηνύματα"
+msgstr "Δεν υπάρχουν αδιάβαστα μηνύματα"
 
 #: index/dlg_index.c:3086 menu/menu.c:190 pager/dlg_pager.c:2894
 #: pattern/pattern.c:580 pattern/pattern.c:736
@@ -3060,13 +3054,13 @@ msgstr "Είστε στην πρώτη συζήτηση"
 #: index/dlg_index.c:3367
 #, fuzzy
 msgid "Thread contains unread or flagged messages"
-msgstr "Η συζήτηση περιέχει μη αναγνωσμένα μηνύματα"
+msgstr "Η συζήτηση περιέχει αδιάβστα μηνύματα"
 
 #. L10N: CHECK_ACL
 #: index/dlg_index.c:3434 pager/dlg_pager.c:3370
 #, fuzzy
 msgid "Can't delete message"
-msgstr "Δεν υπάρχουν αποκαταστημένα μηνύματα."
+msgstr "Το μήνυμα δεν μπορεί να διαγραφεί"
 
 #. L10N: CHECK_ACL
 #: index/dlg_index.c:3572
