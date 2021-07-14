@@ -65,6 +65,7 @@
  */
 
 #include "config.h"
+#include <assert.h>
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -74,11 +75,102 @@
 #include "menu/lib.h"
 #include "alternates.h"
 #include "attachments.h"
+#include "mutt_thread.h"
+#include "muttlib.h"
 #include "options.h"
 #include "private_data.h"
 #include "score.h"
 #include "shared_data.h"
 #include "subjectrx.h"
+
+/// sort_use_threads_warned - whether we've warned about odd $sort settings
+static bool sort_use_threads_warned = false;
+
+/**
+ * config_sort - React to changes to "sort"
+ * @param sub the config subset that was just updated
+ * @retval  0 Successfully handled
+ * @retval -1 Error
+ */
+static int config_sort(const struct ConfigSubset *sub)
+{
+  const short c_sort = cs_subset_sort(sub, "sort");
+  const unsigned char c_use_threads = cs_subset_enum(sub, "use_threads");
+
+  if (((c_sort & SORT_MASK) != SORT_THREADS) || (c_use_threads == UT_UNSET))
+    return 0;
+
+  if (!sort_use_threads_warned)
+  {
+    mutt_warning(
+        _("Changing threaded display should prefer $use_threads over $sort"));
+    sort_use_threads_warned = true;
+    mutt_sleep(0);
+  }
+
+  /* Note: changing a config variable here kicks off a second round of
+   * observers before the first round has completed. Be careful that
+   * changes made here do not cause an infinite loop of toggling
+   * adjustments - the early exit above when $sort no longer uses
+   * SORT_THREADS ends the recursion.
+   */
+  int rc;
+  if ((c_use_threads == UT_FLAT) ||
+      (!(c_sort & SORT_REVERSE) == (c_use_threads == UT_REVERSE)))
+  {
+    /* If we were flat or the user wants to change thread
+     * directions, then leave $sort alone for now and change
+     * $use_threads to match the desired outcome.  The 2nd-level
+     * observer for $use_threads will then adjust $sort, and our
+     * 3rd-level observer for $sort will be a no-op.
+     */
+    rc = cs_subset_str_native_set(
+        sub, "use_threads", (c_sort & SORT_REVERSE) ? UT_REVERSE : UT_THREADS, NULL);
+  }
+  else
+  {
+    /* We were threaded, and the user still wants the same thread
+     * direction. Adjust $sort based on $sort_aux, and the 2nd-level
+     * observer for $sort will be a no-op.
+     */
+    short c_sort_aux = cs_subset_sort(sub, "sort_aux");
+    c_sort_aux &= ~SORT_LAST;
+    c_sort_aux ^= (c_sort & SORT_REVERSE);
+    rc = cs_subset_str_native_set(sub, "sort", c_sort_aux, NULL);
+  }
+  return (CSR_RESULT(rc) == CSR_SUCCESS) ? 0 : -1;
+}
+
+/**
+ * config_use_threads - React to changes to "use_threads"
+ * @param sub the config subset that was just updated
+ * @retval  0 Successfully handled
+ * @retval -1 Error
+ */
+static int config_use_threads(const struct ConfigSubset *sub)
+{
+  const short c_sort = cs_subset_sort(sub, "sort");
+  const unsigned char c_use_threads = cs_subset_enum(sub, "use_threads");
+
+  if (((c_sort & SORT_MASK) != SORT_THREADS) || (c_use_threads == UT_UNSET))
+    return 0;
+
+  if (!sort_use_threads_warned)
+  {
+    mutt_warning(
+        _("Changing threaded display should prefer $use_threads over $sort"));
+    sort_use_threads_warned = true;
+  }
+
+  /* Note: changing a config variable here kicks off a second round of
+   * observers before the first round has completed. But since we
+   * aren't setting $sort to threads, the 2nd-level observer will be a
+   * no-op.
+   */
+  const short c_sort_aux = cs_subset_sort(sub, "sort_aux");
+  int rc = cs_subset_str_native_set(sub, "sort", c_sort_aux & ~SORT_LAST, NULL);
+  return (CSR_RESULT(rc) == CSR_SUCCESS) ? 0 : -1;
+}
 
 /**
  * config_reply_regex - React to changes to $reply_regex
@@ -228,6 +320,16 @@ static int index_config_observer(struct NotifyCallback *nc)
   if (mutt_str_equal(ev_c->name, "reply_regex"))
   {
     config_reply_regex(dlg);
+    mutt_debug(LL_DEBUG5, "config done\n");
+  }
+  else if (mutt_str_equal(ev_c->name, "sort"))
+  {
+    config_sort(ev_c->sub);
+    mutt_debug(LL_DEBUG5, "config done\n");
+  }
+  else if (mutt_str_equal(ev_c->name, "use_threads"))
+  {
+    config_use_threads(ev_c->sub);
     mutt_debug(LL_DEBUG5, "config done\n");
   }
 

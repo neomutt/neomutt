@@ -37,6 +37,7 @@
 #include "menu/lib.h"
 #include "init.h"
 #include "mutt_logging.h"
+#include "mutt_thread.h"
 #include "mx.h"
 #include "options.h"
 
@@ -635,6 +636,9 @@ static struct ConfigDef MainVars[] = {
   },
   { "use_domain", DT_BOOL, true, 0, NULL,
     "Qualify local addresses using this domain"
+  },
+  { "use_threads", DT_ENUM|R_INDEX|R_RESORT, UT_UNSET, IP &UseThreadsTypeDef, NULL,
+    "Whether to use threads for the index"
   },
   { "wait_key", DT_BOOL, true, 0, NULL,
     "Prompt to press a key after running external commands"

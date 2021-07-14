@@ -29,6 +29,7 @@
  */
 
 #include "config.h"
+#include <assert.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
@@ -65,6 +66,7 @@
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
+#include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "options.h"
@@ -895,10 +897,40 @@ bool mutt_select_sort(bool reverse)
       sort = SORT_LABEL;
       break;
   }
-  if (reverse)
-    sort |= SORT_REVERSE;
 
-  int rc = cs_subset_str_native_set(NeoMutt->sub, "sort", sort, NULL);
+  const unsigned char c_use_threads =
+      cs_subset_enum(NeoMutt->sub, "use_threads");
+  int rc = CSR_ERR_CODE;
+  if ((sort != SORT_THREADS) || (c_use_threads == UT_UNSET))
+  {
+    if (reverse)
+      sort |= SORT_REVERSE;
+
+    rc = cs_subset_str_native_set(NeoMutt->sub, "sort", sort, NULL);
+  }
+  else
+  {
+    const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+    assert((c_sort & SORT_MASK) != SORT_THREADS); /* See index_config_observer() */
+    /* Preserve the value of $sort, and toggle whether we are threaded. */
+    switch (c_use_threads)
+    {
+      case UT_FLAT:
+        rc = cs_subset_str_native_set(NeoMutt->sub, "use_threads",
+                                      reverse ? UT_REVERSE : UT_THREADS, NULL);
+        break;
+      case UT_THREADS:
+        rc = cs_subset_str_native_set(NeoMutt->sub, "use_threads",
+                                      reverse ? UT_REVERSE : UT_FLAT, NULL);
+        break;
+      case UT_REVERSE:
+        rc = cs_subset_str_native_set(NeoMutt->sub, "use_threads",
+                                      reverse ? UT_FLAT : UT_THREADS, NULL);
+        break;
+      default:
+        assert(false);
+    }
+  }
 
   return ((CSR_RESULT(rc) == CSR_SUCCESS) && !(rc & CSR_SUC_NO_CHANGE));
 }

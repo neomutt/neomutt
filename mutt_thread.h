@@ -72,14 +72,17 @@ enum MessageInThread
 };
 
 /**
- * enum UseThreads - Which threading style is active
+ * enum UseThreads - Which threading style is active, $use_threads
  */
 enum UseThreads
 {
+  UT_UNSET,     ///< Not yet set by user, stick to legacy semantics
   UT_FLAT,      ///< Unthreaded
   UT_THREADS,   ///< Normal threading (root above subthreads)
   UT_REVERSE,   ///< Reverse threading (subthreads above root)
 };
+
+extern struct EnumDef UseThreadsTypeDef;
 
 int mutt_traverse_thread(struct Email *e, MuttThreadFlags flag);
 #define mutt_collapse_thread(e)         mutt_traverse_thread(e, MUTT_THREAD_COLLAPSE)
