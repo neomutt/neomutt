@@ -48,7 +48,6 @@
  */
 struct AccountEntry
 {
-  int tagged; /* TODO */
   int num;
   struct AutocryptAccount *account;
   struct Address *addr;
@@ -177,25 +176,21 @@ static void autocrypt_menu_free(struct Menu *menu, void **ptr)
 }
 
 /**
- * create_menu - Create the Autocrypt account Menu
- * @param dlg Dialog holding the Menu
- * @retval ptr New Menu
+ * populate_menu - Add the Autocrypt data to a Menu
+ * @param menu Menu to populate
+ * @retval true Success
  */
-static struct Menu *create_menu(struct MuttWindow *dlg)
+static bool populate_menu(struct Menu *menu)
 {
+  // Clear out any existing data
+  autocrypt_menu_free(menu, &menu->mdata);
+  menu->max = 0;
+
   struct AutocryptAccount **accounts = NULL;
   int num_accounts = 0;
 
   if (mutt_autocrypt_db_account_get_all(&accounts, &num_accounts) < 0)
-    return NULL;
-
-  struct Menu *menu = dlg->wdata;
-  menu->make_entry = autocrypt_make_entry;
-  /* menu->tag = account_tag; */
-
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
-  // L10N: Autocrypt Account Management Menu title
-  sbar_set_title(sbar, _("Autocrypt Accounts"));
+    return false;
 
   struct AccountEntry *entries =
       mutt_mem_calloc(num_accounts, sizeof(struct AccountEntry));
@@ -217,7 +212,8 @@ static struct Menu *create_menu(struct MuttWindow *dlg)
   }
   FREE(&accounts);
 
-  return menu;
+  menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  return true;
 }
 
 /**
@@ -265,7 +261,15 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
 
   struct MuttWindow *dlg =
       simple_dialog_new(MENU_AUTOCRYPT_ACCT, WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
-  struct Menu *menu = create_menu(dlg);
+
+  struct Menu *menu = dlg->wdata;
+  menu->make_entry = autocrypt_make_entry;
+
+  populate_menu(menu);
+
+  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
+  // L10N: Autocrypt Account Management Menu title
+  sbar_set_title(sbar, _("Autocrypt Accounts"));
 
   bool done = false;
   while (!done)
@@ -277,12 +281,8 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
         break;
 
       case OP_AUTOCRYPT_CREATE_ACCT:
-        if (mutt_autocrypt_account_init(false))
-          break;
-
-        simple_dialog_free(&dlg);
-        dlg = simple_dialog_new(MENU_AUTOCRYPT_ACCT, WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
-        menu = create_menu(dlg);
+        if (mutt_autocrypt_account_init(false) == 0)
+          populate_menu(menu);
         break;
 
       case OP_AUTOCRYPT_DELETE_ACCT:
@@ -299,12 +299,9 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
         if (mutt_yesorno(msg, MUTT_NO) != MUTT_YES)
           break;
 
-        if (!mutt_autocrypt_db_account_delete(entry->account))
-        {
-          simple_dialog_free(&dlg);
-          dlg = simple_dialog_new(MENU_AUTOCRYPT_ACCT, WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
-          menu = create_menu(dlg);
-        }
+        if (mutt_autocrypt_db_account_delete(entry->account) == 0)
+          populate_menu(menu);
+
         break;
       }
 
