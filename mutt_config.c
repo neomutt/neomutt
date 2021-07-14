@@ -128,31 +128,11 @@ int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef
 }
 
 /**
- * pager_validator - Check for config variables that can't be set from the pager - Implements ConfigDef::validator()
- */
-int pager_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                    intptr_t value, struct Buffer *err)
-{
-  const enum MenuType mtype = menu_get_current_type();
-  if (mtype == MENU_PAGER)
-  {
-    mutt_buffer_printf(err, _("Option %s may not be set or reset from the pager"),
-                       cdef->name);
-    return CSR_ERR_INVALID;
-  }
-
-  return CSR_SUCCESS;
-}
-
-/**
  * reply_validator - Validate the "reply_regex" config variable - Implements ConfigDef::validator()
  */
 int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                     intptr_t value, struct Buffer *err)
 {
-  if (pager_validator(cs, cdef, value, err) != CSR_SUCCESS)
-    return CSR_ERR_INVALID;
-
   if (!OptAttachMsg)
     return CSR_SUCCESS;
 
@@ -283,7 +263,7 @@ static struct ConfigDef MainVars[] = {
   { "display_filter", DT_STRING|DT_COMMAND|R_PAGER, 0, 0, NULL,
     "External command to pre-process an email before display"
   },
-  { "duplicate_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, true, 0, pager_validator,
+  { "duplicate_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, true, 0, NULL,
     "Highlight messages with duplicated message IDs"
   },
   { "editor", DT_STRING|DT_NOT_EMPTY|DT_COMMAND, 0, 0, NULL,
@@ -587,7 +567,7 @@ static struct ConfigDef MainVars[] = {
   { "sleep_time", DT_NUMBER|DT_NOT_NEGATIVE, 1, 0, NULL,
     "Time to pause after certain info messages"
   },
-  { "sort", DT_SORT|R_INDEX|R_RESORT|DT_SORT_REVERSE, SORT_DATE, IP SortMethods, pager_validator,
+  { "sort", DT_SORT|R_INDEX|R_RESORT|DT_SORT_REVERSE, SORT_DATE, IP SortMethods, NULL,
     "Sort method for the index"
   },
   { "sort_aux", DT_SORT|DT_SORT_REVERSE|DT_SORT_LAST|R_INDEX|R_RESORT|R_RESORT_SUB, SORT_DATE, IP SortAuxMethods, NULL,
@@ -596,7 +576,7 @@ static struct ConfigDef MainVars[] = {
   { "sort_browser", DT_SORT|DT_SORT_REVERSE, SORT_ALPHA, IP SortBrowserMethods, NULL,
     "Sort method for the browser"
   },
-  { "sort_re", DT_BOOL|R_INDEX|R_RESORT|R_RESORT_INIT, true, 0, pager_validator,
+  { "sort_re", DT_BOOL|R_INDEX|R_RESORT|R_RESORT_INIT, true, 0, NULL,
     "Whether $reply_regex must be matched when not $strict_threads"
   },
   { "spam_separator", DT_STRING, IP ",", 0, NULL,
@@ -614,7 +594,7 @@ static struct ConfigDef MainVars[] = {
   { "status_on_top", DT_BOOL, false, 0, NULL,
     "Display the status bar at the top"
   },
-  { "strict_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, false, 0, pager_validator,
+  { "strict_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, false, 0, NULL,
     "Thread messages using 'In-Reply-To' and 'References' headers"
   },
   { "suspend", DT_BOOL, true, 0, NULL,
@@ -623,7 +603,7 @@ static struct ConfigDef MainVars[] = {
   { "text_flowed", DT_BOOL, false, 0, NULL,
     "Generate 'format=flowed' messages"
   },
-  { "thread_received", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, false, 0, pager_validator,
+  { "thread_received", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, false, 0, NULL,
     "Sort threaded messages by their received date"
   },
   { "time_inc", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
