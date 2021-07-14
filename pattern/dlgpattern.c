@@ -246,6 +246,60 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
 }
 
 /**
+ * pattern_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ *
+ * The Address Book Window is affected by changes to `$sort_pattern`.
+ */
+static int pattern_config_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
+    return -1;
+
+  if (nc->event_subtype == NT_CONFIG_INITIAL_SET)
+    return 0;
+
+  struct EventConfig *ev_c = nc->event_data;
+
+  if (!mutt_str_equal(ev_c->name, "pattern_format"))
+    return 0;
+
+  struct Menu *menu = nc->global_data;
+  menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  mutt_debug(LL_DEBUG5, "config done, request WA_RECALC, MENU_REDRAW_FULL\n");
+
+  return 0;
+}
+
+/**
+ * pattern_window_observer - Notification that a Window has changed - Implements ::observer_t
+ *
+ * This function is triggered by changes to the windows.
+ *
+ * - Delete (this window): clean up the resources held by the Help Bar
+ */
+static int pattern_window_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
+    return -1;
+
+  if (nc->event_subtype != NT_WINDOW_DELETE)
+    return 0;
+
+  struct MuttWindow *win_menu = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != win_menu)
+    return 0;
+
+  struct Menu *menu = win_menu->wdata;
+
+  notify_observer_remove(NeoMutt->notify, pattern_config_observer, menu);
+  notify_observer_remove(win_menu->notify, pattern_window_observer, win_menu);
+
+  mutt_debug(LL_DEBUG5, "window delete done\n");
+  return 0;
+}
+
+/**
  * dlg_select_pattern - Show menu to select a Pattern
  * @param buf    Buffer for the selected Pattern
  * @param buflen Length of buffer
@@ -255,6 +309,12 @@ bool dlg_select_pattern(char *buf, size_t buflen)
 {
   struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_PATTERN, PatternHelp);
   struct Menu *menu = create_pattern_menu(dlg);
+
+  struct MuttWindow *win_menu = menu->win_index;
+
+  // NT_COLOR is handled by the SimpleDialog
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, pattern_config_observer, menu);
+  notify_observer_add(win_menu->notify, NT_WINDOW, pattern_window_observer, win_menu);
 
   bool rc = false;
   bool done = false;
