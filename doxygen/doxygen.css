@@ -157,10 +157,6 @@ a.codeRef, a.codeRef:visited, a.lineRef, a.lineRef:visited {
 	color: #4665A2;
 }
 
-code {
-	background-color: #E0E0E0;
-}
-
 /* @end */
 
 dl.el {
@@ -263,7 +259,7 @@ div.ah, span.ah {
 	-webkit-box-shadow: 2px 2px 3px #999;
 	-moz-box-shadow: rgba(0, 0, 0, 0.15) 2px 2px 2px;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#000),color-stop(0.3, #444));
-	background-image: -moz-linear-gradient(center to top, #eee 0%, #444 40%, #000 110%);
+	background-image: -moz-linear-gradient(center top, #eee 0%, #444 40%, #000 110%);
 }
 
 div.classindex ul {
@@ -800,7 +796,7 @@ div.directory {
 }
 
 .icon {
-	font-family: sans-serif, Arial, Helvetica;
+	font-family: Arial, Helvetica;
 	font-weight: bold;
 	font-size: 12px;
 	height: 14px;
@@ -1008,6 +1004,7 @@ table.fieldtable {
 	color: #283A5D;
 	font-family: 'Lucida Grande',Geneva,Helvetica,Arial,sans-serif;
 	text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.9);
+	text-decoration: none;
 }
 
 .navpath li.navelem a:hover
@@ -1093,12 +1090,15 @@ dl.section
 	padding-left: 0px;
 }
 
-dl.note
+dl.note, dl.see
 {
 	margin-left:-7px;
 	padding-left: 3px;
 	border-left:4px solid;
 	border-color: #D0C000;
+	background: #ffffd0;
+	padding: 0.5em;
+	border-radius: 0.5em;
 }
 
 dl.warning, dl.attention
@@ -1107,6 +1107,9 @@ dl.warning, dl.attention
 	padding-left: 3px;
 	border-left:4px solid;
 	border-color: #FF0000;
+	background: #ffe0e0;
+	padding: 0.5em;
+	border-radius: 0.5em;
 }
 
 dl.pre, dl.post, dl.invariant
@@ -1115,6 +1118,9 @@ dl.pre, dl.post, dl.invariant
 	padding-left: 3px;
 	border-left:4px solid;
 	border-color: #00D000;
+	background: #e0ffe0;
+	padding: 0.5em;
+	border-radius: 0.5em;
 }
 
 dl.deprecated
