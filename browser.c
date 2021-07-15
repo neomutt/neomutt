@@ -23,7 +23,6 @@
 
 /**
  * @page neo_browser File/Mailbox Browser Dialog
- * WFW
  *
  * ## Overview
  *

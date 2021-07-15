@@ -23,7 +23,6 @@
 
 /**
  * @page pattern_dlgpattern Pattern Selection Dialog
- * WFW
  *
  * ## Overview
  *

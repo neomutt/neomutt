@@ -23,7 +23,6 @@
 
 /**
  * @page neo_postpone Postponed Email Selection Dialog
- * WFW
  *
  * ## Overview
  *

@@ -22,7 +22,6 @@
 
 /**
  * @page crypt_dlgpgp PGP Key Selection Dialog
- * WFW
  *
  * ## Overview
  *

@@ -23,7 +23,6 @@
 
 /**
  * @page neo_recvattach Attachment Selection Dialog
- * WFW
  *
  * ## Overview
  *

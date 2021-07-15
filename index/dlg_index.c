@@ -49,17 +49,7 @@
  *
  * ## Events
  *
- * Once constructed, it is controlled by the following events:
- *
- * | Event Type  | Handler                     |
- * | :---------- | :-------------------------- | 
- * | #NT_CONFIG  | autocrypt_config_observer() |
- * | #NT_WINDOW  | autocrypt_window_observer() |
- *
- * The Index Dialog doesn't have any specific colours, so it doesn't need to
- * support #NT_COLOR.
- *
- * The Index Dialog does not implement MuttWindow::recalc() or MuttWindow::repaint().
+ * None.
  *
  * Some other events are handled by the dialog's children.
  */

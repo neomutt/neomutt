@@ -22,7 +22,6 @@
 
 /**
  * @page conn_gui Certificate Verification Dialog
- * WFW
  *
  * ## Overview
  *

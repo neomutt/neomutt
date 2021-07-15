@@ -22,7 +22,6 @@
 
 /**
  * @page crypt_dlgsmime SMIME Key Selection Dialog
- * WFW
  *
  * ## Overview
  *

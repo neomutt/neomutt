@@ -63,9 +63,9 @@ struct EmailCompare
  * @param a   Pointer to first email
  * @param b   Pointer to second email
  * @param arg EmailCompare with needed context
- * @return <0 a precedes b
- * @return  0 a identical to b (should not happen in practice)
- * @return >0 b precedes a
+ * @retval <0 a precedes b
+ * @retval  0 a identical to b (should not happen in practice)
+ * @retval >0 b precedes a
  */
 static int compare_email_shim(const void *a, const void *b, void *arg)
 {

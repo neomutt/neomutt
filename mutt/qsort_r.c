@@ -44,9 +44,9 @@ static void *global_data = NULL;
  * relay_compar - Shim to pass context through to real comparator
  * @param a First item to be compared
  * @param b Second item to be compared
- * @return <0 a sorts before b
- * @return 0  a and b sort equally (sort stability not guaranteed)
- * @return >0 a sorts after b
+ * @retval <0 a sorts before b
+ * @retval 0  a and b sort equally (sort stability not guaranteed)
+ * @retval >0 a sorts after b
  */
 static int relay_compar(const void *a, const void *b)
 {

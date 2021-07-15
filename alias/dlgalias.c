@@ -24,7 +24,6 @@
 
 /**
  * @page alias_dlgalias Address Book Dialog
- * WFW
  *
  * ## Overview
  *

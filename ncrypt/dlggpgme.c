@@ -22,7 +22,6 @@
 
 /**
  * @page crypt_dlggpgme GPGME Key Selection Dialog
- * WFW
  *
  * ## Overview
  *

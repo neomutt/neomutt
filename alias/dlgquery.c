@@ -24,7 +24,6 @@
 
 /**
  * @page alias_dlgquery Routines for querying and external address book
- * WFW
  *
  * ## Overview
  *

@@ -22,7 +22,6 @@
 
 /**
  * @page history_dlghistory History Selection Dialog
- * WFW
  *
  * ## Overview
  *
