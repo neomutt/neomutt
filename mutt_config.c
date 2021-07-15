@@ -597,7 +597,7 @@ static struct ConfigDef MainVars[] = {
     "Sort method for the browser"
   },
   { "sort_re", DT_BOOL|R_INDEX|R_RESORT|R_RESORT_INIT, true, 0, pager_validator,
-    "Sort method for the sidebar"
+    "Whether $reply_regex must be matched when not $strict_threads"
   },
   { "spam_separator", DT_STRING, IP ",", 0, NULL,
     "Separator for multiple spam headers"
