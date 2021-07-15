@@ -1,0 +1,65 @@
+name: translate
+
+on:
+  push:
+    branches: [ translate ]
+
+jobs:
+
+  leaderboard:
+    name: Update Leaderboard
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Install build software
+      run: |
+        sudo apt install -y gettext
+
+    - name: Checkout neomutt
+      uses: actions/checkout@v2
+      with:
+        repository: neomutt/neomutt
+        path: neomutt
+        fetch-depth: 3
+
+    - name: Checkout translate scripts
+      uses: actions/checkout@v2
+      with:
+        repository: neomutt/translate-scripts
+        path: scripts
+
+    - name: Checkout website
+      uses: actions/checkout@v2
+      with:
+        repository: neomutt/neomutt.github.io
+        path: website
+        persist-credentials: false
+        # otherwise GITHUB_TOKEN will be used, rather than the Personal Access Token
+
+    - name: Set up git
+      run: |
+        git config --global user.email "rich@flatcap.org"
+        git config --global user.name "Richard Russon (DEPLOY)"
+
+    - name: Validate translations
+      run: |
+        cd neomutt/po
+        $GITHUB_WORKSPACE/scripts/stats.sh
+
+    - name: Generate webpage
+      run: |
+        cd neomutt/po
+        $GITHUB_WORKSPACE/scripts/generate-webpage.sh > $GITHUB_WORKSPACE/website/translate.html
+
+    - name: Commit
+      run: |
+        scripts/commit.sh neomutt website translate.html
+
+    - name: Push to website
+      uses: ad-m/github-push-action@v0.6.0
+      with:
+        github_token: ${{ secrets.TRANSLATE_DEPLOY_KEY }}
+        branch: master
+        directory: website
+        repository: neomutt/neomutt.github.io
+
