@@ -23,7 +23,60 @@
 /**
  * @page gui_msgwin Message Window
  *
- * Message Window for displaying messages and text entry.
+ * ## Overview
+ *
+ * The Message Window is a one-line interactive window at the bottom of the
+ * screen.  It's used for asking the user questions, displaying messages and
+ * for a progress bar.
+ *
+ * ## Behaviour
+ *
+ * The Message Window has two modes of behaviour: passive, active.
+ *
+ * ### Passive
+ *
+ * Most of the time, the Message Window will be passively displaying messages
+ * to the user (or empty).  This is characterised by the Window focus being
+ * somewhere else.  In this mode, the Message Window is responsible for drawing
+ * itself.
+ *
+ * @sa mutt_message(), mutt_error()
+ *
+ * ### Active
+ *
+ * The Message Window can be hijacked by other code to be used for user
+ * interaction, commonly for simple questions, "Are you sure? [Y/n]".
+ * In this active state the Window will have focus and it's the responsibility
+ * of the hijacker to perform the drawing.
+ *
+ * @sa mutt_yesorno(), @ref progress_progress
+ *
+ * ## Windows
+ *
+ * | Name           | Type        | Constructor  |
+ * | :------------- | :---------- | :----------- |
+ * | Message Window | #WT_MESSAGE | msgwin_new() |
+ *
+ * **Parent**
+ * - @ref gui_rootwin
+ *
+ * **Children**
+ * - None
+ *
+ * ## Data
+ * - #MsgWinPrivateData
+ *
+ * The Message Window caches the formatted string.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type            | Handler                   |
+ * | :-------------------- | :------------------------ | 
+ * | #NT_WINDOW            | msgwin_window_observer()  |
+ * | MuttWindow::recalc()  | msgwin_recalc()           |
+ * | MuttWindow::repaint() | msgwin_repaint()          |
  */
 
 #include "config.h"
@@ -81,6 +134,11 @@ static int msgwin_repaint(struct MuttWindow *win)
 
 /**
  * msgwin_window_observer - Notification that a Window has changed - Implements ::observer_t
+ *
+ * This function is triggered by changes to the windows.
+ *
+ * - State (this window): refresh the window
+ * - Delete (this window): clean up the resources held by the Message Window
  */
 static int msgwin_window_observer(struct NotifyCallback *nc)
 {

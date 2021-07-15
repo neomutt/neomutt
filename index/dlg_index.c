@@ -1,6 +1,6 @@
 /**
  * @file
- * GUI manage the main index (list of emails)
+ * Index Dialog
  *
  * @authors
  * Copyright (C) 1996-2000,2002,2010,2012-2013 Michael R. Elkins <me@mutt.org>
@@ -22,9 +22,46 @@
  */
 
 /**
- * @page index_dialog GUI manage the main index (list of emails)
+ * @page index_dialog Index Dialog
  *
- * GUI manage the main index (list of emails)
+ * ## Overview
+ *
+ * The Index Dialog is the main screen within NeoMutt.  It contains @ref
+ * index_index (a list of emails), @ref pager_dialog (a view of an email) and
+ * @ref sidebar_window (a list of mailboxes).
+ *
+ * ## Windows
+ *
+ * | Name         | Type         | See Also          |
+ * | :----------- | :----------- | :---------------- |
+ * | Index Dialog | WT_DLG_INDEX | mutt_index_menu() |
+ *
+ * **Parent**
+ * - @ref gui_dialog
+ *
+ * **Children**
+ * - See: @ref index_ipanel
+ * - See: @ref pager_ppanel
+ * - See: @ref sidebar_window
+ *
+ * ## Data
+ * - #IndexSharedData
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type  | Handler                     |
+ * | :---------- | :-------------------------- | 
+ * | #NT_CONFIG  | autocrypt_config_observer() |
+ * | #NT_WINDOW  | autocrypt_window_observer() |
+ *
+ * The Index Dialog doesn't have any specific colours, so it doesn't need to
+ * support #NT_COLOR.
+ *
+ * The Index Dialog does not implement MuttWindow::recalc() or MuttWindow::repaint().
+ *
+ * Some other events are handled by the dialog's children.
  */
 
 #include "config.h"

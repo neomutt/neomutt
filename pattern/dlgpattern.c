@@ -1,6 +1,6 @@
 /**
  * @file
- * Display a guide to Patterns
+ * Pattern Selection Dialog
  *
  * @authors
  * Copyright (C) 1996-2000,2006-2007,2010 Michael R. Elkins <me@mutt.org>
@@ -22,9 +22,51 @@
  */
 
 /**
- * @page pattern_dlgpattern Display a guide to Patterns
+ * @page pattern_dlgpattern Pattern Selection Dialog
+ * WFW
  *
- * Display a guide to Patterns
+ * ## Overview
+ *
+ * The Pattern Selection Dialog lets the user select a pattern.
+ *
+ * This is a @ref gui_simple
+ *
+ * ## Windows
+ *
+ * | Name                     | Type           | See Also             |
+ * | :----------------------- | :------------- | :------------------- |
+ * | Pattern Selection Dialog | WT_DLG_PATTERN | dlg_select_pattern() |
+ *
+ * **Parent**
+ * - @ref gui_dialog
+ *
+ * **Children**
+ * - See: @ref gui_simple
+ *
+ * ## Data
+ * - #Menu
+ * - #Menu::mdata
+ * - #PatternEntry
+ *
+ * The @ref gui_simple holds a Menu.  The Pattern Selection Dialog stores its
+ * data (#PatternEntry) in Menu::mdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type  | Handler                   |
+ * | :---------- | :------------------------ | 
+ * | #NT_CONFIG  | pattern_config_observer() |
+ * | #NT_WINDOW  | pattern_window_observer() |
+ *
+ * The Pattern Selection Dialog doesn't have any specific colours, so it
+ * doesn't need to support #NT_COLOR.
+ *
+ * The Pattern Selection Dialog does not implement MuttWindow::recalc() or
+ * MuttWindow::repaint().
+ *
+ * Some other events are handled by the @ref gui_simple.
  */
 
 #include "config.h"

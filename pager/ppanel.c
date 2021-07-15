@@ -1,6 +1,6 @@
 /**
  * @file
- * GUI display a file/email/help in a viewport with paging
+ * Pager Panel
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,39 @@
  */
 
 /**
- * @page pager_ppanel GUI display a file/email/help in a viewport with paging
+ * @page pager_ppanel Pager Panel
  *
- * GUI display a file/email/help in a viewport with paging
+ * ## Overview
+ *
+ * The Pager Panel is a non-interactive container around the email list and a
+ * status bar.
+ *
+ * ## Windows
+ *
+ * | Name        | Type      | Constructor  |
+ * | :---------- | :-------- | :----------- |
+ * | Pager Panel | #WT_PAGER | ppanel_new() |
+ *
+ * **Parent**
+ * - @ref index_dialog
+ *
+ * **Children**
+ * - @ref pager_pager
+ * - @ref pager_pbar
+ *
+ * ## Data
+ * - #PagerPrivateData
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type  | Handler                  |
+ * | :---------- | :----------------------- |
+ * | #NT_CONFIG  | ppanel_config_observer() |
+ * | #NT_WINDOW  | ppanel_window_observer() |
+ *
+ * The Pager Panel does not implement MuttWindow::recalc() or MuttWindow::repaint().
  */
 
 #include "config.h"

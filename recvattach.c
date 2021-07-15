@@ -1,6 +1,6 @@
 /**
  * @file
- * Routines for managing attachments
+ * Attachment Selection Dialog
  *
  * @authors
  * Copyright (C) 1996-2000,2002,2007,2010 Michael R. Elkins <me@mutt.org>
@@ -22,9 +22,51 @@
  */
 
 /**
- * @page neo_recvattach Routines for managing attachments
+ * @page neo_recvattach Attachment Selection Dialog
+ * WFW
  *
- * Routines for managing attachments
+ * ## Overview
+ *
+ * The Attachment Selection Dialog lets the user select an email attachment.
+ *
+ * This is a @ref gui_simple
+ *
+ * ## Windows
+ *
+ * | Name                        | Type          | See Also                |
+ * | :-------------------------- | :------------ | :---------------------- |
+ * | Attachment Selection Dialog | WT_DLG_ATTACH | dlg_select_attachment() |
+ *
+ * **Parent**
+ * - @ref gui_dialog
+ *
+ * **Children**
+ * - See: @ref gui_simple
+ *
+ * ## Data
+ * - #Menu
+ * - #Menu::mdata
+ * - #AttachCtx
+ *
+ * The @ref gui_simple holds a Menu.  The Attachment Selection Dialog stores
+ * its data (#AttachCtx) in Menu::mdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type  | Handler                  |
+ * | :---------- | :----------------------- | 
+ * | #NT_CONFIG  | attach_config_observer() |
+ * | #NT_WINDOW  | attach_window_observer() |
+ *
+ * The Attachment Selection Dialog doesn't have any specific colours, so it
+ * doesn't need to support #NT_COLOR.
+ *
+ * The Attachment Selection Dialog does not implement MuttWindow::recalc() or
+ * MuttWindow::repaint().
+ *
+ * Some other events are handled by the @ref gui_simple.
  */
 
 #include "config.h"

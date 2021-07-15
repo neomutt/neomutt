@@ -1,6 +1,6 @@
 /**
  * @file
- * GUI display a file/email/help in a viewport with paging
+ * Pager Window
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,45 @@
  */
 
 /**
- * @page pager_pager GUI display a file/email/help in a viewport with paging
+ * @page pager_pager Pager Window
  *
- * GUI display a file/email/help in a viewport with paging
+ * ## Overview
+ *
+ * The Pager Window displays an email to the user.
+ *
+ * ## Windows
+ *
+ * | Name         | Type      | See Also           |
+ * | :----------- | :-------- | :----------------- |
+ * | Pager Window | WT_CUSTOM | pager_window_new() |
+ *
+ * **Parent**
+ * - @ref pager_ppanel
+ *
+ * **Children**
+ *
+ * None.
+ *
+ * ## Data
+ * - #PagerPrivateData
+ *
+ * The Pager Window stores its data (#PagerPrivateData) in MuttWindow::wdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type | Handler                 |
+ * | :--------- | :---------------------- | 
+ * | #NT_COLOR  | pager_color_observer()  |
+ * | #NT_CONFIG | pager_config_observer() |
+ * | #NT_INDEX  | pager_index_observer()  |
+ * | #NT_PAGER  | pager_pager_observer()  |
+ * | #NT_WINDOW | pager_window_observer() |
+ *
+ * The Pager Window does not implement MuttWindow::recalc() or MuttWindow::repaint().
+ *
+ * Some other events are handled by the window's children.
  */
 
 #include "config.h"

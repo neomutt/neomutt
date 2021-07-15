@@ -1,6 +1,6 @@
 /**
  * @file
- * GUI component for displaying/selecting items from a list
+ * File/Mailbox Browser Dialog
  *
  * @authors
  * Copyright (C) 1996-2000,2007,2010,2013 Michael R. Elkins <me@mutt.org>
@@ -22,9 +22,51 @@
  */
 
 /**
- * @page neo_browser GUI component for displaying/selecting items from a list
+ * @page neo_browser File/Mailbox Browser Dialog
+ * WFW
  *
- * GUI component for displaying/selecting items from a list
+ * ## Overview
+ *
+ * The File/Mailbox Browser Dialog lets the user select from a list of files or
+ * mailboxes.
+ *
+ * This is a @ref gui_simple
+ *
+ * ## Windows
+ *
+ * | Name           | Type           | See Also                  |
+ * | :------------- | :------------- | :------------------------ |
+ * | Browser Dialog | WT_DLG_BROWSER | mutt_buffer_select_file() |
+ *
+ * **Parent**
+ * - @ref gui_dialog
+ *
+ * **Children**
+ * - See: @ref gui_simple
+ *
+ * ## Data
+ * - #Menu
+ * - #Menu::mdata
+ * - #BrowserState
+ *
+ * The @ref gui_simple holds a Menu.  The Browser Dialog stores its data
+ * (#BrowserState) in Menu::mdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type            | Handler                     |
+ * | :-------------------- | :-------------------------- | 
+ * | #NT_CONFIG	           | browser_config_observer() |
+ * | #NT_WINDOW	           | browser_window_observer() |
+ *
+ * The Browser Dialog doesn't have any specific colours, so it doesn't need to
+ * support #NT_COLOR.
+ *
+ * The Browser Dialog does not implement MuttWindow::recalc() or MuttWindow::repaint().
+ *
+ * Some other events are handled by the @ref gui_simple.
  */
 
 #include "config.h"

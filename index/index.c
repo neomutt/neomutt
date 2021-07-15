@@ -1,6 +1,6 @@
 /**
  * @file
- * List of Emails Window
+ * Index Window
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,47 @@
  */
 
 /**
- * @page index_index List of Emails Window
+ * @page index_index Index Window
  *
- * List of Emails Window
+ * ## Overview
+ *
+ * The Index Window displays a list of emails to the user.
+ *
+ * ## Windows
+ *
+ * | Name         | Type         | See Also           |
+ * | :----------- | :----------- | :----------------- |
+ * | Index Window | WT_DLG_INDEX | index_window_new() |
+ *
+ * **Parent**
+ * - @ref index_ipanel
+ *
+ * **Children**
+ *
+ * None.
+ *
+ * ## Data
+ * - #IndexPrivateData
+ *
+ * The Index Window stores its data (#IndexPrivateData) in MuttWindow::wdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type | Handler                 |
+ * | :--------- | :---------------------- | 
+ * | #NT_ALTERN | index_altern_observer() |
+ * | #NT_ATTACH | index_attach_observer() |
+ * | #NT_COLOR  | index_color_observer()  |
+ * | #NT_CONFIG | index_config_observer() |
+ * | #NT_SCORE  | index_score_observer()  |
+ * | #NT_SUBJRX | index_subjrx_observer() |
+ * | #NT_WINDOW | index_window_observer() |
+ *
+ * The Index Window does not implement MuttWindow::recalc() or MuttWindow::repaint().
+ *
+ * Some other events are handled by the window's children.
  */
 
 #include "config.h"

@@ -1,6 +1,6 @@
 /**
  * @file
- * PGP key selection dialog
+ * PGP Key Selection Dialog
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,51 @@
  */
 
 /**
- * @page crypt_dlgpgp PGP key selection dialog
+ * @page crypt_dlgpgp PGP Key Selection Dialog
+ * WFW
  *
- * PGP key selection dialog
+ * ## Overview
+ *
+ * The PGP Key Selection Dialog lets the user select a PGP key.
+ *
+ * This is a @ref gui_simple
+ *
+ * ## Windows
+ *
+ * | Name                     | Type       | See Also             |
+ * | :----------------------- | :--------- | :------------------- |
+ * | PGP Key Selection Dialog | WT_DLG_PGP | dlg_select_pgp_key() |
+ *
+ * **Parent**
+ * - @ref gui_dialog
+ *
+ * **Children**
+ * - See: @ref gui_simple
+ *
+ * ## Data
+ * - #Menu
+ * - #Menu::mdata
+ * - #PgpUid
+ *
+ * The @ref gui_simple holds a Menu.  The PGP Key Selection Dialog stores its
+ * data (#PgpUid) in Menu::mdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type  | Handler                   |
+ * | :---------- | :------------------------ | 
+ * | #NT_CONFIG  | pgp_key_config_observer() |
+ * | #NT_WINDOW  | pgp_key_window_observer() |
+ *
+ * The PGP Key Selection Dialog doesn't have any specific colours, so it
+ * doesn't need to support #NT_COLOR.
+ *
+ * The PGP Key Selection Dialog does not implement MuttWindow::recalc() or
+ * MuttWindow::repaint().
+ *
+ * Some other events are handled by the @ref gui_simple.
  */
 
 #include "config.h"

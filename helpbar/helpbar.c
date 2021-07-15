@@ -23,7 +23,10 @@
 /**
  * @page helpbar_helpbar Help Bar
  *
- * The Help Bar Window displays some helpful key bindings for the current screen.
+ * ## Overview
+ *
+ * The Help Bar is a non-interactive window that displays some
+ * helpful key bindings for the current screen.
  *
  * Windows can declare what should be displayed, when they have focus, by setting:
  * - MuttWindow::help_menu, e.g. #MENU_PAGER
@@ -31,16 +34,36 @@
  *
  * The Help Bar looks up which bindings correspond to the function names.
  *
+ * ## Windows
+ *
+ * | Name     | Type         | Constructor   |
+ * | :------- | :----------- | :------------ |
+ * | Help Bar | #WT_HELP_BAR | helpbar_new() |
+ *
+ * **Parent**
+ * - @ref gui_rootwin
+ *
+ * **Children**
+ * - None
+ *
+ * ## Data
+ * - #HelpbarWindowData
+ *
+ * The Help Bar caches the formatted help string and information about the
+ * active Menu.
+ *
  * ## Events
  *
  * Once constructed, it is controlled by the following events:
  *
- * | Event Type  | Handler                    |
- * | :---------- | :------------------------- | 
- * | #NT_BINDING | helpbar_binding_observer() |
- * | #NT_COLOR   | helpbar_color_observer()   |
- * | #NT_CONFIG  | helpbar_config_observer()  |
- * | #NT_WINDOW  | helpbar_window_observer()  |
+ * | Event Type            | Handler                    |
+ * | :-------------------- | :------------------------- | 
+ * | #NT_BINDING           | helpbar_binding_observer() |
+ * | #NT_COLOR             | helpbar_color_observer()   |
+ * | #NT_CONFIG            | helpbar_config_observer()  |
+ * | #NT_WINDOW            | helpbar_window_observer()  |
+ * | MuttWindow::recalc()  | helpbar_recalc()           |
+ * | MuttWindow::repaint() | helpbar_repaint()          |
  */
 
 #include "config.h"

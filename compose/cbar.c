@@ -23,7 +23,41 @@
 /**
  * @page compose_cbar Compose Bar (status)
  *
- * Compose Bar (status)
+ * ## Overview
+ *
+ * The Compose Bar Window displays status info about the email.
+ *
+ * ## Windows
+ *
+ * | Name               | Type          | See Also   |
+ * | :----------------- | :------------ | :--------- |
+ * | Compose Bar Window | WT_STATUS_BAR | cbar_new() |
+ *
+ * **Parent**
+ * - @ref compose_dialog
+ *
+ * **Children**
+ *
+ * None.
+ *
+ * ## Data
+ * - #ComposeBarData
+ *
+ * The Compose Bar Window stores its data (#ComposeBarData) in
+ * MuttWindow::wdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type            | Handler                 |
+ * | :-------------------- | :---------------------- | 
+ * | #NT_COLOR             | cbar_color_observer()   |
+ * | #NT_COMPOSE           | cbar_compose_observer() |
+ * | #NT_CONFIG            | cbar_config_observer()  |
+ * | #NT_WINDOW            | cbar_window_observer()  |
+ * | MuttWindow::recalc()  | cbar_recalc()           |
+ * | MuttWindow::repaint() | cbar_repaint()          |
  */
 
 #include "config.h"

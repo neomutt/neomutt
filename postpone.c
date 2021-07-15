@@ -1,6 +1,6 @@
 /**
  * @file
- * Save/restore and GUI list postponed emails
+ * Postponed Email Selection Dialog
  *
  * @authors
  * Copyright (C) 1996-2002,2012-2013 Michael R. Elkins <me@mutt.org>
@@ -22,9 +22,52 @@
  */
 
 /**
- * @page neo_postpone Save/restore and GUI list postponed emails
+ * @page neo_postpone Postponed Email Selection Dialog
+ * WFW
  *
- * Save/restore and GUI list postponed emails
+ * ## Overview
+ *
+ * The Postponed Email Selection Dialog lets the user set a postponed (draft)
+ * email.
+ *
+ * This is a @ref gui_simple
+ *
+ * ## Windows
+ *
+ * | Name                             | Type            | See Also                     |
+ * | :------------------------------- | :-------------- | :--------------------------- |
+ * | Postponed Email Selection Dialog | WT_DLG_POSTPONE | dlg_select_postponed_email() |
+ *
+ * **Parent**
+ * - @ref gui_dialog
+ *
+ * **Children**
+ * - See: @ref gui_simple
+ *
+ * ## Data
+ * - #Menu
+ * - #Menu::mdata
+ * - #Mailbox
+ *
+ * The @ref gui_simple holds a Menu.  The Autocrypt Account Dialog stores its
+ * data (#Mailbox) in Menu::mdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type  | Handler                     |
+ * | :---------- | :-------------------------- | 
+ * | #NT_CONFIG  | postponed_config_observer() |
+ * | #NT_WINDOW  | postponed_window_observer() |
+ *
+ * The Postponed Email Selection Dialog doesn't have any specific colours, so
+ * it doesn't need to support #NT_COLOR.
+ *
+ * The Postponed Email Selection Dialog does not implement MuttWindow::recalc()
+ * or MuttWindow::repaint().
+ *
+ * Some other events are handled by the @ref gui_simple.
  */
 
 #include "config.h"

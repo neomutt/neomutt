@@ -1,6 +1,6 @@
 /**
  * @file
- * GPGME key selection dialog
+ * GPGME Key Selection Dialog
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,51 @@
  */
 
 /**
- * @page crypt_dlggpgme GPGME key selection dialog
+ * @page crypt_dlggpgme GPGME Key Selection Dialog
+ * WFW
  *
- * GPGME key selection dialog
+ * ## Overview
+ *
+ * The GPGME Key Selection Dialog lets the user select a PGP key.
+ *
+ * This is a @ref gui_simple
+ *
+ * ## Windows
+ *
+ * | Name                       | Type               | See Also               |
+ * | :------------------------- | :----------------- | :--------------------- |
+ * | GPGME Key Selection Dialog | WT_DLG_CRYPT_GPGME | dlg_select_gpgme_key() |
+ *
+ * **Parent**
+ * - @ref gui_dialog
+ *
+ * **Children**
+ * - See: @ref gui_simple
+ *
+ * ## Data
+ * - #Menu
+ * - #Menu::mdata
+ * - #CryptKeyInfo
+ *
+ * The @ref gui_simple holds a Menu.  The GPGME Key Selection Dialog stores its
+ * data (#CryptKeyInfo) in Menu::mdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type  | Handler                     |
+ * | :---------- | :-------------------------- | 
+ * | #NT_CONFIG  | gpgme_key_config_observer() |
+ * | #NT_WINDOW  | gpgme_key_window_observer() |
+ *
+ * The GPGME Key Selection Dialog doesn't have any specific colours, so it
+ * doesn't need to support #NT_COLOR.
+ *
+ * The GPGME Key Selection Dialog does not implement MuttWindow::recalc() or
+ * MuttWindow::repaint().
+ *
+ * Some other events are handled by the @ref gui_simple.
  */
 
 #include "config.h"

@@ -1,6 +1,6 @@
 /**
  * @file
- * Address book handling aliases
+ * Address book
  *
  * @authors
  * Copyright (C) 1996-2000,2007 Michael R. Elkins <me@mutt.org>
@@ -23,9 +23,55 @@
  */
 
 /**
- * @page alias_dlgalias Address book handling aliases
+ * @page alias_dlgalias Address Book Dialog
+ * WFW
  *
- * Address book handling aliases
+ * ## Overview
+ *
+ * The Address Book Dialog allows the user to select, add or delete aliases.
+ *
+ * This is a @ref gui_simple
+ *
+ * @note New aliases will be saved to `$alias_file`.
+ *       Deleted aliases are deleted from memory only.
+ *
+ * ## Windows
+ *
+ * | Name                | Type         | See Also           |
+ * | :------------------ | :----------- | :----------------- |
+ * | Address Book Dialog | WT_DLG_ALIAS | dlg_select_alias() |
+ *
+ * **Parent**
+ * - @ref gui_dialog
+ *
+ * **Children**
+ * - See: @ref gui_simple
+ *
+ * ## Data
+ * - #Menu
+ * - #Menu::mdata
+ * - #AliasMenuData
+ *
+ * The @ref gui_simple holds a Menu.  The Address Book Dialog stores
+ * its data (#AliasMenuData) in Menu::mdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type            | Handler                    |
+ * | :-------------------- | :------------------------- | 
+ * | #NT_ALIAS	           | alias_alias_observer()     |
+ * | #NT_CONFIG	           | alias_config_observer()    |
+ * | #NT_WINDOW	           | alias_window_observer()    |
+ * | MuttWindow::recalc()  | alias_recalc()             |
+ *
+ * The Address Book Dialog doesn't have any specific colours, so it doesn't
+ * need to support #NT_COLOR.
+ *
+ * MuttWindow::recalc() is handled to support custom sorting.
+ *
+ * Some other events are handled by the @ref gui_simple.
  */
 
 #include "config.h"
@@ -188,6 +234,10 @@ static int alias_alias_observer(struct NotifyCallback *nc)
 
 /**
  * alias_window_observer - Notification that a Window has changed - Implements ::observer_t
+ *
+ * This function is triggered by changes to the windows.
+ *
+ * - Delete (this window): clean up the resources held by the Help Bar
  */
 int alias_window_observer(struct NotifyCallback *nc)
 {

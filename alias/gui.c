@@ -37,6 +37,8 @@
 
 /**
  * alias_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ *
+ * The Address Book Window is affected by changes to `$sort_alias`.
  */
 int alias_config_observer(struct NotifyCallback *nc)
 {

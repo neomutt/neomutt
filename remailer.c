@@ -1,6 +1,6 @@
 /**
  * @file
- * Support of Mixmaster anonymous remailer
+ * Mixmaster Remailer Dialog
  *
  * @authors
  * Copyright (C) 1999-2001 Thomas Roessler <roessler@does-not-exist.org>
@@ -22,9 +22,44 @@
  */
 
 /**
- * @page neo_remailer Support of Mixmaster anonymous remailer
+ * @page neo_remailer Mixmaster Remailer Dialog
  *
- * Support of Mixmaster anonymous remailer
+ * ## Overview
+ *
+ * The Mixmaster Remailer Dialog lets the user edit anonymous remailer chain.
+ *
+ * ## Windows
+ *
+ * | Name                      | Type            | See Also                     |
+ * | :------------------------ | :-------------- | :--------------------------- |
+ * | Mixmaster Remailer Dialog | WT_DLG_REMAILER | dlg_select_mixmaster_chain() |
+ *
+ * **Parent**
+ * - @ref gui_dialog
+ *
+ * **Children**
+ * - Hosts:        @ref menu_window
+ * - Chain Bar:    @ref gui_sbar
+ * - Chain:        @ref gui_window
+ * - Remailer Bar: @ref gui_sbar
+ *
+ * ## Data
+ * - #Remailer
+ *
+ * The Mixmaster Remailer Dialog stores its data (#Remailer) in Menu::mdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type  | Handler                    |
+ * | :---------- | :------------------------- | 
+ * | #NT_CONFIG  | remailer_config_observer() |
+ * | #NT_WINDOW  | remailer_window_observer() |
+ *
+ * The Mixmaster Remailer Dialog does not implement MuttWindow::recalc() or MuttWindow::repaint().
+ *
+ * Some other events are handled by the dialog's children.
  */
 
 #include "config.h"

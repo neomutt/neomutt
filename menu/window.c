@@ -23,7 +23,48 @@
 /**
  * @page menu_window Window wrapper around a Menu
  *
- * Window wrapper around a Menu
+ * ## Overview
+ *
+ * The Menu Window is an interactive window that allows a user to work with a
+ * list of items.  The Menu can be configured to allow single or multiple
+ * selections and it can handle arbitrary data, sorting, custom colouring and
+ * searching.
+ *
+ * ## Windows
+ *
+ * | Name | Type     | Constructor   |
+ * | :--- | :------- | :------------ |
+ * | Menu | #WT_MENU | menu_window() |
+ *
+ * **Parent**
+ *
+ * The Menu Window has many possible parents, e.g.
+ *
+ * - @ref index_dialog
+ * - @ref compose_dialog
+ * - ...
+ *
+ * **Children**
+ * - None
+ *
+ * ## Data
+ * - #Menu
+ * - Menu::mdata
+ *
+ * The Menu Window stores it state info in struct Menu.
+ * Users of the Menu Window can store custom data in Menu::mdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type            | Handler                 |
+ * | :-------------------- | :---------------------- | 
+ * | #NT_COLOR             | menu_color_observer()   |
+ * | #NT_CONFIG            | menu_config_observer()  |
+ * | #NT_WINDOW            | menu_window_observer()  |
+ * | MuttWindow::recalc()  | menu_recalc()           |
+ * | MuttWindow::repaint() | menu_repaint()          |
  */
 
 #include "config.h"

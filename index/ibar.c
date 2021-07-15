@@ -23,7 +23,42 @@
 /**
  * @page index_ibar Index Bar (status)
  *
- * Index Bar (status)
+ * ## Overview
+ *
+ * The Index Bar Window displays status info about the email list.
+ *
+ * ## Windows
+ *
+ * | Name             | Type          | See Also   |
+ * | :--------------- | :------------ | :--------- |
+ * | Index Bar Window | WT_STATUS_BAR | ibar_new() |
+ *
+ * **Parent**
+ * - @ref index_ipanel
+ *
+ * **Children**
+ *
+ * None.
+ *
+ * ## Data
+ * - #IBarPrivateData
+ *
+ * The Index Bar Window stores its data (#IBarPrivateData) in
+ * MuttWindow::wdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type            | Handler                 |
+ * | :-------------------- | :---------------------- | 
+ * | #NT_COLOR             | ibar_color_observer()   |
+ * | #NT_CONFIG            | ibar_config_observer()  |
+ * | #NT_INDEX             | ibar_index_observer()   |
+ * | #NT_MENU              | ibar_menu_observer()    |
+ * | #NT_WINDOW            | ibar_window_observer()  |
+ * | MuttWindow::recalc()  | ibar_recalc()           |
+ * | MuttWindow::repaint() | ibar_repaint()          |
  */
 
 #include "config.h"

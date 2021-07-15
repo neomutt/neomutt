@@ -23,7 +23,42 @@
 /**
  * @page compose_envelope Compose Envelope
  *
- * Compose Envelope
+ * ## Overview
+ *
+ * The Compose Envelope Window displays the header fields of an email.
+ *
+ * ## Windows
+ *
+ * | Name                    | Type      | See Also          |
+ * | :---------------------- | :-------- | :---------------- |
+ * | Compose Envelope Window | WT_CUSTOM | compose_env_new() |
+ *
+ * **Parent**
+ * - @ref compose_dialog
+ *
+ * **Children**
+ *
+ * None.
+ *
+ * ## Data
+ * - #ComposeEnvelopeData
+ *
+ * The Compose Envelope Window stores its data (#ComposeEnvelopeData) in
+ * MuttWindow::wdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type            | Handler                |
+ * | :-------------------- | :--------------------- | 
+ * | #NT_COLOR             | env_color_observer()   |
+ * | #NT_COMPOSE           | env_compose_observer() |
+ * | #NT_CONFIG            | env_config_observer()  |
+ * | #NT_HEADER            | env_header_observer()  |
+ * | #NT_WINDOW            | env_window_observer()  |
+ * | MuttWindow::recalc()  | env_recalc()           |
+ * | MuttWindow::repaint() | env_repaint()          |
  */
 
 #include "config.h"

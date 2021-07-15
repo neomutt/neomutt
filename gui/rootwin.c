@@ -23,7 +23,72 @@
 /**
  * @page gui_rootwin Root Window
  *
- * Root Window
+ * ## Overview
+ *
+ * NeoMutt is built from a set of nested windows.  Each window defines a region
+ * of the screen which is responsible for a single concept.  This could be a high-level
+ * component like the @ref compose_dialog, or a single element like the @ref index_ibar.
+ *
+ * The **Root Window** is (grand-)parent of all those windows.
+ *
+ * The Root Window is container window and not visible.
+ * 
+ * ### Definitions
+ *
+ * Every window in the hierarchy is struct MuttWindow, however in these docs
+ * they're often given different descriptions.
+ *
+ * - **Window**:
+ *   A region of the screen.  A Window can be: fixed size; set to maximise
+ *   (as limited by its parent); set to minimise (around its children).
+ *   Everything below is also a Window.
+ *
+ * - **Dialog**:
+ *   A set of nested Windows that form an interactive component.  This is the
+ *   main way that users interact with NeoMutt. e.g. @ref index_dialog,
+ *   @ref compose_dialog.
+ *
+ * - **Panel**
+ *   A small sub-division of a Dialog.  The Panels are sets of Windows that can
+ *   be reused in other Dialogs.
+ *
+ * - **Container**:
+ *   An invisible non-interactive Window used for shaping, aligning or limiting
+ *   the size of its children.
+ *
+ * - **Bar**:
+ *   A one-line high Window used for displaying help or status info, e.g.
+ *   @ref helpbar_helpbar, @ref index_ibar.
+ *
+ * ## Windows
+ *
+ * | Name        | Type     | Constructor   |
+ * | :---------- | :------- | :------------ |
+ * | Root Window | #WT_ROOT | rootwin_new() |
+ *
+ * **Parent**
+ * - None
+ *
+ * **Children**
+ * - @ref helpbar_helpbar
+ * - @ref gui_dialog
+ * - @ref gui_msgwin
+ *
+ * ## Data
+ *
+ * The Root Window has no data.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type  | Handler                                             |
+ * | :---------- | :-------------------------------------------------- |
+ * | #NT_CONFIG  | rootwin_config_observer()                           |
+ * | #NT_WINDOW  | rootwin_window_observer()                           |
+ * | SIGWINCH    | rootwin_set_size() (called by mutt_resize_screen()) |
+ *
+ * The Root Window does not implement MuttWindow::recalc() or MuttWindow::repaint().
  */
 
 #include "config.h"
@@ -41,6 +106,8 @@ struct MuttWindow *RootWindow = NULL; ///< Parent of all Windows
 
 /**
  * rootwin_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ *
+ * The Root Window is affected by changes to `$status_on_top`.
  */
 static int rootwin_config_observer(struct NotifyCallback *nc)
 {
@@ -80,6 +147,10 @@ static int rootwin_config_observer(struct NotifyCallback *nc)
 
 /**
  * rootwin_window_observer - Notification that a Window has changed - Implements ::observer_t
+ *
+ * This function is triggered by changes to the windows.
+ *
+ * - Delete (this window): clean up the resources held by the Root Window
  */
 static int rootwin_window_observer(struct NotifyCallback *nc)
 {
@@ -146,8 +217,10 @@ void rootwin_new(void)
 
 /**
  * rootwin_set_size - Set the dimensions of the Root Window
- * @param rows
- * @param cols
+ * @param rows Number of rows on the screen
+ * @param cols Number of columns on the screen
+ *
+ * This function is called after NeoMutt receives a SIGWINCH signal.
  */
 void rootwin_set_size(int cols, int rows)
 {

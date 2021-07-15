@@ -1,6 +1,6 @@
 /**
  * @file
- * History selection dialog
+ * History Selection Dialog
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,41 @@
  */
 
 /**
- * @page history_dlghistory History selection dialog
+ * @page history_dlghistory History Selection Dialog
+ * WFW
  *
- * History selection dialog
+ * ## Overview
+ *
+ * The History Selection Dialog lets the user choose a string from the history,
+ * e.g. a past command.
+ *
+ * This is a @ref gui_simple
+ *
+ * ## Windows
+ *
+ * | Name                     | Type           | See Also             |
+ * | :----------------------- | :------------- | :------------------- |
+ * | History Selection Dialog | WT_DLG_HISTORY | dlg_select_history() |
+ *
+ * **Parent**
+ * - @ref gui_dialog
+ *
+ * **Children**
+ * - See: @ref gui_simple
+ *
+ * ## Data
+ * - #Menu
+ * - #Menu::mdata
+ * - `char **matches`
+ *
+ * The @ref gui_simple holds a Menu.  The History Selection Dialog stores its
+ * data (`char **matches`) in Menu::mdata.
+ *
+ * ## Events
+ *
+ * None.  The dialog is not affected by any config or colours and doesn't
+ * support sorting.  Once constructed, the events are handled by the Menu (part
+ * of the @ref gui_simple).
  */
 
 #include "config.h"

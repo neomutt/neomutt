@@ -1,6 +1,6 @@
 /**
  * @file
- * SMIME key selection dialog
+ * SMIME Key Selection Dialog
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,40 @@
  */
 
 /**
- * @page crypt_dlgsmime SMIME key selection dialog
+ * @page crypt_dlgsmime SMIME Key Selection Dialog
+ * WFW
  *
- * SMIME key selection dialog
+ * ## Overview
+ *
+ * The SMIME Key Selection Dialog lets the user select a SMIME key.
+ *
+ * This is a @ref gui_simple
+ *
+ * ## Windows
+ *
+ * | Name                       | Type         | See Also               |
+ * | :------------------------- | :----------- | :--------------------- |
+ * | SMIME Key Selection Dialog | WT_DLG_SMIME | dlg_select_smime_key() |
+ *
+ * **Parent**
+ * - @ref gui_dialog
+ *
+ * **Children**
+ * - See: @ref gui_simple
+ *
+ * ## Data
+ * - #Menu
+ * - #Menu::mdata
+ * - #SmimeKey
+ *
+ * The @ref gui_simple holds a Menu.  The SMIME Key Selection Dialog stores its
+ * data (#SmimeKey) in Menu::mdata.
+ *
+ * ## Events
+ *
+ * None.  The dialog is not affected by any config or colours and doesn't
+ * support sorting.  Once constructed, the events are handled by the Menu (part
+ * of the @ref gui_simple).
  */
 
 #include "config.h"

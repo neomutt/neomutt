@@ -1,6 +1,6 @@
 /**
  * @file
- * GUI editor for an email's headers
+ * Compose Email Dialog
  *
  * @authors
  * Copyright (C) 1996-2000,2002,2007,2010,2012 Michael R. Elkins <me@mutt.org>
@@ -24,9 +24,46 @@
  */
 
 /**
- * @page compose_dialog GUI editor for an email's headers
+ * @page compose_dialog Compose Email Dialog
  *
- * GUI editor for an email's headers
+ * ## Overview
+ *
+ * The Compose Email Dialog lets the user edit the fields before sending an email.
+ * They can also add/remove/reorder attachments.
+ *
+ * ## Windows
+ *
+ * | Name                 | Type           | See Also            |
+ * | :------------------- | :------------- | :------------------ |
+ * | Compose Email Dialog | WT_DLG_COMPOSE | mutt_compose_menu() |
+ *
+ * **Parent**
+ * - @ref gui_dialog
+ *
+ * **Children**
+ * - @ref compose_envelope
+ * - @ref gui_sbar
+ * - @ref compose_attach
+ * - @ref compose_cbar
+ *
+ * ## Data
+ * - #ComposeSharedData
+ *
+ * The Compose Email Dialog stores its data (#ComposeSharedData) in
+ * MuttWindow::wdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type  | Handler                   |
+ * | :---------- | :------------------------ | 
+ * | #NT_CONFIG  | compose_config_observer() |
+ * | #NT_WINDOW  | compose_window_observer() |
+ *
+ * The Compose Email Dialog does not implement MuttWindow::recalc() or MuttWindow::repaint().
+ *
+ * Some other events are handled by the dialog's children.
  */
 
 #include "config.h"

@@ -1,6 +1,6 @@
 /**
  * @file
- * Routines for querying and external address book
+ * Routines for querying an external address book
  *
  * @authors
  * Copyright (C) 1996-2000,2003,2013 Michael R. Elkins <me@mutt.org>
@@ -24,8 +24,51 @@
 
 /**
  * @page alias_dlgquery Routines for querying and external address book
+ * WFW
  *
- * Routines for querying and external address book
+ * ## Overview
+ *
+ * The Address Query Dialog will show aliases from an external query.
+ * User can select aliases from the list.
+ *
+ * This is a @ref gui_simple
+ *
+ * ## Windows
+ *
+ * | Name                 | Type         | See Also           |
+ * | :------------------- | :----------- | :----------------- |
+ * | Address Query Dialog | WT_DLG_QUERY | dlg_select_query() |
+ *
+ * **Parent**
+ * - @ref gui_dialog
+ *
+ * **Children**
+ * - See: @ref gui_simple
+ *
+ * ## Data
+ * - #Menu
+ * - #Menu::mdata
+ * - #AliasMenuData
+ *
+ * The @ref gui_simple holds a Menu.  The Address Query Dialog stores
+ * its data (#AliasMenuData) in Menu::mdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type            | Handler                    |
+ * | :-------------------- | :------------------------- | 
+ * | #NT_CONFIG	           | alias_config_observer()    |
+ * | #NT_WINDOW	           | alias_window_observer()    |
+ * | MuttWindow::recalc()  | alias_recalc()             |
+ *
+ * The Address Query Dialog doesn't have any specific colours, so it doesn't
+ * need to support #NT_COLOR.
+ *
+ * MuttWindow::recalc() is handled to support custom sorting.
+ *
+ * Some other events are handled by the @ref gui_simple.
  */
 
 #include "config.h"

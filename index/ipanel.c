@@ -1,6 +1,6 @@
 /**
  * @file
- * List of Emails Window
+ * Index Panel
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,39 @@
  */
 
 /**
- * @page index_ipanel List of Emails Window
+ * @page index_ipanel Index Panel
  *
- * List of Emails Window
+ * ## Overview
+ *
+ * The Index Panel is a non-interactive container around the email list and a
+ * status bar.
+ *
+ * ## Windows
+ *
+ * | Name        | Type      | Constructor  |
+ * | :---------- | :-------- | :----------- |
+ * | Index Panel | #WT_INDEX | ipanel_new() |
+ *
+ * **Parent**
+ * - @ref index_dialog
+ *
+ * **Children**
+ * - @ref index_index
+ * - @ref index_ibar
+ *
+ * ## Data
+ * - #IndexPrivateData
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type  | Handler                  |
+ * | :---------- | :----------------------- |
+ * | #NT_CONFIG  | ipanel_config_observer() |
+ * | #NT_WINDOW  | ipanel_window_observer() |
+ *
+ * The Index Panel does not implement MuttWindow::recalc() or MuttWindow::repaint().
  */
 
 #include "config.h"

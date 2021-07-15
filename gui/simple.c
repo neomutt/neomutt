@@ -1,6 +1,6 @@
 /**
  * @file
- * Simple Dialog Windows
+ * Simple Dialog
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,46 @@
  */
 
 /**
- * @page gui_simple Simple Dialog Windows
+ * @page gui_simple Simple Dialog
  *
- * Simple Dialog Windows
+ * ## Overview
+ *
+ * The Simple Dialog is an interactive set of windows containing a Menu and a
+ * status bar.
+ *
+ * ## Windows
+ *
+ * | Name          | Type     | See Also            |
+ * | :------------ | :------- | :------------------ |
+ * | Simple Dialog | Variable | simple_dialog_new() |
+ *
+ * The type of the Window is determined by the caller.
+ *
+ * **Parent**
+ * - @ref gui_dialog
+ *
+ * **Children**
+ * - @ref menu_window
+ * - @ref gui_sbar
+ *
+ * ## Data
+ * - #Menu
+ * - #Menu::mdata
+ *
+ * The Simple Dialog exposes access to the Menu in MuttWindow::wdata.
+ * The caller may set Menu::mdata to their own data.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type | Handler                  |
+ * | :--------- | :----------------------- |
+ * | #NT_CONFIG | simple_config_observer() |
+ * | #NT_WINDOW | simple_window_observer() |
+ *
+ * The Simple Dialog does not implement MuttWindow::recalc() or MuttWindow::repaint().
+ * They are handled by the child windows.
  */
 
 #include "config.h"
@@ -36,6 +73,8 @@
 
 /**
  * simple_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ *
+ * The Simple Dialog is affected by changes to `$status_on_top`.
  */
 static int simple_config_observer(struct NotifyCallback *nc)
 {
@@ -57,6 +96,10 @@ static int simple_config_observer(struct NotifyCallback *nc)
 
 /**
  * simple_window_observer - Notification that a Window has changed - Implements ::observer_t
+ *
+ * This function is triggered by changes to the windows.
+ *
+ * - Delete (this window): clean up the resources held by the Simple Dialog
  */
 static int simple_window_observer(struct NotifyCallback *nc)
 {

@@ -1,6 +1,6 @@
 /**
  * @file
- * GUI display a file/email/help in a viewport with paging
+ * Pager Dialog
  *
  * @authors
  * Copyright (C) 1996-2002,2007,2010,2012-2013 Michael R. Elkins <me@mutt.org>
@@ -22,9 +22,15 @@
  */
 
 /**
- * @page pager_dialog GUI display a file/email/help in a viewport with paging
+ * @page pager_dialog Pager Dialog
  *
- * GUI display a file/email/help in a viewport with paging
+ * ## Overview
+ *
+ * The Pager Dialog displays some text to the user that can be paged through.
+ * The actual contents depend on the caller, but are usually an email, file or help.
+ *
+ * This dialog doesn't exist on its own.  The @ref pager_ppanel is packaged up
+ * as part of the @ref index_dialog or the @ref pager_dopager.
  */
 
 #include "config.h"

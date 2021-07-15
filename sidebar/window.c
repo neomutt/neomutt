@@ -1,6 +1,6 @@
 /**
  * @file
- * Manage the Sidebar Window
+ * Sidebar Window
  *
  * @authors
  * Copyright (C) 2004 Justin Hibbits <jrh29@po.cwru.edu>
@@ -25,9 +25,46 @@
  */
 
 /**
- * @page sidebar_window Manage the Sidebar Window
+ * @page sidebar_window Sidebar Window
  *
- * Manage the Sidebar Window
+ * ## Overview
+ *
+ * The Sidebar Window is an interactive window that displays a list of
+ * mailboxes to the user.
+ *
+ * ## Windows
+ *
+ * | Name           | Type       | See Also          |
+ * | :------------- | :--------- | :---------------- |
+ * | Sidebar Window | WT_SIDEBAR | mutt_window_new() |
+ *
+ * **Parent**
+ * - @ref index_dialog
+ *
+ * **Children**
+ *
+ * None.
+ *
+ * ## Data
+ * - #SidebarWindowData
+ *
+ * The Sidebar Window stores its data (#SidebarWindowData) in MuttWindow::wdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type            | Handler               |
+ * | :-------------------- | :-------------------- |
+ * | #NT_ACCOUNT           | sb_account_observer() |
+ * | #NT_COLOR             | sb_color_observer()   |
+ * | #NT_COMMAND           | sb_command_observer() |
+ * | #NT_CONFIG            | sb_config_observer()  |
+ * | #NT_INDEX             | sb_index_observer()   |
+ * | #NT_MAILBOX           | sb_mailbox_observer() |
+ * | #NT_WINDOW            | sb_window_observer()  |
+ * | MuttWindow::recalc()  | sb_recalc()           |
+ * | MuttWindow::repaint() | sb_repaint()          |
  */
 
 #include "config.h"

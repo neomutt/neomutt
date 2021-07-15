@@ -23,7 +23,42 @@
 /**
  * @page pager_pbar Pager Bar
  *
- * Pager Bar
+ * ## Overview
+ *
+ * The Pager Bar Window displays status info about the email.
+ *
+ * ## Windows
+ *
+ * | Name             | Type          | See Also   |
+ * | :--------------- | :------------ | :--------- |
+ * | Pager Bar Window | WT_STATUS_BAR | pbar_new() |
+ *
+ * **Parent**
+ * - @ref pager_ppanel
+ *
+ * **Children**
+ *
+ * None.
+ *
+ * ## Data
+ * - #PBarPrivateData
+ *
+ * The Pager Bar Window stores its data (#PBarPrivateData) in
+ * MuttWindow::wdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type            | Handler                 |
+ * | :-------------------- | :---------------------- | 
+ * | #NT_COLOR             | pbar_color_observer()   |
+ * | #NT_CONFIG            | pbar_config_observer()  |
+ * | #NT_PAGER             | pbar_pager_observer()   |
+ * | #NT_INDEX             | pbar_index_observer()   |
+ * | #NT_WINDOW            | pbar_window_observer()  |
+ * | MuttWindow::recalc()  | pbar_recalc()           |
+ * | MuttWindow::repaint() | pbar_repaint()          |
  */
 
 #include "config.h"

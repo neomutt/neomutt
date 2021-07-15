@@ -23,7 +23,40 @@
 /**
  * @page compose_attach Compose Attachments
  *
- * Compose Attachments
+ * ## Overview
+ *
+ * The Compose Attachments Window displays the attachments of an email.
+ *
+ * ## Windows
+ *
+ * | Name                       | Type      | See Also     |
+ * | :------------------------- | :-------- | :----------- |
+ * | Compose Attachments Window | WT_MENU   | attach_new() |
+ *
+ * **Parent**
+ * - @ref compose_dialog
+ *
+ * **Children**
+ *
+ * None.
+ *
+ * ## Data
+ * - #ComposeAttachData
+ *
+ * The Compose Attachments Window stores its data (#ComposeAttachData) in
+ * Menu::mdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type            | Handler                   |
+ * | :-------------------- | :------------------------ | 
+ * | #NT_COMPOSE           | attach_compose_observer() |
+ * | #NT_CONFIG            | attach_config_observer()  |
+ * | #NT_WINDOW            | attach_window_observer()  |
+ * | MuttWindow::recalc()  | attach_recalc()           |
+ * | MuttWindow::repaint() | attach_repaint()          |
  */
 
 #include "config.h"

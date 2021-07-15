@@ -23,7 +23,47 @@
 /**
  * @page autocrypt_account Autocrypt account menu
  *
- * Autocrypt account menu
+ * ## Overview
+ *
+ * The Autocrypt Account Dialog lets the user set up or update an Autocrypt Account.
+ *
+ * This is a @ref gui_simple
+ *
+ * ## Windows
+ *
+ * | Name                     | Type             | See Also                       |
+ * | :----------------------- | :--------------- | :----------------------------- |
+ * | Autocrypt Account Dialog | WT_DLG_AUTOCRYPT | dlg_select_autocrypt_account() |
+ *
+ * **Parent**
+ * - @ref gui_dialog
+ *
+ * **Children**
+ * - See: @ref gui_simple
+ *
+ * ## Data
+ * - #Menu
+ * - #Menu::mdata
+ * - #AccountEntry
+ *
+ * The @ref gui_simple holds a Menu.  The Autocrypt Account Dialog stores its
+ * data (#AccountEntry) in Menu::mdata.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type  | Handler                     |
+ * | :---------- | :-------------------------- | 
+ * | #NT_CONFIG  | autocrypt_config_observer() |
+ * | #NT_WINDOW  | autocrypt_window_observer() |
+ *
+ * The Autocrypt Account Dialog doesn't have any specific colours, so it doesn't
+ * need to support #NT_COLOR.
+ *
+ * The Autocrypt Account Dialog does not implement MuttWindow::recalc() or MuttWindow::repaint().
+ *
+ * Some other events are handled by the @ref gui_simple.
  */
 
 #include "config.h"

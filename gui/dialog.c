@@ -23,7 +23,45 @@
 /**
  * @page gui_dialog Dialog Windows
  *
- * Dialog Windows
+ * ## Overview
+ *
+ * A Dialog is an interactive set of windows allowing the user to perform some
+ * task, e.g. @ref alias_dlgalias
+ *
+ * The All Dialogs window is a container window and not visible.  All active dialogs
+ * will be children of this window, though only one will be active at a time.
+ *
+ * ## Windows
+ *
+ * | Name        | Type            | Constructor      |
+ * | :---------- | :-------------- | :--------------- |
+ * | All Dialogs | #WT_ALL_DIALOGS | alldialogs_new() |
+ *
+ * **Parent**
+ * - @ref gui_rootwin
+ *
+ * **Children**
+ *
+ * The All Dialogs window has many possible children, e.g.
+ *
+ * - @ref alias_dlgalias
+ * - @ref compose_dialog
+ * - @ref crypt_dlggpgme
+ * - ...
+ *
+ * ## Data
+ *
+ * The All Dialogs window has no data.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type  | Handler                      |
+ * | :---------- | :--------------------------- |
+ * | #NT_WINDOW  | alldialogs_window_observer() |
+ *
+ * The All Dialogs window does not implement MuttWindow::recalc() or MuttWindow::repaint().
  */
 
 #include "config.h"
@@ -135,6 +173,10 @@ void dialog_pop(void)
 
 /**
  * alldialogs_window_observer - Notification that a Window has changed - Implements ::observer_t
+ *
+ * This function is triggered by changes to the windows.
+ *
+ * - Delete (this window): clean up the resources held by the All Dialogs window
  */
 static int alldialogs_window_observer(struct NotifyCallback *nc)
 {

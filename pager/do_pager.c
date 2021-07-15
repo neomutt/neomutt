@@ -1,6 +1,6 @@
 /**
  * @file
- * A simple wrapper for the Pager
+ * Simple Pager Dialog
  *
  * @authors
  * Copyright (C) 1996-2002,2007,2010,2012-2013 Michael R. Elkins <me@mutt.org>
@@ -22,9 +22,39 @@
  */
 
 /**
- * @page pager_dopager A simple wrapper for the Pager
+ * @page pager_dopager Simple Pager Dialog
  *
- * A simple wrapper for the Pager
+ * ## Overview
+ *
+ * The Simple Pager Dialog displays text to the user that can be paged.
+ *
+ * ## Windows
+ *
+ * | Name                | Type             | Constructor     |
+ * | :------------------ | :--------------- | :-------------- |
+ * | Simple Pager Dialog | #WT_DLG_DO_PAGER | mutt_do_pager() |
+ *
+ * **Parent**
+ * - @ref gui_dialog
+ *
+ * **Children**
+ * - @ref pager_ppanel
+ *
+ * ## Data
+ *
+ * The Simple Pager Dialog has no data.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type  | Handler                   |
+ * | :---------- | :------------------------ |
+ * | #NT_CONFIG  | dopager_config_observer() |
+ * | #NT_WINDOW  | dopager_window_observer() |
+ *
+ * The Simple Pager Dialog does not implement MuttWindow::recalc() or
+ * MuttWindow::repaint().
  */
 
 #include "config.h"

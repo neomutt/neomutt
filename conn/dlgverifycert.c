@@ -1,6 +1,6 @@
 /**
  * @file
- * GUI parts of Connection Library
+ * Certificate Verification Dialog
  *
  * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,36 @@
  */
 
 /**
- * @page conn_gui GUI parts of Connection Library
+ * @page conn_gui Certificate Verification Dialog
+ * WFW
  *
- * GUI parts of Connection Library
+ * ## Overview
+ *
+ * The Certificate Verification Dialog lets the user check the details of a
+ * certificate.
+ *
+ * This is a @ref gui_simple
+ *
+ * ## Windows
+ *
+ * | Name                            | Type               | See Also                 |
+ * | :------------------------------ | :----------------- | :----------------------- |
+ * | Certificate Verification Dialog | WT_DLG_CERTIFICATE | dlg_verify_certificate() |
+ *
+ * **Parent**
+ * - @ref gui_dialog
+ *
+ * **Children**
+ * - See: @ref gui_simple
+ *
+ * ## Data
+ *
+ * None.
+ *
+ * ## Events
+ *
+ * None.  Once constructed, the events are handled by the Menu
+ * (part of the @ref gui_simple).
  */
 
 #include "config.h"

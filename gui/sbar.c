@@ -23,7 +23,43 @@
 /**
  * @page gui_sbar Simple Bar (status)
  *
- * Simple Bar (status)
+ * ## Overview
+ *
+ * The Simple Bar is a simple non-interactive window to display a message or
+ * trivial status information.
+ *
+ * ## Windows
+ *
+ * | Name       | Type           | Constructor |
+ * | :--------- | :------------- | :---------- |
+ * | Simple Bar | #WT_STATUS_BAR | sbar_new()  |
+ *
+ * **Parent**
+ *
+ * The Simple Bar has many possible parents, e.g.
+ *
+ * - @ref compose_dialog
+ * - @ref gui_simple
+ * - ...
+ *
+ * **Children**
+ * - None
+ *
+ * ## Data
+ * - #SBarPrivateData
+ *
+ * The Simple Bar caches the formatted display string.
+ *
+ * ## Events
+ *
+ * Once constructed, it is controlled by the following events:
+ *
+ * | Event Type            | Handler                 |
+ * | :-------------------- | :---------------------- | 
+ * | #NT_COLOR             | sbar_color_observer()   |
+ * | #NT_WINDOW            | sbar_window_observer()  |
+ * | MuttWindow::recalc()  | sbar_recalc()           |
+ * | MuttWindow::repaint() | sbar_repaint()          |
  */
 
 #include "config.h"
@@ -75,6 +111,9 @@ static int sbar_repaint(struct MuttWindow *win)
 
 /**
  * sbar_color_observer - Notification that a Color has changed - Implements ::observer_t
+ *
+ * This function is triggered by changes to the colour settings, from the
+ * `color` or `uncolor`, `mono` or `unmono` commands.
  */
 static int sbar_color_observer(struct NotifyCallback *nc)
 {
@@ -97,6 +136,11 @@ static int sbar_color_observer(struct NotifyCallback *nc)
 
 /**
  * sbar_window_observer - Notification that a Window has changed - Implements ::observer_t
+ *
+ * This function is triggered by changes to the windows.
+ *
+ * - State (this window): refresh the window
+ * - Delete (this window): clean up the resources held by the Simple Bar
  */
 static int sbar_window_observer(struct NotifyCallback *nc)
 {
