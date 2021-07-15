@@ -117,8 +117,6 @@ static const char *get_config_type(int id)
       return "set";
     case NT_CONFIG_RESET:
       return "reset";
-    case NT_CONFIG_INITIAL_SET:
-      return "initial_set";
     default:
       return "UNKNOWN";
   }

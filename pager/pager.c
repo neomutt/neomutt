@@ -126,9 +126,6 @@ static int pager_config_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
     return -1;
 
-  if (nc->event_subtype == NT_CONFIG_INITIAL_SET)
-    return 0;
-
   struct EventConfig *ev_c = nc->event_data;
   struct MuttWindow *win_pager = nc->global_data;
 

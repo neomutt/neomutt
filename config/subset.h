@@ -61,7 +61,6 @@ enum NotifyConfig
 {
   NT_CONFIG_SET = 1,     ///< Config item has been set
   NT_CONFIG_RESET,       ///< Config item has been reset to initial, or parent, value
-  NT_CONFIG_INITIAL_SET, ///< Config item's initial value has been set
 };
 
 /**
