@@ -48,7 +48,6 @@
  */
 struct AccountEntry
 {
-  int tagged; /* TODO */
   int num;
   struct AutocryptAccount *account;
   struct Address *addr;
@@ -82,7 +81,7 @@ static const struct Mapping AutocryptAcctHelp[] = {
 };
 
 /**
- * account_format_str - Format a string for the Autocrypt account list - Implements ::format_t
+ * autocrypt_format_str - Format a string for the Autocrypt account list - Implements ::format_t
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------
@@ -92,10 +91,10 @@ static const struct Mapping AutocryptAcctHelp[] = {
  * | \%p     | Prefer-encrypt flag
  * | \%s     | Status flag (active/inactive)
  */
-static const char *account_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                      char op, const char *src, const char *prec,
-                                      const char *if_str, const char *else_str,
-                                      intptr_t data, MuttFormatFlags flags)
+static const char *autocrypt_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                        char op, const char *src, const char *prec,
+                                        const char *if_str, const char *else_str,
+                                        intptr_t data, MuttFormatFlags flags)
 {
   struct AccountEntry *entry = (struct AccountEntry *) data;
   char tmp[128];
@@ -147,23 +146,23 @@ static const char *account_format_str(char *buf, size_t buflen, size_t col, int 
 }
 
 /**
- * account_make_entry - Create a line for the Autocrypt account menu - Implements Menu::make_entry()
+ * autocrypt_make_entry - Create a line for the Autocrypt account menu - Implements Menu::make_entry()
  */
-static void account_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
+static void autocrypt_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
 {
   struct AccountEntry *entry = &((struct AccountEntry *) menu->mdata)[num];
 
   const char *const c_autocrypt_acct_format =
       cs_subset_string(NeoMutt->sub, "autocrypt_acct_format");
   mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
-                      NONULL(c_autocrypt_acct_format), account_format_str,
+                      NONULL(c_autocrypt_acct_format), autocrypt_format_str,
                       (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
- * ac_menu_free - Free the Autocrypt account Menu - Implements Menu::mdata_free()
+ * autocrypt_menu_free - Free the Autocrypt account Menu - Implements Menu::mdata_free()
  */
-static void ac_menu_free(struct Menu *menu, void **ptr)
+static void autocrypt_menu_free(struct Menu *menu, void **ptr)
 {
   struct AccountEntry *entries = *ptr;
 
@@ -177,30 +176,26 @@ static void ac_menu_free(struct Menu *menu, void **ptr)
 }
 
 /**
- * create_menu - Create the Autocrypt account Menu
- * @param dlg Dialog holding the Menu
- * @retval ptr New Menu
+ * populate_menu - Add the Autocrypt data to a Menu
+ * @param menu Menu to populate
+ * @retval true Success
  */
-static struct Menu *create_menu(struct MuttWindow *dlg)
+static bool populate_menu(struct Menu *menu)
 {
+  // Clear out any existing data
+  autocrypt_menu_free(menu, &menu->mdata);
+  menu->max = 0;
+
   struct AutocryptAccount **accounts = NULL;
   int num_accounts = 0;
 
   if (mutt_autocrypt_db_account_get_all(&accounts, &num_accounts) < 0)
-    return NULL;
-
-  struct Menu *menu = dlg->wdata;
-  menu->make_entry = account_make_entry;
-  /* menu->tag = account_tag; */
-
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
-  // L10N: Autocrypt Account Management Menu title
-  sbar_set_title(sbar, _("Autocrypt Accounts"));
+    return false;
 
   struct AccountEntry *entries =
       mutt_mem_calloc(num_accounts, sizeof(struct AccountEntry));
   menu->mdata = entries;
-  menu->mdata_free = ac_menu_free;
+  menu->mdata_free = autocrypt_menu_free;
   menu->max = num_accounts;
 
   for (int i = 0; i < num_accounts; i++)
@@ -208,7 +203,7 @@ static struct Menu *create_menu(struct MuttWindow *dlg)
     entries[i].num = i + 1;
     /* note: we are transferring the account pointer to the entries
      * array, and freeing the accounts array below.  the account
-     * will be freed in ac_menu_free().  */
+     * will be freed in autocrypt_menu_free().  */
     entries[i].account = accounts[i];
 
     entries[i].addr = mutt_addr_new();
@@ -217,7 +212,8 @@ static struct Menu *create_menu(struct MuttWindow *dlg)
   }
   FREE(&accounts);
 
-  return menu;
+  menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  return true;
 }
 
 /**
@@ -265,7 +261,15 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
 
   struct MuttWindow *dlg =
       simple_dialog_new(MENU_AUTOCRYPT_ACCT, WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
-  struct Menu *menu = create_menu(dlg);
+
+  struct Menu *menu = dlg->wdata;
+  menu->make_entry = autocrypt_make_entry;
+
+  populate_menu(menu);
+
+  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
+  // L10N: Autocrypt Account Management Menu title
+  sbar_set_title(sbar, _("Autocrypt Accounts"));
 
   bool done = false;
   while (!done)
@@ -277,12 +281,8 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
         break;
 
       case OP_AUTOCRYPT_CREATE_ACCT:
-        if (mutt_autocrypt_account_init(false))
-          break;
-
-        simple_dialog_free(&dlg);
-        dlg = simple_dialog_new(MENU_AUTOCRYPT_ACCT, WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
-        menu = create_menu(dlg);
+        if (mutt_autocrypt_account_init(false) == 0)
+          populate_menu(menu);
         break;
 
       case OP_AUTOCRYPT_DELETE_ACCT:
@@ -299,12 +299,9 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
         if (mutt_yesorno(msg, MUTT_NO) != MUTT_YES)
           break;
 
-        if (!mutt_autocrypt_db_account_delete(entry->account))
-        {
-          simple_dialog_free(&dlg);
-          dlg = simple_dialog_new(MENU_AUTOCRYPT_ACCT, WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
-          menu = create_menu(dlg);
-        }
+        if (mutt_autocrypt_db_account_delete(entry->account) == 0)
+          populate_menu(menu);
+
         break;
       }
 
