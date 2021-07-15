@@ -484,6 +484,61 @@ static void pgp_key_table_free(struct Menu *menu, void **ptr)
 }
 
 /**
+ * pgp_key_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ */
+static int pgp_key_config_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
+    return -1;
+
+  if (nc->event_subtype == NT_CONFIG_INITIAL_SET)
+    return 0;
+
+  struct EventConfig *ev_c = nc->event_data;
+
+  if (!mutt_str_equal(ev_c->name, "pgp_entry_format") &&
+      !mutt_str_equal(ev_c->name, "pgp_sort_keys"))
+  {
+    return 0;
+  }
+
+  struct Menu *menu = nc->global_data;
+  menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  mutt_debug(LL_DEBUG5, "config done, request WA_RECALC, MENU_REDRAW_FULL\n");
+
+  return 0;
+}
+
+/**
+ * pgp_key_window_observer - Notification that a Window has changed - Implements ::observer_t
+ *
+ * This function is triggered by changes to the windows.
+ *
+ * - Delete (this window): clean up the resources held by the Help Bar
+ */
+static int pgp_key_window_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
+    return -1;
+
+  if (nc->event_subtype != NT_WINDOW_DELETE)
+    return 0;
+
+  struct MuttWindow *win_menu = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != win_menu)
+    return 0;
+
+  struct Menu *menu = win_menu->wdata;
+
+  notify_observer_remove(NeoMutt->notify, pgp_key_config_observer, menu);
+  notify_observer_remove(win_menu->notify, pgp_key_window_observer, win_menu);
+
+  mutt_debug(LL_DEBUG5, "window delete done\n");
+  return 0;
+}
+
+/**
  * dlg_select_pgp_key - Let the user select a key to use
  * @param keys List of PGP keys
  * @param p    Address to match
@@ -567,6 +622,12 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
   menu->make_entry = pgp_make_entry;
   menu->mdata = key_table;
   menu->mdata_free = pgp_key_table_free;
+
+  struct MuttWindow *win_menu = menu->win_index;
+
+  // NT_COLOR is handled by the SimpleDialog
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, pgp_key_config_observer, menu);
+  notify_observer_add(win_menu->notify, NT_WINDOW, pgp_key_window_observer, win_menu);
 
   if (p)
     snprintf(buf, sizeof(buf), _("PGP keys matching <%s>"), p->mailbox);

@@ -247,6 +247,60 @@ static void toggle_prefer_encrypt(struct AccountEntry *entry)
 }
 
 /**
+ * autocrypt_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ *
+ * The Address Book Window is affected by changes to `$sort_autocrypt`.
+ */
+static int autocrypt_config_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
+    return -1;
+
+  if (nc->event_subtype == NT_CONFIG_INITIAL_SET)
+    return 0;
+
+  struct EventConfig *ev_c = nc->event_data;
+
+  if (!mutt_str_equal(ev_c->name, "autocrypt_acct_format"))
+    return 0;
+
+  struct Menu *menu = nc->global_data;
+  menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  mutt_debug(LL_DEBUG5, "config done, request WA_RECALC, MENU_REDRAW_FULL\n");
+
+  return 0;
+}
+
+/**
+ * autocrypt_window_observer - Notification that a Window has changed - Implements ::observer_t
+ *
+ * This function is triggered by changes to the windows.
+ *
+ * - Delete (this window): clean up the resources held by the Help Bar
+ */
+static int autocrypt_window_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
+    return -1;
+
+  if (nc->event_subtype != NT_WINDOW_DELETE)
+    return 0;
+
+  struct MuttWindow *win_menu = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != win_menu)
+    return 0;
+
+  struct Menu *menu = win_menu->wdata;
+
+  notify_observer_remove(NeoMutt->notify, autocrypt_config_observer, menu);
+  notify_observer_remove(win_menu->notify, autocrypt_window_observer, win_menu);
+
+  mutt_debug(LL_DEBUG5, "window delete done\n");
+  return 0;
+}
+
+/**
  * dlg_select_autocrypt_account - Display the Autocrypt account Menu
  * @param m Mailbox
  */
@@ -270,6 +324,12 @@ void dlg_select_autocrypt_account(struct Mailbox *m)
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   // L10N: Autocrypt Account Management Menu title
   sbar_set_title(sbar, _("Autocrypt Accounts"));
+
+  struct MuttWindow *win_menu = menu->win_index;
+
+  // NT_COLOR is handled by the SimpleDialog
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, autocrypt_config_observer, menu);
+  notify_observer_add(win_menu->notify, NT_WINDOW, autocrypt_window_observer, win_menu);
 
   bool done = false;
   while (!done)
