@@ -1223,6 +1223,22 @@ static void op_get_message(struct IndexSharedData *shared,
 }
 
 /**
+ * op_search - Perform a search
+ * @param shared Shared Index data
+ * @param priv   Private Index data
+ * @param op     Operation to perform, e.g. OP_search
+ */
+static void op_search(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+{
+  int index = menu_get_index(priv->menu);
+  index = mutt_search_command(shared->mailbox, priv->menu, index, op);
+  if (index != -1)
+    menu_set_index(priv->menu, index);
+  else
+    menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
+}
+
+/**
  * mutt_index_menu - Display a list of emails
  * @param dlg Dialog containing Windows to draw on
  * @param m_init Initial mailbox
@@ -1955,19 +1971,14 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       case OP_SEARCH_OPPOSITE:
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        /* fallthrough */
+        op_search(shared, priv, op);
+        break;
+
       case OP_SEARCH:
-      {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX))
           break;
-        int index = menu_get_index(priv->menu);
-        index = mutt_search_command(shared->mailbox, priv->menu, index, op);
-        if (index != -1)
-          menu_set_index(priv->menu, index);
-        else
-          menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
+        op_search(shared, priv, op);
         break;
-      }
 
       case OP_SORT:
       case OP_SORT_REVERSE:
