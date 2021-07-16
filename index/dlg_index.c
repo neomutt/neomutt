@@ -1239,6 +1239,51 @@ static void op_search(struct IndexSharedData *shared, struct IndexPrivateData *p
 }
 
 /**
+ * op_save - Save an Email
+ * @param shared Shared Index data
+ * @param priv   Private Index data
+ * @param op     Operation to perform, e.g. OP_search
+ */
+static void op_save(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+{
+  struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+
+  const enum MessageSaveOpt save_opt =
+      ((op == OP_SAVE) || (op == OP_DECODE_SAVE) || (op == OP_DECRYPT_SAVE)) ? SAVE_MOVE : SAVE_COPY;
+
+  enum MessageTransformOpt transform_opt =
+      ((op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY))   ? TRANSFORM_DECODE :
+      ((op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY)) ? TRANSFORM_DECRYPT :
+                                                             TRANSFORM_NONE;
+
+  const int rc = mutt_save_message(shared->mailbox, &el, save_opt, transform_opt);
+  if ((rc == 0) && (save_opt == SAVE_MOVE))
+  {
+    menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
+    const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
+    if (priv->tag)
+      menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+    else if (c_resolve)
+    {
+      int index = menu_get_index(priv->menu);
+      index = ci_next_undeleted(shared->mailbox, index);
+      if (index == -1)
+      {
+        menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+      }
+      else
+      {
+        menu_set_index(priv->menu, index);
+      }
+    }
+    else
+      menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+  }
+  emaillist_clear(&el);
+}
+
+/**
  * mutt_index_menu - Display a list of emails
  * @param dlg Dialog containing Windows to draw on
  * @param m_init Initial mailbox
@@ -2962,53 +3007,17 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       case OP_DECRYPT_SAVE:
         if (!WithCrypto)
           break;
-      /* fallthrough */
+        op_save(shared, priv, op);
+        break;
+
       case OP_COPY_MESSAGE:
       case OP_SAVE:
       case OP_DECODE_COPY:
       case OP_DECODE_SAVE:
-      {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-        el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
-
-        const enum MessageSaveOpt save_opt =
-            ((op == OP_SAVE) || (op == OP_DECODE_SAVE) || (op == OP_DECRYPT_SAVE)) ?
-                SAVE_MOVE :
-                SAVE_COPY;
-
-        enum MessageTransformOpt transform_opt =
-            ((op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY)) ? TRANSFORM_DECODE :
-            ((op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY)) ? TRANSFORM_DECRYPT :
-                                                                   TRANSFORM_NONE;
-
-        const int rc = mutt_save_message(shared->mailbox, &el, save_opt, transform_opt);
-        if ((rc == 0) && (save_opt == SAVE_MOVE))
-        {
-          menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
-          const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
-          if (priv->tag)
-            menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
-          else if (c_resolve)
-          {
-            int index = menu_get_index(priv->menu);
-            index = ci_next_undeleted(shared->mailbox, index);
-            if (index == -1)
-            {
-              menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
-            }
-            else
-            {
-              menu_set_index(priv->menu, index);
-            }
-          }
-          else
-            menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
-        }
-        emaillist_clear(&el);
+        op_save(shared, priv, op);
         break;
-      }
 
       case OP_MAIN_NEXT_NEW:
       case OP_MAIN_NEXT_UNREAD:
