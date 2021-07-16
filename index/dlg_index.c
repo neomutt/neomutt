@@ -1156,6 +1156,73 @@ static void index_custom_redraw(struct Menu *menu)
 }
 
 /**
+ * op_get_message - Get an NNTP message
+ * @param shared Shared Index data
+ * @param priv   Private Index data
+ * @param op     Operation to perform, e.g. OP_GET_MESSAGE
+ */
+static void op_get_message(struct IndexSharedData *shared,
+                           struct IndexPrivateData *priv, int op)
+{
+  if (shared->mailbox->type != MUTT_NNTP)
+    return;
+
+  char buf[PATH_MAX] = { 0 };
+  if (op == OP_GET_MESSAGE)
+  {
+    if ((mutt_get_field(_("Enter Message-Id: "), buf, sizeof(buf),
+                        MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
+        (buf[0] == '\0'))
+    {
+      return;
+    }
+  }
+  else
+  {
+    if (!shared->email || STAILQ_EMPTY(&shared->email->env->references))
+    {
+      mutt_error(_("Article has no parent reference"));
+      return;
+    }
+    mutt_str_copy(buf, STAILQ_FIRST(&shared->email->env->references)->data, sizeof(buf));
+  }
+
+  if (!shared->mailbox->id_hash)
+    shared->mailbox->id_hash = mutt_make_id_hash(shared->mailbox);
+  struct Email *e = mutt_hash_find(shared->mailbox->id_hash, buf);
+  if (e)
+  {
+    if (e->vnum != -1)
+    {
+      menu_set_index(priv->menu, e->vnum);
+    }
+    else if (e->collapsed)
+    {
+      mutt_uncollapse_thread(e);
+      mutt_set_vnum(shared->mailbox);
+      menu_set_index(priv->menu, e->vnum);
+    }
+    else
+      mutt_error(_("Message is not visible in limited view"));
+  }
+  else
+  {
+    mutt_message(_("Fetching %s from server..."), buf);
+    int rc = nntp_check_msgid(shared->mailbox, buf);
+    if (rc == 0)
+    {
+      e = shared->mailbox->emails[shared->mailbox->msg_count - 1];
+      mutt_sort_headers(shared->mailbox, shared->ctx->threads, false,
+                        &shared->ctx->vsize);
+      menu_set_index(priv->menu, e->vnum);
+      menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+    }
+    else if (rc > 0)
+      mutt_error(_("Article %s not found on the server"), buf);
+  }
+}
+
+/**
  * mutt_index_menu - Display a list of emails
  * @param dlg Dialog containing Windows to draw on
  * @param m_init Initial mailbox
@@ -1523,68 +1590,14 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       case OP_GET_PARENT:
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        /* fallthrough */
+        op_get_message(shared, priv, op);
+        break;
 
       case OP_GET_MESSAGE:
       {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_READONLY | CHECK_ATTACH))
           break;
-        char buf[PATH_MAX] = { 0 };
-        if (shared->mailbox->type == MUTT_NNTP)
-        {
-          if (op == OP_GET_MESSAGE)
-          {
-            if ((mutt_get_field(_("Enter Message-Id: "), buf, sizeof(buf),
-                                MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
-                (buf[0] == '\0'))
-            {
-              break;
-            }
-          }
-          else
-          {
-            if (!shared->email || STAILQ_EMPTY(&shared->email->env->references))
-            {
-              mutt_error(_("Article has no parent reference"));
-              break;
-            }
-            mutt_str_copy(buf, STAILQ_FIRST(&shared->email->env->references)->data,
-                          sizeof(buf));
-          }
-          if (!shared->mailbox->id_hash)
-            shared->mailbox->id_hash = mutt_make_id_hash(shared->mailbox);
-          struct Email *e = mutt_hash_find(shared->mailbox->id_hash, buf);
-          if (e)
-          {
-            if (e->vnum != -1)
-            {
-              menu_set_index(priv->menu, e->vnum);
-            }
-            else if (e->collapsed)
-            {
-              mutt_uncollapse_thread(e);
-              mutt_set_vnum(shared->mailbox);
-              menu_set_index(priv->menu, e->vnum);
-            }
-            else
-              mutt_error(_("Message is not visible in limited view"));
-          }
-          else
-          {
-            mutt_message(_("Fetching %s from server..."), buf);
-            int rc = nntp_check_msgid(shared->mailbox, buf);
-            if (rc == 0)
-            {
-              e = shared->mailbox->emails[shared->mailbox->msg_count - 1];
-              mutt_sort_headers(shared->mailbox, shared->ctx->threads, false,
-                                &shared->ctx->vsize);
-              menu_set_index(priv->menu, e->vnum);
-              menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-            }
-            else if (rc > 0)
-              mutt_error(_("Article %s not found on the server"), buf);
-          }
-        }
+        op_get_message(shared, priv, op);
         break;
       }
 
