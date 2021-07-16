@@ -1284,6 +1284,75 @@ static void op_save(struct IndexSharedData *shared, struct IndexPrivateData *pri
 }
 
 /**
+ * op_post - Post an Email
+ * @param shared Shared Index data
+ * @param priv   Private Index data
+ * @param op     Operation to perform, e.g. OP_search
+ * @retval true If operation was handled
+ */
+static bool op_post(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+{
+  if (!shared->email)
+    return true;
+  const enum QuadOption c_followup_to_poster =
+      cs_subset_quad(shared->sub, "followup_to_poster");
+  if ((op != OP_FOLLOWUP) || !shared->email->env->followup_to ||
+      !mutt_istr_equal(shared->email->env->followup_to, "poster") ||
+      (query_quadoption(c_followup_to_poster,
+                        _("Reply by mail as poster prefers?")) != MUTT_YES))
+  {
+    const enum QuadOption c_post_moderated =
+        cs_subset_quad(shared->sub, "post_moderated");
+    if (shared->mailbox && (shared->mailbox->type == MUTT_NNTP) &&
+        !((struct NntpMboxData *) shared->mailbox->mdata)->allowed && (query_quadoption(c_post_moderated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
+    {
+      return true;
+    }
+    if (op == OP_POST)
+      mutt_send_message(SEND_NEWS, NULL, NULL, shared->mailbox, NULL, shared->sub);
+    else
+    {
+      if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT))
+        return true;
+      struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+      el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+      mutt_send_message(((op == OP_FOLLOWUP) ? SEND_REPLY : SEND_FORWARD) | SEND_NEWS,
+                        NULL, NULL, shared->mailbox, &el, shared->sub);
+      emaillist_clear(&el);
+    }
+    menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+/**
+ * op_reply - Reply to an Email
+ * @param shared Shared Index data
+ * @param priv   Private Index data
+ * @param op     Operation to perform, e.g. OP_search
+ */
+static void op_reply(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+{
+  if (!shared->email)
+    return;
+  struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+  const bool c_pgp_auto_decode = cs_subset_bool(shared->sub, "pgp_auto_decode");
+  if (c_pgp_auto_decode && (priv->tag || !(shared->email->security & PGP_TRADITIONAL_CHECKED)))
+  {
+    if (mutt_check_traditional_pgp(shared->mailbox, &el))
+      menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+  }
+  mutt_send_message(SEND_REPLY, NULL, NULL, shared->mailbox, &el, shared->sub);
+  emaillist_clear(&el);
+  menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+}
+
+/**
  * mutt_index_menu - Display a list of emails
  * @param dlg Dialog containing Windows to draw on
  * @param m_init Initial mailbox
@@ -3994,71 +4063,28 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       case OP_FORWARD_TO_GROUP:
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        /* fallthrough */
+        if (op_post(shared, priv, op))
+          break;
+        op_reply(shared, priv, op);
+        break;
 
       case OP_POST:
-      {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_ATTACH))
           break;
-        if (!shared->email)
+        if (op_post(shared, priv, op))
           break;
-        const enum QuadOption c_followup_to_poster =
-            cs_subset_quad(shared->sub, "followup_to_poster");
-        if ((op != OP_FOLLOWUP) || !shared->email->env->followup_to ||
-            !mutt_istr_equal(shared->email->env->followup_to, "poster") ||
-            (query_quadoption(c_followup_to_poster,
-                              _("Reply by mail as poster prefers?")) != MUTT_YES))
-        {
-          const enum QuadOption c_post_moderated =
-              cs_subset_quad(shared->sub, "post_moderated");
-          if (shared->mailbox && (shared->mailbox->type == MUTT_NNTP) &&
-              !((struct NntpMboxData *) shared->mailbox->mdata)->allowed && (query_quadoption(c_post_moderated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
-          {
-            break;
-          }
-          if (op == OP_POST)
-            mutt_send_message(SEND_NEWS, NULL, NULL, shared->mailbox, NULL,
-                              shared->sub);
-          else
-          {
-            if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT))
-              break;
-            struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-            el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
-            mutt_send_message(((op == OP_FOLLOWUP) ? SEND_REPLY : SEND_FORWARD) | SEND_NEWS,
-                              NULL, NULL, shared->mailbox, &el, shared->sub);
-            emaillist_clear(&el);
-          }
-          menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-          break;
-        }
-      }
+        op_reply(shared, priv, op);
+        break;
 #endif
-      /* fallthrough */
+
       case OP_REPLY:
-      {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_ATTACH))
         {
           break;
         }
-        if (!shared->email)
-          break;
-        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-        el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
-        const bool c_pgp_auto_decode =
-            cs_subset_bool(shared->sub, "pgp_auto_decode");
-        if (c_pgp_auto_decode &&
-            (priv->tag || !(shared->email->security & PGP_TRADITIONAL_CHECKED)))
-        {
-          if (mutt_check_traditional_pgp(shared->mailbox, &el))
-            menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-        }
-        mutt_send_message(SEND_REPLY, NULL, NULL, shared->mailbox, &el, shared->sub);
-        emaillist_clear(&el);
-        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+        op_reply(shared, priv, op);
         break;
-      }
 
       case OP_SHELL_ESCAPE:
         if (mutt_shell_escape())
