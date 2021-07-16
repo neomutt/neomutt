@@ -141,7 +141,7 @@ bool subjrx_apply_mods(struct Envelope *env)
   if (STAILQ_EMPTY(&SubjectRegexList))
     return false;
 
-  env->disp_subj = mutt_replacelist_apply(&SubjectRegexList, NULL, 0, env->subject);
+  env->disp_subj = mutt_replacelist_apply(&SubjectRegexList, env->subject);
   return true;
 }
 
