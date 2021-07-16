@@ -2621,6 +2621,12 @@
 ** Accepted values all non negative integers. A value of 0 disables the feature.
 */
 
+{ "nm_query_window_enable", DT_BOOL, false },
+/*
+** .pp
+** This variable enables windowed notmuch queries even if window duration is 0.
+*/
+
 { "nm_query_window_or_terms", DT_STRING, 0 },
 /*
 ** .pp
