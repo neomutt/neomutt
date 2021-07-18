@@ -71,7 +71,7 @@ struct MenuStatusLineData
 };
 
 /**
- * status_format_str - Create the status bar string - Implements ::format_t
+ * status_format_str - Create the status bar string - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------

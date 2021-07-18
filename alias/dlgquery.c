@@ -169,7 +169,7 @@ static int query_search(struct Menu *menu, regex_t *rx, int line)
 }
 
 /**
- * query_format_str - Format a string for the query menu - Implements ::format_t
+ * query_format_str - Format a string for the query menu - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------

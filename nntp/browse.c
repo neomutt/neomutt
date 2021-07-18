@@ -40,7 +40,7 @@
 #include "muttlib.h"
 
 /**
- * group_index_format_str - Format a string for the newsgroup menu - Implements ::format_t
+ * group_index_format_str - Format a string for the newsgroup menu - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------

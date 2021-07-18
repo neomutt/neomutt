@@ -106,7 +106,7 @@ static const struct Mapping PatternHelp[] = {
 };
 
 /**
- * pattern_format_str - Format a string for the pattern completion menu - Implements ::format_t
+ * pattern_format_str - Format a string for the pattern completion menu - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:----------------------

@@ -319,7 +319,7 @@ static char pgp_flags(KeyFlags flags)
 }
 
 /**
- * pgp_entry_format_str - Format an entry on the PGP key selection menu - Implements ::format_t
+ * pgp_entry_format_str - Format an entry on the PGP key selection menu - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------

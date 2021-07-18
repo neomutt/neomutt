@@ -995,7 +995,7 @@ static char crypt_flags(KeyFlags flags)
 }
 
 /**
- * crypt_format_str - Format a string for the key selection menu - Implements ::format_t
+ * crypt_format_str - Format a string for the key selection menu - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------

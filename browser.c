@@ -383,7 +383,7 @@ static bool link_is_dir(const char *folder, const char *path)
 }
 
 /**
- * folder_format_str - Format a string for the folder browser - Implements ::format_t
+ * folder_format_str - Format a string for the folder browser - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------

@@ -911,7 +911,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
 }
 
 /**
- * nntp_format_str - Expand the newsrc filename - Implements ::format_t
+ * nntp_format_str - Expand the newsrc filename - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------

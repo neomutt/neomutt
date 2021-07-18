@@ -304,7 +304,7 @@ static int calc_path_depth(const char *mbox, const char *delims, const char **la
 }
 
 /**
- * sidebar_format_str - Format a string for the sidebar - Implements ::format_t
+ * sidebar_format_str - Format a string for the sidebar - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------

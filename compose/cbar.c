@@ -91,7 +91,7 @@ int num_attachments(struct ComposeAttachData *adata)
 }
 
 /**
- * compose_format_str - Create the status bar string for compose mode - Implements ::format_t
+ * compose_format_str - Create the status bar string for compose mode - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------

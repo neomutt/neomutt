@@ -239,7 +239,7 @@ static void compress_info_free(struct Mailbox *m)
 }
 
 /**
- * compress_format_str - Expand the filenames in a command string - Implements ::format_t
+ * compress_format_str - Expand the filenames in a command string - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------
