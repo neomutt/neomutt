@@ -1156,6 +1156,203 @@ static void index_custom_redraw(struct Menu *menu)
 }
 
 /**
+ * op_get_message - Get an NNTP message
+ * @param shared Shared Index data
+ * @param priv   Private Index data
+ * @param op     Operation to perform, e.g. OP_GET_MESSAGE
+ */
+static void op_get_message(struct IndexSharedData *shared,
+                           struct IndexPrivateData *priv, int op)
+{
+  if (shared->mailbox->type != MUTT_NNTP)
+    return;
+
+  char buf[PATH_MAX] = { 0 };
+  if (op == OP_GET_MESSAGE)
+  {
+    if ((mutt_get_field(_("Enter Message-Id: "), buf, sizeof(buf),
+                        MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
+        (buf[0] == '\0'))
+    {
+      return;
+    }
+  }
+  else
+  {
+    if (!shared->email || STAILQ_EMPTY(&shared->email->env->references))
+    {
+      mutt_error(_("Article has no parent reference"));
+      return;
+    }
+    mutt_str_copy(buf, STAILQ_FIRST(&shared->email->env->references)->data, sizeof(buf));
+  }
+
+  if (!shared->mailbox->id_hash)
+    shared->mailbox->id_hash = mutt_make_id_hash(shared->mailbox);
+  struct Email *e = mutt_hash_find(shared->mailbox->id_hash, buf);
+  if (e)
+  {
+    if (e->vnum != -1)
+    {
+      menu_set_index(priv->menu, e->vnum);
+    }
+    else if (e->collapsed)
+    {
+      mutt_uncollapse_thread(e);
+      mutt_set_vnum(shared->mailbox);
+      menu_set_index(priv->menu, e->vnum);
+    }
+    else
+      mutt_error(_("Message is not visible in limited view"));
+  }
+  else
+  {
+    mutt_message(_("Fetching %s from server..."), buf);
+    int rc = nntp_check_msgid(shared->mailbox, buf);
+    if (rc == 0)
+    {
+      e = shared->mailbox->emails[shared->mailbox->msg_count - 1];
+      mutt_sort_headers(shared->mailbox, shared->ctx->threads, false,
+                        &shared->ctx->vsize);
+      menu_set_index(priv->menu, e->vnum);
+      menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+    }
+    else if (rc > 0)
+      mutt_error(_("Article %s not found on the server"), buf);
+  }
+}
+
+/**
+ * op_search - Perform a search
+ * @param shared Shared Index data
+ * @param priv   Private Index data
+ * @param op     Operation to perform, e.g. OP_search
+ */
+static void op_search(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+{
+  int index = menu_get_index(priv->menu);
+  index = mutt_search_command(shared->mailbox, priv->menu, index, op);
+  if (index != -1)
+    menu_set_index(priv->menu, index);
+  else
+    menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
+}
+
+/**
+ * op_save - Save an Email
+ * @param shared Shared Index data
+ * @param priv   Private Index data
+ * @param op     Operation to perform, e.g. OP_search
+ */
+static void op_save(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+{
+  struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+
+  const enum MessageSaveOpt save_opt =
+      ((op == OP_SAVE) || (op == OP_DECODE_SAVE) || (op == OP_DECRYPT_SAVE)) ? SAVE_MOVE : SAVE_COPY;
+
+  enum MessageTransformOpt transform_opt =
+      ((op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY))   ? TRANSFORM_DECODE :
+      ((op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY)) ? TRANSFORM_DECRYPT :
+                                                             TRANSFORM_NONE;
+
+  const int rc = mutt_save_message(shared->mailbox, &el, save_opt, transform_opt);
+  if ((rc == 0) && (save_opt == SAVE_MOVE))
+  {
+    menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
+    const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
+    if (priv->tag)
+      menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+    else if (c_resolve)
+    {
+      int index = menu_get_index(priv->menu);
+      index = ci_next_undeleted(shared->mailbox, index);
+      if (index == -1)
+      {
+        menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+      }
+      else
+      {
+        menu_set_index(priv->menu, index);
+      }
+    }
+    else
+      menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+  }
+  emaillist_clear(&el);
+}
+
+/**
+ * op_post - Post an Email
+ * @param shared Shared Index data
+ * @param priv   Private Index data
+ * @param op     Operation to perform, e.g. OP_search
+ * @retval true If operation was handled
+ */
+static bool op_post(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+{
+  if (!shared->email)
+    return true;
+  const enum QuadOption c_followup_to_poster =
+      cs_subset_quad(shared->sub, "followup_to_poster");
+  if ((op != OP_FOLLOWUP) || !shared->email->env->followup_to ||
+      !mutt_istr_equal(shared->email->env->followup_to, "poster") ||
+      (query_quadoption(c_followup_to_poster,
+                        _("Reply by mail as poster prefers?")) != MUTT_YES))
+  {
+    const enum QuadOption c_post_moderated =
+        cs_subset_quad(shared->sub, "post_moderated");
+    if (shared->mailbox && (shared->mailbox->type == MUTT_NNTP) &&
+        !((struct NntpMboxData *) shared->mailbox->mdata)->allowed && (query_quadoption(c_post_moderated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
+    {
+      return true;
+    }
+    if (op == OP_POST)
+      mutt_send_message(SEND_NEWS, NULL, NULL, shared->mailbox, NULL, shared->sub);
+    else
+    {
+      if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT))
+        return true;
+      struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+      el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+      mutt_send_message(((op == OP_FOLLOWUP) ? SEND_REPLY : SEND_FORWARD) | SEND_NEWS,
+                        NULL, NULL, shared->mailbox, &el, shared->sub);
+      emaillist_clear(&el);
+    }
+    menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+/**
+ * op_reply - Reply to an Email
+ * @param shared Shared Index data
+ * @param priv   Private Index data
+ * @param op     Operation to perform, e.g. OP_search
+ */
+static void op_reply(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+{
+  if (!shared->email)
+    return;
+  struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+  const bool c_pgp_auto_decode = cs_subset_bool(shared->sub, "pgp_auto_decode");
+  if (c_pgp_auto_decode && (priv->tag || !(shared->email->security & PGP_TRADITIONAL_CHECKED)))
+  {
+    if (mutt_check_traditional_pgp(shared->mailbox, &el))
+      menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+  }
+  mutt_send_message(SEND_REPLY, NULL, NULL, shared->mailbox, &el, shared->sub);
+  emaillist_clear(&el);
+  menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+}
+
+/**
  * mutt_index_menu - Display a list of emails
  * @param dlg Dialog containing Windows to draw on
  * @param m_init Initial mailbox
@@ -1523,68 +1720,14 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       case OP_GET_PARENT:
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        /* fallthrough */
+        op_get_message(shared, priv, op);
+        break;
 
       case OP_GET_MESSAGE:
       {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_READONLY | CHECK_ATTACH))
           break;
-        char buf[PATH_MAX] = { 0 };
-        if (shared->mailbox->type == MUTT_NNTP)
-        {
-          if (op == OP_GET_MESSAGE)
-          {
-            if ((mutt_get_field(_("Enter Message-Id: "), buf, sizeof(buf),
-                                MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
-                (buf[0] == '\0'))
-            {
-              break;
-            }
-          }
-          else
-          {
-            if (!shared->email || STAILQ_EMPTY(&shared->email->env->references))
-            {
-              mutt_error(_("Article has no parent reference"));
-              break;
-            }
-            mutt_str_copy(buf, STAILQ_FIRST(&shared->email->env->references)->data,
-                          sizeof(buf));
-          }
-          if (!shared->mailbox->id_hash)
-            shared->mailbox->id_hash = mutt_make_id_hash(shared->mailbox);
-          struct Email *e = mutt_hash_find(shared->mailbox->id_hash, buf);
-          if (e)
-          {
-            if (e->vnum != -1)
-            {
-              menu_set_index(priv->menu, e->vnum);
-            }
-            else if (e->collapsed)
-            {
-              mutt_uncollapse_thread(e);
-              mutt_set_vnum(shared->mailbox);
-              menu_set_index(priv->menu, e->vnum);
-            }
-            else
-              mutt_error(_("Message is not visible in limited view"));
-          }
-          else
-          {
-            mutt_message(_("Fetching %s from server..."), buf);
-            int rc = nntp_check_msgid(shared->mailbox, buf);
-            if (rc == 0)
-            {
-              e = shared->mailbox->emails[shared->mailbox->msg_count - 1];
-              mutt_sort_headers(shared->mailbox, shared->ctx->threads, false,
-                                &shared->ctx->vsize);
-              menu_set_index(priv->menu, e->vnum);
-              menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-            }
-            else if (rc > 0)
-              mutt_error(_("Article %s not found on the server"), buf);
-          }
-        }
+        op_get_message(shared, priv, op);
         break;
       }
 
@@ -1942,19 +2085,14 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       case OP_SEARCH_OPPOSITE:
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        /* fallthrough */
+        op_search(shared, priv, op);
+        break;
+
       case OP_SEARCH:
-      {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX))
           break;
-        int index = menu_get_index(priv->menu);
-        index = mutt_search_command(shared->mailbox, priv->menu, index, op);
-        if (index != -1)
-          menu_set_index(priv->menu, index);
-        else
-          menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
+        op_search(shared, priv, op);
         break;
-      }
 
       case OP_SORT:
       case OP_SORT_REVERSE:
@@ -2938,53 +3076,17 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       case OP_DECRYPT_SAVE:
         if (!WithCrypto)
           break;
-      /* fallthrough */
+        op_save(shared, priv, op);
+        break;
+
       case OP_COPY_MESSAGE:
       case OP_SAVE:
       case OP_DECODE_COPY:
       case OP_DECODE_SAVE:
-      {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-        el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
-
-        const enum MessageSaveOpt save_opt =
-            ((op == OP_SAVE) || (op == OP_DECODE_SAVE) || (op == OP_DECRYPT_SAVE)) ?
-                SAVE_MOVE :
-                SAVE_COPY;
-
-        enum MessageTransformOpt transform_opt =
-            ((op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY)) ? TRANSFORM_DECODE :
-            ((op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY)) ? TRANSFORM_DECRYPT :
-                                                                   TRANSFORM_NONE;
-
-        const int rc = mutt_save_message(shared->mailbox, &el, save_opt, transform_opt);
-        if ((rc == 0) && (save_opt == SAVE_MOVE))
-        {
-          menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
-          const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
-          if (priv->tag)
-            menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
-          else if (c_resolve)
-          {
-            int index = menu_get_index(priv->menu);
-            index = ci_next_undeleted(shared->mailbox, index);
-            if (index == -1)
-            {
-              menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
-            }
-            else
-            {
-              menu_set_index(priv->menu, index);
-            }
-          }
-          else
-            menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
-        }
-        emaillist_clear(&el);
+        op_save(shared, priv, op);
         break;
-      }
 
       case OP_MAIN_NEXT_NEW:
       case OP_MAIN_NEXT_UNREAD:
@@ -3961,71 +4063,28 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       case OP_FORWARD_TO_GROUP:
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        /* fallthrough */
+        if (op_post(shared, priv, op))
+          break;
+        op_reply(shared, priv, op);
+        break;
 
       case OP_POST:
-      {
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_ATTACH))
           break;
-        if (!shared->email)
+        if (op_post(shared, priv, op))
           break;
-        const enum QuadOption c_followup_to_poster =
-            cs_subset_quad(shared->sub, "followup_to_poster");
-        if ((op != OP_FOLLOWUP) || !shared->email->env->followup_to ||
-            !mutt_istr_equal(shared->email->env->followup_to, "poster") ||
-            (query_quadoption(c_followup_to_poster,
-                              _("Reply by mail as poster prefers?")) != MUTT_YES))
-        {
-          const enum QuadOption c_post_moderated =
-              cs_subset_quad(shared->sub, "post_moderated");
-          if (shared->mailbox && (shared->mailbox->type == MUTT_NNTP) &&
-              !((struct NntpMboxData *) shared->mailbox->mdata)->allowed && (query_quadoption(c_post_moderated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
-          {
-            break;
-          }
-          if (op == OP_POST)
-            mutt_send_message(SEND_NEWS, NULL, NULL, shared->mailbox, NULL,
-                              shared->sub);
-          else
-          {
-            if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT))
-              break;
-            struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-            el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
-            mutt_send_message(((op == OP_FOLLOWUP) ? SEND_REPLY : SEND_FORWARD) | SEND_NEWS,
-                              NULL, NULL, shared->mailbox, &el, shared->sub);
-            emaillist_clear(&el);
-          }
-          menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-          break;
-        }
-      }
+        op_reply(shared, priv, op);
+        break;
 #endif
-      /* fallthrough */
+
       case OP_REPLY:
-      {
         if (!prereq(shared->ctx, priv->menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_ATTACH))
         {
           break;
         }
-        if (!shared->email)
-          break;
-        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-        el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
-        const bool c_pgp_auto_decode =
-            cs_subset_bool(shared->sub, "pgp_auto_decode");
-        if (c_pgp_auto_decode &&
-            (priv->tag || !(shared->email->security & PGP_TRADITIONAL_CHECKED)))
-        {
-          if (mutt_check_traditional_pgp(shared->mailbox, &el))
-            menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-        }
-        mutt_send_message(SEND_REPLY, NULL, NULL, shared->mailbox, &el, shared->sub);
-        emaillist_clear(&el);
-        menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+        op_reply(shared, priv, op);
         break;
-      }
 
       case OP_SHELL_ESCAPE:
         if (mutt_shell_escape())
