@@ -56,6 +56,7 @@
 #include "lib.h"
 #include "mutt_logging.h"
 #include "ssl.h"
+#include "mutt_globals.h"
 
 /* LibreSSL defines OPENSSL_VERSION_NUMBER but sets it to 0x20000000L.
  * So technically we don't need the defined(OPENSSL_VERSION_NUMBER) check.  */
