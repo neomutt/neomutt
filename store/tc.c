@@ -38,7 +38,7 @@
 #include "lib.h"
 
 /**
- * store_tokyocabinet_open - Implements StoreOps::open()
+ * store_tokyocabinet_open - Implements StoreOps::open() - @ingroup store_open
  */
 static void *store_tokyocabinet_open(const char *path)
 {
@@ -59,7 +59,7 @@ static void *store_tokyocabinet_open(const char *path)
 }
 
 /**
- * store_tokyocabinet_fetch - Implements StoreOps::fetch()
+ * store_tokyocabinet_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
  */
 static void *store_tokyocabinet_fetch(void *store, const char *key, size_t klen, size_t *vlen)
 {
@@ -74,7 +74,7 @@ static void *store_tokyocabinet_fetch(void *store, const char *key, size_t klen,
 }
 
 /**
- * store_tokyocabinet_free - Implements StoreOps::free()
+ * store_tokyocabinet_free - Implements StoreOps::free() - @ingroup store_free
  */
 static void store_tokyocabinet_free(void *store, void **ptr)
 {
@@ -82,7 +82,7 @@ static void store_tokyocabinet_free(void *store, void **ptr)
 }
 
 /**
- * store_tokyocabinet_store - Implements StoreOps::store()
+ * store_tokyocabinet_store - Implements StoreOps::store() - @ingroup store_store
  */
 static int store_tokyocabinet_store(void *store, const char *key, size_t klen,
                                     void *value, size_t vlen)
@@ -100,7 +100,7 @@ static int store_tokyocabinet_store(void *store, const char *key, size_t klen,
 }
 
 /**
- * store_tokyocabinet_delete_record - Implements StoreOps::delete_record()
+ * store_tokyocabinet_delete_record - Implements StoreOps::delete_record() - @ingroup store_delete_record
  */
 static int store_tokyocabinet_delete_record(void *store, const char *key, size_t klen)
 {
@@ -117,7 +117,7 @@ static int store_tokyocabinet_delete_record(void *store, const char *key, size_t
 }
 
 /**
- * store_tokyocabinet_close - Implements StoreOps::close()
+ * store_tokyocabinet_close - Implements StoreOps::close() - @ingroup store_close
  */
 static void store_tokyocabinet_close(void **ptr)
 {
@@ -135,7 +135,7 @@ static void store_tokyocabinet_close(void **ptr)
 }
 
 /**
- * store_tokyocabinet_version - Implements StoreOps::version()
+ * store_tokyocabinet_version - Implements StoreOps::version() - @ingroup store_version
  */
 static const char *store_tokyocabinet_version(void)
 {

@@ -56,13 +56,18 @@
 #include <stdlib.h>
 
 /**
- * struct StoreOps - Key Value Store API
+ * @defgroup store_api Key Value Store API
+ *
+ * The Key Value Store API
  */
 struct StoreOps
 {
   const char *name; ///< Store name
 
   /**
+   * @defgroup store_open open()
+   * @ingroup store_api
+   *
    * open - Open a connection to a Store
    * @param[in] path Path to the database file
    * @retval ptr  Success, Store pointer
@@ -75,6 +80,9 @@ struct StoreOps
   void *(*open)(const char *path);
 
   /**
+   * @defgroup store_fetch fetch()
+   * @ingroup store_api
+   *
    * fetch - Fetch a Value from the Store
    * @param[in]  store Store retrieved via open()
    * @param[in]  key   Key identifying the record
@@ -86,6 +94,9 @@ struct StoreOps
   void *(*fetch)(void *store, const char *key, size_t klen, size_t *vlen);
 
   /**
+   * @defgroup store_free free()
+   * @ingroup store_api
+   *
    * free - Free a Value returned by fetch()
    * @param[in]  store Store retrieved via open()
    * @param[out] ptr   Value to be freed
@@ -93,6 +104,9 @@ struct StoreOps
   void (*free)(void *store, void **ptr);
 
   /**
+   * @defgroup store_store store()
+   * @ingroup store_api
+   *
    * store - Write a Value to the Store
    * @param[in] store Store retrieved via open()
    * @param[in] key   Key identifying the record
@@ -105,6 +119,9 @@ struct StoreOps
   int (*store)(void *store, const char *key, size_t klen, void *value, size_t vlen);
 
   /**
+   * @defgroup store_delete_record delete_record()
+   * @ingroup store_api
+   *
    * delete_record - Delete a record from the Store
    * @param[in] store Store retrieved via open()
    * @param[in] key   Key identifying the record
@@ -115,12 +132,18 @@ struct StoreOps
   int (*delete_record)(void *store, const char *key, size_t klen);
 
   /**
+   * @defgroup store_close close()
+   * @ingroup store_api
+   *
    * close - Close a Store connection
    * @param[in,out] ptr Store retrieved via open()
    */
   void (*close)(void **ptr);
 
   /**
+   * @defgroup store_version version()
+   * @ingroup store_api
+   *
    * version - Get a Store version string
    * @retval ptr String describing the currently used Store
    */
