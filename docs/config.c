@@ -4660,18 +4660,31 @@
 ** .dd unsorted
 ** .ie
 ** .pp
-** You may optionally use the "reverse-" prefix to specify reverse sorting
-** order.
+** You may optionally use the "reverse-" prefix to specify reverse
+** sorting order, or the "last-" prefix to sort threads based on the
+** corresponding attribute of the last descendant rather than the
+** thread root.  If both prefixes are in use, "reverse-" must come
+** before "last-".  The "last-" prefix has no effect on a flat view.
 ** .pp
-** Any ties in the primary sort are broken by $$sort_aux.
+** Any ties in the primary sort are broken by $$sort_aux.  When
+** $$use_threads is "threads" or "reverse", $$sort controls the
+** sorting between threads, and $$sort_aux controls the sorting within
+** a thread.
 ** .pp
 ** The "date-sent" value is a synonym for "date". The "mailbox-order" value is
 ** a synonym for "unsorted".
 ** .pp
-** The values of "threads" and "reverse-threads" are legacy options;
-** the preferred way to enable a threaded view is via
+** The values of "threads" and "reverse-threads" are legacy options,
+** which cause the value of \fC$$sort_aux\fP to also contol sorting
+** between threads, and they may not be used with the "last-" prefix.
+** The preferred way to enable a threaded view is via
 ** \fC$$use_threads\fP.  This variable can also be set via the
 ** \fC<sort-mailbox>\fP and \fC<sort-reverse>\fP functions.
+** .pp
+** Note: When $$use_threads is "threads", the last thread sorts to the
+** bottom; when it is "reversed", the last thread sorts to the top.
+** The use of "reverse-" in $$sort swaps which end the last thread
+** will sort to.
 ** .pp
 ** See the "Use Threads Feature" section for further explanation and
 ** examples.
@@ -4698,27 +4711,20 @@
 ** This provides a secondary sort for messages in the "index" menu, used
 ** when the $$sort value is equal for two messages.
 ** .pp
-** When sorting by threads, this variable controls how threads are
-** sorted in relation to other threads, and how the branches of the
-** thread trees are sorted.  This can be set to any value that $$sort
-** can, except "threads" (in that case, NeoMutt will just use "date").
-** You can also specify the "last-" prefix in addition to the
-** "reverse-" prefix, but "last-" must come after "reverse-".  The
-** "last-" prefix causes the overall thread to sort by whichever
-** descendant would sort last in a flat view sorted by the same value
-** of $$sort_aux, rather than the thread root.  For instance,
+** When sorting by threads, this variable controls how subthreads are
+** sorted within a single thread (for the order between threads, see
+** $$sort).  This can be set to any value that $$sort can, including
+** with the use of "reverse-" and "last-" prefixes, except for
+** variations using "threads" (in that case, NeoMutt will just use
+** "date").  For instance,
 ** .ts
 ** set sort_aux=last-date-received
 ** .te
 ** .pp
-** would mean that if a new message is received in a
-** thread, that thread becomes the last one displayed (or the first, if
-** you have "\fCset sort=reverse-threads\fP".)
-** .pp
-** Note: When $$use_threads is "threads", the last thread sorts to the
-** bottom; when it is "reversed", the last thread sorts to the top.
-** The use of "reverse-" in $$sort_aux swaps which end the last thread
-** will sort to.
+** would mean that if a new message is received in a thread, that
+** subthread becomes the last one displayed (or the first, if you have
+** "\fCset use_threads=reverse\fP".)  When using $$use_threads, it is
+** more common to use "last-" with $$sort and not with $$sort_aux.
 ** .pp
 ** See the "Use Threads Feature" section for further explanation and
 ** examples.
@@ -5321,10 +5327,13 @@
 ** "threads", and "no" is a synonym for "flat".
 ** .pp
 ** If this variable is never set, then \fC$$sort\fP controls whether
-** threading is used, and using \fC<sort-mailbox>\fP to select threads
-** affects only \fC$$sort\fP.  Once this variable is set, attempting
-** to set \fC$$sort\fP to a value using "threads" will warn, and
-** \fC<sort-mailbox>\fP toggles \fC$$use_threads\fP.
+** threading is used, \fC$$sort_aux\fP controls both the sorting of
+** threads and subthreads, and using \fC<sort-mailbox>\fP to select
+** threads affects only \fC$$sort\fP.  Once this variable is set,
+** attempting to set \fC$$sort\fP to a value using "threads" will
+** warn, the value of \fC$$sort\fP controls the sorting between
+** threads while \fC$$sort_aux\fP controls sorting within a thread,
+** and \fC<sort-mailbox>\fP toggles \fC$$use_threads\fP.
 ** .pp
 ** Example:
 ** .ts

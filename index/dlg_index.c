@@ -387,11 +387,13 @@ static int ci_first_message(struct Mailbox *m)
   if (old != -1)
     return old;
 
-  /* If `$sort` is reverse and not threaded, the latest message is first.
-   * If `$sort` is threaded, the latest message is first if exactly one
-   * of `$sort` and `$sort_aux` are reverse.  */
-  const short c_sort = cs_subset_sort(m->sub, "sort");
-  const short c_sort_aux = cs_subset_sort(m->sub, "sort_aux");
+  /* If `$use_threads` is not threaded and `$sort` is reverse, the latest
+   * message is first.  Otherwise, the latest message is first if exactly
+   * one of `$use_threads` and `$sort` are reverse.
+   */
+  short c_sort = cs_subset_sort(m->sub, "sort");
+  if ((c_sort & SORT_MASK) == SORT_THREADS)
+    c_sort = cs_subset_sort(m->sub, "sort_aux");
   bool reverse = false;
   switch (mutt_thread_style())
   {
@@ -399,10 +401,10 @@ static int ci_first_message(struct Mailbox *m)
       reverse = c_sort & SORT_REVERSE;
       break;
     case UT_THREADS:
-      reverse = c_sort_aux & SORT_REVERSE;
+      reverse = c_sort & SORT_REVERSE;
       break;
     case UT_REVERSE:
-      reverse = !(c_sort_aux & SORT_REVERSE);
+      reverse = !(c_sort & SORT_REVERSE);
       break;
     default:
       assert(false);

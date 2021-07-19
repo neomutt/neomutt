@@ -568,7 +568,7 @@ static struct ConfigDef MainVars[] = {
   { "sleep_time", DT_NUMBER|DT_NOT_NEGATIVE, 1, 0, NULL,
     "Time to pause after certain info messages"
   },
-  { "sort", DT_SORT|R_INDEX|R_RESORT|DT_SORT_REVERSE, SORT_DATE, IP SortMethods, NULL,
+  { "sort", DT_SORT|DT_SORT_REVERSE|DT_SORT_LAST|R_INDEX|R_RESORT, SORT_DATE, IP SortMethods, sort_validator,
     "Sort method for the index"
   },
   { "sort_aux", DT_SORT|DT_SORT_REVERSE|DT_SORT_LAST|R_INDEX|R_RESORT|R_RESORT_SUB, SORT_DATE, IP SortAuxMethods, NULL,

@@ -47,7 +47,8 @@ struct MuttThread
   struct MuttThread *next;          ///< Next sibling Thread
   struct MuttThread *prev;          ///< Previous sibling Thread
   struct Email *message;            ///< Email this Thread refers to
-  struct Email *sort_key;           ///< Email that this Thread is sorted against
+  struct Email *sort_thread_key;    ///< Email that controls how top thread sorts
+  struct Email *sort_aux_key;       ///< Email that controls how subthread siblings sort
 };
 
 void          clean_references      (struct MuttThread *brk, struct MuttThread *cur);

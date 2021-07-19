@@ -93,6 +93,8 @@ int mutt_traverse_thread(struct Email *e, MuttThreadFlags flag);
 
 enum UseThreads mutt_thread_style(void);
 #define mutt_using_threads() (mutt_thread_style() > UT_FLAT)
+int sort_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                   intptr_t value, struct Buffer *err);
 
 int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads);
 #define mutt_next_thread(e)        mutt_aside_thread(e, true,  false)

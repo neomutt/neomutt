@@ -17428,8 +17428,9 @@ set toggle_quoted_show_levels = 1
 set status_format='-%r-NeoMutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? \
   Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%&gt;-(%P)---'
 set index_format='%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'
-set sort=threads
-set sort_aux=last-date-received
+set use_threads=yes
+set sort=last-date-received
+set sort_aux=date
 <emphasis role="comment"># 'status color' can take up to 2 extra parameters</emphasis>
 <emphasis role="comment"># color status foreground background [ regex [ num ]]</emphasis>
 <emphasis role="comment"># 0 extra parameters</emphasis>
@@ -17854,7 +17855,7 @@ set use_threads=reverse sort=date sort_aux=date
 <emphasis role="comment">#set sort=threads sort_aux=reverse-last-date</emphasis>
 <emphasis role="comment"># Modern configuration for the same</emphasis>
 <emphasis role="comment"># Note that subthreads are also rearranged</emphasis>
-set use_threads=threads sort=reverse-date sort_aux=reverse-last-date
+set use_threads=threads sort=reverse-last-date sort_aux=reverse-last-date
 <emphasis role="comment">#   Barbara  12:05  thread 2</emphasis>
 <emphasis role="comment">#   Erica    12:08  `-&gt;re: thread 2</emphasis>
 <emphasis role="comment">#   Anne     12:01  cover letter for thread 1</emphasis>
@@ -17863,6 +17864,19 @@ set use_threads=threads sort=reverse-date sort_aux=reverse-last-date
 <emphasis role="comment">#   Anne     12:04  |-&gt;part 3 of thread 1</emphasis>
 <emphasis role="comment">#   Anne     12:02  `-&gt;part 1 of thread 1</emphasis>
 <emphasis role="comment">#   Claire   12:06  thread 3</emphasis>
+
+<emphasis role="comment"># ------------------------------------------------------------</emphasis>
+<emphasis role="comment"># Modern configuration: threads keep date order, recently active thread last</emphasis>
+<emphasis role="comment"># (not possible with legacy configuration)</emphasis>
+set use_threads=threads sort=last-date sort_aux=date
+<emphasis role="comment">#   Claire   12:06  thread 3</emphasis>
+<emphasis role="comment">#   Anne     12:01  cover letter for thread 1</emphasis>
+<emphasis role="comment">#   Anne     12:02  |-&gt;part 1 of thread 1</emphasis>
+<emphasis role="comment">#   Anne     12:03  |-&gt;part 2 of thread 1</emphasis>
+<emphasis role="comment">#   Diane    12:07  | `-&gt;re: part 2 of thread 1</emphasis>
+<emphasis role="comment">#   Anne     12:04  `-&gt;part 3 of thread 1</emphasis>
+<emphasis role="comment">#   Barbara  12:05  thread 2</emphasis>
+<emphasis role="comment">#   Erica    12:08  `-&gt;re: thread 2</emphasis>
 
 <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
@@ -17878,14 +17892,6 @@ set use_threads=threads sort=reverse-date sort_aux=reverse-last-date
           bare <literal>set use_threads</literal> performs a query
           rather than setting it to <literal>yes</literal>, and the
           variable is not usable with <literal>toggle</literal>.
-        </para>
-        <para>
-          Neither the old nor new style is able to sort top-level
-          threads differently from subthreads within a thread.  If you
-          use <literal>sort_aux=last-date</literal>, not only is the
-          thread with the most recent activity moved to the bottom,
-          but the subthreads within that thread are rearranged in the
-          same manner.  This will be addressed in upcoming patches.
         </para>
       </sect2>
 

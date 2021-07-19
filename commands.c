@@ -900,9 +900,12 @@ bool mutt_select_sort(bool reverse)
 
   const unsigned char c_use_threads =
       cs_subset_enum(NeoMutt->sub, "use_threads");
+  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   int rc = CSR_ERR_CODE;
   if ((sort != SORT_THREADS) || (c_use_threads == UT_UNSET))
   {
+    if ((sort != SORT_THREADS) && (c_sort & SORT_LAST))
+      sort |= SORT_LAST;
     if (reverse)
       sort |= SORT_REVERSE;
 
@@ -910,7 +913,6 @@ bool mutt_select_sort(bool reverse)
   }
   else
   {
-    const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
     assert((c_sort & SORT_MASK) != SORT_THREADS); /* See index_config_observer() */
     /* Preserve the value of $sort, and toggle whether we are threaded. */
     switch (c_use_threads)

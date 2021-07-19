@@ -134,7 +134,6 @@ static int config_sort(const struct ConfigSubset *sub)
      * observer for $sort will be a no-op.
      */
     short c_sort_aux = cs_subset_sort(sub, "sort_aux");
-    c_sort_aux &= ~SORT_LAST;
     c_sort_aux ^= (c_sort & SORT_REVERSE);
     rc = cs_subset_str_native_set(sub, "sort", c_sort_aux, NULL);
   }
@@ -168,7 +167,7 @@ static int config_use_threads(const struct ConfigSubset *sub)
    * no-op.
    */
   const short c_sort_aux = cs_subset_sort(sub, "sort_aux");
-  int rc = cs_subset_str_native_set(sub, "sort", c_sort_aux & ~SORT_LAST, NULL);
+  int rc = cs_subset_str_native_set(sub, "sort", c_sort_aux, NULL);
   return (CSR_RESULT(rc) == CSR_SUCCESS) ? 0 : -1;
 }
 
