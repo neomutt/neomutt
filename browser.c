@@ -1167,6 +1167,120 @@ static int file_tag(struct Menu *menu, int sel, int act)
   return ff->tagged - ot;
 }
 
+
+/*
+ * create_mailbox - Create a new mailbox
+ * @param state State used for handling IMAP case
+ * @param m_current The current mailbox to create the new mailbox under
+ * @retval 0 Successful creation
+ * @retval 1 Creation failed
+ * @retval 2 Creation aborted by user
+*/
+static int create_mailbox(struct BrowserState *state, struct Mailbox *m_current)
+{
+  int create_rc;
+  /* PATH_MAX used for local mailboxes, e.g. maildir, but should also be
+   * sufficient for remote mailboxes */
+  char path[PATH_MAX] = { '\0' };
+
+#ifdef USE_IMAP /* leaving this until mbox_create implemented for IMAP */
+  if (state->imap_browse)
+  {
+    if (imap_mailbox_create(mutt_buffer_string(&LastDir)) == 0)
+    {
+      mutt_message(_("Mailbox created"));
+      return 0;
+    }
+    else
+    {
+      mutt_error(_("Mailbox creation failed"));
+      return 1;
+    }
+  }
+#endif /* USE_IMAP */
+
+  if (!m_current)
+    return 1;
+
+  if (m_current->mx_ops->mbox_create == NULL)
+  {
+    mutt_error(_("Create is not supported for %s mailboxes"), m_current->mx_ops->name);
+    return 1;
+  }
+
+  if (mutt_get_field(_("Create mailbox: "), path, sizeof(path), MUTT_COMP_NO_FLAGS,
+                 false, NULL, NULL) == -1)
+    return 2;
+  struct Mailbox *new_mailbox = mutt_mem_malloc(sizeof(struct Mailbox));
+
+  create_rc = m_current->mx_ops->mbox_create(m_current->account, m_current, path, &new_mailbox);
+
+  switch (create_rc)
+  {
+    case MX_CREATE_OK: /* = 0 (for imap_mailbox_create) */
+      mutt_message(_("Mailbox created"));
+      return 0;
+    case MX_CREATE_EXISTS:
+      mutt_error(_("A %s mailbox already exists under %s"), m_current->mx_ops->name, path);
+      break;
+    case MX_CREATE_BAD_NAME:
+      mutt_error(_("Bad name '%s' (is it empty?)"), path);
+      break;
+    case MX_CREATE_SYS_ERROR:
+      mutt_error(_("Mailbox creation failed: %s"), strerror(errno));
+      break;
+    case MX_CREATE_ERROR:
+    case -1: /* imap_mailbox_create */
+      mutt_error(_("Mailbox creation failed"));
+      break;
+  }
+
+  /* Creation failed, cleanup */
+  mutt_mem_free(&new_mailbox);
+  return 1;
+}
+
+/*
+ * get_selected_dir - Get the (expanded) directory currently selected in the
+ * browser
+ * @param state Current browser state
+ * @param ff Representation of the currently highlighted entry
+ * @param last_dir The previous directory
+ * @param[out] buf Buffer to store the path in
+ * @retval 0 Success
+ * @retval -1 Highlighted entry is not a directory
+ * */
+int get_selected_dir(const struct BrowserState *state, const struct FolderFile *ff,
+                     const struct Buffer *last_dir, struct Buffer *buf)
+{
+  if (S_ISDIR(ff->mode) ||
+      (S_ISLNK(ff->mode) && link_is_dir(mutt_buffer_string(last_dir), ff->name))
+#ifdef USE_IMAP
+      || ff->inferiors
+#endif
+  )
+  {
+    if (state->is_mailbox_list)
+    {
+      mutt_buffer_strcpy(buf, ff->name);
+      mutt_buffer_expand_path(buf);
+    }
+#ifdef USE_IMAP
+    else if (state->imap_browse)
+    {
+      mutt_buffer_strcpy(buf, ff->name);
+    }
+#endif
+    else
+    {
+      mutt_buffer_concat_path(buf, mutt_buffer_string(last_dir), ff->name);
+    }
+    return 0;
+  }
+  else
+    return -1;
+}
+
 /**
  * browser_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
  */
@@ -1519,30 +1633,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           break;
         }
 
-        if (S_ISDIR(ff->mode) ||
-            (S_ISLNK(ff->mode) && link_is_dir(mutt_buffer_string(&LastDir), ff->name))
-#ifdef USE_IMAP
-            || ff->inferiors
-#endif
-        )
+        if (get_selected_dir(&state, ff, &LastDir, buf) == 0)
         {
-          /* make sure this isn't a MH or maildir mailbox */
-          if (state.is_mailbox_list)
-          {
-            mutt_buffer_strcpy(buf, ff->name);
-            mutt_buffer_expand_path(buf);
-          }
-#ifdef USE_IMAP
-          else if (state.imap_browse)
-          {
-            mutt_buffer_strcpy(buf, ff->name);
-          }
-#endif
-          else
-          {
-            mutt_buffer_concat_path(buf, mutt_buffer_string(&LastDir), ff->name);
-          }
-
           enum MailboxType type = mx_path_probe(mutt_buffer_string(buf));
           if ((op == OP_DESCEND_DIRECTORY) || (type == MUTT_MAILBOX_ERROR) ||
               (type == MUTT_UNKNOWN)
@@ -1712,36 +1804,47 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           mutt_message("%s", ARRAY_GET(&state.entry, index)->name);
         break;
 
+      case OP_CREATE_MAILBOX:
+      {
+        if (get_selected_dir(&state, ff, &LastDir, buf) == -1)
+        {
+          mutt_error(_("%s isn't a directory"), ff->name);
+          break;
+        }
+        if (create_mailbox(&state, mailbox_find(mutt_buffer_string(buf))))
+        {
+          /* TODO: find a way to detect if the new folder would appear in
+           *   this window, and insert it without starting over. */
+#ifdef USE_IMAP
+          /* IMAP creation */
+          if (state.imap_browse)
+          {
+            destroy_state(&state);
+            init_state(&state, NULL);
+            state.imap_browse = true;
+            imap_browse(mutt_buffer_string(&LastDir), &state);
+            browser_sort(&state);
+            menu->mdata = &state.entry;
+            browser_highlight_default(&state, menu);
+            init_menu(&state, menu, m, sbar);
+            break;
+          }
+#endif /* USE_IMAP */
+          examine_directory(m, menu, &state, CurrentFolder, mutt_buffer_string(prefix));
+          examine_mailboxes(m, NULL, &state);
+          browser_highlight_default(&state, menu);
+          state.is_mailbox_list = true;
+          init_menu(&state, menu, m, sbar);
+        }
+        break;
+      }
+
 #ifdef USE_IMAP
       case OP_BROWSER_TOGGLE_LSUB:
         bool_str_toggle(NeoMutt->sub, "imap_list_subscribed", NULL);
 
         mutt_unget_event(0, OP_CHECK_NEW);
         break;
-
-      case OP_CREATE_MAILBOX:
-        if (!state.imap_browse)
-        {
-          mutt_error(_("Create is only supported for IMAP mailboxes"));
-          break;
-        }
-
-        if (imap_mailbox_create(mutt_buffer_string(&LastDir)) == 0)
-        {
-          /* TODO: find a way to detect if the new folder would appear in
-           *   this window, and insert it without starting over. */
-          destroy_state(&state);
-          init_state(&state, NULL);
-          state.imap_browse = true;
-          imap_browse(mutt_buffer_string(&LastDir), &state);
-          browser_sort(&state);
-          menu->mdata = &state.entry;
-          browser_highlight_default(&state, menu);
-          init_menu(&state, menu, m, sbar);
-        }
-        /* else leave error on screen */
-        break;
-
       case OP_RENAME_MAILBOX:
         if (!ff->imap)
           mutt_error(_("Rename is only supported for IMAP mailboxes"));
