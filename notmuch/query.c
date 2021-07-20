@@ -167,6 +167,7 @@ bool nm_query_window_check_timebase(const char *timebase)
  * @param[in]  cur_search Current notmuch search
  * @param[in]  timebase Timebase for `date:` search term. Must be: `hour`,
  *                      `day`, `week`, `month`, or `year`
+ * @param[in]  or_terms Additional notmuch search terms
  * @retval NM_WINDOW_QUERY_SUCCESS  Prepended `buf` with `date:` search term
  * @retval NM_WINDOW_QUERY_INVALID_DURATION Duration out-of-range for search term. `buf` *not* prepended with `date:`
  * @retval NM_WINDOW_QUERY_INVALID_TIMEBASE Timebase isn't one of `hour`, `day`, `week`, `month`, or `year`
@@ -204,7 +205,8 @@ bool nm_query_window_check_timebase(const char *timebase)
 enum NmWindowQueryRc
 nm_windowed_query_from_query(char *buf, size_t buflen, const bool force_enable,
                              const short duration, const short cur_pos,
-                             const char *cur_search, const char *timebase)
+                             const char *cur_search, const char *timebase,
+                             const char *or_terms)
 {
   // if the duration is a non positive integer, disable the window unless the
   // user explicitly enables windowed queries.
@@ -229,16 +231,27 @@ nm_windowed_query_from_query(char *buf, size_t buflen, const bool force_enable,
     return NM_WINDOW_QUERY_INVALID_TIMEBASE;
   }
 
+  size_t length = 0;
   if (end == 0)
   {
     // Open-ended date allows mail from the future.
     // This may occur is the sender's time settings are off.
-    snprintf(buf, buflen, "date:%d%s.. and %s", beg, timebase, cur_search);
+    length = snprintf(buf, buflen, "date:%d%s..", beg, timebase);
   }
   else
   {
-    snprintf(buf, buflen, "date:%d%s..%d%s and %s", beg, timebase, end, timebase, cur_search);
+    length = snprintf(buf, buflen, "date:%d%s..%d%s", beg, timebase, end, timebase);
   }
+
+  if (!mutt_str_equal(or_terms, ""))
+  {
+    char *date_part = mutt_str_dup(buf);
+    length = snprintf(buf, buflen, "(%s or (%s))", date_part, or_terms);
+    FREE(&date_part);
+  }
+
+  // Add current search to window query.
+  snprintf(buf + length, buflen, " and %s", cur_search);
 
   return NM_WINDOW_QUERY_SUCCESS;
 }
