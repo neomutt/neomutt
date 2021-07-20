@@ -17806,6 +17806,24 @@ bind index D purge-message
           <literal>%T</literal> expando which shows the current
           threading method.
         </para>
+        <table>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Name</entry>
+                <entry>Type</entry>
+                <entry>Default</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry><literal>use_threads</literal></entry>
+                <entry>enum</entry>
+                <entry><literal>unset</literal></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
       </sect2>
 
       <sect2 id="use-threads-neomuttrc">
