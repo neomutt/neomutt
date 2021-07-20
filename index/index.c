@@ -83,8 +83,20 @@
 #include "shared_data.h"
 #include "subjectrx.h"
 
-/// sort_use_threads_warned - whether we've warned about odd $sort settings
-static bool sort_use_threads_warned = false;
+/**
+ * sort_use_threads_warn - alert the user to odd $sort settings
+ */
+static void sort_use_threads_warn(void)
+{
+  static bool warned = false;
+  if (!warned)
+  {
+    mutt_warning(
+        _("Changing threaded display should prefer $use_threads over $sort"));
+    warned = true;
+    mutt_sleep(0);
+  }
+}
 
 /**
  * config_sort - React to changes to "sort"
@@ -100,13 +112,7 @@ static int config_sort(const struct ConfigSubset *sub)
   if (((c_sort & SORT_MASK) != SORT_THREADS) || (c_use_threads == UT_UNSET))
     return 0;
 
-  if (!sort_use_threads_warned)
-  {
-    mutt_warning(
-        _("Changing threaded display should prefer $use_threads over $sort"));
-    sort_use_threads_warned = true;
-    mutt_sleep(0);
-  }
+  sort_use_threads_warn();
 
   /* Note: changing a config variable here kicks off a second round of
    * observers before the first round has completed. Be careful that
@@ -154,12 +160,7 @@ static int config_use_threads(const struct ConfigSubset *sub)
   if (((c_sort & SORT_MASK) != SORT_THREADS) || (c_use_threads == UT_UNSET))
     return 0;
 
-  if (!sort_use_threads_warned)
-  {
-    mutt_warning(
-        _("Changing threaded display should prefer $use_threads over $sort"));
-    sort_use_threads_warned = true;
-  }
+  sort_use_threads_warn();
 
   /* Note: changing a config variable here kicks off a second round of
    * observers before the first round has completed. But since we
