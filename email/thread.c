@@ -76,10 +76,18 @@ void unlink_message(struct MuttThread **old, struct MuttThread *cur)
   if (cur->next)
     cur->next->prev = cur->prev;
 
-  if (cur->sort_key)
+  if (cur->sort_thread_key)
   {
-    for (tmp = cur->parent; tmp && (tmp->sort_key == cur->sort_key); tmp = tmp->parent)
-      tmp->sort_key = NULL;
+    for (tmp = cur->parent;
+         tmp && (tmp->sort_thread_key == cur->sort_thread_key); tmp = tmp->parent)
+    {
+      tmp->sort_thread_key = NULL;
+    }
+  }
+  if (cur->sort_aux_key)
+  {
+    for (tmp = cur->parent; tmp && (tmp->sort_aux_key == cur->sort_aux_key); tmp = tmp->parent)
+      tmp->sort_aux_key = NULL;
   }
 }
 

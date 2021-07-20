@@ -4660,16 +4660,34 @@
 ** .dd unsorted
 ** .ie
 ** .pp
-** You may optionally use the "reverse-" prefix to specify reverse sorting
-** order.
+** You may optionally use the "reverse-" prefix to specify reverse
+** sorting order, or the "last-" prefix to sort threads based on the
+** corresponding attribute of the last descendant rather than the
+** thread root.  If both prefixes are in use, "reverse-" must come
+** before "last-".  The "last-" prefix has no effect on a flat view.
+** .pp
+** Any ties in the primary sort are broken by $$sort_aux.  When
+** $$use_threads is "threads" or "reverse", $$sort controls the
+** sorting between threads, and $$sort_aux controls the sorting within
+** a thread.
 ** .pp
 ** The "date-sent" value is a synonym for "date". The "mailbox-order" value is
 ** a synonym for "unsorted".
 ** .pp
-** Example:
-** .ts
-** set sort=reverse-date-sent
-** .te
+** The values of "threads" and "reverse-threads" are legacy options,
+** which cause the value of \fC$$sort_aux\fP to also contol sorting
+** between threads, and they may not be used with the "last-" prefix.
+** The preferred way to enable a threaded view is via
+** \fC$$use_threads\fP.  This variable can also be set via the
+** \fC<sort-mailbox>\fP and \fC<sort-reverse>\fP functions.
+** .pp
+** Note: When $$use_threads is "threads", the last thread sorts to the
+** bottom; when it is "reversed", the last thread sorts to the top.
+** The use of "reverse-" in $$sort swaps which end the last thread
+** will sort to.
+** .pp
+** See the "Use Threads Feature" section for further explanation and
+** examples.
 */
 
 { "sort_alias", DT_SORT, SORT_ALIAS },
@@ -4693,25 +4711,23 @@
 ** This provides a secondary sort for messages in the "index" menu, used
 ** when the $$sort value is equal for two messages.
 ** .pp
-** When sorting by threads, this variable controls how threads are sorted
-** in relation to other threads, and how the branches of the thread trees
-** are sorted.  This can be set to any value that $$sort can, except
-** "threads" (in that case, NeoMutt will just use "date").  You can also
-** specify the "last-" prefix in addition to the "reverse-" prefix, but "last-"
-** must come after "reverse-".  The "last-" prefix causes messages to be
-** sorted against its siblings by which has the last descendant, using
-** the rest of $$sort_aux as an ordering.  For instance,
+** When sorting by threads, this variable controls how subthreads are
+** sorted within a single thread (for the order between threads, see
+** $$sort).  This can be set to any value that $$sort can, including
+** with the use of "reverse-" and "last-" prefixes, except for
+** variations using "threads" (in that case, NeoMutt will just use
+** "date").  For instance,
 ** .ts
 ** set sort_aux=last-date-received
 ** .te
 ** .pp
-** would mean that if a new message is received in a
-** thread, that thread becomes the last one displayed (or the first, if
-** you have "\fCset sort=reverse-threads\fP".)
+** would mean that if a new message is received in a thread, that
+** subthread becomes the last one displayed (or the first, if you have
+** "\fCset use_threads=reverse\fP".)  When using $$use_threads, it is
+** more common to use "last-" with $$sort and not with $$sort_aux.
 ** .pp
-** Note: For reversed-threads $$sort
-** order, $$sort_aux is reversed again (which is not the right thing to do,
-** but kept to not break any existing configuration setting).
+** See the "Use Threads Feature" section for further explanation and
+** examples.
 */
 
 { "sort_browser", DT_SORT, SORT_ALPHA },
@@ -4952,7 +4968,7 @@
 ** .de
 */
 
-{ "status_format", DT_STRING, "-%r-NeoMutt: %D [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
+{ "status_format", DT_STRING, "-%r-NeoMutt: %D [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%?T?%T/?%s/%S)-%>-(%P)---" },
 /*
 ** .pp
 ** Controls the format of the status line displayed in the "index"
@@ -4980,6 +4996,7 @@
 ** .dt %s  .dd   .dd Current sorting mode ($$sort)
 ** .dt %S  .dd   .dd Current aux sorting method ($$sort_aux)
 ** .dt %t  .dd * .dd Number of tagged messages in the mailbox
+** .dt %T  .dd * .dd Current threading mode ($$use_threads)
 ** .dt %u  .dd * .dd Number of unread messages in the mailbox (seen or unseen)
 ** .dt %v  .dd   .dd NeoMutt version string
 ** .dt %V  .dd * .dd Currently active limit pattern, if any
@@ -5017,6 +5034,12 @@
 ** .pp
 ** If the value of \fIsequence_char\fP is non-zero, \fIif_string\fP will
 ** be expanded, otherwise \fIelse_string\fP will be expanded.
+** .pp
+** As another example, here is how to show either $$sort and
+** $$sort_aux or $$use_threads and $$sort, based on whether threads
+** are enabled with $$use_threads:
+** .pp
+** \fC%?T?%s/%S&%T/s?\fP
 ** .pp
 ** You can force the result of any \fCprintf(3)\fP-like sequence to be lowercase
 ** by prefixing the sequence character with an underscore ("_") sign.
@@ -5300,6 +5323,33 @@
 ** Normally, the default should work.
 */
 #endif
+
+{ "use_threads", DT_ENUM, THREADS_UNSET },
+/*
+** .pp
+** The style of threading used in the index. May be one of "flat" (no
+** threading), "threads" (threaded, with subthreads below root
+** message) or "reverse" (threaded, with subthreads above root
+** message). For convenience, the value "yes" is a synonym for
+** "threads", and "no" is a synonym for "flat".
+** .pp
+** If this variable is never set, then \fC$$sort\fP controls whether
+** threading is used, \fC$$sort_aux\fP controls both the sorting of
+** threads and subthreads, and using \fC<sort-mailbox>\fP to select
+** threads affects only \fC$$sort\fP.  Once this variable is set,
+** attempting to set \fC$$sort\fP to a value using "threads" will
+** warn, the value of \fC$$sort\fP controls the sorting between
+** threads while \fC$$sort_aux\fP controls sorting within a thread,
+** and \fC<sort-mailbox>\fP toggles \fC$$use_threads\fP.
+** .pp
+** Example:
+** .ts
+** set use_threads=yes
+** .te
+** .pp
+** See the "Use Threads Feature" section for further explanation and
+** examples.
+*/
 
 { "user_agent", DT_BOOL, false },
 /*

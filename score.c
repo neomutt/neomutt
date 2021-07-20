@@ -40,6 +40,7 @@
 #include "init.h"
 #include "mutt_commands.h"
 #include "mutt_globals.h"
+#include "mutt_thread.h"
 #include "options.h"
 #include "protos.h"
 
@@ -71,7 +72,7 @@ void mutt_check_rescore(struct Mailbox *m)
     if (((c_sort & SORT_MASK) == SORT_SCORE) || ((c_sort_aux & SORT_MASK) == SORT_SCORE))
     {
       OptNeedResort = true;
-      if ((c_sort & SORT_MASK) == SORT_THREADS)
+      if (mutt_using_threads())
         OptSortSubthreads = true;
     }
 

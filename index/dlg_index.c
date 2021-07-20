@@ -387,22 +387,33 @@ static int ci_first_message(struct Mailbox *m)
   if (old != -1)
     return old;
 
-  /* If `$sort` is reverse and not threaded, the latest message is first.
-   * If `$sort` is threaded, the latest message is first if exactly one
-   * of `$sort` and `$sort_aux` are reverse.  */
-  const short c_sort = cs_subset_sort(m->sub, "sort");
-  const short c_sort_aux = cs_subset_sort(m->sub, "sort_aux");
-  if (((c_sort & SORT_REVERSE) && ((c_sort & SORT_MASK) != SORT_THREADS)) ||
-      (((c_sort & SORT_MASK) == SORT_THREADS) && ((c_sort ^ c_sort_aux) & SORT_REVERSE)))
+  /* If `$use_threads` is not threaded and `$sort` is reverse, the latest
+   * message is first.  Otherwise, the latest message is first if exactly
+   * one of `$use_threads` and `$sort` are reverse.
+   */
+  short c_sort = cs_subset_sort(m->sub, "sort");
+  if ((c_sort & SORT_MASK) == SORT_THREADS)
+    c_sort = cs_subset_sort(m->sub, "sort_aux");
+  bool reverse = false;
+  switch (mutt_thread_style())
   {
-    return 0;
-  }
-  else
-  {
-    return m->vcount ? m->vcount - 1 : 0;
+    case UT_FLAT:
+      reverse = c_sort & SORT_REVERSE;
+      break;
+    case UT_THREADS:
+      reverse = c_sort & SORT_REVERSE;
+      break;
+    case UT_REVERSE:
+      reverse = !(c_sort & SORT_REVERSE);
+      break;
+    default:
+      assert(false);
   }
 
-  return 0;
+  if (reverse || (m->vcount == 0))
+    return 0;
+
+  return m->vcount - 1;
 }
 
 /**
@@ -468,8 +479,7 @@ static void resort_index(struct Context *ctx, struct Menu *menu)
     }
   }
 
-  const short c_sort = cs_subset_sort(m->sub, "sort");
-  if (((c_sort & SORT_MASK) == SORT_THREADS) && (old_index < 0))
+  if (mutt_using_threads() && (old_index < 0))
     new_index = mutt_parent_message(e_cur, false);
 
   if (old_index < 0)
@@ -617,8 +627,7 @@ static void update_index(struct Menu *menu, struct Context *ctx, enum MxStatus c
     return;
 
   struct Mailbox *m = ctx->mailbox;
-  const short c_sort = cs_subset_sort(m->sub, "sort");
-  if ((c_sort & SORT_MASK) == SORT_THREADS)
+  if (mutt_using_threads())
     update_index_threaded(ctx, check, oldcount);
   else
     update_index_unthreaded(ctx, check);
@@ -783,9 +792,8 @@ static void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *old
     menu_set_index(menu, 0);
   }
 
-  const short c_sort = cs_subset_sort(shared->sub, "sort");
   const bool c_collapse_all = cs_subset_bool(shared->sub, "collapse_all");
-  if (((c_sort & SORT_MASK) == SORT_THREADS) && c_collapse_all)
+  if (mutt_using_threads() && c_collapse_all)
     collapse_all(shared->ctx, menu, 0);
 
   struct MuttWindow *dlg = dialog_find(menu->win_index);
@@ -896,15 +904,15 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
   MuttFormatFlags flags = MUTT_FORMAT_ARROWCURSOR | MUTT_FORMAT_INDEX;
   struct MuttThread *tmp = NULL;
 
-  const short c_sort = cs_subset_sort(shared->sub, "sort");
-  if (((c_sort & SORT_MASK) == SORT_THREADS) && e->tree)
+  const enum UseThreads c_threads = mutt_thread_style();
+  if ((c_threads > UT_FLAT) && e->tree)
   {
     flags |= MUTT_FORMAT_TREE; /* display the thread tree */
     if (e->display_subject)
       flags |= MUTT_FORMAT_FORCESUBJ;
     else
     {
-      const int reverse = c_sort & SORT_REVERSE;
+      const bool reverse = c_threads == UT_REVERSE;
       int edgemsgno;
       if (reverse)
       {
@@ -1395,9 +1403,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 #endif
 
   {
-    const short c_sort = cs_subset_sort(shared->sub, "sort");
     const bool c_collapse_all = cs_subset_bool(shared->sub, "collapse_all");
-    if (((c_sort & SORT_MASK) == SORT_THREADS) && c_collapse_all)
+    if (mutt_using_threads() && c_collapse_all)
     {
       collapse_all(shared->ctx, priv->menu, 0);
       menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
@@ -1424,9 +1431,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     priv->oldcount = shared->mailbox ? shared->mailbox->msg_count : 0;
 
     {
-      const short c_sort = cs_subset_sort(shared->sub, "sort");
-      if (OptRedrawTree && shared->mailbox && (shared->mailbox->msg_count != 0) &&
-          ((c_sort & SORT_MASK) == SORT_THREADS))
+      if (OptRedrawTree && shared->mailbox &&
+          (shared->mailbox->msg_count != 0) && mutt_using_threads())
       {
         mutt_draw_tree(shared->ctx->threads);
         menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS);
@@ -2008,8 +2014,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           }
           menu_set_index(priv->menu, index);
 
-          const short c_sort = cs_subset_sort(shared->sub, "sort");
-          if ((shared->mailbox->msg_count != 0) && ((c_sort & SORT_MASK) == SORT_THREADS))
+          if ((shared->mailbox->msg_count != 0) && mutt_using_threads())
           {
             const bool c_collapse_all =
                 cs_subset_bool(shared->sub, "collapse_all");
@@ -2778,8 +2783,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
         OptNeedResort = false;
 
-        const short c_sort = cs_subset_sort(shared->sub, "sort");
-        if (((c_sort & SORT_MASK) == SORT_THREADS) && shared->email->collapsed)
+        if (mutt_using_threads() && shared->email->collapsed)
         {
           mutt_uncollapse_thread(shared->email);
           mutt_set_vnum(shared->mailbox);
@@ -2857,8 +2861,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         if (!shared->email)
           break;
 
-        const short c_sort = cs_subset_sort(shared->sub, "sort");
-        if ((c_sort & SORT_MASK) != SORT_THREADS)
+        if (!mutt_using_threads())
           mutt_error(_("Threading is not enabled"));
         else if (!STAILQ_EMPTY(&shared->email->env->in_reply_to) ||
                  !STAILQ_EMPTY(&shared->email->env->references))
@@ -2902,8 +2905,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         if (!shared->email)
           break;
 
-        const short c_sort = cs_subset_sort(shared->sub, "sort");
-        if ((c_sort & SORT_MASK) != SORT_THREADS)
+        if (!mutt_using_threads())
           mutt_error(_("Threading is not enabled"));
         else if (!shared->email->env->message_id)
           mutt_error(_("No Message-ID: header available to link thread"));
@@ -3094,8 +3096,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         const int saved_current = menu_get_index(priv->menu);
         int mcur = saved_current;
         int index = -1;
-        const short c_sort = cs_subset_sort(shared->sub, "sort");
-        const bool threaded = ((c_sort & SORT_MASK) == SORT_THREADS);
+        const bool threaded = mutt_using_threads();
         for (size_t i = 0; i != shared->mailbox->vcount; i++)
         {
           if ((op == OP_MAIN_NEXT_NEW) || (op == OP_MAIN_NEXT_UNREAD) ||
@@ -3444,8 +3445,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
 
-        const short c_sort = cs_subset_sort(shared->sub, "sort");
-        if ((c_sort & SORT_MASK) != SORT_THREADS)
+        if (!mutt_using_threads())
         {
           mutt_error(_("Threading is not enabled"));
           break;
@@ -3485,8 +3485,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         if (!prereq(shared->ctx, priv->menu, CHECK_IN_MAILBOX))
           break;
 
-        const short c_sort = cs_subset_sort(shared->sub, "sort");
-        if ((c_sort & SORT_MASK) != SORT_THREADS)
+        if (!mutt_using_threads())
         {
           mutt_error(_("Threading is not enabled"));
           break;

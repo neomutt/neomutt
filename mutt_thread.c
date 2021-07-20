@@ -51,8 +51,78 @@ struct ThreadsContext
   struct Mailbox *mailbox; ///< Current mailbox
   struct MuttThread *tree; ///< Top of thread tree
   struct HashTable *hash;  ///< Hash table for threads
-  short c_sort;            ///< Sort method
+  short c_sort;            ///< Last sort method
+  short c_sort_aux;        ///< Last sort_aux method
 };
+
+/**
+ * UseThreadsMethods - Choices for '$use_threads' for the index
+ */
+static const struct Mapping UseThreadsMethods[] = {
+  // clang-format off
+  { "unset",         UT_UNSET },
+  { "flat",          UT_FLAT },
+  { "threads",       UT_THREADS },
+  { "reverse",       UT_REVERSE },
+  // aliases
+  { "no",            UT_FLAT },
+  { "yes",           UT_THREADS },
+  { NULL,            0 },
+  // clang-format on
+};
+
+struct EnumDef UseThreadsTypeDef = {
+  "use_threads_type",
+  4,
+  (struct Mapping *) &UseThreadsMethods,
+};
+
+/**
+ * mutt_thread_style - Which threading style is active?
+ * @retval UT_FLAT    No threading in use
+ * @retval UT_THREADS Normal threads (root above subthread)
+ * @retval UT_REVERSE Reverse threads (subthread above root)
+ *
+ * @note UT_UNSET is never returned; rather, this function considers the
+ *       interaction between $use_threads and $sort.
+ */
+enum UseThreads mutt_thread_style(void)
+{
+  const unsigned char c_use_threads =
+      cs_subset_enum(NeoMutt->sub, "use_threads");
+  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  if (c_use_threads > UT_FLAT)
+    return c_use_threads;
+  if ((c_sort & SORT_MASK) != SORT_THREADS)
+    return UT_FLAT;
+  if (c_sort & SORT_REVERSE)
+    return UT_REVERSE;
+  return UT_THREADS;
+}
+
+/**
+ * get_use_threads_str - Convert UseThreads enum to string
+ * @param value Value to convert
+ * @retval string form of value
+ */
+const char *get_use_threads_str(enum UseThreads value)
+{
+  return mutt_map_get_name(value, UseThreadsMethods);
+}
+
+/**
+ * sort_validator - Validate values of "sort" - Implements ConfigDef::validator()
+ */
+int sort_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                   intptr_t value, struct Buffer *err)
+{
+  if (((value & SORT_MASK) == SORT_THREADS) && (value & SORT_LAST))
+  {
+    mutt_buffer_printf(err, _("Cannot use 'last-' prefix with 'threads' for %s"), cdef->name);
+    return CSR_ERR_INVALID;
+  }
+  return CSR_SUCCESS;
+}
 
 /**
  * is_visible - Is the message visible?
@@ -126,9 +196,9 @@ static void linearize_tree(struct ThreadsContext *tctx)
 
   struct Mailbox *m = tctx->mailbox;
 
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const bool reverse = (mutt_thread_style() == UT_REVERSE);
   struct MuttThread *tree = tctx->tree;
-  struct Email **array = m->emails + ((c_sort & SORT_REVERSE) ? m->msg_count - 1 : 0);
+  struct Email **array = m->emails + (reverse ? m->msg_count - 1 : 0);
 
   while (tree)
   {
@@ -136,7 +206,7 @@ static void linearize_tree(struct ThreadsContext *tctx)
       tree = tree->child;
 
     *array = tree->message;
-    array += (c_sort & SORT_REVERSE) ? -1 : 1;
+    array += reverse ? -1 : 1;
 
     if (tree->child)
       tree = tree->child;
@@ -318,9 +388,9 @@ void mutt_thread_ctx_free(struct ThreadsContext **tctx)
 void mutt_draw_tree(struct ThreadsContext *tctx)
 {
   char *pfx = NULL, *mypfx = NULL, *arrow = NULL, *myarrow = NULL, *new_tree = NULL;
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  enum TreeChar corner = (c_sort & SORT_REVERSE) ? MUTT_TREE_ULCORNER : MUTT_TREE_LLCORNER;
-  enum TreeChar vtee = (c_sort & SORT_REVERSE) ? MUTT_TREE_BTEE : MUTT_TREE_TTEE;
+  const bool reverse = (mutt_thread_style() == UT_REVERSE);
+  enum TreeChar corner = reverse ? MUTT_TREE_ULCORNER : MUTT_TREE_LLCORNER;
+  enum TreeChar vtee = reverse ? MUTT_TREE_BTEE : MUTT_TREE_TTEE;
   const bool c_narrow_tree = cs_subset_bool(NeoMutt->sub, "narrow_tree");
   int depth = 0, start_depth = 0, max_depth = 0, width = c_narrow_tree ? 1 : 2;
   struct MuttThread *nextdisp = NULL, *pseudo = NULL, *parent = NULL;
@@ -674,10 +744,20 @@ static int compare_threads(const void *a, const void *b, void *arg)
   const struct MuttThread *ta = *(struct MuttThread const *const *) a;
   const struct MuttThread *tb = *(struct MuttThread const *const *) b;
   const struct ThreadsContext *tctx = arg;
+  assert(ta->parent == tb->parent);
   /* If c_sort ties, remember we are building the thread array in
    * reverse from the index the mails had in the mailbox.  */
-  return mutt_compare_emails(ta->sort_key, tb->sort_key, mx_type(tctx->mailbox),
-                             tctx->c_sort, SORT_REVERSE | SORT_ORDER);
+  if (ta->parent)
+  {
+    return mutt_compare_emails(ta->sort_aux_key, tb->sort_aux_key, mx_type(tctx->mailbox),
+                               tctx->c_sort_aux, SORT_REVERSE | SORT_ORDER);
+  }
+  else
+  {
+    return mutt_compare_emails(ta->sort_thread_key, tb->sort_thread_key,
+                               mx_type(tctx->mailbox), tctx->c_sort,
+                               SORT_REVERSE | SORT_ORDER);
+  }
 }
 
 /**
@@ -691,8 +771,9 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
   if (!thread)
     return;
 
-  struct MuttThread **array = NULL, *sort_key = NULL, *top = NULL, *tmp = NULL;
-  struct Email *oldsort_key = NULL;
+  struct MuttThread **array = NULL, *top = NULL, *tmp = NULL;
+  struct Email *sort_aux_key = NULL, *oldsort_aux_key = NULL;
+  struct Email *oldsort_thread_key = NULL;
   int i, array_size;
   bool sort_top = false;
 
@@ -700,9 +781,23 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
    * but we want to have to move less stuff around if we're
    * resorting, so we sort backwards and then put them back
    * in reverse order so they're forwards */
-  short c_sort = cs_subset_sort(NeoMutt->sub, "sort_aux");
+  const bool reverse = (mutt_thread_style() == UT_REVERSE);
+  short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  short c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
+  if ((c_sort & SORT_MASK) == SORT_THREADS)
+  {
+    assert(!(c_sort & SORT_REVERSE) != reverse);
+    assert(cs_subset_enum(NeoMutt->sub, "use_threads") == UT_UNSET);
+    c_sort = c_sort_aux;
+  }
   c_sort ^= SORT_REVERSE;
-  tctx->c_sort = c_sort;
+  c_sort_aux ^= SORT_REVERSE;
+  if (init || tctx->c_sort != c_sort || tctx->c_sort_aux != c_sort_aux)
+  {
+    tctx->c_sort = c_sort;
+    tctx->c_sort_aux = c_sort_aux;
+    init = true;
+  }
 
   top = thread;
 
@@ -710,9 +805,10 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
   array = mutt_mem_calloc(array_size, sizeof(struct MuttThread *));
   while (true)
   {
-    if (init || !thread->sort_key)
+    if (init || !thread->sort_thread_key || !thread->sort_aux_key)
     {
-      thread->sort_key = NULL;
+      thread->sort_thread_key = NULL;
+      thread->sort_aux_key = NULL;
 
       if (thread->parent)
         thread->parent->sort_children = true;
@@ -728,7 +824,8 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
     else
     {
       /* if it has no children, it must be real. sort it on its own merits */
-      thread->sort_key = thread->message;
+      thread->sort_thread_key = thread->message;
+      thread->sort_aux_key = thread->message;
 
       if (thread->next)
       {
@@ -775,33 +872,72 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
         tmp = thread;
         thread = thread->parent;
 
-        if (!thread->sort_key || thread->sort_children)
+        if (!thread->sort_thread_key || !thread->sort_aux_key || thread->sort_children)
         {
-          /* make sort_key the first or last sibling, as appropriate */
-          sort_key = ((!(c_sort & SORT_LAST)) ^ (!(c_sort & SORT_REVERSE))) ?
-                         thread->child :
-                         tmp;
-
           /* we just sorted its children */
           thread->sort_children = false;
 
-          oldsort_key = thread->sort_key;
-          thread->sort_key = thread->message;
+          oldsort_aux_key = thread->sort_aux_key;
+          oldsort_thread_key = thread->sort_thread_key;
 
-          if (c_sort & SORT_LAST)
+          /* update sort keys. sort_aux_key will be the first or last
+           * sibling, as appropriate... */
+          thread->sort_aux_key = thread->message;
+          sort_aux_key = ((!(c_sort_aux & SORT_LAST)) ^ (!(c_sort_aux & SORT_REVERSE))) ?
+                             thread->child->sort_aux_key :
+                             tmp->sort_aux_key;
+
+          if (c_sort_aux & SORT_LAST)
           {
-            if (!thread->sort_key ||
-                ((((c_sort & SORT_REVERSE) ? 1 : -1) *
-                  compare_threads((void *) &thread, (void *) &sort_key, tctx)) > 0))
+            if (!thread->sort_aux_key ||
+                (mutt_compare_emails(thread->sort_aux_key, sort_aux_key, mx_type(tctx->mailbox),
+                                     c_sort_aux | SORT_REVERSE, SORT_ORDER) > 0))
             {
-              thread->sort_key = sort_key->sort_key;
+              thread->sort_aux_key = sort_aux_key;
             }
           }
-          else if (!thread->sort_key)
-            thread->sort_key = sort_key->sort_key;
+          else if (!thread->sort_aux_key)
+            thread->sort_aux_key = sort_aux_key;
 
-          /* if its sort_key has changed, we need to resort it and siblings */
-          if (oldsort_key != thread->sort_key)
+          /* ...but sort_thread_key may require searching the entire
+           * list of siblings */
+          if ((c_sort_aux & ~SORT_REVERSE) == (c_sort & ~SORT_REVERSE))
+          {
+            thread->sort_thread_key = thread->sort_aux_key;
+          }
+          else
+          {
+            if (thread->message)
+            {
+              thread->sort_thread_key = thread->message;
+            }
+            else if (reverse != (!(c_sort_aux & SORT_REVERSE)))
+            {
+              thread->sort_thread_key = tmp->sort_thread_key;
+            }
+            else
+            {
+              thread->sort_thread_key = thread->child->sort_thread_key;
+            }
+            if (c_sort & SORT_LAST)
+            {
+              for (tmp = thread->child; tmp; tmp = tmp->next)
+              {
+                if (tmp->sort_thread_key == thread->sort_thread_key)
+                  continue;
+                if ((mutt_compare_emails(thread->sort_thread_key, tmp->sort_thread_key,
+                                         mx_type(tctx->mailbox),
+                                         c_sort | SORT_REVERSE, SORT_ORDER) > 0))
+                {
+                  thread->sort_thread_key = tmp->sort_thread_key;
+                }
+              }
+            }
+          }
+
+          /* if a sort_key has changed, we need to resort it and siblings */
+          if ((oldsort_aux_key != thread->sort_aux_key) ||
+              (oldsort_thread_key != thread->sort_thread_key))
           {
             if (thread->parent)
               thread->parent->sort_children = true;
@@ -952,7 +1088,8 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
             tmp = thread->parent;
             unlink_message(&tmp->child, thread);
             thread->parent = NULL;
-            thread->sort_key = NULL;
+            thread->sort_thread_key = NULL;
+            thread->sort_aux_key = NULL;
             thread->fake_thread = false;
             thread = tmp;
           } while (thread != &top && !thread->child && !thread->message);
@@ -1121,8 +1258,8 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
   struct MuttThread *cur = NULL;
   struct Email *e_tmp = NULL;
 
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if ((c_sort & SORT_MASK) != SORT_THREADS)
+  const enum UseThreads threaded = mutt_thread_style();
+  if (threaded == UT_FLAT)
   {
     mutt_error(_("Threading is not enabled"));
     return e->vnum;
@@ -1132,7 +1269,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
 
   if (subthreads)
   {
-    if (forwards ^ ((c_sort & SORT_REVERSE) != 0))
+    if (forwards ^ (threaded == UT_REVERSE))
     {
       while (!cur->next && cur->parent)
         cur = cur->parent;
@@ -1149,7 +1286,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
       cur = cur->parent;
   }
 
-  if (forwards ^ ((c_sort & SORT_REVERSE) != 0))
+  if (forwards ^ (threaded == UT_REVERSE))
   {
     do
     {
@@ -1188,8 +1325,7 @@ int mutt_parent_message(struct Email *e, bool find_root)
   struct MuttThread *thread = NULL;
   struct Email *e_parent = NULL;
 
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if ((c_sort & SORT_MASK) != SORT_THREADS)
+  if (!mutt_using_threads())
   {
     mutt_error(_("Threading is not enabled"));
     return e->vnum;
@@ -1269,13 +1405,13 @@ int mutt_traverse_thread(struct Email *e_cur, MuttThreadFlags flag)
 {
   struct MuttThread *thread = NULL, *top = NULL;
   struct Email *e_root = NULL;
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  int final, reverse = (c_sort & SORT_REVERSE), minmsgno;
+  const enum UseThreads threaded = mutt_thread_style();
+  int final, reverse = (threaded == UT_REVERSE), minmsgno;
   int num_hidden = 0, new_mail = 0, old_mail = 0;
   bool flagged = false;
   int min_unread_msgno = INT_MAX, min_unread = e_cur->vnum;
 
-  if ((c_sort & SORT_MASK) != SORT_THREADS)
+  if (threaded == UT_FLAT)
   {
     mutt_error(_("Threading is not enabled"));
     return e_cur->vnum;
@@ -1484,8 +1620,8 @@ int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, enum MessageInTh
   struct MuttThread *threads[2];
   int rc;
 
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if (((c_sort & SORT_MASK) != SORT_THREADS) || !e->thread)
+  const enum UseThreads threaded = mutt_thread_style();
+  if ((threaded == UT_FLAT) || !e->thread)
     return 1;
 
   threads[0] = e->thread;
@@ -1500,7 +1636,7 @@ int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, enum MessageInTh
       threads[i] = threads[i]->child;
   }
 
-  if (c_sort & SORT_REVERSE)
+  if (threaded == UT_REVERSE)
     rc = threads[0]->message->msgno - (threads[1] ? threads[1]->message->msgno : -1);
   else
   {

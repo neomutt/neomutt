@@ -17428,8 +17428,9 @@ set toggle_quoted_show_levels = 1
 set status_format='-%r-NeoMutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? \
   Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%&gt;-(%P)---'
 set index_format='%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'
-set sort=threads
-set sort_aux=last-date-received
+set use_threads=yes
+set sort=last-date-received
+set sort_aux=date
 <emphasis role="comment"># 'status color' can take up to 2 extra parameters</emphasis>
 <emphasis role="comment"># color status foreground background [ regex [ num ]]</emphasis>
 <emphasis role="comment"># 0 extra parameters</emphasis>
@@ -17724,6 +17725,187 @@ bind index D purge-message
         <title>Credits</title>
         <para>
           Cedric Duval, Benjamin Kuperman, Paul Miller, Richard Russon
+        </para>
+      </sect2>
+    </sect1>
+
+    <sect1 id="use-threads-feature">
+      <title>Use Threads Feature</title>
+      <subtitle>Improve the experience with viewing threads in the
+      index</subtitle>
+
+      <sect2 id="use-threads-support">
+        <title>Support</title>
+        <para>
+          <emphasis role="bold">Since:</emphasis> NeoMutt 2021-08-01
+        </para>
+        <para>
+          <emphasis role="bold">Dependencies:</emphasis> None
+        </para>
+      </sect2>
+
+      <sect2 id="use-threads-intro">
+        <title>Introduction</title>
+        <para>
+          The <quote>Use Threads</quote> feature adds a new config
+          variable to allow more precise control of how threads are
+          displayed in the index.  Whether threads are in use is now
+          orthogonal from how messages are sorted.
+        </para>
+      </sect2>
+
+      <sect2 id="use-thread-functions">
+        <title>Functions</title>
+        <para>
+          The <quote>Use Threads</quote> feature adds no new functions
+          to NeoMutt.  The existing functions
+          <literal>&lt;sort-mailbox&gt;</literal> and
+          <literal>&lt;sort-reverse&gt;</literal> are updated to
+          toggle the state of <literal>$use_threads</literal> once it
+          has been set, while preserving backwards-compatible behavior
+          on <literal>$sort</literal> if this feature is not used.
+        </para>
+      </sect2>
+
+      <sect2 id="use-threads-variables">
+        <title>Variables</title>
+        <para>
+          The <quote>Use Threads</quote> feature adds one new config
+          variable, <link linkend="use-threads">$use_threads</link>,
+          which is an enumeration of possible thread views.  The
+          variable defaults to unset for the original behavior of
+          overloading <link linkend="sort">$sort=threads</link> to
+          enable sorting.  It can be set to <literal>flat</literal>
+          (or <literal>no</literal>) for an unthreaded view based on
+          <literal>$sort</literal>, to <literal>threads</literal> (or
+          <literal>yes</literal> for a threaded view where roots
+          appear above children, or to <literal>reverse</literal> for
+          a threaded view where children appear above roots.
+        </para>
+        <para>
+          When sorting by threads, the value of <link
+          linkend="sort-aux">$sort_aux</link> determines which thread
+          floats to the top.  If <literal>$sort_aux</literal> does not
+          contain <literal>reverse-</literal>, the latest thread goes
+          to the bottom for <literal>use_threads=threads</literal> and
+          to the top for <literal>use_threads=reverse</literal>; the
+          direction of float is swapped if
+          <literal>$sort_aux</literal> also uses
+          <literal>reverse-</literal>.  If
+          <literal>$sort_aux</literal> includes
+          <literal>last-</literal>, the overall thread is sorted by
+          its descendant at any depth which would sort last in a flat
+          view; otherwise, the overall thread is sorted solely by the
+          thread root.  The <literal>last-</literal> prefix is ignored
+          when <literal>use_threads=flat</literal>.
+        </para>
+        <para>
+          The <quote>Use Threads</quote> feature also modifies the
+          existing config variable <link
+          linkend="status-format">$status_format</link>, adding the
+          <literal>%T</literal> expando which shows the current
+          threading method.
+        </para>
+      </sect2>
+
+      <sect2 id="use-threads-neomuttrc">
+        <title>neomuttrc</title>
+
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the use-threads feature.</emphasis>
+
+
+<emphasis role="comment"># ------------------------------------------------------------</emphasis>
+<emphasis role="comment"># Default configuration: flat view sorted by date</emphasis>
+<emphasis role="comment">#set use_threads=no sort=date sort_aux=date</emphasis>
+<emphasis role="comment">#   Anne     12:01  cover letter for thread 1</emphasis>
+<emphasis role="comment">#   Anne     12:02  part 1 of thread 1</emphasis>
+<emphasis role="comment">#   Anne     12:03  part 2 of thread 1</emphasis>
+<emphasis role="comment">#   Anne     12:04  part 3 of thread 1</emphasis>
+<emphasis role="comment">#   Barbara  12:05  thread 2</emphasis>
+<emphasis role="comment">#   Claire   12:06  thread 3</emphasis>
+<emphasis role="comment">#   Diane    12:07  re: part 2 of thread 1</emphasis>
+<emphasis role="comment">#   Erica    12:08  re: thread 2</emphasis>
+
+<emphasis role="comment"># ------------------------------------------------------------</emphasis>
+<emphasis role="comment"># Legacy configuration: sorting threads by date started</emphasis>
+<emphasis role="comment">#set sort=threads sort_aux=date</emphasis>
+<emphasis role="comment"># Modern configuration for the same</emphasis>
+<emphasis role="comment"># Latest root message sorts last</emphasis>
+set use_threads=yes sort=date sort_aux=date
+<emphasis role="comment">#   Anne     12:01  cover letter for thread 1</emphasis>
+<emphasis role="comment">#   Anne     12:02  |-&gt;part 1 of thread 1</emphasis>
+<emphasis role="comment">#   Anne     12:03  |-&gt;part 2 of thread 1</emphasis>
+<emphasis role="comment">#   Diane    12:07  | `-&gt;re: part 2 of thread 1</emphasis>
+<emphasis role="comment">#   Anne     12:04  `-&gt;part 3 of thread 1</emphasis>
+<emphasis role="comment">#   Barbara  12:05  thread 2</emphasis>
+<emphasis role="comment">#   Erica    12:08  `-&gt;re: thread 2</emphasis>
+<emphasis role="comment">#   Claire   12:06  thread 3</emphasis>
+
+<emphasis role="comment"># ------------------------------------------------------------</emphasis>
+<emphasis role="comment"># Legacy configuration: display threads upside-down</emphasis>
+<emphasis role="comment">#set sort=reverse-threads sort_aux=date</emphasis>
+<emphasis role="comment"># Modern configuration for the same</emphasis>
+<emphasis role="comment"># Latest root message sorts first</emphasis>
+set use_threads=reverse sort=date sort_aux=date
+<emphasis role="comment">#   Claire   12:06  thread 3</emphasis>
+<emphasis role="comment">#   Erica    12:08  ,-&gt;re: thread 2</emphasis>
+<emphasis role="comment">#   Barbara  12:05  thread 2</emphasis>
+<emphasis role="comment">#   Anne     12:04  ,-&gt;part 3 of thread 1</emphasis>
+<emphasis role="comment">#   Diane    12:07  | ,-&gt;re: part 2 of thread 1</emphasis>
+<emphasis role="comment">#   Anne     12:03  |-&gt;part 2 of thread 1</emphasis>
+<emphasis role="comment">#   Anne     12:02  |-&gt;part 1 of thread 1</emphasis>
+<emphasis role="comment">#   Anne     12:01  cover letter for thread 1</emphasis>
+
+<emphasis role="comment"># ------------------------------------------------------------</emphasis>
+<emphasis role="comment"># Legacy configuration: recently active thread/subthread first</emphasis>
+<emphasis role="comment">#set sort=threads sort_aux=reverse-last-date</emphasis>
+<emphasis role="comment"># Modern configuration for the same</emphasis>
+<emphasis role="comment"># Note that subthreads are also rearranged</emphasis>
+set use_threads=threads sort=reverse-last-date sort_aux=reverse-last-date
+<emphasis role="comment">#   Barbara  12:05  thread 2</emphasis>
+<emphasis role="comment">#   Erica    12:08  `-&gt;re: thread 2</emphasis>
+<emphasis role="comment">#   Anne     12:01  cover letter for thread 1</emphasis>
+<emphasis role="comment">#   Anne     12:03  |-&gt;part 2 of thread 1</emphasis>
+<emphasis role="comment">#   Diane    12:07  | `-&gt;re: part 2 of thread 1</emphasis>
+<emphasis role="comment">#   Anne     12:04  |-&gt;part 3 of thread 1</emphasis>
+<emphasis role="comment">#   Anne     12:02  `-&gt;part 1 of thread 1</emphasis>
+<emphasis role="comment">#   Claire   12:06  thread 3</emphasis>
+
+<emphasis role="comment"># ------------------------------------------------------------</emphasis>
+<emphasis role="comment"># Modern configuration: threads keep date order, recently active thread last</emphasis>
+<emphasis role="comment"># (not possible with legacy configuration)</emphasis>
+set use_threads=threads sort=last-date sort_aux=date
+<emphasis role="comment">#   Claire   12:06  thread 3</emphasis>
+<emphasis role="comment">#   Anne     12:01  cover letter for thread 1</emphasis>
+<emphasis role="comment">#   Anne     12:02  |-&gt;part 1 of thread 1</emphasis>
+<emphasis role="comment">#   Anne     12:03  |-&gt;part 2 of thread 1</emphasis>
+<emphasis role="comment">#   Diane    12:07  | `-&gt;re: part 2 of thread 1</emphasis>
+<emphasis role="comment">#   Anne     12:04  `-&gt;part 3 of thread 1</emphasis>
+<emphasis role="comment">#   Barbara  12:05  thread 2</emphasis>
+<emphasis role="comment">#   Erica    12:08  `-&gt;re: thread 2</emphasis>
+
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+</screen>
+
+      </sect2>
+
+      <sect2 id="use-threads-known-bugs">
+        <title>Known Bugs</title>
+        <para>
+          Even though <literal>use_threads</literal> accepts the
+          values <literal>yes</literal> and <literal>no</literal>, it
+          does not behave like a boolean or quad-option variable.  A
+          bare <literal>set use_threads</literal> performs a query
+          rather than setting it to <literal>yes</literal>, and the
+          variable is not usable with <literal>toggle</literal>.
+        </para>
+      </sect2>
+
+      <sect2 id="use-threads-credits">
+        <title>Credits</title>
+        <para>
+          Eric Blake
         </para>
       </sect2>
     </sect1>

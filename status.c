@@ -41,6 +41,7 @@
 #include "format_flags.h"
 #include "mutt_globals.h"
 #include "mutt_mailbox.h"
+#include "mutt_thread.h"
 #include "muttlib.h"
 #include "options.h"
 #include "protos.h"
@@ -92,6 +93,7 @@ struct MenuStatusLineData
  * | \%r     | Readonly/wontwrite/changed flag
  * | \%S     | Current aux sorting method (`$sort_aux`)
  * | \%s     | Current sorting method (`$sort`)
+ * | \%T     | Current threading view (`$use_threads`)
  * | \%t     | Number of tagged messages
  * | \%u     | Number of unread messages
  * | \%V     | Currently active limit pattern
@@ -366,6 +368,19 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, num);
       }
       else if (num == 0)
+        optional = false;
+      break;
+    }
+
+    case 'T':
+    {
+      const enum UseThreads c_use_threads = mutt_thread_style();
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, get_use_threads_str(c_use_threads));
+      }
+      else if (c_use_threads == UT_FLAT)
         optional = false;
       break;
     }

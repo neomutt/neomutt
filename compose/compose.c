@@ -1369,8 +1369,11 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           break;
         }
 
-        const enum SortType old_sort = cs_subset_sort(sub, "sort"); /* `$sort`, `$sort_aux` could be changed in mutt_index_menu() */
+        /* `$sort`, `$sort_aux`, `$use_threads` could be changed in mutt_index_menu() */
+        const enum SortType old_sort = cs_subset_sort(sub, "sort");
         const enum SortType old_sort_aux = cs_subset_sort(sub, "sort_aux");
+        const unsigned char old_use_threads =
+            cs_subset_enum(sub, "use_threads");
 
         OptAttachMsg = true;
         mutt_message(_("Tag the messages you want to attach"));
@@ -1383,9 +1386,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
         if (!Context)
         {
-          /* Restore old $sort and $sort_aux */
+          /* Restore old $sort variables */
           cs_subset_str_native_set(sub, "sort", old_sort, NULL);
           cs_subset_str_native_set(sub, "sort_aux", old_sort_aux, NULL);
+          cs_subset_str_native_set(sub, "use_threads", old_use_threads, NULL);
           menu_queue_redraw(menu, MENU_REDRAW_INDEX);
           notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
           break;
@@ -1421,9 +1425,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         }
         mx_fastclose_mailbox(m_attach_new);
 
-        /* Restore old $sort and $sort_aux */
+        /* Restore old $sort variables */
         cs_subset_str_native_set(sub, "sort", old_sort, NULL);
         cs_subset_str_native_set(sub, "sort_aux", old_sort_aux, NULL);
+        cs_subset_str_native_set(sub, "use_threads", old_use_threads, NULL);
         if (added_attachment)
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
