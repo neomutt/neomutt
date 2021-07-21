@@ -78,5 +78,6 @@ int                 mx_path_is_empty    (const char *path);
 void                mx_fastclose_mailbox(struct Mailbox *m);
 const struct MxOps *mx_get_ops          (enum MailboxType type);
 bool                mx_tags_is_supported(struct Mailbox *m);
+int                 mx_toggle_write     (struct Mailbox *m);
 
 #endif /* MUTT_MX_H */

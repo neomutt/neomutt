@@ -323,39 +323,6 @@ int ci_first_message(struct Mailbox *m)
 }
 
 /**
- * mx_toggle_write - Toggle the mailbox's readonly flag
- * @param m Mailbox
- * @retval  0 Success
- * @retval -1 Error
- *
- * This should be in mx.c, but it only gets used here.
- */
-int mx_toggle_write(struct Mailbox *m)
-{
-  if (!m)
-    return -1;
-
-  if (m->readonly)
-  {
-    mutt_error(_("Can't toggle write on a readonly mailbox"));
-    return -1;
-  }
-
-  if (m->dontwrite)
-  {
-    m->dontwrite = false;
-    mutt_message(_("Changes to folder will be written on folder exit"));
-  }
-  else
-  {
-    m->dontwrite = true;
-    mutt_message(_("Changes to folder will not be written"));
-  }
-
-  return 0;
-}
-
-/**
  * resort_index - Resort the index
  * @param ctx  Context
  * @param menu Current Menu
