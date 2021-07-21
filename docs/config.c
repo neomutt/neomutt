@@ -5324,7 +5324,7 @@
 */
 #endif
 
-{ "use_threads", DT_ENUM, THREADS_UNSET },
+{ "use_threads", DT_ENUM, UT_UNSET },
 /*
 ** .pp
 ** The style of threading used in the index. May be one of "flat" (no
