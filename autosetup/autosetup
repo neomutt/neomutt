@@ -6,7 +6,7 @@
 dir=`dirname "$0"`; exec "`$dir/autosetup-find-tclsh`" "$0" "$@"
 
 # Note that the version has a trailing + on unreleased versions
-set autosetup(version) 0.7.0
+set autosetup(version) 0.7.0+
 
 # Can be set to 1 to debug early-init problems
 set autosetup(debug) [expr {"--debug" in $argv}]
@@ -214,7 +214,7 @@ proc main {argv} {
 		}
 	}
 	define CONFIGURE_OPTS [join $configure_opts]
-	define AUTOREMAKE [file-normalize $autosetup(exe)]
+	define AUTOREMAKE [quote-if-needed $autosetup(exe)]
 	define-append AUTOREMAKE [get-define CONFIGURE_OPTS]
 
 
@@ -570,7 +570,7 @@ proc options-show {what} {
 		}
 		set max [max $max [string length $opt]]
 	}
-	set indent [string repeat " " [expr $max+4]]
+	set indent [string repeat " " [expr {$max+4}]]
 	set cols [getenv COLUMNS 80]
 	catch {
 		lassign [exec stty size] rows cols
@@ -596,7 +596,7 @@ proc options-show {what} {
 			# Output a pre-formatted help description as-is
 			puts $desc
 		} else {
-			options-wrap-desc [string trim $desc] $cols "  " $indent [expr $max + 2]
+			options-wrap-desc [string trim $desc] $cols "  " $indent [expr {$max+2}]
 		}
 	}
 }
@@ -1453,7 +1453,7 @@ proc autosetup_help {what} {
 
     puts "Usage: [file tail $::autosetup(exe)] \[options\] \[settings\]\n"
     puts "This is [autosetup_version], a build environment \"autoconfigurator\""
-    puts "See the documentation online at http://msteveb.github.com/autosetup/\n"
+    puts "See the documentation online at http://msteveb.github.io/autosetup/\n"
 
     if {$what in {all local}} {
         # Need to load auto.def now
@@ -1930,7 +1930,7 @@ can be loaded with the 'use' directive.
 
 *.auto files in this directory are auto-loaded.
 
-For more information, see http://msteveb.github.com/autosetup/
+For more information, see http://msteveb.github.io/autosetup/
 }
 	dputs "install: autosetup/README.autosetup"
 	writefile $target $readme

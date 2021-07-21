@@ -53,11 +53,12 @@ proc pkg-config-init {{required 1}} {
 			define SYSROOT [file-normalize $o]
 			msg-result "Using specified sysroot [get-define SYSROOT]"
 		} elseif {[get-define build] ne [get-define host]} {
-			if {[catch {exec-with-stderr [get-define CC] -print-sysroot} result errinfo] == 0} {
+			if {[catch {exec-with-stderr {*}[get-define CC] -print-sysroot} result errinfo] == 0} {
 				# Use the compiler sysroot, if there is one
 				define SYSROOT $result
 				msg-result "Found compiler sysroot $result"
 			} else {
+				configlog "[get-define CC] -print-sysroot: $result"
 				set msg "pkg-config: Cross compiling, but no compiler sysroot and no --sysroot supplied"
 				if {$required} {
 					user-error $msg
