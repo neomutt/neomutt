@@ -5056,7 +5056,7 @@
 ** .pp
 ** Setting this variable causes the "status bar" to be displayed on
 ** the first line of the screen rather than near the bottom. If $$help
-** is \fIset\fP, too it'll be placed at the bottom.
+** is \fIset\fP too, it'll be placed at the bottom.
 */
 
 { "strict_threads", DT_BOOL, false },
