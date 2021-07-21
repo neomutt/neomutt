@@ -28,9 +28,9 @@
  */
 struct EnumDef
 {
-  const char *name;
-  int count;
-  struct Mapping *lookup;
+  const char *name;       ///< Config variable
+  int count;              ///< Number of documented options
+  struct Mapping *lookup; ///< Lookup table
 };
 
 #endif /* MUTT_CONFIG_ENUM_H */
