@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: neomutt 20210205\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2021-07-22 12:13+0100\n"
-"PO-Revision-Date: 2021-07-12 16:48+0200\n"
+"PO-Revision-Date: 2021-07-22 20:18+0200\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: poe v0.5-alpha-12-gf812d1c\n"
+"X-Generator: poe v1.01-1-g7e7b946\n"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:397
@@ -3112,7 +3112,7 @@ msgstr "Тренутно ниједан notmuch-ов vfolder није учита
 
 #: index/index.c:95
 msgid "Changing threaded display should prefer $use_threads over $sort"
-msgstr ""
+msgstr "Измена приказа са нитима би требало да преферира $use_threads уместо $sort"
 
 #: init.c:216
 #, c-format
@@ -3821,7 +3821,7 @@ msgstr "SSL није доступан, не може се повезати са 
 #: mutt_thread.c:121
 #, c-format
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
-msgstr ""
+msgstr "Не може се користити префикс „last-“ са  „threads“ за %s"
 
 #: mutt_thread.c:1351
 msgid "Parent message is not available"
@@ -5942,9 +5942,8 @@ msgid "skip beyond quoted text"
 msgstr "прескакање цитираног текста"
 
 #: opcodes.h:216
-#, fuzzy
 msgid "jump to first line after headers"
-msgstr "скок на следећу нит"
+msgstr "скок на први ред после заглавља"
 
 #: opcodes.h:217
 msgid "jump to the top of the message"
@@ -6215,9 +6214,8 @@ msgid "shifts virtual folder time window forwards"
 msgstr "пребацивање временског интервала виртуелног фолдера унапред"
 
 #: opcodes.h:295
-#, fuzzy
 msgid "resets virtual folder time window to the present"
-msgstr "пребацивање временског интервала виртуелног фолдера унапред"
+msgstr "пребацивање временског интервала виртуелног фолдера на садашњост"
 
 #: opcodes.h:301
 msgid "check for classic PGP"
@@ -7480,9 +7478,9 @@ msgstr "Опције за компајлирање:"
 #~ msgid "Already skipped past headers"
 #~ msgstr "Заглавља су већ прескочена"
 
-#, c-format
 #~ msgid "Option %s may not be set or reset from the pager"
 #~ msgstr "Опција %s се не може поставити или вратити из страничника"
 
+#, c-format
 #~ msgid "skip beyond headers"
 #~ msgstr "прескакање заглавља"
