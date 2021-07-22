@@ -35,6 +35,9 @@
  *
  * - The magic "map:" comments define how the map will be called in the manual.
  *   Lines starting with "**" will be included in the manual.
+ *
+ * - For "enter" bindings, add entries for "\n" and "\r" in the struct Binding
+ *   below, and ALSO add a km_bindkey() call with "<keypadenter>" inside km_init().
  */
 
 #include "config.h"

@@ -4437,6 +4437,10 @@ set alias_file=~/.mail_aliases
               <entry>Return</entry>
             </row>
             <row>
+              <entry>&lt;keypadenter&gt;</entry>
+              <entry>Enter key on numeric keypad</entry>
+            </row>
+            <row>
               <entry>&lt;home&gt;</entry>
               <entry>Home</entry>
             </row>
@@ -4481,6 +4485,31 @@ set alias_file=~/.mail_aliases
         The special function <literal>&lt;noop&gt;</literal> unbinds the
         specified key sequence.
       </para>
+
+      <sect2 id="crlf">
+        <title>Enter versus Return</title>
+        <para>
+          Prior to 2022, NeoMutt used a default ncurses mode
+          (<quote><literal>nl()</literal></quote>).  This mode maps keyboard
+          input of either <literal>&lt;Enter&gt;</literal> or
+          <literal>&lt;Return&gt;</literal> to the same value, which NeoMutt
+          interpreted as <literal>&lt;Return&gt;</literal> internally.
+        </para>
+        <para>
+          However, starting in version 2.2, this mode is turned off,
+          allowing <literal>&lt;Return&gt;</literal> and
+          <literal>&lt;Enter&gt;</literal> to be mapped separately, if
+          desired.  The default keyboard mappings set both, but you can
+          override this or create new bindings with one or the other (or
+          both).
+        </para>
+        <para>
+          Note that in terminal application, such as NeoMutt,
+          <literal>&lt;Enter&gt;</literal> is the same as <quote>\n</quote>
+          and <literal>^J</literal>; while <literal>&lt;Return&gt;</literal>
+          is the same as <quote>\r</quote> and <literal>^M</literal>.
+        </para>
+      </sect2>
 
       <sect2 id="bind-warnings">
         <title>Warnings about Duplicated Bindings</title>
@@ -10386,7 +10415,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
               </term>
               <listitem>
                 <para>
-                  Mutt will display internally supported MIME types (see <xref
+                  NeoMutt will display internally supported MIME types (see <xref
                   linkend="mime-pager"/>) in the pager.  This will respect
                   <link linkend="auto-view">auto_view</link> settings, to determine
                   whether to use a <literal>copiousoutput</literal> mailcap entry or
@@ -10408,7 +10437,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
               </term>
               <listitem>
                 <para>
-                  Mutt will use the first matching
+                  NeoMutt will use the first matching
                   <literal>copiousoutput</literal> mailcap entry to display the
                   attachment in the pager (regardless of <link
                   linkend="auto-view">auto_view</link> settings).
@@ -11646,7 +11675,7 @@ set preferred_languages="fr,en,de"
         download the message just once.
       </para>
       <para>
-        By default, Mutt will not search inside
+        By default, NeoMutt will not search inside
         <literal>multipart/alternative</literal> containers.  This can be changed
         via the <link linkend="count-alternatives">$count_alternatives</link>
         configuration variable.

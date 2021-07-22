@@ -71,6 +71,11 @@ static struct Mapping KeyNames[] = {
   { "<End>", KEY_END },
   { "<Enter>", '\n' },
   { "<Return>", '\r' },
+#ifdef KEY_ENTER
+  { "<KeypadEnter>", KEY_ENTER },
+#else
+  { "<KeypadEnter>", '\n' },
+#endif
   { "<Esc>", '\033' }, // Escape
   { "<Tab>", '\t' },
   { "<Space>", ' ' },
@@ -1032,6 +1037,7 @@ void km_init(void)
   km_bindkey("<space>", MENU_MIX, OP_GENERIC_SELECT_ENTRY);
   km_bindkey("h", MENU_MIX, OP_MIX_CHAIN_PREV);
   km_bindkey("l", MENU_MIX, OP_MIX_CHAIN_NEXT);
+  km_bindkey ("<keypadenter>", MENU_MIX, OP_MIX_USE);
 #endif
 
 #ifdef USE_AUTOCRYPT
@@ -1071,9 +1077,7 @@ void km_init(void)
   km_bindkey("7", MENU_GENERIC, OP_JUMP);
   km_bindkey("8", MENU_GENERIC, OP_JUMP);
   km_bindkey("9", MENU_GENERIC, OP_JUMP);
-
-  km_bindkey("<return>", MENU_GENERIC, OP_GENERIC_SELECT_ENTRY);
-  km_bindkey("<enter>", MENU_GENERIC, OP_GENERIC_SELECT_ENTRY);
+  km_bindkey ("<keypadenter>", MENU_GENERIC, OP_GENERIC_SELECT_ENTRY);
 
   /* Miscellaneous extra bindings */
 
@@ -1083,9 +1087,7 @@ void km_init(void)
   km_bindkey("J", MENU_INDEX, OP_NEXT_ENTRY);
   km_bindkey("K", MENU_INDEX, OP_PREV_ENTRY);
   km_bindkey("x", MENU_INDEX, OP_EXIT);
-
-  km_bindkey("<return>", MENU_INDEX, OP_DISPLAY_MESSAGE);
-  km_bindkey("<enter>", MENU_INDEX, OP_DISPLAY_MESSAGE);
+  km_bindkey ("<keypadenter>", MENU_MAIN, OP_DISPLAY_MESSAGE);
 
   km_bindkey("x", MENU_PAGER, OP_EXIT);
   km_bindkey("i", MENU_PAGER, OP_EXIT);
@@ -1107,22 +1109,16 @@ void km_init(void)
   km_bindkey("7", MENU_PAGER, OP_JUMP);
   km_bindkey("8", MENU_PAGER, OP_JUMP);
   km_bindkey("9", MENU_PAGER, OP_JUMP);
+  km_bindkey ("<keypadenter>", MENU_PAGER, OP_NEXT_LINE);
 
-  km_bindkey("<return>", MENU_PAGER, OP_PAGER_NEXT_LINE);
-  km_bindkey("<enter>", MENU_PAGER, OP_PAGER_NEXT_LINE);
-
-  km_bindkey("<return>", MENU_ALIAS, OP_GENERIC_SELECT_ENTRY);
-  km_bindkey("<enter>", MENU_ALIAS, OP_GENERIC_SELECT_ENTRY);
   km_bindkey("<space>", MENU_ALIAS, OP_TAG);
 
-  km_bindkey("<return>", MENU_ATTACH, OP_ATTACHMENT_VIEW);
-  km_bindkey("<enter>", MENU_ATTACH, OP_ATTACHMENT_VIEW);
-  km_bindkey("<return>", MENU_COMPOSE, OP_ATTACHMENT_VIEW);
-  km_bindkey("<enter>", MENU_COMPOSE, OP_ATTACHMENT_VIEW);
+  km_bindkey ("<keypadenter>", MENU_ATTACH, OP_VIEW_ATTACH);
 
   /* edit-to (default "t") hides generic tag-entry in Compose menu
    * This will bind tag-entry to  "T" in the Compose menu */
   km_bindkey("T", MENU_COMPOSE, OP_TAG);
+  km_bindkey ("<keypadenter>", MENU_COMPOSE, OP_VIEW_ATTACH);
 }
 
 /**
