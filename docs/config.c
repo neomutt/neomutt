@@ -4687,7 +4687,7 @@
 ** will sort to.
 ** .pp
 ** See the "Use Threads Feature" section for further explanation and
-** examples.
+** examples, https://neomutt.org/feature/use-threads.
 */
 
 { "sort_alias", DT_SORT, SORT_ALIAS },
@@ -4727,7 +4727,7 @@
 ** more common to use "last-" with $$sort and not with $$sort_aux.
 ** .pp
 ** See the "Use Threads Feature" section for further explanation and
-** examples.
+** examples, https://neomutt.org/feature/use-threads.
 */
 
 { "sort_browser", DT_SORT, SORT_ALPHA },
@@ -5039,7 +5039,7 @@
 ** $$sort_aux or $$use_threads and $$sort, based on whether threads
 ** are enabled with $$use_threads:
 ** .pp
-** \fC%?T?%s/%S&%T/s?\fP
+** \fC%?T?%s/%S&%T/%s?\fP
 ** .pp
 ** You can force the result of any \fCprintf(3)\fP-like sequence to be lowercase
 ** by prefixing the sequence character with an underscore ("_") sign.
@@ -5056,7 +5056,7 @@
 ** .pp
 ** Setting this variable causes the "status bar" to be displayed on
 ** the first line of the screen rather than near the bottom. If $$help
-** is \fIset\fP, too it'll be placed at the bottom.
+** is \fIset\fP too, it'll be placed at the bottom.
 */
 
 { "strict_threads", DT_BOOL, false },
@@ -5324,7 +5324,7 @@
 */
 #endif
 
-{ "use_threads", DT_ENUM, THREADS_UNSET },
+{ "use_threads", DT_ENUM, UT_UNSET },
 /*
 ** .pp
 ** The style of threading used in the index. May be one of "flat" (no

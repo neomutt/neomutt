@@ -1030,6 +1030,8 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
         strncpy(t, "MH", l);
       else if (strcasecmp(s, "MUTT_MAILDIR") == 0)
         strncpy(t, "Maildir", l);
+      else if (strcasecmp(s, "UT_UNSET") == 0)
+        strncpy(t, "unset", l);
       break;
     }
     case DT_SORT:

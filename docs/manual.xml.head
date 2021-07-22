@@ -17778,26 +17778,32 @@ bind index D purge-message
           enable sorting.  It can be set to <literal>flat</literal>
           (or <literal>no</literal>) for an unthreaded view based on
           <literal>$sort</literal>, to <literal>threads</literal> (or
-          <literal>yes</literal> for a threaded view where roots
+          <literal>yes</literal>) for a threaded view where roots
           appear above children, or to <literal>reverse</literal> for
           a threaded view where children appear above roots.
         </para>
         <para>
           When sorting by threads, the value of <link
-          linkend="sort-aux">$sort_aux</link> determines which thread
-          floats to the top.  If <literal>$sort_aux</literal> does not
-          contain <literal>reverse-</literal>, the latest thread goes
-          to the bottom for <literal>use_threads=threads</literal> and
-          to the top for <literal>use_threads=reverse</literal>; the
-          direction of float is swapped if
-          <literal>$sort_aux</literal> also uses
-          <literal>reverse-</literal>.  If
-          <literal>$sort_aux</literal> includes
-          <literal>last-</literal>, the overall thread is sorted by
-          its descendant at any depth which would sort last in a flat
-          view; otherwise, the overall thread is sorted solely by the
-          thread root.  The <literal>last-</literal> prefix is ignored
-          when <literal>use_threads=flat</literal>.
+          linkend="sort">$sort</link> determines which thread floats
+          to the top.  If <literal>$sort</literal> does not contain
+          <literal>reverse-</literal>, the latest thread goes to the
+          bottom for <literal>use_threads=threads</literal> and to the
+          top for <literal>use_threads=reverse</literal>; the
+          direction of float is swapped if <literal>$sort</literal>
+          also uses <literal>reverse-</literal>.  If
+          <literal>$sort</literal> includes <literal>last-</literal>,
+          the overall thread is sorted by its descendant at any depth
+          which would sort last in a flat view; otherwise, the overall
+          thread is sorted solely by the thread root.  The
+          <literal>last-</literal> prefix is ignored when
+          <literal>use_threads=flat</literal>.
+        </para>
+        <para>
+          Within a single thread, the value of <link
+          linkend="sort-aux">$sort_aux</link> determines how siblings
+          are sorted.  The same prefixes apply as for
+          <literal>$sort</literal>, although it is less common to use
+          the <literal>last-</literal> prefix.
         </para>
         <para>
           The <quote>Use Threads</quote> feature also modifies the
@@ -17806,6 +17812,24 @@ bind index D purge-message
           <literal>%T</literal> expando which shows the current
           threading method.
         </para>
+        <table>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Name</entry>
+                <entry>Type</entry>
+                <entry>Default</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry><literal>use_threads</literal></entry>
+                <entry>enum</entry>
+                <entry><literal>unset</literal></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
       </sect2>
 
       <sect2 id="use-threads-neomuttrc">
@@ -17813,7 +17837,6 @@ bind index D purge-message
 
 <screen>
 <emphasis role="comment"># Example NeoMutt config file for the use-threads feature.</emphasis>
-
 
 <emphasis role="comment"># ------------------------------------------------------------</emphasis>
 <emphasis role="comment"># Default configuration: flat view sorted by date</emphasis>
