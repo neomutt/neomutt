@@ -93,7 +93,9 @@ enum MxOpenReturns
 };
 
 /**
- * struct MxOps - The Mailbox API
+ * @defgroup mx_api Mailbox API
+ *
+ * The Mailbox API
  *
  * Each backend provides a set of functions through which the Mailbox, messages,
  * tags and paths are manipulated.
@@ -105,6 +107,9 @@ struct MxOps
   bool is_local;          ///< True, if Mailbox type has local files/dirs
 
   /**
+   * @defgroup mx_ac_owns_path ac_owns_path()
+   * @ingroup mx_api
+   *
    * ac_owns_path - Check whether an Account owns a Mailbox path
    * @param a    Account
    * @param path Mailbox Path
@@ -118,6 +123,9 @@ struct MxOps
   bool (*ac_owns_path)(struct Account *a, const char *path);
 
   /**
+   * @defgroup mx_ac_add ac_add()
+   * @ingroup mx_api
+   *
    * ac_add - Add a Mailbox to an Account
    * @param a Account to add to
    * @param m Mailbox to add
@@ -131,6 +139,9 @@ struct MxOps
   bool (*ac_add)(struct Account *a, struct Mailbox *m);
 
   /**
+   * @defgroup mx_mbox_open mbox_open()
+   * @ingroup mx_api
+   *
    * mbox_open - Open a Mailbox
    * @param m Mailbox to open
    * @retval enum #MxOpenReturns
@@ -141,6 +152,9 @@ struct MxOps
   enum MxOpenReturns (*mbox_open)(struct Mailbox *m);
 
   /**
+   * @defgroup mx_mbox_open_append mbox_open_append()
+   * @ingroup mx_api
+   *
    * mbox_open_append - Open a Mailbox for appending
    * @param m     Mailbox to open
    * @param flags Flags, see #OpenMailboxFlags
@@ -153,6 +167,9 @@ struct MxOps
   bool (*mbox_open_append)(struct Mailbox *m, OpenMailboxFlags flags);
 
   /**
+   * @defgroup mx_mbox_check mbox_check()
+   * @ingroup mx_api
+   *
    * mbox_check - Check for new mail
    * @param m Mailbox
    * @retval enum #MxStatus
@@ -163,6 +180,9 @@ struct MxOps
   enum MxStatus (*mbox_check)(struct Mailbox *m);
 
   /**
+   * @defgroup mx_mbox_check_stats mbox_check_stats()
+   * @ingroup mx_api
+   *
    * mbox_check_stats - Check the Mailbox statistics
    * @param m     Mailbox to check
    * @param flags Function flags
@@ -174,6 +194,9 @@ struct MxOps
   enum MxStatus (*mbox_check_stats)(struct Mailbox *m, uint8_t flags);
 
   /**
+   * @defgroup mx_mbox_sync mbox_sync()
+   * @ingroup mx_api
+   *
    * mbox_sync - Save changes to the Mailbox
    * @param m Mailbox to sync
    * @retval enum #MxStatus
@@ -184,6 +207,9 @@ struct MxOps
   enum MxStatus (*mbox_sync)(struct Mailbox *m);
 
   /**
+   * @defgroup mx_mbox_close mbox_close()
+   * @ingroup mx_api
+   *
    * mbox_close - Close a Mailbox
    * @param m Mailbox to close
    * @retval enum #MxStatus
@@ -194,6 +220,9 @@ struct MxOps
   enum MxStatus (*mbox_close)(struct Mailbox *m);
 
   /**
+   * @defgroup mx_msg_open msg_open()
+   * @ingroup mx_api
+   *
    * msg_open - Open an email message in a Mailbox
    * @param m     Mailbox
    * @param msg   Message to open
@@ -209,6 +238,9 @@ struct MxOps
   bool (*msg_open)(struct Mailbox *m, struct Message *msg, int msgno);
 
   /**
+   * @defgroup mx_msg_open_new msg_open_new()
+   * @ingroup mx_api
+   *
    * msg_open_new - Open a new message in a Mailbox
    * @param m   Mailbox
    * @param msg Message to open
@@ -223,6 +255,9 @@ struct MxOps
   bool (*msg_open_new)(struct Mailbox *m, struct Message *msg, const struct Email *e);
 
   /**
+   * @defgroup mx_msg_commit msg_commit()
+   * @ingroup mx_api
+   *
    * msg_commit - Save changes to an email
    * @param m   Mailbox
    * @param msg Message to commit
@@ -236,6 +271,9 @@ struct MxOps
   int (*msg_commit)      (struct Mailbox *m, struct Message *msg);
 
   /**
+   * @defgroup mx_msg_close msg_close()
+   * @ingroup mx_api
+   *
    * msg_close - Close an email
    * @param m   Mailbox
    * @param msg Message to close
@@ -249,6 +287,9 @@ struct MxOps
   int (*msg_close)       (struct Mailbox *m, struct Message *msg);
 
   /**
+   * @defgroup mx_msg_padding_size msg_padding_size()
+   * @ingroup mx_api
+   *
    * msg_padding_size - Bytes of padding between messages
    * @param m Mailbox
    * @retval num Bytes of padding
@@ -259,6 +300,9 @@ struct MxOps
   int (*msg_padding_size)(struct Mailbox *m);
 
   /**
+   * @defgroup mx_msg_save_hcache msg_save_hcache()
+   * @ingroup mx_api
+   *
    * msg_save_hcache - Save message to the header cache
    * @param m Mailbox
    * @param e Email
@@ -272,6 +316,9 @@ struct MxOps
   int (*msg_save_hcache) (struct Mailbox *m, struct Email *e);
 
   /**
+   * @defgroup mx_tags_edit tags_edit()
+   * @ingroup mx_api
+   *
    * tags_edit - Prompt and validate new messages tags
    * @param m      Mailbox
    * @param tags   Existing tags
@@ -288,6 +335,9 @@ struct MxOps
   int (*tags_edit)       (struct Mailbox *m, const char *tags, char *buf, size_t buflen);
 
   /**
+   * @defgroup mx_tags_commit tags_commit()
+   * @ingroup mx_api
+   *
    * tags_commit - Save the tags to a message
    * @param m Mailbox
    * @param e Email
@@ -303,6 +353,9 @@ struct MxOps
   int (*tags_commit)     (struct Mailbox *m, struct Email *e, char *buf);
 
   /**
+   * @defgroup mx_path_probe path_probe()
+   * @ingroup mx_api
+   *
    * path_probe - Does this Mailbox type recognise this path?
    * @param path Path to examine
    * @param st   stat buffer (for local filesystems)
@@ -314,6 +367,9 @@ struct MxOps
   enum MailboxType (*path_probe)(const char *path, const struct stat *st);
 
   /**
+   * @defgroup mx_path_canon path_canon()
+   * @ingroup mx_api
+   *
    * path_canon - Canonicalise a Mailbox path
    * @param buf    Path to modify
    * @param buflen Length of buffer
@@ -326,6 +382,9 @@ struct MxOps
   int (*path_canon)      (char *buf, size_t buflen);
 
   /**
+   * @defgroup mx_path_pretty path_pretty()
+   * @ingroup mx_api
+   *
    * path_pretty - Abbreviate a Mailbox path
    * @param buf    Path to modify
    * @param buflen Length of buffer
@@ -339,6 +398,9 @@ struct MxOps
   int (*path_pretty)     (char *buf, size_t buflen, const char *folder);
 
   /**
+   * @defgroup mx_path_parent path_parent()
+   * @ingroup mx_api
+   *
    * path_parent - Find the parent of a Mailbox path
    * @param buf    Path to modify
    * @param buflen Length of buffer
@@ -351,6 +413,9 @@ struct MxOps
   int (*path_parent)     (char *buf, size_t buflen);
 
   /**
+   * @defgroup mx_path_is_empty path_is_empty()
+   * @ingroup mx_api
+   *
    * path_is_empty - Is the Mailbox empty?
    * @param path Mailbox to check
    * @retval 1 Mailbox is empty

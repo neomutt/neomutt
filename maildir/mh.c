@@ -27,6 +27,8 @@
  * @page maildir_mh MH local mailbox type
  *
  * MH local mailbox type
+ *
+ * Implementation: #MxMhOps
  */
 
 #include "config.h"
@@ -182,7 +184,7 @@ int mh_check_empty(const char *path)
 }
 
 /**
- * mh_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
+ * mh_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats() - @ingroup mx_mbox_check_stats
  */
 static enum MxStatus mh_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
@@ -803,7 +805,7 @@ int mh_sync_mailbox_message(struct Mailbox *m, int msgno, struct HeaderCache *hc
 }
 
 /**
- * mh_msg_save_hcache - Save message to the header cache - Implements MxOps::msg_save_hcache()
+ * mh_msg_save_hcache - Save message to the header cache - Implements MxOps::msg_save_hcache() - @ingroup mx_msg_save_hcache
  */
 int mh_msg_save_hcache(struct Mailbox *m, struct Email *e)
 {
@@ -819,7 +821,7 @@ int mh_msg_save_hcache(struct Mailbox *m, struct Email *e)
 }
 
 /**
- * mh_ac_owns_path - Check whether an Account own a Mailbox path - Implements MxOps::ac_owns_path()
+ * mh_ac_owns_path - Check whether an Account own a Mailbox path - Implements MxOps::ac_owns_path() - @ingroup mx_ac_owns_path
  */
 bool mh_ac_owns_path(struct Account *a, const char *path)
 {
@@ -827,7 +829,7 @@ bool mh_ac_owns_path(struct Account *a, const char *path)
 }
 
 /**
- * mh_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
+ * mh_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add() - @ingroup mx_ac_add
  */
 bool mh_ac_add(struct Account *a, struct Mailbox *m)
 {
@@ -835,7 +837,7 @@ bool mh_ac_add(struct Account *a, struct Mailbox *m)
 }
 
 /**
- * mh_mbox_open - Open a Mailbox - Implements MxOps::mbox_open()
+ * mh_mbox_open - Open a Mailbox - Implements MxOps::mbox_open() - @ingroup mx_mbox_open
  */
 static enum MxOpenReturns mh_mbox_open(struct Mailbox *m)
 {
@@ -843,7 +845,7 @@ static enum MxOpenReturns mh_mbox_open(struct Mailbox *m)
 }
 
 /**
- * mh_mbox_open_append - Open a Mailbox for appending - Implements MxOps::mbox_open_append()
+ * mh_mbox_open_append - Open a Mailbox for appending - Implements MxOps::mbox_open_append() - @ingroup mx_mbox_open_append
  */
 static bool mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
@@ -871,7 +873,7 @@ static bool mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 }
 
 /**
- * mh_mbox_check - Check for new mail - Implements MxOps::mbox_check()
+ * mh_mbox_check - Check for new mail - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
  *
  * This function handles arrival of new mail and reopening of mh/maildir
  * folders. Things are getting rather complex because we don't have a
@@ -1016,7 +1018,7 @@ enum MxStatus mh_mbox_check(struct Mailbox *m)
 }
 
 /**
- * mh_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync()
+ * mh_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync() - @ingroup mx_mbox_sync
  * @retval #MX_STATUS_REOPENED  mailbox has been externally modified
  * @retval #MX_STATUS_NEW_MAIL  new mail has arrived
  * @retval  0 Success
@@ -1096,7 +1098,7 @@ err:
 }
 
 /**
- * mh_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
+ * mh_mbox_close - Close a Mailbox - Implements MxOps::mbox_close() - @ingroup mx_mbox_close
  * @retval MX_STATUS_OK Always
  */
 enum MxStatus mh_mbox_close(struct Mailbox *m)
@@ -1105,7 +1107,7 @@ enum MxStatus mh_mbox_close(struct Mailbox *m)
 }
 
 /**
- * mh_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
+ * mh_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open() - @ingroup mx_msg_open
  */
 static bool mh_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
@@ -1132,7 +1134,7 @@ static bool mh_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 }
 
 /**
- * mh_msg_open_new - Open a new message in a Mailbox - Implements MxOps::msg_open_new()
+ * mh_msg_open_new - Open a new message in a Mailbox - Implements MxOps::msg_open_new() - @ingroup mx_msg_open_new
  *
  * Open a new (temporary) message in an MH folder.
  */
@@ -1142,7 +1144,7 @@ static bool mh_msg_open_new(struct Mailbox *m, struct Message *msg, const struct
 }
 
 /**
- * mh_msg_commit - Save changes to an email - Implements MxOps::msg_commit()
+ * mh_msg_commit - Save changes to an email - Implements MxOps::msg_commit() - @ingroup mx_msg_commit
  */
 static int mh_msg_commit(struct Mailbox *m, struct Message *msg)
 {
@@ -1150,7 +1152,7 @@ static int mh_msg_commit(struct Mailbox *m, struct Message *msg)
 }
 
 /**
- * mh_msg_close - Close an email - Implements MxOps::msg_close()
+ * mh_msg_close - Close an email - Implements MxOps::msg_close() - @ingroup mx_msg_close
  *
  * @note May also return EOF Failure, see errno
  */
@@ -1160,7 +1162,7 @@ int mh_msg_close(struct Mailbox *m, struct Message *msg)
 }
 
 /**
- * mh_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon()
+ * mh_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon() - @ingroup mx_path_canon
  */
 int mh_path_canon(char *buf, size_t buflen)
 {
@@ -1169,7 +1171,7 @@ int mh_path_canon(char *buf, size_t buflen)
 }
 
 /**
- * mh_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
+ * mh_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
  */
 int mh_path_parent(char *buf, size_t buflen)
 {
@@ -1186,7 +1188,7 @@ int mh_path_parent(char *buf, size_t buflen)
 }
 
 /**
- * mh_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
+ * mh_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty() - @ingroup mx_path_pretty
  */
 int mh_path_pretty(char *buf, size_t buflen, const char *folder)
 {
@@ -1200,7 +1202,7 @@ int mh_path_pretty(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * mh_path_probe - Is this an mh Mailbox? - Implements MxOps::path_probe()
+ * mh_path_probe - Is this an mh Mailbox? - Implements MxOps::path_probe() - @ingroup mx_path_probe
  */
 static enum MailboxType mh_path_probe(const char *path, const struct stat *st)
 {
@@ -1241,7 +1243,7 @@ static enum MailboxType mh_path_probe(const char *path, const struct stat *st)
 
 // clang-format off
 /**
- * MxMhOps - MH Mailbox - Implements ::MxOps
+ * MxMhOps - MH Mailbox - Implements ::MxOps - @ingroup mx_api
  */
 struct MxOps MxMhOps = {
   .type            = MUTT_MH,

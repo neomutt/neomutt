@@ -27,6 +27,8 @@
  * @page imap_imap IMAP network mailbox
  *
  * Support for IMAP4rev1, with the occasional nod to IMAP 4.
+ *
+ * Implementation: #MxImapOps
  */
 
 #include "config.h"
@@ -1212,7 +1214,7 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
 }
 
 /**
- * imap_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
+ * imap_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats() - @ingroup mx_mbox_check_stats
  */
 static enum MxStatus imap_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
@@ -1737,7 +1739,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 }
 
 /**
- * imap_ac_owns_path - Check whether an Account owns a Mailbox path - Implements MxOps::ac_owns_path()
+ * imap_ac_owns_path - Check whether an Account owns a Mailbox path - Implements MxOps::ac_owns_path() - @ingroup mx_ac_owns_path
  */
 static bool imap_ac_owns_path(struct Account *a, const char *path)
 {
@@ -1755,7 +1757,7 @@ static bool imap_ac_owns_path(struct Account *a, const char *path)
 }
 
 /**
- * imap_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
+ * imap_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add() - @ingroup mx_ac_add
  */
 static bool imap_ac_add(struct Account *a, struct Mailbox *m)
 {
@@ -1922,7 +1924,7 @@ int imap_login(struct ImapAccountData *adata)
 }
 
 /**
- * imap_mbox_open - Open a mailbox - Implements MxOps::mbox_open()
+ * imap_mbox_open - Open a mailbox - Implements MxOps::mbox_open() - @ingroup mx_mbox_open
  */
 static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
 {
@@ -2128,7 +2130,7 @@ fail:
 }
 
 /**
- * imap_mbox_open_append - Open a Mailbox for appending - Implements MxOps::mbox_open_append()
+ * imap_mbox_open_append - Open a Mailbox for appending - Implements MxOps::mbox_open_append() - @ingroup mx_mbox_open_append
  */
 static bool imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
@@ -2159,7 +2161,7 @@ static bool imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 }
 
 /**
- * imap_mbox_check - Check for new mail - Implements MxOps::mbox_check()
+ * imap_mbox_check - Check for new mail - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
  * @param m Mailbox
  * @retval >0 Success, e.g. #MX_STATUS_REOPENED
  * @retval -1 Failure
@@ -2176,7 +2178,7 @@ static enum MxStatus imap_mbox_check(struct Mailbox *m)
 }
 
 /**
- * imap_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
+ * imap_mbox_close - Close a Mailbox - Implements MxOps::mbox_close() - @ingroup mx_mbox_close
  */
 static enum MxStatus imap_mbox_close(struct Mailbox *m)
 {
@@ -2218,7 +2220,7 @@ static enum MxStatus imap_mbox_close(struct Mailbox *m)
 }
 
 /**
- * imap_msg_open_new - Open a new message in a Mailbox - Implements MxOps::msg_open_new()
+ * imap_msg_open_new - Open a new message in a Mailbox - Implements MxOps::msg_open_new() - @ingroup mx_msg_open_new
  */
 static bool imap_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
 {
@@ -2243,7 +2245,7 @@ cleanup:
 }
 
 /**
- * imap_tags_edit - Prompt and validate new messages tags - Implements MxOps::tags_edit()
+ * imap_tags_edit - Prompt and validate new messages tags - Implements MxOps::tags_edit() - @ingroup mx_tags_edit
  */
 static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
 {
@@ -2320,7 +2322,7 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
 }
 
 /**
- * imap_tags_commit - Save the tags to a message - Implements MxOps::tags_commit()
+ * imap_tags_commit - Save the tags to a message - Implements MxOps::tags_commit() - @ingroup mx_tags_commit
  *
  * This method update the server flags on the server by
  * removing the last know custom flags of a header
@@ -2395,7 +2397,7 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
 }
 
 /**
- * imap_path_probe - Is this an IMAP Mailbox? - Implements MxOps::path_probe()
+ * imap_path_probe - Is this an IMAP Mailbox? - Implements MxOps::path_probe() - @ingroup mx_path_probe
  */
 enum MailboxType imap_path_probe(const char *path, const struct stat *st)
 {
@@ -2409,7 +2411,7 @@ enum MailboxType imap_path_probe(const char *path, const struct stat *st)
 }
 
 /**
- * imap_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon()
+ * imap_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon() - @ingroup mx_path_canon
  */
 int imap_path_canon(char *buf, size_t buflen)
 {
@@ -2444,7 +2446,7 @@ int imap_expand_path(struct Buffer *buf)
 }
 
 /**
- * imap_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
+ * imap_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty() - @ingroup mx_path_pretty
  */
 static int imap_path_pretty(char *buf, size_t buflen, const char *folder)
 {
@@ -2456,7 +2458,7 @@ static int imap_path_pretty(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * imap_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
+ * imap_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
  */
 static int imap_path_parent(char *buf, size_t buflen)
 {
@@ -2468,7 +2470,7 @@ static int imap_path_parent(char *buf, size_t buflen)
 }
 
 /**
- * imap_path_is_empty - Is the mailbox empty - Implements MxOps::path_is_empty()
+ * imap_path_is_empty - Is the mailbox empty - Implements MxOps::path_is_empty() - @ingroup mx_path_is_empty
  */
 static int imap_path_is_empty(const char *path)
 {
@@ -2482,7 +2484,7 @@ static int imap_path_is_empty(const char *path)
 
 // clang-format off
 /**
- * MxImapOps - IMAP Mailbox - Implements ::MxOps
+ * MxImapOps - IMAP Mailbox - Implements ::MxOps - @ingroup mx_api
  */
 struct MxOps MxImapOps = {
   .type            = MUTT_IMAP,
