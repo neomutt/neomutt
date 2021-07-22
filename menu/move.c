@@ -80,7 +80,7 @@ MenuRedrawFlags menu_set_and_notify(struct Menu *menu, int top, int index)
     if (menu->redraw == MENU_REDRAW_NO_FLAGS)
     {
       // If this is the only change
-      flags |= MENU_REDRAW_CURRENT;
+      flags |= MENU_REDRAW_MOTION;
     }
     else
     {
