@@ -614,22 +614,11 @@ int menu_get_index(struct Menu *menu)
  * menu_set_index - Set the current selection in the Menu
  * @param menu  Menu
  * @param index Item to select
- * @retval true Selection was changed
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_INDEX
  */
-bool menu_set_index(struct Menu *menu, int index)
+MenuRedrawFlags menu_set_index(struct Menu *menu, int index)
 {
-  if (!menu)
-    return false;
-
-  if (index < -1)
-    return false;
-  if (index >= menu->max)
-    return false;
-
-  menu->oldcurrent = menu->current;
-  menu->current = index;
-  menu->redraw |= MENU_REDRAW_MOTION;
-  return true;
+  return menu_move_selection(menu, index);
 }
 
 /**

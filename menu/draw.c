@@ -301,7 +301,7 @@ void menu_make_entry(struct Menu *menu, char *buf, size_t buflen, int i)
   if (!ARRAY_EMPTY(&menu->dialog))
   {
     mutt_str_copy(buf, NONULL(*ARRAY_GET(&menu->dialog, i)), buflen);
-    menu_set_index(menu, -1); /* hide menubar */
+    menu->current = -1; /* hide menubar */
   }
   else
     menu->make_entry(menu, buf, buflen, i);
@@ -570,9 +570,6 @@ int menu_redraw(struct Menu *menu)
     /* allow the caller to do any local configuration */
     return OP_REDRAW;
   }
-
-  if (ARRAY_EMPTY(&menu->dialog))
-    menu_check_recenter(menu);
 
   if (menu->redraw & MENU_REDRAW_STATUS)
     menu_redraw_status(menu);

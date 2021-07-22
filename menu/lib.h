@@ -149,30 +149,29 @@ struct Menu
 };
 
 // Simple movement
-void menu_bottom_page   (struct Menu *menu);
-void menu_check_recenter(struct Menu *menu);
-void menu_current_bottom(struct Menu *menu);
-void menu_current_middle(struct Menu *menu);
-void menu_current_top   (struct Menu *menu);
-void menu_first_entry   (struct Menu *menu);
-void menu_half_down     (struct Menu *menu);
-void menu_half_up       (struct Menu *menu);
-void menu_last_entry    (struct Menu *menu);
-void menu_middle_page   (struct Menu *menu);
-void menu_next_entry    (struct Menu *menu);
-void menu_next_line     (struct Menu *menu);
-void menu_next_page     (struct Menu *menu);
-void menu_prev_entry    (struct Menu *menu);
-void menu_prev_line     (struct Menu *menu);
-void menu_prev_page     (struct Menu *menu);
-void menu_top_page      (struct Menu *menu);
+MenuRedrawFlags menu_bottom_page   (struct Menu *menu);
+MenuRedrawFlags menu_current_bottom(struct Menu *menu);
+MenuRedrawFlags menu_current_middle(struct Menu *menu);
+MenuRedrawFlags menu_current_top   (struct Menu *menu);
+MenuRedrawFlags menu_first_entry   (struct Menu *menu);
+MenuRedrawFlags menu_half_down     (struct Menu *menu);
+MenuRedrawFlags menu_half_up       (struct Menu *menu);
+MenuRedrawFlags menu_last_entry    (struct Menu *menu);
+MenuRedrawFlags menu_middle_page   (struct Menu *menu);
+MenuRedrawFlags menu_next_entry    (struct Menu *menu);
+MenuRedrawFlags menu_next_line     (struct Menu *menu);
+MenuRedrawFlags menu_next_page     (struct Menu *menu);
+MenuRedrawFlags menu_prev_entry    (struct Menu *menu);
+MenuRedrawFlags menu_prev_line     (struct Menu *menu);
+MenuRedrawFlags menu_prev_page     (struct Menu *menu);
+MenuRedrawFlags menu_top_page      (struct Menu *menu);
 
 void         menu_redraw_current(struct Menu *menu);
-void         menu_redraw_full(struct Menu *menu);
-void         menu_redraw_index(struct Menu *menu);
-void         menu_redraw_motion(struct Menu *menu);
-void         menu_redraw_status(struct Menu *menu);
-int          menu_redraw(struct Menu *menu);
+void         menu_redraw_full   (struct Menu *menu);
+void         menu_redraw_index  (struct Menu *menu);
+void         menu_redraw_motion (struct Menu *menu);
+void         menu_redraw_status (struct Menu *menu);
+int          menu_redraw        (struct Menu *menu);
 
 void         menu_add_dialog_row(struct Menu *menu, const char *row);
 void         menu_cleanup(void);
@@ -183,7 +182,11 @@ int          menu_loop(struct Menu *menu);
 struct MuttWindow *menu_new_window(enum MenuType type, struct ConfigSubset *sub);
 
 int  menu_get_index(struct Menu *menu);
-bool menu_set_index(struct Menu *menu, int index);
+MenuRedrawFlags menu_set_index(struct Menu *menu, int index);
+MenuRedrawFlags menu_move_selection(struct Menu *menu, int index);
 void menu_queue_redraw(struct Menu *menu, MenuRedrawFlags redraw);
+MenuRedrawFlags menu_move_view_relative(struct Menu *menu, int relative);
+MenuRedrawFlags menu_set_and_notify(struct Menu *menu, int top, int index);
+void menu_adjust(struct Menu *menu);
 
 #endif /* MUTT_MENU_LIB_H */

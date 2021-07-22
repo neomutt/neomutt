@@ -72,12 +72,13 @@ static int menu_config_observer(struct NotifyCallback *nc)
   if (!mutt_str_startswith(ev_c->name, "arrow_") && !mutt_str_startswith(ev_c->name, "menu_"))
     return 0;
 
-  struct Menu *menu = nc->global_data;
-  struct MuttWindow *win_menu = menu->win;
+  if (mutt_str_equal(ev_c->name, "menu_scroll"))
+    return 0; // This doesn't affect the display
 
-  menu->redraw |= MENU_REDRAW_INDEX;
-  win_menu->actions |= WA_RECALC;
-  mutt_debug(LL_DEBUG5, "config done, request WA_RECALC, MENU_REDRAW_INDEX\n");
+  struct Menu *menu = nc->global_data;
+  menu_adjust(menu);
+
+  mutt_debug(LL_DEBUG5, "config done, request WA_RECALC, MENU_REDRAW_FULL\n");
   return 0;
 }
 
@@ -100,7 +101,7 @@ static int menu_window_observer(struct NotifyCallback *nc)
     menu->pagelen = win_menu->state.rows;
     menu->redraw |= MENU_REDRAW_INDEX;
 
-    win_menu->actions |= WA_REPAINT;
+    win_menu->actions |= WA_RECALC | WA_REPAINT;
     mutt_debug(LL_DEBUG5,
                "window state done, request MENU_REDRAW_INDEX, WA_REPAINT\n");
   }
