@@ -1518,7 +1518,7 @@ static int op_main_show_limit(struct IndexSharedData *shared,
 static int op_main_sync_folder(struct IndexSharedData *shared,
                                struct IndexPrivateData *priv, int op)
 {
-  if (!shared->mailbox || (shared->mailbox->msg_count == 0))
+  if (!shared->mailbox || (shared->mailbox->msg_count == 0) || shared->mailbox->readonly)
     return IR_NO_ACTION;
 
   int ovc = shared->mailbox->vcount;
@@ -3078,7 +3078,7 @@ struct IndexFunction IndexFunctions[] = {
   { OP_MAIN_ROOT_MESSAGE,                op_main_root_message,              CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_SET_FLAG,                    op_main_set_flag,                  CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_MAIN_SHOW_LIMIT,                  op_main_show_limit,                CHECK_IN_MAILBOX },
-  { OP_MAIN_SYNC_FOLDER,                 op_main_sync_folder,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY },
+  { OP_MAIN_SYNC_FOLDER,                 op_main_sync_folder,               CHECK_NO_FLAGS },
   { OP_MAIN_TAG_PATTERN,                 op_main_tag_pattern,               CHECK_IN_MAILBOX },
   { OP_MAIN_UNDELETE_PATTERN,            op_main_undelete_pattern,          CHECK_IN_MAILBOX | CHECK_READONLY },
   { OP_MAIN_UNTAG_PATTERN,               op_main_untag_pattern,             CHECK_IN_MAILBOX },
