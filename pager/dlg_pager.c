@@ -2034,7 +2034,6 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
 
   char buf[1024] = { 0 };
   struct IndexSharedData *shared = dialog_find(priv->pview->win_pager)->wdata;
-  struct Mailbox *m = priv->pview->pdata->ctx ? priv->pview->pdata->ctx->mailbox : NULL;
 
   const bool c_tilde = cs_subset_bool(NeoMutt->sub, "tilde");
   const short c_pager_index_lines =
@@ -2045,9 +2044,10 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
     mutt_curses_set_color(MT_COLOR_NORMAL);
     mutt_window_clear(priv->pview->win_pager);
 
-    if ((priv->pview->mode == PAGER_MODE_EMAIL) && ((m->vcount + 1) < c_pager_index_lines))
+    if ((priv->pview->mode == PAGER_MODE_EMAIL) &&
+        ((shared->mailbox->vcount + 1) < c_pager_index_lines))
     {
-      priv->indexlen = m->vcount + 1;
+      priv->indexlen = shared->mailbox->vcount + 1;
     }
     else
     {
@@ -2215,14 +2215,13 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
       const size_t l1 = priv->pview->win_pbar->state.cols * MB_LEN_MAX;
       const size_t l2 = sizeof(buf);
       const size_t buflen = (l1 < l2) ? l1 : l2;
-      struct Email *e = (priv->pview->mode == PAGER_MODE_EMAIL) ?
-                            priv->pview->pdata->email :      // PAGER_MODE_EMAIL
+      struct Email *e = (priv->pview->mode == PAGER_MODE_EMAIL) ? shared->email : // PAGER_MODE_EMAIL
                             priv->pview->pdata->body->email; // PAGER_MODE_ATTACH_E
 
       const char *const c_pager_format =
           cs_subset_string(NeoMutt->sub, "pager_format");
       mutt_make_string(buf, buflen, priv->pview->win_pbar->state.cols,
-                       NONULL(c_pager_format), m, priv->pview->pdata->ctx->msg_in_pager,
+                       NONULL(c_pager_format), shared->mailbox, shared->ctx->msg_in_pager,
                        e, MUTT_FORMAT_NO_FLAGS, pager_progress_str);
       mutt_draw_statusline(priv->pview->win_pbar,
                            priv->pview->win_pbar->state.cols, buf, l2);
@@ -2369,17 +2368,19 @@ int mutt_pager(struct PagerView *pview)
   assert(pview->win_pager);
   assert(pview->win_pbar);
 
+  struct MuttWindow *dlg = dialog_find(pview->win_pager);
+  struct IndexSharedData *shared = dlg->wdata;
+
   switch (pview->mode)
   {
     case PAGER_MODE_EMAIL:
       // This case was previously identified by IsEmail macro
       // we expect data to contain email and not contain body
       // We also expect email to always belong to some mailbox
-      assert(pview->pdata->email);
-      assert(pview->pdata->ctx);
-      assert(pview->pdata->ctx->mailbox);
+      assert(shared->ctx);
+      assert(shared->mailbox);
+      assert(shared->email);
       assert(!pview->pdata->body);
-
       break;
 
     case PAGER_MODE_ATTACH:
@@ -2388,7 +2389,7 @@ int mutt_pager(struct PagerView *pview)
       //  - body (viewing regular attachment)
       //  - email
       //  - fp and body->email in special case of viewing an attached email.
-      assert(pview->pdata->email); // This should point to the top level email
+      assert(shared->email); // This should point to the top level email
       assert(pview->pdata->body);
       if (pview->pdata->fp && pview->pdata->body->email)
       {
@@ -2400,9 +2401,9 @@ int mutt_pager(struct PagerView *pview)
 
     case PAGER_MODE_HELP:
     case PAGER_MODE_OTHER:
-      assert(!pview->pdata->email);
+      assert(!shared->ctx);
+      assert(!shared->email);
       assert(!pview->pdata->body);
-      assert(!pview->pdata->ctx);
       break;
 
     case PAGER_MODE_UNKNOWN:
@@ -2426,18 +2427,15 @@ int mutt_pager(struct PagerView *pview)
       cs_subset_number(NeoMutt->sub, "pager_read_delay");
 
   //---------- local variables ------------------------------------------------
-  struct Mailbox *m = pview->pdata->ctx ? pview->pdata->ctx->mailbox : NULL;
-  struct MuttWindow *dlg = dialog_find(pview->win_pager);
-  struct IndexSharedData *shared = dlg->wdata;
-
   char buf[1024] = { 0 };
   int op = 0;
   int rc = -1;
   int searchctx = 0;
-  int index_space = m ? MIN(c_pager_index_lines, m->vcount) : c_pager_index_lines;
+  int index_space = shared->mailbox ? MIN(c_pager_index_lines, shared->mailbox->vcount) :
+                                      c_pager_index_lines;
   bool first = true;
   bool wrapped = false;
-  enum MailboxType mailbox_type = m ? m->type : MUTT_UNKNOWN;
+  enum MailboxType mailbox_type = shared->mailbox ? shared->mailbox->type : MUTT_UNKNOWN;
   uint64_t delay_read_timestamp = 0;
 
   struct PagerPrivateData *priv = pview->win_pager->parent->wdata;
@@ -2453,13 +2451,13 @@ int mutt_pager(struct PagerView *pview)
   if (!(pview->flags & MUTT_SHOWCOLOR))
     pview->flags |= MUTT_SHOWFLAT;
 
-  if (pview->mode == PAGER_MODE_EMAIL && !pview->pdata->email->read)
+  if (pview->mode == PAGER_MODE_EMAIL && !shared->email->read)
   {
-    pview->pdata->ctx->msg_in_pager = pview->pdata->email->msgno;
+    shared->ctx->msg_in_pager = shared->email->msgno;
     priv->win_pbar->actions |= WA_RECALC;
     if (c_pager_read_delay == 0)
     {
-      mutt_set_flag(m, pview->pdata->email, MUTT_READ, true);
+      mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true);
     }
     else
     {
@@ -2508,7 +2506,7 @@ int mutt_pager(struct PagerView *pview)
   unlink(pview->pdata->fname);
 
   //---------- restore global state if needed ---------------------------------
-  while ((pview->mode == PAGER_MODE_EMAIL) && (OldEmail == pview->pdata->email) && // are we "resuming" to the same Email?
+  while ((pview->mode == PAGER_MODE_EMAIL) && (OldEmail == shared->email) && // are we "resuming" to the same Email?
          (TopLine != priv->topline) && // is saved offset different?
          (priv->line_info[priv->curline].offset < (priv->sb.st_size - 1)))
   {
@@ -2550,7 +2548,7 @@ int mutt_pager(struct PagerView *pview)
   {
     if (check_read_delay(&delay_read_timestamp))
     {
-      mutt_set_flag(m, pview->pdata->email, MUTT_READ, true);
+      mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true);
     }
     mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
@@ -2580,14 +2578,14 @@ int mutt_pager(struct PagerView *pview)
     // tries to emulate concurrency.
     //-------------------------------------------------------------------------
     bool do_new_mail = false;
-    if (m && !OptAttachMsg)
+    if (shared->mailbox && !OptAttachMsg)
     {
-      int oldcount = m->msg_count;
+      int oldcount = shared->mailbox->msg_count;
       /* check for new mail */
-      enum MxStatus check = mx_mbox_check(m);
+      enum MxStatus check = mx_mbox_check(shared->mailbox);
       if (check == MX_STATUS_ERROR)
       {
-        if (!m || mutt_buffer_is_empty(&m->pathbuf))
+        if (!shared->mailbox || mutt_buffer_is_empty(&shared->mailbox->pathbuf))
         {
           /* fatal error occurred */
           pager_queue_redraw(priv, MENU_REDRAW_FULL);
@@ -2600,9 +2598,9 @@ int mutt_pager(struct PagerView *pview)
         /* notify user of newly arrived mail */
         if (check == MX_STATUS_NEW_MAIL)
         {
-          for (size_t i = oldcount; i < m->msg_count; i++)
+          for (size_t i = oldcount; i < shared->mailbox->msg_count; i++)
           {
-            struct Email *e = m->emails[i];
+            struct Email *e = shared->mailbox->emails[i];
 
             if (e && !e->read)
             {
@@ -2615,31 +2613,31 @@ int mutt_pager(struct PagerView *pview)
 
         if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
         {
-          if (priv->menu && m)
+          if (priv->menu && shared->mailbox)
           {
             /* After the mailbox has been updated, selection might be invalid */
             int index = menu_get_index(priv->menu);
-            menu_set_index(priv->menu, MIN(index, MAX(m->msg_count - 1, 0)));
+            menu_set_index(priv->menu, MIN(index, MAX(shared->mailbox->msg_count - 1, 0)));
             index = menu_get_index(priv->menu);
-            struct Email *e = mutt_get_virt_email(m, index);
+            struct Email *e = mutt_get_virt_email(shared->mailbox, index);
             if (!e)
               continue;
 
-            bool verbose = m->verbose;
-            m->verbose = false;
-            mutt_update_index(priv->menu, pview->pdata->ctx, check, oldcount, shared);
-            m->verbose = verbose;
+            bool verbose = shared->mailbox->verbose;
+            shared->mailbox->verbose = false;
+            mutt_update_index(priv->menu, shared->ctx, check, oldcount, shared);
+            shared->mailbox->verbose = verbose;
 
-            priv->menu->max = m->vcount;
+            priv->menu->max = shared->mailbox->vcount;
 
             /* If these header pointers don't match, then our email may have
              * been deleted.  Make the pointer safe, then leave the pager.
              * This have a unpleasant behaviour to close the pager even the
              * deleted message is not the opened one, but at least it's safe. */
-            e = mutt_get_virt_email(m, index);
-            if (pview->pdata->email != e)
+            e = mutt_get_virt_email(shared->mailbox, index);
+            if (shared->email != e)
             {
-              pview->pdata->email = e;
+              shared->email = e;
               break;
             }
           }
@@ -2649,7 +2647,7 @@ int mutt_pager(struct PagerView *pview)
         }
       }
 
-      if (mutt_mailbox_notify(m) || do_new_mail)
+      if (mutt_mailbox_notify(shared->mailbox) || do_new_mail)
       {
         const bool c_beep_new = cs_subset_bool(NeoMutt->sub, "beep_new");
         if (c_beep_new)
@@ -3307,14 +3305,14 @@ int mutt_pager(struct PagerView *pview)
           break;
         if (pview->mode == PAGER_MODE_ATTACH_E)
         {
-          mutt_attach_bounce(m, pview->pdata->fp, pview->pdata->actx,
-                             pview->pdata->body);
+          mutt_attach_bounce(shared->mailbox, pview->pdata->fp,
+                             pview->pdata->actx, pview->pdata->body);
         }
         else
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-          emaillist_add_email(&el, pview->pdata->email);
-          ci_bounce_message(m, &el);
+          emaillist_add_email(&el, shared->email);
+          ci_bounce_message(shared->mailbox, &el);
           emaillist_clear(&el);
         }
         break;
@@ -3332,13 +3330,13 @@ int mutt_pager(struct PagerView *pview)
           break;
         if (pview->mode == PAGER_MODE_ATTACH_E)
         {
-          mutt_attach_resend(pview->pdata->fp, ctx_mailbox(pview->pdata->ctx),
+          mutt_attach_resend(pview->pdata->fp, ctx_mailbox(shared->ctx),
                              pview->pdata->actx, pview->pdata->body);
         }
         else
         {
-          mutt_resend_message(NULL, ctx_mailbox(pview->pdata->ctx),
-                              pview->pdata->email, NeoMutt->sub);
+          mutt_resend_message(NULL, ctx_mailbox(shared->ctx), shared->email,
+                              NeoMutt->sub);
         }
         pager_queue_redraw(priv, MENU_REDRAW_FULL);
         break;
@@ -3355,16 +3353,16 @@ int mutt_pager(struct PagerView *pview)
           break;
         if (pview->mode == PAGER_MODE_ATTACH_E)
         {
-          mutt_attach_mail_sender(pview->pdata->fp, pview->pdata->email,
+          mutt_attach_mail_sender(pview->pdata->fp, shared->email,
                                   pview->pdata->actx, pview->pdata->body);
         }
         else
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-          emaillist_add_email(&el, pview->pdata->email);
+          emaillist_add_email(&el, shared->email);
 
           mutt_send_message(SEND_TO_SENDER, NULL, NULL,
-                            ctx_mailbox(pview->pdata->ctx), &el, NeoMutt->sub);
+                            ctx_mailbox(shared->ctx), &el, NeoMutt->sub);
           emaillist_clear(&el);
         }
         pager_queue_redraw(priv, MENU_REDRAW_FULL);
@@ -3377,7 +3375,7 @@ int mutt_pager(struct PagerView *pview)
           break;
         if (!(WithCrypto & APPLICATION_PGP))
           break;
-        if (!(pview->pdata->email->security & PGP_TRADITIONAL_CHECKED))
+        if (!(shared->email->security & PGP_TRADITIONAL_CHECKED))
         {
           op = -1;
           rc = OP_CHECK_TRADITIONAL;
@@ -3396,7 +3394,7 @@ int mutt_pager(struct PagerView *pview)
         if (pview->mode == PAGER_MODE_ATTACH_E)
           al = mutt_get_address(pview->pdata->body->email->env, NULL);
         else
-          al = mutt_get_address(pview->pdata->email->env, NULL);
+          al = mutt_get_address(shared->email->env, NULL);
         alias_create(al, NeoMutt->sub);
         break;
 
@@ -3407,20 +3405,21 @@ int mutt_pager(struct PagerView *pview)
       {
         if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
           break;
-        if (!assert_mailbox_writable(m))
+        if (!assert_mailbox_writable(shared->mailbox))
           break;
         /* L10N: CHECK_ACL */
-        if (!assert_mailbox_permissions(m, MUTT_ACL_DELETE, _("Can't delete message")))
+        if (!assert_mailbox_permissions(shared->mailbox, MUTT_ACL_DELETE,
+                                        _("Can't delete message")))
         {
           break;
         }
 
-        mutt_set_flag(m, pview->pdata->email, MUTT_DELETE, true);
-        mutt_set_flag(m, pview->pdata->email, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
+        mutt_set_flag(shared->mailbox, shared->email, MUTT_DELETE, true);
+        mutt_set_flag(shared->mailbox, shared->email, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
         const bool c_delete_untag =
             cs_subset_bool(NeoMutt->sub, "delete_untag");
         if (c_delete_untag)
-          mutt_set_flag(m, pview->pdata->email, MUTT_TAG, false);
+          mutt_set_flag(shared->mailbox, shared->email, MUTT_TAG, false);
         pager_queue_redraw(priv, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
         if (c_resolve)
@@ -3438,16 +3437,16 @@ int mutt_pager(struct PagerView *pview)
       {
         if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
           break;
-        if (!assert_mailbox_writable(m))
+        if (!assert_mailbox_writable(shared->mailbox))
           break;
 
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-        emaillist_add_email(&el, pview->pdata->email);
+        emaillist_add_email(&el, shared->email);
 
-        if (mutt_change_flag(m, &el, (op == OP_MAIN_SET_FLAG)) == 0)
+        if (mutt_change_flag(shared->mailbox, &el, (op == OP_MAIN_SET_FLAG)) == 0)
           pager_queue_redraw(priv, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
-        if (pview->pdata->email->deleted && c_resolve)
+        if (shared->email->deleted && c_resolve)
         {
           op = -1;
           rc = OP_MAIN_NEXT_UNDELETED;
@@ -3464,24 +3463,25 @@ int mutt_pager(struct PagerView *pview)
       {
         if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
           break;
-        if (!assert_mailbox_writable(m))
+        if (!assert_mailbox_writable(shared->mailbox))
           break;
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
            delete zero, 1, 12, ... messages. So in English we use
            "messages". Your language might have other means to express this.  */
-        if (!assert_mailbox_permissions(m, MUTT_ACL_DELETE, _("Can't delete messages")))
+        if (!assert_mailbox_permissions(shared->mailbox, MUTT_ACL_DELETE,
+                                        _("Can't delete messages")))
         {
           break;
         }
 
         int subthread = (op == OP_DELETE_SUBTHREAD);
-        int r = mutt_thread_set_flag(m, pview->pdata->email, MUTT_DELETE, 1, subthread);
+        int r = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_DELETE, 1, subthread);
         if (r == -1)
           break;
         if (op == OP_PURGE_THREAD)
         {
-          r = mutt_thread_set_flag(m, pview->pdata->email, MUTT_PURGE, true, subthread);
+          r = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_PURGE, true, subthread);
           if (r == -1)
             break;
         }
@@ -3489,7 +3489,7 @@ int mutt_pager(struct PagerView *pview)
         const bool c_delete_untag =
             cs_subset_bool(NeoMutt->sub, "delete_untag");
         if (c_delete_untag)
-          mutt_thread_set_flag(m, pview->pdata->email, MUTT_TAG, 0, subthread);
+          mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_TAG, 0, subthread);
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
         if (c_resolve)
         {
@@ -3517,7 +3517,7 @@ int mutt_pager(struct PagerView *pview)
         if (pview->mode == PAGER_MODE_ATTACH_E)
           mutt_display_address(pview->pdata->body->email->env);
         else
-          mutt_display_address(pview->pdata->email->env);
+          mutt_display_address(shared->email->env);
         break;
 
         //=======================================================================
@@ -3550,13 +3550,13 @@ int mutt_pager(struct PagerView *pview)
       {
         if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
           break;
-        if (!assert_mailbox_writable(m))
+        if (!assert_mailbox_writable(shared->mailbox))
           break;
         /* L10N: CHECK_ACL */
-        if (!assert_mailbox_permissions(m, MUTT_ACL_WRITE, "Can't flag message"))
+        if (!assert_mailbox_permissions(shared->mailbox, MUTT_ACL_WRITE, "Can't flag message"))
           break;
 
-        mutt_set_flag(m, pview->pdata->email, MUTT_FLAG, !pview->pdata->email->flagged);
+        mutt_set_flag(shared->mailbox, shared->email, MUTT_FLAG, !shared->email->flagged);
         pager_queue_redraw(priv, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
         if (c_resolve)
@@ -3583,8 +3583,8 @@ int mutt_pager(struct PagerView *pview)
         else
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-          el_add_tagged(&el, pview->pdata->ctx, pview->pdata->email, false);
-          mutt_pipe_message(m, &el);
+          el_add_tagged(&el, shared->ctx, shared->email, false);
+          mutt_pipe_message(shared->mailbox, &el);
           emaillist_clear(&el);
         }
         break;
@@ -3605,8 +3605,8 @@ int mutt_pager(struct PagerView *pview)
         else
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-          el_add_tagged(&el, pview->pdata->ctx, pview->pdata->email, false);
-          mutt_print_message(m, &el);
+          el_add_tagged(&el, shared->ctx, shared->email, false);
+          mutt_print_message(shared->mailbox, &el);
           emaillist_clear(&el);
         }
         break;
@@ -3619,8 +3619,8 @@ int mutt_pager(struct PagerView *pview)
         if (assert_attach_msg_mode(OptAttachMsg))
           break;
 
-        mutt_send_message(SEND_NO_FLAGS, NULL, NULL,
-                          ctx_mailbox(pview->pdata->ctx), NULL, NeoMutt->sub);
+        mutt_send_message(SEND_NO_FLAGS, NULL, NULL, ctx_mailbox(shared->ctx),
+                          NULL, NeoMutt->sub);
         pager_queue_redraw(priv, MENU_REDRAW_FULL);
         break;
 
@@ -3635,14 +3635,14 @@ int mutt_pager(struct PagerView *pview)
           break;
         const enum QuadOption c_post_moderated =
             cs_subset_quad(NeoMutt->sub, "post_moderated");
-        if ((m->type == MUTT_NNTP) &&
-            !((struct NntpMboxData *) m->mdata)->allowed && (query_quadoption(c_post_moderated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
+        if ((shared->mailbox->type == MUTT_NNTP) &&
+            !((struct NntpMboxData *) shared->mailbox->mdata)->allowed && (query_quadoption(c_post_moderated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
         {
           break;
         }
 
-        mutt_send_message(SEND_NEWS, NULL, NULL, ctx_mailbox(pview->pdata->ctx),
-                          NULL, NeoMutt->sub);
+        mutt_send_message(SEND_NEWS, NULL, NULL, ctx_mailbox(shared->ctx), NULL,
+                          NeoMutt->sub);
         pager_queue_redraw(priv, MENU_REDRAW_FULL);
         break;
       }
@@ -3660,23 +3660,23 @@ int mutt_pager(struct PagerView *pview)
           break;
         const enum QuadOption c_post_moderated =
             cs_subset_quad(NeoMutt->sub, "post_moderated");
-        if ((m->type == MUTT_NNTP) &&
-            !((struct NntpMboxData *) m->mdata)->allowed && (query_quadoption(c_post_moderated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
+        if ((shared->mailbox->type == MUTT_NNTP) &&
+            !((struct NntpMboxData *) shared->mailbox->mdata)->allowed && (query_quadoption(c_post_moderated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
         {
           break;
         }
         if (pview->mode == PAGER_MODE_ATTACH_E)
         {
-          mutt_attach_forward(pview->pdata->fp, pview->pdata->email,
+          mutt_attach_forward(pview->pdata->fp, shared->email,
                               pview->pdata->actx, pview->pdata->body, SEND_NEWS);
         }
         else
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-          emaillist_add_email(&el, pview->pdata->email);
+          emaillist_add_email(&el, shared->email);
 
           mutt_send_message(SEND_NEWS | SEND_FORWARD, NULL, NULL,
-                            ctx_mailbox(pview->pdata->ctx), &el, NeoMutt->sub);
+                            ctx_mailbox(shared->ctx), &el, NeoMutt->sub);
           emaillist_clear(&el);
         }
         pager_queue_redraw(priv, MENU_REDRAW_FULL);
@@ -3698,7 +3698,7 @@ int mutt_pager(struct PagerView *pview)
         if (pview->mode == PAGER_MODE_ATTACH_E)
           followup_to = pview->pdata->body->email->env->followup_to;
         else
-          followup_to = pview->pdata->email->env->followup_to;
+          followup_to = shared->email->env->followup_to;
 
         const enum QuadOption c_followup_to_poster =
             cs_subset_quad(NeoMutt->sub, "followup_to_poster");
@@ -3708,22 +3708,22 @@ int mutt_pager(struct PagerView *pview)
         {
           const enum QuadOption c_post_moderated =
               cs_subset_quad(NeoMutt->sub, "post_moderated");
-          if ((m->type == MUTT_NNTP) &&
-              !((struct NntpMboxData *) m->mdata)->allowed && (query_quadoption(c_post_moderated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
+          if ((shared->mailbox->type == MUTT_NNTP) &&
+              !((struct NntpMboxData *) shared->mailbox->mdata)->allowed && (query_quadoption(c_post_moderated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
           {
             break;
           }
           if (pview->mode == PAGER_MODE_ATTACH_E)
           {
-            mutt_attach_reply(pview->pdata->fp, m, pview->pdata->email,
+            mutt_attach_reply(pview->pdata->fp, shared->mailbox, shared->email,
                               pview->pdata->actx, pview->pdata->body, SEND_NEWS | SEND_REPLY);
           }
           else
           {
             struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-            emaillist_add_email(&el, pview->pdata->email);
+            emaillist_add_email(&el, shared->email);
             mutt_send_message(SEND_NEWS | SEND_REPLY, NULL, NULL,
-                              ctx_mailbox(pview->pdata->ctx), &el, NeoMutt->sub);
+                              ctx_mailbox(shared->ctx), &el, NeoMutt->sub);
             emaillist_clear(&el);
           }
           pager_queue_redraw(priv, MENU_REDRAW_FULL);
@@ -3757,15 +3757,15 @@ int mutt_pager(struct PagerView *pview)
 
         if (pview->mode == PAGER_MODE_ATTACH_E)
         {
-          mutt_attach_reply(pview->pdata->fp, m, pview->pdata->email,
+          mutt_attach_reply(pview->pdata->fp, shared->mailbox, shared->email,
                             pview->pdata->actx, pview->pdata->body, replyflags);
         }
         else
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-          emaillist_add_email(&el, pview->pdata->email);
-          mutt_send_message(replyflags, NULL, NULL,
-                            ctx_mailbox(pview->pdata->ctx), &el, NeoMutt->sub);
+          emaillist_add_email(&el, shared->email);
+          mutt_send_message(replyflags, NULL, NULL, ctx_mailbox(shared->ctx),
+                            &el, NeoMutt->sub);
           emaillist_clear(&el);
         }
         pager_queue_redraw(priv, MENU_REDRAW_FULL);
@@ -3781,10 +3781,10 @@ int mutt_pager(struct PagerView *pview)
         if (assert_attach_msg_mode(OptAttachMsg))
           break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-        emaillist_add_email(&el, pview->pdata->email);
+        emaillist_add_email(&el, shared->email);
 
-        mutt_send_message(SEND_POSTPONED, NULL, NULL,
-                          ctx_mailbox(pview->pdata->ctx), &el, NeoMutt->sub);
+        mutt_send_message(SEND_POSTPONED, NULL, NULL, ctx_mailbox(shared->ctx),
+                          &el, NeoMutt->sub);
         emaillist_clear(&el);
         pager_queue_redraw(priv, MENU_REDRAW_FULL);
         break;
@@ -3802,16 +3802,16 @@ int mutt_pager(struct PagerView *pview)
           break;
         if (pview->mode == PAGER_MODE_ATTACH_E)
         {
-          mutt_attach_forward(pview->pdata->fp, pview->pdata->email,
-                              pview->pdata->actx, pview->pdata->body, SEND_NO_FLAGS);
+          mutt_attach_forward(pview->pdata->fp, shared->email, pview->pdata->actx,
+                              pview->pdata->body, SEND_NO_FLAGS);
         }
         else
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-          emaillist_add_email(&el, pview->pdata->email);
+          emaillist_add_email(&el, shared->email);
 
-          mutt_send_message(SEND_FORWARD, NULL, NULL,
-                            ctx_mailbox(pview->pdata->ctx), &el, NeoMutt->sub);
+          mutt_send_message(SEND_FORWARD, NULL, NULL, ctx_mailbox(shared->ctx),
+                            &el, NeoMutt->sub);
           emaillist_clear(&el);
         }
         pager_queue_redraw(priv, MENU_REDRAW_FULL);
@@ -3832,7 +3832,7 @@ int mutt_pager(struct PagerView *pview)
         if (pview->mode == PAGER_MODE_ATTACH)
         {
           mutt_save_attachment_list(pview->pdata->actx, pview->pdata->fp, false,
-                                    pview->pdata->body, pview->pdata->email, NULL);
+                                    pview->pdata->body, shared->email, NULL);
           break;
         }
         /* fallthrough */
@@ -3851,7 +3851,7 @@ int mutt_pager(struct PagerView *pview)
         if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
           break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-        emaillist_add_email(&el, pview->pdata->email);
+        emaillist_add_email(&el, shared->email);
 
         const enum MessageSaveOpt save_opt =
             ((op == OP_SAVE) || (op == OP_DECODE_SAVE) || (op == OP_DECRYPT_SAVE)) ?
@@ -3863,7 +3863,7 @@ int mutt_pager(struct PagerView *pview)
             ((op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY)) ? TRANSFORM_DECRYPT :
                                                                    TRANSFORM_NONE;
 
-        const int rc2 = mutt_save_message(m, &el, save_opt, transform_opt);
+        const int rc2 = mutt_save_message(shared->mailbox, &el, save_opt, transform_opt);
         if ((rc2 == 0) && (save_opt == SAVE_MOVE))
         {
           const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
@@ -3884,7 +3884,7 @@ int mutt_pager(struct PagerView *pview)
       case OP_SHELL_ESCAPE:
         if (mutt_shell_escape())
         {
-          mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_FORCE);
+          mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_FORCE);
         }
         break;
 
@@ -3894,7 +3894,7 @@ int mutt_pager(struct PagerView *pview)
       {
         if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
           break;
-        mutt_set_flag(m, pview->pdata->email, MUTT_TAG, !pview->pdata->email->tagged);
+        mutt_set_flag(shared->mailbox, shared->email, MUTT_TAG, !shared->email->tagged);
 
         pager_queue_redraw(priv, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
@@ -3912,19 +3912,19 @@ int mutt_pager(struct PagerView *pview)
       {
         if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
           break;
-        if (!assert_mailbox_writable(m))
+        if (!assert_mailbox_writable(shared->mailbox))
           break;
         /* L10N: CHECK_ACL */
-        if (!assert_mailbox_permissions(m, MUTT_ACL_SEEN, _("Can't toggle new")))
+        if (!assert_mailbox_permissions(shared->mailbox, MUTT_ACL_SEEN, _("Can't toggle new")))
           break;
 
-        if (pview->pdata->email->read || pview->pdata->email->old)
-          mutt_set_flag(m, pview->pdata->email, MUTT_NEW, true);
+        if (shared->email->read || shared->email->old)
+          mutt_set_flag(shared->mailbox, shared->email, MUTT_NEW, true);
         else if (!first || (delay_read_timestamp != 0))
-          mutt_set_flag(m, pview->pdata->email, MUTT_READ, true);
+          mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true);
         delay_read_timestamp = 0;
         first = false;
-        pview->pdata->ctx->msg_in_pager = -1;
+        shared->ctx->msg_in_pager = -1;
         priv->win_pbar->actions |= WA_RECALC;
         pager_queue_redraw(priv, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
@@ -3942,16 +3942,17 @@ int mutt_pager(struct PagerView *pview)
       {
         if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
           break;
-        if (!assert_mailbox_writable(m))
+        if (!assert_mailbox_writable(shared->mailbox))
           break;
         /* L10N: CHECK_ACL */
-        if (!assert_mailbox_permissions(m, MUTT_ACL_DELETE, _("Can't undelete message")))
+        if (!assert_mailbox_permissions(shared->mailbox, MUTT_ACL_DELETE,
+                                        _("Can't undelete message")))
         {
           break;
         }
 
-        mutt_set_flag(m, pview->pdata->email, MUTT_DELETE, false);
-        mutt_set_flag(m, pview->pdata->email, MUTT_PURGE, false);
+        mutt_set_flag(shared->mailbox, shared->email, MUTT_DELETE, false);
+        mutt_set_flag(shared->mailbox, shared->email, MUTT_PURGE, false);
         pager_queue_redraw(priv, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
         const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
         if (c_resolve)
@@ -3969,23 +3970,24 @@ int mutt_pager(struct PagerView *pview)
       {
         if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
           break;
-        if (!assert_mailbox_writable(m))
+        if (!assert_mailbox_writable(shared->mailbox))
           break;
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
            undelete zero, 1, 12, ... messages. So in English we use
            "messages". Your language might have other means to express this. */
-        if (!assert_mailbox_permissions(m, MUTT_ACL_DELETE, _("Can't undelete messages")))
+        if (!assert_mailbox_permissions(shared->mailbox, MUTT_ACL_DELETE,
+                                        _("Can't undelete messages")))
         {
           break;
         }
 
-        int r = mutt_thread_set_flag(m, pview->pdata->email, MUTT_DELETE, false,
-                                     (op != OP_UNDELETE_THREAD));
+        int r = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_DELETE,
+                                     false, (op != OP_UNDELETE_THREAD));
         if (r != -1)
         {
-          r = mutt_thread_set_flag(m, pview->pdata->email, MUTT_PURGE, false,
-                                   (op != OP_UNDELETE_THREAD));
+          r = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_PURGE,
+                                   false, (op != OP_UNDELETE_THREAD));
         }
         if (r != -1)
         {
@@ -4028,10 +4030,10 @@ int mutt_pager(struct PagerView *pview)
         }
         if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
           break;
-        dlg_select_attachment(NeoMutt->sub, ctx_mailbox(Context),
-                              pview->pdata->email, pview->pdata->fp);
-        if (pview->pdata->email->attach_del)
-          m->changed = true;
+        dlg_select_attachment(NeoMutt->sub, ctx_mailbox(Context), shared->email,
+                              pview->pdata->fp);
+        if (shared->email->attach_del)
+          shared->mailbox->changed = true;
         pager_queue_redraw(priv, MENU_REDRAW_FULL);
         break;
 
@@ -4049,10 +4051,10 @@ int mutt_pager(struct PagerView *pview)
         if (assert_attach_msg_mode(OptAttachMsg))
           break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-        emaillist_add_email(&el, pview->pdata->email);
+        emaillist_add_email(&el, shared->email);
 
-        mutt_send_message(SEND_KEY, NULL, NULL, ctx_mailbox(pview->pdata->ctx),
-                          &el, NeoMutt->sub);
+        mutt_send_message(SEND_KEY, NULL, NULL, ctx_mailbox(shared->ctx), &el,
+                          NeoMutt->sub);
         emaillist_clear(&el);
         pager_queue_redraw(priv, MENU_REDRAW_FULL);
         break;
@@ -4066,13 +4068,13 @@ int mutt_pager(struct PagerView *pview)
           break;
 
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-        emaillist_add_email(&el, pview->pdata->email);
-        rc = mutt_label_message(m, &el);
+        emaillist_add_email(&el, shared->email);
+        rc = mutt_label_message(shared->mailbox, &el);
         emaillist_clear(&el);
 
         if (rc > 0)
         {
-          m->changed = true;
+          shared->mailbox->changed = true;
           pager_queue_redraw(priv, MENU_REDRAW_FULL);
           mutt_message(ngettext("%d label changed", "%d labels changed", rc), rc);
         }
@@ -4101,8 +4103,8 @@ int mutt_pager(struct PagerView *pview)
         if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
           break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-        emaillist_add_email(&el, pview->pdata->email);
-        crypt_extract_keys_from_messages(m, &el);
+        emaillist_add_email(&el, shared->email);
+        crypt_extract_keys_from_messages(shared->mailbox, &el);
         emaillist_clear(&el);
         pager_queue_redraw(priv, MENU_REDRAW_FULL);
         break;
@@ -4117,7 +4119,7 @@ int mutt_pager(struct PagerView *pview)
         //=======================================================================
 
       case OP_CHECK_STATS:
-        mutt_check_stats(m);
+        mutt_check_stats(shared->mailbox);
         break;
 
         //=======================================================================
@@ -4160,12 +4162,12 @@ int mutt_pager(struct PagerView *pview)
 
   if (check_read_delay(&delay_read_timestamp))
   {
-    mutt_set_flag(m, pview->pdata->email, MUTT_READ, true);
+    mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true);
   }
   mutt_file_fclose(&priv->fp);
   if (pview->mode == PAGER_MODE_EMAIL)
   {
-    pview->pdata->ctx->msg_in_pager = -1;
+    shared->ctx->msg_in_pager = -1;
     priv->win_pbar->actions |= WA_RECALC;
     switch (rc)
     {
@@ -4175,7 +4177,7 @@ int mutt_pager(struct PagerView *pview)
         break;
       default:
         TopLine = priv->topline;
-        OldEmail = pview->pdata->email;
+        OldEmail = shared->email;
         break;
     }
   }
