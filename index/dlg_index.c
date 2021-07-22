@@ -738,6 +738,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
     struct Context *ctx = ctx_new(m);
     index_shared_data_set_context(shared, ctx);
 
+    menu->max = m->msg_count;
     menu_set_index(menu, ci_first_message(shared->mailbox));
 #ifdef USE_INOTIFY
     mutt_monitor_add(NULL);
