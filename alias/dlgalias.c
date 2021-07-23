@@ -109,7 +109,7 @@ static const struct Mapping AliasHelp[] = {
 };
 
 /**
- * alias_format_str - Format a string for the alias list - Implements ::format_t
+ * alias_format_str - Format a string for the alias list - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------

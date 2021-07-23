@@ -121,7 +121,7 @@ static const struct Mapping AutocryptAcctHelp[] = {
 };
 
 /**
- * autocrypt_format_str - Format a string for the Autocrypt account list - Implements ::format_t
+ * autocrypt_format_str - Format a string for the Autocrypt account list - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------

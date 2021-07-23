@@ -27,6 +27,7 @@
  *
  * - Backed by `unsigned char`
  * - Validator is passed `unsigned char`
+ * - Implementation: #cst_enum
  */
 
 #include "config.h"
@@ -39,7 +40,7 @@
 #include "types.h"
 
 /**
- * enum_string_set - Set an Enumeration by string - Implements ConfigSetType::string_set()
+ * enum_string_set - Set an Enumeration by string - Implements ConfigSetType::string_set() - @ingroup cfg_type_string_set
  */
 static int enum_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                            const char *value, struct Buffer *err)
@@ -82,7 +83,7 @@ static int enum_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 }
 
 /**
- * enum_string_get - Get an Enumeration as a string - Implements ConfigSetType::string_get()
+ * enum_string_get - Get an Enumeration as a string - Implements ConfigSetType::string_get() - @ingroup cfg_type_string_get
  */
 static int enum_string_get(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, struct Buffer *result)
@@ -113,7 +114,7 @@ static int enum_string_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * enum_native_set - Set an Enumeration config item by int - Implements ConfigSetType::native_set()
+ * enum_native_set - Set an Enumeration config item by int - Implements ConfigSetType::native_set() - @ingroup cfg_type_native_set
  */
 static int enum_native_set(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
@@ -148,7 +149,7 @@ static int enum_native_set(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * enum_native_get - Get an int object from an Enumeration config item - Implements ConfigSetType::native_get()
+ * enum_native_get - Get an int object from an Enumeration config item - Implements ConfigSetType::native_get() - @ingroup cfg_type_native_get
  */
 static intptr_t enum_native_get(const struct ConfigSet *cs, void *var,
                                 const struct ConfigDef *cdef, struct Buffer *err)
@@ -160,7 +161,7 @@ static intptr_t enum_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * enum_reset - Reset an Enumeration to its initial value - Implements ConfigSetType::reset()
+ * enum_reset - Reset an Enumeration to its initial value - Implements ConfigSetType::reset() - @ingroup cfg_type_reset
  */
 static int enum_reset(const struct ConfigSet *cs, void *var,
                       const struct ConfigDef *cdef, struct Buffer *err)

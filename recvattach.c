@@ -245,7 +245,7 @@ void mutt_update_tree(struct AttachCtx *actx)
 }
 
 /**
- * attach_format_str - Format a string for the attachment menu - Implements ::format_t
+ * attach_format_str - Format a string for the attachment menu - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------

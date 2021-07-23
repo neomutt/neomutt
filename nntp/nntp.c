@@ -27,6 +27,8 @@
  * @page nntp_nntp Usenet network mailbox type; talk to an NNTP server
  *
  * Usenet network mailbox type; talk to an NNTP server
+ *
+ * Implementation: #MxNntpOps
  */
 
 #include "config.h"
@@ -2284,7 +2286,7 @@ int nntp_compare_order(const struct Email *a, const struct Email *b, bool revers
 }
 
 /**
- * nntp_ac_owns_path - Check whether an Account owns a Mailbox path - Implements MxOps::ac_owns_path()
+ * nntp_ac_owns_path - Check whether an Account owns a Mailbox path - Implements MxOps::ac_owns_path() - @ingroup mx_ac_owns_path
  */
 static bool nntp_ac_owns_path(struct Account *a, const char *path)
 {
@@ -2292,7 +2294,7 @@ static bool nntp_ac_owns_path(struct Account *a, const char *path)
 }
 
 /**
- * nntp_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
+ * nntp_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add() - @ingroup mx_ac_add
  */
 static bool nntp_ac_add(struct Account *a, struct Mailbox *m)
 {
@@ -2300,7 +2302,7 @@ static bool nntp_ac_add(struct Account *a, struct Mailbox *m)
 }
 
 /**
- * nntp_mbox_open - Open a Mailbox - Implements MxOps::mbox_open()
+ * nntp_mbox_open - Open a Mailbox - Implements MxOps::mbox_open() - @ingroup mx_mbox_open
  */
 static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
 {
@@ -2463,7 +2465,7 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
 }
 
 /**
- * nntp_mbox_check - Check for new mail - Implements MxOps::mbox_check()
+ * nntp_mbox_check - Check for new mail - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
  * @param m          Mailbox
  * @retval enum #MxStatus
  */
@@ -2480,7 +2482,7 @@ static enum MxStatus nntp_mbox_check(struct Mailbox *m)
 }
 
 /**
- * nntp_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync()
+ * nntp_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync() - @ingroup mx_mbox_sync
  *
  * @note May also return values from check_mailbox()
  */
@@ -2541,7 +2543,7 @@ static enum MxStatus nntp_mbox_sync(struct Mailbox *m)
 }
 
 /**
- * nntp_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
+ * nntp_mbox_close - Close a Mailbox - Implements MxOps::mbox_close() - @ingroup mx_mbox_close
  * @retval 0 Always
  */
 static enum MxStatus nntp_mbox_close(struct Mailbox *m)
@@ -2564,7 +2566,7 @@ static enum MxStatus nntp_mbox_close(struct Mailbox *m)
 }
 
 /**
- * nntp_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
+ * nntp_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open() - @ingroup mx_msg_open
  */
 static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
@@ -2692,7 +2694,7 @@ static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 }
 
 /**
- * nntp_msg_close - Close an email - Implements MxOps::msg_close()
+ * nntp_msg_close - Close an email - Implements MxOps::msg_close() - @ingroup mx_msg_close
  *
  * @note May also return EOF Failure, see errno
  */
@@ -2702,7 +2704,7 @@ static int nntp_msg_close(struct Mailbox *m, struct Message *msg)
 }
 
 /**
- * nntp_path_probe - Is this an NNTP Mailbox? - Implements MxOps::path_probe()
+ * nntp_path_probe - Is this an NNTP Mailbox? - Implements MxOps::path_probe() - @ingroup mx_path_probe
  */
 enum MailboxType nntp_path_probe(const char *path, const struct stat *st)
 {
@@ -2716,7 +2718,7 @@ enum MailboxType nntp_path_probe(const char *path, const struct stat *st)
 }
 
 /**
- * nntp_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon()
+ * nntp_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon() - @ingroup mx_path_canon
  */
 static int nntp_path_canon(char *buf, size_t buflen)
 {
@@ -2724,7 +2726,7 @@ static int nntp_path_canon(char *buf, size_t buflen)
 }
 
 /**
- * nntp_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
+ * nntp_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty() - @ingroup mx_path_pretty
  */
 static int nntp_path_pretty(char *buf, size_t buflen, const char *folder)
 {
@@ -2733,7 +2735,7 @@ static int nntp_path_pretty(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * nntp_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
+ * nntp_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
  */
 static int nntp_path_parent(char *buf, size_t buflen)
 {
@@ -2743,7 +2745,7 @@ static int nntp_path_parent(char *buf, size_t buflen)
 
 // clang-format off
 /**
- * MxNntpOps - NNTP Mailbox - Implements ::MxOps
+ * MxNntpOps - NNTP Mailbox - Implements ::MxOps - @ingroup mx_api
  */
 struct MxOps MxNntpOps = {
   .type            = MUTT_NNTP,

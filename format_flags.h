@@ -38,6 +38,10 @@ typedef uint8_t MuttFormatFlags;         ///< Flags for mutt_expando_format(), e
 #define MUTT_FORMAT_PLAIN       (1 << 7) ///< Do not prepend DISP_TO, DISP_CC ...
 
 /**
+ * @defgroup expando_api Expando API
+ *
+ * Callback functions for mutt_expando_format().
+ *
  * typedef format_t - Prototype for a mutt_expando_format() callback function
  * @param[out] buf      Buffer in which to save string
  * @param[in]  buflen   Buffer length

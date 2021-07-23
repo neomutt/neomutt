@@ -65,7 +65,7 @@ struct PgpCommandContext
 };
 
 /**
- * pgp_command_format_str - Format a PGP command string - Implements ::format_t
+ * pgp_command_format_str - Format a PGP command string - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------

@@ -47,7 +47,7 @@ struct ComprLz4Ctx
 };
 
 /**
- * compr_lz4_open - Implements ComprOps::open()
+ * compr_lz4_open - Implements ComprOps::open() - @ingroup compress_open
  */
 static void *compr_lz4_open(short level)
 {
@@ -68,7 +68,7 @@ static void *compr_lz4_open(short level)
 }
 
 /**
- * compr_lz4_compress - Implements ComprOps::compress()
+ * compr_lz4_compress - Implements ComprOps::compress() - @ingroup compress_compress
  */
 static void *compr_lz4_compress(void *cctx, const char *data, size_t dlen, size_t *clen)
 {
@@ -101,7 +101,7 @@ static void *compr_lz4_compress(void *cctx, const char *data, size_t dlen, size_
 }
 
 /**
- * compr_lz4_decompress - Implements ComprOps::decompress()
+ * compr_lz4_decompress - Implements ComprOps::decompress() - @ingroup compress_decompress
  */
 static void *compr_lz4_decompress(void *cctx, const char *cbuf, size_t clen)
 {
@@ -127,7 +127,7 @@ static void *compr_lz4_decompress(void *cctx, const char *cbuf, size_t clen)
 }
 
 /**
- * compr_lz4_close - Implements ComprOps::close()
+ * compr_lz4_close - Implements ComprOps::close() - @ingroup compress_close
  */
 static void compr_lz4_close(void **cctx)
 {

@@ -50,6 +50,10 @@
 #include <stdlib.h>
 
 /**
+ * @defgroup compress_api Compression API
+ *
+ * The Compression API
+ *
  * struct ComprOps - Header Cache Compression API
  */
 struct ComprOps
@@ -59,6 +63,9 @@ struct ComprOps
   short max_level;  ///< Maximum compression level
 
   /**
+   * @defgroup compress_open open()
+   * @ingroup compress_api
+   *
    * open - Open a compression context
    * @param[in]  level The compression level
    * @retval ptr  Success, backend-specific context
@@ -67,6 +74,9 @@ struct ComprOps
   void *(*open)(short level);
 
   /**
+   * @defgroup compress_compress compress()
+   * @ingroup compress_api
+   *
    * compress - Compress header cache data
    * @param[in]  cctx Compression context
    * @param[in]  data Data to be compressed
@@ -81,6 +91,9 @@ struct ComprOps
   void *(*compress)(void *cctx, const char *data, size_t dlen, size_t *clen);
 
   /**
+   * @defgroup compress_decompress decompress()
+   * @ingroup compress_api
+   *
    * decompress - Decompress header cache data
    * @param[in] cctx Compression context
    * @param[in] cbuf Data to be decompressed
@@ -94,6 +107,9 @@ struct ComprOps
   void *(*decompress)(void *cctx, const char *cbuf, size_t clen);
 
   /**
+   * @defgroup compress_close close()
+   * @ingroup compress_api
+   *
    * close - Close a compression context
    * @param[out] cctx Backend-specific context retrieved via open()
    *

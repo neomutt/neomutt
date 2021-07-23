@@ -35,7 +35,7 @@
 #include "lib.h"
 
 /**
- * store_tdb_open - Implements StoreOps::open()
+ * store_tdb_open - Implements StoreOps::open() - @ingroup store_open
  */
 static void *store_tdb_open(const char *path)
 {
@@ -52,7 +52,7 @@ static void *store_tdb_open(const char *path)
 }
 
 /**
- * store_tdb_fetch - Implements StoreOps::fetch()
+ * store_tdb_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
  */
 static void *store_tdb_fetch(void *store, const char *key, size_t klen, size_t *vlen)
 {
@@ -72,7 +72,7 @@ static void *store_tdb_fetch(void *store, const char *key, size_t klen, size_t *
 }
 
 /**
- * store_tdb_free - Implements StoreOps::free()
+ * store_tdb_free - Implements StoreOps::free() - @ingroup store_free
  */
 static void store_tdb_free(void *store, void **ptr)
 {
@@ -80,7 +80,7 @@ static void store_tdb_free(void *store, void **ptr)
 }
 
 /**
- * store_tdb_store - Implements StoreOps::store()
+ * store_tdb_store - Implements StoreOps::store() - @ingroup store_store
  */
 static int store_tdb_store(void *store, const char *key, size_t klen, void *value, size_t vlen)
 {
@@ -101,7 +101,7 @@ static int store_tdb_store(void *store, const char *key, size_t klen, void *valu
 }
 
 /**
- * store_tdb_delete_record - Implements StoreOps::delete_record()
+ * store_tdb_delete_record - Implements StoreOps::delete_record() - @ingroup store_delete_record
  */
 static int store_tdb_delete_record(void *store, const char *key, size_t klen)
 {
@@ -118,7 +118,7 @@ static int store_tdb_delete_record(void *store, const char *key, size_t klen)
 }
 
 /**
- * store_tdb_close - Implements StoreOps::close()
+ * store_tdb_close - Implements StoreOps::close() - @ingroup store_close
  */
 static void store_tdb_close(void **ptr)
 {
@@ -131,7 +131,7 @@ static void store_tdb_close(void **ptr)
 }
 
 /**
- * store_tdb_version - Implements StoreOps::version()
+ * store_tdb_version - Implements StoreOps::version() - @ingroup store_version
  */
 static const char *store_tdb_version(void)
 {

@@ -29,6 +29,7 @@
  * - Empty string is stored as `NULL`
  * - Validator is passed `char *`, which may be `NULL`
  * - Data is freed when `ConfigSet` is freed
+ * - Implementation: #cst_string
  */
 
 #include "config.h"
@@ -39,7 +40,7 @@
 #include "types.h"
 
 /**
- * string_destroy - Destroy a String - Implements ConfigSetType::destroy()
+ * string_destroy - Destroy a String - Implements ConfigSetType::destroy() - @ingroup cfg_type_destroy
  */
 static void string_destroy(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef)
 {
@@ -51,7 +52,7 @@ static void string_destroy(const struct ConfigSet *cs, void *var, const struct C
 }
 
 /**
- * string_string_set - Set a String by string - Implements ConfigSetType::string_set()
+ * string_string_set - Set a String by string - Implements ConfigSetType::string_set() - @ingroup cfg_type_string_set
  */
 static int string_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                              const char *value, struct Buffer *err)
@@ -102,7 +103,7 @@ static int string_string_set(const struct ConfigSet *cs, void *var, struct Confi
 }
 
 /**
- * string_string_get - Get a String as a string - Implements ConfigSetType::string_get()
+ * string_string_get - Get a String as a string - Implements ConfigSetType::string_get() - @ingroup cfg_type_string_get
  */
 static int string_string_get(const struct ConfigSet *cs, void *var,
                              const struct ConfigDef *cdef, struct Buffer *result)
@@ -122,7 +123,7 @@ static int string_string_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * string_native_set - Set a String config item by string - Implements ConfigSetType::native_set()
+ * string_native_set - Set a String config item by string - Implements ConfigSetType::native_set() - @ingroup cfg_type_native_set
  */
 static int string_native_set(const struct ConfigSet *cs, void *var,
                              const struct ConfigDef *cdef, intptr_t value,
@@ -165,7 +166,7 @@ static int string_native_set(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * string_native_get - Get a string from a String config item - Implements ConfigSetType::native_get()
+ * string_native_get - Get a string from a String config item - Implements ConfigSetType::native_get() - @ingroup cfg_type_native_get
  */
 static intptr_t string_native_get(const struct ConfigSet *cs, void *var,
                                   const struct ConfigDef *cdef, struct Buffer *err)
@@ -214,7 +215,7 @@ static int string_string_plus_equals(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * string_reset - Reset a String to its initial value - Implements ConfigSetType::reset()
+ * string_reset - Reset a String to its initial value - Implements ConfigSetType::reset() - @ingroup cfg_type_reset
  */
 static int string_reset(const struct ConfigSet *cs, void *var,
                         const struct ConfigDef *cdef, struct Buffer *err)

@@ -1922,7 +1922,7 @@ char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_c
 }
 
 /**
- * imap_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
+ * imap_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open() - @ingroup mx_msg_open
  */
 bool imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
@@ -2124,7 +2124,7 @@ bail:
 }
 
 /**
- * imap_msg_commit - Save changes to an email - Implements MxOps::msg_commit()
+ * imap_msg_commit - Save changes to an email - Implements MxOps::msg_commit() - @ingroup mx_msg_commit
  *
  * @note May also return EOF Failure, see errno
  */
@@ -2138,7 +2138,7 @@ int imap_msg_commit(struct Mailbox *m, struct Message *msg)
 }
 
 /**
- * imap_msg_close - Close an email - Implements MxOps::msg_close()
+ * imap_msg_close - Close an email - Implements MxOps::msg_close() - @ingroup mx_msg_close
  *
  * @note May also return EOF Failure, see errno
  */
@@ -2148,7 +2148,7 @@ int imap_msg_close(struct Mailbox *m, struct Message *msg)
 }
 
 /**
- * imap_msg_save_hcache - Save message to the header cache - Implements MxOps::msg_save_hcache()
+ * imap_msg_save_hcache - Save message to the header cache - Implements MxOps::msg_save_hcache() - @ingroup mx_msg_save_hcache
  */
 int imap_msg_save_hcache(struct Mailbox *m, struct Email *e)
 {

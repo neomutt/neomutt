@@ -48,7 +48,7 @@ struct ComprZlibCtx
 };
 
 /**
- * compr_zlib_open - Implements ComprOps::open()
+ * compr_zlib_open - Implements ComprOps::open() - @ingroup compress_open
  */
 static void *compr_zlib_open(short level)
 {
@@ -69,7 +69,7 @@ static void *compr_zlib_open(short level)
 }
 
 /**
- * compr_zlib_compress - Implements ComprOps::compress()
+ * compr_zlib_compress - Implements ComprOps::compress() - @ingroup compress_compress
  */
 static void *compr_zlib_compress(void *cctx, const char *data, size_t dlen, size_t *clen)
 {
@@ -101,7 +101,7 @@ static void *compr_zlib_compress(void *cctx, const char *data, size_t dlen, size
 }
 
 /**
- * compr_zlib_decompress - Implements ComprOps::decompress()
+ * compr_zlib_decompress - Implements ComprOps::decompress() - @ingroup compress_decompress
  */
 static void *compr_zlib_decompress(void *cctx, const char *cbuf, size_t clen)
 {
@@ -127,7 +127,7 @@ static void *compr_zlib_decompress(void *cctx, const char *cbuf, size_t clen)
 }
 
 /**
- * compr_zlib_close - Implements ComprOps::close()
+ * compr_zlib_close - Implements ComprOps::close() - @ingroup compress_close
  */
 static void compr_zlib_close(void **cctx)
 {

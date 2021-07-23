@@ -15,7 +15,7 @@
     </tab>
     <tab type="examples" visible="yes" title="" intro=""/>
     <tab type="pages" visible="yes" title="Libraries" intro="These libraries contain are an attempt to make NeoMutt more modular."/>
-    <tab type="modules" visible="yes" title="Groups" intro="List of similar things."/>
+    <tab type="modules" visible="yes" title="APIs" intro="List of similar things."/>
     <tab type="namespaces" visible="yes" title="">
       <tab type="namespacelist" visible="yes" title="" intro=""/>
       <tab type="namespacemembers" visible="yes" title="" intro=""/>

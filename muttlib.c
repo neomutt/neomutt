@@ -767,7 +767,7 @@ void mutt_safe_path(struct Buffer *dest, const struct Address *a)
 }
 
 /**
- * mutt_expando_format - Expand expandos (%x) in a string
+ * mutt_expando_format - Expand expandos (%x) in a string - @ingroup expando_api
  * @param[out] buf      Buffer in which to save string
  * @param[in]  buflen   Buffer length
  * @param[in]  col      Starting column

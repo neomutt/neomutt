@@ -465,7 +465,7 @@ static const char *mix_format_caps(struct Remailer *r)
 }
 
 /**
- * mix_format_str - Format a string for the remailer menu - Implements ::format_t
+ * mix_format_str - Format a string for the remailer menu - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------

@@ -194,7 +194,7 @@ bool smime_class_valid_passphrase(void)
  */
 
 /**
- * smime_command_format_str - Format an SMIME command - Implements ::format_t
+ * smime_command_format_str - Format an SMIME command - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------
