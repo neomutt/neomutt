@@ -50,7 +50,7 @@ struct ComprZstdCtx
 };
 
 /**
- * compr_zstd_open - Implements ComprOps::open()
+ * compr_zstd_open - Implements ComprOps::open() - @ingroup compress_open
  */
 static void *compr_zstd_open(short level)
 {
@@ -84,7 +84,7 @@ static void *compr_zstd_open(short level)
 }
 
 /**
- * compr_zstd_compress - Implements ComprOps::compress()
+ * compr_zstd_compress - Implements ComprOps::compress() - @ingroup compress_compress
  */
 static void *compr_zstd_compress(void *cctx, const char *data, size_t dlen, size_t *clen)
 {
@@ -106,7 +106,7 @@ static void *compr_zstd_compress(void *cctx, const char *data, size_t dlen, size
 }
 
 /**
- * compr_zstd_decompress - Implements ComprOps::decompress()
+ * compr_zstd_decompress - Implements ComprOps::decompress() - @ingroup compress_decompress
  */
 static void *compr_zstd_decompress(void *cctx, const char *cbuf, size_t clen)
 {
@@ -132,7 +132,7 @@ static void *compr_zstd_decompress(void *cctx, const char *cbuf, size_t clen)
 }
 
 /**
- * compr_zstd_close - Implements ComprOps::close()
+ * compr_zstd_close - Implements ComprOps::close() - @ingroup compress_close
  */
 static void compr_zstd_close(void **cctx)
 {
