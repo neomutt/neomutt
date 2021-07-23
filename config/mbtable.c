@@ -29,6 +29,7 @@
  * - Empty multibyte character table is stored as `NULL`
  * - Validator is passed `struct MbTable`, which may be `NULL`
  * - Data is freed when `ConfigSet` is freed
+ * - Implementation: #cst_mbtable
  */
 
 #include "config.h"
@@ -89,7 +90,7 @@ struct MbTable *mbtable_parse(const char *s)
 }
 
 /**
- * mbtable_destroy - Destroy an MbTable object - Implements ConfigSetType::destroy()
+ * mbtable_destroy - Destroy an MbTable object - Implements ConfigSetType::destroy() - @ingroup cfg_type_destroy
  */
 static void mbtable_destroy(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef)
 {
@@ -101,7 +102,7 @@ static void mbtable_destroy(const struct ConfigSet *cs, void *var, const struct 
 }
 
 /**
- * mbtable_string_set - Set an MbTable by string - Implements ConfigSetType::string_set()
+ * mbtable_string_set - Set an MbTable by string - Implements ConfigSetType::string_set() - @ingroup cfg_type_string_set
  */
 static int mbtable_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                               const char *value, struct Buffer *err)
@@ -153,7 +154,7 @@ static int mbtable_string_set(const struct ConfigSet *cs, void *var, struct Conf
 }
 
 /**
- * mbtable_string_get - Get a MbTable as a string - Implements ConfigSetType::string_get()
+ * mbtable_string_get - Get a MbTable as a string - Implements ConfigSetType::string_get() - @ingroup cfg_type_string_get
  */
 static int mbtable_string_get(const struct ConfigSet *cs, void *var,
                               const struct ConfigDef *cdef, struct Buffer *result)
@@ -192,7 +193,7 @@ static struct MbTable *mbtable_dup(struct MbTable *table)
 }
 
 /**
- * mbtable_native_set - Set an MbTable config item by MbTable object - Implements ConfigSetType::native_set()
+ * mbtable_native_set - Set an MbTable config item by MbTable object - Implements ConfigSetType::native_set() - @ingroup cfg_type_native_set
  */
 static int mbtable_native_set(const struct ConfigSet *cs, void *var,
                               const struct ConfigDef *cdef, intptr_t value,
@@ -221,7 +222,7 @@ static int mbtable_native_set(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * mbtable_native_get - Get an MbTable object from a MbTable config item - Implements ConfigSetType::native_get()
+ * mbtable_native_get - Get an MbTable object from a MbTable config item - Implements ConfigSetType::native_get() - @ingroup cfg_type_native_get
  */
 static intptr_t mbtable_native_get(const struct ConfigSet *cs, void *var,
                                    const struct ConfigDef *cdef, struct Buffer *err)
@@ -232,7 +233,7 @@ static intptr_t mbtable_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * mbtable_reset - Reset an MbTable to its initial value - Implements ConfigSetType::reset()
+ * mbtable_reset - Reset an MbTable to its initial value - Implements ConfigSetType::reset() - @ingroup cfg_type_reset
  */
 static int mbtable_reset(const struct ConfigSet *cs, void *var,
                          const struct ConfigDef *cdef, struct Buffer *err)

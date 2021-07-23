@@ -27,6 +27,7 @@
  *
  * - Backed by `short`
  * - Validator is passed `short`
+ * - Implementation: #cst_number
  */
 
 #include "config.h"
@@ -38,7 +39,7 @@
 #include "types.h"
 
 /**
- * number_string_set - Set a Number by string - Implements ConfigSetType::string_set()
+ * number_string_set - Set a Number by string - Implements ConfigSetType::string_set() - @ingroup cfg_type_string_set
  */
 static int number_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                              const char *value, struct Buffer *err)
@@ -92,7 +93,7 @@ static int number_string_set(const struct ConfigSet *cs, void *var, struct Confi
 }
 
 /**
- * number_string_get - Get a Number as a string - Implements ConfigSetType::string_get()
+ * number_string_get - Get a Number as a string - Implements ConfigSetType::string_get() - @ingroup cfg_type_string_get
  */
 static int number_string_get(const struct ConfigSet *cs, void *var,
                              const struct ConfigDef *cdef, struct Buffer *result)
@@ -109,7 +110,7 @@ static int number_string_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * number_native_set - Set a Number config item by int - Implements ConfigSetType::native_set()
+ * number_native_set - Set a Number config item by int - Implements ConfigSetType::native_set() - @ingroup cfg_type_native_set
  */
 static int number_native_set(const struct ConfigSet *cs, void *var,
                              const struct ConfigDef *cdef, intptr_t value,
@@ -143,7 +144,7 @@ static int number_native_set(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * number_native_get - Get an int from a Number config item - Implements ConfigSetType::native_get()
+ * number_native_get - Get an int from a Number config item - Implements ConfigSetType::native_get() - @ingroup cfg_type_native_get
  */
 static intptr_t number_native_get(const struct ConfigSet *cs, void *var,
                                   const struct ConfigDef *cdef, struct Buffer *err)
@@ -152,7 +153,7 @@ static intptr_t number_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * number_string_plus_equals - Add to a Number by string - Implements ConfigSetType::string_plus_equals()
+ * number_string_plus_equals - Add to a Number by string - Implements ConfigSetType::string_plus_equals() - @ingroup cfg_type_string_plus_equals
  */
 static int number_string_plus_equals(const struct ConfigSet *cs, void *var,
                                      const struct ConfigDef *cdef,
@@ -191,7 +192,7 @@ static int number_string_plus_equals(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * number_string_minus_equals - Subtract from a Number by string - Implements ConfigSetType::string_minus_equals()
+ * number_string_minus_equals - Subtract from a Number by string - Implements ConfigSetType::string_minus_equals() - @ingroup cfg_type_string_minus_equals
  */
 static int number_string_minus_equals(const struct ConfigSet *cs, void *var,
                                       const struct ConfigDef *cdef,
@@ -230,7 +231,7 @@ static int number_string_minus_equals(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * number_reset - Reset a Number to its initial value - Implements ConfigSetType::reset()
+ * number_reset - Reset a Number to its initial value - Implements ConfigSetType::reset() - @ingroup cfg_type_reset
  */
 static int number_reset(const struct ConfigSet *cs, void *var,
                         const struct ConfigDef *cdef, struct Buffer *err)
