@@ -113,8 +113,15 @@ bool account_mailbox_remove(struct Account *a, struct Mailbox *m)
       continue;
 
     STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);
-    if (!m)
+    if (m)
+    {
+      m->account = NULL;
+      notify_set_parent(m->notify, NULL);
+    }
+    else
+    {
       mailbox_free(&np->mailbox);
+    }
     FREE(&np);
     result = true;
     if (m)
