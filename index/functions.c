@@ -2052,7 +2052,7 @@ static int op_show_log_messages(struct IndexSharedData *shared,
   pview.flags = MUTT_PAGER_LOGS | MUTT_PAGER_BOTTOM;
   pview.mode = PAGER_MODE_OTHER;
 
-  mutt_do_pager(&pview);
+  mutt_do_pager(&pview, NULL);
 
   return IR_SUCCESS;
 }

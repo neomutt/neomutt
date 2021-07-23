@@ -736,7 +736,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
         pview.flags = MUTT_PAGER_NO_FLAGS;
         pview.mode = PAGER_MODE_OTHER;
 
-        mutt_do_pager(&pview);
+        mutt_do_pager(&pview, NULL);
         mutt_buffer_pool_release(&tempfile);
         menu_queue_redraw(menu, MENU_REDRAW_FULL);
         break;

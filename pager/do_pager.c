@@ -113,10 +113,11 @@ static int dopager_window_observer(struct NotifyCallback *nc)
 /**
  * mutt_do_pager - Display some page-able text to the user (help or attachment)
  * @param pview PagerView to construct Pager object
+ * @param e     Email to use
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_do_pager(struct PagerView *pview)
+int mutt_do_pager(struct PagerView *pview, struct Email *e)
 {
   assert(pview);
   assert(pview->pdata);
@@ -129,6 +130,8 @@ int mutt_do_pager(struct PagerView *pview)
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
 
   struct IndexSharedData *shared = index_shared_data_new();
+  shared->email = e;
+
   notify_set_parent(shared->notify, dlg->notify);
 
   dlg->wdata = shared;

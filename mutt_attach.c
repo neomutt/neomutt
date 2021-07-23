@@ -668,7 +668,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
                                                             MUTT_PAGER_NO_FLAGS);
     pview.mode = PAGER_MODE_ATTACH;
 
-    rc = mutt_do_pager(&pview);
+    rc = mutt_do_pager(&pview, e);
 
     mutt_buffer_reset(pagerfile);
     unlink_pagerfile = false;

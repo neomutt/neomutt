@@ -434,7 +434,7 @@ void mutt_help(enum MenuType menu)
     snprintf(banner, sizeof(banner), _("Help for %s"), desc);
     pdata.fname = mutt_buffer_string(&t);
     pview.banner = banner;
-  } while (mutt_do_pager(&pview) == OP_REFORMAT_WINCH);
+  } while (mutt_do_pager(&pview, NULL) == OP_REFORMAT_WINCH);
 
 cleanup:
   mutt_buffer_dealloc(&t);

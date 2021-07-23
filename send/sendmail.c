@@ -445,7 +445,7 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
           pview.flags = MUTT_PAGER_NO_FLAGS;
           pview.mode = PAGER_MODE_OTHER;
 
-          mutt_do_pager(&pview);
+          mutt_do_pager(&pview, NULL);
         }
       }
     }
