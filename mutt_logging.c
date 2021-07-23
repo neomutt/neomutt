@@ -121,7 +121,7 @@ void mutt_clear_error(void)
 }
 
 /**
- * log_disp_curses - Display a log line in the message line - Implements ::log_dispatcher_t
+ * log_disp_curses - Display a log line in the message line - Implements ::log_dispatcher_t - @ingroup logging_api
  */
 int log_disp_curses(time_t stamp, const char *file, int line,
                     const char *function, enum LogLevel level, ...)
