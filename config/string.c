@@ -177,7 +177,7 @@ static intptr_t string_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * string_string_plus_equals - Concat String to a string - Implements ConfigSetType::string_plus_equals
+ * string_string_plus_equals - Concat String to a string - Implements ConfigSetType::string_plus_equals() - @ingroup cfg_type_string_plus_equals
  */
 static int string_string_plus_equals(const struct ConfigSet *cs, void *var,
                                      const struct ConfigDef *cdef,

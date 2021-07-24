@@ -381,7 +381,7 @@ static bool thread_is_old(struct Email *e)
 }
 
 /**
- * index_format_str - Format a string for the index list - Implements ::format_t  - @ingroup expando_api
+ * index_format_str - Format a string for the index list - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------

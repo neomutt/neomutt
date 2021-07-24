@@ -81,7 +81,7 @@ static const struct Mapping HistoryHelp[] = {
 };
 
 /**
- * history_format_str - Format a string for the history list - Implements ::format_t  - @ingroup expando_api
+ * history_format_str - Format a string for the history list - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:--------------
