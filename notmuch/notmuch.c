@@ -367,7 +367,7 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
     else if (strcmp(item->name, "type") == 0)
       mdata->query_type = nm_string_to_query_type(item->value);
     else if (strcmp(item->name, "query") == 0)
-      mdata->db_query = mutt_str_dup(item->value);
+      mutt_str_replace(&mdata->db_query, item->value);
   }
 
   if (!mdata->db_query)
@@ -385,7 +385,7 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
     if (!strstr(mdata->db_query, "date:") &&
         windowed_query_from_query(mdata->db_query, buf, sizeof(buf)))
     {
-      mdata->db_query = mutt_str_dup(buf);
+      mutt_str_replace(&mdata->db_query, buf);
     }
 
     mutt_debug(LL_DEBUG2, "nm: query (windowed) '%s'\n", mdata->db_query);
