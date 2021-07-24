@@ -759,7 +759,6 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
         /*  mailbox->emails[msgno]->received is restored from mutt_hcache_restore */
         e->edata = h.edata;
         e->edata_free = imap_edata_free;
-        STAILQ_INIT(&e->tags);
 
         /* We take a copy of the tags so we can split the string */
         char *tags_copy = mutt_str_dup(h.edata->flags_remote);
