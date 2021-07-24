@@ -166,9 +166,6 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "autocrypt", 0 },
 #endif
-#ifdef HAVE_LIBUNWIND
-  { "backtrace", 2 },
-#endif
 #ifdef HAVE_BKGDSET
   { "bkgdset", 1 },
 #else
@@ -218,9 +215,6 @@ static struct CompileOptions comp_opts[] = {
   { "gpgme", 1 },
 #else
   { "gpgme", 0 },
-#endif
-#ifdef USE_DEBUG_GRAPHVIZ
-  { "graphviz", 2 },
 #endif
 #ifdef USE_GSS
   { "gss", 1 },
@@ -272,9 +266,6 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "nls", 0 },
 #endif
-#ifdef USE_DEBUG_NOTIFY
-  { "notify", 2 },
-#endif
 #ifdef USE_NOTMUCH
   { "notmuch", 1 },
 #else
@@ -284,9 +275,6 @@ static struct CompileOptions comp_opts[] = {
   { "openssl", 1 },
 #else
   { "openssl", 0 },
-#endif
-#ifdef USE_DEBUG_PARSE_TEST
-  { "parse-test", 2 },
 #endif
 #ifdef HAVE_PCRE2
   { "pcre2", 1 },
@@ -328,6 +316,25 @@ static struct CompileOptions comp_opts[] = {
   { "typeahead", 1 },
 #else
   { "typeahead", 0 },
+#endif
+  { NULL, 0 },
+};
+
+static struct CompileOptions debug_opts[] = {
+#ifdef USE_ASAN
+  { "asan", 2 },
+#endif
+#ifdef HAVE_LIBUNWIND
+  { "backtrace", 2 },
+#endif
+#ifdef USE_DEBUG_GRAPHVIZ
+  { "graphviz", 2 },
+#endif
+#ifdef USE_DEBUG_NOTIFY
+  { "notify", 2 },
+#endif
+#ifdef USE_DEBUG_PARSE_TEST
+  { "parse-test", 2 },
 #endif
 #ifdef USE_DEBUG_WINDOW
   { "window", 2 },
@@ -514,6 +521,13 @@ void print_version(FILE *fp)
   fprintf(fp, "\n%s\n", _("Compile options:"));
   print_compile_options(comp_opts, fp);
 
+  if (debug_opts[0].name)
+  {
+    fprintf(fp, "\n%s\n", _("Debug options:"));
+    print_compile_options(debug_opts, fp);
+  }
+
+  fprintf(fp, "\n");
 #ifdef DOMAIN
   fprintf(fp, "DOMAIN=\"%s\"\n", DOMAIN);
 #endif

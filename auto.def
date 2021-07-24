@@ -1253,6 +1253,7 @@ if {[get-define want-asan]} {
   msg-result "yes"
   define-append CFLAGS -fsanitize=address -O0 -fno-omit-frame-pointer -fno-common
   define-append LDFLAGS -fsanitize=address
+  define USE_ASAN
 }
 
 ###############################################################################
