@@ -26,23 +26,42 @@
 #include "config.h"
 #include "keymap.h"
 
-extern struct Binding OpAlias[];
-extern struct Binding OpAttach[];
+extern struct MenuFuncOp OpAlias[];
+extern struct MenuFuncOp OpAttach[];
 #ifdef USE_AUTOCRYPT
-extern struct Binding OpAutocryptAcct[];
+extern struct MenuFuncOp OpAutocryptAcct[];
 #endif
-extern struct Binding OpBrowser[];
-extern struct Binding OpCompose[];
-extern struct Binding OpEditor[];
-extern struct Binding OpGeneric[];
-extern struct Binding OpIndex[];
+extern struct MenuFuncOp OpBrowser[];
+extern struct MenuFuncOp OpCompose[];
+extern struct MenuFuncOp OpEditor[];
+extern struct MenuFuncOp OpGeneric[];
+extern struct MenuFuncOp OpIndex[];
 #ifdef MIXMASTER
-extern struct Binding OpMix[];
+extern struct MenuFuncOp OpMix[];
 #endif
-extern struct Binding OpPager[];
-extern struct Binding OpPgp[];
-extern struct Binding OpPost[];
-extern struct Binding OpQuery[];
-extern struct Binding OpSmime[];
+extern struct MenuFuncOp OpPager[];
+extern struct MenuFuncOp OpPgp[];
+extern struct MenuFuncOp OpPost[];
+extern struct MenuFuncOp OpQuery[];
+extern struct MenuFuncOp OpSmime[];
+
+extern const struct MenuOpSeq AliasDefaultBindings[];
+extern const struct MenuOpSeq AttachDefaultBindings[];
+#ifdef USE_AUTOCRYPT
+extern const struct MenuOpSeq AutocryptAcctDefaultBindings[];
+#endif
+extern const struct MenuOpSeq BrowserDefaultBindings[];
+extern const struct MenuOpSeq ComposeDefaultBindings[];
+extern const struct MenuOpSeq EditorDefaultBindings[];
+extern const struct MenuOpSeq GenericDefaultBindings[];
+extern const struct MenuOpSeq IndexDefaultBindings[];
+#ifdef MIXMASTER
+extern const struct MenuOpSeq MixDefaultBindings[];
+#endif
+extern const struct MenuOpSeq PagerDefaultBindings[];
+extern const struct MenuOpSeq PgpDefaultBindings[];
+extern const struct MenuOpSeq PostDefaultBindings[];
+extern const struct MenuOpSeq QueryDefaultBindings[];
+extern const struct MenuOpSeq SmimeDefaultBindings[];
 
 #endif /* MUTT_FUNCTIONS_H */

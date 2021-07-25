@@ -1251,9 +1251,9 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
   else if (mutt_str_startswith(buf, "exec"))
   {
     const enum MenuType mtype = menu_get_current_type();
-    const struct Binding *menu = km_get_table(mtype);
-    if (!menu && (mtype != MENU_PAGER))
-      menu = OpGeneric;
+    const struct MenuFuncOp *funcs = km_get_table(mtype);
+    if (!funcs && (mtype != MENU_PAGER))
+      funcs = OpGeneric;
 
     pt++;
     /* first TAB. Collect all the matches */
@@ -1263,14 +1263,14 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
       mutt_str_copy(UserTyped, pt, sizeof(UserTyped));
       memset(Matches, 0, MatchesListsize);
       memset(Completed, 0, sizeof(Completed));
-      for (int num = 0; menu[num].name; num++)
-        candidate(UserTyped, menu[num].name, Completed, sizeof(Completed));
+      for (int num = 0; funcs[num].name; num++)
+        candidate(UserTyped, funcs[num].name, Completed, sizeof(Completed));
       /* try the generic menu */
       if ((mtype != MENU_PAGER) && (mtype != MENU_GENERIC))
       {
-        menu = OpGeneric;
-        for (int num = 0; menu[num].name; num++)
-          candidate(UserTyped, menu[num].name, Completed, sizeof(Completed));
+        funcs = OpGeneric;
+        for (int num = 0; funcs[num].name; num++)
+          candidate(UserTyped, funcs[num].name, Completed, sizeof(Completed));
       }
       matches_ensure_morespace(NumMatched);
       Matches[NumMatched++] = UserTyped;

@@ -52,10 +52,8 @@
  * @retval ptr  Key binding
  * @retval NULL No key binding found
  */
-static const struct Binding *help_lookup_function(int op, enum MenuType menu)
+static const struct MenuFuncOp *help_lookup_function(int op, enum MenuType menu)
 {
-  const struct Binding *map = NULL;
-
   if (menu != MENU_PAGER && (menu != MENU_GENERIC))
   {
     /* first look in the generic map for the function */
@@ -64,12 +62,12 @@ static const struct Binding *help_lookup_function(int op, enum MenuType menu)
         return &OpGeneric[i];
   }
 
-  map = km_get_table(menu);
-  if (map)
+  const struct MenuFuncOp *funcs = km_get_table(menu);
+  if (funcs)
   {
-    for (int i = 0; map[i].name; i++)
-      if (map[i].op == op)
-        return &map[i];
+    for (int i = 0; funcs[i].name; i++)
+      if (funcs[i].op == op)
+        return &funcs[i];
   }
 
   return NULL;
@@ -319,7 +317,6 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2,
 static void dump_menu(FILE *fp, enum MenuType menu, int wraplen)
 {
   struct Keymap *map = NULL;
-  const struct Binding *b = NULL;
   char buf[128];
 
   STAILQ_FOREACH(map, &Keymaps[menu], entries)
@@ -337,9 +334,10 @@ static void dump_menu(FILE *fp, enum MenuType menu, int wraplen)
       }
       else
       {
-        b = help_lookup_function(map->op, menu);
-        format_line(fp, 0, buf, b ? b->name : "UNKNOWN",
-                    b ? _(OpStrings[b->op][1]) : _("ERROR: please report this bug"), wraplen);
+        const struct MenuFuncOp *funcs = help_lookup_function(map->op, menu);
+        format_line(fp, 0, buf, funcs ? funcs->name : "UNKNOWN",
+                    funcs ? _(OpStrings[funcs->op][1]) : _("ERROR: please report this bug"),
+                    wraplen);
       }
     }
   }
@@ -370,7 +368,7 @@ static bool is_bound(struct KeymapList *km_list, int op)
  * @param aux     Second key map to consider
  * @param wraplen Width to wrap to
  */
-static void dump_unbound(FILE *fp, const struct Binding *funcs,
+static void dump_unbound(FILE *fp, const struct MenuFuncOp *funcs,
                          struct KeymapList *km_list, struct KeymapList *aux, int wraplen)
 {
   for (int i = 0; funcs[i].name; i++)
@@ -394,7 +392,7 @@ void mutt_help(enum MenuType menu)
   struct Buffer t = mutt_buffer_make(PATH_MAX);
   mutt_buffer_mktemp(&t);
 
-  const struct Binding *funcs = km_get_table(menu);
+  const struct MenuFuncOp *funcs = km_get_table(menu);
   const char *desc = mutt_map_get_name(menu, MenuNames);
   if (!desc)
     desc = _("<UNKNOWN>");

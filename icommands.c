@@ -140,11 +140,11 @@ static void dump_bind(struct Buffer *buf, struct Mapping *menu, struct Keymap *m
    * the function, try with its own menu. */
   if (!fn_name)
   {
-    const struct Binding *bindings = km_get_table(menu->value);
-    if (!bindings)
+    const struct MenuFuncOp *funcs = km_get_table(menu->value);
+    if (!funcs)
       return;
 
-    fn_name = mutt_get_func(bindings, map->op);
+    fn_name = mutt_get_func(funcs, map->op);
   }
 
   mutt_buffer_add_printf(buf, "bind %s %s %s\n", menu->name, key_binding, fn_name);

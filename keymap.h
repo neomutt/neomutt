@@ -86,13 +86,21 @@ extern keycode_t AbortKey; ///< key to abort edits etc, normally Ctrl-G
 extern const struct Mapping Menus[];
 
 /**
- * struct Binding - Mapping between a user key and a function
+ * struct MenuFuncOp - Mapping between a function and an operation
  */
-struct Binding
+struct MenuFuncOp
 {
-  const char *name; ///< name of the function
-  int op;           ///< function id number
-  const char *seq;  ///< default key binding
+  const char *name; ///< Name of the function
+  int op;           ///< Operation, e.g. OP_DELETE
+};
+
+/**
+ * struct MenuOpSeq - Mapping between an operation and a key sequence
+ */
+struct MenuOpSeq
+{
+  int op;           ///< Operation, e.g. OP_DELETE
+  const char *seq;  ///< Default key binding
 };
 
 /**
@@ -123,8 +131,8 @@ enum NotifyBinding
   NT_MACRO_DELETE_ALL,   ///< All key macros have been deleted
 };
 
-const struct Binding *km_get_table(enum MenuType menu);
-const char *mutt_get_func(const struct Binding *bindings, int op);
+const struct MenuFuncOp *km_get_table(enum MenuType mtype);
+const char *mutt_get_func(const struct MenuFuncOp *bindings, int op);
 
 void mutt_keys_free(void);
 

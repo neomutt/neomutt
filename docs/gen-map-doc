@@ -2,7 +2,8 @@
 
 use strict;
 
-my (%OPS, %MAP, %DOC, $map);
+my (%OPS, %MAP_FUNC_TO_OP, %MAP_OP_TO_SEQSET, %DOC, $map);
+my (%GENERIC_OP_TO_FUNC);
 
 my $xml = shift @ARGV;
 
@@ -14,41 +15,71 @@ while (<F>) {
 }
 close F;
 
-my $num_ops = scalar(keys(%OPS));
-if ( $num_ops == 0 ) {
-  die "No OPS found. Has the syntax changed?";
-}
-
 while (<STDIN>) {
-  if (/^const struct Binding Op.*{ \/\* map: (.*) \*\//) {
+  if (/^const struct MenuFuncOp Op.*{ \/\* map: (.*) \*\//) {
     $map = $1;
     $DOC{$map} = "";
+    $MAP_FUNC_TO_OP{$map} = {};
+    $MAP_OP_TO_SEQSET{$map} = {};
+    while (<STDIN>) {
+      last if (/^}/);
+      if (/^\s*\*\*\s*(.*)/) {
+        $DOC{$map} .= "$1\n";
+      }
+      elsif (/{\s*"(.+)"\s*,\s*(\w+)\s*}/) {
+        my ($function, $op) = ($1, $2);
+        die "unknown OP $op" unless $OPS{$op};
+        $MAP_FUNC_TO_OP{$map}->{$function} = $op;
+        $MAP_OP_TO_SEQSET{$map}->{$op} = {};
+        if ($map eq "generic") {
+          $GENERIC_OP_TO_FUNC{$op} = $function;
+        }
+      }
+    }
   }
-  if ($map and /^\s*\*\*\s*(.*)/) {
-    $DOC{$map} .= "$1\n";
-  }
-  if ($map and /{\s*"(.+)"\s*,\s*(\w+)\s*,\s*(?:"([^"]+)"|(\w+))\s*}/) {
-    my ($function, $op, $binding) = ($1, $2, $3 || $4);
-    $binding =~ s/&/&amp;/;
-    # for <key>, try CamelCasing into <Key>
-    $binding =~ s/<(.)(.+)>/&lt;\U$1\E$2&gt;/;
-    $binding =~ s/</&lt;/;
-    $binding =~ s/>/&gt;/;
-    $binding =~ s/ /&lt;Space&gt;/;
-    $binding =~ s/^\\033/Esc /;
-    $binding =~ s/^\\010/&lt;Backspace&gt;/;
-    $binding =~ s/^\\(0\d+)$/'^'.chr(64+oct($1))/e;
-    $binding =~ s/^\\(0\d+)(.)/'^'.chr(64+oct($1)) ." $2"/e;
-    $binding =~ s/\\t/&lt;Tab&gt;/;
-    $binding =~ s/\\r/&lt;Return&gt;/;
-    $binding =~ s/\\n/&lt;Enter&gt;/;
-    $binding =~ s/NULL//;
-    die "unknown key $binding" if $binding =~ /\\[^\\]|<|>/;
-    die "unknown OP $op" unless $OPS{$op};
-    $MAP{$map} .= "<row><entry><literal>&lt;$function&gt;</literal></entry><entry>$binding</entry><entry>$OPS{$op}</entry></row>\n";
-  }
-  if ($map and /^}/) {
-    undef $map;
+  elsif (/^const struct MenuOpSeq .*{ \/\* map: (.*) \*\//) {
+    $map = $1;
+    die "unknown map $map" unless $MAP_FUNC_TO_OP{$map};
+    while (<STDIN>) {
+      last if (/^}/);
+      if (/{\s*(\w+)\s*,\s*"(.+)"\s*}/) {
+        my ($op, $binding) = ($1, $2);
+
+        # If the $op is NOT in the current map, but it IS
+        # in the generic map, then we need to add a stub entry
+        # in $MAP_FUNC_TO_OP and $MAP_OP_TO_SEQSET for this case.
+        unless ($MAP_OP_TO_SEQSET{$map}->{$op}) {
+          if (($map eq "pager") or ($map eq "editor")) {
+            die "unknown OP $op for map $map";
+          }
+
+          my $function = $GENERIC_OP_TO_FUNC{$op};
+          unless ($function) {
+            die "unknown OP $op for map $map";
+          }
+
+          $MAP_FUNC_TO_OP{$map}->{$function} = $op;
+          $MAP_OP_TO_SEQSET{$map}->{$op} = {};
+        }
+
+        $binding =~ s/&/&amp;/;
+        # for <key>, try CamelCasing into <Key>
+        $binding =~ s/<(.)(.+)>/&lt;\U$1\E$2&gt;/;
+        $binding =~ s/</&lt;/;
+        $binding =~ s/>/&gt;/;
+        $binding =~ s/ /&lt;Space&gt;/;
+        $binding =~ s/^\\033/Esc /;
+        $binding =~ s/^\\010/&lt;Backspace&gt;/;
+        $binding =~ s/^\\177/&lt;Delete&gt;/;
+        $binding =~ s/^\\(0\d+)$/'^'.chr(64+oct($1))/e;
+        $binding =~ s/^\\(0\d+)(.)/'^'.chr(64+oct($1)) ." $2"/e;
+        $binding =~ s/\\t/&lt;Tab&gt;/;
+        $binding =~ s/\\r/&lt;Return&gt;/;
+        $binding =~ s/\\n/&lt;Enter&gt;/;
+        die "unknown key $binding" if $binding =~ /\\[^\\]|<|>/;
+        $MAP_OP_TO_SEQSET{$map}->{$op}->{$binding} = 1;
+      }
+    }
   }
 }
 
@@ -60,7 +91,7 @@ while (<XML>) {
     my $maptitle = $1;
     $mapid =~ s/\s+/-/g;
     $maptitle =~ s/\b(\w)/\u$1/g;
-    unless ($MAP{$map}) {
+    unless ($MAP_FUNC_TO_OP{$map}) {
       warn "map $map undefined";
       next;
     }
@@ -76,7 +107,35 @@ $DOC{$map}
 <row><entry>Function</entry><entry>Default key</entry><entry>Description</entry></row>
 </thead>
 <tbody>
-$MAP{$map}
+EOT
+
+    # Sort the map entries by function, then by binding
+    foreach my $function (sort keys %{$MAP_FUNC_TO_OP{$map}}) {
+      my $op = $MAP_FUNC_TO_OP{$map}->{$function};
+      my $bindings = $MAP_OP_TO_SEQSET{$map}->{$op};
+
+      if (scalar keys %{$bindings}) {
+        foreach my $binding (sort keys %{$bindings}) {
+          print "<row><entry><literal>&lt;" .
+            $function .
+            "&gt;</literal></entry><entry>" .
+            $binding .
+            "</entry><entry>" .
+            $OPS{$op} .
+            "</entry></row>\n";
+        }
+      }
+      else {
+        print "<row><entry><literal>&lt;" .
+          $function .
+          "&gt;</literal></entry><entry>" .
+          "</entry><entry>" .
+            $OPS{$op} .
+          "</entry></row>\n";
+      }
+    }
+
+    print <<EOT;
 </tbody>
 </tgroup>
 </table>
@@ -84,11 +143,11 @@ $MAP{$map}
 </sect2>
 
 EOT
-    delete $MAP{$map};
+    delete $MAP_FUNC_TO_OP{$map};
   } else {
     print;
   }
 }
 close XML;
 
-warn "unprinted maps: ". join(" ", keys %MAP) if %MAP;
+warn "unprinted maps: ". join(" ", keys %MAP_FUNC_TO_OP) if %MAP_FUNC_TO_OP;

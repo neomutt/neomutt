@@ -482,19 +482,18 @@ static enum CommandResult km_bindkey(const char *s, enum MenuType mtype, int op)
 
 /**
  * get_op - Get the function by its name
- * @param bindings Key bindings table
- * @param start    Name of function to find
- * @param len      Length of string to match
+ * @param funcs Functions table
+ * @param start Name of function to find
+ * @param len   Length of string to match
  * @retval num Operation, e.g. OP_DELETE
  */
-static int get_op(const struct Binding *bindings, const char *start, size_t len)
+static int get_op(const struct MenuFuncOp *funcs, const char *start, size_t len)
 {
-  for (int i = 0; bindings[i].name; i++)
+  for (int i = 0; funcs[i].name; i++)
   {
-    if (mutt_istrn_equal(start, bindings[i].name, len) &&
-        (mutt_str_len(bindings[i].name) == len))
+    if (mutt_istrn_equal(start, funcs[i].name, len) && (mutt_str_len(funcs[i].name) == len))
     {
-      return bindings[i].op;
+      return funcs[i].op;
     }
   }
 
@@ -503,19 +502,19 @@ static int get_op(const struct Binding *bindings, const char *start, size_t len)
 
 /**
  * mutt_get_func - Get the name of a function
- * @param bindings Key bindings table
- * @param op       Operation, e.g. OP_DELETE
+ * @param funcs Functions table
+ * @param op    Operation, e.g. OP_DELETE
  * @retval ptr  Name of function
  * @retval NULL Operation not found
  *
  * @note This returns a static string.
  */
-const char *mutt_get_func(const struct Binding *bindings, int op)
+const char *mutt_get_func(const struct MenuFuncOp *funcs, int op)
 {
-  for (int i = 0; bindings[i].name; i++)
+  for (int i = 0; funcs[i].name; i++)
   {
-    if (bindings[i].op == op)
-      return bindings[i].name;
+    if (funcs[i].op == op)
+      return funcs[i].name;
   }
 
   return NULL;
@@ -574,10 +573,10 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
          * skip the '<' and the '>' when comparing */
         for (enum MenuType j = 0; MenuNames[j].name; j++)
         {
-          const struct Binding *binding = km_get_table(MenuNames[j].value);
-          if (binding)
+          const struct MenuFuncOp *funcs = km_get_table(MenuNames[j].value);
+          if (funcs)
           {
-            op = get_op(binding, pp + 1, l - 2);
+            op = get_op(funcs, pp + 1, l - 2);
             if (op != OP_NULL)
               break;
           }
@@ -696,10 +695,10 @@ int km_dokey(enum MenuType mtype)
     if (tmp.op)
     {
       const char *func = NULL;
-      const struct Binding *bindings = NULL;
+      const struct MenuFuncOp *funcs = NULL;
 
       /* is this a valid op for this menu type? */
-      if ((bindings = km_get_table(mtype)) && (func = mutt_get_func(bindings, tmp.op)))
+      if ((funcs = km_get_table(mtype)) && (func = mutt_get_func(funcs, tmp.op)))
         return tmp.op;
 
       if ((mtype == MENU_EDITOR) && mutt_get_func(OpEditor, tmp.op))
@@ -708,8 +707,8 @@ int km_dokey(enum MenuType mtype)
       if ((mtype != MENU_EDITOR) && (mtype != MENU_PAGER) && (mtype != MENU_GENERIC))
       {
         /* check generic menu type */
-        bindings = OpGeneric;
-        func = mutt_get_func(bindings, tmp.op);
+        funcs = OpGeneric;
+        func = mutt_get_func(funcs, tmp.op);
         if (func)
           return tmp.op;
       }
@@ -718,10 +717,10 @@ int km_dokey(enum MenuType mtype)
        * Find the literal string and push it back */
       for (i = 0; MenuNames[i].name; i++)
       {
-        bindings = km_get_table(MenuNames[i].value);
-        if (bindings)
+        funcs = km_get_table(MenuNames[i].value);
+        if (funcs)
         {
-          func = mutt_get_func(bindings, tmp.op);
+          func = mutt_get_func(funcs, tmp.op);
           if (func)
           {
             mutt_unget_event('>', 0);
@@ -791,11 +790,11 @@ int km_dokey(enum MenuType mtype)
  * @param map   Key bindings
  * @param mtype Menu type, e.g. #MENU_PAGER
  */
-static void create_bindings(const struct Binding *map, enum MenuType mtype)
+static void create_bindings(const struct MenuOpSeq *map, enum MenuType mtype)
 {
   STAILQ_INIT(&Keymaps[mtype]);
 
-  for (int i = 0; map[i].name; i++)
+  for (int i = 0; map[i].op != 0; i++)
     if (map[i].seq)
       km_bindkey(map[i].seq, mtype, map[i].op);
 }
@@ -1011,114 +1010,32 @@ void km_init(void)
 {
   memset(Keymaps, 0, sizeof(struct KeymapList) * MENU_MAX);
 
-  create_bindings(OpAttach, MENU_ATTACH);
-  create_bindings(OpBrowser, MENU_FOLDER);
-  create_bindings(OpCompose, MENU_COMPOSE);
-  create_bindings(OpIndex, MENU_INDEX);
-  create_bindings(OpPager, MENU_PAGER);
-  create_bindings(OpPost, MENU_POSTPONE);
-  create_bindings(OpQuery, MENU_QUERY);
-  create_bindings(OpAlias, MENU_ALIAS);
+  create_bindings(AliasDefaultBindings, MENU_ALIAS);
+  create_bindings(AttachDefaultBindings, MENU_ATTACH);
+#ifdef USE_AUTOCRYPT
+  create_bindings(AutocryptAcctDefaultBindings, MENU_AUTOCRYPT_ACCT);
+#endif
+  create_bindings(BrowserDefaultBindings, MENU_FOLDER);
+  create_bindings(ComposeDefaultBindings, MENU_COMPOSE);
+  create_bindings(EditorDefaultBindings, MENU_EDITOR);
+  create_bindings(GenericDefaultBindings, MENU_GENERIC);
+  create_bindings(IndexDefaultBindings, MENU_INDEX);
+#ifdef MIXMASTER
+  create_bindings(MixDefaultBindings, MENU_MIX);
+#endif
+  create_bindings(PagerDefaultBindings, MENU_PAGER);
+  create_bindings(PostDefaultBindings, MENU_POSTPONE);
+  create_bindings(QueryDefaultBindings, MENU_QUERY);
 
   if (WithCrypto & APPLICATION_PGP)
-    create_bindings(OpPgp, MENU_PGP);
-
+    create_bindings(PgpDefaultBindings, MENU_PGP);
   if (WithCrypto & APPLICATION_SMIME)
-    create_bindings(OpSmime, MENU_SMIME);
+    create_bindings(SmimeDefaultBindings, MENU_SMIME);
 
 #ifdef CRYPT_BACKEND_GPGME
-  create_bindings(OpPgp, MENU_KEY_SELECT_PGP);
-  create_bindings(OpSmime, MENU_KEY_SELECT_SMIME);
+  create_bindings(PgpDefaultBindings, MENU_KEY_SELECT_PGP);
+  create_bindings(SmimeDefaultBindings, MENU_KEY_SELECT_SMIME);
 #endif
-
-#ifdef MIXMASTER
-  create_bindings(OpMix, MENU_MIX);
-
-  km_bindkey("<space>", MENU_MIX, OP_GENERIC_SELECT_ENTRY);
-  km_bindkey("h", MENU_MIX, OP_MIX_CHAIN_PREV);
-  km_bindkey("l", MENU_MIX, OP_MIX_CHAIN_NEXT);
-  km_bindkey ("<keypadenter>", MENU_MIX, OP_MIX_USE);
-#endif
-
-#ifdef USE_AUTOCRYPT
-  create_bindings(OpAutocryptAcct, MENU_AUTOCRYPT_ACCT);
-#endif
-
-  /* bindings for the line editor */
-  create_bindings(OpEditor, MENU_EDITOR);
-
-  km_bindkey("<up>", MENU_EDITOR, OP_EDITOR_HISTORY_UP);
-  km_bindkey("<down>", MENU_EDITOR, OP_EDITOR_HISTORY_DOWN);
-  km_bindkey("<left>", MENU_EDITOR, OP_EDITOR_BACKWARD_CHAR);
-  km_bindkey("<right>", MENU_EDITOR, OP_EDITOR_FORWARD_CHAR);
-  km_bindkey("<home>", MENU_EDITOR, OP_EDITOR_BOL);
-  km_bindkey("<end>", MENU_EDITOR, OP_EDITOR_EOL);
-  km_bindkey("<backspace>", MENU_EDITOR, OP_EDITOR_BACKSPACE);
-  km_bindkey("<delete>", MENU_EDITOR, OP_EDITOR_DELETE_CHAR);
-  km_bindkey("\177", MENU_EDITOR, OP_EDITOR_BACKSPACE);
-
-  /* generic menu keymap */
-  create_bindings(OpGeneric, MENU_GENERIC);
-
-  km_bindkey("<home>", MENU_GENERIC, OP_FIRST_ENTRY);
-  km_bindkey("<end>", MENU_GENERIC, OP_LAST_ENTRY);
-  km_bindkey("<pagedown>", MENU_GENERIC, OP_NEXT_PAGE);
-  km_bindkey("<pageup>", MENU_GENERIC, OP_PREV_PAGE);
-  km_bindkey("<right>", MENU_GENERIC, OP_NEXT_PAGE);
-  km_bindkey("<left>", MENU_GENERIC, OP_PREV_PAGE);
-  km_bindkey("<up>", MENU_GENERIC, OP_PREV_ENTRY);
-  km_bindkey("<down>", MENU_GENERIC, OP_NEXT_ENTRY);
-  km_bindkey("1", MENU_GENERIC, OP_JUMP);
-  km_bindkey("2", MENU_GENERIC, OP_JUMP);
-  km_bindkey("3", MENU_GENERIC, OP_JUMP);
-  km_bindkey("4", MENU_GENERIC, OP_JUMP);
-  km_bindkey("5", MENU_GENERIC, OP_JUMP);
-  km_bindkey("6", MENU_GENERIC, OP_JUMP);
-  km_bindkey("7", MENU_GENERIC, OP_JUMP);
-  km_bindkey("8", MENU_GENERIC, OP_JUMP);
-  km_bindkey("9", MENU_GENERIC, OP_JUMP);
-  km_bindkey ("<keypadenter>", MENU_GENERIC, OP_GENERIC_SELECT_ENTRY);
-
-  /* Miscellaneous extra bindings */
-
-  km_bindkey(" ", MENU_INDEX, OP_DISPLAY_MESSAGE);
-  km_bindkey("<up>", MENU_INDEX, OP_MAIN_PREV_UNDELETED);
-  km_bindkey("<down>", MENU_INDEX, OP_MAIN_NEXT_UNDELETED);
-  km_bindkey("J", MENU_INDEX, OP_NEXT_ENTRY);
-  km_bindkey("K", MENU_INDEX, OP_PREV_ENTRY);
-  km_bindkey("x", MENU_INDEX, OP_EXIT);
-  km_bindkey ("<keypadenter>", MENU_MAIN, OP_DISPLAY_MESSAGE);
-
-  km_bindkey("x", MENU_PAGER, OP_EXIT);
-  km_bindkey("i", MENU_PAGER, OP_EXIT);
-  km_bindkey("<backspace>", MENU_PAGER, OP_PAGER_PREV_LINE);
-  km_bindkey("<pagedown>", MENU_PAGER, OP_PAGER_NEXT_PAGE);
-  km_bindkey("<pageup>", MENU_PAGER, OP_PAGER_PREV_PAGE);
-  km_bindkey("<up>", MENU_PAGER, OP_MAIN_PREV_UNDELETED);
-  km_bindkey("<right>", MENU_PAGER, OP_MAIN_NEXT_UNDELETED);
-  km_bindkey("<down>", MENU_PAGER, OP_MAIN_NEXT_UNDELETED);
-  km_bindkey("<left>", MENU_PAGER, OP_MAIN_PREV_UNDELETED);
-  km_bindkey("<home>", MENU_PAGER, OP_PAGER_TOP);
-  km_bindkey("<end>", MENU_PAGER, OP_PAGER_BOTTOM);
-  km_bindkey("1", MENU_PAGER, OP_JUMP);
-  km_bindkey("2", MENU_PAGER, OP_JUMP);
-  km_bindkey("3", MENU_PAGER, OP_JUMP);
-  km_bindkey("4", MENU_PAGER, OP_JUMP);
-  km_bindkey("5", MENU_PAGER, OP_JUMP);
-  km_bindkey("6", MENU_PAGER, OP_JUMP);
-  km_bindkey("7", MENU_PAGER, OP_JUMP);
-  km_bindkey("8", MENU_PAGER, OP_JUMP);
-  km_bindkey("9", MENU_PAGER, OP_JUMP);
-  km_bindkey ("<keypadenter>", MENU_PAGER, OP_NEXT_LINE);
-
-  km_bindkey("<space>", MENU_ALIAS, OP_TAG);
-
-  km_bindkey ("<keypadenter>", MENU_ATTACH, OP_VIEW_ATTACH);
-
-  /* edit-to (default "t") hides generic tag-entry in Compose menu
-   * This will bind tag-entry to  "T" in the Compose menu */
-  km_bindkey("T", MENU_COMPOSE, OP_TAG);
-  km_bindkey ("<keypadenter>", MENU_COMPOSE, OP_VIEW_ATTACH);
 }
 
 /**
@@ -1264,21 +1181,21 @@ error:
 
 /**
  * try_bind - Try to make a key binding
- * @param key      Key name
- * @param mtype    Menu type, e.g. #MENU_PAGER
- * @param func     Function name
- * @param bindings Key bindings table
- * @param err      Buffer for error message
+ * @param key   Key name
+ * @param mtype Menu type, e.g. #MENU_PAGER
+ * @param func  Function name
+ * @param funcs Functions table
+ * @param err   Buffer for error message
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
 static enum CommandResult try_bind(char *key, enum MenuType mtype, char *func,
-                                   const struct Binding *bindings, struct Buffer *err)
+                                   const struct MenuFuncOp *funcs, struct Buffer *err)
 {
-  for (int i = 0; bindings[i].name; i++)
+  for (int i = 0; funcs[i].name; i++)
   {
-    if (mutt_str_equal(func, bindings[i].name))
+    if (mutt_str_equal(func, funcs[i].name))
     {
-      return km_bindkey_err(key, mtype, bindings[i].op, err);
+      return km_bindkey_err(key, mtype, funcs[i].op, err);
     }
   }
   if (err)
@@ -1290,11 +1207,11 @@ static enum CommandResult try_bind(char *key, enum MenuType mtype, char *func,
 }
 
 /**
- * km_get_table - Lookup a menu's keybindings
+ * km_get_table - Lookup a Menu's functions
  * @param mtype Menu type, e.g. #MENU_EDITOR
- * @retval ptr Array of keybindings
+ * @retval ptr Array of functions
  */
-const struct Binding *km_get_table(enum MenuType mtype)
+const struct MenuFuncOp *km_get_table(enum MenuType mtype)
 {
   switch (mtype)
   {
@@ -1314,14 +1231,14 @@ const struct Binding *km_get_table(enum MenuType mtype)
       return OpBrowser;
     case MENU_GENERIC:
       return OpGeneric;
+    case MENU_INDEX:
+      return OpIndex;
 #ifdef CRYPT_BACKEND_GPGME
     case MENU_KEY_SELECT_PGP:
       return OpPgp;
     case MENU_KEY_SELECT_SMIME:
       return OpSmime;
 #endif
-    case MENU_INDEX:
-      return OpIndex;
 #ifdef MIXMASTER
     case MENU_MIX:
       return OpMix;
@@ -1347,7 +1264,7 @@ const struct Binding *km_get_table(enum MenuType mtype)
 enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
 {
-  const struct Binding *bindings = NULL;
+  const struct MenuFuncOp *funcs = NULL;
   enum MenuType mtypes[MenuNamesLen];
   int num_menus = 0;
   enum CommandResult rc = MUTT_CMD_SUCCESS;
@@ -1368,8 +1285,8 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
     for (int i = 0; i < num_menus; i++)
     {
       km_bindkey(key, mtypes[i], OP_NULL); /* the 'unbind' command */
-      bindings = km_get_table(mtypes[i]);
-      if (bindings)
+      funcs = km_get_table(mtypes[i]);
+      if (funcs)
       {
         char keystr[32] = { 0 };
         km_expand_key_string(key, keystr, sizeof(keystr));
@@ -1409,10 +1326,10 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
 
       /* Clear any error message, we're going to try again */
       err->data[0] = '\0';
-      bindings = km_get_table(mtypes[i]);
-      if (bindings)
+      funcs = km_get_table(mtypes[i]);
+      if (funcs)
       {
-        rc = try_bind(key, mtypes[i], buf->data, bindings, err);
+        rc = try_bind(key, mtypes[i], buf->data, funcs, err);
         if (rc == MUTT_CMD_SUCCESS)
         {
           char keystr[32] = { 0 };
@@ -1420,7 +1337,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
           const char *mname = mutt_map_get_name(mtypes[i], MenuNames);
           mutt_debug(LL_NOTIFY, "NT_BINDING_NEW: %s %s\n", mname, keystr);
 
-          int op = get_op(bindings, buf->data, mutt_str_len(buf->data));
+          int op = get_op(funcs, buf->data, mutt_str_len(buf->data));
           struct EventBinding ev_b = { mtypes[i], key, op };
           notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_ADD, &ev_b);
           continue;
@@ -1657,7 +1574,7 @@ enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s,
 {
   int ops[128];
   int nops = 0;
-  const struct Binding *bindings = NULL;
+  const struct MenuFuncOp *funcs = NULL;
   char *function = NULL;
 
   if (!MoreArgs(s))
@@ -1672,11 +1589,11 @@ enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s,
     function = buf->data;
 
     const enum MenuType mtype = menu_get_current_type();
-    bindings = km_get_table(mtype);
-    if (!bindings && (mtype != MENU_PAGER))
-      bindings = OpGeneric;
+    funcs = km_get_table(mtype);
+    if (!funcs && (mtype != MENU_PAGER))
+      funcs = OpGeneric;
 
-    ops[nops] = get_op(bindings, function, mutt_str_len(function));
+    ops[nops] = get_op(funcs, function, mutt_str_len(function));
     if ((ops[nops] == OP_NULL) && (mtype != MENU_PAGER) && (mtype != MENU_GENERIC))
     {
       ops[nops] = get_op(OpGeneric, function, mutt_str_len(function));
