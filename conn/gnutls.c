@@ -1005,7 +1005,7 @@ fail:
 }
 
 /**
- * tls_socket_poll - Check whether a socket read would block - Implements Connection::poll()
+ * tls_socket_poll - Check whether a socket read would block - Implements Connection::poll() - @ingroup connection_poll
  */
 static int tls_socket_poll(struct Connection *conn, time_t wait_secs)
 {
@@ -1020,7 +1020,7 @@ static int tls_socket_poll(struct Connection *conn, time_t wait_secs)
 }
 
 /**
- * tls_socket_close - Close a TLS socket - Implements Connection::close()
+ * tls_socket_close - Close a TLS socket - Implements Connection::close() - @ingroup connection_close
  */
 static int tls_socket_close(struct Connection *conn)
 {
@@ -1045,7 +1045,7 @@ static int tls_socket_close(struct Connection *conn)
 }
 
 /**
- * tls_socket_open - Open a TLS socket - Implements Connection::open()
+ * tls_socket_open - Open a TLS socket - Implements Connection::open() - @ingroup connection_open
  */
 static int tls_socket_open(struct Connection *conn)
 {
@@ -1062,7 +1062,7 @@ static int tls_socket_open(struct Connection *conn)
 }
 
 /**
- * tls_socket_read - Read data from a TLS socket - Implements Connection::read()
+ * tls_socket_read - Read data from a TLS socket - Implements Connection::read() - @ingroup connection_read
  */
 static int tls_socket_read(struct Connection *conn, char *buf, size_t count)
 {
@@ -1089,7 +1089,7 @@ static int tls_socket_read(struct Connection *conn, char *buf, size_t count)
 }
 
 /**
- * tls_socket_write - Write data to a TLS socket - Implements Connection::write()
+ * tls_socket_write - Write data to a TLS socket - Implements Connection::write() - @ingroup connection_write
  */
 static int tls_socket_write(struct Connection *conn, const char *buf, size_t count)
 {
@@ -1123,7 +1123,7 @@ static int tls_socket_write(struct Connection *conn, const char *buf, size_t cou
 }
 
 /**
- * tls_starttls_close - Close a TLS connection - Implements Connection::close()
+ * tls_starttls_close - Close a TLS connection - Implements Connection::close() - @ingroup connection_close
  */
 static int tls_starttls_close(struct Connection *conn)
 {

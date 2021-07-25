@@ -81,7 +81,7 @@ static void zstrm_free(void *opaque, void *address)
 }
 
 /**
- * zstrm_open - Open a socket - Implements Connection::open()
+ * zstrm_open - Open a socket - Implements Connection::open() - @ingroup connection_open
  * @retval -1 Always
  *
  * Cannot open a zlib connection, must wrap an existing one
@@ -92,7 +92,7 @@ static int zstrm_open(struct Connection *conn)
 }
 
 /**
- * zstrm_close - Close a socket - Implements Connection::close()
+ * zstrm_close - Close a socket - Implements Connection::close() - @ingroup connection_close
  */
 static int zstrm_close(struct Connection *conn)
 {
@@ -124,7 +124,7 @@ static int zstrm_close(struct Connection *conn)
 }
 
 /**
- * zstrm_read - Read compressed data from a socket - Implements Connection::read()
+ * zstrm_read - Read compressed data from a socket - Implements Connection::read() - @ingroup connection_read
  */
 static int zstrm_read(struct Connection *conn, char *buf, size_t len)
 {
@@ -206,7 +206,7 @@ retry:
 }
 
 /**
- * zstrm_poll - Checks whether reads would block - Implements Connection::poll()
+ * zstrm_poll - Checks whether reads would block - Implements Connection::poll() - @ingroup connection_poll
  */
 static int zstrm_poll(struct Connection *conn, time_t wait_secs)
 {
@@ -223,7 +223,7 @@ static int zstrm_poll(struct Connection *conn, time_t wait_secs)
 }
 
 /**
- * zstrm_write - Write compressed data to a socket - Implements Connection::write()
+ * zstrm_write - Write compressed data to a socket - Implements Connection::write() - @ingroup connection_write
  */
 static int zstrm_write(struct Connection *conn, const char *buf, size_t count)
 {
