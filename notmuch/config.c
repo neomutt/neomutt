@@ -46,7 +46,7 @@ static bool is_valid_notmuch_url(const char *url)
 }
 
 /**
- * nm_default_url_validator - Ensure nm_default_url is of the form notmuch://[absolute path] - Implements ConfigDef::validator()
+ * nm_default_url_validator - Ensure nm_default_url is of the form notmuch://[absolute path] - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
 static int nm_default_url_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                                     intptr_t value, struct Buffer *err)
@@ -63,7 +63,7 @@ static int nm_default_url_validator(const struct ConfigSet *cs, const struct Con
 }
 
 /**
- * nm_query_window_timebase_validator - Ensures nm_query_window_timebase matches allowed values - Implements ConfigDef::validator()
+ * nm_query_window_timebase_validator - Ensures nm_query_window_timebase matches allowed values - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  *
  * Allowed values:
  * - hour

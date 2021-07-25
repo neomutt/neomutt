@@ -34,7 +34,7 @@
 #include "lib.h"
 
 /**
- * charset_validator - Validate the "charset" config variable - Implements ConfigDef::validator()
+ * charset_validator - Validate the "charset" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
 int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                       intptr_t value, struct Buffer *err)

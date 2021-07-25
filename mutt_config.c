@@ -111,7 +111,7 @@ const struct Mapping SortBrowserMethods[] = {
 };
 
 /**
- * multipart_validator - Validate the "show_multipart_alternative" config variable - Implements ConfigDef::validator()
+ * multipart_validator - Validate the "show_multipart_alternative" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
 int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                         intptr_t value, struct Buffer *err)
@@ -129,7 +129,7 @@ int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef
 }
 
 /**
- * reply_validator - Validate the "reply_regex" config variable - Implements ConfigDef::validator()
+ * reply_validator - Validate the "reply_regex" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
 int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                     intptr_t value, struct Buffer *err)

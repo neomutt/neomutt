@@ -36,7 +36,7 @@
 #include "conn/lib.h"
 
 /**
- * pop_auth_validator - Validate the "pop_authenticators" config variable - Implements ConfigDef::validator()
+ * pop_auth_validator - Validate the "pop_authenticators" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
 static int pop_auth_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                               intptr_t value, struct Buffer *err)

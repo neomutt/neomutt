@@ -36,7 +36,7 @@
 #include "lib.h"
 
 /**
- * wrapheaders_validator - Validate the "wrap_headers" config variable - Implements ConfigDef::validator()
+ * wrapheaders_validator - Validate the "wrap_headers" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
 static int wrapheaders_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                                  intptr_t value, struct Buffer *err)
@@ -54,7 +54,7 @@ static int wrapheaders_validator(const struct ConfigSet *cs, const struct Config
 }
 
 /**
- * smtp_auth_validator - Validate the "smtp_authenticators" config variable - Implements ConfigDef::validator()
+ * smtp_auth_validator - Validate the "smtp_authenticators" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
 static int smtp_auth_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                                intptr_t value, struct Buffer *err)

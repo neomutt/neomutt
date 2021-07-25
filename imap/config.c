@@ -36,7 +36,7 @@
 #include "auth.h"
 
 /**
- * imap_auth_validator - Validate the "imap_authenticators" config variable - Implements ConfigDef::validator()
+ * imap_auth_validator - Validate the "imap_authenticators" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
 static int imap_auth_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                                intptr_t value, struct Buffer *err)

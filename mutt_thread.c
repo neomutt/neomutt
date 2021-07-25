@@ -111,7 +111,7 @@ const char *get_use_threads_str(enum UseThreads value)
 }
 
 /**
- * sort_validator - Validate values of "sort" - Implements ConfigDef::validator()
+ * sort_validator - Validate values of "sort" - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
 int sort_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                    intptr_t value, struct Buffer *err)
