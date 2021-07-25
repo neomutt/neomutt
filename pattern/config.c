@@ -47,7 +47,7 @@ static struct ConfigDef PatternVars[] = {
 };
 
 /**
- * config_init_pattern - Register pattern config variables - Implements ::module_init_config_t
+ * config_init_pattern - Register pattern config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
  */
 bool config_init_pattern(struct ConfigSet *cs)
 {

@@ -102,7 +102,7 @@ static struct ConfigDef PopVars[] = {
 };
 
 /**
- * config_init_pop - Register pop config variables - Implements ::module_init_config_t
+ * config_init_pop - Register pop config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
  */
 bool config_init_pop(struct ConfigSet *cs)
 {

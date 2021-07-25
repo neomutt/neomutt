@@ -68,7 +68,10 @@
 // IWYU pragma: end_exports
 
 /**
- * module_init_config_t - Prototype for a config definition function
+ * @defgroup cfg_module_api Config Module API
+ *
+ * Prototype for a config definition function
+ *
  * @param cs Config items
  * @retval true All the config variables were registered
  */

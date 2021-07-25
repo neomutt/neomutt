@@ -64,7 +64,7 @@ static struct ConfigDef MaildirVars[] = {
 };
 
 /**
- * config_init_maildir - Register maildir config variables - Implements ::module_init_config_t
+ * config_init_maildir - Register maildir config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
  */
 bool config_init_maildir(struct ConfigSet *cs)
 {

@@ -74,7 +74,7 @@ static struct ConfigDef PagerVars[] = {
 };
 
 /**
- * config_init_pager - Register pager config variables - Implements ::module_init_config_t
+ * config_init_pager - Register pager config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
  */
 bool config_init_pager(struct ConfigSet *cs)
 {

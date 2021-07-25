@@ -690,7 +690,7 @@ static struct ConfigDef MainVars[] = {
 };
 
 /**
- * config_init_main - Register main config variables - Implements ::module_init_config_t
+ * config_init_main - Register main config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
  */
 static bool config_init_main(struct ConfigSet *cs)
 {
