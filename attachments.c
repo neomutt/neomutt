@@ -464,7 +464,7 @@ static int print_attach_list(struct ListHead *h, const char op, const char *name
 }
 
 /**
- * parse_attachments - Parse the 'attachments' command - Implements Command::parse()
+ * parse_attachments - Parse the 'attachments' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_attachments(struct Buffer *buf, struct Buffer *s,
                                      intptr_t data, struct Buffer *err)
@@ -523,7 +523,7 @@ enum CommandResult parse_attachments(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_unattachments - Parse the 'unattachments' command - Implements Command::parse()
+ * parse_unattachments - Parse the 'unattachments' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer *s,
                                        intptr_t data, struct Buffer *err)

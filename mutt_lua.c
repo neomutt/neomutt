@@ -472,7 +472,7 @@ void mutt_lua_init(void)
 }
 
 /**
- * mutt_lua_parse - Parse the 'lua' command - Implements Command::parse()
+ * mutt_lua_parse - Parse the 'lua' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult mutt_lua_parse(struct Buffer *buf, struct Buffer *s,
                                   intptr_t data, struct Buffer *err)
@@ -494,7 +494,7 @@ enum CommandResult mutt_lua_parse(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * mutt_lua_source_file - Parse the 'lua-source' command - Implements Command::parse()
+ * mutt_lua_source_file - Parse the 'lua-source' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
                                         intptr_t data, struct Buffer *err)

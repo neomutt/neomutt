@@ -42,7 +42,7 @@
 #include "reverse.h"
 
 /**
- * parse_alias - Parse the 'alias' command - Implements Command::parse()
+ * parse_alias - Parse the 'alias' command - Implements Command::parse() - @ingroup command_parse
  *
  * e.g. "alias jim James Smith <js@example.com> # Pointy-haired boss"
  */
@@ -157,7 +157,7 @@ bail:
 }
 
 /**
- * parse_unalias - Parse the 'unalias' command - Implements Command::parse()
+ * parse_unalias - Parse the 'unalias' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
                                  intptr_t data, struct Buffer *err)

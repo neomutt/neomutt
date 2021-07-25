@@ -62,7 +62,7 @@ void subjrx_init(void)
 }
 
 /**
- * parse_unreplace_list - Remove a string replacement rule - Implements Command::parse()
+ * parse_unreplace_list - Remove a string replacement rule - Implements Command::parse() - @ingroup command_parse
  */
 static enum CommandResult parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
                                                struct ReplaceList *list, struct Buffer *err)
@@ -88,7 +88,7 @@ static enum CommandResult parse_unreplace_list(struct Buffer *buf, struct Buffer
 }
 
 /**
- * parse_replace_list - Parse a string replacement rule - Implements Command::parse()
+ * parse_replace_list - Parse a string replacement rule - Implements Command::parse() - @ingroup command_parse
  */
 static enum CommandResult parse_replace_list(struct Buffer *buf, struct Buffer *s,
                                              struct ReplaceList *list, struct Buffer *err)
@@ -159,7 +159,7 @@ void subjrx_clear_mods(struct Mailbox *m)
 }
 
 /**
- * parse_subjectrx_list - Parse the 'subjectrx' command - Implements Command::parse()
+ * parse_subjectrx_list - Parse the 'subjectrx' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
                                         intptr_t data, struct Buffer *err)
@@ -176,7 +176,7 @@ enum CommandResult parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_unsubjectrx_list - Parse the 'unsubjectrx' command - Implements Command::parse()
+ * parse_unsubjectrx_list - Parse the 'unsubjectrx' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
                                           intptr_t data, struct Buffer *err)

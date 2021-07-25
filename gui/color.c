@@ -950,7 +950,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
 #ifdef HAVE_COLOR
 /**
- * mutt_parse_uncolor - Parse the 'uncolor' command - Implements Command::parse()
+ * mutt_parse_uncolor - Parse the 'uncolor' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s,
                                       intptr_t data, struct Buffer *err)
@@ -965,7 +965,7 @@ enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s,
 #endif
 
 /**
- * mutt_parse_unmono - Parse the 'unmono' command - Implements Command::parse()
+ * mutt_parse_unmono - Parse the 'unmono' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult mutt_parse_unmono(struct Buffer *buf, struct Buffer *s,
                                      intptr_t data, struct Buffer *err)
@@ -1386,7 +1386,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
 
 #ifdef HAVE_COLOR
 /**
- * mutt_parse_color - Parse the 'color' command - Implements Command::parse()
+ * mutt_parse_color - Parse the 'color' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s,
                                     intptr_t data, struct Buffer *err)
@@ -1401,7 +1401,7 @@ enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s,
 #endif
 
 /**
- * mutt_parse_mono - Parse the 'mono' command - Implements Command::parse()
+ * mutt_parse_mono - Parse the 'mono' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
