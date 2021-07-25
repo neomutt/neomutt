@@ -500,7 +500,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
 }
 
 /**
- * attach_make_entry - Format a menu item for the attachment list - Implements Menu::make_entry()
+ * attach_make_entry - Format a menu item for the attachment list - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
 static void attach_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
@@ -514,7 +514,7 @@ static void attach_make_entry(struct Menu *menu, char *buf, size_t buflen, int l
 }
 
 /**
- * attach_tag - Tag an attachment - Implements Menu::tag()
+ * attach_tag - Tag an attachment - Implements Menu::tag() - @ingroup menu_tag
  */
 int attach_tag(struct Menu *menu, int sel, int act)
 {

@@ -186,7 +186,7 @@ static const char *autocrypt_format_str(char *buf, size_t buflen, size_t col, in
 }
 
 /**
- * autocrypt_make_entry - Create a line for the Autocrypt account menu - Implements Menu::make_entry()
+ * autocrypt_make_entry - Create a line for the Autocrypt account menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
 static void autocrypt_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
 {
@@ -200,7 +200,7 @@ static void autocrypt_make_entry(struct Menu *menu, char *buf, size_t buflen, in
 }
 
 /**
- * autocrypt_menu_free - Free the Autocrypt account Menu - Implements Menu::mdata_free()
+ * autocrypt_menu_free - Free the Autocrypt account Menu - Implements Menu::mdata_free() - @ingroup menu_mdata_free
  */
 static void autocrypt_menu_free(struct Menu *menu, void **ptr)
 {

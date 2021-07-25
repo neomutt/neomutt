@@ -160,7 +160,7 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
 }
 
 /**
- * alias_make_entry - Format a menu item for the alias list - Implements Menu::make_entry()
+ * alias_make_entry - Format a menu item for the alias list - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
 static void alias_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
@@ -175,7 +175,7 @@ static void alias_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
 }
 
 /**
- * alias_tag - Tag some aliases - Implements Menu::tag()
+ * alias_tag - Tag some aliases - Implements Menu::tag() - @ingroup menu_tag
  */
 static int alias_tag(struct Menu *menu, int sel, int act)
 {

@@ -107,7 +107,7 @@ static char *smime_key_flags(KeyFlags flags)
 }
 
 /**
- * smime_make_entry - Format a menu item for the smime key list - Implements Menu::make_entry()
+ * smime_make_entry - Format a menu item for the smime key list - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
 static void smime_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
@@ -177,7 +177,7 @@ static void smime_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
 }
 
 /**
- * smime_key_table_free - Free the key table - Implements Menu::mdata_free()
+ * smime_key_table_free - Free the key table - Implements Menu::mdata_free() - @ingroup menu_mdata_free
  *
  * @note The keys are owned by the caller of the dialog
  */

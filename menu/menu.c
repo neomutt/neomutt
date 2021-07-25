@@ -84,7 +84,7 @@ static void menu_jump(struct Menu *menu)
 }
 
 /**
- * default_color - Get the default colour for a line of the menu - Implements Menu::color()
+ * default_color - Get the default colour for a line of the menu - Implements Menu::color() - @ingroup menu_color
  */
 static int default_color(struct Menu *menu, int line)
 {
@@ -92,7 +92,7 @@ static int default_color(struct Menu *menu, int line)
 }
 
 /**
- * generic_search - Search a menu for a item matching a regex - Implements Menu::search()
+ * generic_search - Search a menu for a item matching a regex - Implements Menu::search() - @ingroup menu_search
  */
 static int generic_search(struct Menu *menu, regex_t *rx, int line)
 {

@@ -756,7 +756,7 @@ void change_folder_string(struct Menu *menu, char *buf, size_t buflen, int *oldc
 }
 
 /**
- * index_make_entry - Format a menu item for the index list - Implements Menu::make_entry()
+ * index_make_entry - Format a menu item for the index list - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
 void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
@@ -838,7 +838,7 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 }
 
 /**
- * index_color - Calculate the colour for a line of the index - Implements Menu::color()
+ * index_color - Calculate the colour for a line of the index - Implements Menu::color() - @ingroup menu_color
  */
 int index_color(struct Menu *menu, int line)
 {
@@ -996,7 +996,7 @@ dsl_finish:
 }
 
 /**
- * index_custom_redraw - Redraw the index - Implements Menu::custom_redraw()
+ * index_custom_redraw - Redraw the index - Implements Menu::custom_redraw() - @ingroup menu_custom_redraw
  */
 static void index_custom_redraw(struct Menu *menu)
 {

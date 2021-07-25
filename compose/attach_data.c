@@ -32,7 +32,7 @@
 #include "attach_data.h"
 
 /**
- * attach_data_free - Free the Compose Attach Data - Implements Menu::mdata_free()
+ * attach_data_free - Free the Compose Attach Data - Implements Menu::mdata_free() - @ingroup menu_mdata_free
  */
 void attach_data_free(struct Menu *menu, void **ptr)
 {

@@ -497,7 +497,7 @@ static const char *pgp_entry_format_str(char *buf, size_t buflen, size_t col, in
 }
 
 /**
- * pgp_make_entry - Format a menu item for the pgp key list - Implements Menu::make_entry()
+ * pgp_make_entry - Format a menu item for the pgp key list - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
 static void pgp_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
@@ -515,7 +515,7 @@ static void pgp_make_entry(struct Menu *menu, char *buf, size_t buflen, int line
 }
 
 /**
- * pgp_key_table_free - Free the key table - Implements Menu::mdata_free()
+ * pgp_key_table_free - Free the key table - Implements Menu::mdata_free() - @ingroup menu_mdata_free
  *
  * @note The keys are owned by the caller of the dialog
  */
