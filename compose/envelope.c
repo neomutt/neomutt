@@ -660,7 +660,7 @@ static void draw_envelope(struct MuttWindow *win, struct ComposeSharedData *shar
 }
 
 /**
- * env_recalc - Recalculate the Window data - Implements MuttWindow::recalc()
+ * env_recalc - Recalculate the Window data - Implements MuttWindow::recalc() - @ingroup window_recalc
  */
 static int env_recalc(struct MuttWindow *win)
 {
@@ -682,7 +682,7 @@ static int env_recalc(struct MuttWindow *win)
 }
 
 /**
- * env_repaint - Repaint the Window - Implements MuttWindow::repaint()
+ * env_repaint - Repaint the Window - Implements MuttWindow::repaint() - @ingroup window_repaint
  */
 static int env_repaint(struct MuttWindow *win)
 {

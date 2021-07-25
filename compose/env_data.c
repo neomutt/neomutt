@@ -31,7 +31,7 @@
 #include "env_data.h"
 
 /**
- * env_data_free - Free the Compose Envelope Data - Implements MuttWindow::wdata_free()
+ * env_data_free - Free the Compose Envelope Data - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  */
 void env_data_free(struct MuttWindow *win, void **ptr)
 {

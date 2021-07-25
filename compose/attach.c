@@ -126,7 +126,7 @@ unsigned long cum_attachs_size(struct ConfigSubset *sub, struct ComposeAttachDat
 }
 
 /**
- * attach_recalc - Recalculate the Window data - Implements MuttWindow::recalc()
+ * attach_recalc - Recalculate the Window data - Implements MuttWindow::recalc() - @ingroup window_recalc
  */
 int attach_recalc(struct MuttWindow *win)
 {
@@ -152,7 +152,7 @@ int attach_recalc(struct MuttWindow *win)
 }
 
 /**
- * attach_repaint - Repaint the Window - Implements MuttWindow::repaint()
+ * attach_repaint - Repaint the Window - Implements MuttWindow::repaint() - @ingroup window_repaint
  */
 int attach_repaint(struct MuttWindow *win)
 {

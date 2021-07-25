@@ -47,7 +47,7 @@ struct SidebarWindowData *sb_wdata_new(struct IndexSharedData *shared)
 }
 
 /**
- * sb_wdata_free - Free Sidebar Window data - Implements MuttWindow::wdata_free()
+ * sb_wdata_free - Free Sidebar Window data - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  */
 void sb_wdata_free(struct MuttWindow *win, void **ptr)
 {

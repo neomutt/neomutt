@@ -82,7 +82,7 @@ void alias_set_title(struct MuttWindow *sbar, char *menu_name, char *limit)
 }
 
 /**
- * alias_recalc - Recalculate the display of the Alias Window - Implements MuttWindow::recalc()
+ * alias_recalc - Recalculate the display of the Alias Window - Implements MuttWindow::recalc() - @ingroup window_recalc
  */
 int alias_recalc(struct MuttWindow *win)
 {

@@ -77,7 +77,7 @@
 struct ConfigSubset;
 
 /**
- * menu_recalc - Recalculate the Window data - Implements MuttWindow::recalc()
+ * menu_recalc - Recalculate the Window data - Implements MuttWindow::recalc() - @ingroup window_recalc
  */
 static int menu_recalc(struct MuttWindow *win)
 {
@@ -92,7 +92,7 @@ static int menu_recalc(struct MuttWindow *win)
 }
 
 /**
- * menu_repaint - Repaint the Window - Implements MuttWindow::repaint()
+ * menu_repaint - Repaint the Window - Implements MuttWindow::repaint() - @ingroup window_repaint
  */
 static int menu_repaint(struct MuttWindow *win)
 {
@@ -108,7 +108,7 @@ static int menu_repaint(struct MuttWindow *win)
 }
 
 /**
- * menu_wdata_free - Destroy a Menu Window - Implements MuttWindow::wdata_free()
+ * menu_wdata_free - Destroy a Menu Window - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  */
 static void menu_wdata_free(struct MuttWindow *win, void **ptr)
 {
