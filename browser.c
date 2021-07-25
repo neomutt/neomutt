@@ -965,7 +965,7 @@ static int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct Browse
 }
 
 /**
- * select_file_search - Menu search callback for matching files - Implements Menu::search()
+ * select_file_search - Menu search callback for matching files - Implements Menu::search() - @ingroup menu_search
  */
 static int select_file_search(struct Menu *menu, regex_t *rx, int line)
 {
@@ -981,7 +981,7 @@ static int select_file_search(struct Menu *menu, regex_t *rx, int line)
 }
 
 /**
- * folder_make_entry - Format a menu item for the folder browser - Implements Menu::make_entry()
+ * folder_make_entry - Format a menu item for the folder browser - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
 static void folder_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
@@ -1147,7 +1147,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
 }
 
 /**
- * file_tag - Tag an entry in the menu - Implements Menu::tag()
+ * file_tag - Tag an entry in the menu - Implements Menu::tag() - @ingroup menu_tag
  */
 static int file_tag(struct Menu *menu, int sel, int act)
 {

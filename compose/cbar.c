@@ -153,7 +153,7 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
 }
 
 /**
- * cbar_recalc - Recalculate the Window data - Implements MuttWindow::recalc()
+ * cbar_recalc - Recalculate the Window data - Implements MuttWindow::recalc() - @ingroup window_recalc
  */
 static int cbar_recalc(struct MuttWindow *win)
 {
@@ -177,7 +177,7 @@ static int cbar_recalc(struct MuttWindow *win)
 }
 
 /**
- * cbar_repaint - Repaint the Window - Implements MuttWindow::repaint()
+ * cbar_repaint - Repaint the Window - Implements MuttWindow::repaint() - @ingroup window_repaint
  */
 static int cbar_repaint(struct MuttWindow *win)
 {

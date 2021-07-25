@@ -609,7 +609,7 @@ unsigned char *serial_dump_tags(const struct TagList *tags, unsigned char *d, in
 }
 
 /**
- * serial_restore_tags - Unpack a TagList into a binary blob
+ * serial_restore_tags - Unpack a TagList from a binary blob
  * @param tags    TagList to unpack
  * @param d       Binary blob to add to
  * @param off     Offset into the blob

@@ -690,7 +690,7 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
 }
 
 /**
- * sb_recalc - Recalculate the Sidebar display - Implements MuttWindow::recalc()
+ * sb_recalc - Recalculate the Sidebar display - Implements MuttWindow::recalc() - @ingroup window_recalc
  */
 int sb_recalc(struct MuttWindow *win)
 {
@@ -886,7 +886,7 @@ static void fill_empty_space(struct MuttWindow *win, int first_row,
 }
 
 /**
- * sb_repaint - Repaint the Sidebar display - Implements MuttWindow::repaint()
+ * sb_repaint - Repaint the Sidebar display - Implements MuttWindow::repaint() - @ingroup window_repaint
  */
 int sb_repaint(struct MuttWindow *win)
 {

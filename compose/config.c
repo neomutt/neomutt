@@ -59,7 +59,7 @@ static struct ConfigDef ComposeVars[] = {
 };
 
 /**
- * config_init_compose - Register compose config variables - Implements ::module_init_config_t
+ * config_init_compose - Register compose config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
  */
 bool config_init_compose(struct ConfigSet *cs)
 {

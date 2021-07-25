@@ -41,7 +41,7 @@ static struct ConfigDef HelpbarVars[] = {
 };
 
 /**
- * config_init_helpbar - Register helpbar config variables - Implements ::module_init_config_t
+ * config_init_helpbar - Register helpbar config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
  */
 bool config_init_helpbar(struct ConfigSet *cs)
 {

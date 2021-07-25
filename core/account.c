@@ -87,6 +87,7 @@ bool account_mailbox_add(struct Account *a, struct Mailbox *m)
  * account_mailbox_remove - Remove a Mailbox from an Account
  * @param a Account
  * @param m Mailbox to remove
+ * @retval true On success
  *
  * @note If m is NULL, all the mailboxes will be removed and FREE'd. Otherwise,
  * the specified mailbox is removed from the Account but not FREE'd.

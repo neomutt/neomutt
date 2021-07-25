@@ -54,7 +54,9 @@ struct HashElem;
 #define IP (intptr_t)
 
 /**
- * struct ConfigDef - Config item definition
+ * @defgroup cfg_def_api Config Definition API
+ *
+ * Config item definition
  *
  * Every config variable that NeoMutt supports is backed by a ConfigDef.
  */
@@ -66,6 +68,9 @@ struct ConfigDef
   intptr_t      data;      ///< Extra variable data
 
   /**
+   * @defgroup cfg_def_validator validator()
+   * @ingroup cfg_def_api
+   *
    * validator - Validate a config variable
    * @param cs    Config items
    * @param cdef  Config definition

@@ -138,7 +138,7 @@ static bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
 }
 
 /**
- * query_search - Search a Address menu item - Implements Menu::search()
+ * query_search - Search a Address menu item - Implements Menu::search() - @ingroup menu_search
  *
  * Try to match various Address fields.
  */
@@ -242,7 +242,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
 }
 
 /**
- * query_make_entry - Format a menu item for the query list - Implements Menu::make_entry()
+ * query_make_entry - Format a menu item for the query list - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
 static void query_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
@@ -257,7 +257,7 @@ static void query_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
 }
 
 /**
- * query_tag - Tag an entry in the Query Menu - Implements Menu::tag()
+ * query_tag - Tag an entry in the Query Menu - Implements Menu::tag() - @ingroup menu_tag
  */
 static int query_tag(struct Menu *menu, int sel, int act)
 {

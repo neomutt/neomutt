@@ -42,7 +42,10 @@ enum IndexRetval
 };
 
 /**
- * typedef index_function_t - Perform an Index Function
+ * @defgroup index_function_api Index Function API
+ *
+ * Perform an Index Function
+ *
  * @param shared Shared Index data
  * @param priv   Private Index data
  * @param op     Operation to perform, e.g. OP_MAIN_LIMIT

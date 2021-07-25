@@ -99,7 +99,7 @@ struct MsgWinPrivateData
 };
 
 /**
- * msgwin_recalc - Recalculate the display of the Message Window - Implements MuttWindow::recalc()
+ * msgwin_recalc - Recalculate the display of the Message Window - Implements MuttWindow::recalc() - @ingroup window_recalc
  */
 static int msgwin_recalc(struct MuttWindow *win)
 {
@@ -112,7 +112,7 @@ static int msgwin_recalc(struct MuttWindow *win)
 }
 
 /**
- * msgwin_repaint - Redraw the Message Window - Implements MuttWindow::repaint()
+ * msgwin_repaint - Redraw the Message Window - Implements MuttWindow::repaint() - @ingroup window_repaint
  */
 static int msgwin_repaint(struct MuttWindow *win)
 {
@@ -165,7 +165,7 @@ static int msgwin_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * msgwin_wdata_free - Free the private data attached to the Message Window - Implements MuttWindow::wdata_free()
+ * msgwin_wdata_free - Free the private data attached to the Message Window - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  */
 static void msgwin_wdata_free(struct MuttWindow *win, void **ptr)
 {

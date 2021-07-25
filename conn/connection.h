@@ -29,7 +29,11 @@
 #include "connaccount.h"
 
 /**
- * struct Connection - An open network connection (socket)
+ * @defgroup connection_api Connection API
+ *
+ * The Connection API
+ *
+ * An open network connection (socket)
  */
 struct Connection
 {
@@ -54,6 +58,9 @@ struct Connection
    */
 
   /**
+   * @defgroup connection_open open()
+   * @ingroup connection_api
+   *
    * open - Open a socket Connection
    * @param conn Connection to a server
    * @retval  0 Success
@@ -62,6 +69,9 @@ struct Connection
   int (*open)(struct Connection *conn);
 
   /**
+   * @defgroup connection_read read()
+   * @ingroup connection_api
+   *
    * read - Read from a socket Connection
    * @param conn  Connection to a server
    * @param buf   Buffer to store the data
@@ -72,6 +82,9 @@ struct Connection
   int (*read)(struct Connection *conn, char *buf, size_t count);
 
   /**
+   * @defgroup connection_write write()
+   * @ingroup connection_api
+   *
    * write - Write to a socket Connection
    * @param conn  Connection to a server
    * @param buf   Buffer to read into
@@ -82,6 +95,9 @@ struct Connection
   int (*write)(struct Connection *conn, const char *buf, size_t count);
 
   /**
+   * @defgroup connection_poll poll()
+   * @ingroup connection_api
+   *
    * poll - Check whether a socket read would block
    * @param conn Connection to a server
    * @param wait_secs How long to wait for a response
@@ -92,6 +108,9 @@ struct Connection
   int (*poll)(struct Connection *conn, time_t wait_secs);
 
   /**
+   * @defgroup connection_close close()
+   * @ingroup connection_api
+   *
    * close - Close a socket Connection
    * @param conn Connection to a server
    * @retval  0 Success

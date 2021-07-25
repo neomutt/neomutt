@@ -541,7 +541,7 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
 }
 
 /**
- * mix_make_entry - Format a menu item for the mixmaster chain list - Implements Menu::make_entry()
+ * mix_make_entry - Format a menu item for the mixmaster chain list - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
 static void mix_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
 {

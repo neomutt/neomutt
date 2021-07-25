@@ -52,6 +52,12 @@
 #include "muttlib.h"
 #include "myvar.h"
 
+/// Global Lua State
+lua_State *LuaState = NULL;
+
+/**
+ * lua_commands - List of NeoMutt commands to register
+ */
 static const struct Command lua_commands[] = {
   // clang-format off
   { "lua",        mutt_lua_parse,       0 },
@@ -372,19 +378,27 @@ static void lua_expose_command(void *p, const struct Command *cmd)
   (void) luaL_dostring(l, buf);
 }
 
-lua_State *LuaState = NULL;
-
+/**
+ * luaMuttDecl - List of Lua commands to register
+ *
+ * In NeoMutt, run:
+ *
+ * `:lua mutt.message('hello')`
+ *
+ * and it will call lua_mutt_message()
+ */
 static const luaL_Reg luaMuttDecl[] = {
-  { "set", lua_mutt_set },       { "get", lua_mutt_get },
-  { "call", lua_mutt_call },     { "enter", lua_mutt_enter },
-  { "print", lua_mutt_message }, { "message", lua_mutt_message },
-  { "error", lua_mutt_error },   { NULL, NULL },
+  // clang-format off
+  { "set",     lua_mutt_set },
+  { "get",     lua_mutt_get },
+  { "call",    lua_mutt_call },
+  { "enter",   lua_mutt_enter },
+  { "print",   lua_mutt_message },
+  { "message", lua_mutt_message },
+  { "error",   lua_mutt_error },
+  { NULL,      NULL },
+  // clang-format on
 };
-
-#define lua_add_lib_member(LUA, TABLE, KEY, VALUE, DATATYPE_HANDLER)           \
-  lua_pushstring(LUA, KEY);                                                    \
-  DATATYPE_HANDLER(LUA, VALUE);                                                \
-  lua_settable(LUA, TABLE);
 
 /**
  * luaopen_mutt_decl - Declare some NeoMutt types to the Lua interpreter
@@ -396,12 +410,15 @@ static int luaopen_mutt_decl(lua_State *l)
   mutt_debug(LL_DEBUG2, " * luaopen_mutt()\n");
   luaL_newlib(l, luaMuttDecl);
   int lib_idx = lua_gettop(l);
-  /*                  table_idx, key        value,               value's type */
-  lua_add_lib_member(l, lib_idx, "VERSION", mutt_make_version(), lua_pushstring);
-  lua_add_lib_member(l, lib_idx, "QUAD_YES", MUTT_YES, lua_pushinteger);
-  lua_add_lib_member(l, lib_idx, "QUAD_NO", MUTT_NO, lua_pushinteger);
-  lua_add_lib_member(l, lib_idx, "QUAD_ASKYES", MUTT_ASKYES, lua_pushinteger);
-  lua_add_lib_member(l, lib_idx, "QUAD_ASKNO", MUTT_ASKNO, lua_pushinteger);
+
+  // clang-format off
+  lua_pushstring(l, "VERSION");     lua_pushstring(l, mutt_make_version()); lua_settable(l, lib_idx);;
+  lua_pushstring(l, "QUAD_YES");    lua_pushinteger(l, MUTT_YES);           lua_settable(l, lib_idx);;
+  lua_pushstring(l, "QUAD_NO");     lua_pushinteger(l, MUTT_NO);            lua_settable(l, lib_idx);;
+  lua_pushstring(l, "QUAD_ASKYES"); lua_pushinteger(l, MUTT_ASKYES);        lua_settable(l, lib_idx);;
+  lua_pushstring(l, "QUAD_ASKNO");  lua_pushinteger(l, MUTT_ASKNO);         lua_settable(l, lib_idx);;
+  // clang-format on
+
   return 1;
 }
 
@@ -455,7 +472,7 @@ void mutt_lua_init(void)
 }
 
 /**
- * mutt_lua_parse - Parse the 'lua' command - Implements Command::parse()
+ * mutt_lua_parse - Parse the 'lua' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult mutt_lua_parse(struct Buffer *buf, struct Buffer *s,
                                   intptr_t data, struct Buffer *err)
@@ -477,7 +494,7 @@ enum CommandResult mutt_lua_parse(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * mutt_lua_source_file - Parse the 'lua-source' command - Implements Command::parse()
+ * mutt_lua_source_file - Parse the 'lua-source' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
                                         intptr_t data, struct Buffer *err)

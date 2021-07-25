@@ -126,7 +126,7 @@ unsigned long cum_attachs_size(struct ConfigSubset *sub, struct ComposeAttachDat
 }
 
 /**
- * attach_recalc - Recalculate the Window data - Implements MuttWindow::recalc()
+ * attach_recalc - Recalculate the Window data - Implements MuttWindow::recalc() - @ingroup window_recalc
  */
 int attach_recalc(struct MuttWindow *win)
 {
@@ -152,7 +152,7 @@ int attach_recalc(struct MuttWindow *win)
 }
 
 /**
- * attach_repaint - Repaint the Window - Implements MuttWindow::repaint()
+ * attach_repaint - Repaint the Window - Implements MuttWindow::repaint() - @ingroup window_repaint
  */
 int attach_repaint(struct MuttWindow *win)
 {
@@ -242,7 +242,7 @@ static int attach_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * compose_attach_tag - Tag an attachment - Implements Menu::tag()
+ * compose_attach_tag - Tag an attachment - Implements Menu::tag() - @ingroup menu_tag
  */
 static int compose_attach_tag(struct Menu *menu, int sel, int act)
 {
@@ -256,7 +256,7 @@ static int compose_attach_tag(struct Menu *menu, int sel, int act)
 }
 
 /**
- * compose_make_entry - Format a menu item for the attachment list - Implements Menu::make_entry()
+ * compose_make_entry - Format a menu item for the attachment list - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
 static void compose_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {

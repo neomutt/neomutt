@@ -35,7 +35,7 @@ int cbar_color_observer(struct NotifyCallback *nc);
 int cbar_config_observer(struct NotifyCallback *nc);
 
 /**
- * cbar_data_free - Free the private data attached to the MuttWindow - Implements MuttWindow::wdata_free()
+ * cbar_data_free - Free the private data attached to the MuttWindow - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  */
 void cbar_data_free(struct MuttWindow *win, void **ptr)
 {

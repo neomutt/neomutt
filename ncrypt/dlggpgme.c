@@ -1225,7 +1225,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
 }
 
 /**
- * crypt_make_entry - Format a menu item for the key selection list - Implements Menu::make_entry()
+ * crypt_make_entry - Format a menu item for the key selection list - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
 static void crypt_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
@@ -1242,7 +1242,7 @@ static void crypt_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
 }
 
 /**
- * gpgme_key_table_free - Free the key table - Implements Menu::mdata_free()
+ * gpgme_key_table_free - Free the key table - Implements Menu::mdata_free() - @ingroup menu_mdata_free
  *
  * @note The keys are owned by the caller of the dialog
  */

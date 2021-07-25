@@ -111,7 +111,11 @@ typedef uint8_t WindowActionFlags; ///< Actions waiting to be performed on a Mut
 #define WA_REPAINT   (1 << 2)      ///< Redraw the contents of the Window
 
 /**
- * struct MuttWindow - A division of the screen
+ * @defgroup window_api Window API
+ *
+ * The Window API
+ *
+ * A division of the screen.
  *
  * Windows for different parts of the screen
  */
@@ -141,6 +145,9 @@ struct MuttWindow
   void *wdata;                       ///< Private data
 
   /**
+   * @defgroup window_wdata_free wdata_free()
+   * @ingroup window_api
+   *
    * wdata_free - Free the private data attached to the MuttWindow
    * @param win Window
    * @param ptr Window data to free
@@ -153,6 +160,9 @@ struct MuttWindow
   void (*wdata_free)(struct MuttWindow *win, void **ptr);
 
   /**
+   * @defgroup window_recalc recalc()
+   * @ingroup window_api
+   *
    * recalc - Recalculate the Window data
    * @param win Window
    * @retval  0 Success
@@ -161,6 +171,9 @@ struct MuttWindow
   int (*recalc)(struct MuttWindow *win);
 
   /**
+   * @defgroup window_repaint repaint()
+   * @ingroup window_api
+   *
    * repaint - Repaint the Window
    * @param win Window
    * @retval  0 Success

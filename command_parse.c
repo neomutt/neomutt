@@ -282,7 +282,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
 }
 
 /**
- * parse_cd - Parse the 'cd' command - Implements Command::parse()
+ * parse_cd - Parse the 'cd' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_cd(struct Buffer *buf, struct Buffer *s, intptr_t data,
                             struct Buffer *err)
@@ -310,7 +310,7 @@ enum CommandResult parse_cd(struct Buffer *buf, struct Buffer *s, intptr_t data,
 }
 
 /**
- * parse_echo - Parse the 'echo' command - Implements Command::parse()
+ * parse_echo - Parse the 'echo' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_echo(struct Buffer *buf, struct Buffer *s,
                               intptr_t data, struct Buffer *err)
@@ -330,7 +330,7 @@ enum CommandResult parse_echo(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_finish - Parse the 'finish' command - Implements Command::parse()
+ * parse_finish - Parse the 'finish' command - Implements Command::parse() - @ingroup command_parse
  * @retval  #MUTT_CMD_FINISH Stop processing the current file
  * @retval  #MUTT_CMD_WARNING Failed
  *
@@ -349,7 +349,7 @@ enum CommandResult parse_finish(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_group - Parse the 'group' and 'ungroup' commands - Implements Command::parse()
+ * parse_group - Parse the 'group' and 'ungroup' commands - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
                                intptr_t data, struct Buffer *err)
@@ -435,7 +435,7 @@ warn:
 }
 
 /**
- * parse_ifdef - Parse the 'ifdef' and 'ifndef' commands - Implements Command::parse()
+ * parse_ifdef - Parse the 'ifdef' and 'ifndef' commands - Implements Command::parse() - @ingroup command_parse
  *
  * The 'ifdef' command allows conditional elements in the config file.
  * If a given variable, function, command or compile-time symbol exists, then
@@ -482,7 +482,7 @@ enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_ignore - Parse the 'ignore' command - Implements Command::parse()
+ * parse_ignore - Parse the 'ignore' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_ignore(struct Buffer *buf, struct Buffer *s,
                                 intptr_t data, struct Buffer *err)
@@ -498,7 +498,7 @@ enum CommandResult parse_ignore(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_lists - Parse the 'lists' command - Implements Command::parse()
+ * parse_lists - Parse the 'lists' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_lists(struct Buffer *buf, struct Buffer *s,
                                intptr_t data, struct Buffer *err)
@@ -530,7 +530,7 @@ bail:
 }
 
 /**
- * parse_mailboxes - Parse the 'mailboxes' command - Implements Command::parse()
+ * parse_mailboxes - Parse the 'mailboxes' command - Implements Command::parse() - @ingroup command_parse
  *
  * This is also used by 'virtual-mailboxes'.
  */
@@ -625,7 +625,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_my_hdr - Parse the 'my_hdr' command - Implements Command::parse()
+ * parse_my_hdr - Parse the 'my_hdr' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
                                 intptr_t data, struct Buffer *err)
@@ -658,7 +658,7 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_set - Parse the 'set' family of commands - Implements Command::parse()
+ * parse_set - Parse the 'set' family of commands - Implements Command::parse() - @ingroup command_parse
  *
  * This is used by 'reset', 'set', 'toggle' and 'unset'.
  */
@@ -1037,7 +1037,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_setenv - Parse the 'setenv' and 'unsetenv' commands - Implements Command::parse()
+ * parse_setenv - Parse the 'setenv' and 'unsetenv' commands - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
                                 intptr_t data, struct Buffer *err)
@@ -1147,7 +1147,7 @@ enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_source - Parse the 'source' command - Implements Command::parse()
+ * parse_source - Parse the 'source' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
                                 intptr_t data, struct Buffer *err)
@@ -1176,7 +1176,7 @@ enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_spam_list - Parse the 'spam' and 'nospam' commands - Implements Command::parse()
+ * parse_spam_list - Parse the 'spam' and 'nospam' commands - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_spam_list(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
@@ -1252,7 +1252,7 @@ enum CommandResult parse_spam_list(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_stailq - Parse a list command - Implements Command::parse()
+ * parse_stailq - Parse a list command - Implements Command::parse() - @ingroup command_parse
  *
  * This is used by 'alternative_order', 'auto_view' and several others.
  */
@@ -1269,7 +1269,7 @@ enum CommandResult parse_stailq(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_subscribe - Parse the 'subscribe' command - Implements Command::parse()
+ * parse_subscribe - Parse the 'subscribe' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_subscribe(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
@@ -1304,7 +1304,7 @@ bail:
 
 #ifdef USE_IMAP
 /**
- * parse_subscribe_to - Parse the 'subscribe-to' command - Implements Command::parse()
+ * parse_subscribe_to - Parse the 'subscribe-to' command - Implements Command::parse() - @ingroup command_parse
  *
  * The 'subscribe-to' command allows to subscribe to an IMAP-Mailbox.
  * Patterns are not supported.
@@ -1351,7 +1351,7 @@ enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
 #endif
 
 /**
- * parse_tag_formats - Parse the 'tag-formats' command - Implements Command::parse()
+ * parse_tag_formats - Parse the 'tag-formats' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_tag_formats(struct Buffer *buf, struct Buffer *s,
                                      intptr_t data, struct Buffer *err)
@@ -1390,7 +1390,7 @@ enum CommandResult parse_tag_formats(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_tag_transforms - Parse the 'tag-transforms' command - Implements Command::parse()
+ * parse_tag_transforms - Parse the 'tag-transforms' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
                                         intptr_t data, struct Buffer *err)
@@ -1429,7 +1429,7 @@ enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_unignore - Parse the 'unignore' command - Implements Command::parse()
+ * parse_unignore - Parse the 'unignore' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_unignore(struct Buffer *buf, struct Buffer *s,
                                   intptr_t data, struct Buffer *err)
@@ -1449,7 +1449,7 @@ enum CommandResult parse_unignore(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_unlists - Parse the 'unlists' command - Implements Command::parse()
+ * parse_unlists - Parse the 'unlists' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_unlists(struct Buffer *buf, struct Buffer *s,
                                  intptr_t data, struct Buffer *err)
@@ -1512,7 +1512,7 @@ static void do_unmailboxes_star(void)
 }
 
 /**
- * parse_unmailboxes - Parse the 'unmailboxes' command - Implements Command::parse()
+ * parse_unmailboxes - Parse the 'unmailboxes' command - Implements Command::parse() - @ingroup command_parse
  *
  * This is also used by 'unvirtual-mailboxes'
  */
@@ -1546,7 +1546,7 @@ enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_unmy_hdr - Parse the 'unmy_hdr' command - Implements Command::parse()
+ * parse_unmy_hdr - Parse the 'unmy_hdr' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
                                   intptr_t data, struct Buffer *err)
@@ -1590,7 +1590,7 @@ enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_unstailq - Parse an unlist command - Implements Command::parse()
+ * parse_unstailq - Parse an unlist command - Implements Command::parse() - @ingroup command_parse
  *
  * This is used by 'unalternative_order', 'unauto_view' and several others.
  */
@@ -1613,7 +1613,7 @@ enum CommandResult parse_unstailq(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_unsubscribe - Parse the 'unsubscribe' command - Implements Command::parse()
+ * parse_unsubscribe - Parse the 'unsubscribe' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
                                      intptr_t data, struct Buffer *err)
@@ -1636,7 +1636,7 @@ enum CommandResult parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
 
 #ifdef USE_IMAP
 /**
- * parse_unsubscribe_from - Parse the 'unsubscribe-from' command - Implements Command::parse()
+ * parse_unsubscribe_from - Parse the 'unsubscribe-from' command - Implements Command::parse() - @ingroup command_parse
  *
  * The 'unsubscribe-from' command allows to unsubscribe from an IMAP-Mailbox.
  * Patterns are not supported.

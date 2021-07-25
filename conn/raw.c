@@ -115,7 +115,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
 }
 
 /**
- * raw_socket_open - Open a socket - Implements Connection::open()
+ * raw_socket_open - Open a socket - Implements Connection::open() - @ingroup connection_open
  */
 int raw_socket_open(struct Connection *conn)
 {
@@ -262,7 +262,7 @@ int raw_socket_open(struct Connection *conn)
 }
 
 /**
- * raw_socket_read - Read data from a socket - Implements Connection::read()
+ * raw_socket_read - Read data from a socket - Implements Connection::read() - @ingroup connection_read
  */
 int raw_socket_read(struct Connection *conn, char *buf, size_t count)
 {
@@ -292,7 +292,7 @@ int raw_socket_read(struct Connection *conn, char *buf, size_t count)
 }
 
 /**
- * raw_socket_write - Write data to a socket - Implements Connection::write()
+ * raw_socket_write - Write data to a socket - Implements Connection::write() - @ingroup connection_write
  */
 int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
 {
@@ -322,7 +322,7 @@ int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
 }
 
 /**
- * raw_socket_poll - Checks whether reads would block - Implements Connection::poll()
+ * raw_socket_poll - Checks whether reads would block - Implements Connection::poll() - @ingroup connection_poll
  */
 int raw_socket_poll(struct Connection *conn, time_t wait_secs)
 {
@@ -360,7 +360,7 @@ int raw_socket_poll(struct Connection *conn, time_t wait_secs)
 }
 
 /**
- * raw_socket_close - Close a socket - Implements Connection::close()
+ * raw_socket_close - Close a socket - Implements Connection::close() - @ingroup connection_close
  */
 int raw_socket_close(struct Connection *conn)
 {

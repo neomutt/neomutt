@@ -58,7 +58,11 @@ typedef uint8_t MenuRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX
 #define MENU_REDRAW_FLOW      (1 << 6) ///< Used by pager to reflow text
 
 /**
- * struct Menu - GUI selectable list of items
+ * @defgroup menu_api Menu API
+ *
+ * The Menu API
+ *
+ * GUI selectable list of items
  */
 struct Menu
 {
@@ -89,6 +93,9 @@ struct Menu
   bool custom_search : 1; ///< The menu implements its own non-Menu::search()-compatible search, trickle OP_SEARCH*
 
   /**
+   * @defgroup menu_make_entry make_entry()
+   * @ingroup menu_api
+   *
    * make_entry - Format a item for a menu
    * @param[in]  menu   Menu containing items
    * @param[out] buf    Buffer in which to save string
@@ -98,6 +105,9 @@ struct Menu
   void (*make_entry)(struct Menu *menu, char *buf, size_t buflen, int line);
 
   /**
+   * @defgroup menu_search search()
+   * @ingroup menu_api
+   *
    * search - Search a menu for a item matching a regex
    * @param menu Menu to search
    * @param rx   Regex to match
@@ -108,6 +118,9 @@ struct Menu
   int (*search)(struct Menu *menu, regex_t *rx, int line);
 
   /**
+   * @defgroup menu_tag tag()
+   * @ingroup menu_api
+   *
    * tag - Tag some menu items
    * @param menu Menu to tag
    * @param sel  Current selection
@@ -117,6 +130,9 @@ struct Menu
   int (*tag)(struct Menu *menu, int sel, int act);
 
   /**
+   * @defgroup menu_color color()
+   * @ingroup menu_api
+   *
    * color - Calculate the colour for a line of the menu
    * @param menu Menu containing items
    * @param line Menu line number
@@ -126,6 +142,9 @@ struct Menu
   int (*color)(struct Menu *menu, int line);
 
   /**
+   * @defgroup menu_custom_redraw custom_redraw()
+   * @ingroup menu_api
+   *
    * custom_redraw - Redraw the menu
    * @param menu Menu to redraw
    */
@@ -136,6 +155,9 @@ struct Menu
   void *mdata;            ///< Private data
 
   /**
+   * @defgroup menu_mdata_free mdata_free()
+   * @ingroup menu_api
+   *
    * mdata_free - Free the private data attached to the Menu
    * @param menu Menu
    * @param ptr Menu data to free

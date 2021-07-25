@@ -71,27 +71,27 @@ struct SaslSockData
   void *sockdata; ///< Underlying socket data
 
   /**
-   * open - Open a socket Connection - Implements Connection::open()
+   * open - Open a socket Connection - Implements Connection::open() - @ingroup connection_open
    */
   int (*open)(struct Connection *conn);
 
   /**
-   * read - Read from a socket Connection - Implements Connection::read()
+   * read - Read from a socket Connection - Implements Connection::read() - @ingroup connection_read
    */
   int (*read)(struct Connection *conn, char *buf, size_t count);
 
   /**
-   * write - Write to a socket Connection - Implements Connection::write()
+   * write - Write to a socket Connection - Implements Connection::write() - @ingroup connection_write
    */
   int (*write)(struct Connection *conn, const char *buf, size_t count);
 
   /**
-   * poll - Check whether a socket read would block - Implements Connection::poll()
+   * poll - Check whether a socket read would block - Implements Connection::poll() - @ingroup connection_poll
    */
   int (*poll)(struct Connection *conn, time_t wait_secs);
 
   /**
-   * close - Close a socket Connection - Implements Connection::close()
+   * close - Close a socket Connection - Implements Connection::close() - @ingroup connection_close
    */
   int (*close)(struct Connection *conn);
 };
@@ -417,7 +417,7 @@ static sasl_callback_t *mutt_sasl_get_callbacks(struct ConnAccount *cac)
 }
 
 /**
- * mutt_sasl_conn_open - empty wrapper for underlying open function - Implements Connection::open()
+ * mutt_sasl_conn_open - empty wrapper for underlying open function - Implements Connection::open() - @ingroup connection_open
  *
  * We don't know in advance that a connection will use SASL, so we replace
  * conn's methods with sasl methods when authentication is successful, using
@@ -434,7 +434,7 @@ static int mutt_sasl_conn_open(struct Connection *conn)
 }
 
 /**
- * mutt_sasl_conn_close - close SASL connection - Implements Connection::close()
+ * mutt_sasl_conn_close - close SASL connection - Implements Connection::close() - @ingroup connection_close
  *
  * Calls underlying close function and disposes of the sasl_conn_t object, then
  * restores connection to pre-sasl state
@@ -462,7 +462,7 @@ static int mutt_sasl_conn_close(struct Connection *conn)
 }
 
 /**
- * mutt_sasl_conn_read - Read data from an SASL connection - Implements Connection::read()
+ * mutt_sasl_conn_read - Read data from an SASL connection - Implements Connection::read() - @ingroup connection_read
  */
 static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t count)
 {
@@ -526,7 +526,7 @@ out:
 }
 
 /**
- * mutt_sasl_conn_write - Write to an SASL connection - Implements Connection::write()
+ * mutt_sasl_conn_write - Write to an SASL connection - Implements Connection::write() - @ingroup connection_write
  */
 static int mutt_sasl_conn_write(struct Connection *conn, const char *buf, size_t count)
 {
@@ -576,7 +576,7 @@ fail:
 }
 
 /**
- * mutt_sasl_conn_poll - Check an SASL connection for data - Implements Connection::poll()
+ * mutt_sasl_conn_poll - Check an SASL connection for data - Implements Connection::poll() - @ingroup connection_poll
  */
 static int mutt_sasl_conn_poll(struct Connection *conn, time_t wait_secs)
 {

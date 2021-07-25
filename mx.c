@@ -1764,6 +1764,9 @@ bool mx_ac_add(struct Account *a, struct Mailbox *m)
 /**
  * mx_ac_remove - Remove a Mailbox from an Account and delete Account if empty
  * @param m Mailbox to remove
+ * @retval  0 Success
+ * @retval -1 Error
+ *
  * @note The mailbox is NOT free'd
  */
 int mx_ac_remove(struct Mailbox *m)

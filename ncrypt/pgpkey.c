@@ -231,7 +231,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, KeyFlags abilities,
 }
 
 /**
- * pgp_class_make_key_attachment - Implements CryptModuleSpecs::pgp_make_key_attachment()
+ * pgp_class_make_key_attachment - Implements CryptModuleSpecs::pgp_make_key_attachment() - @ingroup crypto_pgp_make_key_attachment
  */
 struct Body *pgp_class_make_key_attachment(void)
 {

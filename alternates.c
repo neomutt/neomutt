@@ -85,7 +85,7 @@ void mutt_alternates_reset(struct Mailbox *m)
 }
 
 /**
- * parse_alternates - Parse the 'alternates' command - Implements Command::parse()
+ * parse_alternates - Parse the 'alternates' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_alternates(struct Buffer *buf, struct Buffer *s,
                                     intptr_t data, struct Buffer *err)
@@ -121,7 +121,7 @@ bail:
 }
 
 /**
- * parse_unalternates - Parse the 'unalternates' command - Implements Command::parse()
+ * parse_unalternates - Parse the 'unalternates' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *s,
                                       intptr_t data, struct Buffer *err)

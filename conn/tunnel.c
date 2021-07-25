@@ -52,7 +52,7 @@ struct TunnelSockData
 };
 
 /**
- * tunnel_socket_open - Open a tunnel socket - Implements Connection::open()
+ * tunnel_socket_open - Open a tunnel socket - Implements Connection::open() - @ingroup connection_open
  */
 static int tunnel_socket_open(struct Connection *conn)
 {
@@ -132,7 +132,7 @@ static int tunnel_socket_open(struct Connection *conn)
 }
 
 /**
- * tunnel_socket_read - Read data from a tunnel socket - Implements Connection::read()
+ * tunnel_socket_read - Read data from a tunnel socket - Implements Connection::read() - @ingroup connection_read
  */
 static int tunnel_socket_read(struct Connection *conn, char *buf, size_t count)
 {
@@ -154,7 +154,7 @@ static int tunnel_socket_read(struct Connection *conn, char *buf, size_t count)
 }
 
 /**
- * tunnel_socket_write - Write data to a tunnel socket - Implements Connection::write()
+ * tunnel_socket_write - Write data to a tunnel socket - Implements Connection::write() - @ingroup connection_write
  */
 static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t count)
 {
@@ -182,7 +182,7 @@ static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t 
 }
 
 /**
- * tunnel_socket_poll - Checks whether tunnel reads would block - Implements Connection::poll()
+ * tunnel_socket_poll - Checks whether tunnel reads would block - Implements Connection::poll() - @ingroup connection_poll
  */
 static int tunnel_socket_poll(struct Connection *conn, time_t wait_secs)
 {
@@ -199,7 +199,7 @@ static int tunnel_socket_poll(struct Connection *conn, time_t wait_secs)
 }
 
 /**
- * tunnel_socket_close - Close a tunnel socket - Implements Connection::close()
+ * tunnel_socket_close - Close a tunnel socket - Implements Connection::close() - @ingroup connection_close
  */
 static int tunnel_socket_close(struct Connection *conn)
 {

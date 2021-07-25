@@ -55,7 +55,7 @@ static struct ConfigDef AutocryptVars[] = {
 };
 
 /**
- * config_init_autocrypt - Register autocrypt config variables - Implements ::module_init_config_t
+ * config_init_autocrypt - Register autocrypt config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
  */
 bool config_init_autocrypt(struct ConfigSet *cs)
 {

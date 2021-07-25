@@ -85,7 +85,7 @@ struct IBarPrivateData
 };
 
 /**
- * ibar_recalc - Recalculate the Window data - Implements MuttWindow::recalc()
+ * ibar_recalc - Recalculate the Window data - Implements MuttWindow::recalc() - @ingroup window_recalc
  */
 static int ibar_recalc(struct MuttWindow *win)
 {
@@ -136,7 +136,7 @@ static int ibar_recalc(struct MuttWindow *win)
 }
 
 /**
- * ibar_repaint - Repaint the Window - Implements MuttWindow::repaint()
+ * ibar_repaint - Repaint the Window - Implements MuttWindow::repaint() - @ingroup window_repaint
  */
 static int ibar_repaint(struct MuttWindow *win)
 {
@@ -296,7 +296,7 @@ static int ibar_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * ibar_data_free - Free the private data attached to the MuttWindow - Implements MuttWindow::wdata_free()
+ * ibar_data_free - Free the private data attached to the MuttWindow - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  */
 static void ibar_data_free(struct MuttWindow *win, void **ptr)
 {

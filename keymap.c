@@ -1195,7 +1195,7 @@ void km_error_key(enum MenuType mtype)
 }
 
 /**
- * mutt_parse_push - Parse the 'push' command - Implements Command::parse()
+ * mutt_parse_push - Parse the 'push' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult mutt_parse_push(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
@@ -1356,7 +1356,7 @@ const struct Binding *km_get_table(enum MenuType mtype)
 }
 
 /**
- * mutt_parse_bind - Parse the 'bind' command - Implements Command::parse()
+ * mutt_parse_bind - Parse the 'bind' command - Implements Command::parse() - @ingroup command_parse
  *
  * bind menu-name `<key_sequence>` function-name
  */
@@ -1500,7 +1500,7 @@ static void km_unbind_all(struct KeymapList *km_list, unsigned long mode)
 }
 
 /**
- * mutt_parse_unbind - Parse the 'unbind' command - Implements Command::parse()
+ * mutt_parse_unbind - Parse the 'unbind' command - Implements Command::parse() - @ingroup command_parse
  *
  * Command unbinds:
  * - one binding in one menu-name
@@ -1588,7 +1588,7 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * mutt_parse_macro - Parse the 'macro' command - Implements Command::parse()
+ * mutt_parse_macro - Parse the 'macro' command - Implements Command::parse() - @ingroup command_parse
  *
  * macro `<menu>` `<key>` `<macro>` `<description>`
  */
@@ -1665,7 +1665,7 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * mutt_parse_exec - Parse the 'exec' command - Implements Command::parse()
+ * mutt_parse_exec - Parse the 'exec' command - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)

@@ -142,7 +142,7 @@ static const char *pattern_format_str(char *buf, size_t buflen, size_t col, int 
 }
 
 /**
- * make_pattern_entry - Create a line for the Pattern Completion menu - Implements Menu::make_entry()
+ * make_pattern_entry - Create a line for the Pattern Completion menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
 static void make_pattern_entry(struct Menu *menu, char *buf, size_t buflen, int num)
 {
@@ -155,7 +155,7 @@ static void make_pattern_entry(struct Menu *menu, char *buf, size_t buflen, int 
 }
 
 /**
- * free_pattern_menu - Free the Pattern Completion menu - Implements Menu::mdata_free()
+ * free_pattern_menu - Free the Pattern Completion menu - Implements Menu::mdata_free() - @ingroup menu_mdata_free
  */
 static void free_pattern_menu(struct Menu *menu, void **ptr)
 {

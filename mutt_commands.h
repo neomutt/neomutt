@@ -40,13 +40,18 @@ enum CommandResult
 };
 
 /**
- * struct Command - A user-callable command
+ * @defgroup command_api Command API
+ *
+ * A user-callable command
  */
 struct Command
 {
   const char *name; ///< Name of the command
 
   /**
+   * @defgroup command_parse parse()
+   * @ingroup command_api
+   *
    * parse - Function to parse a command
    * @param buf  Temporary Buffer space
    * @param s    Buffer containing string to be parsed

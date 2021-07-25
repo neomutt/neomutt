@@ -31,7 +31,7 @@
 #include "shared_data.h"
 
 /**
- * compose_shared_data_free - Create the compose shared data - Implements MuttWindow::wdata_free()
+ * compose_shared_data_free - Create the compose shared data - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  */
 void compose_shared_data_free(struct MuttWindow *win, void **ptr)
 {

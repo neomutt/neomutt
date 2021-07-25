@@ -95,7 +95,7 @@ static struct ConfigDef NntpVars[] = {
 };
 
 /**
- * config_init_nntp - Register nntp config variables - Implements ::module_init_config_t
+ * config_init_nntp - Register nntp config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
  */
 bool config_init_nntp(struct ConfigSet *cs)
 {
