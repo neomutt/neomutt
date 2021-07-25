@@ -153,7 +153,7 @@ static struct SmimeKey *smime_copy_key(struct SmimeKey *key)
  */
 
 /**
- * smime_class_void_passphrase - Implements CryptModuleSpecs::void_passphrase()
+ * smime_class_void_passphrase - Implements CryptModuleSpecs::void_passphrase() - @ingroup crypto_void_passphrase
  */
 void smime_class_void_passphrase(void)
 {
@@ -162,7 +162,7 @@ void smime_class_void_passphrase(void)
 }
 
 /**
- * smime_class_valid_passphrase - Implements CryptModuleSpecs::valid_passphrase()
+ * smime_class_valid_passphrase - Implements CryptModuleSpecs::valid_passphrase() - @ingroup crypto_valid_passphrase
  */
 bool smime_class_valid_passphrase(void)
 {
@@ -777,7 +777,7 @@ static void getkeys(char *mailbox)
 }
 
 /**
- * smime_class_getkeys - Implements CryptModuleSpecs::smime_getkeys()
+ * smime_class_getkeys - Implements CryptModuleSpecs::smime_getkeys() - @ingroup crypto_smime_getkeys
  */
 void smime_class_getkeys(struct Envelope *env)
 {
@@ -821,7 +821,7 @@ void smime_class_getkeys(struct Envelope *env)
 }
 
 /**
- * smime_class_find_keys - Implements CryptModuleSpecs::find_keys()
+ * smime_class_find_keys - Implements CryptModuleSpecs::find_keys() - @ingroup crypto_find_keys
  */
 char *smime_class_find_keys(struct AddressList *al, bool oppenc_mode)
 {
@@ -1150,7 +1150,7 @@ cleanup:
 }
 
 /**
- * smime_class_invoke_import - Implements CryptModuleSpecs::smime_invoke_import()
+ * smime_class_invoke_import - Implements CryptModuleSpecs::smime_invoke_import() - @ingroup crypto_smime_invoke_import
  */
 void smime_class_invoke_import(const char *infile, const char *mailbox)
 {
@@ -1227,7 +1227,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
 }
 
 /**
- * smime_class_verify_sender - Implements CryptModuleSpecs::smime_verify_sender()
+ * smime_class_verify_sender - Implements CryptModuleSpecs::smime_verify_sender() - @ingroup crypto_smime_verify_sender
  */
 int smime_class_verify_sender(struct Mailbox *m, struct Email *e, struct Message *msg)
 {
@@ -1352,7 +1352,7 @@ static pid_t smime_invoke_sign(FILE **fp_smime_in, FILE **fp_smime_out,
 }
 
 /**
- * smime_class_build_smime_entity - Implements CryptModuleSpecs::smime_build_smime_entity()
+ * smime_class_build_smime_entity - Implements CryptModuleSpecs::smime_build_smime_entity() - @ingroup crypto_smime_build_smime_entity
  */
 struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
 {
@@ -1519,7 +1519,7 @@ static char *openssl_md_to_smime_micalg(const char *md)
 }
 
 /**
- * smime_class_sign_message - Implements CryptModuleSpecs::sign_message()
+ * smime_class_sign_message - Implements CryptModuleSpecs::sign_message() - @ingroup crypto_sign_message
  */
 struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *from)
 {
@@ -1735,7 +1735,7 @@ static pid_t smime_invoke_decrypt(FILE **fp_smime_in, FILE **fp_smime_out,
 }
 
 /**
- * smime_class_verify_one - Implements CryptModuleSpecs::verify_one()
+ * smime_class_verify_one - Implements CryptModuleSpecs::verify_one() - @ingroup crypto_verify_one
  */
 int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
@@ -2079,7 +2079,7 @@ cleanup:
 }
 
 /**
- * smime_class_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime()
+ * smime_class_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime() - @ingroup crypto_decrypt_mime
  */
 int smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
 {
@@ -2141,7 +2141,7 @@ bail:
 }
 
 /**
- * smime_class_application_handler - Implements CryptModuleSpecs::application_handler()
+ * smime_class_application_handler - Implements CryptModuleSpecs::application_handler() - @ingroup crypto_application_handler
  */
 int smime_class_application_handler(struct Body *m, struct State *s)
 {
@@ -2160,7 +2160,7 @@ int smime_class_application_handler(struct Body *m, struct State *s)
 }
 
 /**
- * smime_class_send_menu - Implements CryptModuleSpecs::send_menu()
+ * smime_class_send_menu - Implements CryptModuleSpecs::send_menu() - @ingroup crypto_send_menu
  */
 SecurityFlags smime_class_send_menu(struct Mailbox *m, struct Email *e)
 {

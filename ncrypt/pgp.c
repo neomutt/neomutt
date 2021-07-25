@@ -69,7 +69,7 @@ char PgpPass[1024];
 time_t PgpExptime = 0; /* when does the cached passphrase expire? */
 
 /**
- * pgp_class_void_passphrase - Implements CryptModuleSpecs::void_passphrase()
+ * pgp_class_void_passphrase - Implements CryptModuleSpecs::void_passphrase() - @ingroup crypto_void_passphrase
  */
 void pgp_class_void_passphrase(void)
 {
@@ -78,7 +78,7 @@ void pgp_class_void_passphrase(void)
 }
 
 /**
- * pgp_class_valid_passphrase - Implements CryptModuleSpecs::valid_passphrase()
+ * pgp_class_valid_passphrase - Implements CryptModuleSpecs::valid_passphrase() - @ingroup crypto_valid_passphrase
  */
 bool pgp_class_valid_passphrase(void)
 {
@@ -458,7 +458,7 @@ static void pgp_copy_clearsigned(FILE *fp_in, struct State *s, char *charset)
 }
 
 /**
- * pgp_class_application_handler - Implements CryptModuleSpecs::application_handler()
+ * pgp_class_application_handler - Implements CryptModuleSpecs::application_handler() - @ingroup crypto_application_handler
  */
 int pgp_class_application_handler(struct Body *m, struct State *s)
 {
@@ -846,7 +846,7 @@ cleanup:
 }
 
 /**
- * pgp_class_check_traditional - Implements CryptModuleSpecs::pgp_check_traditional()
+ * pgp_class_check_traditional - Implements CryptModuleSpecs::pgp_check_traditional() - @ingroup crypto_pgp_check_traditional
  */
 bool pgp_class_check_traditional(FILE *fp, struct Body *b, bool just_one)
 {
@@ -873,7 +873,7 @@ bool pgp_class_check_traditional(FILE *fp, struct Body *b, bool just_one)
 }
 
 /**
- * pgp_class_verify_one - Implements CryptModuleSpecs::verify_one()
+ * pgp_class_verify_one - Implements CryptModuleSpecs::verify_one() - @ingroup crypto_verify_one
  */
 int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
@@ -974,7 +974,7 @@ cleanup:
 }
 
 /**
- * pgp_class_extract_key_from_attachment - Implements CryptModuleSpecs::pgp_extract_key_from_attachment()
+ * pgp_class_extract_key_from_attachment - Implements CryptModuleSpecs::pgp_extract_key_from_attachment() - @ingroup crypto_pgp_extract_key_from_attachment
  */
 void pgp_class_extract_key_from_attachment(FILE *fp, struct Body *top)
 {
@@ -1126,7 +1126,7 @@ cleanup:
 }
 
 /**
- * pgp_class_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime()
+ * pgp_class_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime() - @ingroup crypto_decrypt_mime
  */
 int pgp_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
 {
@@ -1208,7 +1208,7 @@ bail:
 }
 
 /**
- * pgp_class_encrypted_handler - Implements CryptModuleSpecs::encrypted_handler()
+ * pgp_class_encrypted_handler - Implements CryptModuleSpecs::encrypted_handler() - @ingroup crypto_encrypted_handler
  */
 int pgp_class_encrypted_handler(struct Body *a, struct State *s)
 {
@@ -1298,7 +1298,7 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
  */
 
 /**
- * pgp_class_sign_message - Implements CryptModuleSpecs::sign_message()
+ * pgp_class_sign_message - Implements CryptModuleSpecs::sign_message() - @ingroup crypto_sign_message
  */
 struct Body *pgp_class_sign_message(struct Body *a, const struct AddressList *from)
 {
@@ -1429,7 +1429,7 @@ cleanup:
 }
 
 /**
- * pgp_class_find_keys - Implements CryptModuleSpecs::find_keys()
+ * pgp_class_find_keys - Implements CryptModuleSpecs::find_keys() - @ingroup crypto_find_keys
  */
 char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 {
@@ -1550,7 +1550,7 @@ char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 }
 
 /**
- * pgp_class_encrypt_message - Implements CryptModuleSpecs::pgp_encrypt_message()
+ * pgp_class_encrypt_message - Implements CryptModuleSpecs::pgp_encrypt_message() - @ingroup crypto_pgp_encrypt_message
  *
  * @warning "a" is no longer freed in this routine, you need to free it later.
  * This is necessary for $fcc_attach.
@@ -1687,7 +1687,7 @@ cleanup:
 }
 
 /**
- * pgp_class_traditional_encryptsign - Implements CryptModuleSpecs::pgp_traditional_encryptsign()
+ * pgp_class_traditional_encryptsign - Implements CryptModuleSpecs::pgp_traditional_encryptsign() - @ingroup crypto_pgp_traditional_encryptsign
  */
 struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags flags, char *keylist)
 {
@@ -1861,7 +1861,7 @@ cleanup:
 }
 
 /**
- * pgp_class_send_menu - Implements CryptModuleSpecs::send_menu()
+ * pgp_class_send_menu - Implements CryptModuleSpecs::send_menu() - @ingroup crypto_send_menu
  */
 SecurityFlags pgp_class_send_menu(struct Mailbox *m, struct Email *e)
 {

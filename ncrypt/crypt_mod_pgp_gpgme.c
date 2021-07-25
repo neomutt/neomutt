@@ -34,7 +34,7 @@
 #include "crypt_mod.h"
 
 /**
- * pgp_gpgme_void_passphrase - Implements CryptModuleSpecs::void_passphrase()
+ * pgp_gpgme_void_passphrase - Implements CryptModuleSpecs::void_passphrase() - @ingroup crypto_void_passphrase
  *
  * This is handled by gpg-agent.
  */
@@ -43,7 +43,7 @@ static void pgp_gpgme_void_passphrase(void)
 }
 
 /**
- * pgp_gpgme_valid_passphrase - Implements CryptModuleSpecs::valid_passphrase()
+ * pgp_gpgme_valid_passphrase - Implements CryptModuleSpecs::valid_passphrase() - @ingroup crypto_valid_passphrase
  *
  * This is handled by gpg-agent.
  */

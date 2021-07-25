@@ -1374,7 +1374,7 @@ static struct Body *sign_message(struct Body *a, const struct AddressList *from,
 }
 
 /**
- * pgp_gpgme_sign_message - Implements CryptModuleSpecs::sign_message()
+ * pgp_gpgme_sign_message - Implements CryptModuleSpecs::sign_message() - @ingroup crypto_sign_message
  */
 struct Body *pgp_gpgme_sign_message(struct Body *a, const struct AddressList *from)
 {
@@ -1382,7 +1382,7 @@ struct Body *pgp_gpgme_sign_message(struct Body *a, const struct AddressList *fr
 }
 
 /**
- * smime_gpgme_sign_message - Implements CryptModuleSpecs::sign_message()
+ * smime_gpgme_sign_message - Implements CryptModuleSpecs::sign_message() - @ingroup crypto_sign_message
  */
 struct Body *smime_gpgme_sign_message(struct Body *a, const struct AddressList *from)
 {
@@ -1390,7 +1390,7 @@ struct Body *smime_gpgme_sign_message(struct Body *a, const struct AddressList *
 }
 
 /**
- * pgp_gpgme_encrypt_message - Implements CryptModuleSpecs::pgp_encrypt_message()
+ * pgp_gpgme_encrypt_message - Implements CryptModuleSpecs::pgp_encrypt_message() - @ingroup crypto_pgp_encrypt_message
  */
 struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, bool sign,
                                        const struct AddressList *from)
@@ -1436,7 +1436,7 @@ struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, bool sign,
 }
 
 /**
- * smime_gpgme_build_smime_entity - Implements CryptModuleSpecs::smime_build_smime_entity()
+ * smime_gpgme_build_smime_entity - Implements CryptModuleSpecs::smime_build_smime_entity() - @ingroup crypto_smime_build_smime_entity
  */
 struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
 {
@@ -2022,7 +2022,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
 }
 
 /**
- * pgp_gpgme_verify_one - Implements CryptModuleSpecs::verify_one()
+ * pgp_gpgme_verify_one - Implements CryptModuleSpecs::verify_one() - @ingroup crypto_verify_one
  */
 int pgp_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
@@ -2030,7 +2030,7 @@ int pgp_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
 }
 
 /**
- * smime_gpgme_verify_one - Implements CryptModuleSpecs::verify_one()
+ * smime_gpgme_verify_one - Implements CryptModuleSpecs::verify_one() - @ingroup crypto_verify_one
  */
 int smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
@@ -2203,7 +2203,7 @@ cleanup:
 }
 
 /**
- * pgp_gpgme_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime()
+ * pgp_gpgme_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime() - @ingroup crypto_decrypt_mime
  */
 int pgp_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
 {
@@ -2297,7 +2297,7 @@ bail:
 }
 
 /**
- * smime_gpgme_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime()
+ * smime_gpgme_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime() - @ingroup crypto_decrypt_mime
  */
 int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
 {
@@ -2635,7 +2635,7 @@ cleanup:
 }
 
 /**
- * pgp_gpgme_check_traditional - Implements CryptModuleSpecs::pgp_check_traditional()
+ * pgp_gpgme_check_traditional - Implements CryptModuleSpecs::pgp_check_traditional() - @ingroup crypto_pgp_check_traditional
  */
 bool pgp_gpgme_check_traditional(FILE *fp, struct Body *b, bool just_one)
 {
@@ -2660,7 +2660,7 @@ bool pgp_gpgme_check_traditional(FILE *fp, struct Body *b, bool just_one)
 }
 
 /**
- * pgp_gpgme_invoke_import - Implements CryptModuleSpecs::pgp_invoke_import()
+ * pgp_gpgme_invoke_import - Implements CryptModuleSpecs::pgp_invoke_import() - @ingroup crypto_pgp_invoke_import
  */
 void pgp_gpgme_invoke_import(const char *fname)
 {
@@ -2826,7 +2826,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
 }
 
 /**
- * pgp_gpgme_application_handler - Implements CryptModuleSpecs::application_handler()
+ * pgp_gpgme_application_handler - Implements CryptModuleSpecs::application_handler() - @ingroup crypto_application_handler
  */
 int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 {
@@ -3053,7 +3053,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 }
 
 /**
- * pgp_gpgme_encrypted_handler - Implements CryptModuleSpecs::encrypted_handler()
+ * pgp_gpgme_encrypted_handler - Implements CryptModuleSpecs::encrypted_handler() - @ingroup crypto_encrypted_handler
  *
  * This handler is passed the application/octet-stream directly.
  * The caller must propagate a->goodsig to its parent.
@@ -3153,7 +3153,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
 }
 
 /**
- * smime_gpgme_application_handler - Implements CryptModuleSpecs::application_handler()
+ * smime_gpgme_application_handler - Implements CryptModuleSpecs::application_handler() - @ingroup crypto_application_handler
  */
 int smime_gpgme_application_handler(struct Body *a, struct State *s)
 {
@@ -3945,7 +3945,7 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
 }
 
 /**
- * pgp_gpgme_find_keys - Implements CryptModuleSpecs::find_keys()
+ * pgp_gpgme_find_keys - Implements CryptModuleSpecs::find_keys() - @ingroup crypto_find_keys
  */
 char *pgp_gpgme_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 {
@@ -3953,7 +3953,7 @@ char *pgp_gpgme_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 }
 
 /**
- * smime_gpgme_find_keys - Implements CryptModuleSpecs::find_keys()
+ * smime_gpgme_find_keys - Implements CryptModuleSpecs::find_keys() - @ingroup crypto_find_keys
  */
 char *smime_gpgme_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 {
@@ -4052,7 +4052,7 @@ cleanup:
 #endif
 
 /**
- * pgp_gpgme_make_key_attachment - Implements CryptModuleSpecs::pgp_make_key_attachment()
+ * pgp_gpgme_make_key_attachment - Implements CryptModuleSpecs::pgp_make_key_attachment() - @ingroup crypto_pgp_make_key_attachment
  */
 struct Body *pgp_gpgme_make_key_attachment(void)
 {
@@ -4159,7 +4159,7 @@ static void init_smime(void)
 }
 
 /**
- * pgp_gpgme_init - Implements CryptModuleSpecs::init()
+ * pgp_gpgme_init - Implements CryptModuleSpecs::init() - @ingroup crypto_init
  */
 void pgp_gpgme_init(void)
 {
@@ -4168,7 +4168,7 @@ void pgp_gpgme_init(void)
 }
 
 /**
- * smime_gpgme_init - Implements CryptModuleSpecs::init()
+ * smime_gpgme_init - Implements CryptModuleSpecs::init() - @ingroup crypto_init
  */
 void smime_gpgme_init(void)
 {
@@ -4349,7 +4349,7 @@ static SecurityFlags gpgme_send_menu(struct Mailbox *m, struct Email *e, bool is
 }
 
 /**
- * pgp_gpgme_send_menu - Implements CryptModuleSpecs::send_menu()
+ * pgp_gpgme_send_menu - Implements CryptModuleSpecs::send_menu() - @ingroup crypto_send_menu
  */
 SecurityFlags pgp_gpgme_send_menu(struct Mailbox *m, struct Email *e)
 {
@@ -4357,7 +4357,7 @@ SecurityFlags pgp_gpgme_send_menu(struct Mailbox *m, struct Email *e)
 }
 
 /**
- * smime_gpgme_send_menu - Implements CryptModuleSpecs::send_menu()
+ * smime_gpgme_send_menu - Implements CryptModuleSpecs::send_menu() - @ingroup crypto_send_menu
  */
 SecurityFlags smime_gpgme_send_menu(struct Mailbox *m, struct Email *e)
 {
@@ -4443,7 +4443,7 @@ static bool verify_sender(struct Email *e)
 }
 
 /**
- * smime_gpgme_verify_sender - Implements CryptModuleSpecs::smime_verify_sender()
+ * smime_gpgme_verify_sender - Implements CryptModuleSpecs::smime_verify_sender() - @ingroup crypto_smime_verify_sender
  */
 int smime_gpgme_verify_sender(struct Mailbox *m, struct Email *e, struct Message *msg)
 {
@@ -4451,7 +4451,7 @@ int smime_gpgme_verify_sender(struct Mailbox *m, struct Email *e, struct Message
 }
 
 /**
- * pgp_gpgme_set_sender - Implements CryptModuleSpecs::set_sender()
+ * pgp_gpgme_set_sender - Implements CryptModuleSpecs::set_sender() - @ingroup crypto_set_sender
  */
 void pgp_gpgme_set_sender(const char *sender)
 {
