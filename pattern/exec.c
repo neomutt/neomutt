@@ -58,8 +58,8 @@
 #endif
 
 static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
-                         struct Mailbox *m, struct Email *e, struct Message *msg,
-                         struct PatternCache *cache);
+                         struct Mailbox *m, struct Email *e,
+                         struct Message *msg, struct PatternCache *cache);
 
 /**
  * patmatch - Compare a string to a Pattern
@@ -797,8 +797,8 @@ static bool pattern_needs_msg(const struct Mailbox *m, const struct Pattern *pat
  *        store some of the cacheable pattern matches in this structure.
  */
 static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
-                        struct Mailbox *m, struct Email *e, struct Message *msg,
-                        struct PatternCache *cache)
+                         struct Mailbox *m, struct Email *e,
+                         struct Message *msg, struct PatternCache *cache)
 {
   switch (pat->op)
   {
@@ -1096,7 +1096,7 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
  *        store some of the cacheable pattern matches in this structure.
  */
 bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
-                      struct Mailbox *m, struct Email *e, struct PatternCache *cache)
+                       struct Mailbox *m, struct Email *e, struct PatternCache *cache)
 {
   const bool needs_msg = pattern_needs_msg(m, pat);
   struct Message *msg = needs_msg ? mx_msg_open(m, e->msgno) : NULL;
@@ -1123,7 +1123,7 @@ bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
  *        store some of the cacheable pattern matches in this structure.
  */
 bool mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
-                            struct AliasView *av, struct PatternCache *cache)
+                             struct AliasView *av, struct PatternCache *cache)
 {
   switch (pat->op)
   {

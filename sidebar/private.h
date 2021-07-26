@@ -61,7 +61,7 @@ enum DivType
  */
 struct SidebarWindowData
 {
-  struct IndexSharedData *shared;         /// Shared Index Data
+  struct IndexSharedData *shared;         ///< Shared Index Data
   ARRAY_HEAD(, struct SbEntry *) entries; ///< Items to display in the sidebar
 
   int top_index;             ///< First mailbox visible in sidebar
