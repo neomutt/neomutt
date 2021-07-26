@@ -1,0 +1,47 @@
+name: Build using docker container
+
+on:
+  push:
+    branches:
+      - '*'
+      - '!flatcap'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    container: ghcr.io/neomutt/neomutt-docker-build
+    env:
+      NEOMUTT_HELPER_TEST_REPO:   neomutt/neomutt-test-files
+      NEOMUTT_HELPER_TEST_SCRIPT: setup.sh
+      CPU_NUMBER:                 2
+      CONFIGURE_OPTS: --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --with-ui=ncurses --zlib --zstd
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+
+    - name: configure neomutt
+      run: ./configure ${{env.CONFIGURE_OPTS}}
+
+    - name: build neomutt
+      run: make -j ${{env.CPU_NUMBER}}
+
+    - name: neomutt version
+      run: ./neomutt -v
+
+    - name: build tests
+      run: make -j ${{env.CPU_NUMBER}} test/neomutt-test
+
+    - name: clone test files
+      run: git clone --depth 1 https://github.com/${{env.NEOMUTT_HELPER_TEST_REPO}} $RUNNER_TEMP/test-files
+
+    - name: set up test files
+      run: (cd $RUNNER_TEMP/test-files && ./${{env.NEOMUTT_HELPER_TEST_SCRIPT}})
+
+    - name: run tests
+      run: |
+        export NEOMUTT_TEST_DIR=$RUNNER_TEMP/test-files
+        make test
+
