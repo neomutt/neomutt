@@ -170,10 +170,10 @@ enum PatternType
   MUTT_PAT_MAX,
 };
 
-int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags, struct Mailbox *m,
-                      struct Email *e, struct PatternCache *cache);
-int mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
-                            struct AliasView *av, struct PatternCache *cache);
+bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags, struct Mailbox *m,
+                       struct Email *e, struct PatternCache *cache);
+bool mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
+                             struct AliasView *av, struct PatternCache *cache);
 
 struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, const char *s, PatternCompFlags flags, struct Buffer *err);
 void mutt_check_simple(struct Buffer *s, const char *simple);
