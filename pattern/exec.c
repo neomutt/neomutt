@@ -57,9 +57,9 @@
 #include <sys/stat.h>
 #endif
 
-static int pattern_exec(struct Pattern *pat, PatternExecFlags flags,
-                        struct Mailbox *m, struct Email *e, struct Message *msg,
-                        struct PatternCache *cache);
+static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
+                         struct Mailbox *m, struct Email *e, struct Message *msg,
+                         struct PatternCache *cache);
 
 /**
  * patmatch - Compare a string to a Pattern
@@ -280,8 +280,10 @@ static bool perform_and(struct PatternList *pat, PatternExecFlags flags,
 
   SLIST_FOREACH(p, pat, entries)
   {
-    if (pattern_exec(p, flags, m, e, msg, cache) <= 0)
+    if (!pattern_exec(p, flags, m, e, msg, cache))
+    {
       return false;
+    }
   }
   return true;
 }
@@ -301,8 +303,10 @@ static bool perform_alias_and(struct PatternList *pat, PatternExecFlags flags,
 
   SLIST_FOREACH(p, pat, entries)
   {
-    if (mutt_pattern_alias_exec(p, flags, av, cache) <= 0)
+    if (!mutt_pattern_alias_exec(p, flags, av, cache))
+    {
       return false;
+    }
   }
   return true;
 }
@@ -325,8 +329,10 @@ static int perform_or(struct PatternList *pat, PatternExecFlags flags,
 
   SLIST_FOREACH(p, pat, entries)
   {
-    if (pattern_exec(p, flags, m, e, msg, cache) > 0)
+    if (pattern_exec(p, flags, m, e, msg, cache))
+    {
       return true;
+    }
   }
   return false;
 }
@@ -346,8 +352,10 @@ static int perform_alias_or(struct PatternList *pat, PatternExecFlags flags,
 
   SLIST_FOREACH(p, pat, entries)
   {
-    if (mutt_pattern_alias_exec(p, flags, av, cache) > 0)
+    if (mutt_pattern_alias_exec(p, flags, av, cache))
+    {
       return true;
+    }
   }
   return false;
 }
@@ -781,15 +789,14 @@ static bool pattern_needs_msg(const struct Mailbox *m, const struct Pattern *pat
  * @param e     Email
  * @param msg   MEssage
  * @param cache Cache for common Patterns
- * @retval  1 Success, pattern matched
- * @retval  0 Pattern did not match
- * @retval -1 Error
+ * @retval true Success, pattern matched
+ * @retval false Pattern did not match
  *
  * flags: MUTT_MATCH_FULL_ADDRESS - match both personal and machine address
  * cache: For repeated matches against the same Header, passing in non-NULL will
  *        store some of the cacheable pattern matches in this structure.
  */
-static int pattern_exec(struct Pattern *pat, PatternExecFlags flags,
+static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
                         struct Mailbox *m, struct Email *e, struct Message *msg,
                         struct PatternCache *cache)
 {
@@ -844,14 +851,14 @@ static int pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       if (pat->sendmode)
       {
         if (!e->body || !e->body->filename)
-          return 0;
+          return false;
         return pat->pat_not ^ msg_search_sendmode(e, pat);
       }
       /* m can be NULL in certain cases, such as when replying to a message
        * from the attachment menu and the user has a reply-hook using "~e".
        * This is also the case when message scoring.  */
       if (!m)
-        return 0;
+        return false;
 #ifdef USE_IMAP
       /* IMAP search sets e->matched at search compile time */
       if ((m->type == MUTT_IMAP) && pat->string_match)
@@ -861,47 +868,42 @@ static int pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_SERVERSEARCH:
 #ifdef USE_IMAP
       if (!m)
-        return 0;
+        return false;
       if (m->type == MUTT_IMAP)
       {
-        if (pat->string_match)
-          return e->matched;
-        return 0;
+        return (pat->string_match) ? e->matched : false;
       }
-      mutt_error(_("error: server custom search only supported with IMAP"));
-      return 0;
-#else
-      mutt_error(_("error: server custom search only supported with IMAP"));
-      return -1;
 #endif
+      mutt_error(_("error: server custom search only supported with IMAP"));
+      return false;
     case MUTT_PAT_SENDER:
       if (!e->env)
-        return 0;
+        return false;
       return pat->pat_not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
                                            1, &e->env->sender);
     case MUTT_PAT_FROM:
       if (!e->env)
-        return 0;
+        return false;
       return pat->pat_not ^
              match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1, &e->env->from);
     case MUTT_PAT_TO:
       if (!e->env)
-        return 0;
+        return false;
       return pat->pat_not ^
              match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1, &e->env->to);
     case MUTT_PAT_CC:
       if (!e->env)
-        return 0;
+        return false;
       return pat->pat_not ^
              match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1, &e->env->cc);
     case MUTT_PAT_SUBJECT:
       if (!e->env)
-        return 0;
+        return false;
       return pat->pat_not ^ (e->env->subject && patmatch(pat, e->env->subject));
     case MUTT_PAT_ID:
     case MUTT_PAT_ID_EXTERNAL:
       if (!e->env)
-        return 0;
+        return false;
       return pat->pat_not ^ (e->env->message_id && patmatch(pat, e->env->message_id));
     case MUTT_PAT_SCORE:
       return pat->pat_not ^ (e->score >= pat->min &&
@@ -911,24 +913,24 @@ static int pattern_exec(struct Pattern *pat, PatternExecFlags flags,
                              (pat->max == MUTT_MAXRANGE || e->body->length <= pat->max));
     case MUTT_PAT_REFERENCE:
       if (!e->env)
-        return 0;
+        return false;
       return pat->pat_not ^ (match_reference(pat, &e->env->references) ||
                              match_reference(pat, &e->env->in_reply_to));
     case MUTT_PAT_ADDRESS:
       if (!e->env)
-        return 0;
+        return false;
       return pat->pat_not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
                                            4, &e->env->from, &e->env->sender,
                                            &e->env->to, &e->env->cc);
     case MUTT_PAT_RECIPIENT:
       if (!e->env)
-        return 0;
+        return false;
       return pat->pat_not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
                                            2, &e->env->to, &e->env->cc);
     case MUTT_PAT_LIST: /* known list, subscribed or not */
     {
       if (!e->env)
-        return 0;
+        return false;
 
       int result;
       if (cache)
@@ -948,7 +950,7 @@ static int pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_SUBSCRIBED_LIST:
     {
       if (!e->env)
-        return 0;
+        return false;
 
       int result;
       if (cache)
@@ -968,7 +970,7 @@ static int pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_PERSONAL_RECIP:
     {
       if (!e->env)
-        return 0;
+        return false;
 
       int result;
       if (cache)
@@ -988,7 +990,7 @@ static int pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_PERSONAL_FROM:
     {
       if (!e->env)
-        return 0;
+        return false;
 
       int result;
       if (cache)
@@ -1011,50 +1013,50 @@ static int pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       if (!WithCrypto)
       {
         print_crypt_pattern_op_error(pat->op);
-        return 0;
+        return false;
       }
       return pat->pat_not ^ ((e->security & SEC_SIGN) ? 1 : 0);
     case MUTT_PAT_CRYPT_VERIFIED:
       if (!WithCrypto)
       {
         print_crypt_pattern_op_error(pat->op);
-        return 0;
+        return false;
       }
       return pat->pat_not ^ ((e->security & SEC_GOODSIGN) ? 1 : 0);
     case MUTT_PAT_CRYPT_ENCRYPT:
       if (!WithCrypto)
       {
         print_crypt_pattern_op_error(pat->op);
-        return 0;
+        return false;
       }
       return pat->pat_not ^ ((e->security & SEC_ENCRYPT) ? 1 : 0);
     case MUTT_PAT_PGP_KEY:
       if (!(WithCrypto & APPLICATION_PGP))
       {
         print_crypt_pattern_op_error(pat->op);
-        return 0;
+        return false;
       }
       return pat->pat_not ^ ((e->security & PGP_KEY) == PGP_KEY);
     case MUTT_PAT_XLABEL:
       if (!e->env)
-        return 0;
+        return false;
       return pat->pat_not ^ (e->env->x_label && patmatch(pat, e->env->x_label));
     case MUTT_PAT_DRIVER_TAGS:
     {
       char *tags = driver_tags_get(&e->tags);
-      bool rc = (pat->pat_not ^ (tags && patmatch(pat, tags)));
+      const bool rc = (pat->pat_not ^ (tags && patmatch(pat, tags)));
       FREE(&tags);
       return rc;
     }
     case MUTT_PAT_HORMEL:
       if (!e->env)
-        return 0;
+        return false;
       return pat->pat_not ^ (e->env->spam.data && patmatch(pat, e->env->spam.data));
     case MUTT_PAT_DUPLICATED:
       return pat->pat_not ^ (e->thread && e->thread->duplicate_thread);
     case MUTT_PAT_MIMEATTACH:
       if (!m)
-        return 0;
+        return false;
       {
         int count = mutt_count_body_parts(m, e, msg->fp);
         return pat->pat_not ^ (count >= pat->min &&
@@ -1062,7 +1064,7 @@ static int pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       }
     case MUTT_PAT_MIMETYPE:
       if (!m)
-        return 0;
+        return false;
       return pat->pat_not ^ match_mime_content_type(pat, m, e, msg->fp);
     case MUTT_PAT_UNREFERENCED:
       return pat->pat_not ^ (e->thread && !e->thread->child);
@@ -1071,12 +1073,12 @@ static int pattern_exec(struct Pattern *pat, PatternExecFlags flags,
 #ifdef USE_NNTP
     case MUTT_PAT_NEWSGROUPS:
       if (!e->env)
-        return 0;
+        return false;
       return pat->pat_not ^ (e->env->newsgroups && patmatch(pat, e->env->newsgroups));
 #endif
   }
   mutt_error(_("error: unknown op %d (report this error)"), pat->op);
-  return 0;
+  return false;
 }
 
 /**
@@ -1086,15 +1088,14 @@ static int pattern_exec(struct Pattern *pat, PatternExecFlags flags,
  * @param m     Mailbox
  * @param e     Email
  * @param cache Cache for common Patterns
- * @retval  1 Success, pattern matched
- * @retval  0 Pattern did not match
- * @retval -1 Error
+ * @retval true Success, pattern matched
+ * @retval false Pattern did not match
  *
  * flags: MUTT_MATCH_FULL_ADDRESS - match both personal and machine address
  * cache: For repeated matches against the same Header, passing in non-NULL will
  *        store some of the cacheable pattern matches in this structure.
  */
-int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
+bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
                       struct Mailbox *m, struct Email *e, struct PatternCache *cache)
 {
   struct Message *msg = pattern_needs_msg(m, pat) ? mx_msg_open(m, e->msgno) : NULL;
@@ -1109,30 +1110,29 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
  * @param flags Flags, e.g. #MUTT_MATCH_FULL_ADDRESS
  * @param av    AliasView
  * @param cache Cache for common Patterns
- * @retval  1 Success, pattern matched
- * @retval  0 Pattern did not match
- * @retval -1 Error
+ * @retval true Success, pattern matched
+ * @retval false Pattern did not match
  *
  * flags: MUTT_MATCH_FULL_ADDRESS - match both personal and machine address
  * cache: For repeated matches against the same Alias, passing in non-NULL will
  *        store some of the cacheable pattern matches in this structure.
  */
-int mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
+bool mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
                             struct AliasView *av, struct PatternCache *cache)
 {
   switch (pat->op)
   {
     case MUTT_PAT_FROM: /* alias */
       if (!av->alias)
-        return 0;
+        return false;
       return pat->pat_not ^ (av->alias->name && patmatch(pat, av->alias->name));
     case MUTT_PAT_CC: /* comment */
       if (!av->alias)
-        return 0;
+        return false;
       return pat->pat_not ^ (av->alias->comment && patmatch(pat, av->alias->comment));
     case MUTT_PAT_TO: /* alias address list */
       if (!av->alias)
-        return 0;
+        return false;
       return pat->pat_not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
                                            1, &av->alias->addr);
     case MUTT_PAT_AND:
@@ -1141,5 +1141,5 @@ int mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
       return pat->pat_not ^ (perform_alias_or(pat->child, flags, av, cache) > 0);
   }
 
-  return 0;
+  return false;
 }
