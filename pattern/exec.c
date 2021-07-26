@@ -1098,10 +1098,15 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
 bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
                       struct Mailbox *m, struct Email *e, struct PatternCache *cache)
 {
-  struct Message *msg = pattern_needs_msg(m, pat) ? mx_msg_open(m, e->msgno) : NULL;
-  const int rc = pattern_exec(pat, flags, m, e, msg, cache);
+  const bool needs_msg = pattern_needs_msg(m, pat);
+  struct Message *msg = needs_msg ? mx_msg_open(m, e->msgno) : NULL;
+  if (needs_msg && !msg)
+  {
+    return false;
+  }
+  const bool matched = pattern_exec(pat, flags, m, e, msg, cache);
   mx_msg_close(m, &msg);
-  return rc;
+  return matched;
 }
 
 /**
