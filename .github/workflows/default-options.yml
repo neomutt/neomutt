@@ -22,13 +22,21 @@ jobs:
       with:
         fetch-depth: 1
 
+    - name: Cache
+      id: cache
+      uses: actions/cache@v2
+      with:
+        path: ~/.ccache
+        key: ${{ runner.os }}-ccache-${{ hashFiles('hashFile.txt') }}
+        restore-keys: ${{ runner.os }}-ccache-
+
     - name: Install build software
       run: |
         sudo apt-get update
         sudo ln -fs /usr/share/zoneinfo/Europe/London /etc/localtime
         sudo apt install -y \
-          autopoint docbook-simple docbook-xsl gettext git gpgsm graphviz \
-          jimsh libdb-dev libgdbm-dev libgnutls28-dev libgpgme11-dev \
+          autopoint ccache docbook-simple docbook-xsl gettext git gpgsm \
+          graphviz jimsh libdb-dev libgdbm-dev libgnutls28-dev libgpgme11-dev \
           libgss-dev libidn2-0-dev libkrb5-dev libkyotocabinet-dev \
           liblmdb-dev liblua5.2-dev liblz4-dev libncursesw5-dev \
           libnotmuch-dev libqdbm-dev librocksdb-dev libsasl2-dev \
