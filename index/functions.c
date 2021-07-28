@@ -2095,8 +2095,10 @@ static int op_tag(struct IndexSharedData *shared, struct IndexPrivateData *priv,
         mutt_set_flag(m, e, MUTT_TAG, false);
     }
     menu_queue_redraw(priv->menu, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
+    return IR_SUCCESS;
   }
-  else if (!shared->email)
+
+  if (!shared->email)
     return IR_NO_ACTION;
 
   mutt_set_flag(shared->mailbox, shared->email, MUTT_TAG, !shared->email->tagged);
