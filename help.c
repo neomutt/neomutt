@@ -56,7 +56,7 @@ static const struct Binding *help_lookup_function(int op, enum MenuType menu)
 {
   const struct Binding *map = NULL;
 
-  if (menu != MENU_PAGER)
+  if (menu != MENU_PAGER && (menu != MENU_GENERIC))
   {
     /* first look in the generic map for the function */
     for (int i = 0; OpGeneric[i].name; i++)
@@ -415,7 +415,7 @@ void mutt_help(enum MenuType menu)
     }
 
     dump_menu(fp, menu, wraplen);
-    if ((menu != MENU_EDITOR) && (menu != MENU_PAGER))
+    if ((menu != MENU_EDITOR) && (menu != MENU_PAGER) && (menu != MENU_GENERIC))
     {
       fprintf(fp, "\n%s\n\n", _("Generic bindings:"));
       dump_menu(fp, MENU_GENERIC, wraplen);
@@ -424,7 +424,7 @@ void mutt_help(enum MenuType menu)
     fprintf(fp, "\n%s\n\n", _("Unbound functions:"));
     if (funcs)
       dump_unbound(fp, funcs, &Keymaps[menu], NULL, wraplen);
-    if (menu != MENU_PAGER)
+    if ((menu != MENU_EDITOR) && (menu != MENU_PAGER) && (menu != MENU_GENERIC))
       dump_unbound(fp, OpGeneric, &Keymaps[MENU_GENERIC], &Keymaps[menu], wraplen);
 
     mutt_file_fclose(&fp);

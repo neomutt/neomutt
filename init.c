@@ -1266,7 +1266,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
       for (int num = 0; menu[num].name; num++)
         candidate(UserTyped, menu[num].name, Completed, sizeof(Completed));
       /* try the generic menu */
-      if ((Completed[0] == '\0') && (mtype != MENU_PAGER))
+      if ((mtype != MENU_PAGER) && (mtype != MENU_GENERIC))
       {
         menu = OpGeneric;
         for (int num = 0; menu[num].name; num++)

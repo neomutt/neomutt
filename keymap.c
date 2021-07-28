@@ -705,7 +705,7 @@ int km_dokey(enum MenuType mtype)
       if ((mtype == MENU_EDITOR) && mutt_get_func(OpEditor, tmp.op))
         return tmp.op;
 
-      if ((mtype != MENU_EDITOR) && (mtype != MENU_PAGER))
+      if ((mtype != MENU_EDITOR) && (mtype != MENU_PAGER) && (mtype != MENU_GENERIC))
       {
         /* check generic menu type */
         bindings = OpGeneric;
@@ -1677,8 +1677,10 @@ enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s,
       bindings = OpGeneric;
 
     ops[nops] = get_op(bindings, function, mutt_str_len(function));
-    if ((ops[nops] == OP_NULL) && (mtype != MENU_PAGER))
+    if ((ops[nops] == OP_NULL) && (mtype != MENU_PAGER) && (mtype != MENU_GENERIC))
+    {
       ops[nops] = get_op(OpGeneric, function, mutt_str_len(function));
+    }
 
     if (ops[nops] == OP_NULL)
     {
