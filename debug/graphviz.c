@@ -458,6 +458,7 @@ static void dot_config(FILE *fp, const char *name, int type,
         }
       }
     }
+    FREE(&list);
   }
   else
   {
