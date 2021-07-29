@@ -17856,7 +17856,11 @@ bind index D purge-message
 
 <emphasis role="comment"># ------------------------------------------------------------</emphasis>
 <emphasis role="comment"># Default configuration: flat view sorted by date</emphasis>
-<emphasis role="comment">#set use_threads=no sort=date sort_aux=date</emphasis>
+<emphasis role="comment"># selecting threads with &lt;sort-mailbox&gt; changes $sort</emphasis>
+<emphasis role="comment">#set use_threads=unset sort=date sort_aux=date</emphasis>
+<emphasis role="comment"># Modern configuration: explicit flat view sorted by date</emphasis>
+<emphasis role="comment"># selecting threads with &lt;sort-mailbox&gt; changes $use_threads</emphasis>
+<emphasis role="comment">set use_threads=no sort=date sort_aux=date</emphasis>
 <emphasis role="comment">#   Anne     12:01  cover letter for thread 1</emphasis>
 <emphasis role="comment">#   Anne     12:02  part 1 of thread 1</emphasis>
 <emphasis role="comment">#   Anne     12:03  part 2 of thread 1</emphasis>
