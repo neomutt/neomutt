@@ -31,7 +31,8 @@
 #include "memory.h"
 
 /**
- * ARRAY_HEADROOM - Additional number of elements to reserve, to prevent frequent reallocations
+ * ARRAY_HEADROOM - Additional number of elements to reserve, to prevent
+ * frequent reallocations
  */
 #define ARRAY_HEADROOM 25
 
@@ -84,7 +85,8 @@
   ((head)->size)
 
 /**
- * ARRAY_CAPACITY - The number of elements the array can store without reallocation
+ * ARRAY_CAPACITY - The number of elements the array can store without
+ * reallocation
  * @param head Pointer to a struct defined using ARRAY_HEAD()
  * @retval num The capacity of the array
  */
@@ -182,12 +184,14 @@
  * @param num Number of elements to make room for
  * @retval num New capacity of the array
  */
-#define ARRAY_RESERVE(head, num)                                                                \
-  (((head)->capacity > (num)) ?                                                                 \
-       (head)->capacity :                                                                       \
-       ((mutt_mem_realloc(&(head)->entries, ((num) + ARRAY_HEADROOM) * ARRAY_ELEM_SIZE(head))), \
-        (memset((head)->entries + (head)->capacity, 0,                                          \
-                ((num) + ARRAY_HEADROOM - (head)->capacity) * ARRAY_ELEM_SIZE(head))),          \
+#define ARRAY_RESERVE(head, num)                                               \
+  (((head)->capacity > (num)) ?                                                \
+       (head)->capacity :                                                      \
+       ((mutt_mem_realloc(                                                     \
+         &(head)->entries, ((num) + ARRAY_HEADROOM) * ARRAY_ELEM_SIZE(head))), \
+        (memset((head)->entries + (head)->capacity, 0,                         \
+                ((num) + ARRAY_HEADROOM - (head)->capacity) *                  \
+                ARRAY_ELEM_SIZE(head))),                                       \
         ((head)->capacity = (num) + ARRAY_HEADROOM)))
 
 /**
@@ -254,13 +258,15 @@
   (elem - (head)->entries)
 
 /**
- * ARRAY_REMOVE - Remove an entry from the array, shifting down the subsequent entries
+ * ARRAY_REMOVE - Remove an entry from the array, shifting down the subsequent
+ * entries
  * @param head Pointer to a struct defined using ARRAY_HEAD()
  * @param elem Pointer to the element of the array to remove
  */
-#define ARRAY_REMOVE(head, elem)                                                        \
-  (memmove((elem), (elem) + 1,                                                          \
-           ARRAY_ELEM_SIZE((head)) * MAX(0, (ARRAY_SIZE((head)) - ARRAY_IDX((head), (elem)) - 1))), \
+#define ARRAY_REMOVE(head, elem)                                               \
+  (memmove((elem), (elem) + 1,                                                 \
+           ARRAY_ELEM_SIZE((head)) *                                           \
+           MAX(0, (ARRAY_SIZE((head)) - ARRAY_IDX((head), (elem)) - 1))),      \
    ARRAY_SHRINK((head), 1))
 
 /**
