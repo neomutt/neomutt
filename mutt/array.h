@@ -260,7 +260,7 @@
  */
 #define ARRAY_REMOVE(head, elem)                                                        \
   (memmove((elem), (elem) + 1,                                                          \
-           ARRAY_ELEM_SIZE((head)) * (ARRAY_SIZE((head)) - ARRAY_IDX((head), (elem)))), \
+           ARRAY_ELEM_SIZE((head)) * MAX(0, (ARRAY_SIZE((head)) - ARRAY_IDX((head), (elem)) - 1))), \
    ARRAY_SHRINK((head), 1))
 
 /**

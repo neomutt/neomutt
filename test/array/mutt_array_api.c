@@ -413,12 +413,72 @@ void test_mutt_array_api(void)
     size_t *elem = ARRAY_GET(&head, to_rem);
     ARRAY_REMOVE(&head, elem);
 
-    if (!TEST_CHECK(ARRAY_SIZE(&head) == 9))
+    if (!TEST_CHECK(ARRAY_SIZE(&head) == 25))
     {
-      TEST_MSG("Expected: %zu", 9);
+      TEST_MSG("Expected: %zu", 25);
       TEST_MSG("Actual  : %zu", ARRAY_SIZE(&head));
     }
-    for (size_t i = 0; i < 9; i++)
+    for (size_t i = 0; i < 25; i++)
+    {
+      size_t res = i < to_rem ? i : i + 1;
+      if (!TEST_CHECK(*ARRAY_GET(&head, i) == res))
+      {
+        TEST_MSG("Expected: %zu", res);
+        TEST_MSG("Actual  : %zu", *ARRAY_GET(&head, i));
+      }
+    }
+    ARRAY_FREE(&head);
+  }
+
+  /* Removal of first element */
+  {
+    const size_t to_rem = 0;
+
+    ARRAY_HEAD(, size_t) head = ARRAY_HEAD_INITIALIZER;
+    for (size_t i = 0; i < 26; i++)
+    {
+      ARRAY_ADD(&head, i);
+    }
+
+    size_t *elem = ARRAY_GET(&head, to_rem);
+    ARRAY_REMOVE(&head, elem);
+
+    if (!TEST_CHECK(ARRAY_SIZE(&head) == 25))
+    {
+      TEST_MSG("Expected: %zu", 25);
+      TEST_MSG("Actual  : %zu", ARRAY_SIZE(&head));
+    }
+    for (size_t i = 0; i < 25; i++)
+    {
+      size_t res = i < to_rem ? i : i + 1;
+      if (!TEST_CHECK(*ARRAY_GET(&head, i) == res))
+      {
+        TEST_MSG("Expected: %zu", res);
+        TEST_MSG("Actual  : %zu", *ARRAY_GET(&head, i));
+      }
+    }
+    ARRAY_FREE(&head);
+  }
+
+  /* Removal of last element */
+  {
+    const size_t to_rem = 25;
+
+    ARRAY_HEAD(, size_t) head = ARRAY_HEAD_INITIALIZER;
+    for (size_t i = 0; i < 26; i++)
+    {
+      ARRAY_ADD(&head, i);
+    }
+
+    size_t *elem = ARRAY_GET(&head, to_rem);
+    ARRAY_REMOVE(&head, elem);
+
+    if (!TEST_CHECK(ARRAY_SIZE(&head) == 25))
+    {
+      TEST_MSG("Expected: %zu", 25);
+      TEST_MSG("Actual  : %zu", ARRAY_SIZE(&head));
+    }
+    for (size_t i = 0; i < 25; i++)
     {
       size_t res = i < to_rem ? i : i + 1;
       if (!TEST_CHECK(*ARRAY_GET(&head, i) == res))
