@@ -405,7 +405,7 @@ void test_mutt_array_api(void)
     const size_t to_rem = 5;
 
     ARRAY_HEAD(, size_t) head = ARRAY_HEAD_INITIALIZER;
-    for (size_t i = 0; i < 10; i++)
+    for (size_t i = 0; i < 26; i++)
     {
       ARRAY_ADD(&head, i);
     }
