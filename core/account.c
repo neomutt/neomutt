@@ -30,6 +30,7 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "core/lib.h"
 #include "account.h"
 #include "mailbox.h"
 
@@ -113,8 +114,15 @@ bool account_mailbox_remove(struct Account *a, struct Mailbox *m)
       continue;
 
     STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);
-    if (!m)
+    if (m)
+    {
+      m->account = NULL;
+      notify_set_parent(m->notify, NeoMutt->notify);
+    }
+    else
+    {
       mailbox_free(&np->mailbox);
+    }
     FREE(&np);
     result = true;
     if (m)

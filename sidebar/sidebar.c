@@ -116,47 +116,47 @@ void sb_remove_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
   struct SbEntry **sbep = NULL;
   ARRAY_FOREACH(sbep, &wdata->entries)
   {
-    if (mutt_str_equal((*sbep)->mailbox->realpath, m->realpath))
+    if ((*sbep)->mailbox != m)
+      continue;
+
+    struct SbEntry *sbe_remove = *sbep;
+    ARRAY_REMOVE(&wdata->entries, sbep);
+    FREE(&sbe_remove);
+
+    if (wdata->opn_index == ARRAY_FOREACH_IDX)
     {
-      struct SbEntry *sbe_remove = *sbep;
-      ARRAY_REMOVE(&wdata->entries, sbep);
-      FREE(&sbe_remove);
-
-      if (wdata->opn_index == ARRAY_FOREACH_IDX)
-      {
-        // Open item was deleted
-        wdata->opn_index = -1;
-      }
-      else if ((wdata->opn_index > 0) && (wdata->opn_index > ARRAY_FOREACH_IDX))
-      {
-        // Open item is still visible, so adjust the index
-        wdata->opn_index--;
-      }
-
-      if (wdata->hil_index == ARRAY_FOREACH_IDX)
-      {
-        // If possible, keep the highlight where it is
-        struct SbEntry **sbep_cur = ARRAY_GET(&wdata->entries, ARRAY_FOREACH_IDX);
-        if (!sbep_cur)
-        {
-          // The last entry was deleted, so backtrack
-          select_prev(wdata);
-        }
-        else if ((*sbep)->is_hidden)
-        {
-          // Find the next unhidden entry, or the previous
-          if (!select_next(wdata))
-            if (!select_prev(wdata))
-              wdata->hil_index = -1;
-        }
-      }
-      else if ((wdata->hil_index > 0) && (wdata->hil_index > ARRAY_FOREACH_IDX))
-      {
-        // Highlighted item is still visible, so adjust the index
-        wdata->hil_index--;
-      }
-      break;
+      // Open item was deleted
+      wdata->opn_index = -1;
     }
+    else if ((wdata->opn_index > 0) && (wdata->opn_index > ARRAY_FOREACH_IDX))
+    {
+      // Open item is still visible, so adjust the index
+      wdata->opn_index--;
+    }
+
+    if (wdata->hil_index == ARRAY_FOREACH_IDX)
+    {
+      // If possible, keep the highlight where it is
+      struct SbEntry **sbep_cur = ARRAY_GET(&wdata->entries, ARRAY_FOREACH_IDX);
+      if (!sbep_cur)
+      {
+        // The last entry was deleted, so backtrack
+        select_prev(wdata);
+      }
+      else if ((*sbep)->is_hidden)
+      {
+        // Find the next unhidden entry, or the previous
+        if (!select_next(wdata))
+          if (!select_prev(wdata))
+            wdata->hil_index = -1;
+      }
+    }
+    else if ((wdata->hil_index > 0) && (wdata->hil_index > ARRAY_FOREACH_IDX))
+    {
+      // Highlighted item is still visible, so adjust the index
+      wdata->hil_index--;
+    }
+    break;
   }
 }
 
