@@ -22,7 +22,9 @@
  */
 
 /**
- * @page lib_store STORE: Key value store
+ * @page lib_store Store
+ *
+ * Key value store
  *
  * These databases provide Key/Value storage for NeoMutt.
  * They are used by the \ref hcache.

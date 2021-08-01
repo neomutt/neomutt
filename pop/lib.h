@@ -21,7 +21,7 @@
  */
 
 /**
- * @page lib_pop POP: Network mailbox
+ * @page lib_pop Pop
  *
  * POP network mailbox
  *

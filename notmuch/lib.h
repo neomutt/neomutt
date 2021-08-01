@@ -21,7 +21,7 @@
  */
 
 /**
- * @page lib_notmuch NOTMUCH: Virtual mailbox type
+ * @page lib_notmuch Notmuch
  *
  * Notmuch virtual mailbox type
  *

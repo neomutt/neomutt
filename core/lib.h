@@ -21,7 +21,7 @@
  */
 
 /**
- * @page lib_core CORE: Backbone objects of NeoMutt
+ * @page lib_core Core
  *
  * Backbone objects of NeoMutt
  *

@@ -21,9 +21,9 @@
  */
 
 /**
- * @page lib_compose COMPOSE: Display and edit an email's headers
+ * @page lib_compose Compose
  *
- * Display the mailboxes in a side panel
+ * Compose an email
  *
  * | File                   | Description                    |
  * | :--------------------- | :----------------------------- |

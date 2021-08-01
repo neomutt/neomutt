@@ -22,7 +22,7 @@
  */
 
 /**
- * @page lib_bcache BCACHE: Body Caching - local copies of email bodies
+ * @page lib_bcache Bcache
  *
  * Body Caching - local copies of email bodies
  *

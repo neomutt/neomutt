@@ -21,7 +21,9 @@
  */
 
 /**
- * @page lib_compress COMPRESS: Data compression
+ * @page lib_compress Compress
+ *
+ * Data compression
  *
  * These compression methods are used by the \ref hcache.
  *

@@ -21,9 +21,9 @@
  */
 
 /**
- * @page lib_menu MENU: GUI present the user with a selectable list
+ * @page lib_menu Menu
  *
- * GUI present the user with a selectable list
+ * A selectable list
  *
  * | File             | Description             |
  * | :--------------- | :---------------------- |

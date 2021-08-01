@@ -21,7 +21,9 @@
  */
 
 /**
- * @page lib_mutt MUTT: Shared code for handling strings, files, dates, etc
+ * @page lib_mutt Mutt
+ *
+ * Shared code for handling strings, files, dates, etc
  *
  * Each source file in the library provides a group of related functions.
  *

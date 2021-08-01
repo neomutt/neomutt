@@ -22,7 +22,9 @@
  */
 
 /**
- * @page lib_helpbar HELPBAR: Help line showing key bindings
+ * @page lib_helpbar Helpbar
+ *
+ * Help line showing key bindings
  *
  * This one-line Window lives at the top of the screen.
  * It displays some commonly-used key bindings for the current screen.

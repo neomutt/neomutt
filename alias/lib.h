@@ -21,9 +21,9 @@
  */
 
 /**
- * @page lib_alias ALIAS: Email Aliases
+ * @page lib_alias Alias
  *
- * Email Aliases
+ * Email Aliases (Address Book)
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |

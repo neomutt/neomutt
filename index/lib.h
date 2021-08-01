@@ -21,9 +21,9 @@
  */
 
 /**
- * @page lib_index INDEX: GUI manage the main index (list of emails)
+ * @page lib_index Index
  *
- * GUI manage the main index (list of emails)
+ * Display a list of Emails
  *
  * | File                 | Description                 |
  * | :------------------- | :-------------------------- |

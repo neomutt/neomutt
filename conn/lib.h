@@ -21,9 +21,9 @@
  */
 
 /**
- * @page lib_conn CONN: Network connections and their encryption
+ * @page lib_conn Conn
  *
- * Manage external connections.
+ * Network connections and their encryption
  *
  * | File                | Description              |
  * | :------------------ | :----------------------- |

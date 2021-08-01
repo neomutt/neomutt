@@ -23,7 +23,7 @@
  */
 
 /**
- * @page lib_sidebar SIDEBAR: Display the mailboxes in a side panel
+ * @page lib_sidebar Sidebar
  *
  * Display the mailboxes in a side panel
  *

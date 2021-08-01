@@ -21,9 +21,9 @@
  */
 
 /**
- * @page lib_debug DEBUG: Debugging tools
+ * @page lib_debug Debug
  *
- * Debugging tools
+ * Debugging code
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |

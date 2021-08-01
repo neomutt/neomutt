@@ -22,7 +22,7 @@
  */
 
 /**
- * @page lib_question QUESTION: Ask the user a question
+ * @page lib_question Question
  *
  * Ask the user a question
  *

@@ -21,9 +21,9 @@
  */
 
 /**
- * @page lib_pager PAGER: GUI display contents of an email or help
+ * @page lib_pager Pager
  *
- * GUI Display contents of an email or help
+ * Display contents of an email or help
  *
  * | File                 | Description                 |
  * | :------------------- | :-------------------------- |

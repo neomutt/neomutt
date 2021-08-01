@@ -23,7 +23,7 @@
  */
 
 /**
- * @page lib_nntp NNTP: Usenet network mailbox type; talk to an NNTP server
+ * @page lib_nntp Nntp
  *
  * Usenet network mailbox type; talk to an NNTP server
  *

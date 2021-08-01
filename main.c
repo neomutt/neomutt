@@ -39,8 +39,8 @@
  *
  * ## Libraries
  *
- * Each library helps to untangle the code by grouping similar functions and
- * reducing dependencies.
+ * [Each library](pages.html) helps to untangle the code by grouping similar
+ * functions and reducing dependencies.
  *
  * The goal is that each library is:
  * - Self-contained (it may rely on other libraries)
@@ -48,41 +48,15 @@
  * - Fully documented
  * - Robust
  *
- * | Library            |
- * | :----------------- |
- * | @ref lib_address   |
- * | @ref lib_alias     |
- * | @ref lib_autocrypt |
- * | @ref lib_bcache    |
- * | @ref lib_compmbox  |
- * | @ref lib_compose   |
- * | @ref lib_compress  |
- * | @ref lib_config    |
- * | @ref lib_conn      |
- * | @ref lib_core      |
- * | @ref lib_debug     |
- * | @ref lib_email     |
- * | @ref lib_gui       |
- * | @ref lib_hcache    |
- * | @ref lib_helpbar   |
- * | @ref lib_history   |
- * | @ref lib_imap      |
- * | @ref lib_index     |
- * | @ref lib_maildir   |
- * | @ref lib_mbox      |
- * | @ref lib_menu      |
- * | @ref lib_mutt      |
- * | @ref lib_ncrypt    |
- * | @ref lib_nntp      |
- * | @ref lib_notmuch   |
- * | @ref lib_pager     |
- * | @ref lib_pattern   |
- * | @ref lib_pop       |
- * | @ref lib_progress  |
- * | @ref lib_question  |
- * | @ref lib_send      |
- * | @ref lib_sidebar   |
- * | @ref lib_store     |
+ * Libraries:
+ * @ref lib_address, @ref lib_alias, @ref lib_autocrypt, @ref lib_bcache,
+ * @ref lib_compmbox, @ref lib_compose, @ref lib_compress, @ref lib_config,
+ * @ref lib_conn, @ref lib_core, @ref lib_debug, @ref lib_email, @ref lib_gui,
+ * @ref lib_hcache, @ref lib_helpbar, @ref lib_history, @ref lib_imap,
+ * @ref lib_index, @ref lib_maildir, @ref lib_mbox, @ref lib_menu,
+ * @ref lib_mutt, @ref lib_ncrypt, @ref lib_nntp, @ref lib_notmuch,
+ * @ref lib_pager, @ref lib_pattern, @ref lib_pop, @ref lib_progress,
+ * @ref lib_question, @ref lib_send, @ref lib_sidebar, @ref lib_store.
  *
  * ## Miscellaneous files
  *

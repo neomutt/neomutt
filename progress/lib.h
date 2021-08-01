@@ -22,7 +22,7 @@
  */
 
 /**
- * @page lib_progress PROGRESS: Progress Bar
+ * @page lib_progress Progress
  *
  * Progress Bar
  *

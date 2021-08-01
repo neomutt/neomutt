@@ -21,7 +21,7 @@
  */
 
 /**
- * @page lib_address ADDRESS: Email Address Handling
+ * @page lib_address Address
  *
  * Email Address Handling
  *

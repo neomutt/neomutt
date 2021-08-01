@@ -23,7 +23,7 @@
  */
 
 /**
- * @page lib_ncrypt NCRYPT: Encrypt/decrypt/sign/verify emails
+ * @page lib_ncrypt Ncrypt
  *
  * Encrypt/decrypt/sign/verify emails
  *
