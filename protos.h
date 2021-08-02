@@ -79,6 +79,8 @@ int mutt_num_postponed(struct Mailbox *m, bool force);
 int mutt_thread_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag, bool bf, bool subthread);
 void mutt_update_num_postponed(void);
 int mutt_is_quote_line(char *buf, regmatch_t *pmatch);
+struct Email *dlg_select_postponed_email(struct Mailbox *m);
+extern short PostCount;
 
 #ifndef HAVE_WCSCASECMP
 int wcscasecmp(const wchar_t *a, const wchar_t *b);

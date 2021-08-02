@@ -77,6 +77,7 @@ debug/graphviz.c
 debug/notify.c
 debug/parse_test.c
 debug/window.c
+dlg_postpone.c
 editmsg.c
 email/attach.c
 email/body.c

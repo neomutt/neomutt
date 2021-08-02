@@ -22,51 +22,9 @@
  */
 
 /**
- * @page neo_postpone Postponed Email Selection Dialog
+ * @page neo_postpone Postponed Email
  *
- * ## Overview
- *
- * The Postponed Email Selection Dialog lets the user set a postponed (draft)
- * email.
- *
- * This is a @ref gui_simple
- *
- * ## Windows
- *
- * | Name                             | Type            | See Also                     |
- * | :------------------------------- | :-------------- | :--------------------------- |
- * | Postponed Email Selection Dialog | WT_DLG_POSTPONE | dlg_select_postponed_email() |
- *
- * **Parent**
- * - @ref gui_dialog
- *
- * **Children**
- * - See: @ref gui_simple
- *
- * ## Data
- * - #Menu
- * - #Menu::mdata
- * - #Mailbox
- *
- * The @ref gui_simple holds a Menu.  The Autocrypt Account Dialog stores its
- * data (#Mailbox) in Menu::mdata.
- *
- * ## Events
- *
- * Once constructed, it is controlled by the following events:
- *
- * | Event Type  | Handler                     |
- * | :---------- | :-------------------------- | 
- * | #NT_CONFIG  | postponed_config_observer() |
- * | #NT_WINDOW  | postponed_window_observer() |
- *
- * The Postponed Email Selection Dialog doesn't have any specific colours, so
- * it doesn't need to support #NT_COLOR.
- *
- * The Postponed Email Selection Dialog does not implement MuttWindow::recalc()
- * or MuttWindow::repaint().
- *
- * Some other events are handled by the @ref gui_simple.
+ * Functions to deal with Postponed Emails.
  */
 
 #include "config.h"
@@ -80,21 +38,15 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "gui/lib.h"
 #include "mutt.h"
-#include "menu/lib.h"
 #include "ncrypt/lib.h"
-#include "pattern/lib.h"
 #include "send/lib.h"
 #include "context.h"
-#include "format_flags.h"
 #include "handler.h"
-#include "hdrline.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "opcodes.h"
 #include "options.h"
 #include "protos.h"
 #include "rfc3676.h"
@@ -102,18 +54,7 @@
 #include "imap/lib.h"
 #endif
 
-/// Help Bar for the Postponed email selection dialog
-static const struct Mapping PostponeHelp[] = {
-  // clang-format off
-  { N_("Exit"),  OP_EXIT },
-  { N_("Del"),   OP_DELETE },
-  { N_("Undel"), OP_UNDELETE },
-  { N_("Help"),  OP_HELP },
-  { NULL, 0 },
-  // clang-format on
-};
-
-static short PostCount = 0;
+short PostCount = 0;
 static bool UpdateNumPostponed = false;
 
 /**
@@ -243,160 +184,6 @@ void mutt_update_num_postponed(void)
 }
 
 /**
- * post_make_entry - Format a menu item for the email list - Implements Menu::make_entry() - @ingroup menu_make_entry
- */
-static void post_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
-{
-  struct Mailbox *m = menu->mdata;
-
-  const char *const c_index_format =
-      cs_subset_string(NeoMutt->sub, "index_format");
-  mutt_make_string(buf, buflen, menu->win->state.cols, NONULL(c_index_format),
-                   m, -1, m->emails[line], MUTT_FORMAT_ARROWCURSOR, NULL);
-}
-
-/**
- * postponed_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
- *
- * The Address Book Window is affected by changes to `$sort_postponed`.
- */
-static int postponed_config_observer(struct NotifyCallback *nc)
-{
-  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
-    return -1;
-
-  struct EventConfig *ev_c = nc->event_data;
-
-  if (!mutt_str_equal(ev_c->name, "index_format") && !mutt_str_equal(ev_c->name, "sort"))
-    return 0;
-
-  struct Menu *menu = nc->global_data;
-  menu_queue_redraw(menu, MENU_REDRAW_FULL);
-  mutt_debug(LL_DEBUG5, "config done, request WA_RECALC, MENU_REDRAW_FULL\n");
-
-  return 0;
-}
-
-/**
- * postponed_window_observer - Notification that a Window has changed - Implements ::observer_t
- *
- * This function is triggered by changes to the windows.
- *
- * - Delete (this window): clean up the resources held by the Help Bar
- */
-static int postponed_window_observer(struct NotifyCallback *nc)
-{
-  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
-    return -1;
-
-  if (nc->event_subtype != NT_WINDOW_DELETE)
-    return 0;
-
-  struct MuttWindow *win_menu = nc->global_data;
-  struct EventWindow *ev_w = nc->event_data;
-  if (ev_w->win != win_menu)
-    return 0;
-
-  struct Menu *menu = win_menu->wdata;
-
-  notify_observer_remove(NeoMutt->notify, postponed_config_observer, menu);
-  notify_observer_remove(win_menu->notify, postponed_window_observer, win_menu);
-
-  mutt_debug(LL_DEBUG5, "window delete done\n");
-  return 0;
-}
-
-/**
- * dlg_select_postponed_email - Create a Menu to select a postponed message
- * @param m Mailbox
- * @retval ptr Email
- */
-static struct Email *dlg_select_postponed_email(struct Mailbox *m)
-{
-  int r = -1;
-  bool done = false;
-
-  struct MuttWindow *dlg = simple_dialog_new(MENU_POSTPONE, WT_DLG_POSTPONE, PostponeHelp);
-
-  struct Menu *menu = dlg->wdata;
-  menu->make_entry = post_make_entry;
-  menu->max = m->msg_count;
-  menu->mdata = m;
-  menu->custom_search = true;
-
-  struct MuttWindow *win_menu = menu->win;
-
-  // NT_COLOR is handled by the SimpleDialog
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, postponed_config_observer, menu);
-  notify_observer_add(win_menu->notify, NT_WINDOW, postponed_window_observer, win_menu);
-
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
-  sbar_set_title(sbar, _("Postponed Messages"));
-
-  /* The postponed mailbox is setup to have sorting disabled, but the global
-   * `$sort` variable may indicate something different.   Sorting has to be
-   * disabled while the postpone menu is being displayed. */
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
-
-  while (!done)
-  {
-    const int op = menu_loop(menu);
-    switch (op)
-    {
-      case OP_DELETE:
-      case OP_UNDELETE:
-      {
-        const int index = menu_get_index(menu);
-        /* should deleted draft messages be saved in the trash folder? */
-        mutt_set_flag(m, m->emails[index], MUTT_DELETE, (op == OP_DELETE));
-        PostCount = m->msg_count - m->msg_deleted;
-        const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
-        if (c_resolve && (index < (menu->max - 1)))
-        {
-          menu_set_index(menu, index + 1);
-          if (index >= (menu->top + menu->pagelen))
-          {
-            menu->top = index;
-            menu_queue_redraw(menu, MENU_REDRAW_INDEX | MENU_REDRAW_STATUS);
-          }
-        }
-        else
-          menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
-        break;
-      }
-
-      // All search operations must exist to show the menu
-      case OP_SEARCH_REVERSE:
-      case OP_SEARCH_NEXT:
-      case OP_SEARCH_OPPOSITE:
-      case OP_SEARCH:
-      {
-        int index = menu_get_index(menu);
-        index = mutt_search_command(m, menu, index, op);
-        if (index != -1)
-          menu_set_index(menu, index);
-        break;
-      }
-
-      case OP_GENERIC_SELECT_ENTRY:
-        r = menu_get_index(menu);
-        done = true;
-        break;
-
-      case OP_EXIT:
-        done = true;
-        break;
-    }
-  }
-
-  cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
-  simple_dialog_free(&dlg);
-
-  return (r > -1) ? m->emails[r] : NULL;
-}
-
-/**
  * hardclose - try hard to close a mailbox
  * @param m Mailbox to close
  */
@@ -409,165 +196,6 @@ static void hardclose(struct Mailbox *m)
     rc = mx_mbox_close(m);
   if (rc != MX_STATUS_OK)
     mx_fastclose_mailbox(m);
-}
-
-/**
- * mutt_get_postponed - Recall a postponed message
- * @param[in]  m_cur   Current mailbox
- * @param[in]  hdr     envelope/attachment info for recalled message
- * @param[out] cur     if message was a reply, 'cur' is set to the message which 'hdr' is in reply to
- * @param[in]  fcc     fcc for the recalled message
- * @retval -1         Error/no messages
- * @retval 0          Normal exit
- * @retval #SEND_REPLY Recalled message is a reply
- */
-int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
-                       struct Email **cur, struct Buffer *fcc)
-{
-  const char *const c_postponed = cs_subset_string(NeoMutt->sub, "postponed");
-  if (!c_postponed)
-    return -1;
-
-  struct Email *e = NULL;
-  int rc = SEND_POSTPONED;
-  const char *p = NULL;
-
-  struct Mailbox *m = mx_path_resolve(c_postponed);
-  if (m_cur != m)
-  {
-    if (!mx_mbox_open(m, MUTT_NOSORT))
-    {
-      PostCount = 0;
-      mutt_error(_("No postponed messages"));
-      mailbox_free(&m);
-      return -1;
-    }
-  }
-
-  mx_mbox_check(m);
-
-  if (m->msg_count == 0)
-  {
-    PostCount = 0;
-    mutt_error(_("No postponed messages"));
-    if (m_cur != m)
-    {
-      mx_fastclose_mailbox(m);
-    }
-    return -1;
-  }
-
-  /* avoid the "purge deleted messages" prompt */
-  const enum QuadOption c_delete = cs_subset_quad(NeoMutt->sub, "delete");
-  cs_subset_str_native_set(NeoMutt->sub, "delete", MUTT_YES, NULL);
-
-  struct Context *ctx = (m_cur != m) ? ctx_new(m) : NULL;
-  if (m->msg_count == 1)
-  {
-    /* only one message, so just use that one. */
-    e = m->emails[0];
-  }
-  else if (!(e = dlg_select_postponed_email(m)))
-  {
-    rc = -1;
-    goto cleanup;
-  }
-
-  if (mutt_prepare_template(NULL, m, hdr, e, false) < 0)
-  {
-    rc = -1;
-    goto cleanup;
-  }
-
-  /* finished with this message, so delete it. */
-  mutt_set_flag(m, e, MUTT_DELETE, true);
-  mutt_set_flag(m, e, MUTT_PURGE, true);
-
-  /* update the count for the status display */
-  PostCount = m->msg_count - m->msg_deleted;
-
-  struct ListNode *np = NULL, *tmp = NULL;
-  STAILQ_FOREACH_SAFE(np, &hdr->env->userhdrs, entries, tmp)
-  {
-    size_t plen = mutt_istr_startswith(np->data, "X-Mutt-References:");
-    if (plen)
-    {
-      /* if a mailbox is currently open, look to see if the original message
-       * the user attempted to reply to is in this mailbox */
-      p = mutt_str_skip_email_wsp(np->data + plen);
-      if (!m_cur->id_hash)
-        m_cur->id_hash = mutt_make_id_hash(m_cur);
-      *cur = mutt_hash_find(m_cur->id_hash, p);
-
-      if (*cur)
-        rc |= SEND_REPLY;
-    }
-    else if ((plen = mutt_istr_startswith(np->data, "X-Mutt-Fcc:")))
-    {
-      p = mutt_str_skip_email_wsp(np->data + plen);
-      mutt_buffer_strcpy(fcc, p);
-      mutt_buffer_pretty_mailbox(fcc);
-
-      /* note that x-mutt-fcc was present.  we do this because we want to add a
-       * default fcc if the header was missing, but preserve the request of the
-       * user to not make a copy if the header field is present, but empty.
-       * see http://dev.mutt.org/trac/ticket/3653 */
-      rc |= SEND_POSTPONED_FCC;
-    }
-    else if (((WithCrypto & APPLICATION_PGP) != 0) &&
-             /* this is generated by old neomutt versions */
-             (mutt_str_startswith(np->data, "Pgp:") ||
-              /* this is the new way */
-              mutt_str_startswith(np->data, "X-Mutt-PGP:")))
-    {
-      hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, true, APPLICATION_PGP);
-      hdr->security |= APPLICATION_PGP;
-    }
-    else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
-             mutt_str_startswith(np->data, "X-Mutt-SMIME:"))
-    {
-      hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, true, APPLICATION_SMIME);
-      hdr->security |= APPLICATION_SMIME;
-    }
-#ifdef MIXMASTER
-    else if (mutt_str_startswith(np->data, "X-Mutt-Mix:"))
-    {
-      mutt_list_free(&hdr->chain);
-
-      char *t = strtok(np->data + 11, " \t\n");
-      while (t)
-      {
-        mutt_list_insert_tail(&hdr->chain, mutt_str_dup(t));
-        t = strtok(NULL, " \t\n");
-      }
-    }
-#endif
-    else
-    {
-      // skip header removal
-      continue;
-    }
-
-    // remove the header
-    STAILQ_REMOVE(&hdr->env->userhdrs, np, ListNode, entries);
-    FREE(&np->data);
-    FREE(&np);
-  }
-
-  const bool c_crypt_opportunistic_encrypt =
-      cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt");
-  if (c_crypt_opportunistic_encrypt)
-    crypt_opportunistic_encrypt(m_cur, hdr);
-
-cleanup:
-  if (m_cur != m)
-  {
-    hardclose(m);
-    ctx_free(&ctx);
-  }
-
-  cs_subset_str_native_set(NeoMutt->sub, "delete", c_delete, NULL);
-  return rc;
 }
 
 /**
@@ -993,5 +621,164 @@ bail:
     mutt_body_free(&e_new->body);
   }
 
+  return rc;
+}
+
+/**
+ * mutt_get_postponed - Recall a postponed message
+ * @param[in]  m_cur   Current mailbox
+ * @param[in]  hdr     envelope/attachment info for recalled message
+ * @param[out] cur     if message was a reply, 'cur' is set to the message which 'hdr' is in reply to
+ * @param[in]  fcc     fcc for the recalled message
+ * @retval -1         Error/no messages
+ * @retval 0          Normal exit
+ * @retval #SEND_REPLY Recalled message is a reply
+ */
+int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
+                       struct Email **cur, struct Buffer *fcc)
+{
+  const char *const c_postponed = cs_subset_string(NeoMutt->sub, "postponed");
+  if (!c_postponed)
+    return -1;
+
+  struct Email *e = NULL;
+  int rc = SEND_POSTPONED;
+  const char *p = NULL;
+
+  struct Mailbox *m = mx_path_resolve(c_postponed);
+  if (m_cur != m)
+  {
+    if (!mx_mbox_open(m, MUTT_NOSORT))
+    {
+      PostCount = 0;
+      mutt_error(_("No postponed messages"));
+      mailbox_free(&m);
+      return -1;
+    }
+  }
+
+  mx_mbox_check(m);
+
+  if (m->msg_count == 0)
+  {
+    PostCount = 0;
+    mutt_error(_("No postponed messages"));
+    if (m_cur != m)
+    {
+      mx_fastclose_mailbox(m);
+    }
+    return -1;
+  }
+
+  /* avoid the "purge deleted messages" prompt */
+  const enum QuadOption c_delete = cs_subset_quad(NeoMutt->sub, "delete");
+  cs_subset_str_native_set(NeoMutt->sub, "delete", MUTT_YES, NULL);
+
+  struct Context *ctx = (m_cur != m) ? ctx_new(m) : NULL;
+  if (m->msg_count == 1)
+  {
+    /* only one message, so just use that one. */
+    e = m->emails[0];
+  }
+  else if (!(e = dlg_select_postponed_email(m)))
+  {
+    rc = -1;
+    goto cleanup;
+  }
+
+  if (mutt_prepare_template(NULL, m, hdr, e, false) < 0)
+  {
+    rc = -1;
+    goto cleanup;
+  }
+
+  /* finished with this message, so delete it. */
+  mutt_set_flag(m, e, MUTT_DELETE, true);
+  mutt_set_flag(m, e, MUTT_PURGE, true);
+
+  /* update the count for the status display */
+  PostCount = m->msg_count - m->msg_deleted;
+
+  struct ListNode *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, &hdr->env->userhdrs, entries, tmp)
+  {
+    size_t plen = mutt_istr_startswith(np->data, "X-Mutt-References:");
+    if (plen)
+    {
+      /* if a mailbox is currently open, look to see if the original message
+       * the user attempted to reply to is in this mailbox */
+      p = mutt_str_skip_email_wsp(np->data + plen);
+      if (!m_cur->id_hash)
+        m_cur->id_hash = mutt_make_id_hash(m_cur);
+      *cur = mutt_hash_find(m_cur->id_hash, p);
+
+      if (*cur)
+        rc |= SEND_REPLY;
+    }
+    else if ((plen = mutt_istr_startswith(np->data, "X-Mutt-Fcc:")))
+    {
+      p = mutt_str_skip_email_wsp(np->data + plen);
+      mutt_buffer_strcpy(fcc, p);
+      mutt_buffer_pretty_mailbox(fcc);
+
+      /* note that x-mutt-fcc was present.  we do this because we want to add a
+       * default fcc if the header was missing, but preserve the request of the
+       * user to not make a copy if the header field is present, but empty.
+       * see http://dev.mutt.org/trac/ticket/3653 */
+      rc |= SEND_POSTPONED_FCC;
+    }
+    else if (((WithCrypto & APPLICATION_PGP) != 0) &&
+             /* this is generated by old neomutt versions */
+             (mutt_str_startswith(np->data, "Pgp:") ||
+              /* this is the new way */
+              mutt_str_startswith(np->data, "X-Mutt-PGP:")))
+    {
+      hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, true, APPLICATION_PGP);
+      hdr->security |= APPLICATION_PGP;
+    }
+    else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
+             mutt_str_startswith(np->data, "X-Mutt-SMIME:"))
+    {
+      hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, true, APPLICATION_SMIME);
+      hdr->security |= APPLICATION_SMIME;
+    }
+#ifdef MIXMASTER
+    else if (mutt_str_startswith(np->data, "X-Mutt-Mix:"))
+    {
+      mutt_list_free(&hdr->chain);
+
+      char *t = strtok(np->data + 11, " \t\n");
+      while (t)
+      {
+        mutt_list_insert_tail(&hdr->chain, mutt_str_dup(t));
+        t = strtok(NULL, " \t\n");
+      }
+    }
+#endif
+    else
+    {
+      // skip header removal
+      continue;
+    }
+
+    // remove the header
+    STAILQ_REMOVE(&hdr->env->userhdrs, np, ListNode, entries);
+    FREE(&np->data);
+    FREE(&np);
+  }
+
+  const bool c_crypt_opportunistic_encrypt =
+      cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt");
+  if (c_crypt_opportunistic_encrypt)
+    crypt_opportunistic_encrypt(m_cur, hdr);
+
+cleanup:
+  if (m_cur != m)
+  {
+    hardclose(m);
+    ctx_free(&ctx);
+  }
+
+  cs_subset_str_native_set(NeoMutt->sub, "delete", c_delete, NULL);
   return rc;
 }
