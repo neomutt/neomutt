@@ -1436,14 +1436,7 @@ int mutt_pager(struct PagerView *pview)
 
       case OP_SORT:
       case OP_SORT_REVERSE:
-        if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
-          break;
-        if (mutt_select_sort(op == OP_SORT_REVERSE))
-        {
-          OptNeedResort = true;
-          op = -1;
-          rc = OP_DISPLAY_MESSAGE;
-        }
+        index_function_dispatcher(priv->pview->win_index, op);
         break;
 
         //=======================================================================
