@@ -2336,6 +2336,55 @@ static bool check_read_delay(uint64_t *timestamp)
 }
 
 /**
+ * squash_index_panel - Shrink or hide the Index Panel
+ * @param dlg    Dialog
+ * @param shared Shared Index data
+ * @param priv   Private Pager data
+ * @param pil    Pager Index Lines
+ */
+static void squash_index_panel(struct MuttWindow *dlg, struct IndexSharedData *shared, struct PagerPrivateData *priv, int pil)
+{
+  struct MuttWindow *win_pager = priv->pview->win_pager;
+  struct MuttWindow *win_index = priv->pview->win_index;
+
+  if (win_index)
+  {
+    const int index_space = shared->mailbox ? MIN(pil, shared->mailbox->vcount) : pil;
+    priv->menu = win_index->wdata;
+    win_index->size = MUTT_WIN_SIZE_FIXED;
+    win_index->req_rows = index_space;
+    win_index->parent->size = MUTT_WIN_SIZE_MINIMISE;
+    window_set_visible(win_index->parent, (index_space > 0));
+  }
+
+  window_set_visible(win_pager->parent, true);
+  mutt_window_reflow(dlg);
+}
+
+/**
+ * expand_index_panel - Restore the Index Panel
+ * @param dlg  Dialog
+ * @param priv Private Pager data
+ */
+static void expand_index_panel(struct MuttWindow *dlg, struct PagerPrivateData *priv)
+{
+  struct MuttWindow *win_pager = priv->pview->win_pager;
+  struct MuttWindow *win_index = priv->pview->win_index;
+
+  if (win_index)
+  {
+    win_index->size = MUTT_WIN_SIZE_MAXIMISE;
+    win_index->req_rows = MUTT_WIN_SIZE_UNLIMITED;
+    win_index->parent->size = MUTT_WIN_SIZE_MAXIMISE;
+    win_index->parent->req_rows = MUTT_WIN_SIZE_UNLIMITED;
+    window_set_visible(win_index->parent, true);
+  }
+
+  window_set_visible(win_pager->parent, false);
+  mutt_window_reflow(dlg);
+}
+
+/**
  * mutt_pager - Display an email, attachment, or help, in a window
  * @param pview Pager view settings
  * @retval  0 Success
@@ -2427,8 +2476,6 @@ int mutt_pager(struct PagerView *pview)
   int op = 0;
   int rc = -1;
   int searchctx = 0;
-  int index_space = shared->mailbox ? MIN(c_pager_index_lines, shared->mailbox->vcount) :
-                                      c_pager_index_lines;
   bool first = true;
   bool wrapped = false;
   enum MailboxType mailbox_type = shared->mailbox ? shared->mailbox->type : MUTT_UNKNOWN;
@@ -2519,16 +2566,7 @@ int mutt_pager(struct PagerView *pview)
   OldEmail = NULL;
 
   //---------- show windows, set focus and visibility --------------------------
-  if (priv->pview->win_index)
-  {
-    priv->menu = priv->pview->win_index->wdata;
-    priv->pview->win_index->size = MUTT_WIN_SIZE_FIXED;
-    priv->pview->win_index->req_rows = index_space;
-    priv->pview->win_index->parent->size = MUTT_WIN_SIZE_MINIMISE;
-    window_set_visible(priv->pview->win_index->parent, (index_space > 0));
-  }
-  window_set_visible(priv->pview->win_pager->parent, true);
-  mutt_window_reflow(dlg);
+  squash_index_panel(dlg, shared, priv, c_pager_index_lines);
   window_set_focus(pview->win_pager);
 
   //---------- jump to the bottom if requested ------------------------------
@@ -4197,16 +4235,7 @@ int mutt_pager(struct PagerView *pview)
   }
   FREE(&priv->line_info);
 
-  if (priv->pview->win_index)
-  {
-    priv->pview->win_index->size = MUTT_WIN_SIZE_MAXIMISE;
-    priv->pview->win_index->req_rows = MUTT_WIN_SIZE_UNLIMITED;
-    priv->pview->win_index->parent->size = MUTT_WIN_SIZE_MAXIMISE;
-    priv->pview->win_index->parent->req_rows = MUTT_WIN_SIZE_UNLIMITED;
-    window_set_visible(priv->pview->win_index->parent, true);
-  }
-  window_set_visible(priv->pview->win_pager->parent, false);
-  mutt_window_reflow(dlg);
+  expand_index_panel(dlg, priv);
 
   return (rc != -1) ? rc : 0;
 }
