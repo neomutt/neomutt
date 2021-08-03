@@ -33,8 +33,8 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "mutt_body.h"
+#include "attach/lib.h"
 #include "send/lib.h"
-#include "mutt_attach.h"
 #include "muttlib.h"
 
 /**

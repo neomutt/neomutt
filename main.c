@@ -49,14 +49,15 @@
  * - Robust
  *
  * Libraries:
- * @ref lib_address, @ref lib_alias, @ref lib_autocrypt, @ref lib_bcache,
- * @ref lib_compmbox, @ref lib_compose, @ref lib_compress, @ref lib_config,
- * @ref lib_conn, @ref lib_core, @ref lib_debug, @ref lib_email, @ref lib_gui,
- * @ref lib_hcache, @ref lib_helpbar, @ref lib_history, @ref lib_imap,
- * @ref lib_index, @ref lib_maildir, @ref lib_mbox, @ref lib_menu,
- * @ref lib_mutt, @ref lib_ncrypt, @ref lib_nntp, @ref lib_notmuch,
- * @ref lib_pager, @ref lib_pattern, @ref lib_pop, @ref lib_progress,
- * @ref lib_question, @ref lib_send, @ref lib_sidebar, @ref lib_store.
+ * @ref lib_address, @ref lib_alias, @ref lib_attach, @ref lib_autocrypt,
+ * @ref lib_bcache, @ref lib_compmbox, @ref lib_compose, @ref lib_compress,
+ * @ref lib_config, @ref lib_conn, @ref lib_core, @ref lib_debug,
+ * @ref lib_email, @ref lib_gui, @ref lib_hcache, @ref lib_helpbar,
+ * @ref lib_history, @ref lib_imap, @ref lib_index, @ref lib_maildir,
+ * @ref lib_mbox, @ref lib_menu, @ref lib_mutt, @ref lib_ncrypt, @ref lib_nntp,
+ * @ref lib_notmuch, @ref lib_pager, @ref lib_pattern, @ref lib_pop,
+ * @ref lib_progress, @ref lib_question, @ref lib_send, @ref lib_sidebar,
+ * @ref lib_store.
  *
  * ## Miscellaneous files
  *
@@ -65,14 +66,12 @@
  * | File            | Description                |
  * | :-------------- | :------------------------- |
  * | alternates.c    | @subpage neo_alternates    |
- * | attachments.c   | @subpage neo_attachments   |
  * | browser.c       | @subpage neo_browser       |
  * | commands.c      | @subpage neo_commands      |
  * | command_parse.c | @subpage neo_command_parse |
  * | complete.c      | @subpage neo_complete      |
  * | context.c       | @subpage neo_ctx           |
  * | copy.c          | @subpage neo_copy          |
- * | dlg_attach.c    | @subpage neo_dlg_attach    |
  * | dlg_postpone.c  | @subpage neo_dlg_postpone  |
  * | editmsg.c       | @subpage neo_editmsg       |
  * | enriched.c      | @subpage neo_enriched      |
@@ -92,7 +91,6 @@
  * | monitor.c       | @subpage neo_monitor       |
  * | muttlib.c       | @subpage neo_muttlib       |
  * | mutt_account.c  | @subpage neo_mutt_account  |
- * | mutt_attach.c   | @subpage neo_mutt_attach   |
  * | mutt_body.c     | @subpage neo_mutt_body     |
  * | mutt_commands.c | @subpage neo_mutt_commands |
  * | mutt_config.c   | @subpage neo_mutt_config   |
@@ -108,7 +106,6 @@
  * | myvar.c         | @subpage neo_myvar         |
  * | opcodes.c       | @subpage neo_opcode        |
  * | postpone.c      | @subpage neo_postpone      |
- * | recvattach.c    | @subpage neo_recvattach    |
  * | recvcmd.c       | @subpage neo_recvcmd       |
  * | remailer.c      | @subpage neo_remailer      |
  * | resize.c        | @subpage neo_resize        |
@@ -166,20 +163,19 @@
 #include "alias/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
+#include "attach/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "alternates.h"
-#include "attachments.h"
 #include "browser.h"
 #include "commands.h"
 #include "context.h"
 #include "hook.h"
 #include "init.h"
 #include "keymap.h"
-#include "mutt_attach.h"
 #include "mutt_globals.h"
 #include "mutt_history.h"
 #include "mutt_logging.h"

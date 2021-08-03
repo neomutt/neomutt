@@ -29,7 +29,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "format_flags.h"
-#include "mutt_attach.h"
+#include "attach/lib.h"
 
 struct Address;
 struct Body;

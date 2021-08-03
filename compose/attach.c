@@ -69,12 +69,12 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "attach/lib.h"
 #include "menu/lib.h"
 #include "send/lib.h"
 #include "attach_data.h"
 #include "format_flags.h"
 #include "muttlib.h"
-#include "recvattach.h"
 #include "shared_data.h"
 
 /**

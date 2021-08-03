@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_ATTACHMENTS_H
-#define MUTT_ATTACHMENTS_H
+#ifndef MUTT_ATTACH_ATTACHMENTS_H
+#define MUTT_ATTACH_ATTACHMENTS_H
 
 #include <stdio.h>
 
@@ -47,4 +47,4 @@ void mutt_attachments_reset (struct Mailbox *m);
 int  mutt_count_body_parts  (struct Mailbox *m, struct Email *e, FILE *fp);
 void mutt_parse_mime_message(struct Mailbox *m, struct Email *e, FILE *fp);
 
-#endif /* MUTT_ATTACHMENTS_H */
+#endif /* MUTT_ATTACH_ATTACHMENTS_H */

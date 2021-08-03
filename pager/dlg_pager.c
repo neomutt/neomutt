@@ -55,6 +55,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "attach/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
@@ -66,7 +67,6 @@
 #include "hdrline.h"
 #include "hook.h"
 #include "keymap.h"
-#include "mutt_attach.h"
 #include "mutt_globals.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
@@ -77,7 +77,6 @@
 #include "options.h"
 #include "private_data.h"
 #include "protos.h"
-#include "recvattach.h"
 #include "recvcmd.h"
 #include "status.h"
 #ifdef USE_SIDEBAR

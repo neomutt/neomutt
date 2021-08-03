@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_RECVATTACH_H
-#define MUTT_RECVATTACH_H
+#ifndef MUTT_ATTACH_RECVATTACH_H
+#define MUTT_ATTACH_RECVATTACH_H
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -48,4 +48,4 @@ struct AttachPtr *current_attachment(struct AttachCtx *actx, struct Menu *menu);
 void mutt_update_recvattach_menu(struct ConfigSubset *sub, struct AttachCtx *actx, struct Menu *menu, bool init);
 void recvattach_edit_content_type(struct ConfigSubset *sub, struct AttachCtx *actx, struct Menu *menu, struct Email *e);
 
-#endif /* MUTT_RECVATTACH_H */
+#endif /* MUTT_ATTACH_RECVATTACH_H */

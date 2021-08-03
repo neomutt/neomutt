@@ -11,7 +11,10 @@ alias/gui.c
 alias/reverse.c
 alias/sort.c
 alternates.c
-attachments.c
+attach/attachments.c
+attach/dlg_attach.c
+attach/mutt_attach.c
+attach/recvattach.c
 autocrypt/autocrypt.c
 autocrypt/config.c
 autocrypt/db.c
@@ -77,7 +80,6 @@ debug/graphviz.c
 debug/notify.c
 debug/parse_test.c
 debug/window.c
-dlg_attach.c
 dlg_postpone.c
 editmsg.c
 email/attach.c
@@ -202,7 +204,6 @@ mutt/state.c
 mutt/string.c
 muttlib.c
 mutt_account.c
-mutt_attach.c
 mutt_body.c
 mutt_commands.c
 mutt_config.c
@@ -277,7 +278,6 @@ pop/pop.c
 postpone.c
 progress/progress.c
 question/question.c
-recvattach.c
 recvcmd.c
 remailer.c
 resize.c

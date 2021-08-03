@@ -21,7 +21,7 @@
  */
 
 /**
- * @page neo_attachments Handle the attachments commmand
+ * @page attach_attachments Handle the attachments commmand
  *
  * Handle the attachments commmand
  */

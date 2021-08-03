@@ -1,6 +1,6 @@
 /**
  * @file
- * Attachment Selection Dialog
+ * Attachment code
  *
  * @authors
  * Copyright (C) 1996-2000,2002,2007,2010 Michael R. Elkins <me@mutt.org>
@@ -22,50 +22,9 @@
  */
 
 /**
- * @page neo_recvattach Attachment Selection Dialog
+ * @page attach_recvattach Attachment code
  *
- * ## Overview
- *
- * The Attachment Selection Dialog lets the user select an email attachment.
- *
- * This is a @ref gui_simple
- *
- * ## Windows
- *
- * | Name                        | Type          | See Also                |
- * | :-------------------------- | :------------ | :---------------------- |
- * | Attachment Selection Dialog | WT_DLG_ATTACH | dlg_select_attachment() |
- *
- * **Parent**
- * - @ref gui_dialog
- *
- * **Children**
- * - See: @ref gui_simple
- *
- * ## Data
- * - #Menu
- * - #Menu::mdata
- * - #AttachCtx
- *
- * The @ref gui_simple holds a Menu.  The Attachment Selection Dialog stores
- * its data (#AttachCtx) in Menu::mdata.
- *
- * ## Events
- *
- * Once constructed, it is controlled by the following events:
- *
- * | Event Type  | Handler                  |
- * | :---------- | :----------------------- | 
- * | #NT_CONFIG  | attach_config_observer() |
- * | #NT_WINDOW  | attach_window_observer() |
- *
- * The Attachment Selection Dialog doesn't have any specific colours, so it
- * doesn't need to support #NT_COLOR.
- *
- * The Attachment Selection Dialog does not implement MuttWindow::recalc() or
- * MuttWindow::repaint().
- *
- * Some other events are handled by the @ref gui_simple.
+ * Attachment code
  */
 
 #include "config.h"
@@ -953,7 +912,7 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
  * @param e  Email
  */
 void recvattach_edit_content_type(struct ConfigSubset *sub, struct AttachCtx *actx,
-                                         struct Menu *menu, struct Email *e)
+                                  struct Menu *menu, struct Email *e)
 {
   struct AttachPtr *cur_att = current_attachment(actx, menu);
   if (!mutt_edit_content_type(e, cur_att->body, cur_att->fp))
@@ -1210,7 +1169,7 @@ void mutt_attach_init(struct AttachCtx *actx)
  * @param init If true, create a new Attachments context
  */
 void mutt_update_recvattach_menu(struct ConfigSubset *sub, struct AttachCtx *actx,
-                                        struct Menu *menu, bool init)
+                                 struct Menu *menu, bool init)
 {
   if (init)
   {
@@ -1229,4 +1188,3 @@ void mutt_update_recvattach_menu(struct ConfigSubset *sub, struct AttachCtx *act
     menu_set_index(menu, menu->max - 1);
   menu_queue_redraw(menu, MENU_REDRAW_INDEX);
 }
-

@@ -86,6 +86,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "attach/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
@@ -98,7 +99,6 @@
 #include "context.h"
 #include "env_data.h"
 #include "hook.h"
-#include "mutt_attach.h"
 #include "mutt_globals.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
@@ -107,7 +107,6 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
-#include "recvattach.h"
 #include "rfc3676.h"
 #include "shared_data.h"
 #ifdef ENABLE_NLS

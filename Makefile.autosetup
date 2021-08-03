@@ -62,16 +62,16 @@ default:	all
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
-NEOMUTTOBJS=	alternates.o attachments.o browser.o commands.o command_parse.o \
-		complete.o conststrings.o context.o copy.o dlg_attach.o dlg_postpone.o \
+NEOMUTTOBJS=	alternates.o browser.o commands.o command_parse.o \
+		complete.o conststrings.o context.o copy.o dlg_postpone.o \
 		editmsg.o enriched.o enter.o flags.o functions.o git_ver.o \
 		handler.o hdrline.o help.o hook.o icommands.o init.o \
 		keymap.o mailcap.o maillist.o main.o muttlib.o mutt_account.o \
-		mutt_attach.o mutt_body.o mutt_commands.o mutt_config.o \
+		mutt_body.o mutt_commands.o mutt_config.o \
 		mutt_header.o mutt_history.o mutt_logging.o mutt_mailbox.o \
 		mutt_signal.o mutt_socket.o mutt_thread.o mx.o \
 		myvar.o opcodes.o postpone.o \
-		recvattach.o recvcmd.o resize.o rfc3676.o score.o \
+		recvcmd.o resize.o rfc3676.o score.o \
 		sort.o status.o subjectrx.o system.o version.o
 
 @if !HAVE_WCSCASECMP
@@ -117,6 +117,20 @@ $(LIBALIAS): $(PWD)/alias $(LIBALIASOBJS)
 	$(RANLIB) $@
 $(PWD)/alias:
 	$(MKDIR_P) $(PWD)/alias
+
+###############################################################################
+# libattach
+LIBATTACH=	libattach.a
+LIBATTACHOBJS=	attach/attachments.o attach/dlg_attach.o attach/mutt_attach.o \
+		attach/recvattach.o
+CLEANFILES+=	$(LIBATTACH) $(LIBATTACHOBJS)
+ALLOBJS+=	$(LIBATTACHOBJS)
+
+$(LIBATTACH): $(PWD)/attach $(LIBATTACHOBJS)
+	$(AR) cr $@ $(LIBATTACHOBJS)
+	$(RANLIB) $@
+$(PWD)/attach:
+	$(MKDIR_P) $(PWD)/attach
 
 ###############################################################################
 # libautocrypt
@@ -684,7 +698,7 @@ $(ALLOBJS):
 MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) $(LIBNNTP) \
 		$(LIBCOMPMBOX) $(LIBSTORE) $(LIBPATTERN) $(LIBPROGRESS) $(LIBQUESTION)\
 		$(LIBGUI) $(LIBHELPBAR) $(LIBMENU) $(LIBMBOX) $(LIBNOTMUCH) \
-		$(LIBMAILDIR) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
+		$(LIBATTACH) $(LIBMAILDIR) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
 		$(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) \
 		$(LIBALIAS) $(LIBSEND) $(LIBCOMPOSE) $(LIBCORE) $(LIBCONFIG) \
 		$(LIBEMAIL) $(LIBADDRESS) $(LIBDEBUG) $(LIBMUTT)

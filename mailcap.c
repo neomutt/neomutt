@@ -41,7 +41,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mailcap.h"
-#include "mutt_attach.h"
+#include "attach/lib.h"
 #include "muttlib.h"
 #include "protos.h"
 

@@ -22,8 +22,8 @@
 
 /* common protos for compose / attach menus */
 
-#ifndef MUTT_MUTT_ATTACH_H
-#define MUTT_MUTT_ATTACH_H
+#ifndef MUTT_ATTACH_MUTT_ATTACH_H
+#define MUTT_ATTACH_MUTT_ATTACH_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -84,4 +84,4 @@ int mutt_save_attachment(FILE *fp, struct Body *m, const char *path, enum SaveAt
 void mutt_add_temp_attachment(const char *filename);
 void mutt_unlink_temp_attachments(void);
 
-#endif /* MUTT_MUTT_ATTACH_H */
+#endif /* MUTT_ATTACH_MUTT_ATTACH_H */

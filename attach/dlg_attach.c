@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_dlg_attach Attachment Selection Dialog
+ * @page attach_dialog Attachment Selection Dialog
  *
  * ## Overview
  *
