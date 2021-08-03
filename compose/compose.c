@@ -332,20 +332,6 @@ static bool check_count(struct AttachCtx *actx)
   return true;
 }
 
-/**
- * current_attachment - Get the current attachment
- * @param actx Attachment context
- * @param menu Menu
- * @retval ptr Current Attachment
- */
-static struct AttachPtr *current_attachment(struct AttachCtx *actx, struct Menu *menu)
-{
-  const int virt = menu_get_index(menu);
-  const int index = actx->v2r[virt];
-
-  return actx->idx[index];
-}
-
 #ifdef USE_AUTOCRYPT
 /**
  * autocrypt_compose_menu - Autocrypt compose settings

@@ -31,10 +31,11 @@
 #include "format_flags.h"
 
 struct AttachCtx;
-struct ConfigSubset;
 struct Body;
+struct ConfigSubset;
 struct Email;
 struct Mailbox;
+struct Menu;
 
 void mutt_attach_init(struct AttachCtx *actx);
 void mutt_update_tree(struct AttachCtx *actx);
@@ -43,5 +44,8 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
 void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m, struct Email *e, FILE *fp);
 
 void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e, struct Body *parts, FILE *fp, int parent_type, int level, bool decrypted);
+struct AttachPtr *current_attachment(struct AttachCtx *actx, struct Menu *menu);
+void mutt_update_recvattach_menu(struct ConfigSubset *sub, struct AttachCtx *actx, struct Menu *menu, bool init);
+void recvattach_edit_content_type(struct ConfigSubset *sub, struct AttachCtx *actx, struct Menu *menu, struct Email *e);
 
 #endif /* MUTT_RECVATTACH_H */

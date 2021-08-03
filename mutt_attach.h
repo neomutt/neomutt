@@ -59,7 +59,6 @@ enum SaveAttach
   MUTT_SAVE_OVERWRITE,    ///< Overwrite existing file
 };
 
-int attach_tag(struct Menu *menu, int sel, int act);
 int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op,
                              struct Email *e, struct AttachCtx *actx, bool recv);
 

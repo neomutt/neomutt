@@ -72,6 +72,7 @@
  * | complete.c      | @subpage neo_complete      |
  * | context.c       | @subpage neo_ctx           |
  * | copy.c          | @subpage neo_copy          |
+ * | dlg_attach.c    | @subpage neo_dlg_attach    |
  * | dlg_postpone.c  | @subpage neo_dlg_postpone  |
  * | editmsg.c       | @subpage neo_editmsg       |
  * | enriched.c      | @subpage neo_enriched      |
