@@ -212,8 +212,8 @@ static int pbar_index_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_INDEX) || !nc->global_data)
     return -1;
 
-  struct MuttWindow *win_ibar = nc->global_data;
-  if (!win_ibar)
+  struct MuttWindow *win_pbar = nc->global_data;
+  if (!win_pbar)
     return 0;
 
   struct IndexSharedData *shared = nc->event_data;
@@ -222,13 +222,13 @@ static int pbar_index_observer(struct NotifyCallback *nc)
 
   if (nc->event_subtype & NT_INDEX_MAILBOX)
   {
-    win_ibar->actions |= WA_RECALC;
+    win_pbar->actions |= WA_RECALC;
     mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
   }
 
   if (nc->event_subtype & NT_INDEX_EMAIL)
   {
-    win_ibar->actions |= WA_RECALC;
+    win_pbar->actions |= WA_RECALC;
     mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
   }
 

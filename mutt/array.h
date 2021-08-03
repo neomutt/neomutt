@@ -31,8 +31,7 @@
 #include "memory.h"
 
 /**
- * ARRAY_HEADROOM - Additional number of elements to reserve, to prevent
- * frequent reallocations
+ * ARRAY_HEADROOM - Additional number of elements to reserve, to prevent frequent reallocations
  */
 #define ARRAY_HEADROOM 25
 
@@ -85,8 +84,7 @@
   ((head)->size)
 
 /**
- * ARRAY_CAPACITY - The number of elements the array can store without
- * reallocation
+ * ARRAY_CAPACITY - The number of elements the array can store without reallocation
  * @param head Pointer to a struct defined using ARRAY_HEAD()
  * @retval num The capacity of the array
  */
@@ -258,8 +256,7 @@
   (elem - (head)->entries)
 
 /**
- * ARRAY_REMOVE - Remove an entry from the array, shifting down the subsequent
- * entries
+ * ARRAY_REMOVE - Remove an entry from the array, shifting down the subsequent entries
  * @param head Pointer to a struct defined using ARRAY_HEAD()
  * @param elem Pointer to the element of the array to remove
  */

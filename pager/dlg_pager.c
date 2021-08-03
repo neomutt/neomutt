@@ -2422,11 +2422,8 @@ int mutt_pager(struct PagerView *pview)
   //---------- reading config values needed now--------------------------------
   const short c_pager_index_lines =
       cs_subset_number(NeoMutt->sub, "pager_index_lines");
-  const short c_pager_read_delay =
-      cs_subset_number(NeoMutt->sub, "pager_read_delay");
 
   //---------- local variables ------------------------------------------------
-  char buf[1024] = { 0 };
   int op = 0;
   int rc = -1;
   int searchctx = 0;
@@ -2454,6 +2451,7 @@ int mutt_pager(struct PagerView *pview)
   {
     shared->ctx->msg_in_pager = shared->email->msgno;
     priv->win_pbar->actions |= WA_RECALC;
+    const short c_pager_read_delay = cs_subset_number(NeoMutt->sub, "pager_read_delay");
     if (c_pager_read_delay == 0)
     {
       mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true);
@@ -2952,6 +2950,8 @@ int mutt_pager(struct PagerView *pview)
 
       case OP_SEARCH:
       case OP_SEARCH_REVERSE:
+      {
+        char buf[1024] = { 0 };
         mutt_str_copy(buf, priv->searchbuf, sizeof(buf));
         if (mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
                                _("Search for: ") :
@@ -3082,6 +3082,7 @@ int mutt_pager(struct PagerView *pview)
         }
         pager_queue_redraw(priv, MENU_REDRAW_BODY);
         break;
+      }
 
         //=======================================================================
 

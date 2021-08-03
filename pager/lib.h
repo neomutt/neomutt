@@ -160,7 +160,6 @@ struct PagerView
   PagerFlags flags;        ///< Additional settings to tweak pager's function
   const char *banner;      ///< Title to display in status bar
 
-  struct MuttWindow *win_ibar;  ///< Index Bar Window
   struct MuttWindow *win_index; ///< Index Window
   struct MuttWindow *win_pbar;  ///< Pager Bar Window
   struct MuttWindow *win_pager; ///< Pager Window
