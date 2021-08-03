@@ -65,7 +65,7 @@ struct PgpCache
 {
   char *what;
   char *dflt;
-  struct PgpCache *next;
+  struct PgpCache *next; ///< Linked list
 };
 
 static struct PgpCache *id_defaults = NULL;

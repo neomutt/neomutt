@@ -174,10 +174,13 @@ static struct Email *restore(const unsigned char *d)
   return e;
 }
 
+/**
+ * struct RealKey - Hcache key name (including compression method)
+ */
 struct RealKey
 {
-  char key[1024];
-  size_t len;
+  char key[1024]; ///< Key name
+  size_t len;     ///< Length of key
 };
 
 /**
@@ -344,8 +347,8 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
   {
     union
     {
-      unsigned char charval[16];
-      unsigned int intval;
+      unsigned char charval[16]; ///< MD5 digest as a string
+      unsigned int intval;       ///< MD5 digest as an integer
     } digest;
     struct Md5Ctx md5ctx;
 

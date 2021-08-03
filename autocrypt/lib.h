@@ -104,11 +104,11 @@ struct Mailbox;
  */
 struct AutocryptAccount
 {
-  char *email_addr;
-  char *keyid;
-  char *keydata;
+  char *email_addr;    ///< Email address
+  char *keyid;         ///< PGP Key id
+  char *keydata;       ///< PGP Key data
   bool prefer_encrypt; ///< false = nopref, true = mutual
-  bool enabled;
+  bool enabled;        ///< Is this account enabled
 };
 
 /**
@@ -116,15 +116,15 @@ struct AutocryptAccount
  */
 struct AutocryptPeer
 {
-  char *email_addr;
-  sqlite3_int64 last_seen;
-  sqlite3_int64 autocrypt_timestamp;
-  char *keyid;
-  char *keydata;
-  bool prefer_encrypt; ///< false = nopref, true = mutual
-  sqlite3_int64 gossip_timestamp;
-  char *gossip_keyid;
-  char *gossip_keydata;
+  char *email_addr;                  ///< Email address
+  sqlite3_int64 last_seen;           ///< When was the peer last seen
+  sqlite3_int64 autocrypt_timestamp; ///< When the email was sent
+  char *keyid;                       ///< PGP Key id
+  char *keydata;                     ///< PGP Key data
+  bool prefer_encrypt;               ///< false = nopref, true = mutual
+  sqlite3_int64 gossip_timestamp;    ///< Timestamp of Gossip header
+  char *gossip_keyid;                ///< Gossip Key id
+  char *gossip_keydata;              ///< Gossip Key data
 };
 
 /**
@@ -132,10 +132,10 @@ struct AutocryptPeer
  */
 struct AutocryptPeerHistory
 {
-  char *peer_email_addr;
-  char *email_msgid;
-  sqlite3_int64 timestamp;
-  char *keydata;
+  char *peer_email_addr;   ///< Email address of the peer
+  char *email_msgid;       ///< Message id of the email
+  sqlite3_int64 timestamp; ///< Timestamp of email
+  char *keydata;           ///< PGP Key data
 };
 
 /**
@@ -143,11 +143,11 @@ struct AutocryptPeerHistory
  */
 struct AutocryptGossipHistory
 {
-  char *peer_email_addr;
-  char *sender_email_addr;
-  char *email_msgid;
-  sqlite3_int64 timestamp;
-  char *gossip_keydata;
+  char *peer_email_addr;   ///< Email addressof the peer
+  char *sender_email_addr; ///< Sender's email address
+  char *email_msgid;       ///< Sender's email's message id
+  sqlite3_int64 timestamp; ///< Timestamp of sender's email
+  char *gossip_keydata;    ///< Gossip Key data
 };
 
 /**

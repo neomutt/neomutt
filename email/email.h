@@ -154,8 +154,8 @@ enum NotifyEmail
  */
 struct EventEmail
 {
-  int num_emails;
-  struct Email **emails;
+  int num_emails;        ///< Number of Emails the event applies to
+  struct Email **emails; ///< Emails affected by the event
 };
 
 /**

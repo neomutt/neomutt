@@ -65,8 +65,8 @@ extern struct MxOps MxNntpOps;
  */
 struct NntpAcache
 {
-  unsigned int index;
-  char *path;
+  unsigned int index; ///< Index number
+  char *path;         ///< Cache path
 };
 
 /**
@@ -74,8 +74,8 @@ struct NntpAcache
  */
 struct NewsrcEntry
 {
-  anum_t first;
-  anum_t last;
+  anum_t first; ///< First article number in run
+  anum_t last;  ///< Last article number in run
 };
 
 /* number of entries in article cache */

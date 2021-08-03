@@ -90,8 +90,8 @@
  */
 struct GreetingInfo
 {
-  struct Mailbox *mailbox;
-  struct Email *email;
+  struct Mailbox *mailbox; ///< Current Mailbox
+  struct Email *email;     ///< Current Email
 };
 
 /**

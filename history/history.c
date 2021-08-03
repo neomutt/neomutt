@@ -87,9 +87,9 @@
  */
 struct History
 {
-  char **hist;
-  short cur;
-  short last;
+  char **hist; ///< Array of history items
+  short cur;   ///< Current history item
+  short last;  ///< Last history item
 };
 
 /* global vars used for the string-history routines */

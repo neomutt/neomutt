@@ -131,8 +131,8 @@ struct KeymapList Keymaps[MENU_MAX];
  */
 struct Extkey
 {
-  const char *name;
-  const char *sym;
+  const char *name; ///< NeoMutt key name
+  const char *sym;  ///< Curses key name
 };
 
 static const struct Extkey ExtKeys[] = {

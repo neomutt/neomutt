@@ -33,11 +33,11 @@ struct Email;
 struct ImapEmailData
 {
   /* server-side flags */
-  bool read    : 1;
-  bool old     : 1;
-  bool deleted : 1;
-  bool flagged : 1;
-  bool replied : 1;
+  bool read    : 1; ///< Email has been read
+  bool old     : 1; ///< Email has been seen
+  bool deleted : 1; ///< Email has been deleted
+  bool flagged : 1; ///< Email has been flagged
+  bool replied : 1; ///< Email has been replied to
 
   bool parsed : 1;
 

@@ -251,10 +251,13 @@ bool mailbox_set_subset(struct Mailbox *m, struct ConfigSubset *sub)
   return true;
 }
 
-static struct
+/**
+ * struct EmailGarbageCollector - Email garbage collection
+ */
+static struct EmailGarbageCollector
 {
-  struct Email *arr[10];
-  size_t idx;
+  struct Email *arr[10]; ///< Array of Emails to be deleted
+  size_t idx;            ///< Current position
 } gc = { 0 };
 
 /**

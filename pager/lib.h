@@ -153,15 +153,15 @@ struct PagerData
  */
 struct PagerView
 {
-  struct PagerData *pdata;   ///< Data that pager displays. NOTNULL
-  enum PagerMode    mode;    ///< Pager mode
-  PagerFlags        flags;   ///< Additional settings to tweak pager's function
-  const char       *banner;  ///< Title to display in status bar
+  struct PagerData *pdata; ///< Data that pager displays. NOTNULL
+  enum PagerMode mode;     ///< Pager mode
+  PagerFlags flags;        ///< Additional settings to tweak pager's function
+  const char *banner;      ///< Title to display in status bar
 
-  struct MuttWindow *win_ibar;
-  struct MuttWindow *win_index;
-  struct MuttWindow *win_pbar;
-  struct MuttWindow *win_pager;
+  struct MuttWindow *win_ibar;  ///< Index Bar Window
+  struct MuttWindow *win_index; ///< Index Window
+  struct MuttWindow *win_pbar;  ///< Pager Bar Window
+  struct MuttWindow *win_pager; ///< Pager Window
 };
 
 typedef uint8_t NotifyPager;         ///< Flags, e.g. #NT_PAGER_ACCOUNT

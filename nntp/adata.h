@@ -35,15 +35,15 @@ struct Mailbox;
  */
 struct NntpAccountData
 {
-  bool hasCAPABILITIES    : 1;
-  bool hasSTARTTLS        : 1;
-  bool hasDATE            : 1;
-  bool hasLIST_NEWSGROUPS : 1;
-  bool hasXGTITLE         : 1;
-  bool hasLISTGROUP       : 1;
-  bool hasLISTGROUPrange  : 1;
-  bool hasOVER            : 1;
-  bool hasXOVER           : 1;
+  bool hasCAPABILITIES    : 1; ///< Server supports CAPABILITIES command
+  bool hasSTARTTLS        : 1; ///< Server supports STARTTLS command
+  bool hasDATE            : 1; ///< Server supports DATE command
+  bool hasLIST_NEWSGROUPS : 1; ///< Server supports LIST_NEWSGROUPS command
+  bool hasXGTITLE         : 1; ///< Server supports XGTITLE command
+  bool hasLISTGROUP       : 1; ///< Server supports LISTGROUP command
+  bool hasLISTGROUPrange  : 1; ///< Server supports LISTGROUPrange command
+  bool hasOVER            : 1; ///< Server supports OVER command
+  bool hasXOVER           : 1; ///< Server supports XOVER command
   unsigned int use_tls    : 3;
   unsigned int status     : 3;
   bool cacheable          : 1;
@@ -60,7 +60,7 @@ struct NntpAccountData
   unsigned int groups_max;
   void **groups_list;
   struct HashTable *groups_hash;
-  struct Connection *conn;
+  struct Connection *conn; ///< Connection to NNTP Server
 };
 
 void                    nntp_adata_free(void **ptr);

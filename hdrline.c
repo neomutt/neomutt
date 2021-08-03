@@ -65,10 +65,10 @@
  */
 struct HdrFormatInfo
 {
-  struct Mailbox *mailbox;
-  int msg_in_pager;
-  struct Email *email;
-  const char *pager_progress;
+  struct Mailbox *mailbox;    ///< Current Mailbox
+  int msg_in_pager;           ///< Index of Email displayed in the Pager
+  struct Email *email;        ///< Current Email
+  const char *pager_progress; ///< String representing Pager postiion through Email
 };
 
 /**

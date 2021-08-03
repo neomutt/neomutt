@@ -88,9 +88,9 @@
  */
 struct AccountEntry
 {
-  int num;
-  struct AutocryptAccount *account;
-  struct Address *addr;
+  int num;                          ///< Number in the index
+  struct AutocryptAccount *account; ///< Account details
+  struct Address *addr; ///< Email address associated with the account
 };
 
 /// Help Bar for the Autocrypt Account selection dialog

@@ -50,8 +50,8 @@
 #endif
 
 #define COLOR_UNSET UINT32_MAX
-#define COLOR_QUOTES_MAX                                                       \
-  10 ///< Ten colours, quoted0..quoted9 (quoted and quoted0 are equivalent)
+/// Ten colours, quoted0..quoted9 (quoted and quoted0 are equivalent)
+#define COLOR_QUOTES_MAX 10
 
 /**
  * struct ColorList - A set of colors
@@ -60,11 +60,11 @@ struct ColorList
 {
   /* TrueColor uses 24bit. Use fixed-width integer type to make sure it fits.
    * Use the upper 8 bits to store flags.  */
-  uint32_t fg;
-  uint32_t bg;
-  short index;
-  short count;
-  struct ColorList *next;
+  uint32_t fg;            ///< Foreground colour
+  uint32_t bg;            ///< Background colour
+  short index;            ///< Index number
+  short count;            ///< Number of users
+  struct ColorList *next; ///< Linked list
 };
 
 /**
@@ -89,8 +89,8 @@ static struct
   int quotes[COLOR_QUOTES_MAX]; ///< Array of colours for quoted email text
   int quotes_used;              ///< Number of colours for quoted email text
 
-  struct ColorList *user_colors;
-  int num_user_colors;
+  struct ColorList *user_colors; ///< Array of user colours
+  int num_user_colors;           ///< Number of user colours
 
   struct Notify *notify; ///< Notifications: #ColorId, #EventColor
 } Colors;

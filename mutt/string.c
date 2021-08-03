@@ -51,8 +51,8 @@
  */
 struct SysExits
 {
-  int err_num;
-  const char *err_str;
+  int err_num;         ///< Error number, see errno(3)
+  const char *err_str; ///< Human-readable string for error
 };
 
 static const struct SysExits sysexits[] = {

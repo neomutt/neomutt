@@ -49,8 +49,8 @@ static char *NotifyTypeNames[] = {
  */
 struct Notify
 {
-  struct Notify *parent;
-  struct ObserverList observers;
+  struct Notify *parent;         ///< Parent of the notification object
+  struct ObserverList observers; ///< List of observers of this object
 };
 
 /**

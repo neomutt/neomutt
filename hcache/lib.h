@@ -85,10 +85,10 @@ struct Email;
  */
 struct HeaderCache
 {
-  char *folder;
-  unsigned int crc;
-  void *ctx;
-  void *cctx;
+  char *folder;     ///< Folder name
+  unsigned int crc; ///< CRC of the cache entry
+  void *ctx;        ///< Store context (handle)
+  void *cctx;       ///< Compression context (handle)
 };
 
 /**

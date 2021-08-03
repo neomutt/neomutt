@@ -44,11 +44,11 @@ typedef uint8_t MixCapFlags;       ///< Flags, e.g. #MIX_CAP_NO_FLAGS
  */
 struct Remailer
 {
-  int num;
-  char *shortname;
-  char *addr;
-  char *ver;
-  MixCapFlags caps;
+  int num;          ///< Index number
+  char *shortname;  ///< Short name of remailer host
+  char *addr;       ///< Address of host
+  char *ver;        ///< Version of host
+  MixCapFlags caps; ///< Capabilities of host
 };
 
 /**
@@ -56,8 +56,8 @@ struct Remailer
  */
 struct MixChain
 {
-  size_t cl;
-  int ch[MAX_MIXES];
+  size_t cl;         ///< Length of chain
+  int ch[MAX_MIXES]; ///< Indexes of chain hosts
 };
 
 int mix_send_message(struct ListHead *chain, const char *tempfile);

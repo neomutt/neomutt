@@ -67,6 +67,7 @@ enum UserHdrsOverrideIdx
  */
 struct UserHdrsOverride
 {
+  /// Which email headers have been overridden
   bool is_overridden[mutt_array_size(userhdrs_override_headers)];
 };
 

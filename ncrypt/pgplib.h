@@ -36,8 +36,8 @@ struct PgpUid
   char *addr;
   short trust;
   int flags;
-  struct PgpKeyInfo *parent;
-  struct PgpUid *next;
+  struct PgpKeyInfo *parent; ///< Parent key
+  struct PgpUid *next;       ///< Linked list
 };
 
 /**

@@ -49,7 +49,7 @@ struct ConnAccount;
  */
 struct BodyCache
 {
-  char *path;
+  char *path; ///< On-disk path to the file
 };
 
 /**

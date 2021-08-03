@@ -110,7 +110,7 @@ static const struct Mapping PgpHelp[] = {
  */
 struct PgpEntry
 {
-  size_t num;
+  size_t num; ///< Index number
   struct PgpUid *uid;
 };
 

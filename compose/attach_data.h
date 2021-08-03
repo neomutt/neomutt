@@ -31,8 +31,8 @@ struct Menu;
  */
 struct ComposeAttachData
 {
-  struct AttachCtx *actx;
-  struct Menu *menu;
+  struct AttachCtx *actx; ///< Set of attachments
+  struct Menu *menu;      ///< Menu displaying the attachments
 };
 
 void                      attach_data_free(struct Menu *menu, void **ptr);

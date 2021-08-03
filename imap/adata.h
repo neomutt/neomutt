@@ -38,9 +38,9 @@ struct Mailbox;
  */
 struct ImapAccountData
 {
-  struct Connection *conn;
+  struct Connection *conn; ///< Connection to IMAP server
   bool recovering;
-  bool closing; ///< If true, we are waiting for CLOSE completion
+  bool closing;         ///< If true, we are waiting for CLOSE completion
   unsigned char state;  ///< ImapState, e.g. #IMAP_AUTHENTICATED
   unsigned char status; ///< ImapFlags, e.g. #IMAP_FATAL
   /* let me explain capstr: SASL needs the capability string (not bits).
@@ -51,11 +51,11 @@ struct ImapAccountData
    * I've chosen (3) for now. (2) might not be too bad, but it involves
    * tracking all possible capabilities. bah. (1) I don't like because
    * it's just no fun to get the same information twice */
-  char *capstr;
-  ImapCapFlags capabilities;
-  unsigned char seqid; ///< tag sequence prefix
-  unsigned int seqno; ///< tag sequence number, e.g. '{seqid}0001'
-  time_t lastread; ///< last time we read a command for the server
+  char *capstr;              ///< Capability string from the server
+  ImapCapFlags capabilities; ///< Capability flags
+  unsigned char seqid;       ///< tag sequence prefix
+  unsigned int seqno;        ///< tag sequence number, e.g. '{seqid}0001'
+  time_t lastread;           ///< last time we read a command for the server
   char *buf;
   size_t blen;
 
@@ -66,13 +66,13 @@ struct ImapAccountData
   struct ImapList *cmdresult;
 
   /* command queue */
-  struct ImapCommand *cmds;
-  int cmdslots;
-  int nextcmd;
-  int lastcmd;
+  struct ImapCommand *cmds; ///< Queue of commands for the server
+  int cmdslots;             ///< Size of the command queue
+  int nextcmd;              ///< Next command to be sent
+  int lastcmd;              ///< Last command in the queue
   struct Buffer cmdbuf;
 
-  char delim;
+  char delim;                   ///< Path delimiter
   struct Mailbox *mailbox;      ///< Current selected mailbox
   struct Mailbox *prev_mailbox; ///< Previously selected mailbox
   struct Account *account;      ///< Parent Account

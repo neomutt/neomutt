@@ -48,12 +48,12 @@ enum PatternEat
  */
 struct PatternFlags
 {
-  int tag;                ///< Character used to represent this operation, e.g. 'A' for '~A'
-  int op;                 ///< Operation to perform, e.g. #MUTT_PAT_SCORE
-  PatternCompFlags flags; ///< Pattern flags, e.g. #MUTT_PC_FULL_MSG
+  int tag;                 ///< Character used to represent this operation, e.g. 'A' for '~A'
+  int op;                  ///< Operation to perform, e.g. #MUTT_PAT_SCORE
+  PatternCompFlags flags;  ///< Pattern flags, e.g. #MUTT_PC_FULL_MSG
 
-  enum PatternEat eat_arg;
-  char *desc;
+  enum PatternEat eat_arg; ///< Type of function needed to parse flag, e.g. #EAT_DATE
+  char *desc;              ///< Description of flag
 };
 
 /**

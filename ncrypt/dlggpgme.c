@@ -115,8 +115,8 @@ static const struct Mapping GpgmeHelp[] = {
  */
 struct CryptEntry
 {
-  size_t num;
-  struct CryptKeyInfo *key;
+  size_t num;               ///< Index number
+  struct CryptKeyInfo *key; ///< Key
 };
 
 /**
@@ -124,8 +124,8 @@ struct CryptEntry
  */
 struct DnArray
 {
-  char *key;
-  char *value;
+  char *key;   ///< Key
+  char *value; ///< Value
 };
 
 static const char *const KeyInfoPrompts[] = {

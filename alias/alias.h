@@ -62,7 +62,7 @@ enum NotifyAlias
  */
 struct EventAlias
 {
-  struct Alias *alias;
+  struct Alias *alias;  ///< Alias that changed
 };
 
 void          alias_free    (struct Alias **ptr);

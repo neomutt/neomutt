@@ -30,8 +30,8 @@
  */
 struct Mapping
 {
-  const char *name;
-  int value;
+  const char *name; ///< String value
+  int value;        ///< Integer value
 };
 
 const char *mutt_map_get_name(int val, const struct Mapping *map);

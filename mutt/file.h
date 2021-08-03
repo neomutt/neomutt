@@ -47,8 +47,8 @@ struct timespec;
  */
 struct timespec
 {
-  time_t tv_sec;
-  long tv_nsec;
+  time_t tv_sec; ///< Number of seconds since the epoch
+  long tv_nsec;  ///< Number of nanosecond, on top
 };
 #endif
 

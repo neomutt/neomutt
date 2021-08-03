@@ -50,11 +50,11 @@
  */
 struct Rfc2231Parameter
 {
-  char *attribute;
-  char *value;
-  int index;
-  bool encoded;
-  struct Rfc2231Parameter *next;
+  char *attribute;               ///< Attribute name
+  char *value;                   ///< Attribute value
+  int index;                     ///< Index number in the list
+  bool encoded;                  ///< Is the value encoded?
+  struct Rfc2231Parameter *next; ///< Linked list
 };
 
 /**

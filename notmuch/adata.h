@@ -33,9 +33,9 @@ struct Mailbox;
  */
 struct NmAccountData
 {
-  notmuch_database_t *db;
-  bool longrun : 1;    ///< A long-lived action is in progress
-  bool trans : 1;      ///< Atomic transaction in progress
+  notmuch_database_t *db; ///< Connection to Notmuch database
+  bool longrun : 1;       ///< A long-lived action is in progress
+  bool trans : 1;         ///< Atomic transaction in progress
 };
 
 void                  nm_adata_free(void **ptr);

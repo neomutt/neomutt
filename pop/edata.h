@@ -30,8 +30,8 @@ struct Email;
  */
 struct PopEmailData
 {
-  const char *uid;
-  int refno;                   ///< Message number on server
+  const char *uid; ///< UID of email
+  int refno;       ///< Message number on server
 };
 
 void                 pop_edata_free(void **ptr);

@@ -31,8 +31,8 @@
  */
 struct NntpMboxData
 {
-  char *group;
-  char *desc;
+  char *group; ///< Name of newsgroup
+  char *desc;  ///< Description of newsgroup
   anum_t first_message;
   anum_t last_message;
   anum_t last_loaded;

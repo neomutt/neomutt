@@ -121,7 +121,7 @@ STAILQ_HEAD(ColorLineList, ColorLine);
  */
 struct EventColor
 {
-  enum ColorId color;
+  enum ColorId color; ///< Colour that has changed
 };
 
 /**

@@ -45,9 +45,9 @@ struct Buffer;
  */
 struct Slist
 {
-  struct ListHead head;
-  size_t count;
-  uint32_t flags;
+  struct ListHead head; ///< List containing values
+  size_t count;         ///< Number of values in list
+  uint32_t flags;       ///< Flags controlling list, e.g. #SLIST_SEP_SPACE
 };
 
 struct Slist *slist_add_list(struct Slist *list, const struct Slist *add);

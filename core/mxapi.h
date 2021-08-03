@@ -46,12 +46,12 @@ struct Message
   bool write;           ///< nonzero if message is open for writing
   struct
   {
-    bool read : 1;
-    bool flagged : 1;
-    bool replied : 1;
-    bool draft : 1;
-  } flags;
-  time_t received; ///< the time at which this message was received
+    bool read : 1;    ///< Message has been read
+    bool flagged : 1; ///< Message is flagged
+    bool replied : 1; ///< Message has been replied to
+    bool draft : 1;   ///< Message has been read
+  } flags;            ///< Flags for the Message
+  time_t received;    ///< Time at which this message was received
 };
 
 

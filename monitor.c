@@ -81,7 +81,7 @@ enum ResolveResult
  */
 struct Monitor
 {
-  struct Monitor *next;
+  struct Monitor *next; ///< Linked list
   char *mh_backup_path;
   dev_t st_dev;
   ino_t st_ino;

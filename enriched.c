@@ -67,8 +67,8 @@ enum RichAttribs
  */
 struct Etags
 {
-  const wchar_t *tag_name;
-  int index;
+  const wchar_t *tag_name; ///< Tag name
+  int index;               ///< Index number
 };
 
 // clang-format off

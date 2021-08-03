@@ -43,8 +43,8 @@ typedef uint8_t SelectFileFlags;  ///< Flags for mutt_select_file(), e.g. #MUTT_
  */
 struct Folder
 {
-  struct FolderFile *ff;
-  int num;
+  struct FolderFile *ff; ///< File / Dir / Mailbox
+  int num;               ///< Number in the index
 };
 
 /**
@@ -52,35 +52,35 @@ struct Folder
  */
 struct FolderFile
 {
-  mode_t mode;
-  off_t size;
-  time_t mtime;
-  uid_t uid;
-  gid_t gid;
-  nlink_t nlink;
+  mode_t mode;             ///< File permissions
+  off_t size;              ///< File size
+  time_t mtime;            ///< Modification time
+  uid_t uid;               ///< File's User ID
+  gid_t gid;               ///< File's Group ID
+  nlink_t nlink;           ///< Number of hard links
 
-  char *name;
-  char *desc;
+  char *name;              ///< Name of file/dir/mailbox
+  char *desc;              ///< Description of mailbox
 
-  bool has_new_mail; ///< true if mailbox has "new mail"
-  int msg_count;     ///< total number of messages
-  int msg_unread;    ///< number of unread messages
+  bool has_new_mail;       ///< true if mailbox has "new mail"
+  int msg_count;           ///< total number of messages
+  int msg_unread;          ///< number of unread messages
 
 #ifdef USE_IMAP
-  char delim;
+  char delim;              ///< Path delimiter
 
-  bool imap : 1;
-  bool selectable : 1;
-  bool inferiors : 1;
+  bool imap        : 1;    ///< This is an IMAP folder
+  bool selectable  : 1;    ///< Folder can be selected
+  bool inferiors   : 1;    ///< Folder has children
 #endif
-  bool has_mailbox : 1;
-  bool local : 1; ///< folder is on local filesystem
-  bool tagged : 1;
+  bool has_mailbox : 1;    ///< This is a mailbox
+  bool local       : 1;    ///< Folder is on local filesystem
+  bool tagged      : 1;    ///< Folder is tagged
 #ifdef USE_NNTP
-  struct NntpMboxData *nd;
+  struct NntpMboxData *nd; ///< Extra NNTP data
 #endif
 
-  int gen;
+  int gen;                 ///< Unique id, used for (un)sorting
 };
 
 ARRAY_HEAD(BrowserStateEntry, struct FolderFile);
@@ -90,12 +90,12 @@ ARRAY_HEAD(BrowserStateEntry, struct FolderFile);
  */
 struct BrowserState
 {
-  struct BrowserStateEntry entry;
+  struct BrowserStateEntry entry; ///< Array of files / dirs / mailboxes
 #ifdef USE_IMAP
-  bool imap_browse;
-  char *folder;
+  bool imap_browse; ///< IMAP folder
+  char *folder;     ///< Folder name
 #endif
-  bool is_mailbox_list;
+  bool is_mailbox_list; ///< Viewing mailboxes
 };
 
 void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags, struct Mailbox *m, char ***files, int *numfiles);

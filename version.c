@@ -120,8 +120,8 @@ static const char *Notice =
  */
 struct CompileOptions
 {
-  const char *name;
-  int enabled; ///< 0 Disabled, 1 Enabled, 2 Devel only
+  const char *name; ///< Option name
+  int enabled;      ///< 0 Disabled, 1 Enabled, 2 Devel only
 };
 
 /* These are sorted by the display string */

@@ -64,9 +64,9 @@ struct SaslSockData
   const unsigned int *pbufsize;
 
   /* read buffer */
-  const char *buf;
-  unsigned int blen;
-  unsigned int bpos;
+  const char *buf;   ///< Buffer for data read from the connection
+  unsigned int blen; ///< Size of the read buffer
+  unsigned int bpos; ///< Current read position
 
   void *sockdata; ///< Underlying socket data
 

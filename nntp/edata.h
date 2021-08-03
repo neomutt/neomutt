@@ -33,8 +33,8 @@ struct Email;
  */
 struct NntpEmailData
 {
-  anum_t article_num;
-  bool parsed : 1;
+  anum_t article_num; ///< NNTP article number
+  bool parsed : 1;    ///< Email has been parse
 };
 
 void                  nntp_edata_free(void **ptr);

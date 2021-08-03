@@ -40,11 +40,11 @@
  */
 struct AutocryptHeader
 {
-  char *addr;
-  char *keydata;
-  bool prefer_encrypt : 1;
-  bool invalid : 1;
-  struct AutocryptHeader *next;
+  char *addr;                   ///< Email address
+  char *keydata;                ///< PGP Key data
+  bool prefer_encrypt : 1;      ///< User prefers encryption
+  bool invalid        : 1;      ///< Header is invalid
+  struct AutocryptHeader *next; ///< Linked list
 };
 #endif
 
@@ -82,10 +82,10 @@ struct Envelope
   struct ListHead in_reply_to;         ///< in-reply-to header content
   struct ListHead userhdrs;            ///< user defined headers
 #ifdef USE_AUTOCRYPT
-  struct AutocryptHeader *autocrypt;
-  struct AutocryptHeader *autocrypt_gossip;
+  struct AutocryptHeader *autocrypt;        ///< Autocrypt header
+  struct AutocryptHeader *autocrypt_gossip; ///< Autocrypt Gossip header
 #endif
-  unsigned char changed;               ///< Changed fields, e.g. #MUTT_ENV_CHANGED_SUBJECT
+  unsigned char changed; ///< Changed fields, e.g. #MUTT_ENV_CHANGED_SUBJECT
 };
 
 bool             mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2);

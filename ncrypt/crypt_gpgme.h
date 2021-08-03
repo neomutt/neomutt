@@ -43,7 +43,7 @@ struct State;
  */
 struct CryptKeyInfo
 {
-  struct CryptKeyInfo *next;
+  struct CryptKeyInfo *next; ///< Linked list
   gpgme_key_t kobj;
   int idx;                   ///< and the user ID at this index
   const char *uid;           ///< and for convenience point to this user ID
