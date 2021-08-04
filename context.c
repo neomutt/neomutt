@@ -390,9 +390,7 @@ int el_add_tagged(struct EmailList *el, struct Context *ctx, struct Email *e, bo
     if (!e)
       return -1;
 
-    struct EmailNode *en = mutt_mem_calloc(1, sizeof(*en));
-    en->email = e;
-    STAILQ_INSERT_TAIL(el, en, entries);
+    emaillist_add_email(el, e);
     count = 1;
   }
 
