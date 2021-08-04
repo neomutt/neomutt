@@ -1061,6 +1061,14 @@ int mutt_pager(struct PagerView *pview)
 
     rc = op;
 
+#define DISPATCH_TO_INDEX(op)                                                  \
+    do {                                                                       \
+      switch (index_function_dispatcher(priv->pview->win_index, (op)))         \
+      {                                                                        \
+        default:                                                               \
+          break;                                                               \
+      }                                                                        \
+    } while (0)
     switch (op)
     {
         //=======================================================================
@@ -1436,7 +1444,7 @@ int mutt_pager(struct PagerView *pview)
 
       case OP_SORT:
       case OP_SORT_REVERSE:
-        index_function_dispatcher(priv->pview->win_index, op);
+        DISPATCH_TO_INDEX(op);
         break;
 
         //=======================================================================
@@ -1641,10 +1649,7 @@ int mutt_pager(struct PagerView *pview)
         }
         else
         {
-          struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-          emaillist_add_email(&el, shared->email);
-          ci_bounce_message(shared->mailbox, &el);
-          emaillist_clear(&el);
+          DISPATCH_TO_INDEX(op);
         }
         break;
       }
@@ -1653,23 +1658,21 @@ int mutt_pager(struct PagerView *pview)
 
       case OP_RESEND:
         if (!assert_pager_mode((pview->mode == PAGER_MODE_EMAIL) ||
-                               (pview->mode == PAGER_MODE_ATTACH_E)))
+                               (pview->mode == PAGER_MODE_ATTACH_E)) ||
+            assert_attach_msg_mode(OptAttachMsg))
         {
           break;
         }
-        if (assert_attach_msg_mode(OptAttachMsg))
-          break;
         if (pview->mode == PAGER_MODE_ATTACH_E)
         {
           mutt_attach_resend(pview->pdata->fp, ctx_mailbox(shared->ctx),
                              pview->pdata->actx, pview->pdata->body);
+          pager_queue_redraw(priv, MENU_REDRAW_FULL);
         }
         else
         {
-          mutt_resend_message(NULL, ctx_mailbox(shared->ctx), shared->email,
-                              NeoMutt->sub);
+          DISPATCH_TO_INDEX(op);
         }
-        pager_queue_redraw(priv, MENU_REDRAW_FULL);
         break;
 
         //=======================================================================
@@ -1686,30 +1689,21 @@ int mutt_pager(struct PagerView *pview)
         {
           mutt_attach_mail_sender(pview->pdata->fp, shared->email,
                                   pview->pdata->actx, pview->pdata->body);
+          pager_queue_redraw(priv, MENU_REDRAW_FULL);
         }
         else
         {
-          struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-          emaillist_add_email(&el, shared->email);
-
-          mutt_send_message(SEND_TO_SENDER, NULL, NULL,
-                            ctx_mailbox(shared->ctx), &el, NeoMutt->sub);
-          emaillist_clear(&el);
+          DISPATCH_TO_INDEX(op);
         }
-        pager_queue_redraw(priv, MENU_REDRAW_FULL);
         break;
 
         //=======================================================================
 
       case OP_CHECK_TRADITIONAL:
-        if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
-          break;
-        if (!(WithCrypto & APPLICATION_PGP))
-          break;
-        if (!(shared->email->security & PGP_TRADITIONAL_CHECKED))
+        if (assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
         {
+          DISPATCH_TO_INDEX(op);
           op = -1;
-          rc = OP_CHECK_TRADITIONAL;
         }
         break;
 
@@ -1734,29 +1728,10 @@ int mutt_pager(struct PagerView *pview)
       case OP_PURGE_MESSAGE:
       case OP_DELETE:
       {
-        if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
-          break;
-        if (!assert_mailbox_writable(shared->mailbox))
-          break;
-        /* L10N: CHECK_ACL */
-        if (!assert_mailbox_permissions(shared->mailbox, MUTT_ACL_DELETE,
-                                        _("Can't delete message")))
+        if (assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
         {
-          break;
-        }
-
-        mutt_set_flag(shared->mailbox, shared->email, MUTT_DELETE, true);
-        mutt_set_flag(shared->mailbox, shared->email, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
-        const bool c_delete_untag =
-            cs_subset_bool(NeoMutt->sub, "delete_untag");
-        if (c_delete_untag)
-          mutt_set_flag(shared->mailbox, shared->email, MUTT_TAG, false);
-        pager_queue_redraw(priv, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
-        const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
-        if (c_resolve)
-        {
+          DISPATCH_TO_INDEX(op);
           op = -1;
-          rc = OP_MAIN_NEXT_UNDELETED;
         }
         break;
       }
@@ -1766,23 +1741,12 @@ int mutt_pager(struct PagerView *pview)
       case OP_MAIN_SET_FLAG:
       case OP_MAIN_CLEAR_FLAG:
       {
-        if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
-          break;
-        if (!assert_mailbox_writable(shared->mailbox))
-          break;
-
-        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-        emaillist_add_email(&el, shared->email);
-
-        if (mutt_change_flag(shared->mailbox, &el, (op == OP_MAIN_SET_FLAG)) == 0)
-          pager_queue_redraw(priv, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
-        const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
-        if (shared->email->deleted && c_resolve)
+        /* TODO - issues with refresh */
+        if (assert_pager_mode(pview->mode == PAGER_MODE_EMAIL) &&
+            assert_mailbox_writable(shared->mailbox))
         {
-          op = -1;
-          rc = OP_MAIN_NEXT_UNDELETED;
+          DISPATCH_TO_INDEX(op);
         }
-        emaillist_clear(&el);
         break;
       }
 
@@ -1792,48 +1756,11 @@ int mutt_pager(struct PagerView *pview)
       case OP_DELETE_SUBTHREAD:
       case OP_PURGE_THREAD:
       {
-        if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
-          break;
-        if (!assert_mailbox_writable(shared->mailbox))
-          break;
-        /* L10N: CHECK_ACL */
-        /* L10N: Due to the implementation details we do not know whether we
-           delete zero, 1, 12, ... messages. So in English we use
-           "messages". Your language might have other means to express this.  */
-        if (!assert_mailbox_permissions(shared->mailbox, MUTT_ACL_DELETE,
-                                        _("Can't delete messages")))
+        if (assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
         {
-          break;
-        }
-
-        int subthread = (op == OP_DELETE_SUBTHREAD);
-        int r = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_DELETE, 1, subthread);
-        if (r == -1)
-          break;
-        if (op == OP_PURGE_THREAD)
-        {
-          r = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_PURGE, true, subthread);
-          if (r == -1)
-            break;
-        }
-
-        const bool c_delete_untag =
-            cs_subset_bool(NeoMutt->sub, "delete_untag");
-        if (c_delete_untag)
-          mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_TAG, 0, subthread);
-        const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
-        if (c_resolve)
-        {
-          rc = OP_MAIN_NEXT_UNDELETED;
+          DISPATCH_TO_INDEX(op);
           op = -1;
         }
-
-        if (!c_resolve &&
-            (cs_subset_number(NeoMutt->sub, "pager_index_lines") != 0))
-          pager_queue_redraw(priv, MENU_REDRAW_FULL);
-        else
-          pager_queue_redraw(priv, MENU_REDRAW_STATUS | MENU_REDRAW_INDEX);
-
         break;
       }
 
@@ -2486,6 +2413,7 @@ int mutt_pager(struct PagerView *pview)
         op = -1;
         break;
     }
+#undef DISPATCH_TO_INDEX
   }
   //-------------------------------------------------------------------------
   // END OF ACT 3: Read user input loop - while (op != -1)
