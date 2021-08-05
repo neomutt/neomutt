@@ -316,8 +316,17 @@ static int op_display_message(struct IndexSharedData *shared,
   const int index = menu_get_index(priv->menu);
   index_shared_data_set_email(shared, mutt_get_virt_email(shared->mailbox, index));
 
-  op = mutt_display_message(priv->win_index, priv->win_ibar, priv->win_pager,
-                            priv->win_pbar, shared->mailbox, shared->email);
+  const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
+  if (c_pager && !mutt_str_equal(c_pager, "builtin"))
+  {
+    op = external_pager(shared->mailbox, shared->email, c_pager);
+  }
+  else
+  {
+    op = mutt_display_message(priv->win_index, priv->win_ibar, priv->win_pager,
+                              priv->win_pbar, shared->mailbox, shared->email);
+  }
+
   window_set_focus(priv->win_index);
   if (op < 0)
   {
