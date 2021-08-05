@@ -31,7 +31,6 @@ struct Email;
 struct EmailList;
 struct Envelope;
 struct Mailbox;
-struct MuttWindow;
 
 /**
  * enum MessageTransformOpt - Message transformation option
@@ -57,7 +56,6 @@ void mutt_check_stats(struct Mailbox *m);
 bool mutt_check_traditional_pgp(struct Mailbox *m, struct EmailList *el);
 void mutt_commands_cleanup(void);
 void mutt_display_address(struct Envelope *env);
-int  mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ibar, struct MuttWindow *win_pager, struct MuttWindow *win_pbar, struct Mailbox *m, struct Email *e);
 bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp);
 void mutt_enter_command(void);
 void mutt_pipe_message(struct Mailbox *m, struct EmailList *el);

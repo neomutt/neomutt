@@ -30,7 +30,6 @@
 
 #include "config.h"
 #include <assert.h>
-#include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -47,23 +46,16 @@
 #include "mutt.h"
 #include "commands.h"
 #include "attach/lib.h"
-#include "menu/lib.h"
 #include "ncrypt/lib.h"
-#include "pager/lib.h"
 #include "progress/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "browser.h"
-#include "context.h"
 #include "copy.h"
-#include "format_flags.h"
-#include "hdrline.h"
 #include "hook.h"
 #include "icommands.h"
 #include "init.h"
-#include "keymap.h"
 #include "mutt_commands.h"
-#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "mutt_thread.h"
@@ -80,11 +72,6 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
-#ifdef USE_AUTOCRYPT
-#include "autocrypt/lib.h"
-#endif
-
-static const char *ExtPagerProgress = "all";
 
 /** The folder the user last saved to.  Used by ci_save_message() */
 static struct Buffer LastSaveFolder = { 0 };
@@ -95,335 +82,6 @@ static struct Buffer LastSaveFolder = { 0 };
 void mutt_commands_cleanup(void)
 {
   mutt_buffer_dealloc(&LastSaveFolder);
-}
-
-/**
- * process_protected_headers - Get the protected header and update the index
- * @param m Mailbox
- * @param e Email to update
- */
-static void process_protected_headers(struct Mailbox *m, struct Email *e)
-{
-  struct Envelope *prot_headers = NULL;
-  regmatch_t pmatch[1];
-
-  const bool c_crypt_protected_headers_read =
-      cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
-#ifdef USE_AUTOCRYPT
-  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
-  if (!c_crypt_protected_headers_read && !c_autocrypt)
-    return;
-#else
-  if (!c_crypt_protected_headers_read)
-    return;
-#endif
-
-  /* Grab protected headers to update in the index */
-  if (e->security & SEC_SIGN)
-  {
-    /* Don't update on a bad signature.
-     *
-     * This is a simplification.  It's possible the headers are in the
-     * encrypted part of a nested encrypt/signed.  But properly handling that
-     * case would require more complexity in the decryption handlers, which
-     * I'm not sure is worth it. */
-    if (!(e->security & SEC_GOODSIGN))
-      return;
-
-    if (mutt_is_multipart_signed(e->body) && e->body->parts)
-    {
-      prot_headers = e->body->parts->mime_headers;
-    }
-    else if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(e->body))
-    {
-      prot_headers = e->body->mime_headers;
-    }
-  }
-  if (!prot_headers && (e->security & SEC_ENCRYPT))
-  {
-    if (((WithCrypto & APPLICATION_PGP) != 0) &&
-        (mutt_is_valid_multipart_pgp_encrypted(e->body) ||
-         mutt_is_malformed_multipart_pgp_encrypted(e->body)))
-    {
-      prot_headers = e->body->mime_headers;
-    }
-    else if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(e->body))
-    {
-      prot_headers = e->body->mime_headers;
-    }
-  }
-
-  /* Update protected headers in the index and header cache. */
-  if (c_crypt_protected_headers_read && prot_headers && prot_headers->subject &&
-      !mutt_str_equal(e->env->subject, prot_headers->subject))
-  {
-    if (m->subj_hash && e->env->real_subj)
-      mutt_hash_delete(m->subj_hash, e->env->real_subj, e);
-
-    mutt_str_replace(&e->env->subject, prot_headers->subject);
-    FREE(&e->env->disp_subj);
-    const struct Regex *c_reply_regex =
-        cs_subset_regex(NeoMutt->sub, "reply_regex");
-    if (mutt_regex_capture(c_reply_regex, e->env->subject, 1, pmatch))
-      e->env->real_subj = e->env->subject + pmatch[0].rm_eo;
-    else
-      e->env->real_subj = e->env->subject;
-
-    if (m->subj_hash)
-      mutt_hash_insert(m->subj_hash, e->env->real_subj, e);
-
-    mx_save_hcache(m, e);
-
-    /* Also persist back to the message headers if this is set */
-    const bool c_crypt_protected_headers_save =
-        cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_save");
-    if (c_crypt_protected_headers_save)
-    {
-      e->env->changed |= MUTT_ENV_CHANGED_SUBJECT;
-      e->changed = true;
-      m->changed = true;
-    }
-  }
-
-#ifdef USE_AUTOCRYPT
-  if (c_autocrypt && (e->security & SEC_ENCRYPT) && prot_headers && prot_headers->autocrypt_gossip)
-  {
-    mutt_autocrypt_process_gossip_header(m, e, prot_headers);
-  }
-#endif
-}
-
-/**
- * mutt_display_message - Display a message in the pager
- * @param win_index Index Window
- * @param win_ibar  Index Bar Window
- * @param win_pager Pager Window
- * @param win_pbar  Pager Bar Window
- * @param m         Mailbox
- * @param e         Email to display
- * @retval  0 Success
- * @retval -1 Error
- */
-int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ibar,
-                         struct MuttWindow *win_pager, struct MuttWindow *win_pbar,
-                         struct Mailbox *m, struct Email *e)
-{
-  int rc = 0;
-  bool builtin = false;
-  CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
-  CopyHeaderFlags chflags;
-  pid_t filterpid = -1;
-  struct Buffer *tempfile = NULL;
-  int res;
-
-  struct Message *msg = mx_msg_open(m, e->msgno);
-  if (!msg)
-  {
-    return -1;
-  }
-
-  mutt_parse_mime_message(m, e, msg->fp);
-  mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
-
-  char columns[16];
-  // win_pager might not be visible and have a size yet, so use win_index
-  snprintf(columns, sizeof(columns), "%d", win_index->state.cols);
-  mutt_envlist_set("COLUMNS", columns, true);
-
-  /* see if crypto is needed for this message.  if so, we should exit curses */
-  if ((WithCrypto != 0) && e->security)
-  {
-    if (e->security & SEC_ENCRYPT)
-    {
-      if (e->security & APPLICATION_SMIME)
-        crypt_smime_getkeys(e->env);
-      if (!crypt_valid_passphrase(e->security))
-        goto cleanup;
-
-      cmflags |= MUTT_CM_VERIFY;
-    }
-    else if (e->security & SEC_SIGN)
-    {
-      /* find out whether or not the verify signature */
-      /* L10N: Used for the $crypt_verify_sig prompt */
-      const enum QuadOption c_crypt_verify_sig =
-          cs_subset_quad(NeoMutt->sub, "crypt_verify_sig");
-      if (query_quadoption(c_crypt_verify_sig, _("Verify signature?")) == MUTT_YES)
-      {
-        cmflags |= MUTT_CM_VERIFY;
-      }
-    }
-  }
-
-  if (cmflags & MUTT_CM_VERIFY || e->security & SEC_ENCRYPT)
-  {
-    if (e->security & APPLICATION_PGP)
-    {
-      if (!TAILQ_EMPTY(&e->env->from))
-        crypt_pgp_invoke_getkeys(TAILQ_FIRST(&e->env->from));
-
-      crypt_invoke_message(APPLICATION_PGP);
-    }
-
-    if (e->security & APPLICATION_SMIME)
-      crypt_invoke_message(APPLICATION_SMIME);
-  }
-
-  FILE *fp_filter_out = NULL;
-  tempfile = mutt_buffer_pool_get();
-  mutt_buffer_mktemp(tempfile);
-  FILE *fp_out = mutt_file_fopen(mutt_buffer_string(tempfile), "w");
-  if (!fp_out)
-  {
-    mutt_error(_("Could not create temporary file"));
-    goto cleanup;
-  }
-
-  const char *const c_display_filter =
-      cs_subset_string(NeoMutt->sub, "display_filter");
-  if (c_display_filter)
-  {
-    fp_filter_out = fp_out;
-    fp_out = NULL;
-    filterpid = filter_create_fd(c_display_filter, &fp_out, NULL, NULL, -1,
-                                 fileno(fp_filter_out), -1);
-    if (filterpid < 0)
-    {
-      mutt_error(_("Can't create display filter"));
-      mutt_file_fclose(&fp_filter_out);
-      unlink(mutt_buffer_string(tempfile));
-      goto cleanup;
-    }
-  }
-
-  const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
-  if (!c_pager || mutt_str_equal(c_pager, "builtin"))
-    builtin = true;
-  else
-  {
-    char buf[1024] = { 0 };
-    const char *const c_pager_format =
-        cs_subset_string(NeoMutt->sub, "pager_format");
-    mutt_make_string(buf, sizeof(buf), win_index->state.cols, NONULL(c_pager_format),
-                     m, Context ? Context->msg_in_pager : -1, e,
-                     MUTT_FORMAT_NO_FLAGS, ExtPagerProgress);
-    fputs(buf, fp_out);
-    fputs("\n\n", fp_out);
-  }
-
-  const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
-  chflags = (c_weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) | CH_DECODE | CH_FROM | CH_DISPLAY;
-#ifdef USE_NOTMUCH
-  if (m->type == MUTT_NOTMUCH)
-    chflags |= CH_VIRTUAL;
-#endif
-  res = mutt_copy_message(fp_out, m, e, msg, cmflags, chflags, win_index->state.cols);
-
-  if (((mutt_file_fclose(&fp_out) != 0) && (errno != EPIPE)) || (res < 0))
-  {
-    mutt_error(_("Could not copy message"));
-    if (fp_filter_out)
-    {
-      filter_wait(filterpid);
-      mutt_file_fclose(&fp_filter_out);
-    }
-    mutt_file_unlink(mutt_buffer_string(tempfile));
-    goto cleanup;
-  }
-
-  if (fp_filter_out && (filter_wait(filterpid) != 0))
-    mutt_any_key_to_continue(NULL);
-
-  mutt_file_fclose(&fp_filter_out); /* XXX - check result? */
-
-  if (WithCrypto)
-  {
-    /* update crypto information for this message */
-    e->security &= ~(SEC_GOODSIGN | SEC_BADSIGN);
-    e->security |= crypt_query(e->body);
-
-    /* Remove color cache for this message, in case there
-     * are color patterns for both ~g and ~V */
-    e->pair = 0;
-
-    /* Process protected headers and autocrypt gossip headers */
-    process_protected_headers(m, e);
-  }
-
-  if (builtin)
-  {
-    if ((WithCrypto != 0) && (e->security & APPLICATION_SMIME) && (cmflags & MUTT_CM_VERIFY))
-    {
-      if (e->security & SEC_GOODSIGN)
-      {
-        if (crypt_smime_verify_sender(m, e, msg) == 0)
-          mutt_message(_("S/MIME signature successfully verified"));
-        else
-          mutt_error(_("S/MIME certificate owner does not match sender"));
-      }
-      else if (e->security & SEC_PARTSIGN)
-        mutt_message(_("Warning: Part of this message has not been signed"));
-      else if (e->security & SEC_SIGN || e->security & SEC_BADSIGN)
-        mutt_error(_("S/MIME signature could NOT be verified"));
-    }
-
-    if ((WithCrypto != 0) && (e->security & APPLICATION_PGP) && (cmflags & MUTT_CM_VERIFY))
-    {
-      if (e->security & SEC_GOODSIGN)
-        mutt_message(_("PGP signature successfully verified"));
-      else if (e->security & SEC_PARTSIGN)
-        mutt_message(_("Warning: Part of this message has not been signed"));
-      else if (e->security & SEC_SIGN)
-        mutt_message(_("PGP signature could NOT be verified"));
-    }
-
-    /* Invoke the builtin pager */
-    struct PagerData pdata = { 0 };
-    struct PagerView pview = { &pdata };
-
-    pdata.fp = msg->fp;
-    pdata.fname = mutt_buffer_string(tempfile);
-
-    pview.mode = PAGER_MODE_EMAIL;
-    pview.banner = NULL;
-    pview.flags = MUTT_PAGER_MESSAGE | (e->body->nowrap ? MUTT_PAGER_NOWRAP : 0);
-    pview.win_ibar = win_ibar;
-    pview.win_index = win_index;
-    pview.win_pbar = win_pbar;
-    pview.win_pager = win_pager;
-    rc = mutt_pager(&pview);
-  }
-  else
-  {
-    mutt_endwin();
-
-    struct Buffer *cmd = mutt_buffer_pool_get();
-    mutt_buffer_printf(cmd, "%s %s", NONULL(c_pager), mutt_buffer_string(tempfile));
-    int r = mutt_system(mutt_buffer_string(cmd));
-    if (r == -1)
-      mutt_error(_("Error running \"%s\""), mutt_buffer_string(cmd));
-    unlink(mutt_buffer_string(tempfile));
-    mutt_buffer_pool_release(&cmd);
-
-    if (!OptNoCurses)
-      keypad(stdscr, true);
-    if (r != -1)
-      mutt_set_flag(m, e, MUTT_READ, true);
-    const bool c_prompt_after = cs_subset_bool(NeoMutt->sub, "prompt_after");
-    if ((r != -1) && c_prompt_after)
-    {
-      mutt_unget_event(mutt_any_key_to_continue(_("Command: ")), 0);
-      rc = km_dokey(MENU_PAGER);
-    }
-    else
-      rc = 0;
-  }
-
-cleanup:
-  mx_msg_close(m, &msg);
-  mutt_envlist_unset("COLUMNS");
-  mutt_buffer_pool_release(&tempfile);
-  return rc;
 }
 
 /**
