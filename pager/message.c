@@ -355,31 +355,13 @@ cleanup:
 }
 
 /**
- * mutt_display_message - Display a message in the pager
- * @param win_index Index Window
- * @param win_ibar  Index Bar Window
- * @param win_pager Pager Window
- * @param win_pbar  Pager Bar Window
- * @param m         Mailbox
- * @param e         Email to display
- * @retval  0 Success
- * @retval -1 Error
+ * notify_crypto - Notify the user about the crypto status of the Email
+ * @param msg Raw Email
+ * @param m   Mailbox
+ * @param e   Email to display
  */
-int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ibar,
-                         struct MuttWindow *win_pager, struct MuttWindow *win_pbar,
-                         struct Mailbox *m, struct Email *e)
+static void notify_crypto(struct Mailbox *m, struct Email *e, struct Message *msg)
 {
-  struct Message *msg = mx_msg_open(m, e->msgno);
-  if (!msg)
-    return -1;
-
-  struct Buffer *tempfile = mutt_buffer_pool_get();
-
-  // win_pager might not be visible and have a size yet, so use win_index
-  int rc = email_to_file(msg, tempfile, m, e, NULL, win_index->state.cols);
-  if (rc < 0)
-    goto cleanup;
-
   CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
   if ((WithCrypto != 0) && (e->security & APPLICATION_SMIME) && (cmflags & MUTT_CM_VERIFY))
   {
@@ -405,6 +387,35 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     else if (e->security & SEC_SIGN)
       mutt_message(_("PGP signature could NOT be verified"));
   }
+}
+
+/**
+ * mutt_display_message - Display a message in the pager
+ * @param win_index Index Window
+ * @param win_ibar  Index Bar Window
+ * @param win_pager Pager Window
+ * @param win_pbar  Pager Bar Window
+ * @param m         Mailbox
+ * @param e         Email to display
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ibar,
+                         struct MuttWindow *win_pager, struct MuttWindow *win_pbar,
+                         struct Mailbox *m, struct Email *e)
+{
+  struct Message *msg = mx_msg_open(m, e->msgno);
+  if (!msg)
+    return -1;
+
+  struct Buffer *tempfile = mutt_buffer_pool_get();
+
+  // win_pager might not be visible and have a size yet, so use win_index
+  int rc = email_to_file(msg, tempfile, m, e, NULL, win_index->state.cols);
+  if (rc < 0)
+    goto cleanup;
+
+  notify_crypto(m, e, msg);
 
   /* Invoke the builtin pager */
   struct PagerData pdata = { 0 };
