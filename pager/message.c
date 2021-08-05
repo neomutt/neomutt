@@ -57,7 +57,7 @@
 #include "autocrypt/lib.h"
 #endif
 
-static const char *ExtPagerProgress = "all";
+static const char *ExtPagerProgress = N_("all");
 
 /**
  * process_protected_headers - Get the protected header and update the index
@@ -156,30 +156,30 @@ static void process_protected_headers(struct Mailbox *m, struct Email *e)
 }
 
 /**
- * external_pager - Display a message in an external program
- * @param m       Mailbox
- * @param e       Email to display
- * @param command External command to run
+ * email_to_file - Decrypt, decode and weed an Email into a file
+ * @param msg      Raw Email
+ * @param tempfile Temporary filename for result
+ * @param m        Mailbox
+ * @param e        Email to display
+ * @param header   Header to prefix output (OPTIONAL)
+ * @param wrap_len Width to wrap lines
  * @retval  0 Success
  * @retval -1 Error
  */
-int external_pager(struct Mailbox *m, struct Email *e, const char *command)
+static int email_to_file(struct Message *msg, struct Buffer *tempfile, struct Mailbox *m,
+                         struct Email *e, const char *header, int wrap_len)
 {
   int rc = 0;
   CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
-  CopyHeaderFlags chflags;
   pid_t filterpid = -1;
-  struct Buffer *tempfile = NULL;
-  int res;
-
-  struct Message *msg = mx_msg_open(m, e->msgno);
-  if (!msg)
-  {
-    return -1;
-  }
 
   mutt_parse_mime_message(m, e, msg->fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
+
+  char columns[16];
+  // win_pager might not be visible and have a size yet, so use win_index
+  snprintf(columns, sizeof(columns), "%d", wrap_len);
+  mutt_envlist_set("COLUMNS", columns, true);
 
   /* see if crypto is needed for this message.  if so, we should exit curses */
   if ((WithCrypto != 0) && e->security)
@@ -221,7 +221,6 @@ int external_pager(struct Mailbox *m, struct Email *e, const char *command)
   }
 
   FILE *fp_filter_out = NULL;
-  tempfile = mutt_buffer_pool_get();
   mutt_buffer_mktemp(tempfile);
   FILE *fp_out = mutt_file_fopen(mutt_buffer_string(tempfile), "w");
   if (!fp_out)
@@ -247,22 +246,20 @@ int external_pager(struct Mailbox *m, struct Email *e, const char *command)
     }
   }
 
-  char buf[1024] = { 0 };
-  const char *const c_pager_format =
-      cs_subset_string(NeoMutt->sub, "pager_format");
-  mutt_make_string(buf, sizeof(buf), sizeof(buf), NONULL(c_pager_format), m,
-                   Context ? Context->msg_in_pager : -1, e,
-                   MUTT_FORMAT_NO_FLAGS, ExtPagerProgress);
-  fputs(buf, fp_out);
-  fputs("\n\n", fp_out);
+  if (header)
+  {
+    fputs(header, fp_out);
+    fputs("\n\n", fp_out);
+  }
 
   const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
-  chflags = (c_weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) | CH_DECODE | CH_FROM | CH_DISPLAY;
+  CopyHeaderFlags chflags = (c_weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) |
+                            CH_DECODE | CH_FROM | CH_DISPLAY;
 #ifdef USE_NOTMUCH
   if (m->type == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
-  res = mutt_copy_message(fp_out, m, e, msg, cmflags, chflags, 0);
+  int res = mutt_copy_message(fp_out, m, e, msg, cmflags, chflags, wrap_len);
 
   if (((mutt_file_fclose(&fp_out) != 0) && (errno != EPIPE)) || (res < 0))
   {
@@ -294,6 +291,39 @@ int external_pager(struct Mailbox *m, struct Email *e, const char *command)
     /* Process protected headers and autocrypt gossip headers */
     process_protected_headers(m, e);
   }
+
+cleanup:
+  mutt_envlist_unset("COLUMNS");
+  return rc;
+}
+
+/**
+ * external_pager - Display a message in an external program
+ * @param m       Mailbox
+ * @param e       Email to display
+ * @param command External command to run
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+int external_pager(struct Mailbox *m, struct Email *e, const char *command)
+{
+  struct Message *msg = mx_msg_open(m, e->msgno);
+  if (!msg)
+    return -1;
+
+  char buf[1024] = { 0 };
+  const char *const c_pager_format =
+      cs_subset_string(NeoMutt->sub, "pager_format");
+  const int screen_width = RootWindow->state.cols;
+  mutt_make_string(buf, sizeof(buf), screen_width, NONULL(c_pager_format), m,
+                   Context ? Context->msg_in_pager : -1, e,
+                   MUTT_FORMAT_NO_FLAGS, _(ExtPagerProgress));
+
+  struct Buffer *tempfile = mutt_buffer_pool_get();
+
+  int rc = email_to_file(msg, tempfile, m, e, buf, screen_width);
+  if (rc < 0)
+    goto cleanup;
 
   mutt_endwin();
 
@@ -339,132 +369,18 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
                          struct MuttWindow *win_pager, struct MuttWindow *win_pbar,
                          struct Mailbox *m, struct Email *e)
 {
-  int rc = 0;
-  CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
-  CopyHeaderFlags chflags;
-  pid_t filterpid = -1;
-  struct Buffer *tempfile = NULL;
-  int res;
-
   struct Message *msg = mx_msg_open(m, e->msgno);
   if (!msg)
-  {
     return -1;
-  }
 
-  mutt_parse_mime_message(m, e, msg->fp);
-  mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
+  struct Buffer *tempfile = mutt_buffer_pool_get();
 
-  char columns[16];
   // win_pager might not be visible and have a size yet, so use win_index
-  snprintf(columns, sizeof(columns), "%d", win_index->state.cols);
-  mutt_envlist_set("COLUMNS", columns, true);
-
-  /* see if crypto is needed for this message.  if so, we should exit curses */
-  if ((WithCrypto != 0) && e->security)
-  {
-    if (e->security & SEC_ENCRYPT)
-    {
-      if (e->security & APPLICATION_SMIME)
-        crypt_smime_getkeys(e->env);
-      if (!crypt_valid_passphrase(e->security))
-        goto cleanup;
-
-      cmflags |= MUTT_CM_VERIFY;
-    }
-    else if (e->security & SEC_SIGN)
-    {
-      /* find out whether or not the verify signature */
-      /* L10N: Used for the $crypt_verify_sig prompt */
-      const enum QuadOption c_crypt_verify_sig =
-          cs_subset_quad(NeoMutt->sub, "crypt_verify_sig");
-      if (query_quadoption(c_crypt_verify_sig, _("Verify signature?")) == MUTT_YES)
-      {
-        cmflags |= MUTT_CM_VERIFY;
-      }
-    }
-  }
-
-  if (cmflags & MUTT_CM_VERIFY || e->security & SEC_ENCRYPT)
-  {
-    if (e->security & APPLICATION_PGP)
-    {
-      if (!TAILQ_EMPTY(&e->env->from))
-        crypt_pgp_invoke_getkeys(TAILQ_FIRST(&e->env->from));
-
-      crypt_invoke_message(APPLICATION_PGP);
-    }
-
-    if (e->security & APPLICATION_SMIME)
-      crypt_invoke_message(APPLICATION_SMIME);
-  }
-
-  FILE *fp_filter_out = NULL;
-  tempfile = mutt_buffer_pool_get();
-  mutt_buffer_mktemp(tempfile);
-  FILE *fp_out = mutt_file_fopen(mutt_buffer_string(tempfile), "w");
-  if (!fp_out)
-  {
-    mutt_error(_("Could not create temporary file"));
+  int rc = email_to_file(msg, tempfile, m, e, NULL, win_index->state.cols);
+  if (rc < 0)
     goto cleanup;
-  }
 
-  const char *const c_display_filter =
-      cs_subset_string(NeoMutt->sub, "display_filter");
-  if (c_display_filter)
-  {
-    fp_filter_out = fp_out;
-    fp_out = NULL;
-    filterpid = filter_create_fd(c_display_filter, &fp_out, NULL, NULL, -1,
-                                 fileno(fp_filter_out), -1);
-    if (filterpid < 0)
-    {
-      mutt_error(_("Can't create display filter"));
-      mutt_file_fclose(&fp_filter_out);
-      unlink(mutt_buffer_string(tempfile));
-      goto cleanup;
-    }
-  }
-
-  const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
-  chflags = (c_weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) | CH_DECODE | CH_FROM | CH_DISPLAY;
-#ifdef USE_NOTMUCH
-  if (m->type == MUTT_NOTMUCH)
-    chflags |= CH_VIRTUAL;
-#endif
-  res = mutt_copy_message(fp_out, m, e, msg, cmflags, chflags, win_index->state.cols);
-
-  if (((mutt_file_fclose(&fp_out) != 0) && (errno != EPIPE)) || (res < 0))
-  {
-    mutt_error(_("Could not copy message"));
-    if (fp_filter_out)
-    {
-      filter_wait(filterpid);
-      mutt_file_fclose(&fp_filter_out);
-    }
-    mutt_file_unlink(mutt_buffer_string(tempfile));
-    goto cleanup;
-  }
-
-  if (fp_filter_out && (filter_wait(filterpid) != 0))
-    mutt_any_key_to_continue(NULL);
-
-  mutt_file_fclose(&fp_filter_out); /* XXX - check result? */
-
-  if (WithCrypto)
-  {
-    /* update crypto information for this message */
-    e->security &= ~(SEC_GOODSIGN | SEC_BADSIGN);
-    e->security |= crypt_query(e->body);
-
-    /* Remove color cache for this message, in case there
-     * are color patterns for both ~g and ~V */
-    e->pair = 0;
-
-    /* Process protected headers and autocrypt gossip headers */
-    process_protected_headers(m, e);
-  }
-
+  CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
   if ((WithCrypto != 0) && (e->security & APPLICATION_SMIME) && (cmflags & MUTT_CM_VERIFY))
   {
     if (e->security & SEC_GOODSIGN)
@@ -508,7 +424,6 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
 
 cleanup:
   mx_msg_close(m, &msg);
-  mutt_envlist_unset("COLUMNS");
   mutt_buffer_pool_release(&tempfile);
   return rc;
 }
