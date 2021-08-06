@@ -55,6 +55,7 @@
  * | #NT_ATTACH | index_attach_observer() |
  * | #NT_COLOR  | index_color_observer()  |
  * | #NT_CONFIG | index_config_observer() |
+ * | #NT_MENU   | index_menu_observer()   |
  * | #NT_SCORE  | index_score_observer()  |
  * | #NT_SUBJRX | index_subjrx_observer() |
  * | #NT_WINDOW | index_window_observer() |
@@ -75,6 +76,7 @@
 #include "attach/lib.h"
 #include "menu/lib.h"
 #include "alternates.h"
+#include "context.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "options.h"
@@ -340,6 +342,26 @@ static int index_config_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * index_menu_observer - Notification that the Menu has changed - Implements ::observer_t
+ */
+static int index_menu_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_MENU) || !nc->global_data)
+    return -1;
+
+  struct MuttWindow *win = nc->global_data;
+  struct MuttWindow *dlg = dialog_find(win);
+  struct IndexSharedData *shared = dlg->wdata;
+  struct Menu *menu = win->wdata;
+
+  const int index = menu_get_index(menu);
+  struct Email *e = mutt_get_virt_email(shared->mailbox, index);
+  index_shared_data_set_email(shared, e);
+
+  return 0;
+}
+
+/**
  * index_score_observer - Notification that a 'score' command has occurred - Implements ::observer_t
  */
 static int index_score_observer(struct NotifyCallback *nc)
@@ -402,10 +424,13 @@ static int index_window_observer(struct NotifyCallback *nc)
   if (ev_w->win != win)
     return 0;
 
+  struct Menu *menu = win->wdata;
+
   notify_observer_remove(NeoMutt->notify, index_altern_observer, win);
   notify_observer_remove(NeoMutt->notify, index_attach_observer, win);
   notify_observer_remove(NeoMutt->notify, index_color_observer, win);
   notify_observer_remove(NeoMutt->notify, index_config_observer, win);
+  notify_observer_remove(menu->notify, index_menu_observer, win);
   notify_observer_remove(NeoMutt->notify, index_score_observer, win);
   notify_observer_remove(NeoMutt->notify, index_subjrx_observer, win);
   notify_observer_remove(win->notify, index_window_observer, win);
@@ -431,6 +456,7 @@ struct MuttWindow *index_window_new(struct IndexSharedData *shared,
   notify_observer_add(NeoMutt->notify, NT_ATTACH, index_attach_observer, win);
   notify_observer_add(NeoMutt->notify, NT_COLOR, index_color_observer, win);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, index_config_observer, win);
+  notify_observer_add(menu->notify, NT_MENU, index_menu_observer, win);
   notify_observer_add(NeoMutt->notify, NT_SCORE, index_score_observer, win);
   notify_observer_add(NeoMutt->notify, NT_SUBJRX, index_subjrx_observer, win);
   notify_observer_add(win->notify, NT_WINDOW, index_window_observer, win);
