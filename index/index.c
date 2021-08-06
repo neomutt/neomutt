@@ -178,10 +178,8 @@ static int config_use_threads(const struct ConfigSubset *sub)
  * @retval  0 Successfully handled
  * @retval -1 Error
  */
-static int config_reply_regex(struct MuttWindow *dlg)
+static int config_reply_regex(struct Mailbox *m)
 {
-  struct IndexSharedData *shared = dlg->wdata;
-  struct Mailbox *m = shared->mailbox;
   if (!m)
     return 0;
 
@@ -219,7 +217,8 @@ static int index_altern_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_ALTERN) || !nc->global_data)
     return -1;
 
-  struct MuttWindow *dlg = nc->global_data;
+  struct MuttWindow *win = nc->global_data;
+  struct MuttWindow *dlg = dialog_find(win);
   struct IndexSharedData *shared = dlg->wdata;
 
   mutt_alternates_reset(shared->mailbox);
@@ -235,7 +234,8 @@ static int index_attach_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_ATTACH) || !nc->global_data)
     return -1;
 
-  struct MuttWindow *dlg = nc->global_data;
+  struct MuttWindow *win = nc->global_data;
+  struct MuttWindow *dlg = dialog_find(win);
   struct IndexSharedData *shared = dlg->wdata;
 
   mutt_attachments_reset(shared->mailbox);
@@ -267,8 +267,8 @@ static int index_color_observer(struct NotifyCallback *nc)
   if (!simple && !lists)
     return 0;
 
-  struct MuttWindow *win_index = nc->global_data;
-  struct MuttWindow *dlg = dialog_find(win_index);
+  struct MuttWindow *win = nc->global_data;
+  struct MuttWindow *dlg = dialog_find(win);
   struct IndexSharedData *shared = dlg->wdata;
 
   struct Mailbox *m = shared->mailbox;
@@ -306,7 +306,8 @@ static int index_config_observer(struct NotifyCallback *nc)
     return -1;
 
   struct EventConfig *ev_c = nc->event_data;
-  struct MuttWindow *dlg = nc->global_data;
+  struct MuttWindow *win = nc->global_data;
+
   const struct ConfigDef *cdef = ev_c->he->data;
   ConfigRedrawFlags flags = cdef->type & R_REDRAW_MASK;
 
@@ -319,7 +320,9 @@ static int index_config_observer(struct NotifyCallback *nc)
 
   if (mutt_str_equal(ev_c->name, "reply_regex"))
   {
-    config_reply_regex(dlg);
+    struct MuttWindow *dlg = dialog_find(win);
+    struct IndexSharedData *shared = dlg->wdata;
+    config_reply_regex(shared->mailbox);
     mutt_debug(LL_DEBUG5, "config done\n");
   }
   else if (mutt_str_equal(ev_c->name, "sort"))
@@ -344,7 +347,8 @@ static int index_score_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_SCORE) || !nc->global_data)
     return -1;
 
-  struct MuttWindow *dlg = nc->global_data;
+  struct MuttWindow *win = nc->global_data;
+  struct MuttWindow *dlg = dialog_find(win);
   struct IndexSharedData *shared = dlg->wdata;
 
   struct Mailbox *m = shared->mailbox;
@@ -373,7 +377,8 @@ static int index_subjrx_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_SUBJRX) || !nc->global_data)
     return -1;
 
-  struct MuttWindow *dlg = nc->global_data;
+  struct MuttWindow *win = nc->global_data;
+  struct MuttWindow *dlg = dialog_find(win);
   struct IndexSharedData *shared = dlg->wdata;
 
   subjrx_clear_mods(shared->mailbox);
