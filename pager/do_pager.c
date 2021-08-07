@@ -69,6 +69,8 @@
 #include "index/lib.h"
 #include "protos.h"
 
+struct Email;
+
 /**
  * dopager_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
  */

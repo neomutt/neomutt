@@ -538,7 +538,7 @@ $(PWD)/notmuch:
 ###############################################################################
 # libpager
 LIBPAGER=	libpager.a
-LIBPAGEROBJS=	pager/config.o pager/dlg_pager.o pager/do_pager.o \
+LIBPAGEROBJS=	pager/config.o pager/display.o pager/dlg_pager.o pager/do_pager.o \
 		pager/message.o pager/pager.o pager/pbar.o pager/ppanel.o \
 		pager/private_data.o
 CLEANFILES+=	$(LIBPAGER) $(LIBPAGEROBJS)
