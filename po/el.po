@@ -383,7 +383,7 @@ msgstr "προτίμηση κρυπτογράφησης"
 #. thus encryption will need to be manually enabled.
 #: autocrypt/dlgautocrypt.c:166
 msgid "manual encrypt"
-msgstr ""
+msgstr "Χειρωνατική κρυπτογράφηση"
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account is enabled/active
@@ -484,7 +484,7 @@ msgstr "Αλλαγή καταλόγου"
 
 #: browser.c:115
 msgid "Goto"
-msgstr ""
+msgstr "Πάνε σε"
 
 #: browser.c:116 browser.c:131
 msgid "Mask"
@@ -2360,14 +2360,14 @@ msgid "Help for %s"
 msgstr "Βοήθεια για το %s"
 
 #: history/dlghistory.c:131
-#, fuzzy, c-format
+#, c-format
 msgid "History '%s'"
-msgstr "Ερώτηση '%s'"
+msgstr "Ιστορία '%s'"
 
 #: history/history.c:229 history/history.c:271 history/history.c:620
 #, c-format
 msgid "Bad history file format (line %d)"
-msgstr ""
+msgstr "Λανθασμένη μορφοποίηση αρχείου ιστορίας (σειρά %d)"
 
 #: history/history.c:261 ncrypt/crypt_gpgme.c:818 ncrypt/crypt_gpgme.c:2249
 #: ncrypt/crypt_gpgme.c:2269 ncrypt/crypt_gpgme.c:2328
@@ -2387,11 +2387,11 @@ msgstr "Αδυναμία δημιουργίας προσωρινού αρχεί�
 
 #: hook.c:155
 msgid "current mailbox shortcut '^' is unset"
-msgstr ""
+msgstr "η συντόμευση '^' δεν έχει τεθεί για το γραμματοκιβώτιο"
 
 #: hook.c:167
 msgid "mailbox shortcut expanded to empty regex"
-msgstr ""
+msgstr "η συντόμευση για γραμματοκιβώριο επεκτάθηκε σε κενό regex"
 
 #: hook.c:187
 msgid "badly formatted command string"
@@ -2694,7 +2694,7 @@ msgstr "Η μνήμη εξαντλήθηκε"
 #: imap/search.c:158
 #, c-format
 msgid "Header search without header name: %s"
-msgstr ""
+msgstr "Αναζήτησ επικεφαλίδας χωρίς όνομα επικεφαλίδας: %s"
 
 #: imap/search.c:186
 #, c-format
@@ -2863,17 +2863,16 @@ msgstr "Αυτό το μήνυμα δεν είναι ορατό"
 
 #. L10N: CHECK_ACL
 #: index/functions.c:707
-#, fuzzy
 msgid "Can't break thread"
-msgstr "Αδυναμία δημιουργίας φίλτρου"
+msgstr "Αδυναμία διάσπασης του νήματος"
 
 #: index/functions.c:725
 msgid "Thread broken"
-msgstr ""
+msgstr "Το νήμα διασπάστηκε"
 
 #: index/functions.c:734
 msgid "Thread can't be broken, message is not part of a thread"
-msgstr ""
+msgstr "Αδυναμία διάσπασης νήματος, το μήνυμα δεν είναι στο νήμα"
 
 #: index/functions.c:755
 msgid "Open mailbox in read-only mode"
@@ -2884,9 +2883,8 @@ msgid "Open mailbox"
 msgstr "Ανοίξτε το γραμματοκιβώτιο"
 
 #: index/functions.c:860
-#, fuzzy
 msgid "Thread contains unread or flagged messages"
-msgstr "Η συζήτηση περιέχει αδιάβστα μηνύματα"
+msgstr "Το νήμα περιέχει αδιάβστα ή μαρκαρισμένα μηνύματα"
 
 #: index/functions.c:882
 msgid "Delete messages matching: "
@@ -2899,7 +2897,7 @@ msgstr ""
 #. L10N: CHECK_ACL
 #: index/functions.c:959
 msgid "Can't link threads"
-msgstr ""
+msgstr "Αδυναμία σύνδεσης νημάτων"
 
 #: index/functions.c:969
 msgid "No Message-ID: header available to link thread"
@@ -2918,13 +2916,12 @@ msgid "Folder doesn't support tagging, aborting"
 msgstr "Ο φάκελος δεν υποστηρίζει τις ετικέτες. Ματαίωση"
 
 #: index/functions.c:1027
-#, fuzzy
 msgid "No tag specified, aborting"
-msgstr "Δεν υπάρχει θέμα, εγκατάλειψη"
+msgstr "Δεν ορίστηκε ετικέτα. Ματαίωση"
 
 #: index/functions.c:1037
 msgid "Update tags..."
-msgstr "Ανανέωση "
+msgstr "Ανανέωση..."
 
 #: index/functions.c:1077
 msgid "Failed to modify tags, aborting"
@@ -3083,14 +3080,13 @@ msgid "Article has no parent reference"
 msgstr ""
 
 #: index/functions.c:2571
-#, fuzzy
 msgid "Message is not visible in limited view"
-msgstr "Το τρέχον μήνυμα δεν είναι ορατό σε αυτή τη περιορισμένη όψη"
+msgstr "Το τρέχον μήνυμα δεν είναι ορατό στη περιορισμένη όψη"
 
 #: index/functions.c:2575
-#, fuzzy, c-format
+#, c-format
 msgid "Fetching %s from server..."
-msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή..."
+msgstr "Λήψη %s μηνυμάτων από τον εξυπηρετητή..."
 
 #: index/functions.c:2586 nntp/nntp.c:2645
 #, c-format
@@ -3098,13 +3094,12 @@ msgid "Article %s not found on the server"
 msgstr "Το άρθρο %s δεν μπορεί να βρεθεί στον διακομιστή"
 
 #: index/functions.c:2608
-#, fuzzy
 msgid "Open newsgroup in read-only mode"
-msgstr "Ανοίξτε το γραμματοκιβώτιο σε κατάσταση ανάγνωσης μόνο"
+msgstr "Ανοίξτε την ομάδα συζήτησης  σε κατάσταση ανάγνωσης μόνο"
 
 #: index/functions.c:2613
 msgid "Open newsgroup"
-msgstr ""
+msgstr "Άνοιγμα ομάδας συζητήσεων"
 
 #: index/functions.c:2685 pager/dlg_pager.c:3707 recvattach.c:2014
 msgid "Reply by mail as poster prefers?"
@@ -3113,20 +3108,19 @@ msgstr ""
 #: index/functions.c:2690 pager/dlg_pager.c:3639 pager/dlg_pager.c:3664
 #: pager/dlg_pager.c:3712
 msgid "Posting to this group not allowed, may be moderated. Continue?"
-msgstr ""
+msgstr "Οι δημοσιεύσεις δεν επιτρέπονται σε αυτήν την ομάδα. Συνέχεια;"
 
 #: index/functions.c:2725
-#, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
-msgstr "Δεν υπάρχει θέμα, εγκατάλειψη"
+msgstr "Δεν υπάρχει εικονικός φάκελος και Message-Id. Ματαίωση"
 
 #: index/functions.c:2745
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
-msgstr ""
+msgstr "δεν βρέθηκε μύνημα στην βάση δεδομέων notmuch. προσπαθήστε να τρέξετε 'notmuch new'."
 
 #: index/functions.c:2755
 msgid "Failed to read thread, aborting"
-msgstr ""
+msgstr "Αδυναμία ανάγνωσης του νήματος. Ματαίωση"
 
 #: index/functions.c:2786
 #, fuzzy
@@ -3139,7 +3133,7 @@ msgstr ""
 
 #: index/functions.c:2825
 msgid "No notmuch vfolder currently loaded"
-msgstr ""
+msgstr "Δεν έχει φορτωθεί εικ. φάκελος notmuch"
 
 #: index/index.c:95
 msgid "Changing threaded display should prefer $use_threads over $sort"
@@ -7316,7 +7310,7 @@ msgstr "Σφάλμα κατά την αποστολή του μηνύματος"
 
 #: score.c:148
 msgid "Error: score: invalid number"
-msgstr ""
+msgstr "Σφάλμα: score: μη έγκυρος αριθμός"
 
 #: send/body.c:326
 msgid "No boundary parameter found [report this error]"
@@ -7391,7 +7385,7 @@ msgstr "Το %c: δεν υποστηρίζεται σε αυτή την κατά
 #: send/send.c:1776
 #, c-format
 msgid "Skipping Fcc to %s"
-msgstr ""
+msgstr "Αγνοείται το Fcc στο %s"
 
 #: send/send.c:1816 send/send.c:1826 send/send.c:1852
 #, fuzzy
@@ -7546,7 +7540,7 @@ msgid "SMTP session failed: %s"
 msgstr "Απέτυχε η συνεδρία SMTP: %s"
 
 #: send/smtp.c:246
-#, fuzzy, c-format
+#, c-format
 msgid "SMTP session failed: unable to open %s"
 msgstr "Απέτυχε η συνεδρία SMTP: δεν μπορεί να ανοιχθεί το %s"
 
