@@ -2708,6 +2708,7 @@ int mutt_pager(struct PagerView *pview)
       clearok(stdscr, true); /* force complete redraw */
       msgwin_clear_text();
 
+      pager_queue_redraw(priv, MENU_REDRAW_FLOW);
       if (pview->flags & MUTT_PAGER_RETWINCH)
       {
         /* Store current position. */
