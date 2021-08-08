@@ -158,7 +158,7 @@ static void resolve_color(struct MuttWindow *win, struct Line *line_info, int n,
     {
       def_color = qc->color;
 
-      while (qc && (qc->length > cnt))
+      while (qc && (qc->prefix_len > cnt))
       {
         def_color = qc->color;
         qc = qc->up;
@@ -270,8 +270,8 @@ static void append_line(struct Line *line_info, int n, int cnt)
  */
 static void class_color_new(struct QClass *qc, int *q_level)
 {
-  qc->index = (*q_level)++;
-  qc->color = mutt_color_quote(qc->index);
+  qc->quoten = (*q_level)++;
+  qc->color = mutt_color_quote(qc->quoten);
 }
 
 /**
@@ -285,14 +285,14 @@ static void shift_class_colors(struct QClass *quote_list,
                                struct QClass *new_class, int index, int *q_level)
 {
   struct QClass *q_list = quote_list;
-  new_class->index = -1;
+  new_class->quoten = -1;
 
   while (q_list)
   {
-    if (q_list->index >= index)
+    if (q_list->quoten >= index)
     {
-      q_list->index++;
-      q_list->color = mutt_color_quote(q_list->index);
+      q_list->quoten++;
+      q_list->color = mutt_color_quote(q_list->quoten);
     }
     if (q_list->down)
       q_list = q_list->down;
@@ -311,7 +311,7 @@ static void shift_class_colors(struct QClass *quote_list,
     }
   }
 
-  new_class->index = index;
+  new_class->quoten = index;
   new_class->color = mutt_color_quote(index);
   (*q_level)++;
 }
@@ -350,13 +350,13 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
   /* classify quoting prefix */
   while (q_list)
   {
-    if (length <= q_list->length)
+    if (length <= q_list->prefix_len)
     {
       /* case 1: check the top level nodes */
 
       if (mutt_strn_equal(qptr, q_list->prefix, length))
       {
-        if (length == q_list->length)
+        if (length == q_list->prefix_len)
           return q_list; /* same prefix: return the current class */
 
         /* found shorter prefix */
@@ -366,7 +366,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
           tmp = mutt_mem_calloc(1, sizeof(struct QClass));
           tmp->prefix = mutt_mem_calloc(1, length + 1);
           strncpy(tmp->prefix, qptr, length);
-          tmp->length = length;
+          tmp->prefix_len = length;
 
           /* replace q_list by tmp in the top level list */
           if (q_list->next)
@@ -392,7 +392,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
           if (q_list == *quote_list)
             *quote_list = tmp;
 
-          index = q_list->index;
+          index = q_list->quoten;
 
           /* tmp should be the return class too */
           qc = tmp;
@@ -425,7 +425,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
           q_list->prev = ptr;
           q_list->up = tmp;
 
-          index = q_list->index;
+          index = q_list->quoten;
 
           /* next class to test; as above, we shouldn't go down */
           q_list = save;
@@ -447,12 +447,12 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
       /* case 2: try subclassing the current top level node */
 
       /* tmp != NULL means we already found a shorter prefix at case 1 */
-      if (!tmp && mutt_strn_equal(qptr, q_list->prefix, q_list->length))
+      if (!tmp && mutt_strn_equal(qptr, q_list->prefix, q_list->prefix_len))
       {
         /* ok, it's a subclass somewhere on this branch */
 
         ptr = q_list;
-        offset = q_list->length;
+        offset = q_list->prefix_len;
 
         q_list = q_list->down;
         tail_lng = length - offset;
@@ -460,12 +460,12 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
 
         while (q_list)
         {
-          if (length <= q_list->length)
+          if (length <= q_list->prefix_len)
           {
             if (mutt_strn_equal(tail_qptr, (q_list->prefix) + offset, tail_lng))
             {
               /* same prefix: return the current class */
-              if (length == q_list->length)
+              if (length == q_list->prefix_len)
                 return q_list;
 
               /* found shorter common prefix */
@@ -475,7 +475,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
                 tmp = mutt_mem_calloc(1, sizeof(struct QClass));
                 tmp->prefix = mutt_mem_calloc(1, length + 1);
                 strncpy(tmp->prefix, qptr, length);
-                tmp->length = length;
+                tmp->prefix_len = length;
 
                 /* replace q_list by tmp */
                 if (q_list->next)
@@ -500,7 +500,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
                 q_list->next = NULL;
                 q_list->prev = NULL;
 
-                index = q_list->index;
+                index = q_list->quoten;
 
                 /* tmp should be the return class too */
                 qc = tmp;
@@ -530,7 +530,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
                 q_list->prev = ptr;
                 q_list->up = tmp;
 
-                index = q_list->index;
+                index = q_list->quoten;
 
                 /* next class to test */
                 q_list = save;
@@ -550,11 +550,11 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
           {
             /* longer than the current prefix: try subclassing it */
             if (!tmp && mutt_strn_equal(tail_qptr, (q_list->prefix) + offset,
-                                        q_list->length - offset))
+                                        q_list->prefix_len - offset))
             {
               /* still a subclass: go down one level */
               ptr = q_list;
-              offset = q_list->length;
+              offset = q_list->prefix_len;
 
               q_list = q_list->down;
               tail_lng = length - offset;
@@ -577,7 +577,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
           tmp = mutt_mem_calloc(1, sizeof(struct QClass));
           tmp->prefix = mutt_mem_calloc(1, length + 1);
           strncpy(tmp->prefix, qptr, length);
-          tmp->length = length;
+          tmp->prefix_len = length;
 
           if (ptr->down)
           {
@@ -614,7 +614,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
     qc = mutt_mem_calloc(1, sizeof(struct QClass));
     qc->prefix = mutt_mem_calloc(1, length + 1);
     strncpy(qc->prefix, qptr, length);
-    qc->length = length;
+    qc->prefix_len = length;
     class_color_new(qc, q_level);
 
     if (*quote_list)
@@ -1487,7 +1487,7 @@ int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info, int n, int
     const short c_toggle_quoted_show_levels =
         cs_subset_number(NeoMutt->sub, "toggle_quoted_show_levels");
     if ((flags & MUTT_HIDE) && (curr_line->type == MT_COLOR_QUOTED) &&
-        ((curr_line->quote == NULL) || (curr_line->quote->index >= c_toggle_quoted_show_levels)))
+        ((curr_line->quote == NULL) || (curr_line->quote->quoten >= c_toggle_quoted_show_levels)))
     {
       flags = 0; /* MUTT_NOSHOW */
     }
