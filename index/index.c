@@ -176,7 +176,7 @@ static int config_use_threads(const struct ConfigSubset *sub)
 
 /**
  * config_reply_regex - React to changes to $reply_regex
- * @param dlg Index Dialog
+ * @param m Mailbox
  * @retval  0 Successfully handled
  * @retval -1 Error
  */

@@ -83,7 +83,7 @@ static int check_sig(const char *s, struct Line *info, int offset)
 }
 
 /**
- * comp_syntax_t - Search for a Syntax using bsearch
+ * comp_syntax_t - Search for a Syntax using bsearch(3)
  * @param m1 Search key
  * @param m2 Array member
  * @retval -1 m1 precedes m2

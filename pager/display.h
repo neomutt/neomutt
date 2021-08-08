@@ -44,13 +44,13 @@ typedef uint8_t AnsiFlags;      ///< Flags, e.g. #ANSI_OFF
 // clang-format on
 
 /**
- * struct TextSyntax - Highlighting for a line of text
+ * struct TextSyntax - Highlighting for a piece of text
  */
 struct TextSyntax
 {
-  int color;
-  int first;
-  int last;
+  int color; ///< Curses colour of text
+  int first; ///< First character in line to be coloured
+  int last;  ///< Last character in line to be coloured
 };
 
 /**
@@ -58,23 +58,28 @@ struct TextSyntax
  */
 struct AnsiAttr
 {
-  AnsiFlags attr; ///< Attributes, e.g. underline, bold, etc
-  int fg;         ///< Foreground colour
-  int bg;         ///< Background colour
+  AnsiFlags attr; ///< Attributes, e.g. #ANSI_BOLD
+  int fg;         ///< ANSI Foreground colour, e.g. 1 red, 2 green, etc
+  int bg;         ///< ANSI Background colour, e.g. 1 red, 2 green, etc
   int pair;       ///< Curses colour pair
 };
 
 /**
  * struct QClass - Style of quoted text
+ *
+ * NeoMutt will store a tree of all the different email quoting levels it
+ * detects in an Email.  If $quote_regex matches, say both "> " and "| ",
+ * and the Email has three levels of indent, then the tree will contain two
+ * siblings each with a child and grandchild.
  */
 struct QClass
 {
-  size_t length;
-  int index;
-  int color;
-  char *prefix;
-  struct QClass *next, *prev;
-  struct QClass *down, *up;
+  size_t length;              ///< Length of the prefix string
+  int index;                  ///< The quoteN colour index for this level
+  int color;                  ///< Curses colour pair
+  char *prefix;               ///< Prefix string, e.g. "> "
+  struct QClass *prev, *next; ///< Different quoting styles at the same level
+  struct QClass *up, *down;   ///< Parent (less quoted) and child (more quoted) levels
 };
 
 /**
@@ -82,15 +87,18 @@ struct QClass
  */
 struct Line
 {
-  LOFF_T offset;
-  short type;
-  short continuation;
-  short chunks;
-  short search_cnt;
-  struct TextSyntax *syntax;
-  struct TextSyntax *search;
-  struct QClass *quote;
-  unsigned int is_cont_hdr; ///< this line is a continuation of the previous header line
+  LOFF_T offset;             ///< Offset into Email file (PagerPrivateData->fp)
+  short type;                ///< Colour, e.g. #MT_COLOR_QUOTED
+  short continuation;        ///< This is a continuation of a previous line (wrapped by NeoMutt)
+  unsigned int is_cont_hdr;  ///< This is a continuation of a header line (wrapped by MTA)
+
+  short chunks;              ///< Number of items in syntax array
+  struct TextSyntax *syntax; ///< Array of coloured text in the line
+
+  short search_cnt;          ///< Number of items in search array
+  struct TextSyntax *search; ///< Array of search text in the line
+
+  struct QClass *quote;      ///< Quoting style for this line (pointer into PagerPrivateData->quote_list)
 };
 
 int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info, int n, int *last,
