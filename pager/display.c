@@ -110,10 +110,10 @@ static int comp_syntax_t(const void *m1, const void *m2)
  * @param cnt       If true, this is a continuation line
  * @param flags     Flags, see #PagerFlags
  * @param special   Flags, e.g. A_BOLD
- * @param a         ANSI attributes
+ * @param aa        ANSI attributes
  */
 static void resolve_color(struct MuttWindow *win, struct Line *line_info, int n,
-                          int cnt, PagerFlags flags, int special, struct AnsiAttr *a)
+                          int cnt, PagerFlags flags, int special, struct AnsiAttr *aa)
 {
   int def_color;         /* color without syntax highlight */
   int color;             /* final color */
@@ -191,44 +191,44 @@ static void resolve_color(struct MuttWindow *win, struct Line *line_info, int n,
   }
 
   /* handle "special" bold & underlined characters */
-  if (special || a->attr)
+  if (special || aa->attr)
   {
 #ifdef HAVE_COLOR
-    if ((a->attr & ANSI_COLOR))
+    if ((aa->attr & ANSI_COLOR))
     {
-      if (a->pair == -1)
-        a->pair = mutt_color_alloc(a->fg, a->bg);
-      color = a->pair;
-      if (a->attr & ANSI_BOLD)
+      if (aa->pair == -1)
+        aa->pair = mutt_color_alloc(aa->fg, aa->bg);
+      color = aa->pair;
+      if (aa->attr & ANSI_BOLD)
         color |= A_BOLD;
     }
     else
 #endif
-        if ((special & A_BOLD) || (a->attr & ANSI_BOLD))
+        if ((special & A_BOLD) || (aa->attr & ANSI_BOLD))
     {
       if (mutt_color(MT_COLOR_BOLD) && !search)
         color = mutt_color(MT_COLOR_BOLD);
       else
         color ^= A_BOLD;
     }
-    if ((special & A_UNDERLINE) || (a->attr & ANSI_UNDERLINE))
+    if ((special & A_UNDERLINE) || (aa->attr & ANSI_UNDERLINE))
     {
       if (mutt_color(MT_COLOR_UNDERLINE) && !search)
         color = mutt_color(MT_COLOR_UNDERLINE);
       else
         color ^= A_UNDERLINE;
     }
-    else if (a->attr & ANSI_REVERSE)
+    else if (aa->attr & ANSI_REVERSE)
     {
       color ^= A_REVERSE;
     }
-    else if (a->attr & ANSI_BLINK)
+    else if (aa->attr & ANSI_BLINK)
     {
       color ^= A_BLINK;
     }
-    else if (a->attr == ANSI_OFF)
+    else if (aa->attr == ANSI_OFF)
     {
-      a->attr = 0;
+      aa->attr = 0;
     }
   }
 
@@ -1002,10 +1002,10 @@ static bool is_ansi(const char *str)
  * grok_ansi - Parse an ANSI escape sequence
  * @param buf String to parse
  * @param pos Starting position in string
- * @param a   AnsiAttr for the result
+ * @param aa  AnsiAttr for the result
  * @retval num Index of first character after the escape sequence
  */
-static int grok_ansi(const unsigned char *buf, int pos, struct AnsiAttr *a)
+static int grok_ansi(const unsigned char *buf, int pos, struct AnsiAttr *aa)
 {
   int x = pos;
 
@@ -1014,69 +1014,69 @@ static int grok_ansi(const unsigned char *buf, int pos, struct AnsiAttr *a)
 
   /* Character Attributes */
   const bool c_allow_ansi = cs_subset_bool(NeoMutt->sub, "allow_ansi");
-  if (c_allow_ansi && a && (buf[x] == 'm'))
+  if (c_allow_ansi && aa && (buf[x] == 'm'))
   {
     if (pos == x)
     {
 #ifdef HAVE_COLOR
-      if (a->pair != -1)
-        mutt_color_free(a->fg, a->bg);
+      if (aa->pair != -1)
+        mutt_color_free(aa->fg, aa->bg);
 #endif
-      a->attr = ANSI_OFF;
-      a->pair = -1;
+      aa->attr = ANSI_OFF;
+      aa->pair = -1;
     }
     while (pos < x)
     {
       if ((buf[pos] == '1') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
       {
-        a->attr |= ANSI_BOLD;
+        aa->attr |= ANSI_BOLD;
         pos += 2;
       }
       else if ((buf[pos] == '4') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
       {
-        a->attr |= ANSI_UNDERLINE;
+        aa->attr |= ANSI_UNDERLINE;
         pos += 2;
       }
       else if ((buf[pos] == '5') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
       {
-        a->attr |= ANSI_BLINK;
+        aa->attr |= ANSI_BLINK;
         pos += 2;
       }
       else if ((buf[pos] == '7') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
       {
-        a->attr |= ANSI_REVERSE;
+        aa->attr |= ANSI_REVERSE;
         pos += 2;
       }
       else if ((buf[pos] == '0') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
       {
 #ifdef HAVE_COLOR
-        if (a->pair != -1)
-          mutt_color_free(a->fg, a->bg);
+        if (aa->pair != -1)
+          mutt_color_free(aa->fg, aa->bg);
 #endif
-        a->attr = ANSI_OFF;
-        a->pair = -1;
+        aa->attr = ANSI_OFF;
+        aa->pair = -1;
         pos += 2;
       }
       else if ((buf[pos] == '3') && isdigit(buf[pos + 1]))
       {
 #ifdef HAVE_COLOR
-        if (a->pair != -1)
-          mutt_color_free(a->fg, a->bg);
+        if (aa->pair != -1)
+          mutt_color_free(aa->fg, aa->bg);
 #endif
-        a->pair = -1;
-        a->attr |= ANSI_COLOR;
-        a->fg = buf[pos + 1] - '0';
+        aa->pair = -1;
+        aa->attr |= ANSI_COLOR;
+        aa->fg = buf[pos + 1] - '0';
         pos += 3;
       }
       else if ((buf[pos] == '4') && isdigit(buf[pos + 1]))
       {
 #ifdef HAVE_COLOR
-        if (a->pair != -1)
-          mutt_color_free(a->fg, a->bg);
+        if (aa->pair != -1)
+          mutt_color_free(aa->fg, aa->bg);
 #endif
-        a->pair = -1;
-        a->attr |= ANSI_COLOR;
-        a->bg = buf[pos + 1] - '0';
+        aa->pair = -1;
+        aa->attr |= ANSI_COLOR;
+        aa->bg = buf[pos + 1] - '0';
         pos += 3;
       }
       else
@@ -1197,7 +1197,7 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
  * @param[in]  n         Line number (index into line_info)
  * @param[in]  buf       Text to display
  * @param[in]  flags     Flags, see #PagerFlags
- * @param[out] pa        ANSI attributes used
+ * @param[out] aa        ANSI attributes used
  * @param[in]  cnt       Length of text buffer
  * @param[out] pspace    Index of last whitespace character
  * @param[out] pvch      Number of bytes read
@@ -1207,7 +1207,7 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
  * @retval num Number of characters displayed
  */
 static int format_line(struct MuttWindow *win, struct Line **line_info, int n,
-                       unsigned char *buf, PagerFlags flags, struct AnsiAttr *pa,
+                       unsigned char *buf, PagerFlags flags, struct AnsiAttr *aa,
                        int cnt, int *pspace, int *pvch, int *pcol, int *pspecial, int width)
 {
   int space = -1; /* index of the last space or TAB */
@@ -1232,7 +1232,7 @@ static int format_line(struct MuttWindow *win, struct Line **line_info, int n,
     while ((cnt - ch >= 2) && (buf[ch] == '\033') && (buf[ch + 1] == '[') && // Escape
            is_ansi((char *) buf + ch + 2))
     {
-      ch = grok_ansi(buf, ch + 2, pa) + 1;
+      ch = grok_ansi(buf, ch + 2, aa) + 1;
     }
 
     while ((cnt - ch >= 2) && (buf[ch] == '\033') && (buf[ch + 1] == ']') && // Escape
@@ -1257,7 +1257,7 @@ static int format_line(struct MuttWindow *win, struct Line **line_info, int n,
       if (col + 4 > wrap_cols)
         break;
       col += 4;
-      if (pa)
+      if (aa)
         mutt_window_printf(win, "\\%03o", buf[ch]);
       k = 1;
       continue;
@@ -1316,10 +1316,10 @@ static int format_line(struct MuttWindow *win, struct Line **line_info, int n,
       }
     }
 
-    if (pa && ((flags & (MUTT_SHOWCOLOR | MUTT_SEARCH | MUTT_PAGER_MARKER)) ||
-               special || last_special || pa->attr))
+    if (aa && ((flags & (MUTT_SHOWCOLOR | MUTT_SEARCH | MUTT_PAGER_MARKER)) ||
+               special || last_special || aa->attr))
     {
-      resolve_color(win, *line_info, n, vch, flags, special, pa);
+      resolve_color(win, *line_info, n, vch, flags, special, aa);
       last_special = special;
     }
 
@@ -1334,7 +1334,7 @@ static int format_line(struct MuttWindow *win, struct Line **line_info, int n,
       if (col + t > wrap_cols)
         break;
       col += t;
-      if (pa)
+      if (aa)
         mutt_addwch(win, wc);
     }
     else if (wc == '\n')
@@ -1345,7 +1345,7 @@ static int format_line(struct MuttWindow *win, struct Line **line_info, int n,
       t = (col & ~7) + 8;
       if (t > wrap_cols)
         break;
-      if (pa)
+      if (aa)
         for (; col < t; col++)
           mutt_window_addch(win, ' ');
       else
@@ -1356,7 +1356,7 @@ static int format_line(struct MuttWindow *win, struct Line **line_info, int n,
       if (col + 2 > wrap_cols)
         break;
       col += 2;
-      if (pa)
+      if (aa)
         mutt_window_printf(win, "^%c", ('@' + wc) & 0x7f);
     }
     else if (wc < 0x100)
@@ -1364,7 +1364,7 @@ static int format_line(struct MuttWindow *win, struct Line **line_info, int n,
       if (col + 4 > wrap_cols)
         break;
       col += 4;
-      if (pa)
+      if (aa)
         mutt_window_printf(win, "\\%03o", wc);
     }
     else
@@ -1372,7 +1372,7 @@ static int format_line(struct MuttWindow *win, struct Line **line_info, int n,
       if (col + 1 > wrap_cols)
         break;
       col += k;
-      if (pa)
+      if (aa)
         mutt_addwch(win, ReplacementChar);
     }
   }
@@ -1411,13 +1411,12 @@ int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info, int n, int
   int ch, vch, col, cnt, b_read;
   int buf_ready = 0;
   bool change_last = false;
-  const bool c_smart_wrap = cs_subset_bool(NeoMutt->sub, "smart_wrap");
   int special;
   int offset;
   int def_color;
   int m;
   int rc = -1;
-  struct AnsiAttr a = { 0, 0, 0, -1 };
+  struct AnsiAttr aa = { 0, 0, 0, -1 };
   regmatch_t pmatch[1];
 
   if (n == *last)
@@ -1585,6 +1584,7 @@ int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info, int n, int
   buf_ptr = buf + cnt;
 
   /* move the break point only if smart_wrap is set */
+  const bool c_smart_wrap = cs_subset_bool(NeoMutt->sub, "smart_wrap");
   if (c_smart_wrap)
   {
     if ((cnt < b_read) && (ch != -1) &&
@@ -1629,7 +1629,7 @@ int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info, int n, int
   }
 
   /* display the line */
-  format_line(win_pager, line_info, n, buf, flags, &a, cnt, &ch, &vch, &col,
+  format_line(win_pager, line_info, n, buf, flags, &aa, cnt, &ch, &vch, &col,
               &special, win_pager->state.cols);
 
 /* avoid a bug in ncurses... */
@@ -1643,7 +1643,7 @@ int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info, int n, int
 
   /* end the last color pattern (needed by S-Lang) */
   if (special || ((col != win_pager->state.cols) && (flags & (MUTT_SHOWCOLOR | MUTT_SEARCH))))
-    resolve_color(win_pager, *line_info, n, vch, flags, 0, &a);
+    resolve_color(win_pager, *line_info, n, vch, flags, 0, &aa);
 
   /* Fill the blank space at the end of the line with the prevailing color.
    * ncurses does an implicit clrtoeol() when you do mutt_window_addch('\n') so we have
