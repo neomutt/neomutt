@@ -101,7 +101,7 @@ struct Line
   struct QClass *quote;      ///< Quoting style for this line (pointer into PagerPrivateData->quote_list)
 };
 
-int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info, int n, int *last,
+int display_line(FILE *fp, LOFF_T *last_pos, struct Line **lines, int n, int *last,
                  int *max, PagerFlags flags, struct QClass **quote_list, int *q_level,
                  bool *force_redraw, regex_t *search_re, struct MuttWindow *win_pager);
 

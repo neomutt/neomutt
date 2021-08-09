@@ -43,17 +43,17 @@ struct PagerPrivateData
   struct PagerView *pview;     ///< Object to view in the pager
 
   FILE *fp;                    ///< File containing decrypted/decoded/weeded Email
-  struct stat sb;              ///< Stats about Email file
-  LOFF_T last_pos;             ///< Number of bytes read from file
+  struct stat st;              ///< Stats about Email file
+  LOFF_T bytes_read;           ///< Number of bytes read from file
 
-  struct Line *line_info;      ///< Array of text lines in pager
-  int curline;                 ///< Current line (last line visible on screen)
-  int last_line;               ///< Size of line_info array (used entries)
-  int max_line;                ///< Capacity of line_info array (total entries)
+  struct Line *lines;          ///< Array of text lines in pager
+  int lines_used;              ///< Size of lines array (used entries)
+  int lines_max;               ///< Capacity of lines array (total entries)
+  int cur_line;                ///< Current line (last line visible on screen)
 
-  int oldtopline;              ///< Old top line, used for repainting
-  int lines;                   ///< Number of lines in the Window
-  int topline;                 ///< First visible line on screen
+  int old_top_line;            ///< Old top line, used for repainting
+  int win_height;              ///< Number of lines in the Window
+  int top_line;                ///< First visible line on screen
   int has_types;               ///< Set to MUTT_TYPES for PAGER_MODE_EMAIL or MUTT_SHOWCOLOR
 
   struct QClass *quote_list;   ///< Tree of quoting levels
@@ -61,12 +61,12 @@ struct PagerPrivateData
   PagerFlags hide_quoted;      ///< Set to MUTT_HIDE when quoted email is hidden `<toggle-quoted>`
 
   PagerFlags search_flag;      ///< Set to MUTT_SEARCH when search results are visible `<search-toggle>`
-  char searchbuf[256];         ///< Current search string
+  char search_str[256];        ///< Current search string
   bool search_compiled;        ///< Search regex is in use
   regex_t search_re;           ///< Compiled search string
   bool search_back;            ///< Search backwards
 
-  int indexlen;                ///< Size of the mini-index Window `$pager_index_lines`
+  int index_size;              ///< Size of the mini-index Window `$pager_index_lines`
   int indicator;               ///< Preferred position of the indicator line in the mini-index Window
 
   bool force_redraw;           ///< Repaint is needed

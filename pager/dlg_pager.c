@@ -343,22 +343,22 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
     if ((priv->pview->mode == PAGER_MODE_EMAIL) &&
         ((shared->mailbox->vcount + 1) < c_pager_index_lines))
     {
-      priv->indexlen = shared->mailbox->vcount + 1;
+      priv->index_size = shared->mailbox->vcount + 1;
     }
     else
     {
-      priv->indexlen = c_pager_index_lines;
+      priv->index_size = c_pager_index_lines;
     }
 
-    priv->indicator = priv->indexlen / 3;
+    priv->indicator = priv->index_size / 3;
 
     if (Resize)
     {
       priv->search_compiled = Resize->search_compiled;
       if (priv->search_compiled)
       {
-        uint16_t flags = mutt_mb_is_lower(priv->searchbuf) ? REG_ICASE : 0;
-        const int err = REG_COMP(&priv->search_re, priv->searchbuf, REG_NEWLINE | flags);
+        uint16_t flags = mutt_mb_is_lower(priv->search_str) ? REG_ICASE : 0;
+        const int err = REG_COMP(&priv->search_re, priv->search_str, REG_NEWLINE | flags);
         if (err == 0)
         {
           priv->search_flag = MUTT_SEARCH;
@@ -371,7 +371,7 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
           priv->search_compiled = false;
         }
       }
-      priv->lines = Resize->line;
+      priv->win_height = Resize->line;
       pager_queue_redraw(priv, MENU_REDRAW_FLOW);
 
       FREE(&Resize);
@@ -400,79 +400,79 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
   {
     if (!(priv->pview->flags & MUTT_PAGER_RETWINCH))
     {
-      priv->lines = -1;
-      for (int i = 0; i <= priv->topline; i++)
-        if (!priv->line_info[i].cont_line)
-          priv->lines++;
-      for (int i = 0; i < priv->max_line; i++)
+      priv->win_height = -1;
+      for (int i = 0; i <= priv->top_line; i++)
+        if (!priv->lines[i].cont_line)
+          priv->win_height++;
+      for (int i = 0; i < priv->lines_max; i++)
       {
-        priv->line_info[i].offset = 0;
-        priv->line_info[i].color = -1;
-        priv->line_info[i].cont_line = 0;
-        priv->line_info[i].syntax_arr_size = 0;
-        priv->line_info[i].search_arr_size = -1;
-        priv->line_info[i].quote = NULL;
+        priv->lines[i].offset = 0;
+        priv->lines[i].color = -1;
+        priv->lines[i].cont_line = 0;
+        priv->lines[i].syntax_arr_size = 0;
+        priv->lines[i].search_arr_size = -1;
+        priv->lines[i].quote = NULL;
 
-        mutt_mem_realloc(&(priv->line_info[i].syntax), sizeof(struct TextSyntax));
-        if (priv->search_compiled && priv->line_info[i].search)
-          FREE(&(priv->line_info[i].search));
+        mutt_mem_realloc(&(priv->lines[i].syntax), sizeof(struct TextSyntax));
+        if (priv->search_compiled && priv->lines[i].search)
+          FREE(&(priv->lines[i].search));
       }
 
-      priv->last_line = 0;
-      priv->topline = 0;
+      priv->lines_used = 0;
+      priv->top_line = 0;
     }
     int i = -1;
     int j = -1;
-    while (display_line(priv->fp, &priv->last_pos, &priv->line_info, ++i,
-                        &priv->last_line, &priv->max_line,
+    while (display_line(priv->fp, &priv->bytes_read, &priv->lines, ++i,
+                        &priv->lines_used, &priv->lines_max,
                         priv->has_types | priv->search_flag | (priv->pview->flags & MUTT_PAGER_NOWRAP),
                         &priv->quote_list, &priv->q_level, &priv->force_redraw,
                         &priv->search_re, priv->pview->win_pager) == 0)
     {
-      if (!priv->line_info[i].cont_line && (++j == priv->lines))
+      if (!priv->lines[i].cont_line && (++j == priv->win_height))
       {
-        priv->topline = i;
+        priv->top_line = i;
         if (!priv->search_flag)
           break;
       }
     }
   }
 
-  if ((priv->redraw & MENU_REDRAW_BODY) || (priv->topline != priv->oldtopline))
+  if ((priv->redraw & MENU_REDRAW_BODY) || (priv->top_line != priv->old_top_line))
   {
     do
     {
       mutt_window_move(priv->pview->win_pager, 0, 0);
-      priv->curline = priv->topline;
-      priv->oldtopline = priv->topline;
-      priv->lines = 0;
+      priv->cur_line = priv->top_line;
+      priv->old_top_line = priv->top_line;
+      priv->win_height = 0;
       priv->force_redraw = false;
 
-      while ((priv->lines < priv->pview->win_pager->state.rows) &&
-             (priv->line_info[priv->curline].offset <= priv->sb.st_size - 1))
+      while ((priv->win_height < priv->pview->win_pager->state.rows) &&
+             (priv->lines[priv->cur_line].offset <= priv->st.st_size - 1))
       {
-        if (display_line(priv->fp, &priv->last_pos, &priv->line_info,
-                         priv->curline, &priv->last_line, &priv->max_line,
+        if (display_line(priv->fp, &priv->bytes_read, &priv->lines,
+                         priv->cur_line, &priv->lines_used, &priv->lines_max,
                          (priv->pview->flags & MUTT_DISPLAYFLAGS) | priv->hide_quoted |
                              priv->search_flag | (priv->pview->flags & MUTT_PAGER_NOWRAP),
                          &priv->quote_list, &priv->q_level, &priv->force_redraw,
                          &priv->search_re, priv->pview->win_pager) > 0)
         {
-          priv->lines++;
+          priv->win_height++;
         }
-        priv->curline++;
-        mutt_window_move(priv->pview->win_pager, 0, priv->lines);
+        priv->cur_line++;
+        mutt_window_move(priv->pview->win_pager, 0, priv->win_height);
       }
     } while (priv->force_redraw);
 
     mutt_curses_set_color(MT_COLOR_TILDE);
-    while (priv->lines < priv->pview->win_pager->state.rows)
+    while (priv->win_height < priv->pview->win_pager->state.rows)
     {
       mutt_window_clrtoeol(priv->pview->win_pager);
       if (c_tilde)
         mutt_window_addch(priv->pview->win_pager, '~');
-      priv->lines++;
-      mutt_window_move(priv->pview->win_pager, 0, priv->lines);
+      priv->win_height++;
+      mutt_window_move(priv->pview->win_pager, 0, priv->win_height);
     }
     mutt_curses_set_color(MT_COLOR_NORMAL);
 
@@ -486,14 +486,14 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
   {
     char pager_progress_str[65]; /* Lots of space for translations */
 
-    if (priv->last_pos < priv->sb.st_size - 1)
+    if (priv->bytes_read < priv->st.st_size - 1)
     {
       snprintf(pager_progress_str, sizeof(pager_progress_str), OFF_T_FMT "%%",
-               (100 * priv->last_pos / priv->sb.st_size));
+               (100 * priv->bytes_read / priv->st.st_size));
     }
     else
     {
-      const char *msg = (priv->topline == 0) ?
+      const char *msg = (priv->top_line == 0) ?
                             /* L10N: Status bar message: the entire email is visible in the pager */
                             _("all") :
                             /* L10N: Status bar message: the end of the email is visible in the pager */
@@ -595,23 +595,23 @@ static const struct Mapping *pager_resolve_help_mapping(enum PagerMode mode, enu
  */
 static bool jump_to_bottom(struct PagerPrivateData *priv, struct PagerView *pview)
 {
-  if (!(priv->line_info[priv->curline].offset < (priv->sb.st_size - 1)))
+  if (!(priv->lines[priv->cur_line].offset < (priv->st.st_size - 1)))
   {
     return false;
   }
 
-  int line_num = priv->curline;
+  int line_num = priv->cur_line;
   /* make sure the types are defined to the end of file */
-  while (display_line(priv->fp, &priv->last_pos, &priv->line_info, line_num,
-                      &priv->last_line, &priv->max_line,
+  while (display_line(priv->fp, &priv->bytes_read, &priv->lines, line_num,
+                      &priv->lines_used, &priv->lines_max,
                       priv->has_types | (pview->flags & MUTT_PAGER_NOWRAP),
                       &priv->quote_list, &priv->q_level, &priv->force_redraw,
                       &priv->search_re, priv->pview->win_pager) == 0)
   {
     line_num++;
   }
-  priv->topline = up_n_lines(priv->pview->win_pager->state.rows, priv->line_info,
-                             priv->last_line, priv->hide_quoted);
+  priv->top_line = up_n_lines(priv->pview->win_pager->state.rows, priv->lines,
+                              priv->lines_used, priv->hide_quoted);
   return true;
 }
 
@@ -813,23 +813,23 @@ int mutt_pager(struct PagerView *pview)
   //---------- initialize redraw pdata  -----------------------------------------
   pview->win_pager->size = MUTT_WIN_SIZE_MAXIMISE;
   priv->pview = pview;
-  priv->indexlen = c_pager_index_lines;
-  priv->indicator = priv->indexlen / 3;
-  priv->max_line = LINES; // number of lines on screen, from curses
-  priv->line_info = mutt_mem_calloc(priv->max_line, sizeof(struct Line));
+  priv->index_size = c_pager_index_lines;
+  priv->indicator = priv->index_size / 3;
+  priv->lines_max = LINES; // number of lines on screen, from curses
+  priv->lines = mutt_mem_calloc(priv->lines_max, sizeof(struct Line));
   priv->fp = fopen(pview->pdata->fname, "r");
   priv->has_types =
       ((pview->mode == PAGER_MODE_EMAIL) || (pview->flags & MUTT_SHOWCOLOR)) ?
           MUTT_TYPES :
           0; // main message or rfc822 attachment
 
-  for (size_t i = 0; i < priv->max_line; i++)
+  for (size_t i = 0; i < priv->lines_max; i++)
   {
-    priv->line_info[i].color = -1;
-    priv->line_info[i].search_arr_size = -1;
-    priv->line_info[i].syntax = mutt_mem_malloc(sizeof(struct TextSyntax));
-    (priv->line_info[i].syntax)[0].first = -1;
-    (priv->line_info[i].syntax)[0].last = -1;
+    priv->lines[i].color = -1;
+    priv->lines[i].search_arr_size = -1;
+    priv->lines[i].syntax = mutt_mem_malloc(sizeof(struct TextSyntax));
+    (priv->lines[i].syntax)[0].first = -1;
+    (priv->lines[i].syntax)[0].last = -1;
   }
 
   // ---------- try to open the pdata file -------------------------------------
@@ -839,7 +839,7 @@ int mutt_pager(struct PagerView *pview)
     return -1;
   }
 
-  if (stat(pview->pdata->fname, &priv->sb) != 0)
+  if (stat(pview->pdata->fname, &priv->st) != 0)
   {
     mutt_perror(pview->pdata->fname);
     mutt_file_fclose(&priv->fp);
@@ -849,15 +849,16 @@ int mutt_pager(struct PagerView *pview)
 
   //---------- restore global state if needed ---------------------------------
   while ((pview->mode == PAGER_MODE_EMAIL) && (OldEmail == shared->email) && // are we "resuming" to the same Email?
-         (TopLine != priv->topline) && // is saved offset different?
-         (priv->line_info[priv->curline].offset < (priv->sb.st_size - 1)))
+         (TopLine != priv->top_line) && // is saved offset different?
+         (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1)))
   {
     pager_queue_redraw(priv, MENU_REDRAW_FULL);
     pager_custom_redraw(priv);
     // trick user, as if nothing happened
     // scroll down to previosly saved offset
-    priv->topline =
-        ((TopLine - priv->topline) > priv->lines) ? priv->topline + priv->lines : TopLine;
+    priv->top_line = ((TopLine - priv->top_line) > priv->win_height) ?
+                         priv->top_line + priv->win_height :
+                         TopLine;
   }
 
   TopLine = 0;
@@ -1010,14 +1011,14 @@ int mutt_pager(struct PagerView *pview)
       if (pview->flags & MUTT_PAGER_RETWINCH)
       {
         /* Store current position. */
-        priv->lines = -1;
-        for (size_t i = 0; i <= priv->topline; i++)
-          if (!priv->line_info[i].cont_line)
-            priv->lines++;
+        priv->win_height = -1;
+        for (size_t i = 0; i <= priv->top_line; i++)
+          if (!priv->lines[i].cont_line)
+            priv->win_height++;
 
         Resize = mutt_mem_malloc(sizeof(struct Resize));
 
-        Resize->line = priv->lines;
+        Resize->line = priv->win_height;
         Resize->search_compiled = priv->search_compiled;
         Resize->search_back = priv->search_back;
 
@@ -1088,12 +1089,12 @@ int mutt_pager(struct PagerView *pview)
       case OP_NEXT_PAGE:
       {
         const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
-        if (priv->line_info[priv->curline].offset < (priv->sb.st_size - 1))
+        if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
         {
           const short c_pager_context =
               cs_subset_number(NeoMutt->sub, "pager_context");
-          priv->topline = up_n_lines(c_pager_context, priv->line_info,
-                                     priv->curline, priv->hide_quoted);
+          priv->top_line = up_n_lines(c_pager_context, priv->lines,
+                                      priv->cur_line, priv->hide_quoted);
         }
         else if (c_pager_stop)
         {
@@ -1112,7 +1113,7 @@ int mutt_pager(struct PagerView *pview)
         //=======================================================================
 
       case OP_PREV_PAGE:
-        if (priv->topline == 0)
+        if (priv->top_line == 0)
         {
           mutt_message(_("Top of message is shown"));
         }
@@ -1120,24 +1121,23 @@ int mutt_pager(struct PagerView *pview)
         {
           const short c_pager_context =
               cs_subset_number(NeoMutt->sub, "pager_context");
-          priv->topline =
-              up_n_lines(priv->pview->win_pager->state.rows - c_pager_context,
-                         priv->line_info, priv->topline, priv->hide_quoted);
+          priv->top_line = up_n_lines(priv->pview->win_pager->state.rows - c_pager_context,
+                                      priv->lines, priv->top_line, priv->hide_quoted);
         }
         break;
 
         //=======================================================================
 
       case OP_NEXT_LINE:
-        if (priv->line_info[priv->curline].offset < (priv->sb.st_size - 1))
+        if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
         {
-          priv->topline++;
+          priv->top_line++;
           if (priv->hide_quoted)
           {
-            while ((priv->line_info[priv->topline].color == MT_COLOR_QUOTED) &&
-                   (priv->topline < priv->last_line))
+            while ((priv->lines[priv->top_line].color == MT_COLOR_QUOTED) &&
+                   (priv->top_line < priv->lines_used))
             {
-              priv->topline++;
+              priv->top_line++;
             }
           }
         }
@@ -1148,8 +1148,8 @@ int mutt_pager(struct PagerView *pview)
         //=======================================================================
 
       case OP_PREV_LINE:
-        if (priv->topline)
-          priv->topline = up_n_lines(1, priv->line_info, priv->topline, priv->hide_quoted);
+        if (priv->top_line)
+          priv->top_line = up_n_lines(1, priv->lines, priv->top_line, priv->hide_quoted);
         else
           mutt_message(_("Top of message is shown"));
         break;
@@ -1157,8 +1157,8 @@ int mutt_pager(struct PagerView *pview)
         //=======================================================================
 
       case OP_PAGER_TOP:
-        if (priv->topline)
-          priv->topline = 0;
+        if (priv->top_line)
+          priv->top_line = 0;
         else
           mutt_message(_("Top of message is shown"));
         break;
@@ -1166,11 +1166,11 @@ int mutt_pager(struct PagerView *pview)
         //=======================================================================
 
       case OP_HALF_UP:
-        if (priv->topline)
+        if (priv->top_line)
         {
-          priv->topline = up_n_lines(priv->pview->win_pager->state.rows / 2 +
-                                         (priv->pview->win_pager->state.rows % 2),
-                                     priv->line_info, priv->topline, priv->hide_quoted);
+          priv->top_line = up_n_lines(priv->pview->win_pager->state.rows / 2 +
+                                          (priv->pview->win_pager->state.rows % 2),
+                                      priv->lines, priv->top_line, priv->hide_quoted);
         }
         else
           mutt_message(_("Top of message is shown"));
@@ -1181,10 +1181,10 @@ int mutt_pager(struct PagerView *pview)
       case OP_HALF_DOWN:
       {
         const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
-        if (priv->line_info[priv->curline].offset < (priv->sb.st_size - 1))
+        if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
         {
-          priv->topline = up_n_lines(priv->pview->win_pager->state.rows / 2,
-                                     priv->line_info, priv->curline, priv->hide_quoted);
+          priv->top_line = up_n_lines(priv->pview->win_pager->state.rows / 2,
+                                      priv->lines, priv->cur_line, priv->hide_quoted);
         }
         else if (c_pager_stop)
         {
@@ -1221,11 +1221,10 @@ int mutt_pager(struct PagerView *pview)
           {
             /* searching forward */
             int i;
-            for (i = wrapped ? 0 : priv->topline + searchctx + 1; i < priv->last_line; i++)
+            for (i = wrapped ? 0 : priv->top_line + searchctx + 1; i < priv->lines_used; i++)
             {
-              if ((!priv->hide_quoted || (priv->line_info[i].color != MT_COLOR_QUOTED)) &&
-                  !priv->line_info[i].cont_line &&
-                  (priv->line_info[i].search_arr_size > 0))
+              if ((!priv->hide_quoted || (priv->lines[i].color != MT_COLOR_QUOTED)) &&
+                  !priv->lines[i].cont_line && (priv->lines[i].search_arr_size > 0))
               {
                 break;
               }
@@ -1233,8 +1232,8 @@ int mutt_pager(struct PagerView *pview)
 
             const bool c_wrap_search =
                 cs_subset_bool(NeoMutt->sub, "wrap_search");
-            if (i < priv->last_line)
-              priv->topline = i;
+            if (i < priv->lines_used)
+              priv->top_line = i;
             else if (wrapped || !c_wrap_search)
               mutt_error(_("Not found"));
             else
@@ -1248,12 +1247,12 @@ int mutt_pager(struct PagerView *pview)
           {
             /* searching backward */
             int i;
-            for (i = wrapped ? priv->last_line : priv->topline + searchctx - 1; i >= 0; i--)
+            for (i = wrapped ? priv->lines_used : priv->top_line + searchctx - 1;
+                 i >= 0; i--)
             {
               if ((!priv->hide_quoted ||
-                   (priv->has_types && (priv->line_info[i].color != MT_COLOR_QUOTED))) &&
-                  !priv->line_info[i].cont_line &&
-                  (priv->line_info[i].search_arr_size > 0))
+                   (priv->has_types && (priv->lines[i].color != MT_COLOR_QUOTED))) &&
+                  !priv->lines[i].cont_line && (priv->lines[i].search_arr_size > 0))
               {
                 break;
               }
@@ -1262,7 +1261,7 @@ int mutt_pager(struct PagerView *pview)
             const bool c_wrap_search =
                 cs_subset_bool(NeoMutt->sub, "wrap_search");
             if (i >= 0)
-              priv->topline = i;
+              priv->top_line = i;
             else if (wrapped || !c_wrap_search)
               mutt_error(_("Not found"));
             else
@@ -1273,12 +1272,12 @@ int mutt_pager(struct PagerView *pview)
             }
           }
 
-          if (priv->line_info[priv->topline].search_arr_size > 0)
+          if (priv->lines[priv->top_line].search_arr_size > 0)
           {
             priv->search_flag = MUTT_SEARCH;
             /* give some context for search results */
-            if (priv->topline - searchctx > 0)
-              priv->topline -= searchctx;
+            if (priv->top_line - searchctx > 0)
+              priv->top_line -= searchctx;
           }
 
           break;
@@ -1291,7 +1290,7 @@ int mutt_pager(struct PagerView *pview)
       case OP_SEARCH_REVERSE:
       {
         char buf[1024] = { 0 };
-        mutt_str_copy(buf, priv->searchbuf, sizeof(buf));
+        mutt_str_copy(buf, priv->search_str, sizeof(buf));
         if (mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
                                _("Search for: ") :
                                _("Reverse search for: "),
@@ -1301,7 +1300,7 @@ int mutt_pager(struct PagerView *pview)
           break;
         }
 
-        if (strcmp(buf, priv->searchbuf) == 0)
+        if (strcmp(buf, priv->search_str) == 0)
         {
           if (priv->search_compiled)
           {
@@ -1319,7 +1318,7 @@ int mutt_pager(struct PagerView *pview)
         if (buf[0] == '\0')
           break;
 
-        mutt_str_copy(priv->searchbuf, buf, sizeof(priv->searchbuf));
+        mutt_str_copy(priv->search_str, buf, sizeof(priv->search_str));
 
         /* leave search_back alone if op == OP_SEARCH_NEXT */
         if (op == OP_SEARCH)
@@ -1330,24 +1329,24 @@ int mutt_pager(struct PagerView *pview)
         if (priv->search_compiled)
         {
           regfree(&priv->search_re);
-          for (size_t i = 0; i < priv->last_line; i++)
+          for (size_t i = 0; i < priv->lines_used; i++)
           {
-            FREE(&(priv->line_info[i].search));
-            priv->line_info[i].search_arr_size = -1;
+            FREE(&(priv->lines[i].search));
+            priv->lines[i].search_arr_size = -1;
           }
         }
 
-        uint16_t rflags = mutt_mb_is_lower(priv->searchbuf) ? REG_ICASE : 0;
-        int err = REG_COMP(&priv->search_re, priv->searchbuf, REG_NEWLINE | rflags);
+        uint16_t rflags = mutt_mb_is_lower(priv->search_str) ? REG_ICASE : 0;
+        int err = REG_COMP(&priv->search_re, priv->search_str, REG_NEWLINE | rflags);
         if (err != 0)
         {
           regerror(err, &priv->search_re, buf, sizeof(buf));
           mutt_error("%s", buf);
-          for (size_t i = 0; i < priv->max_line; i++)
+          for (size_t i = 0; i < priv->lines_max; i++)
           {
             /* cleanup */
-            FREE(&(priv->line_info[i].search));
-            priv->line_info[i].search_arr_size = -1;
+            FREE(&(priv->lines[i].search));
+            priv->lines[i].search_arr_size = -1;
           }
           priv->search_flag = 0;
           priv->search_compiled = false;
@@ -1357,8 +1356,8 @@ int mutt_pager(struct PagerView *pview)
           priv->search_compiled = true;
           /* update the search pointers */
           int line_num = 0;
-          while (display_line(priv->fp, &priv->last_pos, &priv->line_info,
-                              line_num, &priv->last_line, &priv->max_line,
+          while (display_line(priv->fp, &priv->bytes_read, &priv->lines,
+                              line_num, &priv->lines_used, &priv->lines_max,
                               MUTT_SEARCH | (pview->flags & MUTT_PAGER_NSKIP) |
                                   (pview->flags & MUTT_PAGER_NOWRAP),
                               &priv->quote_list, &priv->q_level, &priv->force_redraw,
@@ -1371,38 +1370,36 @@ int mutt_pager(struct PagerView *pview)
           {
             /* searching forward */
             int i;
-            for (i = priv->topline; i < priv->last_line; i++)
+            for (i = priv->top_line; i < priv->lines_used; i++)
             {
-              if ((!priv->hide_quoted || (priv->line_info[i].color != MT_COLOR_QUOTED)) &&
-                  !priv->line_info[i].cont_line &&
-                  (priv->line_info[i].search_arr_size > 0))
+              if ((!priv->hide_quoted || (priv->lines[i].color != MT_COLOR_QUOTED)) &&
+                  !priv->lines[i].cont_line && (priv->lines[i].search_arr_size > 0))
               {
                 break;
               }
             }
 
-            if (i < priv->last_line)
-              priv->topline = i;
+            if (i < priv->lines_used)
+              priv->top_line = i;
           }
           else
           {
             /* searching backward */
             int i;
-            for (i = priv->topline; i >= 0; i--)
+            for (i = priv->top_line; i >= 0; i--)
             {
-              if ((!priv->hide_quoted || (priv->line_info[i].color != MT_COLOR_QUOTED)) &&
-                  !priv->line_info[i].cont_line &&
-                  (priv->line_info[i].search_arr_size > 0))
+              if ((!priv->hide_quoted || (priv->lines[i].color != MT_COLOR_QUOTED)) &&
+                  !priv->lines[i].cont_line && (priv->lines[i].search_arr_size > 0))
               {
                 break;
               }
             }
 
             if (i >= 0)
-              priv->topline = i;
+              priv->top_line = i;
           }
 
-          if (priv->line_info[priv->topline].search_arr_size == 0)
+          if (priv->lines[priv->top_line].search_arr_size == 0)
           {
             priv->search_flag = 0;
             mutt_error(_("Not found"));
@@ -1417,8 +1414,8 @@ int mutt_pager(struct PagerView *pview)
               searchctx = c_search_context;
             else
               searchctx = 0;
-            if (priv->topline - searchctx > 0)
-              priv->topline -= searchctx;
+            if (priv->top_line - searchctx > 0)
+              priv->top_line -= searchctx;
           }
         }
         pager_queue_redraw(priv, MENU_REDRAW_BODY);
@@ -1469,8 +1466,8 @@ int mutt_pager(struct PagerView *pview)
           break;
 
         priv->hide_quoted ^= MUTT_HIDE;
-        if (priv->hide_quoted && (priv->line_info[priv->topline].color == MT_COLOR_QUOTED))
-          priv->topline = up_n_lines(1, priv->line_info, priv->topline, priv->hide_quoted);
+        if (priv->hide_quoted && (priv->lines[priv->top_line].color == MT_COLOR_QUOTED))
+          priv->top_line = up_n_lines(1, priv->lines, priv->top_line, priv->hide_quoted);
         else
           pager_queue_redraw(priv, MENU_REDRAW_BODY);
         break;
@@ -1485,38 +1482,38 @@ int mutt_pager(struct PagerView *pview)
         const short c_skip_quoted_context =
             cs_subset_number(NeoMutt->sub, "pager_skip_quoted_context");
         int dretval = 0;
-        int new_topline = priv->topline;
+        int new_topline = priv->top_line;
         int num_quoted = 0;
 
         /* In a header? Skip all the email headers, and done */
-        if (mutt_color_is_header(priv->line_info[new_topline].color))
+        if (mutt_color_is_header(priv->lines[new_topline].color))
         {
-          while (((new_topline < priv->last_line) ||
+          while (((new_topline < priv->lines_used) ||
                   (0 == (dretval = display_line(
-                             priv->fp, &priv->last_pos, &priv->line_info,
-                             new_topline, &priv->last_line, &priv->max_line,
+                             priv->fp, &priv->bytes_read, &priv->lines,
+                             new_topline, &priv->lines_used, &priv->lines_max,
                              MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
                              &priv->quote_list, &priv->q_level, &priv->force_redraw,
                              &priv->search_re, priv->pview->win_pager)))) &&
-                 mutt_color_is_header(priv->line_info[new_topline].color))
+                 mutt_color_is_header(priv->lines[new_topline].color))
           {
             new_topline++;
           }
-          priv->topline = new_topline;
+          priv->top_line = new_topline;
           break;
         }
 
         /* Already in the body? Skip past previous "context" quoted lines */
         if (c_skip_quoted_context > 0)
         {
-          while (((new_topline < priv->last_line) ||
+          while (((new_topline < priv->lines_used) ||
                   (0 == (dretval = display_line(
-                             priv->fp, &priv->last_pos, &priv->line_info,
-                             new_topline, &priv->last_line, &priv->max_line,
+                             priv->fp, &priv->bytes_read, &priv->lines,
+                             new_topline, &priv->lines_used, &priv->lines_max,
                              MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
                              &priv->quote_list, &priv->q_level, &priv->force_redraw,
                              &priv->search_re, priv->pview->win_pager)))) &&
-                 (priv->line_info[new_topline].color == MT_COLOR_QUOTED))
+                 (priv->lines[new_topline].color == MT_COLOR_QUOTED))
           {
             new_topline++;
             num_quoted++;
@@ -1533,14 +1530,14 @@ int mutt_pager(struct PagerView *pview)
         {
           num_quoted = 0;
 
-          while (((new_topline < priv->last_line) ||
+          while (((new_topline < priv->lines_used) ||
                   (0 == (dretval = display_line(
-                             priv->fp, &priv->last_pos, &priv->line_info,
-                             new_topline, &priv->last_line, &priv->max_line,
+                             priv->fp, &priv->bytes_read, &priv->lines,
+                             new_topline, &priv->lines_used, &priv->lines_max,
                              MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
                              &priv->quote_list, &priv->q_level, &priv->force_redraw,
                              &priv->search_re, priv->pview->win_pager)))) &&
-                 (priv->line_info[new_topline].color != MT_COLOR_QUOTED))
+                 (priv->lines[new_topline].color != MT_COLOR_QUOTED))
           {
             new_topline++;
           }
@@ -1551,14 +1548,14 @@ int mutt_pager(struct PagerView *pview)
             break;
           }
 
-          while (((new_topline < priv->last_line) ||
+          while (((new_topline < priv->lines_used) ||
                   (0 == (dretval = display_line(
-                             priv->fp, &priv->last_pos, &priv->line_info,
-                             new_topline, &priv->last_line, &priv->max_line,
+                             priv->fp, &priv->bytes_read, &priv->lines,
+                             new_topline, &priv->lines_used, &priv->lines_max,
                              MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
                              &priv->quote_list, &priv->q_level, &priv->force_redraw,
                              &priv->search_re, priv->pview->win_pager)))) &&
-                 (priv->line_info[new_topline].color == MT_COLOR_QUOTED))
+                 (priv->lines[new_topline].color == MT_COLOR_QUOTED))
           {
             new_topline++;
             num_quoted++;
@@ -1570,7 +1567,7 @@ int mutt_pager(struct PagerView *pview)
             break;
           }
         }
-        priv->topline = new_topline - MIN(c_skip_quoted_context, num_quoted);
+        priv->top_line = new_topline - MIN(c_skip_quoted_context, num_quoted);
         break;
       }
 
@@ -1584,13 +1581,13 @@ int mutt_pager(struct PagerView *pview)
         int dretval = 0;
         int new_topline = 0;
 
-        while (((new_topline < priv->last_line) ||
+        while (((new_topline < priv->lines_used) ||
                 (0 == (dretval = display_line(
-                           priv->fp, &priv->last_pos, &priv->line_info, new_topline, &priv->last_line,
-                           &priv->max_line, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
+                           priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
+                           &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
                            &priv->quote_list, &priv->q_level, &priv->force_redraw,
                            &priv->search_re, priv->pview->win_pager)))) &&
-               mutt_color_is_header(priv->line_info[new_topline].color))
+               mutt_color_is_header(priv->lines[new_topline].color))
         {
           new_topline++;
         }
@@ -1604,7 +1601,7 @@ int mutt_pager(struct PagerView *pview)
           mutt_warning(_("No text past headers"));
           break;
         }
-        priv->topline = new_topline;
+        priv->top_line = new_topline;
         break;
       }
 
@@ -2517,7 +2514,7 @@ int mutt_pager(struct PagerView *pview)
         mutt_clear_pager_position();
         break;
       default:
-        TopLine = priv->topline;
+        TopLine = priv->top_line;
         OldEmail = shared->email;
         break;
     }
@@ -2525,18 +2522,18 @@ int mutt_pager(struct PagerView *pview)
 
   cleanup_quote(&priv->quote_list);
 
-  for (size_t i = 0; i < priv->max_line; i++)
+  for (size_t i = 0; i < priv->lines_max; i++)
   {
-    FREE(&(priv->line_info[i].syntax));
-    if (priv->search_compiled && priv->line_info[i].search)
-      FREE(&(priv->line_info[i].search));
+    FREE(&(priv->lines[i].syntax));
+    if (priv->search_compiled && priv->lines[i].search)
+      FREE(&(priv->lines[i].search));
   }
   if (priv->search_compiled)
   {
     regfree(&priv->search_re);
     priv->search_compiled = false;
   }
-  FREE(&priv->line_info);
+  FREE(&priv->lines);
 
   expand_index_panel(dlg, priv);
 
