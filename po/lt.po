@@ -3112,7 +3112,7 @@ msgstr "Joks notmuch virtualaus aplanko šiuo metu nėra užkrautas"
 
 #: index/index.c:95
 msgid "Changing threaded display should prefer $use_threads over $sort"
-msgstr ""
+msgstr "Gijų naudojimą nustatykite naudodami $use_threads vietoje $sort"
 
 #: init.c:216
 #, c-format
@@ -3816,7 +3816,7 @@ msgstr "SSL nepasiekiamas, negaliu prisijungti prie %s"
 #: mutt_thread.c:121
 #, c-format
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
-msgstr ""
+msgstr "Negalima naudoti 'last-' prefikso su 'threads' %s reikšmėje"
 
 #: mutt_thread.c:1351
 msgid "Parent message is not available"
@@ -5937,9 +5937,8 @@ msgid "skip beyond quoted text"
 msgstr "praleisti cituojamą tekstą"
 
 #: opcodes.h:216
-#, fuzzy
 msgid "jump to first line after headers"
-msgstr "šokti į kitą giją"
+msgstr "šokti į pirmą eilutę po antraštėmis"
 
 #: opcodes.h:217
 msgid "jump to the top of the message"
@@ -6210,9 +6209,8 @@ msgid "shifts virtual folder time window forwards"
 msgstr "perkelti virtualaus aplanko laiko langą pirmyn"
 
 #: opcodes.h:295
-#, fuzzy
 msgid "resets virtual folder time window to the present"
-msgstr "perkelti virtualaus aplanko laiko langą pirmyn"
+msgstr "atstato virtualaus aplanko laiko tarpą į dabartį"
 
 #: opcodes.h:301
 msgid "check for classic PGP"
