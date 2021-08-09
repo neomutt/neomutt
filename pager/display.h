@@ -88,14 +88,14 @@ struct QClass
 struct Line
 {
   LOFF_T offset;             ///< Offset into Email file (PagerPrivateData->fp)
-  short type;                ///< Colour, e.g. #MT_COLOR_QUOTED
-  short continuation;        ///< This is a continuation of a previous line (wrapped by NeoMutt)
-  unsigned int is_cont_hdr;  ///< This is a continuation of a header line (wrapped by MTA)
+  short color;               ///< Default line colour, e.g. #MT_COLOR_QUOTED
+  bool cont_line   : 1;      ///< Continuation of a previous line (wrapped by NeoMutt)
+  bool cont_header : 1;      ///< Continuation of a header line (wrapped by MTA)
 
-  short chunks;              ///< Number of items in syntax array
+  short syntax_arr_size;     ///< Number of items in syntax array
   struct TextSyntax *syntax; ///< Array of coloured text in the line
 
-  short search_cnt;          ///< Number of items in search array
+  short search_arr_size;     ///< Number of items in search array
   struct TextSyntax *search; ///< Array of search text in the line
 
   struct QClass *quote;      ///< Quoting style for this line (pointer into PagerPrivateData->quote_list)
