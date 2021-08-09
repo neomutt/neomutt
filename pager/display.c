@@ -1386,11 +1386,11 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int n,
 /**
  * display_line - Print a line on screen
  * @param[in]  fp              File to read from
- * @param[out] last_pos        Offset into file
+ * @param[out] bytes_read      Offset into file
  * @param[out] lines           Line attributes
- * @param[in]  n               Line number
- * @param[out] last            Last line
- * @param[out] max             Maximum number of lines
+ * @param[in]  line_num        Line number
+ * @param[out] lines_used      Last line
+ * @param[out] lines_max       Maximum number of lines
  * @param[in]  flags           Flags, see #PagerFlags
  * @param[out] quote_list      Email quoting style
  * @param[out] q_level         Level of quoting
@@ -1401,9 +1401,10 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int n,
  * @retval 0  normal exit, line was not displayed
  * @retval >0 normal exit, line was displayed
  */
-int display_line(FILE *fp, LOFF_T *last_pos, struct Line **lines, int n, int *last,
-                 int *max, PagerFlags flags, struct QClass **quote_list, int *q_level,
-                 bool *force_redraw, regex_t *search_re, struct MuttWindow *win_pager)
+int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
+                 int line_num, int *lines_used, int *lines_max, PagerFlags flags,
+                 struct QClass **quote_list, int *q_level, bool *force_redraw,
+                 regex_t *search_re, struct MuttWindow *win_pager)
 {
   unsigned char *buf = NULL, *fmt = NULL;
   size_t buflen = 0;
@@ -1419,16 +1420,16 @@ int display_line(FILE *fp, LOFF_T *last_pos, struct Line **lines, int n, int *la
   struct AnsiAttr aa = { 0, 0, 0, -1 };
   regmatch_t pmatch[1];
 
-  if (n == *last)
+  if (line_num == *lines_used)
   {
-    (*last)++;
+    (*lines_used)++;
     change_last = true;
   }
 
-  if (*last == *max)
+  if (*lines_used == *lines_max)
   {
-    mutt_mem_realloc(lines, sizeof(struct Line) * (*max += LINES));
-    for (ch = *last; ch < *max; ch++)
+    mutt_mem_realloc(lines, sizeof(struct Line) * (*lines_max += LINES));
+    for (ch = *lines_used; ch < *lines_max; ch++)
     {
       memset(&((*lines)[ch]), 0, sizeof(struct Line));
       (*lines)[ch].color = -1;
@@ -1439,15 +1440,15 @@ int display_line(FILE *fp, LOFF_T *last_pos, struct Line **lines, int n, int *la
     }
   }
 
-  struct Line *const curr_line = &(*lines)[n];
+  struct Line *const curr_line = &(*lines)[line_num];
 
   if (flags & MUTT_PAGER_LOGS)
   {
     /* determine the line class */
-    if (fill_buffer(fp, last_pos, curr_line->offset, &buf, &fmt, &buflen, &buf_ready) < 0)
+    if (fill_buffer(fp, bytes_read, curr_line->offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {
       if (change_last)
-        (*last)--;
+        (*lines_used)--;
       goto out;
     }
 
@@ -1468,18 +1469,19 @@ int display_line(FILE *fp, LOFF_T *last_pos, struct Line **lines, int n, int *la
     if (curr_line->color == -1)
     {
       /* determine the line class */
-      if (fill_buffer(fp, last_pos, curr_line->offset, &buf, &fmt, &buflen, &buf_ready) < 0)
+      if (fill_buffer(fp, bytes_read, curr_line->offset, &buf, &fmt, &buflen, &buf_ready) < 0)
       {
         if (change_last)
-          (*last)--;
+          (*lines_used)--;
         goto out;
       }
 
-      resolve_types(win_pager, (char *) fmt, (char *) buf, *lines, n, *last,
+      resolve_types(win_pager, (char *) fmt, (char *) buf, *lines, line_num, *lines_used,
                     quote_list, q_level, force_redraw, flags & MUTT_SHOWCOLOR);
 
       /* avoid race condition for continuation lines when scrolling up */
-      for (m = n + 1; m < *last && (*lines)[m].offset && (*lines)[m].cont_line; m++)
+      for (m = line_num + 1;
+           m < *lines_used && (*lines)[m].offset && (*lines)[m].cont_line; m++)
         (*lines)[m].color = curr_line->color;
     }
 
@@ -1493,7 +1495,7 @@ int display_line(FILE *fp, LOFF_T *last_pos, struct Line **lines, int n, int *la
     }
   }
 
-  /* At this point, (*lines[n]).quote may still be undefined. We
+  /* At this point, (*lines[line_num]).quote may still be undefined. We
    * don't want to compute it every time MUTT_TYPES is set, since this
    * would slow down the "bottom" function unacceptably. A compromise
    * solution is hence to call regexec() again, just to find out the
@@ -1501,10 +1503,10 @@ int display_line(FILE *fp, LOFF_T *last_pos, struct Line **lines, int n, int *la
   if ((flags & MUTT_SHOWCOLOR) && !curr_line->cont_line &&
       (curr_line->color == MT_COLOR_QUOTED) && !curr_line->quote)
   {
-    if (fill_buffer(fp, last_pos, curr_line->offset, &buf, &fmt, &buflen, &buf_ready) < 0)
+    if (fill_buffer(fp, bytes_read, curr_line->offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {
       if (change_last)
-        (*last)--;
+        (*lines_used)--;
       goto out;
     }
 
@@ -1524,10 +1526,10 @@ int display_line(FILE *fp, LOFF_T *last_pos, struct Line **lines, int n, int *la
 
   if ((flags & MUTT_SEARCH) && !curr_line->cont_line && (curr_line->search_arr_size == -1))
   {
-    if (fill_buffer(fp, last_pos, curr_line->offset, &buf, &fmt, &buflen, &buf_ready) < 0)
+    if (fill_buffer(fp, bytes_read, curr_line->offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {
       if (change_last)
-        (*last)--;
+        (*lines_used)--;
       goto out;
     }
 
@@ -1557,30 +1559,30 @@ int display_line(FILE *fp, LOFF_T *last_pos, struct Line **lines, int n, int *la
     }
   }
 
-  if (!(flags & MUTT_SHOW) && ((*lines)[n + 1].offset > 0))
+  if (!(flags & MUTT_SHOW) && ((*lines)[line_num + 1].offset > 0))
   {
     /* we've already scanned this line, so just exit */
     rc = 0;
     goto out;
   }
-  if ((flags & MUTT_SHOWCOLOR) && *force_redraw && ((*lines)[n + 1].offset > 0))
+  if ((flags & MUTT_SHOWCOLOR) && *force_redraw && ((*lines)[line_num + 1].offset > 0))
   {
     /* no need to try to display this line... */
     rc = 1;
     goto out; /* fake display */
   }
 
-  b_read = fill_buffer(fp, last_pos, curr_line->offset, &buf, &fmt, &buflen, &buf_ready);
+  b_read = fill_buffer(fp, bytes_read, curr_line->offset, &buf, &fmt, &buflen, &buf_ready);
   if (b_read < 0)
   {
     if (change_last)
-      (*last)--;
+      (*lines_used)--;
     goto out;
   }
 
   /* now chose a good place to break the line */
-  cnt = format_line(win_pager, lines, n, buf, flags, NULL, b_read, &ch, &vch,
-                    &col, &special, win_pager->state.cols);
+  cnt = format_line(win_pager, lines, line_num, buf, flags, NULL, b_read, &ch,
+                    &vch, &col, &special, win_pager->state.cols);
   buf_ptr = buf + cnt;
 
   /* move the break point only if smart_wrap is set */
@@ -1617,9 +1619,9 @@ int display_line(FILE *fp, LOFF_T *last_pos, struct Line **lines, int n, int *la
   if (*buf_ptr == '\n')
     buf_ptr++;
 
-  if (((int) (buf_ptr - buf) < b_read) && !(*lines)[n + 1].cont_line)
-    append_line(*lines, n, (int) (buf_ptr - buf));
-  (*lines)[n + 1].offset = curr_line->offset + (long) (buf_ptr - buf);
+  if (((int) (buf_ptr - buf) < b_read) && !(*lines)[line_num + 1].cont_line)
+    append_line(*lines, line_num, (int) (buf_ptr - buf));
+  (*lines)[line_num + 1].offset = curr_line->offset + (long) (buf_ptr - buf);
 
   /* if we don't need to display the line we are done */
   if (!(flags & MUTT_SHOW))
@@ -1629,7 +1631,7 @@ int display_line(FILE *fp, LOFF_T *last_pos, struct Line **lines, int n, int *la
   }
 
   /* display the line */
-  format_line(win_pager, lines, n, buf, flags, &aa, cnt, &ch, &vch, &col,
+  format_line(win_pager, lines, line_num, buf, flags, &aa, cnt, &ch, &vch, &col,
               &special, win_pager->state.cols);
 
 /* avoid a bug in ncurses... */
@@ -1643,14 +1645,14 @@ int display_line(FILE *fp, LOFF_T *last_pos, struct Line **lines, int n, int *la
 
   /* end the last color pattern (needed by S-Lang) */
   if (special || ((col != win_pager->state.cols) && (flags & (MUTT_SHOWCOLOR | MUTT_SEARCH))))
-    resolve_color(win_pager, *lines, n, vch, flags, 0, &aa);
+    resolve_color(win_pager, *lines, line_num, vch, flags, 0, &aa);
 
   /* Fill the blank space at the end of the line with the prevailing color.
    * ncurses does an implicit clrtoeol() when you do mutt_window_addch('\n') so we have
    * to make sure to reset the color *after* that */
   if (flags & MUTT_SHOWCOLOR)
   {
-    m = (curr_line->cont_line) ? (curr_line->syntax)[0].first : n;
+    m = (curr_line->cont_line) ? (curr_line->syntax)[0].first : line_num;
     if ((*lines)[m].color == MT_COLOR_HEADER)
       def_color = ((*lines)[m].syntax)[0].color;
     else
