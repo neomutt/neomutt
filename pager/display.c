@@ -1147,17 +1147,17 @@ void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src, bool str
 
 /**
  * fill_buffer - Fill a buffer from a file
- * @param[in]     fp        File to read from
- * @param[in,out] last_pos  End of last read
- * @param[in]     offset    Position start reading from
- * @param[out]    buf       Buffer to fill
- * @param[out]    fmt       Copy of buffer, stripped of attributes
- * @param[out]    blen      Length of the buffer
- * @param[in,out] buf_ready true if the buffer already has data in it
+ * @param[in]     fp         File to read from
+ * @param[in,out] bytes_read End of last read
+ * @param[in]     offset     Position start reading from
+ * @param[out]    buf        Buffer to fill
+ * @param[out]    fmt        Copy of buffer, stripped of attributes
+ * @param[out]    blen       Length of the buffer
+ * @param[in,out] buf_ready  true if the buffer already has data in it
  * @retval >=0 Bytes read
  * @retval -1  Error
  */
-static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char **buf,
+static int fill_buffer(FILE *fp, LOFF_T *bytes_read, LOFF_T offset, unsigned char **buf,
                        unsigned char **fmt, size_t *blen, int *buf_ready)
 {
   static int b_read;
@@ -1165,7 +1165,7 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
 
   if (*buf_ready == 0)
   {
-    if (offset != *last_pos)
+    if (offset != *bytes_read)
       fseeko(fp, offset, SEEK_SET);
 
     *buf = (unsigned char *) mutt_file_read_line((char *) *buf, blen, fp, NULL, MUTT_RL_EOL);
@@ -1175,8 +1175,8 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
       return -1;
     }
 
-    *last_pos = ftello(fp);
-    b_read = (int) (*last_pos - offset);
+    *bytes_read = ftello(fp);
+    b_read = (int) (*bytes_read - offset);
     *buf_ready = 1;
 
     mutt_buffer_init(&stripped);
