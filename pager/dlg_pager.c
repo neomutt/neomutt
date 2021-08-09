@@ -463,7 +463,6 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
         priv->curline++;
         mutt_window_move(priv->pview->win_pager, 0, priv->lines);
       }
-      priv->last_offset = priv->line_info[priv->curline].offset;
     } while (priv->force_redraw);
 
     mutt_curses_set_color(MT_COLOR_TILDE);
@@ -490,7 +489,7 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
     if (priv->last_pos < priv->sb.st_size - 1)
     {
       snprintf(pager_progress_str, sizeof(pager_progress_str), OFF_T_FMT "%%",
-               (100 * priv->last_offset / priv->sb.st_size));
+               (100 * priv->last_pos / priv->sb.st_size));
     }
     else
     {

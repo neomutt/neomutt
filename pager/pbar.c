@@ -105,7 +105,7 @@ static int pbar_recalc(struct MuttWindow *win)
   if (priv->last_pos < priv->sb.st_size - 1)
   {
     snprintf(pager_progress_str, sizeof(pager_progress_str), OFF_T_FMT "%%",
-             (100 * priv->last_offset / priv->sb.st_size));
+             (100 * priv->last_pos / priv->sb.st_size));
   }
   else
   {

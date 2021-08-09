@@ -45,7 +45,6 @@ struct PagerPrivateData
   FILE *fp;                    ///< File containing decrypted/decoded/weeded Email
   struct stat sb;              ///< Stats about Email file
   LOFF_T last_pos;             ///< Number of bytes read from file
-  LOFF_T last_offset;
 
   struct Line *line_info;      ///< Array of text lines in pager
   int curline;                 ///< Current line (last line visible on screen)
