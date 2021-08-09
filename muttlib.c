@@ -94,8 +94,8 @@ void mutt_adv_mktemp(struct Buffer *buf)
     const char *const c_tmpdir = cs_subset_path(NeoMutt->sub, "tmpdir");
     mutt_buffer_printf(buf, "%s/%s", NONULL(c_tmpdir), mutt_buffer_string(prefix));
 
-    struct stat sb;
-    if ((lstat(mutt_buffer_string(buf), &sb) == -1) && (errno == ENOENT))
+    struct stat st;
+    if ((lstat(mutt_buffer_string(buf), &st) == -1) && (errno == ENOENT))
       goto out;
 
     char *suffix = strchr(prefix->data, '.');
@@ -1315,7 +1315,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 FILE *mutt_open_read(const char *path, pid_t *thepid)
 {
   FILE *fp = NULL;
-  struct stat s;
+  struct stat st;
 
   size_t len = mutt_str_len(path);
   if (len == 0)
@@ -1336,9 +1336,9 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
   }
   else
   {
-    if (stat(path, &s) < 0)
+    if (stat(path, &st) < 0)
       return NULL;
-    if (S_ISDIR(s.st_mode))
+    if (S_ISDIR(st.st_mode))
     {
       errno = EINVAL;
       return NULL;

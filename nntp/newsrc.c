@@ -162,7 +162,7 @@ void nntp_group_unread_stat(struct NntpMboxData *mdata)
 int nntp_newsrc_parse(struct NntpAccountData *adata)
 {
   char *line = NULL;
-  struct stat sb;
+  struct stat st;
 
   if (adata->fp_newsrc)
   {
@@ -192,18 +192,18 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
     return -1;
   }
 
-  if (stat(adata->newsrc_file, &sb) != 0)
+  if (stat(adata->newsrc_file, &st) != 0)
   {
     mutt_perror(adata->newsrc_file);
     nntp_newsrc_close(adata);
     return -1;
   }
 
-  if ((adata->size == sb.st_size) && (adata->mtime == sb.st_mtime))
+  if ((adata->size == st.st_size) && (adata->mtime == st.st_mtime))
     return 0;
 
-  adata->size = sb.st_size;
-  adata->mtime = sb.st_mtime;
+  adata->size = st.st_size;
+  adata->mtime = st.st_mtime;
   adata->newsrc_modified = true;
   mutt_debug(LL_DEBUG1, "Parsing %s\n", adata->newsrc_file);
 
@@ -219,8 +219,8 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
     FREE(&mdata->newsrc_ent);
   }
 
-  line = mutt_mem_malloc(sb.st_size + 1);
-  while (sb.st_size && fgets(line, sb.st_size + 1, adata->fp_newsrc))
+  line = mutt_mem_malloc(st.st_size + 1);
+  while (st.st_size && fgets(line, st.st_size + 1, adata->fp_newsrc))
   {
     char *b = NULL, *h = NULL;
     unsigned int j = 1;
@@ -491,13 +491,13 @@ int nntp_newsrc_update(struct NntpAccountData *adata)
   mutt_debug(LL_DEBUG1, "Updating %s\n", adata->newsrc_file);
   if (adata->newsrc_file && (update_file(adata->newsrc_file, buf) == 0))
   {
-    struct stat sb;
+    struct stat st;
 
-    rc = stat(adata->newsrc_file, &sb);
+    rc = stat(adata->newsrc_file, &st);
     if (rc == 0)
     {
-      adata->size = sb.st_size;
-      adata->mtime = sb.st_mtime;
+      adata->size = st.st_size;
+      adata->mtime = st.st_mtime;
     }
     else
     {
@@ -862,7 +862,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
     while ((entry = readdir(dp)))
     {
       char *group = entry->d_name;
-      struct stat sb;
+      struct stat st;
       struct NntpMboxData *mdata = NULL;
       struct NntpMboxData tmp_mdata;
 
@@ -870,11 +870,11 @@ void nntp_clear_cache(struct NntpAccountData *adata)
         continue;
       *fp = '\0';
       mutt_strn_cat(file, sizeof(file), group, strlen(group));
-      if (stat(file, &sb) != 0)
+      if (stat(file, &st) != 0)
         continue;
 
 #ifdef USE_HCACHE
-      if (S_ISREG(sb.st_mode))
+      if (S_ISREG(st.st_mode))
       {
         char *ext = group + strlen(group) - 7;
         if ((strlen(group) < 8) || !mutt_str_equal(ext, ".hcache"))
@@ -883,7 +883,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
       }
       else
 #endif
-          if (!S_ISDIR(sb.st_mode))
+          if (!S_ISDIR(st.st_mode))
         continue;
 
       const bool c_save_unsubscribed =
@@ -900,7 +900,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
         continue;
 
       nntp_delete_group_cache(mdata);
-      if (S_ISDIR(sb.st_mode))
+      if (S_ISDIR(st.st_mode))
       {
         rmdir(file);
         mutt_debug(LL_DEBUG2, "%s\n", file);

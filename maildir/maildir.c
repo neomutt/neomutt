@@ -88,7 +88,7 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
   DIR *dirp = NULL;
   struct dirent *de = NULL;
   char *p = NULL;
-  struct stat sb;
+  struct stat st;
 
   struct Buffer *path = mutt_buffer_pool_get();
   struct Buffer *msgpath = mutt_buffer_pool_get();
@@ -100,8 +100,8 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
       cs_subset_bool(NeoMutt->sub, "mail_check_recent");
   if (check_new && c_mail_check_recent)
   {
-    if ((stat(mutt_buffer_string(path), &sb) == 0) &&
-        (mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) < 0))
+    if ((stat(mutt_buffer_string(path), &st) == 0) &&
+        (mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->last_visited) < 0))
     {
       check_new = false;
     }
@@ -142,8 +142,8 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
         {
           mutt_buffer_printf(msgpath, "%s/%s", mutt_buffer_string(path), de->d_name);
           /* ensure this message was received since leaving this m */
-          if ((stat(mutt_buffer_string(msgpath), &sb) == 0) &&
-              (mutt_file_stat_timespec_compare(&sb, MUTT_STAT_CTIME, &m->last_visited) <= 0))
+          if ((stat(mutt_buffer_string(msgpath), &st) == 0) &&
+              (mutt_file_stat_timespec_compare(&st, MUTT_STAT_CTIME, &m->last_visited) <= 0))
           {
             continue;
           }
@@ -619,20 +619,20 @@ void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
     snprintf(fn, sizeof(fn), "%s/%s", mailbox_path(m), md->email->path);
 
 #ifdef USE_HCACHE
-    struct stat lastchanged = { 0 };
+    struct stat st_lastchanged = { 0 };
     int rc = 0;
     const bool c_maildir_header_cache_verify =
         cs_subset_bool(NeoMutt->sub, "maildir_header_cache_verify");
     if (c_maildir_header_cache_verify)
     {
-      rc = stat(fn, &lastchanged);
+      rc = stat(fn, &st_lastchanged);
     }
 
     const char *key = md->email->path + 3;
     size_t keylen = maildir_hcache_keylen(key);
     struct HCacheEntry hce = mutt_hcache_fetch(hc, key, keylen, 0);
 
-    if (hce.email && (rc == 0) && (lastchanged.st_mtime <= hce.uidvalidity))
+    if (hce.email && (rc == 0) && (st_lastchanged.st_mtime <= hce.uidvalidity))
     {
       hce.email->edata = maildir_edata_new();
       hce.email->edata_free = maildir_edata_free;
@@ -1634,8 +1634,8 @@ static enum MailboxType maildir_path_probe(const char *path, const struct stat *
   char cur[PATH_MAX];
   snprintf(cur, sizeof(cur), "%s/cur", path);
 
-  struct stat stc;
-  if ((stat(cur, &stc) == 0) && S_ISDIR(stc.st_mode))
+  struct stat st_cur;
+  if ((stat(cur, &st_cur) == 0) && S_ISDIR(st_cur.st_mode))
     return MUTT_MAILDIR;
 
   return MUTT_UNKNOWN;

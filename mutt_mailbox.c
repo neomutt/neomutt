@@ -48,13 +48,13 @@ static short MailboxNotify = 0; ///< # of unnotified new boxes
  * mailbox_check - Check a mailbox for new mail
  * @param m_cur       Current Mailbox
  * @param m_check     Mailbox to check
- * @param ctx_sb      stat() info for the current Mailbox
+ * @param st_ctx      stat() info for the current Mailbox
  * @param check_stats If true, also count the total, new and flagged messages
  */
 static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
-                          struct stat *ctx_sb, bool check_stats)
+                          struct stat *st_ctx, bool check_stats)
 {
-  struct stat sb = { 0 };
+  struct stat st = { 0 };
 
   enum MailboxType mb_type = mx_path_probe(mailbox_path(m_check));
 
@@ -72,8 +72,8 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       m_check->type = mb_type;
       break;
     default:
-      if ((stat(mailbox_path(m_check), &sb) != 0) ||
-          ((m_check->type == MUTT_UNKNOWN) && S_ISREG(sb.st_mode) && (sb.st_size == 0)) ||
+      if ((stat(mailbox_path(m_check), &st) != 0) ||
+          ((m_check->type == MUTT_UNKNOWN) && S_ISREG(st.st_mode) && (st.st_size == 0)) ||
           ((m_check->type == MUTT_UNKNOWN) &&
            ((m_check->type = mx_path_probe(mailbox_path(m_check))) <= 0)))
       {
@@ -94,7 +94,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       (((m_check->type == MUTT_IMAP) || (m_check->type == MUTT_NNTP) ||
         (m_check->type == MUTT_NOTMUCH) || (m_check->type == MUTT_POP)) ?
            !mutt_str_equal(mailbox_path(m_check), mailbox_path(m_cur)) :
-           ((sb.st_dev != ctx_sb->st_dev) || (sb.st_ino != ctx_sb->st_ino))))
+           ((st.st_dev != st_ctx->st_dev) || (st.st_ino != st_ctx->st_ino))))
   {
     switch (m_check->type)
     {
@@ -114,7 +114,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
     }
   }
   else if (c_check_mbox_size && m_cur && mutt_buffer_is_empty(&m_cur->pathbuf))
-    m_check->size = (off_t) sb.st_size; /* update the size of current folder */
+    m_check->size = (off_t) st.st_size; /* update the size of current folder */
 
   if (!m_check->has_new)
     m_check->notified = false;
@@ -136,11 +136,11 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
  */
 int mutt_mailbox_check(struct Mailbox *m_cur, int force)
 {
-  struct stat ctx_st;
+  struct stat st_ctx;
   time_t t;
   bool check_stats = false;
-  ctx_st.st_dev = 0;
-  ctx_st.st_ino = 0;
+  st_ctx.st_dev = 0;
+  st_ctx.st_ino = 0;
 
 #ifdef USE_IMAP
   /* update postponed count as well, on force */
@@ -178,10 +178,10 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
 #ifdef USE_NNTP
       || (m_cur->type == MUTT_NNTP)
 #endif
-      || stat(mailbox_path(m_cur), &ctx_st) != 0)
+      || stat(mailbox_path(m_cur), &st_ctx) != 0)
   {
-    ctx_st.st_dev = 0;
-    ctx_st.st_ino = 0;
+    st_ctx.st_dev = 0;
+    st_ctx.st_ino = 0;
   }
 
   struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
@@ -192,7 +192,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
     if (np->mailbox->flags & MB_HIDDEN)
       continue;
 
-    mailbox_check(m_cur, np->mailbox, &ctx_st,
+    mailbox_check(m_cur, np->mailbox, &st_ctx,
                   check_stats || (!np->mailbox->first_check_stats_done && c_mail_check_stats));
     np->mailbox->first_check_stats_done = true;
   }

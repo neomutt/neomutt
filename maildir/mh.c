@@ -125,12 +125,12 @@ bool mh_mkstemp(struct Mailbox *m, FILE **fp, char **tgt)
 static int mh_already_notified(struct Mailbox *m, int msgno)
 {
   char path[PATH_MAX];
-  struct stat sb;
+  struct stat st;
 
   if ((snprintf(path, sizeof(path), "%s/%d", mailbox_path(m), msgno) < sizeof(path)) &&
-      (stat(path, &sb) == 0))
+      (stat(path, &st) == 0))
   {
-    return (mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) <= 0);
+    return (mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->last_visited) <= 0);
   }
   return -1;
 }
@@ -628,20 +628,20 @@ void mh_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda, struct Prog
     snprintf(fn, sizeof(fn), "%s/%s", mailbox_path(m), md->email->path);
 
 #ifdef USE_HCACHE
-    struct stat lastchanged = { 0 };
+    struct stat st_lastchanged = { 0 };
     int rc = 0;
     const bool c_maildir_header_cache_verify =
         cs_subset_bool(NeoMutt->sub, "maildir_header_cache_verify");
     if (c_maildir_header_cache_verify)
     {
-      rc = stat(fn, &lastchanged);
+      rc = stat(fn, &st_lastchanged);
     }
 
     const char *key = md->email->path;
     size_t keylen = strlen(key);
     struct HCacheEntry hce = mutt_hcache_fetch(hc, key, keylen, 0);
 
-    if (hce.email && (rc == 0) && (lastchanged.st_mtime <= hce.uidvalidity))
+    if (hce.email && (rc == 0) && (st_lastchanged.st_mtime <= hce.uidvalidity))
     {
       hce.email->edata = maildir_edata_new();
       hce.email->edata_free = maildir_edata_free;

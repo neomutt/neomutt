@@ -473,20 +473,20 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
   char buf[100];
   size_t r;
 
-  struct stat sb;
+  struct stat st;
 
   if (b && !fname)
     fname = b->filename;
   if (!fname)
     return NULL;
 
-  if (stat(fname, &sb) == -1)
+  if (stat(fname, &st) == -1)
   {
     mutt_error(_("Can't stat %s: %s"), fname, strerror(errno));
     return NULL;
   }
 
-  if (!S_ISREG(sb.st_mode))
+  if (!S_ISREG(st.st_mode))
   {
     mutt_error(_("%s isn't a regular file"), fname);
     return NULL;
@@ -685,7 +685,7 @@ static void transform_to_7bit(struct Body *a, FILE *fp_in, struct ConfigSubset *
 {
   struct Buffer *buf = NULL;
   struct State s = { 0 };
-  struct stat sb;
+  struct stat st;
 
   for (; a; a = a->next)
   {
@@ -722,12 +722,12 @@ static void transform_to_7bit(struct Body *a, FILE *fp_in, struct ConfigSubset *
       a->filename = mutt_buffer_strdup(buf);
       mutt_buffer_pool_release(&buf);
       a->unlink = true;
-      if (stat(a->filename, &sb) == -1)
+      if (stat(a->filename, &st) == -1)
       {
         mutt_perror("stat");
         return;
       }
-      a->length = sb.st_size;
+      a->length = st.st_size;
 
       mutt_update_encoding(a, sub);
       if (a->encoding == ENC_8BIT)
@@ -749,7 +749,7 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp, struct ConfigSubset *sub)
   struct Buffer temp = mutt_buffer_make(0);
   FILE *fp_in = NULL;
   FILE *fp_out = NULL;
-  struct stat sb;
+  struct stat st;
 
   if (!a->filename && fp)
     fp_in = fp;
@@ -761,13 +761,13 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp, struct ConfigSubset *sub)
   else
   {
     a->offset = 0;
-    if (stat(a->filename, &sb) == -1)
+    if (stat(a->filename, &st) == -1)
     {
       mutt_perror("stat");
       mutt_file_fclose(&fp_in);
       goto cleanup;
     }
-    a->length = sb.st_size;
+    a->length = st.st_size;
   }
 
   /* Avoid buffer pool due to recursion */
@@ -803,12 +803,12 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp, struct ConfigSubset *sub)
     unlink(a->filename);
   a->filename = mutt_buffer_strdup(&temp);
   a->unlink = true;
-  if (stat(a->filename, &sb) == -1)
+  if (stat(a->filename, &st) == -1)
   {
     mutt_perror("stat");
     goto cleanup;
   }
-  a->length = sb.st_size;
+  a->length = st.st_size;
   mutt_body_free(&a->parts);
   a->email->body = NULL;
 

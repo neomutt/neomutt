@@ -274,14 +274,14 @@ static int monitor_handle_ignore(int desc)
 {
   int new_desc = -1;
   struct Monitor *iter = Monitor;
-  struct stat sb;
+  struct stat st;
 
   while (iter && (iter->desc != desc))
     iter = iter->next;
 
   if (iter)
   {
-    if ((iter->type == MUTT_MH) && (stat(iter->mh_backup_path, &sb) == 0))
+    if ((iter->type == MUTT_MH) && (stat(iter->mh_backup_path, &st) == 0))
     {
       new_desc = inotify_add_watch(INotifyFd, iter->mh_backup_path, INOTIFY_MASK_FILE);
       if (new_desc == -1)
@@ -293,8 +293,8 @@ static int monitor_handle_ignore(int desc)
       {
         mutt_debug(LL_DEBUG3, "inotify_add_watch descriptor=%d for '%s'\n",
                    desc, iter->mh_backup_path);
-        iter->st_dev = sb.st_dev;
-        iter->st_ino = sb.st_ino;
+        iter->st_dev = st.st_dev;
+        iter->st_ino = st.st_ino;
         iter->desc = new_desc;
       }
     }
@@ -331,7 +331,7 @@ static int monitor_handle_ignore(int desc)
 static enum ResolveResult monitor_resolve(struct MonitorInfo *info, struct Mailbox *m)
 {
   char *fmt = NULL;
-  struct stat sb;
+  struct stat st;
 
   if (m)
   {
@@ -368,15 +368,15 @@ static enum ResolveResult monitor_resolve(struct MonitorInfo *info, struct Mailb
     mutt_buffer_printf(&info->path_buf, fmt, info->path);
     info->path = mutt_buffer_string(&info->path_buf);
   }
-  if (stat(info->path, &sb) != 0)
+  if (stat(info->path, &st) != 0)
     return RESOLVE_RES_FAIL_STAT;
 
   struct Monitor *iter = Monitor;
-  while (iter && ((iter->st_ino != sb.st_ino) || (iter->st_dev != sb.st_dev)))
+  while (iter && ((iter->st_ino != st.st_ino) || (iter->st_dev != st.st_dev)))
     iter = iter->next;
 
-  info->st_dev = sb.st_dev;
-  info->st_ino = sb.st_ino;
+  info->st_dev = st.st_dev;
+  info->st_ino = st.st_ino;
   info->monitor = iter;
 
   return iter ? RESOLVE_RES_OK_EXISTING : RESOLVE_RES_OK_NOTEXISTING;

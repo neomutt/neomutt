@@ -228,13 +228,13 @@ static const char *smime_command_format_str(char *buf, size_t buflen, size_t col
         struct Buffer *path = mutt_buffer_pool_get();
         struct Buffer *buf1 = mutt_buffer_pool_get();
         struct Buffer *buf2 = mutt_buffer_pool_get();
-        struct stat sb;
+        struct stat st;
 
         mutt_buffer_strcpy(path, c_smime_ca_location);
         mutt_buffer_expand_path(path);
         mutt_buffer_quote_filename(buf1, mutt_buffer_string(path), true);
 
-        if ((stat(mutt_buffer_string(path), &sb) != 0) || !S_ISDIR(sb.st_mode))
+        if ((stat(mutt_buffer_string(path), &st) != 0) || !S_ISDIR(st.st_mode))
           mutt_buffer_printf(buf2, "-CAfile %s", mutt_buffer_string(buf1));
         else
           mutt_buffer_printf(buf2, "-CApath %s", mutt_buffer_string(buf1));
@@ -1854,7 +1854,6 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
   struct Buffer tmpfname = mutt_buffer_make(0);
   FILE *fp_smime_out = NULL, *fp_smime_in = NULL, *fp_smime_err = NULL;
   FILE *fp_tmp = NULL, *fp_out = NULL;
-  struct stat info;
   struct Body *p = NULL;
   pid_t pid = -1;
   SecurityFlags type = mutt_is_application_smime(m);
@@ -1998,8 +1997,9 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
   p = mutt_read_mime_header(fp_out, 0);
   if (p)
   {
-    fstat(fileno(fp_out), &info);
-    p->length = info.st_size - p->offset;
+    struct stat st;
+    fstat(fileno(fp_out), &st);
+    p->length = st.st_size - p->offset;
 
     mutt_parse_part(fp_out, p);
 

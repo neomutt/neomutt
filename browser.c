@@ -655,13 +655,13 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
  * @param state Browser state
  * @param name  Name of folder
  * @param desc  Description of folder
- * @param s     stat info for the folder
+ * @param st    stat info for the folder
  * @param m     Mailbox
  * @param data  Data to associate with the folder
  */
 static void add_folder(struct Menu *menu, struct BrowserState *state,
-                       const char *name, const char *desc, const struct stat *s,
-                       struct Mailbox *m, void *data)
+                       const char *name, const char *desc,
+                       const struct stat *st, struct Mailbox *m, void *data)
 {
   if ((!menu || state->is_mailbox_list) && m && (m->flags & MB_HIDDEN))
   {
@@ -670,14 +670,14 @@ static void add_folder(struct Menu *menu, struct BrowserState *state,
 
   struct FolderFile ff = { 0 };
 
-  if (s)
+  if (st)
   {
-    ff.mode = s->st_mode;
-    ff.mtime = s->st_mtime;
-    ff.size = s->st_size;
-    ff.gid = s->st_gid;
-    ff.uid = s->st_uid;
-    ff.nlink = s->st_nlink;
+    ff.mode = st->st_mode;
+    ff.mtime = st->st_mtime;
+    ff.size = st->st_size;
+    ff.gid = st->st_gid;
+    ff.uid = st->st_uid;
+    ff.nlink = st->st_nlink;
     ff.local = true;
   }
   else
@@ -761,11 +761,11 @@ static int examine_directory(struct Mailbox *m, struct Menu *menu,
   else
 #endif /* USE_NNTP */
   {
-    struct stat s;
+    struct stat st;
     DIR *dp = NULL;
     struct dirent *de = NULL;
 
-    while (stat(d, &s) == -1)
+    while (stat(d, &st) == -1)
     {
       if (errno == ENOENT)
       {
@@ -782,7 +782,7 @@ static int examine_directory(struct Mailbox *m, struct Menu *menu,
       goto ed_out;
     }
 
-    if (!S_ISDIR(s.st_mode))
+    if (!S_ISDIR(st.st_mode))
     {
       mutt_error(_("%s is not a directory"), d);
       goto ed_out;
@@ -818,13 +818,13 @@ static int examine_directory(struct Mailbox *m, struct Menu *menu,
       }
 
       mutt_buffer_concat_path(buf, d, de->d_name);
-      if (lstat(mutt_buffer_string(buf), &s) == -1)
+      if (lstat(mutt_buffer_string(buf), &st) == -1)
         continue;
 
       /* No size for directories or symlinks */
-      if (S_ISDIR(s.st_mode) || S_ISLNK(s.st_mode))
-        s.st_size = 0;
-      else if (!S_ISREG(s.st_mode))
+      if (S_ISDIR(st.st_mode) || S_ISLNK(st.st_mode))
+        st.st_size = 0;
+      else if (!S_ISREG(st.st_mode))
         continue;
 
       struct MailboxNode *np = NULL;
@@ -839,7 +839,7 @@ static int examine_directory(struct Mailbox *m, struct Menu *menu,
         np->mailbox->msg_count = m->msg_count;
         np->mailbox->msg_unread = m->msg_unread;
       }
-      add_folder(menu, state, de->d_name, NULL, &s, np ? np->mailbox : NULL, NULL);
+      add_folder(menu, state, de->d_name, NULL, &st, np ? np->mailbox : NULL, NULL);
     }
     neomutt_mailboxlist_clear(&ml);
     closedir(dp);
@@ -861,7 +861,7 @@ ed_out:
  */
 static int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState *state)
 {
-  struct stat s;
+  struct stat st;
   struct Buffer *md = NULL;
   struct Buffer *mailbox = NULL;
 
@@ -932,10 +932,10 @@ static int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct Browse
           break;
       }
 
-      if (lstat(mailbox_path(np->mailbox), &s) == -1)
+      if (lstat(mailbox_path(np->mailbox), &st) == -1)
         continue;
 
-      if ((!S_ISREG(s.st_mode)) && (!S_ISDIR(s.st_mode)) && (!S_ISLNK(s.st_mode)))
+      if ((!S_ISREG(st.st_mode)) && (!S_ISDIR(st.st_mode)) && (!S_ISLNK(st.st_mode)))
         continue;
 
       if (np->mailbox->type == MUTT_MAILDIR)
@@ -943,17 +943,17 @@ static int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct Browse
         struct stat st2;
 
         mutt_buffer_printf(md, "%s/new", mailbox_path(np->mailbox));
-        if (stat(mutt_buffer_string(md), &s) < 0)
-          s.st_mtime = 0;
+        if (stat(mutt_buffer_string(md), &st) < 0)
+          st.st_mtime = 0;
         mutt_buffer_printf(md, "%s/cur", mailbox_path(np->mailbox));
         if (stat(mutt_buffer_string(md), &st2) < 0)
           st2.st_mtime = 0;
-        if (st2.st_mtime > s.st_mtime)
-          s.st_mtime = st2.st_mtime;
+        if (st2.st_mtime > st.st_mtime)
+          st.st_mtime = st2.st_mtime;
       }
 
       add_folder(menu, state, mutt_buffer_string(mailbox), np->mailbox->name,
-                 &s, np->mailbox, NULL);
+                 &st, np->mailbox, NULL);
     }
     neomutt_mailboxlist_clear(&ml);
   }

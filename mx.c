@@ -203,7 +203,7 @@ static bool mx_open_mailbox_append(struct Mailbox *m, OpenMailboxFlags flags)
   if (!m)
     return false;
 
-  struct stat sb;
+  struct stat st;
 
   m->append = true;
   if ((m->type == MUTT_UNKNOWN) || (m->type == MUTT_MAILBOX_ERROR))
@@ -225,7 +225,7 @@ static bool mx_open_mailbox_append(struct Mailbox *m, OpenMailboxFlags flags)
 
     if (m->type == MUTT_MAILBOX_ERROR)
     {
-      if (stat(mailbox_path(m), &sb) == -1)
+      if (stat(mailbox_path(m), &st) == -1)
       {
         if (errno == ENOENT)
         {

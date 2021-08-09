@@ -903,7 +903,7 @@ int main(int argc, char *argv[], char *envp[])
   const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
   if (!OptNoCurses && c_folder)
   {
-    struct stat sb;
+    struct stat st;
     struct Buffer *fpath = mutt_buffer_pool_get();
 
     mutt_buffer_strcpy(fpath, c_folder);
@@ -919,7 +919,7 @@ int main(int argc, char *argv[], char *envp[])
 #ifdef USE_NNTP
     skip |= (nntp_path_probe(mutt_buffer_string(fpath), NULL) == MUTT_NNTP);
 #endif
-    if (!skip && (stat(mutt_buffer_string(fpath), &sb) == -1) && (errno == ENOENT))
+    if (!skip && (stat(mutt_buffer_string(fpath), &st) == -1) && (errno == ENOENT))
     {
       char msg2[256];
       snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), c_folder);

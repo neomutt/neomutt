@@ -91,7 +91,7 @@ static void *store_bdb_open(const char *path)
   if (!path)
     return NULL;
 
-  struct stat sb;
+  struct stat st;
   int ret;
   uint32_t createflags = DB_CREATE;
 
@@ -125,7 +125,7 @@ static void *store_bdb_open(const char *path)
   if (ret)
     goto fail_env;
 
-  if ((stat(path, &sb) != 0) && (errno == ENOENT))
+  if ((stat(path, &st) != 0) && (errno == ENOENT))
   {
     createflags |= DB_EXCL;
     ctx->db->set_pagesize(ctx->db, pagesize);

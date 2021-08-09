@@ -2056,7 +2056,6 @@ static struct Body *decrypt_part(struct Body *a, struct State *s, FILE *fp_out,
   if (!a || !s || !fp_out)
     return NULL;
 
-  struct stat info;
   struct Body *tattach = NULL;
   int err = 0;
   gpgme_data_t ciphertext = NULL, plaintext = NULL;
@@ -2185,8 +2184,9 @@ restart:
   if (tattach)
   {
     /* Need to set the length of this body part.  */
-    fstat(fileno(fp_out), &info);
-    tattach->length = info.st_size - tattach->offset;
+    struct stat st;
+    fstat(fileno(fp_out), &st);
+    tattach->length = st.st_size - tattach->offset;
 
     tattach->warnsig = anywarn;
 
@@ -4063,7 +4063,7 @@ struct Body *pgp_gpgme_make_key_attachment(void)
   gpgme_error_t err;
   struct Body *att = NULL;
   char buf[1024];
-  struct stat sb;
+  struct stat st;
 
   OptPgpCheckTrust = false;
 
@@ -4102,8 +4102,8 @@ struct Body *pgp_gpgme_make_key_attachment(void)
   att->description = mutt_str_dup(buf);
   mutt_update_encoding(att, NeoMutt->sub);
 
-  stat(tempf, &sb);
-  att->length = sb.st_size;
+  stat(tempf, &st);
+  att->length = st.st_size;
 
 bail:
   crypt_key_free(&key);

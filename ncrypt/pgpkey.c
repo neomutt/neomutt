@@ -238,7 +238,7 @@ struct Body *pgp_class_make_key_attachment(void)
   struct Body *att = NULL;
   char buf[1024];
   char tmp[256];
-  struct stat sb;
+  struct stat st;
   pid_t pid;
   OptPgpCheckTrust = false;
   struct Buffer *tempf = NULL;
@@ -297,8 +297,8 @@ struct Body *pgp_class_make_key_attachment(void)
   att->description = mutt_str_dup(buf);
   mutt_update_encoding(att, NeoMutt->sub);
 
-  stat(mutt_buffer_string(tempf), &sb);
-  att->length = sb.st_size;
+  stat(mutt_buffer_string(tempf), &st);
+  att->length = st.st_size;
 
 cleanup:
   mutt_buffer_pool_release(&tempf);

@@ -263,13 +263,13 @@ static bool create_hcache_dir(const char *path)
 static void hcache_per_folder(struct Buffer *hcpath, const char *path,
                               const char *folder, hcache_namer_t namer)
 {
-  struct stat sb;
+  struct stat st;
 
   int plen = mutt_str_len(path);
-  int rc = stat(path, &sb);
+  int rc = stat(path, &st);
   bool slash = (path[plen - 1] == '/');
 
-  if (((rc == 0) && !S_ISDIR(sb.st_mode)) || ((rc == -1) && !slash))
+  if (((rc == 0) && !S_ISDIR(st.st_mode)) || ((rc == -1) && !slash))
   {
     /* An existing file or a non-existing path not ending with a slash */
     mutt_encode_path(hcpath, path);

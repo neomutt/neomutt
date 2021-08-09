@@ -59,7 +59,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   char buf[256];
   int rc;
   FILE *fp = NULL;
-  struct stat sb;
+  struct stat st;
   bool old_append = m->append;
 
   struct Buffer *fname = mutt_buffer_pool_get();
@@ -93,7 +93,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     goto bail;
   }
 
-  rc = stat(mutt_buffer_string(fname), &sb);
+  rc = stat(mutt_buffer_string(fname), &st);
   if (rc == -1)
   {
     mutt_error(_("Can't stat %s: %s"), mutt_buffer_string(fname), strerror(errno));
@@ -105,7 +105,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
    * the message separator, and not the body of the message.  If we fail to
    * remove it, the message will grow by one line each time the user edits
    * the message.  */
-  if ((sb.st_size != 0) && (truncate(mutt_buffer_string(fname), sb.st_size - 1) == -1))
+  if ((st.st_size != 0) && (truncate(mutt_buffer_string(fname), st.st_size - 1) == -1))
   {
     rc = -1;
     mutt_error(_("could not truncate temporary mail folder: %s"), strerror(errno));
@@ -116,7 +116,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   {
     /* remove write permissions */
     rc = mutt_file_chmod_rm_stat(mutt_buffer_string(fname),
-                                 S_IWUSR | S_IWGRP | S_IWOTH, &sb);
+                                 S_IWUSR | S_IWGRP | S_IWOTH, &st);
     if (rc == -1)
     {
       mutt_debug(LL_DEBUG1, "Could not remove write permissions of %s: %s",
@@ -127,14 +127,14 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   }
 
   /* re-stat after the truncate, to avoid false "modified" bugs */
-  rc = stat(mutt_buffer_string(fname), &sb);
+  rc = stat(mutt_buffer_string(fname), &st);
   if (rc == -1)
   {
     mutt_error(_("Can't stat %s: %s"), mutt_buffer_string(fname), strerror(errno));
     goto bail;
   }
 
-  /* Do not reuse the stat sb here as it is outdated. */
+  /* Do not reuse the stat st here as it is outdated. */
   time_t mtime = mutt_file_decrease_mtime(mutt_buffer_string(fname), NULL);
   if (mtime == (time_t) -1)
   {
@@ -146,28 +146,28 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   const char *const c_editor = cs_subset_string(NeoMutt->sub, "editor");
   mutt_edit_file(NONULL(c_editor), mutt_buffer_string(fname));
 
-  rc = stat(mutt_buffer_string(fname), &sb);
+  rc = stat(mutt_buffer_string(fname), &st);
   if (rc == -1)
   {
     mutt_error(_("Can't stat %s: %s"), mutt_buffer_string(fname), strerror(errno));
     goto bail;
   }
 
-  if (sb.st_size == 0)
+  if (st.st_size == 0)
   {
     mutt_message(_("Message file is empty"));
     rc = 1;
     goto bail;
   }
 
-  if ((action == EVM_EDIT) && (sb.st_mtime == mtime))
+  if ((action == EVM_EDIT) && (st.st_mtime == mtime))
   {
     mutt_message(_("Message not modified"));
     rc = 1;
     goto bail;
   }
 
-  if ((action == EVM_VIEW) && (sb.st_mtime != mtime))
+  if ((action == EVM_VIEW) && (st.st_mtime != mtime))
   {
     mutt_message(_("Message of read-only mailbox modified! Ignoring changes."));
     rc = 1;
@@ -227,7 +227,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     goto bail;
   }
 
-  rc = mutt_copy_hdr(fp, msg->fp, 0, sb.st_size, CH_NOLEN | cf, NULL, 0);
+  rc = mutt_copy_hdr(fp, msg->fp, 0, st.st_size, CH_NOLEN | cf, NULL, 0);
   if (rc == 0)
   {
     fputc('\n', msg->fp);

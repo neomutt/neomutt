@@ -445,12 +445,12 @@ out:
 int mh_seq_changed(struct Mailbox *m)
 {
   char path[PATH_MAX];
-  struct stat sb;
+  struct stat st;
 
   if ((snprintf(path, sizeof(path), "%s/.mh_sequences", mailbox_path(m)) < sizeof(path)) &&
-      (stat(path, &sb) == 0))
+      (stat(path, &st) == 0))
   {
-    return (mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) > 0);
+    return (mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->last_visited) > 0);
   }
   return -1;
 }

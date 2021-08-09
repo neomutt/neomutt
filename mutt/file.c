@@ -70,17 +70,17 @@ const char filename_safe_chars[] =
 
 /**
  * compare_stat - Compare the struct stat's of two files/dirs
- * @param osb struct stat of the first file/dir
- * @param nsb struct stat of the second file/dir
+ * @param st_old struct stat of the first file/dir
+ * @param st_new struct stat of the second file/dir
  * @retval true They match
  *
  * This compares the device id (st_dev), inode number (st_ino) and special id
  * (st_rdev) of the files/dirs.
  */
-static bool compare_stat(struct stat *osb, struct stat *nsb)
+static bool compare_stat(struct stat *st_old, struct stat *st_new)
 {
-  return (osb->st_dev == nsb->st_dev) && (osb->st_ino == nsb->st_ino) &&
-         (osb->st_rdev == nsb->st_rdev);
+  return (st_old->st_dev == st_new->st_dev) && (st_old->st_ino == st_new->st_ino) &&
+         (st_old->st_rdev == st_new->st_rdev);
 }
 
 /**
@@ -197,10 +197,10 @@ void mutt_file_unlink(const char *s)
   if (!s)
     return;
 
-  struct stat sb;
+  struct stat st;
   /* Defend against symlink attacks */
 
-  const bool is_regular_file = (lstat(s, &sb) == 0) && S_ISREG(sb.st_mode);
+  const bool is_regular_file = (lstat(s, &st) == 0) && S_ISREG(st.st_mode);
   if (!is_regular_file)
     return;
 
@@ -208,9 +208,9 @@ void mutt_file_unlink(const char *s)
   if (fd < 0)
     return;
 
-  struct stat sb2;
-  if ((fstat(fd, &sb2) != 0) || !S_ISREG(sb2.st_mode) ||
-      (sb.st_dev != sb2.st_dev) || (sb.st_ino != sb2.st_ino))
+  struct stat st2;
+  if ((fstat(fd, &st2) != 0) || !S_ISREG(st2.st_mode) ||
+      (st.st_dev != st2.st_dev) || (st.st_ino != st2.st_ino))
   {
     close(fd);
     return;
@@ -221,10 +221,10 @@ void mutt_file_unlink(const char *s)
   {
     unlink(s);
     char buf[2048] = { 0 };
-    while (sb.st_size > 0)
+    while (st.st_size > 0)
     {
-      fwrite(buf, 1, MIN(sizeof(buf), sb.st_size), fp);
-      sb.st_size -= MIN(sizeof(buf), sb.st_size);
+      fwrite(buf, 1, MIN(sizeof(buf), st.st_size), fp);
+      st.st_size -= MIN(sizeof(buf), st.st_size);
     }
     mutt_file_fclose(&fp);
   }
@@ -298,7 +298,7 @@ int mutt_file_copy_stream(FILE *fp_in, FILE *fp_out)
  */
 int mutt_file_symlink(const char *oldpath, const char *newpath)
 {
-  struct stat osb, nsb;
+  struct stat st_old, st_new;
 
   if (!oldpath || !newpath)
     return -1;
@@ -332,8 +332,8 @@ int mutt_file_symlink(const char *oldpath, const char *newpath)
     mutt_buffer_dealloc(&abs_oldpath);
   }
 
-  if ((stat(oldpath, &osb) == -1) || (stat(newpath, &nsb) == -1) ||
-      !compare_stat(&osb, &nsb))
+  if ((stat(oldpath, &st_old) == -1) || (stat(newpath, &st_new) == -1) ||
+      !compare_stat(&st_old, &st_new))
   {
     unlink(newpath);
     return -1;
@@ -353,7 +353,7 @@ int mutt_file_symlink(const char *oldpath, const char *newpath)
  */
 int mutt_file_safe_rename(const char *src, const char *target)
 {
-  struct stat ssb, tsb;
+  struct stat st_src, st_target;
   int link_errno;
 
   if (!src || !target)
@@ -372,8 +372,8 @@ int mutt_file_safe_rename(const char *src, const char *target)
      * I am not doing so to minimize changes in behavior: the function
      * used lstat() further below for 20 years without issue, and I
      * believe was never intended to be used on a src symlink.  */
-    if ((lstat(src, &ssb) == 0) && (lstat(target, &tsb) == 0) &&
-        (compare_stat(&ssb, &tsb) == 0))
+    if ((lstat(src, &st_src) == 0) && (lstat(target, &st_target) == 0) &&
+        (compare_stat(&st_src, &st_target) == 0))
     {
       mutt_debug(LL_DEBUG1, "link (%s, %s) reported failure: %s (%d) but actually succeeded\n",
                  src, target, strerror(errno), errno);
@@ -426,13 +426,13 @@ int mutt_file_safe_rename(const char *src, const char *target)
    * creating links.  */
 #if 0
   /* Stat both links and check if they are equal. */
-  if (lstat(src, &ssb) == -1)
+  if (lstat(src, &st_src) == -1)
   {
     mutt_debug(LL_DEBUG1, "#1 can't stat %s: %s (%d)\n", src, strerror(errno), errno);
     return -1;
   }
 
-  if (lstat(target, &tsb) == -1)
+  if (lstat(target, &st_target) == -1)
   {
     mutt_debug(LL_DEBUG1, "#2 can't stat %s: %s (%d)\n", src, strerror(errno), errno);
     return -1;
@@ -440,7 +440,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
 
   /* pretend that the link failed because the target file did already exist. */
 
-  if (!compare_stat(&ssb, &tsb))
+  if (!compare_stat(&st_src, &st_target))
   {
     mutt_debug(LL_DEBUG1, "stat blocks for %s and %s diverge; pretending EEXIST\n", src, target);
     errno = EEXIST;
@@ -471,7 +471,7 @@ int mutt_file_rmtree(const char *path)
     return -1;
 
   struct dirent *de = NULL;
-  struct stat statbuf;
+  struct stat st;
   int rc = 0;
 
   DIR *dirp = opendir(path);
@@ -493,13 +493,13 @@ int mutt_file_rmtree(const char *path)
     mutt_buffer_printf(&cur, "%s/%s", path, de->d_name);
     /* XXX make nonrecursive version */
 
-    if (stat(mutt_buffer_string(&cur), &statbuf) == -1)
+    if (stat(mutt_buffer_string(&cur), &st) == -1)
     {
       rc = 1;
       continue;
     }
 
-    if (S_ISDIR(statbuf.st_mode))
+    if (S_ISDIR(st.st_mode))
       rc |= mutt_file_rmtree(mutt_buffer_string(&cur));
     else
       rc |= unlink(mutt_buffer_string(&cur));
@@ -524,7 +524,6 @@ int mutt_file_open(const char *path, uint32_t flags)
   if (!path)
     return -1;
 
-  struct stat osb, nsb;
   int fd;
   struct Buffer safe_file = mutt_buffer_make(0);
   struct Buffer safe_dir = mutt_buffer_make(0);
@@ -562,7 +561,9 @@ int mutt_file_open(const char *path, uint32_t flags)
     goto cleanup;
 
   /* make sure the file is not symlink */
-  if (((lstat(path, &osb) < 0) || (fstat(fd, &nsb) < 0)) || !compare_stat(&osb, &nsb))
+  struct stat st_old, st_new;
+  if (((lstat(path, &st_old) < 0) || (fstat(fd, &st_new) < 0)) ||
+      !compare_stat(&st_old, &st_new))
   {
     close(fd);
     fd = -1;
@@ -892,8 +893,8 @@ int mutt_file_mkdir(const char *path, mode_t mode)
     return -1;
   }
 
-  struct stat sb;
-  if ((stat(path, &sb) == 0) && S_ISDIR(sb.st_mode))
+  struct stat st;
+  if ((stat(path, &st) == 0) && S_ISDIR(st.st_mode))
     return 0;
 
   /* Create a mutable copy */
@@ -1177,7 +1178,7 @@ int mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st)
  */
 int mutt_file_lock(int fd, bool excl, bool timeout)
 {
-  struct stat sb = { 0 }, prev_sb = { 0 };
+  struct stat st = { 0 }, prev_sb = { 0 };
   int count = 0;
   int attempt = 0;
 
@@ -1195,21 +1196,21 @@ int mutt_file_lock(int fd, bool excl, bool timeout)
       return -1;
     }
 
-    if (fstat(fd, &sb) != 0)
-      sb.st_size = 0;
+    if (fstat(fd, &st) != 0)
+      st.st_size = 0;
 
     if (count == 0)
-      prev_sb = sb;
+      prev_sb = st;
 
     /* only unlock file if it is unchanged */
-    if ((prev_sb.st_size == sb.st_size) && (++count >= (timeout ? MAX_LOCK_ATTEMPTS : 0)))
+    if ((prev_sb.st_size == st.st_size) && (++count >= (timeout ? MAX_LOCK_ATTEMPTS : 0)))
     {
       if (timeout)
         mutt_error(_("Timeout exceeded while attempting fcntl lock"));
       return -1;
     }
 
-    prev_sb = sb;
+    prev_sb = st;
 
     mutt_message(_("Waiting for fcntl lock... %d"), ++attempt);
     sleep(1);
@@ -1249,7 +1250,7 @@ int mutt_file_unlock(int fd)
  */
 int mutt_file_lock(int fd, bool excl, bool timeout)
 {
-  struct stat sb = { 0 }, prev_sb = { 0 };
+  struct stat st = { 0 }, prev_sb = { 0 };
   int rc = 0;
   int count = 0;
   int attempt = 0;
@@ -1263,14 +1264,14 @@ int mutt_file_lock(int fd, bool excl, bool timeout)
       break;
     }
 
-    if (fstat(fd, &sb) != 0)
-      sb.st_size = 0;
+    if (fstat(fd, &st) != 0)
+      st.st_size = 0;
 
     if (count == 0)
-      prev_sb = sb;
+      prev_sb = st;
 
     /* only unlock file if it is unchanged */
-    if ((prev_sb.st_size == sb.st_size) && (++count >= (timeout ? MAX_LOCK_ATTEMPTS : 0)))
+    if ((prev_sb.st_size == st.st_size) && (++count >= (timeout ? MAX_LOCK_ATTEMPTS : 0)))
     {
       if (timeout)
         mutt_error(_("Timeout exceeded while attempting flock lock"));
@@ -1278,7 +1279,7 @@ int mutt_file_lock(int fd, bool excl, bool timeout)
       break;
     }
 
-    prev_sb = sb;
+    prev_sb = st;
 
     mutt_message(_("Waiting for flock attempt... %d"), ++attempt);
     sleep(1);
@@ -1316,7 +1317,7 @@ void mutt_file_unlink_empty(const char *path)
   if (!path)
     return;
 
-  struct stat sb;
+  struct stat st;
 
   int fd = open(path, O_RDWR);
   if (fd == -1)
@@ -1328,7 +1329,7 @@ void mutt_file_unlink_empty(const char *path)
     return;
   }
 
-  if ((fstat(fd, &sb) == 0) && (sb.st_size == 0))
+  if ((fstat(fd, &st) == 0) && (st.st_size == 0))
     unlink(path);
 
   mutt_file_unlock(fd);
@@ -1500,11 +1501,11 @@ long mutt_file_get_size(const char *path)
   if (!path)
     return 0;
 
-  struct stat sb;
-  if (stat(path, &sb) != 0)
+  struct stat st;
+  if (stat(path, &st) != 0)
     return 0;
 
-  return sb.st_size;
+  return st.st_size;
 }
 
 /**
@@ -1534,12 +1535,12 @@ int mutt_file_timespec_compare(struct timespec *a, struct timespec *b)
 /**
  * mutt_file_get_stat_timespec - Read the stat() time into a time value
  * @param dest Time value to populate
- * @param sb   stat info
+ * @param st   stat info
  * @param type Type of stat info to read, e.g. #MUTT_STAT_ATIME
  */
-void mutt_file_get_stat_timespec(struct timespec *dest, struct stat *sb, enum MuttStatType type)
+void mutt_file_get_stat_timespec(struct timespec *dest, struct stat *st, enum MuttStatType type)
 {
-  if (!dest || !sb)
+  if (!dest || !st)
     return;
 
   dest->tv_sec = 0;
@@ -1548,21 +1549,21 @@ void mutt_file_get_stat_timespec(struct timespec *dest, struct stat *sb, enum Mu
   switch (type)
   {
     case MUTT_STAT_ATIME:
-      dest->tv_sec = sb->st_atime;
+      dest->tv_sec = st->st_atime;
 #ifdef HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC
-      dest->tv_nsec = sb->st_atim.tv_nsec;
+      dest->tv_nsec = st->st_atim.tv_nsec;
 #endif
       break;
     case MUTT_STAT_MTIME:
-      dest->tv_sec = sb->st_mtime;
+      dest->tv_sec = st->st_mtime;
 #ifdef HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC
-      dest->tv_nsec = sb->st_mtim.tv_nsec;
+      dest->tv_nsec = st->st_mtim.tv_nsec;
 #endif
       break;
     case MUTT_STAT_CTIME:
-      dest->tv_sec = sb->st_ctime;
+      dest->tv_sec = st->st_ctime;
 #ifdef HAVE_STRUCT_STAT_ST_CTIM_TV_NSEC
-      dest->tv_nsec = sb->st_ctim.tv_nsec;
+      dest->tv_nsec = st->st_ctim.tv_nsec;
 #endif
       break;
   }
@@ -1570,46 +1571,46 @@ void mutt_file_get_stat_timespec(struct timespec *dest, struct stat *sb, enum Mu
 
 /**
  * mutt_file_stat_timespec_compare - Compare stat info with a time value
- * @param sba  stat info
+ * @param st   stat info
  * @param type Type of stat info, e.g. #MUTT_STAT_ATIME
  * @param b    Time value
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int mutt_file_stat_timespec_compare(struct stat *sba, enum MuttStatType type,
+int mutt_file_stat_timespec_compare(struct stat *st, enum MuttStatType type,
                                     struct timespec *b)
 {
-  if (!sba || !b)
+  if (!st || !b)
     return 0;
 
   struct timespec a = { 0 };
 
-  mutt_file_get_stat_timespec(&a, sba, type);
+  mutt_file_get_stat_timespec(&a, st, type);
   return mutt_file_timespec_compare(&a, b);
 }
 
 /**
  * mutt_file_stat_compare - Compare two stat infos
- * @param sba      First stat info
- * @param sba_type Type of first stat info, e.g. #MUTT_STAT_ATIME
- * @param sbb      Second stat info
- * @param sbb_type Type of second stat info, e.g. #MUTT_STAT_ATIME
+ * @param st1      First stat info
+ * @param st1_type Type of first stat info, e.g. #MUTT_STAT_ATIME
+ * @param st2      Second stat info
+ * @param st2_type Type of second stat info, e.g. #MUTT_STAT_ATIME
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int mutt_file_stat_compare(struct stat *sba, enum MuttStatType sba_type,
-                           struct stat *sbb, enum MuttStatType sbb_type)
+int mutt_file_stat_compare(struct stat *st1, enum MuttStatType st1_type,
+                           struct stat *st2, enum MuttStatType st2_type)
 {
-  if (!sba || !sbb)
+  if (!st1 || !st2)
     return 0;
 
   struct timespec a = { 0 };
   struct timespec b = { 0 };
 
-  mutt_file_get_stat_timespec(&a, sba, sba_type);
-  mutt_file_get_stat_timespec(&b, sbb, sbb_type);
+  mutt_file_get_stat_timespec(&a, st1, st1_type);
+  mutt_file_get_stat_timespec(&b, st2, st2_type);
   return mutt_file_timespec_compare(&a, &b);
 }
 

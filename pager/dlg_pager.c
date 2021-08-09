@@ -2342,7 +2342,8 @@ static bool check_read_delay(uint64_t *timestamp)
  * @param priv   Private Pager data
  * @param pil    Pager Index Lines
  */
-static void squash_index_panel(struct MuttWindow *dlg, struct IndexSharedData *shared, struct PagerPrivateData *priv, int pil)
+static void squash_index_panel(struct MuttWindow *dlg, struct IndexSharedData *shared,
+                               struct PagerPrivateData *priv, int pil)
 {
   struct MuttWindow *win_pager = priv->pview->win_pager;
   struct MuttWindow *win_index = priv->pview->win_index;
@@ -2498,7 +2499,8 @@ int mutt_pager(struct PagerView *pview)
   {
     shared->ctx->msg_in_pager = shared->email->msgno;
     priv->win_pbar->actions |= WA_RECALC;
-    const short c_pager_read_delay = cs_subset_number(NeoMutt->sub, "pager_read_delay");
+    const short c_pager_read_delay =
+        cs_subset_number(NeoMutt->sub, "pager_read_delay");
     if (c_pager_read_delay == 0)
     {
       mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true);

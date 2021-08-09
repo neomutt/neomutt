@@ -195,18 +195,18 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
   time_t t;
   LOFF_T loc, tmploc;
   struct Email *e = NULL;
-  struct stat sb;
+  struct stat st;
   struct Progress *progress = NULL;
   enum MxOpenReturns rc = MX_OPEN_ERROR;
 
-  if (stat(mailbox_path(m), &sb) == -1)
+  if (stat(mailbox_path(m), &st) == -1)
   {
     mutt_perror(mailbox_path(m));
     goto fail;
   }
-  mutt_file_get_stat_timespec(&adata->atime, &sb, MUTT_STAT_ATIME);
-  mutt_file_get_stat_timespec(&m->mtime, &sb, MUTT_STAT_MTIME);
-  m->size = sb.st_size;
+  mutt_file_get_stat_timespec(&adata->atime, &st, MUTT_STAT_ATIME);
+  mutt_file_get_stat_timespec(&m->mtime, &st, MUTT_STAT_MTIME);
+  m->size = st.st_size;
 
   buf[sizeof(buf) - 1] = '\0';
 
@@ -355,7 +355,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
   if (!adata)
     return MX_OPEN_ERROR;
 
-  struct stat sb;
+  struct stat st;
   char buf[8192], return_path[256];
   struct Email *e_cur = NULL;
   time_t t;
@@ -365,15 +365,15 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
   enum MxOpenReturns rc = MX_OPEN_ERROR;
 
   /* Save information about the folder at the time we opened it. */
-  if (stat(mailbox_path(m), &sb) == -1)
+  if (stat(mailbox_path(m), &st) == -1)
   {
     mutt_perror(mailbox_path(m));
     goto fail;
   }
 
-  m->size = sb.st_size;
-  mutt_file_get_stat_timespec(&m->mtime, &sb, MUTT_STAT_MTIME);
-  mutt_file_get_stat_timespec(&adata->atime, &sb, MUTT_STAT_ATIME);
+  m->size = st.st_size;
+  mutt_file_get_stat_timespec(&m->mtime, &st, MUTT_STAT_MTIME);
+  mutt_file_get_stat_timespec(&adata->atime, &st, MUTT_STAT_ATIME);
 
   if (!m->readonly)
     m->readonly = access(mailbox_path(m), W_OK) ? true : false;
@@ -1156,7 +1156,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   int need_sort = 0; /* flag to resort mailbox if new mail arrives */
   int first = -1;    /* first message to be written */
   LOFF_T offset;     /* location in mailbox to write changed messages */
-  struct stat statbuf;
+  struct stat st;
   struct MUpdate *new_offset = NULL;
   struct MUpdate *old_offset = NULL;
   FILE *fp = NULL;
@@ -1337,7 +1337,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   }
 
   /* Save the state of this folder. */
-  if (stat(mailbox_path(m), &statbuf) == -1)
+  if (stat(mailbox_path(m), &st) == -1)
   {
     mutt_perror(mailbox_path(m));
     goto bail;
@@ -1421,7 +1421,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   }
 
   /* Restore the previous access/modification times */
-  mbox_reset_atime(m, &statbuf);
+  mbox_reset_atime(m, &st);
 
   /* reopen the mailbox in read-only mode */
   adata->fp = mbox_open_readwrite(m);
@@ -1772,8 +1772,8 @@ static int mmdf_msg_padding_size(struct Mailbox *m)
  */
 static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
-  struct stat sb = { 0 };
-  if (stat(mailbox_path(m), &sb) != 0)
+  struct stat st = { 0 };
+  if (stat(mailbox_path(m), &st) != 0)
     return MX_STATUS_ERROR;
 
   bool new_or_changed;
@@ -1781,14 +1781,14 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   const bool c_check_mbox_size =
       cs_subset_bool(NeoMutt->sub, "check_mbox_size");
   if (c_check_mbox_size)
-    new_or_changed = (sb.st_size > m->size);
+    new_or_changed = (st.st_size > m->size);
   else
   {
     new_or_changed =
-        (mutt_file_stat_compare(&sb, MUTT_STAT_MTIME, &sb, MUTT_STAT_ATIME) > 0) ||
+        (mutt_file_stat_compare(&st, MUTT_STAT_MTIME, &st, MUTT_STAT_ATIME) > 0) ||
         (m->newly_created &&
-         (mutt_file_stat_compare(&sb, MUTT_STAT_CTIME, &sb, MUTT_STAT_MTIME) == 0) &&
-         (mutt_file_stat_compare(&sb, MUTT_STAT_CTIME, &sb, MUTT_STAT_ATIME) == 0));
+         (mutt_file_stat_compare(&st, MUTT_STAT_CTIME, &st, MUTT_STAT_MTIME) == 0) &&
+         (mutt_file_stat_compare(&st, MUTT_STAT_CTIME, &st, MUTT_STAT_ATIME) == 0));
   }
 
   if (new_or_changed)
@@ -1796,7 +1796,7 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
     const bool c_mail_check_recent =
         cs_subset_bool(NeoMutt->sub, "mail_check_recent");
     if (!c_mail_check_recent ||
-        (mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) > 0))
+        (mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->last_visited) > 0))
     {
       m->has_new = true;
     }
@@ -1804,13 +1804,13 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   else if (c_check_mbox_size)
   {
     /* some other program has deleted mail from the folder */
-    m->size = (off_t) sb.st_size;
+    m->size = (off_t) st.st_size;
   }
 
-  if (m->newly_created && ((sb.st_ctime != sb.st_mtime) || (sb.st_ctime != sb.st_atime)))
+  if (m->newly_created && ((st.st_ctime != st.st_mtime) || (st.st_ctime != st.st_atime)))
     m->newly_created = false;
 
-  if ((flags != 0) && mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME,
+  if ((flags != 0) && mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME,
                                                       &m->stats_last_checked) > 0)
   {
     bool old_peek = m->peekonly;

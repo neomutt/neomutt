@@ -127,10 +127,10 @@ struct Mailbox *mailbox_find(const char *path)
   if (!path)
     return NULL;
 
-  struct stat sb;
-  struct stat tmp_sb;
+  struct stat st;
+  struct stat st_tmp;
 
-  if (stat(path, &sb) != 0)
+  if (stat(path, &st) != 0)
     return NULL;
 
   struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
@@ -139,8 +139,8 @@ struct Mailbox *mailbox_find(const char *path)
   struct Mailbox *m = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {
-    if ((stat(mailbox_path(np->mailbox), &tmp_sb) == 0) &&
-        (sb.st_dev == tmp_sb.st_dev) && (sb.st_ino == tmp_sb.st_ino))
+    if ((stat(mailbox_path(np->mailbox), &st_tmp) == 0) &&
+        (st.st_dev == st_tmp.st_dev) && (st.st_ino == st_tmp.st_ino))
     {
       m = np->mailbox;
       break;
@@ -189,13 +189,13 @@ struct Mailbox *mailbox_find_name(const char *name)
  */
 void mailbox_update(struct Mailbox *m)
 {
-  struct stat sb;
+  struct stat st;
 
   if (!m)
     return;
 
-  if (stat(mailbox_path(m), &sb) == 0)
-    m->size = (off_t) sb.st_size;
+  if (stat(mailbox_path(m), &st) == 0)
+    m->size = (off_t) st.st_size;
   else
     m->size = 0;
 }

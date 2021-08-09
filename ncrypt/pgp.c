@@ -1007,7 +1007,6 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
 
   char buf[1024];
   FILE *fp_pgp_in = NULL, *fp_pgp_out = NULL, *fp_pgp_tmp = NULL;
-  struct stat info;
   struct Body *tattach = NULL;
   pid_t pid;
   int rv;
@@ -1113,8 +1112,9 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   if (tattach)
   {
     /* Need to set the length of this body part.  */
-    fstat(fileno(fp_out), &info);
-    tattach->length = info.st_size - tattach->offset;
+    struct stat st;
+    fstat(fileno(fp_out), &st);
+    tattach->length = st.st_size - tattach->offset;
 
     /* See if we need to recurse on this MIME part.  */
     mutt_parse_part(fp_out, tattach);
