@@ -241,26 +241,26 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int n, int
 
 /**
  * append_line - Add a new Line to the array
- * @param lines Array of Line info
- * @param n         Line number to add
- * @param cnt       true, if line is a continuation
+ * @param lines    Array of Line info
+ * @param line_num Line number to add
+ * @param cnt      Offset of the overflow if line is a continuation
  */
-static void append_line(struct Line *lines, int n, int cnt)
+static void append_line(struct Line *lines, int line_num, int cnt)
 {
   int m;
 
-  lines[n + 1].color = lines[n].color;
-  (lines[n + 1].syntax)[0].color = (lines[n].syntax)[0].color;
-  lines[n + 1].cont_line = 1;
+  lines[line_num + 1].color = lines[line_num].color;
+  (lines[line_num + 1].syntax)[0].color = (lines[line_num].syntax)[0].color;
+  lines[line_num + 1].cont_line = 1;
 
   /* find the real start of the line */
-  for (m = n; m >= 0; m--)
+  for (m = line_num; m >= 0; m--)
     if (lines[m].cont_line == 0)
       break;
 
-  (lines[n + 1].syntax)[0].first = m;
-  (lines[n + 1].syntax)[0].last =
-      (lines[n].cont_line) ? cnt + (lines[n].syntax)[0].last : cnt;
+  (lines[line_num + 1].syntax)[0].first = m;
+  (lines[line_num + 1].syntax)[0].last =
+      (lines[line_num].cont_line) ? cnt + (lines[line_num].syntax)[0].last : cnt;
 }
 
 /**
