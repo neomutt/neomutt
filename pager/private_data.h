@@ -38,35 +38,39 @@ struct MuttWindow;
  */
 struct PagerPrivateData
 {
-  struct Menu *menu;
-  struct MuttWindow *win_pbar;
+  struct Menu *menu;           ///< Pager Menu
+  struct MuttWindow *win_pbar; ///< Pager Bar
+  struct PagerView *pview;     ///< Object to view in the pager
 
-  struct PagerView *pview;
-  int indexlen;
-  int indicator; ///< the indicator line of the PI
-  int oldtopline;
-  int lines;
-  int max_line;
-  int last_line;
-  int curline;
-  int topline;
-  bool force_redraw;
-  int has_types;
-  PagerFlags hide_quoted;
-  int q_level;
-  struct QClass *quote_list;
-  LOFF_T last_pos;
-  LOFF_T last_offset;
-  regex_t search_re;
-  bool search_compiled;
-  PagerFlags search_flag;
-  bool search_back;
-  char searchbuf[256];
-  struct Line *line_info;
-  FILE *fp;
-  struct stat sb;
+  FILE *fp;                    ///< File containing decrypted/decoded/weeded Email
+  struct stat st;              ///< Stats about Email file
+  LOFF_T bytes_read;           ///< Number of bytes read from file
 
-  MenuRedrawFlags redraw; ///< When to redraw the screen
+  struct Line *lines;          ///< Array of text lines in pager
+  int lines_used;              ///< Size of lines array (used entries)
+  int lines_max;               ///< Capacity of lines array (total entries)
+  int cur_line;                ///< Current line (last line visible on screen)
+
+  int old_top_line;            ///< Old top line, used for repainting
+  int win_height;              ///< Number of lines in the Window
+  int top_line;                ///< First visible line on screen
+  int has_types;               ///< Set to MUTT_TYPES for PAGER_MODE_EMAIL or MUTT_SHOWCOLOR
+
+  struct QClass *quote_list;   ///< Tree of quoting levels
+  int q_level;                 ///< Number of unique quoting levels
+  PagerFlags hide_quoted;      ///< Set to MUTT_HIDE when quoted email is hidden `<toggle-quoted>`
+
+  PagerFlags search_flag;      ///< Set to MUTT_SEARCH when search results are visible `<search-toggle>`
+  char search_str[256];        ///< Current search string
+  bool search_compiled;        ///< Search regex is in use
+  regex_t search_re;           ///< Compiled search string
+  bool search_back;            ///< Search backwards
+
+  int index_size;              ///< Size of the mini-index Window `$pager_index_lines`
+  int indicator;               ///< Preferred position of the indicator line in the mini-index Window
+
+  bool force_redraw;           ///< Repaint is needed
+  MenuRedrawFlags redraw;      ///< When to redraw the screen
 };
 
 void                     pager_private_data_free(struct MuttWindow *win, void **ptr);

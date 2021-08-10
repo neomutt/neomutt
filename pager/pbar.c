@@ -102,14 +102,14 @@ static int pbar_recalc(struct MuttWindow *win)
   struct PagerPrivateData *priv = pbar_data->priv;
 
   char pager_progress_str[65]; /* Lots of space for translations */
-  if (priv->last_pos < priv->sb.st_size - 1)
+  if (priv->bytes_read < priv->st.st_size - 1)
   {
     snprintf(pager_progress_str, sizeof(pager_progress_str), OFF_T_FMT "%%",
-             (100 * priv->last_offset / priv->sb.st_size));
+             (100 * priv->bytes_read / priv->st.st_size));
   }
   else
   {
-    const char *msg = (priv->topline == 0) ?
+    const char *msg = (priv->top_line == 0) ?
                           /* L10N: Status bar message: the entire email is visible in the pager */
                           _("all") :
                           /* L10N: Status bar message: the end of the email is visible in the pager */

@@ -71,6 +71,7 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "index/lib.h"
+#include "menu/lib.h"
 #include "private_data.h"
 
 /**

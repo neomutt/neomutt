@@ -64,7 +64,7 @@ typedef uint32_t ConfigRedrawFlags; ///< Flags for redraw/resort, e.g. #R_INDEX
 #define R_REDRAW_NO_FLAGS        0  ///< No refresh/resort flags
 #define R_INDEX           (1 << 17) ///< Redraw the index menu (MENU_MAIN)
 #define R_PAGER           (1 << 18) ///< Redraw the pager menu
-#define R_PAGER_FLOW      (1 << 19) ///< Reflow line_info and redraw the pager menu
+#define R_PAGER_FLOW      (1 << 19) ///< Reflow lines and redraw the pager menu
 #define R_RESORT          (1 << 20) ///< Resort the mailbox
 #define R_RESORT_SUB      (1 << 21) ///< Resort subthreads
 #define R_RESORT_INIT     (1 << 22) ///< Resort from scratch

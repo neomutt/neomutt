@@ -175,6 +175,9 @@ typedef uint8_t NotifyPager;         ///< Flags, e.g. #NT_PAGER_ACCOUNT
 #define NT_PAGER_CLOSING   (1 << 5)  ///< The Pager is about to close
 #define NT_PAGER_SUBSET    (1 << 6)  ///< Config Subset has changed
 
+extern int braille_row;
+extern int braille_col;
+
 int mutt_pager(struct PagerView *pview);
 int mutt_do_pager(struct PagerView *pview, struct Email *e);
 void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src, bool strip_markers);
