@@ -1194,7 +1194,7 @@ static int fill_buffer(FILE *fp, LOFF_T *bytes_read, LOFF_T offset, unsigned cha
  * format_line - Display a line of text in the pager
  * @param[in]  win       Window
  * @param[out] lines     Line info
- * @param[in]  n         Line number (index into lines)
+ * @param[in]  line_num  Line number (index into lines)
  * @param[in]  buf       Text to display
  * @param[in]  flags     Flags, see #PagerFlags
  * @param[out] aa        ANSI attributes used
@@ -1206,13 +1206,13 @@ static int fill_buffer(FILE *fp, LOFF_T *bytes_read, LOFF_T offset, unsigned cha
  * @param[in]  width     Width of screen (to wrap to)
  * @retval num Number of characters displayed
  */
-static int format_line(struct MuttWindow *win, struct Line **lines, int n,
+static int format_line(struct MuttWindow *win, struct Line **lines, int line_num,
                        unsigned char *buf, PagerFlags flags, struct AnsiAttr *aa,
                        int cnt, int *pspace, int *pvch, int *pcol, int *pspecial, int width)
 {
   int space = -1; /* index of the last space or TAB */
   const bool c_markers = cs_subset_bool(NeoMutt->sub, "markers");
-  size_t col = c_markers ? (*lines)[n].cont_line : 0;
+  size_t col = c_markers ? (*lines)[line_num].cont_line : 0;
   size_t k;
   int ch, vch, last_special = -1, special = 0, t;
   wchar_t wc;
@@ -1319,7 +1319,7 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int n,
     if (aa && ((flags & (MUTT_SHOWCOLOR | MUTT_SEARCH | MUTT_PAGER_MARKER)) ||
                special || last_special || aa->attr))
     {
-      resolve_color(win, *lines, n, vch, flags, special, aa);
+      resolve_color(win, *lines, line_num, vch, flags, special, aa);
       last_special = special;
     }
 
