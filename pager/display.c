@@ -105,15 +105,15 @@ static int comp_syntax_t(const void *m1, const void *m2)
 /**
  * resolve_color - Set the colour for a line of text
  * @param win       Window
- * @param lines Line info array
- * @param n         Line Number (index into lines)
+ * @param lines     Line info array
+ * @param line_num  Line Number (index into lines)
  * @param cnt       If true, this is a continuation line
  * @param flags     Flags, see #PagerFlags
  * @param special   Flags, e.g. A_BOLD
  * @param aa        ANSI attributes
  */
-static void resolve_color(struct MuttWindow *win, struct Line *lines, int n, int cnt,
-                          PagerFlags flags, int special, struct AnsiAttr *aa)
+static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_num,
+                          int cnt, PagerFlags flags, int special, struct AnsiAttr *aa)
 {
   int def_color;         /* color without syntax highlight */
   int color;             /* final color */
@@ -125,7 +125,7 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int n, int
   if (cnt == 0)
     last_color = -1; /* force attrset() */
 
-  if (lines[n].cont_line)
+  if (lines[line_num].cont_line)
   {
     const bool c_markers = cs_subset_bool(NeoMutt->sub, "markers");
     if (!cnt && c_markers)
@@ -134,14 +134,14 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int n, int
       mutt_window_addch(win, '+');
       last_color = mutt_color(MT_COLOR_MARKERS);
     }
-    m = (lines[n].syntax)[0].first;
-    cnt += (lines[n].syntax)[0].last;
+    m = (lines[line_num].syntax)[0].first;
+    cnt += (lines[line_num].syntax)[0].last;
   }
   else
-    m = n;
+    m = line_num;
   if (flags & MUTT_PAGER_LOGS)
   {
-    def_color = mutt_color(lines[n].syntax[0].color);
+    def_color = mutt_color(lines[line_num].syntax[0].color);
   }
   else if (!(flags & MUTT_SHOWCOLOR))
     def_color = mutt_color(MT_COLOR_NORMAL);
@@ -1193,7 +1193,7 @@ static int fill_buffer(FILE *fp, LOFF_T *bytes_read, LOFF_T offset, unsigned cha
 /**
  * format_line - Display a line of text in the pager
  * @param[in]  win       Window
- * @param[out] lines Line info
+ * @param[out] lines     Line info
  * @param[in]  n         Line number (index into lines)
  * @param[in]  buf       Text to display
  * @param[in]  flags     Flags, see #PagerFlags
