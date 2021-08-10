@@ -109,7 +109,7 @@ static int config_pager_index_lines(struct MuttWindow *win)
     win_index->size = MUTT_WIN_SIZE_MAXIMISE;
 
     panel_index->size = MUTT_WIN_SIZE_MAXIMISE;
-    panel_index->state.visible = true;
+    panel_index->state.visible = false;
   }
 
   mutt_window_reflow(dlg);
