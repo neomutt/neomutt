@@ -1031,27 +1031,27 @@ static int grok_ansi(const unsigned char *buf, int pos, struct AnsiAttr *aa)
     }
     while (pos < x)
     {
-      if ((buf[pos] == '1') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
+      if ((buf[pos] == '1') && (((pos + 1) == x) || (buf[pos + 1] == ';')))
       {
         aa->attr |= ANSI_BOLD;
         pos += 2;
       }
-      else if ((buf[pos] == '4') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
+      else if ((buf[pos] == '4') && (((pos + 1) == x) || (buf[pos + 1] == ';')))
       {
         aa->attr |= ANSI_UNDERLINE;
         pos += 2;
       }
-      else if ((buf[pos] == '5') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
+      else if ((buf[pos] == '5') && (((pos + 1) == x) || (buf[pos + 1] == ';')))
       {
         aa->attr |= ANSI_BLINK;
         pos += 2;
       }
-      else if ((buf[pos] == '7') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
+      else if ((buf[pos] == '7') && (((pos + 1) == x) || (buf[pos + 1] == ';')))
       {
         aa->attr |= ANSI_REVERSE;
         pos += 2;
       }
-      else if ((buf[pos] == '0') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
+      else if ((buf[pos] == '0') && (((pos + 1) == x) || (buf[pos + 1] == ';')))
       {
 #ifdef HAVE_COLOR
         if (aa->pair != -1)

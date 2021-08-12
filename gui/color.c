@@ -76,15 +76,17 @@ static struct
 
   /* These are lazily initialized, so make sure to always refer to them using
    * the mutt_color_<object>() wrappers. */
-  struct ColorLineList attach_list; ///< List of colours applied to the attachment headers
-  struct ColorLineList body_list; ///< List of colours applied to the email body
-  struct ColorLineList hdr_list; ///< List of colours applied to the email headers
-  struct ColorLineList index_author_list; ///< List of colours applied to the author in the index
-  struct ColorLineList index_flags_list; ///< List of colours applied to the flags in the index
-  struct ColorLineList index_list; ///< List of default colours applied to the index
+  // clang-format off
+  struct ColorLineList attach_list;        ///< List of colours applied to the attachment headers
+  struct ColorLineList body_list;          ///< List of colours applied to the email body
+  struct ColorLineList hdr_list;           ///< List of colours applied to the email headers
+  struct ColorLineList index_author_list;  ///< List of colours applied to the author in the index
+  struct ColorLineList index_flags_list;   ///< List of colours applied to the flags in the index
+  struct ColorLineList index_list;         ///< List of default colours applied to the index
   struct ColorLineList index_subject_list; ///< List of colours applied to the subject in the index
-  struct ColorLineList index_tag_list; ///< List of colours applied to tags in the index
-  struct ColorLineList status_list; ///< List of colours applied to the status bar
+  struct ColorLineList index_tag_list;     ///< List of colours applied to tags in the index
+  struct ColorLineList status_list;        ///< List of colours applied to the status bar
+  // clang-format on
 
   int quotes[COLOR_QUOTES_MAX]; ///< Array of colours for quoted email text
   int quotes_used;              ///< Number of colours for quoted email text

@@ -1,6 +1,6 @@
 /**
  * @file
- * Handle the attachments commmand
+ * Handle the attachments command
  *
  * @authors
  * Copyright (C) 1996-2000,2012-2013 Michael R. Elkins <me@mutt.org>
@@ -21,9 +21,9 @@
  */
 
 /**
- * @page attach_attachments Handle the attachments commmand
+ * @page attach_attachments Handle the attachments command
  *
- * Handle the attachments commmand
+ * Handle the attachments command
  */
 
 #include "config.h"

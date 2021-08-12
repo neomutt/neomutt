@@ -658,7 +658,7 @@ bool window_is_focused(struct MuttWindow *win)
 }
 
 /**
- * window_get_focus - Get the currently focussed Window
+ * window_get_focus - Get the currently focused Window
  * @retval ptr Window with focus
  */
 struct MuttWindow *window_get_focus(void)
@@ -674,7 +674,7 @@ struct MuttWindow *window_get_focus(void)
 /**
  * window_set_focus - Set the Window focus
  * @param win Window to focus
- * @retval ptr  Old focussed Window
+ * @retval ptr  Old focused Window
  * @retval NULL Error, or focus not changed
  */
 struct MuttWindow *window_set_focus(struct MuttWindow *win)
@@ -691,7 +691,7 @@ struct MuttWindow *window_set_focus(struct MuttWindow *win)
   for (; parent; child = parent, parent = parent->parent)
     parent->focus = child;
 
-  // Find the most focussed Window
+  // Find the most focused Window
   while (win && win->focus)
     win = win->focus;
 
