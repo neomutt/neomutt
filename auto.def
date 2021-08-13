@@ -655,6 +655,7 @@ if {[get-define want-notmuch]} {
     msg-result "no"
   }
   cc-check-function-in-lib notmuch_database_index_file notmuch
+  cc-check-function-in-lib notmuch_database_open_with_config notmuch
 }
 
 ###############################################################################

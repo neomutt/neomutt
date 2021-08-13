@@ -119,7 +119,10 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
 
   do
   {
-#if LIBNOTMUCH_CHECK_VERSION(4, 2, 0)
+#if LIBNOTMUCH_CHECK_VERSION(5, 4, 0) || defined(HAVE_NOTMUCH_DATABASE_OPEN_WITH_CONFIG)
+    // notmuch 0.32-0.32.2 didn't bump libnotmuch version to 5.4.
+    st = notmuch_database_open_with_config(filename, mode, NULL, NULL, &db, &msg);
+#elif LIBNOTMUCH_CHECK_VERSION(4, 2, 0)
     st = notmuch_database_open_verbose(filename, mode, &db, &msg);
 #elif defined(NOTMUCH_API_3)
     st = notmuch_database_open(filename, mode, &db);
