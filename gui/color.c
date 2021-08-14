@@ -63,7 +63,7 @@ struct ColorList
   uint32_t fg;            ///< Foreground colour
   uint32_t bg;            ///< Background colour
   short index;            ///< Index number
-  short count;            ///< Number of users
+  short ref_count;        ///< Number of users
   struct ColorList *next; ///< Linked list
 };
 
@@ -292,8 +292,8 @@ void mutt_color_free(uint32_t fg, uint32_t bg)
   {
     if ((p->fg == fg) && (p->bg == bg))
     {
-      (p->count)--;
-      if (p->count > 0)
+      (p->ref_count)--;
+      if (p->ref_count > 0)
         return;
 
       Colors.num_user_colors--;
@@ -489,7 +489,7 @@ int mutt_color_alloc(uint32_t fg, uint32_t bg)
   {
     if ((p->fg == fg) && (p->bg == bg))
     {
-      (p->count)++;
+      (p->ref_count)++;
       return COLOR_PAIR(p->index);
     }
     p = p->next;
@@ -520,7 +520,7 @@ int mutt_color_alloc(uint32_t fg, uint32_t bg)
   Colors.user_colors = p;
 
   p->index = i;
-  p->count = 1;
+  p->ref_count = 1;
   p->bg = bg;
   p->fg = fg;
 
