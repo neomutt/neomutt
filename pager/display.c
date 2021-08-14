@@ -123,7 +123,7 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
   struct TextSyntax *matching_chunk = NULL;
 
   if (cnt == 0)
-    last_color = -1; /* force attrset() */
+    last_color = -1;
 
   if (lines[line_num].cont_line)
   {

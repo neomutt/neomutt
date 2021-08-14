@@ -261,18 +261,15 @@ static void print_enriched_string(struct MuttWindow *win, int index, int attr,
       {
         if (*s == MT_COLOR_INDEX)
         {
-          attrset(attr);
+          mutt_curses_set_attr(attr);
         }
         else
         {
-          if (get_color(index, s) == 0)
-          {
-            attron(attr);
-          }
+          int color = get_color(index, s);
+          if (color == 0)
+            mutt_curses_set_attr(attr);
           else
-          {
-            attron(get_color(index, s));
-          }
+            mutt_curses_set_attr(color);
         }
       }
       s++;
