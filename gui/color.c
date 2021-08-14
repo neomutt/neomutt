@@ -134,8 +134,8 @@ typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, uint32_t 
  */
 #define RGB24 (1U << 24)
 
-// clang-format off
 static const struct Mapping ColorNames[] = {
+  // clang-format off
   { "black",   COLOR_BLACK },
   { "blue",    COLOR_BLUE },
   { "cyan",    COLOR_CYAN },
@@ -147,13 +147,13 @@ static const struct Mapping ColorNames[] = {
 #if defined(USE_SLANG_CURSES) || defined(HAVE_USE_DEFAULT_COLORS)
   { "default", COLOR_DEFAULT },
 #endif
-  { 0,         0 },
+  { 0, 0 },
+  // clang-format on
 };
-// clang-format on
 #endif /* HAVE_COLOR */
 
-// clang-format off
 const struct Mapping ColorFields[] = {
+  // clang-format off
   { "attachment",        MT_COLOR_ATTACHMENT },
   { "attach_headers",    MT_COLOR_ATTACH_HEADERS },
   { "body",              MT_COLOR_BODY },
@@ -197,18 +197,20 @@ const struct Mapping ColorFields[] = {
   { "tree",              MT_COLOR_TREE },
   { "underline",         MT_COLOR_UNDERLINE },
   { "warning",           MT_COLOR_WARNING },
-  { NULL,                0 },
+  { NULL, 0 },
+  // clang-format on
 };
 
 const struct Mapping ComposeColorFields[] = {
+  // clang-format off
   { "header",            MT_COLOR_COMPOSE_HEADER },
   { "security_encrypt",  MT_COLOR_COMPOSE_SECURITY_ENCRYPT },
   { "security_sign",     MT_COLOR_COMPOSE_SECURITY_SIGN },
   { "security_both",     MT_COLOR_COMPOSE_SECURITY_BOTH },
   { "security_none",     MT_COLOR_COMPOSE_SECURITY_NONE },
-  { NULL,                0 }
+  { NULL, 0 }
+  // clang-format on
 };
-// clang-format off
 
 /**
  * defs_init - Initialise the simple colour definitions
@@ -633,7 +635,8 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
   {
     s += clen;
     *col = strtoul(s, &eptr, 10);
-    if ((*s == '\0') || (*eptr != '\0') || ((*col >= COLORS) && !OptNoCurses && has_colors()))
+    if ((*s == '\0') || (*eptr != '\0') ||
+        ((*col >= COLORS) && !OptNoCurses && has_colors()))
     {
       mutt_buffer_printf(err, _("%s: color not supported by term"), s);
       return MUTT_CMD_ERROR;
@@ -644,7 +647,8 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
   {
     s += 1;
     *col = strtoul(s, &eptr, 16);
-    if ((*s == '\0') || (*eptr != '\0') || ((*col == COLOR_UNSET) && !OptNoCurses && has_colors()))
+    if ((*s == '\0') || (*eptr != '\0') ||
+        ((*col == COLOR_UNSET) && !OptNoCurses && has_colors()))
     {
       snprintf(err->data, err->dsize, _("%s: color not supported by term"), s);
       return MUTT_CMD_ERROR;
@@ -806,7 +810,6 @@ static bool do_uncolor(struct Buffer *buf, struct Buffer *s,
 
   return rc;
 }
-
 
 /**
  * get_colorid_name - Get the name of a color id
@@ -1037,7 +1040,9 @@ static enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
       const char *const c_simple_search =
           cs_subset_string(NeoMutt->sub, "simple_search");
       mutt_check_simple(buf, NONULL(c_simple_search));
-      tmp->color_pattern = mutt_pattern_comp(ctx_mailbox(Context), Context ? Context->menu : NULL, buf->data, MUTT_PC_FULL_MSG, err);
+      tmp->color_pattern =
+          mutt_pattern_comp(ctx_mailbox(Context), Context ? Context->menu : NULL,
+                            buf->data, MUTT_PC_FULL_MSG, err);
       mutt_buffer_pool_release(&buf);
       if (!tmp->color_pattern)
       {
@@ -1283,7 +1288,8 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
 #endif
 
   if (object == MT_COLOR_ATTACH_HEADERS)
-    rc = add_pattern(mutt_color_attachments(), buf->data, true, fg, bg, attr, err, false, match);
+    rc = add_pattern(mutt_color_attachments(), buf->data, true, fg, bg, attr,
+                     err, false, match);
   else if (object == MT_COLOR_BODY)
     rc = add_pattern(mutt_color_body(), buf->data, true, fg, bg, attr, err, false, match);
   else if (object == MT_COLOR_HEADER)
@@ -1299,7 +1305,8 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
   }
   else if (object == MT_COLOR_INDEX_FLAGS)
   {
-    rc = add_pattern(mutt_color_index_flags(), buf->data, true, fg, bg, attr, err, true, match);
+    rc = add_pattern(mutt_color_index_flags(), buf->data, true, fg, bg, attr,
+                     err, true, match);
   }
   else if (object == MT_COLOR_INDEX_SUBJECT)
   {
@@ -1365,7 +1372,8 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_WARNING;
     }
 
-    rc = add_pattern(mutt_color_status_line(), buf->data, true, fg, bg, attr, err, false, match);
+    rc = add_pattern(mutt_color_status_line(), buf->data, true, fg, bg, attr,
+                     err, false, match);
   }
   else // Remaining simple colours
   {
@@ -1559,5 +1567,5 @@ void mutt_color_observer_remove(observer_t callback, void *global_data)
  */
 bool mutt_color_is_header(enum ColorId color_id)
 {
-    return (color_id == MT_COLOR_HEADER) || (color_id == MT_COLOR_HDRDEFAULT);
+  return (color_id == MT_COLOR_HEADER) || (color_id == MT_COLOR_HDRDEFAULT);
 }

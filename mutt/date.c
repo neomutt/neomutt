@@ -41,7 +41,6 @@
 #include "regex3.h"
 #include "string2.h"
 
-// clang-format off
 /**
  * Weekdays - Day of the week (abbreviated)
  */
@@ -54,7 +53,7 @@ static const char *const Weekdays[] = {
  */
 static const char *const Months[] = {
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 };
 
 /**
@@ -63,6 +62,7 @@ static const char *const Months[] = {
  * @note Keep in alphabetical order
  */
 static const struct Tz TimeZones[] = {
+  // clang-format off
   { "aat",     1,  0, true  }, /* Atlantic Africa Time */
   { "adt",     4,  0, false }, /* Arabia DST */
   { "ast",     3,  0, false }, /* Arabia */
@@ -112,8 +112,8 @@ static const struct Tz TimeZones[] = {
   { "wgst",    2,  0, true  }, /* Western Greenland DST */
   { "wgt",     3,  0, true  }, /* Western Greenland */
   { "wst",     8,  0, false }, /* Western Australia */
+  // clang-format on
 };
-// clang-format on
 
 /**
  * compute_tz - Calculate the number of seconds east of UTC

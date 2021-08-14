@@ -67,7 +67,7 @@ static const struct Mapping SortAuxMethods[] = {
   { "spam",          SORT_SPAM },
   { "subject",       SORT_SUBJECT },
   { "to",            SORT_TO },
-  { NULL,            0 },
+  { NULL, 0 },
   // clang-format on
 };
 
@@ -89,7 +89,7 @@ const struct Mapping SortMethods[] = {
   { "subject",       SORT_SUBJECT },
   { "threads",       SORT_THREADS },
   { "to",            SORT_TO },
-  { NULL,            0 },
+  { NULL, 0 },
   // clang-format on
 };
 
@@ -106,7 +106,7 @@ const struct Mapping SortBrowserMethods[] = {
   { "unread",   SORT_UNREAD },
   { "size",     SORT_SIZE },
   { "unsorted", SORT_ORDER },
-  { NULL,       0 },
+  { NULL, 0 },
   // clang-format on
 };
 

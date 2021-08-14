@@ -132,7 +132,6 @@ static struct ConfigDef HcacheVars[] = {
 #if defined(HAVE_GDBM) || defined(HAVE_BDB)
   { "header_cache_pagesize", DT_DEPRECATED|DT_LONG, 0, 0, NULL, NULL },
 #endif
-
   { NULL },
   // clang-format on
 };

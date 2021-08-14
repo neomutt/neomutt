@@ -1824,11 +1824,11 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   return MX_STATUS_OK;
 }
 
-// clang-format off
 /**
  * MxMboxOps - Mbox Mailbox - Implements ::MxOps - @ingroup mx_api
  */
 struct MxOps MxMboxOps = {
+  // clang-format off
   .type            = MUTT_MBOX,
   .name             = "mbox",
   .is_local         = true,
@@ -1853,12 +1853,14 @@ struct MxOps MxMboxOps = {
   .path_pretty      = mbox_path_pretty,
   .path_parent      = mbox_path_parent,
   .path_is_empty    = mbox_path_is_empty,
+  // clang-format on
 };
 
 /**
  * MxMmdfOps - MMDF Mailbox - Implements ::MxOps - @ingroup mx_api
  */
 struct MxOps MxMmdfOps = {
+  // clang-format off
   .type            = MUTT_MMDF,
   .name             = "mmdf",
   .is_local         = true,
@@ -1883,5 +1885,5 @@ struct MxOps MxMmdfOps = {
   .path_pretty      = mbox_path_pretty,
   .path_parent      = mbox_path_parent,
   .path_is_empty    = mbox_path_is_empty,
+  // clang-format on
 };
-// clang-format on

@@ -2482,11 +2482,11 @@ static int imap_path_is_empty(const char *path)
   return 0;
 }
 
-// clang-format off
 /**
  * MxImapOps - IMAP Mailbox - Implements ::MxOps - @ingroup mx_api
  */
 struct MxOps MxImapOps = {
+  // clang-format off
   .type            = MUTT_IMAP,
   .name             = "imap",
   .is_local         = false,
@@ -2511,5 +2511,5 @@ struct MxOps MxImapOps = {
   .path_pretty      = imap_path_pretty,
   .path_parent      = imap_path_parent,
   .path_is_empty    = imap_path_is_empty,
+  // clang-format on
 };
-// clang-format on

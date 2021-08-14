@@ -3180,6 +3180,6 @@ struct IndexFunction IndexFunctions[] = {
   { OP_SIDEBAR_PREV_NEW,                 op_sidebar_next,                   CHECK_NO_FLAGS },
   { OP_SIDEBAR_TOGGLE_VISIBLE,           op_sidebar_toggle_visible,         CHECK_NO_FLAGS },
 #endif
-  // clang-format on
   { 0, NULL, CHECK_NO_FLAGS },
+  // clang-format on
 };

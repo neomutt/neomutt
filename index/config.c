@@ -48,7 +48,6 @@ static struct ConfigDef IndexVars[] = {
   { "uncollapse_new", DT_BOOL, true, 0, NULL,
     "Open collapsed threads when new mail arrives"
   },
-
   { NULL },
   // clang-format on
 };

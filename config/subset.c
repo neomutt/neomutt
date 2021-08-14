@@ -44,8 +44,8 @@ static const struct Mapping ConfigEventNames[] = {
   // clang-format off
   { "NT_CONFIG_SET",   NT_CONFIG_SET   },
   { "NT_CONFIG_RESET", NT_CONFIG_RESET },
-  // clang-format on
   { NULL, 0 },
+  // clang-format on
 };
 
 /**

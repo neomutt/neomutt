@@ -97,7 +97,7 @@ struct PrexStorage
 static struct PrexStorage *prex(enum Prex which)
 {
   static struct PrexStorage storage[] = {
-    /* clang-format off */
+    // clang-format off
     {
       PREX_URL,
       PREX_URL_MATCH_MAX,
@@ -261,7 +261,7 @@ static struct PrexStorage *prex(enum Prex which)
         "([[:digit:]]{2})"      // Year (YY)
       ")"
     }
-    /* clang-format on */
+    // clang-format on
   };
 
   assert((which >= 0) && (which < PREX_MAX) && "Invalid 'which' argument");

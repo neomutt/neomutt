@@ -52,11 +52,11 @@ static bool pgp_gpgme_valid_passphrase(void)
   return true;
 }
 
-// clang-format off
 /**
  * CryptModPgpGpgme - GPGME PGP - Implements ::CryptModuleSpecs
  */
 struct CryptModuleSpecs CryptModPgpGpgme = {
+  // clang-format off
   APPLICATION_PGP,
 
   pgp_gpgme_init,
@@ -84,5 +84,5 @@ struct CryptModuleSpecs CryptModPgpGpgme = {
   NULL, /* smime_verify_sender */
   NULL, /* smime_build_smime_entity */
   NULL, /* smime_invoke_import */
+  // clang-format on
 };
-// clang-format on

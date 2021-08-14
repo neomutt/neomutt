@@ -85,15 +85,15 @@
 #include <xlocale.h>
 #endif
 
-// clang-format off
 static const struct Mapping MboxTypeMap[] = {
+  // clang-format off
   { "mbox",    MUTT_MBOX,    },
   { "MMDF",    MUTT_MMDF,    },
   { "MH",      MUTT_MH,      },
   { "Maildir", MUTT_MAILDIR, },
-  { NULL,      0,            },
+  { NULL, 0, },
+  // clang-format on
 };
-// clang-format on
 
 struct EnumDef MboxTypeDef = {
   "mbox_type",

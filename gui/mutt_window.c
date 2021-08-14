@@ -70,8 +70,8 @@ static const struct Mapping WindowNames[] = {
   { "WT_ROOT",            WT_ROOT },
   { "WT_SIDEBAR",         WT_SIDEBAR },
   { "WT_STATUS_BAR",      WT_STATUS_BAR },
-  // clang-format off
   { NULL, 0 },
+  // clang-format on
 };
 
 /**

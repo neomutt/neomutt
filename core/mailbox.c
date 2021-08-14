@@ -48,8 +48,8 @@ static const struct Mapping MailboxTypes[] = {
   { "nntp",       MUTT_NNTP },
   { "notmuch",    MUTT_NOTMUCH },
   { "pop",        MUTT_POP },
-  // clang-format off
   { NULL, 0 },
+  // clang-format on
 };
 
 /**

@@ -50,6 +50,7 @@
 static enum CommandResult icmd_bind   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 static enum CommandResult icmd_set    (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+// clang-format on
 
 /**
  * ICommandList - All available informational commands
@@ -57,13 +58,14 @@ static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s, int
  * @note These commands take precedence over conventional NeoMutt rc-lines
  */
 static const struct ICommand ICommandList[] = {
+  // clang-format off
   { "bind",     icmd_bind,     0 },
   { "macro",    icmd_bind,     1 },
   { "set",      icmd_set,      0 },
   { "version",  icmd_version,  0 },
-  { NULL,       NULL,          0 },
+  { NULL, NULL, 0 },
+  // clang-format on
 };
-// clang-format on
 
 /**
  * mutt_parse_icommand - Parse an informational command

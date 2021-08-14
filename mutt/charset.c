@@ -86,7 +86,6 @@ struct MimeNames
   const char *pref;
 };
 
-// clang-format off
 /**
  * PreferredMimeNames - Lookup table of preferred charsets
  *
@@ -97,8 +96,8 @@ struct MimeNames
  * @note It includes only the subset of character sets for which a preferred
  * MIME name is given.
  */
-const struct MimeNames PreferredMimeNames[] =
-{
+const struct MimeNames PreferredMimeNames[] = {
+  // clang-format off
   { "ansi_x3.4-1968",        "us-ascii"      },
   { "iso-ir-6",              "us-ascii"      },
   { "iso_646.irv:1991",      "us-ascii"      },
@@ -237,9 +236,9 @@ const struct MimeNames PreferredMimeNames[] =
    * character set naming, please add it above this comment, and submit a patch
    * to <neomutt-devel@neomutt.org> */
 
-  { NULL,                     NULL           },
+  { NULL, NULL },
+  // clang-format on
 };
-// clang-format on
 
 /**
  * lookup_new - Create a new Lookup

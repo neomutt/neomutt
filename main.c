@@ -258,7 +258,6 @@ void mutt_exit(int code)
   exit(code);
 }
 
-// clang-format off
 /**
  * usage - Display NeoMutt command line
  */
@@ -266,6 +265,7 @@ static void usage(void)
 {
   puts(mutt_make_version());
 
+  // clang-format off
   /* L10N: Try to limit to 80 columns */
   puts(_("usage:"));
   puts(_("  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
@@ -327,8 +327,8 @@ static void usage(void)
          "                exit code 1 if none is found in all defined mailboxes"));
   puts(_("  -z            Open the first or specified (-f) mailbox if it holds any message\n"
          "                or exit immediately with exit code 1 otherwise"));
+  // clang-format on
 }
-// clang-format on
 
 /**
  * start_curses - Start the curses or slang UI

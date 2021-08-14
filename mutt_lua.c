@@ -396,7 +396,7 @@ static const luaL_Reg luaMuttDecl[] = {
   { "print",   lua_mutt_message },
   { "message", lua_mutt_message },
   { "error",   lua_mutt_error },
-  { NULL,      NULL },
+  { NULL, NULL },
   // clang-format on
 };
 
