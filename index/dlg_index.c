@@ -59,6 +59,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "private.h"
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
@@ -68,7 +69,6 @@
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "pattern/lib.h"
-#include "progress/lib.h"
 #include "context.h"
 #include "format_flags.h"
 #include "functions.h"
@@ -94,9 +94,6 @@
 #include "nntp/lib.h"
 #include "nntp/adata.h" // IWYU pragma: keep
 #include "nntp/mdata.h" // IWYU pragma: keep
-#endif
-#ifdef ENABLE_NLS
-#include <libintl.h>
 #endif
 #ifdef USE_INOTIFY
 #include "monitor.h"
@@ -944,7 +941,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
   {
     /* Text before the first highlight */
     mutt_window_addnstr(win, buf, MIN(len, syntax[0].first));
-    attrset(mutt_color(MT_COLOR_STATUS));
+    mutt_curses_set_color(MT_COLOR_STATUS);
     if (len <= syntax[0].first)
       goto dsl_finish; /* no more room */
 
@@ -954,7 +951,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
   for (i = 0; i < chunks; i++)
   {
     /* Highlighted text */
-    attrset(syntax[i].color);
+    mutt_curses_set_attr(syntax[i].color);
     mutt_window_addnstr(win, buf + offset, MIN(len, syntax[i].last) - offset);
     if (len <= syntax[i].last)
       goto dsl_finish; /* no more room */
@@ -969,7 +966,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
       next = MIN(len, syntax[i + 1].first);
     }
 
-    attrset(mutt_color(MT_COLOR_STATUS));
+    mutt_curses_set_color(MT_COLOR_STATUS);
     offset = syntax[i].last;
     mutt_window_addnstr(win, buf + offset, next - offset);
 
@@ -978,7 +975,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
       goto dsl_finish; /* no more room */
   }
 
-  attrset(mutt_color(MT_COLOR_STATUS));
+  mutt_curses_set_color(MT_COLOR_STATUS);
   if (offset < len)
   {
     /* Text after the last highlight */

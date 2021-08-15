@@ -57,20 +57,20 @@
 #include "imap/lib.h"
 #endif
 
-// clang-format off
 /**
  * range_regexes - Set of Regexes for various range types
  *
  * This array, will also contain the compiled regexes.
  */
 struct RangeRegex range_regexes[] = {
+  // clang-format off
   [RANGE_K_REL]  = { RANGE_REL_RX,  1, 3, 0, { 0 } },
   [RANGE_K_ABS]  = { RANGE_ABS_RX,  1, 3, 0, { 0 } },
   [RANGE_K_LT]   = { RANGE_LT_RX,   1, 2, 0, { 0 } },
   [RANGE_K_GT]   = { RANGE_GT_RX,   2, 1, 0, { 0 } },
   [RANGE_K_BARE] = { RANGE_BARE_RX, 1, 1, 0, { 0 } },
+  // clang-format on
 };
-// clang-format on
 
 /**
  * eat_arg_t - Function to parse a pattern

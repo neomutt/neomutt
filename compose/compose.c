@@ -633,7 +633,7 @@ void update_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
 }
 
 /**
- * update_idx - Add a new attchment to the message
+ * update_idx - Add a new attachment to the message
  * @param menu Current menu
  * @param actx Attachment context
  * @param ap   Attachment to add

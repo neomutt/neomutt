@@ -40,7 +40,7 @@ const struct Mapping SortAliasMethods[] = {
   { "address",  SORT_ADDRESS },
   { "alias",    SORT_ALIAS },
   { "unsorted", SORT_ORDER },
-  { NULL,       0 },
+  { NULL, 0 },
   // clang-format on
 };
 

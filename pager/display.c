@@ -123,7 +123,7 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
   struct TextSyntax *matching_chunk = NULL;
 
   if (cnt == 0)
-    last_color = -1; /* force attrset() */
+    last_color = -1;
 
   if (lines[line_num].cont_line)
   {
@@ -858,6 +858,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw, struct L
       color_line->stop_matching = false;
     }
     do
+
     {
       if (!buf[offset])
         break;
@@ -870,39 +871,40 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw, struct L
             (regexec(&color_line->regex, buf + offset, 1, pmatch,
                      ((offset != 0) ? REG_NOTBOL : 0)) == 0))
         {
-          if (pmatch[0].rm_eo != pmatch[0].rm_so)
+          if (pmatch[0].rm_eo == pmatch[0].rm_so)
           {
-            if (!found)
-            {
-              /* Abort if we fill up chunks.
-               * Yes, this really happened. */
-              if (lines[line_num].syntax_arr_size == SHRT_MAX)
-              {
-                null_rx = false;
-                break;
-              }
-              if (++(lines[line_num].syntax_arr_size) > 1)
-              {
-                mutt_mem_realloc(&(lines[line_num].syntax),
-                                 (lines[line_num].syntax_arr_size) * sizeof(struct TextSyntax));
-              }
-            }
-            i = lines[line_num].syntax_arr_size - 1;
-            pmatch[0].rm_so += offset;
-            pmatch[0].rm_eo += offset;
-            if (!found || (pmatch[0].rm_so < (lines[line_num].syntax)[i].first) ||
-                ((pmatch[0].rm_so == (lines[line_num].syntax)[i].first) &&
-                 (pmatch[0].rm_eo > (lines[line_num].syntax)[i].last)))
-            {
-              (lines[line_num].syntax)[i].color = color_line->pair;
-              (lines[line_num].syntax)[i].first = pmatch[0].rm_so;
-              (lines[line_num].syntax)[i].last = pmatch[0].rm_eo;
-            }
-            found = true;
-            null_rx = false;
-          }
-          else
             null_rx = true; /* empty regex; don't add it, but keep looking */
+            continue;
+          }
+
+          if (!found)
+          {
+            /* Abort if we fill up chunks.
+              * Yes, this really happened. */
+            if (lines[line_num].syntax_arr_size == SHRT_MAX)
+            {
+              null_rx = false;
+              break;
+            }
+            if (++(lines[line_num].syntax_arr_size) > 1)
+            {
+              mutt_mem_realloc(&(lines[line_num].syntax),
+                               (lines[line_num].syntax_arr_size) * sizeof(struct TextSyntax));
+            }
+          }
+          i = lines[line_num].syntax_arr_size - 1;
+          pmatch[0].rm_so += offset;
+          pmatch[0].rm_eo += offset;
+          if (!found || (pmatch[0].rm_so < (lines[line_num].syntax)[i].first) ||
+              ((pmatch[0].rm_so == (lines[line_num].syntax)[i].first) &&
+               (pmatch[0].rm_eo > (lines[line_num].syntax)[i].last)))
+          {
+            (lines[line_num].syntax)[i].color = color_line->pair;
+            (lines[line_num].syntax)[i].first = pmatch[0].rm_so;
+            (lines[line_num].syntax)[i].last = pmatch[0].rm_eo;
+          }
+          found = true;
+          null_rx = false;
         }
         else
         {
@@ -945,35 +947,37 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw, struct L
       STAILQ_FOREACH(color_line, mutt_color_attachments(), entries)
       {
         if (regexec(&color_line->regex, buf + offset, 1, pmatch,
-                    ((offset != 0) ? REG_NOTBOL : 0)) == 0)
+                    ((offset != 0) ? REG_NOTBOL : 0)) != 0)
         {
-          if (pmatch[0].rm_eo != pmatch[0].rm_so)
-          {
-            if (!found)
-            {
-              if (++(lines[line_num].syntax_arr_size) > 1)
-              {
-                mutt_mem_realloc(&(lines[line_num].syntax),
-                                 (lines[line_num].syntax_arr_size) * sizeof(struct TextSyntax));
-              }
-            }
-            i = lines[line_num].syntax_arr_size - 1;
-            pmatch[0].rm_so += offset;
-            pmatch[0].rm_eo += offset;
-            if (!found || (pmatch[0].rm_so < (lines[line_num].syntax)[i].first) ||
-                ((pmatch[0].rm_so == (lines[line_num].syntax)[i].first) &&
-                 (pmatch[0].rm_eo > (lines[line_num].syntax)[i].last)))
-            {
-              (lines[line_num].syntax)[i].color = color_line->pair;
-              (lines[line_num].syntax)[i].first = pmatch[0].rm_so;
-              (lines[line_num].syntax)[i].last = pmatch[0].rm_eo;
-            }
-            found = 1;
-            null_rx = 0;
-          }
-          else
-            null_rx = 1; /* empty regex; don't add it, but keep looking */
+          continue;
         }
+
+        if (pmatch[0].rm_eo != pmatch[0].rm_so)
+        {
+          if (!found)
+          {
+            if (++(lines[line_num].syntax_arr_size) > 1)
+            {
+              mutt_mem_realloc(&(lines[line_num].syntax),
+                               (lines[line_num].syntax_arr_size) * sizeof(struct TextSyntax));
+            }
+          }
+          i = lines[line_num].syntax_arr_size - 1;
+          pmatch[0].rm_so += offset;
+          pmatch[0].rm_eo += offset;
+          if (!found || (pmatch[0].rm_so < (lines[line_num].syntax)[i].first) ||
+              ((pmatch[0].rm_so == (lines[line_num].syntax)[i].first) &&
+               (pmatch[0].rm_eo > (lines[line_num].syntax)[i].last)))
+          {
+            (lines[line_num].syntax)[i].color = color_line->pair;
+            (lines[line_num].syntax)[i].first = pmatch[0].rm_so;
+            (lines[line_num].syntax)[i].last = pmatch[0].rm_eo;
+          }
+          found = 1;
+          null_rx = false;
+        }
+        else
+          null_rx = true; /* empty regex; don't add it, but keep looking */
       }
 
       if (null_rx)
@@ -1027,27 +1031,27 @@ static int grok_ansi(const unsigned char *buf, int pos, struct AnsiAttr *aa)
     }
     while (pos < x)
     {
-      if ((buf[pos] == '1') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
+      if ((buf[pos] == '1') && (((pos + 1) == x) || (buf[pos + 1] == ';')))
       {
         aa->attr |= ANSI_BOLD;
         pos += 2;
       }
-      else if ((buf[pos] == '4') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
+      else if ((buf[pos] == '4') && (((pos + 1) == x) || (buf[pos + 1] == ';')))
       {
         aa->attr |= ANSI_UNDERLINE;
         pos += 2;
       }
-      else if ((buf[pos] == '5') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
+      else if ((buf[pos] == '5') && (((pos + 1) == x) || (buf[pos + 1] == ';')))
       {
         aa->attr |= ANSI_BLINK;
         pos += 2;
       }
-      else if ((buf[pos] == '7') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
+      else if ((buf[pos] == '7') && (((pos + 1) == x) || (buf[pos + 1] == ';')))
       {
         aa->attr |= ANSI_REVERSE;
         pos += 2;
       }
-      else if ((buf[pos] == '0') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
+      else if ((buf[pos] == '0') && (((pos + 1) == x) || (buf[pos + 1] == ';')))
       {
 #ifdef HAVE_COLOR
         if (aa->pair != -1)

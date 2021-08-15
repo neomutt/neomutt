@@ -49,7 +49,7 @@ struct Progress
   struct MuttWindow *win; ///< Window to draw on
   char msg[1024];         ///< Message to display
   char sizestr[24];       ///< String for percentage/size
-  size_t pos;             ///< Current postion
+  size_t pos;             ///< Current position
   size_t size;            ///< Total expected size
   size_t inc;             ///< Increment size
   uint64_t timestamp;     ///< Time of last update

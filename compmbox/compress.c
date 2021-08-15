@@ -922,7 +922,6 @@ static int comp_path_parent(char *buf, size_t buflen)
   return -1;
 }
 
-// clang-format off
 /**
  * MxCompOps - Compressed Mailbox - Implements ::MxOps - @ingroup mx_api
  *
@@ -930,6 +929,7 @@ static int comp_path_parent(char *buf, size_t buflen)
  * The message functions are delegated to mbox.
  */
 struct MxOps MxCompOps = {
+  // clang-format off
   .type            = MUTT_COMPRESSED,
   .name             = "compressed",
   .is_local         = true,
@@ -954,5 +954,5 @@ struct MxOps MxCompOps = {
   .path_pretty      = comp_path_pretty,
   .path_parent      = comp_path_parent,
   .path_is_empty    = NULL,
+  // clang-format on
 };
-// clang-format on

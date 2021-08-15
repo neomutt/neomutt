@@ -67,7 +67,7 @@ static const struct Mapping UseThreadsMethods[] = {
   // aliases
   { "no",            UT_FLAT },
   { "yes",           UT_THREADS },
-  { NULL,            0 },
+  { NULL, 0 },
   // clang-format on
 };
 

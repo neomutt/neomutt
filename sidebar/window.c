@@ -224,7 +224,7 @@ static const char *abbrev_url(const char *mbox, enum MailboxType type)
 
 /**
  * add_indent - Generate the needed indentation
- * @param buf    Output bufer
+ * @param buf    Output buffer
  * @param buflen Size of output buffer
  * @param sbe    Sidebar entry
  * @retval Number of bytes written

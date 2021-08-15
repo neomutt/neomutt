@@ -873,9 +873,6 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
         tagmsgcount++;
 
   snprintf(prompt, sizeof(prompt),
-           /* L10N: Although we now the precise number of tagged messages, we
-              do not show it to the user.  So feel free to use a "generic
-              plural" as plural translation if your language has one. */
            tag ? ngettext("Print tagged attachment?", "Print %d tagged attachments?", tagmsgcount) :
                  _("Print attachment?"),
            tagmsgcount);

@@ -2743,11 +2743,11 @@ static int nntp_path_parent(char *buf, size_t buflen)
   return 0;
 }
 
-// clang-format off
 /**
  * MxNntpOps - NNTP Mailbox - Implements ::MxOps - @ingroup mx_api
  */
 struct MxOps MxNntpOps = {
+  // clang-format off
   .type            = MUTT_NNTP,
   .name             = "nntp",
   .is_local         = false,
@@ -2771,5 +2771,5 @@ struct MxOps MxNntpOps = {
   .path_canon       = nntp_path_canon,
   .path_pretty      = nntp_path_pretty,
   .path_parent      = nntp_path_parent,
+  // clang-format on
 };
-// clang-format on

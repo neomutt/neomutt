@@ -1641,11 +1641,11 @@ static enum MailboxType maildir_path_probe(const char *path, const struct stat *
   return MUTT_UNKNOWN;
 }
 
-// clang-format off
 /**
  * MxMaildirOps - Maildir Mailbox - Implements ::MxOps - @ingroup mx_api
  */
 struct MxOps MxMaildirOps = {
+  // clang-format off
   .type            = MUTT_MAILDIR,
   .name             = "maildir",
   .is_local         = true,
@@ -1670,5 +1670,5 @@ struct MxOps MxMaildirOps = {
   .path_pretty      = maildir_path_pretty,
   .path_parent      = maildir_path_parent,
   .path_is_empty    = maildir_check_empty,
+  // clang-format on
 };
-// clang-format on

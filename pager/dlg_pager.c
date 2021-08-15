@@ -505,7 +505,7 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
     mutt_window_move(priv->pview->win_pbar, 0, 0);
     mutt_curses_set_color(MT_COLOR_STATUS);
 
-    if (priv->pview->mode == PAGER_MODE_EMAIL || priv->pview->mode == PAGER_MODE_ATTACH_E)
+    if ((priv->pview->mode == PAGER_MODE_EMAIL) || (priv->pview->mode == PAGER_MODE_ATTACH_E))
     {
       const size_t l1 = priv->pview->win_pbar->state.cols * MB_LEN_MAX;
       const size_t l2 = sizeof(buf);
@@ -791,7 +791,7 @@ int mutt_pager(struct PagerView *pview)
   if (!(pview->flags & MUTT_SHOWCOLOR))
     pview->flags |= MUTT_SHOWFLAT;
 
-  if (pview->mode == PAGER_MODE_EMAIL && !shared->email->read)
+  if ((pview->mode == PAGER_MODE_EMAIL) && !shared->email->read)
   {
     shared->ctx->msg_in_pager = shared->email->msgno;
     priv->win_pbar->actions |= WA_RECALC;
@@ -855,7 +855,7 @@ int mutt_pager(struct PagerView *pview)
     pager_queue_redraw(priv, MENU_REDRAW_FULL);
     pager_custom_redraw(priv);
     // trick user, as if nothing happened
-    // scroll down to previosly saved offset
+    // scroll down to previously saved offset
     priv->top_line = ((TopLine - priv->top_line) > priv->win_height) ?
                          priv->top_line + priv->win_height :
                          TopLine;

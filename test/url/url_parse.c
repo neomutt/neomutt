@@ -151,7 +151,7 @@ static struct UrlTest test[] = {
     false,
   },
   {
-    /* Correctly escaped fragment (#) chracter, see also
+    /* Correctly escaped fragment (#) character, see also
      * https://github.com/neomutt/neomutt/issues/2276 */
     "mailto:a@b?subject=%23",
     true,

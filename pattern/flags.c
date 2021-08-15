@@ -34,11 +34,11 @@
 #include "mutt.h"
 #include "lib.h"
 
-// clang-format off
 /**
  * Flags - Lookup table for all patterns
  */
 const struct PatternFlags Flags[] = {
+  // clang-format off
   { 'A', MUTT_ALL, 0, EAT_NONE,
     // L10N: Pattern Completion Menu description for ~A
     N_("all messages") },
@@ -186,8 +186,8 @@ const struct PatternFlags Flags[] = {
     // L10N: Pattern Completion Menu description for =/
     N_("IMAP custom server-side search for STRING") },
   { 0, 0, 0, EAT_NONE, NULL, },
+  // clang-format on
 };
-// clang-format on
 
 /**
  * lookup_tag - Lookup a pattern modifier

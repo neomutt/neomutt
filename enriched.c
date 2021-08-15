@@ -71,8 +71,8 @@ struct Etags
   int index;               ///< Index number
 };
 
-// clang-format off
 static const struct Etags EnrichedTags[] = {
+  // clang-format off
   { L"param",       RICH_PARAM        },
   { L"bold",        RICH_BOLD         },
   { L"italic",      RICH_ITALIC       },
@@ -87,9 +87,9 @@ static const struct Etags EnrichedTags[] = {
   { L"flushboth",   RICH_FLUSHLEFT    },
   { L"color",       RICH_COLOR        },
   { L"x-color",     RICH_COLOR        },
-  { NULL,           -1                },
+  { NULL, -1 },
+  // clang-format on
 };
-// clang-format on
 
 /**
  * struct EnrichedState - State of enriched-text parser

@@ -95,7 +95,7 @@ static const struct Mapping EditorHelp[] = {
   { N_("Kill Line"),   OP_EDITOR_KILL_LINE },
   { N_("Kill Word"),   OP_EDITOR_KILL_WORD },
   { NULL, 0 },
-  // clang-format off
+  // clang-format on
 };
 
 /**

@@ -49,8 +49,8 @@ const struct Mapping MenuNames[] = {
 #endif
   { "query",            MENU_QUERY },
   { "generic",          MENU_GENERIC },
-  // clang-format off
   { NULL, 0 },
+  // clang-format on
 };
 
 const int MenuNamesLen = mutt_array_size(MenuNames) - 1;

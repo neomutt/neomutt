@@ -257,7 +257,7 @@ void address_free(struct Address **addr)
 }
 
 /**
- * cst_address - Config type representing an Email Addresss
+ * cst_address - Config type representing an Email Address
  */
 const struct ConfigSetType cst_address = {
   DT_ADDRESS,

@@ -93,7 +93,7 @@ const struct Binding OpGeneric[] = { /* map: generic */
   { "tag-prefix-cond", OP_TAG_PREFIX_COND,      NULL },
   { "top-page",        OP_TOP_PAGE,             "H" },
   { "what-key",        OP_WHAT_KEY,             NULL },
-  { NULL,              0,                       NULL },
+  { NULL, 0, NULL },
 };
 
 /**
@@ -254,7 +254,7 @@ const struct Binding OpMain[] = { /* map: index */
   { "view-raw-message",          OP_VIEW_RAW_MESSAGE,               NULL },
   /* This is deprecated.  Leave it last so it doesn't show up in the help. */
   { "buffy-list",                OP_MAILBOX_LIST,                   NULL },
-  { NULL,                        0,                                 NULL },
+  { NULL, 0, NULL },
 };
 
 /**
@@ -411,7 +411,7 @@ const struct Binding OpPager[] = { /* map: pager */
   { "what-key",                  OP_WHAT_KEY,                     NULL },
   /* This is deprecated.  Leave it last so it doesn't show up in the help. */
   { "buffy-list",                OP_MAILBOX_LIST,                 NULL },
-  { NULL,                        0,                               NULL },
+  { NULL, 0, NULL },
 };
 
 /**
@@ -448,7 +448,7 @@ const struct Binding OpAttach[] = { /* map: attachment */
   { "view-mailcap",          OP_ATTACH_VIEW_MAILCAP,         "m" },
   { "view-pager",            OP_ATTACH_VIEW_PAGER,           NULL },
   { "view-text",             OP_ATTACH_VIEW_TEXT,            "T" },
-  { NULL,                    0,                              NULL },
+  { NULL, 0, NULL },
 };
 
 /**
@@ -518,7 +518,7 @@ const struct Binding OpCompose[] = { /* map: compose */
   { "view-attach",           OP_VIEW_ATTACH,                 "\n" },            // <Enter>
   { "view-attach",           OP_VIEW_ATTACH,                 "\r" },            // <Return>
   { "write-fcc",             OP_COMPOSE_WRITE_MESSAGE,       "w" },
-  { NULL,                    0,                              NULL },
+  { NULL, 0, NULL },
 };
 
 /**
@@ -527,7 +527,7 @@ const struct Binding OpCompose[] = { /* map: compose */
 const struct Binding OpPost[] = { /* map: postpone */
   { "delete-entry",          OP_DELETE,                      "d" },
   { "undelete-entry",        OP_UNDELETE,                    "u" },
-  { NULL,                    0,                              NULL },
+  { NULL, 0, NULL },
 };
 
 /**
@@ -539,7 +539,7 @@ const struct Binding OpAlias[] = { /* map: alias */
   { "sort-alias",            OP_SORT,                        "o" },
   { "sort-alias-reverse",    OP_SORT_REVERSE,                "O" },
   { "undelete-entry",        OP_UNDELETE,                    "u" },
-  { NULL,                    0,                              NULL },
+  { NULL, 0, NULL },
 };
 
 /**
@@ -592,7 +592,7 @@ const struct Binding OpBrowser[] = { /* map: browser */
   { "view-file",             OP_BROWSER_VIEW_FILE,           " " },
   /* This is deprecated.  Leave it last so it doesn't show up in the help. */
   { "buffy-list",            OP_MAILBOX_LIST,                NULL },
-  { NULL,                    0,                              NULL },
+  { NULL, 0, NULL },
 };
 
 /**
@@ -606,7 +606,7 @@ const struct Binding OpQuery[] = { /* map: query */
   { "query-append",          OP_QUERY_APPEND,                "A" },
   { "sort",                  OP_SORT,                        "o" },
   { "sort-reverse",          OP_SORT_REVERSE,                "O" },
-  { NULL,                    0,                              NULL },
+  { NULL, 0, NULL },
 };
 
 /**
@@ -638,7 +638,7 @@ const struct Binding OpEditor[] = { /* map: editor */
   { "upcase-word",           OP_EDITOR_UPCASE_WORD,          "\033u" },         // <Alt-u>
   /* This is deprecated.  Leave it last so it doesn't show up in the help. */
   { "buffy-cycle",           OP_EDITOR_MAILBOX_CYCLE,        NULL },
-  { NULL,                    0,                              NULL },
+  { NULL, 0, NULL },
 };
 
 /**
@@ -647,7 +647,7 @@ const struct Binding OpEditor[] = { /* map: editor */
 const struct Binding OpPgp[] = { /* map: pgp */
   { "verify-key",            OP_VERIFY_KEY,                  "c" },
   { "view-name",             OP_VIEW_ID,                     "%" },
-  { NULL,                    0,                              NULL },
+  { NULL, 0, NULL },
 };
 
 /**
@@ -658,7 +658,7 @@ const struct Binding OpSmime[] = { /* map: smime */
   { "verify-key",            OP_VERIFY_KEY,                  "c" },
   { "view-name",             OP_VIEW_ID,                     "%" },
 #endif
-  { NULL,                    0,                              NULL },
+  { NULL, 0, NULL },
 };
 
 #ifdef MIXMASTER
@@ -673,7 +673,7 @@ const struct Binding OpMix[] = { /* map: mixmaster */
   { "chain-prev",            OP_MIX_CHAIN_PREV,              "<left>" },
   { "delete",                OP_MIX_DELETE,                  "d" },
   { "insert",                OP_MIX_INSERT,                  "i" },
-  { NULL,                    0,                              NULL },
+  { NULL, 0, NULL },
 };
 #endif /* MIXMASTER */
 
@@ -686,7 +686,7 @@ const struct Binding OpAutocryptAcct[] = { /* map: autocrypt account */
   { "delete-account",        OP_AUTOCRYPT_DELETE_ACCT,       "D" },
   { "toggle-active",         OP_AUTOCRYPT_TOGGLE_ACTIVE,     "a" },
   { "toggle-prefer-encrypt", OP_AUTOCRYPT_TOGGLE_PREFER,     "p" },
-  { NULL,                    0,                              NULL }
+  { NULL, 0, NULL }
 };
 #endif
 

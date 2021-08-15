@@ -1199,11 +1199,11 @@ static int pop_path_parent(char *buf, size_t buflen)
   return 0;
 }
 
-// clang-format off
 /**
  * MxPopOps - POP Mailbox - Implements ::MxOps - @ingroup mx_api
  */
 struct MxOps MxPopOps = {
+  // clang-format off
   .type            = MUTT_POP,
   .name             = "pop",
   .is_local         = false,
@@ -1228,5 +1228,5 @@ struct MxOps MxPopOps = {
   .path_pretty      = pop_path_pretty,
   .path_parent      = pop_path_parent,
   .path_is_empty    = NULL,
+  // clang-format on
 };
-// clang-format on

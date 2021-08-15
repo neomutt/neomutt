@@ -36,11 +36,11 @@
 #include "pgp.h"
 #endif
 
-// clang-format off
 /**
  * CryptModPgpClassic - CLI PGP - Implements ::CryptModuleSpecs
  */
 struct CryptModuleSpecs CryptModPgpClassic = {
+  // clang-format off
   APPLICATION_PGP,
 
   NULL, /* init */
@@ -68,5 +68,5 @@ struct CryptModuleSpecs CryptModPgpClassic = {
   NULL, /* smime_verify_sender */
   NULL, /* smime_build_smime_entity */
   NULL, /* smime_invoke_import */
+  // clang-format on
 };
-// clang-format on

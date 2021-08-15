@@ -1241,11 +1241,11 @@ static enum MailboxType mh_path_probe(const char *path, const struct stat *st)
   return MUTT_UNKNOWN;
 }
 
-// clang-format off
 /**
  * MxMhOps - MH Mailbox - Implements ::MxOps - @ingroup mx_api
  */
 struct MxOps MxMhOps = {
+  // clang-format off
   .type            = MUTT_MH,
   .name             = "mh",
   .is_local         = true,
@@ -1270,5 +1270,5 @@ struct MxOps MxMhOps = {
   .path_pretty      = mh_path_pretty,
   .path_parent      = mh_path_parent,
   .path_is_empty    = mh_check_empty,
+  // clang-format on
 };
-// clang-format on

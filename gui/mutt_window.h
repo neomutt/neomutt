@@ -137,7 +137,7 @@ struct MuttWindow
 
   struct Notify *notify;             ///< Notifications: #NotifyWindow, #EventWindow
 
-  struct MuttWindow *focus;          ///< Focussed Window
+  struct MuttWindow *focus;          ///< Focused Window
   int help_menu;                     ///< Menu for key bindings, e.g. #MENU_PAGER
   const struct Mapping *help_data;   ///< Data for the Help Bar
 
