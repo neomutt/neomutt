@@ -4,6 +4,7 @@ notifications:
 branches:
   except:
   - /flatcap\/.*/
+  - translate
 
 dist: bionic
 
