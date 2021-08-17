@@ -430,6 +430,9 @@ static int op_compose_attach_file(struct ComposeSharedData *shared, int op)
   for (int i = 0; i < numfiles; i++)
   {
     char *att = files[i];
+    if (!att)
+      continue;
+
     struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
     ap->unowned = true;
     ap->body = mutt_make_file_attach(att, shared->sub);
