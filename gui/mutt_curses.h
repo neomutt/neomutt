@@ -25,7 +25,7 @@
 #define MUTT_MUTT_CURSES_H
 
 #include "config.h"
-#include "color.h"
+#include "color/lib.h"
 
 #ifdef USE_SLANG_CURSES
 

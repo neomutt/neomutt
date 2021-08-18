@@ -20,14 +20,24 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COLOR_H
-#define MUTT_COLOR_H
+/**
+ * @page lib_color Color
+ *
+ * Colour handling code
+ *
+ * | File                | Description                |
+ * | :------------------ | :------------------------- |
+ * | color/color.c       | @subpage color_color       |
+ */
+
+#ifndef MUTT_COLOR_LIB_H
+#define MUTT_COLOR_LIB_H
 
 #include "config.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
-#include "mutt_commands.h"
+#include "core/lib.h"
 
 /**
  * enum ColorId - List of all colored objects
@@ -166,4 +176,4 @@ int mutt_color_quotes_used(void);
 void mutt_color_observer_add(observer_t callback, void *global_data);
 void mutt_color_observer_remove(observer_t callback, void *global_data);
 
-#endif /* MUTT_COLOR_H */
+#endif /* MUTT_COLOR_LIB_H */

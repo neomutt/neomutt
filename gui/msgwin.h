@@ -24,7 +24,7 @@
 #define MUTT_MSGWIN_H
 
 #include <stdio.h>
-#include "color.h"
+#include "color/lib.h"
 
 void               msgwin_clear_text(void);
 struct MuttWindow *msgwin_new    (void);

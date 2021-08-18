@@ -22,13 +22,14 @@
  */
 
 /**
- * @page gui_color Color and attribute parsing
+ * @page color_color Color and attribute parsing
  *
  * Color and attribute parsing
  */
 
 #include "config.h"
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -36,13 +37,12 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "mutt.h"
-#include "color.h"
+#include "lib.h"
 #include "pattern/lib.h"
 #include "context.h"
 #include "init.h"
-#include "mutt_commands.h"
-#include "mutt_curses.h"
 #include "mutt_globals.h"
 #include "options.h"
 #ifdef USE_SLANG_CURSES

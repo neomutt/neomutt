@@ -163,6 +163,19 @@ $(PWD)/bcache:
 	$(MKDIR_P) $(PWD)/bcache
 
 ###############################################################################
+# libcolor
+LIBCOLOR=	libcolor.a
+LIBCOLOROBJS=	color/color.o
+CLEANFILES+=	$(LIBCOLOR) $(LIBCOLOROBJS)
+ALLOBJS+=	$(LIBCOLOROBJS)
+
+$(LIBCOLOR):	$(PWD)/color $(LIBCOLOROBJS)
+	$(AR) cr $@ $(LIBCOLOROBJS)
+	$(RANLIB) $@
+$(PWD)/color:
+	$(MKDIR_P) $(PWD)/color
+
+###############################################################################
 # libcompmbox
 LIBCOMPMBOX=	libcompmbox.a
 LIBCOMPMBOXOBJS=compmbox/compress.o
@@ -325,9 +338,9 @@ $(PWD)/email:
 ###############################################################################
 # libgui
 LIBGUI=		libgui.a
-LIBGUIOBJS=	gui/color.o gui/curs_lib.o gui/dialog.o gui/msgwin.o \
-		gui/mutt_curses.o gui/mutt_window.o gui/reflow.o gui/rootwin.o \
-		gui/sbar.o gui/simple.o gui/terminal.o
+LIBGUIOBJS=	gui/curs_lib.o gui/dialog.o gui/msgwin.o gui/mutt_curses.o \
+		gui/mutt_window.o gui/reflow.o gui/rootwin.o gui/sbar.o \
+		gui/simple.o gui/terminal.o
 CLEANFILES+=	$(LIBGUI) $(LIBGUIOBJS)
 ALLOBJS+=	$(LIBGUIOBJS)
 
@@ -697,12 +710,13 @@ $(ALLOBJS):
 # The order of these libraries depends on their dependencies.
 # The libraries with the most dependencies will come first.
 MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) $(LIBNNTP) \
-		$(LIBCOMPMBOX) $(LIBSTORE) $(LIBPATTERN) $(LIBPROGRESS) $(LIBQUESTION)\
-		$(LIBGUI) $(LIBHELPBAR) $(LIBMENU) $(LIBMBOX) $(LIBNOTMUCH) \
-		$(LIBATTACH) $(LIBMAILDIR) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
-		$(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) \
-		$(LIBALIAS) $(LIBSEND) $(LIBCOMPOSE) $(LIBCORE) $(LIBCONFIG) \
-		$(LIBEMAIL) $(LIBADDRESS) $(LIBDEBUG) $(LIBMUTT)
+		$(LIBCOMPMBOX) $(LIBSTORE) $(LIBPATTERN) $(LIBPROGRESS) \
+		$(LIBQUESTION) $(LIBCOLOR) $(LIBGUI) $(LIBHELPBAR) $(LIBMENU) \
+		$(LIBMBOX) $(LIBNOTMUCH) $(LIBATTACH) $(LIBMAILDIR) \
+		$(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) $(LIBCOMPRESS) \
+		$(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) $(LIBALIAS) \
+		$(LIBSEND) $(LIBCOMPOSE) $(LIBCORE) $(LIBCONFIG) $(LIBEMAIL) \
+		$(LIBADDRESS) $(LIBDEBUG) $(LIBMUTT)
 
 # neomutt
 $(NEOMUTT): $(GENERATED) $(NEOMUTTOBJS) $(MUTTLIBS)

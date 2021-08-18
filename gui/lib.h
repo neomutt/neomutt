@@ -27,7 +27,6 @@
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |
- * | gui/color.c         | @subpage gui_color         |
  * | gui/curs_lib.c      | @subpage gui_curs_lib      |
  * | gui/dialog.c        | @subpage gui_dialog        |
  * | gui/msgwin.c        | @subpage gui_msgwin        |
@@ -44,7 +43,6 @@
 #define MUTT_GUI_LIB_H
 
 // IWYU pragma: begin_exports
-#include "color.h"
 #include "curs_lib.h"
 #include "dialog.h"
 #include "msgwin.h"

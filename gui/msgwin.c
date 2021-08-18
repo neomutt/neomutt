@@ -82,7 +82,7 @@
 #include "config.h"
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "color.h"
+#include "color/lib.h"
 #include "curs_lib.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
