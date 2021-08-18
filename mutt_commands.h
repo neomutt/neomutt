@@ -27,42 +27,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
-
-/**
- * enum CommandResult - Error codes for command_t parse functions
- */
-enum CommandResult
-{
-  MUTT_CMD_ERROR   = -1, ///< Error: Can't help the user
-  MUTT_CMD_WARNING = -2, ///< Warning: Help given to the user
-  MUTT_CMD_SUCCESS =  0, ///< Success: Command worked
-  MUTT_CMD_FINISH  =  1  ///< Finish: Stop processing this file
-};
-
-/**
- * @defgroup command_api Command API
- *
- * A user-callable command
- */
-struct Command
-{
-  const char *name; ///< Name of the command
-
-  /**
-   * @defgroup command_parse parse()
-   * @ingroup command_api
-   *
-   * parse - Function to parse a command
-   * @param buf  Temporary Buffer space
-   * @param s    Buffer containing string to be parsed
-   * @param data Flags associated with the command
-   * @param err  Buffer for error messages
-   * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
-   */
-  enum CommandResult (*parse)(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-
-  intptr_t data; ///< Data or flags to pass to the command
-};
+#include "core/lib.h"
 
 /**
  * enum MuttSetCommand - Flags for parse_set()
