@@ -45,6 +45,33 @@ static short MailboxCount = 0;  ///< how many boxes with new mail
 static short MailboxNotify = 0; ///< # of unnotified new boxes
 
 /**
+ * is_same_mailbox - Compare two Mailboxes to see if they're equal
+ * @param m1  First mailbox
+ * @param m2  Second mailbox
+ * @param st1 stat() info for first mailbox
+ * @param st2 stat() info for second mailbox
+ * @retval true  Mailboxes are the same
+ * @retval false Mailboxes are different
+ */
+static bool is_same_mailbox(struct Mailbox *m1, struct Mailbox *m2,
+                            struct stat *st1, struct stat *st2)
+{
+  if (!m1 || mutt_buffer_is_empty(&m1->pathbuf) || !m2 ||
+      mutt_buffer_is_empty(&m2->pathbuf) || (m1->type != m2->type))
+  {
+    return false;
+  }
+
+  const bool uses_protocol = (m2->type == MUTT_IMAP) || (m2->type == MUTT_NNTP) ||
+                             (m2->type == MUTT_NOTMUCH) || (m2->type == MUTT_POP);
+
+  if (uses_protocol)
+    return mutt_str_equal(mailbox_path(m1), mailbox_path(m2));
+  else
+    return ((st1->st_dev == st2->st_dev) && (st1->st_ino == st2->st_ino));
+}
+
+/**
  * mailbox_check - Check a mailbox for new mail
  * @param m_cur       Current Mailbox
  * @param m_check     Mailbox to check
@@ -89,12 +116,9 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
 
   const bool c_check_mbox_size =
       cs_subset_bool(NeoMutt->sub, "check_mbox_size");
+
   /* check to see if the folder is the currently selected folder before polling */
-  if (!m_cur || mutt_buffer_is_empty(&m_cur->pathbuf) ||
-      (((m_check->type == MUTT_IMAP) || (m_check->type == MUTT_NNTP) ||
-        (m_check->type == MUTT_NOTMUCH) || (m_check->type == MUTT_POP)) ?
-           !mutt_str_equal(mailbox_path(m_check), mailbox_path(m_cur)) :
-           ((st.st_dev != st_ctx->st_dev) || (st.st_ino != st_ctx->st_ino))))
+  if (!is_same_mailbox(m_cur, m_check, st_ctx, &st))
   {
     switch (m_check->type)
     {
