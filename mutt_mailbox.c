@@ -118,7 +118,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       cs_subset_bool(NeoMutt->sub, "check_mbox_size");
 
   /* check to see if the folder is the currently selected folder before polling */
-  if (!is_same_mailbox(m_cur, m_check, st_ctx, &st))
+  if (check_stats && !is_same_mailbox(m_cur, m_check, st_ctx, &st))
   {
     switch (m_check->type)
     {
