@@ -330,11 +330,13 @@ int mutt_ch_convert_nonmime_string(char **ps)
     char *s = mutt_strn_dup(u, ulen);
     int m = mutt_ch_convert_string(&s, fromcode, c_charset, MUTT_ICONV_NO_FLAGS);
     FREE(&fromcode);
-    FREE(&s);
     if (m == 0)
     {
+      FREE(ps);
+      *ps = s;
       return 0;
     }
+    FREE(&s);
   }
   mutt_ch_convert_string(ps, (const char *) mutt_ch_get_default_charset(),
                          c_charset, MUTT_ICONV_HOOK_FROM);
