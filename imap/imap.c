@@ -273,9 +273,8 @@ static int make_msg_set(struct Mailbox *m, struct Buffer *buf,
       else if (n == (m->msg_count - 1))
         mutt_buffer_add_printf(buf, ":%u", imap_edata_get(e)->uid);
     }
-    /* End current set if message doesn't match or we've reached the end
-     * of the mailbox via inactive messages following the last match. */
-    else if (setstart && (e->active || (n == adata->mailbox->msg_count - 1)))
+    /* End current set if message doesn't match. */
+    else if (setstart)
     {
       if (imap_edata_get(m->emails[n - 1])->uid > setstart)
         mutt_buffer_add_printf(buf, ":%u", imap_edata_get(m->emails[n - 1])->uid);
