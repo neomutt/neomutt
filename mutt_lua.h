@@ -24,7 +24,7 @@
 #define MUTT_MUTT_LUA_H
 
 #include <stdint.h>
-#include "mutt_commands.h"
+#include "core/lib.h"
 
 struct Buffer;
 

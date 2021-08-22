@@ -24,12 +24,11 @@
 #define MUTT_SCORE_H
 
 #include <stdbool.h>
+#include "core/lib.h"
 #include <stdint.h>
-#include "mutt_commands.h"
 
 struct Buffer;
 struct Email;
-struct Mailbox;
 
 void mutt_check_rescore(struct Mailbox *m);
 enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);

@@ -43,7 +43,6 @@
 #include "ncrypt/lib.h"
 #include "functions.h"
 #include "init.h"
-#include "mutt_commands.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "opcodes.h"

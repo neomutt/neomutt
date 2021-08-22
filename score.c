@@ -38,7 +38,6 @@
 #include "pattern/lib.h"
 #include "context.h"
 #include "init.h"
-#include "mutt_commands.h"
 #include "mutt_globals.h"
 #include "mutt_thread.h"
 #include "options.h"

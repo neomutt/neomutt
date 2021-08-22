@@ -35,7 +35,6 @@
 #include "mutt.h"
 #include "subjectrx.h"
 #include "init.h"
-#include "mutt_commands.h"
 
 static struct ReplaceList SubjectRegexList = STAILQ_HEAD_INITIALIZER(SubjectRegexList);
 static struct Notify *SubjRxNotify = NULL;

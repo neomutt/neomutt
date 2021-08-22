@@ -40,6 +40,7 @@
 #include "gui/lib.h"
 #include "display.h"
 #include "lib.h"
+#include "color/lib.h"
 #include "protos.h"
 
 /**

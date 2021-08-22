@@ -25,9 +25,9 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <stdint.h>
 #include "mutt/lib.h"
-#include "core/lib.h"
+
+struct Command;
 
 /**
  * enum MuttSetCommand - Flags for parse_set()

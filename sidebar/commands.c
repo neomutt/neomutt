@@ -30,10 +30,10 @@
 #include <stdint.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "mutt.h"
 #include "lib.h"
 #include "init.h"
-#include "mutt_commands.h"
 #include "muttlib.h"
 
 /**

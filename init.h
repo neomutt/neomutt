@@ -24,12 +24,11 @@
 #ifndef MUTT_INIT_H
 #define MUTT_INIT_H
 
-#include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
+#include "core/lib.h"
 #include "mutt.h"
 #include "hook.h"
-#include "mutt_commands.h"
 
 struct Buffer;
 struct ConfigSet;

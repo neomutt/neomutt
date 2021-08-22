@@ -42,9 +42,9 @@
 #define MUTT_ALIAS_LIB_H
 
 #include <stddef.h>
+#include "core/command.h"
 #include <stdbool.h>
 #include <stdint.h>
-#include "mutt_commands.h"
 
 struct Address;
 struct AddressList;

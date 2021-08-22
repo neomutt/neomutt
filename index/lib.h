@@ -45,7 +45,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
-#include "functions.h"
+#include "functions.h"   // IWYU pragma: keep
 #include "mx.h"          // IWYU pragma: keep
 #include "shared_data.h" // IWYU pragma: keep
 

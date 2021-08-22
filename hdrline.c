@@ -46,6 +46,7 @@
 #include "gui/lib.h"
 #include "hdrline.h"
 #include "attach/lib.h"
+#include "color/lib.h"
 #include "ncrypt/lib.h"
 #include "format_flags.h"
 #include "hook.h"

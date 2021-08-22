@@ -35,6 +35,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "gui/lib.h"
+#include "color/lib.h"
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"

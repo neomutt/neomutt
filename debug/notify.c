@@ -34,8 +34,8 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "color/lib.h"
 #include "context.h"
-#include "mutt_commands.h"
 
 extern const struct Mapping ColorFields[];
 extern const struct Mapping ComposeColorFields[];

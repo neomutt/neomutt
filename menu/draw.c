@@ -35,6 +35,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "gui/lib.h"
+#include "color/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "context.h"

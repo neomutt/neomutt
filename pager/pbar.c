@@ -71,6 +71,7 @@
 #include "gui/lib.h"
 #include "pbar.h"
 #include "lib.h"
+#include "color/lib.h"
 #include "index/lib.h"
 #include "context.h"
 #include "format_flags.h"

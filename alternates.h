@@ -24,11 +24,10 @@
 #define MUTT_ALTERNATES_H
 
 #include <stdbool.h>
+#include "core/lib.h"
 #include <stdint.h>
-#include "mutt_commands.h"
 
 struct Buffer;
-struct Mailbox;
 
 /**
  * enum NotifyAlternates - Alternates command notification types

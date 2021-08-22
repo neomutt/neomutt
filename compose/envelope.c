@@ -71,6 +71,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "color/lib.h"
 #include "ncrypt/lib.h"
 #include "env_data.h"
 #include "options.h"

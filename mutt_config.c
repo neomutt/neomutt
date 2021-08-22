@@ -34,7 +34,6 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "menu/lib.h"
 #include "init.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"

@@ -29,9 +29,9 @@
 #include "config.h"
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "lib.h"
 #include "init.h"
-#include "mutt_commands.h"
 
 /**
  * test_parse_set - Test the config parsing

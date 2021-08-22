@@ -37,6 +37,7 @@
 #include "config/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "color/lib.h"
 #include "menu/lib.h"
 #include "commands.h"
 #include "context.h"

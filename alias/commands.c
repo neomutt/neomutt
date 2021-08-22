@@ -38,7 +38,6 @@
 #include "alias.h"
 #include "command_parse.h"
 #include "init.h"
-#include "mutt_commands.h"
 #include "reverse.h"
 
 /**

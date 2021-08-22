@@ -26,7 +26,9 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include <stdint.h>
+#include "config/lib.h"
 
+struct Buffer;
 struct Email;
 struct EmailList;
 struct Mailbox;

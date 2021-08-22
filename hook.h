@@ -23,16 +23,15 @@
 #ifndef MUTT_HOOK_H
 #define MUTT_HOOK_H
 
+#include "core/lib.h"
 #include "config.h"
 #include <stdint.h>
 #include <stdio.h>
-#include "mutt_commands.h"
 
 struct Address;
 struct Buffer;
 struct Email;
 struct ListHead;
-struct Mailbox;
 
 typedef uint32_t HookFlags;          ///< Flags for mutt_parse_hook(), e.g. #MUTT_FOLDER_HOOK
 #define MUTT_HOOK_NO_FLAGS       0   ///< No flags are set

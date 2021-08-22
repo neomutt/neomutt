@@ -164,6 +164,7 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "attach/lib.h"
+#include "color/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"

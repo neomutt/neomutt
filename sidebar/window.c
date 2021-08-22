@@ -78,6 +78,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "color/lib.h"
 #include "index/lib.h"
 #include "format_flags.h"
 #include "muttlib.h"

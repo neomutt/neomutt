@@ -43,8 +43,8 @@
 #define MUTT_SIDEBAR_LIB_H
 
 #include <stdbool.h>
+#include "core/lib.h"
 #include <stdint.h>
-#include "mutt_commands.h"
 
 struct Buffer;
 struct MuttWindow;

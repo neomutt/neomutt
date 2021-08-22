@@ -74,6 +74,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "color/lib.h"
 #include "menu/lib.h"
 #include "send/lib.h"
 #include "format_flags.h"

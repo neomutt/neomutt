@@ -38,7 +38,6 @@
 #include "alternates.h"
 #include "command_parse.h"
 #include "init.h"
-#include "mutt_commands.h"
 
 struct RegexList Alternates = STAILQ_HEAD_INITIALIZER(Alternates); ///< List of regexes to match the user's alternate email addresses
 struct RegexList UnAlternates = STAILQ_HEAD_INITIALIZER(UnAlternates); ///< List of regexes to blacklist false matches in Alternates

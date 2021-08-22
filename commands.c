@@ -55,7 +55,6 @@
 #include "hook.h"
 #include "icommands.h"
 #include "init.h"
-#include "mutt_commands.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "mutt_thread.h"

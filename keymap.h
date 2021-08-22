@@ -24,11 +24,11 @@
 #define MUTT_KEYMAP_H
 
 #include "config.h"
+#include "core/lib.h"
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "menu/lib.h"
-#include "mutt_commands.h"
 
 #define MUTT_UNBIND  1<<0
 #define MUTT_UNMACRO 1<<1

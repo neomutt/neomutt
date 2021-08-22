@@ -24,12 +24,11 @@
 #define MUTT_SUBJECTRX_H
 
 #include <stdbool.h>
+#include "core/lib.h"
 #include <stdint.h>
-#include "mutt_commands.h"
 
 struct Buffer;
 struct Envelope;
-struct Mailbox;
 
 /**
  * enum NotifySubjRx - Subject Regex notification types

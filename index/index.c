@@ -66,7 +66,7 @@
  */
 
 #include "config.h"
-#include <assert.h>
+#include <stddef.h>
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -74,6 +74,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "attach/lib.h"
+#include "color/lib.h"
 #include "menu/lib.h"
 #include "alternates.h"
 #include "context.h"
