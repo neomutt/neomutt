@@ -166,21 +166,6 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "autocrypt", 0 },
 #endif
-#ifdef HAVE_BKGDSET
-  { "bkgdset", 1 },
-#else
-  { "bkgdset", 0 },
-#endif
-#ifdef HAVE_COLOR
-  { "color", 1 },
-#else
-  { "color", 0 },
-#endif
-#ifdef HAVE_CURS_SET
-  { "curs_set", 1 },
-#else
-  { "curs_set", 0 },
-#endif
 #ifdef USE_FCNTL
   { "fcntl", 1 },
 #else
@@ -251,11 +236,6 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "lua", 0 },
 #endif
-#ifdef HAVE_META
-  { "meta", 1 },
-#else
-  { "meta", 0 },
-#endif
 #ifdef MIXMASTER
   { "mixmaster", 1 },
 #else
@@ -302,20 +282,10 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "sqlite", 0 },
 #endif
-#ifdef HAVE_START_COLOR
-  { "start_color", 1 },
-#else
-  { "start_color", 0 },
-#endif
 #ifdef SUN_ATTACHMENT
   { "sun_attachment", 1 },
 #else
   { "sun_attachment", 0 },
-#endif
-#ifdef HAVE_TYPEAHEAD
-  { "typeahead", 1 },
-#else
-  { "typeahead", 0 },
 #endif
   { NULL, 0 },
 };

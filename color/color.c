@@ -125,8 +125,6 @@ static struct ColorLineList *get_color_line_list(struct ColorLineList *cll)
 typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
                                  uint32_t *bg, int *attr, struct Buffer *err);
 
-#ifdef HAVE_COLOR
-
 #define COLOR_DEFAULT (-2)
 
 /*
@@ -146,13 +144,10 @@ static const struct Mapping ColorNames[] = {
   { "red",     COLOR_RED },
   { "white",   COLOR_WHITE },
   { "yellow",  COLOR_YELLOW },
-#if defined(USE_SLANG_CURSES) || defined(HAVE_USE_DEFAULT_COLORS)
   { "default", COLOR_DEFAULT },
-#endif
   { 0, 0 },
   // clang-format on
 };
-#endif /* HAVE_COLOR */
 
 const struct Mapping ColorFields[] = {
   // clang-format off
@@ -336,10 +331,8 @@ static void color_line_free(struct ColorLine **ptr, bool free_colors)
 
   struct ColorLine *cl = *ptr;
 
-#ifdef HAVE_COLOR
   if (free_colors && (cl->fg != COLOR_UNSET) && (cl->bg != COLOR_UNSET))
     mutt_color_free(cl->fg, cl->bg);
-#endif
 
   regfree(&cl->regex);
   mutt_pattern_free(&cl->color_pattern);
@@ -401,9 +394,7 @@ void mutt_colors_init(void)
   quotes_init();
   defs_init();
 
-#ifdef HAVE_COLOR
   start_color();
-#endif
 
   notify_set_parent(Colors.notify, NeoMutt->notify);
 }
@@ -422,7 +413,6 @@ static struct ColorLine *color_line_new(void)
   return cl;
 }
 
-#ifdef HAVE_COLOR
 #ifdef USE_SLANG_CURSES
 /**
  * get_color_name - Get a colour's name from its ID
@@ -535,12 +525,10 @@ int mutt_color_alloc(uint32_t fg, uint32_t bg)
   SLtt_set_color(i, NULL, get_color_name(fgc, sizeof(fgc), fg),
                  get_color_name(bgc, sizeof(bgc), bg));
 #else
-#ifdef HAVE_USE_DEFAULT_COLORS
   if (fg == COLOR_DEFAULT)
     fg = COLOR_UNSET;
   if (bg == COLOR_DEFAULT)
     bg = COLOR_UNSET;
-#endif
   init_pair(i, fg, bg);
 #endif
 
@@ -594,9 +582,7 @@ int mutt_color_combine(uint32_t fg_attr, uint32_t bg_attr)
     return A_NORMAL;
   return mutt_color_alloc(fg, bg);
 }
-#endif /* HAVE_COLOR */
 
-#ifdef HAVE_COLOR
 /**
  * parse_color_name - Parse a colour name
  * @param[in]  s     String to parse
@@ -644,7 +630,7 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
       return MUTT_CMD_ERROR;
     }
   }
-#ifdef HAVE_DIRECTCOLOR
+#ifdef USE_SLANG_CURSES
   else if (*s == '#')
   {
     s += 1;
@@ -701,7 +687,6 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
 
   return MUTT_CMD_SUCCESS;
 }
-#endif
 
 /**
  * parse_object - Identify a colour object
@@ -905,13 +890,9 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_WARNING;
   }
 
-#ifdef HAVE_COLOR
   if (OptNoCurses ||                // running without curses
       (uncolor && !has_colors()) || // parsing an uncolor command, and have no colors
       (!uncolor && has_colors())) // parsing an unmono command, and have colors
-#else
-  if (uncolor) // We don't even have colors compiled in
-#endif
   {
     do
     {
@@ -953,7 +934,6 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
   return MUTT_CMD_SUCCESS;
 }
 
-#ifdef HAVE_COLOR
 /**
  * mutt_parse_uncolor - Parse the 'uncolor' command - Implements Command::parse() - @ingroup command_parse
  */
@@ -967,7 +947,6 @@ enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s,
   }
   return parse_uncolor(buf, s, err, true);
 }
-#endif
 
 /**
  * mutt_parse_unmono - Parse the 'unmono' command - Implements Command::parse() - @ingroup command_parse
@@ -1016,7 +995,6 @@ static enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
 
   if (tmp)
   {
-#ifdef HAVE_COLOR
     if ((fg != COLOR_UNSET) && (bg != COLOR_UNSET))
     {
       if ((tmp->fg != fg) || (tmp->bg != bg))
@@ -1029,7 +1007,6 @@ static enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
       else
         attr |= (tmp->pair & ~A_BOLD);
     }
-#endif /* HAVE_COLOR */
     tmp->pair = attr;
   }
   else
@@ -1070,14 +1047,12 @@ static enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
     }
     tmp->pattern = mutt_str_dup(s);
     tmp->match = match;
-#ifdef HAVE_COLOR
     if ((fg != COLOR_UNSET) && (bg != COLOR_UNSET))
     {
       tmp->fg = fg;
       tmp->bg = bg;
       attr |= mutt_color_alloc(fg, bg);
     }
-#endif
     tmp->pair = attr;
     STAILQ_INSERT_HEAD(top, tmp, entries);
   }
@@ -1098,7 +1073,6 @@ static enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
   return MUTT_CMD_SUCCESS;
 }
 
-#ifdef HAVE_COLOR
 /**
  * parse_color_pair - Parse a pair of colours - Implements ::parser_callback_t
  */
@@ -1147,7 +1121,6 @@ static enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
 
   return parse_color_name(buf->data, bg, attr, false, err);
 }
-#endif
 
 /**
  * parse_attr_spec - Parse an attribute description - Implements ::parser_callback_t
@@ -1199,10 +1172,8 @@ static enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
  */
 static int fgbgattr_to_color(int fg, int bg, int attr)
 {
-#ifdef HAVE_COLOR
   if ((fg != COLOR_UNSET) && (bg != COLOR_UNSET))
     return attr | mutt_color_alloc(fg, bg);
-#endif
   return attr;
 }
 
@@ -1272,8 +1243,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_SUCCESS;
   }
 
-#ifdef HAVE_COLOR
-#ifdef HAVE_USE_DEFAULT_COLORS
+#ifdef NCURSES_VERSION
   if (!OptNoCurses &&
       has_colors()
       /* delay use_default_colors() until needed, since it initializes things */
@@ -1286,7 +1256,6 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     mutt_buffer_strcpy(err, _("default colors not supported"));
     return MUTT_CMD_ERROR;
   }
-#endif /* HAVE_USE_DEFAULT_COLORS */
 #endif
 
   if (object == MT_COLOR_ATTACH_HEADERS)
@@ -1394,7 +1363,6 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
   return rc;
 }
 
-#ifdef HAVE_COLOR
 /**
  * mutt_parse_color - Parse the 'color' command - Implements Command::parse() - @ingroup command_parse
  */
@@ -1408,7 +1376,6 @@ enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s,
 
   return parse_color(buf, s, err, parse_color_pair, dry_run, true);
 }
-#endif
 
 /**
  * mutt_parse_mono - Parse the 'mono' command - Implements Command::parse() - @ingroup command_parse
@@ -1418,13 +1385,8 @@ enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
 {
   bool dry_run = false;
 
-#ifdef HAVE_COLOR
   if (OptNoCurses || has_colors())
     dry_run = true;
-#else
-  if (OptNoCurses)
-    dry_run = true;
-#endif
 
   return parse_color(buf, s, err, parse_attr_spec, dry_run, false);
 }

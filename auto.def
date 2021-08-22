@@ -735,11 +735,6 @@ switch [opt-val with-ui ncurses] {
       if {![have-feature waddnwstr] || ![have-feature tgetent]} {
         user-error "Unable to find ncursesw library"
       }
-
-      foreach f {bkgdset curs_set meta start_color typeahead use_default_colors} {
-        cc-check-function-in-lib $f $ncurses_lib
-      }
-      cc-check-functions use_extended_names
     }
 
     # Locate the directory containing ncurses.h
@@ -755,10 +750,6 @@ switch [opt-val with-ui ncurses] {
         user-error "Unable to find ncurses headers"
       }
     }} $ncurses_prefix
-
-    if {[have-feature start_color]} {
-      define-feature COLOR
-    }
   }
 
   slang {
@@ -772,8 +763,6 @@ switch [opt-val with-ui ncurses] {
       user-error "Unable to find S-Lang"
     }
     define USE_SLANG_CURSES
-    define-feature COLOR
-    define-feature DIRECTCOLOR
   }
 
   default {

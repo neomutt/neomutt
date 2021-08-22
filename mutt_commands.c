@@ -55,9 +55,7 @@ static const struct Command mutt_commands[] = {
   { "bind",                mutt_parse_bind,        0 },
   { "cd",                  parse_cd,               0 },
   { "charset-hook",        mutt_parse_hook,        MUTT_CHARSET_HOOK },
-#ifdef HAVE_COLOR
   { "color",               mutt_parse_color,       0 },
-#endif
   { "crypt-hook",          mutt_parse_hook,        MUTT_CRYPT_HOOK },
   { "echo",                parse_echo,             0 },
   { "exec",                mutt_parse_exec,        0 },
@@ -109,9 +107,7 @@ static const struct Command mutt_commands[] = {
   { "unattachments",       parse_unattachments,    0 },
   { "unauto_view",         parse_unstailq,         IP &AutoViewList },
   { "unbind",              mutt_parse_unbind,      MUTT_UNBIND },
-#ifdef HAVE_COLOR
   { "uncolor",             mutt_parse_uncolor,     0 },
-#endif
   { "ungroup",             parse_group,            MUTT_UNGROUP },
   { "unhdr_order",         parse_unstailq,         IP &HeaderOrderList },
   { "unhook",              mutt_parse_unhook,      0 },

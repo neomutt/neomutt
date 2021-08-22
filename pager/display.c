@@ -194,7 +194,6 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
   /* handle "special" bold & underlined characters */
   if (special || aa->attr)
   {
-#ifdef HAVE_COLOR
     if ((aa->attr & ANSI_COLOR))
     {
       if (aa->pair == -1)
@@ -203,9 +202,7 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
       if (aa->attr & ANSI_BOLD)
         color |= A_BOLD;
     }
-    else
-#endif
-        if ((special & A_BOLD) || (aa->attr & ANSI_BOLD))
+    else if ((special & A_BOLD) || (aa->attr & ANSI_BOLD))
     {
       if (mutt_color(MT_COLOR_BOLD) && !search)
         color = mutt_color(MT_COLOR_BOLD);
@@ -1023,10 +1020,8 @@ static int grok_ansi(const unsigned char *buf, int pos, struct AnsiAttr *aa)
   {
     if (pos == x)
     {
-#ifdef HAVE_COLOR
       if (aa->pair != -1)
         mutt_color_free(aa->fg, aa->bg);
-#endif
       aa->attr = ANSI_OFF;
       aa->pair = -1;
     }
@@ -1054,20 +1049,16 @@ static int grok_ansi(const unsigned char *buf, int pos, struct AnsiAttr *aa)
       }
       else if ((buf[pos] == '0') && (((pos + 1) == x) || (buf[pos + 1] == ';')))
       {
-#ifdef HAVE_COLOR
         if (aa->pair != -1)
           mutt_color_free(aa->fg, aa->bg);
-#endif
         aa->attr = ANSI_OFF;
         aa->pair = -1;
         pos += 2;
       }
       else if ((buf[pos] == '3') && isdigit(buf[pos + 1]))
       {
-#ifdef HAVE_COLOR
         if (aa->pair != -1)
           mutt_color_free(aa->fg, aa->bg);
-#endif
         aa->pair = -1;
         aa->attr |= ANSI_COLOR;
         aa->fg = buf[pos + 1] - '0';
@@ -1075,10 +1066,8 @@ static int grok_ansi(const unsigned char *buf, int pos, struct AnsiAttr *aa)
       }
       else if ((buf[pos] == '4') && isdigit(buf[pos + 1]))
       {
-#ifdef HAVE_COLOR
         if (aa->pair != -1)
           mutt_color_free(aa->fg, aa->bg);
-#endif
         aa->pair = -1;
         aa->attr |= ANSI_COLOR;
         aa->bg = buf[pos + 1] - '0';
