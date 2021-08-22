@@ -38,7 +38,7 @@
  */
 void mutt_curses_set_attr(int attr)
 {
-#ifdef HAVE_BKGDSET
+#ifdef NCURSES_VERSION
   bkgdset(attr | ' ');
 #else
   attrset(attr);
@@ -57,7 +57,7 @@ void mutt_curses_set_color(enum ColorId color)
 {
   const int chosen = mutt_color(color);
   const int normal = mutt_color(MT_COLOR_NORMAL);
-#ifdef HAVE_BKGDSET
+#ifdef NCURSES_VERSION
   bkgdset((chosen ? chosen : normal) | ' ');
 #else
   attrset(chosen ? chosen : normal);
@@ -70,7 +70,6 @@ void mutt_curses_set_color(enum ColorId color)
  */
 void mutt_curses_set_cursor(enum MuttCursorState state)
 {
-#if (defined(USE_SLANG_CURSES) || defined(HAVE_CURS_SET))
   static int SavedCursor = MUTT_CURSOR_VISIBLE;
 
   if (state == MUTT_CURSOR_RESTORE_LAST)
@@ -83,5 +82,4 @@ void mutt_curses_set_cursor(enum MuttCursorState state)
     if (state == MUTT_CURSOR_VISIBLE)
       curs_set(MUTT_CURSOR_VERY_VISIBLE);
   }
-#endif
 }

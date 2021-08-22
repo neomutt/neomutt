@@ -364,10 +364,8 @@ static int start_curses(void)
   cbreak();
   noecho();
   nonl();
-#ifdef HAVE_TYPEAHEAD
+#ifdef NCURSES_VERSION
   typeahead(-1); /* simulate smooth scrolling */
-#endif
-#ifdef HAVE_META
   meta(stdscr, true);
 #endif
   init_extended_keys();

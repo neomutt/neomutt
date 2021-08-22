@@ -73,7 +73,7 @@ bool mutt_ts_capability(void)
     return true;
   }
 
-#ifdef HAVE_USE_EXTENDED_NAMES
+#ifdef NCURSES_VERSION
   /* If XT (boolean) is set, then this terminal supports the standard escape. */
   /* Beware: tigetflag returns -1 if XT is invalid or not a boolean. */
   use_extended_names(true);
