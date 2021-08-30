@@ -517,7 +517,8 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
       const char *const c_pager_format =
           cs_subset_string(NeoMutt->sub, "pager_format");
       mutt_make_string(buf, buflen, priv->pview->win_pbar->state.cols,
-                       NONULL(c_pager_format), shared->mailbox, shared->ctx->msg_in_pager,
+                       NONULL(c_pager_format), shared->mailbox,
+                       shared->ctx ? shared->ctx->msg_in_pager : -1,
                        e, MUTT_FORMAT_NO_FLAGS, pager_progress_str);
       mutt_draw_statusline(priv->pview->win_pbar,
                            priv->pview->win_pbar->state.cols, buf, l2);
