@@ -74,6 +74,7 @@
 #include "color/lib.h"
 #include "index/lib.h"
 #include "context.h"
+#include "display.h"
 #include "format_flags.h"
 #include "hdrline.h"
 #include "private_data.h"
@@ -103,10 +104,17 @@ static int pbar_recalc(struct MuttWindow *win)
   struct PagerPrivateData *priv = pbar_data->priv;
 
   char pager_progress_str[65]; /* Lots of space for translations */
-  if (priv->bytes_read < priv->st.st_size - 1)
+
+  long offset;
+  if (priv->lines && (priv->cur_line <= priv->lines_used))
+    offset = priv->lines[priv->cur_line].offset;
+  else
+    offset = priv->bytes_read;
+
+  if (offset < (priv->st.st_size - 1))
   {
     snprintf(pager_progress_str, sizeof(pager_progress_str), OFF_T_FMT "%%",
-             (100 * priv->bytes_read / priv->st.st_size));
+             (100 * offset / priv->st.st_size));
   }
   else
   {
