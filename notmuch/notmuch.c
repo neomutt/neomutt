@@ -1808,20 +1808,7 @@ static enum MxStatus nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 
   db_filename = url->path;
   if (!db_filename)
-  {
-    const char *const c_nm_default_url =
-        cs_subset_string(NeoMutt->sub, "nm_default_url");
-    const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
-    if (c_nm_default_url)
-    {
-      if (nm_path_probe(c_nm_default_url, NULL) == MUTT_NOTMUCH)
-        db_filename = c_nm_default_url + NmUrlProtocolLen;
-      else
-        db_filename = c_nm_default_url;
-    }
-    else if (c_folder)
-      db_filename = c_folder;
-  }
+    db_filename = nm_db_get_filename(m);
 
   /* don't be verbose about connection, as we're called from
    * sidebar/mailbox very often */
