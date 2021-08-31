@@ -1340,7 +1340,7 @@ static int rename_filename(struct Mailbox *m, const char *old_file,
     return -1;
 
   mutt_debug(LL_DEBUG2, "nm: rename: add '%s'\n", new_file);
-#ifdef HAVE_NOTMUCH_DATABASE_INDEX_FILE
+#if LIBNOTMUCH_CHECK_VERSION(5, 1, 0)
   st = notmuch_database_index_file(db, new_file, NULL, &msg);
 #else
   st = notmuch_database_add_message(db, new_file, &msg);
@@ -1379,7 +1379,7 @@ static int rename_filename(struct Mailbox *m, const char *old_file,
         {
           mutt_debug(LL_DEBUG2, "nm: rename dup %s -> %s\n", path, newpath);
           notmuch_database_remove_message(db, path);
-#ifdef HAVE_NOTMUCH_DATABASE_INDEX_FILE
+#if LIBNOTMUCH_CHECK_VERSION(5, 1, 0)
           notmuch_database_index_file(db, newpath, NULL, NULL);
 #else
           notmuch_database_add_message(db, newpath, NULL);
@@ -1925,7 +1925,7 @@ int nm_record_message(struct Mailbox *m, char *path, struct Email *e)
   if (trans < 0)
     goto done;
 
-#ifdef HAVE_NOTMUCH_DATABASE_INDEX_FILE
+#if LIBNOTMUCH_CHECK_VERSION(5, 1, 0)
   st = notmuch_database_index_file(db, path, NULL, &msg);
 #else
   st = notmuch_database_add_message(db, path, &msg);

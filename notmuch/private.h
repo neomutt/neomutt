@@ -33,12 +33,28 @@ struct Mailbox;
 #undef LIBNOTMUCH_CHECK_VERSION
 #endif
 
-/* The definition in <notmuch.h> is broken */
-#define LIBNOTMUCH_CHECK_VERSION(major, minor, micro)                             \
-  (LIBNOTMUCH_MAJOR_VERSION > (major) ||                                          \
-   (LIBNOTMUCH_MAJOR_VERSION == (major) && LIBNOTMUCH_MINOR_VERSION > (minor)) || \
-   (LIBNOTMUCH_MAJOR_VERSION == (major) &&                                        \
-    LIBNOTMUCH_MINOR_VERSION == (minor) && LIBNOTMUCH_MICRO_VERSION >= (micro)))
+#ifndef HAVE_NOTMUCH_DATABASE_INDEX_FILE
+#define HAVE_NOTMUCH_DATABASE_INDEX_FILE 0
+#endif
+
+#ifndef HAVE_NOTMUCH_DATABASE_OPEN_WITH_CONFIG
+#define HAVE_NOTMUCH_DATABASE_OPEN_WITH_CONFIG 0
+#endif
+
+/*
+ * The definition in <notmuch.h> is broken.
+ *
+ * Corrects for libnotmuch releases with missing version bumps:
+ * - libnotmuch 5.4 released with notmuch 0.32. notmuch 0.32.3 fixed version.
+ * - libnotmuch 5.1 released with notmuch 0.26. notmuch 0.26.1 fixed version.
+ */
+#define LIBNOTMUCH_CHECK_VERSION(major, minor, micro)                              \
+  (major == 5 && minor == 4 && HAVE_NOTMUCH_DATABASE_OPEN_WITH_CONFIG)          || \
+  (major == 5 && minor == 1 && HAVE_NOTMUCH_DATABASE_INDEX_FILE)                || \
+  ((LIBNOTMUCH_MAJOR_VERSION > (major) ||                                          \
+   (LIBNOTMUCH_MAJOR_VERSION == (major) && LIBNOTMUCH_MINOR_VERSION > (minor))  || \
+   (LIBNOTMUCH_MAJOR_VERSION == (major) &&                                         \
+    LIBNOTMUCH_MINOR_VERSION == (minor) && LIBNOTMUCH_MICRO_VERSION >= (micro))))
 
 extern const char NmUrlProtocol[];
 extern const int NmUrlProtocolLen;
