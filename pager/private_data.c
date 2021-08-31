@@ -29,6 +29,7 @@
 #include "config.h"
 #include "mutt/lib.h"
 #include "private_data.h"
+#include "pager/lib.h"
 
 /**
  * pager_private_data_free - Free Pager Data
@@ -40,7 +41,11 @@ void pager_private_data_free(struct MuttWindow *win, void **ptr)
   if (!ptr || !*ptr)
     return;
 
-  // struct PagerPrivateData *priv = *ptr;
+  struct PagerPrivateData *priv = *ptr;
+
+  mutt_debug(LL_NOTIFY, "NT_PAGER_DELETE: %p\n", priv);
+  notify_send(priv->notify, NT_PAGER, NT_PAGER_DELETE, priv);
+  notify_free(&priv->notify);
 
   FREE(ptr);
 }
@@ -52,6 +57,8 @@ void pager_private_data_free(struct MuttWindow *win, void **ptr)
 struct PagerPrivateData *pager_private_data_new(void)
 {
   struct PagerPrivateData *priv = mutt_mem_calloc(1, sizeof(struct PagerPrivateData));
+
+  priv->notify = notify_new();
 
   return priv;
 }

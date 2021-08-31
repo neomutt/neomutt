@@ -71,6 +71,7 @@ struct PagerPrivateData
 
   bool force_redraw;           ///< Repaint is needed
   MenuRedrawFlags redraw;      ///< When to redraw the screen
+  struct Notify *notify;       ///< Notifications: #NotifyPager, #PagerPrivateData
 };
 
 void                     pager_private_data_free(struct MuttWindow *win, void **ptr);

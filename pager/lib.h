@@ -165,15 +165,10 @@ struct PagerView
   struct MuttWindow *win_pager; ///< Pager Window
 };
 
-typedef uint8_t NotifyPager;         ///< Flags, e.g. #NT_PAGER_ACCOUNT
+typedef uint8_t NotifyPager;         ///< Flags, e.g. #NT_PAGER_DELETE
 #define NT_PAGER_NO_FLAGS        0   ///< No flags are set
-#define NT_PAGER_CONFIG    (1 << 0)  ///< Config subset has changed
-#define NT_PAGER_CONTEXT   (1 << 1)  ///< Context has changed
-#define NT_PAGER_ACCOUNT   (1 << 2)  ///< Account has changed
-#define NT_PAGER_MAILBOX   (1 << 3)  ///< Mailbox has changed
-#define NT_PAGER_EMAIL     (1 << 4)  ///< Email has changed
-#define NT_PAGER_CLOSING   (1 << 5)  ///< The Pager is about to close
-#define NT_PAGER_SUBSET    (1 << 6)  ///< Config Subset has changed
+#define NT_PAGER_DELETE    (1 << 0)  ///< Pager Private Data is about to be freed
+#define NT_PAGER_VIEW      (1 << 1)  ///< Pager View has changed
 
 extern int braille_row;
 extern int braille_col;

@@ -36,7 +36,6 @@
 #include "config.h"
 #include <assert.h>
 #include <inttypes.h> // IWYU pragma: keep
-#include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -61,8 +60,6 @@
 #include "commands.h"
 #include "context.h"
 #include "display.h"
-#include "format_flags.h"
-#include "hdrline.h"
 #include "hook.h"
 #include "keymap.h"
 #include "mutt_globals.h"
@@ -545,6 +542,7 @@ static bool jump_to_bottom(struct PagerPrivateData *priv, struct PagerView *pvie
   }
   priv->top_line = up_n_lines(priv->pview->win_pager->state.rows, priv->lines,
                               priv->lines_used, priv->hide_quoted);
+  notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
   return true;
 }
 
@@ -715,8 +713,10 @@ int mutt_pager(struct PagerView *pview)
   {
     // Wipe any previous state info
     struct Menu *menu = priv->menu;
+    struct Notify *notify = priv->notify;
     memset(priv, 0, sizeof(*priv));
     priv->menu = menu;
+    priv->notify = notify;
     priv->win_pbar = pview->win_pbar;
   }
 
@@ -820,8 +820,9 @@ int mutt_pager(struct PagerView *pview)
     mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
     pager_queue_redraw(priv, MENU_REDRAW_FULL);
-    window_redraw(NULL);
     pager_custom_redraw(priv);
+    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+    window_redraw(NULL);
 
     const bool c_braille_friendly =
         cs_subset_bool(NeoMutt->sub, "braille_friendly");
@@ -1028,6 +1029,7 @@ int mutt_pager(struct PagerView *pview)
               cs_subset_number(NeoMutt->sub, "pager_context");
           priv->top_line = up_n_lines(c_pager_context, priv->lines,
                                       priv->cur_line, priv->hide_quoted);
+          notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
         }
         else if (c_pager_stop)
         {
@@ -1056,6 +1058,7 @@ int mutt_pager(struct PagerView *pview)
               cs_subset_number(NeoMutt->sub, "pager_context");
           priv->top_line = up_n_lines(priv->pview->win_pager->state.rows - c_pager_context,
                                       priv->lines, priv->top_line, priv->hide_quoted);
+          notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
         }
         break;
 
@@ -1073,18 +1076,26 @@ int mutt_pager(struct PagerView *pview)
               priv->top_line++;
             }
           }
+          notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
         }
         else
+        {
           mutt_message(_("Bottom of message is shown"));
+        }
         break;
 
         //=======================================================================
 
       case OP_PREV_LINE:
         if (priv->top_line)
+        {
           priv->top_line = up_n_lines(1, priv->lines, priv->top_line, priv->hide_quoted);
+          notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+        }
         else
+        {
           mutt_message(_("Top of message is shown"));
+        }
         break;
 
         //=======================================================================
@@ -1104,6 +1115,7 @@ int mutt_pager(struct PagerView *pview)
           priv->top_line = up_n_lines(priv->pview->win_pager->state.rows / 2 +
                                           (priv->pview->win_pager->state.rows % 2),
                                       priv->lines, priv->top_line, priv->hide_quoted);
+          notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
         }
         else
           mutt_message(_("Top of message is shown"));
@@ -1118,6 +1130,7 @@ int mutt_pager(struct PagerView *pview)
         {
           priv->top_line = up_n_lines(priv->pview->win_pager->state.rows / 2,
                                       priv->lines, priv->cur_line, priv->hide_quoted);
+          notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
         }
         else if (c_pager_stop)
         {
@@ -1213,6 +1226,7 @@ int mutt_pager(struct PagerView *pview)
               priv->top_line -= searchctx;
           }
 
+          notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
           break;
         }
         /* no previous search pattern */
@@ -1352,6 +1366,7 @@ int mutt_pager(struct PagerView *pview)
           }
         }
         pager_queue_redraw(priv, MENU_REDRAW_BODY);
+        notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
         break;
       }
 
@@ -1400,9 +1415,14 @@ int mutt_pager(struct PagerView *pview)
 
         priv->hide_quoted ^= MUTT_HIDE;
         if (priv->hide_quoted && (priv->lines[priv->top_line].color == MT_COLOR_QUOTED))
+        {
           priv->top_line = up_n_lines(1, priv->lines, priv->top_line, priv->hide_quoted);
+        }
         else
+        {
           pager_queue_redraw(priv, MENU_REDRAW_BODY);
+        }
+        notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
         break;
 
         //=======================================================================
@@ -1433,6 +1453,7 @@ int mutt_pager(struct PagerView *pview)
             new_topline++;
           }
           priv->top_line = new_topline;
+          notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
           break;
         }
 
@@ -1501,6 +1522,7 @@ int mutt_pager(struct PagerView *pview)
           }
         }
         priv->top_line = new_topline - MIN(c_skip_quoted_context, num_quoted);
+        notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
         break;
       }
 
@@ -1535,6 +1557,7 @@ int mutt_pager(struct PagerView *pview)
           break;
         }
         priv->top_line = new_topline;
+        notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
         break;
       }
 

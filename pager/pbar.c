@@ -248,17 +248,7 @@ static int pbar_pager_observer(struct NotifyCallback *nc)
   if (!win_pbar)
     return 0;
 
-  struct IndexSharedData *shared = nc->event_data;
-  if (!shared)
-    return 0;
-
-  if (nc->event_subtype & NT_PAGER_MAILBOX)
-  {
-    win_pbar->actions |= WA_RECALC;
-    mutt_debug(LL_DEBUG5, "pager done, request WA_RECALC\n");
-  }
-
-  if (nc->event_subtype & NT_PAGER_EMAIL)
+  if (nc->event_subtype & NT_PAGER_VIEW)
   {
     win_pbar->actions |= WA_RECALC;
     mutt_debug(LL_DEBUG5, "pager done, request WA_RECALC\n");
@@ -293,7 +283,7 @@ static int pbar_window_observer(struct NotifyCallback *nc)
     notify_observer_remove(NeoMutt->notify, pbar_color_observer, win_pbar);
     notify_observer_remove(NeoMutt->notify, pbar_config_observer, win_pbar);
     notify_observer_remove(shared->notify, pbar_index_observer, win_pbar);
-    notify_observer_remove(shared->notify, pbar_pager_observer, win_pbar);
+    notify_observer_remove(pbar_data->priv->notify, pbar_pager_observer, win_pbar);
     notify_observer_remove(win_pbar->notify, pbar_window_observer, win_pbar);
 
     mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -350,7 +340,7 @@ struct MuttWindow *pbar_new(struct MuttWindow *parent, struct IndexSharedData *s
   notify_observer_add(NeoMutt->notify, NT_COLOR, pbar_color_observer, win_pbar);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, pbar_config_observer, win_pbar);
   notify_observer_add(shared->notify, NT_INDEX, pbar_index_observer, win_pbar);
-  notify_observer_add(shared->notify, NT_PAGER, pbar_pager_observer, win_pbar);
+  notify_observer_add(priv->notify, NT_PAGER, pbar_pager_observer, win_pbar);
   notify_observer_add(win_pbar->notify, NT_WINDOW, pbar_window_observer, win_pbar);
 
   return win_pbar;
