@@ -12046,7 +12046,7 @@ set timeout=15
     </sect1>
 
     <sect1 id="oauth">
-      <title>OAUTHBEARER Support</title>
+      <title>OAUTHBEARER and XOAUTH2 Support</title>
       <para>
         Preliminary OAUTH support for IMAP, POP, and SMTP is provided via external scripts.
       </para>
@@ -12073,8 +12073,25 @@ set imap_oauth_refresh_command="/path/to/oauth2.py --quiet --user=[email_address
 </screen>
 
       <para>
-        Substitute pop or smtp for imap in the above example to configure for
-        those.
+        For Office365, you can use the <literal>mutt_oauth2.py</literal> script
+        written by Alexander Perlis:
+        <ulink url="https://github.com/neomutt/neomutt/blob/master/contrib/oauth2/mutt_oauth2.py">https://github.com/neomutt/neomutt/blob/master/contrib/oauth2/mutt_oauth2.py</ulink>
+      </para>
+      <para>
+        You'll need to get your own oauth client credentials by following the
+        script instructions:
+        <ulink url="https://github.com/neomutt/neomutt/blob/master/contrib/oauth2/mutt_oauth2.py.README">https://github.com/neomutt/neomutt/blob/master/contrib/oauth2/mutt_oauth2.py.README</ulink>
+      </para>
+
+<screen>
+set imap_authenticators="xoauth2"
+set imap_oauth_refresh_command="/path/to/mutt_oauth2.py /path/to/token"
+</screen>
+
+      <para>
+        Substitute pop or smtp for imap in the above examples to configure for
+        those. Please note that xoauth2 support has not yet been implemented for
+        pop.
       </para>
     </sect1>
 
