@@ -74,7 +74,7 @@ struct AnsiAttr
  */
 struct QClass
 {
-  int quoten;                 ///< The quoteN colour index for this level
+  int quote_n;                ///< The quoteN colour index for this level
   int color;                  ///< Curses colour pair
   char *prefix;               ///< Prefix string, e.g. "> "
   size_t prefix_len;          ///< Length of the prefix string

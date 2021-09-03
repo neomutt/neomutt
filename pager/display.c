@@ -268,8 +268,8 @@ static void append_line(struct Line *lines, int line_num, int cnt)
  */
 static void class_color_new(struct QClass *qc, int *q_level)
 {
-  qc->quoten = (*q_level)++;
-  qc->color = mutt_color_quote(qc->quoten);
+  qc->quote_n = (*q_level)++;
+  qc->color = mutt_color_quote(qc->quote_n);
 }
 
 /**
@@ -283,14 +283,14 @@ static void shift_class_colors(struct QClass *quote_list,
                                struct QClass *new_class, int index, int *q_level)
 {
   struct QClass *q_list = quote_list;
-  new_class->quoten = -1;
+  new_class->quote_n = -1;
 
   while (q_list)
   {
-    if (q_list->quoten >= index)
+    if (q_list->quote_n >= index)
     {
-      q_list->quoten++;
-      q_list->color = mutt_color_quote(q_list->quoten);
+      q_list->quote_n++;
+      q_list->color = mutt_color_quote(q_list->quote_n);
     }
     if (q_list->down)
       q_list = q_list->down;
@@ -309,7 +309,7 @@ static void shift_class_colors(struct QClass *quote_list,
     }
   }
 
-  new_class->quoten = index;
+  new_class->quote_n = index;
   new_class->color = mutt_color_quote(index);
   (*q_level)++;
 }
@@ -390,7 +390,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
           if (q_list == *quote_list)
             *quote_list = tmp;
 
-          index = q_list->quoten;
+          index = q_list->quote_n;
 
           /* tmp should be the return class too */
           qc = tmp;
@@ -423,7 +423,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
           q_list->prev = ptr;
           q_list->up = tmp;
 
-          index = q_list->quoten;
+          index = q_list->quote_n;
 
           /* next class to test; as above, we shouldn't go down */
           q_list = save;
@@ -498,7 +498,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
                 q_list->next = NULL;
                 q_list->prev = NULL;
 
-                index = q_list->quoten;
+                index = q_list->quote_n;
 
                 /* tmp should be the return class too */
                 qc = tmp;
@@ -528,7 +528,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
                 q_list->prev = ptr;
                 q_list->up = tmp;
 
-                index = q_list->quoten;
+                index = q_list->quote_n;
 
                 /* next class to test */
                 q_list = save;
@@ -1483,7 +1483,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     const short c_toggle_quoted_show_levels =
         cs_subset_number(NeoMutt->sub, "toggle_quoted_show_levels");
     if ((flags & MUTT_HIDE) && (curr_line->color == MT_COLOR_QUOTED) &&
-        ((curr_line->quote == NULL) || (curr_line->quote->quoten >= c_toggle_quoted_show_levels)))
+        ((curr_line->quote == NULL) || (curr_line->quote->quote_n >= c_toggle_quoted_show_levels)))
     {
       flags = 0; /* MUTT_NOSHOW */
     }
