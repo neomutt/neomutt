@@ -25,6 +25,7 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <sys/stat.h>
 #include "mutt/lib.h"
@@ -72,6 +73,12 @@ struct PagerPrivateData
   bool force_redraw;           ///< Repaint is needed
   MenuRedrawFlags redraw;      ///< When to redraw the screen
   struct Notify *notify;       ///< Notifications: #NotifyPager, #PagerPrivateData
+
+  int rc;                        ///< Return code from functions
+  int searchctx;                 ///< Space to show around search matches
+  bool first;                    ///< First time flag for toggle-new
+  bool wrapped;                  ///< Has the search/next wrapped around?
+  uint64_t delay_read_timestamp; ///< Time that email was first shown
 };
 
 void                     pager_private_data_free(struct MuttWindow *win, void **ptr);
