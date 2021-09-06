@@ -60,5 +60,7 @@ struct PagerPrivateData *pager_private_data_new(void)
 
   priv->notify = notify_new();
 
+  // TODO initialize fields
+
   return priv;
 }

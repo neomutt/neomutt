@@ -23,8 +23,12 @@
 #ifndef MUTT_PAGER_FUNCTIONS_H
 #define MUTT_PAGER_FUNCTIONS_H
 
+#include <stdbool.h>
+
 struct IndexSharedData;
+struct MuttWindow;
 struct PagerPrivateData;
+struct PagerView;
 
 /**
  * @defgroup pager_function_api Pager Function API
@@ -47,5 +51,10 @@ struct PagerFunction
   int op;                    ///< Op code, e.g. OP_MAIN_LIMIT
   pager_function_t function; ///< Function to call
 };
+
+int pager_function_dispatcher(struct MuttWindow *win_index, int op);
+bool jump_to_bottom(struct PagerPrivateData *priv, struct PagerView *pview);
+
+extern struct PagerFunction PagerFunctions[];
 
 #endif //MUTT_PAGER_FUNCTIONS_H
