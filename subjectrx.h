@@ -24,8 +24,8 @@
 #define MUTT_SUBJECTRX_H
 
 #include <stdbool.h>
-#include "core/lib.h"
 #include <stdint.h>
+#include "core/lib.h"
 
 struct Buffer;
 struct Envelope;

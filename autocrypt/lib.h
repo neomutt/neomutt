@@ -91,8 +91,8 @@
 #ifndef MUTT_AUTOCRYPT_LIB_H
 #define MUTT_AUTOCRYPT_LIB_H
 
-#include <stdbool.h>
 #include <sqlite3.h>
+#include <stdbool.h>
 #include <stdio.h>
 
 struct Email;

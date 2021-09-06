@@ -24,8 +24,8 @@
 #define MUTT_COMPOSE_PRIVATE_H
 
 #include "config.h"
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 extern int HeaderPadding[];
 extern int MaxHeaderWidth;

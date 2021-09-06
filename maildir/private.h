@@ -23,8 +23,8 @@
 #ifndef MUTT_MAILDIR_PRIVATE_H
 #define MUTT_MAILDIR_PRIVATE_H
 
-#include <stdio.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <sys/types.h>
 
 struct MdEmailArray;

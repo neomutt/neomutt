@@ -24,7 +24,6 @@
 #define MUTT_EMAIL_EMAIL_H
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
 #include <time.h>
 #include "mutt/lib.h"

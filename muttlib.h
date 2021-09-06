@@ -28,8 +28,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "format_flags.h"
 #include "attach/lib.h"
+#include "format_flags.h"
 
 struct Address;
 struct Body;

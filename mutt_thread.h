@@ -24,8 +24,8 @@
 #define MUTT_MUTT_THREAD_H
 
 #include <stdbool.h>
-#include <sys/types.h>
 #include <stdint.h>
+#include <sys/types.h>
 #include "config/lib.h"
 
 struct Buffer;

@@ -23,8 +23,8 @@
 #ifndef MUTT_LIB_RANDOM_H
 #define MUTT_LIB_RANDOM_H
 
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 
 uint32_t mutt_rand32(void);
 uint64_t mutt_rand64(void);

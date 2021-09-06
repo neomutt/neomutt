@@ -23,10 +23,10 @@
 #ifndef MUTT_HOOK_H
 #define MUTT_HOOK_H
 
-#include "core/lib.h"
 #include "config.h"
 #include <stdint.h>
 #include <stdio.h>
+#include "core/lib.h"
 
 struct Address;
 struct Buffer;

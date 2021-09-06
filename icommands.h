@@ -24,8 +24,8 @@
 #ifndef MUTT_ICOMMANDS_H
 #define MUTT_ICOMMANDS_H
 
-#include "core/lib.h"
 #include <stdint.h>
+#include "core/lib.h"
 
 struct Buffer;
 

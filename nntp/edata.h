@@ -23,8 +23,8 @@
 #ifndef MUTT_NNTP_EDATA_H
 #define MUTT_NNTP_EDATA_H
 
-#include "lib.h"
 #include <stdbool.h>
+#include "lib.h"
 
 struct Email;
 

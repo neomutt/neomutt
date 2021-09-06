@@ -25,8 +25,8 @@
 #define MUTT_COMMAND_PARSE_H
 
 #include "config.h"
-#include "core/lib.h"
 #include <stdint.h>
+#include "core/lib.h"
 
 struct Buffer;
 struct GroupList;

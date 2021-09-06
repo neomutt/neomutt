@@ -24,8 +24,8 @@
 #define MUTT_SCORE_H
 
 #include <stdbool.h>
-#include "core/lib.h"
 #include <stdint.h>
+#include "core/lib.h"
 
 struct Buffer;
 struct Email;
