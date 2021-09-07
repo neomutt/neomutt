@@ -259,6 +259,7 @@ pager/config.c
 pager/display.c
 pager/dlg_pager.c
 pager/do_pager.c
+pager/functions.c
 pager/message.c
 pager/pager.c
 pager/pbar.c

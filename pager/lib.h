@@ -44,6 +44,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "menu/lib.h"
 
 struct Buffer;
 struct Email;
@@ -180,6 +181,7 @@ struct MuttWindow *ppanel_new(bool status_on_top, struct IndexSharedData *shared
 struct MuttWindow *pager_window_new(struct MuttWindow *parent, struct IndexSharedData *shared, struct PagerPrivateData *priv);
 int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ibar, struct MuttWindow *win_pager, struct MuttWindow *win_pbar, struct Mailbox *m, struct Email *e);
 int external_pager(struct Mailbox *m, struct Email *e, const char *command);
+void pager_queue_redraw(struct PagerPrivateData *priv, MenuRedrawFlags redraw);
 
 void mutt_clear_pager_position(void);
 
