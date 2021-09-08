@@ -45,7 +45,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m, struct E
 
 void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e, struct Body *parts, FILE *fp, int parent_type, int level, bool decrypted);
 struct AttachPtr *current_attachment(struct AttachCtx *actx, struct Menu *menu);
-void mutt_update_recvattach_menu(struct ConfigSubset *sub, struct AttachCtx *actx, struct Menu *menu, bool init);
-void recvattach_edit_content_type(struct ConfigSubset *sub, struct AttachCtx *actx, struct Menu *menu, struct Email *e);
+void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool init);
+void recvattach_edit_content_type(struct AttachCtx *actx, struct Menu *menu, struct Email *e);
 
 #endif /* MUTT_ATTACH_RECVATTACH_H */

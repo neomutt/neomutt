@@ -597,7 +597,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
   struct AttachCtx *actx = mutt_actx_new();
   actx->email = e;
   actx->fp_root = fp;
-  mutt_update_recvattach_menu(sub, actx, menu, true);
+  mutt_update_recvattach_menu(actx, menu, true);
 
   while (true)
   {
@@ -649,7 +649,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
           break;
         }
         attach_collapse(actx, menu);
-        mutt_update_recvattach_menu(sub, actx, menu, false);
+        mutt_update_recvattach_menu(actx, menu, false);
         break;
       }
 
@@ -907,7 +907,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
       }
 
       case OP_EDIT_TYPE:
-        recvattach_edit_content_type(sub, actx, menu, e);
+        recvattach_edit_content_type(actx, menu, e);
         menu_queue_redraw(menu, MENU_REDRAW_INDEX);
         break;
 

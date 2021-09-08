@@ -455,7 +455,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
   if ((chflags & CH_UPDATE_REFS) && !STAILQ_EMPTY(&e->env->references))
   {
     fputs("References:", fp_out);
-    mutt_write_references(&e->env->references, fp_out, 0, NeoMutt->sub);
+    mutt_write_references(&e->env->references, fp_out, 0);
     fputc('\n', fp_out);
   }
 
