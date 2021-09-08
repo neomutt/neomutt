@@ -347,7 +347,7 @@ int maildir_rewrite_message(struct Mailbox *m, int msgno)
   if (!dest)
     return -1;
 
-  int rc = mutt_copy_message(dest->fp, m, e, dest, MUTT_CM_UPDATE,
+  int rc = mutt_copy_message(dest->fp, e, dest, MUTT_CM_UPDATE,
                              CH_UPDATE | CH_UPDATE_LEN, 0);
   if (rc == 0)
   {

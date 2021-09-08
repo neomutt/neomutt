@@ -1229,7 +1229,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
 /**
  * smime_class_verify_sender - Implements CryptModuleSpecs::smime_verify_sender() - @ingroup crypto_smime_verify_sender
  */
-int smime_class_verify_sender(struct Mailbox *m, struct Email *e, struct Message *msg)
+int smime_class_verify_sender(struct Email *e, struct Message *msg)
 {
   char *mbox = NULL, *certfile = NULL;
   int rc = 1;
@@ -1244,7 +1244,7 @@ int smime_class_verify_sender(struct Mailbox *m, struct Email *e, struct Message
   }
 
   const bool encrypt = e->security & SEC_ENCRYPT;
-  mutt_copy_message(fp_out, m, e, msg,
+  mutt_copy_message(fp_out, e, msg,
                     encrypt ? (MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME) : MUTT_CM_NO_FLAGS,
                     encrypt ? (CH_MIME | CH_WEED | CH_NONEWLINE) : CH_NO_FLAGS, 0);
 
@@ -2162,7 +2162,7 @@ int smime_class_application_handler(struct Body *m, struct State *s)
 /**
  * smime_class_send_menu - Implements CryptModuleSpecs::send_menu() - @ingroup crypto_send_menu
  */
-SecurityFlags smime_class_send_menu(struct Mailbox *m, struct Email *e)
+SecurityFlags smime_class_send_menu(struct Email *e)
 {
   struct SmimeKey *key = NULL;
   const char *prompt = NULL;
@@ -2250,7 +2250,7 @@ SecurityFlags smime_class_send_menu(struct Mailbox *m, struct Email *e)
 
       case 'O': /* oppenc mode on */
         e->security |= SEC_OPPENCRYPT;
-        crypt_opportunistic_encrypt(m, e);
+        crypt_opportunistic_encrypt(e);
         break;
 
       case 'o': /* oppenc mode off */

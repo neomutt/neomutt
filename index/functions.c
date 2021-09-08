@@ -2350,7 +2350,7 @@ static int op_what_key(struct IndexSharedData *shared, struct IndexPrivateData *
 static int op_autocrypt_acct_menu(struct IndexSharedData *shared,
                                   struct IndexPrivateData *priv, int op)
 {
-  dlg_select_autocrypt_account(shared->mailbox);
+  dlg_select_autocrypt_account();
   return IR_SUCCESS;
 }
 #endif

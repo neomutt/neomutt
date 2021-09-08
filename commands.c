@@ -261,10 +261,10 @@ static void pipe_msg(struct Mailbox *m, struct Email *e, struct Message *msg,
 
   if (decode)
   {
-    mutt_parse_mime_message(m, e, msg->fp);
+    mutt_parse_mime_message(e, msg->fp);
   }
 
-  mutt_copy_message(fp, m, e, msg, cmflags, chflags, 0);
+  mutt_copy_message(fp, e, msg, cmflags, chflags, 0);
 
   if (own_msg)
   {
@@ -308,7 +308,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, const char *cmd
     struct Message *msg = mx_msg_open(m, en->email->msgno);
     if (msg && WithCrypto && decode)
     {
-      mutt_parse_mime_message(m, en->email, msg->fp);
+      mutt_parse_mime_message(en->email, msg->fp);
       if ((en->email->security & SEC_ENCRYPT) &&
           !crypt_valid_passphrase(en->email->security))
       {
@@ -343,7 +343,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, const char *cmd
         struct Message *msg = mx_msg_open(m, en->email->msgno);
         if (msg)
         {
-          mutt_parse_mime_message(m, en->email, msg->fp);
+          mutt_parse_mime_message(en->email, msg->fp);
           mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
           mx_msg_close(m, &msg);
         }
@@ -769,7 +769,7 @@ int mutt_save_message_ctx(struct Mailbox *m_src, struct Email *e, enum MessageSa
   struct Message *msg = mx_msg_open(m_src, e->msgno);
   if (msg && transform_opt != TRANSFORM_NONE)
   {
-    mutt_parse_mime_message(m_src, e, msg->fp);
+    mutt_parse_mime_message(e, msg->fp);
   }
 
   rc = mutt_append_message(m_dst, m_src, e, msg, cmflags, chflags);
@@ -1209,7 +1209,7 @@ static bool check_traditional_pgp(struct Mailbox *m, struct Email *e)
   struct Message *msg = mx_msg_open(m, e->msgno);
   if (msg)
   {
-    mutt_parse_mime_message(m, e, msg->fp);
+    mutt_parse_mime_message(e, msg->fp);
     if (crypt_pgp_check_traditional(msg->fp, e->body, false))
     {
       e->security = crypt_query(e->body);

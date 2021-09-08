@@ -104,14 +104,12 @@ static void print_crypt_pattern_op_error(int op)
 /**
  * msg_search - Search an email
  * @param pat   Pattern to find
- * @param m   Mailbox
  * @param e   Email
  * @param msg Message
  * @retval true Pattern found
  * @retval false Error or pattern not found
  */
-static bool msg_search(struct Pattern *pat, struct Mailbox *m, struct Email *e,
-                       struct Message *msg)
+static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg)
 {
   assert(msg);
 
@@ -159,7 +157,7 @@ static bool msg_search(struct Pattern *pat, struct Mailbox *m, struct Email *e,
 
     if (needs_body)
     {
-      mutt_parse_mime_message(m, e, msg->fp);
+      mutt_parse_mime_message(e, msg->fp);
 
       if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT) &&
           !crypt_valid_passphrase(e->security))
@@ -606,16 +604,14 @@ static bool match_content_type(const struct Pattern *pat, struct Body *b)
 /**
  * match_mime_content_type - Match a Pattern against an email's Content-Type
  * @param pat Pattern to match
- * @param m   Mailbox
  * @param e   Email
  * @param fp  Message file
  * @retval true  Success, pattern matched
  * @retval false Pattern did not match
  */
-static bool match_mime_content_type(const struct Pattern *pat,
-                                    struct Mailbox *m, struct Email *e, FILE *fp)
+static bool match_mime_content_type(const struct Pattern *pat, struct Email *e, FILE *fp)
 {
-  mutt_parse_mime_message(m, e, fp);
+  mutt_parse_mime_message(e, fp);
   return match_content_type(pat, e->body);
 }
 
@@ -864,7 +860,7 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       if ((m->type == MUTT_IMAP) && pat->string_match)
         return e->matched;
 #endif
-      return pat->pat_not ^ msg_search(pat, m, e, msg);
+      return pat->pat_not ^ msg_search(pat, e, msg);
     case MUTT_PAT_SERVERSEARCH:
 #ifdef USE_IMAP
       if (!m)
@@ -1065,7 +1061,7 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_MIMETYPE:
       if (!m)
         return false;
-      return pat->pat_not ^ match_mime_content_type(pat, m, e, msg->fp);
+      return pat->pat_not ^ match_mime_content_type(pat, e, msg->fp);
     case MUTT_PAT_UNREFERENCED:
       return pat->pat_not ^ (e->thread && !e->thread->child);
     case MUTT_PAT_BROKEN:

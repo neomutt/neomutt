@@ -52,7 +52,6 @@
 #include "pattern/lib.h"
 #include "question/lib.h"
 #include "browser.h"
-#include "context.h"
 #include "copy.h"
 #include "format_flags.h"
 #include "handler.h"
@@ -489,7 +488,7 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out,
   {
     return -1;
   }
-  mutt_parse_mime_message(m, e, msg->fp);
+  mutt_parse_mime_message(e, msg->fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
   const bool c_forward_decode = cs_subset_bool(sub, "forward_decode");
@@ -521,7 +520,7 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out,
   if (c_forward_quote)
     cmflags |= MUTT_CM_PREFIX;
 
-  mutt_copy_message(fp_out, m, e, msg, cmflags, chflags, 0);
+  mutt_copy_message(fp_out, e, msg, cmflags, chflags, 0);
   mx_msg_close(m, &msg);
   mutt_forward_trailer(e, fp_out, sub);
   return 0;
@@ -552,7 +551,7 @@ static int inline_forward_attachments(struct Mailbox *m, struct Email *e,
     return -1;
   }
 
-  mutt_parse_mime_message(m, e, msg->fp);
+  mutt_parse_mime_message(e, msg->fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
   actx = mutt_mem_calloc(1, sizeof(*actx));
@@ -766,7 +765,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out,
   {
     return -1;
   }
-  mutt_parse_mime_message(m, e, msg->fp);
+  mutt_parse_mime_message(e, msg->fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
   mutt_make_attribution(e, fp_out, sub);
@@ -782,7 +781,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out,
     cmflags |= MUTT_CM_WEED;
   }
 
-  mutt_copy_message(fp_out, m, e, msg, cmflags, chflags, 0);
+  mutt_copy_message(fp_out, e, msg, cmflags, chflags, 0);
   mx_msg_close(m, &msg);
 
   mutt_make_post_indent(e, fp_out, sub);
@@ -1128,14 +1127,13 @@ static void make_reference_headers(struct EmailList *el, struct Envelope *env,
 /**
  * envelope_defaults - Fill in some defaults for a new email
  * @param env   Envelope for result
- * @param m     Mailbox
  * @param el    List of Emails to use
  * @param flags Flags, see #SendFlags
  * @param sub   Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int envelope_defaults(struct Envelope *env, struct Mailbox *m, struct EmailList *el,
+static int envelope_defaults(struct Envelope *env, struct EmailList *el,
                              SendFlags flags, struct ConfigSubset *sub)
 {
   if (!el || STAILQ_EMPTY(el))
@@ -1658,7 +1656,7 @@ int mutt_resend_message(FILE *fp, struct Mailbox *m, struct Email *e_cur,
     if (c_crypt_opportunistic_encrypt)
     {
       e_new->security |= SEC_OPPENCRYPT;
-      crypt_opportunistic_encrypt(m, e_new);
+      crypt_opportunistic_encrypt(e_new);
     }
   }
 
@@ -1833,7 +1831,7 @@ static int save_fcc(struct Mailbox *m, struct Email *e, struct Buffer *fcc,
           /* this means writing only the main part */
           e->body = clear_content->parts;
 
-          if (mutt_protect(m, e, pgpkeylist, false) == -1)
+          if (mutt_protect(e, pgpkeylist, false) == -1)
           {
             /* we can't do much about it at this point, so
            * fallback to saving the whole thing to fcc */
@@ -1946,7 +1944,6 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
   char *pgpkeylist = NULL;
   const char *encrypt_as = NULL;
   struct Body *clear_content = NULL;
-  struct Mailbox *m = ctx_mailbox(Context);
 
   const char *const c_postponed = cs_subset_string(sub, "postponed");
   if (!c_postponed)
@@ -1986,7 +1983,7 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
 #ifdef USE_AUTOCRYPT
     if (e_post->security & SEC_AUTOCRYPT)
     {
-      if (mutt_autocrypt_set_sign_as_default_key(m, e_post))
+      if (mutt_autocrypt_set_sign_as_default_key(e_post))
       {
         e_post->body = mutt_remove_multipart(e_post->body);
         decode_descriptions(e_post->body);
@@ -2001,7 +1998,7 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
     {
       pgpkeylist = mutt_str_dup(encrypt_as);
       clear_content = e_post->body;
-      if (mutt_protect(m, e_post, pgpkeylist, true) == -1)
+      if (mutt_protect(e_post, pgpkeylist, true) == -1)
       {
         FREE(&pgpkeylist);
         e_post->body = mutt_remove_multipart(e_post->body);
@@ -2332,8 +2329,8 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (!(flags & (SEND_POSTPONED | SEND_RESEND)) &&
       !((flags & SEND_DRAFT_FILE) && c_resume_draft_files))
   {
-    if ((flags & (SEND_REPLY | SEND_FORWARD | SEND_TO_SENDER)) && m &&
-        (envelope_defaults(e_templ->env, m, el, flags, sub) == -1))
+    if ((flags & (SEND_REPLY | SEND_FORWARD | SEND_TO_SENDER)) &&
+        (envelope_defaults(e_templ->env, el, flags, sub) == -1))
     {
       goto cleanup;
     }
@@ -2672,7 +2669,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       if (!(e_templ->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)))
       {
         e_templ->security |= SEC_OPPENCRYPT;
-        crypt_opportunistic_encrypt(m, e_templ);
+        crypt_opportunistic_encrypt(e_templ);
       }
     }
 
@@ -2825,8 +2822,8 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       /* save the decrypted attachments */
       clear_content = e_templ->body;
 
-      if ((crypt_get_keys(m, e_templ, &pgpkeylist, 0) == -1) ||
-          (mutt_protect(m, e_templ, pgpkeylist, false) == -1))
+      if ((crypt_get_keys(e_templ, &pgpkeylist, 0) == -1) ||
+          (mutt_protect(e_templ, pgpkeylist, false) == -1))
       {
         e_templ->body = mutt_remove_multipart(e_templ->body);
 

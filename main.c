@@ -895,7 +895,7 @@ int main(int argc, char *argv[], char *envp[])
    * because of the initial account setup screens. */
   const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
   if (c_autocrypt)
-    mutt_autocrypt_init(NULL, !(sendflags & SEND_BATCH));
+    mutt_autocrypt_init(!(sendflags & SEND_BATCH));
 #endif
 
   /* Create the `$folder` directory if it doesn't exist. */

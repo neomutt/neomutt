@@ -576,7 +576,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
   int op = OP_NULL;
 
   /* make sure we have parsed this message */
-  mutt_parse_mime_message(m, e, fp);
+  mutt_parse_mime_message(e, fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
   struct MuttWindow *dlg = simple_dialog_new(MENU_ATTACH, WT_DLG_ATTACH, AttachHelp);

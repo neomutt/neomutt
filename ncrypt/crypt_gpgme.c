@@ -4178,12 +4178,11 @@ void smime_gpgme_init(void)
 
 /**
  * gpgme_send_menu - Show the user the encryption/signing menu
- * @param m        Current Mailbox
  * @param e        Email
  * @param is_smime True if an SMIME message
  * @retval num Flags, e.g. #APPLICATION_SMIME | #SEC_ENCRYPT
  */
-static SecurityFlags gpgme_send_menu(struct Mailbox *m, struct Email *e, bool is_smime)
+static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
 {
   struct CryptKeyInfo *p = NULL;
   const char *prompt = NULL;
@@ -4322,12 +4321,12 @@ static SecurityFlags gpgme_send_menu(struct Mailbox *m, struct Email *e, bool is
           e->security &= ~APPLICATION_SMIME;
           e->security |= APPLICATION_PGP;
         }
-        crypt_opportunistic_encrypt(m, e);
+        crypt_opportunistic_encrypt(e);
         break;
 
       case 'O': /* oppenc mode on */
         e->security |= SEC_OPPENCRYPT;
-        crypt_opportunistic_encrypt(m, e);
+        crypt_opportunistic_encrypt(e);
         break;
 
       case 'o': /* oppenc mode off */
@@ -4351,17 +4350,17 @@ static SecurityFlags gpgme_send_menu(struct Mailbox *m, struct Email *e, bool is
 /**
  * pgp_gpgme_send_menu - Implements CryptModuleSpecs::send_menu() - @ingroup crypto_send_menu
  */
-SecurityFlags pgp_gpgme_send_menu(struct Mailbox *m, struct Email *e)
+SecurityFlags pgp_gpgme_send_menu(struct Email *e)
 {
-  return gpgme_send_menu(m, e, false);
+  return gpgme_send_menu(e, false);
 }
 
 /**
  * smime_gpgme_send_menu - Implements CryptModuleSpecs::send_menu() - @ingroup crypto_send_menu
  */
-SecurityFlags smime_gpgme_send_menu(struct Mailbox *m, struct Email *e)
+SecurityFlags smime_gpgme_send_menu(struct Email *e)
 {
-  return gpgme_send_menu(m, e, true);
+  return gpgme_send_menu(e, true);
 }
 
 /**
@@ -4445,7 +4444,7 @@ static bool verify_sender(struct Email *e)
 /**
  * smime_gpgme_verify_sender - Implements CryptModuleSpecs::smime_verify_sender() - @ingroup crypto_smime_verify_sender
  */
-int smime_gpgme_verify_sender(struct Mailbox *m, struct Email *e, struct Message *msg)
+int smime_gpgme_verify_sender(struct Email *e, struct Message *msg)
 {
   return verify_sender(e);
 }

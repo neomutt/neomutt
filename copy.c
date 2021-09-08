@@ -838,7 +838,6 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
 /**
  * mutt_copy_message - Copy a message from a Mailbox
  * @param fp_out  FILE pointer to write to
- * @param m       Source mailbox
  * @param e       Email
  * @param msg     Message
  * @param cmflags Flags, see #CopyMessageFlags
@@ -850,9 +849,8 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
  * should be made to return -1 on fatal errors, and 1 on non-fatal errors
  * like partial decode, where it is worth displaying as much as possible
  */
-int mutt_copy_message(FILE *fp_out, struct Mailbox *m, struct Email *e,
-                      struct Message *msg, CopyMessageFlags cmflags,
-                      CopyHeaderFlags chflags, int wraplen)
+int mutt_copy_message(FILE *fp_out, struct Email *e, struct Message *msg,
+                      CopyMessageFlags cmflags, CopyHeaderFlags chflags, int wraplen)
 {
   if (!msg || !e->body)
   {

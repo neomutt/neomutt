@@ -36,7 +36,6 @@
 #include "email/lib.h"
 #include "gui/lib.h"
 #include "header.h"
-#include "context.h"
 #include "mutt_globals.h"
 #include "options.h"
 #ifdef USE_AUTOCRYPT
@@ -735,11 +734,10 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
   const bool c_autocrypt = cs_subset_bool(sub, "autocrypt");
   if (c_autocrypt)
   {
-    struct Mailbox *m = ctx_mailbox(Context);
     if (mode == MUTT_WRITE_HEADER_NORMAL || mode == MUTT_WRITE_HEADER_FCC)
-      mutt_autocrypt_write_autocrypt_header(m, env, fp);
+      mutt_autocrypt_write_autocrypt_header(env, fp);
     if (mode == MUTT_WRITE_HEADER_MIME)
-      mutt_autocrypt_write_gossip_headers(m, env, fp);
+      mutt_autocrypt_write_gossip_headers(env, fp);
   }
 #endif
 

@@ -1863,7 +1863,7 @@ cleanup:
 /**
  * pgp_class_send_menu - Implements CryptModuleSpecs::send_menu() - @ingroup crypto_send_menu
  */
-SecurityFlags pgp_class_send_menu(struct Mailbox *m, struct Email *e)
+SecurityFlags pgp_class_send_menu(struct Email *e)
 {
   struct PgpKeyInfo *p = NULL;
   const char *prompt = NULL;
@@ -2029,7 +2029,7 @@ SecurityFlags pgp_class_send_menu(struct Mailbox *m, struct Email *e)
 
       case 'O': /* oppenc mode on */
         e->security |= SEC_OPPENCRYPT;
-        crypt_opportunistic_encrypt(m, e);
+        crypt_opportunistic_encrypt(e);
         break;
 
       case 'o': /* oppenc mode off */

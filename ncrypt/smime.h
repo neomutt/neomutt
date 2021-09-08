@@ -34,7 +34,6 @@ struct AddressList;
 struct Body;
 struct Email;
 struct Envelope;
-struct Mailbox;
 struct Message;
 struct State;
 
@@ -61,11 +60,11 @@ int          smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b
 char *       smime_class_find_keys(struct AddressList *addrlist, bool oppenc_mode);
 void         smime_class_getkeys(struct Envelope *env);
 void         smime_class_invoke_import(const char *infile, const char *mailbox);
-SecurityFlags smime_class_send_menu(struct Mailbox *m, struct Email *e);
+SecurityFlags smime_class_send_menu(struct Email *e);
 struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *from);
 bool         smime_class_valid_passphrase(void);
 int          smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
-int          smime_class_verify_sender(struct Mailbox *m, struct Email *e, struct Message *msg);
+int          smime_class_verify_sender(struct Email *e, struct Message *msg);
 void         smime_class_void_passphrase(void);
 
 #endif /* MUTT_NCRYPT_SMIME_H */

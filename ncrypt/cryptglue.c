@@ -340,14 +340,13 @@ struct Body *crypt_pgp_sign_message(struct Body *a, const struct AddressList *fr
 /**
  * crypt_pgp_encrypt_message - Wrapper for CryptModuleSpecs::pgp_encrypt_message()
  */
-struct Body *crypt_pgp_encrypt_message(struct Mailbox *m, struct Email *e,
-                                       struct Body *a, char *keylist, int sign,
-                                       const struct AddressList *from)
+struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *a, char *keylist,
+                                       int sign, const struct AddressList *from)
 {
 #ifdef USE_AUTOCRYPT
   if (e->security & SEC_AUTOCRYPT)
   {
-    if (mutt_autocrypt_set_sign_as_default_key(m, e))
+    if (mutt_autocrypt_set_sign_as_default_key(e))
       return NULL;
 
     OptAutocryptGpgme = true;
@@ -387,10 +386,10 @@ int crypt_pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
 /**
  * crypt_pgp_send_menu - Wrapper for CryptModuleSpecs::send_menu()
  */
-SecurityFlags crypt_pgp_send_menu(struct Mailbox *m, struct Email *e)
+SecurityFlags crypt_pgp_send_menu(struct Email *e)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, send_menu))
-    return CRYPT_MOD_CALL(PGP, send_menu)(m, e);
+    return CRYPT_MOD_CALL(PGP, send_menu)(e);
 
   return 0;
 }
@@ -469,10 +468,10 @@ void crypt_smime_getkeys(struct Envelope *env)
 /**
  * crypt_smime_verify_sender - Wrapper for CryptModuleSpecs::smime_verify_sender()
  */
-int crypt_smime_verify_sender(struct Mailbox *m, struct Email *e, struct Message *msg)
+int crypt_smime_verify_sender(struct Email *e, struct Message *msg)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, smime_verify_sender))
-    return CRYPT_MOD_CALL(SMIME, smime_verify_sender)(m, e, msg);
+    return CRYPT_MOD_CALL(SMIME, smime_verify_sender)(e, msg);
 
   return 1;
 }
@@ -533,10 +532,10 @@ int crypt_smime_verify_one(struct Body *sigbdy, struct State *s, const char *tem
 /**
  * crypt_smime_send_menu - Wrapper for CryptModuleSpecs::send_menu()
  */
-SecurityFlags crypt_smime_send_menu(struct Mailbox *m, struct Email *e)
+SecurityFlags crypt_smime_send_menu(struct Email *e)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, send_menu))
-    return CRYPT_MOD_CALL(SMIME, send_menu)(m, e);
+    return CRYPT_MOD_CALL(SMIME, send_menu)(e);
 
   return 0;
 }

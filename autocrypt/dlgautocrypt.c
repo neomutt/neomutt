@@ -339,15 +339,14 @@ static int autocrypt_window_observer(struct NotifyCallback *nc)
 
 /**
  * dlg_select_autocrypt_account - Display the Autocrypt account Menu
- * @param m Mailbox
  */
-void dlg_select_autocrypt_account(struct Mailbox *m)
+void dlg_select_autocrypt_account(void)
 {
   const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
   if (!c_autocrypt)
     return;
 
-  if (mutt_autocrypt_init(m, false))
+  if (mutt_autocrypt_init(false))
     return;
 
   struct MuttWindow *dlg =

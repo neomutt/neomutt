@@ -150,7 +150,7 @@ static void process_protected_headers(struct Mailbox *m, struct Email *e)
 #ifdef USE_AUTOCRYPT
   if (c_autocrypt && (e->security & SEC_ENCRYPT) && prot_headers && prot_headers->autocrypt_gossip)
   {
-    mutt_autocrypt_process_gossip_header(m, e, prot_headers);
+    mutt_autocrypt_process_gossip_header(e, prot_headers);
   }
 #endif
 }
@@ -173,7 +173,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile, struct Ma
   CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
   pid_t filterpid = -1;
 
-  mutt_parse_mime_message(m, e, msg->fp);
+  mutt_parse_mime_message(e, msg->fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
   char columns[16];
@@ -259,7 +259,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile, struct Ma
   if (m->type == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
-  int res = mutt_copy_message(fp_out, m, e, msg, cmflags, chflags, wrap_len);
+  int res = mutt_copy_message(fp_out, e, msg, cmflags, chflags, wrap_len);
 
   if (((mutt_file_fclose(&fp_out) != 0) && (errno != EPIPE)) || (res < 0))
   {
@@ -356,18 +356,17 @@ cleanup:
 
 /**
  * notify_crypto - Notify the user about the crypto status of the Email
- * @param msg Raw Email
- * @param m   Mailbox
  * @param e   Email to display
+ * @param msg Raw Email
  */
-static void notify_crypto(struct Mailbox *m, struct Email *e, struct Message *msg)
+static void notify_crypto(struct Email *e, struct Message *msg)
 {
   CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
   if ((WithCrypto != 0) && (e->security & APPLICATION_SMIME) && (cmflags & MUTT_CM_VERIFY))
   {
     if (e->security & SEC_GOODSIGN)
     {
-      if (crypt_smime_verify_sender(m, e, msg) == 0)
+      if (crypt_smime_verify_sender(e, msg) == 0)
         mutt_message(_("S/MIME signature successfully verified"));
       else
         mutt_error(_("S/MIME certificate owner does not match sender"));
@@ -415,7 +414,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
   if (rc < 0)
     goto cleanup;
 
-  notify_crypto(m, e, msg);
+  notify_crypto(e, msg);
 
   /* Invoke the builtin pager */
   struct PagerData pdata = { 0 };

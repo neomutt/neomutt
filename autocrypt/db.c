@@ -72,12 +72,11 @@ static int autocrypt_db_create(const char *db_path)
 
 /**
  * mutt_autocrypt_db_init - Initialise the Autocrypt SQLite database
- * @param m          Mailbox
  * @param can_create If true, the directory may be created
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_autocrypt_db_init(struct Mailbox *m, bool can_create)
+int mutt_autocrypt_db_init(bool can_create)
 {
   int rc = -1;
 
@@ -116,7 +115,7 @@ int mutt_autocrypt_db_init(struct Mailbox *m, bool can_create)
       goto cleanup;
     /* Don't abort the whole init process because account creation failed */
     mutt_autocrypt_account_init(true);
-    mutt_autocrypt_scan_mailboxes(m);
+    mutt_autocrypt_scan_mailboxes();
   }
 
   rc = 0;

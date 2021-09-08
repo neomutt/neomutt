@@ -45,6 +45,6 @@ void attach_free(void);
 
 void mutt_attachments_reset (struct Mailbox *m);
 int  mutt_count_body_parts  (struct Mailbox *m, struct Email *e, FILE *fp);
-void mutt_parse_mime_message(struct Mailbox *m, struct Email *e, FILE *fp);
+void mutt_parse_mime_message(struct Email *e, FILE *fp);
 
 #endif /* MUTT_ATTACH_ATTACHMENTS_H */
