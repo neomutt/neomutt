@@ -264,9 +264,7 @@ bool index_shared_data_is_cur_email(const struct IndexSharedData *shared,
 }
 
 /**
- * index_shared_data_free - Free Index Data
- * @param win Window
- * @param ptr Index Data to free
+ * index_shared_data_free - Free Shared Index Data - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  *
  * Only `notify` is owned by IndexSharedData and should be freed.
  */

@@ -228,13 +228,12 @@ void mutt_log_stop(void)
 /**
  * mutt_log_set_file - Change the logging file
  * @param file Name to use
- * @param verbose If true, then log the event
  * @retval  0 Success, file opened
  * @retval -1 Error, see errno
  *
  * Close the old log, rotate the new logs and open the new log.
  */
-int mutt_log_set_file(const char *file, bool verbose)
+int mutt_log_set_file(const char *file)
 {
   const char *const c_debug_file = cs_subset_path(NeoMutt->sub, "debug_file");
   if (!mutt_str_equal(CurrentFile, c_debug_file))
@@ -265,7 +264,7 @@ int mutt_log_set_level(enum LogLevel level, bool verbose)
   if (!CurrentFile)
   {
     const char *const c_debug_file = cs_subset_path(NeoMutt->sub, "debug_file");
-    mutt_log_set_file(c_debug_file, false);
+    mutt_log_set_file(c_debug_file);
   }
 
   if (log_file_set_level(level, verbose) != 0)
@@ -292,7 +291,7 @@ int mutt_log_start(void)
     return 0;
 
   const char *const c_debug_file = cs_subset_path(NeoMutt->sub, "debug_file");
-  mutt_log_set_file(c_debug_file, false);
+  mutt_log_set_file(c_debug_file);
 
   /* This will trigger the file creation */
   if (log_file_set_level(c_debug_level, true) < 0)
@@ -329,7 +328,7 @@ int main_log_observer(struct NotifyCallback *nc)
   if (mutt_str_equal(ev_c->name, "debug_file"))
   {
     const char *const c_debug_file = cs_subset_path(NeoMutt->sub, "debug_file");
-    mutt_log_set_file(c_debug_file, true);
+    mutt_log_set_file(c_debug_file);
   }
   else if (mutt_str_equal(ev_c->name, "debug_level"))
   {

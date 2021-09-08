@@ -1597,13 +1597,13 @@ int maildir_path_canon(char *buf, size_t buflen)
  */
 int maildir_path_parent(char *buf, size_t buflen)
 {
-  if (mutt_path_parent(buf, buflen))
+  if (mutt_path_parent(buf))
     return 0;
 
   if (buf[0] == '~')
     mutt_path_canon(buf, buflen, HomeDir, true);
 
-  if (mutt_path_parent(buf, buflen))
+  if (mutt_path_parent(buf))
     return 0;
 
   return -1;
@@ -1614,7 +1614,7 @@ int maildir_path_parent(char *buf, size_t buflen)
  */
 int maildir_path_pretty(char *buf, size_t buflen, const char *folder)
 {
-  if (mutt_path_abbr_folder(buf, buflen, folder))
+  if (mutt_path_abbr_folder(buf, folder))
     return 0;
 
   if (mutt_path_pretty(buf, buflen, HomeDir, false))

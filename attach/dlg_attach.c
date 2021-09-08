@@ -900,8 +900,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         if (check_attach())
           break;
         struct AttachPtr *cur_att = current_attachment(actx, menu);
-        mutt_attach_mail_sender(cur_att->fp, e, actx,
-                                menu->tagprefix ? NULL : cur_att->body);
+        mutt_attach_mail_sender(actx, menu->tagprefix ? NULL : cur_att->body);
         menu_queue_redraw(menu, MENU_REDRAW_FULL);
         break;
       }

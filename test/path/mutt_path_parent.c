@@ -27,9 +27,9 @@
 
 void test_mutt_path_parent(void)
 {
-  // bool mutt_path_parent(char *buf, size_t buflen);
+  // bool mutt_path_parent(char *buf);
 
   {
-    TEST_CHECK(!mutt_path_parent(NULL, 10));
+    TEST_CHECK(!mutt_path_parent(NULL));
   }
 }

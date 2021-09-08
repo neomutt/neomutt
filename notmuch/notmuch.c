@@ -732,12 +732,11 @@ static struct Email *get_mutt_email(struct Mailbox *m, notmuch_message_t *msg)
  * append_message - Associate a message
  * @param h     Header cache handle
  * @param m     Mailbox
- * @param q     Notmuch query
  * @param msg   Notmuch message
  * @param dedup De-duplicate results
  */
 static void append_message(struct HeaderCache *h, struct Mailbox *m,
-                           notmuch_query_t *q, notmuch_message_t *msg, bool dedup)
+                           notmuch_message_t *msg, bool dedup)
 {
   struct NmMboxData *mdata = nm_mdata_get(m);
   if (!mdata)
@@ -858,7 +857,7 @@ static void append_replies(struct HeaderCache *h, struct Mailbox *m,
        notmuch_messages_move_to_next(msgs))
   {
     notmuch_message_t *nm = notmuch_messages_get(msgs);
-    append_message(h, m, q, nm, dedup);
+    append_message(h, m, nm, dedup);
     /* recurse through all the replies to this message too */
     append_replies(h, m, q, nm, dedup);
     notmuch_message_destroy(nm);
@@ -885,7 +884,7 @@ static void append_thread(struct HeaderCache *h, struct Mailbox *m,
        notmuch_messages_valid(msgs); notmuch_messages_move_to_next(msgs))
   {
     notmuch_message_t *nm = notmuch_messages_get(msgs);
-    append_message(h, m, q, nm, dedup);
+    append_message(h, m, nm, dedup);
     append_replies(h, m, q, nm, dedup);
     notmuch_message_destroy(nm);
   }
@@ -953,7 +952,7 @@ static bool read_mesgs_query(struct Mailbox *m, notmuch_query_t *q, bool dedup)
       return false;
     }
     notmuch_message_t *nm = notmuch_messages_get(msgs);
-    append_message(h, m, q, nm, dedup);
+    append_message(h, m, nm, dedup);
     notmuch_message_destroy(nm);
   }
 
@@ -2137,7 +2136,7 @@ static enum MxStatus nm_mbox_check(struct Mailbox *m)
     if (!e)
     {
       /* new email */
-      append_message(h, m, NULL, msg, false);
+      append_message(h, m, msg, false);
       notmuch_message_destroy(msg);
       continue;
     }

@@ -83,7 +83,6 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
@@ -209,7 +208,7 @@ static int alias_alias_observer(struct NotifyCallback *nc)
 
     if (alias_array_count_visible(&mdata->ava) != ARRAY_SIZE(&mdata->ava))
     {
-      mutt_pattern_alias_func(MUTT_LIMIT, NULL, mdata, menu);
+      mutt_pattern_alias_func(NULL, mdata, menu);
     }
   }
   else if (nc->event_subtype == NT_ALIAS_DELETE)
@@ -410,8 +409,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
 
       case OP_MAIN_LIMIT:
       {
-        int rc = mutt_pattern_alias_func(MUTT_LIMIT, _("Limit to messages matching: "),
-                                         mdata, menu);
+        int rc = mutt_pattern_alias_func(_("Limit to messages matching: "), mdata, menu);
         if (rc == 0)
         {
           alias_set_title(sbar, _("Aliases"), mdata->str);
@@ -530,7 +528,7 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
       alias_array_alias_add(&mdata.ava, np);
     }
 
-    mutt_pattern_alias_func(MUTT_LIMIT, NULL, &mdata, NULL);
+    mutt_pattern_alias_func(NULL, &mdata, NULL);
   }
 
   alias_array_sort(&mdata.ava, mdata.sub);

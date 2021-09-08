@@ -231,15 +231,13 @@ bool mutt_limit_current_thread(struct Context *ctx, struct Email *e)
 
 /**
  * mutt_pattern_alias_func - Perform some Pattern matching for Alias
- * @param op        Operation to perform, e.g. #MUTT_LIMIT
  * @param prompt    Prompt to show the user
  * @param mdata     Menu data holding Aliases
  * @param menu      Current menu
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_pattern_alias_func(int op, char *prompt, struct AliasMenuData *mdata,
-                            struct Menu *menu)
+int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Menu *menu)
 {
   int rc = -1;
   struct Progress *progress = NULL;

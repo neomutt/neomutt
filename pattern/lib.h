@@ -184,7 +184,7 @@ int mutt_which_case(const char *s);
 int mutt_is_list_recipient(bool all_addr, struct Envelope *e);
 int mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *e);
 int mutt_pattern_func(struct Context *ctx, int op, char *prompt);
-int mutt_pattern_alias_func(int op, char *prompt, struct AliasMenuData *mdata, struct Menu *menu);
+int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Menu *menu);
 int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op);
 int mutt_search_alias_command(struct Menu *menu, int cur, int op);
 

@@ -31,9 +31,7 @@
 #include "private_data.h"
 
 /**
- * index_private_data_free - Free Index Data
- * @param win Window
- * @param ptr Index Data to free
+ * index_private_data_free - Free Private Index Data - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  */
 void index_private_data_free(struct MuttWindow *win, void **ptr)
 {
