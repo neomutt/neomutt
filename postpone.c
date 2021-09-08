@@ -770,7 +770,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
   const bool c_crypt_opportunistic_encrypt =
       cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt");
   if (c_crypt_opportunistic_encrypt)
-    crypt_opportunistic_encrypt(m_cur, hdr);
+    crypt_opportunistic_encrypt(hdr);
 
 cleanup:
   if (m_cur != m)

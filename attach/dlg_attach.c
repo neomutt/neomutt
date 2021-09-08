@@ -576,7 +576,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
   int op = OP_NULL;
 
   /* make sure we have parsed this message */
-  mutt_parse_mime_message(m, e, fp);
+  mutt_parse_mime_message(e, fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
   struct MuttWindow *dlg = simple_dialog_new(MENU_ATTACH, WT_DLG_ATTACH, AttachHelp);
@@ -597,7 +597,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
   struct AttachCtx *actx = mutt_actx_new();
   actx->email = e;
   actx->fp_root = fp;
-  mutt_update_recvattach_menu(sub, actx, menu, true);
+  mutt_update_recvattach_menu(actx, menu, true);
 
   while (true)
   {
@@ -649,7 +649,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
           break;
         }
         attach_collapse(actx, menu);
-        mutt_update_recvattach_menu(sub, actx, menu, false);
+        mutt_update_recvattach_menu(actx, menu, false);
         break;
       }
 
@@ -900,14 +900,13 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         if (check_attach())
           break;
         struct AttachPtr *cur_att = current_attachment(actx, menu);
-        mutt_attach_mail_sender(cur_att->fp, e, actx,
-                                menu->tagprefix ? NULL : cur_att->body);
+        mutt_attach_mail_sender(actx, menu->tagprefix ? NULL : cur_att->body);
         menu_queue_redraw(menu, MENU_REDRAW_FULL);
         break;
       }
 
       case OP_EDIT_TYPE:
-        recvattach_edit_content_type(sub, actx, menu, e);
+        recvattach_edit_content_type(actx, menu, e);
         menu_queue_redraw(menu, MENU_REDRAW_INDEX);
         break;
 

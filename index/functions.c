@@ -322,8 +322,8 @@ static int op_display_message(struct IndexSharedData *shared,
   }
   else
   {
-    op = mutt_display_message(priv->win_index, priv->win_ibar, priv->win_pager,
-                              priv->win_pbar, shared->mailbox, shared->email);
+    op = mutt_display_message(priv->win_index, priv->win_pager, priv->win_pbar,
+                              shared->mailbox, shared->email);
   }
 
   window_set_focus(priv->win_index);
@@ -2350,7 +2350,7 @@ static int op_what_key(struct IndexSharedData *shared, struct IndexPrivateData *
 static int op_autocrypt_acct_menu(struct IndexSharedData *shared,
                                   struct IndexPrivateData *priv, int op)
 {
-  dlg_select_autocrypt_account(shared->mailbox);
+  dlg_select_autocrypt_account();
   return IR_SUCCESS;
 }
 #endif

@@ -1293,7 +1293,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
       new_offset[i - first].hdr = ftello(fp) + offset;
 
       struct Message *msg = mx_msg_open(m, m->emails[i]->msgno);
-      const int rc2 = mutt_copy_message(fp, m, m->emails[i], msg, MUTT_CM_UPDATE,
+      const int rc2 = mutt_copy_message(fp, m->emails[i], msg, MUTT_CM_UPDATE,
                                         CH_FROM | CH_UPDATE | CH_UPDATE_LEN, 0);
       mx_msg_close(m, &msg);
       if (rc2 != 0)
@@ -1706,7 +1706,7 @@ static int mbox_path_canon(char *buf, size_t buflen)
  */
 static int mbox_path_pretty(char *buf, size_t buflen, const char *folder)
 {
-  if (mutt_path_abbr_folder(buf, buflen, folder))
+  if (mutt_path_abbr_folder(buf, folder))
     return 0;
 
   if (mutt_path_pretty(buf, buflen, HomeDir, false))
@@ -1720,13 +1720,13 @@ static int mbox_path_pretty(char *buf, size_t buflen, const char *folder)
  */
 static int mbox_path_parent(char *buf, size_t buflen)
 {
-  if (mutt_path_parent(buf, buflen))
+  if (mutt_path_parent(buf))
     return 0;
 
   if (buf[0] == '~')
     mutt_path_canon(buf, buflen, HomeDir, false);
 
-  if (mutt_path_parent(buf, buflen))
+  if (mutt_path_parent(buf))
     return 0;
 
   return -1;

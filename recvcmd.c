@@ -1107,13 +1107,10 @@ cleanup:
 
 /**
  * mutt_attach_mail_sender - Compose an email to the sender in the email attachment
- * @param fp   File containing attachment (UNUSED)
- * @param e    Email (UNUSED)
  * @param actx Attachment Context
  * @param cur  Current attachment
  */
-void mutt_attach_mail_sender(FILE *fp, struct Email *e, struct AttachCtx *actx,
-                             struct Body *cur)
+void mutt_attach_mail_sender(struct AttachCtx *actx, struct Body *cur)
 {
   if (!check_all_msg(actx, cur, 0))
   {

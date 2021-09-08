@@ -38,7 +38,6 @@
 #include "mutt.h"
 #include "parse.h"
 #include "body.h"
-#include "context.h"
 #include "email.h"
 #include "envelope.h"
 #include "from.h"
@@ -50,7 +49,6 @@
 #include "url.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
-#include "mutt_globals.h"
 #endif
 
 /* If the 'Content-Length' is bigger than 1GiB, then it's clearly wrong.
@@ -1266,8 +1264,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
     const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
     if (c_autocrypt)
     {
-      struct Mailbox *m = ctx_mailbox(Context);
-      mutt_autocrypt_process_autocrypt_header(m, e, env);
+      mutt_autocrypt_process_autocrypt_header(e, env);
       /* No sense in taking up memory after the header is processed */
       mutt_autocrypthdr_free(&env->autocrypt);
     }

@@ -263,7 +263,7 @@ int mutt_count_body_parts(struct Mailbox *m, struct Email *e, FILE *fp)
   if (e->body->parts)
     keep_parts = true;
   else
-    mutt_parse_mime_message(m, e, fp);
+    mutt_parse_mime_message(e, fp);
 
   if (!STAILQ_EMPTY(&AttachAllow) || !STAILQ_EMPTY(&AttachExclude) ||
       !STAILQ_EMPTY(&InlineAllow) || !STAILQ_EMPTY(&InlineExclude))
@@ -584,11 +584,10 @@ enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer *s,
 
 /**
  * mutt_parse_mime_message - Parse a MIME email
- * @param m Mailbox
  * @param e Email
  * @param fp File to parse
  */
-void mutt_parse_mime_message(struct Mailbox *m, struct Email *e, FILE *fp)
+void mutt_parse_mime_message(struct Email *e, FILE *fp)
 {
   const bool right_type =
       (e->body->type == TYPE_MESSAGE) || (e->body->type == TYPE_MULTIPART);

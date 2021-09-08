@@ -36,7 +36,6 @@
 #include "email/lib.h"
 #include "gui/lib.h"
 #include "header.h"
-#include "context.h"
 #include "mutt_globals.h"
 #include "options.h"
 #ifdef USE_AUTOCRYPT
@@ -508,13 +507,11 @@ out:
  * @param r    String List of references
  * @param fp   File to write to
  * @param trim Trim the list to at most this many items
- * @param sub  Config Subset
  *
  * Write the list in reverse because they are stored in reverse order when
  * parsed to speed up threading.
  */
-void mutt_write_references(const struct ListHead *r, FILE *fp, size_t trim,
-                           struct ConfigSubset *sub)
+void mutt_write_references(const struct ListHead *r, FILE *fp, size_t trim)
 {
   struct ListNode *np = NULL;
   size_t length = 0;
@@ -712,7 +709,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
     if (!STAILQ_EMPTY(&env->references))
     {
       fputs("References:", fp);
-      mutt_write_references(&env->references, fp, 10, sub);
+      mutt_write_references(&env->references, fp, 10);
       fputc('\n', fp);
     }
 
@@ -727,7 +724,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
   if (!STAILQ_EMPTY(&env->in_reply_to))
   {
     fputs("In-Reply-To:", fp);
-    mutt_write_references(&env->in_reply_to, fp, 0, sub);
+    mutt_write_references(&env->in_reply_to, fp, 0);
     fputc('\n', fp);
   }
 
@@ -735,11 +732,10 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
   const bool c_autocrypt = cs_subset_bool(sub, "autocrypt");
   if (c_autocrypt)
   {
-    struct Mailbox *m = ctx_mailbox(Context);
     if (mode == MUTT_WRITE_HEADER_NORMAL || mode == MUTT_WRITE_HEADER_FCC)
-      mutt_autocrypt_write_autocrypt_header(m, env, fp);
+      mutt_autocrypt_write_autocrypt_header(env, fp);
     if (mode == MUTT_WRITE_HEADER_MIME)
-      mutt_autocrypt_write_gossip_headers(m, env, fp);
+      mutt_autocrypt_write_gossip_headers(env, fp);
   }
 #endif
 

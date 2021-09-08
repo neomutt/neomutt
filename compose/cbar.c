@@ -291,10 +291,9 @@ int cbar_window_observer(struct NotifyCallback *nc)
 
 /**
  * cbar_new - Create the Compose Bar (status)
- * @param parent Parent Window
  * @param shared Shared compose data
  */
-struct MuttWindow *cbar_new(struct MuttWindow *parent, struct ComposeSharedData *shared)
+struct MuttWindow *cbar_new(struct ComposeSharedData *shared)
 {
   struct MuttWindow *win_cbar =
       mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,

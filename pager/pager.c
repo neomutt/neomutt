@@ -234,12 +234,11 @@ static int pager_window_observer(struct NotifyCallback *nc)
 
 /**
  * pager_window_new - Create a new Pager Window (list of Emails)
- * @param parent Parent Window
  * @param shared Shared Index Data
  * @param priv   Private Pager Data
  * @retval ptr New Window
  */
-struct MuttWindow *pager_window_new(struct MuttWindow *parent, struct IndexSharedData *shared,
+struct MuttWindow *pager_window_new(struct IndexSharedData *shared,
                                     struct PagerPrivateData *priv)
 {
   struct MuttWindow *win =

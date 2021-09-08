@@ -33,7 +33,6 @@ struct AddressList;
 struct Body;
 struct Email;
 struct Envelope;
-struct Mailbox;
 struct Message;
 struct State;
 
@@ -168,11 +167,10 @@ struct CryptModuleSpecs
    * @ingroup crypto_api
    *
    * send_menu - Ask the user whether to sign and/or encrypt the email
-   * @param m Current Mailbox
    * @param e Email
    * @retval num Flags, e.g. #APPLICATION_PGP | #SEC_ENCRYPT
    */
-  SecurityFlags (*send_menu)(struct Mailbox *m, struct Email *e);
+  SecurityFlags (*send_menu)(struct Email *e);
 
   /**
    * @defgroup crypto_set_sender set_sender()
@@ -277,13 +275,12 @@ struct CryptModuleSpecs
    * @ingroup crypto_api
    *
    * smime_verify_sender - Does the sender match the certificate?
-   * @param m Mailbox
    * @param e Email
    * @param msg Message
    * @retval 0 Success
    * @retval 1 Failure
    */
-  int (*smime_verify_sender)(struct Mailbox *m, struct Email *e, struct Message *msg);
+  int (*smime_verify_sender)(struct Email *e, struct Message *msg);
 
   /**
    * @defgroup crypto_smime_build_smime_entity smime_build_smime_entity()

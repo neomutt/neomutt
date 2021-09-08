@@ -24,9 +24,8 @@
 #define MUTT_PAGER_PBAR_H
 
 struct IndexSharedData;
-struct MuttWindow;
 struct PagerPrivateData;
 
-struct MuttWindow *pbar_new(struct MuttWindow *parent, struct IndexSharedData *shared, struct PagerPrivateData *priv);
+struct MuttWindow *pbar_new(struct IndexSharedData *shared, struct PagerPrivateData *priv);
 
 #endif /* MUTT_PAGER_PBAR_H */

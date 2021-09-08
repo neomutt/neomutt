@@ -444,8 +444,7 @@ static int index_window_observer(struct NotifyCallback *nc)
  * index_window_new - Create a new Index Window (list of Emails)
  * @retval ptr New Window
  */
-struct MuttWindow *index_window_new(struct IndexSharedData *shared,
-                                    struct IndexPrivateData *priv)
+struct MuttWindow *index_window_new(struct IndexPrivateData *priv)
 {
   struct MuttWindow *win = menu_new_window(MENU_MAIN, NeoMutt->sub);
 

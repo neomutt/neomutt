@@ -382,19 +382,18 @@ static void autocrypt_compose_menu(struct Email *e, const struct ConfigSubset *s
 static void update_crypt_info(struct ComposeSharedData *shared)
 {
   struct Email *e = shared->email;
-  struct Mailbox *m = shared->mailbox;
 
   const bool c_crypt_opportunistic_encrypt =
       cs_subset_bool(shared->sub, "crypt_opportunistic_encrypt");
   if (c_crypt_opportunistic_encrypt)
-    crypt_opportunistic_encrypt(m, e);
+    crypt_opportunistic_encrypt(e);
 
 #ifdef USE_AUTOCRYPT
   const bool c_autocrypt = cs_subset_bool(shared->sub, "autocrypt");
   if (c_autocrypt)
   {
     struct ComposeEnvelopeData *edata = shared->edata;
-    edata->autocrypt_rec = mutt_autocrypt_ui_recommendation(m, e, NULL);
+    edata->autocrypt_rec = mutt_autocrypt_ui_recommendation(e, NULL);
 
     /* Anything that enables SEC_ENCRYPT or SEC_SIGN, or turns on SMIME
      * overrides autocrypt, be it oppenc or the user having turned on
@@ -701,10 +700,10 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
   dlg->wdata = shared;
   dlg->wdata_free = compose_shared_data_free;
 
-  struct MuttWindow *win_env = compose_env_new(dlg, shared, fcc);
+  struct MuttWindow *win_env = compose_env_new(shared, fcc);
   struct MuttWindow *win_attach = attach_new(dlg, shared);
-  struct MuttWindow *win_cbar = cbar_new(dlg, shared);
-  struct MuttWindow *win_abar = sbar_new(dlg);
+  struct MuttWindow *win_cbar = cbar_new(shared);
+  struct MuttWindow *win_abar = sbar_new();
   sbar_set_title(win_abar, _("-- Attachments"));
 
   const bool c_status_on_top = cs_subset_bool(sub, "status_on_top");
@@ -1957,7 +1956,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           e->security |= APPLICATION_PGP;
           update_crypt_info(shared);
         }
-        e->security = crypt_pgp_send_menu(m, e);
+        e->security = crypt_pgp_send_menu(e);
         update_crypt_info(shared);
         if (old_flags != e->security)
         {
@@ -1997,7 +1996,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           e->security |= APPLICATION_SMIME;
           update_crypt_info(shared);
         }
-        e->security = crypt_smime_send_menu(m, e);
+        e->security = crypt_smime_send_menu(e);
         update_crypt_info(shared);
         if (old_flags != e->security)
         {

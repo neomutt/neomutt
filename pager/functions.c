@@ -289,8 +289,7 @@ static int op_compose_to_sender(struct IndexSharedData *shared,
     return IR_ERROR;
   if (pview->mode == PAGER_MODE_ATTACH_E)
   {
-    mutt_attach_mail_sender(pview->pdata->fp, shared->email, pview->pdata->actx,
-                            pview->pdata->body);
+    mutt_attach_mail_sender(pview->pdata->actx, pview->pdata->body);
   }
   else
   {

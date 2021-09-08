@@ -141,8 +141,8 @@ typedef uint16_t KeyFlags;                  ///< Flags describing PGP/SMIME keys
 /* crypt.c */
 void         crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailList *el);
 void         crypt_forget_passphrase(void);
-int          crypt_get_keys(struct Mailbox *m, struct Email *e, char **keylist, bool oppenc_mode);
-void         crypt_opportunistic_encrypt(struct Mailbox *m, struct Email *e);
+int          crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode);
+void         crypt_opportunistic_encrypt(struct Email *e);
 SecurityFlags crypt_query(struct Body *b);
 bool         crypt_valid_passphrase(SecurityFlags flags);
 SecurityFlags mutt_is_application_pgp(struct Body *b);
@@ -151,7 +151,7 @@ SecurityFlags mutt_is_malformed_multipart_pgp_encrypted(struct Body *b);
 SecurityFlags mutt_is_multipart_encrypted(struct Body *b);
 SecurityFlags mutt_is_multipart_signed(struct Body *b);
 int          mutt_is_valid_multipart_pgp_encrypted(struct Body *b);
-int          mutt_protect(struct Mailbox *m, struct Email *e, char *keylist, bool postpone);
+int          mutt_protect(struct Email *e, char *keylist, bool postpone);
 int          mutt_protected_headers_handler(struct Body *b, struct State *s);
 bool         mutt_should_hide_protected_subject(struct Email *e);
 int          mutt_signed_handler(struct Body *b, struct State *s);
@@ -168,12 +168,12 @@ int          crypt_pgp_encrypted_handler(struct Body *a, struct State *s);
 void         crypt_pgp_extract_key_from_attachment(FILE *fp, struct Body *top);
 void         crypt_pgp_invoke_getkeys(struct Address *addr);
 struct Body *crypt_pgp_make_key_attachment(void);
-SecurityFlags crypt_pgp_send_menu(struct Mailbox *m, struct Email *e);
+SecurityFlags crypt_pgp_send_menu(struct Email *e);
 int          crypt_smime_application_handler(struct Body *m, struct State *s);
 int          crypt_smime_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
 void         crypt_smime_getkeys(struct Envelope *env);
-SecurityFlags crypt_smime_send_menu(struct Mailbox *m, struct Email *e);
-int          crypt_smime_verify_sender(struct Mailbox *m, struct Email *e, struct Message *msg);
+SecurityFlags crypt_smime_send_menu(struct Email *e);
+int          crypt_smime_verify_sender(struct Email *e, struct Message *msg);
 
 /* crypt_mod.c */
 void crypto_module_free(void);

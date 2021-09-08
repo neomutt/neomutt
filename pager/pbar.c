@@ -328,13 +328,11 @@ static struct PBarPrivateData *pbar_data_new(struct IndexSharedData *shared,
 
 /**
  * pbar_new - Create the Pager Bar
- * @param parent Parent Window
  * @param shared Shared Pager data
  * @param priv   Private Pager data
  * @retval ptr New Pager Bar
  */
-struct MuttWindow *pbar_new(struct MuttWindow *parent, struct IndexSharedData *shared,
-                            struct PagerPrivateData *priv)
+struct MuttWindow *pbar_new(struct IndexSharedData *shared, struct PagerPrivateData *priv)
 {
   struct MuttWindow *win_pbar =
       mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,

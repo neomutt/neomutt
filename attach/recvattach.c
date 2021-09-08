@@ -903,13 +903,11 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
 
 /**
  * recvattach_edit_content_type - Edit the content type of an attachment
- * @param sub  Config Subset
  * @param actx Attachment context
  * @param menu Menu listing Attachments
  * @param e  Email
  */
-void recvattach_edit_content_type(struct ConfigSubset *sub, struct AttachCtx *actx,
-                                  struct Menu *menu, struct Email *e)
+void recvattach_edit_content_type(struct AttachCtx *actx, struct Menu *menu, struct Email *e)
 {
   struct AttachPtr *cur_att = current_attachment(actx, menu);
   if (!mutt_edit_content_type(e, cur_att->body, cur_att->fp))
@@ -927,7 +925,7 @@ void recvattach_edit_content_type(struct ConfigSubset *sub, struct AttachCtx *ac
   for (int i = 0; i < actx->idxlen; i++)
     actx->idx[i]->body = NULL;
   mutt_actx_entries_free(actx);
-  mutt_update_recvattach_menu(sub, actx, menu, true);
+  mutt_update_recvattach_menu(actx, menu, true);
 }
 
 /**
@@ -994,7 +992,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
          * immediately */
         mutt_edit_content_type(e, cur_att->body, cur_att->fp);
         if (recv)
-          recvattach_edit_content_type(sub, actx, menu, e);
+          recvattach_edit_content_type(actx, menu, e);
         else
           mutt_edit_content_type(e, cur_att->body, cur_att->fp);
 
@@ -1160,13 +1158,11 @@ void mutt_attach_init(struct AttachCtx *actx)
 
 /**
  * mutt_update_recvattach_menu - Update the Attachment Menu
- * @param sub  Config Subset
  * @param actx Attachment context
  * @param menu Menu listing Attachments
  * @param init If true, create a new Attachments context
  */
-void mutt_update_recvattach_menu(struct ConfigSubset *sub, struct AttachCtx *actx,
-                                 struct Menu *menu, bool init)
+void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
 {
   if (init)
   {
