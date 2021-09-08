@@ -700,10 +700,10 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
   dlg->wdata = shared;
   dlg->wdata_free = compose_shared_data_free;
 
-  struct MuttWindow *win_env = compose_env_new(dlg, shared, fcc);
+  struct MuttWindow *win_env = compose_env_new(shared, fcc);
   struct MuttWindow *win_attach = attach_new(dlg, shared);
-  struct MuttWindow *win_cbar = cbar_new(dlg, shared);
-  struct MuttWindow *win_abar = sbar_new(dlg);
+  struct MuttWindow *win_cbar = cbar_new(shared);
+  struct MuttWindow *win_abar = sbar_new();
   sbar_set_title(win_abar, _("-- Attachments"));
 
   const bool c_status_on_top = cs_subset_bool(sub, "status_on_top");

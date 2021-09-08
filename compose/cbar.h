@@ -24,8 +24,7 @@
 #define MUTT_COMPOSE_CBAR_H
 
 struct ComposeSharedData;
-struct MuttWindow;
 
-struct MuttWindow *cbar_new(struct MuttWindow *parent, struct ComposeSharedData *shared);
+struct MuttWindow *cbar_new(struct ComposeSharedData *shared);
 
 #endif /* MUTT_COMPOSE_CBAR_H */

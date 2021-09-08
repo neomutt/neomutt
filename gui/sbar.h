@@ -25,7 +25,7 @@
 
 struct MuttWindow;
 
-struct MuttWindow *sbar_new(struct MuttWindow *parent);
+struct MuttWindow *sbar_new(void);
 void sbar_set_title(struct MuttWindow *win, const char *title);
 
 #endif /* MUTT_SIMPLE_IBAR_H */

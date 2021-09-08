@@ -391,7 +391,6 @@ static void notify_crypto(struct Email *e, struct Message *msg)
 /**
  * mutt_display_message - Display a message in the pager
  * @param win_index Index Window
- * @param win_ibar  Index Bar Window
  * @param win_pager Pager Window
  * @param win_pbar  Pager Bar Window
  * @param m         Mailbox
@@ -399,9 +398,8 @@ static void notify_crypto(struct Email *e, struct Message *msg)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ibar,
-                         struct MuttWindow *win_pager, struct MuttWindow *win_pbar,
-                         struct Mailbox *m, struct Email *e)
+int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_pager,
+                         struct MuttWindow *win_pbar, struct Mailbox *m, struct Email *e)
 {
   struct Message *msg = mx_msg_open(m, e->msgno);
   if (!msg)

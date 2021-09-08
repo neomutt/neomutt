@@ -138,7 +138,7 @@ struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype,
   dlg->focus = win_index;
   dlg->wdata = win_index->wdata;
 
-  struct MuttWindow *win_sbar = sbar_new(dlg);
+  struct MuttWindow *win_sbar = sbar_new();
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)
   {
