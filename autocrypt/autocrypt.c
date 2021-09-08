@@ -41,6 +41,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
@@ -917,6 +918,32 @@ int mutt_autocrypt_generate_gossip_list(struct Mailbox *m, struct Email *e)
   mutt_autocrypt_db_account_free(&account);
   mutt_autocrypt_db_peer_free(&peer);
   return rc;
+}
+
+/**
+ * get_current_mailbox - Get the current Mailbox
+ * @retval ptr Current Mailbox
+ *
+ * Search for the last (most recent) dialog that has an Index.
+ * Then return the Mailbox from its shared data.
+ */
+struct Mailbox *get_current_mailbox(void)
+{
+  if (!AllDialogsWindow)
+    return NULL;
+
+  struct MuttWindow *np = NULL;
+  TAILQ_FOREACH_REVERSE(np, &AllDialogsWindow->children, MuttWindowList, entries)
+  {
+    struct MuttWindow *win = window_find_child(np, WT_DLG_INDEX);
+    if (win)
+    {
+      struct IndexSharedData *shared = win->wdata;
+      return shared->mailbox;
+    }
+  }
+
+  return NULL;
 }
 
 /**
