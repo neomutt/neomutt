@@ -296,8 +296,7 @@ static int op_compose_to_sender(struct IndexSharedData *shared,
     struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
     emaillist_add_email(&el, shared->email);
 
-    mutt_send_message(SEND_TO_SENDER, NULL, NULL, ctx_mailbox(shared->ctx), &el,
-                      NeoMutt->sub);
+    mutt_send_message(SEND_TO_SENDER, NULL, NULL, shared->mailbox, &el, NeoMutt->sub);
     emaillist_clear(&el);
   }
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
@@ -600,8 +599,7 @@ static int op_forward_message(struct IndexSharedData *shared,
     struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
     emaillist_add_email(&el, shared->email);
 
-    mutt_send_message(SEND_FORWARD, NULL, NULL, ctx_mailbox(shared->ctx), &el,
-                      NeoMutt->sub);
+    mutt_send_message(SEND_FORWARD, NULL, NULL, shared->mailbox, &el, NeoMutt->sub);
     emaillist_clear(&el);
   }
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
@@ -677,8 +675,7 @@ static int op_mail(struct IndexSharedData *shared, struct PagerPrivateData *priv
   if (assert_attach_msg_mode(OptAttachMsg))
     return IR_ERROR;
 
-  mutt_send_message(SEND_NO_FLAGS, NULL, NULL, ctx_mailbox(shared->ctx), NULL,
-                    NeoMutt->sub);
+  mutt_send_message(SEND_NO_FLAGS, NULL, NULL, shared->mailbox, NULL, NeoMutt->sub);
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
   return IR_SUCCESS;
 }
@@ -707,7 +704,7 @@ static int op_mail_key(struct IndexSharedData *shared, struct PagerPrivateData *
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, shared->email);
 
-  mutt_send_message(SEND_KEY, NULL, NULL, ctx_mailbox(shared->ctx), &el, NeoMutt->sub);
+  mutt_send_message(SEND_KEY, NULL, NULL, shared->mailbox, &el, NeoMutt->sub);
   emaillist_clear(&el);
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
   return IR_SUCCESS;
@@ -1095,8 +1092,7 @@ static int op_recall_message(struct IndexSharedData *shared,
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, shared->email);
 
-  mutt_send_message(SEND_POSTPONED, NULL, NULL, ctx_mailbox(shared->ctx), &el,
-                    NeoMutt->sub);
+  mutt_send_message(SEND_POSTPONED, NULL, NULL, shared->mailbox, &el, NeoMutt->sub);
   emaillist_clear(&el);
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
   return IR_SUCCESS;
@@ -1144,8 +1140,7 @@ static int op_reply(struct IndexSharedData *shared, struct PagerPrivateData *pri
   {
     struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
     emaillist_add_email(&el, shared->email);
-    mutt_send_message(replyflags, NULL, NULL, ctx_mailbox(shared->ctx), &el,
-                      NeoMutt->sub);
+    mutt_send_message(replyflags, NULL, NULL, shared->mailbox, &el, NeoMutt->sub);
     emaillist_clear(&el);
   }
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
@@ -1167,12 +1162,12 @@ static int op_resend(struct IndexSharedData *shared, struct PagerPrivateData *pr
     return IR_ERROR;
   if (pview->mode == PAGER_MODE_ATTACH_E)
   {
-    mutt_attach_resend(pview->pdata->fp, ctx_mailbox(shared->ctx),
-                       pview->pdata->actx, pview->pdata->body);
+    mutt_attach_resend(pview->pdata->fp, shared->mailbox, pview->pdata->actx,
+                       pview->pdata->body);
   }
   else
   {
-    mutt_resend_message(NULL, ctx_mailbox(shared->ctx), shared->email, NeoMutt->sub);
+    mutt_resend_message(NULL, shared->mailbox, shared->email, NeoMutt->sub);
   }
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
   return IR_SUCCESS;
@@ -1616,7 +1611,7 @@ static int op_view_attachments(struct IndexSharedData *shared,
 
   if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
     return IR_NOT_IMPL;
-  dlg_select_attachment(NeoMutt->sub, ctx_mailbox(Context), shared->email,
+  dlg_select_attachment(NeoMutt->sub, shared->mailbox, shared->email,
                         pview->pdata->fp);
   if (shared->email->attach_del)
     shared->mailbox->changed = true;
@@ -1678,8 +1673,8 @@ static int op_followup(struct IndexSharedData *shared, struct PagerPrivateData *
     {
       struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
       emaillist_add_email(&el, shared->email);
-      mutt_send_message(SEND_NEWS | SEND_REPLY, NULL, NULL,
-                        ctx_mailbox(shared->ctx), &el, NeoMutt->sub);
+      mutt_send_message(SEND_NEWS | SEND_REPLY, NULL, NULL, shared->mailbox,
+                        &el, NeoMutt->sub);
       emaillist_clear(&el);
     }
     pager_queue_redraw(priv, MENU_REDRAW_FULL);
@@ -1720,8 +1715,8 @@ static int op_forward_to_group(struct IndexSharedData *shared,
     struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
     emaillist_add_email(&el, shared->email);
 
-    mutt_send_message(SEND_NEWS | SEND_FORWARD, NULL, NULL,
-                      ctx_mailbox(shared->ctx), &el, NeoMutt->sub);
+    mutt_send_message(SEND_NEWS | SEND_FORWARD, NULL, NULL, shared->mailbox,
+                      &el, NeoMutt->sub);
     emaillist_clear(&el);
   }
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
@@ -1745,8 +1740,7 @@ static int op_post(struct IndexSharedData *shared, struct PagerPrivateData *priv
     return IR_ERROR;
   }
 
-  mutt_send_message(SEND_NEWS, NULL, NULL, ctx_mailbox(shared->ctx), NULL,
-                    NeoMutt->sub);
+  mutt_send_message(SEND_NEWS, NULL, NULL, shared->mailbox, NULL, NeoMutt->sub);
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
   return IR_SUCCESS;
 }
