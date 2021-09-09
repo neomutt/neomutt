@@ -747,7 +747,6 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   int rc = -1;
   bool loop = true;
   bool fcc_set = false; /* has the user edited the Fcc: field ? */
-  struct Mailbox *m = ctx_mailbox(Context);
 
 #ifdef USE_NNTP
   bool news = OptNewsSend; /* is it a news article ? */
@@ -771,6 +770,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   dlg->help_menu = MENU_COMPOSE;
 
   struct ComposeSharedData *shared = dlg->wdata;
+  shared->mailbox = ctx_mailbox(Context);
 
   // win_env->req_rows = calc_envelope(win_env, shared, shared->edata);
 
@@ -1279,11 +1279,11 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
 #ifdef USE_NNTP
         OptNews = false;
-        if (Context && (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE))
+        if (shared->mailbox && (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE))
         {
           const char *const c_news_server =
               cs_subset_string(sub, "news_server");
-          CurrentNewsSrv = nntp_select_server(Context->mailbox, c_news_server, false);
+          CurrentNewsSrv = nntp_select_server(shared->mailbox, c_news_server, false);
           if (!CurrentNewsSrv)
             break;
 
@@ -1292,19 +1292,19 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         }
 #endif
 
-        if (Context)
+        if (shared->mailbox)
         {
 #ifdef USE_NNTP
-          if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->mailbox->type == MUTT_NNTP))
+          if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (shared->mailbox->type == MUTT_NNTP))
 #endif
           {
-            mutt_buffer_strcpy(&fname, mailbox_path(Context->mailbox));
+            mutt_buffer_strcpy(&fname, mailbox_path(shared->mailbox));
             mutt_buffer_pretty_mailbox(&fname);
           }
         }
 
-        if ((mutt_buffer_enter_fname(prompt, &fname, true, m, false, NULL, NULL,
-                                     MUTT_SEL_NO_FLAGS) == -1) ||
+        if ((mutt_buffer_enter_fname(prompt, &fname, true, shared->mailbox, false,
+                                     NULL, NULL, MUTT_SEL_NO_FLAGS) == -1) ||
             mutt_buffer_is_empty(&fname))
         {
           break;
@@ -1368,7 +1368,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         mutt_window_free(&dlg_index);
         OptAttachMsg = false;
 
-        if (!Context)
+        if (!shared->mailbox)
         {
           /* Restore old $sort variables */
           cs_subset_str_native_set(sub, "sort", old_sort, NULL);
@@ -1907,15 +1907,16 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
       case OP_COMPOSE_WRITE_MESSAGE:
         mutt_buffer_reset(&fname);
-        if (Context)
+        if (shared->mailbox)
         {
-          mutt_buffer_strcpy(&fname, mailbox_path(Context->mailbox));
+          mutt_buffer_strcpy(&fname, mailbox_path(shared->mailbox));
           mutt_buffer_pretty_mailbox(&fname);
         }
         if (actx->idxlen)
           e->body = actx->idx[0]->body;
-        if ((mutt_buffer_enter_fname(_("Write message to mailbox"), &fname, true, m,
-                                     false, NULL, NULL, MUTT_SEL_NO_FLAGS) != -1) &&
+        if ((mutt_buffer_enter_fname(_("Write message to mailbox"), &fname,
+                                     true, shared->mailbox, false, NULL, NULL,
+                                     MUTT_SEL_NO_FLAGS) != -1) &&
             !mutt_buffer_is_empty(&fname))
         {
           mutt_message(_("Writing message to %s ..."), mutt_buffer_string(&fname));
