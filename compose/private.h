@@ -67,11 +67,15 @@ enum HeaderField
   HDR_ATTACH_TITLE,   ///< The "-- Attachments" line
 };
 
+struct AddressList;
 struct AttachCtx;
+struct AttachPtr;
+struct Body;
 struct Buffer;
 struct ComposeAttachData;
 struct ComposeSharedData;
 struct ConfigSubset;
+struct Email;
 struct Menu;
 struct MuttWindow;
 
@@ -80,5 +84,13 @@ struct MuttWindow *attach_new(struct MuttWindow *parent, struct ComposeSharedDat
 unsigned long cum_attachs_size(struct ConfigSubset *sub, struct ComposeAttachData *adata);
 int num_attachments(struct ComposeAttachData *adata);
 void update_menu(struct AttachCtx *actx, struct Menu *menu, bool init);
+void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachPtr *ap);
+bool edit_address_list(int field, struct AddressList *al);
+void update_crypt_info(struct ComposeSharedData *shared);
+bool check_count(struct AttachCtx *actx);
+void compose_attach_swap(struct Body *msg, struct AttachPtr **idx, short first);
+int check_attachments(struct AttachCtx *actx, struct ConfigSubset *sub);
+int delete_attachment(struct AttachCtx *actx, int x);
+void autocrypt_compose_menu(struct Email *e, const struct ConfigSubset *sub);
 
 #endif /* MUTT_COMPOSE_PRIVATE_H */

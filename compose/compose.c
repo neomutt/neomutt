@@ -320,7 +320,7 @@ static int compose_window_observer(struct NotifyCallback *nc)
  * @param actx Attachment context
  * @retval true There are attachments
  */
-static bool check_count(struct AttachCtx *actx)
+bool check_count(struct AttachCtx *actx)
 {
   if (actx->idxlen == 0)
   {
@@ -337,7 +337,7 @@ static bool check_count(struct AttachCtx *actx)
  * @param e Email
  * @param sub ConfigSubset
  */
-static void autocrypt_compose_menu(struct Email *e, const struct ConfigSubset *sub)
+void autocrypt_compose_menu(struct Email *e, const struct ConfigSubset *sub)
 {
   /* L10N: The compose menu autocrypt prompt.
      (e)ncrypt enables encryption via autocrypt.
@@ -379,7 +379,7 @@ static void autocrypt_compose_menu(struct Email *e, const struct ConfigSubset *s
  * update_crypt_info - Update the crypto info
  * @param shared Shared compose data
  */
-static void update_crypt_info(struct ComposeSharedData *shared)
+void update_crypt_info(struct ComposeSharedData *shared)
 {
   struct Email *e = shared->email;
 
@@ -424,7 +424,7 @@ static void update_crypt_info(struct ComposeSharedData *shared)
  * @retval  0 Success
  * @retval -1 Error
  */
-static int check_attachments(struct AttachCtx *actx, struct ConfigSubset *sub)
+int check_attachments(struct AttachCtx *actx, struct ConfigSubset *sub)
 {
   int rc = -1;
   struct stat st;
@@ -487,7 +487,7 @@ cleanup:
  * @param[in,out] al    AddressList to edit
  * @retval true The address list was changed
  */
-static bool edit_address_list(int field, struct AddressList *al)
+bool edit_address_list(int field, struct AddressList *al)
 {
   char buf[8192] = { 0 }; /* needs to be large for alias expansion */
   char old_list[8192] = { 0 };
@@ -520,7 +520,7 @@ static bool edit_address_list(int field, struct AddressList *al)
  * @retval  0 Success
  * @retval -1 Error
  */
-static int delete_attachment(struct AttachCtx *actx, int x)
+int delete_attachment(struct AttachCtx *actx, int x)
 {
   struct AttachPtr **idx = actx->idx;
   int rindex = actx->v2r[x];
@@ -637,7 +637,7 @@ void update_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
  * @param actx Attachment context
  * @param ap   Attachment to add
  */
-static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachPtr *ap)
+void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachPtr *ap)
 {
   ap->level = (actx->idxlen > 0) ? actx->idx[actx->idxlen - 1]->level : 0;
   if (actx->idxlen)
@@ -654,7 +654,7 @@ static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachP
  * @param[out] idx   Array of Attachments
  * @param[in]  first Index of first attachment to swap
  */
-static void compose_attach_swap(struct Body *msg, struct AttachPtr **idx, short first)
+void compose_attach_swap(struct Body *msg, struct AttachPtr **idx, short first)
 {
   /* Reorder Body pointers.
    * Must traverse msg from top since Body has no previous ptr.  */
