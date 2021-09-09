@@ -37,8 +37,7 @@
 #include "core/lib.h"
 
 /**
- * state_attachment_marker - Get a unique (per-run) ANSI string to mark PGP
- * messages in an email
+ * state_attachment_marker - Get a unique (per-run) ANSI string to mark PGP messages in an email
  * @retval s Marker
  */
 const char *state_attachment_marker(void)
@@ -52,8 +51,7 @@ const char *state_attachment_marker(void)
 }
 
 /**
- * state_protected_header_marker - Get a unique (per-run) ANSI string to mark
- * protected headers in an email
+ * state_protected_header_marker - Get a unique (per-run) ANSI string to mark protected headers in an email
  * @retval s Marker
  */
 const char *state_protected_header_marker(void)

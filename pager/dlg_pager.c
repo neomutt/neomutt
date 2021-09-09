@@ -355,8 +355,7 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
 }
 
 /**
- * pager_resolve_help_mapping - determine help mapping based on pager mode and
- * mailbox type
+ * pager_resolve_help_mapping - determine help mapping based on pager mode and mailbox type
  * @param mode pager mode
  * @param type mailbox type
  */

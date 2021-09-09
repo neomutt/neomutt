@@ -63,8 +63,7 @@
 static unsigned int hcachever = 0x0;
 
 /**
- * header_size - Compute the size of the header with uuid validity
- * and crc.
+ * header_size - Compute the size of the header with uuid validity and crc
  */
 static size_t header_size(void)
 {
