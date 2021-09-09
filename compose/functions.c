@@ -36,15 +36,18 @@
 #include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "alias/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "functions.h"
 #include "lib.h"
 #include "attach/lib.h"
+#include "autocrypt/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
@@ -54,6 +57,7 @@
 #include "browser.h"
 #include "commands.h"
 #include "context.h"
+#include "env_data.h"
 #include "hook.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
@@ -83,6 +87,311 @@
 
 static const char *Not_available_in_this_menu =
     N_("Not available in this menu");
+
+/**
+ * check_count - Check if there are any attachments
+ * @param actx Attachment context
+ * @retval true There are attachments
+ */
+static bool check_count(struct AttachCtx *actx)
+{
+  if (actx->idxlen == 0)
+  {
+    mutt_error(_("There are no attachments"));
+    return false;
+  }
+
+  return true;
+}
+
+#ifdef USE_AUTOCRYPT
+/**
+ * autocrypt_compose_menu - Autocrypt compose settings
+ * @param e Email
+ * @param sub ConfigSubset
+ */
+static void autocrypt_compose_menu(struct Email *e, const struct ConfigSubset *sub)
+{
+  /* L10N: The compose menu autocrypt prompt.
+     (e)ncrypt enables encryption via autocrypt.
+     (c)lear sets cleartext.
+     (a)utomatic defers to the recommendation.  */
+  const char *prompt = _("Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?");
+
+  e->security |= APPLICATION_PGP;
+
+  /* L10N: The letter corresponding to the compose menu autocrypt prompt
+     (e)ncrypt, (c)lear, (a)utomatic */
+  const char *letters = _("eca");
+
+  int choice = mutt_multi_choice(prompt, letters);
+  switch (choice)
+  {
+    case 1:
+      e->security |= (SEC_AUTOCRYPT | SEC_AUTOCRYPT_OVERRIDE);
+      e->security &= ~(SEC_ENCRYPT | SEC_SIGN | SEC_OPPENCRYPT | SEC_INLINE);
+      break;
+    case 2:
+      e->security &= ~SEC_AUTOCRYPT;
+      e->security |= SEC_AUTOCRYPT_OVERRIDE;
+      break;
+    case 3:
+    {
+      e->security &= ~SEC_AUTOCRYPT_OVERRIDE;
+      const bool c_crypt_opportunistic_encrypt =
+          cs_subset_bool(sub, "crypt_opportunistic_encrypt");
+      if (c_crypt_opportunistic_encrypt)
+        e->security |= SEC_OPPENCRYPT;
+      break;
+    }
+  }
+}
+#endif
+
+/**
+ * update_crypt_info - Update the crypto info
+ * @param shared Shared compose data
+ */
+void update_crypt_info(struct ComposeSharedData *shared)
+{
+  struct Email *e = shared->email;
+
+  const bool c_crypt_opportunistic_encrypt =
+      cs_subset_bool(shared->sub, "crypt_opportunistic_encrypt");
+  if (c_crypt_opportunistic_encrypt)
+    crypt_opportunistic_encrypt(e);
+
+#ifdef USE_AUTOCRYPT
+  const bool c_autocrypt = cs_subset_bool(shared->sub, "autocrypt");
+  if (c_autocrypt)
+  {
+    struct ComposeEnvelopeData *edata = shared->edata;
+    edata->autocrypt_rec = mutt_autocrypt_ui_recommendation(e, NULL);
+
+    /* Anything that enables SEC_ENCRYPT or SEC_SIGN, or turns on SMIME
+     * overrides autocrypt, be it oppenc or the user having turned on
+     * those flags manually. */
+    if (e->security & (SEC_ENCRYPT | SEC_SIGN | APPLICATION_SMIME))
+      e->security &= ~(SEC_AUTOCRYPT | SEC_AUTOCRYPT_OVERRIDE);
+    else
+    {
+      if (!(e->security & SEC_AUTOCRYPT_OVERRIDE))
+      {
+        if (edata->autocrypt_rec == AUTOCRYPT_REC_YES)
+        {
+          e->security |= (SEC_AUTOCRYPT | APPLICATION_PGP);
+          e->security &= ~(SEC_INLINE | APPLICATION_SMIME);
+        }
+        else
+          e->security &= ~SEC_AUTOCRYPT;
+      }
+    }
+  }
+#endif
+}
+
+/**
+ * check_attachments - Check if any attachments have changed or been deleted
+ * @param actx Attachment context
+ * @param sub  ConfigSubset
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+static int check_attachments(struct AttachCtx *actx, struct ConfigSubset *sub)
+{
+  int rc = -1;
+  struct stat st;
+  struct Buffer *pretty = NULL, *msg = NULL;
+
+  for (int i = 0; i < actx->idxlen; i++)
+  {
+    if (actx->idx[i]->body->type == TYPE_MULTIPART)
+      continue;
+    if (stat(actx->idx[i]->body->filename, &st) != 0)
+    {
+      if (!pretty)
+        pretty = mutt_buffer_pool_get();
+      mutt_buffer_strcpy(pretty, actx->idx[i]->body->filename);
+      mutt_buffer_pretty_mailbox(pretty);
+      /* L10N: This message is displayed in the compose menu when an attachment
+         doesn't stat.  %d is the attachment number and %s is the attachment
+         filename.  The filename is located last to avoid a long path hiding
+         the error message.  */
+      mutt_error(_("Attachment #%d no longer exists: %s"), i + 1,
+                 mutt_buffer_string(pretty));
+      goto cleanup;
+    }
+
+    if (actx->idx[i]->body->stamp < st.st_mtime)
+    {
+      if (!pretty)
+        pretty = mutt_buffer_pool_get();
+      mutt_buffer_strcpy(pretty, actx->idx[i]->body->filename);
+      mutt_buffer_pretty_mailbox(pretty);
+
+      if (!msg)
+        msg = mutt_buffer_pool_get();
+      /* L10N: This message is displayed in the compose menu when an attachment
+         is modified behind the scenes.  %d is the attachment number and %s is
+         the attachment filename.  The filename is located last to avoid a long
+         path hiding the prompt question.  */
+      mutt_buffer_printf(msg, _("Attachment #%d modified. Update encoding for %s?"),
+                         i + 1, mutt_buffer_string(pretty));
+
+      enum QuadOption ans = mutt_yesorno(mutt_buffer_string(msg), MUTT_YES);
+      if (ans == MUTT_YES)
+        mutt_update_encoding(actx->idx[i]->body, sub);
+      else if (ans == MUTT_ABORT)
+        goto cleanup;
+    }
+  }
+
+  rc = 0;
+
+cleanup:
+  mutt_buffer_pool_release(&pretty);
+  mutt_buffer_pool_release(&msg);
+  return rc;
+}
+
+/**
+ * edit_address_list - Let the user edit the address list
+ * @param[in]     field Field to edit, e.g. #HDR_FROM
+ * @param[in,out] al    AddressList to edit
+ * @retval true The address list was changed
+ */
+static bool edit_address_list(int field, struct AddressList *al)
+{
+  char buf[8192] = { 0 }; /* needs to be large for alias expansion */
+  char old_list[8192] = { 0 };
+
+  mutt_addrlist_to_local(al);
+  mutt_addrlist_write(al, buf, sizeof(buf), false);
+  mutt_str_copy(old_list, buf, sizeof(buf));
+  if (mutt_get_field(_(Prompts[field]), buf, sizeof(buf), MUTT_ALIAS, false, NULL, NULL) == 0)
+  {
+    mutt_addrlist_clear(al);
+    mutt_addrlist_parse2(al, buf);
+    mutt_expand_aliases(al);
+  }
+
+  char *err = NULL;
+  if (mutt_addrlist_to_intl(al, &err) != 0)
+  {
+    mutt_error(_("Bad IDN: '%s'"), err);
+    mutt_refresh();
+    FREE(&err);
+  }
+
+  return !mutt_str_equal(buf, old_list);
+}
+
+/**
+ * delete_attachment - Delete an attachment
+ * @param actx Attachment context
+ * @param x    Index number of attachment
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+static int delete_attachment(struct AttachCtx *actx, int x)
+{
+  struct AttachPtr **idx = actx->idx;
+  int rindex = actx->v2r[x];
+
+  if ((rindex == 0) && (actx->idxlen == 1))
+  {
+    mutt_error(_("You may not delete the only attachment"));
+    idx[rindex]->body->tagged = false;
+    return -1;
+  }
+
+  for (int y = 0; y < actx->idxlen; y++)
+  {
+    if (idx[y]->body->next == idx[rindex]->body)
+    {
+      idx[y]->body->next = idx[rindex]->body->next;
+      break;
+    }
+  }
+
+  idx[rindex]->body->next = NULL;
+  /* mutt_make_message_attach() creates body->parts, shared by
+   * body->email->body.  If we NULL out that, it creates a memory
+   * leak because mutt_free_body() frees body->parts, not
+   * body->email->body.
+   *
+   * Other mutt_send_message() message constructors are careful to free
+   * any body->parts, removing depth:
+   *  - mutt_prepare_template() used by postponed, resent, and draft files
+   *  - mutt_copy_body() used by the recvattach menu and $forward_attachments.
+   *
+   * I believe it is safe to completely remove the "body->parts =
+   * NULL" statement.  But for safety, am doing so only for the case
+   * it must be avoided: message attachments.
+   */
+  if (!idx[rindex]->body->email)
+    idx[rindex]->body->parts = NULL;
+  mutt_body_free(&(idx[rindex]->body));
+  FREE(&idx[rindex]->tree);
+  FREE(&idx[rindex]);
+  for (; rindex < actx->idxlen - 1; rindex++)
+    idx[rindex] = idx[rindex + 1];
+  idx[actx->idxlen - 1] = NULL;
+  actx->idxlen--;
+
+  return 0;
+}
+
+/**
+ * update_idx - Add a new attachment to the message
+ * @param menu Current menu
+ * @param actx Attachment context
+ * @param ap   Attachment to add
+ */
+static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachPtr *ap)
+{
+  ap->level = (actx->idxlen > 0) ? actx->idx[actx->idxlen - 1]->level : 0;
+  if (actx->idxlen)
+    actx->idx[actx->idxlen - 1]->body->next = ap->body;
+  ap->body->aptr = ap;
+  mutt_actx_add_attach(actx, ap);
+  update_menu(actx, menu, false);
+  menu_set_index(menu, actx->vcount - 1);
+}
+
+/**
+ * compose_attach_swap - Swap two adjacent entries in the attachment list
+ * @param[in]  msg   Body of email
+ * @param[out] idx   Array of Attachments
+ * @param[in]  first Index of first attachment to swap
+ */
+static void compose_attach_swap(struct Body *msg, struct AttachPtr **idx, short first)
+{
+  /* Reorder Body pointers.
+   * Must traverse msg from top since Body has no previous ptr.  */
+  for (struct Body *part = msg; part; part = part->next)
+  {
+    if (part->next == idx[first]->body)
+    {
+      idx[first]->body->next = idx[first + 1]->body->next;
+      idx[first + 1]->body->next = idx[first]->body;
+      part->next = idx[first + 1]->body;
+      break;
+    }
+  }
+
+  /* Reorder index */
+  struct AttachPtr *saved = idx[first];
+  idx[first] = idx[first + 1];
+  idx[first + 1] = saved;
+
+  /* Swap ptr->num */
+  int i = idx[first]->num;
+  idx[first]->num = idx[first + 1]->num;
+  idx[first + 1]->num = i;
+}
+
+// -----------------------------------------------------------------------------
 
 /**
  * op_compose_attach_file - attach files to this message - Implements ::compose_function_t - @ingroup compose_function_api
