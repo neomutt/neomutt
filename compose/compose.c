@@ -743,35 +743,37 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 {
   init_header_padding();
 
-  int rc = -1;
   bool loop = true;
-  bool fcc_set = false; /* has the user edited the Fcc: field ? */
-
-#ifdef USE_NNTP
-  bool news = OptNewsSend; /* is it a news article ? */
-#endif
 
   struct MuttWindow *dlg = compose_dlg_init(sub, e, fcc);
+  struct ComposeSharedData *shared = dlg->wdata;
+  shared->mailbox = ctx_mailbox(Context);
+  shared->email = e;
+  shared->sub = sub;
+  shared->fcc = fcc;
+  shared->fcc_set = false;
+  shared->flags = flags;
+  shared->rc = -1;
 #ifdef USE_NNTP
-  if (news)
+  shared->news = OptNewsSend;
+#endif
+
+#ifdef USE_NNTP
+  if (shared->news)
     dlg->help_data = ComposeNewsHelp;
 #endif
+
   notify_observer_add(NeoMutt->notify, NT_CONFIG, compose_config_observer, dlg);
   notify_observer_add(dlg->notify, NT_WINDOW, compose_window_observer, dlg);
   dialog_push(dlg);
 
 #ifdef USE_NNTP
-  if (news)
+  if (shared->news)
     dlg->help_data = ComposeNewsHelp;
   else
 #endif
     dlg->help_data = ComposeHelp;
   dlg->help_menu = MENU_COMPOSE;
-
-  struct ComposeSharedData *shared = dlg->wdata;
-  shared->mailbox = ctx_mailbox(Context);
-
-  // win_env->req_rows = calc_envelope(win_env, shared, shared->edata);
 
   update_menu(shared->adata->actx, shared->adata->menu, true);
   update_crypt_info(shared);
@@ -788,10 +790,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
     switch (op)
     {
       case OP_COMPOSE_EDIT_FROM:
-        if (edit_address_list(HDR_FROM, &e->env->from))
+        if (edit_address_list(HDR_FROM, &shared->email->env->from))
         {
           update_crypt_info(shared);
-          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
           notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
@@ -799,13 +801,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       case OP_COMPOSE_EDIT_TO:
       {
 #ifdef USE_NNTP
-        if (news)
+        if (shared->news)
           break;
 #endif
-        if (edit_address_list(HDR_TO, &e->env->to))
+        if (edit_address_list(HDR_TO, &shared->email->env->to))
         {
           update_crypt_info(shared);
-          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
           notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
@@ -814,13 +816,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       case OP_COMPOSE_EDIT_BCC:
       {
 #ifdef USE_NNTP
-        if (news)
+        if (shared->news)
           break;
 #endif
-        if (edit_address_list(HDR_BCC, &e->env->bcc))
+        if (edit_address_list(HDR_BCC, &shared->email->env->bcc))
         {
           update_crypt_info(shared);
-          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
           notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
@@ -829,13 +831,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       case OP_COMPOSE_EDIT_CC:
       {
 #ifdef USE_NNTP
-        if (news)
+        if (shared->news)
           break;
 #endif
-        if (edit_address_list(HDR_CC, &e->env->cc))
+        if (edit_address_list(HDR_CC, &shared->email->env->cc))
         {
           update_crypt_info(shared);
-          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
           notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
@@ -844,14 +846,14 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 #ifdef USE_NNTP
       case OP_COMPOSE_EDIT_NEWSGROUPS:
       {
-        if (!news)
+        if (!shared->news)
           break;
         char buf[PATH_MAX];
-        mutt_str_copy(buf, e->env->newsgroups, sizeof(buf));
+        mutt_str_copy(buf, shared->email->env->newsgroups, sizeof(buf));
         if (mutt_get_field(Prompts[HDR_NEWSGROUPS], buf, sizeof(buf),
                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
-          mutt_str_replace(&e->env->newsgroups, buf);
+          mutt_str_replace(&shared->email->env->newsgroups, buf);
           notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
@@ -859,14 +861,14 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
       case OP_COMPOSE_EDIT_FOLLOWUP_TO:
       {
-        if (!news)
+        if (!shared->news)
           break;
         char buf[PATH_MAX];
-        mutt_str_copy(buf, e->env->followup_to, sizeof(buf));
+        mutt_str_copy(buf, shared->email->env->followup_to, sizeof(buf));
         if (mutt_get_field(Prompts[HDR_FOLLOWUPTO], buf, sizeof(buf),
                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
-          mutt_str_replace(&e->env->followup_to, buf);
+          mutt_str_replace(&shared->email->env->followup_to, buf);
           notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
@@ -874,15 +876,15 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
       case OP_COMPOSE_EDIT_X_COMMENT_TO:
       {
-        const bool c_x_comment_to = cs_subset_bool(sub, "x_comment_to");
-        if (!(news && c_x_comment_to))
+        const bool c_x_comment_to = cs_subset_bool(shared->sub, "x_comment_to");
+        if (!(shared->news && c_x_comment_to))
           break;
         char buf[PATH_MAX];
-        mutt_str_copy(buf, e->env->x_comment_to, sizeof(buf));
+        mutt_str_copy(buf, shared->email->env->x_comment_to, sizeof(buf));
         if (mutt_get_field(Prompts[HDR_XCOMMENTTO], buf, sizeof(buf),
                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
-          mutt_str_replace(&e->env->x_comment_to, buf);
+          mutt_str_replace(&shared->email->env->x_comment_to, buf);
           notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
@@ -892,24 +894,24 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       case OP_COMPOSE_EDIT_SUBJECT:
       {
         char buf[PATH_MAX];
-        mutt_str_copy(buf, e->env->subject, sizeof(buf));
+        mutt_str_copy(buf, shared->email->env->subject, sizeof(buf));
         if (mutt_get_field(Prompts[HDR_SUBJECT], buf, sizeof(buf),
                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
         {
-          if (!mutt_str_equal(e->env->subject, buf))
+          if (!mutt_str_equal(shared->email->env->subject, buf))
           {
-            mutt_str_replace(&e->env->subject, buf);
+            mutt_str_replace(&shared->email->env->subject, buf);
             notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
-            mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+            mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
           }
         }
         break;
       }
 
       case OP_COMPOSE_EDIT_REPLY_TO:
-        if (edit_address_list(HDR_REPLYTO, &e->env->reply_to))
+        if (edit_address_list(HDR_REPLYTO, &shared->email->env->reply_to))
         {
-          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
           notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
@@ -917,17 +919,17 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       case OP_COMPOSE_EDIT_FCC:
       {
         struct Buffer *fname = mutt_buffer_pool_get();
-        mutt_buffer_copy(fname, fcc);
+        mutt_buffer_copy(fname, shared->fcc);
         if (mutt_buffer_get_field(Prompts[HDR_FCC], fname, MUTT_FILE | MUTT_CLEAR,
                                   false, NULL, NULL, NULL) == 0)
         {
-          if (!mutt_str_equal(fcc->data, fname->data))
+          if (!mutt_str_equal(shared->fcc->data, fname->data))
           {
-            mutt_buffer_copy(fcc, fname);
-            mutt_buffer_pretty_mailbox(fcc);
-            fcc_set = true;
+            mutt_buffer_copy(shared->fcc, fname);
+            mutt_buffer_pretty_mailbox(shared->fcc);
+            shared->fcc_set = true;
             notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
-            mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+            mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
           }
         }
         mutt_buffer_pool_release(&fname);
@@ -936,17 +938,17 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
       case OP_COMPOSE_EDIT_MESSAGE:
       {
-        const bool c_edit_headers = cs_subset_bool(sub, "edit_headers");
+        const bool c_edit_headers = cs_subset_bool(shared->sub, "edit_headers");
         if (!c_edit_headers)
         {
-          mutt_rfc3676_space_unstuff(e);
-          const char *const c_editor = cs_subset_string(sub, "editor");
-          mutt_edit_file(c_editor, e->body->filename);
-          mutt_rfc3676_space_stuff(e);
-          mutt_update_encoding(e->body, sub);
+          mutt_rfc3676_space_unstuff(shared->email);
+          const char *const c_editor = cs_subset_string(shared->sub, "editor");
+          mutt_edit_file(c_editor, shared->email->body->filename);
+          mutt_rfc3676_space_stuff(shared->email);
+          mutt_update_encoding(shared->email->body, shared->sub);
           menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
           /* Unconditional hook since editor was invoked */
-          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
           break;
         }
       }
@@ -954,13 +956,14 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
       case OP_COMPOSE_EDIT_HEADERS:
       {
-        mutt_rfc3676_space_unstuff(e);
+        mutt_rfc3676_space_unstuff(shared->email);
         const char *tag = NULL;
         char *err = NULL;
-        mutt_env_to_local(e->env);
-        const char *const c_editor = cs_subset_string(sub, "editor");
-        mutt_edit_headers(NONULL(c_editor), e->body->filename, e, fcc);
-        if (mutt_env_to_intl(e->env, &tag, &err))
+        mutt_env_to_local(shared->email->env);
+        const char *const c_editor = cs_subset_string(shared->sub, "editor");
+        mutt_edit_headers(NONULL(c_editor), shared->email->body->filename,
+                          shared->email, shared->fcc);
+        if (mutt_env_to_intl(shared->email->env, &tag, &err))
         {
           mutt_error(_("Bad IDN in '%s': '%s'"), tag, err);
           FREE(&err);
@@ -968,8 +971,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         update_crypt_info(shared);
         notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
 
-        mutt_rfc3676_space_stuff(e);
-        mutt_update_encoding(e->body, sub);
+        mutt_rfc3676_space_stuff(shared->email);
+        mutt_update_encoding(shared->email->body, shared->sub);
 
         /* attachments may have been added */
         if (shared->adata->actx->idxlen &&
@@ -981,7 +984,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
         menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
         /* Unconditional hook since editor was invoked */
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+        mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
         break;
       }
 
@@ -995,7 +998,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         {
           update_idx(shared->adata->menu, shared->adata->actx, ap);
           menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
-          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
         }
         else
           FREE(&ap);
@@ -1017,7 +1020,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           mutt_error(_("The fundamental part can't be moved"));
           break;
         }
-        compose_attach_swap(e->body, shared->adata->actx->idx, index - 1);
+        compose_attach_swap(shared->email->body, shared->adata->actx->idx, index - 1);
         menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
         menu_set_index(shared->adata->menu, index - 1);
         break;
@@ -1036,7 +1039,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           mutt_error(_("The fundamental part can't be moved"));
           break;
         }
-        compose_attach_swap(e->body, shared->adata->actx->idx, index);
+        compose_attach_swap(shared->email->body, shared->adata->actx->idx, index);
         menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
         menu_set_index(shared->adata->menu, index + 1);
         break;
@@ -1058,7 +1061,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
         struct Body *alts = NULL;
         /* group tagged message into a multipart/alternative */
-        struct Body *bptr = e->body;
+        struct Body *bptr = shared->email->body;
         for (int i = 0; bptr;)
         {
           if (bptr->tagged)
@@ -1079,7 +1082,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
               }
             }
 
-            // append bptr to the alts list, and remove from the e->body list
+            // append bptr to the alts list, and remove from the shared->email->body list
             if (alts)
             {
               alts->next = bptr;
@@ -1134,7 +1137,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
         /* traverse to see whether all the parts have Content-Language: set */
         int tagged_with_lang_num = 0;
-        for (struct Body *b = e->body; b; b = b->next)
+        for (struct Body *b = shared->email->body; b; b = b->next)
           if (b->tagged && b->language && *b->language)
             tagged_with_lang_num++;
 
@@ -1155,7 +1158,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
         struct Body *alts = NULL;
         /* group tagged message into a multipart/multilingual */
-        struct Body *bptr = e->body;
+        struct Body *bptr = shared->email->body;
         for (int i = 0; bptr;)
         {
           if (bptr->tagged)
@@ -1176,7 +1179,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
               }
             }
 
-            // append bptr to the alts list, and remove from the e->body list
+            // append bptr to the alts list, and remove from the shared->email->body list
             if (alts)
             {
               alts->next = bptr;
@@ -1251,7 +1254,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           char *att = files[i];
           struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
           ap->unowned = true;
-          ap->body = mutt_make_file_attach(att, sub);
+          ap->body = mutt_make_file_attach(att, shared->sub);
           if (ap->body)
           {
             added_attachment = true;
@@ -1275,7 +1278,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
         notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
         if (added_attachment)
-          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
         break;
       }
 
@@ -1291,7 +1294,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         if (shared->mailbox && (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE))
         {
           const char *const c_news_server =
-              cs_subset_string(sub, "news_server");
+              cs_subset_string(shared->sub, "news_server");
           CurrentNewsSrv = nntp_select_server(shared->mailbox, c_news_server, false);
           if (!CurrentNewsSrv)
             break;
@@ -1369,10 +1372,11 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         }
 
         /* `$sort`, `$sort_aux`, `$use_threads` could be changed in mutt_index_menu() */
-        const enum SortType old_sort = cs_subset_sort(sub, "sort");
-        const enum SortType old_sort_aux = cs_subset_sort(sub, "sort_aux");
+        const enum SortType old_sort = cs_subset_sort(shared->sub, "sort");
+        const enum SortType old_sort_aux =
+            cs_subset_sort(shared->sub, "sort_aux");
         const unsigned char old_use_threads =
-            cs_subset_enum(sub, "use_threads");
+            cs_subset_enum(shared->sub, "use_threads");
 
         OptAttachMsg = true;
         mutt_message(_("Tag the messages you want to attach"));
@@ -1386,9 +1390,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         if (!shared->mailbox)
         {
           /* Restore old $sort variables */
-          cs_subset_str_native_set(sub, "sort", old_sort, NULL);
-          cs_subset_str_native_set(sub, "sort_aux", old_sort_aux, NULL);
-          cs_subset_str_native_set(sub, "use_threads", old_use_threads, NULL);
+          cs_subset_str_native_set(shared->sub, "sort", old_sort, NULL);
+          cs_subset_str_native_set(shared->sub, "sort_aux", old_sort_aux, NULL);
+          cs_subset_str_native_set(shared->sub, "use_threads", old_use_threads, NULL);
           menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
           notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
           break;
@@ -1403,8 +1407,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
             continue;
 
           struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
-          ap->body = mutt_make_message_attach(m_attach_new,
-                                              m_attach_new->emails[i], true, sub);
+          ap->body = mutt_make_message_attach(m_attach_new, m_attach_new->emails[i],
+                                              true, shared->sub);
           if (ap->body)
           {
             added_attachment = true;
@@ -1425,11 +1429,11 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         mx_fastclose_mailbox(m_attach_new);
 
         /* Restore old $sort variables */
-        cs_subset_str_native_set(sub, "sort", old_sort, NULL);
-        cs_subset_str_native_set(sub, "sort_aux", old_sort_aux, NULL);
-        cs_subset_str_native_set(sub, "use_threads", old_use_threads, NULL);
+        cs_subset_str_native_set(shared->sub, "sort", old_sort, NULL);
+        cs_subset_str_native_set(shared->sub, "sort_aux", old_sort_aux, NULL);
+        cs_subset_str_native_set(shared->sub, "use_threads", old_use_threads, NULL);
         if (added_attachment)
-          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
         break;
       }
 
@@ -1448,9 +1452,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
         index = menu_get_index(shared->adata->menu);
         if (index == 0)
-          e->body = shared->adata->actx->idx[0]->body;
+          shared->email->body = shared->adata->actx->idx[0]->body;
 
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+        mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
         break;
       }
 
@@ -1471,7 +1475,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         else
           mutt_message(_("The current attachment will be converted"));
         menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+        mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
         break;
       }
 
@@ -1491,7 +1495,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           {
             mutt_str_replace(&cur_att->body->description, buf);
             menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
-            mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+            mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
           }
         }
         break;
@@ -1505,12 +1509,12 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         if (shared->adata->menu->tagprefix)
         {
           struct Body *top = NULL;
-          for (top = e->body; top; top = top->next)
+          for (top = shared->email->body; top; top = top->next)
           {
             if (top->tagged)
             {
               encoding_updated = true;
-              mutt_update_encoding(top, sub);
+              mutt_update_encoding(top, shared->sub);
             }
           }
           menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
@@ -1519,13 +1523,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         {
           struct AttachPtr *cur_att =
               current_attachment(shared->adata->actx, shared->adata->menu);
-          mutt_update_encoding(cur_att->body, sub);
+          mutt_update_encoding(cur_att->body, shared->sub);
           encoding_updated = true;
           menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
           notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
         }
         if (encoding_updated)
-          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
         break;
       }
 
@@ -1550,9 +1554,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           if (mutt_edit_content_type(NULL, cur_att->body, NULL))
           {
             /* this may have been a change to text/something */
-            mutt_update_encoding(cur_att->body, sub);
+            mutt_update_encoding(cur_att->body, shared->sub);
             menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
-            mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+            mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
           }
         }
         break;
@@ -1574,7 +1578,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
             cur_att->body->language = mutt_str_dup(buf);
             menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
             notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
-            mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+            mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
           }
           mutt_clear_error();
         }
@@ -1604,7 +1608,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
               menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
               notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
               mutt_clear_error();
-              mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+              mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
             }
           }
           else
@@ -1616,30 +1620,30 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       case OP_COMPOSE_SEND_MESSAGE:
         /* Note: We don't invoke send2-hook here, since we want to leave
          * users an opportunity to change settings from the ":" prompt.  */
-        if (check_attachments(shared->adata->actx, sub) != 0)
+        if (check_attachments(shared->adata->actx, shared->sub) != 0)
         {
           menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
           break;
         }
 
 #ifdef MIXMASTER
-        if (!STAILQ_EMPTY(&e->chain) && (mix_check_message(e) != 0))
+        if (!STAILQ_EMPTY(&shared->email->chain) && (mix_check_message(shared->email) != 0))
           break;
 #endif
 
-        if (!fcc_set && !mutt_buffer_is_empty(fcc))
+        if (!shared->fcc_set && !mutt_buffer_is_empty(shared->fcc))
         {
-          const enum QuadOption c_copy = cs_subset_quad(sub, "copy");
+          const enum QuadOption c_copy = cs_subset_quad(shared->sub, "copy");
           enum QuadOption ans =
               query_quadoption(c_copy, _("Save a copy of this message?"));
           if (ans == MUTT_ABORT)
             break;
           else if (ans == MUTT_NO)
-            mutt_buffer_reset(fcc);
+            mutt_buffer_reset(shared->fcc);
         }
 
         loop = false;
-        rc = 0;
+        shared->rc = 0;
         break;
 
       case OP_COMPOSE_EDIT_FILE:
@@ -1648,13 +1652,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           break;
         struct AttachPtr *cur_att =
             current_attachment(shared->adata->actx, shared->adata->menu);
-        const char *const c_editor = cs_subset_string(sub, "editor");
+        const char *const c_editor = cs_subset_string(shared->sub, "editor");
         mutt_edit_file(NONULL(c_editor), cur_att->body->filename);
-        mutt_update_encoding(cur_att->body, sub);
+        mutt_update_encoding(cur_att->body, shared->sub);
         menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
         notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
         /* Unconditional hook since editor was invoked */
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+        mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
         break;
       }
 
@@ -1679,7 +1683,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
             current_attachment(shared->adata->actx, shared->adata->menu);
         if (shared->adata->menu->tagprefix)
         {
-          for (struct Body *top = e->body; top; top = top->next)
+          for (struct Body *top = shared->email->body; top; top = top->next)
           {
             if (top->tagged)
               mutt_get_tmp_attachment(top);
@@ -1752,7 +1756,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
           if (cur_att->body->stamp >= st.st_mtime)
             mutt_stamp_attachment(cur_att->body);
-          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
         }
         mutt_buffer_pool_release(&fname);
         break;
@@ -1783,7 +1787,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         char *p = strchr(type, '/');
         if (!p)
         {
-          mutt_error(_("Content-Type is of the form base/sub"));
+          mutt_error(_("Content-Type is of the form base/shared->sub"));
           mutt_buffer_pool_release(&fname);
           continue;
         }
@@ -1807,7 +1811,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         }
         mutt_file_fclose(&fp);
 
-        ap->body = mutt_make_file_attach(mutt_buffer_string(fname), sub);
+        ap->body = mutt_make_file_attach(mutt_buffer_string(fname), shared->sub);
         if (!ap->body)
         {
           mutt_error(_("What we have here is a failure to make an attachment"));
@@ -1827,10 +1831,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
         if (mutt_compose_attachment(cur_att->body))
         {
-          mutt_update_encoding(cur_att->body, sub);
+          mutt_update_encoding(cur_att->body, shared->sub);
           menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
         }
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+        mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
         mutt_buffer_pool_release(&fname);
         break;
       }
@@ -1843,9 +1847,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
             current_attachment(shared->adata->actx, shared->adata->menu);
         if (mutt_edit_attachment(cur_att->body))
         {
-          mutt_update_encoding(cur_att->body, sub);
+          mutt_update_encoding(cur_att->body, shared->sub);
           menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
-          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
         }
         break;
       }
@@ -1854,7 +1858,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       case OP_DISPLAY_HEADERS:
         if (!check_count(shared->adata->actx))
           break;
-        mutt_attach_display_loop(sub, shared->adata->menu, op, e, shared->adata->actx, false);
+        mutt_attach_display_loop(shared->sub, shared->adata->menu, op,
+                                 shared->email, shared->adata->actx, false);
         menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
         /* no send2hook, since this doesn't modify the message */
         break;
@@ -1897,13 +1902,14 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
                                                      MENU_REDRAW_FULL :
                                                      MENU_REDRAW_CURRENT);
         notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+        mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
         break;
       }
 
       case OP_EXIT:
       {
-        const enum QuadOption c_postpone = cs_subset_quad(sub, "postpone");
+        const enum QuadOption c_postpone =
+            cs_subset_quad(shared->sub, "postpone");
         enum QuadOption ans =
             query_quadoption(c_postpone, _("Save (postpone) draft message?"));
         if (ans == MUTT_NO)
@@ -1912,7 +1918,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
             if (shared->adata->actx->idx[i]->unowned)
               shared->adata->actx->idx[i]->body->unlink = false;
 
-          if (!(flags & MUTT_COMPOSE_NOFREEHEADER))
+          if (!(shared->flags & MUTT_COMPOSE_NOFREEHEADER))
           {
             for (int i = 0; i < shared->adata->actx->idxlen; i++)
             {
@@ -1924,7 +1930,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
               mutt_body_free(&shared->adata->actx->idx[i]->body);
             }
           }
-          rc = -1;
+          shared->rc = -1;
           loop = false;
           break;
         }
@@ -1934,27 +1940,28 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
         /* fallthrough */
 
       case OP_COMPOSE_POSTPONE_MESSAGE:
-        if (check_attachments(shared->adata->actx, sub) != 0)
+        if (check_attachments(shared->adata->actx, shared->sub) != 0)
         {
           menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
           break;
         }
 
         loop = false;
-        rc = 1;
+        shared->rc = 1;
         break;
 
       case OP_COMPOSE_ISPELL:
       {
         endwin();
-        const char *const c_ispell = cs_subset_string(sub, "ispell");
+        const char *const c_ispell = cs_subset_string(shared->sub, "ispell");
         char buf[PATH_MAX];
-        snprintf(buf, sizeof(buf), "%s -x %s", NONULL(c_ispell), e->body->filename);
+        snprintf(buf, sizeof(buf), "%s -x %s", NONULL(c_ispell),
+                 shared->email->body->filename);
         if (mutt_system(buf) == -1)
           mutt_error(_("Error running \"%s\""), buf);
         else
         {
-          mutt_update_encoding(e->body, sub);
+          mutt_update_encoding(shared->email->body, shared->sub);
           notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
         }
         break;
@@ -1969,7 +1976,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           mutt_buffer_pretty_mailbox(fname);
         }
         if (shared->adata->actx->idxlen)
-          e->body = shared->adata->actx->idx[0]->body;
+          shared->email->body = shared->adata->actx->idx[0]->body;
         if ((mutt_buffer_enter_fname(_("Write message to mailbox"), fname, true,
                                      shared->mailbox, false, NULL, NULL,
                                      MUTT_SEL_NO_FLAGS) != -1) &&
@@ -1978,13 +1985,14 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           mutt_message(_("Writing message to %s ..."), mutt_buffer_string(fname));
           mutt_buffer_expand_path(fname);
 
-          if (e->body->next)
-            e->body = mutt_make_multipart(e->body);
+          if (shared->email->body->next)
+            shared->email->body = mutt_make_multipart(shared->email->body);
 
-          if (mutt_write_fcc(mutt_buffer_string(fname), e, NULL, false, NULL, NULL, sub) == 0)
+          if (mutt_write_fcc(mutt_buffer_string(fname), shared->email, NULL,
+                             false, NULL, NULL, shared->sub) == 0)
             mutt_message(_("Message written"));
 
-          e->body = mutt_remove_multipart(e->body);
+          shared->email->body = mutt_remove_multipart(shared->email->body);
         }
         mutt_buffer_pool_release(&fname);
         break;
@@ -1992,7 +2000,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
       case OP_COMPOSE_PGP_MENU:
       {
-        const SecurityFlags old_flags = e->security;
+        const SecurityFlags old_flags = shared->email->security;
         if (!(WithCrypto & APPLICATION_PGP))
           break;
         if (!crypt_has_module_backend(APPLICATION_PGP))
@@ -2000,26 +2008,27 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           mutt_error(_("No PGP backend configured"));
           break;
         }
-        if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
+        if (((WithCrypto & APPLICATION_SMIME) != 0) &&
+            (shared->email->security & APPLICATION_SMIME))
         {
-          if (e->security & (SEC_ENCRYPT | SEC_SIGN))
+          if (shared->email->security & (SEC_ENCRYPT | SEC_SIGN))
           {
             if (mutt_yesorno(_("S/MIME already selected. Clear and continue?"), MUTT_YES) != MUTT_YES)
             {
               mutt_clear_error();
               break;
             }
-            e->security &= ~(SEC_ENCRYPT | SEC_SIGN);
+            shared->email->security &= ~(SEC_ENCRYPT | SEC_SIGN);
           }
-          e->security &= ~APPLICATION_SMIME;
-          e->security |= APPLICATION_PGP;
+          shared->email->security &= ~APPLICATION_SMIME;
+          shared->email->security |= APPLICATION_PGP;
           update_crypt_info(shared);
         }
-        e->security = crypt_pgp_send_menu(e);
+        shared->email->security = crypt_pgp_send_menu(shared->email);
         update_crypt_info(shared);
-        if (old_flags != e->security)
+        if (old_flags != shared->email->security)
         {
-          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
           notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
@@ -2031,7 +2040,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
       case OP_COMPOSE_SMIME_MENU:
       {
-        const SecurityFlags old_flags = e->security;
+        const SecurityFlags old_flags = shared->email->security;
         if (!(WithCrypto & APPLICATION_SMIME))
           break;
         if (!crypt_has_module_backend(APPLICATION_SMIME))
@@ -2040,26 +2049,26 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
           break;
         }
 
-        if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
+        if (((WithCrypto & APPLICATION_PGP) != 0) && (shared->email->security & APPLICATION_PGP))
         {
-          if (e->security & (SEC_ENCRYPT | SEC_SIGN))
+          if (shared->email->security & (SEC_ENCRYPT | SEC_SIGN))
           {
             if (mutt_yesorno(_("PGP already selected. Clear and continue?"), MUTT_YES) != MUTT_YES)
             {
               mutt_clear_error();
               break;
             }
-            e->security &= ~(SEC_ENCRYPT | SEC_SIGN);
+            shared->email->security &= ~(SEC_ENCRYPT | SEC_SIGN);
           }
-          e->security &= ~APPLICATION_PGP;
-          e->security |= APPLICATION_SMIME;
+          shared->email->security &= ~APPLICATION_PGP;
+          shared->email->security |= APPLICATION_SMIME;
           update_crypt_info(shared);
         }
-        e->security = crypt_smime_send_menu(e);
+        shared->email->security = crypt_smime_send_menu(shared->email);
         update_crypt_info(shared);
-        if (old_flags != e->security)
+        if (old_flags != shared->email->security)
         {
-          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
           notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
@@ -2067,8 +2076,8 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
 #ifdef MIXMASTER
       case OP_COMPOSE_MIX:
-        dlg_select_mixmaster_chain(&e->chain);
-        mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+        dlg_select_mixmaster_chain(&shared->email->chain);
+        mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
         notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         break;
 #endif
@@ -2076,31 +2085,31 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 #ifdef USE_AUTOCRYPT
       case OP_COMPOSE_AUTOCRYPT_MENU:
       {
-        const SecurityFlags old_flags = e->security;
-        const bool c_autocrypt = cs_subset_bool(sub, "autocrypt");
+        const SecurityFlags old_flags = shared->email->security;
+        const bool c_autocrypt = cs_subset_bool(shared->sub, "autocrypt");
         if (!c_autocrypt)
           break;
 
-        if ((WithCrypto & APPLICATION_SMIME) && (e->security & APPLICATION_SMIME))
+        if ((WithCrypto & APPLICATION_SMIME) && (shared->email->security & APPLICATION_SMIME))
         {
-          if (e->security & (SEC_ENCRYPT | SEC_SIGN))
+          if (shared->email->security & (SEC_ENCRYPT | SEC_SIGN))
           {
             if (mutt_yesorno(_("S/MIME already selected. Clear and continue?"), MUTT_YES) != MUTT_YES)
             {
               mutt_clear_error();
               break;
             }
-            e->security &= ~(SEC_ENCRYPT | SEC_SIGN);
+            shared->email->security &= ~(SEC_ENCRYPT | SEC_SIGN);
           }
-          e->security &= ~APPLICATION_SMIME;
-          e->security |= APPLICATION_PGP;
+          shared->email->security &= ~APPLICATION_SMIME;
+          shared->email->security |= APPLICATION_PGP;
           update_crypt_info(shared);
         }
-        autocrypt_compose_menu(e, sub);
+        autocrypt_compose_menu(shared->email, shared->sub);
         update_crypt_info(shared);
-        if (old_flags != e->security)
+        if (old_flags != shared->email->security)
         {
-          mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
+          mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
           notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
         }
         break;
@@ -2126,5 +2135,5 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   dialog_pop();
   mutt_window_free(&dlg);
 
-  return rc;
+  return shared->rc;
 }

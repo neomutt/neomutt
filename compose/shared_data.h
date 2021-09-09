@@ -23,6 +23,9 @@
 #ifndef MUTT_COMPOSE_SHARED_DATA_H
 #define MUTT_COMPOSE_SHARED_DATA_H
 
+#include "config.h"
+#include <stdbool.h>
+
 /**
  * struct ComposeSharedData - Shared Compose Data
  */
@@ -34,6 +37,14 @@ struct ComposeSharedData
   struct ComposeAttachData *adata;   ///< Attachments
   struct ComposeEnvelopeData *edata; ///< Envelope data
   struct Notify *notify;             ///< Notifications: #NotifyCompose
+
+  struct Buffer *fcc;                ///< Buffer to save FCC
+  int flags;                         ///< Flags, e.g. #MUTT_COMPOSE_NOFREEHEADER
+  bool fcc_set;                      ///< User has edited the Fcc: field
+  int rc;                            ///< Return code to leave compose
+#ifdef USE_NNTP
+  bool news;                         ///< Email is a news article
+#endif
 };
 
 struct MuttWindow;
