@@ -36,6 +36,7 @@ compose/compose.c
 compose/config.c
 compose/envelope.c
 compose/env_data.c
+compose/functions.c
 compose/shared_data.c
 compress/compress.c
 compress/lz4.c

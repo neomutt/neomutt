@@ -80,5 +80,6 @@ struct MuttWindow *attach_new(struct MuttWindow *parent, struct ComposeSharedDat
 unsigned long cum_attachs_size(struct ConfigSubset *sub, struct ComposeAttachData *adata);
 int num_attachments(struct ComposeAttachData *adata);
 void update_menu(struct AttachCtx *actx, struct Menu *menu, bool init);
+void update_crypt_info(struct ComposeSharedData *shared);
 
 #endif /* MUTT_COMPOSE_PRIVATE_H */
