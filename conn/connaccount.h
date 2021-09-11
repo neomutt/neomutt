@@ -23,6 +23,7 @@
 #ifndef MUTT_CONN_CONNACCOUNT_H
 #define MUTT_CONN_CONNACCOUNT_H
 
+#include <stdbool.h>
 #include <stdint.h>
 
 /**
@@ -70,7 +71,7 @@ struct ConnAccount
 };
 
 int   mutt_account_getlogin      (struct ConnAccount *account);
-char *mutt_account_getoauthbearer(struct ConnAccount *account);
+char *mutt_account_getoauthbearer(struct ConnAccount *account, bool xoauth2);
 int   mutt_account_getpass       (struct ConnAccount *account);
 int   mutt_account_getuser       (struct ConnAccount *account);
 void  mutt_account_unsetpass     (struct ConnAccount *account);

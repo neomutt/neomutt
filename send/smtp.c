@@ -556,7 +556,7 @@ static int smtp_auth_oauth(struct SmtpAccountData *adata, const char *method)
   mutt_message(_("Authenticating (%s)..."), "OAUTHBEARER");
 
   /* We get the access token from the smtp_oauth_refresh_command */
-  char *oauthbearer = mutt_account_getoauthbearer(&adata->conn->account);
+  char *oauthbearer = mutt_account_getoauthbearer(&adata->conn->account, false);
   if (!oauthbearer)
     return SMTP_AUTH_FAIL;
 

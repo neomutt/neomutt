@@ -338,7 +338,7 @@ static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *
   // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
   mutt_message(_("Authenticating (%s)..."), "OAUTHBEARER");
 
-  char *oauthbearer = mutt_account_getoauthbearer(&adata->conn->account);
+  char *oauthbearer = mutt_account_getoauthbearer(&adata->conn->account, false);
   if (!oauthbearer)
     return POP_A_FAILURE;
 
