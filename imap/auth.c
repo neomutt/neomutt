@@ -59,6 +59,7 @@ struct ImapAuth
 static const struct ImapAuth imap_authenticators[] = {
   // clang-format off
   { imap_auth_oauth, "oauthbearer" },
+  { imap_auth_xoauth2, "xoauth2" },
   { imap_auth_plain, "plain" },
 #ifdef USE_SASL
   { imap_auth_sasl, NULL },
