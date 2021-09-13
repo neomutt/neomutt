@@ -465,8 +465,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   else
     e->body = NULL;
 
+  const int rc = shared->rc;
+
   dialog_pop();
   mutt_window_free(&dlg);
 
-  return shared->rc;
+  return rc;
 }
