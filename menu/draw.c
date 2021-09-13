@@ -333,7 +333,6 @@ void menu_redraw_full(struct Menu *menu)
   mutt_curses_set_color(MT_COLOR_NORMAL);
   mutt_window_clear(menu->win);
 
-  window_redraw(NULL);
   menu->pagelen = menu->win->state.rows;
 
   menu->redraw = MENU_REDRAW_INDEX;
