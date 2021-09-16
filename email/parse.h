@@ -43,7 +43,7 @@ bool             mutt_parse_mailto        (struct Envelope *e, char **body, cons
 struct Body *    mutt_parse_multipart     (FILE *fp, const char *boundary, LOFF_T end_off, bool digest);
 void             mutt_parse_part          (FILE *fp, struct Body *b);
 struct Body *    mutt_read_mime_header    (FILE *fp, bool digest);
-int              mutt_rfc822_parse_line   (struct Envelope *env, struct Email *e, char *line, char *p, bool user_hdrs, bool weed, bool do_2047);
+int              mutt_rfc822_parse_line   (struct Envelope *env, struct Email *e, const char *name, const char *body, bool user_hdrs, bool weed, bool do_2047);
 struct Body *    mutt_rfc822_parse_message(FILE *fp, struct Body *parent);
 struct Envelope *mutt_rfc822_read_header  (FILE *fp, struct Email *e, bool user_hdrs, bool weed);
 char *           mutt_rfc822_read_line    (FILE *fp, char *line, size_t *linelen);
