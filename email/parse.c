@@ -590,6 +590,37 @@ cleanup:
 #endif
 
 /**
+ * rfc2369_first_mailto - Extract the first mailto: URL from a RFC2369 list
+ * @param body Body of the header
+ * @return First mailto: URL found, or NULL if none was found
+ */
+static char *rfc2369_first_mailto(const char *body)
+{
+  for (const char *beg = body, *end = NULL; beg; beg = strchr(end, ','))
+  {
+    beg = strchr(beg, '<');
+    if (!beg)
+    {
+      break;
+    }
+    beg++;
+    end = strchr(beg, '>');
+    if (!end)
+    {
+      break;
+    }
+
+    char *mlist = mutt_strn_dup(beg, end - beg);
+    if (url_check_scheme(mlist) == U_MAILTO)
+    {
+      return mlist;
+    }
+    FREE(&mlist);
+  }
+  return NULL;
+}
+
+/**
  * mutt_rfc822_parse_line - Parse an email header
  * @param env       Envelope of the email
  * @param e         Email
@@ -765,32 +796,30 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, const char *na
       }
       else if (mutt_istr_equal(name + 1, "ist-Post"))
       {
-        /* RFC2369.  FIXME: We should ignore whitespace, but don't. */
-        if (!mutt_strn_equal(body, "NO", 2))
+        /* RFC2369 */
+        if (!mutt_strn_equal(mutt_str_skip_whitespace(body), "NO", 2))
         {
-          char *beg = NULL, *end = NULL;
-          for (beg = strchr(body, '<'); beg; beg = strchr(end, ','))
+          char *mailto = rfc2369_first_mailto(body);
+          if (mailto)
           {
-            beg++;
-            end = strchr(beg, '>');
-            if (!end)
-              break;
-
-            char *mlist = mutt_strn_dup(beg, end - beg);
-            /* Take the first mailto URL */
-            if (url_check_scheme(mlist) == U_MAILTO)
-            {
-              FREE(&env->list_post);
-              env->list_post = mlist;
-              const bool c_auto_subscribe =
-                  cs_subset_bool(NeoMutt->sub, "auto_subscribe");
-              if (c_auto_subscribe)
-                mutt_auto_subscribe(env->list_post);
-
-              break;
-            }
-            FREE(&mlist);
+            FREE(&env->list_post);
+            env->list_post = mailto;
+            const bool c_auto_subscribe =
+                cs_subset_bool(NeoMutt->sub, "auto_subscribe");
+            if (c_auto_subscribe)
+              mutt_auto_subscribe(env->list_post);
           }
+        }
+        matched = true;
+      }
+      else if (mutt_istr_equal(name + 1, "ist-Unsubscribe"))
+      {
+        /* RFC2369 */
+        char *mailto = rfc2369_first_mailto(body);
+        if (mailto)
+        {
+          FREE(&env->list_unsubscribe);
+          env->list_unsubscribe = mailto;
         }
         matched = true;
       }

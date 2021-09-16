@@ -212,6 +212,7 @@
   _fmt(OP_NEXT_PAGE,                      N_("move to the next page")) \
   _fmt(OP_PAGER_BOTTOM,                   N_("jump to the bottom of the message")) \
   _fmt(OP_PAGER_HIDE_QUOTED,              N_("toggle display of quoted text")) \
+  _fmt(OP_PAGER_LIST_UNSUBSCRIBE,         N_("unsubscribe from mailing list")) \
   _fmt(OP_PAGER_SKIP_QUOTED,              N_("skip beyond quoted text")) \
   _fmt(OP_PAGER_SKIP_HEADERS,             N_("jump to first line after headers")) \
   _fmt(OP_PAGER_TOP,                      N_("jump to the top of the message")) \

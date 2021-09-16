@@ -824,6 +824,42 @@ static int op_pager_hide_quoted(struct IndexSharedData *shared,
 }
 
 /**
+ * op_pager_list_unsubscribe - unsubscribe from mailing list - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_pager_list_unsubscribe(struct IndexSharedData *shared,
+                                     struct PagerPrivateData *priv, int op)
+{
+  if (!(shared->email && shared->email->env && shared->email->env->list_unsubscribe))
+  {
+    return IR_NO_ACTION;
+  }
+
+  const char *mailto = shared->email->env->list_unsubscribe;
+
+  /*
+   * TODO - how about a simple API to send an email given from/to/subject/body?
+   */
+  {
+    struct Email *e = email_new();
+    e->env = mutt_env_new();
+    mutt_parse_mailto(e->env, NULL, mailto);
+    e->body = mutt_body_new();
+    char ctype[] = "text/plain";
+    mutt_parse_content_type(ctype, e->body);
+    char tempfile[PATH_MAX];
+    mutt_mktemp(tempfile, sizeof(tempfile));
+    FILE *fp = mutt_file_fopen(tempfile, "w+");
+    fprintf(fp, "Unsubscribe\n");
+    mutt_file_fclose(&fp);
+    e->body->unlink = true;
+    e->body->filename = mutt_str_dup(tempfile);
+    mutt_send_message(SEND_DRAFT_FILE, e, NULL, shared->mailbox, NULL, NeoMutt->sub);
+  }
+
+  return IR_SUCCESS;
+}
+
+/**
  * op_pager_skip_headers - jump to first line after headers - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_pager_skip_headers(struct IndexSharedData *shared,
@@ -1822,6 +1858,7 @@ struct PagerFunction PagerFunctions[] = {
   { OP_NEXT_PAGE,              op_next_page },
   { OP_PAGER_BOTTOM,           op_pager_bottom },
   { OP_PAGER_HIDE_QUOTED,      op_pager_hide_quoted },
+  { OP_PAGER_LIST_UNSUBSCRIBE, op_pager_list_unsubscribe },
   { OP_PAGER_SKIP_HEADERS,     op_pager_skip_headers },
   { OP_PAGER_SKIP_QUOTED,      op_pager_skip_quoted },
   { OP_PAGER_TOP,              op_pager_top },

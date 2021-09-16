@@ -501,6 +501,7 @@ unsigned char *serial_dump_envelope(struct Envelope *env, unsigned char *d,
   d = serial_dump_address(&env->mail_followup_to, d, off, convert);
 
   d = serial_dump_char(env->list_post, d, off, convert);
+  d = serial_dump_char(env->list_unsubscribe, d, off, convert);
   d = serial_dump_char(env->subject, d, off, convert);
 
   if (env->real_subj)
@@ -550,6 +551,7 @@ void serial_restore_envelope(struct Envelope *env, const unsigned char *d, int *
   serial_restore_address(&env->mail_followup_to, d, off, convert);
 
   serial_restore_char(&env->list_post, d, off, convert);
+  serial_restore_char(&env->list_unsubscribe, d, off, convert);
 
   const bool c_auto_subscribe = cs_subset_bool(NeoMutt->sub, "auto_subscribe");
   if (c_auto_subscribe)
