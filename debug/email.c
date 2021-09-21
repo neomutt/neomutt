@@ -100,6 +100,7 @@ void dump_envelope(const struct Envelope *env)
   if (env->S)                                                                  \
   mutt_debug(LL_DEBUG1, "\t%s: %s\n", #S, env->S)
   OPT_STRING(list_post);
+  OPT_STRING(list_subscribe);
   OPT_STRING(list_unsubscribe);
   OPT_STRING(subject);
   OPT_STRING(real_subj);

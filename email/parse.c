@@ -812,6 +812,17 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, const char *na
         }
         matched = true;
       }
+      else if (mutt_istr_equal(name + 1, "ist-Subscribe"))
+      {
+        /* RFC2369 */
+        char *mailto = rfc2369_first_mailto(body);
+        if (mailto)
+        {
+          FREE(&env->list_subscribe);
+          env->list_subscribe = mailto;
+        }
+        matched = true;
+      }
       else if (mutt_istr_equal(name + 1, "ist-Unsubscribe"))
       {
         /* RFC2369 */

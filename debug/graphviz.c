@@ -1279,6 +1279,7 @@ static void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links)
   dot_type_string(fp, "disp_subj", env->disp_subj, false);
   dot_type_string(fp, "followup_to", env->followup_to, false);
   dot_type_string(fp, "list_post", env->list_post, false);
+  dot_type_string(fp, "list_subscribe", env->list_subscribe, false);
   dot_type_string(fp, "list_unsubscribe", env->list_unsubscribe, false);
   dot_type_string(fp, "message_id", env->message_id, false);
   dot_type_string(fp, "newsgroups", env->newsgroups, false);
