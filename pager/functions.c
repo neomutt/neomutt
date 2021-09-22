@@ -823,71 +823,6 @@ static int op_pager_hide_quoted(struct IndexSharedData *shared,
   return IR_SUCCESS;
 }
 
-/*
- * TODO - how about a simple API to send an email given from/to/subject/body?
- */
-static void send_simple_email(struct Mailbox *m, const char *mailto, const char *body)
-{
-  struct Email *e = email_new();
-  e->env = mutt_env_new();
-  mutt_parse_mailto(e->env, NULL, mailto);
-  e->body = mutt_body_new();
-  char ctype[] = "text/plain";
-  mutt_parse_content_type(ctype, e->body);
-  char tempfile[PATH_MAX];
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  FILE *fp = mutt_file_fopen(tempfile, "w+");
-  fprintf(fp, "%s\n", body);
-  mutt_file_fclose(&fp);
-  e->body->unlink = true;
-  e->body->filename = mutt_str_dup(tempfile);
-  mutt_send_message(SEND_DRAFT_FILE, e, NULL, m, NULL, NeoMutt->sub);
-}
-
-/**
- * op_pager_list_subscribe - subscribe to a mailing list - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_pager_list_subscribe(struct IndexSharedData *shared,
-                                   struct PagerPrivateData *priv, int op)
-{
-  if (!(shared->email && shared->email->env))
-  {
-    return IR_NO_ACTION;
-  }
-
-  const char *mailto = shared->email->env->list_subscribe;
-  if (!mailto)
-  {
-    mutt_warning(_("No List-Subscribe header found"));
-    return IR_NO_ACTION;
-  }
-
-  send_simple_email(shared->mailbox, mailto, "subscribe");
-  return IR_SUCCESS;
-}
-
-/**
- * op_pager_list_unsubscribe - unsubscribe from mailing list - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_pager_list_unsubscribe(struct IndexSharedData *shared,
-                                     struct PagerPrivateData *priv, int op)
-{
-  if (!(shared->email && shared->email->env))
-  {
-    return IR_NO_ACTION;
-  }
-
-  const char *mailto = shared->email->env->list_unsubscribe;
-  if (!mailto)
-  {
-    mutt_warning(_("No List-Subscribe header found"));
-    return IR_NO_ACTION;
-  }
-
-  send_simple_email(shared->mailbox, mailto, "unsubscribe");
-  return IR_SUCCESS;
-}
-
 /**
  * op_pager_skip_headers - jump to first line after headers - Implements ::pager_function_t - @ingroup pager_function_api
  */
@@ -1210,6 +1145,30 @@ static int op_reply(struct IndexSharedData *shared, struct PagerPrivateData *pri
   }
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
   return IR_SUCCESS;
+}
+
+/**
+ * op_list_subscribe - subscribe to a mailing list - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_list_subscribe(struct IndexSharedData *shared,
+                             struct PagerPrivateData *priv, int op)
+{
+  const int rc = mutt_send_list_subscribe(shared->mailbox, shared->email) ? IR_SUCCESS : IR_NO_ACTION;
+  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  return rc;
+}
+
+/**
+ * op_list_unsubscribe - unsubscribe from mailing list - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_list_unsubscribe(struct IndexSharedData *shared,
+                               struct PagerPrivateData *priv, int op)
+{
+  const int rc = mutt_send_list_unsubscribe(shared->mailbox, shared->email) ?
+                     IR_SUCCESS :
+                     IR_NO_ACTION;
+  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  return rc;
 }
 
 /**
@@ -1887,8 +1846,6 @@ struct PagerFunction PagerFunctions[] = {
   { OP_NEXT_PAGE,              op_next_page },
   { OP_PAGER_BOTTOM,           op_pager_bottom },
   { OP_PAGER_HIDE_QUOTED,      op_pager_hide_quoted },
-  { OP_PAGER_LIST_SUBSCRIBE,   op_pager_list_subscribe },
-  { OP_PAGER_LIST_UNSUBSCRIBE, op_pager_list_unsubscribe },
   { OP_PAGER_SKIP_HEADERS,     op_pager_skip_headers },
   { OP_PAGER_SKIP_QUOTED,      op_pager_skip_quoted },
   { OP_PAGER_TOP,              op_pager_top },
@@ -1905,6 +1862,8 @@ struct PagerFunction PagerFunctions[] = {
   { OP_GROUP_CHAT_REPLY,       op_reply },
   { OP_GROUP_REPLY,            op_reply },
   { OP_LIST_REPLY,             op_reply },
+  { OP_LIST_SUBSCRIBE,         op_list_subscribe },
+  { OP_LIST_UNSUBSCRIBE,       op_list_unsubscribe },
   { OP_REPLY,                  op_reply },
   { OP_RESEND,                 op_resend },
   { OP_SAVE,                   op_save },

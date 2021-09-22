@@ -895,6 +895,16 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         break;
       }
 
+      case OP_LIST_SUBSCRIBE:
+        if (!check_attach())
+          mutt_send_list_subscribe(m, e);
+        break;
+
+      case OP_LIST_UNSUBSCRIBE:
+        if (!check_attach())
+          mutt_send_list_unsubscribe(m, e);
+        break;
+
       case OP_COMPOSE_TO_SENDER:
       {
         if (check_attach())

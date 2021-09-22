@@ -677,6 +677,24 @@ static int op_list_reply(struct IndexSharedData *shared, struct IndexPrivateData
 }
 
 /**
+ * op_list_subscribe - subscribe to a mailing list - Implements ::index_function_t - @ingroup index_function_api
+ */
+static int op_list_subscribe(struct IndexSharedData *shared,
+                             struct IndexPrivateData *priv, int op)
+{
+  return mutt_send_list_subscribe(shared->mailbox, shared->email) ? IR_SUCCESS : IR_NO_ACTION;
+}
+
+/**
+ * op_list_unsubscribe - unsubscribe from mailing list - Implements ::index_function_t - @ingroup index_function_api
+ */
+static int op_list_unsubscribe(struct IndexSharedData *shared,
+                               struct IndexPrivateData *priv, int op)
+{
+  return mutt_send_list_unsubscribe(shared->mailbox, shared->email) ? IR_SUCCESS : IR_NO_ACTION;
+}
+
+/**
  * op_mail - compose a new mail message - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_mail(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
@@ -3046,6 +3064,8 @@ struct IndexFunction IndexFunctions[] = {
   { OP_LAST_ENTRY,                       op_menu_move,                      CHECK_NO_FLAGS },
   { OP_LIMIT_CURRENT_THREAD,             op_main_limit,                     CHECK_IN_MAILBOX },
   { OP_LIST_REPLY,                       op_list_reply,                     CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_LIST_SUBSCRIBE,                   op_list_subscribe,                 CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_LIST_UNSUBSCRIBE,                 op_list_unsubscribe,               CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIL,                             op_mail,                           CHECK_ATTACH },
   { OP_MAILBOX_LIST,                     op_mailbox_list,                   CHECK_NO_FLAGS },
   { OP_MAIL_KEY,                         op_mail_key,                       CHECK_ATTACH },

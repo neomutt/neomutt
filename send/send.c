@@ -2943,3 +2943,73 @@ cleanup:
   FREE(&finalpath);
   return rc;
 }
+
+/*
+ * TODO - how about a simple API to send an email given from/to/subject/body?
+ */
+static bool send_simple_email(struct Mailbox *m, const char *mailto, const char *body)
+{
+  struct Email *e = email_new();
+  e->env = mutt_env_new();
+  mutt_parse_mailto(e->env, NULL, mailto);
+  e->body = mutt_body_new();
+  char ctype[] = "text/plain";
+  mutt_parse_content_type(ctype, e->body);
+  char tempfile[PATH_MAX];
+  mutt_mktemp(tempfile, sizeof(tempfile));
+  FILE *fp = mutt_file_fopen(tempfile, "w+");
+  fprintf(fp, "%s\n", body);
+  mutt_file_fclose(&fp);
+  e->body->unlink = true;
+  e->body->filename = mutt_str_dup(tempfile);
+  const int rc = mutt_send_message(SEND_DRAFT_FILE, e, NULL, m, NULL, NeoMutt->sub);
+  return rc >= 0;
+}
+
+/**
+ * mutt_send_list_subscribe - Send a mailing-list subscription email
+ * @param m Mailbox
+ * @param e Email carrying mailing-list subscription headers
+ * @retval true Success
+ * @retval false Failure
+ */
+bool mutt_send_list_subscribe(struct Mailbox *m, const struct Email *e)
+{
+  if (!e || !e->env)
+  {
+    return false;
+  }
+
+  const char *mailto = e->env->list_subscribe;
+  if (!mailto)
+  {
+    mutt_warning(_("No List-Subscribe header found"));
+    return false;
+  }
+
+  return send_simple_email(m, mailto, "subscribe");
+}
+
+/**
+ * mutt_send_list_unsubscribe - Send a mailing-list unsubscription email
+ * @param m Mailbox
+ * @param e Email carrying mailing-list unsubscription headers
+ * @retval true Success
+ * @retval false Failure
+ */
+bool mutt_send_list_unsubscribe(struct Mailbox *m, const struct Email *e)
+{
+  if (!e || !e->env)
+  {
+    return false;
+  }
+
+  const char *mailto = e->env->list_unsubscribe;
+  if (!mailto)
+  {
+    mutt_warning(_("No List-Unsubscribe header found"));
+    return false;
+  }
+
+  return send_simple_email(m, mailto, "unsubscribe");
+}

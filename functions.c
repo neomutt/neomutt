@@ -170,6 +170,8 @@ const struct Binding OpMain[] = { /* map: index */
   { "limit-current-thread",      OP_LIMIT_CURRENT_THREAD,           NULL },
   { "link-threads",              OP_MAIN_LINK_THREADS,              "&" },
   { "list-reply",                OP_LIST_REPLY,                     "L" },
+  { "list-subscribe",            OP_LIST_SUBSCRIBE,                 NULL },
+  { "list-unsubscribe",          OP_LIST_UNSUBSCRIBE,               NULL },
   { "mail",                      OP_MAIL,                           "m" },
   { "mail-key",                  OP_MAIL_KEY,                       "\033k" },  // <Alt-k>
   { "mailbox-list",              OP_MAILBOX_LIST,                   "." },
@@ -320,6 +322,8 @@ const struct Binding OpPager[] = { /* map: pager */
   { "jump",                      OP_JUMP,                         NULL },
   { "link-threads",              OP_MAIN_LINK_THREADS,            "&" },
   { "list-reply",                OP_LIST_REPLY,                   "L" },
+  { "list-subscribe",            OP_LIST_SUBSCRIBE,               NULL },
+  { "list-unsubscribe",          OP_LIST_UNSUBSCRIBE,             NULL },
   { "mail",                      OP_MAIL,                         "m" },
   { "mail-key",                  OP_MAIL_KEY,                     "\033k" },    // <Alt-k>
   { "mailbox-list",              OP_MAILBOX_LIST,                 "." },
@@ -390,8 +394,6 @@ const struct Binding OpPager[] = { /* map: pager */
   { "sidebar-toggle-virtual",    OP_SIDEBAR_TOGGLE_VIRTUAL,       NULL },
   { "sidebar-toggle-visible",    OP_SIDEBAR_TOGGLE_VISIBLE,       NULL },
 #endif
-  { "list-subscribe",            OP_PAGER_LIST_SUBSCRIBE,         NULL},
-  { "list-unsubscribe",          OP_PAGER_LIST_UNSUBSCRIBE,       "U" },
   { "skip-headers",              OP_PAGER_SKIP_HEADERS,           "H" },
   { "skip-quoted",               OP_PAGER_SKIP_QUOTED,            "S" },
   { "sort-mailbox",              OP_SORT,                         "o" },
@@ -439,6 +441,8 @@ const struct Binding OpAttach[] = { /* map: attachment */
   { "group-chat-reply",      OP_GROUP_CHAT_REPLY,            NULL },
   { "group-reply",           OP_GROUP_REPLY,                 "g" },
   { "list-reply",            OP_LIST_REPLY,                  "L" },
+  { "list-subscribe",        OP_LIST_SUBSCRIBE,              NULL },
+  { "list-unsubscribe",      OP_LIST_UNSUBSCRIBE,            NULL },
   { "pipe-entry",            OP_PIPE,                        "|" },
   { "print-entry",           OP_PRINT,                       "p" },
   { "reply",                 OP_REPLY,                       "r" },
