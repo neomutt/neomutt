@@ -2944,24 +2944,49 @@ cleanup:
   return rc;
 }
 
-/*
- * TODO - how about a simple API to send an email given from/to/subject/body?
+/**
+ * send_simple_email - Compose an email given a few basic ingredients
+ * @param m Mailbox
+ * @param mailto mailto address to parse (can include fields such as subject)
+ * @param to Recipient address, if not overridden by mailto
+ * @param subj Subject, if not overridden by mailto
+ * @param body text/plain body
+ * @retval true Success
+ * @retval false Failure
  */
-static bool send_simple_email(struct Mailbox *m, const char *mailto, const char *body)
+static bool send_simple_email(struct Mailbox *m, const char *mailto,
+                              const char *to, const char *subj, const char *body)
 {
   struct Email *e = email_new();
+
+  /* envelope */
   e->env = mutt_env_new();
   mutt_parse_mailto(e->env, NULL, mailto);
+  if (!e->env->subject)
+  {
+    e->env->subject = mutt_str_dup(subj);
+  }
+  if (TAILQ_EMPTY(&e->env->to) && !mutt_addrlist_parse(&e->env->to, to))
+  {
+    mutt_warning(_("No recipient specified"));
+  }
+
+  /* body */
   e->body = mutt_body_new();
   char ctype[] = "text/plain";
   mutt_parse_content_type(ctype, e->body);
-  char tempfile[PATH_MAX];
+
+  char tempfile[PATH_MAX] = { 0 };
   mutt_mktemp(tempfile, sizeof(tempfile));
-  FILE *fp = mutt_file_fopen(tempfile, "w+");
-  fprintf(fp, "%s\n", body);
-  mutt_file_fclose(&fp);
-  e->body->unlink = true;
+  if (body)
+  {
+    FILE *fp = mutt_file_fopen(tempfile, "w+");
+    fprintf(fp, "%s\n", body);
+    mutt_file_fclose(&fp);
+  }
   e->body->filename = mutt_str_dup(tempfile);
+  e->body->unlink = true;
+
   const int rc = mutt_send_message(SEND_DRAFT_FILE, e, NULL, m, NULL, NeoMutt->sub);
   return rc >= 0;
 }
@@ -2987,7 +3012,7 @@ bool mutt_send_list_subscribe(struct Mailbox *m, const struct Email *e)
     return false;
   }
 
-  return send_simple_email(m, mailto, "subscribe");
+  return send_simple_email(m, mailto, NULL, "Subscribe", "subscribe");
 }
 
 /**
@@ -3011,5 +3036,5 @@ bool mutt_send_list_unsubscribe(struct Mailbox *m, const struct Email *e)
     return false;
   }
 
-  return send_simple_email(m, mailto, "unsubscribe");
+  return send_simple_email(m, mailto, NULL, "Unsubscribe", "unsubscribe");
 }
