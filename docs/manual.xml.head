@@ -2464,6 +2464,30 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </varlistentry>
           <varlistentry>
             <term>
+              <literal>&lt;list-subscribe&gt;</literal>
+              <anchor id="list-subscribe" />
+            </term>
+            <listitem>
+              <para>
+                Send an email to the address specified in the List-Subscribe
+                header as specified in RFC2369.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+              <literal>&lt;list-unsubscribe&gt;</literal>
+              <anchor id="list-unsubscribe" />
+            </term>
+            <listitem>
+              <para>
+                Send an email to the address specified in the List-Unsubscribe
+                header as specified in RFC2369.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
               <literal>&lt;pipe-message&gt;</literal> (default: |)
               <anchor id="pipe-message" />
             </term>
@@ -2644,7 +2668,17 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
               <row>
                 <entry>L</entry>
                 <entry><literal>&lt;list-reply&gt;</literal></entry>
-                <entry>reply to mailing list address</entry>
+                <entry>reply to a mailing list</entry>
+              </row>
+              <row>
+                <entry>L</entry>
+                <entry><literal>&lt;list-subscribe&gt;</literal></entry>
+                <entry>send a subscription email to a mailing list</entry>
+              </row>
+              <row>
+                <entry>L</entry>
+                <entry><literal>&lt;list-unsubscribe&gt;</literal></entry>
+                <entry>send an unsubscription email to a mailing list</entry>
               </row>
               <row>
                 <entry>f</entry>
