@@ -332,7 +332,7 @@ static void usage(void)
 }
 
 /**
- * start_curses - Start the curses or slang UI
+ * start_curses - Start the Curses UI
  * @retval 0 Success
  * @retval 1 Failure
  */
@@ -340,34 +340,23 @@ static int start_curses(void)
 {
   km_init(); /* must come before mutt_init */
 
-#ifdef USE_SLANG_CURSES
-  SLtt_Ignore_Beep = 1; /* don't do that #*$@^! annoying visual beep! */
-  SLsmg_Display_Eight_Bit = 128; /* characters above this are printable */
-  SLtt_set_color(0, NULL, "default", "default");
-#if (SLANG_VERSION >= 20000)
-  SLutf8_enable(-1);
-#endif
-#else
   /* should come before initscr() so that ncurses 4.2 doesn't try to install
    * its own SIGWINCH handler */
   mutt_signal_init();
-#endif
+
   if (!initscr())
   {
     mutt_error(_("Error initializing terminal"));
     return 1;
   }
-  /* slang requires the signal handlers to be set after initializing */
   mutt_signal_init();
   mutt_colors_init();
   keypad(stdscr, true);
   cbreak();
   noecho();
   nonl();
-#ifdef NCURSES_VERSION
   typeahead(-1); /* simulate smooth scrolling */
   meta(stdscr, true);
-#endif
   init_extended_keys();
   /* Now that curses is set up, we drop back to normal screen mode.
    * This simplifies displaying error messages to the user.

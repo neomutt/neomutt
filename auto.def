@@ -26,10 +26,8 @@ set subdirs {po docs contrib}
 ###############################################################################
 # Add any user options here
 options {
-# Curses / S-Lang
-  with-ui:=ncurses          => "Select ncurses or slang for the UI"
+# Curses
   with-ncurses:path         => "Location of ncurses"
-  with-slang:path           => "Location of S-Lang"
 # Features w/o 3rd party dependencies
   doc=1                     => "Disable building the documentation"
   full-doc=0                => "Build the full documentation set"
@@ -152,9 +150,9 @@ if {1} {
   # relative --enable-opt to true. This allows "--with-opt=/usr" to be used as
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
-    bdb gdbm gnutls gpgme gss homespool idn idn2 kyotocabinet lmdb lua lz4
-    mixmaster ncurses nls notmuch pcre2 qdbm rocksdb sasl slang sqlite ssl tdb
-    tokyocabinet zlib zstd
+    bdb gdbm gnutls gpgme gss homespool idn idn2 kyotocabinet lmdb lua lz4 
+    mixmaster nls notmuch pcre2 qdbm rocksdb sasl sqlite ssl tdb tokyocabinet 
+    zlib zstd
   } {
     if {[opt-val with-$opt] ne {}} {
       define want-$opt 1
@@ -707,71 +705,49 @@ if {[get-define want-fmemopen]} {
 }
 
 ###############################################################################
-# Ncurses / S-Lang
-switch [opt-val with-ui ncurses] {
-  ncurses {
-    define-append CFLAGS -DNCURSES_WIDECHAR
-    set ncurses_prefix [opt-val with-ncurses $prefix]
+# Ncurses
+define-append CFLAGS -DNCURSES_WIDECHAR
+set ncurses_prefix [opt-val with-ncurses $prefix]
 
-    cc-with [list -libs -L$ncurses_prefix/$::libdir_tail] {
+cc-with [list -libs -L$ncurses_prefix/$::libdir_tail] {
 
-      set tinfo_libs   {tinfow tinfo}
-      set ncurses_libs {ncursesw ncurses curses}
+  set tinfo_libs   {tinfow tinfo}
+  set ncurses_libs {ncursesw ncurses curses}
 
-      # Locate the library defining tgetent()
-      # This must be done *before* checking for ncurses functions, see
-      # https://github.com/neomutt/neomutt/issues/1118
-      foreach tinfo_lib [concat $tinfo_libs $ncurses_libs] {
-        if {[cc-check-function-in-lib tgetent $tinfo_lib]} {
-          break
-        }
-      }
-
-      # Locate the library defining waddnwstr()
-      foreach ncurses_lib $ncurses_libs {
-        if {[cc-check-function-in-lib waddnwstr $ncurses_lib]} {
-          break
-        }
-      }
-
-      if {![have-feature waddnwstr] || ![have-feature tgetent]} {
-        user-error "Unable to find ncursesw library"
-      }
+  # Locate the library defining tgetent()
+  # This must be done *before* checking for ncurses functions, see
+  # https://github.com/neomutt/neomutt/issues/1118
+  foreach tinfo_lib [concat $tinfo_libs $ncurses_libs] {
+    if {[cc-check-function-in-lib tgetent $tinfo_lib]} {
+      break
     }
-
-    # Locate the directory containing ncurses.h
-    # See https://github.com/neomutt/neomutt/pull/679
-    apply {{ncurses_prefix} {
-      cc-with [list -cflags -I$ncurses_prefix/include] {
-        foreach ncurses_inc {ncursesw/ ncurses/ curses/ {}} {
-          if {[cc-check-includes ${ncurses_inc}ncurses.h] ||
-              [cc-check-includes ${ncurses_inc}curses.h]} {
-            return
-          }
-        }
-        user-error "Unable to find ncurses headers"
-      }
-    }} $ncurses_prefix
   }
 
-  slang {
-    cc-with {-includes sys/param.h} {
-      if {[cc-check-defines BSD]} {
-        cc-check-function-in-lib initscr termlib
-      }
+  # Locate the library defining waddnwstr()
+  foreach ncurses_lib $ncurses_libs {
+    if {[cc-check-function-in-lib waddnwstr $ncurses_lib]} {
+      break
     }
-    if {![check-inc-and-lib slang [opt-val with-slang $prefix] \
-                            slcurses.h SLtt_get_terminfo slang]} {
-      user-error "Unable to find S-Lang"
-    }
-    define USE_SLANG_CURSES
   }
 
-  default {
-    user-error "Invalid value for --with-ui=[opt-val with-ui], select ncurses\
-                or slang"
+  if {![have-feature waddnwstr] || ![have-feature tgetent]} {
+    user-error "Unable to find ncursesw library"
   }
 }
+
+# Locate the directory containing ncurses.h
+# See https://github.com/neomutt/neomutt/pull/679
+apply {{ncurses_prefix} {
+  cc-with [list -cflags -I$ncurses_prefix/include] {
+    foreach ncurses_inc {ncursesw/ ncurses/ curses/ {}} {
+      if {[cc-check-includes ${ncurses_inc}ncurses.h] ||
+          [cc-check-includes ${ncurses_inc}curses.h]} {
+        return
+      }
+    }
+    user-error "Unable to find ncurses headers"
+  }
+}} $ncurses_prefix
 
 ###############################################################################
 # Iconv - try to mimic AM_ICONV by preferring an installed libiconv

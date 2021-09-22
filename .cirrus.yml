@@ -55,14 +55,6 @@ task:
       build_script: make
       version_script: ./neomutt -v
 
-    - name: FreeBSD / S-Lang
-      install_script:
-        - ${PKG_UPDATE}
-        - ${PKG_INSTALL} ${PKG_COMMON} libslang2
-      configure_script: ./configure ${CONFIGURE_COMMON} --with-ui=slang
-      build_script: make
-      version_script: ./neomutt -v
-
     - name: FreeBSD / pkgconf
       install_script:
         - ${PKG_UPDATE}

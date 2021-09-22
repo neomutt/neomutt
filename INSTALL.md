@@ -36,7 +36,7 @@ See [Signing Releases](https://neomutt.org/dev/signing#source-example) for detai
 To build NeoMutt, you will need, at the very minimum:
 
 - A C99 compiler such as gcc or clang
-- SysV-compatible curses library: ncurses or slang
+- SysV-compatible curses library: ncurses
 - Some common libraries, such as iconv and regex
 - DocBook XSL stylesheets and DTDs (for building the docs)
 
@@ -55,9 +55,7 @@ For a list of the currently supported options and a brief help text, run:
 
 | Configure option        | Path | Notes                                        |
 | :---------------------- | :--- | :------------------------------------------- |
-| `--with-ui=CHOICE`      |      | Select 'ncurses' or 'slang'                  |
 | `--with-ncurses=path`   |      | Location of ncurses                          |
-| `--with-slang=path`     |      | Location of S-Lang                           |
 |                         |      |                                              |
 | `--gpgme`               | Path | GPG Made Easy                                |
 | `--gnutls`              | Path | Gnu TLS (SSL)                                |

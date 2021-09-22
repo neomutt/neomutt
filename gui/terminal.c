@@ -36,8 +36,6 @@
 #include <ncursesw/term.h> // IWYU pragma: keep
 #elif defined(HAVE_NCURSES_NCURSES_H)
 #include <ncurses/term.h> // IWYU pragma: keep
-#elif !defined(USE_SLANG_CURSES)
-#include <term.h>
 #endif
 
 bool TsSupported; ///< Terminal Setting is supported
@@ -73,14 +71,12 @@ bool mutt_ts_capability(void)
     return true;
   }
 
-#ifdef NCURSES_VERSION
   /* If XT (boolean) is set, then this terminal supports the standard escape. */
   /* Beware: tigetflag returns -1 if XT is invalid or not a boolean. */
   use_extended_names(true);
   int tcapi = tigetflag("XT");
   if (tcapi == 1)
     return true;
-#endif
 
   /* Check term types that are known to support the standard escape without
    * necessarily asserting it in terminfo. */

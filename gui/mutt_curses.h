@@ -1,6 +1,6 @@
 /**
  * @file
- * Define wrapper functions around Curses/Slang
+ * Define wrapper functions around Curses
  *
  * @authors
  * Copyright (C) 1996-2000,2012 Michael R. Elkins <me@mutt.org>
@@ -27,30 +27,6 @@
 #include "config.h"
 #include "color/lib.h"
 
-#ifdef USE_SLANG_CURSES
-
-#ifndef unix /* this symbol is not defined by the hp-ux compiler */
-#define unix
-#endif
-
-#include <slang.h> /* in addition to slcurses.h, we need slang.h for the version
-                      number to test for 2.x having UTF-8 support in main.c */
-#ifdef bool
-#undef bool
-#endif
-
-#include <slcurses.h>
-
-#ifdef bool
-#undef bool
-#define bool _Bool
-#endif
-
-#define KEY_DC SL_KEY_DELETE
-#define KEY_IC SL_KEY_IC
-
-#else /* USE_SLANG_CURSES */
-
 #ifdef HAVE_NCURSESW_NCURSES_H
 #include <ncursesw/ncurses.h> // IWYU pragma: keep
 #elif defined(HAVE_NCURSES_NCURSES_H)
@@ -60,8 +36,6 @@
 #else
 #include <curses.h>
 #endif
-
-#endif /* USE_SLANG_CURSES */
 
 #define ctrl(ch) ((ch) - '@')
 

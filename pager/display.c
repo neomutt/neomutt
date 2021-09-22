@@ -1635,13 +1635,11 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
               &special, win_pager->state.cols);
 
 /* avoid a bug in ncurses... */
-#ifndef USE_SLANG_CURSES
   if (col == 0)
   {
     mutt_curses_set_color(MT_COLOR_NORMAL);
     mutt_window_addch(win_pager, ' ');
   }
-#endif
 
   /* end the last color pattern (needed by S-Lang) */
   if (special || ((col != win_pager->state.cols) && (flags & (MUTT_SHOWCOLOR | MUTT_SEARCH))))

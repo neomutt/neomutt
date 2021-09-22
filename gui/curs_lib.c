@@ -65,9 +65,8 @@
 #include "monitor.h"
 #endif
 
-/* not possible to unget more than one char under some curses libs, and it
- * is impossible to unget function keys in SLang, so roll our own input
- * buffering routines.  */
+/* not possible to unget more than one char under some curses libs, so roll our
+ * own input buffering routines.  */
 
 /* These are used for macros and exec/push commands.
  * They can be temporarily ignored by setting OptIgnoreMacroEvents */
@@ -418,7 +417,7 @@ void mutt_query_exit(void)
 }
 
 /**
- * mutt_endwin - Shutdown curses/slang
+ * mutt_endwin - Shutdown curses
  */
 void mutt_endwin(void)
 {

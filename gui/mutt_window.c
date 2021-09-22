@@ -221,24 +221,6 @@ void mutt_window_free(struct MuttWindow **ptr)
   FREE(ptr);
 }
 
-#ifdef USE_SLANG_CURSES
-/**
- * vw_printw - Write a formatted string to a Window (function missing from Slang)
- * @param win Window
- * @param fmt printf format string
- * @param ap  printf arguments
- * @retval 0 Always
- */
-static int vw_printw(SLcurses_Window_Type *win, const char *fmt, va_list ap)
-{
-  char buf[1024];
-
-  (void) SLvsnprintf(buf, sizeof(buf), (char *) fmt, ap);
-  SLcurses_waddnstr(win, buf, -1);
-  return 0;
-}
-#endif
-
 /**
  * mutt_window_clearline - Clear a row of a Window
  * @param win Window
@@ -323,11 +305,7 @@ int mutt_window_move(struct MuttWindow *win, int col, int row)
  */
 int mutt_window_mvaddstr(struct MuttWindow *win, int col, int row, const char *str)
 {
-#ifdef USE_SLANG_CURSES
-  return mvaddstr(win->state.row_offset + row, win->state.col_offset + col, (char *) str);
-#else
   return mvaddstr(win->state.row_offset + row, win->state.col_offset + col, str);
-#endif
 }
 
 /**
@@ -417,11 +395,7 @@ int mutt_window_addnstr(struct MuttWindow *win, const char *str, int num)
   if (!str)
     return -1;
 
-#ifdef USE_SLANG_CURSES
-  return addnstr((char *) str, num);
-#else
   return addnstr(str, num);
-#endif
 }
 
 /**
@@ -436,11 +410,7 @@ int mutt_window_addstr(struct MuttWindow *win, const char *str)
   if (!str)
     return -1;
 
-#ifdef USE_SLANG_CURSES
-  return addstr((char *) str);
-#else
   return addstr(str);
-#endif
 }
 
 /**

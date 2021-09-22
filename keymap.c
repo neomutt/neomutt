@@ -47,9 +47,6 @@
 #include "mutt_logging.h"
 #include "opcodes.h"
 #include "options.h"
-#ifndef USE_SLANG_CURSES
-#include <strings.h>
-#endif
 #ifdef USE_IMAP
 #include "imap/lib.h"
 #endif
@@ -83,7 +80,6 @@ static struct Mapping KeyNames[] = {
 #ifdef KEY_NEXT
   { "<Next>", KEY_NEXT },
 #endif
-#ifdef NCURSES_VERSION
   /* extensions supported by ncurses.  values are filled in during initialization */
 
   /* CTRL+key */
@@ -115,7 +111,6 @@ static struct Mapping KeyNames[] = {
   { "<A-End>", -1 },
   { "<A-Next>", -1 },
   { "<A-Prev>", -1 },
-#endif /* NCURSES_VERSION */
   { NULL, 0 },
 };
 
@@ -124,7 +119,6 @@ keycode_t AbortKey; ///< code of key to abort prompts, normally Ctrl-G
 
 struct KeymapList Keymaps[MENU_MAX];
 
-#ifdef NCURSES_VERSION
 /**
  * struct Extkey - Map key names from NeoMutt's style to Curses style
  */
@@ -169,7 +163,6 @@ static const struct Extkey ExtKeys[] = {
 
   { 0, 0 },
 };
-#endif
 
 /**
  * mutt_keymap_free - Free a Keymap
@@ -953,7 +946,6 @@ struct Keymap *km_find_func(enum MenuType mtype, int func)
   return np;
 }
 
-#ifdef NCURSES_VERSION
 /**
  * find_ext_name - Find the curses name for a key
  * @param key Key name
@@ -972,7 +964,6 @@ static const char *find_ext_name(const char *key)
   }
   return 0;
 }
-#endif /* NCURSES_VERSION */
 
 /**
  * init_extended_keys - Initialise map of ncurses extended keys
@@ -986,7 +977,6 @@ static const char *find_ext_name(const char *key)
  */
 void init_extended_keys(void)
 {
-#ifdef NCURSES_VERSION
   use_extended_names(true);
 
   for (int j = 0; KeyNames[j].name; j++)
@@ -1007,7 +997,6 @@ void init_extended_keys(void)
       }
     }
   }
-#endif
 }
 
 /**

@@ -21,10 +21,8 @@ jobs:
             options:
           - name: disabled
             options: --disable-idn --disable-nls --disable-pgp --disable-smime
-          - name: slang
-            options: --fmemopen --homespool --locales-fix --mixmaster --ssl --with-domain=example.com --with-lock=flock --with-ui=slang
           - name: everything
-            options: --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --with-ui=ncurses --zlib --zstd
+            options: --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
 
     steps:
     - name: Checkout Code

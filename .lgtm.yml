@@ -37,7 +37,6 @@ extraction:
         - libnotmuch-dev
         - libqdbm-dev
         - libsasl2-dev
-        - libslang2-dev
         - libssl-dev
         - libtokyocabinet-dev
         - libxml2-utils

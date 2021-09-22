@@ -40,7 +40,6 @@ addons:
       - libqdbm-dev
       - librocksdb-dev
       - libsasl2-dev
-      - libslang2-dev
       - libssl-dev
       - libtdb-dev
       - libtokyocabinet-dev

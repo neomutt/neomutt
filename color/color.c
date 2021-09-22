@@ -45,9 +45,6 @@
 #include "init.h"
 #include "mutt_globals.h"
 #include "options.h"
-#ifdef USE_SLANG_CURSES
-#include <assert.h>
-#endif
 
 #define COLOR_UNSET UINT32_MAX
 /// Ten colours, quoted0..quoted9 (quoted and quoted0 are equivalent)
@@ -413,56 +410,6 @@ static struct ColorLine *color_line_new(void)
   return cl;
 }
 
-#ifdef USE_SLANG_CURSES
-/**
- * get_color_name - Get a colour's name from its ID
- * @param dest    Buffer for the result
- * @param destlen Length of buffer
- * @param val     Colour ID to look up
- * @retval ptr Pointer to the results buffer
- */
-static char *get_color_name(char *dest, size_t destlen, uint32_t val)
-{
-  static const char *const missing[3] = { "brown", "lightgray", "default" };
-
-  if (val & RGB24)
-  {
-    assert(snprintf(dest, destlen, "#%06X", val & 0xffffff) == 7);
-    return dest;
-  }
-
-  switch (val)
-  {
-    case COLOR_YELLOW:
-      mutt_str_copy(dest, missing[0], destlen);
-      return dest;
-
-    case COLOR_WHITE:
-      mutt_str_copy(dest, missing[1], destlen);
-      return dest;
-
-    case COLOR_DEFAULT:
-      mutt_str_copy(dest, missing[2], destlen);
-      return dest;
-  }
-
-  for (int i = 0; ColorNames[i].name; i++)
-  {
-    if (ColorNames[i].value == val)
-    {
-      mutt_str_copy(dest, ColorNames[i].name, destlen);
-      return dest;
-    }
-  }
-
-  /* Sigh. If we got this far, the color is of the form 'colorN'
-   * Slang can handle this itself, so just return 'colorN' */
-  snprintf(dest, destlen, "color%d", val);
-
-  return dest;
-}
-#endif
-
 /**
  * mutt_color_alloc - Allocate a colour pair
  * @param fg Foreground colour ID
@@ -471,9 +418,6 @@ static char *get_color_name(char *dest, size_t destlen, uint32_t val)
  */
 int mutt_color_alloc(uint32_t fg, uint32_t bg)
 {
-#ifdef USE_SLANG_CURSES
-  char fgc[128], bgc[128];
-#endif
   struct ColorList *p = Colors.user_colors;
 
   /* check to see if this color is already allocated to save space */
@@ -516,21 +460,11 @@ int mutt_color_alloc(uint32_t fg, uint32_t bg)
   p->bg = bg;
   p->fg = fg;
 
-#ifdef USE_SLANG_CURSES
-  /*
-   * If using s-lang always use SLtt_set_color which allows using truecolor
-   * values. Note that I couldn't figure out if s-lang somehow reports
-   * truecolor support.
-   */
-  SLtt_set_color(i, NULL, get_color_name(fgc, sizeof(fgc), fg),
-                 get_color_name(bgc, sizeof(bgc), bg));
-#else
   if (fg == COLOR_DEFAULT)
     fg = COLOR_UNSET;
   if (bg == COLOR_DEFAULT)
     bg = COLOR_UNSET;
   init_pair(i, fg, bg);
-#endif
 
   mutt_debug(LL_DEBUG3, "Color pairs used so far: %d\n", Colors.num_user_colors);
 
@@ -630,20 +564,6 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
       return MUTT_CMD_ERROR;
     }
   }
-#ifdef USE_SLANG_CURSES
-  else if (*s == '#')
-  {
-    s += 1;
-    *col = strtoul(s, &eptr, 16);
-    if ((*s == '\0') || (*eptr != '\0') ||
-        ((*col == COLOR_UNSET) && !OptNoCurses && has_colors()))
-    {
-      snprintf(err->data, err->dsize, _("%s: color not supported by term"), s);
-      return MUTT_CMD_ERROR;
-    }
-    *col |= RGB24;
-  }
-#endif
   else if ((*col = mutt_map_get_value(s, ColorNames)) == -1)
   {
     mutt_buffer_printf(err, _("%s: no such color"), s);
@@ -1243,7 +1163,6 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_SUCCESS;
   }
 
-#ifdef NCURSES_VERSION
   if (!OptNoCurses &&
       has_colors()
       /* delay use_default_colors() until needed, since it initializes things */
@@ -1256,7 +1175,6 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     mutt_buffer_strcpy(err, _("default colors not supported"));
     return MUTT_CMD_ERROR;
   }
-#endif
 
   if (object == MT_COLOR_ATTACH_HEADERS)
     rc = add_pattern(mutt_color_attachments(), buf->data, true, fg, bg, attr,

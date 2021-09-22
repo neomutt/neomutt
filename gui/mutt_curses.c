@@ -1,6 +1,6 @@
 /**
  * @file
- * Define wrapper functions around Curses/Slang
+ * Define wrapper functions around Curses
  *
  * @authors
  * Copyright (C) 1996-2000,2012 Michael R. Elkins <me@mutt.org>
@@ -23,9 +23,9 @@
  */
 
 /**
- * @page gui_curses Wrapper functions around Curses/Slang
+ * @page gui_curses Wrapper functions around Curses
  *
- * Wrapper functions around Curses/Slang
+ * Wrapper functions around Curses
  */
 
 #include "config.h"
@@ -38,11 +38,7 @@
  */
 void mutt_curses_set_attr(int attr)
 {
-#ifdef NCURSES_VERSION
   bkgdset(attr | ' ');
-#else
-  attrset(attr);
-#endif
 }
 
 /**
@@ -57,11 +53,7 @@ void mutt_curses_set_color(enum ColorId color)
 {
   const int chosen = mutt_color(color);
   const int normal = mutt_color(MT_COLOR_NORMAL);
-#ifdef NCURSES_VERSION
   bkgdset((chosen ? chosen : normal) | ' ');
-#else
-  attrset(chosen ? chosen : normal);
-#endif
 }
 
 /**
