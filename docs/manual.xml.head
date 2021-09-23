@@ -4146,7 +4146,7 @@ set alias_file=~/.mail_aliases
       </para>
       <para>
         In the alias menu, you can select as many aliases as you want with the
-        <literal>select-entry</literal> key (default: &lt;Return&gt;), and use
+        <literal>tag-entry</literal> key (default: &lt;Space&gt; or t), and use
         the <emphasis>exit</emphasis> key (default: q) to return to the address
         prompt.
       </para>
