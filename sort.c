@@ -80,7 +80,7 @@ static int compare_email_shim(const void *a, const void *b, void *arg)
  */
 static int compare_score(const struct Email *a, const struct Email *b, bool reverse)
 {
-  int result = b->score - a->score; /* note that this is reverse */
+  int result = mutt_numeric_cmp(b->score, a->score); /* note that this is reverse */
   return reverse ? -result : result;
 }
 
@@ -89,7 +89,7 @@ static int compare_score(const struct Email *a, const struct Email *b, bool reve
  */
 static int compare_size(const struct Email *a, const struct Email *b, bool reverse)
 {
-  int result = a->body->length - b->body->length;
+  int result = mutt_numeric_cmp(a->body->length, b->body->length);
   return reverse ? -result : result;
 }
 
@@ -98,7 +98,7 @@ static int compare_size(const struct Email *a, const struct Email *b, bool rever
  */
 static int compare_date_sent(const struct Email *a, const struct Email *b, bool reverse)
 {
-  int result = a->date_sent - b->date_sent;
+  int result = mutt_numeric_cmp(a->date_sent, b->date_sent);
   return reverse ? -result : result;
 }
 
@@ -182,7 +182,7 @@ static int compare_from(const struct Email *a, const struct Email *b, bool rever
  */
 static int compare_date_received(const struct Email *a, const struct Email *b, bool reverse)
 {
-  int result = a->received - b->received;
+  int result = mutt_numeric_cmp(a->received, b->received);
   return reverse ? -result : result;
 }
 
@@ -191,7 +191,7 @@ static int compare_date_received(const struct Email *a, const struct Email *b, b
  */
 static int compare_order(const struct Email *a, const struct Email *b, bool reverse)
 {
-  int result = a->index - b->index;
+  int result = mutt_numeric_cmp(a->index, b->index);
   return reverse ? -result : result;
 }
 

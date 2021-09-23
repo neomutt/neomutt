@@ -63,6 +63,7 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "sort.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -908,11 +909,7 @@ static int compare_uid(const void *a, const void *b)
   const unsigned int ua = imap_edata_get((struct Email *) ea)->uid;
   const unsigned int ub = imap_edata_get((struct Email *) eb)->uid;
 
-  if (ua < ub)
-    return -1;
-  if (ua > ub)
-    return 1;
-  return 0;
+  return mutt_numeric_cmp(ua, ub);
 }
 
 /**
