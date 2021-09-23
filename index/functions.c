@@ -3146,6 +3146,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_GET_CHILDREN,                        op_get_children,                      CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_GET_MESSAGE,                         op_get_message,                       CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_READONLY },
   { OP_GET_PARENT,                          op_get_message,                       CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_GENERIC_SELECT_ENTRY,                op_display_message,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_GROUP_CHAT_REPLY,                    op_group_reply,                       CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_GROUP_REPLY,                         op_group_reply,                       CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_JUMP,                                op_jump,                              CHECK_IN_MAILBOX },
