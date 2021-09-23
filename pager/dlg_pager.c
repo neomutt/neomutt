@@ -450,6 +450,7 @@ static void expand_index_panel(struct MuttWindow *dlg, struct PagerPrivateData *
     win_index->parent->size = MUTT_WIN_SIZE_MAXIMISE;
     win_index->parent->req_rows = MUTT_WIN_SIZE_UNLIMITED;
     window_set_visible(win_index->parent, true);
+    priv->menu = NULL;
   }
 
   window_set_visible(win_pager->parent, false);
