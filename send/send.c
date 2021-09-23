@@ -85,15 +85,6 @@
 #endif
 
 /**
- * struct GreetingInfo - Data passed to greeting_string()
- */
-struct GreetingInfo
-{
-  struct Mailbox *mailbox; ///< Current Mailbox
-  struct Email *email;     ///< Current Email
-};
-
-/**
  * append_signature - Append a signature to an email
  * @param fp  File to write to
  * @param sub Config Subset
@@ -644,12 +635,12 @@ static const char *greeting_string(char *buf, size_t buflen, size_t col, int col
                                    const char *if_str, const char *else_str,
                                    intptr_t data, MuttFormatFlags flags)
 {
-  struct GreetingInfo *gi = (struct GreetingInfo *) data;
+  struct Email *e = (struct Email *) data;
   char *p = NULL;
   char buf2[256];
 
-  const struct Address *to = TAILQ_FIRST(&gi->email->env->to);
-  const struct Address *cc = TAILQ_FIRST(&gi->email->env->cc);
+  const struct Address *to = TAILQ_FIRST(&e->env->to);
+  const struct Address *cc = TAILQ_FIRST(&e->env->cc);
 
   buf[0] = '\0';
   switch (op)
@@ -695,23 +686,20 @@ static const char *greeting_string(char *buf, size_t buflen, size_t col, int col
 
 /**
  * mutt_make_greeting - Add greetings string
- * @param m      Mailbox
  * @param e      Email
  * @param fp_out File to write to
  * @param sub    Config Subset
  */
-static void mutt_make_greeting(struct Mailbox *m, struct Email *e, FILE *fp_out,
-                               struct ConfigSubset *sub)
+static void mutt_make_greeting(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
 {
   const char *const c_greeting = cs_subset_string(sub, "greeting");
   if (!c_greeting || !fp_out)
     return;
 
   char buf[1024];
-  struct GreetingInfo gi = { m, e };
 
   mutt_expando_format(buf, sizeof(buf), 0, 0, c_greeting, greeting_string,
-                      (intptr_t) &gi, MUTT_TOKEN_NO_FLAGS);
+                      (intptr_t) e, MUTT_TOKEN_NO_FLAGS);
 
   fputs(buf, fp_out);
   fputc('\n', fp_out);
@@ -2418,7 +2406,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     }
 
     if (!(flags & SEND_BATCH))
-      mutt_make_greeting(m, e_templ, fp_tmp, sub);
+      mutt_make_greeting(e_templ, fp_tmp, sub);
 
     const bool c_sig_on_top = cs_subset_bool(sub, "sig_on_top");
     const char *const c_editor = cs_subset_string(sub, "editor");
