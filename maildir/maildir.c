@@ -343,12 +343,12 @@ int maildir_rewrite_message(struct Mailbox *m, int msgno)
   long old_body_length = e->body->length;
   long old_hdr_lines = e->lines;
 
+  struct Message *src = mx_msg_open(m, msgno);
   struct Message *dest = mx_msg_open_new(m, e, MUTT_MSG_NO_FLAGS);
-  if (!dest)
+  if (!src || !dest)
     return -1;
 
-  int rc = mutt_copy_message(dest->fp, e, dest, MUTT_CM_UPDATE,
-                             CH_UPDATE | CH_UPDATE_LEN, 0);
+  int rc = mutt_copy_message(dest->fp, e, src, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN, 0);
   if (rc == 0)
   {
     char oldpath[PATH_MAX];
@@ -364,6 +364,7 @@ int maildir_rewrite_message(struct Mailbox *m, int msgno)
       restore = false;
     }
   }
+  mx_msg_close(m, &src);
   mx_msg_close(m, &dest);
 
   if ((rc == -1) && restore)

@@ -856,6 +856,12 @@ int mutt_copy_message(FILE *fp_out, struct Email *e, struct Message *msg,
   {
     return -1;
   }
+  if (fp_out == msg->fp)
+  {
+    mutt_debug(LL_DEBUG1, "trying to read/write from/to the same FILE*!\n");
+    return -1;
+  }
+
   int rc = mutt_copy_message_fp(fp_out, msg->fp, e, cmflags, chflags, wraplen);
   if ((rc == 0) && (ferror(fp_out) || feof(fp_out)))
   {
