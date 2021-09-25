@@ -148,7 +148,7 @@ int           crypt_get_keys                           (struct Email *e, char **
 void          crypt_opportunistic_encrypt              (struct Email *e);
 SecurityFlags crypt_query                              (struct Body *b);
 bool          crypt_valid_passphrase                   (SecurityFlags flags);
-SecurityFlags mutt_is_application_pgp                  (struct Body *b);
+SecurityFlags mutt_is_application_pgp                  (const struct Body *b);
 SecurityFlags mutt_is_application_smime                (struct Body *b);
 SecurityFlags mutt_is_malformed_multipart_pgp_encrypted(struct Body *b);
 SecurityFlags mutt_is_multipart_encrypted              (struct Body *b);

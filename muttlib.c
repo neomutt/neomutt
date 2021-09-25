@@ -439,7 +439,7 @@ bool mutt_needs_mailcap(struct Body *b)
  * @param b Part of an email
  * @retval true Part is in plain text
  */
-bool mutt_is_text_part(struct Body *b)
+bool mutt_is_text_part(const struct Body *b)
 {
   int t = b->type;
   char *s = b->subtype;
