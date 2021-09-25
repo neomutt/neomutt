@@ -1151,7 +1151,6 @@ int pgp_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
   struct State s = { 0 };
   struct Body *p = b;
   bool need_decode = false;
-  int saved_type = 0;
   LOFF_T saved_offset = 0;
   size_t saved_length = 0;
   FILE *fp_decoded = NULL;
@@ -1176,7 +1175,6 @@ int pgp_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
 
   if (need_decode)
   {
-    saved_type = b->type;
     saved_offset = b->offset;
     saved_length = b->length;
 
@@ -1221,7 +1219,6 @@ int pgp_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
 bail:
   if (need_decode)
   {
-    b->type = saved_type;
     b->length = saved_length;
     b->offset = saved_offset;
     mutt_file_fclose(&fp_decoded);

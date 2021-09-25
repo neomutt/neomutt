@@ -2213,7 +2213,6 @@ int pgp_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
   struct Body *first_part = b;
   int is_signed = 0;
   bool need_decode = false;
-  int saved_type = 0;
   LOFF_T saved_offset = 0;
   size_t saved_length = 0;
   FILE *fp_decoded = NULL;
@@ -2241,7 +2240,6 @@ int pgp_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
 
   if (need_decode)
   {
-    saved_type = b->type;
     saved_offset = b->offset;
     saved_length = b->length;
 
@@ -2294,7 +2292,6 @@ int pgp_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
 bail:
   if (need_decode)
   {
-    b->type = saved_type;
     b->length = saved_length;
     b->offset = saved_offset;
     mutt_file_fclose(&fp_decoded);
@@ -2312,7 +2309,6 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
   int is_signed;
   LOFF_T saved_b_offset;
   size_t saved_b_length;
-  int saved_b_type;
 
   if (mutt_is_application_smime(b) == SEC_NO_FLAGS)
     return -1;
@@ -2324,7 +2320,6 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
    * backend.  The backend allows for Base64 encoded data but it does
    * not allow for QP which I have seen in some messages.  So better
    * do it here. */
-  saved_b_type = b->type;
   saved_b_offset = b->offset;
   saved_b_length = b->length;
   s.fp_in = fp_in;
@@ -2360,7 +2355,6 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
   *cur = decrypt_part(b, &s, *fp_out, true, &is_signed);
   if (*cur)
     (*cur)->goodsig = is_signed > 0;
-  b->type = saved_b_type;
   b->length = saved_b_length;
   b->offset = saved_b_offset;
   mutt_file_fclose(&fp_tmp);
@@ -2376,7 +2370,6 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
      * decrypt again.  This needs a partial rewrite of the MIME engine. */
     struct Body *bb = *cur;
 
-    saved_b_type = bb->type;
     saved_b_offset = bb->offset;
     saved_b_length = bb->length;
     memset(&s, 0, sizeof(s));
@@ -2414,7 +2407,6 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
     struct Body *b_tmp = decrypt_part(bb, &s, *fp_out, true, &is_signed);
     if (b_tmp)
       b_tmp->goodsig = is_signed > 0;
-    bb->type = saved_b_type;
     bb->length = saved_b_length;
     bb->offset = saved_b_offset;
     mutt_file_fclose(&fp_tmp2);
