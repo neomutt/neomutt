@@ -47,7 +47,9 @@
 #include "functions.h"
 #include "lib.h"
 #include "attach/lib.h"
+#ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
+#endif
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
