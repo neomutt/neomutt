@@ -2943,3 +2943,98 @@ cleanup:
   FREE(&finalpath);
   return rc;
 }
+
+/**
+ * send_simple_email - Compose an email given a few basic ingredients
+ * @param m Mailbox
+ * @param mailto mailto address to parse (can include fields such as subject)
+ * @param to Recipient address, if not overridden by mailto
+ * @param subj Subject, if not overridden by mailto
+ * @param body text/plain body
+ * @retval true Success
+ * @retval false Failure
+ */
+static bool send_simple_email(struct Mailbox *m, const char *mailto,
+                              const char *to, const char *subj, const char *body)
+{
+  struct Email *e = email_new();
+
+  /* envelope */
+  e->env = mutt_env_new();
+  mutt_parse_mailto(e->env, NULL, mailto);
+  if (!e->env->subject)
+  {
+    e->env->subject = mutt_str_dup(subj);
+  }
+  if (TAILQ_EMPTY(&e->env->to) && !mutt_addrlist_parse(&e->env->to, to))
+  {
+    mutt_warning(_("No recipient specified"));
+  }
+
+  /* body */
+  e->body = mutt_body_new();
+  char ctype[] = "text/plain";
+  mutt_parse_content_type(ctype, e->body);
+
+  char tempfile[PATH_MAX] = { 0 };
+  mutt_mktemp(tempfile, sizeof(tempfile));
+  if (body)
+  {
+    FILE *fp = mutt_file_fopen(tempfile, "w+");
+    fprintf(fp, "%s\n", body);
+    mutt_file_fclose(&fp);
+  }
+  e->body->filename = mutt_str_dup(tempfile);
+  e->body->unlink = true;
+
+  const int rc = mutt_send_message(SEND_DRAFT_FILE, e, NULL, m, NULL, NeoMutt->sub);
+  return rc >= 0;
+}
+
+/**
+ * mutt_send_list_subscribe - Send a mailing-list subscription email
+ * @param m Mailbox
+ * @param e Email carrying mailing-list subscription headers
+ * @retval true Success
+ * @retval false Failure
+ */
+bool mutt_send_list_subscribe(struct Mailbox *m, const struct Email *e)
+{
+  if (!e || !e->env)
+  {
+    return false;
+  }
+
+  const char *mailto = e->env->list_subscribe;
+  if (!mailto)
+  {
+    mutt_warning(_("No List-Subscribe header found"));
+    return false;
+  }
+
+  return send_simple_email(m, mailto, NULL, "Subscribe", "subscribe");
+}
+
+/**
+ * mutt_send_list_unsubscribe - Send a mailing-list unsubscription email
+ * @param m Mailbox
+ * @param e Email carrying mailing-list unsubscription headers
+ * @retval true Success
+ * @retval false Failure
+ */
+bool mutt_send_list_unsubscribe(struct Mailbox *m, const struct Email *e)
+{
+  if (!e || !e->env)
+  {
+    return false;
+  }
+
+  const char *mailto = e->env->list_unsubscribe;
+  if (!mailto)
+  {
+    mutt_warning(_("No List-Unsubscribe header found"));
+    return false;
+  }
+
+  return send_simple_email(m, mailto, NULL, "Unsubscribe", "unsubscribe");
+}

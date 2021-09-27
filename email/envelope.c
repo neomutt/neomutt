@@ -111,6 +111,8 @@ void mutt_env_free(struct Envelope **ptr)
   mutt_addrlist_clear(&env->x_original_to);
 
   FREE(&env->list_post);
+  FREE(&env->list_subscribe);
+  FREE(&env->list_unsubscribe);
   FREE(&env->subject);
   /* real_subj is just an offset to subject and shouldn't be freed */
   FREE(&env->disp_subj);
@@ -191,6 +193,8 @@ void mutt_env_merge(struct Envelope *base, struct Envelope **extra)
   MOVE_ADDRESSLIST(reply_to);
   MOVE_ADDRESSLIST(mail_followup_to);
   MOVE_ELEM(list_post);
+  MOVE_ELEM(list_subscribe);
+  MOVE_ELEM(list_unsubscribe);
   MOVE_ELEM(message_id);
   MOVE_ELEM(supersedes);
   MOVE_ELEM(date);

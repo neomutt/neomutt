@@ -67,5 +67,7 @@ void            mutt_make_post_indent(struct Email *e, FILE *fp_out, struct Conf
 int             mutt_resend_message(FILE *fp, struct Mailbox *m, struct Email *e_cur, struct ConfigSubset *sub);
 int             mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile, struct Mailbox *m, struct EmailList *el, struct ConfigSubset *sub);
 void            mutt_set_followup_to(struct Envelope *env, struct ConfigSubset *sub);
+bool            mutt_send_list_subscribe(struct Mailbox *m, const struct Email *e);
+bool            mutt_send_list_unsubscribe(struct Mailbox *m, const struct Email *e);
 
 #endif /* MUTT_SEND_H */

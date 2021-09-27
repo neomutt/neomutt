@@ -161,6 +161,8 @@
   _fmt(OP_LAST_ENTRY,                     N_("move to the last entry")) \
   _fmt(OP_LIMIT_CURRENT_THREAD,           N_("limit view to current thread")) \
   _fmt(OP_LIST_REPLY,                     N_("reply to specified mailing list")) \
+  _fmt(OP_LIST_SUBSCRIBE,                 N_("subscribe to a mailing list")) \
+  _fmt(OP_LIST_UNSUBSCRIBE,               N_("unsubscribe from a mailing list")) \
   _fmt(OP_LOAD_ACTIVE,                    N_("load list of all newsgroups from NNTP server")) \
   _fmt(OP_MACRO,                          N_("execute a macro")) \
   _fmt(OP_MAIL,                           N_("compose a new mail message")) \

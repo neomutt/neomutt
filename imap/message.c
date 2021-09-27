@@ -1060,8 +1060,8 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   struct Buffer *buf = NULL;
   static const char *const want_headers =
       "DATE FROM SENDER SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE "
-      "CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL "
-      "X-ORIGINAL-TO";
+      "CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST "
+      "LIST-SUBSCRIBE LIST-UNSUBSCRIBE X-LABEL X-ORIGINAL-TO";
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);

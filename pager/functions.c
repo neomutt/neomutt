@@ -1148,6 +1148,30 @@ static int op_reply(struct IndexSharedData *shared, struct PagerPrivateData *pri
 }
 
 /**
+ * op_list_subscribe - subscribe to a mailing list - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_list_subscribe(struct IndexSharedData *shared,
+                             struct PagerPrivateData *priv, int op)
+{
+  const int rc = mutt_send_list_subscribe(shared->mailbox, shared->email) ? IR_SUCCESS : IR_NO_ACTION;
+  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  return rc;
+}
+
+/**
+ * op_list_unsubscribe - unsubscribe from mailing list - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_list_unsubscribe(struct IndexSharedData *shared,
+                               struct PagerPrivateData *priv, int op)
+{
+  const int rc = mutt_send_list_unsubscribe(shared->mailbox, shared->email) ?
+                     IR_SUCCESS :
+                     IR_NO_ACTION;
+  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  return rc;
+}
+
+/**
  * op_resend - use the current message as a template for a new one - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_resend(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
@@ -1838,6 +1862,8 @@ struct PagerFunction PagerFunctions[] = {
   { OP_GROUP_CHAT_REPLY,       op_reply },
   { OP_GROUP_REPLY,            op_reply },
   { OP_LIST_REPLY,             op_reply },
+  { OP_LIST_SUBSCRIBE,         op_list_subscribe },
+  { OP_LIST_UNSUBSCRIBE,       op_list_unsubscribe },
   { OP_REPLY,                  op_reply },
   { OP_RESEND,                 op_resend },
   { OP_SAVE,                   op_save },
