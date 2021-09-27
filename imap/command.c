@@ -71,6 +71,7 @@ static const char *const Capabilities[] = {
   "AUTH=GSSAPI",
   "AUTH=ANONYMOUS",
   "AUTH=OAUTHBEARER",
+  "AUTH=XOAUTH2",
   "STARTTLS",
   "LOGINDISABLED",
   "IDLE",

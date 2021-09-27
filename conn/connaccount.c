@@ -28,6 +28,7 @@
 
 #include "config.h"
 #include <assert.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
@@ -144,8 +145,9 @@ void mutt_account_unsetpass(struct ConnAccount *cac)
 }
 
 /**
- * mutt_account_getoauthbearer - Get an OAUTHBEARER token
+ * mutt_account_getoauthbearer - Get an OAUTHBEARER/XOAUTH2 token
  * @param cac Account to use
+ * @param xoauth2 Generate a deprecated XOAUTH2 token
  * @retval ptr  OAuth token
  * @retval NULL Error
  *
@@ -154,7 +156,7 @@ void mutt_account_unsetpass(struct ConnAccount *cac)
  *
  * @note Caller should free the token
  */
-char *mutt_account_getoauthbearer(struct ConnAccount *cac)
+char *mutt_account_getoauthbearer(struct ConnAccount *cac, bool xoauth2)
 {
   if (!cac || !cac->get_field)
     return NULL;
@@ -187,6 +189,10 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac)
   mutt_file_fclose(&fp);
   filter_wait(pid);
 
+  /* The refresh cmd in some cases will invoke gpg to decrypt a token */
+  if (!OptNoCurses)
+    mutt_need_hard_redraw();
+
   if (!token || (*token == '\0'))
   {
     mutt_error(_("Command returned empty string"));
@@ -194,20 +200,32 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac)
     return NULL;
   }
 
-  if (token_size > 512)
+  if ((!xoauth2 && (token_size > 512)) || (xoauth2 && (token_size > 2048)))
   {
     mutt_error(_("OAUTH token is too big: %ld"), token_size);
     FREE(&token);
     return NULL;
   }
 
-  char oauthbearer[1024];
-  int oalen = snprintf(oauthbearer, sizeof(oauthbearer), "n,a=%s,\001host=%s\001port=%d\001auth=Bearer %s\001\001",
-                       cac->login, cac->host, cac->port, token);
+  /* 2400 is chosen to allow for both a token that is ~2048-long plus a
+   * username that can be up to 320-long. */
+  char oauthbearer[2400];
+  int oalen = 0;
+  if (xoauth2)
+  {
+    oalen = snprintf(oauthbearer, sizeof(oauthbearer),
+                     "user=%s\001auth=Bearer %s\001\001", cac->login, token);
+  }
+  else
+  {
+    oalen = snprintf(oauthbearer, sizeof(oauthbearer),
+                     "n,a=%s,\001host=%s\001port=%d\001auth=Bearer %s\001\001",
+                     cac->login, cac->host, cac->port, token);
+  }
   FREE(&token);
 
   size_t encoded_len = oalen * 4 / 3 + 10;
-  assert(encoded_len < 1400); // Assure LGTM that we won't overflow
+  assert(encoded_len < 3400); // Assure LGTM that we won't overflow
 
   char *encoded_token = mutt_mem_malloc(encoded_len);
   mutt_b64_encode(oauthbearer, oalen, encoded_token, encoded_len);

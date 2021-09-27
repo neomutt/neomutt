@@ -28,6 +28,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
@@ -40,17 +41,24 @@
 #include "mutt_socket.h"
 
 /**
- * imap_auth_oauth - Authenticate an IMAP connection using OAUTHBEARER - Implements ImapAuth::authenticate()
+ * imap_auth_oauth_xoauth2 - Authenticate an IMAP connection using OAUTHBEARER or XOAUTH2
+ * @param adata   Imap Account data
+ * @param method  Use this named method, or any available method if NULL
+ * @param xoauth2 Use xoauth2 token (if true) or oauthbearer token (if false)
+ * @retval num ImapAuth::ImapAuthRes Result, e.g. IMAP_AUTH_SUCCESS
  */
-enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *method)
+enum ImapAuthRes imap_auth_oauth_xoauth2(struct ImapAccountData *adata,
+                                         const char *method, bool xoauth2)
 {
   char *ibuf = NULL;
   char *oauthbearer = NULL;
+  const char *authtype = xoauth2 ? "XOAUTH2" : "OAUTHBEARER";
   int ilen;
   int rc;
 
   /* For now, we only support SASL_IR also and over TLS */
-  if (!(adata->capabilities & IMAP_CAP_AUTH_OAUTHBEARER) ||
+  if ((xoauth2 && !(adata->capabilities & IMAP_CAP_AUTH_XOAUTH2)) ||
+      (!xoauth2 && !(adata->capabilities & IMAP_CAP_AUTH_OAUTHBEARER)) ||
       !(adata->capabilities & IMAP_CAP_SASL_IR) || (adata->conn->ssf == 0))
   {
     return IMAP_AUTH_UNAVAIL;
@@ -63,16 +71,16 @@ enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *meth
     return IMAP_AUTH_UNAVAIL;
 
   // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
-  mutt_message(_("Authenticating (%s)..."), "OAUTHBEARER");
+  mutt_message(_("Authenticating (%s)..."), authtype);
 
   /* We get the access token from the imap_oauth_refresh_command */
-  oauthbearer = mutt_account_getoauthbearer(&adata->conn->account);
+  oauthbearer = mutt_account_getoauthbearer(&adata->conn->account, xoauth2);
   if (!oauthbearer)
     return IMAP_AUTH_FAILURE;
 
   ilen = mutt_str_len(oauthbearer) + 30;
   ibuf = mutt_mem_malloc(ilen);
-  snprintf(ibuf, ilen, "AUTHENTICATE OAUTHBEARER %s", oauthbearer);
+  snprintf(ibuf, ilen, "AUTHENTICATE %s %s", authtype, oauthbearer);
 
   /* This doesn't really contain a password, but the token is good for
    * an hour, so suppress it anyways.  */
@@ -96,6 +104,22 @@ enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *meth
   }
 
   // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
-  mutt_error(_("%s authentication failed"), "OAUTHBEARER");
+  mutt_error(_("%s authentication failed"), authtype);
   return IMAP_AUTH_FAILURE;
+}
+
+/**
+ * imap_auth_oauth - Authenticate an IMAP connection using OAUTHBEARER - Implements ImapAuth::authenticate()
+ */
+enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *method)
+{
+  return imap_auth_oauth_xoauth2(adata, method, false);
+}
+
+/**
+ * imap_auth_xoauth2 - Authenticate an IMAP connection using XOAUTH2 - Implements ImapAuth::authenticate()
+ */
+enum ImapAuthRes imap_auth_xoauth2(struct ImapAccountData *adata, const char *method)
+{
+  return imap_auth_oauth_xoauth2(adata, method, true);
 }

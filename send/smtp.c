@@ -543,26 +543,28 @@ fail:
 #endif
 
 /**
- * smtp_auth_oauth - Authenticate an SMTP connection using OAUTHBEARER
+ * smtp_auth_oauth_xoauth2 - Authenticate an SMTP connection using OAUTHBEARER/XOAUTH2
  * @param adata   SMTP Account data
  * @param method  Authentication method (not used)
+ * @param xoauth2 Use XOAUTH2 token (if true), OAUTHBEARER token otherwise
  * @retval num Result, e.g. #SMTP_AUTH_SUCCESS
  */
-static int smtp_auth_oauth(struct SmtpAccountData *adata, const char *method)
+static int smtp_auth_oauth_xoauth2(struct SmtpAccountData *adata, const char *method, bool xoauth2)
 {
   (void) method; // This is OAUTHBEARER
+  const char *authtype = xoauth2 ? "XOAUTH2" : "OAUTHBEARER";
 
   // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
-  mutt_message(_("Authenticating (%s)..."), "OAUTHBEARER");
+  mutt_message(_("Authenticating (%s)..."), authtype);
 
   /* We get the access token from the smtp_oauth_refresh_command */
-  char *oauthbearer = mutt_account_getoauthbearer(&adata->conn->account);
+  char *oauthbearer = mutt_account_getoauthbearer(&adata->conn->account, xoauth2);
   if (!oauthbearer)
     return SMTP_AUTH_FAIL;
 
   size_t ilen = strlen(oauthbearer) + 30;
   char *ibuf = mutt_mem_malloc(ilen);
-  snprintf(ibuf, ilen, "AUTH OAUTHBEARER %s\r\n", oauthbearer);
+  snprintf(ibuf, ilen, "AUTH %s %s\r\n", authtype, oauthbearer);
 
   int rc = mutt_socket_send(adata->conn, ibuf);
   FREE(&oauthbearer);
@@ -574,6 +576,28 @@ static int smtp_auth_oauth(struct SmtpAccountData *adata, const char *method)
     return SMTP_AUTH_FAIL;
 
   return SMTP_AUTH_SUCCESS;
+}
+
+/**
+ * smtp_auth_oauth - Authenticate an SMTP connection using OAUTHBEARER
+ * @param adata   SMTP Account data
+ * @param method  Authentication method (not used)
+ * @retval num Result, e.g. #SMTP_AUTH_SUCCESS
+ */
+static int smtp_auth_oauth(struct SmtpAccountData *adata, const char *method)
+{
+  return smtp_auth_oauth_xoauth2(adata, method, false);
+}
+
+/**
+ * smtp_auth_xoauth2 - Authenticate an SMTP connection using XOAUTH2
+ * @param adata   SMTP Account data
+ * @param method  Authentication method (not used)
+ * @retval num Result, e.g. #SMTP_AUTH_SUCCESS
+ */
+static int smtp_auth_xoauth2(struct SmtpAccountData *adata, const char *method)
+{
+  return smtp_auth_oauth_xoauth2(adata, method, true);
 }
 
 /**
@@ -700,12 +724,15 @@ error:
  * smtp_authenticators - Accepted authentication methods
  */
 static const struct SmtpAuth smtp_authenticators[] = {
+  // clang-format off
   { smtp_auth_oauth, "oauthbearer" },
+  { smtp_auth_xoauth2, "xoauth2" },
   { smtp_auth_plain, "plain" },
   { smtp_auth_login, "login" },
 #ifdef USE_SASL
   { smtp_auth_sasl, NULL },
 #endif
+  // clang-format on
 };
 
 /**

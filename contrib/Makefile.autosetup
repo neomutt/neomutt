@@ -1,4 +1,4 @@
-CONTRIB_DIRS=	colorschemes hcache-bench keybase logo lua samples vim-keys
+CONTRIB_DIRS=	colorschemes hcache-bench keybase logo lua oauth2 samples vim-keys
 
 all-contrib:
 clean-contrib:
