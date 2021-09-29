@@ -112,11 +112,11 @@ msgstr "Odtwórz"
 
 #: alias/dlgalias.c:102 alias/dlgquery.c:107
 msgid "Sort"
-msgstr ""
+msgstr "Sortowanie"
 
 #: alias/dlgalias.c:103 alias/dlgquery.c:108
 msgid "Rev-Sort"
-msgstr ""
+msgstr "Odwrotne sortowanie"
 
 #: alias/dlgalias.c:104 history/dlghistory.c:76 ncrypt/dlggpgme.c:106
 #: ncrypt/dlgpgp.c:101 ncrypt/dlgsmime.c:77 pattern/dlgpattern.c:102
@@ -144,17 +144,17 @@ msgstr "Brak aliasów"
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/dlgalias.c:364 alias/dlgquery.c:566
 msgid "Rev-Sort (a)lias, a(d)dress or (u)nsorted?"
-msgstr ""
+msgstr "Odwrotne sortowanie po (a)liasie/a(d)resie, czy (n)ieposortowane?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: alias/dlgalias.c:366 alias/dlgquery.c:568
 msgid "Sort (a)lias, a(d)dress or (u)nsorted?"
-msgstr ""
+msgstr "Sortowanie po (a)liasie/a(d)resie, czy (n)ieposortowane?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/dlgalias.c:368 alias/dlgquery.c:570
 msgid "adu"
-msgstr ""
+msgstr "adn"
 
 #: alias/dlgalias.c:412 alias/dlgquery.c:615 index/functions.c:948
 msgid "Limit to messages matching: "
@@ -408,7 +408,7 @@ msgstr "Wydrukować załącznik?"
 
 #: attach/recvattach.c:921
 msgid "Structural changes to decrypted attachments are not supported"
-msgstr ""
+msgstr "Zmiany strukturalne rozszyfrowanych załączników nie są wspierane"
 
 #: attach/recvattach.c:1103
 msgid "Can't decrypt encrypted message"
@@ -880,12 +880,12 @@ msgstr "brak argumentów"
 #: command_parse.c:166
 #, c-format
 msgid "Error: Can't build path of '%s'"
-msgstr ""
+msgstr "Błąd: Nie udało się zbudować ścieżki dla '%s'"
 
 #: command_parse.c:179
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
-msgstr ""
+msgstr "Błąd: Cykliczne ładowanie pliku konfiguracji '%s'"
 
 #: command_parse.c:220
 #, c-format
@@ -928,7 +928,7 @@ msgstr "%sgrupa: ostrzeżenie: błędny IDN '%s'"
 #: command_parse.c:476
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Błąd: %s"
 
 #: command_parse.c:637
 msgid "invalid header field"
@@ -937,7 +937,7 @@ msgstr "nieprawidłowy nagłówek"
 #: command_parse.c:708
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
-msgstr ""
+msgstr "Nie można użyć 'inv', 'no', '&', '?' z poleceniem '%s'"
 
 #: command_parse.c:742 command_parse.c:886 command_parse.c:996
 #, c-format
@@ -946,38 +946,38 @@ msgstr "%s: nieznana zmienna"
 
 #: command_parse.c:758 command_parse.c:1084
 msgid "Can't use a prefix when querying a variable"
-msgstr ""
+msgstr "Nie można użyć prefiksu pytając zmienną"
 
 #: command_parse.c:764 command_parse.c:1064 command_parse.c:1078
 #, c-format
 msgid "Can't query a variable with the '%s' command"
-msgstr ""
+msgstr "Nie można pytać zmiennej poleceniem '%s'"
 
 #: command_parse.c:778
 msgid "Can't use prefix when incrementing or decrementing a variable"
-msgstr ""
+msgstr "Nie można użyć prefiksu zwiększając ani zmniejszając zmienną"
 
 #: command_parse.c:784 command_parse.c:815
 #, c-format
 msgid "Can't set a variable with the '%s' command"
-msgstr ""
+msgstr "Nie można przypisać do zmiennej poleceniem '%s'"
 
 #: command_parse.c:795
 msgid "Can't decrement a my_ variable"
-msgstr ""
+msgstr "Nie można zmniejszyć zmiennych 'my_'"
 
 #: command_parse.c:809
 msgid "Can't use prefix when setting a variable"
-msgstr ""
+msgstr "Nie można użyć prefiksu przypisując do zmiennej"
 
 #: command_parse.c:828
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
-msgstr ""
+msgstr "Prefiksy 'no' i 'inv' mogą być użyte tylko ze zmiennymi logicznymi/pytaniowymi"
 
 #: command_parse.c:833
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
-msgstr ""
+msgstr "Polecenie '%s' może być użyte tylko ze zmiennymi logicznymi/pytaniowymi"
 
 #: command_parse.c:1116
 #, c-format
@@ -1247,7 +1247,7 @@ msgstr "Nie rozpoznano zawartości skompresowanego pliku"
 #: compmbox/compress.c:476 compmbox/compress.c:550
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
-msgstr ""
+msgstr "Nie udało się znaleźć operacji skrzynki dla skrzynki typu %d"
 
 #: compmbox/compress.c:530
 #, c-format
@@ -1320,7 +1320,7 @@ msgstr "Mix: "
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
 #: compose/compose.c:116
 msgid "Security: "
-msgstr ""
+msgstr "Zabezpieczenia: "
 
 #. L10N: This string is used by the compose menu.
 #. Since it is hidden by default, it does not increase the indentation of
@@ -1452,7 +1452,7 @@ msgstr " (PGP w treści)"
 
 #: compose/envelope.c:340
 msgid " (PGP/MIME)"
-msgstr ""
+msgstr " (PGP/MIME)"
 
 #: compose/envelope.c:343
 msgid " (S/MIME)"
@@ -1485,9 +1485,9 @@ msgstr "<nie zdefiniowany łańcuch>"
 #, c-format
 msgid "(+%d more)"
 msgid_plural "(+%d more)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "(+%d więcej)"
+msgstr[1] "(+%d więcej)"
+msgstr[2] "(+%d więcej)"
 
 #: compose/functions.c:91 index/functions.c:93 pager/functions.c:78
 msgid "Not available in this menu"
@@ -1581,19 +1581,19 @@ msgstr "Błędny IDN w '%s': '%s'"
 
 #: compose/functions.c:858
 msgid "Empty 'Content-Language'"
-msgstr ""
+msgstr "Pusty 'Content-Language'"
 
 #: compose/functions.c:990
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
-msgstr ""
+msgstr "Grupowanie jako alternatywy wymaga przynajmniej dwóch zaznaczonych wiadomości"
 
 #: compose/functions.c:1073
 msgid "Grouping 'multilingual' requires at least 2 tagged messages"
-msgstr ""
+msgstr "Grupowanie jako wielojęzyczne wymaga przynajmniej dwóch zaznaczonych wiadomości"
 
 #: compose/functions.c:1085
 msgid "Not all parts have 'Content-Language' set, continue?"
-msgstr ""
+msgstr "Nie wszystkie części mają przypisany 'Content-Language', kontynuować?"
 
 #: compose/functions.c:1087
 msgid "Not sending this message"
@@ -1709,7 +1709,7 @@ msgstr "Błędna wartość logiczna: %ld"
 
 #: config/charset.c:50
 msgid "'charset' must contain exactly one character set name"
-msgstr ""
+msgstr "'charset' musi zawierać jedną nazwę układu znaków"
 
 #: config/charset.c:66 hcache/config.c:53 hcache/config.c:72 hcache/config.c:94
 #: mutt_config.c:126
@@ -1974,7 +1974,7 @@ msgstr "Wszystkie dostępne protokoły połączenia TLS/SSL zostały zablokowane
 
 #: conn/gnutls.c:870
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
-msgstr ""
+msgstr "Wybranie szyfrów przez $ssl_ciphers nie jest wspierane"
 
 #. L10N: This is a warning when trying to set the host name for
 #. TLS Server Name Indication (SNI).  This allows the server to present
@@ -2142,13 +2142,13 @@ msgstr "Zestawianie tunelu: %s zwrócił błąd %d (%s)"
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Obliczenie długości pomyliło się o %ld bajt"
+msgstr[1] "Obliczenie długości pomyliło się o %ld bajty"
+msgstr[2] "Obliczenie długości pomyliło się o %ld bajtów"
 
 #: copy.c:786
 msgid "No decryption engine available for message"
-msgstr ""
+msgstr "Nieznany sposób odszyfrowania tej wiadomości"
 
 #: dlg_postpone.c:189
 msgid "Postponed Messages"
@@ -2179,7 +2179,7 @@ msgstr "List nie został zmieniony"
 
 #: editmsg.c:172
 msgid "Message of read-only mailbox modified! Ignoring changes."
-msgstr ""
+msgstr "Zmieniona wiadomość skrzynki tylko do odczytu! Ignorowanie."
 
 #: editmsg.c:188
 #, c-format
@@ -2470,7 +2470,7 @@ msgstr "[-- typ %s/%s nie jest obsługiwany --]\n"
 #: hcache/config.c:86
 #, c-format
 msgid "Set option %s before setting %s"
-msgstr ""
+msgstr "Ustaw opcję %s przed ustawieniem %s"
 
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
@@ -2478,7 +2478,7 @@ msgstr ""
 #: hcache/config.c:103 send/config.c:51
 #, c-format
 msgid "Option %s must be between %d and %d inclusive"
-msgstr ""
+msgstr "Opcja %s musi zawierać się między %d i %d, włącznie"
 
 #: help.c:344
 msgid "ERROR: please report this bug"
@@ -2780,7 +2780,7 @@ msgstr "Błędne flagi IMAP"
 #. L10N: This prompt is made if the user hits Ctrl-C when opening an IMAP mailbox
 #: imap/message.c:491
 msgid "Abort download and close mailbox?"
-msgstr ""
+msgstr "Przerwać ściąganie i zamknąć skrzynkę?"
 
 #. L10N: Comparing the cached data with the IMAP server's data
 #: imap/message.c:675 imap/message.c:816
@@ -2857,7 +2857,7 @@ msgstr "Grupie"
 
 #: index/dlg_index.c:126 pager/dlg_pager.c:132
 msgid "Post"
-msgstr ""
+msgstr "Wyślij"
 
 #: index/dlg_index.c:127 pager/dlg_pager.c:133
 msgid "Followup"
@@ -3204,7 +3204,7 @@ msgstr "Brak folderu wirtualnego i Message-Id, zaniechano"
 
 #: index/functions.c:2767
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
-msgstr ""
+msgstr "nie znaleziono wiadomości w bazie danych notmuch. spróbuj uruchomić 'notmuch new'."
 
 #: index/functions.c:2777
 msgid "Failed to read thread, aborting"
@@ -3220,7 +3220,7 @@ msgstr ""
 
 #: index/functions.c:2847
 msgid "No notmuch vfolder currently loaded"
-msgstr "Żaden notmach vfolder nie jest obecnie załadowany"
+msgstr "Żaden vfolder notmuch nie jest obecnie załadowany"
 
 #: index/functions.c:2949
 msgid "There are no messages"
@@ -3232,7 +3232,7 @@ msgstr "Brak widocznych listów"
 
 #: index/index.c:98
 msgid "Changing threaded display should prefer $use_threads over $sort"
-msgstr ""
+msgstr "Zmienianie wyświetlania wątkowego woli $use_threads od $sort"
 
 #: init.c:217
 #, c-format
@@ -3256,12 +3256,12 @@ msgstr "%s: nieznane polecenie"
 #: init.c:1085
 #, c-format
 msgid "Config variable '%s' is deprecated"
-msgstr ""
+msgstr "Zmienna konfiguracji '%s' jest przestarzała"
 
 #: keymap.c:406
 #, c-format
 msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
-msgstr ""
+msgstr "Powiązanie '%s' zastąpi '%s'  Spróbuj użyć 'bind %s %s noop' przed nim  https://neomutt.org/guide/configuration.html#bind-warnings"
 
 #: keymap.c:778
 msgid "Macro loop detected"
@@ -3269,12 +3269,12 @@ msgstr "Wykryto pętlę w makrze"
 
 #: keymap.c:855
 msgid "Abort key is not set, defaulting to Ctrl-G"
-msgstr ""
+msgstr "Klawisz przerwania nie jest przypisany, używanie domyślnego Ctrl-G"
 
 #: keymap.c:862
 #, c-format
 msgid "Specified abort key sequence (%s) will be truncated to first key"
-msgstr ""
+msgstr "Sekwencja przerwania (%s) będzie skrócona do pierwszego klawisza"
 
 #: keymap.c:1153 keymap.c:1188
 msgid "Key is not bound"
@@ -3374,7 +3374,7 @@ msgstr "Zapisywanie %s..."
 #. L10N: Try to limit to 80 columns
 #: main.c:271
 msgid "usage:"
-msgstr ""
+msgstr "użycie:"
 
 #: main.c:272
 msgid ""
@@ -3818,7 +3818,7 @@ msgstr "Niewłaściwa wartość opcji %s: %ld"
 
 #: mutt_lua.c:453
 msgid "Error: Couldn't load the lua interpreter"
-msgstr ""
+msgstr "Błąd: Nie udało się załadować interpretora lua"
 
 #: mutt_lua.c:523
 #, c-format
@@ -3837,7 +3837,7 @@ msgstr "Protokół SSL nie jest dostępny, nieudane połączenie z %s"
 #: mutt_thread.c:121
 #, c-format
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
-msgstr ""
+msgstr "Nie można użyć prefiksu 'last-' z 'threads' dla %s"
 
 #: mutt_thread.c:1351
 msgid "Parent message is not available"
@@ -4446,7 +4446,7 @@ msgstr "Wyszukiwanie odpowiednich kluczy dla \"%s\"..."
 #: ncrypt/crypt_gpgme.c:3810 ncrypt/pgpkey.c:228 ncrypt/smime.c:734
 #, c-format
 msgid "No matching keys found for \"%s\""
-msgstr ""
+msgstr "Nie ma kluczy odpowiadających \"%s\""
 
 #: ncrypt/crypt_gpgme.c:3862 ncrypt/pgp.c:1468
 #, c-format
@@ -4484,11 +4484,11 @@ msgstr "Klucz PGP 0x%s"
 
 #: ncrypt/crypt_gpgme.c:4146
 msgid "GPGME: OpenPGP protocol not available"
-msgstr ""
+msgstr "GPGME: protokół OpenPGP niedostępny"
 
 #: ncrypt/crypt_gpgme.c:4157
 msgid "GPGME: CMS protocol not available"
-msgstr ""
+msgstr "GPGME: protokół CMS niedostępny"
 
 #: ncrypt/crypt_gpgme.c:4210
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
@@ -5098,7 +5098,7 @@ msgstr "(1) AES128, (2) AES192, (3) AES256?"
 
 #: nntp/newsrc.c:635
 msgid "Loading list of groups from cache..."
-msgstr ""
+msgstr "Ładowanie listy grup z pamięci podręcznej..."
 
 #: nntp/newsrc.c:1027
 msgid "No news server defined"
@@ -5145,11 +5145,11 @@ msgstr "Połączono z %s. %s"
 
 #: nntp/nntp.c:1777
 msgid "Posting is NOT ok"
-msgstr ""
+msgstr "Wysyłanie NIE jest dozwolone"
 
 #: nntp/nntp.c:1777
 msgid "Posting is ok"
-msgstr ""
+msgstr "Wysyłanie jest dozwolone"
 
 #: nntp/nntp.c:1915 nntp/nntp.c:1950
 #, c-format
@@ -5171,7 +5171,7 @@ msgstr "Sprawdzanie nowych grup dyskusyjnych..."
 
 #: nntp/nntp.c:2246
 msgid "Unable to find child articles because server does not support XPAT command"
-msgstr ""
+msgstr "Nie udało się znaleźć potomnych artykułów bo serwer nie rozumie polecenia XPAT"
 
 #: nntp/nntp.c:2324
 #, c-format
@@ -5191,13 +5191,13 @@ msgstr "Lista dyskusyjna %s została skasowana z serwera"
 #: notmuch/config.c:58
 #, c-format
 msgid "nm_default_url must be: notmuch://<absolute path> . Current: %s"
-msgstr ""
+msgstr "nm_default_url musi być notmuch://<ścieżka absolutna>. Teraz jest %s"
 
 #. L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
 #. They should not be translated.
 #: notmuch/config.c:85 notmuch/notmuch.c:317
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
-msgstr ""
+msgstr "Niepoprawna wartość nm_query_window_timebase (może być hour/day/week/month/year)"
 
 #: notmuch/db.c:139
 #, c-format
@@ -5240,9 +5240,9 @@ msgstr "nieudane parsowanie limitu: %s"
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Nie udało się zapisać %d wiadomości z powodu zewnętrznej modyfikacji skrzynki"
+msgstr[1] "Nie udało się zapisać %d wiadomości z powodu zewnętrznej modyfikacji skrzynki"
+msgstr[2] "Nie udało się zapisać %d wiadomości z powodu zewnętrznej modyfikacji skrzynki"
 
 #: notmuch/notmuch.c:2376
 msgid "Can't write to virtual folder"
@@ -5303,7 +5303,7 @@ msgstr "wyślij ponownie do innego użytkownika"
 
 #: opcodes.h:49
 msgid "swap the current folder position with $folder if it exists"
-msgstr ""
+msgstr "zamień obecną pozycję folderu z $folder'em, jeżeli istnieje"
 
 #: opcodes.h:50
 msgid "select a new file in this directory"
@@ -5431,11 +5431,11 @@ msgstr "weź tymczasową kopię załącznika"
 
 #: opcodes.h:81
 msgid "group tagged attachments as 'multipart/alternative'"
-msgstr ""
+msgstr "zgrupuj zaznaczone załączniki jako alternatywy ('multipart/alternative')"
 
 #: opcodes.h:82
 msgid "group tagged attachments as 'multipart/multilingual'"
-msgstr ""
+msgstr "zgrupuj zaznaczone załączniki jako wielojęzyczne ('multipart/multilingual')"
 
 #: opcodes.h:83
 msgid "run ispell on the message"
@@ -5655,11 +5655,11 @@ msgstr "dodaj, zmień albo skasuj etykietę listu"
 
 #: opcodes.h:137
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
-msgstr ""
+msgstr "edytuj surową wiadomość jeżeli skrzynka nie jest tylko do odczytu, albo wyświetl ją jeżeli jest"
 
 #: opcodes.h:138
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
-msgstr ""
+msgstr "edytuj surową wiadomość (edit jest synonimem edit-raw-message)"
 
 #: opcodes.h:139
 msgid "edit attachment content type"
@@ -5703,7 +5703,7 @@ msgstr "prześlij dalej list opatrując go uwagami"
 
 #: opcodes.h:149
 msgid "forward to newsgroup"
-msgstr ""
+msgstr "prześlij do grupy dyskusyjnej"
 
 #: opcodes.h:150
 msgid "select the current entry"
@@ -5771,7 +5771,7 @@ msgstr "wypisz się z listy pocztowej"
 
 #: opcodes.h:166
 msgid "load list of all newsgroups from NNTP server"
-msgstr ""
+msgstr "załaduj listę grup dyskusyjnych z serwera NNTP"
 
 #: opcodes.h:167
 msgid "execute a macro"
@@ -5843,7 +5843,7 @@ msgstr "podlinkuj zaznaczony list do bieżącego"
 
 #: opcodes.h:184
 msgid "modify (notmuch/imap) tags"
-msgstr ""
+msgstr "zmodyfikuj tagi (notmuch/imap)"
 
 #: opcodes.h:185
 msgid "modify (notmuch/imap) tags and then hide message"
@@ -5907,7 +5907,7 @@ msgstr "przejdź do poprzedniego nieprzeczytanego listu"
 
 #: opcodes.h:200
 msgid "delete from NeoMutt, don't touch on disk"
-msgstr ""
+msgstr "usuń z NeoMutta, nie z dysku"
 
 #: opcodes.h:201
 msgid "mark the current subthread as read"
@@ -6011,11 +6011,11 @@ msgstr "wydrukuj obecną pozycję"
 
 #: opcodes.h:226
 msgid "delete the current entry, bypassing the trash folder"
-msgstr "usuń bieżący list z pominięciem folderu trash"
+msgstr "usuń bieżący list z pominięciem śmietnika"
 
 #: opcodes.h:227
 msgid "delete the current thread, bypassing the trash folder"
-msgstr ""
+msgstr "usuń bieżący wątek pomijając śmietnik"
 
 #: opcodes.h:228
 msgid "query external program for addresses"
@@ -6235,11 +6235,11 @@ msgstr "przeczytaj cały wątek tego listu"
 
 #: opcodes.h:293
 msgid "generate virtual folder from query"
-msgstr ""
+msgstr "wygeneruj wirtualny folder z pytania"
 
 #: opcodes.h:294
 msgid "generate a read-only virtual folder from query"
-msgstr ""
+msgstr "wygeneruj wirtualny folder tylko do odczytu z pytania"
 
 #: opcodes.h:295
 msgid "shifts virtual folder time window backwards"
@@ -6468,7 +6468,7 @@ msgstr "Brak bieżącej wiadomości"
 
 #: pattern/compile.c:938
 msgid "No Context"
-msgstr ""
+msgstr "Brak Kontekstu"
 
 #: pattern/compile.c:1113 pattern/compile.c:1350
 msgid "empty pattern"
@@ -6588,7 +6588,7 @@ msgstr "Nie można otworzyć /dev/null"
 
 #: pattern/exec.c:873
 msgid "error: server custom search only supported with IMAP"
-msgstr ""
+msgstr "błąd: szukanie na serwerze dostępne tylko przez IMAP"
 
 #. L10N: Pattern Completion Menu description for ~A
 #: pattern/flags.c:44
@@ -7182,7 +7182,7 @@ msgstr "Uwaga: Fcc do skrzynki IMAP nieobsługiwane w trybie masowym"
 #: send/send.c:1760
 #, c-format
 msgid "Skipping Fcc to %s"
-msgstr ""
+msgstr "Pomijanie Fcc do %s"
 
 #: send/send.c:1800 send/send.c:1810 send/send.c:1836
 msgid "Save attachments in Fcc?"
@@ -7219,7 +7219,7 @@ msgstr "Błąd podczas szyfrowania wiadomości. Zweryfikuj ustawienia szyfrowani
 
 #: send/send.c:2087
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
-msgstr ""
+msgstr "Wiadomość zawiera tekst pasujący do \"$abort_noattach_regex\". Nie wysyłam."
 
 #: send/send.c:2093
 msgid "No attachments, cancel sending?"
@@ -7235,7 +7235,7 @@ msgstr "Odmawiam wysłania pustej wiadomości"
 
 #: send/send.c:2403
 msgid "Try: echo | neomutt -s 'subject' user@example.com"
-msgstr ""
+msgstr "Spróbuj: echo | neomutt -s 'temat' user@example.com"
 
 #: send/send.c:2488
 msgid "Edit forwarded message?"
@@ -7251,7 +7251,7 @@ msgstr "List nie został zmieniony. Zaniechano wysłania"
 
 #: send/send.c:2675
 msgid "No crypto backend configured.  Disabling message security setting."
-msgstr ""
+msgstr "Brak ustawionego zaplecza kryptograficznego.  Wyłączanie ustawień zabezpieczenia wiadomości."
 
 #: send/send.c:2717
 msgid "Article not posted"
@@ -7299,11 +7299,11 @@ msgstr "Nie wskazano żadnych adresatów"
 
 #: send/send.c:3011
 msgid "No List-Subscribe header found"
-msgstr "Nie znalezioni nagłówka List-Subscribe"
+msgstr "Nie znaleziono nagłówka List-Subscribe"
 
 #: send/send.c:3035
 msgid "No List-Unsubscribe header found"
-msgstr "Nie znalezioni nagłówka List-Unsubscribe"
+msgstr "Nie znaleziono nagłówka List-Unsubscribe"
 
 #: send/sendlib.c:491
 #, c-format
@@ -7362,7 +7362,7 @@ msgstr "Serwer SMTP nie wspiera uwierzytelniania"
 
 #: send/smtp.c:935
 msgid "No from address given"
-msgstr ""
+msgstr "Nie podano adresu źródłowego"
 
 #: send/smtp.c:1002
 msgid "SMTP session failed: read error"
