@@ -1250,7 +1250,7 @@ static int op_compose_new_mime(struct ComposeSharedData *shared, int op)
   char *p = strchr(type, '/');
   if (!p)
   {
-    mutt_error(_("Content-Type is of the form base/shared->sub"));
+    mutt_error(_("Content-Type is of the form base/sub"));
     mutt_buffer_pool_release(&fname);
     return IR_ERROR;
   }
