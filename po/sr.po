@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: neomutt 20210205\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2021-09-29 11:59+0100\n"
-"PO-Revision-Date: 2021-09-29 13:19+0200\n"
+"PO-Revision-Date: 2021-09-29 13:33+0200\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -7253,19 +7253,16 @@ msgid "Mail sent"
 msgstr "Мејл је послат"
 
 #: send/send.c:2971
-#, fuzzy
 msgid "No recipient specified"
 msgstr "Није задат ниједан прималац"
 
 #: send/send.c:3011
-#, fuzzy
 msgid "No List-Subscribe header found"
-msgstr "Није пронађен ниједан тајни кључ"
+msgstr "Није пронађено заглавље List-Subscribe"
 
 #: send/send.c:3035
-#, fuzzy
 msgid "No List-Unsubscribe header found"
-msgstr "Шаблон отпретплате: "
+msgstr "Није пронађено заглавље List-Unubscribe"
 
 #: send/sendlib.c:491
 #, c-format
