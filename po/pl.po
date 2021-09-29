@@ -82,9 +82,9 @@ msgid "alias: no address"
 msgstr "alias: brak adresu"
 
 #: alias/commands.c:77
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: Bad address '%s' in alias '%s'"
-msgstr "Ostrzeżenie: błędny IDN '%s' w aliasie '%s'"
+msgstr "Ostrzeżenie: błędny adres '%s' w aliasie '%s'"
 
 #: alias/commands.c:86
 #, c-format
@@ -186,9 +186,8 @@ msgid "Query: "
 msgstr "Pytanie:"
 
 #: alias/dlgquery.c:619
-#, fuzzy
 msgid "Query"
-msgstr "Pytanie:"
+msgstr "Pytanie"
 
 #: alias/dlgquery.c:701 alias/dlgquery.c:741
 msgid "Query command not defined"
@@ -658,9 +657,9 @@ msgid "Autocrypt database version is too new"
 msgstr "Zbyt nowa wersja bazy danych autocrypt"
 
 #: bcache/bcache.c:76
-#, fuzzy, c-format
+#, c-format
 msgid "Cache disabled, $message_cachedir isn't a directory: %s"
-msgstr "Pamięć podręczna (cache) wiadomości nie jest katalogiem: %s"
+msgstr "Pamięć podręczna (cache) wiadomości $message_cachedir nie jest katalogiem: %s"
 
 #: bcache/bcache.c:220
 #, c-format
@@ -1183,27 +1182,23 @@ msgstr "Kopiowanie do %s..."
 
 #. L10N: Message when an index tagged save operation fails for some reason
 #: commands.c:1053
-#, fuzzy
 msgid "Error saving tagged messages"
-msgstr "Zapisywanie zaznaczonych wiadomości..."
+msgstr "Błąd podczas zapisywania zaznaczonych wiadomości..."
 
 #. L10N: Message when an index/pager save operation fails for some reason
 #: commands.c:1058
-#, fuzzy
 msgid "Error saving message"
 msgstr "Błąd podczas wysyłania listu"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
 #: commands.c:1065
-#, fuzzy
 msgid "Error copying tagged messages"
-msgstr "Kopiowanie zaznaczonych wiadomości..."
+msgstr "Błąd podczas kopiowania zaznaczonych wiadomości..."
 
 #. L10N: Message when an index/pager copy operation fails for some reason
 #: commands.c:1070
-#, fuzzy
 msgid "Error copying message"
-msgstr "Błąd wysyłania kopii"
+msgstr "Błąd podczas kopiowania wiadomości"
 
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
 #: commands.c:1117
@@ -1703,14 +1698,14 @@ msgid "Save (postpone) draft message?"
 msgstr "Zapisać (odłożyć) szkic wiadomośći?"
 
 #: config/bool.c:75
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid boolean value: %s"
-msgstr "Błędna data względna: %s"
+msgstr "Błędna wartość logiczna: %s"
 
 #: config/bool.c:130
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid boolean value: %ld"
-msgstr "Błędna data względna: %s"
+msgstr "Błędna wartość logiczna: %ld"
 
 #: config/charset.c:50
 msgid "'charset' must contain exactly one character set name"
@@ -1723,14 +1718,14 @@ msgid "Invalid value for option %s: %s"
 msgstr "Niewłaściwa wartość opcji %s: \"%s\""
 
 #: config/enum.c:58
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid enum value: %s"
-msgstr "%s: błędna liczba: %s"
+msgstr "Niewłaściwa wartość enumeracji: %s"
 
 #: config/enum.c:132
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid enum value: %ld"
-msgstr "Niewłaściwa wartość opcji %s: %ld"
+msgstr "Niewłaściwa wartość enumeracji: %ld"
 
 #: config/long.c:48 config/number.c:49 config/path.c:94 config/path.c:167
 #: config/sort.c:55 config/string.c:66 config/string.c:140
@@ -1739,9 +1734,9 @@ msgid "Option %s may not be empty"
 msgstr "Opcja %s nie może być pusta"
 
 #: config/long.c:55 config/long.c:151 config/long.c:187
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid long: %s"
-msgstr "Niewłaściwy miesiąc: %s"
+msgstr "Niewłaściwa liczba: %s"
 
 #: config/long.c:61 config/long.c:113 config/long.c:158 config/long.c:194
 #: config/number.c:68 config/number.c:127 config/number.c:178
@@ -1766,14 +1761,14 @@ msgid "Invalid number: %ld"
 msgstr "Błędna liczba: %ld"
 
 #: config/quad.c:74
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid quad value: %s"
-msgstr "Błędna data względna: %s"
+msgstr "Błędna wartość pytania: %s"
 
 #: config/quad.c:132
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid quad value: %ld"
-msgstr "Niewłaściwa wartość opcji %s: %ld"
+msgstr "Niewłaściwa wartość pytania: %ld"
 
 #: config/set.c:104 init.c:1078
 #, c-format
@@ -1781,9 +1776,9 @@ msgid "No such variable: %s"
 msgstr "Nieznana zmienna: %s"
 
 #: config/set.c:136 config/set.c:826
-#, fuzzy, c-format
+#, c-format
 msgid "Variable '%s' has an invalid type %d"
-msgstr "Błąd: wartość '%s' jest błędna dla -d"
+msgstr "Zmienna '%s' jest błędnego typu %d"
 
 #: config/set.c:401 config/set.c:467 config/set.c:528 config/set.c:604
 #: config/set.c:670 config/set.c:746 config/set.c:926 config/set.c:1009
@@ -1798,14 +1793,14 @@ msgid "Type '%s' doesn't support operation '%s'"
 msgstr "Typ '%s' nie ma operacji '%s'"
 
 #: config/sort.c:85
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid sort name: %s"
-msgstr "Błędna data względna: %s"
+msgstr "Błędna nazwa sortowania: %s"
 
 #: config/sort.c:161
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid sort type: %ld"
-msgstr "Błędna data względna: %s"
+msgstr "Błędny typ sortowania: %ld"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:65
@@ -2801,9 +2796,8 @@ msgstr "Pobieranie aktualnych flag..."
 #. sanity check.  If that fails, Mutt reopens the mailbox using a normal
 #. download.
 #: imap/message.c:1031
-#, fuzzy
 msgid "QRESYNC failed.  Reopening mailbox."
-msgstr "Nie można ponownie otworzyć skrzynki pocztowej"
+msgstr "QRESYNC nie powiódł się.  Otwieranie normalnie."
 
 #: imap/message.c:1101
 msgid "Unable to fetch headers from this IMAP server version"
@@ -3445,9 +3439,8 @@ msgstr ""
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
 #: main.c:291
-#, fuzzy
 msgid "options:"
-msgstr "Domyślne opcje:"
+msgstr "opcje:"
 
 #: main.c:292
 msgid ""
@@ -3557,9 +3550,8 @@ msgid ""
 msgstr ""
 
 #: main.c:322
-#, fuzzy
 msgid "  -R            Open mailbox in read-only mode"
-msgstr "Otwórz skrzynkę tylko do odczytu"
+msgstr "  -R            Otwórz skrzynkę tylko do odczytu"
 
 #: main.c:323
 msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
@@ -5294,9 +5286,8 @@ msgid "force viewing of attachment using mailcap"
 msgstr "wymusza obejrzenie załączników poprzez plik 'mailcap'"
 
 #: opcodes.h:45
-#, fuzzy
 msgid "view attachment in pager using copiousoutput mailcap"
-msgstr "wymusza obejrzenie załączników poprzez plik 'mailcap'"
+msgstr "otwórz załącznik przez wariant 'copiousoutput' (obfite wyjście) w pliku 'mailcap'"
 
 #: opcodes.h:46
 msgid "view attachment as text"
@@ -5771,14 +5762,12 @@ msgid "reply to specified mailing list"
 msgstr "opowiedz na wskazaną listę pocztową"
 
 #: opcodes.h:164
-#, fuzzy
 msgid "subscribe to a mailing list"
-msgstr "opowiedz na wskazaną listę pocztową"
+msgstr "zapisz się na listę pocztową"
 
 #: opcodes.h:165
-#, fuzzy
 msgid "unsubscribe from a mailing list"
-msgstr "Odsubskrybowano %s"
+msgstr "wypisz się z listy pocztowej"
 
 #: opcodes.h:166
 msgid "load list of all newsgroups from NNTP server"
@@ -5989,9 +5978,8 @@ msgid "skip beyond quoted text"
 msgstr "przeskocz poza zaznaczony fragment tekstu"
 
 #: opcodes.h:218
-#, fuzzy
 msgid "jump to first line after headers"
-msgstr "przejdź do następnego wątku"
+msgstr "przejdź do pierwszej linii po nagłówkach"
 
 #: opcodes.h:219
 msgid "jump to the top of the message"
@@ -7306,19 +7294,16 @@ msgid "Mail sent"
 msgstr "Poczta została wysłana"
 
 #: send/send.c:2971
-#, fuzzy
 msgid "No recipient specified"
-msgstr "Nie wskazano adresatów listu"
+msgstr "Nie wskazano żadnych adresatów"
 
 #: send/send.c:3011
-#, fuzzy
 msgid "No List-Subscribe header found"
-msgstr "Nie znaleziono tajnych kluczy"
+msgstr "Nie znalezioni nagłówka List-Subscribe"
 
 #: send/send.c:3035
-#, fuzzy
 msgid "No List-Unsubscribe header found"
-msgstr "Odsubskrybuj wzorzec: "
+msgstr "Nie znalezioni nagłówka List-Unsubscribe"
 
 #: send/sendlib.c:491
 #, c-format
@@ -7470,9 +7455,8 @@ msgid "Compile options:"
 msgstr "Parametry kompilacji:"
 
 #: version.c:496
-#, fuzzy
 msgid "Debug options:"
-msgstr "Domyślne opcje:"
+msgstr "Parametry debugowania:"
 
 #, c-format
 #~ msgid "%s authentication failed, trying next method"
