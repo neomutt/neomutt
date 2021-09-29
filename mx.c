@@ -1849,5 +1849,7 @@ int mx_toggle_write(struct Mailbox *m)
     mutt_message(_("Changes to folder will not be written"));
   }
 
+  struct EventMailbox ev_m = { m };
+  notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
   return 0;
 }
