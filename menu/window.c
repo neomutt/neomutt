@@ -59,7 +59,7 @@
  * Once constructed, it is controlled by the following events:
  *
  * | Event Type            | Handler                 |
- * | :-------------------- | :---------------------- | 
+ * | :-------------------- | :---------------------- |
  * | #NT_COLOR             | menu_color_observer()   |
  * | #NT_CONFIG            | menu_config_observer()  |
  * | #NT_WINDOW            | menu_window_observer()  |

@@ -32,7 +32,7 @@
  * The **Root Window** is (grand-)parent of all those windows.
  *
  * The Root Window is container window and not visible.
- * 
+ *
  * ### Definitions
  *
  * Every window in the hierarchy is struct MuttWindow, however in these docs

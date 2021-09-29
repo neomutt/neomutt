@@ -56,7 +56,7 @@
  * Once constructed, it is controlled by the following events:
  *
  * | Event Type  | Handler                     |
- * | :---------- | :-------------------------- | 
+ * | :---------- | :-------------------------- |
  * | #NT_CONFIG  | postponed_config_observer() |
  * | #NT_WINDOW  | postponed_window_observer() |
  *

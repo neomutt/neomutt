@@ -51,7 +51,7 @@
  * Once constructed, it is controlled by the following events:
  *
  * | Event Type            | Handler                 |
- * | :-------------------- | :---------------------- | 
+ * | :-------------------- | :---------------------- |
  * | #NT_COLOR             | pbar_color_observer()   |
  * | #NT_CONFIG            | pbar_config_observer()  |
  * | #NT_PAGER             | pbar_pager_observer()   |

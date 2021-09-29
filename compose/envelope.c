@@ -51,7 +51,7 @@
  * Once constructed, it is controlled by the following events:
  *
  * | Event Type            | Handler                |
- * | :-------------------- | :--------------------- | 
+ * | :-------------------- | :--------------------- |
  * | #NT_COLOR             | env_color_observer()   |
  * | #NT_COMPOSE           | env_compose_observer() |
  * | #NT_CONFIG            | env_config_observer()  |

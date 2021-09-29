@@ -57,7 +57,7 @@
  * Once constructed, it is controlled by the following events:
  *
  * | Event Type            | Handler                    |
- * | :-------------------- | :------------------------- | 
+ * | :-------------------- | :------------------------- |
  * | #NT_BINDING           | helpbar_binding_observer() |
  * | #NT_COLOR             | helpbar_color_observer()   |
  * | #NT_CONFIG            | helpbar_config_observer()  |

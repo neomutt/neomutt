@@ -50,7 +50,7 @@
  * Once constructed, it is controlled by the following events:
  *
  * | Event Type | Handler                 |
- * | :--------- | :---------------------- | 
+ * | :--------- | :---------------------- |
  * | #NT_COLOR  | pager_color_observer()  |
  * | #NT_CONFIG | pager_config_observer() |
  * | #NT_INDEX  | pager_index_observer()  |

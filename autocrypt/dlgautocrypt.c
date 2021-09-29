@@ -54,7 +54,7 @@
  * Once constructed, it is controlled by the following events:
  *
  * | Event Type  | Handler                     |
- * | :---------- | :-------------------------- | 
+ * | :---------- | :-------------------------- |
  * | #NT_CONFIG  | autocrypt_config_observer() |
  * | #NT_WINDOW  | autocrypt_window_observer() |
  *

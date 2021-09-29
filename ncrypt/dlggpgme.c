@@ -54,7 +54,7 @@
  * Once constructed, it is controlled by the following events:
  *
  * | Event Type  | Handler                     |
- * | :---------- | :-------------------------- | 
+ * | :---------- | :-------------------------- |
  * | #NT_CONFIG  | gpgme_key_config_observer() |
  * | #NT_WINDOW  | gpgme_key_window_observer() |
  *

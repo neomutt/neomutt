@@ -73,7 +73,7 @@
  * Once constructed, it is controlled by the following events:
  *
  * | Event Type            | Handler                   |
- * | :-------------------- | :------------------------ | 
+ * | :-------------------- | :------------------------ |
  * | #NT_WINDOW            | msgwin_window_observer()  |
  * | MuttWindow::recalc()  | msgwin_recalc()           |
  * | MuttWindow::repaint() | msgwin_repaint()          |

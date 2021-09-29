@@ -51,7 +51,7 @@
  * Once constructed, it is controlled by the following events:
  *
  * | Event Type            | Handler                 |
- * | :-------------------- | :---------------------- | 
+ * | :-------------------- | :---------------------- |
  * | #NT_COLOR             | cbar_color_observer()   |
  * | #NT_COMPOSE           | cbar_compose_observer() |
  * | #NT_CONFIG            | cbar_config_observer()  |

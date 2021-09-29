@@ -16004,7 +16004,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 <entry>
                   Additional notmuch search terms to always include in the
                   window even if they're outside the date range. This turns the
-                  window from <literal>date:...</literal> to 
+                  window from <literal>date:...</literal> to
                   <literal>date:... or (additional search terms.)</literal>
 
                   For example, to always include flagged, unread emails, set to
@@ -17879,7 +17879,13 @@ bind index D purge-message
           <literal>%T</literal> expando which shows the current
           threading method.
         </para>
+      </sect2>
+
+      <sect2 id="use-threads-value">
+        <title>Use Threads</title>
+
         <table>
+          <title>Use Threads</title>
           <tgroup cols="3">
             <thead>
               <row>

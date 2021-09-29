@@ -55,7 +55,7 @@
  * Once constructed, it is controlled by the following events:
  *
  * | Event Type  | Handler                   |
- * | :---------- | :------------------------ | 
+ * | :---------- | :------------------------ |
  * | #NT_CONFIG  | pattern_config_observer() |
  * | #NT_WINDOW  | pattern_window_observer() |
  *

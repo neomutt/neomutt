@@ -56,9 +56,9 @@
  * Once constructed, it is controlled by the following events:
  *
  * | Event Type            | Handler                     |
- * | :-------------------- | :-------------------------- | 
- * | #NT_CONFIG	           | browser_config_observer() |
- * | #NT_WINDOW	           | browser_window_observer() |
+ * | :-------------------- | :-------------------------- |
+ * | #NT_CONFIG            | browser_config_observer() |
+ * | #NT_WINDOW            | browser_window_observer() |
  *
  * The Browser Dialog doesn't have any specific colours, so it doesn't need to
  * support #NT_COLOR.

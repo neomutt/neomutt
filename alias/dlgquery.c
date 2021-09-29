@@ -57,9 +57,9 @@
  * Once constructed, it is controlled by the following events:
  *
  * | Event Type            | Handler                    |
- * | :-------------------- | :------------------------- | 
- * | #NT_CONFIG	           | alias_config_observer()    |
- * | #NT_WINDOW	           | alias_window_observer()    |
+ * | :-------------------- | :------------------------- |
+ * | #NT_CONFIG            | alias_config_observer()    |
+ * | #NT_WINDOW            | alias_window_observer()    |
  * | MuttWindow::recalc()  | alias_recalc()             |
  *
  * The Address Query Dialog doesn't have any specific colours, so it doesn't

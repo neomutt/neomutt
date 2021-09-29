@@ -51,7 +51,7 @@
  * Once constructed, it is controlled by the following events:
  *
  * | Event Type            | Handler                   |
- * | :-------------------- | :------------------------ | 
+ * | :-------------------- | :------------------------ |
  * | #NT_COMPOSE           | attach_compose_observer() |
  * | #NT_CONFIG            | attach_config_observer()  |
  * | #NT_WINDOW            | attach_window_observer()  |

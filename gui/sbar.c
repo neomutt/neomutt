@@ -55,7 +55,7 @@
  * Once constructed, it is controlled by the following events:
  *
  * | Event Type            | Handler                 |
- * | :-------------------- | :---------------------- | 
+ * | :-------------------- | :---------------------- |
  * | #NT_COLOR             | sbar_color_observer()   |
  * | #NT_WINDOW            | sbar_window_observer()  |
  * | MuttWindow::recalc()  | sbar_recalc()           |

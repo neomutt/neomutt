@@ -50,7 +50,7 @@
  * Once constructed, it is controlled by the following events:
  *
  * | Event Type | Handler                 |
- * | :--------- | :---------------------- | 
+ * | :--------- | :---------------------- |
  * | #NT_ALTERN | index_altern_observer() |
  * | #NT_ATTACH | index_attach_observer() |
  * | #NT_COLOR  | index_color_observer()  |

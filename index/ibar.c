@@ -51,7 +51,7 @@
  * Once constructed, it is controlled by the following events:
  *
  * | Event Type            | Handler                 |
- * | :-------------------- | :---------------------- | 
+ * | :-------------------- | :---------------------- |
  * | #NT_COLOR             | ibar_color_observer()   |
  * | #NT_CONFIG            | ibar_config_observer()  |
  * | #NT_INDEX             | ibar_index_observer()   |
