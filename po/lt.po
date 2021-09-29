@@ -5784,14 +5784,12 @@ msgid "reply to specified mailing list"
 msgstr "atsakyti nurodytai konferencijai"
 
 #: opcodes.h:164
-#, fuzzy
 msgid "subscribe to a mailing list"
-msgstr "atsakyti nurodytai konferencijai"
+msgstr "prenumeruoti konferenciją"
 
 #: opcodes.h:165
-#, fuzzy
 msgid "unsubscribe from a mailing list"
-msgstr "Atsisakiau %s"
+msgstr "atsisakyti konferencijos"
 
 #: opcodes.h:166
 msgid "load list of all newsgroups from NNTP server"
@@ -7318,19 +7316,16 @@ msgid "Mail sent"
 msgstr "Laiškas išsiųstas"
 
 #: send/send.c:2971
-#, fuzzy
 msgid "No recipient specified"
-msgstr "Nenurodyti jokie gavėjai"
+msgstr "Nenurodytas gavėjas"
 
 #: send/send.c:3011
-#, fuzzy
 msgid "No List-Subscribe header found"
-msgstr "Slaptų raktų nerasta"
+msgstr "Nėra List-Subscribe antraštės"
 
 #: send/send.c:3035
-#, fuzzy
 msgid "No List-Unsubscribe header found"
-msgstr "Atsisakymo šablonas: "
+msgstr "Nėra List-Unsubscribe antraštės"
 
 #: send/sendlib.c:491
 #, c-format
@@ -7486,9 +7481,8 @@ msgid "Compile options:"
 msgstr "Kompiliavimo parinktys:"
 
 #: version.c:496
-#, fuzzy
 msgid "Debug options:"
-msgstr "Įprastos parinktys:"
+msgstr "Derinimo parinktys:"
 
 #, c-format
 #~ msgid "%s authentication failed, trying next method"
