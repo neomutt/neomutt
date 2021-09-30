@@ -43,6 +43,7 @@
 #include <ioctl.h>
 #endif
 #endif
+#include <termios.h>
 
 /**
  * mutt_get_winsize - Use an ioctl to get the window size
