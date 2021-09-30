@@ -336,6 +336,7 @@ cc-with {-includes "signal.h unistd.h"} {
 if {1} {
   cc-check-includes \
     ioctl.h \
+    termios.h \
     sys/ioctl.h \
     syscall.h \
     sys/random.h \
@@ -353,6 +354,7 @@ if {1} {
     mkdtemp \
     qsort_s \
     strsep \
+    tcgetwinsize \
     utimesnsat \
     vasprintf \
     wcscasecmp

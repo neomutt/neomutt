@@ -36,6 +36,10 @@
 #ifdef USE_SLANG_CURSES
 #include <stdbool.h>
 #endif
+#ifdef HAVE_TERMIOS_H
+#include <termios.h>
+#endif
+#ifndef HAVE_TCGETWINSIZE
 #ifdef HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
 #else
@@ -43,18 +47,24 @@
 #include <ioctl.h>
 #endif
 #endif
+#endif /* HAVE_TCGETWINSIZE */
 
 /**
- * mutt_get_winsize - Use an ioctl to get the window size
+ * mutt_get_winsize - Get the window size
  * @retval obj Window size
  */
 static struct winsize mutt_get_winsize(void)
 {
   struct winsize w = { 0 };
+
   int fd = open("/dev/tty", O_RDONLY);
   if (fd != -1)
   {
+#ifdef HAVE_TCGETWINSIZE
+    tcgetwinsize(fd, &w);
+#else
     ioctl(fd, TIOCGWINSZ, &w);
+#endif
     close(fd);
   }
   return w;
