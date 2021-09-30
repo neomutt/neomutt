@@ -128,11 +128,11 @@ msgstr "Récup"
 
 #: alias/dlgalias.c:102 alias/dlgquery.c:107
 msgid "Sort"
-msgstr ""
+msgstr "Trier"
 
 #: alias/dlgalias.c:103 alias/dlgquery.c:108
 msgid "Rev-Sort"
-msgstr ""
+msgstr "Trier (ordre inverse)"
 
 #: alias/dlgalias.c:104 history/dlghistory.c:76 ncrypt/dlggpgme.c:106
 #: ncrypt/dlgpgp.c:101 ncrypt/dlgsmime.c:77 pattern/dlgpattern.c:102
@@ -160,16 +160,16 @@ msgstr "Vous n'avez pas défini d'alias "
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/dlgalias.c:364 alias/dlgquery.c:566
 msgid "Rev-Sort (a)lias, a(d)dress or (u)nsorted?"
-msgstr ""
+msgstr "Trier (ordre inverse) par (a)lias, a(d)resse ou ne (p)as trier ?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: alias/dlgalias.c:366 alias/dlgquery.c:568
 msgid "Sort (a)lias, a(d)dress or (u)nsorted?"
-msgstr ""
+msgstr "Trier par (a)lias, a(d)resse ou ne (p)as trier ?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/dlgalias.c:368 alias/dlgquery.c:570
-msgid "adu"
+msgid "adp"
 msgstr ""
 
 #: alias/dlgalias.c:412 alias/dlgquery.c:615 index/functions.c:948
@@ -519,7 +519,7 @@ msgstr "Le message père n'est pas disponible"
 #: autocrypt/autocrypt.c:616
 #, c-format
 msgid "Autocrypt is not enabled for %s"
-msgstr ""
+msgstr "Autocrypt n'est pas activé pour %s"
 
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
@@ -578,7 +578,7 @@ msgstr "Retirer"
 #. q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help
 #: autocrypt/dlgautocrypt.c:111
 msgid "Tgl Active"
-msgstr ""
+msgstr "Tgl Actif"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. toggle "prefer-encrypt" on an account
@@ -705,7 +705,7 @@ msgstr "Changement de répertoire"
 
 #: browser.c:115
 msgid "Goto"
-msgstr ""
+msgstr "Aller à"
 
 #: browser.c:116 browser.c:131
 msgid "Mask"
@@ -729,7 +729,7 @@ msgstr "Désabonné de %s"
 
 #: browser.c:130 index/dlg_index.c:128
 msgid "Catchup"
-msgstr ""
+msgstr "Rattraper"
 
 # , c-format
 #: browser.c:787 browser.c:1654 browser.c:1889 notmuch/db.c:101
@@ -992,7 +992,7 @@ msgstr "en-tête invalide"
 #: command_parse.c:708
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
-msgstr ""
+msgstr "Impossible d'utiliser 'inv', 'no', '&' ou '?' dans la commande '%s'"
 
 # , c-format
 #: command_parse.c:742 command_parse.c:886 command_parse.c:996
@@ -1002,38 +1002,38 @@ msgstr "%s : variable inconnue"
 
 #: command_parse.c:758 command_parse.c:1084
 msgid "Can't use a prefix when querying a variable"
-msgstr ""
+msgstr "Impossible d'utiliser un préfixe en appelant une variable"
 
 #: command_parse.c:764 command_parse.c:1064 command_parse.c:1078
 #, c-format
 msgid "Can't query a variable with the '%s' command"
-msgstr ""
+msgstr "Impossible d'appeler une variable avec la commande '%s'"
 
 #: command_parse.c:778
 msgid "Can't use prefix when incrementing or decrementing a variable"
-msgstr ""
+msgstr "Impossible d'utiliser un préfixe en incrémentant ou décrémentant une variable"
 
 #: command_parse.c:784 command_parse.c:815
 #, c-format
 msgid "Can't set a variable with the '%s' command"
-msgstr ""
+msgstr "Impossible de définir une variable avec la commande '%s'"
 
 #: command_parse.c:795
 msgid "Can't decrement a my_ variable"
-msgstr ""
+msgstr "Impossible de décrémenter une my_variable"
 
 #: command_parse.c:809
 msgid "Can't use prefix when setting a variable"
-msgstr ""
+msgstr "Impossible d'utiliser un préfixe en définissant une variable"
 
 #: command_parse.c:828
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
-msgstr ""
+msgstr "Les préfixes 'no' et 'inv' ne peuvent être utilisés qu'avec des variables booléennes/quadratiques"
 
 #: command_parse.c:833
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
-msgstr ""
+msgstr "La commande '%s' ne peut être utlisée qu'avec des variables booléennes/quadratiques"
 
 # , c-format
 #: command_parse.c:1116
@@ -1456,7 +1456,7 @@ msgstr "éditer le champ Reply-To"
 
 #: compose/compose.c:135
 msgid "Headers: "
-msgstr ""
+msgstr "Headers"
 
 #: compose/compose.c:141 compose/compose.c:160
 msgid "Send"
@@ -1502,7 +1502,7 @@ msgstr "-- Attachements"
 #. This is displayed when Autocrypt is turned off.
 #: compose/envelope.c:93 compose/envelope.c:393
 msgid "Off"
-msgstr ""
+msgstr "Off"
 
 #. L10N: Autocrypt recommendation flag: no.
 #. This is displayed when Autocrypt cannot encrypt to the recipients.
@@ -1584,7 +1584,7 @@ msgstr "Recommendation : "
 
 #: compose/envelope.c:423
 msgid "<no chain defined>"
-msgstr ""
+msgstr "<aucune chaine définie"
 
 #: compose/envelope.c:489
 #, c-format
@@ -1824,7 +1824,7 @@ msgstr "Valeur booléenne invalide : %ld"
 
 #: config/charset.c:50
 msgid "'charset' must contain exactly one character set name"
-msgstr ""
+msgstr "charset doit contenir exactement le nom d'un jeu de caractères"
 
 # , c-format
 #: config/charset.c:66 hcache/config.c:53 hcache/config.c:72 hcache/config.c:94
@@ -1912,7 +1912,7 @@ msgstr "%s : variable inconnue"
 #: config/set.c:895 config/set.c:978
 #, c-format
 msgid "Type '%s' doesn't support operation '%s'"
-msgstr ""
+msgstr "Le type '%s' ne supporte pas l'opération '%s'"
 
 # , c-format
 #: config/sort.c:85
@@ -7806,6 +7806,11 @@ msgstr "Options de compilation :"
 #, fuzzy
 msgid "Debug options:"
 msgstr "Options par défaut :"
+
+#. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
+#: alias/dlgalias.c:368 alias/dlgquery.c:570
+msgid "adu"
+msgstr ""
 
 #, c-format
 #~ msgid "%s authentication failed, trying next method"
