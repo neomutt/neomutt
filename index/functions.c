@@ -1881,6 +1881,8 @@ static int op_quit(struct IndexSharedData *shared, struct IndexPrivateData *priv
     if (!shared->ctx || ((check = mx_mbox_close(shared->mailbox)) == MX_STATUS_OK))
     {
       ctx_free(&shared->ctx);
+      if (shared->mailbox->flags == MB_HIDDEN)
+        mailbox_free(&shared->mailbox);
       return IR_DONE;
     }
 
@@ -2817,6 +2819,7 @@ static int op_main_vfolder_from_query(struct IndexSharedData *shared,
                             shared, (op == OP_MAIN_VFOLDER_FROM_QUERY_READONLY));
   if (m_query)
   {
+    FREE(&m_query->name);
     m_query->name = query_unencoded;
     query_unencoded = NULL;
   }

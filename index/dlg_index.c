@@ -582,6 +582,8 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
   if (shared->mailbox && (mutt_buffer_is_empty(&shared->mailbox->pathbuf)))
   {
     ctx_free(&shared->ctx);
+    if (shared->mailbox->flags == MB_HIDDEN)
+      mailbox_free(&shared->mailbox);
   }
 
   if (shared->mailbox)
@@ -602,6 +604,8 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
     if (check == MX_STATUS_OK)
     {
       ctx_free(&shared->ctx);
+      if ((shared->mailbox != m) && (shared->mailbox->flags == MB_HIDDEN))
+        mailbox_free(&shared->mailbox);
     }
     else
     {
@@ -636,10 +640,13 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
      * of the function. */
     notify_observer_remove(m->notify, index_mailbox_observer, &m);
   }
+  else
+  {
+    // Recreate the Mailbox as the folder-hook might have invoked `mailboxes`
+    // and/or `unmailboxes`.
+    m = mx_path_resolve(dup_path);
+  }
 
-  // Recreate the Mailbox as the folder-hook might have invoked `mailboxes`
-  // and/or `unmailboxes`.
-  m = mx_path_resolve(dup_path);
   FREE(&dup_path);
   FREE(&dup_name);
 
