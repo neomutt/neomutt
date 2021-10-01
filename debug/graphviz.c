@@ -67,6 +67,7 @@
 // #define GV_HIDE_MBOX
 // #define GV_HIDE_NEOMUTT
 // #define GV_HIDE_CONFIG
+// #define GV_HIDE_ADATA
 // #define GV_HIDE_MDATA
 
 static void dot_email(FILE *fp, struct Email *e, struct ListHead *links);
@@ -625,6 +626,7 @@ static void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
   dot_ptr(fp, "mdata", m->mdata, NULL);
 #endif
   dot_ptr(fp, "account", m->account, "#80ffff");
+  dot_type_number(fp, "opened", m->opened);
 
   dot_type_number(fp, "msg_count", m->msg_count);
   // dot_type_number(fp, "msg_unread", m->msg_unread);
@@ -868,6 +870,7 @@ static void dot_account(FILE *fp, struct Account *a, struct ListHead *links)
   // dot_ptr(fp, "adata", a->adata, "#60c0c0");
   dot_object_footer(fp);
 
+#ifndef GV_HIDE_ADATA
   if (a->adata)
   {
     if (a->type == MUTT_IMAP)
@@ -883,6 +886,7 @@ static void dot_account(FILE *fp, struct Account *a, struct ListHead *links)
 
     dot_add_link(links, a, a->adata, "Account->adata", false, NULL);
   }
+#endif
 
 #ifndef GV_HIDE_CONFIG
   if (a->name)
