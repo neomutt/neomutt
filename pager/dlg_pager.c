@@ -269,7 +269,7 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
     pager_queue_redraw(priv, MENU_REDRAW_BODY | MENU_REDRAW_INDEX);
   }
 
-  if (priv->redraw & MENU_REDRAW_FLOW)
+  if ((priv->redraw & MENU_REDRAW_FLOW) || (priv->cur_line >= priv->lines_used))
   {
     if (!(priv->pview->flags & MUTT_PAGER_RETWINCH))
     {
