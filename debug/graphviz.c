@@ -165,6 +165,7 @@ static void dot_type_bool(FILE *fp, const char *name, bool val)
   fprintf(fp, "\t\t</tr>\n");
 }
 
+#ifndef GV_HIDE_ADATA
 static void dot_type_char(FILE *fp, const char *name, char ch)
 {
   fprintf(fp, "\t\t<tr>\n");
@@ -173,6 +174,7 @@ static void dot_type_char(FILE *fp, const char *name, char ch)
   fprintf(fp, "\t\t\t<td border=\"0\" align=\"left\">%c</td>\n", ch);
   fprintf(fp, "\t\t</tr>\n");
 }
+#endif
 
 static void dot_type_date(char *buf, size_t buflen, time_t timestamp)
 {
@@ -243,10 +245,12 @@ static void dot_type_string(FILE *fp, const char *name, const char *str, bool fo
   fprintf(fp, "\t\t</tr>\n");
 }
 
+#ifndef GV_HIDE_MDATA
 static void dot_type_umask(char *buf, size_t buflen, int umask)
 {
   snprintf(buf, buflen, "0%03o", umask);
 }
+#endif
 
 static void dot_ptr_name(char *buf, size_t buflen, const void *ptr)
 {
@@ -419,6 +423,7 @@ static void dot_path_imap(char *buf, size_t buflen, const char *path)
   url_free(&u);
 }
 
+#ifndef GV_HIDE_CONFIG
 static void dot_config(FILE *fp, const char *name, int type,
                        struct ConfigSubset *sub, struct ListHead *links)
 {
@@ -475,6 +480,7 @@ static void dot_config(FILE *fp, const char *name, int type,
   dot_object_footer(fp);
   mutt_buffer_dealloc(&value);
 }
+#endif
 
 static void dot_comp(FILE *fp, struct CompressInfo *ci, struct ListHead *links)
 {
@@ -529,6 +535,7 @@ static void dot_mailbox_type(FILE *fp, const char *name, enum MailboxType type)
   fprintf(fp, "\t\t</tr>\n");
 }
 
+#ifndef GV_HIDE_MDATA
 static void dot_mailbox_imap(FILE *fp, struct ImapMboxData *mdata, struct ListHead *links)
 {
   dot_object_header(fp, mdata, "ImapMboxData", "#60c060");
@@ -598,6 +605,7 @@ static void dot_mailbox_pop(FILE *fp, struct PopAccountData *adata, struct ListH
   dot_ptr(fp, "conn", adata->conn, "#ff8080");
   dot_object_footer(fp);
 }
+#endif
 
 static void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
 {
@@ -737,6 +745,7 @@ static void dot_mailbox_list(FILE *fp, struct MailboxList *ml, struct ListHead *
   }
 }
 
+#ifndef GV_HIDE_ADATA
 static void dot_connection(FILE *fp, struct Connection *c, struct ListHead *links)
 {
   dot_object_header(fp, c, "Connection", "#ff8080");
@@ -861,6 +870,7 @@ static void dot_account_pop(FILE *fp, struct PopAccountData *adata, struct ListH
     dot_add_link(links, adata, adata->conn, "PopAccountData->conn", false, NULL);
   }
 }
+#endif
 
 static void dot_account(FILE *fp, struct Account *a, struct ListHead *links)
 {
@@ -935,6 +945,7 @@ static void dot_account_list(FILE *fp, struct AccountList *al, struct ListHead *
   }
 }
 
+#ifndef GV_HIDE_CONTEXT
 static void dot_context(FILE *fp, struct Context *ctx, struct ListHead *links)
 {
   dot_object_header(fp, ctx, "Context", "#ff80ff");
@@ -946,6 +957,7 @@ static void dot_context(FILE *fp, struct Context *ctx, struct ListHead *links)
 #endif
   dot_object_footer(fp);
 }
+#endif
 
 void dump_graphviz(const char *title, struct Context *ctx)
 {
