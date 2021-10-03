@@ -114,7 +114,10 @@ void mailbox_free(struct Mailbox **ptr)
   notify_free(&m->notify);
   mailbox_gc_run();
 
-  FREE(ptr);
+  /* The NT_MAILBOX_DELETE notification might already have caused *ptr to be NULL,
+   * so call free() on the m pointer */
+  *ptr = NULL;
+  FREE(&m);
 }
 
 /**
