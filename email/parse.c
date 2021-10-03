@@ -1059,22 +1059,20 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, const char *na
   if (!matched && user_hdrs)
   {
     const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
-    if (!weed && !c_weed)
+    char *dup = NULL;
+    mutt_str_asprintf(&dup, "%s: %s", name, body);
+
+    if (!weed || !c_weed || !mutt_matches_ignore(dup))
     {
-      char *dup = NULL;
-      mutt_str_asprintf(&dup, "%s:%s", name, body);
-      if (!mutt_matches_ignore(dup))
+      struct ListNode *np = mutt_list_insert_tail(&env->userhdrs, dup);
+      if (do_2047)
       {
-        struct ListNode *np = mutt_list_insert_tail(&env->userhdrs, dup);
-        if (do_2047)
-        {
-          rfc2047_decode(&np->data);
-        }
+        rfc2047_decode(&np->data);
       }
-      else
-      {
-        FREE(&dup);
-      }
+    }
+    else
+    {
+      FREE(&dup);
     }
   }
 
