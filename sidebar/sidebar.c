@@ -86,6 +86,13 @@ void sb_add_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
   if (!m)
     return;
 
+  struct SbEntry **sbep = NULL;
+  ARRAY_FOREACH(sbep, &wdata->entries)
+  {
+    if ((*sbep)->mailbox == m)
+      return;
+  }
+
   /* Any new/deleted mailboxes will cause a refresh.  As long as
    * they're valid, our pointers will be updated in prepare_sidebar() */
 
