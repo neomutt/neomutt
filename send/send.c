@@ -2981,6 +2981,10 @@ static bool send_simple_email(struct Mailbox *m, const char *mailto,
   if (body)
   {
     FILE *fp = mutt_file_fopen(tempfile, "w+");
+    if (!fp)
+    {
+      return false;
+    }
     fprintf(fp, "%s\n", body);
     mutt_file_fclose(&fp);
   }
