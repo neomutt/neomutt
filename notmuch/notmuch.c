@@ -536,7 +536,10 @@ static int update_message_path(struct Email *e, const char *path)
     FREE(&edata->folder);
 
     p -= 3; /* skip subfolder (e.g. "new") */
-    e->old = mutt_str_startswith(p, "cur");
+    if (cs_subset_bool(NeoMutt->sub, "mark_old"))
+    {
+      e->old = mutt_str_startswith(p, "cur");
+    }
     e->path = mutt_str_dup(p);
 
     for (; (p > path) && (*(p - 1) == '/'); p--)
