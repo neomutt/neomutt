@@ -2983,6 +2983,7 @@ static bool send_simple_email(struct Mailbox *m, const char *mailto,
     FILE *fp = mutt_file_fopen(tempfile, "w+");
     if (!fp)
     {
+      email_free(&e);
       return false;
     }
     fprintf(fp, "%s\n", body);
