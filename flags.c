@@ -330,6 +330,8 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e,
   if (update)
   {
     mutt_set_header_color(m, e);
+    struct EventMailbox ev_m = { m };
+    notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
   }
 
   /* if the message status has changed, we need to invalidate the cached
