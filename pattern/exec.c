@@ -203,7 +203,12 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
     fp = s.fp_out;
     fflush(fp);
     fseek(fp, 0, SEEK_SET);
-    fstat(fileno(fp), &st);
+    if (fstat(fileno(fp), &st))
+    {
+      mutt_perror(_("Error checking length of temporary file"));
+      mutt_file_fclose(&fp);
+      return false;
+    }
     len = (long) st.st_size;
 #endif
   }
