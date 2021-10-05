@@ -1342,7 +1342,7 @@ static int op_main_next_undeleted(struct IndexSharedData *shared,
 }
 
 /**
- * op_main_next_unread_mailbox - open next mailbox with new mail - Implements ::index_function_t - @ingroup index_function_api
+ * op_main_next_unread_mailbox - open next mailbox with unread mail - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_next_unread_mailbox(struct IndexSharedData *shared,
                                        struct IndexPrivateData *priv, int op)
@@ -1351,7 +1351,7 @@ static int op_main_next_unread_mailbox(struct IndexSharedData *shared,
 
   struct Buffer *folderbuf = mutt_buffer_pool_get();
   mutt_buffer_strcpy(folderbuf, mailbox_path(m));
-  m = mutt_mailbox_next(m, folderbuf);
+  m = mutt_mailbox_next_unread(m, folderbuf);
   mutt_buffer_pool_release(&folderbuf);
 
   if (!m)
