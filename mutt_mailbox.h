@@ -36,6 +36,7 @@ int  mutt_mailbox_check       (struct Mailbox *m_cur, int force);
 void mutt_mailbox_cleanup     (const char *path, struct stat *st);
 bool mutt_mailbox_list        (void);
 struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s);
+struct Mailbox *mutt_mailbox_next_unread(struct Mailbox *m_cur, struct Buffer *s);
 bool mutt_mailbox_notify      (struct Mailbox *m_cur);
 void mutt_mailbox_set_notified(struct Mailbox *m);
 

@@ -327,6 +327,49 @@ void mutt_mailbox_set_notified(struct Mailbox *m)
 }
 
 /**
+ * find_next_mailbox - Find the next mailbox with new or unread mail.
+ * @param s         Buffer containing name of current mailbox
+ * @param find_new  Boolean controlling new or unread check.
+ * @retval ptr Mailbox
+ *
+ * Given a folder name, find the next incoming folder with new or unread mail.
+ * The Mailbox will be returned and a pretty version of the path put into s.
+ */
+static struct Mailbox *find_next_mailbox(struct Buffer *s, bool find_new)
+{
+  bool found = false;
+  for (int pass = 0; pass < 2; pass++)
+  {
+    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
+    struct MailboxNode *np = NULL;
+    STAILQ_FOREACH(np, &ml, entries)
+    {
+      // Match only real mailboxes if looking for new mail.
+      if (find_new && np->mailbox->type == MUTT_NOTMUCH)
+        continue;
+
+      mutt_buffer_expand_path(&np->mailbox->pathbuf);
+      struct Mailbox *m_cur = np->mailbox;
+
+      if ((found || (pass > 0)) && (find_new ? m_cur->has_new : m_cur->msg_unread > 0))
+      {
+        mutt_buffer_strcpy(s, mailbox_path(np->mailbox));
+        mutt_buffer_pretty_mailbox(s);
+        struct Mailbox *m_result = np->mailbox;
+        neomutt_mailboxlist_clear(&ml);
+        return m_result;
+      }
+      if (mutt_str_equal(mutt_buffer_string(s), mailbox_path(np->mailbox)))
+        found = true;
+    }
+    neomutt_mailboxlist_clear(&ml);
+  }
+
+  return NULL;
+}
+
+/**
  * mutt_mailbox_next - incoming folders completion routine
  * @param m_cur Current Mailbox
  * @param s     Buffer containing name of current mailbox
@@ -341,33 +384,33 @@ struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
 
   if (mutt_mailbox_check(m_cur, 0) > 0)
   {
-    bool found = false;
-    for (int pass = 0; pass < 2; pass++)
-    {
-      struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-      neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
-      struct MailboxNode *np = NULL;
-      STAILQ_FOREACH(np, &ml, entries)
-      {
-        if (np->mailbox->type == MUTT_NOTMUCH) /* only match real mailboxes */
-          continue;
-        mutt_buffer_expand_path(&np->mailbox->pathbuf);
-        if ((found || (pass > 0)) && np->mailbox->has_new)
-        {
-          mutt_buffer_strcpy(s, mailbox_path(np->mailbox));
-          mutt_buffer_pretty_mailbox(s);
-          struct Mailbox *m_result = np->mailbox;
-          neomutt_mailboxlist_clear(&ml);
-          return m_result;
-        }
-        if (mutt_str_equal(mutt_buffer_string(s), mailbox_path(np->mailbox)))
-          found = true;
-      }
-      neomutt_mailboxlist_clear(&ml);
-    }
+    struct Mailbox *m_res = find_next_mailbox(s, true);
+    if (m_res)
+      return m_res;
 
     mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_FORCE); /* mailbox was wrong - resync things */
   }
+
+  mutt_buffer_reset(s); // no folders with new mail
+  return NULL;
+}
+
+/**
+ * mutt_mailbox_next_unread - find next mailbox with unread mail
+ * @param m_cur Current Mailbox
+ * @param s     Buffer containing name of current mailbox
+ * @retval ptr Mailbox
+ *
+ * Given a folder name, find the next mailbox with unread mail.
+ * The Mailbox will be returned and a pretty version of the path put into s.
+ */
+struct Mailbox *mutt_mailbox_next_unread(struct Mailbox *m_cur, struct Buffer *s)
+{
+  mutt_buffer_expand_path(s);
+
+  struct Mailbox *m_res = find_next_mailbox(s, false);
+  if (m_res)
+    return m_res;
 
   mutt_buffer_reset(s); // no folders with new mail
   return NULL;
