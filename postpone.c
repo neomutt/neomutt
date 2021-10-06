@@ -159,13 +159,16 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     if (mx_mbox_open(m_post, MUTT_NOSORT | MUTT_QUIET))
     {
       PostCount = m_post->msg_count;
+      mx_fastclose_mailbox(m_post);
+      if (m_post->flags == MB_HIDDEN)
+        mailbox_free(&m_post);
     }
     else
     {
       mailbox_free(&m_post);
       PostCount = 0;
     }
-    mx_fastclose_mailbox(m_post);
+
 #ifdef USE_NNTP
     if (optnews)
       OptNews = true;
