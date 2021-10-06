@@ -1032,6 +1032,8 @@ static enum MxStatus mbox_mbox_check(struct Mailbox *m)
       return MX_STATUS_ERROR;
     mailbox_changed(m, NT_MAILBOX_INVALID);
   }
+  if (!adata->fp)
+    return MX_STATUS_ERROR;
 
   struct stat st;
   bool unlock = false;
