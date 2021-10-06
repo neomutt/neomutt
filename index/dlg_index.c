@@ -1189,11 +1189,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         OptSearchInvalid = true;
       }
 
-      if (shared->mailbox)
-      {
-        index_shared_data_set_email(
-            shared, mutt_get_virt_email(shared->mailbox, menu_get_index(priv->menu)));
-      }
+      index_shared_data_set_email(
+          shared, mutt_get_virt_email(shared->mailbox, menu_get_index(priv->menu)));
     }
 
     if (!priv->attach_msg)
