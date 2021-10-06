@@ -1365,7 +1365,10 @@ int main(int argc, char *argv[], char *envp[])
       mutt_debug(LL_NOTIFY, "NT_MAILBOX_SWITCH: %p\n", m);
       notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &ev_m);
 
-      mutt_index_menu(dlg, m);
+      m = mutt_index_menu(dlg, m);
+      if (m->flags == MB_HIDDEN)
+        mailbox_free(&m);
+
       dialog_pop();
       mutt_window_free(&dlg);
       log_queue_empty();
