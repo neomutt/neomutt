@@ -38,6 +38,51 @@
 static struct HashTable *Groups = NULL;
 
 /**
+ * group_free - Free an Address Group
+ * @param ptr Group to free
+ */
+void group_free(struct Group **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct Group *g = *ptr;
+
+  mutt_addrlist_clear(&g->al);
+  mutt_regexlist_free(&g->rs);
+  FREE(&g->name);
+
+  FREE(ptr);
+}
+
+/**
+ * group_new - Create a new Address Group
+ * @param  pat Pattern
+ * @retval ptr New Address Group
+ *
+ * @note The pattern will be copied
+ */
+struct Group *group_new(const char *pat)
+{
+  struct Group *g = mutt_mem_calloc(1, sizeof(struct Group));
+
+  g->name = mutt_str_dup(pat);
+  STAILQ_INIT(&g->rs);
+  TAILQ_INIT(&g->al);
+
+  return g;
+}
+
+/**
+ * group_hash_free - Free our hash table data - Implements ::hash_hdata_free_t
+ */
+void group_hash_free(int type, void *obj, intptr_t data)
+{
+  struct Group *g = obj;
+  group_free(&g);
+}
+
+/**
  * mutt_grouplist_init - Initialize the GroupList singleton
  *
  * This is called once from init.c when initializing the global structures.
@@ -45,6 +90,8 @@ static struct HashTable *Groups = NULL;
 void mutt_grouplist_init(void)
 {
   Groups = mutt_hash_new(1031, MUTT_HASH_NO_FLAGS);
+
+  mutt_hash_set_destructor(Groups, group_hash_free, 0);
 }
 
 /**
@@ -71,10 +118,7 @@ struct Group *mutt_pattern_group(const char *pat)
   if (!g)
   {
     mutt_debug(LL_DEBUG2, "Creating group %s\n", pat);
-    g = mutt_mem_calloc(1, sizeof(struct Group));
-    g->name = mutt_str_dup(pat);
-    STAILQ_INIT(&g->rs);
-    TAILQ_INIT(&g->al);
+    g = group_new(pat);
     mutt_hash_insert(Groups, g->name, g);
   }
 
