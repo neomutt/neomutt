@@ -297,6 +297,9 @@ static bool edit_address_list(int field, struct AddressList *al)
  */
 static int delete_attachment(struct AttachCtx *actx, int x)
 {
+  if (!actx || (x < 0) || (x >= actx->idxlen))
+    return -1;
+
   struct AttachPtr **idx = actx->idx;
   int rindex = actx->v2r[x];
 
