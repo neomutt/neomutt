@@ -370,6 +370,9 @@ static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s
     mutt_list_insert_tail(head, (char *) a);
   } while (MoreArgs(s));
 
+  if (!a)
+    return MUTT_CMD_ERROR;
+
   mutt_debug(LL_NOTIFY, "NT_ATTACH_ADD: %s/%s\n", a->major, a->minor);
   notify_send(AttachmentsNotify, NT_ATTACH, NT_ATTACH_ADD, NULL);
 
