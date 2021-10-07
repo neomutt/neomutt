@@ -10553,9 +10553,9 @@ mailboxes `find ~/.mail/ -type d -name cur | sed -e 's:/cur/*$::' -e 's/ /\\ /g'
           If <link linkend="mail-check-stats">$mail_check_stats</link> is set,
           NeoMutt will periodically calculate the unread, flagged, and total
           message counts for each mailbox watched by the
-          <command>mailboxes</command> command. This calculation takes place at
-          the same time as new mail polling, but is controlled by a separate
-          timer:
+          <command>mailboxes</command> command.  (Note: IMAP mailboxes only support
+          unread and total counts).  This calculation takes place at the same
+          time as new mail polling, but is controlled by a separate timer:
           <link linkend="mail-check-stats-interval">$mail_check_stats_interval</link>.
         </para>
         <para>
