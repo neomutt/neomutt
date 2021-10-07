@@ -6,7 +6,7 @@
 # Dan Ohnesorg <dan@ohnesorg.cz>, 2004
 # Petr Písař <petr.pisar@atlas.cz>, 2007-2010, 2012, 2014-2017
 # David Sterba <dsterba@suse.cz>, 2018-2019
-# Jakub Jindra <jakub.jindra@socialbakers.com>, 2018
+# Jakub Jindra <jakub.jindra@socialbakers.com>, 2018-2021
 #
 # macro (stroke) → značka
 # mailbox → schránka
@@ -977,7 +977,7 @@ msgstr "Nelze nastavit proměnnou příkazem „%s“"
 #: command_parse.c:795
 #, fuzzy
 msgid "Can't decrement a my_ variable"
-msgstr "Nelze použít prefix při nastavování proměnné"
+msgstr "Nelze snížit hodnotu vlastní proměnné my_"
 
 #: command_parse.c:809
 msgid "Can't use prefix when setting a variable"
@@ -1196,27 +1196,23 @@ msgstr "Kopíruji do %s…"
 
 #. L10N: Message when an index tagged save operation fails for some reason
 #: commands.c:1053
-#, fuzzy
 msgid "Error saving tagged messages"
-msgstr "Ukládám označené zprávy…"
+msgstr "Chyba při ukládání označených zpráv"
 
 #. L10N: Message when an index/pager save operation fails for some reason
 #: commands.c:1058
-#, fuzzy
 msgid "Error saving message"
-msgstr "Chyba při zasílání zprávy"
+msgstr "Chyba při ukládání zprávy"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
 #: commands.c:1065
-#, fuzzy
 msgid "Error copying tagged messages"
-msgstr "Kopíruji označené zprávy…"
+msgstr "Chyba při kopírování označených zpráv"
 
 #. L10N: Message when an index/pager copy operation fails for some reason
 #: commands.c:1070
-#, fuzzy
 msgid "Error copying message"
-msgstr "Chyba při přeposílání zprávy"
+msgstr "Chyba při kopíorvání zprávy"
 
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
 #: commands.c:1117
@@ -2817,9 +2813,8 @@ msgstr "Stahuji příznaky zpráv…"
 #. sanity check.  If that fails, Mutt reopens the mailbox using a normal
 #. download.
 #: imap/message.c:1031
-#, fuzzy
 msgid "QRESYNC failed.  Reopening mailbox."
-msgstr "Schránku nelze znovu otevřít"
+msgstr "QRESYNC selhal.  Znovu otevírám schránku."
 
 #: imap/message.c:1101
 msgid "Unable to fetch headers from this IMAP server version"
@@ -3255,7 +3250,7 @@ msgstr "Žádné viditelné zprávy"
 
 #: index/index.c:98
 msgid "Changing threaded display should prefer $use_threads over $sort"
-msgstr ""
+msgstr "Změna nastavení zobrazení vláken by měla upřednostnit nastavení $use_threads před $sort"
 
 #: init.c:217
 #, c-format
@@ -3879,7 +3874,7 @@ msgstr "SSL není dostupné, nelze se spojit s %s"
 #: mutt_thread.c:121
 #, c-format
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
-msgstr ""
+msgstr "Nelze použít 'last-' prefix s 'threads' pro %s"
 
 #: mutt_thread.c:1351
 msgid "Parent message is not available"
@@ -5233,14 +5228,13 @@ msgstr "Diskusní skupina %s byla odstraněna ze serveru"
 #: notmuch/config.c:58
 #, c-format
 msgid "nm_default_url must be: notmuch://<absolute path> . Current: %s"
-msgstr ""
+msgstr "nm_default_url musí být ve tvaru: notmuch://<absolutní cesta> . Současné nastavení: %s"
 
 #. L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
 #. They should not be translated.
 #: notmuch/config.c:85 notmuch/notmuch.c:317
-#, fuzzy
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
-msgstr "Neplatná hodnota nm_query_window_timebase (platné hodnoty jsou: hodina, den, týden, měsíc nebo rok)"
+msgstr "Neplatná hodnota nm_query_window_timebase (platné hodnoty jsou: hour, day, week, month, year)"
 
 #: notmuch/db.c:139
 #, c-format
@@ -5329,9 +5323,8 @@ msgid "force viewing of attachment using mailcap"
 msgstr "pro zobrazení příloh vynuceně použít mailcap"
 
 #: opcodes.h:45
-#, fuzzy
 msgid "view attachment in pager using copiousoutput mailcap"
-msgstr "pro zobrazení příloh vynuceně použít mailcap"
+msgstr "zobrazit přílohu v pageru pomocí copiousoutput mailcapu"
 
 #: opcodes.h:46
 msgid "view attachment as text"
@@ -5806,14 +5799,12 @@ msgid "reply to specified mailing list"
 msgstr "odepsat na specifikovanou poštovní konferenci"
 
 #: opcodes.h:164
-#, fuzzy
 msgid "subscribe to a mailing list"
-msgstr "odepsat na specifikovanou poštovní konferenci"
+msgstr "přihlásit k odběru mailing listu"
 
 #: opcodes.h:165
-#, fuzzy
 msgid "unsubscribe from a mailing list"
-msgstr "%s odhlášeno"
+msgstr "odhlásit odběr mailing listu"
 
 #: opcodes.h:166
 msgid "load list of all newsgroups from NNTP server"
@@ -6024,9 +6015,8 @@ msgid "skip beyond quoted text"
 msgstr "přeskočit za citovaný text"
 
 #: opcodes.h:218
-#, fuzzy
 msgid "jump to first line after headers"
-msgstr "přeskočit na následující vlákno"
+msgstr "přejít na první řadku pod hlavičkami"
 
 #: opcodes.h:219
 msgid "jump to the top of the message"
@@ -6297,9 +6287,8 @@ msgid "shifts virtual folder time window forwards"
 msgstr "posune dopředu časový rozsah virtuální složky"
 
 #: opcodes.h:297
-#, fuzzy
 msgid "resets virtual folder time window to the present"
-msgstr "posune dopředu časový rozsah virtuální složky"
+msgstr "vrátí nastavení časového rozsahu virtuální složky na přítomnost"
 
 #: opcodes.h:303
 msgid "check for classic PGP"
@@ -6415,7 +6404,7 @@ msgstr "Nápověda je právě zobrazena"
 #. display some kind of message in case it somehow occurs.)
 #: pager/functions.c:857
 msgid "No text past headers"
-msgstr ""
+msgstr "Pod hlavičkami není žádný text"
 
 #: pager/functions.c:917 pager/functions.c:957
 msgid "No more unquoted text after quoted text"
@@ -7343,19 +7332,16 @@ msgid "Mail sent"
 msgstr "Zpráva odeslána"
 
 #: send/send.c:2971
-#, fuzzy
 msgid "No recipient specified"
-msgstr "Nejsou specifikováni žádní příjemci"
+msgstr "Není zadán žádný příjemce"
 
 #: send/send.c:3011
-#, fuzzy
 msgid "No List-Subscribe header found"
-msgstr "Nenalezeny žádné tajné klíče"
+msgstr "Nenalezena hlavička List-Subscribe"
 
 #: send/send.c:3035
-#, fuzzy
 msgid "No List-Unsubscribe header found"
-msgstr "Odhlásit odběr zpráv dle vzoru: "
+msgstr "Nenalezena hlavička List-Unsubscribe"
 
 #: send/sendlib.c:491
 #, c-format
@@ -7510,9 +7496,8 @@ msgid "Compile options:"
 msgstr "Přeloženo s volbami:"
 
 #: version.c:496
-#, fuzzy
 msgid "Debug options:"
-msgstr "Výchozí volby:"
+msgstr "Ladící volby:"
 
 #, c-format
 #~ msgid "%s authentication failed, trying next method"
