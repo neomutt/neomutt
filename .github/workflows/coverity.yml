@@ -1,5 +1,8 @@
 name: Coverity
 on:
+  push:
+    branches:
+      - 'coverity/**'
   schedule:
     - cron: '0 3 * * 1'
       # Mondays at 3am
@@ -19,8 +22,6 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v2
-      with:
-        ref: master
 
     - name: Configure Neomutt
       run: ./configure $OPTIONS
@@ -41,7 +42,7 @@ jobs:
       run: |
         tar -czf neomutt.tgz $COV_RESULTS
         ls -lh neomutt.tgz
-        GIT_HASH="$(git rev-parse --short master)"
+        GIT_HASH="$(git rev-parse --short HEAD)"
         echo "HASH: $GIT_HASH"
         GIT_DESC="$(git log -n1 --format="%s" $GIT_HASH)"
         echo "DESC: $GIT_DESC"

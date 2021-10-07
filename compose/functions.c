@@ -297,6 +297,9 @@ static bool edit_address_list(int field, struct AddressList *al)
  */
 static int delete_attachment(struct AttachCtx *actx, int x)
 {
+  if (!actx || (x < 0) || (x >= actx->idxlen))
+    return -1;
+
   struct AttachPtr **idx = actx->idx;
   int rindex = actx->v2r[x];
 
@@ -1185,6 +1188,9 @@ static int op_compose_ispell(struct ComposeSharedData *shared, int op)
 static int op_compose_move_down(struct ComposeSharedData *shared, int op)
 {
   int index = menu_get_index(shared->adata->menu);
+  if (index < 0)
+    return IR_ERROR;
+
   if (index == (shared->adata->actx->idxlen - 1))
   {
     mutt_error(_("Attachment is already at bottom"));

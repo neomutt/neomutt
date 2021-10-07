@@ -975,6 +975,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
   struct Message *msg = mx_msg_open(m, e->msgno);
   if (!msg)
   {
+    mutt_body_free(&body);
     return NULL;
   }
   mutt_parse_mime_message(e, msg->fp);

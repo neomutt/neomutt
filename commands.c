@@ -306,7 +306,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, const char *cmd
     mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
 
     struct Message *msg = mx_msg_open(m, en->email->msgno);
-    if (msg && WithCrypto && decode)
+    if (msg && (WithCrypto != 0) && decode)
     {
       mutt_parse_mime_message(en->email, msg->fp);
       if ((en->email->security & SEC_ENCRYPT) &&

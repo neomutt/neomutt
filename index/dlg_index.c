@@ -767,11 +767,14 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
   buf[0] = '\0';
 
+  if (!menu || !menu->mdata)
+    return;
+
   struct IndexPrivateData *priv = menu->mdata;
   struct IndexSharedData *shared = priv->shared;
   struct Mailbox *m = shared->mailbox;
 
-  if (!m || !menu || (line < 0) || (line >= m->email_max))
+  if (!m || (line < 0) || (line >= m->email_max))
     return;
 
   struct Email *e = mutt_get_virt_email(m, line);
@@ -1189,11 +1192,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         OptSearchInvalid = true;
       }
 
-      if (shared->mailbox)
-      {
-        index_shared_data_set_email(
-            shared, mutt_get_virt_email(shared->mailbox, menu_get_index(priv->menu)));
-      }
+      index_shared_data_set_email(
+          shared, mutt_get_virt_email(shared->mailbox, menu_get_index(priv->menu)));
     }
 
     if (!priv->attach_msg)
