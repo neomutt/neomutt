@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2021-09-29 11:59+0100\n"
+"POT-Creation-Date: 2021-10-07 21:15+0100\n"
 "PO-Revision-Date: 2018-03-19 01:14-0300\n"
 "Last-Translator: Thiago Costa de Paiva <tecepe@tecepe.eng.br>\n"
 "Language-Team: \n"
@@ -200,23 +200,23 @@ msgstr "Comando de consulta não definido"
 msgid "Limit: %s"
 msgstr "Limitar: %s"
 
-#: attach/attachments.c:475
+#: attach/attachments.c:478
 msgid "attachments: no disposition"
 msgstr "anexos: sem disposição"
 
-#: attach/attachments.c:486
+#: attach/attachments.c:489
 msgid "Current attachments settings:"
 msgstr "Configurações atuais para anexos:"
 
-#: attach/attachments.c:518
+#: attach/attachments.c:521
 msgid "attachments: invalid disposition"
 msgstr "anexos: disposição inválida"
 
-#: attach/attachments.c:538
+#: attach/attachments.c:541
 msgid "unattachments: no disposition"
 msgstr "desvinculados: sem disposição"
 
-#: attach/attachments.c:578
+#: attach/attachments.c:581
 msgid "unattachments: invalid disposition"
 msgstr "desvinculados: disposição inválida"
 
@@ -232,11 +232,11 @@ msgstr "Cano"
 msgid "Print"
 msgstr "Imprimir"
 
-#: attach/dlg_attach.c:486 index/functions.c:2968 pager/functions.c:81
+#: attach/dlg_attach.c:486 index/functions.c:2971 pager/functions.c:81
 msgid "Function not permitted in attach-message mode"
 msgstr "Função não permitida no modo de anexar mensagem (attach-message)"
 
-#: attach/dlg_attach.c:503 index/functions.c:2962 mx.c:938 pager/functions.c:79
+#: attach/dlg_attach.c:503 index/functions.c:2965 mx.c:938 pager/functions.c:79
 msgid "Mailbox is read-only"
 msgstr "Esta caixa é somente para leitura"
 
@@ -268,7 +268,7 @@ msgstr "Deleção de anexos de mensagens assinadas podem invalidar a assinatura"
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Somente a deleção de anexos multiparte é suportada"
 
-#: attach/dlg_attach.c:865 index/functions.c:2707 pager/functions.c:1682
+#: attach/dlg_attach.c:865 index/functions.c:2709 pager/functions.c:1682
 msgid "Reply by mail as poster prefers?"
 msgstr "Responder mensagem de acordo com a preferencia do rementente?"
 
@@ -282,9 +282,9 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Entrada de composição no mailcap requer %%s"
 
 #: attach/mutt_attach.c:162 attach/mutt_attach.c:296 compmbox/compress.c:340
-#: compose/functions.c:1173 gui/curs_lib.c:388 index/dlg_index.c:1162
-#: index/dlg_index.c:1212 pager/dlg_pager.c:775 pager/do_pager.c:170
-#: pager/message.c:334 send/sendlib.c:1062
+#: compose/functions.c:1176 gui/curs_lib.c:388 index/dlg_index.c:1172
+#: index/dlg_index.c:1219 pager/dlg_pager.c:775 pager/do_pager.c:170
+#: pager/message.c:334 send/sendlib.c:1063
 #, c-format
 msgid "Error running \"%s\""
 msgstr "Erro ao executar \"%s\""
@@ -1231,7 +1231,7 @@ msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Não é possível incluir sem os comandos 'append-hook' ou 'close-hook': %s"
 
 #: compmbox/compress.c:456 compmbox/compress.c:520 compmbox/compress.c:596
-#: compmbox/compress.c:634 mbox/mbox.c:1191
+#: compmbox/compress.c:634 mbox/mbox.c:1193
 msgid "Unable to lock mailbox"
 msgstr "Não foi possível travar a caixa de mensagens"
 
@@ -1379,7 +1379,7 @@ msgstr "CC (cópia)"
 msgid "Subj"
 msgstr "Subj (assunto)"
 
-#: compose/compose.c:149 compose/compose.c:164 compose/functions.c:403
+#: compose/compose.c:149 compose/compose.c:164 compose/functions.c:406
 msgid "Attach file"
 msgstr "Anexar arquivo"
 
@@ -1528,170 +1528,170 @@ msgstr "O anexo #%d não existe mais: %s"
 msgid "Attachment #%d modified. Update encoding for %s?"
 msgstr "O anexo #%d foi modificado. Atualizar a codificação para %s?"
 
-#: compose/functions.c:305
+#: compose/functions.c:308
 msgid "You may not delete the only attachment"
 msgstr "Você não pode remover o único anexo"
 
-#: compose/functions.c:424
+#: compose/functions.c:427
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
 msgstr[0] "Anexando o arquivo escolhido..."
 msgstr[1] "Anexando os arquivos escolhidos..."
 
-#: compose/functions.c:441
+#: compose/functions.c:444
 #, c-format
 msgid "Unable to attach %s"
 msgstr "Não foi possível anexar %s"
 
-#: compose/functions.c:487
+#: compose/functions.c:490
 msgid "Open mailbox to attach message from"
 msgstr "Abrir caixa para obter mensagem a ser anexada"
 
-#: compose/functions.c:499
+#: compose/functions.c:502
 msgid "Open newsgroup to attach message from"
 msgstr "Abrir grupo de notícias para obter mensagem a ser anexada"
 
-#: compose/functions.c:556 main.c:1356
+#: compose/functions.c:559 main.c:1356
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Não foi possível abrir a caixa de mensagens %s"
 
-#: compose/functions.c:567
+#: compose/functions.c:570
 msgid "No messages in that folder"
 msgstr "Nenhuma mensagem naquela pasta"
 
-#: compose/functions.c:578
+#: compose/functions.c:581
 msgid "Tag the messages you want to attach"
 msgstr "Marque as mensagens que você quer anexar"
 
-#: compose/functions.c:615
+#: compose/functions.c:618
 msgid "Unable to attach"
 msgstr "Não foi possível anexar"
 
-#: compose/functions.c:728
+#: compose/functions.c:731
 msgid "Invalid encoding"
 msgstr "Codificação inválida"
 
-#: compose/functions.c:807 send/send.c:2752
+#: compose/functions.c:810 send/send.c:2752
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "IDN inválida em '%s': '%s'"
 
-#: compose/functions.c:858
+#: compose/functions.c:861
 msgid "Empty 'Content-Language'"
 msgstr "'Content-Language' vazio"
 
-#: compose/functions.c:990
+#: compose/functions.c:993
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr "Alternativas para grupo requerem ao menos 2 mensagens rotuladas"
 
-#: compose/functions.c:1073
+#: compose/functions.c:1076
 msgid "Grouping 'multilingual' requires at least 2 tagged messages"
 msgstr "Multilíngue para grupo requer ao menos 2 mensagens rotuladas"
 
-#: compose/functions.c:1085
+#: compose/functions.c:1088
 msgid "Not all parts have 'Content-Language' set, continue?"
 msgstr "Nem todos os ítens possuem 'Content-Language' configurado. Continuar?"
 
-#: compose/functions.c:1087
+#: compose/functions.c:1090
 msgid "Not sending this message"
 msgstr "Mensagem não enviada"
 
-#: compose/functions.c:1190
+#: compose/functions.c:1196
 msgid "Attachment is already at bottom"
 msgstr "Anexo já é o último da lista"
 
-#: compose/functions.c:1195 compose/functions.c:1217
+#: compose/functions.c:1201 compose/functions.c:1223
 msgid "The fundamental part can't be moved"
 msgstr "Item fundamental não pode ser rearranjado"
 
-#: compose/functions.c:1212
+#: compose/functions.c:1218
 msgid "Attachment is already at top"
 msgstr "Anexo já é o primeiro da lista"
 
-#: compose/functions.c:1232
+#: compose/functions.c:1238
 msgid "New file: "
 msgstr "Novo arquivo: "
 
-#: compose/functions.c:1253
+#: compose/functions.c:1259
 msgid "Content-Type is of the form base/sub"
 msgstr "Tipo de conteúdo (Content-Type) é da forma base/sub"
 
-#: compose/functions.c:1261
+#: compose/functions.c:1267
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Tipo de conteúdo (Content-Type) %s desconhecido"
 
-#: compose/functions.c:1270
+#: compose/functions.c:1276
 #, c-format
 msgid "Can't create file %s"
 msgstr "Não é possível criar o arquivo %s"
 
-#: compose/functions.c:1280
+#: compose/functions.c:1286
 msgid "What we have here is a failure to make an attachment"
 msgstr "O que temos aqui é uma falha ao criar um anexo"
 
-#: compose/functions.c:1315
+#: compose/functions.c:1321
 msgid "No PGP backend configured"
 msgstr "Nenhum sistema PGP configurado"
 
-#: compose/functions.c:1322 compose/functions.c:1792
+#: compose/functions.c:1328 compose/functions.c:1798
 msgid "S/MIME already selected. Clear and continue?"
 msgstr "S/MIME já selecionado. Remover e continuar?"
 
-#: compose/functions.c:1374
+#: compose/functions.c:1380
 msgid "Send attachment with name: "
 msgstr "Enviar anexo com o nome: "
 
-#: compose/functions.c:1398
+#: compose/functions.c:1404
 msgid "Rename to: "
 msgstr "Renomear para: "
 
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose/functions.c:1405 editmsg.c:99 editmsg.c:133 editmsg.c:152
+#: compose/functions.c:1411 editmsg.c:99 editmsg.c:133 editmsg.c:152
 #: notmuch/db.c:96 send/sendlib.c:485
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Impossível aplicar 'stat' em %s: %s"
 
-#: compose/functions.c:1450
+#: compose/functions.c:1456
 msgid "Save a copy of this message?"
 msgstr "Salvar uma cópia desta mensagem?"
 
-#: compose/functions.c:1471
+#: compose/functions.c:1477
 msgid "No S/MIME backend configured"
 msgstr "Nenum sistema S/MIME configurado"
 
-#: compose/functions.c:1479
+#: compose/functions.c:1485
 msgid "PGP already selected. Clear and continue?"
 msgstr "PGP já selecionado. Remover e continuar?"
 
-#: compose/functions.c:1525
+#: compose/functions.c:1531
 msgid "Recoding only affects text attachments"
 msgstr "A gravação só afeta os anexos de texto"
 
-#: compose/functions.c:1530
+#: compose/functions.c:1536
 msgid "The current attachment won't be converted"
 msgstr "O anexo atual não será convertido"
 
-#: compose/functions.c:1532
+#: compose/functions.c:1538
 msgid "The current attachment will be converted"
 msgstr "O anexo atual será convertido"
 
-#: compose/functions.c:1603
+#: compose/functions.c:1609
 msgid "Write message to mailbox"
 msgstr "Gravar mensagem na caixa"
 
-#: compose/functions.c:1607
+#: compose/functions.c:1613
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Gravando mensagem em %s..."
 
-#: compose/functions.c:1615
+#: compose/functions.c:1621
 msgid "Message written"
 msgstr "Mensgem gravada"
 
-#: compose/functions.c:1689
+#: compose/functions.c:1695
 msgid "Save (postpone) draft message?"
 msgstr "Salvar (adiar) mensagem não terminada?"
 
@@ -2189,21 +2189,21 @@ msgstr "Não é possível abrir o arquivo de mensagens: %s"
 msgid "Can't append to folder: %s"
 msgstr "Não é possível anexar à pasta: %s"
 
-#: email/parse.c:1521
+#: email/parse.c:1519
 msgid "multipart message has no boundary parameter"
 msgstr "mensagem multiparte não tem um parâmetro de fronteiras"
 
-#: flags.c:383 index/functions.c:744 index/functions.c:851
+#: flags.c:385 index/functions.c:744 index/functions.c:851
 #: index/functions.c:867 index/functions.c:998 mutt_thread.c:1264
 #: mutt_thread.c:1330 mutt_thread.c:1416
 msgid "Threading is not enabled"
 msgstr "Visualização por threads não está habilitado"
 
-#: flags.c:448
+#: flags.c:450
 msgid "Clear flag"
 msgstr "Remove sinalização"
 
-#: flags.c:448
+#: flags.c:450
 msgid "Set flag"
 msgstr "Atribui sinalização"
 
@@ -2795,7 +2795,7 @@ msgstr "Não foi possível reabrir a caixa de mensagens"
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Incapaz de obter cabeçalhos nesta versão de servidor IMAP"
 
-#: imap/message.c:1122 index/functions.c:2462 nntp/nntp.c:1229 pop/pop.c:369
+#: imap/message.c:1122 index/functions.c:2464 nntp/nntp.c:1229 pop/pop.c:369
 msgid "Fetching message headers..."
 msgstr "Obtendo cabeçalhos das mensagens..."
 
@@ -2861,36 +2861,36 @@ msgstr "Seguimento"
 msgid "%s: Operation not permitted by ACL"
 msgstr "%s: ACL não permite operação"
 
-#: index/dlg_index.c:698
+#: index/dlg_index.c:705
 msgid "Failed to create query, aborting"
 msgstr "Falha ao criar consulta, cancelado"
 
-#: index/dlg_index.c:745 muttlib.c:1403 mx.c:221 mx.c:359
+#: index/dlg_index.c:752 muttlib.c:1403 mx.c:221 mx.c:359
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s não é uma caixa de mensagens"
 
-#: index/dlg_index.c:1141
+#: index/dlg_index.c:1151
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "A caixa foi modificada externamente. As marcas podem estar erradas."
 
-#: index/dlg_index.c:1150 pager/dlg_pager.c:719
+#: index/dlg_index.c:1160 pager/dlg_pager.c:719
 msgid "New mail in this mailbox"
 msgstr "Novas mensagens nesta caixa"
 
-#: index/dlg_index.c:1170
+#: index/dlg_index.c:1180
 msgid "Mailbox was externally modified"
 msgstr "A caixa foi modificada externamente"
 
-#: index/dlg_index.c:1297 index/functions.c:2943
+#: index/dlg_index.c:1304 index/functions.c:2946
 msgid "No mailbox is open"
 msgstr "Nenhuma caixa de mensagens aberta"
 
-#: index/dlg_index.c:1304
+#: index/dlg_index.c:1311
 msgid "No tagged messages"
 msgstr "Nenhuma mensagem marcada"
 
-#: index/dlg_index.c:1308 index/functions.c:629 menu/menu.c:350
+#: index/dlg_index.c:1315 index/functions.c:629 menu/menu.c:350
 msgid "Nothing to do"
 msgstr "Nada a fazer"
 
@@ -3089,7 +3089,7 @@ msgstr "Marcar mensagens que casem com: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1639 index/functions.c:2289 pager/functions.c:1582
+#: index/functions.c:1639 index/functions.c:2291 pager/functions.c:1582
 msgid "Can't undelete messages"
 msgstr "Incapaz de restaurar mensagens."
 
@@ -3133,91 +3133,91 @@ msgid "Quit NeoMutt?"
 msgstr "Sair do NeoMutt?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2178 pager/functions.c:1520
+#: index/functions.c:2180 pager/functions.c:1520
 msgid "Can't toggle new"
 msgstr "Não pude alternar sinalização de leitura"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2250 pager/functions.c:1551
+#: index/functions.c:2252 pager/functions.c:1551
 msgid "Can't undelete message"
 msgstr "Não é possível restaurar mensagem."
 
-#: index/functions.c:2415
+#: index/functions.c:2417
 msgid "Logged out of IMAP servers"
 msgstr "Conexões com os servidores IMAP encerradas"
 
-#: index/functions.c:2458
+#: index/functions.c:2460
 msgid "No Message-Id. Unable to perform operation."
 msgstr "Nenhuma id de mensagem (Message-Id). Impossível executar operação."
 
-#: index/functions.c:2536
+#: index/functions.c:2538
 msgid "No deleted messages found in the thread"
 msgstr "Nenhuma mensagem removida foi encontrada nesta thread"
 
-#: index/functions.c:2560
+#: index/functions.c:2562
 msgid "Enter Message-Id: "
 msgstr "Entre com a id da mensagem (Message-Id): "
 
-#: index/functions.c:2571
+#: index/functions.c:2573
 msgid "Article has no parent reference"
 msgstr "Artigo não tem referência no nível acima"
 
-#: index/functions.c:2593
+#: index/functions.c:2595
 msgid "Message is not visible in limited view"
 msgstr "Mensagem não está visível nesta visão restringida"
 
-#: index/functions.c:2597
+#: index/functions.c:2599
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "Obtendo %s do servidor..."
 
-#: index/functions.c:2608 nntp/nntp.c:2647
+#: index/functions.c:2610 nntp/nntp.c:2647
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "Artigo %s não foi encontrado no servidor"
 
-#: index/functions.c:2630
+#: index/functions.c:2632
 msgid "Open newsgroup in read-only mode"
 msgstr "Abrir grupo de notícias em modo somente leitura"
 
-#: index/functions.c:2635
+#: index/functions.c:2637
 msgid "Open newsgroup"
 msgstr "Abrir grupo de notícias"
 
-#: index/functions.c:2712 pager/functions.c:1687 pager/functions.c:1728
+#: index/functions.c:2714 pager/functions.c:1687 pager/functions.c:1728
 #: pager/functions.c:1762
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Não é permitido postar neste grupo, pode ser moderado. Continuar?"
 
-#: index/functions.c:2747
+#: index/functions.c:2749
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Sem pasta virtual e sem ID de mensagem, cancelado"
 
-#: index/functions.c:2767
+#: index/functions.c:2769
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr "Não foi possível encontrar a mensagem no banco de dados do notmuch. Tente rodar 'notmuch new'."
 
-#: index/functions.c:2777
+#: index/functions.c:2779
 msgid "Failed to read thread, aborting"
 msgstr "Falha ao accessar thread, cancelado"
 
-#: index/functions.c:2808
+#: index/functions.c:2810
 msgid "No query, aborting"
 msgstr "Nenhuma consulta, cancelado"
 
-#: index/functions.c:2840
+#: index/functions.c:2843
 msgid "Windowed queries disabled"
 msgstr "Consultas restritas desabilitadas"
 
-#: index/functions.c:2847
+#: index/functions.c:2850
 msgid "No notmuch vfolder currently loaded"
 msgstr "Nenhuma pasta virtual do notmuch carregada"
 
-#: index/functions.c:2949
+#: index/functions.c:2952
 msgid "There are no messages"
 msgstr "Não há mensagens"
 
-#: index/functions.c:2956
+#: index/functions.c:2959
 msgid "No visible messages"
 msgstr "Nenhuma mensagem visível"
 
@@ -3357,8 +3357,8 @@ msgid "Reading %s..."
 msgstr "Lendo %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1392 maildir/mh.c:1048 mbox/mbox.c:1260 mx.c:479
-#: notmuch/notmuch.c:2231
+#: maildir/maildir.c:1392 maildir/mh.c:1048 mbox/mbox.c:1262 mx.c:479
+#: notmuch/notmuch.c:2234
 #, c-format
 msgid "Writing %s..."
 msgstr "Gravando %s..."
@@ -3647,36 +3647,36 @@ msgstr "A caixa de mensagens está corrompida"
 msgid "Couldn't lock %s"
 msgstr "Incapaz de travar %s"
 
-#: mbox/mbox.c:1139
+#: mbox/mbox.c:1141
 msgid "Mailbox was corrupted"
 msgstr "A caixa de mensagens foi corrompida"
 
-#: mbox/mbox.c:1182 mbox/mbox.c:1437
+#: mbox/mbox.c:1184 mbox/mbox.c:1439
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Erro fatal! Não foi posssível reabrir a caixa de mensagens!"
 
-#: mbox/mbox.c:1219 pager/message.c:228
+#: mbox/mbox.c:1221 pager/message.c:228
 msgid "Could not create temporary file"
 msgstr "Não foi possível criar um arquivo temporário"
 
-#: mbox/mbox.c:1238
+#: mbox/mbox.c:1240
 msgid "sync: mbox modified, but no modified messages (report this bug)"
 msgstr "sync: mbox modificada, mas nenhuma mensagem modificada (relate este problema)"
 
-#: mbox/mbox.c:1382
+#: mbox/mbox.c:1384
 msgid "Committing changes..."
 msgstr "Aplicando mudanças..."
 
-#: mbox/mbox.c:1416
+#: mbox/mbox.c:1418
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Erro de gravação! Caixa parcial salva em %s"
 
-#: mbox/mbox.c:1502
+#: mbox/mbox.c:1504
 msgid "Could not reopen mailbox"
 msgstr "Não foi possível reabrir a caixa de mensagens"
 
-#: mbox/mbox.c:1600 mbox/mbox.c:1753
+#: mbox/mbox.c:1602 mbox/mbox.c:1755
 msgid "Can't write message"
 msgstr "Não foi possível gravar a mensagem"
 
@@ -4399,7 +4399,7 @@ msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Fim dos dados encriptados com PGP/MIME --]\n"
 
 #: ncrypt/crypt_gpgme.c:3144 ncrypt/pgp.c:669 ncrypt/pgp.c:722
-#: ncrypt/pgp.c:1285 postpone.c:414
+#: ncrypt/pgp.c:1285 postpone.c:417
 msgid "Could not decrypt PGP message"
 msgstr "Incapaz de decriptar mensagem PGP"
 
@@ -4856,8 +4856,8 @@ msgstr ""
 "[-- Erro: não foi possível criar um subprocesso para o PGP --]\n"
 "\n"
 
-#: ncrypt/pgp.c:1077 ncrypt/pgp.c:1104 ncrypt/smime.c:1966 postpone.c:524
-#: postpone.c:552
+#: ncrypt/pgp.c:1077 ncrypt/pgp.c:1104 ncrypt/smime.c:1966 postpone.c:527
+#: postpone.c:555
 msgid "Decryption failed"
 msgstr "Desencriptação falhou"
 
@@ -5214,7 +5214,7 @@ msgstr "Incapaz de abrir banco de dados do notmuch: %s: %s"
 msgid "unknown reason"
 msgstr "razão desconhecida"
 
-#: notmuch/mdata.c:85 notmuch/notmuch.c:1786
+#: notmuch/mdata.c:85 notmuch/notmuch.c:1789
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "falha ao interpretar url do notmuch: %s"
@@ -5224,27 +5224,27 @@ msgstr "falha ao interpretar url do notmuch: %s"
 msgid "failed to parse notmuch limit: %s"
 msgstr "Falha ao interpretar limite do notmuch: %s"
 
-#: notmuch/notmuch.c:680
+#: notmuch/notmuch.c:683
 msgid "Reading messages..."
 msgstr "Obtendo mensagens..."
 
-#: notmuch/notmuch.c:1546
+#: notmuch/notmuch.c:1549
 msgid "No more messages in the thread"
 msgstr "Não há mais mensagens nessa thread"
 
-#: notmuch/notmuch.c:1799
+#: notmuch/notmuch.c:1802
 #, c-format
 msgid "failed to parse limit: %s"
 msgstr "falhou ao interpretar limite: %s"
 
-#: notmuch/notmuch.c:2313
+#: notmuch/notmuch.c:2316
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] ""
 msgstr[1] ""
 
-#: notmuch/notmuch.c:2376
+#: notmuch/notmuch.c:2379
 msgid "Can't write to virtual folder"
 msgstr "Incapaz de gravar na pasta virtual"
 
@@ -6576,7 +6576,7 @@ msgstr ""
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:100 pattern/exec.c:1076
+#: pattern/exec.c:100 pattern/exec.c:1081
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "erro: operação %d desconhecida (relate este erro)"
@@ -6593,7 +6593,12 @@ msgstr "Erro ao abrir novamente o fluxo para memória"
 msgid "Error opening /dev/null"
 msgstr "Erro ao abrir /dev/null"
 
-#: pattern/exec.c:873
+#: pattern/exec.c:208
+#, fuzzy
+msgid "Error checking length of temporary file"
+msgstr "Erro. Preservando o arquivo temporário: %s"
+
+#: pattern/exec.c:878
 msgid "error: server custom search only supported with IMAP"
 msgstr "erro: busca personalizada no servidor somente suportada com IMAP"
 
@@ -6995,19 +7000,19 @@ msgstr "Marcando mensagens como apagadas..."
 msgid "Can't write message to temporary file"
 msgstr "Incapaz de gravar mensagem para o arquivo temporário"
 
-#: postpone.c:237
+#: postpone.c:240
 msgid "Illegal S/MIME header"
 msgstr "Cabeçalho S/MIME ilegal"
 
-#: postpone.c:269 postpone.c:308 postpone.c:317
+#: postpone.c:272 postpone.c:311 postpone.c:320
 msgid "Illegal crypto header"
 msgstr "Cabeçalho cripto ilegal"
 
-#: postpone.c:411 postpone.c:519 postpone.c:547
+#: postpone.c:414 postpone.c:522 postpone.c:550
 msgid "Decrypting message..."
 msgstr "Desencriptando mensagem..."
 
-#: postpone.c:654 postpone.c:665
+#: postpone.c:657 postpone.c:668
 msgid "No postponed messages"
 msgstr "Nenhuma mensagem adiada"
 
@@ -7331,12 +7336,12 @@ msgstr "Mensagem enviada"
 msgid "No recipient specified"
 msgstr "Nenhum destinatário foi especificado"
 
-#: send/send.c:3011
+#: send/send.c:3016
 #, fuzzy
 msgid "No List-Subscribe header found"
 msgstr "Nenhuma chave secreta encontrada"
 
-#: send/send.c:3035
+#: send/send.c:3040
 #, fuzzy
 msgid "No List-Unsubscribe header found"
 msgstr "Padrão para desinscrição: "
@@ -7355,7 +7360,7 @@ msgstr "Incapaz de encontrar qualquer arquivo mime.types"
 msgid "Could not open %s"
 msgstr "Não foi possível abrir %s"
 
-#: send/sendlib.c:1410
+#: send/sendlib.c:1411
 #, c-format
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "IDN %s inválida durante preparação remetente re-enviado"

@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2021-09-29 11:59+0100\n"
+"POT-Creation-Date: 2021-10-07 21:15+0100\n"
 "PO-Revision-Date: 2021-05-09 00:47GMT+3\n"
 "Last-Translator: Christos Margiolis <christos@margiolis.net>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -203,26 +203,26 @@ msgstr "Η εντολή ερωτήσεως δεν ορίστηκε"
 msgid "Limit: %s"
 msgstr "Όριο: %s"
 
-#: attach/attachments.c:475
+#: attach/attachments.c:478
 #, fuzzy
 msgid "attachments: no disposition"
 msgstr "επεξεργασία της περιγραφής της προσάρτησης"
 
-#: attach/attachments.c:486
+#: attach/attachments.c:489
 msgid "Current attachments settings:"
 msgstr "Τρέχουσες ρυθμίσεις συνημμένου: "
 
-#: attach/attachments.c:518
+#: attach/attachments.c:521
 #, fuzzy
 msgid "attachments: invalid disposition"
 msgstr "επεξεργασία της περιγραφής της προσάρτησης"
 
-#: attach/attachments.c:538
+#: attach/attachments.c:541
 #, fuzzy
 msgid "unattachments: no disposition"
 msgstr "επεξεργασία της περιγραφής της προσάρτησης"
 
-#: attach/attachments.c:578
+#: attach/attachments.c:581
 msgid "unattachments: invalid disposition"
 msgstr ""
 
@@ -238,11 +238,11 @@ msgstr "Διοχέτευση"
 msgid "Print"
 msgstr "Εκτύπωση"
 
-#: attach/dlg_attach.c:486 index/functions.c:2968 pager/functions.c:81
+#: attach/dlg_attach.c:486 index/functions.c:2971 pager/functions.c:81
 msgid "Function not permitted in attach-message mode"
 msgstr "Η λειτουργία απαγορεύεται στην κατάσταση προσάρτηση-μηνύματος"
 
-#: attach/dlg_attach.c:503 index/functions.c:2962 mx.c:938 pager/functions.c:79
+#: attach/dlg_attach.c:503 index/functions.c:2965 mx.c:938 pager/functions.c:79
 msgid "Mailbox is read-only"
 msgstr "Το γραμματοκιβώτιο είναι μόνο για ανάγνωση"
 
@@ -276,7 +276,7 @@ msgstr "Η διαγραφή προσαρτήσεων από κρυπτογραφ
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Μόνο η διαγραφή πολυμερών προσαρτήσεων υποστηρίζεται"
 
-#: attach/dlg_attach.c:865 index/functions.c:2707 pager/functions.c:1682
+#: attach/dlg_attach.c:865 index/functions.c:2709 pager/functions.c:1682
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
@@ -290,9 +290,9 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Η καταχώρηση στοιχείων του mailcap χρειάζεται το %%s"
 
 #: attach/mutt_attach.c:162 attach/mutt_attach.c:296 compmbox/compress.c:340
-#: compose/functions.c:1173 gui/curs_lib.c:388 index/dlg_index.c:1162
-#: index/dlg_index.c:1212 pager/dlg_pager.c:775 pager/do_pager.c:170
-#: pager/message.c:334 send/sendlib.c:1062
+#: compose/functions.c:1176 gui/curs_lib.c:388 index/dlg_index.c:1172
+#: index/dlg_index.c:1219 pager/dlg_pager.c:775 pager/do_pager.c:170
+#: pager/message.c:334 send/sendlib.c:1063
 #, c-format
 msgid "Error running \"%s\""
 msgstr "Σφάλμα κατά την εκτέλεση του \"%s\""
@@ -1237,7 +1237,7 @@ msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Δεν μπορεί να γίνει προσάρτηση χωρίς append-hook ή close-hook : %s"
 
 #: compmbox/compress.c:456 compmbox/compress.c:520 compmbox/compress.c:596
-#: compmbox/compress.c:634 mbox/mbox.c:1191
+#: compmbox/compress.c:634 mbox/mbox.c:1193
 msgid "Unable to lock mailbox"
 msgstr "Αδυναμία κλειδώματος του γραμματοκιβωτίου"
 
@@ -1385,7 +1385,7 @@ msgstr "Κοινοποίηση σε"
 msgid "Subj"
 msgstr "Θέμα"
 
-#: compose/compose.c:149 compose/compose.c:164 compose/functions.c:403
+#: compose/compose.c:149 compose/compose.c:164 compose/functions.c:406
 msgid "Attach file"
 msgstr "Σύναψη αρχείου"
 
@@ -1534,170 +1534,170 @@ msgstr "Το συνημμένο #%d δεν υπάρχει πια: %s"
 msgid "Attachment #%d modified. Update encoding for %s?"
 msgstr "Το συνημμένο #%d έχει τροποποιηθεί. Ανανέωση κωδικοποίησης για %s;"
 
-#: compose/functions.c:305
+#: compose/functions.c:308
 msgid "You may not delete the only attachment"
 msgstr "Δεν μπορείτε να διαγράψετε το μοναδικό συνημμένο"
 
-#: compose/functions.c:424
+#: compose/functions.c:427
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
 msgstr[0] "Σύναψη επιλεγμένου αρχείου..."
 msgstr[1] "Σύναψη επιλεγμένων αρχείων..."
 
-#: compose/functions.c:441
+#: compose/functions.c:444
 #, c-format
 msgid "Unable to attach %s"
 msgstr "Αδυναμία σύναψης του %s"
 
-#: compose/functions.c:487
+#: compose/functions.c:490
 msgid "Open mailbox to attach message from"
 msgstr "Άνοιγμα γραμματοκιβωτίου για σύναψη μηνύματος από"
 
-#: compose/functions.c:499
+#: compose/functions.c:502
 msgid "Open newsgroup to attach message from"
 msgstr "Άνοιγμα ομάδας νέων για σύναψη μηνύματος από"
 
-#: compose/functions.c:556 main.c:1356
+#: compose/functions.c:559 main.c:1356
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Αδυναμία ανοίγματος του γραμματοκιβωτίου %s"
 
-#: compose/functions.c:567
+#: compose/functions.c:570
 msgid "No messages in that folder"
 msgstr "Δεν υπάρχουν μηνύματα σε αυτό το φάκελο"
 
-#: compose/functions.c:578
+#: compose/functions.c:581
 msgid "Tag the messages you want to attach"
 msgstr "Σημειώστε τα μηνύματα που θέλετε να συνάψετε"
 
-#: compose/functions.c:615
+#: compose/functions.c:618
 msgid "Unable to attach"
 msgstr "Αδυναμία συνάψης"
 
-#: compose/functions.c:728
+#: compose/functions.c:731
 msgid "Invalid encoding"
 msgstr "Μη έγκυρη κωδικοποίηση"
 
-#: compose/functions.c:807 send/send.c:2752
+#: compose/functions.c:810 send/send.c:2752
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Λανθασμένη διεθνής διεύθυνση IDN στο '%s': '%s'"
 
-#: compose/functions.c:858
+#: compose/functions.c:861
 msgid "Empty 'Content-Language'"
 msgstr "Άδειο 'Content-Language'"
 
-#: compose/functions.c:990
+#: compose/functions.c:993
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr "Η ομαδοποίηση των 'alternatives' χρειάζεται τουλάχιστον 2 σημειωμένα μηνύματα"
 
-#: compose/functions.c:1073
+#: compose/functions.c:1076
 msgid "Grouping 'multilingual' requires at least 2 tagged messages"
 msgstr "Η ομαδοποίηση των 'multilingual' χρειάζεται τουλάχιστον 2 σημειωμένα μηνύματα"
 
-#: compose/functions.c:1085
+#: compose/functions.c:1088
 msgid "Not all parts have 'Content-Language' set, continue?"
 msgstr "Δεν έχουνε όλα τα μέρη σετ 'Content-Language', συνέχεια;"
 
-#: compose/functions.c:1087
+#: compose/functions.c:1090
 msgid "Not sending this message"
 msgstr "Δεν γίνεται αποστολή αυτού του μηνύματος"
 
-#: compose/functions.c:1190
+#: compose/functions.c:1196
 msgid "Attachment is already at bottom"
 msgstr "Το συνημμένο είναι τελευταίο"
 
-#: compose/functions.c:1195 compose/functions.c:1217
+#: compose/functions.c:1201 compose/functions.c:1223
 msgid "The fundamental part can't be moved"
 msgstr "Το βασικό μέρος δεν μπορεί να μετακινηθεί"
 
-#: compose/functions.c:1212
+#: compose/functions.c:1218
 msgid "Attachment is already at top"
 msgstr "Το συνημμένο είναι ήδη πρώτο"
 
-#: compose/functions.c:1232
+#: compose/functions.c:1238
 msgid "New file: "
 msgstr "Νέο αρχείο: "
 
-#: compose/functions.c:1253
+#: compose/functions.c:1259
 msgid "Content-Type is of the form base/sub"
 msgstr "Το Content-Type είναι της μορφής base/sub"
 
-#: compose/functions.c:1261
+#: compose/functions.c:1267
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Άγνωστο Content-Type %s"
 
-#: compose/functions.c:1270
+#: compose/functions.c:1276
 #, c-format
 msgid "Can't create file %s"
 msgstr "Αδυναμία δημιουργίας αρχείου %s"
 
-#: compose/functions.c:1280
+#: compose/functions.c:1286
 msgid "What we have here is a failure to make an attachment"
 msgstr "Αποτυχία κατά την δημιουργία συννημένου"
 
-#: compose/functions.c:1315
+#: compose/functions.c:1321
 msgid "No PGP backend configured"
 msgstr "Δεν έχει ρυθμιστεί PGP backend"
 
-#: compose/functions.c:1322 compose/functions.c:1792
+#: compose/functions.c:1328 compose/functions.c:1798
 msgid "S/MIME already selected. Clear and continue?"
 msgstr "Το S/MIME είχε ήδη επιλεγεί. Καθαρισμός και συνέχεια; "
 
-#: compose/functions.c:1374
+#: compose/functions.c:1380
 msgid "Send attachment with name: "
 msgstr "Αποστολή συνημμένου με όνομα: "
 
-#: compose/functions.c:1398
+#: compose/functions.c:1404
 msgid "Rename to: "
 msgstr "Μετονομασία σε: "
 
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose/functions.c:1405 editmsg.c:99 editmsg.c:133 editmsg.c:152
+#: compose/functions.c:1411 editmsg.c:99 editmsg.c:133 editmsg.c:152
 #: notmuch/db.c:96 send/sendlib.c:485
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Αδυναμία λήψης της κατάστασης του %s: %s"
 
-#: compose/functions.c:1450
+#: compose/functions.c:1456
 msgid "Save a copy of this message?"
 msgstr "Αποθήκευση αντιγράφου του μηνύματος;"
 
-#: compose/functions.c:1471
+#: compose/functions.c:1477
 msgid "No S/MIME backend configured"
 msgstr "Δεν έχει ρυθμιστεί S/MIME backend"
 
-#: compose/functions.c:1479
+#: compose/functions.c:1485
 msgid "PGP already selected. Clear and continue?"
 msgstr "Το PGP είχε ήδη επιλεγεί. Καθαρισμός και συνέχεια; "
 
-#: compose/functions.c:1525
+#: compose/functions.c:1531
 msgid "Recoding only affects text attachments"
 msgstr "Η επανακωδικοποίηση επηρεάζει μόνο τα συνημμένα κειμένου"
 
-#: compose/functions.c:1530
+#: compose/functions.c:1536
 msgid "The current attachment won't be converted"
 msgstr "Η τρέχουσα σύναψη δεν θα μετατραπεί"
 
-#: compose/functions.c:1532
+#: compose/functions.c:1538
 msgid "The current attachment will be converted"
 msgstr "Η τρέχουσα σύναψη θα μετατραπεί"
 
-#: compose/functions.c:1603
+#: compose/functions.c:1609
 msgid "Write message to mailbox"
 msgstr "Εγγραφή του μηνύματος στο γραμματοκιβώτιο"
 
-#: compose/functions.c:1607
+#: compose/functions.c:1613
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Εγγραφή μηνύματος στο %s ..."
 
-#: compose/functions.c:1615
+#: compose/functions.c:1621
 msgid "Message written"
 msgstr "Το μήνυμα γράφτηκε"
 
-#: compose/functions.c:1689
+#: compose/functions.c:1695
 msgid "Save (postpone) draft message?"
 msgstr "Αποθήκευση (αναβολλή) πρόχειρου μηνύματος;"
 
@@ -2195,21 +2195,21 @@ msgstr "Αδυναμία ανοίγματος αρχείου μηνυμάτων:
 msgid "Can't append to folder: %s"
 msgstr "Αδυναμία προσάρτησης στο φάκελο: %s"
 
-#: email/parse.c:1521
+#: email/parse.c:1519
 msgid "multipart message has no boundary parameter"
 msgstr "το πολυμερές μήνυμα δεν έχει παράμετρο ορίων"
 
-#: flags.c:383 index/functions.c:744 index/functions.c:851
+#: flags.c:385 index/functions.c:744 index/functions.c:851
 #: index/functions.c:867 index/functions.c:998 mutt_thread.c:1264
 #: mutt_thread.c:1330 mutt_thread.c:1416
 msgid "Threading is not enabled"
 msgstr "Η χρήση νημάτων δεν έχει ενεργοποιηθεί"
 
-#: flags.c:448
+#: flags.c:450
 msgid "Clear flag"
 msgstr "Καθαρίστε σημαία"
 
-#: flags.c:448
+#: flags.c:450
 msgid "Set flag"
 msgstr "Ορίστε σημαία"
 
@@ -2810,7 +2810,7 @@ msgstr "Αδυναμία επαναπρόσβασης του γραμματοκ�
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Αδυναμία λήψης επικεφαλίδων από αυτή την έκδοση του εξυπηρετητή IMAP"
 
-#: imap/message.c:1122 index/functions.c:2462 nntp/nntp.c:1229 pop/pop.c:369
+#: imap/message.c:1122 index/functions.c:2464 nntp/nntp.c:1229 pop/pop.c:369
 #, fuzzy
 msgid "Fetching message headers..."
 msgstr "Λήψη επικεφαλίδων από τα μηνύματα... [%d/%d]"
@@ -2878,36 +2878,36 @@ msgstr "Συνέχεια"
 msgid "%s: Operation not permitted by ACL"
 msgstr "%s: Η λειτουργία δεν επιτρέπεται από το ACL"
 
-#: index/dlg_index.c:698
+#: index/dlg_index.c:705
 msgid "Failed to create query, aborting"
 msgstr "Σφάλμα κατά την δημιουργία ερωτήματος. Ματαίωση"
 
-#: index/dlg_index.c:745 muttlib.c:1403 mx.c:221 mx.c:359
+#: index/dlg_index.c:752 muttlib.c:1403 mx.c:221 mx.c:359
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "Το %s δεν είναι γραμματοκιβώτιο"
 
-#: index/dlg_index.c:1141
+#: index/dlg_index.c:1151
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Το γραμματοκιβώτιο τροποποιήθηκε εξωτερικά. Οι σημαίες μπορεί να είναι λάθος"
 
-#: index/dlg_index.c:1150 pager/dlg_pager.c:719
+#: index/dlg_index.c:1160 pager/dlg_pager.c:719
 msgid "New mail in this mailbox"
 msgstr "Νέα αλληλογραφία σε αυτό το γραμματοκιβώτιο"
 
-#: index/dlg_index.c:1170
+#: index/dlg_index.c:1180
 msgid "Mailbox was externally modified"
 msgstr "Το γραμματοκιβώτιο τροποποιήθηκε εξωτερικά"
 
-#: index/dlg_index.c:1297 index/functions.c:2943
+#: index/dlg_index.c:1304 index/functions.c:2946
 msgid "No mailbox is open"
 msgstr "Δεν υπάρχουν ανοιχτά γραμματοκιβώτια"
 
-#: index/dlg_index.c:1304
+#: index/dlg_index.c:1311
 msgid "No tagged messages"
 msgstr "Δεν υπάρχουν σημειωμένα μηνύματα"
 
-#: index/dlg_index.c:1308 index/functions.c:629 menu/menu.c:350
+#: index/dlg_index.c:1315 index/functions.c:629 menu/menu.c:350
 msgid "Nothing to do"
 msgstr "Καμμία ενέργεια"
 
@@ -3113,7 +3113,7 @@ msgstr "Σημειώστε μηνύματα που ταιριάζουν σε: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1639 index/functions.c:2289 pager/functions.c:1582
+#: index/functions.c:1639 index/functions.c:2291 pager/functions.c:1582
 #, fuzzy
 msgid "Can't undelete messages"
 msgstr "Δεν υπάρχουν αποκαταστημένα μηνύματα."
@@ -3161,96 +3161,96 @@ msgid "Quit NeoMutt?"
 msgstr "Έξοδος από το NeoMutt;"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2178 pager/functions.c:1520
+#: index/functions.c:2180 pager/functions.c:1520
 msgid "Can't toggle new"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2250 pager/functions.c:1551
+#: index/functions.c:2252 pager/functions.c:1551
 #, fuzzy
 msgid "Can't undelete message"
 msgstr "Δεν υπάρχουν αποκαταστημένα μηνύματα."
 
-#: index/functions.c:2415
+#: index/functions.c:2417
 #, fuzzy
 msgid "Logged out of IMAP servers"
 msgstr "Κλείσιμο σύνδεσης στον εξυπηρετητή IMAP.."
 
-#: index/functions.c:2458
+#: index/functions.c:2460
 msgid "No Message-Id. Unable to perform operation."
 msgstr "Δεν υπάρχει Message-id. Αδυναμία εκτέλεσης της λειτουργίας."
 
-#: index/functions.c:2536
+#: index/functions.c:2538
 #, fuzzy
 msgid "No deleted messages found in the thread"
 msgstr "διαγραφή όλων των μηνυμάτων στη συζήτηση"
 
-#: index/functions.c:2560
+#: index/functions.c:2562
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Εισάγετε το keyID: "
 
-#: index/functions.c:2571
+#: index/functions.c:2573
 msgid "Article has no parent reference"
 msgstr ""
 
-#: index/functions.c:2593
+#: index/functions.c:2595
 msgid "Message is not visible in limited view"
 msgstr "Το τρέχον μήνυμα δεν είναι ορατό στη περιορισμένη όψη"
 
-#: index/functions.c:2597
+#: index/functions.c:2599
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "Λήψη %s μηνυμάτων από τον εξυπηρετητή..."
 
-#: index/functions.c:2608 nntp/nntp.c:2647
+#: index/functions.c:2610 nntp/nntp.c:2647
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "Το άρθρο %s δεν μπορεί να βρεθεί στον διακομιστή"
 
-#: index/functions.c:2630
+#: index/functions.c:2632
 msgid "Open newsgroup in read-only mode"
 msgstr "Ανοίξτε την ομάδα συζήτησης  σε κατάσταση ανάγνωσης μόνο"
 
-#: index/functions.c:2635
+#: index/functions.c:2637
 msgid "Open newsgroup"
 msgstr "Άνοιγμα ομάδας συζητήσεων"
 
-#: index/functions.c:2712 pager/functions.c:1687 pager/functions.c:1728
+#: index/functions.c:2714 pager/functions.c:1687 pager/functions.c:1728
 #: pager/functions.c:1762
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Οι δημοσιεύσεις δεν επιτρέπονται σε αυτήν την ομάδα. Συνέχεια;"
 
-#: index/functions.c:2747
+#: index/functions.c:2749
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Δεν υπάρχει εικονικός φάκελος και Message-Id. Ματαίωση"
 
-#: index/functions.c:2767
+#: index/functions.c:2769
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr "δεν βρέθηκε μύνημα στην βάση δεδομέων notmuch. προσπαθήστε να τρέξετε 'notmuch new'."
 
-#: index/functions.c:2777
+#: index/functions.c:2779
 msgid "Failed to read thread, aborting"
 msgstr "Αδυναμία ανάγνωσης του νήματος. Ματαίωση"
 
-#: index/functions.c:2808
+#: index/functions.c:2810
 #, fuzzy
 msgid "No query, aborting"
 msgstr "Δεν υπάρχει ερώτημα. Ματαίωση"
 
-#: index/functions.c:2840
+#: index/functions.c:2843
 msgid "Windowed queries disabled"
 msgstr ""
 
-#: index/functions.c:2847
+#: index/functions.c:2850
 msgid "No notmuch vfolder currently loaded"
 msgstr "Δεν έχει φορτωθεί εικ. φάκελος notmuch"
 
-#: index/functions.c:2949
+#: index/functions.c:2952
 msgid "There are no messages"
 msgstr "Δεν υπάρχουν μηνύματα"
 
-#: index/functions.c:2956
+#: index/functions.c:2959
 msgid "No visible messages"
 msgstr "Δεν υπάρχουν ορατά μηνύματα"
 
@@ -3393,8 +3393,8 @@ msgid "Reading %s..."
 msgstr "Ανάγνωση %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1392 maildir/mh.c:1048 mbox/mbox.c:1260 mx.c:479
-#: notmuch/notmuch.c:2231
+#: maildir/maildir.c:1392 maildir/mh.c:1048 mbox/mbox.c:1262 mx.c:479
+#: notmuch/notmuch.c:2234
 #, c-format
 msgid "Writing %s..."
 msgstr "Εγγραφή %s..."
@@ -3671,38 +3671,38 @@ msgstr "Το γραμματοκιβώτιο έχει αλλοιωθεί"
 msgid "Couldn't lock %s"
 msgstr "Αδυναμία κλειδώματος του %s"
 
-#: mbox/mbox.c:1139
+#: mbox/mbox.c:1141
 msgid "Mailbox was corrupted"
 msgstr "Το γραμματοκιβώτιο είχε αλλοιωθεί"
 
-#: mbox/mbox.c:1182 mbox/mbox.c:1437
+#: mbox/mbox.c:1184 mbox/mbox.c:1439
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Μοιραίο λάθος! Αδυναμία επαναπρόσβασης του γραμματοκιβωτίου!"
 
-#: mbox/mbox.c:1219 pager/message.c:228
+#: mbox/mbox.c:1221 pager/message.c:228
 msgid "Could not create temporary file"
 msgstr "Αδυναμία δημιουργίας προσωρινού αρχείου"
 
-#: mbox/mbox.c:1238
+#: mbox/mbox.c:1240
 msgid "sync: mbox modified, but no modified messages (report this bug)"
 msgstr ""
 "sync: το mbox έχει τροποποιηθεί, δεν υπάρχουν τροποποιημένα μηνύματα\n"
 "(αναφέρατε αυτό το σφάλμα)"
 
-#: mbox/mbox.c:1382
+#: mbox/mbox.c:1384
 msgid "Committing changes..."
 msgstr "Εφαρμογή των αλλαγών..."
 
-#: mbox/mbox.c:1416
+#: mbox/mbox.c:1418
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Η εγγραφή απέτυχε! Μέρος του γραμματοκιβωτίου αποθηκεύτηκε στο %s"
 
-#: mbox/mbox.c:1502
+#: mbox/mbox.c:1504
 msgid "Could not reopen mailbox"
 msgstr "Αδυναμία επαναπρόσβασης του γραμματοκιβωτίου"
 
-#: mbox/mbox.c:1600 mbox/mbox.c:1753
+#: mbox/mbox.c:1602 mbox/mbox.c:1755
 msgid "Can't write message"
 msgstr "Αδυναμία εγγραφής του μηνύματος"
 
@@ -4443,7 +4443,7 @@ msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Τέλος δεδομένων κρυπτογραφημένων μέσω PGP/MIME --]\n"
 
 #: ncrypt/crypt_gpgme.c:3144 ncrypt/pgp.c:669 ncrypt/pgp.c:722
-#: ncrypt/pgp.c:1285 postpone.c:414
+#: ncrypt/pgp.c:1285 postpone.c:417
 #, fuzzy
 msgid "Could not decrypt PGP message"
 msgstr "Αδυναμία αντιγραφής του μηνύματος."
@@ -4941,8 +4941,8 @@ msgstr ""
 "[-- Σφάλμα: αδυναμία στη δημιουργία υποδιεργασίας PGP --0]\n"
 "\n"
 
-#: ncrypt/pgp.c:1077 ncrypt/pgp.c:1104 ncrypt/smime.c:1966 postpone.c:524
-#: postpone.c:552
+#: ncrypt/pgp.c:1077 ncrypt/pgp.c:1104 ncrypt/smime.c:1966 postpone.c:527
+#: postpone.c:555
 msgid "Decryption failed"
 msgstr "Η αποκρυπτογράφηση απέτυχε"
 
@@ -5320,7 +5320,7 @@ msgstr ""
 msgid "unknown reason"
 msgstr "άγνωστο σφάλμα"
 
-#: notmuch/mdata.c:85 notmuch/notmuch.c:1786
+#: notmuch/mdata.c:85 notmuch/notmuch.c:1789
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr ""
@@ -5330,29 +5330,29 @@ msgstr ""
 msgid "failed to parse notmuch limit: %s"
 msgstr ""
 
-#: notmuch/notmuch.c:680
+#: notmuch/notmuch.c:683
 #, fuzzy
 msgid "Reading messages..."
 msgstr "Αποστολή μηνύματος..."
 
-#: notmuch/notmuch.c:1546
+#: notmuch/notmuch.c:1549
 #, fuzzy
 msgid "No more messages in the thread"
 msgstr "Το τρέχον μήνυμα δεν είναι ορατό σε αυτή τη περιορισμένη όψη"
 
-#: notmuch/notmuch.c:1799
+#: notmuch/notmuch.c:1802
 #, fuzzy, c-format
 msgid "failed to parse limit: %s"
 msgstr "Αδυναμία προσάρτησης του %s"
 
-#: notmuch/notmuch.c:2313
+#: notmuch/notmuch.c:2316
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] ""
 msgstr[1] ""
 
-#: notmuch/notmuch.c:2376
+#: notmuch/notmuch.c:2379
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "Αδυναμία πρόσθεσης στο φάκελο: %s"
@@ -6743,7 +6743,7 @@ msgstr ""
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:100 pattern/exec.c:1076
+#: pattern/exec.c:100 pattern/exec.c:1081
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "λάθος: άγνωστη διεργασία %d (ανέφερε αυτό το σφάλμα)"
@@ -6763,7 +6763,12 @@ msgstr "Σφάλμα κατά  το άνοιγμα του γραμματοκιβ
 msgid "Error opening /dev/null"
 msgstr "Αδυναμία ανοίγματος /dev/null"
 
-#: pattern/exec.c:873
+#: pattern/exec.c:208
+#, fuzzy
+msgid "Error checking length of temporary file"
+msgstr "Σφάλμα. Διατήρηση προσωρινού αρχείου: %s"
+
+#: pattern/exec.c:878
 msgid "error: server custom search only supported with IMAP"
 msgstr ""
 
@@ -7168,20 +7173,20 @@ msgstr "Σημείωση %d διαγραφέντων μηνυμάτων..."
 msgid "Can't write message to temporary file"
 msgstr "Αδυναμία εγγραφής μηνύματος στο προσωρινό αρχείο"
 
-#: postpone.c:237
+#: postpone.c:240
 msgid "Illegal S/MIME header"
 msgstr "Ακατάλληλη επικεφαλίδα S/MIME"
 
-#: postpone.c:269 postpone.c:308 postpone.c:317
+#: postpone.c:272 postpone.c:311 postpone.c:320
 #, fuzzy
 msgid "Illegal crypto header"
 msgstr "Ακατάλληλη επικεφαλίδα PGP"
 
-#: postpone.c:411 postpone.c:519 postpone.c:547
+#: postpone.c:414 postpone.c:522 postpone.c:550
 msgid "Decrypting message..."
 msgstr "Αποκρυπτογράφηση μηνύματος..."
 
-#: postpone.c:654 postpone.c:665
+#: postpone.c:657 postpone.c:668
 msgid "No postponed messages"
 msgstr "Δεν υπάρχουν αναβληθέντα μηνύματα"
 
@@ -7507,12 +7512,12 @@ msgstr "Το γράμμα εστάλη"
 msgid "No recipient specified"
 msgstr "Δεν έχουν οριστεί παραλήπτες"
 
-#: send/send.c:3011
+#: send/send.c:3016
 #, fuzzy
 msgid "No List-Subscribe header found"
 msgstr "Δε βρέθηκε"
 
-#: send/send.c:3035
+#: send/send.c:3040
 #, fuzzy
 msgid "No List-Unsubscribe header found"
 msgstr "Μοτίβο απεγγραφής: "
@@ -7532,7 +7537,7 @@ msgstr "Αδυναμία αποστολής του μηνύματος"
 msgid "Could not open %s"
 msgstr "Αδυναμία ανοίγματος του %s"
 
-#: send/sendlib.c:1410
+#: send/sendlib.c:1411
 #, c-format
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "Λανθασμένη διεθνής διεύθυνση IDN %s κατά την δημιουργία του πεδίου Επαναποστολή-Από"
