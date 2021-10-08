@@ -294,7 +294,7 @@ static int sb_config_observer(struct NotifyCallback *nc)
     const short c_sidebar_width =
         cs_subset_number(NeoMutt->sub, "sidebar_width");
     win->req_cols = c_sidebar_width;
-    win->parent->actions |= WA_REFLOW;
+    window_reflow(win->parent);
     mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
     return 0;
   }
@@ -320,7 +320,7 @@ static int sb_config_observer(struct NotifyCallback *nc)
       TAILQ_INSERT_TAIL(&parent->children, first, entries);
     }
 
-    win->parent->actions |= WA_REFLOW;
+    window_reflow(win->parent);
     mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
     return 0;
   }
@@ -331,7 +331,7 @@ static int sb_config_observer(struct NotifyCallback *nc)
     struct SidebarWindowData *wdata = sb_wdata_get(win);
     if (calc_divider(wdata))
     {
-      win->parent->actions |= WA_REFLOW;
+      window_reflow(win->parent);
       mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
     }
     return 0;
