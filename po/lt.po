@@ -6609,9 +6609,8 @@ msgid "Error opening /dev/null"
 msgstr "Klaida atidarant /dev/null"
 
 #: pattern/exec.c:208
-#, fuzzy
 msgid "Error checking length of temporary file"
-msgstr "Klaida. Išsaugau laikiną bylą: %s"
+msgstr "Klaida tikrinant laikinos bylos ilgį"
 
 #: pattern/exec.c:878
 msgid "error: server custom search only supported with IMAP"
