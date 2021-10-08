@@ -280,7 +280,7 @@ static int pbar_window_observer(struct NotifyCallback *nc)
 
   if (nc->event_subtype == NT_WINDOW_STATE)
   {
-    win_pbar->actions |= WA_RECALC;
+    win_pbar->actions |= WA_RECALC | WA_REPAINT;
     mutt_debug(LL_NOTIFY, "window state done, request WA_RECALC\n");
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
