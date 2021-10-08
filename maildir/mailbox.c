@@ -483,6 +483,8 @@ static int maildir_read_dir(struct Mailbox *m, const char *subdir)
   if (!m)
     return -1;
 
+  mutt_path_tidy(&m->pathbuf, true);
+
   struct Progress *progress = NULL;
 
   if (m->verbose)

@@ -665,6 +665,8 @@ static bool mh_read_dir(struct Mailbox *m)
   if (!m)
     return false;
 
+  mutt_path_tidy(&m->pathbuf, true);
+
   struct MhSequences mhs = { 0 };
   struct Progress *progress = NULL;
 

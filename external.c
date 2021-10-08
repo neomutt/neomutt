@@ -852,9 +852,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
   if (pathlen == 0)
     goto cleanup;
 
-  /* Trim any trailing '/' */
-  if (buf->data[pathlen - 1] == '/')
-    buf->data[pathlen - 1] = '\0';
+  mutt_path_tidy(buf, true);
 
   /* This is an undocumented feature of ELM pointed out to me by Felix von
    * Leitner <leitner@prz.fu-berlin.de> */
