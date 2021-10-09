@@ -807,6 +807,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   int rc = -1;
   int tagged_progress_count = 0;
   unsigned int msg_count = 0;
+  struct Mailbox *m_save = NULL;
 
   struct Buffer *buf = mutt_buffer_pool_get();
   struct stat st;
@@ -932,7 +933,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 #endif
 
   mutt_file_resolve_symlink(buf);
-  struct Mailbox *m_save = mx_path_resolve(mutt_buffer_string(buf));
+  m_save = mx_path_resolve(mutt_buffer_string(buf));
   bool old_append = m_save->append;
   OpenMailboxFlags mbox_flags = MUTT_NEWFOLDER;
   /* Display a tagged message progress counter, rather than (for
@@ -1072,6 +1073,9 @@ errcleanup:
         break;
     }
   }
+
+  if (m_save && (m_save->flags == MB_HIDDEN))
+    mailbox_free(&m_save);
 
 cleanup:
   mutt_buffer_pool_release(&buf);
