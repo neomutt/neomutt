@@ -283,7 +283,7 @@ bool mx_mbox_ac_link(struct Mailbox *m)
   {
     if (new_account)
     {
-      FREE(&a);
+      account_free(&a);
     }
     return false;
   }
