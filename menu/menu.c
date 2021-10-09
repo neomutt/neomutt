@@ -323,6 +323,7 @@ int menu_loop(struct Menu *menu)
     if (!ARRAY_EMPTY(&menu->dialog) && (menu_dialog_dokey(menu, &op) == 0))
       return op;
 
+    window_redraw(NULL);
     const bool c_auto_tag = cs_subset_bool(menu->sub, "auto_tag");
     op = km_dokey(menu->type);
     if ((op == OP_TAG_PREFIX) || (op == OP_TAG_PREFIX_COND))
