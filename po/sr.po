@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: neomutt 20210205\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2021-10-07 21:15+0100\n"
-"PO-Revision-Date: 2021-09-29 13:33+0200\n"
+"PO-Revision-Date: 2021-10-10 21:44+0200\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: poe v1.3.2-1-g5becbf5\n"
+"X-Generator: poe 1.3.5-2\n"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:397
@@ -6614,9 +6614,8 @@ msgid "Error opening /dev/null"
 msgstr "Грешка приликом отварања /dev/null"
 
 #: pattern/exec.c:208
-#, fuzzy
 msgid "Error checking length of temporary file"
-msgstr "Грешка. Сачувана привремена датотека: %s"
+msgstr "Грешка приликом провере дужине привремене датотеке"
 
 #: pattern/exec.c:878
 msgid "error: server custom search only supported with IMAP"
