@@ -47,14 +47,15 @@
  */
 struct Progress
 {
-  struct MuttWindow *win; ///< Window to draw on
-  char msg[1024];         ///< Message to display
-  char sizestr[24];       ///< String for percentage/size
-  size_t pos;             ///< Current position
-  size_t size;            ///< Total expected size
-  size_t inc;             ///< Increment size
-  uint64_t timestamp;     ///< Time of last update
-  bool is_bytes;          ///< true if measuring bytes
+  struct MuttWindow *win;       ///< Window to draw on
+  struct MuttWindow *old_focus; ///< Previous focused Window
+  char msg[1024];               ///< Message to display
+  char sizestr[24];             ///< String for percentage/size
+  size_t pos;                   ///< Current position
+  size_t size;                  ///< Total expected size
+  size_t inc;                   ///< Increment size
+  uint64_t timestamp;           ///< Time of last update
+  bool is_bytes;                ///< true if measuring bytes
 };
 
 /**
@@ -231,8 +232,10 @@ void progress_free(struct Progress **ptr)
   if (!ptr || !*ptr)
     return;
 
-  mutt_clear_error();
-  // struct Progress *progress = *ptr;
+  struct Progress *progress = *ptr;
+
+  mutt_window_clearline(progress->win, 0);
+  window_set_focus(progress->old_focus);
 
   FREE(ptr);
 }
@@ -257,6 +260,7 @@ struct Progress *progress_new(const char *msg, enum ProgressType type, size_t si
   progress->size = size;
   progress->inc = choose_increment(type);
   progress->is_bytes = (type == MUTT_PROGRESS_NET);
+  progress->old_focus = window_set_focus(progress->win);
 
   /* Generate the size string, if a total size was specified */
   if (progress->size != 0)
