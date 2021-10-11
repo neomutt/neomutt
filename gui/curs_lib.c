@@ -306,6 +306,8 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
 
   win->help_data = old_help;
   win->help_menu = old_menu;
+  mutt_window_move(win, 0, 0);
+  mutt_window_clearline(win, 0);
   window_set_focus(old_focus);
 
   if (ret == 0)
@@ -313,7 +315,6 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
   else
     mutt_buffer_reset(buf);
 
-  mutt_window_clearline(win, 0);
   mutt_enter_state_free(&es);
 
   return ret;
