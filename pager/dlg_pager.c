@@ -269,7 +269,9 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
     pager_queue_redraw(priv, MENU_REDRAW_BODY | MENU_REDRAW_INDEX);
   }
 
-  if ((priv->redraw & MENU_REDRAW_FLOW) || (priv->cur_line >= priv->lines_used))
+  // We need to populate more lines, but not change position
+  const bool repopulate = (priv->cur_line >= priv->lines_used);
+  if ((priv->redraw & MENU_REDRAW_FLOW) || repopulate)
   {
     if (!(priv->pview->flags & MUTT_PAGER_RETWINCH))
     {
@@ -291,8 +293,11 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
           FREE(&(priv->lines[i].search));
       }
 
-      priv->lines_used = 0;
-      priv->top_line = 0;
+      if (!repopulate)
+      {
+        priv->lines_used = 0;
+        priv->top_line = 0;
+      }
     }
     int i = -1;
     int j = -1;
@@ -304,7 +309,8 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
     {
       if (!priv->lines[i].cont_line && (++j == priv->win_height))
       {
-        priv->top_line = i;
+        if (!repopulate)
+          priv->top_line = i;
         if (!priv->search_flag)
           break;
       }
