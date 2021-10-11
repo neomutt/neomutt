@@ -520,6 +520,7 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
     return -1;
 
   struct KeyEvent ch;
+  struct MuttWindow *old_focus = window_set_focus(win);
 
   mutt_curses_set_color(MT_COLOR_PROMPT);
   mutt_window_mvaddstr(win, 0, 0, prompt);
@@ -534,14 +535,18 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
   {
     ch = mutt_getch();
   } while (ch.ch == -2); // Timeout
+
+  mutt_window_move(win, 0, 0);
+  mutt_window_clrtoeol(win);
+  mutt_refresh();
+  window_set_focus(old_focus);
+
   if (ch.ch < 0)
   {
-    mutt_window_clearline(win, 0);
     return -1;
   }
   else if (ch.ch == '?')
   {
-    mutt_refresh();
     mutt_buffer_reset(fname);
 
     if (flags == MUTT_SEL_NO_FLAGS)
