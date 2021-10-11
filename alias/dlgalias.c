@@ -414,6 +414,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
         {
           alias_set_title(sbar, _("Aliases"), mdata->str);
           menu_queue_redraw(menu, MENU_REDRAW_FULL);
+          window_redraw(NULL);
         }
 
         break;
@@ -425,6 +426,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
           t = -1;
         done = true;
         break;
+
       case OP_EXIT:
         done = true;
         break;
