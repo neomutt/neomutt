@@ -163,14 +163,17 @@ static void process_protected_headers(struct Mailbox *m, struct Email *e)
  * @param e        Email to display
  * @param header   Header to prefix output (OPTIONAL)
  * @param wrap_len Width to wrap lines
+ * @param cmflags  Message flags, e.g. #MUTT_CM_DECODE 
  * @retval  0 Success
  * @retval -1 Error
+ *
+ * @note Flags may be added to @a cmflags
  */
-static int email_to_file(struct Message *msg, struct Buffer *tempfile, struct Mailbox *m,
-                         struct Email *e, const char *header, int wrap_len)
+static int email_to_file(struct Message *msg, struct Buffer *tempfile,
+                         struct Mailbox *m, struct Email *e, const char *header,
+                         int wrap_len, CopyMessageFlags *cmflags)
 {
   int rc = 0;
-  CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
   pid_t filterpid = -1;
 
   mutt_parse_mime_message(e, msg->fp);
@@ -191,7 +194,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile, struct Ma
       if (!crypt_valid_passphrase(e->security))
         goto cleanup;
 
-      cmflags |= MUTT_CM_VERIFY;
+      *cmflags |= MUTT_CM_VERIFY;
     }
     else if (e->security & SEC_SIGN)
     {
@@ -201,12 +204,12 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile, struct Ma
           cs_subset_quad(NeoMutt->sub, "crypt_verify_sig");
       if (query_quadoption(c_crypt_verify_sig, _("Verify signature?")) == MUTT_YES)
       {
-        cmflags |= MUTT_CM_VERIFY;
+        *cmflags |= MUTT_CM_VERIFY;
       }
     }
   }
 
-  if (cmflags & MUTT_CM_VERIFY || e->security & SEC_ENCRYPT)
+  if (*cmflags & MUTT_CM_VERIFY || e->security & SEC_ENCRYPT)
   {
     if (e->security & APPLICATION_PGP)
     {
@@ -259,7 +262,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile, struct Ma
   if (m->type == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
-  int res = mutt_copy_message(fp_out, e, msg, cmflags, chflags, wrap_len);
+  int res = mutt_copy_message(fp_out, e, msg, *cmflags, chflags, wrap_len);
 
   if (((mutt_file_fclose(&fp_out) != 0) && (errno != EPIPE)) || (res < 0))
   {
@@ -321,7 +324,8 @@ int external_pager(struct Mailbox *m, struct Email *e, const char *command)
 
   struct Buffer *tempfile = mutt_buffer_pool_get();
 
-  int rc = email_to_file(msg, tempfile, m, e, buf, screen_width);
+  CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
+  int rc = email_to_file(msg, tempfile, m, e, buf, screen_width, &cmflags);
   if (rc < 0)
     goto cleanup;
 
@@ -356,12 +360,12 @@ cleanup:
 
 /**
  * notify_crypto - Notify the user about the crypto status of the Email
- * @param e   Email to display
- * @param msg Raw Email
+ * @param e       Email to display
+ * @param msg     Raw Email
+ * @param cmflags Message flags, e.g. #MUTT_CM_DECODE 
  */
-static void notify_crypto(struct Email *e, struct Message *msg)
+static void notify_crypto(struct Email *e, struct Message *msg, CopyMessageFlags cmflags)
 {
-  CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
   if ((WithCrypto != 0) && (e->security & APPLICATION_SMIME) && (cmflags & MUTT_CM_VERIFY))
   {
     if (e->security & SEC_GOODSIGN)
@@ -407,12 +411,14 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_pa
 
   struct Buffer *tempfile = mutt_buffer_pool_get();
 
+  CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
+
   // win_pager might not be visible and have a size yet, so use win_index
-  int rc = email_to_file(msg, tempfile, m, e, NULL, win_index->state.cols);
+  int rc = email_to_file(msg, tempfile, m, e, NULL, win_index->state.cols, &cmflags);
   if (rc < 0)
     goto cleanup;
 
-  notify_crypto(e, msg);
+  notify_crypto(e, msg, cmflags);
 
   /* Invoke the builtin pager */
   struct PagerData pdata = { 0 };
