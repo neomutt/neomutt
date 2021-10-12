@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2021-10-07 21:15+0100\n"
-"PO-Revision-Date: 2021-09-30 22:11+0200\n"
+"PO-Revision-Date: 2021-10-12 21:04+0200\n"
 "Last-Translator: kbcb <gerritche@gmail.com>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -6591,9 +6591,8 @@ msgid "Error opening /dev/null"
 msgstr "Kann /dev/null nicht öffnen"
 
 #: pattern/exec.c:208
-#, fuzzy
 msgid "Error checking length of temporary file"
-msgstr "Fehler. Speichere Temporärdatei: %s"
+msgstr "Fehler bei Prüfung Größe temporärer Datei"
 
 #: pattern/exec.c:878
 msgid "error: server custom search only supported with IMAP"
@@ -7308,7 +7307,7 @@ msgstr "Keinen List-Subscribe-Header gefunden"
 
 #: send/send.c:3040
 msgid "No List-Unsubscribe header found"
-msgstr "Keinen List-Unsubscribe-Header gefunden:"
+msgstr "Keinen List-Unsubscribe-Header gefunden"
 
 #: send/sendlib.c:491
 #, c-format
