@@ -929,9 +929,9 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
   buf_strcpy(ps, s);
   buf_seek(ps, 0);
 
+  SKIPWS(ps->dptr);
   while (*ps->dptr)
   {
-    SKIPWS(ps->dptr);
     switch (*ps->dptr)
     {
       case '^':
@@ -1017,7 +1017,6 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
           }
           FREE(&buf);
           ps->dptr = p + 1; /* restore location */
-          SKIPWS(ps->dptr);
           break;
         }
         if (implicit && pat_or)
@@ -1123,7 +1122,6 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
         all_addr = false;
         is_alias = false;
         ps->dptr = p + 1; /* restore location */
-        SKIPWS(ps->dptr);
         break;
       }
 
@@ -1131,6 +1129,7 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
         buf_printf(err, _("error in pattern at: %s"), ps->dptr);
         goto cleanup;
     }
+    SKIPWS(ps->dptr);
   }
   buf_pool_release(&ps);
 
