@@ -564,7 +564,9 @@ int mutt_pager(struct PagerView *pview)
     // Wipe any previous state info
     struct Menu *menu = priv->menu;
     struct Notify *notify = priv->notify;
+    int rc = priv->rc;
     memset(priv, 0, sizeof(*priv));
+    priv->rc = rc;
     priv->menu = menu;
     priv->notify = notify;
     priv->win_pbar = pview->win_pbar;
