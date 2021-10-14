@@ -409,7 +409,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
 
       case OP_MAIN_LIMIT:
       {
-        int rc = mutt_pattern_alias_func(_("Limit to messages matching: "), mdata, menu);
+        int rc = mutt_pattern_alias_func(_("Limit to addresses matching: "), mdata, menu);
         if (rc == 0)
         {
           alias_set_title(sbar, _("Aliases"), mdata->str);

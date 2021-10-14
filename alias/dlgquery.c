@@ -612,7 +612,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
 
       case OP_MAIN_LIMIT:
       {
-        int rc = mutt_pattern_alias_func(_("Limit to messages matching: "), &mdata, menu);
+        int rc = mutt_pattern_alias_func(_("Limit to addresses matching: "), &mdata, menu);
         if (rc == 0)
         {
           alias_array_sort(&mdata.ava, mdata.sub);
