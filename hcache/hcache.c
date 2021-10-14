@@ -262,7 +262,7 @@ static bool create_hcache_dir(const char *path)
 static void hcache_per_folder(struct Buffer *hcpath, const char *path,
                               const char *folder, hcache_namer_t namer)
 {
-  struct stat st;
+  struct stat st = { 0 };
 
   int plen = mutt_str_len(path);
   int rc = stat(path, &st);

@@ -70,7 +70,7 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, struct 
   if (!account || !c_message_cachedir || !bcache)
     return -1;
 
-  struct stat st;
+  struct stat st = { 0 };
   if (!((stat(c_message_cachedir, &st) == 0) && S_ISDIR(st.st_mode)))
   {
     mutt_error(_("Cache disabled, $message_cachedir isn't a directory: %s"), c_message_cachedir);
@@ -212,7 +212,7 @@ FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
   struct Buffer *path = mutt_buffer_pool_get();
   mutt_buffer_printf(path, "%s%s%s", bcache->path, id, ".tmp");
 
-  struct stat st;
+  struct stat st = { 0 };
   if (stat(bcache->path, &st) == 0)
   {
     if (!S_ISDIR(st.st_mode))
@@ -294,7 +294,7 @@ int mutt_bcache_exists(struct BodyCache *bcache, const char *id)
   mutt_buffer_addstr(path, id);
 
   int rc = 0;
-  struct stat st;
+  struct stat st = { 0 };
   if (stat(mutt_buffer_string(path), &st) < 0)
     rc = -1;
   else

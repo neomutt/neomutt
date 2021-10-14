@@ -205,7 +205,7 @@ static int add_entropy(const char *file)
   if (!file)
     return 0;
 
-  struct stat st;
+  struct stat st = { 0 };
   int n = -1;
 
   if (stat(file, &st) == -1)

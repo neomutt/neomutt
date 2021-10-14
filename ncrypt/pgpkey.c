@@ -238,7 +238,7 @@ struct Body *pgp_class_make_key_attachment(void)
   struct Body *att = NULL;
   char buf[1024];
   char tmp[256];
-  struct stat st;
+  struct stat st = { 0 };
   pid_t pid;
   OptPgpCheckTrust = false;
   struct Buffer *tempf = NULL;

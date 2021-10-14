@@ -473,7 +473,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
   char buf[100];
   size_t r;
 
-  struct stat st;
+  struct stat st = { 0 };
 
   if (b && !fname)
     fname = b->filename;
@@ -685,7 +685,7 @@ static void transform_to_7bit(struct Body *a, FILE *fp_in, struct ConfigSubset *
 {
   struct Buffer *buf = NULL;
   struct State s = { 0 };
-  struct stat st;
+  struct stat st = { 0 };
 
   for (; a; a = a->next)
   {
@@ -749,7 +749,7 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp, struct ConfigSubset *sub)
   struct Buffer temp = mutt_buffer_make(0);
   FILE *fp_in = NULL;
   FILE *fp_out = NULL;
-  struct stat st;
+  struct stat st = { 0 };
 
   if (!a->filename && fp)
     fp_in = fp;
@@ -1530,7 +1530,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
   FILE *fp_tmp = NULL;
   int rc = -1;
   bool need_mailbox_cleanup = false;
-  struct stat st;
+  struct stat st = { 0 };
   MsgOpenFlags onm_flags;
 
   if (post)

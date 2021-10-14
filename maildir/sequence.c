@@ -445,7 +445,7 @@ out:
 int mh_seq_changed(struct Mailbox *m)
 {
   char path[PATH_MAX];
-  struct stat st;
+  struct stat st = { 0 };
 
   if ((snprintf(path, sizeof(path), "%s/.mh_sequences", mailbox_path(m)) < sizeof(path)) &&
       (stat(path, &st) == 0))

@@ -202,7 +202,7 @@ void update_crypt_info(struct ComposeSharedData *shared)
 static int check_attachments(struct AttachCtx *actx, struct ConfigSubset *sub)
 {
   int rc = -1;
-  struct stat st;
+  struct stat st = { 0 };
   struct Buffer *pretty = NULL, *msg = NULL;
 
   for (int i = 0; i < actx->idxlen; i++)
@@ -1404,7 +1404,7 @@ static int op_compose_rename_file(struct ComposeSharedData *shared, int op)
   if ((mutt_buffer_get_field(_("Rename to: "), fname, MUTT_FILE, false, NULL, NULL, NULL) == 0) &&
       !mutt_buffer_is_empty(fname))
   {
-    struct stat st;
+    struct stat st = { 0 };
     if (stat(cur_att->body->filename, &st) == -1)
     {
       /* L10N: "stat" is a system call. Do "man 2 stat" for more information. */

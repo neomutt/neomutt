@@ -160,7 +160,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
  */
 int mutt_mailbox_check(struct Mailbox *m_cur, int force)
 {
-  struct stat st_ctx;
+  struct stat st_ctx = { 0 };
   time_t t;
   bool check_stats = false;
   st_ctx.st_dev = 0;

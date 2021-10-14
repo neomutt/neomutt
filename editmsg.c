@@ -59,7 +59,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   char buf[256];
   int rc;
   FILE *fp = NULL;
-  struct stat st;
+  struct stat st = { 0 };
   bool old_append = m->append;
 
   struct Buffer *fname = mutt_buffer_pool_get();

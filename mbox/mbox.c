@@ -195,7 +195,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
   time_t t;
   LOFF_T loc, tmploc;
   struct Email *e = NULL;
-  struct stat st;
+  struct stat st = { 0 };
   struct Progress *progress = NULL;
   enum MxOpenReturns rc = MX_OPEN_ERROR;
 
@@ -355,7 +355,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
   if (!adata)
     return MX_OPEN_ERROR;
 
-  struct stat st;
+  struct stat st = { 0 };
   char buf[8192], return_path[256];
   struct Email *e_cur = NULL;
   time_t t;
@@ -842,7 +842,7 @@ bool mbox_test_new_folder(const char *path)
 void mbox_reset_atime(struct Mailbox *m, struct stat *st)
 {
   struct utimbuf utimebuf;
-  struct stat st2;
+  struct stat st2 = { 0 };
 
   if (!st)
   {
@@ -1035,7 +1035,7 @@ static enum MxStatus mbox_mbox_check(struct Mailbox *m)
   if (!adata->fp)
     return MX_STATUS_ERROR;
 
-  struct stat st;
+  struct stat st = { 0 };
   bool unlock = false;
   bool modified = false;
 
@@ -1158,7 +1158,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   int need_sort = 0; /* flag to resort mailbox if new mail arrives */
   int first = -1;    /* first message to be written */
   LOFF_T offset;     /* location in mailbox to write changed messages */
-  struct stat st;
+  struct stat st = { 0 };
   struct MUpdate *new_offset = NULL;
   struct MUpdate *old_offset = NULL;
   FILE *fp = NULL;

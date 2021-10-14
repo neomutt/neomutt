@@ -432,7 +432,7 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
       mutt_error(_("Error sending message, child exited %d (%s)"), i, NONULL(e));
       if (childout)
       {
-        struct stat st;
+        struct stat st = { 0 };
 
         if ((stat(childout, &st) == 0) && (st.st_size > 0))
         {

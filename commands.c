@@ -810,7 +810,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   struct Mailbox *m_save = NULL;
 
   struct Buffer *buf = mutt_buffer_pool_get();
-  struct stat st;
+  struct stat st = { 0 };
   struct EmailNode *en = NULL;
 
   STAILQ_FOREACH(en, el, entries)

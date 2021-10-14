@@ -368,7 +368,7 @@ static void browser_sort(struct BrowserState *state)
  */
 static bool link_is_dir(const char *folder, const char *path)
 {
-  struct stat st;
+  struct stat st = { 0 };
   bool retval = false;
 
   struct Buffer *fullpath = mutt_buffer_pool_get();
@@ -761,7 +761,7 @@ static int examine_directory(struct Mailbox *m, struct Menu *menu,
   else
 #endif /* USE_NNTP */
   {
-    struct stat st;
+    struct stat st = { 0 };
     DIR *dp = NULL;
     struct dirent *de = NULL;
 
@@ -861,7 +861,7 @@ ed_out:
  */
 static int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState *state)
 {
-  struct stat st;
+  struct stat st = { 0 };
   struct Buffer *md = NULL;
   struct Buffer *mailbox = NULL;
 
@@ -940,7 +940,7 @@ static int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct Browse
 
       if (np->mailbox->type == MUTT_MAILDIR)
       {
-        struct stat st2;
+        struct stat st2 = { 0 };
 
         mutt_buffer_printf(md, "%s/new", mailbox_path(np->mailbox));
         if (stat(mutt_buffer_string(md), &st) < 0)
@@ -1862,7 +1862,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             if (mutt_path_realpath(buf->data) == 0)
               break;
 
-            struct stat st;
+            struct stat st = { 0 };
             if (stat(mutt_buffer_string(buf), &st) == 0)
             {
               if (S_ISDIR(st.st_mode))

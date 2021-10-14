@@ -175,7 +175,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   int i;
   struct Envelope *n = NULL;
   time_t mtime;
-  struct stat st;
+  struct stat st = { 0 };
 
   struct Buffer *path = mutt_buffer_pool_get();
   mutt_buffer_mktemp(path);

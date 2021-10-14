@@ -303,7 +303,7 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
 
     if (is_message)
     {
-      struct stat st;
+      struct stat st = { 0 };
 
       /* check to make sure that this file is really the one the user wants */
       rc = mutt_save_confirm(mutt_buffer_string(buf), &st);

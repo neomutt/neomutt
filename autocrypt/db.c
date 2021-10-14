@@ -92,7 +92,7 @@ int mutt_autocrypt_db_init(bool can_create)
   struct Buffer *db_path = mutt_buffer_pool_get();
   mutt_buffer_concat_path(db_path, c_autocrypt_dir, "autocrypt.db");
 
-  struct stat st;
+  struct stat st = { 0 };
   if (stat(mutt_buffer_string(db_path), &st) == 0)
   {
     if (sqlite3_open_v2(mutt_buffer_string(db_path), &AutocryptDB,

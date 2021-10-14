@@ -59,7 +59,7 @@
 static int autocrypt_dir_init(bool can_create)
 {
   int rc = 0;
-  struct stat st;
+  struct stat st = { 0 };
 
   const char *const c_autocrypt_dir =
       cs_subset_path(NeoMutt->sub, "autocrypt_dir");

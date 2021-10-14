@@ -2461,7 +2461,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
   if (!(flags & SEND_BATCH))
   {
-    struct stat st;
+    struct stat st = { 0 };
     time_t mtime = mutt_file_decrease_mtime(e_templ->body->filename, NULL);
     if (mtime == (time_t) -1)
     {

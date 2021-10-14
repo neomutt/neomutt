@@ -130,8 +130,8 @@ struct Mailbox *mailbox_find(const char *path)
   if (!path)
     return NULL;
 
-  struct stat st;
-  struct stat st_tmp;
+  struct stat st = { 0 };
+  struct stat st_tmp = { 0 };
 
   if (stat(path, &st) != 0)
     return NULL;
@@ -192,7 +192,7 @@ struct Mailbox *mailbox_find_name(const char *name)
  */
 void mailbox_update(struct Mailbox *m)
 {
-  struct stat st;
+  struct stat st = { 0 };
 
   if (!m)
     return;

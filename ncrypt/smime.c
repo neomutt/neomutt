@@ -228,7 +228,7 @@ static const char *smime_command_format_str(char *buf, size_t buflen, size_t col
         struct Buffer *path = mutt_buffer_pool_get();
         struct Buffer *buf1 = mutt_buffer_pool_get();
         struct Buffer *buf2 = mutt_buffer_pool_get();
-        struct stat st;
+        struct stat st = { 0 };
 
         mutt_buffer_strcpy(path, c_smime_ca_location);
         mutt_buffer_expand_path(path);

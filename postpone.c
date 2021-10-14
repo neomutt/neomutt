@@ -67,7 +67,7 @@ static bool UpdateNumPostponed = false;
  */
 int mutt_num_postponed(struct Mailbox *m, bool force)
 {
-  struct stat st;
+  struct stat st = { 0 };
 
   static time_t LastModify = 0;
   static char *OldPostponed = NULL;

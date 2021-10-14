@@ -89,7 +89,7 @@ const char *nm_db_get_filename(struct Mailbox *m)
  */
 notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verbose)
 {
-  struct stat st1;
+  struct stat st1 = { 0 };
   char buf[PATH_MAX];
   if (stat(mutt_path_concat(buf, filename, ".notmuch", sizeof(buf)), &st1) != 0)
   {
@@ -287,7 +287,7 @@ int nm_db_get_mtime(struct Mailbox *m, time_t *mtime)
   snprintf(path, sizeof(path), "%s/.notmuch/xapian", nm_db_get_filename(m));
   mutt_debug(LL_DEBUG2, "nm: checking '%s' mtime\n", path);
 
-  struct stat st;
+  struct stat st = { 0 };
   if (stat(path, &st) != 0)
     return -1;
 

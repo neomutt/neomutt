@@ -197,7 +197,7 @@ void mutt_file_unlink(const char *s)
   if (!s)
     return;
 
-  struct stat st;
+  struct stat st = { 0 };
   /* Defend against symlink attacks */
 
   const bool is_regular_file = (lstat(s, &st) == 0) && S_ISREG(st.st_mode);
@@ -208,7 +208,7 @@ void mutt_file_unlink(const char *s)
   if (fd < 0)
     return;
 
-  struct stat st2;
+  struct stat st2 = { 0 };
   if ((fstat(fd, &st2) != 0) || !S_ISREG(st2.st_mode) ||
       (st.st_dev != st2.st_dev) || (st.st_ino != st2.st_ino))
   {
@@ -298,7 +298,8 @@ int mutt_file_copy_stream(FILE *fp_in, FILE *fp_out)
  */
 int mutt_file_symlink(const char *oldpath, const char *newpath)
 {
-  struct stat st_old, st_new;
+  struct stat st_old = { 0 };
+  struct stat st_new = { 0 };
 
   if (!oldpath || !newpath)
     return -1;
@@ -353,7 +354,8 @@ int mutt_file_symlink(const char *oldpath, const char *newpath)
  */
 int mutt_file_safe_rename(const char *src, const char *target)
 {
-  struct stat st_src, st_target;
+  struct stat st_src = { 0 };
+  struct stat st_target = { 0 };
   int link_errno;
 
   if (!src || !target)
@@ -471,7 +473,7 @@ int mutt_file_rmtree(const char *path)
     return -1;
 
   struct dirent *de = NULL;
-  struct stat st;
+  struct stat st = { 0 };
   int rc = 0;
 
   DIR *dirp = opendir(path);
@@ -561,7 +563,8 @@ int mutt_file_open(const char *path, uint32_t flags)
     goto cleanup;
 
   /* make sure the file is not symlink */
-  struct stat st_old, st_new;
+  struct stat st_old = { 0 };
+  struct stat st_new = { 0 };
   if (((lstat(path, &st_old) < 0) || (fstat(fd, &st_new) < 0)) ||
       !compare_stat(&st_old, &st_new))
   {
@@ -893,7 +896,7 @@ int mutt_file_mkdir(const char *path, mode_t mode)
     return -1;
   }
 
-  struct stat st;
+  struct stat st = { 0 };
   if ((stat(path, &st) == 0) && S_ISDIR(st.st_mode))
     return 0;
 
@@ -970,7 +973,7 @@ time_t mutt_file_decrease_mtime(const char *fp, struct stat *st)
     return -1;
 
   struct utimbuf utim;
-  struct stat st2;
+  struct stat st2 = { 0 };
   time_t mtime;
 
   if (!st)
@@ -1010,7 +1013,7 @@ void mutt_file_set_mtime(const char *from, const char *to)
     return;
 
   struct utimbuf utim;
-  struct stat st;
+  struct stat st = { 0 };
 
   if (stat(from, &st) != -1)
   {
@@ -1096,7 +1099,7 @@ int mutt_file_chmod_add_stat(const char *path, mode_t mode, struct stat *st)
   if (!path)
     return -1;
 
-  struct stat st2;
+  struct stat st2 = { 0 };
 
   if (!st)
   {
@@ -1152,7 +1155,7 @@ int mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st)
   if (!path)
     return -1;
 
-  struct stat st2;
+  struct stat st2 = { 0 };
 
   if (!st)
   {
@@ -1317,7 +1320,7 @@ void mutt_file_unlink_empty(const char *path)
   if (!path)
     return;
 
-  struct stat st;
+  struct stat st = { 0 };
 
   int fd = open(path, O_RDWR);
   if (fd == -1)
@@ -1418,7 +1421,7 @@ int mutt_file_check_empty(const char *path)
   if (!path)
     return -1;
 
-  struct stat st;
+  struct stat st = { 0 };
   if (stat(path, &st) == -1)
     return -1;
 
@@ -1501,7 +1504,7 @@ long mutt_file_get_size(const char *path)
   if (!path)
     return 0;
 
-  struct stat st;
+  struct stat st = { 0 };
   if (stat(path, &st) != 0)
     return 0;
 
@@ -1519,7 +1522,7 @@ long mutt_file_get_size_fp(FILE *fp)
   if (!fp)
     return 0;
 
-  struct stat st;
+  struct stat st = { 0 };
   if (fstat(fileno(fp), &st) != 0)
     return 0;
 
@@ -1638,7 +1641,7 @@ int mutt_file_stat_compare(struct stat *st1, enum MuttStatType st1_type,
  */
 void mutt_file_resolve_symlink(struct Buffer *buf)
 {
-  struct stat st;
+  struct stat st = { 0 };
   int rc = lstat(mutt_buffer_string(buf), &st);
   if ((rc != -1) && S_ISLNK(st.st_mode))
   {

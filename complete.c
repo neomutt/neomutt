@@ -200,7 +200,7 @@ int mutt_complete(char *buf, size_t buflen)
       }
       else
       {
-        struct stat st;
+        struct stat st = { 0 };
 
         mutt_buffer_strcpy(filepart, de->d_name);
 

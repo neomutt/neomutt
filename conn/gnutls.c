@@ -238,7 +238,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
   unsigned char *ptr = NULL;
   gnutls_datum_t b64_data = { 0 };
   unsigned char *b64_data_data = NULL;
-  struct stat st;
+  struct stat st = { 0 };
 
   const char *const c_certificate_file =
       cs_subset_path(NeoMutt->sub, "certificate_file");

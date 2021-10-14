@@ -162,7 +162,7 @@ void nntp_group_unread_stat(struct NntpMboxData *mdata)
 int nntp_newsrc_parse(struct NntpAccountData *adata)
 {
   char *line = NULL;
-  struct stat st;
+  struct stat st = { 0 };
 
   if (adata->fp_newsrc)
   {
@@ -491,7 +491,7 @@ int nntp_newsrc_update(struct NntpAccountData *adata)
   mutt_debug(LL_DEBUG1, "Updating %s\n", adata->newsrc_file);
   if (adata->newsrc_file && (update_file(adata->newsrc_file, buf) == 0))
   {
-    struct stat st;
+    struct stat st = { 0 };
 
     rc = stat(adata->newsrc_file, &st);
     if (rc == 0)
@@ -862,7 +862,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
     while ((entry = readdir(dp)))
     {
       char *group = entry->d_name;
-      struct stat st;
+      struct stat st = { 0 };
       struct NntpMboxData *mdata = NULL;
       struct NntpMboxData tmp_mdata;
 

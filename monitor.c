@@ -274,7 +274,7 @@ static int monitor_handle_ignore(int desc)
 {
   int new_desc = -1;
   struct Monitor *iter = Monitor;
-  struct stat st;
+  struct stat st = { 0 };
 
   while (iter && (iter->desc != desc))
     iter = iter->next;
@@ -331,7 +331,7 @@ static int monitor_handle_ignore(int desc)
 static enum ResolveResult monitor_resolve(struct MonitorInfo *info, struct Mailbox *m)
 {
   char *fmt = NULL;
-  struct stat st;
+  struct stat st = { 0 };
 
   if (m)
   {

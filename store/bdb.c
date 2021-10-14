@@ -91,7 +91,7 @@ static void *store_bdb_open(const char *path)
   if (!path)
     return NULL;
 
-  struct stat st;
+  struct stat st = { 0 };
   int ret;
   uint32_t createflags = DB_CREATE;
 

@@ -94,7 +94,7 @@ void mutt_adv_mktemp(struct Buffer *buf)
     const char *const c_tmpdir = cs_subset_path(NeoMutt->sub, "tmpdir");
     mutt_buffer_printf(buf, "%s/%s", NONULL(c_tmpdir), mutt_buffer_string(prefix));
 
-    struct stat st;
+    struct stat st = { 0 };
     if ((lstat(mutt_buffer_string(buf), &st) == -1) && (errno == ENOENT))
       goto out;
 
@@ -625,7 +625,7 @@ void mutt_buffer_pretty_mailbox(struct Buffer *buf)
 int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *fname,
                          enum SaveAttach *opt, char **directory)
 {
-  struct stat st;
+  struct stat st = { 0 };
 
   mutt_buffer_strcpy(fname, path);
   if (access(mutt_buffer_string(fname), F_OK) != 0)
@@ -1315,7 +1315,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 FILE *mutt_open_read(const char *path, pid_t *thepid)
 {
   FILE *fp = NULL;
-  struct stat st;
+  struct stat st = { 0 };
 
   size_t len = mutt_str_len(path);
   if (len == 0)

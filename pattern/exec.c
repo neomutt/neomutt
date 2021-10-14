@@ -121,7 +121,7 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
   char *temp = NULL;
   size_t tempsize = 0;
 #else
-  struct stat st;
+  struct stat st = { 0 };
 #endif
 
   const bool needs_head = (pat->op == MUTT_PAT_HEADER) || (pat->op == MUTT_PAT_WHOLE_MSG);

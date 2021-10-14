@@ -68,7 +68,7 @@
 int mutt_get_tmp_attachment(struct Body *a)
 {
   char type[256];
-  struct stat st;
+  struct stat st = { 0 };
 
   if (a->unlink)
     return 0;
@@ -1039,7 +1039,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, const char *path,
   {
     /* When called from the compose menu, the attachment isn't parsed,
      * so we need to do it here. */
-    struct stat st;
+    struct stat st = { 0 };
 
     if (stat(m->filename, &st) == -1)
     {

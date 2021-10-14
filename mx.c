@@ -203,7 +203,7 @@ static bool mx_open_mailbox_append(struct Mailbox *m, OpenMailboxFlags flags)
   if (!m)
     return false;
 
-  struct stat st;
+  struct stat st = { 0 };
 
   m->append = true;
   if ((m->type == MUTT_UNKNOWN) || (m->type == MUTT_MAILBOX_ERROR))
@@ -504,7 +504,8 @@ static int trash_append(struct Mailbox *m)
   if (!m)
     return -1;
 
-  struct stat st, stc;
+  struct stat st = { 0 };
+  struct stat stc = { 0 };
   int rc;
 
   const bool c_maildir_trash = cs_subset_bool(NeoMutt->sub, "maildir_trash");

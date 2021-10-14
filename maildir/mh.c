@@ -125,7 +125,7 @@ bool mh_mkstemp(struct Mailbox *m, FILE **fp, char **tgt)
 static int mh_already_notified(struct Mailbox *m, int msgno)
 {
   char path[PATH_MAX];
-  struct stat st;
+  struct stat st = { 0 };
 
   if ((snprintf(path, sizeof(path), "%s/%d", mailbox_path(m), msgno) < sizeof(path)) &&
       (stat(path, &st) == 0))
@@ -477,7 +477,7 @@ int mh_sync_message(struct Mailbox *m, int msgno)
 void mh_update_mtime(struct Mailbox *m)
 {
   char buf[PATH_MAX];
-  struct stat st;
+  struct stat st = { 0 };
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
 
   snprintf(buf, sizeof(buf), "%s/.mh_sequences", mailbox_path(m));
@@ -895,7 +895,8 @@ static bool mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 enum MxStatus mh_mbox_check(struct Mailbox *m)
 {
   char buf[PATH_MAX];
-  struct stat st, st_cur;
+  struct stat st = { 0 };
+  struct stat st_cur = { 0 };
   bool modified = false, occult = false, flags_changed = false;
   int num_new = 0;
   struct MhSequences mhs = { 0 };

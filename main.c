@@ -891,7 +891,7 @@ int main(int argc, char *argv[], char *envp[])
   const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
   if (!OptNoCurses && c_folder)
   {
-    struct stat st;
+    struct stat st = { 0 };
     struct Buffer *fpath = mutt_buffer_pool_get();
 
     mutt_buffer_strcpy(fpath, c_folder);
@@ -1069,7 +1069,7 @@ int main(int argc, char *argv[], char *envp[])
       if (draft_file)
       {
         struct Envelope *opts_env = e->env;
-        struct stat st;
+        struct stat st = { 0 };
 
         sendflags |= SEND_DRAFT_FILE;
 

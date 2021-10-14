@@ -88,7 +88,7 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
   DIR *dirp = NULL;
   struct dirent *de = NULL;
   char *p = NULL;
-  struct stat st;
+  struct stat st = { 0 };
 
   struct Buffer *path = mutt_buffer_pool_get();
   struct Buffer *msgpath = mutt_buffer_pool_get();
@@ -478,7 +478,7 @@ cleanup:
 void maildir_update_mtime(struct Mailbox *m)
 {
   char buf[PATH_MAX];
-  struct stat st;
+  struct stat st = { 0 };
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
 
   snprintf(buf, sizeof(buf), "%s/%s", mailbox_path(m), "cur");
@@ -1170,8 +1170,8 @@ static bool maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
  */
 enum MxStatus maildir_mbox_check(struct Mailbox *m)
 {
-  struct stat st_new;         /* status of the "new" subdirectory */
-  struct stat st_cur;         /* status of the "cur" subdirectory */
+  struct stat st_new = { 0 };         /* status of the "new" subdirectory */
+  struct stat st_cur = { 0 };         /* status of the "cur" subdirectory */
   int changed = MMC_NO_DIRS;  /* which subdirectories have changed */
   bool occult = false;        /* messages were removed from the mailbox */
   int num_new = 0;            /* number of new messages added to the mailbox */
@@ -1639,7 +1639,7 @@ static enum MailboxType maildir_path_probe(const char *path, const struct stat *
   char cur[PATH_MAX];
   snprintf(cur, sizeof(cur), "%s/cur", path);
 
-  struct stat st_cur;
+  struct stat st_cur = { 0 };
   if ((stat(cur, &st_cur) == 0) && S_ISDIR(st_cur.st_mode))
     return MUTT_MAILDIR;
 

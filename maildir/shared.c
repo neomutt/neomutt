@@ -55,7 +55,7 @@ mode_t mh_umask(struct Mailbox *m)
   if (mdata && mdata->mh_umask)
     return mdata->mh_umask;
 
-  struct stat st;
+  struct stat st = { 0 };
   if (stat(mailbox_path(m), &st) != 0)
   {
     mutt_debug(LL_DEBUG1, "stat failed on %s\n", mailbox_path(m));
