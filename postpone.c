@@ -386,7 +386,11 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
 
   /* parse the message header and MIME structure */
 
-  fseeko(fp, e->offset, SEEK_SET);
+  if (fseeko(fp, e->offset, SEEK_SET) != 0)
+  {
+    mutt_perror("fseeko");
+    return -1;
+  }
   e_new->offset = e->offset;
   /* enable header weeding for resent messages */
   e_new->env = mutt_rfc822_read_header(fp, e_new, true, resend);

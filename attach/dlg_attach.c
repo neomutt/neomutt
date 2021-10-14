@@ -351,12 +351,10 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       break;
     case 's':
     {
-      size_t l;
+      size_t l = 0;
       if (aptr->body->filename && (flags & MUTT_FORMAT_STAT_FILE))
       {
-        struct stat st;
-        stat(aptr->body->filename, &st);
-        l = st.st_size;
+        l = mutt_file_get_size(aptr->body->filename);
       }
       else
         l = aptr->body->length;

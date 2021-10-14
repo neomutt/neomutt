@@ -579,6 +579,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
  * @param length  Number of bytes to be deleted
  * @param datelen Length of the date
  * @retval num Number of lines to be deleted
+ * @retval -1 on error
  *
  * Count the number of lines and bytes to be deleted in this body
  */
@@ -588,7 +589,10 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
 
   if (b->deleted)
   {
-    fseeko(fp, b->offset, SEEK_SET);
+    if (fseeko(fp, b->offset, SEEK_SET) != 0)
+    {
+      return -1;
+    }
     for (long l = b->length; l; l--)
     {
       const int ch = getc(fp);
@@ -610,7 +614,14 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
   else
   {
     for (b = b->parts; b; b = b->next)
-      dellines += count_delete_lines(fp, b, length, datelen);
+    {
+      const int del = count_delete_lines(fp, b, length, datelen);
+      if (del == -1)
+      {
+        return -1;
+      }
+      dellines += del;
+    }
   }
   return dellines;
 }
@@ -666,9 +677,17 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
       mutt_buffer_addch(quoted_date, '"');
 
       /* Count the number of lines and bytes to be deleted */
-      fseeko(fp_in, body->offset, SEEK_SET);
-      new_lines = e->lines - count_delete_lines(fp_in, body, &new_length,
-                                                mutt_buffer_len(quoted_date));
+      if (fseeko(fp_in, body->offset, SEEK_SET) != 0)
+      {
+        goto attach_del_cleanup;
+      }
+      const int del =
+          count_delete_lines(fp_in, body, &new_length, mutt_buffer_len(quoted_date));
+      if (del == -1)
+      {
+        goto attach_del_cleanup;
+      }
+      new_lines = e->lines - del;
 
       /* Copy the headers */
       if (mutt_copy_header(fp_in, e, fp_out, chflags | CH_NOLEN | CH_NONEWLINE, NULL, wraplen))
@@ -965,7 +984,9 @@ static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, const c
     {
       /* Copy till start of this part */
       if (mutt_file_copy_bytes(fp_in, fp_out, part->hdr_offset - ftello(fp_in)))
+      {
         return -1;
+      }
 
       if (part->deleted)
       {
@@ -977,19 +998,28 @@ static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, const c
             "\n",
             quoted_date, part->length);
         if (ferror(fp_out))
+        {
           return -1;
+        }
 
         /* Copy the original mime headers */
         if (mutt_file_copy_bytes(fp_in, fp_out, part->offset - ftello(fp_in)))
+        {
           return -1;
+        }
 
         /* Skip the deleted body */
-        fseeko(fp_in, part->offset + part->length, SEEK_SET);
+        if (fseeko(fp_in, part->offset + part->length, SEEK_SET) != 0)
+        {
+          return -1;
+        }
       }
       else
       {
         if (copy_delete_attach(part, fp_in, fp_out, quoted_date))
+        {
           return -1;
+        }
       }
     }
   }

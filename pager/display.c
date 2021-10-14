@@ -1160,7 +1160,13 @@ static int fill_buffer(FILE *fp, LOFF_T *bytes_read, LOFF_T offset, unsigned cha
   if (*buf_ready == 0)
   {
     if (offset != *bytes_read)
-      fseeko(fp, offset, SEEK_SET);
+    {
+      if (fseeko(fp, offset, SEEK_SET) != 0)
+      {
+        mutt_perror("fseeko");
+        return -1;
+      }
+    }
 
     *buf = (unsigned char *) mutt_file_read_line((char *) *buf, blen, fp, NULL, MUTT_RL_EOL);
     if (!*buf)

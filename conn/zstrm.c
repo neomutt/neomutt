@@ -319,10 +319,11 @@ void mutt_zstrm_wrap_conn(struct Connection *conn)
   zctx->read.z.zfree = zstrm_free;
   zctx->read.z.opaque = NULL;
   zctx->read.z.avail_out = zctx->read.len;
-  inflateInit2(&zctx->read.z, -15);
+  (void) inflateInit2(&zctx->read.z, -15);
   zctx->write.z.zalloc = zstrm_malloc;
   zctx->write.z.zfree = zstrm_free;
   zctx->write.z.opaque = NULL;
   zctx->write.z.avail_out = zctx->write.len;
-  deflateInit2(&zctx->write.z, Z_DEFAULT_COMPRESSION, Z_DEFLATED, -15, 8, Z_DEFAULT_STRATEGY);
+  (void) deflateInit2(&zctx->write.z, Z_DEFAULT_COMPRESSION, Z_DEFLATED, -15, 8,
+                      Z_DEFAULT_STRATEGY);
 }

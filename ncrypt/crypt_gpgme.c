@@ -43,7 +43,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
-#include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
 #include "private.h"
@@ -2180,13 +2179,16 @@ restart:
 
   fflush(fp_out);
   rewind(fp_out);
+  const long size = mutt_file_get_size_fp(fp_out);
+  if (size == 0)
+  {
+    goto cleanup;
+  }
   tattach = mutt_read_mime_header(fp_out, 0);
   if (tattach)
   {
     /* Need to set the length of this body part.  */
-    struct stat st;
-    fstat(fileno(fp_out), &st);
-    tattach->length = st.st_size - tattach->offset;
+    tattach->length = size - tattach->offset;
 
     tattach->warnsig = anywarn;
 
@@ -2250,7 +2252,12 @@ int pgp_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
       return -1;
     }
 
-    fseeko(s.fp_in, b->offset, SEEK_SET);
+    if (fseeko(s.fp_in, b->offset, SEEK_SET) != 0)
+    {
+      mutt_perror("fseeko");
+      rc = -1;
+      goto bail;
+    }
     s.fp_out = fp_decoded;
 
     mutt_decode_attachment(b, &s);
@@ -2321,7 +2328,11 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
   saved_b_offset = b->offset;
   saved_b_length = b->length;
   s.fp_in = fp_in;
-  fseeko(s.fp_in, b->offset, SEEK_SET);
+  if (fseeko(s.fp_in, b->offset, SEEK_SET) != 0)
+  {
+    mutt_perror("fseeko");
+    return -1;
+  }
   FILE *fp_tmp = mutt_file_mkstemp();
   if (!fp_tmp)
   {
@@ -2370,7 +2381,11 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
     saved_b_length = bb->length;
     memset(&s, 0, sizeof(s));
     s.fp_in = *fp_out;
-    fseeko(s.fp_in, bb->offset, SEEK_SET);
+    if (fseeko(s.fp_in, bb->offset, SEEK_SET) != 0)
+    {
+      mutt_perror("fseeko");
+      return -1;
+    }
     FILE *fp_tmp2 = mutt_file_mkstemp();
     if (!fp_tmp2)
     {
@@ -2853,7 +2868,11 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
   if (!mutt_body_get_charset(m, body_charset, sizeof(body_charset)))
     mutt_str_copy(body_charset, "iso-8859-1", sizeof(body_charset));
 
-  fseeko(s->fp_in, m->offset, SEEK_SET);
+  if (fseeko(s->fp_in, m->offset, SEEK_SET) != 0)
+  {
+    mutt_perror("fseeko");
+    return -1;
+  }
   last_pos = m->offset;
 
   for (bytes = m->length; bytes > 0;)
@@ -4063,7 +4082,6 @@ struct Body *pgp_gpgme_make_key_attachment(void)
   gpgme_error_t err;
   struct Body *att = NULL;
   char buf[1024];
-  struct stat st;
 
   OptPgpCheckTrust = false;
 
@@ -4102,8 +4120,7 @@ struct Body *pgp_gpgme_make_key_attachment(void)
   att->description = mutt_str_dup(buf);
   mutt_update_encoding(att, NeoMutt->sub);
 
-  stat(tempf, &st);
-  att->length = st.st_size;
+  att->length = mutt_file_get_size(tempf);
 
 bail:
   crypt_key_free(&key);

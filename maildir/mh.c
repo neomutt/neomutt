@@ -575,7 +575,16 @@ struct Email *mh_parse_message(const char *fname, struct Email *e)
 {
   FILE *fp = fopen(fname, "r");
   if (!fp)
+  {
     return NULL;
+  }
+
+  const long size = mutt_file_get_size_fp(fp);
+  if (size == 0)
+  {
+    mutt_file_fclose(&fp);
+    return NULL;
+  }
 
   if (!e)
   {
@@ -585,14 +594,11 @@ struct Email *mh_parse_message(const char *fname, struct Email *e)
   }
   e->env = mutt_rfc822_read_header(fp, e, false, false);
 
-  struct stat st;
-  fstat(fileno(fp), &st);
-
   if (!e->received)
     e->received = e->date_sent;
 
   /* always update the length since we have fresh information available. */
-  e->body->length = st.st_size - e->body->offset;
+  e->body->length = size - e->body->offset;
   e->index = -1;
 
   mutt_file_fclose(&fp);
@@ -783,7 +789,10 @@ int mh_sync_mailbox_message(struct Mailbox *m, int msgno, struct HeaderCache *hc
         char tmp[PATH_MAX];
         snprintf(tmp, sizeof(tmp), "%s/,%s", mailbox_path(m), e->path);
         unlink(tmp);
-        rename(path, tmp);
+        if (rename(path, tmp) != 0)
+        {
+          return -1;
+        }
       }
     }
   }

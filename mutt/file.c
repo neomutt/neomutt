@@ -1231,7 +1231,7 @@ int mutt_file_unlock(int fd)
   memset(&unlockit, 0, sizeof(struct flock));
   unlockit.l_type = F_UNLCK;
   unlockit.l_whence = SEEK_SET;
-  fcntl(fd, F_SETLK, &unlockit);
+  (void) fcntl(fd, F_SETLK, &unlockit);
 
   return 0;
 }
@@ -1503,6 +1503,24 @@ long mutt_file_get_size(const char *path)
 
   struct stat st;
   if (stat(path, &st) != 0)
+    return 0;
+
+  return st.st_size;
+}
+
+/**
+ * mutt_file_get_size_fp - Get the size of a file
+ * @param fp FILE* to measure
+ * @retval num Size in bytes
+ * @retval 0   Error
+ */
+long mutt_file_get_size_fp(FILE *fp)
+{
+  if (!fp)
+    return 0;
+
+  struct stat st;
+  if (fstat(fileno(fp), &st) != 0)
     return 0;
 
   return st.st_size;

@@ -1157,7 +1157,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
     return -1;
 
   struct NntpMboxData *mdata = m->mdata;
-  struct FetchCtx fc;
+  struct FetchCtx fc = { 0 };
   struct Email *e = NULL;
   char buf[8192];
   int rc = 0;

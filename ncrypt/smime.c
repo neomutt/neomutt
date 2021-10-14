@@ -1884,7 +1884,11 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
     goto cleanup;
   }
 
-  fseeko(s->fp_in, m->offset, SEEK_SET);
+  if (fseeko(s->fp_in, m->offset, SEEK_SET) != 0)
+  {
+    mutt_perror("fseeko");
+    goto cleanup;
+  }
 
   mutt_file_copy_bytes(s->fp_in, fp_tmp, m->length);
 
@@ -1994,12 +1998,15 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
   fflush(fp_out);
   rewind(fp_out);
 
+  const long size = mutt_file_get_size_fp(fp_out);
+  if (size == 0)
+  {
+    goto cleanup;
+  }
   p = mutt_read_mime_header(fp_out, 0);
   if (p)
   {
-    struct stat st;
-    fstat(fileno(fp_out), &st);
-    p->length = st.st_size - p->offset;
+    p->length = size - p->offset;
 
     mutt_parse_part(fp_out, p);
 

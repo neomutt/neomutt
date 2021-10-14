@@ -235,7 +235,6 @@ static int smtp_data(struct SmtpAccountData *adata, const char *msgfile)
 {
   char buf[1024];
   struct Progress *progress = NULL;
-  struct stat st;
   int rc = SMTP_ERR_WRITE;
   int term = 0;
   size_t buflen = 0;
@@ -246,9 +245,14 @@ static int smtp_data(struct SmtpAccountData *adata, const char *msgfile)
     mutt_error(_("SMTP session failed: unable to open %s"), msgfile);
     return -1;
   }
-  stat(msgfile, &st);
+  const long size = mutt_file_get_size_fp(fp);
+  if (size == 0)
+  {
+    mutt_file_fclose(&fp);
+    return -1;
+  }
   unlink(msgfile);
-  progress = progress_new(_("Sending message..."), MUTT_PROGRESS_NET, st.st_size);
+  progress = progress_new(_("Sending message..."), MUTT_PROGRESS_NET, size);
 
   snprintf(buf, sizeof(buf), "DATA\r\n");
   if (mutt_socket_send(adata->conn, buf) == -1)

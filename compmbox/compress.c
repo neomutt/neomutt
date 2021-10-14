@@ -482,7 +482,7 @@ static enum MxOpenReturns comp_mbox_open(struct Mailbox *m)
 
 cmo_fail:
   /* remove the partial uncompressed file */
-  remove(mailbox_path(m));
+  (void) remove(mailbox_path(m));
   compress_info_free(m);
   return MX_OPEN_ERROR;
 }
@@ -558,7 +558,7 @@ static bool comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 
 cmoa_fail2:
   /* remove the partial uncompressed file */
-  remove(mailbox_path(m));
+  (void) remove(mailbox_path(m));
 cmoa_fail1:
   /* Free the compress_info to prevent close from trying to recompress */
   compress_info_free(m);

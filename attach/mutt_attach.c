@@ -946,7 +946,12 @@ int mutt_save_attachment(FILE *fp, struct Body *m, const char *path,
         mutt_perror("fopen");
         return -1;
       }
-      fseeko((s.fp_in = fp), m->offset, SEEK_SET);
+      if (fseeko((s.fp_in = fp), m->offset, SEEK_SET) != 0)
+      {
+        mutt_perror("fseeko");
+        mutt_file_fclose(&s.fp_out);
+        return -1;
+      }
       mutt_decode_attachment(m, &s);
 
       if (mutt_file_fsync_close(&s.fp_out) != 0)
@@ -1278,7 +1283,7 @@ void mutt_unlink_temp_attachments(void)
 
   STAILQ_FOREACH(np, &TempAttachmentsList, entries)
   {
-    mutt_file_chmod_add(np->data, S_IWUSR);
+    (void) mutt_file_chmod_add(np->data, S_IWUSR);
     mutt_file_unlink(np->data);
   }
 

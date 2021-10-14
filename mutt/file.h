@@ -99,6 +99,7 @@ int         mutt_file_fclose(FILE **fp);
 FILE *      mutt_file_fopen(const char *path, const char *mode);
 int         mutt_file_fsync_close(FILE **fp);
 long        mutt_file_get_size(const char *path);
+long        mutt_file_get_size_fp(FILE* fp);
 void        mutt_file_get_stat_timespec(struct timespec *dest, struct stat *st, enum MuttStatType type);
 bool        mutt_file_iter_line(struct MuttFileIter *iter, FILE *fp, ReadLineFlags flags);
 int         mutt_file_lock(int fd, bool excl, bool timeout);

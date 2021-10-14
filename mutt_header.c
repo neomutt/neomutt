@@ -219,8 +219,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   }
 
   mutt_edit_file(editor, mutt_buffer_string(path));
-  stat(mutt_buffer_string(path), &st);
-  if (mtime == st.st_mtime)
+  if ((stat(mutt_buffer_string(path), &st) != 0) || (mtime == st.st_mtime))
   {
     mutt_debug(LL_DEBUG1, "temp file was not modified\n");
     /* the file has not changed! */

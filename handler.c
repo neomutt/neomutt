@@ -34,7 +34,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
 #include "mutt/lib.h"
@@ -701,7 +700,6 @@ static int text_plain_handler(struct Body *b, struct State *s)
  */
 static int message_handler(struct Body *a, struct State *s)
 {
-  struct stat st;
   struct Body *b = NULL;
   LOFF_T off_start;
   int rc = 0;
@@ -713,9 +711,8 @@ static int message_handler(struct Body *a, struct State *s)
   if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
       (a->encoding == ENC_UUENCODED))
   {
-    fstat(fileno(s->fp_in), &st);
     b = mutt_body_new();
-    b->length = (LOFF_T) st.st_size;
+    b->length = mutt_file_get_size_fp(s->fp_in);
     b->parts = mutt_rfc822_parse_message(s->fp_in, b);
   }
   else
@@ -936,14 +933,12 @@ static int alternative_handler(struct Body *a, struct State *s)
   if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
       (a->encoding == ENC_UUENCODED))
   {
-    struct stat st;
     mustfree = true;
-    fstat(fileno(s->fp_in), &st);
     b = mutt_body_new();
-    b->length = (long) st.st_size;
+    b->length = mutt_file_get_size_fp(s->fp_in);
     b->parts =
         mutt_parse_multipart(s->fp_in, mutt_param_get(&a->parameter, "boundary"),
-                             (long) st.st_size, mutt_istr_equal("digest", a->subtype));
+                             b->length, mutt_istr_equal("digest", a->subtype));
   }
   else
     b = a;
@@ -1056,9 +1051,9 @@ static int alternative_handler(struct Body *a, struct State *s)
   if (choice)
   {
     const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
-    if (s->flags & MUTT_DISPLAY && !c_weed)
+    if (s->flags & MUTT_DISPLAY && !c_weed &&
+        (fseeko(s->fp_in, choice->hdr_offset, SEEK_SET) == 0))
     {
-      fseeko(s->fp_in, choice->hdr_offset, SEEK_SET);
       mutt_file_copy_bytes(s->fp_in, s->fp_out, choice->offset - choice->hdr_offset);
     }
 
@@ -1125,14 +1120,12 @@ static int multilingual_handler(struct Body *a, struct State *s)
   if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
       (a->encoding == ENC_UUENCODED))
   {
-    struct stat st;
     mustfree = true;
-    fstat(fileno(s->fp_in), &st);
     b = mutt_body_new();
-    b->length = (long) st.st_size;
+    b->length = mutt_file_get_size_fp(s->fp_in);
     b->parts =
         mutt_parse_multipart(s->fp_in, mutt_param_get(&a->parameter, "boundary"),
-                             (long) st.st_size, mutt_istr_equal("digest", a->subtype));
+                             b->length, mutt_istr_equal("digest", a->subtype));
   }
   else
     b = a;
@@ -1217,19 +1210,17 @@ static int multilingual_handler(struct Body *a, struct State *s)
 static int multipart_handler(struct Body *a, struct State *s)
 {
   struct Body *b = NULL, *p = NULL;
-  struct stat st;
   int count;
   int rc = 0;
 
   if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
       (a->encoding == ENC_UUENCODED))
   {
-    fstat(fileno(s->fp_in), &st);
     b = mutt_body_new();
-    b->length = (long) st.st_size;
+    b->length = mutt_file_get_size_fp(s->fp_in);
     b->parts =
         mutt_parse_multipart(s->fp_in, mutt_param_get(&a->parameter, "boundary"),
-                             (long) st.st_size, mutt_istr_equal("digest", a->subtype));
+                             b->length, mutt_istr_equal("digest", a->subtype));
   }
   else
     b = a;
@@ -1255,9 +1246,8 @@ static int multipart_handler(struct Body *a, struct State *s)
       {
         state_putc(s, '\n');
       }
-      else
+      else if (fseeko(s->fp_in, p->hdr_offset, SEEK_SET) == 0)
       {
-        fseeko(s->fp_in, p->hdr_offset, SEEK_SET);
         mutt_file_copy_bytes(s->fp_in, s->fp_out, p->offset - p->hdr_offset);
       }
     }
@@ -1314,7 +1304,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
   struct Buffer *tempfile = NULL;
 #endif
 
-  fseeko(s->fp_in, b->offset, SEEK_SET);
+  (void) fseeko(s->fp_in, b->offset, SEEK_SET);
 
 #ifdef USE_FMEMOPEN
   char *temp = NULL;
@@ -1879,7 +1869,7 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
       cd = mutt_ch_iconv_open(c_charset, charset, MUTT_ICONV_HOOK_FROM);
   }
 
-  fseeko(s->fp_in, b->offset, SEEK_SET);
+  (void) fseeko(s->fp_in, b->offset, SEEK_SET);
   switch (b->encoding)
   {
     case ENC_QUOTED_PRINTABLE:

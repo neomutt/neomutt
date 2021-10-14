@@ -1216,7 +1216,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
         continue;
       }
 
-      fseeko(fp, loc, SEEK_SET);
+      (void) fseeko(fp, loc, SEEK_SET);
       break; /* end of header */
     }
 

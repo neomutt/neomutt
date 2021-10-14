@@ -227,7 +227,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
 
 bail:
 
-  fseeko(fp, startpos, SEEK_SET);
+  (void) fseeko(fp, startpos, SEEK_SET);
   return NULL;
 }
 

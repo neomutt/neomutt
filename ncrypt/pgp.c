@@ -37,7 +37,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
 #include "mutt/lib.h"
@@ -484,7 +483,11 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
   char body_charset[256];
   mutt_body_get_charset(m, body_charset, sizeof(body_charset));
 
-  fseeko(s->fp_in, m->offset, SEEK_SET);
+  if (fseeko(s->fp_in, m->offset, SEEK_SET) != 0)
+  {
+    mutt_perror("fseeko");
+    return -1;
+  }
   last_pos = m->offset;
 
   for (bytes = m->length; bytes > 0;)
@@ -891,7 +894,12 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
     goto cleanup;
   }
 
-  fseeko(s->fp_in, sigbdy->offset, SEEK_SET);
+  if (fseeko(s->fp_in, sigbdy->offset, SEEK_SET) != 0)
+  {
+    mutt_perror("fseeko");
+    mutt_file_fclose(&fp_sig);
+    goto cleanup;
+  }
   mutt_file_copy_bytes(s->fp_in, fp_sig, sigbdy->length);
   mutt_file_fclose(&fp_sig);
 
@@ -1031,7 +1039,13 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   /* Position the stream at the beginning of the body, and send the data to
    * the temporary file.  */
 
-  fseeko(s->fp_in, a->offset, SEEK_SET);
+  if (fseeko(s->fp_in, a->offset, SEEK_SET) != 0)
+  {
+    mutt_perror("fseeko");
+    mutt_file_fclose(&fp_pgp_tmp);
+    mutt_file_fclose(&fp_pgp_err);
+    goto cleanup;
+  }
   mutt_file_copy_bytes(s->fp_in, fp_pgp_tmp, a->length);
   mutt_file_fclose(&fp_pgp_tmp);
 
@@ -1107,14 +1121,17 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   }
 
   rewind(fp_out);
+  const long size = mutt_file_get_size_fp(fp_out);
+  if (size != 0)
+  {
+    goto cleanup;
+  }
 
   tattach = mutt_read_mime_header(fp_out, 0);
   if (tattach)
   {
     /* Need to set the length of this body part.  */
-    struct stat st;
-    fstat(fileno(fp_out), &st);
-    tattach->length = st.st_size - tattach->offset;
+    tattach->length = size - tattach->offset;
 
     /* See if we need to recurse on this MIME part.  */
     mutt_parse_part(fp_out, tattach);
@@ -1169,7 +1186,12 @@ int pgp_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
       return -1;
     }
 
-    fseeko(s.fp_in, b->offset, SEEK_SET);
+    if (fseeko(s.fp_in, b->offset, SEEK_SET) != 0)
+    {
+      mutt_perror("fseeko");
+      rc = -1;
+      goto bail;
+    }
     s.fp_out = fp_decoded;
 
     mutt_decode_attachment(b, &s);

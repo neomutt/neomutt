@@ -779,7 +779,11 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp, struct ConfigSubset *sub)
     goto cleanup;
   }
 
-  fseeko(fp_in, a->offset, SEEK_SET);
+  if (fseeko(fp_in, a->offset, SEEK_SET) != 0)
+  {
+    mutt_perror("fseeko");
+    goto cleanup;
+  }
   a->parts = mutt_rfc822_parse_message(fp_in, a);
 
   transform_to_7bit(a->parts, fp_in, sub);
@@ -1326,7 +1330,12 @@ static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
     if (!c_bounce_delivered)
       chflags |= CH_WEED_DELIVERED;
 
-    fseeko(fp, e->offset, SEEK_SET);
+    if (fseeko(fp, e->offset, SEEK_SET) != 0)
+    {
+      (void) mutt_file_fclose(&fp_tmp);
+      mutt_perror("fseeko");
+      return -1;
+    }
     fprintf(fp_tmp, "Resent-From: %s\n", resent_from);
 
     struct Buffer *date = mutt_buffer_pool_get();
