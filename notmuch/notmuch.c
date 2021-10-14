@@ -496,6 +496,7 @@ static int update_email_tags(struct Email *e, notmuch_message_t *msg)
     mutt_debug(LL_DEBUG2, "nm: tags unchanged\n");
     return 1;
   }
+  FREE(&old_tags);
 
   /* new version */
   driver_tags_replace(&e->tags, new_tags);
