@@ -80,7 +80,7 @@ set smime_import_cert_command="/usr/libexec/neomutt/smime_keys add_cert %f"
 set smime_encrypt_with="aes256"
 
 # Encrypt a message.  Input file is a MIME entity.
-set smime_encrypt_command="openssl smime -encrypt -%a -outform DER -in %f %c"
+set smime_encrypt_command="openssl cms -encrypt -%a -outform DER -in %f %c"
 
 # Algorithm for the signature message digest.
 # Valid choices are md5, sha1, sha224, sha256, sha384, sha512.
@@ -94,7 +94,7 @@ set smime_sign_command="openssl smime -sign -md %d -signer %c -inkey %k -passin 
 # Section C: Incoming messages
 
 # Decrypt a message.  Output is a MIME entity.
-set smime_decrypt_command="openssl smime -decrypt -passin stdin -inform DER -in %f -inkey %k -recip %c"
+set smime_decrypt_command="openssl cms -decrypt -passin stdin -inform DER -in %f -inkey %k -recip %c"
 
 # Verify a signature of type multipart/signed
 set smime_verify_command="openssl smime -verify -inform DER -in %s %C -content %f"

@@ -661,7 +661,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
   struct Buffer *tmpbody = NULL;
   FILE *fp_tmp = NULL;
 
-  CopyHeaderFlags chflags = CH_XMIT;
+  CopyHeaderFlags chflags = CH_DECODE;
 
   if (cur)
     e_cur = cur->email;

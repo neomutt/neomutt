@@ -739,7 +739,7 @@ static bool mbox_has_new(struct Mailbox *m)
 static int fseek_last_message(FILE *fp)
 {
   LOFF_T pos;
-  char buf[BUFSIZ + 9] = { 0 }; /* 7 for "\n\nFrom " */
+  char buf[BUFSIZ + 7] = { 0 }; // 7 for "\n\nFrom "
   size_t bytes_read;
 
   fseek(fp, 0, SEEK_END);
@@ -755,7 +755,7 @@ static int fseek_last_message(FILE *fp)
   while ((pos -= bytes_read) >= 0)
   {
     /* we save in the buf at the end the first 7 chars from the last read */
-    strncpy(buf + BUFSIZ, buf, 5 + 2); /* 2 == 2 * mutt_str_len(CRLF) */
+    memcpy(buf + BUFSIZ, buf, 7);
     fseeko(fp, pos, SEEK_SET);
     bytes_read = fread(buf, sizeof(char), bytes_read, fp);
     if (bytes_read == 0)

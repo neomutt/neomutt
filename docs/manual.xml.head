@@ -1507,6 +1507,12 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </tgroup>
         </table>
         <para>
+          <literal>^G</literal> is the generic <quote>abort</quote> key
+          in NeoMutt.  In addition to the line editor, it can also be used
+          to abort prompts.  Generally, typing <literal>^G</literal> at a
+          confirmation prompt or line editor should abort the entire action.
+        </para>
+        <para>
           You can remap the <emphasis>editor</emphasis> functions using the
           <link linkend="bind"><command>bind</command></link> command. For
           example, to make the &lt;Delete&gt; key delete the character in front
@@ -2647,7 +2653,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             <tbody>
               <row>
                 <entry>m</entry>
-                <entry><literal>&lt;compose&gt;</literal></entry>
+                <entry><literal>&lt;mail&gt;</literal></entry>
                 <entry>compose a new message</entry>
               </row>
               <row>
@@ -3399,6 +3405,12 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
       <title>Encryption and Signing</title>
 
       <para>
+      NeoMutt supports encrypting and signing emails when used interactively.
+      In batch mode, cryptographic operations are disabled, so these options
+      can't be used to sign an email sent via a cron job, for instance.
+      </para>
+
+      <para>
         OpenPGP and S/MIME are enabled in one of two ways: <quote>classic
         mode</quote> or GPGME.  The former invokes external programs to perform
         the various operations; it is better tested and more flexible, but
@@ -4140,7 +4152,7 @@ set alias_file=~/.mail_aliases
       </para>
       <para>
         In the alias menu, you can select as many aliases as you want with the
-        <literal>select-entry</literal> key (default: &lt;Return&gt;), and use
+        <literal>tag-entry</literal> key (default: &lt;Space&gt; or t), and use
         the <emphasis>exit</emphasis> key (default: q) to return to the address
         prompt.
       </para>
@@ -9584,6 +9596,18 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
         be used to set <link linkend="record">$record</link>:
       </para>
       <screen>folder-hook . 'set record=^'</screen>
+      <para>
+        Note: the current mailbox shortcut,
+        <quote><literal>^</literal></quote>, has no value in some cases.  No
+        mailbox is opened when NeoMutt is invoked to send an email from the
+        command-line.  In interactive mode, NeoMutt reads the muttrc before
+        opening the mailbox, so immediate expansion won't work as expected
+        either.  This can be an issue when trying to directly assign to <link
+        linkend="record">$record</link>, but also affects the <link
+        linkend="fcc-hook">fcc-hook</link> mailbox, which is expanded
+        immediately too.  The folder-hook example above works because the
+        command is executed later, when the folder-hook fires.
+      </para>
     </sect1>
 
     <sect1 id="using-lists">
@@ -9845,7 +9869,8 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
           showing the files specified by the <command>mailboxes</command>
           command, and indicate which contain new messages. NeoMutt will
           automatically enter this mode when invoked from the command line with
-          the <literal>-y</literal> option.
+          the <literal>-y</literal> option, or from the index/pager via the
+          <literal>&lt;browse-mailboxes&gt;</literal> function.
         </para>
         <para>
           For the pager, index and directory browser menus, NeoMutt contains
@@ -11829,7 +11854,7 @@ smtp://user@host:587/
         <title>Tunnel</title>
         <para>
           When connecting through a <link linkend="tunnel">$tunnel</link>
-          and <link linkend="tunnel-is-secure">$tunnel_is_secure"</link> is
+          and <link linkend="tunnel-is-secure">$tunnel_is_secure</link> is
           set(the default), NeoMutt will assume the connection to the server
           through the pipe is already secured.  NeoMutt will ignore <link
           linkend="ssl-starttls">$ssl_starttls</link> and <link
@@ -11837,7 +11862,7 @@ smtp://user@host:587/
           has already been negotiated.
         </para>
         <para>
-          When <link linkend="tunnel-is-secure">$tunnel_is_secure"</link> is
+          When <link linkend="tunnel-is-secure">$tunnel_is_secure</link> is
           unset, NeoMutt will respect the values of <link
           linkend="ssl-starttls">$ssl_starttls</link> and <link
           linkend="ssl-force-tls">$ssl_force_tls</link>.  It is

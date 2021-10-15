@@ -2093,7 +2093,6 @@ int smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
   struct State s = { 0 };
   LOFF_T tmpoffset = b->offset;
   size_t tmplength = b->length;
-  int orig_type = b->type;
   int rc = -1;
 
   if (!mutt_is_application_smime(b))
@@ -2137,7 +2136,6 @@ int smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
   rc = 0;
 
 bail:
-  b->type = orig_type;
   b->length = tmplength;
   b->offset = tmpoffset;
   mutt_file_fclose(&fp_tmp);

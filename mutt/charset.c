@@ -357,7 +357,7 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
   if (!buf || !name)
     return;
 
-  char in[1024], scratch[1024];
+  char in[1024], scratch[1024 + 10];
 
   mutt_str_copy(in, name, sizeof(in));
   char *ext = strchr(in, '/');
@@ -451,7 +451,13 @@ char *mutt_ch_get_default_charset(void)
   if (c)
   {
     c1 = strchr(c, ':');
-    mutt_str_copy(fcharset, c, c1 ? (c1 - c + 1) : sizeof(fcharset));
+
+    size_t copysize;
+    if (c1)
+      copysize = MIN((c1 - c + 1), sizeof(fcharset));
+    else
+      copysize = sizeof(fcharset);
+    mutt_str_copy(fcharset, c, copysize);
     return fcharset;
   }
   return strcpy(fcharset, "us-ascii");

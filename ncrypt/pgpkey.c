@@ -369,7 +369,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
   struct PgpUid *q = NULL;
 
   if (a->mailbox)
-    pgp_add_string_to_hints(a->mailbox, &hints);
+    mutt_list_insert_tail(&hints, a->mailbox);
   if (a->personal)
     pgp_add_string_to_hints(a->personal, &hints);
 
@@ -382,7 +382,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
   if (!keys)
     return NULL;
 
-  mutt_debug(LL_DEBUG5, "looking for %s <%s>\n", a->personal, a->mailbox);
+  mutt_debug(LL_DEBUG5, "looking for %s <%s>\n", NONULL(a->personal), NONULL(a->mailbox));
 
   for (k = keys; k; k = kn)
   {

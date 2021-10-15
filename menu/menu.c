@@ -319,6 +319,13 @@ int menu_loop(struct Menu *menu)
 
     mutt_refresh();
 
+    if (SigWinch)
+    {
+      SigWinch = false;
+      mutt_resize_screen();
+      clearok(stdscr, true); /* force complete redraw */
+    }
+
     /* try to catch dialog keys before ops */
     if (!ARRAY_EMPTY(&menu->dialog) && (menu_dialog_dokey(menu, &op) == 0))
       return op;
@@ -356,13 +363,6 @@ int menu_loop(struct Menu *menu)
       menu->tagprefix = true;
 
     mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
-
-    if (SigWinch)
-    {
-      SigWinch = false;
-      mutt_resize_screen();
-      clearok(stdscr, true); /* force complete redraw */
-    }
 
     if (op < 0)
     {

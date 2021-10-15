@@ -1081,7 +1081,13 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   }
 
   mutt_file_fclose(&fp_pgp_out);
+
   rv = filter_wait(pid);
+  const bool c_pgp_use_gpg_agent =
+      cs_subset_bool(NeoMutt->sub, "pgp_use_gpg_agent");
+  if (c_pgp_use_gpg_agent)
+    mutt_need_hard_redraw();
+
   mutt_file_unlink(mutt_buffer_string(pgptmpfile));
 
   fflush(fp_pgp_err);
@@ -1107,11 +1113,6 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
 
   fflush(fp_out);
   rewind(fp_out);
-
-  if (pgp_use_gpg_agent())
-  {
-    mutt_need_hard_redraw();
-  }
 
   if (fgetc(fp_out) == EOF)
   {
@@ -1150,7 +1151,6 @@ int pgp_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
   struct State s = { 0 };
   struct Body *p = b;
   bool need_decode = false;
-  int saved_type = 0;
   LOFF_T saved_offset = 0;
   size_t saved_length = 0;
   FILE *fp_decoded = NULL;
@@ -1175,7 +1175,6 @@ int pgp_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
 
   if (need_decode)
   {
-    saved_type = b->type;
     saved_offset = b->offset;
     saved_length = b->length;
 
@@ -1220,7 +1219,6 @@ int pgp_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
 bail:
   if (need_decode)
   {
-    b->type = saved_type;
     b->length = saved_length;
     b->offset = saved_offset;
     mutt_file_fclose(&fp_decoded);

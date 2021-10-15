@@ -113,7 +113,10 @@ static const char *const sasl_authenticators[] = {
  * a protection buffer. */
 #define MUTT_SASL_MAXBUF 65536
 
-#define IP_PORT_BUFLEN 1024
+/* used to hold a string "host;port"
+ * where host is size NI_MAXHOST-1 and port is size NI_MAXSERV-1
+ * plus two bytes for the ';' and trailing \0 */
+#define IP_PORT_BUFLEN (NI_MAXHOST + NI_MAXSERV)
 
 static sasl_callback_t MuttSaslCallbacks[5];
 

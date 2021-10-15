@@ -217,7 +217,10 @@ static void join_continuations(struct ParameterList *pl, struct Rfc2231Parameter
 
     const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
     if (encoded)
+    {
       mutt_ch_convert_string(&value, charset, c_charset, MUTT_ICONV_HOOK_FROM);
+      mutt_mb_filter_unprintable(&value);
+    }
 
     struct Parameter *np = mutt_param_new();
     np->attribute = mutt_str_dup(attribute);
@@ -250,6 +253,9 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
   struct Parameter *np = NULL, *tmp = NULL;
   TAILQ_FOREACH_SAFE(np, pl, entries, tmp)
   {
+    /* Single value, non encoded:
+     *   attr=value
+     */
     s = strchr(np->attribute, '*');
     if (!s)
     {
@@ -267,6 +273,9 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
       else if (c_assumed_charset)
         mutt_ch_convert_nonmime_string(&np->value);
     }
+    /* Single value with encoding:
+     *   attr*=us-ascii''the%20value
+     */
     else if (s[1] == '\0')
     {
       s[0] = '\0';
@@ -278,6 +287,11 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
       mutt_mb_filter_unprintable(&np->value);
       dirty = true;
     }
+    /* A parameter continuation, which may or may not be encoded:
+     *   attr*0=value
+     *     -or-
+     *   attr*0*=us-ascii''the%20value
+     */
     else
     {
       s[0] = '\0';

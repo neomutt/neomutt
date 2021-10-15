@@ -291,12 +291,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
 
     mutt_env_free(&e->body->mime_headers);
     e->body->mime_headers = protected_headers;
-    /* Optional part of the draft RFC, but required by Enigmail */
     mutt_param_set(&e->body->parameter, "protected-headers", "v1");
-  }
-  else
-  {
-    mutt_param_delete(&e->body->parameter, "protected-headers");
   }
 
 #ifdef USE_AUTOCRYPT
@@ -406,6 +401,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
 
 bail:
   mutt_env_free(&e->body->mime_headers);
+  mutt_param_delete(&e->body->parameter, "protected-headers");
   return -1;
 }
 

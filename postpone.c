@@ -403,7 +403,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   if (resend)
   {
     FREE(&e_new->env->message_id);
-    FREE(&e_new->env->mail_followup_to);
+    mutt_addrlist_clear(&e_new->env->mail_followup_to);
   }
 
   /* decrypt pgp/mime encoded messages */
