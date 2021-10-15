@@ -1,3 +1,61 @@
+2021-10-15  Richard Russon  <rich@flatcap.org>
+* Security
+  - Fix CVE-2021-32055
+* Features
+  - threads: implement the `$use_threads` feature
+    https://neomutt.org/feature/use-threads
+  - hooks: allow a -noregex param to folder and mbox hooks
+  - mailing lists: implement list-(un)subscribe using RFC2369 headers
+  - mailcap: implement x-neomutt-nowrap flag
+  - pager: add `$local_date_header` option
+  - imap, smtp: add support for authenticating using XOAUTH2
+  - Allow `<sync-mailbox`> to fail quietly
+  - imap: speed up server-side searches
+  - pager: improve skip-quoted and skip-headers
+  - notmuch: open database with user's configuration
+  - notmuch: implement `<vfolder-window-reset>`
+  - config: allow += modification of my_ variables
+  - notmuch: tolerate file renames behind neomutt's back
+  - pager: implement `$pager_read_delay`
+  - notmuch: validate `nm_query_window_timebase`
+  - notmuch: make $nm_record work in non-notmuch mailboxes
+  - compose: add `$greeting` - a welcome message on top of emails
+  - notmuch: show additional mail in query windows
+* Changed Config
+- Renamed lots of config, e.g.  `askbcc` to `ask_bcc`.
+* Bug Fixes
+  - imap: fix crash on external IMAP events
+  - notmuch: handle missing libnotmuch version bumps
+  - imap: add sanity check for qresync
+  - notmuch: allow windows with 0 duration
+  - index: fix index selection on `<collapse-all>`
+  - imap: fix crash when sync'ing labels
+  - search: fix searching by Message-Id in `<mark-message>`
+  - threads: fix double sorting of threads
+  - stats: don't check mailbox stats unless told
+  - alias: fix crash on empty query
+  - pager: honor mid-message config changes
+  - mailbox: don't propagate read-only state across reopens
+  - hcache: fix caching new labels in the header cache
+  - crypto: set invalidity flags for gpgme/smime keys
+  - notmuch: fix parsing of multiple `type=`
+  - notmuch: validate $nm_default_url
+  - messages: avoid unnecessary opening of messages
+  - imap: fix seqset iterator when it ends in a comma
+  - build: refuse to build without pcre2 when pcre2 is linked in ncurses
+* Translations
+  - 100% Serbian
+  - 100% Lithuanian
+  - 100% German
+  - 100% Czech
+  - 96% Spanish
+  - 92% Polish
+  - 85% Norwegian
+  - 80% French
+  - 78% Russian
+  - 74% Esperanto
+  - 66% Greek
+
 2021-02-05  Richard Russon  <rich@flatcap.org>
 * Features
   - Add <skip-headers> to skip past message headers in pager
