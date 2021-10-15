@@ -1170,8 +1170,8 @@ static bool maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
  */
 enum MxStatus maildir_mbox_check(struct Mailbox *m)
 {
-  struct stat st_new = { 0 };         /* status of the "new" subdirectory */
-  struct stat st_cur = { 0 };         /* status of the "cur" subdirectory */
+  struct stat st_new = { 0 }; /* status of the "new" subdirectory */
+  struct stat st_cur = { 0 }; /* status of the "cur" subdirectory */
   int changed = MMC_NO_DIRS;  /* which subdirectories have changed */
   bool occult = false;        /* messages were removed from the mailbox */
   int num_new = 0;            /* number of new messages added to the mailbox */

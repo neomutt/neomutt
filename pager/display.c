@@ -1634,7 +1634,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   format_line(win_pager, lines, line_num, buf, flags, &aa, cnt, &ch, &vch, &col,
               &special, win_pager->state.cols);
 
-/* avoid a bug in ncurses... */
+  /* avoid a bug in ncurses... */
   if (col == 0)
   {
     mutt_curses_set_color(MT_COLOR_NORMAL);
