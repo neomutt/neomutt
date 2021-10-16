@@ -85,11 +85,7 @@ static void message_bar(struct MuttWindow *win, int percent, const char *fmt, ..
 
   mutt_window_move(win, 0, 0);
 
-  if (mutt_color(MT_COLOR_PROGRESS) == 0)
-  {
-    mutt_window_addstr(win, buf2);
-  }
-  else
+  if (simple_color_is_set(MT_COLOR_PROGRESS))
   {
     if (l < w)
     {
@@ -116,6 +112,10 @@ static void message_bar(struct MuttWindow *win, int percent, const char *fmt, ..
       mutt_curses_set_color(MT_COLOR_NORMAL);
       mutt_window_addstr(win, &buf2[off]);
     }
+  }
+  else
+  {
+    mutt_window_addstr(win, buf2);
   }
 
   mutt_window_clrtoeol(win);

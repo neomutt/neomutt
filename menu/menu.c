@@ -89,7 +89,7 @@ static void menu_jump(struct Menu *menu)
  */
 static int default_color(struct Menu *menu, int line)
 {
-  return mutt_color(MT_COLOR_NORMAL);
+  return simple_colors_get(MT_COLOR_NORMAL);
 }
 
 /**

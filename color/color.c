@@ -327,16 +327,6 @@ int mutt_color_combine(uint32_t fg_attr, uint32_t bg_attr)
 }
 
 /**
- * mutt_color - Return the color of an object
- * @param id Object id
- * @retval num Color ID, e.g. #MT_COLOR_HEADER
- */
-int mutt_color(enum ColorId id)
-{
-  return SimpleColors[id];
-}
-
-/**
  * mutt_color_quote - Return the color of a quote, cycling through the used quotes
  * @param q Quote number
  * @retval num Color ID, e.g. MT_COLOR_QUOTED
@@ -356,14 +346,4 @@ int mutt_color_quote(int q)
 int mutt_color_quotes_used(void)
 {
   return NumQuotedColors;
-}
-
-/**
- * mutt_color_is_header - Colour is for an Email header
- * @param color_id Colour, e.g. #MT_COLOR_HEADER
- * @retval true Colour is for an Email header
- */
-bool mutt_color_is_header(enum ColorId color_id)
-{
-  return (color_id == MT_COLOR_HEADER) || (color_id == MT_COLOR_HDRDEFAULT);
 }

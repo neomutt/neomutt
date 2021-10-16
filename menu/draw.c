@@ -86,7 +86,7 @@ static int get_color(int index, unsigned char *s)
       }
       return 0;
     default:
-      return mutt_color(type);
+      return simple_colors_get(type);
   }
 
   STAILQ_FOREACH(np, color, entries)
@@ -128,7 +128,7 @@ static void print_enriched_string(struct MuttWindow *win, int index, int attr,
       {
         /* Combining tree fg color and another bg color requires having
          * use_default_colors, because the other bg color may be undefined. */
-        mutt_curses_set_attr(mutt_color_combine(mutt_color(MT_COLOR_TREE), attr));
+        mutt_curses_set_attr(mutt_color_combine(simple_colors_get(MT_COLOR_TREE), attr));
       }
 
       while (*s && (*s < MUTT_TREE_MAX))

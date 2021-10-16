@@ -253,7 +253,7 @@ static enum ColorId calc_color(const struct Mailbox *m, bool current, bool highl
 {
   if (current)
   {
-    if (mutt_color(MT_COLOR_SIDEBAR_INDICATOR) != 0)
+    if (simple_color_is_set(MT_COLOR_SIDEBAR_INDICATOR))
       return MT_COLOR_SIDEBAR_INDICATOR;
     return MT_COLOR_INDICATOR;
   }
@@ -269,13 +269,13 @@ static enum ColorId calc_color(const struct Mailbox *m, bool current, bool highl
     return MT_COLOR_SIDEBAR_FLAGGED;
 
   const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
-  if ((mutt_color(MT_COLOR_SIDEBAR_SPOOLFILE) != 0) &&
+  if (simple_color_is_set(MT_COLOR_SIDEBAR_SPOOLFILE) &&
       mutt_str_equal(mailbox_path(m), c_spool_file))
   {
     return MT_COLOR_SIDEBAR_SPOOLFILE;
   }
 
-  if (mutt_color(MT_COLOR_SIDEBAR_ORDINARY) != 0)
+  if (simple_color_is_set(MT_COLOR_SIDEBAR_ORDINARY))
     return MT_COLOR_SIDEBAR_ORDINARY;
 
   return MT_COLOR_NORMAL;

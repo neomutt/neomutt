@@ -51,8 +51,8 @@ void mutt_curses_set_attr(int attr)
  */
 void mutt_curses_set_color(enum ColorId color)
 {
-  const int chosen = mutt_color(color);
-  const int normal = mutt_color(MT_COLOR_NORMAL);
+  const int chosen = simple_colors_get(color);
+  const int normal = simple_colors_get(MT_COLOR_NORMAL);
   bkgdset((chosen ? chosen : normal) | ' ');
 }
 

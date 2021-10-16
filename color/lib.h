@@ -61,7 +61,6 @@ void mutt_color_free  (uint32_t fg, uint32_t bg);
 void mutt_colors_init(void);
 void mutt_colors_cleanup(void);
 
-int mutt_color(enum ColorId id);
 int mutt_color_quote(int quote);
 int mutt_color_quotes_used(void);
 
