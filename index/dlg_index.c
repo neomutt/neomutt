@@ -952,7 +952,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
   {
     /* Text before the first highlight */
     mutt_window_addnstr(win, buf, MIN(len, syntax[0].first));
-    mutt_curses_set_color(MT_COLOR_STATUS);
+    mutt_curses_set_color_by_id(MT_COLOR_STATUS);
     if (len <= syntax[0].first)
       goto dsl_finish; /* no more room */
 
@@ -977,7 +977,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
       next = MIN(len, syntax[i + 1].first);
     }
 
-    mutt_curses_set_color(MT_COLOR_STATUS);
+    mutt_curses_set_color_by_id(MT_COLOR_STATUS);
     offset = syntax[i].last;
     mutt_window_addnstr(win, buf + offset, next - offset);
 
@@ -986,7 +986,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
       goto dsl_finish; /* no more room */
   }
 
-  mutt_curses_set_color(MT_COLOR_STATUS);
+  mutt_curses_set_color_by_id(MT_COLOR_STATUS);
   if (offset < len)
   {
     /* Text after the last highlight */

@@ -187,10 +187,10 @@ static int helpbar_repaint(struct MuttWindow *win)
   if (!wdata)
     return 0;
 
-  mutt_curses_set_color(MT_COLOR_STATUS);
+  mutt_curses_set_color_by_id(MT_COLOR_STATUS);
   mutt_window_move(win, 0, 0);
   mutt_paddstr(win, win->state.cols, wdata->help_str);
-  mutt_curses_set_color(MT_COLOR_NORMAL);
+  mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 
   mutt_debug(LL_DEBUG5, "repaint done\n");
   return 0;

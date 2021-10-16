@@ -886,7 +886,7 @@ int main(int argc, char *argv[], char *envp[])
 
   if (!OptNoCurses)
   {
-    mutt_curses_set_color(MT_COLOR_NORMAL);
+    mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
     clear();
     MuttLogger = log_disp_curses;
     log_queue_flush(log_disp_curses);

@@ -131,7 +131,7 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
     const bool c_markers = cs_subset_bool(NeoMutt->sub, "markers");
     if (!cnt && c_markers)
     {
-      mutt_curses_set_color(MT_COLOR_MARKERS);
+      mutt_curses_set_color_by_id(MT_COLOR_MARKERS);
       mutt_window_addch(win, '+');
       last_color = simple_colors_get(MT_COLOR_MARKERS);
     }
@@ -1637,7 +1637,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   /* avoid a bug in ncurses... */
   if (col == 0)
   {
-    mutt_curses_set_color(MT_COLOR_NORMAL);
+    mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
     mutt_window_addch(win_pager, ' ');
   }
 
@@ -1666,7 +1666,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
    * clrtoeol, otherwise the color for this line will not be
    * filled to the right margin.  */
   if (flags & MUTT_SHOWCOLOR)
-    mutt_curses_set_color(MT_COLOR_NORMAL);
+    mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 
   /* build a return code */
   if (!(flags & MUTT_SHOW))
