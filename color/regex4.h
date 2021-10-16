@@ -55,6 +55,9 @@ void                   regex_colors_clear(void);
 struct RegexColorList *regex_colors_get_list(enum ColorId id);
 void                   regex_colors_init(void);
 
+bool                   regex_colors_parse_color_list (enum ColorId color, const char *pat, uint32_t fg, uint32_t bg, int attrs, int *rc, struct Buffer *err);
+int                    regex_colors_parse_status_list(enum ColorId color, const char *pat, uint32_t fg, uint32_t bg, int attrs, int match, struct Buffer *err);
+
 enum CommandResult add_pattern(struct RegexColorList *top, const char *s, bool sensitive, uint32_t fg, uint32_t bg, int attr, struct Buffer *err, bool is_index, int match);
 
 #endif /* MUTT_COLOR_REGEX_H */

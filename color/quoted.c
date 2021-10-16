@@ -77,3 +77,48 @@ int quoted_colors_num_used(void)
 {
   return NumQuotedColors;
 }
+
+/**
+ * quoted_colors_parse_color - Parse the 'color quoted' command
+ * @param color   Colour ID, should be #MT_COLOR_QUOTED
+ * @param fg      Foreground colour ID
+ * @param bg      Background colour ID
+ * @param attrs   Attributes
+ * @param q_level Quoting depth level
+ * @param rc      Return code, e.g. #MUTT_CMD_SUCCESS
+ * @param err     Buffer for error messages
+ * @retval true Colour was parsed
+ */
+bool quoted_colors_parse_color(enum ColorId color, uint32_t fg, uint32_t bg,
+                               int attrs, int q_level, int *rc, struct Buffer *err)
+{
+  if (color != MT_COLOR_QUOTED)
+    return false;
+
+  if (q_level >= COLOR_QUOTES_MAX)
+  {
+    mutt_buffer_printf(err, _("Maximum quoting level is %d"), COLOR_QUOTES_MAX - 1);
+    return MUTT_CMD_WARNING;
+  }
+
+  if (q_level >= NumQuotedColors)
+    NumQuotedColors = q_level + 1;
+
+  if (q_level == 0)
+  {
+    SimpleColors[MT_COLOR_QUOTED] = fgbgattr_to_color(fg, bg, attrs);
+
+    QuotedColors[0] = SimpleColors[MT_COLOR_QUOTED];
+    for (q_level = 1; q_level < NumQuotedColors; q_level++)
+    {
+      if (QuotedColors[q_level] == A_NORMAL)
+        QuotedColors[q_level] = SimpleColors[MT_COLOR_QUOTED];
+    }
+  }
+  else
+  {
+    QuotedColors[q_level] = fgbgattr_to_color(fg, bg, attrs);
+  }
+  *rc = MUTT_CMD_SUCCESS;
+  return true;
+}

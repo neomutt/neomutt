@@ -277,3 +277,72 @@ enum CommandResult add_pattern(struct RegexColorList *top, const char *s,
 
   return MUTT_CMD_SUCCESS;
 }
+
+/**
+ * regex_colors_parse_color_list - Parse a Regex 'color' command
+ * @param color   Colour ID, should be #MT_COLOR_QUOTED
+ * @param pat     Regex pattern
+ * @param fg      Foreground colour ID
+ * @param bg      Background colour ID
+ * @param attrs   Attributes
+ * @param rc      Return code, e.g. #MUTT_CMD_SUCCESS
+ * @param err     Buffer for error messages
+ * @retval true Colour was parsed
+ */
+bool regex_colors_parse_color_list(enum ColorId color, const char *pat, uint32_t fg,
+                                   uint32_t bg, int attrs, int *rc, struct Buffer *err)
+
+{
+  switch (color)
+  {
+    case MT_COLOR_ATTACH_HEADERS:
+      *rc = add_pattern(&AttachList, pat, true, fg, bg, attrs, err, false, 0);
+      break;
+    case MT_COLOR_BODY:
+      *rc = add_pattern(&BodyList, pat, true, fg, bg, attrs, err, false, 0);
+      break;
+    case MT_COLOR_HEADER:
+      *rc = add_pattern(&HeaderList, pat, false, fg, bg, attrs, err, false, 0);
+      break;
+    case MT_COLOR_INDEX:
+      *rc = add_pattern(&IndexList, pat, true, fg, bg, attrs, err, true, 0);
+      break;
+    case MT_COLOR_INDEX_AUTHOR:
+      *rc = add_pattern(&IndexAuthorList, pat, true, fg, bg, attrs, err, true, 0);
+      break;
+    case MT_COLOR_INDEX_FLAGS:
+      *rc = add_pattern(&IndexFlagsList, pat, true, fg, bg, attrs, err, true, 0);
+      break;
+    case MT_COLOR_INDEX_SUBJECT:
+      *rc = add_pattern(&IndexSubjectList, pat, true, fg, bg, attrs, err, true, 0);
+      break;
+    case MT_COLOR_INDEX_TAG:
+      *rc = add_pattern(&IndexTagList, pat, true, fg, bg, attrs, err, true, 0);
+      break;
+    default:
+      return false;
+  }
+
+  return true;
+}
+
+/**
+ * regex_colors_parse_status_list - Parse a Regex 'color status' command
+ * @param color   Colour ID, should be #MT_COLOR_QUOTED
+ * @param pat     Regex pattern
+ * @param fg      Foreground colour ID
+ * @param bg      Background colour ID
+ * @param attrs   Attributes
+ * @param match   Use the nth regex submatch
+ * @param err     Buffer for error messages
+ * @retval true Colour was parsed
+ */
+int regex_colors_parse_status_list(enum ColorId color, const char *pat, uint32_t fg,
+                                   uint32_t bg, int attrs, int match, struct Buffer *err)
+{
+  if (color != MT_COLOR_STATUS)
+    return -1;
+
+  int rc = add_pattern(&StatusList, pat, true, fg, bg, attrs, err, false, match);
+  return rc;
+}

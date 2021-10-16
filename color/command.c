@@ -532,7 +532,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
  * @param attrs Attribute flags, e.g. A_BOLD
  * @retval num Combined colour pair
  */
-static int fgbgattr_to_color(int fg, int bg, int attrs)
+int fgbgattr_to_color(int fg, int bg, int attrs)
 {
   if ((fg != COLOR_UNSET) && (bg != COLOR_UNSET))
     return attrs | mutt_color_alloc(fg, bg);
@@ -618,66 +618,13 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
   }
 
-  if (object == MT_COLOR_ATTACH_HEADERS)
-    rc = add_pattern(regex_colors_get_list(MT_COLOR_ATTACH_HEADERS), buf->data,
-                     true, fg, bg, attrs, err, false, match);
-  else if (object == MT_COLOR_BODY)
-    rc = add_pattern(regex_colors_get_list(MT_COLOR_BODY), buf->data, true, fg,
-                     bg, attrs, err, false, match);
-  else if (object == MT_COLOR_HEADER)
-    rc = add_pattern(regex_colors_get_list(MT_COLOR_HEADER), buf->data, false,
-                     fg, bg, attrs, err, false, match);
-  else if (object == MT_COLOR_INDEX)
+  if (regex_colors_parse_color_list(object, buf->data, fg, bg, attrs, &rc, err))
   {
-    rc = add_pattern(regex_colors_get_list(MT_COLOR_INDEX), buf->data, true, fg,
-                     bg, attrs, err, true, match);
+    // do nothing
   }
-  else if (object == MT_COLOR_INDEX_AUTHOR)
+  else if (quoted_colors_parse_color(object, fg, bg, attrs, q_level, &rc, err))
   {
-    rc = add_pattern(regex_colors_get_list(MT_COLOR_INDEX_AUTHOR), buf->data,
-                     true, fg, bg, attrs, err, true, match);
-  }
-  else if (object == MT_COLOR_INDEX_FLAGS)
-  {
-    rc = add_pattern(regex_colors_get_list(MT_COLOR_INDEX_FLAGS), buf->data,
-                     true, fg, bg, attrs, err, true, match);
-  }
-  else if (object == MT_COLOR_INDEX_SUBJECT)
-  {
-    rc = add_pattern(regex_colors_get_list(MT_COLOR_INDEX_SUBJECT), buf->data,
-                     true, fg, bg, attrs, err, true, match);
-  }
-  else if (object == MT_COLOR_INDEX_TAG)
-  {
-    rc = add_pattern(regex_colors_get_list(MT_COLOR_INDEX_TAG), buf->data, true,
-                     fg, bg, attrs, err, true, match);
-  }
-  else if (object == MT_COLOR_QUOTED)
-  {
-    if (q_level >= COLOR_QUOTES_MAX)
-    {
-      mutt_buffer_printf(err, _("Maximum quoting level is %d"), COLOR_QUOTES_MAX - 1);
-      return MUTT_CMD_WARNING;
-    }
-
-    if (q_level >= NumQuotedColors)
-      NumQuotedColors = q_level + 1;
-    if (q_level == 0)
-    {
-      SimpleColors[MT_COLOR_QUOTED] = fgbgattr_to_color(fg, bg, attrs);
-
-      QuotedColors[0] = SimpleColors[MT_COLOR_QUOTED];
-      for (q_level = 1; q_level < NumQuotedColors; q_level++)
-      {
-        if (QuotedColors[q_level] == A_NORMAL)
-          QuotedColors[q_level] = SimpleColors[MT_COLOR_QUOTED];
-      }
-    }
-    else
-    {
-      QuotedColors[q_level] = fgbgattr_to_color(fg, bg, attrs);
-    }
-    rc = MUTT_CMD_SUCCESS;
+    // do nothing
   }
   else if ((object == MT_COLOR_STATUS) && MoreArgs(s))
   {
@@ -707,8 +654,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_WARNING;
     }
 
-    rc = add_pattern(regex_colors_get_list(MT_COLOR_STATUS), buf->data, true,
-                     fg, bg, attrs, err, false, match);
+    rc = regex_colors_parse_status_list(object, buf->data, fg, bg, attrs, match, err);
   }
   else // Remaining simple colours
   {

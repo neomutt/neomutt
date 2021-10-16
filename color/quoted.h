@@ -39,5 +39,6 @@ void               quoted_colors_clear(void);
 int                quoted_colors_get(int q);
 void               quoted_colors_init(void);
 int                quoted_colors_num_used(void);
+bool               quoted_colors_parse_color(enum ColorId color, uint32_t fg, uint32_t bg, int attrs, int q_level, int *rc, struct Buffer *err);
 
 #endif /* MUTT_COLOR_QUOTED_H */
