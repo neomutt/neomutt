@@ -389,7 +389,7 @@ static bool do_uncolor(struct Buffer *buf, struct Buffer *s,
     if (mutt_str_equal("*", buf->data))
     {
       rc = STAILQ_FIRST(cl);
-      color_line_list_clear(cl);
+      regex_color_list_clear(cl);
       return rc;
     }
 
@@ -405,7 +405,7 @@ static bool do_uncolor(struct Buffer *buf, struct Buffer *s,
           STAILQ_REMOVE_AFTER(cl, prev, entries);
         else
           STAILQ_REMOVE_HEAD(cl, entries);
-        color_line_free(&np, uncolor);
+        regex_color_free(&np, uncolor);
         break;
       }
       prev = np;

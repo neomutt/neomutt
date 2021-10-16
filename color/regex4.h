@@ -48,9 +48,11 @@ struct ColorLine
 };
 STAILQ_HEAD(ColorLineList, ColorLine);
 
+void regex_color_list_clear(struct ColorLineList *list);
+void regex_color_free(struct ColorLine **ptr, bool free_colors);
 void regex_colors_clear(void);
-void regex_colors_init(void);
 struct ColorLineList *regex_colors_get_list(enum ColorId id);
+void regex_colors_init(void);
 
 enum CommandResult add_pattern(struct ColorLineList *top, const char *s, bool sensitive, uint32_t fg, uint32_t bg, int attr, struct Buffer *err, bool is_index, int match);
 

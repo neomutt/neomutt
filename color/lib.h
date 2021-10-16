@@ -61,11 +61,6 @@ void mutt_color_free  (uint32_t fg, uint32_t bg);
 void mutt_colors_init(void);
 void mutt_colors_cleanup(void);
 
-int mutt_color_quote(int quote);
-int mutt_color_quotes_used(void);
-
-void color_line_list_clear(struct ColorLineList *list);
-void color_line_free(struct ColorLine **ptr, bool free_colors);
 void colors_clear(void);
 
 #endif /* MUTT_COLOR_LIB_H */

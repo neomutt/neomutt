@@ -146,41 +146,6 @@ void mutt_color_free(uint32_t fg, uint32_t bg)
 }
 
 /**
- * color_line_free - Free a ColorLine
- * @param ptr         ColorLine to free
- * @param free_colors If true, free its colours too
- */
-void color_line_free(struct ColorLine **ptr, bool free_colors)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct ColorLine *cl = *ptr;
-
-  if (free_colors && (cl->fg != COLOR_UNSET) && (cl->bg != COLOR_UNSET))
-    mutt_color_free(cl->fg, cl->bg);
-
-  regfree(&cl->regex);
-  mutt_pattern_free(&cl->color_pattern);
-  FREE(&cl->pattern);
-  FREE(ptr);
-}
-
-/**
- * color_line_list_clear - Clear a list of colours
- * @param list ColorLine List
- */
-void color_line_list_clear(struct ColorLineList *list)
-{
-  struct ColorLine *np = NULL, *tmp = NULL;
-  STAILQ_FOREACH_SAFE(np, list, entries, tmp)
-  {
-    STAILQ_REMOVE(list, np, ColorLine, entries);
-    color_line_free(&np, true);
-  }
-}
-
-/**
  * colors_clear - Reset all the colours
  */
 void colors_clear(void)

@@ -55,6 +55,41 @@ struct ColorLineList StatusList;       ///< List of colours applied to the statu
 // clang-format on
 
 /**
+ * regex_color_free - Free a ColorLine
+ * @param ptr         ColorLine to free
+ * @param free_colors If true, free its colours too
+ */
+void regex_color_free(struct ColorLine **ptr, bool free_colors)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct ColorLine *cl = *ptr;
+
+  if (free_colors && (cl->fg != COLOR_UNSET) && (cl->bg != COLOR_UNSET))
+    mutt_color_free(cl->fg, cl->bg);
+
+  regfree(&cl->regex);
+  mutt_pattern_free(&cl->color_pattern);
+  FREE(&cl->pattern);
+  FREE(ptr);
+}
+
+/**
+ * regex_color_list_clear - Clear a list of colours
+ * @param list ColorLine List
+ */
+void regex_color_list_clear(struct ColorLineList *list)
+{
+  struct ColorLine *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, list, entries, tmp)
+  {
+    STAILQ_REMOVE(list, np, ColorLine, entries);
+    regex_color_free(&np, true);
+  }
+}
+
+/**
  * regex_colors_init - Initialise the Regex colours
  */
 void regex_colors_init(void)
@@ -75,15 +110,15 @@ void regex_colors_init(void)
  */
 void regex_colors_clear(void)
 {
-  color_line_list_clear(&AttachList);
-  color_line_list_clear(&BodyList);
-  color_line_list_clear(&HeaderList);
-  color_line_list_clear(&IndexList);
-  color_line_list_clear(&IndexAuthorList);
-  color_line_list_clear(&IndexFlagsList);
-  color_line_list_clear(&IndexSubjectList);
-  color_line_list_clear(&IndexTagList);
-  color_line_list_clear(&StatusList);
+  regex_color_list_clear(&AttachList);
+  regex_color_list_clear(&BodyList);
+  regex_color_list_clear(&HeaderList);
+  regex_color_list_clear(&IndexList);
+  regex_color_list_clear(&IndexAuthorList);
+  regex_color_list_clear(&IndexFlagsList);
+  regex_color_list_clear(&IndexSubjectList);
+  regex_color_list_clear(&IndexTagList);
+  regex_color_list_clear(&StatusList);
 }
 
 /**
@@ -119,10 +154,10 @@ struct ColorLineList *regex_colors_get_list(enum ColorId id)
 }
 
 /**
- * color_line_new - Create a new ColorLine
+ * regex_color_new - Create a new ColorLine
  * @retval ptr Newly allocated ColorLine
  */
-static struct ColorLine *color_line_new(void)
+static struct ColorLine *regex_color_new(void)
 {
   struct ColorLine *cl = mutt_mem_calloc(1, sizeof(struct ColorLine));
 
@@ -181,7 +216,7 @@ enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
   }
   else
   {
-    tmp = color_line_new();
+    tmp = regex_color_new();
     if (is_index)
     {
       struct Buffer *buf = mutt_buffer_pool_get();
@@ -195,7 +230,7 @@ enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
       mutt_buffer_pool_release(&buf);
       if (!tmp->color_pattern)
       {
-        color_line_free(&tmp, true);
+        regex_color_free(&tmp, true);
         return MUTT_CMD_ERROR;
       }
     }
@@ -211,7 +246,7 @@ enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
       if (r != 0)
       {
         regerror(r, &tmp->regex, err->data, err->dsize);
-        color_line_free(&tmp, true);
+        regex_color_free(&tmp, true);
         return MUTT_CMD_ERROR;
       }
     }
