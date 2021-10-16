@@ -46,6 +46,9 @@
 #include "mutt_globals.h"
 #include "options.h"
 
+struct ColorList *UserColors; ///< Array of user colours
+int NumUserColors;            ///< Number of user colours
+
 /**
  * struct ColorList - A set of colors
  */
@@ -59,22 +62,6 @@ struct ColorList
   short ref_count;        ///< Number of users
   struct ColorList *next; ///< Linked list
 };
-
-struct Colors Colors;
-
-/**
- * get_color_line_list - Sanitize and return a ColorLineList
- * @param cll A ColorLineList
- * @retval cll The ColorLineList
- */
-static struct ColorLineList *get_color_line_list(struct ColorLineList *cll)
-{
-  if (cll->stqh_last == NULL)
-  {
-    STAILQ_INIT(cll);
-  }
-  return cll;
-}
 
 const struct Mapping ColorNames[] = {
   // clang-format off
@@ -90,49 +77,6 @@ const struct Mapping ColorNames[] = {
   { 0, 0 },
   // clang-format on
 };
-
-/**
- * defs_init - Initialise the simple colour definitions
- */
-static void defs_init(void)
-{
-  memset(Colors.defs, A_NORMAL, MT_COLOR_MAX * sizeof(int));
-
-  // Set some defaults
-  Colors.defs[MT_COLOR_INDICATOR] = A_REVERSE;
-  Colors.defs[MT_COLOR_MARKERS] = A_REVERSE;
-  Colors.defs[MT_COLOR_SEARCH] = A_REVERSE;
-#ifdef USE_SIDEBAR
-  Colors.defs[MT_COLOR_SIDEBAR_HIGHLIGHT] = A_UNDERLINE;
-#endif
-  Colors.defs[MT_COLOR_STATUS] = A_REVERSE;
-}
-
-/**
- * defs_clear - Reset the simple colour definitions
- */
-static void defs_clear(void)
-{
-  memset(Colors.defs, A_NORMAL, MT_COLOR_MAX * sizeof(int));
-}
-
-/**
- * quotes_init - Initialise the quoted-email colours
- */
-static void quotes_init(void)
-{
-  memset(Colors.quotes, A_NORMAL, COLOR_QUOTES_MAX * sizeof(int));
-  Colors.quotes_used = 0;
-}
-
-/**
- * quotes_clear - Reset the quoted-email colours
- */
-static void quotes_clear(void)
-{
-  memset(Colors.quotes, A_NORMAL, COLOR_QUOTES_MAX * sizeof(int));
-  Colors.quotes_used = 0;
-}
 
 /**
  * color_list_free - Free the list of curses colours
@@ -166,7 +110,7 @@ void mutt_color_free(uint32_t fg, uint32_t bg)
 {
   struct ColorList *q = NULL;
 
-  struct ColorList *p = Colors.user_colors;
+  struct ColorList *p = UserColors;
   while (p)
   {
     if ((p->fg == fg) && (p->bg == bg))
@@ -175,16 +119,16 @@ void mutt_color_free(uint32_t fg, uint32_t bg)
       if (p->ref_count > 0)
         return;
 
-      Colors.num_user_colors--;
-      mutt_debug(LL_DEBUG1, "Color pairs used so far: %d\n", Colors.num_user_colors);
+      NumUserColors--;
+      mutt_debug(LL_DEBUG1, "Color pairs used so far: %d\n", NumUserColors);
 
-      if (p == Colors.user_colors)
+      if (p == UserColors)
       {
-        Colors.user_colors = Colors.user_colors->next;
+        UserColors = UserColors->next;
         FREE(&p);
         return;
       }
-      q = Colors.user_colors;
+      q = UserColors;
       while (q)
       {
         if (q->next == p)
@@ -241,20 +185,11 @@ void color_line_list_clear(struct ColorLineList *list)
  */
 void colors_clear(void)
 {
-  color_line_list_clear(mutt_color_attachments());
-  color_line_list_clear(mutt_color_body());
-  color_line_list_clear(mutt_color_headers());
-  color_line_list_clear(mutt_color_index_author());
-  color_line_list_clear(mutt_color_index_flags());
-  color_line_list_clear(mutt_color_index());
-  color_line_list_clear(mutt_color_index_subject());
-  color_line_list_clear(mutt_color_index_tags());
-  color_line_list_clear(mutt_color_status_line());
+  simple_colors_clear();
+  quoted_colors_clear();
+  regex_colors_clear();
 
-  defs_clear();
-  quotes_clear();
-
-  color_list_free(&Colors.user_colors);
+  color_list_free(&UserColors);
 }
 
 /**
@@ -263,7 +198,7 @@ void colors_clear(void)
 void mutt_colors_cleanup(void)
 {
   colors_clear();
-  notify_free(&Colors.notify);
+  color_notify_free();
 }
 
 /**
@@ -271,14 +206,12 @@ void mutt_colors_cleanup(void)
  */
 void mutt_colors_init(void)
 {
-  Colors.notify = notify_new();
-
-  quotes_init();
-  defs_init();
+  color_notify_init();
+  simple_colors_init();
+  quoted_colors_init();
+  regex_colors_init();
 
   start_color();
-
-  notify_set_parent(Colors.notify, NeoMutt->notify);
 }
 
 /**
@@ -289,7 +222,7 @@ void mutt_colors_init(void)
  */
 int mutt_color_alloc(uint32_t fg, uint32_t bg)
 {
-  struct ColorList *p = Colors.user_colors;
+  struct ColorList *p = UserColors;
 
   /* check to see if this color is already allocated to save space */
   while (p)
@@ -303,14 +236,14 @@ int mutt_color_alloc(uint32_t fg, uint32_t bg)
   }
 
   /* check to see if there are colors left */
-  if (++Colors.num_user_colors > COLOR_PAIRS)
+  if (++NumUserColors > COLOR_PAIRS)
     return A_NORMAL;
 
   /* find the smallest available index (object) */
   int i = 1;
   while (true)
   {
-    p = Colors.user_colors;
+    p = UserColors;
     while (p)
     {
       if (p->index == i)
@@ -328,8 +261,8 @@ int mutt_color_alloc(uint32_t fg, uint32_t bg)
     return (0);
 
   p = mutt_mem_malloc(sizeof(struct ColorList));
-  p->next = Colors.user_colors;
-  Colors.user_colors = p;
+  p->next = UserColors;
+  UserColors = p;
 
   p->index = i;
   p->ref_count = 1;
@@ -342,7 +275,7 @@ int mutt_color_alloc(uint32_t fg, uint32_t bg)
     bg = COLOR_UNSET;
   init_pair(i, fg, bg);
 
-  mutt_debug(LL_DEBUG3, "Color pairs used so far: %d\n", Colors.num_user_colors);
+  mutt_debug(LL_DEBUG3, "Color pairs used so far: %d\n", NumUserColors);
 
   return COLOR_PAIR(p->index);
 }
@@ -357,7 +290,7 @@ int mutt_color_alloc(uint32_t fg, uint32_t bg)
  */
 static int mutt_lookup_color(short pair, uint32_t *fg, uint32_t *bg)
 {
-  struct ColorList *p = Colors.user_colors;
+  struct ColorList *p = UserColors;
 
   while (p)
   {
@@ -400,88 +333,7 @@ int mutt_color_combine(uint32_t fg_attr, uint32_t bg_attr)
  */
 int mutt_color(enum ColorId id)
 {
-  return Colors.defs[id];
-}
-
-/**
- * mutt_color_status_line - Return the ColorLineList for the status_line
- * @retval ptr ColorLineList
- */
-struct ColorLineList *mutt_color_status_line(void)
-{
-  return get_color_line_list(&Colors.status_list);
-}
-
-/**
- * mutt_color_index - Return the ColorLineList for the index
- * @retval ptr ColorLineList
- */
-struct ColorLineList *mutt_color_index(void)
-{
-  return get_color_line_list(&Colors.index_list);
-}
-
-/**
- * mutt_color_headers - Return the ColorLineList for headers
- * @retval ptr ColorLineList
- */
-struct ColorLineList *mutt_color_headers(void)
-{
-  return get_color_line_list(&Colors.hdr_list);
-}
-
-/**
- * mutt_color_body - Return the ColorLineList for the body
- * @retval ptr ColorLineList
- */
-struct ColorLineList *mutt_color_body(void)
-{
-  return get_color_line_list(&Colors.body_list);
-}
-
-/**
- * mutt_color_attachments - Return the ColorLineList for the attachments
- * @retval ptr ColorLineList
- */
-struct ColorLineList *mutt_color_attachments(void)
-{
-  return get_color_line_list(&Colors.attach_list);
-}
-
-/**
- * mutt_color_index_author - Return the ColorLineList for author in the index
- * @retval ptr ColorLineList
- */
-struct ColorLineList *mutt_color_index_author(void)
-{
-  return get_color_line_list(&Colors.index_author_list);
-}
-
-/**
- * mutt_color_index_flags - Return the ColorLineList for flags in the index
- * @retval ptr ColorLineList
- */
-struct ColorLineList *mutt_color_index_flags(void)
-{
-  return get_color_line_list(&Colors.index_flags_list);
-}
-
-/**
- * mutt_color_index_subject - Return the ColorLineList for subject in the index
- * @retval ptr ColorLineList
- */
-struct ColorLineList *mutt_color_index_subject(void)
-{
-  return get_color_line_list(&Colors.index_subject_list);
-}
-
-/**
- * mutt_color_index_tags - Return the ColorLineList for tags in the index
- * @retval ptr ColorLineList
- */
-struct ColorLineList *mutt_color_index_tags(void)
-{
-  return get_color_line_list(&Colors.index_tag_list);
+  return SimpleColors[id];
 }
 
 /**
@@ -491,10 +343,10 @@ struct ColorLineList *mutt_color_index_tags(void)
  */
 int mutt_color_quote(int q)
 {
-  const int used = Colors.quotes_used;
+  const int used = NumQuotedColors;
   if (used == 0)
     return 0;
-  return Colors.quotes[q % used];
+  return QuotedColors[q % used];
 }
 
 /**
@@ -503,7 +355,7 @@ int mutt_color_quote(int q)
  */
 int mutt_color_quotes_used(void)
 {
-  return Colors.quotes_used;
+  return NumQuotedColors;
 }
 
 /**

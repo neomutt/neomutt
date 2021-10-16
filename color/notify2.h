@@ -27,6 +27,8 @@
 #include "mutt/lib.h"
 #include "color.h"
 
+extern struct Notify *ColorsNotify;
+
 /**
  * enum NotifyColor - Types of Color Event
  *
@@ -52,6 +54,8 @@ struct EventColor
   enum ColorId color; ///< Colour that has changed
 };
 
+void color_notify_init(void);
+void color_notify_free(void);
 void mutt_color_observer_add   (observer_t callback, void *global_data);
 void mutt_color_observer_remove(observer_t callback, void *global_data);
 

@@ -437,7 +437,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
     mutt_debug(LL_NOTIFY, "NT_COLOR_RESET: [ALL]\n");
     colors_clear();
     struct EventColor ev_c = { MT_COLOR_MAX };
-    notify_send(Colors.notify, NT_COLOR, NT_COLOR_RESET, &ev_c);
+    notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
     return MUTT_CMD_SUCCESS;
   }
 
@@ -455,7 +455,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
   if (object == MT_COLOR_QUOTED)
   {
-    Colors.quotes[ql] = A_NORMAL;
+    QuotedColors[ql] = A_NORMAL;
     /* fallthrough to simple case */
   }
 
@@ -466,12 +466,12 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
       (object != MT_COLOR_STATUS))
   {
     // Simple colours
-    Colors.defs[object] = A_NORMAL;
+    SimpleColors[object] = A_NORMAL;
 
     get_colorid_name(object, buf);
     mutt_debug(LL_NOTIFY, "NT_COLOR_RESET: %s\n", buf->data);
     struct EventColor ev_c = { object };
-    notify_send(Colors.notify, NT_COLOR, NT_COLOR_RESET, &ev_c);
+    notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
     return MUTT_CMD_SUCCESS;
   }
 
@@ -496,30 +496,30 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
   bool changed = false;
   if (object == MT_COLOR_ATTACH_HEADERS)
-    changed |= do_uncolor(buf, s, mutt_color_attachments(), uncolor);
+    changed |= do_uncolor(buf, s, regex_colors_get_list(MT_COLOR_ATTACH_HEADERS), uncolor);
   else if (object == MT_COLOR_BODY)
-    changed |= do_uncolor(buf, s, mutt_color_body(), uncolor);
+    changed |= do_uncolor(buf, s, regex_colors_get_list(MT_COLOR_BODY), uncolor);
   else if (object == MT_COLOR_HEADER)
-    changed |= do_uncolor(buf, s, mutt_color_headers(), uncolor);
+    changed |= do_uncolor(buf, s, regex_colors_get_list(MT_COLOR_HEADER), uncolor);
   else if (object == MT_COLOR_INDEX)
-    changed |= do_uncolor(buf, s, mutt_color_index(), uncolor);
+    changed |= do_uncolor(buf, s, regex_colors_get_list(MT_COLOR_INDEX), uncolor);
   else if (object == MT_COLOR_INDEX_AUTHOR)
-    changed |= do_uncolor(buf, s, mutt_color_index_author(), uncolor);
+    changed |= do_uncolor(buf, s, regex_colors_get_list(MT_COLOR_INDEX_AUTHOR), uncolor);
   else if (object == MT_COLOR_INDEX_FLAGS)
-    changed |= do_uncolor(buf, s, mutt_color_index_flags(), uncolor);
+    changed |= do_uncolor(buf, s, regex_colors_get_list(MT_COLOR_INDEX_FLAGS), uncolor);
   else if (object == MT_COLOR_INDEX_SUBJECT)
-    changed |= do_uncolor(buf, s, mutt_color_index_subject(), uncolor);
+    changed |= do_uncolor(buf, s, regex_colors_get_list(MT_COLOR_INDEX_SUBJECT), uncolor);
   else if (object == MT_COLOR_INDEX_TAG)
-    changed |= do_uncolor(buf, s, mutt_color_index_tags(), uncolor);
+    changed |= do_uncolor(buf, s, regex_colors_get_list(MT_COLOR_INDEX_TAG), uncolor);
   else if (object == MT_COLOR_STATUS)
-    changed |= do_uncolor(buf, s, mutt_color_status_line(), uncolor);
+    changed |= do_uncolor(buf, s, regex_colors_get_list(MT_COLOR_STATUS), uncolor);
 
   if (changed)
   {
     get_colorid_name(object, buf);
     mutt_debug(LL_NOTIFY, "NT_COLOR_RESET: %s\n", buf->data);
     struct EventColor ev_c = { object };
-    notify_send(Colors.notify, NT_COLOR, NT_COLOR_RESET, &ev_c);
+    notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
   }
 
   return MUTT_CMD_SUCCESS;
@@ -619,34 +619,38 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
   }
 
   if (object == MT_COLOR_ATTACH_HEADERS)
-    rc = add_pattern(mutt_color_attachments(), buf->data, true, fg, bg, attrs,
-                     err, false, match);
+    rc = add_pattern(regex_colors_get_list(MT_COLOR_ATTACH_HEADERS), buf->data,
+                     true, fg, bg, attrs, err, false, match);
   else if (object == MT_COLOR_BODY)
-    rc = add_pattern(mutt_color_body(), buf->data, true, fg, bg, attrs, err, false, match);
+    rc = add_pattern(regex_colors_get_list(MT_COLOR_BODY), buf->data, true, fg,
+                     bg, attrs, err, false, match);
   else if (object == MT_COLOR_HEADER)
-    rc = add_pattern(mutt_color_headers(), buf->data, false, fg, bg, attrs, err, false, match);
+    rc = add_pattern(regex_colors_get_list(MT_COLOR_HEADER), buf->data, false,
+                     fg, bg, attrs, err, false, match);
   else if (object == MT_COLOR_INDEX)
   {
-    rc = add_pattern(mutt_color_index(), buf->data, true, fg, bg, attrs, err, true, match);
+    rc = add_pattern(regex_colors_get_list(MT_COLOR_INDEX), buf->data, true, fg,
+                     bg, attrs, err, true, match);
   }
   else if (object == MT_COLOR_INDEX_AUTHOR)
   {
-    rc = add_pattern(mutt_color_index_author(), buf->data, true, fg, bg, attrs,
-                     err, true, match);
+    rc = add_pattern(regex_colors_get_list(MT_COLOR_INDEX_AUTHOR), buf->data,
+                     true, fg, bg, attrs, err, true, match);
   }
   else if (object == MT_COLOR_INDEX_FLAGS)
   {
-    rc = add_pattern(mutt_color_index_flags(), buf->data, true, fg, bg, attrs,
-                     err, true, match);
+    rc = add_pattern(regex_colors_get_list(MT_COLOR_INDEX_FLAGS), buf->data,
+                     true, fg, bg, attrs, err, true, match);
   }
   else if (object == MT_COLOR_INDEX_SUBJECT)
   {
-    rc = add_pattern(mutt_color_index_subject(), buf->data, true, fg, bg, attrs,
-                     err, true, match);
+    rc = add_pattern(regex_colors_get_list(MT_COLOR_INDEX_SUBJECT), buf->data,
+                     true, fg, bg, attrs, err, true, match);
   }
   else if (object == MT_COLOR_INDEX_TAG)
   {
-    rc = add_pattern(mutt_color_index_tags(), buf->data, true, fg, bg, attrs, err, true, match);
+    rc = add_pattern(regex_colors_get_list(MT_COLOR_INDEX_TAG), buf->data, true,
+                     fg, bg, attrs, err, true, match);
   }
   else if (object == MT_COLOR_QUOTED)
   {
@@ -656,22 +660,22 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_WARNING;
     }
 
-    if (q_level >= Colors.quotes_used)
-      Colors.quotes_used = q_level + 1;
+    if (q_level >= NumQuotedColors)
+      NumQuotedColors = q_level + 1;
     if (q_level == 0)
     {
-      Colors.defs[MT_COLOR_QUOTED] = fgbgattr_to_color(fg, bg, attrs);
+      SimpleColors[MT_COLOR_QUOTED] = fgbgattr_to_color(fg, bg, attrs);
 
-      Colors.quotes[0] = Colors.defs[MT_COLOR_QUOTED];
-      for (q_level = 1; q_level < Colors.quotes_used; q_level++)
+      QuotedColors[0] = SimpleColors[MT_COLOR_QUOTED];
+      for (q_level = 1; q_level < NumQuotedColors; q_level++)
       {
-        if (Colors.quotes[q_level] == A_NORMAL)
-          Colors.quotes[q_level] = Colors.defs[MT_COLOR_QUOTED];
+        if (QuotedColors[q_level] == A_NORMAL)
+          QuotedColors[q_level] = SimpleColors[MT_COLOR_QUOTED];
       }
     }
     else
     {
-      Colors.quotes[q_level] = fgbgattr_to_color(fg, bg, attrs);
+      QuotedColors[q_level] = fgbgattr_to_color(fg, bg, attrs);
     }
     rc = MUTT_CMD_SUCCESS;
   }
@@ -703,12 +707,12 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_WARNING;
     }
 
-    rc = add_pattern(mutt_color_status_line(), buf->data, true, fg, bg, attrs,
-                     err, false, match);
+    rc = add_pattern(regex_colors_get_list(MT_COLOR_STATUS), buf->data, true,
+                     fg, bg, attrs, err, false, match);
   }
   else // Remaining simple colours
   {
-    Colors.defs[object] = fgbgattr_to_color(fg, bg, attrs);
+    SimpleColors[object] = fgbgattr_to_color(fg, bg, attrs);
     rc = MUTT_CMD_SUCCESS;
   }
 
@@ -717,7 +721,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     get_colorid_name(object, buf);
     mutt_debug(LL_NOTIFY, "NT_COLOR_SET: %s\n", buf->data);
     struct EventColor ev_c = { object };
-    notify_send(Colors.notify, NT_COLOR, NT_COLOR_SET, &ev_c);
+    notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
   }
 
   return rc;

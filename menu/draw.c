@@ -65,16 +65,16 @@ static int get_color(int index, unsigned char *s)
   switch (type)
   {
     case MT_COLOR_INDEX_AUTHOR:
-      color = mutt_color_index_author();
+      color = regex_colors_get_list(MT_COLOR_INDEX_AUTHOR);
       break;
     case MT_COLOR_INDEX_FLAGS:
-      color = mutt_color_index_flags();
+      color = regex_colors_get_list(MT_COLOR_INDEX_FLAGS);
       break;
     case MT_COLOR_INDEX_SUBJECT:
-      color = mutt_color_index_subject();
+      color = regex_colors_get_list(MT_COLOR_INDEX_SUBJECT);
       break;
     case MT_COLOR_INDEX_TAG:
-      STAILQ_FOREACH(np, mutt_color_index_tags(), entries)
+      STAILQ_FOREACH(np, regex_colors_get_list(MT_COLOR_INDEX_TAG), entries)
       {
         if (mutt_strn_equal((const char *) (s + 1), np->pattern, strlen(np->pattern)))
           return np->pair;

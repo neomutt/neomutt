@@ -165,7 +165,8 @@ $(PWD)/bcache:
 ###############################################################################
 # libcolor
 LIBCOLOR=	libcolor.a
-LIBCOLOROBJS=	color/color.o color/command.o color/notify.o color/regex.o
+LIBCOLOROBJS=	color/color.o color/command.o color/notify.o color/quoted.o \
+		color/regex.o color/simple.o
 CLEANFILES+=	$(LIBCOLOR) $(LIBCOLOROBJS)
 ALLOBJS+=	$(LIBCOLOROBJS)
 

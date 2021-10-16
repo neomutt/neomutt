@@ -907,7 +907,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
       break;
 
     /* loop through each "color status regex" */
-    STAILQ_FOREACH(cl, mutt_color_status_line(), entries)
+    STAILQ_FOREACH(cl, regex_colors_get_list(MT_COLOR_STATUS), entries)
     {
       regmatch_t pmatch[cl->match + 1];
 
@@ -1388,7 +1388,7 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
   struct ColorLine *color = NULL;
   struct PatternCache cache = { 0 };
 
-  STAILQ_FOREACH(color, mutt_color_index(), entries)
+  STAILQ_FOREACH(color, regex_colors_get_list(MT_COLOR_INDEX), entries)
   {
     if (mutt_pattern_exec(SLIST_FIRST(color->color_pattern),
                           MUTT_MATCH_FULL_ADDRESS, m, e, &cache))

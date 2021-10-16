@@ -42,6 +42,82 @@
 #include "mutt_globals.h"
 #include "regex4.h"
 
+// clang-format off
+struct ColorLineList AttachList;       ///< List of colours applied to the attachment headers
+struct ColorLineList BodyList;         ///< List of colours applied to the email body
+struct ColorLineList HeaderList;       ///< List of colours applied to the email headers
+struct ColorLineList IndexAuthorList;  ///< List of colours applied to the author in the index
+struct ColorLineList IndexFlagsList;   ///< List of colours applied to the flags in the index
+struct ColorLineList IndexList;        ///< List of default colours applied to the index
+struct ColorLineList IndexSubjectList; ///< List of colours applied to the subject in the index
+struct ColorLineList IndexTagList;     ///< List of colours applied to tags in the index
+struct ColorLineList StatusList;       ///< List of colours applied to the status bar
+// clang-format on
+
+/**
+ * regex_colors_init - Initialise the Regex colours
+ */
+void regex_colors_init(void)
+{
+  STAILQ_INIT(&AttachList);
+  STAILQ_INIT(&BodyList);
+  STAILQ_INIT(&HeaderList);
+  STAILQ_INIT(&IndexAuthorList);
+  STAILQ_INIT(&IndexFlagsList);
+  STAILQ_INIT(&IndexList);
+  STAILQ_INIT(&IndexSubjectList);
+  STAILQ_INIT(&IndexTagList);
+  STAILQ_INIT(&StatusList);
+}
+
+/**
+ * regex_colors_clear - Clear the Regex colours
+ */
+void regex_colors_clear(void)
+{
+  color_line_list_clear(&AttachList);
+  color_line_list_clear(&BodyList);
+  color_line_list_clear(&HeaderList);
+  color_line_list_clear(&IndexList);
+  color_line_list_clear(&IndexAuthorList);
+  color_line_list_clear(&IndexFlagsList);
+  color_line_list_clear(&IndexSubjectList);
+  color_line_list_clear(&IndexTagList);
+  color_line_list_clear(&StatusList);
+}
+
+/**
+ * regex_colors_get_list - Return the RegexColorList for a colour id
+ * @param id Colour ID
+ * @retval ptr RegexColorList
+ */
+struct ColorLineList *regex_colors_get_list(enum ColorId id)
+{
+  switch (id)
+  {
+    case MT_COLOR_ATTACH_HEADERS:
+      return &AttachList;
+    case MT_COLOR_BODY:
+      return &BodyList;
+    case MT_COLOR_HEADER:
+      return &HeaderList;
+    case MT_COLOR_INDEX:
+      return &IndexList;
+    case MT_COLOR_INDEX_AUTHOR:
+      return &IndexAuthorList;
+    case MT_COLOR_INDEX_FLAGS:
+      return &IndexFlagsList;
+    case MT_COLOR_INDEX_SUBJECT:
+      return &IndexSubjectList;
+    case MT_COLOR_INDEX_TAG:
+      return &IndexTagList;
+    case MT_COLOR_STATUS:
+      return &StatusList;
+    default:
+      return NULL;
+  }
+}
+
 /**
  * color_line_new - Create a new ColorLine
  * @retval ptr Newly allocated ColorLine
@@ -166,4 +242,3 @@ enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
 
   return MUTT_CMD_SUCCESS;
 }
-

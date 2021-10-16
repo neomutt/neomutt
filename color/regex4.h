@@ -29,7 +29,28 @@
 #include "mutt/lib.h"
 #include "lib.h"
 
-struct ColorLineList;
+/**
+ * struct ColorLine - A regular expression and a color to highlight a line
+ */
+struct ColorLine
+{
+  regex_t regex;                     ///< Compiled regex
+  int match;                         ///< Substring to match, 0 for old behaviour
+  char *pattern;                     ///< Pattern to match
+  struct PatternList *color_pattern; ///< Compiled pattern to speed up index color calculation
+  uint32_t fg;                       ///< Foreground colour
+  uint32_t bg;                       ///< Background colour
+  int pair;                          ///< Colour pair index
+
+  bool stop_matching : 1;            ///< Used by the pager for body patterns, to prevent the color from being retried once it fails
+
+  STAILQ_ENTRY(ColorLine) entries;   ///< Linked list
+};
+STAILQ_HEAD(ColorLineList, ColorLine);
+
+void regex_colors_clear(void);
+void regex_colors_init(void);
+struct ColorLineList *regex_colors_get_list(enum ColorId id);
 
 enum CommandResult add_pattern(struct ColorLineList *top, const char *s, bool sensitive, uint32_t fg, uint32_t bg, int attr, struct Buffer *err, bool is_index, int match);
 

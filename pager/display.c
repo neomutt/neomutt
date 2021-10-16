@@ -765,7 +765,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw, struct L
        * like body patterns (further below).  */
       if (!c_header_color_partial)
       {
-        STAILQ_FOREACH(color_line, mutt_color_headers(), entries)
+        STAILQ_FOREACH(color_line, regex_colors_get_list(MT_COLOR_HEADER), entries)
         {
           if (regexec(&color_line->regex, buf, 0, NULL, 0) == 0)
           {
@@ -848,9 +848,9 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw, struct L
     offset = 0;
     lines[line_num].syntax_arr_size = 0;
     if (lines[line_num].color == MT_COLOR_HDRDEFAULT)
-      head = mutt_color_headers();
+      head = regex_colors_get_list(MT_COLOR_HEADER);
     else
-      head = mutt_color_body();
+      head = regex_colors_get_list(MT_COLOR_BODY);
     STAILQ_FOREACH(color_line, head, entries)
     {
       color_line->stop_matching = false;
@@ -942,7 +942,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw, struct L
 
       found = false;
       null_rx = false;
-      STAILQ_FOREACH(color_line, mutt_color_attachments(), entries)
+      STAILQ_FOREACH(color_line, regex_colors_get_list(MT_COLOR_ATTACH_HEADERS), entries)
       {
         if (regexec(&color_line->regex, buf + offset, 1, pmatch,
                     ((offset != 0) ? REG_NOTBOL : 0)) != 0)
