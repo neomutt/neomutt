@@ -269,7 +269,7 @@ static void append_line(struct Line *lines, int line_num, int cnt)
 static void class_color_new(struct QClass *qc, int *q_level)
 {
   qc->quote_n = (*q_level)++;
-  qc->color = mutt_color_quote(qc->quote_n);
+  qc->color = quoted_colors_get(qc->quote_n);
 }
 
 /**
@@ -290,7 +290,7 @@ static void shift_class_colors(struct QClass *quote_list,
     if (q_list->quote_n >= index)
     {
       q_list->quote_n++;
-      q_list->color = mutt_color_quote(q_list->quote_n);
+      q_list->color = quoted_colors_get(q_list->quote_n);
     }
     if (q_list->down)
       q_list = q_list->down;
@@ -310,7 +310,7 @@ static void shift_class_colors(struct QClass *quote_list,
   }
 
   new_class->quote_n = index;
-  new_class->color = mutt_color_quote(index);
+  new_class->color = quoted_colors_get(index);
   (*q_level)++;
 }
 
@@ -332,14 +332,14 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
   size_t offset, tail_lng;
   int index = -1;
 
-  if (mutt_color_quotes_used() <= 1)
+  if (quoted_colors_num_used() <= 1)
   {
     /* not much point in classifying quotes... */
 
     if (!*quote_list)
     {
       qc = mutt_mem_calloc(1, sizeof(struct QClass));
-      qc->color = mutt_color_quote(0);
+      qc->color = quoted_colors_get(0);
       *quote_list = qc;
     }
     return *quote_list;

@@ -325,25 +325,3 @@ int mutt_color_combine(uint32_t fg_attr, uint32_t bg_attr)
     return A_NORMAL;
   return mutt_color_alloc(fg, bg);
 }
-
-/**
- * mutt_color_quote - Return the color of a quote, cycling through the used quotes
- * @param q Quote number
- * @retval num Color ID, e.g. MT_COLOR_QUOTED
- */
-int mutt_color_quote(int q)
-{
-  const int used = NumQuotedColors;
-  if (used == 0)
-    return 0;
-  return QuotedColors[q % used];
-}
-
-/**
- * mutt_color_quotes_used - Return the number of used quotes
- * @retval num Number of used quotes
- */
-int mutt_color_quotes_used(void)
-{
-  return NumQuotedColors;
-}

@@ -35,7 +35,9 @@
 extern int QuotedColors[];
 extern int NumQuotedColors;
 
-void quoted_colors_clear(void);
-void quoted_colors_init(void);
+void               quoted_colors_clear(void);
+int                quoted_colors_get(int q);
+void               quoted_colors_init(void);
+int                quoted_colors_num_used(void);
 
 #endif /* MUTT_COLOR_QUOTED_H */

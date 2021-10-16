@@ -55,3 +55,25 @@ void quoted_colors_init(void)
   memset(QuotedColors, A_NORMAL, COLOR_QUOTES_MAX * sizeof(int));
   NumQuotedColors = 0;
 }
+
+/**
+ * quoted_colors_get - Return the color of a quote, cycling through the used quotes
+ * @param q Quote number
+ * @retval num Color ID, e.g. MT_COLOR_QUOTED
+ */
+int quoted_colors_get(int q)
+{
+  const int used = NumQuotedColors;
+  if (used == 0)
+    return 0;
+  return QuotedColors[q % used];
+}
+
+/**
+ * quoted_colors_num_used - Return the number of used quotes
+ * @retval num Number of used quotes
+ */
+int quoted_colors_num_used(void)
+{
+  return NumQuotedColors;
+}
