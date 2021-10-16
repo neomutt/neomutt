@@ -57,8 +57,8 @@
  */
 static int get_color(int index, unsigned char *s)
 {
-  struct ColorLineList *color = NULL;
-  struct ColorLine *np = NULL;
+  struct RegexColorList *color = NULL;
+  struct RegexColor *np = NULL;
   struct Email *e = mutt_get_virt_email(Context->mailbox, index);
   int type = *s;
 

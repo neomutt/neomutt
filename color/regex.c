@@ -43,28 +43,28 @@
 #include "regex4.h"
 
 // clang-format off
-struct ColorLineList AttachList;       ///< List of colours applied to the attachment headers
-struct ColorLineList BodyList;         ///< List of colours applied to the email body
-struct ColorLineList HeaderList;       ///< List of colours applied to the email headers
-struct ColorLineList IndexAuthorList;  ///< List of colours applied to the author in the index
-struct ColorLineList IndexFlagsList;   ///< List of colours applied to the flags in the index
-struct ColorLineList IndexList;        ///< List of default colours applied to the index
-struct ColorLineList IndexSubjectList; ///< List of colours applied to the subject in the index
-struct ColorLineList IndexTagList;     ///< List of colours applied to tags in the index
-struct ColorLineList StatusList;       ///< List of colours applied to the status bar
+struct RegexColorList AttachList;       ///< List of colours applied to the attachment headers
+struct RegexColorList BodyList;         ///< List of colours applied to the email body
+struct RegexColorList HeaderList;       ///< List of colours applied to the email headers
+struct RegexColorList IndexAuthorList;  ///< List of colours applied to the author in the index
+struct RegexColorList IndexFlagsList;   ///< List of colours applied to the flags in the index
+struct RegexColorList IndexList;        ///< List of default colours applied to the index
+struct RegexColorList IndexSubjectList; ///< List of colours applied to the subject in the index
+struct RegexColorList IndexTagList;     ///< List of colours applied to tags in the index
+struct RegexColorList StatusList;       ///< List of colours applied to the status bar
 // clang-format on
 
 /**
- * regex_color_free - Free a ColorLine
- * @param ptr         ColorLine to free
+ * regex_color_free - Free a RegexColor
+ * @param ptr         RegexColor to free
  * @param free_colors If true, free its colours too
  */
-void regex_color_free(struct ColorLine **ptr, bool free_colors)
+void regex_color_free(struct RegexColor **ptr, bool free_colors)
 {
   if (!ptr || !*ptr)
     return;
 
-  struct ColorLine *cl = *ptr;
+  struct RegexColor *cl = *ptr;
 
   if (free_colors && (cl->fg != COLOR_UNSET) && (cl->bg != COLOR_UNSET))
     mutt_color_free(cl->fg, cl->bg);
@@ -77,14 +77,14 @@ void regex_color_free(struct ColorLine **ptr, bool free_colors)
 
 /**
  * regex_color_list_clear - Clear a list of colours
- * @param list ColorLine List
+ * @param rcl RegexColor List
  */
-void regex_color_list_clear(struct ColorLineList *list)
+void regex_color_list_clear(struct RegexColorList *rcl)
 {
-  struct ColorLine *np = NULL, *tmp = NULL;
-  STAILQ_FOREACH_SAFE(np, list, entries, tmp)
+  struct RegexColor *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, rcl, entries, tmp)
   {
-    STAILQ_REMOVE(list, np, ColorLine, entries);
+    STAILQ_REMOVE(rcl, np, RegexColor, entries);
     regex_color_free(&np, true);
   }
 }
@@ -126,7 +126,7 @@ void regex_colors_clear(void)
  * @param id Colour ID
  * @retval ptr RegexColorList
  */
-struct ColorLineList *regex_colors_get_list(enum ColorId id)
+struct RegexColorList *regex_colors_get_list(enum ColorId id)
 {
   switch (id)
   {
@@ -154,12 +154,12 @@ struct ColorLineList *regex_colors_get_list(enum ColorId id)
 }
 
 /**
- * regex_color_new - Create a new ColorLine
- * @retval ptr Newly allocated ColorLine
+ * regex_color_new - Create a new RegexColor
+ * @retval ptr Newly allocated RegexColor
  */
-static struct ColorLine *regex_color_new(void)
+struct RegexColor *regex_color_new(void)
 {
-  struct ColorLine *cl = mutt_mem_calloc(1, sizeof(struct ColorLine));
+  struct RegexColor *cl = mutt_mem_calloc(1, sizeof(struct RegexColor));
 
   cl->fg = COLOR_UNSET;
   cl->bg = COLOR_UNSET;
@@ -183,11 +183,11 @@ static struct ColorLine *regex_color_new(void)
  * is_index used to store compiled pattern only for 'index' color object when
  * called from mutt_parse_color()
  */
-enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
+enum CommandResult add_pattern(struct RegexColorList *top, const char *s,
                                bool sensitive, uint32_t fg, uint32_t bg, int attr,
                                struct Buffer *err, bool is_index, int match)
 {
-  struct ColorLine *tmp = NULL;
+  struct RegexColor *tmp = NULL;
 
   STAILQ_FOREACH(tmp, top, entries)
   {

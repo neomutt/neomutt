@@ -378,9 +378,9 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
  * @retval true A colour was freed
  */
 static bool do_uncolor(struct Buffer *buf, struct Buffer *s,
-                       struct ColorLineList *cl, bool uncolor)
+                       struct RegexColorList *cl, bool uncolor)
 {
-  struct ColorLine *np = NULL, *prev = NULL;
+  struct RegexColor *np = NULL, *prev = NULL;
   bool rc = false;
 
   do

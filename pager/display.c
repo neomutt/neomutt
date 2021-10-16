@@ -725,8 +725,8 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw, struct L
                           int line_num, int lines_used, struct QClass **quote_list,
                           int *q_level, bool *force_redraw, bool q_classify)
 {
-  struct ColorLine *color_line = NULL;
-  struct ColorLineList *head = NULL;
+  struct RegexColor *color_line = NULL;
+  struct RegexColorList *head = NULL;
   regmatch_t pmatch[1];
   bool found;
   bool null_rx;

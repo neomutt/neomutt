@@ -30,13 +30,13 @@
 #include "lib.h"
 
 /**
- * struct ColorLine - A regular expression and a color to highlight a line
+ * struct RegexColor - A regular expression and a color to highlight a line
  */
-struct ColorLine
+struct RegexColor
 {
+  char *pattern;                     ///< Pattern to match
   regex_t regex;                     ///< Compiled regex
   int match;                         ///< Substring to match, 0 for old behaviour
-  char *pattern;                     ///< Pattern to match
   struct PatternList *color_pattern; ///< Compiled pattern to speed up index color calculation
   uint32_t fg;                       ///< Foreground colour
   uint32_t bg;                       ///< Background colour
@@ -44,16 +44,17 @@ struct ColorLine
 
   bool stop_matching : 1;            ///< Used by the pager for body patterns, to prevent the color from being retried once it fails
 
-  STAILQ_ENTRY(ColorLine) entries;   ///< Linked list
+  STAILQ_ENTRY(RegexColor) entries;   ///< Linked list
 };
-STAILQ_HEAD(ColorLineList, ColorLine);
+STAILQ_HEAD(RegexColorList, RegexColor);
 
-void regex_color_list_clear(struct ColorLineList *list);
-void regex_color_free(struct ColorLine **ptr, bool free_colors);
-void regex_colors_clear(void);
-struct ColorLineList *regex_colors_get_list(enum ColorId id);
-void regex_colors_init(void);
+void                   regex_color_free(struct RegexColor **ptr, bool free_colors);
+void                   regex_color_list_clear(struct RegexColorList *rcl);
+struct RegexColor *    regex_color_new (void);
+void                   regex_colors_clear(void);
+struct RegexColorList *regex_colors_get_list(enum ColorId id);
+void                   regex_colors_init(void);
 
-enum CommandResult add_pattern(struct ColorLineList *top, const char *s, bool sensitive, uint32_t fg, uint32_t bg, int attr, struct Buffer *err, bool is_index, int match);
+enum CommandResult add_pattern(struct RegexColorList *top, const char *s, bool sensitive, uint32_t fg, uint32_t bg, int attr, struct Buffer *err, bool is_index, int match);
 
 #endif /* MUTT_COLOR_REGEX_H */

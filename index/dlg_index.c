@@ -900,7 +900,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
 
   do
   {
-    struct ColorLine *cl = NULL;
+    struct RegexColor *cl = NULL;
     found = false;
 
     if (!buf[offset])
@@ -1385,7 +1385,7 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
   if (!e)
     return;
 
-  struct ColorLine *color = NULL;
+  struct RegexColor *color = NULL;
   struct PatternCache cache = { 0 };
 
   STAILQ_FOREACH(color, regex_colors_get_list(MT_COLOR_INDEX), entries)
