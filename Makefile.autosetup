@@ -165,7 +165,7 @@ $(PWD)/bcache:
 ###############################################################################
 # libcolor
 LIBCOLOR=	libcolor.a
-LIBCOLOROBJS=	color/color.o
+LIBCOLOROBJS=	color/color.o color/command.o color/notify.o color/regex.o
 CLEANFILES+=	$(LIBCOLOR) $(LIBCOLOROBJS)
 ALLOBJS+=	$(LIBCOLOROBJS)
 
@@ -712,7 +712,7 @@ $(ALLOBJS):
 # The libraries with the most dependencies will come first.
 MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) $(LIBNNTP) \
 		$(LIBCOMPMBOX) $(LIBSTORE) $(LIBPATTERN) $(LIBPROGRESS) \
-		$(LIBQUESTION) $(LIBCOLOR) $(LIBGUI) $(LIBHELPBAR) $(LIBMENU) \
+		$(LIBQUESTION) $(LIBMENU) $(LIBCOLOR) $(LIBGUI) $(LIBHELPBAR) \
 		$(LIBMBOX) $(LIBNOTMUCH) $(LIBATTACH) $(LIBMAILDIR) \
 		$(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) $(LIBCOMPRESS) \
 		$(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) $(LIBALIAS) \
