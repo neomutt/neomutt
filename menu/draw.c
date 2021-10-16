@@ -57,24 +57,24 @@
  */
 static int get_color(int index, unsigned char *s)
 {
-  struct ColorLineList *color = NULL;
-  struct ColorLine *np = NULL;
+  struct RegexColorList *color = NULL;
+  struct RegexColor *np = NULL;
   struct Email *e = mutt_get_virt_email(Context->mailbox, index);
   int type = *s;
 
   switch (type)
   {
     case MT_COLOR_INDEX_AUTHOR:
-      color = mutt_color_index_author();
+      color = regex_colors_get_list(MT_COLOR_INDEX_AUTHOR);
       break;
     case MT_COLOR_INDEX_FLAGS:
-      color = mutt_color_index_flags();
+      color = regex_colors_get_list(MT_COLOR_INDEX_FLAGS);
       break;
     case MT_COLOR_INDEX_SUBJECT:
-      color = mutt_color_index_subject();
+      color = regex_colors_get_list(MT_COLOR_INDEX_SUBJECT);
       break;
     case MT_COLOR_INDEX_TAG:
-      STAILQ_FOREACH(np, mutt_color_index_tags(), entries)
+      STAILQ_FOREACH(np, regex_colors_get_list(MT_COLOR_INDEX_TAG), entries)
       {
         if (mutt_strn_equal((const char *) (s + 1), np->pattern, strlen(np->pattern)))
           return np->pair;
@@ -86,7 +86,7 @@ static int get_color(int index, unsigned char *s)
       }
       return 0;
     default:
-      return mutt_color(type);
+      return simple_colors_get(type);
   }
 
   STAILQ_FOREACH(np, color, entries)
@@ -128,7 +128,7 @@ static void print_enriched_string(struct MuttWindow *win, int index, int attr,
       {
         /* Combining tree fg color and another bg color requires having
          * use_default_colors, because the other bg color may be undefined. */
-        mutt_curses_set_attr(mutt_color_combine(mutt_color(MT_COLOR_TREE), attr));
+        mutt_curses_set_attr(mutt_color_combine(simple_colors_get(MT_COLOR_TREE), attr));
       }
 
       while (*s && (*s < MUTT_TREE_MAX))
@@ -330,7 +330,7 @@ static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
  */
 void menu_redraw_full(struct Menu *menu)
 {
-  mutt_curses_set_color(MT_COLOR_NORMAL);
+  mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   mutt_window_clear(menu->win);
 
   menu->pagelen = menu->win->state.rows;
@@ -366,7 +366,7 @@ void menu_redraw_index(struct Menu *menu)
           cs_subset_string(menu->sub, "arrow_string");
       if (i == menu->current)
       {
-        mutt_curses_set_color(MT_COLOR_INDICATOR);
+        mutt_curses_set_color_by_id(MT_COLOR_INDICATOR);
         if (c_arrow_cursor)
         {
           mutt_window_addstr(menu->win, c_arrow_string);
@@ -386,11 +386,11 @@ void menu_redraw_index(struct Menu *menu)
     }
     else
     {
-      mutt_curses_set_color(MT_COLOR_NORMAL);
+      mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
       mutt_window_clearline(menu->win, i - menu->top);
     }
   }
-  mutt_curses_set_color(MT_COLOR_NORMAL);
+  mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   menu->redraw = MENU_REDRAW_NO_FLAGS;
 }
 
@@ -433,7 +433,7 @@ void menu_redraw_motion(struct Menu *menu)
                           (unsigned char *) buf, true, menu->sub);
 
     /* now draw it in the new location */
-    mutt_curses_set_color(MT_COLOR_INDICATOR);
+    mutt_curses_set_color_by_id(MT_COLOR_INDICATOR);
     mutt_window_mvaddstr(menu->win, 0, menu->current - menu->top, c_arrow_string);
   }
   else
@@ -448,12 +448,12 @@ void menu_redraw_motion(struct Menu *menu)
     const int cur_color = menu->color(menu, menu->current);
     menu_make_entry(menu, buf, sizeof(buf), menu->current);
     menu_pad_string(menu, buf, sizeof(buf));
-    mutt_curses_set_color(MT_COLOR_INDICATOR);
+    mutt_curses_set_color_by_id(MT_COLOR_INDICATOR);
     mutt_window_move(menu->win, 0, menu->current - menu->top);
     print_enriched_string(menu->win, menu->current, cur_color,
                           (unsigned char *) buf, false, menu->sub);
   }
-  mutt_curses_set_color(MT_COLOR_NORMAL);
+  mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 }
 
 /**
@@ -469,7 +469,7 @@ void menu_redraw_current(struct Menu *menu)
   menu_make_entry(menu, buf, sizeof(buf), menu->current);
   menu_pad_string(menu, buf, sizeof(buf));
 
-  mutt_curses_set_color(MT_COLOR_INDICATOR);
+  mutt_curses_set_color_by_id(MT_COLOR_INDICATOR);
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   const char *const c_arrow_string =
       cs_subset_string(menu->sub, "arrow_string");
@@ -485,7 +485,7 @@ void menu_redraw_current(struct Menu *menu)
   else
     print_enriched_string(menu->win, menu->current, attr, (unsigned char *) buf,
                           false, menu->sub);
-  mutt_curses_set_color(MT_COLOR_NORMAL);
+  mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 }
 
 /**

@@ -58,8 +58,9 @@ int mutt_multi_choice(const char *prompt, const char *letters)
   bool redraw = true;
   int prompt_lines = 1;
 
-  const bool opt_cols = ((mutt_color(MT_COLOR_OPTIONS) != 0) &&
-                         (mutt_color(MT_COLOR_OPTIONS) != mutt_color(MT_COLOR_PROMPT)));
+  const bool opt_cols =
+      (simple_color_is_set(MT_COLOR_OPTIONS) &&
+       (simple_colors_get(MT_COLOR_OPTIONS) != simple_colors_get(MT_COLOR_PROMPT)));
 
   struct MuttWindow *old_focus = window_set_focus(win);
   window_redraw(NULL);
@@ -101,13 +102,13 @@ int mutt_multi_choice(const char *prompt, const char *letters)
         while ((cur = strchr(prompt, '(')))
         {
           // write the part between prompt and cur using MT_COLOR_PROMPT
-          mutt_curses_set_color(MT_COLOR_PROMPT);
+          mutt_curses_set_color_by_id(MT_COLOR_PROMPT);
           mutt_window_addnstr(win, prompt, cur - prompt);
 
           if (isalnum(cur[1]) && (cur[2] == ')'))
           {
             // we have a single letter within parentheses
-            mutt_curses_set_color(MT_COLOR_OPTIONS);
+            mutt_curses_set_color_by_id(MT_COLOR_OPTIONS);
             mutt_window_addch(win, cur[1]);
             prompt = cur + 3;
           }
@@ -120,9 +121,9 @@ int mutt_multi_choice(const char *prompt, const char *letters)
         }
       }
 
-      mutt_curses_set_color(MT_COLOR_PROMPT);
+      mutt_curses_set_color_by_id(MT_COLOR_PROMPT);
       mutt_window_addstr(win, prompt);
-      mutt_curses_set_color(MT_COLOR_NORMAL);
+      mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 
       mutt_window_addch(win, ' ');
       mutt_window_clrtoeol(win);
@@ -268,10 +269,10 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
           ((size_t) prompt_lines * win->state.cols) - answer_string_wid, NULL);
 
       mutt_window_move(win, 0, 0);
-      mutt_curses_set_color(MT_COLOR_PROMPT);
+      mutt_curses_set_color_by_id(MT_COLOR_PROMPT);
       mutt_window_addnstr(win, msg, trunc_msg_len);
       mutt_window_addstr(win, answer_string);
-      mutt_curses_set_color(MT_COLOR_NORMAL);
+      mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
       mutt_window_clrtoeol(win);
     }
 

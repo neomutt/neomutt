@@ -253,7 +253,7 @@ static enum ColorId calc_color(const struct Mailbox *m, bool current, bool highl
 {
   if (current)
   {
-    if (mutt_color(MT_COLOR_SIDEBAR_INDICATOR) != 0)
+    if (simple_color_is_set(MT_COLOR_SIDEBAR_INDICATOR))
       return MT_COLOR_SIDEBAR_INDICATOR;
     return MT_COLOR_INDICATOR;
   }
@@ -269,13 +269,13 @@ static enum ColorId calc_color(const struct Mailbox *m, bool current, bool highl
     return MT_COLOR_SIDEBAR_FLAGGED;
 
   const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
-  if ((mutt_color(MT_COLOR_SIDEBAR_SPOOLFILE) != 0) &&
+  if (simple_color_is_set(MT_COLOR_SIDEBAR_SPOOLFILE) &&
       mutt_str_equal(mailbox_path(m), c_spool_file))
   {
     return MT_COLOR_SIDEBAR_SPOOLFILE;
   }
 
-  if (mutt_color(MT_COLOR_SIDEBAR_ORDINARY) != 0)
+  if (simple_color_is_set(MT_COLOR_SIDEBAR_ORDINARY))
     return MT_COLOR_SIDEBAR_ORDINARY;
 
   return MT_COLOR_NORMAL;
@@ -829,7 +829,7 @@ static int draw_divider(struct SidebarWindowData *wdata, struct MuttWindow *win,
   const char *const c_sidebar_divider_char =
       cs_subset_string(NeoMutt->sub, "sidebar_divider_char");
 
-  mutt_curses_set_color(MT_COLOR_SIDEBAR_DIVIDER);
+  mutt_curses_set_color_by_id(MT_COLOR_SIDEBAR_DIVIDER);
 
   const bool c_sidebar_on_right =
       cs_subset_bool(NeoMutt->sub, "sidebar_on_right");
@@ -853,7 +853,7 @@ static int draw_divider(struct SidebarWindowData *wdata, struct MuttWindow *win,
     }
   }
 
-  mutt_curses_set_color(MT_COLOR_NORMAL);
+  mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   return width;
 }
 
@@ -871,7 +871,7 @@ static void fill_empty_space(struct MuttWindow *win, int first_row,
                              int num_rows, int div_width, int num_cols)
 {
   /* Fill the remaining rows with blank space */
-  mutt_curses_set_color(MT_COLOR_NORMAL);
+  mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 
   const bool c_sidebar_on_right =
       cs_subset_bool(NeoMutt->sub, "sidebar_on_right");
@@ -919,7 +919,7 @@ int sb_repaint(struct MuttWindow *win)
 
       struct SbEntry *entry = (*sbep);
       mutt_window_move(win, col, row);
-      mutt_curses_set_color(entry->color);
+      mutt_curses_set_color_by_id(entry->color);
       mutt_window_printf(win, "%s", entry->display);
       mutt_refresh();
       row++;

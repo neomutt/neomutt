@@ -371,12 +371,12 @@ static void mix_redraw_ce(struct MuttWindow *win, struct Remailer **type2_list,
   if (coords[i].r < win->state.rows)
   {
     if (selected)
-      mutt_curses_set_color(MT_COLOR_INDICATOR);
+      mutt_curses_set_color_by_id(MT_COLOR_INDICATOR);
     else
-      mutt_curses_set_color(MT_COLOR_NORMAL);
+      mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 
     mutt_window_mvaddstr(win, coords[i].c, coords[i].r, type2_list[chain->ch[i]]->shortname);
-    mutt_curses_set_color(MT_COLOR_NORMAL);
+    mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 
     if (i + 1 < chain->cl)
       mutt_window_addstr(win, ", ");

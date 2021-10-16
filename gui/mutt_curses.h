@@ -57,7 +57,7 @@ enum MuttCursorState
 };
 
 void mutt_curses_set_attr(int attr);
-void mutt_curses_set_color(enum ColorId color);
+void mutt_curses_set_color_by_id(enum ColorId color);
 void mutt_curses_set_cursor(enum MuttCursorState state);
 void mutt_resize_screen(void);
 

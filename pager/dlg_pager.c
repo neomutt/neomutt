@@ -210,7 +210,7 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
 
   if (priv->redraw & MENU_REDRAW_FULL)
   {
-    mutt_curses_set_color(MT_COLOR_NORMAL);
+    mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
     mutt_window_clear(priv->pview->win_pager);
 
     if ((priv->pview->mode == PAGER_MODE_EMAIL) &&
@@ -252,7 +252,7 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
 
     if ((priv->pview->mode == PAGER_MODE_EMAIL) && (c_pager_index_lines != 0) && priv->menu)
     {
-      mutt_curses_set_color(MT_COLOR_NORMAL);
+      mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 
       /* some fudge to work out whereabouts the indicator should go */
       const int index = menu_get_index(priv->menu);
@@ -344,7 +344,7 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
       }
     } while (priv->force_redraw);
 
-    mutt_curses_set_color(MT_COLOR_TILDE);
+    mutt_curses_set_color_by_id(MT_COLOR_TILDE);
     while (priv->win_height < priv->pview->win_pager->state.rows)
     {
       mutt_window_clrtoeol(priv->pview->win_pager);
@@ -353,7 +353,7 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
       priv->win_height++;
       mutt_window_move(priv->pview->win_pager, 0, priv->win_height);
     }
-    mutt_curses_set_color(MT_COLOR_NORMAL);
+    mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   }
 
   priv->redraw = MENU_REDRAW_NO_FLAGS;

@@ -163,7 +163,7 @@ static void process_protected_headers(struct Mailbox *m, struct Email *e)
  * @param e        Email to display
  * @param header   Header to prefix output (OPTIONAL)
  * @param wrap_len Width to wrap lines
- * @param cmflags  Message flags, e.g. #MUTT_CM_DECODE 
+ * @param cmflags  Message flags, e.g. #MUTT_CM_DECODE
  * @retval  0 Success
  * @retval -1 Error
  *
@@ -362,7 +362,7 @@ cleanup:
  * notify_crypto - Notify the user about the crypto status of the Email
  * @param e       Email to display
  * @param msg     Raw Email
- * @param cmflags Message flags, e.g. #MUTT_CM_DECODE 
+ * @param cmflags Message flags, e.g. #MUTT_CM_DECODE
  */
 static void notify_crypto(struct Email *e, struct Message *msg, CopyMessageFlags cmflags)
 {

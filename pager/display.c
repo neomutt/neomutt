@@ -131,9 +131,9 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
     const bool c_markers = cs_subset_bool(NeoMutt->sub, "markers");
     if (!cnt && c_markers)
     {
-      mutt_curses_set_color(MT_COLOR_MARKERS);
+      mutt_curses_set_color_by_id(MT_COLOR_MARKERS);
       mutt_window_addch(win, '+');
-      last_color = mutt_color(MT_COLOR_MARKERS);
+      last_color = simple_colors_get(MT_COLOR_MARKERS);
     }
     m = (lines[line_num].syntax)[0].first;
     cnt += (lines[line_num].syntax)[0].last;
@@ -142,14 +142,14 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
     m = line_num;
   if (flags & MUTT_PAGER_LOGS)
   {
-    def_color = mutt_color(lines[line_num].syntax[0].color);
+    def_color = simple_colors_get(lines[line_num].syntax[0].color);
   }
   else if (!(flags & MUTT_SHOWCOLOR))
-    def_color = mutt_color(MT_COLOR_NORMAL);
+    def_color = simple_colors_get(MT_COLOR_NORMAL);
   else if (lines[m].color == MT_COLOR_HEADER)
     def_color = lines[m].syntax[0].color;
   else
-    def_color = mutt_color(lines[m].color);
+    def_color = simple_colors_get(lines[m].color);
 
   if ((flags & MUTT_SHOWCOLOR) && (lines[m].color == MT_COLOR_QUOTED))
   {
@@ -186,7 +186,7 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
     if (matching_chunk && (cnt >= matching_chunk->first) &&
         (cnt < matching_chunk->last))
     {
-      color = mutt_color(MT_COLOR_SEARCH);
+      color = simple_colors_get(MT_COLOR_SEARCH);
       search = 1;
     }
   }
@@ -204,15 +204,15 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
     }
     else if ((special & A_BOLD) || (aa->attr & ANSI_BOLD))
     {
-      if (mutt_color(MT_COLOR_BOLD) && !search)
-        color = mutt_color(MT_COLOR_BOLD);
+      if (simple_color_is_set(MT_COLOR_BOLD) && !search)
+        color = simple_colors_get(MT_COLOR_BOLD);
       else
         color ^= A_BOLD;
     }
     if ((special & A_UNDERLINE) || (aa->attr & ANSI_UNDERLINE))
     {
-      if (mutt_color(MT_COLOR_UNDERLINE) && !search)
-        color = mutt_color(MT_COLOR_UNDERLINE);
+      if (simple_color_is_set(MT_COLOR_UNDERLINE) && !search)
+        color = simple_colors_get(MT_COLOR_UNDERLINE);
       else
         color ^= A_UNDERLINE;
     }
@@ -269,7 +269,7 @@ static void append_line(struct Line *lines, int line_num, int cnt)
 static void class_color_new(struct QClass *qc, int *q_level)
 {
   qc->quote_n = (*q_level)++;
-  qc->color = mutt_color_quote(qc->quote_n);
+  qc->color = quoted_colors_get(qc->quote_n);
 }
 
 /**
@@ -290,7 +290,7 @@ static void shift_class_colors(struct QClass *quote_list,
     if (q_list->quote_n >= index)
     {
       q_list->quote_n++;
-      q_list->color = mutt_color_quote(q_list->quote_n);
+      q_list->color = quoted_colors_get(q_list->quote_n);
     }
     if (q_list->down)
       q_list = q_list->down;
@@ -310,7 +310,7 @@ static void shift_class_colors(struct QClass *quote_list,
   }
 
   new_class->quote_n = index;
-  new_class->color = mutt_color_quote(index);
+  new_class->color = quoted_colors_get(index);
   (*q_level)++;
 }
 
@@ -332,14 +332,14 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
   size_t offset, tail_lng;
   int index = -1;
 
-  if (mutt_color_quotes_used() <= 1)
+  if (quoted_colors_num_used() <= 1)
   {
     /* not much point in classifying quotes... */
 
     if (!*quote_list)
     {
       qc = mutt_mem_calloc(1, sizeof(struct QClass));
-      qc->color = mutt_color_quote(0);
+      qc->color = quoted_colors_get(0);
       *quote_list = qc;
     }
     return *quote_list;
@@ -725,8 +725,8 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw, struct L
                           int line_num, int lines_used, struct QClass **quote_list,
                           int *q_level, bool *force_redraw, bool q_classify)
 {
-  struct ColorLine *color_line = NULL;
-  struct ColorLineList *head = NULL;
+  struct RegexColor *color_line = NULL;
+  struct RegexColorList *head = NULL;
   regmatch_t pmatch[1];
   bool found;
   bool null_rx;
@@ -734,7 +734,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw, struct L
       cs_subset_bool(NeoMutt->sub, "header_color_partial");
   int offset, i = 0;
 
-  if ((line_num == 0) || mutt_color_is_header(lines[line_num - 1].color) ||
+  if ((line_num == 0) || simple_color_is_header(lines[line_num - 1].color) ||
       (check_protected_header_marker(raw) == 0))
   {
     if (buf[0] == '\n') /* end of header */
@@ -765,7 +765,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw, struct L
        * like body patterns (further below).  */
       if (!c_header_color_partial)
       {
-        STAILQ_FOREACH(color_line, mutt_color_headers(), entries)
+        STAILQ_FOREACH(color_line, regex_colors_get_list(MT_COLOR_HEADER), entries)
         {
           if (regexec(&color_line->regex, buf, 0, NULL, 0) == 0)
           {
@@ -848,9 +848,9 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw, struct L
     offset = 0;
     lines[line_num].syntax_arr_size = 0;
     if (lines[line_num].color == MT_COLOR_HDRDEFAULT)
-      head = mutt_color_headers();
+      head = regex_colors_get_list(MT_COLOR_HEADER);
     else
-      head = mutt_color_body();
+      head = regex_colors_get_list(MT_COLOR_BODY);
     STAILQ_FOREACH(color_line, head, entries)
     {
       color_line->stop_matching = false;
@@ -942,7 +942,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw, struct L
 
       found = false;
       null_rx = false;
-      STAILQ_FOREACH(color_line, mutt_color_attachments(), entries)
+      STAILQ_FOREACH(color_line, regex_colors_get_list(MT_COLOR_ATTACH_HEADERS), entries)
       {
         if (regexec(&color_line->regex, buf + offset, 1, pmatch,
                     ((offset != 0) ? REG_NOTBOL : 0)) != 0)
@@ -1590,7 +1590,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   if (c_smart_wrap)
   {
     if ((cnt < b_read) && (ch != -1) &&
-        !mutt_color_is_header(curr_line->color) && !IS_SPACE(buf[cnt]))
+        !simple_color_is_header(curr_line->color) && !IS_SPACE(buf[cnt]))
     {
       buf_ptr = buf + ch;
       /* skip trailing blanks */
@@ -1637,7 +1637,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   /* avoid a bug in ncurses... */
   if (col == 0)
   {
-    mutt_curses_set_color(MT_COLOR_NORMAL);
+    mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
     mutt_window_addch(win_pager, ' ');
   }
 
@@ -1654,7 +1654,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     if ((*lines)[m].color == MT_COLOR_HEADER)
       def_color = ((*lines)[m].syntax)[0].color;
     else
-      def_color = mutt_color((*lines)[m].color);
+      def_color = simple_colors_get((*lines)[m].color);
 
     mutt_curses_set_attr(def_color);
   }
@@ -1666,7 +1666,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
    * clrtoeol, otherwise the color for this line will not be
    * filled to the right margin.  */
   if (flags & MUTT_SHOWCOLOR)
-    mutt_curses_set_color(MT_COLOR_NORMAL);
+    mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 
   /* build a return code */
   if (!(flags & MUTT_SHOW))
