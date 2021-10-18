@@ -127,6 +127,18 @@ options {
   debug-notify=0            => "DEBUG: Enable Notifications dump"
   debug-parse-test=0        => "DEBUG: Enable 'neomutt -T' for config testing"
   debug-window=0            => "DEBUG: Enable windows dump"
+# Deprecated stuff
+  with-ui:=deprecated       => "Deprecated"
+  with-slang:deprecated     => "Deprecated"
+}
+###############################################################################
+
+###############################################################################
+# Deprecated config options
+foreach dep {with-ui with-slang} {
+  if {[opt-bool -nodefault $dep] != -1} {
+    user-notice "\nThe configure option \"--$dep\" is not used anymore\n"
+  }
 }
 ###############################################################################
 
