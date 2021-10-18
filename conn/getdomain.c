@@ -148,7 +148,9 @@ int getdnsdomainname(struct Buffer *result)
     mutt_buffer_strcpy(result, ++hostname);
     rc = 0;
   }
-  freeaddrinfo(lookup_result);
+
+  if (lookup_result)
+    freeaddrinfo(lookup_result);
 #endif
 
   return rc;
