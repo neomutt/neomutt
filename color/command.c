@@ -75,6 +75,7 @@ const struct Mapping ColorFields[] = {
   { "sidebar_new",       MT_COLOR_SIDEBAR_NEW },
   { "sidebar_ordinary",  MT_COLOR_SIDEBAR_ORDINARY },
   { "sidebar_spool_file", MT_COLOR_SIDEBAR_SPOOLFILE },
+  { "sidebar_spoolfile", MT_COLOR_SIDEBAR_SPOOLFILE }, // This will be deprecated
   { "sidebar_unread",    MT_COLOR_SIDEBAR_UNREAD },
 #endif
   { "signature",         MT_COLOR_SIGNATURE },
