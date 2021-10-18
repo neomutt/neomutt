@@ -1726,7 +1726,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   if (expunge && close)
   {
     adata->closing = true;
-    imap_exec(adata, "CLOSE", IMAP_CMD_QUEUE);
+    imap_exec(adata, "CLOSE", IMAP_CMD_NO_FLAGS);
     adata->state = IMAP_AUTHENTICATED;
   }
 
