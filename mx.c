@@ -1788,13 +1788,22 @@ int mx_ac_remove(struct Mailbox *m)
 
 /**
  * mx_mbox_check_stats - Check the statistics for a mailbox - Wrapper for MxOps::mbox_check_stats()
+ *
+ * @note Emits: #NT_MAILBOX_CHANGE
  */
 enum MxStatus mx_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   if (!m)
     return MX_STATUS_ERROR;
 
-  return m->mx_ops->mbox_check_stats(m, flags);
+  enum MxStatus rc = m->mx_ops->mbox_check_stats(m, flags);
+  if (rc != MX_STATUS_ERROR)
+  {
+    struct EventMailbox ev_m = { m };
+    notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
+  }
+
+  return rc;
 }
 
 /**

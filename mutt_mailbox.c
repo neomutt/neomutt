@@ -128,11 +128,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       case MUTT_MAILDIR:
       case MUTT_MH:
       case MUTT_NOTMUCH:
-        if ((mx_mbox_check_stats(m_check, check_stats) != MX_STATUS_ERROR) &&
-            m_check->has_new)
-        {
-          MailboxCount++;
-        }
+        mx_mbox_check_stats(m_check, check_stats);
         break;
       default:; /* do nothing */
     }
@@ -218,6 +214,8 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
 
     mailbox_check(m_cur, np->mailbox, &st_ctx,
                   check_stats || (!np->mailbox->first_check_stats_done && c_mail_check_stats));
+    if (np->mailbox->has_new)
+      MailboxCount++;
     np->mailbox->first_check_stats_done = true;
   }
   neomutt_mailboxlist_clear(&ml);
