@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: neomutt 20210205\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2021-10-19 10:45+0100\n"
-"PO-Revision-Date: 2021-10-10 21:44+0200\n"
+"PO-Revision-Date: 2021-10-19 12:29+0200\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -156,9 +156,8 @@ msgid "adu"
 msgstr "adn"
 
 #: alias/dlgalias.c:412 alias/dlgquery.c:615
-#, fuzzy
 msgid "Limit to addresses matching: "
-msgstr "Ограничи на поруке које одговарају: "
+msgstr "Ограничи на адресе које одговарају: "
 
 #: alias/dlgquery.c:104 index/dlg_index.c:110
 msgid "Mail"
@@ -3916,9 +3915,8 @@ msgstr "Не може се отворити фасцикла са отпацим
 
 #. L10N: Displayed if appending to $trash fails when syncing or closing a mailbox
 #: mx.c:586
-#, fuzzy
 msgid "Unable to append to trash folder"
-msgstr "Не може се отворити привремена датотека"
+msgstr "Не може се дописати фасцикли са отпацима"
 
 #: mx.c:646
 msgid "Mark all articles read?"
@@ -7469,7 +7467,6 @@ msgstr "Опције за компајлирање:"
 msgid "Debug options:"
 msgstr "Опције за дебаговање:"
 
-#, c-format
 #~ msgid "%s: color not supported by term"
 #~ msgstr "%s: терминал не подржава ову боју"
 
@@ -7489,13 +7486,14 @@ msgstr "Опције за дебаговање:"
 #~ msgid "%s: no such object"
 #~ msgstr "%s: нема таквог објекта"
 
+#, c-format
 #~ msgid "Already skipped past headers"
 #~ msgstr "Заглавља су већ прескочена"
 
-#, c-format
 #~ msgid "Maximum quoting level is %d"
 #~ msgstr "Максимални ниво цитирања је %d"
 
+#, c-format
 #~ msgid "Option %s may not be set or reset from the pager"
 #~ msgstr "Опција %s се не може поставити или вратити из страничника"
 
