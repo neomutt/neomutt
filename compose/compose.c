@@ -382,6 +382,7 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
 
   dlg->help_data = ComposeHelp;
   dlg->help_menu = MENU_COMPOSE;
+  dlg->focus = win_attach;
 
   return dlg;
 }
