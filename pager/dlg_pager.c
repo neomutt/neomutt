@@ -513,9 +513,7 @@ int mutt_pager(struct PagerView *pview)
       // this case was previously identified by IsAttach and IsMsgAttach
       // macros, we expect data to contain:
       //  - body (viewing regular attachment)
-      //  - email
       //  - fp and body->email in special case of viewing an attached email.
-      assert(shared->email); // This should point to the top level email
       assert(pview->pdata->body);
       if (pview->pdata->fp && pview->pdata->body->email)
       {
