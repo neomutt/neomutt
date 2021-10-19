@@ -157,9 +157,8 @@ msgid "adu"
 msgstr "adu"
 
 #: alias/dlgalias.c:412 alias/dlgquery.c:615
-#, fuzzy
 msgid "Limit to addresses matching: "
-msgstr "Riboti iki laiškų, tenkinančių: "
+msgstr "Riboti iki adresų, tenkinančių: "
 
 #: alias/dlgquery.c:104 index/dlg_index.c:110
 msgid "Mail"
@@ -3911,9 +3910,8 @@ msgstr "Negaliu atidaryti šiukšlių aplanko"
 
 #. L10N: Displayed if appending to $trash fails when syncing or closing a mailbox
 #: mx.c:586
-#, fuzzy
 msgid "Unable to append to trash folder"
-msgstr "Negaliu atidaryti laikinos bylos"
+msgstr "Negaliu papildyti šiukšlių aplanko"
 
 #: mx.c:646
 msgid "Mark all articles read?"
