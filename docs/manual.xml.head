@@ -11938,7 +11938,10 @@ alternative_order text/enriched text/plain text application/postscript image/*
           </listitem>
           <listitem>
             <para>
-              Failing that, NeoMutt will look for any text type.
+              Failing that, NeoMutt will look first for
+              <literal>text/enriched</literal>, followed by
+              <literal>text/plain</literal>, and finally
+              <literal>text/html</literal>.
             </para>
           </listitem>
           <listitem>
