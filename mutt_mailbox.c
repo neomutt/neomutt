@@ -118,16 +118,21 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       cs_subset_bool(NeoMutt->sub, "check_mbox_size");
 
   /* check to see if the folder is the currently selected folder before polling */
-  if (check_stats && !is_same_mailbox(m_cur, m_check, st_ctx, &st))
+  if (!is_same_mailbox(m_cur, m_check, st_ctx, &st))
   {
     switch (m_check->type)
     {
+      case MUTT_NOTMUCH:
+        // Remove this when non-notmuch backends only check unread, flagged,
+        // and total counts per 'mbox_check_stats' docs.
+        if (!check_stats)
+          break;
+        /* fall through */
       case MUTT_IMAP:
       case MUTT_MBOX:
       case MUTT_MMDF:
       case MUTT_MAILDIR:
       case MUTT_MH:
-      case MUTT_NOTMUCH:
         mx_mbox_check_stats(m_check, check_stats);
         break;
       default:; /* do nothing */
