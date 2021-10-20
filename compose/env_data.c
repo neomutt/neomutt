@@ -21,7 +21,7 @@
  */
 
 /**
- * @page compose_env_data Compose Envelope Data
+ * @page compose_env_data Envelope Data
  *
  * Compose Envelope Data
  */

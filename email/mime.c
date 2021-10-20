@@ -21,7 +21,7 @@
  */
 
 /**
- * @page email_mime Constants and macros for managing MIME encoding
+ * @page email_mime Data for MIME encoding
  *
  * Constants and macros for managing MIME encoding.
  */

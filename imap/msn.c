@@ -21,7 +21,7 @@
  */
 
 /**
- * @page imap_msn IMAP MSN helper functions
+ * @page imap_msn MSN helper functions
  *
  * IMAP MSN helper functions
  */

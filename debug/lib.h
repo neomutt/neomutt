@@ -21,7 +21,7 @@
  */
 
 /**
- * @page lib_debug Debug
+ * @page lib_debug Debug Code
  *
  * Debugging code
  *

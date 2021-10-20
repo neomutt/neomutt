@@ -21,7 +21,7 @@
  */
 
 /**
- * @page compose_attach_data Compose Attach Data
+ * @page compose_attach_data Attachment Data
  *
  * Compose Attach Data
  */

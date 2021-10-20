@@ -210,7 +210,7 @@ int nm_db_release(struct Mailbox *m)
 }
 
 /**
- * nm_db_free - decoupled way to close a Notmuch database
+ * nm_db_free - Decoupled way to close a Notmuch database
  * @param db Notmuch database
  */
 void nm_db_free(notmuch_database_t *db)

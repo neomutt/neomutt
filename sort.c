@@ -59,7 +59,7 @@ struct EmailCompare
 };
 
 /**
- * compare_email_shim - qsort_r comparator to drive mutt_compare_emails
+ * compare_email_shim - qsort_r() comparator to drive mutt_compare_emails
  * @param a   Pointer to first email
  * @param b   Pointer to second email
  * @param arg EmailCompare with needed context

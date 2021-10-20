@@ -605,7 +605,7 @@ int mutt_hcache_store(struct HeaderCache *hc, const char *key, size_t keylen,
 }
 
 /**
- * mutt_hcache_store_raw - store a key / data pair
+ * mutt_hcache_store_raw - Store a key / data pair
  * @param hc     Pointer to the struct HeaderCache structure got by mutt_hcache_open()
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key

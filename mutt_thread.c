@@ -731,7 +731,7 @@ void mutt_clear_threads(struct ThreadsContext *tctx)
 }
 
 /**
- * compare_threads - qsort_r function for comparing email threads
+ * compare_threads - qsort_r() function for comparing email threads
  * @param a   First thread to compare
  * @param b   Second thread to compare
  * @param arg ThreadsContext for how to compare
@@ -1717,7 +1717,7 @@ bool mutt_link_threads(struct Email *parent, struct EmailList *children, struct 
 }
 
 /**
- * mutt_thread_collapse_collapsed - re-collapse threads marked as collapsed
+ * mutt_thread_collapse_collapsed - Re-collapse threads marked as collapsed
  * @param tctx Threading context
  */
 void mutt_thread_collapse_collapsed(struct ThreadsContext *tctx)
@@ -1737,7 +1737,7 @@ void mutt_thread_collapse_collapsed(struct ThreadsContext *tctx)
 }
 
 /**
- * mutt_thread_collapse - toggle collapse
+ * mutt_thread_collapse - Toggle collapse
  * @param tctx Threading context
  * @param collapse Collapse / uncollapse
  */

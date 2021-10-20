@@ -22,7 +22,7 @@
  */
 
 /**
- * @page email_parse Miscellaneous email parsing routines
+ * @page email_parse Email parsing code
  *
  * Miscellaneous email parsing routines
  */
@@ -1153,7 +1153,7 @@ char *mutt_rfc822_read_line(FILE *fp, char *line, size_t *linelen)
 }
 
 /**
- * mutt_rfc822_read_header - parses an RFC822 header
+ * mutt_rfc822_read_header - Parses an RFC822 header
  * @param fp        Stream to read from
  * @param e         Current Email (optional)
  * @param user_hdrs If set, store user headers
@@ -1613,7 +1613,7 @@ static struct Body *parse_multipart(FILE *fp, const char *boundary,
 }
 
 /**
- * rfc822_parse_message - parse a Message/RFC822 body
+ * rfc822_parse_message - Parse a Message/RFC822 body
  * @param fp      Stream to read from
  * @param parent  Info about the message/rfc822 body part
  * @param counter Number of parts processed so far
@@ -1726,7 +1726,7 @@ void mutt_parse_part(FILE *fp, struct Body *b)
 }
 
 /**
- * mutt_rfc822_parse_message - parse a Message/RFC822 body
+ * mutt_rfc822_parse_message - Parse a Message/RFC822 body
  * @param fp      Stream to read from
  * @param parent  Info about the message/rfc822 body part
  * @retval ptr New Body containing parsed message

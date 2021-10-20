@@ -21,7 +21,7 @@
  */
 
 /**
- * @page imap_adata Imap-specific Account data
+ * @page imap_adata Account data
  *
  * Imap-specific Account data
  */

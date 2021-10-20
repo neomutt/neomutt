@@ -24,7 +24,7 @@
 #define MUTT_CONFIG_MBTABLE_H
 
 /**
- * struct MbTable - multibyte character table
+ * struct MbTable - Multibyte character table
  *
  * Allows for direct access to the individual multibyte characters in a string.
  * This is used for the `$flag_chars`, `$from_chars`, `$status_chars` and `$to_chars`

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page email_rfc2231 RFC2231 MIME Charset routines
+ * @page email_rfc2231 RFC2231 MIME Charset functions
  *
  * RFC2231 MIME Charset routines
  *

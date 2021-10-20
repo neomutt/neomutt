@@ -21,7 +21,7 @@
  */
 
 /**
- * @page imap_config Config used by libimap
+ * @page imap_config Config used by IMAP
  *
  * Config used by libimap
  */

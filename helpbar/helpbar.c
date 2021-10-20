@@ -21,7 +21,7 @@
  */
 
 /**
- * @page helpbar_helpbar Help Bar
+ * @page helpbar_helpbar Help Bar Window
  *
  * ## Overview
  *

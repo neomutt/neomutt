@@ -24,7 +24,7 @@
  */
 
 /**
- * @page conn_raw Low-level socket handling
+ * @page conn_raw Low-level socket code
  *
  * Low-level socket handling
  */
@@ -59,7 +59,7 @@
 #endif
 
 /**
- * socket_connect - set up to connect to a socket fd
+ * socket_connect - Set up to connect to a socket fd
  * @param fd File descriptor to connect with
  * @param sa Address info
  * @retval  0 Success

@@ -22,7 +22,7 @@
  */
 
 /**
- * @page imap_auth_plain IMAP plain authentication method
+ * @page imap_auth_plain Plain authentication
  *
  * IMAP plain authentication method
  */

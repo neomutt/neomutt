@@ -21,7 +21,7 @@
  */
 
 /**
- * @page lib_compose Compose
+ * @page lib_compose Compose an Email
  *
  * Compose an email
  *

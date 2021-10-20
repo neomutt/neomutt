@@ -109,7 +109,7 @@ static void matches_ensure_morespace(int current)
 }
 
 /**
- * candidate - helper function for completion
+ * candidate - Helper function for completion
  * @param user User entered data for completion
  * @param src  Candidate for completion
  * @param dest Completion result gets here
@@ -638,7 +638,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
 }
 
 /**
- * mutt_opts_free - clean up before quitting
+ * mutt_opts_free - Clean up before quitting
  */
 void mutt_opts_free(void)
 {

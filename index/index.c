@@ -87,7 +87,7 @@
 #include "subjectrx.h"
 
 /**
- * sort_use_threads_warn - alert the user to odd $sort settings
+ * sort_use_threads_warn - Alert the user to odd $sort settings
  */
 static void sort_use_threads_warn(void)
 {

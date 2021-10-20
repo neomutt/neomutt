@@ -56,7 +56,7 @@ static int get_toplevel_encoding(struct Body *a)
 }
 
 /**
- * check_boundary - check for duplicate boundary
+ * check_boundary - Check for duplicate boundary
  * @param boundary Boundary to look for
  * @param b        Body parts to check
  * @retval true Duplicate found

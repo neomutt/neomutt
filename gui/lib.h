@@ -21,7 +21,7 @@
  */
 
 /**
- * @page lib_gui Gui
+ * @page lib_gui Graphical code
  *
  * Curses and Window code
  *

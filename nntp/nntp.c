@@ -376,7 +376,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
 
 #ifdef USE_SASL
 /**
- * nntp_memchr - look for a char in a binary buf, conveniently
+ * nntp_memchr - Look for a char in a binary buf, conveniently
  * @param haystack [in/out] input: start here, output: store address of hit
  * @param sentinel points just beyond (1 byte after) search area
  * @param needle the character to search for
@@ -395,7 +395,7 @@ static bool nntp_memchr(char **haystack, char *sentinel, int needle)
 }
 
 /**
- * nntp_log_binbuf - log a buffer possibly containing NUL bytes
+ * nntp_log_binbuf - Log a buffer possibly containing NUL bytes
  * @param buf source buffer
  * @param len how many bytes from buf
  * @param pfx logging prefix (protocol etc.)

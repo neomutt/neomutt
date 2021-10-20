@@ -22,7 +22,7 @@
  */
 
 /**
- * @page conn_gnutls Handling of GnuTLS encryption
+ * @page conn_gnutls GnuTLS encryption
  *
  * Handling of GnuTLS encryption
  */

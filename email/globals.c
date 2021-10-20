@@ -21,7 +21,7 @@
  */
 
 /**
- * @page email_globals Email Global Variables
+ * @page email_globals Global Variables
  *
  * These global variables are private to the email library.
  */

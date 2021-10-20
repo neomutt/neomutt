@@ -21,7 +21,7 @@
  */
 
 /**
- * @page lib_attach Attach
+ * @page lib_attach Attachments
  *
  * Attachment handling
  *

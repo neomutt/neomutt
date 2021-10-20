@@ -21,7 +21,7 @@
  */
 
 /**
- * @page debug_window Dump the details of the nested Windows
+ * @page debug_window Dump the Windows
  *
  * Dump the details of the nested Windows
  */

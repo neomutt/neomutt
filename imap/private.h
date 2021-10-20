@@ -77,7 +77,7 @@ typedef uint8_t ImapCmdFlags;          ///< Flags for imap_exec(), e.g. #IMAP_CM
 #define IMAP_CMD_SINGLE      (1 << 3)  ///< Run a single command
 
 /**
- * enum ImapExecResult - imap_exec return code
+ * enum ImapExecResult - Imap_exec return code
  */
 enum ImapExecResult
 {

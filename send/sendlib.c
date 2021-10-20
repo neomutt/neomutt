@@ -830,7 +830,7 @@ cleanup:
 }
 
 /**
- * set_encoding - determine which Content-Transfer-Encoding to use
+ * set_encoding - Determine which Content-Transfer-Encoding to use
  * @param[in]  b    Body of email
  * @param[out] info Info about the email
  * @param[in]  sub  Config Subset

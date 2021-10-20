@@ -21,7 +21,7 @@
  */
 
 /**
- * @page compose_envelope Compose Envelope
+ * @page compose_envelope Envelope Window
  *
  * ## Overview
  *

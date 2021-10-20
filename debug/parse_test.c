@@ -21,7 +21,7 @@
  */
 
 /**
- * @page debug_parse Test the config parsing code
+ * @page debug_parse Test the config parsing
  *
  * Test the config parsing code
  */

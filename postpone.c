@@ -187,7 +187,7 @@ void mutt_update_num_postponed(void)
 }
 
 /**
- * hardclose - try hard to close a mailbox
+ * hardclose - Try hard to close a mailbox
  * @param m Mailbox to close
  */
 static void hardclose(struct Mailbox *m)

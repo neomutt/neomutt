@@ -134,7 +134,7 @@ static short count_tagged(struct AttachCtx *actx)
 }
 
 /**
- * count_tagged_children - tagged children below a multipart/message attachment
+ * count_tagged_children - Tagged children below a multipart/message attachment
  * @param actx Attachment context
  * @param i    Index of first attachment
  * @retval num Number of tagged attachments
@@ -285,7 +285,7 @@ end:
 }
 
 /**
- * mutt_attach_resend - resend-message, from the attachment menu
+ * mutt_attach_resend - Resend-message, from the attachment menu
  * @param fp   File containing email
  * @param m    Current mailbox
  * @param actx Attachment context
@@ -312,7 +312,7 @@ void mutt_attach_resend(FILE *fp, struct Mailbox *m, struct AttachCtx *actx, str
 }
 
 /**
- * find_common_parent - find a common parent message for the tagged attachments
+ * find_common_parent - Find a common parent message for the tagged attachments
  * @param actx    Attachment context
  * @param nattach Number of tagged attachments
  * @retval ptr Parent attachment
@@ -459,7 +459,7 @@ static struct Body **copy_problematic_attachments(struct Body **last,
 }
 
 /**
- * attach_forward_bodies - forward one or several MIME bodies
+ * attach_forward_bodies - Forward one or several MIME bodies
  * @param fp      File to read from
  * @param e       Email
  * @param actx    Attachment Context
@@ -647,7 +647,7 @@ bail:
  * This is different from the previous function since we want to mimic the
  * index menu's behavior.
  *
- * Code reuse from mutt_send_message() is not possible here - it relies on a
+ * Code reuse from mutt_send_message() is not possible here. It relies on a
  * context structure to find messages, while, on the attachment menu, messages
  * are referenced through the attachment index.
  */

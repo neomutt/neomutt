@@ -23,7 +23,7 @@
  */
 
 /**
- * @page core_mailbox Representation of a Mailbox
+ * @page core_mailbox Mailbox object
  *
  * Representation of a Mailbox
  */

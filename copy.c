@@ -637,7 +637,7 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
 }
 
 /**
- * mutt_copy_message_fp - make a copy of a message from a FILE pointer
+ * mutt_copy_message_fp - Make a copy of a message from a FILE pointer
  * @param fp_out  Where to write output
  * @param fp_in   Where to get input
  * @param e       Email being copied
@@ -901,7 +901,7 @@ int mutt_copy_message(FILE *fp_out, struct Email *e, struct Message *msg,
 }
 
 /**
- * append_message - appends a copy of the given message to a mailbox
+ * append_message - Appends a copy of the given message to a mailbox
  * @param dest    destination mailbox
  * @param fp_in    where to get input
  * @param src     source mailbox

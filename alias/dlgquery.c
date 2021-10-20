@@ -23,7 +23,7 @@
  */
 
 /**
- * @page alias_dlgquery Routines for querying and external address book
+ * @page alias_dlgquery Address Query Dialog
  *
  * ## Overview
  *

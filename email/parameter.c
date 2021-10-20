@@ -21,7 +21,7 @@
  */
 
 /**
- * @page email_parameter Store attributes associated with a MIME part
+ * @page email_parameter Attributes for a MIME part
  *
  * Store attributes associated with a MIME part
  */

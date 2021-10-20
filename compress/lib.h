@@ -21,7 +21,7 @@
  */
 
 /**
- * @page lib_compress Compress
+ * @page lib_compress Compression functions
  *
  * Data compression
  *

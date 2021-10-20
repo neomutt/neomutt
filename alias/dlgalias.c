@@ -451,7 +451,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
 }
 
 /**
- * alias_complete - alias completion routine
+ * alias_complete - Alias completion routine
  * @param buf    Partial Alias to complete
  * @param buflen Length of buffer
  * @param sub    Config items

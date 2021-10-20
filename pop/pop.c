@@ -89,7 +89,7 @@ static const char *cache_id(const char *id)
 }
 
 /**
- * fetch_message - write line to file - Implements ::pop_fetch_t
+ * fetch_message - Write line to file - Implements ::pop_fetch_t
  * @param line String to write
  * @param data FILE pointer to write to
  * @retval  0 Success
@@ -191,7 +191,7 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
 }
 
 /**
- * fetch_uidl - parse UIDL - Implements ::pop_fetch_t
+ * fetch_uidl - Parse UIDL - Implements ::pop_fetch_t
  * @param line String to parse
  * @param data Mailbox
  * @retval  0 Success
@@ -489,7 +489,7 @@ static int pop_fetch_headers(struct Mailbox *m)
 }
 
 /**
- * pop_clear_cache - delete all cached messages
+ * pop_clear_cache - Delete all cached messages
  * @param adata POP Account data
  */
 static void pop_clear_cache(struct PopAccountData *adata)

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page imap_auth_sasl IMAP SASL authentication method
+ * @page imap_auth_sasl SASL authentication
  *
  * IMAP SASL authentication method
  */

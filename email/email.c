@@ -21,7 +21,7 @@
  */
 
 /**
- * @page email_email Representation of an email
+ * @page email_email Email object
  *
  * Representation of an email
  */
@@ -118,7 +118,7 @@ bool email_cmp_strict(const struct Email *e1, const struct Email *e2)
 }
 
 /**
- * email_size - compute the size of an email
+ * email_size - Compute the size of an email
  * @param e Email
  * @retval num Size of the email, in bytes
  */

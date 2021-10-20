@@ -793,7 +793,7 @@ static bool pattern_needs_msg(const struct Mailbox *m, const struct Pattern *pat
  * @retval true Success, pattern matched
  * @retval false Pattern did not match
  *
- * flags: MUTT_MATCH_FULL_ADDRESS - match both personal and machine address
+ * flags: MUTT_MATCH_FULL_ADDRESS: match both personal and machine address
  * cache: For repeated matches against the same Header, passing in non-NULL will
  *        store some of the cacheable pattern matches in this structure.
  */
@@ -1092,7 +1092,7 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
  * @retval true Success, pattern matched
  * @retval false Pattern did not match
  *
- * flags: MUTT_MATCH_FULL_ADDRESS - match both personal and machine address
+ * flags: MUTT_MATCH_FULL_ADDRESS: match both personal and machine address
  * cache: For repeated matches against the same Header, passing in non-NULL will
  *        store some of the cacheable pattern matches in this structure.
  */
@@ -1119,7 +1119,7 @@ bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
  * @retval true Success, pattern matched
  * @retval false Pattern did not match
  *
- * flags: MUTT_MATCH_FULL_ADDRESS - match both personal and machine address
+ * flags: MUTT_MATCH_FULL_ADDRESS: match both personal and machine address
  * cache: For repeated matches against the same Alias, passing in non-NULL will
  *        store some of the cacheable pattern matches in this structure.
  */

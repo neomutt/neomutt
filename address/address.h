@@ -44,7 +44,7 @@ struct Address
 TAILQ_HEAD(AddressList, Address);
 
 /**
- * enum AddressError - possible values for AddressError
+ * enum AddressError - Possible values for AddressError
  */
 enum AddressError
 {

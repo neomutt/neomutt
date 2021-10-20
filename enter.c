@@ -54,7 +54,7 @@
 #include "protos.h"
 
 /**
- * enum EnterRedrawFlags - redraw flags for mutt_enter_string_full()
+ * enum EnterRedrawFlags - Redraw flags for mutt_enter_string_full()
  */
 enum EnterRedrawFlags
 {

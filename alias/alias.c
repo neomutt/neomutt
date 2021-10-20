@@ -23,7 +23,7 @@
  */
 
 /**
- * @page alias_alias Representation of a single alias to an email address
+ * @page alias_alias Alias for an email address
  *
  * Representation of a single alias to an email address
  */
@@ -74,7 +74,7 @@ struct AliasList Aliases = TAILQ_HEAD_INITIALIZER(Aliases); ///< List of all the
  *      alias me Michael \\`/bin/rm -f ~\\` Elkins <me@mutt.org>
  * which still gets evaluated because the double backslash is not a quote.
  *
- * Additionally, we need to quote ' and " characters - otherwise, neomutt will
+ * Additionally, we need to quote ' and " characters, otherwise neomutt will
  * interpret them on the wrong parsing step.
  *
  * $ wants to be quoted since it may indicate the start of an environment

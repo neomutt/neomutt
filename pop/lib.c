@@ -414,7 +414,7 @@ err_conn:
 }
 
 /**
- * pop_logout - logout from a POP server
+ * pop_logout - Logout from a POP server
  * @param m Mailbox
  */
 void pop_logout(struct Mailbox *m)
@@ -561,7 +561,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
 }
 
 /**
- * check_uidl - find message with this UIDL and set refno - Implements ::pop_fetch_t
+ * check_uidl - Find message with this UIDL and set refno - Implements ::pop_fetch_t
  * @param line String containing UIDL
  * @param data POP data
  * @retval  0 Success
@@ -596,7 +596,7 @@ static int check_uidl(const char *line, void *data)
 }
 
 /**
- * pop_reconnect - reconnect and verify indexes if connection was lost
+ * pop_reconnect - Reconnect and verify indexes if connection was lost
  * @param m Mailbox
  * @retval  0 Success
  * @retval -1 Error

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page compose_config Config used by libcompose
+ * @page compose_config Config used by Compose
  *
  * Config used by libcompose
  */

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page hc_config Config used by libhcache
+ * @page hc_config Config used by Header Cache
  *
  * Config used by libhcache
  */

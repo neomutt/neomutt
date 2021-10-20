@@ -731,7 +731,7 @@ char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, Rea
 }
 
 /**
- * mutt_file_iter_line - iterate over the lines from an open file pointer
+ * mutt_file_iter_line - Iterate over the lines from an open file pointer
  * @param iter  State of iteration including ptr to line
  * @param fp    File pointer to read from
  * @param flags Same as mutt_file_read_line()
@@ -1168,7 +1168,7 @@ int mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st)
 
 #if defined(USE_FCNTL)
 /**
- * mutt_file_lock - (try to) lock a file using fcntl()
+ * mutt_file_lock - (Try to) Lock a file using fcntl()
  * @param fd      File descriptor to file
  * @param excl    If true, try to lock exclusively
  * @param timeout If true, Retry #MAX_LOCK_ATTEMPTS times
@@ -1240,7 +1240,7 @@ int mutt_file_unlock(int fd)
 }
 #elif defined(USE_FLOCK)
 /**
- * mutt_file_lock - (try to) lock a file using flock()
+ * mutt_file_lock - (Try to) Lock a file using flock()
  * @param fd      File descriptor to file
  * @param excl    If true, try to lock exclusively
  * @param timeout If true, Retry #MAX_LOCK_ATTEMPTS times

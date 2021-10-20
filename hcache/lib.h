@@ -25,7 +25,7 @@
  */
 
 /**
- * @page lib_hcache Hcache
+ * @page lib_hcache Email Header Cache
  *
  * Cache of Email headers
  *
@@ -76,7 +76,7 @@ struct Buffer;
 struct Email;
 
 /**
- * struct HeaderCache - header cache structure
+ * struct HeaderCache - Header cache structure
  *
  * This struct holds both the backend-agnostic and the backend-specific parts
  * of the header cache. Backend code MUST initialize the fetch, store,
@@ -109,7 +109,7 @@ struct HCacheEntry
 typedef void (*hcache_namer_t)(const char *path, struct Buffer *dest);
 
 /**
- * mutt_hcache_open - open the connection to the header cache
+ * mutt_hcache_open - Open the connection to the header cache
  * @param path   Location of the header cache (often as specified by the user)
  * @param folder Name of the folder containing the messages
  * @param namer  Optional (might be NULL) client-specific function to form the
@@ -120,13 +120,13 @@ typedef void (*hcache_namer_t)(const char *path, struct Buffer *dest);
 struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer);
 
 /**
- * mutt_hcache_close - close the connection to the header cache
+ * mutt_hcache_close - Close the connection to the header cache
  * @param hc Pointer to the struct HeaderCache structure got by mutt_hcache_open()
  */
 void mutt_hcache_close(struct HeaderCache *hc);
 
 /**
- * mutt_hcache_store - store a Header along with a validity datum
+ * mutt_hcache_store - Store a Header along with a validity datum
  * @param hc          Pointer to the struct HeaderCache structure got by mutt_hcache_open()
  * @param key         Message identification string
  * @param keylen      Length of the key string
@@ -139,7 +139,7 @@ int mutt_hcache_store(struct HeaderCache *hc, const char *key, size_t keylen,
                       struct Email *e, uint32_t uidvalidity);
 
 /**
- * mutt_hcache_fetch - fetch and validate a  message's header from the cache
+ * mutt_hcache_fetch - Fetch and validate a  message's header from the cache
  * @param hc     Pointer to the struct HeaderCache structure got by mutt_hcache_open()
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
@@ -157,14 +157,14 @@ int mutt_hcache_store_raw(struct HeaderCache *hc, const char *key, size_t keylen
 void *mutt_hcache_fetch_raw(struct HeaderCache *hc, const char *key, size_t keylen, size_t *dlen);
 
 /**
- * mutt_hcache_free_raw - free data fetched with mutt_hcache_fetch_raw()
+ * mutt_hcache_free_raw - Free data fetched with mutt_hcache_fetch_raw()
  * @param hc   Pointer to the struct HeaderCache structure got by mutt_hcache_open()
  * @param data Pointer to the data got using mutt_hcache_fetch_raw
  */
 void mutt_hcache_free_raw(struct HeaderCache *hc, void **data);
 
 /**
- * mutt_hcache_delete_record - delete a key / data pair
+ * mutt_hcache_delete_record - Delete a key / data pair
  * @param hc     Pointer to the struct HeaderCache structure got by mutt_hcache_open()
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key

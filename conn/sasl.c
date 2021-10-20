@@ -21,14 +21,14 @@
  */
 
 /**
- * @page conn_sasl SASL authentication support
+ * @page conn_sasl SASL authentication
  *
  * SASL can stack a protection layer on top of an existing connection.  To
  * handle this, we store a saslconn_t in conn->sockdata, and write wrappers
  * which en/decode the read/write stream, then replace sockdata with an
  * embedded copy of the old sockdata and call the underlying functions (which
  * we've also preserved). I thought about trying to make a general stackable
- * connection system, but it seemed like overkill - something is wrong if we
+ * connection system, but it seemed like overkill. Something is wrong if we
  * have 15 filters on top of a socket. Anyway, anything else which wishes to
  * stack can use the same method. The only disadvantage is we have to write
  * wrappers for all the socket methods, even if we only stack over read and
@@ -233,7 +233,7 @@ static int iptostring(const struct sockaddr *addr, socklen_t addrlen, char *out,
 }
 
 /**
- * mutt_sasl_cb_log - callback to log SASL messages
+ * mutt_sasl_cb_log - Callback to log SASL messages
  * @param context  Supplied context, always NULL
  * @param priority Debug level
  * @param message  Message
@@ -274,7 +274,7 @@ static int mutt_sasl_cb_log(void *context, int priority, const char *message)
  * mutt_sasl_start - Initialise SASL library
  * @retval num SASL error code, e.g. SASL_OK
  *
- * Call before doing an SASL exchange - initialises library (if necessary).
+ * Call before doing an SASL exchange (initialises library if necessary).
  */
 static int mutt_sasl_start(void)
 {
@@ -309,7 +309,7 @@ static int mutt_sasl_start(void)
 }
 
 /**
- * mutt_sasl_cb_authname - callback to retrieve authname or user from ConnAccount
+ * mutt_sasl_cb_authname - Callback to retrieve authname or user from ConnAccount
  * @param[in]  context ConnAccount
  * @param[in]  id      Field to get.  SASL_CB_USER or SASL_CB_AUTHNAME
  * @param[out] result  Resulting string
@@ -420,7 +420,7 @@ static sasl_callback_t *mutt_sasl_get_callbacks(struct ConnAccount *cac)
 }
 
 /**
- * mutt_sasl_conn_open - empty wrapper for underlying open function - Implements Connection::open() - @ingroup connection_open
+ * mutt_sasl_conn_open - Empty wrapper for underlying open function - Implements Connection::open() - @ingroup connection_open
  *
  * We don't know in advance that a connection will use SASL, so we replace
  * conn's methods with sasl methods when authentication is successful, using
@@ -437,7 +437,7 @@ static int mutt_sasl_conn_open(struct Connection *conn)
 }
 
 /**
- * mutt_sasl_conn_close - close SASL connection - Implements Connection::close() - @ingroup connection_close
+ * mutt_sasl_conn_close - Close SASL connection - Implements Connection::close() - @ingroup connection_close
  *
  * Calls underlying close function and disposes of the sasl_conn_t object, then
  * restores connection to pre-sasl state

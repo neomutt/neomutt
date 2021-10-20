@@ -21,7 +21,7 @@
  */
 
 /**
- * @page lib_conn Conn
+ * @page lib_conn Network connections
  *
  * Network connections and their encryption
  *

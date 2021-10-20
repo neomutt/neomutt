@@ -21,7 +21,7 @@
  */
 
 /**
- * @page maildir_config Config used by libmaildir
+ * @page maildir_config Config used by Maildir
  *
  * Config used by libmaildir
  */

@@ -22,7 +22,7 @@
  */
 
 /**
- * @page lib_compmbox Compmbox
+ * @page lib_compmbox Compressed Mailbox
  *
  * Compressed mbox local mailbox type
  *

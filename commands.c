@@ -593,7 +593,7 @@ bool mutt_select_sort(bool reverse)
 }
 
 /**
- * mutt_shell_escape - invoke a command in a subshell
+ * mutt_shell_escape - Invoke a command in a subshell
  * @retval true A command was invoked (no matter what its result)
  * @retval false No command was invoked
  */
@@ -630,7 +630,7 @@ bool mutt_shell_escape(void)
 }
 
 /**
- * mutt_enter_command - enter a neomutt command
+ * mutt_enter_command - Enter a neomutt command
  */
 void mutt_enter_command(void)
 {

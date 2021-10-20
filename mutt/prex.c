@@ -292,7 +292,7 @@ static struct PrexStorage *prex(enum Prex which)
 }
 
 /**
- * mutt_prex_capture - match a precompiled regex against a string
+ * mutt_prex_capture - Match a precompiled regex against a string
  * @param which Which regex to return
  * @param str   String to apply regex on
  * @retval ptr  Pointer to an array of matched captures

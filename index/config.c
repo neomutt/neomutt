@@ -21,7 +21,7 @@
  */
 
 /**
- * @page index_config Config used by libindex
+ * @page index_config Config used by the Index
  *
  * Config used by libindex
  */

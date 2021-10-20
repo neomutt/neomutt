@@ -21,7 +21,7 @@
  */
 
 /**
- * @page helpbar_wdata Private data for the Help Bar
+ * @page helpbar_wdata Data for the Help Bar
  *
  * #HelpbarWindowData stores the state of the Help Bar.
  */

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page alias_reverse Manage alias reverse lookups
+ * @page alias_reverse Reverse Alias lookups
  *
  * Manage alias reverse lookups
  */

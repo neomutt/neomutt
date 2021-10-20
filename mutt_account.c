@@ -72,7 +72,7 @@ int mutt_account_fromurl(struct ConnAccount *cac, const struct Url *url)
  * @param cac Source ConnAccount
  * @param url Url to fill
  *
- * The URL information is a set of pointers into cac - don't free or edit cac
+ * The URL information is a set of pointers into cac. Don't free or edit cac
  * until you've finished with url (make a copy of cac if you need it for a
  * while).
  */

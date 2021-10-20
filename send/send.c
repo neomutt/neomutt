@@ -1549,7 +1549,7 @@ cleanup:
 }
 
 /**
- * mutt_encode_descriptions - rfc2047 encode the content-descriptions
+ * mutt_encode_descriptions - RFC2047 encode the content-descriptions
  * @param b       Body of email
  * @param recurse If true, encode children parts
  * @param sub     Config Subset
@@ -1569,7 +1569,7 @@ void mutt_encode_descriptions(struct Body *b, bool recurse, struct ConfigSubset 
 }
 
 /**
- * decode_descriptions - rfc2047 decode them in case of an error
+ * decode_descriptions - RFC2047 decode them in case of an error
  * @param b MIME parts to decode
  */
 static void decode_descriptions(struct Body *b)
@@ -2036,7 +2036,7 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
 }
 
 /**
- * is_text_plain - is a Body a text/plain MIME part?
+ * is_text_plain - Is a Body a text/plain MIME part?
  * @param b Body to check
  * @retval true  Body is text/plain
  * @retval false Body is not

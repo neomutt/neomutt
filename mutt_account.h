@@ -29,7 +29,7 @@ struct ConnAccount;
 struct Url;
 
 /**
- * enum AccountType - account types
+ * enum AccountType - Account types
  */
 enum AccountType
 {

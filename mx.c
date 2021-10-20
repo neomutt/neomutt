@@ -423,7 +423,7 @@ error:
 }
 
 /**
- * mx_fastclose_mailbox - free up memory associated with the Mailbox
+ * mx_fastclose_mailbox - Free up memory associated with the Mailbox
  * @param m Mailbox
  */
 void mx_fastclose_mailbox(struct Mailbox *m)
@@ -464,7 +464,7 @@ void mx_fastclose_mailbox(struct Mailbox *m)
 }
 
 /**
- * sync_mailbox - save changes to disk
+ * sync_mailbox - Save changes to disk
  * @param m Mailbox
  * @retval enum #MxStatus
  */
@@ -494,7 +494,7 @@ static enum MxStatus sync_mailbox(struct Mailbox *m)
 }
 
 /**
- * trash_append - move deleted mails to the trash folder
+ * trash_append - Move deleted mails to the trash folder
  * @param m Mailbox
  * @retval  0 Success
  * @retval -1 Failure
@@ -1134,7 +1134,7 @@ enum MxStatus mx_mbox_check(struct Mailbox *m)
 }
 
 /**
- * mx_msg_open - return a stream pointer for a message
+ * mx_msg_open - Return a stream pointer for a message
  * @param m   Mailbox
  * @param msgno Message number
  * @retval ptr  Message
@@ -1261,7 +1261,7 @@ int mx_path_is_empty(const char *path)
 }
 
 /**
- * mx_tags_edit - start the tag editor of the mailbox
+ * mx_tags_edit - Start the tag editor of the mailbox
  * @param m      Mailbox
  * @param tags   Existing tags
  * @param buf    Buffer for the results
@@ -1303,7 +1303,7 @@ int mx_tags_commit(struct Mailbox *m, struct Email *e, char *tags)
 }
 
 /**
- * mx_tags_is_supported - return true if mailbox support tagging
+ * mx_tags_is_supported - Return true if mailbox support tagging
  * @param m Mailbox
  * @retval true Tagging is supported
  */

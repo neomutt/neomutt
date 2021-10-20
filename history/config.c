@@ -21,7 +21,7 @@
  */
 
 /**
- * @page history_config Config used by libhistory
+ * @page history_config Config used by the history
  *
  * Config used by libhistory
  */

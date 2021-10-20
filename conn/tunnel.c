@@ -22,7 +22,7 @@
  */
 
 /**
- * @page conn_tunnel Support for network tunnelling
+ * @page conn_tunnel Network tunnelling
  *
  * Support for network tunnelling
  */
@@ -225,7 +225,7 @@ static int tunnel_socket_close(struct Connection *conn)
 }
 
 /**
- * mutt_tunnel_socket_setup - sets up tunnel connection functions
+ * mutt_tunnel_socket_setup - Sets up tunnel connection functions
  * @param conn Connection to assign functions to
  *
  * Assign tunnel socket functions to the Connection conn.

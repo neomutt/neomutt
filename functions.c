@@ -337,7 +337,7 @@ const struct Binding OpPager[] = { /* map: pager */
   { "next-line",                 OP_NEXT_LINE,                    "\r" },       // <Return>
   { "next-new",                  OP_MAIN_NEXT_NEW,                NULL },
   { "next-new-then-unread",      OP_MAIN_NEXT_NEW_THEN_UNREAD,    "\t" },       // <Tab>
-  { "next-page",                 OP_NEXT_PAGE,                    " " },
+  { "next-page",                 OP_NEXT_PAGE,                    " " },        // <Space>
   { "next-subthread",            OP_MAIN_NEXT_SUBTHREAD,          "\033n" },    // <Alt-n>
   { "next-thread",               OP_MAIN_NEXT_THREAD,             "\016" },     // <Ctrl-N>
   { "next-undeleted",            OP_MAIN_NEXT_UNDELETED,          "j" },
@@ -595,7 +595,7 @@ const struct Binding OpBrowser[] = { /* map: browser */
 #ifdef USE_NNTP
   { "unsubscribe-pattern",   OP_UNSUBSCRIBE_PATTERN,         NULL },
 #endif
-  { "view-file",             OP_BROWSER_VIEW_FILE,           " " },
+  { "view-file",             OP_BROWSER_VIEW_FILE,           " " },             // <Space>
   /* This is deprecated.  Leave it last so it doesn't show up in the help. */
   { "buffy-list",            OP_MAILBOX_LIST,                NULL },
   { NULL, 0, NULL },
@@ -638,7 +638,7 @@ const struct Binding OpEditor[] = { /* map: editor */
   { "kill-eow",              OP_EDITOR_KILL_EOW,             "\033d" },         // <Alt-d>
   { "kill-line",             OP_EDITOR_KILL_LINE,            "\025" },          // <Ctrl-U>
   { "kill-word",             OP_EDITOR_KILL_WORD,            "\027" },          // <Ctrl-W>
-  { "mailbox-cycle",         OP_EDITOR_MAILBOX_CYCLE,        " " },
+  { "mailbox-cycle",         OP_EDITOR_MAILBOX_CYCLE,        " " },             // <Space>
   { "quote-char",            OP_EDITOR_QUOTE_CHAR,           "\026" },          // <Ctrl-V>
   { "transpose-chars",       OP_EDITOR_TRANSPOSE_CHARS,      NULL },
   { "upcase-word",           OP_EDITOR_UPCASE_WORD,          "\033u" },         // <Alt-u>

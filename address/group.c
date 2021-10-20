@@ -23,7 +23,7 @@
  */
 
 /**
- * @page addr_group Handling for email address groups
+ * @page addr_group Address groups
  *
  * Handling for email address groups
  */

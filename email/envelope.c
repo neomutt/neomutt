@@ -22,7 +22,7 @@
  */
 
 /**
- * @page email_envelope Representation of an email header (envelope)
+ * @page email_envelope Envelope (Email header)
  *
  * Representation of an email header (envelope)
  */

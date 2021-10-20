@@ -21,7 +21,7 @@
  */
 
 /**
- * @page imap_auth_gss IMAP GSS authentication method
+ * @page imap_auth_gss GSS authentication
  *
  * IMAP GSS authentication method
  *

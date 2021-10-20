@@ -165,7 +165,7 @@ cleanup:
 }
 
 /**
- * ch_compare - qsort callback to sort characters
+ * ch_compare - qsort() callback to sort characters
  * @param a First  character to compare
  * @param b Second character to compare
  * @retval -1 a precedes b

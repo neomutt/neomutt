@@ -23,7 +23,7 @@
  */
 
 /**
- * @page gui_curses Wrapper functions around Curses
+ * @page gui_curses Wrapper around Curses
  *
  * Wrapper functions around Curses
  */

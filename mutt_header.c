@@ -92,7 +92,7 @@ static void label_ref_inc(struct Mailbox *m, char *label)
 }
 
 /**
- * label_message - add an X-Label: field
+ * label_message - Add an X-Label: field
  * @param[in]  m         Mailbox
  * @param[in]  e         Email
  * @param[out] new_label Set to true if this is a new label

@@ -370,7 +370,7 @@ static struct Mailbox *find_next_mailbox(struct Buffer *s, bool find_new)
 }
 
 /**
- * mutt_mailbox_next - incoming folders completion routine
+ * mutt_mailbox_next - Incoming folders completion routine
  * @param m_cur Current Mailbox
  * @param s     Buffer containing name of current mailbox
  * @retval ptr Mailbox
@@ -396,7 +396,7 @@ struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
 }
 
 /**
- * mutt_mailbox_next_unread - find next mailbox with unread mail
+ * mutt_mailbox_next_unread - Find next mailbox with unread mail
  * @param m_cur Current Mailbox
  * @param s     Buffer containing name of current mailbox
  * @retval ptr Mailbox

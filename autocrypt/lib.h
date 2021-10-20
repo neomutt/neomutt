@@ -47,7 +47,7 @@
  * Outside message composition the flags are not exclusive.  We can't tell a
  * message is an autocrypt message until we try to decrypt it.  Once we do so,
  * the flag is added to the existing flags.  The only relevance for decrypted
- * messages is when replying - in which case we want to force using autocrypt
+ * messages is when replying, in which case we want to force using autocrypt
  * in the reply.
  *
  * ### `header->security | SEC_AUTOCRYPT_OVERRIDE`

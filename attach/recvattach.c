@@ -22,7 +22,7 @@
  */
 
 /**
- * @page attach_recvattach Attachment code
+ * @page attach_recvattach Attachment functions
  *
  * Attachment code
  */

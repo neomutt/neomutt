@@ -21,7 +21,7 @@
  */
 
 /**
- * @page index_private_data Private state data for the Index
+ * @page index_private_data Private data for the Index
  *
  * Private state data for the Index
  */

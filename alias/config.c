@@ -21,9 +21,9 @@
  */
 
 /**
- * @page alias_config Config used by libaddress
+ * @page alias_config Alias Config
  *
- * Config used by libaddress
+ * Config used by libalias
  */
 
 #include "config.h"
@@ -33,7 +33,7 @@
 #include "mutt/lib.h"
 
 /**
- * SortAliasMethods - Sort methods for email aliases
+ * struct SortAliasMethods - Sort methods for email aliases
  */
 const struct Mapping SortAliasMethods[] = {
   // clang-format off

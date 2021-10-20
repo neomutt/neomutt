@@ -646,7 +646,7 @@ fallback:
 }
 
 /**
- * imap_continue - display a message and ask the user if they want to go on
+ * imap_continue - Display a message and ask the user if they want to go on
  * @param msg  Location of the error
  * @param resp Message for user
  * @retval #QuadOption Result, e.g. #MUTT_NO
@@ -658,7 +658,7 @@ enum QuadOption imap_continue(const char *msg, const char *resp)
 }
 
 /**
- * imap_error - show an error and abort
+ * imap_error - Show an error and abort
  * @param where Location of the error
  * @param msg   Message for user
  */
@@ -739,7 +739,7 @@ void imap_cachepath(char delim, const char *mailbox, struct Buffer *dest)
 }
 
 /**
- * imap_get_literal_count - write number of bytes in an IMAP literal into bytes
+ * imap_get_literal_count - Write number of bytes in an IMAP literal into bytes
  * @param[in]  buf   Number as a string
  * @param[out] bytes Resulting number
  * @retval  0 Success
@@ -829,7 +829,7 @@ void imap_qualify_path(char *buf, size_t buflen, struct ConnAccount *cac, char *
 }
 
 /**
- * imap_quote_string - quote string according to IMAP rules
+ * imap_quote_string - Quote string according to IMAP rules
  * @param dest           Buffer for the result
  * @param dlen           Length of the buffer
  * @param src            String to be quoted
@@ -871,7 +871,7 @@ void imap_quote_string(char *dest, size_t dlen, const char *src, bool quote_back
 }
 
 /**
- * imap_unquote_string - equally stupid unquoting routine
+ * imap_unquote_string - Equally stupid unquoting routine
  * @param s String to be unquoted
  */
 void imap_unquote_string(char *s)
@@ -943,7 +943,7 @@ void imap_unmunge_mbox_name(bool unicode, char *s)
 }
 
 /**
- * imap_keepalive - poll the current folder to keep the connection alive
+ * imap_keepalive - Poll the current folder to keep the connection alive
  */
 void imap_keepalive(void)
 {

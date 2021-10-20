@@ -21,7 +21,7 @@
  */
 
 /**
- * @page conn_sasl_plain SASL plain authentication support
+ * @page conn_sasl_plain SASL plain authentication
  *
  * SASL plain authentication support
  */

@@ -428,7 +428,7 @@ bool mutt_path_to_absolute(char *path, const char *reference)
 }
 
 /**
- * mutt_path_realpath - resolve path, unraveling symlinks
+ * mutt_path_realpath - Resolve path, unraveling symlinks
  * @param buf Buffer containing path
  * @retval num String length of resolved path
  * @retval 0   Error, buf is not overwritten

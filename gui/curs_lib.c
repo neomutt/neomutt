@@ -22,7 +22,7 @@
  */
 
 /**
- * @page gui_curs_lib GUI miscellaneous curses (window drawing) routines
+ * @page gui_curs_lib Window drawing code
  *
  * GUI miscellaneous curses (window drawing) routines
  */
@@ -678,7 +678,7 @@ void mutt_flushinp(void)
 }
 
 /**
- * mutt_addwch - addwch would be provided by an up-to-date curses library
+ * mutt_addwch - Addwch would be provided by an up-to-date curses library
  * @param win Window
  * @param wc  Wide char to display
  * @retval  0 Success

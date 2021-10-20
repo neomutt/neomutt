@@ -585,7 +585,7 @@ int mutt_replacelist_remove(struct ReplaceList *rl, const char *pat)
 }
 
 /**
- * mutt_regex_capture - match a regex against a string, with provided options
+ * mutt_regex_capture - Match a regex against a string, with provided options
  * @param regex   Regex to execute
  * @param str     String to apply regex on
  * @param nmatch  Length of matches

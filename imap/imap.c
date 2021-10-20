@@ -165,7 +165,7 @@ static char *get_flags(struct ListHead *hflags, char *s)
 }
 
 /**
- * set_flag - append str to flags if we currently have permission according to aclflag
+ * set_flag - Append str to flags if we currently have permission according to aclflag
  * @param[in]  m       Selected Imap Mailbox
  * @param[in]  aclflag Permissions, see #AclFlags
  * @param[in]  flag    Does the email have the flag set?
@@ -557,7 +557,7 @@ static void imap_logout(struct ImapAccountData *adata)
 }
 
 /**
- * imap_logout_all - close all open connections
+ * imap_logout_all - Close all open connections
  *
  * Quick and dirty until we can make sure we've got all the context we need.
  */
@@ -1095,7 +1095,7 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
 }
 
 /**
- * imap_check_mailbox - use the NOOP or IDLE command to poll for new mail
+ * imap_check_mailbox - Use the NOOP or IDLE command to poll for new mail
  * @param m     Mailbox
  * @param force Don't wait
  * return enum MxStatus
@@ -1839,7 +1839,7 @@ static void imap_mbox_select(struct Mailbox *m)
 }
 
 /**
- * imap_login -  Open an IMAP connection
+ * imap_login - Open an IMAP connection
  * @param adata Imap Account data
  * @retval  0 Success
  * @retval -1 Failure

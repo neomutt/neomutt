@@ -102,7 +102,7 @@ static inline bool assert_pager_mode(bool test)
 }
 
 /**
- * assert_mailbox_writable - checks that mailbox is writable
+ * assert_mailbox_writable - Checks that mailbox is writable
  * @param mailbox mailbox to check
  * @retval true  Mailbox is writable
  * @retval false Mailbox is not writable
@@ -141,7 +141,7 @@ static inline bool assert_attach_msg_mode(bool attach_msg)
 }
 
 /**
- * assert_mailbox_permissions - checks that mailbox is has requested acl flags set
+ * assert_mailbox_permissions - Checks that mailbox is has requested acl flags set
  * @param m      Mailbox to check
  * @param acl    AclFlags required to be set on a given mailbox
  * @param action String to augment error message
@@ -185,7 +185,7 @@ static int up_n_lines(int nlines, struct Line *info, int cur, bool hiding)
 }
 
 /**
- * jump_to_bottom - make sure the bottom line is displayed
+ * jump_to_bottom - Make sure the bottom line is displayed
  * @param priv   Private Pager data
  * @param pview PagerView
  * @retval true Something changed
@@ -215,7 +215,7 @@ bool jump_to_bottom(struct PagerPrivateData *priv, struct PagerView *pview)
 }
 
 /**
- * op_bounce_message - remail a message to another user - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_bounce_message - Remail a message to another user - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_bounce_message(struct IndexSharedData *shared,
                              struct PagerPrivateData *priv, int op)
@@ -244,7 +244,7 @@ static int op_bounce_message(struct IndexSharedData *shared,
 }
 
 /**
- * op_check_stats - calculate message statistics for all mailboxes - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_check_stats - Calculate message statistics for all mailboxes - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_check_stats(struct IndexSharedData *shared,
                           struct PagerPrivateData *priv, int op)
@@ -254,7 +254,7 @@ static int op_check_stats(struct IndexSharedData *shared,
 }
 
 /**
- * op_check_traditional - check for classic PGP - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_check_traditional - Check for classic PGP - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_check_traditional(struct IndexSharedData *shared,
                                 struct PagerPrivateData *priv, int op)
@@ -274,7 +274,7 @@ static int op_check_traditional(struct IndexSharedData *shared,
 }
 
 /**
- * op_compose_to_sender - compose new message to the current message sender - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_compose_to_sender - Compose new message to the current message sender - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_compose_to_sender(struct IndexSharedData *shared,
                                 struct PagerPrivateData *priv, int op)
@@ -304,7 +304,7 @@ static int op_compose_to_sender(struct IndexSharedData *shared,
 }
 
 /**
- * op_copy_message - copy a message to a file/mailbox - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_copy_message - Copy a message to a file/mailbox - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_copy_message(struct IndexSharedData *shared,
                            struct PagerPrivateData *priv, int op)
@@ -343,7 +343,7 @@ static int op_copy_message(struct IndexSharedData *shared,
 }
 
 /**
- * op_create_alias - create an alias from a message sender - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_create_alias - Create an alias from a message sender - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_create_alias(struct IndexSharedData *shared,
                            struct PagerPrivateData *priv, int op)
@@ -364,7 +364,7 @@ static int op_create_alias(struct IndexSharedData *shared,
 }
 
 /**
- * op_delete - delete the current entry - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_delete - Delete the current entry - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_delete(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -394,7 +394,7 @@ static int op_delete(struct IndexSharedData *shared, struct PagerPrivateData *pr
 }
 
 /**
- * op_delete_thread - delete all messages in thread - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_delete_thread - Delete all messages in thread - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_delete_thread(struct IndexSharedData *shared,
                             struct PagerPrivateData *priv, int op)
@@ -445,7 +445,7 @@ static int op_delete_thread(struct IndexSharedData *shared,
 }
 
 /**
- * op_display_address - display full address of sender - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_display_address - Display full address of sender - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_display_address(struct IndexSharedData *shared,
                               struct PagerPrivateData *priv, int op)
@@ -464,7 +464,7 @@ static int op_display_address(struct IndexSharedData *shared,
 }
 
 /**
- * op_edit_label - add, change, or delete a message's label - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_edit_label - Add, change, or delete a message's label - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_edit_label(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -490,7 +490,7 @@ static int op_edit_label(struct IndexSharedData *shared, struct PagerPrivateData
 }
 
 /**
- * op_enter_command - enter a neomuttrc command - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_enter_command - Enter a neomuttrc command - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_enter_command(struct IndexSharedData *shared,
                             struct PagerPrivateData *priv, int op)
@@ -516,7 +516,7 @@ static int op_enter_command(struct IndexSharedData *shared,
 }
 
 /**
- * op_exit - exit this menu - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_exit - Exit this menu - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_exit(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -525,7 +525,7 @@ static int op_exit(struct IndexSharedData *shared, struct PagerPrivateData *priv
 }
 
 /**
- * op_extract_keys - extract supported public keys - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_extract_keys - Extract supported public keys - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_extract_keys(struct IndexSharedData *shared,
                            struct PagerPrivateData *priv, int op)
@@ -545,7 +545,7 @@ static int op_extract_keys(struct IndexSharedData *shared,
 }
 
 /**
- * op_flag_message - toggle a message's 'important' flag - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_flag_message - Toggle a message's 'important' flag - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_flag_message(struct IndexSharedData *shared,
                            struct PagerPrivateData *priv, int op)
@@ -570,7 +570,7 @@ static int op_flag_message(struct IndexSharedData *shared,
 }
 
 /**
- * op_forget_passphrase - wipe passphrases from memory - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_forget_passphrase - Wipe passphrases from memory - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_forget_passphrase(struct IndexSharedData *shared,
                                 struct PagerPrivateData *priv, int op)
@@ -580,7 +580,7 @@ static int op_forget_passphrase(struct IndexSharedData *shared,
 }
 
 /**
- * op_forward_message - forward a message with comments - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_forward_message - Forward a message with comments - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_forward_message(struct IndexSharedData *shared,
                               struct PagerPrivateData *priv, int op)
@@ -611,7 +611,7 @@ static int op_forward_message(struct IndexSharedData *shared,
 }
 
 /**
- * op_half_down - scroll down 1/2 page - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_half_down - Scroll down 1/2 page - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_half_down(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -637,7 +637,7 @@ static int op_half_down(struct IndexSharedData *shared, struct PagerPrivateData 
 }
 
 /**
- * op_half_up - scroll up 1/2 page - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_half_up - Scroll up 1/2 page - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_half_up(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -654,7 +654,7 @@ static int op_half_up(struct IndexSharedData *shared, struct PagerPrivateData *p
 }
 
 /**
- * op_help - this screen - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_help - This screen - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_help(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -670,7 +670,7 @@ static int op_help(struct IndexSharedData *shared, struct PagerPrivateData *priv
 }
 
 /**
- * op_mail - compose a new mail message - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_mail - Compose a new mail message - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_mail(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -685,7 +685,7 @@ static int op_mail(struct IndexSharedData *shared, struct PagerPrivateData *priv
 }
 
 /**
- * op_mailbox_list - list mailboxes with new mail - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_mailbox_list - List mailboxes with new mail - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_mailbox_list(struct IndexSharedData *shared,
                            struct PagerPrivateData *priv, int op)
@@ -695,7 +695,7 @@ static int op_mailbox_list(struct IndexSharedData *shared,
 }
 
 /**
- * op_mail_key - mail a PGP public key - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_mail_key - Mail a PGP public key - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_mail_key(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -715,7 +715,7 @@ static int op_mail_key(struct IndexSharedData *shared, struct PagerPrivateData *
 }
 
 /**
- * op_main_set_flag - set a status flag on a message - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_main_set_flag - Set a status flag on a message - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_main_set_flag(struct IndexSharedData *shared,
                             struct PagerPrivateData *priv, int op)
@@ -742,7 +742,7 @@ static int op_main_set_flag(struct IndexSharedData *shared,
 }
 
 /**
- * op_next_line - scroll down one line - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_next_line - Scroll down one line - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_next_line(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -767,7 +767,7 @@ static int op_next_line(struct IndexSharedData *shared, struct PagerPrivateData 
 }
 
 /**
- * op_next_page - move to the next page - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_next_page - Move to the next page - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_next_page(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -795,7 +795,7 @@ static int op_next_page(struct IndexSharedData *shared, struct PagerPrivateData 
 }
 
 /**
- * op_pager_bottom - jump to the bottom of the message - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_pager_bottom - Jump to the bottom of the message - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_pager_bottom(struct IndexSharedData *shared,
                            struct PagerPrivateData *priv, int op)
@@ -807,7 +807,7 @@ static int op_pager_bottom(struct IndexSharedData *shared,
 }
 
 /**
- * op_pager_hide_quoted - toggle display of quoted text - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_pager_hide_quoted - Toggle display of quoted text - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_pager_hide_quoted(struct IndexSharedData *shared,
                                 struct PagerPrivateData *priv, int op)
@@ -829,7 +829,7 @@ static int op_pager_hide_quoted(struct IndexSharedData *shared,
 }
 
 /**
- * op_pager_skip_headers - jump to first line after headers - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_pager_skip_headers - Jump to first line after headers - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_pager_skip_headers(struct IndexSharedData *shared,
                                  struct PagerPrivateData *priv, int op)
@@ -868,7 +868,7 @@ static int op_pager_skip_headers(struct IndexSharedData *shared,
 }
 
 /**
- * op_pager_skip_quoted - skip beyond quoted text - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_pager_skip_quoted - Skip beyond quoted text - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_pager_skip_quoted(struct IndexSharedData *shared,
                                 struct PagerPrivateData *priv, int op)
@@ -969,7 +969,7 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
 }
 
 /**
- * op_pager_top - jump to the top of the message - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_pager_top - Jump to the top of the message - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_pager_top(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -981,7 +981,7 @@ static int op_pager_top(struct IndexSharedData *shared, struct PagerPrivateData 
 }
 
 /**
- * op_pipe - pipe message/attachment to a shell command - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_pipe - Pipe message/attachment to a shell command - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_pipe(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1007,7 +1007,7 @@ static int op_pipe(struct IndexSharedData *shared, struct PagerPrivateData *priv
 }
 
 /**
- * op_prev_line - scroll up one line - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_prev_line - Scroll up one line - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_prev_line(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1024,7 +1024,7 @@ static int op_prev_line(struct IndexSharedData *shared, struct PagerPrivateData 
 }
 
 /**
- * op_prev_page - move to the previous page - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_prev_page - Move to the previous page - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_prev_page(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1044,7 +1044,7 @@ static int op_prev_page(struct IndexSharedData *shared, struct PagerPrivateData 
 }
 
 /**
- * op_print - print the current entry - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_print - Print the current entry - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_print(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1070,7 +1070,7 @@ static int op_print(struct IndexSharedData *shared, struct PagerPrivateData *pri
 }
 
 /**
- * op_quit - save changes to mailbox and quit - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_quit - Save changes to mailbox and quit - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_quit(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1085,7 +1085,7 @@ static int op_quit(struct IndexSharedData *shared, struct PagerPrivateData *priv
 }
 
 /**
- * op_recall_message - recall a postponed message - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_recall_message - Recall a postponed message - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_recall_message(struct IndexSharedData *shared,
                              struct PagerPrivateData *priv, int op)
@@ -1104,7 +1104,7 @@ static int op_recall_message(struct IndexSharedData *shared,
 }
 
 /**
- * op_redraw - clear and redraw the screen - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_redraw - Clear and redraw the screen - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_redraw(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1116,7 +1116,7 @@ static int op_redraw(struct IndexSharedData *shared, struct PagerPrivateData *pr
 }
 
 /**
- * op_reply - reply to a message - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_reply - Reply to a message - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_reply(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1154,7 +1154,7 @@ static int op_reply(struct IndexSharedData *shared, struct PagerPrivateData *pri
 }
 
 /**
- * op_list_subscribe - subscribe to a mailing list - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_list_subscribe - Subscribe to a mailing list - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_list_subscribe(struct IndexSharedData *shared,
                              struct PagerPrivateData *priv, int op)
@@ -1165,7 +1165,7 @@ static int op_list_subscribe(struct IndexSharedData *shared,
 }
 
 /**
- * op_list_unsubscribe - unsubscribe from mailing list - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_list_unsubscribe - Unsubscribe from mailing list - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_list_unsubscribe(struct IndexSharedData *shared,
                                struct PagerPrivateData *priv, int op)
@@ -1178,7 +1178,7 @@ static int op_list_unsubscribe(struct IndexSharedData *shared,
 }
 
 /**
- * op_resend - use the current message as a template for a new one - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_resend - Use the current message as a template for a new one - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_resend(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1204,7 +1204,7 @@ static int op_resend(struct IndexSharedData *shared, struct PagerPrivateData *pr
 }
 
 /**
- * op_save - save message/attachment to a mailbox/file - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_save - Save message/attachment to a mailbox/file - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_save(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1224,7 +1224,7 @@ static int op_save(struct IndexSharedData *shared, struct PagerPrivateData *priv
 }
 
 /**
- * op_search - search for a regular expression - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_search - Search for a regular expression - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_search(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1363,7 +1363,7 @@ static int op_search(struct IndexSharedData *shared, struct PagerPrivateData *pr
 }
 
 /**
- * op_search_next - search for next match - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_search_next - Search for next match - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_search_next(struct IndexSharedData *shared,
                           struct PagerPrivateData *priv, int op)
@@ -1452,7 +1452,7 @@ static int op_search_next(struct IndexSharedData *shared,
 }
 
 /**
- * op_search_toggle - toggle search pattern coloring - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_search_toggle - Toggle search pattern coloring - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_search_toggle(struct IndexSharedData *shared,
                             struct PagerPrivateData *priv, int op)
@@ -1466,7 +1466,7 @@ static int op_search_toggle(struct IndexSharedData *shared,
 }
 
 /**
- * op_shell_escape - invoke a command in a subshell - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_shell_escape - Invoke a command in a subshell - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_shell_escape(struct IndexSharedData *shared,
                            struct PagerPrivateData *priv, int op)
@@ -1479,7 +1479,7 @@ static int op_shell_escape(struct IndexSharedData *shared,
 }
 
 /**
- * op_sort - sort messages - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_sort - Sort messages - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_sort(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1495,7 +1495,7 @@ static int op_sort(struct IndexSharedData *shared, struct PagerPrivateData *priv
 }
 
 /**
- * op_tag - tag the current entry - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_tag - Tag the current entry - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_tag(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1514,7 +1514,7 @@ static int op_tag(struct IndexSharedData *shared, struct PagerPrivateData *priv,
 }
 
 /**
- * op_toggle_new - toggle a message's 'new' flag - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_toggle_new - Toggle a message's 'new' flag - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_toggle_new(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1545,7 +1545,7 @@ static int op_toggle_new(struct IndexSharedData *shared, struct PagerPrivateData
 }
 
 /**
- * op_undelete - undelete the current entry - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_undelete - Undelete the current entry - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_undelete(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1572,7 +1572,7 @@ static int op_undelete(struct IndexSharedData *shared, struct PagerPrivateData *
 }
 
 /**
- * op_undelete_thread - undelete all messages in thread - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_undelete_thread - Undelete all messages in thread - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_undelete_thread(struct IndexSharedData *shared,
                               struct PagerPrivateData *priv, int op)
@@ -1617,7 +1617,7 @@ static int op_undelete_thread(struct IndexSharedData *shared,
 }
 
 /**
- * op_version - show the NeoMutt version number and date - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_version - Show the NeoMutt version number and date - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_version(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1626,7 +1626,7 @@ static int op_version(struct IndexSharedData *shared, struct PagerPrivateData *p
 }
 
 /**
- * op_view_attachments - show MIME attachments - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_view_attachments - Show MIME attachments - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_view_attachments(struct IndexSharedData *shared,
                                struct PagerPrivateData *priv, int op)
@@ -1650,7 +1650,7 @@ static int op_view_attachments(struct IndexSharedData *shared,
 }
 
 /**
- * op_what_key - display the keycode for a key press - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_what_key - Display the keycode for a key press - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_what_key(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1662,7 +1662,7 @@ static int op_what_key(struct IndexSharedData *shared, struct PagerPrivateData *
 
 #ifdef USE_NNTP
 /**
- * op_followup - followup to newsgroup - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_followup - Followup to newsgroup - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_followup(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1715,7 +1715,7 @@ static int op_followup(struct IndexSharedData *shared, struct PagerPrivateData *
 }
 
 /**
- * op_forward_to_group - forward to newsgroup - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_forward_to_group - Forward to newsgroup - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_forward_to_group(struct IndexSharedData *shared,
                                struct PagerPrivateData *priv, int op)
@@ -1754,7 +1754,7 @@ static int op_forward_to_group(struct IndexSharedData *shared,
 }
 
 /**
- * op_post - post message to newsgroup - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_post - Post message to newsgroup - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_post(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1778,7 +1778,7 @@ static int op_post(struct IndexSharedData *shared, struct PagerPrivateData *priv
 
 #ifdef USE_SIDEBAR
 /**
- * op_sidebar_move - move the sidebar highlight - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_sidebar_move - Move the sidebar highlight - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_sidebar_move(struct IndexSharedData *shared,
                            struct PagerPrivateData *priv, int op)
@@ -1792,7 +1792,7 @@ static int op_sidebar_move(struct IndexSharedData *shared,
 }
 
 /**
- * op_sidebar_toggle_visible - make the sidebar (in)visible - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_sidebar_toggle_visible - Make the sidebar (in)visible - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_sidebar_toggle_visible(struct IndexSharedData *shared,
                                      struct PagerPrivateData *priv, int op)

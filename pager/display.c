@@ -1,6 +1,6 @@
 /**
  * @file
- * Pager Dialog
+ * Pager Display
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -21,7 +21,9 @@
  */
 
 /**
- * @page pager_display XXX
+ * @page pager_display Pager Display
+ *
+ * Parse and Display pager data
  */
 
 #include "config.h"

@@ -83,7 +83,7 @@ struct Connection *mutt_conn_new(const struct ConnAccount *cac)
  * find a connection off the list of connections whose account matches cac.
  * If start is not null, only search for connections after the given connection
  * (allows higher level socket code to make more fine-grained searches than
- * account info - eg in IMAP we may wish to find a connection which is not in
+ * account info. Eg in IMAP we may wish to find a connection which is not in
  * IMAP_SELECTED state)
  */
 struct Connection *mutt_conn_find(const struct ConnAccount *cac)

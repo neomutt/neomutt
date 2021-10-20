@@ -21,7 +21,7 @@
  */
 
 /**
- * @page email_url Parse and identify different URL schemes
+ * @page email_url Parse URL schemes
  *
  * Parse and identify different URL schemes
  */

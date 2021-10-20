@@ -22,7 +22,7 @@
  */
 
 /**
- * @page lib_helpbar Helpbar
+ * @page lib_helpbar Help bar
  *
  * Help line showing key bindings
  *

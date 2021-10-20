@@ -22,7 +22,7 @@
  */
 
 /**
- * @page attach_mutt_attach Handling of email attachments
+ * @page attach_mutt_attach Shared attachments functions
  *
  * Handling of email attachments
  */

@@ -23,7 +23,7 @@
  */
 
 /**
- * @page email_rfc2047 RFC2047 encoding / decoding functions
+ * @page email_rfc2047 RFC2047 encoding / decoding
  *
  * RFC2047 MIME extensions encoding / decoding routines.
  */

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page imap_auth_cram IMAP CRAM-MD5 authentication method
+ * @page imap_auth_cram CRAM-MD5 authentication
  *
  * IMAP CRAM-MD5 authentication method
  */
@@ -40,7 +40,7 @@
 #define MD5_DIGEST_LEN 16
 
 /**
- * hmac_md5 - produce CRAM-MD5 challenge response
+ * hmac_md5 - Produce CRAM-MD5 challenge response
  * @param[in]  password  Password to encrypt
  * @param[in]  challenge Challenge from server
  * @param[out] response  Buffer for the response

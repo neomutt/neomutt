@@ -1,6 +1,6 @@
 /**
  * @file
- * Body Caching - local copies of email bodies
+ * Body Caching (local copies of email bodies)
  *
  * @authors
  * Copyright (C) 2006-2007 Brendan Cully <brendan@kublai.com>
@@ -22,9 +22,9 @@
  */
 
 /**
- * @page lib_bcache Bcache
+ * @page lib_bcache Body (Message) Cache
  *
- * Body Caching - local copies of email bodies
+ * Body Caching (Local copies of email bodies)
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |

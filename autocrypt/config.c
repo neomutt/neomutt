@@ -21,7 +21,7 @@
  */
 
 /**
- * @page autocrypt_config Config used by libautocrypt
+ * @page autocrypt_config Autocrypt Config
  *
  * Config used by libautocrypt
  */

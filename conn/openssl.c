@@ -21,7 +21,7 @@
  */
 
 /**
- * @page conn_openssl Handling of OpenSSL encryption
+ * @page conn_openssl OpenSSL encryption
  *
  * Handling of OpenSSL encryption
  */

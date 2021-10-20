@@ -21,7 +21,7 @@
  */
 
 /**
- * @page debug_graphviz Create a GraphViz dot file
+ * @page debug_graphviz GraphViz dot file
  *
  * Create a GraphViz dot file from the NeoMutt objects
  */

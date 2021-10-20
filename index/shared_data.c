@@ -21,7 +21,7 @@
  */
 
 /**
- * @page index_shared_data Data shared between Index, Pager and Sidebar
+ * @page index_shared_data Shared data
  *
  * Data shared between Index, Pager and Sidebar
  */

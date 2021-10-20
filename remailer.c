@@ -198,7 +198,7 @@ static void remailer_free(struct Remailer **ptr)
 }
 
 /**
- * mix_type2_list - parse the type2.list as given by mixmaster -T
+ * mix_type2_list - Parse the type2.list as given by mixmaster -T
  * @param[out] l Length of list
  * @retval ptr type2.list
  */

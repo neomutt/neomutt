@@ -24,7 +24,7 @@
  */
 
 /**
- * @page imap_command Send/receive commands to/from an IMAP server
+ * @page imap_command Send/receive commands
  *
  * Send/receive commands to/from an IMAP server
  */
@@ -229,7 +229,7 @@ static int cmd_start(struct ImapAccountData *adata, const char *cmdstr, ImapCmdF
 }
 
 /**
- * cmd_status - parse response line for tagged OK/NO/BAD
+ * cmd_status - Parse response line for tagged OK/NO/BAD
  * @param s Status string from server
  * @retval  0 Success
  * @retval <0 Failure, e.g. #IMAP_RES_BAD
@@ -529,7 +529,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
 }
 
 /**
- * cmd_parse_capability - set capability bits according to CAPABILITY response
+ * cmd_parse_capability - Set capability bits according to CAPABILITY response
  * @param adata Imap Account data
  * @param s     Command string with capabilities
  */
@@ -980,7 +980,7 @@ static void cmd_parse_exists(struct ImapAccountData *adata, const char *pn)
 }
 
 /**
- * cmd_handle_untagged - fallback parser for otherwise unhandled messages
+ * cmd_handle_untagged - Fallback parser for otherwise unhandled messages
  * @param adata Imap Account data
  * @retval  0 Success
  * @retval -1 Failure

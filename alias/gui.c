@@ -21,7 +21,7 @@
  */
 
 /**
- * @page alias_gui Shared code for the Alias and Query Dialogs
+ * @page alias_gui Shared code for alias dialogs
  *
  * Shared code for the Alias and Query Dialogs
  */

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page imap_auth_anon IMAP anonymous authentication method
+ * @page imap_auth_anon Anonymous authentication
  *
  * IMAP anonymous authentication method
  */

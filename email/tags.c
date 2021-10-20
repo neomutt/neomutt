@@ -21,7 +21,7 @@
  */
 
 /**
- * @page email_tags Driver based email tags
+ * @page email_tags Email tags
  *
  * Driver based email tags
  */

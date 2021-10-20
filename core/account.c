@@ -21,7 +21,7 @@
  */
 
 /**
- * @page core_account A group of associated Mailboxes
+ * @page core_account Account object
  *
  * A group of associated Mailboxes
  */

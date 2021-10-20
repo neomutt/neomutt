@@ -21,7 +21,7 @@
  */
 
 /**
- * @page compose_attach Compose Attachments
+ * @page compose_attach Attachments window
  *
  * ## Overview
  *

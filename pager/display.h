@@ -1,6 +1,6 @@
 /**
  * @file
- * Pager Dialog
+ * Pager Display
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>

@@ -394,7 +394,7 @@ static char *rstrip_in_place(char *s)
 
 /**
  * print_version - Print system and compile info to a file
- * @param fp - file to print to
+ * @param fp File to print to
  * @retval true Text displayed
  *
  * Print information about the current system NeoMutt is running on.

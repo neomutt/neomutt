@@ -21,7 +21,7 @@
  */
 
 /**
- * @page core_neomutt Container for Accounts, Notifications
+ * @page core_neomutt NeoMutt object
  *
  * Container for Accounts, Notifications
  */

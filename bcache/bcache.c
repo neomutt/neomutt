@@ -1,6 +1,6 @@
 /**
  * @file
- * Body Caching - local copies of email bodies
+ * Body Caching (local copies of email bodies)
  *
  * @authors
  * Copyright (C) 2006-2007,2009,2017 Brendan Cully <brendan@kublai.com>
@@ -22,9 +22,9 @@
  */
 
 /**
- * @page bcache_bcache Body Caching - local copies of email bodies
+ * @page bcache_bcache Body Cache functions
  *
- * Body Caching - local copies of email bodies
+ * Body Caching (Local copies of email bodies)
  */
 
 #include "config.h"

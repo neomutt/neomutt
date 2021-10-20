@@ -70,7 +70,7 @@ static void alarm_handler(int sig)
 }
 
 /**
- * send_msg - invoke sendmail in a subshell
+ * send_msg - Invoke sendmail in a subshell
  * @param[in]  path     Path to program to execute
  * @param[in]  args     Arguments to pass to program
  * @param[in]  msg      Temp file containing message to send

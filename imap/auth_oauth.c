@@ -22,7 +22,7 @@
  */
 
 /**
- * @page imap_auth_oauth IMAP OAUTH authentication method
+ * @page imap_auth_oauth OAUTH authentication
  *
  * IMAP OAUTH authentication method
  */

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page imap_auth_login IMAP login authentication method
+ * @page imap_auth_login Login authentication
  *
  * IMAP login authentication method
  */

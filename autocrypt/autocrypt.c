@@ -21,7 +21,7 @@
  */
 
 /**
- * @page autocrypt_autocrypt Autocrypt end-to-end encryption
+ * @page autocrypt_autocrypt Autocrypt shared code
  *
  * Autocrypt end-to-end encryption
  */

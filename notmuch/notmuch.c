@@ -245,7 +245,7 @@ static void query_window_reset(void)
 }
 
 /**
- * windowed_query_from_query - transforms a vfolder search query into a windowed one
+ * windowed_query_from_query - Transforms a vfolder search query into a windowed one
  * @param[in]  query vfolder search string
  * @param[out] buf   allocated string buffer to receive the modified search query
  * @param[in]  buflen allocated maximum size of the buf string buffer
@@ -325,7 +325,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
 }
 
 /**
- * get_query_string - builds the notmuch vfolder search string
+ * get_query_string - Builds the notmuch vfolder search string
  * @param mdata Notmuch Mailbox data
  * @param window If true enable application of the window on the search string
  * @retval ptr  String containing a notmuch search query
@@ -580,7 +580,7 @@ static char *get_folder_from_path(const char *path)
 }
 
 /**
- * nm2mutt_message_id - converts notmuch message Id to neomutt message Id
+ * nm2mutt_message_id - Converts notmuch message Id to neomutt message Id
  * @param id Notmuch ID to convert
  * @retval ptr NeoMutt message ID
  *
@@ -843,7 +843,7 @@ done:
 }
 
 /**
- * append_replies - add all the replies to a given messages into the display
+ * append_replies - Add all the replies to a given messages into the display
  * @param h     Header cache handle
  * @param m     Mailbox
  * @param q     Notmuch query
@@ -869,7 +869,7 @@ static void append_replies(struct HeaderCache *h, struct Mailbox *m,
 }
 
 /**
- * append_thread - add each top level reply in the thread
+ * append_thread - Add each top level reply in the thread
  * @param h      Header cache handle
  * @param m      Mailbox
  * @param q      Notmuch query
@@ -895,7 +895,7 @@ static void append_thread(struct HeaderCache *h, struct Mailbox *m,
 }
 
 /**
- * get_messages - load messages for a query
+ * get_messages - Load messages for a query
  * @param query Notmuch query
  * @retval ptr  Messages matching query
  * @retval NULL Error occurred
@@ -965,7 +965,7 @@ static bool read_mesgs_query(struct Mailbox *m, notmuch_query_t *q, bool dedup)
 }
 
 /**
- * get_threads - load threads for a query
+ * get_threads - Load threads for a query
  * @param query Notmuch query
  * @retval ptr Threads matching query
  * @retval NULL Error occurred

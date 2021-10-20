@@ -112,7 +112,7 @@ static bool is_pka_notation(gpgme_sig_notation_t notation)
 }
 
 /**
- * redraw_if_needed - accommodate for a redraw if needed
+ * redraw_if_needed - Accommodate for a redraw if needed
  * @param ctx GPGME handle
  */
 static void redraw_if_needed(gpgme_ctx_t ctx)

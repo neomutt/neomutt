@@ -21,7 +21,7 @@
  */
 
 /**
- * @page alias_sort Address book sorting functions
+ * @page alias_sort Alias sorting
  *
  * Address book sorting functions
  */

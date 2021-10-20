@@ -23,7 +23,7 @@
  */
 
 /**
- * @page imap_message Manage IMAP messages
+ * @page imap_message IMAP messages
  *
  * Manage IMAP messages
  */
@@ -182,7 +182,7 @@ static int msg_cache_clean_cb(const char *id, struct BodyCache *bcache, void *da
 }
 
 /**
- * msg_parse_flags - read a FLAGS token into an ImapHeader
+ * msg_parse_flags - Read a FLAGS token into an ImapHeader
  * @param h Header to store flags
  * @param s Command string containing flags
  * @retval ptr  The end of flags string
@@ -286,7 +286,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
 }
 
 /**
- * msg_parse_fetch - handle headers returned from header fetch
+ * msg_parse_fetch - Handle headers returned from header fetch
  * @param h IMAP Header
  * @param s Command string
  * @retval  0 Success
@@ -391,7 +391,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
 }
 
 /**
- * msg_fetch_header - import IMAP FETCH response into an ImapHeader
+ * msg_fetch_header - Import IMAP FETCH response into an ImapHeader
  * @param m   Mailbox
  * @param ih  ImapHeader
  * @param buf Server string containing FETCH response
@@ -1849,7 +1849,7 @@ int imap_cache_clean(struct Mailbox *m)
 }
 
 /**
- * imap_set_flags - fill the message header according to the server flags
+ * imap_set_flags - Fill the message header according to the server flags
  * @param[in]  m              Imap Selected Mailbox
  * @param[in]  e              Email
  * @param[in]  s              Command string

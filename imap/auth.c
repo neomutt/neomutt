@@ -23,7 +23,7 @@
  */
 
 /**
- * @page imap_auth IMAP authenticator multiplexor
+ * @page imap_auth Authenticator multiplexor
  *
  * IMAP authenticator multiplexor
  */

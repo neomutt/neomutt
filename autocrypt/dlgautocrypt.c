@@ -21,7 +21,7 @@
  */
 
 /**
- * @page autocrypt_account Autocrypt account menu
+ * @page autocrypt_account Autocrypt account dialog
  *
  * ## Overview
  *

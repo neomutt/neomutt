@@ -24,7 +24,7 @@
  */
 
 /**
- * @page imap_search IMAP search routines
+ * @page imap_search Search routines
  *
  * IMAP search routines
  */
@@ -252,7 +252,7 @@ bool imap_search(struct Mailbox *m, const struct PatternList *pat)
 }
 
 /**
- * cmd_parse_search - store SEARCH response for later use
+ * cmd_parse_search - Store SEARCH response for later use
  * @param adata Imap Account data
  * @param s     Command string with search results
  */

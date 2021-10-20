@@ -115,7 +115,7 @@ int mutt_socket_close(struct Connection *conn)
 }
 
 /**
- * mutt_socket_read - read from a Connection
+ * mutt_socket_read - Read from a Connection
  * @param conn Connection a server
  * @param buf Buffer to store read data
  * @param len length of the buffer
@@ -128,7 +128,7 @@ int mutt_socket_read(struct Connection *conn, char *buf, size_t len)
 }
 
 /**
- * mutt_socket_write - write to a Connection
+ * mutt_socket_write - Write to a Connection
  * @param conn Connection to a server
  * @param buf Buffer with data to write
  * @param len Length of data to write
@@ -201,7 +201,7 @@ int mutt_socket_poll(struct Connection *conn, time_t wait_secs)
 }
 
 /**
- * mutt_socket_readchar - simple read buffering to speed things up
+ * mutt_socket_readchar - Simple read buffering to speed things up
  * @param[in]  conn Connection to a server
  * @param[out] c    Character that was read
  * @retval  1 Success
@@ -273,7 +273,7 @@ int mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int 
 }
 
 /**
- * mutt_socket_new - allocate and initialise a new connection
+ * mutt_socket_new - Allocate and initialise a new connection
  * @param type Type of the new Connection
  * @retval ptr New Connection
  */

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page email_from Determine who the email is from
+ * @page email_from Who is the email from?
  *
  * Determine who the email is from
  */
