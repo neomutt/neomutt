@@ -5,7 +5,7 @@ on:
       - 'coverity/**'
   schedule:
     - cron: '0 3 * * 1'
-      # Mondays at 3am
+      # Mondays at 03:00
 
 jobs:
   build:
