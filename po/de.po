@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2021-10-19 10:45+0100\n"
-"PO-Revision-Date: 2021-10-12 21:04+0200\n"
+"PO-Revision-Date: 2021-10-20 10:34+0200\n"
 "Last-Translator: kbcb <gerritche@gmail.com>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -161,9 +161,8 @@ msgid "adu"
 msgstr "adu"
 
 #: alias/dlgalias.c:412 alias/dlgquery.c:615
-#, fuzzy
 msgid "Limit to addresses matching: "
-msgstr "Begrenze auf Nachrichten nach Muster: "
+msgstr "Beschränke auf Adressen nach Muster: "
 
 #: alias/dlgquery.c:104 index/dlg_index.c:110
 msgid "Mail"
@@ -3897,9 +3896,8 @@ msgstr "Kann Papierkorb nicht öffnen"
 
 #. L10N: Displayed if appending to $trash fails when syncing or closing a mailbox
 #: mx.c:586
-#, fuzzy
 msgid "Unable to append to trash folder"
-msgstr "Konnte Temporärdatei nicht öffnen"
+msgstr "Konnte nicht an Papierkorb anhängen"
 
 #: mx.c:646
 msgid "Mark all articles read?"
