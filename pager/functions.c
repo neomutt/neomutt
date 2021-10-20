@@ -1108,6 +1108,7 @@ static int op_recall_message(struct IndexSharedData *shared,
  */
 static int op_redraw(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
+  window_invalidate_all();
   mutt_window_reflow(NULL);
   clearok(stdscr, true);
   pager_queue_redraw(priv, MENU_REDRAW_FULL);

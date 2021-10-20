@@ -1915,6 +1915,7 @@ static int op_recall_message(struct IndexSharedData *shared,
  */
 static int op_redraw(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
+  window_invalidate_all();
   mutt_window_reflow(NULL);
   clearok(stdscr, true);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
