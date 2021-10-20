@@ -55,6 +55,7 @@
  * | #NT_COLOR             | ibar_color_observer()   |
  * | #NT_CONFIG            | ibar_config_observer()  |
  * | #NT_INDEX             | ibar_index_observer()   |
+ * | #NT_MAILBOX           | ibar_mailbox_observer() |
  * | #NT_MENU              | ibar_menu_observer()    |
  * | #NT_WINDOW            | ibar_window_observer()  |
  * | MuttWindow::recalc()  | ibar_recalc()           |
@@ -247,6 +248,21 @@ static int ibar_index_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * ibar_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t
+ */
+static int ibar_mailbox_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_MAILBOX) || !nc->global_data)
+    return -1;
+
+  struct MuttWindow *win_ibar = nc->global_data;
+  win_ibar->actions |= WA_RECALC;
+  mutt_debug(LL_DEBUG5, "mailbox done, request WA_RECALC\n");
+
+  return 0;
+}
+
+/**
  * ibar_menu_observer - Notification that a Menu has changed - Implements ::observer_t
  */
 static int ibar_menu_observer(struct NotifyCallback *nc)
@@ -287,6 +303,7 @@ static int ibar_window_observer(struct NotifyCallback *nc)
     notify_observer_remove(NeoMutt->notify, ibar_color_observer, win_ibar);
     notify_observer_remove(NeoMutt->notify, ibar_config_observer, win_ibar);
     notify_observer_remove(shared->notify, ibar_index_observer, win_ibar);
+    notify_observer_remove(NeoMutt->notify, ibar_mailbox_observer, win_ibar);
     notify_observer_remove(win_ibar->parent->notify, ibar_menu_observer, win_ibar);
     notify_observer_remove(win_ibar->notify, ibar_window_observer, win_ibar);
 
@@ -346,6 +363,7 @@ struct MuttWindow *ibar_new(struct MuttWindow *parent, struct IndexSharedData *s
   notify_observer_add(NeoMutt->notify, NT_COLOR, ibar_color_observer, win_ibar);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, ibar_config_observer, win_ibar);
   notify_observer_add(shared->notify, NT_INDEX, ibar_index_observer, win_ibar);
+  notify_observer_add(NeoMutt->notify, NT_MAILBOX, ibar_mailbox_observer, win_ibar);
   notify_observer_add(parent->notify, NT_MENU, ibar_menu_observer, win_ibar);
   notify_observer_add(win_ibar->notify, NT_WINDOW, ibar_window_observer, win_ibar);
 
