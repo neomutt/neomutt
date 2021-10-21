@@ -45,9 +45,9 @@ STORE_BACKEND(tokyocabinet)
 #undef STORE_BACKEND
 
 /**
- * store_ops - Backend implementations
+ * StoreOps - Backend implementations
  */
-static const struct StoreOps *store_ops[] = {
+static const struct StoreOps *StoreOps[] = {
 #ifdef HAVE_TC
   &store_tokyocabinet_ops,
 #endif
@@ -84,7 +84,7 @@ static const struct StoreOps *store_ops[] = {
 const char *store_backend_list(void)
 {
   char tmp[256] = { 0 };
-  const struct StoreOps **ops = store_ops;
+  const struct StoreOps **ops = StoreOps;
   size_t len = 0;
 
   for (; *ops; ops++)
@@ -106,7 +106,7 @@ const char *store_backend_list(void)
  */
 const struct StoreOps *store_get_backend_ops(const char *str)
 {
-  const struct StoreOps **ops = store_ops;
+  const struct StoreOps **ops = StoreOps;
 
   if (!str || (*str == '\0'))
   {

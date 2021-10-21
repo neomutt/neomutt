@@ -104,7 +104,7 @@ enum WindowType
 
 TAILQ_HEAD(MuttWindowList, MuttWindow);
 
-typedef uint8_t WindowActionFlags; ///< Actions waiting to be performed on a MuttWindow
+typedef uint8_t WindowActionFlags; ///< Flags for Actions waiting to be performed on a MuttWindow, e.g. #WA_REFLOW
 #define WA_NO_FLAGS        0       ///< No flags are set
 #define WA_REFLOW    (1 << 0)      ///< Reflow the Window and its children
 #define WA_RECALC    (1 << 1)      ///< Recalculate the contents of the Window
@@ -182,7 +182,7 @@ struct MuttWindow
   int (*repaint)(struct MuttWindow *win);
 };
 
-typedef uint8_t WindowNotifyFlags; ///< Changes to a MuttWindow
+typedef uint8_t WindowNotifyFlags; ///< Flags for Changes to a MuttWindow, e.g. #WN_TALLER
 #define WN_NO_FLAGS        0       ///< No flags are set
 #define WN_TALLER    (1 << 0)      ///< Window became taller
 #define WN_SHORTER   (1 << 1)      ///< Window became shorter

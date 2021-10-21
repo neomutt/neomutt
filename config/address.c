@@ -30,7 +30,7 @@
  * - Empty address is stored as `NULL`
  * - Validator is passed `struct Address *`, which may be `NULL`
  * - Data is freed when `ConfigSet` is freed
- * - Implementation: #cst_address
+ * - Implementation: #CstAddress
  */
 
 #include "config.h"
@@ -257,9 +257,9 @@ void address_free(struct Address **addr)
 }
 
 /**
- * cst_address - Config type representing an Email Address
+ * CstAddress - Config type representing an Email Address
  */
-const struct ConfigSetType cst_address = {
+const struct ConfigSetType CstAddress = {
   DT_ADDRESS,
   "address",
   address_string_set,

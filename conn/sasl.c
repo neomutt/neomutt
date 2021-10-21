@@ -97,9 +97,9 @@ struct SaslSockData
 };
 
 /**
- * sasl_authenticators - Authenticaion methods supported by Cyrus SASL
+ * SaslAuthenticators - Authenticaion methods supported by Cyrus SASL
  */
-static const char *const sasl_authenticators[] = {
+static const char *const SaslAuthenticators[] = {
   "ANONYMOUS",     "CRAM-MD5",       "DIGEST-MD5",    "EXTERNAL",
   "GS2-IAKERB",    "GS2-KRB5",       "GSS-SPNEGO",    "GSSAPI",
   "LOGIN",         "NTLM",           "OTP-MD4",       "OTP-MD5",
@@ -129,9 +129,9 @@ static sasl_secret_t *secret_ptr = NULL;
  */
 bool sasl_auth_validator(const char *authenticator)
 {
-  for (size_t i = 0; i < mutt_array_size(sasl_authenticators); i++)
+  for (size_t i = 0; i < mutt_array_size(SaslAuthenticators); i++)
   {
-    const char *auth = sasl_authenticators[i];
+    const char *auth = SaslAuthenticators[i];
     if (mutt_istr_equal(auth, authenticator))
       return true;
   }

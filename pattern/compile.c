@@ -869,7 +869,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
 {
   int regerr;
   regmatch_t pmatch[RANGE_RX_GROUPS];
-  struct RangeRegex *pspec = &range_regexes[kind];
+  struct RangeRegex *pspec = &RangeRegexes[kind];
 
   /* First time through, compile the big regex */
   if (!pspec->ready)

@@ -118,7 +118,7 @@ enum RangeSide
 
 #define MUTT_MAXRANGE -1
 
-extern struct RangeRegex range_regexes[];
+extern struct RangeRegex RangeRegexes[];
 extern const struct PatternFlags Flags[];
 
 const struct PatternFlags *lookup_op(int op);

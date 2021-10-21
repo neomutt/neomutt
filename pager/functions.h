@@ -33,9 +33,8 @@ struct PagerView;
 /**
  * @defgroup pager_function_api Pager Function API
  *
- * Perform a Pager Function
+ * Prototype for a Pager Function
  *
- * typedef pager_function_t - Perform an Index Function
  * @param shared Shared Index data
  * @param priv   Private Index data
  * @param op     Operation to perform, e.g. OP_MAIN_LIMIT

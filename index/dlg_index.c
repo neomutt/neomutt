@@ -891,11 +891,14 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
   size_t chunks = 0;
   size_t len = 0;
 
+  /**
+   * struct StatusSyntax - Colours of the status bar
+   */
   struct StatusSyntax
   {
-    int color;
-    int first;
-    int last;
+    int color; ///< Colour pair
+    int first; ///< First character of that colour
+    int last;  ///< Last character of that colour
   } *syntax = NULL;
 
   do

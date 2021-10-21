@@ -29,7 +29,7 @@
  * - Empty regular expression is stored as `NULL`
  * - Validator is passed `struct Regex`, which may be `NULL`
  * - Data is freed when `ConfigSet` is freed
- * - Implementation: #cst_regex
+ * - Implementation: #CstRegex
  */
 
 #include "config.h"
@@ -296,9 +296,9 @@ static int regex_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * cst_regex - Config type representing a regular expression
+ * CstRegex - Config type representing a regular expression
  */
-const struct ConfigSetType cst_regex = {
+const struct ConfigSetType CstRegex = {
   DT_REGEX,
   "regex",
   regex_string_set,

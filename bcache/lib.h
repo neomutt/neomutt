@@ -40,7 +40,7 @@ struct ConnAccount;
 struct BodyCache;
 
 /**
- * typedef bcache_list_t - Prototype for mutt_bcache_list() callback
+ * typedef bcache_list_t - Prototype for a mutt_bcache_list() callback function
  * @param id      Cache id
  * @param bcache  Body Cache from mutt_bcache_open()
  * @param data    Data to pass to the callback function

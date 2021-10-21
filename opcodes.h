@@ -334,6 +334,11 @@
   OPS_SMIME(_fmt) \
   OPS_CRYPT(_fmt) \
 
+/**
+ * enum MuttOps - All NeoMutt Opcodes
+ *
+ * Opcodes, e.g. OP_TOGGLE_NEW
+ */
 enum MuttOps {
 #define DEFINE_OPS(opcode, help_string) opcode,
   OPS(DEFINE_OPS)

@@ -29,7 +29,7 @@
  * - Empty string list is stored as `NULL`
  * - Validator is passed `struct Slist`, which may be `NULL`
  * - Data is freed when `ConfigSet` is freed
- * - Implementation: #cst_slist
+ * - Implementation: #CstSlist
  */
 
 #include "config.h"
@@ -299,9 +299,9 @@ static int slist_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * cst_slist - Config type representing a list of strings
+ * CstSlist - Config type representing a list of strings
  */
-const struct ConfigSetType cst_slist = {
+const struct ConfigSetType CstSlist = {
   DT_SLIST,
   "slist",
   slist_string_set,

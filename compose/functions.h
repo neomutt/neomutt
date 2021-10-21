@@ -29,9 +29,8 @@ struct ComposeSharedData;
 /**
  * @defgroup compose_function_api Compose Function API
  *
- * Perform a Compose Function
+ * Prototype for a Compose Function
  *
- * typedef compose_function_t - Perform an Index Function
  * @param shared Shared Compose data
  * @param op     Operation to perform, e.g. OP_COMPOSE_WRITE_MESSAGE
  * @retval enum #IndexRetval

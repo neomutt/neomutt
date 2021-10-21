@@ -50,9 +50,8 @@ enum LogLevel
 /**
  * @defgroup logging_api Logging API
  *
- * The Logging API
+ * Prototype for a Logging Function
  *
- * typedef log_dispatcher_t - Prototype for a logging function
  * @param stamp    Unix time (optional)
  * @param file     Source file
  * @param line     Source line

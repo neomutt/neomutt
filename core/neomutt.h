@@ -43,7 +43,7 @@ struct NeoMutt
 extern struct NeoMutt *NeoMutt;
 
 /**
- * NotifyGlobal - Events not associated with an object
+ * enum NotifyGlobal - Events not associated with an object
  */
 enum NotifyGlobal
 {

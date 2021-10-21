@@ -46,7 +46,7 @@ void test_neomutt_new(void)
 
   {
     struct ConfigSet *cs = cs_new(30);
-    cs_register_type(cs, &cst_number);
+    cs_register_type(cs, &CstNumber);
     TEST_CHECK(cs_register_variables(cs, Vars, 0));
 
     NeoMutt = neomutt_new(cs);

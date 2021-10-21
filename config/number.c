@@ -27,7 +27,7 @@
  *
  * - Backed by `short`
  * - Validator is passed `short`
- * - Implementation: #cst_number
+ * - Implementation: #CstNumber
  */
 
 #include "config.h"
@@ -252,9 +252,9 @@ static int number_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * cst_number - Config type representing a number
+ * CstNumber - Config type representing a number
  */
-const struct ConfigSetType cst_number = {
+const struct ConfigSetType CstNumber = {
   DT_NUMBER,
   "number",
   number_string_set,

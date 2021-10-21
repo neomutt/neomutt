@@ -58,11 +58,11 @@
 #endif
 
 /**
- * range_regexes - Set of Regexes for various range types
+ * RangeRegexes - Set of Regexes for various range types
  *
  * This array, will also contain the compiled regexes.
  */
-struct RangeRegex range_regexes[] = {
+struct RangeRegex RangeRegexes[] = {
   // clang-format off
   [RANGE_K_REL]  = { RANGE_REL_RX,  1, 3, 0, { 0 } },
   [RANGE_K_ABS]  = { RANGE_ABS_RX,  1, 3, 0, { 0 } },

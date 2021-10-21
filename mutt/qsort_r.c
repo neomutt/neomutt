@@ -31,6 +31,14 @@
 #include <stdlib.h>
 #include "qsort_r.h"
 
+/**
+ * typedef qsort_compar_t - Prototype for generic comparison function, compatible with qsort()
+ * @param a First item
+ * @param b Second item
+ * @retval <0 a precedes b
+ * @retval  0 a and b are identical
+ * @retval >0 b precedes a
+ */
 typedef int (*qsort_compar_t)(const void *a, const void *b);
 
 #if !defined(HAVE_QSORT_S) && !defined(HAVE_QSORT_R)

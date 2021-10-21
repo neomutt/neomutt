@@ -91,19 +91,19 @@ static struct ConfigSet *create_sample_data(void)
   if (!cs)
     return NULL;
 
-  cs_register_type(cs, &cst_address);
-  cs_register_type(cs, &cst_bool);
-  cs_register_type(cs, &cst_enum);
-  cs_register_type(cs, &cst_long);
-  cs_register_type(cs, &cst_mbtable);
-  cs_register_type(cs, &cst_number);
-  cs_register_type(cs, &cst_path);
-  cs_register_type(cs, &cst_quad);
-  cs_register_type(cs, &cst_path);
-  cs_register_type(cs, &cst_regex);
-  cs_register_type(cs, &cst_slist);
-  cs_register_type(cs, &cst_sort);
-  cs_register_type(cs, &cst_string);
+  cs_register_type(cs, &CstAddress);
+  cs_register_type(cs, &CstBool);
+  cs_register_type(cs, &CstEnum);
+  cs_register_type(cs, &CstLong);
+  cs_register_type(cs, &CstMbtable);
+  cs_register_type(cs, &CstNumber);
+  cs_register_type(cs, &CstPath);
+  cs_register_type(cs, &CstQuad);
+  cs_register_type(cs, &CstPath);
+  cs_register_type(cs, &CstRegex);
+  cs_register_type(cs, &CstSlist);
+  cs_register_type(cs, &CstSort);
+  cs_register_type(cs, &CstString);
 
   if (!cs_register_variables(cs, Vars, 0))
     return NULL;

@@ -41,8 +41,8 @@
 #include "options.h"
 
 #define CONFIG_INIT_TYPE(CS, NAME)                                             \
-  extern const struct ConfigSetType cst_##NAME;                                \
-  cs_register_type(CS, &cst_##NAME)
+  extern const struct ConfigSetType Cst##NAME;                                 \
+  cs_register_type(CS, &Cst##NAME)
 
 #define CONFIG_INIT_VARS(CS, NAME)                                             \
   bool config_init_##NAME(struct ConfigSet *cs);                               \
@@ -704,18 +704,18 @@ static bool config_init_main(struct ConfigSet *cs)
  */
 static void init_types(struct ConfigSet *cs)
 {
-  CONFIG_INIT_TYPE(cs, address);
-  CONFIG_INIT_TYPE(cs, bool);
-  CONFIG_INIT_TYPE(cs, enum);
-  CONFIG_INIT_TYPE(cs, long);
-  CONFIG_INIT_TYPE(cs, mbtable);
-  CONFIG_INIT_TYPE(cs, number);
-  CONFIG_INIT_TYPE(cs, path);
-  CONFIG_INIT_TYPE(cs, quad);
-  CONFIG_INIT_TYPE(cs, regex);
-  CONFIG_INIT_TYPE(cs, slist);
-  CONFIG_INIT_TYPE(cs, sort);
-  CONFIG_INIT_TYPE(cs, string);
+  CONFIG_INIT_TYPE(cs, Address);
+  CONFIG_INIT_TYPE(cs, Bool);
+  CONFIG_INIT_TYPE(cs, Enum);
+  CONFIG_INIT_TYPE(cs, Long);
+  CONFIG_INIT_TYPE(cs, Mbtable);
+  CONFIG_INIT_TYPE(cs, Number);
+  CONFIG_INIT_TYPE(cs, Path);
+  CONFIG_INIT_TYPE(cs, Quad);
+  CONFIG_INIT_TYPE(cs, Regex);
+  CONFIG_INIT_TYPE(cs, Slist);
+  CONFIG_INIT_TYPE(cs, Sort);
+  CONFIG_INIT_TYPE(cs, String);
 }
 
 /**

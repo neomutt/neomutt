@@ -28,7 +28,7 @@
  * - Backed by `bool`
  * - Validator is passed `bool`
  * - Valid user entry: #BoolValues
- * - Implementation: #cst_bool
+ * - Implementation: #CstBool
  */
 
 #include "config.h"
@@ -219,9 +219,9 @@ int bool_str_toggle(struct ConfigSubset *sub, const char *name, struct Buffer *e
 }
 
 /**
- * cst_bool - Config type representing an boolean
+ * CstBool - Config type representing an boolean
  */
-const struct ConfigSetType cst_bool = {
+const struct ConfigSetType CstBool = {
   DT_BOOL,
   "boolean",
   bool_string_set,

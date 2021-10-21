@@ -63,7 +63,7 @@ extern const char AddressSpecials[];
 #define address_error(num) AddressErrors[num]
 
 /**
- * typedef addr_predicate_t - Test an Address for some condition
+ * typedef addr_predicate_t - Prototype for an Address Test function
  * @param a Address to test
  * @retval true Address matches the test
  */

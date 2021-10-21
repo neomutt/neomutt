@@ -40,9 +40,8 @@ typedef uint8_t MuttFormatFlags;         ///< Flags for mutt_expando_format(), e
 /**
  * @defgroup expando_api Expando API
  *
- * Callback functions for mutt_expando_format().
+ * Prototype for a mutt_expando_format() Callback Function
  *
- * typedef format_t - Prototype for a mutt_expando_format() callback function
  * @param[out] buf      Buffer in which to save string
  * @param[in]  buflen   Buffer length
  * @param[in]  col      Starting column

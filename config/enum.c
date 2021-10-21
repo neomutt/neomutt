@@ -27,7 +27,7 @@
  *
  * - Backed by `unsigned char`
  * - Validator is passed `unsigned char`
- * - Implementation: #cst_enum
+ * - Implementation: #CstEnum
  */
 
 #include "config.h"
@@ -185,9 +185,9 @@ static int enum_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * cst_enum - Config type representing an enumeration
+ * CstEnum - Config type representing an enumeration
  */
-const struct ConfigSetType cst_enum = {
+const struct ConfigSetType CstEnum = {
   DT_ENUM,
   "enum",
   enum_string_set,

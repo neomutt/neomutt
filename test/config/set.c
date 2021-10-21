@@ -88,7 +88,7 @@ void dummy_destroy(const struct ConfigSet *cs, void *var, const struct ConfigDef
 
 bool degenerate_tests(struct ConfigSet *cs)
 {
-  const struct ConfigSetType cst_dummy = {
+  const struct ConfigSetType CstDummy = {
     DT_NUMBER, "dummy", NULL, NULL, NULL, NULL, NULL, NULL,
   };
 
@@ -97,7 +97,7 @@ bool degenerate_tests(struct ConfigSet *cs)
   cs_free(NULL);
   TEST_CHECK_(1, "cs_free(NULL)");
 
-  if (!TEST_CHECK(cs_register_type(NULL, &cst_dummy) == false))
+  if (!TEST_CHECK(cs_register_type(NULL, &CstDummy) == false))
     return false;
   if (!TEST_CHECK(cs_register_type(cs, NULL) == false))
     return false;
@@ -255,11 +255,11 @@ void test_config_set(void)
 
   NeoMutt = neomutt_new(cs);
 
-  const struct ConfigSetType cst_dummy = {
+  const struct ConfigSetType CstDummy = {
     DT_STRING, "dummy", NULL, NULL, NULL, NULL, NULL, NULL,
   };
 
-  if (TEST_CHECK(!cs_register_type(cs, &cst_dummy)))
+  if (TEST_CHECK(!cs_register_type(cs, &CstDummy)))
   {
     TEST_MSG("Expected error\n");
   }
@@ -269,7 +269,7 @@ void test_config_set(void)
     return;
   }
 
-  const struct ConfigSetType cst_dummy2 = {
+  const struct ConfigSetType CstDummy2 = {
     25,
     "dummy2",
     dummy_string_set,
@@ -282,7 +282,7 @@ void test_config_set(void)
     dummy_destroy,
   };
 
-  if (TEST_CHECK(!cs_register_type(cs, &cst_dummy2)))
+  if (TEST_CHECK(!cs_register_type(cs, &CstDummy2)))
   {
     TEST_MSG("Expected error\n");
   }
@@ -292,8 +292,8 @@ void test_config_set(void)
     return;
   }
 
-  cs_register_type(cs, &cst_bool);
-  cs_register_type(cs, &cst_bool); /* second one should fail */
+  cs_register_type(cs, &CstBool);
+  cs_register_type(cs, &CstBool); /* second one should fail */
 
   if (TEST_CHECK(!cs_register_variables(cs, Vars, 0)))
   {

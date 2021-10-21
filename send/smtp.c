@@ -725,9 +725,9 @@ error:
 }
 
 /**
- * smtp_authenticators - Accepted authentication methods
+ * SmtpAuthenticators - Accepted authentication methods
  */
-static const struct SmtpAuth smtp_authenticators[] = {
+static const struct SmtpAuth SmtpAuthenticators[] = {
   // clang-format off
   { smtp_auth_oauth, "oauthbearer" },
   { smtp_auth_xoauth2, "xoauth2" },
@@ -745,13 +745,13 @@ static const struct SmtpAuth smtp_authenticators[] = {
  * @retval true Argument is a valid auth method
  *
  * Validate whether an input string is an accepted smtp authentication method as
- * defined by #smtp_authenticators.
+ * defined by #SmtpAuthenticators.
  */
 bool smtp_auth_is_valid(const char *authenticator)
 {
-  for (size_t i = 0; i < mutt_array_size(smtp_authenticators); i++)
+  for (size_t i = 0; i < mutt_array_size(SmtpAuthenticators); i++)
   {
-    const struct SmtpAuth *auth = &smtp_authenticators[i];
+    const struct SmtpAuth *auth = &SmtpAuthenticators[i];
     if (auth->method && mutt_istr_equal(auth->method, authenticator))
       return true;
   }
@@ -781,9 +781,9 @@ static int smtp_authenticate(struct SmtpAccountData *adata)
     {
       mutt_debug(LL_DEBUG2, "Trying method %s\n", np->data);
 
-      for (size_t i = 0; i < mutt_array_size(smtp_authenticators); i++)
+      for (size_t i = 0; i < mutt_array_size(SmtpAuthenticators); i++)
       {
-        const struct SmtpAuth *auth = &smtp_authenticators[i];
+        const struct SmtpAuth *auth = &SmtpAuthenticators[i];
         if (!auth->method || mutt_istr_equal(auth->method, np->data))
         {
           r = auth->authenticate(adata, np->data);

@@ -28,7 +28,7 @@
  * - Backed by `unsigned char`
  * - Validator is passed `unsigned char`
  * - Valid user entry: #QuadValues
- * - Implementation: #cst_quad
+ * - Implementation: #CstQuad
  */
 
 #include "config.h"
@@ -239,9 +239,9 @@ int quad_str_toggle(struct ConfigSubset *sub, const char *name, struct Buffer *e
 }
 
 /**
- * cst_quad - Config type representing a quad-option
+ * CstQuad - Config type representing a quad-option
  */
-const struct ConfigSetType cst_quad = {
+const struct ConfigSetType CstQuad = {
   DT_QUAD,
   "quad",
   quad_string_set,

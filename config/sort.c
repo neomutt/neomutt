@@ -27,7 +27,7 @@
  *
  * - Backed by `short`
  * - Validator is passed `short`
- * - Implementation: #cst_sort
+ * - Implementation: #CstSort
  */
 
 #include "config.h"
@@ -208,9 +208,9 @@ static int sort_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * cst_sort - Config type representing a sort option
+ * CstSort - Config type representing a sort option
  */
-const struct ConfigSetType cst_sort = {
+const struct ConfigSetType CstSort = {
   DT_SORT,
   "sort",
   sort_string_set,

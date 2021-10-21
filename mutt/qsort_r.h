@@ -25,6 +25,15 @@
 
 #include <stddef.h>
 
+/**
+ * typedef qsort_r_compar_t - Prototype for generic comparison function, compatible with qsort_r()
+ * @param a   First item
+ * @param b   Second item
+ * @param arg Private data
+ * @retval <0 a precedes b
+ * @retval  0 a and b are identical
+ * @retval >0 b precedes a
+ */
 typedef int (*qsort_r_compar_t)(const void *a, const void *b, void *arg);
 
 void mutt_qsort_r(void *base, size_t nmemb, size_t size, qsort_r_compar_t compar, void *arg);

@@ -67,10 +67,13 @@ typedef uint8_t MuttThreadFlags;         ///< Flags, e.g. #MUTT_THREAD_COLLAPSE
 #define MUTT_THREAD_NEXT_UNREAD (1 << 3) ///< Find the next unread email
 #define MUTT_THREAD_FLAGGED     (1 << 4) ///< Count flagged emails in a thread
 
+/**
+ * enum MessageInThread - Flags for mutt_messages_in_thread()
+ */
 enum MessageInThread
 {
-  MIT_NUM_MESSAGES, // How many messages are in the thread
-  MIT_POSITION,     // Our position in the thread
+  MIT_NUM_MESSAGES, ///< How many messages are in the thread
+  MIT_POSITION,     ///< Our position in the thread
 };
 
 /**

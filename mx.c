@@ -102,9 +102,9 @@ struct EnumDef MboxTypeDef = {
 };
 
 /**
- * mx_ops - All the Mailbox backends
+ * MxOps - All the Mailbox backends
  */
-const struct MxOps *mx_ops[] = {
+const struct MxOps *MxOps[] = {
 /* These mailboxes can be recognised by their Url scheme */
 #ifdef USE_IMAP
   &MxImapOps,
@@ -140,7 +140,7 @@ const struct MxOps *mx_ops[] = {
  */
 const struct MxOps *mx_get_ops(enum MailboxType type)
 {
-  for (const struct MxOps **ops = mx_ops; *ops; ops++)
+  for (const struct MxOps **ops = MxOps; *ops; ops++)
     if ((*ops)->type == type)
       return *ops;
 
@@ -1325,7 +1325,7 @@ enum MailboxType mx_path_probe(const char *path)
   enum MailboxType rc = MUTT_UNKNOWN;
 
   // First, search the non-local Mailbox types (is_local == false)
-  for (const struct MxOps **ops = mx_ops; *ops; ops++)
+  for (const struct MxOps **ops = MxOps; *ops; ops++)
   {
     if ((*ops)->is_local)
       continue;
@@ -1348,7 +1348,7 @@ enum MailboxType mx_path_probe(const char *path)
   }
 
   // Next, search the local Mailbox types (is_local == true)
-  for (const struct MxOps **ops = mx_ops; *ops; ops++)
+  for (const struct MxOps **ops = MxOps; *ops; ops++)
   {
     if (!(*ops)->is_local)
       continue;

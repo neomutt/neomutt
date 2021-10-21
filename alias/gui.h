@@ -30,7 +30,7 @@ struct Alias;
 struct MuttWindow;
 
 /**
- * AliasView - GUI data wrapping an Alias
+ * struct AliasView - GUI data wrapping an Alias
  */
 struct AliasView
 {
@@ -43,11 +43,10 @@ struct AliasView
   bool is_visible  : 1; ///< Is visible?
   struct Alias *alias;  ///< Alias
 };
-
 ARRAY_HEAD(AliasViewArray, struct AliasView);
 
 /**
- * AliasMenuData - AliasView array wrapper with Pattern information - @extends Menu
+ * struct AliasMenuData - AliasView array wrapper with Pattern information - @extends Menu
  */
 struct AliasMenuData
 {

@@ -29,7 +29,7 @@
  * - Empty multibyte character table is stored as `NULL`
  * - Validator is passed `struct MbTable`, which may be `NULL`
  * - Data is freed when `ConfigSet` is freed
- * - Implementation: #cst_mbtable
+ * - Implementation: #CstMbtable
  */
 
 #include "config.h"
@@ -290,9 +290,9 @@ void mbtable_free(struct MbTable **table)
 }
 
 /**
- * cst_mbtable - Config type representing a multi-byte table
+ * CstMbtable - Config type representing a multi-byte table
  */
-const struct ConfigSetType cst_mbtable = {
+const struct ConfigSetType CstMbtable = {
   DT_MBTABLE,
   "mbtable",
   mbtable_string_set,

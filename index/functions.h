@@ -44,7 +44,7 @@ enum IndexRetval
 /**
  * @defgroup index_function_api Index Function API
  *
- * Perform an Index Function
+ * Prototype for an Index Function
  *
  * @param shared Shared Index data
  * @param priv   Private Index data

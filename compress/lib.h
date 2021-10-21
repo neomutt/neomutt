@@ -55,8 +55,6 @@
  * @defgroup compress_api Compression API
  *
  * The Compression API
- *
- * struct ComprOps - Header Cache Compression API
  */
 struct ComprOps
 {

@@ -68,7 +68,7 @@
 #define TXT_ENRICHED 3
 
 /**
- * typedef handler_t - Manage a PGP or S/MIME encrypted MIME part
+ * typedef handler_t - Prototype for a function to handle MIME parts
  * @param b Body of the email
  * @param s State of text being processed
  * @retval 0 Success

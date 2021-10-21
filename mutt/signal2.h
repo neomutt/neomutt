@@ -26,7 +26,7 @@
 #include <stdbool.h>
 
 /**
- * typedef sig_handler_t - Handler for signals
+ * typedef sig_handler_t - Prototype for a Signal Handler function
  * @param sig Signal number, e.g. SIGINT
  */
 typedef void (*sig_handler_t)(int sig);

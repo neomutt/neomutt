@@ -1074,7 +1074,7 @@ bool slist_test_separator(struct ConfigDef vars[], struct Buffer *err)
 
   mutt_buffer_reset(err);
 
-  cs_register_type(cs, &cst_slist);
+  cs_register_type(cs, &CstSlist);
   if (!TEST_CHECK(cs_register_variables(cs, vars, 0)))
     return false;
 

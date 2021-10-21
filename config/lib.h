@@ -70,7 +70,7 @@
 /**
  * @defgroup cfg_module_api Config Module API
  *
- * Prototype for a config definition function
+ * Prototype for a Config Definition Function
  *
  * @param cs Config items
  * @retval true All the config variables were registered

@@ -29,7 +29,7 @@
  * - Empty string is stored as `NULL`
  * - Validator is passed `char *`, which may be `NULL`
  * - Data is freed when `ConfigSet` is freed
- * - Implementation: #cst_string
+ * - Implementation: #CstString
  */
 
 #include "config.h"
@@ -253,9 +253,9 @@ static int string_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * cst_string - Config type representing a string
+ * CstString - Config type representing a string
  */
-const struct ConfigSetType cst_string = {
+const struct ConfigSetType CstString = {
   DT_STRING,
   "string",
   string_string_set,

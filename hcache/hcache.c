@@ -538,7 +538,7 @@ void *mutt_hcache_fetch_raw(struct HeaderCache *hc, const char *key,
 }
 
 /**
- * mutt_hcache_free - Multiplexor for StoreOps::free
+ * mutt_hcache_free_raw - Multiplexor for StoreOps::free
  */
 void mutt_hcache_free_raw(struct HeaderCache *hc, void **data)
 {

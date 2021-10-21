@@ -27,7 +27,7 @@
  *
  * - Backed by `long`
  * - Validator is passed `long`
- * - Implementation: #cst_long
+ * - Implementation: #CstLong
  */
 
 #include "config.h"
@@ -232,9 +232,9 @@ static int long_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * cst_long - Config type representing a long
+ * CstLong - Config type representing a long
  */
-const struct ConfigSetType cst_long = {
+const struct ConfigSetType CstLong = {
   DT_LONG,
   "long",
   long_string_set,

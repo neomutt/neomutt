@@ -29,7 +29,7 @@
  * - Empty path is stored as `NULL`
  * - Validator is passed `char *`, which may be `NULL`
  * - Data is freed when `ConfigSet` is freed
- * - Implementation: #cst_path
+ * - Implementation: #CstPath
  */
 
 #include "config.h"
@@ -242,9 +242,9 @@ static int path_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * cst_path - Config type representing a path
+ * CstPath - Config type representing a path
  */
-const struct ConfigSetType cst_path = {
+const struct ConfigSetType CstPath = {
   DT_PATH,
   "path",
   path_string_set,

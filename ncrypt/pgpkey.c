@@ -71,7 +71,7 @@ struct PgpCache
 static struct PgpCache *id_defaults = NULL;
 
 // clang-format off
-typedef uint8_t PgpKeyValidFlags; ///< Pgp Key valid fields, e.g. #PGP_KV_VALID
+typedef uint8_t PgpKeyValidFlags; ///< Flags for valid Pgp Key fields, e.g. #PGP_KV_VALID
 #define PGP_KV_NO_FLAGS       0   ///< No flags are set
 #define PGP_KV_VALID    (1 << 0)  ///< PGP Key ID is valid
 #define PGP_KV_ADDR     (1 << 1)  ///< PGP Key address is valid

@@ -382,9 +382,9 @@ static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *
 }
 
 /**
- * pop_authenticators - Accepted authentication methods
+ * PopAuthenticators - Accepted authentication methods
  */
-static const struct PopAuth pop_authenticators[] = {
+static const struct PopAuth PopAuthenticators[] = {
   // clang-format off
   { pop_auth_oauth, "oauthbearer" },
 #ifdef USE_SASL
@@ -402,13 +402,13 @@ static const struct PopAuth pop_authenticators[] = {
  * @retval true Argument is a valid auth method
  *
  * Validate whether an input string is an accepted pop authentication method as
- * defined by #pop_authenticators.
+ * defined by #PopAuthenticators.
  */
 bool pop_auth_is_valid(const char *authenticator)
 {
-  for (size_t i = 0; i < mutt_array_size(pop_authenticators); i++)
+  for (size_t i = 0; i < mutt_array_size(PopAuthenticators); i++)
   {
-    const struct PopAuth *auth = &pop_authenticators[i];
+    const struct PopAuth *auth = &PopAuthenticators[i];
     if (auth->method && mutt_istr_equal(auth->method, authenticator))
       return true;
   }
@@ -448,7 +448,7 @@ int pop_authenticate(struct PopAccountData *adata)
     STAILQ_FOREACH(np, &c_pop_authenticators->head, entries)
     {
       mutt_debug(LL_DEBUG2, "Trying method %s\n", np->data);
-      authenticator = pop_authenticators;
+      authenticator = PopAuthenticators;
 
       while (authenticator->authenticate)
       {
@@ -485,7 +485,7 @@ int pop_authenticate(struct PopAccountData *adata)
   {
     /* Fall back to default: any authenticator */
     mutt_debug(LL_DEBUG2, "Using any available method\n");
-    authenticator = pop_authenticators;
+    authenticator = PopAuthenticators;
 
     while (authenticator->authenticate)
     {

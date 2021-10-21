@@ -56,9 +56,9 @@
 lua_State *LuaState = NULL;
 
 /**
- * lua_commands - List of NeoMutt commands to register
+ * LuaCommands - List of NeoMutt commands to register
  */
-static const struct Command lua_commands[] = {
+static const struct Command LuaCommands[] = {
   // clang-format off
   { "lua",        mutt_lua_parse,       0 },
   { "lua-source", mutt_lua_source_file, 0 },
@@ -379,7 +379,7 @@ static void lua_expose_command(void *p, const struct Command *cmd)
 }
 
 /**
- * luaMuttDecl - List of Lua commands to register
+ * LuaMuttCommands - List of Lua commands to register
  *
  * In NeoMutt, run:
  *
@@ -387,7 +387,7 @@ static void lua_expose_command(void *p, const struct Command *cmd)
  *
  * and it will call lua_mutt_message()
  */
-static const luaL_Reg luaMuttDecl[] = {
+static const luaL_Reg LuaMuttCommands[] = {
   // clang-format off
   { "set",     lua_mutt_set },
   { "get",     lua_mutt_get },
@@ -408,7 +408,7 @@ static const luaL_Reg luaMuttDecl[] = {
 static int luaopen_mutt_decl(lua_State *l)
 {
   mutt_debug(LL_DEBUG2, " * luaopen_mutt()\n");
-  luaL_newlib(l, luaMuttDecl);
+  luaL_newlib(l, LuaMuttCommands);
   int lib_idx = lua_gettop(l);
 
   // clang-format off
@@ -468,7 +468,7 @@ static bool lua_init(lua_State **l)
  */
 void mutt_lua_init(void)
 {
-  COMMANDS_REGISTER(lua_commands);
+  COMMANDS_REGISTER(LuaCommands);
 }
 
 /**
