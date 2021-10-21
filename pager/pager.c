@@ -102,7 +102,7 @@ static int config_pager_index_lines(struct MuttWindow *win)
     win_index->size = MUTT_WIN_SIZE_FIXED;
 
     panel_index->size = MUTT_WIN_SIZE_MINIMISE;
-    panel_index->state.visible = (c_pager_index_lines != 0);
+    panel_index->state.visible = true;
   }
   else
   {
