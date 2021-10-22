@@ -45,15 +45,17 @@ sorted through them, fixed them up and documented them.
 | New Mail                 | Execute a command upon the receipt of new mail.
 | NNTP                     | Talk to a Usenet news server
 | Notmuch                  | Email search engine
+| Pager Read Delay         | Delay when the pager marks a previewed message as read
 | Progress Bar             | Show a visual progress bar on slow operations
 | Quasi-Delete             | Mark emails that should be hidden, but not deleted
-| Reply With X-Orig-To     | Direct reply to email using X-Original-To header
+| Reply With X-Original-To | Direct reply to email using X-Original-To header
 | Sensible Browser         | Make the file browser behave
 | Sidebar                  | Panel containing list of Mailboxes
 | Skip Quoted              | Leave some context visible
 | Status Color             | Custom rules for theming the status bar
 | TLS-SNI                  | Negotiate with a server for a TLS/SSL certificate
 | Trash Folder             | Automatically move deleted emails to a trash bin
+| Use Threads              | Improve the experience with viewing threads in the index
 
 ## Contributed Scripts and Config
 

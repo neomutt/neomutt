@@ -1,3 +1,30 @@
+2021-10-22  Richard Russon  <rich@flatcap.org>
+* Bug Fixes
+  - fix new mail notifications
+  - fix pattern compilation error for ~( !~>(~P) )
+  - fix menu display on window resize
+  - Stop batch mode emails with no argument or recipients
+  - Add sanitize call in print mailcap function
+  - fix `hdr_order` to use the longest match
+  - fix (un)setenv to not return an error with unset env vars
+  - fix Imap sync when closing a mailbox
+  - fix segfault on OpenBSD current
+  - sidebar: restore `sidebar_spoolfile` colour
+  - fix assert when displaying a file from the browser
+  - fix exec command in compose
+  - fix `check_stats` for Notmuch mailboxes
+  - Fallback: Open Notmuch database without config
+  - fix gui hook commands on startup
+* Changed Config
+  - Re-enable `$ssl_force_tls`
+* Translations
+  - 100% Serbian
+  - 100% Lithuanian
+  - 100% German
+* Build
+  - Remove Slang from the build
+  - Warn about deprecated configure options
+
 2021-10-15  Richard Russon  <rich@flatcap.org>
 * Security
   - Fix CVE-2021-32055
