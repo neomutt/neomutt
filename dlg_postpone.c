@@ -111,7 +111,7 @@ static void post_make_entry(struct Menu *menu, char *buf, size_t buflen, int lin
 }
 
 /**
- * postponed_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * postponed_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  *
  * The Address Book Window is affected by changes to `$sort_postponed`.
  */
@@ -133,7 +133,7 @@ static int postponed_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * postponed_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * postponed_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
  *

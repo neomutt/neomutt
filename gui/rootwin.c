@@ -105,7 +105,7 @@
 struct MuttWindow *RootWindow = NULL; ///< Parent of all Windows
 
 /**
- * rootwin_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * rootwin_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  *
  * The Root Window is affected by changes to `$status_on_top`.
  */
@@ -143,7 +143,7 @@ static int rootwin_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * rootwin_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * rootwin_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
  *

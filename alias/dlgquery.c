@@ -347,7 +347,7 @@ static int query_run(char *s, bool verbose, struct AliasList *al,
 }
 
 /**
- * query_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * query_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
 int query_window_observer(struct NotifyCallback *nc)
 {

@@ -46,7 +46,10 @@ struct NotifyCallback
 };
 
 /**
- * typedef observer_t - Prototype for a notification callback function
+ * @defgroup observer_api Observer API
+ *
+ * Prototype for a notification callback function
+ *
  * @param[in] nc Callback data
  * @retval  0 Success
  * @retval -1 Error

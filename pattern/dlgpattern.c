@@ -286,7 +286,7 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
 }
 
 /**
- * pattern_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * pattern_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  *
  * The Address Book Window is affected by changes to `$sort_pattern`.
  */
@@ -308,7 +308,7 @@ static int pattern_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * pattern_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * pattern_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
  *

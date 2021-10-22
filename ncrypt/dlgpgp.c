@@ -525,7 +525,7 @@ static void pgp_key_table_free(struct Menu *menu, void **ptr)
 }
 
 /**
- * pgp_key_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * pgp_key_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int pgp_key_config_observer(struct NotifyCallback *nc)
 {
@@ -548,7 +548,7 @@ static int pgp_key_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * pgp_key_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * pgp_key_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
  *

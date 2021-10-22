@@ -72,7 +72,7 @@
 struct Email;
 
 /**
- * dopager_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * dopager_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int dopager_config_observer(struct NotifyCallback *nc)
 {
@@ -90,7 +90,7 @@ static int dopager_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * dopager_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * dopager_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int dopager_window_observer(struct NotifyCallback *nc)
 {

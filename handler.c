@@ -68,7 +68,10 @@
 #define TXT_ENRICHED 3
 
 /**
- * typedef handler_t - Prototype for a function to handle MIME parts
+ * @defgroup handler_api Mime Handler API
+ *
+ * Prototype for a function to handle MIME parts
+ *
  * @param b Body of the email
  * @param s State of text being processed
  * @retval 0 Success
@@ -516,7 +519,7 @@ static bool is_autoview(struct Body *b)
 }
 
 /**
- * autoview_handler - Handler for autoviewable attachments - Implements ::handler_t
+ * autoview_handler - Handler for autoviewable attachments - Implements ::handler_t - @ingroup handler_api
  */
 static int autoview_handler(struct Body *a, struct State *s)
 {
@@ -664,7 +667,7 @@ cleanup:
 }
 
 /**
- * text_plain_handler - Handler for plain text - Implements ::handler_t
+ * text_plain_handler - Handler for plain text - Implements ::handler_t - @ingroup handler_api
  * @retval 0 Always
  *
  * When generating format=flowed ($text_flowed is set) from format=fixed, strip
@@ -696,7 +699,7 @@ static int text_plain_handler(struct Body *b, struct State *s)
 }
 
 /**
- * message_handler - Handler for message/rfc822 body parts - Implements ::handler_t
+ * message_handler - Handler for message/rfc822 body parts - Implements ::handler_t - @ingroup handler_api
  */
 static int message_handler(struct Body *a, struct State *s)
 {
@@ -748,7 +751,7 @@ static int message_handler(struct Body *a, struct State *s)
 }
 
 /**
- * external_body_handler - Handler for external-body emails - Implements ::handler_t
+ * external_body_handler - Handler for external-body emails - Implements ::handler_t - @ingroup handler_api
  */
 static int external_body_handler(struct Body *b, struct State *s)
 {
@@ -920,7 +923,7 @@ static int external_body_handler(struct Body *b, struct State *s)
 }
 
 /**
- * alternative_handler - Handler for multipart alternative emails - Implements ::handler_t
+ * alternative_handler - Handler for multipart alternative emails - Implements ::handler_t - @ingroup handler_api
  */
 static int alternative_handler(struct Body *a, struct State *s)
 {
@@ -1106,7 +1109,7 @@ static int alternative_handler(struct Body *a, struct State *s)
 }
 
 /**
- * multilingual_handler - Handler for multi-lingual emails - Implements ::handler_t
+ * multilingual_handler - Handler for multi-lingual emails - Implements ::handler_t - @ingroup handler_api
  * @retval 0 Always
  */
 static int multilingual_handler(struct Body *a, struct State *s)
@@ -1205,7 +1208,7 @@ static int multilingual_handler(struct Body *a, struct State *s)
 }
 
 /**
- * multipart_handler - Handler for multipart emails - Implements ::handler_t
+ * multipart_handler - Handler for multipart emails - Implements ::handler_t - @ingroup handler_api
  */
 static int multipart_handler(struct Body *a, struct State *s)
 {
@@ -1429,7 +1432,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
 }
 
 /**
- * valid_pgp_encrypted_handler - Handler for valid pgp-encrypted emails - Implements ::handler_t
+ * valid_pgp_encrypted_handler - Handler for valid pgp-encrypted emails - Implements ::handler_t - @ingroup handler_api
  */
 static int valid_pgp_encrypted_handler(struct Body *b, struct State *s)
 {
@@ -1458,7 +1461,7 @@ static int valid_pgp_encrypted_handler(struct Body *b, struct State *s)
 }
 
 /**
- * malformed_pgp_encrypted_handler - Handler for invalid pgp-encrypted emails - Implements ::handler_t
+ * malformed_pgp_encrypted_handler - Handler for invalid pgp-encrypted emails - Implements ::handler_t - @ingroup handler_api
  */
 static int malformed_pgp_encrypted_handler(struct Body *b, struct State *s)
 {

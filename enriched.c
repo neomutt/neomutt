@@ -453,7 +453,7 @@ static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *stte)
 }
 
 /**
- * text_enriched_handler - Handler for enriched text - Implements ::handler_t
+ * text_enriched_handler - Handler for enriched text - Implements ::handler_t - @ingroup handler_api
  * @retval 0 Always
  */
 int text_enriched_handler(struct Body *a, struct State *s)

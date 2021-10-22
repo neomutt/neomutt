@@ -60,7 +60,7 @@ struct ListHead InlineExclude = STAILQ_HEAD_INITIALIZER(InlineExclude); ///< Lis
 static struct Notify *AttachmentsNotify = NULL;
 
 /**
- * attachmatch_free - Free an AttachMatch - Implements ::list_free_t
+ * attachmatch_free - Free an AttachMatch - Implements ::list_free_t - @ingroup list_free_api
  * @param ptr AttachMatch to free
  *
  * @note We don't free minor because it is either a pointer into major,

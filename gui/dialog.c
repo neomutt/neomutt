@@ -172,7 +172,7 @@ void dialog_pop(void)
 }
 
 /**
- * alldialogs_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * alldialogs_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
  *

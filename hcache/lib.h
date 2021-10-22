@@ -102,7 +102,10 @@ struct HCacheEntry
 };
 
 /**
- * typedef hcache_namer_t - Prototype for function to compose hcache file names
+ * @defgroup hcache_namer_api Header Cache Naming API
+ *
+ * Prototype for function to compose hcache file names
+ *
  * @param path    Path of message
  * @param dest    Buffer for filename
  */

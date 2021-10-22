@@ -74,7 +74,7 @@ struct Group *group_new(const char *pat)
 }
 
 /**
- * group_hash_free - Free our hash table data - Implements ::hash_hdata_free_t
+ * group_hash_free - Free our hash table data - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
  */
 void group_hash_free(int type, void *obj, intptr_t data)
 {

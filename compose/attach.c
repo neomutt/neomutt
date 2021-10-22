@@ -175,7 +175,7 @@ int attach_repaint(struct MuttWindow *win)
 }
 
 /**
- * attach_compose_observer - Notification that the Compose data has changed - Implements ::observer_t
+ * attach_compose_observer - Notification that the Compose data has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int attach_compose_observer(struct NotifyCallback *nc)
 {
@@ -194,7 +194,7 @@ static int attach_compose_observer(struct NotifyCallback *nc)
 }
 
 /**
- * attach_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * attach_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 int attach_config_observer(struct NotifyCallback *nc)
 {
@@ -213,7 +213,7 @@ int attach_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * attach_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * attach_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int attach_window_observer(struct NotifyCallback *nc)
 {

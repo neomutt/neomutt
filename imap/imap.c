@@ -899,7 +899,7 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
 }
 
 /**
- * compare_uid - Compare two Emails by UID - Implements ::sort_t
+ * compare_uid - Compare two Emails by UID - Implements ::sort_t - @ingroup sort_api
  */
 static int compare_uid(const void *a, const void *b)
 {

@@ -56,7 +56,7 @@ void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
 }
 
 /**
- * main_hist_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * main_hist_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 int main_hist_observer(struct NotifyCallback *nc)
 {

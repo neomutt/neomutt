@@ -75,7 +75,10 @@ struct MuttFileIter
 };
 
 /**
- * typedef mutt_file_map_t - Prototype for a text handler function for mutt_file_map_lines()
+ * @defgroup mutt_file_map_api File Mapping API
+ *
+ * Prototype for a text handler function for mutt_file_map_lines()
+ *
  * @param line      Line of text read
  * @param line_num  Line number
  * @param user_data Data to pass to the callback function

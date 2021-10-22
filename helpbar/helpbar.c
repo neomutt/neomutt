@@ -197,7 +197,7 @@ static int helpbar_repaint(struct MuttWindow *win)
 }
 
 /**
- * helpbar_binding_observer - Notification that a Key Binding has changed - Implements ::observer_t
+ * helpbar_binding_observer - Notification that a Key Binding has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the key bindings, from either of
  * the `bind` or `macro` commands.
@@ -225,7 +225,7 @@ static int helpbar_binding_observer(struct NotifyCallback *nc)
 }
 
 /**
- * helpbar_color_observer - Notification that a Color has changed - Implements ::observer_t
+ * helpbar_color_observer - Notification that a Color has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the colour settings, from the
  * `color` or `uncolor`, `mono` or `unmono` commands.
@@ -249,7 +249,7 @@ static int helpbar_color_observer(struct NotifyCallback *nc)
 }
 
 /**
- * helpbar_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * helpbar_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the config by the `set`, `unset`,
  * `reset`, `toggle`, etc commands.
@@ -272,7 +272,7 @@ static int helpbar_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * helpbar_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * helpbar_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
  *

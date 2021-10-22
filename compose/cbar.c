@@ -201,7 +201,7 @@ static int cbar_repaint(struct MuttWindow *win)
 }
 
 /**
- * cbar_color_observer - Notification that a Color has changed - Implements ::observer_t
+ * cbar_color_observer - Notification that a Color has changed - Implements ::observer_t - @ingroup observer_api
  */
 int cbar_color_observer(struct NotifyCallback *nc)
 {
@@ -222,7 +222,7 @@ int cbar_color_observer(struct NotifyCallback *nc)
 }
 
 /**
- * cbar_compose_observer - Notification that the Compose data has changed - Implements ::observer_t
+ * cbar_compose_observer - Notification that the Compose data has changed - Implements ::observer_t - @ingroup observer_api
  */
 int cbar_compose_observer(struct NotifyCallback *nc)
 {
@@ -237,7 +237,7 @@ int cbar_compose_observer(struct NotifyCallback *nc)
 }
 
 /**
- * cbar_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * cbar_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 int cbar_config_observer(struct NotifyCallback *nc)
 {
@@ -256,7 +256,7 @@ int cbar_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * cbar_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * cbar_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
 int cbar_window_observer(struct NotifyCallback *nc)
 {

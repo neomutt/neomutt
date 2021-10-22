@@ -553,7 +553,7 @@ cleanup:
 }
 
 /**
- * mh_cmp_path - Compare two Maildirs by path - Implements ::sort_t
+ * mh_cmp_path - Compare two Maildirs by path - Implements ::sort_t - @ingroup sort_api
  */
 int mh_cmp_path(const void *a, const void *b)
 {

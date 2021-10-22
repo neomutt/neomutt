@@ -699,7 +699,7 @@ static int env_repaint(struct MuttWindow *win)
 }
 
 /**
- * env_color_observer - Notification that a Color has changed - Implements ::observer_t
+ * env_color_observer - Notification that a Color has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int env_color_observer(struct NotifyCallback *nc)
 {
@@ -733,7 +733,7 @@ static int env_color_observer(struct NotifyCallback *nc)
 }
 
 /**
- * env_compose_observer - Notification that the Compose data has changed - Implements ::observer_t
+ * env_compose_observer - Notification that the Compose data has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int env_compose_observer(struct NotifyCallback *nc)
 {
@@ -752,7 +752,7 @@ static int env_compose_observer(struct NotifyCallback *nc)
 }
 
 /**
- * env_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * env_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int env_config_observer(struct NotifyCallback *nc)
 {
@@ -797,7 +797,7 @@ static int env_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * env_header_observer - Notification that a User Header has changed - Implements ::observer_t
+ * env_header_observer - Notification that a User Header has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int env_header_observer(struct NotifyCallback *nc)
 {
@@ -836,7 +836,7 @@ static int env_header_observer(struct NotifyCallback *nc)
 }
 
 /**
- * env_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * env_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int env_window_observer(struct NotifyCallback *nc)
 {

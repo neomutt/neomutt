@@ -51,7 +51,10 @@
 #define CONTINUATION_BYTE(ch) (((ch) &0xc0) == 0x80)
 
 /**
- * typedef encoder_t - Prototype for an encoding function
+ * @defgroup encoder_api Mime Encoder API
+ *
+ * Prototype for an encoding function
+ *
  * @param str    String to encode
  * @param buf    Buffer for result
  * @param buflen Length of buffer
@@ -61,7 +64,7 @@
 typedef size_t (*encoder_t)(char *str, const char *buf, size_t buflen, const char *tocode);
 
 /**
- * b_encoder - Base64 Encode a string - Implements ::encoder_t
+ * b_encoder - Base64 Encode a string - Implements ::encoder_t - @ingroup encoder_api
  */
 static size_t b_encoder(char *str, const char *buf, size_t buflen, const char *tocode)
 {
@@ -94,7 +97,7 @@ static size_t b_encoder(char *str, const char *buf, size_t buflen, const char *t
 }
 
 /**
- * q_encoder - Quoted-printable Encode a string - Implements ::encoder_t
+ * q_encoder - Quoted-printable Encode a string - Implements ::encoder_t - @ingroup encoder_api
  */
 static size_t q_encoder(char *str, const char *buf, size_t buflen, const char *tocode)
 {

@@ -316,7 +316,7 @@ int level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 }
 
 /**
- * main_log_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * main_log_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 int main_log_observer(struct NotifyCallback *nc)
 {

@@ -39,7 +39,7 @@
 static bool sb_sort_reverse = false;
 
 /**
- * sb_sort_count - Sort Sidebar entries by count - Implements ::sort_t
+ * sb_sort_count - Sort Sidebar entries by count - Implements ::sort_t - @ingroup sort_api
  */
 static int sb_sort_count(const void *a, const void *b)
 {
@@ -60,7 +60,7 @@ static int sb_sort_count(const void *a, const void *b)
 }
 
 /**
- * sb_sort_desc - Sort Sidebar entries by description - Implements ::sort_t
+ * sb_sort_desc - Sort Sidebar entries by description - Implements ::sort_t - @ingroup sort_api
  */
 static int sb_sort_desc(const void *a, const void *b)
 {
@@ -77,7 +77,7 @@ static int sb_sort_desc(const void *a, const void *b)
 }
 
 /**
- * sb_sort_flagged - Sort Sidebar entries by flagged - Implements ::sort_t
+ * sb_sort_flagged - Sort Sidebar entries by flagged - Implements ::sort_t - @ingroup sort_api
  */
 static int sb_sort_flagged(const void *a, const void *b)
 {
@@ -98,7 +98,7 @@ static int sb_sort_flagged(const void *a, const void *b)
 }
 
 /**
- * sb_sort_path - Sort Sidebar entries by path - Implements ::sort_t
+ * sb_sort_path - Sort Sidebar entries by path - Implements ::sort_t - @ingroup sort_api
  */
 static int sb_sort_path(const void *a, const void *b)
 {
@@ -118,7 +118,7 @@ static int sb_sort_path(const void *a, const void *b)
 }
 
 /**
- * sb_sort_unread - Sort Sidebar entries by unread - Implements ::sort_t
+ * sb_sort_unread - Sort Sidebar entries by unread - Implements ::sort_t - @ingroup sort_api
  */
 static int sb_sort_unread(const void *a, const void *b)
 {
@@ -139,7 +139,7 @@ static int sb_sort_unread(const void *a, const void *b)
 }
 
 /**
- * sb_sort_order - Sort Sidebar entries by order of creation - Implements ::sort_t
+ * sb_sort_order - Sort Sidebar entries by order of creation - Implements ::sort_t - @ingroup sort_api
  */
 static int sb_sort_order(const void *a, const void *b)
 {
@@ -152,7 +152,7 @@ static int sb_sort_order(const void *a, const void *b)
 }
 
 /**
- * sb_sort_unsorted - Sort Sidebar entries into their original order - Implements ::sort_t
+ * sb_sort_unsorted - Sort Sidebar entries into their original order - Implements ::sort_t - @ingroup sort_api
  */
 static int sb_sort_unsorted(const void *a, const void *b)
 {

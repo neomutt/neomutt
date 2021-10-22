@@ -491,7 +491,7 @@ void maildir_update_mtime(struct Mailbox *m)
 }
 
 /**
- * maildir_cmp_inode - Compare two Maildirs by inode number - Implements ::sort_t
+ * maildir_cmp_inode - Compare two Maildirs by inode number - Implements ::sort_t - @ingroup sort_api
  */
 static int maildir_cmp_inode(const void *a, const void *b)
 {

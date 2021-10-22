@@ -685,7 +685,7 @@ int nntp_active_save_cache(struct NntpAccountData *adata)
 
 #ifdef USE_HCACHE
 /**
- * nntp_hcache_namer - Compose hcache file names - Implements ::hcache_namer_t
+ * nntp_hcache_namer - Compose hcache file names - Implements ::hcache_namer_t - @ingroup hcache_namer_api
  */
 static void nntp_hcache_namer(const char *path, struct Buffer *dest)
 {
@@ -777,7 +777,7 @@ void nntp_hcache_update(struct NntpMboxData *mdata, struct HeaderCache *hc)
 #endif
 
 /**
- * nntp_bcache_delete - Remove bcache file - Implements ::bcache_list_t
+ * nntp_bcache_delete - Remove bcache file - Implements ::bcache_list_t - @ingroup bcache_list_api
  * @retval 0 Always
  */
 static int nntp_bcache_delete(const char *id, struct BodyCache *bcache, void *data)

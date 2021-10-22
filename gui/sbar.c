@@ -111,7 +111,7 @@ static int sbar_repaint(struct MuttWindow *win)
 }
 
 /**
- * sbar_color_observer - Notification that a Color has changed - Implements ::observer_t
+ * sbar_color_observer - Notification that a Color has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the colour settings, from the
  * `color` or `uncolor`, `mono` or `unmono` commands.
@@ -136,7 +136,7 @@ static int sbar_color_observer(struct NotifyCallback *nc)
 }
 
 /**
- * sbar_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * sbar_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
  *

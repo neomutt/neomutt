@@ -129,7 +129,7 @@ static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
 }
 
 /**
- * add_query_msgid - Parse a Message-Id and add it to a list - Implements ::mutt_file_map_t
+ * add_query_msgid - Parse a Message-Id and add it to a list - Implements ::mutt_file_map_t - @ingroup mutt_file_map_api
  * @retval true Always
  */
 static bool add_query_msgid(char *line, int line_num, void *user_data)

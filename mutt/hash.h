@@ -49,18 +49,24 @@ struct HashElem
 };
 
 /**
- * typedef hash_hdata_free_t - Prototype for Hash Destructor callback function
+ * @defgroup hash_hdata_free_api Hash Data Free API
+ *
+ * Prototype for Hash Destructor callback function
+ *
  * @param type Hash Type
  * @param obj  Object to free
  * @param data Data associated with the Hash
-   *
-   * **Contract**
-   * - @a obj is not NULL
+ *
+ * **Contract**
+ * - @a obj is not NULL
  */
 typedef void (*hash_hdata_free_t)(int type, void *obj, intptr_t data);
 
 /**
- * typedef hash_gen_hash_t - Prototype for a Key hashing function
+ * @defgroup hash_gen_hash_api Hash Generator API
+ *
+ * Prototype for a Key hashing function
+ *
  * @param key       Key to hash
  * @param num_elems Number of elements in the Hash Table
  *
@@ -70,7 +76,10 @@ typedef void (*hash_hdata_free_t)(int type, void *obj, intptr_t data);
 typedef size_t (*hash_gen_hash_t)(union HashKey key, size_t num_elems);
 
 /**
- * typedef hash_cmp_key_t - Prototype for a function to compare two Hash keys
+ * @defgroup hash_cmp_key_api Hash Table Compare API
+ *
+ * Prototype for a function to compare two Hash keys
+ *
  * @param a First key to compare
  * @param b Second key to compare
  * @retval -1 a precedes b

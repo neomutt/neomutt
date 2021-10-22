@@ -69,7 +69,7 @@
 struct IndexSharedData;
 
 /**
- * ipanel_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * ipanel_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int ipanel_config_observer(struct NotifyCallback *nc)
 {
@@ -89,7 +89,7 @@ static int ipanel_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * ipanel_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * ipanel_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int ipanel_window_observer(struct NotifyCallback *nc)
 {

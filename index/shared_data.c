@@ -37,7 +37,7 @@
 #include "mutt_globals.h"
 
 /**
- * index_shared_context_observer - Notification that the Context has changed - Implements ::observer_t
+ * index_shared_context_observer - Notification that the Context has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int index_shared_context_observer(struct NotifyCallback *nc)
 {
@@ -62,7 +62,7 @@ static int index_shared_context_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_shared_account_observer - Notification that an Account has changed - Implements ::observer_t
+ * index_shared_account_observer - Notification that an Account has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int index_shared_account_observer(struct NotifyCallback *nc)
 {
@@ -87,7 +87,7 @@ static int index_shared_account_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_shared_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t
+ * index_shared_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int index_shared_mailbox_observer(struct NotifyCallback *nc)
 {
@@ -112,7 +112,7 @@ static int index_shared_mailbox_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_shared_email_observer - Notification that an Email has changed - Implements ::observer_t
+ * index_shared_email_observer - Notification that an Email has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int index_shared_email_observer(struct NotifyCallback *nc)
 {

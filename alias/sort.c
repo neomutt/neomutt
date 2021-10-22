@@ -41,7 +41,7 @@
 static short sort_alias = 0;
 
 /**
- * alias_sort_name - Compare two Aliases by their short names - Implements ::sort_t
+ * alias_sort_name - Compare two Aliases by their short names - Implements ::sort_t - @ingroup sort_api
  *
  * @note Non-visible Aliases are sorted to the end
  */
@@ -62,7 +62,7 @@ static int alias_sort_name(const void *a, const void *b)
 }
 
 /**
- * alias_sort_address - Compare two Aliases by their Addresses - Implements ::sort_t
+ * alias_sort_address - Compare two Aliases by their Addresses - Implements ::sort_t - @ingroup sort_api
  *
  * @note Non-visible Aliases are sorted to the end
  */
@@ -110,7 +110,7 @@ static int alias_sort_address(const void *a, const void *b)
 }
 
 /**
- * alias_sort_unsort - Compare two Aliases by their original configuration position - Implements ::sort_t
+ * alias_sort_unsort - Compare two Aliases by their original configuration position - Implements ::sort_t - @ingroup sort_api
  *
  * @note Non-visible Aliases are sorted to the end
  */

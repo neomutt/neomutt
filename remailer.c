@@ -593,7 +593,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
 }
 
 /**
- * remailer_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * remailer_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int remailer_config_observer(struct NotifyCallback *nc)
 {
@@ -611,7 +611,7 @@ static int remailer_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * remailer_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * remailer_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int remailer_window_observer(struct NotifyCallback *nc)
 {

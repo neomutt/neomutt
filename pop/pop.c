@@ -89,7 +89,7 @@ static const char *cache_id(const char *id)
 }
 
 /**
- * fetch_message - Write line to file - Implements ::pop_fetch_t
+ * fetch_message - Write line to file - Implements ::pop_fetch_t - @ingroup pop_fetch_api
  * @param line String to write
  * @param data FILE pointer to write to
  * @retval  0 Success
@@ -191,7 +191,7 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
 }
 
 /**
- * fetch_uidl - Parse UIDL - Implements ::pop_fetch_t
+ * fetch_uidl - Parse UIDL - Implements ::pop_fetch_t - @ingroup pop_fetch_api
  * @param line String to parse
  * @param data Mailbox
  * @retval  0 Success
@@ -248,7 +248,7 @@ static int fetch_uidl(const char *line, void *data)
 }
 
 /**
- * msg_cache_check - Check the Body Cache for an ID - Implements ::bcache_list_t
+ * msg_cache_check - Check the Body Cache for an ID - Implements ::bcache_list_t - @ingroup bcache_list_api
  */
 static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 {
@@ -281,7 +281,7 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 
 #ifdef USE_HCACHE
 /**
- * pop_hcache_namer - Create a header cache filename for a POP mailbox - Implements ::hcache_namer_t
+ * pop_hcache_namer - Create a header cache filename for a POP mailbox - Implements ::hcache_namer_t - @ingroup hcache_namer_api
  */
 static void pop_hcache_namer(const char *path, struct Buffer *dest)
 {

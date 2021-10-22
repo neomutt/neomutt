@@ -287,7 +287,7 @@ static void toggle_prefer_encrypt(struct AccountEntry *entry)
 }
 
 /**
- * autocrypt_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * autocrypt_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  *
  * The Address Book Window is affected by changes to `$sort_autocrypt`.
  */
@@ -309,7 +309,7 @@ static int autocrypt_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * autocrypt_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * autocrypt_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
  *

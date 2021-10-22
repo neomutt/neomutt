@@ -233,9 +233,7 @@ int crypt_pgp_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
 }
 
 /**
- * crypt_pgp_application_handler - Wrapper for CryptModuleSpecs::application_handler()
- *
- * Implements ::handler_t
+ * crypt_pgp_application_handler - Wrapper for CryptModuleSpecs::application_handler() - Implements ::handler_t - @ingroup handler_api
  */
 int crypt_pgp_application_handler(struct Body *b, struct State *s)
 {
@@ -246,9 +244,7 @@ int crypt_pgp_application_handler(struct Body *b, struct State *s)
 }
 
 /**
- * crypt_pgp_encrypted_handler - Wrapper for CryptModuleSpecs::encrypted_handler()
- *
- * Implements ::handler_t
+ * crypt_pgp_encrypted_handler - Wrapper for CryptModuleSpecs::encrypted_handler() - Implements ::handler_t - @ingroup handler_api
  */
 int crypt_pgp_encrypted_handler(struct Body *b, struct State *s)
 {
@@ -444,9 +440,7 @@ int crypt_smime_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
 }
 
 /**
- * crypt_smime_application_handler - Wrapper for CryptModuleSpecs::application_handler()
- *
- * Implements ::handler_t
+ * crypt_smime_application_handler - Wrapper for CryptModuleSpecs::application_handler() - Implements ::handler_t - @ingroup handler_api
  */
 int crypt_smime_application_handler(struct Body *b, struct State *s)
 {

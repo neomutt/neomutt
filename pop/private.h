@@ -94,7 +94,10 @@ int pop_authenticate(struct PopAccountData *adata);
 void pop_apop_timestamp(struct PopAccountData *adata, char *buf);
 
 /**
- * typedef pop_fetch_t - Prototype for a function to handle POP server responses
+ * @defgroup pop_fetch_api POP Response Parser API
+ *
+ * Prototype for a function to handle POP server responses
+ *
  * @param str  String to parse
  * @param data Private data passed to pop_fetch_data()
  * @retval  0 Success

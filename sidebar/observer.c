@@ -178,7 +178,7 @@ static void sb_init_data(struct MuttWindow *win)
 }
 
 /**
- * sb_account_observer - Notification that an Account has changed - Implements ::observer_t
+ * sb_account_observer - Notification that an Account has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int sb_account_observer(struct NotifyCallback *nc)
 {
@@ -201,7 +201,7 @@ static int sb_account_observer(struct NotifyCallback *nc)
 }
 
 /**
- * sb_color_observer - Notification that a Color has changed - Implements ::observer_t
+ * sb_color_observer - Notification that a Color has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int sb_color_observer(struct NotifyCallback *nc)
 {
@@ -237,7 +237,7 @@ static int sb_color_observer(struct NotifyCallback *nc)
 }
 
 /**
- * sb_command_observer - Notification that a Command has occurred - Implements ::observer_t
+ * sb_command_observer - Notification that a Command has occurred - Implements ::observer_t - @ingroup observer_api
  */
 static int sb_command_observer(struct NotifyCallback *nc)
 {
@@ -256,7 +256,7 @@ static int sb_command_observer(struct NotifyCallback *nc)
 }
 
 /**
- * sb_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * sb_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int sb_config_observer(struct NotifyCallback *nc)
 {
@@ -344,7 +344,7 @@ static int sb_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * sb_index_observer - Notification that the Index has changed - Implements ::observer_t
+ * sb_index_observer - Notification that the Index has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int sb_index_observer(struct NotifyCallback *nc)
 {
@@ -372,7 +372,7 @@ static int sb_index_observer(struct NotifyCallback *nc)
 }
 
 /**
- * sb_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t
+ * sb_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int sb_mailbox_observer(struct NotifyCallback *nc)
 {
@@ -403,7 +403,7 @@ static int sb_mailbox_observer(struct NotifyCallback *nc)
 }
 
 /**
- * sb_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * sb_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int sb_window_observer(struct NotifyCallback *nc)
 {
@@ -465,7 +465,7 @@ void sb_win_remove_observers(struct MuttWindow *win)
 }
 
 /**
- * sb_insertion_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * sb_insertion_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
 int sb_insertion_window_observer(struct NotifyCallback *nc)
 {

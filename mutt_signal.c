@@ -45,7 +45,7 @@
 static int IsEndwin = 0;
 
 /**
- * curses_signal_handler - Catch signals and relay the info to the main program - Implements ::sig_handler_t
+ * curses_signal_handler - Catch signals and relay the info to the main program - Implements ::sig_handler_t - @ingroup sig_handler_api
  * @param sig Signal number, e.g. SIGINT
  */
 static void curses_signal_handler(int sig)
@@ -88,7 +88,7 @@ static void curses_signal_handler(int sig)
 }
 
 /**
- * curses_exit_handler - Notify the user and shutdown gracefully - Implements ::sig_handler_t
+ * curses_exit_handler - Notify the user and shutdown gracefully - Implements ::sig_handler_t - @ingroup sig_handler_api
  * @param sig Signal number, e.g. SIGTERM
  */
 static void curses_exit_handler(int sig)
@@ -100,7 +100,7 @@ static void curses_exit_handler(int sig)
 }
 
 /**
- * curses_segv_handler - Catch a segfault and print a backtrace - Implements ::sig_handler_t
+ * curses_segv_handler - Catch a segfault and print a backtrace - Implements ::sig_handler_t - @ingroup sig_handler_api
  * @param sig Signal number, e.g. SIGSEGV
  */
 static void curses_segv_handler(int sig)

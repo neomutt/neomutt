@@ -139,7 +139,7 @@ void mutt_commands_init(void)
 }
 
 /**
- * commands_cmp - Compare two commands by name - Implements ::sort_t
+ * commands_cmp - Compare two commands by name - Implements ::sort_t - @ingroup sort_api
  */
 int commands_cmp(const void *a, const void *b)
 {

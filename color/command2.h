@@ -30,7 +30,10 @@
 struct Buffer;
 
 /**
- * typedef parser_callback_t - Prototype for a function to parse color config
+ * @defgroup parser_callback_api Colour Parsing API
+ *
+ * Prototype for a function to parse color config
+ *
  * @param[in]  buf   Temporary Buffer space
  * @param[in]  s     Buffer containing string to be parsed
  * @param[out] fg    Foreground colour (set to -1)

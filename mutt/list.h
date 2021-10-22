@@ -39,7 +39,10 @@ struct ListNode
 STAILQ_HEAD(ListHead, ListNode);
 
 /**
- * typedef list_free_t - Prototype for a function to free List data
+ * @defgroup list_free_api List Data Free API
+ *
+ * Prototype for a function to free List data
+ *
  * @param[out] ptr Data to free
  */
 typedef void (*list_free_t)(void **ptr);

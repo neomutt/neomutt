@@ -142,7 +142,7 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
 }
 
 /**
- * attach_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * attach_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  *
  * The Address Book Window is affected by changes to `$sort_attach`.
  */
@@ -444,7 +444,7 @@ static int attach_tag(struct Menu *menu, int sel, int act)
 }
 
 /**
- * attach_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * attach_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
  *

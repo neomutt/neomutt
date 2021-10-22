@@ -34,7 +34,10 @@ struct Email;
 struct ThreadsContext;
 
 /**
- * typedef sort_t - Prototype for generic comparison function, compatible with qsort()
+ * @defgroup sort_api Sorting API
+ *
+ * Prototype for generic comparison function, compatible with qsort()
+ *
  * @param a First item
  * @param b Second item
  * @retval <0 a precedes b
@@ -44,7 +47,10 @@ struct ThreadsContext;
 typedef int (*sort_t)(const void *a, const void *b);
 
 /**
- * typedef sort_mail_t - Prototype for an email comparison function
+ * @defgroup sort_mail_api Mail Sorting API
+ *
+ * Prototype for an email comparison function
+ *
  * @param a       First item
  * @param b       Second item
  * @param reverse true if this is a reverse sort (smaller b precedes a)

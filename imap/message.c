@@ -162,7 +162,7 @@ static int msg_cache_commit(struct Mailbox *m, struct Email *e)
 }
 
 /**
- * msg_cache_clean_cb - Delete an entry from the message cache - Implements ::bcache_list_t
+ * msg_cache_clean_cb - Delete an entry from the message cache - Implements ::bcache_list_t - @ingroup bcache_list_api
  * @retval 0 Always
  */
 static int msg_cache_clean_cb(const char *id, struct BodyCache *bcache, void *data)

@@ -282,7 +282,7 @@ static void imap_msn_index_to_uid_seqset(struct Buffer *buf, struct ImapMboxData
 }
 
 /**
- * imap_hcache_namer - Generate a filename for the header cache - Implements ::hcache_namer_t
+ * imap_hcache_namer - Generate a filename for the header cache - Implements ::hcache_namer_t - @ingroup hcache_namer_api
  */
 static void imap_hcache_namer(const char *path, struct Buffer *dest)
 {

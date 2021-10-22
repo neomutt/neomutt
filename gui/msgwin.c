@@ -133,7 +133,7 @@ static int msgwin_repaint(struct MuttWindow *win)
 }
 
 /**
- * msgwin_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * msgwin_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
  *

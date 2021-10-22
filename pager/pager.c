@@ -119,7 +119,7 @@ static int config_pager_index_lines(struct MuttWindow *win)
 }
 
 /**
- * pager_color_observer - Notification that a Color has changed - Implements ::observer_t
+ * pager_color_observer - Notification that a Color has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int pager_color_observer(struct NotifyCallback *nc)
 {
@@ -131,7 +131,7 @@ static int pager_color_observer(struct NotifyCallback *nc)
 }
 
 /**
- * pager_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * pager_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int pager_config_observer(struct NotifyCallback *nc)
 {
@@ -151,7 +151,7 @@ static int pager_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * pager_index_observer - Notification that the Index has changed - Implements ::observer_t
+ * pager_index_observer - Notification that the Index has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int pager_index_observer(struct NotifyCallback *nc)
 {
@@ -188,7 +188,7 @@ static int pager_index_observer(struct NotifyCallback *nc)
 }
 
 /**
- * pager_pager_observer - Notification that the Pager has changed - Implements ::observer_t
+ * pager_pager_observer - Notification that the Pager has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int pager_pager_observer(struct NotifyCallback *nc)
 {
@@ -200,7 +200,7 @@ static int pager_pager_observer(struct NotifyCallback *nc)
 }
 
 /**
- * pager_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * pager_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int pager_window_observer(struct NotifyCallback *nc)
 {

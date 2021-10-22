@@ -1252,7 +1252,7 @@ static void gpgme_key_table_free(struct Menu *menu, void **ptr)
 }
 
 /**
- * gpgme_key_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * gpgme_key_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int gpgme_key_config_observer(struct NotifyCallback *nc)
 {
@@ -1275,7 +1275,7 @@ static int gpgme_key_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * gpgme_key_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * gpgme_key_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
  *

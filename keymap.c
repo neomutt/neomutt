@@ -858,7 +858,7 @@ void mutt_init_abort_key(void)
 }
 
 /**
- * main_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * main_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 int main_config_observer(struct NotifyCallback *nc)
 {

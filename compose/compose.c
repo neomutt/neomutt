@@ -223,7 +223,7 @@ static void init_header_padding(void)
 }
 
 /**
- * compose_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * compose_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int compose_config_observer(struct NotifyCallback *nc)
 {
@@ -254,7 +254,7 @@ static int compose_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * compose_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * compose_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int compose_window_observer(struct NotifyCallback *nc)
 {

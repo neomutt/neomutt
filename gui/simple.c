@@ -72,7 +72,7 @@
 #include "menu/lib.h"
 
 /**
- * simple_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * simple_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  *
  * The Simple Dialog is affected by changes to `$status_on_top`.
  */
@@ -92,7 +92,7 @@ static int simple_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * simple_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * simple_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
  *

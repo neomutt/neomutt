@@ -308,7 +308,7 @@ static void update_tables(struct Context *ctx)
 }
 
 /**
- * ctx_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t
+ * ctx_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t - @ingroup observer_api
  */
 int ctx_mailbox_observer(struct NotifyCallback *nc)
 {

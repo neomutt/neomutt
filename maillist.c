@@ -37,7 +37,7 @@
 #include "sort.h"
 
 /**
- * mutt_is_mail_list - Is this the email address of a mailing list? - Implements ::addr_predicate_t
+ * mutt_is_mail_list - Is this the email address of a mailing list? - Implements ::addr_predicate_t - @ingroup addr_predicate_api
  * @param addr Address to test
  * @retval true It's a mailing list
  */
@@ -49,7 +49,7 @@ bool mutt_is_mail_list(const struct Address *addr)
 }
 
 /**
- * mutt_is_subscribed_list - Is this the email address of a user-subscribed mailing list? - Implements ::addr_predicate_t
+ * mutt_is_subscribed_list - Is this the email address of a user-subscribed mailing list? - Implements ::addr_predicate_t - @ingroup addr_predicate_api
  * @param addr Address to test
  * @retval true It's a subscribed mailing list
  */

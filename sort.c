@@ -76,7 +76,7 @@ static int compare_email_shim(const void *a, const void *b, void *arg)
 }
 
 /**
- * compare_score - Compare two emails using their scores - Implements ::sort_mail_t
+ * compare_score - Compare two emails using their scores - Implements ::sort_mail_t - @ingroup sort_mail_api
  */
 static int compare_score(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -85,7 +85,7 @@ static int compare_score(const struct Email *a, const struct Email *b, bool reve
 }
 
 /**
- * compare_size - Compare the size of two emails - Implements ::sort_mail_t
+ * compare_size - Compare the size of two emails - Implements ::sort_mail_t - @ingroup sort_mail_api
  */
 static int compare_size(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -94,7 +94,7 @@ static int compare_size(const struct Email *a, const struct Email *b, bool rever
 }
 
 /**
- * compare_date_sent - Compare the sent date of two emails - Implements ::sort_mail_t
+ * compare_date_sent - Compare the sent date of two emails - Implements ::sort_mail_t - @ingroup sort_mail_api
  */
 static int compare_date_sent(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -103,7 +103,7 @@ static int compare_date_sent(const struct Email *a, const struct Email *b, bool 
 }
 
 /**
- * compare_subject - Compare the subject of two emails - Implements ::sort_mail_t
+ * compare_subject - Compare the subject of two emails - Implements ::sort_mail_t - @ingroup sort_mail_api
  */
 static int compare_subject(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -152,7 +152,7 @@ const char *mutt_get_name(const struct Address *a)
 }
 
 /**
- * compare_to - Compare the 'to' fields of two emails - Implements ::sort_mail_t
+ * compare_to - Compare the 'to' fields of two emails - Implements ::sort_mail_t - @ingroup sort_mail_api
  */
 static int compare_to(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -165,7 +165,7 @@ static int compare_to(const struct Email *a, const struct Email *b, bool reverse
 }
 
 /**
- * compare_from - Compare the 'from' fields of two emails - Implements ::sort_mail_t
+ * compare_from - Compare the 'from' fields of two emails - Implements ::sort_mail_t - @ingroup sort_mail_api
  */
 static int compare_from(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -178,7 +178,7 @@ static int compare_from(const struct Email *a, const struct Email *b, bool rever
 }
 
 /**
- * compare_date_received - Compare the date received of two emails - Implements ::sort_mail_t
+ * compare_date_received - Compare the date received of two emails - Implements ::sort_mail_t - @ingroup sort_mail_api
  */
 static int compare_date_received(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -187,7 +187,7 @@ static int compare_date_received(const struct Email *a, const struct Email *b, b
 }
 
 /**
- * compare_order - Restore the 'unsorted' order of emails - Implements ::sort_mail_t
+ * compare_order - Restore the 'unsorted' order of emails - Implements ::sort_mail_t - @ingroup sort_mail_api
  */
 static int compare_order(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -196,7 +196,7 @@ static int compare_order(const struct Email *a, const struct Email *b, bool reve
 }
 
 /**
- * compare_spam - Compare the spam values of two emails - Implements ::sort_mail_t
+ * compare_spam - Compare the spam values of two emails - Implements ::sort_mail_t - @ingroup sort_mail_api
  */
 static int compare_spam(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -245,7 +245,7 @@ static int compare_spam(const struct Email *a, const struct Email *b, bool rever
 }
 
 /**
- * compare_label - Compare the labels of two emails - Implements ::sort_mail_t
+ * compare_label - Compare the labels of two emails - Implements ::sort_mail_t - @ingroup sort_mail_api
  */
 static int compare_label(const struct Email *a, const struct Email *b, bool reverse)
 {

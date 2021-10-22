@@ -190,7 +190,7 @@ static int alias_tag(struct Menu *menu, int sel, int act)
 }
 
 /**
- * alias_alias_observer - Notification that an Alias has changed - Implements ::observer_t
+ * alias_alias_observer - Notification that an Alias has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int alias_alias_observer(struct NotifyCallback *nc)
 {
@@ -231,7 +231,7 @@ static int alias_alias_observer(struct NotifyCallback *nc)
 }
 
 /**
- * alias_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * alias_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
  *

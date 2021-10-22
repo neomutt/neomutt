@@ -70,7 +70,7 @@
 struct IndexSharedData;
 
 /**
- * ppanel_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * ppanel_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int ppanel_config_observer(struct NotifyCallback *nc)
 {
@@ -90,7 +90,7 @@ static int ppanel_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * ppanel_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * ppanel_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int ppanel_window_observer(struct NotifyCallback *nc)
 {

@@ -213,7 +213,7 @@ static int config_reply_regex(struct Mailbox *m)
 }
 
 /**
- * index_altern_observer - Notification that an 'alternates' command has occurred - Implements ::observer_t
+ * index_altern_observer - Notification that an 'alternates' command has occurred - Implements ::observer_t - @ingroup observer_api
  */
 static int index_altern_observer(struct NotifyCallback *nc)
 {
@@ -230,7 +230,7 @@ static int index_altern_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_attach_observer - Notification that an 'attachments' command has occurred - Implements ::observer_t
+ * index_attach_observer - Notification that an 'attachments' command has occurred - Implements ::observer_t - @ingroup observer_api
  */
 static int index_attach_observer(struct NotifyCallback *nc)
 {
@@ -247,7 +247,7 @@ static int index_attach_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_color_observer - Notification that a Color has changed - Implements ::observer_t
+ * index_color_observer - Notification that a Color has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int index_color_observer(struct NotifyCallback *nc)
 {
@@ -301,7 +301,7 @@ static int index_color_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * index_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int index_config_observer(struct NotifyCallback *nc)
 {
@@ -343,7 +343,7 @@ static int index_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_menu_observer - Notification that the Menu has changed - Implements ::observer_t
+ * index_menu_observer - Notification that the Menu has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int index_menu_observer(struct NotifyCallback *nc)
 {
@@ -363,7 +363,7 @@ static int index_menu_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_score_observer - Notification that a 'score' command has occurred - Implements ::observer_t
+ * index_score_observer - Notification that a 'score' command has occurred - Implements ::observer_t - @ingroup observer_api
  */
 static int index_score_observer(struct NotifyCallback *nc)
 {
@@ -393,7 +393,7 @@ static int index_score_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_subjrx_observer - Notification that a 'subjectrx' command has occurred - Implements ::observer_t
+ * index_subjrx_observer - Notification that a 'subjectrx' command has occurred - Implements ::observer_t - @ingroup observer_api
  */
 static int index_subjrx_observer(struct NotifyCallback *nc)
 {
@@ -410,7 +410,7 @@ static int index_subjrx_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * index_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int index_window_observer(struct NotifyCallback *nc)
 {

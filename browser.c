@@ -185,7 +185,7 @@ static void destroy_state(struct BrowserState *state)
 }
 
 /**
- * browser_compare_subject - Compare the subject of two browser entries - Implements ::sort_t
+ * browser_compare_subject - Compare the subject of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
 static int browser_compare_subject(const void *a, const void *b)
 {
@@ -201,7 +201,7 @@ static int browser_compare_subject(const void *a, const void *b)
 }
 
 /**
- * browser_compare_order - Compare the order of creation of two browser entries - Implements ::sort_t
+ * browser_compare_order - Compare the order of creation of two browser entries - Implements ::sort_t - @ingroup sort_api
  *
  * @note This only affects browsing mailboxes and is a no-op for folders.
  */
@@ -215,7 +215,7 @@ static int browser_compare_order(const void *a, const void *b)
 }
 
 /**
- * browser_compare_desc - Compare the descriptions of two browser entries - Implements ::sort_t
+ * browser_compare_desc - Compare the descriptions of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
 static int browser_compare_desc(const void *a, const void *b)
 {
@@ -229,7 +229,7 @@ static int browser_compare_desc(const void *a, const void *b)
 }
 
 /**
- * browser_compare_date - Compare the date of two browser entries - Implements ::sort_t
+ * browser_compare_date - Compare the date of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
 static int browser_compare_date(const void *a, const void *b)
 {
@@ -243,7 +243,7 @@ static int browser_compare_date(const void *a, const void *b)
 }
 
 /**
- * browser_compare_size - Compare the size of two browser entries - Implements ::sort_t
+ * browser_compare_size - Compare the size of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
 static int browser_compare_size(const void *a, const void *b)
 {
@@ -257,7 +257,7 @@ static int browser_compare_size(const void *a, const void *b)
 }
 
 /**
- * browser_compare_count - Compare the message count of two browser entries - Implements ::sort_t
+ * browser_compare_count - Compare the message count of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
 static int browser_compare_count(const void *a, const void *b)
 {
@@ -277,7 +277,7 @@ static int browser_compare_count(const void *a, const void *b)
 }
 
 /**
- * browser_compare_count_new - Compare the new count of two browser entries - Implements ::sort_t
+ * browser_compare_count_new - Compare the new count of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
 static int browser_compare_count_new(const void *a, const void *b)
 {
@@ -297,7 +297,7 @@ static int browser_compare_count_new(const void *a, const void *b)
 }
 
 /**
- * browser_compare - Sort the items in the browser - Implements ::sort_t
+ * browser_compare - Sort the items in the browser - Implements ::sort_t - @ingroup sort_api
  *
  * Wild compare function that calls the others. It's useful because it provides
  * a way to tell "../" is always on the top of the list, independently of the
@@ -1167,7 +1167,7 @@ static int file_tag(struct Menu *menu, int sel, int act)
 }
 
 /**
- * browser_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * browser_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int browser_config_observer(struct NotifyCallback *nc)
 {
@@ -1193,7 +1193,7 @@ static int browser_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * browser_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * browser_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
  *

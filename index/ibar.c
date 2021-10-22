@@ -169,7 +169,7 @@ static int ibar_repaint(struct MuttWindow *win)
 }
 
 /**
- * ibar_color_observer - Notification that a Color has changed - Implements ::observer_t
+ * ibar_color_observer - Notification that a Color has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int ibar_color_observer(struct NotifyCallback *nc)
 {
@@ -190,7 +190,7 @@ static int ibar_color_observer(struct NotifyCallback *nc)
 }
 
 /**
- * ibar_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * ibar_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int ibar_config_observer(struct NotifyCallback *nc)
 {
@@ -217,7 +217,7 @@ static int ibar_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * ibar_index_observer - Notification that the Index has changed - Implements ::observer_t
+ * ibar_index_observer - Notification that the Index has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int ibar_index_observer(struct NotifyCallback *nc)
 {
@@ -248,7 +248,7 @@ static int ibar_index_observer(struct NotifyCallback *nc)
 }
 
 /**
- * ibar_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t
+ * ibar_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int ibar_mailbox_observer(struct NotifyCallback *nc)
 {
@@ -263,7 +263,7 @@ static int ibar_mailbox_observer(struct NotifyCallback *nc)
 }
 
 /**
- * ibar_menu_observer - Notification that a Menu has changed - Implements ::observer_t
+ * ibar_menu_observer - Notification that a Menu has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int ibar_menu_observer(struct NotifyCallback *nc)
 {
@@ -278,7 +278,7 @@ static int ibar_menu_observer(struct NotifyCallback *nc)
 }
 
 /**
- * ibar_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * ibar_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int ibar_window_observer(struct NotifyCallback *nc)
 {

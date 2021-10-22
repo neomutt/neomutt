@@ -35,7 +35,7 @@
 #include "menu/lib.h"
 
 /**
- * menu_color_observer - Notification that a Color has changed - Implements ::observer_t
+ * menu_color_observer - Notification that a Color has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int menu_color_observer(struct NotifyCallback *nc)
 {
@@ -62,7 +62,7 @@ static int menu_color_observer(struct NotifyCallback *nc)
 }
 
 /**
- * menu_config_observer - Notification that a Config Variable has changed - Implements ::observer_t
+ * menu_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int menu_config_observer(struct NotifyCallback *nc)
 {
@@ -84,7 +84,7 @@ static int menu_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * menu_window_observer - Notification that a Window has changed - Implements ::observer_t
+ * menu_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int menu_window_observer(struct NotifyCallback *nc)
 {

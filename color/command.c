@@ -191,7 +191,7 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
 }
 
 /**
- * parse_attr_spec - Parse an attribute description - Implements ::parser_callback_t
+ * parse_attr_spec - Parse an attribute description - Implements ::parser_callback_t - @ingroup parser_callback_api
  */
 static enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
                                           uint32_t *fg, uint32_t *bg,
@@ -232,7 +232,7 @@ static enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_color_pair - Parse a pair of colours - Implements ::parser_callback_t
+ * parse_color_pair - Parse a pair of colours - Implements ::parser_callback_t - @ingroup parser_callback_api
  */
 static enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
                                            uint32_t *fg, uint32_t *bg,

@@ -1117,7 +1117,7 @@ bool mutt_should_hide_protected_subject(struct Email *e)
 }
 
 /**
- * mutt_protected_headers_handler - Process a protected header - Implements ::handler_t
+ * mutt_protected_headers_handler - Process a protected header - Implements ::handler_t - @ingroup handler_api
  */
 int mutt_protected_headers_handler(struct Body *b, struct State *s)
 {
@@ -1147,7 +1147,7 @@ int mutt_protected_headers_handler(struct Body *b, struct State *s)
 }
 
 /**
- * mutt_signed_handler - Verify a "multipart/signed" body - Implements ::handler_t
+ * mutt_signed_handler - Verify a "multipart/signed" body - Implements ::handler_t - @ingroup handler_api
  */
 int mutt_signed_handler(struct Body *b, struct State *s)
 {

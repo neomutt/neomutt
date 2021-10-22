@@ -112,7 +112,7 @@ struct ChildCtx
 };
 
 /**
- * nntp_hashelem_free - Free our hash table data - Implements ::hash_hdata_free_t
+ * nntp_hashelem_free - Free our hash table data - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
  */
 void nntp_hashelem_free(int type, void *obj, intptr_t data)
 {
@@ -2275,7 +2275,7 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
 }
 
 /**
- * nntp_compare_order - Sort to mailbox order - Implements ::sort_mail_t
+ * nntp_compare_order - Sort to mailbox order - Implements ::sort_mail_t - @ingroup sort_mail_api
  */
 int nntp_compare_order(const struct Email *a, const struct Email *b, bool reverse)
 {
