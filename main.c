@@ -205,7 +205,7 @@
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
-#ifdef USE_DEBUG_NOTIFY
+#if defined(USE_DEBUG_NOTIFY) || defined(HAVE_LIBUNWIND)
 #include "debug/lib.h"
 #endif
 

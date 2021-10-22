@@ -361,9 +361,9 @@ static void print_compile_options(struct CompileOptions *co, FILE *fp)
         break;
       case 2: // Devel only
         if (tty)
-          fmt = "\033[1;36m!%s\033[0m "; // Escape, cyan
+          fmt = "\033[1;36m%s\033[0m "; // Escape, cyan
         else
-          fmt = "!%s ";
+          fmt = "%s ";
         break;
     }
     fprintf(fp, fmt, co[i].name);
