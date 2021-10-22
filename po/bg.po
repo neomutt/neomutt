@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2021-10-19 10:45+0100\n"
+"POT-Creation-Date: 2021-10-22 12:41+0100\n"
 "PO-Revision-Date: 2016-11-09 22:45+0000\n"
 "Last-Translator: Velko Hristov <hristov@informatik.hu-berlin.de>\n"
 "Language-Team: none\n"
@@ -243,11 +243,11 @@ msgstr "Pipe"
 msgid "Print"
 msgstr "Отпечатване"
 
-#: attach/dlg_attach.c:484 index/functions.c:2971 pager/functions.c:81
+#: attach/dlg_attach.c:484 index/functions.c:2972 pager/functions.c:81
 msgid "Function not permitted in attach-message mode"
 msgstr "Тази функция не може да се изпълни при прилагане на писма"
 
-#: attach/dlg_attach.c:501 index/functions.c:2965 mx.c:941 pager/functions.c:79
+#: attach/dlg_attach.c:501 index/functions.c:2966 mx.c:941 pager/functions.c:79
 msgid "Mailbox is read-only"
 msgstr "Тази пощенска кутия е само за четене"
 
@@ -282,7 +282,7 @@ msgstr "Изтриването на приложения от шифровани
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Поддържа се само изтриване на приложения от съставни писма"
 
-#: attach/dlg_attach.c:863 index/functions.c:2709 pager/functions.c:1687
+#: attach/dlg_attach.c:863 index/functions.c:2710 pager/functions.c:1688
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
@@ -296,8 +296,8 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Записът \"compose\" в mailcap изисква %%s"
 
 #: attach/mutt_attach.c:162 attach/mutt_attach.c:296 compmbox/compress.c:340
-#: compose/functions.c:1179 gui/curs_lib.c:388 index/dlg_index.c:1172
-#: index/dlg_index.c:1219 pager/dlg_pager.c:783 pager/do_pager.c:170
+#: compose/functions.c:1179 gui/curs_lib.c:388 index/dlg_index.c:1175
+#: index/dlg_index.c:1222 pager/dlg_pager.c:781 pager/do_pager.c:170
 #: pager/message.c:338 send/sendlib.c:1067
 #, c-format
 msgid "Error running \"%s\""
@@ -2713,12 +2713,12 @@ msgstr "Пощенската кутия е създадена"
 msgid "Mailbox %s@%s closed"
 msgstr "Пощенската кутия е затворена."
 
-#: imap/command.c:1176
+#: imap/command.c:1179
 #, fuzzy, c-format
 msgid "IMAP command failed: %s"
 msgstr "Грешка при изпълнение на командата \"preconnect\""
 
-#: imap/command.c:1277 imap/command.c:1399
+#: imap/command.c:1280 imap/command.c:1402
 #, fuzzy, c-format
 msgid "Connection to %s timed out"
 msgstr "Връзката с %s е затворена"
@@ -2860,7 +2860,7 @@ msgstr "Грешка при повторното отваряне на поще�
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Грешка при получаване на заглавните части от тази версия на IMAP-сървъра"
 
-#: imap/message.c:1122 index/functions.c:2464 nntp/nntp.c:1229 pop/pop.c:369
+#: imap/message.c:1122 index/functions.c:2465 nntp/nntp.c:1229 pop/pop.c:369
 #, fuzzy
 msgid "Fetching message headers..."
 msgstr "Изтегляне на заглавните части... [%d/%d]"
@@ -2938,27 +2938,27 @@ msgstr ""
 msgid "%s is not a mailbox"
 msgstr "%s не е пощенска кутия"
 
-#: index/dlg_index.c:1151
+#: index/dlg_index.c:1154
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Пощенската кутия е променена от друга програма. Маркировките може да са остарели."
 
-#: index/dlg_index.c:1160 pager/dlg_pager.c:727
+#: index/dlg_index.c:1163 pager/dlg_pager.c:725
 msgid "New mail in this mailbox"
 msgstr "Нови писма в тази пощенска кутия"
 
-#: index/dlg_index.c:1180
+#: index/dlg_index.c:1183
 msgid "Mailbox was externally modified"
 msgstr "Пощенската кутия е променена от друга програма"
 
-#: index/dlg_index.c:1304 index/functions.c:2946
+#: index/dlg_index.c:1307 index/functions.c:2947
 msgid "No mailbox is open"
 msgstr "Няма отворена пощенска кутия"
 
-#: index/dlg_index.c:1311
+#: index/dlg_index.c:1314
 msgid "No tagged messages"
 msgstr "Няма маркирани писма"
 
-#: index/dlg_index.c:1315 index/functions.c:629 menu/menu.c:358
+#: index/dlg_index.c:1318 index/functions.c:629 menu/menu.c:358
 msgid "Nothing to do"
 msgstr "Няма какво да се прави"
 
@@ -3120,12 +3120,12 @@ msgstr "Родителското писмо не е видимо в този о�
 msgid "No unread messages"
 msgstr "Няма непрочетени писма"
 
-#: index/functions.c:1251 menu/menu.c:191 pager/functions.c:1404
+#: index/functions.c:1251 menu/menu.c:191 pager/functions.c:1405
 #: pattern/pattern.c:578 pattern/pattern.c:734
 msgid "Search wrapped to top"
 msgstr "Търсенето е започнато отгоре"
 
-#: index/functions.c:1256 pager/functions.c:1431 pattern/pattern.c:589
+#: index/functions.c:1256 pager/functions.c:1432 pattern/pattern.c:589
 #: pattern/pattern.c:745
 msgid "Search wrapped to bottom"
 msgstr "Търсенето е започнато отдолу"
@@ -3176,7 +3176,7 @@ msgstr "Маркиране на писмата, отговарящи на: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1639 index/functions.c:2291 pager/functions.c:1587
+#: index/functions.c:1639 index/functions.c:2292 pager/functions.c:1588
 #, fuzzy
 msgid "Can't undelete messages"
 msgstr "Няма възстановени писма."
@@ -3224,99 +3224,99 @@ msgid "Quit NeoMutt?"
 msgstr "Желаете ли да напуснете neomutt?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2180 pager/functions.c:1525
+#: index/functions.c:2181 pager/functions.c:1526
 msgid "Can't toggle new"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2252 pager/functions.c:1556
+#: index/functions.c:2253 pager/functions.c:1557
 #, fuzzy
 msgid "Can't undelete message"
 msgstr "Няма възстановени писма."
 
-#: index/functions.c:2417
+#: index/functions.c:2418
 #, fuzzy
 msgid "Logged out of IMAP servers"
 msgstr "Затваряне на връзката към IMAP сървър.."
 
-#: index/functions.c:2460
+#: index/functions.c:2461
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: index/functions.c:2538
+#: index/functions.c:2539
 #, fuzzy
 msgid "No deleted messages found in the thread"
 msgstr "изтрива всички писма в нишката"
 
-#: index/functions.c:2562
+#: index/functions.c:2563
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Въведете ключов идентификатор: "
 
-#: index/functions.c:2573
+#: index/functions.c:2574
 msgid "Article has no parent reference"
 msgstr ""
 
-#: index/functions.c:2595
+#: index/functions.c:2596
 #, fuzzy
 msgid "Message is not visible in limited view"
 msgstr "Родителското писмо не е видимо в този ограничен изглед"
 
-#: index/functions.c:2599
+#: index/functions.c:2600
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "Премахване на съобщенията от сървъра..."
 
-#: index/functions.c:2610 nntp/nntp.c:2647
+#: index/functions.c:2611 nntp/nntp.c:2647
 #, c-format
 msgid "Article %s not found on the server"
 msgstr ""
 
-#: index/functions.c:2632
+#: index/functions.c:2633
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Отваряне на пощенската кутия само за четене"
 
-#: index/functions.c:2637
+#: index/functions.c:2638
 msgid "Open newsgroup"
 msgstr ""
 
-#: index/functions.c:2714 pager/functions.c:1692 pager/functions.c:1733
-#: pager/functions.c:1767
+#: index/functions.c:2715 pager/functions.c:1693 pager/functions.c:1734
+#: pager/functions.c:1768
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
-#: index/functions.c:2749
+#: index/functions.c:2750
 #, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Прекъсване поради липса на тема"
 
-#: index/functions.c:2769
+#: index/functions.c:2770
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr ""
 
-#: index/functions.c:2779
+#: index/functions.c:2780
 msgid "Failed to read thread, aborting"
 msgstr ""
 
-#: index/functions.c:2810
+#: index/functions.c:2811
 #, fuzzy
 msgid "No query, aborting"
 msgstr "Прекъсване поради липса на тема"
 
-#: index/functions.c:2843
+#: index/functions.c:2844
 msgid "Windowed queries disabled"
 msgstr ""
 
-#: index/functions.c:2850
+#: index/functions.c:2851
 msgid "No notmuch vfolder currently loaded"
 msgstr ""
 
-#: index/functions.c:2952
+#: index/functions.c:2953
 msgid "There are no messages"
 msgstr "Няма писма"
 
-#: index/functions.c:2959
+#: index/functions.c:2960
 msgid "No visible messages"
 msgstr "Няма видими писма"
 
@@ -3784,18 +3784,18 @@ msgstr "Скок към: "
 msgid "Invalid index number"
 msgstr "Невалиден номер на индекс"
 
-#: menu/menu.c:155 pager/functions.c:1235 pattern/pattern.c:504
+#: menu/menu.c:155 pager/functions.c:1236 pattern/pattern.c:504
 #: pattern/pattern.c:662
 msgid "Search for: "
 msgstr "Търсене: "
 
-#: menu/menu.c:156 pager/functions.c:1235 pattern/pattern.c:504
+#: menu/menu.c:156 pager/functions.c:1236 pattern/pattern.c:504
 #: pattern/pattern.c:662
 msgid "Reverse search for: "
 msgstr "Обратно търсене: "
 
-#: menu/menu.c:210 pager/functions.c:1343 pager/functions.c:1401
-#: pager/functions.c:1428 pattern/pattern.c:636 pattern/pattern.c:792
+#: menu/menu.c:210 pager/functions.c:1344 pager/functions.c:1402
+#: pager/functions.c:1429 pattern/pattern.c:636 pattern/pattern.c:792
 msgid "Not found"
 msgstr "Няма резултати от търсенето"
 
@@ -3922,7 +3922,7 @@ msgstr ""
 msgid "Couldn't source lua source: %s"
 msgstr "Невъзможно заключване на %s\n"
 
-#: mutt_mailbox.c:257
+#: mutt_mailbox.c:260
 msgid "New mail in "
 msgstr "Нови писма в "
 
@@ -4086,15 +4086,15 @@ msgstr "Пощенската кутия е отбелязана"
 msgid "Can't open %s: it is a pipe"
 msgstr "Грешка при отваряне на файла: %s"
 
-#: mx.c:1840
+#: mx.c:1849
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Режимът на защитената от запис пощенска кутия не може да бъде променен"
 
-#: mx.c:1847
+#: mx.c:1856
 msgid "Changes to folder will be written on folder exit"
 msgstr "Промените в тази пощенска кутия ще бъдат записани при напускането й"
 
-#: mx.c:1852
+#: mx.c:1861
 msgid "Changes to folder will not be written"
 msgstr "Промените в тази пощенска кутия няма да бъдат записани"
 
@@ -5370,17 +5370,17 @@ msgstr ""
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
 msgstr ""
 
-#: notmuch/db.c:139
+#: notmuch/db.c:147
 #, fuzzy, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
 msgstr "Чакане за fcntl заключване... %d"
 
-#: notmuch/db.c:157
+#: notmuch/db.c:165
 #, c-format
 msgid "Can't open notmuch database: %s: %s"
 msgstr ""
 
-#: notmuch/db.c:158
+#: notmuch/db.c:166
 #, fuzzy
 msgid "unknown reason"
 msgstr "непозната грешка"

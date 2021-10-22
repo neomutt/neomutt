@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2021-10-19 10:45+0100\n"
+"POT-Creation-Date: 2021-10-22 12:41+0100\n"
 "PO-Revision-Date: 2021-05-06 05:30+0100\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Liberium <epost@anotheragency.no>\n"
@@ -235,11 +235,11 @@ msgstr "Rørlegg"
 msgid "Print"
 msgstr "Skriv ut"
 
-#: attach/dlg_attach.c:484 index/functions.c:2971 pager/functions.c:81
+#: attach/dlg_attach.c:484 index/functions.c:2972 pager/functions.c:81
 msgid "Function not permitted in attach-message mode"
 msgstr "Funksjonen tillates ikke i vedlegg-melding -modus"
 
-#: attach/dlg_attach.c:501 index/functions.c:2965 mx.c:941 pager/functions.c:79
+#: attach/dlg_attach.c:501 index/functions.c:2966 mx.c:941 pager/functions.c:79
 msgid "Mailbox is read-only"
 msgstr "E-postboksen er skrivebeskyttet"
 
@@ -271,7 +271,7 @@ msgstr "Sletting av vedlegg fra signerte meldinger kan invalidere signaturen"
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Kun sletting av multidels-vedlegg støttes"
 
-#: attach/dlg_attach.c:863 index/functions.c:2709 pager/functions.c:1687
+#: attach/dlg_attach.c:863 index/functions.c:2710 pager/functions.c:1688
 msgid "Reply by mail as poster prefers?"
 msgstr "Svar per e-post som posteren foretrekker?"
 
@@ -286,8 +286,8 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Bruk av forfattingsoppføring krever %%s"
 
 #: attach/mutt_attach.c:162 attach/mutt_attach.c:296 compmbox/compress.c:340
-#: compose/functions.c:1179 gui/curs_lib.c:388 index/dlg_index.c:1172
-#: index/dlg_index.c:1219 pager/dlg_pager.c:783 pager/do_pager.c:170
+#: compose/functions.c:1179 gui/curs_lib.c:388 index/dlg_index.c:1175
+#: index/dlg_index.c:1222 pager/dlg_pager.c:781 pager/do_pager.c:170
 #: pager/message.c:338 send/sendlib.c:1067
 #, c-format
 msgid "Error running \"%s\""
@@ -2638,12 +2638,12 @@ msgstr "Navn på e-postboks endret"
 msgid "Mailbox %s@%s closed"
 msgstr "E-postboksen %s@%s ble lukket"
 
-#: imap/command.c:1176
+#: imap/command.c:1179
 #, fuzzy, c-format
 msgid "IMAP command failed: %s"
 msgstr "IMAP-kommando mislyktes: %s"
 
-#: imap/command.c:1277 imap/command.c:1399
+#: imap/command.c:1280 imap/command.c:1402
 #, c-format
 msgid "Connection to %s timed out"
 msgstr "Tidsavbrudd for forbeindelse til %s"
@@ -2782,7 +2782,7 @@ msgstr "Omsynkronisering mislyktes. Gjenåpner e-postboks."
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Kan ikke hente hoder fra denne IMAP-tjenerversjonen"
 
-#: imap/message.c:1122 index/functions.c:2464 nntp/nntp.c:1229 pop/pop.c:369
+#: imap/message.c:1122 index/functions.c:2465 nntp/nntp.c:1229 pop/pop.c:369
 msgid "Fetching message headers..."
 msgstr "Henter meldingshoder …"
 
@@ -2858,27 +2858,27 @@ msgstr "Klarte ikke å opprette spørring, avbryter"
 msgid "%s is not a mailbox"
 msgstr "%s er ingen e-postboks"
 
-#: index/dlg_index.c:1151
+#: index/dlg_index.c:1154
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "E-postboksen ble endret eksternt. Flaggene kan være gale."
 
-#: index/dlg_index.c:1160 pager/dlg_pager.c:727
+#: index/dlg_index.c:1163 pager/dlg_pager.c:725
 msgid "New mail in this mailbox"
 msgstr "Ny e-post i denne e-postboksen"
 
-#: index/dlg_index.c:1180
+#: index/dlg_index.c:1183
 msgid "Mailbox was externally modified"
 msgstr "E-postboks ble endret eksternt"
 
-#: index/dlg_index.c:1304 index/functions.c:2946
+#: index/dlg_index.c:1307 index/functions.c:2947
 msgid "No mailbox is open"
 msgstr "Ingen e-postboks er åpen"
 
-#: index/dlg_index.c:1311
+#: index/dlg_index.c:1314
 msgid "No tagged messages"
 msgstr "Ingen etikettmerkede meldinger"
 
-#: index/dlg_index.c:1315 index/functions.c:629 menu/menu.c:358
+#: index/dlg_index.c:1318 index/functions.c:629 menu/menu.c:358
 msgid "Nothing to do"
 msgstr "Ingenting å gjøre"
 
@@ -3031,13 +3031,13 @@ msgstr "Ingen uleste meldinger i denne avgrensede visningen"
 msgid "No unread messages"
 msgstr "Ingen uleste meldinger"
 
-#: index/functions.c:1251 menu/menu.c:191 pager/functions.c:1404
+#: index/functions.c:1251 menu/menu.c:191 pager/functions.c:1405
 #: pattern/pattern.c:578 pattern/pattern.c:734
 #, fuzzy
 msgid "Search wrapped to top"
 msgstr "Søk linjebrutt til toppen"
 
-#: index/functions.c:1256 pager/functions.c:1431 pattern/pattern.c:589
+#: index/functions.c:1256 pager/functions.c:1432 pattern/pattern.c:589
 #: pattern/pattern.c:745
 #, fuzzy
 msgid "Search wrapped to bottom"
@@ -3088,7 +3088,7 @@ msgstr "Etikettmerk meldinger som stemmer overens med: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1639 index/functions.c:2291 pager/functions.c:1587
+#: index/functions.c:1639 index/functions.c:2292 pager/functions.c:1588
 msgid "Can't undelete messages"
 msgstr "Kan ikke angre sletting av meldinger"
 
@@ -3132,95 +3132,95 @@ msgid "Quit NeoMutt?"
 msgstr "Avslutt NeoMutt?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2180 pager/functions.c:1525
+#: index/functions.c:2181 pager/functions.c:1526
 msgid "Can't toggle new"
 msgstr "Kan ikke veksle «ny»-status"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2252 pager/functions.c:1556
+#: index/functions.c:2253 pager/functions.c:1557
 msgid "Can't undelete message"
 msgstr "Kan ikke angre sletting av melding"
 
-#: index/functions.c:2417
+#: index/functions.c:2418
 msgid "Logged out of IMAP servers"
 msgstr "Utlogget av IMAP-tjenere"
 
-#: index/functions.c:2460
+#: index/functions.c:2461
 msgid "No Message-Id. Unable to perform operation."
 msgstr "Ingen meldings-ID. Klarrer ikke å utføre operasjon."
 
-#: index/functions.c:2538
+#: index/functions.c:2539
 msgid "No deleted messages found in the thread"
 msgstr "Fant ingen slettede meldinger i tråden"
 
-#: index/functions.c:2562
+#: index/functions.c:2563
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Skriv inn meldings-ID: "
 
-#: index/functions.c:2573
+#: index/functions.c:2574
 #, fuzzy
 msgid "Article has no parent reference"
 msgstr "Artikkelen har ingen ovennevnt referanse"
 
-#: index/functions.c:2595
+#: index/functions.c:2596
 msgid "Message is not visible in limited view"
 msgstr "Meldingen er ikke synlig i avgrenset visning"
 
-#: index/functions.c:2599
+#: index/functions.c:2600
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "Henter %s fra tjener …"
 
-#: index/functions.c:2610 nntp/nntp.c:2647
+#: index/functions.c:2611 nntp/nntp.c:2647
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "Artikkelen %s ble ikke funnet på tjeneren"
 
-#: index/functions.c:2632
+#: index/functions.c:2633
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Åpne nyhetsgruppe skrivebeskyttet"
 
-#: index/functions.c:2637
+#: index/functions.c:2638
 msgid "Open newsgroup"
 msgstr "Åpne nyhetsgruppe"
 
-#: index/functions.c:2714 pager/functions.c:1692 pager/functions.c:1733
-#: pager/functions.c:1767
+#: index/functions.c:2715 pager/functions.c:1693 pager/functions.c:1734
+#: pager/functions.c:1768
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Å poste i denne gruppen tillates ikke, kan være moderert. Fortsett?"
 
-#: index/functions.c:2749
+#: index/functions.c:2750
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Ingen virtuell mappe, og ingen meldings-ID. Avbryter."
 
-#: index/functions.c:2769
+#: index/functions.c:2770
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr "Klarte ikke å finne melding i notmutch-database. Prøv å kjøre «notmutch new»."
 
-#: index/functions.c:2779
+#: index/functions.c:2780
 msgid "Failed to read thread, aborting"
 msgstr "Klarte ikke å lese tråd. Avbryter."
 
-#: index/functions.c:2810
+#: index/functions.c:2811
 msgid "No query, aborting"
 msgstr "Ingen spørring. Avbryter."
 
-#: index/functions.c:2843
+#: index/functions.c:2844
 msgid "Windowed queries disabled"
 msgstr "Vindusspørringer avskrudd"
 
-#: index/functions.c:2850
+#: index/functions.c:2851
 msgid "No notmuch vfolder currently loaded"
 msgstr "Ingen virtuell notmutch-mappe innlastet"
 
-#: index/functions.c:2952
+#: index/functions.c:2953
 #, fuzzy
 msgid "There are no messages"
 msgstr "Det er ingen meldinger"
 
-#: index/functions.c:2959
+#: index/functions.c:2960
 msgid "No visible messages"
 msgstr "Ingen synlige meldinger"
 
@@ -3718,18 +3718,18 @@ msgstr "Hopp til: "
 msgid "Invalid index number"
 msgstr "Ugyldig indeksnummer"
 
-#: menu/menu.c:155 pager/functions.c:1235 pattern/pattern.c:504
+#: menu/menu.c:155 pager/functions.c:1236 pattern/pattern.c:504
 #: pattern/pattern.c:662
 msgid "Search for: "
 msgstr "Søk etter: "
 
-#: menu/menu.c:156 pager/functions.c:1235 pattern/pattern.c:504
+#: menu/menu.c:156 pager/functions.c:1236 pattern/pattern.c:504
 #: pattern/pattern.c:662
 msgid "Reverse search for: "
 msgstr "Søg baklengs etter: "
 
-#: menu/menu.c:210 pager/functions.c:1343 pager/functions.c:1401
-#: pager/functions.c:1428 pattern/pattern.c:636 pattern/pattern.c:792
+#: menu/menu.c:210 pager/functions.c:1344 pager/functions.c:1402
+#: pager/functions.c:1429 pattern/pattern.c:636 pattern/pattern.c:792
 msgid "Not found"
 msgstr "Ikke funnet"
 
@@ -3856,7 +3856,7 @@ msgstr "Feil: Kunne ikke laste inn Lua-fortolker"
 msgid "Couldn't source lua source: %s"
 msgstr "Kunne ikke spore opp Lua-kilde: %s"
 
-#: mutt_mailbox.c:257
+#: mutt_mailbox.c:260
 msgid "New mail in "
 msgstr "Ny e-post i "
 
@@ -4021,15 +4021,15 @@ msgstr "E-postboks avhukingsmerket"
 msgid "Can't open %s: it is a pipe"
 msgstr "Kan ikke åpne %s: det er et rør"
 
-#: mx.c:1840
+#: mx.c:1849
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Kan ikke veksle skrivetilgang for en skrivebeskyttet e-postboks"
 
-#: mx.c:1847
+#: mx.c:1856
 msgid "Changes to folder will be written on folder exit"
 msgstr "Endringer i mappe vil bli skrevet når du går ut av den"
 
-#: mx.c:1852
+#: mx.c:1861
 msgid "Changes to folder will not be written"
 msgstr "Endringer til mappe vil ikke bli skrevet"
 
@@ -5245,17 +5245,17 @@ msgstr "nm_default_url må være: notmuch://<absolutt sti>. Nåværende: %s"
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
 msgstr "Ugyldig nm_query_window_timebase-verdi (gyldige verdier er: hour, day, week, month, year)"
 
-#: notmuch/db.c:139
+#: notmuch/db.c:147
 #, fuzzy, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
 msgstr "Venter på notmuch-database … (%d sek.)"
 
-#: notmuch/db.c:157
+#: notmuch/db.c:165
 #, c-format
 msgid "Can't open notmuch database: %s: %s"
 msgstr "Kan ikke åpne notmuch-database. %s: %s"
 
-#: notmuch/db.c:158
+#: notmuch/db.c:166
 msgid "unknown reason"
 msgstr "ukjent grunn"
 
