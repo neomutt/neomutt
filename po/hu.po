@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2021-10-19 10:45+0100\n"
+"POT-Creation-Date: 2021-10-22 12:41+0100\n"
 "PO-Revision-Date: 2003-08-01 13:56+0000\n"
 "Last-Translator: Szabolcs Horváth <horvaths@fi.inf.elte.hu>\n"
 "Language-Team: LME Magyaritasok Lista <magyar@lists.linux.hu>\n"
@@ -240,11 +240,11 @@ msgstr "Átküld"
 msgid "Print"
 msgstr "Nyomtat"
 
-#: attach/dlg_attach.c:484 index/functions.c:2971 pager/functions.c:81
+#: attach/dlg_attach.c:484 index/functions.c:2972 pager/functions.c:81
 msgid "Function not permitted in attach-message mode"
 msgstr "A funkció levél-csatolás módban le van tiltva"
 
-#: attach/dlg_attach.c:501 index/functions.c:2965 mx.c:941 pager/functions.c:79
+#: attach/dlg_attach.c:501 index/functions.c:2966 mx.c:941 pager/functions.c:79
 msgid "Mailbox is read-only"
 msgstr "A postafiók csak olvasható"
 
@@ -278,7 +278,7 @@ msgstr "Mellékletek törlése kódolt üzenetből nem támogatott"
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Többrészes csatolásoknál csak a törlés támogatott"
 
-#: attach/dlg_attach.c:863 index/functions.c:2709 pager/functions.c:1687
+#: attach/dlg_attach.c:863 index/functions.c:2710 pager/functions.c:1688
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
@@ -292,8 +292,8 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "A mailcap-ba \"compose\" bejegyzés szükséges %%s"
 
 #: attach/mutt_attach.c:162 attach/mutt_attach.c:296 compmbox/compress.c:340
-#: compose/functions.c:1179 gui/curs_lib.c:388 index/dlg_index.c:1172
-#: index/dlg_index.c:1219 pager/dlg_pager.c:783 pager/do_pager.c:170
+#: compose/functions.c:1179 gui/curs_lib.c:388 index/dlg_index.c:1175
+#: index/dlg_index.c:1222 pager/dlg_pager.c:781 pager/do_pager.c:170
 #: pager/message.c:338 send/sendlib.c:1067
 #, c-format
 msgid "Error running \"%s\""
@@ -2708,12 +2708,12 @@ msgstr "Postafiók létrehozva"
 msgid "Mailbox %s@%s closed"
 msgstr "Postafiók lezárva"
 
-#: imap/command.c:1176
+#: imap/command.c:1179
 #, fuzzy, c-format
 msgid "IMAP command failed: %s"
 msgstr "A \"preconnect\" parancs nem sikerült."
 
-#: imap/command.c:1277 imap/command.c:1399
+#: imap/command.c:1280 imap/command.c:1402
 #, fuzzy, c-format
 msgid "Connection to %s timed out"
 msgstr "%s kapcsolat lezárva"
@@ -2855,7 +2855,7 @@ msgstr "Nem lehetett újra megnyitni a postafiókot"
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Nem lehet a fejléceket letölteni ezen verziójú IMAP szerverről"
 
-#: imap/message.c:1122 index/functions.c:2464 nntp/nntp.c:1229 pop/pop.c:369
+#: imap/message.c:1122 index/functions.c:2465 nntp/nntp.c:1229 pop/pop.c:369
 #, fuzzy
 msgid "Fetching message headers..."
 msgstr "Levélfejlécek letöltése... [%d/%d]"
@@ -2933,27 +2933,27 @@ msgstr ""
 msgid "%s is not a mailbox"
 msgstr "A %s nem postafiók"
 
-#: index/dlg_index.c:1151
+#: index/dlg_index.c:1154
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "A postafiókot más program módosította. A jelzők hibásak lehetnek."
 
-#: index/dlg_index.c:1160 pager/dlg_pager.c:727
+#: index/dlg_index.c:1163 pager/dlg_pager.c:725
 msgid "New mail in this mailbox"
 msgstr "Új levél érkezett a postafiókba"
 
-#: index/dlg_index.c:1180
+#: index/dlg_index.c:1183
 msgid "Mailbox was externally modified"
 msgstr "A postafiókot más program módosította"
 
-#: index/dlg_index.c:1304 index/functions.c:2946
+#: index/dlg_index.c:1307 index/functions.c:2947
 msgid "No mailbox is open"
 msgstr "Nincs megnyitott postafiók"
 
-#: index/dlg_index.c:1311
+#: index/dlg_index.c:1314
 msgid "No tagged messages"
 msgstr "Nincs kijelölt levél"
 
-#: index/dlg_index.c:1315 index/functions.c:629 menu/menu.c:358
+#: index/dlg_index.c:1318 index/functions.c:629 menu/menu.c:358
 #, fuzzy
 msgid "Nothing to do"
 msgstr "Kapcsolódás %s-hez.."
@@ -3116,12 +3116,12 @@ msgstr "A nyitóüzenet nem látható a szűkített nézetben"
 msgid "No unread messages"
 msgstr "Nincs olvasatlan levél"
 
-#: index/functions.c:1251 menu/menu.c:191 pager/functions.c:1404
+#: index/functions.c:1251 menu/menu.c:191 pager/functions.c:1405
 #: pattern/pattern.c:578 pattern/pattern.c:734
 msgid "Search wrapped to top"
 msgstr "Keresés az elejétől"
 
-#: index/functions.c:1256 pager/functions.c:1431 pattern/pattern.c:589
+#: index/functions.c:1256 pager/functions.c:1432 pattern/pattern.c:589
 #: pattern/pattern.c:745
 msgid "Search wrapped to bottom"
 msgstr "Keresés a végétől"
@@ -3172,7 +3172,7 @@ msgstr "Minta a levelek kijelöléséhez: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1639 index/functions.c:2291 pager/functions.c:1587
+#: index/functions.c:1639 index/functions.c:2292 pager/functions.c:1588
 #, fuzzy
 msgid "Can't undelete messages"
 msgstr "Nincs visszaállított levél."
@@ -3220,99 +3220,99 @@ msgid "Quit NeoMutt?"
 msgstr "Kilépsz a NeoMuttból?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2180 pager/functions.c:1525
+#: index/functions.c:2181 pager/functions.c:1526
 msgid "Can't toggle new"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2252 pager/functions.c:1556
+#: index/functions.c:2253 pager/functions.c:1557
 #, fuzzy
 msgid "Can't undelete message"
 msgstr "Nincs visszaállított levél."
 
-#: index/functions.c:2417
+#: index/functions.c:2418
 #, fuzzy
 msgid "Logged out of IMAP servers"
 msgstr "IMAP kapcsolat lezárása.."
 
-#: index/functions.c:2460
+#: index/functions.c:2461
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: index/functions.c:2538
+#: index/functions.c:2539
 #, fuzzy
 msgid "No deleted messages found in the thread"
 msgstr "téma összes üzenetének törlése"
 
-#: index/functions.c:2562
+#: index/functions.c:2563
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Add meg a kulcsID-t: "
 
-#: index/functions.c:2573
+#: index/functions.c:2574
 msgid "Article has no parent reference"
 msgstr ""
 
-#: index/functions.c:2595
+#: index/functions.c:2596
 #, fuzzy
 msgid "Message is not visible in limited view"
 msgstr "A nyitóüzenet nem látható a szűkített nézetben"
 
-#: index/functions.c:2599
+#: index/functions.c:2600
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "Levelek törlése a szerverről..."
 
-#: index/functions.c:2610 nntp/nntp.c:2647
+#: index/functions.c:2611 nntp/nntp.c:2647
 #, c-format
 msgid "Article %s not found on the server"
 msgstr ""
 
-#: index/functions.c:2632
+#: index/functions.c:2633
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Postafiók megnyitása csak olvasásra"
 
-#: index/functions.c:2637
+#: index/functions.c:2638
 msgid "Open newsgroup"
 msgstr ""
 
-#: index/functions.c:2714 pager/functions.c:1692 pager/functions.c:1733
-#: pager/functions.c:1767
+#: index/functions.c:2715 pager/functions.c:1693 pager/functions.c:1734
+#: pager/functions.c:1768
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
-#: index/functions.c:2749
+#: index/functions.c:2750
 #, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Nincs tárgy megadva, megszakítom"
 
-#: index/functions.c:2769
+#: index/functions.c:2770
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr ""
 
-#: index/functions.c:2779
+#: index/functions.c:2780
 msgid "Failed to read thread, aborting"
 msgstr ""
 
-#: index/functions.c:2810
+#: index/functions.c:2811
 #, fuzzy
 msgid "No query, aborting"
 msgstr "Nincs tárgy megadva, megszakítom"
 
-#: index/functions.c:2843
+#: index/functions.c:2844
 msgid "Windowed queries disabled"
 msgstr ""
 
-#: index/functions.c:2850
+#: index/functions.c:2851
 msgid "No notmuch vfolder currently loaded"
 msgstr ""
 
-#: index/functions.c:2952
+#: index/functions.c:2953
 msgid "There are no messages"
 msgstr "Nincs levél"
 
-#: index/functions.c:2959
+#: index/functions.c:2960
 msgid "No visible messages"
 msgstr "Nincs látható levél"
 
@@ -3780,18 +3780,18 @@ msgstr "Ugrás: "
 msgid "Invalid index number"
 msgstr "Érvénytelen indexszám"
 
-#: menu/menu.c:155 pager/functions.c:1235 pattern/pattern.c:504
+#: menu/menu.c:155 pager/functions.c:1236 pattern/pattern.c:504
 #: pattern/pattern.c:662
 msgid "Search for: "
 msgstr "Keresés: "
 
-#: menu/menu.c:156 pager/functions.c:1235 pattern/pattern.c:504
+#: menu/menu.c:156 pager/functions.c:1236 pattern/pattern.c:504
 #: pattern/pattern.c:662
 msgid "Reverse search for: "
 msgstr "Keresés visszafelé: "
 
-#: menu/menu.c:210 pager/functions.c:1343 pager/functions.c:1401
-#: pager/functions.c:1428 pattern/pattern.c:636 pattern/pattern.c:792
+#: menu/menu.c:210 pager/functions.c:1344 pager/functions.c:1402
+#: pager/functions.c:1429 pattern/pattern.c:636 pattern/pattern.c:792
 msgid "Not found"
 msgstr "Nem található"
 
@@ -3918,7 +3918,7 @@ msgstr ""
 msgid "Couldn't source lua source: %s"
 msgstr "Nem lehet lockolni %s\n"
 
-#: mutt_mailbox.c:257
+#: mutt_mailbox.c:260
 msgid "New mail in "
 msgstr "Új levél: "
 
@@ -4083,15 +4083,15 @@ msgstr "A postafiók ellenőrizve"
 msgid "Can't open %s: it is a pipe"
 msgstr "A(z) %s levélfájl üres"
 
-#: mx.c:1840
+#: mx.c:1849
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "A csak olvasható postafiókba nem lehet írni"
 
-#: mx.c:1847
+#: mx.c:1856
 msgid "Changes to folder will be written on folder exit"
 msgstr "A postafiók módosításai a postafiókból történő kilépéskor lesznek elmentve"
 
-#: mx.c:1852
+#: mx.c:1861
 msgid "Changes to folder will not be written"
 msgstr "A postafiók módosításai nem lesznek elmentve"
 
@@ -5367,17 +5367,17 @@ msgstr ""
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
 msgstr ""
 
-#: notmuch/db.c:139
+#: notmuch/db.c:147
 #, fuzzy, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
 msgstr "Várakozás az fcntl lock-ra... %d"
 
-#: notmuch/db.c:157
+#: notmuch/db.c:165
 #, c-format
 msgid "Can't open notmuch database: %s: %s"
 msgstr ""
 
-#: notmuch/db.c:158
+#: notmuch/db.c:166
 #, fuzzy
 msgid "unknown reason"
 msgstr "ismeretlen hiba"

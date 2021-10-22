@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt 20210205\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2021-10-19 10:45+0100\n"
-"PO-Revision-Date: 2021-10-10 21:44+0200\n"
+"POT-Creation-Date: 2021-10-22 12:41+0100\n"
+"PO-Revision-Date: 2021-10-19 12:29+0200\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -156,9 +156,8 @@ msgid "adu"
 msgstr "adn"
 
 #: alias/dlgalias.c:412 alias/dlgquery.c:615
-#, fuzzy
 msgid "Limit to addresses matching: "
-msgstr "Ограничи на поруке које одговарају: "
+msgstr "Ограничи на адресе које одговарају: "
 
 #: alias/dlgquery.c:104 index/dlg_index.c:110
 msgid "Mail"
@@ -231,11 +230,11 @@ msgstr "Проследи"
 msgid "Print"
 msgstr "Штампај"
 
-#: attach/dlg_attach.c:484 index/functions.c:2971 pager/functions.c:81
+#: attach/dlg_attach.c:484 index/functions.c:2972 pager/functions.c:81
 msgid "Function not permitted in attach-message mode"
 msgstr "Функција није дозвољена у режиму додавања поруке"
 
-#: attach/dlg_attach.c:501 index/functions.c:2965 mx.c:941 pager/functions.c:79
+#: attach/dlg_attach.c:501 index/functions.c:2966 mx.c:941 pager/functions.c:79
 msgid "Mailbox is read-only"
 msgstr "Сандуче је само за читање"
 
@@ -267,7 +266,7 @@ msgstr "Брисање прилога из потписаних порука м�
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Само је подржано брисање multipart прилога"
 
-#: attach/dlg_attach.c:863 index/functions.c:2709 pager/functions.c:1687
+#: attach/dlg_attach.c:863 index/functions.c:2710 pager/functions.c:1688
 msgid "Reply by mail as poster prefers?"
 msgstr "Одговорити мејлом, као што постављач преферира?"
 
@@ -281,8 +280,8 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Compose ставка mailcap-а захтева %%s"
 
 #: attach/mutt_attach.c:162 attach/mutt_attach.c:296 compmbox/compress.c:340
-#: compose/functions.c:1179 gui/curs_lib.c:388 index/dlg_index.c:1172
-#: index/dlg_index.c:1219 pager/dlg_pager.c:783 pager/do_pager.c:170
+#: compose/functions.c:1179 gui/curs_lib.c:388 index/dlg_index.c:1175
+#: index/dlg_index.c:1222 pager/dlg_pager.c:781 pager/do_pager.c:170
 #: pager/message.c:338 send/sendlib.c:1067
 #, c-format
 msgid "Error running \"%s\""
@@ -2624,12 +2623,12 @@ msgstr "Сандуче је преименовано"
 msgid "Mailbox %s@%s closed"
 msgstr "Сандуче %s@%s је затворено"
 
-#: imap/command.c:1176
+#: imap/command.c:1179
 #, c-format
 msgid "IMAP command failed: %s"
 msgstr "Неуспешна IMAP наредба: %s"
 
-#: imap/command.c:1277 imap/command.c:1399
+#: imap/command.c:1280 imap/command.c:1402
 #, c-format
 msgid "Connection to %s timed out"
 msgstr "Повезивању са %s је истекло време"
@@ -2767,7 +2766,7 @@ msgstr "QRESYNC је неуспешан.  Поново се отвара сан�
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Не могу се доставити заглавља са ове верзије IMAP сервера"
 
-#: imap/message.c:1122 index/functions.c:2464 nntp/nntp.c:1229 pop/pop.c:369
+#: imap/message.c:1122 index/functions.c:2465 nntp/nntp.c:1229 pop/pop.c:369
 msgid "Fetching message headers..."
 msgstr "Достављање заглавља порука..."
 
@@ -2842,27 +2841,27 @@ msgstr "Неуспешно креирање упита, прекида се"
 msgid "%s is not a mailbox"
 msgstr "%s није сандуче"
 
-#: index/dlg_index.c:1151
+#: index/dlg_index.c:1154
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Сандуче је измењено споља.  Заставице могу бити погрешне."
 
-#: index/dlg_index.c:1160 pager/dlg_pager.c:727
+#: index/dlg_index.c:1163 pager/dlg_pager.c:725
 msgid "New mail in this mailbox"
 msgstr "Нови мејлови у овом сандучету"
 
-#: index/dlg_index.c:1180
+#: index/dlg_index.c:1183
 msgid "Mailbox was externally modified"
 msgstr "Сандуче је измењено споља"
 
-#: index/dlg_index.c:1304 index/functions.c:2946
+#: index/dlg_index.c:1307 index/functions.c:2947
 msgid "No mailbox is open"
 msgstr "Ниједно сандуче није отворено"
 
-#: index/dlg_index.c:1311
+#: index/dlg_index.c:1314
 msgid "No tagged messages"
 msgstr "Нема означених порука"
 
-#: index/dlg_index.c:1315 index/functions.c:629 menu/menu.c:358
+#: index/dlg_index.c:1318 index/functions.c:629 menu/menu.c:358
 msgid "Nothing to do"
 msgstr "Нема се шта радити"
 
@@ -3012,12 +3011,12 @@ msgstr "Нема непрочитаних порука у овом ограни�
 msgid "No unread messages"
 msgstr "Нема непрочитаних порука"
 
-#: index/functions.c:1251 menu/menu.c:191 pager/functions.c:1404
+#: index/functions.c:1251 menu/menu.c:191 pager/functions.c:1405
 #: pattern/pattern.c:578 pattern/pattern.c:734
 msgid "Search wrapped to top"
 msgstr "Претрага се вратила на почетак"
 
-#: index/functions.c:1256 pager/functions.c:1431 pattern/pattern.c:589
+#: index/functions.c:1256 pager/functions.c:1432 pattern/pattern.c:589
 #: pattern/pattern.c:745
 msgid "Search wrapped to bottom"
 msgstr "Претрага се вратила на дно"
@@ -3066,7 +3065,7 @@ msgstr "Означи поруке: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1639 index/functions.c:2291 pager/functions.c:1587
+#: index/functions.c:1639 index/functions.c:2292 pager/functions.c:1588
 msgid "Can't undelete messages"
 msgstr "Не могу се од-обрисати поруке"
 
@@ -3110,91 +3109,91 @@ msgid "Quit NeoMutt?"
 msgstr "Излаз из NeoMutt-а?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2180 pager/functions.c:1525
+#: index/functions.c:2181 pager/functions.c:1526
 msgid "Can't toggle new"
 msgstr "Не може се сменити статус нове"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2252 pager/functions.c:1556
+#: index/functions.c:2253 pager/functions.c:1557
 msgid "Can't undelete message"
 msgstr "Не може се од-обрисати порука"
 
-#: index/functions.c:2417
+#: index/functions.c:2418
 msgid "Logged out of IMAP servers"
 msgstr "Одјављен са IMAP сервера"
 
-#: index/functions.c:2460
+#: index/functions.c:2461
 msgid "No Message-Id. Unable to perform operation."
 msgstr "Нема Message-Id-а: Не може се обавити операција."
 
-#: index/functions.c:2538
+#: index/functions.c:2539
 msgid "No deleted messages found in the thread"
 msgstr "Нема обрисаних порука у овој нити"
 
-#: index/functions.c:2562
+#: index/functions.c:2563
 msgid "Enter Message-Id: "
 msgstr "Унесите Message-Id: "
 
-#: index/functions.c:2573
+#: index/functions.c:2574
 msgid "Article has no parent reference"
 msgstr "Чланак нема надређену референцу"
 
-#: index/functions.c:2595
+#: index/functions.c:2596
 msgid "Message is not visible in limited view"
 msgstr "Порука није видљива у ограниченом погледу"
 
-#: index/functions.c:2599
+#: index/functions.c:2600
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "Добављање %s са сервера..."
 
-#: index/functions.c:2610 nntp/nntp.c:2647
+#: index/functions.c:2611 nntp/nntp.c:2647
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "Чланак %s није пронађен на серверу"
 
-#: index/functions.c:2632
+#: index/functions.c:2633
 msgid "Open newsgroup in read-only mode"
 msgstr "Отвори њузгрупу у режиму само за читање"
 
-#: index/functions.c:2637
+#: index/functions.c:2638
 msgid "Open newsgroup"
 msgstr "Отвори њузгрупу"
 
-#: index/functions.c:2714 pager/functions.c:1692 pager/functions.c:1733
-#: pager/functions.c:1767
+#: index/functions.c:2715 pager/functions.c:1693 pager/functions.c:1734
+#: pager/functions.c:1768
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Постављање у ову групу није дозвољено, можда је модерисана. Наставити?"
 
-#: index/functions.c:2749
+#: index/functions.c:2750
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Нема виртуалног фолдера и Message-Id-а, прекида се"
 
-#: index/functions.c:2769
+#: index/functions.c:2770
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr "неуспешна претрага порука у notmuch-овој бази. покушајте да покренете „notmuch new“."
 
-#: index/functions.c:2779
+#: index/functions.c:2780
 msgid "Failed to read thread, aborting"
 msgstr "Неуспешно читање нити, прекида се"
 
-#: index/functions.c:2810
+#: index/functions.c:2811
 msgid "No query, aborting"
 msgstr "Нема упита, прекида се"
 
-#: index/functions.c:2843
+#: index/functions.c:2844
 msgid "Windowed queries disabled"
 msgstr "Прозорски упити нису подржани"
 
-#: index/functions.c:2850
+#: index/functions.c:2851
 msgid "No notmuch vfolder currently loaded"
 msgstr "Тренутно ниједан notmuch-ов vfolder није учитан"
 
-#: index/functions.c:2952
+#: index/functions.c:2953
 msgid "There are no messages"
 msgstr "Нема порука"
 
-#: index/functions.c:2959
+#: index/functions.c:2960
 msgid "No visible messages"
 msgstr "Нема видљивих порука"
 
@@ -3684,18 +3683,18 @@ msgstr "Скочи на: "
 msgid "Invalid index number"
 msgstr "Неисправан број индекса"
 
-#: menu/menu.c:155 pager/functions.c:1235 pattern/pattern.c:504
+#: menu/menu.c:155 pager/functions.c:1236 pattern/pattern.c:504
 #: pattern/pattern.c:662
 msgid "Search for: "
 msgstr "Тражи: "
 
-#: menu/menu.c:156 pager/functions.c:1235 pattern/pattern.c:504
+#: menu/menu.c:156 pager/functions.c:1236 pattern/pattern.c:504
 #: pattern/pattern.c:662
 msgid "Reverse search for: "
 msgstr "Тражи уназад: "
 
-#: menu/menu.c:210 pager/functions.c:1343 pager/functions.c:1401
-#: pager/functions.c:1428 pattern/pattern.c:636 pattern/pattern.c:792
+#: menu/menu.c:210 pager/functions.c:1344 pager/functions.c:1402
+#: pager/functions.c:1429 pattern/pattern.c:636 pattern/pattern.c:792
 msgid "Not found"
 msgstr "Није пронађено"
 
@@ -3821,7 +3820,7 @@ msgstr "Грешка: Не може се учитати lua интерпрете
 msgid "Couldn't source lua source: %s"
 msgstr "Не може се учитати lua изворни код: %s"
 
-#: mutt_mailbox.c:257
+#: mutt_mailbox.c:260
 msgid "New mail in "
 msgstr "Нова пошта у "
 
@@ -3916,9 +3915,8 @@ msgstr "Не може се отворити фасцикла са отпацим
 
 #. L10N: Displayed if appending to $trash fails when syncing or closing a mailbox
 #: mx.c:586
-#, fuzzy
 msgid "Unable to append to trash folder"
-msgstr "Не може се отворити привремена датотека"
+msgstr "Не може се дописати фасцикли са отпацима"
 
 #: mx.c:646
 msgid "Mark all articles read?"
@@ -3984,15 +3982,15 @@ msgstr "Стање сандучета је забележено"
 msgid "Can't open %s: it is a pipe"
 msgstr "Не може се отворити %s: то је цев"
 
-#: mx.c:1840
+#: mx.c:1849
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Не може се сменити писање у сандучету за читање"
 
-#: mx.c:1847
+#: mx.c:1856
 msgid "Changes to folder will be written on folder exit"
 msgstr "Промене фасцикле ће бити уписане при изласку из ње"
 
-#: mx.c:1852
+#: mx.c:1861
 msgid "Changes to folder will not be written"
 msgstr "Промене фасцикле неће бити уписане"
 
@@ -5201,17 +5199,17 @@ msgstr "nm_default_url мора бити: notmuch://<апсолутна пута
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
 msgstr "Неисправна вредност nm_query_window_timebase (исправне вредности су: hour, day, week, month, year)"
 
-#: notmuch/db.c:139
+#: notmuch/db.c:147
 #, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
 msgstr "Чекање на notmuch базу... (%d sec)"
 
-#: notmuch/db.c:157
+#: notmuch/db.c:165
 #, c-format
 msgid "Can't open notmuch database: %s: %s"
 msgstr "Не може се отворити notmuch база: %s: %s"
 
-#: notmuch/db.c:158
+#: notmuch/db.c:166
 msgid "unknown reason"
 msgstr "непознат разлог"
 
@@ -7469,7 +7467,6 @@ msgstr "Опције за компајлирање:"
 msgid "Debug options:"
 msgstr "Опције за дебаговање:"
 
-#, c-format
 #~ msgid "%s: color not supported by term"
 #~ msgstr "%s: терминал не подржава ову боју"
 
@@ -7489,13 +7486,14 @@ msgstr "Опције за дебаговање:"
 #~ msgid "%s: no such object"
 #~ msgstr "%s: нема таквог објекта"
 
+#, c-format
 #~ msgid "Already skipped past headers"
 #~ msgstr "Заглавља су већ прескочена"
 
-#, c-format
 #~ msgid "Maximum quoting level is %d"
 #~ msgstr "Максимални ниво цитирања је %d"
 
+#, c-format
 #~ msgid "Option %s may not be set or reset from the pager"
 #~ msgstr "Опција %s се не може поставити или вратити из страничника"
 

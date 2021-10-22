@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2021-10-19 10:45+0100\n"
+"POT-Creation-Date: 2021-10-22 12:41+0100\n"
 "PO-Revision-Date: 2020-06-15 02:23-0700\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
@@ -238,11 +238,11 @@ msgstr "管道"
 msgid "Print"
 msgstr "打印"
 
-#: attach/dlg_attach.c:484 index/functions.c:2971 pager/functions.c:81
+#: attach/dlg_attach.c:484 index/functions.c:2972 pager/functions.c:81
 msgid "Function not permitted in attach-message mode"
 msgstr "功能在附加信件(attach-message)模式下不被支持"
 
-#: attach/dlg_attach.c:501 index/functions.c:2965 mx.c:941 pager/functions.c:79
+#: attach/dlg_attach.c:501 index/functions.c:2966 mx.c:941 pager/functions.c:79
 msgid "Mailbox is read-only"
 msgstr "信箱是只读的"
 
@@ -274,7 +274,7 @@ msgstr "从已签名的信件中删除附件可能导致签名失效"
 msgid "Only deletion of multipart attachments is supported"
 msgstr "只支持删除多段附件"
 
-#: attach/dlg_attach.c:863 index/functions.c:2709 pager/functions.c:1687
+#: attach/dlg_attach.c:863 index/functions.c:2710 pager/functions.c:1688
 msgid "Reply by mail as poster prefers?"
 msgstr "按发帖人的偏好通过邮件回复？"
 
@@ -288,8 +288,8 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap 撰写条目需要 %%s"
 
 #: attach/mutt_attach.c:162 attach/mutt_attach.c:296 compmbox/compress.c:340
-#: compose/functions.c:1179 gui/curs_lib.c:388 index/dlg_index.c:1172
-#: index/dlg_index.c:1219 pager/dlg_pager.c:783 pager/do_pager.c:170
+#: compose/functions.c:1179 gui/curs_lib.c:388 index/dlg_index.c:1175
+#: index/dlg_index.c:1222 pager/dlg_pager.c:781 pager/do_pager.c:170
 #: pager/message.c:338 send/sendlib.c:1067
 #, c-format
 msgid "Error running \"%s\""
@@ -2610,12 +2610,12 @@ msgstr "信箱已重命名"
 msgid "Mailbox %s@%s closed"
 msgstr "信箱 %s@%s 已关闭"
 
-#: imap/command.c:1176
+#: imap/command.c:1179
 #, c-format
 msgid "IMAP command failed: %s"
 msgstr "IMAP 命令失败：%s"
 
-#: imap/command.c:1277 imap/command.c:1399
+#: imap/command.c:1280 imap/command.c:1402
 #, c-format
 msgid "Connection to %s timed out"
 msgstr "到 %s 的连接已超时"
@@ -2748,7 +2748,7 @@ msgstr "无法重开信箱"
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "无法取回此版本的 IMAP 服务器的信件头"
 
-#: imap/message.c:1122 index/functions.c:2464 nntp/nntp.c:1229 pop/pop.c:369
+#: imap/message.c:1122 index/functions.c:2465 nntp/nntp.c:1229 pop/pop.c:369
 msgid "Fetching message headers..."
 msgstr "正在取回信件信件头..."
 
@@ -2823,27 +2823,27 @@ msgstr "无法创建查询，正在中止"
 msgid "%s is not a mailbox"
 msgstr "%s 不是信箱"
 
-#: index/dlg_index.c:1151
+#: index/dlg_index.c:1154
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "信箱已有外部修改。标记可能有错误。"
 
-#: index/dlg_index.c:1160 pager/dlg_pager.c:727
+#: index/dlg_index.c:1163 pager/dlg_pager.c:725
 msgid "New mail in this mailbox"
 msgstr "此信箱中有新邮件"
 
-#: index/dlg_index.c:1180
+#: index/dlg_index.c:1183
 msgid "Mailbox was externally modified"
 msgstr "信箱已有外部修改"
 
-#: index/dlg_index.c:1304 index/functions.c:2946
+#: index/dlg_index.c:1307 index/functions.c:2947
 msgid "No mailbox is open"
 msgstr "没有已打开信箱"
 
-#: index/dlg_index.c:1311
+#: index/dlg_index.c:1314
 msgid "No tagged messages"
 msgstr "没有已标记的信件"
 
-#: index/dlg_index.c:1315 index/functions.c:629 menu/menu.c:358
+#: index/dlg_index.c:1318 index/functions.c:629 menu/menu.c:358
 msgid "Nothing to do"
 msgstr "无事可做"
 
@@ -2991,12 +2991,12 @@ msgstr "在此限制视图中没有未读信件"
 msgid "No unread messages"
 msgstr "没有尚未读取的信件"
 
-#: index/functions.c:1251 menu/menu.c:191 pager/functions.c:1404
+#: index/functions.c:1251 menu/menu.c:191 pager/functions.c:1405
 #: pattern/pattern.c:578 pattern/pattern.c:734
 msgid "Search wrapped to top"
 msgstr "搜寻从开头重新开始"
 
-#: index/functions.c:1256 pager/functions.c:1431 pattern/pattern.c:589
+#: index/functions.c:1256 pager/functions.c:1432 pattern/pattern.c:589
 #: pattern/pattern.c:745
 msgid "Search wrapped to bottom"
 msgstr "搜寻从结尾重新开始"
@@ -3045,7 +3045,7 @@ msgstr "标记符合此模式的信件："
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1639 index/functions.c:2291 pager/functions.c:1587
+#: index/functions.c:1639 index/functions.c:2292 pager/functions.c:1588
 msgid "Can't undelete messages"
 msgstr "不能反删除信件"
 
@@ -3089,91 +3089,91 @@ msgid "Quit NeoMutt?"
 msgstr "离开 NeoMutt？"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2180 pager/functions.c:1525
+#: index/functions.c:2181 pager/functions.c:1526
 msgid "Can't toggle new"
 msgstr "无法切换新信件标记"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2252 pager/functions.c:1556
+#: index/functions.c:2253 pager/functions.c:1557
 msgid "Can't undelete message"
 msgstr "不能反删除信件"
 
-#: index/functions.c:2417
+#: index/functions.c:2418
 msgid "Logged out of IMAP servers"
 msgstr "已从 IMAP 服务器退出"
 
-#: index/functions.c:2460
+#: index/functions.c:2461
 msgid "No Message-Id. Unable to perform operation."
 msgstr "没有信件 ID。无法执行操作"
 
-#: index/functions.c:2538
+#: index/functions.c:2539
 msgid "No deleted messages found in the thread"
 msgstr "在该线程中没有发现被删除的信件"
 
-#: index/functions.c:2562
+#: index/functions.c:2563
 msgid "Enter Message-Id: "
 msgstr "请输入信件 ID："
 
-#: index/functions.c:2573
+#: index/functions.c:2574
 msgid "Article has no parent reference"
 msgstr "帖子没有父索引"
 
-#: index/functions.c:2595
+#: index/functions.c:2596
 msgid "Message is not visible in limited view"
 msgstr "信件在此限制视图中不可见"
 
-#: index/functions.c:2599
+#: index/functions.c:2600
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "正在从服务器上取回 %s..."
 
-#: index/functions.c:2610 nntp/nntp.c:2647
+#: index/functions.c:2611 nntp/nntp.c:2647
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "帖子 %s 没有在服务器上找到"
 
-#: index/functions.c:2632
+#: index/functions.c:2633
 msgid "Open newsgroup in read-only mode"
 msgstr "用只读模式打开新闻组"
 
-#: index/functions.c:2637
+#: index/functions.c:2638
 msgid "Open newsgroup"
 msgstr "打开新闻组"
 
-#: index/functions.c:2714 pager/functions.c:1692 pager/functions.c:1733
-#: pager/functions.c:1767
+#: index/functions.c:2715 pager/functions.c:1693 pager/functions.c:1734
+#: pager/functions.c:1768
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "不允许在这个组里发帖，帖子可能会被审核，继续？"
 
-#: index/functions.c:2749
+#: index/functions.c:2750
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "没有虚拟文件夹及 Message-Id，正在中止"
 
-#: index/functions.c:2769
+#: index/functions.c:2770
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr "在 notmuch 数据库中查找信件失败。请尝试运行“notmuch new”。"
 
-#: index/functions.c:2779
+#: index/functions.c:2780
 msgid "Failed to read thread, aborting"
 msgstr "无法读取线索，正在中止"
 
-#: index/functions.c:2810
+#: index/functions.c:2811
 msgid "No query, aborting"
 msgstr "没有查询，正在中止"
 
-#: index/functions.c:2843
+#: index/functions.c:2844
 msgid "Windowed queries disabled"
 msgstr "窗口查询已禁用"
 
-#: index/functions.c:2850
+#: index/functions.c:2851
 msgid "No notmuch vfolder currently loaded"
 msgstr "现在没有加载 notmuch 虚拟文件夹"
 
-#: index/functions.c:2952
+#: index/functions.c:2953
 msgid "There are no messages"
 msgstr "没有信件"
 
-#: index/functions.c:2959
+#: index/functions.c:2960
 msgid "No visible messages"
 msgstr "无可见信件"
 
@@ -3650,18 +3650,18 @@ msgstr "跳到："
 msgid "Invalid index number"
 msgstr "无效的索引编号"
 
-#: menu/menu.c:155 pager/functions.c:1235 pattern/pattern.c:504
+#: menu/menu.c:155 pager/functions.c:1236 pattern/pattern.c:504
 #: pattern/pattern.c:662
 msgid "Search for: "
 msgstr "搜寻："
 
-#: menu/menu.c:156 pager/functions.c:1235 pattern/pattern.c:504
+#: menu/menu.c:156 pager/functions.c:1236 pattern/pattern.c:504
 #: pattern/pattern.c:662
 msgid "Reverse search for: "
 msgstr "返向搜寻："
 
-#: menu/menu.c:210 pager/functions.c:1343 pager/functions.c:1401
-#: pager/functions.c:1428 pattern/pattern.c:636 pattern/pattern.c:792
+#: menu/menu.c:210 pager/functions.c:1344 pager/functions.c:1402
+#: pager/functions.c:1429 pattern/pattern.c:636 pattern/pattern.c:792
 msgid "Not found"
 msgstr "没有找到"
 
@@ -3787,7 +3787,7 @@ msgstr "错误：无法加载 lua 解释器"
 msgid "Couldn't source lua source: %s"
 msgstr "无法读取 Lua 源码：%s"
 
-#: mutt_mailbox.c:257
+#: mutt_mailbox.c:260
 msgid "New mail in "
 msgstr "有新信件在 "
 
@@ -3944,15 +3944,15 @@ msgstr "信箱已检查"
 msgid "Can't open %s: it is a pipe"
 msgstr "无法打开 %s：这是管道设备文件"
 
-#: mx.c:1840
+#: mx.c:1849
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "无法在只读信箱切换可写"
 
-#: mx.c:1847
+#: mx.c:1856
 msgid "Changes to folder will be written on folder exit"
 msgstr "在退出文件夹后将会把改变写入文件夹"
 
-#: mx.c:1852
+#: mx.c:1861
 msgid "Changes to folder will not be written"
 msgstr "将不会把改变写入文件夹"
 
@@ -5160,17 +5160,17 @@ msgstr ""
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
 msgstr "非法的 nm_query_window_timebase 值(合法值是：小时，天，周，月或者年)"
 
-#: notmuch/db.c:139
+#: notmuch/db.c:147
 #, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
 msgstr "正在等待 notmuch 数据库...（已等待 %d 秒）"
 
-#: notmuch/db.c:157
+#: notmuch/db.c:165
 #, c-format
 msgid "Can't open notmuch database: %s: %s"
 msgstr "无法打开 notmuch 数据库：%s：%s"
 
-#: notmuch/db.c:158
+#: notmuch/db.c:166
 msgid "unknown reason"
 msgstr "未知原因"
 

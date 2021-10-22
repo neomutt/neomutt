@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2021-10-19 10:45+0100\n"
+"POT-Creation-Date: 2021-10-22 12:41+0100\n"
 "PO-Revision-Date: 2020-04-20 15:18+0100\n"
 "Last-Translator: Jakub Jindra <jakub.jindra@socialbakers.com>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -242,11 +242,11 @@ msgstr "Poslat rourou"
 msgid "Print"
 msgstr "Tisk"
 
-#: attach/dlg_attach.c:484 index/functions.c:2971 pager/functions.c:81
+#: attach/dlg_attach.c:484 index/functions.c:2972 pager/functions.c:81
 msgid "Function not permitted in attach-message mode"
 msgstr "V režimu přikládání zpráv není tato funkce povolena"
 
-#: attach/dlg_attach.c:501 index/functions.c:2965 mx.c:941 pager/functions.c:79
+#: attach/dlg_attach.c:501 index/functions.c:2966 mx.c:941 pager/functions.c:79
 msgid "Mailbox is read-only"
 msgstr "Ze schránky je možné pouze číst"
 
@@ -278,7 +278,7 @@ msgstr "Mazání příloh z podepsaných zpráv může zneplatnit podpis"
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Podporováno je pouze mazání příloh o více částech"
 
-#: attach/dlg_attach.c:863 index/functions.c:2709 pager/functions.c:1687
+#: attach/dlg_attach.c:863 index/functions.c:2710 pager/functions.c:1688
 msgid "Reply by mail as poster prefers?"
 msgstr "Odpovědět e-mailem dle návrhu autora?"
 
@@ -292,8 +292,8 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Položka mailcapu „compose“ vyžaduje %%s"
 
 #: attach/mutt_attach.c:162 attach/mutt_attach.c:296 compmbox/compress.c:340
-#: compose/functions.c:1179 gui/curs_lib.c:388 index/dlg_index.c:1172
-#: index/dlg_index.c:1219 pager/dlg_pager.c:783 pager/do_pager.c:170
+#: compose/functions.c:1179 gui/curs_lib.c:388 index/dlg_index.c:1175
+#: index/dlg_index.c:1222 pager/dlg_pager.c:781 pager/do_pager.c:170
 #: pager/message.c:338 send/sendlib.c:1067
 #, c-format
 msgid "Error running \"%s\""
@@ -2641,12 +2641,12 @@ msgstr "Schránka přejmenována"
 msgid "Mailbox %s@%s closed"
 msgstr "Schránka %s@%s uzavřena"
 
-#: imap/command.c:1176
+#: imap/command.c:1179
 #, c-format
 msgid "IMAP command failed: %s"
 msgstr "Příkaz protokolu IMAP selhal: %s"
 
-#: imap/command.c:1277 imap/command.c:1399
+#: imap/command.c:1280 imap/command.c:1402
 #, c-format
 msgid "Connection to %s timed out"
 msgstr "Vypršel časový limit spojení k %s"
@@ -2785,7 +2785,7 @@ msgstr "QRESYNC selhal.  Znovu otevírám schránku."
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Z IMAP serveru této verze nelze stahovat hlavičky"
 
-#: imap/message.c:1122 index/functions.c:2464 nntp/nntp.c:1229 pop/pop.c:369
+#: imap/message.c:1122 index/functions.c:2465 nntp/nntp.c:1229 pop/pop.c:369
 msgid "Fetching message headers..."
 msgstr "Stahuji hlavičky zpráv…"
 
@@ -2860,27 +2860,27 @@ msgstr "Nezdařilo se vytvořit dotaz, zrušeno"
 msgid "%s is not a mailbox"
 msgstr "%s není schránkou"
 
-#: index/dlg_index.c:1151
+#: index/dlg_index.c:1154
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Obsah schránky byl změněn zvenčí. Atributy mohou být nesprávné."
 
-#: index/dlg_index.c:1160 pager/dlg_pager.c:727
+#: index/dlg_index.c:1163 pager/dlg_pager.c:725
 msgid "New mail in this mailbox"
 msgstr "V této schránce je nová pošta"
 
-#: index/dlg_index.c:1180
+#: index/dlg_index.c:1183
 msgid "Mailbox was externally modified"
 msgstr "Obsah schránky byl změněn zvenčí"
 
-#: index/dlg_index.c:1304 index/functions.c:2946
+#: index/dlg_index.c:1307 index/functions.c:2947
 msgid "No mailbox is open"
 msgstr "Žádná schránka není otevřena"
 
-#: index/dlg_index.c:1311
+#: index/dlg_index.c:1314
 msgid "No tagged messages"
 msgstr "Žádné zprávy nejsou označeny"
 
-#: index/dlg_index.c:1315 index/functions.c:629 menu/menu.c:358
+#: index/dlg_index.c:1318 index/functions.c:629 menu/menu.c:358
 msgid "Nothing to do"
 msgstr "Není co dělat"
 
@@ -3031,12 +3031,12 @@ msgstr "Žádné nepřečtené zprávy v tomto omezeném zobrazení"
 msgid "No unread messages"
 msgstr "Žádné nepřečtené zprávy"
 
-#: index/functions.c:1251 menu/menu.c:191 pager/functions.c:1404
+#: index/functions.c:1251 menu/menu.c:191 pager/functions.c:1405
 #: pattern/pattern.c:578 pattern/pattern.c:734
 msgid "Search wrapped to top"
 msgstr "Hledání pokračuje od začátku"
 
-#: index/functions.c:1256 pager/functions.c:1431 pattern/pattern.c:589
+#: index/functions.c:1256 pager/functions.c:1432 pattern/pattern.c:589
 #: pattern/pattern.c:745
 msgid "Search wrapped to bottom"
 msgstr "Hledání pokračuje od konce"
@@ -3085,7 +3085,7 @@ msgstr "Označit zprávy shodující se s: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1639 index/functions.c:2291 pager/functions.c:1587
+#: index/functions.c:1639 index/functions.c:2292 pager/functions.c:1588
 msgid "Can't undelete messages"
 msgstr "Zprávy nelze obnovit"
 
@@ -3129,91 +3129,91 @@ msgid "Quit NeoMutt?"
 msgstr "Ukončit NeoMutt?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2180 pager/functions.c:1525
+#: index/functions.c:2181 pager/functions.c:1526
 msgid "Can't toggle new"
 msgstr "Nelze přepnout mezi nová/stará"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2252 pager/functions.c:1556
+#: index/functions.c:2253 pager/functions.c:1557
 msgid "Can't undelete message"
 msgstr "Zprávu nelze obnovit"
 
-#: index/functions.c:2417
+#: index/functions.c:2418
 msgid "Logged out of IMAP servers"
 msgstr "Odhlášeno z IMAP serverů"
 
-#: index/functions.c:2460
+#: index/functions.c:2461
 msgid "No Message-Id. Unable to perform operation."
 msgstr "Chybějící Message-Id. Nelze provést operaci."
 
-#: index/functions.c:2538
+#: index/functions.c:2539
 msgid "No deleted messages found in the thread"
 msgstr "Nebyly nalezeny žádné smazané zprávy ve vláknu"
 
-#: index/functions.c:2562
+#: index/functions.c:2563
 msgid "Enter Message-Id: "
 msgstr "Zadejte Message-Id: "
 
-#: index/functions.c:2573
+#: index/functions.c:2574
 msgid "Article has no parent reference"
 msgstr "Článek neobsahuje odkaz na jiný nadřazený"
 
-#: index/functions.c:2595
+#: index/functions.c:2596
 msgid "Message is not visible in limited view"
 msgstr "Zpráva není v omezeném zobrazení viditelná"
 
-#: index/functions.c:2599
+#: index/functions.c:2600
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "Stahuji %s ze serveru…"
 
-#: index/functions.c:2610 nntp/nntp.c:2647
+#: index/functions.c:2611 nntp/nntp.c:2647
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "Článek %s nebyl nalezen na serveru"
 
-#: index/functions.c:2632
+#: index/functions.c:2633
 msgid "Open newsgroup in read-only mode"
 msgstr "Otevřít diskusní skupinu pouze pro čtení"
 
-#: index/functions.c:2637
+#: index/functions.c:2638
 msgid "Open newsgroup"
 msgstr "Otevřít diskusní skupinu"
 
-#: index/functions.c:2714 pager/functions.c:1692 pager/functions.c:1733
-#: pager/functions.c:1767
+#: index/functions.c:2715 pager/functions.c:1693 pager/functions.c:1734
+#: pager/functions.c:1768
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Publikování do této skupiny není povoleno, může být moderována. Pokračovat?"
 
-#: index/functions.c:2749
+#: index/functions.c:2750
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Virtuální složka ani Message-Id nejsou specifikovány, zrušeno"
 
-#: index/functions.c:2769
+#: index/functions.c:2770
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr "nelze nalézt zprávu v databází notmuch. Zkuste spustit „notmuch new“."
 
-#: index/functions.c:2779
+#: index/functions.c:2780
 msgid "Failed to read thread, aborting"
 msgstr "Selhalo čtení vlákna, zrušeno"
 
-#: index/functions.c:2810
+#: index/functions.c:2811
 msgid "No query, aborting"
 msgstr "Dotaz není specifikován, zrušeno"
 
-#: index/functions.c:2843
+#: index/functions.c:2844
 msgid "Windowed queries disabled"
 msgstr "Dotazy do okna nejsou povoleny"
 
-#: index/functions.c:2850
+#: index/functions.c:2851
 msgid "No notmuch vfolder currently loaded"
 msgstr "Není natažena žádná virtuální složka (notmuch)"
 
-#: index/functions.c:2952
+#: index/functions.c:2953
 msgid "There are no messages"
 msgstr "Nejsou žádné zprávy"
 
-#: index/functions.c:2959
+#: index/functions.c:2960
 msgid "No visible messages"
 msgstr "Žádné viditelné zprávy"
 
@@ -3694,18 +3694,18 @@ msgstr "Přeskočit na: "
 msgid "Invalid index number"
 msgstr "Neplatné indexové číslo"
 
-#: menu/menu.c:155 pager/functions.c:1235 pattern/pattern.c:504
+#: menu/menu.c:155 pager/functions.c:1236 pattern/pattern.c:504
 #: pattern/pattern.c:662
 msgid "Search for: "
 msgstr "Vyhledat: "
 
-#: menu/menu.c:156 pager/functions.c:1235 pattern/pattern.c:504
+#: menu/menu.c:156 pager/functions.c:1236 pattern/pattern.c:504
 #: pattern/pattern.c:662
 msgid "Reverse search for: "
 msgstr "Vyhledat obráceným směrem: "
 
-#: menu/menu.c:210 pager/functions.c:1343 pager/functions.c:1401
-#: pager/functions.c:1428 pattern/pattern.c:636 pattern/pattern.c:792
+#: menu/menu.c:210 pager/functions.c:1344 pager/functions.c:1402
+#: pager/functions.c:1429 pattern/pattern.c:636 pattern/pattern.c:792
 msgid "Not found"
 msgstr "Nenalezeno"
 
@@ -3831,7 +3831,7 @@ msgstr "Chyba: nelze zavést interpret jazyka lua"
 msgid "Couldn't source lua source: %s"
 msgstr "Nelze vložit lua zdroj: %s"
 
-#: mutt_mailbox.c:257
+#: mutt_mailbox.c:260
 msgid "New mail in "
 msgstr "Nová pošta ve složce "
 
@@ -3994,15 +3994,15 @@ msgstr "Do schránky byla vložena kontrolní značka"
 msgid "Can't open %s: it is a pipe"
 msgstr "Nelze otevřít %s: soubor je typu pipe"
 
-#: mx.c:1840
+#: mx.c:1849
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Schránka je určena pouze pro čtení, zápis nelze zapnout"
 
-#: mx.c:1847
+#: mx.c:1856
 msgid "Changes to folder will be written on folder exit"
 msgstr "Změny obsahu složky budou uloženy po jejím uzavření"
 
-#: mx.c:1852
+#: mx.c:1861
 msgid "Changes to folder will not be written"
 msgstr "Změny obsahu složky nebudou uloženy"
 
@@ -5211,17 +5211,17 @@ msgstr "nm_default_url musí být ve tvaru: notmuch://<absolutní cesta> . Souč
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
 msgstr "Neplatná hodnota nm_query_window_timebase (platné hodnoty jsou: hour, day, week, month, year)"
 
-#: notmuch/db.c:139
+#: notmuch/db.c:147
 #, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
 msgstr "Čekám na zamknutí notmuch databáze… (%d s)"
 
-#: notmuch/db.c:157
+#: notmuch/db.c:165
 #, c-format
 msgid "Can't open notmuch database: %s: %s"
 msgstr "Nelze otevřít notmuch databázi: %s: %s"
 
-#: notmuch/db.c:158
+#: notmuch/db.c:166
 msgid "unknown reason"
 msgstr "neznámá chyba"
 

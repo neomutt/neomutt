@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2021-10-19 10:45+0100\n"
+"POT-Creation-Date: 2021-10-22 12:41+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Adán Somoza\n"
 "Language-Team: \n"
@@ -234,11 +234,11 @@ msgstr "Redirigir"
 msgid "Print"
 msgstr "Mostrar"
 
-#: attach/dlg_attach.c:484 index/functions.c:2971 pager/functions.c:81
+#: attach/dlg_attach.c:484 index/functions.c:2972 pager/functions.c:81
 msgid "Function not permitted in attach-message mode"
 msgstr "Función no permitida en el modo de adjuntar mensaje"
 
-#: attach/dlg_attach.c:501 index/functions.c:2965 mx.c:941 pager/functions.c:79
+#: attach/dlg_attach.c:501 index/functions.c:2966 mx.c:941 pager/functions.c:79
 msgid "Mailbox is read-only"
 msgstr "El buzón es de sólo lectura"
 
@@ -270,7 +270,7 @@ msgstr "Eliminar adjuntos de mensajes firmados invalidará la firma"
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Suprimir sólo es soportado con archivos adjuntos tipo múltiple"
 
-#: attach/dlg_attach.c:863 index/functions.c:2709 pager/functions.c:1687
+#: attach/dlg_attach.c:863 index/functions.c:2710 pager/functions.c:1688
 msgid "Reply by mail as poster prefers?"
 msgstr "¿Responder por correo según las preferencias del autor?"
 
@@ -284,8 +284,8 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "La entrada \"compose\" en el archivo Mailcap requiere %%s"
 
 #: attach/mutt_attach.c:162 attach/mutt_attach.c:296 compmbox/compress.c:340
-#: compose/functions.c:1179 gui/curs_lib.c:388 index/dlg_index.c:1172
-#: index/dlg_index.c:1219 pager/dlg_pager.c:783 pager/do_pager.c:170
+#: compose/functions.c:1179 gui/curs_lib.c:388 index/dlg_index.c:1175
+#: index/dlg_index.c:1222 pager/dlg_pager.c:781 pager/do_pager.c:170
 #: pager/message.c:338 send/sendlib.c:1067
 #, c-format
 msgid "Error running \"%s\""
@@ -2615,12 +2615,12 @@ msgstr "Se renombró el buzón"
 msgid "Mailbox %s@%s closed"
 msgstr "Se cerró el buzón %s@%s"
 
-#: imap/command.c:1176
+#: imap/command.c:1179
 #, c-format
 msgid "IMAP command failed: %s"
 msgstr "Comando IMAP falló: %s"
 
-#: imap/command.c:1277 imap/command.c:1399
+#: imap/command.c:1280 imap/command.c:1402
 #, c-format
 msgid "Connection to %s timed out"
 msgstr "Venció la conexión a %s"
@@ -2756,7 +2756,7 @@ msgstr "Imposible reabrir buzón"
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Imposible obtener encabezados a partir de esta versión del servidor IMAP"
 
-#: imap/message.c:1122 index/functions.c:2464 nntp/nntp.c:1229 pop/pop.c:369
+#: imap/message.c:1122 index/functions.c:2465 nntp/nntp.c:1229 pop/pop.c:369
 msgid "Fetching message headers..."
 msgstr "Obteniendo encabezados de mensajes..."
 
@@ -2831,27 +2831,27 @@ msgstr "Fallo al crear petición, abortando"
 msgid "%s is not a mailbox"
 msgstr "%s no es un buzón"
 
-#: index/dlg_index.c:1151
+#: index/dlg_index.c:1154
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Buzón fue modificado externamente.  Indicadores posiblemente incorrectos."
 
-#: index/dlg_index.c:1160 pager/dlg_pager.c:727
+#: index/dlg_index.c:1163 pager/dlg_pager.c:725
 msgid "New mail in this mailbox"
 msgstr "Correo nuevo en este buzón"
 
-#: index/dlg_index.c:1180
+#: index/dlg_index.c:1183
 msgid "Mailbox was externally modified"
 msgstr "Buzón fue modificado externamente"
 
-#: index/dlg_index.c:1304 index/functions.c:2946
+#: index/dlg_index.c:1307 index/functions.c:2947
 msgid "No mailbox is open"
 msgstr "Ningún buzón abierto"
 
-#: index/dlg_index.c:1311
+#: index/dlg_index.c:1314
 msgid "No tagged messages"
 msgstr "No hay mensajes marcados"
 
-#: index/dlg_index.c:1315 index/functions.c:629 menu/menu.c:358
+#: index/dlg_index.c:1318 index/functions.c:629 menu/menu.c:358
 msgid "Nothing to do"
 msgstr "Nada que hacer"
 
@@ -3000,12 +3000,12 @@ msgstr "No hay ningún mensaje no leído en esta pestaña"
 msgid "No unread messages"
 msgstr "No hay mensajes sin leer"
 
-#: index/functions.c:1251 menu/menu.c:191 pager/functions.c:1404
+#: index/functions.c:1251 menu/menu.c:191 pager/functions.c:1405
 #: pattern/pattern.c:578 pattern/pattern.c:734
 msgid "Search wrapped to top"
 msgstr "La búsqueda volvió a empezar desde arriba"
 
-#: index/functions.c:1256 pager/functions.c:1431 pattern/pattern.c:589
+#: index/functions.c:1256 pager/functions.c:1432 pattern/pattern.c:589
 #: pattern/pattern.c:745
 msgid "Search wrapped to bottom"
 msgstr "La búsqueda volvió a empezar desde abajo"
@@ -3054,7 +3054,7 @@ msgstr "Marcar mensajes que coincidan con: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1639 index/functions.c:2291 pager/functions.c:1587
+#: index/functions.c:1639 index/functions.c:2292 pager/functions.c:1588
 msgid "Can't undelete messages"
 msgstr "No se pueden recuperar mensajes borrados"
 
@@ -3098,91 +3098,91 @@ msgid "Quit NeoMutt?"
 msgstr "¿Salir de NeoMutt?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2180 pager/functions.c:1525
+#: index/functions.c:2181 pager/functions.c:1526
 msgid "Can't toggle new"
 msgstr "No se puede activar nuevo"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2252 pager/functions.c:1556
+#: index/functions.c:2253 pager/functions.c:1557
 msgid "Can't undelete message"
 msgstr "No se puede recuperar el mensaje borrado"
 
-#: index/functions.c:2417
+#: index/functions.c:2418
 msgid "Logged out of IMAP servers"
 msgstr "Se cerró la conexión a los servidores IMAP"
 
-#: index/functions.c:2460
+#: index/functions.c:2461
 msgid "No Message-Id. Unable to perform operation."
 msgstr "Sin identificación de mensaje. No se puede realizar la operación."
 
-#: index/functions.c:2538
+#: index/functions.c:2539
 msgid "No deleted messages found in the thread"
 msgstr "Ningún mensaje borrado encontrado en el hilo"
 
-#: index/functions.c:2562
+#: index/functions.c:2563
 msgid "Enter Message-Id: "
 msgstr "Introducir la identificación del mensaje: "
 
-#: index/functions.c:2573
+#: index/functions.c:2574
 msgid "Article has no parent reference"
 msgstr "Al articulo no tiene referencia"
 
-#: index/functions.c:2595
+#: index/functions.c:2596
 msgid "Message is not visible in limited view"
 msgstr "El mensaje no es visible en vista limitada"
 
-#: index/functions.c:2599
+#: index/functions.c:2600
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "Obteniendo %s desde el servidor..."
 
-#: index/functions.c:2610 nntp/nntp.c:2647
+#: index/functions.c:2611 nntp/nntp.c:2647
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "Artículo %s no encontrado en el servidor"
 
-#: index/functions.c:2632
+#: index/functions.c:2633
 msgid "Open newsgroup in read-only mode"
 msgstr "Abrir grupo de noticias en modo de sólo lectura"
 
-#: index/functions.c:2637
+#: index/functions.c:2638
 msgid "Open newsgroup"
 msgstr "Abrir grupo de noticias"
 
-#: index/functions.c:2714 pager/functions.c:1692 pager/functions.c:1733
-#: pager/functions.c:1767
+#: index/functions.c:2715 pager/functions.c:1693 pager/functions.c:1734
+#: pager/functions.c:1768
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Enviar un mensaje a este grupo no está permitido, podría ser moderado. ¿Continuar?"
 
-#: index/functions.c:2749
+#: index/functions.c:2750
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "No existe carpeta virtual ni identificación de mensaje, cancelando"
 
-#: index/functions.c:2769
+#: index/functions.c:2770
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr "Fallo al encontrar el mensaje en la base de datos notmuch. Intente 'notmuch new'"
 
-#: index/functions.c:2779
+#: index/functions.c:2780
 msgid "Failed to read thread, aborting"
 msgstr "Fallo al leer el hilo, cancelando"
 
-#: index/functions.c:2810
+#: index/functions.c:2811
 msgid "No query, aborting"
 msgstr "Sin asunto, cancelando"
 
-#: index/functions.c:2843
+#: index/functions.c:2844
 msgid "Windowed queries disabled"
 msgstr "Los asuntos en ventana están desactivados"
 
-#: index/functions.c:2850
+#: index/functions.c:2851
 msgid "No notmuch vfolder currently loaded"
 msgstr "No hay carpeta 'vfolder' de notmuch cargada"
 
-#: index/functions.c:2952
+#: index/functions.c:2953
 msgid "There are no messages"
 msgstr "No hay nuevos mensajes"
 
-#: index/functions.c:2959
+#: index/functions.c:2960
 msgid "No visible messages"
 msgstr "No hay mensajes visibles"
 
@@ -3686,18 +3686,18 @@ msgstr "Saltar a: "
 msgid "Invalid index number"
 msgstr "Número de índice inválido"
 
-#: menu/menu.c:155 pager/functions.c:1235 pattern/pattern.c:504
+#: menu/menu.c:155 pager/functions.c:1236 pattern/pattern.c:504
 #: pattern/pattern.c:662
 msgid "Search for: "
 msgstr "Buscar por: "
 
-#: menu/menu.c:156 pager/functions.c:1235 pattern/pattern.c:504
+#: menu/menu.c:156 pager/functions.c:1236 pattern/pattern.c:504
 #: pattern/pattern.c:662
 msgid "Reverse search for: "
 msgstr "Buscar en sentido opuesto: "
 
-#: menu/menu.c:210 pager/functions.c:1343 pager/functions.c:1401
-#: pager/functions.c:1428 pattern/pattern.c:636 pattern/pattern.c:792
+#: menu/menu.c:210 pager/functions.c:1344 pager/functions.c:1402
+#: pager/functions.c:1429 pattern/pattern.c:636 pattern/pattern.c:792
 msgid "Not found"
 msgstr "No hay resultados"
 
@@ -3823,7 +3823,7 @@ msgstr "Error: no se pudo cargar el interpretador lua"
 msgid "Couldn't source lua source: %s"
 msgstr "No pudo encontrar fuente lua: %s"
 
-#: mutt_mailbox.c:257
+#: mutt_mailbox.c:260
 msgid "New mail in "
 msgstr "Correo nuevo en "
 
@@ -3983,15 +3983,15 @@ msgstr "El buzón fue salvado"
 msgid "Can't open %s: it is a pipe"
 msgstr "Imposible abrir %s: es una redirección"
 
-#: mx.c:1840
+#: mx.c:1849
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "No se puede cambiar a escritura en un buzón de sólo lectura"
 
-#: mx.c:1847
+#: mx.c:1856
 msgid "Changes to folder will be written on folder exit"
 msgstr "Los cambios a la carpeta seran escritos al salir de ella"
 
-#: mx.c:1852
+#: mx.c:1861
 msgid "Changes to folder will not be written"
 msgstr "Los cambios a la carpeta no serán escritos"
 
@@ -5201,17 +5201,17 @@ msgstr ""
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
 msgstr "Valor nm_query_window_timebase erróneo (los valores válidos son: hora, día, semana, mes, o año)"
 
-#: notmuch/db.c:139
+#: notmuch/db.c:147
 #, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
 msgstr "Esperando para DB notmuch... (%d segundos)"
 
-#: notmuch/db.c:157
+#: notmuch/db.c:165
 #, c-format
 msgid "Can't open notmuch database: %s: %s"
 msgstr "No se pudo abrir la base de datos notmuch: %s: %s"
 
-#: notmuch/db.c:158
+#: notmuch/db.c:166
 msgid "unknown reason"
 msgstr "Razón desconocida"
 
