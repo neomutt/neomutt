@@ -534,8 +534,9 @@ enum MenuType menu_get_current_type(void)
   while (win && win->focus)
     win = win->focus;
 
+  // This should only happen before the first dialog is created
   if (!win)
-    return MENU_GENERIC;
+    return MENU_MAIN;
 
   if ((win->type == WT_CUSTOM) && (win->parent->type == WT_PAGER))
     return MENU_PAGER;
