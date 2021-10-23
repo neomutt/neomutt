@@ -282,11 +282,24 @@ int nm_db_get_mtime(struct Mailbox *m, time_t *mtime)
   if (!m || !mtime)
     return -1;
 
-  char path[PATH_MAX];
-  snprintf(path, sizeof(path), "%s/.notmuch/xapian", nm_db_get_filename(m));
-  mutt_debug(LL_DEBUG2, "nm: checking '%s' mtime\n", path);
-
   struct stat st = { 0 };
+  char path[PATH_MAX];
+  const char *db_filename = nm_db_get_filename(m);
+
+  mutt_debug(LL_DEBUG2, "nm: checking database mtime '%s'\n", db_filename);
+
+  // See if the path we were given has a Xapian directory.
+  // After notmuch 0.32, a .notmuch folder isn't guaranteed.
+  snprintf(path, sizeof(path), "%s/xapian", db_filename);
+  if (stat(path, &st) == 0)
+  {
+    *mtime = st.st_mtime;
+    return 0;
+  }
+
+  // Otherwise, check for a .notmuch directory.
+  snprintf(path, sizeof(path), "%s/.notmuch/xapian", db_filename);
+
   if (stat(path, &st) != 0)
     return -1;
 
