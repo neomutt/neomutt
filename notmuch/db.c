@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <errno.h>
 #include <limits.h>
 #include <notmuch.h>
 #include <stdbool.h>
@@ -89,19 +88,6 @@ const char *nm_db_get_filename(struct Mailbox *m)
  */
 notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verbose)
 {
-  struct stat st1 = { 0 };
-  char buf[PATH_MAX];
-  if (stat(mutt_path_concat(buf, filename, ".notmuch", sizeof(buf)), &st1) != 0)
-  {
-    mutt_error(_("Can't stat %s: %s"), buf, strerror(errno));
-    return NULL;
-  }
-  else if (!S_ISDIR(st1.st_mode))
-  {
-    mutt_error(_("%s is not a directory"), buf);
-    return NULL;
-  }
-
   notmuch_database_t *db = NULL;
   int ct = 0;
   notmuch_status_t st = NOTMUCH_STATUS_SUCCESS;
