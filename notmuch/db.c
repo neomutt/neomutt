@@ -149,6 +149,11 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
     ct++;
   } while (true);
 
+  if (st != NOTMUCH_STATUS_SUCCESS)
+  {
+    db = NULL;
+  }
+
   if (verbose)
   {
     if (!db)
