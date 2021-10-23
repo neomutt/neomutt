@@ -3581,7 +3581,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
   *forced_valid = 0;
 
   if (a && a->mailbox)
-    mutt_list_insert_tail(&hints, a->mailbox);
+    mutt_list_insert_tail(&hints, mutt_str_dup(a->mailbox));
   if (a && a->personal)
     crypt_add_string_to_hints(a->personal, &hints);
 
