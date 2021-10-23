@@ -369,7 +369,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
   struct PgpUid *q = NULL;
 
   if (a->mailbox)
-    mutt_list_insert_tail(&hints, a->mailbox);
+    mutt_list_insert_tail(&hints, mutt_str_dup(a->mailbox));
   if (a->personal)
     pgp_add_string_to_hints(a->personal, &hints);
 
