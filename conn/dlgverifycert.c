@@ -23,8 +23,6 @@
 /**
  * @page conn_gui Certificate Verification Dialog
  *
- * ## Overview
- *
  * The Certificate Verification Dialog lets the user check the details of a
  * certificate.
  *

@@ -27,8 +27,6 @@
 /**
  * @page sidebar_window Sidebar Window
  *
- * ## Overview
- *
  * The Sidebar Window is an interactive window that displays a list of
  * mailboxes to the user.
  *

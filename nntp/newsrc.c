@@ -23,7 +23,7 @@
  */
 
 /**
- * @page nntp_newsrc Read/parse/write an NNTP config file of subscribed newsgroups
+ * @page nntp_newsrc Read/write a file of subscribed newsgroups
  *
  * Read/parse/write an NNTP config file of subscribed newsgroups
  */

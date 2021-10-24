@@ -75,7 +75,7 @@ enum EatRangeError
 #define MEGA 1048576
 
 /**
- * eat_regex - Parse a regex - Implements ::eat_arg_t
+ * eat_regex - Parse a regex - Implements ::eat_arg_t - @ingroup eat_arg_api
  */
 static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
                       struct Buffer *s, struct Buffer *err)
@@ -144,7 +144,7 @@ static bool add_query_msgid(char *line, int line_num, void *user_data)
 }
 
 /**
- * eat_query - Parse a query for an external search program - Implements ::eat_arg_t
+ * eat_query - Parse a query for an external search program - Implements ::eat_arg_t - @ingroup eat_arg_api
  * @param pat   Pattern to store the results in
  * @param flags Flags, e.g. #MUTT_PC_PATTERN_DYNAMIC
  * @param s     String to parse
@@ -622,7 +622,7 @@ bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *err)
 }
 
 /**
- * eat_range - Parse a number range - Implements ::eat_arg_t
+ * eat_range - Parse a number range - Implements ::eat_arg_t - @ingroup eat_arg_api
  */
 static bool eat_range(struct Pattern *pat, PatternCompFlags flags,
                       struct Buffer *s, struct Buffer *err)
@@ -919,7 +919,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
 }
 
 /**
- * eat_message_range - Parse a range of message numbers - Implements ::eat_arg_t
+ * eat_message_range - Parse a range of message numbers - Implements ::eat_arg_t - @ingroup eat_arg_api
  * @param pat   Pattern to store the results in
  * @param flags Flags, e.g. #MUTT_PC_PATTERN_DYNAMIC
  * @param s     String to parse
@@ -971,7 +971,7 @@ static bool eat_message_range(struct Pattern *pat, PatternCompFlags flags,
 }
 
 /**
- * eat_date - Parse a date pattern - Implements ::eat_arg_t
+ * eat_date - Parse a date pattern - Implements ::eat_arg_t - @ingroup eat_arg_api
  */
 static bool eat_date(struct Pattern *pat, PatternCompFlags flags,
                      struct Buffer *s, struct Buffer *err)

@@ -24,8 +24,6 @@
 /**
  * @page pager_dopager Simple Pager Dialog
  *
- * ## Overview
- *
  * The Simple Pager Dialog displays text to the user that can be paged.
  *
  * ## Windows

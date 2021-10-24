@@ -23,8 +23,6 @@
 /**
  * @page gui_simple Simple Dialog
  *
- * ## Overview
- *
  * The Simple Dialog is an interactive set of windows containing a Menu and a
  * status bar.
  *

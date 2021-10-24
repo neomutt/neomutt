@@ -24,8 +24,6 @@
 /**
  * @page neo_dlg_postpone Postponed Email Selection Dialog
  *
- * ## Overview
- *
  * The Postponed Email Selection Dialog lets the user set a postponed (draft)
  * email.
  *

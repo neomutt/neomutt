@@ -24,7 +24,7 @@
  */
 
 /**
- * @page nntp_nntp Usenet network mailbox type; talk to an NNTP server
+ * @page nntp_nntp Talk to an NNTP server
  *
  * Usenet network mailbox type; talk to an NNTP server
  *

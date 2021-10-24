@@ -23,8 +23,6 @@
 /**
  * @page crypt_dlggpgme GPGME Key Selection Dialog
  *
- * ## Overview
- *
  * The GPGME Key Selection Dialog lets the user select a PGP key.
  *
  * This is a @ref gui_simple

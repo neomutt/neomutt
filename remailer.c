@@ -24,8 +24,6 @@
 /**
  * @page neo_remailer Mixmaster Remailer Dialog
  *
- * ## Overview
- *
  * The Mixmaster Remailer Dialog lets the user edit anonymous remailer chain.
  *
  * ## Windows

@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page neo_mutt_globals Global variables
+ *
+ * Global variables
+ */
+
 #ifndef MUTT_GLOBALS_H
 #define MUTT_GLOBALS_H
 

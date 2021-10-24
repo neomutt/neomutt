@@ -23,8 +23,6 @@
 /**
  * @page pager_pbar Pager Bar
  *
- * ## Overview
- *
  * The Pager Bar Window displays status info about the email.
  *
  * ## Windows

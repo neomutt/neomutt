@@ -24,8 +24,6 @@
 /**
  * @page attach_dialog Attachment Selection Dialog
  *
- * ## Overview
- *
  * The Attachment Selection Dialog lets the user select an email attachment.
  *
  * This is a @ref gui_simple

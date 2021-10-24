@@ -23,8 +23,6 @@
 /**
  * @page pager_ppanel Pager Panel
  *
- * ## Overview
- *
  * The Pager Panel is a non-interactive container around the email list and a
  * status bar.
  *

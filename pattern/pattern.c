@@ -73,14 +73,17 @@ struct RangeRegex RangeRegexes[] = {
 };
 
 /**
- * eat_arg_t - Function to parse a pattern
+ * @defgroup eat_arg_api Parse a pattern
+ *
+ * Prototype for a function to parse a pattern
+ *
  * @param pat   Pattern to store the results in
  * @param flags Flags, e.g. #MUTT_PC_PATTERN_DYNAMIC
  * @param s     String to parse
  * @param err   Buffer for error messages
  * @retval true The pattern was read successfully
  */
-bool (*eat_arg_t)(struct Pattern *pat, PatternCompFlags flags, struct Buffer *s,
+typedef bool (*eat_arg_t)(struct Pattern *pat, PatternCompFlags flags, struct Buffer *s,
                   struct Buffer *err);
 
 static struct PatternList *SearchPattern = NULL; ///< current search pattern

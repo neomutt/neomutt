@@ -23,8 +23,6 @@
 /**
  * @page index_ipanel Index Panel
  *
- * ## Overview
- *
  * The Index Panel is a non-interactive container around the email list and a
  * status bar.
  *

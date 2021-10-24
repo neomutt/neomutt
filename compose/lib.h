@@ -35,6 +35,7 @@
  * | compose/config.c       | @subpage compose_config        |
  * | compose/env_data.c     | @subpage compose_env_data      |
  * | compose/envelope.c     | @subpage compose_envelope      |
+ * | compose/functions.c    | @subpage compose_functions     |
  * | compose/shared_data.c  | @subpage compose_shared_data   |
  */
 

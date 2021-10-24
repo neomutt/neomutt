@@ -23,8 +23,6 @@
 /**
  * @page gui_sbar Simple Bar (status)
  *
- * ## Overview
- *
  * The Simple Bar is a simple non-interactive window to display a message or
  * trivial status information.
  *

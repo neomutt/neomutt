@@ -23,8 +23,6 @@
 /**
  * @page compose_envelope Envelope Window
  *
- * ## Overview
- *
  * The Compose Envelope Window displays the header fields of an email.
  *
  * ## Windows

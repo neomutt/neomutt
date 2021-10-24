@@ -32,7 +32,6 @@
  * <img style="float: left; padding-right: 0.5em;" src="globals.svg">
  * <img style="float: left; padding-right: 0.5em;" src="functions.svg">
  * <img style="float: left; padding-right: 0.5em;" src="enums.svg">
- * <img style="float: left; padding-right: 0.5em;" src="config.svg">
  * <img style="float: left; padding-right: 0.5em;" src="members.svg">
  * <img style="float: left; padding-right: 0.5em;" src="defines.svg">
  * <br>
@@ -52,12 +51,12 @@
  * @ref lib_address, @ref lib_alias, @ref lib_attach, @ref lib_autocrypt,
  * @ref lib_bcache, @ref lib_color, @ref lib_compmbox, @ref lib_compose,
  * @ref lib_compress, @ref lib_config, @ref lib_conn, @ref lib_core,
- * @ref lib_debug, @ref lib_email, @ref lib_gui, @ref lib_hcache,
- * @ref lib_helpbar, @ref lib_history, @ref lib_imap, @ref lib_index,
- * @ref lib_maildir, @ref lib_mbox, @ref lib_menu, @ref lib_mutt,
- * @ref lib_ncrypt, @ref lib_nntp, @ref lib_notmuch, @ref lib_pager,
- * @ref lib_pattern, @ref lib_pop, @ref lib_progress, @ref lib_question,
- * @ref lib_send, @ref lib_sidebar, @ref lib_store.
+ * @ref lib_email, @ref lib_gui, @ref lib_hcache, @ref lib_helpbar,
+ * @ref lib_history, @ref lib_imap, @ref lib_index, @ref lib_maildir,
+ * @ref lib_mbox, @ref lib_menu, @ref lib_mutt, @ref lib_ncrypt, @ref lib_nntp,
+ * @ref lib_notmuch, @ref lib_pager, @ref lib_pattern, @ref lib_pop,
+ * @ref lib_progress, @ref lib_question, @ref lib_send, @ref lib_sidebar,
+ * @ref lib_store.
  *
  * ## Miscellaneous files
  *
@@ -94,6 +93,7 @@
  * | mutt_body.c     | @subpage neo_mutt_body     |
  * | mutt_commands.c | @subpage neo_mutt_commands |
  * | mutt_config.c   | @subpage neo_mutt_config   |
+ * | mutt_globals.h  | @subpage neo_mutt_globals  |
  * | mutt_header.c   | @subpage neo_mutt_header   |
  * | mutt_history.c  | @subpage neo_mutt_history  |
  * | mutt_logging.c  | @subpage neo_mutt_logging  |
@@ -105,6 +105,7 @@
  * | mx.c            | @subpage neo_mx            |
  * | myvar.c         | @subpage neo_myvar         |
  * | opcodes.c       | @subpage neo_opcode        |
+ * | options.h       | @subpage neo_options       |
  * | postpone.c      | @subpage neo_postpone      |
  * | recvcmd.c       | @subpage neo_recvcmd       |
  * | remailer.c      | @subpage neo_remailer      |

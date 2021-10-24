@@ -24,8 +24,6 @@
 /**
  * @page pattern_dlgpattern Pattern Selection Dialog
  *
- * ## Overview
- *
  * The Pattern Selection Dialog lets the user select a pattern.
  *
  * This is a @ref gui_simple

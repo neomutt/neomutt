@@ -23,8 +23,6 @@
 /**
  * @page autocrypt_account Autocrypt account dialog
  *
- * ## Overview
- *
  * The Autocrypt Account Dialog lets the user set up or update an Autocrypt Account.
  *
  * This is a @ref gui_simple

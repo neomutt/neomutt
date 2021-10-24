@@ -25,8 +25,6 @@
 /**
  * @page alias_dlgalias Address Book Dialog
  *
- * ## Overview
- *
  * The Address Book Dialog allows the user to select, add or delete aliases.
  *
  * This is a @ref gui_simple

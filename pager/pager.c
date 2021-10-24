@@ -23,8 +23,6 @@
 /**
  * @page pager_pager Pager Window
  *
- * ## Overview
- *
  * The Pager Window displays an email to the user.
  *
  * ## Windows

@@ -23,8 +23,6 @@
 /**
  * @page gui_rootwin Root Window
  *
- * ## Overview
- *
  * NeoMutt is built from a set of nested windows.  Each window defines a region
  * of the screen which is responsible for a single concept.  This could be a high-level
  * component like the @ref compose_dialog, or a single element like the @ref index_ibar.

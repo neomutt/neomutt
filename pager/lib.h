@@ -31,6 +31,7 @@
  * | pager/display.c      | @subpage pager_display      |
  * | pager/dlg_pager.c    | @subpage pager_dialog       |
  * | pager/do_pager.c     | @subpage pager_dopager      |
+ * | pager/functions.c    | @subpage pager_functions    |
  * | pager/message.c      | @subpage pager_message      |
  * | pager/pager.c        | @subpage pager_pager        |
  * | pager/pbar.c         | @subpage pager_pbar         |

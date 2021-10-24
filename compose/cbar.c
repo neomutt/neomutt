@@ -23,8 +23,6 @@
 /**
  * @page compose_cbar Compose Bar (status)
  *
- * ## Overview
- *
  * The Compose Bar Window displays status info about the email.
  *
  * ## Windows

@@ -23,8 +23,6 @@
 /**
  * @page crypt_dlgsmime SMIME Key Selection Dialog
  *
- * ## Overview
- *
  * The SMIME Key Selection Dialog lets the user select a SMIME key.
  *
  * This is a @ref gui_simple

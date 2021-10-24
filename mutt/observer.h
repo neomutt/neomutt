@@ -20,12 +20,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @page mutt_observer Observer of notifications
- *
- * Observer of notifications
- */
-
 #ifndef MUTT_LIB_OBSERVER_H
 #define MUTT_LIB_OBSERVER_H
 

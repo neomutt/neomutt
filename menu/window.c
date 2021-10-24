@@ -23,8 +23,6 @@
 /**
  * @page menu_window Window wrapper around a Menu
  *
- * ## Overview
- *
  * The Menu Window is an interactive window that allows a user to work with a
  * list of items.  The Menu can be configured to allow single or multiple
  * selections and it can handle arbitrary data, sorting, custom colouring and

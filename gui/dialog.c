@@ -23,8 +23,6 @@
 /**
  * @page gui_dialog Dialog Windows
  *
- * ## Overview
- *
  * A Dialog is an interactive set of windows allowing the user to perform some
  * task, e.g. @ref alias_dlgalias
  *

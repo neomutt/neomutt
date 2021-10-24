@@ -23,8 +23,6 @@
 /**
  * @page index_ibar Index Bar (status)
  *
- * ## Overview
- *
  * The Index Bar Window displays status info about the email list.
  *
  * ## Windows

@@ -46,7 +46,6 @@
  * | mutt/md5.c       | @subpage mutt_md5       |
  * | mutt/memory.c    | @subpage mutt_memory    |
  * | mutt/notify.c    | @subpage mutt_notify    |
- * | mutt/observer.h  | @subpage mutt_observer  |
  * | mutt/path.c      | @subpage mutt_path      |
  * | mutt/pool.c      | @subpage mutt_pool      |
  * | mutt/prex.c      | @subpage mutt_prex      |

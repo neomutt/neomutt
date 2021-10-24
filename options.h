@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page neo_options Option variables
+ *
+ * Option variables
+ */
+
 #ifndef MUTT_OPTIONS_H
 #define MUTT_OPTIONS_H
 

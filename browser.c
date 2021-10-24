@@ -24,8 +24,6 @@
 /**
  * @page neo_browser File/Mailbox Browser Dialog
  *
- * ## Overview
- *
  * The File/Mailbox Browser Dialog lets the user select from a list of files or
  * mailboxes.
  *

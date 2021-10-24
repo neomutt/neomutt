@@ -26,8 +26,6 @@
 /**
  * @page compose_dialog Compose Email Dialog
  *
- * ## Overview
- *
  * The Compose Email Dialog lets the user edit the fields before sending an email.
  * They can also add/remove/reorder attachments.
  *

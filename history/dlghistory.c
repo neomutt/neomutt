@@ -23,8 +23,6 @@
 /**
  * @page history_dlghistory History Selection Dialog
  *
- * ## Overview
- *
  * The History Selection Dialog lets the user choose a string from the history,
  * e.g. a past command.
  *

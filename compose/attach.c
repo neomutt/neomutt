@@ -23,8 +23,6 @@
 /**
  * @page compose_attach Attachments window
  *
- * ## Overview
- *
  * The Compose Attachments Window displays the attachments of an email.
  *
  * ## Windows

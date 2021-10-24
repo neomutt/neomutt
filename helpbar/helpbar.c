@@ -23,8 +23,6 @@
 /**
  * @page helpbar_helpbar Help Bar Window
  *
- * ## Overview
- *
  * The Help Bar is a non-interactive window that displays some
  * helpful key bindings for the current screen.
  *

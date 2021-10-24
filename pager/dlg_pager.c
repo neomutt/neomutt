@@ -24,8 +24,6 @@
 /**
  * @page pager_dialog Pager Dialog
  *
- * ## Overview
- *
  * The Pager Dialog displays some text to the user that can be paged through.
  * The actual contents depend on the caller, but are usually an email, file or help.
  *

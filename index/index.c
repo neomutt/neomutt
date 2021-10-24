@@ -23,8 +23,6 @@
 /**
  * @page index_index Index Window
  *
- * ## Overview
- *
  * The Index Window displays a list of emails to the user.
  *
  * ## Windows
