@@ -1123,7 +1123,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
 
   rewind(fp_out);
   const long size = mutt_file_get_size_fp(fp_out);
-  if (size != 0)
+  if (size == 0)
   {
     goto cleanup;
   }
