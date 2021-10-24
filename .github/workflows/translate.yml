@@ -25,7 +25,7 @@ jobs:
     - name: Checkout translate scripts
       uses: actions/checkout@v2
       with:
-        repository: neomutt/translate-scripts
+        repository: neomutt/action-translate
         path: scripts
 
     - name: Checkout website
