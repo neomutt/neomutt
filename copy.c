@@ -321,7 +321,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
         {
           x++;
           hdr_order_len = mutt_str_len(np->data);
-          if (mutt_strn_equal(buf, np->data, hdr_order_len))
+          if (mutt_istrn_equal(buf, np->data, hdr_order_len))
           {
             if ((match == -1) || (hdr_order_len > match_len))
             {
