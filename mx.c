@@ -592,6 +592,8 @@ static int trash_append(struct Mailbox *m)
 
   mx_mbox_close(m_trash);
   m_trash->append = old_append;
+  if (m_trash->flags == MB_HIDDEN)
+    mailbox_free(&m_trash);
 
   return 0;
 }
