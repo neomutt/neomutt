@@ -86,6 +86,8 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   int oerrno = errno;
 
   mx_mbox_close(m_fname);
+  if (m_fname->flags == MB_HIDDEN)
+    mailbox_free(&m_fname);
 
   if (rc == -1)
   {
