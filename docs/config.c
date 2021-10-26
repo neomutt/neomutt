@@ -510,6 +510,8 @@
 ** .ts
 ** set certificate_file=~/.neomutt/certificates
 ** .te
+** .pp
+** (OpenSSL and GnuTLS only)
 */
 #endif
 
@@ -1173,7 +1175,7 @@
 /*
 ** .pp
 ** The file which includes random data that is used to initialize SSL
-** library functions.
+** library functions. (OpenSSL only)
 */
 #endif
 
@@ -2599,6 +2601,8 @@
 ** .dt %|X .dd pad to the end of the line with character "X"
 ** .dt %*X .dd soft-fill with character "X" as pad
 ** .de
+** .pp
+** (Mixmaster only)
 */
 
 { "mixmaster", D_STRING_COMMAND, MIXMASTER },
@@ -2607,7 +2611,7 @@
 ** This variable contains the path to the Mixmaster binary on your
 ** system.  It is used with various sets of parameters to gather the
 ** list of known remailers, and to finally send a message through the
-** mixmaster chain.
+** mixmaster chain. (Mixmaster only)
 */
 #endif
 
