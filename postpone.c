@@ -659,7 +659,8 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
     {
       PostCount = 0;
       mutt_error(_("No postponed messages"));
-      mailbox_free(&m);
+      if (m->flags == MB_HIDDEN)
+        mailbox_free(&m);
       return -1;
     }
   }
@@ -673,6 +674,8 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
     if (m_cur != m)
     {
       mx_fastclose_mailbox(m);
+      if (m->flags == MB_HIDDEN)
+        mailbox_free(&m);
     }
     return -1;
   }
@@ -784,6 +787,8 @@ cleanup:
   {
     hardclose(m);
     ctx_free(&ctx);
+    if (m->flags == MB_HIDDEN)
+      mailbox_free(&m);
   }
 
   cs_subset_str_native_set(NeoMutt->sub, "delete", c_delete, NULL);
