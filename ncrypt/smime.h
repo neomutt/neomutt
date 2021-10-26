@@ -57,7 +57,7 @@ void smime_cleanup(void);
 int          smime_class_application_handler(struct Body *m, struct State *s);
 struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist);
 int          smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
-char *       smime_class_find_keys(struct AddressList *addrlist, bool oppenc_mode);
+char *       smime_class_find_keys(const struct AddressList *addrlist, bool oppenc_mode);
 void         smime_class_getkeys(struct Envelope *env);
 void         smime_class_invoke_import(const char *infile, const char *mailbox);
 SecurityFlags smime_class_send_menu(struct Email *e);

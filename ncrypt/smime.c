@@ -823,7 +823,7 @@ void smime_class_getkeys(struct Envelope *env)
 /**
  * smime_class_find_keys - Implements CryptModuleSpecs::find_keys() - @ingroup crypto_find_keys
  */
-char *smime_class_find_keys(struct AddressList *al, bool oppenc_mode)
+char *smime_class_find_keys(const struct AddressList *al, bool oppenc_mode)
 {
   struct SmimeKey *key = NULL;
   char *keyid = NULL, *keylist = NULL;

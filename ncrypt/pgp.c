@@ -1451,7 +1451,7 @@ cleanup:
 /**
  * pgp_class_find_keys - Implements CryptModuleSpecs::find_keys() - @ingroup crypto_find_keys
  */
-char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
+char *pgp_class_find_keys(const struct AddressList *addrlist, bool oppenc_mode)
 {
   struct ListHead crypt_hook_list = STAILQ_HEAD_INITIALIZER(crypt_hook_list);
   struct ListNode *crypt_hook = NULL;

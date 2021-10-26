@@ -135,7 +135,7 @@ struct CryptModuleSpecs
    * If oppenc_mode is true, only keys that can be determined without prompting
    * will be used.
    */
-  char *(*find_keys)(struct AddressList *addrlist, bool oppenc_mode);
+  char *(*find_keys)(const struct AddressList *addrlist, bool oppenc_mode);
 
   /**
    * @defgroup crypto_sign_message sign_message()
