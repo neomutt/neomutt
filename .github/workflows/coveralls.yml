@@ -1,0 +1,65 @@
+name: Coveralls
+on:
+  schedule:
+    - cron: '20 3 * * 1'
+      # Mondays at 03:20
+  push:
+    branches:
+      - 'coveralls/**'
+
+jobs:
+  build:
+    name: Coverage
+    runs-on: ubuntu-latest
+    container: ghcr.io/neomutt/neomutt-docker-build
+
+    env:
+      OPTIONS: --coverage --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
+
+    steps:
+    - name: Install build software
+      run: |
+        apt-get update
+        apt install -y lcov
+
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Checkout Test Files
+      uses: actions/checkout@v2
+      with:
+        repository: neomutt/neomutt-test-files
+        path: test-files
+
+    - name: Set Up Test Files
+      run: |
+        cd test-files
+        ./setup.sh
+
+    - name: Compilation Cache
+      uses: hendrikmuhs/ccache-action@v1
+
+    - name: Configure Neomutt
+      run: |
+        ./configure $OPTIONS
+
+    - name: Build Neomutt
+      run: make -j 2
+
+    - name: Neomutt Version
+      run: ./neomutt -v
+
+    - name: Build Tests
+      run: make -j 2 test/neomutt-test
+
+    - name: Make Coverage
+      run: |
+        export NEOMUTT_TEST_DIR=$GITHUB_WORKSPACE/test-files
+        make coverage
+        ls -l coverage.info
+
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: coverage.info
