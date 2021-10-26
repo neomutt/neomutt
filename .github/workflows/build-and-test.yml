@@ -28,6 +28,17 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v2
 
+    - name: Checkout Test Files
+      uses: actions/checkout@v2
+      with:
+        repository: neomutt/neomutt-test-files
+        path: test-files
+
+    - name: Set Up Test Files
+      run: |
+        cd test-files
+        ./setup.sh
+
     - name: Compilation Cache
       uses: hendrikmuhs/ccache-action@v1
 
@@ -42,17 +53,6 @@ jobs:
 
     - name: Build Tests
       run: make -j 2 test/neomutt-test
-
-    - name: Clone Test Files
-      uses: actions/checkout@v2
-      with:
-        repository: neomutt/neomutt-test-files
-        path: test-files
-
-    - name: Set Up Test Files
-      run: |
-        cd test-files
-        ./setup.sh
 
     - name: Run Tests
       run: |

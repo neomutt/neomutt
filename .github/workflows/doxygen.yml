@@ -1,19 +1,19 @@
 name: Doxygen
 on:
-  push:
-    branches:
-      - 'doxygen/**'
   schedule:
     - cron: '10 3 * * 1'
       # Mondays at 03:10
+  push:
+    branches:
+      - 'doxygen/**'
 
 jobs:
   doxygen:
     name: Update Code Docs
     runs-on: ubuntu-latest
     container: debian:sid
-    steps:
 
+    steps:
     - name: Check secret
       run: |
         [ -n "${{ secrets.DOXYGEN_DEPLOY_KEY }}" ]

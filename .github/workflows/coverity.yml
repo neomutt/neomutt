@@ -1,11 +1,11 @@
 name: Coverity
 on:
-  push:
-    branches:
-      - 'coverity/**'
   schedule:
     - cron: '0 3 * * 1'
       # Mondays at 03:00
+  push:
+    branches:
+      - 'coverity/**'
 
 jobs:
   build:
@@ -20,6 +20,10 @@ jobs:
       COV_RESULTS: cov-int
 
     steps:
+    - name: Check secret
+      run: |
+        [ -n "${{ secrets.COVERITY_SCAN_TOKEN }}" ]
+
     - name: Checkout Code
       uses: actions/checkout@v2
 
