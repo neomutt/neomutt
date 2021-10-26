@@ -268,7 +268,7 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
   }
 
   // We need to populate more lines, but not change position
-  const bool repopulate = (priv->cur_line >= priv->lines_used);
+  const bool repopulate = (priv->cur_line > priv->lines_used);
   if ((priv->redraw & MENU_REDRAW_FLOW) || repopulate)
   {
     if (!(priv->pview->flags & MUTT_PAGER_RETWINCH))
