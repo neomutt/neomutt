@@ -1108,7 +1108,7 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
   char *buf = NULL;
   struct Buffer ps;
 
-  if (!s || !*s)
+  if (!s || (s[0] == '\0'))
   {
     mutt_buffer_strcpy(err, _("empty pattern"));
     return NULL;

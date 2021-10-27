@@ -1092,7 +1092,7 @@ static void run_mime_type_query(struct Body *att, struct ConfigSubset *sub)
  */
 struct Body *mutt_make_file_attach(const char *path, struct ConfigSubset *sub)
 {
-  if (!path || !*path)
+  if (!path || (path[0] == '\0'))
     return NULL;
 
   struct Body *att = mutt_body_new();
