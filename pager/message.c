@@ -127,9 +127,15 @@ static void process_protected_headers(struct Mailbox *m, struct Email *e)
     const struct Regex *c_reply_regex =
         cs_subset_regex(NeoMutt->sub, "reply_regex");
     if (mutt_regex_capture(c_reply_regex, e->env->subject, 1, pmatch))
+    {
       e->env->real_subj = e->env->subject + pmatch[0].rm_eo;
+      if (e->env->real_subj[0] == '\0')
+        e->env->real_subj = NULL;
+    }
     else
+    {
       e->env->real_subj = e->env->subject;
+    }
 
     if (m->subj_hash)
       mutt_hash_insert(m->subj_hash, e->env->real_subj, e);
