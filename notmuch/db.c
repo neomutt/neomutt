@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <errno.h>
 #include <limits.h>
 #include <notmuch.h>
 #include <stdbool.h>
@@ -89,19 +88,6 @@ const char *nm_db_get_filename(struct Mailbox *m)
  */
 notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verbose)
 {
-  struct stat st1 = { 0 };
-  char buf[PATH_MAX];
-  if (stat(mutt_path_concat(buf, filename, ".notmuch", sizeof(buf)), &st1) != 0)
-  {
-    mutt_error(_("Can't stat %s: %s"), buf, strerror(errno));
-    return NULL;
-  }
-  else if (!S_ISDIR(st1.st_mode))
-  {
-    mutt_error(_("%s is not a directory"), buf);
-    return NULL;
-  }
-
   notmuch_database_t *db = NULL;
   int ct = 0;
   notmuch_status_t st = NOTMUCH_STATUS_SUCCESS;
@@ -296,11 +282,24 @@ int nm_db_get_mtime(struct Mailbox *m, time_t *mtime)
   if (!m || !mtime)
     return -1;
 
-  char path[PATH_MAX];
-  snprintf(path, sizeof(path), "%s/.notmuch/xapian", nm_db_get_filename(m));
-  mutt_debug(LL_DEBUG2, "nm: checking '%s' mtime\n", path);
-
   struct stat st = { 0 };
+  char path[PATH_MAX];
+  const char *db_filename = nm_db_get_filename(m);
+
+  mutt_debug(LL_DEBUG2, "nm: checking database mtime '%s'\n", db_filename);
+
+  // See if the path we were given has a Xapian directory.
+  // After notmuch 0.32, a .notmuch folder isn't guaranteed.
+  snprintf(path, sizeof(path), "%s/xapian", db_filename);
+  if (stat(path, &st) == 0)
+  {
+    *mtime = st.st_mtime;
+    return 0;
+  }
+
+  // Otherwise, check for a .notmuch directory.
+  snprintf(path, sizeof(path), "%s/.notmuch/xapian", db_filename);
+
   if (stat(path, &st) != 0)
     return -1;
 
