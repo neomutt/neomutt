@@ -2780,6 +2780,10 @@ static int op_main_entire_thread(struct IndexSharedData *shared,
     mutt_message(_("Failed to read thread, aborting"));
     return IR_ERROR;
   }
+
+  // nm_read_entire_thread() may modify msg_count and menu won't be updated.
+  priv->menu->max = shared->mailbox->msg_count;
+
   if (priv->oldcount < shared->mailbox->msg_count)
   {
     /* nm_read_entire_thread() triggers mutt_sort_headers() if necessary */
