@@ -221,7 +221,7 @@ static int calc_move_view(struct Menu *menu, int relative)
 }
 
 /**
- * menu_move_selection - Move the selection
+ * menu_move_selection - Move the selection, keeping within between [0, menu->max]
  * @param menu  Menu
  * @param index New selection
  */
