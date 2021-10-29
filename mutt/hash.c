@@ -65,11 +65,15 @@ static int cmp_string_key(union HashKey a, union HashKey b)
 
 /**
  * gen_case_string_hash - Generate a hash from a string (ignore the case) - Implements hash_gen_hash_t - @ingroup hash_gen_hash_api
+ *
+ * @note If the key is NULL or empty, the retval will be 0
  */
 static size_t gen_case_string_hash(union HashKey key, size_t num_elems)
 {
   size_t hash = 0;
   const unsigned char *s = (const unsigned char *) key.strkey;
+  if (!s)
+    return 0;
 
   while (*s != '\0')
     hash += ((hash << 7) + tolower(*s++));
