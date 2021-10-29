@@ -1,3 +1,21 @@
+2021-10-29  Richard Russon  <rich@flatcap.org>
+* Features
+  - Notmuch: support separate database and mail roots without .notmuch
+* Bug Fixes
+  - fix notmuch crash on open failure
+  - fix crypto crash handling pgp keys
+  - fix ncrypt/pgp file_get_size return check
+  - fix restore case-insensitive header sort
+  - fix pager redrawing of long lines
+  - fix notmuch: check database dir for xapian dir
+  - fix notmuch: update index count after `<entire-thread>`
+  - fix protect hash table against empty keys
+  - fix prevent real_subj being set but empty
+  - fix leak when saving fcc
+  - fix leak after `<edit-or-view-raw-message>`
+  - fix leak after trash to hidden mailbox
+  - fix leak restoring postponed emails
+
 2021-10-22  Richard Russon  <rich@flatcap.org>
 * Bug Fixes
   - fix new mail notifications
