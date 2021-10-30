@@ -931,7 +931,7 @@ static enum MxOpenReturns mbox_mbox_open(struct Mailbox *m)
   if (!adata)
     return MX_OPEN_ERROR;
 
-  adata->fp = mbox_open_readwrite(m);
+  adata->fp = m->readonly ? NULL : mbox_open_readwrite(m);
   if (!adata->fp)
   {
     adata->fp = mbox_open_readonly(m);
