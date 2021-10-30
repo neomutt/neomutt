@@ -32,14 +32,14 @@ struct AttrColorList;
 struct RegexColor;
 struct RegexColorList;
 
-#ifdef USE_DEBUG_COLOR
-
-const char *color_debug_log_attrs(int attrs);
-const char *color_debug_log_color(int fg, int bg);
 const char *color_debug_log_color_attrs(int fg, int bg, int attrs);
 const char *color_debug_log_name(char *buf, int buflen, int color);
 const char *color_debug_log_attrs_list(int attrs);
 
+#ifdef USE_DEBUG_COLOR
+
+const char *color_debug_log_attrs(int attrs);
+const char *color_debug_log_color(int fg, int bg);
 void attr_color_dump       (struct AttrColor *ac, const char *prefix);
 void attr_color_list_dump  (struct AttrColorList *acl, const char *title);
 
