@@ -3605,7 +3605,8 @@
 ** string substituted for "%s" automatically according to shell quoting
 ** rules, so you should avoid adding your own.  If no "%s" is found in
 ** the string, NeoMutt will append the user's query to the end of the string.
-** See "$query" for more information.
+** See "$query" (https://neomutt.org/guide/advancedusage.html#query) for more
+** information.
 */
 
 { "query_format", DT_STRING, "%3c %t %-25.25n %-25.25a | %e" },
