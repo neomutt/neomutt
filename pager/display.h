@@ -80,11 +80,11 @@ struct Line
   short search_arr_size;     ///< Number of items in search array
   struct TextSyntax *search; ///< Array of search text in the line
 
-  struct QClass *quote;      ///< Quoting style for this line (pointer into PagerPrivateData->quote_list)
+  struct QuoteStyle *quote;  ///< Quoting style for this line (pointer into PagerPrivateData->quote_list)
 };
 
 int display_line(FILE *fp, LOFF_T *last_pos, struct Line **lines, int n, int *last,
-                 int *max, PagerFlags flags, struct QClass **quote_list, int *q_level,
+                 int *max, PagerFlags flags, struct QuoteStyle **quote_list, int *q_level,
                  bool *force_redraw, regex_t *search_re, struct MuttWindow *win_pager);
 
 #endif /* MUTT_PAGER_DISPLAY_H */

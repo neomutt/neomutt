@@ -58,8 +58,8 @@ void quoted_colors_init(void)
 
 /**
  * quoted_colors_get - Return the color of a quote, cycling through the used quotes
- * @param q Quote number
- * @retval num Color ID, e.g. MT_COLOR_QUOTED
+ * @param q Quote level
+ * @retval num Color ID, e.g. #MT_COLOR_QUOTED
  */
 int quoted_colors_get(int q)
 {
@@ -124,17 +124,17 @@ bool quoted_colors_parse_color(enum ColorId color, uint32_t fg, uint32_t bg,
 }
 
 /**
- * cleanup_quote - Free a quote list
+ * qstyle_free_tree - Free a quote list
  * @param[out] quote_list Quote list to free
  */
-void cleanup_quote(struct QClass **quote_list)
+void qstyle_free_tree(struct QuoteStyle **quote_list)
 {
-  struct QClass *ptr = NULL;
+  struct QuoteStyle *ptr = NULL;
 
   while (*quote_list)
   {
     if ((*quote_list)->down)
-      cleanup_quote(&((*quote_list)->down));
+      qstyle_free_tree(&((*quote_list)->down));
     ptr = (*quote_list)->next;
     FREE(&(*quote_list)->prefix);
     FREE(quote_list);
@@ -147,23 +147,23 @@ void cleanup_quote(struct QClass **quote_list)
  * @param[in]     qc      Class of quoted text
  * @param[in,out] q_level Quote level
  */
-static void class_color_new(struct QClass *qc, int *q_level)
+static void class_color_new(struct QuoteStyle *qc, int *q_level)
 {
   qc->quote_n = (*q_level)++;
   qc->color = quoted_colors_get(qc->quote_n);
 }
 
 /**
- * shift_class_colors - Insert a new quote colour class into a list
+ * qstyle_insert - Insert a new quote colour class into a list
  * @param[in]     quote_list List of quote colours
  * @param[in]     new_class  New quote colour to inset
  * @param[in]     index      Index to insert at
  * @param[in,out] q_level    Quote level
  */
-static void shift_class_colors(struct QClass *quote_list,
-                               struct QClass *new_class, int index, int *q_level)
+static void qstyle_insert(struct QuoteStyle *quote_list,
+                          struct QuoteStyle *new_class, int index, int *q_level)
 {
-  struct QClass *q_list = quote_list;
+  struct QuoteStyle *q_list = quote_list;
   new_class->quote_n = -1;
 
   while (q_list)
@@ -196,7 +196,7 @@ static void shift_class_colors(struct QClass *quote_list,
 }
 
 /**
- * classify_quote - Find a style for a string
+ * qstyle_classify - Find a style for a string
  * @param[out] quote_list   List of quote colours
  * @param[in]  qptr         String to classify
  * @param[in]  length       Length of string
@@ -204,11 +204,11 @@ static void shift_class_colors(struct QClass *quote_list,
  * @param[out] q_level      Quoting level
  * @retval ptr Quoting style
  */
-struct QClass *classify_quote(struct QClass **quote_list, const char *qptr,
-                              size_t length, bool *force_redraw, int *q_level)
+struct QuoteStyle *qstyle_classify(struct QuoteStyle **quote_list, const char *qptr,
+                                   size_t length, bool *force_redraw, int *q_level)
 {
-  struct QClass *q_list = *quote_list;
-  struct QClass *qc = NULL, *tmp = NULL, *ptr = NULL, *save = NULL;
+  struct QuoteStyle *q_list = *quote_list;
+  struct QuoteStyle *qc = NULL, *tmp = NULL, *ptr = NULL, *save = NULL;
   const char *tail_qptr = NULL;
   size_t offset, tail_lng;
   int index = -1;
@@ -219,7 +219,7 @@ struct QClass *classify_quote(struct QClass **quote_list, const char *qptr,
 
     if (!*quote_list)
     {
-      qc = mutt_mem_calloc(1, sizeof(struct QClass));
+      qc = mutt_mem_calloc(1, sizeof(struct QuoteStyle));
       qc->color = quoted_colors_get(0);
       *quote_list = qc;
     }
@@ -242,7 +242,7 @@ struct QClass *classify_quote(struct QClass **quote_list, const char *qptr,
         if (!tmp)
         {
           /* add a node above q_list */
-          tmp = mutt_mem_calloc(1, sizeof(struct QClass));
+          tmp = mutt_mem_calloc(1, sizeof(struct QuoteStyle));
           tmp->prefix = mutt_mem_calloc(1, length + 1);
           strncpy(tmp->prefix, qptr, length);
           tmp->prefix_len = length;
@@ -351,7 +351,7 @@ struct QClass *classify_quote(struct QClass **quote_list, const char *qptr,
               if (!tmp)
               {
                 /* add a node above q_list */
-                tmp = mutt_mem_calloc(1, sizeof(struct QClass));
+                tmp = mutt_mem_calloc(1, sizeof(struct QuoteStyle));
                 tmp->prefix = mutt_mem_calloc(1, length + 1);
                 strncpy(tmp->prefix, qptr, length);
                 tmp->prefix_len = length;
@@ -453,7 +453,7 @@ struct QClass *classify_quote(struct QClass **quote_list, const char *qptr,
         /* still not found so far: add it as a sibling to the current node */
         if (!qc)
         {
-          tmp = mutt_mem_calloc(1, sizeof(struct QClass));
+          tmp = mutt_mem_calloc(1, sizeof(struct QuoteStyle));
           tmp->prefix = mutt_mem_calloc(1, length + 1);
           strncpy(tmp->prefix, qptr, length);
           tmp->prefix_len = length;
@@ -473,7 +473,7 @@ struct QClass *classify_quote(struct QClass **quote_list, const char *qptr,
         else
         {
           if (index != -1)
-            shift_class_colors(*quote_list, tmp, index, q_level);
+            qstyle_insert(*quote_list, tmp, index, q_level);
 
           return qc;
         }
@@ -490,7 +490,7 @@ struct QClass *classify_quote(struct QClass **quote_list, const char *qptr,
   if (!qc)
   {
     /* not found so far: add it as a top level class */
-    qc = mutt_mem_calloc(1, sizeof(struct QClass));
+    qc = mutt_mem_calloc(1, sizeof(struct QuoteStyle));
     qc->prefix = mutt_mem_calloc(1, length + 1);
     strncpy(qc->prefix, qptr, length);
     qc->prefix_len = length;
@@ -505,7 +505,7 @@ struct QClass *classify_quote(struct QClass **quote_list, const char *qptr,
   }
 
   if (index != -1)
-    shift_class_colors(*quote_list, tmp, index, q_level);
+    qstyle_insert(*quote_list, tmp, index, q_level);
 
   return qc;
 }

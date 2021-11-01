@@ -155,7 +155,7 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
 
   if ((flags & MUTT_SHOWCOLOR) && (lines[m].color == MT_COLOR_QUOTED))
   {
-    struct QClass *qc = lines[m].quote;
+    struct QuoteStyle *qc = lines[m].quote;
 
     if (qc)
     {
@@ -307,7 +307,7 @@ static int check_protected_header_marker(const char *p)
  * @retval true Line is quoted
  *
  * Checks if line matches the `$quote_regex` and doesn't match `$smileys`.
- * This is used by the pager for calling classify_quote.
+ * This is used by the pager for calling qstyle_classify.
  */
 int mutt_is_quote_line(char *line, regmatch_t *pmatch)
 {
@@ -355,9 +355,10 @@ int mutt_is_quote_line(char *line, regmatch_t *pmatch)
  * @param[out] force_redraw Set to true if a screen redraw is needed
  * @param[in]  q_classify   If true, style the text
  */
-static void resolve_types(struct MuttWindow *win, char *buf, char *raw, struct Line *lines,
-                          int line_num, int lines_used, struct QClass **quote_list,
-                          int *q_level, bool *force_redraw, bool q_classify)
+static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
+                          struct Line *lines, int line_num, int lines_used,
+                          struct QuoteStyle **quote_list, int *q_level,
+                          bool *force_redraw, bool q_classify)
 {
   struct RegexColor *color_line = NULL;
   struct RegexColorList *head = NULL;
@@ -457,9 +458,9 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw, struct L
   {
     if (q_classify && (lines[line_num].quote == NULL))
     {
-      lines[line_num].quote = classify_quote(quote_list, buf + pmatch[0].rm_so,
-                                             pmatch[0].rm_eo - pmatch[0].rm_so,
-                                             force_redraw, q_level);
+      lines[line_num].quote = qstyle_classify(quote_list, buf + pmatch[0].rm_so,
+                                              pmatch[0].rm_eo - pmatch[0].rm_so,
+                                              force_redraw, q_level);
     }
     lines[line_num].color = MT_COLOR_QUOTED;
   }
@@ -1037,7 +1038,7 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
  */
 int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
                  int line_num, int *lines_used, int *lines_max, PagerFlags flags,
-                 struct QClass **quote_list, int *q_level, bool *force_redraw,
+                 struct QuoteStyle **quote_list, int *q_level, bool *force_redraw,
                  regex_t *search_re, struct MuttWindow *win_pager)
 {
   unsigned char *buf = NULL, *fmt = NULL;
@@ -1149,8 +1150,8 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     if (mutt_regex_capture(c_quote_regex, (char *) fmt, 1, pmatch))
     {
       curr_line->quote =
-          classify_quote(quote_list, (char *) fmt + pmatch[0].rm_so,
-                         pmatch[0].rm_eo - pmatch[0].rm_so, force_redraw, q_level);
+          qstyle_classify(quote_list, (char *) fmt + pmatch[0].rm_so,
+                          pmatch[0].rm_eo - pmatch[0].rm_so, force_redraw, q_level);
     }
     else
     {

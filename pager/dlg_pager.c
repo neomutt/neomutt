@@ -862,7 +862,7 @@ int mutt_pager(struct PagerView *pview)
     }
   }
 
-  cleanup_quote(&priv->quote_list);
+  qstyle_free_tree(&priv->quote_list);
 
   for (size_t i = 0; i < priv->lines_max; i++)
   {
