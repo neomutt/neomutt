@@ -138,25 +138,6 @@ static const struct Mapping PagerNewsHelp[] = {
 #endif
 
 /**
- * cleanup_quote - Free a quote list
- * @param[out] quote_list Quote list to free
- */
-static void cleanup_quote(struct QClass **quote_list)
-{
-  struct QClass *ptr = NULL;
-
-  while (*quote_list)
-  {
-    if ((*quote_list)->down)
-      cleanup_quote(&((*quote_list)->down));
-    ptr = (*quote_list)->next;
-    FREE(&(*quote_list)->prefix);
-    FREE(quote_list);
-    *quote_list = ptr;
-  }
-}
-
-/**
  * mutt_clear_pager_position - Reset the pager's viewing position
  */
 void mutt_clear_pager_position(void)

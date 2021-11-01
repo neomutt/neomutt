@@ -65,24 +65,6 @@ struct AnsiAttr
 };
 
 /**
- * struct QClass - Style of quoted text
- *
- * NeoMutt will store a tree of all the different email quoting levels it
- * detects in an Email.  If $quote_regex matches, say both "> " and "| ",
- * and the Email has three levels of indent, then the tree will contain two
- * siblings each with a child and grandchild.
- */
-struct QClass
-{
-  int quote_n;                ///< The quoteN colour index for this level
-  int color;                  ///< Curses colour pair
-  char *prefix;               ///< Prefix string, e.g. "> "
-  size_t prefix_len;          ///< Length of the prefix string
-  struct QClass *prev, *next; ///< Different quoting styles at the same level
-  struct QClass *up, *down;   ///< Parent (less quoted) and child (more quoted) levels
-};
-
-/**
  * struct Line - A line of text in the pager
  */
 struct Line
