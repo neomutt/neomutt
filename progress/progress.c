@@ -176,16 +176,18 @@ static bool time_needs_update(const struct Progress *progress, size_t now)
  */
 void progress_update(struct Progress *progress, size_t pos, int percent)
 {
-  if (!progress || OptNoCurses)
+  if (OptNoCurses || !progress || (progress->inc == 0))
     return;
 
+  const bool first = (pos == 0); /* always show the first update */
+
+  if (!first && !pos_needs_update(progress, pos))
+  {
+    return;
+  }
+
   const uint64_t now = mutt_date_epoch_ms();
-
-  const bool update =
-      (pos == 0) /* always show the first update */ ||
-      (pos_needs_update(progress, pos) && time_needs_update(progress, now));
-
-  if ((progress->inc != 0) && update)
+  if (first || time_needs_update(progress, now))
   {
     progress->pos = pos;
     progress->timestamp = now;
