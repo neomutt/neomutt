@@ -155,7 +155,7 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
 
   if ((flags & MUTT_SHOWCOLOR) && (lines[m].color == MT_COLOR_QUOTED))
   {
-    struct QClass *qc = lines[m].quote;
+    struct QuoteStyle *qc = lines[m].quote;
 
     if (qc)
     {
@@ -264,374 +264,6 @@ static void append_line(struct Line *lines, int line_num, int cnt)
 }
 
 /**
- * class_color_new - Create a new quoting colour
- * @param[in]     qc      Class of quoted text
- * @param[in,out] q_level Quote level
- */
-static void class_color_new(struct QClass *qc, int *q_level)
-{
-  qc->quote_n = (*q_level)++;
-  qc->color = quoted_colors_get(qc->quote_n);
-}
-
-/**
- * shift_class_colors - Insert a new quote colour class into a list
- * @param[in]     quote_list List of quote colours
- * @param[in]     new_class  New quote colour to inset
- * @param[in]     index      Index to insert at
- * @param[in,out] q_level    Quote level
- */
-static void shift_class_colors(struct QClass *quote_list,
-                               struct QClass *new_class, int index, int *q_level)
-{
-  struct QClass *q_list = quote_list;
-  new_class->quote_n = -1;
-
-  while (q_list)
-  {
-    if (q_list->quote_n >= index)
-    {
-      q_list->quote_n++;
-      q_list->color = quoted_colors_get(q_list->quote_n);
-    }
-    if (q_list->down)
-      q_list = q_list->down;
-    else if (q_list->next)
-      q_list = q_list->next;
-    else
-    {
-      while (!q_list->next)
-      {
-        q_list = q_list->up;
-        if (!q_list)
-          break;
-      }
-      if (q_list)
-        q_list = q_list->next;
-    }
-  }
-
-  new_class->quote_n = index;
-  new_class->color = quoted_colors_get(index);
-  (*q_level)++;
-}
-
-/**
- * classify_quote - Find a style for a string
- * @param[out] quote_list   List of quote colours
- * @param[in]  qptr         String to classify
- * @param[in]  length       Length of string
- * @param[out] force_redraw Set to true if a screen redraw is needed
- * @param[out] q_level      Quoting level
- * @retval ptr Quoting style
- */
-static struct QClass *classify_quote(struct QClass **quote_list, const char *qptr,
-                                     size_t length, bool *force_redraw, int *q_level)
-{
-  struct QClass *q_list = *quote_list;
-  struct QClass *qc = NULL, *tmp = NULL, *ptr = NULL, *save = NULL;
-  const char *tail_qptr = NULL;
-  size_t offset, tail_lng;
-  int index = -1;
-
-  if (quoted_colors_num_used() <= 1)
-  {
-    /* not much point in classifying quotes... */
-
-    if (!*quote_list)
-    {
-      qc = mutt_mem_calloc(1, sizeof(struct QClass));
-      qc->color = quoted_colors_get(0);
-      *quote_list = qc;
-    }
-    return *quote_list;
-  }
-
-  /* classify quoting prefix */
-  while (q_list)
-  {
-    if (length <= q_list->prefix_len)
-    {
-      /* case 1: check the top level nodes */
-
-      if (mutt_strn_equal(qptr, q_list->prefix, length))
-      {
-        if (length == q_list->prefix_len)
-          return q_list; /* same prefix: return the current class */
-
-        /* found shorter prefix */
-        if (!tmp)
-        {
-          /* add a node above q_list */
-          tmp = mutt_mem_calloc(1, sizeof(struct QClass));
-          tmp->prefix = mutt_mem_calloc(1, length + 1);
-          strncpy(tmp->prefix, qptr, length);
-          tmp->prefix_len = length;
-
-          /* replace q_list by tmp in the top level list */
-          if (q_list->next)
-          {
-            tmp->next = q_list->next;
-            q_list->next->prev = tmp;
-          }
-          if (q_list->prev)
-          {
-            tmp->prev = q_list->prev;
-            q_list->prev->next = tmp;
-          }
-
-          /* make q_list a child of tmp */
-          tmp->down = q_list;
-          q_list->up = tmp;
-
-          /* q_list has no siblings for now */
-          q_list->next = NULL;
-          q_list->prev = NULL;
-
-          /* update the root if necessary */
-          if (q_list == *quote_list)
-            *quote_list = tmp;
-
-          index = q_list->quote_n;
-
-          /* tmp should be the return class too */
-          qc = tmp;
-
-          /* next class to test; if tmp is a shorter prefix for another
-           * node, that node can only be in the top level list, so don't
-           * go down after this point */
-          q_list = tmp->next;
-        }
-        else
-        {
-          /* found another branch for which tmp is a shorter prefix */
-
-          /* save the next sibling for later */
-          save = q_list->next;
-
-          /* unlink q_list from the top level list */
-          if (q_list->next)
-            q_list->next->prev = q_list->prev;
-          if (q_list->prev)
-            q_list->prev->next = q_list->next;
-
-          /* at this point, we have a tmp->down; link q_list to it */
-          ptr = tmp->down;
-          /* sibling order is important here, q_list should be linked last */
-          while (ptr->next)
-            ptr = ptr->next;
-          ptr->next = q_list;
-          q_list->next = NULL;
-          q_list->prev = ptr;
-          q_list->up = tmp;
-
-          index = q_list->quote_n;
-
-          /* next class to test; as above, we shouldn't go down */
-          q_list = save;
-        }
-
-        /* we found a shorter prefix, so certain quotes have changed classes */
-        *force_redraw = true;
-        continue;
-      }
-      else
-      {
-        /* shorter, but not a substring of the current class: try next */
-        q_list = q_list->next;
-        continue;
-      }
-    }
-    else
-    {
-      /* case 2: try subclassing the current top level node */
-
-      /* tmp != NULL means we already found a shorter prefix at case 1 */
-      if (!tmp && mutt_strn_equal(qptr, q_list->prefix, q_list->prefix_len))
-      {
-        /* ok, it's a subclass somewhere on this branch */
-
-        ptr = q_list;
-        offset = q_list->prefix_len;
-
-        q_list = q_list->down;
-        tail_lng = length - offset;
-        tail_qptr = qptr + offset;
-
-        while (q_list)
-        {
-          if (length <= q_list->prefix_len)
-          {
-            if (mutt_strn_equal(tail_qptr, (q_list->prefix) + offset, tail_lng))
-            {
-              /* same prefix: return the current class */
-              if (length == q_list->prefix_len)
-                return q_list;
-
-              /* found shorter common prefix */
-              if (!tmp)
-              {
-                /* add a node above q_list */
-                tmp = mutt_mem_calloc(1, sizeof(struct QClass));
-                tmp->prefix = mutt_mem_calloc(1, length + 1);
-                strncpy(tmp->prefix, qptr, length);
-                tmp->prefix_len = length;
-
-                /* replace q_list by tmp */
-                if (q_list->next)
-                {
-                  tmp->next = q_list->next;
-                  q_list->next->prev = tmp;
-                }
-                if (q_list->prev)
-                {
-                  tmp->prev = q_list->prev;
-                  q_list->prev->next = tmp;
-                }
-
-                /* make q_list a child of tmp */
-                tmp->down = q_list;
-                tmp->up = q_list->up;
-                q_list->up = tmp;
-                if (tmp->up->down == q_list)
-                  tmp->up->down = tmp;
-
-                /* q_list has no siblings */
-                q_list->next = NULL;
-                q_list->prev = NULL;
-
-                index = q_list->quote_n;
-
-                /* tmp should be the return class too */
-                qc = tmp;
-
-                /* next class to test */
-                q_list = tmp->next;
-              }
-              else
-              {
-                /* found another branch for which tmp is a shorter prefix */
-
-                /* save the next sibling for later */
-                save = q_list->next;
-
-                /* unlink q_list from the top level list */
-                if (q_list->next)
-                  q_list->next->prev = q_list->prev;
-                if (q_list->prev)
-                  q_list->prev->next = q_list->next;
-
-                /* at this point, we have a tmp->down; link q_list to it */
-                ptr = tmp->down;
-                while (ptr->next)
-                  ptr = ptr->next;
-                ptr->next = q_list;
-                q_list->next = NULL;
-                q_list->prev = ptr;
-                q_list->up = tmp;
-
-                index = q_list->quote_n;
-
-                /* next class to test */
-                q_list = save;
-              }
-
-              /* we found a shorter prefix, so we need a redraw */
-              *force_redraw = true;
-              continue;
-            }
-            else
-            {
-              q_list = q_list->next;
-              continue;
-            }
-          }
-          else
-          {
-            /* longer than the current prefix: try subclassing it */
-            if (!tmp && mutt_strn_equal(tail_qptr, (q_list->prefix) + offset,
-                                        q_list->prefix_len - offset))
-            {
-              /* still a subclass: go down one level */
-              ptr = q_list;
-              offset = q_list->prefix_len;
-
-              q_list = q_list->down;
-              tail_lng = length - offset;
-              tail_qptr = qptr + offset;
-
-              continue;
-            }
-            else
-            {
-              /* nope, try the next prefix */
-              q_list = q_list->next;
-              continue;
-            }
-          }
-        }
-
-        /* still not found so far: add it as a sibling to the current node */
-        if (!qc)
-        {
-          tmp = mutt_mem_calloc(1, sizeof(struct QClass));
-          tmp->prefix = mutt_mem_calloc(1, length + 1);
-          strncpy(tmp->prefix, qptr, length);
-          tmp->prefix_len = length;
-
-          if (ptr->down)
-          {
-            tmp->next = ptr->down;
-            ptr->down->prev = tmp;
-          }
-          ptr->down = tmp;
-          tmp->up = ptr;
-
-          class_color_new(tmp, q_level);
-
-          return tmp;
-        }
-        else
-        {
-          if (index != -1)
-            shift_class_colors(*quote_list, tmp, index, q_level);
-
-          return qc;
-        }
-      }
-      else
-      {
-        /* nope, try the next prefix */
-        q_list = q_list->next;
-        continue;
-      }
-    }
-  }
-
-  if (!qc)
-  {
-    /* not found so far: add it as a top level class */
-    qc = mutt_mem_calloc(1, sizeof(struct QClass));
-    qc->prefix = mutt_mem_calloc(1, length + 1);
-    strncpy(qc->prefix, qptr, length);
-    qc->prefix_len = length;
-    class_color_new(qc, q_level);
-
-    if (*quote_list)
-    {
-      qc->next = *quote_list;
-      (*quote_list)->prev = qc;
-    }
-    *quote_list = qc;
-  }
-
-  if (index != -1)
-    shift_class_colors(*quote_list, tmp, index, q_level);
-
-  return qc;
-}
-
-/**
  * check_marker - Check that the unique marker is present
  * @param q Marker string
  * @param p String to check
@@ -675,7 +307,7 @@ static int check_protected_header_marker(const char *p)
  * @retval true Line is quoted
  *
  * Checks if line matches the `$quote_regex` and doesn't match `$smileys`.
- * This is used by the pager for calling classify_quote.
+ * This is used by the pager for calling qstyle_classify.
  */
 int mutt_is_quote_line(char *line, regmatch_t *pmatch)
 {
@@ -723,9 +355,10 @@ int mutt_is_quote_line(char *line, regmatch_t *pmatch)
  * @param[out] force_redraw Set to true if a screen redraw is needed
  * @param[in]  q_classify   If true, style the text
  */
-static void resolve_types(struct MuttWindow *win, char *buf, char *raw, struct Line *lines,
-                          int line_num, int lines_used, struct QClass **quote_list,
-                          int *q_level, bool *force_redraw, bool q_classify)
+static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
+                          struct Line *lines, int line_num, int lines_used,
+                          struct QuoteStyle **quote_list, int *q_level,
+                          bool *force_redraw, bool q_classify)
 {
   struct RegexColor *color_line = NULL;
   struct RegexColorList *head = NULL;
@@ -825,9 +458,9 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw, struct L
   {
     if (q_classify && (lines[line_num].quote == NULL))
     {
-      lines[line_num].quote = classify_quote(quote_list, buf + pmatch[0].rm_so,
-                                             pmatch[0].rm_eo - pmatch[0].rm_so,
-                                             force_redraw, q_level);
+      lines[line_num].quote = qstyle_classify(quote_list, buf + pmatch[0].rm_so,
+                                              pmatch[0].rm_eo - pmatch[0].rm_so,
+                                              force_redraw, q_level);
     }
     lines[line_num].color = MT_COLOR_QUOTED;
   }
@@ -1405,7 +1038,7 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
  */
 int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
                  int line_num, int *lines_used, int *lines_max, PagerFlags flags,
-                 struct QClass **quote_list, int *q_level, bool *force_redraw,
+                 struct QuoteStyle **quote_list, int *q_level, bool *force_redraw,
                  regex_t *search_re, struct MuttWindow *win_pager)
 {
   unsigned char *buf = NULL, *fmt = NULL;
@@ -1517,8 +1150,8 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     if (mutt_regex_capture(c_quote_regex, (char *) fmt, 1, pmatch))
     {
       curr_line->quote =
-          classify_quote(quote_list, (char *) fmt + pmatch[0].rm_so,
-                         pmatch[0].rm_eo - pmatch[0].rm_so, force_redraw, q_level);
+          qstyle_classify(quote_list, (char *) fmt + pmatch[0].rm_so,
+                          pmatch[0].rm_eo - pmatch[0].rm_so, force_redraw, q_level);
     }
     else
     {

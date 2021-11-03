@@ -57,7 +57,7 @@ struct PagerPrivateData
   int top_line;                ///< First visible line on screen
   int has_types;               ///< Set to MUTT_TYPES for PAGER_MODE_EMAIL or MUTT_SHOWCOLOR
 
-  struct QClass *quote_list;   ///< Tree of quoting levels
+  struct QuoteStyle *quote_list;///< Tree of quoting levels
   int q_level;                 ///< Number of unique quoting levels
   PagerFlags hide_quoted;      ///< Set to MUTT_HIDE when quoted email is hidden `<toggle-quoted>`
 

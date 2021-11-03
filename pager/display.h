@@ -65,24 +65,6 @@ struct AnsiAttr
 };
 
 /**
- * struct QClass - Style of quoted text
- *
- * NeoMutt will store a tree of all the different email quoting levels it
- * detects in an Email.  If $quote_regex matches, say both "> " and "| ",
- * and the Email has three levels of indent, then the tree will contain two
- * siblings each with a child and grandchild.
- */
-struct QClass
-{
-  int quote_n;                ///< The quoteN colour index for this level
-  int color;                  ///< Curses colour pair
-  char *prefix;               ///< Prefix string, e.g. "> "
-  size_t prefix_len;          ///< Length of the prefix string
-  struct QClass *prev, *next; ///< Different quoting styles at the same level
-  struct QClass *up, *down;   ///< Parent (less quoted) and child (more quoted) levels
-};
-
-/**
  * struct Line - A line of text in the pager
  */
 struct Line
@@ -98,11 +80,11 @@ struct Line
   short search_arr_size;     ///< Number of items in search array
   struct TextSyntax *search; ///< Array of search text in the line
 
-  struct QClass *quote;      ///< Quoting style for this line (pointer into PagerPrivateData->quote_list)
+  struct QuoteStyle *quote;  ///< Quoting style for this line (pointer into PagerPrivateData->quote_list)
 };
 
 int display_line(FILE *fp, LOFF_T *last_pos, struct Line **lines, int n, int *last,
-                 int *max, PagerFlags flags, struct QClass **quote_list, int *q_level,
+                 int *max, PagerFlags flags, struct QuoteStyle **quote_list, int *q_level,
                  bool *force_redraw, regex_t *search_re, struct MuttWindow *win_pager);
 
 #endif /* MUTT_PAGER_DISPLAY_H */
