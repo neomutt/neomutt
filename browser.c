@@ -1563,7 +1563,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
               {
                 char *p = NULL;
                 if (lastdirlen > 1)
-                  p = strrchr(mutt_buffer_string(&LastDir) + 1, '/');
+                  p = strrchr(LastDir.data + 1, '/');
 
                 if (p)
                 {
