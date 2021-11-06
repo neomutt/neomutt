@@ -410,7 +410,7 @@ static void mix_redraw_chain(struct MuttWindow *win, struct Remailer **type2_lis
 static void mix_redraw_head(struct MuttWindow *win, struct MixChain *chain)
 {
   char buf[1024];
-  snprintf(buf, sizeof(buf), "-- Remailer chain [Length: %ld]", chain ? chain->cl : 0);
+  snprintf(buf, sizeof(buf), "-- Remailer chain [Length: %zu]", chain ? chain->cl : 0);
   sbar_set_title(win, buf);
 }
 
