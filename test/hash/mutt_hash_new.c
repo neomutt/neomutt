@@ -43,7 +43,7 @@ void test_mutt_hash_new(void)
     char buf[32];
     for (size_t i = 0; i < 50; i++)
     {
-      snprintf(buf, sizeof(buf), "apple%ld", i);
+      snprintf(buf, sizeof(buf), "apple%zu", i);
       mutt_hash_insert(table, buf, &dummy1);
     }
     mutt_hash_free(&table);
