@@ -145,14 +145,14 @@ void compress_data_tests(const struct ComprOps *cops, short min_level, short max
     TEST_CASE(case_name);
     for (size_t size = 1; size < 33; size++)
     {
-      snprintf(case_name, sizeof(case_name), "    size %ld", size);
+      snprintf(case_name, sizeof(case_name), "    size %zu", size);
       TEST_CASE(case_name);
       one_test(cops, level, size);
     }
 
     for (size_t i = 0; i < mutt_array_size(sizes); i++)
     {
-      snprintf(case_name, sizeof(case_name), "    size %ld", sizes[i]);
+      snprintf(case_name, sizeof(case_name), "    size %zu", sizes[i]);
       TEST_CASE(case_name);
       one_test(cops, level, sizes[i]);
     }
