@@ -61,4 +61,11 @@ void test_mutt_replacelist_match(void)
     TEST_CHECK(mutt_replacelist_match(&replacelist, buf, sizeof(buf), "foo-1234-bar"));
     TEST_CHECK_STR_EQ("foo [1234] bar", buf);
   }
+
+  {
+    struct ReplaceList replacelist = STAILQ_HEAD_INITIALIZER(replacelist);
+    mutt_replacelist_add(&replacelist, "foo-([^-]+)-bar", "foo [%2] bar", NULL);
+    char buf[32] = { 0 };
+    TEST_CHECK(!mutt_replacelist_match(&replacelist, buf, sizeof(buf), "foo-1234-bar"));
+  }
 }
