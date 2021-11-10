@@ -29,6 +29,7 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <errno.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -313,13 +314,18 @@ int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
   {
     if (*p == '%')
     {
-      int n = 0;
-      if (mutt_str_atoi(++p, &n) < 0)
+      char *end = NULL;
+      errno = 0;
+      int n = strtol(++p, &end, 10);
+      if (errno != 0)
+      {
         mutt_debug(LL_DEBUG2, "Invalid match number in replacelist: '%s'\n", p);
-      if (n > np->nmatch)
+      }
+      else if (n > np->nmatch)
+      {
         np->nmatch = n;
-      while (*p && isdigit((int) *p))
-        p++;
+      }
+      p = end;
     }
     else
       p++;
@@ -463,9 +469,9 @@ void mutt_replacelist_free(struct ReplaceList *rl)
 /**
  * mutt_replacelist_match - Does a string match a pattern?
  * @param rl     ReplaceList of patterns
- * @param str    String to check
  * @param buf    Buffer to save match
  * @param buflen Buffer length
+ * @param str    String to check
  * @retval true String matches a patterh in the ReplaceList
  *
  * Match a string against the patterns defined by the 'spam' command and output
