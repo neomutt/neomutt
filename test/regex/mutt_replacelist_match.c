@@ -23,6 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include "test_common.h"
 #include "mutt/lib.h"
 
 void test_mutt_replacelist_match(void)
@@ -43,5 +44,21 @@ void test_mutt_replacelist_match(void)
     struct ReplaceList replacelist = { 0 };
     char buf[32] = { 0 };
     TEST_CHECK(!mutt_replacelist_match(&replacelist, buf, sizeof(buf), NULL));
+  }
+
+  {
+    struct ReplaceList replacelist = STAILQ_HEAD_INITIALIZER(replacelist);
+    mutt_replacelist_add(&replacelist, "foo-([^-]+)-bar", "foo [%0] bar", NULL);
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_replacelist_match(&replacelist, buf, sizeof(buf), "foo-1234-bar"));
+    TEST_CHECK_STR_EQ("foo [foo-1234-bar] bar", buf);
+  }
+
+  {
+    struct ReplaceList replacelist = STAILQ_HEAD_INITIALIZER(replacelist);
+    mutt_replacelist_add(&replacelist, "foo-([^-]+)-bar", "foo [%1] bar", NULL);
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_replacelist_match(&replacelist, buf, sizeof(buf), "foo-1234-bar"));
+    TEST_CHECK_STR_EQ("foo [1234] bar", buf);
   }
 }
