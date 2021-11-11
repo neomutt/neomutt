@@ -262,17 +262,11 @@ enum CommandResult add_pattern(struct RegexColorList *top, const char *s,
     STAILQ_INSERT_HEAD(top, tmp, entries);
   }
 
-  /* force re-caching of index colors */
-  const struct Mailbox *m = ctx_mailbox(Context);
-  if (is_index && m)
+  if (is_index)
   {
-    for (int i = 0; i < m->msg_count; i++)
-    {
-      struct Email *e = m->emails[i];
-      if (!e)
-        break;
-      e->pair = 0;
-    }
+    /* force re-caching of index colors */
+    struct EventColor ev_c = { MT_COLOR_INDEX };
+    notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
   }
 
   return MUTT_CMD_SUCCESS;
