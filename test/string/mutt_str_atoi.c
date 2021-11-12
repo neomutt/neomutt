@@ -90,11 +90,11 @@ void test_mutt_str_atoi(void)
   // int mutt_str_atoi(const char *str, int *dst);
 
   int result = UNEXPECTED;
-  int retval = 0;
 
   // Degenerate tests
-  TEST_CHECK(mutt_str_atoi(NULL, &result) == 0);
-  TEST_CHECK(mutt_str_atoi("42", NULL) == 0);
+  TEST_CHECK(mutt_str_atoi(NULL, &result) == NULL);
+  TEST_CHECK(result == 0);
+  TEST_CHECK(mutt_str_atoi("42", NULL) != NULL);
 
   // Normal tests
   for (size_t i = 0; i < mutt_array_size(tests); i++)
@@ -102,12 +102,19 @@ void test_mutt_str_atoi(void)
     TEST_CASE(tests[i].str);
 
     result = UNEXPECTED;
-    retval = mutt_str_atoi(tests[i].str, &result);
+    const char *end = mutt_str_atoi(tests[i].str, &result);
 
-    if (!TEST_CHECK((retval == tests[i].retval) && (result == tests[i].result)))
+    if (tests[i].retval == 0 && (end == NULL || *end))
     {
-      TEST_MSG("retval: Expected: %d, Got: %d\n", tests[i].retval, retval);
-      TEST_MSG("result: Expected: %ld, Got: %ld\n", tests[i].result, result);
+      TEST_MSG("retval: Expected: \\0, Got: %s\n", end);
+    }
+    else if (tests[i].retval == -1 && end)
+    {
+      TEST_MSG("retval: Expected: NULL, Got: %s\n", end);
+    }
+    else if (tests[i].retval == -2 && end)
+    {
+      TEST_MSG("retval: Expected: NULL, Got: %s\n", end);
     }
   }
 }

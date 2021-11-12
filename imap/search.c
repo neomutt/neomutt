@@ -266,7 +266,7 @@ void cmd_parse_search(struct ImapAccountData *adata, const char *s)
 
   while ((s = imap_next_word((char *) s)) && (*s != '\0'))
   {
-    if (mutt_str_atoui(s, &uid) < 0)
+    if (!mutt_str_atoui(s, &uid))
       continue;
     e = mutt_hash_int_find(mdata->uid_hash, uid);
     if (e)

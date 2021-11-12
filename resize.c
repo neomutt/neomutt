@@ -80,14 +80,14 @@ void mutt_resize_screen(void)
   if (screenrows <= 0)
   {
     const char *cp = mutt_str_getenv("LINES");
-    if (cp && (mutt_str_atoi(cp, &screenrows) < 0))
+    if (cp && !mutt_str_atoi_full(cp, &screenrows))
       screenrows = 24;
   }
 
   if (screencols <= 0)
   {
     const char *cp = mutt_str_getenv("COLUMNS");
-    if (cp && (mutt_str_atoi(cp, &screencols) < 0))
+    if (cp && !mutt_str_atoi_full(cp, &screencols))
       screencols = 80;
   }
 

@@ -628,7 +628,7 @@ static int op_jump(struct IndexSharedData *shared, struct IndexPrivateData *priv
   {
     mutt_error(_("Nothing to do"));
   }
-  else if (mutt_str_atoi(buf, &msg_num) < 0)
+  else if (!mutt_str_atoi_full(buf, &msg_num))
     mutt_error(_("Argument must be a message number"));
   else if ((msg_num < 1) || (msg_num > shared->mailbox->msg_count))
     mutt_error(_("Invalid message number"));

@@ -314,18 +314,25 @@ int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
   {
     if (*p == '%')
     {
-      char *end = NULL;
-      errno = 0;
-      int n = strtol(++p, &end, 10);
-      if (errno != 0)
+      int n = 0;
+      const char *end = mutt_str_atoi(++p, &n);
+      if (!end)
       {
+        // this is not an error, we might have matched %R or %L in subjectrx
         mutt_debug(LL_DEBUG2, "Invalid match number in replacelist: '%s'\n", p);
       }
-      else if (n > np->nmatch)
+      if (n > np->nmatch)
       {
         np->nmatch = n;
       }
-      p = end;
+      if (end)
+      {
+        p = end;
+      }
+      else
+      {
+        p++;
+      }
     }
     else
       p++;

@@ -271,7 +271,7 @@ void mh_update_maildir(struct MdEmailArray *mda, struct MhSequences *mhs)
       p = md->email->path;
 
     int i = 0;
-    if (mutt_str_atoi(p, &i) < 0)
+    if (!mutt_str_atoi_full(p, &i))
       continue;
     MhSeqFlags flags = mh_seq_check(mhs, i);
 
@@ -326,7 +326,7 @@ int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e, bool 
     }
     if (*cp == '\0')
     {
-      if (mutt_str_atoui(dep, &n) < 0)
+      if (!mutt_str_atoui(dep, &n))
         mutt_debug(LL_DEBUG2, "Invalid MH message number '%s'\n", dep);
       if (n > hi)
         hi = n;

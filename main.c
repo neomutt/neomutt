@@ -716,7 +716,7 @@ int main(int argc, char *argv[], char *envp[])
   if (dlevel)
   {
     short num = 0;
-    if ((mutt_str_atos(dlevel, &num) < 0) || (num < LL_MESSAGE) || (num >= LL_MAX))
+    if (!mutt_str_atos_full(dlevel, &num) || (num < LL_MESSAGE) || (num >= LL_MAX))
     {
       mutt_error(_("Error: value '%s' is invalid for -d"), dlevel);
       goto main_exit; // TEST07: neomutt -d xyz

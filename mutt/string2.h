@@ -56,12 +56,13 @@
 void        mutt_str_adjust(char **ptr);
 void        mutt_str_append_item(char **str, const char *item, char sep);
 int         mutt_str_asprintf(char **strp, const char *fmt, ...);
-int         mutt_str_atoi(const char *str, int *dst);
-int         mutt_str_atol(const char *str, long *dst);
-int         mutt_str_atos(const char *str, short *dst);
-int         mutt_str_atoui(const char *str, unsigned int *dst);
-int         mutt_str_atoul(const char *str, unsigned long *dst);
-int         mutt_str_atoull(const char *str, unsigned long long *dst);
+const char *mutt_str_atoi(const char *str, int *dst);
+const char *mutt_str_atol(const char *str, long *dst);
+const char *mutt_str_atos(const char *str, short *dst);
+const char *mutt_str_atoui(const char *str, unsigned int *dst);
+const char *mutt_str_atoul(const char *str, unsigned long *dst);
+const char *mutt_str_atous(const char *str, unsigned short *dst);
+const char *mutt_str_atoull(const char *str, unsigned long long *dst);
 int         mutt_str_coll(const char *a, const char *b);
 void        mutt_str_dequote_comment(char *str);
 const char *mutt_str_find_word(const char *src);
@@ -106,5 +107,20 @@ size_t      mutt_istr_startswith(const char *str, const char *prefix);
 int         mutt_istrn_cmp(const char *a, const char *b, size_t num);
 bool        mutt_istrn_equal(const char *a, const char *b, size_t num);
 const char *mutt_istrn_rfind(const char *haystack, size_t haystack_length, const char *needle);
+
+#define make_str_ato_wrappers(flavour, type) \
+  static inline bool mutt_str_ato ## flavour ## _full(const char *src, type *dst) \
+  { \
+    const char * end = mutt_str_ato ## flavour(src, dst); \
+    return end && !*end; \
+  } \
+
+make_str_ato_wrappers(i,   int)
+make_str_ato_wrappers(l,   long)
+make_str_ato_wrappers(s,   short)
+make_str_ato_wrappers(ui,  unsigned int)
+make_str_ato_wrappers(ul,  unsigned long)
+make_str_ato_wrappers(ull, unsigned long long)
+make_str_ato_wrappers(us,  unsigned short)
 
 #endif /* MUTT_LIB_STRING_H */

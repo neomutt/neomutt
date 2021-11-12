@@ -141,7 +141,7 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
     ptr->exact = true;
     pc++;
   }
-  if (mutt_str_atoi(pc, &ptr->val) < 0)
+  if (!mutt_str_atoi_full(pc, &ptr->val))
   {
     FREE(&pattern);
     mutt_buffer_strcpy(err, _("Error: score: invalid number"));
