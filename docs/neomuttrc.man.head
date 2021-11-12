@@ -1322,11 +1322,17 @@ identical plus and minus error margins.
 allbox center tab(|);
 lb c c c c
 lb l l l l .
-\0Date Unit|S|M|H|d|w|m|y
-\0Description|Seconds|Minutes|Hours|Days|Weeks|Months|Years
+\0Date Unit|d|w|m|y
+\0Description|Days|Weeks|Months|Years
 .TE
-.PP
 .
+.TS
+allbox center tab(|);
+lb c c c
+lb l l l .
+\0Date Unit|S|M|H
+\0Description|Seconds|Minutes|Hours
+.TE
 .PP
 \fBExample\fP: To select any messages two weeks around January 15, 2001, you'd
 use the following pattern:
