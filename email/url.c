@@ -305,12 +305,12 @@ struct Url *url_parse(const char *src)
   {
     url->src[mutt_regmatch_end(port)] = '\0';
     const char *ports = url->src + mutt_regmatch_start(port);
-    int num;
-    if ((mutt_str_atoi(ports, &num) < 0) || (num < 0) || (num > 0xffff))
+    unsigned short num;
+    if (!mutt_str_atous_full(ports, &num))
     {
       goto err;
     }
-    url->port = (unsigned short) num;
+    url->port = num;
   }
 
   /* path */

@@ -232,7 +232,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
       {
         mutt_debug(LL_DEBUG2, "key len: %s\n", p);
 
-        if (!(*is_subkey && c_pgp_ignore_subkeys) && (mutt_str_atos(p, &tmp.keylen) < 0))
+        if (!(*is_subkey && c_pgp_ignore_subkeys) && !mutt_str_atos_full(p, &tmp.keylen))
         {
           goto bail;
         }
@@ -245,7 +245,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
         if (!(*is_subkey && c_pgp_ignore_subkeys))
         {
           int x = 0;
-          if (mutt_str_atoi(p, &x) < 0)
+          if (!mutt_str_atoi_full(p, &x))
             goto bail;
           tmp.numalg = x;
           tmp.algorithm = pgp_pkalgbytype(x);
@@ -274,19 +274,19 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
           strncpy(tstr, p, 11);
           tstr[4] = '\0';
           tstr[7] = '\0';
-          if (mutt_str_atoi(tstr, &time.tm_year) < 0)
+          if (!mutt_str_atoi_full(tstr, &time.tm_year))
           {
             p = tstr;
             goto bail;
           }
           time.tm_year -= 1900;
-          if (mutt_str_atoi(tstr + 5, &time.tm_mon) < 0)
+          if (!mutt_str_atoi_full(tstr + 5, &time.tm_mon))
           {
             p = tstr + 5;
             goto bail;
           }
           time.tm_mon -= 1;
-          if (mutt_str_atoi(tstr + 8, &time.tm_mday) < 0)
+          if (!mutt_str_atoi_full(tstr + 8, &time.tm_mday))
           {
             p = tstr + 8;
             goto bail;
@@ -297,7 +297,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
         {
           unsigned long long secs;
 
-          if (mutt_str_atoull(p, &secs) < 0)
+          if (!mutt_str_atoull(p, &secs))
             goto bail;
           tmp.gen_time = (time_t) secs;
         }

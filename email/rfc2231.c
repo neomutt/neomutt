@@ -306,7 +306,7 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
        * thus an overflow should never occur in a valid message, thus
        * the value INT_MAX in case of overflow does not really matter
        * (the goal is just to avoid undefined behaviour). */
-      if (mutt_str_atoi(s, &index) != 0)
+      if (!mutt_str_atoi_full(s, &index))
         index = INT_MAX;
 
       conttmp = parameter_new();

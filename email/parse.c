@@ -699,11 +699,9 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, const char *na
           {
             if (e)
             {
-              int rc = mutt_str_atol(body, (long *) &e->body->length);
-              if ((rc < 0) || (e->body->length < 0))
-                e->body->length = -1;
-              if (e->body->length > CONTENT_TOO_BIG)
-                e->body->length = CONTENT_TOO_BIG;
+              unsigned long len = 0;
+              e->body->length =
+                  mutt_str_atoul(body, &len) ? MIN(len, CONTENT_TOO_BIG) : -1;
             }
             matched = true;
           }
@@ -786,10 +784,8 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, const char *na
       {
         if (e)
         {
-          /* HACK - neomutt has, for a very short time, produced negative
-           * Lines header values.  Ignore them.  */
-          if ((mutt_str_atoi(body, &e->lines) < 0) || (e->lines < 0))
-            e->lines = 0;
+          unsigned int ui = 0; // we don't want a negative number of lines
+          e->lines = MAX((mutt_str_atoui(body, &ui), ui), 0);
         }
 
         matched = true;
@@ -1566,11 +1562,7 @@ static struct Body *parse_multipart(FILE *fp, const char *boundary,
         if (mutt_param_get(&new_body->parameter, "content-lines"))
         {
           int lines = 0;
-          if (mutt_str_atoi(
-                  mutt_param_get(&new_body->parameter, "content-lines"), &lines) < 0)
-          {
-            lines = 0;
-          }
+          mutt_str_atoi(mutt_param_get(&new_body->parameter, "content-lines"), &lines);
           for (; lines > 0; lines--)
             if ((ftello(fp) >= end_off) || !fgets(buf, sizeof(buf), fp))
               break;

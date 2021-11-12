@@ -2022,7 +2022,7 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
       mutt_debug(LL_DEBUG3, "Getting mailbox UIDVALIDITY\n");
       pc += 3;
       pc = imap_next_word(pc);
-      if (mutt_str_atoui(pc, &mdata->uidvalidity) < 0)
+      if (!mutt_str_atoui(pc, &mdata->uidvalidity))
         goto fail;
     }
     else if (mutt_istr_startswith(pc, "OK [UIDNEXT"))
@@ -2030,7 +2030,7 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
       mutt_debug(LL_DEBUG3, "Getting mailbox UIDNEXT\n");
       pc += 3;
       pc = imap_next_word(pc);
-      if (mutt_str_atoui(pc, &mdata->uid_next) < 0)
+      if (!mutt_str_atoui(pc, &mdata->uid_next))
         goto fail;
     }
     else if (mutt_istr_startswith(pc, "OK [HIGHESTMODSEQ"))
@@ -2038,7 +2038,7 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
       mutt_debug(LL_DEBUG3, "Getting mailbox HIGHESTMODSEQ\n");
       pc += 3;
       pc = imap_next_word(pc);
-      if (mutt_str_atoull(pc, &mdata->modseq) < 0)
+      if (!mutt_str_atoull(pc, &mdata->modseq))
         goto fail;
     }
     else if (mutt_istr_startswith(pc, "OK [NOMODSEQ"))

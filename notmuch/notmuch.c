@@ -361,8 +361,10 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
 
     if (strcmp(item->name, "limit") == 0)
     {
-      if (mutt_str_atoi(item->value, &mdata->db_limit))
+      if (!mutt_str_atoi_full(item->value, &mdata->db_limit))
+      {
         mutt_error(_("failed to parse notmuch limit: %s"), item->value);
+      }
     }
     else if (strcmp(item->name, "type") == 0)
       mdata->query_type = nm_string_to_query_type(item->value);
@@ -1798,7 +1800,7 @@ static enum MxStatus nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
     else if (item->value && (strcmp(item->name, "limit") == 0))
     {
       // Try to parse the limit
-      if (mutt_str_atoi(item->value, &limit) != 0)
+      if (!mutt_str_atoi_full(item->value, &limit))
       {
         mutt_error(_("failed to parse limit: %s"), item->value);
         goto done;

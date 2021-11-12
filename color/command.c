@@ -325,8 +325,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
     int val = 0;
     if (buf->data[6] != '\0')
     {
-      rc = mutt_str_atoi(buf->data + 6, &val);
-      if ((rc != 0) || (val > COLOR_QUOTES_MAX))
+      if (!mutt_str_atoi_full(buf->data + 6, &val) || (val > COLOR_QUOTES_MAX))
       {
         mutt_buffer_printf(err, _("%s: no such object"), buf->data);
         return MUTT_CMD_WARNING;
@@ -639,7 +638,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     {
       struct Buffer tmp = mutt_buffer_make(0);
       mutt_extract_token(&tmp, s, MUTT_TOKEN_NO_FLAGS);
-      if (mutt_str_atoui(tmp.data, &match) < 0)
+      if (!mutt_str_atoui_full(tmp.data, &match))
       {
         mutt_buffer_printf(err, _("%s: invalid number: %s"),
                            color ? "color" : "mono", tmp.data);

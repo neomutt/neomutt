@@ -50,7 +50,7 @@ static int long_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   }
 
   long num = 0;
-  if (mutt_str_atol(value, &num) < 0)
+  if (!mutt_str_atol_full(value, &num))
   {
     mutt_buffer_printf(err, _("Invalid long: %s"), value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
@@ -146,7 +146,7 @@ static int long_string_plus_equals(const struct ConfigSet *cs, void *var,
                                    const char *value, struct Buffer *err)
 {
   long num = 0;
-  if (!value || (value[0] == '\0') || (mutt_str_atol(value, &num) < 0))
+  if (!mutt_str_atol_full(value, &num))
   {
     mutt_buffer_printf(err, _("Invalid long: %s"), NONULL(value));
     return CSR_ERR_INVALID | CSR_INV_TYPE;
@@ -182,9 +182,9 @@ static int long_string_minus_equals(const struct ConfigSet *cs, void *var,
                                     const char *value, struct Buffer *err)
 {
   long num = 0;
-  if (!value || (value[0] == '\0') || (mutt_str_atol(value, &num) < 0))
+  if (!mutt_str_atol_full(value, &num))
   {
-    mutt_buffer_printf(err, _("Invalid long: %s"), value);
+    mutt_buffer_printf(err, _("Invalid long: %s"), NONULL(value));
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 

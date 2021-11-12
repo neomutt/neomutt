@@ -302,7 +302,7 @@ void mh_seq_update(struct Mailbox *m)
     else
       p = e->path;
 
-    if (mutt_str_atoi(p, &seq_num) < 0)
+    if (!mutt_str_atoi_full(p, &seq_num))
       continue;
 
     if (!e->read)
@@ -359,12 +359,12 @@ static int mh_seq_read_token(char *t, int *first, int *last)
   if (p)
   {
     *p++ = '\0';
-    if ((mutt_str_atoi(t, first) < 0) || (mutt_str_atoi(p, last) < 0))
+    if (!mutt_str_atoi_full(t, first) || !mutt_str_atoi_full(p, last))
       return -1;
   }
   else
   {
-    if (mutt_str_atoi(t, first) < 0)
+    if (!mutt_str_atoi_full(t, first))
       return -1;
     *last = *first;
   }

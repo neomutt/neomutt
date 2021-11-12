@@ -75,7 +75,7 @@ static void menu_jump(struct Menu *menu)
       (buf[0] != '\0'))
   {
     int n = 0;
-    if ((mutt_str_atoi(buf, &n) == 0) && (n > 0) && (n < (menu->max + 1)))
+    if (mutt_str_atoi_full(buf, &n) && (n > 0) && (n < (menu->max + 1)))
     {
       menu_set_index(menu, n - 1); // msg numbers are 0-based
     }

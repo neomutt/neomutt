@@ -263,7 +263,7 @@ static void cmd_parse_expunge(struct ImapAccountData *adata, const char *s)
 
   struct ImapMboxData *mdata = adata->mailbox->mdata;
 
-  if ((mutt_str_atoui(s, &exp_msn) < 0) || (exp_msn < 1) ||
+  if (!mutt_str_atoui(s, &exp_msn) || (exp_msn < 1) ||
       (exp_msn > imap_msn_highest(&mdata->msn)))
   {
     return;
@@ -407,7 +407,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
 
   mutt_debug(LL_DEBUG3, "Handling FETCH\n");
 
-  if (mutt_str_atoui(s, &msn) < 0)
+  if (!mutt_str_atoui(s, &msn))
   {
     mutt_debug(LL_DEBUG3, "Skipping FETCH response - illegal MSN\n");
     return;
@@ -470,7 +470,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
     {
       s += plen;
       SKIPWS(s);
-      if (mutt_str_atoui(s, &uid) < 0)
+      if (!mutt_str_atoui(s, &uid))
       {
         mutt_debug(LL_DEBUG1, "Illegal UID.  Skipping update\n");
         return;
@@ -945,6 +945,7 @@ static void cmd_parse_enabled(struct ImapAccountData *adata, const char *s)
       adata->qresync = true;
   }
 }
+
 /**
  * cmd_parse_exists - Parse EXISTS message from serer
  * @param adata  Imap Account data
@@ -955,7 +956,7 @@ static void cmd_parse_exists(struct ImapAccountData *adata, const char *pn)
   unsigned int count = 0;
   mutt_debug(LL_DEBUG2, "Handling EXISTS\n");
 
-  if (mutt_str_atoui(pn, &count) < 0)
+  if (!mutt_str_atoui(pn, &count))
   {
     mutt_debug(LL_DEBUG1, "Malformed EXISTS: '%s'\n", pn);
     return;

@@ -316,7 +316,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
     {
       s += plen;
       SKIPWS(s);
-      if (mutt_str_atoui(s, &h->edata->uid) < 0)
+      if (!mutt_str_atoui(s, &h->edata->uid))
         return -1;
 
       s = imap_next_word(s);
@@ -348,7 +348,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       while (isdigit((unsigned char) *s) && (ptmp != (tmp + sizeof(tmp) - 1)))
         *ptmp++ = *s++;
       *ptmp = '\0';
-      if (mutt_str_atol(tmp, &h->content_length) < 0)
+      if (!mutt_str_atol(tmp, &h->content_length))
         return -1;
     }
     else if (mutt_istr_startswith(s, "BODY") ||
@@ -413,7 +413,7 @@ static int msg_fetch_header(struct Mailbox *m, struct ImapHeader *ih, char *buf,
 
   /* skip to message number */
   buf = imap_next_word(buf);
-  if (mutt_str_atoui(buf, &ih->edata->msn) < 0)
+  if (!mutt_str_atoui(buf, &ih->edata->msn))
     return rc;
 
   /* find FETCH tag */
@@ -917,7 +917,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
       continue;
 
     fetch_buf = imap_next_word(fetch_buf);
-    if (!isdigit((unsigned char) *fetch_buf) || (mutt_str_atoui(fetch_buf, &header_msn) < 0))
+    if (!isdigit((unsigned char) *fetch_buf) || !mutt_str_atoui(fetch_buf, &header_msn))
       continue;
 
     if ((header_msn < 1) || (header_msn > msn_end) ||
@@ -2007,7 +2007,7 @@ bool imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
         if (mutt_istr_startswith(pc, "UID"))
         {
           pc = imap_next_word(pc);
-          if (mutt_str_atoui(pc, &uid) < 0)
+          if (!mutt_str_atoui(pc, &uid))
             goto bail;
           if (uid != imap_edata_get(e)->uid)
           {

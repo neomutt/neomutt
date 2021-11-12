@@ -51,7 +51,7 @@ static int number_string_set(const struct ConfigSet *cs, void *var, struct Confi
   }
 
   int num = 0;
-  if (mutt_str_atoi(value, &num) < 0)
+  if (!mutt_str_atoi_full(value, &num))
   {
     mutt_buffer_printf(err, _("Invalid number: %s"), value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
@@ -160,7 +160,7 @@ static int number_string_plus_equals(const struct ConfigSet *cs, void *var,
                                      const char *value, struct Buffer *err)
 {
   int num = 0;
-  if (!value || (value[0] == '\0') || (mutt_str_atoi(value, &num) < 0))
+  if (!mutt_str_atoi_full(value, &num))
   {
     mutt_buffer_printf(err, _("Invalid number: %s"), NONULL(value));
     return CSR_ERR_INVALID | CSR_INV_TYPE;
@@ -199,9 +199,9 @@ static int number_string_minus_equals(const struct ConfigSet *cs, void *var,
                                       const char *value, struct Buffer *err)
 {
   int num = 0;
-  if (!value || (value[0] == '\0') || (mutt_str_atoi(value, &num) < 0))
+  if (!mutt_str_atoi(value, &num))
   {
-    mutt_buffer_printf(err, _("Invalid number: %s"), value);
+    mutt_buffer_printf(err, _("Invalid number: %s"), NONULL(value));
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
