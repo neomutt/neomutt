@@ -801,7 +801,8 @@ coverage: all test
 	  --directory email \
 	  --directory mutt \
 	  --directory notmuch \
-	  --directory store
+	  --directory store \
+	  --exclude '*/include/*'
 	-genhtml --output-directory coverage --frames coverage.info
 	lcov --list coverage.info
 @endif
