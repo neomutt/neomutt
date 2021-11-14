@@ -259,16 +259,27 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
   else
 #endif
   {
-    if ((mutt_edit_address(&en->to, _("To: "), true) == -1) || TAILQ_EMPTY(&en->to))
-      return -1;
+    const bool c_fast_reply = cs_subset_bool(sub, "fast_reply");
+    if (TAILQ_EMPTY(&en->to) || !c_fast_reply)
+    {
+      if ((mutt_edit_address(&en->to, _("To: "), true) == -1) || TAILQ_EMPTY(&en->to))
+        return -1;
+    }
 
     const bool c_ask_cc = cs_subset_bool(sub, "ask_cc");
-    if (c_ask_cc && (mutt_edit_address(&en->cc, _("Cc: "), true) == -1))
-      return -1;
+    if (TAILQ_EMPTY(&en->cc) || !c_fast_reply)
+    {
+      if (c_ask_cc && (mutt_edit_address(&en->cc, _("Cc: "), true) == -1))
+        return -1;
+    }
+
 
     const bool c_ask_bcc = cs_subset_bool(sub, "ask_bcc");
-    if (c_ask_bcc && (mutt_edit_address(&en->bcc, _("Bcc: "), true) == -1))
-      return -1;
+    if (TAILQ_EMPTY(&en->bcc) || !c_fast_reply)
+    {
+      if (c_ask_bcc && (mutt_edit_address(&en->bcc, _("Bcc: "), true) == -1))
+        return -1;
+    }
 
     const bool c_reply_with_xorig = cs_subset_bool(sub, "reply_with_xorig");
     if (c_reply_with_xorig && (flags & (SEND_REPLY | SEND_LIST_REPLY | SEND_GROUP_REPLY)) &&
