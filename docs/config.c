@@ -1155,12 +1155,17 @@
 { "fast_reply", DT_BOOL, false },
 /*
 ** .pp
-** When \fIset\fP, the initial prompt for recipients and subject are skipped
-** when replying to messages, and the initial prompt for subject is
-** skipped when forwarding messages.
+** When \fIset\fP, the initial prompt for recipients (to, cc, bcc) and
+** subject are skipped when the relevant information is already provided.
+** These cases include replying to messages and passing the relevant
+** command line arguments. The initial prompt for recipients
+** is also skipped when composing a new message to the current message sender,
+** while the initial prompt for subject is also skipped when forwarding messages.
 ** .pp
 ** \fBNote:\fP this variable has no effect when the $$auto_edit
 ** variable is \fIset\fP.
+** .pp
+** See also: $$auto_edit, $$edit_headers, $$ask_cc, $$ask_bcc
 */
 
 { "fcc_attach", DT_QUAD, MUTT_YES },
