@@ -204,16 +204,16 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac, bool xoauth2)
     return NULL;
   }
 
-  if ((!xoauth2 && (token_size > 512)) || (xoauth2 && (token_size > 2048)))
+  if ((!xoauth2 && (token_size > 512)) || (xoauth2 && (token_size > 4096)))
   {
     mutt_error(_("OAUTH token is too big: %ld"), token_size);
     FREE(&token);
     return NULL;
   }
 
-  /* 2400 is chosen to allow for both a token that is ~2048-long plus a
+  /* 4500 is chosen to allow for both a token that is 4096-long plus a
    * username that can be up to 320-long. */
-  char oauthbearer[2400];
+  char oauthbearer[4500];
   int oalen = 0;
   if (xoauth2)
   {
@@ -229,7 +229,7 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac, bool xoauth2)
   FREE(&token);
 
   size_t encoded_len = oalen * 4 / 3 + 10;
-  assert(encoded_len < 3400); // Assure LGTM that we won't overflow
+  assert(encoded_len < 6010); // Assure LGTM that we won't overflow
 
   char *encoded_token = mutt_mem_malloc(encoded_len);
   mutt_b64_encode(oauthbearer, oalen, encoded_token, encoded_len);
