@@ -2518,10 +2518,15 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
         fprintf(*fp, "sub %5.5s %u/%8s %s\n", gpgme_pubkey_algo_name(subkey->pubkey_algo),
                 subkey->length, shortid, date);
       }
-      else
+      else if (uid)
       {
         fprintf(*fp, "pub %5.5s %u/%8s %s %s\n", gpgme_pubkey_algo_name(subkey->pubkey_algo),
                 subkey->length, shortid, date, uid->uid);
+      }
+      else
+      {
+        fprintf(*fp, "pub %5.5s %u/%8s %s\n", gpgme_pubkey_algo_name(subkey->pubkey_algo),
+                subkey->length, shortid, date);
       }
       subkey = subkey->next;
       more = true;
