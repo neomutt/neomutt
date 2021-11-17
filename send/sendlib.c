@@ -779,9 +779,8 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp, struct ConfigSubset *sub)
     goto cleanup;
   }
 
-  if (fseeko(fp_in, a->offset, SEEK_SET) != 0)
+  if (!mutt_file_seek(fp_in, a->offset, SEEK_SET))
   {
-    mutt_perror("fseeko");
     goto cleanup;
   }
   a->parts = mutt_rfc822_parse_message(fp_in, a);
@@ -1333,10 +1332,9 @@ static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
     if (!c_bounce_delivered)
       chflags |= CH_WEED_DELIVERED;
 
-    if (fseeko(fp, e->offset, SEEK_SET) != 0)
+    if (!mutt_file_seek(fp, e->offset, SEEK_SET))
     {
       (void) mutt_file_fclose(&fp_tmp);
-      mutt_perror("fseeko");
       return -1;
     }
     fprintf(fp_tmp, "Resent-From: %s\n", resent_from);
@@ -1685,10 +1683,9 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
 
     /* make sure the last line ends with a newline.  Emacs doesn't ensure this
      * will happen, and it can cause problems parsing the mailbox later.  */
-    fseek(fp_tmp, -1, SEEK_END);
-    if (fgetc(fp_tmp) != '\n')
+    if (mutt_file_seek(fp_tmp, -1, SEEK_END) && (fgetc(fp_tmp) != '\n') &&
+        mutt_file_seek(fp_tmp, 0, SEEK_END))
     {
-      fseek(fp_tmp, 0, SEEK_END);
       fputc('\n', fp_tmp);
     }
 

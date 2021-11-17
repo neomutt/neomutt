@@ -386,9 +386,8 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
 
   /* parse the message header and MIME structure */
 
-  if (fseeko(fp, e->offset, SEEK_SET) != 0)
+  if (!mutt_file_seek(fp, e->offset, SEEK_SET))
   {
-    mutt_perror("fseeko");
     return -1;
   }
   e_new->offset = e->offset;

@@ -1212,7 +1212,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
         continue;
       }
 
-      (void) fseeko(fp, loc, SEEK_SET);
+      (void) mutt_file_seek(fp, loc, SEEK_SET);
       break; /* end of header */
     }
 
@@ -1464,7 +1464,10 @@ static void parse_part(FILE *fp, struct Body *b, int *counter)
 #endif
         bound = mutt_param_get(&b->parameter, "boundary");
 
-      fseeko(fp, b->offset, SEEK_SET);
+      if (!mutt_file_seek(fp, b->offset, SEEK_SET))
+      {
+        goto bail;
+      }
       b->parts = parse_multipart(fp, bound, b->offset + b->length,
                                  mutt_istr_equal("digest", b->subtype), counter);
       break;
@@ -1473,7 +1476,10 @@ static void parse_part(FILE *fp, struct Body *b, int *counter)
       if (!b->subtype)
         break;
 
-      fseeko(fp, b->offset, SEEK_SET);
+      if (!mutt_file_seek(fp, b->offset, SEEK_SET))
+      {
+        goto bail;
+      }
       if (mutt_is_message_type(b->type, b->subtype))
         b->parts = rfc822_parse_message(fp, b, counter);
       else if (mutt_istr_equal(b->subtype, "external-body"))

@@ -511,11 +511,11 @@ retry_name:
   }
 
   /* terminate existing file with \n if necessary */
-  if (fseek(fp_alias, 0, SEEK_END))
+  if (!mutt_file_seek(fp_alias, 0, SEEK_END))
     goto fseek_err;
   if (ftell(fp_alias) > 0)
   {
-    if (fseek(fp_alias, -1, SEEK_CUR) < 0)
+    if (!mutt_file_seek(fp_alias, -1, SEEK_CUR))
       goto fseek_err;
     if (fread(buf, 1, 1, fp_alias) != 1)
     {
@@ -523,7 +523,7 @@ retry_name:
       mutt_file_fclose(&fp_alias);
       return;
     }
-    if (fseek(fp_alias, 0, SEEK_END) < 0)
+    if (!mutt_file_seek(fp_alias, 0, SEEK_END))
       goto fseek_err;
     if (buf[0] != '\n')
       fputc('\n', fp_alias);
@@ -550,7 +550,6 @@ retry_name:
   return;
 
 fseek_err:
-  mutt_perror(_("Error seeking in alias file"));
   mutt_file_fclose(&fp_alias);
 }
 

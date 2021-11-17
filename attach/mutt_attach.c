@@ -196,8 +196,13 @@ int mutt_compose_attachment(struct Body *a)
 
             /* Remove headers by copying out data to another file, then
              * copying the file back */
-            fseeko(fp, b->offset, SEEK_SET);
+            const LOFF_T offset = b->offset;
             mutt_body_free(&b);
+            if (!mutt_file_seek(fp, offset, SEEK_SET))
+            {
+              goto bailout;
+            }
+
             mutt_buffer_mktemp(tmpfile);
             FILE *fp_tmp = mutt_file_fopen(mutt_buffer_string(tmpfile), "w");
             if (!fp_tmp)
@@ -900,7 +905,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, const char *path,
       e_new->msgno = e->msgno; /* required for MH/maildir */
       e_new->read = true;
 
-      if (fseeko(fp, m->offset, SEEK_SET) < 0)
+      if (!mutt_file_seek(fp, m->offset, SEEK_SET))
         return -1;
       if (!fgets(buf, sizeof(buf), fp))
         return -1;
@@ -946,9 +951,8 @@ int mutt_save_attachment(FILE *fp, struct Body *m, const char *path,
         mutt_perror("fopen");
         return -1;
       }
-      if (fseeko((s.fp_in = fp), m->offset, SEEK_SET) != 0)
+      if (!mutt_file_seek((s.fp_in = fp), m->offset, SEEK_SET))
       {
-        mutt_perror("fseeko");
         mutt_file_fclose(&s.fp_out);
         return -1;
       }

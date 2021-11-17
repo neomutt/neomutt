@@ -172,7 +172,10 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
         return false;
       }
 
-      fseeko(msg->fp, e->offset, SEEK_SET);
+      if (!mutt_file_seek(msg->fp, e->offset, SEEK_SET))
+      {
+        return false;
+      }
       mutt_body_handler(e->body, &s);
     }
 
@@ -202,8 +205,7 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
 #else
     fp = s.fp_out;
     fflush(fp);
-    fseek(fp, 0, SEEK_SET);
-    if (fstat(fileno(fp), &st))
+    if (!mutt_file_seek(fp, 0, SEEK_SET) || fstat(fileno(fp), &st))
     {
       mutt_perror(_("Error checking length of temporary file"));
       mutt_file_fclose(&fp);
@@ -218,14 +220,20 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
     fp = msg->fp;
     if (needs_head)
     {
-      fseeko(fp, e->offset, SEEK_SET);
+      if (!mutt_file_seek(fp, e->offset, SEEK_SET))
+      {
+        return false;
+      }
       len = e->body->offset - e->offset;
     }
     if (needs_body)
     {
       if (pat->op == MUTT_PAT_BODY)
       {
-        fseeko(fp, e->body->offset, SEEK_SET);
+        if (!mutt_file_seek(fp, e->body->offset, SEEK_SET))
+        {
+          return false;
+        }
       }
       len += e->body->length;
     }
@@ -699,14 +707,15 @@ static int msg_search_sendmode(struct Email *e, struct Pattern *pat)
     mutt_rfc822_write_header(fp, e->env, e->body, MUTT_WRITE_HEADER_POSTPONE,
                              false, false, NeoMutt->sub);
     fflush(fp);
-    fseek(fp, 0, 0);
-
-    while ((buf = mutt_file_read_line(buf, &blen, fp, NULL, MUTT_RL_NO_FLAGS)) != NULL)
+    if (mutt_file_seek(fp, 0, SEEK_SET))
     {
-      if (patmatch(pat, buf) == 0)
+      while ((buf = mutt_file_read_line(buf, &blen, fp, NULL, MUTT_RL_NO_FLAGS)) != NULL)
       {
-        match = true;
-        break;
+        if (patmatch(pat, buf) == 0)
+        {
+          match = true;
+          break;
+        }
       }
     }
 

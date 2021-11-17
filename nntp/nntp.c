@@ -2673,7 +2673,10 @@ static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     mutt_hash_insert(m->subj_hash, e->env->real_subj, e);
 
   /* fix content length */
-  fseek(msg->fp, 0, SEEK_END);
+  if (!mutt_file_seek(msg->fp, 0, SEEK_END))
+  {
+    return false;
+  }
   e->body->length = ftell(msg->fp) - e->body->offset;
 
   /* this is called in neomutt before the open which fetches the message,

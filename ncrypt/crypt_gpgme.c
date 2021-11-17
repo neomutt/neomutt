@@ -2250,9 +2250,8 @@ int pgp_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
       return -1;
     }
 
-    if (fseeko(s.fp_in, b->offset, SEEK_SET) != 0)
+    if (!mutt_file_seek(s.fp_in, b->offset, SEEK_SET))
     {
-      mutt_perror("fseeko");
       rc = -1;
       goto bail;
     }
@@ -2323,9 +2322,8 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
   saved_b_offset = b->offset;
   saved_b_length = b->length;
   s.fp_in = fp_in;
-  if (fseeko(s.fp_in, b->offset, SEEK_SET) != 0)
+  if (!mutt_file_seek(s.fp_in, b->offset, SEEK_SET))
   {
-    mutt_perror("fseeko");
     return -1;
   }
   FILE *fp_tmp = mutt_file_mkstemp();
@@ -2374,9 +2372,8 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
     saved_b_length = bb->length;
     memset(&s, 0, sizeof(s));
     s.fp_in = *fp_out;
-    if (fseeko(s.fp_in, bb->offset, SEEK_SET) != 0)
+    if (!mutt_file_seek(s.fp_in, bb->offset, SEEK_SET))
     {
-      mutt_perror("fseeko");
       return -1;
     }
     FILE *fp_tmp2 = mutt_file_mkstemp();
@@ -2860,9 +2857,8 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
   if (!mutt_body_get_charset(m, body_charset, sizeof(body_charset)))
     mutt_str_copy(body_charset, "iso-8859-1", sizeof(body_charset));
 
-  if (fseeko(s->fp_in, m->offset, SEEK_SET) != 0)
+  if (!mutt_file_seek(s->fp_in, m->offset, SEEK_SET))
   {
-    mutt_perror("fseeko");
     return -1;
   }
   last_pos = m->offset;
