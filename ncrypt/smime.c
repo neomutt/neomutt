@@ -1884,9 +1884,8 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
     goto cleanup;
   }
 
-  if (fseeko(s->fp_in, m->offset, SEEK_SET) != 0)
+  if (!mutt_file_seek(s->fp_in, m->offset, SEEK_SET))
   {
-    mutt_perror("fseeko");
     goto cleanup;
   }
 
@@ -2102,7 +2101,10 @@ int smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
     return -1;
 
   s.fp_in = fp_in;
-  fseeko(s.fp_in, b->offset, SEEK_SET);
+  if (!mutt_file_seek(s.fp_in, b->offset, SEEK_SET))
+  {
+    return -1;
+  }
 
   FILE *fp_tmp = mutt_file_mkstemp();
   if (!fp_tmp)

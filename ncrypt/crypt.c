@@ -773,9 +773,8 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
     return -1;
   }
 
-  if (fseeko(s->fp_in, a->hdr_offset, SEEK_SET) != 0)
+  if (!mutt_file_seek(s->fp_in, a->hdr_offset, SEEK_SET))
   {
-    mutt_perror("fseeko");
     mutt_file_fclose(&fp);
     return -1;
   }

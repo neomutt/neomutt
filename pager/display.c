@@ -796,9 +796,8 @@ static int fill_buffer(FILE *fp, LOFF_T *bytes_read, LOFF_T offset, unsigned cha
   {
     if (offset != *bytes_read)
     {
-      if (fseeko(fp, offset, SEEK_SET) != 0)
+      if (!mutt_file_seek(fp, offset, SEEK_SET))
       {
-        mutt_perror("fseeko");
         return -1;
       }
     }

@@ -119,7 +119,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
     return -1;
 
   if (ftello(fp_in) != off_start)
-    if (fseeko(fp_in, off_start, SEEK_SET) < 0)
+    if (!mutt_file_seek(fp_in, off_start, SEEK_SET))
       return -1;
 
   buf[0] = '\n';
@@ -599,7 +599,7 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
 
   if (b->deleted)
   {
-    if (fseeko(fp, b->offset, SEEK_SET) != 0)
+    if (!mutt_file_seek(fp, b->offset, SEEK_SET))
     {
       return -1;
     }
@@ -687,7 +687,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
       mutt_buffer_addch(quoted_date, '"');
 
       /* Count the number of lines and bytes to be deleted */
-      if (fseeko(fp_in, body->offset, SEEK_SET) != 0)
+      if (!mutt_file_seek(fp_in, body->offset, SEEK_SET))
       {
         goto attach_del_cleanup;
       }
@@ -714,7 +714,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
       new_offset = ftello(fp_out);
 
       /* Copy the body */
-      if (fseeko(fp_in, body->offset, SEEK_SET) < 0)
+      if (!mutt_file_seek(fp_in, body->offset, SEEK_SET))
         goto attach_del_cleanup;
       if (copy_delete_attach(body, fp_in, fp_out, mutt_buffer_string(quoted_date)))
         goto attach_del_cleanup;
@@ -819,7 +819,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
     mutt_write_mime_header(cur, fp_out, NeoMutt->sub);
     fputc('\n', fp_out);
 
-    if (fseeko(fp, cur->offset, SEEK_SET) < 0)
+    if (!mutt_file_seek(fp, cur->offset, SEEK_SET))
       return -1;
     if (mutt_file_copy_bytes(fp, fp_out, cur->length) == -1)
     {
@@ -832,7 +832,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
   }
   else
   {
-    if (fseeko(fp_in, body->offset, SEEK_SET) < 0)
+    if (!mutt_file_seek(fp_in, body->offset, SEEK_SET))
       return -1;
     if (cmflags & MUTT_CM_PREFIX)
     {
@@ -918,7 +918,7 @@ static int append_message(struct Mailbox *dest, FILE *fp_in, struct Mailbox *src
   struct Message *msg = NULL;
   int rc;
 
-  if (fseeko(fp_in, e->offset, SEEK_SET) < 0)
+  if (!mutt_file_seek(fp_in, e->offset, SEEK_SET))
     return -1;
   if (!fgets(buf, sizeof(buf), fp_in))
     return -1;
@@ -1019,7 +1019,7 @@ static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, const c
         }
 
         /* Skip the deleted body */
-        if (fseeko(fp_in, part->offset + part->length, SEEK_SET) != 0)
+        if (!mutt_file_seek(fp_in, part->offset + part->length, SEEK_SET))
         {
           return -1;
         }

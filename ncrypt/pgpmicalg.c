@@ -134,9 +134,8 @@ static void pgp_dearmor(FILE *fp_in, FILE *fp_out)
     return;
   }
 
-  if (fseeko(fp_in, start, SEEK_SET) == -1)
+  if (!mutt_file_seek(fp_in, start, SEEK_SET))
   {
-    mutt_debug(LL_DEBUG1, "Can't seekto start\n");
     return;
   }
 

@@ -1055,7 +1055,7 @@ static int alternative_handler(struct Body *a, struct State *s)
   {
     const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
     if (s->flags & MUTT_DISPLAY && !c_weed &&
-        (fseeko(s->fp_in, choice->hdr_offset, SEEK_SET) == 0))
+        mutt_file_seek(s->fp_in, choice->hdr_offset, SEEK_SET))
     {
       mutt_file_copy_bytes(s->fp_in, s->fp_out, choice->offset - choice->hdr_offset);
     }
@@ -1249,7 +1249,7 @@ static int multipart_handler(struct Body *a, struct State *s)
       {
         state_putc(s, '\n');
       }
-      else if (fseeko(s->fp_in, p->hdr_offset, SEEK_SET) == 0)
+      else if (mutt_file_seek(s->fp_in, p->hdr_offset, SEEK_SET))
       {
         mutt_file_copy_bytes(s->fp_in, s->fp_out, p->offset - p->hdr_offset);
       }
@@ -1307,7 +1307,10 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
   struct Buffer *tempfile = NULL;
 #endif
 
-  (void) fseeko(s->fp_in, b->offset, SEEK_SET);
+  if (!mutt_file_seek(s->fp_in, b->offset, SEEK_SET))
+  {
+    return -1;
+  }
 
 #ifdef USE_FMEMOPEN
   char *temp = NULL;
@@ -1856,6 +1859,11 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
   int istext = mutt_is_text_part(b) && (b->disposition == DISP_INLINE);
   iconv_t cd = (iconv_t) (-1);
 
+  if (!mutt_file_seek(s->fp_in, b->offset, SEEK_SET))
+  {
+    return;
+  }
+
   if (istext && (b->charset || (s->flags & MUTT_CHARCONV)))
   {
     const char *charset = b->charset;
@@ -1872,7 +1880,6 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
       cd = mutt_ch_iconv_open(c_charset, charset, MUTT_ICONV_HOOK_FROM);
   }
 
-  (void) fseeko(s->fp_in, b->offset, SEEK_SET);
   switch (b->encoding)
   {
     case ENC_QUOTED_PRINTABLE:

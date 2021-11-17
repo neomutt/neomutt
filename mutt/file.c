@@ -655,6 +655,30 @@ int mutt_file_sanitize_regex(struct Buffer *dest, const char *src)
 }
 
 /**
+ * mutt_file_seek - Wrapper for fseeko with error handling
+ * @param[in] fp File to seek
+ * @param[in] offset Offset
+ * @param[in] whence Seek mode
+ * @retval true Seek was successful
+ * @retval false Seek failed
+ */
+bool mutt_file_seek(FILE *fp, LOFF_T offset, int whence)
+{
+  if (!fp)
+  {
+    return false;
+  }
+
+  if (fseeko(fp, offset, whence) != 0)
+  {
+    mutt_perror(_("Failed to seek file: %s"), strerror(errno));
+    return false;
+  }
+
+  return true;
+}
+
+/**
  * mutt_file_read_line - Read a line from a file
  * @param[out] line     Buffer allocated on the head (optional)
  * @param[in]  size     Length of buffer
