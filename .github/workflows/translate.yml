@@ -10,7 +10,11 @@ jobs:
   leaderboard:
     name: Update Leaderboard
     runs-on: ubuntu-latest
+
     steps:
+    - name: Check secret
+      run: |
+        [ -n "${{ secrets.TRANSLATE_DEPLOY_KEY }}" ]
 
     - name: Install Build Software
       run: |
