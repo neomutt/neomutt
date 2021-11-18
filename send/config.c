@@ -151,7 +151,7 @@ static struct ConfigDef SendVars[] = {
     "Don't prompt for the recipients and subject when replying/forwarding"
   },
   { "fcc_attach", DT_QUAD, MUTT_YES, 0, NULL,
-    "Save send message with all their attachments"
+    "Save sent message with all their attachments"
   },
   { "fcc_before_send", DT_BOOL, false, 0, NULL,
     "Save FCCs before sending the message"
@@ -287,7 +287,7 @@ static struct ConfigDef SendVars[] = {
     "Set the 'From' header for outgoing mail"
   },
   { "user_agent", DT_BOOL, false, 0, NULL,
-    "Add a 'User-Agent' head to outgoing mail"
+    "Add a 'User-Agent' header to outgoing mail"
   },
   { "wrap_headers", DT_NUMBER|DT_NOT_NEGATIVE|R_PAGER, 78, 0, wrapheaders_validator,
     "Width to wrap headers in outgoing messages"

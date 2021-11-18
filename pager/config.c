@@ -64,7 +64,7 @@ static struct ConfigDef PagerVars[] = {
     "Regex to match smileys to prevent mistakes when quoting text"
   },
   { "tilde", DT_BOOL|R_PAGER, false, 0, NULL,
-    "Character to pad blank lines in the pager"
+    "Display '~' in the pager after the end of the email"
   },
 
   { "skip_quoted_offset", DT_SYNONYM, IP "pager_skip_quoted_context",    },

@@ -4620,7 +4620,7 @@
 ** (the default) NeoMutt will try all available methods, in order from
 ** most-secure to least-secure. Support for the "plain" mechanism is
 ** bundled; other mechanisms are provided by an external SASL library (look
-** for +USE_SASL in the output of neomutt -v).
+** for '+sasl' in the output of neomutt -v).
 ** .pp
 ** Example:
 ** .ts
