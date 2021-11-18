@@ -50,11 +50,14 @@ jobs:
         echo "HASH: $GIT_HASH"
         GIT_DESC="$(git log -n1 --format="%s" $GIT_HASH)"
         echo "DESC: $GIT_DESC"
-        curl \
+        curl --fail --output curl.log \
           --form token=$TOKEN \
           --form email=richard.russon@gmail.com \
           --form file=@neomutt.tgz \
           --form version="$GIT_HASH" \
           --form description="$GIT_DESC" \
           https://scan.coverity.com/builds?project=neomutt%2Fneomutt
+        # If we go over quota, alert the user
+        cat curl.log
+        grep -qv "quota.*reached" curl.log || false
 
