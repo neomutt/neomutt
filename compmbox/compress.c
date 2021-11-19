@@ -712,10 +712,13 @@ static enum MxStatus comp_mbox_close(struct Mailbox *m)
   else
   {
     /* If the file was removed, remove the compressed folder too */
-    const bool c_save_empty = cs_subset_bool(NeoMutt->sub, "save_empty");
-    if ((access(mailbox_path(m), F_OK) != 0) && !c_save_empty)
+    if (access(mailbox_path(m), F_OK) != 0)
     {
-      remove(m->realpath);
+      const bool c_save_empty = cs_subset_bool(NeoMutt->sub, "save_empty");
+      if (!c_save_empty)
+      {
+        remove(m->realpath);
+      }
     }
     else
     {
