@@ -254,6 +254,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
     return 0;
 
   b64_data.size = fread(b64_data.data, 1, b64_data.size, fp);
+  b64_data.data[b64_data.size] = '\0';
   mutt_file_fclose(&fp);
 
   do

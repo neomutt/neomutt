@@ -233,6 +233,8 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     }
     else if (line_rc == MUTT_CMD_FINISH)
     {
+      if (conv)
+        FREE(&currentline);
       break; /* Found "finish" command */
     }
     else
