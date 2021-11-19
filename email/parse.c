@@ -656,6 +656,26 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, const char *na
         mutt_addrlist_parse(&env->from, body);
         matched = true;
       }
+#ifdef USE_AUTOCRYPT
+      else if (mutt_istr_equal(name + 1, "utocrypt"))
+      {
+        const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+        if (c_autocrypt)
+        {
+          env->autocrypt = parse_autocrypt(env->autocrypt, body);
+          matched = true;
+        }
+      }
+      else if (mutt_istr_equal(name + 1, "utocrypt-gossip"))
+      {
+        const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+        if (c_autocrypt)
+        {
+          env->autocrypt_gossip = parse_autocrypt(env->autocrypt_gossip, body);
+          matched = true;
+        }
+      }
+#endif
       break;
 
     case 'b':
@@ -972,26 +992,6 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, const char *na
         mutt_addrlist_parse(&env->to, body);
         matched = true;
       }
-#ifdef USE_AUTOCRYPT
-      else if (mutt_istr_equal(name + 1, "utocrypt"))
-      {
-        const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
-        if (c_autocrypt)
-        {
-          env->autocrypt = parse_autocrypt(env->autocrypt, body);
-          matched = true;
-        }
-      }
-      else if (mutt_istr_equal(name + 1, "utocrypt-gossip"))
-      {
-        const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
-        if (c_autocrypt)
-        {
-          env->autocrypt_gossip = parse_autocrypt(env->autocrypt_gossip, body);
-          matched = true;
-        }
-      }
-#endif
       break;
 
     case 'x':
