@@ -273,7 +273,6 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
         return -1;
     }
 
-
     const bool c_ask_bcc = cs_subset_bool(sub, "ask_bcc");
     if (TAILQ_EMPTY(&en->bcc) || !c_fast_reply)
     {

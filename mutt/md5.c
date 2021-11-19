@@ -405,8 +405,7 @@ void mutt_md5_process_bytes(const void *buf, size_t buflen, struct Md5Ctx *md5ct
 #if !defined(_STRING_ARCH_unaligned)
 #define alignof(type)                                                          \
   offsetof(                                                                    \
-      struct                                                                   \
-      {                                                                        \
+      struct {                                                                 \
         char c;                                                                \
         type x;                                                                \
       },                                                                       \
