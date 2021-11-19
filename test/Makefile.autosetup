@@ -34,6 +34,13 @@ ADDRESS_OBJS	= test/address/mutt_addr_cat.o \
 
 ARRAY_OBJS	= test/array/mutt_array_api.o
 
+ATOI_OBJS	= test/atoi/mutt_str_atoi.o \
+		  test/atoi/mutt_str_atol.o \
+		  test/atoi/mutt_str_atos.o \
+		  test/atoi/mutt_str_atoui.o \
+		  test/atoi/mutt_str_atoul.o \
+		  test/atoi/mutt_str_atoull.o
+
 ATTACH_OBJS	= test/attach/mutt_actx_add_attach.o \
 		  test/attach/mutt_actx_add_body.o \
 		  test/attach/mutt_actx_add_fp.o \
@@ -495,12 +502,6 @@ STRING_OBJS	= test/string/mutt_istr_equal.o \
 		  test/string/mutt_str_adjust.o \
 		  test/string/mutt_str_append_item.o \
 		  test/string/mutt_str_asprintf.o \
-		  test/string/mutt_str_atoi.o \
-		  test/string/mutt_str_atol.o \
-		  test/string/mutt_str_atos.o \
-		  test/string/mutt_str_atoui.o \
-		  test/string/mutt_str_atoul.o \
-		  test/string/mutt_str_atoull.o \
 		  test/string/mutt_str_cat.o \
 		  test/string/mutt_str_coll.o \
 		  test/string/mutt_str_copy.o \
@@ -573,6 +574,7 @@ TEST_OBJS	= test/main.o test/common.o \
 		  $(ACCOUNT_OBJS) \
 		  $(ADDRESS_OBJS) \
 		  $(ARRAY_OBJS) \
+		  $(ATOI_OBJS) \
 		  $(ATTACH_OBJS) \
 		  $(BASE64_OBJS) \
 		  $(BODY_OBJS) \

@@ -30,6 +30,7 @@
  * | File             | Description             |
  * | :--------------- | :---------------------- |
  * | mutt/array.h     | @subpage mutt_array     |
+ * | mutt/atoi.h      | @subpage mutt_atoi      |
  * | mutt/base64.c    | @subpage mutt_base64    |
  * | mutt/buffer.c    | @subpage mutt_buffer    |
  * | mutt/charset.c   | @subpage mutt_charset   |
@@ -68,6 +69,7 @@
 
 // IWYU pragma: begin_exports
 #include "array.h"
+#include "atoi.h"
 #include "base64.h"
 #include "buffer.h"
 #include "charset.h"

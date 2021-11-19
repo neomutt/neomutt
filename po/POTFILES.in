@@ -24,6 +24,11 @@ autocrypt/schema.c
 bcache/bcache.c
 browser.c
 color/color.c
+color/command.c
+color/notify.c
+color/quoted.c
+color/regex.c
+color/simple.c
 commands.c
 command_parse.c
 complete.c
@@ -177,6 +182,7 @@ menu/observer.c
 menu/type.c
 menu/window.c
 monitor.c
+mutt/atoi.c
 mutt/base64.c
 mutt/buffer.c
 mutt/charset.c
