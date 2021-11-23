@@ -6,6 +6,7 @@ on:
     branches:
       - 'master'
       - 'devel/**'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -21,7 +22,7 @@ jobs:
           - name: default
             options:
           - name: disabled
-            options: --disable-idn --disable-nls --disable-pgp --disable-smime
+            options: --disable-idn --disable-nls --disable-pgp --disable-smime --ssl
           - name: everything
             options: --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
 

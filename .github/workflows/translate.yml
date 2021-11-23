@@ -4,6 +4,7 @@ on:
   push:
     branches:
     - 'translate'
+  workflow_dispatch:
 
 jobs:
   leaderboard:
