@@ -1,4 +1,5 @@
 name: Doxygen
+
 on:
   schedule:
     - cron: '10 3 * * 1'
@@ -14,34 +15,34 @@ jobs:
     container: debian:sid
 
     steps:
-    - name: Check secret
+    - name: Check Secret
       run: |
         [ -n "${{ secrets.DOXYGEN_DEPLOY_KEY }}" ]
 
-    - name: Install build software
+    - name: Install Build Software
       run: |
         apt-get update
         apt install -y doxygen graphviz git rsync
 
-    - name: Set up git
+    - name: Set Up Git
       run: |
         git config --global user.email "rich@flatcap.org"
         git config --global user.name "Richard Russon (DEPLOY)"
 
-    - name: Checkout neomutt
+    - name: Checkout NeoMutt
       uses: actions/checkout@v2
       with:
         repository: neomutt/neomutt
         path: neomutt
         fetch-depth: 0
 
-    - name: Checkout doxygen scripts
+    - name: Checkout Doxygen Scripts
       uses: actions/checkout@v2
       with:
         repository: neomutt/action-doxygen
         path: action-doxygen
 
-    - name: Checkout code docs
+    - name: Checkout Code Docs
       uses: actions/checkout@v2
       with:
         repository: neomutt/code
@@ -49,18 +50,18 @@ jobs:
         persist-credentials: false
         # otherwise GITHUB_TOKEN will be used, rather than the Personal Access Token
 
-    - name: Generate docs
+    - name: Generate Docs
       run: |
         cd neomutt
         ln -s ../action-doxygen
         action-doxygen/bin/generate.sh
         ls -l html/index.html
 
-    - name: Commit docs
+    - name: Commit Docs
       run: |
         action-doxygen/bin/commit.sh neomutt/html code
 
-    - name: Push to code docs
+    - name: Push to Code Docs
       uses: ad-m/github-push-action@v0.6.0
       with:
         github_token: ${{ secrets.DOXYGEN_DEPLOY_KEY }}

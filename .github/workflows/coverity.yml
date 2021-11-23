@@ -1,4 +1,5 @@
 name: Coverity
+
 on:
   schedule:
     - cron: '0 3 * * 1'
@@ -20,14 +21,14 @@ jobs:
       COV_RESULTS: cov-int
 
     steps:
-    - name: Check secret
+    - name: Check Secret
       run: |
         [ -n "${{ secrets.COVERITY_SCAN_TOKEN }}" ]
 
     - name: Checkout Code
       uses: actions/checkout@v2
 
-    - name: Configure Neomutt
+    - name: Configure NeoMutt
       run: ./configure $OPTIONS
 
     - name: Download Coverity

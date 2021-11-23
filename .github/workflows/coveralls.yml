@@ -1,4 +1,5 @@
 name: Coveralls
+
 on:
   schedule:
     - cron: '20 3 * * 1'
@@ -17,7 +18,7 @@ jobs:
       OPTIONS: --coverage --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
 
     steps:
-    - name: Install build software
+    - name: Install Build Software
       run: |
         apt-get update
         apt install -y lcov
