@@ -3,7 +3,7 @@
 # Copyright (c) 2016-2019 NeoMutt project.
 # This file is distributed under the same license as the NeoMutt package.
 #
-# Richard Russon <rich@flatcap.org>, 2016-2020
+# Richard Russon <rich@flatcap.org>, 2016-2021
 #
 msgid ""
 msgstr ""
@@ -7428,58 +7428,3 @@ msgstr "Compile options:"
 #: version.c:494
 msgid "Debug options:"
 msgstr "Debug options:"
-
-#, c-format
-#~ msgid "%s authentication failed, trying next method"
-#~ msgstr "%s authentication failed, trying next method"
-
-#, c-format
-#~ msgid "%s: color not supported by term"
-#~ msgstr "%s: colour not supported by term"
-
-#, c-format
-#~ msgid "%s: invalid number: %s"
-#~ msgstr "%s: invalid number: %s"
-
-#, c-format
-#~ msgid "%s: no such attribute"
-#~ msgstr "%s: no such attribute"
-
-#, c-format
-#~ msgid "%s: no such color"
-#~ msgstr "%s: no such colour"
-
-#, c-format
-#~ msgid "%s: no such object"
-#~ msgstr "%s: no such object"
-
-#~ msgid "Already skipped past headers"
-#~ msgstr "Already skipped past headers"
-
-#, c-format
-#~ msgid "Maximum quoting level is %d"
-#~ msgstr "Maximum quoting level is %d"
-
-#, c-format
-#~ msgid "Option %s may not be set or reset from the pager"
-#~ msgstr "Option %s may not be set or reset from the pager"
-
-#, c-format
-#~ msgid "Query '%s'"
-#~ msgstr "Query '%s'"
-
-#, c-format
-#~ msgid "SMTP authentication method %s requires SASL"
-#~ msgstr "SMTP authentication method %s requires SASL"
-
-#~ msgid "You are on the first page"
-#~ msgstr "You are on the first page"
-
-#~ msgid "You are on the last page"
-#~ msgstr "You are on the last page"
-
-#~ msgid "default colors not supported"
-#~ msgstr "default colours not supported"
-
-#~ msgid "skip beyond headers"
-#~ msgstr "skip beyond headers"
