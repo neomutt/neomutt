@@ -271,13 +271,13 @@ static struct PrexStorage *prex(enum Prex which)
   {
 #ifdef HAVE_PCRE2
     uint32_t opt = pcre2_has_unicode() ? PCRE2_UTF : 0;
-    int eno;
-    PCRE2_SIZE eoff;
+    int eno = 0;
+    PCRE2_SIZE eoff = 0;
     h->re = pcre2_compile((PCRE2_SPTR8) h->str, PCRE2_ZERO_TERMINATED, opt,
                           &eno, &eoff, NULL);
     assert(h->re && "Fix your RE");
     h->mdata = pcre2_match_data_create_from_pattern(h->re, NULL);
-    uint32_t ccount;
+    uint32_t ccount = 0;
     pcre2_pattern_info(h->re, PCRE2_INFO_CAPTURECOUNT, &ccount);
     assert(ccount + 1 == h->nmatches && "Number of matches do not match (...)");
     h->matches = mutt_mem_calloc(h->nmatches, sizeof(*h->matches));
