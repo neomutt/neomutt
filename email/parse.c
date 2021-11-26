@@ -301,7 +301,7 @@ static void parse_content_language(const char *s, struct Body *ct)
     return;
 
   mutt_debug(LL_DEBUG2, "RFC8255 >> Content-Language set to %s\n", s);
-  ct->language = mutt_str_dup(s);
+  mutt_str_replace(&ct->language, s);
 }
 
 /**
@@ -463,7 +463,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
       ; // do nothing
 
     *pc = '\0';
-    ct->subtype = mutt_str_dup(subtype);
+    mutt_str_replace(&ct->subtype, subtype);
   }
 
   /* Finally, get the major type */
@@ -471,7 +471,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
 
 #ifdef SUN_ATTACHMENT
   if (mutt_istr_equal("x-sun-attachment", s))
-    ct->subtype = mutt_str_dup("x-sun-attachment");
+    mutt_str_replace(&ct->subtype, "x-sun-attachment");
 #endif
 
   if (ct->type == TYPE_OTHER)
