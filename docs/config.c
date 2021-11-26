@@ -2071,13 +2071,18 @@
 **                 "$index-format-hook" command
 ** .dt %{fmt} .dd the date and time of the message is converted to sender's
 **                time zone, and "fmt" is expanded by the library function
-**                \fCstrftime(3)\fP; a leading bang disables locales
+**                \fCstrftime(3)\fP; if the first character inside the braces
+**                is a bang ("!"), the date is formatted ignoring any locale
+**                settings.  Note that the sender's time zone might only be
+**                available as a numerical offset, so "%Z" behaves like "%z".
 ** .dt %[fmt] .dd the date and time of the message is converted to the local
 **                time zone, and "fmt" is expanded by the library function
-**                \fCstrftime(3)\fP; a leading bang disables locales
-** .dt %(fmt) .dd the local date and time when the message was received.
+**                \fCstrftime(3)\fP; if the first character inside the brackets
+**                is a bang ("!"), the date is formatted ignoring any locale settings.
+** .dt %(fmt) .dd the local date and time when the message was received, and
 **                "fmt" is expanded by the library function \fCstrftime(3)\fP;
-**                a leading bang disables locales
+**                if the first character inside the parentheses is a bang ("!"),
+**                the date is formatted ignoring any locale settings.
 ** .dt %>X    .dd right justify the rest of the string and pad with character "X"
 ** .dt %|X    .dd pad to the end of the line with character "X"
 ** .dt %*X    .dd soft-fill with character "X" as pad
