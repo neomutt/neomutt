@@ -1,0 +1,24 @@
+FUZZ_OBJS   = fuzz/address.o
+
+CFLAGS	+= -I$(SRCDIR)/fuzz
+
+FUZZ_ADDRESS = fuzz/address-fuzz$(EXEEXT)
+
+.PHONY: fuzz
+fuzz: $(FUZZ_ADDRESS)
+
+$(FUZZ_ADDRESS): $(FUZZ_OBJS) $(NEOMUTTOBJS) $(MUTTLIBS) $(NEOMUTTLIBS)
+	$(CXX) $(CXXFLAGS) -o $@ $(FUZZ_OBJS) $(NEOMUTTOBJS) $(MUTTLIBS) $(NEOMUTTLIBS) $(LDFLAGS) $(LIBS) $(LIB_FUZZING_ENGINE)
+
+all-fuzz: $(FUZZ_ADDRESS)
+
+clean-fuzz:
+	$(RM) $(FUZZ_ADDRESS) $(FUZZ_OBJS) $(FUZZ_OBJS:.o=.Po)
+
+install-fuzz:
+uninstall-fuzz:
+
+FUZZ_DEPFILES = $(FUZZ_OBJS:.o=.Po)
+-include $(FUZZ_DEPFILES)
+
+# vim: set ts=8 noexpandtab:

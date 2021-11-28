@@ -822,5 +822,8 @@ coverage: all test
 @if ENABLE_UNIT_TESTS
 @include @srcdir@/test/Makefile.autosetup
 @endif
+@if ENABLE_FUZZ_TESTS
+@include @srcdir@/fuzz/Makefile.autosetup
+@endif
 
 # vim: set ts=8 noexpandtab:

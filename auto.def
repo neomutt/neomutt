@@ -115,6 +115,7 @@ options {
   asan=0                    => "Enable the Address Sanitizer"
   coverage=0                => "Enable Coverage Testing"
   testing=0                 => "Enable Unit Testing"
+  fuzzing                   => "Enable Fuzz Testing"
 # Configure with pkg-config
   pkgconf=0                 => "Use pkg-config during configure"
 # Enable all options
@@ -150,7 +151,7 @@ if {1} {
   # Keep sorted, please.
   foreach opt {
     asan autocrypt bdb coverage debug-backtrace debug-email debug-graphviz debug-notify
-    debug-parse-test debug-window doc everything fmemopen full-doc gdbm gnutls
+    debug-parse-test debug-window doc everything fmemopen full-doc fuzzing gdbm gnutls
     gpgme gss homespool idn idn2 include-path-in-cflags inotify kyotocabinet
     lmdb locales-fix lua lz4 mixmaster nls notmuch pcre2 pgp pkgconf qdbm
     rocksdb sasl smime sqlite ssl testing tdb tokyocabinet zlib zstd
@@ -609,6 +610,13 @@ if {[get-define want-sasl]} {
 if {[get-define want-testing]} {
   define ENABLE_UNIT_TESTS
   lappend subdirs test
+}
+
+###############################################################################
+# Fuzz Testing
+if {[get-define want-fuzzing]} {
+  define ENABLE_FUZZ_TESTS
+  lappend subdirs fuzz
 }
 
 ###############################################################################

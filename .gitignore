@@ -11,6 +11,7 @@ docs/makedoc
 neomutt
 pgpewrap
 test/neomutt-test
+fuzz/address-fuzz
 
 # Build products
 *.o
