@@ -268,7 +268,7 @@ static void parse_content_disposition(const char *s, struct Body *ct)
       mutt_str_replace(&ct->filename, s);
     s = mutt_param_get(&pl, "name");
     if (s)
-      ct->form_name = mutt_str_dup(s);
+      mutt_str_replace(&ct->form_name, s);
     mutt_param_free(&pl);
   }
 }
