@@ -332,14 +332,6 @@ static struct ConfigDef MainVars[] = {
   { "hostname", DT_STRING, 0, 0, NULL,
     "Fully-qualified domain name of this machine"
   },
-#ifdef HAVE_LIBIDN
-  { "idn_decode", DT_BOOL|R_MENU, true, 0, NULL,
-    "(idn) Decode international domain names"
-  },
-  { "idn_encode", DT_BOOL|R_MENU, true, 0, NULL,
-    "(idn) Encode international domain names"
-  },
-#endif
   { "implicit_autoview", DT_BOOL, false, 0, NULL,
     "Display MIME attachments inline if a 'copiousoutput' mailcap entry exists"
   },
@@ -412,14 +404,6 @@ static struct ConfigDef MainVars[] = {
   { "mime_forward_rest", DT_QUAD, MUTT_YES, 0, NULL,
     "Forward all attachments, even if they can't be decoded"
   },
-#ifdef MIXMASTER
-  { "mix_entry_format", DT_STRING|DT_NOT_EMPTY, IP "%4n %c %-16s %a", 0, NULL,
-    "(mixmaster) printf-like format string for the mixmaster chain"
-  },
-  { "mixmaster", DT_STRING|DT_COMMAND, IP MIXMASTER, 0, NULL,
-    "(mixmaster) External command to route a mixmaster message"
-  },
-#endif
   { "move", DT_QUAD, MUTT_NO, 0, NULL,
     "Move emails from `$spool_file` to `$mbox` when read"
   },
@@ -688,12 +672,55 @@ static struct ConfigDef MainVars[] = {
   // clang-format on
 };
 
+#if defined(MIXMASTER)
+#ifdef MIXMASTER
+#define MIXMASTER_DEFAULT MIXMASTER
+#else
+#define MIXMASTER_DEFAULT ""
+#endif
+static struct ConfigDef MainVarsMixmaster[] = {
+  // clang-format off
+  { "mix_entry_format", DT_STRING|DT_NOT_EMPTY, IP "%4n %c %-16s %a", 0, NULL,
+    "(mixmaster) printf-like format string for the mixmaster chain"
+  },
+  { "mixmaster", DT_STRING|DT_COMMAND, IP MIXMASTER_DEFAULT, 0, NULL,
+    "(mixmaster) External command to route a mixmaster message"
+  },
+  { NULL },
+  // clang-format on
+};
+#endif
+
+#if defined(HAVE_LIBIDN)
+static struct ConfigDef MainVarsIdn[] = {
+  // clang-format off
+  { "idn_decode", DT_BOOL|R_MENU, true, 0, NULL,
+    "(idn) Decode international domain names"
+  },
+  { "idn_encode", DT_BOOL|R_MENU, true, 0, NULL,
+    "(idn) Encode international domain names"
+  },
+  { NULL },
+  // clang-format on
+};
+#endif
+
 /**
  * config_init_main - Register main config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
  */
 static bool config_init_main(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, MainVars, 0);
+  bool rc = cs_register_variables(cs, MainVars, 0);
+
+#if defined(MIXMASTER)
+  rc |= cs_register_variables(cs, MainVarsMixmaster, 0);
+#endif
+
+#if defined(HAVE_LIBIDN)
+  rc |= cs_register_variables(cs, MainVarsIdn, 0);
+#endif
+
+  return rc;
 }
 
 /**
@@ -727,37 +754,37 @@ static void init_variables(struct ConfigSet *cs)
   // Define the config variables
   config_init_main(cs);
   CONFIG_INIT_VARS(cs, alias);
-#ifdef USE_AUTOCRYPT
+#if defined(USE_AUTOCRYPT)
   CONFIG_INIT_VARS(cs, autocrypt);
 #endif
   CONFIG_INIT_VARS(cs, compose);
   CONFIG_INIT_VARS(cs, conn);
-#ifdef USE_HCACHE
+#if defined(USE_HCACHE)
   CONFIG_INIT_VARS(cs, hcache);
 #endif
   CONFIG_INIT_VARS(cs, helpbar);
   CONFIG_INIT_VARS(cs, history);
-  CONFIG_INIT_VARS(cs, index);
-#ifdef USE_IMAP
+#if defined(USE_IMAP)
   CONFIG_INIT_VARS(cs, imap);
 #endif
+  CONFIG_INIT_VARS(cs, index);
   CONFIG_INIT_VARS(cs, maildir);
   CONFIG_INIT_VARS(cs, mbox);
   CONFIG_INIT_VARS(cs, menu);
   CONFIG_INIT_VARS(cs, ncrypt);
-#ifdef USE_NNTP
+#if defined(USE_NNTP)
   CONFIG_INIT_VARS(cs, nntp);
 #endif
-#ifdef USE_NOTMUCH
+#if defined(USE_NOTMUCH)
   CONFIG_INIT_VARS(cs, notmuch);
 #endif
   CONFIG_INIT_VARS(cs, pager);
   CONFIG_INIT_VARS(cs, pattern);
-#ifdef USE_POP
+#if defined(USE_POP)
   CONFIG_INIT_VARS(cs, pop);
 #endif
   CONFIG_INIT_VARS(cs, send);
-#ifdef USE_SIDEBAR
+#if defined(USE_SIDEBAR)
   CONFIG_INIT_VARS(cs, sidebar);
 #endif
 }

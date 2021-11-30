@@ -39,11 +39,6 @@ static struct ConfigDef MaildirVars[] = {
   { "maildir_check_cur", DT_BOOL, false, 0, NULL,
     "Check both 'new' and 'cur' directories for new mail"
   },
-#ifdef USE_HCACHE
-  { "maildir_header_cache_verify", DT_BOOL, true, 0, NULL,
-    "Check for maildir changes when opening mailbox"
-  },
-#endif
   { "maildir_trash", DT_BOOL, false, 0, NULL,
     "Use the maildir 'trashed' flag, rather than deleting"
   },
@@ -63,10 +58,27 @@ static struct ConfigDef MaildirVars[] = {
   // clang-format on
 };
 
+#if defined(USE_HCACHE)
+static struct ConfigDef MaildirVarsHcache[] = {
+  // clang-format off
+  { "maildir_header_cache_verify", DT_BOOL, true, 0, NULL,
+    "Check for maildir changes when opening mailbox"
+  },
+  { NULL },
+  // clang-format on
+};
+#endif
+
 /**
  * config_init_maildir - Register maildir config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
  */
 bool config_init_maildir(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, MaildirVars, 0);
+  bool rc = cs_register_variables(cs, MaildirVars, 0);
+
+#if defined(USE_HCACHE)
+  rc |= cs_register_variables(cs, MaildirVarsHcache, 0);
+#endif
+
+  return rc;
 }

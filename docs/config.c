@@ -4822,7 +4822,6 @@
 ** \fC$$$MAILDIR\fP will be checked.
 */
 
-#ifdef USE_SSL
 #ifdef USE_SSL_GNUTLS
 { "ssl_ca_certificates_file", DT_PATH, 0 },
 /*
@@ -4838,6 +4837,7 @@
 */
 #endif
 
+#ifdef USE_SSL
 { "ssl_ciphers", DT_STRING, 0 },
 /*
 ** .pp
@@ -4866,6 +4866,7 @@
 ** since it would otherwise have to abort the connection anyway. This
 ** option supersedes $$ssl_starttls.
 */
+#endif
 
 #ifdef USE_SSL_GNUTLS
 { "ssl_min_dh_prime_bits", DT_NUMBER, 0 },
@@ -4877,6 +4878,7 @@
 */
 #endif
 
+#ifdef USE_SSL
 { "ssl_starttls", DT_QUAD, MUTT_YES },
 /*
 ** .pp
@@ -4889,6 +4891,7 @@
 ** suppress the advertising of support.  Setting $$ssl_force_tls is
 ** recommended if you rely on \fCSTARTTLS\fP.
 */
+#endif
 
 #ifdef USE_SSL_OPENSSL
 { "ssl_use_sslv2", DT_BOOL, false },
@@ -4901,6 +4904,7 @@
 */
 #endif
 
+#ifdef USE_SSL
 { "ssl_use_sslv3", DT_BOOL, false },
 /*
 ** .pp
@@ -4908,6 +4912,7 @@
 ** request it. \fBN.B. As of 2015, SSLv3 is considered insecure, and using
 ** it is inadvisable. See https://tools.ietf.org/html/rfc7525 .\fP
 */
+#endif
 
 #ifdef USE_SSL_OPENSSL
 { "ssl_use_system_certs", DT_BOOL, true },
@@ -4919,6 +4924,7 @@
 */
 #endif
 
+#ifdef USE_SSL
 { "ssl_use_tlsv1", DT_BOOL, false },
 /*
 ** .pp
@@ -4966,8 +4972,8 @@
 ** URL. You should only unset this for particular known hosts, using
 ** the \fC$<account-hook>\fP function.
 */
+#endif
 
-#ifdef USE_SSL_OPENSSL
 #ifdef HAVE_SSL_PARTIAL_CHAIN
 { "ssl_verify_partial_chains", DT_BOOL, false },
 /*
@@ -4983,8 +4989,6 @@
 ** .pp
 ** (OpenSSL 1.0.2b and newer only).
 */
-#endif
-#endif
 #endif
 
 { "status_chars", DT_MBTABLE, "-*%A" },

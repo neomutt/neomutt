@@ -39,9 +39,10 @@
 /**
  * hcache_validator - Validate the "header_cache_backend" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
-int hcache_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                     intptr_t value, struct Buffer *err)
+static int hcache_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                            intptr_t value, struct Buffer *err)
 {
+#ifdef USE_HCACHE
   if (value == 0)
     return CSR_SUCCESS;
 
@@ -52,15 +53,20 @@ int hcache_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
   mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
   return CSR_ERR_INVALID;
+#else
+  return CSR_SUCCESS;
+#endif
 }
 
-#ifdef USE_HCACHE_COMPRESSION
+#if defined(USE_HCACHE_COMPRESSION)
 /**
  * compress_method_validator - Validate the "header_cache_compress_method" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
-int compress_method_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                              intptr_t value, struct Buffer *err)
+static int compress_method_validator(const struct ConfigSet *cs,
+                                     const struct ConfigDef *cdef,
+                                     intptr_t value, struct Buffer *err)
 {
+#ifdef USE_HCACHE_COMPRESSION
   if (value == 0)
     return CSR_SUCCESS;
 
@@ -71,14 +77,18 @@ int compress_method_validator(const struct ConfigSet *cs, const struct ConfigDef
 
   mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
   return CSR_ERR_INVALID;
+#else
+  return CSR_SUCCESS;
+#endif
 }
 
 /**
  * compress_level_validator - Validate the "header_cache_compress_level" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
-int compress_level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                             intptr_t value, struct Buffer *err)
+static int compress_level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                                    intptr_t value, struct Buffer *err)
 {
+#ifdef USE_HCACHE_COMPRESSION
   const char *const c_header_cache_compress_method =
       cs_subset_string(NeoMutt->sub, "header_cache_compress_method");
   if (!c_header_cache_compress_method)
@@ -104,10 +114,10 @@ int compress_level_validator(const struct ConfigSet *cs, const struct ConfigDef 
                        cdef->name, cops->min_level, cops->max_level);
     return CSR_ERR_INVALID;
   }
-
+#endif
   return CSR_SUCCESS;
 }
-#endif /* USE_HCACHE_COMPRESSION */
+#endif
 
 static struct ConfigDef HcacheVars[] = {
   // clang-format off
@@ -117,7 +127,13 @@ static struct ConfigDef HcacheVars[] = {
   { "header_cache_backend", DT_STRING, 0, 0, hcache_validator,
     "(hcache) Header cache backend to use"
   },
+  { NULL },
+  // clang-format on
+};
+
 #if defined(USE_HCACHE_COMPRESSION)
+static struct ConfigDef HcacheVarsComp[] = {
+  // clang-format off
   // These two are not in alphabetical order because `level`s validator depends on `method`
   { "header_cache_compress_method", DT_STRING, 0, 0, compress_method_validator,
     "(hcache) Enable generic hcache database compression"
@@ -125,21 +141,51 @@ static struct ConfigDef HcacheVars[] = {
   { "header_cache_compress_level", DT_NUMBER|DT_NOT_NEGATIVE, 1, 0, compress_level_validator,
     "(hcache) Level of compression for method"
   },
-#endif
-#if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
-  { "header_cache_compress", DT_DEPRECATED|DT_BOOL, false, 0, NULL, NULL },
-#endif
-#if defined(HAVE_GDBM) || defined(HAVE_BDB)
-  { "header_cache_pagesize", DT_DEPRECATED|DT_LONG, 0, 0, NULL, NULL },
-#endif
   { NULL },
   // clang-format on
 };
+#endif
+
+#if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
+static struct ConfigDef HcacheVarsComp2[] = {
+  // clang-format off
+  { "header_cache_compress", DT_DEPRECATED|DT_BOOL, false, 0, NULL, NULL },
+  { NULL },
+  // clang-format on
+};
+#endif
+
+#if defined(HAVE_GDBM) || defined(HAVE_BDB)
+static struct ConfigDef HcacheVarsPage[] = {
+  // clang-format off
+  { "header_cache_pagesize", DT_DEPRECATED|DT_LONG, 0, 0, NULL, NULL },
+  { NULL },
+  // clang-format on
+};
+#endif
 
 /**
  * config_init_hcache - Register hcache config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
  */
 bool config_init_hcache(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, HcacheVars, 0);
+  bool rc = false;
+
+#if defined(USE_HCACHE)
+  rc |= cs_register_variables(cs, HcacheVars, 0);
+#endif
+
+#if defined(USE_HCACHE_COMPRESSION)
+  rc |= cs_register_variables(cs, HcacheVarsComp, 0);
+#endif
+
+#if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
+  rc |= cs_register_variables(cs, HcacheVarsComp2, 0);
+#endif
+
+#if defined(HAVE_GDBM) || defined(HAVE_BDB)
+  rc |= cs_register_variables(cs, HcacheVarsPage, 0);
+#endif
+
+  return rc;
 }

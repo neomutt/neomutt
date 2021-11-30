@@ -275,4 +275,3 @@ const char *mutt_str_atoull(const char *str, unsigned long long *dst)
 {
   return str_atoull_clamp(str, dst, ULLONG_MAX);
 }
-

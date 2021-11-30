@@ -70,11 +70,6 @@ static struct ConfigDef ImapVars[] = {
   { "imap_condstore", DT_BOOL, false, 0, NULL,
     "(imap) Enable the CONDSTORE extension"
   },
-#ifdef USE_ZLIB
-  { "imap_deflate", DT_BOOL, true, 0, NULL,
-    "(imap) Compress network traffic"
-  },
-#endif
   { "imap_authenticators", DT_SLIST|SLIST_SEP_COLON, 0, 0, imap_auth_validator,
     "(imap) List of allowed IMAP authentication methods (colon-separated)"
   },
@@ -136,10 +131,27 @@ static struct ConfigDef ImapVars[] = {
   // clang-format on
 };
 
+#if defined(USE_ZLIB)
+static struct ConfigDef ImapVarsZlib[] = {
+  // clang-format off
+  { "imap_deflate", DT_BOOL, true, 0, NULL,
+    "(imap) Compress network traffic"
+  },
+  { NULL },
+  // clang-format on
+};
+#endif
+
 /**
  * config_init_imap - Register imap config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
  */
 bool config_init_imap(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, ImapVars, 0);
+  bool rc = cs_register_variables(cs, ImapVars, 0);
+
+#if defined(USE_ZLIB)
+  rc |= cs_register_variables(cs, ImapVarsZlib, 0);
+#endif
+
+  return rc;
 }

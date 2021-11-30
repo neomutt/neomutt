@@ -35,6 +35,7 @@
 #include "notmuch/private.h"
 #include "notmuch/query.h"
 
+#ifdef USE_NOTMUCH
 /**
  * is_valid_notmuch_url - Checks that a URL is in required form.
  * @retval true url in form notmuch://[absolute path]
@@ -44,6 +45,7 @@ static bool is_valid_notmuch_url(const char *url)
 {
   return mutt_istr_startswith(url, NmUrlProtocol) && (url[NmUrlProtocolLen] == '/');
 }
+#endif
 
 /**
  * nm_default_url_validator - Ensure nm_default_url is of the form notmuch://[absolute path] - Implements ConfigDef::validator() - @ingroup cfg_def_validator
@@ -51,6 +53,7 @@ static bool is_valid_notmuch_url(const char *url)
 static int nm_default_url_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                                     intptr_t value, struct Buffer *err)
 {
+#ifdef USE_NOTMUCH
   const char *url = (const char *) value;
   if (!is_valid_notmuch_url(url))
   {
@@ -58,7 +61,7 @@ static int nm_default_url_validator(const struct ConfigSet *cs, const struct Con
         err, _("nm_default_url must be: notmuch://<absolute path> . Current: %s"), url);
     return CSR_ERR_INVALID;
   }
-
+#endif
   return CSR_SUCCESS;
 }
 
@@ -76,6 +79,7 @@ static int nm_query_window_timebase_validator(const struct ConfigSet *cs,
                                               const struct ConfigDef *cdef,
                                               intptr_t value, struct Buffer *err)
 {
+#ifdef USE_NOTMUCH
   const char *timebase = (const char *) value;
   if (!nm_query_window_check_timebase(timebase))
   {
@@ -86,7 +90,7 @@ static int nm_query_window_timebase_validator(const struct ConfigSet *cs,
                "hour, day, week, month, year)"));
     return CSR_ERR_INVALID;
   }
-
+#endif
   return CSR_SUCCESS;
 }
 
@@ -156,5 +160,11 @@ static struct ConfigDef NotmuchVars[] = {
  */
 bool config_init_notmuch(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, NotmuchVars, 0);
+  bool rc = false;
+
+#if defined(USE_NOTMUCH)
+  rc |= cs_register_variables(cs, NotmuchVars, 0);
+#endif
+
+  return rc;
 }
