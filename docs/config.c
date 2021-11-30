@@ -161,6 +161,20 @@
 ** and attachment trees, instead of the default \fIACS\fP characters.
 */
 
+{ "ask_bcc", DT_BOOL, false },
+/*
+** .pp
+** If \fIset\fP, NeoMutt will prompt you for blind-carbon-copy (Bcc) recipients
+** before editing an outgoing message.
+*/
+
+{ "ask_cc", DT_BOOL, false },
+/*
+** .pp
+** If \fIset\fP, NeoMutt will prompt you for carbon-copy (Cc) recipients before
+** editing the body of an outgoing message.
+*/
+
 #ifdef USE_NNTP
 { "ask_follow_up", DT_BOOL, false },
 /*
@@ -176,20 +190,6 @@
 ** the body of an outgoing message.
 */
 #endif
-
-{ "ask_bcc", DT_BOOL, false },
-/*
-** .pp
-** If \fIset\fP, NeoMutt will prompt you for blind-carbon-copy (Bcc) recipients
-** before editing an outgoing message.
-*/
-
-{ "ask_cc", DT_BOOL, false },
-/*
-** .pp
-** If \fIset\fP, NeoMutt will prompt you for carbon-copy (Cc) recipients before
-** editing the body of an outgoing message.
-*/
 
 { "assumed_charset", DT_STRING, 0 },
 /*
@@ -312,6 +312,22 @@
 ** this except to override that default.
 */
 
+{ "auto_edit", DT_BOOL, false },
+/*
+** .pp
+** When \fIset\fP along with $$edit_headers, NeoMutt will skip the initial
+** send-menu (prompting for subject and recipients) and allow you to
+** immediately begin editing the body of your
+** message.  The send-menu may still be accessed once you have finished
+** editing the body of your message.
+** .pp
+** \fBNote:\fP when this option is \fIset\fP, you can't use send-hooks that depend
+** on the recipients when composing a new (non-reply) message, as the initial
+** list of recipients is empty.
+** .pp
+** Also see $$fast_reply.
+*/
+
 { "auto_subscribe", DT_BOOL, false },
 /*
 ** .pp
@@ -375,22 +391,6 @@
 ** (Autocrypt only)
 */
 #endif
-
-{ "auto_edit", DT_BOOL, false },
-/*
-** .pp
-** When \fIset\fP along with $$edit_headers, NeoMutt will skip the initial
-** send-menu (prompting for subject and recipients) and allow you to
-** immediately begin editing the body of your
-** message.  The send-menu may still be accessed once you have finished
-** editing the body of your message.
-** .pp
-** \fBNote:\fP when this option is \fIset\fP, you can't use send-hooks that depend
-** on the recipients when composing a new (non-reply) message, as the initial
-** list of recipients is empty.
-** .pp
-** Also see $$fast_reply.
-*/
 
 { "beep", DT_BOOL, true },
 /*
@@ -2305,6 +2305,13 @@
 ** This can also be set using the \fC-m\fP command-line option.
 */
 
+{ "me_too", DT_BOOL, false },
+/*
+** .pp
+** If \fIunset\fP, NeoMutt will remove your address (see the "$alternates"
+** command) from the list of recipients when replying to a message.
+*/
+
 { "menu_context", DT_NUMBER, 0 },
 /*
 ** .pp
@@ -2372,13 +2379,6 @@
 ** pressed Esc then "x".  This is because the result of removing the
 ** high bit from \fC0xf8\fP is \fC0x78\fP, which is the ASCII character
 ** "x".
-*/
-
-{ "me_too", DT_BOOL, false },
-/*
-** .pp
-** If \fIunset\fP, NeoMutt will remove your address (see the "$alternates"
-** command) from the list of recipients when replying to a message.
 */
 
 { "mh_purge", DT_BOOL, false },
@@ -4909,6 +4909,16 @@
 ** it is inadvisable. See https://tools.ietf.org/html/rfc7525 .\fP
 */
 
+#ifdef USE_SSL_OPENSSL
+{ "ssl_use_system_certs", DT_BOOL, true },
+/*
+** .pp
+** If set to \fIyes\fP, NeoMutt will use CA certificates in the
+** system-wide certificate store when checking if a server certificate
+** is signed by a trusted CA. (OpenSSL only)
+*/
+#endif
+
 { "ssl_use_tlsv1", DT_BOOL, false },
 /*
 ** .pp
@@ -4938,16 +4948,6 @@
 ** If \fIset\fP , NeoMutt will use TLSv1.3 when communicating with servers that
 ** request it.
 */
-
-#ifdef USE_SSL_OPENSSL
-{ "ssl_use_system_certs", DT_BOOL, true },
-/*
-** .pp
-** If set to \fIyes\fP, NeoMutt will use CA certificates in the
-** system-wide certificate store when checking if a server certificate
-** is signed by a trusted CA. (OpenSSL only)
-*/
-#endif
 
 { "ssl_verify_dates", DT_BOOL, true },
 /*
