@@ -36,6 +36,7 @@
 #include "core/lib.h"
 #include "gui/lib.h" // IWYU pragma: keep
 #include "ansi.h"
+#include "debug.h"
 
 /**
  * ansi_is_end_char - Is this the end of a sequence?
@@ -287,6 +288,7 @@ static void ansi_color_list_add(struct AttrColorList *acl, struct AnsiColor *ans
   ansi->attr_color = ac;
 
   TAILQ_INSERT_TAIL(acl, ac, entries);
+  attr_color_list_dump(acl, "AnsiColors");
 }
 
 /**
@@ -308,6 +310,7 @@ int ansi_color_parse(const char *str, struct AnsiColor *ansi,
 
   while ((seq_len = ansi_color_parse_single(str + total_len, ansi, dry_run)) != 0)
   {
+    // color_debug(LL_DEBUG5, "seq_len = %d\n", seq_len);
     total_len += seq_len;
   }
 

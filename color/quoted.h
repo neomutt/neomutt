@@ -34,6 +34,11 @@ struct Buffer;
 /// Ten colours, quoted0..quoted9 (quoted and quoted0 are equivalent)
 #define COLOR_QUOTES_MAX 10
 
+#ifdef USE_DEBUG_COLOR
+extern struct AttrColor QuotedColors[];
+extern int NumQuotedColors;
+#endif
+
 /**
  * struct QuoteStyle - Style of quoted text
  *

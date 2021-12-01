@@ -33,6 +33,7 @@
 #include "mutt/lib.h"
 #include "attr.h"
 #include "curses2.h"
+#include "debug.h"
 
 /**
  * attr_color_clear - Free the contents of an AttrColor
@@ -45,6 +46,8 @@ void attr_color_clear(struct AttrColor *ac)
   if (!ac)
     return;
 
+  if (ac->curses_color)
+    color_debug(LL_DEBUG5, "clear %p\n", ac);
   curses_color_free(&ac->curses_color);
   ac->attrs = 0;
 }

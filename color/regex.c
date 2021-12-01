@@ -41,6 +41,7 @@
 #include "command2.h"
 #include "context.h"
 #include "curses2.h"
+#include "debug.h"
 #include "mutt_globals.h"
 #include "notify2.h"
 #include "regex4.h"
@@ -62,6 +63,7 @@ struct RegexColorList StatusList;       ///< List of colours applied to the stat
  */
 void regex_colors_init(void)
 {
+  color_debug(LL_DEBUG5, "init AttachList, BodyList, etc\n");
   STAILQ_INIT(&AttachList);
   STAILQ_INIT(&BodyList);
   STAILQ_INIT(&HeaderList);
@@ -78,6 +80,7 @@ void regex_colors_init(void)
  */
 void regex_colors_clear(void)
 {
+  color_debug(LL_DEBUG5, "clean up regex\n");
   regex_color_list_clear(&AttachList);
   regex_color_list_clear(&BodyList);
   regex_color_list_clear(&HeaderList);
@@ -345,11 +348,13 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat, uint32_t f
 
   struct Buffer *buf = mutt_buffer_pool_get();
   get_colorid_name(cid, buf);
+  color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
   mutt_buffer_pool_release(&buf);
 
   struct EventColor ev_c = { cid, NULL };
   notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
 
+  regex_colors_dump_all();
   return true;
 }
 
@@ -376,11 +381,13 @@ int regex_colors_parse_status_list(enum ColorId cid, const char *pat, uint32_t f
 
   struct Buffer *buf = mutt_buffer_pool_get();
   get_colorid_name(cid, buf);
+  color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
   mutt_buffer_pool_release(&buf);
 
   struct EventColor ev_c = { cid, NULL };
   notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
 
+  regex_colors_dump_all();
   return rc;
 }
 

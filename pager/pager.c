@@ -68,6 +68,7 @@
 #include "lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
+#include "display.h"
 #include "private_data.h"
 
 /**
@@ -158,6 +159,24 @@ static int pager_color_observer(struct NotifyCallback *nc)
   {
     // rework quoted colours
     qstyle_recolour(priv->quote_list);
+  }
+
+  if (ev_c->cid == MT_COLOR_MAX)
+  {
+    for (size_t i = 0; i < priv->lines_max; i++)
+    {
+      FREE(&(priv->lines[i].syntax));
+      // if (priv->search_compiled && priv->lines[i].search)
+      //   FREE(&(priv->lines[i].search));
+      // priv->lines[i].syntax_arr_size = 0;
+    }
+    priv->lines_used = 0;
+
+    // if (priv->search_compiled)
+    // {
+    //   regfree(&priv->search_re);
+    //   priv->search_compiled = false;
+    // }
   }
 
   mutt_debug(LL_DEBUG5, "color done\n");

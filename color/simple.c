@@ -32,6 +32,7 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
+#include "debug.h"
 
 struct AttrColor SimpleColors[MT_COLOR_MAX]; ///< Array of Simple colours
 
@@ -41,6 +42,7 @@ struct AttrColor SimpleColors[MT_COLOR_MAX]; ///< Array of Simple colours
 void simple_colors_init(void)
 {
   // Set some defaults
+  color_debug(LL_DEBUG5, "init indicator, markers, etc\n");
   SimpleColors[MT_COLOR_INDICATOR].attrs = A_REVERSE;
   SimpleColors[MT_COLOR_MARKERS].attrs = A_REVERSE;
   SimpleColors[MT_COLOR_SEARCH].attrs = A_REVERSE;
@@ -55,6 +57,7 @@ void simple_colors_init(void)
  */
 void simple_colors_clear(void)
 {
+  color_debug(LL_DEBUG5, "clean up defs\n");
   for (size_t i = 0; i < MT_COLOR_MAX; i++)
   {
     attr_color_clear(&SimpleColors[i]);
@@ -125,6 +128,7 @@ struct AttrColor *simple_color_set(enum ColorId cid, int fg, int bg, int attrs)
 
   struct Buffer *buf = mutt_buffer_pool_get();
   get_colorid_name(cid, buf);
+  color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
   mutt_buffer_pool_release(&buf);
 
   struct EventColor ev_c = { cid };
@@ -145,6 +149,7 @@ void simple_color_reset(enum ColorId cid)
 
   struct Buffer *buf = mutt_buffer_pool_get();
   get_colorid_name(cid, buf);
+  color_debug(LL_DEBUG5, "NT_COLOR_RESET: %s\n", buf->data);
   mutt_buffer_pool_release(&buf);
 
   struct EventColor ev_c = { cid, ac };

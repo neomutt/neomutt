@@ -185,6 +185,9 @@ LIBCOLOR=	libcolor.a
 LIBCOLOROBJS=	color/ansi.o color/attr.o color/color.o color/command.o \
 		color/curses.o color/merged.o color/notify.o color/quoted.o \
 		color/regex.o color/simple.o
+@if USE_DEBUG_COLOR
+LIBCOLOROBJS+=	color/debug.o
+@endif
 CLEANFILES+=	$(LIBCOLOR) $(LIBCOLOROBJS)
 ALLOBJS+=	$(LIBCOLOROBJS)
 

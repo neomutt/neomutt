@@ -183,6 +183,9 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
   assert(priv->pview->pdata); // View can't exist without its data
   //---------------------------------------------------------------------------
 
+#ifdef USE_DEBUG_COLOR
+  dump_pager(priv);
+#endif
   char buf[1024] = { 0 };
   struct IndexSharedData *shared = dialog_find(priv->pview->win_pager)->wdata;
 
@@ -325,6 +328,8 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
         mutt_window_move(priv->pview->win_pager, 0, priv->win_height);
       }
     } while (priv->force_redraw);
+    // curses_colors_dump();
+    // attr_color_list_dump(&priv->ansi_list, "All AnsiColors");
 
     mutt_curses_set_color_by_id(MT_COLOR_TILDE);
     while (priv->win_height < priv->pview->win_pager->state.rows)
@@ -444,6 +449,86 @@ static void expand_index_panel(struct MuttWindow *dlg, struct PagerPrivateData *
   window_set_visible(win_pager->parent, false);
   mutt_window_reflow(dlg);
 }
+
+#ifdef USE_DEBUG_COLOR
+void dump_text_syntax(struct TextSyntax *ts, int num)
+{
+  if (!ts || (num == 0))
+    return;
+
+  for (int i = 0; i < num; i++)
+  {
+    int index = -1;
+    const char *swatch = "";
+    if (!ts[i].attr_color)
+      continue;
+    struct CursesColor *cc = ts[i].attr_color->curses_color;
+    if (cc)
+    {
+      index = cc->index;
+      swatch = color_debug_log_color(cc->fg, cc->bg);
+    }
+    mutt_debug(LL_DEBUG1, "\t\t%3d %4d %4d %s\n", index, ts[i].first, ts[i].last, swatch);
+  }
+}
+
+void dump_line(int i, struct Line *line)
+{
+  mutt_debug(LL_DEBUG1, "Line: %d (offset: %ld)\n", i, line->offset);
+  // mutt_debug(LL_DEBUG1, "\toffset: %ld\n", line->offset);
+  if ((line->cid > 0) && (line->cid != MT_COLOR_NORMAL))
+  {
+    struct Buffer *buf = mutt_buffer_pool_get();
+    get_colorid_name(line->cid, buf);
+
+    const char *swatch = "";
+    struct AttrColor *ac = simple_color_get(line->cid);
+    if (ac && ac->curses_color)
+    {
+      struct CursesColor *cc = ac->curses_color;
+      swatch = color_debug_log_color(cc->fg, cc->bg);
+    }
+
+    mutt_debug(LL_DEBUG1, "\tcolor: %d %s (%s)\n", line->cid, swatch,
+               mutt_buffer_string(buf));
+    mutt_buffer_pool_release(&buf);
+  }
+  if (line->cont_line)
+  {
+    mutt_debug(LL_DEBUG1, "\tcont_line: %s\n",
+               line->cont_line ? "\033[1;32myes\033[0m" : "\033[31mno\033[0m");
+  }
+  if (line->cont_header)
+  {
+    mutt_debug(LL_DEBUG1, "\tcont_header: %s\n",
+               line->cont_header ? "\033[1;32myes\033[0m" : "\033[31mno\033[0m");
+  }
+
+  if (line->syntax_arr_size > 0)
+  {
+    mutt_debug(LL_DEBUG1, "\tsyntax: %d\n", line->syntax_arr_size);
+    dump_text_syntax(line->syntax, line->syntax_arr_size);
+  }
+  if (line->search_arr_size > 0)
+  {
+    mutt_debug(LL_DEBUG1, "\t\033[1;36msearch\033[0m: %d\n", line->search_arr_size);
+    dump_text_syntax(line->search, line->search_arr_size);
+  }
+}
+
+void dump_pager(struct PagerPrivateData *priv)
+{
+  if (!priv)
+    return;
+
+  mutt_debug(LL_DEBUG1, "----------------------------------------------\n");
+  mutt_debug(LL_DEBUG1, "Pager: %d lines (fd %d)\n", priv->lines_used, fileno(priv->fp));
+  for (int i = 0; i < priv->lines_used; i++)
+  {
+    dump_line(i, &priv->lines[i]);
+  }
+}
+#endif
 
 /**
  * mutt_pager - Display an email, attachment, or help, in a window
@@ -802,6 +887,10 @@ int mutt_pager(struct PagerView *pview)
       continue;
     }
 
+#ifdef USE_DEBUG_COLOR
+    dump_pager(priv);
+#endif
+
     //-------------------------------------------------------------------------
     // Finally, read user's key press
     //-------------------------------------------------------------------------
@@ -899,6 +988,7 @@ int mutt_pager(struct PagerView *pview)
     {
       count++;
     }
+    color_debug(LL_DEBUG5, "AnsiColors %d\n", count);
   }
 
   expand_index_panel(dlg, priv);

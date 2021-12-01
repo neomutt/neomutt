@@ -26,6 +26,10 @@
 #include "config.h"
 #include "attr.h"
 
+#ifdef USE_DEBUG_COLOR
+extern struct AttrColorList MergedColors;
+#endif
+
 struct AttrColor * merged_color_overlay(struct AttrColor *base, struct AttrColor *over);
 
 void               merged_colors_clear(void);

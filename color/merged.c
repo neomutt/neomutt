@@ -35,6 +35,7 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "attr.h"
+#include "debug.h"
 
 struct AttrColorList MergedColors; ///< Array of user colours
 
@@ -141,6 +142,7 @@ struct AttrColor *merged_color_overlay(struct AttrColor *base, struct AttrColor 
   ac->curses_color = curses_color_new(fg, bg);
   ac->attrs = attrs;
   TAILQ_INSERT_TAIL(&MergedColors, ac, entries);
+  merged_colors_dump();
 
   return ac;
 }

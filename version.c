@@ -295,6 +295,9 @@ static struct CompileOptions debug_opts[] = {
 #ifdef USE_ASAN
   { "asan", 2 },
 #endif
+#ifdef USE_DEBUG_COLOR
+  { "color", 2 },
+#endif
 #ifdef HAVE_LIBUNWIND
   { "backtrace", 2 },
 #endif

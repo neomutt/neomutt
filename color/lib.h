@@ -32,6 +32,7 @@
  * | color/color.c       | @subpage color_color       |
  * | color/command.c     | @subpage color_command     |
  * | color/curses.c      | @subpage color_curses      |
+ * | color/debug.c       | @subpage color_debug       |
  * | color/merged.c      | @subpage color_merge       |
  * | color/notify.c      | @subpage color_notify      |
  * | color/quoted.c      | @subpage color_quote       |
@@ -48,6 +49,7 @@
 #include "color.h"
 #include "command2.h"
 #include "curses2.h"
+#include "debug.h"
 #include "merged.h"
 #include "notify2.h"
 #include "quoted.h"
