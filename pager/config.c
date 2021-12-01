@@ -67,7 +67,7 @@ static struct ConfigDef PagerVars[] = {
     "Display '~' in the pager after the end of the email"
   },
 
-  { "skip_quoted_offset", DT_SYNONYM, IP "pager_skip_quoted_context",    },
+  { "skip_quoted_offset", DT_SYNONYM, IP "pager_skip_quoted_context", IP "2021-06-18" },
 
   { NULL },
   // clang-format on

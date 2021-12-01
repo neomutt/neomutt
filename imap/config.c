@@ -125,8 +125,7 @@ static struct ConfigDef ImapVars[] = {
     "(imap) Username for the IMAP server"
   },
 
-  { "imap_servernoise", DT_SYNONYM, IP "imap_server_noise", },
-
+  { "imap_servernoise", DT_SYNONYM, IP "imap_server_noise", IP "2021-02-11" },
   { NULL },
   // clang-format on
 };

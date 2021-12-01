@@ -132,15 +132,15 @@ static struct ConfigDef NcryptVars[] = {
     "Save the cleartext Subject with the headers"
   },
 
-  { "crypt_confirmhook",      DT_SYNONYM, IP "crypt_confirm_hook",     },
-  { "pgp_autoinline",         DT_SYNONYM, IP "pgp_auto_inline",        },
-  { "pgp_create_traditional", DT_SYNONYM, IP "pgp_auto_inline",        },
-  { "pgp_self_encrypt_as",    DT_SYNONYM, IP "pgp_default_key",        },
-  { "pgp_verify_sig",         DT_SYNONYM, IP "crypt_verify_sig",       },
-  { "smime_self_encrypt_as",  DT_SYNONYM, IP "smime_default_key",      },
+  { "crypt_confirmhook",      DT_SYNONYM, IP "crypt_confirm_hook", IP "2021-02-11" },
+  { "pgp_autoinline",         DT_SYNONYM, IP "pgp_auto_inline",    IP "2021-02-11" },
+  { "pgp_create_traditional", DT_SYNONYM, IP "pgp_auto_inline",    IP "2004-04-12" },
+  { "pgp_self_encrypt_as",    DT_SYNONYM, IP "pgp_default_key",    IP "2018-01-11" },
+  { "pgp_verify_sig",         DT_SYNONYM, IP "crypt_verify_sig",   IP "2002-01-24" },
+  { "smime_self_encrypt_as",  DT_SYNONYM, IP "smime_default_key",  IP "2018-01-11" },
 
-  { "pgp_encrypt_self",   DT_DEPRECATED|DT_QUAD, MUTT_NO },
-  { "smime_encrypt_self", DT_DEPRECATED|DT_QUAD, MUTT_NO },
+  { "pgp_encrypt_self",   DT_DEPRECATED|DT_QUAD, MUTT_NO, IP "2019-09-09" },
+  { "smime_encrypt_self", DT_DEPRECATED|DT_QUAD, MUTT_NO, IP "2019-09-09" },
 
   { NULL },
   // clang-format on
@@ -220,8 +220,8 @@ static struct ConfigDef NcryptVarsPgp[] = {
   { "pgp_verify_key_command", DT_STRING|DT_COMMAND, 0, 0, NULL,
     "(pgp) External command to verify key information"
   },
-  { "pgp_clearsign_command",  DT_SYNONYM, IP "pgp_clear_sign_command", },
-  { "pgp_getkeys_command",    DT_SYNONYM, IP "pgp_get_keys_command",   },
+  { "pgp_clearsign_command",  DT_SYNONYM, IP "pgp_clear_sign_command", IP "2021-02-11" },
+  { "pgp_getkeys_command",    DT_SYNONYM, IP "pgp_get_keys_command",   IP "2021-02-11" },
   { NULL },
   // clang-format on
 };

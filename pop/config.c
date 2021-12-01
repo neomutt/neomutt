@@ -95,8 +95,7 @@ static struct ConfigDef PopVars[] = {
     "(pop) Username of the POP server"
   },
 
-  { "pop_checkinterval",         DT_SYNONYM, IP "pop_check_interval",         },
-
+  { "pop_checkinterval", DT_SYNONYM, IP "pop_check_interval", IP "2021-02-11" },
   { NULL },
   // clang-format on
 };

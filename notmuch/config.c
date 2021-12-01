@@ -148,9 +148,8 @@ static struct ConfigDef NotmuchVars[] = {
     "(notmuch) Use the first virtual mailbox as a spool file"
   },
 
-  { "nm_default_uri",    DT_SYNONYM, IP "nm_default_url",     },
-  { "virtual_spoolfile", DT_SYNONYM, IP "virtual_spool_file", },
-
+  { "nm_default_uri",    DT_SYNONYM, IP "nm_default_url",     IP "2021-02-11" },
+  { "virtual_spoolfile", DT_SYNONYM, IP "virtual_spool_file", IP "2021-02-11" },
   { NULL },
   // clang-format on
 };

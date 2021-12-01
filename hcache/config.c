@@ -149,7 +149,7 @@ static struct ConfigDef HcacheVarsComp[] = {
 #if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
 static struct ConfigDef HcacheVarsComp2[] = {
   // clang-format off
-  { "header_cache_compress", DT_DEPRECATED|DT_BOOL, false, 0, NULL, NULL },
+  { "header_cache_compress", DT_DEPRECATED|DT_BOOL, false, IP "2020-03-25" },
   { NULL },
   // clang-format on
 };
@@ -158,7 +158,7 @@ static struct ConfigDef HcacheVarsComp2[] = {
 #if defined(HAVE_GDBM) || defined(HAVE_BDB)
 static struct ConfigDef HcacheVarsPage[] = {
   // clang-format off
-  { "header_cache_pagesize", DT_DEPRECATED|DT_LONG, 0, 0, NULL, NULL },
+  { "header_cache_pagesize", DT_DEPRECATED|DT_LONG, 0, IP "2020-03-25" },
   { NULL },
   // clang-format on
 };

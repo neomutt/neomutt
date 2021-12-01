@@ -119,7 +119,7 @@ static struct ConfigDef ConnVarsOpenssl[] = {
   { "ssl_use_system_certs", DT_BOOL, true, 0, NULL,
     "(ssl) Use CA certificates in the system-wide store"
   },
-  { "ssl_usesystemcerts", DT_SYNONYM, IP "ssl_use_system_certs", },
+  { "ssl_usesystemcerts", DT_SYNONYM, IP "ssl_use_system_certs", IP "2021-02-11" },
   { NULL },
   // clang-format on
 };

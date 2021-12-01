@@ -192,8 +192,8 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
     if ((he->type & DT_DEPRECATED) && !(flags & CS_DUMP_SHOW_DEPRECATED))
       continue;
 
-    // if ((type == DT_DISABLED) && !(flags & CS_DUMP_SHOW_DISABLED))
-    //   continue;
+    if ((he->type & DT_DISABLED) && !(flags & CS_DUMP_SHOW_DISABLED))
+      continue;
 
     if (type != DT_SYNONYM)
     {
