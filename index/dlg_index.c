@@ -1398,7 +1398,7 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
       return;
     }
   }
-  e->pair = simple_colors_get(MT_COLOR_NORMAL);
+  e->pair = simple_color_get(MT_COLOR_NORMAL);
 }
 
 /**

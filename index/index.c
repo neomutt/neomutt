@@ -256,15 +256,15 @@ static int index_color_observer(struct NotifyCallback *nc)
 
   struct EventColor *ev_c = nc->event_data;
 
-  const int c = ev_c->color;
+  const int cid = ev_c->cid;
 
-  bool simple = (c == MT_COLOR_INDEX_COLLAPSED) || (c == MT_COLOR_INDEX_DATE) ||
-                (c == MT_COLOR_INDEX_LABEL) || (c == MT_COLOR_INDEX_NUMBER) ||
-                (c == MT_COLOR_INDEX_SIZE) || (c == MT_COLOR_INDEX_TAGS);
+  bool simple = (cid == MT_COLOR_INDEX_COLLAPSED) || (cid == MT_COLOR_INDEX_DATE) ||
+                (cid == MT_COLOR_INDEX_LABEL) || (cid == MT_COLOR_INDEX_NUMBER) ||
+                (cid == MT_COLOR_INDEX_SIZE) || (cid == MT_COLOR_INDEX_TAGS);
 
-  bool lists = (c == MT_COLOR_INDEX) || (c == MT_COLOR_INDEX_AUTHOR) ||
-               (c == MT_COLOR_INDEX_FLAGS) || (c == MT_COLOR_INDEX_SUBJECT) ||
-               (c == MT_COLOR_INDEX_TAG);
+  bool lists = (cid == MT_COLOR_INDEX) || (cid == MT_COLOR_INDEX_AUTHOR) ||
+               (cid == MT_COLOR_INDEX_FLAGS) ||
+               (cid == MT_COLOR_INDEX_SUBJECT) || (cid == MT_COLOR_INDEX_TAG);
 
   // The changes aren't relevant to the index menu
   if (!simple && !lists)

@@ -60,7 +60,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
 
   const bool opt_cols =
       (simple_color_is_set(MT_COLOR_OPTIONS) &&
-       (simple_colors_get(MT_COLOR_OPTIONS) != simple_colors_get(MT_COLOR_PROMPT)));
+       (simple_color_get(MT_COLOR_OPTIONS) != simple_color_get(MT_COLOR_PROMPT)));
 
   struct MuttWindow *old_focus = window_set_focus(win);
   window_redraw(NULL);

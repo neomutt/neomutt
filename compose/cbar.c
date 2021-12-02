@@ -209,7 +209,7 @@ int cbar_color_observer(struct NotifyCallback *nc)
   struct EventColor *ev_c = nc->event_data;
 
   // MT_COLOR_MAX is sent on `uncolor *`
-  if ((ev_c->color != MT_COLOR_STATUS) && (ev_c->color != MT_COLOR_MAX))
+  if ((ev_c->cid != MT_COLOR_STATUS) && (ev_c->cid != MT_COLOR_MAX))
     return 0;
 
   struct MuttWindow *win_cbar = nc->global_data;

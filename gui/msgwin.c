@@ -92,8 +92,8 @@ struct MuttWindow *MessageWindow = NULL; ///< Message Window, ":set", etc
  */
 struct MsgWinPrivateData
 {
-  enum ColorId color; ///< Colour for the text, e.g. #MT_COLOR_MESSAGE
-  char *text;         ///< Cached display string
+  enum ColorId cid; ///< Colour for the text, e.g. #MT_COLOR_MESSAGE
+  char *text;       ///< Cached display string
 };
 
 /**
@@ -121,7 +121,7 @@ static int msgwin_repaint(struct MuttWindow *win)
 
   mutt_window_move(win, 0, 0);
 
-  mutt_curses_set_color_by_id(priv->color);
+  mutt_curses_set_color_by_id(priv->cid);
   mutt_window_move(win, 0, 0);
   mutt_paddstr(win, win->state.cols, priv->text);
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
@@ -183,7 +183,7 @@ static struct MsgWinPrivateData *msgwin_wdata_new(void)
   struct MsgWinPrivateData *msgwin_data =
       mutt_mem_calloc(1, sizeof(struct MsgWinPrivateData));
 
-  msgwin_data->color = MT_COLOR_NORMAL;
+  msgwin_data->cid = MT_COLOR_NORMAL;
 
   return msgwin_data;
 }
@@ -211,21 +211,21 @@ struct MuttWindow *msgwin_new(void)
 
 /**
  * msgwin_set_text - Set the text for the Message Window
- * @param color Colour, e.g. #MT_COLOR_MESSAGE
- * @param text  Text to set
+ * @param cid  Colour Id, e.g. #MT_COLOR_MESSAGE
+ * @param text Text to set
  *
  * @note Changes will appear on screen immediately
  *
  * @note The text string will be copied
  */
-void msgwin_set_text(enum ColorId color, const char *text)
+void msgwin_set_text(enum ColorId cid, const char *text)
 {
   if (!MessageWindow)
     return;
 
   struct MsgWinPrivateData *priv = MessageWindow->wdata;
 
-  priv->color = color;
+  priv->cid = cid;
   mutt_str_replace(&priv->text, text);
 
   MessageWindow->actions |= WA_RECALC;

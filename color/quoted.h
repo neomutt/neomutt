@@ -77,7 +77,7 @@ int                quoted_colors_get(int q);
 void               quoted_colors_init(void);
 int                quoted_colors_num_used(void);
 
-bool               quoted_colors_parse_color(enum ColorId color, uint32_t fg, uint32_t bg, int attrs, int q_level, int *rc, struct Buffer *err);
+bool               quoted_colors_parse_color  (enum ColorId cid, uint32_t fg, uint32_t bg, int attrs, int q_level, int *rc, struct Buffer *err);
 
 struct QuoteStyle *qstyle_classify (struct QuoteStyle **quote_list, const char *qptr, size_t length, bool *force_redraw, int *q_level);
 void               qstyle_free_tree(struct QuoteStyle **quote_list);

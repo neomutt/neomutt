@@ -174,22 +174,22 @@ int log_disp_curses(time_t stamp, const char *file, int line,
 
   if (!OptKeepQuiet)
   {
-    enum ColorId color = MT_COLOR_NORMAL;
+    enum ColorId cid = MT_COLOR_NORMAL;
     switch (level)
     {
       case LL_ERROR:
         mutt_beep(false);
-        color = MT_COLOR_ERROR;
+        cid = MT_COLOR_ERROR;
         break;
       case LL_WARNING:
-        color = MT_COLOR_WARNING;
+        cid = MT_COLOR_WARNING;
         break;
       default:
-        color = MT_COLOR_MESSAGE;
+        cid = MT_COLOR_MESSAGE;
         break;
     }
 
-    msgwin_set_text(color, ErrorBuf);
+    msgwin_set_text(cid, ErrorBuf);
   }
 
   if ((level <= LL_ERROR) && !dupe)

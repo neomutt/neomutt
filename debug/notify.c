@@ -172,15 +172,15 @@ static void notify_dump_color(struct NotifyCallback *nc)
   const char *color = NULL;
   const char *scope = "";
 
-  if (ev_c->color == MT_COLOR_MAX)
+  if (ev_c->cid == MT_COLOR_MAX)
     color = "ALL";
 
   if (!color)
-    color = mutt_map_get_name(ev_c->color, ColorFields);
+    color = mutt_map_get_name(ev_c->cid, ColorFields);
 
   if (!color)
   {
-    color = mutt_map_get_name(ev_c->color, ComposeColorFields);
+    color = mutt_map_get_name(ev_c->cid, ComposeColorFields);
     scope = "compose ";
   }
 
@@ -189,7 +189,7 @@ static void notify_dump_color(struct NotifyCallback *nc)
 
   mutt_debug(LL_DEBUG1, "    Color: %s %s%s (%d)\n",
              (nc->event_subtype == NT_COLOR_SET) ? "set" : "reset", scope,
-             color, ev_c->color);
+             color, ev_c->cid);
 }
 
 static void notify_dump_command(struct NotifyCallback *nc)

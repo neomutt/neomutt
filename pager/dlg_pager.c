@@ -261,7 +261,7 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
       for (int i = 0; i < priv->lines_max; i++)
       {
         priv->lines[i].offset = 0;
-        priv->lines[i].color = -1;
+        priv->lines[i].cid = -1;
         priv->lines[i].cont_line = 0;
         priv->lines[i].syntax_arr_size = 0;
         priv->lines[i].search_arr_size = -1;
@@ -587,7 +587,7 @@ int mutt_pager(struct PagerView *pview)
 
   for (size_t i = 0; i < priv->lines_max; i++)
   {
-    priv->lines[i].color = -1;
+    priv->lines[i].cid = -1;
     priv->lines[i].search_arr_size = -1;
     priv->lines[i].syntax = mutt_mem_malloc(sizeof(struct TextSyntax));
     (priv->lines[i].syntax)[0].first = -1;

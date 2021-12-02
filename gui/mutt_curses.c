@@ -43,16 +43,16 @@ void mutt_curses_set_attr(int attr)
 
 /**
  * mutt_curses_set_color_by_id - Set the current colour for text
- * @param color Colour to set, e.g. #MT_COLOR_HEADER
+ * @param cid Colour to set, e.g. #MT_COLOR_HEADER
  *
  * If the system has bkgdset() use it rather than attrset() so that the clr*()
  * functions will properly set the background attributes all the way to the
  * right column.
  */
-void mutt_curses_set_color_by_id(enum ColorId color)
+void mutt_curses_set_color_by_id(enum ColorId cid)
 {
-  const int chosen = simple_colors_get(color);
-  const int normal = simple_colors_get(MT_COLOR_NORMAL);
+  const int chosen = simple_color_get(cid);
+  const int normal = simple_color_get(MT_COLOR_NORMAL);
   bkgdset((chosen ? chosen : normal) | ' ');
 }
 

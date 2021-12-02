@@ -180,9 +180,9 @@ static int pbar_color_observer(struct NotifyCallback *nc)
     return -1;
 
   struct EventColor *ev_c = nc->event_data;
-  enum ColorId color = ev_c->color;
+  enum ColorId cid = ev_c->cid;
 
-  if (color != MT_COLOR_STATUS)
+  if (cid != MT_COLOR_STATUS)
     return 0;
 
   struct MuttWindow *win_pbar = nc->global_data;

@@ -80,19 +80,19 @@ int quoted_colors_num_used(void)
 
 /**
  * quoted_colors_parse_color - Parse the 'color quoted' command
- * @param color   Colour ID, should be #MT_COLOR_QUOTED
- * @param fg      Foreground colour ID
- * @param bg      Background colour ID
- * @param attrs   Attributes
+ * @param cid     Colour Id, should be #MT_COLOR_QUOTED
+ * @param fg      Foreground colour
+ * @param bg      Background colour
+ * @param attrs   Attributes, e.g. A_UNDERLINE
  * @param q_level Quoting depth level
  * @param rc      Return code, e.g. #MUTT_CMD_SUCCESS
  * @param err     Buffer for error messages
  * @retval true Colour was parsed
  */
-bool quoted_colors_parse_color(enum ColorId color, uint32_t fg, uint32_t bg,
+bool quoted_colors_parse_color(enum ColorId cid, uint32_t fg, uint32_t bg,
                                int attrs, int q_level, int *rc, struct Buffer *err)
 {
-  if (color != MT_COLOR_QUOTED)
+  if (cid != MT_COLOR_QUOTED)
     return false;
 
   if (q_level >= COLOR_QUOTES_MAX)

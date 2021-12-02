@@ -57,7 +57,7 @@
  */
 static int get_color(int index, unsigned char *s)
 {
-  struct RegexColorList *color = NULL;
+  struct RegexColorList *rcl = NULL;
   struct RegexColor *np = NULL;
   struct Email *e = mutt_get_virt_email(Context->mailbox, index);
   int type = *s;
@@ -65,13 +65,13 @@ static int get_color(int index, unsigned char *s)
   switch (type)
   {
     case MT_COLOR_INDEX_AUTHOR:
-      color = regex_colors_get_list(MT_COLOR_INDEX_AUTHOR);
+      rcl = regex_colors_get_list(MT_COLOR_INDEX_AUTHOR);
       break;
     case MT_COLOR_INDEX_FLAGS:
-      color = regex_colors_get_list(MT_COLOR_INDEX_FLAGS);
+      rcl = regex_colors_get_list(MT_COLOR_INDEX_FLAGS);
       break;
     case MT_COLOR_INDEX_SUBJECT:
-      color = regex_colors_get_list(MT_COLOR_INDEX_SUBJECT);
+      rcl = regex_colors_get_list(MT_COLOR_INDEX_SUBJECT);
       break;
     case MT_COLOR_INDEX_TAG:
       STAILQ_FOREACH(np, regex_colors_get_list(MT_COLOR_INDEX_TAG), entries)
@@ -86,10 +86,10 @@ static int get_color(int index, unsigned char *s)
       }
       return 0;
     default:
-      return simple_colors_get(type);
+      return simple_color_get(type);
   }
 
-  STAILQ_FOREACH(np, color, entries)
+  STAILQ_FOREACH(np, rcl, entries)
   {
     if (mutt_pattern_exec(SLIST_FIRST(np->color_pattern),
                           MUTT_MATCH_FULL_ADDRESS, Context->mailbox, e, NULL))
@@ -128,7 +128,7 @@ static void print_enriched_string(struct MuttWindow *win, int index, int attr,
       {
         /* Combining tree fg color and another bg color requires having
          * use_default_colors, because the other bg color may be undefined. */
-        mutt_curses_set_attr(mutt_color_combine(simple_colors_get(MT_COLOR_TREE), attr));
+        mutt_curses_set_attr(mutt_color_combine(simple_color_get(MT_COLOR_TREE), attr));
       }
 
       while (*s && (*s < MUTT_TREE_MAX))

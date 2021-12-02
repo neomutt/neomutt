@@ -707,9 +707,9 @@ static int env_color_observer(struct NotifyCallback *nc)
   struct EventColor *ev_c = nc->event_data;
   struct MuttWindow *win_env = nc->global_data;
 
-  enum ColorId color = ev_c->color;
+  enum ColorId cid = ev_c->cid;
 
-  switch (color)
+  switch (cid)
   {
     case MT_COLOR_BOLD:
     case MT_COLOR_COMPOSE_HEADER:

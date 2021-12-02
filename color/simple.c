@@ -61,44 +61,44 @@ void simple_colors_clear(void)
 }
 
 /**
- * simple_colors_get - Get the colour of an object by its ID
- * @param id Colour ID, e.g. #MT_COLOR_SEARCH
+ * simple_color_get - Get the colour of an object by its ID
+ * @param cid Colour Id, e.g. #MT_COLOR_SEARCH
  * @retval num Color of the object
  */
-int simple_colors_get(enum ColorId id)
+int simple_color_get(enum ColorId cid)
 {
-  if (id >= MT_COLOR_MAX)
+  if (cid >= MT_COLOR_MAX)
   {
-    mutt_error("colour overflow %d", id);
+    mutt_error("colour overflow %d", cid);
     return 0;
   }
-  if (id <= MT_COLOR_NONE)
+  if (cid <= MT_COLOR_NONE)
   {
-    mutt_error("colour underflow %d", id);
+    mutt_error("colour underflow %d", cid);
     return 0;
   }
 
-  return SimpleColors[id];
+  return SimpleColors[cid];
 }
 
 /**
  * simple_color_is_set - Is the object coloured?
- * @param id Colour ID, e.g. #MT_COLOR_SEARCH
+ * @param cid Colour Id, e.g. #MT_COLOR_SEARCH
  * @retval true Yes, a 'color' command has been used on this object
  */
-bool simple_color_is_set(enum ColorId id)
+bool simple_color_is_set(enum ColorId cid)
 {
-  int color = simple_colors_get(id);
+  int color = simple_color_get(cid);
 
   return (color > 0);
 }
 
 /**
  * simple_color_is_header - Colour is for an Email header
- * @param color_id Colour, e.g. #MT_COLOR_HEADER
+ * @param cid Colour Id, e.g. #MT_COLOR_HEADER
  * @retval true Colour is for an Email header
  */
-bool simple_color_is_header(enum ColorId color_id)
+bool simple_color_is_header(enum ColorId cid)
 {
-  return (color_id == MT_COLOR_HEADER) || (color_id == MT_COLOR_HDRDEFAULT);
+  return (cid == MT_COLOR_HEADER) || (cid == MT_COLOR_HDRDEFAULT);
 }

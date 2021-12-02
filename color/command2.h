@@ -38,7 +38,7 @@ struct Buffer;
  * @param[in]  s     Buffer containing string to be parsed
  * @param[out] fg    Foreground colour (set to -1)
  * @param[out] bg    Background colour (set to -1)
- * @param[out] attrs Attribute flags
+ * @param[out] attrs Attributes, e.g. A_UNDERLINE
  * @param[out] err   Buffer for error messages
  * @retval  0 Success
  * @retval -1 Error

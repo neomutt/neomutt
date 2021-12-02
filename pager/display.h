@@ -70,7 +70,7 @@ struct AnsiAttr
 struct Line
 {
   LOFF_T offset;             ///< Offset into Email file (PagerPrivateData->fp)
-  short color;               ///< Default line colour, e.g. #MT_COLOR_QUOTED
+  short cid;                 ///< Default line colour, e.g. #MT_COLOR_QUOTED
   bool cont_line   : 1;      ///< Continuation of a previous line (wrapped by NeoMutt)
   bool cont_header : 1;      ///< Continuation of a header line (wrapped by MTA)
 

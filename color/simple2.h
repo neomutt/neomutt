@@ -29,10 +29,11 @@
 
 extern int SimpleColors[];
 
-bool              simple_color_is_header(enum ColorId color_id);
-bool              simple_color_is_set(enum ColorId id);
+int               simple_color_get      (enum ColorId cid);
+bool              simple_color_is_header(enum ColorId cid);
+bool              simple_color_is_set   (enum ColorId cid);
+
 void              simple_colors_clear(void);
-int               simple_colors_get(enum ColorId id);
 void              simple_colors_init(void);
 
 #endif /* MUTT_COLOR_SIMPLE_H */
