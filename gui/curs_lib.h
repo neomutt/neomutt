@@ -26,7 +26,7 @@
 #include <stdbool.h>
 #include <wchar.h> // IWYU pragma: keep
 #include "mutt.h"
-#include "browser.h"
+#include "browser/lib.h"
 #include "keymap.h"
 
 struct Buffer;

@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_browser File/Mailbox Browser Dialog
+ * @page lib_browser File/Mailbox Browser Dialog
  *
  * The File/Mailbox Browser Dialog lets the user select from a list of files or
  * mailboxes.
@@ -84,7 +84,7 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "browser.h"
+#include "lib.h"
 #include "attach/lib.h"
 #include "menu/lib.h"
 #include "question/lib.h"
