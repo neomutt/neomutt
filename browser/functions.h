@@ -23,11 +23,8 @@
 #ifndef MUTT_BROWSER_FUNCTIONS_H
 #define MUTT_BROWSER_FUNCTIONS_H
 
-#include <stdbool.h>
-
 struct MuttWindow;
 struct BrowserPrivateData;
-struct BrowserView;
 
 /**
  * @defgroup browser_function_api Browser Function API

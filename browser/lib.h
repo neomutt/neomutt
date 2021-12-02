@@ -45,6 +45,7 @@
 struct Mailbox;
 struct Menu;
 struct MuttWindow;
+struct stat;
 
 extern struct Buffer LastDir;
 extern struct Buffer LastDirBackup;

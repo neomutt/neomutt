@@ -27,10 +27,6 @@
 #include <limits.h>
 #include "lib.h"
 
-struct Buffer;
-struct Menu;
-struct MuttWindow;
-
 /**
  * struct BrowserPrivateData - Private state data for the Browser
  */
