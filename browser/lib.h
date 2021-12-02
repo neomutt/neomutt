@@ -29,6 +29,7 @@
  * | :------------------ | :------------------------- |
  * | browser/browser.c   | @subpage browser_browser   |
  * | browser/config.c    | @subpage browser_config    |
+ * | browser/functions.c | @subpage browser_functions |
  * | browser/sort.c      | @subpage browser_sorting   |
  */
 
