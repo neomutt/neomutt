@@ -1114,8 +1114,6 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
   char goto_swapper[PATH_MAX] = { 0 };
 
   struct Buffer *OldLastDir = mutt_buffer_pool_get();
-  struct Buffer *tmp = mutt_buffer_pool_get();
-  struct Buffer *buf = mutt_buffer_pool_get();
   struct Buffer *prefix = mutt_buffer_pool_get();
 
   init_lastdir();
@@ -1356,8 +1354,6 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
     int op = menu_loop(menu);
     if (op >= 0)
       mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
-    int index = menu_get_index(menu);
-    struct FolderFile *ff = ARRAY_GET(&state.entry, index);
     switch (op)
     {
       case OP_DESCEND_DIRECTORY:
@@ -1369,6 +1365,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           break;
         }
 
+        int index = menu_get_index(menu);
+        struct FolderFile *ff = ARRAY_GET(&state.entry, index);
         if (S_ISDIR(ff->mode) ||
             (S_ISLNK(ff->mode) && link_is_dir(mutt_buffer_string(&LastDir), ff->name))
 #ifdef USE_IMAP
@@ -1377,6 +1375,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         )
         {
           /* make sure this isn't a MH or maildir mailbox */
+          struct Buffer *buf = mutt_buffer_pool_get();
           if (state.is_mailbox_list)
           {
             mutt_buffer_strcpy(buf, ff->name);
@@ -1394,6 +1393,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           }
 
           enum MailboxType type = mx_path_probe(mutt_buffer_string(buf));
+          mutt_buffer_pool_release(&buf);
+
           if ((op == OP_DESCEND_DIRECTORY) || (type == MUTT_MAILBOX_ERROR) ||
               (type == MUTT_UNKNOWN)
 #ifdef USE_IMAP
@@ -1454,8 +1455,10 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 #endif
             else
             {
+              struct Buffer *tmp = mutt_buffer_pool_get();
               mutt_buffer_concat_path(tmp, mutt_buffer_string(&LastDir), ff->name);
               mutt_buffer_copy(&LastDir, tmp);
+              mutt_buffer_pool_release(&tmp);
             }
 
             destroy_state(&state);
@@ -1533,13 +1536,16 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             *numfiles = menu->tagged;
             tfiles = mutt_mem_calloc(*numfiles, sizeof(char *));
             size_t j = 0;
+            struct FolderFile *ff = NULL;
             ARRAY_FOREACH(ff, &state.entry)
             {
               if (ff->tagged)
               {
-                mutt_buffer_concat_path(tmp, mutt_buffer_string(&LastDir), ff->name);
-                mutt_buffer_expand_path(tmp);
-                tfiles[j++] = mutt_buffer_strdup(tmp);
+                struct Buffer *buf = mutt_buffer_pool_get();
+                mutt_buffer_concat_path(buf, mutt_buffer_string(&LastDir), ff->name);
+                mutt_buffer_expand_path(buf);
+                tfiles[j++] = mutt_buffer_strdup(buf);
+                mutt_buffer_pool_release(&buf);
               }
             }
             *files = tfiles;
@@ -1560,6 +1566,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
       case OP_BROWSER_TELL:
       {
+        int index = menu_get_index(menu);
         if (!ARRAY_EMPTY(&state.entry))
           mutt_message("%s", ARRAY_GET(&state.entry, index)->name);
         break;
@@ -1601,6 +1608,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
       case OP_RENAME_MAILBOX:
       {
+        int index = menu_get_index(menu);
+        struct FolderFile *ff = ARRAY_GET(&state.entry, index);
         if (!ff->imap)
         {
           mutt_error(_("Rename is only supported for IMAP mailboxes"));
@@ -1624,6 +1633,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
       case OP_DELETE_MAILBOX:
       {
+        int index = menu_get_index(menu);
+        struct FolderFile *ff = ARRAY_GET(&state.entry, index);
         if (!ff->imap)
         {
           mutt_error(_("Delete is only supported for IMAP mailboxes"));
@@ -1675,6 +1686,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         if (OptNews)
           break;
 #endif
+        struct Buffer *buf = mutt_buffer_pool_get();
         mutt_buffer_copy(buf, &LastDir);
 #ifdef USE_IMAP
         if (!state.imap_browse)
@@ -1688,11 +1700,11 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
         if (op == OP_CHANGE_DIRECTORY)
         {
-          /* buf comes from the buffer pool, so defaults to size 1024 */
           int ret = mutt_buffer_get_field(_("Chdir to: "), buf, MUTT_FILE,
                                           false, NULL, NULL, NULL);
           if ((ret != 0) && mutt_buffer_is_empty(buf))
           {
+            mutt_buffer_pool_release(&buf);
             break;
           }
         }
@@ -1723,15 +1735,18 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             {
               /* in case dir is relative, make it relative to LastDir,
                * not current working dir */
+              struct Buffer *tmp = mutt_buffer_pool_get();
               mutt_buffer_concat_path(tmp, mutt_buffer_string(&LastDir),
                                       mutt_buffer_string(buf));
               mutt_buffer_copy(buf, tmp);
+              mutt_buffer_pool_release(&tmp);
             }
             /* Resolve path from <chdir>
              * Avoids buildup such as /a/b/../../c
              * Symlinks are always unraveled to keep code simple */
             if (mutt_path_realpath(buf->data) == 0)
             {
+              mutt_buffer_pool_release(&buf);
               break;
             }
 
@@ -1769,16 +1784,19 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             }
           }
         }
+        mutt_buffer_pool_release(&buf);
         break;
       }
 
       case OP_ENTER_MASK:
       {
         const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
+        struct Buffer *buf = mutt_buffer_pool_get();
         mutt_buffer_strcpy(buf, c_mask ? c_mask->pattern : NULL);
         if (mutt_get_field(_("File Mask: "), buf->data, buf->dsize,
                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0)
         {
+          mutt_buffer_pool_release(&buf);
           break;
         }
 
@@ -1792,6 +1810,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         struct Buffer errmsg = mutt_buffer_make(256);
         int rc = cs_subset_str_string_set(NeoMutt->sub, "mask",
                                           mutt_buffer_string(buf), &errmsg);
+        mutt_buffer_pool_release(&buf);
         if (CSR_RESULT(rc) != CSR_SUCCESS)
         {
           if (!mutt_buffer_is_empty(&errmsg))
@@ -1975,15 +1994,18 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
       case OP_BROWSER_NEW_FILE:
       {
+        struct Buffer *buf = mutt_buffer_pool_get();
         mutt_buffer_printf(buf, "%s/", mutt_buffer_string(&LastDir));
         /* buf comes from the buffer pool, so defaults to size 1024 */
         if (mutt_buffer_get_field(_("New file name: "), buf, MUTT_FILE, false,
                                   NULL, NULL, NULL) == 0)
         {
           mutt_buffer_copy(file, buf);
+          mutt_buffer_pool_release(&buf);
           destroy_state(&state);
           goto bail;
         }
+        mutt_buffer_pool_release(&buf);
         break;
       }
 
@@ -1995,6 +2017,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           break;
         }
 
+        int index = menu_get_index(menu);
+        struct FolderFile *ff = ARRAY_GET(&state.entry, index);
 #ifdef USE_IMAP
         if (ff->selectable)
         {
@@ -2043,6 +2067,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         if (rc < 0)
           break;
 
+        int index = menu_get_index(menu);
+        struct FolderFile *ff = ARRAY_GET(&state.entry, index);
         if (op == OP_CATCHUP)
           mdata = mutt_newsgroup_catchup(m, CurrentNewsSrv, ff->name);
         else
@@ -2109,14 +2135,13 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           struct NntpAccountData *adata = CurrentNewsSrv;
           regex_t rx;
           memset(&rx, 0, sizeof(rx));
-          char *s = buf->data;
-          index = menu_get_index(menu);
+          int index = menu_get_index(menu);
 
           if ((op == OP_SUBSCRIBE_PATTERN) || (op == OP_UNSUBSCRIBE_PATTERN))
           {
             char tmp2[256];
 
-            mutt_buffer_reset(buf);
+            struct Buffer *buf = mutt_buffer_pool_get();
             if (op == OP_SUBSCRIBE_PATTERN)
               snprintf(tmp2, sizeof(tmp2), _("Subscribe pattern: "));
             else
@@ -2125,19 +2150,22 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             if ((mutt_buffer_get_field(tmp2, buf, MUTT_PATTERN, false, NULL, NULL, NULL) != 0) ||
                 mutt_buffer_is_empty(buf))
             {
+              mutt_buffer_pool_release(&buf);
               break;
             }
 
-            int err = REG_COMP(&rx, s, REG_NOSUB);
+            int err = REG_COMP(&rx, buf->data, REG_NOSUB);
             if (err != 0)
             {
               regerror(err, &rx, buf->data, buf->dsize);
               regfree(&rx);
               mutt_error("%s", mutt_buffer_string(buf));
+              mutt_buffer_pool_release(&buf);
               break;
             }
             menu_queue_redraw(menu, MENU_REDRAW_FULL);
             index = 0;
+            mutt_buffer_pool_release(&buf);
           }
           else if (ARRAY_EMPTY(&state.entry))
           {
@@ -2149,6 +2177,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           if (rc < 0)
             break;
 
+          struct FolderFile *ff = NULL;
           ARRAY_FOREACH_FROM(ff, &state.entry, index)
           {
             if ((op == OP_BROWSER_SUBSCRIBE) || (op == OP_BROWSER_UNSUBSCRIBE) ||
@@ -2198,6 +2227,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 #ifdef USE_IMAP
         {
           char tmp2[256];
+          int index = menu_get_index(menu);
+          struct FolderFile *ff = ARRAY_GET(&state.entry, index);
           mutt_str_copy(tmp2, ff->name, sizeof(tmp2));
           mutt_expand_path(tmp2, sizeof(tmp2));
           imap_subscribe(tmp2, (op == OP_BROWSER_SUBSCRIBE));
@@ -2209,8 +2240,6 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
 bail:
   mutt_buffer_pool_release(&OldLastDir);
-  mutt_buffer_pool_release(&tmp);
-  mutt_buffer_pool_release(&buf);
   mutt_buffer_pool_release(&prefix);
 
   simple_dialog_free(&dlg);
