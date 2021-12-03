@@ -174,7 +174,7 @@ struct RegexColor *regex_color_new(void)
  * @param sensitive true if the pattern case-sensitive
  * @param fg        Foreground colour
  * @param bg        Background colour
- * @param attrs     Attributes, e.g. A_UNDERLINE
+ * @param attr      Attributes, e.g. A_UNDERLINE
  * @param err       Buffer for error messages
  * @param is_index  true of this is for the index
  * @param match     Number of regex subexpression to match (0 for entire pattern)

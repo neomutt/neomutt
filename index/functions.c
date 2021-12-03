@@ -177,6 +177,10 @@ static int op_create_alias(struct IndexSharedData *shared,
 
 /**
  * op_delete - Delete the current entry - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_DELETE
+ * - OP_PURGE_MESSAGE
  */
 static int op_delete(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
@@ -226,6 +230,11 @@ static int op_delete(struct IndexSharedData *shared, struct IndexPrivateData *pr
 
 /**
  * op_delete_thread - Delete all messages in thread - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_DELETE_SUBTHREAD
+ * - OP_DELETE_THREAD
+ * - OP_PURGE_THREAD
  */
 static int op_delete_thread(struct IndexSharedData *shared,
                             struct IndexPrivateData *priv, int op)
@@ -280,6 +289,10 @@ static int op_display_address(struct IndexSharedData *shared,
 
 /**
  * op_display_message - Display a message - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_DISPLAY_HEADERS
+ * - OP_DISPLAY_MESSAGE
  */
 static int op_display_message(struct IndexSharedData *shared,
                               struct IndexPrivateData *priv, int op)
@@ -375,6 +388,11 @@ static int op_edit_label(struct IndexSharedData *shared, struct IndexPrivateData
 
 /**
  * op_edit_raw_message - Edit the raw message (edit and edit-raw-message are synonyms) - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_EDIT_OR_VIEW_RAW_MESSAGE
+ * - OP_EDIT_RAW_MESSAGE
+ * - OP_VIEW_RAW_MESSAGE
  */
 static int op_edit_raw_message(struct IndexSharedData *shared,
                                struct IndexPrivateData *priv, int op)
@@ -576,6 +594,10 @@ static int op_forward_message(struct IndexSharedData *shared,
 
 /**
  * op_group_reply - Reply to all recipients - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_GROUP_CHAT_REPLY
+ * - OP_GROUP_REPLY
  */
 static int op_group_reply(struct IndexSharedData *shared,
                           struct IndexPrivateData *priv, int op)
@@ -770,6 +792,11 @@ static int op_main_break_thread(struct IndexSharedData *shared,
 
 /**
  * op_main_change_folder - Open a different folder - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_MAIN_CHANGE_FOLDER
+ * - OP_MAIN_CHANGE_FOLDER_READONLY
+ * - OP_MAIN_CHANGE_VFOLDER
  */
 static int op_main_change_folder(struct IndexSharedData *shared,
                                  struct IndexPrivateData *priv, int op)
@@ -918,6 +945,11 @@ static int op_main_delete_pattern(struct IndexSharedData *shared,
 
 /**
  * op_main_limit - Limit view to current thread - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_LIMIT_CURRENT_THREAD
+ * - OP_MAIN_LIMIT
+ * - OP_TOGGLE_READ
  */
 static int op_main_limit(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
@@ -1031,6 +1063,10 @@ static int op_main_link_threads(struct IndexSharedData *shared,
 
 /**
  * op_main_modify_tags - Modify (notmuch/imap) tags - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_MAIN_MODIFY_TAGS
+ * - OP_MAIN_MODIFY_TAGS_THEN_HIDE
  */
 static int op_main_modify_tags(struct IndexSharedData *shared,
                                struct IndexPrivateData *priv, int op)
@@ -1144,6 +1180,14 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
 
 /**
  * op_main_next_new - Jump to the next new message - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_MAIN_NEXT_NEW
+ * - OP_MAIN_NEXT_NEW_THEN_UNREAD
+ * - OP_MAIN_NEXT_UNREAD
+ * - OP_MAIN_PREV_NEW
+ * - OP_MAIN_PREV_NEW_THEN_UNREAD
+ * - OP_MAIN_PREV_UNREAD
  */
 static int op_main_next_new(struct IndexSharedData *shared,
                             struct IndexPrivateData *priv, int op)
@@ -1265,6 +1309,12 @@ static int op_main_next_new(struct IndexSharedData *shared,
 
 /**
  * op_main_next_thread - Jump to the next thread - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_MAIN_NEXT_SUBTHREAD
+ * - OP_MAIN_NEXT_THREAD
+ * - OP_MAIN_PREV_SUBTHREAD
+ * - OP_MAIN_PREV_THREAD
  */
 static int op_main_next_thread(struct IndexSharedData *shared,
                                struct IndexPrivateData *priv, int op)
@@ -1429,6 +1479,10 @@ static int op_main_quasi_delete(struct IndexSharedData *shared,
 
 /**
  * op_main_read_thread - Mark the current thread as read - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_MAIN_READ_SUBTHREAD
+ * - OP_MAIN_READ_THREAD
  */
 static int op_main_read_thread(struct IndexSharedData *shared,
                                struct IndexPrivateData *priv, int op)
@@ -1465,6 +1519,10 @@ static int op_main_read_thread(struct IndexSharedData *shared,
 
 /**
  * op_main_root_message - Jump to root message in thread - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_MAIN_PARENT_MESSAGE
+ * - OP_MAIN_ROOT_MESSAGE
  */
 static int op_main_root_message(struct IndexSharedData *shared,
                                 struct IndexPrivateData *priv, int op)
@@ -1485,6 +1543,10 @@ static int op_main_root_message(struct IndexSharedData *shared,
 
 /**
  * op_main_set_flag - Set a status flag on a message - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_MAIN_CLEAR_FLAG
+ * - OP_MAIN_SET_FLAG
  */
 static int op_main_set_flag(struct IndexSharedData *shared,
                             struct IndexPrivateData *priv, int op)
@@ -1713,6 +1775,22 @@ static int op_mark_msg(struct IndexSharedData *shared, struct IndexPrivateData *
 
 /**
  * op_menu_move - Move to the bottom of the page - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_BOTTOM_PAGE
+ * - OP_CURRENT_BOTTOM
+ * - OP_CURRENT_MIDDLE
+ * - OP_CURRENT_TOP
+ * - OP_FIRST_ENTRY
+ * - OP_HALF_DOWN
+ * - OP_HALF_UP
+ * - OP_LAST_ENTRY
+ * - OP_MIDDLE_PAGE
+ * - OP_NEXT_LINE
+ * - OP_NEXT_PAGE
+ * - OP_PREV_LINE
+ * - OP_PREV_PAGE
+ * - OP_TOP_PAGE
  */
 static int op_menu_move(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
@@ -1974,6 +2052,14 @@ static int op_resend(struct IndexSharedData *shared, struct IndexPrivateData *pr
 
 /**
  * op_save - Make decrypted copy - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_COPY_MESSAGE
+ * - OP_DECODE_COPY
+ * - OP_DECODE_SAVE
+ * - OP_DECRYPT_COPY
+ * - OP_DECRYPT_SAVE
+ * - OP_SAVE
  */
 static int op_save(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
@@ -2020,6 +2106,12 @@ static int op_save(struct IndexSharedData *shared, struct IndexPrivateData *priv
 
 /**
  * op_search - Search for a regular expression - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_SEARCH
+ * - OP_SEARCH_NEXT
+ * - OP_SEARCH_OPPOSITE
+ * - OP_SEARCH_REVERSE
  */
 static int op_search(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
@@ -2085,6 +2177,10 @@ static int op_show_log_messages(struct IndexSharedData *shared,
 
 /**
  * op_sort - Sort messages - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_SORT
+ * - OP_SORT_REVERSE
  */
 static int op_sort(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
@@ -2144,6 +2240,10 @@ static int op_tag(struct IndexSharedData *shared, struct IndexPrivateData *priv,
 
 /**
  * op_tag_thread - Tag the current thread - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_TAG_SUBTHREAD
+ * - OP_TAG_THREAD
  */
 static int op_tag_thread(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
@@ -2281,6 +2381,10 @@ static int op_undelete(struct IndexSharedData *shared, struct IndexPrivateData *
 
 /**
  * op_undelete_thread - Undelete all messages in thread - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_UNDELETE_SUBTHREAD
+ * - OP_UNDELETE_THREAD
  */
 static int op_undelete_thread(struct IndexSharedData *shared,
                               struct IndexPrivateData *priv, int op)
@@ -2441,6 +2545,10 @@ static int op_catchup(struct IndexSharedData *shared, struct IndexPrivateData *p
 
 /**
  * op_get_children - Get all children of the current message - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_GET_CHILDREN
+ * - OP_RECONSTRUCT_THREAD
  */
 static int op_get_children(struct IndexSharedData *shared,
                            struct IndexPrivateData *priv, int op)
@@ -2550,6 +2658,10 @@ static int op_get_children(struct IndexSharedData *shared,
 
 /**
  * op_get_message - Get parent of the current message - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_GET_MESSAGE
+ * - OP_GET_PARENT
  */
 static int op_get_message(struct IndexSharedData *shared,
                           struct IndexPrivateData *priv, int op)
@@ -2616,6 +2728,10 @@ static int op_get_message(struct IndexSharedData *shared,
 
 /**
  * op_main_change_group - Open a different newsgroup - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_MAIN_CHANGE_GROUP
+ * - OP_MAIN_CHANGE_GROUP_READONLY
  */
 static int op_main_change_group(struct IndexSharedData *shared,
                                 struct IndexPrivateData *priv, int op)
@@ -2696,6 +2812,10 @@ changefoldercleanup2:
 
 /**
  * op_post - Followup to newsgroup - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_FOLLOWUP
+ * - OP_POST
  */
 static int op_post(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
@@ -2804,6 +2924,10 @@ static int op_main_entire_thread(struct IndexSharedData *shared,
 
 /**
  * op_main_vfolder_from_query - Generate virtual folder from query - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_MAIN_VFOLDER_FROM_QUERY
+ * - OP_MAIN_VFOLDER_FROM_QUERY_READONLY op_main_vfolder_from_query
  */
 static int op_main_vfolder_from_query(struct IndexSharedData *shared,
                                       struct IndexPrivateData *priv, int op)
@@ -2838,6 +2962,11 @@ static int op_main_vfolder_from_query(struct IndexSharedData *shared,
 
 /**
  * op_main_windowed_vfolder - Shifts virtual folder time window - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_MAIN_WINDOWED_VFOLDER_BACKWARD
+ * - OP_MAIN_WINDOWED_VFOLDER_FORWARD
+ * - OP_MAIN_WINDOWED_VFOLDER_RESET
  */
 static int op_main_windowed_vfolder(struct IndexSharedData *shared,
                                     struct IndexPrivateData *priv, int op)
@@ -2895,6 +3024,16 @@ static int op_main_fetch_mail(struct IndexSharedData *shared,
 #ifdef USE_SIDEBAR
 /**
  * op_sidebar_next - Move the highlight to the first mailbox - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * This function handles:
+ * - OP_SIDEBAR_FIRST
+ * - OP_SIDEBAR_LAST
+ * - OP_SIDEBAR_NEXT
+ * - OP_SIDEBAR_NEXT_NEW
+ * - OP_SIDEBAR_PAGE_DOWN
+ * - OP_SIDEBAR_PAGE_UP
+ * - OP_SIDEBAR_PREV
+ * - OP_SIDEBAR_PREV_NEW
  */
 static int op_sidebar_next(struct IndexSharedData *shared,
                            struct IndexPrivateData *priv, int op)

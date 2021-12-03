@@ -45,6 +45,7 @@ void index_private_data_free(struct MuttWindow *win, void **ptr)
 
 /**
  * index_private_data_new - Create new Index Data
+ * @param shared Shared Index data
  * @retval ptr New IndexPrivateData
  */
 struct IndexPrivateData *index_private_data_new(struct IndexSharedData *shared)

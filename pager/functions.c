@@ -305,6 +305,12 @@ static int op_compose_to_sender(struct IndexSharedData *shared,
 
 /**
  * op_copy_message - Copy a message to a file/mailbox - Implements ::pager_function_t - @ingroup pager_function_api
+ *
+ * This function handles:
+ * - OP_COPY_MESSAGE
+ * - OP_DECODE_COPY
+ * - OP_DECODE_SAVE
+ * - OP_DECRYPT_COPY
  */
 static int op_copy_message(struct IndexSharedData *shared,
                            struct PagerPrivateData *priv, int op)
@@ -365,6 +371,10 @@ static int op_create_alias(struct IndexSharedData *shared,
 
 /**
  * op_delete - Delete the current entry - Implements ::pager_function_t - @ingroup pager_function_api
+ *
+ * This function handles:
+ * - OP_DELETE
+ * - OP_PURGE_MESSAGE
  */
 static int op_delete(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -395,6 +405,11 @@ static int op_delete(struct IndexSharedData *shared, struct PagerPrivateData *pr
 
 /**
  * op_delete_thread - Delete all messages in thread - Implements ::pager_function_t - @ingroup pager_function_api
+ *
+ * This function handles:
+ * - OP_DELETE_SUBTHREAD
+ * - OP_DELETE_THREAD
+ * - OP_PURGE_THREAD
  */
 static int op_delete_thread(struct IndexSharedData *shared,
                             struct PagerPrivateData *priv, int op)
@@ -716,6 +731,10 @@ static int op_mail_key(struct IndexSharedData *shared, struct PagerPrivateData *
 
 /**
  * op_main_set_flag - Set a status flag on a message - Implements ::pager_function_t - @ingroup pager_function_api
+ *
+ * This function handles:
+ * - OP_MAIN_CLEAR_FLAG
+ * - OP_MAIN_SET_FLAG
  */
 static int op_main_set_flag(struct IndexSharedData *shared,
                             struct PagerPrivateData *priv, int op)
@@ -1117,6 +1136,12 @@ static int op_redraw(struct IndexSharedData *shared, struct PagerPrivateData *pr
 
 /**
  * op_reply - Reply to a message - Implements ::pager_function_t - @ingroup pager_function_api
+ *
+ * This function handles:
+ * - OP_GROUP_CHAT_REPLY
+ * - OP_GROUP_REPLY
+ * - OP_LIST_REPLY
+ * - OP_REPLY
  */
 static int op_reply(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1205,6 +1230,10 @@ static int op_resend(struct IndexSharedData *shared, struct PagerPrivateData *pr
 
 /**
  * op_save - Save message/attachment to a mailbox/file - Implements ::pager_function_t - @ingroup pager_function_api
+ *
+ * This function handles:
+ * - OP_DECRYPT_SAVE
+ * - OP_SAVE
  */
 static int op_save(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1225,6 +1254,10 @@ static int op_save(struct IndexSharedData *shared, struct PagerPrivateData *priv
 
 /**
  * op_search - Search for a regular expression - Implements ::pager_function_t - @ingroup pager_function_api
+ *
+ * This function handles:
+ * - OP_SEARCH
+ * - OP_SEARCH_REVERSE
  */
 static int op_search(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1364,6 +1397,10 @@ static int op_search(struct IndexSharedData *shared, struct PagerPrivateData *pr
 
 /**
  * op_search_next - Search for next match - Implements ::pager_function_t - @ingroup pager_function_api
+ *
+ * This function handles:
+ * - OP_SEARCH_NEXT
+ * - OP_SEARCH_OPPOSITE
  */
 static int op_search_next(struct IndexSharedData *shared,
                           struct PagerPrivateData *priv, int op)
@@ -1479,6 +1516,10 @@ static int op_shell_escape(struct IndexSharedData *shared,
 
 /**
  * op_sort - Sort messages - Implements ::pager_function_t - @ingroup pager_function_api
+ *
+ * This function handles:
+ * - OP_SORT
+ * - OP_SORT_REVERSE
  */
 static int op_sort(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
@@ -1778,6 +1819,16 @@ static int op_post(struct IndexSharedData *shared, struct PagerPrivateData *priv
 #ifdef USE_SIDEBAR
 /**
  * op_sidebar_move - Move the sidebar highlight - Implements ::pager_function_t - @ingroup pager_function_api
+ *
+ * This function handles:
+ * - OP_SIDEBAR_FIRST
+ * - OP_SIDEBAR_LAST
+ * - OP_SIDEBAR_NEXT
+ * - OP_SIDEBAR_NEXT_NEW
+ * - OP_SIDEBAR_PAGE_DOWN
+ * - OP_SIDEBAR_PAGE_UP
+ * - OP_SIDEBAR_PREV
+ * - OP_SIDEBAR_PREV_NEW
  */
 static int op_sidebar_move(struct IndexSharedData *shared,
                            struct PagerPrivateData *priv, int op)

@@ -107,6 +107,7 @@ enriched.c
 enter.c
 flags.c
 functions.c
+fuzz/address.c
 gui/curs_lib.c
 gui/dialog.c
 gui/msgwin.c

@@ -487,6 +487,10 @@ static int op_compose_attach_key(struct ComposeSharedData *shared, int op)
 
 /**
  * op_compose_attach_message - Attach messages to this message - Implements ::compose_function_t - @ingroup compose_function_api
+ *
+ * This function handles:
+ * - OP_COMPOSE_ATTACH_MESSAGE
+ * - OP_COMPOSE_ATTACH_NEWS_MESSAGE
  */
 static int op_compose_attach_message(struct ComposeSharedData *shared, int op)
 {
@@ -1656,6 +1660,10 @@ static int op_delete(struct ComposeSharedData *shared, int op)
 
 /**
  * op_display_headers - Display message and toggle header weeding - Implements ::compose_function_t - @ingroup compose_function_api
+ *
+ * This function handles:
+ * - OP_DISPLAY_HEADERS
+ * - OP_VIEW_ATTACH
  */
 static int op_display_headers(struct ComposeSharedData *shared, int op)
 {
@@ -1725,6 +1733,10 @@ static int op_exit(struct ComposeSharedData *shared, int op)
 
 /**
  * op_filter - Filter attachment through a shell command - Implements ::compose_function_t - @ingroup compose_function_api
+ *
+ * This function handles:
+ * - OP_FILTER
+ * - OP_PIPE
  */
 static int op_filter(struct ComposeSharedData *shared, int op)
 {
