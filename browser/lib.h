@@ -28,6 +28,7 @@
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | browser/browser.c   | @subpage browser_browser   |
+ * | browser/sort.c      | @subpage browser_sorting   |
  */
 
 #ifndef MUTT_BROWSER_LIB_H
@@ -112,5 +113,6 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags, struct 
 void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m, char ***files, int *numfiles);
 void mutt_browser_select_dir(const char *f);
 void mutt_browser_cleanup(void);
+void browser_sort(struct BrowserState *state);
 
 #endif /* MUTT_BROWSER_LIB_H */
