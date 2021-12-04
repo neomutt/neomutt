@@ -791,7 +791,6 @@ main
 
   /* set defaults and read init files */
   int rc2 = mutt_init(cs, flags & MUTT_CLI_NOSYSRC, &commands);
-  mutt_list_free(&commands);
   if (rc2 != 0)
     goto main_curses;
 
@@ -1410,6 +1409,7 @@ main_curses:
   if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
 main_exit:
+  mutt_list_free(&commands);
   MuttLogger = log_disp_queue;
   mutt_buffer_dealloc(&folder);
   mutt_buffer_dealloc(&expanded_infile);
