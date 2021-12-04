@@ -1,9 +1,9 @@
 /**
  * @file
- * GUI component for displaying/selecting items from a list
+ * Select a Mailbox from a list
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,8 +20,19 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_BROWSER_H
-#define MUTT_BROWSER_H
+/**
+ * @page lib_browser Mailbox Browser
+ *
+ * Select a Mailbox from a list
+ *
+ * | File                | Description                |
+ * | :------------------ | :------------------------- |
+ * | browser/browser.c   | @subpage browser_browser   |
+ * | browser/sort.c      | @subpage browser_sorting   |
+ */
+
+#ifndef MUTT_BROWSER_LIB_H
+#define MUTT_BROWSER_LIB_H
 
 #include "config.h"
 #include <stdbool.h>
@@ -102,5 +113,6 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags, struct 
 void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m, char ***files, int *numfiles);
 void mutt_browser_select_dir(const char *f);
 void mutt_browser_cleanup(void);
+void browser_sort(struct BrowserState *state);
 
-#endif /* MUTT_BROWSER_H */
+#endif /* MUTT_BROWSER_LIB_H */

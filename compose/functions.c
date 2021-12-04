@@ -50,13 +50,13 @@
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
+#include "browser/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "attach_data.h"
-#include "browser.h"
 #include "commands.h"
 #include "context.h"
 #include "env_data.h"

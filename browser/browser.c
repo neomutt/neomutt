@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_browser File/Mailbox Browser Dialog
+ * @page browser_browser File/Mailbox Browser Dialog
  *
  * The File/Mailbox Browser Dialog lets the user select from a list of files or
  * mailboxes.
@@ -84,7 +84,7 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "browser.h"
+#include "lib.h"
 #include "attach/lib.h"
 #include "menu/lib.h"
 #include "question/lib.h"
@@ -183,181 +183,6 @@ static void destroy_state(struct BrowserState *state)
 }
 
 /**
- * browser_compare_subject - Compare the subject of two browser entries - Implements ::sort_t - @ingroup sort_api
- */
-static int browser_compare_subject(const void *a, const void *b)
-{
-  const struct FolderFile *pa = (const struct FolderFile *) a;
-  const struct FolderFile *pb = (const struct FolderFile *) b;
-
-  /* inbox should be sorted ahead of its siblings */
-  int r = mutt_inbox_cmp(pa->name, pb->name);
-  if (r == 0)
-    r = mutt_str_coll(pa->name, pb->name);
-  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-  return (c_sort_browser & SORT_REVERSE) ? -r : r;
-}
-
-/**
- * browser_compare_order - Compare the order of creation of two browser entries - Implements ::sort_t - @ingroup sort_api
- *
- * @note This only affects browsing mailboxes and is a no-op for folders.
- */
-static int browser_compare_order(const void *a, const void *b)
-{
-  const struct FolderFile *pa = (const struct FolderFile *) a;
-  const struct FolderFile *pb = (const struct FolderFile *) b;
-
-  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-  return ((c_sort_browser & SORT_REVERSE) ? -1 : 1) * (pa->gen - pb->gen);
-}
-
-/**
- * browser_compare_desc - Compare the descriptions of two browser entries - Implements ::sort_t - @ingroup sort_api
- */
-static int browser_compare_desc(const void *a, const void *b)
-{
-  const struct FolderFile *pa = (const struct FolderFile *) a;
-  const struct FolderFile *pb = (const struct FolderFile *) b;
-
-  int r = mutt_str_coll(pa->desc, pb->desc);
-
-  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-  return (c_sort_browser & SORT_REVERSE) ? -r : r;
-}
-
-/**
- * browser_compare_date - Compare the date of two browser entries - Implements ::sort_t - @ingroup sort_api
- */
-static int browser_compare_date(const void *a, const void *b)
-{
-  const struct FolderFile *pa = (const struct FolderFile *) a;
-  const struct FolderFile *pb = (const struct FolderFile *) b;
-
-  int r = pa->mtime - pb->mtime;
-
-  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-  return (c_sort_browser & SORT_REVERSE) ? -r : r;
-}
-
-/**
- * browser_compare_size - Compare the size of two browser entries - Implements ::sort_t - @ingroup sort_api
- */
-static int browser_compare_size(const void *a, const void *b)
-{
-  const struct FolderFile *pa = (const struct FolderFile *) a;
-  const struct FolderFile *pb = (const struct FolderFile *) b;
-
-  int r = pa->size - pb->size;
-
-  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-  return (c_sort_browser & SORT_REVERSE) ? -r : r;
-}
-
-/**
- * browser_compare_count - Compare the message count of two browser entries - Implements ::sort_t - @ingroup sort_api
- */
-static int browser_compare_count(const void *a, const void *b)
-{
-  const struct FolderFile *pa = (const struct FolderFile *) a;
-  const struct FolderFile *pb = (const struct FolderFile *) b;
-
-  int r = 0;
-  if (pa->has_mailbox && pb->has_mailbox)
-    r = pa->msg_count - pb->msg_count;
-  else if (pa->has_mailbox)
-    r = -1;
-  else
-    r = 1;
-
-  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-  return (c_sort_browser & SORT_REVERSE) ? -r : r;
-}
-
-/**
- * browser_compare_count_new - Compare the new count of two browser entries - Implements ::sort_t - @ingroup sort_api
- */
-static int browser_compare_count_new(const void *a, const void *b)
-{
-  const struct FolderFile *pa = (const struct FolderFile *) a;
-  const struct FolderFile *pb = (const struct FolderFile *) b;
-
-  int r = 0;
-  if (pa->has_mailbox && pb->has_mailbox)
-    r = pa->msg_unread - pb->msg_unread;
-  else if (pa->has_mailbox)
-    r = -1;
-  else
-    r = 1;
-
-  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-  return (c_sort_browser & SORT_REVERSE) ? -r : r;
-}
-
-/**
- * browser_compare - Sort the items in the browser - Implements ::sort_t - @ingroup sort_api
- *
- * Wild compare function that calls the others. It's useful because it provides
- * a way to tell "../" is always on the top of the list, independently of the
- * sort method.
- */
-static int browser_compare(const void *a, const void *b)
-{
-  const struct FolderFile *pa = (const struct FolderFile *) a;
-  const struct FolderFile *pb = (const struct FolderFile *) b;
-
-  if ((mutt_str_coll(pa->desc, "../") == 0) || (mutt_str_coll(pa->desc, "..") == 0))
-    return -1;
-  if ((mutt_str_coll(pb->desc, "../") == 0) || (mutt_str_coll(pb->desc, "..") == 0))
-    return 1;
-
-  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-  switch (c_sort_browser & SORT_MASK)
-  {
-    case SORT_COUNT:
-      return browser_compare_count(a, b);
-    case SORT_DATE:
-      return browser_compare_date(a, b);
-    case SORT_DESC:
-      return browser_compare_desc(a, b);
-    case SORT_SIZE:
-      return browser_compare_size(a, b);
-    case SORT_UNREAD:
-      return browser_compare_count_new(a, b);
-    case SORT_SUBJECT:
-      return browser_compare_subject(a, b);
-    default:
-    case SORT_ORDER:
-      return browser_compare_order(a, b);
-  }
-}
-
-/**
- * browser_sort - Sort the entries in the browser
- * @param state Browser state
- *
- * Call to qsort using browser_compare function.
- * Some specific sort methods are not used via NNTP.
- */
-static void browser_sort(struct BrowserState *state)
-{
-  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-  switch (c_sort_browser & SORT_MASK)
-  {
-#ifdef USE_NNTP
-    case SORT_SIZE:
-    case SORT_DATE:
-      if (OptNews)
-        return;
-#endif
-    default:
-      break;
-  }
-
-  ARRAY_SORT(&state->entry, browser_compare);
-}
-
-/**
  * link_is_dir - Does this symlink point to a directory?
  * @param folder Folder
  * @param path   Link name
@@ -452,7 +277,9 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         mutt_format_s(buf, buflen, prec, date);
       }
       else
+      {
         mutt_format_s(buf, buflen, prec, "");
+      }
       break;
 
     case 'f':
@@ -517,7 +344,9 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       {
         struct group *gr = getgrgid(folder->ff->gid);
         if (gr)
+        {
           mutt_format_s(buf, buflen, prec, gr->gr_name);
+        }
         else
         {
           snprintf(fmt, sizeof(fmt), "%%%sld", prec);
@@ -525,7 +354,9 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         }
       }
       else
+      {
         mutt_format_s(buf, buflen, prec, "");
+      }
       break;
 
     case 'i':
@@ -556,7 +387,9 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, folder->ff->nlink);
       }
       else
+      {
         mutt_format_s(buf, buflen, prec, "");
+      }
       break;
 
     case 'm':
@@ -568,7 +401,9 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
           snprintf(buf, buflen, fmt, folder->ff->msg_count);
         }
         else
+        {
           mutt_format_s(buf, buflen, prec, "");
+        }
       }
       else if (folder->ff->msg_count == 0)
         optional = false;
@@ -588,7 +423,9 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
           snprintf(buf, buflen, fmt, folder->ff->msg_unread);
         }
         else
+        {
           mutt_format_s(buf, buflen, prec, "");
+        }
       }
       else if (folder->ff->msg_unread == 0)
         optional = false;
@@ -602,7 +439,9 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, fn);
       }
       else
+      {
         mutt_format_s(buf, buflen, prec, "");
+      }
       break;
 
     case 't':
@@ -615,7 +454,9 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       {
         struct passwd *pw = getpwuid(folder->ff->uid);
         if (pw)
+        {
           mutt_format_s(buf, buflen, prec, pw->pw_name);
+        }
         else
         {
           snprintf(fmt, sizeof(fmt), "%%%sld", prec);
@@ -623,7 +464,9 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         }
       }
       else
+      {
         mutt_format_s(buf, buflen, prec, "");
+      }
       break;
 
     default:
@@ -679,7 +522,9 @@ static void add_folder(struct Menu *menu, struct BrowserState *state,
     ff.local = true;
   }
   else
+  {
     ff.local = false;
+  }
 
   if (m)
   {
@@ -1062,7 +907,9 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
   if (OptNews)
   {
     if (state->is_mailbox_list)
+    {
       snprintf(title, sizeof(title), _("Subscribed newsgroups"));
+    }
     else
     {
       snprintf(title, sizeof(title), _("Newsgroups on server [%s]"),
@@ -1139,7 +986,9 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
       browser_highlight_default(state, menu);
   }
   else
+  {
     browser_highlight_default(state, menu);
+  }
 
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
 }
@@ -1265,8 +1114,6 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
   char goto_swapper[PATH_MAX] = { 0 };
 
   struct Buffer *OldLastDir = mutt_buffer_pool_get();
-  struct Buffer *tmp = mutt_buffer_pool_get();
-  struct Buffer *buf = mutt_buffer_pool_get();
   struct Buffer *prefix = mutt_buffer_pool_get();
 
   init_lastdir();
@@ -1324,7 +1171,9 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
       if (i > 0)
       {
         if ((mutt_buffer_string(file))[0] == '/')
+        {
           mutt_buffer_strcpy_n(&LastDir, mutt_buffer_string(file), i);
+        }
         else
         {
           mutt_path_getcwd(&LastDir);
@@ -1352,7 +1201,9 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
   else
   {
     if (!folder)
+    {
       mutt_path_getcwd(&LastDir);
+    }
     else
     {
       /* Whether we use the tracking feature of the browser depends
@@ -1503,8 +1354,6 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
     int op = menu_loop(menu);
     if (op >= 0)
       mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
-    int index = menu_get_index(menu);
-    struct FolderFile *ff = ARRAY_GET(&state.entry, index);
     switch (op)
     {
       case OP_DESCEND_DIRECTORY:
@@ -1516,6 +1365,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           break;
         }
 
+        int index = menu_get_index(menu);
+        struct FolderFile *ff = ARRAY_GET(&state.entry, index);
         if (S_ISDIR(ff->mode) ||
             (S_ISLNK(ff->mode) && link_is_dir(mutt_buffer_string(&LastDir), ff->name))
 #ifdef USE_IMAP
@@ -1524,6 +1375,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         )
         {
           /* make sure this isn't a MH or maildir mailbox */
+          struct Buffer *buf = mutt_buffer_pool_get();
           if (state.is_mailbox_list)
           {
             mutt_buffer_strcpy(buf, ff->name);
@@ -1541,6 +1393,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           }
 
           enum MailboxType type = mx_path_probe(mutt_buffer_string(buf));
+          mutt_buffer_pool_release(&buf);
+
           if ((op == OP_DESCEND_DIRECTORY) || (type == MUTT_MAILBOX_ERROR) ||
               (type == MUTT_UNKNOWN)
 #ifdef USE_IMAP
@@ -1601,8 +1455,10 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 #endif
             else
             {
+              struct Buffer *tmp = mutt_buffer_pool_get();
               mutt_buffer_concat_path(tmp, mutt_buffer_string(&LastDir), ff->name);
               mutt_buffer_copy(&LastDir, tmp);
+              mutt_buffer_pool_release(&tmp);
             }
 
             destroy_state(&state);
@@ -1670,7 +1526,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         /* fallthrough */
 
       case OP_EXIT:
-
+      {
         if (multiple)
         {
           char **tfiles = NULL;
@@ -1680,13 +1536,16 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             *numfiles = menu->tagged;
             tfiles = mutt_mem_calloc(*numfiles, sizeof(char *));
             size_t j = 0;
+            struct FolderFile *ff = NULL;
             ARRAY_FOREACH(ff, &state.entry)
             {
               if (ff->tagged)
               {
-                mutt_buffer_concat_path(tmp, mutt_buffer_string(&LastDir), ff->name);
-                mutt_buffer_expand_path(tmp);
-                tfiles[j++] = mutt_buffer_strdup(tmp);
+                struct Buffer *buf = mutt_buffer_pool_get();
+                mutt_buffer_concat_path(buf, mutt_buffer_string(&LastDir), ff->name);
+                mutt_buffer_expand_path(buf);
+                tfiles[j++] = mutt_buffer_strdup(buf);
+                mutt_buffer_pool_release(&buf);
               }
             }
             *files = tfiles;
@@ -1703,20 +1562,27 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
         destroy_state(&state);
         goto bail;
+      }
 
       case OP_BROWSER_TELL:
+      {
+        int index = menu_get_index(menu);
         if (!ARRAY_EMPTY(&state.entry))
           mutt_message("%s", ARRAY_GET(&state.entry, index)->name);
         break;
+      }
 
 #ifdef USE_IMAP
       case OP_BROWSER_TOGGLE_LSUB:
+      {
         bool_str_toggle(NeoMutt->sub, "imap_list_subscribed", NULL);
 
         mutt_unget_event(0, OP_CHECK_NEW);
         break;
+      }
 
       case OP_CREATE_MAILBOX:
+      {
         if (!state.imap_browse)
         {
           mutt_error(_("Create is only supported for IMAP mailboxes"));
@@ -1738,10 +1604,16 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         }
         /* else leave error on screen */
         break;
+      }
 
       case OP_RENAME_MAILBOX:
+      {
+        int index = menu_get_index(menu);
+        struct FolderFile *ff = ARRAY_GET(&state.entry, index);
         if (!ff->imap)
+        {
           mutt_error(_("Rename is only supported for IMAP mailboxes"));
+        }
         else
         {
           if (imap_mailbox_rename(ff->name) >= 0)
@@ -1757,10 +1629,16 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           }
         }
         break;
+      }
 
       case OP_DELETE_MAILBOX:
+      {
+        int index = menu_get_index(menu);
+        struct FolderFile *ff = ARRAY_GET(&state.entry, index);
         if (!ff->imap)
+        {
           mutt_error(_("Delete is only supported for IMAP mailboxes"));
+        }
         else
         {
           char msg[128];
@@ -1788,22 +1666,27 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
               init_menu(&state, menu, m, sbar);
             }
             else
+            {
               mutt_error(_("Mailbox deletion failed"));
+            }
           }
           else
+          {
             mutt_message(_("Mailbox not deleted"));
+          }
         }
         break;
+      }
 #endif
 
       case OP_GOTO_PARENT:
       case OP_CHANGE_DIRECTORY:
-
+      {
 #ifdef USE_NNTP
         if (OptNews)
           break;
 #endif
-
+        struct Buffer *buf = mutt_buffer_pool_get();
         mutt_buffer_copy(buf, &LastDir);
 #ifdef USE_IMAP
         if (!state.imap_browse)
@@ -1817,11 +1700,13 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
         if (op == OP_CHANGE_DIRECTORY)
         {
-          /* buf comes from the buffer pool, so defaults to size 1024 */
           int ret = mutt_buffer_get_field(_("Chdir to: "), buf, MUTT_FILE,
                                           false, NULL, NULL, NULL);
           if ((ret != 0) && mutt_buffer_is_empty(buf))
+          {
+            mutt_buffer_pool_release(&buf);
             break;
+          }
         }
         else if (op == OP_GOTO_PARENT)
           mutt_get_parent_path(mutt_buffer_string(buf), buf->data, buf->dsize);
@@ -1850,15 +1735,20 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             {
               /* in case dir is relative, make it relative to LastDir,
                * not current working dir */
+              struct Buffer *tmp = mutt_buffer_pool_get();
               mutt_buffer_concat_path(tmp, mutt_buffer_string(&LastDir),
                                       mutt_buffer_string(buf));
               mutt_buffer_copy(buf, tmp);
+              mutt_buffer_pool_release(&tmp);
             }
             /* Resolve path from <chdir>
              * Avoids buildup such as /a/b/../../c
              * Symlinks are always unraveled to keep code simple */
             if (mutt_path_realpath(buf->data) == 0)
+            {
+              mutt_buffer_pool_release(&buf);
               break;
+            }
 
             struct stat st = { 0 };
             if (stat(mutt_buffer_string(buf), &st) == 0)
@@ -1884,21 +1774,29 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
                 init_menu(&state, menu, m, sbar);
               }
               else
+              {
                 mutt_error(_("%s is not a directory"), mutt_buffer_string(buf));
+              }
             }
             else
+            {
               mutt_perror(mutt_buffer_string(buf));
+            }
           }
         }
+        mutt_buffer_pool_release(&buf);
         break;
+      }
 
       case OP_ENTER_MASK:
       {
         const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
+        struct Buffer *buf = mutt_buffer_pool_get();
         mutt_buffer_strcpy(buf, c_mask ? c_mask->pattern : NULL);
         if (mutt_get_field(_("File Mask: "), buf->data, buf->dsize,
                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0)
         {
+          mutt_buffer_pool_release(&buf);
           break;
         }
 
@@ -1912,6 +1810,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         struct Buffer errmsg = mutt_buffer_make(256);
         int rc = cs_subset_str_string_set(NeoMutt->sub, "mask",
                                           mutt_buffer_string(buf), &errmsg);
+        mutt_buffer_pool_release(&buf);
         if (CSR_RESULT(rc) != CSR_SUCCESS)
         {
           if (!mutt_buffer_is_empty(&errmsg))
@@ -1956,7 +1855,6 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
       case OP_SORT:
       case OP_SORT_REVERSE:
-
       {
         bool resort = true;
         int sort = -1;
@@ -2023,6 +1921,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
       case OP_TOGGLE_MAILBOXES:
       case OP_BROWSER_GOTO_FOLDER:
       case OP_CHECK_NEW:
+      {
         if (state.is_mailbox_list)
         {
           last_selected_mailbox = menu->current;
@@ -2085,30 +1984,41 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         }
         init_menu(&state, menu, m, sbar);
         break;
+      }
 
       case OP_MAILBOX_LIST:
+      {
         mutt_mailbox_list();
         break;
+      }
 
       case OP_BROWSER_NEW_FILE:
+      {
+        struct Buffer *buf = mutt_buffer_pool_get();
         mutt_buffer_printf(buf, "%s/", mutt_buffer_string(&LastDir));
         /* buf comes from the buffer pool, so defaults to size 1024 */
         if (mutt_buffer_get_field(_("New file name: "), buf, MUTT_FILE, false,
                                   NULL, NULL, NULL) == 0)
         {
           mutt_buffer_copy(file, buf);
+          mutt_buffer_pool_release(&buf);
           destroy_state(&state);
           goto bail;
         }
+        mutt_buffer_pool_release(&buf);
         break;
+      }
 
       case OP_BROWSER_VIEW_FILE:
+      {
         if (ARRAY_EMPTY(&state.entry))
         {
           mutt_error(_("No files match the file mask"));
           break;
         }
 
+        int index = menu_get_index(menu);
+        struct FolderFile *ff = ARRAY_GET(&state.entry, index);
 #ifdef USE_IMAP
         if (ff->selectable)
         {
@@ -2137,9 +2047,12 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             menu_queue_redraw(menu, MENU_REDRAW_FULL);
           }
           else
+          {
             mutt_error(_("Error trying to view file"));
+          }
         }
         break;
+      }
 
 #ifdef USE_NNTP
       case OP_CATCHUP:
@@ -2154,6 +2067,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         if (rc < 0)
           break;
 
+        int index = menu_get_index(menu);
+        struct FolderFile *ff = ARRAY_GET(&state.entry, index);
         if (op == OP_CATCHUP)
           mdata = mutt_newsgroup_catchup(m, CurrentNewsSrv, ff->name);
         else
@@ -2220,14 +2135,13 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           struct NntpAccountData *adata = CurrentNewsSrv;
           regex_t rx;
           memset(&rx, 0, sizeof(rx));
-          char *s = buf->data;
-          index = menu_get_index(menu);
+          int index = menu_get_index(menu);
 
           if ((op == OP_SUBSCRIBE_PATTERN) || (op == OP_UNSUBSCRIBE_PATTERN))
           {
             char tmp2[256];
 
-            mutt_buffer_reset(buf);
+            struct Buffer *buf = mutt_buffer_pool_get();
             if (op == OP_SUBSCRIBE_PATTERN)
               snprintf(tmp2, sizeof(tmp2), _("Subscribe pattern: "));
             else
@@ -2236,19 +2150,22 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             if ((mutt_buffer_get_field(tmp2, buf, MUTT_PATTERN, false, NULL, NULL, NULL) != 0) ||
                 mutt_buffer_is_empty(buf))
             {
+              mutt_buffer_pool_release(&buf);
               break;
             }
 
-            int err = REG_COMP(&rx, s, REG_NOSUB);
+            int err = REG_COMP(&rx, buf->data, REG_NOSUB);
             if (err != 0)
             {
               regerror(err, &rx, buf->data, buf->dsize);
               regfree(&rx);
               mutt_error("%s", mutt_buffer_string(buf));
+              mutt_buffer_pool_release(&buf);
               break;
             }
             menu_queue_redraw(menu, MENU_REDRAW_FULL);
             index = 0;
+            mutt_buffer_pool_release(&buf);
           }
           else if (ARRAY_EMPTY(&state.entry))
           {
@@ -2260,6 +2177,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           if (rc < 0)
             break;
 
+          struct FolderFile *ff = NULL;
           ARRAY_FOREACH_FROM(ff, &state.entry, index)
           {
             if ((op == OP_BROWSER_SUBSCRIBE) || (op == OP_BROWSER_UNSUBSCRIBE) ||
@@ -2309,6 +2227,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 #ifdef USE_IMAP
         {
           char tmp2[256];
+          int index = menu_get_index(menu);
+          struct FolderFile *ff = ARRAY_GET(&state.entry, index);
           mutt_str_copy(tmp2, ff->name, sizeof(tmp2));
           mutt_expand_path(tmp2, sizeof(tmp2));
           imap_subscribe(tmp2, (op == OP_BROWSER_SUBSCRIBE));
@@ -2320,8 +2240,6 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
 bail:
   mutt_buffer_pool_release(&OldLastDir);
-  mutt_buffer_pool_release(&tmp);
-  mutt_buffer_pool_release(&buf);
   mutt_buffer_pool_release(&prefix);
 
   simple_dialog_free(&dlg);

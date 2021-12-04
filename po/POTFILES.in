@@ -22,7 +22,8 @@ autocrypt/dlgautocrypt.c
 autocrypt/gpgme.c
 autocrypt/schema.c
 bcache/bcache.c
-browser.c
+browser/browser.c
+browser/sort.c
 color/color.c
 color/command.c
 color/notify.c
