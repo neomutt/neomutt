@@ -106,6 +106,7 @@ email/thread.c
 email/url.c
 enriched.c
 enter/enter.c
+enter/state.c
 flags.c
 functions.c
 fuzz/address.c

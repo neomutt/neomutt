@@ -39,4 +39,7 @@ struct EnterState
   int tabs;        ///< Number of times the user has hit tab
 };
 
+void               mutt_enter_state_free(struct EnterState **ptr);
+struct EnterState *mutt_enter_state_new(void);
+
 #endif /* MUTT_ENTER_STATE_H */

@@ -1,6 +1,6 @@
 /**
  * @file
- * Enter a string
+ * State of text entry
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -21,21 +21,35 @@
  */
 
 /**
- * @page lib_enter Mailbox Enter
+ * @page enter_state State of text entry
  *
- * Select a Mailbox from a list
- *
- * | File                | Description                |
- * | :------------------ | :------------------------- |
- * | enter/enter.c       | @subpage enter_enter       |
- * | enter/state.c       | @subpage enter_state       |
+ * State of text entry
  */
 
-#ifndef MUTT_ENTER_LIB_H
-#define MUTT_ENTER_LIB_H
-
-// IWYU pragma: begin_exports
+#include "config.h"
+#include "mutt/lib.h"
 #include "state.h"
-// IWYU pragma: end_exports
 
-#endif /* MUTT_ENTER_LIB_H */
+/**
+ * mutt_enter_state_free - Free an EnterState
+ * @param[out] ptr EnterState to free
+ */
+void mutt_enter_state_free(struct EnterState **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct EnterState *es = *ptr;
+
+  FREE(&es->wbuf);
+  FREE(ptr);
+}
+
+/**
+ * mutt_enter_state_new - Create a new EnterState
+ * @retval ptr New EnterState
+ */
+struct EnterState *mutt_enter_state_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct EnterState));
+}

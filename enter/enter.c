@@ -124,15 +124,6 @@ static void replace_part(struct EnterState *state, size_t from, char *buf)
 }
 
 /**
- * mutt_enter_state_new - Create a new EnterState
- * @retval ptr New EnterState
- */
-struct EnterState *mutt_enter_state_new(void)
-{
-  return mutt_mem_calloc(1, sizeof(struct EnterState));
-}
-
-/**
  * mutt_enter_string_full - Ask the user for a string
  * @param[in]  buf      Buffer to store the string
  * @param[in]  buflen   Buffer length
@@ -809,19 +800,4 @@ bye:
   mutt_hist_reset_state(hclass);
   FREE(&tempbuf);
   return rc;
-}
-
-/**
- * mutt_enter_state_free - Free an EnterState
- * @param[out] ptr EnterState to free
- */
-void mutt_enter_state_free(struct EnterState **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct EnterState *es = *ptr;
-
-  FREE(&es->wbuf);
-  FREE(ptr);
 }
