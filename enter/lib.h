@@ -1,9 +1,9 @@
 /**
  * @file
- * Struct to store the cursor position when entering text
+ * Enter a string
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,26 +20,24 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_ENTER_STATE_H
-#define MUTT_ENTER_STATE_H
-
-#include <stddef.h>
-#include <wchar.h> // IWYU pragma: keep
-
 /**
- * struct EnterState - Keep our place when entering a string
+ * @page lib_enter Mailbox Enter
+ *
+ * Select a Mailbox from a list
+ *
+ * | File                | Description                |
+ * | :------------------ | :------------------------- |
+ * | enter/enter.c       | @subpage enter_enter       |
  */
-struct EnterState
-{
-  wchar_t *wbuf;   ///< Buffer for the string being entered
-  size_t wbuflen;  ///< Length of buffer
-  size_t lastchar; ///< Position of the last character
-  size_t curpos;   ///< Position of the cursor
-  size_t begin;    ///< Position of the start
-  int tabs;        ///< Number of times the user has hit tab
-};
+
+#ifndef MUTT_ENTER_LIB_H
+#define MUTT_ENTER_LIB_H
+
+// IWYU pragma: begin_exports
+#include "state.h"
+// IWYU pragma: end_exports
 
 void mutt_enter_state_free(struct EnterState **ptr);
 struct EnterState *mutt_enter_state_new(void);
 
-#endif /* MUTT_ENTER_STATE_H */
+#endif /* MUTT_ENTER_LIB_H */

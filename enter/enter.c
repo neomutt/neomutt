@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_enter GUI ask the user to enter a string
+ * @page enter_enter GUI ask the user to enter a string
  *
  * GUI ask the user to enter a string
  */
@@ -43,7 +43,6 @@
 #include "history/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
-#include "enter_state.h"
 #include "init.h"
 #include "keymap.h"
 #include "mutt_globals.h"
@@ -52,6 +51,7 @@
 #include "muttlib.h"
 #include "opcodes.h"
 #include "protos.h"
+#include "state.h"
 
 /**
  * enum EnterRedrawFlags - Redraw flags for mutt_enter_string_full()

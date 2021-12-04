@@ -51,7 +51,7 @@
  * @ref lib_address, @ref lib_alias, @ref lib_attach, @ref lib_autocrypt,
  * @ref lib_bcache, @ref lib_browser, @ref lib_color, @ref lib_compmbox,
  * @ref lib_compose, @ref lib_compress, @ref lib_config, @ref lib_conn,
- * @ref lib_core, @ref lib_email, @ref lib_gui, @ref lib_hcache,
+ * @ref lib_core, @ref lib_email, @ref lib_enter, @ref lib_gui, @ref lib_hcache,
  * @ref lib_helpbar, @ref lib_history, @ref lib_imap, @ref lib_index,
  * @ref lib_maildir, @ref lib_mbox, @ref lib_menu, @ref lib_mutt,
  * @ref lib_ncrypt, @ref lib_nntp, @ref lib_notmuch, @ref lib_pager,
@@ -73,7 +73,6 @@
  * | dlg_postpone.c  | @subpage neo_dlg_postpone  |
  * | editmsg.c       | @subpage neo_editmsg       |
  * | enriched.c      | @subpage neo_enriched      |
- * | enter.c         | @subpage neo_enter         |
  * | flags.c         | @subpage neo_flags         |
  * | functions.c     | @subpage neo_functions     |
  * | handler.c       | @subpage neo_handler       |

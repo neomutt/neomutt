@@ -105,7 +105,7 @@ email/tags.c
 email/thread.c
 email/url.c
 enriched.c
-enter.c
+enter/enter.c
 flags.c
 functions.c
 fuzz/address.c

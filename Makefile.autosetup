@@ -64,7 +64,7 @@ default:	all
 NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	alternates.o commands.o command_parse.o complete.o \
 		conststrings.o context.o copy.o dlg_postpone.o editmsg.o \
-		enriched.o enter.o flags.o functions.o git_ver.o handler.o \
+		enriched.o flags.o functions.o git_ver.o handler.o \
 		hdrline.o help.o hook.o icommands.o init.o keymap.o mailcap.o \
 		maillist.o main.o muttlib.o mutt_account.o mutt_body.o \
 		mutt_commands.o mutt_config.o mutt_header.o mutt_history.o \
@@ -348,6 +348,19 @@ $(LIBEMAIL): $(PWD)/email $(LIBEMAILOBJS)
 	$(RANLIB) $@
 $(PWD)/email:
 	$(MKDIR_P) $(PWD)/email
+
+###############################################################################
+# libenter
+LIBENTER=	libenter.a
+LIBENTEROBJS=	enter/enter.o
+CLEANFILES+=	$(LIBENTER) $(LIBENTEROBJS)
+ALLOBJS+=	$(LIBENTEROBJS)
+
+$(LIBENTER): $(PWD)/enter $(LIBENTEROBJS)
+	$(AR) cr $@ $(LIBENTEROBJS)
+	$(RANLIB) $@
+$(PWD)/enter:
+	$(MKDIR_P) $(PWD)/enter
 
 ###############################################################################
 # libgui
@@ -727,12 +740,13 @@ $(ALLOBJS):
 # The libraries with the most dependencies will come first.
 MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) \
 		$(LIBBROWSER) $(LIBNNTP) $(LIBCOMPMBOX) $(LIBSTORE) \
-		$(LIBPATTERN) $(LIBPROGRESS) $(LIBQUESTION) $(LIBMENU) \
-		$(LIBCOLOR) $(LIBGUI) $(LIBHELPBAR) $(LIBMBOX) $(LIBNOTMUCH) \
-		$(LIBATTACH) $(LIBMAILDIR) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) \
-		$(LIBHCACHE) $(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) \
-		$(LIBHISTORY) $(LIBALIAS) $(LIBSEND) $(LIBCOMPOSE) $(LIBCORE) \
-		$(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) $(LIBDEBUG) $(LIBMUTT)
+		$(LIBPROGRESS) $(LIBQUESTION) $(LIBMENU) $(LIBCOLOR) \
+		$(LIBGUI) $(LIBENTER) $(LIBPATTERN) $(LIBHELPBAR) $(LIBMBOX) \
+		$(LIBNOTMUCH) $(LIBATTACH) $(LIBMAILDIR) $(LIBNCRYPT) \
+		$(LIBIMAP) $(LIBCONN) $(LIBHCACHE) $(LIBCOMPRESS) \
+		$(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) $(LIBALIAS) \
+		$(LIBSEND) $(LIBCOMPOSE) $(LIBCORE) $(LIBCONFIG) $(LIBEMAIL) \
+		$(LIBADDRESS) $(LIBDEBUG) $(LIBMUTT)
 
 # neomutt
 $(NEOMUTT): $(GENERATED) $(NEOMUTTOBJS) $(MUTTLIBS)
