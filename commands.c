@@ -117,7 +117,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   else
     mutt_str_copy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
 
-  rc = mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS, false, NULL, NULL);
+  rc = mutt_get_field(prompt, buf, sizeof(buf), MUTT_COMP_ALIAS, false, NULL, NULL);
   if (rc || (buf[0] == '\0'))
     return;
 
@@ -421,8 +421,8 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailList *el)
 
   struct Buffer *buf = mutt_buffer_pool_get();
 
-  if (mutt_buffer_get_field(_("Pipe to command: "), buf, MUTT_CMD, false, NULL,
-                            NULL, NULL) != 0)
+  if (mutt_buffer_get_field(_("Pipe to command: "), buf, MUTT_COMP_FILE_SIMPLE,
+                            false, NULL, NULL, NULL) != 0)
   {
     goto cleanup;
   }
@@ -602,7 +602,8 @@ bool mutt_shell_escape(void)
   char buf[1024];
 
   buf[0] = '\0';
-  if (mutt_get_field(_("Shell command: "), buf, sizeof(buf), MUTT_CMD, false, NULL, NULL) != 0)
+  if (mutt_get_field(_("Shell command: "), buf, sizeof(buf),
+                     MUTT_COMP_FILE_SIMPLE, false, NULL, NULL) != 0)
   {
     return false;
   }
@@ -638,7 +639,7 @@ void mutt_enter_command(void)
 
   window_redraw(NULL);
   /* if enter is pressed after : with no command, just return */
-  if ((mutt_get_field(":", buf, sizeof(buf), MUTT_COMMAND, false, NULL, NULL) != 0) ||
+  if ((mutt_get_field(":", buf, sizeof(buf), MUTT_COMP_COMMAND, false, NULL, NULL) != 0) ||
       (buf[0] == '\0'))
   {
     return;

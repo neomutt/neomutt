@@ -126,7 +126,7 @@ int mutt_account_getpass(struct ConnAccount *cac)
     snprintf(prompt, sizeof(prompt), _("Password for %s@%s: "),
              (cac->flags & MUTT_ACCT_LOGIN) ? cac->login : cac->user, cac->host);
     cac->pass[0] = '\0';
-    if (mutt_get_field_unbuffered(prompt, cac->pass, sizeof(cac->pass), MUTT_PASS))
+    if (mutt_get_field_unbuffered(prompt, cac->pass, sizeof(cac->pass), MUTT_COMP_PASS))
       return -1;
   }
 

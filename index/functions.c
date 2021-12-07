@@ -2933,7 +2933,7 @@ static int op_main_vfolder_from_query(struct IndexSharedData *shared,
                                       struct IndexPrivateData *priv, int op)
 {
   char buf[PATH_MAX] = { 0 };
-  if ((mutt_get_field("Query: ", buf, sizeof(buf), MUTT_NM_QUERY, false, NULL, NULL) != 0) ||
+  if ((mutt_get_field("Query: ", buf, sizeof(buf), MUTT_COMP_NM_QUERY, false, NULL, NULL) != 0) ||
       (buf[0] == '\0'))
   {
     mutt_message(_("No query, aborting"));

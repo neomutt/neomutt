@@ -567,7 +567,7 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
       mutt_unget_event(0, ch.op);
 
     mutt_buffer_alloc(fname, 1024);
-    if (mutt_buffer_get_field(pc, fname, (mailbox ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
+    if (mutt_buffer_get_field(pc, fname, (mailbox ? MUTT_COMP_FILE_MBOX : MUTT_COMP_FILE) | MUTT_COMP_CLEAR,
                               multiple, m, files, numfiles) != 0)
     {
       mutt_buffer_reset(fname);

@@ -401,7 +401,7 @@ int imap_mailbox_create(const char *path)
     name[n + 1] = '\0';
   }
 
-  if (mutt_get_field(_("Create mailbox: "), name, sizeof(name), MUTT_FILE,
+  if (mutt_get_field(_("Create mailbox: "), name, sizeof(name), MUTT_COMP_FILE,
                      false, NULL, NULL) < 0)
   {
     goto err;
@@ -456,7 +456,7 @@ int imap_mailbox_rename(const char *path)
   snprintf(buf, sizeof(buf), _("Rename mailbox %s to: "), mdata->name);
   mutt_str_copy(newname, mdata->name, sizeof(newname));
 
-  if (mutt_get_field(buf, newname, sizeof(newname), MUTT_FILE, false, NULL, NULL) < 0)
+  if (mutt_get_field(buf, newname, sizeof(newname), MUTT_COMP_FILE, false, NULL, NULL) < 0)
     goto err;
 
   if (mutt_str_len(newname) == 0)

@@ -1700,7 +1700,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
         if (op == OP_CHANGE_DIRECTORY)
         {
-          int ret = mutt_buffer_get_field(_("Chdir to: "), buf, MUTT_FILE,
+          int ret = mutt_buffer_get_field(_("Chdir to: "), buf, MUTT_COMP_FILE,
                                           false, NULL, NULL, NULL);
           if ((ret != 0) && mutt_buffer_is_empty(buf))
           {
@@ -1997,8 +1997,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         struct Buffer *buf = mutt_buffer_pool_get();
         mutt_buffer_printf(buf, "%s/", mutt_buffer_string(&LastDir));
         /* buf comes from the buffer pool, so defaults to size 1024 */
-        if (mutt_buffer_get_field(_("New file name: "), buf, MUTT_FILE, false,
-                                  NULL, NULL, NULL) == 0)
+        if (mutt_buffer_get_field(_("New file name: "), buf, MUTT_COMP_FILE,
+                                  false, NULL, NULL, NULL) == 0)
         {
           mutt_buffer_copy(file, buf);
           mutt_buffer_pool_release(&buf);
@@ -2147,7 +2147,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             else
               snprintf(tmp2, sizeof(tmp2), _("Unsubscribe pattern: "));
             /* buf comes from the buffer pool, so defaults to size 1024 */
-            if ((mutt_buffer_get_field(tmp2, buf, MUTT_PATTERN, false, NULL, NULL, NULL) != 0) ||
+            if ((mutt_buffer_get_field(tmp2, buf, MUTT_COMP_PATTERN, false,
+                                       NULL, NULL, NULL) != 0) ||
                 mutt_buffer_is_empty(buf))
             {
               mutt_buffer_pool_release(&buf);

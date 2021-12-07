@@ -176,7 +176,7 @@ bool smime_class_valid_passphrase(void)
   smime_class_void_passphrase();
 
   if (mutt_get_field_unbuffered(_("Enter S/MIME passphrase:"), SmimePass,
-                                sizeof(SmimePass), MUTT_PASS) == 0)
+                                sizeof(SmimePass), MUTT_COMP_PASS) == 0)
   {
     const short c_smime_timeout =
         cs_subset_number(NeoMutt->sub, "smime_timeout");

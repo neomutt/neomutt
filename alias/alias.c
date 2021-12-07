@@ -498,7 +498,7 @@ retry_name:
   mutt_str_copy(buf, NONULL(alias_file), sizeof(buf));
 
   if (mutt_get_field(_("Save to file: "), buf, sizeof(buf),
-                     MUTT_FILE | MUTT_CLEAR, false, NULL, NULL) != 0)
+                     MUTT_COMP_FILE | MUTT_COMP_CLEAR, false, NULL, NULL) != 0)
   {
     return;
   }

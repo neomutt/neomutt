@@ -2398,7 +2398,8 @@ static int nm_msg_close(struct Mailbox *m, struct Message *msg)
 static int nm_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
 {
   *buf = '\0';
-  if (mutt_get_field("Add/remove labels: ", buf, buflen, MUTT_NM_TAG, false, NULL, NULL) != 0)
+  if (mutt_get_field("Add/remove labels: ", buf, buflen, MUTT_COMP_NM_TAG,
+                     false, NULL, NULL) != 0)
   {
     return -1;
   }

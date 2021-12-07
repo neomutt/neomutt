@@ -154,7 +154,7 @@ static int search(struct Menu *menu, int op)
     if ((mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
                             _("Search for: ") :
                             _("Reverse search for: "),
-                        buf, sizeof(buf), MUTT_CLEAR, false, NULL, NULL) != 0) ||
+                        buf, sizeof(buf), MUTT_COMP_CLEAR, false, NULL, NULL) != 0) ||
         (buf[0] == '\0'))
     {
       return -1;

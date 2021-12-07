@@ -96,7 +96,7 @@ bool pgp_class_valid_passphrase(void)
   pgp_class_void_passphrase();
 
   if (mutt_get_field_unbuffered(_("Enter PGP passphrase:"), PgpPass,
-                                sizeof(PgpPass), MUTT_PASS) == 0)
+                                sizeof(PgpPass), MUTT_COMP_PASS) == 0)
   {
     const long c_pgp_timeout = cs_subset_long(NeoMutt->sub, "pgp_timeout");
     PgpExptime = mutt_date_add_timeout(mutt_date_epoch(), c_pgp_timeout);

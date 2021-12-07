@@ -270,7 +270,8 @@ static bool edit_address_list(int field, struct AddressList *al)
   mutt_addrlist_to_local(al);
   mutt_addrlist_write(al, buf, sizeof(buf), false);
   mutt_str_copy(old_list, buf, sizeof(buf));
-  if (mutt_get_field(_(Prompts[field]), buf, sizeof(buf), MUTT_ALIAS, false, NULL, NULL) == 0)
+  if (mutt_get_field(_(Prompts[field]), buf, sizeof(buf), MUTT_COMP_ALIAS,
+                     false, NULL, NULL) == 0)
   {
     mutt_addrlist_clear(al);
     mutt_addrlist_parse2(al, buf);
@@ -750,7 +751,7 @@ static int op_compose_edit_fcc(struct ComposeSharedData *shared, int op)
   int rc = IR_NO_ACTION;
   struct Buffer *fname = mutt_buffer_pool_get();
   mutt_buffer_copy(fname, shared->fcc);
-  if (mutt_buffer_get_field(Prompts[HDR_FCC], fname, MUTT_FILE | MUTT_CLEAR,
+  if (mutt_buffer_get_field(Prompts[HDR_FCC], fname, MUTT_COMP_FILE | MUTT_COMP_CLEAR,
                             false, NULL, NULL, NULL) == 0)
   {
     if (!mutt_str_equal(shared->fcc->data, fname->data))
@@ -1242,7 +1243,8 @@ static int op_compose_move_up(struct ComposeSharedData *shared, int op)
 static int op_compose_new_mime(struct ComposeSharedData *shared, int op)
 {
   struct Buffer *fname = mutt_buffer_pool_get();
-  if ((mutt_buffer_get_field(_("New file: "), fname, MUTT_FILE, false, NULL, NULL, NULL) != 0) ||
+  if ((mutt_buffer_get_field(_("New file: "), fname, MUTT_COMP_FILE, false,
+                             NULL, NULL, NULL) != 0) ||
       mutt_buffer_is_empty(fname))
   {
     mutt_buffer_pool_release(&fname);
@@ -1385,7 +1387,7 @@ static int op_compose_rename_attachment(struct ComposeSharedData *shared, int op
   struct Buffer *fname = mutt_buffer_pool_get();
   mutt_buffer_strcpy(fname, mutt_path_basename(NONULL(src)));
   int ret = mutt_buffer_get_field(_("Send attachment with name: "), fname,
-                                  MUTT_FILE, false, NULL, NULL, NULL);
+                                  MUTT_COMP_FILE, false, NULL, NULL, NULL);
   if (ret == 0)
   {
     // It's valid to set an empty string here, to erase what was set
@@ -1408,7 +1410,8 @@ static int op_compose_rename_file(struct ComposeSharedData *shared, int op)
   struct Buffer *fname = mutt_buffer_pool_get();
   mutt_buffer_strcpy(fname, cur_att->body->filename);
   mutt_buffer_pretty_mailbox(fname);
-  if ((mutt_buffer_get_field(_("Rename to: "), fname, MUTT_FILE, false, NULL, NULL, NULL) == 0) &&
+  if ((mutt_buffer_get_field(_("Rename to: "), fname, MUTT_COMP_FILE, false,
+                             NULL, NULL, NULL) == 0) &&
       !mutt_buffer_is_empty(fname))
   {
     struct stat st = { 0 };

@@ -48,19 +48,19 @@
 #define fgetc fgetc_unlocked
 #endif
 
-typedef uint16_t CompletionFlags;    ///< Flags for mutt_enter_string_full(), e.g. #MUTT_ALIAS
-#define MUTT_COMP_NO_FLAGS       0   ///< No flags are set
-#define MUTT_ALIAS         (1 << 0)  ///< Do alias "completion" by calling up the alias-menu
-#define MUTT_FILE          (1 << 1)  ///< Do file completion
-#define MUTT_EFILE         (1 << 2)  ///< Do file completion, plus incoming folders
-#define MUTT_CMD           (1 << 3)  ///< Do completion on previous word
-#define MUTT_PASS          (1 << 4)  ///< Password mode (no echo)
-#define MUTT_CLEAR         (1 << 5)  ///< Clear input if printable character is pressed
-#define MUTT_COMMAND       (1 << 6)  ///< Do command completion
-#define MUTT_PATTERN       (1 << 7)  ///< Pattern mode - only used for history classes
-#define MUTT_LABEL         (1 << 8)  ///< Do label completion
-#define MUTT_NM_QUERY      (1 << 9)  ///< Notmuch query mode.
-#define MUTT_NM_TAG        (1 << 10) ///< Notmuch tag +/- mode.
+typedef uint16_t CompletionFlags;       ///< Flags for mutt_enter_string_full(), e.g. #MUTT_COMP_ALIAS
+#define MUTT_COMP_NO_FLAGS          0   ///< No flags are set
+#define MUTT_COMP_ALIAS       (1 << 0)  ///< Alias completion (in alias dialog)
+#define MUTT_COMP_COMMAND     (1 << 1)  ///< Complete a NeoMutt command
+#define MUTT_COMP_FILE        (1 << 2)  ///< File completion (in browser)
+#define MUTT_COMP_FILE_MBOX   (1 << 3)  ///< File completion, plus incoming folders (in browser)
+#define MUTT_COMP_FILE_SIMPLE (1 << 4)  ///< File completion (no browser)
+#define MUTT_COMP_LABEL       (1 << 5)  ///< Label completion
+#define MUTT_COMP_NM_QUERY    (1 << 6)  ///< Notmuch query mode
+#define MUTT_COMP_NM_TAG      (1 << 7)  ///< Notmuch tag +/- mode
+#define MUTT_COMP_PATTERN     (1 << 8)  ///< Pattern mode (in pattern dialog)
+#define MUTT_COMP_CLEAR       (1 << 9)  ///< Clear input if printable character is pressed
+#define MUTT_COMP_PASS        (1 << 10) ///< Password mode (no echo)
 
 typedef uint16_t TokenFlags;               ///< Flags for mutt_extract_token(), e.g. #MUTT_TOKEN_EQUAL
 #define MUTT_TOKEN_NO_FLAGS            0   ///< No flags are set
@@ -74,8 +74,8 @@ typedef uint16_t TokenFlags;               ///< Flags for mutt_extract_token(), 
 #define MUTT_TOKEN_BACKTICK_VARS (1 << 7)  ///< Expand variables within backticks
 #define MUTT_TOKEN_NOSHELL       (1 << 8)  ///< Don't expand environment variables
 #define MUTT_TOKEN_QUESTION      (1 << 9)  ///< Treat '?' as a special
-#define MUTT_TOKEN_PLUS          (1 << 10)  ///< Treat '+' as a special
-#define MUTT_TOKEN_MINUS         (1 << 11)  ///< Treat '-' as a special
+#define MUTT_TOKEN_PLUS          (1 << 10) ///< Treat '+' as a special
+#define MUTT_TOKEN_MINUS         (1 << 11) ///< Treat '-' as a special
 
 /**
  * enum MessageType - To set flags or match patterns

@@ -664,7 +664,7 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
 
     struct Buffer *tmp = mutt_buffer_pool_get();
     mutt_buffer_strcpy(tmp, mutt_path_basename(NONULL(attname)));
-    if ((mutt_buffer_get_field(_("File under directory: "), tmp, MUTT_FILE | MUTT_CLEAR,
+    if ((mutt_buffer_get_field(_("File under directory: "), tmp, MUTT_COMP_FILE | MUTT_COMP_CLEAR,
                                false, NULL, NULL, NULL) != 0) ||
         mutt_buffer_is_empty(tmp))
     {
