@@ -44,4 +44,37 @@ void test_mutt_mb_mbstowcs(void)
     size_t pwbuflen = 0;
     TEST_CHECK(mutt_mb_mbstowcs(&wbuf, &pwbuflen, 0, NULL) == 0);
   }
+
+  {
+    struct WideTest
+    {
+      char *name;
+      char *src;
+      wchar_t *expected;
+    };
+
+    struct WideTest test[] = {
+      // clang-format off
+      { "Greek",     "Οὐχὶ ταὐτὰ παρίσταταί μοι γιγνώσκειν, ὦ ἄνδρες ᾿Αθηναῖοι",         L"Οὐχὶ ταὐτὰ παρίσταταί μοι γιγνώσκειν, ὦ ἄνδρες ᾿Αθηναῖοι" },
+      { "Georgian",  "გთხოვთ ახლავე გაიაროთ რეგისტრაცია Unicode-ის მეათე საერთაშორისო",  L"გთხოვთ ახლავე გაიაროთ რეგისტრაცია Unicode-ის მეათე საერთაშორისო" },
+      { "Russian",   "Зарегистрируйтесь сейчас на Десятую Международную Конференцию по", L"Зарегистрируйтесь сейчас на Десятую Международную Конференцию по" },
+      { "Thai",      "๏ แผ่นดินฮั่นเสื่อมโทรมแสนสังเวช พระปกเกศกองบู๊กู้ขึ้นใหม่",                     L"๏ แผ่นดินฮั่นเสื่อมโทรมแสนสังเวช พระปกเกศกองบู๊กู้ขึ้นใหม่" },
+      { "Ethiopian", "ሰማይ አይታረስ ንጉሥ አይከሰስ።",                                             L"ሰማይ አይታረስ ንጉሥ አይከሰስ።" },
+      { "Braille",   "⡍⠜⠇⠑⠹ ⠺⠁⠎ ⠙⠑⠁⠙⠒ ⠞⠕ ⠃⠑⠛⠔ ⠺⠊⠹⠲ ⡹⠻⠑ ⠊⠎ ⠝⠕ ⠙⠳⠃⠞",                      L"⡍⠜⠇⠑⠹ ⠺⠁⠎ ⠙⠑⠁⠙⠒ ⠞⠕ ⠃⠑⠛⠔ ⠺⠊⠹⠲ ⡹⠻⠑ ⠊⠎ ⠝⠕ ⠙⠳⠃⠞" },
+      { NULL },
+      // clang-format on
+    };
+
+    for (size_t i = 0; test[i].src; i++)
+    {
+      TEST_CASE(test[i].name);
+      wchar_t *result = NULL;
+      size_t rlen = 0;
+
+      size_t elen = wcslen(test[i].expected);
+      TEST_CHECK(mutt_mb_mbstowcs(&result, &rlen, 0, test[i].src) == elen);
+      TEST_CHECK(memcmp(result, test[i].expected, elen) == 0);
+      FREE(&result);
+    }
+  }
 }

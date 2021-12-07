@@ -31,13 +31,45 @@ void test_mutt_mb_wcstombs(void)
 
   {
     wchar_t src[32] = L"apple";
-    mutt_mb_wcstombs(NULL, 10, src, 3);
-    TEST_CHECK_(1, "mutt_mb_wcstombs(&buf, sizeof(buf), src, 3)");
+    mutt_mb_wcstombs(NULL, 10, src, 5);
+    TEST_CHECK_(1, "mutt_mb_wcstombs(NULL, 10, src, 5)");
   }
 
   {
     char buf[32] = { 0 };
     mutt_mb_wcstombs(buf, sizeof(buf), NULL, 3);
-    TEST_CHECK_(1, "mutt_mb_wcstombs(&buf, sizeof(buf), NULL, 3)");
+    TEST_CHECK_(1, "mutt_mb_wcstombs(buf, sizeof(buf), NULL, 3)");
+  }
+
+  {
+    struct WideTest
+    {
+      char *name;
+      wchar_t *src;
+      char *expected;
+    };
+
+    struct WideTest test[] = {
+      // clang-format off
+      { "Greek",     L"Οὐχὶ ταὐτὰ παρίσταταί μοι γιγνώσκειν, ὦ ἄνδρες ᾿Αθηναῖοι",         "Οὐχὶ ταὐτὰ παρίσταταί μοι γιγνώσκειν, ὦ ἄνδρες ᾿Αθηναῖοι" },
+      { "Georgian",  L"გთხოვთ ახლავე გაიაროთ რეგისტრაცია Unicode-ის მეათე საერთაშორისო",  "გთხოვთ ახლავე გაიაროთ რეგისტრაცია Unicode-ის მეათე საერთაშორისო" },
+      { "Russian",   L"Зарегистрируйтесь сейчас на Десятую Международную Конференцию по", "Зарегистрируйтесь сейчас на Десятую Международную Конференцию по" },
+      { "Thai",      L"๏ แผ่นดินฮั่นเสื่อมโทรมแสนสังเวช พระปกเกศกองบู๊กู้ขึ้นใหม่",                     "๏ แผ่นดินฮั่นเสื่อมโทรมแสนสังเวช พระปกเกศกองบู๊กู้ขึ้นใหม่" },
+      { "Ethiopian", L"ሰማይ አይታረስ ንጉሥ አይከሰስ።",                                             "ሰማይ አይታረስ ንጉሥ አይከሰስ።" },
+      { "Braille",   L"⡍⠜⠇⠑⠹ ⠺⠁⠎ ⠙⠑⠁⠙⠒ ⠞⠕ ⠃⠑⠛⠔ ⠺⠊⠹⠲ ⡹⠻⠑ ⠊⠎ ⠝⠕ ⠙⠳⠃⠞",                      "⡍⠜⠇⠑⠹ ⠺⠁⠎ ⠙⠑⠁⠙⠒ ⠞⠕ ⠃⠑⠛⠔ ⠺⠊⠹⠲ ⡹⠻⠑ ⠊⠎ ⠝⠕ ⠙⠳⠃⠞" },
+      { NULL },
+      // clang-format on
+    };
+
+    char buf[256];
+    for (size_t i = 0; test[i].src; i++)
+    {
+      memset(buf, 0, sizeof(buf));
+      TEST_CASE(test[i].name);
+      size_t len = wcslen(test[i].src);
+      mutt_mb_wcstombs(buf, sizeof(buf), test[i].src, len);
+
+      TEST_CHECK(mutt_str_equal(buf, test[i].expected));
+    }
   }
 }
