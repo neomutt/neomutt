@@ -199,8 +199,8 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
   char *trans_no = _(no);
 
   char *expr = NULL;
-  regex_t reyes;
-  regex_t reno;
+  regex_t reyes = { 0 };
+  regex_t reno = { 0 };
 
   bool reyes_ok = (expr = nl_langinfo(YESEXPR)) && (expr[0] == '^') &&
                   (REG_COMP(&reyes, expr, REG_NOSUB) == 0);

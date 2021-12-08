@@ -274,7 +274,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   else if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
   {
     /* Hooks not allowing full patterns: Check syntax of regex */
-    rx = mutt_mem_malloc(sizeof(regex_t));
+    rx = mutt_mem_calloc(1, sizeof(regex_t));
     int rc2 = REG_COMP(rx, NONULL(mutt_buffer_string(pattern)),
                        ((data & MUTT_CRYPT_HOOK) ? REG_ICASE : 0));
     if (rc2 != 0)

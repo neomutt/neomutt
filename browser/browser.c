@@ -2133,8 +2133,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         if (OptNews)
         {
           struct NntpAccountData *adata = CurrentNewsSrv;
-          regex_t rx;
-          memset(&rx, 0, sizeof(rx));
+          regex_t rx = { 0 };
           int index = menu_get_index(menu);
 
           if ((op == OP_SUBSCRIBE_PATTERN) || (op == OP_UNSUBSCRIBE_PATTERN))

@@ -143,7 +143,7 @@ static int search(struct Menu *menu, int op)
 {
   int rc = 0, wrap = 0;
   int search_dir;
-  regex_t re;
+  regex_t re = { 0 };
   char buf[128];
   char *search_buf = ((menu->type < MENU_MAX)) ? SearchBuffers[menu->type] : NULL;
 

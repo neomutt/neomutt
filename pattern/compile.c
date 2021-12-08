@@ -110,7 +110,7 @@ static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
   }
   else
   {
-    pat->p.regex = mutt_mem_malloc(sizeof(regex_t));
+    pat->p.regex = mutt_mem_calloc(1, sizeof(regex_t));
     uint16_t case_flags = mutt_mb_is_lower(buf.data) ? REG_ICASE : 0;
     int rc = REG_COMP(pat->p.regex, buf.data, REG_NEWLINE | REG_NOSUB | case_flags);
     if (rc != 0)
