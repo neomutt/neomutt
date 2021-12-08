@@ -218,52 +218,51 @@ done:
 static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubset *sub)
 {
   int rc = -1;
-  char buf[8192];
+  struct Buffer *buf = mutt_buffer_pool_get();
+  mutt_buffer_alloc(buf, 8192);
 
 #ifdef USE_NNTP
   if (OptNewsSend)
   {
     if (en->newsgroups)
-      mutt_str_copy(buf, en->newsgroups, sizeof(buf));
+      mutt_buffer_strcpy(buf, en->newsgroups);
     else
-      buf[0] = '\0';
-    if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
-                       false, NULL, NULL) != 0)
+      mutt_buffer_reset(buf);
+
+    if (mutt_buffer_get_field("Newsgroups: ", buf, MUTT_COMP_NO_FLAGS, false,
+                              NULL, NULL, NULL) != 0)
     {
       goto done;
     }
-    FREE(&en->newsgroups);
-    en->newsgroups = mutt_str_dup(buf);
+    mutt_str_replace(&en->newsgroups, mutt_buffer_string(buf));
 
     if (en->followup_to)
-      mutt_str_copy(buf, en->followup_to, sizeof(buf));
+      mutt_buffer_strcpy(buf, en->followup_to);
     else
-      buf[0] = '\0';
+      mutt_buffer_reset(buf);
 
     const bool c_ask_follow_up = cs_subset_bool(sub, "ask_follow_up");
-    if (c_ask_follow_up && (mutt_get_field("Followup-To: ", buf, sizeof(buf),
-                                           MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0))
+    if (c_ask_follow_up && (mutt_buffer_get_field("Followup-To: ", buf, MUTT_COMP_NO_FLAGS,
+                                                  false, NULL, NULL, NULL) != 0))
     {
       goto done;
     }
-    FREE(&en->followup_to);
-    en->followup_to = mutt_str_dup(buf);
+    mutt_str_replace(&en->followup_to, mutt_buffer_string(buf));
 
     if (en->x_comment_to)
-      mutt_str_copy(buf, en->x_comment_to, sizeof(buf));
+      mutt_buffer_strcpy(buf, en->x_comment_to);
     else
-      buf[0] = '\0';
+      mutt_buffer_reset(buf);
 
     const bool c_x_comment_to = cs_subset_bool(sub, "x_comment_to");
     const bool c_ask_x_comment_to = cs_subset_bool(sub, "ask_x_comment_to");
     if (c_x_comment_to && c_ask_x_comment_to &&
-        (mutt_get_field("X-Comment-To: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
-                        false, NULL, NULL) != 0))
+        (mutt_buffer_get_field("X-Comment-To: ", buf, MUTT_COMP_NO_FLAGS, false,
+                               NULL, NULL, NULL) != 0))
     {
       goto done;
     }
-    FREE(&en->x_comment_to);
-    en->x_comment_to = mutt_str_dup(buf);
+    mutt_str_replace(&en->x_comment_to, mutt_buffer_string(buf));
   }
   else
 #endif
@@ -305,13 +304,13 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
       rc = 0;
       goto done;
     }
-    mutt_str_copy(buf, en->subject, sizeof(buf));
+    mutt_buffer_strcpy(buf, en->subject);
   }
   else
   {
     const char *p = NULL;
 
-    buf[0] = '\0';
+    mutt_buffer_reset(buf);
     struct ListNode *uh = NULL;
     STAILQ_FOREACH(uh, &UserHeader, entries)
     {
@@ -319,25 +318,26 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
       if (plen)
       {
         p = mutt_str_skip_email_wsp(uh->data + plen);
-        mutt_str_copy(buf, p, sizeof(buf));
+        mutt_buffer_strcpy(buf, p);
       }
     }
   }
 
   const enum QuadOption c_abort_nosubject =
       cs_subset_quad(sub, "abort_nosubject");
-  if ((mutt_get_field(_("Subject: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
-                      false, NULL, NULL) != 0) ||
-      ((buf[0] == '\0') &&
+  if ((mutt_buffer_get_field(_("Subject: "), buf, MUTT_COMP_NO_FLAGS, false,
+                             NULL, NULL, NULL) != 0) ||
+      (mutt_buffer_is_empty(buf) &&
        (query_quadoption(c_abort_nosubject, _("No subject, abort?")) != MUTT_NO)))
   {
     mutt_message(_("No subject, aborting"));
     goto done;
   }
-  mutt_str_replace(&en->subject, buf);
+  mutt_str_replace(&en->subject, mutt_buffer_string(buf));
   rc = 0;
 
 done:
+  mutt_buffer_pool_release(&buf);
   return rc;
 }
 
