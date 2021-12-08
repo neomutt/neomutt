@@ -1271,50 +1271,47 @@ static int op_compose_new_mime(struct ComposeSharedData *shared, int op)
 {
   int rc = IR_NO_ACTION;
   struct Buffer *fname = mutt_buffer_pool_get();
+  struct Buffer *type = NULL;
   struct AttachPtr *ap = NULL;
 
   if ((mutt_buffer_get_field(_("New file: "), fname, MUTT_COMP_FILE, false,
                              NULL, NULL, NULL) != 0) ||
       mutt_buffer_is_empty(fname))
   {
-    mutt_buffer_pool_release(&fname);
     goto done;
   }
   mutt_buffer_expand_path(fname);
 
   /* Call to lookup_mime_type () ?  maybe later */
-  char type[256] = { 0 };
-  if ((mutt_get_field("Content-Type: ", type, sizeof(type), MUTT_COMP_NO_FLAGS,
-                      false, NULL, NULL) != 0) ||
-      (type[0] == '\0'))
+  type = mutt_buffer_pool_get();
+  if ((mutt_buffer_get_field("Content-Type: ", type, MUTT_COMP_NO_FLAGS, false,
+                             NULL, NULL, NULL) != 0) ||
+      mutt_buffer_is_empty(type))
   {
-    mutt_buffer_pool_release(&fname);
     goto done;
   }
 
   rc = IR_ERROR;
-  char *p = strchr(type, '/');
+  char *p = strchr(mutt_buffer_string(type), '/');
   if (!p)
   {
     mutt_error(_("Content-Type is of the form base/sub"));
-    mutt_buffer_pool_release(&fname);
     goto done;
   }
   *p++ = 0;
-  enum ContentType itype = mutt_check_mime_type(type);
+  enum ContentType itype = mutt_check_mime_type(mutt_buffer_string(type));
   if (itype == TYPE_OTHER)
   {
-    mutt_error(_("Unknown Content-Type %s"), type);
-    mutt_buffer_pool_release(&fname);
+    mutt_error(_("Unknown Content-Type %s"), mutt_buffer_string(type));
     goto done;
   }
+
   ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
   /* Touch the file */
   FILE *fp = mutt_file_fopen(mutt_buffer_string(fname), "w");
   if (!fp)
   {
     mutt_error(_("Can't create file %s"), mutt_buffer_string(fname));
-    mutt_buffer_pool_release(&fname);
     goto done;
   }
   mutt_file_fclose(&fp);
@@ -1323,7 +1320,6 @@ static int op_compose_new_mime(struct ComposeSharedData *shared, int op)
   if (!ap->body)
   {
     mutt_error(_("What we have here is a failure to make an attachment"));
-    mutt_buffer_pool_release(&fname);
     goto done;
   }
   update_idx(shared->adata->menu, shared->adata->actx, ap);
@@ -1347,6 +1343,7 @@ static int op_compose_new_mime(struct ComposeSharedData *shared, int op)
 
 done:
   FREE(&ap);
+  mutt_buffer_pool_release(&type);
   mutt_buffer_pool_release(&fname);
   return rc;
 }
