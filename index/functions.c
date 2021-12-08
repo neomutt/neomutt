@@ -2971,9 +2971,10 @@ static int op_main_vfolder_from_query(struct IndexSharedData *shared,
                                       struct IndexPrivateData *priv, int op)
 {
   int rc = IR_SUCCESS;
-  char buf[PATH_MAX] = { 0 };
-  if ((mutt_get_field("Query: ", buf, sizeof(buf), MUTT_COMP_NM_QUERY, false, NULL, NULL) != 0) ||
-      (buf[0] == '\0'))
+  struct Buffer *buf = mutt_buffer_pool_get();
+
+  if ((mutt_buffer_get_field("Query: ", buf, MUTT_COMP_NM_QUERY, false, NULL, NULL, NULL) != 0) ||
+      mutt_buffer_is_empty(buf))
   {
     mutt_message(_("No query, aborting"));
     rc = IR_NO_ACTION;
@@ -2981,10 +2982,11 @@ static int op_main_vfolder_from_query(struct IndexSharedData *shared,
   }
 
   // Keep copy of user's query to name the mailbox
-  char *query_unencoded = mutt_str_dup(buf);
+  char *query_unencoded = mutt_buffer_strdup(buf);
 
+  mutt_buffer_alloc(buf, PATH_MAX);
   struct Mailbox *m_query =
-      change_folder_notmuch(priv->menu, buf, sizeof(buf), &priv->oldcount,
+      change_folder_notmuch(priv->menu, buf->data, buf->dsize, &priv->oldcount,
                             shared, (op == OP_MAIN_VFOLDER_FROM_QUERY_READONLY));
   if (m_query)
   {
@@ -2999,6 +3001,7 @@ static int op_main_vfolder_from_query(struct IndexSharedData *shared,
   }
 
 done:
+  mutt_buffer_pool_release(&buf);
   return rc;
 }
 
