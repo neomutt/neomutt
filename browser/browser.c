@@ -1793,8 +1793,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
         struct Buffer *buf = mutt_buffer_pool_get();
         mutt_buffer_strcpy(buf, c_mask ? c_mask->pattern : NULL);
-        if (mutt_get_field(_("File Mask: "), buf->data, buf->dsize,
-                           MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0)
+        if (mutt_buffer_get_field(_("File Mask: "), buf, MUTT_COMP_NO_FLAGS,
+                                  false, NULL, NULL, NULL) != 0)
         {
           mutt_buffer_pool_release(&buf);
           break;
