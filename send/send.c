@@ -175,22 +175,23 @@ static void add_mailing_lists(struct AddressList *out, const struct AddressList 
 int mutt_edit_address(struct AddressList *al, const char *field, bool expand_aliases)
 {
   int rc = 0;
-  char buf[8192];
+  struct Buffer *buf = mutt_buffer_pool_get();
+  mutt_buffer_alloc(buf, 8192);
   char *err = NULL;
   int idna_ok = 0;
 
   do
   {
-    buf[0] = '\0';
     mutt_addrlist_to_local(al);
-    mutt_addrlist_write(al, buf, sizeof(buf), false);
-    if (mutt_get_field(field, buf, sizeof(buf), MUTT_COMP_ALIAS, false, NULL, NULL) != 0)
+    mutt_buffer_reset(buf);
+    mutt_addrlist_write(al, buf->data, buf->dsize, false);
+    if (mutt_buffer_get_field(field, buf, MUTT_COMP_ALIAS, false, NULL, NULL, NULL) != 0)
     {
       rc = -1;
       goto done;
     }
     mutt_addrlist_clear(al);
-    mutt_addrlist_parse2(al, buf);
+    mutt_addrlist_parse2(al, mutt_buffer_string(buf));
     if (expand_aliases)
       mutt_expand_aliases(al);
     idna_ok = mutt_addrlist_to_intl(al, &err);
@@ -202,6 +203,7 @@ int mutt_edit_address(struct AddressList *al, const char *field, bool expand_ali
   } while (idna_ok != 0);
 
 done:
+  mutt_buffer_pool_release(&buf);
   return rc;
 }
 
