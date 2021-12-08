@@ -641,19 +641,19 @@ done:
  */
 void mutt_enter_command(void)
 {
-  char buf[1024] = { 0 };
+  struct Buffer *buf = mutt_buffer_pool_get();
   struct Buffer *err = mutt_buffer_pool_get();
 
   window_redraw(NULL);
   /* if enter is pressed after : with no command, just return */
-  if ((mutt_get_field(":", buf, sizeof(buf), MUTT_COMP_COMMAND, false, NULL, NULL) != 0) ||
-      (buf[0] == '\0'))
+  if ((mutt_buffer_get_field(":", buf, MUTT_COMP_COMMAND, false, NULL, NULL, NULL) != 0) ||
+      mutt_buffer_is_empty(buf))
   {
     goto done;
   }
 
   /* check if buf is a valid icommand, else fall back quietly to parse_rc_lines */
-  enum CommandResult rc = mutt_parse_icommand(buf, err);
+  enum CommandResult rc = mutt_parse_icommand(mutt_buffer_string(buf), err);
   if (!mutt_buffer_is_empty(err))
   {
     /* since errbuf could potentially contain printf() sequences in it,
@@ -666,7 +666,7 @@ void mutt_enter_command(void)
   }
   else if (rc != MUTT_CMD_SUCCESS)
   {
-    rc = mutt_parse_rc_line(buf, err);
+    rc = mutt_parse_rc_line(mutt_buffer_string(buf), err);
     if (!mutt_buffer_is_empty(err))
     {
       if (rc == MUTT_CMD_SUCCESS) /* command succeeded with message */
@@ -680,6 +680,7 @@ void mutt_enter_command(void)
   /* else successful command */
 
 done:
+  mutt_buffer_pool_release(&buf);
   mutt_buffer_pool_release(&err);
 }
 
