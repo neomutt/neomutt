@@ -689,24 +689,26 @@ static int op_compose_edit_description(struct ComposeSharedData *shared, int op)
     return IR_NO_ACTION;
 
   int rc = IR_NO_ACTION;
-  char buf[PATH_MAX];
+  struct Buffer *buf = mutt_buffer_pool_get();
+
   struct AttachPtr *cur_att =
       current_attachment(shared->adata->actx, shared->adata->menu);
-  mutt_str_copy(buf, cur_att->body->description, sizeof(buf));
+  mutt_buffer_strcpy(buf, cur_att->body->description);
 
   /* header names should not be translated */
-  if (mutt_get_field("Description: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
-                     false, NULL, NULL) == 0)
+  if (mutt_buffer_get_field("Description: ", buf, MUTT_COMP_NO_FLAGS, false,
+                            NULL, NULL, NULL) == 0)
   {
-    if (!mutt_str_equal(cur_att->body->description, buf))
+    if (!mutt_str_equal(cur_att->body->description, mutt_buffer_string(buf)))
     {
-      mutt_str_replace(&cur_att->body->description, buf);
+      mutt_str_replace(&cur_att->body->description, mutt_buffer_string(buf));
       menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
       mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
       rc = IR_SUCCESS;
     }
   }
 
+  mutt_buffer_pool_release(&buf);
   return rc;
 }
 
