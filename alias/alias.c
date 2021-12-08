@@ -371,10 +371,11 @@ struct AddressList *mutt_get_address(struct Envelope *env, const char **prefix)
  */
 void alias_create(struct AddressList *al, const struct ConfigSubset *sub)
 {
-  char buf[1024];
-  char fixed[1024];
-  char prompt[2048];
-  char tmp[1024] = { 0 };
+  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *fixed = mutt_buffer_pool_get();
+  struct Buffer *prompt = NULL;
+  struct Buffer *tmp = mutt_buffer_pool_get();
+
   struct Address *addr = NULL;
   char *pc = NULL;
   char *err = NULL;
@@ -385,38 +386,38 @@ void alias_create(struct AddressList *al, const struct ConfigSubset *sub)
     addr = TAILQ_FIRST(al);
     if (addr && addr->mailbox)
     {
-      mutt_str_copy(tmp, addr->mailbox, sizeof(tmp));
-      pc = strchr(tmp, '@');
+      mutt_buffer_strcpy(tmp, addr->mailbox);
+      pc = strchr(mutt_buffer_string(tmp), '@');
       if (pc)
         *pc = '\0';
     }
   }
 
   /* Don't suggest a bad alias name in the event of a strange local part. */
-  check_alias_name(tmp, buf, sizeof(buf));
+  check_alias_name(mutt_buffer_string(tmp), buf->data, buf->dsize);
 
 retry_name:
   /* L10N: prompt to add a new alias */
-  if ((mutt_get_field(_("Alias as: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
-                      false, NULL, NULL) != 0) ||
-      (buf[0] == '\0'))
+  if ((mutt_buffer_get_field(_("Alias as: "), buf, MUTT_COMP_NO_FLAGS, false,
+                             NULL, NULL, NULL) != 0) ||
+      mutt_buffer_is_empty(buf))
   {
     goto done;
   }
 
   /* check to see if the user already has an alias defined */
-  if (alias_lookup(buf))
+  if (alias_lookup(mutt_buffer_string(buf)))
   {
     mutt_error(_("You already have an alias defined with that name"));
     goto done;
   }
 
-  if (check_alias_name(buf, fixed, sizeof(fixed)))
+  if (check_alias_name(mutt_buffer_string(buf), fixed->data, fixed->dsize))
   {
     switch (mutt_yesorno(_("Warning: This alias name may not work.  Fix it?"), MUTT_YES))
     {
       case MUTT_YES:
-        mutt_str_copy(buf, fixed, sizeof(buf));
+        mutt_buffer_copy(buf, fixed);
         goto retry_name;
       case MUTT_ABORT:
         goto done;
@@ -425,28 +426,28 @@ retry_name:
   }
 
   struct Alias *alias = alias_new();
-  alias->name = mutt_str_dup(buf);
+  alias->name = mutt_buffer_strdup(buf);
 
   mutt_addrlist_to_local(al);
 
   if (addr && addr->mailbox)
-    mutt_str_copy(buf, addr->mailbox, sizeof(buf));
+    mutt_buffer_strcpy(buf, addr->mailbox);
   else
-    buf[0] = '\0';
+    mutt_buffer_reset(buf);
 
   mutt_addrlist_to_intl(al, NULL);
 
   do
   {
-    if ((mutt_get_field(_("Address: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
-                        false, NULL, NULL) != 0) ||
-        (buf[0] == '\0'))
+    if ((mutt_buffer_get_field(_("Address: "), buf, MUTT_COMP_NO_FLAGS, false,
+                               NULL, NULL, NULL) != 0) ||
+        mutt_buffer_is_empty(buf))
     {
       alias_free(&alias);
       goto done;
     }
 
-    mutt_addrlist_parse(&alias->addr, buf);
+    mutt_addrlist_parse(&alias->addr, mutt_buffer_string(buf));
     if (TAILQ_EMPTY(&alias->addr))
       mutt_beep(false);
     if (mutt_addrlist_to_intl(&alias->addr, &err))
@@ -458,37 +459,39 @@ retry_name:
   } while (TAILQ_EMPTY(&alias->addr));
 
   if (addr && addr->personal && !mutt_is_mail_list(addr))
-    mutt_str_copy(buf, addr->personal, sizeof(buf));
+    mutt_buffer_strcpy(buf, addr->personal);
   else
-    buf[0] = '\0';
+    mutt_buffer_reset(buf);
 
-  if (mutt_get_field(_("Personal name: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
-                     false, NULL, NULL) != 0)
+  if (mutt_buffer_get_field(_("Personal name: "), buf, MUTT_COMP_NO_FLAGS,
+                            false, NULL, NULL, NULL) != 0)
   {
     alias_free(&alias);
     goto done;
   }
-  mutt_str_replace(&TAILQ_FIRST(&alias->addr)->personal, buf);
+  mutt_str_replace(&TAILQ_FIRST(&alias->addr)->personal, mutt_buffer_string(buf));
 
-  buf[0] = '\0';
-  if (mutt_get_field(_("Comment: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
-                     false, NULL, NULL) == 0)
+  mutt_buffer_reset(buf);
+  if (mutt_buffer_get_field(_("Comment: "), buf, MUTT_COMP_NO_FLAGS, false,
+                            NULL, NULL, NULL) == 0)
   {
-    mutt_str_replace(&alias->comment, buf);
+    mutt_str_replace(&alias->comment, mutt_buffer_string(buf));
   }
 
-  buf[0] = '\0';
-  mutt_addrlist_write(&alias->addr, buf, sizeof(buf), true);
+  mutt_buffer_reset(buf);
+  mutt_addrlist_write(&alias->addr, buf->data, buf->dsize, true);
+  prompt = mutt_buffer_pool_get();
   if (alias->comment)
   {
-    snprintf(prompt, sizeof(prompt), "[%s = %s # %s] %s", alias->name, buf,
-             alias->comment, _("Accept?"));
+    mutt_buffer_printf(prompt, "[%s = %s # %s] %s", alias->name,
+                       mutt_buffer_string(buf), alias->comment, _("Accept?"));
   }
   else
   {
-    snprintf(prompt, sizeof(prompt), "[%s = %s] %s", alias->name, buf, _("Accept?"));
+    mutt_buffer_printf(prompt, "[%s = %s] %s", alias->name,
+                       mutt_buffer_string(buf), _("Accept?"));
   }
-  if (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES)
+  if (mutt_yesorno(mutt_buffer_string(prompt), MUTT_YES) != MUTT_YES)
   {
     alias_free(&alias);
     goto done;
@@ -498,18 +501,18 @@ retry_name:
   TAILQ_INSERT_TAIL(&Aliases, alias, entries);
 
   const char *const alias_file = cs_subset_path(sub, "alias_file");
-  mutt_str_copy(buf, NONULL(alias_file), sizeof(buf));
+  mutt_buffer_strcpy(buf, alias_file);
 
-  if (mutt_get_field(_("Save to file: "), buf, sizeof(buf),
-                     MUTT_COMP_FILE | MUTT_COMP_CLEAR, false, NULL, NULL) != 0)
+  if (mutt_buffer_get_field(_("Save to file: "), buf, MUTT_COMP_FILE | MUTT_COMP_CLEAR,
+                            false, NULL, NULL, NULL) != 0)
   {
     goto done;
   }
-  mutt_expand_path(buf, sizeof(buf));
-  fp_alias = fopen(buf, "a+");
+  mutt_expand_path(buf->data, buf->dsize);
+  fp_alias = fopen(mutt_buffer_string(buf), "a+");
   if (!fp_alias)
   {
-    mutt_perror(buf);
+    mutt_perror(mutt_buffer_string(buf));
     goto done;
   }
 
@@ -524,7 +527,7 @@ retry_name:
     {
       goto done;
     }
-    if (fread(buf, 1, 1, fp_alias) != 1)
+    if (fread(buf->data, 1, 1, fp_alias) != 1)
     {
       mutt_perror(_("Error reading alias file"));
       goto done;
@@ -533,20 +536,22 @@ retry_name:
     {
       goto done;
     }
-    if (buf[0] != '\n')
+    if (buf->data[0] != '\n')
       fputc('\n', fp_alias);
   }
 
   if (check_alias_name(alias->name, NULL, 0))
-    mutt_file_quote_filename(alias->name, buf, sizeof(buf));
+    mutt_file_quote_filename(alias->name, buf->data, buf->dsize);
   else
-    mutt_str_copy(buf, alias->name, sizeof(buf));
-  recode_buf(buf, sizeof(buf));
-  fprintf(fp_alias, "alias %s ", buf);
-  buf[0] = '\0';
-  mutt_addrlist_write(&alias->addr, buf, sizeof(buf), false);
-  recode_buf(buf, sizeof(buf));
-  write_safe_address(fp_alias, buf);
+    mutt_buffer_strcpy(buf, alias->name);
+
+  recode_buf(buf->data, buf->dsize);
+  fprintf(fp_alias, "alias %s ", mutt_buffer_string(buf));
+  mutt_buffer_reset(buf);
+
+  mutt_addrlist_write(&alias->addr, buf->data, buf->dsize, false);
+  recode_buf(buf->data, buf->dsize);
+  write_safe_address(fp_alias, mutt_buffer_string(buf));
   if (alias->comment)
     fprintf(fp_alias, " # %s", alias->comment);
   fputc('\n', fp_alias);
@@ -557,6 +562,10 @@ retry_name:
 
 done:
   mutt_file_fclose(&fp_alias);
+  mutt_buffer_pool_release(&buf);
+  mutt_buffer_pool_release(&fixed);
+  mutt_buffer_pool_release(&prompt);
+  mutt_buffer_pool_release(&tmp);
 }
 
 /**
