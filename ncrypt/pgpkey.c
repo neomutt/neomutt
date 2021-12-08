@@ -181,19 +181,18 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, KeyFlags abilities,
                                    enum PgpRing keyring)
 {
   struct PgpKeyInfo *key = NULL;
-  char resp[128];
   struct PgpCache *l = NULL;
+  struct Buffer *resp = mutt_buffer_pool_get();
 
   mutt_clear_error();
 
-  resp[0] = '\0';
   if (whatfor)
   {
     for (l = id_defaults; l; l = l->next)
     {
       if (mutt_istr_equal(whatfor, l->what))
       {
-        mutt_str_copy(resp, l->dflt, sizeof(resp));
+        mutt_buffer_strcpy(resp, l->dflt);
         break;
       }
     }
@@ -201,8 +200,8 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, KeyFlags abilities,
 
   while (true)
   {
-    resp[0] = '\0';
-    if (mutt_get_field(tag, resp, sizeof(resp), MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0)
+    mutt_buffer_reset(resp);
+    if (mutt_buffer_get_field(tag, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
     {
       goto done;
     }
@@ -210,25 +209,26 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, KeyFlags abilities,
     if (whatfor)
     {
       if (l)
-        mutt_str_replace(&l->dflt, resp);
+        mutt_str_replace(&l->dflt, mutt_buffer_string(resp));
       else
       {
         l = mutt_mem_malloc(sizeof(struct PgpCache));
         l->next = id_defaults;
         id_defaults = l;
         l->what = mutt_str_dup(whatfor);
-        l->dflt = mutt_str_dup(resp);
+        l->dflt = mutt_buffer_strdup(resp);
       }
     }
 
-    key = pgp_getkeybystr(resp, abilities, keyring);
+    key = pgp_getkeybystr(mutt_buffer_string(resp), abilities, keyring);
     if (key)
       goto done;
 
-    mutt_error(_("No matching keys found for \"%s\""), resp);
+    mutt_error(_("No matching keys found for \"%s\""), mutt_buffer_string(resp));
   }
 
 done:
+  mutt_buffer_pool_release(&resp);
   return key;
 }
 
