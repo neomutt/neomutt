@@ -641,18 +641,19 @@ static int op_help(struct IndexSharedData *shared, struct IndexPrivateData *priv
 static int op_jump(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
   int rc = IR_ERROR;
-  char buf[PATH_MAX] = { 0 };
+  struct Buffer *buf = mutt_buffer_pool_get();
+
   int msg_num = 0;
   if (isdigit(LastKey))
     mutt_unget_event(LastKey, 0);
-  if ((mutt_get_field(_("Jump to message: "), buf, sizeof(buf),
-                      MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
-      (buf[0] == '\0'))
+  if ((mutt_buffer_get_field(_("Jump to message: "), buf, MUTT_COMP_NO_FLAGS,
+                             false, NULL, NULL, NULL) != 0) ||
+      mutt_buffer_is_empty(buf))
   {
     mutt_message(_("Nothing to do"));
     rc = IR_NO_ACTION;
   }
-  else if (!mutt_str_atoi_full(buf, &msg_num))
+  else if (!mutt_str_atoi_full(mutt_buffer_string(buf), &msg_num))
   {
     mutt_warning(_("Argument must be a message number"));
   }
@@ -680,6 +681,7 @@ static int op_jump(struct IndexSharedData *shared, struct IndexPrivateData *priv
   if (priv->in_pager)
     rc = IR_CONTINUE;
 
+  mutt_buffer_pool_release(&buf);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
   return rc;
 }
