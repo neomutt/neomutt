@@ -599,35 +599,40 @@ bool mutt_select_sort(bool reverse)
  */
 bool mutt_shell_escape(void)
 {
-  char buf[1024];
+  bool rc = false;
+  char buf[1024] = { 0 };
 
-  buf[0] = '\0';
   if (mutt_get_field(_("Shell command: "), buf, sizeof(buf),
                      MUTT_COMP_FILE_SIMPLE, false, NULL, NULL) != 0)
   {
-    return false;
+    goto done;
   }
 
-  const char *const c_shell = cs_subset_string(NeoMutt->sub, "shell");
-  if ((buf[0] == '\0') && c_shell)
-    mutt_str_copy(buf, c_shell, sizeof(buf));
   if (buf[0] == '\0')
   {
-    return false;
+    const char *const c_shell = cs_subset_string(NeoMutt->sub, "shell");
+    mutt_str_copy(buf, c_shell, sizeof(buf));
+  }
+
+  if (buf[0] == '\0')
+  {
+    goto done;
   }
 
   msgwin_clear_text();
   mutt_endwin();
   fflush(stdout);
-  int rc = mutt_system(buf);
-  if (rc == -1)
+  int rc2 = mutt_system(buf);
+  if (rc2 == -1)
     mutt_debug(LL_DEBUG1, "Error running \"%s\"\n", buf);
 
   const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
-  if ((rc != 0) || c_wait_key)
+  if ((rc2 != 0) || c_wait_key)
     mutt_any_key_to_continue(NULL);
 
-  return true;
+  rc = true;
+done:
+  return rc;
 }
 
 /**
@@ -1099,6 +1104,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   char tmp[256];
   char charset[256];
 
+  bool rc = false;
   bool charset_changed = false;
   bool type_changed = false;
   bool structure_changed = false;
@@ -1120,7 +1126,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
       {
         // L10N: e.g. "text/plain; charset=UTF-8; ..."
         mutt_error(_("Content type is too long"));
-        return false;
+        goto done;
       }
     }
   }
@@ -1129,7 +1135,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
                       false, NULL, NULL) != 0) ||
       (buf[0] == '\0'))
   {
-    return false;
+    goto done;
   }
 
   /* clean up previous junk */
@@ -1196,7 +1202,10 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
     e->security |= crypt_query(b);
   }
 
-  return structure_changed | type_changed;
+  rc = structure_changed | type_changed;
+
+done:
+  return rc;
 }
 
 /**
