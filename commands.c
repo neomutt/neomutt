@@ -1108,10 +1108,10 @@ cleanup:
  */
 bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
 {
-  char buf[1024];
-  char obuf[1024];
-  char tmp[256];
-  char charset[256];
+  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *charset = mutt_buffer_pool_get();
+  struct Buffer *obuf = mutt_buffer_pool_get();
+  struct Buffer *tmp = mutt_buffer_pool_get();
 
   bool rc = false;
   bool charset_changed = false;
@@ -1119,30 +1119,23 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   bool structure_changed = false;
 
   char *cp = mutt_param_get(&b->parameter, "charset");
-  mutt_str_copy(charset, cp, sizeof(charset));
+  mutt_buffer_strcpy(charset, cp);
 
-  snprintf(buf, sizeof(buf), "%s/%s", TYPE(b), b->subtype);
-  mutt_str_copy(obuf, buf, sizeof(obuf));
+  mutt_buffer_printf(buf, "%s/%s", TYPE(b), b->subtype);
+  mutt_buffer_copy(obuf, buf);
   if (!TAILQ_EMPTY(&b->parameter))
   {
-    size_t l = strlen(buf);
     struct Parameter *np = NULL;
     TAILQ_FOREACH(np, &b->parameter, entries)
     {
-      mutt_addr_cat(tmp, sizeof(tmp), np->value, MimeSpecials);
-      l += snprintf(buf + l, sizeof(buf) - l, "; %s=%s", np->attribute, tmp);
-      if (l >= sizeof(buf))
-      {
-        // L10N: e.g. "text/plain; charset=UTF-8; ..."
-        mutt_error(_("Content type is too long"));
-        goto done;
-      }
+      mutt_addr_cat(tmp->data, tmp->dsize, np->value, MimeSpecials);
+      mutt_buffer_add_printf(buf, "; %s=%s", np->attribute, mutt_buffer_string(tmp));
     }
   }
 
-  if ((mutt_get_field("Content-Type: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
-                      false, NULL, NULL) != 0) ||
-      (buf[0] == '\0'))
+  if ((mutt_buffer_get_field("Content-Type: ", buf, MUTT_COMP_NO_FLAGS, false,
+                             NULL, NULL, NULL) != 0) ||
+      mutt_buffer_is_empty(buf))
   {
     goto done;
   }
@@ -1151,29 +1144,30 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   mutt_param_free(&b->parameter);
   FREE(&b->subtype);
 
-  mutt_parse_content_type(buf, b);
+  mutt_parse_content_type(mutt_buffer_string(buf), b);
 
-  snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
-  type_changed = !mutt_istr_equal(tmp, obuf);
-  charset_changed =
-      !mutt_istr_equal(charset, mutt_param_get(&b->parameter, "charset"));
+  mutt_buffer_printf(tmp, "%s/%s", TYPE(b), NONULL(b->subtype));
+  type_changed = !mutt_istr_equal(mutt_buffer_string(tmp), mutt_buffer_string(obuf));
+  charset_changed = !mutt_istr_equal(mutt_buffer_string(charset),
+                                     mutt_param_get(&b->parameter, "charset"));
 
   /* if in send mode, check for conversion - current setting is default. */
 
   if (!e && (b->type == TYPE_TEXT) && charset_changed)
   {
-    snprintf(tmp, sizeof(tmp), _("Convert to %s upon sending?"),
-             mutt_param_get(&b->parameter, "charset"));
-    enum QuadOption ans = mutt_yesorno(tmp, b->noconv ? MUTT_NO : MUTT_YES);
+    mutt_buffer_printf(tmp, _("Convert to %s upon sending?"),
+                       mutt_param_get(&b->parameter, "charset"));
+    enum QuadOption ans =
+        mutt_yesorno(mutt_buffer_string(tmp), b->noconv ? MUTT_NO : MUTT_YES);
     if (ans != MUTT_ABORT)
       b->noconv = (ans == MUTT_NO);
   }
 
   /* inform the user */
 
-  snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
+  mutt_buffer_printf(tmp, "%s/%s", TYPE(b), NONULL(b->subtype));
   if (type_changed)
-    mutt_message(_("Content-Type changed to %s"), tmp);
+    mutt_message(_("Content-Type changed to %s"), mutt_buffer_string(tmp));
   if ((b->type == TYPE_TEXT) && charset_changed)
   {
     if (type_changed)
@@ -1214,6 +1208,10 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   rc = structure_changed | type_changed;
 
 done:
+  mutt_buffer_pool_release(&buf);
+  mutt_buffer_pool_release(&charset);
+  mutt_buffer_pool_release(&obuf);
+  mutt_buffer_pool_release(&tmp);
   return rc;
 }
 
