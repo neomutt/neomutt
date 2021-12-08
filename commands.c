@@ -600,21 +600,21 @@ bool mutt_select_sort(bool reverse)
 bool mutt_shell_escape(void)
 {
   bool rc = false;
-  char buf[1024] = { 0 };
+  struct Buffer *buf = mutt_buffer_pool_get();
 
-  if (mutt_get_field(_("Shell command: "), buf, sizeof(buf),
-                     MUTT_COMP_FILE_SIMPLE, false, NULL, NULL) != 0)
+  if (mutt_buffer_get_field(_("Shell command: "), buf, MUTT_COMP_FILE_SIMPLE,
+                            false, NULL, NULL, NULL) != 0)
   {
     goto done;
   }
 
-  if (buf[0] == '\0')
+  if (mutt_buffer_is_empty(buf))
   {
     const char *const c_shell = cs_subset_string(NeoMutt->sub, "shell");
-    mutt_str_copy(buf, c_shell, sizeof(buf));
+    mutt_buffer_strcpy(buf, c_shell);
   }
 
-  if (buf[0] == '\0')
+  if (mutt_buffer_is_empty(buf))
   {
     goto done;
   }
@@ -622,9 +622,9 @@ bool mutt_shell_escape(void)
   msgwin_clear_text();
   mutt_endwin();
   fflush(stdout);
-  int rc2 = mutt_system(buf);
+  int rc2 = mutt_system(mutt_buffer_string(buf));
   if (rc2 == -1)
-    mutt_debug(LL_DEBUG1, "Error running \"%s\"\n", buf);
+    mutt_debug(LL_DEBUG1, "Error running \"%s\"\n", mutt_buffer_string(buf));
 
   const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
   if ((rc2 != 0) || c_wait_key)
@@ -632,6 +632,7 @@ bool mutt_shell_escape(void)
 
   rc = true;
 done:
+  mutt_buffer_pool_release(&buf);
   return rc;
 }
 
