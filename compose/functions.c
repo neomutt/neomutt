@@ -721,15 +721,17 @@ static int op_compose_edit_encoding(struct ComposeSharedData *shared, int op)
     return IR_NO_ACTION;
 
   int rc = IR_NO_ACTION;
+  struct Buffer *buf = mutt_buffer_pool_get();
+
   struct AttachPtr *cur_att =
       current_attachment(shared->adata->actx, shared->adata->menu);
-  char buf[PATH_MAX];
-  mutt_str_copy(buf, ENCODING(cur_att->body->encoding), sizeof(buf));
-  if ((mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf),
-                      MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0) &&
-      (buf[0] != '\0'))
+  mutt_buffer_strcpy(buf, ENCODING(cur_att->body->encoding));
+
+  if ((mutt_buffer_get_field("Content-Transfer-Encoding: ", buf,
+                             MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) == 0) &&
+      !mutt_buffer_is_empty(buf))
   {
-    int enc = mutt_check_encoding(buf);
+    int enc = mutt_check_encoding(mutt_buffer_string(buf));
     if ((enc != ENC_OTHER) && (enc != ENC_UUENCODED))
     {
       if (enc != cur_att->body->encoding)
@@ -749,6 +751,7 @@ static int op_compose_edit_encoding(struct ComposeSharedData *shared, int op)
     }
   }
 
+  mutt_buffer_pool_release(&buf);
   return rc;
 }
 
