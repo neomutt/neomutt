@@ -2699,12 +2699,13 @@ static int op_get_message(struct IndexSharedData *shared,
     return IR_SUCCESS;
 
   int rc = IR_ERROR;
-  char buf[PATH_MAX] = { 0 };
+  struct Buffer *buf = mutt_buffer_pool_get();
+
   if (op == OP_GET_MESSAGE)
   {
-    if ((mutt_get_field(_("Enter Message-Id: "), buf, sizeof(buf),
-                        MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
-        (buf[0] == '\0'))
+    if ((mutt_buffer_get_field(_("Enter Message-Id: "), buf, MUTT_COMP_NO_FLAGS,
+                               false, NULL, NULL, NULL) != 0) ||
+        mutt_buffer_is_empty(buf))
     {
       goto done;
     }
@@ -2716,12 +2717,12 @@ static int op_get_message(struct IndexSharedData *shared,
       mutt_error(_("Article has no parent reference"));
       goto done;
     }
-    mutt_str_copy(buf, STAILQ_FIRST(&shared->email->env->references)->data, sizeof(buf));
+    mutt_buffer_strcpy(buf, STAILQ_FIRST(&shared->email->env->references)->data);
   }
 
   if (!shared->mailbox->id_hash)
     shared->mailbox->id_hash = mutt_make_id_hash(shared->mailbox);
-  struct Email *e = mutt_hash_find(shared->mailbox->id_hash, buf);
+  struct Email *e = mutt_hash_find(shared->mailbox->id_hash, mutt_buffer_string(buf));
   if (e)
   {
     if (e->vnum != -1)
@@ -2735,12 +2736,14 @@ static int op_get_message(struct IndexSharedData *shared,
       menu_set_index(priv->menu, e->vnum);
     }
     else
+    {
       mutt_error(_("Message is not visible in limited view"));
+    }
   }
   else
   {
-    mutt_message(_("Fetching %s from server..."), buf);
-    int rc2 = nntp_check_msgid(shared->mailbox, buf);
+    mutt_message(_("Fetching %s from server..."), mutt_buffer_string(buf));
+    int rc2 = nntp_check_msgid(shared->mailbox, mutt_buffer_string(buf));
     if (rc2 == 0)
     {
       e = shared->mailbox->emails[shared->mailbox->msg_count - 1];
@@ -2752,11 +2755,12 @@ static int op_get_message(struct IndexSharedData *shared,
     }
     else if (rc2 > 0)
     {
-      mutt_error(_("Article %s not found on the server"), buf);
+      mutt_error(_("Article %s not found on the server"), mutt_buffer_string(buf));
     }
   }
 
 done:
+  mutt_buffer_pool_release(&buf);
   return rc;
 }
 
