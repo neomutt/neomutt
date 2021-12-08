@@ -715,7 +715,7 @@ static struct SmimeKey *smime_get_key_by_str(const char *str, KeyFlags abilities
 static struct SmimeKey *smime_ask_for_key(char *prompt, KeyFlags abilities, bool only_public_key)
 {
   struct SmimeKey *key = NULL;
-  char resp[128];
+  struct Buffer *resp = mutt_buffer_pool_get();
 
   if (!prompt)
     prompt = _("Enter keyID: ");
@@ -724,20 +724,21 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, KeyFlags abilities, bool
 
   while (true)
   {
-    resp[0] = '\0';
-    if (mutt_get_field(prompt, resp, sizeof(resp), MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0)
+    mutt_buffer_reset(resp);
+    if (mutt_buffer_get_field(prompt, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
     {
       goto done;
     }
 
-    key = smime_get_key_by_str(resp, abilities, only_public_key);
+    key = smime_get_key_by_str(mutt_buffer_string(resp), abilities, only_public_key);
     if (key)
       goto done;
 
-    mutt_error(_("No matching keys found for \"%s\""), resp);
+    mutt_error(_("No matching keys found for \"%s\""), mutt_buffer_string(resp));
   }
 
 done:
+  mutt_buffer_pool_release(&resp);
   return key;
 }
 
