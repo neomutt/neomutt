@@ -69,13 +69,14 @@ static void menu_jump(struct Menu *menu)
   }
 
   mutt_unget_event(LastKey, 0);
-  char buf[128] = { 0 };
-  if ((mutt_get_field(_("Jump to: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
-                      false, NULL, NULL) == 0) &&
-      (buf[0] != '\0'))
+
+  struct Buffer *buf = mutt_buffer_pool_get();
+  if ((mutt_buffer_get_field(_("Jump to: "), buf, MUTT_COMP_NO_FLAGS, false,
+                             NULL, NULL, NULL) == 0) &&
+      !mutt_buffer_is_empty(buf))
   {
     int n = 0;
-    if (mutt_str_atoi_full(buf, &n) && (n > 0) && (n < (menu->max + 1)))
+    if (mutt_str_atoi_full(mutt_buffer_string(buf), &n) && (n > 0) && (n < (menu->max + 1)))
     {
       menu_set_index(menu, n - 1); // msg numbers are 0-based
     }
@@ -84,6 +85,8 @@ static void menu_jump(struct Menu *menu)
       mutt_error(_("Invalid index number"));
     }
   }
+
+  mutt_buffer_pool_release(&buf);
 }
 
 /**
