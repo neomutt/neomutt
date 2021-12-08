@@ -1758,19 +1758,19 @@ static int op_mark_msg(struct IndexSharedData *shared, struct IndexPrivateData *
 
   if (shared->email->env->message_id)
   {
-    char buf2[128] = { 0 };
+    struct Buffer *buf = mutt_buffer_pool_get();
 
     /* L10N: This is the prompt for <mark-message>.  Whatever they
        enter will be prefixed by $mark_macro_prefix and will become
        a macro hotkey to jump to the currently selected message. */
-    if (!mutt_get_field(_("Enter macro stroke: "), buf2, sizeof(buf2),
-                        MUTT_COMP_NO_FLAGS, false, NULL, NULL) &&
-        buf2[0])
+    if ((mutt_buffer_get_field(_("Enter macro stroke: "), buf, MUTT_COMP_NO_FLAGS,
+                               false, NULL, NULL, NULL) == 0) &&
+        !mutt_buffer_is_empty(buf))
     {
       const char *const c_mark_macro_prefix =
           cs_subset_string(shared->sub, "mark_macro_prefix");
       char str[256];
-      snprintf(str, sizeof(str), "%s%s", c_mark_macro_prefix, buf2);
+      snprintf(str, sizeof(str), "%s%s", c_mark_macro_prefix, mutt_buffer_string(buf));
 
       struct Buffer *msg_id = mutt_buffer_pool_get();
       mutt_file_sanitize_regex(msg_id, shared->email->env->message_id);
@@ -1785,9 +1785,10 @@ static int op_mark_msg(struct IndexSharedData *shared, struct IndexPrivateData *
       /* L10N: This is echoed after <mark-message> creates a new hotkey
          macro.  %s is the hotkey string ($mark_macro_prefix followed
          by whatever they typed at the prompt.) */
-      snprintf(buf2, sizeof(buf2), _("Message bound to %s"), str);
-      mutt_message(buf2);
+      mutt_buffer_printf(buf, _("Message bound to %s"), str);
+      mutt_message(mutt_buffer_string(buf));
       mutt_debug(LL_DEBUG1, "Mark: %s => %s\n", str, macro);
+      mutt_buffer_pool_release(&buf);
     }
   }
   else
