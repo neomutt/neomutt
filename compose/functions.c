@@ -1920,16 +1920,18 @@ static int op_compose_edit_x_comment_to(struct ComposeSharedData *shared, int op
     return IR_NO_ACTION;
 
   int rc = IR_NO_ACTION;
-  char buf[PATH_MAX];
-  mutt_str_copy(buf, shared->email->env->x_comment_to, sizeof(buf));
-  if (mutt_get_field(Prompts[HDR_XCOMMENTTO], buf, sizeof(buf),
-                     MUTT_COMP_NO_FLAGS, false, NULL, NULL) == 0)
+  struct Buffer *buf = mutt_buffer_pool_get();
+
+  mutt_buffer_strcpy(buf, shared->email->env->x_comment_to);
+  if (mutt_buffer_get_field(Prompts[HDR_XCOMMENTTO], buf, MUTT_COMP_NO_FLAGS,
+                            false, NULL, NULL, NULL) == 0)
   {
-    mutt_str_replace(&shared->email->env->x_comment_to, buf);
+    mutt_str_replace(&shared->email->env->x_comment_to, mutt_buffer_string(buf));
     notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
     rc = IR_SUCCESS;
   }
 
+  mutt_buffer_pool_release(&buf);
   return rc;
 }
 #endif
