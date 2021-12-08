@@ -1162,7 +1162,7 @@ cleanup:
 void smime_class_invoke_import(const char *infile, const char *mailbox)
 {
   char *certfile = NULL;
-  char buf[256];
+  struct Buffer *buf = NULL;
 
   FILE *fp_err = mutt_file_mkstemp();
   if (!fp_err)
@@ -1174,19 +1174,18 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
   FILE *fp_out = mutt_file_mkstemp();
   if (!fp_out)
   {
-    mutt_file_fclose(&fp_err);
     mutt_perror(_("Can't create temporary file"));
     goto done;
   }
 
-  buf[0] = '\0';
+  buf = mutt_buffer_pool_get();
   const bool c_smime_ask_cert_label =
       cs_subset_bool(NeoMutt->sub, "smime_ask_cert_label");
   if (c_smime_ask_cert_label)
   {
-    if ((mutt_get_field(_("Label for certificate: "), buf, sizeof(buf),
-                        MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
-        (buf[0] == '\0'))
+    if ((mutt_buffer_get_field(_("Label for certificate: "), buf,
+                               MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0) ||
+        mutt_buffer_is_empty(buf))
     {
       goto done;
     }
@@ -1209,7 +1208,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
       mutt_message(_("Error: unable to create OpenSSL subprocess"));
       goto done;
     }
-    fputs(buf, fp_smime_in);
+    fputs(mutt_buffer_string(buf), fp_smime_in);
     fputc('\n', fp_smime_in);
     mutt_file_fclose(&fp_smime_in);
 
@@ -1230,6 +1229,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
 done:
   mutt_file_fclose(&fp_out);
   mutt_file_fclose(&fp_err);
+  mutt_buffer_pool_release(&buf);
 }
 
 /**
