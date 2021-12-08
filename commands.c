@@ -93,9 +93,10 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   if (!m || !el || STAILQ_EMPTY(el))
     return;
 
-  char prompt[8193];
-  char scratch[8192];
-  char buf[8192] = { 0 };
+  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *prompt = mutt_buffer_pool_get();
+  struct Buffer *scratch = NULL;
+
   struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
   char *err = NULL;
   int rc;
@@ -113,15 +114,16 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   }
 
   if (msg_count == 1)
-    mutt_str_copy(prompt, _("Bounce message to: "), sizeof(prompt));
+    mutt_buffer_strcpy(prompt, _("Bounce message to: "));
   else
-    mutt_str_copy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
+    mutt_buffer_strcpy(prompt, _("Bounce tagged messages to: "));
 
-  rc = mutt_get_field(prompt, buf, sizeof(buf), MUTT_COMP_ALIAS, false, NULL, NULL);
-  if (rc || (buf[0] == '\0'))
+  rc = mutt_buffer_get_field(mutt_buffer_string(prompt), buf, MUTT_COMP_ALIAS,
+                             false, NULL, NULL, NULL);
+  if ((rc != 0) || mutt_buffer_is_empty(buf))
     goto done;
 
-  mutt_addrlist_parse2(&al, buf);
+  mutt_addrlist_parse2(&al, mutt_buffer_string(buf));
   if (TAILQ_EMPTY(&al))
   {
     mutt_error(_("Error parsing address"));
@@ -137,25 +139,27 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
     goto done;
   }
 
-  buf[0] = '\0';
-  mutt_addrlist_write(&al, buf, sizeof(buf), true);
+  mutt_buffer_reset(buf);
+  mutt_addrlist_write(&al, buf->data, buf->dsize, true);
 
 #define EXTRA_SPACE (15 + 7 + 2)
-  snprintf(scratch, sizeof(scratch),
-           ngettext("Bounce message to %s?", "Bounce messages to %s?", msg_count), buf);
+  scratch = mutt_buffer_pool_get();
+  mutt_buffer_printf(scratch,
+                     ngettext("Bounce message to %s?", "Bounce messages to %s?", msg_count),
+                     mutt_buffer_string(buf));
 
   const size_t width = msgwin_get_width();
-  if (mutt_strwidth(scratch) > (width - EXTRA_SPACE))
+  if (mutt_strwidth(mutt_buffer_string(scratch)) > (width - EXTRA_SPACE))
   {
-    mutt_simple_format(prompt, sizeof(prompt), 0, width - EXTRA_SPACE,
-                       JUSTIFY_LEFT, 0, scratch, sizeof(scratch), false);
-    mutt_str_cat(prompt, sizeof(prompt), "...?");
+    mutt_simple_format(prompt->data, prompt->dsize, 0, width - EXTRA_SPACE,
+                       JUSTIFY_LEFT, 0, scratch->data, scratch->dsize, false);
+    mutt_buffer_addstr(prompt, "...?");
   }
   else
-    mutt_str_copy(prompt, scratch, sizeof(prompt));
+    mutt_buffer_copy(prompt, scratch);
 
   const enum QuadOption c_bounce = cs_subset_quad(NeoMutt->sub, "bounce");
-  if (query_quadoption(c_bounce, prompt) != MUTT_YES)
+  if (query_quadoption(c_bounce, mutt_buffer_string(prompt)) != MUTT_YES)
   {
     msgwin_clear_text();
     mutt_message(ngettext("Message not bounced", "Messages not bounced", msg_count));
@@ -187,6 +191,9 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
 
 done:
   mutt_addrlist_clear(&al);
+  mutt_buffer_pool_release(&buf);
+  mutt_buffer_pool_release(&prompt);
+  mutt_buffer_pool_release(&scratch);
 }
 
 /**
