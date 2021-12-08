@@ -740,19 +740,22 @@ void query_index(struct ConfigSubset *sub)
     return;
   }
 
-  char buf[256] = { 0 };
-  if ((mutt_get_field(_("Query: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS, false,
-                      NULL, NULL) != 0) ||
-      (buf[0] == '\0'))
+  struct Buffer *buf = mutt_buffer_pool_get();
+  if ((mutt_buffer_get_field(_("Query: "), buf, MUTT_COMP_NO_FLAGS, false, NULL,
+                             NULL, NULL) != 0) ||
+      mutt_buffer_is_empty(buf))
   {
-    return;
+    goto done;
   }
 
   struct AliasList al = TAILQ_HEAD_INITIALIZER(al);
-  query_run(buf, false, &al, sub);
+  query_run(mutt_buffer_string(buf), false, &al, sub);
   if (TAILQ_EMPTY(&al))
-    return;
+    goto done;
 
-  dlg_select_query(buf, sizeof(buf), &al, false, sub);
+  dlg_select_query(buf->data, buf->dsize, &al, false, sub);
   aliaslist_free(&al);
+
+done:
+  mutt_buffer_pool_release(&buf);
 }
