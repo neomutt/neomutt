@@ -859,16 +859,17 @@ static int op_compose_edit_language(struct ComposeSharedData *shared, int op)
     return IR_NO_ACTION;
 
   int rc = IR_NO_ACTION;
+  struct Buffer *buf = mutt_buffer_pool_get();
   struct AttachPtr *cur_att =
       current_attachment(shared->adata->actx, shared->adata->menu);
-  char buf[PATH_MAX];
-  mutt_str_copy(buf, cur_att->body->language, sizeof(buf));
-  if (mutt_get_field("Content-Language: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
-                     false, NULL, NULL) == 0)
+
+  mutt_buffer_strcpy(buf, cur_att->body->language);
+  if (mutt_buffer_get_field("Content-Language: ", buf, MUTT_COMP_NO_FLAGS,
+                            false, NULL, NULL, NULL) == 0)
   {
-    if (!mutt_str_equal(cur_att->body->language, buf))
+    if (!mutt_str_equal(cur_att->body->language, mutt_buffer_string(buf)))
     {
-      cur_att->body->language = mutt_str_dup(buf);
+      mutt_str_replace(&cur_att->body->language, mutt_buffer_string(buf));
       menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
       notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
       mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
@@ -881,6 +882,8 @@ static int op_compose_edit_language(struct ComposeSharedData *shared, int op)
     mutt_warning(_("Empty 'Content-Language'"));
     rc = IR_ERROR;
   }
+
+  mutt_buffer_pool_release(&buf);
   return rc;
 }
 
