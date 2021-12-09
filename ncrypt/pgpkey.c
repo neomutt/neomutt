@@ -204,7 +204,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, KeyFlags abilities,
     resp[0] = '\0';
     if (mutt_get_field(tag, resp, sizeof(resp), MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0)
     {
-      return NULL;
+      goto done;
     }
 
     if (whatfor)
@@ -223,11 +223,13 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, KeyFlags abilities,
 
     key = pgp_getkeybystr(resp, abilities, keyring);
     if (key)
-      return key;
+      goto done;
 
     mutt_error(_("No matching keys found for \"%s\""), resp);
   }
-  /* not reached */
+
+done:
+  return key;
 }
 
 /**
