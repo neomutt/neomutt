@@ -473,12 +473,6 @@ int log_disp_terminal(time_t stamp, const char *file, int line,
       case LL_MESSAGE:
         // colour = 36;
         break;
-      case LL_DEBUG1:
-      case LL_DEBUG2:
-      case LL_DEBUG3:
-      case LL_DEBUG4:
-      case LL_DEBUG5:
-      case LL_NOTIFY:
       default:
         break;
     }
