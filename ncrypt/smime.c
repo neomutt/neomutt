@@ -175,8 +175,11 @@ bool smime_class_valid_passphrase(void)
 
   smime_class_void_passphrase();
 
-  const int rc = mutt_get_field_unbuffered(_("Enter S/MIME passphrase:"), SmimePass,
-                                           sizeof(SmimePass), MUTT_COMP_PASS);
+  struct Buffer *buf = mutt_buffer_pool_get();
+  const int rc = mutt_get_field_unbuffered(_("Enter S/MIME passphrase:"), buf, MUTT_COMP_PASS);
+  mutt_str_copy(SmimePass, mutt_buffer_string(buf), sizeof(SmimePass));
+  mutt_buffer_pool_release(&buf);
+
   if (rc == 0)
   {
     const short c_smime_timeout =

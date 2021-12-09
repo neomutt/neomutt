@@ -350,13 +350,12 @@ int mutt_get_field(const char *field, char *buf, size_t buflen,
  * mutt_get_field_unbuffered - Ask the user for a string (ignoring macro buffer)
  * @param msg    Prompt
  * @param buf    Buffer for the result
- * @param buflen Length of buffer
  * @param flags  Flags, see #CompletionFlags
  * @retval 1  Redraw the screen and call the function again
  * @retval 0  Selection made
  * @retval -1 Aborted
  */
-int mutt_get_field_unbuffered(const char *msg, char *buf, size_t buflen, CompletionFlags flags)
+int mutt_get_field_unbuffered(const char *msg, struct Buffer *buf, CompletionFlags flags)
 {
   bool reset_ignoremacro = false;
 
@@ -365,7 +364,7 @@ int mutt_get_field_unbuffered(const char *msg, char *buf, size_t buflen, Complet
     OptIgnoreMacroEvents = true;
     reset_ignoremacro = true;
   }
-  int rc = mutt_get_field(msg, buf, buflen, flags, false, NULL, NULL);
+  int rc = mutt_buffer_get_field(msg, buf, flags, false, NULL, NULL, NULL);
   if (reset_ignoremacro)
     OptIgnoreMacroEvents = false;
 

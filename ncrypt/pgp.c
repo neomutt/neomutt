@@ -95,8 +95,11 @@ bool pgp_class_valid_passphrase(void)
 
   pgp_class_void_passphrase();
 
-  const int rc = mutt_get_field_unbuffered(_("Enter PGP passphrase:"), PgpPass,
-                                           sizeof(PgpPass), MUTT_COMP_PASS);
+  struct Buffer *buf = mutt_buffer_pool_get();
+  const int rc = mutt_get_field_unbuffered(_("Enter PGP passphrase:"), buf, MUTT_COMP_PASS);
+  mutt_str_copy(PgpPass, mutt_buffer_string(buf), sizeof(PgpPass));
+  mutt_buffer_pool_release(&buf);
+
   if (rc == 0)
   {
     const long c_pgp_timeout = cs_subset_long(NeoMutt->sub, "pgp_timeout");
