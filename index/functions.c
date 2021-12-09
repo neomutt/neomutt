@@ -640,6 +640,7 @@ static int op_help(struct IndexSharedData *shared, struct IndexPrivateData *priv
  */
 static int op_jump(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
+  int rc = IR_ERROR;
   char buf[PATH_MAX] = { 0 };
   int msg_num = 0;
   if (isdigit(LastKey))
@@ -649,6 +650,7 @@ static int op_jump(struct IndexSharedData *shared, struct IndexPrivateData *priv
       (buf[0] == '\0'))
   {
     mutt_message(_("Nothing to do"));
+    rc = IR_NO_ACTION;
   }
   else if (!mutt_str_atoi_full(buf, &msg_num))
   {
@@ -672,13 +674,14 @@ static int op_jump(struct IndexSharedData *shared, struct IndexPrivateData *priv
       mutt_set_vnum(shared->mailbox);
     }
     menu_set_index(priv->menu, e->vnum);
+    rc = IR_SUCCESS;
   }
 
   if (priv->in_pager)
-    return IR_CONTINUE;
+    rc = IR_CONTINUE;
 
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return rc;
 }
 
 /**
@@ -1077,28 +1080,35 @@ static int op_main_link_threads(struct IndexSharedData *shared,
 static int op_main_modify_tags(struct IndexSharedData *shared,
                                struct IndexPrivateData *priv, int op)
 {
+  int rc = IR_ERROR;
+
   if (!shared->mailbox)
-    return IR_ERROR;
+    goto done;
   struct Mailbox *m = shared->mailbox;
   if (!mx_tags_is_supported(m))
   {
     mutt_message(_("Folder doesn't support tagging, aborting"));
-    return IR_ERROR;
+    goto done;
   }
   if (!shared->email)
-    return IR_NO_ACTION;
+  {
+    rc = IR_NO_ACTION;
+    goto done;
+  }
   char *tags = NULL;
   if (!priv->tag)
     tags = driver_tags_get_with_hidden(&shared->email->tags);
   char buf[PATH_MAX] = { 0 };
-  int rc = mx_tags_edit(m, tags, buf, sizeof(buf));
+  int rc2 = mx_tags_edit(m, tags, buf, sizeof(buf));
   FREE(&tags);
-  if (rc < 0)
-    return IR_ERROR;
-  else if (rc == 0)
+  if (rc2 < 0)
+  {
+    goto done;
+  }
+  else if (rc2 == 0)
   {
     mutt_message(_("No tag specified, aborting"));
-    return IR_ERROR;
+    goto done;
   }
 
   if (priv->tag)
@@ -1148,7 +1158,7 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
     if (mx_tags_commit(m, shared->email, buf))
     {
       mutt_message(_("Failed to modify tags, aborting"));
-      return IR_ERROR;
+      goto done;
     }
     if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
     {
@@ -1161,7 +1171,10 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
       m->changed = true;
     }
     if (priv->in_pager)
-      return IR_CONTINUE;
+    {
+      rc = IR_CONTINUE;
+      goto done;
+    }
 
     const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
     if (c_resolve)
@@ -1178,10 +1191,14 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
       }
     }
     else
+    {
       menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+    }
   }
+  rc = IR_SUCCESS;
 
-  return IR_SUCCESS;
+done:
+  return rc;
 }
 
 /**
@@ -1734,6 +1751,9 @@ static int op_mark_msg(struct IndexSharedData *shared, struct IndexPrivateData *
 {
   if (!shared->email)
     return IR_NO_ACTION;
+
+  int rc = IR_SUCCESS;
+
   if (shared->email->env->message_id)
   {
     char buf2[128] = { 0 };
@@ -1773,10 +1793,10 @@ static int op_mark_msg(struct IndexSharedData *shared, struct IndexPrivateData *
     /* L10N: This error is printed if <mark-message> can't find a
        Message-ID for the currently selected message in the index. */
     mutt_error(_("No message ID to macro"));
-    return IR_ERROR;
+    rc = IR_ERROR;
   }
 
-  return IR_SUCCESS;
+  return rc;
 }
 
 /**
@@ -2675,6 +2695,7 @@ static int op_get_message(struct IndexSharedData *shared,
   if (shared->mailbox->type != MUTT_NNTP)
     return IR_SUCCESS;
 
+  int rc = IR_ERROR;
   char buf[PATH_MAX] = { 0 };
   if (op == OP_GET_MESSAGE)
   {
@@ -2682,7 +2703,7 @@ static int op_get_message(struct IndexSharedData *shared,
                         MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
         (buf[0] == '\0'))
     {
-      return IR_ERROR;
+      goto done;
     }
   }
   else
@@ -2690,7 +2711,7 @@ static int op_get_message(struct IndexSharedData *shared,
     if (!shared->email || STAILQ_EMPTY(&shared->email->env->references))
     {
       mutt_error(_("Article has no parent reference"));
-      return IR_ERROR;
+      goto done;
     }
     mutt_str_copy(buf, STAILQ_FIRST(&shared->email->env->references)->data, sizeof(buf));
   }
@@ -2716,20 +2737,24 @@ static int op_get_message(struct IndexSharedData *shared,
   else
   {
     mutt_message(_("Fetching %s from server..."), buf);
-    int rc = nntp_check_msgid(shared->mailbox, buf);
-    if (rc == 0)
+    int rc2 = nntp_check_msgid(shared->mailbox, buf);
+    if (rc2 == 0)
     {
       e = shared->mailbox->emails[shared->mailbox->msg_count - 1];
       mutt_sort_headers(shared->mailbox, shared->ctx->threads, false,
                         &shared->ctx->vsize);
       menu_set_index(priv->menu, e->vnum);
       menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+      rc = IR_SUCCESS;
     }
-    else if (rc > 0)
+    else if (rc2 > 0)
+    {
       mutt_error(_("Article %s not found on the server"), buf);
+    }
   }
 
-  return IR_SUCCESS;
+done:
+  return rc;
 }
 
 /**
@@ -2938,12 +2963,14 @@ static int op_main_entire_thread(struct IndexSharedData *shared,
 static int op_main_vfolder_from_query(struct IndexSharedData *shared,
                                       struct IndexPrivateData *priv, int op)
 {
+  int rc = IR_SUCCESS;
   char buf[PATH_MAX] = { 0 };
   if ((mutt_get_field("Query: ", buf, sizeof(buf), MUTT_COMP_NM_QUERY, false, NULL, NULL) != 0) ||
       (buf[0] == '\0'))
   {
     mutt_message(_("No query, aborting"));
-    return IR_NO_ACTION;
+    rc = IR_NO_ACTION;
+    goto done;
   }
 
   // Keep copy of user's query to name the mailbox
@@ -2957,13 +2984,15 @@ static int op_main_vfolder_from_query(struct IndexSharedData *shared,
     FREE(&m_query->name);
     m_query->name = query_unencoded;
     query_unencoded = NULL;
+    rc = IR_SUCCESS;
   }
   else
   {
     FREE(&query_unencoded);
   }
 
-  return IR_SUCCESS;
+done:
+  return rc;
 }
 
 /**
