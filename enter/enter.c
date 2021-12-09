@@ -606,7 +606,11 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
             }
 
             mutt_mb_wcstombs(buf, buflen, state->wbuf + i, state->curpos - i);
-            query_complete(buf, buflen, NeoMutt->sub);
+            struct Buffer *tmp = mutt_buffer_pool_get();
+            mutt_buffer_strcpy(tmp, buf);
+            query_complete(tmp, NeoMutt->sub);
+            mutt_str_copy(buf, mutt_buffer_string(tmp), buflen);
+            mutt_buffer_pool_release(&tmp);
             replace_part(state, i, buf);
 
             rc = 1;
