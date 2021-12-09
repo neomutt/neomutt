@@ -657,16 +657,17 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
   struct Progress *progress = NULL;
   const struct AliasMenuData *mdata = menu->mdata;
   const struct AliasViewArray *ava = &mdata->ava;
+  struct Buffer *buf = NULL;
   int rc = -1;
 
   if ((*LastSearch == '\0') || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
-    char buf[256];
-    mutt_str_copy(buf, (LastSearch[0] != '\0') ? LastSearch : "", sizeof(buf));
-    if ((mutt_get_field(
+    buf = mutt_buffer_pool_get();
+    mutt_buffer_strcpy(buf, (LastSearch[0] != '\0') ? LastSearch : "");
+    if ((mutt_buffer_get_field(
              ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
-             buf, sizeof(buf), MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL) != 0) ||
-        (buf[0] == '\0'))
+             buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL, NULL) != 0) ||
+        mutt_buffer_is_empty(buf))
     {
       goto done;
     }
@@ -679,7 +680,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
     /* compare the *expanded* version of the search pattern in case
      * $simple_search has changed while we were searching */
     struct Buffer *tmp = mutt_buffer_pool_get();
-    mutt_buffer_strcpy(tmp, buf);
+    mutt_buffer_copy(tmp, buf);
     mutt_check_simple(tmp, MUTT_ALIAS_SIMPLESEARCH);
 
     if (!SearchPattern || !mutt_str_equal(mutt_buffer_string(tmp), LastSearchExpn))
@@ -687,7 +688,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
       struct Buffer err;
       mutt_buffer_init(&err);
       OptSearchInvalid = true;
-      mutt_str_copy(LastSearch, buf, sizeof(LastSearch));
+      mutt_str_copy(LastSearch, mutt_buffer_string(buf), sizeof(LastSearch));
       mutt_str_copy(LastSearchExpn, mutt_buffer_string(tmp), sizeof(LastSearchExpn));
       mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&SearchPattern);
@@ -797,5 +798,6 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
   mutt_error(_("Not found"));
 done:
   progress_free(&progress);
+  mutt_buffer_pool_release(&buf);
   return rc;
 }
