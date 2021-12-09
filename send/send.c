@@ -174,6 +174,7 @@ static void add_mailing_lists(struct AddressList *out, const struct AddressList 
  */
 int mutt_edit_address(struct AddressList *al, const char *field, bool expand_aliases)
 {
+  int rc = 0;
   char buf[8192];
   char *err = NULL;
   int idna_ok = 0;
@@ -184,7 +185,10 @@ int mutt_edit_address(struct AddressList *al, const char *field, bool expand_ali
     mutt_addrlist_to_local(al);
     mutt_addrlist_write(al, buf, sizeof(buf), false);
     if (mutt_get_field(field, buf, sizeof(buf), MUTT_COMP_ALIAS, false, NULL, NULL) != 0)
-      return -1;
+    {
+      rc = -1;
+      goto done;
+    }
     mutt_addrlist_clear(al);
     mutt_addrlist_parse2(al, buf);
     if (expand_aliases)
@@ -196,7 +200,9 @@ int mutt_edit_address(struct AddressList *al, const char *field, bool expand_ali
       FREE(&err);
     }
   } while (idna_ok != 0);
-  return 0;
+
+done:
+  return rc;
 }
 
 /**
@@ -209,6 +215,7 @@ int mutt_edit_address(struct AddressList *al, const char *field, bool expand_ali
  */
 static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubset *sub)
 {
+  int rc = -1;
   char buf[8192];
 
 #ifdef USE_NNTP
@@ -221,7 +228,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
                        false, NULL, NULL) != 0)
     {
-      return -1;
+      goto done;
     }
     FREE(&en->newsgroups);
     en->newsgroups = mutt_str_dup(buf);
@@ -235,7 +242,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     if (c_ask_follow_up && (mutt_get_field("Followup-To: ", buf, sizeof(buf),
                                            MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0))
     {
-      return -1;
+      goto done;
     }
     FREE(&en->followup_to);
     en->followup_to = mutt_str_dup(buf);
@@ -251,7 +258,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
         (mutt_get_field("X-Comment-To: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
                         false, NULL, NULL) != 0))
     {
-      return -1;
+      goto done;
     }
     FREE(&en->x_comment_to);
     en->x_comment_to = mutt_str_dup(buf);
@@ -263,28 +270,28 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     if (TAILQ_EMPTY(&en->to) || !c_fast_reply)
     {
       if ((mutt_edit_address(&en->to, _("To: "), true) == -1) || TAILQ_EMPTY(&en->to))
-        return -1;
+        goto done;
     }
 
     const bool c_ask_cc = cs_subset_bool(sub, "ask_cc");
     if (TAILQ_EMPTY(&en->cc) || !c_fast_reply)
     {
       if (c_ask_cc && (mutt_edit_address(&en->cc, _("Cc: "), true) == -1))
-        return -1;
+        goto done;
     }
 
     const bool c_ask_bcc = cs_subset_bool(sub, "ask_bcc");
     if (TAILQ_EMPTY(&en->bcc) || !c_fast_reply)
     {
       if (c_ask_bcc && (mutt_edit_address(&en->bcc, _("Bcc: "), true) == -1))
-        return -1;
+        goto done;
     }
 
     const bool c_reply_with_xorig = cs_subset_bool(sub, "reply_with_xorig");
     if (c_reply_with_xorig && (flags & (SEND_REPLY | SEND_LIST_REPLY | SEND_GROUP_REPLY)) &&
         (mutt_edit_address(&en->from, "From: ", true) == -1))
     {
-      return -1;
+      goto done;
     }
   }
 
@@ -292,7 +299,10 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
   {
     const bool c_fast_reply = cs_subset_bool(sub, "fast_reply");
     if (c_fast_reply)
-      return 0;
+    {
+      rc = 0;
+      goto done;
+    }
     mutt_str_copy(buf, en->subject, sizeof(buf));
   }
   else
@@ -320,11 +330,13 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
        (query_quadoption(c_abort_nosubject, _("No subject, abort?")) != MUTT_NO)))
   {
     mutt_message(_("No subject, aborting"));
-    return -1;
+    goto done;
   }
   mutt_str_replace(&en->subject, buf);
+  rc = 0;
 
-  return 0;
+done:
+  return rc;
 }
 
 #ifdef USE_NNTP
