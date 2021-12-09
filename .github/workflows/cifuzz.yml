@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        sanitizer: [address, undefined, memory]
+        sanitizer: [address, undefined]
 
     steps:
       - name: Build Fuzzers (${{ matrix.sanitizer }})
