@@ -80,7 +80,7 @@ struct AliasList Aliases = TAILQ_HEAD_INITIALIZER(Aliases); ///< List of all the
  * $ wants to be quoted since it may indicate the start of an environment
  * variable.
  */
-static void write_safe_address(FILE *fp, char *s)
+static void write_safe_address(FILE *fp, const char *s)
 {
   while (*s)
   {

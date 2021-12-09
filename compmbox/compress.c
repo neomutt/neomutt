@@ -857,7 +857,7 @@ static int comp_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
 /**
  * comp_tags_commit - Save the tags to a message - Implements MxOps::tags_commit() - @ingroup mx_tags_commit
  */
-static int comp_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
+static int comp_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
 {
   if (!m->compress_info)
     return 0;

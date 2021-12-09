@@ -445,7 +445,7 @@ static int complete_hosts(char *buf, size_t buflen)
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_create_mailbox(struct ImapAccountData *adata, char *mailbox)
+int imap_create_mailbox(struct ImapAccountData *adata, const char *mailbox)
 {
   char buf[2048], mbox[1024];
 
@@ -2334,7 +2334,7 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
  * Also this method check that each flags is support by the server
  * first and remove unsupported one.
  */
-static int imap_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
+static int imap_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
 {
   char uid[11];
 

@@ -183,7 +183,7 @@ char *driver_tags_get_transformed_for(struct TagList *head, const char *name)
  *
  * Free current tags structures and replace it by new tags
  */
-bool driver_tags_replace(struct TagList *head, char *tags)
+bool driver_tags_replace(struct TagList *head, const char *tags)
 {
   if (!head)
     return false;

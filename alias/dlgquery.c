@@ -375,7 +375,7 @@ int query_window_observer(struct NotifyCallback *nc)
  * @param query Initial query string
  * @retval ptr New Dialog
  */
-struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, char *query)
+static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const char *query)
 {
   struct MuttWindow *dlg = simple_dialog_new(MENU_QUERY, WT_DLG_QUERY, QueryHelp);
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);

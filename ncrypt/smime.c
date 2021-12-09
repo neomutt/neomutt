@@ -663,7 +663,7 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
  * @param only_public_key  If true, only get the public keys
  * @retval ptr Matching key
  */
-static struct SmimeKey *smime_get_key_by_str(char *str, KeyFlags abilities, bool only_public_key)
+static struct SmimeKey *smime_get_key_by_str(const char *str, KeyFlags abilities, bool only_public_key)
 {
   if (!str)
     return NULL;

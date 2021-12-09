@@ -77,7 +77,7 @@ static const struct ICommand ICommandList[] = {
  * - Error (no message): command not found
  * - Error with message: command failed
  */
-enum CommandResult mutt_parse_icommand(/* const */ char *line, struct Buffer *err)
+enum CommandResult mutt_parse_icommand(const char *line, struct Buffer *err)
 {
   if (!line || (*line == '\0') || !err)
     return MUTT_CMD_ERROR;

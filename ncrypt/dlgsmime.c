@@ -190,7 +190,7 @@ static void smime_key_table_free(struct Menu *menu, void **ptr)
  * @param query String to match
  * @retval ptr Key selected by user
  */
-struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, char *query)
+struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, const char *query)
 {
   struct SmimeKey **table = NULL;
   int table_size = 0;

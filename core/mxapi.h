@@ -350,7 +350,7 @@ struct MxOps
    * - @a e   is not NULL
    * - @a buf is not NULL
    */
-  int (*tags_commit)     (struct Mailbox *m, struct Email *e, char *buf);
+  int (*tags_commit)     (struct Mailbox *m, struct Email *e, const char *buf);
 
   /**
    * @defgroup mx_path_probe path_probe()

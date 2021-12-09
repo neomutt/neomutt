@@ -2409,7 +2409,7 @@ static int nm_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t b
 /**
  * nm_tags_commit - Save the tags to a message - Implements MxOps::tags_commit() - @ingroup mx_tags_commit
  */
-static int nm_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
+static int nm_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
 {
   if (*buf == '\0')
     return 0; /* no tag change, so nothing to do */

@@ -91,7 +91,7 @@ static int my_addwch(struct MuttWindow *win, wchar_t wc)
  * @param from  Starting point for the replacement
  * @param buf   Replacement string
  */
-static void replace_part(struct EnterState *state, size_t from, char *buf)
+static void replace_part(struct EnterState *state, size_t from, const char *buf)
 {
   /* Save the suffix */
   size_t savelen = state->lastchar - state->curpos;

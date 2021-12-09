@@ -1292,7 +1292,7 @@ int mx_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mx_tags_commit(struct Mailbox *m, struct Email *e, char *tags)
+int mx_tags_commit(struct Mailbox *m, struct Email *e, const char *tags)
 {
   if (!m || !e || !tags)
     return -1;
