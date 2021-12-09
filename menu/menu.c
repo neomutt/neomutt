@@ -80,7 +80,9 @@ static void menu_jump(struct Menu *menu)
       menu_set_index(menu, n - 1); // msg numbers are 0-based
     }
     else
+    {
       mutt_error(_("Invalid index number"));
+    }
   }
 }
 
@@ -141,7 +143,8 @@ void menu_add_dialog_row(struct Menu *menu, const char *row)
  */
 static int search(struct Menu *menu, int op)
 {
-  int rc = 0, wrap = 0;
+  int rc = -1;
+  int wrap = 0;
   int search_dir;
   regex_t re = { 0 };
   char buf[128];
@@ -157,7 +160,7 @@ static int search(struct Menu *menu, int op)
                         buf, sizeof(buf), MUTT_COMP_CLEAR, false, NULL, NULL) != 0) ||
         (buf[0] == '\0'))
     {
-      return -1;
+      goto done;
     }
     if (menu->type < MENU_MAX)
     {
@@ -182,7 +185,8 @@ static int search(struct Menu *menu, int op)
   {
     regerror(rc, &re, buf, sizeof(buf));
     mutt_error("%s", buf);
-    return -1;
+    rc = -1;
+    goto done;
   }
 
   rc = menu->current + search_dir;
@@ -194,7 +198,7 @@ search_next:
     if (menu->search(menu, &re, rc) == 0)
     {
       regfree(&re);
-      return rc;
+      goto done;
     }
 
     rc += search_dir;
@@ -208,7 +212,10 @@ search_next:
   }
   regfree(&re);
   mutt_error(_("Not found"));
-  return -1;
+  rc = -1;
+
+done:
+  return rc;
 }
 
 /**
