@@ -62,7 +62,7 @@ enum MailboxType mx_path_probe     (const char *path);
 struct Mailbox *mx_path_resolve    (const char *path);
 struct Mailbox *mx_resolve         (const char *path_or_name);
 int             mx_tags_commit     (struct Mailbox *m, struct Email *e, const char *tags);
-int             mx_tags_edit       (struct Mailbox *m, const char *tags, char *buf, size_t buflen);
+int             mx_tags_edit       (struct Mailbox *m, const char *tags, struct Buffer *buf);
 enum MailboxType mx_type           (struct Mailbox *m);
 
 struct Account *mx_ac_find     (struct Mailbox *m);

@@ -840,7 +840,7 @@ static int comp_msg_save_hcache(struct Mailbox *m, struct Email *e)
 /**
  * comp_tags_edit - Prompt and validate new messages tags - Implements MxOps::tags_edit() - @ingroup mx_tags_edit
  */
-static int comp_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
+static int comp_tags_edit(struct Mailbox *m, const char *tags, struct Buffer *buf)
 {
   if (!m->compress_info)
     return 0;
@@ -851,7 +851,7 @@ static int comp_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
   if (!ops || !ops->tags_edit)
     return 0;
 
-  return ops->tags_edit(m, tags, buf, buflen);
+  return ops->tags_edit(m, tags, buf);
 }
 
 /**

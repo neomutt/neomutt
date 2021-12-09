@@ -1083,6 +1083,7 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
                                struct IndexPrivateData *priv, int op)
 {
   int rc = IR_ERROR;
+  struct Buffer *buf = NULL;
 
   if (!shared->mailbox)
     goto done;
@@ -1097,11 +1098,12 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
     rc = IR_NO_ACTION;
     goto done;
   }
+
   char *tags = NULL;
   if (!priv->tag)
     tags = driver_tags_get_with_hidden(&shared->email->tags);
-  char buf[PATH_MAX] = { 0 };
-  int rc2 = mx_tags_edit(m, tags, buf, sizeof(buf));
+  buf = mutt_buffer_pool_get();
+  int rc2 = mx_tags_edit(m, tags, buf);
   FREE(&tags);
   if (rc2 < 0)
   {
@@ -1136,7 +1138,7 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
 
       if (m->verbose)
         progress_update(progress, ++px, -1);
-      mx_tags_commit(m, e, buf);
+      mx_tags_commit(m, e, mutt_buffer_string(buf));
       if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
       {
         bool still_queried = false;
@@ -1157,7 +1159,7 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
   }
   else
   {
-    if (mx_tags_commit(m, shared->email, buf))
+    if (mx_tags_commit(m, shared->email, mutt_buffer_string(buf)))
     {
       mutt_message(_("Failed to modify tags, aborting"));
       goto done;
@@ -1200,6 +1202,7 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
   rc = IR_SUCCESS;
 
 done:
+  mutt_buffer_pool_release(&buf);
   return rc;
 }
 

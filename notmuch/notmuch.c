@@ -2397,11 +2397,11 @@ static int nm_msg_close(struct Mailbox *m, struct Message *msg)
 /**
  * nm_tags_edit - Prompt and validate new messages tags - Implements MxOps::tags_edit() - @ingroup mx_tags_edit
  */
-static int nm_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
+static int nm_tags_edit(struct Mailbox *m, const char *tags, struct Buffer *buf)
 {
-  *buf = '\0';
-  if (mutt_get_field("Add/remove labels: ", buf, buflen, MUTT_COMP_NM_TAG,
-                     false, NULL, NULL) != 0)
+  mutt_buffer_reset(buf);
+  if (mutt_buffer_get_field("Add/remove labels: ", buf, MUTT_COMP_NM_TAG, false,
+                            NULL, NULL, NULL) != 0)
   {
     return -1;
   }
