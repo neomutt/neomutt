@@ -320,33 +320,6 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
 }
 
 /**
- * mutt_get_field - Ask the user for a string
- * @param[in]  field    Prompt
- * @param[in]  buf      Buffer for the result
- * @param[in]  buflen   Length of buffer
- * @param[in]  complete Flags, see #CompletionFlags
- * @param[in]  multiple Allow multiple selections
- * @param[out] files    List of files selected
- * @param[out] numfiles Number of files selected
- * @retval 1  Redraw the screen and call the function again
- * @retval 0  Selection made
- * @retval -1 Aborted
- */
-int mutt_get_field(const char *field, char *buf, size_t buflen,
-                   CompletionFlags complete, bool multiple, char ***files, int *numfiles)
-{
-  if (!buf)
-    return -1;
-
-  struct Buffer tmp = {
-    .data = buf,
-    .dptr = buf + mutt_str_len(buf),
-    .dsize = buflen,
-  };
-  return mutt_buffer_get_field(field, &tmp, complete, multiple, NULL, files, numfiles);
-}
-
-/**
  * mutt_get_field_unbuffered - Ask the user for a string (ignoring macro buffer)
  * @param msg    Prompt
  * @param buf    Buffer for the result
