@@ -277,7 +277,7 @@ static int smtp_data(struct SmtpAccountData *adata, const char *msgfile)
       mutt_file_fclose(&fp);
       goto done;
     }
-    progress_update(progress, ftell(fp), -1);
+    progress_update(progress, MAX(0, ftell(fp)), -1);
   }
   if (!term && buflen &&
       (mutt_socket_send_d(adata->conn, "\r\n", MUTT_SOCK_LOG_FULL) == -1))
