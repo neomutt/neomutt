@@ -1334,6 +1334,7 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
   char *c = NULL;
   size_t linelen = 1024;
   char *line = mutt_mem_malloc(linelen);
+  bool matched = false;
 
   p->hdr_offset = ftello(fp);
 
@@ -1397,7 +1398,9 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
     else
     {
       if (mutt_rfc822_parse_line(env, NULL, line, c, false, false, false))
-        p->mime_headers = env;
+      {
+        matched = true;
+      }
     }
   }
   p->offset = ftello(fp); /* Mark the start of the real data */
@@ -1408,10 +1411,15 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
 
   FREE(&line);
 
-  if (p->mime_headers)
+  if (matched)
+  {
+    p->mime_headers = env;
     rfc2047_decode_envelope(p->mime_headers);
+  }
   else
+  {
     mutt_env_free(&env);
+  }
 
   return p;
 }
