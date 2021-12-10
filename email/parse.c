@@ -805,7 +805,8 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, const char *na
         if (e)
         {
           unsigned int ui = 0; // we don't want a negative number of lines
-          e->lines = MAX((mutt_str_atoui(body, &ui), ui), 0);
+          mutt_str_atoui(body, &ui);
+          e->lines = ui;
         }
 
         matched = true;
