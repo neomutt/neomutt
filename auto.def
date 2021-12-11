@@ -127,6 +127,7 @@ options {
   debug-graphviz=0          => "DEBUG: Enable Graphviz dump"
   debug-notify=0            => "DEBUG: Enable Notifications dump"
   debug-parse-test=0        => "DEBUG: Enable 'neomutt -T' for config testing"
+  debug-queue=0             => "DEBUG: Enable TAILQ debugging"
   debug-window=0            => "DEBUG: Enable windows dump"
 # Deprecated stuff
   with-ui:=deprecated       => "Deprecated"
@@ -150,11 +151,12 @@ foreach dep {with-ui with-slang} {
 if {1} {
   # Keep sorted, please.
   foreach opt {
-    asan autocrypt bdb coverage debug-backtrace debug-email debug-graphviz debug-notify
-    debug-parse-test debug-window doc everything fmemopen full-doc fuzzing gdbm gnutls
-    gpgme gss homespool idn idn2 include-path-in-cflags inotify kyotocabinet
-    lmdb locales-fix lua lz4 mixmaster nls notmuch pcre2 pgp pkgconf qdbm
-    rocksdb sasl smime sqlite ssl testing tdb tokyocabinet zlib zstd
+    asan autocrypt bdb coverage debug-backtrace debug-email debug-graphviz
+    debug-notify debug-parse-test debug-queue debug-window doc everything
+    fmemopen full-doc fuzzing gdbm gnutls gpgme gss homespool idn idn2
+    include-path-in-cflags inotify kyotocabinet lmdb locales-fix lua lz4
+    mixmaster nls notmuch pcre2 pgp pkgconf qdbm rocksdb sasl smime sqlite ssl
+    testing tdb tokyocabinet zlib zstd
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -1226,6 +1228,14 @@ if {[get-define want-debug-parse-test]} {
   define USE_DEBUG_PARSE_TEST 1
 }
 
+# TAILQ debugging
+if {[get-define want-debug-queue]} {
+  # Store the last 2 places the queue element or head was altered
+  define QUEUE_MACRO_DEBUG_TRACE
+  # Invalidated pointers will be set to 0xffffffffffffffff
+  define QUEUE_MACRO_DEBUG_TRASH
+}
+
 # Windows dump
 if {[get-define want-debug-window]} {
   define USE_DEBUG_WINDOW 1
@@ -1290,6 +1300,7 @@ set auto_rep {
   PACKAGE
   PKGDATADIR
   PKGDOCDIR
+  QUEUE_*
   SENDMAIL
   SUN_ATTACHMENT
   SYSCONFDIR
