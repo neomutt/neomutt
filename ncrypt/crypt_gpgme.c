@@ -1015,7 +1015,7 @@ static bool set_signer_from_address(gpgme_ctx_t ctx, const char *address, bool f
       gpgme_key_unref(key);
       gpgme_key_unref(key2);
       gpgme_release(listctx);
-      mutt_error(_("ambiguous specification of secret key '%s'\n"), address);
+      mutt_error(_("ambiguous specification of secret key '%s'"), address);
       return false;
     }
     else

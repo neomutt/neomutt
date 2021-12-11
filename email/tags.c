@@ -85,8 +85,7 @@ void driver_tags_add(struct TagList *list, char *new_tag)
   struct Tag *tn = mutt_mem_calloc(1, sizeof(struct Tag));
   tn->name = new_tag;
   tn->hidden = false;
-  if (new_tag_transformed)
-    tn->transformed = mutt_str_dup(new_tag_transformed);
+  tn->transformed = mutt_str_dup(new_tag_transformed);
 
   /* filter out hidden tags */
   const struct Slist *c_hidden_tags =

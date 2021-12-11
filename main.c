@@ -999,8 +999,7 @@ main
       goto main_curses; // TEST26: neomutt -s test (with auto_edit=yes)
     }
 
-    if (subject)
-      e->env->subject = mutt_str_dup(subject);
+    e->env->subject = mutt_str_dup(subject);
 
     if (draft_file)
     {

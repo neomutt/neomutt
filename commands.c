@@ -621,7 +621,7 @@ bool mutt_shell_escape(void)
   fflush(stdout);
   int rc = mutt_system(buf);
   if (rc == -1)
-    mutt_debug(LL_DEBUG1, "Error running \"%s\"", buf);
+    mutt_debug(LL_DEBUG1, "Error running \"%s\"\n", buf);
 
   const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
   if ((rc != 0) || c_wait_key)

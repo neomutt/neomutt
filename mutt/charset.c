@@ -739,8 +739,7 @@ int mutt_ch_check(const char *s, size_t slen, const char *from, const char *to)
   char *out = mutt_mem_malloc(outlen + 1);
   char *saved_out = out;
 
-  const size_t convlen =
-      iconv(cd, (ICONV_CONST char **) &s, &slen, &out, (size_t *) &outlen);
+  const size_t convlen = iconv(cd, (ICONV_CONST char **) &s, &slen, &out, &outlen);
   if (convlen == -1)
     rc = errno;
 

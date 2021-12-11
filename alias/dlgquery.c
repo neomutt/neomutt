@@ -320,8 +320,7 @@ static int query_run(char *s, bool verbose, struct AliasList *al,
       {
         alias->name = mutt_str_dup(p);
         p = strtok(NULL, "\t\n");
-        if (p)
-          alias->comment = mutt_str_dup(p);
+        alias->comment = mutt_str_dup(p);
       }
       TAILQ_INSERT_TAIL(al, alias, entries);
     }

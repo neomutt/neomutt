@@ -435,7 +435,7 @@ void pgp_class_invoke_import(const char *fname)
       cs_subset_string(NeoMutt->sub, "pgp_import_command");
   mutt_pgp_command(cmd, sizeof(cmd), &cctx, c_pgp_import_command);
   if (mutt_system(cmd) != 0)
-    mutt_debug(LL_DEBUG1, "Error running \"%s\"", cmd);
+    mutt_debug(LL_DEBUG1, "Error running \"%s\"\n", cmd);
 
   mutt_buffer_pool_release(&buf_fname);
 }
@@ -478,7 +478,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
     mutt_message(_("Fetching PGP key..."));
 
   if (mutt_system(cmd) != 0)
-    mutt_debug(LL_DEBUG1, "Error running \"%s\"", cmd);
+    mutt_debug(LL_DEBUG1, "Error running \"%s\"\n", cmd);
 
   if (!isendwin())
     mutt_clear_error();
