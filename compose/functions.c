@@ -1253,6 +1253,7 @@ static int op_compose_new_mime(struct ComposeSharedData *shared, int op)
 {
   int rc = IR_NO_ACTION;
   struct Buffer *fname = mutt_buffer_pool_get();
+  struct AttachPtr *ap = NULL;
 
   if ((mutt_buffer_get_field(_("New file: "), fname, MUTT_COMP_FILE, false,
                              NULL, NULL, NULL) != 0) ||
@@ -1289,13 +1290,12 @@ static int op_compose_new_mime(struct ComposeSharedData *shared, int op)
     mutt_buffer_pool_release(&fname);
     goto done;
   }
-  struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
+  ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
   /* Touch the file */
   FILE *fp = mutt_file_fopen(mutt_buffer_string(fname), "w");
   if (!fp)
   {
     mutt_error(_("Can't create file %s"), mutt_buffer_string(fname));
-    FREE(&ap);
     mutt_buffer_pool_release(&fname);
     goto done;
   }
@@ -1305,11 +1305,11 @@ static int op_compose_new_mime(struct ComposeSharedData *shared, int op)
   if (!ap->body)
   {
     mutt_error(_("What we have here is a failure to make an attachment"));
-    FREE(&ap);
     mutt_buffer_pool_release(&fname);
     goto done;
   }
   update_idx(shared->adata->menu, shared->adata->actx, ap);
+  ap = NULL; // shared->adata->actx has taken ownership
 
   struct AttachPtr *cur_att =
       current_attachment(shared->adata->actx, shared->adata->menu);
@@ -1328,6 +1328,7 @@ static int op_compose_new_mime(struct ComposeSharedData *shared, int op)
   rc = IR_SUCCESS;
 
 done:
+  FREE(&ap);
   mutt_buffer_pool_release(&fname);
   return rc;
 }
