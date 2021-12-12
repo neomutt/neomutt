@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2021-12-10 23:32+0000\n"
-"PO-Revision-Date: 2021-12-12 05:54+0000\n"
+"PO-Revision-Date: 2021-12-12 06:13+0000\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -2904,7 +2904,7 @@ msgstr "不能中断线索"
 
 #: index/functions.c:778
 msgid "Thread broken"
-msgstr "线索有误"
+msgstr "已拆分线索"
 
 #: index/functions.c:787
 msgid "Thread can't be broken, message is not part of a thread"
@@ -6519,9 +6519,8 @@ msgid "Error opening /dev/null"
 msgstr "打开 /dev/null 时出错"
 
 #: pattern/exec.c:210
-#, fuzzy
 msgid "Error checking length of temporary file"
-msgstr "错误。保留临时文件：%s"
+msgstr "获取临时文件大小时出错"
 
 #: pattern/exec.c:887
 msgid "error: server custom search only supported with IMAP"
@@ -6535,119 +6534,112 @@ msgstr "所有信件"
 #. L10N: Pattern Completion Menu description for ~b
 #: pattern/flags.c:47
 msgid "messages whose body matches EXPR"
-msgstr ""
+msgstr "正文匹配 EXPR 的信件"
 
 #. L10N: Pattern Completion Menu description for ~B
 #: pattern/flags.c:50
 msgid "messages whose body or headers match EXPR"
-msgstr ""
+msgstr "正文或头匹配 EXPR 的信件"
 
 #. L10N: Pattern Completion Menu description for ~c
 #: pattern/flags.c:53
 msgid "messages whose CC header matches EXPR"
-msgstr ""
+msgstr "CC 头匹配 EXPR 的信件"
 
 #. L10N: Pattern Completion Menu description for ~C
 #: pattern/flags.c:56
 msgid "messages whose recipient matches EXPR"
-msgstr ""
+msgstr "收件人匹配 EXPR 的信件"
 
 #. L10N: Pattern Completion Menu description for ~d
 #: pattern/flags.c:59
 msgid "messages sent in DATERANGE"
-msgstr ""
+msgstr "在 DATERANGE 范围内发送的信件"
 
 #. L10N: Pattern Completion Menu description for ~D
 #: pattern/flags.c:62
-#, fuzzy
 msgid "deleted messages"
-msgstr "没有要反删除的信件"
+msgstr "已删除的信件"
 
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:65
 msgid "messages whose Sender header matches EXPR"
-msgstr ""
+msgstr "Sender 头匹配 EXPR 的信件"
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:68
-#, fuzzy
 msgid "expired messages"
-msgstr "没有尚未读取的信件"
+msgstr "已过期的信件"
 
 #. L10N: Pattern Completion Menu description for ~f
 #: pattern/flags.c:71
 msgid "messages whose From header matches EXPR"
-msgstr ""
+msgstr "From 头匹配 EXPR 的信件"
 
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:74
-#, fuzzy
 msgid "flagged messages"
-msgstr "没有已标记的信件"
+msgstr "已标记的信件"
 
 #. L10N: Pattern Completion Menu description for ~g
 #: pattern/flags.c:77
-#, fuzzy
 msgid "cryptographically signed messages"
-msgstr "重新叫出一封被延迟寄出的信件"
+msgstr "已签名的信件"
 
 #. L10N: Pattern Completion Menu description for ~G
 #: pattern/flags.c:80
-#, fuzzy
 msgid "cryptographically encrypted messages"
-msgstr "无法解密加密信件"
+msgstr "已加密的信件"
 
 #. L10N: Pattern Completion Menu description for ~h
 #: pattern/flags.c:83
 msgid "messages whose header matches EXPR"
-msgstr ""
+msgstr "头匹配 EXPR 的信件"
 
 #. L10N: Pattern Completion Menu description for ~H
 #: pattern/flags.c:86
 msgid "messages whose spam tag matches EXPR"
-msgstr ""
+msgstr "spam tag 匹配 EXPR 的信件"
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:89
-#, fuzzy
 msgid "messages whose Message-ID matches EXPR"
-msgstr "通过信件 ID 获取信件"
+msgstr "信件 ID 匹配 EXPR 的信件"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:92
 msgid "messages whose Message-ID is included in the results returned from an external search program"
-msgstr ""
+msgstr "信件 ID 在外部搜索程序返回的结果中的信件"
 
 #. L10N: Pattern Completion Menu description for ~k
 #: pattern/flags.c:95
-#, fuzzy
 msgid "messages which contain PGP key"
-msgstr "信件热键"
+msgstr "包含 PGP 密钥的信件"
 
 #. L10N: Pattern Completion Menu description for ~l
 #: pattern/flags.c:98
 msgid "messages addressed to known mailing lists"
-msgstr ""
+msgstr "发送至已知邮件列表的信件"
 
 #. L10N: Pattern Completion Menu description for ~L
 #: pattern/flags.c:101
 msgid "messages whose From/Sender/To/CC matches EXPR"
-msgstr ""
+msgstr "From/Sender/To/CC 头匹配 EXPR 的信件"
 
 #. L10N: Pattern Completion Menu description for ~m
 #: pattern/flags.c:104
 msgid "messages whose number is in RANGE"
-msgstr ""
+msgstr "数字在 RANGE 范围内的信件"
 
 #. L10N: Pattern Completion Menu description for ~M
 #: pattern/flags.c:107
 msgid "messages with a Content-Type matching EXPR"
-msgstr ""
+msgstr "Content-Type 匹配 EXPR 的信件"
 
 #. L10N: Pattern Completion Menu description for ~n
 #: pattern/flags.c:110
 msgid "messages whose score is in RANGE"
-msgstr ""
+msgstr "分数在 RANGE 范围内的信件"
 
 #. L10N: Pattern Completion Menu description for ~N
 #: pattern/flags.c:113
@@ -6662,119 +6654,107 @@ msgstr "旧信件"
 #. L10N: Pattern Completion Menu description for ~p
 #: pattern/flags.c:119
 msgid "messages addressed to you"
-msgstr ""
+msgstr "发送给您的信件"
 
 #. L10N: Pattern Completion Menu description for ~P
 #: pattern/flags.c:122
-#, fuzzy
 msgid "messages from you"
-msgstr "信件热键"
+msgstr "您发送的信件"
 
 #. L10N: Pattern Completion Menu description for ~Q
 #: pattern/flags.c:125
 msgid "messages which have been replied to"
-msgstr ""
+msgstr "已回复的信件"
 
 #. L10N: Pattern Completion Menu description for ~r
 #: pattern/flags.c:128
 msgid "messages received in DATERANGE"
-msgstr ""
+msgstr "在 DATERANGE 期间收到的信件"
 
 #. L10N: Pattern Completion Menu description for ~R
 #: pattern/flags.c:131
-#, fuzzy
 msgid "already read messages"
-msgstr "没有尚未读取的信件"
+msgstr "已读的信件"
 
 #. L10N: Pattern Completion Menu description for ~s
 #: pattern/flags.c:134
 msgid "messages whose Subject header matches EXPR"
-msgstr ""
+msgstr "Subject 头匹配 EXPR 的信件"
 
 #. L10N: Pattern Completion Menu description for ~S
 #: pattern/flags.c:137
-#, fuzzy
 msgid "superseded messages"
-msgstr "没有尚未读取的信件"
+msgstr "被取代的信件"
 
 #. L10N: Pattern Completion Menu description for ~t
 #: pattern/flags.c:140
 msgid "messages whose To header matches EXPR"
-msgstr ""
+msgstr "To 头匹配 EXPR 的信件"
 
 #. L10N: Pattern Completion Menu description for ~T
 #: pattern/flags.c:143
-#, fuzzy
 msgid "tagged messages"
-msgstr "没有已标记的信件"
+msgstr "已标记的信件"
 
 #. L10N: Pattern Completion Menu description for ~u
 #: pattern/flags.c:146
-#, fuzzy
 msgid "messages addressed to subscribed mailing lists"
-msgstr "回复给指定的邮件列表"
+msgstr "发送至已订阅邮件列表的信件"
 
 #. L10N: Pattern Completion Menu description for ~U
 #: pattern/flags.c:149
-#, fuzzy
 msgid "unread messages"
-msgstr "没有尚未读取的信件"
+msgstr "未读信件"
 
 #. L10N: Pattern Completion Menu description for ~v
 #: pattern/flags.c:152
-#, fuzzy
 msgid "messages in collapsed threads"
-msgstr "此线索中没有更多信件"
+msgstr "折叠线索中的信件"
 
 #. L10N: Pattern Completion Menu description for ~V
 #: pattern/flags.c:155
-#, fuzzy
 msgid "cryptographically verified messages"
-msgstr "切换已读信件的显示"
+msgstr "已验证的信件"
 
 #. L10N: Pattern Completion Menu description for ~w
 #: pattern/flags.c:159
-#, fuzzy
 msgid "newsgroups matching EXPR"
-msgstr "没有新闻组与掩码相符"
+msgstr "匹配 EXPR 的新闻组"
 
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:163
 msgid "messages whose References header matches EXPR"
-msgstr ""
+msgstr "References 头匹配 EXPR 的信件"
 
 #. L10N: Pattern Completion Menu description for ~X
 #: pattern/flags.c:166
-#, fuzzy
 msgid "messages with RANGE attachments"
-msgstr "显示 MIME 附件"
+msgstr "附件在 RANGE 范围内的信件"
 
 #. L10N: Pattern Completion Menu description for ~y
 #: pattern/flags.c:169
 msgid "messages whose X-Label header matches EXPR"
-msgstr ""
+msgstr "X-Label 头匹配 EXPR 的信件"
 
 #. L10N: Pattern Completion Menu description for ~Y
 #: pattern/flags.c:172
 msgid "messages whose tags match EXPR"
-msgstr ""
+msgstr "标签匹配 EXPR 的信件"
 
 #. L10N: Pattern Completion Menu description for ~z
 #: pattern/flags.c:175
 msgid "messages whose size is in RANGE"
-msgstr ""
+msgstr "大小在 RANGE 范围内的信件"
 
 #. L10N: Pattern Completion Menu description for ~=
 #: pattern/flags.c:178
-#, fuzzy
 msgid "duplicated messages"
-msgstr "没有要反删除的信件"
+msgstr "重复的信件"
 
 #. L10N: Pattern Completion Menu description for ~$
 #: pattern/flags.c:181
-#, fuzzy
 msgid "unreferenced messages"
-msgstr "没有尚未读取的信件"
+msgstr "没有被引用的信件"
 
 #. L10N: Pattern Completion Menu description for ~#
 #: pattern/flags.c:184
