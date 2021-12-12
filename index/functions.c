@@ -648,14 +648,20 @@ static int op_jump(struct IndexSharedData *shared, struct IndexPrivateData *priv
                       MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
       (buf[0] == '\0'))
   {
-    mutt_error(_("Nothing to do"));
+    mutt_message(_("Nothing to do"));
   }
   else if (!mutt_str_atoi_full(buf, &msg_num))
-    mutt_error(_("Argument must be a message number"));
+  {
+    mutt_warning(_("Argument must be a message number"));
+  }
   else if ((msg_num < 1) || (msg_num > shared->mailbox->msg_count))
-    mutt_error(_("Invalid message number"));
+  {
+    mutt_warning(_("Invalid message number"));
+  }
   else if (!shared->mailbox->emails[msg_num - 1]->visible)
-    mutt_error(_("That message is not visible"));
+  {
+    mutt_warning(_("That message is not visible"));
+  }
   else
   {
     struct Email *e = shared->mailbox->emails[msg_num - 1];
