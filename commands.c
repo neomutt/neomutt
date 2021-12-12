@@ -119,13 +119,13 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
 
   rc = mutt_get_field(prompt, buf, sizeof(buf), MUTT_COMP_ALIAS, false, NULL, NULL);
   if (rc || (buf[0] == '\0'))
-    return;
+    goto done;
 
   mutt_addrlist_parse2(&al, buf);
   if (TAILQ_EMPTY(&al))
   {
     mutt_error(_("Error parsing address"));
-    return;
+    goto done;
   }
 
   mutt_expand_aliases(&al);
@@ -134,8 +134,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   {
     mutt_error(_("Bad IDN: '%s'"), err);
     FREE(&err);
-    mutt_addrlist_clear(&al);
-    return;
+    goto done;
   }
 
   buf[0] = '\0';
@@ -158,10 +157,9 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   const enum QuadOption c_bounce = cs_subset_quad(NeoMutt->sub, "bounce");
   if (query_quadoption(c_bounce, prompt) != MUTT_YES)
   {
-    mutt_addrlist_clear(&al);
     msgwin_clear_text();
     mutt_message(ngettext("Message not bounced", "Messages not bounced", msg_count));
-    return;
+    goto done;
   }
 
   msgwin_clear_text();
@@ -183,10 +181,12 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
       break;
   }
 
-  mutt_addrlist_clear(&al);
   /* If no error, or background, display message. */
   if ((rc == 0) || (rc == S_BKG))
     mutt_message(ngettext("Message bounced", "Messages bounced", msg_count));
+
+done:
+  mutt_addrlist_clear(&al);
 }
 
 /**
