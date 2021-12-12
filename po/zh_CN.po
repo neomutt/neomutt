@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2021-12-10 23:32+0000\n"
-"PO-Revision-Date: 2021-12-12 06:13+0000\n"
+"PO-Revision-Date: 2021-12-12 06:27+0000\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -1151,9 +1151,8 @@ msgstr "正在复制到 %s..."
 
 #. L10N: Message when an index tagged save operation fails for some reason
 #: commands.c:1055
-#, fuzzy
 msgid "Error saving tagged messages"
-msgstr "打印已标记的信件？"
+msgstr "无法保存标记的信件"
 
 #. L10N: Message when an index/pager save operation fails for some reason
 #: commands.c:1060
@@ -1162,9 +1161,8 @@ msgstr "保存信件出错"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
 #: commands.c:1067
-#, fuzzy
 msgid "Error copying tagged messages"
-msgstr "正在复制 %d 封信件到 %s ..."
+msgstr "无法复制标记的信件"
 
 #. L10N: Message when an index/pager copy operation fails for some reason
 #: commands.c:1072
@@ -2172,35 +2170,35 @@ msgstr "设定标记"
 
 #: gui/curs_lib.c:88
 msgid "Complete"
-msgstr "完成"
+msgstr "自动补全"
 
 #: gui/curs_lib.c:89
 msgid "Hist Up"
-msgstr ""
+msgstr "上一条历史"
 
 #: gui/curs_lib.c:90
 msgid "Hist Down"
-msgstr ""
+msgstr "下一条历史"
 
 #: gui/curs_lib.c:91
 msgid "Hist Search"
-msgstr "搜索"
+msgstr "搜索历史"
 
 #: gui/curs_lib.c:92
 msgid "Begin Line"
-msgstr ""
+msgstr "跳到行首"
 
 #: gui/curs_lib.c:93
 msgid "End Line"
-msgstr ""
+msgstr "跳到行末"
 
 #: gui/curs_lib.c:94
 msgid "Kill Line"
-msgstr ""
+msgstr "删除行"
 
 #: gui/curs_lib.c:95
 msgid "Kill Word"
-msgstr ""
+msgstr "删除词"
 
 #: gui/curs_lib.c:410
 msgid "Exit NeoMutt?"
@@ -2908,7 +2906,7 @@ msgstr "已拆分线索"
 
 #: index/functions.c:787
 msgid "Thread can't be broken, message is not part of a thread"
-msgstr "无法打破线索，信件不是该线索的一部分"
+msgstr "无法拆分线索，信件不是该线索的一部分"
 
 #: index/functions.c:813
 msgid "Open mailbox in read-only mode"
@@ -3168,7 +3166,7 @@ msgstr "无可见信件"
 
 #: index/index.c:96
 msgid "Changing threaded display should prefer $use_threads over $sort"
-msgstr ""
+msgstr "建议使用 $use_threads 而不是 $sort 控制信件线索的展示"
 
 #: init.c:217
 #, c-format
@@ -3790,7 +3788,7 @@ msgstr "SSL 不可用，无法连接到 %s"
 #: mutt_thread.c:121
 #, c-format
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
-msgstr ""
+msgstr "%s 中 'threads' 不能和 'last-' 前缀一同使用"
 
 #: mutt_thread.c:1351
 msgid "Parent message is not available"
@@ -6481,15 +6479,15 @@ msgstr "PATTERN"
 
 #: pattern/dlgpattern.c:261
 msgid "messages in threads containing messages matching PATTERN"
-msgstr ""
+msgstr "包含匹配 PATTERN 的信件的线索中所有信件"
 
 #: pattern/dlgpattern.c:270
 msgid "messages whose immediate parent matches PATTERN"
-msgstr ""
+msgstr "直接父信件匹配 PATTERN 的信件"
 
 #: pattern/dlgpattern.c:279
 msgid "messages having an immediate child matching PATTERN"
-msgstr ""
+msgstr "直接子信件匹配 PATTERN 的信件"
 
 #. L10N: One of the crypt pattern operators: ~g, ~G, ~k, ~V
 #. was invoked when NeoMutt was compiled without crypto support.
@@ -6497,7 +6495,7 @@ msgstr ""
 #: pattern/exec.c:94
 #, c-format
 msgid "Pattern operator '~%c' is disabled"
-msgstr ""
+msgstr "模式操作符 '~%c' 不可用"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
@@ -6758,14 +6756,13 @@ msgstr "没有被引用的信件"
 
 #. L10N: Pattern Completion Menu description for ~#
 #: pattern/flags.c:184
-#, fuzzy
 msgid "broken threads"
-msgstr "没有更多的线索"
+msgstr "拆分的线索"
 
 #. L10N: Pattern Completion Menu description for =/
 #: pattern/flags.c:187
 msgid "IMAP custom server-side search for STRING"
-msgstr ""
+msgstr "IMAP 服务器端自定义搜索 STRING"
 
 #: pattern/pattern.c:261 pattern/pattern.c:367 pattern/pattern.c:534 pattern/pattern.c:690
 msgid "Compiling search pattern..."
