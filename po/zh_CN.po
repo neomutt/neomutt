@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2021-12-10 23:32+0000\n"
-"PO-Revision-Date: 2021-12-12 05:17+0000\n"
+"PO-Revision-Date: 2021-12-12 05:54+0000\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -108,11 +108,11 @@ msgstr "反删除"
 
 #: alias/dlgalias.c:100 alias/dlgquery.c:105
 msgid "Sort"
-msgstr ""
+msgstr "排序"
 
 #: alias/dlgalias.c:101 alias/dlgquery.c:106
 msgid "Rev-Sort"
-msgstr ""
+msgstr "反向排序"
 
 #: alias/dlgalias.c:102 history/dlghistory.c:74 ncrypt/dlggpgme.c:104 ncrypt/dlgpgp.c:99 ncrypt/dlgsmime.c:75
 #: pattern/dlgpattern.c:100
@@ -137,22 +137,21 @@ msgstr "您没有别名信息"
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/dlgalias.c:362 alias/dlgquery.c:564
 msgid "Rev-Sort (a)lias, a(d)dress or (u)nsorted?"
-msgstr ""
+msgstr "按别名(a)、地址(d)反向排序或不排序(u)？"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: alias/dlgalias.c:364 alias/dlgquery.c:566
 msgid "Sort (a)lias, a(d)dress or (u)nsorted?"
-msgstr ""
+msgstr "按别名(a)、地址(d)排序或不排序(u)？"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/dlgalias.c:366 alias/dlgquery.c:568
 msgid "adu"
-msgstr ""
+msgstr "adu"
 
 #: alias/dlgalias.c:410 alias/dlgquery.c:613
-#, fuzzy
 msgid "Limit to addresses matching: "
-msgstr "限制到符合此模式的信件："
+msgstr "限制到符合此地址的信件："
 
 #: alias/dlgquery.c:102 index/dlg_index.c:108
 msgid "Mail"
@@ -478,7 +477,7 @@ msgstr "Autocrypt 不可用"
 #: autocrypt/autocrypt.c:616
 #, c-format
 msgid "Autocrypt is not enabled for %s"
-msgstr ""
+msgstr "帐号 %s 未启用 autocrypt"
 
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
@@ -917,7 +916,7 @@ msgstr "无效的信件头域"
 #: command_parse.c:710
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
-msgstr ""
+msgstr "'%s' 命令不能使用 'inv', 'no', '&' 或 '?'"
 
 #: command_parse.c:744 command_parse.c:888 command_parse.c:998
 #, c-format
@@ -926,38 +925,38 @@ msgstr "%s：未知的变量"
 
 #: command_parse.c:760 command_parse.c:1086
 msgid "Can't use a prefix when querying a variable"
-msgstr ""
+msgstr "查询变量时无法使用前缀"
 
 #: command_parse.c:766 command_parse.c:1066 command_parse.c:1080
 #, c-format
 msgid "Can't query a variable with the '%s' command"
-msgstr ""
+msgstr "无法使用 '%s' 命令查询变量"
 
 #: command_parse.c:780
 msgid "Can't use prefix when incrementing or decrementing a variable"
-msgstr ""
+msgstr "变量自增或自减时无法使用前缀"
 
 #: command_parse.c:786 command_parse.c:817
 #, c-format
 msgid "Can't set a variable with the '%s' command"
-msgstr ""
+msgstr "无法使用 '%s' 命令设置变量"
 
 #: command_parse.c:797
 msgid "Can't decrement a my_ variable"
-msgstr ""
+msgstr "无法自减一个 my_ 变量"
 
 #: command_parse.c:811
 msgid "Can't use prefix when setting a variable"
-msgstr ""
+msgstr "设置变量时无法使用前缀"
 
 #: command_parse.c:830
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
-msgstr ""
+msgstr "前缀 'no' 和 'inv' 只能用于布尔值和四项值变量"
 
 #: command_parse.c:835
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
-msgstr ""
+msgstr "命令 '%s' 只能用于布尔值和四项值变量"
 
 #: command_parse.c:1118 command_parse.c:1126
 #, c-format
@@ -1089,9 +1088,8 @@ msgstr "Shell 指令："
 
 #. L10N: Progress meter message when copying tagged messages
 #: commands.c:834
-#, fuzzy
 msgid "Copying tagged messages..."
-msgstr "正在复制 %d 封信件到 %s ..."
+msgstr "正在复制标记的信件..."
 
 #: commands.c:838
 msgid "Copy tagged to mailbox"
@@ -1119,9 +1117,8 @@ msgstr "解码复制到信箱"
 
 #. L10N: Progress meter message when saving tagged messages
 #: commands.c:853
-#, fuzzy
 msgid "Saving tagged messages..."
-msgstr "打印已标记的信件？"
+msgstr "正在保存标记的信件..."
 
 #: commands.c:857
 msgid "Save tagged to mailbox"
@@ -1160,9 +1157,8 @@ msgstr "打印已标记的信件？"
 
 #. L10N: Message when an index/pager save operation fails for some reason
 #: commands.c:1060
-#, fuzzy
 msgid "Error saving message"
-msgstr "发送信件出错"
+msgstr "保存信件出错"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
 #: commands.c:1067
@@ -1172,9 +1168,8 @@ msgstr "正在复制 %d 封信件到 %s ..."
 
 #. L10N: Message when an index/pager copy operation fails for some reason
 #: commands.c:1072
-#, fuzzy
 msgid "Error copying message"
-msgstr "重发信件出错"
+msgstr "复制信件出错"
 
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
 #: commands.c:1122
@@ -1328,7 +1323,7 @@ msgstr "X-Comment-To: "
 
 #: compose/compose.c:133
 msgid "Headers: "
-msgstr ""
+msgstr "信件头："
 
 #: compose/compose.c:139 compose/compose.c:158
 msgid "Send"
@@ -2177,7 +2172,7 @@ msgstr "设定标记"
 
 #: gui/curs_lib.c:88
 msgid "Complete"
-msgstr ""
+msgstr "完成"
 
 #: gui/curs_lib.c:89
 msgid "Hist Up"
@@ -2188,7 +2183,6 @@ msgid "Hist Down"
 msgstr ""
 
 #: gui/curs_lib.c:91
-#, fuzzy
 msgid "Hist Search"
 msgstr "搜索"
 
@@ -2623,7 +2617,7 @@ msgstr "到 %s 的连接已超时"
 #: imap/config.c:57 pop/config.c:57 send/config.c:75
 #, c-format
 msgid "Option %s: %s is not a valid authenticator"
-msgstr ""
+msgstr "选项 %s: %s 不是一个合法的认证方式"
 
 #: imap/imap.c:105
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
@@ -2740,9 +2734,8 @@ msgstr "正在取回标记更新..."
 #. sanity check.  If that fails, Mutt reopens the mailbox using a normal
 #. download.
 #: imap/message.c:1031
-#, fuzzy
 msgid "QRESYNC failed.  Reopening mailbox."
-msgstr "无法重开信箱"
+msgstr "QRESYNC 失败。正在重新打开信箱。"
 
 #: imap/message.c:1101
 msgid "Unable to fetch headers from this IMAP server version"
@@ -3199,7 +3192,7 @@ msgstr "%s：未知命令"
 #: init.c:1088
 #, c-format
 msgid "Config variable '%s' is deprecated"
-msgstr ""
+msgstr "配置变量 '%s' 已废弃"
 
 #: keymap.c:399
 #, c-format
@@ -3282,9 +3275,8 @@ msgstr "在 \"%2$s\" 的第 %3$d 行发现类型 %1$s 为错误的格式纪录"
 #. unset mailcap_path
 #.
 #: mailcap.c:500
-#, fuzzy
 msgid "Neither mailcap_path nor MAILCAPS specified"
-msgstr "没有指定 mailcap 路径"
+msgstr "没有指定 mailcap_path 或 MAILCAPS"
 
 #: mailcap.c:524
 #, c-format
@@ -3429,7 +3421,7 @@ msgstr "  -D            以 '键=值' 对的格式显示所有配置变量"
 
 #: main.c:299
 msgid "  -D -O         Like -D, but show one-liner documentation"
-msgstr ""
+msgstr "  -D -O         类似 -D，但显示单行文档"
 
 #: main.c:300
 msgid "  -D -S         Like -D, but hide the value of sensitive variables"
@@ -3500,12 +3492,13 @@ msgid "  -p            Resume a prior postponed message, if any"
 msgstr "  -p            继续一个之前延迟寄送的信件，如果有"
 
 #: main.c:317
-#, fuzzy
 msgid ""
 "  -Q <variable> Query a configuration variable and print its value to stdout\n"
 "                (after the config has been read and any commands executed)\n"
 "                Add -O for one-liner documentation"
-msgstr "  -Q <变量>     查询一个配置变量（在读取配置和执行命令后）"
+msgstr ""
+"  -Q <变量>     查询一个配置变量（在读取配置和执行命令后）\n"
+"                加 -O 以显示单行文档"
 
 #: main.c:320
 msgid "  -R            Open mailbox in read-only mode"
@@ -3691,9 +3684,9 @@ msgid "You can't scroll down farther"
 msgstr "您无法再向下滚动了"
 
 #: mutt/file.c:674
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to seek file: %s"
-msgstr "重命名文件失败"
+msgstr "读文件失败：%s"
 
 #: mutt/file.c:1236
 msgid "Timeout exceeded while attempting fcntl lock"
@@ -3878,9 +3871,8 @@ msgstr "无法打开回收站"
 
 #. L10N: Displayed if appending to $trash fails when syncing or closing a mailbox
 #: mx.c:586
-#, fuzzy
 msgid "Unable to append to trash folder"
-msgstr "无法打开临时文件"
+msgstr "无法附加到垃圾箱"
 
 #: mx.c:648
 msgid "Mark all articles read?"
@@ -5137,14 +5129,13 @@ msgstr "新闻组 %s 已经从服务器上被移除"
 #: notmuch/config.c:61
 #, c-format
 msgid "nm_default_url must be: notmuch://<absolute path> . Current: %s"
-msgstr ""
+msgstr "nm_default_url 必须为: notmuch://<absolute path> 。目前是：%s"
 
 #. L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
 #. They should not be translated.
 #: notmuch/config.c:89 notmuch/notmuch.c:317
-#, fuzzy
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
-msgstr "非法的 nm_query_window_timebase 值(合法值是：小时，天，周，月或者年)"
+msgstr "非法的 nm_query_window_timebase 值(合法值是：小时，天，周，月或年)"
 
 #: notmuch/db.c:133
 #, c-format
@@ -5187,7 +5178,7 @@ msgstr "无法解析限制：%s"
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
-msgstr[0] ""
+msgstr[0] "由于来自外部的信箱修改，无法同步 %d 条信件"
 
 #: notmuch/notmuch.c:2382
 msgid "Can't write to virtual folder"
@@ -5228,12 +5219,11 @@ msgstr "切换子部分的显示"
 
 #: opcodes.h:44
 msgid "force viewing of attachment using mailcap"
-msgstr "强迫使用 mailcap 查看附件"
+msgstr "强制使用 mailcap 查看附件"
 
 #: opcodes.h:45
-#, fuzzy
 msgid "view attachment in pager using copiousoutput mailcap"
-msgstr "强迫使用 mailcap 查看附件"
+msgstr "使用 copiousoutput mailcap 和分页器查看附件"
 
 #: opcodes.h:46
 msgid "view attachment as text"
@@ -5924,9 +5914,8 @@ msgid "skip beyond quoted text"
 msgstr "跳过引用"
 
 #: opcodes.h:218
-#, fuzzy
 msgid "jump to first line after headers"
-msgstr "跳到下一个线索"
+msgstr "跳到信件头后的第一行"
 
 #: opcodes.h:219
 msgid "jump to the top of the message"
@@ -6197,9 +6186,8 @@ msgid "shifts virtual folder time window forwards"
 msgstr "向前移动虚拟文件夹时间窗口"
 
 #: opcodes.h:297
-#, fuzzy
 msgid "resets virtual folder time window to the present"
-msgstr "向前移动虚拟文件夹时间窗口"
+msgstr "重置虚拟文件夹时间窗口到当前时间"
 
 #: opcodes.h:303
 msgid "check for classic PGP"
@@ -6311,7 +6299,7 @@ msgstr "现在正显示帮助"
 #. display some kind of message in case it somehow occurs.)
 #: pager/functions.c:881
 msgid "No text past headers"
-msgstr ""
+msgstr "信件头后没有文本"
 
 #: pager/functions.c:941 pager/functions.c:981
 msgid "No more unquoted text after quoted text"
@@ -6450,14 +6438,14 @@ msgstr "缺少参数"
 #. L10N: Pattern completion menu title
 #: pattern/dlgpattern.c:197
 msgid "Patterns"
-msgstr ""
+msgstr "模式"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a regular expression
 #.
 #: pattern/dlgpattern.c:213
 msgid "EXPR"
-msgstr ""
+msgstr "EXPR"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a numeric range.
@@ -6465,7 +6453,7 @@ msgstr ""
 #.
 #: pattern/dlgpattern.c:221
 msgid "RANGE"
-msgstr ""
+msgstr "RANGE"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a date range
@@ -6473,7 +6461,7 @@ msgstr ""
 #.
 #: pattern/dlgpattern.c:228
 msgid "DATERANGE"
-msgstr ""
+msgstr "DATERANGE"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a query
@@ -6481,7 +6469,7 @@ msgstr ""
 #.
 #: pattern/dlgpattern.c:235
 msgid "QUERY"
-msgstr ""
+msgstr "QUERY"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a nested pattern.
@@ -6489,7 +6477,7 @@ msgstr ""
 #.
 #: pattern/dlgpattern.c:253
 msgid "PATTERN"
-msgstr ""
+msgstr "PATTERN"
 
 #: pattern/dlgpattern.c:261
 msgid "messages in threads containing messages matching PATTERN"
