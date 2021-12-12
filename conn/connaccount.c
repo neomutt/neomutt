@@ -64,7 +64,10 @@ int mutt_account_getuser(struct ConnAccount *cac)
     /* L10N: Example: Username at myhost.com */
     snprintf(prompt, sizeof(prompt), _("Username at %s: "), cac->host);
     mutt_str_copy(cac->user, Username, sizeof(cac->user));
-    if (mutt_get_field_unbuffered(prompt, cac->user, sizeof(cac->user), MUTT_COMP_NO_FLAGS))
+
+    const int rc = mutt_get_field_unbuffered(prompt, cac->user, sizeof(cac->user),
+                                             MUTT_COMP_NO_FLAGS);
+    if (rc != 0)
       return -1;
   }
 
@@ -126,7 +129,10 @@ int mutt_account_getpass(struct ConnAccount *cac)
     snprintf(prompt, sizeof(prompt), _("Password for %s@%s: "),
              (cac->flags & MUTT_ACCT_LOGIN) ? cac->login : cac->user, cac->host);
     cac->pass[0] = '\0';
-    if (mutt_get_field_unbuffered(prompt, cac->pass, sizeof(cac->pass), MUTT_COMP_PASS))
+
+    const int rc = mutt_get_field_unbuffered(prompt, cac->pass,
+                                             sizeof(cac->pass), MUTT_COMP_PASS);
+    if (rc != 0)
       return -1;
   }
 

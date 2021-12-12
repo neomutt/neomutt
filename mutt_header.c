@@ -126,6 +126,7 @@ int mutt_label_message(struct Mailbox *m, struct EmailList *el)
   if (!m || !el)
     return 0;
 
+  int changed = 0;
   char buf[1024] = { 0 };
 
   struct EmailNode *en = STAILQ_FIRST(el);
@@ -139,7 +140,7 @@ int mutt_label_message(struct Mailbox *m, struct EmailList *el)
   if (mutt_get_field("Label: ", buf, sizeof(buf),
                      MUTT_COMP_LABEL /* | MUTT_COMP_CLEAR */, false, NULL, NULL) != 0)
   {
-    return 0;
+    goto done;
   }
 
   char *new_label = buf;
@@ -147,7 +148,6 @@ int mutt_label_message(struct Mailbox *m, struct EmailList *el)
   if (*new_label == '\0')
     new_label = NULL;
 
-  int changed = 0;
   STAILQ_FOREACH(en, el, entries)
   {
     if (label_message(m, en->email, new_label))
@@ -157,6 +157,7 @@ int mutt_label_message(struct Mailbox *m, struct EmailList *el)
     }
   }
 
+done:
   return changed;
 }
 

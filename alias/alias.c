@@ -371,11 +371,14 @@ struct AddressList *mutt_get_address(struct Envelope *env, const char **prefix)
  */
 void alias_create(struct AddressList *al, const struct ConfigSubset *sub)
 {
+  char buf[1024];
+  char fixed[1024];
+  char prompt[2048];
+  char tmp[1024] = { 0 };
   struct Address *addr = NULL;
-  char buf[1024], tmp[1024] = { 0 }, prompt[2048];
   char *pc = NULL;
   char *err = NULL;
-  char fixed[1024];
+  FILE *fp_alias = NULL;
 
   if (al)
   {
@@ -398,14 +401,14 @@ retry_name:
                       false, NULL, NULL) != 0) ||
       (buf[0] == '\0'))
   {
-    return;
+    goto done;
   }
 
   /* check to see if the user already has an alias defined */
   if (alias_lookup(buf))
   {
     mutt_error(_("You already have an alias defined with that name"));
-    return;
+    goto done;
   }
 
   if (check_alias_name(buf, fixed, sizeof(fixed)))
@@ -416,7 +419,7 @@ retry_name:
         mutt_str_copy(buf, fixed, sizeof(buf));
         goto retry_name;
       case MUTT_ABORT:
-        return;
+        goto done;
       default:; // do nothing
     }
   }
@@ -440,7 +443,7 @@ retry_name:
         (buf[0] == '\0'))
     {
       alias_free(&alias);
-      return;
+      goto done;
     }
 
     mutt_addrlist_parse(&alias->addr, buf);
@@ -463,7 +466,7 @@ retry_name:
                      false, NULL, NULL) != 0)
   {
     alias_free(&alias);
-    return;
+    goto done;
   }
   mutt_str_replace(&TAILQ_FIRST(&alias->addr)->personal, buf);
 
@@ -488,7 +491,7 @@ retry_name:
   if (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES)
   {
     alias_free(&alias);
-    return;
+    goto done;
   }
 
   alias_reverse_add(alias);
@@ -500,31 +503,36 @@ retry_name:
   if (mutt_get_field(_("Save to file: "), buf, sizeof(buf),
                      MUTT_COMP_FILE | MUTT_COMP_CLEAR, false, NULL, NULL) != 0)
   {
-    return;
+    goto done;
   }
   mutt_expand_path(buf, sizeof(buf));
-  FILE *fp_alias = fopen(buf, "a+");
+  fp_alias = fopen(buf, "a+");
   if (!fp_alias)
   {
     mutt_perror(buf);
-    return;
+    goto done;
   }
 
   /* terminate existing file with \n if necessary */
   if (!mutt_file_seek(fp_alias, 0, SEEK_END))
-    goto fseek_err;
+  {
+    goto done;
+  }
   if (ftell(fp_alias) > 0)
   {
     if (!mutt_file_seek(fp_alias, -1, SEEK_CUR))
-      goto fseek_err;
+    {
+      goto done;
+    }
     if (fread(buf, 1, 1, fp_alias) != 1)
     {
       mutt_perror(_("Error reading alias file"));
-      mutt_file_fclose(&fp_alias);
-      return;
+      goto done;
     }
     if (!mutt_file_seek(fp_alias, 0, SEEK_END))
-      goto fseek_err;
+    {
+      goto done;
+    }
     if (buf[0] != '\n')
       fputc('\n', fp_alias);
   }
@@ -547,9 +555,7 @@ retry_name:
   else
     mutt_message(_("Alias added"));
 
-  return;
-
-fseek_err:
+done:
   mutt_file_fclose(&fp_alias);
 }
 

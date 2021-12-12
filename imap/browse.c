@@ -386,11 +386,12 @@ int imap_mailbox_create(const char *path)
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
   char name[1024];
+  int rc = -1;
 
   if (imap_adata_find(path, &adata, &mdata) < 0)
   {
     mutt_debug(LL_DEBUG1, "Couldn't find open connection to %s\n", path);
-    goto err;
+    goto done;
   }
 
   /* append a delimiter if necessary */
@@ -404,26 +405,26 @@ int imap_mailbox_create(const char *path)
   if (mutt_get_field(_("Create mailbox: "), name, sizeof(name), MUTT_COMP_FILE,
                      false, NULL, NULL) < 0)
   {
-    goto err;
+    goto done;
   }
 
   if (mutt_str_len(name) == 0)
   {
     mutt_error(_("Mailbox must have a name"));
-    goto err;
+    goto done;
   }
 
   if (imap_create_mailbox(adata, name) < 0)
-    goto err;
+    goto done;
 
   imap_mdata_free((void *) &mdata);
   mutt_message(_("Mailbox created"));
   mutt_sleep(0);
-  return 0;
+  rc = 0;
 
-err:
+done:
   imap_mdata_free((void *) &mdata);
-  return -1;
+  return rc;
 }
 
 /**

@@ -700,6 +700,7 @@ int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
  */
 int mutt_sasl_interact(sasl_interact_t *interaction)
 {
+  int rc = SASL_OK;
   char prompt[128];
   char resp[128];
 
@@ -712,7 +713,8 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
     if (OptNoCurses || mutt_get_field(prompt, resp, sizeof(resp),
                                       MUTT_COMP_NO_FLAGS, false, NULL, NULL))
     {
-      return SASL_FAIL;
+      rc = SASL_FAIL;
+      break;
     }
 
     interaction->len = mutt_str_len(resp) + 1;
@@ -723,7 +725,7 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
     interaction++;
   }
 
-  return SASL_OK;
+  return rc;
 }
 
 /**

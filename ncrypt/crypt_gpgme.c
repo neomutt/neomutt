@@ -3771,7 +3771,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
   struct CryptKeyInfo *key = NULL;
   char resp[128];
   struct CryptCache *l = NULL;
-  int dummy;
+  int dummy = 0;
 
   if (!forced_valid)
     forced_valid = &dummy;
@@ -3797,7 +3797,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
     resp[0] = '\0';
     if (mutt_get_field(tag, resp, sizeof(resp), MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0)
     {
-      return NULL;
+      goto done;
     }
 
     if (whatfor)
@@ -3816,11 +3816,13 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
 
     key = crypt_getkeybystr(resp, abilities, app, forced_valid);
     if (key)
-      return key;
+      goto done;
 
     mutt_error(_("No matching keys found for \"%s\""), resp);
   }
-  /* not reached */
+
+done:
+  return key;
 }
 
 /**

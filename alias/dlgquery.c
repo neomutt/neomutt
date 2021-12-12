@@ -278,7 +278,7 @@ static int query_tag(struct Menu *menu, int sel, int act)
  * @retval  0 Success
  * @retval -1 Error
  */
-static int query_run(char *s, bool verbose, struct AliasList *al,
+static int query_run(const char *s, bool verbose, struct AliasList *al,
                      const struct ConfigSubset *sub)
 {
   FILE *fp = NULL;
@@ -692,17 +692,17 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
  */
 int query_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
 {
+  struct AliasList al = TAILQ_HEAD_INITIALIZER(al);
   const char *const query_command = cs_subset_string(sub, "query_command");
   if (!query_command)
   {
     mutt_warning(_("Query command not defined"));
-    return 0;
+    goto done;
   }
 
-  struct AliasList al = TAILQ_HEAD_INITIALIZER(al);
   query_run(buf, true, &al, sub);
   if (TAILQ_EMPTY(&al))
-    return 0;
+    goto done;
 
   struct Alias *a_first = TAILQ_FIRST(&al);
   if (!TAILQ_NEXT(a_first, entries)) // only one response?
@@ -714,14 +714,15 @@ int query_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
       buf[0] = '\0';
       mutt_addrlist_write(&addr, buf, buflen, false);
       mutt_addrlist_clear(&addr);
-      aliaslist_free(&al);
       mutt_clear_error();
     }
-    return 0;
+    goto done;
   }
 
   /* multiple results, choose from query menu */
   dlg_select_query(buf, buflen, &al, true, sub);
+
+done:
   aliaslist_free(&al);
   return 0;
 }

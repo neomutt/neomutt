@@ -1263,13 +1263,14 @@ static int op_search(struct IndexSharedData *shared, struct PagerPrivateData *pr
 {
   struct PagerView *pview = priv->pview;
 
+  int rc = IR_NO_ACTION;
   char buf[1024] = { 0 };
   mutt_str_copy(buf, priv->search_str, sizeof(buf));
   if (mutt_get_field(
           ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
           buf, sizeof(buf), MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL) != 0)
   {
-    return IR_NO_ACTION;
+    goto done;
   }
 
   if (strcmp(buf, priv->search_str) == 0)
@@ -1288,7 +1289,7 @@ static int op_search(struct IndexSharedData *shared, struct PagerPrivateData *pr
   }
 
   if (buf[0] == '\0')
-    return IR_NO_ACTION;
+    goto done;
 
   mutt_str_copy(priv->search_str, buf, sizeof(priv->search_str));
 
@@ -1392,7 +1393,10 @@ static int op_search(struct IndexSharedData *shared, struct PagerPrivateData *pr
   }
   pager_queue_redraw(priv, MENU_REDRAW_BODY);
   notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-  return IR_SUCCESS;
+  rc = IR_SUCCESS;
+
+done:
+  return rc;
 }
 
 /**

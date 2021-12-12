@@ -175,8 +175,9 @@ bool smime_class_valid_passphrase(void)
 
   smime_class_void_passphrase();
 
-  if (mutt_get_field_unbuffered(_("Enter S/MIME passphrase:"), SmimePass,
-                                sizeof(SmimePass), MUTT_COMP_PASS) == 0)
+  const int rc = mutt_get_field_unbuffered(_("Enter S/MIME passphrase:"), SmimePass,
+                                           sizeof(SmimePass), MUTT_COMP_PASS);
+  if (rc == 0)
   {
     const short c_smime_timeout =
         cs_subset_number(NeoMutt->sub, "smime_timeout");
@@ -184,7 +185,9 @@ bool smime_class_valid_passphrase(void)
     return true;
   }
   else
+  {
     SmimeExpTime = 0;
+  }
 
   return false;
 }
@@ -724,15 +727,18 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, KeyFlags abilities, bool
     resp[0] = '\0';
     if (mutt_get_field(prompt, resp, sizeof(resp), MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0)
     {
-      return NULL;
+      goto done;
     }
 
     key = smime_get_key_by_str(resp, abilities, only_public_key);
     if (key)
-      return key;
+      goto done;
 
     mutt_error(_("No matching keys found for \"%s\""), resp);
   }
+
+done:
+  return key;
 }
 
 /**
@@ -1156,13 +1162,12 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
 {
   char *certfile = NULL;
   char buf[256];
-  FILE *fp_smime_in = NULL;
 
   FILE *fp_err = mutt_file_mkstemp();
   if (!fp_err)
   {
     mutt_perror(_("Can't create temporary file"));
-    return;
+    goto done;
   }
 
   FILE *fp_out = mutt_file_mkstemp();
@@ -1170,7 +1175,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
   {
     mutt_file_fclose(&fp_err);
     mutt_perror(_("Can't create temporary file"));
-    return;
+    goto done;
   }
 
   buf[0] = '\0';
@@ -1182,9 +1187,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
                         MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
         (buf[0] == '\0'))
     {
-      mutt_file_fclose(&fp_out);
-      mutt_file_fclose(&fp_err);
-      return;
+      goto done;
     }
   }
 
@@ -1196,13 +1199,14 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
 
     const char *const c_smime_import_cert_command =
         cs_subset_string(NeoMutt->sub, "smime_import_cert_command");
+    FILE *fp_smime_in = NULL;
     pid_t pid = smime_invoke(&fp_smime_in, NULL, NULL, -1, fileno(fp_out),
                              fileno(fp_err), certfile, NULL, NULL, NULL, NULL,
                              NULL, NULL, c_smime_import_cert_command);
     if (pid == -1)
     {
       mutt_message(_("Error: unable to create OpenSSL subprocess"));
-      return;
+      goto done;
     }
     fputs(buf, fp_smime_in);
     fputc('\n', fp_smime_in);
@@ -1222,6 +1226,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
   mutt_file_copy_stream(fp_out, stdout);
   mutt_file_copy_stream(fp_err, stdout);
 
+done:
   mutt_file_fclose(&fp_out);
   mutt_file_fclose(&fp_err);
 }

@@ -508,7 +508,7 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
              buf, sizeof(buf), MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL) != 0) ||
         (buf[0] == '\0'))
     {
-      return -1;
+      goto done;
     }
 
     if ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT))
@@ -666,7 +666,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
              buf, sizeof(buf), MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL) != 0) ||
         (buf[0] == '\0'))
     {
-      return -1;
+      goto done;
     }
 
     if ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT))
