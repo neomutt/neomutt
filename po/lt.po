@@ -3760,9 +3760,9 @@ msgid "You can't scroll down farther"
 msgstr "Tu negali slinkti žemyn daugiau"
 
 #: mutt/file.c:674
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to seek file: %s"
-msgstr "Nepavyko pervadinti bylos"
+msgstr "Nepavyko pozicionuoti bylos: %s"
 
 #: mutt/file.c:1236
 msgid "Timeout exceeded while attempting fcntl lock"
