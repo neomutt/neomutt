@@ -307,6 +307,9 @@ static struct CompileOptions debug_opts[] = {
 #ifdef USE_DEBUG_PARSE_TEST
   { "parse-test", 2 },
 #endif
+#ifdef QUEUE_MACRO_DEBUG_TRACE
+  { "queue", 2 },
+#endif
 #ifdef USE_DEBUG_WINDOW
   { "window", 2 },
 #endif
@@ -491,7 +494,7 @@ bool print_version(FILE *fp)
 
   if (debug_opts[0].name)
   {
-    fprintf(fp, "\n%s\n", _("Debug options:"));
+    fprintf(fp, "\n%s\n", _("Devel options:"));
     print_compile_options(debug_opts, fp);
   }
 
