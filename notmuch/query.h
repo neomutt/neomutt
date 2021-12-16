@@ -48,7 +48,7 @@ enum NmWindowQueryRc
   NM_WINDOW_QUERY_INVALID_DURATION  ///< Invalid duration
 };
 
-enum NmQueryType nm_parse_type_from_query(char *buf);
+enum NmQueryType nm_parse_type_from_query(char *buf, enum NmQueryType fallback);
 enum NmQueryType nm_string_to_query_type(const char *str);
 enum NmQueryType nm_string_to_query_type_mapper(const char *str);
 const char *nm_query_type_to_string(enum NmQueryType query_type);
