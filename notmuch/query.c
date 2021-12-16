@@ -38,19 +38,20 @@
 /**
  * nm_parse_type_from_query - Parse a query type out of a query
  * @param buf   Buffer for URL
- * @retval Notmuch query type.  Default: #NM_QUERY_TYPE_MESGS
+ * @param fallback Fallback query type if buf doesn't contain a type= statement.
+ * @retval Notmuch query type.
  *
  * If a user writes a query for a vfolder and includes a type= statement, that
  * type= will be encoded, which Notmuch will treat as part of the query=
  * statement. This method will remove the type= and return its corresponding
  * NmQueryType representation.
  */
-enum NmQueryType nm_parse_type_from_query(char *buf)
+enum NmQueryType nm_parse_type_from_query(char *buf, enum NmQueryType fallback)
 {
-  if (!buf)
-    return NM_QUERY_TYPE_MESGS;
+  enum NmQueryType query_type = fallback;
 
-  enum NmQueryType query_type = NM_QUERY_TYPE_MESGS;
+  if (!buf)
+    return query_type;
 
   size_t buf_len = mutt_str_len(buf);
   const char *message_ptr = mutt_istrn_rfind(buf, buf_len, "type=messages");

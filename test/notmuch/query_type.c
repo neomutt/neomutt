@@ -53,7 +53,8 @@ void test_nm_parse_type_from_query(void)
   };
 
   // Degenerate test
-  TEST_CHECK(nm_parse_type_from_query(NULL) == NM_QUERY_TYPE_MESGS);
+  TEST_CHECK(nm_parse_type_from_query(NULL, NM_QUERY_TYPE_MESGS) == NM_QUERY_TYPE_MESGS);
+  TEST_CHECK(nm_parse_type_from_query(NULL, NM_QUERY_TYPE_THREADS) == NM_QUERY_TYPE_THREADS);
 
   char buf[1024];
   for (int i = 0; i < mutt_array_size(tests); i++)
@@ -62,7 +63,7 @@ void test_nm_parse_type_from_query(void)
     memset(buf, 0, sizeof(buf));
     mutt_str_copy(buf, t->input, sizeof(buf));
     TEST_CASE(buf);
-    TEST_CHECK(nm_parse_type_from_query(buf) == t->expected);
+    TEST_CHECK(nm_parse_type_from_query(buf, NM_QUERY_TYPE_MESGS) == t->expected);
   }
 }
 
