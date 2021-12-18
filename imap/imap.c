@@ -2247,7 +2247,7 @@ cleanup:
 /**
  * imap_tags_edit - Prompt and validate new messages tags - Implements MxOps::tags_edit() - @ingroup mx_tags_edit
  */
-static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
+static int imap_tags_edit(struct Mailbox *m, const char *tags, struct Buffer *buf)
 {
   struct ImapMboxData *mdata = imap_mdata_get(m);
   if (!mdata)
@@ -2263,11 +2263,11 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
     return -1;
   }
 
-  *buf = '\0';
+  mutt_buffer_reset(buf);
   if (tags)
-    mutt_str_copy(buf, tags, buflen);
+    mutt_buffer_strcpy(buf, tags);
 
-  if (mutt_get_field("Tags: ", buf, buflen, MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0)
+  if (mutt_buffer_get_field("Tags: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
     return -1;
 
   /* each keyword must be atom defined by rfc822 as:
@@ -2283,8 +2283,8 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
    * And must be separated by one space.
    */
 
-  new_tag = buf;
-  checker = buf;
+  new_tag = buf->data;
+  checker = buf->data;
   SKIPWS(checker);
   while (*checker != '\0')
   {
@@ -2315,10 +2315,10 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
     *new_tag++ = *checker++;
   }
   *new_tag = '\0';
-  new_tag = buf; /* rewind */
+  new_tag = buf->data; /* rewind */
   mutt_str_remove_trailing_ws(new_tag);
 
-  return !mutt_str_equal(tags, buf);
+  return !mutt_str_equal(tags, mutt_buffer_string(buf));
 }
 
 /**

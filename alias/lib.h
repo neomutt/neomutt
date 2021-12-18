@@ -69,7 +69,7 @@ enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s, intptr_t 
 
 int  alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub);
 
-int  query_complete(char *buf, size_t buflen, struct ConfigSubset *sub);
+int  query_complete(struct Buffer *buf, struct ConfigSubset *sub);
 void query_index   (struct ConfigSubset *sub);
 
 struct Address *alias_reverse_lookup(const struct Address *addr);

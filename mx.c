@@ -1267,18 +1267,17 @@ int mx_path_is_empty(const char *path)
  * @param m      Mailbox
  * @param tags   Existing tags
  * @param buf    Buffer for the results
- * @param buflen Length of the buffer
  * @retval -1 Error
  * @retval 0  No valid user input
  * @retval 1  Buffer set
  */
-int mx_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
+int mx_tags_edit(struct Mailbox *m, const char *tags, struct Buffer *buf)
 {
   if (!m || !buf)
     return -1;
 
   if (m->mx_ops->tags_edit)
-    return m->mx_ops->tags_edit(m, tags, buf, buflen);
+    return m->mx_ops->tags_edit(m, tags, buf);
 
   mutt_message(_("Folder doesn't support tagging, aborting"));
   return -1;

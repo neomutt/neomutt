@@ -407,12 +407,11 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
 /**
  * dlg_select_query - Get the user to enter an Address Query
  * @param buf    Buffer for the query
- * @param buflen Length of buffer
  * @param all    Alias List
  * @param retbuf If true, populate the results
  * @param sub    Config items
  */
-static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
+static void dlg_select_query(struct Buffer *buf, struct AliasList *all,
                              bool retbuf, struct ConfigSubset *sub)
 {
   struct AliasMenuData mdata = { NULL, ARRAY_HEAD_INITIALIZER, sub };
@@ -423,7 +422,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
   }
   alias_array_sort(&mdata.ava, mdata.sub);
 
-  struct MuttWindow *dlg = query_dialog_new(&mdata, buf);
+  struct MuttWindow *dlg = query_dialog_new(&mdata, mutt_buffer_string(buf));
   struct Menu *menu = dlg->wdata;
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
 
@@ -436,9 +435,9 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
       case OP_QUERY_APPEND:
       case OP_QUERY:
       {
-        if ((mutt_get_field(_("Query: "), buf, buflen, MUTT_COMP_NO_FLAGS,
-                            false, NULL, NULL) != 0) ||
-            (buf[0] == '\0'))
+        if ((mutt_buffer_get_field(_("Query: "), buf, MUTT_COMP_NO_FLAGS, false,
+                                   NULL, NULL, NULL) != 0) ||
+            mutt_buffer_is_empty(buf))
         {
           break;
         }
@@ -450,10 +449,10 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
         }
 
         struct AliasList al = TAILQ_HEAD_INITIALIZER(al);
-        query_run(buf, true, &al, sub);
+        query_run(mutt_buffer_string(buf), true, &al, sub);
         menu_queue_redraw(menu, MENU_REDRAW_FULL);
         char title[256];
-        snprintf(title, sizeof(title), "%s%s", _("Query: "), buf);
+        snprintf(title, sizeof(title), "%s%s", _("Query: "), mutt_buffer_string(buf));
         sbar_set_title(sbar, title);
 
         if (TAILQ_EMPTY(&al))
@@ -632,7 +631,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
     bool tagged = false;
     size_t curpos = 0;
 
-    memset(buf, 0, buflen);
+    mutt_buffer_reset(buf);
 
     /* check for tagged entries */
     struct AliasView *avp = NULL;
@@ -648,20 +647,20 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
         {
           mutt_addrlist_to_local(&al);
           tagged = true;
-          mutt_addrlist_write(&al, buf, buflen, false);
-          curpos = mutt_str_len(buf);
+          mutt_addrlist_write(&al, buf->data, buf->dsize, false);
+          curpos = mutt_buffer_len(buf);
           mutt_addrlist_clear(&al);
         }
       }
-      else if (curpos + 2 < buflen)
+      else if ((curpos + 2) < buf->dsize)
       {
         struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
         if (alias_to_addrlist(&al, avp->alias))
         {
           mutt_addrlist_to_local(&al);
-          strcat(buf, ", ");
-          mutt_addrlist_write(&al, buf + curpos + 2, buflen - curpos - 2, false);
-          curpos = mutt_str_len(buf);
+          mutt_buffer_addstr(buf, ", ");
+          mutt_addrlist_write(&al, buf->data + curpos + 2, buf->dsize - curpos - 2, false);
+          curpos = mutt_buffer_len(buf);
           mutt_addrlist_clear(&al);
         }
       }
@@ -673,7 +672,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
       if (alias_to_addrlist(&al, ARRAY_GET(&mdata.ava, menu_get_index(menu))->alias))
       {
         mutt_addrlist_to_local(&al);
-        mutt_addrlist_write(&al, buf, buflen, false);
+        mutt_addrlist_write(&al, buf->data, buf->dsize, false);
         mutt_addrlist_clear(&al);
       }
     }
@@ -686,11 +685,10 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
 /**
  * query_complete - Perform auto-complete using an Address Query
  * @param buf    Buffer for completion
- * @param buflen Length of buffer
  * @param sub    Config item
  * @retval 0 Always
  */
-int query_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
+int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
 {
   struct AliasList al = TAILQ_HEAD_INITIALIZER(al);
   const char *const query_command = cs_subset_string(sub, "query_command");
@@ -700,7 +698,7 @@ int query_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
     goto done;
   }
 
-  query_run(buf, true, &al, sub);
+  query_run(mutt_buffer_string(buf), true, &al, sub);
   if (TAILQ_EMPTY(&al))
     goto done;
 
@@ -711,8 +709,8 @@ int query_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
     if (alias_to_addrlist(&addr, a_first))
     {
       mutt_addrlist_to_local(&addr);
-      buf[0] = '\0';
-      mutt_addrlist_write(&addr, buf, buflen, false);
+      mutt_buffer_reset(buf);
+      mutt_addrlist_write(&addr, buf->data, buf->dsize, false);
       mutt_addrlist_clear(&addr);
       mutt_clear_error();
     }
@@ -720,7 +718,7 @@ int query_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
   }
 
   /* multiple results, choose from query menu */
-  dlg_select_query(buf, buflen, &al, true, sub);
+  dlg_select_query(buf, &al, true, sub);
 
 done:
   aliaslist_free(&al);
@@ -753,7 +751,7 @@ void query_index(struct ConfigSubset *sub)
   if (TAILQ_EMPTY(&al))
     goto done;
 
-  dlg_select_query(buf->data, buf->dsize, &al, false, sub);
+  dlg_select_query(buf, &al, false, sub);
   aliaslist_free(&al);
 
 done:
