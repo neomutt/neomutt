@@ -4198,7 +4198,7 @@ msgstr "sekreta ŝlosilo '%s' ne trovita: %s"
 
 #: ncrypt/crypt_gpgme.c:1018
 #, fuzzy, c-format
-msgid "ambiguous specification of secret key '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
 msgstr "plursenca specifo de sekreta ŝlosilo '%s'"
 
 #: ncrypt/crypt_gpgme.c:1034

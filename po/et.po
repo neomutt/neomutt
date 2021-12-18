@@ -4284,7 +4284,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:1018
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:1034

@@ -4272,7 +4272,7 @@ msgstr "ez da '%s' gako sekretua aurkitu: %s"
 
 #: ncrypt/crypt_gpgme.c:1018
 #, fuzzy, c-format
-msgid "ambiguous specification of secret key '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
 msgstr "'%s' gako sekretu espezifikazio anbiguoa"
 
 #: ncrypt/crypt_gpgme.c:1034

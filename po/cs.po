@@ -4196,8 +4196,8 @@ msgstr "tajný klíč „%s“ nenalezen: %s"
 
 #: ncrypt/crypt_gpgme.c:1018
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "tajný klíč „%s“ není určen jednoznačně\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "tajný klíč „%s“ není určen jednoznačně"
 
 #: ncrypt/crypt_gpgme.c:1034
 #, c-format

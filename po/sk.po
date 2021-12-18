@@ -4253,8 +4253,8 @@ msgstr "tajný kľúč „%s“ nebol nájdený: %s"
 
 #: ncrypt/crypt_gpgme.c:1018
 #, fuzzy, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "nejednoznačné vymedzenie tajného kľúča „%s“\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "nejednoznačné vymedzenie tajného kľúča „%s“"
 
 #: ncrypt/crypt_gpgme.c:1034
 #, c-format

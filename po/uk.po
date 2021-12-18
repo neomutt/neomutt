@@ -4245,7 +4245,7 @@ msgstr "таємний ключ \"%s\" не знайдено: %s"
 
 #: ncrypt/crypt_gpgme.c:1018
 #, fuzzy, c-format
-msgid "ambiguous specification of secret key '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
 msgstr "неоднозначне визначення таємного ключа \"%s\""
 
 #: ncrypt/crypt_gpgme.c:1034

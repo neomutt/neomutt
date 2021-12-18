@@ -4219,7 +4219,7 @@ msgstr "hemmelig nøgle \"%s\" ikke fundet: %s"
 
 #: ncrypt/crypt_gpgme.c:1018
 #, fuzzy, c-format
-msgid "ambiguous specification of secret key '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
 msgstr "tvetydig specifikation af hemmelig nøgle \"%s\""
 
 #: ncrypt/crypt_gpgme.c:1034

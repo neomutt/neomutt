@@ -4337,7 +4337,7 @@ msgstr "eochair rúnda '%s' gan aimsiú: %s"
 
 #: ncrypt/crypt_gpgme.c:1018
 #, fuzzy, c-format
-msgid "ambiguous specification of secret key '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
 msgstr "sonrú débhríoch d'eochair rúnda '%s'"
 
 #: ncrypt/crypt_gpgme.c:1034

@@ -4251,7 +4251,7 @@ msgstr "kunci rahasia '%s' tidak ditemukan: %s"
 
 #: ncrypt/crypt_gpgme.c:1018
 #, fuzzy, c-format
-msgid "ambiguous specification of secret key '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
 msgstr "lebih dari satu kunci rahasia yang cocok dengan '%s'"
 
 #: ncrypt/crypt_gpgme.c:1034

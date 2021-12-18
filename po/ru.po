@@ -4210,7 +4210,7 @@ msgstr "секретный ключ \"%s\" не найден: %s"
 
 #: ncrypt/crypt_gpgme.c:1018
 #, fuzzy, c-format
-msgid "ambiguous specification of secret key '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
 msgstr "неоднозначное указание секретного ключа \"%s\""
 
 #: ncrypt/crypt_gpgme.c:1034

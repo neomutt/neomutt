@@ -4179,8 +4179,8 @@ msgstr "slaptas raktas '%s' nerastas: %s"
 
 #: ncrypt/crypt_gpgme.c:1018
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "nevienprasmė slapto rakto specifikacija '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "nevienprasmė slapto rakto specifikacija '%s'"
 
 #: ncrypt/crypt_gpgme.c:1034
 #, c-format

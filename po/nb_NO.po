@@ -4227,8 +4227,8 @@ msgstr "hemmelighetsnøkkelen «%s» ble ikke funnet: %s"
 
 #: ncrypt/crypt_gpgme.c:1018
 #, fuzzy, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "tvetydig spesifikasjon av hemmelighetsnøkkel «%s»\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "tvetydig spesifikasjon av hemmelighetsnøkkel «%s»"
 
 #: ncrypt/crypt_gpgme.c:1034
 #, fuzzy, c-format

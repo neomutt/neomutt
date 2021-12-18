@@ -4186,8 +4186,8 @@ msgstr "clave secreta '%s' no encontrada: %s"
 
 #: ncrypt/crypt_gpgme.c:1018
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "Especificación ambigua de la clave secreta '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "Especificación ambigua de la clave secreta '%s'"
 
 #: ncrypt/crypt_gpgme.c:1034
 #, c-format

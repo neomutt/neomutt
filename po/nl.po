@@ -4236,7 +4236,7 @@ msgstr "geheime sleutel '%s' niet gevonden: %s"
 
 #: ncrypt/crypt_gpgme.c:1018
 #, fuzzy, c-format
-msgid "ambiguous specification of secret key '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
 msgstr "dubbelzinnige specificatie van geheime sleutel '%s'"
 
 #: ncrypt/crypt_gpgme.c:1034
