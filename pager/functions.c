@@ -1264,16 +1264,17 @@ static int op_search(struct IndexSharedData *shared, struct PagerPrivateData *pr
   struct PagerView *pview = priv->pview;
 
   int rc = IR_NO_ACTION;
-  char buf[1024] = { 0 };
-  mutt_str_copy(buf, priv->search_str, sizeof(buf));
-  if (mutt_get_field(
+  struct Buffer *buf = mutt_buffer_pool_get();
+
+  mutt_buffer_strcpy(buf, priv->search_str);
+  if (mutt_buffer_get_field(
           ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
-          buf, sizeof(buf), MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL) != 0)
+          buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL, NULL) != 0)
   {
     goto done;
   }
 
-  if (strcmp(buf, priv->search_str) == 0)
+  if (mutt_str_equal(mutt_buffer_string(buf), priv->search_str))
   {
     if (priv->search_compiled)
     {
@@ -1288,10 +1289,10 @@ static int op_search(struct IndexSharedData *shared, struct PagerPrivateData *pr
     }
   }
 
-  if (buf[0] == '\0')
+  if (mutt_buffer_is_empty(buf))
     goto done;
 
-  mutt_str_copy(priv->search_str, buf, sizeof(priv->search_str));
+  mutt_str_copy(priv->search_str, mutt_buffer_string(buf), sizeof(priv->search_str));
 
   /* leave search_back alone if op == OP_SEARCH_NEXT */
   if (op == OP_SEARCH)
@@ -1313,8 +1314,8 @@ static int op_search(struct IndexSharedData *shared, struct PagerPrivateData *pr
   int err = REG_COMP(&priv->search_re, priv->search_str, REG_NEWLINE | rflags);
   if (err != 0)
   {
-    regerror(err, &priv->search_re, buf, sizeof(buf));
-    mutt_error("%s", buf);
+    regerror(err, &priv->search_re, buf->data, buf->dsize);
+    mutt_error("%s", mutt_buffer_string(buf));
     for (size_t i = 0; i < priv->lines_max; i++)
     {
       /* cleanup */
@@ -1396,6 +1397,7 @@ static int op_search(struct IndexSharedData *shared, struct PagerPrivateData *pr
   rc = IR_SUCCESS;
 
 done:
+  mutt_buffer_pool_release(&buf);
   return rc;
 }
 

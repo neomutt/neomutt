@@ -69,13 +69,14 @@ static void menu_jump(struct Menu *menu)
   }
 
   mutt_unget_event(LastKey, 0);
-  char buf[128] = { 0 };
-  if ((mutt_get_field(_("Jump to: "), buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
-                      false, NULL, NULL) == 0) &&
-      (buf[0] != '\0'))
+
+  struct Buffer *buf = mutt_buffer_pool_get();
+  if ((mutt_buffer_get_field(_("Jump to: "), buf, MUTT_COMP_NO_FLAGS, false,
+                             NULL, NULL, NULL) == 0) &&
+      !mutt_buffer_is_empty(buf))
   {
     int n = 0;
-    if (mutt_str_atoi_full(buf, &n) && (n > 0) && (n < (menu->max + 1)))
+    if (mutt_str_atoi_full(mutt_buffer_string(buf), &n) && (n > 0) && (n < (menu->max + 1)))
     {
       menu_set_index(menu, n - 1); // msg numbers are 0-based
     }
@@ -84,6 +85,8 @@ static void menu_jump(struct Menu *menu)
       mutt_error(_("Invalid index number"));
     }
   }
+
+  mutt_buffer_pool_release(&buf);
 }
 
 /**
@@ -147,24 +150,24 @@ static int search(struct Menu *menu, int op)
   int wrap = 0;
   int search_dir;
   regex_t re = { 0 };
-  char buf[128];
+  struct Buffer *buf = mutt_buffer_pool_get();
+
   char *search_buf = ((menu->type < MENU_MAX)) ? SearchBuffers[menu->type] : NULL;
 
   if (!(search_buf && *search_buf) || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
-    mutt_str_copy(buf, search_buf && (search_buf[0] != '\0') ? search_buf : "",
-                  sizeof(buf));
-    if ((mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
-                            _("Search for: ") :
-                            _("Reverse search for: "),
-                        buf, sizeof(buf), MUTT_COMP_CLEAR, false, NULL, NULL) != 0) ||
-        (buf[0] == '\0'))
+    mutt_buffer_strcpy(buf, search_buf && (search_buf[0] != '\0') ? search_buf : "");
+    if ((mutt_buffer_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
+                                   _("Search for: ") :
+                                   _("Reverse search for: "),
+                               buf, MUTT_COMP_CLEAR, false, NULL, NULL, NULL) != 0) ||
+        mutt_buffer_is_empty(buf))
     {
       goto done;
     }
     if (menu->type < MENU_MAX)
     {
-      mutt_str_replace(&SearchBuffers[menu->type], buf);
+      mutt_str_replace(&SearchBuffers[menu->type], mutt_buffer_string(buf));
       search_buf = SearchBuffers[menu->type];
     }
     menu->search_dir =
@@ -183,8 +186,8 @@ static int search(struct Menu *menu, int op)
 
   if (rc != 0)
   {
-    regerror(rc, &re, buf, sizeof(buf));
-    mutt_error("%s", buf);
+    regerror(rc, &re, buf->data, buf->dsize);
+    mutt_error("%s", mutt_buffer_string(buf));
     rc = -1;
     goto done;
   }
@@ -215,6 +218,7 @@ search_next:
   rc = -1;
 
 done:
+  mutt_buffer_pool_release(&buf);
   return rc;
 }
 

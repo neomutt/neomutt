@@ -167,8 +167,8 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
     return;
 
   struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-  char prompt[256];
-  char buf[8192];
+  struct Buffer *prompt = mutt_buffer_pool_get();
+  struct Buffer *buf = mutt_buffer_pool_get();
 
   /* RFC5322 mandates a From: header, so warn before bouncing
    * messages without one */
@@ -199,18 +199,18 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   /* one or more messages? */
   int num_msg = cur ? 1 : count_tagged(actx);
   if (num_msg == 1)
-    mutt_str_copy(prompt, _("Bounce message to: "), sizeof(prompt));
+    mutt_buffer_strcpy(prompt, _("Bounce message to: "));
   else
-    mutt_str_copy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
+    mutt_buffer_strcpy(prompt, _("Bounce tagged messages to: "));
 
-  buf[0] = '\0';
-  if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_COMP_ALIAS, false, NULL, NULL) ||
-      (buf[0] == '\0'))
+  if (mutt_buffer_get_field(mutt_buffer_string(prompt), buf, MUTT_COMP_ALIAS,
+                            false, NULL, NULL, NULL) ||
+      mutt_buffer_is_empty(buf))
   {
     goto done;
   }
 
-  mutt_addrlist_parse(&al, buf);
+  mutt_addrlist_parse(&al, mutt_buffer_string(buf));
   if (TAILQ_EMPTY(&al))
   {
     mutt_error(_("Error parsing address"));
@@ -227,26 +227,32 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
     goto done;
   }
 
-  buf[0] = '\0';
-  mutt_addrlist_write(&al, buf, sizeof(buf), true);
+  mutt_buffer_reset(buf);
+  mutt_buffer_alloc(buf, 8192);
+  mutt_addrlist_write(&al, buf->data, buf->dsize, true);
 
 #define EXTRA_SPACE (15 + 7 + 2)
   /* See commands.c.  */
-  snprintf(prompt, sizeof(prompt) - 4,
-           ngettext("Bounce message to %s?", "Bounce messages to %s?", num_msg), buf);
+  mutt_buffer_printf(prompt, ngettext("Bounce message to %s?", "Bounce messages to %s?", num_msg),
+                     mutt_buffer_string(buf));
 
   const size_t width = msgwin_get_width();
-  if (mutt_strwidth(prompt) > (width - EXTRA_SPACE))
+  if (mutt_strwidth(mutt_buffer_string(prompt)) > (width - EXTRA_SPACE))
   {
-    mutt_simple_format(prompt, sizeof(prompt) - 4, 0, width - EXTRA_SPACE,
-                       JUSTIFY_LEFT, 0, prompt, sizeof(prompt), false);
-    mutt_str_cat(prompt, sizeof(prompt), "...?");
+    struct Buffer *scratch = mutt_buffer_pool_get();
+    mutt_simple_format(scratch->data, scratch->dsize - 4, 0, width - EXTRA_SPACE,
+                       JUSTIFY_LEFT, 0, prompt->data, prompt->dsize, false);
+    mutt_buffer_addstr(scratch, "...?");
+    mutt_buffer_copy(prompt, scratch);
+    mutt_buffer_pool_release(&scratch);
   }
   else
-    mutt_str_cat(prompt, sizeof(prompt), "?");
+  {
+    mutt_buffer_addstr(prompt, "?");
+  }
 
   const enum QuadOption c_bounce = cs_subset_quad(NeoMutt->sub, "bounce");
-  if (query_quadoption(c_bounce, prompt) != MUTT_YES)
+  if (query_quadoption(c_bounce, mutt_buffer_string(prompt)) != MUTT_YES)
   {
     msgwin_clear_text();
     mutt_message(ngettext("Message not bounced", "Messages not bounced", num_msg));
@@ -282,6 +288,8 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
 
 done:
   mutt_addrlist_clear(&al);
+  mutt_buffer_pool_release(&buf);
+  mutt_buffer_pool_release(&prompt);
 }
 
 /**

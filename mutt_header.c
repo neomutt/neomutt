@@ -127,23 +127,23 @@ int mutt_label_message(struct Mailbox *m, struct EmailList *el)
     return 0;
 
   int changed = 0;
-  char buf[1024] = { 0 };
+  struct Buffer *buf = mutt_buffer_pool_get();
 
   struct EmailNode *en = STAILQ_FIRST(el);
   if (!STAILQ_NEXT(en, entries))
   {
     // If there's only one email, use its label as a template
     if (en->email->env->x_label)
-      mutt_str_copy(buf, en->email->env->x_label, sizeof(buf));
+      mutt_buffer_strcpy(buf, en->email->env->x_label);
   }
 
-  if (mutt_get_field("Label: ", buf, sizeof(buf),
-                     MUTT_COMP_LABEL /* | MUTT_COMP_CLEAR */, false, NULL, NULL) != 0)
+  if (mutt_buffer_get_field("Label: ", buf, MUTT_COMP_LABEL /* | MUTT_COMP_CLEAR */,
+                            false, NULL, NULL, NULL) != 0)
   {
     goto done;
   }
 
-  char *new_label = buf;
+  char *new_label = buf->data;
   SKIPWS(new_label);
   if (*new_label == '\0')
     new_label = NULL;
@@ -158,6 +158,7 @@ int mutt_label_message(struct Mailbox *m, struct EmailList *el)
   }
 
 done:
+  mutt_buffer_pool_release(&buf);
   return changed;
 }
 

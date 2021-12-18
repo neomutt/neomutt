@@ -715,7 +715,7 @@ static struct SmimeKey *smime_get_key_by_str(const char *str, KeyFlags abilities
 static struct SmimeKey *smime_ask_for_key(char *prompt, KeyFlags abilities, bool only_public_key)
 {
   struct SmimeKey *key = NULL;
-  char resp[128];
+  struct Buffer *resp = mutt_buffer_pool_get();
 
   if (!prompt)
     prompt = _("Enter keyID: ");
@@ -724,20 +724,21 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, KeyFlags abilities, bool
 
   while (true)
   {
-    resp[0] = '\0';
-    if (mutt_get_field(prompt, resp, sizeof(resp), MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0)
+    mutt_buffer_reset(resp);
+    if (mutt_buffer_get_field(prompt, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
     {
       goto done;
     }
 
-    key = smime_get_key_by_str(resp, abilities, only_public_key);
+    key = smime_get_key_by_str(mutt_buffer_string(resp), abilities, only_public_key);
     if (key)
       goto done;
 
-    mutt_error(_("No matching keys found for \"%s\""), resp);
+    mutt_error(_("No matching keys found for \"%s\""), mutt_buffer_string(resp));
   }
 
 done:
+  mutt_buffer_pool_release(&resp);
   return key;
 }
 
@@ -1161,7 +1162,7 @@ cleanup:
 void smime_class_invoke_import(const char *infile, const char *mailbox)
 {
   char *certfile = NULL;
-  char buf[256];
+  struct Buffer *buf = NULL;
 
   FILE *fp_err = mutt_file_mkstemp();
   if (!fp_err)
@@ -1173,19 +1174,18 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
   FILE *fp_out = mutt_file_mkstemp();
   if (!fp_out)
   {
-    mutt_file_fclose(&fp_err);
     mutt_perror(_("Can't create temporary file"));
     goto done;
   }
 
-  buf[0] = '\0';
+  buf = mutt_buffer_pool_get();
   const bool c_smime_ask_cert_label =
       cs_subset_bool(NeoMutt->sub, "smime_ask_cert_label");
   if (c_smime_ask_cert_label)
   {
-    if ((mutt_get_field(_("Label for certificate: "), buf, sizeof(buf),
-                        MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
-        (buf[0] == '\0'))
+    if ((mutt_buffer_get_field(_("Label for certificate: "), buf,
+                               MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0) ||
+        mutt_buffer_is_empty(buf))
     {
       goto done;
     }
@@ -1208,7 +1208,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
       mutt_message(_("Error: unable to create OpenSSL subprocess"));
       goto done;
     }
-    fputs(buf, fp_smime_in);
+    fputs(mutt_buffer_string(buf), fp_smime_in);
     fputc('\n', fp_smime_in);
     mutt_file_fclose(&fp_smime_in);
 
@@ -1229,6 +1229,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
 done:
   mutt_file_fclose(&fp_out);
   mutt_file_fclose(&fp_err);
+  mutt_buffer_pool_release(&buf);
 }
 
 /**

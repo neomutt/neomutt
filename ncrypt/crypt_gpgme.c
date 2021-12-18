@@ -3769,9 +3769,9 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
                                               unsigned int app, int *forced_valid)
 {
   struct CryptKeyInfo *key = NULL;
-  char resp[128];
   struct CryptCache *l = NULL;
   int dummy = 0;
+  struct Buffer *resp = mutt_buffer_pool_get();
 
   if (!forced_valid)
     forced_valid = &dummy;
@@ -3779,14 +3779,13 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
   mutt_clear_error();
 
   *forced_valid = 0;
-  resp[0] = '\0';
   if (whatfor)
   {
     for (l = id_defaults; l; l = l->next)
     {
       if (mutt_istr_equal(whatfor, l->what))
       {
-        mutt_str_copy(resp, l->dflt, sizeof(resp));
+        mutt_buffer_strcpy(resp, l->dflt);
         break;
       }
     }
@@ -3794,8 +3793,8 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
 
   while (true)
   {
-    resp[0] = '\0';
-    if (mutt_get_field(tag, resp, sizeof(resp), MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0)
+    mutt_buffer_reset(resp);
+    if (mutt_buffer_get_field(tag, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
     {
       goto done;
     }
@@ -3803,25 +3802,26 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
     if (whatfor)
     {
       if (l)
-        mutt_str_replace(&l->dflt, resp);
+        mutt_str_replace(&l->dflt, mutt_buffer_string(resp));
       else
       {
         l = mutt_mem_malloc(sizeof(struct CryptCache));
         l->next = id_defaults;
         id_defaults = l;
         l->what = mutt_str_dup(whatfor);
-        l->dflt = mutt_str_dup(resp);
+        l->dflt = mutt_buffer_strdup(resp);
       }
     }
 
-    key = crypt_getkeybystr(resp, abilities, app, forced_valid);
+    key = crypt_getkeybystr(mutt_buffer_string(resp), abilities, app, forced_valid);
     if (key)
       goto done;
 
-    mutt_error(_("No matching keys found for \"%s\""), resp);
+    mutt_error(_("No matching keys found for \"%s\""), mutt_buffer_string(resp));
   }
 
 done:
+  mutt_buffer_pool_release(&resp);
   return key;
 }
 

@@ -641,18 +641,19 @@ static int op_help(struct IndexSharedData *shared, struct IndexPrivateData *priv
 static int op_jump(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
   int rc = IR_ERROR;
-  char buf[PATH_MAX] = { 0 };
+  struct Buffer *buf = mutt_buffer_pool_get();
+
   int msg_num = 0;
   if (isdigit(LastKey))
     mutt_unget_event(LastKey, 0);
-  if ((mutt_get_field(_("Jump to message: "), buf, sizeof(buf),
-                      MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
-      (buf[0] == '\0'))
+  if ((mutt_buffer_get_field(_("Jump to message: "), buf, MUTT_COMP_NO_FLAGS,
+                             false, NULL, NULL, NULL) != 0) ||
+      mutt_buffer_is_empty(buf))
   {
     mutt_message(_("Nothing to do"));
     rc = IR_NO_ACTION;
   }
-  else if (!mutt_str_atoi_full(buf, &msg_num))
+  else if (!mutt_str_atoi_full(mutt_buffer_string(buf), &msg_num))
   {
     mutt_warning(_("Argument must be a message number"));
   }
@@ -680,6 +681,7 @@ static int op_jump(struct IndexSharedData *shared, struct IndexPrivateData *priv
   if (priv->in_pager)
     rc = IR_CONTINUE;
 
+  mutt_buffer_pool_release(&buf);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
   return rc;
 }
@@ -1756,19 +1758,19 @@ static int op_mark_msg(struct IndexSharedData *shared, struct IndexPrivateData *
 
   if (shared->email->env->message_id)
   {
-    char buf2[128] = { 0 };
+    struct Buffer *buf = mutt_buffer_pool_get();
 
     /* L10N: This is the prompt for <mark-message>.  Whatever they
        enter will be prefixed by $mark_macro_prefix and will become
        a macro hotkey to jump to the currently selected message. */
-    if (!mutt_get_field(_("Enter macro stroke: "), buf2, sizeof(buf2),
-                        MUTT_COMP_NO_FLAGS, false, NULL, NULL) &&
-        buf2[0])
+    if ((mutt_buffer_get_field(_("Enter macro stroke: "), buf, MUTT_COMP_NO_FLAGS,
+                               false, NULL, NULL, NULL) == 0) &&
+        !mutt_buffer_is_empty(buf))
     {
       const char *const c_mark_macro_prefix =
           cs_subset_string(shared->sub, "mark_macro_prefix");
       char str[256];
-      snprintf(str, sizeof(str), "%s%s", c_mark_macro_prefix, buf2);
+      snprintf(str, sizeof(str), "%s%s", c_mark_macro_prefix, mutt_buffer_string(buf));
 
       struct Buffer *msg_id = mutt_buffer_pool_get();
       mutt_file_sanitize_regex(msg_id, shared->email->env->message_id);
@@ -1783,9 +1785,10 @@ static int op_mark_msg(struct IndexSharedData *shared, struct IndexPrivateData *
       /* L10N: This is echoed after <mark-message> creates a new hotkey
          macro.  %s is the hotkey string ($mark_macro_prefix followed
          by whatever they typed at the prompt.) */
-      snprintf(buf2, sizeof(buf2), _("Message bound to %s"), str);
-      mutt_message(buf2);
+      mutt_buffer_printf(buf, _("Message bound to %s"), str);
+      mutt_message(mutt_buffer_string(buf));
       mutt_debug(LL_DEBUG1, "Mark: %s => %s\n", str, macro);
+      mutt_buffer_pool_release(&buf);
     }
   }
   else
@@ -2696,12 +2699,13 @@ static int op_get_message(struct IndexSharedData *shared,
     return IR_SUCCESS;
 
   int rc = IR_ERROR;
-  char buf[PATH_MAX] = { 0 };
+  struct Buffer *buf = mutt_buffer_pool_get();
+
   if (op == OP_GET_MESSAGE)
   {
-    if ((mutt_get_field(_("Enter Message-Id: "), buf, sizeof(buf),
-                        MUTT_COMP_NO_FLAGS, false, NULL, NULL) != 0) ||
-        (buf[0] == '\0'))
+    if ((mutt_buffer_get_field(_("Enter Message-Id: "), buf, MUTT_COMP_NO_FLAGS,
+                               false, NULL, NULL, NULL) != 0) ||
+        mutt_buffer_is_empty(buf))
     {
       goto done;
     }
@@ -2713,12 +2717,12 @@ static int op_get_message(struct IndexSharedData *shared,
       mutt_error(_("Article has no parent reference"));
       goto done;
     }
-    mutt_str_copy(buf, STAILQ_FIRST(&shared->email->env->references)->data, sizeof(buf));
+    mutt_buffer_strcpy(buf, STAILQ_FIRST(&shared->email->env->references)->data);
   }
 
   if (!shared->mailbox->id_hash)
     shared->mailbox->id_hash = mutt_make_id_hash(shared->mailbox);
-  struct Email *e = mutt_hash_find(shared->mailbox->id_hash, buf);
+  struct Email *e = mutt_hash_find(shared->mailbox->id_hash, mutt_buffer_string(buf));
   if (e)
   {
     if (e->vnum != -1)
@@ -2732,12 +2736,14 @@ static int op_get_message(struct IndexSharedData *shared,
       menu_set_index(priv->menu, e->vnum);
     }
     else
+    {
       mutt_error(_("Message is not visible in limited view"));
+    }
   }
   else
   {
-    mutt_message(_("Fetching %s from server..."), buf);
-    int rc2 = nntp_check_msgid(shared->mailbox, buf);
+    mutt_message(_("Fetching %s from server..."), mutt_buffer_string(buf));
+    int rc2 = nntp_check_msgid(shared->mailbox, mutt_buffer_string(buf));
     if (rc2 == 0)
     {
       e = shared->mailbox->emails[shared->mailbox->msg_count - 1];
@@ -2749,11 +2755,12 @@ static int op_get_message(struct IndexSharedData *shared,
     }
     else if (rc2 > 0)
     {
-      mutt_error(_("Article %s not found on the server"), buf);
+      mutt_error(_("Article %s not found on the server"), mutt_buffer_string(buf));
     }
   }
 
 done:
+  mutt_buffer_pool_release(&buf);
   return rc;
 }
 
@@ -2964,9 +2971,10 @@ static int op_main_vfolder_from_query(struct IndexSharedData *shared,
                                       struct IndexPrivateData *priv, int op)
 {
   int rc = IR_SUCCESS;
-  char buf[PATH_MAX] = { 0 };
-  if ((mutt_get_field("Query: ", buf, sizeof(buf), MUTT_COMP_NM_QUERY, false, NULL, NULL) != 0) ||
-      (buf[0] == '\0'))
+  struct Buffer *buf = mutt_buffer_pool_get();
+
+  if ((mutt_buffer_get_field("Query: ", buf, MUTT_COMP_NM_QUERY, false, NULL, NULL, NULL) != 0) ||
+      mutt_buffer_is_empty(buf))
   {
     mutt_message(_("No query, aborting"));
     rc = IR_NO_ACTION;
@@ -2974,10 +2982,11 @@ static int op_main_vfolder_from_query(struct IndexSharedData *shared,
   }
 
   // Keep copy of user's query to name the mailbox
-  char *query_unencoded = mutt_str_dup(buf);
+  char *query_unencoded = mutt_buffer_strdup(buf);
 
+  mutt_buffer_alloc(buf, PATH_MAX);
   struct Mailbox *m_query =
-      change_folder_notmuch(priv->menu, buf, sizeof(buf), &priv->oldcount,
+      change_folder_notmuch(priv->menu, buf->data, buf->dsize, &priv->oldcount,
                             shared, (op == OP_MAIN_VFOLDER_FROM_QUERY_READONLY));
   if (m_query)
   {
@@ -2992,6 +3001,7 @@ static int op_main_vfolder_from_query(struct IndexSharedData *shared,
   }
 
 done:
+  mutt_buffer_pool_release(&buf);
   return rc;
 }
 

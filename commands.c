@@ -93,9 +93,10 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   if (!m || !el || STAILQ_EMPTY(el))
     return;
 
-  char prompt[8193];
-  char scratch[8192];
-  char buf[8192] = { 0 };
+  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *prompt = mutt_buffer_pool_get();
+  struct Buffer *scratch = NULL;
+
   struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
   char *err = NULL;
   int rc;
@@ -113,15 +114,16 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   }
 
   if (msg_count == 1)
-    mutt_str_copy(prompt, _("Bounce message to: "), sizeof(prompt));
+    mutt_buffer_strcpy(prompt, _("Bounce message to: "));
   else
-    mutt_str_copy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
+    mutt_buffer_strcpy(prompt, _("Bounce tagged messages to: "));
 
-  rc = mutt_get_field(prompt, buf, sizeof(buf), MUTT_COMP_ALIAS, false, NULL, NULL);
-  if (rc || (buf[0] == '\0'))
+  rc = mutt_buffer_get_field(mutt_buffer_string(prompt), buf, MUTT_COMP_ALIAS,
+                             false, NULL, NULL, NULL);
+  if ((rc != 0) || mutt_buffer_is_empty(buf))
     goto done;
 
-  mutt_addrlist_parse2(&al, buf);
+  mutt_addrlist_parse2(&al, mutt_buffer_string(buf));
   if (TAILQ_EMPTY(&al))
   {
     mutt_error(_("Error parsing address"));
@@ -137,25 +139,27 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
     goto done;
   }
 
-  buf[0] = '\0';
-  mutt_addrlist_write(&al, buf, sizeof(buf), true);
+  mutt_buffer_reset(buf);
+  mutt_addrlist_write(&al, buf->data, buf->dsize, true);
 
 #define EXTRA_SPACE (15 + 7 + 2)
-  snprintf(scratch, sizeof(scratch),
-           ngettext("Bounce message to %s?", "Bounce messages to %s?", msg_count), buf);
+  scratch = mutt_buffer_pool_get();
+  mutt_buffer_printf(scratch,
+                     ngettext("Bounce message to %s?", "Bounce messages to %s?", msg_count),
+                     mutt_buffer_string(buf));
 
   const size_t width = msgwin_get_width();
-  if (mutt_strwidth(scratch) > (width - EXTRA_SPACE))
+  if (mutt_strwidth(mutt_buffer_string(scratch)) > (width - EXTRA_SPACE))
   {
-    mutt_simple_format(prompt, sizeof(prompt), 0, width - EXTRA_SPACE,
-                       JUSTIFY_LEFT, 0, scratch, sizeof(scratch), false);
-    mutt_str_cat(prompt, sizeof(prompt), "...?");
+    mutt_simple_format(prompt->data, prompt->dsize, 0, width - EXTRA_SPACE,
+                       JUSTIFY_LEFT, 0, scratch->data, scratch->dsize, false);
+    mutt_buffer_addstr(prompt, "...?");
   }
   else
-    mutt_str_copy(prompt, scratch, sizeof(prompt));
+    mutt_buffer_copy(prompt, scratch);
 
   const enum QuadOption c_bounce = cs_subset_quad(NeoMutt->sub, "bounce");
-  if (query_quadoption(c_bounce, prompt) != MUTT_YES)
+  if (query_quadoption(c_bounce, mutt_buffer_string(prompt)) != MUTT_YES)
   {
     msgwin_clear_text();
     mutt_message(ngettext("Message not bounced", "Messages not bounced", msg_count));
@@ -187,6 +191,9 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
 
 done:
   mutt_addrlist_clear(&al);
+  mutt_buffer_pool_release(&buf);
+  mutt_buffer_pool_release(&prompt);
+  mutt_buffer_pool_release(&scratch);
 }
 
 /**
@@ -600,21 +607,21 @@ bool mutt_select_sort(bool reverse)
 bool mutt_shell_escape(void)
 {
   bool rc = false;
-  char buf[1024] = { 0 };
+  struct Buffer *buf = mutt_buffer_pool_get();
 
-  if (mutt_get_field(_("Shell command: "), buf, sizeof(buf),
-                     MUTT_COMP_FILE_SIMPLE, false, NULL, NULL) != 0)
+  if (mutt_buffer_get_field(_("Shell command: "), buf, MUTT_COMP_FILE_SIMPLE,
+                            false, NULL, NULL, NULL) != 0)
   {
     goto done;
   }
 
-  if (buf[0] == '\0')
+  if (mutt_buffer_is_empty(buf))
   {
     const char *const c_shell = cs_subset_string(NeoMutt->sub, "shell");
-    mutt_str_copy(buf, c_shell, sizeof(buf));
+    mutt_buffer_strcpy(buf, c_shell);
   }
 
-  if (buf[0] == '\0')
+  if (mutt_buffer_is_empty(buf))
   {
     goto done;
   }
@@ -622,9 +629,9 @@ bool mutt_shell_escape(void)
   msgwin_clear_text();
   mutt_endwin();
   fflush(stdout);
-  int rc2 = mutt_system(buf);
+  int rc2 = mutt_system(mutt_buffer_string(buf));
   if (rc2 == -1)
-    mutt_debug(LL_DEBUG1, "Error running \"%s\"\n", buf);
+    mutt_debug(LL_DEBUG1, "Error running \"%s\"\n", mutt_buffer_string(buf));
 
   const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
   if ((rc2 != 0) || c_wait_key)
@@ -632,6 +639,7 @@ bool mutt_shell_escape(void)
 
   rc = true;
 done:
+  mutt_buffer_pool_release(&buf);
   return rc;
 }
 
@@ -640,19 +648,19 @@ done:
  */
 void mutt_enter_command(void)
 {
-  char buf[1024] = { 0 };
+  struct Buffer *buf = mutt_buffer_pool_get();
   struct Buffer *err = mutt_buffer_pool_get();
 
   window_redraw(NULL);
   /* if enter is pressed after : with no command, just return */
-  if ((mutt_get_field(":", buf, sizeof(buf), MUTT_COMP_COMMAND, false, NULL, NULL) != 0) ||
-      (buf[0] == '\0'))
+  if ((mutt_buffer_get_field(":", buf, MUTT_COMP_COMMAND, false, NULL, NULL, NULL) != 0) ||
+      mutt_buffer_is_empty(buf))
   {
     goto done;
   }
 
   /* check if buf is a valid icommand, else fall back quietly to parse_rc_lines */
-  enum CommandResult rc = mutt_parse_icommand(buf, err);
+  enum CommandResult rc = mutt_parse_icommand(mutt_buffer_string(buf), err);
   if (!mutt_buffer_is_empty(err))
   {
     /* since errbuf could potentially contain printf() sequences in it,
@@ -665,7 +673,7 @@ void mutt_enter_command(void)
   }
   else if (rc != MUTT_CMD_SUCCESS)
   {
-    rc = mutt_parse_rc_line(buf, err);
+    rc = mutt_parse_rc_line(mutt_buffer_string(buf), err);
     if (!mutt_buffer_is_empty(err))
     {
       if (rc == MUTT_CMD_SUCCESS) /* command succeeded with message */
@@ -679,6 +687,7 @@ void mutt_enter_command(void)
   /* else successful command */
 
 done:
+  mutt_buffer_pool_release(&buf);
   mutt_buffer_pool_release(&err);
 }
 
@@ -1099,10 +1108,10 @@ cleanup:
  */
 bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
 {
-  char buf[1024];
-  char obuf[1024];
-  char tmp[256];
-  char charset[256];
+  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *charset = mutt_buffer_pool_get();
+  struct Buffer *obuf = mutt_buffer_pool_get();
+  struct Buffer *tmp = mutt_buffer_pool_get();
 
   bool rc = false;
   bool charset_changed = false;
@@ -1110,30 +1119,23 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   bool structure_changed = false;
 
   char *cp = mutt_param_get(&b->parameter, "charset");
-  mutt_str_copy(charset, cp, sizeof(charset));
+  mutt_buffer_strcpy(charset, cp);
 
-  snprintf(buf, sizeof(buf), "%s/%s", TYPE(b), b->subtype);
-  mutt_str_copy(obuf, buf, sizeof(obuf));
+  mutt_buffer_printf(buf, "%s/%s", TYPE(b), b->subtype);
+  mutt_buffer_copy(obuf, buf);
   if (!TAILQ_EMPTY(&b->parameter))
   {
-    size_t l = strlen(buf);
     struct Parameter *np = NULL;
     TAILQ_FOREACH(np, &b->parameter, entries)
     {
-      mutt_addr_cat(tmp, sizeof(tmp), np->value, MimeSpecials);
-      l += snprintf(buf + l, sizeof(buf) - l, "; %s=%s", np->attribute, tmp);
-      if (l >= sizeof(buf))
-      {
-        // L10N: e.g. "text/plain; charset=UTF-8; ..."
-        mutt_error(_("Content type is too long"));
-        goto done;
-      }
+      mutt_addr_cat(tmp->data, tmp->dsize, np->value, MimeSpecials);
+      mutt_buffer_add_printf(buf, "; %s=%s", np->attribute, mutt_buffer_string(tmp));
     }
   }
 
-  if ((mutt_get_field("Content-Type: ", buf, sizeof(buf), MUTT_COMP_NO_FLAGS,
-                      false, NULL, NULL) != 0) ||
-      (buf[0] == '\0'))
+  if ((mutt_buffer_get_field("Content-Type: ", buf, MUTT_COMP_NO_FLAGS, false,
+                             NULL, NULL, NULL) != 0) ||
+      mutt_buffer_is_empty(buf))
   {
     goto done;
   }
@@ -1142,29 +1144,30 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   mutt_param_free(&b->parameter);
   FREE(&b->subtype);
 
-  mutt_parse_content_type(buf, b);
+  mutt_parse_content_type(mutt_buffer_string(buf), b);
 
-  snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
-  type_changed = !mutt_istr_equal(tmp, obuf);
-  charset_changed =
-      !mutt_istr_equal(charset, mutt_param_get(&b->parameter, "charset"));
+  mutt_buffer_printf(tmp, "%s/%s", TYPE(b), NONULL(b->subtype));
+  type_changed = !mutt_istr_equal(mutt_buffer_string(tmp), mutt_buffer_string(obuf));
+  charset_changed = !mutt_istr_equal(mutt_buffer_string(charset),
+                                     mutt_param_get(&b->parameter, "charset"));
 
   /* if in send mode, check for conversion - current setting is default. */
 
   if (!e && (b->type == TYPE_TEXT) && charset_changed)
   {
-    snprintf(tmp, sizeof(tmp), _("Convert to %s upon sending?"),
-             mutt_param_get(&b->parameter, "charset"));
-    enum QuadOption ans = mutt_yesorno(tmp, b->noconv ? MUTT_NO : MUTT_YES);
+    mutt_buffer_printf(tmp, _("Convert to %s upon sending?"),
+                       mutt_param_get(&b->parameter, "charset"));
+    enum QuadOption ans =
+        mutt_yesorno(mutt_buffer_string(tmp), b->noconv ? MUTT_NO : MUTT_YES);
     if (ans != MUTT_ABORT)
       b->noconv = (ans == MUTT_NO);
   }
 
   /* inform the user */
 
-  snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
+  mutt_buffer_printf(tmp, "%s/%s", TYPE(b), NONULL(b->subtype));
   if (type_changed)
-    mutt_message(_("Content-Type changed to %s"), tmp);
+    mutt_message(_("Content-Type changed to %s"), mutt_buffer_string(tmp));
   if ((b->type == TYPE_TEXT) && charset_changed)
   {
     if (type_changed)
@@ -1205,6 +1208,10 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   rc = structure_changed | type_changed;
 
 done:
+  mutt_buffer_pool_release(&buf);
+  mutt_buffer_pool_release(&charset);
+  mutt_buffer_pool_release(&obuf);
+  mutt_buffer_pool_release(&tmp);
   return rc;
 }
 
