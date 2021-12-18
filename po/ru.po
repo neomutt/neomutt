@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2021-12-10 23:32+0000\n"
+"POT-Creation-Date: 2021-12-18 21:52+0000\n"
 "PO-Revision-Date: 2021-05-16 19:33+0000\n"
 "Last-Translator: Ivan Shmakov\n"
 "Language-Team: \n"
@@ -26,54 +26,54 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #. L10N: prompt to add a new alias
-#: alias/alias.c:397
+#: alias/alias.c:401
 msgid "Alias as: "
 msgstr "Псевдоним: "
 
-#: alias/alias.c:407
+#: alias/alias.c:411
 msgid "You already have an alias defined with that name"
 msgstr "Такой псевдоним уже присутствует"
 
-#: alias/alias.c:413
+#: alias/alias.c:417
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "Предупреждение: Этот псевдоним может не работать. Исправить?"
 
-#: alias/alias.c:438
+#: alias/alias.c:442
 msgid "Address: "
 msgstr "Адрес: "
 
-#: alias/alias.c:451 commands.c:135 compose/functions.c:284 conn/raw.c:151
-#: conn/raw.c:208 recvcmd.c:228 send/send.c:195
+#: alias/alias.c:455 commands.c:137 compose/functions.c:288 conn/raw.c:151
+#: conn/raw.c:208 recvcmd.c:225 send/send.c:200
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "Некорректный IDN: %s"
 
-#: alias/alias.c:462
+#: alias/alias.c:466
 msgid "Personal name: "
 msgstr "Полное имя: "
 
-#: alias/alias.c:471
+#: alias/alias.c:475
 msgid "Comment: "
 msgstr "Комментарий: "
 
-#: alias/alias.c:482 alias/alias.c:486
+#: alias/alias.c:487 alias/alias.c:492
 msgid "Accept?"
 msgstr "Принять?"
 
-#: alias/alias.c:500 attach/recvattach.c:289 attach/recvattach.c:312
+#: alias/alias.c:506 attach/recvattach.c:289 attach/recvattach.c:312
 #: attach/recvattach.c:327 attach/recvattach.c:343 attach/recvattach.c:447
 msgid "Save to file: "
 msgstr "Сохранить в файл: "
 
-#: alias/alias.c:522
+#: alias/alias.c:532
 msgid "Error reading alias file"
 msgstr "Ошибка чтения файла псевдонимов"
 
-#: alias/alias.c:546
+#: alias/alias.c:559
 msgid "Trouble adding alias"
 msgstr "Проблема с добавлением псевдонима"
 
-#: alias/alias.c:548
+#: alias/alias.c:561
 msgid "Alias added"
 msgstr "Псевдоним добавлен"
 
@@ -142,21 +142,21 @@ msgid "You have no aliases"
 msgstr "Список псевдонимов отсутствует"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: alias/dlgalias.c:362 alias/dlgquery.c:564
+#: alias/dlgalias.c:362 alias/dlgquery.c:562
 msgid "Rev-Sort (a)lias, a(d)dress or (u)nsorted?"
 msgstr ""
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
-#: alias/dlgalias.c:364 alias/dlgquery.c:566
+#: alias/dlgalias.c:364 alias/dlgquery.c:564
 msgid "Sort (a)lias, a(d)dress or (u)nsorted?"
 msgstr ""
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: alias/dlgalias.c:366 alias/dlgquery.c:568
+#: alias/dlgalias.c:366 alias/dlgquery.c:566
 msgid "adu"
 msgstr ""
 
-#: alias/dlgalias.c:410 alias/dlgquery.c:613
+#: alias/dlgalias.c:410 alias/dlgquery.c:611
 #, fuzzy
 msgid "Limit to addresses matching: "
 msgstr "Ограничиться сообщениями, соответствующими: "
@@ -181,21 +181,21 @@ msgstr "Искать"
 msgid "Waiting for response..."
 msgstr "Ожидается ответ..."
 
-#: alias/dlgquery.c:398 alias/dlgquery.c:440 alias/dlgquery.c:457
-#: alias/dlgquery.c:744
+#: alias/dlgquery.c:397 alias/dlgquery.c:438 alias/dlgquery.c:455
+#: alias/dlgquery.c:742
 msgid "Query: "
 msgstr "Запрос: "
 
-#: alias/dlgquery.c:617
+#: alias/dlgquery.c:615
 msgid "Query"
 msgstr "Запрос"
 
-#: alias/dlgquery.c:699 alias/dlgquery.c:739
+#: alias/dlgquery.c:697 alias/dlgquery.c:737
 msgid "Query command not defined"
 msgstr "Команда запроса не определена"
 
 #. L10N: ask for a limit to apply
-#: alias/gui.c:79 index/functions.c:1596
+#: alias/gui.c:79 index/functions.c:1624
 #, c-format
 msgid "Limit: %s"
 msgstr "Шаблон ограничения: %s"
@@ -232,11 +232,11 @@ msgstr "Передать программе"
 msgid "Print"
 msgstr "Напечатать"
 
-#: attach/dlg_attach.c:482 index/functions.c:3115 pager/functions.c:81
+#: attach/dlg_attach.c:482 index/functions.c:3163 pager/functions.c:81
 msgid "Function not permitted in attach-message mode"
 msgstr "В режиме \"вложить сообщение\" функция недоступна"
 
-#: attach/dlg_attach.c:499 index/functions.c:3109 mx.c:943 pager/functions.c:79
+#: attach/dlg_attach.c:499 index/functions.c:3157 mx.c:943 pager/functions.c:79
 msgid "Mailbox is read-only"
 msgstr "Почтовый ящик немодифицируем"
 
@@ -269,7 +269,7 @@ msgstr "Удаление вложений из зашифрованных соо
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Для составных вложений поддерживается только удаление"
 
-#: attach/dlg_attach.c:859 index/functions.c:2830 pager/functions.c:1728
+#: attach/dlg_attach.c:859 index/functions.c:2871 pager/functions.c:1734
 msgid "Reply by mail as poster prefers?"
 msgstr "Ответить почтой согласно предпочтению отправителя?"
 
@@ -283,7 +283,7 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Указанный в mailcap способ создания требует наличия параметра %%s"
 
 #: attach/mutt_attach.c:158 attach/mutt_attach.c:297 compmbox/compress.c:340
-#: compose/functions.c:1184 gui/curs_lib.c:388 index/dlg_index.c:1173
+#: compose/functions.c:1211 gui/curs_lib.c:360 index/dlg_index.c:1173
 #: index/dlg_index.c:1220 pager/dlg_pager.c:760 pager/do_pager.c:168
 #: pager/message.c:344 send/sendlib.c:1066
 #, c-format
@@ -327,7 +327,7 @@ msgstr "MIME-тип не определен.  Невозможно просмо�
 
 #: attach/mutt_attach.c:547 attach/mutt_attach.c:747 attach/mutt_attach.c:1171
 #: attach/mutt_attach.c:1239 handler.c:587 ncrypt/dlgpgp.c:714
-#: ncrypt/pgpkey.c:278
+#: ncrypt/pgpkey.c:280
 msgid "Can't create filter"
 msgstr "Не удалось создать фильтр"
 
@@ -1032,25 +1032,25 @@ msgstr "Отключено от %s"
 msgid "Could not unsubscribe from %s"
 msgstr ""
 
-#: commands.c:110 recvcmd.c:184 recvcmd.c:196
+#: commands.c:111 recvcmd.c:179 recvcmd.c:191
 msgid "Warning: message contains no From: header"
 msgstr "Предупреждение: сообщение не содержит заголовка From:"
 
-#: commands.c:116 recvcmd.c:205
+#: commands.c:117 recvcmd.c:202
 #, fuzzy
 msgid "Bounce message to: "
 msgstr "Перенаправить сообщение: "
 
-#: commands.c:118 recvcmd.c:207
+#: commands.c:119 recvcmd.c:204
 #, fuzzy
 msgid "Bounce tagged messages to: "
 msgstr "Перенаправить сообщения: "
 
-#: commands.c:127 recvcmd.c:220
+#: commands.c:129 recvcmd.c:216
 msgid "Error parsing address"
 msgstr "Ошибка разбора адреса"
 
-#: commands.c:146 recvcmd.c:239
+#: commands.c:148 recvcmd.c:236
 #, fuzzy, c-format
 msgid "Bounce message to %s?"
 msgid_plural "Bounce messages to %s?"
@@ -1058,7 +1058,7 @@ msgstr[0] "Перенаправить сообщение %s?"
 msgstr[1] "Перенаправить сообщения %s?"
 msgstr[2] "Перенаправить сообщения %s?"
 
-#: commands.c:163 recvcmd.c:255
+#: commands.c:165 recvcmd.c:258
 #, fuzzy
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
@@ -1066,7 +1066,7 @@ msgstr[0] "Сообщение не перенаправлено"
 msgstr[1] "Сообщения не перенаправлены"
 msgstr[2] "Сообщения не перенаправлены"
 
-#: commands.c:189 recvcmd.c:279
+#: commands.c:190 recvcmd.c:285
 #, fuzzy
 msgid "Message bounced"
 msgid_plural "Messages bounced"
@@ -1074,34 +1074,34 @@ msgstr[0] "Сообщение перенаправлено"
 msgstr[1] "Сообщения перенаправлены"
 msgstr[2] "Сообщения перенаправлены"
 
-#: commands.c:324 commands.c:367 commands.c:387
+#: commands.c:331 commands.c:374 commands.c:394
 msgid "Can't create filter process"
 msgstr "Не удалось создать процесс фильтра"
 
-#: commands.c:424
+#: commands.c:431
 msgid "Pipe to command: "
 msgstr "Передать программе: "
 
-#: commands.c:458
+#: commands.c:465
 msgid "No printing command has been defined"
 msgstr "Команда для печати не определена"
 
-#: commands.c:470
+#: commands.c:477
 msgid "Print message?"
 msgstr "Напечатать сообщение?"
 
-#: commands.c:471
+#: commands.c:478
 msgid "Print tagged messages?"
 msgstr "Напечатать отмеченные сообщения?"
 
-#: commands.c:479
+#: commands.c:486
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Сообщение напечатано"
 msgstr[1] "Сообщения напечатаны"
 msgstr[2] "Сообщения напечатаны"
 
-#: commands.c:482
+#: commands.c:489
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Не удалось напечатать сообщение"
@@ -1109,140 +1109,135 @@ msgstr[1] "Не удалось напечатать сообщения"
 msgstr[2] "Не удалось напечатать сообщения"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: commands.c:498
+#: commands.c:505
 msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Обр.пор.:(d)дата/(f)от/(r)получ/(s)тема/(o)кому/(t)диск/(u)без/(z)разм/(c)конт/(p)спам/(l)метка?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
-#: commands.c:502
+#: commands.c:509
 msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Порядок:(d)дата/(f)от/(r)получ/(s)тема/(o)кому/(t)диск/(u)без/(z)разм/(c)конт/(p)спам/(l)метка?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: commands.c:506
+#: commands.c:513
 msgid "dfrsotuzcpl"
 msgstr "dfrsotuzcpl"
 
-#: commands.c:605
+#: commands.c:612
 msgid "Shell command: "
 msgstr "Программа: "
 
 #. L10N: Progress meter message when copying tagged messages
-#: commands.c:834
+#: commands.c:848
 msgid "Copying tagged messages..."
 msgstr "Копирую отмеченные сообщения..."
 
-#: commands.c:838
+#: commands.c:852
 #, fuzzy
 msgid "Copy tagged to mailbox"
 msgstr "Копировать помеченное в почтовый ящик"
 
-#: commands.c:838
+#: commands.c:852
 #, fuzzy
 msgid "Copy to mailbox"
 msgstr "Копировать в почтовый ящик"
 
-#: commands.c:841
+#: commands.c:855
 #, fuzzy
 msgid "Decrypt-copy tagged to mailbox"
 msgstr "Расшифровать и копировать помеченное в почтовый ящик"
 
-#: commands.c:842
+#: commands.c:856
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgstr "Расшифровать и копировать в почтовый ящик"
 
-#: commands.c:845
+#: commands.c:859
 #, fuzzy
 msgid "Decode-copy tagged to mailbox"
 msgstr "Декодировать и копировать помеченное в почтовый ящик"
 
-#: commands.c:846
+#: commands.c:860
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgstr "Декодировать и копировать в почтовый ящик"
 
 #. L10N: Progress meter message when saving tagged messages
-#: commands.c:853
+#: commands.c:867
 msgid "Saving tagged messages..."
 msgstr "Сохраняю отмеченные сообщения..."
 
-#: commands.c:857
+#: commands.c:871
 #, fuzzy
 msgid "Save tagged to mailbox"
 msgstr "Сохранить помеченное в почтовый ящик"
 
-#: commands.c:857
+#: commands.c:871
 #, fuzzy
 msgid "Save to mailbox"
 msgstr "Сохранить в почтовый ящик"
 
-#: commands.c:860
+#: commands.c:874
 #, fuzzy
 msgid "Decrypt-save tagged to mailbox"
 msgstr "Расшифровать и сохранить помеченное в почтовый ящик"
 
-#: commands.c:861
+#: commands.c:875
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgstr "Расшифровать и сохранить в почтовый ящик"
 
-#: commands.c:864
+#: commands.c:878
 #, fuzzy
 msgid "Decode-save tagged to mailbox"
 msgstr "Декодировать и сохранить помеченное в почтовый ящик"
 
-#: commands.c:865
+#: commands.c:879
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgstr "Декодировать и сохранить в почтовый ящик"
 
-#: commands.c:912
+#: commands.c:926
 #, c-format
 msgid "Copying to %s..."
 msgstr "Копируется в %s..."
 
 #. L10N: Message when an index tagged save operation fails for some reason
-#: commands.c:1055
+#: commands.c:1069
 msgid "Error saving tagged messages"
 msgstr "Ошибка сохранения отмеченных сообщений"
 
 #. L10N: Message when an index/pager save operation fails for some reason
-#: commands.c:1060
+#: commands.c:1074
 msgid "Error saving message"
 msgstr "Ошибка сохранения сообщения"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
-#: commands.c:1067
+#: commands.c:1081
 msgid "Error copying tagged messages"
 msgstr "Ошибка копирования отмеченных сообщений"
 
 #. L10N: Message when an index/pager copy operation fails for some reason
-#: commands.c:1072
+#: commands.c:1086
 msgid "Error copying message"
 msgstr "Ошибка копирования сообщения"
 
-#. L10N: e.g. "text/plain; charset=UTF-8; ..."
-#: commands.c:1122
-msgid "Content type is too long"
-msgstr "Значение Content-Type слишком длинное"
-
-#: commands.c:1150
+#: commands.c:1158
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "Перекодировать в %s при отправке?"
 
-#: commands.c:1161
+#: commands.c:1170
 #, c-format
 msgid "Content-Type changed to %s"
 msgstr "Значение Content-Type изменено на %s"
 
-#: commands.c:1166
+#: commands.c:1175
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting"
 msgstr "Установлена новая кодировка: %s; не перекодировать"
 
-#: commands.c:1167
+#: commands.c:1176
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting"
 msgstr "Установлена новая кодировка: %s; перекодировать"
@@ -1305,22 +1300,22 @@ msgid "From: "
 msgstr "From: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:98 send/send.c:265
+#: compose/compose.c:98 send/send.c:273
 msgid "To: "
 msgstr "To: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:100 send/send.c:272
+#: compose/compose.c:100 send/send.c:280
 msgid "Cc: "
 msgstr "Cc: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:102 send/send.c:279
+#: compose/compose.c:102 send/send.c:287
 msgid "Bcc: "
 msgstr "Bcc: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose/compose.c:104 send/send.c:317
+#: compose/compose.c:104 send/send.c:328
 msgid "Subject: "
 msgstr "Subject: "
 
@@ -1349,8 +1344,8 @@ msgstr "Безопасность: "
 #. other compose menu fields.  However, if possible, it should not be longer
 #. than the other compose menu fields.  Since it shares the row with "Encrypt
 #. with:", it should not be longer than 15-20 character cells.
-#: compose/compose.c:120 ncrypt/crypt_gpgme.c:4285 ncrypt/pgp.c:2011
-#: ncrypt/smime.c:2227
+#: compose/compose.c:120 ncrypt/crypt_gpgme.c:4287 ncrypt/pgp.c:2017
+#: ncrypt/smime.c:2236
 msgid "Sign as: "
 msgstr "Подписать как: "
 
@@ -1401,7 +1396,7 @@ msgstr "CC"
 msgid "Subj"
 msgstr "Subj"
 
-#: compose/compose.c:147 compose/compose.c:162 compose/functions.c:407
+#: compose/compose.c:147 compose/compose.c:162 compose/functions.c:415
 msgid "Attach file"
 msgstr "Вложить файл"
 
@@ -1551,171 +1546,171 @@ msgstr "Вложение #%d уже не существует: %s"
 msgid "Attachment #%d modified. Update encoding for %s?"
 msgstr "Вложение #%d изменено. Обновить кодировку для %s?"
 
-#: compose/functions.c:309
+#: compose/functions.c:317
 msgid "You may not delete the only attachment"
 msgstr "Вы не можете удалить единственное вложение"
 
-#: compose/functions.c:428
+#: compose/functions.c:436
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
 msgstr[0] "Вкладываются выбранные файлы..."
 msgstr[1] "Вкладываются выбранные файлы..."
 msgstr[2] "Вкладываются выбранные файлы..."
 
-#: compose/functions.c:448
+#: compose/functions.c:456
 #, c-format
 msgid "Unable to attach %s"
 msgstr "Не удалось вложить %s"
 
-#: compose/functions.c:498
+#: compose/functions.c:506
 msgid "Open mailbox to attach message from"
 msgstr "Вложить сообщение из почтового ящика"
 
-#: compose/functions.c:510
+#: compose/functions.c:518
 msgid "Open newsgroup to attach message from"
 msgstr "Открыть группу для вложения сообщения из"
 
-#: compose/functions.c:567 main.c:1368
+#: compose/functions.c:575 main.c:1367
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Не удалось открыть почтовый ящик %s"
 
-#: compose/functions.c:578
+#: compose/functions.c:586
 msgid "No messages in that folder"
 msgstr "В этом почтовом ящике/файле нет сообщений"
 
-#: compose/functions.c:589
+#: compose/functions.c:597
 msgid "Tag the messages you want to attach"
 msgstr "Пометьте сообщения, которые вы хотите вложить"
 
-#: compose/functions.c:626
+#: compose/functions.c:634
 msgid "Unable to attach"
 msgstr "Не удалось создать вложение"
 
-#: compose/functions.c:739
+#: compose/functions.c:757
 msgid "Invalid encoding"
 msgstr "Неверная кодировка"
 
-#: compose/functions.c:818 send/send.c:2764
+#: compose/functions.c:838 send/send.c:2778
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Некорректный IDN в '%s': %s."
 
-#: compose/functions.c:869
+#: compose/functions.c:890
 msgid "Empty 'Content-Language'"
 msgstr "Поле «Content-Language» пусто"
 
-#: compose/functions.c:1001
+#: compose/functions.c:1028
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr ""
 
-#: compose/functions.c:1084
+#: compose/functions.c:1111
 msgid "Grouping 'multilingual' requires at least 2 tagged messages"
 msgstr ""
 
-#: compose/functions.c:1096
+#: compose/functions.c:1123
 msgid "Not all parts have 'Content-Language' set, continue?"
 msgstr "Не для всех частей указано поле Content-Language, продолжить?"
 
-#: compose/functions.c:1098
+#: compose/functions.c:1125
 msgid "Not sending this message"
 msgstr "Не отправляю это сообщение"
 
-#: compose/functions.c:1204
+#: compose/functions.c:1231
 msgid "Attachment is already at bottom"
 msgstr "Вложение уже в самом низу"
 
-#: compose/functions.c:1209 compose/functions.c:1231
+#: compose/functions.c:1236 compose/functions.c:1258
 msgid "The fundamental part can't be moved"
 msgstr ""
 
-#: compose/functions.c:1226
+#: compose/functions.c:1253
 msgid "Attachment is already at top"
 msgstr "Вложение уже в самом верху"
 
-#: compose/functions.c:1246
+#: compose/functions.c:1277
 msgid "New file: "
 msgstr "Новый файл: "
 
-#: compose/functions.c:1268
+#: compose/functions.c:1298
 msgid "Content-Type is of the form base/sub"
 msgstr "Поле Content-Type должно иметь вид тип/подтип"
 
-#: compose/functions.c:1276
+#: compose/functions.c:1305
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Неизвестное значение поля Content-Type: %s"
 
-#: compose/functions.c:1285
+#: compose/functions.c:1314
 #, c-format
 msgid "Can't create file %s"
 msgstr "Не удалось создать файл %s"
 
-#: compose/functions.c:1295
+#: compose/functions.c:1322
 msgid "What we have here is a failure to make an attachment"
 msgstr "Не удалось создать вложение"
 
-#: compose/functions.c:1330
+#: compose/functions.c:1361
 msgid "No PGP backend configured"
 msgstr "Поддержка PGP не настроена"
 
-#: compose/functions.c:1337 compose/functions.c:1816
+#: compose/functions.c:1368 compose/functions.c:1847
 msgid "S/MIME already selected. Clear and continue?"
 msgstr "S/MIME уже используется. Очистить и продолжить?"
 
-#: compose/functions.c:1389
+#: compose/functions.c:1420
 msgid "Send attachment with name: "
 msgstr "Отправить вложение с именем: "
 
-#: compose/functions.c:1413
+#: compose/functions.c:1444
 msgid "Rename to: "
 msgstr "Переименовать в: "
 
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose/functions.c:1421 editmsg.c:101 editmsg.c:135 editmsg.c:154
+#: compose/functions.c:1452 editmsg.c:101 editmsg.c:135 editmsg.c:154
 #: send/sendlib.c:485
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Не удалось получить информацию о %s: %s"
 
-#: compose/functions.c:1466
+#: compose/functions.c:1497
 msgid "Save a copy of this message?"
 msgstr "Сохранить копию этого сообщения?"
 
-#: compose/functions.c:1487
+#: compose/functions.c:1518
 msgid "No S/MIME backend configured"
 msgstr "Поддержка S/MIME не настроена"
 
-#: compose/functions.c:1495
+#: compose/functions.c:1526
 msgid "PGP already selected. Clear and continue?"
 msgstr "PGP уже используется. Очистить и продолжить?"
 
-#: compose/functions.c:1541
+#: compose/functions.c:1572
 msgid "Recoding only affects text attachments"
 msgstr "Перекодирование применимо только для текстовых вложений"
 
-#: compose/functions.c:1546
+#: compose/functions.c:1577
 msgid "The current attachment won't be converted"
 msgstr "Текущее вложение не будет перекодировано"
 
-#: compose/functions.c:1548
+#: compose/functions.c:1579
 msgid "The current attachment will be converted"
 msgstr "Текущее вложение будет перекодировано"
 
-#: compose/functions.c:1619
+#: compose/functions.c:1650
 msgid "Write message to mailbox"
 msgstr "Записать сообщение в почтовый ящик"
 
-#: compose/functions.c:1623
+#: compose/functions.c:1654
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Сообщение записывается в %s..."
 
-#: compose/functions.c:1631
+#: compose/functions.c:1662
 msgid "Message written"
 msgstr "Сообщение записано"
 
-#: compose/functions.c:1709
+#: compose/functions.c:1740
 msgid "Save (postpone) draft message?"
 msgstr "Сохранить (отложить) сообщение в черновики?"
 
@@ -1830,7 +1825,7 @@ msgstr "Недопустимый тип сортировки: %ld"
 msgid "Username at %s: "
 msgstr "Имя пользователя для %s: "
 
-#: conn/connaccount.c:126
+#: conn/connaccount.c:131
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Пароль для %s@%s: "
@@ -1839,19 +1834,19 @@ msgstr "Пароль для %s@%s: "
 #. one of your $*_authenticators and (2) you do not have the corresponding
 #. $*_oauth_refresh_command defined. So the message does not mean "None of
 #. your $*_oauth_refresh_command's are defined."
-#: conn/connaccount.c:175
+#: conn/connaccount.c:185
 msgid "No OAUTH refresh command defined"
 msgstr "Команда обновления OAUTH не определена"
 
-#: conn/connaccount.c:183
+#: conn/connaccount.c:193
 msgid "Unable to run refresh command"
 msgstr "Не могу выполнить команду обновления"
 
-#: conn/connaccount.c:202
+#: conn/connaccount.c:212
 msgid "Command returned empty string"
 msgstr "Команда вернула пустую строку"
 
-#: conn/connaccount.c:209
+#: conn/connaccount.c:219
 #, c-format
 msgid "OAUTH token is too big: %ld"
 msgstr "Токен OAUTH слишком большой: %ld"
@@ -2066,7 +2061,7 @@ msgstr "Не удалось выполнить проверку хоста се�
 msgid "I/O error"
 msgstr "ошибка ввода/вывода"
 
-#: conn/openssl.c:1182 conn/raw.c:257 gui/curs_lib.c:446 mutt_logging.c:148
+#: conn/openssl.c:1182 conn/raw.c:257 gui/curs_lib.c:418 mutt_logging.c:148
 msgid "unknown error"
 msgstr "неизвестная ошибка"
 
@@ -2218,8 +2213,8 @@ msgstr "Не удалось дозаписать почтовый ящик: %s"
 msgid "multipart message has no boundary parameter"
 msgstr "Составное сообщение требует наличия параметра boundary"
 
-#: flags.c:385 index/functions.c:766 index/functions.c:878
-#: index/functions.c:894 index/functions.c:1030 mutt_thread.c:1264
+#: flags.c:385 index/functions.c:777 index/functions.c:889
+#: index/functions.c:905 index/functions.c:1041 mutt_thread.c:1264
 #: mutt_thread.c:1330 mutt_thread.c:1416
 msgid "Threading is not enabled"
 msgstr "Группировка по дискуссиям не включена"
@@ -2264,15 +2259,15 @@ msgstr ""
 msgid "Kill Word"
 msgstr ""
 
-#: gui/curs_lib.c:410
+#: gui/curs_lib.c:382
 msgid "Exit NeoMutt?"
 msgstr "Завершить работу с NeoMutt?"
 
-#: gui/curs_lib.c:475
+#: gui/curs_lib.c:447
 msgid "Press any key to continue..."
 msgstr "Чтобы продолжить, нажмите любую клавишу..."
 
-#: gui/curs_lib.c:526
+#: gui/curs_lib.c:498
 msgid " ('?' for list): "
 msgstr " (\"?\" -- список): "
 
@@ -2542,13 +2537,13 @@ msgstr "Некорректный формат файла истории (стр�
 #: ncrypt/crypt_gpgme.c:2352 ncrypt/crypt_gpgme.c:2385
 #: ncrypt/crypt_gpgme.c:2403 ncrypt/crypt_gpgme.c:2487
 #: ncrypt/crypt_gpgme.c:3081 ncrypt/crypt_gpgme.c:3181 ncrypt/dlggpgme.c:886
-#: ncrypt/dlgpgp.c:697 ncrypt/pgp.c:580 ncrypt/pgp.c:587 ncrypt/pgp.c:907
-#: ncrypt/pgp.c:1024 ncrypt/pgp.c:1181 ncrypt/pgp.c:1205 ncrypt/pgp.c:1238
-#: ncrypt/pgp.c:1597 ncrypt/pgpkey.c:260 ncrypt/pgpmicalg.c:190
-#: ncrypt/smime.c:883 ncrypt/smime.c:891 ncrypt/smime.c:984 ncrypt/smime.c:1096
-#: ncrypt/smime.c:1164 ncrypt/smime.c:1172 ncrypt/smime.c:1380
-#: ncrypt/smime.c:1791 ncrypt/smime.c:1868 ncrypt/smime.c:1875
-#: ncrypt/smime.c:1982 ncrypt/smime.c:2112 ncrypt/smime.c:2128 nntp/nntp.c:1297
+#: ncrypt/dlgpgp.c:697 ncrypt/pgp.c:586 ncrypt/pgp.c:593 ncrypt/pgp.c:913
+#: ncrypt/pgp.c:1030 ncrypt/pgp.c:1187 ncrypt/pgp.c:1211 ncrypt/pgp.c:1244
+#: ncrypt/pgp.c:1603 ncrypt/pgpkey.c:262 ncrypt/pgpmicalg.c:190
+#: ncrypt/smime.c:893 ncrypt/smime.c:901 ncrypt/smime.c:994 ncrypt/smime.c:1106
+#: ncrypt/smime.c:1173 ncrypt/smime.c:1180 ncrypt/smime.c:1389
+#: ncrypt/smime.c:1800 ncrypt/smime.c:1877 ncrypt/smime.c:1884
+#: ncrypt/smime.c:1991 ncrypt/smime.c:2121 ncrypt/smime.c:2137 nntp/nntp.c:1297
 #: nntp/nntp.c:2152 pattern/exec.c:148 pop/pop.c:123
 msgid "Can't create temporary file"
 msgstr "Не удалось создать временный файл"
@@ -2656,7 +2651,7 @@ msgstr "Нет такого почтового ящика: %s"
 msgid "Create mailbox: "
 msgstr "Создать почтовый ящик: "
 
-#: imap/browse.c:412 imap/browse.c:465
+#: imap/browse.c:412 imap/browse.c:470
 msgid "Mailbox must have a name"
 msgstr "Почтовый ящик должен иметь имя"
 
@@ -2664,21 +2659,21 @@ msgstr "Почтовый ящик должен иметь имя"
 msgid "Mailbox created"
 msgstr "Почтовый ящик создан"
 
-#: imap/browse.c:453
+#: imap/browse.c:454
 msgid "Can't rename root folder"
 msgstr "Невозможно переименовать корневой почтовый ящик"
 
-#: imap/browse.c:457
+#: imap/browse.c:461
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Переименовать почтовый ящик %s в: "
 
-#: imap/browse.c:473
+#: imap/browse.c:478
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Не удалось переименовать: %s"
 
-#: imap/browse.c:477
+#: imap/browse.c:482
 msgid "Mailbox renamed"
 msgstr "Почтовый ящик переименован"
 
@@ -2833,7 +2828,7 @@ msgstr "Сбой QRESYNC.  Заново открываем почтовый ящ
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Получение списка заголовков не поддерживается этим IMAP-сервером"
 
-#: imap/message.c:1122 index/functions.c:2573 nntp/nntp.c:1229 pop/pop.c:369
+#: imap/message.c:1122 index/functions.c:2605 nntp/nntp.c:1229 pop/pop.c:369
 msgid "Fetching message headers..."
 msgstr "Получение заголовков сообщений..."
 
@@ -2847,11 +2842,11 @@ msgstr "Сообщение загружается на сервер..."
 msgid "Copying message %d to %s..."
 msgstr "Сообщение %d копируется в %s..."
 
-#: imap/message.c:1963 imap/message.c:2028 nntp/nntp.c:2612 pop/pop.c:1054
+#: imap/message.c:1962 imap/message.c:2027 nntp/nntp.c:2612 pop/pop.c:1054
 msgid "Fetching message..."
 msgstr "Получение сообщения..."
 
-#: imap/message.c:2015 pop/pop.c:1033
+#: imap/message.c:2014 pop/pop.c:1033
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Нумерация сообщений изменилась. Требуется повторно открыть почтовый ящик."
 
@@ -2922,7 +2917,7 @@ msgstr "Новая почта в этом ящике"
 msgid "Mailbox was externally modified"
 msgstr "Ящик был изменен внешней программой"
 
-#: index/dlg_index.c:1305 index/functions.c:3090
+#: index/dlg_index.c:1305 index/functions.c:3138
 msgid "No mailbox is open"
 msgstr "Нет открытого почтового ящика"
 
@@ -2930,7 +2925,7 @@ msgstr "Нет открытого почтового ящика"
 msgid "No tagged messages"
 msgstr "Нет отмеченных сообщений"
 
-#: index/dlg_index.c:1316 index/functions.c:651 menu/menu.c:358
+#: index/dlg_index.c:1316 index/functions.c:653 menu/menu.c:369
 #, fuzzy
 msgid "Nothing to do"
 msgstr "Нет отмеченных сообщений"
@@ -2944,7 +2939,7 @@ msgstr "Не удалось удалить сообщение"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:246 index/functions.c:937 pager/functions.c:425
+#: index/functions.c:246 index/functions.c:948 pager/functions.c:425
 #, fuzzy
 msgid "Can't delete messages"
 msgstr "Не удалось удалить сообщение"
@@ -2981,142 +2976,142 @@ msgstr "Выйти из NeoMutt без сохранения изменений?"
 msgid "Can't flag message"
 msgstr "Не удалось переключить флаг сообщения"
 
-#: index/functions.c:647
+#: index/functions.c:649
 msgid "Jump to message: "
 msgstr "Перейти к сообщению: "
 
-#: index/functions.c:654
+#: index/functions.c:658
 msgid "Argument must be a message number"
 msgstr "Аргумент должен быть номером сообщения"
 
-#: index/functions.c:656
+#: index/functions.c:662
 msgid "Invalid message number"
 msgstr "Неверный номер сообщения"
 
-#: index/functions.c:658
+#: index/functions.c:666
 msgid "That message is not visible"
 msgstr "Это сообщение невидимо"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:760
+#: index/functions.c:771
 #, fuzzy
 msgid "Can't break thread"
 msgstr "Не удалось разъединить дискуссии"
 
-#: index/functions.c:778
+#: index/functions.c:789
 msgid "Thread broken"
 msgstr "Дискуссия разделена"
 
-#: index/functions.c:787
+#: index/functions.c:798
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr "Дискуссия не может быть разделена, сообщение не является частью дискуссии"
 
-#: index/functions.c:813
+#: index/functions.c:824
 msgid "Open mailbox in read-only mode"
 msgstr "Открыть почтовый ящик только для чтения"
 
-#: index/functions.c:818
+#: index/functions.c:829
 msgid "Open mailbox"
 msgstr "Открыть почтовый ящик"
 
-#: index/functions.c:918
+#: index/functions.c:929
 #, fuzzy
 msgid "Thread contains unread or flagged messages"
 msgstr "В дискуссии присутствуют непрочитанные сообщения"
 
-#: index/functions.c:940
+#: index/functions.c:951
 msgid "Delete messages matching: "
 msgstr "Удалить сообщения по образцу: "
 
-#: index/functions.c:980
+#: index/functions.c:991
 msgid "Limit to messages matching: "
 msgstr "Ограничиться сообщениями, соответствующими: "
 
-#: index/functions.c:1010
+#: index/functions.c:1021
 msgid "To view all messages, limit to \"all\""
 msgstr "Используйте \"all\" для просмотра всех сообщений"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:1022
+#: index/functions.c:1033
 msgid "Can't link threads"
 msgstr "Не удалось соединить дискуссии"
 
-#: index/functions.c:1032
+#: index/functions.c:1043
 msgid "No Message-ID: header available to link thread"
 msgstr "Отсутствует заголовок Message-ID: для соединения дискуссии"
 
-#: index/functions.c:1045
+#: index/functions.c:1056
 msgid "Threads linked"
 msgstr "Дискуссии соединены"
 
-#: index/functions.c:1050
+#: index/functions.c:1061
 msgid "No thread linked"
 msgstr "Дискуссии не соединены"
 
-#: index/functions.c:1079 mx.c:1283 mx.c:1303
+#: index/functions.c:1093 mx.c:1282 mx.c:1302
 msgid "Folder doesn't support tagging, aborting"
 msgstr ""
 
-#: index/functions.c:1094
+#: index/functions.c:1114
 #, fuzzy
 msgid "No tag specified, aborting"
 msgstr "Нет темы письма, отказ"
 
-#: index/functions.c:1104
+#: index/functions.c:1124
 msgid "Update tags..."
 msgstr ""
 
-#: index/functions.c:1144
+#: index/functions.c:1164
 msgid "Failed to modify tags, aborting"
 msgstr ""
 
-#: index/functions.c:1271
+#: index/functions.c:1299
 msgid "No new messages in this limited view"
 msgstr "Нет новых сообщений при просмотре с ограничением"
 
-#: index/functions.c:1273
+#: index/functions.c:1301
 msgid "No new messages"
 msgstr "Нет новых сообщений"
 
-#: index/functions.c:1278
+#: index/functions.c:1306
 msgid "No unread messages in this limited view"
 msgstr "Нет непрочитанных сообщений при просмотре с ограничением"
 
-#: index/functions.c:1280
+#: index/functions.c:1308
 msgid "No unread messages"
 msgstr "Нет непрочитанных сообщений"
 
-#: index/functions.c:1295 menu/menu.c:191 pager/functions.c:1442
-#: pattern/pattern.c:581 pattern/pattern.c:737
+#: index/functions.c:1323 menu/menu.c:198 pager/functions.c:1448
+#: pattern/pattern.c:582 pattern/pattern.c:740
 msgid "Search wrapped to top"
 msgstr "Достигнут конец; продолжаем поиск с начала"
 
-#: index/functions.c:1300 pager/functions.c:1468 pattern/pattern.c:592
-#: pattern/pattern.c:748
+#: index/functions.c:1328 pager/functions.c:1474 pattern/pattern.c:593
+#: pattern/pattern.c:751
 msgid "Search wrapped to bottom"
 msgstr "Достигнуто начало; продолжаем поиск с конца"
 
-#: index/functions.c:1348
+#: index/functions.c:1376
 msgid "No more threads"
 msgstr "Нет больше дискуссий"
 
-#: index/functions.c:1350
+#: index/functions.c:1378
 msgid "You are on the first thread"
 msgstr "Это первая дискуссия"
 
-#: index/functions.c:1372 index/functions.c:1855
+#: index/functions.c:1400 index/functions.c:1887
 msgid "You are on the last message"
 msgstr "Это последнее сообщение"
 
-#: index/functions.c:1382 index/functions.c:1436
+#: index/functions.c:1410 index/functions.c:1464
 msgid "No undeleted messages"
 msgstr "Нет восстановленных сообщений"
 
-#: index/functions.c:1409
+#: index/functions.c:1437
 msgid "No mailboxes have new mail"
 msgstr "Нет почтовых ящиков с новой почтой"
 
-#: index/functions.c:1426 index/functions.c:1898
+#: index/functions.c:1454 index/functions.c:1930
 msgid "You are on the first message"
 msgstr "Это первое сообщение"
 
@@ -3124,16 +3119,16 @@ msgstr "Это первое сообщение"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1494
+#: index/functions.c:1522
 #, fuzzy
 msgid "Can't mark messages as read"
 msgstr "Не удалось пометить сообщения как прочитанные"
 
-#: index/functions.c:1591
+#: index/functions.c:1619
 msgid "No limit pattern is in effect"
 msgstr "Шаблон ограничения списка отсутствует"
 
-#: index/functions.c:1685
+#: index/functions.c:1713
 msgid "Tag messages matching: "
 msgstr "Пометить сообщения по образцу: "
 
@@ -3141,141 +3136,141 @@ msgstr "Пометить сообщения по образцу: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1701 index/functions.c:2396 pager/functions.c:1628
+#: index/functions.c:1729 index/functions.c:2428 pager/functions.c:1634
 #, fuzzy
 msgid "Can't undelete messages"
 msgstr "Не удалось восстановить сообщение"
 
-#: index/functions.c:1704
+#: index/functions.c:1732
 msgid "Undelete messages matching: "
 msgstr "Восстановить сообщения по образцу: "
 
-#: index/functions.c:1718
+#: index/functions.c:1746
 msgid "Untag messages matching: "
 msgstr "Снять пометку с сообщений по образцу: "
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index/functions.c:1738
+#: index/functions.c:1769
 msgid "Enter macro stroke: "
 msgstr "Введите макрос сообщения: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index/functions.c:1755
+#: index/functions.c:1786
 msgid "message hotkey"
 msgstr "макрос сообщения"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index/functions.c:1760
+#: index/functions.c:1791
 #, c-format
 msgid "Message bound to %s"
 msgstr "Сообщение связяно с %s"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index/functions.c:1769
+#: index/functions.c:1801
 msgid "No message ID to macro"
 msgstr "Нет Message-ID для создания макроса"
 
-#: index/functions.c:1950 pager/functions.c:1097
+#: index/functions.c:1982 pager/functions.c:1097
 msgid "Quit NeoMutt?"
 msgstr "Выйти из NeoMutt?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2281 pager/functions.c:1566
+#: index/functions.c:2313 pager/functions.c:1572
 msgid "Can't toggle new"
 msgstr "Не удалось переключить флаг \"новое\""
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2353 pager/functions.c:1597
+#: index/functions.c:2385 pager/functions.c:1603
 msgid "Can't undelete message"
 msgstr "Не удалось восстановить сообщение"
 
-#: index/functions.c:2522
+#: index/functions.c:2554
 msgid "Logged out of IMAP servers"
 msgstr "Соединения с IMAP-серверами отключены"
 
-#: index/functions.c:2569
+#: index/functions.c:2601
 msgid "No Message-Id. Unable to perform operation."
 msgstr "Нет Message-Id. Не могу выполнить действие."
 
-#: index/functions.c:2647
+#: index/functions.c:2679
 #, fuzzy
 msgid "No deleted messages found in the thread"
 msgstr "Не найдено удаленных сообщений в дискуссии"
 
-#: index/functions.c:2675
+#: index/functions.c:2709
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Введите Message-Id: "
 
-#: index/functions.c:2686
+#: index/functions.c:2720
 #, fuzzy
 msgid "Article has no parent reference"
 msgstr "В сообщении нет ссылки на предыдущее в теме"
 
-#: index/functions.c:2708
+#: index/functions.c:2743
 #, fuzzy
 msgid "Message is not visible in limited view"
 msgstr "Сообщение не видимо при просмотре с ограничением"
 
-#: index/functions.c:2712
+#: index/functions.c:2748
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "Получение %s с сервера..."
 
-#: index/functions.c:2723 nntp/nntp.c:2647
+#: index/functions.c:2761 nntp/nntp.c:2647
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "Сообщение %s не найдено на сервере"
 
-#: index/functions.c:2749
+#: index/functions.c:2790
 msgid "Open newsgroup in read-only mode"
 msgstr "Открыть группу в режиме только для чтения"
 
-#: index/functions.c:2754
+#: index/functions.c:2795
 msgid "Open newsgroup"
 msgstr "Открыть группу"
 
-#: index/functions.c:2835 pager/functions.c:1733 pager/functions.c:1774
-#: pager/functions.c:1808
+#: index/functions.c:2876 pager/functions.c:1739 pager/functions.c:1780
+#: pager/functions.c:1814
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
-#: index/functions.c:2870
+#: index/functions.c:2911
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr ""
 
-#: index/functions.c:2890
+#: index/functions.c:2931
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr ""
 
-#: index/functions.c:2900
+#: index/functions.c:2941
 msgid "Failed to read thread, aborting"
 msgstr ""
 
-#: index/functions.c:2939
+#: index/functions.c:2982
 #, fuzzy
 msgid "No query, aborting"
 msgstr "Нет запроса, отказ"
 
-#: index/functions.c:2977
+#: index/functions.c:3025
 msgid "Windowed queries disabled"
 msgstr ""
 
-#: index/functions.c:2984
+#: index/functions.c:3032
 msgid "No notmuch vfolder currently loaded"
 msgstr ""
 
-#: index/functions.c:3096
+#: index/functions.c:3144
 msgid "There are no messages"
 msgstr "Сообщений нет"
 
-#: index/functions.c:3103
+#: index/functions.c:3151
 msgid "No visible messages"
 msgstr "Нет видимых сообщений"
 
@@ -3417,7 +3412,7 @@ msgstr "Читается %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
 #: maildir/maildir.c:1396 maildir/mh.c:1058 mbox/mbox.c:1276 mx.c:479
-#: notmuch/notmuch.c:2237
+#: notmuch/notmuch.c:2239
 #, c-format
 msgid "Writing %s..."
 msgstr "Пишется %s..."
@@ -3653,33 +3648,33 @@ msgstr "Ошибка: неверное значение \"%s\" для -d"
 msgid "Failed to parse mailto: link"
 msgstr "Не удалось распознать ссылку mailto:"
 
-#: main.c:997 main.c:1257 send/send.c:2754 send/send.c:2758
+#: main.c:997 main.c:1256 send/send.c:2768 send/send.c:2772
 msgid "No recipients specified"
 msgstr "Адресаты не указаны"
 
-#: main.c:1024
+#: main.c:1023
 msgid "Can't use -E flag with stdin"
 msgstr "Невозможно использовать ключ -E с stdin"
 
-#: main.c:1108
+#: main.c:1107
 #, fuzzy, c-format
 msgid "Can't parse message template: %s"
 msgstr "Не удалось разобрать шаблон: %s"
 
-#: main.c:1175 mutt_header.c:337
+#: main.c:1174 mutt_header.c:339
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: не удалось вложить файл"
 
-#: main.c:1270
+#: main.c:1269
 msgid "No mailbox with new mail"
 msgstr "Нет почтовых ящиков с новой почтой"
 
-#: main.c:1296
+#: main.c:1295
 msgid "No incoming mailboxes defined"
 msgstr "Не определено ни одного почтового ящика со входящими письмами"
 
-#: main.c:1349
+#: main.c:1348
 msgid "Mailbox is empty"
 msgstr "Почтовый ящик пуст"
 
@@ -3725,48 +3720,48 @@ msgstr "Не удалось заново открыть почтовый ящи�
 msgid "Can't write message"
 msgstr "Ошибка записи сообщения"
 
-#: menu/menu.c:67 menu/menu.c:482 menu/move.c:336 menu/move.c:356
+#: menu/menu.c:67 menu/menu.c:493 menu/move.c:336 menu/move.c:356
 #: menu/move.c:403 menu/move.c:419 menu/move.c:436 menu/move.c:457
 #: menu/move.c:477
 msgid "No entries"
 msgstr "Записи отсутствуют"
 
-#: menu/menu.c:73
+#: menu/menu.c:74
 msgid "Jump to: "
 msgstr "Перейти к: "
 
-#: menu/menu.c:83
+#: menu/menu.c:85
 msgid "Invalid index number"
 msgstr "Неверный индекс"
 
-#: menu/menu.c:155 pager/functions.c:1269 pattern/pattern.c:507
-#: pattern/pattern.c:665
+#: menu/menu.c:161 pager/functions.c:1271 pattern/pattern.c:508
+#: pattern/pattern.c:668
 msgid "Search for: "
 msgstr "Поиск: "
 
-#: menu/menu.c:156 pager/functions.c:1269 pattern/pattern.c:507
-#: pattern/pattern.c:665
+#: menu/menu.c:162 pager/functions.c:1271 pattern/pattern.c:508
+#: pattern/pattern.c:668
 msgid "Reverse search for: "
 msgstr "Обратный поиск: "
 
-#: menu/menu.c:210 pager/functions.c:1377 pager/functions.c:1439
-#: pager/functions.c:1465 pattern/pattern.c:639 pattern/pattern.c:795
+#: menu/menu.c:217 pager/functions.c:1379 pager/functions.c:1445
+#: pager/functions.c:1471 pattern/pattern.c:640 pattern/pattern.c:798
 msgid "Not found"
 msgstr "Не найдено"
 
-#: menu/menu.c:352
+#: menu/menu.c:363
 msgid "No tagged entries"
 msgstr "Нет отмеченных записей"
 
-#: menu/menu.c:444
+#: menu/menu.c:455
 msgid "Search is not implemented for this menu"
 msgstr "В этом меню поиск не реализован"
 
-#: menu/menu.c:449
+#: menu/menu.c:460
 msgid "Jumping is not implemented for dialogs"
 msgstr "Для диалогов переход по номеру сообщения не реализован"
 
-#: menu/menu.c:485
+#: menu/menu.c:496
 msgid "Tagging is not supported"
 msgstr "Возможность пометки не поддерживается"
 
@@ -4042,20 +4037,20 @@ msgstr "Почтовый ящик стал доступен только для 
 msgid "Mailbox checkpointed"
 msgstr "Почтовый ящик обновлен"
 
-#: mx.c:1348
+#: mx.c:1347
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Не удалось открыть %s: это pipe"
 
-#: mx.c:1851
+#: mx.c:1850
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Не удалось разрешить запись в почтовый ящик, открытый только для чтения"
 
-#: mx.c:1858
+#: mx.c:1857
 msgid "Changes to folder will be written on folder exit"
 msgstr "Изменения в состояние почтового ящика будут внесены при его закрытии"
 
-#: mx.c:1863
+#: mx.c:1862
 msgid "Changes to folder will not be written"
 msgstr "Изменения в состояние почтового ящика не будут внесены"
 
@@ -4094,7 +4089,7 @@ msgid "Mail not sent: inline PGP can't be used with format=flowed"
 msgstr "Письмо не отправлено: невозможно использовать PGP/текст с format=flowed"
 
 #: ncrypt/crypt.c:219 ncrypt/cryptglue.c:161 ncrypt/dlgpgp.c:703
-#: ncrypt/pgpkey.c:273
+#: ncrypt/pgpkey.c:275
 msgid "Invoking PGP..."
 msgstr "Запускается программа PGP..."
 
@@ -4102,7 +4097,7 @@ msgstr "Запускается программа PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Не удалось отправить PGP-сообщение в текстовом формате. Использовать PGP/MIME?"
 
-#: ncrypt/crypt.c:233 send/send.c:2732
+#: ncrypt/crypt.c:233 send/send.c:2746
 msgid "Mail not sent"
 msgstr "Письмо не отправлено"
 
@@ -4210,7 +4205,7 @@ msgstr "секретный ключ \"%s\" не найден: %s"
 
 #: ncrypt/crypt_gpgme.c:1018
 #, fuzzy, c-format
-msgid "ambiguous specification of secret key '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
 msgstr "неоднозначное указание секретного ключа \"%s\""
 
 #: ncrypt/crypt_gpgme.c:1034
@@ -4385,8 +4380,8 @@ msgstr "Ошибка импорта ключа: %s"
 msgid "Error: decryption/verification failed: %s\n"
 msgstr "Ошибка: не удалось расшифровать или проверить подпись: %s\n"
 
-#: ncrypt/crypt_gpgme.c:2947 ncrypt/crypt_gpgme.c:3146 ncrypt/pgp.c:733
-#: ncrypt/pgp.c:1297
+#: ncrypt/crypt_gpgme.c:2947 ncrypt/crypt_gpgme.c:3146 ncrypt/pgp.c:739
+#: ncrypt/pgp.c:1303
 msgid "PGP message successfully decrypted"
 msgstr "PGP-сообщение успешно расшифровано"
 
@@ -4394,7 +4389,7 @@ msgstr "PGP-сообщение успешно расшифровано"
 msgid "Error: copy data failed\n"
 msgstr "Ошибка: не удалось скопировать данные\n"
 
-#: ncrypt/crypt_gpgme.c:3001 ncrypt/pgp.c:680
+#: ncrypt/crypt_gpgme.c:3001 ncrypt/pgp.c:686
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -4402,11 +4397,11 @@ msgstr ""
 "[-- Начало PGP-сообщения --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:3003 ncrypt/pgp.c:682
+#: ncrypt/crypt_gpgme.c:3003 ncrypt/pgp.c:688
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- Начало блока открытого PGP-ключа --]\n"
 
-#: ncrypt/crypt_gpgme.c:3005 ncrypt/pgp.c:684
+#: ncrypt/crypt_gpgme.c:3005 ncrypt/pgp.c:690
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -4414,19 +4409,19 @@ msgstr ""
 "[-- Начало сообщения, подписанного PGP --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:3032 ncrypt/pgp.c:722
+#: ncrypt/crypt_gpgme.c:3032 ncrypt/pgp.c:728
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- Конец PGP-сообщения --]\n"
 
-#: ncrypt/crypt_gpgme.c:3034 ncrypt/pgp.c:736
+#: ncrypt/crypt_gpgme.c:3034 ncrypt/pgp.c:742
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- Конец блока открытого PGP-ключа --]\n"
 
-#: ncrypt/crypt_gpgme.c:3036 ncrypt/pgp.c:738
+#: ncrypt/crypt_gpgme.c:3036 ncrypt/pgp.c:744
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- Конец сообщения, подписанного PGP --]\n"
 
-#: ncrypt/crypt_gpgme.c:3057 ncrypt/pgp.c:771
+#: ncrypt/crypt_gpgme.c:3057 ncrypt/pgp.c:777
 msgid ""
 "[-- Error: could not find beginning of PGP message --]\n"
 "\n"
@@ -4434,7 +4429,7 @@ msgstr ""
 "[-- Ошибка: не удалось найти начало PGP-сообщения --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:3085 ncrypt/crypt_gpgme.c:3185 ncrypt/pgp.c:1242
+#: ncrypt/crypt_gpgme.c:3085 ncrypt/crypt_gpgme.c:3185 ncrypt/pgp.c:1248
 msgid "[-- Error: could not create temporary file --]\n"
 msgstr "[-- Ошибка: не удалось создать временный файл --]\n"
 
@@ -4446,7 +4441,7 @@ msgstr ""
 "[-- Начало данных, подписанных и зашифрованных в формате PGP/MIME --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:3101 ncrypt/pgp.c:1256
+#: ncrypt/crypt_gpgme.c:3101 ncrypt/pgp.c:1262
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -4458,12 +4453,12 @@ msgstr ""
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- Конец данных, подписанных и зашифрованных в формате PGP/MIME --]\n"
 
-#: ncrypt/crypt_gpgme.c:3142 ncrypt/pgp.c:1292
+#: ncrypt/crypt_gpgme.c:3142 ncrypt/pgp.c:1298
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Конец данных, зашифрованных в формате PGP/MIME --]\n"
 
-#: ncrypt/crypt_gpgme.c:3154 ncrypt/pgp.c:671 ncrypt/pgp.c:724
-#: ncrypt/pgp.c:1301 postpone.c:420
+#: ncrypt/crypt_gpgme.c:3154 ncrypt/pgp.c:677 ncrypt/pgp.c:730
+#: ncrypt/pgp.c:1307 postpone.c:420
 msgid "Could not decrypt PGP message"
 msgstr "Не удалось расшифровать PGP-сообщение"
 
@@ -4497,44 +4492,44 @@ msgid "gpgme_op_keylist_start failed: %s"
 msgstr "Ошибка gpgme_op_keylist_start: %s"
 
 #: ncrypt/crypt_gpgme.c:3470 ncrypt/crypt_gpgme.c:3521
-#: ncrypt/crypt_gpgme.c:4039
+#: ncrypt/crypt_gpgme.c:4041
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "Ошибка gpgme_op_keylist_next: %s"
 
-#: ncrypt/crypt_gpgme.c:3588 ncrypt/crypt_gpgme.c:3704 ncrypt/pgpkey.c:377
-#: ncrypt/pgpkey.c:506
+#: ncrypt/crypt_gpgme.c:3588 ncrypt/crypt_gpgme.c:3704 ncrypt/pgpkey.c:379
+#: ncrypt/pgpkey.c:508
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Поиск ключей, соответствующих \"%s\"..."
 
-#: ncrypt/crypt_gpgme.c:3821 ncrypt/pgpkey.c:228 ncrypt/smime.c:734
+#: ncrypt/crypt_gpgme.c:3820 ncrypt/pgpkey.c:227 ncrypt/smime.c:740
 #, c-format
 msgid "No matching keys found for \"%s\""
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3873 ncrypt/pgp.c:1484
+#: ncrypt/crypt_gpgme.c:3875 ncrypt/pgp.c:1490
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Использовать ключ \"%s\" для %s?"
 
-#: ncrypt/crypt_gpgme.c:3921 ncrypt/pgp.c:1533 ncrypt/smime.c:754
-#: ncrypt/smime.c:840
+#: ncrypt/crypt_gpgme.c:3923 ncrypt/pgp.c:1539 ncrypt/smime.c:764
+#: ncrypt/smime.c:850
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Введите идентификатор ключа для %s: "
 
 #. L10N: mutt_gpgme_select_secret_key() tries to list all secret keys to choose
 #. from.  This error is displayed if no results were found.
-#: ncrypt/crypt_gpgme.c:4046
+#: ncrypt/crypt_gpgme.c:4048
 msgid "No secret keys found"
 msgstr "Скретный ключ не найден"
 
-#: ncrypt/crypt_gpgme.c:4080 ncrypt/pgpkey.c:246
+#: ncrypt/crypt_gpgme.c:4082 ncrypt/pgpkey.c:248
 msgid "Please enter the key ID: "
 msgstr "Введите, пожалуйста, идентификатор ключа: "
 
-#: ncrypt/crypt_gpgme.c:4093
+#: ncrypt/crypt_gpgme.c:4095
 #, c-format
 msgid "Error exporting key: %s"
 msgstr "Ошибка экспорта ключа: %s"
@@ -4542,88 +4537,88 @@ msgstr "Ошибка экспорта ключа: %s"
 #. L10N: MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: ncrypt/crypt_gpgme.c:4111
+#: ncrypt/crypt_gpgme.c:4113
 #, c-format
 msgid "PGP Key 0x%s"
 msgstr "PGP-ключ 0x%s"
 
-#: ncrypt/crypt_gpgme.c:4155
+#: ncrypt/crypt_gpgme.c:4157
 msgid "GPGME: OpenPGP protocol not available"
 msgstr "GPGME: Протокол OpenPGP не доступен"
 
-#: ncrypt/crypt_gpgme.c:4166
+#: ncrypt/crypt_gpgme.c:4168
 msgid "GPGME: CMS protocol not available"
 msgstr "GPGME: Протокол CMS не доступен"
 
-#: ncrypt/crypt_gpgme.c:4219
+#: ncrypt/crypt_gpgme.c:4221
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME (s)подпись, (a)подпись как, (p)gp, (c)отказаться, отключить (o)ppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4221
+#: ncrypt/crypt_gpgme.c:4223
 msgid "sapco"
 msgstr "sapco"
 
-#: ncrypt/crypt_gpgme.c:4228
+#: ncrypt/crypt_gpgme.c:4230
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP (s)подпись, (a)подпись как, s/(m)ime, (c)отказаться, отключить (o)ppenc?"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4230
+#: ncrypt/crypt_gpgme.c:4232
 msgid "samco"
 msgstr "samco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4240
+#: ncrypt/crypt_gpgme.c:4242
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME (e)шифр, (s)подпись, (a)подпись как, (b)оба, (p)gp, (c)отказ, (o)ppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4243
+#: ncrypt/crypt_gpgme.c:4245
 #, fuzzy
 msgid "esabpco"
 msgstr "esabpco"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4249
+#: ncrypt/crypt_gpgme.c:4251
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
 msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, s/(m)ime, (c)отказ, (o)ppenc?"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4252
+#: ncrypt/crypt_gpgme.c:4254
 #, fuzzy
 msgid "esabmco"
 msgstr "esabmco"
 
-#: ncrypt/crypt_gpgme.c:4263
+#: ncrypt/crypt_gpgme.c:4265
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr "S/MIME (e)шифр, (s)подпись, (a)подпись как, (b)оба, (p)gp, (c)отказаться?"
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:4265
+#: ncrypt/crypt_gpgme.c:4267
 #, fuzzy
 msgid "esabpc"
 msgstr "esabpc"
 
-#: ncrypt/crypt_gpgme.c:4272
+#: ncrypt/crypt_gpgme.c:4274
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
 msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, s/(m)ime, (c)отказаться?"
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:4274
+#: ncrypt/crypt_gpgme.c:4276
 #, fuzzy
 msgid "esabmc"
 msgstr "esabmc"
 
-#: ncrypt/crypt_gpgme.c:4439
+#: ncrypt/crypt_gpgme.c:4441
 msgid "Failed to verify sender"
 msgstr "Не удалось проверить отправителя"
 
-#: ncrypt/crypt_gpgme.c:4442
+#: ncrypt/crypt_gpgme.c:4444
 msgid "Failed to figure out sender"
 msgstr "Не удалось вычислить отправителя"
 
@@ -4822,7 +4817,7 @@ msgstr "PGP-ключи, соответствующие <%s>"
 msgid "PGP keys matching \"%s\""
 msgstr "PGP-ключи, соответствующие \"%s\""
 
-#: ncrypt/dlgpgp.c:689 ncrypt/pgpkey.c:267
+#: ncrypt/dlgpgp.c:689 ncrypt/pgpkey.c:269
 msgid "Can't open /dev/null"
 msgstr "Не удалось открыть /dev/null"
 
@@ -4899,15 +4894,15 @@ msgstr "S/MIME-сертификаты, соответствующие \"%s\""
 msgid "ID is not trusted. Do you really want to use the key?"
 msgstr "ID недоверенный. Использовать этот ключ?"
 
-#: ncrypt/pgp.c:98
+#: ncrypt/pgp.c:99
 msgid "Enter PGP passphrase:"
 msgstr "Введите PGP фразу-пароль:"
 
-#: ncrypt/pgp.c:600
+#: ncrypt/pgp.c:606
 msgid "[-- Error: unable to create PGP subprocess --]\n"
 msgstr "[-- Ошибка: не удалось создать PGP-подпроцесс --]\n"
 
-#: ncrypt/pgp.c:647 ncrypt/pgp.c:937 ncrypt/pgp.c:1107
+#: ncrypt/pgp.c:653 ncrypt/pgp.c:943 ncrypt/pgp.c:1113
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -4918,15 +4913,15 @@ msgstr ""
 #. L10N: You will see this error message if (1) you are decrypting
 #. (not encrypting) something and (2) it is a plaintext. So the
 #. message does not mean "You failed to encrypt the message."
-#: ncrypt/pgp.c:730
+#: ncrypt/pgp.c:736
 msgid "PGP message is not encrypted"
 msgstr "PGP-сообщение не зашифровано."
 
-#: ncrypt/pgp.c:989
+#: ncrypt/pgp.c:995
 msgid "Internal error.  Please submit a bug report."
 msgstr "Внутренняя ошибка. Пожалуйста, сообщите о ней разработчикам."
 
-#: ncrypt/pgp.c:1058
+#: ncrypt/pgp.c:1064
 msgid ""
 "[-- Error: could not create a PGP subprocess --]\n"
 "\n"
@@ -4934,102 +4929,102 @@ msgstr ""
 "[-- Ошибка: не удалось создать PGP-подпроцесс --]\n"
 "\n"
 
-#: ncrypt/pgp.c:1094 ncrypt/pgp.c:1116 ncrypt/smime.c:1969 postpone.c:530
+#: ncrypt/pgp.c:1100 ncrypt/pgp.c:1122 ncrypt/smime.c:1978 postpone.c:530
 #: postpone.c:558
 msgid "Decryption failed"
 msgstr "Расшифровать не удалась"
 
-#: ncrypt/pgp.c:1358
+#: ncrypt/pgp.c:1364
 msgid "Can't open PGP subprocess"
 msgstr "Не удалось открыть PGP-подпроцесс"
 
-#: ncrypt/pgp.c:1800
+#: ncrypt/pgp.c:1806
 msgid "Can't invoke PGP"
 msgstr "Не удалось запустить программу PGP"
 
 #. L10N: The next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
-#: ncrypt/pgp.c:1910
+#: ncrypt/pgp.c:1916
 #, fuzzy
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
 #. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
-#: ncrypt/pgp.c:1916
+#: ncrypt/pgp.c:1922
 #, fuzzy
 msgid "(i)nline"
 msgstr "(i)PGP/текст"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
-#: ncrypt/pgp.c:1930
+#: ncrypt/pgp.c:1936
 #, fuzzy, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP (s)подпись, (a)подпись как, %s, (c)отказаться, отключить (o)ppenc?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1936
+#: ncrypt/pgp.c:1942
 #, fuzzy
 msgid "saico"
 msgstr "saico"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/pgp.c:1942
+#: ncrypt/pgp.c:1948
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP (s)подпись, (a)подпись как, (c)отказаться, отключить (o)ppenc?"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/pgp.c:1944
+#: ncrypt/pgp.c:1950
 msgid "saco"
 msgstr "saco"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
-#: ncrypt/pgp.c:1958
+#: ncrypt/pgp.c:1964
 #, fuzzy, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
 msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, %s, (c)отказ, (o)ppenc?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1964
+#: ncrypt/pgp.c:1970
 #, fuzzy
 msgid "esabico"
 msgstr "esabico"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/pgp.c:1970
+#: ncrypt/pgp.c:1976
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, (c)отказ, (o)ppenc?"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/pgp.c:1973
+#: ncrypt/pgp.c:1979
 #, fuzzy
 msgid "esabco"
 msgstr "esabco"
 
 #. L10N: PGP options (inline)
-#: ncrypt/pgp.c:1984
+#: ncrypt/pgp.c:1990
 #, fuzzy, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
 msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, %s, (c)отказаться?"
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1990
+#: ncrypt/pgp.c:1996
 #, fuzzy
 msgid "esabic"
 msgstr "esabic"
 
 #. L10N: PGP options
-#: ncrypt/pgp.c:1996
+#: ncrypt/pgp.c:2002
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
 msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, (c)отказаться?"
 
 #. L10N: PGP options
-#: ncrypt/pgp.c:1998
+#: ncrypt/pgp.c:2004
 #, fuzzy
 msgid "esabc"
 msgstr "esabc"
@@ -5038,54 +5033,54 @@ msgstr "esabc"
 msgid "Fetching PGP key..."
 msgstr "Получение PGP-ключа..."
 
-#: ncrypt/pgpkey.c:296
+#: ncrypt/pgpkey.c:298
 #, c-format
 msgid "PGP Key %s"
 msgstr "PGP-ключ %s"
 
-#: ncrypt/smime.c:178
+#: ncrypt/smime.c:179
 msgid "Enter S/MIME passphrase:"
 msgstr "Введите S/MIME фразу-пароль:"
 
-#: ncrypt/smime.c:718
+#: ncrypt/smime.c:724
 msgid "Enter keyID: "
 msgstr "Введите идентификатор ключа: "
 
-#: ncrypt/smime.c:846
+#: ncrypt/smime.c:856
 #, c-format
 msgid "No (valid) certificate found for %s"
 msgstr "Не найдено (правильного) сертификата для %s"
 
-#: ncrypt/smime.c:901 ncrypt/smime.c:930 ncrypt/smime.c:1004
-#: ncrypt/smime.c:1040 ncrypt/smime.c:1119 ncrypt/smime.c:1204
+#: ncrypt/smime.c:911 ncrypt/smime.c:940 ncrypt/smime.c:1014
+#: ncrypt/smime.c:1050 ncrypt/smime.c:1129 ncrypt/smime.c:1211
 msgid "Error: unable to create OpenSSL subprocess"
 msgstr "Ошибка: не удалось создать OpenSSL-подпроцесс"
 
-#: ncrypt/smime.c:1181
+#: ncrypt/smime.c:1189
 msgid "Label for certificate: "
 msgstr "Метка для сертификата: "
 
-#: ncrypt/smime.c:1282
+#: ncrypt/smime.c:1291
 msgid "no certfile"
 msgstr "нет файла сертификата"
 
-#: ncrypt/smime.c:1285
+#: ncrypt/smime.c:1294
 msgid "no mbox"
 msgstr "нет почтового ящика"
 
-#: ncrypt/smime.c:1452 ncrypt/smime.c:1627
+#: ncrypt/smime.c:1461 ncrypt/smime.c:1636
 msgid "No output from OpenSSL..."
 msgstr "Нет вывода от программы OpenSSL..."
 
-#: ncrypt/smime.c:1543
+#: ncrypt/smime.c:1552
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Не удалось подписать: не указан ключ. Используйте \"подписать как\"."
 
-#: ncrypt/smime.c:1594
+#: ncrypt/smime.c:1603
 msgid "Can't open OpenSSL subprocess"
 msgstr "Не удалось открыть OpenSSL-подпроцесс"
 
-#: ncrypt/smime.c:1827 ncrypt/smime.c:1949
+#: ncrypt/smime.c:1836 ncrypt/smime.c:1958
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -5093,19 +5088,19 @@ msgstr ""
 "[-- Конец вывода программы OpenSSL --]\n"
 "\n"
 
-#: ncrypt/smime.c:1906 ncrypt/smime.c:1919
+#: ncrypt/smime.c:1915 ncrypt/smime.c:1928
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
 msgstr "[-- Ошибка: не удалось создать OpenSSL-подпроцесс --]\n"
 
-#: ncrypt/smime.c:1955
+#: ncrypt/smime.c:1964
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr "[-- Начало данных, зашифрованных в формате S/MIME --]\n"
 
-#: ncrypt/smime.c:1958
+#: ncrypt/smime.c:1967
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- Начало данных, подписанных в формате S/MIME --]\n"
 
-#: ncrypt/smime.c:2055
+#: ncrypt/smime.c:2064
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
@@ -5113,7 +5108,7 @@ msgstr ""
 "\n"
 "[-- Конец данных, зашифрованных в формате S/MIME --]\n"
 
-#: ncrypt/smime.c:2057
+#: ncrypt/smime.c:2066
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
@@ -5122,68 +5117,68 @@ msgstr ""
 "[-- Конец данных, подписанных в формате S/MIME --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2193
+#: ncrypt/smime.c:2202
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME (s)подпись, (w)шифр как, (a)подпись как, (c)отказ, отключить (o)ppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2196
+#: ncrypt/smime.c:2205
 msgid "swaco"
 msgstr "swaco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2204
+#: ncrypt/smime.c:2213
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME (e)шифр, (s)подпись, (w)шифр как, (a)подпись как, (b)оба, (c)отказ, (o)ppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2207
+#: ncrypt/smime.c:2216
 #, fuzzy
 msgid "eswabco"
 msgstr "eswabco"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2214
+#: ncrypt/smime.c:2223
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
 msgstr "S/MIME (e)шифр, (s)подпись, (w)шифр как, (a)подпись как, (b)оба, (c)отказ?"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2217
+#: ncrypt/smime.c:2226
 #, fuzzy
 msgid "eswabc"
 msgstr "eswabc"
 
-#: ncrypt/smime.c:2283
+#: ncrypt/smime.c:2292
 msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
 msgstr "Выберите семейство алгоритмов: (1) DES, (2) RC2, (3) AES, (c)отказ?"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
-#: ncrypt/smime.c:2286
+#: ncrypt/smime.c:2295
 msgid "123c"
 msgstr "123c"
 
-#: ncrypt/smime.c:2289
+#: ncrypt/smime.c:2298
 msgid "(1) DES, (2) Triple-DES?"
 msgstr "(1) DES, (2) Triple-DES?"
 
 #. L10N: Options for: (1) DES, (2) Triple-DES
-#: ncrypt/smime.c:2291
+#: ncrypt/smime.c:2300
 msgid "12"
 msgstr "12"
 
-#: ncrypt/smime.c:2306
+#: ncrypt/smime.c:2315
 msgid "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 msgstr "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 
 #. L10N: Options for: (1) RC2-40, (2) RC2-64, (3) RC2-128
 #. L10N: Options for: (1) AES128, (2) AES192, (3) AES256
-#: ncrypt/smime.c:2308 ncrypt/smime.c:2329
+#: ncrypt/smime.c:2317 ncrypt/smime.c:2338
 msgid "123"
 msgstr "123"
 
-#: ncrypt/smime.c:2327
+#: ncrypt/smime.c:2336
 msgid "(1) AES128, (2) AES192, (3) AES256?"
 msgstr "(1) AES128, (2) AES192, (3) AES256?"
 
@@ -5309,7 +5304,7 @@ msgstr ""
 msgid "unknown reason"
 msgstr "неизвестная ошибка"
 
-#: notmuch/mdata.c:85 notmuch/notmuch.c:1792
+#: notmuch/mdata.c:85 notmuch/notmuch.c:1794
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr ""
@@ -5327,12 +5322,12 @@ msgstr "Чтение сообщений..."
 msgid "No more messages in the thread"
 msgstr ""
 
-#: notmuch/notmuch.c:1805
+#: notmuch/notmuch.c:1807
 #, c-format
 msgid "failed to parse limit: %s"
 msgstr ""
 
-#: notmuch/notmuch.c:2319
+#: notmuch/notmuch.c:2321
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
@@ -5340,12 +5335,12 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: notmuch/notmuch.c:2382
+#: notmuch/notmuch.c:2384
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "Не удалось записать в виртуальный ящик"
 
-#: notmuch/query.c:115
+#: notmuch/query.c:116
 #, c-format
 msgid "failed to parse notmuch query type: %s"
 msgstr ""
@@ -6961,8 +6956,8 @@ msgstr ""
 msgid "IMAP custom server-side search for STRING"
 msgstr ""
 
-#: pattern/pattern.c:261 pattern/pattern.c:367 pattern/pattern.c:534
-#: pattern/pattern.c:690
+#: pattern/pattern.c:261 pattern/pattern.c:367 pattern/pattern.c:535
+#: pattern/pattern.c:693
 msgid "Compiling search pattern..."
 msgstr "Образец поиска компилируется..."
 
@@ -6974,19 +6969,19 @@ msgstr "Исполняется команда для подходящих соо
 msgid "No messages matched criteria"
 msgstr "Ни одно сообщение не подходит под критерий"
 
-#: pattern/pattern.c:570 pattern/pattern.c:726
+#: pattern/pattern.c:571 pattern/pattern.c:729
 msgid "Searching..."
 msgstr "Поиск..."
 
-#: pattern/pattern.c:584 pattern/pattern.c:740
+#: pattern/pattern.c:585 pattern/pattern.c:743
 msgid "Search hit bottom without finding match"
 msgstr "Поиск дошел до конца, не найдя ничего подходящего"
 
-#: pattern/pattern.c:595 pattern/pattern.c:751
+#: pattern/pattern.c:596 pattern/pattern.c:754
 msgid "Search hit top without finding match"
 msgstr "Поиск дошел до начала, не найдя ничего подходящего"
 
-#: pattern/pattern.c:631 pattern/pattern.c:787
+#: pattern/pattern.c:632 pattern/pattern.c:790
 msgid "Search interrupted"
 msgstr "Поиск прерван"
 
@@ -7127,7 +7122,7 @@ msgstr "нет"
 msgid "You may only bounce message/rfc822 parts"
 msgstr "Вы можете перенаправлять только части типа message/rfc822"
 
-#: recvcmd.c:281
+#: recvcmd.c:287
 #, fuzzy
 msgid "Error bouncing message"
 msgid_plural "Error bouncing messages"
@@ -7135,43 +7130,43 @@ msgstr[0] "Ошибка перенаправления сообщения"
 msgstr[1] "Ошибка перенаправления сообщений"
 msgstr[2] "Ошибка перенаправления сообщений"
 
-#: recvcmd.c:506
+#: recvcmd.c:514
 #, c-format
 msgid "Can't open temporary file %s"
 msgstr "Не удалось открыть временный файл %s"
 
-#: recvcmd.c:540
+#: recvcmd.c:548
 msgid "Forward as attachments?"
 msgstr "Переслать как вложения?"
 
-#: recvcmd.c:557
+#: recvcmd.c:565
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr "Удалось раскодировать не все вложения. Переслать остальные в виде MIME?"
 
-#: recvcmd.c:688
+#: recvcmd.c:696
 msgid "Forward MIME encapsulated?"
 msgstr "Переслать инкапсулированным в MIME?"
 
-#: recvcmd.c:697 recvcmd.c:1006
+#: recvcmd.c:705 recvcmd.c:1014
 #, c-format
 msgid "Can't create %s"
 msgstr "Не удалось создать %s"
 
-#: recvcmd.c:841
+#: recvcmd.c:849
 msgid "Can't find any tagged messages"
 msgstr "Помеченные сообщения отсутствуют"
 
-#: recvcmd.c:877 send/send.c:1173
+#: recvcmd.c:885 send/send.c:1187
 msgid "No mailing lists found"
 msgstr "Списков рассылки не найдено"
 
-#: recvcmd.c:982
+#: recvcmd.c:990
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr "Удалось раскодировать не все вложения. Инкапсулировать остальные в MIME?"
 
 #. L10N: You will see this error message if you invoke <compose-to-sender>
 #. when you are on a normal attachment.
-#: recvcmd.c:1119
+#: recvcmd.c:1127
 #, fuzzy
 msgid "You may only compose to sender with message/rfc822 parts"
 msgstr "Вы можете перенаправлять только части типа message/rfc822"
@@ -7253,11 +7248,11 @@ msgstr "Параметр boundary не найден (Сообщите об эт�
 msgid "%s no longer exists"
 msgstr "%s больше не существует"
 
-#: send/send.c:320
+#: send/send.c:331
 msgid "No subject, abort?"
 msgstr "Нет темы письма, отказаться?"
 
-#: send/send.c:322
+#: send/send.c:333
 msgid "No subject, aborting"
 msgstr "Нет темы письма, отказ"
 
@@ -7267,43 +7262,43 @@ msgstr "Нет темы письма, отказ"
 #. Text/plain parts and the like will already be included in the
 #. message contents, but other attachment, such as PDF files, will also
 #. be added as attachments to the new mail, if this is answered yes.
-#: send/send.c:586
+#: send/send.c:600
 msgid "Forward attachments?"
 msgstr "Переслать вложения?"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
-#: send/send.c:872
+#: send/send.c:886
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Отвечать по %s%s?"
 
-#: send/send.c:919
+#: send/send.c:933
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Отвечать по %s%s?"
 
-#: send/send.c:1217
+#: send/send.c:1231
 msgid "Include message in reply?"
 msgstr "Вставить сообщение в ответ?"
 
-#: send/send.c:1223
+#: send/send.c:1237
 msgid "Including quoted message..."
 msgstr "Включается цитируемое сообщение..."
 
-#: send/send.c:1229
+#: send/send.c:1243
 msgid "Could not include all requested messages"
 msgstr "Не удалось вставить все затребованные сообщения"
 
-#: send/send.c:1243
+#: send/send.c:1257
 msgid "Forward as attachment?"
 msgstr "Переслать как вложение?"
 
-#: send/send.c:1248
+#: send/send.c:1262
 msgid "Preparing forwarded message..."
 msgstr "Подготовка пересылаемого сообщения..."
 
-#: send/send.c:1764
+#: send/send.c:1778
 #, fuzzy
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
 msgstr "Fcc в ящик на IMAP-сервере не поддерживается в пакетном режиме"
@@ -7313,12 +7308,12 @@ msgstr "Fcc в ящик на IMAP-сервере не поддерживаетс
 #. sending the mail too.
 #. %s is the full mailbox URL, including imap(s)://
 #.
-#: send/send.c:1770
+#: send/send.c:1784
 #, c-format
 msgid "Skipping Fcc to %s"
 msgstr ""
 
-#: send/send.c:1811 send/send.c:1821 send/send.c:1847
+#: send/send.c:1825 send/send.c:1835 send/send.c:1861
 msgid "Save attachments in Fcc?"
 msgstr "Сохранить вложения в Fcc?"
 
@@ -7326,118 +7321,118 @@ msgstr "Сохранить вложения в Fcc?"
 #. (r)etry tries the same mailbox again.
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
-#: send/send.c:1870
+#: send/send.c:1884
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr "Ошибка сохранения в Fcc. (r)повторить, (m)другой ящик, (s)пропустить? "
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
-#: send/send.c:1874
+#: send/send.c:1888
 msgid "rms"
 msgstr "rms"
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
-#: send/send.c:1880
+#: send/send.c:1894
 msgid "Fcc mailbox"
 msgstr "Fcc ящик"
 
-#: send/send.c:1950
+#: send/send.c:1964
 msgid "Can't postpone.  $postponed is unset"
 msgstr "Не удалось отложить сообщение. Значение $postponed не определено."
 
-#: send/send.c:1989 send/send.c:2005
+#: send/send.c:2003 send/send.c:2019
 msgid "Error encrypting message. Check your crypt settings."
 msgstr ""
 
-#: send/send.c:2099
+#: send/send.c:2113
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr "Сообщение содержит текст, соответствуюший \"$abort_noattach_regex\". Отправлено не будет."
 
-#: send/send.c:2105
+#: send/send.c:2119
 msgid "No attachments, cancel sending?"
 msgstr "Вложения отсутствуют. Отменить отправку?"
 
-#: send/send.c:2163
+#: send/send.c:2177
 msgid "Recall postponed message?"
 msgstr "Продолжить отложенное сообщение?"
 
-#: send/send.c:2414
+#: send/send.c:2428
 msgid "Refusing to send an empty email"
 msgstr ""
 
-#: send/send.c:2415
+#: send/send.c:2429
 msgid "Try: echo | neomutt -s 'subject' user@example.com"
 msgstr ""
 
-#: send/send.c:2500
+#: send/send.c:2514
 msgid "Edit forwarded message?"
 msgstr "Редактировать пересылаемое сообщение?"
 
-#: send/send.c:2540
+#: send/send.c:2554
 msgid "Abort unmodified message?"
 msgstr "Отказаться от неизмененного сообщения?"
 
-#: send/send.c:2542
+#: send/send.c:2556
 msgid "Aborted unmodified message"
 msgstr "Сообщение не изменилось, отказ"
 
-#: send/send.c:2687
+#: send/send.c:2701
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
-#: send/send.c:2729
+#: send/send.c:2743
 msgid "Article not posted"
 msgstr "Статья не размещена"
 
-#: send/send.c:2739
+#: send/send.c:2753
 msgid "Message postponed"
 msgstr "Сообщение отложено"
 
-#: send/send.c:2775
+#: send/send.c:2789
 msgid "No subject, abort sending?"
 msgstr "Нет темы сообщения, прервать отправку?"
 
-#: send/send.c:2779 send/send.c:2785
+#: send/send.c:2793 send/send.c:2799
 msgid "No subject specified"
 msgstr "Тема сообщения не указана"
 
-#: send/send.c:2791
+#: send/send.c:2805
 msgid "No newsgroup specified"
 msgstr "Не указана группа новостей"
 
-#: send/send.c:2852 send/smtp.c:245
+#: send/send.c:2866 send/smtp.c:245
 msgid "Sending message..."
 msgstr "Сообщение отправляется..."
 
-#: send/send.c:2893
+#: send/send.c:2907
 msgid "Could not send the message"
 msgstr "Сообщение отправить не удалось"
 
-#: send/send.c:2903
+#: send/send.c:2917
 msgid "Sending in background"
 msgstr "Сообщение отправляется в фоновом режиме"
 
-#: send/send.c:2904
+#: send/send.c:2918
 msgid "Article posted"
 msgstr "Статья размещена"
 
-#: send/send.c:2905
+#: send/send.c:2919
 msgid "Mail sent"
 msgstr "Сообщение отправлено"
 
-#: send/send.c:2984
+#: send/send.c:2998
 #, fuzzy
 msgid "No recipient specified"
 msgstr "Адресаты не указаны"
 
-#: send/send.c:3029
+#: send/send.c:3043
 #, fuzzy
 msgid "No List-Subscribe header found"
 msgstr "Скретный ключ не найден"
 
-#: send/send.c:3053
+#: send/send.c:3067
 #, fuzzy
 msgid "No List-Unsubscribe header found"
 msgstr "Отписаться по шаблону: "
@@ -7603,6 +7598,9 @@ msgstr "Параметры по умолчанию:"
 #, c-format
 #~ msgid "%s authentication failed, trying next method"
 #~ msgstr "Не удалось выполнить %s аутентификацию, пробуем следующий метод"
+
+#~ msgid "Content type is too long"
+#~ msgstr "Значение Content-Type слишком длинное"
 
 #~ msgid "Error seeking in alias file"
 #~ msgstr "Ошибка позиционирования в файле псевдонимов"
