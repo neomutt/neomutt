@@ -269,7 +269,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     const bool c_fast_reply = cs_subset_bool(sub, "fast_reply");
     if (TAILQ_EMPTY(&en->to) || !c_fast_reply)
     {
-      if ((mutt_edit_address(&en->to, _("To: "), true) == -1) || TAILQ_EMPTY(&en->to))
+      if ((mutt_edit_address(&en->to, _("To: "), true) == -1))
         goto done;
     }
 
@@ -285,6 +285,12 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     {
       if (c_ask_bcc && (mutt_edit_address(&en->bcc, _("Bcc: "), true) == -1))
         goto done;
+    }
+
+    if (TAILQ_EMPTY(&en->to) && TAILQ_EMPTY(&en->cc) && TAILQ_EMPTY(&en->bcc))
+    {
+      mutt_warning(_("No recipients specified"));
+      goto done;
     }
 
     const bool c_reply_with_xorig = cs_subset_bool(sub, "reply_with_xorig");
@@ -2767,7 +2773,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
         goto cleanup;
       }
 
-      mutt_error(_("No recipients specified"));
+      mutt_warning(_("No recipients specified"));
       goto main_loop;
     }
 
