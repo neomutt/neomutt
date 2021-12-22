@@ -27,10 +27,13 @@
  */
 
 #include "config.h"
+#include "gui/lib.h"
 #include "functions.h"
 #include "index/lib.h"
 #include "opcodes.h"
 #include "private_data.h"
+
+static const char *Not_available_in_this_menu = N_("Not available in this menu");
 
 /**
  * op_browser_new_file - Select a new file in this directory - Implements ::browser_function_t - @ingroup browser_function_api
@@ -270,3 +273,35 @@ struct BrowserFunction BrowserFunctions[] = {
   { 0, NULL },
   // clang-format on
 };
+
+/**
+ * browser_function_dispatcher - Perform a Browser function
+ * @param win_browser Window for the Index
+ * @param op          Operation to perform, e.g. OP_GOTO_PARENT
+ * @retval num #IndexRetval, e.g. #FR_SUCCESS
+ */
+int browser_function_dispatcher(struct MuttWindow *win_browser, int op)
+{
+  if (!win_browser)
+  {
+    mutt_error(_(Not_available_in_this_menu));
+    return FR_ERROR;
+  }
+
+  struct BrowserPrivateData *priv = win_browser->parent->wdata;
+  if (!priv)
+    return FR_ERROR;
+
+  int rc = FR_UNKNOWN;
+  for (size_t i = 0; BrowserFunctions[i].op != OP_NULL; i++)
+  {
+    const struct BrowserFunction *fn = &BrowserFunctions[i];
+    if (fn->op == op)
+    {
+      rc = fn->function(priv, op);
+      break;
+    }
+  }
+
+  return rc;
+}
