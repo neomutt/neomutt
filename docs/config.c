@@ -4857,7 +4857,7 @@
 ** key.
 */
 
-{ "ssl_force_tls", DT_BOOL, false },
+{ "ssl_force_tls", DT_BOOL, true },
 /*
 ** .pp
 ** If this variable is \fIset\fP, NeoMutt will require that all connections
