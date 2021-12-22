@@ -491,7 +491,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
 }
 
 /**
- * add_folder - Add a folder to the browser list
+ * browser_add_folder - Add a folder to the browser list
  * @param menu  Menu to use
  * @param state Browser state
  * @param name  Name of folder
@@ -500,9 +500,9 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
  * @param m     Mailbox
  * @param data  Data to associate with the folder
  */
-static void add_folder(struct Menu *menu, struct BrowserState *state,
-                       const char *name, const char *desc,
-                       const struct stat *st, struct Mailbox *m, void *data)
+static void browser_add_folder(struct Menu *menu, struct BrowserState *state,
+                               const char *name, const char *desc,
+                               const struct stat *st, struct Mailbox *m, void *data)
 {
   if ((!menu || state->is_mailbox_list) && m && !m->visible)
   {
@@ -601,7 +601,7 @@ static int examine_directory(struct Mailbox *m, struct Menu *menu,
       {
         continue;
       }
-      add_folder(menu, state, mdata->group, NULL, NULL, NULL, mdata);
+      browser_add_folder(menu, state, mdata->group, NULL, NULL, NULL, mdata);
     }
   }
   else
@@ -685,7 +685,7 @@ static int examine_directory(struct Mailbox *m, struct Menu *menu,
         np->mailbox->msg_count = m->msg_count;
         np->mailbox->msg_unread = m->msg_unread;
       }
-      add_folder(menu, state, de->d_name, NULL, &st, np ? np->mailbox : NULL, NULL);
+      browser_add_folder(menu, state, de->d_name, NULL, &st, np ? np->mailbox : NULL, NULL);
     }
     neomutt_mailboxlist_clear(&ml);
     closedir(dp);
@@ -725,7 +725,7 @@ static int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct Browse
       if (mdata && (mdata->has_new_mail ||
                     (mdata->subscribed && (mdata->unread || !c_show_only_unread))))
       {
-        add_folder(menu, state, mdata->group, NULL, NULL, NULL, mdata);
+        browser_add_folder(menu, state, mdata->group, NULL, NULL, NULL, mdata);
       }
     }
   }
@@ -764,13 +764,13 @@ static int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct Browse
       {
         case MUTT_IMAP:
         case MUTT_POP:
-          add_folder(menu, state, mutt_buffer_string(mailbox),
-                     np->mailbox->name, NULL, np->mailbox, NULL);
+          browser_add_folder(menu, state, mutt_buffer_string(mailbox),
+                             np->mailbox->name, NULL, np->mailbox, NULL);
           continue;
         case MUTT_NOTMUCH:
         case MUTT_NNTP:
-          add_folder(menu, state, mailbox_path(np->mailbox), np->mailbox->name,
-                     NULL, np->mailbox, NULL);
+          browser_add_folder(menu, state, mailbox_path(np->mailbox),
+                             np->mailbox->name, NULL, np->mailbox, NULL);
           continue;
         default: /* Continue */
           break;
@@ -796,8 +796,8 @@ static int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct Browse
           st.st_mtime = st2.st_mtime;
       }
 
-      add_folder(menu, state, mutt_buffer_string(mailbox), np->mailbox->name,
-                 &st, np->mailbox, NULL);
+      browser_add_folder(menu, state, mutt_buffer_string(mailbox),
+                         np->mailbox->name, &st, np->mailbox, NULL);
     }
     neomutt_mailboxlist_clear(&ml);
   }
@@ -1328,7 +1328,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
       if (!state.imap_browse)
 #endif
   {
-    // examine_directory() calls add_folder() which needs the menu
+    // examine_directory() calls browser_add_folder() which needs the menu
     if (examine_directory(m, menu, &state, mutt_buffer_string(&LastDir),
                           mutt_buffer_string(prefix)) == -1)
     {
@@ -2221,7 +2221,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
                 if (regexec(&rx, mdata->group, 0, NULL, 0) == 0)
                 {
                   mutt_newsgroup_subscribe(adata, mdata->group);
-                  add_folder(menu, &state, mdata->group, NULL, NULL, NULL, mdata);
+                  browser_add_folder(menu, &state, mdata->group, NULL, NULL, NULL, mdata);
                 }
               }
             }
