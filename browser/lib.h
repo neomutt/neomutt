@@ -42,6 +42,11 @@
 #include "mutt/lib.h"
 
 struct Mailbox;
+struct Menu;
+struct MuttWindow;
+
+extern struct Buffer LastDir;
+extern struct Buffer LastDirBackup;
 
 typedef uint8_t SelectFileFlags;  ///< Flags for mutt_select_file(), e.g. #MUTT_SEL_MAILBOX
 #define MUTT_SEL_NO_FLAGS      0  ///< No flags are set
@@ -113,6 +118,16 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags, struct 
 void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m, char ***files, int *numfiles);
 void mutt_browser_select_dir(const char *f);
 void mutt_browser_cleanup(void);
+
 void browser_sort(struct BrowserState *state);
+void browser_add_folder(struct Menu *menu, struct BrowserState *state, const char *name, const char *desc, const struct stat *st, struct Mailbox *m, void *data);
+void browser_highlight_default(struct BrowserState *state, struct Menu *menu);
+int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState *state, const char *d, const char *prefix);
+int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState *state);
+void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m, struct MuttWindow *sbar);
+void init_state(struct BrowserState *state, struct Menu *menu);
+bool link_is_dir(const char *folder, const char *path);
+void destroy_state(struct BrowserState *state);
+void dump_state(struct BrowserState *state);
 
 #endif /* MUTT_BROWSER_LIB_H */

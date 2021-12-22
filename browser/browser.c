@@ -136,8 +136,8 @@ static const struct Mapping FolderNewsHelp[] = {
 };
 #endif
 
-static struct Buffer LastDir = { 0 };
-static struct Buffer LastDirBackup = { 0 };
+struct Buffer LastDir = { 0 };
+struct Buffer LastDirBackup = { 0 };
 
 /**
  * init_lastdir - Initialise the browser directories
@@ -170,7 +170,7 @@ void mutt_browser_cleanup(void)
  *
  * Frees up the memory allocated for the local-global variables.
  */
-static void destroy_state(struct BrowserState *state)
+void destroy_state(struct BrowserState *state)
 {
   struct FolderFile *ff = NULL;
   ARRAY_FOREACH(ff, &state->entry)
@@ -192,7 +192,7 @@ static void destroy_state(struct BrowserState *state)
  * @retval true  Links to a directory
  * @retval false Otherwise
  */
-static bool link_is_dir(const char *folder, const char *path)
+bool link_is_dir(const char *folder, const char *path)
 {
   struct stat st = { 0 };
   bool retval = false;
@@ -500,9 +500,9 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
  * @param m     Mailbox
  * @param data  Data to associate with the folder
  */
-static void browser_add_folder(struct Menu *menu, struct BrowserState *state,
-                               const char *name, const char *desc,
-                               const struct stat *st, struct Mailbox *m, void *data)
+void browser_add_folder(struct Menu *menu, struct BrowserState *state,
+                        const char *name, const char *desc,
+                        const struct stat *st, struct Mailbox *m, void *data)
 {
   if ((!menu || state->is_mailbox_list) && m && !m->visible)
   {
@@ -553,7 +553,7 @@ static void browser_add_folder(struct Menu *menu, struct BrowserState *state,
  * @param state BrowserState to initialise
  * @param menu  Current menu
  */
-static void init_state(struct BrowserState *state, struct Menu *menu)
+void init_state(struct BrowserState *state, struct Menu *menu)
 {
   ARRAY_INIT(&state->entry);
   ARRAY_RESERVE(&state->entry, 256);
@@ -577,8 +577,8 @@ static void init_state(struct BrowserState *state, struct Menu *menu)
  * @retval  0 Success
  * @retval -1 Error
  */
-static int examine_directory(struct Mailbox *m, struct Menu *menu,
-                             struct BrowserState *state, const char *d, const char *prefix)
+int examine_directory(struct Mailbox *m, struct Menu *menu,
+                      struct BrowserState *state, const char *d, const char *prefix)
 {
   int rc = -1;
   struct Buffer *buf = mutt_buffer_pool_get();
@@ -705,7 +705,7 @@ ed_out:
  * @retval  0 Success
  * @retval -1 Error
  */
-static int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState *state)
+int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState *state)
 {
   struct stat st = { 0 };
   struct Buffer *md = NULL;
@@ -860,7 +860,7 @@ static void folder_make_entry(struct Menu *menu, char *buf, size_t buflen, int l
  * This function takes a menu and a state and defines the current entry that
  * should be highlighted.
  */
-static void browser_highlight_default(struct BrowserState *state, struct Menu *menu)
+void browser_highlight_default(struct BrowserState *state, struct Menu *menu)
 {
   menu->top = 0;
   /* Reset menu position to 1.
@@ -886,8 +886,8 @@ static void browser_highlight_default(struct BrowserState *state, struct Menu *m
  * @param m        Mailbox
  * @param sbar     Status bar
  */
-static void init_menu(struct BrowserState *state, struct Menu *menu,
-                      struct Mailbox *m, struct MuttWindow *sbar)
+void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
+               struct MuttWindow *sbar)
 {
   char title[256] = { 0 };
   menu->max = ARRAY_SIZE(&state->entry);
