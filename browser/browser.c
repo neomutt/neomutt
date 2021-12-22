@@ -165,27 +165,6 @@ void mutt_browser_cleanup(void)
 }
 
 /**
- * destroy_state - Free the BrowserState
- * @param state State to free
- *
- * Frees up the memory allocated for the local-global variables.
- */
-void destroy_state(struct BrowserState *state)
-{
-  struct FolderFile *ff = NULL;
-  ARRAY_FOREACH(ff, &state->entry)
-  {
-    FREE(&ff->name);
-    FREE(&ff->desc);
-  }
-  ARRAY_FREE(&state->entry);
-
-#ifdef USE_IMAP
-  FREE(&state->folder);
-#endif
-}
-
-/**
  * link_is_dir - Does this symlink point to a directory?
  * @param folder Folder
  * @param path   Link name
