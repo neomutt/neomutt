@@ -573,7 +573,7 @@ static int op_compose_attach_message(struct ComposeSharedData *shared, int op)
   if (!mx_mbox_open(m_attach, MUTT_READONLY))
   {
     mutt_error(_("Unable to open mailbox %s"), mutt_buffer_string(fname));
-    mx_fastclose_mailbox(m_attach);
+    mx_fastclose_mailbox(m_attach, false);
     m_attach = NULL;
     mutt_buffer_pool_release(&fname);
     return IR_ERROR;
@@ -641,7 +641,7 @@ static int op_compose_attach_message(struct ComposeSharedData *shared, int op)
   {
     m_attach->readonly = old_readonly;
   }
-  mx_fastclose_mailbox(m_attach_new);
+  mx_fastclose_mailbox(m_attach_new, false);
 
   /* Restore old $sort variables */
   cs_subset_str_native_set(shared->sub, "sort", old_sort, NULL);

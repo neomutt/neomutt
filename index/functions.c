@@ -482,7 +482,7 @@ static int op_exit(struct IndexSharedData *shared, struct IndexPrivateData *priv
   {
     if (shared->ctx)
     {
-      mx_fastclose_mailbox(shared->mailbox);
+      mx_fastclose_mailbox(shared->mailbox, false);
       ctx_free(&shared->ctx);
     }
     return IR_DONE;
