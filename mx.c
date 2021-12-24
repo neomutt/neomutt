@@ -416,7 +416,7 @@ bool mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   return true;
 
 error:
-  mx_fastclose_mailbox(m);
+  mx_fastclose_mailbox(m, newly_linked_account);
   if (newly_linked_account)
     account_mailbox_remove(m->account, m);
   return false;
@@ -425,8 +425,9 @@ error:
 /**
  * mx_fastclose_mailbox - Free up memory associated with the Mailbox
  * @param m Mailbox
+ * @param keep_account Make sure not to remove the mailbox's account
  */
-void mx_fastclose_mailbox(struct Mailbox *m)
+void mx_fastclose_mailbox(struct Mailbox *m, bool keep_account)
 {
   if (!m)
     return;
@@ -459,7 +460,7 @@ void mx_fastclose_mailbox(struct Mailbox *m)
 
   if (m->flags & MB_HIDDEN)
   {
-    mx_ac_remove(m);
+    mx_ac_remove(m, keep_account);
   }
 }
 
@@ -624,7 +625,7 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
 
   if (m->readonly || m->dontwrite || m->append || m->peekonly)
   {
-    mx_fastclose_mailbox(m);
+    mx_fastclose_mailbox(m, false);
     return 0;
   }
 
@@ -809,7 +810,7 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
       mutt_message(_("Mailbox is unchanged"));
     if ((m->type == MUTT_MBOX) || (m->type == MUTT_MMDF))
       mbox_reset_atime(m, NULL);
-    mx_fastclose_mailbox(m);
+    mx_fastclose_mailbox(m, false);
     rc = MX_STATUS_OK;
     goto cleanup;
   }
@@ -901,7 +902,7 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
   }
 #endif
 
-  mx_fastclose_mailbox(m);
+  mx_fastclose_mailbox(m, false);
 
   rc = MX_STATUS_OK;
 
@@ -1025,7 +1026,7 @@ enum MxStatus mx_mbox_sync(struct Mailbox *m)
         !mutt_is_spool(mailbox_path(m)) && !c_save_empty)
     {
       unlink(mailbox_path(m));
-      mx_fastclose_mailbox(m);
+      mx_fastclose_mailbox(m, false);
       return MX_STATUS_OK;
     }
 
@@ -1768,19 +1769,20 @@ bool mx_ac_add(struct Account *a, struct Mailbox *m)
 /**
  * mx_ac_remove - Remove a Mailbox from an Account and delete Account if empty
  * @param m Mailbox to remove
+ * @param keep_account Make sure not to remove the mailbox's account
  * @retval  0 Success
  * @retval -1 Error
  *
  * @note The mailbox is NOT free'd
  */
-int mx_ac_remove(struct Mailbox *m)
+int mx_ac_remove(struct Mailbox *m, bool keep_account)
 {
   if (!m || !m->account)
     return -1;
 
   struct Account *a = m->account;
   account_mailbox_remove(m->account, m);
-  if (STAILQ_EMPTY(&a->mailboxes))
+  if (!keep_account && STAILQ_EMPTY(&a->mailboxes))
   {
     neomutt_account_remove(NeoMutt, a);
   }

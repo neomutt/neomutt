@@ -159,7 +159,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     if (mx_mbox_open(m_post, MUTT_NOSORT | MUTT_QUIET))
     {
       PostCount = m_post->msg_count;
-      mx_fastclose_mailbox(m_post);
+      mx_fastclose_mailbox(m_post, false);
       if (m_post->flags == MB_HIDDEN)
         mailbox_free(&m_post);
     }
@@ -198,7 +198,7 @@ static void hardclose(struct Mailbox *m)
   if (rc != MX_STATUS_ERROR && rc != MX_STATUS_OK)
     rc = mx_mbox_close(m);
   if (rc != MX_STATUS_OK)
-    mx_fastclose_mailbox(m);
+    mx_fastclose_mailbox(m, false);
 }
 
 /**
@@ -672,7 +672,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
     mutt_error(_("No postponed messages"));
     if (m_cur != m)
     {
-      mx_fastclose_mailbox(m);
+      mx_fastclose_mailbox(m, false);
       if (m->flags == MB_HIDDEN)
         mailbox_free(&m);
     }

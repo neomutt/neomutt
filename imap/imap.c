@@ -1251,7 +1251,7 @@ int imap_path_status(const char *path, bool queue)
 
   if (is_temp)
   {
-    mx_ac_remove(m);
+    mx_ac_remove(m, false);
     mailbox_free(&m);
   }
 
