@@ -155,8 +155,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
   size_t templen = 0;
   enum HistoryClass hclass;
   int rc = 0;
-  mbstate_t mbstate;
-  memset(&mbstate, 0, sizeof(mbstate));
+  mbstate_t mbstate = { 0 };
 
   if (state->wbuf)
   {
@@ -709,16 +708,14 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
             mutt_beep(false);
           else
           {
-            wchar_t t;
-
             if (state->curpos == 0)
               state->curpos = 2;
             else if (state->curpos < state->lastchar)
               state->curpos++;
 
-            t = state->wbuf[state->curpos - 2];
+            wchar_t wc = state->wbuf[state->curpos - 2];
             state->wbuf[state->curpos - 2] = state->wbuf[state->curpos - 1];
-            state->wbuf[state->curpos - 1] = t;
+            state->wbuf[state->curpos - 1] = wc;
           }
           break;
 
@@ -730,7 +727,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
     {
     self_insert:
       state->tabs = 0;
-      wchar_t wc;
+      wchar_t wc = 0;
       /* use the raw keypress */
       ch = LastKey;
 

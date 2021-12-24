@@ -853,16 +853,13 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
   size_t col = c_markers ? (*lines)[line_num].cont_line : 0;
   size_t k;
   int ch, vch, last_special = -1, special = 0, t;
-  wchar_t wc;
-  mbstate_t mbstate;
+  wchar_t wc = 0;
+  mbstate_t mbstate = { 0 }; // FIXME: this should come from lines
   const size_t c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
   size_t wrap_cols = mutt_window_wrap_cols(width, (flags & MUTT_PAGER_NOWRAP) ? 0 : c_wrap);
 
   if (check_attachment_marker((char *) buf) == 0)
     wrap_cols = width;
-
-  /* FIXME: this should come from lines */
-  memset(&mbstate, 0, sizeof(mbstate));
 
   for (ch = 0, vch = 0; ch < cnt; ch += k, vch += k)
   {
@@ -922,7 +919,7 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
     special = 0;
     if (IsWPrint(wc))
     {
-      wchar_t wc1;
+      wchar_t wc1 = 0;
       mbstate_t mbstate1 = mbstate;
       size_t k1 = mbrtowc(&wc1, (char *) buf + ch + k, cnt - ch - k, &mbstate1);
       while ((k1 != (size_t) (-2)) && (k1 != (size_t) (-1)) && (k1 > 0) && (wc1 == '\b'))

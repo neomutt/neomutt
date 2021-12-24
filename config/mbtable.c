@@ -50,7 +50,7 @@ struct MbTable *mbtable_parse(const char *s)
 {
   struct MbTable *t = NULL;
   size_t slen, k;
-  mbstate_t mbstate;
+  mbstate_t mbstate = { 0 };
   char *d = NULL;
 
   slen = mutt_str_len(s);
@@ -66,7 +66,6 @@ struct MbTable *mbtable_parse(const char *s)
   t->segmented_str = mutt_mem_calloc(slen * 2, sizeof(char));
   d = t->segmented_str;
 
-  memset(&mbstate, 0, sizeof(mbstate));
   while (slen && (k = mbrtowc(NULL, s, slen, &mbstate)))
   {
     if ((k == (size_t) (-1)) || (k == (size_t) (-2)))

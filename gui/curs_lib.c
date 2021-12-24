@@ -659,10 +659,9 @@ void mutt_flushinp(void)
 int mutt_addwch(struct MuttWindow *win, wchar_t wc)
 {
   char buf[MB_LEN_MAX * 2];
-  mbstate_t mbstate;
+  mbstate_t mbstate = { 0 };
   size_t n1, n2;
 
-  memset(&mbstate, 0, sizeof(mbstate));
   if (((n1 = wcrtomb(buf, wc, &mbstate)) == (size_t) (-1)) ||
       ((n2 = wcrtomb(buf + n1, 0, &mbstate)) == (size_t) (-1)))
   {
@@ -694,15 +693,14 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
                         enum FormatJustify justify, char pad_char,
                         const char *s, size_t n, bool arboreal)
 {
-  wchar_t wc;
+  wchar_t wc = 0;
   int w;
   size_t k, k2;
   char scratch[MB_LEN_MAX];
-  mbstate_t mbstate1, mbstate2;
+  mbstate_t mbstate1 = { 0 };
+  mbstate_t mbstate2 = { 0 };
   bool escaped = false;
 
-  memset(&mbstate1, 0, sizeof(mbstate1));
-  memset(&mbstate2, 0, sizeof(mbstate2));
   buflen--;
   char *p = buf;
   for (; n && (k = mbrtowc(&wc, s, n, &mbstate1)); s += k, n -= k)
@@ -866,12 +864,11 @@ void mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *
  */
 void mutt_paddstr(struct MuttWindow *win, int n, const char *s)
 {
-  wchar_t wc;
+  wchar_t wc = 0;
   size_t k;
   size_t len = mutt_str_len(s);
-  mbstate_t mbstate;
+  mbstate_t mbstate = { 0 };
 
-  memset(&mbstate, 0, sizeof(mbstate));
   for (; len && (k = mbrtowc(&wc, s, len, &mbstate)); s += k, len -= k)
   {
     if ((k == (size_t) (-1)) || (k == (size_t) (-2)))
@@ -909,17 +906,16 @@ void mutt_paddstr(struct MuttWindow *win, int n, const char *s)
  */
 size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width)
 {
-  wchar_t wc;
+  wchar_t wc = 0;
   size_t n, w = 0, l = 0, cl;
   int cw;
-  mbstate_t mbstate;
+  mbstate_t mbstate = { 0 };
 
   if (!src)
     goto out;
 
   n = mutt_str_len(src);
 
-  memset(&mbstate, 0, sizeof(mbstate));
   for (w = 0; n && (cl = mbrtowc(&wc, src, n, &mbstate)); src += cl, n -= cl)
   {
     if ((cl == (size_t) (-1)) || (cl == (size_t) (-2)))
@@ -975,12 +971,11 @@ int mutt_strnwidth(const char *s, size_t n)
   if (!s)
     return 0;
 
-  wchar_t wc;
+  wchar_t wc = 0;
   int w;
   size_t k;
-  mbstate_t mbstate;
+  mbstate_t mbstate = { 0 };
 
-  memset(&mbstate, 0, sizeof(mbstate));
   for (w = 0; n && (k = mbrtowc(&wc, s, n, &mbstate)); s += k, n -= k)
   {
     if (*s == MUTT_SPECIAL_INDEX)

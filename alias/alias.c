@@ -214,17 +214,15 @@ static void recode_buf(char *buf, size_t buflen)
  */
 static int check_alias_name(const char *s, char *dest, size_t destlen)
 {
-  wchar_t wc;
-  mbstate_t mb;
+  wchar_t wc = 0;
+  mbstate_t mbstate = { 0 };
   size_t l;
   int rc = 0;
   bool dry = !dest || !destlen;
 
-  memset(&mb, 0, sizeof(mbstate_t));
-
   if (!dry)
     destlen--;
-  for (; s && *s && (dry || destlen) && (l = mbrtowc(&wc, s, MB_CUR_MAX, &mb)) != 0;
+  for (; s && *s && (dry || destlen) && (l = mbrtowc(&wc, s, MB_CUR_MAX, &mbstate)) != 0;
        s += l, destlen -= l)
   {
     bool bad = (l == (size_t) (-1)) || (l == (size_t) (-2)); /* conversion error */
@@ -238,7 +236,7 @@ static int check_alias_name(const char *s, char *dest, size_t destlen)
       if (dry)
         return -1;
       if (l == (size_t) (-1))
-        memset(&mb, 0, sizeof(mbstate_t));
+        memset(&mbstate, 0, sizeof(mbstate_t));
       *dest++ = '_';
       rc = -1;
     }

@@ -113,13 +113,12 @@ static int get_color(int index, unsigned char *s)
 static void print_enriched_string(struct MuttWindow *win, int index, int attr,
                                   unsigned char *s, bool do_color, struct ConfigSubset *sub)
 {
-  wchar_t wc;
+  wchar_t wc = 0;
   size_t k;
   size_t n = mutt_str_len((char *) s);
-  mbstate_t mbstate;
+  mbstate_t mbstate = { 0 };
 
   const bool c_ascii_chars = cs_subset_bool(sub, "ascii_chars");
-  memset(&mbstate, 0, sizeof(mbstate));
   while (*s)
   {
     if (*s < MUTT_TREE_MAX)

@@ -56,12 +56,11 @@ int mutt_mb_charlen(const char *s, int *width)
   if (!s || (*s == '\0'))
     return 0;
 
-  wchar_t wc;
-  mbstate_t mbstate;
+  wchar_t wc = 0;
+  mbstate_t mbstate = { 0 };
   size_t k, n;
 
   n = mutt_str_len(s);
-  memset(&mbstate, 0, sizeof(mbstate));
   k = mbrtowc(&wc, s, n, &mbstate);
   if (width)
     *width = wcwidth(wc);
@@ -137,7 +136,7 @@ bool mutt_mb_get_initials(const char *name, char *buf, size_t buflen)
  */
 int mutt_mb_width(const char *str, int col, bool display)
 {
-  wchar_t wc;
+  wchar_t wc = 0;
   int l, w = 0, nl = 0;
   const char *p = str;
 
@@ -238,14 +237,13 @@ void mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen)
   if (!dest || !src)
     return;
 
-  mbstate_t st;
+  mbstate_t mbstate = { 0 };
   size_t k;
 
   /* First convert directly into the destination buffer */
-  memset(&st, 0, sizeof(st));
   for (; slen && dlen >= MB_LEN_MAX; dest += k, dlen -= k, src++, slen--)
   {
-    k = wcrtomb(dest, *src, &st);
+    k = wcrtomb(dest, *src, &mbstate);
     if (k == (size_t) (-1))
       break;
   }
@@ -253,7 +251,7 @@ void mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen)
   /* If this works, we can stop now */
   if (dlen >= MB_LEN_MAX)
   {
-    dest += wcrtomb(dest, 0, &st);
+    dest += wcrtomb(dest, 0, &mbstate);
     return;
   }
 
@@ -264,11 +262,11 @@ void mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen)
 
     for (; slen && p - buf < dlen; p += k, src++, slen--)
     {
-      k = wcrtomb(p, *src, &st);
+      k = wcrtomb(p, *src, &mbstate);
       if (k == (size_t) (-1))
         break;
     }
-    p += wcrtomb(p, 0, &st);
+    p += wcrtomb(p, 0, &mbstate);
 
     /* If it fits into the destination buffer, we can stop now */
     if (p - buf <= dlen)
@@ -296,16 +294,16 @@ size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, const char 
   if (!pwbuf || !pwbuflen || !buf)
     return 0;
 
-  wchar_t wc;
-  mbstate_t st;
+  wchar_t wc = 0;
+  mbstate_t mbstate = { 0 };
   size_t k;
   wchar_t *wbuf = *pwbuf;
   size_t wbuflen = *pwbuflen;
 
   while (*buf != '\0')
   {
-    memset(&st, 0, sizeof(st));
-    for (; (k = mbrtowc(&wc, buf, MB_LEN_MAX, &st)) && k != (size_t) (-1) &&
+    memset(&mbstate, 0, sizeof(mbstate));
+    for (; (k = mbrtowc(&wc, buf, MB_LEN_MAX, &mbstate)) && k != (size_t) (-1) &&
            k != (size_t) (-2);
          buf += k)
     {
@@ -359,19 +357,19 @@ bool mutt_mb_is_lower(const char *s)
   if (!s)
     return false;
 
-  wchar_t w;
-  mbstate_t mb;
+  wchar_t wc = 0;
+  mbstate_t mbstate = { 0 };
   size_t l;
 
-  memset(&mb, 0, sizeof(mb));
+  memset(&mbstate, 0, sizeof(mbstate));
 
-  for (; (l = mbrtowc(&w, s, MB_CUR_MAX, &mb)) != 0; s += l)
+  for (; (l = mbrtowc(&wc, s, MB_CUR_MAX, &mbstate)) != 0; s += l)
   {
     if (l == (size_t) -2)
       continue; /* shift sequences */
     if (l == (size_t) -1)
       return false;
-    if (iswalpha((wint_t) w) && iswupper((wint_t) w))
+    if (iswalpha((wint_t) wc) && iswupper((wint_t) wc))
       return false;
   }
 
@@ -425,15 +423,14 @@ int mutt_mb_filter_unprintable(char **s)
   if (!s || !*s)
     return -1;
 
-  wchar_t wc;
+  wchar_t wc = 0;
   size_t k, k2;
   char scratch[MB_LEN_MAX + 1];
   char *p = *s;
-  mbstate_t mbstate1, mbstate2;
+  mbstate_t mbstate1 = { 0 };
+  mbstate_t mbstate2 = { 0 };
 
   struct Buffer buf = mutt_buffer_make(0);
-  memset(&mbstate1, 0, sizeof(mbstate1));
-  memset(&mbstate2, 0, sizeof(mbstate2));
   for (; (k = mbrtowc(&wc, p, MB_LEN_MAX, &mbstate1)); p += k)
   {
     if ((k == (size_t) -1) || (k == (size_t) -2))
