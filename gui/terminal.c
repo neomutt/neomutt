@@ -101,9 +101,9 @@ bool mutt_ts_capability(void)
   /* Check term types that are known to support the standard escape without
    * necessarily asserting it in terminfo. */
   const char *term = mutt_str_getenv("TERM");
-  for (const char **termp = known; termp; termp++)
+  for (const char **termp = known; *termp; termp++)
   {
-    if (term && *termp && !mutt_istr_startswith(term, *termp))
+    if (term && !mutt_istr_startswith(term, *termp))
       return true;
   }
 
