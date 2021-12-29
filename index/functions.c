@@ -990,9 +990,9 @@ static int op_main_limit(struct IndexSharedData *shared, struct IndexPrivateData
       ((op == OP_MAIN_LIMIT) &&
        (mutt_pattern_func(shared->ctx, MUTT_LIMIT, _("Limit to messages matching: ")) == 0)))
   {
-    int index = 0;
     if (old_index >= 0)
     {
+      priv->menu->max = shared->mailbox->vcount;
       /* try to find what used to be the current message */
       for (size_t i = 0; i < shared->mailbox->vcount; i++)
       {
@@ -1001,11 +1001,10 @@ static int op_main_limit(struct IndexSharedData *shared, struct IndexPrivateData
           continue;
         if (e->index == old_index)
         {
-          index = i;
+          menu_set_index(priv->menu, i);
           break;
         }
       }
-      menu_set_index(priv->menu, index);
     }
 
     if ((shared->mailbox->msg_count != 0) && mutt_using_threads())
