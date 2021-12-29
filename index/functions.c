@@ -1005,8 +1005,8 @@ static int op_main_limit(struct IndexSharedData *shared, struct IndexPrivateData
           break;
         }
       }
+      menu_set_index(priv->menu, index);
     }
-    menu_set_index(priv->menu, index);
 
     if ((shared->mailbox->msg_count != 0) && mutt_using_threads())
     {
