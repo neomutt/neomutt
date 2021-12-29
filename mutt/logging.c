@@ -411,7 +411,8 @@ int log_disp_queue(time_t stamp, const char *file, int line,
 
   if (level == LL_PERROR)
   {
-    ret += snprintf(buf + ret, sizeof(buf) - ret, ": %s", strerror(err));
+    if ((ret >= 0) && (ret < sizeof(buf)))
+      ret += snprintf(buf + ret, sizeof(buf) - ret, ": %s", strerror(err));
     level = LL_ERROR;
   }
 

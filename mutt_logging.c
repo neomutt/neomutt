@@ -139,7 +139,7 @@ int log_disp_curses(time_t stamp, const char *file, int line,
   int ret = vsnprintf(buf, sizeof(buf), fmt, ap);
   va_end(ap);
 
-  if (level == LL_PERROR)
+  if ((level == LL_PERROR) && (ret >= 0) && (ret < sizeof(buf)))
   {
     char *buf2 = buf + ret;
     int len = sizeof(buf) - ret;
