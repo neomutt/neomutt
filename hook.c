@@ -268,8 +268,8 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
       comp_flags = MUTT_PC_FULL_MSG;
 
     struct Mailbox *m_cur = get_current_mailbox();
-    pat = mutt_pattern_comp(m_cur, Context ? Context->menu : NULL,
-                            mutt_buffer_string(pattern), comp_flags, err);
+    struct Menu *menu = get_current_menu();
+    pat = mutt_pattern_comp(m_cur, menu, mutt_buffer_string(pattern), comp_flags, err);
     if (!pat)
       goto cleanup;
   }
@@ -441,8 +441,9 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
    * used for date ranges, and they need to be evaluated relative to "now", not
    * the hook compilation time.  */
   struct Mailbox *m_cur = get_current_mailbox();
+  struct Menu *menu = get_current_menu();
   struct PatternList *pat =
-      mutt_pattern_comp(m_cur, Context ? Context->menu : NULL, mutt_buffer_string(pattern),
+      mutt_pattern_comp(m_cur, menu, mutt_buffer_string(pattern),
                         MUTT_PC_FULL_MSG | MUTT_PC_PATTERN_DYNAMIC, err);
   if (!pat)
     goto out;

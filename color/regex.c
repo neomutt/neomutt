@@ -226,8 +226,9 @@ enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
           cs_subset_string(NeoMutt->sub, "simple_search");
       mutt_check_simple(buf, NONULL(c_simple_search));
       struct Mailbox *m_cur = get_current_mailbox();
-      rcol->color_pattern = mutt_pattern_comp(m_cur, Context ? Context->menu : NULL,
-                                              buf->data, MUTT_PC_FULL_MSG, err);
+      struct Menu *menu = get_current_menu();
+      rcol->color_pattern =
+          mutt_pattern_comp(m_cur, menu, buf->data, MUTT_PC_FULL_MSG, err);
       mutt_buffer_pool_release(&buf);
       if (!rcol->color_pattern)
       {

@@ -114,8 +114,9 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
   if (!ptr)
   {
     struct Mailbox *m_cur = get_current_mailbox();
-    struct PatternList *pat = mutt_pattern_comp(m_cur, Context ? Context->menu : NULL,
-                                                pattern, MUTT_PC_NO_FLAGS, err);
+    struct Menu *menu = get_current_menu();
+    struct PatternList *pat =
+        mutt_pattern_comp(m_cur, menu, pattern, MUTT_PC_NO_FLAGS, err);
     if (!pat)
     {
       FREE(&pattern);
