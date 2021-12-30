@@ -38,6 +38,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "color/lib.h"
+#include "index/lib.h"
 #include "menu/lib.h"
 #include "commands.h"
 #include "context.h"
@@ -499,7 +500,8 @@ int menu_loop(struct Menu *menu)
       case OP_SHELL_ESCAPE:
         if (mutt_shell_escape())
         {
-          mutt_mailbox_check(ctx_mailbox(Context), MUTT_MAILBOX_CHECK_FORCE);
+          struct Mailbox *m_cur = get_current_mailbox();
+          mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_FORCE);
         }
         break;
 
@@ -508,8 +510,11 @@ int menu_loop(struct Menu *menu)
         break;
 
       case OP_CHECK_STATS:
-        mutt_check_stats(ctx_mailbox(Context));
+      {
+        struct Mailbox *m_cur = get_current_mailbox();
+        mutt_check_stats(m_cur);
         break;
+      }
 
       case OP_REDRAW:
         clearok(stdscr, true);

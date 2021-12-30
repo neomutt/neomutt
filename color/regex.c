@@ -36,6 +36,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "index/lib.h"
 #include "pattern/lib.h"
 #include "color.h"
 #include "context.h"
@@ -224,9 +225,9 @@ enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
       const char *const c_simple_search =
           cs_subset_string(NeoMutt->sub, "simple_search");
       mutt_check_simple(buf, NONULL(c_simple_search));
-      rcol->color_pattern =
-          mutt_pattern_comp(ctx_mailbox(Context), Context ? Context->menu : NULL,
-                            buf->data, MUTT_PC_FULL_MSG, err);
+      struct Mailbox *m_cur = get_current_mailbox();
+      rcol->color_pattern = mutt_pattern_comp(m_cur, Context ? Context->menu : NULL,
+                                              buf->data, MUTT_PC_FULL_MSG, err);
       mutt_buffer_pool_release(&buf);
       if (!rcol->color_pattern)
       {

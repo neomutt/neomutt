@@ -82,6 +82,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "index/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "question/lib.h"
@@ -542,8 +543,8 @@ static void dlg_select_query(struct Buffer *buf, struct AliasList *all,
             mutt_addrlist_clear(&al);
           }
         }
-        mutt_send_message(SEND_NO_FLAGS, e, NULL, ctx_mailbox(Context), NULL,
-                          NeoMutt->sub);
+        struct Mailbox *m_cur = get_current_mailbox();
+        mutt_send_message(SEND_NO_FLAGS, e, NULL, m_cur, NULL, NeoMutt->sub);
         menu_queue_redraw(menu, MENU_REDRAW_FULL);
         break;
       }

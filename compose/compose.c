@@ -404,7 +404,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 
   struct MuttWindow *dlg = compose_dlg_init(sub, e, fcc);
   struct ComposeSharedData *shared = dlg->wdata;
-  shared->mailbox = ctx_mailbox(Context);
+  shared->mailbox = get_current_mailbox();
   shared->email = e;
   shared->sub = sub;
   shared->fcc = fcc;
