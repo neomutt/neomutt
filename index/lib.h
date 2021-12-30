@@ -92,5 +92,6 @@ void resort_index(struct Context *ctx, struct Menu *menu);
 int mx_toggle_write(struct Mailbox *m);
 extern const struct Mapping IndexNewsHelp[];
 struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, int *oldcount, struct IndexSharedData *shared, bool read_only);
+struct Mailbox *get_current_mailbox(void);
 
 #endif /* MUTT_INDEX_LIB_H */

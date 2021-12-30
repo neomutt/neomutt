@@ -463,3 +463,29 @@ struct MuttWindow *index_window_new(struct IndexPrivateData *priv)
 
   return win;
 }
+
+/**
+ * get_current_mailbox - Get the current Mailbox
+ * @retval ptr Current Mailbox
+ *
+ * Search for the last (most recent) dialog that has an Index.
+ * Then return the Mailbox from its shared data.
+ */
+struct Mailbox *get_current_mailbox(void)
+{
+  if (!AllDialogsWindow)
+    return NULL;
+
+  struct MuttWindow *np = NULL;
+  TAILQ_FOREACH_REVERSE(np, &AllDialogsWindow->children, MuttWindowList, entries)
+  {
+    struct MuttWindow *win = window_find_child(np, WT_DLG_INDEX);
+    if (win)
+    {
+      struct IndexSharedData *shared = win->wdata;
+      return shared->mailbox;
+    }
+  }
+
+  return NULL;
+}
