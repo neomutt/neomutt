@@ -1104,7 +1104,9 @@ void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e,
 
     /* Strip out the top level multipart */
     if ((m->type == TYPE_MULTIPART) && m->parts && !need_secured &&
-        ((parent_type == -1) && !mutt_istr_equal("alternative", m->subtype)))
+        ((parent_type == -1) &&
+         !mutt_istr_equal("alternative", m->subtype) &&
+         !mutt_istr_equal("multilingual", m->subtype)))
     {
       mutt_generate_recvattach_list(actx, e, m->parts, fp, m->type, level, decrypted);
     }
