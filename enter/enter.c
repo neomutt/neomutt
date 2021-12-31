@@ -503,9 +503,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
             if (tempbuf && (templen == (state->lastchar - i)) &&
                 (memcmp(tempbuf, state->wbuf + i, (state->lastchar - i) * sizeof(wchar_t)) == 0))
             {
-              mutt_select_file(buf, buflen,
-                               (flags & MUTT_COMP_FILE_MBOX) ? MUTT_SEL_FOLDER : MUTT_SEL_NO_FLAGS,
-                               m, NULL, NULL);
+              mutt_select_file(buf, buflen, MUTT_SEL_NO_FLAGS, m, NULL, NULL);
               if (buf[0] != '\0')
                 replace_part(state, i, buf);
               rc = 1;
