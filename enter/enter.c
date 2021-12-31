@@ -515,6 +515,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
             {
               templen = state->lastchar - i;
               mutt_mem_realloc(&tempbuf, templen * sizeof(wchar_t));
+              memcpy(tempbuf, state->wbuf + i, templen * sizeof(wchar_t));
             }
             else
               mutt_beep(false);
