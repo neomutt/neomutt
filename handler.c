@@ -1145,6 +1145,16 @@ static int multilingual_handler(struct Body *a, struct State *s)
   struct Body *zxx_part = NULL;
   struct ListNode *np = NULL;
 
+  while (b)
+  {
+    if (mutt_can_decode(b))
+    {
+      first_part = b;
+      break;
+    }
+    b = b->next;
+  }
+
   const struct Slist *c_preferred_languages =
       cs_subset_slist(NeoMutt->sub, "preferred_languages");
   if (c_preferred_languages)
@@ -1161,9 +1171,6 @@ static int multilingual_handler(struct Body *a, struct State *s)
       {
         if (mutt_can_decode(b))
         {
-          if (!first_part)
-            first_part = b;
-
           if (b->language && mutt_str_equal("zxx", b->language))
             zxx_part = b;
 
