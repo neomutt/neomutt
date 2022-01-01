@@ -168,8 +168,6 @@ void index_shared_data_set_context(struct IndexSharedData *shared, struct Contex
 
     if (ctx)
       notify_observer_add(ctx->notify, NT_CONTEXT, index_shared_context_observer, shared);
-
-    Context = ctx;
   }
 
   struct Mailbox *m = ctx_mailbox(ctx);

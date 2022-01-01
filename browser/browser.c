@@ -1644,7 +1644,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           char msg[128];
 
           // TODO(sileht): It could be better to select INBOX instead. But I
-          // don't want to manipulate Context/Mailboxes/mailbox->account here for now.
+          // don't want to manipulate Mailboxes/mailbox->account here for now.
           // Let's just protect neomutt against crash for now. #1417
           if (mutt_str_equal(mailbox_path(m), ff->name))
           {

@@ -269,7 +269,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
  */
 struct Mailbox *ctx_mailbox(struct Context *ctx)
 {
-  return Context ? Context->mailbox : NULL;
+  return ctx ? ctx->mailbox : NULL;
 }
 
 int menu_get_index(struct Menu *menu)
