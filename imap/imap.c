@@ -63,6 +63,7 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "sort.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -273,9 +274,8 @@ static int make_msg_set(struct Mailbox *m, struct Buffer *buf,
       else if (n == (m->msg_count - 1))
         mutt_buffer_add_printf(buf, ":%u", imap_edata_get(e)->uid);
     }
-    /* End current set if message doesn't match or we've reached the end
-     * of the mailbox via inactive messages following the last match. */
-    else if (setstart && (e->active || (n == adata->mailbox->msg_count - 1)))
+    /* End current set if message doesn't match. */
+    else if (setstart)
     {
       if (imap_edata_get(m->emails[n - 1])->uid > setstart)
         mutt_buffer_add_printf(buf, ":%u", imap_edata_get(m->emails[n - 1])->uid);
@@ -905,8 +905,11 @@ static int compare_uid(const void *a, const void *b)
 {
   const struct Email *ea = *(struct Email const *const *) a;
   const struct Email *eb = *(struct Email const *const *) b;
-  return imap_edata_get((struct Email *) ea)->uid -
-         imap_edata_get((struct Email *) eb)->uid;
+
+  const unsigned int ua = imap_edata_get((struct Email *) ea)->uid;
+  const unsigned int ub = imap_edata_get((struct Email *) eb)->uid;
+
+  return mutt_numeric_cmp(ua, ub);
 }
 
 /**
