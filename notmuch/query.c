@@ -38,8 +38,8 @@
 /**
  * nm_parse_type_from_query - Parse a query type out of a query
  * @param buf   Buffer for URL
- * @param fallback Fallback query type if buf doesn't contain a type= statement.
- * @retval Notmuch query type.
+ * @param fallback Fallback query type if buf doesn't contain a type= statement
+ * @retval num Notmuch query type, #NmQueryType
  *
  * If a user writes a query for a vfolder and includes a type= statement, that
  * type= will be encoded, which Notmuch will treat as part of the query=

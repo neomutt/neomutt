@@ -181,6 +181,7 @@ static int quad_reset(const struct ConfigSet *cs, void *var,
 /**
  * quad_toggle - Toggle (invert) the value of a quad option
  * @param opt Value to toggle
+ * @retval num New value
  *
  * By toggling the low bit, the following are swapped:
  * - #MUTT_NO    <--> #MUTT_YES

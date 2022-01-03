@@ -174,7 +174,7 @@ void mutt_commands_free(void)
 /**
  * mutt_commands_array - Get Commands array
  * @param first Set to first element of Commands array
- * @retval size_t Size of Commands array
+ * @retval num Size of Commands array
  */
 size_t mutt_commands_array(struct Command **first)
 {

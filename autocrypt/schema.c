@@ -34,6 +34,8 @@
 
 /**
  * mutt_autocrypt_schema_init - Set up an Autocrypt database
+ * @retval  0 Success
+ * @retval -1 Error
  */
 int mutt_autocrypt_schema_init(void)
 {

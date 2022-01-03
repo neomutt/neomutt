@@ -441,6 +441,8 @@ char *mutt_buffer_strdup(const struct Buffer *buf)
  * mutt_buffer_copy - Copy a Buffer's contents to another Buffer
  * @param dst Buffer for result
  * @param src Buffer to copy
+ * @retval num Bytes written to Buffer
+ * @retval 0   Error
  */
 size_t mutt_buffer_copy(struct Buffer *dst, const struct Buffer *src)
 {

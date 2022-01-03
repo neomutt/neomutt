@@ -592,7 +592,7 @@ cleanup:
 /**
  * rfc2369_first_mailto - Extract the first mailto: URL from a RFC2369 list
  * @param body Body of the header
- * @return First mailto: URL found, or NULL if none was found
+ * @retval ptr First mailto: URL found, or NULL if none was found
  */
 static char *rfc2369_first_mailto(const char *body)
 {

@@ -1101,7 +1101,7 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
  * imap_check_mailbox - Use the NOOP or IDLE command to poll for new mail
  * @param m     Mailbox
  * @param force Don't wait
- * return enum MxStatus
+ * @retval num MxStatus
  */
 enum MxStatus imap_check_mailbox(struct Mailbox *m, bool force)
 {

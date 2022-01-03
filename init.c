@@ -1482,6 +1482,8 @@ bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs)
  * @param buf    Buffer for the result
  * @param buflen Length of the buffer
  * @param pos    Cursor position in the buffer
+ * @retval 1 Success
+ * @retval 0 Failure
  */
 int mutt_var_value_complete(char *buf, size_t buflen, int pos)
 {

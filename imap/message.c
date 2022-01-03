@@ -465,6 +465,8 @@ static int msg_fetch_header(struct Mailbox *m, struct ImapHeader *ih, char *buf,
  * @param buf  Buffer containing data
  * @param len  Length of buffer
  * @param conn Network connection
+ * @retval >0 Number of bytes written
+ * @retval -1 Error
  */
 static int flush_buffer(char *buf, size_t *len, struct Connection *conn)
 {
@@ -521,6 +523,7 @@ static void imap_alloc_uid_hash(struct ImapAccountData *adata, unsigned int msn_
  * @param[in]  msn_begin     First Message Sequence Number
  * @param[in]  msn_end       Last Message Sequence Number
  * @param[out] fetch_msn_end Highest Message Sequence Number fetched
+ * @retval num MSN count
  *
  * Generates a more complicated sequence set after using the header cache,
  * in case there are missing MSNs in the middle.

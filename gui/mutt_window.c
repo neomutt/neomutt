@@ -454,6 +454,7 @@ void mutt_window_add_child(struct MuttWindow *parent, struct MuttWindow *child)
  * mutt_window_remove_child - Remove a child from a Window
  * @param parent Window to remove from
  * @param child  Window to remove
+ * @retval ptr Child Window
  */
 struct MuttWindow *mutt_window_remove_child(struct MuttWindow *parent, struct MuttWindow *child)
 {

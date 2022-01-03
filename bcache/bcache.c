@@ -109,6 +109,8 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, struct 
  * @param bcache Body cache
  * @param id     Per-mailbox unique identifier for the message
  * @param newid  New id for the message
+ * @retval  0 Success
+ * @retval -1 Error
  */
 static int mutt_bcache_move(struct BodyCache *bcache, const char *id, const char *newid)
 {

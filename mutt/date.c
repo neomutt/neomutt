@@ -154,7 +154,7 @@ static time_t compute_tz(time_t g, struct tm *utc)
  * @param w True if west of UTC, false if east
  * @param h Number of hours in the timezone
  * @param m Number of minutes in the timezone
- * @retval Timezone offset in seconds
+ * @retval num Timezone offset in seconds
  */
 static time_t add_tz_offset(time_t t, bool w, time_t h, time_t m)
 {
@@ -422,7 +422,7 @@ int mutt_date_check_month(const char *s)
 
 /**
  * mutt_date_epoch - Return the number of seconds since the Unix epoch
- * @retval s The number of s since the Unix epoch, or 0 on failure
+ * @retval num Number of seconds since the Unix epoch, or 0 on failure
  */
 time_t mutt_date_epoch(void)
 {
@@ -686,7 +686,7 @@ struct tm mutt_date_gmtime(time_t t)
  * @param buflen Buffer size
  * @param format Format to apply
  * @param t      Time to format
- * @retval num   Number of Bytes added to buffer, excluding null byte.
+ * @retval num   Number of Bytes added to buffer, excluding NUL byte
  */
 size_t mutt_date_localtime_format(char *buf, size_t buflen, const char *format, time_t t)
 {

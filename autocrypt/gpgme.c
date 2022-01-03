@@ -63,6 +63,7 @@ static int create_gpgme_context(gpgme_ctx_t *ctx)
 
 /**
  * mutt_autocrypt_gpgme_init - Initialise GPGME
+ * @retval 0 Always
  */
 int mutt_autocrypt_gpgme_init(void)
 {

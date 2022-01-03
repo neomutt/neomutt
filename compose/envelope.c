@@ -291,6 +291,7 @@ static void draw_header_content(struct MuttWindow *win, int row,
  * @param shared Shared compose data
  * @param edata  Envelope data
  * @param row    Window row to start drawing
+ * @retval num Number of lines used
  */
 static int draw_crypt_lines(struct MuttWindow *win, struct ComposeSharedData *shared,
                             struct ComposeEnvelopeData *edata, int row)
@@ -450,6 +451,7 @@ static void draw_mix_line(struct ListHead *chain, struct MuttWindow *win, int ro
  * @param win       Window
  * @param row       Window row to start drawing
  * @param max_lines How many lines may be used
+ * @retval num Lines used
  */
 static int draw_envelope_addr(int field, struct AddressList *al,
                               struct MuttWindow *win, int row, size_t max_lines)
@@ -557,6 +559,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
  * @param win    Window to draw on
  * @param shared Shared compose data
  * @param row    Window row to start drawing from
+ * @retval num Rows used
  */
 static int draw_envelope_user_hdrs(struct MuttWindow *win,
                                    struct ComposeSharedData *shared, int row)

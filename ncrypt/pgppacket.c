@@ -35,7 +35,7 @@
 
 #define CHUNK_SIZE 1024 ///< Amount of data to read at once
 
-static unsigned char *pbuf = NULL; ///< Cache PGP data packet
+static unsigned char *pbuf = NULL; ///< Cached PGP data packet
 static size_t plen = 0;            ///< Length of cached packet
 
 /**
@@ -78,6 +78,7 @@ static int read_material(size_t material, size_t *used, FILE *fp)
  * pgp_read_packet - Read a PGP packet from a file
  * @param[in]  fp  File to read from
  * @param[out] len Number of bytes read
+ * @retval ptr PGP data packet
  *
  * This function uses a cache to store the data: #pbuf, #plen.
  */

@@ -191,6 +191,7 @@ static const char *abbrev_folder(const char *mbox, const char *folder, enum Mail
  * abbrev_url - Abbreviate a url-style Mailbox path
  * @param mbox Mailbox path to shorten
  * @param type Mailbox type
+ * @retval ptr mbox unchanged
  *
  * Use heuristics to shorten a non-local Mailbox path.
  * Strip the host part (or database part for Notmuch).
@@ -226,7 +227,7 @@ static const char *abbrev_url(const char *mbox, enum MailboxType type)
  * @param buf    Output buffer
  * @param buflen Size of output buffer
  * @param sbe    Sidebar entry
- * @retval Number of bytes written
+ * @retval num Bytes written
  */
 static size_t add_indent(char *buf, size_t buflen, const struct SbEntry *sbe)
 {
@@ -284,6 +285,7 @@ static enum ColorId calc_color(const struct Mailbox *m, bool current, bool highl
  * @param[in]  mbox      Mailbox path to examine
  * @param[in]  delims    Delimiter characters
  * @param[out] last_part Last path component
+ * @retval num Depth
  */
 static int calc_path_depth(const char *mbox, const char *delims, const char **last_part)
 {

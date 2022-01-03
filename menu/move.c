@@ -103,6 +103,7 @@ MenuRedrawFlags menu_set_and_notify(struct Menu *menu, int top, int index)
  * @param menu  Menu
  * @param top   Index of item at the top of the view
  * @param index Current selection
+ * @retval num Top line
  */
 static int menu_drag_view(struct Menu *menu, int top, int index)
 {
@@ -155,6 +156,7 @@ static int menu_drag_view(struct Menu *menu, int top, int index)
  * @param menu  Menu
  * @param top   First entry visible in the view
  * @param index Current selection
+ * @retval num Index
  */
 static int calc_fit_selection_to_view(struct Menu *menu, int top, int index)
 {
@@ -183,6 +185,8 @@ static int calc_fit_selection_to_view(struct Menu *menu, int top, int index)
  * calc_move_view - Move the view
  * @param menu     Menu
  * @param relative Relative number of lines to move
+ * @retval num Top line
+ * @retval   0 Error
  */
 static int calc_move_view(struct Menu *menu, int relative)
 {
@@ -224,6 +228,7 @@ static int calc_move_view(struct Menu *menu, int relative)
  * menu_move_selection - Move the selection, keeping within between [0, menu->max]
  * @param menu  Menu
  * @param index New selection
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_move_selection(struct Menu *menu, int index)
 {
@@ -241,6 +246,7 @@ MenuRedrawFlags menu_move_selection(struct Menu *menu, int index)
  * menu_move_view_relative - Move the view relatively
  * @param menu     Menu
  * @param relative Relative number of lines to move
+ * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_move_view_relative(struct Menu *menu, int relative)
 {

@@ -38,6 +38,8 @@ struct Alias;
  * alias_array_alias_add - Add an Alias to the AliasViewArray
  * @param ava Array of Aliases
  * @param alias Alias to add
+ * @retval num Size of array
+ * @retval -1  Error
  *
  * @note The Alias is wrapped in an AliasView
  * @note Call alias_array_sort() to sort and reindex the AliasViewArray
@@ -63,6 +65,8 @@ int alias_array_alias_add(struct AliasViewArray *ava, struct Alias *alias)
  * alias_array_alias_delete - Delete an Alias from the AliasViewArray
  * @param ava    Array of Aliases
  * @param alias Alias to remove
+ * @retval num Size of array
+ * @retval -1  Error
  *
  * @note Call alias_array_sort() to sort and reindex the AliasViewArray
  */

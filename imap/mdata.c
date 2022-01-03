@@ -55,6 +55,7 @@ void imap_mdata_free(void **ptr)
 /**
  * imap_mdata_get - Get the Mailbox data for this mailbox
  * @param m Mailbox
+ * @retval ptr ImapMboxData
  */
 struct ImapMboxData *imap_mdata_get(struct Mailbox *m)
 {

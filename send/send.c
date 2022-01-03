@@ -652,7 +652,7 @@ void mutt_make_attribution(struct Email *e, FILE *fp_out, struct ConfigSubset *s
 }
 
 /**
- * greeting_string - Format a greetings string
+ * greeting_string - Format a greetings string - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------

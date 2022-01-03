@@ -1441,6 +1441,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
  * @param menus    Array for results
  * @param s        String containing menu-names
  * @param err      Buffer for error messages
+ * @retval NULL Always
  *
  * Expects to see: <menu-string>[,<menu-string>]
  */

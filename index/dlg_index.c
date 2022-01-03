@@ -694,6 +694,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
  * @param oldcount  How many items are currently in the index
  * @param shared    Shared Index data
  * @param read_only Open Mailbox in read-only mode
+ * @retval ptr Mailbox
  */
 struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, int *oldcount,
                                       struct IndexSharedData *shared, bool read_only)

@@ -103,7 +103,7 @@ enum UseThreads mutt_thread_style(void)
 /**
  * get_use_threads_str - Convert UseThreads enum to string
  * @param value Value to convert
- * @retval string form of value
+ * @retval ptr String form of value
  */
 const char *get_use_threads_str(enum UseThreads value)
 {
@@ -351,7 +351,7 @@ static void calculate_visibility(struct MuttThread *tree, int *max_depth)
 /**
  * mutt_thread_ctx_init - Initialize a threading context
  * @param m     Current mailbox
- * @retval tctx Threading context
+ * @retval ptr Threading context
  */
 struct ThreadsContext *mutt_thread_ctx_init(struct Mailbox *m)
 {

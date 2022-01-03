@@ -38,7 +38,7 @@
 
 /**
  * state_attachment_marker - Get a unique (per-run) ANSI string to mark PGP messages in an email
- * @retval s Marker
+ * @retval ptr Marker
  */
 const char *state_attachment_marker(void)
 {
@@ -52,7 +52,7 @@ const char *state_attachment_marker(void)
 
 /**
  * state_protected_header_marker - Get a unique (per-run) ANSI string to mark protected headers in an email
- * @retval s Marker
+ * @retval ptr Marker
  */
 const char *state_protected_header_marker(void)
 {

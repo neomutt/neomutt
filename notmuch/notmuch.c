@@ -1860,7 +1860,7 @@ done:
 
 /**
  * get_default_mailbox - Get Mailbox for notmuch without any parameters.
- * @retval ptr Mailbox pointer.
+ * @retval ptr Mailbox pointer
  */
 static struct Mailbox *get_default_mailbox(void)
 {

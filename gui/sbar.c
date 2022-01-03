@@ -180,6 +180,7 @@ static void sbar_wdata_free(struct MuttWindow *win, void **ptr)
 
 /**
  * sbar_data_new - Free the private data attached to the MuttWindow
+ * @retval ptr New SBar
  */
 static struct SBarPrivateData *sbar_data_new(void)
 {

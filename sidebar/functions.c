@@ -65,7 +65,7 @@ bool select_next(struct SidebarWindowData *wdata)
  * @param wdata Sidebar data
  * @param begin Starting index for searching
  * @param end   Ending index for searching
- * @retval sbe  Pointer to the first entry with new messages
+ * @retval ptr  Pointer to the first entry with new messages
  * @retval NULL None could be found
  */
 static struct SbEntry **next_new(struct SidebarWindowData *wdata, size_t begin, size_t end)
@@ -136,7 +136,7 @@ bool select_prev(struct SidebarWindowData *wdata)
  * @param wdata Sidebar data
  * @param begin Starting index for searching
  * @param end   Ending index for searching
- * @retval sbe  Pointer to the first entry with new messages
+ * @retval ptr  Pointer to the first entry with new messages
  * @retval NULL None could be found
  */
 static struct SbEntry **prev_new(struct SidebarWindowData *wdata, size_t begin, size_t end)

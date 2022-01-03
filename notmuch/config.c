@@ -38,8 +38,8 @@
 #ifdef USE_NOTMUCH
 /**
  * is_valid_notmuch_url - Checks that a URL is in required form.
- * @retval true url in form notmuch://[absolute path]
- * @retval false url is not in required form.
+ * @retval true  url in form notmuch://[absolute path]
+ * @retval false url is not in required form
  */
 static bool is_valid_notmuch_url(const char *url)
 {
