@@ -69,6 +69,7 @@
 // #define GV_HIDE_CONFIG
 // #define GV_HIDE_ADATA
 // #define GV_HIDE_MDATA
+// #define GV_HIDE_BODY_CONTENT
 
 static void dot_email(FILE *fp, struct Email *e, struct ListHead *links);
 static void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links);
@@ -1039,6 +1040,7 @@ void dump_graphviz(const char *title, struct Context *ctx)
   mutt_list_free(&links);
 }
 
+#ifndef GV_HIDE_BODY_CONTENT
 static void dot_parameter_list(FILE *fp, const char *name, const struct ParameterList *pl)
 {
   if (!pl)
@@ -1082,6 +1084,7 @@ static void dot_content(FILE *fp, struct Content *cont, struct ListHead *links)
 
   mutt_buffer_dealloc(&buf);
 }
+#endif
 
 void dot_attach_ptr(FILE *fp, struct AttachPtr *aptr, struct ListHead *links)
 {
@@ -1163,13 +1166,27 @@ static void dot_body(FILE *fp, struct Body *b, struct ListHead *links, bool link
   dot_type_number(fp, "offset", b->offset);
 
   dot_ptr(fp, "aptr", b->aptr, "#3bcbc4");
+
+#ifdef GV_HIDE_BODY_CONTENT
+  if (!TAILQ_EMPTY(&b->parameter))
+  {
+    struct Parameter *param = TAILQ_FIRST(&b->parameter);
+    if (mutt_str_equal(param->attribute, "boundary"))
+    {
+      dot_type_string(fp, "boundary", param->value, false);
+    }
+  }
+#endif
+
   dot_object_footer(fp);
 
+#ifndef GV_HIDE_BODY_CONTENT
   if (!TAILQ_EMPTY(&b->parameter))
   {
     dot_parameter_list(fp, "parameter", &b->parameter);
     dot_add_link(links, b, &b->parameter, "Body->mime_headers", false, NULL);
   }
+#endif
 
   if (b->mime_headers)
   {
@@ -1214,11 +1231,13 @@ static void dot_body(FILE *fp, struct Body *b, struct ListHead *links, bool link
   }
   else
   {
+#ifndef GV_HIDE_BODY_CONTENT
     if (b->content)
     {
       dot_content(fp, b->content, links);
       dot_add_link(links, b, b->content, "Body->content", false, NULL);
     }
+#endif
 
     // if (b->aptr)
     // {
