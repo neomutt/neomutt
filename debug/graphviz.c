@@ -283,8 +283,8 @@ static void dot_add_link(struct ListHead *links, void *src, void *dst,
   if (!colour)
     colour = "#c0c0c0";
 
-  char obj1[16] = { 0 };
-  char obj2[16] = { 0 };
+  char obj1[64] = { 0 };
+  char obj2[64] = { 0 };
   char text[256] = { 0 };
   char lstr[128] = { 0 };
 
@@ -335,7 +335,7 @@ static void dot_graph_footer(FILE *fp, struct ListHead *links)
 
 static void dot_object_header(FILE *fp, const void *ptr, const char *name, const char *colour)
 {
-  char obj[16] = { 0 };
+  char obj[64] = { 0 };
   dot_ptr_name(obj, sizeof(obj), ptr);
 
   if (!colour)
@@ -359,7 +359,7 @@ static void dot_object_footer(FILE *fp)
 
 static void dot_node(FILE *fp, void *ptr, const char *name, const char *colour)
 {
-  char obj[16] = { 0 };
+  char obj[64] = { 0 };
   dot_ptr_name(obj, sizeof(obj), ptr);
 
   fprintf(fp, "\t%s [\n", obj);
@@ -374,7 +374,7 @@ static void dot_node(FILE *fp, void *ptr, const char *name, const char *colour)
 
 static void dot_node_link(FILE *fp, void *ptr, const char *name, void *link, const char *colour)
 {
-  char obj[16] = { 0 };
+  char obj[64] = { 0 };
   dot_ptr_name(obj, sizeof(obj), ptr);
 
   fprintf(fp, "\t%s [\n", obj);
@@ -992,8 +992,8 @@ void dump_graphviz(const char *title, struct Context *ctx)
   dot_config(fp, (const char *) NeoMutt->sub, 0, NeoMutt->sub, &links);
   dot_add_link(&links, NeoMutt, NeoMutt->sub, "NeoMutt Config", false, NULL);
   struct Buffer buf = mutt_buffer_make(256);
-  char obj1[16] = { 0 };
-  char obj2[16] = { 0 };
+  char obj1[64] = { 0 };
+  char obj2[64] = { 0 };
   dot_ptr_name(obj1, sizeof(obj1), NeoMutt);
   dot_ptr_name(obj2, sizeof(obj2), NeoMutt->sub);
   mutt_buffer_printf(&buf, "{ rank=same %s %s }", obj1, obj2);
