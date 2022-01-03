@@ -1444,6 +1444,28 @@ static void dot_email(FILE *fp, struct Email *e, struct ListHead *links)
   mutt_buffer_dealloc(&buf);
 }
 
+void dump_graphviz_body(struct Body *b)
+{
+  char name[256] = { 0 };
+  struct ListHead links = STAILQ_HEAD_INITIALIZER(links);
+
+  time_t now = time(NULL);
+  mutt_date_localtime_format(name, sizeof(name), "%R-email.gv", now);
+
+  umask(022);
+  FILE *fp = fopen(name, "w");
+  if (!fp)
+    return;
+
+  dot_graph_header(fp);
+
+  dot_body(fp, b, &links, true);
+
+  dot_graph_footer(fp, &links);
+  fclose(fp);
+  mutt_list_free(&links);
+}
+
 void dump_graphviz_email(struct Email *e)
 {
   char name[256] = { 0 };
