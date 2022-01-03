@@ -69,6 +69,7 @@ const char *get_content_type       (enum ContentType type);
 void        add_flag               (struct Buffer *buf, bool is_set, const char *name);
 void        dump_graphviz          (const char *title, struct Context *ctx);
 void        dump_graphviz_attach_ctx(struct AttachCtx *actx);
+void        dump_graphviz_body     (struct Body *b);
 void        dump_graphviz_email    (struct Email *e);
 const char *get_content_disposition(enum ContentDisposition disp);
 const char *get_content_encoding   (enum ContentEncoding enc);

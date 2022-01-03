@@ -69,6 +69,7 @@
 // #define GV_HIDE_CONFIG
 // #define GV_HIDE_ADATA
 // #define GV_HIDE_MDATA
+// #define GV_HIDE_BODY_CONTENT
 
 static void dot_email(FILE *fp, struct Email *e, struct ListHead *links);
 static void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links);
@@ -282,8 +283,8 @@ static void dot_add_link(struct ListHead *links, void *src, void *dst,
   if (!colour)
     colour = "#c0c0c0";
 
-  char obj1[16] = { 0 };
-  char obj2[16] = { 0 };
+  char obj1[64] = { 0 };
+  char obj2[64] = { 0 };
   char text[256] = { 0 };
   char lstr[128] = { 0 };
 
@@ -334,7 +335,7 @@ static void dot_graph_footer(FILE *fp, struct ListHead *links)
 
 static void dot_object_header(FILE *fp, const void *ptr, const char *name, const char *colour)
 {
-  char obj[16] = { 0 };
+  char obj[64] = { 0 };
   dot_ptr_name(obj, sizeof(obj), ptr);
 
   if (!colour)
@@ -358,7 +359,7 @@ static void dot_object_footer(FILE *fp)
 
 static void dot_node(FILE *fp, void *ptr, const char *name, const char *colour)
 {
-  char obj[16] = { 0 };
+  char obj[64] = { 0 };
   dot_ptr_name(obj, sizeof(obj), ptr);
 
   fprintf(fp, "\t%s [\n", obj);
@@ -373,7 +374,7 @@ static void dot_node(FILE *fp, void *ptr, const char *name, const char *colour)
 
 static void dot_node_link(FILE *fp, void *ptr, const char *name, void *link, const char *colour)
 {
-  char obj[16] = { 0 };
+  char obj[64] = { 0 };
   dot_ptr_name(obj, sizeof(obj), ptr);
 
   fprintf(fp, "\t%s [\n", obj);
@@ -991,8 +992,8 @@ void dump_graphviz(const char *title, struct Context *ctx)
   dot_config(fp, (const char *) NeoMutt->sub, 0, NeoMutt->sub, &links);
   dot_add_link(&links, NeoMutt, NeoMutt->sub, "NeoMutt Config", false, NULL);
   struct Buffer buf = mutt_buffer_make(256);
-  char obj1[16] = { 0 };
-  char obj2[16] = { 0 };
+  char obj1[64] = { 0 };
+  char obj2[64] = { 0 };
   dot_ptr_name(obj1, sizeof(obj1), NeoMutt);
   dot_ptr_name(obj2, sizeof(obj2), NeoMutt->sub);
   mutt_buffer_printf(&buf, "{ rank=same %s %s }", obj1, obj2);
@@ -1039,6 +1040,7 @@ void dump_graphviz(const char *title, struct Context *ctx)
   mutt_list_free(&links);
 }
 
+#ifndef GV_HIDE_BODY_CONTENT
 static void dot_parameter_list(FILE *fp, const char *name, const struct ParameterList *pl)
 {
   if (!pl)
@@ -1082,6 +1084,7 @@ static void dot_content(FILE *fp, struct Content *cont, struct ListHead *links)
 
   mutt_buffer_dealloc(&buf);
 }
+#endif
 
 void dot_attach_ptr(FILE *fp, struct AttachPtr *aptr, struct ListHead *links)
 {
@@ -1163,13 +1166,27 @@ static void dot_body(FILE *fp, struct Body *b, struct ListHead *links, bool link
   dot_type_number(fp, "offset", b->offset);
 
   dot_ptr(fp, "aptr", b->aptr, "#3bcbc4");
+
+#ifdef GV_HIDE_BODY_CONTENT
+  if (!TAILQ_EMPTY(&b->parameter))
+  {
+    struct Parameter *param = TAILQ_FIRST(&b->parameter);
+    if (mutt_str_equal(param->attribute, "boundary"))
+    {
+      dot_type_string(fp, "boundary", param->value, false);
+    }
+  }
+#endif
+
   dot_object_footer(fp);
 
+#ifndef GV_HIDE_BODY_CONTENT
   if (!TAILQ_EMPTY(&b->parameter))
   {
     dot_parameter_list(fp, "parameter", &b->parameter);
     dot_add_link(links, b, &b->parameter, "Body->mime_headers", false, NULL);
   }
+#endif
 
   if (b->mime_headers)
   {
@@ -1214,11 +1231,13 @@ static void dot_body(FILE *fp, struct Body *b, struct ListHead *links, bool link
   }
   else
   {
+#ifndef GV_HIDE_BODY_CONTENT
     if (b->content)
     {
       dot_content(fp, b->content, links);
       dot_add_link(links, b, b->content, "Body->content", false, NULL);
     }
+#endif
 
     // if (b->aptr)
     // {
@@ -1442,6 +1461,28 @@ static void dot_email(FILE *fp, struct Email *e, struct ListHead *links)
   // struct TagList tags;
 
   mutt_buffer_dealloc(&buf);
+}
+
+void dump_graphviz_body(struct Body *b)
+{
+  char name[256] = { 0 };
+  struct ListHead links = STAILQ_HEAD_INITIALIZER(links);
+
+  time_t now = time(NULL);
+  mutt_date_localtime_format(name, sizeof(name), "%R-email.gv", now);
+
+  umask(022);
+  FILE *fp = fopen(name, "w");
+  if (!fp)
+    return;
+
+  dot_graph_header(fp);
+
+  dot_body(fp, b, &links, true);
+
+  dot_graph_footer(fp, &links);
+  fclose(fp);
+  mutt_list_free(&links);
 }
 
 void dump_graphviz_email(struct Email *e)
