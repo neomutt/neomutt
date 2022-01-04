@@ -317,7 +317,7 @@ void mutt_hash_set_destructor(struct HashTable *table, hash_hdata_free_t fn, int
 struct HashElem *mutt_hash_typed_insert(struct HashTable *table,
                                         const char *strkey, int type, void *data)
 {
-  if (!table || !strkey || (strkey[0] == '\0'))
+  if (!table || !strkey)
     return NULL;
 
   union HashKey key;
