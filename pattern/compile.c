@@ -1102,7 +1102,6 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
   bool pat_or = false;
   bool implicit = true; /* used to detect logical AND operator */
   bool is_alias = false;
-  short thread_op;
   const struct PatternFlags *entry = NULL;
   char *p = NULL;
   char *buf = NULL;
@@ -1176,14 +1175,14 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
           mutt_buffer_printf(err, _("missing pattern: %s"), ps.dptr);
           goto cleanup;
         }
-        thread_op = 0;
+        short thread_op = 0;
         if (ps.dptr[1] == '(')
           thread_op = MUTT_PAT_THREAD;
         else if ((ps.dptr[1] == '<') && (ps.dptr[2] == '('))
           thread_op = MUTT_PAT_PARENT;
         else if ((ps.dptr[1] == '>') && (ps.dptr[2] == '('))
           thread_op = MUTT_PAT_CHILDREN;
-        if (thread_op)
+        if (thread_op != 0)
         {
           ps.dptr++; /* skip ~ */
           if ((thread_op == MUTT_PAT_PARENT) || (thread_op == MUTT_PAT_CHILDREN))
@@ -1198,9 +1197,15 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
           pat = SLIST_FIRST(tmp);
           pat->op = thread_op;
           if (last)
+          {
             SLIST_NEXT(SLIST_FIRST(last), entries) = pat;
+            if (last != curlist)
+              FREE(&last);
+          }
           else
+          {
             curlist = tmp;
+          }
           last = tmp;
           pat->pat_not ^= pat_not;
           pat->all_addr |= all_addr;
