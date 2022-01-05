@@ -739,13 +739,6 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
         e->lines = new_lines;
         body->offset = new_offset;
 
-        /* update the total size of the mailbox to reflect this deletion */
-        struct Mailbox *m_cur = get_current_mailbox();
-        m_cur->size -= body->length - new_length;
-        /* if the message is visible, update the visible size of the mailbox as well.  */
-        if (m_cur->v2r[e->msgno] != -1)
-          Context->vsize -= body->length - new_length;
-
         body->length = new_length;
         mutt_body_free(&body->parts);
       }

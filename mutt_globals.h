@@ -43,8 +43,6 @@
 #include "ncrypt/lib.h"
 #endif /* MAIN_C */
 
-WHERE struct Context *Context;
-
 WHERE bool ErrorBufMessage;            ///< true if the last message was an error
 WHERE char ErrorBuf[256];              ///< Copy of the last error message
 

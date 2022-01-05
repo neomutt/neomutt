@@ -1044,7 +1044,6 @@ static void index_custom_redraw(struct Menu *menu)
  */
 struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 {
-  struct Context *ctx_old = Context;
   struct IndexSharedData *shared = dlg->wdata;
   index_shared_data_set_context(shared, ctx_new(m_init));
 
@@ -1372,7 +1371,6 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   }
 
   ctx_free(&shared->ctx);
-  Context = ctx_old;
 
   return shared->mailbox;
 }

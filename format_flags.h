@@ -51,7 +51,7 @@ typedef uint8_t MuttFormatFlags;         ///< Flags for mutt_expando_format(), e
  * @param[in]  prec     Field precision, e.g. "-3.4"
  * @param[in]  if_str   If condition is met, display this string
  * @param[in]  else_str Otherwise, display this string
- * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  data     Private data
  * @param[in]  flags    Flags, see #MuttFormatFlags
  * @retval ptr src (unchanged)
  *

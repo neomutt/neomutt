@@ -593,7 +593,7 @@ char *mutt_find_hook(HookFlags type, const char *pat)
 
 /**
  * mutt_message_hook - Perform a message hook
- * @param m   Mailbox Context
+ * @param m   Mailbox
  * @param e   Email
  * @param type Hook type, see #HookFlags
  */
