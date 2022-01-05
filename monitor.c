@@ -42,6 +42,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "monitor.h"
+#include "index/lib.h"
 #include "context.h"
 #include "mutt_globals.h"
 #ifndef HAVE_INOTIFY_INIT1
@@ -326,22 +327,23 @@ static int monitor_handle_ignore(int desc)
  * @retval  -2 type not set
  * @retval  -1 stat() failed (see errno; MonitorInfo fields: type, is_dir, path)
  *
- * If m is NULL, the current mailbox (Context) is used.
+ * If m is NULL, try to get the current mailbox from the Index.
  */
 static enum ResolveResult monitor_resolve(struct MonitorInfo *info, struct Mailbox *m)
 {
   char *fmt = NULL;
   struct stat st = { 0 };
 
+  struct Mailbox *m_cur = get_current_mailbox();
   if (m)
   {
     info->type = m->type;
     info->path = m->realpath;
   }
-  else if (ctx_mailbox(Context))
+  else if (m_cur)
   {
-    info->type = Context->mailbox->type;
-    info->path = Context->mailbox->realpath;
+    info->type = m_cur->type;
+    info->path = m_cur->realpath;
   }
   else
   {
@@ -476,7 +478,7 @@ int mutt_monitor_poll(void)
  * @retval  0 success: new or already existing monitor
  * @retval -1 failed:  no mailbox, inaccessible file, create monitor/watcher failed
  *
- * If mailbox is NULL, the current mailbox (Context) is used.
+ * If m is NULL, try to get the current mailbox from the Index.
  */
 int mutt_monitor_add(struct Mailbox *m)
 {
@@ -521,7 +523,7 @@ cleanup:
  * @retval 1 monitor not removed (shared)
  * @retval 2 no monitor
  *
- * If mailbox is NULL, the current mailbox (Context) is used.
+ * If m is NULL, try to get the current mailbox from the Index.
  */
 int mutt_monitor_remove(struct Mailbox *m)
 {
@@ -543,8 +545,8 @@ int mutt_monitor_remove(struct Mailbox *m)
     goto cleanup;
   }
 
-  struct Mailbox *m_ctx = ctx_mailbox(Context);
-  if (m_ctx)
+  struct Mailbox *m_cur = get_current_mailbox();
+  if (m_cur)
   {
     if (m)
     {
@@ -557,7 +559,7 @@ int mutt_monitor_remove(struct Mailbox *m)
     }
     else
     {
-      if (mailbox_find(m_ctx->realpath))
+      if (mailbox_find(m_cur->realpath))
       {
         rc = 1;
         goto cleanup;

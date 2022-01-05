@@ -463,3 +463,56 @@ struct MuttWindow *index_window_new(struct IndexPrivateData *priv)
 
   return win;
 }
+
+/**
+ * get_current_mailbox - Get the current Mailbox
+ * @retval ptr Current Mailbox
+ *
+ * Search for the last (most recent) dialog that has an Index.
+ * Then return the Mailbox from its shared data.
+ */
+struct Mailbox *get_current_mailbox(void)
+{
+  if (!AllDialogsWindow)
+    return NULL;
+
+  struct MuttWindow *np = NULL;
+  TAILQ_FOREACH_REVERSE(np, &AllDialogsWindow->children, MuttWindowList, entries)
+  {
+    struct MuttWindow *win = window_find_child(np, WT_DLG_INDEX);
+    if (win)
+    {
+      struct IndexSharedData *shared = win->wdata;
+      return shared->mailbox;
+    }
+  }
+
+  return NULL;
+}
+
+/**
+ * get_current_menu - Get the current Menu
+ * @retval ptr Current Menu
+ *
+ * Search for the last (most recent) dialog that has an Index.
+ * Then return the Menu from its private data.
+ */
+struct Menu *get_current_menu(void)
+{
+  if (!AllDialogsWindow)
+    return NULL;
+
+  struct MuttWindow *np = NULL;
+  TAILQ_FOREACH_REVERSE(np, &AllDialogsWindow->children, MuttWindowList, entries)
+  {
+    struct MuttWindow *dlg = window_find_child(np, WT_DLG_INDEX);
+    if (dlg)
+    {
+      struct MuttWindow *panel_index = window_find_child(dlg, WT_INDEX);
+      struct IndexPrivateData *priv = panel_index->wdata;
+      return priv->menu;
+    }
+  }
+
+  return NULL;
+}

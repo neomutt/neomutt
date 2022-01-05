@@ -49,6 +49,7 @@
 #include "init.h"
 #include "color/lib.h"
 #include "history/lib.h"
+#include "index/lib.h"
 #include "notmuch/lib.h"
 #include "command_parse.h"
 #include "context.h"
@@ -148,7 +149,7 @@ static void candidate(char *user, const char *src, char *dest, size_t dlen)
  */
 static int complete_all_nm_tags(const char *pt)
 {
-  struct Mailbox *m = ctx_mailbox(Context);
+  struct Mailbox *m_cur = get_current_mailbox();
   int tag_count_1 = 0;
   int tag_count_2 = 0;
 
@@ -157,10 +158,10 @@ static int complete_all_nm_tags(const char *pt)
   memset(Matches, 0, MatchesListsize);
   memset(Completed, 0, sizeof(Completed));
 
-  nm_db_longrun_init(m, false);
+  nm_db_longrun_init(m_cur, false);
 
   /* Work out how many tags there are. */
-  if (nm_get_all_tags(m, NULL, &tag_count_1) || (tag_count_1 == 0))
+  if (nm_get_all_tags(m_cur, NULL, &tag_count_1) || (tag_count_1 == 0))
     goto done;
 
   /* Free the old list, if any. */
@@ -175,11 +176,11 @@ static int complete_all_nm_tags(const char *pt)
   nm_tags[tag_count_1] = NULL;
 
   /* Get all the tags. */
-  if (nm_get_all_tags(m, nm_tags, &tag_count_2) || (tag_count_1 != tag_count_2))
+  if (nm_get_all_tags(m_cur, nm_tags, &tag_count_2) || (tag_count_1 != tag_count_2))
   {
     FREE(&nm_tags);
     nm_tags = NULL;
-    nm_db_longrun_done(m);
+    nm_db_longrun_done(m_cur);
     return -1;
   }
 
@@ -193,7 +194,7 @@ static int complete_all_nm_tags(const char *pt)
   Matches[NumMatched++] = UserTyped;
 
 done:
-  nm_db_longrun_done(m);
+  nm_db_longrun_done(m_cur);
   return 0;
 }
 #endif
@@ -1314,7 +1315,8 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
   char *pt = buf;
   int spaces; /* keep track of the number of leading spaces on the line */
 
-  if (!Context || !Context->mailbox->label_hash)
+  struct Mailbox *m_cur = get_current_mailbox();
+  if (!m_cur || !m_cur->label_hash)
     return 0;
 
   SKIPWS(buf);
@@ -1330,7 +1332,7 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
     mutt_str_copy(UserTyped, buf, sizeof(UserTyped));
     memset(Matches, 0, MatchesListsize);
     memset(Completed, 0, sizeof(Completed));
-    while ((entry = mutt_hash_walk(Context->mailbox->label_hash, &state)))
+    while ((entry = mutt_hash_walk(m_cur->label_hash, &state)))
       candidate(UserTyped, entry->key.strkey, Completed, sizeof(Completed));
     matches_ensure_morespace(NumMatched);
     qsort(Matches, NumMatched, sizeof(char *), (sort_t) mutt_istr_cmp);

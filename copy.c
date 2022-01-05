@@ -40,6 +40,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "copy.h"
+#include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"
 #include "context.h"
@@ -533,7 +534,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
   {
     temp_hdr = e->env->x_label;
     /* env->x_label isn't currently stored with direct references elsewhere.
-     * Context->label_hash strdups the keys.  But to be safe, encode a copy */
+     * Mailbox->label_hash strdups the keys.  But to be safe, encode a copy */
     if (!(chflags & CH_DECODE))
     {
       temp_hdr = mutt_str_dup(temp_hdr);
@@ -552,7 +553,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
   if ((chflags & CH_UPDATE_SUBJECT) && e->env->subject)
   {
     temp_hdr = e->env->subject;
-    /* env->subject is directly referenced in Context->subj_hash, so we
+    /* env->subject is directly referenced in Mailbox->subj_hash, so we
      * have to be careful not to encode (and thus free) that memory. */
     if (!(chflags & CH_DECODE))
     {
@@ -664,8 +665,9 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
     {
       const char *const c_indent_string =
           cs_subset_string(NeoMutt->sub, "indent_string");
+      struct Mailbox *m_cur = get_current_mailbox();
       mutt_make_string(prefix, sizeof(prefix), wraplen, NONULL(c_indent_string),
-                       Context->mailbox, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
+                       m_cur, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
     }
   }
 
@@ -738,9 +740,10 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
         body->offset = new_offset;
 
         /* update the total size of the mailbox to reflect this deletion */
-        Context->mailbox->size -= body->length - new_length;
+        struct Mailbox *m_cur = get_current_mailbox();
+        m_cur->size -= body->length - new_length;
         /* if the message is visible, update the visible size of the mailbox as well.  */
-        if (Context->mailbox->v2r[e->msgno] != -1)
+        if (m_cur->v2r[e->msgno] != -1)
           Context->vsize -= body->length - new_length;
 
         body->length = new_length;

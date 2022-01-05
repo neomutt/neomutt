@@ -42,6 +42,7 @@
 #include "mutt.h"
 #include "hook.h"
 #include "attach/lib.h"
+#include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "pattern/lib.h"
 #include "context.h"
@@ -266,8 +267,9 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     else
       comp_flags = MUTT_PC_FULL_MSG;
 
-    pat = mutt_pattern_comp(ctx_mailbox(Context), Context ? Context->menu : NULL,
-                            mutt_buffer_string(pattern), comp_flags, err);
+    struct Mailbox *m_cur = get_current_mailbox();
+    struct Menu *menu = get_current_menu();
+    pat = mutt_pattern_comp(m_cur, menu, mutt_buffer_string(pattern), comp_flags, err);
     if (!pat)
       goto cleanup;
   }
@@ -438,9 +440,10 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
    * matching.  This of course is slower, but index-format-hook is commonly
    * used for date ranges, and they need to be evaluated relative to "now", not
    * the hook compilation time.  */
+  struct Mailbox *m_cur = get_current_mailbox();
+  struct Menu *menu = get_current_menu();
   struct PatternList *pat =
-      mutt_pattern_comp(ctx_mailbox(Context), Context ? Context->menu : NULL,
-                        mutt_buffer_string(pattern),
+      mutt_pattern_comp(m_cur, menu, mutt_buffer_string(pattern),
                         MUTT_PC_FULL_MSG | MUTT_PC_PATTERN_DYNAMIC, err);
   if (!pat)
     goto out;
@@ -676,7 +679,8 @@ static int addr_hook(char *path, size_t pathlen, HookFlags type,
 void mutt_default_save(char *path, size_t pathlen, struct Email *e)
 {
   *path = '\0';
-  if (addr_hook(path, pathlen, MUTT_SAVE_HOOK, ctx_mailbox(Context), e) == 0)
+  struct Mailbox *m_cur = get_current_mailbox();
+  if (addr_hook(path, pathlen, MUTT_SAVE_HOOK, m_cur, e) == 0)
     return;
 
   struct Envelope *env = e->env;

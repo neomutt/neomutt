@@ -910,32 +910,6 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
 }
 
 /**
- * get_current_mailbox - Get the current Mailbox
- * @retval ptr Current Mailbox
- *
- * Search for the last (most recent) dialog that has an Index.
- * Then return the Mailbox from its shared data.
- */
-static struct Mailbox *get_current_mailbox(void)
-{
-  if (!AllDialogsWindow)
-    return NULL;
-
-  struct MuttWindow *np = NULL;
-  TAILQ_FOREACH_REVERSE(np, &AllDialogsWindow->children, MuttWindowList, entries)
-  {
-    struct MuttWindow *win = window_find_child(np, WT_DLG_INDEX);
-    if (win)
-    {
-      struct IndexSharedData *shared = win->wdata;
-      return shared->mailbox;
-    }
-  }
-
-  return NULL;
-}
-
-/**
  * mutt_autocrypt_scan_mailboxes - Scan mailboxes for Autocrypt headers
  *
  * This is invoked during the first autocrypt initialization,
@@ -963,10 +937,10 @@ void mutt_autocrypt_scan_mailboxes(void)
       mutt_yesorno(_("Scan a mailbox for autocrypt headers?"), MUTT_YES);
   while (scan == MUTT_YES)
   {
-    struct Mailbox *m = get_current_mailbox();
+    struct Mailbox *m_cur = get_current_mailbox();
     // L10N: The prompt for a mailbox to scan for Autocrypt: headers
-    if ((!mutt_buffer_enter_fname(_("Scan mailbox"), folderbuf, true, m, false,
-                                  NULL, NULL, MUTT_SEL_NO_FLAGS)) &&
+    if ((!mutt_buffer_enter_fname(_("Scan mailbox"), folderbuf, true, m_cur,
+                                  false, NULL, NULL, MUTT_SEL_NO_FLAGS)) &&
         (!mutt_buffer_is_empty(folderbuf)))
     {
       mutt_buffer_expand_path_regex(folderbuf, false);

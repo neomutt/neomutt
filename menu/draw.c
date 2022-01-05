@@ -36,6 +36,7 @@
 #include "email/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
+#include "index/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "context.h"
@@ -59,7 +60,8 @@ static int get_color(int index, unsigned char *s)
 {
   struct RegexColorList *rcl = NULL;
   struct RegexColor *np = NULL;
-  struct Email *e = mutt_get_virt_email(Context->mailbox, index);
+  struct Mailbox *m_cur = get_current_mailbox();
+  struct Email *e = mutt_get_virt_email(m_cur, index);
   int type = *s;
 
   switch (type)
@@ -92,7 +94,7 @@ static int get_color(int index, unsigned char *s)
   STAILQ_FOREACH(np, rcl, entries)
   {
     if (mutt_pattern_exec(SLIST_FIRST(np->color_pattern),
-                          MUTT_MATCH_FULL_ADDRESS, Context->mailbox, e, NULL))
+                          MUTT_MATCH_FULL_ADDRESS, m_cur, e, NULL))
     {
       return np->pair;
     }
