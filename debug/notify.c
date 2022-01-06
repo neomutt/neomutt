@@ -160,6 +160,8 @@ static void notify_dump_account(struct NotifyCallback *nc)
 {
   struct EventAccount *ev_a = nc->event_data;
   struct Account *a = ev_a->account;
+  if (!a)
+    return;
 
   mutt_debug(LL_DEBUG1, "    Account: %p (%s) %s\n", a,
              get_mailbox_type(a->type), NONULL(a->name));

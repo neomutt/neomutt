@@ -74,7 +74,6 @@ struct Menu
   int pagelen;              ///< Number of entries per screen
   bool tagprefix : 1;       ///< User has pressed <tag-prefix>
   struct MuttWindow *win;   ///< Window holding the Menu
-  struct MuttWindow *win_ibar;
   struct ConfigSubset *sub; ///< Inherited config items
 
   /* Setting a non-empty dialog overrides normal menu behavior.
@@ -192,7 +191,6 @@ void         menu_redraw_current(struct Menu *menu);
 void         menu_redraw_full   (struct Menu *menu);
 void         menu_redraw_index  (struct Menu *menu);
 void         menu_redraw_motion (struct Menu *menu);
-void         menu_redraw_status (struct Menu *menu);
 int          menu_redraw        (struct Menu *menu);
 
 void         menu_add_dialog_row(struct Menu *menu, const char *row);

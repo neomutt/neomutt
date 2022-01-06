@@ -6,7 +6,7 @@
 #endif
 
 /*++*/
-
+// clang-format off
 { "abort_backspace", DT_BOOL, true },
 /*
 ** .pp
@@ -5514,5 +5514,5 @@
 ** name of original article author) to article that followuped to newsgroup.
 */
 #endif
-
+// clang-format on
 /*--*/
