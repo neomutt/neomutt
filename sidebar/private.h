@@ -46,6 +46,7 @@ struct SbEntry
   bool is_hidden;          ///< Don't show, e.g. $sidebar_new_mail_only
   enum ColorId cid;        ///< Colour to use
 };
+ARRAY_HEAD(SbEntryArray, struct SbEntry *);
 
 /**
  * enum DivType - Source of the sidebar divider character
@@ -63,7 +64,7 @@ enum DivType
 struct SidebarWindowData
 {
   struct IndexSharedData *shared;         ///< Shared Index Data
-  ARRAY_HEAD(, struct SbEntry *) entries; ///< Items to display in the sidebar
+  struct SbEntryArray entries;            ///< Items to display in the sidebar
 
   int top_index;             ///< First mailbox visible in sidebar
   int opn_index;             ///< Current (open) mailbox

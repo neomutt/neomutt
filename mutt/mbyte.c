@@ -303,8 +303,8 @@ size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, const char 
   while (*buf != '\0')
   {
     memset(&mbstate, 0, sizeof(mbstate));
-    for (; (k = mbrtowc(&wc, buf, MB_LEN_MAX, &mbstate)) && k != (size_t) (-1) &&
-           k != (size_t) (-2);
+    for (; (k = mbrtowc(&wc, buf, MB_LEN_MAX, &mbstate)) &&
+           k != (size_t) (-1) && k != (size_t) (-2);
          buf += k)
     {
       if (i >= wbuflen)

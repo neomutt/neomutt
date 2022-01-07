@@ -127,7 +127,8 @@ static const struct Command mutt_commands[] = {
   // clang-format on
 };
 
-ARRAY_HEAD(, struct Command) commands = ARRAY_HEAD_INITIALIZER;
+ARRAY_HEAD(CommandArray, struct Command);
+struct CommandArray commands = ARRAY_HEAD_INITIALIZER;
 
 /**
  * mutt_commands_init - Initialize commands array and register default commands

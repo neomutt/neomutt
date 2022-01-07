@@ -56,6 +56,8 @@ typedef uint8_t MenuRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX
 #define MENU_REDRAW_BODY      (1 << 4) ///< Redraw the pager
 #define MENU_REDRAW_FLOW      (1 << 5) ///< Used by pager to reflow text
 
+ARRAY_HEAD(DialogLines, char *);
+
 /**
  * @defgroup menu_api Menu API
  *
@@ -79,7 +81,7 @@ struct Menu
    * In dialog mode menubar is hidden and prompt keys are checked before
    * normal menu movement keys. This can cause problems with scrolling, if
    * prompt keys override movement keys.  */
-  ARRAY_HEAD(, char *) dialog; ///< Dialog lines themselves
+  struct DialogLines dialog;   ///< Dialog lines themselves
   char *prompt;                ///< Prompt for user, similar to mutt_multi_choice
   char *keys;                  ///< Keys used in the prompt
 
