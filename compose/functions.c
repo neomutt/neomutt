@@ -300,56 +300,39 @@ static bool edit_address_list(int field, struct AddressList *al)
 /**
  * delete_attachment - Delete an attachment
  * @param actx Attachment context
- * @param x    Index number of attachment
- * @retval  0 Success
- * @retval -1 Error
+ * @param aidx Index number of attachment
+ * @retval   0 Success
+ * @retval  -1 Error
  */
-static int delete_attachment(struct AttachCtx *actx, int x)
+static int delete_attachment(struct AttachCtx *actx, int aidx)
 {
-  if (!actx || (x < 0) || (x >= actx->idxlen))
+  if (!actx || (aidx < 0) || (aidx >= actx->idxlen))
     return -1;
 
   struct AttachPtr **idx = actx->idx;
-  int rindex = actx->v2r[x];
 
-  if ((rindex == 0) && (actx->idxlen == 1))
+  if ((aidx == 0) && (actx->idxlen == 1))
   {
     mutt_error(_("You may not delete the only attachment"));
-    idx[rindex]->body->tagged = false;
+    idx[aidx]->body->tagged = false;
     return -1;
   }
 
-  for (int y = 0; y < actx->idxlen; y++)
+  for (int i = 0; i < actx->idxlen; i++)
   {
-    if (idx[y]->body->next == idx[rindex]->body)
+    if (idx[i]->body->next == idx[aidx]->body)
     {
-      idx[y]->body->next = idx[rindex]->body->next;
+      idx[i]->body->next = idx[aidx]->body->next;
       break;
     }
   }
 
-  idx[rindex]->body->next = NULL;
-  /* mutt_make_message_attach() creates body->parts, shared by
-   * body->email->body.  If we NULL out that, it creates a memory
-   * leak because mutt_free_body() frees body->parts, not
-   * body->email->body.
-   *
-   * Other mutt_send_message() message constructors are careful to free
-   * any body->parts, removing depth:
-   *  - mutt_prepare_template() used by postponed, resent, and draft files
-   *  - mutt_copy_body() used by the recvattach menu and $forward_attachments.
-   *
-   * I believe it is safe to completely remove the "body->parts =
-   * NULL" statement.  But for safety, am doing so only for the case
-   * it must be avoided: message attachments.
-   */
-  if (!idx[rindex]->body->email)
-    idx[rindex]->body->parts = NULL;
-  mutt_body_free(&(idx[rindex]->body));
-  FREE(&idx[rindex]->tree);
-  FREE(&idx[rindex]);
-  for (; rindex < actx->idxlen - 1; rindex++)
-    idx[rindex] = idx[rindex + 1];
+  idx[aidx]->body->next = NULL;
+  mutt_body_free(&(idx[aidx]->body));
+  FREE(&idx[aidx]->tree);
+  FREE(&idx[aidx]);
+  for (; aidx < actx->idxlen - 1; aidx++)
+    idx[aidx] = idx[aidx + 1];
   idx[actx->idxlen - 1] = NULL;
   actx->idxlen--;
 
