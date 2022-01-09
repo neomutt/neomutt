@@ -420,6 +420,7 @@ static int group_attachments(struct ComposeSharedData *shared,
   group->type = TYPE_MULTIPART;
   group->subtype = mutt_str_dup(subtype);
   group->disposition = DISP_INLINE;
+  group->encoding = ENC_7BIT;
 
   struct Body *alts = NULL;
   /* group tagged message into a multipart group */
