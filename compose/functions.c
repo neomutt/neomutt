@@ -442,6 +442,9 @@ static int group_attachments(struct ComposeSharedData *shared,
         }
       }
 
+      if (i > 0)
+        shared->adata->actx->idx[i - 1]->body->next = bptr->next;
+
       // append bptr to the alts list, and remove from the shared->email->body list
       if (alts)
       {
@@ -482,6 +485,11 @@ static int group_attachments(struct ComposeSharedData *shared,
   struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
   gptr->body = group;
   update_idx(shared->adata->menu, shared->adata->actx, gptr);
+
+  // update email body and last attachment pointers
+  shared->email->body = shared->adata->actx->idx[0]->body;
+  shared->adata->actx->idx[shared->adata->actx->idxlen - 1]->body->next = NULL;
+
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
   return IR_SUCCESS;
 }
