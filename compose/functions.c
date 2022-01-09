@@ -504,6 +504,8 @@ static int group_attachments(struct ComposeSharedData *shared,
   shared->adata->actx->idx[shared->adata->actx->idxlen - 1]->body->next = NULL;
 
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
+
+  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
   return IR_SUCCESS;
 }
 
