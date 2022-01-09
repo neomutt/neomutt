@@ -419,23 +419,33 @@ static int group_attachments(struct ComposeSharedData *shared,
         group->disposition = bptr->disposition;
         if (bptr->language && !mutt_str_equal(subtype, "multilingual"))
           group->language = mutt_str_dup(bptr->language);
+
+        // set group description
+        if ((bptr->disposition != DISP_INLINE) || bptr->description)
+        {
+          char *p = NULL;
+          if (bptr->description)
+            p = bptr->description;
+          else if (bptr->d_filename)
+            p = bptr->d_filename;
+          else if (mutt_path_basename(bptr->filename))
+            p = (char *) mutt_path_basename(bptr->filename);
+          else
+            p = bptr->filename;
+          if (p)
+          {
+            group->description =
+                mutt_mem_calloc(1, strlen(p) + strlen(multipart_tag) + 1);
+            sprintf(group->description, multipart_tag, p);
+          }
+        }
+
         bptr_first = bptr;
         group_parent_type = bptr->aptr->parent_type;
       }
 
       shared->adata->menu->tagged--;
       bptr->tagged = false;
-
-      /* for first match, set group desc according to match */
-      if (!group->description)
-      {
-        char *p = bptr->description ? bptr->description : bptr->filename;
-        if (p)
-        {
-          group->description = mutt_mem_calloc(1, strlen(p) + strlen(multipart_tag) + 1);
-          sprintf(group->description, multipart_tag, p);
-        }
-      }
 
       if (i > 0)
         shared->adata->actx->idx[i - 1]->body->next = bptr->next;
@@ -472,10 +482,6 @@ static int group_attachments(struct ComposeSharedData *shared,
 
   group->next = NULL;
   mutt_generate_boundary(&group->parameter);
-
-  /* if no group desc yet, make one up */
-  if (!group->description)
-    group->description = mutt_str_dup("unknown multipart group");
 
   struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
   gptr->body = group;
