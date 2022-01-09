@@ -3891,8 +3891,25 @@
 /*
 ** .pp
 ** A regular expression used to recognize reply messages when threading
-** and replying. The default value corresponds to the English "Re:", the
-** German "Aw:" and the Swedish "Sv:".
+** and replying. The default value corresponds to the standard Latin "Re:"
+** prefix, the German "Aw:" or the Swedish "Sv:".  You can add your
+** own prefixes by swapping out or appending to that list.  For example:
+** \fC"^(re|se)"\fP or \fC"^(re|aw|se)"\fP.
+** .pp
+** The second parenthesized expression matches zero or more
+** bracketed numbers following the prefix, such as \fC"Re[1]: "\fP.
+** The initial \fC"\\["\fP means a literal left-bracket character.
+** Note the backslash must be doubled when used inside a double
+** quoted string in the neomuttrc.  \fC"[0-9]+"\fP means one or more
+** numbers.  \fC"\\]"\fP means a literal right-bracket.  Finally the
+** whole parenthesized expression has a \fC"*"\fP suffix, meaning it
+** can occur zero or more times.
+** .pp
+** The last part matches a colon followed by an optional space or
+** tab.  Note \fC"\t"\fP is converted to a literal tab inside a
+** double quoted string.  If you use a single quoted string, you
+** would have to type an actual tab character, and would need to
+** convert the double-backslashes to single backslashes.
 */
 
 { "reply_self", DT_BOOL, false },
