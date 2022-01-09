@@ -405,6 +405,87 @@ static void compose_attach_swap(struct Body *msg, struct AttachPtr **idx, short 
   idx[first + 1]->num = i;
 }
 
+/**
+ * group_attachments - Group tagged attachments into a multipart group
+ * @param  shared        Shared compose data
+ * @param  multipart_tag String format for group description
+ * @param  subtype       MIME subtype
+ * @retval IR_SUCCESS    Success
+ * @retval IR_ERROR      Failure
+ */
+static int group_attachments(struct ComposeSharedData *shared,
+                             const char *multipart_tag, char *subtype)
+{
+  struct Body *group = mutt_body_new();
+  group->type = TYPE_MULTIPART;
+  group->subtype = mutt_str_dup(subtype);
+  group->disposition = DISP_INLINE;
+
+  struct Body *alts = NULL;
+  /* group tagged message into a multipart group */
+  struct Body *bptr = shared->email->body;
+  for (int i = 0; bptr;)
+  {
+    if (bptr->tagged)
+    {
+      bptr->tagged = false;
+      bptr->disposition = DISP_INLINE;
+
+      /* for first match, set group desc according to match */
+      if (!group->description)
+      {
+        char *p = bptr->description ? bptr->description : bptr->filename;
+        if (p)
+        {
+          group->description = mutt_mem_calloc(1, strlen(p) + strlen(multipart_tag) + 1);
+          sprintf(group->description, multipart_tag, p);
+        }
+      }
+
+      // append bptr to the alts list, and remove from the shared->email->body list
+      if (alts)
+      {
+        alts->next = bptr;
+        bptr = bptr->next;
+        alts = alts->next;
+        alts->next = NULL;
+      }
+      else
+      {
+        group->parts = bptr;
+        alts = bptr;
+        bptr = bptr->next;
+        alts->next = NULL;
+      }
+
+      for (int j = i; j < shared->adata->actx->idxlen - 1; j++)
+      {
+        shared->adata->actx->idx[j] = shared->adata->actx->idx[j + 1];
+        shared->adata->actx->idx[j + 1] = NULL; /* for debug reason */
+      }
+      shared->adata->actx->idxlen--;
+    }
+    else
+    {
+      bptr = bptr->next;
+      i++;
+    }
+  }
+
+  group->next = NULL;
+  mutt_generate_boundary(&group->parameter);
+
+  /* if no group desc yet, make one up */
+  if (!group->description)
+    group->description = mutt_str_dup("unknown multipart group");
+
+  struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
+  gptr->body = group;
+  update_idx(shared->adata->menu, shared->adata->actx, gptr);
+  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
+  return IR_SUCCESS;
+}
+
 // -----------------------------------------------------------------------------
 
 /**
@@ -1029,74 +1110,7 @@ static int op_compose_group_alts(struct ComposeSharedData *shared, int op)
     return IR_ERROR;
   }
 
-  struct Body *group = mutt_body_new();
-  group->type = TYPE_MULTIPART;
-  group->subtype = mutt_str_dup("alternative");
-  group->disposition = DISP_INLINE;
-
-  struct Body *alts = NULL;
-  /* group tagged message into a multipart/alternative */
-  struct Body *bptr = shared->email->body;
-  for (int i = 0; bptr;)
-  {
-    if (bptr->tagged)
-    {
-      bptr->tagged = false;
-      bptr->disposition = DISP_INLINE;
-
-      /* for first match, set group desc according to match */
-      if (!group->description)
-      {
-        char *p = bptr->description ? bptr->description : bptr->filename;
-        if (p)
-        {
-          group->description = mutt_mem_calloc(1, strlen(p) + strlen(ALTS_TAG) + 1);
-          sprintf(group->description, ALTS_TAG, p);
-        }
-      }
-
-      // append bptr to the alts list, and remove from the shared->email->body list
-      if (alts)
-      {
-        alts->next = bptr;
-        bptr = bptr->next;
-        alts = alts->next;
-        alts->next = NULL;
-      }
-      else
-      {
-        group->parts = bptr;
-        alts = bptr;
-        bptr = bptr->next;
-        alts->next = NULL;
-      }
-
-      for (int j = i; j < shared->adata->actx->idxlen - 1; j++)
-      {
-        shared->adata->actx->idx[j] = shared->adata->actx->idx[j + 1];
-        shared->adata->actx->idx[j + 1] = NULL; /* for debug reason */
-      }
-      shared->adata->actx->idxlen--;
-    }
-    else
-    {
-      bptr = bptr->next;
-      i++;
-    }
-  }
-
-  group->next = NULL;
-  mutt_generate_boundary(&group->parameter);
-
-  /* if no group desc yet, make one up */
-  if (!group->description)
-    group->description = mutt_str_dup("unknown alternative group");
-
-  struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
-  gptr->body = group;
-  update_idx(shared->adata->menu, shared->adata->actx, gptr);
-  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
-  return IR_SUCCESS;
+  return group_attachments(shared, ALTS_TAG, "alternative");
 }
 
 /**
@@ -1127,74 +1141,7 @@ static int op_compose_group_lingual(struct ComposeSharedData *shared, int op)
     }
   }
 
-  struct Body *group = mutt_body_new();
-  group->type = TYPE_MULTIPART;
-  group->subtype = mutt_str_dup("multilingual");
-  group->disposition = DISP_INLINE;
-
-  struct Body *alts = NULL;
-  /* group tagged message into a multipart/multilingual */
-  struct Body *bptr = shared->email->body;
-  for (int i = 0; bptr;)
-  {
-    if (bptr->tagged)
-    {
-      bptr->tagged = false;
-      bptr->disposition = DISP_INLINE;
-
-      /* for first match, set group desc according to match */
-      if (!group->description)
-      {
-        char *p = bptr->description ? bptr->description : bptr->filename;
-        if (p)
-        {
-          group->description = mutt_mem_calloc(1, strlen(p) + strlen(LINGUAL_TAG) + 1);
-          sprintf(group->description, LINGUAL_TAG, p);
-        }
-      }
-
-      // append bptr to the alts list, and remove from the shared->email->body list
-      if (alts)
-      {
-        alts->next = bptr;
-        bptr = bptr->next;
-        alts = alts->next;
-        alts->next = NULL;
-      }
-      else
-      {
-        group->parts = bptr;
-        alts = bptr;
-        bptr = bptr->next;
-        alts->next = NULL;
-      }
-
-      for (int j = i; j < shared->adata->actx->idxlen - 1; j++)
-      {
-        shared->adata->actx->idx[j] = shared->adata->actx->idx[j + 1];
-        shared->adata->actx->idx[j + 1] = NULL; /* for debug reason */
-      }
-      shared->adata->actx->idxlen--;
-    }
-    else
-    {
-      bptr = bptr->next;
-      i++;
-    }
-  }
-
-  group->next = NULL;
-  mutt_generate_boundary(&group->parameter);
-
-  /* if no group desc yet, make one up */
-  if (!group->description)
-    group->description = mutt_str_dup("unknown multilingual group");
-
-  struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
-  gptr->body = group;
-  update_idx(shared->adata->menu, shared->adata->actx, gptr);
-  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
-  return IR_SUCCESS;
+  return group_attachments(shared, LINGUAL_TAG, "multilingual");
 }
 
 /**
