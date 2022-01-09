@@ -428,6 +428,7 @@ static int group_attachments(struct ComposeSharedData *shared,
   {
     if (bptr->tagged)
     {
+      shared->adata->menu->tagged--;
       bptr->tagged = false;
       bptr->disposition = DISP_INLINE;
 
