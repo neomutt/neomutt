@@ -1323,11 +1323,6 @@ static int op_compose_move_down(struct ComposeSharedData *shared, int op)
     mutt_error(_("Attachment is already at bottom"));
     return IR_NO_ACTION;
   }
-  if (index == 0)
-  {
-    mutt_error(_("The fundamental part can't be moved"));
-    return IR_ERROR;
-  }
   compose_attach_swap(shared->email, shared->adata->actx, index, index + 1);
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
   menu_set_index(shared->adata->menu, index + 1);
@@ -1347,11 +1342,6 @@ static int op_compose_move_up(struct ComposeSharedData *shared, int op)
   {
     mutt_error(_("Attachment is already at top"));
     return IR_NO_ACTION;
-  }
-  if (index == 1)
-  {
-    mutt_error(_("The fundamental part can't be moved"));
-    return IR_ERROR;
   }
   compose_attach_swap(shared->email, shared->adata->actx, index - 1, index);
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
