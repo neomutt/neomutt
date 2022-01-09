@@ -901,6 +901,11 @@ static int op_compose_edit_file(struct ComposeSharedData *shared, int op)
     return IR_NO_ACTION;
   struct AttachPtr *cur_att =
       current_attachment(shared->adata->actx, shared->adata->menu);
+  if (cur_att->body->type == TYPE_MULTIPART)
+  {
+    mutt_error(_("Can't edit multipart attachments"));
+    return IR_ERROR;
+  }
   const char *const c_editor = cs_subset_string(shared->sub, "editor");
   mutt_edit_file(NONULL(c_editor), cur_att->body->filename);
   mutt_update_encoding(cur_att->body, shared->sub);
@@ -1114,6 +1119,11 @@ static int op_compose_get_attachment(struct ComposeSharedData *shared, int op)
     return IR_NO_ACTION;
   struct AttachPtr *cur_att =
       current_attachment(shared->adata->actx, shared->adata->menu);
+  if (cur_att->body->type == TYPE_MULTIPART)
+  {
+    mutt_error(_("Can't get multipart attachments"));
+    return IR_ERROR;
+  }
   if (shared->adata->menu->tagprefix)
   {
     for (struct Body *top = shared->email->body; top; top = top->next)
@@ -1421,6 +1431,11 @@ static int op_compose_rename_file(struct ComposeSharedData *shared, int op)
     return IR_NO_ACTION;
   struct AttachPtr *cur_att =
       current_attachment(shared->adata->actx, shared->adata->menu);
+  if (cur_att->body->type == TYPE_MULTIPART)
+  {
+    mutt_error(_("Can't rename multipart attachments"));
+    return IR_ERROR;
+  }
   struct Buffer *fname = mutt_buffer_pool_get();
   mutt_buffer_strcpy(fname, cur_att->body->filename);
   mutt_buffer_pretty_mailbox(fname);
@@ -1761,6 +1776,11 @@ static int op_filter(struct ComposeSharedData *shared, int op)
     return IR_NO_ACTION;
   struct AttachPtr *cur_att =
       current_attachment(shared->adata->actx, shared->adata->menu);
+  if (cur_att->body->type == TYPE_MULTIPART)
+  {
+    mutt_error(_("Can't filter multipart attachments"));
+    return IR_ERROR;
+  }
   mutt_pipe_attachment_list(shared->adata->actx, NULL, shared->adata->menu->tagprefix,
                             cur_att->body, (op == OP_FILTER));
   if (op == OP_FILTER) /* cte might have changed */
@@ -1789,6 +1809,11 @@ static int op_print(struct ComposeSharedData *shared, int op)
     return IR_NO_ACTION;
   struct AttachPtr *cur_att =
       current_attachment(shared->adata->actx, shared->adata->menu);
+  if (cur_att->body->type == TYPE_MULTIPART)
+  {
+    mutt_error(_("Can't print multipart attachments"));
+    return IR_ERROR;
+  }
   mutt_print_attachment_list(shared->adata->actx, NULL,
                              shared->adata->menu->tagprefix, cur_att->body);
   /* no send2hook, since this doesn't modify the message */
@@ -1804,6 +1829,11 @@ static int op_save(struct ComposeSharedData *shared, int op)
     return IR_NO_ACTION;
   struct AttachPtr *cur_att =
       current_attachment(shared->adata->actx, shared->adata->menu);
+  if (cur_att->body->type == TYPE_MULTIPART)
+  {
+    mutt_error(_("Can't save multipart attachments"));
+    return IR_ERROR;
+  }
   mutt_save_attachment_list(shared->adata->actx, NULL, shared->adata->menu->tagprefix,
                             cur_att->body, NULL, shared->adata->menu);
   /* no send2hook, since this doesn't modify the message */
