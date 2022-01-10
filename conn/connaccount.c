@@ -38,6 +38,9 @@
 #include "connaccount.h"
 #include "mutt_globals.h"
 #include "options.h"
+#ifdef USE_MACOS_KEYCHAIN
+#include "macos_keychain.h"
+#endif
 
 /**
  * mutt_account_getuser - Retrieve username into ConnAccount, if necessary
@@ -91,10 +94,10 @@ int mutt_account_getlogin(struct ConnAccount *cac)
     return -1;
 
   const char *login = cac->get_field(MUTT_CA_LOGIN, cac->gf_data);
-  if (!login && (mutt_account_getuser(cac) == 0))
-  {
+  if (!login && (mutt_account_read_keychain(cac) == 0))
     login = cac->user;
-  }
+  if (!login && (mutt_account_getuser(cac) == 0))
+    login = cac->user;
 
   if (!login)
   {
@@ -125,6 +128,8 @@ int mutt_account_getpass(struct ConnAccount *cac)
     mutt_str_copy(cac->pass, pass, sizeof(cac->pass));
   else if (OptNoCurses)
     return -1;
+  else if (mutt_account_read_keychain(cac) == 0)
+    return 0;
   else
   {
     char prompt[256];
@@ -135,6 +140,7 @@ int mutt_account_getpass(struct ConnAccount *cac)
     struct Buffer *buf = mutt_buffer_pool_get();
     const int rc = mutt_get_field_unbuffered(prompt, buf, MUTT_COMP_PASS);
     mutt_str_copy(cac->pass, mutt_buffer_string(buf), sizeof(cac->pass));
+    mutt_account_write_keychain(cac);
     mutt_buffer_pool_release(&buf);
     if (rc != 0)
       return -1;

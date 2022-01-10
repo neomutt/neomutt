@@ -72,6 +72,7 @@ conn/dlgverifycert.c
 conn/getdomain.c
 conn/gnutls.c
 conn/openssl.c
+conn/macos_keychain.c
 conn/raw.c
 conn/sasl.c
 conn/sasl_plain.c
