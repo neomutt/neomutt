@@ -1342,17 +1342,52 @@ static int op_compose_ispell(struct ComposeSharedData *shared, int op)
 static int op_compose_move_down(struct ComposeSharedData *shared, int op)
 {
   int index = menu_get_index(shared->adata->menu);
+
+  struct AttachCtx *actx = shared->adata->actx;
+
   if (index < 0)
     return IR_ERROR;
 
-  if (index == (shared->adata->actx->idxlen - 1))
+  if (index == (actx->idxlen - 1))
   {
     mutt_error(_("Attachment is already at bottom"));
     return IR_NO_ACTION;
   }
-  compose_attach_swap(shared->email, shared->adata->actx, index, index + 1);
+  if ((actx->idx[index]->parent_type == TYPE_MULTIPART) &&
+      !actx->idx[index]->body->next)
+  {
+    mutt_error(_("Attachment can't be moved out of group"));
+    return IR_ERROR;
+  }
+
+  // find next attachment at current level
+  int nextidx = index + 1;
+  while ((nextidx < actx->idxlen) &&
+         (actx->idx[nextidx]->level > actx->idx[index]->level))
+  {
+    nextidx++;
+  }
+  if (nextidx == actx->idxlen)
+  {
+    mutt_error(_("Attachment is already at bottom"));
+    return IR_NO_ACTION;
+  }
+
+  // find final position
+  int finalidx = index + 1;
+  if (nextidx < actx->idxlen - 1)
+  {
+    if ((actx->idx[nextidx]->body->type == TYPE_MULTIPART) &&
+        (actx->idx[nextidx + 1]->level > actx->idx[nextidx]->level))
+    {
+      finalidx += count_attachments(actx->idx[nextidx]->body->parts, true);
+    }
+  }
+
+  compose_attach_swap(shared->email, shared->adata->actx, index, nextidx);
+  mutt_update_tree(shared->adata->actx);
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
-  menu_set_index(shared->adata->menu, index + 1);
+  menu_set_index(shared->adata->menu, finalidx);
   return IR_SUCCESS;
 }
 
@@ -1365,14 +1400,28 @@ static int op_compose_move_up(struct ComposeSharedData *shared, int op)
   if (index < 0)
     return IR_ERROR;
 
+  struct AttachCtx *actx = shared->adata->actx;
+
   if (index == 0)
   {
     mutt_error(_("Attachment is already at top"));
     return IR_NO_ACTION;
   }
-  compose_attach_swap(shared->email, shared->adata->actx, index - 1, index);
+  if (actx->idx[index - 1]->level < actx->idx[index]->level)
+  {
+    mutt_error(_("Attachment can't be moved out of group"));
+    return IR_ERROR;
+  }
+
+  // find previous attachment at current level
+  int previdx = index - 1;
+  while ((previdx > 0) && (actx->idx[previdx]->level > actx->idx[index]->level))
+    previdx--;
+
+  compose_attach_swap(shared->email, actx, previdx, index);
+  mutt_update_tree(actx);
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
-  menu_set_index(shared->adata->menu, index - 1);
+  menu_set_index(shared->adata->menu, previdx);
   return IR_SUCCESS;
 }
 
