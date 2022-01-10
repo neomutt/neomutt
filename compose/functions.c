@@ -107,6 +107,33 @@ static bool check_count(struct AttachCtx *actx)
 }
 
 /**
+ * count_attachments - Count attachments
+ * @param  body    Body to start counting from
+ * @param  recurse Whether to recurse into groups or not
+ * @retval num     Number of attachments
+ * @retval -1      Failure
+ * */
+static int count_attachments(struct Body *body, bool recurse)
+{
+  if (!body)
+    return -1;
+
+  int attachments = 0;
+
+  for (struct Body *b = body; b; b = b->next)
+  {
+    attachments++;
+    if (recurse)
+    {
+      if (b->parts)
+        attachments += count_attachments(b->parts, true);
+    }
+  }
+
+  return attachments;
+}
+
+/**
  * find_body_parent - Find the parent of a body
  * @param[in]  start        Body to start search from
  * @param[in]  start_parent Parent of start Body pointer (or NULL if none)
