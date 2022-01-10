@@ -33,6 +33,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include <time.h>
+#include "mutt/message.h"
 #include "date.h"
 #include "buffer.h"
 #include "logging.h"
@@ -55,6 +56,19 @@ static const char *const Months[] = {
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 };
+
+/**
+ * Special cases for humanized timestamps
+ */
+static const unsigned ONE_HOUR = 3600;         ///< In terms of seconds
+static const unsigned ONE_DAY = 24 * ONE_HOUR; ///< Again, expressed in seconds
+static const char *const E0h = N_("just now"); ///< Within the hour
+static const char *const E1h = N_("an hour ago"); ///< Between an hour and two hours
+static const char *const E2h = N_("few hours ago"); ///< Between two and four hours
+static const char *const E6h = N_("earlier today"); ///< Over four hours ago, the same day
+static const char *const E1d = N_("yesterday"); ///< Anytime the previous day
+static const char *const ENd = N_("days ago");  ///< N days ago; be precise
+// Anything beyond this range doesn't need to be humanized
 
 /**
  * TimeZones - Lookup table of Time Zones
@@ -695,6 +709,36 @@ size_t mutt_date_localtime_format(char *buf, size_t buflen, const char *format, 
 
   struct tm tm = mutt_date_localtime(t);
   return strftime(buf, buflen, format, &tm);
+}
+
+/**
+ * @param  buf     Buffer to store humanized time string
+ * @param  buflen  Buffer size
+ * @param  t       Time to format
+ * @retval num     Number of bytes added to the buffer, excluding NUL byte
+ */
+size_t mutt_date_humanize(char *buf, size_t buflen, time_t t)
+{
+  if (!buf)
+    return 0;
+
+  double diff = difftime(mutt_date_epoch(), t);
+  struct tm now = mutt_date_localtime(mutt_date_epoch());
+  struct tm tm = mutt_date_localtime(t);
+  if (diff < ONE_HOUR)
+    return sprintf(buf, "%13s", _(E0h));
+  else if (diff < 2 * ONE_HOUR)
+    return sprintf(buf, "%13s", _(E1h));
+  else if (diff < 4 * ONE_HOUR)
+    return sprintf(buf, "%13s", _(E2h));
+  else if (diff < ONE_DAY && now.tm_mday == tm.tm_mday)
+    return sprintf(buf, "%13s", _(E6h));
+  else if (diff < 2 * ONE_DAY && now.tm_mday - tm.tm_mday == 1)
+    return sprintf(buf, "%13s", _(E1d));
+  else if (diff < 7 * ONE_DAY)
+    return sprintf(buf, "%4d %s", now.tm_mday - tm.tm_mday, _(ENd));
+  else
+    return strftime(buf, buflen, "  %b %d %Y", &tm);
 }
 
 /**

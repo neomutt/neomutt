@@ -3978,6 +3978,30 @@ msgstr "Défilement vers le haut impossible"
 msgid "You can't scroll down farther"
 msgstr "Défilement vers le bas impossible"
 
+#: mutt/date.c:728
+msgid "just now"
+msgstr "maintenant"
+
+#: mutt/date.c:730
+msgid "an hour ago"
+msgstr "une heure"
+
+#: mutt/date.c:732
+msgid "few hours ago"
+msgstr "quelques heures"
+
+#: mutt/date.c:734
+msgid "earlier today"
+msgstr "aujourd'hui"
+
+#: mutt/date.c:736
+msgid "yesterday"
+msgstr "hier"
+
+#: mutt/date.c:738
+msgid "days ago"
+msgstr "jours"
+
 #: mutt/file.c:674
 #, fuzzy, c-format
 msgid "Failed to seek file: %s"
