@@ -25,20 +25,21 @@
  *
  * Network connections and their encryption
  *
- * | File                | Description                  |
- * | :------------------ | :--------------------------- |
- * | conn/config.c       | @subpage conn_config         |
- * | conn/connaccount.c  | @subpage conn_account        |
- * | conn/getdomain.c    | @subpage conn_getdomain      |
- * | conn/gnutls.c       | @subpage conn_gnutls         |
- * | conn/gui.c          | @subpage conn_dlg_verifycert |
- * | conn/openssl.c      | @subpage conn_openssl        |
- * | conn/raw.c          | @subpage conn_raw            |
- * | conn/sasl.c         | @subpage conn_sasl           |
- * | conn/sasl_plain.c   | @subpage conn_sasl_plain     |
- * | conn/socket.c       | @subpage conn_socket         |
- * | conn/tunnel.c       | @subpage conn_tunnel         |
- * | conn/zstrm.c        | @subpage conn_zstrm          |
+ * | File                  | Description                  |
+ * | :-------------------- | :--------------------------- |
+ * | conn/config.c         | @subpage conn_config         |
+ * | conn/connaccount.c    | @subpage conn_account        |
+ * | conn/getdomain.c      | @subpage conn_getdomain      |
+ * | conn/gnutls.c         | @subpage conn_gnutls         |
+ * | conn/gui.c            | @subpage conn_dlg_verifycert |
+ * | conn/macos_keychain.c | @subpage conn_macos_keychain |
+ * | conn/openssl.c        | @subpage conn_openssl        |
+ * | conn/raw.c            | @subpage conn_raw            |
+ * | conn/sasl.c           | @subpage conn_sasl           |
+ * | conn/sasl_plain.c     | @subpage conn_sasl_plain     |
+ * | conn/socket.c         | @subpage conn_socket         |
+ * | conn/tunnel.c         | @subpage conn_tunnel         |
+ * | conn/zstrm.c          | @subpage conn_zstrm          |
  */
 
 #ifndef MUTT_CONN_LIB_H
