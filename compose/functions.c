@@ -437,34 +437,68 @@ static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachP
 
 /**
  * compose_attach_swap - Swap two adjacent entries in the attachment list
- * @param[in]  msg   Body of email
- * @param[out] idx   Array of Attachments
- * @param[in]  first Index of first attachment to swap
+ * @param e      Email
+ * @param actx   Attachment information
+ * @param first  Index of first attachment to swap
+ * @param second Index of second attachment to swap
  */
-static void compose_attach_swap(struct Body *msg, struct AttachPtr **idx, short first)
+static void compose_attach_swap(struct Email *e, struct AttachCtx *actx, int first, int second)
 {
-  /* Reorder Body pointers.
-   * Must traverse msg from top since Body has no previous ptr.  */
-  for (struct Body *part = msg; part; part = part->next)
+  struct AttachPtr **idx = actx->idx;
+
+  // check that attachments really are adjacent
+  if (idx[first]->body->next != idx[second]->body)
+    return;
+
+  // reorder Body pointers
+  if (first == 0)
   {
-    if (part->next == idx[first]->body)
+    // first attachment is the fundamental part
+    idx[first]->body->next = idx[second]->body->next;
+    idx[second]->body->next = idx[first]->body;
+    e->body = idx[second]->body;
+  }
+  else
+  {
+    // find previous attachment
+    struct Body *bptr_previous = NULL;
+    struct Body *bptr_parent = NULL;
+    if (find_body_previous(e->body, idx[first]->body, &bptr_previous))
     {
-      idx[first]->body->next = idx[first + 1]->body->next;
-      idx[first + 1]->body->next = idx[first]->body;
-      part->next = idx[first + 1]->body;
-      break;
+      idx[first]->body->next = idx[second]->body->next;
+      idx[second]->body->next = idx[first]->body;
+      bptr_previous->next = idx[second]->body;
+    }
+    else if (find_body_parent(e->body, NULL, idx[first]->body, &bptr_parent))
+    {
+      idx[first]->body->next = idx[second]->body->next;
+      idx[second]->body->next = idx[first]->body;
+      bptr_parent->parts = idx[second]->body;
     }
   }
 
-  /* Reorder index */
-  struct AttachPtr *saved = idx[first];
-  idx[first] = idx[first + 1];
-  idx[first + 1] = saved;
+  // reorder attachment list
+  struct AttachPtr *saved = idx[second];
+  for (int i = second; i > first; i--)
+    idx[i] = idx[i - 1];
+  idx[first] = saved;
 
-  /* Swap ptr->num */
-  int i = idx[first]->num;
-  idx[first]->num = idx[first + 1]->num;
-  idx[first + 1]->num = i;
+  // if moved attachment is a group then move subparts too
+  if ((idx[first]->body->type == TYPE_MULTIPART) && (second < actx->idxlen - 1))
+  {
+    int i = second + 1;
+    while (idx[i]->level > idx[first]->level)
+    {
+      saved = idx[i];
+      int destidx = i - second + first;
+      for (int j = i; j > destidx; j--)
+        idx[j] = idx[j - 1];
+      idx[destidx] = saved;
+      i++;
+      if (i >= actx->idxlen)
+        break;
+    }
+  }
 }
 
 /**
@@ -1294,7 +1328,7 @@ static int op_compose_move_down(struct ComposeSharedData *shared, int op)
     mutt_error(_("The fundamental part can't be moved"));
     return IR_ERROR;
   }
-  compose_attach_swap(shared->email->body, shared->adata->actx->idx, index);
+  compose_attach_swap(shared->email, shared->adata->actx, index, index + 1);
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
   menu_set_index(shared->adata->menu, index + 1);
   return IR_SUCCESS;
@@ -1319,7 +1353,7 @@ static int op_compose_move_up(struct ComposeSharedData *shared, int op)
     mutt_error(_("The fundamental part can't be moved"));
     return IR_ERROR;
   }
-  compose_attach_swap(shared->email->body, shared->adata->actx->idx, index - 1);
+  compose_attach_swap(shared->email, shared->adata->actx, index - 1, index);
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
   menu_set_index(shared->adata->menu, index - 1);
   return IR_SUCCESS;
