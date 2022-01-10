@@ -106,6 +106,52 @@ static bool check_count(struct AttachCtx *actx)
   return true;
 }
 
+/**
+ * find_body_parent - Find the parent of a body
+ * @param[in]  start        Body to start search from
+ * @param[in]  start_parent Parent of start Body pointer (or NULL if none)
+ * @param[in]  body         Body to find parent of
+ * @param[out] body_parent  Body Parent if found
+ * @retval     true         Parent body found
+ * @retval     false        Parent body not found
+ */
+static bool find_body_parent(struct Body *start, struct Body *start_parent,
+                             struct Body *body, struct Body **body_parent)
+{
+  if (!start || !body)
+    return false;
+
+  struct Body *b = start;
+
+  if (b->parts)
+  {
+    if (b->parts == body)
+    {
+      *body_parent = b;
+      return true;
+    }
+  }
+  while (b)
+  {
+    if (b == body)
+    {
+      *body_parent = start_parent;
+      if (start_parent)
+        return true;
+      else
+        return false;
+    }
+    if (b->parts)
+    {
+      if (find_body_parent(b->parts, b, body, body_parent))
+        return true;
+    }
+    b = b->next;
+  }
+
+  return false;
+}
+
 #ifdef USE_AUTOCRYPT
 /**
  * autocrypt_compose_menu - Autocrypt compose settings
