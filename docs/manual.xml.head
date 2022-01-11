@@ -2196,7 +2196,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           In the <emphasis>index</emphasis>, the subject of threaded children
           messages will be prepended with thread tree characters. By default,
           the subject itself will not be duplicated unless
-          <link linkend="hide-thread-subject">$hide_thread_subject</link>is
+          <link linkend="hide-thread-subject">$hide_thread_subject</link> is
           unset.  Special characters will be added to the thread tree as
           detailed in <xref linkend="tab-thread-chars" />.
         </para>
@@ -2215,14 +2215,14 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
                 <entry>&amp;</entry>
                 <entry>hidden message</entry>
                 <entry>see
-                <link linkend="hide-limited">$hide_limited</link>and
+                <link linkend="hide-limited">$hide_limited</link> and
                 <link linkend="hide-top-limited">$hide_top_limited</link></entry>
               </row>
               <row>
                 <entry>?</entry>
                 <entry>missing message</entry>
                 <entry>see
-                <link linkend="hide-missing">$hide_missing</link>and
+                <link linkend="hide-missing">$hide_missing</link> and
                 <link linkend="hide-top-missing">$hide_top_missing</link></entry>
               </row>
               <row>
@@ -2230,7 +2230,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
                 <entry>pseudo thread</entry>
                 <entry>see
                 <link linkend="strict-threads">$strict_threads</link>; not displayed
-                when <link linkend="narrow-tree">$narrow_tree</link>is set</entry>
+                when <link linkend="narrow-tree">$narrow_tree</link> is set</entry>
               </row>
               <row>
                 <entry>=</entry>
@@ -2238,7 +2238,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
                 <entry>see
                 <link linkend="duplicate-threads">$duplicate_threads</link>; not
                 displayed when
-                <link linkend="narrow-tree">$narrow_tree</link>is set</entry>
+                <link linkend="narrow-tree">$narrow_tree</link> is set</entry>
               </row>
             </tbody>
           </tgroup>
@@ -2279,7 +2279,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             <listitem>
               <para>
                 Calculate statistics for all monitored mailboxes declared using
-                the <command>mailboxes</command>command. It will calculate
+                the <command>mailboxes</command> command. It will calculate
                 statistics despite <link linkend="mail-check-stats">$mail_check_stats</link>
                 being unset.
               </para>
@@ -6378,21 +6378,21 @@ message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
       </cmdsynopsis>
       <para>
         This command is used to inject format strings dynamically into <link
-        linkend="index-format">$index_format</link>based on pattern matching
+        linkend="index-format">$index_format</link> based on pattern matching
         against the current message.
       </para>
       <para>
-        The <link linkend="index-format">$index_format</link>expando
-        <emphasis>%@name@</emphasis>specifies a placeholder for the injection.
-        Index-format-hooks with the same <emphasis>name</emphasis>are matched using
-        <link linkend="patterns"> <emphasis>pattern</emphasis> </link>against the
+        The <link linkend="index-format">$index_format</link> expando
+        <emphasis>%@name@</emphasis> specifies a placeholder for the injection.
+        Index-format-hooks with the same <emphasis>name</emphasis> are matched using
+        <link linkend="patterns"> <emphasis>pattern</emphasis> </link> against the
         current message. Matching is done in the order specified in the .muttrc,
         with the first match being used. The hook's
-        <emphasis>format-string</emphasis>is then substituted and evaluated.
+        <emphasis>format-string</emphasis> is then substituted and evaluated.
       </para>
       <para>
         Because the first match is used, best practice is to put a catch-all
-        <emphasis>~A</emphasis>pattern as the last hook. Here is an example showing
+        <emphasis>~A</emphasis> pattern as the last hook. Here is an example showing
         how to implement dynamic date formatting:
       </para>
 <screen>
@@ -6583,11 +6583,11 @@ folder-hook . 'push "&lt;enter-command&gt;score ~= 10&lt;enter&gt;"'
         defined for a given message.)
       </para>
       <para>
-        Note: the value displayed by <literal>%H</literal>and searched by
-        <literal>~H</literal>is stored in the
+        Note: the value displayed by <literal>%H</literal> and searched by
+        <literal>~H</literal> is stored in the
         <link linkend="caching">header cache</link>. NeoMutt isn't smart enough to
         invalidate a header cache entry based on changing <literal>spam</literal>
-        rules, so if you aren't seeing correct <literal>%H</literal>values, try
+        rules, so if you aren't seeing correct <literal>%H</literal> values, try
         temporarily turning off the header cache. If that fixes the problem,
         then once your spam rules are set to your liking, remove your stale
         header cache files and turn the header cache back on.
@@ -8023,7 +8023,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
                 <entry>~B <emphasis>EXPR</emphasis></entry>
                 <entry>d)</entry>
                 <entry>
-                  messages which contain <emphasis>EXPR</emphasis>in the whole
+                  messages which contain <emphasis>EXPR</emphasis> in the whole
                   message
                 </entry>
               </row>
@@ -8032,7 +8032,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
                 <entry></entry>
                 <entry>
                   If IMAP is enabled, like ~B but searches for
-                  <emphasis>STRING</emphasis>on the server, rather than
+                  <emphasis>STRING</emphasis> on the server, rather than
                   downloading each message and searching it locally.
                 </entry>
               </row>
@@ -8143,7 +8143,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
                 <entry>~h <emphasis>EXPR</emphasis></entry>
                 <entry>d)</entry>
                 <entry>
-                  messages which contain <emphasis>EXPR</emphasis>in the
+                  messages which contain <emphasis>EXPR</emphasis> in the
                   message header
                 </entry>
               </row>
@@ -8152,9 +8152,9 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
                 <entry></entry>
                 <entry>
                   If IMAP is enabled, like ~h but searches for
-                  <emphasis>STRING</emphasis>on the server, rather than
+                  <emphasis>STRING</emphasis> on the server, rather than
                   downloading each message and searching it locally;
-                  <emphasis>STRING</emphasis>must be of the form
+                  <emphasis>STRING</emphasis> must be of the form
                   <quote>header: substring</quote>(see below).
                 </entry>
               </row>
@@ -9909,12 +9909,12 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
       <sect2 id="new-mail-monitoring">
         <title>Monitoring New Mail</title>
         <para>
-          When the <emphasis>Inotify</emphasis>mechanism for monitoring of
+          When the <emphasis>Inotify</emphasis> mechanism for monitoring of
           files is supported (Linux only) and not disabled at compilation time,
           NeoMutt immediately notifies about new mail for all folders configured
           via the <link linkend="mailboxes"><command>mailboxes</command></link>
           command.  Dependent on <link linkend="mailbox-formats">mailbox format</link>
-          also added <emphasis>old</emphasis>mails are tracked (not for Maildir).
+          also added <emphasis>old</emphasis> mails are tracked (not for Maildir).
         </para>
         <para>
           No configuration variables are available. Trace output is given when
@@ -9925,7 +9925,7 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
         <note>
           <para>
             Getting events about new mail is limited to the capabilities of the
-            underlying mechanism.  <emphasis>inotify</emphasis>only reports
+            underlying mechanism.  <emphasis>inotify</emphasis> only reports
             local changes, i. e. new mail notification works for mails
             delivered by an agent on the same machine as NeoMutt, but not when
             delivered remotely on a network file system as nfs. also the
@@ -10077,13 +10077,13 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
       <itemizedlist>
         <listitem>
           <para>Reply envelope settings.
-            <link linkend="reverse-name">$reverse_name</link>processing. To, Cc,
+            <link linkend="reverse-name">$reverse_name</link> processing. To, Cc,
             Subject, References header defaults.
           </para>
         </listitem>
         <listitem>
           <para>
-            <link linkend="my-hdr">my_hdr</link>processing for To, Cc, Bcc,
+            <link linkend="my-hdr">my_hdr</link> processing for To, Cc, Bcc,
             Subject headers.
           </para>
         </listitem>
@@ -10130,12 +10130,12 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
         </listitem>
         <listitem>
           <para>
-            <link linkend="real-name">$real_name</link>part of From header setting.
+            <link linkend="real-name">$real_name</link> part of From header setting.
           </para>
         </listitem>
         <listitem>
           <para>
-            <link linkend="editor">$editor</link>invocation for the message.
+            <link linkend="editor">$editor</link> invocation for the message.
           </para>
         </listitem>
         <listitem>
@@ -12122,7 +12122,7 @@ set timeout=15
         Preliminary OAUTH support for IMAP, POP, and SMTP is provided via external scripts.
       </para>
       <para>
-        At least for Gmail, you can use the <literal>oauth2.py</literal>script
+        At least for Gmail, you can use the <literal>oauth2.py</literal> script
         from Google's gmail-oauth2-tools:
         <ulink url="https://github.com/google/gmail-oauth2-tools/blob/master/python/oauth2.py">https://github.com/google/gmail-oauth2-tools/blob/master/python/oauth2.py</ulink>
       </para>
@@ -17326,7 +17326,7 @@ color sidebar_unread color136 default
         <para>
           Also, it can be handy to jump directly to the start of the
           email body with the <literal>&lt;skip-headers&gt;</literal>
-          function (by default the <literal>H</literal>key).
+          function (by default the <literal>H</literal> key).
         </para>
       </sect2>
 
