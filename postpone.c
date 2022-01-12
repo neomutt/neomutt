@@ -472,11 +472,30 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
 
   file = mutt_buffer_pool_get();
 
+  struct Body *b_previous = NULL;
+
   /* create temporary files for all attachments */
   for (b = e_new->body; b; b = b->next)
   {
     /* what follows is roughly a receive-mode variant of
      * mutt_get_tmp_attachment () from muttlib.c */
+
+    while (b->type == TYPE_MULTIPART)
+    {
+      struct Body *b_next = b->next;
+      b->next = NULL;
+      b = mutt_remove_multipart(b);
+      if (!b_previous)
+        e_new->body = b;
+      else
+        b_previous->next = b;
+      struct Body *b_part = b;
+      while (b_part->next)
+        b_part = b_part->next;
+      b_part->next = b_next;
+    }
+
+    b_previous = b;
 
     mutt_buffer_reset(file);
     if (b->filename)
