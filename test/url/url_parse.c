@@ -109,6 +109,20 @@ static struct UrlTest test[] = {
     "encoding|binary|second|third|some space|\"quoted content\"|"
   },
   {
+    "pop://user@example.com:password@pop.example.com:234/some/where?encoding=binary"
+    "&second=third&some%20space=%22quoted%20content%22",
+    true,
+    {
+      U_POP,
+      "user@example.com",
+      "password",
+      "pop.example.com",
+      234,
+      "some/where",
+    },
+    "encoding|binary|second|third|some space|\"quoted content\"|"
+  },
+  {
     "snews://user@[2000:4860:0:2001::68]:563",
     true,
     {
