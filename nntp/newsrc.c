@@ -1050,6 +1050,20 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
   }
   url_free(&url);
 
+  // If nntp_user and nntp_pass are specified in the config, use them to find the connection
+  const char *user = NULL;
+  const char *pass = NULL;
+  if ((user = cac.get_field(MUTT_CA_USER, NULL)))
+  {
+    mutt_str_copy(cac.user, user, sizeof(cac.user));
+    cac.flags |= MUTT_ACCT_USER;
+  }
+  if ((pass = cac.get_field(MUTT_CA_PASS, NULL)))
+  {
+    mutt_str_copy(cac.pass, pass, sizeof(cac.pass));
+    cac.flags |= MUTT_ACCT_PASS;
+  }
+
   /* find connection by account */
   conn = mutt_conn_find(&cac);
   if (!conn)
