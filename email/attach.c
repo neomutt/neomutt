@@ -58,6 +58,37 @@ void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach)
 }
 
 /**
+ * mutt_actx_ins_attach - Insert an Attachment into an Attachment Context at Specified Index
+ * @param actx   Attachment context
+ * @param attach Attachment to insert
+ * @param aidx   Index to insert attachment at
+ */
+void mutt_actx_ins_attach(struct AttachCtx *actx, struct AttachPtr *attach, int aidx)
+{
+  if (!actx || !attach)
+    return;
+
+  if ((aidx < 0) || (aidx > actx->idxmax))
+    return;
+
+  if (actx->idxlen == actx->idxmax)
+  {
+    actx->idxmax += 5;
+    mutt_mem_realloc(&actx->idx, sizeof(struct AttachPtr *) * actx->idxmax);
+    mutt_mem_realloc(&actx->v2r, sizeof(short) * actx->idxmax);
+    for (int i = actx->idxlen; i < actx->idxmax; i++)
+      actx->idx[i] = NULL;
+  }
+
+  actx->idxlen++;
+
+  for (int i = actx->idxlen - 1; i > aidx; i--)
+    actx->idx[i] = actx->idx[i - 1];
+
+  actx->idx[aidx] = attach;
+}
+
+/**
  * mutt_actx_add_fp - Save a File handle to the Attachment Context
  * @param actx   Attachment context
  * @param fp_new File handle to save
