@@ -273,6 +273,9 @@ LIBCONNOBJS=	conn/config.o conn/connaccount.o conn/getdomain.o conn/raw.o \
 @if HAVE_SASL
 LIBCONNOBJS+=	conn/sasl.o
 @endif
+@if USE_MACOS_KEYCHAIN
+LIBCONNOBJS+=	conn/macos_keychain.o
+@endif
 @if USE_SSL
 LIBCONNOBJS+=	conn/dlg_verifycert.o
 @endif
