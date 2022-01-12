@@ -579,19 +579,79 @@ static void compose_attach_swap(struct Email *e, struct AttachCtx *actx, int fir
 static int group_attachments(struct ComposeSharedData *shared,
                              const char *multipart_tag, char *subtype)
 {
+  struct AttachCtx *actx = shared->adata->actx;
+  int group_level = -1;
+  struct Body *bptr_parent = NULL;
+
+  // Attachments to be grouped must have the same parent
+  for (int i = 0; i < actx->idxlen; i++)
+  {
+    // check if all tagged attachments are at same level
+    if (actx->idx[i]->body->tagged)
+    {
+      if (group_level == -1)
+      {
+        group_level = actx->idx[i]->level;
+      }
+      else
+      {
+        if (group_level != actx->idx[i]->level)
+        {
+          mutt_error(_("Attachments to be grouped must have the same parent"));
+          return IR_ERROR;
+        }
+      }
+      // if not at top level check if all tagged attachments have same parent
+      if (group_level > 0)
+      {
+        if (bptr_parent)
+        {
+          struct Body *bptr_test = NULL;
+          if (!find_body_parent(actx->idx[0]->body, NULL, actx->idx[i]->body, &bptr_test))
+            mutt_debug(LL_DEBUG5, "can't find parent\n");
+          if (bptr_test != bptr_parent)
+          {
+            mutt_error(
+                _("Attachments to be grouped must have the same parent"));
+            return IR_ERROR;
+          }
+        }
+        else
+        {
+          if (!find_body_parent(actx->idx[0]->body, NULL, actx->idx[i]->body, &bptr_parent))
+            mutt_debug(LL_DEBUG5, "can't find parent\n");
+        }
+      }
+    }
+  }
+
+  // Can't group all attachments unless at top level
+  if (bptr_parent)
+  {
+    if (shared->adata->menu->tagged == count_attachments(bptr_parent->parts, false))
+    {
+      mutt_error(_("Can't leave group with only one attachment"));
+      return IR_ERROR;
+    }
+  }
+
   struct Body *group = mutt_body_new();
   group->type = TYPE_MULTIPART;
   group->subtype = mutt_str_dup(subtype);
   group->encoding = ENC_7BIT;
 
-  struct Body *bptr_first = NULL; // first tagged attachment
-  struct Body *alts = NULL;
-  /* group tagged message into a multipart group */
-  struct Body *bptr = shared->email->body;
+  struct Body *bptr_first = NULL;     // first tagged attachment
+  struct Body *bptr = NULL;           // current tagged attachment
+  struct Body *group_parent = NULL;   // parent of group
+  struct Body *group_previous = NULL; // previous body to group
+  struct Body *group_part = NULL;     // current attachment in group
   int group_idx = 0; // index in attachment list where group will be inserted
+  int group_last_idx = 0; // index of last part of previous found group
   int group_parent_type = TYPE_OTHER;
-  for (int i = 0; bptr;)
+
+  for (int i = 0; i < actx->idxlen; i++)
   {
+    bptr = actx->idx[i]->body;
     if (bptr->tagged)
     {
       // set group properties based on first tagged attachment
@@ -600,90 +660,149 @@ static int group_attachments(struct ComposeSharedData *shared,
         group->disposition = bptr->disposition;
         if (bptr->language && !mutt_str_equal(subtype, "multilingual"))
           group->language = mutt_str_dup(bptr->language);
-
-        // set group description
-        if ((bptr->disposition != DISP_INLINE) || bptr->description)
+        group_parent_type = bptr->aptr->parent_type;
+        bptr_first = bptr;
+        if (i > 0)
         {
-          char *p = NULL;
-          if (bptr->description)
-            p = bptr->description;
-          else if (bptr->d_filename)
-            p = bptr->d_filename;
-          else if (mutt_path_basename(bptr->filename))
-            p = (char *) mutt_path_basename(bptr->filename);
-          else
-            p = bptr->filename;
-          if (p)
+          if (!find_body_previous(shared->email->body, bptr, &group_previous))
           {
-            group->description =
-                mutt_mem_calloc(1, strlen(p) + strlen(multipart_tag) + 1);
-            sprintf(group->description, multipart_tag, p);
+            mutt_debug(LL_DEBUG5, "couldn't find previous\n");
+          }
+          if (!find_body_parent(shared->email->body, NULL, bptr, &group_parent))
+          {
+            mutt_debug(LL_DEBUG5, "couldn't find parent\n");
           }
         }
-
-        bptr_first = bptr;
-        group_parent_type = bptr->aptr->parent_type;
       }
 
       shared->adata->menu->tagged--;
       bptr->tagged = false;
+      bptr->aptr->level++;
+      bptr->aptr->parent_type = TYPE_MULTIPART;
 
-      if (i > 0)
-        shared->adata->actx->idx[i - 1]->body->next = bptr->next;
+      // append bptr to the group parts list and remove from email body list
+      struct Body *bptr_previous = NULL;
+      if (find_body_previous(shared->email->body, bptr, &bptr_previous))
+        bptr_previous->next = bptr->next;
+      else if (find_body_parent(shared->email->body, NULL, bptr, &bptr_parent))
+        bptr_parent->parts = bptr->next;
+      else
+        shared->email->body = bptr->next;
 
-      // append bptr to the alts list, and remove from the shared->email->body list
-      if (alts)
+      if (group_part)
       {
-        alts->next = bptr;
-        bptr = bptr->next;
-        alts = alts->next;
-        alts->next = NULL;
+        // add bptr to group parts list
+        group_part->next = bptr;
+        group_part = group_part->next;
+        group_part->next = NULL;
+
+        // reorder attachments and set levels
+        int bptr_attachments = count_attachments(bptr, true);
+        for (int j = i + 1; j < (i + bptr_attachments); j++)
+          actx->idx[j]->level++;
+        if (i > (group_last_idx + 1))
+        {
+          for (int j = 0; j < bptr_attachments; j++)
+          {
+            struct AttachPtr *saved = actx->idx[i + bptr_attachments - 1];
+            for (int k = i + bptr_attachments - 1; k > (group_last_idx + 1); k--)
+              actx->idx[k] = actx->idx[k - 1];
+            actx->idx[group_last_idx + 1] = saved;
+          }
+        }
+        i += bptr_attachments - 1;
+        group_last_idx += bptr_attachments;
       }
       else
       {
         group_idx = i;
         group->parts = bptr;
-        alts = bptr;
-        bptr = bptr->next;
-        alts->next = NULL;
+        group_part = bptr;
+        group_part->next = NULL;
+        int bptr_attachments = count_attachments(bptr, true);
+        for (int j = i + 1; j < (i + bptr_attachments); j++)
+          actx->idx[j]->level++;
+        i += bptr_attachments - 1;
+        group_last_idx = i;
       }
-
-      // reorder attachments
-      for (int j = i; j < shared->adata->actx->idxlen - 1; j++)
-        shared->adata->actx->idx[j] = shared->adata->actx->idx[j + 1];
-
-      shared->adata->actx->idxlen--;
-    }
-    else
-    {
-      bptr = bptr->next;
-      i++;
     }
   }
 
-  // set group->next
-  if (group_idx < shared->adata->actx->idxlen)
-    group->next = shared->adata->actx->idx[group_idx]->body;
-  else
-    group->next = NULL;
+  if (!bptr_first)
+  {
+    mutt_body_free(&group);
+    return IR_ERROR;
+  }
 
-  // set previous for group
-  if (group_idx > 0)
-    shared->adata->actx->idx[group_idx - 1]->body->next = group;
+  // set group->next
+  int next_aidx = group_idx + count_attachments(group->parts, true);
+  if (group_parent)
+  {
+    // find next attachment with the same parent as the group
+    struct Body *b = NULL;
+    struct Body *b_parent = NULL;
+    while (next_aidx < actx->idxlen)
+    {
+      b = actx->idx[next_aidx]->body;
+      b_parent = NULL;
+      if (find_body_parent(shared->email->body, NULL, b, &b_parent))
+      {
+        if (group_parent == b_parent)
+        {
+          group->next = b;
+          break;
+        }
+      }
+      next_aidx++;
+    }
+  }
+  else if (next_aidx < actx->idxlen)
+  {
+    // group is at top level
+    group->next = actx->idx[next_aidx]->body;
+  }
+
+  // set previous or parent for group
+  if (group_previous)
+    group_previous->next = group;
+  else if (group_parent)
+    group_parent->parts = group;
 
   mutt_generate_boundary(&group->parameter);
 
-  struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
-  gptr->body = group;
-  gptr->body->aptr = gptr;
-  gptr->parent_type = group_parent_type;
-  mutt_actx_ins_attach(shared->adata->actx, gptr, group_idx);
+  // set group description
+  if (bptr_first->disposition != DISP_INLINE || bptr_first->description)
+  {
+    char *p;
+    if (bptr_first->description)
+      p = bptr_first->description;
+    else if (bptr_first->d_filename)
+      p = bptr_first->d_filename;
+    else if (mutt_path_basename(bptr_first->filename))
+      p = (char *) mutt_path_basename(bptr_first->filename);
+    else
+      p = bptr_first->filename;
+    if (p)
+    {
+      group->description = mutt_mem_calloc(1, strlen(p) + strlen(multipart_tag) + 1);
+      sprintf(group->description, multipart_tag, p);
+    }
+  }
+
+  struct AttachPtr *group_ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
+  group_ap->body = group;
+  group_ap->body->aptr = group_ap;
+  group_ap->level = group_level;
+  group_ap->parent_type = group_parent_type;
+
+  // insert group into attachment list
+  mutt_actx_ins_attach(actx, group_ap, group_idx);
 
   // update email body and last attachment pointers
-  shared->email->body = shared->adata->actx->idx[0]->body;
-  shared->adata->actx->idx[shared->adata->actx->idxlen - 1]->body->next = NULL;
+  shared->email->body = actx->idx[0]->body;
+  actx->idx[actx->idxlen - 1]->body->next = NULL;
 
-  update_menu(shared->adata->actx, shared->adata->menu, false);
+  update_menu(actx, shared->adata->menu, false);
   shared->adata->menu->current = group_idx;
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
 
