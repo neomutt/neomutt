@@ -40,6 +40,9 @@
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "opcodes.h"
+#ifdef HAVE_SYS_PARAM_H
+#include <sys/param.h>
+#endif
 
 /**
  * mutt_multi_choice - Offer the user a multiple choice question
@@ -210,14 +213,37 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
   char *trans_yes = _(yes);
   char *trans_no = _(no);
 
-  char *expr = NULL;
   regex_t reyes = { 0 };
   regex_t reno = { 0 };
 
-  bool reyes_ok = (expr = nl_langinfo(YESEXPR)) && (expr[0] == '^') &&
-                  (REG_COMP(&reyes, expr, REG_NOSUB) == 0);
-  bool reno_ok = (expr = nl_langinfo(NOEXPR)) && (expr[0] == '^') &&
-                 (REG_COMP(&reno, expr, REG_NOSUB) == 0);
+  bool reyes_ok = false;
+  bool reno_ok = false;
+
+#ifdef OpenBSD
+  /* OpenBSD only supports locale C and UTF-8
+   * so there is no suitable base system's locale identification
+   * Remove this code immediately if this situation changes! */
+  char rexyes[16] = "^[+1YyYy]";
+  rexyes[6] = toupper(trans_yes[0]);
+  rexyes[7] = tolower(trans_yes[0]);
+
+  char rexno[16] = "^[-0NnNn]";
+  rexno[6] = toupper(trans_no[0]);
+  rexno[7] = tolower(trans_no[0]);
+
+  if (REG_COMP(&reyes, rexyes, REG_NOSUB) == 0)
+    reyes_ok = true;
+
+  if (REG_COMP(&reno, rexno, REG_NOSUB) == 0)
+    reno_ok = true;
+
+#else
+  char *expr = NULL;
+  reyes_ok = (expr = nl_langinfo(YESEXPR)) && (expr[0] == '^') &&
+             (REG_COMP(&reyes, expr, REG_NOSUB) == 0);
+  reno_ok = (expr = nl_langinfo(NOEXPR)) && (expr[0] == '^') &&
+            (REG_COMP(&reno, expr, REG_NOSUB) == 0);
+#endif
 
   if ((yes != trans_yes) && (no != trans_no) && reyes_ok && reno_ok)
   {
