@@ -419,16 +419,27 @@ static int group_attachments(struct ComposeSharedData *shared,
   struct Body *group = mutt_body_new();
   group->type = TYPE_MULTIPART;
   group->subtype = mutt_str_dup(subtype);
-  group->disposition = DISP_INLINE;
   group->encoding = ENC_7BIT;
 
+  struct Body *bptr_first = NULL; // first tagged attachment
   struct Body *alts = NULL;
   /* group tagged message into a multipart group */
   struct Body *bptr = shared->email->body;
+  int group_parent_type = TYPE_OTHER;
   for (int i = 0; bptr;)
   {
     if (bptr->tagged)
     {
+      // set group properties based on first tagged attachment
+      if (!bptr_first)
+      {
+        group->disposition = bptr->disposition;
+        if (bptr->language && !mutt_str_equal(subtype, "multilingual"))
+          group->language = mutt_str_dup(bptr->language);
+        bptr_first = bptr;
+        group_parent_type = bptr->aptr->parent_type;
+      }
+
       shared->adata->menu->tagged--;
       bptr->tagged = false;
 
@@ -485,6 +496,7 @@ static int group_attachments(struct ComposeSharedData *shared,
 
   struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
   gptr->body = group;
+  gptr->parent_type = group_parent_type;
   update_idx(shared->adata->menu, shared->adata->actx, gptr);
 
   // update email body and last attachment pointers
