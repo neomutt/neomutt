@@ -431,7 +431,6 @@ static int group_attachments(struct ComposeSharedData *shared,
     {
       shared->adata->menu->tagged--;
       bptr->tagged = false;
-      bptr->disposition = DISP_INLINE;
 
       /* for first match, set group desc according to match */
       if (!group->description)
