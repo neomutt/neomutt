@@ -406,9 +406,9 @@ static bool edit_address_list(int field, struct AddressList *al)
 /**
  * delete_attachment - Delete an attachment
  * @param actx Attachment context
- * @param aidx Index number of attachment
- * @retval   0 Success
- * @retval  -1 Error
+ * @param aidx  Index number of attachment to delete
+ * @retval  0 Success
+ * @retval -1 Error
  */
 static int delete_attachment(struct AttachCtx *actx, int aidx)
 {
@@ -416,31 +416,64 @@ static int delete_attachment(struct AttachCtx *actx, int aidx)
     return -1;
 
   struct AttachPtr **idx = actx->idx;
+  struct Body *bptr_previous = NULL;
+  struct Body *bptr_parent = NULL;
 
-  if ((aidx == 0) && (actx->idxlen == 1))
+  if (aidx == 0)
   {
-    mutt_error(_("You may not delete the only attachment"));
-    idx[aidx]->body->tagged = false;
-    return -1;
-  }
-
-  for (int i = 0; i < actx->idxlen; i++)
-  {
-    if (idx[i]->body->next == idx[aidx]->body)
+    struct Body *b = actx->idx[0]->body;
+    if (!b->next) // There's only one attachment left
     {
-      idx[i]->body->next = idx[aidx]->body->next;
-      break;
+      mutt_error(_("You may not delete the only attachment"));
+      return -1;
     }
   }
 
+  if (idx[aidx]->level > 0)
+  {
+    if (find_body_parent(idx[0]->body, NULL, idx[aidx]->body, &bptr_parent))
+    {
+      if (count_attachments(bptr_parent->parts, false) < 3)
+      {
+        mutt_error(_("Can't leave group with only one attachment"));
+        return -1;
+      }
+    }
+  }
+
+  // reorder body pointers
+  if (aidx > 0)
+  {
+    if (find_body_previous(idx[0]->body, idx[aidx]->body, &bptr_previous))
+      bptr_previous->next = idx[aidx]->body->next;
+    else if (find_body_parent(idx[0]->body, NULL, idx[aidx]->body, &bptr_parent))
+      bptr_parent->parts = idx[aidx]->body->next;
+  }
+
+  // free memory
+  int part_count = 1;
+  if (aidx < (actx->idxlen - 1))
+  {
+    if ((idx[aidx]->body->type == TYPE_MULTIPART) &&
+        (idx[aidx + 1]->level > idx[aidx]->level))
+    {
+      part_count += count_attachments(idx[aidx]->body->parts, true);
+    }
+  }
   idx[aidx]->body->next = NULL;
   mutt_body_free(&(idx[aidx]->body));
-  FREE(&idx[aidx]->tree);
-  FREE(&idx[aidx]);
-  for (; aidx < actx->idxlen - 1; aidx++)
-    idx[aidx] = idx[aidx + 1];
-  idx[actx->idxlen - 1] = NULL;
-  actx->idxlen--;
+  for (int i = 0; i < part_count; i++)
+  {
+    FREE(&idx[aidx + i]->tree);
+    FREE(&idx[aidx + i]);
+  }
+
+  // reorder attachment list
+  for (int i = aidx; i < (actx->idxlen - part_count); i++)
+    idx[i] = idx[i + part_count];
+  for (int i = 0; i < part_count; i++)
+    idx[actx->idxlen - i - 1] = NULL;
+  actx->idxlen -= part_count;
 
   return 0;
 }
@@ -1861,6 +1894,12 @@ static int op_delete(struct ComposeSharedData *shared, int op)
   int index = menu_get_index(shared->adata->menu);
   if (delete_attachment(shared->adata->actx, index) == -1)
     return IR_ERROR;
+  shared->adata->menu->tagged = 0;
+  for (int i = 0; i < shared->adata->actx->idxlen; i++)
+  {
+    if (shared->adata->actx->idx[i]->body->tagged)
+      shared->adata->menu->tagged++;
+  }
   update_menu(shared->adata->actx, shared->adata->menu, false);
   notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
   index = menu_get_index(shared->adata->menu);
