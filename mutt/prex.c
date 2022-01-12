@@ -114,8 +114,8 @@ static struct PrexStorage *prex(enum Prex which)
                                                    // . . or path only
           "(//"                                    // . . . authority + path
             "("                                    // . . . . user info
-              "([" UNR_PCTENC_SUBDEL "@-]*)"       // . . . . . user name + '@'
-              "(:([" UNR_PCTENC_SUBDEL "-]*))?"    // . . . . . password
+              "([" UNR_PCTENC_SUBDEL "-]*)"        // . . . . . user name
+              "(:([" UNR_PCTENC_SUBDEL "-]*))?"    // . . . . . + ':' + password
             "@)?"
             "("                                    // . . . . host
               "([" UNR_PCTENC_SUBDEL "-]*)"        // . . . . . host name
