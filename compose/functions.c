@@ -548,6 +548,7 @@ static int group_attachments(struct ComposeSharedData *shared,
   struct Body *alts = NULL;
   /* group tagged message into a multipart group */
   struct Body *bptr = shared->email->body;
+  int group_idx = 0; // index in attachment list where group will be inserted
   int group_parent_type = TYPE_OTHER;
   for (int i = 0; bptr;)
   {
@@ -600,17 +601,17 @@ static int group_attachments(struct ComposeSharedData *shared,
       }
       else
       {
+        group_idx = i;
         group->parts = bptr;
         alts = bptr;
         bptr = bptr->next;
         alts->next = NULL;
       }
 
+      // reorder attachments
       for (int j = i; j < shared->adata->actx->idxlen - 1; j++)
-      {
         shared->adata->actx->idx[j] = shared->adata->actx->idx[j + 1];
-        shared->adata->actx->idx[j + 1] = NULL; /* for debug reason */
-      }
+
       shared->adata->actx->idxlen--;
     }
     else
@@ -620,18 +621,30 @@ static int group_attachments(struct ComposeSharedData *shared,
     }
   }
 
-  group->next = NULL;
+  // set group->next
+  if (group_idx < shared->adata->actx->idxlen)
+    group->next = shared->adata->actx->idx[group_idx]->body;
+  else
+    group->next = NULL;
+
+  // set previous for group
+  if (group_idx > 0)
+    shared->adata->actx->idx[group_idx - 1]->body->next = group;
+
   mutt_generate_boundary(&group->parameter);
 
   struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
   gptr->body = group;
+  gptr->body->aptr = gptr;
   gptr->parent_type = group_parent_type;
-  update_idx(shared->adata->menu, shared->adata->actx, gptr);
+  mutt_actx_ins_attach(shared->adata->actx, gptr, group_idx);
 
   // update email body and last attachment pointers
   shared->email->body = shared->adata->actx->idx[0]->body;
   shared->adata->actx->idx[shared->adata->actx->idxlen - 1]->body->next = NULL;
 
+  update_menu(shared->adata->actx, shared->adata->menu, false);
+  shared->adata->menu->current = group_idx;
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
 
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
