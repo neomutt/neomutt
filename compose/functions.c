@@ -152,6 +152,39 @@ static bool find_body_parent(struct Body *start, struct Body *start_parent,
   return false;
 }
 
+/**
+ * find_body_previous - Find the previous body of a body
+ * @param[in]  start        Body to start search from
+ * @param[in]  body         Body to find previous body of
+ * @param[out] previous     Previous Body if found
+ * @retval     true         Previous body found
+ * @retval     false        Previous body not found
+ */
+static bool find_body_previous(struct Body *start, struct Body *body, struct Body **previous)
+{
+  if (!start || !body)
+    return false;
+
+  struct Body *b = start;
+
+  while (b)
+  {
+    if (b->next == body)
+    {
+      *previous = b;
+      return true;
+    }
+    if (b->parts)
+    {
+      if (find_body_previous(b->parts, body, previous))
+        return true;
+    }
+    b = b->next;
+  }
+
+  return false;
+}
+
 #ifdef USE_AUTOCRYPT
 /**
  * autocrypt_compose_menu - Autocrypt compose settings
