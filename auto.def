@@ -106,6 +106,8 @@ options {
   with-zlib:path            => "Location of zlib"
   zstd=0                    => "Enable Zstandard header cache compression support"
   with-zstd:path            => "Location of Zstandard"
+# MacOS
+  macoskeychain=1           => "Use MacOS's Keychain for authentication"
 # System
   with-sysroot:path         => "Target system root"
   with-tmpdir:=/tmp         => "location of the tmp directory"
@@ -155,8 +157,8 @@ if {1} {
     debug-notify debug-parse-test debug-queue debug-window doc everything
     fmemopen full-doc fuzzing gdbm gnutls gpgme gss homespool idn idn2
     include-path-in-cflags inotify kyotocabinet lmdb locales-fix lua lz4
-    mixmaster nls notmuch pcre2 pgp pkgconf qdbm rocksdb sasl smime sqlite ssl
-    testing tdb tokyocabinet zlib zstd
+    mixmaster nls notmuch macoskeychain pcre2 pgp pkgconf qdbm rocksdb sasl smime
+    sqlite ssl testing tdb tokyocabinet zlib zstd
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -165,8 +167,8 @@ if {1} {
   # relative --enable-opt to true. This allows "--with-opt=/usr" to be used as
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
-    bdb gdbm gnutls gpgme gss homespool idn idn2 kyotocabinet lmdb lua lz4 
-    mixmaster nls notmuch pcre2 qdbm rocksdb sasl sqlite ssl tdb tokyocabinet 
+    bdb gdbm gnutls gpgme gss homespool idn idn2 kyotocabinet lmdb lua lz4
+    mixmaster nls notmuch pcre2 qdbm rocksdb sasl sqlite ssl tdb tokyocabinet
     zlib zstd
   } {
     if {[opt-val with-$opt] ne {}} {
@@ -1194,6 +1196,15 @@ if {[get-define want-gss]} {
     define HAVE_HEIMDAL
   }
   define USE_GSS
+}
+
+###############################################################################
+# Use MacOS's Keychain for authentication
+if {[has-define {} __APPLE__]} {
+  if {[get-define want-macoskeychain]} {
+    define USE_MACOS_KEYCHAIN
+    define-append LDFLAGS -Wl,-framework -Wl,Security
+  }
 }
 
 ###############################################################################
