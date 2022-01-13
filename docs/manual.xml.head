@@ -11376,10 +11376,12 @@ alternative_order text/enriched text/plain text application/postscript image/*
           <listitem>
             <para>
               Tag the attachments that are alternatives, and press the
-              <command>&lt;group-alternatives&gt;</command> (&amp;) binding to group
-              them together. After this, the separate parts will be replaced by a single
-              new part with the <literal>multipart/alternative</literal> type and the
-              alternatives must be manipulated or deleted as a group.
+              <literal>&lt;group-alternatives&gt;</literal> (&amp;) binding to group
+              them together. After this, the separate parts will be displayed in a tree
+              structure. Attachments can still be edited separately and reordered within
+              the group, but must be ungrouped using the <literal>&lt;ungroup-attachment&gt;</literal>
+              (#) binding for more advanced editing before tagging and grouping together again
+              as described above.
             </para>
           </listitem>
           <listitem>
@@ -11394,15 +11396,6 @@ alternative_order text/enriched text/plain text application/postscript image/*
           as a <literal>multipart/alternative</literal> email, otherwise it will be sent
           as a <literal>multipart/mixed</literal> email.
         </para>
-        <para>
-          Note that after grouping, you can't view, edit or break the
-          <literal>multipart/alternative</literal> bundle, because it is in a temporary
-          form. But you can view and edit its primitive part using the
-          <command>&lt;edit&gt;</command> command. When postponing emails or on error
-          (e.g., no recipients address when sending emails) this
-          <literal>multipart/alternative</literal> will be broken apart and need to
-          be tagged and group together again as described above.
-        </para>
 
         <para>
           Be aware that when sending a <literal>multipart/alternative</literal> email,
@@ -11411,12 +11404,17 @@ alternative_order text/enriched text/plain text application/postscript image/*
           you can compose a plain text email as usual and turn that into a
           <literal>multipart/alternative</literal> email in one single command, with
           one part being <literal>text/plain</literal> and the other
-          <literal>text/html</literal>. An example macro will be the following:
+          <literal>text/html</literal>. An example macro which adds an HTML
+          part to the main body of an email and sends it could be the following:
 
 <screen>
-macro compose K "| pandoc -o /tmp/neomutt-alternative.html&lt;enter&gt; \
+  macro compose Y "&lt;first-entry&gt;&lt;enter-command&gt;set wait_key=no&lt;enter&gt; \
+    | pandoc -o /tmp/neomutt-alternative.html&lt;enter&gt; \
     &lt;attach-file&gt;/tmp/neomutt-alternative.html&lt;enter&gt; \
-    &lt;tag-entry&gt;&lt;previous-entry&gt;&lt;tag-entry&gt;&lt;group-alternatives&gt;"
+    &lt;toggle-unlink&gt;&lt;toggle-disposition&gt; \
+    &lt;tag-entry&gt;&lt;first-entry&gt;&lt;tag-entry&gt;&lt;group-alternatives&gt; \
+    &lt;enter-command&gt;set wait_key=yes&lt;enter&gt;&lt;send-message&gt;" \
+    "send the message as 'multipart/alternative'"
 </screen>
         </para>
       </sect2>
@@ -11478,14 +11476,14 @@ set preferred_languages="fr,en,de"
 
           <listitem>
             <para>
-              Tag them with <command>&lt;tag-entry&gt;</command>
+              Tag them with <literal>&lt;tag-entry&gt;</literal>
             </para>
           </listitem>
 
           <listitem>
             <para>
               Edit the <literal>Content-Language</literal> header of every attachment with command
-              <command>&lt;edit-language&gt;</command> (default to <literal>Ctrl-L</literal>). This
+              <literal>&lt;edit-language&gt;</literal> (default to <literal>Ctrl-L</literal>). This
               is important, otherwise the recipient of this email will not know the corresponding
               languages. You can set arbitrary string as <literal>Content-Language</literal>, but it
               is recommended to set it as some common prefixes such as "en", "zh" and "fr".
@@ -11493,7 +11491,7 @@ set preferred_languages="fr,en,de"
           </listitem>
           <listitem>
             <para>
-              Group all the tag messages together by <command>&lt;group-multilingual&gt;</command>
+              Group all the tag messages together by <literal>&lt;group-multilingual&gt;</literal>
               (default to <literal>^</literal>).
             </para>
           </listitem>
@@ -11511,12 +11509,11 @@ set preferred_languages="fr,en,de"
         </para>
 
         <para>
-          Note that after grouping, you can't view, edit or break the
-          <literal>multipart/multilingual</literal> email bundle, because it is in a temporary form.
-          But you can view and edit its primitive part using the <command>&lt;edit&gt;</command>
-          command. When postponing emails or on error (e.g., no recipients address when sending
-          emails) this <literal>multipart/multilingual</literal> will be broken apart and need to
-          be tagged and group together again as described above.
+          After grouping the separate parts will be displayed in a tree
+          structure. Attachments can still be edited separately and reordered within
+          the group, but must be ungrouped using the <literal>&lt;ungroup-attachment&gt;</literal>
+          (#) binding for more advanced editing before tagging and grouping together again
+          as described above.
         </para>
       </sect2>
     </sect1>
