@@ -486,9 +486,16 @@ static int delete_attachment(struct AttachCtx *actx, int aidx)
  */
 static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachPtr *ap)
 {
-  ap->level = (actx->idxlen > 0) ? actx->idx[actx->idxlen - 1]->level : 0;
-  if (actx->idxlen)
-    actx->idx[actx->idxlen - 1]->body->next = ap->body;
+  ap->level = 0;
+  for (int i = actx->idxlen; i > 0; i--)
+  {
+    if (ap->level == actx->idx[i - 1]->level)
+    {
+      actx->idx[i - 1]->body->next = ap->body;
+      break;
+    }
+  }
+
   ap->body->aptr = ap;
   mutt_actx_add_attach(actx, ap);
   update_menu(actx, menu, false);
