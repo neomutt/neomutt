@@ -1217,29 +1217,33 @@ int mx_msg_close(struct Mailbox *m, struct Message **msg)
  */
 void mx_alloc_memory(struct Mailbox *m)
 {
+  const int grow = 25;
   size_t s = MAX(sizeof(struct Email *), sizeof(int));
 
-  if ((m->email_max + 25) * s < m->email_max * s)
+  if (((m->email_max + grow) * s) < (m->email_max * s))
   {
     mutt_error(_("Out of memory"));
     mutt_exit(1);
   }
 
-  m->email_max += 25;
+  m->email_max += grow;
   if (m->emails)
   {
-    mutt_mem_realloc(&m->emails, sizeof(struct Email *) * m->email_max);
-    mutt_mem_realloc(&m->v2r, sizeof(int) * m->email_max);
+    mutt_mem_realloc(&m->emails, m->email_max * sizeof(struct Email *));
+    mutt_mem_realloc(&m->v2r, m->email_max * sizeof(int));
   }
   else
   {
     m->emails = mutt_mem_calloc(m->email_max, sizeof(struct Email *));
     m->v2r = mutt_mem_calloc(m->email_max, sizeof(int));
   }
-  for (int i = m->email_max - 25; i < m->email_max; i++)
+  for (int i = m->email_max - grow; i < m->email_max; i++)
   {
-    m->emails[i] = NULL;
-    m->v2r[i] = -1;
+    if (i < m->email_max)
+    {
+      m->emails[i] = NULL;
+      m->v2r[i] = -1;
+    }
   }
 }
 

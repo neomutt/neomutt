@@ -1248,6 +1248,9 @@ static int op_compose_move_down(struct ComposeSharedData *shared, int op)
 static int op_compose_move_up(struct ComposeSharedData *shared, int op)
 {
   int index = menu_get_index(shared->adata->menu);
+  if (index < 0)
+    return IR_ERROR;
+
   if (index == 0)
   {
     mutt_error(_("Attachment is already at top"));

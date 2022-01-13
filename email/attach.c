@@ -39,16 +39,19 @@
  */
 void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach)
 {
+  const int grow = 5;
+
   if (!actx || !attach)
     return;
 
   if (actx->idxlen == actx->idxmax)
   {
-    actx->idxmax += 5;
-    mutt_mem_realloc(&actx->idx, sizeof(struct AttachPtr *) * actx->idxmax);
-    mutt_mem_realloc(&actx->v2r, sizeof(short) * actx->idxmax);
-    for (int i = actx->idxlen; i < actx->idxmax; i++)
-      actx->idx[i] = NULL;
+    actx->idxmax += grow;
+    mutt_mem_realloc(&actx->idx, actx->idxmax * sizeof(struct AttachPtr *));
+    mutt_mem_realloc(&actx->v2r, actx->idxmax * sizeof(short));
+
+    memset(&actx->idx[actx->idxlen], 0, grow * sizeof(struct AttachPtr *));
+    memset(&actx->v2r[actx->idxlen], 0, grow * sizeof(short));
   }
 
   actx->idx[actx->idxlen++] = attach;

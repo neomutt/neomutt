@@ -275,7 +275,8 @@ void mailbox_gc_add(struct Email *e)
   {
     mailbox_gc_run();
   }
-  gc.arr[gc.idx++] = e;
+  gc.arr[gc.idx] = e;
+  gc.idx++;
 }
 
 /**
