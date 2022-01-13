@@ -337,6 +337,16 @@ struct HashElem *mutt_hash_insert(struct HashTable *table, const char *strkey, v
   return mutt_hash_typed_insert(table, strkey, -1, data);
 }
 
+struct HashTable *mutt_hash_merge(struct HashTable *table, struct HashTable *aux)
+{
+  if (!table || !aux)
+    return NULL;
+  for (struct HashElem *el = mutt_hash_walk(aux, aux->table); !el;
+       el = mutt_hash_walk(aux, el))
+    mutt_hash_insert(table, el->key.strkey, el->data);
+  return table;
+}
+
 /**
  * mutt_hash_int_insert - Add a new element to the Hash Table (with integer keys)
  * @param table  Hash Table (with integer keys)

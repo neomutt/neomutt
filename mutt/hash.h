@@ -97,14 +97,14 @@ struct HashTable
 {
   size_t num_elems;             ///< Number of elements in the Hash Table
   bool strdup_keys : 1;         ///< if set, the key->strkey is strdup()'d
-  bool allow_dups  : 1;         ///< if set, duplicate keys are allowed
+  bool allow_dups : 1;          ///< if set, duplicate keys are allowed
   struct HashElem **table;      ///< Array of Hash keys
   hash_gen_hash_t gen_hash;     ///< Function to generate hash id from the key
   hash_cmp_key_t cmp_key;       ///< Function to compare two Hash keys
   intptr_t hdata;               ///< Data to pass to the hdata_free() function
   hash_hdata_free_t hdata_free; ///< Function to free a Hash element
 };
-
+// clang-format off
 typedef uint8_t HashFlags;             ///< Flags for mutt_hash_new(), e.g. #MUTT_HASH_STRCASECMP
 #define MUTT_HASH_NO_FLAGS          0  ///< No flags are set
 #define MUTT_HASH_STRCASECMP  (1 << 0) ///< use strcasecmp() to compare keys
@@ -117,6 +117,7 @@ void *            mutt_hash_find          (const struct HashTable *table, const 
 struct HashElem * mutt_hash_find_elem     (const struct HashTable *table, const char *strkey);
 void              mutt_hash_free          (struct HashTable **ptr);
 struct HashElem * mutt_hash_insert        (struct HashTable *table, const char *strkey, void *data);
+struct HashTable* mutt_hash_merge         (struct HashTable *table, struct HashTable *aux);
 void              mutt_hash_int_delete    (struct HashTable *table, unsigned int intkey, const void *data);
 void *            mutt_hash_int_find      (const struct HashTable *table, unsigned int intkey);
 struct HashElem * mutt_hash_int_insert    (struct HashTable *table, unsigned int intkey, void *data);
@@ -124,7 +125,7 @@ struct HashTable *mutt_hash_int_new       (size_t num_elems, HashFlags flags);
 struct HashTable *mutt_hash_new           (size_t num_elems, HashFlags flags);
 void              mutt_hash_set_destructor(struct HashTable *table, hash_hdata_free_t fn, intptr_t fn_data);
 struct HashElem * mutt_hash_typed_insert  (struct HashTable *table, const char *strkey, int type, void *data);
-
+// clang-format on
 /**
  * struct HashWalkState - Cursor to iterate through a Hash Table
  */
