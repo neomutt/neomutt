@@ -502,6 +502,7 @@ const struct Binding OpCompose[] = { /* map: compose */
   { "get-attachment",        OP_COMPOSE_GET_ATTACHMENT,      "G" },
   { "group-alternatives",    OP_COMPOSE_GROUP_ALTS,          "&" },
   { "group-multilingual",    OP_COMPOSE_GROUP_LINGUAL,       "^" },
+  { "ungroup-attachment",    OP_COMPOSE_UNGROUP_ATTACHMENT,  "#" },
   { "ispell",                OP_COMPOSE_ISPELL,              "i" },
 #ifdef MIXMASTER
   { "mix",                   OP_COMPOSE_MIX,                 "M" },

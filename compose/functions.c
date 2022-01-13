@@ -1489,6 +1489,70 @@ static int op_compose_group_lingual(struct ComposeSharedData *shared, int op)
 }
 
 /**
+ * op_compose_ungroup_attachment - Ungroup a 'multipart' attachment - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_compose_ungroup_attachment(struct ComposeSharedData *shared, int op)
+{
+  if (shared->adata->actx->idx[shared->adata->menu->current]->body->type != TYPE_MULTIPART)
+  {
+    mutt_error(_("Attachment is not 'multipart'"));
+    return IR_ERROR;
+  }
+
+  int aidx = shared->adata->menu->current;
+  struct AttachCtx *actx = shared->adata->actx;
+  struct Body *bptr = actx->idx[aidx]->body;
+  struct Body *bptr_next = bptr->next;
+  struct Body *bptr_previous = NULL;
+  struct Body *bptr_parent = NULL;
+  int parent_type = actx->idx[aidx]->parent_type;
+  int level = actx->idx[aidx]->level;
+
+  // reorder body pointers
+  if (find_body_previous(shared->email->body, bptr, &bptr_previous))
+    bptr_previous->next = bptr->parts;
+  else if (find_body_parent(shared->email->body, NULL, bptr, &bptr_parent))
+    bptr_parent->parts = bptr->parts;
+  else
+    shared->email->body = bptr->parts;
+
+  // update attachment list
+  int i = aidx + 1;
+  while (actx->idx[i]->level > level)
+  {
+    actx->idx[i]->level--;
+    if (actx->idx[i]->level == level)
+    {
+      actx->idx[i]->parent_type = parent_type;
+      // set body->next for final attachment in group
+      if (!actx->idx[i]->body->next)
+        actx->idx[i]->body->next = bptr_next;
+    }
+    i++;
+    if (i == actx->idxlen)
+      break;
+  }
+
+  // free memory
+  actx->idx[aidx]->body->parts = NULL;
+  actx->idx[aidx]->body->next = NULL;
+  actx->idx[aidx]->body->email = NULL;
+  mutt_body_free(&actx->idx[aidx]->body);
+  FREE(&actx->idx[aidx]->tree);
+  FREE(&actx->idx[aidx]);
+
+  // reorder attachment list
+  for (int j = aidx; j < (actx->idxlen - 1); j++)
+    actx->idx[j] = actx->idx[j + 1];
+  actx->idx[actx->idxlen - 1] = NULL;
+  actx->idxlen--;
+  update_menu(actx, shared->adata->menu, false);
+
+  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  return IR_SUCCESS;
+}
+
+/**
  * op_compose_ispell - Run ispell on the message - Implements ::compose_function_t - @ingroup compose_function_api
  */
 static int op_compose_ispell(struct ComposeSharedData *shared, int op)
@@ -2353,6 +2417,7 @@ struct ComposeFunction ComposeFunctions[] = {
   { OP_COMPOSE_GET_ATTACHMENT,      op_compose_get_attachment },
   { OP_COMPOSE_GROUP_ALTS,          op_compose_group_alts },
   { OP_COMPOSE_GROUP_LINGUAL,       op_compose_group_lingual },
+  { OP_COMPOSE_UNGROUP_ATTACHMENT,  op_compose_ungroup_attachment },
   { OP_COMPOSE_ISPELL,              op_compose_ispell },
 #ifdef MIXMASTER
   { OP_COMPOSE_MIX,                 op_compose_mix },
