@@ -626,8 +626,7 @@ static int active_get_cache(struct NntpAccountData *adata)
   if (!fp)
     return -1;
 
-  if (!fgets(buf, sizeof(buf), fp) ||
-      (sscanf(buf, "%" SCNd64 "%4095s", &t, file) != 1) || (t == 0))
+  if (!fgets(buf, sizeof(buf), fp) || (sscanf(buf, "%jd%4095s", &t, file) != 1) || (t == 0))
   {
     mutt_file_fclose(&fp);
     return -1;
