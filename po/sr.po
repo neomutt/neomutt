@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: neomutt 20210205\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2022-01-14 13:16+0000\n"
-"PO-Revision-Date: 2021-12-11 14:52+0100\n"
+"PO-Revision-Date: 2022-01-14 20:25+0100\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: poe 1.3.10-1\n"
+"X-Generator: poe 1.4.2\n"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:399
@@ -1526,13 +1526,12 @@ msgid "You may not delete the only attachment"
 msgstr "Не можете уклонити једини прилог"
 
 #: compose/functions.c:438 compose/functions.c:633
-#, fuzzy
 msgid "Can't leave group with only one attachment"
-msgstr "Не можете уклонити једини прилог"
+msgstr "Група се не може састојати само од једног прилога"
 
 #: compose/functions.c:600 compose/functions.c:615
 msgid "Attachments to be grouped must have the same parent"
-msgstr ""
+msgstr "Прилози за груписање морају имати исти надређени прилог"
 
 #: compose/functions.c:841
 msgid "Attaching selected file..."
@@ -1576,9 +1575,8 @@ msgid "Invalid encoding"
 msgstr "Погрешно кодирање"
 
 #: compose/functions.c:1207
-#, fuzzy
 msgid "Can't edit multipart attachments"
-msgstr "Само је подржано брисање multipart прилога"
+msgstr "Не могу се уређивати multipart прилози"
 
 #: compose/functions.c:1258 send/send.c:2855
 #, c-format
@@ -1590,9 +1588,8 @@ msgid "Empty 'Content-Language'"
 msgstr "Празно заглавље „Content-Language“"
 
 #: compose/functions.c:1425
-#, fuzzy
 msgid "Can't get multipart attachments"
-msgstr "Само је подржано брисање multipart прилога"
+msgstr "Не могу се добавити multipart прилози"
 
 #: compose/functions.c:1453
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
@@ -1611,9 +1608,8 @@ msgid "Not sending this message"
 msgstr "Ова порука неће бити послана"
 
 #: compose/functions.c:1498
-#, fuzzy
 msgid "Attachment is not 'multipart'"
-msgstr "Прилог је већ на врху"
+msgstr "Прилог није „multipart“"
 
 #: compose/functions.c:1589 compose/functions.c:1608
 msgid "Attachment is already at bottom"
@@ -1621,7 +1617,7 @@ msgstr "Прилог је већ на дну"
 
 #: compose/functions.c:1595 compose/functions.c:1648
 msgid "Attachment can't be moved out of group"
-msgstr ""
+msgstr "Прилог се не може преместити ван групе"
 
 #: compose/functions.c:1643
 msgid "Attachment is already at top"
@@ -1662,9 +1658,8 @@ msgid "Send attachment with name: "
 msgstr "Послати прилог са називом: "
 
 #: compose/functions.c:1840
-#, fuzzy
 msgid "Can't rename multipart attachments"
-msgstr "Само је подржано брисање multipart прилога"
+msgstr "Не могу се преименовати multipart прилози"
 
 #: compose/functions.c:1846
 msgid "Rename to: "
@@ -1719,19 +1714,16 @@ msgid "Save (postpone) draft message?"
 msgstr "Чување (одлагање) нацрта?"
 
 #: compose/functions.c:2191
-#, fuzzy
 msgid "Can't filter multipart attachments"
-msgstr "Само је подржано брисање multipart прилога"
+msgstr "Не могу се филтрирати multipart прилози"
 
 #: compose/functions.c:2224
-#, fuzzy
 msgid "Can't print multipart attachments"
-msgstr "Одштампати %d означен прилог?"
+msgstr "Не могу се одштампати multipart прилози"
 
 #: compose/functions.c:2244
-#, fuzzy
 msgid "Can't save multipart attachments"
-msgstr "Само је подржано брисање multipart прилога"
+msgstr "Не могу се сачувати multipart прилози"
 
 #: config/bool.c:75
 #, c-format
@@ -5517,7 +5509,7 @@ msgstr "груписање означених прилога као „multipart
 
 #: opcodes.h:83
 msgid "ungroup 'multipart' attachment"
-msgstr ""
+msgstr "разгруписање „multipart“ прилога"
 
 #: opcodes.h:84
 msgid "run ispell on the message"
@@ -7546,9 +7538,8 @@ msgid "Compile options:"
 msgstr "Опције за компајлирање:"
 
 #: version.c:497
-#, fuzzy
 msgid "Devel options:"
-msgstr "Подразумеване опције:"
+msgstr "Опције при изградњи:"
 
 #~ msgid "Already skipped past headers"
 #~ msgstr "Заглавља су већ прескочена"
@@ -7559,9 +7550,9 @@ msgstr "Подразумеване опције:"
 #~ msgid "Debug options:"
 #~ msgstr "Опције за дебаговање:"
 
-#, c-format
 #~ msgid "Error seeking in alias file"
 #~ msgstr "Грешка при читању фајла са алијасом"
+#, c-format
 
 #~ msgid "Option %s may not be set or reset from the pager"
 #~ msgstr "Опција %s се не може поставити или вратити из страничника"
@@ -7569,9 +7560,9 @@ msgstr "Подразумеване опције:"
 #~ msgid "The fundamental part can't be moved"
 #~ msgstr "Кључни део се не може преместити"
 
-#, c-format
 #~ msgid "You are on the first page"
 #~ msgstr "Налазите се на првој страни"
+#, c-format
 
 #~ msgid "You are on the last page"
 #~ msgstr "Налазите се на последњој страни"
