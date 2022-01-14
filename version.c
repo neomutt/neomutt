@@ -298,6 +298,9 @@ static struct CompileOptions debug_opts[] = {
 #ifdef HAVE_LIBUNWIND
   { "backtrace", 2 },
 #endif
+#ifdef USE_DEBUG_EMAIL
+  { "email", 2 },
+#endif
 #ifdef USE_DEBUG_GRAPHVIZ
   { "graphviz", 2 },
 #endif
