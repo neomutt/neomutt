@@ -2004,7 +2004,8 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
     {
       if (mutt_autocrypt_set_sign_as_default_key(e_post))
       {
-        e_post->body = mutt_remove_multipart(e_post->body);
+        if (mutt_istr_equal(e_post->body->subtype, "mixed"))
+          e_post->body = mutt_remove_multipart(e_post->body);
         decode_descriptions(e_post->body);
         mutt_error(_("Error encrypting message. Check your crypt settings."));
         return -1;
@@ -2020,7 +2021,8 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
       if (mutt_protect(e_post, pgpkeylist, true) == -1)
       {
         FREE(&pgpkeylist);
-        e_post->body = mutt_remove_multipart(e_post->body);
+        if (mutt_istr_equal(e_post->body->subtype, "mixed"))
+          e_post->body = mutt_remove_multipart(e_post->body);
         decode_descriptions(e_post->body);
         mutt_error(_("Error encrypting message. Check your crypt settings."));
         return -1;
@@ -2051,7 +2053,8 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
     }
     mutt_env_free(&e_post->body->mime_headers); /* protected headers */
     mutt_param_delete(&e_post->body->parameter, "protected-headers");
-    e_post->body = mutt_remove_multipart(e_post->body);
+    if (mutt_istr_equal(e_post->body->subtype, "mixed"))
+      e_post->body = mutt_remove_multipart(e_post->body);
     decode_descriptions(e_post->body);
     mutt_unprepare_envelope(e_post->env);
     return -1;
@@ -2242,11 +2245,26 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
     if (flags & (SEND_POSTPONED | SEND_RESEND))
     {
-      fp_tmp = mutt_file_fopen(e_templ->body->filename, "a+");
-      if (!fp_tmp)
+      if (e_templ->body->type == TYPE_MULTIPART)
       {
-        mutt_perror(e_templ->body->filename);
-        goto cleanup;
+        struct Body *b = e_templ->body->parts;
+        while (b->type == TYPE_MULTIPART)
+          b = b->parts;
+        fp_tmp = mutt_file_fopen(b->filename, "a+");
+        if (!fp_tmp)
+        {
+          mutt_perror(b->filename);
+          goto cleanup;
+        }
+      }
+      else
+      {
+        fp_tmp = mutt_file_fopen(e_templ->body->filename, "a+");
+        if (!fp_tmp)
+        {
+          mutt_perror(e_templ->body->filename);
+          goto cleanup;
+        }
       }
     }
 
@@ -2494,14 +2512,32 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (!(flags & SEND_BATCH))
   {
     struct stat st = { 0 };
-    time_t mtime = mutt_file_decrease_mtime(e_templ->body->filename, NULL);
-    if (mtime == (time_t) -1)
+    time_t mtime;
+    if (e_templ->body->type == TYPE_MULTIPART)
     {
-      mutt_perror(e_templ->body->filename);
-      goto cleanup;
-    }
+      struct Body *b = e_templ->body->parts;
+      while (b->type == TYPE_MULTIPART)
+        b = b->parts;
+      mtime = mutt_file_decrease_mtime(b->filename, NULL);
+      if (mtime == (time_t) -1)
+      {
+        mutt_perror(b->filename);
+        goto cleanup;
+      }
 
-    mutt_update_encoding(e_templ->body, sub);
+      mutt_update_encoding(e_templ->body->parts, sub);
+    }
+    else
+    {
+      mtime = mutt_file_decrease_mtime(e_templ->body->filename, NULL);
+      if (mtime == (time_t) -1)
+      {
+        mutt_perror(e_templ->body->filename);
+        goto cleanup;
+      }
+
+      mutt_update_encoding(e_templ->body, sub);
+    }
 
     const bool c_edit_headers = cs_subset_bool(sub, "edit_headers");
     const bool c_auto_edit = cs_subset_bool(sub, "auto_edit");
@@ -2521,27 +2557,62 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     {
       /* If the this isn't a text message, look for a mailcap edit command */
       const char *const c_editor = cs_subset_string(sub, "editor");
-      if (mutt_needs_mailcap(e_templ->body))
+      if (e_templ->body->type == TYPE_MULTIPART)
       {
-        if (!mutt_edit_attachment(e_templ->body))
-          goto cleanup;
-      }
-      else if (c_edit_headers)
-      {
-        mutt_env_to_local(e_templ->env);
-        mutt_edit_headers(c_editor, e_templ->body->filename, e_templ, &fcc);
-        mutt_env_to_intl(e_templ->env, NULL, NULL);
+        struct Body *b = e_templ->body->parts;
+        while (b->type == TYPE_MULTIPART)
+          b = b->parts;
+        if (mutt_needs_mailcap(b))
+        {
+          if (!mutt_edit_attachment(b))
+            goto cleanup;
+        }
+        else if (c_edit_headers)
+        {
+          mutt_env_to_local(e_templ->env);
+          mutt_edit_headers(c_editor, b->filename, e_templ, &fcc);
+          mutt_env_to_intl(e_templ->env, NULL, NULL);
+        }
+        else
+        {
+          mutt_edit_file(c_editor, b->filename);
+          if (stat(b->filename, &st) == 0)
+          {
+            if (mtime != st.st_mtime)
+              fix_end_of_file(b->filename);
+          }
+          else
+          {
+            mutt_perror(b->filename);
+          }
+        }
       }
       else
       {
-        mutt_edit_file(c_editor, e_templ->body->filename);
-        if (stat(e_templ->body->filename, &st) == 0)
+        if (mutt_needs_mailcap(e_templ->body))
         {
-          if (mtime != st.st_mtime)
-            fix_end_of_file(e_templ->body->filename);
+          if (!mutt_edit_attachment(e_templ->body))
+            goto cleanup;
+        }
+        else if (c_edit_headers)
+        {
+          mutt_env_to_local(e_templ->env);
+          mutt_edit_headers(c_editor, e_templ->body->filename, e_templ, &fcc);
+          mutt_env_to_intl(e_templ->env, NULL, NULL);
         }
         else
-          mutt_perror(e_templ->body->filename);
+        {
+          mutt_edit_file(c_editor, e_templ->body->filename);
+          if (stat(e_templ->body->filename, &st) == 0)
+          {
+            if (mtime != st.st_mtime)
+              fix_end_of_file(e_templ->body->filename);
+          }
+          else
+          {
+            mutt_perror(e_templ->body->filename);
+          }
+        }
       }
 
       mutt_message_hook(NULL, e_templ, MUTT_SEND2_HOOK);
@@ -2845,7 +2916,8 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       if ((crypt_get_keys(e_templ, &pgpkeylist, 0) == -1) ||
           (mutt_protect(e_templ, pgpkeylist, false) == -1))
       {
-        e_templ->body = mutt_remove_multipart(e_templ->body);
+        if (mutt_istr_equal(e_templ->body->subtype, "mixed"))
+          e_templ->body = mutt_remove_multipart(e_templ->body);
 
         FREE(&pgpkeylist);
 
@@ -2896,13 +2968,15 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       else if ((e_templ->security & SEC_SIGN) && (e_templ->body->type == TYPE_MULTIPART))
       {
         mutt_body_free(&e_templ->body->parts->next); /* destroy sig */
-        e_templ->body = mutt_remove_multipart(e_templ->body);
+        if (mutt_istr_equal(e_templ->body->subtype, "mixed"))
+          e_templ->body = mutt_remove_multipart(e_templ->body);
       }
 
       FREE(&pgpkeylist);
       mutt_env_free(&e_templ->body->mime_headers); /* protected headers */
       mutt_param_delete(&e_templ->body->parameter, "protected-headers");
-      e_templ->body = mutt_remove_multipart(e_templ->body);
+      if (mutt_istr_equal(e_templ->body->subtype, "mixed"))
+        e_templ->body = mutt_remove_multipart(e_templ->body);
       decode_descriptions(e_templ->body);
       mutt_unprepare_envelope(e_templ->env);
       FREE(&finalpath);
