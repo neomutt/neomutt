@@ -44,6 +44,7 @@
   _fmt(OP_ATTACHMENT_GET_ATTACHMENT,          N_("get a temporary copy of an attachment")) \
   _fmt(OP_ATTACHMENT_GROUP_ALTS,              N_("group tagged attachments as 'multipart/alternative'")) \
   _fmt(OP_ATTACHMENT_GROUP_LINGUAL,           N_("group tagged attachments as 'multipart/multilingual'")) \
+  _fmt(OP_ATTACHMENT_GROUP_RELATED,           N_("group tagged attachments as 'multipart/related'")) \
   _fmt(OP_ATTACHMENT_MOVE_DOWN,               N_("move an attachment down in the attachment list")) \
   _fmt(OP_ATTACHMENT_MOVE_UP,                 N_("move an attachment up in the attachment list")) \
   _fmt(OP_ATTACHMENT_NEW_MIME,                N_("compose new attachment using mailcap entry")) \
