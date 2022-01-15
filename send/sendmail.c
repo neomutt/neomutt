@@ -418,6 +418,9 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
 
   ARRAY_ADD(&args, NULL);
 
+  const short c_sendmail_wait = cs_subset_number(sub, "sendmail_wait");
+  i = send_msg(path, &args, msg, OptNoCurses ? NULL : &childout, c_sendmail_wait);
+
   /* Some user's $sendmail command uses gpg for password decryption,
    * and is set up to prompt using ncurses pinentry.  If we
    * mutt_endwin() it leaves other users staring at a blank screen.
@@ -427,8 +430,6 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
     mutt_need_hard_redraw();
   }
 
-  const short c_sendmail_wait = cs_subset_number(sub, "sendmail_wait");
-  i = send_msg(path, &args, msg, OptNoCurses ? NULL : &childout, c_sendmail_wait);
   if (i != (EX_OK & 0xff))
   {
     if (i != S_BKG)
