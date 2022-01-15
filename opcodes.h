@@ -34,6 +34,7 @@
   _fmt(OP_ATTACHMENT_COLLAPSE,                N_("toggle display of subparts")) \
   _fmt(OP_ATTACHMENT_DELETE,                  N_("delete the current entry")) \
   _fmt(OP_ATTACHMENT_DETACH,                  N_("delete the current entry")) \
+  _fmt(OP_ATTACHMENT_EDIT_CONTENT_ID,         N_("edit the 'Content-ID' of the attachment")) \
   _fmt(OP_ATTACHMENT_EDIT_DESCRIPTION,        N_("edit attachment description")) \
   _fmt(OP_ATTACHMENT_EDIT_ENCODING,           N_("edit attachment transfer-encoding")) \
   _fmt(OP_ATTACHMENT_EDIT_LANGUAGE,           N_("edit the 'Content-Language' of the attachment")) \

@@ -1131,6 +1131,61 @@ static int op_attachment_detach(struct ComposeSharedData *shared, int op)
 }
 
 /**
+ * op_attachment_edit_content_id - Edit the 'Content-ID' of the attachment - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_attachment_edit_content_id(struct ComposeSharedData *shared, int op)
+{
+  if (!check_count(shared->adata->actx))
+    return IR_NO_ACTION;
+
+  int rc = IR_NO_ACTION;
+  struct Buffer *buf = mutt_buffer_pool_get();
+  struct AttachPtr *cur_att =
+      current_attachment(shared->adata->actx, shared->adata->menu);
+
+  char *id = mutt_param_get(&cur_att->body->parameter, "content-id");
+  if (id)
+  {
+    mutt_buffer_strcpy(buf, id);
+  }
+  else
+  {
+    id = gen_cid();
+    mutt_buffer_strcpy(buf, id);
+    FREE(&id);
+  }
+
+  if (mutt_buffer_get_field("Content-ID: ", buf, MUTT_COMP_NO_FLAGS, false,
+                            NULL, NULL, NULL) == 0)
+  {
+    if (!mutt_str_equal(id, mutt_buffer_string(buf)))
+    {
+      if (check_cid(mutt_buffer_string(buf)))
+      {
+        mutt_param_set(&cur_att->body->parameter, "content-id", mutt_buffer_string(buf));
+        menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+        notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+        mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+        rc = IR_SUCCESS;
+      }
+      else
+      {
+        mutt_error(
+            _("Content-ID can only contain the characters: -.0-9@A-Z_a-z"));
+        rc = IR_ERROR;
+      }
+    }
+  }
+
+  mutt_buffer_pool_release(&buf);
+
+  if (rc != IR_ERROR)
+    mutt_clear_error();
+
+  return rc;
+}
+
+/**
  * op_attachment_edit_description - Edit attachment description - Implements ::compose_function_t - @ingroup compose_function_api
  */
 static int op_attachment_edit_description(struct ComposeSharedData *shared, int op)
@@ -2450,6 +2505,7 @@ struct ComposeFunction ComposeFunctions[] = {
   { OP_ATTACHMENT_ATTACH_MESSAGE,         op_attachment_attach_message },
   { OP_ATTACHMENT_ATTACH_NEWS_MESSAGE,    op_attachment_attach_message },
   { OP_ATTACHMENT_DETACH,                 op_attachment_detach },
+  { OP_ATTACHMENT_EDIT_CONTENT_ID,        op_attachment_edit_content_id },
   { OP_ATTACHMENT_EDIT_DESCRIPTION,       op_attachment_edit_description },
   { OP_ATTACHMENT_EDIT_ENCODING,          op_attachment_edit_encoding },
   { OP_ATTACHMENT_EDIT_LANGUAGE,          op_attachment_edit_language },

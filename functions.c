@@ -475,6 +475,7 @@ const struct Binding OpCompose[] = { /* map: compose */
   { "display-toggle-weed",           OP_DISPLAY_HEADERS,                    "h" },
   { "edit-bcc",                      OP_ENVELOPE_EDIT_BCC,                  "b" },
   { "edit-cc",                       OP_ENVELOPE_EDIT_CC,                   "c" },
+  { "edit-content-id",               OP_ATTACHMENT_EDIT_CONTENT_ID,         "\033i" },  // <Alt-i>
   { "edit-description",              OP_ATTACHMENT_EDIT_DESCRIPTION,        "d" },
   { "edit-encoding",                 OP_ATTACHMENT_EDIT_ENCODING,           "\005" },   // <Ctrl-E>
   { "edit-fcc",                      OP_ENVELOPE_EDIT_FCC,                  "f" },
