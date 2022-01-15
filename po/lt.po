@@ -1527,13 +1527,12 @@ msgid "You may not delete the only attachment"
 msgstr "Tu negali ištrinti vienintelio priedo"
 
 #: compose/functions.c:438 compose/functions.c:633
-#, fuzzy
 msgid "Can't leave group with only one attachment"
-msgstr "Tu negali ištrinti vienintelio priedo"
+msgstr "Negalima palikti grupės tik su vienu priedu"
 
 #: compose/functions.c:600 compose/functions.c:615
 msgid "Attachments to be grouped must have the same parent"
-msgstr ""
+msgstr "Grupavimui parinkti priedai turi turėti tą patį tėvą"
 
 #: compose/functions.c:841
 msgid "Attaching selected file..."
@@ -1577,9 +1576,8 @@ msgid "Invalid encoding"
 msgstr "Bloga koduotė"
 
 #: compose/functions.c:1207
-#, fuzzy
 msgid "Can't edit multipart attachments"
-msgstr "Palaikomas trynimas tik iš keleto dalių priedų"
+msgstr "Negalima redaguoti priedų iš kelių dalių"
 
 #: compose/functions.c:1258 send/send.c:2855
 #, c-format
@@ -1591,9 +1589,8 @@ msgid "Empty 'Content-Language'"
 msgstr "Tuščia 'Content-Language' antraštė"
 
 #: compose/functions.c:1425
-#, fuzzy
 msgid "Can't get multipart attachments"
-msgstr "Palaikomas trynimas tik iš keleto dalių priedų"
+msgstr "Negalima gauti priedo iš kelių dalių"
 
 #: compose/functions.c:1453
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
@@ -1612,9 +1609,8 @@ msgid "Not sending this message"
 msgstr "Nesiunčiu šito laiško"
 
 #: compose/functions.c:1498
-#, fuzzy
 msgid "Attachment is not 'multipart'"
-msgstr "Priedas jau yra viršuje"
+msgstr "Priedas nėra sudarytas iš kelių dalių"
 
 #: compose/functions.c:1589 compose/functions.c:1608
 msgid "Attachment is already at bottom"
@@ -1622,7 +1618,7 @@ msgstr "Priedas jau yra apačioje"
 
 #: compose/functions.c:1595 compose/functions.c:1648
 msgid "Attachment can't be moved out of group"
-msgstr ""
+msgstr "Negalima iškelti priedo iš grupės"
 
 #: compose/functions.c:1643
 msgid "Attachment is already at top"
@@ -1663,9 +1659,8 @@ msgid "Send attachment with name: "
 msgstr "Siųsti priedą vardu: "
 
 #: compose/functions.c:1840
-#, fuzzy
 msgid "Can't rename multipart attachments"
-msgstr "Palaikomas trynimas tik iš keleto dalių priedų"
+msgstr "Negalima pervadinti priedo iš kelių dalių"
 
 #: compose/functions.c:1846
 msgid "Rename to: "
@@ -1720,19 +1715,16 @@ msgid "Save (postpone) draft message?"
 msgstr "Išsaugoti (atidėti) juodraštį?"
 
 #: compose/functions.c:2191
-#, fuzzy
 msgid "Can't filter multipart attachments"
-msgstr "Palaikomas trynimas tik iš keleto dalių priedų"
+msgstr "Negalima filtruoti kelių dalių priedų"
 
 #: compose/functions.c:2224
-#, fuzzy
 msgid "Can't print multipart attachments"
-msgstr "Spausdinti %d pažymėtą priedą?"
+msgstr "Negalima spausdinti kelių dalių priedų"
 
 #: compose/functions.c:2244
-#, fuzzy
 msgid "Can't save multipart attachments"
-msgstr "Palaikomas trynimas tik iš keleto dalių priedų"
+msgstr "Negalima išsaugoti kelių dalių priedų"
 
 #: config/bool.c:75
 #, c-format
@@ -5512,7 +5504,7 @@ msgstr "grupuoti pažymėtus priedus kaip kalbų alternatyvas"
 
 #: opcodes.h:83
 msgid "ungroup 'multipart' attachment"
-msgstr ""
+msgstr "atgrupuoti kelių dalių priedą"
 
 #: opcodes.h:84
 msgid "run ispell on the message"
@@ -7540,9 +7532,8 @@ msgid "Compile options:"
 msgstr "Kompiliavimo parinktys:"
 
 #: version.c:497
-#, fuzzy
 msgid "Devel options:"
-msgstr "Įprastos parinktys:"
+msgstr "Derinimo parinktys:"
 
 #, c-format
 #~ msgid "%s authentication failed, trying next method"
