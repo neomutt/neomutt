@@ -1379,6 +1379,23 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
         mutt_str_replace(&p->description, c);
         rfc2047_decode(&p->description);
       }
+      else if (mutt_istr_equal("id", line + plen))
+      {
+        // strip <angle braces> from Content-ID: header
+        char *id = c;
+        int cid_len = mutt_str_len(c);
+        if (cid_len > 2)
+        {
+          if (id[0] == '<')
+          {
+            id++;
+            cid_len--;
+          }
+          if (id[cid_len - 1] == '>')
+            id[cid_len - 1] = '\0';
+        }
+        mutt_param_set(&p->parameter, "content-id", id);
+      }
     }
 #ifdef SUN_ATTACHMENT
     else if ((plen = mutt_istr_startswith(line, "x-sun-")))

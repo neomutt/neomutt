@@ -767,6 +767,8 @@ int mutt_write_mime_header(struct Body *a, FILE *fp, struct ConfigSubset *sub)
   int tmplen;
   char buf[256] = { 0 };
 
+  char *id = NULL;
+
   fprintf(fp, "Content-Type: %s/%s", TYPE(a), a->subtype);
 
   if (!TAILQ_EMPTY(&a->parameter))
@@ -784,6 +786,13 @@ int mutt_write_mime_header(struct Body *a, FILE *fp, struct ConfigSubset *sub)
       struct Parameter *cont = NULL;
       TAILQ_FOREACH(cont, &pl_conts, entries)
       {
+        if (mutt_istr_equal(cont->attribute, "content-id"))
+        {
+          // Content-ID: gets its own header
+          id = mutt_str_dup(cont->value);
+          break;
+        }
+
         fputc(';', fp);
 
         buf[0] = 0;
@@ -815,6 +824,12 @@ int mutt_write_mime_header(struct Body *a, FILE *fp, struct ConfigSubset *sub)
   }
 
   fputc('\n', fp);
+
+  if (id)
+  {
+    fprintf(fp, "Content-ID: <%s>\n", id);
+    mutt_mem_free(&id);
+  }
 
   if (a->language)
     fprintf(fp, "Content-Language: %s\n", a->language);
