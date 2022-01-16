@@ -9,8 +9,8 @@ benchmark the NeoMutt hcache backends.
 
 In order to run the benchmark, you must have a directory in maildir format at
 hand. NeoMutt will load messages from there and populate the header cache with
-them. Please note that you'll need a reasonable large number of messages - >50k
-- to see anything interesting.
+them. Please note that you'll need a reasonable large number of messages -
+over 50,000 - to see anything interesting.
 
 ## Running the benchmark
 
