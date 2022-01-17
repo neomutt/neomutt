@@ -56,6 +56,9 @@
 
 struct Mailbox;
 
+/* For execvp environment setting in send_msg() */
+extern char **environ;
+
 SIG_ATOMIC_VOLATILE_T SigAlrm; ///< true after SIGALRM is received
 
 ARRAY_HEAD(SendmailArgs, const char *);
@@ -160,8 +163,8 @@ static int send_msg(const char *path, struct SendmailArgs *args,
           _exit(S_ERR);
       }
 
-      /* execvpe is a glibc extension */
-      /* execvpe (path, args, mutt_envlist_getlist()); */
+      /* execvpe is a glibc extension, so just manually set environ */
+      environ = mutt_envlist_getlist();
       execvp(path, (char **) args->entries);
       _exit(S_ERR);
     }
