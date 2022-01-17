@@ -846,7 +846,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp, struct ConfigSubset *sub)
       fprintf(fp, "Content-Disposition: %s", dispstr[a->disposition]);
       len = 21 + mutt_str_len(dispstr[a->disposition]);
 
-      if (a->use_disp && (a->disposition != DISP_INLINE))
+      if (a->use_disp && ((a->disposition != DISP_INLINE) || a->d_filename))
       {
         char *fn = a->d_filename;
         if (!fn)
