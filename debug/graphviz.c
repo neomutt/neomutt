@@ -70,9 +70,10 @@
 // #define GV_HIDE_ADATA
 // #define GV_HIDE_MDATA
 // #define GV_HIDE_BODY_CONTENT
+// #define GV_HIDE_ENVELOPE
 
-static void dot_email(FILE *fp, struct Email *e, struct ListHead *links);
-static void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links);
+void dot_email(FILE *fp, struct Email *e, struct ListHead *links);
+void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links);
 
 const char *get_content_type(enum ContentType type)
 {
@@ -156,7 +157,7 @@ void add_flag(struct Buffer *buf, bool is_set, const char *name)
   }
 }
 
-static void dot_type_bool(FILE *fp, const char *name, bool val)
+void dot_type_bool(FILE *fp, const char *name, bool val)
 {
   static const char *values[] = { "false", "true" };
   fprintf(fp, "\t\t<tr>\n");
@@ -167,7 +168,7 @@ static void dot_type_bool(FILE *fp, const char *name, bool val)
 }
 
 #ifndef GV_HIDE_ADATA
-static void dot_type_char(FILE *fp, const char *name, char ch)
+void dot_type_char(FILE *fp, const char *name, char ch)
 {
   fprintf(fp, "\t\t<tr>\n");
   fprintf(fp, "\t\t\t<td border=\"0\" align=\"left\">%s</td>\n", name);
@@ -177,12 +178,12 @@ static void dot_type_char(FILE *fp, const char *name, char ch)
 }
 #endif
 
-static void dot_type_date(char *buf, size_t buflen, time_t timestamp)
+void dot_type_date(char *buf, size_t buflen, time_t timestamp)
 {
   mutt_date_localtime_format(buf, buflen, "%Y-%m-%d %H:%M:%S", timestamp);
 }
 
-static void dot_type_file(FILE *fp, const char *name, FILE *struct_fp)
+void dot_type_file(FILE *fp, const char *name, FILE *struct_fp)
 {
   fprintf(fp, "\t\t<tr>\n");
   fprintf(fp, "\t\t\t<td border=\"0\" align=\"left\">%s</td>\n", name);
@@ -199,7 +200,7 @@ static void dot_type_file(FILE *fp, const char *name, FILE *struct_fp)
   fprintf(fp, "\t\t</tr>\n");
 }
 
-static void dot_type_number(FILE *fp, const char *name, int num)
+void dot_type_number(FILE *fp, const char *name, int num)
 {
   fprintf(fp, "\t\t<tr>\n");
   fprintf(fp, "\t\t\t<td border=\"0\" align=\"left\">%s</td>\n", name);
@@ -208,7 +209,7 @@ static void dot_type_number(FILE *fp, const char *name, int num)
   fprintf(fp, "\t\t</tr>\n");
 }
 
-static void dot_type_string_escape(char *buf, size_t buflen)
+void dot_type_string_escape(char *buf, size_t buflen)
 {
   for (; buf[0]; buf++)
   {
@@ -221,7 +222,7 @@ static void dot_type_string_escape(char *buf, size_t buflen)
   }
 }
 
-static void dot_type_string(FILE *fp, const char *name, const char *str, bool force)
+void dot_type_string(FILE *fp, const char *name, const char *str, bool force)
 {
   if ((!str || (str[0] == '\0')) && !force)
     return;
@@ -247,18 +248,18 @@ static void dot_type_string(FILE *fp, const char *name, const char *str, bool fo
 }
 
 #ifndef GV_HIDE_MDATA
-static void dot_type_umask(char *buf, size_t buflen, int umask)
+void dot_type_umask(char *buf, size_t buflen, int umask)
 {
   snprintf(buf, buflen, "0%03o", umask);
 }
 #endif
 
-static void dot_ptr_name(char *buf, size_t buflen, const void *ptr)
+void dot_ptr_name(char *buf, size_t buflen, const void *ptr)
 {
   snprintf(buf, buflen, "obj_%p", ptr);
 }
 
-static void dot_ptr(FILE *fp, const char *name, void *ptr, const char *colour)
+void dot_ptr(FILE *fp, const char *name, void *ptr, const char *colour)
 {
   fprintf(fp, "\t\t<tr>\n");
   fprintf(fp, "\t\t\t<td border=\"0\" align=\"left\">%s</td>\n", name);
@@ -275,7 +276,7 @@ static void dot_ptr(FILE *fp, const char *name, void *ptr, const char *colour)
   fprintf(fp, "\t\t</tr>\n");
 }
 
-static void dot_add_link(struct ListHead *links, void *src, void *dst,
+void dot_add_link(struct ListHead *links, void *src, void *dst,
                          const char *label, bool back, const char *colour)
 {
   if (!src || !dst)
@@ -299,7 +300,7 @@ static void dot_add_link(struct ListHead *links, void *src, void *dst,
   mutt_list_insert_tail(links, mutt_str_dup(text));
 }
 
-static void dot_graph_header(FILE *fp)
+void dot_graph_header(FILE *fp)
 {
   fprintf(fp, "digraph neomutt\n");
   fprintf(fp, "{\n\n");
@@ -322,7 +323,7 @@ static void dot_graph_header(FILE *fp)
   fprintf(fp, "\n");
 }
 
-static void dot_graph_footer(FILE *fp, struct ListHead *links)
+void dot_graph_footer(FILE *fp, struct ListHead *links)
 {
   fprintf(fp, "\n");
   struct ListNode *np = NULL;
@@ -333,7 +334,7 @@ static void dot_graph_footer(FILE *fp, struct ListHead *links)
   fprintf(fp, "\n}\n");
 }
 
-static void dot_object_header(FILE *fp, const void *ptr, const char *name, const char *colour)
+void dot_object_header(FILE *fp, const void *ptr, const char *name, const char *colour)
 {
   char obj[64] = { 0 };
   dot_ptr_name(obj, sizeof(obj), ptr);
@@ -350,14 +351,14 @@ static void dot_object_header(FILE *fp, const void *ptr, const char *name, const
   fprintf(fp, "\t\t</tr>\n");
 }
 
-static void dot_object_footer(FILE *fp)
+void dot_object_footer(FILE *fp)
 {
   fprintf(fp, "\t\t</table>>\n");
   fprintf(fp, "\t];\n");
   fprintf(fp, "\n");
 }
 
-static void dot_node(FILE *fp, void *ptr, const char *name, const char *colour)
+void dot_node(FILE *fp, void *ptr, const char *name, const char *colour)
 {
   char obj[64] = { 0 };
   dot_ptr_name(obj, sizeof(obj), ptr);
@@ -372,7 +373,7 @@ static void dot_node(FILE *fp, void *ptr, const char *name, const char *colour)
   dot_object_footer(fp);
 }
 
-static void dot_node_link(FILE *fp, void *ptr, const char *name, void *link, const char *colour)
+void dot_node_link(FILE *fp, void *ptr, const char *name, void *link, const char *colour)
 {
   char obj[64] = { 0 };
   dot_ptr_name(obj, sizeof(obj), ptr);
@@ -392,7 +393,7 @@ static void dot_node_link(FILE *fp, void *ptr, const char *name, void *link, con
   dot_object_footer(fp);
 }
 
-static void dot_path_fs(char *buf, size_t buflen, const char *path)
+void dot_path_fs(char *buf, size_t buflen, const char *path)
 {
   if (!path)
   {
@@ -409,7 +410,7 @@ static void dot_path_fs(char *buf, size_t buflen, const char *path)
   mutt_str_copy(buf, slash, buflen);
 }
 
-static void dot_path_imap(char *buf, size_t buflen, const char *path)
+void dot_path_imap(char *buf, size_t buflen, const char *path)
 {
   char tmp[1024] = { 0 };
   mutt_str_copy(tmp, path, sizeof(tmp));
@@ -425,7 +426,7 @@ static void dot_path_imap(char *buf, size_t buflen, const char *path)
 }
 
 #ifndef GV_HIDE_CONFIG
-static void dot_config(FILE *fp, const char *name, int type,
+void dot_config(FILE *fp, const char *name, int type,
                        struct ConfigSubset *sub, struct ListHead *links)
 {
   if (!sub)
@@ -483,7 +484,7 @@ static void dot_config(FILE *fp, const char *name, int type,
 }
 #endif
 
-static void dot_comp(FILE *fp, struct CompressInfo *ci, struct ListHead *links)
+void dot_comp(FILE *fp, struct CompressInfo *ci, struct ListHead *links)
 {
   dot_object_header(fp, ci, "CompressInfo", "#c0c060");
   dot_type_string(fp, "append", ci->cmd_append, true);
@@ -492,7 +493,7 @@ static void dot_comp(FILE *fp, struct CompressInfo *ci, struct ListHead *links)
   dot_object_footer(fp);
 }
 
-static void dot_mailbox_type(FILE *fp, const char *name, enum MailboxType type)
+void dot_mailbox_type(FILE *fp, const char *name, enum MailboxType type)
 {
   const char *typestr = NULL;
 
@@ -537,7 +538,7 @@ static void dot_mailbox_type(FILE *fp, const char *name, enum MailboxType type)
 }
 
 #ifndef GV_HIDE_MDATA
-static void dot_mailbox_imap(FILE *fp, struct ImapMboxData *mdata, struct ListHead *links)
+void dot_mailbox_imap(FILE *fp, struct ImapMboxData *mdata, struct ListHead *links)
 {
   dot_object_header(fp, mdata, "ImapMboxData", "#60c060");
   dot_type_string(fp, "name", mdata->name, true);
@@ -546,7 +547,7 @@ static void dot_mailbox_imap(FILE *fp, struct ImapMboxData *mdata, struct ListHe
   dot_object_footer(fp);
 }
 
-static void dot_mailbox_maildir(FILE *fp, struct MaildirMboxData *mdata, struct ListHead *links)
+void dot_mailbox_maildir(FILE *fp, struct MaildirMboxData *mdata, struct ListHead *links)
 {
   char buf[64] = { 0 };
 
@@ -560,7 +561,7 @@ static void dot_mailbox_maildir(FILE *fp, struct MaildirMboxData *mdata, struct 
   dot_object_footer(fp);
 }
 
-static void dot_mailbox_mbox(FILE *fp, struct MboxAccountData *mdata, struct ListHead *links)
+void dot_mailbox_mbox(FILE *fp, struct MboxAccountData *mdata, struct ListHead *links)
 {
   char buf[64] = { 0 };
 
@@ -573,7 +574,7 @@ static void dot_mailbox_mbox(FILE *fp, struct MboxAccountData *mdata, struct Lis
   dot_object_footer(fp);
 }
 
-static void dot_mailbox_nntp(FILE *fp, struct NntpMboxData *mdata, struct ListHead *links)
+void dot_mailbox_nntp(FILE *fp, struct NntpMboxData *mdata, struct ListHead *links)
 {
   dot_object_header(fp, mdata, "NntpMboxData", "#60c060");
   dot_type_string(fp, "group", mdata->group, true);
@@ -593,14 +594,14 @@ static void dot_mailbox_nntp(FILE *fp, struct NntpMboxData *mdata, struct ListHe
   dot_object_footer(fp);
 }
 
-static void dot_mailbox_notmuch(FILE *fp, struct NmMboxData *mdata, struct ListHead *links)
+void dot_mailbox_notmuch(FILE *fp, struct NmMboxData *mdata, struct ListHead *links)
 {
   dot_object_header(fp, mdata, "NmMboxData", "#60c060");
   dot_type_number(fp, "db_limit", mdata->db_limit);
   dot_object_footer(fp);
 }
 
-static void dot_mailbox_pop(FILE *fp, struct PopAccountData *adata, struct ListHead *links)
+void dot_mailbox_pop(FILE *fp, struct PopAccountData *adata, struct ListHead *links)
 {
   dot_object_header(fp, adata, "PopAccountData", "#60c060");
   dot_ptr(fp, "conn", adata->conn, "#ff8080");
@@ -608,7 +609,7 @@ static void dot_mailbox_pop(FILE *fp, struct PopAccountData *adata, struct ListH
 }
 #endif
 
-static void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
+void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
 {
   char buf[64] = { 0 };
 
@@ -688,7 +689,7 @@ static void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
 #endif
 }
 
-static void dot_mailbox_node(FILE *fp, struct MailboxNode *mn, struct ListHead *links)
+void dot_mailbox_node(FILE *fp, struct MailboxNode *mn, struct ListHead *links)
 {
   dot_node(fp, mn, "MN", "#80ff80");
 
@@ -730,7 +731,7 @@ static void dot_mailbox_node(FILE *fp, struct MailboxNode *mn, struct ListHead *
   mutt_buffer_dealloc(&buf);
 }
 
-static void dot_mailbox_list(FILE *fp, struct MailboxList *ml, struct ListHead *links, bool abbr)
+void dot_mailbox_list(FILE *fp, struct MailboxList *ml, struct ListHead *links, bool abbr)
 {
   struct MailboxNode *prev = NULL;
   struct MailboxNode *np = NULL;
@@ -747,7 +748,7 @@ static void dot_mailbox_list(FILE *fp, struct MailboxList *ml, struct ListHead *
 }
 
 #ifndef GV_HIDE_ADATA
-static void dot_connection(FILE *fp, struct Connection *c, struct ListHead *links)
+void dot_connection(FILE *fp, struct Connection *c, struct ListHead *links)
 {
   dot_object_header(fp, c, "Connection", "#ff8080");
   // dot_ptr(fp, "sockdata", c->sockdata, "#60c0c0");
@@ -763,7 +764,7 @@ static void dot_connection(FILE *fp, struct Connection *c, struct ListHead *link
   dot_add_link(links, c, c->inbuf, "Connection.ConnAccount", false, NULL);
 }
 
-static void dot_account_imap(FILE *fp, struct ImapAccountData *adata, struct ListHead *links)
+void dot_account_imap(FILE *fp, struct ImapAccountData *adata, struct ListHead *links)
 {
   dot_object_header(fp, adata, "ImapAccountData", "#60c0c0");
   // dot_type_string(fp, "mbox_name", adata->mbox_name, true);
@@ -785,7 +786,7 @@ static void dot_account_imap(FILE *fp, struct ImapAccountData *adata, struct Lis
   }
 }
 
-static void dot_account_mbox(FILE *fp, struct MboxAccountData *adata, struct ListHead *links)
+void dot_account_mbox(FILE *fp, struct MboxAccountData *adata, struct ListHead *links)
 {
   char buf[64] = { 0 };
 
@@ -800,7 +801,7 @@ static void dot_account_mbox(FILE *fp, struct MboxAccountData *adata, struct Lis
   dot_object_footer(fp);
 }
 
-static void dot_account_nntp(FILE *fp, struct NntpAccountData *adata, struct ListHead *links)
+void dot_account_nntp(FILE *fp, struct NntpAccountData *adata, struct ListHead *links)
 {
   dot_object_header(fp, adata, "NntpAccountData", "#60c0c0");
   dot_type_number(fp, "groups_num", adata->groups_num);
@@ -842,14 +843,14 @@ static void dot_account_nntp(FILE *fp, struct NntpAccountData *adata, struct Lis
   }
 }
 
-static void dot_account_notmuch(FILE *fp, struct NmAccountData *adata, struct ListHead *links)
+void dot_account_notmuch(FILE *fp, struct NmAccountData *adata, struct ListHead *links)
 {
   dot_object_header(fp, adata, "NmAccountData", "#60c0c0");
   dot_ptr(fp, "db", adata->db, NULL);
   dot_object_footer(fp);
 }
 
-static void dot_account_pop(FILE *fp, struct PopAccountData *adata, struct ListHead *links)
+void dot_account_pop(FILE *fp, struct PopAccountData *adata, struct ListHead *links)
 {
   char buf[64] = { 0 };
 
@@ -873,7 +874,7 @@ static void dot_account_pop(FILE *fp, struct PopAccountData *adata, struct ListH
 }
 #endif
 
-static void dot_account(FILE *fp, struct Account *a, struct ListHead *links)
+void dot_account(FILE *fp, struct Account *a, struct ListHead *links)
 {
   dot_object_header(fp, a, "Account", "#80ffff");
   dot_mailbox_type(fp, "type", a->type);
@@ -928,7 +929,7 @@ static void dot_account(FILE *fp, struct Account *a, struct ListHead *links)
   dot_mailbox_list(fp, &a->mailboxes, links, false);
 }
 
-static void dot_account_list(FILE *fp, struct AccountList *al, struct ListHead *links)
+void dot_account_list(FILE *fp, struct AccountList *al, struct ListHead *links)
 {
   struct Account *prev = NULL;
   struct Account *np = NULL;
@@ -947,7 +948,7 @@ static void dot_account_list(FILE *fp, struct AccountList *al, struct ListHead *
 }
 
 #ifndef GV_HIDE_CONTEXT
-static void dot_context(FILE *fp, struct Context *ctx, struct ListHead *links)
+void dot_context(FILE *fp, struct Context *ctx, struct ListHead *links)
 {
   dot_object_header(fp, ctx, "Context", "#ff80ff");
   dot_ptr(fp, "mailbox", ctx->mailbox, "#80ff80");
@@ -969,12 +970,12 @@ void dump_graphviz(const char *title, struct Context *ctx)
   if (title)
   {
     char date[128];
-    mutt_date_localtime_format(date, sizeof(date), "%R", now);
+    mutt_date_localtime_format(date, sizeof(date), "%T", now);
     snprintf(name, sizeof(name), "%s-%s.gv", date, title);
   }
   else
   {
-    mutt_date_localtime_format(name, sizeof(name), "%R.gv", now);
+    mutt_date_localtime_format(name, sizeof(name), "%T.gv", now);
   }
 
   umask(022);
@@ -1041,7 +1042,7 @@ void dump_graphviz(const char *title, struct Context *ctx)
 }
 
 #ifndef GV_HIDE_BODY_CONTENT
-static void dot_parameter_list(FILE *fp, const char *name, const struct ParameterList *pl)
+void dot_parameter_list(FILE *fp, const char *name, const struct ParameterList *pl)
 {
   if (!pl)
     return;
@@ -1059,7 +1060,7 @@ static void dot_parameter_list(FILE *fp, const char *name, const struct Paramete
   dot_object_footer(fp);
 }
 
-static void dot_content(FILE *fp, struct Content *cont, struct ListHead *links)
+void dot_content(FILE *fp, struct Content *cont, struct ListHead *links)
 {
   struct Buffer buf = mutt_buffer_make(256);
 
@@ -1112,7 +1113,7 @@ void dot_attach_ptr(FILE *fp, struct AttachPtr *aptr, struct ListHead *links)
   mutt_buffer_dealloc(&buf);
 }
 
-static void dot_body(FILE *fp, struct Body *b, struct ListHead *links, bool link_next)
+void dot_body(FILE *fp, struct Body *b, struct ListHead *links, bool link_next)
 {
   struct Buffer buf = mutt_buffer_make(256);
 
@@ -1188,11 +1189,13 @@ static void dot_body(FILE *fp, struct Body *b, struct ListHead *links, bool link
   }
 #endif
 
+#ifndef GV_HIDE_ENVELOPE
   if (b->mime_headers)
   {
     dot_envelope(fp, b->mime_headers, links);
     dot_add_link(links, b, b->mime_headers, "Body->mime_headers", false, NULL);
   }
+#endif
 
   if (b->email)
   {
@@ -1249,7 +1252,8 @@ static void dot_body(FILE *fp, struct Body *b, struct ListHead *links, bool link
   mutt_buffer_dealloc(&buf);
 }
 
-static void dot_list_head(FILE *fp, const char *name, const struct ListHead *list)
+#ifndef GV_HIDE_ENVELOPE
+void dot_list_head(FILE *fp, const char *name, const struct ListHead *list)
 {
   if (!list || !name)
     return;
@@ -1269,7 +1273,7 @@ static void dot_list_head(FILE *fp, const char *name, const struct ListHead *lis
   dot_type_string(fp, name, mutt_buffer_string(&buf), false);
 }
 
-static void dot_addr_list(FILE *fp, const char *name,
+void dot_addr_list(FILE *fp, const char *name,
                           const struct AddressList *al, struct ListHead *links)
 {
   if (!al)
@@ -1283,7 +1287,7 @@ static void dot_addr_list(FILE *fp, const char *name,
   dot_type_string(fp, name, buf, false);
 }
 
-static void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links)
+void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links)
 {
   struct Buffer buf = mutt_buffer_make(256);
 
@@ -1343,8 +1347,9 @@ static void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links)
 
   mutt_buffer_dealloc(&buf);
 }
+#endif
 
-static void dot_email(FILE *fp, struct Email *e, struct ListHead *links)
+void dot_email(FILE *fp, struct Email *e, struct ListHead *links)
 {
   struct Buffer buf = mutt_buffer_make(256);
   char arr[256];
@@ -1439,6 +1444,7 @@ static void dot_email(FILE *fp, struct Email *e, struct ListHead *links)
     dot_add_link(links, e, e->body, "Email->body", false, NULL);
   }
 
+#ifndef GV_HIDE_ENVELOPE
   if (e->env)
   {
     dot_envelope(fp, e->env, links);
@@ -1457,6 +1463,7 @@ static void dot_email(FILE *fp, struct Email *e, struct ListHead *links)
 
     mutt_list_insert_tail(links, mutt_str_dup(buf.data));
   }
+#endif
 
   // struct TagList tags;
 
@@ -1469,7 +1476,7 @@ void dump_graphviz_body(struct Body *b)
   struct ListHead links = STAILQ_HEAD_INITIALIZER(links);
 
   time_t now = time(NULL);
-  mutt_date_localtime_format(name, sizeof(name), "%R-email.gv", now);
+  mutt_date_localtime_format(name, sizeof(name), "%T-email.gv", now);
 
   umask(022);
   FILE *fp = fopen(name, "w");
@@ -1491,7 +1498,7 @@ void dump_graphviz_email(struct Email *e)
   struct ListHead links = STAILQ_HEAD_INITIALIZER(links);
 
   time_t now = time(NULL);
-  mutt_date_localtime_format(name, sizeof(name), "%R-email.gv", now);
+  mutt_date_localtime_format(name, sizeof(name), "%T-email.gv", now);
 
   umask(022);
   FILE *fp = fopen(name, "w");
@@ -1507,7 +1514,7 @@ void dump_graphviz_email(struct Email *e)
   mutt_list_free(&links);
 }
 
-static void dot_attach_ptr2(FILE *fp, struct AttachPtr *aptr, struct ListHead *links)
+void dot_attach_ptr2(FILE *fp, struct AttachPtr *aptr, struct ListHead *links)
 {
   if (!aptr)
     return;
@@ -1532,7 +1539,7 @@ static void dot_attach_ptr2(FILE *fp, struct AttachPtr *aptr, struct ListHead *l
   mutt_buffer_dealloc(&buf);
 }
 
-static void dot_array_actx_idx(FILE *fp, struct AttachPtr **idx, short idxlen,
+void dot_array_actx_idx(FILE *fp, struct AttachPtr **idx, short idxlen,
                                short idxmax, struct ListHead *links)
 {
   dot_object_header(fp, idx, "AttachCtx-&gt;idx", "#9347de");
@@ -1556,7 +1563,7 @@ static void dot_array_actx_idx(FILE *fp, struct AttachPtr **idx, short idxlen,
   }
 }
 
-static void dot_array_actx_v2r(FILE *fp, short *v2r, short vcount, struct ListHead *links)
+void dot_array_actx_v2r(FILE *fp, short *v2r, short vcount, struct ListHead *links)
 {
   dot_object_header(fp, v2r, "AttachCtx-&gt;v2r", "#9347de");
 
@@ -1572,7 +1579,7 @@ static void dot_array_actx_v2r(FILE *fp, short *v2r, short vcount, struct ListHe
   dot_object_footer(fp);
 }
 
-static void dot_array_actx_fp_idx(FILE *fp, FILE **fp_idx, short fp_len,
+void dot_array_actx_fp_idx(FILE *fp, FILE **fp_idx, short fp_len,
                                   short fp_max, struct ListHead *links)
 {
   dot_object_header(fp, fp_idx, "AttachCtx-&gt;fp_idx", "#f86e28");
@@ -1590,7 +1597,7 @@ static void dot_array_actx_fp_idx(FILE *fp, FILE **fp_idx, short fp_len,
   dot_object_footer(fp);
 }
 
-static void dot_array_actx_body_idx(FILE *fp, struct Body **body_idx, short body_len,
+void dot_array_actx_body_idx(FILE *fp, struct Body **body_idx, short body_len,
                                     short body_max, struct ListHead *links)
 {
   dot_object_header(fp, body_idx, "AttachCtx-&gt;body_idx", "#4ff270");
@@ -1608,7 +1615,7 @@ static void dot_array_actx_body_idx(FILE *fp, struct Body **body_idx, short body
   dot_object_footer(fp);
 }
 
-static void dot_attach_ctx(FILE *fp, struct AttachCtx *actx, struct ListHead *links)
+void dot_attach_ctx(FILE *fp, struct AttachCtx *actx, struct ListHead *links)
 {
   struct Buffer buf = mutt_buffer_make(256);
   // char arr[256];
@@ -1653,7 +1660,7 @@ void dump_graphviz_attach_ctx(struct AttachCtx *actx)
   struct ListHead links = STAILQ_HEAD_INITIALIZER(links);
 
   time_t now = time(NULL);
-  mutt_date_localtime_format(name, sizeof(name), "%R-actx.gv", now);
+  mutt_date_localtime_format(name, sizeof(name), "%T-actx.gv", now);
 
   umask(022);
   FILE *fp = fopen(name, "w");
