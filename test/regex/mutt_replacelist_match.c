@@ -23,8 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include "test_common.h"
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_replacelist_match(void)
 {

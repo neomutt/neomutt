@@ -277,7 +277,7 @@ void dot_ptr(FILE *fp, const char *name, void *ptr, const char *colour)
 }
 
 void dot_add_link(struct ListHead *links, void *src, void *dst,
-                         const char *label, bool back, const char *colour)
+                  const char *label, bool back, const char *colour)
 {
   if (!src || !dst)
     return;
@@ -426,8 +426,8 @@ void dot_path_imap(char *buf, size_t buflen, const char *path)
 }
 
 #ifndef GV_HIDE_CONFIG
-void dot_config(FILE *fp, const char *name, int type,
-                       struct ConfigSubset *sub, struct ListHead *links)
+void dot_config(FILE *fp, const char *name, int type, struct ConfigSubset *sub,
+                struct ListHead *links)
 {
   if (!sub)
     return;
@@ -1273,8 +1273,8 @@ void dot_list_head(FILE *fp, const char *name, const struct ListHead *list)
   dot_type_string(fp, name, mutt_buffer_string(&buf), false);
 }
 
-void dot_addr_list(FILE *fp, const char *name,
-                          const struct AddressList *al, struct ListHead *links)
+void dot_addr_list(FILE *fp, const char *name, const struct AddressList *al,
+                   struct ListHead *links)
 {
   if (!al)
     return;
@@ -1540,7 +1540,7 @@ void dot_attach_ptr2(FILE *fp, struct AttachPtr *aptr, struct ListHead *links)
 }
 
 void dot_array_actx_idx(FILE *fp, struct AttachPtr **idx, short idxlen,
-                               short idxmax, struct ListHead *links)
+                        short idxmax, struct ListHead *links)
 {
   dot_object_header(fp, idx, "AttachCtx-&gt;idx", "#9347de");
 
@@ -1579,8 +1579,8 @@ void dot_array_actx_v2r(FILE *fp, short *v2r, short vcount, struct ListHead *lin
   dot_object_footer(fp);
 }
 
-void dot_array_actx_fp_idx(FILE *fp, FILE **fp_idx, short fp_len,
-                                  short fp_max, struct ListHead *links)
+void dot_array_actx_fp_idx(FILE *fp, FILE **fp_idx, short fp_len, short fp_max,
+                           struct ListHead *links)
 {
   dot_object_header(fp, fp_idx, "AttachCtx-&gt;fp_idx", "#f86e28");
 
@@ -1598,7 +1598,7 @@ void dot_array_actx_fp_idx(FILE *fp, FILE **fp_idx, short fp_len,
 }
 
 void dot_array_actx_body_idx(FILE *fp, struct Body **body_idx, short body_len,
-                                    short body_max, struct ListHead *links)
+                             short body_max, struct ListHead *links)
 {
   dot_object_header(fp, body_idx, "AttachCtx-&gt;body_idx", "#4ff270");
 
@@ -1613,6 +1613,14 @@ void dot_array_actx_body_idx(FILE *fp, struct Body **body_idx, short body_len,
   }
 
   dot_object_footer(fp);
+
+  for (size_t i = 0; i < body_max; i++)
+  {
+    if (!body_idx[i])
+      continue;
+    dot_body(fp, body_idx[i], links, true);
+    dot_add_link(links, body_idx, body_idx[i], "AttachCtx->Body", false, "#008000");
+  }
 }
 
 void dot_attach_ctx(FILE *fp, struct AttachCtx *actx, struct ListHead *links)
