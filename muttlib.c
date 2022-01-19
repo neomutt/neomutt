@@ -677,10 +677,11 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
 
   if ((*opt == MUTT_SAVE_NO_FLAGS) && (access(mutt_buffer_string(fname), F_OK) == 0))
   {
-    switch (
-        mutt_multi_choice(_("File exists, (o)verwrite, (a)ppend, or (c)ancel?"),
-                          // L10N: Options for: File exists, (o)verwrite, (a)ppend, or (c)ancel?
-                          _("oac")))
+    char buf[4096] = { 0 };
+    snprintf(buf, sizeof(buf), "%s - %s", mutt_buffer_string(fname),
+             // L10N: Options for: File %s exists, (o)verwrite, (a)ppend, or (c)ancel?
+             _("File exists, (o)verwrite, (a)ppend, or (c)ancel?"));
+    switch (mutt_multi_choice(buf, _("oac")))
     {
       case -1: /* abort */
         return -1;
