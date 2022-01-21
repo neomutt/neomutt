@@ -1188,9 +1188,7 @@ main
 
     if (edit_infile)
     {
-      if (include_file)
-        e->body->unlink = false;
-      else if (draft_file)
+      if (draft_file)
       {
         if (truncate(mutt_buffer_string(&expanded_infile), 0) == -1)
         {
