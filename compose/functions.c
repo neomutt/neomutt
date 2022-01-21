@@ -1829,34 +1829,27 @@ static int op_attachment_update_encoding(struct ComposeSharedData *shared, int o
   if (!check_count(actx))
     return IR_NO_ACTION;
 
-  bool encoding_updated = false;
+  int rc = IR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
-  if (menu->tagprefix)
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
+  ba_add_tagged(&ba, actx, menu);
+  if (ARRAY_EMPTY(&ba))
+    goto done;
+
+  struct Body **bp = NULL;
+  ARRAY_FOREACH(bp, &ba)
   {
-    struct Body *top = NULL;
-    for (top = shared->email->body; top; top = top->next)
-    {
-      if (top->tagged)
-      {
-        encoding_updated = true;
-        mutt_update_encoding(top, shared->sub);
-      }
-    }
-    menu_queue_redraw(menu, MENU_REDRAW_FULL);
-  }
-  else
-  {
-    struct AttachPtr *cur_att = current_attachment(actx, menu);
-    mutt_update_encoding(cur_att->body, shared->sub);
-    encoding_updated = true;
-    menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
-    notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+    mutt_update_encoding(*bp, shared->sub);
   }
 
-  if (encoding_updated)
-    mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  rc = IR_SUCCESS;
 
-  return IR_SUCCESS;
+done:
+  ARRAY_FREE(&ba);
+  return rc;
 }
 
 // -----------------------------------------------------------------------------
