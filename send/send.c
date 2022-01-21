@@ -2293,6 +2293,8 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       {
         fp_tmp = mutt_file_fopen(tempfile, "a+");
         e_templ->body->filename = mutt_str_dup(tempfile);
+        if (flags & SEND_NO_FREE_HEADER)
+          e_templ->body->unlink = false;
       }
       else
       {
