@@ -83,7 +83,6 @@ struct Body
   // View data - Used by the GUI
 
   bool attach_qualifies : 1;      ///< This attachment should be counted
-  bool collapsed        : 1;      ///< Used by recvattach
   bool deleted          : 1;      ///< Attachment marked for deletion
   bool nowrap           : 1;      ///< Do not wrap the output in the pager
   bool tagged           : 1;      ///< This attachment is tagged

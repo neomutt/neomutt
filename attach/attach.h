@@ -41,6 +41,7 @@ struct AttachPtr
   int num;              ///< Attachment index number
   bool unowned : 1;     ///< Don't unlink on detach
   bool decrypted : 1;   ///< Not part of message as stored in the email->body
+  bool collapsed : 1;   ///< Group is collapsed
 };
 
 /**

@@ -88,7 +88,7 @@ static void mutt_update_v2r(struct AttachCtx *actx)
   while (rindex < actx->idxlen)
   {
     actx->v2r[vindex++] = rindex;
-    if (actx->idx[rindex]->body->collapsed)
+    if (actx->idx[rindex]->collapsed)
     {
       curlevel = actx->idx[rindex]->level;
       do
@@ -1160,7 +1160,7 @@ void mutt_attach_init(struct AttachCtx *actx)
     actx->idx[i]->body->tagged = false;
 
     /* OR an inner container is of type 'multipart/digest' */
-    actx->idx[i]->body->collapsed =
+    actx->idx[i]->collapsed =
         (c_digest_collapse &&
          (digest || ((actx->idx[i]->body->type == TYPE_MULTIPART) &&
                      mutt_istr_equal(actx->idx[i]->body->subtype, "digest"))));

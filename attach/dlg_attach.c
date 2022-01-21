@@ -113,9 +113,9 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
   int rindex, curlevel;
 
   struct AttachPtr *cur_att = current_attachment(actx, menu);
-  cur_att->body->collapsed = !cur_att->body->collapsed;
+  cur_att->collapsed = !cur_att->collapsed;
   /* When expanding, expand all the children too */
-  if (cur_att->body->collapsed)
+  if (cur_att->collapsed)
     return;
 
   curlevel = cur_att->level;
@@ -129,11 +129,11 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
     if (c_digest_collapse && (actx->idx[rindex]->body->type == TYPE_MULTIPART) &&
         mutt_istr_equal(actx->idx[rindex]->body->subtype, "digest"))
     {
-      actx->idx[rindex]->body->collapsed = true;
+      actx->idx[rindex]->collapsed = true;
     }
     else
     {
-      actx->idx[rindex]->body->collapsed = false;
+      actx->idx[rindex]->collapsed = false;
     }
     rindex++;
   }

@@ -1105,6 +1105,7 @@ void dot_attach_ptr(FILE *fp, struct AttachPtr *aptr, struct ListHead *links)
   dot_type_number(fp, "num", aptr->num);
 
   dot_type_bool(fp, "unowned", aptr->unowned);
+  dot_type_bool(fp, "collapsed", aptr->collapsed);
   dot_type_bool(fp, "decrypted", aptr->decrypted);
 
   dot_object_footer(fp);
@@ -1146,7 +1147,6 @@ void dot_body(FILE *fp, struct Body *b, struct ListHead *links, bool link_next)
 #define ADD_BOOL(F) add_flag(&buf, b->F, #F)
   ADD_BOOL(attach_qualifies);
   ADD_BOOL(badsig);
-  ADD_BOOL(collapsed);
   ADD_BOOL(deleted);
   ADD_BOOL(force_charset);
   ADD_BOOL(goodsig);
@@ -1531,6 +1531,7 @@ void dot_attach_ptr2(FILE *fp, struct AttachPtr *aptr, struct ListHead *links)
   dot_type_number(fp, "level", aptr->level);
   dot_type_number(fp, "num", aptr->num);
   dot_type_bool(fp, "unowned", aptr->unowned);
+  dot_type_bool(fp, "collapsed", aptr->collapsed);
   dot_type_bool(fp, "decrypted", aptr->decrypted);
 
   // dot_type_string(fp, "tree", aptr->tree, false);
