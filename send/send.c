@@ -2245,26 +2245,14 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
     if (flags & (SEND_POSTPONED | SEND_RESEND))
     {
-      if (e_templ->body->type == TYPE_MULTIPART)
+      struct Body *b = e_templ->body;
+      while (b->parts)
+        b = b->parts;
+      fp_tmp = mutt_file_fopen(b->filename, "a+");
+      if (!fp_tmp)
       {
-        struct Body *b = e_templ->body->parts;
-        while (b->type == TYPE_MULTIPART)
-          b = b->parts;
-        fp_tmp = mutt_file_fopen(b->filename, "a+");
-        if (!fp_tmp)
-        {
-          mutt_perror(b->filename);
-          goto cleanup;
-        }
-      }
-      else
-      {
-        fp_tmp = mutt_file_fopen(e_templ->body->filename, "a+");
-        if (!fp_tmp)
-        {
-          mutt_perror(e_templ->body->filename);
-          goto cleanup;
-        }
+        mutt_perror(b->filename);
+        goto cleanup;
       }
     }
 
@@ -2518,31 +2506,17 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   {
     struct stat st = { 0 };
     time_t mtime;
-    if (e_templ->body->type == TYPE_MULTIPART)
+    struct Body *b = e_templ->body;
+    while (b->parts)
+      b = b->parts;
+    mtime = mutt_file_decrease_mtime(b->filename, NULL);
+    if (mtime == (time_t) -1)
     {
-      struct Body *b = e_templ->body->parts;
-      while (b->type == TYPE_MULTIPART)
-        b = b->parts;
-      mtime = mutt_file_decrease_mtime(b->filename, NULL);
-      if (mtime == (time_t) -1)
-      {
-        mutt_perror(b->filename);
-        goto cleanup;
-      }
-
-      mutt_update_encoding(e_templ->body->parts, sub);
+      mutt_perror(b->filename);
+      goto cleanup;
     }
-    else
-    {
-      mtime = mutt_file_decrease_mtime(e_templ->body->filename, NULL);
-      if (mtime == (time_t) -1)
-      {
-        mutt_perror(e_templ->body->filename);
-        goto cleanup;
-      }
 
-      mutt_update_encoding(e_templ->body, sub);
-    }
+    mutt_update_encoding(b, sub);
 
     const bool c_edit_headers = cs_subset_bool(sub, "edit_headers");
     const bool c_auto_edit = cs_subset_bool(sub, "auto_edit");
@@ -2562,61 +2536,31 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     {
       /* If the this isn't a text message, look for a mailcap edit command */
       const char *const c_editor = cs_subset_string(sub, "editor");
-      if (e_templ->body->type == TYPE_MULTIPART)
+      b = e_templ->body;
+      while (b->parts)
+        b = b->parts;
+      if (mutt_needs_mailcap(b))
       {
-        struct Body *b = e_templ->body->parts;
-        while (b->type == TYPE_MULTIPART)
-          b = b->parts;
-        if (mutt_needs_mailcap(b))
-        {
-          if (!mutt_edit_attachment(b))
-            goto cleanup;
-        }
-        else if (c_edit_headers)
-        {
-          mutt_env_to_local(e_templ->env);
-          mutt_edit_headers(c_editor, b->filename, e_templ, &fcc);
-          mutt_env_to_intl(e_templ->env, NULL, NULL);
-        }
-        else
-        {
-          mutt_edit_file(c_editor, b->filename);
-          if (stat(b->filename, &st) == 0)
-          {
-            if (mtime != st.st_mtime)
-              fix_end_of_file(b->filename);
-          }
-          else
-          {
-            mutt_perror(b->filename);
-          }
-        }
+        if (!mutt_edit_attachment(b))
+          goto cleanup;
+      }
+      else if (c_edit_headers)
+      {
+        mutt_env_to_local(e_templ->env);
+        mutt_edit_headers(c_editor, b->filename, e_templ, &fcc);
+        mutt_env_to_intl(e_templ->env, NULL, NULL);
       }
       else
       {
-        if (mutt_needs_mailcap(e_templ->body))
+        mutt_edit_file(c_editor, b->filename);
+        if (stat(b->filename, &st) == 0)
         {
-          if (!mutt_edit_attachment(e_templ->body))
-            goto cleanup;
-        }
-        else if (c_edit_headers)
-        {
-          mutt_env_to_local(e_templ->env);
-          mutt_edit_headers(c_editor, e_templ->body->filename, e_templ, &fcc);
-          mutt_env_to_intl(e_templ->env, NULL, NULL);
+          if (mtime != st.st_mtime)
+            fix_end_of_file(b->filename);
         }
         else
         {
-          mutt_edit_file(c_editor, e_templ->body->filename);
-          if (stat(e_templ->body->filename, &st) == 0)
-          {
-            if (mtime != st.st_mtime)
-              fix_end_of_file(e_templ->body->filename);
-          }
-          else
-          {
-            mutt_perror(e_templ->body->filename);
-          }
+          mutt_perror(b->filename);
         }
       }
 
