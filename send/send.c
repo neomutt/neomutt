@@ -2314,7 +2314,12 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       }
     }
     else
-      fp_tmp = mutt_file_fopen(e_templ->body->filename, "a+");
+    {
+      struct Body *b = e_templ->body;
+      while (b->parts)
+        b = b->parts;
+      fp_tmp = mutt_file_fopen(b->filename, "a+");
+    }
 
     if (!fp_tmp)
     {
