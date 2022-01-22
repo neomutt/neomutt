@@ -500,7 +500,7 @@ static struct ConfigDef MainVars[] = {
   { "reverse_alias", DT_BOOL|R_INDEX|R_PAGER, false, 0, NULL,
     "Display the alias in the index, rather than the message's sender"
   },
-  { "rfc2047_parameters", DT_BOOL, false, 0, NULL,
+  { "rfc2047_parameters", DT_BOOL, true, 0, NULL,
     "Decode RFC2047-encoded MIME parameters"
   },
   { "save_address", DT_BOOL, false, 0, NULL,
