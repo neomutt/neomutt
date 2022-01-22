@@ -1062,26 +1062,32 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
  */
 static int op_attachment_detach(struct ComposeSharedData *shared, int op)
 {
-  if (!check_count(shared->adata->actx))
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
     return IR_NO_ACTION;
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
+
+  struct Menu *menu = shared->adata->menu;
+  struct AttachPtr *cur_att = current_attachment(actx, menu);
   if (cur_att->unowned)
     cur_att->body->unlink = false;
-  int index = menu_get_index(shared->adata->menu);
-  if (delete_attachment(shared->adata->actx, index) == -1)
+
+  int index = menu_get_index(menu);
+  if (delete_attachment(actx, index) == -1)
     return IR_ERROR;
-  shared->adata->menu->tagged = 0;
-  for (int i = 0; i < shared->adata->actx->idxlen; i++)
+
+  menu->tagged = 0;
+  for (int i = 0; i < actx->idxlen; i++)
   {
-    if (shared->adata->actx->idx[i]->body->tagged)
-      shared->adata->menu->tagged++;
+    if (actx->idx[i]->body->tagged)
+      menu->tagged++;
   }
-  update_menu(shared->adata->actx, shared->adata->menu, false);
+
+  update_menu(actx, menu, false);
   notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
-  index = menu_get_index(shared->adata->menu);
+
+  index = menu_get_index(menu);
   if (index == 0)
-    shared->email->body = shared->adata->actx->idx[0]->body;
+    shared->email->body = actx->idx[0]->body;
 
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
   return IR_SUCCESS;
