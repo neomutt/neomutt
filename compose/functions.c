@@ -1252,20 +1252,22 @@ static int op_attachment_edit_type(struct ComposeSharedData *shared, int op)
  */
 static int op_attachment_filter(struct ComposeSharedData *shared, int op)
 {
-  if (!check_count(shared->adata->actx))
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
     return IR_NO_ACTION;
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
+
+  struct Menu *menu = shared->adata->menu;
+  struct AttachPtr *cur_att = current_attachment(actx, menu);
   if (cur_att->body->type == TYPE_MULTIPART)
   {
     mutt_error(_("Can't filter multipart attachments"));
     return IR_ERROR;
   }
-  mutt_pipe_attachment_list(shared->adata->actx, NULL, shared->adata->menu->tagprefix,
-                            cur_att->body, (op == OP_ATTACHMENT_FILTER));
+  mutt_pipe_attachment_list(actx, NULL, menu->tagprefix, cur_att->body, (op == OP_FILTER));
   if (op == OP_ATTACHMENT_FILTER) /* cte might have changed */
-    menu_queue_redraw(shared->adata->menu,
-                      shared->adata->menu->tagprefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
+  {
+    menu_queue_redraw(menu, menu->tagprefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
+  }
   notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
   return IR_SUCCESS;
