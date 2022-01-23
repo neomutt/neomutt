@@ -1711,10 +1711,13 @@ static int op_attachment_ungroup(struct ComposeSharedData *shared, int op)
  */
 static int op_attachment_update_encoding(struct ComposeSharedData *shared, int op)
 {
-  if (!check_count(shared->adata->actx))
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
     return IR_NO_ACTION;
+
   bool encoding_updated = false;
-  if (shared->adata->menu->tagprefix)
+  struct Menu *menu = shared->adata->menu;
+  if (menu->tagprefix)
   {
     struct Body *top = NULL;
     for (top = shared->email->body; top; top = top->next)
@@ -1725,19 +1728,20 @@ static int op_attachment_update_encoding(struct ComposeSharedData *shared, int o
         mutt_update_encoding(top, shared->sub);
       }
     }
-    menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
+    menu_queue_redraw(menu, MENU_REDRAW_FULL);
   }
   else
   {
-    struct AttachPtr *cur_att =
-        current_attachment(shared->adata->actx, shared->adata->menu);
+    struct AttachPtr *cur_att = current_attachment(actx, menu);
     mutt_update_encoding(cur_att->body, shared->sub);
     encoding_updated = true;
-    menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+    menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
     notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
   }
+
   if (encoding_updated)
     mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+
   return IR_SUCCESS;
 }
 
