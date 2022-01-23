@@ -22,15 +22,15 @@
  */
 
 /**
- * @page email_attach Email attachments
+ * @page attach_attach Email attachments
  *
  * Handling of email attachments
  */
 
 #include "config.h"
 #include "mutt/lib.h"
+#include "email/lib.h"
 #include "attach.h"
-#include "body.h"
 
 /**
  * mutt_actx_add_attach - Add an Attachment to an Attachment Context

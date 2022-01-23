@@ -44,6 +44,7 @@
 #include "core/lib.h"
 
 struct AddressList;
+struct AttachCtx;
 struct Buffer;
 struct Context;
 struct ListHead;

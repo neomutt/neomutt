@@ -39,6 +39,7 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "lib.h"
+#include "attach/lib.h"
 #include "compmbox/lib.h"
 #include "imap/lib.h"
 #include "maildir/lib.h"

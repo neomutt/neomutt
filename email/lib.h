@@ -27,7 +27,6 @@
  *
  * | File                   | Description              |
  * | :--------------------- | :----------------------- |
- * | email/attach.c         | @subpage email_attach    |
  * | email/body.c           | @subpage email_body      |
  * | email/email.c          | @subpage email_email     |
  * | email/envelope.c       | @subpage email_envelope  |
@@ -49,7 +48,6 @@
 #define MUTT_EMAIL_LIB_H
 
 // IWYU pragma: begin_exports
-#include "attach.h"
 #include "body.h"
 #include "content.h"
 #include "email.h"

@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_EMAIL_ATTACH_H
-#define MUTT_EMAIL_ATTACH_H
+#ifndef MUTT_ATTACH_ATTACH_H
+#define MUTT_ATTACH_ATTACH_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -75,4 +75,4 @@ void              mutt_actx_free        (struct AttachCtx **ptr);
 void              mutt_actx_entries_free(struct AttachCtx *actx);
 struct AttachCtx *mutt_actx_new         (void);
 
-#endif /* MUTT_EMAIL_ATTACH_H */
+#endif /* MUTT_ATTACH_ATTACH_H */

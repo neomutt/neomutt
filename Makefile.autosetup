@@ -120,8 +120,8 @@ $(PWD)/alias:
 ###############################################################################
 # libattach
 LIBATTACH=	libattach.a
-LIBATTACHOBJS=	attach/attachments.o attach/dlg_attach.o attach/mutt_attach.o \
-		attach/recvattach.o
+LIBATTACHOBJS=	attach/attach.o attach/attachments.o attach/dlg_attach.o \
+		attach/mutt_attach.o attach/recvattach.o
 CLEANFILES+=	$(LIBATTACH) $(LIBATTACHOBJS)
 ALLOBJS+=	$(LIBATTACHOBJS)
 
@@ -336,7 +336,7 @@ $(PWD)/debug:
 ###############################################################################
 # libemail
 LIBEMAIL=	libemail.a
-LIBEMAILOBJS=	email/attach.o email/body.o email/email.o email/envelope.o \
+LIBEMAILOBJS=	email/body.o email/email.o email/envelope.o \
 		email/from.o email/globals.o email/mime.o email/parameter.o \
 		email/parse.o email/rfc2047.o email/rfc2231.o email/tags.o \
 		email/thread.o email/url.o

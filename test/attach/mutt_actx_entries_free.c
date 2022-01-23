@@ -26,6 +26,7 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
+#include "attach/lib.h"
 
 void test_mutt_actx_entries_free(void)
 {

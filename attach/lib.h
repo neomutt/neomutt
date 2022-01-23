@@ -27,6 +27,7 @@
  *
  * | File                 | Description                 |
  * | :------------------- | :-------------------------- |
+ * | attach/attach.c      | @subpage attach_attach      |
  * | attach/attachments.c | @subpage attach_attachments |
  * | attach/dlg_attach.c  | @subpage attach_dialog      |
  * | attach/mutt_attach.c | @subpage attach_mutt_attach |
@@ -37,6 +38,7 @@
 #define MUTT_ATTACH_LIB_H
 
 // IWYU pragma: begin_exports
+#include "attach.h"
 #include "attachments.h"
 #include "mutt_attach.h"
 #include "recvattach.h"
