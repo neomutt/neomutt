@@ -1270,26 +1270,31 @@ static int op_attachment_filter(struct ComposeSharedData *shared, int op)
  */
 static int op_attachment_get_attachment(struct ComposeSharedData *shared, int op)
 {
-  if (!check_count(shared->adata->actx))
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
     return IR_NO_ACTION;
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
+
+  struct Menu *menu = shared->adata->menu;
+  struct AttachPtr *cur_att = current_attachment(actx, menu);
   if (cur_att->body->type == TYPE_MULTIPART)
   {
     mutt_error(_("Can't get multipart attachments"));
     return IR_ERROR;
   }
-  if (shared->adata->menu->tagprefix)
+
+  if (menu->tagprefix)
   {
     for (struct Body *top = shared->email->body; top; top = top->next)
     {
       if (top->tagged)
         mutt_get_tmp_attachment(top);
     }
-    menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
+    menu_queue_redraw(menu, MENU_REDRAW_FULL);
   }
   else if (mutt_get_tmp_attachment(cur_att->body) == 0)
-    menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+  {
+    menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
+  }
 
   /* No send2hook since this doesn't change the message. */
   return IR_SUCCESS;
