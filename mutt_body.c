@@ -96,11 +96,16 @@ int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
     b->d_filename = mutt_str_dup(src->filename);
   b->description = mutt_str_dup(b->description);
 
+  b->language = mutt_str_dup(b->language);
+  b->charset = mutt_str_dup(b->charset);
+
+  b->content = NULL;
+  b->aptr = NULL;
+  b->mime_headers = NULL;
+
   /* we don't seem to need the Email structure currently.
    * XXX this may change in the future */
-
-  if (b->email)
-    b->email = NULL;
+  b->email = NULL;
 
   /* copy parameters */
   struct Parameter *np = NULL, *new_param = NULL;
