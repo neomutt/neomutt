@@ -74,7 +74,7 @@ void        dump_param_list        (const struct ParameterList *pl);
 void        dump_graphviz           (const char *title, struct MailboxView *mv);
 void        dump_graphviz_attach_ctx(struct AttachCtx *actx);
 void        dump_graphviz_body      (struct Body *b);
-void        dump_graphviz_email     (struct Email *e);
+void        dump_graphviz_email     (struct Email *e, const char *title);
 
 // Names
 const char *get_content_disposition(enum ContentDisposition disp);

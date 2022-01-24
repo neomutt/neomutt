@@ -1406,13 +1406,19 @@ void dump_graphviz_body(struct Body *b)
   mutt_list_free(&links);
 }
 
-void dump_graphviz_email(struct Email *e)
+void dump_graphviz_email(struct Email *e, const char *title)
 {
   char name[256] = { 0 };
   struct ListHead links = STAILQ_HEAD_INITIALIZER(links);
 
+  if (!title)
+    title = "email";
+
+  char format[64];
+  snprintf(format, sizeof(format), "%%T-%s.gv", title);
+
   time_t now = time(NULL);
-  mutt_date_localtime_format(name, sizeof(name), "%T-email.gv", now);
+  mutt_date_localtime_format(name, sizeof(name), format, now);
 
   umask(022);
   FILE *fp = fopen(name, "w");
