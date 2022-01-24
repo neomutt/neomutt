@@ -95,7 +95,7 @@ void             mutt_env_free      (struct Envelope **ptr);
 void             mutt_env_merge     (struct Envelope *base, struct Envelope **extra);
 struct Envelope *mutt_env_new       (void);
 int              mutt_env_to_intl   (struct Envelope *env, const char **tag, char **err);
-void             mutt_env_to_local  (struct Envelope *e);
+void             mutt_env_to_local  (struct Envelope *env);
 
 #ifdef USE_AUTOCRYPT
 struct AutocryptHeader *mutt_autocrypthdr_new(void);

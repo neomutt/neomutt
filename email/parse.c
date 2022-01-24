@@ -1655,15 +1655,15 @@ static struct Body *rfc822_parse_message(FILE *fp, struct Body *parent, int *cou
 
 /**
  * mutt_parse_mailto - Parse a mailto:// url
- * @param[in]  e    Envelope to fill
+ * @param[in]  env  Envelope to fill
  * @param[out] body Body to
  * @param[in]  src  String to parse
  * @retval true  Success
  * @retval false Error
  */
-bool mutt_parse_mailto(struct Envelope *e, char **body, const char *src)
+bool mutt_parse_mailto(struct Envelope *env, char **body, const char *src)
 {
-  if (!e || !src)
+  if (!env || !src)
     return false;
 
   struct Url *url = url_parse(src);
@@ -1677,7 +1677,7 @@ bool mutt_parse_mailto(struct Envelope *e, char **body, const char *src)
     return false;
   }
 
-  mutt_addrlist_parse(&e->to, url->path);
+  mutt_addrlist_parse(&env->to, url->path);
 
   struct UrlQuery *np;
   STAILQ_FOREACH(np, &url->query_strings, entries)
@@ -1709,14 +1709,14 @@ bool mutt_parse_mailto(struct Envelope *e, char **body, const char *src)
         mutt_str_asprintf(&scratch, "%s: %s", tag, value);
         scratch[taglen] = 0; /* overwrite the colon as mutt_rfc822_parse_line expects */
         value = mutt_str_skip_email_wsp(&scratch[taglen + 1]);
-        mutt_rfc822_parse_line(e, NULL, scratch, value, true, false, true);
+        mutt_rfc822_parse_line(env, NULL, scratch, value, true, false, true);
         FREE(&scratch);
       }
     }
   }
 
   /* RFC2047 decode after the RFC822 parsing */
-  rfc2047_decode_envelope(e);
+  rfc2047_decode_envelope(env);
 
   url_free(&url);
   return true;

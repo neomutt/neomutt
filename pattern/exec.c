@@ -425,7 +425,7 @@ static bool match_reference(struct Pattern *pat, struct ListHead *refs)
 /**
  * mutt_is_predicate_recipient - Test an Envelopes Addresses using a predicate function
  * @param all_addr If true, ALL Addresses must match
- * @param e       Envelope
+ * @param env     Envelope
  * @param p       Predicate function, e.g. mutt_is_subscribed_list()
  * @retval true
  * - One Address matches (all_addr is false)
@@ -433,9 +433,9 @@ static bool match_reference(struct Pattern *pat, struct ListHead *refs)
  *
  * Test the 'To' and 'Cc' fields of an Address using a test function (the predicate).
  */
-static int mutt_is_predicate_recipient(bool all_addr, struct Envelope *e, addr_predicate_t p)
+static int mutt_is_predicate_recipient(bool all_addr, struct Envelope *env, addr_predicate_t p)
 {
-  struct AddressList *als[] = { &e->to, &e->cc };
+  struct AddressList *als[] = { &env->to, &env->cc };
   for (size_t i = 0; i < mutt_array_size(als); ++i)
   {
     struct AddressList *al = als[i];
@@ -452,27 +452,27 @@ static int mutt_is_predicate_recipient(bool all_addr, struct Envelope *e, addr_p
 /**
  * mutt_is_subscribed_list_recipient - Matches subscribed mailing lists
  * @param all_addr If true, ALL Addresses must be on the subscribed list
- * @param e       Envelope
+ * @param env     Envelope
  * @retval true
  * - One Address is subscribed (all_addr is false)
  * - All the Addresses are subscribed (all_addr is true)
  */
-int mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *e)
+int mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *env)
 {
-  return mutt_is_predicate_recipient(all_addr, e, &mutt_is_subscribed_list);
+  return mutt_is_predicate_recipient(all_addr, env, &mutt_is_subscribed_list);
 }
 
 /**
  * mutt_is_list_recipient - Matches known mailing lists
  * @param all_addr If true, ALL Addresses must be mailing lists
- * @param e       Envelope
+ * @param env     Envelope
  * @retval true
  * - One Address is a mailing list (all_addr is false)
  * - All the Addresses are mailing lists (all_addr is true)
  */
-int mutt_is_list_recipient(bool all_addr, struct Envelope *e)
+int mutt_is_list_recipient(bool all_addr, struct Envelope *env)
 {
-  return mutt_is_predicate_recipient(all_addr, e, &mutt_is_mail_list);
+  return mutt_is_predicate_recipient(all_addr, env, &mutt_is_mail_list);
 }
 
 /**
