@@ -2143,7 +2143,6 @@ static bool abort_for_missing_attachments(const struct Body *b, struct ConfigSub
 int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile,
                       struct Mailbox *m, struct EmailList *el, struct ConfigSubset *sub)
 {
-  char buf[1024];
   struct Buffer fcc = mutt_buffer_make(0); /* where to copy this message */
   FILE *fp_tmp = NULL;
   struct Body *pbody = NULL;
@@ -2157,7 +2156,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   char *smime_sign_as = NULL;
   const char *tag = NULL;
   char *err = NULL;
-  char *ctype = NULL;
+  const char *ctype = NULL;
   char *finalpath = NULL;
   struct EmailNode *en = NULL;
   struct Email *e_cur = NULL;
@@ -2280,11 +2279,10 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       e_templ->body = pbody;
 
       const char *const c_content_type = cs_subset_string(sub, "content_type");
-      ctype = mutt_str_dup(c_content_type);
+      ctype = c_content_type;
       if (!ctype)
-        ctype = mutt_str_dup("text/plain");
+        ctype = "text/plain";
       mutt_parse_content_type(ctype, e_templ->body);
-      FREE(&ctype);
       e_templ->body->unlink = true;
       e_templ->body->use_disp = false;
       e_templ->body->disposition = DISP_INLINE;
@@ -2298,6 +2296,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       }
       else
       {
+        char buf[1024];
         mutt_mktemp(buf, sizeof(buf));
         fp_tmp = mutt_file_fopen(buf, "w+");
         e_templ->body->filename = mutt_str_dup(buf);
