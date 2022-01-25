@@ -426,7 +426,7 @@ const struct Binding OpAttach[] = { /* map: attachment */
   { "check-traditional-pgp", OP_CHECK_TRADITIONAL,           "\033P" },         // <Alt-P>
   { "collapse-parts",        OP_ATTACHMENT_COLLAPSE,         "v" },
   { "compose-to-sender",     OP_COMPOSE_TO_SENDER,           NULL },
-  { "delete-entry",          OP_DELETE,                      "d" },
+  { "delete-entry",          OP_ATTACHMENT_DELETE,           "d" },
   { "display-toggle-weed",   OP_DISPLAY_HEADERS,             "h" },
   { "edit-type",             OP_ATTACHMENT_EDIT_TYPE,        "\005" },          // <Ctrl-E>
   { "extract-keys",          OP_EXTRACT_KEYS,                "\013" },          // <Ctrl-K>
@@ -443,12 +443,12 @@ const struct Binding OpAttach[] = { /* map: attachment */
   { "list-reply",            OP_LIST_REPLY,                  "L" },
   { "list-subscribe",        OP_LIST_SUBSCRIBE,              NULL },
   { "list-unsubscribe",      OP_LIST_UNSUBSCRIBE,            NULL },
-  { "pipe-entry",            OP_PIPE,                        "|" },
-  { "print-entry",           OP_PRINT,                       "p" },
+  { "pipe-entry",            OP_ATTACHMENT_PIPE,             "|" },
+  { "print-entry",           OP_ATTACHMENT_PRINT,            "p" },
   { "reply",                 OP_REPLY,                       "r" },
   { "resend-message",        OP_RESEND,                      "\033e" },         // <Alt-e>
-  { "save-entry",            OP_SAVE,                        "s" },
-  { "undelete-entry",        OP_UNDELETE,                    "u" },
+  { "save-entry",            OP_ATTACHMENT_SAVE,             "s" },
+  { "undelete-entry",        OP_ATTACHMENT_UNDELETE,         "u" },
   { "view-attach",           OP_ATTACHMENT_VIEW,             "\n" },            // <Enter>
   { "view-attach",           OP_ATTACHMENT_VIEW,             "\r" },            // <Return>
   { "view-mailcap",          OP_ATTACHMENT_VIEW_MAILCAP,     "m" },
@@ -470,8 +470,8 @@ const struct Binding OpCompose[] = { /* map: compose */
 #ifdef USE_AUTOCRYPT
   { "autocrypt-menu",        OP_COMPOSE_AUTOCRYPT_MENU,      "o" },
 #endif
-  { "copy-file",             OP_SAVE,                        "C" },
-  { "detach-file",           OP_DELETE,                      "D" },
+  { "copy-file",             OP_ATTACHMENT_SAVE,             "C" },
+  { "detach-file",           OP_ATTACHMENT_DETACH,           "D" },
   { "display-toggle-weed",   OP_DISPLAY_HEADERS,             "h" },
   { "edit-bcc",              OP_ENVELOPE_EDIT_BCC,           "b" },
   { "edit-cc",               OP_ENVELOPE_EDIT_CC,            "c" },
@@ -497,7 +497,7 @@ const struct Binding OpCompose[] = { /* map: compose */
 #ifdef USE_NNTP
   { "edit-x-comment-to",     OP_ENVELOPE_EDIT_X_COMMENT_TO,   NULL },
 #endif
-  { "filter-entry",          OP_FILTER,                      "F" },
+  { "filter-entry",          OP_ATTACHMENT_FILTER,           "F" },
   { "forget-passphrase",     OP_FORGET_PASSPHRASE,           "\006" },          // <Ctrl-F>
   { "get-attachment",        OP_ATTACHMENT_GET_ATTACHMENT,   "G" },
   { "group-alternatives",    OP_ATTACHMENT_GROUP_ALTS,       "&" },
@@ -511,9 +511,9 @@ const struct Binding OpCompose[] = { /* map: compose */
   { "move-up",               OP_ATTACHMENT_MOVE_UP,          "-" },
   { "new-mime",              OP_ATTACHMENT_NEW_MIME,         "n" },
   { "pgp-menu",              OP_COMPOSE_PGP_MENU,            "p" },
-  { "pipe-entry",            OP_PIPE,                        "|" },
+  { "pipe-entry",            OP_ATTACHMENT_PIPE,             "|" },
   { "postpone-message",      OP_COMPOSE_POSTPONE_MESSAGE,    "P" },
-  { "print-entry",           OP_PRINT,                       "l" },
+  { "print-entry",           OP_ATTACHMENT_PRINT,            "l" },
   { "rename-attachment",     OP_ATTACHMENT_RENAME_ATTACHMENT,"\017" },          // <Ctrl-O>
   { "rename-file",           OP_COMPOSE_RENAME_FILE,         "R" },
   { "send-message",          OP_COMPOSE_SEND_MESSAGE,        "y" },

@@ -2071,9 +2071,9 @@ static int op_compose_write_message(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_delete - Delete the current entry - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_detach - Delete the current entry - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_delete(struct ComposeSharedData *shared, int op)
+static int op_attachment_detach(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -2174,13 +2174,13 @@ static int op_exit(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_filter - Filter attachment through a shell command - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_filter - Filter attachment through a shell command - Implements ::compose_function_t - @ingroup compose_function_api
  *
  * This function handles:
- * - OP_FILTER
- * - OP_PIPE
+ * - OP_ATTACHMENT_FILTER
+ * - OP_ATTACHMENT_PIPE
  */
-static int op_filter(struct ComposeSharedData *shared, int op)
+static int op_attachment_filter(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -2192,8 +2192,8 @@ static int op_filter(struct ComposeSharedData *shared, int op)
     return IR_ERROR;
   }
   mutt_pipe_attachment_list(shared->adata->actx, NULL, shared->adata->menu->tagprefix,
-                            cur_att->body, (op == OP_FILTER));
-  if (op == OP_FILTER) /* cte might have changed */
+                            cur_att->body, (op == OP_ATTACHMENT_FILTER));
+  if (op == OP_ATTACHMENT_FILTER) /* cte might have changed */
     menu_queue_redraw(shared->adata->menu,
                       shared->adata->menu->tagprefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
   notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
@@ -2211,9 +2211,9 @@ static int op_forget_passphrase(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_print - Print the current entry - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_print - Print the current entry - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_print(struct ComposeSharedData *shared, int op)
+static int op_attachment_print(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -2231,9 +2231,9 @@ static int op_print(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_save - Save message/attachment to a mailbox/file - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_save - Save message/attachment to a mailbox/file - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_save(struct ComposeSharedData *shared, int op)
+static int op_attachment_save(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -2388,6 +2388,11 @@ struct ComposeFunction ComposeFunctions[] = {
   { OP_ATTACHMENT_ATTACH_KEY,       op_attachment_attach_key },
   { OP_ATTACHMENT_ATTACH_MESSAGE,   op_attachment_attach_message },
   { OP_ATTACHMENT_ATTACH_NEWS_MESSAGE, op_attachment_attach_message },
+  { OP_ATTACHMENT_DETACH,              op_attachment_detach },
+  { OP_ATTACHMENT_FILTER,              op_attachment_filter },
+  { OP_ATTACHMENT_PIPE,                op_attachment_filter },
+  { OP_ATTACHMENT_PRINT,               op_attachment_print },
+  { OP_ATTACHMENT_SAVE,                op_attachment_save },
 #ifdef USE_AUTOCRYPT
   { OP_COMPOSE_AUTOCRYPT_MENU,      op_compose_autocrypt_menu },
 #endif
@@ -2436,15 +2441,10 @@ struct ComposeFunction ComposeFunctions[] = {
   { OP_ATTACHMENT_TOGGLE_UNLINK,    op_attachment_toggle_unlink },
   { OP_ATTACHMENT_UPDATE_ENCODING,  op_attachment_update_encoding },
   { OP_COMPOSE_WRITE_MESSAGE,       op_compose_write_message },
-  { OP_DELETE,                      op_delete },
   { OP_DISPLAY_HEADERS,             op_display_headers },
   { OP_ATTACHMENT_EDIT_TYPE,        op_attachment_edit_type },
   { OP_EXIT,                        op_exit },
-  { OP_FILTER,                      op_filter },
   { OP_FORGET_PASSPHRASE,           op_forget_passphrase },
-  { OP_PIPE,                        op_filter },
-  { OP_PRINT,                       op_print },
-  { OP_SAVE,                        op_save },
   { OP_ATTACHMENT_VIEW,             op_display_headers },
   { 0, NULL },
   // clang-format on

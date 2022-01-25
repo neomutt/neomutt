@@ -95,9 +95,9 @@
 static const struct Mapping AttachHelp[] = {
   // clang-format off
   { N_("Exit"),  OP_EXIT },
-  { N_("Save"),  OP_SAVE },
-  { N_("Pipe"),  OP_PIPE },
-  { N_("Print"), OP_PRINT },
+  { N_("Save"),  OP_ATTACHMENT_SAVE },
+  { N_("Pipe"),  OP_ATTACHMENT_PIPE },
+  { N_("Print"), OP_ATTACHMENT_PRINT },
   { N_("Help"),  OP_HELP },
   { NULL, 0 },
   // clang-format on
@@ -668,21 +668,21 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         }
         break;
 
-      case OP_PRINT:
+      case OP_ATTACHMENT_PRINT:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_print_attachment_list(actx, cur_att->fp, menu->tagprefix, cur_att->body);
         break;
       }
 
-      case OP_PIPE:
+      case OP_ATTACHMENT_PIPE:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_pipe_attachment_list(actx, cur_att->fp, menu->tagprefix, cur_att->body, false);
         break;
       }
 
-      case OP_SAVE:
+      case OP_ATTACHMENT_SAVE:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_save_attachment_list(actx, cur_att->fp, menu->tagprefix,
@@ -695,7 +695,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         break;
       }
 
-      case OP_DELETE:
+      case OP_ATTACHMENT_DELETE:
         if (check_readonly(m))
           break;
 
@@ -770,7 +770,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         }
         break;
 
-      case OP_UNDELETE:
+      case OP_ATTACHMENT_UNDELETE:
         if (check_readonly(m))
           break;
         if (!menu->tagprefix)
