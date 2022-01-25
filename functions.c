@@ -478,7 +478,7 @@ const struct Binding OpCompose[] = { /* map: compose */
   { "edit-description",              OP_ATTACHMENT_EDIT_DESCRIPTION,        "d" },
   { "edit-encoding",                 OP_ATTACHMENT_EDIT_ENCODING,           "\005" },   // <Ctrl-E>
   { "edit-fcc",                      OP_ENVELOPE_EDIT_FCC,                  "f" },
-  { "edit-file",                     OP_COMPOSE_EDIT_FILE,                  "\030e" },  // <Alt-e>
+  { "edit-file",                     OP_COMPOSE_EDIT_FILE,                  "\033e" },  // <Alt-e>
 #ifdef USE_NNTP
   { "edit-followup-to",              OP_ENVELOPE_EDIT_FOLLOWUP_TO,          NULL },
 #endif
