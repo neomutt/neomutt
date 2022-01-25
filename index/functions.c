@@ -432,9 +432,10 @@ static int op_edit_raw_message(struct IndexSharedData *shared,
 }
 
 /**
- * op_edit_type - Edit attachment content type - Implements ::index_function_t - @ingroup index_function_api
+ * op_attachment_edit_type - Edit attachment content type - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_edit_type(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_attachment_edit_type(struct IndexSharedData *shared,
+                                   struct IndexPrivateData *priv, int op)
 {
   if (!shared->email)
     return IR_NO_ACTION;
@@ -3240,7 +3241,7 @@ struct IndexFunction IndexFunctions[] = {
   { OP_EDIT_LABEL,                       op_edit_label,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_EDIT_OR_VIEW_RAW_MESSAGE,         op_edit_raw_message,               CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_EDIT_RAW_MESSAGE,                 op_edit_raw_message,               CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
-  { OP_EDIT_TYPE,                        op_edit_type,                      CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_ATTACHMENT_EDIT_TYPE,             op_attachment_edit_type,           CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_END_COND,                         op_end_cond,                       CHECK_NO_FLAGS },
   { OP_ENTER_COMMAND,                    op_enter_command,                  CHECK_NO_FLAGS },
   { OP_EXIT,                             op_exit,                           CHECK_NO_FLAGS },

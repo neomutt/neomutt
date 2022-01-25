@@ -140,7 +140,7 @@ const struct Binding OpMain[] = { /* map: index */
   { "edit-label",                OP_EDIT_LABEL,                     "Y" },
   { "edit-or-view-raw-message",  OP_EDIT_OR_VIEW_RAW_MESSAGE,       "e" },
   { "edit-raw-message",          OP_EDIT_RAW_MESSAGE,               NULL },
-  { "edit-type",                 OP_EDIT_TYPE,                      "\005" },   // <Ctrl-E>
+  { "edit-type",                 OP_ATTACHMENT_EDIT_TYPE,           "\005" },   // <Ctrl-E>
 #ifdef USE_NOTMUCH
   { "entire-thread",             OP_MAIN_ENTIRE_THREAD,             NULL },
 #endif
@@ -294,7 +294,7 @@ const struct Binding OpPager[] = { /* map: pager */
   { "edit-label",                OP_EDIT_LABEL,                   "Y" },
   { "edit-or-view-raw-message",  OP_EDIT_OR_VIEW_RAW_MESSAGE,     "e" },
   { "edit-raw-message",          OP_EDIT_RAW_MESSAGE,             NULL },
-  { "edit-type",                 OP_EDIT_TYPE,                    "\005" },     // <Ctrl-E>
+  { "edit-type",                 OP_ATTACHMENT_EDIT_TYPE,         "\005" },     // <Ctrl-E>
   { "enter-command",             OP_ENTER_COMMAND,                ":" },
 #ifdef USE_NOTMUCH
   { "entire-thread",             OP_MAIN_ENTIRE_THREAD,           NULL },
@@ -424,11 +424,11 @@ const struct Binding OpPager[] = { /* map: pager */
 const struct Binding OpAttach[] = { /* map: attachment */
   { "bounce-message",        OP_BOUNCE_MESSAGE,              "b" },
   { "check-traditional-pgp", OP_CHECK_TRADITIONAL,           "\033P" },         // <Alt-P>
-  { "collapse-parts",        OP_ATTACH_COLLAPSE,             "v" },
+  { "collapse-parts",        OP_ATTACHMENT_COLLAPSE,         "v" },
   { "compose-to-sender",     OP_COMPOSE_TO_SENDER,           NULL },
   { "delete-entry",          OP_DELETE,                      "d" },
   { "display-toggle-weed",   OP_DISPLAY_HEADERS,             "h" },
-  { "edit-type",             OP_EDIT_TYPE,                   "\005" },          // <Ctrl-E>
+  { "edit-type",             OP_ATTACHMENT_EDIT_TYPE,        "\005" },          // <Ctrl-E>
   { "extract-keys",          OP_EXTRACT_KEYS,                "\013" },          // <Ctrl-K>
 #ifdef USE_NNTP
   { "followup-message",      OP_FOLLOWUP,                    NULL },
@@ -449,11 +449,11 @@ const struct Binding OpAttach[] = { /* map: attachment */
   { "resend-message",        OP_RESEND,                      "\033e" },         // <Alt-e>
   { "save-entry",            OP_SAVE,                        "s" },
   { "undelete-entry",        OP_UNDELETE,                    "u" },
-  { "view-attach",           OP_VIEW_ATTACH,                 "\n" },            // <Enter>
-  { "view-attach",           OP_VIEW_ATTACH,                 "\r" },            // <Return>
-  { "view-mailcap",          OP_ATTACH_VIEW_MAILCAP,         "m" },
-  { "view-pager",            OP_ATTACH_VIEW_PAGER,           NULL },
-  { "view-text",             OP_ATTACH_VIEW_TEXT,            "T" },
+  { "view-attach",           OP_ATTACHMENT_VIEW,             "\n" },            // <Enter>
+  { "view-attach",           OP_ATTACHMENT_VIEW,             "\r" },            // <Return>
+  { "view-mailcap",          OP_ATTACHMENT_VIEW_MAILCAP,     "m" },
+  { "view-pager",            OP_ATTACHMENT_VIEW_PAGER,       NULL },
+  { "view-text",             OP_ATTACHMENT_VIEW_TEXT,        "T" },
   { NULL, 0, NULL },
 };
 
@@ -461,11 +461,11 @@ const struct Binding OpAttach[] = { /* map: attachment */
  * OpCompose - Key bindings for the compose menu
  */
 const struct Binding OpCompose[] = { /* map: compose */
-  { "attach-file",           OP_COMPOSE_ATTACH_FILE,         "a" },
-  { "attach-key",            OP_COMPOSE_ATTACH_KEY,          "\033k" },         // <Alt-k>
-  { "attach-message",        OP_COMPOSE_ATTACH_MESSAGE,      "A" },
+  { "attach-file",           OP_ATTACHMENT_ATTACH_FILE,      "a" },
+  { "attach-key",            OP_ATTACHMENT_ATTACH_KEY,       "\033k" },         // <Alt-k>
+  { "attach-message",        OP_ATTACHMENT_ATTACH_MESSAGE,   "A" },
 #ifdef USE_NNTP
-  { "attach-news-message",   OP_COMPOSE_ATTACH_NEWS_MESSAGE, NULL },
+  { "attach-news-message",   OP_ATTACHMENT_ATTACH_NEWS_MESSAGE, NULL },
 #endif
 #ifdef USE_AUTOCRYPT
   { "autocrypt-menu",        OP_COMPOSE_AUTOCRYPT_MENU,      "o" },
@@ -473,57 +473,57 @@ const struct Binding OpCompose[] = { /* map: compose */
   { "copy-file",             OP_SAVE,                        "C" },
   { "detach-file",           OP_DELETE,                      "D" },
   { "display-toggle-weed",   OP_DISPLAY_HEADERS,             "h" },
-  { "edit-bcc",              OP_COMPOSE_EDIT_BCC,            "b" },
-  { "edit-cc",               OP_COMPOSE_EDIT_CC,             "c" },
-  { "edit-description",      OP_COMPOSE_EDIT_DESCRIPTION,    "d" },
-  { "edit-encoding",         OP_COMPOSE_EDIT_ENCODING,       "\005" },          // <Ctrl-E>
-  { "edit-fcc",              OP_COMPOSE_EDIT_FCC,            "f" },
+  { "edit-bcc",              OP_ENVELOPE_EDIT_BCC,           "b" },
+  { "edit-cc",               OP_ENVELOPE_EDIT_CC,            "c" },
+  { "edit-description",      OP_ATTACHMENT_EDIT_DESCRIPTION, "d" },
+  { "edit-encoding",         OP_ATTACHMENT_EDIT_ENCODING,    "\005" },          // <Ctrl-E>
+  { "edit-fcc",              OP_ENVELOPE_EDIT_FCC,           "f" },
   { "edit-file",             OP_COMPOSE_EDIT_FILE,           "\030e" },         // <Alt-e>
 #ifdef USE_NNTP
-  { "edit-followup-to",      OP_COMPOSE_EDIT_FOLLOWUP_TO,    NULL },
+  { "edit-followup-to",      OP_ENVELOPE_EDIT_FOLLOWUP_TO,    NULL },
 #endif
-  { "edit-from",             OP_COMPOSE_EDIT_FROM,           "\033f" },         // <Alt-f>
-  { "edit-headers",          OP_COMPOSE_EDIT_HEADERS,        "E" },
-  { "edit-language",         OP_COMPOSE_EDIT_LANGUAGE,       "\014" },          // <Ctrl-L>
+  { "edit-from",             OP_ENVELOPE_EDIT_FROM,          "\033f" },         // <Alt-f>
+  { "edit-headers",          OP_ENVELOPE_EDIT_HEADERS,       "E" },
+  { "edit-language",         OP_ATTACHMENT_EDIT_LANGUAGE,    "\014" },          // <Ctrl-L>
   { "edit-message",          OP_COMPOSE_EDIT_MESSAGE,        "e" },
-  { "edit-mime",             OP_COMPOSE_EDIT_MIME,           "m" },
+  { "edit-mime",             OP_ATTACHMENT_EDIT_MIME,        "m" },
 #ifdef USE_NNTP
-  { "edit-newsgroups",       OP_COMPOSE_EDIT_NEWSGROUPS,     NULL },
+  { "edit-newsgroups",       OP_ENVELOPE_EDIT_NEWSGROUPS,     NULL },
 #endif
-  { "edit-reply-to",         OP_COMPOSE_EDIT_REPLY_TO,       "r" },
-  { "edit-subject",          OP_COMPOSE_EDIT_SUBJECT,        "s" },
-  { "edit-to",               OP_COMPOSE_EDIT_TO,             "t" },
-  { "edit-type",             OP_EDIT_TYPE,                   "\024" },          // <Ctrl-T>
+  { "edit-reply-to",         OP_ENVELOPE_EDIT_REPLY_TO,      "r" },
+  { "edit-subject",          OP_ENVELOPE_EDIT_SUBJECT,       "s" },
+  { "edit-to",               OP_ENVELOPE_EDIT_TO,            "t" },
+  { "edit-type",             OP_ATTACHMENT_EDIT_TYPE,        "\024" },          // <Ctrl-T>
 #ifdef USE_NNTP
-  { "edit-x-comment-to",     OP_COMPOSE_EDIT_X_COMMENT_TO,   NULL },
+  { "edit-x-comment-to",     OP_ENVELOPE_EDIT_X_COMMENT_TO,   NULL },
 #endif
   { "filter-entry",          OP_FILTER,                      "F" },
   { "forget-passphrase",     OP_FORGET_PASSPHRASE,           "\006" },          // <Ctrl-F>
-  { "get-attachment",        OP_COMPOSE_GET_ATTACHMENT,      "G" },
-  { "group-alternatives",    OP_COMPOSE_GROUP_ALTS,          "&" },
-  { "group-multilingual",    OP_COMPOSE_GROUP_LINGUAL,       "^" },
-  { "ungroup-attachment",    OP_COMPOSE_UNGROUP_ATTACHMENT,  "#" },
+  { "get-attachment",        OP_ATTACHMENT_GET_ATTACHMENT,   "G" },
+  { "group-alternatives",    OP_ATTACHMENT_GROUP_ALTS,       "&" },
+  { "group-multilingual",    OP_ATTACHMENT_GROUP_LINGUAL,    "^" },
+  { "ungroup-attachment",    OP_ATTACHMENT_UNGROUP,  "#" },
   { "ispell",                OP_COMPOSE_ISPELL,              "i" },
 #ifdef MIXMASTER
   { "mix",                   OP_COMPOSE_MIX,                 "M" },
 #endif
-  { "move-down",             OP_COMPOSE_MOVE_DOWN,           "+" },
-  { "move-up",               OP_COMPOSE_MOVE_UP,             "-" },
-  { "new-mime",              OP_COMPOSE_NEW_MIME,            "n" },
+  { "move-down",             OP_ATTACHMENT_MOVE_DOWN,        "+" },
+  { "move-up",               OP_ATTACHMENT_MOVE_UP,          "-" },
+  { "new-mime",              OP_ATTACHMENT_NEW_MIME,         "n" },
   { "pgp-menu",              OP_COMPOSE_PGP_MENU,            "p" },
   { "pipe-entry",            OP_PIPE,                        "|" },
   { "postpone-message",      OP_COMPOSE_POSTPONE_MESSAGE,    "P" },
   { "print-entry",           OP_PRINT,                       "l" },
-  { "rename-attachment",     OP_COMPOSE_RENAME_ATTACHMENT,   "\017" },          // <Ctrl-O>
+  { "rename-attachment",     OP_ATTACHMENT_RENAME_ATTACHMENT,"\017" },          // <Ctrl-O>
   { "rename-file",           OP_COMPOSE_RENAME_FILE,         "R" },
   { "send-message",          OP_COMPOSE_SEND_MESSAGE,        "y" },
   { "smime-menu",            OP_COMPOSE_SMIME_MENU,          "S" },
-  { "toggle-disposition",    OP_COMPOSE_TOGGLE_DISPOSITION,  "\004" },          // <Ctrl-D>
-  { "toggle-recode",         OP_COMPOSE_TOGGLE_RECODE,       NULL },
-  { "toggle-unlink",         OP_COMPOSE_TOGGLE_UNLINK,       "u" },
-  { "update-encoding",       OP_COMPOSE_UPDATE_ENCODING,     "U" },
-  { "view-attach",           OP_VIEW_ATTACH,                 "\n" },            // <Enter>
-  { "view-attach",           OP_VIEW_ATTACH,                 "\r" },            // <Return>
+  { "toggle-disposition",    OP_ATTACHMENT_TOGGLE_DISPOSITION,  "\004" },          // <Ctrl-D>
+  { "toggle-recode",         OP_ATTACHMENT_TOGGLE_RECODE,    NULL },
+  { "toggle-unlink",         OP_ATTACHMENT_TOGGLE_UNLINK,    "u" },
+  { "update-encoding",       OP_ATTACHMENT_UPDATE_ENCODING,  "U" },
+  { "view-attach",           OP_ATTACHMENT_VIEW,             "\n" },            // <Enter>
+  { "view-attach",           OP_ATTACHMENT_VIEW,             "\r" },            // <Return>
   { "write-fcc",             OP_COMPOSE_WRITE_MESSAGE,       "w" },
   { NULL, 0, NULL },
 };

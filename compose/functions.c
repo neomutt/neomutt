@@ -813,9 +813,9 @@ static int group_attachments(struct ComposeSharedData *shared,
 // -----------------------------------------------------------------------------
 
 /**
- * op_compose_attach_file - Attach files to this message - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_attach_file - Attach files to this message - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_attach_file(struct ComposeSharedData *shared, int op)
+static int op_attachment_attach_file(struct ComposeSharedData *shared, int op)
 {
   char *prompt = _("Attach file");
   int numfiles = 0;
@@ -878,9 +878,9 @@ static int op_compose_attach_file(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_attach_key - Attach a PGP public key - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_attach_key - Attach a PGP public key - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_attach_key(struct ComposeSharedData *shared, int op)
+static int op_attachment_attach_key(struct ComposeSharedData *shared, int op)
 {
   if (!(WithCrypto & APPLICATION_PGP))
     return IR_NOT_IMPL;
@@ -900,19 +900,19 @@ static int op_compose_attach_key(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_attach_message - Attach messages to this message - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_attach_message - Attach messages to this message - Implements ::compose_function_t - @ingroup compose_function_api
  *
  * This function handles:
- * - OP_COMPOSE_ATTACH_MESSAGE
- * - OP_COMPOSE_ATTACH_NEWS_MESSAGE
+ * - OP_ATTACHMENT_ATTACH_MESSAGE
+ * - OP_ATTACHMENT_ATTACH_NEWS_MESSAGE
  */
-static int op_compose_attach_message(struct ComposeSharedData *shared, int op)
+static int op_attachment_attach_message(struct ComposeSharedData *shared, int op)
 {
   char *prompt = _("Open mailbox to attach message from");
 
 #ifdef USE_NNTP
   OptNews = false;
-  if (shared->mailbox && (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE))
+  if (shared->mailbox && (op == OP_ATTACHMENT_ATTACH_NEWS_MESSAGE))
   {
     const char *const c_news_server =
         cs_subset_string(shared->sub, "news_server");
@@ -929,7 +929,7 @@ static int op_compose_attach_message(struct ComposeSharedData *shared, int op)
   if (shared->mailbox)
   {
 #ifdef USE_NNTP
-    if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (shared->mailbox->type == MUTT_NNTP))
+    if ((op == OP_ATTACHMENT_ATTACH_MESSAGE) ^ (shared->mailbox->type == MUTT_NNTP))
 #endif
     {
       mutt_buffer_strcpy(fname, mailbox_path(shared->mailbox));
@@ -1058,9 +1058,9 @@ static int op_compose_attach_message(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_bcc - Edit the BCC list - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_envelope_edit_bcc - Edit the BCC list - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_bcc(struct ComposeSharedData *shared, int op)
+static int op_envelope_edit_bcc(struct ComposeSharedData *shared, int op)
 {
 #ifdef USE_NNTP
   if (shared->news)
@@ -1076,9 +1076,9 @@ static int op_compose_edit_bcc(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_cc - Edit the CC list - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_envelope_edit_cc - Edit the CC list - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_cc(struct ComposeSharedData *shared, int op)
+static int op_envelope_edit_cc(struct ComposeSharedData *shared, int op)
 {
 #ifdef USE_NNTP
   if (shared->news)
@@ -1094,9 +1094,9 @@ static int op_compose_edit_cc(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_description - Edit attachment description - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_edit_description - Edit attachment description - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_description(struct ComposeSharedData *shared, int op)
+static int op_attachment_edit_description(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -1126,9 +1126,9 @@ static int op_compose_edit_description(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_encoding - Edit attachment transfer-encoding - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_edit_encoding - Edit attachment transfer-encoding - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_encoding(struct ComposeSharedData *shared, int op)
+static int op_attachment_edit_encoding(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -1169,9 +1169,9 @@ static int op_compose_edit_encoding(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_fcc - Enter a file to save a copy of this message in - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_envelope_edit_fcc - Enter a file to save a copy of this message in - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_fcc(struct ComposeSharedData *shared, int op)
+static int op_envelope_edit_fcc(struct ComposeSharedData *shared, int op)
 {
   int rc = IR_NO_ACTION;
   struct Buffer *fname = mutt_buffer_pool_get();
@@ -1218,9 +1218,9 @@ static int op_compose_edit_file(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_from - Edit the from field - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_envelope_edit_from - Edit the from field - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_from(struct ComposeSharedData *shared, int op)
+static int op_envelope_edit_from(struct ComposeSharedData *shared, int op)
 {
   if (!edit_address_list(HDR_FROM, &shared->email->env->from))
     return IR_NO_ACTION;
@@ -1232,9 +1232,9 @@ static int op_compose_edit_from(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_headers - Edit the message with headers - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_envelope_edit_headers - Edit the message with headers - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_headers(struct ComposeSharedData *shared, int op)
+static int op_envelope_edit_headers(struct ComposeSharedData *shared, int op)
 {
   mutt_rfc3676_space_unstuff(shared->email);
   const char *tag = NULL;
@@ -1279,9 +1279,9 @@ static int op_compose_edit_headers(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_language - Edit the 'Content-Language' of the attachment - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_edit_language - Edit the 'Content-Language' of the attachment - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_language(struct ComposeSharedData *shared, int op)
+static int op_attachment_edit_language(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -1334,13 +1334,13 @@ static int op_compose_edit_message(struct ComposeSharedData *shared, int op)
     return IR_SUCCESS;
   }
 
-  return op_compose_edit_headers(shared, op);
+  return op_envelope_edit_headers(shared, op);
 }
 
 /**
- * op_compose_edit_mime - Edit attachment using mailcap entry - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_edit_mime - Edit attachment using mailcap entry - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_mime(struct ComposeSharedData *shared, int op)
+static int op_attachment_edit_mime(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -1356,9 +1356,9 @@ static int op_compose_edit_mime(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_reply_to - Edit the Reply-To field - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_envelope_edit_reply_to - Edit the Reply-To field - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_reply_to(struct ComposeSharedData *shared, int op)
+static int op_envelope_edit_reply_to(struct ComposeSharedData *shared, int op)
 {
   if (!edit_address_list(HDR_REPLYTO, &shared->email->env->reply_to))
     return IR_NO_ACTION;
@@ -1369,9 +1369,9 @@ static int op_compose_edit_reply_to(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_subject - Edit the subject of this message - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_envelope_edit_subject - Edit the subject of this message - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_subject(struct ComposeSharedData *shared, int op)
+static int op_envelope_edit_subject(struct ComposeSharedData *shared, int op)
 {
   int rc = IR_NO_ACTION;
   struct Buffer *buf = mutt_buffer_pool_get();
@@ -1394,9 +1394,9 @@ static int op_compose_edit_subject(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_to - Edit the TO list - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_envelope_edit_to - Edit the TO list - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_to(struct ComposeSharedData *shared, int op)
+static int op_envelope_edit_to(struct ComposeSharedData *shared, int op)
 {
 #ifdef USE_NNTP
   if (shared->news)
@@ -1412,9 +1412,9 @@ static int op_compose_edit_to(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_get_attachment - Get a temporary copy of an attachment - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_get_attachment - Get a temporary copy of an attachment - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_get_attachment(struct ComposeSharedData *shared, int op)
+static int op_attachment_get_attachment(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -1442,9 +1442,9 @@ static int op_compose_get_attachment(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_group_alts - Group tagged attachments as 'multipart/alternative' - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_group_alts - Group tagged attachments as 'multipart/alternative' - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_group_alts(struct ComposeSharedData *shared, int op)
+static int op_attachment_group_alts(struct ComposeSharedData *shared, int op)
 {
   static const char *ALTS_TAG = "Alternatives for \"%s\"";
   if (shared->adata->menu->tagged < 2)
@@ -1458,9 +1458,9 @@ static int op_compose_group_alts(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_group_lingual - Group tagged attachments as 'multipart/multilingual' - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_group_lingual - Group tagged attachments as 'multipart/multilingual' - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_group_lingual(struct ComposeSharedData *shared, int op)
+static int op_attachment_group_lingual(struct ComposeSharedData *shared, int op)
 {
   static const char *LINGUAL_TAG = "Multilingual part for \"%s\"";
   if (shared->adata->menu->tagged < 2)
@@ -1489,9 +1489,9 @@ static int op_compose_group_lingual(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_ungroup_attachment - Ungroup a 'multipart' attachment - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_ungroup - Ungroup a 'multipart' attachment - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_ungroup_attachment(struct ComposeSharedData *shared, int op)
+static int op_attachment_ungroup(struct ComposeSharedData *shared, int op)
 {
   if (shared->adata->actx->idx[shared->adata->menu->current]->body->type != TYPE_MULTIPART)
   {
@@ -1573,9 +1573,9 @@ static int op_compose_ispell(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_move_down - Move an attachment down in the attachment list - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_move_down - Move an attachment down in the attachment list - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_move_down(struct ComposeSharedData *shared, int op)
+static int op_attachment_move_down(struct ComposeSharedData *shared, int op)
 {
   int index = menu_get_index(shared->adata->menu);
 
@@ -1628,9 +1628,9 @@ static int op_compose_move_down(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_move_up - Move an attachment up in the attachment list - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_move_up - Move an attachment up in the attachment list - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_move_up(struct ComposeSharedData *shared, int op)
+static int op_attachment_move_up(struct ComposeSharedData *shared, int op)
 {
   int index = menu_get_index(shared->adata->menu);
   if (index < 0)
@@ -1662,9 +1662,9 @@ static int op_compose_move_up(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_new_mime - Compose new attachment using mailcap entry - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_new_mime - Compose new attachment using mailcap entry - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_new_mime(struct ComposeSharedData *shared, int op)
+static int op_attachment_new_mime(struct ComposeSharedData *shared, int op)
 {
   int rc = IR_NO_ACTION;
   struct Buffer *fname = mutt_buffer_pool_get();
@@ -1799,9 +1799,9 @@ static int op_compose_postpone_message(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_rename_attachment - Send attachment with a different name - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_rename_attachment - Send attachment with a different name - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_rename_attachment(struct ComposeSharedData *shared, int op)
+static int op_attachment_rename_attachment(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -1947,9 +1947,9 @@ static int op_compose_smime_menu(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_toggle_disposition - Toggle disposition between inline/attachment - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_toggle_disposition - Toggle disposition between inline/attachment - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_toggle_disposition(struct ComposeSharedData *shared, int op)
+static int op_attachment_toggle_disposition(struct ComposeSharedData *shared, int op)
 {
   /* toggle the content-disposition between inline/attachment */
   struct AttachPtr *cur_att =
@@ -1961,9 +1961,9 @@ static int op_compose_toggle_disposition(struct ComposeSharedData *shared, int o
 }
 
 /**
- * op_compose_toggle_recode - Toggle recoding of this attachment - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_toggle_recode - Toggle recoding of this attachment - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_toggle_recode(struct ComposeSharedData *shared, int op)
+static int op_attachment_toggle_recode(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -1985,9 +1985,9 @@ static int op_compose_toggle_recode(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_toggle_unlink - Toggle whether to delete file after sending it - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_toggle_unlink - Toggle whether to delete file after sending it - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_toggle_unlink(struct ComposeSharedData *shared, int op)
+static int op_attachment_toggle_unlink(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -2001,9 +2001,9 @@ static int op_compose_toggle_unlink(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_update_encoding - Update an attachment's encoding info - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_update_encoding - Update an attachment's encoding info - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_update_encoding(struct ComposeSharedData *shared, int op)
+static int op_attachment_update_encoding(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -2119,9 +2119,9 @@ static int op_display_headers(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_edit_type - Edit attachment content type - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_edit_type - Edit attachment content type - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_edit_type(struct ComposeSharedData *shared, int op)
+static int op_attachment_edit_type(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -2291,9 +2291,9 @@ static int op_compose_autocrypt_menu(struct ComposeSharedData *shared, int op)
 
 #ifdef USE_NNTP
 /**
- * op_compose_edit_followup_to - Edit the Followup-To field - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_envelope_edit_followup_to - Edit the Followup-To field - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_followup_to(struct ComposeSharedData *shared, int op)
+static int op_envelope_edit_followup_to(struct ComposeSharedData *shared, int op)
 {
   if (!shared->news)
     return IR_NO_ACTION;
@@ -2315,9 +2315,9 @@ static int op_compose_edit_followup_to(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_newsgroups - Edit the newsgroups list - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_envelope_edit_newsgroups - Edit the newsgroups list - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_newsgroups(struct ComposeSharedData *shared, int op)
+static int op_envelope_edit_newsgroups(struct ComposeSharedData *shared, int op)
 {
   if (!shared->news)
     return IR_NO_ACTION;
@@ -2339,9 +2339,9 @@ static int op_compose_edit_newsgroups(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_x_comment_to - Edit the X-Comment-To field - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_envelope_edit_x_comment_to - Edit the X-Comment-To field - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_x_comment_to(struct ComposeSharedData *shared, int op)
+static int op_envelope_edit_x_comment_to(struct ComposeSharedData *shared, int op)
 {
   const bool c_x_comment_to = cs_subset_bool(shared->sub, "x_comment_to");
   if (!(shared->news && c_x_comment_to))
@@ -2384,68 +2384,68 @@ static int op_compose_mix(struct ComposeSharedData *shared, int op)
  */
 struct ComposeFunction ComposeFunctions[] = {
   // clang-format off
-  { OP_COMPOSE_ATTACH_FILE,         op_compose_attach_file },
-  { OP_COMPOSE_ATTACH_KEY,          op_compose_attach_key },
-  { OP_COMPOSE_ATTACH_MESSAGE,      op_compose_attach_message },
-  { OP_COMPOSE_ATTACH_NEWS_MESSAGE, op_compose_attach_message },
+  { OP_ATTACHMENT_ATTACH_FILE,      op_attachment_attach_file },
+  { OP_ATTACHMENT_ATTACH_KEY,       op_attachment_attach_key },
+  { OP_ATTACHMENT_ATTACH_MESSAGE,   op_attachment_attach_message },
+  { OP_ATTACHMENT_ATTACH_NEWS_MESSAGE, op_attachment_attach_message },
 #ifdef USE_AUTOCRYPT
   { OP_COMPOSE_AUTOCRYPT_MENU,      op_compose_autocrypt_menu },
 #endif
-  { OP_COMPOSE_EDIT_BCC,            op_compose_edit_bcc },
-  { OP_COMPOSE_EDIT_CC,             op_compose_edit_cc },
-  { OP_COMPOSE_EDIT_DESCRIPTION,    op_compose_edit_description },
-  { OP_COMPOSE_EDIT_ENCODING,       op_compose_edit_encoding },
-  { OP_COMPOSE_EDIT_FCC,            op_compose_edit_fcc },
+  { OP_ENVELOPE_EDIT_BCC,           op_envelope_edit_bcc },
+  { OP_ENVELOPE_EDIT_CC,            op_envelope_edit_cc },
+  { OP_ATTACHMENT_EDIT_DESCRIPTION, op_attachment_edit_description },
+  { OP_ATTACHMENT_EDIT_ENCODING,    op_attachment_edit_encoding },
+  { OP_ENVELOPE_EDIT_FCC,           op_envelope_edit_fcc },
   { OP_COMPOSE_EDIT_FILE,           op_compose_edit_file },
 #ifdef USE_NNTP
-  { OP_COMPOSE_EDIT_FOLLOWUP_TO,    op_compose_edit_followup_to },
+  { OP_ENVELOPE_EDIT_FOLLOWUP_TO,   op_envelope_edit_followup_to },
 #endif
-  { OP_COMPOSE_EDIT_FROM,           op_compose_edit_from },
-  { OP_COMPOSE_EDIT_HEADERS,        op_compose_edit_headers },
-  { OP_COMPOSE_EDIT_LANGUAGE,       op_compose_edit_language },
+  { OP_ENVELOPE_EDIT_FROM,          op_envelope_edit_from },
+  { OP_ENVELOPE_EDIT_HEADERS,       op_envelope_edit_headers },
+  { OP_ATTACHMENT_EDIT_LANGUAGE,    op_attachment_edit_language },
   { OP_COMPOSE_EDIT_MESSAGE,        op_compose_edit_message },
-  { OP_COMPOSE_EDIT_MIME,           op_compose_edit_mime },
+  { OP_ATTACHMENT_EDIT_MIME,        op_attachment_edit_mime },
 #ifdef USE_NNTP
-  { OP_COMPOSE_EDIT_NEWSGROUPS,     op_compose_edit_newsgroups },
+  { OP_ENVELOPE_EDIT_NEWSGROUPS,    op_envelope_edit_newsgroups },
 #endif
-  { OP_COMPOSE_EDIT_REPLY_TO,       op_compose_edit_reply_to },
-  { OP_COMPOSE_EDIT_SUBJECT,        op_compose_edit_subject },
-  { OP_COMPOSE_EDIT_TO,             op_compose_edit_to },
+  { OP_ENVELOPE_EDIT_REPLY_TO,      op_envelope_edit_reply_to },
+  { OP_ENVELOPE_EDIT_SUBJECT,       op_envelope_edit_subject },
+  { OP_ENVELOPE_EDIT_TO,            op_envelope_edit_to },
 #ifdef USE_NNTP
-  { OP_COMPOSE_EDIT_X_COMMENT_TO,   op_compose_edit_x_comment_to },
+  { OP_ENVELOPE_EDIT_X_COMMENT_TO,  op_envelope_edit_x_comment_to },
 #endif
-  { OP_COMPOSE_GET_ATTACHMENT,      op_compose_get_attachment },
-  { OP_COMPOSE_GROUP_ALTS,          op_compose_group_alts },
-  { OP_COMPOSE_GROUP_LINGUAL,       op_compose_group_lingual },
-  { OP_COMPOSE_UNGROUP_ATTACHMENT,  op_compose_ungroup_attachment },
+  { OP_ATTACHMENT_GET_ATTACHMENT,   op_attachment_get_attachment },
+  { OP_ATTACHMENT_GROUP_ALTS,       op_attachment_group_alts },
+  { OP_ATTACHMENT_GROUP_LINGUAL,    op_attachment_group_lingual },
+  { OP_ATTACHMENT_UNGROUP,          op_attachment_ungroup },
   { OP_COMPOSE_ISPELL,              op_compose_ispell },
 #ifdef MIXMASTER
   { OP_COMPOSE_MIX,                 op_compose_mix },
 #endif
-  { OP_COMPOSE_MOVE_DOWN,           op_compose_move_down },
-  { OP_COMPOSE_MOVE_UP,             op_compose_move_up },
-  { OP_COMPOSE_NEW_MIME,            op_compose_new_mime },
+  { OP_ATTACHMENT_MOVE_DOWN,        op_attachment_move_down },
+  { OP_ATTACHMENT_MOVE_UP,          op_attachment_move_up },
+  { OP_ATTACHMENT_NEW_MIME,         op_attachment_new_mime },
   { OP_COMPOSE_PGP_MENU,            op_compose_pgp_menu },
   { OP_COMPOSE_POSTPONE_MESSAGE,    op_compose_postpone_message },
-  { OP_COMPOSE_RENAME_ATTACHMENT,   op_compose_rename_attachment },
+  { OP_ATTACHMENT_RENAME_ATTACHMENT,   op_attachment_rename_attachment },
   { OP_COMPOSE_RENAME_FILE,         op_compose_rename_file },
   { OP_COMPOSE_SEND_MESSAGE,        op_compose_send_message },
   { OP_COMPOSE_SMIME_MENU,          op_compose_smime_menu },
-  { OP_COMPOSE_TOGGLE_DISPOSITION,  op_compose_toggle_disposition },
-  { OP_COMPOSE_TOGGLE_RECODE,       op_compose_toggle_recode },
-  { OP_COMPOSE_TOGGLE_UNLINK,       op_compose_toggle_unlink },
-  { OP_COMPOSE_UPDATE_ENCODING,     op_compose_update_encoding },
+  { OP_ATTACHMENT_TOGGLE_DISPOSITION,  op_attachment_toggle_disposition },
+  { OP_ATTACHMENT_TOGGLE_RECODE,    op_attachment_toggle_recode },
+  { OP_ATTACHMENT_TOGGLE_UNLINK,    op_attachment_toggle_unlink },
+  { OP_ATTACHMENT_UPDATE_ENCODING,  op_attachment_update_encoding },
   { OP_COMPOSE_WRITE_MESSAGE,       op_compose_write_message },
   { OP_DELETE,                      op_delete },
   { OP_DISPLAY_HEADERS,             op_display_headers },
-  { OP_EDIT_TYPE,                   op_edit_type },
+  { OP_ATTACHMENT_EDIT_TYPE,        op_attachment_edit_type },
   { OP_EXIT,                        op_exit },
   { OP_FILTER,                      op_filter },
   { OP_FORGET_PASSPHRASE,           op_forget_passphrase },
   { OP_PIPE,                        op_filter },
   { OP_PRINT,                       op_print },
   { OP_SAVE,                        op_save },
-  { OP_VIEW_ATTACH,                 op_display_headers },
+  { OP_ATTACHMENT_VIEW,             op_display_headers },
   { 0, NULL },
   // clang-format on
 };

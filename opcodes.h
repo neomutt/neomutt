@@ -40,10 +40,10 @@
 #endif
 
 #define OPS_CORE(_fmt) \
-  _fmt(OP_ATTACH_COLLAPSE,                N_("toggle display of subparts")) \
-  _fmt(OP_ATTACH_VIEW_MAILCAP,            N_("force viewing of attachment using mailcap")) \
-  _fmt(OP_ATTACH_VIEW_PAGER,              N_("view attachment in pager using copiousoutput mailcap")) \
-  _fmt(OP_ATTACH_VIEW_TEXT,               N_("view attachment as text")) \
+  _fmt(OP_ATTACHMENT_COLLAPSE,            N_("toggle display of subparts")) \
+  _fmt(OP_ATTACHMENT_VIEW_MAILCAP,        N_("force viewing of attachment using mailcap")) \
+  _fmt(OP_ATTACHMENT_VIEW_PAGER,          N_("view attachment in pager using copiousoutput mailcap")) \
+  _fmt(OP_ATTACHMENT_VIEW_TEXT,           N_("view attachment as text")) \
   _fmt(OP_BOTTOM_PAGE,                    N_("move to the bottom of the page")) \
   _fmt(OP_BOUNCE_MESSAGE,                 N_("remail a message to another user")) \
   _fmt(OP_BROWSER_GOTO_FOLDER,            N_("swap the current folder position with $folder if it exists")) \
@@ -57,43 +57,43 @@
   _fmt(OP_CHANGE_DIRECTORY,               N_("change directories")) \
   _fmt(OP_CHECK_NEW,                      N_("check mailboxes for new mail")) \
   _fmt(OP_CHECK_STATS,                    N_("calculate message statistics for all mailboxes")) \
-  _fmt(OP_COMPOSE_ATTACH_FILE,            N_("attach files to this message")) \
-  _fmt(OP_COMPOSE_ATTACH_MESSAGE,         N_("attach messages to this message")) \
-  _fmt(OP_COMPOSE_ATTACH_NEWS_MESSAGE,    N_("attach news articles to this message")) \
-  _fmt(OP_COMPOSE_EDIT_BCC,               N_("edit the BCC list")) \
-  _fmt(OP_COMPOSE_EDIT_CC,                N_("edit the CC list")) \
-  _fmt(OP_COMPOSE_EDIT_DESCRIPTION,       N_("edit attachment description")) \
-  _fmt(OP_COMPOSE_EDIT_ENCODING,          N_("edit attachment transfer-encoding")) \
-  _fmt(OP_COMPOSE_EDIT_FCC,               N_("enter a file to save a copy of this message in")) \
+  _fmt(OP_ATTACHMENT_ATTACH_FILE,         N_("attach files to this message")) \
+  _fmt(OP_ATTACHMENT_ATTACH_MESSAGE,      N_("attach messages to this message")) \
+  _fmt(OP_ATTACHMENT_ATTACH_NEWS_MESSAGE, N_("attach news articles to this message")) \
+  _fmt(OP_ENVELOPE_EDIT_BCC,              N_("edit the BCC list")) \
+  _fmt(OP_ENVELOPE_EDIT_CC,               N_("edit the CC list")) \
+  _fmt(OP_ATTACHMENT_EDIT_DESCRIPTION,    N_("edit attachment description")) \
+  _fmt(OP_ATTACHMENT_EDIT_ENCODING,       N_("edit attachment transfer-encoding")) \
+  _fmt(OP_ENVELOPE_EDIT_FCC,              N_("enter a file to save a copy of this message in")) \
   _fmt(OP_COMPOSE_EDIT_FILE,              N_("edit the file to be attached")) \
-  _fmt(OP_COMPOSE_EDIT_FOLLOWUP_TO,       N_("edit the Followup-To field")) \
-  _fmt(OP_COMPOSE_EDIT_FROM,              N_("edit the from field")) \
-  _fmt(OP_COMPOSE_EDIT_HEADERS,           N_("edit the message with headers")) \
-  _fmt(OP_COMPOSE_EDIT_LANGUAGE,          N_("edit the 'Content-Language' of the attachment")) \
+  _fmt(OP_ENVELOPE_EDIT_FOLLOWUP_TO,      N_("edit the Followup-To field")) \
+  _fmt(OP_ENVELOPE_EDIT_FROM,             N_("edit the from field")) \
+  _fmt(OP_ENVELOPE_EDIT_HEADERS,          N_("edit the message with headers")) \
+  _fmt(OP_ATTACHMENT_EDIT_LANGUAGE,       N_("edit the 'Content-Language' of the attachment")) \
   _fmt(OP_COMPOSE_EDIT_MESSAGE,           N_("edit the message")) \
-  _fmt(OP_COMPOSE_EDIT_MIME,              N_("edit attachment using mailcap entry")) \
-  _fmt(OP_COMPOSE_EDIT_NEWSGROUPS,        N_("edit the newsgroups list")) \
-  _fmt(OP_COMPOSE_EDIT_REPLY_TO,          N_("edit the Reply-To field")) \
-  _fmt(OP_COMPOSE_EDIT_SUBJECT,           N_("edit the subject of this message")) \
-  _fmt(OP_COMPOSE_EDIT_TO,                N_("edit the TO list")) \
-  _fmt(OP_COMPOSE_EDIT_X_COMMENT_TO,      N_("edit the X-Comment-To field")) \
-  _fmt(OP_COMPOSE_GET_ATTACHMENT,         N_("get a temporary copy of an attachment")) \
-  _fmt(OP_COMPOSE_GROUP_ALTS,             N_("group tagged attachments as 'multipart/alternative'")) \
-  _fmt(OP_COMPOSE_GROUP_LINGUAL,          N_("group tagged attachments as 'multipart/multilingual'")) \
-  _fmt(OP_COMPOSE_UNGROUP_ATTACHMENT,     N_("ungroup 'multipart' attachment")) \
+  _fmt(OP_ATTACHMENT_EDIT_MIME,           N_("edit attachment using mailcap entry")) \
+  _fmt(OP_ENVELOPE_EDIT_NEWSGROUPS,       N_("edit the newsgroups list")) \
+  _fmt(OP_ENVELOPE_EDIT_REPLY_TO,         N_("edit the Reply-To field")) \
+  _fmt(OP_ENVELOPE_EDIT_SUBJECT,          N_("edit the subject of this message")) \
+  _fmt(OP_ENVELOPE_EDIT_TO,               N_("edit the TO list")) \
+  _fmt(OP_ENVELOPE_EDIT_X_COMMENT_TO,     N_("edit the X-Comment-To field")) \
+  _fmt(OP_ATTACHMENT_GET_ATTACHMENT,      N_("get a temporary copy of an attachment")) \
+  _fmt(OP_ATTACHMENT_GROUP_ALTS,          N_("group tagged attachments as 'multipart/alternative'")) \
+  _fmt(OP_ATTACHMENT_GROUP_LINGUAL,       N_("group tagged attachments as 'multipart/multilingual'")) \
+  _fmt(OP_ATTACHMENT_UNGROUP,             N_("ungroup 'multipart' attachment")) \
   _fmt(OP_COMPOSE_ISPELL,                 N_("run ispell on the message")) \
-  _fmt(OP_COMPOSE_MOVE_DOWN,              N_("move an attachment down in the attachment list")) \
-  _fmt(OP_COMPOSE_MOVE_UP,                N_("move an attachment up in the attachment list")) \
-  _fmt(OP_COMPOSE_NEW_MIME,               N_("compose new attachment using mailcap entry")) \
+  _fmt(OP_ATTACHMENT_MOVE_DOWN,           N_("move an attachment down in the attachment list")) \
+  _fmt(OP_ATTACHMENT_MOVE_UP,             N_("move an attachment up in the attachment list")) \
+  _fmt(OP_ATTACHMENT_NEW_MIME,            N_("compose new attachment using mailcap entry")) \
   _fmt(OP_COMPOSE_POSTPONE_MESSAGE,       N_("save this message to send later")) \
-  _fmt(OP_COMPOSE_RENAME_ATTACHMENT,      N_("send attachment with a different name")) \
+  _fmt(OP_ATTACHMENT_RENAME_ATTACHMENT,   N_("send attachment with a different name")) \
   _fmt(OP_COMPOSE_RENAME_FILE,            N_("rename/move an attached file")) \
   _fmt(OP_COMPOSE_SEND_MESSAGE,           N_("send the message")) \
-  _fmt(OP_COMPOSE_TOGGLE_DISPOSITION,     N_("toggle disposition between inline/attachment")) \
-  _fmt(OP_COMPOSE_TOGGLE_RECODE,          N_("toggle recoding of this attachment")) \
-  _fmt(OP_COMPOSE_TOGGLE_UNLINK,          N_("toggle whether to delete file after sending it")) \
+  _fmt(OP_ATTACHMENT_TOGGLE_DISPOSITION,  N_("toggle disposition between inline/attachment")) \
+  _fmt(OP_ATTACHMENT_TOGGLE_RECODE,       N_("toggle recoding of this attachment")) \
+  _fmt(OP_ATTACHMENT_TOGGLE_UNLINK,       N_("toggle whether to delete file after sending it")) \
   _fmt(OP_COMPOSE_TO_SENDER,              N_("compose new message to the current message sender")) \
-  _fmt(OP_COMPOSE_UPDATE_ENCODING,        N_("update an attachment's encoding info")) \
+  _fmt(OP_ATTACHMENT_UPDATE_ENCODING,     N_("update an attachment's encoding info")) \
   _fmt(OP_COMPOSE_WRITE_MESSAGE,          N_("write the message to a folder")) \
   _fmt(OP_COPY_MESSAGE,                   N_("copy a message to a file/mailbox")) \
   _fmt(OP_CREATE_ALIAS,                   N_("create an alias from a message sender")) \
@@ -137,7 +137,7 @@
   _fmt(OP_EDIT_LABEL,                     N_("add, change, or delete a message's label")) \
   _fmt(OP_EDIT_OR_VIEW_RAW_MESSAGE,       N_("edit the raw message if the mailbox is not read-only, otherwise view it")) \
   _fmt(OP_EDIT_RAW_MESSAGE,               N_("edit the raw message (edit and edit-raw-message are synonyms)")) \
-  _fmt(OP_EDIT_TYPE,                      N_("edit attachment content type")) \
+  _fmt(OP_ATTACHMENT_EDIT_TYPE,           N_("edit attachment content type")) \
   _fmt(OP_END_COND,                       N_("end of conditional execution (noop)")) \
   _fmt(OP_ENTER_COMMAND,                  N_("enter a neomuttrc command")) \
   _fmt(OP_ENTER_MASK,                     N_("enter a file mask")) \
@@ -263,7 +263,7 @@
   _fmt(OP_UNDELETE_THREAD,                N_("undelete all messages in thread")) \
   _fmt(OP_UNSUBSCRIBE_PATTERN,            N_("unsubscribe from newsgroups matching a pattern")) \
   _fmt(OP_VERSION,                        N_("show the NeoMutt version number and date")) \
-  _fmt(OP_VIEW_ATTACH,                    N_("view attachment using mailcap entry if necessary")) \
+  _fmt(OP_ATTACHMENT_VIEW,                N_("view attachment using mailcap entry if necessary")) \
   _fmt(OP_VIEW_ATTACHMENTS,               N_("show MIME attachments")) \
   _fmt(OP_VIEW_RAW_MESSAGE,               N_("show the raw message")) \
   _fmt(OP_WHAT_KEY,                       N_("display the keycode for a key press")) \
@@ -302,7 +302,7 @@
 
 #define OPS_PGP(_fmt) \
   _fmt(OP_CHECK_TRADITIONAL,              N_("check for classic PGP")) \
-  _fmt(OP_COMPOSE_ATTACH_KEY,             N_("attach a PGP public key")) \
+  _fmt(OP_ATTACHMENT_ATTACH_KEY,          N_("attach a PGP public key")) \
   _fmt(OP_COMPOSE_PGP_MENU,               N_("show PGP options")) \
   _fmt(OP_MAIL_KEY,                       N_("mail a PGP public key")) \
   _fmt(OP_VERIFY_KEY,                     N_("verify a PGP public key")) \
