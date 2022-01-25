@@ -95,6 +95,23 @@ static const char *Not_available_in_this_menu =
 // -----------------------------------------------------------------------------
 
 /**
+ * op_attachment_edit_type - Edit attachment content type - Implements ::index_function_t - @ingroup index_function_api
+ */
+static int op_attachment_edit_type(struct IndexSharedData *shared,
+                                   struct IndexPrivateData *priv, int op)
+{
+  if (!shared->email)
+    return IR_NO_ACTION;
+  mutt_edit_content_type(shared->email, shared->email->body, NULL);
+  /* if we were in the pager, redisplay the message */
+  if (priv->in_pager)
+    return IR_CONTINUE;
+
+  menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+  return IR_SUCCESS;
+}
+
+/**
  * op_bounce_message - Remail a message to another user - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_bounce_message(struct IndexSharedData *shared,
@@ -428,23 +445,6 @@ static int op_edit_raw_message(struct IndexSharedData *shared,
   emaillist_clear(&el);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
 
-  return IR_SUCCESS;
-}
-
-/**
- * op_attachment_edit_type - Edit attachment content type - Implements ::index_function_t - @ingroup index_function_api
- */
-static int op_attachment_edit_type(struct IndexSharedData *shared,
-                                   struct IndexPrivateData *priv, int op)
-{
-  if (!shared->email)
-    return IR_NO_ACTION;
-  mutt_edit_content_type(shared->email, shared->email->body, NULL);
-  /* if we were in the pager, redisplay the message */
-  if (priv->in_pager)
-    return IR_CONTINUE;
-
-  menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
   return IR_SUCCESS;
 }
 
