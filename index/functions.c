@@ -631,7 +631,7 @@ static int op_group_reply(struct IndexSharedData *shared,
  */
 static int op_help(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
-  mutt_help(MENU_MAIN);
+  mutt_help(MENU_INDEX);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
   return IR_SUCCESS;
 }
@@ -1783,7 +1783,7 @@ static int op_mark_msg(struct IndexSharedData *shared, struct IndexPrivateData *
 
       /* L10N: "message hotkey" is the key bindings menu description of a
          macro created by <mark-message>. */
-      km_bind(str, MENU_MAIN, OP_MACRO, macro, _("message hotkey"));
+      km_bind(str, MENU_INDEX, OP_MACRO, macro, _("message hotkey"));
 
       /* L10N: This is echoed after <mark-message> creates a new hotkey
          macro.  %s is the hotkey string ($mark_macro_prefix followed

@@ -1009,7 +1009,7 @@ void km_init(void)
   create_bindings(OpAttach, MENU_ATTACH);
   create_bindings(OpBrowser, MENU_FOLDER);
   create_bindings(OpCompose, MENU_COMPOSE);
-  create_bindings(OpMain, MENU_MAIN);
+  create_bindings(OpIndex, MENU_INDEX);
   create_bindings(OpPager, MENU_PAGER);
   create_bindings(OpPost, MENU_POSTPONE);
   create_bindings(OpQuery, MENU_QUERY);
@@ -1077,15 +1077,15 @@ void km_init(void)
 
   /* Miscellaneous extra bindings */
 
-  km_bindkey(" ", MENU_MAIN, OP_DISPLAY_MESSAGE);
-  km_bindkey("<up>", MENU_MAIN, OP_MAIN_PREV_UNDELETED);
-  km_bindkey("<down>", MENU_MAIN, OP_MAIN_NEXT_UNDELETED);
-  km_bindkey("J", MENU_MAIN, OP_NEXT_ENTRY);
-  km_bindkey("K", MENU_MAIN, OP_PREV_ENTRY);
-  km_bindkey("x", MENU_MAIN, OP_EXIT);
+  km_bindkey(" ", MENU_INDEX, OP_DISPLAY_MESSAGE);
+  km_bindkey("<up>", MENU_INDEX, OP_MAIN_PREV_UNDELETED);
+  km_bindkey("<down>", MENU_INDEX, OP_MAIN_NEXT_UNDELETED);
+  km_bindkey("J", MENU_INDEX, OP_NEXT_ENTRY);
+  km_bindkey("K", MENU_INDEX, OP_PREV_ENTRY);
+  km_bindkey("x", MENU_INDEX, OP_EXIT);
 
-  km_bindkey("<return>", MENU_MAIN, OP_DISPLAY_MESSAGE);
-  km_bindkey("<enter>", MENU_MAIN, OP_DISPLAY_MESSAGE);
+  km_bindkey("<return>", MENU_INDEX, OP_DISPLAY_MESSAGE);
+  km_bindkey("<enter>", MENU_INDEX, OP_DISPLAY_MESSAGE);
 
   km_bindkey("x", MENU_PAGER, OP_EXIT);
   km_bindkey("i", MENU_PAGER, OP_EXIT);
@@ -1324,8 +1324,8 @@ const struct Binding *km_get_table(enum MenuType mtype)
     case MENU_KEY_SELECT_SMIME:
       return OpSmime;
 #endif
-    case MENU_MAIN:
-      return OpMain;
+    case MENU_INDEX:
+      return OpIndex;
 #ifdef MIXMASTER
     case MENU_MIX:
       return OpMix;
@@ -1539,8 +1539,8 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
       km_unbind_all(&Keymaps[i], data);
       km_bindkey("<enter>", MENU_GENERIC, OP_GENERIC_SELECT_ENTRY);
       km_bindkey("<return>", MENU_GENERIC, OP_GENERIC_SELECT_ENTRY);
-      km_bindkey("<enter>", MENU_MAIN, OP_DISPLAY_MESSAGE);
-      km_bindkey("<return>", MENU_MAIN, OP_DISPLAY_MESSAGE);
+      km_bindkey("<enter>", MENU_INDEX, OP_DISPLAY_MESSAGE);
+      km_bindkey("<return>", MENU_INDEX, OP_DISPLAY_MESSAGE);
       km_bindkey("<backspace>", MENU_EDITOR, OP_EDITOR_BACKSPACE);
       km_bindkey("\177", MENU_EDITOR, OP_EDITOR_BACKSPACE);
       km_bindkey(":", MENU_GENERIC, OP_ENTER_COMMAND);

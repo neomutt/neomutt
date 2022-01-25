@@ -97,9 +97,9 @@ const struct Binding OpGeneric[] = { /* map: generic */
 };
 
 /**
- * OpMain - Key bindings for the index menu
+ * OpIndex - Key bindings for the index menu
  */
-const struct Binding OpMain[] = { /* map: index */
+const struct Binding OpIndex[] = { /* map: index */
 #ifdef USE_AUTOCRYPT
   { "autocrypt-acct-menu",           OP_AUTOCRYPT_ACCT_MENU,                "A" },
 #endif

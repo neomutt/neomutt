@@ -1065,7 +1065,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   else
 #endif
     dlg->help_data = IndexHelp;
-  dlg->help_menu = MENU_MAIN;
+  dlg->help_menu = MENU_INDEX;
 
   priv->menu = priv->win_index->wdata;
   priv->menu->make_entry = index_make_entry;
@@ -1273,7 +1273,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       }
 
       window_redraw(NULL);
-      op = km_dokey(MENU_MAIN);
+      op = km_dokey(MENU_INDEX);
 
       /* either user abort or timeout */
       if (op < 0)
@@ -1353,7 +1353,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     }
 
     if ((rc == IR_UNKNOWN) && !priv->in_pager)
-      km_error_key(MENU_MAIN);
+      km_error_key(MENU_INDEX);
 
 #ifdef USE_NOTMUCH
     nm_db_debug_check(shared->mailbox);

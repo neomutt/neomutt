@@ -552,7 +552,7 @@ enum MenuType menu_get_current_type(void)
 
   // This should only happen before the first dialog is created
   if (!win)
-    return MENU_MAIN;
+    return MENU_INDEX;
 
   if ((win->type == WT_CUSTOM) && (win->parent->type == WT_PAGER))
     return MENU_PAGER;

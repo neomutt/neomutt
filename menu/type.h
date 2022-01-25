@@ -47,7 +47,7 @@ enum MenuType
   MENU_KEY_SELECT_PGP,   ///< Select a PGP key
   MENU_KEY_SELECT_SMIME, ///< Select a SMIME key
 #endif
-  MENU_MAIN,             ///< Index panel (list of emails)
+  MENU_INDEX,             ///< Index panel (list of emails)
 #ifdef MIXMASTER
   MENU_MIX,              ///< Create/edit a Mixmaster chain
 #endif

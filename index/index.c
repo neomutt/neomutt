@@ -446,7 +446,7 @@ static int index_window_observer(struct NotifyCallback *nc)
  */
 struct MuttWindow *index_window_new(struct IndexPrivateData *priv)
 {
-  struct MuttWindow *win = menu_new_window(MENU_MAIN, NeoMutt->sub);
+  struct MuttWindow *win = menu_new_window(MENU_INDEX, NeoMutt->sub);
 
   struct Menu *menu = win->wdata;
   menu->mdata = priv;
