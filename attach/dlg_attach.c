@@ -95,9 +95,9 @@
 static const struct Mapping AttachHelp[] = {
   // clang-format off
   { N_("Exit"),  OP_EXIT },
-  { N_("Save"),  OP_SAVE },
-  { N_("Pipe"),  OP_PIPE },
-  { N_("Print"), OP_PRINT },
+  { N_("Save"),  OP_ATTACHMENT_SAVE },
+  { N_("Pipe"),  OP_ATTACHMENT_PIPE },
+  { N_("Print"), OP_ATTACHMENT_PRINT },
   { N_("Help"),  OP_HELP },
   { NULL, 0 },
   // clang-format on
@@ -602,7 +602,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
     window_redraw(dlg);
     switch (op)
     {
-      case OP_ATTACH_VIEW_MAILCAP:
+      case OP_ATTACHMENT_VIEW_MAILCAP:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_MAILCAP, e,
@@ -611,7 +611,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         break;
       }
 
-      case OP_ATTACH_VIEW_TEXT:
+      case OP_ATTACHMENT_VIEW_TEXT:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_AS_TEXT, e,
@@ -620,7 +620,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         break;
       }
 
-      case OP_ATTACH_VIEW_PAGER:
+      case OP_ATTACHMENT_VIEW_PAGER:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_PAGER, e, actx, menu->win);
@@ -629,12 +629,12 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
       }
 
       case OP_DISPLAY_HEADERS:
-      case OP_VIEW_ATTACH:
+      case OP_ATTACHMENT_VIEW:
         op = mutt_attach_display_loop(sub, menu, op, e, actx, true);
         menu_queue_redraw(menu, MENU_REDRAW_FULL);
         continue;
 
-      case OP_ATTACH_COLLAPSE:
+      case OP_ATTACHMENT_COLLAPSE:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         if (!cur_att->body->parts)
@@ -668,21 +668,21 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         }
         break;
 
-      case OP_PRINT:
+      case OP_ATTACHMENT_PRINT:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_print_attachment_list(actx, cur_att->fp, menu->tagprefix, cur_att->body);
         break;
       }
 
-      case OP_PIPE:
+      case OP_ATTACHMENT_PIPE:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_pipe_attachment_list(actx, cur_att->fp, menu->tagprefix, cur_att->body, false);
         break;
       }
 
-      case OP_SAVE:
+      case OP_ATTACHMENT_SAVE:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_save_attachment_list(actx, cur_att->fp, menu->tagprefix,
@@ -695,7 +695,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         break;
       }
 
-      case OP_DELETE:
+      case OP_ATTACHMENT_DELETE:
         if (check_readonly(m))
           break;
 
@@ -770,7 +770,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         }
         break;
 
-      case OP_UNDELETE:
+      case OP_ATTACHMENT_UNDELETE:
         if (check_readonly(m))
           break;
         if (!menu->tagprefix)
@@ -909,7 +909,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
         break;
       }
 
-      case OP_EDIT_TYPE:
+      case OP_ATTACHMENT_EDIT_TYPE:
         recvattach_edit_content_type(actx, menu, e);
         menu_queue_redraw(menu, MENU_REDRAW_INDEX);
         break;

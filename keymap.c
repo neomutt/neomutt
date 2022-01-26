@@ -1115,10 +1115,10 @@ void km_init(void)
   km_bindkey("<enter>", MENU_ALIAS, OP_GENERIC_SELECT_ENTRY);
   km_bindkey("<space>", MENU_ALIAS, OP_TAG);
 
-  km_bindkey("<return>", MENU_ATTACH, OP_VIEW_ATTACH);
-  km_bindkey("<enter>", MENU_ATTACH, OP_VIEW_ATTACH);
-  km_bindkey("<return>", MENU_COMPOSE, OP_VIEW_ATTACH);
-  km_bindkey("<enter>", MENU_COMPOSE, OP_VIEW_ATTACH);
+  km_bindkey("<return>", MENU_ATTACH, OP_ATTACHMENT_VIEW);
+  km_bindkey("<enter>", MENU_ATTACH, OP_ATTACHMENT_VIEW);
+  km_bindkey("<return>", MENU_COMPOSE, OP_ATTACHMENT_VIEW);
+  km_bindkey("<enter>", MENU_COMPOSE, OP_ATTACHMENT_VIEW);
 
   /* edit-to (default "t") hides generic tag-entry in Compose menu
    * This will bind tag-entry to  "T" in the Compose menu */

@@ -1681,7 +1681,7 @@ static int op_view_attachments(struct IndexSharedData *shared,
 
   if (pview->flags & MUTT_PAGER_ATTACHMENT)
   {
-    priv->rc = OP_ATTACH_COLLAPSE;
+    priv->rc = OP_ATTACHMENT_COLLAPSE;
     return IR_DONE;
   }
 

@@ -813,9 +813,9 @@ static int group_attachments(struct ComposeSharedData *shared,
 // -----------------------------------------------------------------------------
 
 /**
- * op_compose_attach_file - Attach files to this message - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_attach_file - Attach files to this message - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_attach_file(struct ComposeSharedData *shared, int op)
+static int op_attachment_attach_file(struct ComposeSharedData *shared, int op)
 {
   char *prompt = _("Attach file");
   int numfiles = 0;
@@ -878,9 +878,9 @@ static int op_compose_attach_file(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_attach_key - Attach a PGP public key - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_attach_key - Attach a PGP public key - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_attach_key(struct ComposeSharedData *shared, int op)
+static int op_attachment_attach_key(struct ComposeSharedData *shared, int op)
 {
   if (!(WithCrypto & APPLICATION_PGP))
     return IR_NOT_IMPL;
@@ -900,19 +900,19 @@ static int op_compose_attach_key(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_attach_message - Attach messages to this message - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_attach_message - Attach messages to this message - Implements ::compose_function_t - @ingroup compose_function_api
  *
  * This function handles:
- * - OP_COMPOSE_ATTACH_MESSAGE
- * - OP_COMPOSE_ATTACH_NEWS_MESSAGE
+ * - OP_ATTACHMENT_ATTACH_MESSAGE
+ * - OP_ATTACHMENT_ATTACH_NEWS_MESSAGE
  */
-static int op_compose_attach_message(struct ComposeSharedData *shared, int op)
+static int op_attachment_attach_message(struct ComposeSharedData *shared, int op)
 {
   char *prompt = _("Open mailbox to attach message from");
 
 #ifdef USE_NNTP
   OptNews = false;
-  if (shared->mailbox && (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE))
+  if (shared->mailbox && (op == OP_ATTACHMENT_ATTACH_NEWS_MESSAGE))
   {
     const char *const c_news_server =
         cs_subset_string(shared->sub, "news_server");
@@ -929,7 +929,7 @@ static int op_compose_attach_message(struct ComposeSharedData *shared, int op)
   if (shared->mailbox)
   {
 #ifdef USE_NNTP
-    if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (shared->mailbox->type == MUTT_NNTP))
+    if ((op == OP_ATTACHMENT_ATTACH_MESSAGE) ^ (shared->mailbox->type == MUTT_NNTP))
 #endif
     {
       mutt_buffer_strcpy(fname, mailbox_path(shared->mailbox));
@@ -1058,45 +1058,39 @@ static int op_compose_attach_message(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_bcc - Edit the BCC list - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_detach - Delete the current entry - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_bcc(struct ComposeSharedData *shared, int op)
+static int op_attachment_detach(struct ComposeSharedData *shared, int op)
 {
-#ifdef USE_NNTP
-  if (shared->news)
+  if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
-#endif
-  if (!edit_address_list(HDR_BCC, &shared->email->env->bcc))
-    return IR_NO_ACTION;
+  struct AttachPtr *cur_att =
+      current_attachment(shared->adata->actx, shared->adata->menu);
+  if (cur_att->unowned)
+    cur_att->body->unlink = false;
+  int index = menu_get_index(shared->adata->menu);
+  if (delete_attachment(shared->adata->actx, index) == -1)
+    return IR_ERROR;
+  shared->adata->menu->tagged = 0;
+  for (int i = 0; i < shared->adata->actx->idxlen; i++)
+  {
+    if (shared->adata->actx->idx[i]->body->tagged)
+      shared->adata->menu->tagged++;
+  }
+  update_menu(shared->adata->actx, shared->adata->menu, false);
+  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+  index = menu_get_index(shared->adata->menu);
+  if (index == 0)
+    shared->email->body = shared->adata->actx->idx[0]->body;
 
-  update_crypt_info(shared);
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
   return IR_SUCCESS;
 }
 
 /**
- * op_compose_edit_cc - Edit the CC list - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_edit_description - Edit attachment description - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_cc(struct ComposeSharedData *shared, int op)
-{
-#ifdef USE_NNTP
-  if (shared->news)
-    return IR_NO_ACTION;
-#endif
-  if (!edit_address_list(HDR_CC, &shared->email->env->cc))
-    return IR_NO_ACTION;
-
-  update_crypt_info(shared);
-  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
-  return IR_SUCCESS;
-}
-
-/**
- * op_compose_edit_description - Edit attachment description - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_compose_edit_description(struct ComposeSharedData *shared, int op)
+static int op_attachment_edit_description(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -1126,9 +1120,9 @@ static int op_compose_edit_description(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_encoding - Edit attachment transfer-encoding - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_edit_encoding - Edit attachment transfer-encoding - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_encoding(struct ComposeSharedData *shared, int op)
+static int op_attachment_edit_encoding(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -1169,119 +1163,9 @@ static int op_compose_edit_encoding(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_fcc - Enter a file to save a copy of this message in - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_edit_language - Edit the 'Content-Language' of the attachment - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_fcc(struct ComposeSharedData *shared, int op)
-{
-  int rc = IR_NO_ACTION;
-  struct Buffer *fname = mutt_buffer_pool_get();
-  mutt_buffer_copy(fname, shared->fcc);
-  if (mutt_buffer_get_field(Prompts[HDR_FCC], fname, MUTT_COMP_FILE | MUTT_COMP_CLEAR,
-                            false, NULL, NULL, NULL) == 0)
-  {
-    if (!mutt_str_equal(shared->fcc->data, fname->data))
-    {
-      mutt_buffer_copy(shared->fcc, fname);
-      mutt_buffer_pretty_mailbox(shared->fcc);
-      shared->fcc_set = true;
-      notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
-      mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-      rc = IR_SUCCESS;
-    }
-  }
-  mutt_buffer_pool_release(&fname);
-  return rc;
-}
-
-/**
- * op_compose_edit_file - Edit the file to be attached - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_compose_edit_file(struct ComposeSharedData *shared, int op)
-{
-  if (!check_count(shared->adata->actx))
-    return IR_NO_ACTION;
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
-  if (cur_att->body->type == TYPE_MULTIPART)
-  {
-    mutt_error(_("Can't edit multipart attachments"));
-    return IR_ERROR;
-  }
-  const char *const c_editor = cs_subset_string(shared->sub, "editor");
-  mutt_edit_file(NONULL(c_editor), cur_att->body->filename);
-  mutt_update_encoding(cur_att->body, shared->sub);
-  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
-  /* Unconditional hook since editor was invoked */
-  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  return IR_SUCCESS;
-}
-
-/**
- * op_compose_edit_from - Edit the from field - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_compose_edit_from(struct ComposeSharedData *shared, int op)
-{
-  if (!edit_address_list(HDR_FROM, &shared->email->env->from))
-    return IR_NO_ACTION;
-
-  update_crypt_info(shared);
-  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
-  return IR_SUCCESS;
-}
-
-/**
- * op_compose_edit_headers - Edit the message with headers - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_compose_edit_headers(struct ComposeSharedData *shared, int op)
-{
-  mutt_rfc3676_space_unstuff(shared->email);
-  const char *tag = NULL;
-  char *err = NULL;
-  mutt_env_to_local(shared->email->env);
-  const char *const c_editor = cs_subset_string(shared->sub, "editor");
-  if (shared->email->body->type == TYPE_MULTIPART)
-  {
-    struct Body *b = shared->email->body->parts;
-    while (b->parts)
-      b = b->parts;
-    mutt_edit_headers(NONULL(c_editor), b->filename, shared->email, shared->fcc);
-  }
-  else
-  {
-    mutt_edit_headers(NONULL(c_editor), shared->email->body->filename,
-                      shared->email, shared->fcc);
-  }
-  if (mutt_env_to_intl(shared->email->env, &tag, &err))
-  {
-    mutt_error(_("Bad IDN in '%s': '%s'"), tag, err);
-    FREE(&err);
-  }
-  update_crypt_info(shared);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
-
-  mutt_rfc3676_space_stuff(shared->email);
-  mutt_update_encoding(shared->email->body, shared->sub);
-
-  /* attachments may have been added */
-  if (shared->adata->actx->idxlen &&
-      shared->adata->actx->idx[shared->adata->actx->idxlen - 1]->body->next)
-  {
-    mutt_actx_entries_free(shared->adata->actx);
-    update_menu(shared->adata->actx, shared->adata->menu, true);
-  }
-
-  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
-  /* Unconditional hook since editor was invoked */
-  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  return IR_SUCCESS;
-}
-
-/**
- * op_compose_edit_language - Edit the 'Content-Language' of the attachment - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_compose_edit_language(struct ComposeSharedData *shared, int op)
+static int op_attachment_edit_language(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -1316,31 +1200,9 @@ static int op_compose_edit_language(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_message - Edit the message - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_edit_mime - Edit attachment using mailcap entry - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_message(struct ComposeSharedData *shared, int op)
-{
-  const bool c_edit_headers = cs_subset_bool(shared->sub, "edit_headers");
-  if (!c_edit_headers)
-  {
-    mutt_rfc3676_space_unstuff(shared->email);
-    const char *const c_editor = cs_subset_string(shared->sub, "editor");
-    mutt_edit_file(c_editor, shared->email->body->filename);
-    mutt_rfc3676_space_stuff(shared->email);
-    mutt_update_encoding(shared->email->body, shared->sub);
-    menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
-    /* Unconditional hook since editor was invoked */
-    mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-    return IR_SUCCESS;
-  }
-
-  return op_compose_edit_headers(shared, op);
-}
-
-/**
- * op_compose_edit_mime - Edit attachment using mailcap entry - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_compose_edit_mime(struct ComposeSharedData *shared, int op)
+static int op_attachment_edit_mime(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -1356,65 +1218,57 @@ static int op_compose_edit_mime(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_reply_to - Edit the Reply-To field - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_edit_type - Edit attachment content type - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_reply_to(struct ComposeSharedData *shared, int op)
+static int op_attachment_edit_type(struct ComposeSharedData *shared, int op)
 {
-  if (!edit_address_list(HDR_REPLYTO, &shared->email->env->reply_to))
+  if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
 
+  struct AttachPtr *cur_att =
+      current_attachment(shared->adata->actx, shared->adata->menu);
+  if (!mutt_edit_content_type(NULL, cur_att->body, NULL))
+    return IR_NO_ACTION;
+
+  /* this may have been a change to text/something */
+  mutt_update_encoding(cur_att->body, shared->sub);
+  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
   return IR_SUCCESS;
 }
 
 /**
- * op_compose_edit_subject - Edit the subject of this message - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_filter - Filter attachment through a shell command - Implements ::compose_function_t - @ingroup compose_function_api
+ *
+ * This function handles:
+ * - OP_ATTACHMENT_FILTER
+ * - OP_ATTACHMENT_PIPE
  */
-static int op_compose_edit_subject(struct ComposeSharedData *shared, int op)
+static int op_attachment_filter(struct ComposeSharedData *shared, int op)
 {
-  int rc = IR_NO_ACTION;
-  struct Buffer *buf = mutt_buffer_pool_get();
-
-  mutt_buffer_strcpy(buf, shared->email->env->subject);
-  if (mutt_buffer_get_field(Prompts[HDR_SUBJECT], buf, MUTT_COMP_NO_FLAGS,
-                            false, NULL, NULL, NULL) == 0)
+  if (!check_count(shared->adata->actx))
+    return IR_NO_ACTION;
+  struct AttachPtr *cur_att =
+      current_attachment(shared->adata->actx, shared->adata->menu);
+  if (cur_att->body->type == TYPE_MULTIPART)
   {
-    if (!mutt_str_equal(shared->email->env->subject, mutt_buffer_string(buf)))
-    {
-      mutt_str_replace(&shared->email->env->subject, mutt_buffer_string(buf));
-      notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
-      mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-      rc = IR_SUCCESS;
-    }
+    mutt_error(_("Can't filter multipart attachments"));
+    return IR_ERROR;
   }
-
-  mutt_buffer_pool_release(&buf);
-  return rc;
-}
-
-/**
- * op_compose_edit_to - Edit the TO list - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_compose_edit_to(struct ComposeSharedData *shared, int op)
-{
-#ifdef USE_NNTP
-  if (shared->news)
-    return IR_NO_ACTION;
-#endif
-  if (!edit_address_list(HDR_TO, &shared->email->env->to))
-    return IR_NO_ACTION;
-
-  update_crypt_info(shared);
+  mutt_pipe_attachment_list(shared->adata->actx, NULL, shared->adata->menu->tagprefix,
+                            cur_att->body, (op == OP_ATTACHMENT_FILTER));
+  if (op == OP_ATTACHMENT_FILTER) /* cte might have changed */
+    menu_queue_redraw(shared->adata->menu,
+                      shared->adata->menu->tagprefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
+  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
   return IR_SUCCESS;
 }
 
 /**
- * op_compose_get_attachment - Get a temporary copy of an attachment - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_get_attachment - Get a temporary copy of an attachment - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_get_attachment(struct ComposeSharedData *shared, int op)
+static int op_attachment_get_attachment(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return IR_NO_ACTION;
@@ -1442,9 +1296,9 @@ static int op_compose_get_attachment(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_group_alts - Group tagged attachments as 'multipart/alternative' - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_group_alts - Group tagged attachments as 'multipart/alternative' - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_group_alts(struct ComposeSharedData *shared, int op)
+static int op_attachment_group_alts(struct ComposeSharedData *shared, int op)
 {
   static const char *ALTS_TAG = "Alternatives for \"%s\"";
   if (shared->adata->menu->tagged < 2)
@@ -1458,9 +1312,9 @@ static int op_compose_group_alts(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_group_lingual - Group tagged attachments as 'multipart/multilingual' - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_group_lingual - Group tagged attachments as 'multipart/multilingual' - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_group_lingual(struct ComposeSharedData *shared, int op)
+static int op_attachment_group_lingual(struct ComposeSharedData *shared, int op)
 {
   static const char *LINGUAL_TAG = "Multilingual part for \"%s\"";
   if (shared->adata->menu->tagged < 2)
@@ -1489,93 +1343,9 @@ static int op_compose_group_lingual(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_ungroup_attachment - Ungroup a 'multipart' attachment - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_move_down - Move an attachment down in the attachment list - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_ungroup_attachment(struct ComposeSharedData *shared, int op)
-{
-  if (shared->adata->actx->idx[shared->adata->menu->current]->body->type != TYPE_MULTIPART)
-  {
-    mutt_error(_("Attachment is not 'multipart'"));
-    return IR_ERROR;
-  }
-
-  int aidx = shared->adata->menu->current;
-  struct AttachCtx *actx = shared->adata->actx;
-  struct Body *bptr = actx->idx[aidx]->body;
-  struct Body *bptr_next = bptr->next;
-  struct Body *bptr_previous = NULL;
-  struct Body *bptr_parent = NULL;
-  int parent_type = actx->idx[aidx]->parent_type;
-  int level = actx->idx[aidx]->level;
-
-  // reorder body pointers
-  if (find_body_previous(shared->email->body, bptr, &bptr_previous))
-    bptr_previous->next = bptr->parts;
-  else if (find_body_parent(shared->email->body, NULL, bptr, &bptr_parent))
-    bptr_parent->parts = bptr->parts;
-  else
-    shared->email->body = bptr->parts;
-
-  // update attachment list
-  int i = aidx + 1;
-  while (actx->idx[i]->level > level)
-  {
-    actx->idx[i]->level--;
-    if (actx->idx[i]->level == level)
-    {
-      actx->idx[i]->parent_type = parent_type;
-      // set body->next for final attachment in group
-      if (!actx->idx[i]->body->next)
-        actx->idx[i]->body->next = bptr_next;
-    }
-    i++;
-    if (i == actx->idxlen)
-      break;
-  }
-
-  // free memory
-  actx->idx[aidx]->body->parts = NULL;
-  actx->idx[aidx]->body->next = NULL;
-  actx->idx[aidx]->body->email = NULL;
-  mutt_body_free(&actx->idx[aidx]->body);
-  FREE(&actx->idx[aidx]->tree);
-  FREE(&actx->idx[aidx]);
-
-  // reorder attachment list
-  for (int j = aidx; j < (actx->idxlen - 1); j++)
-    actx->idx[j] = actx->idx[j + 1];
-  actx->idx[actx->idxlen - 1] = NULL;
-  actx->idxlen--;
-  update_menu(actx, shared->adata->menu, false);
-
-  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  return IR_SUCCESS;
-}
-
-/**
- * op_compose_ispell - Run ispell on the message - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_compose_ispell(struct ComposeSharedData *shared, int op)
-{
-  endwin();
-  const char *const c_ispell = cs_subset_string(shared->sub, "ispell");
-  char buf[PATH_MAX];
-  snprintf(buf, sizeof(buf), "%s -x %s", NONULL(c_ispell), shared->email->body->filename);
-  if (mutt_system(buf) == -1)
-  {
-    mutt_error(_("Error running \"%s\""), buf);
-    return IR_ERROR;
-  }
-
-  mutt_update_encoding(shared->email->body, shared->sub);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
-  return IR_SUCCESS;
-}
-
-/**
- * op_compose_move_down - Move an attachment down in the attachment list - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_compose_move_down(struct ComposeSharedData *shared, int op)
+static int op_attachment_move_down(struct ComposeSharedData *shared, int op)
 {
   int index = menu_get_index(shared->adata->menu);
 
@@ -1628,9 +1398,9 @@ static int op_compose_move_down(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_move_up - Move an attachment up in the attachment list - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_move_up - Move an attachment up in the attachment list - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_move_up(struct ComposeSharedData *shared, int op)
+static int op_attachment_move_up(struct ComposeSharedData *shared, int op)
 {
   int index = menu_get_index(shared->adata->menu);
   if (index < 0)
@@ -1662,9 +1432,9 @@ static int op_compose_move_up(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_new_mime - Compose new attachment using mailcap entry - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_attachment_new_mime - Compose new attachment using mailcap entry - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_new_mime(struct ComposeSharedData *shared, int op)
+static int op_attachment_new_mime(struct ComposeSharedData *shared, int op)
 {
   int rc = IR_NO_ACTION;
   struct Buffer *fname = mutt_buffer_pool_get();
@@ -1746,6 +1516,475 @@ done:
 }
 
 /**
+ * op_attachment_print - Print the current entry - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_attachment_print(struct ComposeSharedData *shared, int op)
+{
+  if (!check_count(shared->adata->actx))
+    return IR_NO_ACTION;
+  struct AttachPtr *cur_att =
+      current_attachment(shared->adata->actx, shared->adata->menu);
+  if (cur_att->body->type == TYPE_MULTIPART)
+  {
+    mutt_error(_("Can't print multipart attachments"));
+    return IR_ERROR;
+  }
+  mutt_print_attachment_list(shared->adata->actx, NULL,
+                             shared->adata->menu->tagprefix, cur_att->body);
+  /* no send2hook, since this doesn't modify the message */
+  return IR_SUCCESS;
+}
+
+/**
+ * op_attachment_rename_attachment - Send attachment with a different name - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_attachment_rename_attachment(struct ComposeSharedData *shared, int op)
+{
+  if (!check_count(shared->adata->actx))
+    return IR_NO_ACTION;
+  char *src = NULL;
+  struct AttachPtr *cur_att =
+      current_attachment(shared->adata->actx, shared->adata->menu);
+  if (cur_att->body->d_filename)
+    src = cur_att->body->d_filename;
+  else
+    src = cur_att->body->filename;
+  struct Buffer *fname = mutt_buffer_pool_get();
+  mutt_buffer_strcpy(fname, mutt_path_basename(NONULL(src)));
+  int ret = mutt_buffer_get_field(_("Send attachment with name: "), fname,
+                                  MUTT_COMP_FILE, false, NULL, NULL, NULL);
+  if (ret == 0)
+  {
+    // It's valid to set an empty string here, to erase what was set
+    mutt_str_replace(&cur_att->body->d_filename, mutt_buffer_string(fname));
+    menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+  }
+  mutt_buffer_pool_release(&fname);
+  return IR_SUCCESS;
+}
+
+/**
+ * op_attachment_save - Save message/attachment to a mailbox/file - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_attachment_save(struct ComposeSharedData *shared, int op)
+{
+  if (!check_count(shared->adata->actx))
+    return IR_NO_ACTION;
+  struct AttachPtr *cur_att =
+      current_attachment(shared->adata->actx, shared->adata->menu);
+  if (cur_att->body->type == TYPE_MULTIPART)
+  {
+    mutt_error(_("Can't save multipart attachments"));
+    return IR_ERROR;
+  }
+  mutt_save_attachment_list(shared->adata->actx, NULL, shared->adata->menu->tagprefix,
+                            cur_att->body, NULL, shared->adata->menu);
+  /* no send2hook, since this doesn't modify the message */
+  return IR_SUCCESS;
+}
+
+/**
+ * op_attachment_toggle_disposition - Toggle disposition between inline/attachment - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_attachment_toggle_disposition(struct ComposeSharedData *shared, int op)
+{
+  /* toggle the content-disposition between inline/attachment */
+  struct AttachPtr *cur_att =
+      current_attachment(shared->adata->actx, shared->adata->menu);
+  cur_att->body->disposition =
+      (cur_att->body->disposition == DISP_INLINE) ? DISP_ATTACH : DISP_INLINE;
+  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+  return IR_SUCCESS;
+}
+
+/**
+ * op_attachment_toggle_recode - Toggle recoding of this attachment - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_attachment_toggle_recode(struct ComposeSharedData *shared, int op)
+{
+  if (!check_count(shared->adata->actx))
+    return IR_NO_ACTION;
+  struct AttachPtr *cur_att =
+      current_attachment(shared->adata->actx, shared->adata->menu);
+  if (!mutt_is_text_part(cur_att->body))
+  {
+    mutt_error(_("Recoding only affects text attachments"));
+    return IR_ERROR;
+  }
+  cur_att->body->noconv = !cur_att->body->noconv;
+  if (cur_att->body->noconv)
+    mutt_message(_("The current attachment won't be converted"));
+  else
+    mutt_message(_("The current attachment will be converted"));
+  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  return IR_SUCCESS;
+}
+
+/**
+ * op_attachment_toggle_unlink - Toggle whether to delete file after sending it - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_attachment_toggle_unlink(struct ComposeSharedData *shared, int op)
+{
+  if (!check_count(shared->adata->actx))
+    return IR_NO_ACTION;
+  struct AttachPtr *cur_att =
+      current_attachment(shared->adata->actx, shared->adata->menu);
+  cur_att->body->unlink = !cur_att->body->unlink;
+
+  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
+  /* No send2hook since this doesn't change the message. */
+  return IR_SUCCESS;
+}
+
+/**
+ * op_attachment_ungroup - Ungroup a 'multipart' attachment - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_attachment_ungroup(struct ComposeSharedData *shared, int op)
+{
+  if (shared->adata->actx->idx[shared->adata->menu->current]->body->type != TYPE_MULTIPART)
+  {
+    mutt_error(_("Attachment is not 'multipart'"));
+    return IR_ERROR;
+  }
+
+  int aidx = shared->adata->menu->current;
+  struct AttachCtx *actx = shared->adata->actx;
+  struct Body *bptr = actx->idx[aidx]->body;
+  struct Body *bptr_next = bptr->next;
+  struct Body *bptr_previous = NULL;
+  struct Body *bptr_parent = NULL;
+  int parent_type = actx->idx[aidx]->parent_type;
+  int level = actx->idx[aidx]->level;
+
+  // reorder body pointers
+  if (find_body_previous(shared->email->body, bptr, &bptr_previous))
+    bptr_previous->next = bptr->parts;
+  else if (find_body_parent(shared->email->body, NULL, bptr, &bptr_parent))
+    bptr_parent->parts = bptr->parts;
+  else
+    shared->email->body = bptr->parts;
+
+  // update attachment list
+  int i = aidx + 1;
+  while (actx->idx[i]->level > level)
+  {
+    actx->idx[i]->level--;
+    if (actx->idx[i]->level == level)
+    {
+      actx->idx[i]->parent_type = parent_type;
+      // set body->next for final attachment in group
+      if (!actx->idx[i]->body->next)
+        actx->idx[i]->body->next = bptr_next;
+    }
+    i++;
+    if (i == actx->idxlen)
+      break;
+  }
+
+  // free memory
+  actx->idx[aidx]->body->parts = NULL;
+  actx->idx[aidx]->body->next = NULL;
+  actx->idx[aidx]->body->email = NULL;
+  mutt_body_free(&actx->idx[aidx]->body);
+  FREE(&actx->idx[aidx]->tree);
+  FREE(&actx->idx[aidx]);
+
+  // reorder attachment list
+  for (int j = aidx; j < (actx->idxlen - 1); j++)
+    actx->idx[j] = actx->idx[j + 1];
+  actx->idx[actx->idxlen - 1] = NULL;
+  actx->idxlen--;
+  update_menu(actx, shared->adata->menu, false);
+
+  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  return IR_SUCCESS;
+}
+
+/**
+ * op_attachment_update_encoding - Update an attachment's encoding info - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_attachment_update_encoding(struct ComposeSharedData *shared, int op)
+{
+  if (!check_count(shared->adata->actx))
+    return IR_NO_ACTION;
+  bool encoding_updated = false;
+  if (shared->adata->menu->tagprefix)
+  {
+    struct Body *top = NULL;
+    for (top = shared->email->body; top; top = top->next)
+    {
+      if (top->tagged)
+      {
+        encoding_updated = true;
+        mutt_update_encoding(top, shared->sub);
+      }
+    }
+    menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
+  }
+  else
+  {
+    struct AttachPtr *cur_att =
+        current_attachment(shared->adata->actx, shared->adata->menu);
+    mutt_update_encoding(cur_att->body, shared->sub);
+    encoding_updated = true;
+    menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+    notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+  }
+  if (encoding_updated)
+    mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  return IR_SUCCESS;
+}
+
+// -----------------------------------------------------------------------------
+
+/**
+ * op_envelope_edit_bcc - Edit the BCC list - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_envelope_edit_bcc(struct ComposeSharedData *shared, int op)
+{
+#ifdef USE_NNTP
+  if (shared->news)
+    return IR_NO_ACTION;
+#endif
+  if (!edit_address_list(HDR_BCC, &shared->email->env->bcc))
+    return IR_NO_ACTION;
+
+  update_crypt_info(shared);
+  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  return IR_SUCCESS;
+}
+
+/**
+ * op_envelope_edit_cc - Edit the CC list - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_envelope_edit_cc(struct ComposeSharedData *shared, int op)
+{
+#ifdef USE_NNTP
+  if (shared->news)
+    return IR_NO_ACTION;
+#endif
+  if (!edit_address_list(HDR_CC, &shared->email->env->cc))
+    return IR_NO_ACTION;
+
+  update_crypt_info(shared);
+  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  return IR_SUCCESS;
+}
+
+/**
+ * op_envelope_edit_fcc - Enter a file to save a copy of this message in - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_envelope_edit_fcc(struct ComposeSharedData *shared, int op)
+{
+  int rc = IR_NO_ACTION;
+  struct Buffer *fname = mutt_buffer_pool_get();
+  mutt_buffer_copy(fname, shared->fcc);
+  if (mutt_buffer_get_field(Prompts[HDR_FCC], fname, MUTT_COMP_FILE | MUTT_COMP_CLEAR,
+                            false, NULL, NULL, NULL) == 0)
+  {
+    if (!mutt_str_equal(shared->fcc->data, fname->data))
+    {
+      mutt_buffer_copy(shared->fcc, fname);
+      mutt_buffer_pretty_mailbox(shared->fcc);
+      shared->fcc_set = true;
+      notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+      mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+      rc = IR_SUCCESS;
+    }
+  }
+  mutt_buffer_pool_release(&fname);
+  return rc;
+}
+
+/**
+ * op_envelope_edit_from - Edit the from field - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_envelope_edit_from(struct ComposeSharedData *shared, int op)
+{
+  if (!edit_address_list(HDR_FROM, &shared->email->env->from))
+    return IR_NO_ACTION;
+
+  update_crypt_info(shared);
+  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  return IR_SUCCESS;
+}
+
+/**
+ * op_envelope_edit_headers - Edit the message with headers - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_envelope_edit_headers(struct ComposeSharedData *shared, int op)
+{
+  mutt_rfc3676_space_unstuff(shared->email);
+  const char *tag = NULL;
+  char *err = NULL;
+  mutt_env_to_local(shared->email->env);
+  const char *const c_editor = cs_subset_string(shared->sub, "editor");
+  if (shared->email->body->type == TYPE_MULTIPART)
+  {
+    struct Body *b = shared->email->body->parts;
+    while (b->parts)
+      b = b->parts;
+    mutt_edit_headers(NONULL(c_editor), b->filename, shared->email, shared->fcc);
+  }
+  else
+  {
+    mutt_edit_headers(NONULL(c_editor), shared->email->body->filename,
+                      shared->email, shared->fcc);
+  }
+  if (mutt_env_to_intl(shared->email->env, &tag, &err))
+  {
+    mutt_error(_("Bad IDN in '%s': '%s'"), tag, err);
+    FREE(&err);
+  }
+  update_crypt_info(shared);
+  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+
+  mutt_rfc3676_space_stuff(shared->email);
+  mutt_update_encoding(shared->email->body, shared->sub);
+
+  /* attachments may have been added */
+  if (shared->adata->actx->idxlen &&
+      shared->adata->actx->idx[shared->adata->actx->idxlen - 1]->body->next)
+  {
+    mutt_actx_entries_free(shared->adata->actx);
+    update_menu(shared->adata->actx, shared->adata->menu, true);
+  }
+
+  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
+  /* Unconditional hook since editor was invoked */
+  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  return IR_SUCCESS;
+}
+
+/**
+ * op_envelope_edit_reply_to - Edit the Reply-To field - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_envelope_edit_reply_to(struct ComposeSharedData *shared, int op)
+{
+  if (!edit_address_list(HDR_REPLYTO, &shared->email->env->reply_to))
+    return IR_NO_ACTION;
+
+  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  return IR_SUCCESS;
+}
+
+/**
+ * op_envelope_edit_subject - Edit the subject of this message - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_envelope_edit_subject(struct ComposeSharedData *shared, int op)
+{
+  int rc = IR_NO_ACTION;
+  struct Buffer *buf = mutt_buffer_pool_get();
+
+  mutt_buffer_strcpy(buf, shared->email->env->subject);
+  if (mutt_buffer_get_field(Prompts[HDR_SUBJECT], buf, MUTT_COMP_NO_FLAGS,
+                            false, NULL, NULL, NULL) == 0)
+  {
+    if (!mutt_str_equal(shared->email->env->subject, mutt_buffer_string(buf)))
+    {
+      mutt_str_replace(&shared->email->env->subject, mutt_buffer_string(buf));
+      notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+      mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+      rc = IR_SUCCESS;
+    }
+  }
+
+  mutt_buffer_pool_release(&buf);
+  return rc;
+}
+
+/**
+ * op_envelope_edit_to - Edit the TO list - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_envelope_edit_to(struct ComposeSharedData *shared, int op)
+{
+#ifdef USE_NNTP
+  if (shared->news)
+    return IR_NO_ACTION;
+#endif
+  if (!edit_address_list(HDR_TO, &shared->email->env->to))
+    return IR_NO_ACTION;
+
+  update_crypt_info(shared);
+  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  return IR_SUCCESS;
+}
+
+// -----------------------------------------------------------------------------
+
+/**
+ * op_compose_edit_file - Edit the file to be attached - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_compose_edit_file(struct ComposeSharedData *shared, int op)
+{
+  if (!check_count(shared->adata->actx))
+    return IR_NO_ACTION;
+  struct AttachPtr *cur_att =
+      current_attachment(shared->adata->actx, shared->adata->menu);
+  if (cur_att->body->type == TYPE_MULTIPART)
+  {
+    mutt_error(_("Can't edit multipart attachments"));
+    return IR_ERROR;
+  }
+  const char *const c_editor = cs_subset_string(shared->sub, "editor");
+  mutt_edit_file(NONULL(c_editor), cur_att->body->filename);
+  mutt_update_encoding(cur_att->body, shared->sub);
+  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+  /* Unconditional hook since editor was invoked */
+  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  return IR_SUCCESS;
+}
+
+/**
+ * op_compose_edit_message - Edit the message - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_compose_edit_message(struct ComposeSharedData *shared, int op)
+{
+  const bool c_edit_headers = cs_subset_bool(shared->sub, "edit_headers");
+  if (!c_edit_headers)
+  {
+    mutt_rfc3676_space_unstuff(shared->email);
+    const char *const c_editor = cs_subset_string(shared->sub, "editor");
+    mutt_edit_file(c_editor, shared->email->body->filename);
+    mutt_rfc3676_space_stuff(shared->email);
+    mutt_update_encoding(shared->email->body, shared->sub);
+    menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
+    /* Unconditional hook since editor was invoked */
+    mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+    return IR_SUCCESS;
+  }
+
+  return op_envelope_edit_headers(shared, op);
+}
+
+/**
+ * op_compose_ispell - Run ispell on the message - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_compose_ispell(struct ComposeSharedData *shared, int op)
+{
+  endwin();
+  const char *const c_ispell = cs_subset_string(shared->sub, "ispell");
+  char buf[PATH_MAX];
+  snprintf(buf, sizeof(buf), "%s -x %s", NONULL(c_ispell), shared->email->body->filename);
+  if (mutt_system(buf) == -1)
+  {
+    mutt_error(_("Error running \"%s\""), buf);
+    return IR_ERROR;
+  }
+
+  mutt_update_encoding(shared->email->body, shared->sub);
+  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+  return IR_SUCCESS;
+}
+
+/**
  * op_compose_pgp_menu - Show PGP options - Implements ::compose_function_t - @ingroup compose_function_api
  */
 static int op_compose_pgp_menu(struct ComposeSharedData *shared, int op)
@@ -1796,34 +2035,6 @@ static int op_compose_postpone_message(struct ComposeSharedData *shared, int op)
 
   shared->rc = 1;
   return IR_DONE;
-}
-
-/**
- * op_compose_rename_attachment - Send attachment with a different name - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_compose_rename_attachment(struct ComposeSharedData *shared, int op)
-{
-  if (!check_count(shared->adata->actx))
-    return IR_NO_ACTION;
-  char *src = NULL;
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
-  if (cur_att->body->d_filename)
-    src = cur_att->body->d_filename;
-  else
-    src = cur_att->body->filename;
-  struct Buffer *fname = mutt_buffer_pool_get();
-  mutt_buffer_strcpy(fname, mutt_path_basename(NONULL(src)));
-  int ret = mutt_buffer_get_field(_("Send attachment with name: "), fname,
-                                  MUTT_COMP_FILE, false, NULL, NULL, NULL);
-  if (ret == 0)
-  {
-    // It's valid to set an empty string here, to erase what was set
-    mutt_str_replace(&cur_att->body->d_filename, mutt_buffer_string(fname));
-    menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
-  }
-  mutt_buffer_pool_release(&fname);
-  return IR_SUCCESS;
 }
 
 /**
@@ -1947,95 +2158,6 @@ static int op_compose_smime_menu(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_toggle_disposition - Toggle disposition between inline/attachment - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_compose_toggle_disposition(struct ComposeSharedData *shared, int op)
-{
-  /* toggle the content-disposition between inline/attachment */
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
-  cur_att->body->disposition =
-      (cur_att->body->disposition == DISP_INLINE) ? DISP_ATTACH : DISP_INLINE;
-  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
-  return IR_SUCCESS;
-}
-
-/**
- * op_compose_toggle_recode - Toggle recoding of this attachment - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_compose_toggle_recode(struct ComposeSharedData *shared, int op)
-{
-  if (!check_count(shared->adata->actx))
-    return IR_NO_ACTION;
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
-  if (!mutt_is_text_part(cur_att->body))
-  {
-    mutt_error(_("Recoding only affects text attachments"));
-    return IR_ERROR;
-  }
-  cur_att->body->noconv = !cur_att->body->noconv;
-  if (cur_att->body->noconv)
-    mutt_message(_("The current attachment won't be converted"));
-  else
-    mutt_message(_("The current attachment will be converted"));
-  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
-  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  return IR_SUCCESS;
-}
-
-/**
- * op_compose_toggle_unlink - Toggle whether to delete file after sending it - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_compose_toggle_unlink(struct ComposeSharedData *shared, int op)
-{
-  if (!check_count(shared->adata->actx))
-    return IR_NO_ACTION;
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
-  cur_att->body->unlink = !cur_att->body->unlink;
-
-  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
-  /* No send2hook since this doesn't change the message. */
-  return IR_SUCCESS;
-}
-
-/**
- * op_compose_update_encoding - Update an attachment's encoding info - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_compose_update_encoding(struct ComposeSharedData *shared, int op)
-{
-  if (!check_count(shared->adata->actx))
-    return IR_NO_ACTION;
-  bool encoding_updated = false;
-  if (shared->adata->menu->tagprefix)
-  {
-    struct Body *top = NULL;
-    for (top = shared->email->body; top; top = top->next)
-    {
-      if (top->tagged)
-      {
-        encoding_updated = true;
-        mutt_update_encoding(top, shared->sub);
-      }
-    }
-    menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
-  }
-  else
-  {
-    struct AttachPtr *cur_att =
-        current_attachment(shared->adata->actx, shared->adata->menu);
-    mutt_update_encoding(cur_att->body, shared->sub);
-    encoding_updated = true;
-    menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
-    notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
-  }
-  if (encoding_updated)
-    mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  return IR_SUCCESS;
-}
-
-/**
  * op_compose_write_message - Write the message to a folder - Implements ::compose_function_t - @ingroup compose_function_api
  */
 static int op_compose_write_message(struct ComposeSharedData *shared, int op)
@@ -2071,36 +2193,6 @@ static int op_compose_write_message(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_delete - Delete the current entry - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_delete(struct ComposeSharedData *shared, int op)
-{
-  if (!check_count(shared->adata->actx))
-    return IR_NO_ACTION;
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
-  if (cur_att->unowned)
-    cur_att->body->unlink = false;
-  int index = menu_get_index(shared->adata->menu);
-  if (delete_attachment(shared->adata->actx, index) == -1)
-    return IR_ERROR;
-  shared->adata->menu->tagged = 0;
-  for (int i = 0; i < shared->adata->actx->idxlen; i++)
-  {
-    if (shared->adata->actx->idx[i]->body->tagged)
-      shared->adata->menu->tagged++;
-  }
-  update_menu(shared->adata->actx, shared->adata->menu, false);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
-  index = menu_get_index(shared->adata->menu);
-  if (index == 0)
-    shared->email->body = shared->adata->actx->idx[0]->body;
-
-  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  return IR_SUCCESS;
-}
-
-/**
  * op_display_headers - Display message and toggle header weeding - Implements ::compose_function_t - @ingroup compose_function_api
  *
  * This function handles:
@@ -2115,26 +2207,6 @@ static int op_display_headers(struct ComposeSharedData *shared, int op)
                            shared->adata->actx, false);
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
   /* no send2hook, since this doesn't modify the message */
-  return IR_SUCCESS;
-}
-
-/**
- * op_edit_type - Edit attachment content type - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_edit_type(struct ComposeSharedData *shared, int op)
-{
-  if (!check_count(shared->adata->actx))
-    return IR_NO_ACTION;
-
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
-  if (!mutt_edit_content_type(NULL, cur_att->body, NULL))
-    return IR_NO_ACTION;
-
-  /* this may have been a change to text/something */
-  mutt_update_encoding(cur_att->body, shared->sub);
-  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
-  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
   return IR_SUCCESS;
 }
 
@@ -2174,34 +2246,6 @@ static int op_exit(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_filter - Filter attachment through a shell command - Implements ::compose_function_t - @ingroup compose_function_api
- *
- * This function handles:
- * - OP_FILTER
- * - OP_PIPE
- */
-static int op_filter(struct ComposeSharedData *shared, int op)
-{
-  if (!check_count(shared->adata->actx))
-    return IR_NO_ACTION;
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
-  if (cur_att->body->type == TYPE_MULTIPART)
-  {
-    mutt_error(_("Can't filter multipart attachments"));
-    return IR_ERROR;
-  }
-  mutt_pipe_attachment_list(shared->adata->actx, NULL, shared->adata->menu->tagprefix,
-                            cur_att->body, (op == OP_FILTER));
-  if (op == OP_FILTER) /* cte might have changed */
-    menu_queue_redraw(shared->adata->menu,
-                      shared->adata->menu->tagprefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
-  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  return IR_SUCCESS;
-}
-
-/**
  * op_forget_passphrase - Wipe passphrases from memory - Implements ::compose_function_t - @ingroup compose_function_api
  */
 static int op_forget_passphrase(struct ComposeSharedData *shared, int op)
@@ -2210,48 +2254,7 @@ static int op_forget_passphrase(struct ComposeSharedData *shared, int op)
   return IR_SUCCESS;
 }
 
-/**
- * op_print - Print the current entry - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_print(struct ComposeSharedData *shared, int op)
-{
-  if (!check_count(shared->adata->actx))
-    return IR_NO_ACTION;
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
-  if (cur_att->body->type == TYPE_MULTIPART)
-  {
-    mutt_error(_("Can't print multipart attachments"));
-    return IR_ERROR;
-  }
-  mutt_print_attachment_list(shared->adata->actx, NULL,
-                             shared->adata->menu->tagprefix, cur_att->body);
-  /* no send2hook, since this doesn't modify the message */
-  return IR_SUCCESS;
-}
-
-/**
- * op_save - Save message/attachment to a mailbox/file - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_save(struct ComposeSharedData *shared, int op)
-{
-  if (!check_count(shared->adata->actx))
-    return IR_NO_ACTION;
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
-  if (cur_att->body->type == TYPE_MULTIPART)
-  {
-    mutt_error(_("Can't save multipart attachments"));
-    return IR_ERROR;
-  }
-  mutt_save_attachment_list(shared->adata->actx, NULL, shared->adata->menu->tagprefix,
-                            cur_att->body, NULL, shared->adata->menu);
-  /* no send2hook, since this doesn't modify the message */
-  return IR_SUCCESS;
-}
-
 // -----------------------------------------------------------------------------
-
 #ifdef USE_AUTOCRYPT
 /**
  * op_compose_autocrypt_menu - Show autocrypt compose menu options - Implements ::compose_function_t - @ingroup compose_function_api
@@ -2291,9 +2294,9 @@ static int op_compose_autocrypt_menu(struct ComposeSharedData *shared, int op)
 
 #ifdef USE_NNTP
 /**
- * op_compose_edit_followup_to - Edit the Followup-To field - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_envelope_edit_followup_to - Edit the Followup-To field - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_followup_to(struct ComposeSharedData *shared, int op)
+static int op_envelope_edit_followup_to(struct ComposeSharedData *shared, int op)
 {
   if (!shared->news)
     return IR_NO_ACTION;
@@ -2315,9 +2318,9 @@ static int op_compose_edit_followup_to(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_newsgroups - Edit the newsgroups list - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_envelope_edit_newsgroups - Edit the newsgroups list - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_newsgroups(struct ComposeSharedData *shared, int op)
+static int op_envelope_edit_newsgroups(struct ComposeSharedData *shared, int op)
 {
   if (!shared->news)
     return IR_NO_ACTION;
@@ -2339,9 +2342,9 @@ static int op_compose_edit_newsgroups(struct ComposeSharedData *shared, int op)
 }
 
 /**
- * op_compose_edit_x_comment_to - Edit the X-Comment-To field - Implements ::compose_function_t - @ingroup compose_function_api
+ * op_envelope_edit_x_comment_to - Edit the X-Comment-To field - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_x_comment_to(struct ComposeSharedData *shared, int op)
+static int op_envelope_edit_x_comment_to(struct ComposeSharedData *shared, int op)
 {
   const bool c_x_comment_to = cs_subset_bool(shared->sub, "x_comment_to");
   if (!(shared->news && c_x_comment_to))
@@ -2384,68 +2387,68 @@ static int op_compose_mix(struct ComposeSharedData *shared, int op)
  */
 struct ComposeFunction ComposeFunctions[] = {
   // clang-format off
-  { OP_COMPOSE_ATTACH_FILE,         op_compose_attach_file },
-  { OP_COMPOSE_ATTACH_KEY,          op_compose_attach_key },
-  { OP_COMPOSE_ATTACH_MESSAGE,      op_compose_attach_message },
-  { OP_COMPOSE_ATTACH_NEWS_MESSAGE, op_compose_attach_message },
+  { OP_ATTACHMENT_ATTACH_FILE,            op_attachment_attach_file },
+  { OP_ATTACHMENT_ATTACH_KEY,             op_attachment_attach_key },
+  { OP_ATTACHMENT_ATTACH_MESSAGE,         op_attachment_attach_message },
+  { OP_ATTACHMENT_ATTACH_NEWS_MESSAGE,    op_attachment_attach_message },
+  { OP_ATTACHMENT_DETACH,                 op_attachment_detach },
+  { OP_ATTACHMENT_EDIT_DESCRIPTION,       op_attachment_edit_description },
+  { OP_ATTACHMENT_EDIT_ENCODING,          op_attachment_edit_encoding },
+  { OP_ATTACHMENT_EDIT_LANGUAGE,          op_attachment_edit_language },
+  { OP_ATTACHMENT_EDIT_MIME,              op_attachment_edit_mime },
+  { OP_ATTACHMENT_EDIT_TYPE,              op_attachment_edit_type },
+  { OP_ATTACHMENT_FILTER,                 op_attachment_filter },
+  { OP_ATTACHMENT_GET_ATTACHMENT,         op_attachment_get_attachment },
+  { OP_ATTACHMENT_GROUP_ALTS,             op_attachment_group_alts },
+  { OP_ATTACHMENT_GROUP_LINGUAL,          op_attachment_group_lingual },
+  { OP_ATTACHMENT_MOVE_DOWN,              op_attachment_move_down },
+  { OP_ATTACHMENT_MOVE_UP,                op_attachment_move_up },
+  { OP_ATTACHMENT_NEW_MIME,               op_attachment_new_mime },
+  { OP_ATTACHMENT_PIPE,                   op_attachment_filter },
+  { OP_ATTACHMENT_PRINT,                  op_attachment_print },
+  { OP_ATTACHMENT_RENAME_ATTACHMENT,      op_attachment_rename_attachment },
+  { OP_ATTACHMENT_SAVE,                   op_attachment_save },
+  { OP_ATTACHMENT_TOGGLE_DISPOSITION,     op_attachment_toggle_disposition },
+  { OP_ATTACHMENT_TOGGLE_RECODE,          op_attachment_toggle_recode },
+  { OP_ATTACHMENT_TOGGLE_UNLINK,          op_attachment_toggle_unlink },
+  { OP_ATTACHMENT_UNGROUP,                op_attachment_ungroup },
+  { OP_ATTACHMENT_UPDATE_ENCODING,        op_attachment_update_encoding },
+  { OP_ATTACHMENT_VIEW,                   op_display_headers },
 #ifdef USE_AUTOCRYPT
-  { OP_COMPOSE_AUTOCRYPT_MENU,      op_compose_autocrypt_menu },
+  { OP_COMPOSE_AUTOCRYPT_MENU,            op_compose_autocrypt_menu },
 #endif
-  { OP_COMPOSE_EDIT_BCC,            op_compose_edit_bcc },
-  { OP_COMPOSE_EDIT_CC,             op_compose_edit_cc },
-  { OP_COMPOSE_EDIT_DESCRIPTION,    op_compose_edit_description },
-  { OP_COMPOSE_EDIT_ENCODING,       op_compose_edit_encoding },
-  { OP_COMPOSE_EDIT_FCC,            op_compose_edit_fcc },
-  { OP_COMPOSE_EDIT_FILE,           op_compose_edit_file },
-#ifdef USE_NNTP
-  { OP_COMPOSE_EDIT_FOLLOWUP_TO,    op_compose_edit_followup_to },
-#endif
-  { OP_COMPOSE_EDIT_FROM,           op_compose_edit_from },
-  { OP_COMPOSE_EDIT_HEADERS,        op_compose_edit_headers },
-  { OP_COMPOSE_EDIT_LANGUAGE,       op_compose_edit_language },
-  { OP_COMPOSE_EDIT_MESSAGE,        op_compose_edit_message },
-  { OP_COMPOSE_EDIT_MIME,           op_compose_edit_mime },
-#ifdef USE_NNTP
-  { OP_COMPOSE_EDIT_NEWSGROUPS,     op_compose_edit_newsgroups },
-#endif
-  { OP_COMPOSE_EDIT_REPLY_TO,       op_compose_edit_reply_to },
-  { OP_COMPOSE_EDIT_SUBJECT,        op_compose_edit_subject },
-  { OP_COMPOSE_EDIT_TO,             op_compose_edit_to },
-#ifdef USE_NNTP
-  { OP_COMPOSE_EDIT_X_COMMENT_TO,   op_compose_edit_x_comment_to },
-#endif
-  { OP_COMPOSE_GET_ATTACHMENT,      op_compose_get_attachment },
-  { OP_COMPOSE_GROUP_ALTS,          op_compose_group_alts },
-  { OP_COMPOSE_GROUP_LINGUAL,       op_compose_group_lingual },
-  { OP_COMPOSE_UNGROUP_ATTACHMENT,  op_compose_ungroup_attachment },
-  { OP_COMPOSE_ISPELL,              op_compose_ispell },
+  { OP_COMPOSE_EDIT_FILE,                 op_compose_edit_file },
+  { OP_COMPOSE_EDIT_MESSAGE,              op_compose_edit_message },
+  { OP_COMPOSE_ISPELL,                    op_compose_ispell },
 #ifdef MIXMASTER
-  { OP_COMPOSE_MIX,                 op_compose_mix },
+  { OP_COMPOSE_MIX,                       op_compose_mix },
 #endif
-  { OP_COMPOSE_MOVE_DOWN,           op_compose_move_down },
-  { OP_COMPOSE_MOVE_UP,             op_compose_move_up },
-  { OP_COMPOSE_NEW_MIME,            op_compose_new_mime },
-  { OP_COMPOSE_PGP_MENU,            op_compose_pgp_menu },
-  { OP_COMPOSE_POSTPONE_MESSAGE,    op_compose_postpone_message },
-  { OP_COMPOSE_RENAME_ATTACHMENT,   op_compose_rename_attachment },
-  { OP_COMPOSE_RENAME_FILE,         op_compose_rename_file },
-  { OP_COMPOSE_SEND_MESSAGE,        op_compose_send_message },
-  { OP_COMPOSE_SMIME_MENU,          op_compose_smime_menu },
-  { OP_COMPOSE_TOGGLE_DISPOSITION,  op_compose_toggle_disposition },
-  { OP_COMPOSE_TOGGLE_RECODE,       op_compose_toggle_recode },
-  { OP_COMPOSE_TOGGLE_UNLINK,       op_compose_toggle_unlink },
-  { OP_COMPOSE_UPDATE_ENCODING,     op_compose_update_encoding },
-  { OP_COMPOSE_WRITE_MESSAGE,       op_compose_write_message },
-  { OP_DELETE,                      op_delete },
-  { OP_DISPLAY_HEADERS,             op_display_headers },
-  { OP_EDIT_TYPE,                   op_edit_type },
-  { OP_EXIT,                        op_exit },
-  { OP_FILTER,                      op_filter },
-  { OP_FORGET_PASSPHRASE,           op_forget_passphrase },
-  { OP_PIPE,                        op_filter },
-  { OP_PRINT,                       op_print },
-  { OP_SAVE,                        op_save },
-  { OP_VIEW_ATTACH,                 op_display_headers },
+  { OP_COMPOSE_PGP_MENU,                  op_compose_pgp_menu },
+  { OP_COMPOSE_POSTPONE_MESSAGE,          op_compose_postpone_message },
+  { OP_COMPOSE_RENAME_FILE,               op_compose_rename_file },
+  { OP_COMPOSE_SEND_MESSAGE,              op_compose_send_message },
+  { OP_COMPOSE_SMIME_MENU,                op_compose_smime_menu },
+  { OP_COMPOSE_WRITE_MESSAGE,             op_compose_write_message },
+  { OP_DISPLAY_HEADERS,                   op_display_headers },
+  { OP_ENVELOPE_EDIT_BCC,                 op_envelope_edit_bcc },
+  { OP_ENVELOPE_EDIT_CC,                  op_envelope_edit_cc },
+  { OP_ENVELOPE_EDIT_FCC,                 op_envelope_edit_fcc },
+#ifdef USE_NNTP
+  { OP_ENVELOPE_EDIT_FOLLOWUP_TO,         op_envelope_edit_followup_to },
+#endif
+  { OP_ENVELOPE_EDIT_FROM,                op_envelope_edit_from },
+  { OP_ENVELOPE_EDIT_HEADERS,             op_envelope_edit_headers },
+#ifdef USE_NNTP
+  { OP_ENVELOPE_EDIT_NEWSGROUPS,          op_envelope_edit_newsgroups },
+#endif
+  { OP_ENVELOPE_EDIT_REPLY_TO,            op_envelope_edit_reply_to },
+  { OP_ENVELOPE_EDIT_SUBJECT,             op_envelope_edit_subject },
+  { OP_ENVELOPE_EDIT_TO,                  op_envelope_edit_to },
+#ifdef USE_NNTP
+  { OP_ENVELOPE_EDIT_X_COMMENT_TO,        op_envelope_edit_x_comment_to },
+#endif
+  { OP_EXIT,                              op_exit },
+  { OP_FORGET_PASSPHRASE,                 op_forget_passphrase },
   { 0, NULL },
   // clang-format on
 };
