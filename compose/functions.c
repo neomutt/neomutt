@@ -107,6 +107,22 @@ static bool check_count(struct AttachCtx *actx)
 }
 
 /**
+ * gen_cid - Generate a random Content ID
+ * @retval ptr Content ID
+ *
+ * @note The caller should free the string
+ */
+static char *gen_cid(void)
+{
+  char rndid[MUTT_RANDTAG_LEN + 1];
+
+  mutt_rand_base32(rndid, sizeof(rndid) - 1);
+  rndid[MUTT_RANDTAG_LEN] = 0;
+
+  return mutt_str_dup(rndid);
+}
+
+/**
  * count_attachments - Count attachments
  * @param  body    Body to start counting from
  * @param  recurse Whether to recurse into groups or not
