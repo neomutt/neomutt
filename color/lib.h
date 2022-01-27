@@ -27,8 +27,12 @@
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |
+ * | color/ansi.c        | @subpage color_ansi        |
+ * | color/attr.c        | @subpage color_attr        |
  * | color/color.c       | @subpage color_color       |
  * | color/command.c     | @subpage color_command     |
+ * | color/curses.c      | @subpage color_curses      |
+ * | color/merged.c      | @subpage color_merge       |
  * | color/notify.c      | @subpage color_notify      |
  * | color/quoted.c      | @subpage color_quote       |
  * | color/regex.c       | @subpage color_regex       |
@@ -45,8 +49,12 @@
 #include "core/lib.h"
 
 // IWYU pragma: begin_exports
+#include "ansi.h"
+#include "attr.h"
 #include "color.h"
 #include "command2.h"
+#include "curses2.h"
+#include "merged.h"
 #include "notify2.h"
 #include "quoted.h"
 #include "regex4.h"

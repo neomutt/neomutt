@@ -28,8 +28,12 @@ autocrypt/schema.c
 bcache/bcache.c
 browser/browser.c
 browser/sort.c
+color/ansi.c
+color/attr.c
 color/color.c
 color/command.c
+color/curses.c
+color/merged.c
 color/notify.c
 color/quoted.c
 color/regex.c

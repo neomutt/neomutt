@@ -182,7 +182,8 @@ $(PWD)/browser:
 ###############################################################################
 # libcolor
 LIBCOLOR=	libcolor.a
-LIBCOLOROBJS=	color/color.o color/command.o color/notify.o color/quoted.o \
+LIBCOLOROBJS=	color/ansi.o color/attr.o color/color.o color/command.o \
+		color/curses.o color/merged.o color/notify.o color/quoted.o \
 		color/regex.o color/simple.o
 CLEANFILES+=	$(LIBCOLOR) $(LIBCOLOROBJS)
 ALLOBJS+=	$(LIBCOLOROBJS)
