@@ -44,7 +44,7 @@ struct SbEntry
   int depth;               ///< Indentation depth
   struct Mailbox *mailbox; ///< Mailbox this represents
   bool is_hidden;          ///< Don't show, e.g. $sidebar_new_mail_only
-  enum ColorId cid;        ///< Colour to use
+  struct AttrColor *color; ///< Colour to use
 };
 ARRAY_HEAD(SbEntryArray, struct SbEntry *);
 

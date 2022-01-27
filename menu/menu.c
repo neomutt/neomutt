@@ -93,7 +93,7 @@ static void menu_jump(struct Menu *menu)
 /**
  * default_color - Get the default colour for a line of the menu - Implements Menu::color() - @ingroup menu_color
  */
-static int default_color(struct Menu *menu, int line)
+static struct AttrColor *default_color(struct Menu *menu, int line)
 {
   return simple_color_get(MT_COLOR_NORMAL);
 }

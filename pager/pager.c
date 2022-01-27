@@ -47,17 +47,15 @@
  *
  * Once constructed, it is controlled by the following events:
  *
- * | Event Type | Handler                 |
- * | :--------- | :---------------------- |
- * | #NT_COLOR  | pager_color_observer()  |
- * | #NT_CONFIG | pager_config_observer() |
- * | #NT_INDEX  | pager_index_observer()  |
- * | #NT_PAGER  | pager_pager_observer()  |
- * | #NT_WINDOW | pager_window_observer() |
- *
- * The Pager Window does not implement MuttWindow::recalc() or MuttWindow::repaint().
- *
- * Some other events are handled by the window's children.
+ * | Event Type            | Handler                 |
+ * | :-------------------- | :---------------------- |
+ * | #NT_COLOR             | pager_color_observer()  |
+ * | #NT_CONFIG            | pager_config_observer() |
+ * | #NT_INDEX             | pager_index_observer()  |
+ * | #NT_PAGER             | pager_pager_observer()  |
+ * | #NT_WINDOW            | pager_window_observer() |
+ * | MuttWindow::recalc()  | pager_recalc()          |
+ * | MuttWindow::repaint() | pager_repaint()         |
  */
 
 #include "config.h"
@@ -117,12 +115,50 @@ static int config_pager_index_lines(struct MuttWindow *win)
 }
 
 /**
+ * pager_recalc - Recalculate the Pager display - Implements MuttWindow::recalc() - @ingroup window_recalc
+ */
+static int pager_recalc(struct MuttWindow *win)
+{
+  if (!mutt_window_is_visible(win))
+    return 0;
+
+  win->actions |= WA_REPAINT;
+  mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
+  return 0;
+}
+
+/**
+ * pager_repaint - Repaint the Pager display - Implements MuttWindow::repaint() - @ingroup window_repaint
+ */
+static int pager_repaint(struct MuttWindow *win)
+{
+  if (!mutt_window_is_visible(win))
+    return 0;
+
+  mutt_debug(LL_DEBUG5, "repaint done\n");
+  return 0;
+}
+
+/**
  * pager_color_observer - Notification that a Color has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int pager_color_observer(struct NotifyCallback *nc)
 {
   if ((nc->event_type != NT_COLOR) || !nc->global_data || !nc->event_data)
     return -1;
+
+  struct EventColor *ev_c = nc->event_data;
+  struct MuttWindow *win_pager = nc->global_data;
+  struct PagerPrivateData *priv = win_pager->wdata;
+  if (!priv)
+    return 0;
+
+  // MT_COLOR_MAX is sent on `uncolor *`
+  if ((ev_c->cid == MT_COLOR_QUOTED) || (ev_c->cid == MT_COLOR_MAX))
+  {
+    // rework quoted colours
+    qstyle_recolour(priv->quote_list);
+  }
 
   mutt_debug(LL_DEBUG5, "color done\n");
   return 0;
@@ -243,6 +279,8 @@ struct MuttWindow *pager_window_new(struct IndexSharedData *shared,
       mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
   win->wdata = priv;
+  win->recalc = pager_recalc;
+  win->repaint = pager_repaint;
 
   notify_observer_add(NeoMutt->notify, NT_COLOR, pager_color_observer, win);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, pager_config_observer, win);

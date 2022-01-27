@@ -258,13 +258,15 @@ static int index_color_observer(struct NotifyCallback *nc)
 
   const int cid = ev_c->cid;
 
-  bool simple = (cid == MT_COLOR_INDEX_COLLAPSED) || (cid == MT_COLOR_INDEX_DATE) ||
-                (cid == MT_COLOR_INDEX_LABEL) || (cid == MT_COLOR_INDEX_NUMBER) ||
-                (cid == MT_COLOR_INDEX_SIZE) || (cid == MT_COLOR_INDEX_TAGS);
+  // MT_COLOR_MAX is sent on `uncolor *`
+  bool simple = (cid == MT_COLOR_INDEX_COLLAPSED) ||
+                (cid == MT_COLOR_INDEX_DATE) || (cid == MT_COLOR_INDEX_LABEL) ||
+                (cid == MT_COLOR_INDEX_NUMBER) || (cid == MT_COLOR_INDEX_SIZE) ||
+                (cid == MT_COLOR_INDEX_TAGS) || (cid == MT_COLOR_MAX);
 
   bool lists = (cid == MT_COLOR_INDEX) || (cid == MT_COLOR_INDEX_AUTHOR) ||
-               (cid == MT_COLOR_INDEX_FLAGS) ||
-               (cid == MT_COLOR_INDEX_SUBJECT) || (cid == MT_COLOR_INDEX_TAG);
+               (cid == MT_COLOR_INDEX_FLAGS) || (cid == MT_COLOR_INDEX_SUBJECT) ||
+               (cid == MT_COLOR_INDEX_TAG) || (cid == MT_COLOR_MAX);
 
   // The changes aren't relevant to the index menu
   if (!simple && !lists)
@@ -287,7 +289,7 @@ static int index_color_observer(struct NotifyCallback *nc)
       struct Email *e = m->emails[i];
       if (!e)
         break;
-      e->pair = 0;
+      e->attr_color = NULL;
     }
   }
 
@@ -385,7 +387,7 @@ static int index_score_observer(struct NotifyCallback *nc)
       break;
 
     mutt_score_message(m, e, true);
-    e->pair = 0; // Force recalc of colour
+    e->attr_color = NULL; // Force recalc of colour
   }
 
   mutt_debug(LL_DEBUG5, "score done\n");

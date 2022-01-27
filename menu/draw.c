@@ -56,7 +56,7 @@
  * Text is coloured by inserting special characters into the string, e.g.
  * #MT_COLOR_INDEX_AUTHOR
  */
-static int get_color(int index, unsigned char *s)
+static struct AttrColor *get_color(int index, unsigned char *s)
 {
   struct RegexColorList *rcl = NULL;
   struct RegexColor *np = NULL;
@@ -79,14 +79,14 @@ static int get_color(int index, unsigned char *s)
       STAILQ_FOREACH(np, regex_colors_get_list(MT_COLOR_INDEX_TAG), entries)
       {
         if (mutt_strn_equal((const char *) (s + 1), np->pattern, strlen(np->pattern)))
-          return np->pair;
+          return &np->attr_color;
         const char *transform = mutt_hash_find(TagTransforms, np->pattern);
         if (transform && mutt_strn_equal((const char *) (s + 1), transform, strlen(transform)))
         {
-          return np->pair;
+          return &np->attr_color;
         }
       }
-      return 0;
+      return NULL;
     default:
       return simple_color_get(type);
   }
@@ -96,24 +96,25 @@ static int get_color(int index, unsigned char *s)
     if (mutt_pattern_exec(SLIST_FIRST(np->color_pattern),
                           MUTT_MATCH_FULL_ADDRESS, m_cur, e, NULL))
     {
-      return np->pair;
+      return &np->attr_color;
     }
   }
 
-  return 0;
+  return NULL;
 }
 
 /**
  * print_enriched_string - Display a string with embedded colours and graphics
  * @param win      Window
  * @param index    Index number
- * @param attr     Default colour for the line
+ * @param ac_def   Default colour for the line
+ * @param ac_ind   Indicator colour for the line
  * @param s        String of embedded colour codes
- * @param do_color If true, apply colour
  * @param sub      Config items
  */
-static void print_enriched_string(struct MuttWindow *win, int index, int attr,
-                                  unsigned char *s, bool do_color, struct ConfigSubset *sub)
+static void print_enriched_string(struct MuttWindow *win, int index,
+                                  struct AttrColor *ac_def, struct AttrColor *ac_ind,
+                                  unsigned char *s, struct ConfigSubset *sub)
 {
   wchar_t wc = 0;
   size_t k;
@@ -125,12 +126,13 @@ static void print_enriched_string(struct MuttWindow *win, int index, int attr,
   {
     if (*s < MUTT_TREE_MAX)
     {
-      if (do_color)
-      {
-        /* Combining tree fg color and another bg color requires having
-         * use_default_colors, because the other bg color may be undefined. */
-        mutt_curses_set_attr(mutt_color_combine(simple_color_get(MT_COLOR_TREE), attr));
-      }
+      struct AttrColor *ac_merge =
+          merged_color_overlay(ac_def, simple_color_get(MT_COLOR_TREE));
+      ac_merge = merged_color_overlay(ac_merge, ac_ind);
+
+      /* Combining tree fg color and another bg color requires having
+       * use_default_colors, because the other bg color may be undefined. */
+      mutt_curses_set_color(ac_merge);
 
       while (*s && (*s < MUTT_TREE_MAX))
       {
@@ -249,26 +251,24 @@ static void print_enriched_string(struct MuttWindow *win, int index, int attr,
         s++;
         n--;
       }
-      if (do_color)
-        mutt_curses_set_attr(attr);
+      ac_merge = merged_color_overlay(ac_def, ac_ind);
+      mutt_curses_set_color(ac_merge);
     }
     else if (*s == MUTT_SPECIAL_INDEX)
     {
       s++;
-      if (do_color)
+      if (*s == MT_COLOR_INDEX)
       {
-        if (*s == MT_COLOR_INDEX)
-        {
-          mutt_curses_set_attr(attr);
-        }
-        else
-        {
-          int color = get_color(index, s);
-          if (color == 0)
-            mutt_curses_set_attr(attr);
-          else
-            mutt_curses_set_attr(color);
-        }
+        struct AttrColor *ac_merge = merged_color_overlay(ac_def, ac_ind);
+        mutt_curses_set_color(ac_merge);
+      }
+      else
+      {
+        struct AttrColor *color = get_color(index, s);
+        struct AttrColor *ac_merge = merged_color_overlay(ac_def, color);
+        ac_merge = merged_color_overlay(ac_merge, ac_ind);
+
+        mutt_curses_set_color(ac_merge);
       }
       s++;
       n -= 2;
@@ -346,36 +346,36 @@ void menu_redraw_full(struct Menu *menu)
 void menu_redraw_index(struct Menu *menu)
 {
   char buf[1024];
-  bool do_color;
-  int attr;
+  struct AttrColor *ac = NULL;
 
   for (int i = menu->top; i < (menu->top + menu->pagelen); i++)
   {
     if (i < menu->max)
     {
-      attr = menu->color(menu, i);
+      struct AttrColor *ac_ind = NULL;
+      if (i == menu->current)
+        ac_ind = simple_color_get(MT_COLOR_INDICATOR);
+
+      ac = menu->color(menu, i);
 
       menu_make_entry(menu, buf, sizeof(buf), i);
       menu_pad_string(menu, buf, sizeof(buf));
 
-      mutt_curses_set_attr(attr);
+      mutt_curses_set_color(ac);
       mutt_window_move(menu->win, 0, i - menu->top);
-      do_color = true;
 
       const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
       const char *const c_arrow_string =
           cs_subset_string(menu->sub, "arrow_string");
       if (i == menu->current)
       {
-        mutt_curses_set_color_by_id(MT_COLOR_INDICATOR);
+        mutt_curses_set_color(ac_ind);
         if (c_arrow_cursor)
         {
           mutt_window_addstr(menu->win, c_arrow_string);
-          mutt_curses_set_attr(attr);
+          mutt_curses_set_color(ac);
           mutt_window_addch(menu->win, ' ');
         }
-        else
-          do_color = false;
       }
       else if (c_arrow_cursor)
       {
@@ -383,7 +383,7 @@ void menu_redraw_index(struct Menu *menu)
         mutt_window_printf(menu->win, "%*s", mutt_strwidth(c_arrow_string) + 1, "");
       }
 
-      print_enriched_string(menu->win, i, attr, (unsigned char *) buf, do_color, menu->sub);
+      print_enriched_string(menu->win, i, ac, ac_ind, (unsigned char *) buf, menu->sub);
     }
     else
     {
@@ -413,13 +413,14 @@ void menu_redraw_motion(struct Menu *menu)
    * over imap (if matching against ~h for instance).  This can
    * generate status messages.  So we want to call it *before* we
    * position the cursor for drawing. */
-  const int old_color = menu->color(menu, menu->oldcurrent);
+  struct AttrColor *old_color = menu->color(menu, menu->oldcurrent);
   mutt_window_move(menu->win, 0, menu->oldcurrent - menu->top);
-  mutt_curses_set_attr(old_color);
+  mutt_curses_set_color(old_color);
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   const char *const c_arrow_string =
       cs_subset_string(menu->sub, "arrow_string");
+  struct AttrColor *ac_ind = simple_color_get(MT_COLOR_INDICATOR);
   if (c_arrow_cursor)
   {
     /* clear the arrow */
@@ -430,11 +431,11 @@ void menu_redraw_motion(struct Menu *menu)
     menu_pad_string(menu, buf, sizeof(buf));
     mutt_window_move(menu->win, mutt_strwidth(c_arrow_string) + 1,
                      menu->oldcurrent - menu->top);
-    print_enriched_string(menu->win, menu->oldcurrent, old_color,
-                          (unsigned char *) buf, true, menu->sub);
+    print_enriched_string(menu->win, menu->oldcurrent, old_color, NULL,
+                          (unsigned char *) buf, menu->sub);
 
     /* now draw it in the new location */
-    mutt_curses_set_color_by_id(MT_COLOR_INDICATOR);
+    mutt_curses_set_color(ac_ind);
     mutt_window_mvaddstr(menu->win, 0, menu->current - menu->top, c_arrow_string);
   }
   else
@@ -442,17 +443,18 @@ void menu_redraw_motion(struct Menu *menu)
     /* erase the current indicator */
     menu_make_entry(menu, buf, sizeof(buf), menu->oldcurrent);
     menu_pad_string(menu, buf, sizeof(buf));
-    print_enriched_string(menu->win, menu->oldcurrent, old_color,
-                          (unsigned char *) buf, true, menu->sub);
+    print_enriched_string(menu->win, menu->oldcurrent, old_color, NULL,
+                          (unsigned char *) buf, menu->sub);
 
     /* now draw the new one to reflect the change */
-    const int cur_color = menu->color(menu, menu->current);
+    struct AttrColor *cur_color = menu->color(menu, menu->current);
+    cur_color = merged_color_overlay(cur_color, ac_ind);
     menu_make_entry(menu, buf, sizeof(buf), menu->current);
     menu_pad_string(menu, buf, sizeof(buf));
-    mutt_curses_set_color_by_id(MT_COLOR_INDICATOR);
     mutt_window_move(menu->win, 0, menu->current - menu->top);
-    print_enriched_string(menu->win, menu->current, cur_color,
-                          (unsigned char *) buf, false, menu->sub);
+    mutt_curses_set_color(cur_color);
+    print_enriched_string(menu->win, menu->current, cur_color, ac_ind,
+                          (unsigned char *) buf, menu->sub);
   }
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 }
@@ -464,28 +466,31 @@ void menu_redraw_motion(struct Menu *menu)
 void menu_redraw_current(struct Menu *menu)
 {
   char buf[1024];
-  int attr = menu->color(menu, menu->current);
+  struct AttrColor *ac = menu->color(menu, menu->current);
 
   mutt_window_move(menu->win, 0, menu->current - menu->top);
   menu_make_entry(menu, buf, sizeof(buf), menu->current);
   menu_pad_string(menu, buf, sizeof(buf));
 
-  mutt_curses_set_color_by_id(MT_COLOR_INDICATOR);
+  struct AttrColor *ac_ind = simple_color_get(MT_COLOR_INDICATOR);
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   const char *const c_arrow_string =
       cs_subset_string(menu->sub, "arrow_string");
   if (c_arrow_cursor)
   {
+    mutt_curses_set_color(ac_ind);
     mutt_window_addstr(menu->win, c_arrow_string);
-    mutt_curses_set_attr(attr);
+    mutt_curses_set_color(ac);
     mutt_window_addch(menu->win, ' ');
     menu_pad_string(menu, buf, sizeof(buf));
-    print_enriched_string(menu->win, menu->current, attr, (unsigned char *) buf,
-                          true, menu->sub);
+    print_enriched_string(menu->win, menu->current, ac, NULL,
+                          (unsigned char *) buf, menu->sub);
   }
   else
-    print_enriched_string(menu->win, menu->current, attr, (unsigned char *) buf,
-                          false, menu->sub);
+  {
+    print_enriched_string(menu->win, menu->current, ac, ac_ind,
+                          (unsigned char *) buf, menu->sub);
+  }
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 }
 

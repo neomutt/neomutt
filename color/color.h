@@ -96,12 +96,12 @@ extern const struct Mapping ColorNames[];
 extern const struct Mapping ColorFields[];
 extern const struct Mapping ComposeColorFields[];
 
-/* Flags for the high 8bits of the color value.
- * Note that no flag means it's a palette color.  */
-#define RGB24 (1U << 24)
-
 #define COLOR_DEFAULT (-2)
 #define COLOR_UNSET   UINT32_MAX
 
+void mutt_colors_init(void);
+void mutt_colors_cleanup(void);
+
+void colors_clear(void);
 
 #endif /* MUTT_COLOR_COLOR_H */

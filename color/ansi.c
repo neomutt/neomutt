@@ -264,10 +264,10 @@ static void ansi_color_list_add(struct AttrColorList *acl, struct AnsiColor *ans
       case 0:
         return;
       case A_UNDERLINE:
-        // ansi->attr_color = simple_color_get(MT_COLOR_UNDERLINE);
+        ansi->attr_color = simple_color_get(MT_COLOR_UNDERLINE);
         return;
       case A_BOLD:
-        // ansi->attr_color = simple_color_get(MT_COLOR_BOLD);
+        ansi->attr_color = simple_color_get(MT_COLOR_BOLD);
         return;
     }
   }

@@ -27,20 +27,19 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
-#include "lib.h"
+#include "attr.h"
+#include "color.h"
 
 /**
  * struct RegexColor - A regular expression and a color to highlight a line
  */
 struct RegexColor
 {
+  struct AttrColor attr_color;       ///< Colour and attributes to apply
   char *pattern;                     ///< Pattern to match
   regex_t regex;                     ///< Compiled regex
   int match;                         ///< Substring to match, 0 for old behaviour
   struct PatternList *color_pattern; ///< Compiled pattern to speed up index color calculation
-  uint32_t fg;                       ///< Foreground colour
-  uint32_t bg;                       ///< Background colour
-  int pair;                          ///< Colour pair index
 
   bool stop_matching : 1;            ///< Used by the pager for body patterns, to prevent the color from being retried once it fails
 
@@ -48,16 +47,18 @@ struct RegexColor
 };
 STAILQ_HEAD(RegexColorList, RegexColor);
 
-void                   regex_color_free(struct RegexColor **ptr, bool free_colors);
-void                   regex_color_list_clear(struct RegexColorList *rcl);
+void                   regex_color_clear(struct RegexColor *rcol);
+void                   regex_color_free(struct RegexColorList *list, struct RegexColor **ptr);
 struct RegexColor *    regex_color_new (void);
+
 void                   regex_colors_clear(void);
 struct RegexColorList *regex_colors_get_list(enum ColorId cid);
 void                   regex_colors_init(void);
 
+void                   regex_color_list_clear(struct RegexColorList *rcl);
+
 bool regex_colors_parse_color_list (enum ColorId cid, const char *pat, uint32_t fg, uint32_t bg, int attrs, int *rc,   struct Buffer *err);
 int  regex_colors_parse_status_list(enum ColorId cid, const char *pat, uint32_t fg, uint32_t bg, int attrs, int match, struct Buffer *err);
-
-enum CommandResult add_pattern(struct RegexColorList *top, const char *s, bool sensitive, uint32_t fg, uint32_t bg, int attr, struct Buffer *err, bool is_index, int match);
+bool regex_colors_parse_uncolor    (enum ColorId cid, const char *pat, bool uncolor);
 
 #endif /* MUTT_COLOR_REGEX4_H */

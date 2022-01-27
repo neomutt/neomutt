@@ -142,3 +142,13 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
 {
   return MUTT_YES;
 }
+
+struct Mailbox *get_current_mailbox(void)
+{
+  return NULL;
+}
+
+struct Menu *get_current_menu(void)
+{
+  return NULL;
+}

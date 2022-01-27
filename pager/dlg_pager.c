@@ -287,7 +287,7 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
                         &priv->lines_used, &priv->lines_max,
                         priv->has_types | priv->search_flag | (priv->pview->flags & MUTT_PAGER_NOWRAP),
                         &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                        &priv->search_re, priv->pview->win_pager) == 0)
+                        &priv->search_re, priv->pview->win_pager, &priv->ansi_list) == 0)
     {
       if (!priv->lines[i].cont_line && (++j == priv->win_height))
       {
@@ -317,7 +317,7 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
                          (priv->pview->flags & MUTT_DISPLAYFLAGS) | priv->hide_quoted |
                              priv->search_flag | (priv->pview->flags & MUTT_PAGER_NOWRAP),
                          &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                         &priv->search_re, priv->pview->win_pager) > 0)
+                         &priv->search_re, priv->pview->win_pager, &priv->ansi_list) > 0)
         {
           priv->win_height++;
         }
@@ -551,6 +551,7 @@ int mutt_pager(struct PagerView *pview)
     priv->menu = menu;
     priv->notify = notify;
     priv->win_pbar = pview->win_pbar;
+    TAILQ_INIT(&priv->ansi_list);
   }
 
   //---------- setup flags ----------------------------------------------------
@@ -800,6 +801,7 @@ int mutt_pager(struct PagerView *pview)
       }
       continue;
     }
+
     //-------------------------------------------------------------------------
     // Finally, read user's key press
     //-------------------------------------------------------------------------
@@ -889,6 +891,15 @@ int mutt_pager(struct PagerView *pview)
     priv->search_compiled = false;
   }
   FREE(&priv->lines);
+  attr_color_list_clear(&priv->ansi_list);
+  {
+    struct AttrColor *ac = NULL;
+    int count = 0;
+    TAILQ_FOREACH(ac, &priv->ansi_list, entries)
+    {
+      count++;
+    }
+  }
 
   expand_index_panel(dlg, priv);
 

@@ -758,6 +758,10 @@ cc-with [list -libs -L$ncurses_prefix/$::libdir_tail] {
   if {![have-feature waddnwstr] || ![have-feature tgetent]} {
     user-error "Unable to find ncursesw library"
   }
+
+  foreach f {bkgrndset setcchar} {
+    cc-check-function-in-lib $f $ncurses_lib
+  }
 }
 
 # Locate the directory containing ncurses.h

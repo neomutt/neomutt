@@ -34,9 +34,6 @@ struct Buffer;
 /// Ten colours, quoted0..quoted9 (quoted and quoted0 are equivalent)
 #define COLOR_QUOTES_MAX 10
 
-extern int QuotedColors[];
-extern int NumQuotedColors;
-
 /**
  * struct QuoteStyle - Style of quoted text
  *
@@ -65,7 +62,7 @@ extern int NumQuotedColors;
 struct QuoteStyle
 {
   int quote_n;                      ///< The quoteN colour index for this level
-  int color;                        ///< Curses colour pair
+  struct AttrColor *attr_color;     ///< Colour and attribute of the text
   char *prefix;                     ///< Prefix string, e.g. "> "
   size_t prefix_len;                ///< Length of the prefix string
   struct QuoteStyle *prev, *next;   ///< Different quoting styles at the same level
@@ -73,13 +70,14 @@ struct QuoteStyle
 };
 
 void               quoted_colors_clear(void);
-int                quoted_colors_get(int q);
-void               quoted_colors_init(void);
+struct AttrColor * quoted_colors_get(int q);
 int                quoted_colors_num_used(void);
 
 bool               quoted_colors_parse_color  (enum ColorId cid, uint32_t fg, uint32_t bg, int attrs, int q_level, int *rc, struct Buffer *err);
+enum CommandResult quoted_colors_parse_uncolor(enum ColorId cid, int q_level, struct Buffer *err);
 
 struct QuoteStyle *qstyle_classify (struct QuoteStyle **quote_list, const char *qptr, size_t length, bool *force_redraw, int *q_level);
 void               qstyle_free_tree(struct QuoteStyle **quote_list);
+void               qstyle_recolour (struct QuoteStyle *quote_list);
 
 #endif /* MUTT_COLOR_QUOTED_H */

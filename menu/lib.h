@@ -139,7 +139,7 @@ struct Menu
    * @retval >0 Colour pair in an integer
    * @retval  0 No colour
    */
-  int (*color)(struct Menu *menu, int line);
+  struct AttrColor *(*color)(struct Menu *menu, int line);
 
   /**
    * @defgroup menu_custom_redraw custom_redraw()
