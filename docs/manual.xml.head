@@ -11518,6 +11518,114 @@ set preferred_languages="fr,en,de"
       </sect2>
     </sect1>
 
+    <sect1 id="related">
+      <title>MIME Multipart/Related</title>
+
+      <para>
+        Neomutt doesn't include any special support for reading <literal>multipart/related</literal>
+        emails, but it is possible to write a <literal>multipart/related</literal> email.
+        A <literal>multipart/related</literal> attachment is intended for compound objects
+        consisting of several inter-related body parts which are linked together using the
+        <literal>Content-ID</literal> header. Its format is described by
+        <ulink url="https://tools.ietf.org/html/rfc2387">RFC2387</ulink>.
+      </para>
+
+      <sect2 id="compose-multipart-related">
+        <title>Composing Multipart/Related Emails</title>
+        <para>
+          The procedure for composing a <literal>multipart/related</literal> email is similar
+          to that in <link linkend="compose-alternative-order">Composing Multipart/Alternative</link>.
+          You have to prepare every part manually or using some scripts, and then tag and group them
+          together into a <literal>multipart/related</literal> bundle before sending it:
+        </para>
+
+        <orderedlist>
+          <listitem>
+            <para>
+              Prepare parts of the related email.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Attach them as attachments.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Tag them with <literal>&lt;tag-entry&gt;</literal>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              One part can reference another using its <literal>Content-ID</literal> header.
+              For example, an HTML part that includes an embedded image needs to contain:
+              <literal>&lt;img src="cid:content-id"&gt;</literal> where an
+              attached image has a <literal>Content-ID</literal> header of <literal>content-id</literal>.
+              The <literal>Content-ID</literal> of an attachment can be set using
+              <literal>&lt;edit-content-id&gt;</literal> (default key <literal>Alt-i</literal>).
+              <literal>&lt;edit-content-id&gt;</literal> sets a random ID which can then be
+              changed if desired. Permitted characters for <literal>Content-ID</literal> are:
+              <literal>-.0-9@A-Z_a-z</literal>.
+            </para>
+            <para>
+              If the <literal>multipart/related</literal> group is intended to be inline,
+              members of the group should also have their <literal>Content-Disposition</literal>
+              header set to <literal>inline</literal> which can be toggled using
+              <literal>&lt;toggle-disposition&gt;</literal> (default key <literal>Ctrl-D</literal>).
+            </para>
+            <para>
+              It can also be desirable to give referenced files in the group a
+              <literal>filename</literal> even when the <literal>Content-Disposition</literal> is
+              set to be <literal>inline</literal>. To do this use <literal>&lt;rename-attachment&gt;</literal>
+              (default key <literal>Ctrl-O</literal>).
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Group all the tagged messages together with <literal>&lt;group-related&gt;</literal>
+              (default key <literal>%</literal>).
+            </para>
+            <para>
+              Top level attachments (excluding <literal>multipart</literal> ones) in the group
+              are automatically given a random <literal>Content-ID</literal> if they do not
+              already have one.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Send the email as usual.
+            </para>
+          </listitem>
+        </orderedlist>
+
+        <para>
+          Some care needs to be taken with the construction of a <literal>multipart/related</literal>
+          email to ensure it is correctly displayed by the receiving mail client.
+          A typical email with a <literal>multipart/alternative</literal> part
+          containing a <literal>text/plain</literal> part and a <literal>text/html</literal>
+          part with an embedded image, along with a separate attachment might end up like this:
+        </para>
+
+<screen>
+  I     1 &lt;no description&gt;                                         [multipart/related, 7bit, 0K]
+  I     2 ├─>&lt;no description&gt;                                  [multipart/alternative, 7bit, 0K]
+- I     3 │ ├─>/tmp/neomutt-hostname-XXXX-XXXXXX-XXXXXXXXXX   [text/plain, 7bit, us-ascii, 0.1K]
+- I     4 │ └─>/tmp/neomutt-alternative.html                      [text/html, 8bit, utf-8, 0.6K]
+  I     5 └─>image.png                                                  [image/png, base64, 19K]
+  A     6 attachment.pdf                                         [application/pdf, quoted, 7.1K]
+</screen>
+
+        <para>
+          In the above email <literal>/tmp/neomutt-alternative.html</literal> would reference
+          <literal>image.png</literal> using <literal>&lt;img src="cid:content-id"&gt;</literal>
+          and <literal>image.png</literal> has been given an explicit name of
+          <literal>image.png</literal> using <literal>&lt;rename-attachment&gt;</literal>
+          (regardless of its initial filename). <literal>&lt;group-related&gt;</literal>
+          has set its <literal>Content-ID</literal> header to a random value.
+        </para>
+      </sect2>
+    </sect1>
+
     <sect1 id="attachments">
       <title>Attachment Searching and Counting</title>
       <para>

@@ -34,6 +34,7 @@
   _fmt(OP_ATTACHMENT_COLLAPSE,                N_("toggle display of subparts")) \
   _fmt(OP_ATTACHMENT_DELETE,                  N_("delete the current entry")) \
   _fmt(OP_ATTACHMENT_DETACH,                  N_("delete the current entry")) \
+  _fmt(OP_ATTACHMENT_EDIT_CONTENT_ID,         N_("edit the 'Content-ID' of the attachment")) \
   _fmt(OP_ATTACHMENT_EDIT_DESCRIPTION,        N_("edit attachment description")) \
   _fmt(OP_ATTACHMENT_EDIT_ENCODING,           N_("edit attachment transfer-encoding")) \
   _fmt(OP_ATTACHMENT_EDIT_LANGUAGE,           N_("edit the 'Content-Language' of the attachment")) \
@@ -43,6 +44,7 @@
   _fmt(OP_ATTACHMENT_GET_ATTACHMENT,          N_("get a temporary copy of an attachment")) \
   _fmt(OP_ATTACHMENT_GROUP_ALTS,              N_("group tagged attachments as 'multipart/alternative'")) \
   _fmt(OP_ATTACHMENT_GROUP_LINGUAL,           N_("group tagged attachments as 'multipart/multilingual'")) \
+  _fmt(OP_ATTACHMENT_GROUP_RELATED,           N_("group tagged attachments as 'multipart/related'")) \
   _fmt(OP_ATTACHMENT_MOVE_DOWN,               N_("move an attachment down in the attachment list")) \
   _fmt(OP_ATTACHMENT_MOVE_UP,                 N_("move an attachment up in the attachment list")) \
   _fmt(OP_ATTACHMENT_NEW_MIME,                N_("compose new attachment using mailcap entry")) \

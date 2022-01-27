@@ -107,6 +107,43 @@ static bool check_count(struct AttachCtx *actx)
 }
 
 /**
+ * gen_cid - Generate a random Content ID
+ * @retval ptr Content ID
+ *
+ * @note The caller should free the string
+ */
+static char *gen_cid(void)
+{
+  char rndid[MUTT_RANDTAG_LEN + 1];
+
+  mutt_rand_base32(rndid, sizeof(rndid) - 1);
+  rndid[MUTT_RANDTAG_LEN] = 0;
+
+  return mutt_str_dup(rndid);
+}
+
+/**
+ * check_cid - Check if a Content-ID is valid
+ * @param  cid   Content-ID to check
+ * @retval true  Content-ID is valid
+ * @retval false Content-ID is not valid
+ */
+static bool check_cid(const char *cid)
+{
+  static const char *check = "^[-\\.0-9@A-Z_a-z]+$";
+  struct Buffer buf = mutt_buffer_make(0);
+
+  struct Regex *check_cid_regex = mutt_regex_new(check, 0, &buf);
+  mutt_buffer_dealloc(&buf);
+
+  const bool valid = mutt_regex_match(check_cid_regex, cid);
+
+  mutt_regex_free(&check_cid_regex);
+
+  return valid;
+}
+
+/**
  * count_attachments - Count attachments
  * @param  body    Body to start counting from
  * @param  recurse Whether to recurse into groups or not
@@ -1094,6 +1131,61 @@ static int op_attachment_detach(struct ComposeSharedData *shared, int op)
 }
 
 /**
+ * op_attachment_edit_content_id - Edit the 'Content-ID' of the attachment - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_attachment_edit_content_id(struct ComposeSharedData *shared, int op)
+{
+  if (!check_count(shared->adata->actx))
+    return IR_NO_ACTION;
+
+  int rc = IR_NO_ACTION;
+  struct Buffer *buf = mutt_buffer_pool_get();
+  struct AttachPtr *cur_att =
+      current_attachment(shared->adata->actx, shared->adata->menu);
+
+  char *id = mutt_param_get(&cur_att->body->parameter, "content-id");
+  if (id)
+  {
+    mutt_buffer_strcpy(buf, id);
+  }
+  else
+  {
+    id = gen_cid();
+    mutt_buffer_strcpy(buf, id);
+    FREE(&id);
+  }
+
+  if (mutt_buffer_get_field("Content-ID: ", buf, MUTT_COMP_NO_FLAGS, false,
+                            NULL, NULL, NULL) == 0)
+  {
+    if (!mutt_str_equal(id, mutt_buffer_string(buf)))
+    {
+      if (check_cid(mutt_buffer_string(buf)))
+      {
+        mutt_param_set(&cur_att->body->parameter, "content-id", mutt_buffer_string(buf));
+        menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+        notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+        mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+        rc = IR_SUCCESS;
+      }
+      else
+      {
+        mutt_error(
+            _("Content-ID can only contain the characters: -.0-9@A-Z_a-z"));
+        rc = IR_ERROR;
+      }
+    }
+  }
+
+  mutt_buffer_pool_release(&buf);
+
+  if (rc != IR_ERROR)
+    mutt_clear_error();
+
+  return rc;
+}
+
+/**
  * op_attachment_edit_description - Edit attachment description - Implements ::compose_function_t - @ingroup compose_function_api
  */
 static int op_attachment_edit_description(struct ComposeSharedData *shared, int op)
@@ -1652,6 +1744,39 @@ static int op_attachment_toggle_unlink(struct ComposeSharedData *shared, int op)
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
   /* No send2hook since this doesn't change the message. */
   return IR_SUCCESS;
+}
+
+/**
+ * op_attachment_group_related - Group tagged attachments as 'multipart/related' - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_attachment_group_related(struct ComposeSharedData *shared, int op)
+{
+  static const char *RELATED_TAG = "Related parts for \"%s\"";
+  if (shared->adata->menu->tagged < 2)
+  {
+    mutt_error(_("Grouping 'related' requires at least 2 tagged messages"));
+    return IR_ERROR;
+  }
+
+  // ensure Content-ID is set for tagged attachments
+  for (struct Body *b = shared->email->body; b; b = b->next)
+  {
+    if (!b->tagged || (b->type == TYPE_MULTIPART))
+      continue;
+
+    char *id = mutt_param_get(&b->parameter, "content-id");
+    if (id)
+      continue;
+
+    id = gen_cid();
+    if (id)
+    {
+      mutt_param_set(&b->parameter, "content-id", id);
+      FREE(&id);
+    }
+  }
+
+  return group_attachments(shared, RELATED_TAG, "related");
 }
 
 /**
@@ -2413,6 +2538,7 @@ struct ComposeFunction ComposeFunctions[] = {
   { OP_ATTACHMENT_ATTACH_MESSAGE,         op_attachment_attach_message },
   { OP_ATTACHMENT_ATTACH_NEWS_MESSAGE,    op_attachment_attach_message },
   { OP_ATTACHMENT_DETACH,                 op_attachment_detach },
+  { OP_ATTACHMENT_EDIT_CONTENT_ID,        op_attachment_edit_content_id },
   { OP_ATTACHMENT_EDIT_DESCRIPTION,       op_attachment_edit_description },
   { OP_ATTACHMENT_EDIT_ENCODING,          op_attachment_edit_encoding },
   { OP_ATTACHMENT_EDIT_LANGUAGE,          op_attachment_edit_language },
@@ -2422,6 +2548,7 @@ struct ComposeFunction ComposeFunctions[] = {
   { OP_ATTACHMENT_GET_ATTACHMENT,         op_attachment_get_attachment },
   { OP_ATTACHMENT_GROUP_ALTS,             op_attachment_group_alts },
   { OP_ATTACHMENT_GROUP_LINGUAL,          op_attachment_group_lingual },
+  { OP_ATTACHMENT_GROUP_RELATED,          op_attachment_group_related },
   { OP_ATTACHMENT_MOVE_DOWN,              op_attachment_move_down },
   { OP_ATTACHMENT_MOVE_UP,                op_attachment_move_up },
   { OP_ATTACHMENT_NEW_MIME,               op_attachment_new_mime },
