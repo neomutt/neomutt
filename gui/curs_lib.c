@@ -225,14 +225,16 @@ struct KeyEvent mutt_getch(void)
     return err;
   }
 
-  /* either timeout, a sigwinch (if timeout is set), or the terminal
-   * has been lost */
+  /* either timeout, a sigwinch (if timeout is set), the terminal
+   * has been lost, or curses was never initialized */
   if (ch == ERR)
   {
     if (!isatty(0))
+    {
       mutt_exit(1);
+    }
 
-    return timeout;
+    return OptNoCurses ? err : timeout;
   }
 
   const bool c_meta_key = cs_subset_bool(NeoMutt->sub, "meta_key");
