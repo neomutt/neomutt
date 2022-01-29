@@ -268,9 +268,9 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile,
   if (m->type == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
-  int res = mutt_copy_message(fp_out, e, msg, *cmflags, chflags, wrap_len);
+  rc = mutt_copy_message(fp_out, e, msg, *cmflags, chflags, wrap_len);
 
-  if (((mutt_file_fclose(&fp_out) != 0) && (errno != EPIPE)) || (res < 0))
+  if (((mutt_file_fclose(&fp_out) != 0) && (errno != EPIPE)) || (rc < 0))
   {
     mutt_error(_("Could not copy message"));
     if (fp_filter_out)
