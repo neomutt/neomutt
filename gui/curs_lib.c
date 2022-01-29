@@ -135,6 +135,10 @@ void mutt_refresh(void)
  */
 void mutt_need_hard_redraw(void)
 {
+  // Forcibly switch to the alternate screen.
+  // Using encryption can leave ncurses confused about which mode it's in.
+  fputs("\033[?1049h", stdout);
+  fflush(stdout);
   keypad(stdscr, true);
   clearok(stdscr, true);
   window_redraw(NULL);
