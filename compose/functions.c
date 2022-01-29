@@ -724,6 +724,15 @@ static int op_attachment_attach_file(struct ComposeSharedData *shared, int op)
 }
 
 /**
+ * op_attachment_attach_file_after - Attach files after current entry to this message - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_attachment_attach_file_after(struct ComposeSharedData *shared, int op)
+{
+  return compose_attach_files(shared, _("Attach file after current entry"),
+                              menu_get_index(shared->adata->menu), true);
+}
+
+/**
  * op_attachment_attach_key - Attach a PGP public key - Implements ::compose_function_t - @ingroup compose_function_api
  */
 static int op_attachment_attach_key(struct ComposeSharedData *shared, int op)
@@ -1990,6 +1999,7 @@ static int op_forget_passphrase(struct ComposeSharedData *shared, int op)
 struct ComposeFunction ComposeFunctions[] = {
   // clang-format off
   { OP_ATTACHMENT_ATTACH_FILE,            op_attachment_attach_file },
+  { OP_ATTACHMENT_ATTACH_FILE_AFTER,      op_attachment_attach_file_after },
   { OP_ATTACHMENT_ATTACH_KEY,             op_attachment_attach_key },
   { OP_ATTACHMENT_ATTACH_MESSAGE,         op_attachment_attach_message },
   { OP_ATTACHMENT_ATTACH_NEWS_MESSAGE,    op_attachment_attach_message },

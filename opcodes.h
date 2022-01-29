@@ -35,6 +35,7 @@ const char *opcodes_get_name       (int op);
 // clang-format off
 #define OPS_ATTACHMENT(_fmt) \
   _fmt(OP_ATTACHMENT_ATTACH_FILE,             N_("attach files to this message")) \
+  _fmt(OP_ATTACHMENT_ATTACH_FILE_AFTER,       N_("attach files after current entry")) \
   _fmt(OP_ATTACHMENT_ATTACH_MESSAGE,          N_("attach messages to this message")) \
   _fmt(OP_ATTACHMENT_ATTACH_NEWS_MESSAGE,     N_("attach news articles to this message")) \
   _fmt(OP_ATTACHMENT_COLLAPSE,                N_("toggle display of subparts")) \
