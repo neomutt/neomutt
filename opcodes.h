@@ -215,7 +215,13 @@
   _fmt(OP_NEXT_LINE,                          N_("scroll down one line")) \
   _fmt(OP_NEXT_PAGE,                          N_("move to the next page")) \
   _fmt(OP_PAGER_BOTTOM,                       N_("jump to the bottom of the message")) \
+  _fmt(OP_PAGER_HALF_DOWN,                    N_("scroll down 1/2 page")) \
+  _fmt(OP_PAGER_HALF_UP,                      N_("scroll up 1/2 page")) \
   _fmt(OP_PAGER_HIDE_QUOTED,                  N_("toggle display of quoted text")) \
+  _fmt(OP_PAGER_NEXT_LINE,                    N_("scroll down one line")) \
+  _fmt(OP_PAGER_NEXT_PAGE,                    N_("move to the next page")) \
+  _fmt(OP_PAGER_PREV_LINE,                    N_("scroll up one line")) \
+  _fmt(OP_PAGER_PREV_PAGE,                    N_("move to the previous page")) \
   _fmt(OP_PAGER_SKIP_HEADERS,                 N_("jump to first line after headers")) \
   _fmt(OP_PAGER_SKIP_QUOTED,                  N_("skip beyond quoted text")) \
   _fmt(OP_PAGER_TOP,                          N_("jump to the top of the message")) \

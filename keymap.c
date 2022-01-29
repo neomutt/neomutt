@@ -1089,9 +1089,9 @@ void km_init(void)
 
   km_bindkey("x", MENU_PAGER, OP_EXIT);
   km_bindkey("i", MENU_PAGER, OP_EXIT);
-  km_bindkey("<backspace>", MENU_PAGER, OP_PREV_LINE);
-  km_bindkey("<pagedown>", MENU_PAGER, OP_NEXT_PAGE);
-  km_bindkey("<pageup>", MENU_PAGER, OP_PREV_PAGE);
+  km_bindkey("<backspace>", MENU_PAGER, OP_PAGER_PREV_LINE);
+  km_bindkey("<pagedown>", MENU_PAGER, OP_PAGER_NEXT_PAGE);
+  km_bindkey("<pageup>", MENU_PAGER, OP_PAGER_PREV_PAGE);
   km_bindkey("<up>", MENU_PAGER, OP_MAIN_PREV_UNDELETED);
   km_bindkey("<right>", MENU_PAGER, OP_MAIN_NEXT_UNDELETED);
   km_bindkey("<down>", MENU_PAGER, OP_MAIN_NEXT_UNDELETED);
@@ -1108,8 +1108,8 @@ void km_init(void)
   km_bindkey("8", MENU_PAGER, OP_JUMP);
   km_bindkey("9", MENU_PAGER, OP_JUMP);
 
-  km_bindkey("<return>", MENU_PAGER, OP_NEXT_LINE);
-  km_bindkey("<enter>", MENU_PAGER, OP_NEXT_LINE);
+  km_bindkey("<return>", MENU_PAGER, OP_PAGER_NEXT_LINE);
+  km_bindkey("<enter>", MENU_PAGER, OP_PAGER_NEXT_LINE);
 
   km_bindkey("<return>", MENU_ALIAS, OP_GENERIC_SELECT_ENTRY);
   km_bindkey("<enter>", MENU_ALIAS, OP_GENERIC_SELECT_ENTRY);

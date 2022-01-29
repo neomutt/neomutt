@@ -312,8 +312,8 @@ const struct Binding OpPager[] = { /* map: pager */
 #endif
   { "group-chat-reply",              OP_GROUP_CHAT_REPLY,                   NULL },
   { "group-reply",                   OP_GROUP_REPLY,                        "g" },
-  { "half-down",                     OP_HALF_DOWN,                          NULL },
-  { "half-up",                       OP_HALF_UP,                            NULL },
+  { "half-down",                     OP_PAGER_HALF_DOWN,                    NULL },
+  { "half-up",                       OP_PAGER_HALF_UP,                      NULL },
   { "help",                          OP_HELP,                               "?" },
 #ifdef USE_IMAP
   { "imap-fetch-mail",               OP_MAIN_IMAP_FETCH,                    NULL },
@@ -333,11 +333,11 @@ const struct Binding OpPager[] = { /* map: pager */
   { "modify-tags",                   OP_MAIN_MODIFY_TAGS,                   NULL },
   { "modify-tags-then-hide",         OP_MAIN_MODIFY_TAGS_THEN_HIDE,         NULL },
   { "next-entry",                    OP_NEXT_ENTRY,                         "J" },
-  { "next-line",                     OP_NEXT_LINE,                          "\n" },     // <Enter>
-  { "next-line",                     OP_NEXT_LINE,                          "\r" },     // <Return>
+  { "next-line",                     OP_PAGER_NEXT_LINE,                    "\n" },     // <Enter>
+  { "next-line",                     OP_PAGER_NEXT_LINE,                    "\r" },     // <Return>
   { "next-new",                      OP_MAIN_NEXT_NEW,                      NULL },
   { "next-new-then-unread",          OP_MAIN_NEXT_NEW_THEN_UNREAD,          "\t" },     // <Tab>
-  { "next-page",                     OP_NEXT_PAGE,                          " " },      // <Space>
+  { "next-page",                     OP_PAGER_NEXT_PAGE,                    " " },      // <Space>
   { "next-subthread",                OP_MAIN_NEXT_SUBTHREAD,                "\033n" },  // <Alt-n>
   { "next-thread",                   OP_MAIN_NEXT_THREAD,                   "\016" },   // <Ctrl-N>
   { "next-undeleted",                OP_MAIN_NEXT_UNDELETED,                "j" },
@@ -349,10 +349,10 @@ const struct Binding OpPager[] = { /* map: pager */
   { "post-message",                  OP_POST,                               NULL },
 #endif
   { "previous-entry",                OP_PREV_ENTRY,                         "K" },
-  { "previous-line",                 OP_PREV_LINE,                          NULL },
+  { "previous-line",                 OP_PAGER_PREV_LINE,                    NULL },
   { "previous-new",                  OP_MAIN_PREV_NEW,                      NULL },
   { "previous-new-then-unread",      OP_MAIN_PREV_NEW_THEN_UNREAD,          NULL },
-  { "previous-page",                 OP_PREV_PAGE,                          "-" },
+  { "previous-page",                 OP_PAGER_PREV_PAGE,                    "-" },
   { "previous-subthread",            OP_MAIN_PREV_SUBTHREAD,                "\033p" },  // <Alt-p>
   { "previous-thread",               OP_MAIN_PREV_THREAD,                   "\020" },   // <Ctrl-P>
   { "previous-undeleted",            OP_MAIN_PREV_UNDELETED,                "k" },

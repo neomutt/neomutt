@@ -626,9 +626,9 @@ static int op_forward_message(struct IndexSharedData *shared,
 }
 
 /**
- * op_half_down - Scroll down 1/2 page - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_pager_half_down - Scroll down 1/2 page - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_half_down(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
+static int op_pager_half_down(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
   if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
@@ -652,9 +652,9 @@ static int op_half_down(struct IndexSharedData *shared, struct PagerPrivateData 
 }
 
 /**
- * op_half_up - Scroll up 1/2 page - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_pager_half_up - Scroll up 1/2 page - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_half_up(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
+static int op_pager_half_up(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   if (priv->top_line)
   {
@@ -761,9 +761,9 @@ static int op_main_set_flag(struct IndexSharedData *shared,
 }
 
 /**
- * op_next_line - Scroll down one line - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_pager_next_line - Scroll down one line - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_next_line(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
+static int op_pager_next_line(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
   {
@@ -786,9 +786,9 @@ static int op_next_line(struct IndexSharedData *shared, struct PagerPrivateData 
 }
 
 /**
- * op_next_page - Move to the next page - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_pager_next_page - Move to the next page - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_next_page(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
+static int op_pager_next_page(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
   if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
@@ -1026,9 +1026,9 @@ static int op_pipe(struct IndexSharedData *shared, struct PagerPrivateData *priv
 }
 
 /**
- * op_prev_line - Scroll up one line - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_pager_prev_line - Scroll up one line - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_prev_line(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
+static int op_pager_prev_line(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   if (priv->top_line)
   {
@@ -1043,9 +1043,9 @@ static int op_prev_line(struct IndexSharedData *shared, struct PagerPrivateData 
 }
 
 /**
- * op_prev_page - Move to the previous page - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_pager_prev_page - Move to the previous page - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_prev_page(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
+static int op_pager_prev_page(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   if (priv->top_line == 0)
   {
@@ -1896,16 +1896,16 @@ struct PagerFunction PagerFunctions[] = {
 #ifdef USE_NNTP
   { OP_FORWARD_TO_GROUP,       op_forward_to_group },
 #endif
-  { OP_HALF_DOWN,              op_half_down },
-  { OP_HALF_UP,                op_half_up },
+  { OP_PAGER_HALF_DOWN,        op_pager_half_down },
+  { OP_PAGER_HALF_UP,          op_pager_half_up },
   { OP_HELP,                   op_help },
   { OP_MAIL,                   op_mail },
   { OP_MAILBOX_LIST,           op_mailbox_list },
   { OP_MAIL_KEY,               op_mail_key },
   { OP_MAIN_CLEAR_FLAG,        op_main_set_flag },
   { OP_MAIN_SET_FLAG,          op_main_set_flag },
-  { OP_NEXT_LINE,              op_next_line },
-  { OP_NEXT_PAGE,              op_next_page },
+  { OP_PAGER_NEXT_LINE,        op_pager_next_line },
+  { OP_PAGER_NEXT_PAGE,        op_pager_next_page },
   { OP_PAGER_BOTTOM,           op_pager_bottom },
   { OP_PAGER_HIDE_QUOTED,      op_pager_hide_quoted },
   { OP_PAGER_SKIP_HEADERS,     op_pager_skip_headers },
@@ -1915,8 +1915,8 @@ struct PagerFunction PagerFunctions[] = {
 #ifdef USE_NNTP
   { OP_POST,                   op_post },
 #endif
-  { OP_PREV_LINE,              op_prev_line },
-  { OP_PREV_PAGE,              op_prev_page },
+  { OP_PAGER_PREV_LINE,        op_pager_prev_line },
+  { OP_PAGER_PREV_PAGE,        op_pager_prev_page },
   { OP_PRINT,                  op_print },
   { OP_QUIT,                   op_quit },
   { OP_RECALL_MESSAGE,         op_recall_message },
