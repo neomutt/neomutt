@@ -214,6 +214,579 @@ bool jump_to_bottom(struct PagerPrivateData *priv, struct PagerView *pview)
   return true;
 }
 
+// -----------------------------------------------------------------------------
+
+/**
+ * op_pager_bottom - Jump to the bottom of the message - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_pager_bottom(struct IndexSharedData *shared,
+                           struct PagerPrivateData *priv, int op)
+{
+  if (!jump_to_bottom(priv, priv->pview))
+    mutt_message(_("Bottom of message is shown"));
+
+  return IR_SUCCESS;
+}
+
+/**
+ * op_pager_half_down - Scroll down 1/2 page - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_pager_half_down(struct IndexSharedData *shared,
+                              struct PagerPrivateData *priv, int op)
+{
+  const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
+  if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
+  {
+    priv->top_line = up_n_lines(priv->pview->win_pager->state.rows / 2,
+                                priv->lines, priv->cur_line, priv->hide_quoted);
+    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+  }
+  else if (c_pager_stop)
+  {
+    /* emulate "less -q" and don't go on to the next message. */
+    mutt_message(_("Bottom of message is shown"));
+  }
+  else
+  {
+    /* end of the current message, so display the next message. */
+    priv->rc = OP_MAIN_NEXT_UNDELETED;
+    return IR_DONE;
+  }
+  return IR_SUCCESS;
+}
+
+/**
+ * op_pager_half_up - Scroll up 1/2 page - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_pager_half_up(struct IndexSharedData *shared,
+                            struct PagerPrivateData *priv, int op)
+{
+  if (priv->top_line)
+  {
+    priv->top_line = up_n_lines(priv->pview->win_pager->state.rows / 2 +
+                                    (priv->pview->win_pager->state.rows % 2),
+                                priv->lines, priv->top_line, priv->hide_quoted);
+    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+  }
+  else
+    mutt_message(_("Top of message is shown"));
+  return IR_SUCCESS;
+}
+
+/**
+ * op_pager_hide_quoted - Toggle display of quoted text - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_pager_hide_quoted(struct IndexSharedData *shared,
+                                struct PagerPrivateData *priv, int op)
+{
+  if (!priv->has_types)
+    return IR_NO_ACTION;
+
+  priv->hide_quoted ^= MUTT_HIDE;
+  if (priv->hide_quoted && (priv->lines[priv->top_line].cid == MT_COLOR_QUOTED))
+  {
+    priv->top_line = up_n_lines(1, priv->lines, priv->top_line, priv->hide_quoted);
+  }
+  else
+  {
+    pager_queue_redraw(priv, MENU_REDRAW_BODY);
+  }
+  notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+  return IR_SUCCESS;
+}
+
+/**
+ * op_pager_next_line - Scroll down one line - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_pager_next_line(struct IndexSharedData *shared,
+                              struct PagerPrivateData *priv, int op)
+{
+  if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
+  {
+    priv->top_line++;
+    if (priv->hide_quoted)
+    {
+      while ((priv->lines[priv->top_line].cid == MT_COLOR_QUOTED) &&
+             (priv->top_line < priv->lines_used))
+      {
+        priv->top_line++;
+      }
+    }
+    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+  }
+  else
+  {
+    mutt_message(_("Bottom of message is shown"));
+  }
+  return IR_SUCCESS;
+}
+
+/**
+ * op_pager_next_page - Move to the next page - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_pager_next_page(struct IndexSharedData *shared,
+                              struct PagerPrivateData *priv, int op)
+{
+  const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
+  if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
+  {
+    const short c_pager_context =
+        cs_subset_number(NeoMutt->sub, "pager_context");
+    priv->top_line =
+        up_n_lines(c_pager_context, priv->lines, priv->cur_line, priv->hide_quoted);
+    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+  }
+  else if (c_pager_stop)
+  {
+    /* emulate "less -q" and don't go on to the next message. */
+    mutt_message(_("Bottom of message is shown"));
+  }
+  else
+  {
+    /* end of the current message, so display the next message. */
+    priv->rc = OP_MAIN_NEXT_UNDELETED;
+    return IR_DONE;
+  }
+  return IR_SUCCESS;
+}
+
+/**
+ * op_pager_prev_line - Scroll up one line - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_pager_prev_line(struct IndexSharedData *shared,
+                              struct PagerPrivateData *priv, int op)
+{
+  if (priv->top_line)
+  {
+    priv->top_line = up_n_lines(1, priv->lines, priv->top_line, priv->hide_quoted);
+    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+  }
+  else
+  {
+    mutt_message(_("Top of message is shown"));
+  }
+  return IR_SUCCESS;
+}
+
+/**
+ * op_pager_prev_page - Move to the previous page - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_pager_prev_page(struct IndexSharedData *shared,
+                              struct PagerPrivateData *priv, int op)
+{
+  if (priv->top_line == 0)
+  {
+    mutt_message(_("Top of message is shown"));
+  }
+  else
+  {
+    const short c_pager_context =
+        cs_subset_number(NeoMutt->sub, "pager_context");
+    priv->top_line = up_n_lines(priv->pview->win_pager->state.rows - c_pager_context,
+                                priv->lines, priv->top_line, priv->hide_quoted);
+    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+  }
+  return IR_SUCCESS;
+}
+
+/**
+ * op_pager_search - Search for a regular expression - Implements ::pager_function_t - @ingroup pager_function_api
+ *
+ * This function handles:
+ * - OP_PAGER_SEARCH
+ * - OP_PAGER_SEARCH_REVERSE
+ */
+static int op_pager_search(struct IndexSharedData *shared,
+                           struct PagerPrivateData *priv, int op)
+{
+  struct PagerView *pview = priv->pview;
+
+  int rc = IR_NO_ACTION;
+  struct Buffer *buf = mutt_buffer_pool_get();
+
+  mutt_buffer_strcpy(buf, priv->search_str);
+  if (mutt_buffer_get_field(((op == OP_PAGER_SEARCH) || (op == OP_PAGER_SEARCH_NEXT)) ?
+                                _("Search for: ") :
+                                _("Reverse search for: "),
+                            buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false,
+                            NULL, NULL, NULL) != 0)
+  {
+    goto done;
+  }
+
+  if (mutt_str_equal(mutt_buffer_string(buf), priv->search_str))
+  {
+    if (priv->search_compiled)
+    {
+      /* do an implicit search-next */
+      if (op == OP_PAGER_SEARCH)
+        op = OP_PAGER_SEARCH_NEXT;
+      else
+        op = OP_PAGER_SEARCH_OPPOSITE;
+
+      priv->wrapped = false;
+      op_pager_search_next(shared, priv, op);
+    }
+  }
+
+  if (mutt_buffer_is_empty(buf))
+    goto done;
+
+  mutt_str_copy(priv->search_str, mutt_buffer_string(buf), sizeof(priv->search_str));
+
+  /* leave search_back alone if op == OP_PAGER_SEARCH_NEXT */
+  if (op == OP_PAGER_SEARCH)
+    priv->search_back = false;
+  else if (op == OP_PAGER_SEARCH_REVERSE)
+    priv->search_back = true;
+
+  if (priv->search_compiled)
+  {
+    regfree(&priv->search_re);
+    for (size_t i = 0; i < priv->lines_used; i++)
+    {
+      FREE(&(priv->lines[i].search));
+      priv->lines[i].search_arr_size = -1;
+    }
+  }
+
+  uint16_t rflags = mutt_mb_is_lower(priv->search_str) ? REG_ICASE : 0;
+  int err = REG_COMP(&priv->search_re, priv->search_str, REG_NEWLINE | rflags);
+  if (err != 0)
+  {
+    regerror(err, &priv->search_re, buf->data, buf->dsize);
+    mutt_error("%s", mutt_buffer_string(buf));
+    for (size_t i = 0; i < priv->lines_max; i++)
+    {
+      /* cleanup */
+      FREE(&(priv->lines[i].search));
+      priv->lines[i].search_arr_size = -1;
+    }
+    priv->search_flag = 0;
+    priv->search_compiled = false;
+  }
+  else
+  {
+    priv->search_compiled = true;
+    /* update the search pointers */
+    int line_num = 0;
+    while (display_line(priv->fp, &priv->bytes_read, &priv->lines, line_num,
+                        &priv->lines_used, &priv->lines_max,
+                        MUTT_SEARCH | (pview->flags & MUTT_PAGER_NSKIP) |
+                            (pview->flags & MUTT_PAGER_NOWRAP) | priv->has_types,
+                        &priv->quote_list, &priv->q_level, &priv->force_redraw,
+                        &priv->search_re, priv->pview->win_pager) == 0)
+    {
+      line_num++;
+    }
+
+    if (!priv->search_back)
+    {
+      /* searching forward */
+      int i;
+      for (i = priv->top_line; i < priv->lines_used; i++)
+      {
+        if ((!priv->hide_quoted || (priv->lines[i].cid != MT_COLOR_QUOTED)) &&
+            !priv->lines[i].cont_line && (priv->lines[i].search_arr_size > 0))
+        {
+          break;
+        }
+      }
+
+      if (i < priv->lines_used)
+        priv->top_line = i;
+    }
+    else
+    {
+      /* searching backward */
+      int i;
+      for (i = priv->top_line; i >= 0; i--)
+      {
+        if ((!priv->hide_quoted || (priv->lines[i].cid != MT_COLOR_QUOTED)) &&
+            !priv->lines[i].cont_line && (priv->lines[i].search_arr_size > 0))
+        {
+          break;
+        }
+      }
+
+      if (i >= 0)
+        priv->top_line = i;
+    }
+
+    if (priv->lines[priv->top_line].search_arr_size == 0)
+    {
+      priv->search_flag = 0;
+      mutt_error(_("Not found"));
+    }
+    else
+    {
+      const short c_search_context =
+          cs_subset_number(NeoMutt->sub, "search_context");
+      priv->search_flag = MUTT_SEARCH;
+      /* give some context for search results */
+      if (c_search_context < priv->pview->win_pager->state.rows)
+        priv->searchctx = c_search_context;
+      else
+        priv->searchctx = 0;
+      if (priv->top_line - priv->searchctx > 0)
+        priv->top_line -= priv->searchctx;
+    }
+  }
+  pager_queue_redraw(priv, MENU_REDRAW_BODY);
+  notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+  rc = IR_SUCCESS;
+
+done:
+  mutt_buffer_pool_release(&buf);
+  return rc;
+}
+
+/**
+ * op_pager_search_next - Search for next match - Implements ::pager_function_t - @ingroup pager_function_api
+ *
+ * This function handles:
+ * - OP_PAGER_SEARCH_NEXT
+ * - OP_PAGER_SEARCH_OPPOSITE
+ */
+static int op_pager_search_next(struct IndexSharedData *shared,
+                                struct PagerPrivateData *priv, int op)
+{
+  if (priv->search_compiled)
+  {
+    const short c_search_context =
+        cs_subset_number(NeoMutt->sub, "search_context");
+    priv->wrapped = false;
+
+    if (c_search_context < priv->pview->win_pager->state.rows)
+      priv->searchctx = c_search_context;
+    else
+      priv->searchctx = 0;
+
+  search_next:
+    if ((!priv->search_back && (op == OP_PAGER_SEARCH_NEXT)) ||
+        (priv->search_back && (op == OP_PAGER_SEARCH_OPPOSITE)))
+    {
+      /* searching forward */
+      int i;
+      for (i = priv->wrapped ? 0 : priv->top_line + priv->searchctx + 1;
+           i < priv->lines_used; i++)
+      {
+        if ((!priv->hide_quoted || (priv->lines[i].cid != MT_COLOR_QUOTED)) &&
+            !priv->lines[i].cont_line && (priv->lines[i].search_arr_size > 0))
+        {
+          break;
+        }
+      }
+
+      const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
+      if (i < priv->lines_used)
+        priv->top_line = i;
+      else if (priv->wrapped || !c_wrap_search)
+        mutt_error(_("Not found"));
+      else
+      {
+        mutt_message(_("Search wrapped to top"));
+        priv->wrapped = true;
+        goto search_next;
+      }
+    }
+    else
+    {
+      /* searching backward */
+      int i;
+      for (i = priv->wrapped ? priv->lines_used : priv->top_line + priv->searchctx - 1;
+           i >= 0; i--)
+      {
+        if ((!priv->hide_quoted || (priv->has_types && (priv->lines[i].cid != MT_COLOR_QUOTED))) &&
+            !priv->lines[i].cont_line && (priv->lines[i].search_arr_size > 0))
+        {
+          break;
+        }
+      }
+
+      const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
+      if (i >= 0)
+        priv->top_line = i;
+      else if (priv->wrapped || !c_wrap_search)
+        mutt_error(_("Not found"));
+      else
+      {
+        mutt_message(_("Search wrapped to bottom"));
+        priv->wrapped = true;
+        goto search_next;
+      }
+    }
+
+    if (priv->lines[priv->top_line].search_arr_size > 0)
+    {
+      priv->search_flag = MUTT_SEARCH;
+      /* give some context for search results */
+      if (priv->top_line - priv->searchctx > 0)
+        priv->top_line -= priv->searchctx;
+    }
+
+    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+    return IR_SUCCESS;
+  }
+
+  /* no previous search pattern */
+  return op_pager_search(shared, priv, op);
+}
+
+/**
+ * op_pager_skip_headers - Jump to first line after headers - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_pager_skip_headers(struct IndexSharedData *shared,
+                                 struct PagerPrivateData *priv, int op)
+{
+  struct PagerView *pview = priv->pview;
+
+  if (!priv->has_types)
+    return IR_NO_ACTION;
+
+  int dretval = 0;
+  int new_topline = 0;
+
+  while (((new_topline < priv->lines_used) ||
+          (0 == (dretval = display_line(
+                     priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
+                     &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
+                     &priv->quote_list, &priv->q_level, &priv->force_redraw,
+                     &priv->search_re, priv->pview->win_pager)))) &&
+         simple_color_is_header(priv->lines[new_topline].cid))
+  {
+    new_topline++;
+  }
+
+  if (dretval < 0)
+  {
+    /* L10N: Displayed if <skip-headers> is invoked in the pager, but
+       there is no text past the headers.
+       (I don't think this is actually possible in Mutt's code, but
+       display some kind of message in case it somehow occurs.) */
+    mutt_warning(_("No text past headers"));
+    return IR_NO_ACTION;
+  }
+  priv->top_line = new_topline;
+  notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+  return IR_SUCCESS;
+}
+
+/**
+ * op_pager_skip_quoted - Skip beyond quoted text - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_pager_skip_quoted(struct IndexSharedData *shared,
+                                struct PagerPrivateData *priv, int op)
+{
+  struct PagerView *pview = priv->pview;
+
+  if (!priv->has_types)
+    return IR_NO_ACTION;
+
+  const short c_skip_quoted_context =
+      cs_subset_number(NeoMutt->sub, "pager_skip_quoted_context");
+  int dretval = 0;
+  int new_topline = priv->top_line;
+  int num_quoted = 0;
+
+  /* In a header? Skip all the email headers, and done */
+  if (simple_color_is_header(priv->lines[new_topline].cid))
+  {
+    while (((new_topline < priv->lines_used) ||
+            (0 == (dretval = display_line(
+                       priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
+                       &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
+                       &priv->quote_list, &priv->q_level, &priv->force_redraw,
+                       &priv->search_re, priv->pview->win_pager)))) &&
+           simple_color_is_header(priv->lines[new_topline].cid))
+    {
+      new_topline++;
+    }
+    priv->top_line = new_topline;
+    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+    return IR_SUCCESS;
+  }
+
+  /* Already in the body? Skip past previous "context" quoted lines */
+  if (c_skip_quoted_context > 0)
+  {
+    while (((new_topline < priv->lines_used) ||
+            (0 == (dretval = display_line(
+                       priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
+                       &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
+                       &priv->quote_list, &priv->q_level, &priv->force_redraw,
+                       &priv->search_re, priv->pview->win_pager)))) &&
+           (priv->lines[new_topline].cid == MT_COLOR_QUOTED))
+    {
+      new_topline++;
+      num_quoted++;
+    }
+
+    if (dretval < 0)
+    {
+      mutt_error(_("No more unquoted text after quoted text"));
+      return IR_NO_ACTION;
+    }
+  }
+
+  if (num_quoted <= c_skip_quoted_context)
+  {
+    num_quoted = 0;
+
+    while (((new_topline < priv->lines_used) ||
+            (0 == (dretval = display_line(
+                       priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
+                       &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
+                       &priv->quote_list, &priv->q_level, &priv->force_redraw,
+                       &priv->search_re, priv->pview->win_pager)))) &&
+           (priv->lines[new_topline].cid != MT_COLOR_QUOTED))
+    {
+      new_topline++;
+    }
+
+    if (dretval < 0)
+    {
+      mutt_error(_("No more quoted text"));
+      return IR_NO_ACTION;
+    }
+
+    while (((new_topline < priv->lines_used) ||
+            (0 == (dretval = display_line(
+                       priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
+                       &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
+                       &priv->quote_list, &priv->q_level, &priv->force_redraw,
+                       &priv->search_re, priv->pview->win_pager)))) &&
+           (priv->lines[new_topline].cid == MT_COLOR_QUOTED))
+    {
+      new_topline++;
+      num_quoted++;
+    }
+
+    if (dretval < 0)
+    {
+      mutt_error(_("No more unquoted text after quoted text"));
+      return IR_NO_ACTION;
+    }
+  }
+  priv->top_line = new_topline - MIN(c_skip_quoted_context, num_quoted);
+  notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+  return IR_SUCCESS;
+}
+
+/**
+ * op_pager_top - Jump to the top of the message - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_pager_top(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
+{
+  if (priv->top_line)
+    priv->top_line = 0;
+  else
+    mutt_message(_("Top of message is shown"));
+  return IR_SUCCESS;
+}
+
+// -----------------------------------------------------------------------------
+
 /**
  * op_bounce_message - Remail a message to another user - Implements ::pager_function_t - @ingroup pager_function_api
  */
@@ -626,49 +1199,6 @@ static int op_forward_message(struct IndexSharedData *shared,
 }
 
 /**
- * op_pager_half_down - Scroll down 1/2 page - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_pager_half_down(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
-{
-  const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
-  if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
-  {
-    priv->top_line = up_n_lines(priv->pview->win_pager->state.rows / 2,
-                                priv->lines, priv->cur_line, priv->hide_quoted);
-    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-  }
-  else if (c_pager_stop)
-  {
-    /* emulate "less -q" and don't go on to the next message. */
-    mutt_message(_("Bottom of message is shown"));
-  }
-  else
-  {
-    /* end of the current message, so display the next message. */
-    priv->rc = OP_MAIN_NEXT_UNDELETED;
-    return IR_DONE;
-  }
-  return IR_SUCCESS;
-}
-
-/**
- * op_pager_half_up - Scroll up 1/2 page - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_pager_half_up(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
-{
-  if (priv->top_line)
-  {
-    priv->top_line = up_n_lines(priv->pview->win_pager->state.rows / 2 +
-                                    (priv->pview->win_pager->state.rows % 2),
-                                priv->lines, priv->top_line, priv->hide_quoted);
-    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-  }
-  else
-    mutt_message(_("Top of message is shown"));
-  return IR_SUCCESS;
-}
-
-/**
  * op_help - This screen - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_help(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
@@ -682,6 +1212,30 @@ static int op_help(struct IndexSharedData *shared, struct PagerPrivateData *priv
   mutt_help(MENU_PAGER);
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
   return IR_SUCCESS;
+}
+
+/**
+ * op_list_subscribe - Subscribe to a mailing list - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_list_subscribe(struct IndexSharedData *shared,
+                             struct PagerPrivateData *priv, int op)
+{
+  const int rc = mutt_send_list_subscribe(shared->mailbox, shared->email) ? IR_SUCCESS : IR_NO_ACTION;
+  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  return rc;
+}
+
+/**
+ * op_list_unsubscribe - Unsubscribe from mailing list - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_list_unsubscribe(struct IndexSharedData *shared,
+                               struct PagerPrivateData *priv, int op)
+{
+  const int rc = mutt_send_list_unsubscribe(shared->mailbox, shared->email) ?
+                     IR_SUCCESS :
+                     IR_NO_ACTION;
+  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  return rc;
 }
 
 /**
@@ -761,245 +1315,6 @@ static int op_main_set_flag(struct IndexSharedData *shared,
 }
 
 /**
- * op_pager_next_line - Scroll down one line - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_pager_next_line(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
-{
-  if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
-  {
-    priv->top_line++;
-    if (priv->hide_quoted)
-    {
-      while ((priv->lines[priv->top_line].cid == MT_COLOR_QUOTED) &&
-             (priv->top_line < priv->lines_used))
-      {
-        priv->top_line++;
-      }
-    }
-    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-  }
-  else
-  {
-    mutt_message(_("Bottom of message is shown"));
-  }
-  return IR_SUCCESS;
-}
-
-/**
- * op_pager_next_page - Move to the next page - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_pager_next_page(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
-{
-  const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
-  if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
-  {
-    const short c_pager_context =
-        cs_subset_number(NeoMutt->sub, "pager_context");
-    priv->top_line =
-        up_n_lines(c_pager_context, priv->lines, priv->cur_line, priv->hide_quoted);
-    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-  }
-  else if (c_pager_stop)
-  {
-    /* emulate "less -q" and don't go on to the next message. */
-    mutt_message(_("Bottom of message is shown"));
-  }
-  else
-  {
-    /* end of the current message, so display the next message. */
-    priv->rc = OP_MAIN_NEXT_UNDELETED;
-    return IR_DONE;
-  }
-  return IR_SUCCESS;
-}
-
-/**
- * op_pager_bottom - Jump to the bottom of the message - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_pager_bottom(struct IndexSharedData *shared,
-                           struct PagerPrivateData *priv, int op)
-{
-  if (!jump_to_bottom(priv, priv->pview))
-    mutt_message(_("Bottom of message is shown"));
-
-  return IR_SUCCESS;
-}
-
-/**
- * op_pager_hide_quoted - Toggle display of quoted text - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_pager_hide_quoted(struct IndexSharedData *shared,
-                                struct PagerPrivateData *priv, int op)
-{
-  if (!priv->has_types)
-    return IR_NO_ACTION;
-
-  priv->hide_quoted ^= MUTT_HIDE;
-  if (priv->hide_quoted && (priv->lines[priv->top_line].cid == MT_COLOR_QUOTED))
-  {
-    priv->top_line = up_n_lines(1, priv->lines, priv->top_line, priv->hide_quoted);
-  }
-  else
-  {
-    pager_queue_redraw(priv, MENU_REDRAW_BODY);
-  }
-  notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-  return IR_SUCCESS;
-}
-
-/**
- * op_pager_skip_headers - Jump to first line after headers - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_pager_skip_headers(struct IndexSharedData *shared,
-                                 struct PagerPrivateData *priv, int op)
-{
-  struct PagerView *pview = priv->pview;
-
-  if (!priv->has_types)
-    return IR_NO_ACTION;
-
-  int dretval = 0;
-  int new_topline = 0;
-
-  while (((new_topline < priv->lines_used) ||
-          (0 == (dretval = display_line(
-                     priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
-                     &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
-                     &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                     &priv->search_re, priv->pview->win_pager)))) &&
-         simple_color_is_header(priv->lines[new_topline].cid))
-  {
-    new_topline++;
-  }
-
-  if (dretval < 0)
-  {
-    /* L10N: Displayed if <skip-headers> is invoked in the pager, but
-       there is no text past the headers.
-       (I don't think this is actually possible in Mutt's code, but
-       display some kind of message in case it somehow occurs.) */
-    mutt_warning(_("No text past headers"));
-    return IR_NO_ACTION;
-  }
-  priv->top_line = new_topline;
-  notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-  return IR_SUCCESS;
-}
-
-/**
- * op_pager_skip_quoted - Skip beyond quoted text - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_pager_skip_quoted(struct IndexSharedData *shared,
-                                struct PagerPrivateData *priv, int op)
-{
-  struct PagerView *pview = priv->pview;
-
-  if (!priv->has_types)
-    return IR_NO_ACTION;
-
-  const short c_skip_quoted_context =
-      cs_subset_number(NeoMutt->sub, "pager_skip_quoted_context");
-  int dretval = 0;
-  int new_topline = priv->top_line;
-  int num_quoted = 0;
-
-  /* In a header? Skip all the email headers, and done */
-  if (simple_color_is_header(priv->lines[new_topline].cid))
-  {
-    while (((new_topline < priv->lines_used) ||
-            (0 == (dretval = display_line(
-                       priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
-                       &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
-                       &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                       &priv->search_re, priv->pview->win_pager)))) &&
-           simple_color_is_header(priv->lines[new_topline].cid))
-    {
-      new_topline++;
-    }
-    priv->top_line = new_topline;
-    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-    return IR_SUCCESS;
-  }
-
-  /* Already in the body? Skip past previous "context" quoted lines */
-  if (c_skip_quoted_context > 0)
-  {
-    while (((new_topline < priv->lines_used) ||
-            (0 == (dretval = display_line(
-                       priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
-                       &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
-                       &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                       &priv->search_re, priv->pview->win_pager)))) &&
-           (priv->lines[new_topline].cid == MT_COLOR_QUOTED))
-    {
-      new_topline++;
-      num_quoted++;
-    }
-
-    if (dretval < 0)
-    {
-      mutt_error(_("No more unquoted text after quoted text"));
-      return IR_NO_ACTION;
-    }
-  }
-
-  if (num_quoted <= c_skip_quoted_context)
-  {
-    num_quoted = 0;
-
-    while (((new_topline < priv->lines_used) ||
-            (0 == (dretval = display_line(
-                       priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
-                       &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
-                       &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                       &priv->search_re, priv->pview->win_pager)))) &&
-           (priv->lines[new_topline].cid != MT_COLOR_QUOTED))
-    {
-      new_topline++;
-    }
-
-    if (dretval < 0)
-    {
-      mutt_error(_("No more quoted text"));
-      return IR_NO_ACTION;
-    }
-
-    while (((new_topline < priv->lines_used) ||
-            (0 == (dretval = display_line(
-                       priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
-                       &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
-                       &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                       &priv->search_re, priv->pview->win_pager)))) &&
-           (priv->lines[new_topline].cid == MT_COLOR_QUOTED))
-    {
-      new_topline++;
-      num_quoted++;
-    }
-
-    if (dretval < 0)
-    {
-      mutt_error(_("No more unquoted text after quoted text"));
-      return IR_NO_ACTION;
-    }
-  }
-  priv->top_line = new_topline - MIN(c_skip_quoted_context, num_quoted);
-  notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-  return IR_SUCCESS;
-}
-
-/**
- * op_pager_top - Jump to the top of the message - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_pager_top(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
-{
-  if (priv->top_line)
-    priv->top_line = 0;
-  else
-    mutt_message(_("Top of message is shown"));
-  return IR_SUCCESS;
-}
-
-/**
  * op_pipe - Pipe message/attachment to a shell command - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_pipe(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
@@ -1021,43 +1336,6 @@ static int op_pipe(struct IndexSharedData *shared, struct PagerPrivateData *priv
     el_add_tagged(&el, shared->ctx, shared->email, false);
     mutt_pipe_message(shared->mailbox, &el);
     emaillist_clear(&el);
-  }
-  return IR_SUCCESS;
-}
-
-/**
- * op_pager_prev_line - Scroll up one line - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_pager_prev_line(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
-{
-  if (priv->top_line)
-  {
-    priv->top_line = up_n_lines(1, priv->lines, priv->top_line, priv->hide_quoted);
-    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-  }
-  else
-  {
-    mutt_message(_("Top of message is shown"));
-  }
-  return IR_SUCCESS;
-}
-
-/**
- * op_pager_prev_page - Move to the previous page - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_pager_prev_page(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
-{
-  if (priv->top_line == 0)
-  {
-    mutt_message(_("Top of message is shown"));
-  }
-  else
-  {
-    const short c_pager_context =
-        cs_subset_number(NeoMutt->sub, "pager_context");
-    priv->top_line = up_n_lines(priv->pview->win_pager->state.rows - c_pager_context,
-                                priv->lines, priv->top_line, priv->hide_quoted);
-    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
   }
   return IR_SUCCESS;
 }
@@ -1179,30 +1457,6 @@ static int op_reply(struct IndexSharedData *shared, struct PagerPrivateData *pri
 }
 
 /**
- * op_list_subscribe - Subscribe to a mailing list - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_list_subscribe(struct IndexSharedData *shared,
-                             struct PagerPrivateData *priv, int op)
-{
-  const int rc = mutt_send_list_subscribe(shared->mailbox, shared->email) ? IR_SUCCESS : IR_NO_ACTION;
-  pager_queue_redraw(priv, MENU_REDRAW_FULL);
-  return rc;
-}
-
-/**
- * op_list_unsubscribe - Unsubscribe from mailing list - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_list_unsubscribe(struct IndexSharedData *shared,
-                               struct PagerPrivateData *priv, int op)
-{
-  const int rc = mutt_send_list_unsubscribe(shared->mailbox, shared->email) ?
-                     IR_SUCCESS :
-                     IR_NO_ACTION;
-  pager_queue_redraw(priv, MENU_REDRAW_FULL);
-  return rc;
-}
-
-/**
  * op_resend - Use the current message as a template for a new one - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_resend(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
@@ -1250,247 +1504,6 @@ static int op_save(struct IndexSharedData *shared, struct PagerPrivateData *priv
   }
 
   return op_copy_message(shared, priv, op);
-}
-
-/**
- * op_pager_search - Search for a regular expression - Implements ::pager_function_t - @ingroup pager_function_api
- *
- * This function handles:
- * - OP_PAGER_SEARCH
- * - OP_PAGER_SEARCH_REVERSE
- */
-static int op_pager_search(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
-{
-  struct PagerView *pview = priv->pview;
-
-  int rc = IR_NO_ACTION;
-  struct Buffer *buf = mutt_buffer_pool_get();
-
-  mutt_buffer_strcpy(buf, priv->search_str);
-  if (mutt_buffer_get_field(
-          ((op == OP_PAGER_SEARCH) || (op == OP_PAGER_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
-          buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL, NULL) != 0)
-  {
-    goto done;
-  }
-
-  if (mutt_str_equal(mutt_buffer_string(buf), priv->search_str))
-  {
-    if (priv->search_compiled)
-    {
-      /* do an implicit search-next */
-      if (op == OP_PAGER_SEARCH)
-        op = OP_PAGER_SEARCH_NEXT;
-      else
-        op = OP_PAGER_SEARCH_OPPOSITE;
-
-      priv->wrapped = false;
-      op_pager_search_next(shared, priv, op);
-    }
-  }
-
-  if (mutt_buffer_is_empty(buf))
-    goto done;
-
-  mutt_str_copy(priv->search_str, mutt_buffer_string(buf), sizeof(priv->search_str));
-
-  /* leave search_back alone if op == OP_PAGER_SEARCH_NEXT */
-  if (op == OP_PAGER_SEARCH)
-    priv->search_back = false;
-  else if (op == OP_PAGER_SEARCH_REVERSE)
-    priv->search_back = true;
-
-  if (priv->search_compiled)
-  {
-    regfree(&priv->search_re);
-    for (size_t i = 0; i < priv->lines_used; i++)
-    {
-      FREE(&(priv->lines[i].search));
-      priv->lines[i].search_arr_size = -1;
-    }
-  }
-
-  uint16_t rflags = mutt_mb_is_lower(priv->search_str) ? REG_ICASE : 0;
-  int err = REG_COMP(&priv->search_re, priv->search_str, REG_NEWLINE | rflags);
-  if (err != 0)
-  {
-    regerror(err, &priv->search_re, buf->data, buf->dsize);
-    mutt_error("%s", mutt_buffer_string(buf));
-    for (size_t i = 0; i < priv->lines_max; i++)
-    {
-      /* cleanup */
-      FREE(&(priv->lines[i].search));
-      priv->lines[i].search_arr_size = -1;
-    }
-    priv->search_flag = 0;
-    priv->search_compiled = false;
-  }
-  else
-  {
-    priv->search_compiled = true;
-    /* update the search pointers */
-    int line_num = 0;
-    while (display_line(priv->fp, &priv->bytes_read, &priv->lines, line_num,
-                        &priv->lines_used, &priv->lines_max,
-                        MUTT_SEARCH | (pview->flags & MUTT_PAGER_NSKIP) |
-                            (pview->flags & MUTT_PAGER_NOWRAP) | priv->has_types,
-                        &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                        &priv->search_re, priv->pview->win_pager) == 0)
-    {
-      line_num++;
-    }
-
-    if (!priv->search_back)
-    {
-      /* searching forward */
-      int i;
-      for (i = priv->top_line; i < priv->lines_used; i++)
-      {
-        if ((!priv->hide_quoted || (priv->lines[i].cid != MT_COLOR_QUOTED)) &&
-            !priv->lines[i].cont_line && (priv->lines[i].search_arr_size > 0))
-        {
-          break;
-        }
-      }
-
-      if (i < priv->lines_used)
-        priv->top_line = i;
-    }
-    else
-    {
-      /* searching backward */
-      int i;
-      for (i = priv->top_line; i >= 0; i--)
-      {
-        if ((!priv->hide_quoted || (priv->lines[i].cid != MT_COLOR_QUOTED)) &&
-            !priv->lines[i].cont_line && (priv->lines[i].search_arr_size > 0))
-        {
-          break;
-        }
-      }
-
-      if (i >= 0)
-        priv->top_line = i;
-    }
-
-    if (priv->lines[priv->top_line].search_arr_size == 0)
-    {
-      priv->search_flag = 0;
-      mutt_error(_("Not found"));
-    }
-    else
-    {
-      const short c_search_context =
-          cs_subset_number(NeoMutt->sub, "search_context");
-      priv->search_flag = MUTT_SEARCH;
-      /* give some context for search results */
-      if (c_search_context < priv->pview->win_pager->state.rows)
-        priv->searchctx = c_search_context;
-      else
-        priv->searchctx = 0;
-      if (priv->top_line - priv->searchctx > 0)
-        priv->top_line -= priv->searchctx;
-    }
-  }
-  pager_queue_redraw(priv, MENU_REDRAW_BODY);
-  notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-  rc = IR_SUCCESS;
-
-done:
-  mutt_buffer_pool_release(&buf);
-  return rc;
-}
-
-/**
- * op_pager_search_next - Search for next match - Implements ::pager_function_t - @ingroup pager_function_api
- *
- * This function handles:
- * - OP_PAGER_SEARCH_NEXT
- * - OP_PAGER_SEARCH_OPPOSITE
- */
-static int op_pager_search_next(struct IndexSharedData *shared,
-                          struct PagerPrivateData *priv, int op)
-{
-  if (priv->search_compiled)
-  {
-    const short c_search_context =
-        cs_subset_number(NeoMutt->sub, "search_context");
-    priv->wrapped = false;
-
-    if (c_search_context < priv->pview->win_pager->state.rows)
-      priv->searchctx = c_search_context;
-    else
-      priv->searchctx = 0;
-
-  search_next:
-    if ((!priv->search_back && (op == OP_PAGER_SEARCH_NEXT)) ||
-        (priv->search_back && (op == OP_PAGER_SEARCH_OPPOSITE)))
-    {
-      /* searching forward */
-      int i;
-      for (i = priv->wrapped ? 0 : priv->top_line + priv->searchctx + 1;
-           i < priv->lines_used; i++)
-      {
-        if ((!priv->hide_quoted || (priv->lines[i].cid != MT_COLOR_QUOTED)) &&
-            !priv->lines[i].cont_line && (priv->lines[i].search_arr_size > 0))
-        {
-          break;
-        }
-      }
-
-      const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
-      if (i < priv->lines_used)
-        priv->top_line = i;
-      else if (priv->wrapped || !c_wrap_search)
-        mutt_error(_("Not found"));
-      else
-      {
-        mutt_message(_("Search wrapped to top"));
-        priv->wrapped = true;
-        goto search_next;
-      }
-    }
-    else
-    {
-      /* searching backward */
-      int i;
-      for (i = priv->wrapped ? priv->lines_used : priv->top_line + priv->searchctx - 1;
-           i >= 0; i--)
-      {
-        if ((!priv->hide_quoted || (priv->has_types && (priv->lines[i].cid != MT_COLOR_QUOTED))) &&
-            !priv->lines[i].cont_line && (priv->lines[i].search_arr_size > 0))
-        {
-          break;
-        }
-      }
-
-      const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
-      if (i >= 0)
-        priv->top_line = i;
-      else if (priv->wrapped || !c_wrap_search)
-        mutt_error(_("Not found"));
-      else
-      {
-        mutt_message(_("Search wrapped to bottom"));
-        priv->wrapped = true;
-        goto search_next;
-      }
-    }
-
-    if (priv->lines[priv->top_line].search_arr_size > 0)
-    {
-      priv->search_flag = MUTT_SEARCH;
-      /* give some context for search results */
-      if (priv->top_line - priv->searchctx > 0)
-        priv->top_line -= priv->searchctx;
-    }
-
-    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-    return IR_SUCCESS;
-  }
-
-  /* no previous search pattern */
-  return op_pager_search(shared, priv, op);
 }
 
 /**

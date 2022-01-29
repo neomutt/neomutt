@@ -1448,6 +1448,39 @@ static int op_attachment_group_lingual(struct ComposeSharedData *shared, int op)
 }
 
 /**
+ * op_attachment_group_related - Group tagged attachments as 'multipart/related' - Implements ::compose_function_t - @ingroup compose_function_api
+ */
+static int op_attachment_group_related(struct ComposeSharedData *shared, int op)
+{
+  static const char *RELATED_TAG = "Related parts for \"%s\"";
+  if (shared->adata->menu->tagged < 2)
+  {
+    mutt_error(_("Grouping 'related' requires at least 2 tagged messages"));
+    return IR_ERROR;
+  }
+
+  // ensure Content-ID is set for tagged attachments
+  for (struct Body *b = shared->email->body; b; b = b->next)
+  {
+    if (!b->tagged || (b->type == TYPE_MULTIPART))
+      continue;
+
+    char *id = mutt_param_get(&b->parameter, "content-id");
+    if (id)
+      continue;
+
+    id = gen_cid();
+    if (id)
+    {
+      mutt_param_set(&b->parameter, "content-id", id);
+      FREE(&id);
+    }
+  }
+
+  return group_attachments(shared, RELATED_TAG, "related");
+}
+
+/**
  * op_attachment_move_down - Move an attachment down in the attachment list - Implements ::compose_function_t - @ingroup compose_function_api
  */
 static int op_attachment_move_down(struct ComposeSharedData *shared, int op)
@@ -1744,39 +1777,6 @@ static int op_attachment_toggle_unlink(struct ComposeSharedData *shared, int op)
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
   /* No send2hook since this doesn't change the message. */
   return IR_SUCCESS;
-}
-
-/**
- * op_attachment_group_related - Group tagged attachments as 'multipart/related' - Implements ::compose_function_t - @ingroup compose_function_api
- */
-static int op_attachment_group_related(struct ComposeSharedData *shared, int op)
-{
-  static const char *RELATED_TAG = "Related parts for \"%s\"";
-  if (shared->adata->menu->tagged < 2)
-  {
-    mutt_error(_("Grouping 'related' requires at least 2 tagged messages"));
-    return IR_ERROR;
-  }
-
-  // ensure Content-ID is set for tagged attachments
-  for (struct Body *b = shared->email->body; b; b = b->next)
-  {
-    if (!b->tagged || (b->type == TYPE_MULTIPART))
-      continue;
-
-    char *id = mutt_param_get(&b->parameter, "content-id");
-    if (id)
-      continue;
-
-    id = gen_cid();
-    if (id)
-    {
-      mutt_param_set(&b->parameter, "content-id", id);
-      FREE(&id);
-    }
-  }
-
-  return group_attachments(shared, RELATED_TAG, "related");
 }
 
 /**
