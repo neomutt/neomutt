@@ -222,6 +222,10 @@
   _fmt(OP_PAGER_NEXT_PAGE,                    N_("move to the next page")) \
   _fmt(OP_PAGER_PREV_LINE,                    N_("scroll up one line")) \
   _fmt(OP_PAGER_PREV_PAGE,                    N_("move to the previous page")) \
+  _fmt(OP_PAGER_SEARCH,                       N_("search for a regular expression")) \
+  _fmt(OP_PAGER_SEARCH_NEXT,                  N_("search for next match")) \
+  _fmt(OP_PAGER_SEARCH_OPPOSITE,              N_("search for next match in opposite direction")) \
+  _fmt(OP_PAGER_SEARCH_REVERSE,               N_("search backwards for a regular expression")) \
   _fmt(OP_PAGER_SKIP_HEADERS,                 N_("jump to first line after headers")) \
   _fmt(OP_PAGER_SKIP_QUOTED,                  N_("skip beyond quoted text")) \
   _fmt(OP_PAGER_TOP,                          N_("jump to the top of the message")) \

@@ -373,10 +373,10 @@ const struct Binding OpPager[] = { /* map: pager */
   { "resend-message",                OP_RESEND,                             "\033e" },  // <Alt-e>
   { "root-message",                  OP_MAIN_ROOT_MESSAGE,                  NULL },
   { "save-message",                  OP_SAVE,                               "s" },
-  { "search",                        OP_SEARCH,                             "/" },
-  { "search-next",                   OP_SEARCH_NEXT,                        "n" },
-  { "search-opposite",               OP_SEARCH_OPPOSITE,                    NULL },
-  { "search-reverse",                OP_SEARCH_REVERSE,                     "\033/" },  // <Alt-/>
+  { "search",                        OP_PAGER_SEARCH,                       "/" },
+  { "search-next",                   OP_PAGER_SEARCH_NEXT,                  "n" },
+  { "search-opposite",               OP_PAGER_SEARCH_OPPOSITE,              NULL },
+  { "search-reverse",                OP_PAGER_SEARCH_REVERSE,               "\033/" },  // <Alt-/>
   { "search-toggle",                 OP_SEARCH_TOGGLE,                      "\\" },     // <Backslash>
   { "set-flag",                      OP_MAIN_SET_FLAG,                      "w" },
   { "shell-escape",                  OP_SHELL_ESCAPE,                       "!" },

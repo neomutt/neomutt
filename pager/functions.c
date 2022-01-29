@@ -80,8 +80,8 @@ static const char *Mailbox_is_read_only = N_("Mailbox is read-only");
 static const char *Function_not_permitted_in_attach_message_mode =
     N_("Function not permitted in attach-message mode");
 
-static int op_search_next(struct IndexSharedData *shared,
-                          struct PagerPrivateData *priv, int op);
+static int op_pager_search_next(struct IndexSharedData *shared,
+                                struct PagerPrivateData *priv, int op);
 
 /**
  * assert_pager_mode - Check that pager is in correct mode
@@ -1253,13 +1253,13 @@ static int op_save(struct IndexSharedData *shared, struct PagerPrivateData *priv
 }
 
 /**
- * op_search - Search for a regular expression - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_pager_search - Search for a regular expression - Implements ::pager_function_t - @ingroup pager_function_api
  *
  * This function handles:
- * - OP_SEARCH
- * - OP_SEARCH_REVERSE
+ * - OP_PAGER_SEARCH
+ * - OP_PAGER_SEARCH_REVERSE
  */
-static int op_search(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
+static int op_pager_search(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   struct PagerView *pview = priv->pview;
 
@@ -1268,7 +1268,7 @@ static int op_search(struct IndexSharedData *shared, struct PagerPrivateData *pr
 
   mutt_buffer_strcpy(buf, priv->search_str);
   if (mutt_buffer_get_field(
-          ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
+          ((op == OP_PAGER_SEARCH) || (op == OP_PAGER_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
           buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL, NULL) != 0)
   {
     goto done;
@@ -1279,13 +1279,13 @@ static int op_search(struct IndexSharedData *shared, struct PagerPrivateData *pr
     if (priv->search_compiled)
     {
       /* do an implicit search-next */
-      if (op == OP_SEARCH)
-        op = OP_SEARCH_NEXT;
+      if (op == OP_PAGER_SEARCH)
+        op = OP_PAGER_SEARCH_NEXT;
       else
-        op = OP_SEARCH_OPPOSITE;
+        op = OP_PAGER_SEARCH_OPPOSITE;
 
       priv->wrapped = false;
-      op_search_next(shared, priv, op);
+      op_pager_search_next(shared, priv, op);
     }
   }
 
@@ -1294,10 +1294,10 @@ static int op_search(struct IndexSharedData *shared, struct PagerPrivateData *pr
 
   mutt_str_copy(priv->search_str, mutt_buffer_string(buf), sizeof(priv->search_str));
 
-  /* leave search_back alone if op == OP_SEARCH_NEXT */
-  if (op == OP_SEARCH)
+  /* leave search_back alone if op == OP_PAGER_SEARCH_NEXT */
+  if (op == OP_PAGER_SEARCH)
     priv->search_back = false;
-  else if (op == OP_SEARCH_REVERSE)
+  else if (op == OP_PAGER_SEARCH_REVERSE)
     priv->search_back = true;
 
   if (priv->search_compiled)
@@ -1402,13 +1402,13 @@ done:
 }
 
 /**
- * op_search_next - Search for next match - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_pager_search_next - Search for next match - Implements ::pager_function_t - @ingroup pager_function_api
  *
  * This function handles:
- * - OP_SEARCH_NEXT
- * - OP_SEARCH_OPPOSITE
+ * - OP_PAGER_SEARCH_NEXT
+ * - OP_PAGER_SEARCH_OPPOSITE
  */
-static int op_search_next(struct IndexSharedData *shared,
+static int op_pager_search_next(struct IndexSharedData *shared,
                           struct PagerPrivateData *priv, int op)
 {
   if (priv->search_compiled)
@@ -1423,8 +1423,8 @@ static int op_search_next(struct IndexSharedData *shared,
       priv->searchctx = 0;
 
   search_next:
-    if ((!priv->search_back && (op == OP_SEARCH_NEXT)) ||
-        (priv->search_back && (op == OP_SEARCH_OPPOSITE)))
+    if ((!priv->search_back && (op == OP_PAGER_SEARCH_NEXT)) ||
+        (priv->search_back && (op == OP_PAGER_SEARCH_OPPOSITE)))
     {
       /* searching forward */
       int i;
@@ -1490,7 +1490,7 @@ static int op_search_next(struct IndexSharedData *shared,
   }
 
   /* no previous search pattern */
-  return op_search(shared, priv, op);
+  return op_pager_search(shared, priv, op);
 }
 
 /**
@@ -1929,10 +1929,10 @@ struct PagerFunction PagerFunctions[] = {
   { OP_REPLY,                  op_reply },
   { OP_RESEND,                 op_resend },
   { OP_SAVE,                   op_save },
-  { OP_SEARCH,                 op_search },
-  { OP_SEARCH_REVERSE,         op_search },
-  { OP_SEARCH_NEXT,            op_search_next },
-  { OP_SEARCH_OPPOSITE,        op_search_next },
+  { OP_PAGER_SEARCH,           op_pager_search },
+  { OP_PAGER_SEARCH_REVERSE,   op_pager_search },
+  { OP_PAGER_SEARCH_NEXT,      op_pager_search_next },
+  { OP_PAGER_SEARCH_OPPOSITE,  op_pager_search_next },
   { OP_SEARCH_TOGGLE,          op_search_toggle },
   { OP_SHELL_ESCAPE,           op_shell_escape },
   { OP_SIDEBAR_FIRST,          op_sidebar_move },
