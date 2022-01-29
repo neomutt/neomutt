@@ -177,6 +177,7 @@ const struct MenuFuncOp OpBrowser[] = { /* map: browser */
 const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "attach-file",                   OP_ATTACHMENT_ATTACH_FILE },
   { "attach-file-after",             OP_ATTACHMENT_ATTACH_FILE_AFTER },
+  { "attach-file-before",            OP_ATTACHMENT_ATTACH_FILE_BEFORE },
   { "attach-key",                    OP_ATTACHMENT_ATTACH_KEY },
   { "attach-message",                OP_ATTACHMENT_ATTACH_MESSAGE },
 #ifdef USE_NNTP
@@ -845,6 +846,7 @@ const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
 const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ATTACHMENT_ATTACH_FILE,             "a" },
   { OP_ATTACHMENT_ATTACH_FILE_AFTER,       "\033a" },          // <Alt-a>
+  { OP_ATTACHMENT_ATTACH_FILE_BEFORE,      "\033b" },          // <Alt-b>
   { OP_ATTACHMENT_ATTACH_KEY,              "\033k" },          // <Alt-k>
   { OP_ATTACHMENT_ATTACH_MESSAGE,          "A" },
   { OP_ATTACHMENT_DETACH,                  "D" },
