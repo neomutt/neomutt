@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 
   if (argc < 2)
   {
-    print_usage(argv[0]);
+    print_usage((argc != 0) ? argv[0] : "pgpewrap");
   }
 
   opts = malloc((2 * argc + 1) * sizeof(*opts));
