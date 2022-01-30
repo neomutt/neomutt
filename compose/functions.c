@@ -296,6 +296,138 @@ static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachP
 }
 
 /**
+ * compose_attach_files - Attach files to a message
+ * @param shared        Shared compose data
+ * @param prompt        User prompt
+ * @param aidx          Index to attach file
+ * @param after         Attach file after specified index
+ * @retval IR_SUCCESS   Success
+ * @retval IR_ERROR     Failure
+ * @retval IR_NO_ACTION No action
+ *
+ * @note Attached file will be at the same level aidx or level 0 if aidx is idxlen
+ */
+static int compose_attach_files(struct ComposeSharedData *shared,
+                                const char *prompt, int aidx, bool after)
+{
+  int numfiles = 0;
+  char **files = NULL;
+
+  struct Buffer *fname = buf_pool_get();
+  if ((buf_enter_fname(prompt, fname, false, NULL, true, &files, &numfiles,
+                       MUTT_SEL_MULTI) == -1) ||
+      buf_is_empty(fname))
+  {
+    for (int i = 0; i < numfiles; i++)
+      FREE(&files[i]);
+
+    FREE(&files);
+    buf_pool_release(&fname);
+    return FR_NO_ACTION;
+  }
+
+  bool error = false;
+  bool added_attachment = false;
+  int final_idx = shared->adata->actx->idxlen;
+  if (numfiles > 1)
+  {
+    mutt_message(ngettext("Attaching selected file...",
+                          "Attaching selected files...", numfiles));
+  }
+  for (int i = 0; i < numfiles; i++)
+  {
+    char *att = files[i];
+    if (!att)
+      continue;
+
+    struct AttachPtr *ap = mutt_aptr_new();
+    ap->unowned = true;
+    ap->body = mutt_make_file_attach(att, shared->sub);
+    if (ap->body)
+    {
+      added_attachment = true;
+      struct AttachCtx *actx = shared->adata->actx;
+
+      if (aidx == actx->idxlen)
+      {
+        // append to attachment list
+        update_idx(shared->adata->menu, actx, ap);
+      }
+      else
+      {
+        struct AttachPtr *cur_att = actx->idx[aidx];
+        struct Body *bptr_current = cur_att->body;
+
+        // set ap properties
+        ap->level = cur_att->level;
+        ap->parent_type = cur_att->parent_type;
+        ap->body->aptr = ap;
+
+        int new_idx = menu_get_index(shared->adata->menu);
+
+        // reorder body pointers
+        if (after)
+        {
+          struct Body *bptr_next = cur_att->body->next;
+          cur_att->body->next = ap->body;
+          ap->body->next = bptr_next;
+
+          new_idx++;
+          if (bptr_current->parts)
+            new_idx += attach_body_count(bptr_current->parts, true);
+        }
+        else
+        {
+          ap->body->next = bptr_current;
+          struct Body *bptr_previous = NULL;
+          if (attach_body_previous(shared->email->body, bptr_current, &bptr_previous))
+          {
+            bptr_previous->next = ap->body;
+          }
+          else
+          {
+            struct Body *bptr_parent = NULL;
+            if (attach_body_parent(shared->email->body, NULL, bptr_current, &bptr_parent))
+              bptr_parent->parts = ap->body;
+            else
+              shared->email->body = ap->body;
+          }
+        }
+
+        // insert attachment pointer
+        mutt_actx_ins_attach(actx, ap, new_idx);
+        update_menu(actx, shared->adata->menu, false);
+
+        // set final cursor position
+        if (i == 0)
+          final_idx = new_idx;
+      }
+    }
+    else
+    {
+      error = true;
+      mutt_error(_("Unable to attach %s"), att);
+      mutt_aptr_free(&ap);
+    }
+    FREE(&files[i]);
+  }
+
+  FREE(&files);
+  buf_pool_release(&fname);
+
+  if (!error)
+    mutt_clear_error();
+
+  shared->adata->menu->current = final_idx;
+
+  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
+  if (added_attachment)
+    mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  return FR_SUCCESS;
+}
+
+/**
  * compose_attach_swap - Swap two adjacent entries in the attachment list
  * @param e      Email
  * @param actx   Attachment information
@@ -588,64 +720,7 @@ static int group_attachments(struct ComposeSharedData *shared, char *subtype)
  */
 static int op_attachment_attach_file(struct ComposeSharedData *shared, int op)
 {
-  char *prompt = _("Attach file");
-  int numfiles = 0;
-  char **files = NULL;
-
-  struct Buffer *fname = buf_pool_get();
-  if ((buf_enter_fname(prompt, fname, false, NULL, true, &files, &numfiles,
-                       MUTT_SEL_MULTI) == -1) ||
-      buf_is_empty(fname))
-  {
-    for (int i = 0; i < numfiles; i++)
-      FREE(&files[i]);
-
-    FREE(&files);
-    buf_pool_release(&fname);
-    return FR_NO_ACTION;
-  }
-
-  bool error = false;
-  bool added_attachment = false;
-  if (numfiles > 1)
-  {
-    mutt_message(ngettext("Attaching selected file...",
-                          "Attaching selected files...", numfiles));
-  }
-  for (int i = 0; i < numfiles; i++)
-  {
-    char *att = files[i];
-    if (!att)
-      continue;
-
-    struct AttachPtr *ap = mutt_aptr_new();
-    ap->unowned = true;
-    ap->body = mutt_make_file_attach(att, shared->sub);
-    if (ap->body)
-    {
-      added_attachment = true;
-      update_idx(shared->adata->menu, shared->adata->actx, ap);
-    }
-    else
-    {
-      error = true;
-      mutt_error(_("Unable to attach %s"), att);
-      mutt_aptr_free(&ap);
-    }
-    FREE(&files[i]);
-  }
-
-  FREE(&files);
-  buf_pool_release(&fname);
-
-  if (!error)
-    mutt_clear_error();
-
-  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
-  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
-  if (added_attachment)
-    mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  return FR_SUCCESS;
+  return compose_attach_files(shared, _("Attach file"), shared->adata->actx->idxlen, false);
 }
 
 /**
