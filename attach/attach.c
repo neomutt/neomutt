@@ -33,6 +33,30 @@
 #include "attach.h"
 
 /**
+ * mutt_aptr_new - Create a new Attachment Pointer
+ * @retval ptr New Attachment Pointer
+ */
+struct AttachPtr *mutt_aptr_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct AttachPtr));
+}
+
+/**
+ * mutt_aptr_free - Free an Attachment Pointer
+ * @param[out] ptr Attachment Pointer
+ */
+void mutt_aptr_free(struct AttachPtr **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct AttachPtr *aptr = *ptr;
+  FREE(&aptr->tree);
+
+  FREE(ptr);
+}
+
+/**
  * mutt_actx_add_attach - Add an Attachment to an Attachment Context
  * @param actx   Attachment context
  * @param attach Attachment to add
@@ -143,8 +167,7 @@ void mutt_actx_entries_free(struct AttachCtx *actx)
   {
     if (actx->idx[i]->body)
       actx->idx[i]->body->aptr = NULL;
-    FREE(&actx->idx[i]->tree);
-    FREE(&actx->idx[i]);
+    mutt_aptr_free(&actx->idx[i]);
   }
   actx->idxlen = 0;
   actx->vcount = 0;
@@ -185,3 +208,4 @@ void mutt_actx_free(struct AttachCtx **ptr)
   FREE(&actx->body_idx);
   FREE(ptr);
 }
+

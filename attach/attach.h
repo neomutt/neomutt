@@ -76,4 +76,7 @@ void              mutt_actx_free        (struct AttachCtx **ptr);
 void              mutt_actx_entries_free(struct AttachCtx *actx);
 struct AttachCtx *mutt_actx_new         (void);
 
+void              mutt_aptr_free(struct AttachPtr **ptr);
+struct AttachPtr *mutt_aptr_new (void);
+
 #endif /* MUTT_ATTACH_ATTACH_H */

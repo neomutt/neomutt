@@ -1121,7 +1121,7 @@ void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e,
     }
     else
     {
-      struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
+      struct AttachPtr *ap = mutt_aptr_new();
       mutt_actx_add_attach(actx, ap);
 
       ap->body = m;

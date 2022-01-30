@@ -285,7 +285,7 @@ static void gen_attach_list(struct AttachCtx *actx, struct Body *m, int parent_t
 {
   for (; m; m = m->next)
   {
-    struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
+    struct AttachPtr *ap = mutt_aptr_new();
     mutt_actx_add_attach(actx, ap);
     ap->body = m;
     m->aptr = ap;

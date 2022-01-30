@@ -826,7 +826,7 @@ static int group_attachments(struct ComposeSharedData *shared,
     }
   }
 
-  struct AttachPtr *group_ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
+  struct AttachPtr *group_ap = mutt_aptr_new();
   group_ap->body = group;
   group_ap->body->aptr = group_ap;
   group_ap->level = group_level;
@@ -884,7 +884,7 @@ static int op_attachment_attach_file(struct ComposeSharedData *shared, int op)
     if (!att)
       continue;
 
-    struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
+    struct AttachPtr *ap = mutt_aptr_new();
     ap->unowned = true;
     ap->body = mutt_make_file_attach(att, shared->sub);
     if (ap->body)
@@ -896,7 +896,7 @@ static int op_attachment_attach_file(struct ComposeSharedData *shared, int op)
     {
       error = true;
       mutt_error(_("Unable to attach %s"), att);
-      FREE(&ap);
+      mutt_aptr_free(&ap);
     }
     FREE(&files[i]);
   }
@@ -921,7 +921,7 @@ static int op_attachment_attach_key(struct ComposeSharedData *shared, int op)
 {
   if (!(WithCrypto & APPLICATION_PGP))
     return IR_NOT_IMPL;
-  struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
+  struct AttachPtr *ap = mutt_aptr_new();
   ap->body = crypt_pgp_make_key_attachment();
   if (ap->body)
   {
@@ -930,7 +930,9 @@ static int op_attachment_attach_key(struct ComposeSharedData *shared, int op)
     mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
   }
   else
-    FREE(&ap);
+  {
+    mutt_aptr_free(&ap);
+  }
 
   notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
   return IR_SUCCESS;
@@ -1063,7 +1065,7 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
     if (!message_is_tagged(m_attach_new->emails[i]))
       continue;
 
-    struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
+    struct AttachPtr *ap = mutt_aptr_new();
     ap->body = mutt_make_message_attach(m_attach_new, m_attach_new->emails[i],
                                         true, shared->sub);
     if (ap->body)
@@ -1074,7 +1076,7 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
     else
     {
       mutt_error(_("Unable to attach"));
-      FREE(&ap);
+      mutt_aptr_free(&ap);
     }
   }
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
@@ -1611,7 +1613,7 @@ static int op_attachment_new_mime(struct ComposeSharedData *shared, int op)
     goto done;
   }
 
-  ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
+  ap = mutt_aptr_new();
   /* Touch the file */
   FILE *fp = mutt_file_fopen(mutt_buffer_string(fname), "w");
   if (!fp)
@@ -1647,7 +1649,7 @@ static int op_attachment_new_mime(struct ComposeSharedData *shared, int op)
   rc = IR_SUCCESS;
 
 done:
-  FREE(&ap);
+  mutt_aptr_free(&ap);
   mutt_buffer_pool_release(&type);
   mutt_buffer_pool_release(&fname);
   return rc;
@@ -2342,8 +2344,8 @@ static int op_compose_write_message(struct ComposeSharedData *shared, int op)
  * op_display_headers - Display message and toggle header weeding - Implements ::compose_function_t - @ingroup compose_function_api
  *
  * This function handles:
- * - OP_DISPLAY_HEADERS
- * - OP_VIEW_ATTACH
+ * - OP_ATTACHMENT_VIEW 
+ * - OP_DISPLAY_HEADERS 
  */
 static int op_display_headers(struct ComposeSharedData *shared, int op)
 {
