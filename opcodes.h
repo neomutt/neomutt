@@ -57,6 +57,7 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_ATTACHMENT_MOVE_UP,                 N_("move an attachment up in the attachment list")) \
   _fmt(OP_ATTACHMENT_NEW_MIME,                N_("compose new attachment using mailcap entry")) \
   _fmt(OP_ATTACHMENT_NEW_MIME_AFTER,          N_("insert new attachment using mailcap entry after current entry")) \
+  _fmt(OP_ATTACHMENT_NEW_MIME_BEFORE,         N_("insert new attachment using mailcap entry before current entry")) \
   _fmt(OP_ATTACHMENT_PIPE,                    N_("pipe message/attachment to a shell command")) \
   _fmt(OP_ATTACHMENT_PRINT,                   N_("print the current entry")) \
   _fmt(OP_ATTACHMENT_RENAME_ATTACHMENT,       N_("send attachment with a different name")) \
