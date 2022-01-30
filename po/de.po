@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2022-01-14 13:16+0000\n"
-"PO-Revision-Date: 2022-01-16 18:01+0100\n"
+"PO-Revision-Date: 2022-01-30 13:18+0100\n"
 "Last-Translator: kbcb <gerritche@gmail.com>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.3\n"
+"X-Generator: Poedit 1.8.4\n"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:399
@@ -1587,7 +1587,7 @@ msgstr "Anhang befindet sich bereits am Ende"
 
 #: compose/functions.c:1595 compose/functions.c:1648
 msgid "Attachment can't be moved out of group"
-msgstr ""
+msgstr "Anhang kann nicht aus Gruppe entfernt werden"
 
 #: compose/functions.c:1643
 msgid "Attachment is already at top"
