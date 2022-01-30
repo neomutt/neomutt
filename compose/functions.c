@@ -428,6 +428,152 @@ static int compose_attach_files(struct ComposeSharedData *shared,
 }
 
 /**
+ * compose_new_mime - Compose new attachment using mailcap entry
+ * @param shared        Shared compose data
+ * @param prompt        User prompt
+ * @param aidx          Index for new file
+ * @param after         Create file after specified index
+ * @retval IR_SUCCESS   Success
+ * @retval IR_ERROR     Failure
+ * @retval IR_NO_ACTION No action
+ *
+ * @note New created file will be at the same level aidx or level 0 if aidx is idxlen
+ */
+static int compose_new_mime(struct ComposeSharedData *shared,
+                            const char *prompt, int aidx, bool after)
+{
+  int rc = FR_NO_ACTION;
+  struct Buffer *fname = buf_pool_get();
+  struct Buffer *type = NULL;
+  struct AttachPtr *ap = NULL;
+
+  if ((buf_get_field(prompt, fname, MUTT_COMP_FILE, false, NULL, NULL, NULL) != 0) ||
+      buf_is_empty(fname))
+  {
+    goto done;
+  }
+  buf_expand_path(fname);
+
+  /* Call to lookup_mime_type () ?  maybe later */
+  type = buf_pool_get();
+  if ((buf_get_field("Content-Type: ", type, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0) ||
+      buf_is_empty(type))
+  {
+    goto done;
+  }
+
+  rc = FR_ERROR;
+  char *p = strchr(buf_string(type), '/');
+  if (!p)
+  {
+    mutt_error(_("Content-Type is of the form base/sub"));
+    goto done;
+  }
+  *p++ = 0;
+  enum ContentType itype = mutt_check_mime_type(buf_string(type));
+  if (itype == TYPE_OTHER)
+  {
+    mutt_error(_("Unknown Content-Type %s"), buf_string(type));
+    goto done;
+  }
+
+  ap = mutt_aptr_new();
+  /* Touch the file */
+  FILE *fp = mutt_file_fopen(buf_string(fname), "w");
+  if (!fp)
+  {
+    mutt_error(_("Can't create file %s"), buf_string(fname));
+    goto done;
+  }
+  mutt_file_fclose(&fp);
+
+  ap->body = mutt_make_file_attach(buf_string(fname), shared->sub);
+  if (!ap->body)
+  {
+    mutt_error(_("What we have here is a failure to make an attachment"));
+    goto done;
+  }
+
+  struct AttachCtx *actx = shared->adata->actx;
+
+  if (aidx == actx->idxlen)
+  {
+    // append to attachment list
+    update_idx(shared->adata->menu, shared->adata->actx, ap);
+  }
+  else
+  {
+    struct AttachPtr *cur_att = actx->idx[aidx];
+    struct Body *bptr_current = cur_att->body;
+
+    // set ap properties
+    ap->level = cur_att->level;
+    ap->parent_type = cur_att->parent_type;
+    ap->body->aptr = ap;
+
+    int new_idx = menu_get_index(shared->adata->menu);
+
+    // reorder body pointers
+    if (after)
+    {
+      struct Body *bptr_next = cur_att->body->next;
+      cur_att->body->next = ap->body;
+      ap->body->next = bptr_next;
+
+      new_idx++;
+      if (bptr_current->parts)
+        new_idx += attach_body_count(bptr_current->parts, true);
+    }
+    else
+    {
+      ap->body->next = bptr_current;
+      struct Body *bptr_previous = NULL;
+      if (attach_body_previous(shared->email->body, bptr_current, &bptr_previous))
+      {
+        bptr_previous->next = ap->body;
+      }
+      else
+      {
+        struct Body *bptr_parent = NULL;
+        if (attach_body_parent(shared->email->body, NULL, bptr_current, &bptr_parent))
+          bptr_parent->parts = ap->body;
+        else
+          shared->email->body = ap->body;
+      }
+    }
+
+    // insert attachment pointer
+    mutt_actx_ins_attach(actx, ap, new_idx);
+    update_menu(actx, shared->adata->menu, false);
+    shared->adata->menu->current = new_idx;
+  }
+
+  ap = NULL; // shared->adata->actx has taken ownership
+
+  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
+                                                 shared->adata->menu);
+  cur_att->body->type = itype;
+  mutt_str_replace(&cur_att->body->subtype, p);
+  cur_att->body->unlink = true;
+  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
+
+  if (mutt_compose_attachment(cur_att->body))
+  {
+    mutt_update_encoding(cur_att->body, shared->sub);
+    menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
+  }
+  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  rc = FR_SUCCESS;
+
+done:
+  mutt_aptr_free(&ap);
+  buf_pool_release(&type);
+  buf_pool_release(&fname);
+  return rc;
+}
+
+/**
  * compose_attach_swap - Swap two adjacent entries in the attachment list
  * @param e      Email
  * @param actx   Attachment information
@@ -1396,81 +1542,7 @@ static int op_attachment_move_up(struct ComposeSharedData *shared, int op)
  */
 static int op_attachment_new_mime(struct ComposeSharedData *shared, int op)
 {
-  int rc = FR_NO_ACTION;
-  struct Buffer *fname = buf_pool_get();
-  struct Buffer *type = NULL;
-  struct AttachPtr *ap = NULL;
-
-  if ((buf_get_field(_("New file: "), fname, MUTT_COMP_FILE, false, NULL, NULL, NULL) != 0) ||
-      buf_is_empty(fname))
-  {
-    goto done;
-  }
-  buf_expand_path(fname);
-
-  /* Call to lookup_mime_type () ?  maybe later */
-  type = buf_pool_get();
-  if ((buf_get_field("Content-Type: ", type, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0) ||
-      buf_is_empty(type))
-  {
-    goto done;
-  }
-
-  rc = FR_ERROR;
-  char *p = strchr(buf_string(type), '/');
-  if (!p)
-  {
-    mutt_error(_("Content-Type is of the form base/sub"));
-    goto done;
-  }
-  *p++ = 0;
-  enum ContentType itype = mutt_check_mime_type(buf_string(type));
-  if (itype == TYPE_OTHER)
-  {
-    mutt_error(_("Unknown Content-Type %s"), buf_string(type));
-    goto done;
-  }
-
-  ap = mutt_aptr_new();
-  /* Touch the file */
-  FILE *fp = mutt_file_fopen(buf_string(fname), "w");
-  if (!fp)
-  {
-    mutt_error(_("Can't create file %s"), buf_string(fname));
-    goto done;
-  }
-  mutt_file_fclose(&fp);
-
-  ap->body = mutt_make_file_attach(buf_string(fname), shared->sub);
-  if (!ap->body)
-  {
-    mutt_error(_("What we have here is a failure to make an attachment"));
-    goto done;
-  }
-  update_idx(shared->adata->menu, shared->adata->actx, ap);
-  ap = NULL; // shared->adata->actx has taken ownership
-
-  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
-                                                 shared->adata->menu);
-  cur_att->body->type = itype;
-  mutt_str_replace(&cur_att->body->subtype, p);
-  cur_att->body->unlink = true;
-  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
-  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
-
-  if (mutt_compose_attachment(cur_att->body))
-  {
-    mutt_update_encoding(cur_att->body, shared->sub);
-    menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
-  }
-  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  rc = FR_SUCCESS;
-
-done:
-  mutt_aptr_free(&ap);
-  buf_pool_release(&type);
-  buf_pool_release(&fname);
-  return rc;
+  return compose_new_mime(shared, _("New file: "), shared->adata->actx->idxlen, false);
 }
 
 /**
