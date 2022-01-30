@@ -228,6 +228,7 @@ const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "move-down",                     OP_ATTACHMENT_MOVE_DOWN },
   { "move-up",                       OP_ATTACHMENT_MOVE_UP },
   { "new-mime",                      OP_ATTACHMENT_NEW_MIME },
+  { "new-mime-after",                OP_ATTACHMENT_NEW_MIME_AFTER },
   { "pgp-menu",                      OP_COMPOSE_PGP_MENU },
   { "pipe-entry",                    OP_PIPE },
   { "pipe-message",                  OP_PIPE },
@@ -864,6 +865,7 @@ const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ATTACHMENT_MOVE_DOWN,               "+" },
   { OP_ATTACHMENT_MOVE_UP,                 "-" },
   { OP_ATTACHMENT_NEW_MIME,                "n" },
+  { OP_ATTACHMENT_NEW_MIME_AFTER,          "\033A" },          // <Alt-A>
   { OP_EXIT,                               "q" },
   { OP_PIPE,                               "|" },
   { OP_ATTACHMENT_PRINT,                   "l" },
