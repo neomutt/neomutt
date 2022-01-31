@@ -208,4 +208,3 @@ void mutt_actx_free(struct AttachCtx **ptr)
   FREE(&actx->body_idx);
   FREE(ptr);
 }
-

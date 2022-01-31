@@ -789,7 +789,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp, struct ConfigSubset *sub)
         if (mutt_istr_equal(cont->attribute, "content-id"))
         {
           // Content-ID: gets its own header
-          id = mutt_str_dup(cont->value);
+          mutt_str_replace(&id, cont->value);
           break;
         }
 
