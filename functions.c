@@ -723,26 +723,15 @@ const struct MenuOpSeq AttachDefaultBindings[] = { /* map: attachment */
   { OP_ATTACHMENT_VIEW,                    "\n" },             // <Enter>
   { OP_ATTACHMENT_VIEW,                    "\r" },             // <Return>
   { OP_ATTACHMENT_VIEW_MAILCAP,            "m" },
-  { OP_ATTACHMENT_VIEW_PAGER,              NULL },
   { OP_ATTACHMENT_VIEW_TEXT,               "T" },
   { OP_BOUNCE_MESSAGE,                     "b" },
   { OP_CHECK_TRADITIONAL,                  "\033P" },          // <Alt-P>
-  { OP_COMPOSE_TO_SENDER,                  NULL },
   { OP_DISPLAY_HEADERS,                    "h" },
   { OP_EXTRACT_KEYS,                       "\013" },           // <Ctrl-K>
-#ifdef USE_NNTP
-  { OP_FOLLOWUP,                           NULL },
-#endif
   { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
   { OP_FORWARD_MESSAGE,                    "f" },
-#ifdef USE_NNTP
-  { OP_FORWARD_TO_GROUP,                   NULL },
-#endif
-  { OP_GROUP_CHAT_REPLY,                   NULL },
   { OP_GROUP_REPLY,                        "g" },
   { OP_LIST_REPLY,                         "L" },
-  { OP_LIST_SUBSCRIBE,                     NULL },
-  { OP_LIST_UNSUBSCRIBE,                   NULL },
   { OP_REPLY,                              "r" },
   { OP_RESEND,                             "\033e" },          // <Alt-e>
   { 0, NULL },
@@ -778,20 +767,14 @@ const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
   { OP_BROWSER_UNSUBSCRIBE,                "u" },
 #endif
   { OP_BROWSER_VIEW_FILE,                  " " },              // <Space>
-#ifdef USE_NNTP
-  { OP_CATCHUP,                            NULL },
-#endif
   { OP_CHANGE_DIRECTORY,                   "c" },
-  { OP_CHECK_NEW,                          NULL },
 #ifdef USE_IMAP
   { OP_CREATE_MAILBOX,                     "C" },
   { OP_DELETE_MAILBOX,                     "d" },
 #endif
-  { OP_DESCEND_DIRECTORY,                  NULL },
   { OP_ENTER_MASK,                         "m" },
   { OP_GOTO_PARENT,                        "p" },
 #ifdef USE_NNTP
-  { OP_LOAD_ACTIVE,                        NULL },
 #endif
   { OP_MAILBOX_LIST,                       "." },
 #ifdef USE_IMAP
@@ -799,16 +782,7 @@ const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
 #endif
   { OP_SORT,                               "o" },
   { OP_SORT_REVERSE,                       "O" },
-#ifdef USE_NNTP
-  { OP_SUBSCRIBE_PATTERN,                  NULL },
-#endif
   { OP_TOGGLE_MAILBOXES,                   "\t" },             // <Tab>
-#ifdef USE_NNTP
-  { OP_UNCATCHUP,                          NULL },
-#endif
-#ifdef USE_NNTP
-  { OP_UNSUBSCRIBE_PATTERN,                NULL },
-#endif
   { 0, NULL },
 };
 
@@ -819,9 +793,6 @@ const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ATTACHMENT_ATTACH_FILE,             "a" },
   { OP_ATTACHMENT_ATTACH_KEY,              "\033k" },          // <Alt-k>
   { OP_ATTACHMENT_ATTACH_MESSAGE,          "A" },
-#ifdef USE_NNTP
-  { OP_ATTACHMENT_ATTACH_NEWS_MESSAGE,     NULL },
-#endif
   { OP_ATTACHMENT_DETACH,                  "D" },
   { OP_ATTACHMENT_EDIT_CONTENT_ID,         "\033i" },          // <Alt-i>
   { OP_ATTACHMENT_EDIT_DESCRIPTION,        "d" },
@@ -842,7 +813,6 @@ const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ATTACHMENT_RENAME_ATTACHMENT,       "\017" },           // <Ctrl-O>
   { OP_ATTACHMENT_SAVE,                    "C" },
   { OP_ATTACHMENT_TOGGLE_DISPOSITION,      "\004" },           // <Ctrl-D>
-  { OP_ATTACHMENT_TOGGLE_RECODE,           NULL },
   { OP_ATTACHMENT_TOGGLE_UNLINK,           "u" },
   { OP_ATTACHMENT_UNGROUP,                 "#" },
   { OP_ATTACHMENT_UPDATE_ENCODING,         "U" },
@@ -868,20 +838,11 @@ const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ENVELOPE_EDIT_BCC,                  "b" },
   { OP_ENVELOPE_EDIT_CC,                   "c" },
   { OP_ENVELOPE_EDIT_FCC,                  "f" },
-#ifdef USE_NNTP
-  { OP_ENVELOPE_EDIT_FOLLOWUP_TO,          NULL },
-#endif
   { OP_ENVELOPE_EDIT_FROM,                 "\033f" },          // <Alt-f>
   { OP_ENVELOPE_EDIT_HEADERS,              "E" },
-#ifdef USE_NNTP
-  { OP_ENVELOPE_EDIT_NEWSGROUPS,           NULL },
-#endif
   { OP_ENVELOPE_EDIT_REPLY_TO,             "r" },
   { OP_ENVELOPE_EDIT_SUBJECT,              "s" },
   { OP_ENVELOPE_EDIT_TO,                   "t" },
-#ifdef USE_NNTP
-  { OP_ENVELOPE_EDIT_X_COMMENT_TO,         NULL },
-#endif
   { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
   { OP_TAG,                                "T" },
   { 0, NULL },
@@ -920,10 +881,7 @@ const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
   { OP_EDITOR_KILL_WORD,                   "\027" },           // <Ctrl-W>
   { OP_EDITOR_MAILBOX_CYCLE,               " " },              // <Space>
   { OP_EDITOR_QUOTE_CHAR,                  "\026" },           // <Ctrl-V>
-  { OP_EDITOR_TRANSPOSE_CHARS,             NULL },
   { OP_EDITOR_UPCASE_WORD,                 "\033u" },          // <Alt-u>
-  // This is deprecated.  Leave it last so it doesn't show up in the help.
-  { OP_EDITOR_MAILBOX_CYCLE,               NULL },
   { 0, NULL },
 };
 
@@ -932,11 +890,6 @@ const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
  */
 const struct MenuOpSeq GenericDefaultBindings[] = { /* map: generic */
   { OP_BOTTOM_PAGE,                        "L" },
-  { OP_CHECK_STATS,                        NULL },
-  { OP_CURRENT_BOTTOM,                     NULL },
-  { OP_CURRENT_MIDDLE,                     NULL },
-  { OP_CURRENT_TOP,                        NULL },
-  { OP_END_COND,                           NULL },
   { OP_ENTER_COMMAND,                      ":" },
   { OP_EXIT,                               "q" },
   { OP_FIRST_ENTRY,                        "<home>" },
@@ -956,7 +909,6 @@ const struct MenuOpSeq GenericDefaultBindings[] = { /* map: generic */
   { OP_JUMP,                               "7" },
   { OP_JUMP,                               "8" },
   { OP_JUMP,                               "9" },
-  { OP_JUMP,                               NULL },
   { OP_LAST_ENTRY,                         "*" },
   { OP_LAST_ENTRY,                         "<end>" },
   { OP_MIDDLE_PAGE,                        "M" },
@@ -975,14 +927,11 @@ const struct MenuOpSeq GenericDefaultBindings[] = { /* map: generic */
   { OP_REDRAW,                             "\014" },           // <Ctrl-L>
   { OP_SEARCH,                             "/" },
   { OP_SEARCH_NEXT,                        "n" },
-  { OP_SEARCH_OPPOSITE,                    NULL },             // <Enter>
   { OP_SEARCH_REVERSE,                     "\033/" },          // <Alt-/>
   { OP_SHELL_ESCAPE,                       "!" },
   { OP_TAG,                                "t" },
   { OP_TAG_PREFIX,                         ";" },
-  { OP_TAG_PREFIX_COND,                    NULL },
   { OP_TOP_PAGE,                           "H" },
-  { OP_WHAT_KEY,                           NULL },
   { 0, NULL },
 };
 
@@ -995,17 +944,11 @@ const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_AUTOCRYPT_ACCT_MENU,                "A" },
 #endif
   { OP_BOUNCE_MESSAGE,                     "b" },
-#ifdef USE_NNTP
-  { OP_CATCHUP,                            NULL },
-#endif
   { OP_CHECK_TRADITIONAL,                  "\033P" },          // <Alt-P>
-  { OP_COMPOSE_TO_SENDER,                  NULL },
   { OP_COPY_MESSAGE,                       "C" },
   { OP_CREATE_ALIAS,                       "a" },
   { OP_DECODE_COPY,                        "\033C" },          // <Alt-C>
   { OP_DECODE_SAVE,                        "\033s" },          // <Alt-s>
-  { OP_DECRYPT_COPY,                       NULL },
-  { OP_DECRYPT_SAVE,                       NULL },
   { OP_DELETE,                             "d" },
   { OP_DELETE_SUBTHREAD,                   "\033d" },          // <Alt-d>
   { OP_DELETE_THREAD,                      "\004" },           // <Ctrl-D>
@@ -1017,27 +960,13 @@ const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_DISPLAY_MESSAGE,                    "\r" },             // <Return>
   { OP_EDIT_LABEL,                         "Y" },
   { OP_EDIT_OR_VIEW_RAW_MESSAGE,           "e" },
-  { OP_EDIT_RAW_MESSAGE,                   NULL },
   { OP_EXIT,                               "x" },
   { OP_EXTRACT_KEYS,                       "\013" },           // <Ctrl-K>
   { OP_FLAG_MESSAGE,                       "F" },
-#ifdef USE_NNTP
-  { OP_FOLLOWUP,                           NULL },
-#endif
   { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
   { OP_FORWARD_MESSAGE,                    "f" },
-#ifdef USE_NNTP
-  { OP_FORWARD_TO_GROUP,                   NULL },
-  { OP_GET_CHILDREN,                       NULL },
-  { OP_GET_MESSAGE,                        NULL },
-  { OP_GET_PARENT,                         NULL },
-#endif
-  { OP_GROUP_CHAT_REPLY,                   NULL },
   { OP_GROUP_REPLY,                        "g" },
-  { OP_LIMIT_CURRENT_THREAD,               NULL },
   { OP_LIST_REPLY,                         "L" },
-  { OP_LIST_SUBSCRIBE,                     NULL },
-  { OP_LIST_UNSUBSCRIBE,                   NULL },
   { OP_MAIL,                               "m" },
   { OP_MAILBOX_LIST,                       "." },
   { OP_MAIL_KEY,                           "\033k" },          // <Alt-k>
@@ -1048,49 +977,28 @@ const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_MAIN_CHANGE_GROUP,                  "i" },
   { OP_MAIN_CHANGE_GROUP_READONLY,         "\033i" },          // <Alt-i>
 #endif
-#ifdef USE_NOTMUCH
-  { OP_MAIN_CHANGE_VFOLDER,                NULL },
-#endif
   { OP_MAIN_CLEAR_FLAG,                    "W" },
   { OP_MAIN_COLLAPSE_ALL,                  "\033V" },          // <Alt-V>
   { OP_MAIN_COLLAPSE_THREAD,               "\033v" },          // <Alt-v>
   { OP_MAIN_DELETE_PATTERN,                "D" },
-#ifdef USE_NOTMUCH
-  { OP_MAIN_ENTIRE_THREAD,                 NULL },
-#endif
 #ifdef USE_POP
   { OP_MAIN_FETCH_MAIL,                    "G" },
 #endif
-#ifdef USE_IMAP
-  { OP_MAIN_IMAP_FETCH,                    NULL },
-  { OP_MAIN_IMAP_LOGOUT_ALL,               NULL },
-#endif
   { OP_MAIN_LIMIT,                         "l" },
   { OP_MAIN_LINK_THREADS,                  "&" },
-  { OP_MAIN_MODIFY_TAGS,                   NULL },
-  { OP_MAIN_MODIFY_TAGS,                   NULL },             // NOTE(sileht): kept for backward compatibility
-  { OP_MAIN_MODIFY_TAGS_THEN_HIDE,         NULL },
-  { OP_MAIN_MODIFY_TAGS_THEN_HIDE,         NULL },             // NOTE(sileht): kept for backward compatibility
-  { OP_MAIN_NEXT_NEW,                      NULL },
   { OP_MAIN_NEXT_NEW_THEN_UNREAD,          "\t" },             // <Tab>
   { OP_MAIN_NEXT_SUBTHREAD,                "\033n" },          // <Alt-n>
   { OP_MAIN_NEXT_THREAD,                   "\016" },           // <Ctrl-N>
   { OP_MAIN_NEXT_UNDELETED,                "<down>" },
   { OP_MAIN_NEXT_UNDELETED,                "j" },
-  { OP_MAIN_NEXT_UNREAD,                   NULL },
-  { OP_MAIN_NEXT_UNREAD_MAILBOX,           NULL },
   { OP_MAIN_PARENT_MESSAGE,                "P" },
-  { OP_MAIN_PREV_NEW,                      NULL },
   { OP_MAIN_PREV_NEW_THEN_UNREAD,          "\033\t" },         // <Alt-\>
   { OP_MAIN_PREV_SUBTHREAD,                "\033p" },          // <Alt-p>
   { OP_MAIN_PREV_THREAD,                   "\020" },           // <Ctrl-P>
   { OP_MAIN_PREV_UNDELETED,                "<up>" },
   { OP_MAIN_PREV_UNDELETED,                "k" },
-  { OP_MAIN_PREV_UNREAD,                   NULL },
-  { OP_MAIN_QUASI_DELETE,                  NULL },
   { OP_MAIN_READ_SUBTHREAD,                "\033r" },          // <Alt-r>
   { OP_MAIN_READ_THREAD,                   "\022" },           // <Ctrl-R>
-  { OP_MAIN_ROOT_MESSAGE,                  NULL },
   { OP_MAIN_SET_FLAG,                      "w" },
   { OP_MAIN_SHOW_LIMIT,                    "\033l" },          // <Alt-l>
   { OP_MAIN_SYNC_FOLDER,                   "$" },
@@ -1099,57 +1007,26 @@ const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_NEXT_ENTRY,                         "J" },
   { OP_PREV_ENTRY,                         "K" },
   { OP_MAIN_UNTAG_PATTERN,                 "\024" },           // <Ctrl-T>
-#ifdef USE_NOTMUCH
-  { OP_MAIN_VFOLDER_FROM_QUERY,            NULL },
-  { OP_MAIN_VFOLDER_FROM_QUERY_READONLY,   NULL },
-  { OP_MAIN_WINDOWED_VFOLDER_BACKWARD,     NULL },
-  { OP_MAIN_WINDOWED_VFOLDER_FORWARD,      NULL },
-  { OP_MAIN_WINDOWED_VFOLDER_RESET,        NULL },
-#endif
   { OP_MARK_MSG,                           "~" },
   { OP_PIPE,                               "|" },
-#ifdef USE_NNTP
-  { OP_POST,                               NULL },
-#endif
   { OP_PRINT,                              "p" },
-  { OP_PURGE_MESSAGE,                      NULL },
-  { OP_PURGE_THREAD,                       NULL },
   { OP_QUERY,                              "Q" },
   { OP_QUIT,                               "q" },
   { OP_RECALL_MESSAGE,                     "R" },
-#ifdef USE_NNTP
-  { OP_RECONSTRUCT_THREAD,                 NULL },
-#endif
   { OP_REPLY,                              "r" },
   { OP_RESEND,                             "\033e" },          // <Alt-e>
   { OP_SAVE,                               "s" },
   { OP_SHOW_LOG_MESSAGES,                  "M" },
-#ifdef USE_SIDEBAR
-  { OP_SIDEBAR_FIRST,                      NULL },
-  { OP_SIDEBAR_LAST,                       NULL },
-  { OP_SIDEBAR_NEXT,                       NULL },
-  { OP_SIDEBAR_NEXT_NEW,                   NULL },
-  { OP_SIDEBAR_OPEN,                       NULL },
-  { OP_SIDEBAR_PAGE_DOWN,                  NULL },
-  { OP_SIDEBAR_PAGE_UP,                    NULL },
-  { OP_SIDEBAR_PREV,                       NULL },
-  { OP_SIDEBAR_PREV_NEW,                   NULL },
-  { OP_SIDEBAR_TOGGLE_VIRTUAL,             NULL },
-  { OP_SIDEBAR_TOGGLE_VISIBLE,             NULL },
-#endif
   { OP_SORT,                               "o" },
   { OP_SORT_REVERSE,                       "O" },
-  { OP_TAG_SUBTHREAD,                      NULL },
   { OP_TAG_THREAD,                         "\033t" },          // <Alt-t>
   { OP_TOGGLE_NEW,                         "N" },
-  { OP_TOGGLE_READ,                        NULL },
   { OP_TOGGLE_WRITE,                       "%" },
   { OP_UNDELETE,                           "u" },
   { OP_UNDELETE_SUBTHREAD,                 "\033u" },          // <Alt-u>
   { OP_UNDELETE_THREAD,                    "\025" },           // <Ctrl-U>
   { OP_VERSION,                            "V" },
   { OP_VIEW_ATTACHMENTS,                   "v" },
-  { OP_VIEW_RAW_MESSAGE,                   NULL },
   { 0, NULL },
 };
 
@@ -1179,15 +1056,11 @@ const struct MenuOpSeq MixDefaultBindings[] = { /* map: mixmaster */
 const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_ATTACHMENT_EDIT_TYPE,               "\005" },           // <Ctrl-E>
   { OP_BOUNCE_MESSAGE,                     "b" },
-  { OP_CHECK_STATS,                        NULL },
   { OP_CHECK_TRADITIONAL,                  "\033P" },          // <Alt-P>
-  { OP_COMPOSE_TO_SENDER,                  NULL },
   { OP_COPY_MESSAGE,                       "C" },
   { OP_CREATE_ALIAS,                       "a" },
   { OP_DECODE_COPY,                        "\033C" },          // <Alt-C>
   { OP_DECODE_SAVE,                        "\033s" },          // <Alt-s>
-  { OP_DECRYPT_COPY,                       NULL },
-  { OP_DECRYPT_SAVE,                       NULL },
   { OP_DELETE,                             "d" },
   { OP_DELETE_SUBTHREAD,                   "\033d" },          // <Alt-d>
   { OP_DELETE_THREAD,                      "\004" },           // <Ctrl-D>
@@ -1195,22 +1068,14 @@ const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_DISPLAY_HEADERS,                    "h" },
   { OP_EDIT_LABEL,                         "Y" },
   { OP_EDIT_OR_VIEW_RAW_MESSAGE,           "e" },
-  { OP_EDIT_RAW_MESSAGE,                   NULL },
   { OP_ENTER_COMMAND,                      ":" },
   { OP_EXIT,                               "i" },
   { OP_EXIT,                               "q" },
   { OP_EXIT,                               "x" },
   { OP_EXTRACT_KEYS,                       "\013" },           // <Ctrl-K>
   { OP_FLAG_MESSAGE,                       "F" },
-#ifdef USE_NNTP
-  { OP_FOLLOWUP,                           NULL },
-#endif
   { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
   { OP_FORWARD_MESSAGE,                    "f" },
-#ifdef USE_NNTP
-  { OP_FORWARD_TO_GROUP,                   NULL },
-#endif
-  { OP_GROUP_CHAT_REPLY,                   NULL },
   { OP_GROUP_REPLY,                        "g" },
   { OP_HELP,                               "?" },
   { OP_JUMP,                               "1" },
@@ -1223,8 +1088,6 @@ const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_JUMP,                               "8" },
   { OP_JUMP,                               "9" },
   { OP_LIST_REPLY,                         "L" },
-  { OP_LIST_SUBSCRIBE,                     NULL },
-  { OP_LIST_UNSUBSCRIBE,                   NULL },
   { OP_MAIL,                               "m" },
   { OP_MAILBOX_LIST,                       "." },
   { OP_MAIL_KEY,                           "\033k" },          // <Alt-k>
@@ -1235,53 +1098,26 @@ const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_MAIN_CHANGE_GROUP,                  "i" },
   { OP_MAIN_CHANGE_GROUP_READONLY,         "\033i" },          // <Alt-i>
 #endif
-#ifdef USE_NOTMUCH
-  { OP_MAIN_CHANGE_VFOLDER,                NULL },
-#endif
   { OP_MAIN_CLEAR_FLAG,                    "W" },
-#ifdef USE_NOTMUCH
-  { OP_MAIN_ENTIRE_THREAD,                 NULL },
-#endif
-#ifdef USE_IMAP
-  { OP_MAIN_IMAP_FETCH,                    NULL },
-  { OP_MAIN_IMAP_LOGOUT_ALL,               NULL },
-#endif
   { OP_MAIN_LINK_THREADS,                  "&" },
-  { OP_MAIN_MODIFY_TAGS,                   NULL },             // NOTE(sileht): kept for backward compatibility
-  { OP_MAIN_MODIFY_TAGS_THEN_HIDE,         NULL },             // NOTE(sileht): kept for backward compatibility
-  { OP_MAIN_NEXT_NEW,                      NULL },
   { OP_MAIN_NEXT_NEW_THEN_UNREAD,          "\t" },             // <Tab>
   { OP_MAIN_NEXT_SUBTHREAD,                "\033n" },          // <Alt-n>
   { OP_MAIN_NEXT_THREAD,                   "\016" },           // <Ctrl-N>
   { OP_MAIN_NEXT_UNDELETED,                "<down>" },
   { OP_MAIN_NEXT_UNDELETED,                "<right>" },
   { OP_MAIN_NEXT_UNDELETED,                "j" },
-  { OP_MAIN_NEXT_UNREAD,                   NULL },
-  { OP_MAIN_NEXT_UNREAD_MAILBOX,           NULL },
   { OP_MAIN_PARENT_MESSAGE,                "P" },
-  { OP_MAIN_PREV_NEW,                      NULL },
-  { OP_MAIN_PREV_NEW_THEN_UNREAD,          NULL },
   { OP_MAIN_PREV_SUBTHREAD,                "\033p" },          // <Alt-p>
   { OP_MAIN_PREV_THREAD,                   "\020" },           // <Ctrl-P>
   { OP_MAIN_PREV_UNDELETED,                "<left>" },
   { OP_MAIN_PREV_UNDELETED,                "<up>" },
   { OP_MAIN_PREV_UNDELETED,                "k" },
-  { OP_MAIN_PREV_UNREAD,                   NULL },
-  { OP_MAIN_QUASI_DELETE,                  NULL },
   { OP_MAIN_READ_SUBTHREAD,                "\033r" },          // <Alt-r>
   { OP_MAIN_READ_THREAD,                   "\022" },           // <Ctrl-R>
-  { OP_MAIN_ROOT_MESSAGE,                  NULL },
   { OP_MAIN_SET_FLAG,                      "w" },
   { OP_MAIN_SYNC_FOLDER,                   "$" },
-#ifdef USE_NOTMUCH
-  { OP_MAIN_VFOLDER_FROM_QUERY,            NULL },
-  { OP_MAIN_VFOLDER_FROM_QUERY_READONLY,   NULL },
-#endif
   { OP_NEXT_ENTRY,                         "J" },
   { OP_PAGER_BOTTOM,                       "<end>" },
-  { OP_PAGER_BOTTOM,                       NULL },
-  { OP_PAGER_HALF_DOWN,                    NULL },
-  { OP_PAGER_HALF_UP,                      NULL },
   { OP_PAGER_HIDE_QUOTED,                  "T" },
   { OP_PAGER_NEXT_LINE,                    "<keypadenter>" },
   { OP_PAGER_NEXT_LINE,                    "\n" },             // <Enter>
@@ -1289,49 +1125,26 @@ const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_PAGER_NEXT_PAGE,                    " " },              // <Space>
   { OP_PAGER_NEXT_PAGE,                    "<pagedown>" },
   { OP_PAGER_PREV_LINE,                    "<backspace>" },
-  { OP_PAGER_PREV_LINE,                    NULL },
   { OP_PAGER_PREV_PAGE,                    "-" },
   { OP_PAGER_PREV_PAGE,                    "<pageup>" },
   { OP_PAGER_SEARCH,                       "/" },
   { OP_PAGER_SEARCH_NEXT,                  "n" },
-  { OP_PAGER_SEARCH_OPPOSITE,              NULL },
   { OP_PAGER_SEARCH_REVERSE,               "\033/" },          // <Alt-/>
   { OP_PAGER_SKIP_HEADERS,                 "H" },
   { OP_PAGER_SKIP_QUOTED,                  "S" },
   { OP_PAGER_TOP,                          "<home>" },
   { OP_PAGER_TOP,                          "^" },
   { OP_PIPE,                               "|" },
-#ifdef USE_NNTP
-  { OP_POST,                               NULL },
-#endif
   { OP_PREV_ENTRY,                         "K" },
   { OP_PRINT,                              "p" },
-  { OP_PURGE_MESSAGE,                      NULL },
-  { OP_PURGE_THREAD,                       NULL },
   { OP_QUIT,                               "Q" },
   { OP_RECALL_MESSAGE,                     "R" },
-#ifdef USE_NNTP
-  { OP_RECONSTRUCT_THREAD,                 NULL },
-#endif
   { OP_REDRAW,                             "\014" },           // <Ctrl-L>
   { OP_REPLY,                              "r" },
   { OP_RESEND,                             "\033e" },          // <Alt-e>
   { OP_SAVE,                               "s" },
   { OP_SEARCH_TOGGLE,                      "\\" },             // <Backslash>
   { OP_SHELL_ESCAPE,                       "!" },
-#ifdef USE_SIDEBAR
-  { OP_SIDEBAR_FIRST,                      NULL },
-  { OP_SIDEBAR_LAST,                       NULL },
-  { OP_SIDEBAR_NEXT,                       NULL },
-  { OP_SIDEBAR_NEXT_NEW,                   NULL },
-  { OP_SIDEBAR_OPEN,                       NULL },
-  { OP_SIDEBAR_PAGE_DOWN,                  NULL },
-  { OP_SIDEBAR_PAGE_UP,                    NULL },
-  { OP_SIDEBAR_PREV,                       NULL },
-  { OP_SIDEBAR_PREV_NEW,                   NULL },
-  { OP_SIDEBAR_TOGGLE_VIRTUAL,             NULL },
-  { OP_SIDEBAR_TOGGLE_VISIBLE,             NULL },
-#endif
   { OP_SORT,                               "o" },
   { OP_SORT_REVERSE,                       "O" },
   { OP_TAG,                                "t" },
@@ -1342,8 +1155,6 @@ const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_UNDELETE_THREAD,                    "\025" },           // <Ctrl-U>
   { OP_VERSION,                            "V" },
   { OP_VIEW_ATTACHMENTS,                   "v" },
-  { OP_VIEW_RAW_MESSAGE,                   NULL },
-  { OP_WHAT_KEY,                           NULL },
   { 0, NULL },
 };
 
