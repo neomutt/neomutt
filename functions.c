@@ -233,6 +233,9 @@ const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "ungroup-attachment",            OP_ATTACHMENT_UNGROUP },
   { "update-encoding",               OP_ATTACHMENT_UPDATE_ENCODING },
   { "view-attach",                   OP_ATTACHMENT_VIEW },
+  { "view-mailcap",                  OP_ATTACHMENT_VIEW_MAILCAP },
+  { "view-pager",                    OP_ATTACHMENT_VIEW_PAGER },
+  { "view-text",                     OP_ATTACHMENT_VIEW_TEXT },
   { "write-fcc",                     OP_COMPOSE_WRITE_MESSAGE },
   { NULL, 0 },
 };
@@ -855,6 +858,7 @@ const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
   { OP_EDITOR_BACKSPACE,                   "<backspace>" },
   { OP_EDITOR_BACKSPACE,                   "\010" },           // <Ctrl-H>
   { OP_EDITOR_BACKSPACE,                   "\177" },           // <Backspace>
+  { OP_EDITOR_BACKWARD_CHAR,               "<left>" },
   { OP_EDITOR_BACKWARD_CHAR,               "\002" },           // <Ctrl-B>
   { OP_EDITOR_BACKWARD_WORD,               "\033b" },          // <Alt-b>
   { OP_EDITOR_BOL,                         "<home>" },
@@ -1004,11 +1008,11 @@ const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_MAIN_SYNC_FOLDER,                   "$" },
   { OP_MAIN_TAG_PATTERN,                   "T" },
   { OP_MAIN_UNDELETE_PATTERN,              "U" },
-  { OP_NEXT_ENTRY,                         "J" },
-  { OP_PREV_ENTRY,                         "K" },
   { OP_MAIN_UNTAG_PATTERN,                 "\024" },           // <Ctrl-T>
   { OP_MARK_MSG,                           "~" },
+  { OP_NEXT_ENTRY,                         "J" },
   { OP_PIPE,                               "|" },
+  { OP_PREV_ENTRY,                         "K" },
   { OP_PRINT,                              "p" },
   { OP_QUERY,                              "Q" },
   { OP_QUIT,                               "q" },
