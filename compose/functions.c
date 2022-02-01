@@ -607,14 +607,12 @@ static void compose_attach_swap(struct Email *e, struct AttachCtx *actx, int fir
 
 /**
  * group_attachments - Group tagged attachments into a multipart group
- * @param  shared        Shared compose data
- * @param  multipart_tag String format for group description
- * @param  subtype       MIME subtype
- * @retval IR_SUCCESS    Success
- * @retval IR_ERROR      Failure
+ * @param  shared     Shared compose data
+ * @param  subtype    MIME subtype
+ * @retval IR_SUCCESS Success
+ * @retval IR_ERROR   Failure
  */
-static int group_attachments(struct ComposeSharedData *shared,
-                             const char *multipart_tag, char *subtype)
+static int group_attachments(struct ComposeSharedData *shared, char *subtype)
 {
   struct AttachCtx *actx = shared->adata->actx;
   int group_level = -1;
@@ -806,25 +804,6 @@ static int group_attachments(struct ComposeSharedData *shared,
     group_parent->parts = group;
 
   mutt_generate_boundary(&group->parameter);
-
-  // set group description
-  if (bptr_first->disposition != DISP_INLINE || bptr_first->description)
-  {
-    char *p;
-    if (bptr_first->description)
-      p = bptr_first->description;
-    else if (bptr_first->d_filename)
-      p = bptr_first->d_filename;
-    else if (mutt_path_basename(bptr_first->filename))
-      p = (char *) mutt_path_basename(bptr_first->filename);
-    else
-      p = bptr_first->filename;
-    if (p)
-    {
-      group->description = mutt_mem_calloc(1, strlen(p) + strlen(multipart_tag) + 1);
-      sprintf(group->description, multipart_tag, p);
-    }
-  }
 
   struct AttachPtr *group_ap = mutt_aptr_new();
   group_ap->body = group;
@@ -1407,7 +1386,6 @@ static int op_attachment_get_attachment(struct ComposeSharedData *shared, int op
  */
 static int op_attachment_group_alts(struct ComposeSharedData *shared, int op)
 {
-  static const char *ALTS_TAG = "Alternatives for \"%s\"";
   if (shared->adata->menu->tagged < 2)
   {
     mutt_error(
@@ -1415,7 +1393,7 @@ static int op_attachment_group_alts(struct ComposeSharedData *shared, int op)
     return IR_ERROR;
   }
 
-  return group_attachments(shared, ALTS_TAG, "alternative");
+  return group_attachments(shared, "alternative");
 }
 
 /**
@@ -1423,7 +1401,6 @@ static int op_attachment_group_alts(struct ComposeSharedData *shared, int op)
  */
 static int op_attachment_group_lingual(struct ComposeSharedData *shared, int op)
 {
-  static const char *LINGUAL_TAG = "Multilingual part for \"%s\"";
   if (shared->adata->menu->tagged < 2)
   {
     mutt_error(
@@ -1446,7 +1423,7 @@ static int op_attachment_group_lingual(struct ComposeSharedData *shared, int op)
     }
   }
 
-  return group_attachments(shared, LINGUAL_TAG, "multilingual");
+  return group_attachments(shared, "multilingual");
 }
 
 /**
@@ -1454,7 +1431,6 @@ static int op_attachment_group_lingual(struct ComposeSharedData *shared, int op)
  */
 static int op_attachment_group_related(struct ComposeSharedData *shared, int op)
 {
-  static const char *RELATED_TAG = "Related parts for \"%s\"";
   if (shared->adata->menu->tagged < 2)
   {
     mutt_error(_("Grouping 'related' requires at least 2 tagged messages"));
@@ -1479,7 +1455,7 @@ static int op_attachment_group_related(struct ComposeSharedData *shared, int op)
     }
   }
 
-  return group_attachments(shared, RELATED_TAG, "related");
+  return group_attachments(shared, "related");
 }
 
 /**
