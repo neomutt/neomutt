@@ -610,10 +610,10 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "resend-message",                OP_RESEND },
   { "root-message",                  OP_MAIN_ROOT_MESSAGE },
   { "save-message",                  OP_SAVE },
-  { "search",                        OP_PAGER_SEARCH },
-  { "search-next",                   OP_PAGER_SEARCH_NEXT },
-  { "search-opposite",               OP_PAGER_SEARCH_OPPOSITE },
-  { "search-reverse",                OP_PAGER_SEARCH_REVERSE },
+  { "search",                        OP_SEARCH },
+  { "search-next",                   OP_SEARCH_NEXT },
+  { "search-opposite",               OP_SEARCH_OPPOSITE },
+  { "search-reverse",                OP_SEARCH_REVERSE },
   { "search-toggle",                 OP_SEARCH_TOGGLE },
   { "set-flag",                      OP_MAIN_SET_FLAG },
   { "shell-escape",                  OP_SHELL_ESCAPE },
@@ -1131,9 +1131,6 @@ const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_PAGER_PREV_LINE,                    "<backspace>" },
   { OP_PAGER_PREV_PAGE,                    "-" },
   { OP_PAGER_PREV_PAGE,                    "<pageup>" },
-  { OP_PAGER_SEARCH,                       "/" },
-  { OP_PAGER_SEARCH_NEXT,                  "n" },
-  { OP_PAGER_SEARCH_REVERSE,               "\033/" },          // <Alt-/>
   { OP_PAGER_SKIP_HEADERS,                 "H" },
   { OP_PAGER_SKIP_QUOTED,                  "S" },
   { OP_PAGER_TOP,                          "<home>" },
@@ -1147,6 +1144,9 @@ const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_REPLY,                              "r" },
   { OP_RESEND,                             "\033e" },          // <Alt-e>
   { OP_SAVE,                               "s" },
+  { OP_SEARCH,                             "/" },
+  { OP_SEARCH_NEXT,                        "n" },
+  { OP_SEARCH_REVERSE,                     "\033/" },          // <Alt-/>
   { OP_SEARCH_TOGGLE,                      "\\" },             // <Backslash>
   { OP_SHELL_ESCAPE,                       "!" },
   { OP_SORT,                               "o" },
