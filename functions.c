@@ -550,8 +550,8 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
 #endif
   { "group-chat-reply",              OP_GROUP_CHAT_REPLY },
   { "group-reply",                   OP_GROUP_REPLY },
-  { "half-down",                     OP_PAGER_HALF_DOWN },
-  { "half-up",                       OP_PAGER_HALF_UP },
+  { "half-down",                     OP_HALF_DOWN },
+  { "half-up",                       OP_HALF_UP },
   { "help",                          OP_HELP },
 #ifdef USE_IMAP
   { "imap-fetch-mail",               OP_MAIN_IMAP_FETCH },
@@ -571,10 +571,10 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "modify-tags",                   OP_MAIN_MODIFY_TAGS },
   { "modify-tags-then-hide",         OP_MAIN_MODIFY_TAGS_THEN_HIDE },
   { "next-entry",                    OP_NEXT_ENTRY },
-  { "next-line",                     OP_PAGER_NEXT_LINE },
+  { "next-line",                     OP_NEXT_LINE },
   { "next-new",                      OP_MAIN_NEXT_NEW },
   { "next-new-then-unread",          OP_MAIN_NEXT_NEW_THEN_UNREAD },
-  { "next-page",                     OP_PAGER_NEXT_PAGE },
+  { "next-page",                     OP_NEXT_PAGE },
   { "next-subthread",                OP_MAIN_NEXT_SUBTHREAD },
   { "next-thread",                   OP_MAIN_NEXT_THREAD },
   { "next-undeleted",                OP_MAIN_NEXT_UNDELETED },
@@ -586,10 +586,10 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "post-message",                  OP_POST },
 #endif
   { "previous-entry",                OP_PREV_ENTRY },
-  { "previous-line",                 OP_PAGER_PREV_LINE },
+  { "previous-line",                 OP_PREV_LINE },
   { "previous-new",                  OP_MAIN_PREV_NEW },
   { "previous-new-then-unread",      OP_MAIN_PREV_NEW_THEN_UNREAD },
-  { "previous-page",                 OP_PAGER_PREV_PAGE },
+  { "previous-page",                 OP_PREV_PAGE },
   { "previous-subthread",            OP_MAIN_PREV_SUBTHREAD },
   { "previous-thread",               OP_MAIN_PREV_THREAD },
   { "previous-undeleted",            OP_MAIN_PREV_UNDELETED },
@@ -1121,22 +1121,22 @@ const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_MAIN_SET_FLAG,                      "w" },
   { OP_MAIN_SYNC_FOLDER,                   "$" },
   { OP_NEXT_ENTRY,                         "J" },
+  { OP_NEXT_LINE,                          "<keypadenter>" },
+  { OP_NEXT_LINE,                          "\n" },             // <Enter>
+  { OP_NEXT_LINE,                          "\r" },             // <Return>
+  { OP_NEXT_PAGE,                          " " },              // <Space>
+  { OP_NEXT_PAGE,                          "<pagedown>" },
   { OP_PAGER_BOTTOM,                       "<end>" },
   { OP_PAGER_HIDE_QUOTED,                  "T" },
-  { OP_PAGER_NEXT_LINE,                    "<keypadenter>" },
-  { OP_PAGER_NEXT_LINE,                    "\n" },             // <Enter>
-  { OP_PAGER_NEXT_LINE,                    "\r" },             // <Return>
-  { OP_PAGER_NEXT_PAGE,                    " " },              // <Space>
-  { OP_PAGER_NEXT_PAGE,                    "<pagedown>" },
-  { OP_PAGER_PREV_LINE,                    "<backspace>" },
-  { OP_PAGER_PREV_PAGE,                    "-" },
-  { OP_PAGER_PREV_PAGE,                    "<pageup>" },
   { OP_PAGER_SKIP_HEADERS,                 "H" },
   { OP_PAGER_SKIP_QUOTED,                  "S" },
   { OP_PAGER_TOP,                          "<home>" },
   { OP_PAGER_TOP,                          "^" },
   { OP_PIPE,                               "|" },
   { OP_PREV_ENTRY,                         "K" },
+  { OP_PREV_LINE,                          "<backspace>" },
+  { OP_PREV_PAGE,                          "-" },
+  { OP_PREV_PAGE,                          "<pageup>" },
   { OP_PRINT,                              "p" },
   { OP_QUIT,                               "Q" },
   { OP_RECALL_MESSAGE,                     "R" },

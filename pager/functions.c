@@ -1907,16 +1907,16 @@ struct PagerFunction PagerFunctions[] = {
 #ifdef USE_NNTP
   { OP_FORWARD_TO_GROUP,       op_forward_to_group },
 #endif
-  { OP_PAGER_HALF_DOWN,        op_pager_half_down },
-  { OP_PAGER_HALF_UP,          op_pager_half_up },
+  { OP_HALF_DOWN,              op_pager_half_down },
+  { OP_HALF_UP,                op_pager_half_up },
   { OP_HELP,                   op_help },
   { OP_MAIL,                   op_mail },
   { OP_MAILBOX_LIST,           op_mailbox_list },
   { OP_MAIL_KEY,               op_mail_key },
   { OP_MAIN_CLEAR_FLAG,        op_main_set_flag },
   { OP_MAIN_SET_FLAG,          op_main_set_flag },
-  { OP_PAGER_NEXT_LINE,        op_pager_next_line },
-  { OP_PAGER_NEXT_PAGE,        op_pager_next_page },
+  { OP_NEXT_LINE,              op_pager_next_line },
+  { OP_NEXT_PAGE,              op_pager_next_page },
   { OP_PAGER_BOTTOM,           op_pager_bottom },
   { OP_PAGER_HIDE_QUOTED,      op_pager_hide_quoted },
   { OP_PAGER_SKIP_HEADERS,     op_pager_skip_headers },
@@ -1926,8 +1926,8 @@ struct PagerFunction PagerFunctions[] = {
 #ifdef USE_NNTP
   { OP_POST,                   op_post },
 #endif
-  { OP_PAGER_PREV_LINE,        op_pager_prev_line },
-  { OP_PAGER_PREV_PAGE,        op_pager_prev_page },
+  { OP_PREV_LINE,              op_pager_prev_line },
+  { OP_PREV_PAGE,              op_pager_prev_page },
   { OP_PRINT,                  op_print },
   { OP_QUIT,                   op_quit },
   { OP_RECALL_MESSAGE,         op_recall_message },
