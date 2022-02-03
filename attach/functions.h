@@ -54,10 +54,4 @@ int attach_function_dispatcher(struct MuttWindow *win_attach, int op);
 
 extern struct AttachFunction AttachFunctions[];
 
-void attach_collapse(struct AttachCtx *actx, struct Menu *menu);
-bool check_attach(void);
-bool check_readonly(struct Mailbox *m);
-void recvattach_extract_pgp_keys(struct AttachCtx *actx, struct Menu *menu);
-int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu *menu);
-
 #endif //MUTT_ATTACH_FUNCTIONS_H

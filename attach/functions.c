@@ -38,13 +38,136 @@
 #include "send/lib.h"
 #include "attach.h"
 #include "opcodes.h"
+#include "options.h"
 #include "private_data.h"
 #include "recvcmd.h"
 
 static const char *Not_available_in_this_menu =
     N_("Not available in this menu");
-// static const char *Function_not_permitted_in_attach_message_mode =
-//     N_("Function not permitted in attach-message mode");
+static const char *Function_not_permitted_in_attach_message_mode =
+    N_("Function not permitted in attach-message mode");
+
+/**
+ * attach_collapse - Close the tree of the current attachment
+ * @param actx Attachment context
+ * @param menu Menu listing Attachments
+ */
+static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
+{
+  int rindex, curlevel;
+
+  struct AttachPtr *cur_att = current_attachment(actx, menu);
+  cur_att->collapsed = !cur_att->collapsed;
+  /* When expanding, expand all the children too */
+  if (cur_att->collapsed)
+    return;
+
+  curlevel = cur_att->level;
+  const int index = menu_get_index(menu);
+  rindex = actx->v2r[index] + 1;
+
+  const bool c_digest_collapse =
+      cs_subset_bool(NeoMutt->sub, "digest_collapse");
+  while ((rindex < actx->idxlen) && (actx->idx[rindex]->level > curlevel))
+  {
+    if (c_digest_collapse && (actx->idx[rindex]->body->type == TYPE_MULTIPART) &&
+        mutt_istr_equal(actx->idx[rindex]->body->subtype, "digest"))
+    {
+      actx->idx[rindex]->collapsed = true;
+    }
+    else
+    {
+      actx->idx[rindex]->collapsed = false;
+    }
+    rindex++;
+  }
+}
+
+/**
+ * check_attach - Check if in attach-message mode
+ * @retval true Mailbox is readonly
+ */
+static bool check_attach(void)
+{
+  if (OptAttachMsg)
+  {
+    mutt_flushinp();
+    mutt_error(_(Function_not_permitted_in_attach_message_mode));
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * check_readonly - Check if the Mailbox is readonly
+ * @param m Mailbox
+ * @retval true Mailbox is readonly
+ */
+static bool check_readonly(struct Mailbox *m)
+{
+  if (!m || m->readonly)
+  {
+    mutt_flushinp();
+    mutt_error(_("Mailbox is read-only"));
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * recvattach_extract_pgp_keys - Extract PGP keys from attachments
+ * @param actx Attachment context
+ * @param menu Menu listing attachments
+ */
+static void recvattach_extract_pgp_keys(struct AttachCtx *actx, struct Menu *menu)
+{
+  if (!menu->tagprefix)
+  {
+    struct AttachPtr *cur_att = current_attachment(actx, menu);
+    crypt_pgp_extract_key_from_attachment(cur_att->fp, cur_att->body);
+  }
+  else
+  {
+    for (int i = 0; i < actx->idxlen; i++)
+    {
+      if (actx->idx[i]->body->tagged)
+      {
+        crypt_pgp_extract_key_from_attachment(actx->idx[i]->fp, actx->idx[i]->body);
+      }
+    }
+  }
+}
+
+/**
+ * recvattach_pgp_check_traditional - Is the Attachment inline PGP?
+ * @param actx Attachment to check
+ * @param menu Menu listing Attachments
+ * @retval 1 The (tagged) Attachment(s) are inline PGP
+ *
+ * @note If the menu->tagprefix is set, all the tagged attachments will be checked.
+ */
+static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu *menu)
+{
+  int rc = 0;
+
+  if (!menu->tagprefix)
+  {
+    struct AttachPtr *cur_att = current_attachment(actx, menu);
+    rc = crypt_pgp_check_traditional(cur_att->fp, cur_att->body, true);
+  }
+  else
+  {
+    for (int i = 0; i < actx->idxlen; i++)
+      if (actx->idx[i]->body->tagged)
+        rc = rc || crypt_pgp_check_traditional(actx->idx[i]->fp, actx->idx[i]->body, true);
+  }
+
+  return rc;
+}
+
+// -----------------------------------------------------------------------------
 
 /**
  * op_attachment_collapse - toggle display of subparts - Implements ::attach_function_t - @ingroup attach_function_api
