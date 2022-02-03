@@ -109,7 +109,7 @@ static const struct Mapping AttachHelp[] = {
  * @param actx Attachment context
  * @param menu Menu listing Attachments
  */
-static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
+void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
 {
   int rindex, curlevel;
 
@@ -478,7 +478,7 @@ static int attach_window_observer(struct NotifyCallback *nc)
  * check_attach - Check if in attach-message mode
  * @retval true Mailbox is readonly
  */
-static bool check_attach(void)
+bool check_attach(void)
 {
   if (OptAttachMsg)
   {
@@ -495,7 +495,7 @@ static bool check_attach(void)
  * @param m Mailbox
  * @retval true Mailbox is readonly
  */
-static bool check_readonly(struct Mailbox *m)
+bool check_readonly(struct Mailbox *m)
 {
   if (!m || m->readonly)
   {
@@ -512,7 +512,7 @@ static bool check_readonly(struct Mailbox *m)
  * @param actx Attachment context
  * @param menu Menu listing attachments
  */
-static void recvattach_extract_pgp_keys(struct AttachCtx *actx, struct Menu *menu)
+void recvattach_extract_pgp_keys(struct AttachCtx *actx, struct Menu *menu)
 {
   if (!menu->tagprefix)
   {
@@ -539,7 +539,7 @@ static void recvattach_extract_pgp_keys(struct AttachCtx *actx, struct Menu *men
  *
  * @note If the menu->tagprefix is set, all the tagged attachments will be checked.
  */
-static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu *menu)
+int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu *menu)
 {
   int rc = 0;
 
