@@ -1624,7 +1624,8 @@ static void fix_end_of_file(const char *data)
   FILE *fp = mutt_file_fopen(data, "a+");
   if (!fp)
     return;
-  if (mutt_file_seek(fp, -1, SEEK_END))
+
+  if ((mutt_file_get_size_fp(fp) > 0) && mutt_file_seek(fp, -1, SEEK_END))
   {
     int c = fgetc(fp);
     if (c != '\n')
