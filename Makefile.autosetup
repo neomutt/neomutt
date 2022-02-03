@@ -121,7 +121,7 @@ $(PWD)/alias:
 # libattach
 LIBATTACH=	libattach.a
 LIBATTACHOBJS=	attach/attach.o attach/attachments.o attach/dlg_attach.o \
-		attach/mutt_attach.o attach/recvattach.o
+		attach/mutt_attach.o attach/private_data.o attach/recvattach.o
 CLEANFILES+=	$(LIBATTACH) $(LIBATTACHOBJS)
 ALLOBJS+=	$(LIBATTACHOBJS)
 
