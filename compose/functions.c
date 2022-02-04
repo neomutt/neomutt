@@ -131,10 +131,8 @@ static char *gen_cid(void)
 static bool check_cid(const char *cid)
 {
   static const char *check = "^[-\\.0-9@A-Z_a-z]+$";
-  struct Buffer buf = mutt_buffer_make(0);
 
-  struct Regex *check_cid_regex = mutt_regex_new(check, 0, &buf);
-  mutt_buffer_dealloc(&buf);
+  struct Regex *check_cid_regex = mutt_regex_new(check, 0, NULL);
 
   const bool valid = mutt_regex_match(check_cid_regex, cid);
 

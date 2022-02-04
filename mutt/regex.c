@@ -96,9 +96,10 @@ struct Regex *mutt_regex_new(const char *str, uint32_t flags, struct Buffer *err
   }
 
   int rc = REG_COMP(reg->regex, str, rflags);
-  if ((rc != 0) && err)
+  if (rc != 0)
   {
-    regerror(rc, reg->regex, err->data, err->dsize);
+    if (err)
+      regerror(rc, reg->regex, err->data, err->dsize);
     mutt_regex_free(&reg);
     return NULL;
   }
