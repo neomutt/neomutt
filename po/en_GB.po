@@ -5616,7 +5616,7 @@ msgstr "jump to the beginning of the line"
 
 #: opcodes.h:118
 msgid "capitalize the word"
-msgstr "capitalize the word"
+msgstr "capitalise the word"
 
 #: opcodes.h:119
 msgid "complete filename or alias"

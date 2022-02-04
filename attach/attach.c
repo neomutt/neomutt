@@ -134,7 +134,7 @@ void mutt_actx_add_fp(struct AttachCtx *actx, FILE *fp_new)
 }
 
 /**
- * mutt_actx_add_body - Add an email box to an Attachment Context
+ * mutt_actx_add_body - Add an email body to an Attachment Context
  * @param actx     Attachment context
  * @param new_body Email Body to add
  */
