@@ -1180,7 +1180,6 @@ void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool
     mutt_generate_recvattach_list(actx, actx->email, actx->email->body,
                                   actx->fp_root, -1, 0, 0);
     mutt_attach_init(actx);
-    menu->mdata = actx;
   }
 
   mutt_update_tree(actx);

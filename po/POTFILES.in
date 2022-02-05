@@ -14,7 +14,9 @@ alternates.c
 attach/attach.c
 attach/attachments.c
 attach/dlg_attach.c
+attach/functions.c
 attach/mutt_attach.c
+attach/private_data.c
 attach/recvattach.c
 autocrypt/autocrypt.c
 autocrypt/config.c
