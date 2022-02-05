@@ -50,4 +50,7 @@ struct Body *    mutt_rfc822_parse_message(FILE *fp, struct Body *b);
 struct Envelope *mutt_rfc822_read_header  (FILE *fp, struct Email *e, bool user_hdrs, bool weed);
 size_t           mutt_rfc822_read_line    (FILE *fp, struct Buffer *out);
 
+void mutt_filter_commandline_header_tag  (char *header);
+void mutt_filter_commandline_header_value(char *header);
+
 #endif /* MUTT_EMAIL_PARSE_H */

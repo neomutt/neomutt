@@ -67,6 +67,42 @@ static struct Body *parse_multipart(FILE *fp, const char *boundary,
                                     LOFF_T end_off, bool digest, int *counter);
 
 /**
+ * mutt_filter_commandline_header_tag - Sanitise characters in a header tag
+ * @param header String to sanitise
+ */
+void mutt_filter_commandline_header_tag(char *header)
+{
+  if (!header)
+    return;
+
+  for (; (*header != '\0'); header++)
+  {
+    if ((*header < 33) || (*header > 126) || (*header == ':'))
+      *header = '?';
+  }
+}
+
+/**
+ * mutt_filter_commandline_header_value - Sanitise characters in a header value
+ * @param header String to sanitise
+ *
+ * It might be preferable to use mutt_filter_unprintable() instead.
+ * This filter is being lax, but preventing a header injection via an embedded
+ * newline.
+ */
+void mutt_filter_commandline_header_value(char *header)
+{
+  if (!header)
+    return;
+
+  for (; (*header != '\0'); header++)
+  {
+    if ((*header == '\n') || (*header == '\r'))
+      *header = ' ';
+  }
+}
+
+/**
  * mutt_auto_subscribe - Check if user is subscribed to mailing list
  * @param mailto URL of mailing list subscribe
  */
@@ -796,7 +832,10 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e,
         break;
 
       mutt_list_free(&env->in_reply_to);
-      parse_references(&env->in_reply_to, body);
+      char *body2 = mutt_str_dup(body); // Create a mutable copy
+      mutt_filter_commandline_header_value(body2);
+      parse_references(&env->in_reply_to, body2);
+      FREE(&body2);
       matched = true;
       break;
 
@@ -1728,6 +1767,7 @@ bool mutt_parse_mailto(struct Envelope *env, char **body, const char *src)
   struct UrlQuery *np;
   STAILQ_FOREACH(np, &url->query_strings, entries)
   {
+    mutt_filter_commandline_header_tag(np->name);
     const char *tag = np->name;
     char *value = np->value;
     /* Determine if this header field is on the allowed list.  Since NeoMutt
@@ -1752,6 +1792,7 @@ bool mutt_parse_mailto(struct Envelope *env, char **body, const char *src)
         char *scratch = NULL;
         size_t taglen = mutt_str_len(tag);
 
+        mutt_filter_commandline_header_value(value);
         mutt_str_asprintf(&scratch, "%s: %s", tag, value);
         scratch[taglen] = 0; /* overwrite the colon as mutt_rfc822_parse_line expects */
         value = mutt_str_skip_email_wsp(&scratch[taglen + 1]);
