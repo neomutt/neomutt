@@ -26,10 +26,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-struct AttachCtx;
 struct Body;
-struct BodyArray;
-struct Menu;
 
 /**
  * struct AttachPtr - An email to which things will be attached
@@ -81,7 +78,5 @@ struct AttachCtx *mutt_actx_new         (void);
 
 void              mutt_aptr_free(struct AttachPtr **ptr);
 struct AttachPtr *mutt_aptr_new (void);
-
-int ba_add_tagged(struct BodyArray *ba, struct AttachCtx *actx, struct Menu *menu);
 
 #endif /* MUTT_ATTACH_ATTACH_H */

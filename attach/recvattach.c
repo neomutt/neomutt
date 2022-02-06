@@ -1191,3 +1191,42 @@ void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool
     menu_set_index(menu, menu->max - 1);
   menu_queue_redraw(menu, MENU_REDRAW_INDEX);
 }
+
+/**
+ * ba_add_tagged - Get an array of tagged Attachments
+ * @param ba   Empty BodyArray to populate
+ * @param actx List of Attachments
+ * @param menu Menu
+ * @retval num Number of selected Attachments
+ * @retval -1  Error
+ */
+int ba_add_tagged(struct BodyArray *ba, struct AttachCtx *actx, struct Menu *menu)
+{
+  if (!ba || !actx || !menu)
+    return -1;
+
+  if (menu->tagprefix)
+  {
+    if (!actx)
+      return -1;
+
+    for (int i = 0; i < actx->idxlen; i++)
+    {
+      struct Body *b = actx->idx[i]->body;
+      if (b->tagged)
+      {
+        ARRAY_ADD(ba, b);
+      }
+    }
+  }
+  else
+  {
+    struct AttachPtr *cur = current_attachment(actx, menu);
+    if (!cur)
+      return -1;
+
+    ARRAY_ADD(ba, cur->body);
+  }
+
+  return ARRAY_SIZE(ba);
+}
