@@ -74,7 +74,7 @@ struct MenuStatusLineData
  * status_format_str - Create the status bar string - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
- * |:--------|:--------------------------------------------------------
+ * | :------ | :-------------------------------------------------------
  * | \%b     | Number of incoming folders with unread messages
  * | \%D     | Description of the mailbox
  * | \%d     | Number of deleted messages
@@ -441,6 +441,8 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
  * @param[in]  menu     Current menu
  * @param[in]  cols     Maximum number of columns to use
  * @param[in]  fmt      Format string
+ *
+ * @sa status_format_str()
  */
 void menu_status_line(char *buf, size_t buflen, struct IndexSharedData *shared,
                       struct Menu *menu, int cols, const char *fmt)

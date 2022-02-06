@@ -242,7 +242,7 @@ static void compress_info_free(struct Mailbox *m)
  * compress_format_str - Expand the filenames in a command string - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
- * |:--------|:--------------------------------------------------------
+ * | :------ | :-------------------------------------------------------
  * | \%f     | Compressed file
  * | \%t     | Plaintext, temporary file
  */
@@ -295,6 +295,8 @@ static const char *compress_format_str(char *buf, size_t buflen, size_t col, int
  *
  * Result:
  *      gzip -dc '~/mail/abc.gz' > '/tmp/xyz'
+ *
+ * @sa compress_format_str()
  */
 static void expand_command_str(const struct Mailbox *m, const char *cmd, char *buf, int buflen)
 {

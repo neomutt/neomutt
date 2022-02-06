@@ -122,7 +122,7 @@ static const struct Mapping AutocryptAcctHelp[] = {
  * autocrypt_format_str - Format a string for the Autocrypt account list - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
- * |:--------|:-----------------------------------------------------------------
+ * | :------ | :----------------------------------------------------------------
  * | \%a     | Email address
  * | \%k     | Gpg keyid
  * | \%n     | Current entry number
@@ -185,6 +185,8 @@ static const char *autocrypt_format_str(char *buf, size_t buflen, size_t col, in
 
 /**
  * autocrypt_make_entry - Create a line for the Autocrypt account menu - Implements Menu::make_entry() - @ingroup menu_make_entry
+ *
+ * @sa $autocrypt_acct_format, autocrypt_format_str()
  */
 static void autocrypt_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
 {

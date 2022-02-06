@@ -82,7 +82,7 @@ static const struct Mapping HistoryHelp[] = {
  * history_format_str - Format a string for the history list - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
- * |:--------|:--------------
+ * | :------ | :-------------
  * | \%s     | History match
  */
 static const char *history_format_str(char *buf, size_t buflen, size_t col, int cols,
@@ -104,6 +104,8 @@ static const char *history_format_str(char *buf, size_t buflen, size_t col, int 
 
 /**
  * history_make_entry - Format a menu item for the history list - Implements Menu::make_entry() - @ingroup menu_make_entry
+ *
+ * @sa history_format_str()
  */
 static void history_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {

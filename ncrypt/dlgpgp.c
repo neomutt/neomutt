@@ -320,7 +320,7 @@ static char pgp_flags(KeyFlags flags)
  * pgp_entry_format_str - Format an entry on the PGP key selection menu - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
- * |:--------|:--------------------------------------------------------
+ * | :------ | :-------------------------------------------------------
  * | \%n     | Number
  * | \%t     | Trust/validity of the key-uid association
  * | \%u     | User id
@@ -496,6 +496,8 @@ static const char *pgp_entry_format_str(char *buf, size_t buflen, size_t col, in
 
 /**
  * pgp_make_entry - Format a menu item for the pgp key list - Implements Menu::make_entry() - @ingroup menu_make_entry
+ *
+ * @sa $pgp_entry_format, pgp_entry_format_str()
  */
 static void pgp_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {

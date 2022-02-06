@@ -203,7 +203,7 @@ bool smime_class_valid_passphrase(void)
  * smime_command_format_str - Format an SMIME command - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
- * |:--------|:-----------------------------------------------------------------
+ * | :------ | :----------------------------------------------------------------
  * | \%a     | Algorithm used for encryption
  * | \%C     | CA location: Depending on whether `$smime_ca_location` points to a directory or file
  * | \%c     | One or more certificate IDs
@@ -367,6 +367,8 @@ static const char *smime_command_format_str(char *buf, size_t buflen, size_t col
  * @param buflen Length of buffer
  * @param cctx   Data to pass to the formatter
  * @param fmt    printf-like formatting string
+ *
+ * @sa smime_command_format_str()
  */
 static void smime_command(char *buf, size_t buflen,
                           struct SmimeCommandContext *cctx, const char *fmt)

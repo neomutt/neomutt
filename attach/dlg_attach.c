@@ -132,7 +132,7 @@ static int attach_config_observer(struct NotifyCallback *nc)
  * attach_format_str - Format a string for the attachment menu - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
- * |:--------|:--------------------------------------------------------
+ * | :------ | :-------------------------------------------------------
  * | \%C     | Character set
  * | \%c     | Character set: convert?
  * | \%D     | Deleted flag
@@ -383,6 +383,8 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
 
 /**
  * attach_make_entry - Format a menu item for the attachment list - Implements Menu::make_entry() - @ingroup menu_make_entry
+ *
+ * @sa $attach_format, attach_format_str()
  */
 static void attach_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {

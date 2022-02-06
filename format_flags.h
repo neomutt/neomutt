@@ -58,7 +58,7 @@ typedef uint8_t MuttFormatFlags;         ///< Flags for mutt_expando_format(), e
  * Each callback function implements some expandos, e.g.
  *
  * | Expando | Description
- * |:--------|:-----------
+ * | :------ | :----------
  * | \%t     | Title
  */
 typedef const char *(*format_t)(char *buf, size_t buflen, size_t col, int cols,

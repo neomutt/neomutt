@@ -996,7 +996,7 @@ static char crypt_flags(KeyFlags flags)
  * crypt_format_str - Format a string for the key selection menu - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
- * |:--------|:--------------------------------------------------------
+ * | :------ | :-------------------------------------------------------
  * | \%n     | Number
  * | \%p     | Protocol
  * | \%t     | Trust/validity of the key-uid association
@@ -1224,6 +1224,8 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
 
 /**
  * crypt_make_entry - Format a menu item for the key selection list - Implements Menu::make_entry() - @ingroup menu_make_entry
+ *
+ * @sa $pgp_entry_format, crypt_format_str()
  */
 static void crypt_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {

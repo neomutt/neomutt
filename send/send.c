@@ -655,7 +655,7 @@ void mutt_make_attribution(struct Email *e, FILE *fp_out, struct ConfigSubset *s
  * greeting_string - Format a greetings string - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
- * |:--------|:-----------------------------------------------------------------
+ * | :------ | :----------------------------------------------------------------
  * | \%n     | Recipient's real name (or address if missing)
  * | \%u     | User (login) name of the recipient
  * | \%v     | First name of the recipient
@@ -719,6 +719,8 @@ static const char *greeting_string(char *buf, size_t buflen, size_t col, int col
  * @param e      Email
  * @param fp_out File to write to
  * @param sub    Config Subset
+ *
+ * @sa $greeting, greeting_format_str()
  */
 static void mutt_make_greeting(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
 {

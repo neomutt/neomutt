@@ -171,7 +171,7 @@ static int query_search(struct Menu *menu, regex_t *rx, int line)
  * query_format_str - Format a string for the query menu - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
- * |:--------|:--------------------------------------------------------
+ * | :------ | :-------------------------------------------------------
  * | \%a     | Destination address
  * | \%c     | Current entry number
  * | \%e     | Extra information
@@ -242,6 +242,8 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
 
 /**
  * query_make_entry - Format a menu item for the query list - Implements Menu::make_entry() - @ingroup menu_make_entry
+ *
+ * @sa $query_format, query_format_str()
  */
 static void query_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {

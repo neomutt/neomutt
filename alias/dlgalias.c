@@ -109,7 +109,7 @@ static const struct Mapping AliasHelp[] = {
  * alias_format_str - Format a string for the alias list - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
- * |:--------|:--------------------------------------------------------
+ * | :------ | :-------------------------------------------------------
  * | \%a     | Alias name
  * | \%c     | Comments
  * | \%f     | Flags - currently, a 'd' for an alias marked for deletion
@@ -158,6 +158,8 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
 
 /**
  * alias_make_entry - Format a menu item for the alias list - Implements Menu::make_entry() - @ingroup menu_make_entry
+ *
+ * @sa $alias_format, alias_format_str()
  */
 static void alias_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {

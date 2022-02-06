@@ -308,7 +308,7 @@ static int calc_path_depth(const char *mbox, const char *delims, const char **la
  * sidebar_format_str - Format a string for the sidebar - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
- * |:--------|:--------------------------------------------------------
+ * | :------ | :-------------------------------------------------------
  * | \%!     | 'n!' Flagged messages
  * | \%B     | Name of the mailbox
  * | \%D     | Description of the mailbox
@@ -499,8 +499,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
  * @param[in]  shared  Shared Index Data
  *
  * Take all the relevant mailbox data and the desired screen width and then get
- * mutt_expando_format to do the actual work. mutt_expando_format will callback to
- * us using sidebar_format_str() for the sidebar specific formatting characters.
+ * mutt_expando_format to do the actual work.
+ *
+ * @sa $sidebar_format, sidebar_format_str()
  */
 static void make_sidebar_entry(char *buf, size_t buflen, int width,
                                struct SbEntry *sbe, struct IndexSharedData *shared)

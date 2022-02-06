@@ -68,7 +68,7 @@ struct PgpCommandContext
  * pgp_command_format_str - Format a PGP command string - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
- * |:--------|:-----------------------------------------------------------------
+ * | :------ | :----------------------------------------------------------------
  * | \%a     | Value of `$pgp_sign_as` if set, otherwise `$pgp_default_key`
  * | \%f     | File containing a message
  * | \%p     | Expands to PGPPASSFD=0 when a pass phrase is needed, to an empty string otherwise
@@ -169,6 +169,8 @@ static const char *pgp_command_format_str(char *buf, size_t buflen, size_t col, 
  * @param buflen Length of buffer
  * @param cctx   Data to pass to the formatter
  * @param fmt    printf-like formatting string
+ *
+ * @sa pgp_command_format_str()
  */
 static void mutt_pgp_command(char *buf, size_t buflen,
                              struct PgpCommandContext *cctx, const char *fmt)

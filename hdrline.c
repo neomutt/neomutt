@@ -385,7 +385,7 @@ static bool thread_is_old(struct Email *e)
  * index_format_str - Format a string for the index list - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
- * |:--------|:-----------------------------------------------------------------
+ * | :------ | :----------------------------------------------------------------
  * | \%a     | Address of the author
  * | \%A     | Reply-to address (if present; otherwise: address of author)
  * | \%b     | Filename of the original message folder (think mailbox)
@@ -1406,6 +1406,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
  * @param e        Email
  * @param flags    Flags, see #MuttFormatFlags
  * @param progress Pager progress string
+ *
+ * @sa index_format_str()
  */
 void mutt_make_string(char *buf, size_t buflen, int cols, const char *s,
                       struct Mailbox *m, int inpgr, struct Email *e,

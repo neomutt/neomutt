@@ -43,7 +43,7 @@
  * group_index_format_str - Format a string for the newsgroup menu - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
- * |:--------|:--------------------------------------------------------
+ * | :------ | :-------------------------------------------------------
  * | \%C     | Current newsgroup number
  * | \%d     | Description of newsgroup (becomes from server)
  * | \%f     | Newsgroup name

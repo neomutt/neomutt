@@ -107,7 +107,7 @@ static const struct Mapping PatternHelp[] = {
  * pattern_format_str - Format a string for the pattern completion menu - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
- * |:--------|:----------------------
+ * | :------ | :---------------------
  * | \%d     | Pattern description
  * | \%e     | Pattern expression
  * | \%n     | Index number
@@ -141,6 +141,8 @@ static const char *pattern_format_str(char *buf, size_t buflen, size_t col, int 
 
 /**
  * make_pattern_entry - Create a line for the Pattern Completion menu - Implements Menu::make_entry() - @ingroup menu_make_entry
+ *
+ * @sa $pattern_format, pattern_format_str()
  */
 static void make_pattern_entry(struct Menu *menu, char *buf, size_t buflen, int num)
 {

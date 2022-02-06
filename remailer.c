@@ -467,7 +467,7 @@ static const char *mix_format_caps(struct Remailer *r)
  * mix_format_str - Format a string for the remailer menu - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
- * |:--------|:--------------------------------------------------------
+ * | :------ | :-------------------------------------------------------
  * | \%a     | The remailer's e-mail address
  * | \%c     | Remailer capabilities
  * | \%n     | The running number on the menu
@@ -541,6 +541,8 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
 
 /**
  * mix_make_entry - Format a menu item for the mixmaster chain list - Implements Menu::make_entry() - @ingroup menu_make_entry
+ *
+ * @sa $mix_entry_format, mix_format_str()
  */
 static void mix_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
 {

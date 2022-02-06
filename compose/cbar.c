@@ -93,7 +93,7 @@ int num_attachments(struct ComposeAttachData *adata)
  * compose_format_str - Create the status bar string for compose mode - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
- * |:--------|:--------------------------------------------------------
+ * | :------ | :-------------------------------------------------------
  * | \%a     | Total number of attachments
  * | \%h     | Local hostname
  * | \%l     | Approximate size (in bytes) of the current message
@@ -153,6 +153,8 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
 
 /**
  * cbar_recalc - Recalculate the Window data - Implements MuttWindow::recalc() - @ingroup window_recalc
+ *
+ * @sa $compose_format, compose_format_str()
  */
 static int cbar_recalc(struct MuttWindow *win)
 {

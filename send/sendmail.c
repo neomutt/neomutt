@@ -283,6 +283,8 @@ static void add_args(struct SendmailArgs *args, struct AddressList *al)
  * @param sub      Config Subset
  * @retval  0 Success
  * @retval -1 Failure
+ *
+ * @sa $inews, nntp_format_str()
  */
 int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
                          struct AddressList *to, struct AddressList *cc,
