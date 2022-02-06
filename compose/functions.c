@@ -1354,30 +1354,31 @@ static int op_attachment_get_attachment(struct ComposeSharedData *shared, int op
   if (!check_count(actx))
     return IR_NO_ACTION;
 
+  int rc = IR_ERROR;
   struct Menu *menu = shared->adata->menu;
-  struct AttachPtr *cur_att = current_attachment(actx, menu);
-  if (cur_att->body->type == TYPE_MULTIPART)
-  {
-    mutt_error(_("Can't get multipart attachments"));
-    return IR_ERROR;
-  }
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
+  ba_add_tagged(&ba, actx, menu);
+  if (ARRAY_EMPTY(&ba))
+    goto done;
 
-  if (menu->tagprefix)
+  struct Body **bp = NULL;
+  ARRAY_FOREACH(bp, &ba)
   {
-    for (struct Body *top = shared->email->body; top; top = top->next)
+    if ((*bp)->type == TYPE_MULTIPART)
     {
-      if (top->tagged)
-        mutt_get_tmp_attachment(top);
+      mutt_warning(_("Can't get multipart attachments"));
+      continue;
     }
-    menu_queue_redraw(menu, MENU_REDRAW_FULL);
-  }
-  else if (mutt_get_tmp_attachment(cur_att->body) == 0)
-  {
-    menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
+    mutt_get_tmp_attachment(*bp);
   }
 
+  menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  rc = IR_SUCCESS;
+
+done:
+  ARRAY_FREE(&ba);
   /* No send2hook since this doesn't change the message. */
-  return IR_SUCCESS;
+  return rc;
 }
 
 /**
@@ -1829,34 +1830,27 @@ static int op_attachment_update_encoding(struct ComposeSharedData *shared, int o
   if (!check_count(actx))
     return IR_NO_ACTION;
 
-  bool encoding_updated = false;
+  int rc = IR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
-  if (menu->tagprefix)
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
+  ba_add_tagged(&ba, actx, menu);
+  if (ARRAY_EMPTY(&ba))
+    goto done;
+
+  struct Body **bp = NULL;
+  ARRAY_FOREACH(bp, &ba)
   {
-    struct Body *top = NULL;
-    for (top = shared->email->body; top; top = top->next)
-    {
-      if (top->tagged)
-      {
-        encoding_updated = true;
-        mutt_update_encoding(top, shared->sub);
-      }
-    }
-    menu_queue_redraw(menu, MENU_REDRAW_FULL);
-  }
-  else
-  {
-    struct AttachPtr *cur_att = current_attachment(actx, menu);
-    mutt_update_encoding(cur_att->body, shared->sub);
-    encoding_updated = true;
-    menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
-    notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+    mutt_update_encoding(*bp, shared->sub);
   }
 
-  if (encoding_updated)
-    mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  rc = IR_SUCCESS;
 
-  return IR_SUCCESS;
+done:
+  ARRAY_FREE(&ba);
+  return rc;
 }
 
 // -----------------------------------------------------------------------------
