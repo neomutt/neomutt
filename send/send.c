@@ -652,7 +652,7 @@ void mutt_make_attribution(struct Email *e, FILE *fp_out, struct ConfigSubset *s
 }
 
 /**
- * greeting_string - Format a greetings string - Implements ::format_t - @ingroup expando_api
+ * greeting_format_str - Format a greetings string - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
  * | :------ | :----------------------------------------------------------------
@@ -660,10 +660,10 @@ void mutt_make_attribution(struct Email *e, FILE *fp_out, struct ConfigSubset *s
  * | \%u     | User (login) name of the recipient
  * | \%v     | First name of the recipient
  */
-static const char *greeting_string(char *buf, size_t buflen, size_t col, int cols,
-                                   char op, const char *src, const char *prec,
-                                   const char *if_str, const char *else_str,
-                                   intptr_t data, MuttFormatFlags flags)
+static const char *greeting_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                       char op, const char *src, const char *prec,
+                                       const char *if_str, const char *else_str,
+                                       intptr_t data, MuttFormatFlags flags)
 {
   struct Email *e = (struct Email *) data;
   char *p = NULL;
@@ -709,7 +709,7 @@ static const char *greeting_string(char *buf, size_t buflen, size_t col, int col
   }
 
   if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(buf, buflen, col, cols, else_str, greeting_string, data, flags);
+    mutt_expando_format(buf, buflen, col, cols, else_str, greeting_format_str, data, flags);
 
   return src;
 }
@@ -730,7 +730,7 @@ static void mutt_make_greeting(struct Email *e, FILE *fp_out, struct ConfigSubse
 
   char buf[1024];
 
-  mutt_expando_format(buf, sizeof(buf), 0, 0, c_greeting, greeting_string,
+  mutt_expando_format(buf, sizeof(buf), 0, 0, c_greeting, greeting_format_str,
                       (intptr_t) e, MUTT_TOKEN_NO_FLAGS);
 
   fputs(buf, fp_out);
