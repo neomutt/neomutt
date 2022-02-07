@@ -518,7 +518,7 @@ main
   /* sanity check against stupid administrators */
   if (getegid() != getgid())
   {
-    mutt_error("%s: I don't want to run with privileges!", argv[0]);
+    mutt_error("%s: I don't want to run with privileges!", (argc != 0) ? argv[0] : "neomutt");
     goto main_exit; // TEST01: neomutt (as root, chgrp mail neomutt; chmod +s neomutt)
   }
 

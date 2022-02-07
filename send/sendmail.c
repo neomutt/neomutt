@@ -56,6 +56,9 @@
 
 struct Mailbox;
 
+/* For execvp environment setting in send_msg() */
+extern char **environ;
+
 SIG_ATOMIC_VOLATILE_T SigAlrm; ///< true after SIGALRM is received
 
 ARRAY_HEAD(SendmailArgs, const char *);
@@ -160,8 +163,8 @@ static int send_msg(const char *path, struct SendmailArgs *args,
           _exit(S_ERR);
       }
 
-      /* execvpe is a glibc extension */
-      /* execvpe (path, args, mutt_envlist_getlist()); */
+      /* execvpe is a glibc extension, so just manually set environ */
+      environ = mutt_envlist_getlist();
       execvp(path, (char **) args->entries);
       _exit(S_ERR);
     }
@@ -415,6 +418,9 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
 
   ARRAY_ADD(&args, NULL);
 
+  const short c_sendmail_wait = cs_subset_number(sub, "sendmail_wait");
+  i = send_msg(path, &args, msg, OptNoCurses ? NULL : &childout, c_sendmail_wait);
+
   /* Some user's $sendmail command uses gpg for password decryption,
    * and is set up to prompt using ncurses pinentry.  If we
    * mutt_endwin() it leaves other users staring at a blank screen.
@@ -424,8 +430,6 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
     mutt_need_hard_redraw();
   }
 
-  const short c_sendmail_wait = cs_subset_number(sub, "sendmail_wait");
-  i = send_msg(path, &args, msg, OptNoCurses ? NULL : &childout, c_sendmail_wait);
   if (i != (EX_OK & 0xff))
   {
     if (i != S_BKG)

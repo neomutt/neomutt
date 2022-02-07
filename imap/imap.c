@@ -2207,7 +2207,7 @@ static enum MxStatus imap_mbox_close(struct Mailbox *m)
       if (m->msg_deleted == 0)
       {
         adata->closing = true;
-        imap_exec(adata, "CLOSE", IMAP_CMD_QUEUE);
+        imap_exec(adata, "CLOSE", IMAP_CMD_NO_FLAGS);
       }
       adata->state = IMAP_AUTHENTICATED;
     }
