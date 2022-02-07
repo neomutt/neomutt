@@ -47,9 +47,6 @@
 #include "functions.h"
 #include "lib.h"
 #include "attach/lib.h"
-#ifdef USE_AUTOCRYPT
-#include "autocrypt/lib.h"
-#endif
 #include "browser/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
@@ -85,6 +82,9 @@
 #endif
 #ifdef USE_IMAP
 #include "imap/lib.h"
+#endif
+#ifdef USE_AUTOCRYPT
+#include "autocrypt/lib.h"
 #endif
 
 static const char *Not_available_in_this_menu =
@@ -403,7 +403,7 @@ cleanup:
  * @param[in,out] al    AddressList to edit
  * @retval true The address list was changed
  */
-static bool edit_address_list(int field, struct AddressList *al)
+static bool edit_address_list(enum HeaderField field, struct AddressList *al)
 {
   struct Buffer *old_list = mutt_buffer_pool_get();
   struct Buffer *new_list = mutt_buffer_pool_get();

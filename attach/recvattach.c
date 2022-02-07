@@ -1207,9 +1207,6 @@ int ba_add_tagged(struct BodyArray *ba, struct AttachCtx *actx, struct Menu *men
 
   if (menu->tagprefix)
   {
-    if (!actx)
-      return -1;
-
     for (int i = 0; i < actx->idxlen; i++)
     {
       struct Body *b = actx->idx[i]->body;
