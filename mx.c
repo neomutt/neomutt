@@ -1103,11 +1103,15 @@ struct Message *mx_msg_open_new(struct Mailbox *m, const struct Email *e, MsgOpe
       }
 
       // Force a 'C' locale for the date, so that day/month names are in English
-      locale_t loc = newlocale(LC_TIME_MASK, "C", 0);
       char buf[64] = { 0 };
       struct tm tm = mutt_date_localtime(msg->received);
+#ifdef LC_TIME_MASK
+      locale_t loc = newlocale(LC_TIME_MASK, "C", 0);
       strftime_l(buf, sizeof(buf), "%a %b %e %H:%M:%S %Y", &tm, loc);
       freelocale(loc);
+#else  /* !LC_TIME_MASK */
+      strftime(buf, sizeof(buf), "%a %b %e %H:%M:%S %Y", &tm);
+#endif /* LC_TIME_MASK */
       fprintf(msg->fp, "From %s %s\n", p ? p->mailbox : NONULL(Username), buf);
     }
   }
