@@ -442,7 +442,7 @@ static void log_translation(void)
 {
   const char *header = ""; // Do not merge these two lines
   header = _(header);      // otherwise the .po files will end up badly ordered
-  const char *lang = strcasestr(header, "Language:");
+  const char *lang = mutt_istr_find(header, "Language:");
   int len = 64;
   if (lang)
   {

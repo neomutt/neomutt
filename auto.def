@@ -367,6 +367,7 @@ if {1} {
     mkdtemp \
     qsort_s \
     strsep \
+    strcasestr \
     tcgetwinsize \
     utimesnsat \
     vasprintf \

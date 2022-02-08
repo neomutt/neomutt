@@ -73,7 +73,7 @@ static bool patmatch(const struct Pattern *pat, const char *buf)
   if (pat->is_multi)
     return (mutt_list_find(&pat->p.multi_cases, buf) != NULL);
   if (pat->string_match)
-    return pat->ign_case ? strcasestr(buf, pat->p.str) : strstr(buf, pat->p.str);
+    return pat->ign_case ? mutt_istr_find(buf, pat->p.str) : strstr(buf, pat->p.str);
   if (pat->group_match)
     return mutt_group_match(pat->p.group, buf);
   return (regexec(pat->p.regex, buf, 0, NULL, 0) == 0);

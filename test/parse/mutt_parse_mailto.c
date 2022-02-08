@@ -50,7 +50,7 @@ static void check_addrlist(struct AddressList *list, const char *const exp[], si
   char *pp = parsed;
   for (size_t i = 0; i < num; ++i)
   {
-    char *tok = mutt_str_skip_whitespace(strsep(&pp, ","));
+    char *tok = mutt_str_skip_whitespace(mutt_str_sep(&pp, ","));
     if (!TEST_CHECK(mutt_str_equal(tok, exp[i])))
     {
       TEST_MSG("Expected: %s", exp[i]);

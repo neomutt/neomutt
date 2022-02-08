@@ -4425,7 +4425,7 @@ static bool verify_sender(struct Email *e)
             tmp_email += mailbox_length;
             tmp_sender += mailbox_length;
             domainname_match =
-                (strncasecmp(tmp_email, tmp_sender, domainname_length) == 0);
+                (mutt_istrn_cmp(tmp_email, tmp_sender, domainname_length) == 0);
             if (mailbox_match && domainname_match)
               rc = false;
           }
