@@ -42,4 +42,3 @@ short                 cs_subset_sort   (const struct ConfigSubset *sub, const ch
 const char *          cs_subset_string (const struct ConfigSubset *sub, const char *name);
 
 #endif /* MUTT_CONFIG_HELPERS_H */
-

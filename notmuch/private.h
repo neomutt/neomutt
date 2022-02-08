@@ -20,14 +20,14 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef MUTT_NOTMUCH_PRIVATE_H
+#define MUTT_NOTMUCH_PRIVATE_H
+
 #include <notmuch.h>
 #include <stdbool.h>
 #include <time.h>
 
 struct Mailbox;
-
-#ifndef MUTT_NOTMUCH_PRIVATE_H
-#define MUTT_NOTMUCH_PRIVATE_H
 
 #ifdef LIBNOTMUCH_CHECK_VERSION
 #undef LIBNOTMUCH_CHECK_VERSION

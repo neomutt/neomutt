@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MUTT_WINDOW_H
-#define MUTT_MUTT_WINDOW_H
+#ifndef MUTT_GUI_MUTT_WINDOW_H
+#define MUTT_GUI_MUTT_WINDOW_H
 
 #include "config.h"
 #include <stdbool.h>
@@ -254,4 +254,4 @@ void window_invalidate_all(void);
 const char *mutt_window_win_name(const struct MuttWindow *win);
 bool window_status_on_top(struct MuttWindow *panel, struct ConfigSubset *sub);
 
-#endif /* MUTT_MUTT_WINDOW_H */
+#endif /* MUTT_GUI_MUTT_WINDOW_H */

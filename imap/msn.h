@@ -36,4 +36,4 @@ void          imap_msn_reserve(struct MSN *msn, size_t num);
 void          imap_msn_set    (struct MSN *msn, size_t idx, struct Email *e);
 size_t        imap_msn_shrink (struct MSN *msn, size_t num);
 
-#endif /* !MUTT_IMAP_MSN_H */
+#endif /* MUTT_IMAP_MSN_H */

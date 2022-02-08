@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_CONFIG_REGEX_H
-#define MUTT_CONFIG_REGEX_H
+#ifndef MUTT_CONFIG_REGEX2_H
+#define MUTT_CONFIG_REGEX2_H
 
 #include <stdint.h>
 
@@ -31,4 +31,4 @@ struct Regex;
 void          regex_free(struct Regex **regex);
 struct Regex *regex_new (const char *str, uint32_t flags, struct Buffer *err);
 
-#endif /* MUTT_CONFIG_REGEX_H */
+#endif /* MUTT_CONFIG_REGEX2_H */

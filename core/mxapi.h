@@ -428,4 +428,3 @@ struct MxOps
 };
 
 #endif /* MUTT_CORE_MXAPI_H */
-

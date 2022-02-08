@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_STATE_H
-#define MUTT_STATE_H
+#ifndef MUTT_MUTT_STATE_H
+#define MUTT_MUTT_STATE_H
 
 #include <stdint.h>
 #include <stdio.h>
@@ -66,4 +66,4 @@ int  state_putws                (struct State *s, const wchar_t *ws);
 const char *state_attachment_marker(void);
 const char *state_protected_header_marker(void);
 
-#endif /* MUTT_STATE_H */
+#endif /* MUTT_MUTT_STATE_H */

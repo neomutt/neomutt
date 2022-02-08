@@ -26,8 +26,8 @@
  * Global variables
  */
 
-#ifndef MUTT_GLOBALS_H
-#define MUTT_GLOBALS_H
+#ifndef MUTT_MUTT_GLOBALS_H
+#define MUTT_MUTT_GLOBALS_H
 
 #include "config.h"
 #include <signal.h> // IWYU pragma: keep
@@ -73,4 +73,4 @@ WHERE SIG_ATOMIC_VOLATILE_T SigWinch; ///< true after SIGWINCH is received
 
 WHERE enum MenuType CurrentMenu; ///< Current Menu, e.g. #MENU_PAGER
 
-#endif /* MUTT_GLOBALS_H */
+#endif /* MUTT_MUTT_GLOBALS_H */

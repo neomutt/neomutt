@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_CURS_LIB_H
-#define MUTT_CURS_LIB_H
+#ifndef MUTT_GUI_CURS_LIB_H
+#define MUTT_GUI_CURS_LIB_H
 
 #include <stdbool.h>
 #include <wchar.h> // IWYU pragma: keep
@@ -74,4 +74,4 @@ void         mutt_unget_event(int ch, int op);
 void         mutt_unget_string(const char *s);
 size_t       mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width);
 
-#endif /* MUTT_CURS_LIB_H */
+#endif /* MUTT_GUI_CURS_LIB_H */

@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MSGWIN_H
-#define MUTT_MSGWIN_H
+#ifndef MUTT_GUI_MSGWIN_H
+#define MUTT_GUI_MSGWIN_H
 
 #include <stdio.h>
 #include "color/lib.h"
@@ -33,4 +33,4 @@ struct MuttWindow *msgwin_get_window(void);
 void               msgwin_set_height(short height);
 void               msgwin_set_text  (enum ColorId cid, const char *text);
 
-#endif /* MUTT_MSGWIN_H */
+#endif /* MUTT_GUI_MSGWIN_H */

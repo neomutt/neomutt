@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_REFLOW_H
-#define MUTT_REFLOW_H
+#ifndef MUTT_GUI_REFLOW_H
+#define MUTT_GUI_REFLOW_H
 
 struct MuttWindow;
 
 void window_reflow(struct MuttWindow *win);
 
-#endif /* MUTT_REFLOW_H */
+#endif /* MUTT_GUI_REFLOW_H */

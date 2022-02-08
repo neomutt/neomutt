@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_EMAIL_ADDRESS_H
-#define MUTT_EMAIL_ADDRESS_H
+#ifndef MUTT_ADDRESS_ADDRESS_H
+#define MUTT_ADDRESS_ADDRESS_H
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -109,4 +109,4 @@ size_t mutt_addrlist_write       (const struct AddressList *al, char *buf, size_
 void   mutt_addrlist_write_file  (const struct AddressList *addr, FILE *fp, int start_col, bool display);
 size_t mutt_addrlist_write_list  (const struct AddressList *al, struct ListHead *list);
 
-#endif /* MUTT_EMAIL_ADDRESS_H */
+#endif /* MUTT_ADDRESS_ADDRESS_H */

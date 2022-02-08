@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COLOR_COMMAND_H
-#define MUTT_COLOR_COMMAND_H
+#ifndef MUTT_COLOR_COMMAND2_H
+#define MUTT_COLOR_COMMAND2_H
 
 #include "config.h"
 #include <stdint.h>
@@ -53,4 +53,4 @@ enum CommandResult mutt_parse_unmono (struct Buffer *buf, struct Buffer *s, intp
 
 int fgbgattr_to_color(int fg, int bg, int attrs);
 
-#endif /* MUTT_COLOR_COMMAND_H */
+#endif /* MUTT_COLOR_COMMAND2_H */

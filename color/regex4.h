@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COLOR_REGEX_H
-#define MUTT_COLOR_REGEX_H
+#ifndef MUTT_COLOR_REGEX4_H
+#define MUTT_COLOR_REGEX4_H
 
 #include "config.h"
 #include <stdbool.h>
@@ -60,4 +60,4 @@ int  regex_colors_parse_status_list(enum ColorId cid, const char *pat, uint32_t 
 
 enum CommandResult add_pattern(struct RegexColorList *top, const char *s, bool sensitive, uint32_t fg, uint32_t bg, int attr, struct Buffer *err, bool is_index, int match);
 
-#endif /* MUTT_COLOR_REGEX_H */
+#endif /* MUTT_COLOR_REGEX4_H */

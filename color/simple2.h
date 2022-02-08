@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COLOR_SIMPLE_H
-#define MUTT_COLOR_SIMPLE_H
+#ifndef MUTT_COLOR_SIMPLE2_H
+#define MUTT_COLOR_SIMPLE2_H
 
 #include "config.h"
 #include <stdbool.h>
@@ -36,4 +36,4 @@ bool              simple_color_is_set   (enum ColorId cid);
 void              simple_colors_clear(void);
 void              simple_colors_init(void);
 
-#endif /* MUTT_COLOR_SIMPLE_H */
+#endif /* MUTT_COLOR_SIMPLE2_H */

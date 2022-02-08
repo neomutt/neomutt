@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_EMAIL_IDNA_H
-#define MUTT_EMAIL_IDNA_H
+#ifndef MUTT_ADDRESS_IDNA2_H
+#define MUTT_ADDRESS_IDNA2_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -34,4 +34,4 @@ char *      mutt_idna_local_to_intl(const char *user, const char *domain);
 const char *mutt_idna_print_version(void);
 int         mutt_idna_to_ascii_lz  (const char *input, char **output, uint8_t flags);
 
-#endif /* MUTT_EMAIL_IDNA_H */
+#endif /* MUTT_ADDRESS_IDNA2_H */

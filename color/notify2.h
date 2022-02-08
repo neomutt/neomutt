@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COLOR_NOTIFY_H
-#define MUTT_COLOR_NOTIFY_H
+#ifndef MUTT_COLOR_NOTIFY2_H
+#define MUTT_COLOR_NOTIFY2_H
 
 #include "config.h"
 #include "mutt/lib.h"
@@ -60,4 +60,4 @@ void color_notify_free(void);
 void mutt_color_observer_add   (observer_t callback, void *global_data);
 void mutt_color_observer_remove(observer_t callback, void *global_data);
 
-#endif /* MUTT_COLOR_NOTIFY_H */
+#endif /* MUTT_COLOR_NOTIFY2_H */

@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_WINDOW_ROOTWIN_H
-#define MUTT_WINDOW_ROOTWIN_H
+#ifndef MUTT_GUI_ROOTWIN_H
+#define MUTT_GUI_ROOTWIN_H
 
 extern struct MuttWindow *RootWindow;
 
@@ -29,4 +29,4 @@ void rootwin_free(void);
 void rootwin_new(void);
 void rootwin_set_size(int cols, int rows);
 
-#endif /* MUTT_WINDOW_ROOTWIN_H */
+#endif /* MUTT_GUI_ROOTWIN_H */

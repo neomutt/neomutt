@@ -25,13 +25,15 @@
  *
  * Attachment handling
  *
- * | File                 | Description                 |
- * | :------------------- | :-------------------------- |
- * | attach/attach.c      | @subpage attach_attach      |
- * | attach/attachments.c | @subpage attach_attachments |
- * | attach/dlg_attach.c  | @subpage attach_dialog      |
- * | attach/mutt_attach.c | @subpage attach_mutt_attach |
- * | attach/recvattach.c  | @subpage attach_recvattach  |
+ * | File                  | Description                  |
+ * | :-------------------- | :--------------------------- |
+ * | attach/attach.c       | @subpage attach_attach       |
+ * | attach/attachments.c  | @subpage attach_attachments  |
+ * | attach/dlg_attach.c   | @subpage attach_dialog       |
+ * | attach/functions.c    | @subpage attach_functions    |
+ * | attach/mutt_attach.c  | @subpage attach_mutt_attach  |
+ * | attach/private_data.c | @subpage attach_private_data |
+ * | attach/recvattach.c   | @subpage attach_recvattach   |
  */
 
 #ifndef MUTT_ATTACH_LIB_H

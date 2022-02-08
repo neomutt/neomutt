@@ -20,12 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_SIMPLE_IBAR_H
-#define MUTT_SIMPLE_IBAR_H
+#ifndef MUTT_GUI_SBAR_H
+#define MUTT_GUI_SBAR_H
 
 struct MuttWindow;
 
 struct MuttWindow *sbar_new(void);
 void sbar_set_title(struct MuttWindow *win, const char *title);
 
-#endif /* MUTT_SIMPLE_IBAR_H */
+#endif /* MUTT_GUI_SBAR_H */

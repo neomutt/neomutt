@@ -25,8 +25,8 @@
  * #include <string.h>
  */
 
-#ifndef MUTT_LIB_STRING_H
-#define MUTT_LIB_STRING_H
+#ifndef MUTT_LIB_STRING2_H
+#define MUTT_LIB_STRING2_H
 
 #include <ctype.h>
 #include <stdbool.h>
@@ -101,4 +101,4 @@ int         mutt_istrn_cmp(const char *a, const char *b, size_t num);
 bool        mutt_istrn_equal(const char *a, const char *b, size_t num);
 const char *mutt_istrn_rfind(const char *haystack, size_t haystack_length, const char *needle);
 
-#endif /* MUTT_LIB_STRING_H */
+#endif /* MUTT_LIB_STRING2_H */

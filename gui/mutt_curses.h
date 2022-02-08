@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MUTT_CURSES_H
-#define MUTT_MUTT_CURSES_H
+#ifndef MUTT_GUI_MUTT_CURSES_H
+#define MUTT_GUI_MUTT_CURSES_H
 
 #include "config.h"
 #include "color/lib.h"
@@ -61,4 +61,4 @@ void              mutt_curses_set_color_by_id(enum ColorId cid);
 void              mutt_curses_set_cursor(enum MuttCursorState state);
 void              mutt_resize_screen(void);
 
-#endif /* MUTT_MUTT_CURSES_H */
+#endif /* MUTT_GUI_MUTT_CURSES_H */

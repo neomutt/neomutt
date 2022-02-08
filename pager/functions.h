@@ -56,4 +56,4 @@ bool jump_to_bottom(struct PagerPrivateData *priv, struct PagerView *pview);
 
 extern struct PagerFunction PagerFunctions[];
 
-#endif //MUTT_PAGER_FUNCTIONS_H
+#endif /* MUTT_PAGER_FUNCTIONS_H */

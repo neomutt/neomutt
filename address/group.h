@@ -22,8 +22,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_GROUP_H
-#define MUTT_GROUP_H
+#ifndef MUTT_ADDRESS_GROUP_H
+#define MUTT_ADDRESS_GROUP_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -66,4 +66,4 @@ int  mutt_grouplist_remove_regex   (struct GroupList *gl, const char *s);
 bool          mutt_group_match  (struct Group *g, const char *s);
 struct Group *mutt_pattern_group(const char *pat);
 
-#endif /* MUTT_GROUP_H */
+#endif /* MUTT_ADDRESS_GROUP_H */

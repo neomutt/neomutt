@@ -26,6 +26,9 @@
  * API to store contiguous elements.
  */
 
+#ifndef MUTT_MUTT_ARRAY_H
+#define MUTT_MUTT_ARRAY_H
+
 #include <stdbool.h>
 #include <string.h>
 #include "memory.h"
@@ -290,3 +293,4 @@
       true)                                                                    \
    : false)
 
+#endif /* MUTT_MUTT_ARRAY_H */

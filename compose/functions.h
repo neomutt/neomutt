@@ -50,4 +50,4 @@ int compose_function_dispatcher(struct MuttWindow *win_compose, int op);
 
 extern struct ComposeFunction ComposeFunctions[];
 
-#endif //MUTT_COMPOSE_FUNCTIONS_H
+#endif /* MUTT_COMPOSE_FUNCTIONS_H */

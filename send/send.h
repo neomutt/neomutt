@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_SEND_H
-#define MUTT_SEND_H
+#ifndef MUTT_SEND_SEND_H
+#define MUTT_SEND_SEND_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -70,4 +70,4 @@ void            mutt_set_followup_to(struct Envelope *env, struct ConfigSubset *
 bool            mutt_send_list_subscribe(struct Mailbox *m, const struct Email *e);
 bool            mutt_send_list_unsubscribe(struct Mailbox *m, const struct Email *e);
 
-#endif /* MUTT_SEND_H */
+#endif /* MUTT_SEND_SEND_H */
