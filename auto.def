@@ -369,6 +369,7 @@ if {1} {
     strsep \
     strcasestr \
     tcgetwinsize \
+    timegm \
     utimesnsat \
     vasprintf \
     wcscasecmp

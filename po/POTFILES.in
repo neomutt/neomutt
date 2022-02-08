@@ -327,5 +327,6 @@ store/tc.c
 store/tdb.c
 subjectrx.c
 system.c
+timegm.c
 version.c
 wcscasecmp.c

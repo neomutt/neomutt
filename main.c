@@ -114,6 +114,7 @@
  * | status.c        | @subpage neo_status        |
  * | subjectrx.c     | @subpage neo_subjrx        |
  * | system.c        | @subpage neo_system        |
+ * | timegm.c        | @subpage neo_timegm        |
  * | version.c       | @subpage neo_version       |
  * | wcscasecmp.c    | @subpage neo_wcscasecmp    |
  *
