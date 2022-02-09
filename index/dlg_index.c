@@ -1428,3 +1428,28 @@ struct MuttWindow *index_pager_init(void)
 
   return dlg;
 }
+
+/**
+ * dlg_change_folder - Change the current folder, cautiously
+ * @param dlg Dialog holding the Index
+ * @param m   Mailbox to change to
+ */
+void dlg_change_folder(struct MuttWindow *dlg, struct Mailbox *m)
+{
+  if (!dlg || !m)
+    return;
+
+  struct IndexSharedData *shared = dlg->wdata;
+  if (!shared)
+    return;
+
+  struct MuttWindow *panel_index = window_find_child(dlg, WT_INDEX);
+  if (!panel_index)
+    return;
+
+  struct IndexPrivateData *priv = panel_index->wdata;
+  if (!priv)
+    return;
+
+  change_folder_mailbox(priv->menu, m, &priv->oldcount, shared, false);
+}

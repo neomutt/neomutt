@@ -219,6 +219,20 @@ static int op_sidebar_next_new(struct SidebarWindowData *wdata, int op)
 }
 
 /**
+ * op_sidebar_open - Open highlighted mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+int op_sidebar_open(struct SidebarWindowData *wdata, int op)
+{
+  struct MuttWindow *win_sidebar = wdata->win;
+  if (!mutt_window_is_visible(win_sidebar))
+    return IR_NO_ACTION;
+
+  struct MuttWindow *dlg = dialog_find(win_sidebar);
+  dlg_change_folder(dlg, sb_get_highlight(win_sidebar));
+  return IR_SUCCESS;
+}
+
+/**
  * op_sidebar_page_down - Selects the first entry in the next page of mailboxes - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
 static int op_sidebar_page_down(struct SidebarWindowData *wdata, int op)
@@ -315,6 +329,16 @@ static int op_sidebar_prev_new(struct SidebarWindowData *wdata, int op)
   }
 
   return IR_NO_ACTION;
+}
+
+/**
+ * op_sidebar_toggle_visible - Make the sidebar (in)visible - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+int op_sidebar_toggle_visible(struct SidebarWindowData *wdata, int op)
+{
+  // Config notifications will do the rest
+  bool_str_toggle(NeoMutt->sub, "sidebar_visible", NULL);
+  return IR_SUCCESS;
 }
 
 /**
