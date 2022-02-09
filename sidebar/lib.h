@@ -58,4 +58,6 @@ struct Mailbox *sb_get_highlight (struct MuttWindow *win);
 enum CommandResult sb_parse_unwhitelist(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult sb_parse_whitelist  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
+int sb_function_dispatcher(struct MuttWindow *win_sidebar, int op);
+
 #endif /* MUTT_SIDEBAR_LIB_H */

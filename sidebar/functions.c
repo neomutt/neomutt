@@ -221,7 +221,7 @@ static int op_sidebar_next_new(struct SidebarWindowData *wdata, int op)
 /**
  * op_sidebar_open - Open highlighted mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-int op_sidebar_open(struct SidebarWindowData *wdata, int op)
+static int op_sidebar_open(struct SidebarWindowData *wdata, int op)
 {
   struct MuttWindow *win_sidebar = wdata->win;
   if (!mutt_window_is_visible(win_sidebar))
@@ -334,11 +334,58 @@ static int op_sidebar_prev_new(struct SidebarWindowData *wdata, int op)
 /**
  * op_sidebar_toggle_visible - Make the sidebar (in)visible - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-int op_sidebar_toggle_visible(struct SidebarWindowData *wdata, int op)
+static int op_sidebar_toggle_visible(struct SidebarWindowData *wdata, int op)
 {
   // Config notifications will do the rest
   bool_str_toggle(NeoMutt->sub, "sidebar_visible", NULL);
   return IR_SUCCESS;
+}
+
+// -----------------------------------------------------------------------------
+
+/**
+ * SidebarFunctions - All the NeoMutt functions that the Sidebar supports
+ */
+struct SidebarFunction SidebarFunctions[] = {
+  // clang-format off
+  { OP_SIDEBAR_FIRST,          op_sidebar_first },
+  { OP_SIDEBAR_LAST,           op_sidebar_last },
+  { OP_SIDEBAR_NEXT,           op_sidebar_next },
+  { OP_SIDEBAR_NEXT_NEW,       op_sidebar_next_new },
+  { OP_SIDEBAR_OPEN,           op_sidebar_open },
+  { OP_SIDEBAR_PAGE_DOWN,      op_sidebar_page_down },
+  { OP_SIDEBAR_PAGE_UP,        op_sidebar_page_up },
+  { OP_SIDEBAR_PREV,           op_sidebar_prev },
+  { OP_SIDEBAR_PREV_NEW,       op_sidebar_prev_new },
+  { OP_SIDEBAR_TOGGLE_VISIBLE, op_sidebar_toggle_visible },
+  { 0, NULL },
+  // clang-format on
+};
+
+/**
+ * sb_function_dispatcher - Perform a Sidebar function
+ * @param win Sidebar Window
+ * @param op  Operation to perform, e.g. OP_SIDEBAR_NEXT
+ * @retval num #IndexRetval, e.g. #IR_SUCCESS
+ */
+int sb_function_dispatcher(struct MuttWindow *win, int op)
+{
+  if (!win || !win->wdata)
+    return IR_UNKNOWN;
+
+  struct SidebarWindowData *wdata = win->wdata;
+  int rc = IR_UNKNOWN;
+  for (size_t i = 0; SidebarFunctions[i].op != OP_NULL; i++)
+  {
+    const struct SidebarFunction *fn = &SidebarFunctions[i];
+    if (fn->op == op)
+    {
+      rc = fn->function(wdata, op);
+      break;
+    }
+  }
+
+  return rc;
 }
 
 /**
