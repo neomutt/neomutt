@@ -367,7 +367,9 @@ if {1} {
     mkdtemp \
     qsort_s \
     strsep \
+    strcasestr \
     tcgetwinsize \
+    timegm \
     utimesnsat \
     vasprintf \
     wcscasecmp
@@ -381,6 +383,7 @@ if {1} {
   cc-check-function-in-lib gethostent nsl
   cc-check-function-in-lib setsockopt socket
   cc-check-function-in-lib getaddrinfo_a anl
+  cc-check-function-in-lib nanosleep rt
 
   cc-with {-includes time.h} {
     cc-check-types "struct timespec"

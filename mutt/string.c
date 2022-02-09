@@ -44,6 +44,62 @@
 #include <sysexits.h>
 #endif
 
+#ifndef HAVE_STRCASESTR
+/**
+ * strcasestr - Find the first occurrence of needle in haystack, ignoring case
+ * @param haystack String to search
+ * @param needle   String to find
+ * @retval ptr Matched string, or NULL on failure
+ */
+static char *strcasestr(const char *haystack, const char *needle)
+{
+  size_t haystackn = strlen(haystack);
+  size_t needlen = strlen(needle);
+
+  const char *p = haystack;
+  while (haystackn >= needlen)
+  {
+    if (strncasecmp(p, needle, needlen) == 0)
+      return (char *) p;
+    p++;
+    haystackn--;
+  }
+  return NULL;
+}
+#endif /* HAVE_STRCASESTR */
+
+#ifndef HAVE_STRSEP
+/**
+ * strsep - Extract a token from a string
+ * @param stringp String to be split up
+ * @param delim   Characters to split stringp at
+ * @retval ptr Next token, or NULL if the no more tokens
+ *
+ * @note The pointer stringp will be moved and NULs inserted into it
+ */
+static char *strsep(char **stringp, const char *delim)
+{
+  if (*stringp == NULL)
+    return NULL;
+
+  char *start = *stringp;
+  for (char *p = *stringp; *p != '\0'; p++)
+  {
+    for (const char *s = delim; *s != '\0'; s++)
+    {
+      if (*p == *s)
+      {
+        *p = '\0';
+        *stringp = p + 1;
+        return start;
+      }
+    }
+  }
+  *stringp = NULL;
+  return start;
+}
+#endif /* HAVE_STRSEP */
+
 /**
  * struct SysExits - Lookup table of error messages
  */
@@ -116,6 +172,19 @@ const char *mutt_str_sysexit(int err_num)
   }
 
   return NULL;
+}
+
+/**
+ * mutt_str_sep - Find first occurance of any of delim characters in *stringp
+ * @param stringp Pointer to string to search for delim, updated with position of after delim if found else NULL
+ * @param delim   String with characters to search for in *stringp
+ * @retval ptr Input value of *stringp
+ */
+char *mutt_str_sep(char **stringp, const char *delim)
+{
+  if (!stringp || !*stringp || !delim)
+    return NULL;
+  return strsep(stringp, delim);
 }
 
 /**

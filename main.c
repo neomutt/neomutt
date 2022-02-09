@@ -114,6 +114,7 @@
  * | status.c        | @subpage neo_status        |
  * | subjectrx.c     | @subpage neo_subjrx        |
  * | system.c        | @subpage neo_system        |
+ * | timegm.c        | @subpage neo_timegm        |
  * | version.c       | @subpage neo_version       |
  * | wcscasecmp.c    | @subpage neo_wcscasecmp    |
  *
@@ -442,7 +443,7 @@ static void log_translation(void)
 {
   const char *header = ""; // Do not merge these two lines
   header = _(header);      // otherwise the .po files will end up badly ordered
-  const char *lang = strcasestr(header, "Language:");
+  const char *lang = mutt_istr_find(header, "Language:");
   int len = 64;
   if (lang)
   {

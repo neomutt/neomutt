@@ -13,6 +13,7 @@ CFLAGS_FOR_BUILD=	@CFLAGS_FOR_BUILD@ $(EXTRA_CFLAGS_FOR_BUILD)
 LDFLAGS_FOR_BUILD=	@LDFLAGS_FOR_BUILD@ $(EXTRA_LDFLAGS_FOR_BUILD)
 
 PWD=		@PWD@
+SH?=		sh
 AR=		@AR@
 CC=		@CC@
 CPP=		@CPP@
@@ -73,6 +74,9 @@ NEOMUTTOBJS=	alternates.o commands.o command_parse.o complete.o \
 		resize.o rfc3676.o score.o sort.o status.o subjectrx.o \
 		system.o version.o
 
+@if !HAVE_TIMEGM
+NEOMUTTOBJS+=	timegm.o
+@endif
 @if !HAVE_WCSCASECMP
 NEOMUTTOBJS+=	wcscasecmp.o
 @endif
@@ -814,7 +818,7 @@ hcache/hcversion.h:	$(SRCDIR)/address/address.h $(SRCDIR)/email/body.h \
 	echo '#include "email/parameter.h"'; \
 	echo '#include "mutt/buffer.h"'; \
 	echo '#include "mutt/list.h"';) | $(CPP) $(CFLAGS) - | \
-	sh $(SRCDIR)/hcache/hcachever.sh hcache/hcversion.h
+	$(SH) $(SRCDIR)/hcache/hcachever.sh hcache/hcversion.h
 
 ###############################################################################
 # coverage

@@ -1364,7 +1364,7 @@ static void *parse_menu(bool *menus, char *s, struct Buffer *err)
   char *marker = menu_names_dup;
   char *menu_name = NULL;
 
-  while ((menu_name = strsep(&marker, ",")))
+  while ((menu_name = mutt_str_sep(&marker, ",")))
   {
     int value = mutt_map_get_value(menu_name, MenuNames);
     if (value == -1)

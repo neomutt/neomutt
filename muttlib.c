@@ -1518,11 +1518,11 @@ int mutt_set_xdg_path(enum XdgType type, struct Buffer *buf)
 {
   const char *xdg_env = mutt_str_getenv(xdg_env_vars[type]);
   char *xdg = xdg_env ? mutt_str_dup(xdg_env) : mutt_str_dup(xdg_defaults[type]);
-  char *x = xdg; /* strsep() changes xdg, so free x instead later */
+  char *x = xdg; /* mutt_str_sep() changes xdg, so free x instead later */
   char *token = NULL;
   int rc = 0;
 
-  while ((token = strsep(&xdg, ":")))
+  while ((token = mutt_str_sep(&xdg, ":")))
   {
     if (mutt_buffer_printf(buf, "%s/%s/neomuttrc", token, PACKAGE) < 0)
       continue;
