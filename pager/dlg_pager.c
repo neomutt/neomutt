@@ -64,6 +64,9 @@
 #include "private_data.h"
 #include "protos.h"
 #include "status.h"
+#ifdef USE_SIDEBAR
+#include "sidebar/lib.h"
+#endif
 
 /**
  * struct Resize - Keep track of screen resizing
@@ -832,6 +835,15 @@ int mutt_pager(struct PagerView *pview)
     }
 
     int rc = pager_function_dispatcher(priv->pview->win_pager, op);
+
+#ifdef USE_SIDEBAR
+    if (rc == IR_UNKNOWN)
+    {
+      struct MuttWindow *win_sidebar = window_find_child(dlg, WT_SIDEBAR);
+      rc = sb_function_dispatcher(win_sidebar, op);
+    }
+#endif
+
     if (rc == IR_DONE)
       break;
     if (rc == IR_UNKNOWN)

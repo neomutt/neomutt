@@ -75,9 +75,6 @@
 #ifdef USE_IMAP
 #include "imap/lib.h"
 #endif
-#ifdef USE_SIDEBAR
-#include "sidebar/lib.h"
-#endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
 #include "nntp/mdata.h" // IWYU pragma: keep
@@ -91,6 +88,20 @@
 
 static const char *Not_available_in_this_menu =
     N_("Not available in this menu");
+
+/// Lookup for function results
+const struct Mapping RetvalNames[] = {
+  // clang-format off
+  { "continue",  IR_CONTINUE },
+  { "done",      IR_DONE },
+  { "error",     IR_ERROR },
+  { "no action", IR_NO_ACTION },
+  { "not impl",  IR_NOT_IMPL },
+  { "success",   IR_SUCCESS },
+  { "unknown",   IR_UNKNOWN },
+  { NULL, 0 },
+  // clang-format on
+};
 
 // -----------------------------------------------------------------------------
 
@@ -3069,54 +3080,6 @@ static int op_main_fetch_mail(struct IndexSharedData *shared,
 }
 #endif
 
-#ifdef USE_SIDEBAR
-/**
- * op_sidebar_next - Move the highlight to the first mailbox - Implements ::index_function_t - @ingroup index_function_api
- *
- * This function handles:
- * - OP_SIDEBAR_FIRST
- * - OP_SIDEBAR_LAST
- * - OP_SIDEBAR_NEXT
- * - OP_SIDEBAR_NEXT_NEW
- * - OP_SIDEBAR_PAGE_DOWN
- * - OP_SIDEBAR_PAGE_UP
- * - OP_SIDEBAR_PREV
- * - OP_SIDEBAR_PREV_NEW
- */
-static int op_sidebar_next(struct IndexSharedData *shared,
-                           struct IndexPrivateData *priv, int op)
-{
-  struct MuttWindow *dlg = dialog_find(priv->win_index);
-  struct MuttWindow *win_sidebar = window_find_child(dlg, WT_SIDEBAR);
-  sb_change_mailbox(win_sidebar, op);
-  return IR_SUCCESS;
-}
-
-/**
- * op_sidebar_open - Open highlighted mailbox - Implements ::index_function_t - @ingroup index_function_api
- */
-static int op_sidebar_open(struct IndexSharedData *shared,
-                           struct IndexPrivateData *priv, int op)
-{
-  struct MuttWindow *dlg = dialog_find(priv->win_index);
-  struct MuttWindow *win_sidebar = window_find_child(dlg, WT_SIDEBAR);
-  change_folder_mailbox(priv->menu, sb_get_highlight(win_sidebar),
-                        &priv->oldcount, shared, false);
-  return IR_SUCCESS;
-}
-
-/**
- * op_sidebar_toggle_visible - Make the sidebar (in)visible - Implements ::index_function_t - @ingroup index_function_api
- */
-static int op_sidebar_toggle_visible(struct IndexSharedData *shared,
-                                     struct IndexPrivateData *priv, int op)
-{
-  bool_str_toggle(shared->sub, "sidebar_visible", NULL);
-  mutt_window_reflow(NULL);
-  return IR_SUCCESS;
-}
-#endif
-
 // -----------------------------------------------------------------------------
 
 /**
@@ -3209,6 +3172,12 @@ int index_function_dispatcher(struct MuttWindow *win_index, int op)
       break;
     }
   }
+
+  if (rc == IR_UNKNOWN) // Not our function
+    return rc;
+
+  const char *result = mutt_map_get_name(rc, RetvalNames);
+  mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", OpStrings[op][0], op, NONULL(result));
 
   return rc;
 }
@@ -3370,18 +3339,6 @@ struct IndexFunction IndexFunctions[] = {
 #endif
 #ifdef USE_POP
   { OP_MAIN_FETCH_MAIL,                     op_main_fetch_mail,                   CHECK_ATTACH },
-#endif
-#ifdef USE_SIDEBAR
-  { OP_SIDEBAR_FIRST,                       op_sidebar_next,                      CHECK_NO_FLAGS },
-  { OP_SIDEBAR_LAST,                        op_sidebar_next,                      CHECK_NO_FLAGS },
-  { OP_SIDEBAR_NEXT,                        op_sidebar_next,                      CHECK_NO_FLAGS },
-  { OP_SIDEBAR_NEXT_NEW,                    op_sidebar_next,                      CHECK_NO_FLAGS },
-  { OP_SIDEBAR_OPEN,                        op_sidebar_open,                      CHECK_NO_FLAGS },
-  { OP_SIDEBAR_PAGE_DOWN,                   op_sidebar_next,                      CHECK_NO_FLAGS },
-  { OP_SIDEBAR_PAGE_UP,                     op_sidebar_next,                      CHECK_NO_FLAGS },
-  { OP_SIDEBAR_PREV,                        op_sidebar_next,                      CHECK_NO_FLAGS },
-  { OP_SIDEBAR_PREV_NEW,                    op_sidebar_next,                      CHECK_NO_FLAGS },
-  { OP_SIDEBAR_TOGGLE_VISIBLE,              op_sidebar_toggle_visible,            CHECK_NO_FLAGS },
 #endif
   { 0, NULL, CHECK_NO_FLAGS },
   // clang-format on

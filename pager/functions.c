@@ -63,9 +63,6 @@
 #include "private_data.h"
 #include "protos.h"
 #include "recvcmd.h"
-#ifdef USE_SIDEBAR
-#include "sidebar/lib.h"
-#endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
 #include "nntp/mdata.h" // IWYU pragma: keep
@@ -1833,44 +1830,6 @@ static int op_post(struct IndexSharedData *shared, struct PagerPrivateData *priv
 }
 #endif
 
-#ifdef USE_SIDEBAR
-/**
- * op_sidebar_move - Move the sidebar highlight - Implements ::pager_function_t - @ingroup pager_function_api
- *
- * This function handles:
- * - OP_SIDEBAR_FIRST
- * - OP_SIDEBAR_LAST
- * - OP_SIDEBAR_NEXT
- * - OP_SIDEBAR_NEXT_NEW
- * - OP_SIDEBAR_PAGE_DOWN
- * - OP_SIDEBAR_PAGE_UP
- * - OP_SIDEBAR_PREV
- * - OP_SIDEBAR_PREV_NEW
- */
-static int op_sidebar_move(struct IndexSharedData *shared,
-                           struct PagerPrivateData *priv, int op)
-{
-  struct MuttWindow *dlg = dialog_find(priv->pview->win_pager);
-  struct MuttWindow *win_sidebar = window_find_child(dlg, WT_SIDEBAR);
-  if (!win_sidebar)
-    return IR_NO_ACTION;
-  sb_change_mailbox(win_sidebar, op);
-  return IR_SUCCESS;
-}
-
-/**
- * op_sidebar_toggle_visible - Make the sidebar (in)visible - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_sidebar_toggle_visible(struct IndexSharedData *shared,
-                                     struct PagerPrivateData *priv, int op)
-{
-  bool_str_toggle(NeoMutt->sub, "sidebar_visible", NULL);
-  struct MuttWindow *dlg = dialog_find(priv->pview->win_pager);
-  mutt_window_reflow(dlg);
-  return IR_SUCCESS;
-}
-#endif
-
 // -----------------------------------------------------------------------------
 
 /**
@@ -1946,15 +1905,6 @@ struct PagerFunction PagerFunctions[] = {
   { OP_SEARCH_OPPOSITE,        op_pager_search_next },
   { OP_SEARCH_TOGGLE,          op_search_toggle },
   { OP_SHELL_ESCAPE,           op_shell_escape },
-  { OP_SIDEBAR_FIRST,          op_sidebar_move },
-  { OP_SIDEBAR_LAST,           op_sidebar_move },
-  { OP_SIDEBAR_NEXT,           op_sidebar_move },
-  { OP_SIDEBAR_NEXT_NEW,       op_sidebar_move },
-  { OP_SIDEBAR_PAGE_DOWN,      op_sidebar_move },
-  { OP_SIDEBAR_PAGE_UP,        op_sidebar_move },
-  { OP_SIDEBAR_PREV,           op_sidebar_move },
-  { OP_SIDEBAR_PREV_NEW,       op_sidebar_move },
-  { OP_SIDEBAR_TOGGLE_VISIBLE, op_sidebar_toggle_visible },
   { OP_SORT,                   op_sort },
   { OP_SORT_REVERSE,           op_sort },
   { OP_TAG,                    op_tag },
@@ -2002,6 +1952,12 @@ int pager_function_dispatcher(struct MuttWindow *win_pager, int op)
       break;
     }
   }
+
+  if (rc == IR_UNKNOWN) // Not our function
+    return rc;
+
+  const char *result = mutt_map_get_name(rc, RetvalNames);
+  mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", OpStrings[op][0], op, NONULL(result));
 
   return rc;
 }

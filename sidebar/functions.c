@@ -385,50 +385,11 @@ int sb_function_dispatcher(struct MuttWindow *win, int op)
     }
   }
 
-  return rc;
-}
+  if (rc == IR_UNKNOWN) // Not our function
+    return rc;
 
-/**
- * sb_change_mailbox - Perform a Sidebar function
- * @param win Sidebar Window
- * @param op  Operation to perform, e.g. OP_SIDEBAR_NEXT_NEW
- */
-void sb_change_mailbox(struct MuttWindow *win, int op)
-{
-  struct SidebarWindowData *wdata = sb_wdata_get(win);
-  if (!wdata)
-    return;
+  const char *result = mutt_map_get_name(rc, RetvalNames);
+  mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", OpStrings[op][0], op, NONULL(result));
 
-  if (wdata->hil_index < 0) /* It'll get reset on the next draw */
-    return;
-
-  switch (op)
-  {
-    case OP_SIDEBAR_FIRST:
-      op_sidebar_first(wdata, op);
-      break;
-    case OP_SIDEBAR_LAST:
-      op_sidebar_last(wdata, op);
-      break;
-    case OP_SIDEBAR_NEXT:
-      op_sidebar_next(wdata, op);
-      break;
-    case OP_SIDEBAR_NEXT_NEW:
-      op_sidebar_next_new(wdata, op);
-      break;
-    case OP_SIDEBAR_PAGE_DOWN:
-      op_sidebar_page_down(wdata, op);
-      break;
-    case OP_SIDEBAR_PAGE_UP:
-      op_sidebar_page_up(wdata, op);
-      break;
-    case OP_SIDEBAR_PREV:
-      op_sidebar_prev(wdata, op);
-      break;
-    case OP_SIDEBAR_PREV_NEW:
-      op_sidebar_prev_new(wdata, op);
-      break;
-    default:
-      return;
-  }
+  return IR_SUCCESS; // Whatever the outcome, we handled it
 }

@@ -32,7 +32,7 @@ struct MuttWindow;
  */
 enum IndexRetval
 {
-  IR_UNKNOWN   = -7, ///< Unknown key
+  IR_UNKNOWN   = -7, ///< Unknown function
   IR_CONTINUE  = -6, ///< Return to the Pager
   IR_DONE      = -5, ///< Exit the Index
   IR_NOT_IMPL  = -4, ///< Invalid function - feature not enabled
@@ -40,6 +40,8 @@ enum IndexRetval
   IR_ERROR     = -2, ///< Valid function - error occurred
   IR_SUCCESS   = -1, ///< Valid function - successfully performed
 };
+
+extern const struct Mapping RetvalNames[];
 
 /**
  * @defgroup index_function_api Index Function API
