@@ -38,14 +38,14 @@
 #include "opcodes.h"
 
 /**
- * next_new - Return the next mailbox with new messages
+ * sb_next_new - Return the next mailbox with new messages
  * @param wdata Sidebar data
  * @param begin Starting index for searching
  * @param end   Ending index for searching
  * @retval ptr  Pointer to the first entry with new messages
  * @retval NULL None could be found
  */
-static struct SbEntry **next_new(struct SidebarWindowData *wdata, size_t begin, size_t end)
+static struct SbEntry **sb_next_new(struct SidebarWindowData *wdata, size_t begin, size_t end)
 {
   struct SbEntry **sbep = NULL;
   ARRAY_FOREACH_FROM_TO(sbep, &wdata->entries, begin, end)
@@ -57,14 +57,14 @@ static struct SbEntry **next_new(struct SidebarWindowData *wdata, size_t begin, 
 }
 
 /**
- * prev_new - Return the previous mailbox with new messages
+ * sb_prev_new - Return the previous mailbox with new messages
  * @param wdata Sidebar data
  * @param begin Starting index for searching
  * @param end   Ending index for searching
  * @retval ptr  Pointer to the first entry with new messages
  * @retval NULL None could be found
  */
-static struct SbEntry **prev_new(struct SidebarWindowData *wdata, size_t begin, size_t end)
+static struct SbEntry **sb_prev_new(struct SidebarWindowData *wdata, size_t begin, size_t end)
 {
   struct SbEntry **sbep = NULL, **prev = NULL;
   ARRAY_FOREACH_FROM_TO(sbep, &wdata->entries, begin, end)
@@ -79,11 +79,11 @@ static struct SbEntry **prev_new(struct SidebarWindowData *wdata, size_t begin, 
 // -----------------------------------------------------------------------------
 
 /**
- * select_first - Selects the first unhidden mailbox
+ * op_sidebar_first - Selects the first unhidden mailbox
  * @param wdata Sidebar data
  * @retval true The selection changed
  */
-static bool select_first(struct SidebarWindowData *wdata)
+static bool op_sidebar_first(struct SidebarWindowData *wdata)
 {
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
     return false;
@@ -92,18 +92,18 @@ static bool select_first(struct SidebarWindowData *wdata)
 
   wdata->hil_index = 0;
   if ((*ARRAY_GET(&wdata->entries, wdata->hil_index))->is_hidden)
-    if (!select_next(wdata))
+    if (!op_sidebar_next(wdata))
       wdata->hil_index = orig_hil_index;
 
   return (orig_hil_index != wdata->hil_index);
 }
 
 /**
- * select_last - Selects the last unhidden mailbox
+ * op_sidebar_last - Selects the last unhidden mailbox
  * @param wdata Sidebar data
  * @retval true The selection changed
  */
-static bool select_last(struct SidebarWindowData *wdata)
+static bool op_sidebar_last(struct SidebarWindowData *wdata)
 {
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
     return false;
@@ -111,18 +111,18 @@ static bool select_last(struct SidebarWindowData *wdata)
   int orig_hil_index = wdata->hil_index;
 
   wdata->hil_index = ARRAY_SIZE(&wdata->entries);
-  if (!select_prev(wdata))
+  if (!op_sidebar_prev(wdata))
     wdata->hil_index = orig_hil_index;
 
   return (orig_hil_index != wdata->hil_index);
 }
 
 /**
- * select_next - Selects the next unhidden mailbox
+ * op_sidebar_next - Selects the next unhidden mailbox
  * @param wdata Sidebar data
  * @retval true The selection changed
  */
-bool select_next(struct SidebarWindowData *wdata)
+bool op_sidebar_next(struct SidebarWindowData *wdata)
 {
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
     return false;
@@ -141,14 +141,14 @@ bool select_next(struct SidebarWindowData *wdata)
 }
 
 /**
- * select_next_new - Selects the next new mailbox
+ * op_sidebar_next_new - Selects the next new mailbox
  * @param wdata         Sidebar data
  * @param next_new_wrap Wrap around when searching for the next mailbox with new mail
  * @retval true The selection changed
  *
  * Search down the list of mail folders for one containing new mail.
  */
-static bool select_next_new(struct SidebarWindowData *wdata, bool next_new_wrap)
+static bool op_sidebar_next_new(struct SidebarWindowData *wdata, bool next_new_wrap)
 {
   const size_t max_entries = ARRAY_SIZE(&wdata->entries);
 
@@ -156,8 +156,8 @@ static bool select_next_new(struct SidebarWindowData *wdata, bool next_new_wrap)
     return false;
 
   struct SbEntry **sbep = NULL;
-  if ((sbep = next_new(wdata, wdata->hil_index + 1, max_entries)) ||
-      (next_new_wrap && (sbep = next_new(wdata, 0, wdata->hil_index))))
+  if ((sbep = sb_next_new(wdata, wdata->hil_index + 1, max_entries)) ||
+      (next_new_wrap && (sbep = sb_next_new(wdata, 0, wdata->hil_index))))
   {
     wdata->hil_index = ARRAY_IDX(&wdata->entries, sbep);
     return true;
@@ -167,11 +167,11 @@ static bool select_next_new(struct SidebarWindowData *wdata, bool next_new_wrap)
 }
 
 /**
- * select_page_down - Selects the first entry in the next page of mailboxes
+ * op_sidebar_page_down - Selects the first entry in the next page of mailboxes
  * @param wdata Sidebar data
  * @retval true The selection changed
  */
-static bool select_page_down(struct SidebarWindowData *wdata)
+static bool op_sidebar_page_down(struct SidebarWindowData *wdata)
 {
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->bot_index < 0))
     return false;
@@ -179,20 +179,20 @@ static bool select_page_down(struct SidebarWindowData *wdata)
   int orig_hil_index = wdata->hil_index;
 
   wdata->hil_index = wdata->bot_index;
-  select_next(wdata);
+  op_sidebar_next(wdata);
   /* If the rest of the entries are hidden, go up to the last unhidden one */
   if ((*ARRAY_GET(&wdata->entries, wdata->hil_index))->is_hidden)
-    select_prev(wdata);
+    op_sidebar_prev(wdata);
 
   return (orig_hil_index != wdata->hil_index);
 }
 
 /**
- * select_page_up - Selects the last entry in the previous page of mailboxes
+ * op_sidebar_page_up - Selects the last entry in the previous page of mailboxes
  * @param wdata Sidebar data
  * @retval true The selection changed
  */
-static bool select_page_up(struct SidebarWindowData *wdata)
+static bool op_sidebar_page_up(struct SidebarWindowData *wdata)
 {
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->top_index < 0))
     return false;
@@ -200,20 +200,20 @@ static bool select_page_up(struct SidebarWindowData *wdata)
   int orig_hil_index = wdata->hil_index;
 
   wdata->hil_index = wdata->top_index;
-  select_prev(wdata);
+  op_sidebar_prev(wdata);
   /* If the rest of the entries are hidden, go down to the last unhidden one */
   if ((*ARRAY_GET(&wdata->entries, wdata->hil_index))->is_hidden)
-    select_next(wdata);
+    op_sidebar_next(wdata);
 
   return (orig_hil_index != wdata->hil_index);
 }
 
 /**
- * select_prev - Selects the previous unhidden mailbox
+ * op_sidebar_prev - Selects the previous unhidden mailbox
  * @param wdata Sidebar data
  * @retval true The selection changed
  */
-bool select_prev(struct SidebarWindowData *wdata)
+bool op_sidebar_prev(struct SidebarWindowData *wdata)
 {
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
     return false;
@@ -235,14 +235,14 @@ bool select_prev(struct SidebarWindowData *wdata)
 }
 
 /**
- * select_prev_new - Selects the previous new mailbox
+ * op_sidebar_prev_new - Selects the previous new mailbox
  * @param wdata         Sidebar data
  * @param next_new_wrap Wrap around when searching for the next mailbox with new mail
  * @retval true The selection changed
  *
  * Search up the list of mail folders for one containing new mail.
  */
-static bool select_prev_new(struct SidebarWindowData *wdata, bool next_new_wrap)
+static bool op_sidebar_prev_new(struct SidebarWindowData *wdata, bool next_new_wrap)
 {
   const size_t max_entries = ARRAY_SIZE(&wdata->entries);
 
@@ -250,8 +250,8 @@ static bool select_prev_new(struct SidebarWindowData *wdata, bool next_new_wrap)
     return false;
 
   struct SbEntry **sbep = NULL;
-  if ((sbep = prev_new(wdata, 0, wdata->hil_index)) ||
-      (next_new_wrap && (sbep = prev_new(wdata, wdata->hil_index + 1, max_entries))))
+  if ((sbep = sb_prev_new(wdata, 0, wdata->hil_index)) ||
+      (next_new_wrap && (sbep = sb_prev_new(wdata, wdata->hil_index + 1, max_entries))))
   {
     wdata->hil_index = ARRAY_IDX(&wdata->entries, sbep);
     return true;
@@ -283,28 +283,28 @@ void sb_change_mailbox(struct MuttWindow *win, int op)
   switch (op)
   {
     case OP_SIDEBAR_FIRST:
-      changed = select_first(wdata);
+      changed = op_sidebar_first(wdata);
       break;
     case OP_SIDEBAR_LAST:
-      changed = select_last(wdata);
+      changed = op_sidebar_last(wdata);
       break;
     case OP_SIDEBAR_NEXT:
-      changed = select_next(wdata);
+      changed = op_sidebar_next(wdata);
       break;
     case OP_SIDEBAR_NEXT_NEW:
-      changed = select_next_new(wdata, c_sidebar_next_new_wrap);
+      changed = op_sidebar_next_new(wdata, c_sidebar_next_new_wrap);
       break;
     case OP_SIDEBAR_PAGE_DOWN:
-      changed = select_page_down(wdata);
+      changed = op_sidebar_page_down(wdata);
       break;
     case OP_SIDEBAR_PAGE_UP:
-      changed = select_page_up(wdata);
+      changed = op_sidebar_page_up(wdata);
       break;
     case OP_SIDEBAR_PREV:
-      changed = select_prev(wdata);
+      changed = op_sidebar_prev(wdata);
       break;
     case OP_SIDEBAR_PREV_NEW:
-      changed = select_prev_new(wdata, c_sidebar_next_new_wrap);
+      changed = op_sidebar_prev_new(wdata, c_sidebar_next_new_wrap);
       break;
     default:
       return;
