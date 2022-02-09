@@ -63,6 +63,7 @@ enum DivType
  */
 struct SidebarWindowData
 {
+  struct MuttWindow *win;                 ///< Sidebar Window
   struct IndexSharedData *shared;         ///< Shared Index Data
   struct SbEntryArray entries;            ///< Items to display in the sidebar
 
@@ -95,7 +96,7 @@ void sb_sort_entries(struct SidebarWindowData *wdata, enum SortType sort);
 // wdata.c
 void                      sb_wdata_free(struct MuttWindow *win, void **ptr);
 struct SidebarWindowData *sb_wdata_get(struct MuttWindow *win);
-struct SidebarWindowData *sb_wdata_new(struct IndexSharedData *shared);
+struct SidebarWindowData *sb_wdata_new(struct MuttWindow *win, struct IndexSharedData *shared);
 
 // window.c
 int sb_recalc(struct MuttWindow *win);

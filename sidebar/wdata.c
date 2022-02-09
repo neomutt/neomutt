@@ -36,11 +36,14 @@ struct IndexSharedData;
 
 /**
  * sb_wdata_new - Create new Window data for the Sidebar
+ * @param win    Sidebar Window
+ * @param shared Index shared data
  * @retval ptr New Window data
  */
-struct SidebarWindowData *sb_wdata_new(struct IndexSharedData *shared)
+struct SidebarWindowData *sb_wdata_new(struct MuttWindow *win, struct IndexSharedData *shared)
 {
   struct SidebarWindowData *wdata = mutt_mem_calloc(1, sizeof(struct SidebarWindowData));
+  wdata->win = win;
   wdata->shared = shared;
   ARRAY_INIT(&wdata->entries);
   return wdata;
