@@ -82,8 +82,8 @@ void sb_remove_mailbox     (struct SidebarWindowData *wdata, struct Mailbox *m);
 void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m);
 
 // functions.c
-bool op_sidebar_next(struct SidebarWindowData *wdata);
-bool op_sidebar_prev(struct SidebarWindowData *wdata);
+bool sb_next(struct SidebarWindowData *wdata);
+bool sb_prev(struct SidebarWindowData *wdata);
 
 // observer.c
 int sb_insertion_window_observer(struct NotifyCallback *nc);

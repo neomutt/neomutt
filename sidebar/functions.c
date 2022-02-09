@@ -38,6 +38,26 @@
 #include "opcodes.h"
 
 /**
+ * sb_next - Find the next unhidden Mailbox
+ * @param wdata Sidebar data
+ * @retval bool true if found
+ */
+bool sb_next(struct SidebarWindowData *wdata)
+{
+  struct SbEntry **sbep = NULL;
+  ARRAY_FOREACH_FROM(sbep, &wdata->entries, wdata->hil_index + 1)
+  {
+    if (!(*sbep)->is_hidden)
+    {
+      wdata->hil_index = ARRAY_FOREACH_IDX;
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
  * sb_next_new - Return the next mailbox with new messages
  * @param wdata Sidebar data
  * @param begin Starting index for searching
@@ -54,6 +74,29 @@ static struct SbEntry **sb_next_new(struct SidebarWindowData *wdata, size_t begi
       return sbep;
   }
   return NULL;
+}
+
+/**
+ * sb_prev - Find the previous unhidden Mailbox
+ * @param wdata Sidebar data
+ * @retval bool true if found
+ */
+bool sb_prev(struct SidebarWindowData *wdata)
+{
+  struct SbEntry **sbep = NULL, **prev = NULL;
+  ARRAY_FOREACH_TO(sbep, &wdata->entries, wdata->hil_index)
+  {
+    if (!(*sbep)->is_hidden)
+      prev = sbep;
+  }
+
+  if (prev)
+  {
+    wdata->hil_index = ARRAY_IDX(&wdata->entries, prev);
+    return true;
+  }
+
+  return false;
 }
 
 /**
@@ -92,7 +135,7 @@ static bool op_sidebar_first(struct SidebarWindowData *wdata)
 
   wdata->hil_index = 0;
   if ((*ARRAY_GET(&wdata->entries, wdata->hil_index))->is_hidden)
-    if (!op_sidebar_next(wdata))
+    if (!sb_next(wdata))
       wdata->hil_index = orig_hil_index;
 
   return (orig_hil_index != wdata->hil_index);
@@ -111,7 +154,7 @@ static bool op_sidebar_last(struct SidebarWindowData *wdata)
   int orig_hil_index = wdata->hil_index;
 
   wdata->hil_index = ARRAY_SIZE(&wdata->entries);
-  if (!op_sidebar_prev(wdata))
+  if (!sb_prev(wdata))
     wdata->hil_index = orig_hil_index;
 
   return (orig_hil_index != wdata->hil_index);
@@ -122,22 +165,15 @@ static bool op_sidebar_last(struct SidebarWindowData *wdata)
  * @param wdata Sidebar data
  * @retval true The selection changed
  */
-bool op_sidebar_next(struct SidebarWindowData *wdata)
+static bool op_sidebar_next(struct SidebarWindowData *wdata)
 {
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
     return false;
 
-  struct SbEntry **sbep = NULL;
-  ARRAY_FOREACH_FROM(sbep, &wdata->entries, wdata->hil_index + 1)
-  {
-    if (!(*sbep)->is_hidden)
-    {
-      wdata->hil_index = ARRAY_FOREACH_IDX;
-      return true;
-    }
-  }
+  if (!sb_next(wdata))
+    return false;
 
-  return false;
+  return true;
 }
 
 /**
@@ -179,10 +215,10 @@ static bool op_sidebar_page_down(struct SidebarWindowData *wdata)
   int orig_hil_index = wdata->hil_index;
 
   wdata->hil_index = wdata->bot_index;
-  op_sidebar_next(wdata);
+  sb_next(wdata);
   /* If the rest of the entries are hidden, go up to the last unhidden one */
   if ((*ARRAY_GET(&wdata->entries, wdata->hil_index))->is_hidden)
-    op_sidebar_prev(wdata);
+    sb_prev(wdata);
 
   return (orig_hil_index != wdata->hil_index);
 }
@@ -200,10 +236,10 @@ static bool op_sidebar_page_up(struct SidebarWindowData *wdata)
   int orig_hil_index = wdata->hil_index;
 
   wdata->hil_index = wdata->top_index;
-  op_sidebar_prev(wdata);
+  sb_prev(wdata);
   /* If the rest of the entries are hidden, go down to the last unhidden one */
   if ((*ARRAY_GET(&wdata->entries, wdata->hil_index))->is_hidden)
-    op_sidebar_next(wdata);
+    sb_next(wdata);
 
   return (orig_hil_index != wdata->hil_index);
 }
@@ -213,25 +249,15 @@ static bool op_sidebar_page_up(struct SidebarWindowData *wdata)
  * @param wdata Sidebar data
  * @retval true The selection changed
  */
-bool op_sidebar_prev(struct SidebarWindowData *wdata)
+static bool op_sidebar_prev(struct SidebarWindowData *wdata)
 {
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
     return false;
 
-  struct SbEntry **sbep = NULL, **prev = NULL;
-  ARRAY_FOREACH_TO(sbep, &wdata->entries, wdata->hil_index)
-  {
-    if (!(*sbep)->is_hidden)
-      prev = sbep;
-  }
+  if (!sb_prev(wdata))
+    return false;
 
-  if (prev)
-  {
-    wdata->hil_index = ARRAY_IDX(&wdata->entries, prev);
-    return true;
-  }
-
-  return false;
+  return true;
 }
 
 /**

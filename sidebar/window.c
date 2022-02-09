@@ -649,7 +649,7 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
     {
       wdata->hil_index = 0;
       /* Note is_hidden will only be set when `$sidebar_new_mail_only` */
-      if ((*ARRAY_GET(&wdata->entries, 0))->is_hidden && !op_sidebar_next(wdata))
+      if ((*ARRAY_GET(&wdata->entries, 0))->is_hidden && !sb_next(wdata))
         wdata->hil_index = -1;
     }
   }
