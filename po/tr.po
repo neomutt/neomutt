@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2022-02-11 10:46+0000\n"
-"PO-Revision-Date: 2022-02-09 23:00+0300\n"
+"PO-Revision-Date: 2022-02-11 23:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomuttmutt\n"
 "Language: tr\n"
@@ -1565,7 +1565,7 @@ msgstr "Eklenemedi"
 
 #: compose/functions.c:1154
 msgid "Content-ID can only contain the characters: -.0-9@A-Z_a-z"
-msgstr ""
+msgstr "Content-ID, yalnızca şu karakterleri içerebilir: -.0-9@A-Z_a-z"
 
 #: compose/functions.c:1234
 msgid "Invalid encoding"
@@ -1600,9 +1600,8 @@ msgid "Not sending this message"
 msgstr "Bu ileti gönderilmeyecek"
 
 #: compose/functions.c:1436
-#, fuzzy
 msgid "Grouping 'related' requires at least 2 tagged messages"
-msgstr "'alternatives'i gruplama en az iki imli ileti gerektiriyor"
+msgstr "'related'ı gruplama en az iki imli ileti gerektiriyor"
 
 #: compose/functions.c:1475 compose/functions.c:1494
 msgid "Attachment is already at bottom"
@@ -5331,9 +5330,8 @@ msgid "delete the current entry"
 msgstr "geçerli girdiyi sil"
 
 #: opcodes.h:37
-#, fuzzy
 msgid "edit the 'Content-ID' of the attachment"
-msgstr "posta ekinin 'Content-Language'ini düzenle"
+msgstr "posta ekinin 'Content-ID'sini düzenle"
 
 #: opcodes.h:38
 msgid "edit attachment description"
@@ -5372,9 +5370,8 @@ msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr "imlenen posta eklerini 'multipart/multilingual' olarak grupla"
 
 #: opcodes.h:47
-#, fuzzy
 msgid "group tagged attachments as 'multipart/related'"
-msgstr "imlenen posta eklerini 'multipart/alternative' olarak grupla"
+msgstr "imlenen posta eklerini 'multipart/related' olarak grupla"
 
 #: opcodes.h:48
 msgid "move an attachment down in the attachment list"
