@@ -63,6 +63,7 @@ enum DivType
  */
 struct SidebarWindowData
 {
+  struct MuttWindow *win;                 ///< Sidebar Window
   struct IndexSharedData *shared;         ///< Shared Index Data
   struct SbEntryArray entries;            ///< Items to display in the sidebar
 
@@ -80,10 +81,15 @@ struct SidebarWindowData
 void sb_add_mailbox        (struct SidebarWindowData *wdata, struct Mailbox *m);
 void sb_remove_mailbox     (struct SidebarWindowData *wdata, struct Mailbox *m);
 void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m);
+struct Mailbox *sb_get_highlight(struct MuttWindow *win);
+
+// commands.c
+enum CommandResult sb_parse_unwhitelist(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult sb_parse_whitelist  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
 // functions.c
-bool select_next(struct SidebarWindowData *wdata);
-bool select_prev(struct SidebarWindowData *wdata);
+bool sb_next(struct SidebarWindowData *wdata);
+bool sb_prev(struct SidebarWindowData *wdata);
 
 // observer.c
 int sb_insertion_window_observer(struct NotifyCallback *nc);
@@ -95,7 +101,7 @@ void sb_sort_entries(struct SidebarWindowData *wdata, enum SortType sort);
 // wdata.c
 void                      sb_wdata_free(struct MuttWindow *win, void **ptr);
 struct SidebarWindowData *sb_wdata_get(struct MuttWindow *win);
-struct SidebarWindowData *sb_wdata_new(struct IndexSharedData *shared);
+struct SidebarWindowData *sb_wdata_new(struct MuttWindow *win, struct IndexSharedData *shared);
 
 // window.c
 int sb_recalc(struct MuttWindow *win);

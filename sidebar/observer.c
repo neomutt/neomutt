@@ -127,7 +127,7 @@ static struct MuttWindow *sb_win_init(struct MuttWindow *dlg)
   win_sidebar->state.visible = c_sidebar_visible && (c_sidebar_width > 0);
 
   struct IndexSharedData *shared = dlg->wdata;
-  win_sidebar->wdata = sb_wdata_new(shared);
+  win_sidebar->wdata = sb_wdata_new(win_sidebar, shared);
   win_sidebar->wdata_free = sb_wdata_free;
 
   calc_divider(win_sidebar->wdata);

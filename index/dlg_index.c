@@ -97,6 +97,9 @@
 #ifdef USE_INOTIFY
 #include "monitor.h"
 #endif
+#ifdef USE_SIDEBAR
+#include "sidebar/lib.h"
+#endif
 
 /// Help Bar for the Index dialog
 static const struct Mapping IndexHelp[] = {
@@ -1340,6 +1343,14 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
     int rc = index_function_dispatcher(priv->win_index, op);
 
+#ifdef USE_SIDEBAR
+    if (rc == IR_UNKNOWN)
+    {
+      struct MuttWindow *win_sidebar = window_find_child(dlg, WT_SIDEBAR);
+      rc = sb_function_dispatcher(win_sidebar, op);
+    }
+#endif
+
     if (rc == IR_CONTINUE)
     {
       op = OP_DISPLAY_MESSAGE;
@@ -1427,4 +1438,29 @@ struct MuttWindow *index_pager_init(void)
   dlg->focus = panel_index;
 
   return dlg;
+}
+
+/**
+ * dlg_change_folder - Change the current folder, cautiously
+ * @param dlg Dialog holding the Index
+ * @param m   Mailbox to change to
+ */
+void dlg_change_folder(struct MuttWindow *dlg, struct Mailbox *m)
+{
+  if (!dlg || !m)
+    return;
+
+  struct IndexSharedData *shared = dlg->wdata;
+  if (!shared)
+    return;
+
+  struct MuttWindow *panel_index = window_find_child(dlg, WT_INDEX);
+  if (!panel_index)
+    return;
+
+  struct IndexPrivateData *priv = panel_index->wdata;
+  if (!priv)
+    return;
+
+  change_folder_mailbox(priv->menu, m, &priv->oldcount, shared, false);
 }

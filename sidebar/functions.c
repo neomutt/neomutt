@@ -34,19 +34,18 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "functions.h"
 #include "lib.h"
+#include "index/lib.h"
 #include "opcodes.h"
 
 /**
- * select_next - Selects the next unhidden mailbox
+ * sb_next - Find the next unhidden Mailbox
  * @param wdata Sidebar data
- * @retval true The selection changed
+ * @retval bool true if found
  */
-bool select_next(struct SidebarWindowData *wdata)
+bool sb_next(struct SidebarWindowData *wdata)
 {
-  if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
-    return false;
-
   struct SbEntry **sbep = NULL;
   ARRAY_FOREACH_FROM(sbep, &wdata->entries, wdata->hil_index + 1)
   {
@@ -61,60 +60,31 @@ bool select_next(struct SidebarWindowData *wdata)
 }
 
 /**
- * next_new - Return the next mailbox with new messages
+ * sb_next_new - Return the next mailbox with new messages
  * @param wdata Sidebar data
  * @param begin Starting index for searching
  * @param end   Ending index for searching
  * @retval ptr  Pointer to the first entry with new messages
  * @retval NULL None could be found
  */
-static struct SbEntry **next_new(struct SidebarWindowData *wdata, size_t begin, size_t end)
+static struct SbEntry **sb_next_new(struct SidebarWindowData *wdata, size_t begin, size_t end)
 {
   struct SbEntry **sbep = NULL;
   ARRAY_FOREACH_FROM_TO(sbep, &wdata->entries, begin, end)
   {
-    if ((*sbep)->mailbox->has_new || (*sbep)->mailbox->msg_unread != 0)
+    if ((*sbep)->mailbox->has_new || ((*sbep)->mailbox->msg_unread != 0))
       return sbep;
   }
   return NULL;
 }
 
 /**
- * select_next_new - Selects the next new mailbox
- * @param wdata         Sidebar data
- * @param next_new_wrap Wrap around when searching for the next mailbox with new mail
- * @retval true The selection changed
- *
- * Search down the list of mail folders for one containing new mail.
- */
-static bool select_next_new(struct SidebarWindowData *wdata, bool next_new_wrap)
-{
-  const size_t max_entries = ARRAY_SIZE(&wdata->entries);
-
-  if ((max_entries == 0) || (wdata->hil_index < 0))
-    return false;
-
-  struct SbEntry **sbep = NULL;
-  if ((sbep = next_new(wdata, wdata->hil_index + 1, max_entries)) ||
-      (next_new_wrap && (sbep = next_new(wdata, 0, wdata->hil_index))))
-  {
-    wdata->hil_index = ARRAY_IDX(&wdata->entries, sbep);
-    return true;
-  }
-
-  return false;
-}
-
-/**
- * select_prev - Selects the previous unhidden mailbox
+ * sb_prev - Find the previous unhidden Mailbox
  * @param wdata Sidebar data
- * @retval true The selection changed
+ * @retval bool true if found
  */
-bool select_prev(struct SidebarWindowData *wdata)
+bool sb_prev(struct SidebarWindowData *wdata)
 {
-  if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
-    return false;
-
   struct SbEntry **sbep = NULL, **prev = NULL;
   ARRAY_FOREACH_TO(sbep, &wdata->entries, wdata->hil_index)
   {
@@ -132,181 +102,294 @@ bool select_prev(struct SidebarWindowData *wdata)
 }
 
 /**
- * prev_new - Return the previous mailbox with new messages
+ * sb_prev_new - Return the previous mailbox with new messages
  * @param wdata Sidebar data
  * @param begin Starting index for searching
  * @param end   Ending index for searching
  * @retval ptr  Pointer to the first entry with new messages
  * @retval NULL None could be found
  */
-static struct SbEntry **prev_new(struct SidebarWindowData *wdata, size_t begin, size_t end)
+static struct SbEntry **sb_prev_new(struct SidebarWindowData *wdata, size_t begin, size_t end)
 {
   struct SbEntry **sbep = NULL, **prev = NULL;
   ARRAY_FOREACH_FROM_TO(sbep, &wdata->entries, begin, end)
   {
-    if ((*sbep)->mailbox->has_new || (*sbep)->mailbox->msg_unread != 0)
+    if ((*sbep)->mailbox->has_new || ((*sbep)->mailbox->msg_unread != 0))
       prev = sbep;
   }
 
   return prev;
 }
 
-/**
- * select_prev_new - Selects the previous new mailbox
- * @param wdata         Sidebar data
- * @param next_new_wrap Wrap around when searching for the next mailbox with new mail
- * @retval true The selection changed
- *
- * Search up the list of mail folders for one containing new mail.
- */
-static bool select_prev_new(struct SidebarWindowData *wdata, bool next_new_wrap)
-{
-  const size_t max_entries = ARRAY_SIZE(&wdata->entries);
-
-  if ((max_entries == 0) || (wdata->hil_index < 0))
-    return false;
-
-  struct SbEntry **sbep = NULL;
-  if ((sbep = prev_new(wdata, 0, wdata->hil_index)) ||
-      (next_new_wrap && (sbep = prev_new(wdata, wdata->hil_index + 1, max_entries))))
-  {
-    wdata->hil_index = ARRAY_IDX(&wdata->entries, sbep);
-    return true;
-  }
-
-  return false;
-}
+// -----------------------------------------------------------------------------
 
 /**
- * select_page_down - Selects the first entry in the next page of mailboxes
- * @param wdata Sidebar data
- * @retval true The selection changed
+ * op_sidebar_first - Selects the first unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-static bool select_page_down(struct SidebarWindowData *wdata)
+static int op_sidebar_first(struct SidebarWindowData *wdata, int op)
 {
-  if (ARRAY_EMPTY(&wdata->entries) || (wdata->bot_index < 0))
-    return false;
+  if (!mutt_window_is_visible(wdata->win))
+    return IR_NO_ACTION;
 
-  int orig_hil_index = wdata->hil_index;
-
-  wdata->hil_index = wdata->bot_index;
-  select_next(wdata);
-  /* If the rest of the entries are hidden, go up to the last unhidden one */
-  if ((*ARRAY_GET(&wdata->entries, wdata->hil_index))->is_hidden)
-    select_prev(wdata);
-
-  return (orig_hil_index != wdata->hil_index);
-}
-
-/**
- * select_page_up - Selects the last entry in the previous page of mailboxes
- * @param wdata Sidebar data
- * @retval true The selection changed
- */
-static bool select_page_up(struct SidebarWindowData *wdata)
-{
-  if (ARRAY_EMPTY(&wdata->entries) || (wdata->top_index < 0))
-    return false;
-
-  int orig_hil_index = wdata->hil_index;
-
-  wdata->hil_index = wdata->top_index;
-  select_prev(wdata);
-  /* If the rest of the entries are hidden, go down to the last unhidden one */
-  if ((*ARRAY_GET(&wdata->entries, wdata->hil_index))->is_hidden)
-    select_next(wdata);
-
-  return (orig_hil_index != wdata->hil_index);
-}
-
-/**
- * select_first - Selects the first unhidden mailbox
- * @param wdata Sidebar data
- * @retval true The selection changed
- */
-static bool select_first(struct SidebarWindowData *wdata)
-{
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
-    return false;
+    return IR_NO_ACTION;
 
   int orig_hil_index = wdata->hil_index;
 
   wdata->hil_index = 0;
   if ((*ARRAY_GET(&wdata->entries, wdata->hil_index))->is_hidden)
-    if (!select_next(wdata))
+    if (!sb_next(wdata))
       wdata->hil_index = orig_hil_index;
 
-  return (orig_hil_index != wdata->hil_index);
+  if (orig_hil_index == wdata->hil_index)
+    return IR_NO_ACTION;
+
+  wdata->win->actions |= WA_RECALC;
+  return IR_SUCCESS;
 }
 
 /**
- * select_last - Selects the last unhidden mailbox
- * @param wdata Sidebar data
- * @retval true The selection changed
+ * op_sidebar_last - Selects the last unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-static bool select_last(struct SidebarWindowData *wdata)
+static int op_sidebar_last(struct SidebarWindowData *wdata, int op)
 {
+  if (!mutt_window_is_visible(wdata->win))
+    return IR_NO_ACTION;
+
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
-    return false;
+    return IR_NO_ACTION;
 
   int orig_hil_index = wdata->hil_index;
 
   wdata->hil_index = ARRAY_SIZE(&wdata->entries);
-  if (!select_prev(wdata))
+  if (!sb_prev(wdata))
     wdata->hil_index = orig_hil_index;
 
-  return (orig_hil_index != wdata->hil_index);
+  if (orig_hil_index == wdata->hil_index)
+    return IR_NO_ACTION;
+
+  wdata->win->actions |= WA_RECALC;
+  return IR_SUCCESS;
 }
 
 /**
- * sb_change_mailbox - Perform a Sidebar function
- * @param win Sidebar Window
- * @param op  Operation to perform, e.g. OP_SIDEBAR_NEXT_NEW
+ * op_sidebar_next - Selects the next unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
  */
-void sb_change_mailbox(struct MuttWindow *win, int op)
+static int op_sidebar_next(struct SidebarWindowData *wdata, int op)
 {
-  if (!mutt_window_is_visible(win))
-    return;
+  if (!mutt_window_is_visible(wdata->win))
+    return IR_NO_ACTION;
 
-  struct SidebarWindowData *wdata = sb_wdata_get(win);
-  if (!wdata)
-    return;
+  if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
+    return IR_NO_ACTION;
 
-  if (wdata->hil_index < 0) /* It'll get reset on the next draw */
-    return;
+  if (!sb_next(wdata))
+    return IR_NO_ACTION;
 
-  bool changed = false;
+  wdata->win->actions |= WA_RECALC;
+  return IR_SUCCESS;
+}
+
+/**
+ * op_sidebar_next_new - Selects the next new mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ *
+ * Search down the list of mail folders for one containing new mail.
+ */
+static int op_sidebar_next_new(struct SidebarWindowData *wdata, int op)
+{
+  if (!mutt_window_is_visible(wdata->win))
+    return IR_NO_ACTION;
+
+  const size_t max_entries = ARRAY_SIZE(&wdata->entries);
+  if ((max_entries == 0) || (wdata->hil_index < 0))
+    return IR_NO_ACTION;
+
   const bool c_sidebar_next_new_wrap =
       cs_subset_bool(NeoMutt->sub, "sidebar_next_new_wrap");
-  switch (op)
+  struct SbEntry **sbep = NULL;
+  if ((sbep = sb_next_new(wdata, wdata->hil_index + 1, max_entries)) ||
+      (c_sidebar_next_new_wrap && (sbep = sb_next_new(wdata, 0, wdata->hil_index))))
   {
-    case OP_SIDEBAR_FIRST:
-      changed = select_first(wdata);
-      break;
-    case OP_SIDEBAR_LAST:
-      changed = select_last(wdata);
-      break;
-    case OP_SIDEBAR_NEXT:
-      changed = select_next(wdata);
-      break;
-    case OP_SIDEBAR_NEXT_NEW:
-      changed = select_next_new(wdata, c_sidebar_next_new_wrap);
-      break;
-    case OP_SIDEBAR_PAGE_DOWN:
-      changed = select_page_down(wdata);
-      break;
-    case OP_SIDEBAR_PAGE_UP:
-      changed = select_page_up(wdata);
-      break;
-    case OP_SIDEBAR_PREV:
-      changed = select_prev(wdata);
-      break;
-    case OP_SIDEBAR_PREV_NEW:
-      changed = select_prev_new(wdata, c_sidebar_next_new_wrap);
-      break;
-    default:
-      return;
+    wdata->hil_index = ARRAY_IDX(&wdata->entries, sbep);
+    wdata->win->actions |= WA_RECALC;
+    return IR_SUCCESS;
   }
-  if (changed)
-    win->actions |= WA_RECALC;
+
+  return IR_NO_ACTION;
+}
+
+/**
+ * op_sidebar_open - Open highlighted mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_open(struct SidebarWindowData *wdata, int op)
+{
+  struct MuttWindow *win_sidebar = wdata->win;
+  if (!mutt_window_is_visible(win_sidebar))
+    return IR_NO_ACTION;
+
+  struct MuttWindow *dlg = dialog_find(win_sidebar);
+  dlg_change_folder(dlg, sb_get_highlight(win_sidebar));
+  return IR_SUCCESS;
+}
+
+/**
+ * op_sidebar_page_down - Selects the first entry in the next page of mailboxes - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_page_down(struct SidebarWindowData *wdata, int op)
+{
+  if (!mutt_window_is_visible(wdata->win))
+    return IR_NO_ACTION;
+
+  if (ARRAY_EMPTY(&wdata->entries) || (wdata->bot_index < 0))
+    return IR_NO_ACTION;
+
+  int orig_hil_index = wdata->hil_index;
+
+  wdata->hil_index = wdata->bot_index;
+  sb_next(wdata);
+  /* If the rest of the entries are hidden, go up to the last unhidden one */
+  if ((*ARRAY_GET(&wdata->entries, wdata->hil_index))->is_hidden)
+    sb_prev(wdata);
+
+  if (orig_hil_index == wdata->hil_index)
+    return IR_NO_ACTION;
+
+  wdata->win->actions |= WA_RECALC;
+  return IR_SUCCESS;
+}
+
+/**
+ * op_sidebar_page_up - Selects the last entry in the previous page of mailboxes - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_page_up(struct SidebarWindowData *wdata, int op)
+{
+  if (!mutt_window_is_visible(wdata->win))
+    return IR_NO_ACTION;
+
+  if (ARRAY_EMPTY(&wdata->entries) || (wdata->top_index < 0))
+    return IR_NO_ACTION;
+
+  int orig_hil_index = wdata->hil_index;
+
+  wdata->hil_index = wdata->top_index;
+  sb_prev(wdata);
+  /* If the rest of the entries are hidden, go down to the last unhidden one */
+  if ((*ARRAY_GET(&wdata->entries, wdata->hil_index))->is_hidden)
+    sb_next(wdata);
+
+  if (orig_hil_index == wdata->hil_index)
+    return IR_NO_ACTION;
+
+  wdata->win->actions |= WA_RECALC;
+  return IR_SUCCESS;
+}
+
+/**
+ * op_sidebar_prev - Selects the previous unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_prev(struct SidebarWindowData *wdata, int op)
+{
+  if (!mutt_window_is_visible(wdata->win))
+    return IR_NO_ACTION;
+
+  if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
+    return IR_NO_ACTION;
+
+  if (!sb_prev(wdata))
+    return IR_NO_ACTION;
+
+  wdata->win->actions |= WA_RECALC;
+  return IR_SUCCESS;
+}
+
+/**
+ * op_sidebar_prev_new - Selects the previous new mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ *
+ * Search up the list of mail folders for one containing new mail.
+ */
+static int op_sidebar_prev_new(struct SidebarWindowData *wdata, int op)
+{
+  if (!mutt_window_is_visible(wdata->win))
+    return IR_NO_ACTION;
+
+  const size_t max_entries = ARRAY_SIZE(&wdata->entries);
+  if ((max_entries == 0) || (wdata->hil_index < 0))
+    return IR_NO_ACTION;
+
+  const bool c_sidebar_next_new_wrap =
+      cs_subset_bool(NeoMutt->sub, "sidebar_next_new_wrap");
+  struct SbEntry **sbep = NULL;
+  if ((sbep = sb_prev_new(wdata, 0, wdata->hil_index)) ||
+      (c_sidebar_next_new_wrap &&
+       (sbep = sb_prev_new(wdata, wdata->hil_index + 1, max_entries))))
+  {
+    wdata->hil_index = ARRAY_IDX(&wdata->entries, sbep);
+    wdata->win->actions |= WA_RECALC;
+    return IR_SUCCESS;
+  }
+
+  return IR_NO_ACTION;
+}
+
+/**
+ * op_sidebar_toggle_visible - Make the sidebar (in)visible - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_toggle_visible(struct SidebarWindowData *wdata, int op)
+{
+  // Config notifications will do the rest
+  bool_str_toggle(NeoMutt->sub, "sidebar_visible", NULL);
+  return IR_SUCCESS;
+}
+
+// -----------------------------------------------------------------------------
+
+/**
+ * SidebarFunctions - All the NeoMutt functions that the Sidebar supports
+ */
+struct SidebarFunction SidebarFunctions[] = {
+  // clang-format off
+  { OP_SIDEBAR_FIRST,          op_sidebar_first },
+  { OP_SIDEBAR_LAST,           op_sidebar_last },
+  { OP_SIDEBAR_NEXT,           op_sidebar_next },
+  { OP_SIDEBAR_NEXT_NEW,       op_sidebar_next_new },
+  { OP_SIDEBAR_OPEN,           op_sidebar_open },
+  { OP_SIDEBAR_PAGE_DOWN,      op_sidebar_page_down },
+  { OP_SIDEBAR_PAGE_UP,        op_sidebar_page_up },
+  { OP_SIDEBAR_PREV,           op_sidebar_prev },
+  { OP_SIDEBAR_PREV_NEW,       op_sidebar_prev_new },
+  { OP_SIDEBAR_TOGGLE_VISIBLE, op_sidebar_toggle_visible },
+  { 0, NULL },
+  // clang-format on
+};
+
+/**
+ * sb_function_dispatcher - Perform a Sidebar function
+ * @param win Sidebar Window
+ * @param op  Operation to perform, e.g. OP_SIDEBAR_NEXT
+ * @retval num #IndexRetval, e.g. #IR_SUCCESS
+ */
+int sb_function_dispatcher(struct MuttWindow *win, int op)
+{
+  if (!win || !win->wdata)
+    return IR_UNKNOWN;
+
+  struct SidebarWindowData *wdata = win->wdata;
+  int rc = IR_UNKNOWN;
+  for (size_t i = 0; SidebarFunctions[i].op != OP_NULL; i++)
+  {
+    const struct SidebarFunction *fn = &SidebarFunctions[i];
+    if (fn->op == op)
+    {
+      rc = fn->function(wdata, op);
+      break;
+    }
+  }
+
+  if (rc == IR_UNKNOWN) // Not our function
+    return rc;
+
+  const char *result = mutt_map_get_name(rc, RetvalNames);
+  mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", OpStrings[op][0], op, NONULL(result));
+
+  return IR_SUCCESS; // Whatever the outcome, we handled it
 }
