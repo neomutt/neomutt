@@ -1574,7 +1574,7 @@ msgstr "Negaliu prisegti"
 
 #: compose/functions.c:1154
 msgid "Content-ID can only contain the characters: -.0-9@A-Z_a-z"
-msgstr ""
+msgstr "Content-ID gali būti tik šie simboliai: -.0-9@A-Z_a-z"
 
 #: compose/functions.c:1234
 msgid "Invalid encoding"
@@ -1609,9 +1609,8 @@ msgid "Not sending this message"
 msgstr "Nesiunčiu šito laiško"
 
 #: compose/functions.c:1436
-#, fuzzy
 msgid "Grouping 'related' requires at least 2 tagged messages"
-msgstr "Alternatyvų grupavimui reikia bent dviejų pažymėtų laiškų"
+msgstr "Susijusių grupavimui reikia bent dviejų pažymėtų laiškų"
 
 #: compose/functions.c:1475 compose/functions.c:1494
 msgid "Attachment is already at bottom"
@@ -5349,9 +5348,8 @@ msgid "delete the current entry"
 msgstr "ištrinti esamą įrašą"
 
 #: opcodes.h:37
-#, fuzzy
 msgid "edit the 'Content-ID' of the attachment"
-msgstr "taisyti priedo 'Content-Language' antraštę"
+msgstr "taisyti priedo 'Content-ID' antraštę"
 
 #: opcodes.h:38
 msgid "edit attachment description"
@@ -5383,16 +5381,15 @@ msgstr "gauti laikiną priedo kopiją"
 
 #: opcodes.h:45
 msgid "group tagged attachments as 'multipart/alternative'"
-msgstr "grupuoti pažymėtus priedus kaip alternatyvas"
+msgstr "grupuoti pažymėtus priedus kaip alternatyvas (multipart/alternative)"
 
 #: opcodes.h:46
 msgid "group tagged attachments as 'multipart/multilingual'"
-msgstr "grupuoti pažymėtus priedus kaip kalbų alternatyvas"
+msgstr "grupuoti pažymėtus priedus kaip kalbų alternatyvas (multipart/multilingual)"
 
 #: opcodes.h:47
-#, fuzzy
 msgid "group tagged attachments as 'multipart/related'"
-msgstr "grupuoti pažymėtus priedus kaip alternatyvas"
+msgstr "grupuoti pažymėtus priedus kaip susijusius (multipart/related)"
 
 #: opcodes.h:48
 msgid "move an attachment down in the attachment list"
