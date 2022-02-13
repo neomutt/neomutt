@@ -410,11 +410,6 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   shared->news = OptNewsSend;
 #endif
 
-#ifdef USE_NNTP
-  if (shared->news)
-    dlg->help_data = ComposeNewsHelp;
-#endif
-
   notify_observer_add(NeoMutt->notify, NT_CONFIG, compose_config_observer, dlg);
   notify_observer_add(dlg->notify, NT_WINDOW, compose_window_observer, dlg);
   dialog_push(dlg);

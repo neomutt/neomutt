@@ -567,7 +567,7 @@ cleanup:
  * If the recommendataion is > NO and keylist is not NULL, keylist will be
  * populated with the autocrypt keyids.
  */
-enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *e, char **keylist)
+enum AutocryptRec mutt_autocrypt_ui_recommendation(const struct Email *e, char **keylist)
 {
   enum AutocryptRec rc = AUTOCRYPT_REC_OFF;
   struct AutocryptAccount *account = NULL;

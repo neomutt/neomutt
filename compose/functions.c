@@ -2207,8 +2207,8 @@ static int op_compose_write_message(struct ComposeSharedData *shared, int op)
  * op_display_headers - Display message and toggle header weeding - Implements ::compose_function_t - @ingroup compose_function_api
  *
  * This function handles:
- * - OP_ATTACHMENT_VIEW 
- * - OP_DISPLAY_HEADERS 
+ * - OP_ATTACHMENT_VIEW
+ * - OP_DISPLAY_HEADERS
  */
 static int op_display_headers(struct ComposeSharedData *shared, int op)
 {
