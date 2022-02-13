@@ -31,6 +31,7 @@
  * | attach/attachments.c  | @subpage attach_attachments  |
  * | attach/dlg_attach.c   | @subpage attach_dialog       |
  * | attach/functions.c    | @subpage attach_functions    |
+ * | attach/lib.c          | @subpage attach_lib          |
  * | attach/mutt_attach.c  | @subpage attach_mutt_attach  |
  * | attach/private_data.c | @subpage attach_private_data |
  * | attach/recvattach.c   | @subpage attach_recvattach   |
@@ -45,5 +46,14 @@
 #include "mutt_attach.h"
 #include "recvattach.h"
 // IWYU pragma: end_exports
+
+
+struct Body;
+
+int  attach_body_count   (struct Body *body, bool recurse);
+bool attach_body_parent  (struct Body *start, struct Body *start_parent,
+                          struct Body *body, struct Body **body_parent);
+bool attach_body_previous(struct Body *start, struct Body *body,
+                          struct Body **previous);
 
 #endif /* MUTT_ATTACH_LIB_H */

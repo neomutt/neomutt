@@ -125,8 +125,8 @@ $(PWD)/alias:
 # libattach
 LIBATTACH=	libattach.a
 LIBATTACHOBJS=	attach/attach.o attach/attachments.o attach/dlg_attach.o \
-		attach/functions.o attach/mutt_attach.o attach/private_data.o \
-		attach/recvattach.o
+		attach/functions.o attach/lib.o attach/mutt_attach.o \
+		attach/private_data.o attach/recvattach.o
 CLEANFILES+=	$(LIBATTACH) $(LIBATTACHOBJS)
 ALLOBJS+=	$(LIBATTACHOBJS)
 
@@ -747,10 +747,10 @@ MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) \
 		$(LIBBROWSER) $(LIBNNTP) $(LIBCOMPMBOX) $(LIBSTORE) \
 		$(LIBPROGRESS) $(LIBQUESTION) $(LIBMENU) $(LIBCOLOR) \
 		$(LIBGUI) $(LIBENTER) $(LIBPATTERN) $(LIBHELPBAR) $(LIBMBOX) \
-		$(LIBNOTMUCH) $(LIBATTACH) $(LIBMAILDIR) $(LIBNCRYPT) \
-		$(LIBIMAP) $(LIBCONN) $(LIBHCACHE) $(LIBCOMPRESS) \
-		$(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) $(LIBALIAS) \
-		$(LIBSEND) $(LIBCOMPOSE) $(LIBCORE) $(LIBCONFIG) $(LIBEMAIL) \
+		$(LIBNOTMUCH) $(LIBSEND) $(LIBCOMPOSE) $(LIBATTACH) \
+		$(LIBMAILDIR) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
+		$(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) \
+		$(LIBALIAS) $(LIBCORE) $(LIBCONFIG) $(LIBEMAIL) \
 		$(LIBADDRESS) $(LIBDEBUG) $(LIBMUTT)
 
 # neomutt
