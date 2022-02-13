@@ -172,13 +172,6 @@ done:
 void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
                        struct Buffer *fcc)
 {
-  char buf[1024];
-  const char *p = NULL;
-  int i;
-  struct Envelope *n = NULL;
-  time_t mtime;
-  struct stat st = { 0 };
-
   struct Buffer *path = mutt_buffer_pool_get();
   mutt_buffer_mktemp(path);
   FILE *fp_out = mutt_file_fopen(mutt_buffer_string(path), "w");
@@ -207,13 +200,14 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   mutt_file_fclose(&fp_in);
   mutt_file_fclose(&fp_out);
 
+  struct stat st = { 0 };
   if (stat(mutt_buffer_string(path), &st) == -1)
   {
     mutt_perror(mutt_buffer_string(path));
     goto cleanup;
   }
 
-  mtime = mutt_file_decrease_mtime(mutt_buffer_string(path), &st);
+  time_t mtime = mutt_file_decrease_mtime(mutt_buffer_string(path), &st);
   if (mtime == (time_t) -1)
   {
     mutt_perror(mutt_buffer_string(path));
@@ -249,9 +243,12 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
     goto cleanup;
   }
 
-  n = mutt_rfc822_read_header(fp_in, NULL, true, false);
-  while ((i = fread(buf, 1, sizeof(buf), fp_in)) > 0)
-    fwrite(buf, 1, i, fp_out);
+  struct Envelope *env_new = NULL;
+  char buf[1024];
+  env_new = mutt_rfc822_read_header(fp_in, NULL, true, false);
+  int bytes_read;
+  while ((bytes_read = fread(buf, 1, sizeof(buf), fp_in)) > 0)
+    fwrite(buf, 1, bytes_read, fp_out);
   mutt_file_fclose(&fp_out);
   mutt_file_fclose(&fp_in);
   mutt_file_unlink(mutt_buffer_string(path));
@@ -265,8 +262,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
 #endif
   {
     if (!STAILQ_EMPTY(&e->env->in_reply_to) &&
-        (STAILQ_EMPTY(&n->in_reply_to) ||
-         !mutt_str_equal(STAILQ_FIRST(&n->in_reply_to)->data,
+        (STAILQ_EMPTY(&env_new->in_reply_to) ||
+         !mutt_str_equal(STAILQ_FIRST(&env_new->in_reply_to)->data,
                          STAILQ_FIRST(&e->env->in_reply_to)->data)))
     {
       mutt_list_free(&e->env->references);
@@ -274,12 +271,12 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   }
 
   /* restore old info. */
-  mutt_list_free(&n->references);
-  STAILQ_SWAP(&n->references, &e->env->references, ListNode);
+  mutt_list_free(&env_new->references);
+  STAILQ_SWAP(&env_new->references, &e->env->references, ListNode);
 
   mutt_env_free(&e->env);
-  e->env = n;
-  n = NULL;
+  e->env = env_new;
+  env_new = NULL;
 
   mutt_expand_aliases_env(e->env);
 
@@ -294,7 +291,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
 
     if (fcc && (plen = mutt_istr_startswith(np->data, "fcc:")))
     {
-      p = mutt_str_skip_email_wsp(np->data + plen);
+      const char *p = mutt_str_skip_email_wsp(np->data + plen);
       if (*p)
       {
         mutt_buffer_strcpy(fcc, p);
@@ -307,7 +304,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
       struct Body *body2 = NULL;
       struct Body *parts = NULL;
 
-      p = mutt_str_skip_email_wsp(np->data + plen);
+      const char *p = mutt_str_skip_email_wsp(np->data + plen);
       if (*p)
       {
         mutt_buffer_reset(path);
