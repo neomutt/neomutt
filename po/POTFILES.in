@@ -48,8 +48,6 @@ compose/cbar.c
 compose/cbar_data.c
 compose/compose.c
 compose/config.c
-compose/envelope.c
-compose/env_data.c
 compose/functions.c
 compose/shared_data.c
 compress/compress.c
@@ -114,6 +112,8 @@ email/url.c
 enriched.c
 enter/enter.c
 enter/state.c
+envelope/wdata.c
+envelope/window.c
 flags.c
 functions.c
 fuzz/address.c

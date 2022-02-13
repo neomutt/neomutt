@@ -1,6 +1,6 @@
 /**
  * @file
- * Compose Envelope Data
+ * Envelope Window Data
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMPOSE_ENV_DATA_H
-#define MUTT_COMPOSE_ENV_DATA_H
+#ifndef MUTT_ENVELOPE_WDATA_H
+#define MUTT_ENVELOPE_WDATA_H
 
 #include "config.h"
 #include "mutt/lib.h"
@@ -55,4 +55,4 @@ struct ComposeEnvelopeData
 void env_data_free(struct MuttWindow *win, void **ptr);
 struct ComposeEnvelopeData *env_data_new(void);
 
-#endif /* MUTT_COMPOSE_ENV_DATA_H */
+#endif /* MUTT_ENVELOPE_WDATA_H */

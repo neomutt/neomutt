@@ -215,8 +215,7 @@ $(PWD)/compmbox:
 LIBCOMPOSE=	libcompose.a
 LIBCOMPOSEOBJS=	compose/attach.o compose/attach_data.o compose/cbar.o \
 		compose/cbar_data.o compose/compose.o compose/config.o \
-		compose/env_data.o compose/envelope.o compose/functions.o \
-		compose/shared_data.o
+		compose/functions.o compose/shared_data.o
 
 CLEANFILES+=	$(LIBCOMPOSE) $(LIBCOMPOSEOBJS)
 ALLOBJS+=	$(LIBCOMPOSEOBJS)
@@ -374,7 +373,7 @@ $(PWD)/enter:
 ###############################################################################
 # libenvelope
 LIBENVELOPE=	libenvelope.a
-LIBENVELOPEOBJS=
+LIBENVELOPEOBJS= envelope/wdata.o envelope/window.o
 CLEANFILES+=	$(LIBENVELOPE) $(LIBENVELOPEOBJS)
 ALLOBJS+=	$(LIBENVELOPEOBJS)
 

@@ -1,6 +1,6 @@
 /**
  * @file
- * Compose Envelope Data
+ * Envelope Window Data
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -21,14 +21,14 @@
  */
 
 /**
- * @page compose_env_data Envelope Data
+ * @page envelope_wdata Envelope Window Data
  *
- * Compose Envelope Data
+ * Envelope Window Data
  */
 
 #include "config.h"
 #include "mutt/lib.h"
-#include "env_data.h"
+#include "wdata.h"
 
 /**
  * env_data_free - Free the Compose Envelope Data - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
@@ -37,6 +37,7 @@ void env_data_free(struct MuttWindow *win, void **ptr)
 {
   struct ComposeEnvelopeData *env_data = *ptr;
 
+  // Don't free email, env, fcc, sub -- we don't own them
   mutt_list_free(&env_data->to_list);
   mutt_list_free(&env_data->cc_list);
   mutt_list_free(&env_data->bcc_list);

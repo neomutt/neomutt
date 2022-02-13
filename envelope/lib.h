@@ -27,11 +27,21 @@
  *
  * | File                 | Description                 |
  * | :------------------  | :-------------------------- |
+ * | envelope/wdata.c     | @subpage envelope_wdata     |
+ * | envelope/window.c    | @subpage envelope_window    |
  */
 
 #ifndef MUTT_ENVELOPE_LIB_H
 #define MUTT_ENVELOPE_LIB_H
 
-extern int dummy;
+#include "private.h"
+#include "wdata.h"
+
+struct MuttWindow;
+
+extern int HeaderPadding[];
+extern int MaxHeaderWidth;
+
+int env_function_dispatcher(struct MuttWindow *win, int op);
 
 #endif /* MUTT_ENVELOPE_LIB_H */

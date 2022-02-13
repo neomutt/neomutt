@@ -39,7 +39,7 @@
  * - @ref gui_dialog
  *
  * **Children**
- * - @ref compose_envelope
+ * - @ref envelope_window
  * - @ref gui_sbar
  * - @ref compose_attach
  * - @ref compose_cbar
@@ -88,51 +88,6 @@
 #include "options.h"
 #include "shared_data.h"
 
-int HeaderPadding[HDR_ATTACH_TITLE] = { 0 };
-int MaxHeaderWidth = 0;
-
-const char *const Prompts[] = {
-  /* L10N: Compose menu field.  May not want to translate. */
-  N_("From: "),
-  /* L10N: Compose menu field.  May not want to translate. */
-  N_("To: "),
-  /* L10N: Compose menu field.  May not want to translate. */
-  N_("Cc: "),
-  /* L10N: Compose menu field.  May not want to translate. */
-  N_("Bcc: "),
-  /* L10N: Compose menu field.  May not want to translate. */
-  N_("Subject: "),
-  /* L10N: Compose menu field.  May not want to translate. */
-  N_("Reply-To: "),
-  /* L10N: Compose menu field.  May not want to translate. */
-  N_("Fcc: "),
-#ifdef MIXMASTER
-  /* L10N: "Mix" refers to the MixMaster chain for anonymous email */
-  N_("Mix: "),
-#endif
-  /* L10N: Compose menu field.  Holds "Encrypt", "Sign" related information */
-  N_("Security: "),
-  /* L10N: This string is used by the compose menu.
-     Since it is hidden by default, it does not increase the indentation of
-     other compose menu fields.  However, if possible, it should not be longer
-     than the other compose menu fields.  Since it shares the row with "Encrypt
-     with:", it should not be longer than 15-20 character cells.  */
-  N_("Sign as: "),
-#ifdef USE_AUTOCRYPT
-  // L10N: The compose menu autocrypt line
-  N_("Autocrypt: "),
-#endif
-#ifdef USE_NNTP
-  /* L10N: Compose menu field.  May not want to translate. */
-  N_("Newsgroups: "),
-  /* L10N: Compose menu field.  May not want to translate. */
-  N_("Followup-To: "),
-  /* L10N: Compose menu field.  May not want to translate. */
-  N_("X-Comment-To: "),
-#endif
-  N_("Headers: "),
-};
-
 /// Help Bar for the Compose dialog
 static const struct Mapping ComposeHelp[] = {
   // clang-format off
@@ -166,59 +121,6 @@ static const struct Mapping ComposeNewsHelp[] = {
   // clang-format on
 };
 #endif
-
-/**
- * calc_header_width_padding - Calculate the width needed for the compose labels
- * @param idx      Store the result at this index of HeaderPadding
- * @param header   Header string
- * @param calc_max If true, calculate the maximum width
- */
-static void calc_header_width_padding(int idx, const char *header, bool calc_max)
-{
-  int width;
-
-  HeaderPadding[idx] = mutt_str_len(header);
-  width = mutt_strwidth(header);
-  if (calc_max && (MaxHeaderWidth < width))
-    MaxHeaderWidth = width;
-  HeaderPadding[idx] -= width;
-}
-
-/**
- * init_header_padding - Calculate how much padding the compose table will need
- *
- * The padding needed for each header is strlen() + max_width - strwidth().
- *
- * calc_header_width_padding sets each entry in HeaderPadding to strlen -
- * width.  Then, afterwards, we go through and add max_width to each entry.
- */
-static void init_header_padding(void)
-{
-  static bool done = false;
-
-  if (done)
-    return;
-  done = true;
-
-  for (int i = 0; i < HDR_ATTACH_TITLE; i++)
-  {
-    if (i == HDR_CRYPTINFO)
-      continue;
-    calc_header_width_padding(i, _(Prompts[i]), true);
-  }
-
-  /* Don't include "Sign as: " in the MaxHeaderWidth calculation.  It
-   * doesn't show up by default, and so can make the indentation of
-   * the other fields look funny. */
-  calc_header_width_padding(HDR_CRYPTINFO, _(Prompts[HDR_CRYPTINFO]), false);
-
-  for (int i = 0; i < HDR_ATTACH_TITLE; i++)
-  {
-    HeaderPadding[i] += MaxHeaderWidth;
-    if (HeaderPadding[i] < 0)
-      HeaderPadding[i] = 0;
-  }
-}
 
 /**
  * compose_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
@@ -393,8 +295,6 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
 int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
                       struct ConfigSubset *sub)
 {
-  init_header_padding();
-
   bool loop = true;
 
   struct MuttWindow *dlg = compose_dlg_init(sub, e, fcc);
