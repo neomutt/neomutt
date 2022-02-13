@@ -141,112 +141,6 @@ static bool check_cid(const char *cid)
   return valid;
 }
 
-/**
- * count_attachments - Count attachments
- * @param  body    Body to start counting from
- * @param  recurse Whether to recurse into groups or not
- * @retval num     Number of attachments
- * @retval -1      Failure
- * */
-static int count_attachments(struct Body *body, bool recurse)
-{
-  if (!body)
-    return -1;
-
-  int attachments = 0;
-
-  for (struct Body *b = body; b; b = b->next)
-  {
-    attachments++;
-    if (recurse)
-    {
-      if (b->parts)
-        attachments += count_attachments(b->parts, true);
-    }
-  }
-
-  return attachments;
-}
-
-/**
- * find_body_parent - Find the parent of a body
- * @param[in]  start        Body to start search from
- * @param[in]  start_parent Parent of start Body pointer (or NULL if none)
- * @param[in]  body         Body to find parent of
- * @param[out] body_parent  Body Parent if found
- * @retval     true         Parent body found
- * @retval     false        Parent body not found
- */
-static bool find_body_parent(struct Body *start, struct Body *start_parent,
-                             struct Body *body, struct Body **body_parent)
-{
-  if (!start || !body)
-    return false;
-
-  struct Body *b = start;
-
-  if (b->parts)
-  {
-    if (b->parts == body)
-    {
-      *body_parent = b;
-      return true;
-    }
-  }
-  while (b)
-  {
-    if (b == body)
-    {
-      *body_parent = start_parent;
-      if (start_parent)
-        return true;
-      else
-        return false;
-    }
-    if (b->parts)
-    {
-      if (find_body_parent(b->parts, b, body, body_parent))
-        return true;
-    }
-    b = b->next;
-  }
-
-  return false;
-}
-
-/**
- * find_body_previous - Find the previous body of a body
- * @param[in]  start        Body to start search from
- * @param[in]  body         Body to find previous body of
- * @param[out] previous     Previous Body if found
- * @retval     true         Previous body found
- * @retval     false        Previous body not found
- */
-static bool find_body_previous(struct Body *start, struct Body *body, struct Body **previous)
-{
-  if (!start || !body)
-    return false;
-
-  struct Body *b = start;
-
-  while (b)
-  {
-    if (b->next == body)
-    {
-      *previous = b;
-      return true;
-    }
-    if (b->parts)
-    {
-      if (find_body_previous(b->parts, body, previous))
-        return true;
-    }
-    b = b->next;
-  }
-
-  return false;
-}
-
 #ifdef USE_AUTOCRYPT
 /**
  * autocrypt_compose_menu - Autocrypt compose settings
@@ -467,9 +361,9 @@ static int delete_attachment(struct AttachCtx *actx, int aidx)
 
   if (idx[aidx]->level > 0)
   {
-    if (find_body_parent(idx[0]->body, NULL, idx[aidx]->body, &bptr_parent))
+    if (attach_body_parent(idx[0]->body, NULL, idx[aidx]->body, &bptr_parent))
     {
-      if (count_attachments(bptr_parent->parts, false) < 3)
+      if (attach_body_count(bptr_parent->parts, false) < 3)
       {
         mutt_error(_("Can't leave group with only one attachment"));
         return -1;
@@ -480,9 +374,9 @@ static int delete_attachment(struct AttachCtx *actx, int aidx)
   // reorder body pointers
   if (aidx > 0)
   {
-    if (find_body_previous(idx[0]->body, idx[aidx]->body, &bptr_previous))
+    if (attach_body_previous(idx[0]->body, idx[aidx]->body, &bptr_previous))
       bptr_previous->next = idx[aidx]->body->next;
-    else if (find_body_parent(idx[0]->body, NULL, idx[aidx]->body, &bptr_parent))
+    else if (attach_body_parent(idx[0]->body, NULL, idx[aidx]->body, &bptr_parent))
       bptr_parent->parts = idx[aidx]->body->next;
   }
 
@@ -493,7 +387,7 @@ static int delete_attachment(struct AttachCtx *actx, int aidx)
     if ((idx[aidx]->body->type == TYPE_MULTIPART) &&
         (idx[aidx + 1]->level > idx[aidx]->level))
     {
-      part_count += count_attachments(idx[aidx]->body->parts, true);
+      part_count += attach_body_count(idx[aidx]->body->parts, true);
     }
   }
   idx[aidx]->body->next = NULL;
@@ -566,13 +460,13 @@ static void compose_attach_swap(struct Email *e, struct AttachCtx *actx, int fir
     // find previous attachment
     struct Body *bptr_previous = NULL;
     struct Body *bptr_parent = NULL;
-    if (find_body_previous(e->body, idx[first]->body, &bptr_previous))
+    if (attach_body_previous(e->body, idx[first]->body, &bptr_previous))
     {
       idx[first]->body->next = idx[second]->body->next;
       idx[second]->body->next = idx[first]->body;
       bptr_previous->next = idx[second]->body;
     }
-    else if (find_body_parent(e->body, NULL, idx[first]->body, &bptr_parent))
+    else if (attach_body_parent(e->body, NULL, idx[first]->body, &bptr_parent))
     {
       idx[first]->body->next = idx[second]->body->next;
       idx[second]->body->next = idx[first]->body;
@@ -641,7 +535,7 @@ static int group_attachments(struct ComposeSharedData *shared, char *subtype)
         if (bptr_parent)
         {
           struct Body *bptr_test = NULL;
-          if (!find_body_parent(actx->idx[0]->body, NULL, actx->idx[i]->body, &bptr_test))
+          if (!attach_body_parent(actx->idx[0]->body, NULL, actx->idx[i]->body, &bptr_test))
             mutt_debug(LL_DEBUG5, "can't find parent\n");
           if (bptr_test != bptr_parent)
           {
@@ -652,7 +546,7 @@ static int group_attachments(struct ComposeSharedData *shared, char *subtype)
         }
         else
         {
-          if (!find_body_parent(actx->idx[0]->body, NULL, actx->idx[i]->body, &bptr_parent))
+          if (!attach_body_parent(actx->idx[0]->body, NULL, actx->idx[i]->body, &bptr_parent))
             mutt_debug(LL_DEBUG5, "can't find parent\n");
         }
       }
@@ -662,7 +556,7 @@ static int group_attachments(struct ComposeSharedData *shared, char *subtype)
   // Can't group all attachments unless at top level
   if (bptr_parent)
   {
-    if (shared->adata->menu->tagged == count_attachments(bptr_parent->parts, false))
+    if (shared->adata->menu->tagged == attach_body_count(bptr_parent->parts, false))
     {
       mutt_error(_("Can't leave group with only one attachment"));
       return IR_ERROR;
@@ -698,11 +592,11 @@ static int group_attachments(struct ComposeSharedData *shared, char *subtype)
         bptr_first = bptr;
         if (i > 0)
         {
-          if (!find_body_previous(shared->email->body, bptr, &group_previous))
+          if (!attach_body_previous(shared->email->body, bptr, &group_previous))
           {
             mutt_debug(LL_DEBUG5, "couldn't find previous\n");
           }
-          if (!find_body_parent(shared->email->body, NULL, bptr, &group_parent))
+          if (!attach_body_parent(shared->email->body, NULL, bptr, &group_parent))
           {
             mutt_debug(LL_DEBUG5, "couldn't find parent\n");
           }
@@ -716,9 +610,9 @@ static int group_attachments(struct ComposeSharedData *shared, char *subtype)
 
       // append bptr to the group parts list and remove from email body list
       struct Body *bptr_previous = NULL;
-      if (find_body_previous(shared->email->body, bptr, &bptr_previous))
+      if (attach_body_previous(shared->email->body, bptr, &bptr_previous))
         bptr_previous->next = bptr->next;
-      else if (find_body_parent(shared->email->body, NULL, bptr, &bptr_parent))
+      else if (attach_body_parent(shared->email->body, NULL, bptr, &bptr_parent))
         bptr_parent->parts = bptr->next;
       else
         shared->email->body = bptr->next;
@@ -731,7 +625,7 @@ static int group_attachments(struct ComposeSharedData *shared, char *subtype)
         group_part->next = NULL;
 
         // reorder attachments and set levels
-        int bptr_attachments = count_attachments(bptr, true);
+        int bptr_attachments = attach_body_count(bptr, true);
         for (int j = i + 1; j < (i + bptr_attachments); j++)
           actx->idx[j]->level++;
         if (i > (group_last_idx + 1))
@@ -753,7 +647,7 @@ static int group_attachments(struct ComposeSharedData *shared, char *subtype)
         group->parts = bptr;
         group_part = bptr;
         group_part->next = NULL;
-        int bptr_attachments = count_attachments(bptr, true);
+        int bptr_attachments = attach_body_count(bptr, true);
         for (int j = i + 1; j < (i + bptr_attachments); j++)
           actx->idx[j]->level++;
         i += bptr_attachments - 1;
@@ -769,7 +663,7 @@ static int group_attachments(struct ComposeSharedData *shared, char *subtype)
   }
 
   // set group->next
-  int next_aidx = group_idx + count_attachments(group->parts, true);
+  int next_aidx = group_idx + attach_body_count(group->parts, true);
   if (group_parent)
   {
     // find next attachment with the same parent as the group
@@ -779,7 +673,7 @@ static int group_attachments(struct ComposeSharedData *shared, char *subtype)
     {
       b = actx->idx[next_aidx]->body;
       b_parent = NULL;
-      if (find_body_parent(shared->email->body, NULL, b, &b_parent))
+      if (attach_body_parent(shared->email->body, NULL, b, &b_parent))
       {
         if (group_parent == b_parent)
         {
@@ -1502,7 +1396,7 @@ static int op_attachment_move_down(struct ComposeSharedData *shared, int op)
     if ((actx->idx[nextidx]->body->type == TYPE_MULTIPART) &&
         (actx->idx[nextidx + 1]->level > actx->idx[nextidx]->level))
     {
-      finalidx += count_attachments(actx->idx[nextidx]->body->parts, true);
+      finalidx += attach_body_count(actx->idx[nextidx]->body->parts, true);
     }
   }
 
@@ -1778,9 +1672,9 @@ static int op_attachment_ungroup(struct ComposeSharedData *shared, int op)
   int level = actx->idx[aidx]->level;
 
   // reorder body pointers
-  if (find_body_previous(shared->email->body, bptr, &bptr_previous))
+  if (attach_body_previous(shared->email->body, bptr, &bptr_previous))
     bptr_previous->next = bptr->parts;
-  else if (find_body_parent(shared->email->body, NULL, bptr, &bptr_parent))
+  else if (attach_body_parent(shared->email->body, NULL, bptr, &bptr_parent))
     bptr_parent->parts = bptr->parts;
   else
     shared->email->body = bptr->parts;
