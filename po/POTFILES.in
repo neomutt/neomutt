@@ -120,6 +120,7 @@ functions.c
 fuzz/address.c
 gui/curs_lib.c
 gui/dialog.c
+gui/global.c
 gui/msgwin.c
 gui/mutt_curses.c
 gui/mutt_window.c
