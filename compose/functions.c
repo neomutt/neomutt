@@ -2025,7 +2025,7 @@ static int op_compose_pgp_menu(struct ComposeSharedData *shared, int op)
   }
   shared->email->security = crypt_pgp_send_menu(shared->email);
   update_crypt_info(shared);
-  if (old_flags == shared->email->security)
+  if (shared->email->security == old_flags)
     return IR_NO_ACTION;
 
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
@@ -2160,7 +2160,7 @@ static int op_compose_smime_menu(struct ComposeSharedData *shared, int op)
   }
   shared->email->security = crypt_smime_send_menu(shared->email);
   update_crypt_info(shared);
-  if (old_flags == shared->email->security)
+  if (shared->email->security == old_flags)
     return IR_NO_ACTION;
 
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
@@ -2294,7 +2294,7 @@ static int op_compose_autocrypt_menu(struct ComposeSharedData *shared, int op)
   }
   autocrypt_compose_menu(shared->email, shared->sub);
   update_crypt_info(shared);
-  if (old_flags == shared->email->security)
+  if (shared->email->security == old_flags)
     return IR_NO_ACTION;
 
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
