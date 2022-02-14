@@ -1793,19 +1793,24 @@ static int op_envelope_edit_fcc(struct ComposeSharedData *shared, int op)
   int rc = IR_NO_ACTION;
   struct Buffer *fname = mutt_buffer_pool_get();
   mutt_buffer_copy(fname, shared->fcc);
+
   if (mutt_buffer_get_field(Prompts[HDR_FCC], fname, MUTT_COMP_FILE | MUTT_COMP_CLEAR,
-                            false, NULL, NULL, NULL) == 0)
+                            false, NULL, NULL, NULL) != 0)
   {
-    if (!mutt_str_equal(shared->fcc->data, fname->data))
-    {
-      mutt_buffer_copy(shared->fcc, fname);
-      mutt_buffer_pretty_mailbox(shared->fcc);
-      shared->fcc_set = true;
-      notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
-      mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-      rc = IR_SUCCESS;
-    }
+    goto done; // aborted
   }
+
+  if (mutt_str_equal(shared->fcc->data, fname->data))
+    goto done; // no change
+
+  mutt_buffer_copy(shared->fcc, fname);
+  mutt_buffer_pretty_mailbox(shared->fcc);
+  shared->fcc_set = true;
+  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  rc = IR_SUCCESS;
+
+done:
   mutt_buffer_pool_release(&fname);
   return rc;
 }
@@ -1894,17 +1899,20 @@ static int op_envelope_edit_subject(struct ComposeSharedData *shared, int op)
 
   mutt_buffer_strcpy(buf, shared->email->env->subject);
   if (mutt_buffer_get_field(Prompts[HDR_SUBJECT], buf, MUTT_COMP_NO_FLAGS,
-                            false, NULL, NULL, NULL) == 0)
+                            false, NULL, NULL, NULL) != 0)
   {
-    if (!mutt_str_equal(shared->email->env->subject, mutt_buffer_string(buf)))
-    {
-      mutt_str_replace(&shared->email->env->subject, mutt_buffer_string(buf));
-      notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
-      mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-      rc = IR_SUCCESS;
-    }
+    goto done; // aborted
   }
 
+  if (mutt_str_equal(shared->email->env->subject, mutt_buffer_string(buf)))
+    goto done; // no change
+
+  mutt_str_replace(&shared->email->env->subject, mutt_buffer_string(buf));
+  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  rc = IR_SUCCESS;
+
+done:
   mutt_buffer_pool_release(&buf);
   return rc;
 }
