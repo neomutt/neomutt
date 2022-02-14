@@ -87,9 +87,6 @@
 #include "autocrypt/lib.h"
 #endif
 
-static const char *Not_available_in_this_menu =
-    N_("Not available in this menu");
-
 /**
  * check_count - Check if there are any attachments
  * @param actx Attachment context
@@ -2477,21 +2474,18 @@ struct ComposeFunction ComposeFunctions[] = {
 
 /**
  * compose_function_dispatcher - Perform a Compose function
- * @param win_compose Window for Compose
- * @param op          Operation to perform, e.g. OP_MAIN_LIMIT
+ * @param win Compose Window
+ * @param op  Operation to perform, e.g. OP_COMPOSE_WRITE_MESSAGE
  * @retval num #IndexRetval, e.g. #IR_SUCCESS
  */
-int compose_function_dispatcher(struct MuttWindow *win_compose, int op)
+int compose_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win_compose)
-  {
-    mutt_error(_(Not_available_in_this_menu));
-    return IR_ERROR;
-  }
+  if (!win)
+    return IR_UNKNOWN;
 
-  struct MuttWindow *dlg = dialog_find(win_compose);
+  struct MuttWindow *dlg = dialog_find(win);
   if (!dlg || !dlg->wdata)
-    return IR_ERROR;
+    return IR_UNKNOWN;
 
   int rc = IR_UNKNOWN;
   for (size_t i = 0; ComposeFunctions[i].op != OP_NULL; i++)
@@ -2504,6 +2498,12 @@ int compose_function_dispatcher(struct MuttWindow *win_compose, int op)
       break;
     }
   }
+
+  if (rc == IR_UNKNOWN) // Not our function
+    return rc;
+
+  const char *result = mutt_map_get_name(rc, RetvalNames);
+  mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", OpStrings[op][0], op, NONULL(result));
 
   return rc;
 }

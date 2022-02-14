@@ -27,6 +27,7 @@
  *
  * | File                 | Description                 |
  * | :------------------  | :-------------------------- |
+ * | envelope/functions.c | @subpage envelope_functions |
  * | envelope/wdata.c     | @subpage envelope_wdata     |
  * | envelope/window.c    | @subpage envelope_window    |
  */

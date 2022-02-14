@@ -112,6 +112,7 @@ email/url.c
 enriched.c
 enter/enter.c
 enter/state.c
+envelope/functions.c
 envelope/wdata.c
 envelope/window.c
 flags.c

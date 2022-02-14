@@ -76,6 +76,7 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "attach/lib.h"
+#include "envelope/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
@@ -325,6 +326,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   update_menu(shared->adata->actx, shared->adata->menu, true);
   update_crypt_info(shared);
 
+  struct MuttWindow *win_env = window_find_child(dlg, WT_CUSTOM);
   while (loop)
   {
 #ifdef USE_NNTP
@@ -336,6 +338,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
       mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
 
     int rc = compose_function_dispatcher(dlg, op);
+    if (rc == IR_UNKNOWN)
+    {
+      rc = env_function_dispatcher(win_env, op);
+    }
     if (rc == IR_DONE)
       break;
   }

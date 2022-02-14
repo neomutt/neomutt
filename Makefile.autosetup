@@ -373,7 +373,7 @@ $(PWD)/enter:
 ###############################################################################
 # libenvelope
 LIBENVELOPE=	libenvelope.a
-LIBENVELOPEOBJS= envelope/wdata.o envelope/window.o
+LIBENVELOPEOBJS= envelope/functions.o envelope/wdata.o envelope/window.o
 CLEANFILES+=	$(LIBENVELOPE) $(LIBENVELOPEOBJS)
 ALLOBJS+=	$(LIBENVELOPEOBJS)
 
