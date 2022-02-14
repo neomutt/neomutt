@@ -25,6 +25,8 @@
 
 #include "config.h"
 
+struct ComposeSharedData;
+
 /**
  * enum HeaderField - Ordered list of headers for the compose screen
  *
@@ -57,5 +59,20 @@ enum HeaderField
 };
 
 extern const char *const Prompts[];
+
+int op_compose_autocrypt_menu    (struct ComposeSharedData *shared, int op);
+int op_compose_mix               (struct ComposeSharedData *shared, int op);
+int op_compose_pgp_menu          (struct ComposeSharedData *shared, int op);
+int op_compose_smime_menu        (struct ComposeSharedData *shared, int op);
+int op_envelope_edit_bcc         (struct ComposeSharedData *shared, int op);
+int op_envelope_edit_cc          (struct ComposeSharedData *shared, int op);
+int op_envelope_edit_fcc         (struct ComposeSharedData *shared, int op);
+int op_envelope_edit_followup_to (struct ComposeSharedData *shared, int op);
+int op_envelope_edit_from        (struct ComposeSharedData *shared, int op);
+int op_envelope_edit_newsgroups  (struct ComposeSharedData *shared, int op);
+int op_envelope_edit_reply_to    (struct ComposeSharedData *shared, int op);
+int op_envelope_edit_subject     (struct ComposeSharedData *shared, int op);
+int op_envelope_edit_to          (struct ComposeSharedData *shared, int op);
+int op_envelope_edit_x_comment_to(struct ComposeSharedData *shared, int op);
 
 #endif /* MUTT_ENVELOPE_PRIVATE_H */
