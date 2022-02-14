@@ -31,12 +31,6 @@ extern int HeaderPadding[];
 extern int MaxHeaderWidth;
 extern const char *const Prompts[];
 
-// Observers of #NT_COMPOSE will not be passed any Event data.
-typedef uint8_t NotifyCompose;         ///< Flags, e.g. #NT_COMPOSE_ATTACH
-#define NT_COMPOSE_NO_FLAGS        0   ///< No flags are set
-#define NT_COMPOSE_ATTACH    (1 << 0)  ///< Attachments have changed
-#define NT_COMPOSE_ENVELOPE  (1 << 1)  ///< Envelope has changed
-
 /**
  * enum HeaderField - Ordered list of headers for the compose screen
  *

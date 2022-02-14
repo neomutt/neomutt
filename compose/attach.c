@@ -50,8 +50,8 @@
  *
  * | Event Type            | Handler                   |
  * | :-------------------- | :------------------------ |
- * | #NT_COMPOSE           | attach_compose_observer() |
  * | #NT_CONFIG            | attach_config_observer()  |
+ * | #NT_EMAIL             | attach_email_observer()   |
  * | #NT_WINDOW            | attach_window_observer()  |
  * | MuttWindow::recalc()  | attach_recalc()           |
  * | MuttWindow::repaint() | attach_repaint()          |
@@ -173,14 +173,14 @@ int attach_repaint(struct MuttWindow *win)
 }
 
 /**
- * attach_compose_observer - Notification that the Compose data has changed - Implements ::observer_t - @ingroup observer_api
+ * attach_email_observer - Notification that the Email has changed - Implements ::observer_t - @ingroup observer_api
  */
-static int attach_compose_observer(struct NotifyCallback *nc)
+static int attach_email_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_COMPOSE) || !nc->global_data)
+  if ((nc->event_type != NT_EMAIL) || !nc->global_data)
     return -1;
 
-  if (nc->event_subtype != NT_COMPOSE_ATTACH)
+  if (nc->event_subtype != NT_EMAIL_CHANGE_ATTACH)
     return 0;
 
   struct MuttWindow *win_attach = nc->global_data;
@@ -230,7 +230,10 @@ static int attach_window_observer(struct NotifyCallback *nc)
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
-    notify_observer_remove(win_attach->parent->notify, attach_compose_observer, win_attach);
+    struct Menu *menu = win_attach->wdata;
+    struct ComposeAttachData *adata = menu->mdata;
+    struct AttachCtx *actx = adata->actx;
+    notify_observer_remove(actx->email->notify, attach_email_observer, win_attach);
     notify_observer_remove(NeoMutt->notify, attach_config_observer, win_attach);
     notify_observer_remove(win_attach->notify, attach_window_observer, win_attach);
     mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -288,8 +291,8 @@ struct MuttWindow *attach_new(struct MuttWindow *parent, struct ComposeSharedDat
   // win_attach->repaint = attach_repaint;
 
   // NT_COLOR is handled by the Menu Window
-  notify_observer_add(parent->notify, NT_COMPOSE, attach_compose_observer, win_attach);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, attach_config_observer, win_attach);
+  notify_observer_add(shared->email->notify, NT_EMAIL, attach_email_observer, win_attach);
   notify_observer_add(win_attach->notify, NT_WINDOW, attach_window_observer, win_attach);
 
   struct Menu *menu = win_attach->wdata;

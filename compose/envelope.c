@@ -48,15 +48,15 @@
  *
  * Once constructed, it is controlled by the following events:
  *
- * | Event Type            | Handler                |
- * | :-------------------- | :--------------------- |
- * | #NT_COLOR             | env_color_observer()   |
- * | #NT_COMPOSE           | env_compose_observer() |
- * | #NT_CONFIG            | env_config_observer()  |
- * | #NT_HEADER            | env_header_observer()  |
- * | #NT_WINDOW            | env_window_observer()  |
- * | MuttWindow::recalc()  | env_recalc()           |
- * | MuttWindow::repaint() | env_repaint()          |
+ * | Event Type               | Handler                |
+ * | :----------------------- | :--------------------- |
+ * | #NT_COLOR                | env_color_observer()   |
+ * | #NT_CONFIG               | env_config_observer()  |
+ * | #NT_EMAIL (#NT_ENVELOPE) | env_email_observer()   |
+ * | #NT_HEADER               | env_header_observer()  |
+ * | #NT_WINDOW               | env_window_observer()  |
+ * | MuttWindow::recalc()     | env_recalc()           |
+ * | MuttWindow::repaint()    | env_repaint()          |
  */
 
 #include "config.h"
@@ -734,25 +734,6 @@ static int env_color_observer(struct NotifyCallback *nc)
 }
 
 /**
- * env_compose_observer - Notification that the Compose data has changed - Implements ::observer_t - @ingroup observer_api
- */
-static int env_compose_observer(struct NotifyCallback *nc)
-{
-  if ((nc->event_type != NT_COMPOSE) || !nc->global_data)
-    return -1;
-
-  if (nc->event_subtype != NT_COMPOSE_ENVELOPE)
-    return 0;
-
-  struct MuttWindow *win_env = nc->global_data;
-
-  win_env->actions |= WA_RECALC;
-  mutt_debug(LL_DEBUG5, "compose done, request WA_RECALC\n");
-
-  return 0;
-}
-
-/**
  * env_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int env_config_observer(struct NotifyCallback *nc)
@@ -794,6 +775,23 @@ static int env_config_observer(struct NotifyCallback *nc)
 
   win_env->actions |= WA_RECALC;
   mutt_debug(LL_DEBUG5, "config done, request WA_RECALC\n");
+  return 0;
+}
+
+/**
+ * env_email_observer - Notification that the Email has changed - Implements ::observer_t - @ingroup observer_api
+ */
+static int env_email_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_EMAIL) && (nc->event_type != NT_ENVELOPE))
+    return -1;
+  if (!nc->global_data)
+    return -1;
+
+  struct MuttWindow *win_env = nc->global_data;
+
+  win_env->actions |= WA_RECALC;
+  mutt_debug(LL_DEBUG5, "email done, request WA_RECALC\n");
   return 0;
 }
 
@@ -859,7 +857,7 @@ static int env_window_observer(struct NotifyCallback *nc)
     struct ComposeSharedData *shared = win_env->parent->wdata;
 
     notify_observer_remove(NeoMutt->notify, env_color_observer, win_env);
-    notify_observer_remove(shared->notify, env_compose_observer, win_env);
+    notify_observer_remove(shared->email->notify, env_email_observer, win_env);
     notify_observer_remove(NeoMutt->notify, env_config_observer, win_env);
     notify_observer_remove(NeoMutt->notify, env_header_observer, win_env);
     notify_observer_remove(win_env->notify, env_window_observer, win_env);
@@ -882,7 +880,7 @@ struct MuttWindow *compose_env_new(struct ComposeSharedData *shared, struct Buff
                       MUTT_WIN_SIZE_UNLIMITED, HDR_ATTACH_TITLE - 1);
 
   notify_observer_add(NeoMutt->notify, NT_COLOR, env_color_observer, win_env);
-  notify_observer_add(shared->notify, NT_COMPOSE, env_compose_observer, win_env);
+  notify_observer_add(shared->email->notify, NT_ALL, env_email_observer, win_env);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, env_config_observer, win_env);
   notify_observer_add(NeoMutt->notify, NT_HEADER, env_header_observer, win_env);
   notify_observer_add(win_env->notify, NT_WINDOW, env_window_observer, win_env);

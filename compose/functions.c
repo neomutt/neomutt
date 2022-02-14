@@ -780,7 +780,7 @@ static int op_attachment_attach_file(struct ComposeSharedData *shared, int op)
     mutt_clear_error();
 
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   if (added_attachment)
     mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
   return IR_SUCCESS;
@@ -806,7 +806,7 @@ static int op_attachment_attach_key(struct ComposeSharedData *shared, int op)
     mutt_aptr_free(&ap);
   }
 
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   return IR_SUCCESS;
 }
 
@@ -925,7 +925,7 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
     cs_subset_str_native_set(shared->sub, "sort_aux", old_sort_aux, NULL);
     cs_subset_str_native_set(shared->sub, "use_threads", old_use_threads, NULL);
     menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
-    notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+    notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
     return IR_SUCCESS;
   }
 
@@ -994,7 +994,7 @@ static int op_attachment_detach(struct ComposeSharedData *shared, int op)
   }
 
   update_menu(actx, menu, false);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
 
   index = menu_get_index(menu);
   if (index == 0)
@@ -1038,7 +1038,7 @@ static int op_attachment_edit_content_id(struct ComposeSharedData *shared, int o
       {
         mutt_param_set(&cur_att->body->parameter, "content-id", mutt_buffer_string(buf));
         menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
-        notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+        notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
         mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
         rc = IR_SUCCESS;
       }
@@ -1117,7 +1117,7 @@ static int op_attachment_edit_encoding(struct ComposeSharedData *shared, int op)
       {
         cur_att->body->encoding = enc;
         menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
-        notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+        notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
         mutt_clear_error();
         mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
         rc = IR_SUCCESS;
@@ -1155,7 +1155,7 @@ static int op_attachment_edit_language(struct ComposeSharedData *shared, int op)
     {
       mutt_str_replace(&cur_att->body->language, mutt_buffer_string(buf));
       menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
-      notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+      notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
       mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
       rc = IR_SUCCESS;
     }
@@ -1235,7 +1235,7 @@ static int op_attachment_filter(struct ComposeSharedData *shared, int op)
   {
     menu_queue_redraw(menu, menu->tagprefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
   }
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
   return IR_SUCCESS;
 }
@@ -1509,7 +1509,7 @@ static int op_attachment_new_mime(struct ComposeSharedData *shared, int op)
   mutt_str_replace(&cur_att->body->subtype, p);
   cur_att->body->unlink = true;
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
 
   if (mutt_compose_attachment(cur_att->body))
   {
@@ -1739,7 +1739,7 @@ static int op_attachment_update_encoding(struct ComposeSharedData *shared, int o
   }
 
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
   rc = IR_SUCCESS;
 
@@ -1764,7 +1764,7 @@ static int op_envelope_edit_bcc(struct ComposeSharedData *shared, int op)
 
   update_crypt_info(shared);
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  mutt_env_notify_send(shared->email, NT_ENVELOPE_BCC);
   return IR_SUCCESS;
 }
 
@@ -1782,7 +1782,7 @@ static int op_envelope_edit_cc(struct ComposeSharedData *shared, int op)
 
   update_crypt_info(shared);
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  mutt_env_notify_send(shared->email, NT_ENVELOPE_CC);
   return IR_SUCCESS;
 }
 
@@ -1807,7 +1807,7 @@ static int op_envelope_edit_fcc(struct ComposeSharedData *shared, int op)
   mutt_buffer_copy(shared->fcc, fname);
   mutt_buffer_pretty_mailbox(shared->fcc);
   shared->fcc_set = true;
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  mutt_env_notify_send(shared->email, NT_ENVELOPE_FCC);
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
   rc = IR_SUCCESS;
 
@@ -1826,7 +1826,7 @@ static int op_envelope_edit_from(struct ComposeSharedData *shared, int op)
 
   update_crypt_info(shared);
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  mutt_env_notify_send(shared->email, NT_ENVELOPE_FROM);
   return IR_SUCCESS;
 }
 
@@ -1858,7 +1858,7 @@ static int op_envelope_edit_headers(struct ComposeSharedData *shared, int op)
     FREE(&err);
   }
   update_crypt_info(shared);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ENVELOPE, NULL);
 
   mutt_rfc3676_space_stuff(shared->email);
   mutt_update_encoding(shared->email->body, shared->sub);
@@ -1886,7 +1886,7 @@ static int op_envelope_edit_reply_to(struct ComposeSharedData *shared, int op)
     return IR_NO_ACTION;
 
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  mutt_env_notify_send(shared->email, NT_ENVELOPE_REPLY_TO);
   return IR_SUCCESS;
 }
 
@@ -1909,7 +1909,7 @@ static int op_envelope_edit_subject(struct ComposeSharedData *shared, int op)
     goto done; // no change
 
   mutt_str_replace(&shared->email->env->subject, mutt_buffer_string(buf));
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  mutt_env_notify_send(shared->email, NT_ENVELOPE_SUBJECT);
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
   rc = IR_SUCCESS;
 
@@ -1932,7 +1932,7 @@ static int op_envelope_edit_to(struct ComposeSharedData *shared, int op)
 
   update_crypt_info(shared);
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  mutt_env_notify_send(shared->email, NT_ENVELOPE_TO);
   return IR_SUCCESS;
 }
 
@@ -1956,7 +1956,7 @@ static int op_compose_edit_file(struct ComposeSharedData *shared, int op)
   mutt_edit_file(NONULL(c_editor), cur_att->body->filename);
   mutt_update_encoding(cur_att->body, shared->sub);
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   /* Unconditional hook since editor was invoked */
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
   return IR_SUCCESS;
@@ -2000,7 +2000,7 @@ static int op_compose_ispell(struct ComposeSharedData *shared, int op)
   }
 
   mutt_update_encoding(shared->email->body, shared->sub);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ATTACH, NULL);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   return IR_SUCCESS;
 }
 
@@ -2038,7 +2038,7 @@ static int op_compose_pgp_menu(struct ComposeSharedData *shared, int op)
     return IR_NO_ACTION;
 
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE, NULL);
   return IR_SUCCESS;
 }
 
@@ -2173,7 +2173,7 @@ static int op_compose_smime_menu(struct ComposeSharedData *shared, int op)
     return IR_NO_ACTION;
 
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE, NULL);
   return IR_SUCCESS;
 }
 
@@ -2307,7 +2307,7 @@ static int op_compose_autocrypt_menu(struct ComposeSharedData *shared, int op)
     return IR_NO_ACTION;
 
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE, NULL);
   return IR_SUCCESS;
 }
 #endif
@@ -2329,7 +2329,7 @@ static int op_envelope_edit_followup_to(struct ComposeSharedData *shared, int op
                             false, NULL, NULL, NULL) == 0)
   {
     mutt_str_replace(&shared->email->env->followup_to, mutt_buffer_string(buf));
-    notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+    mutt_env_notify_send(shared->email, NT_ENVELOPE_FOLLOWUP_TO);
     rc = IR_SUCCESS;
   }
 
@@ -2353,7 +2353,7 @@ static int op_envelope_edit_newsgroups(struct ComposeSharedData *shared, int op)
                             false, NULL, NULL, NULL) == 0)
   {
     mutt_str_replace(&shared->email->env->newsgroups, mutt_buffer_string(buf));
-    notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+    mutt_env_notify_send(shared->email, NT_ENVELOPE_NEWSGROUPS);
     rc = IR_SUCCESS;
   }
 
@@ -2378,7 +2378,7 @@ static int op_envelope_edit_x_comment_to(struct ComposeSharedData *shared, int o
                             false, NULL, NULL, NULL) == 0)
   {
     mutt_str_replace(&shared->email->env->x_comment_to, mutt_buffer_string(buf));
-    notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+    mutt_env_notify_send(shared->email, NT_ENVELOPE_X_COMMENT_TO);
     rc = IR_SUCCESS;
   }
 
@@ -2395,7 +2395,7 @@ static int op_compose_mix(struct ComposeSharedData *shared, int op)
 {
   dlg_select_mixmaster_chain(&shared->email->chain);
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  mutt_env_notify_send(shared->email, NT_ENVELOPE_X_COMMENT_TO);
   return IR_SUCCESS;
 }
 #endif
