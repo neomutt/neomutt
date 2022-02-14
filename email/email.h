@@ -162,7 +162,7 @@ struct EventEmail
 /**
  * enum NotifyHeader - Types of Header Event
  *
- * Observers on #NT_HEADER will be passed an #EventHeader
+ * Observers of #NT_HEADER will be passed an #EventHeader.
  */
 enum NotifyHeader
 {

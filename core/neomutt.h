@@ -44,6 +44,8 @@ extern struct NeoMutt *NeoMutt;
 
 /**
  * enum NotifyGlobal - Events not associated with an object
+ *
+ * Observers of #NT_GLOBAL will not be passed any Event data.
  */
 enum NotifyGlobal
 {

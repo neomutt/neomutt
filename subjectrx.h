@@ -33,6 +33,8 @@ struct Envelope;
 /**
  * enum NotifySubjRx - Subject Regex notification types
  *
+ * Observers of #NT_SUBJRX will not be passed any Event data.
+ *
  * @note Notifications are sent **after** the event.
  */
 enum NotifySubjRx
