@@ -6408,12 +6408,12 @@ msgstr "belirtilmemiş işlem"
 #: pager/dlg_pager.c:94 pager/dlg_pager.c:105 pager/dlg_pager.c:115
 #: pager/dlg_pager.c:131
 msgid "PrevPg"
-msgstr "SyfAşğ"
+msgstr "ÖnckSyf"
 
 #: pager/dlg_pager.c:95 pager/dlg_pager.c:106 pager/dlg_pager.c:116
 #: pager/dlg_pager.c:132
 msgid "NextPg"
-msgstr "SyfYuk"
+msgstr "SonrSyf"
 
 #: pager/dlg_pager.c:117
 msgid "View Attachm."
