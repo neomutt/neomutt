@@ -109,7 +109,7 @@ static void mutt_update_v2r(struct AttachCtx *actx)
  */
 void mutt_update_tree(struct AttachCtx *actx)
 {
-  char buf[256];
+  char buf[256] = { 0 };
   char *s = NULL;
 
   mutt_update_v2r(actx);

@@ -313,7 +313,7 @@ static char *getmailname(void)
 static bool get_hostname(struct ConfigSet *cs)
 {
   const char *short_host = NULL;
-  struct utsname utsname;
+  struct utsname utsname = { 0 };
 
   const char *const c_hostname = cs_subset_string(NeoMutt->sub, "hostname");
   if (c_hostname)
