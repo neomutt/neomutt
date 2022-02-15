@@ -213,7 +213,6 @@ static int op_envelope_edit_bcc(struct EnvelopeWindowData *wdata, int op)
     return IR_NO_ACTION;
 
   update_crypt_info(wdata);
-  // mutt_message_hook(NULL, wdata->email, MUTT_SEND2_HOOK);
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_BCC);
   return IR_SUCCESS;
 }
@@ -231,7 +230,6 @@ static int op_envelope_edit_cc(struct EnvelopeWindowData *wdata, int op)
     return IR_NO_ACTION;
 
   update_crypt_info(wdata);
-  // mutt_message_hook(NULL, wdata->email, MUTT_SEND2_HOOK);
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_CC);
   return IR_SUCCESS;
 }
@@ -256,9 +254,7 @@ static int op_envelope_edit_fcc(struct EnvelopeWindowData *wdata, int op)
 
   mutt_buffer_copy(wdata->fcc, fname);
   mutt_buffer_pretty_mailbox(wdata->fcc);
-  // shared->fcc_set = true;
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_FCC);
-  // mutt_message_hook(NULL, wdata->email, MUTT_SEND2_HOOK);
   rc = IR_SUCCESS;
 
 done:
@@ -275,7 +271,6 @@ static int op_envelope_edit_from(struct EnvelopeWindowData *wdata, int op)
     return IR_NO_ACTION;
 
   update_crypt_info(wdata);
-  // mutt_message_hook(NULL, wdata->email, MUTT_SEND2_HOOK);
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_FROM);
   return IR_SUCCESS;
 }
@@ -288,7 +283,6 @@ static int op_envelope_edit_reply_to(struct EnvelopeWindowData *wdata, int op)
   if (!edit_address_list(HDR_REPLYTO, &wdata->email->env->reply_to))
     return IR_NO_ACTION;
 
-  // mutt_message_hook(NULL, wdata->email, MUTT_SEND2_HOOK);
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_REPLY_TO);
   return IR_SUCCESS;
 }
@@ -313,7 +307,6 @@ static int op_envelope_edit_subject(struct EnvelopeWindowData *wdata, int op)
 
   mutt_str_replace(&wdata->email->env->subject, mutt_buffer_string(buf));
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_SUBJECT);
-  // mutt_message_hook(NULL, wdata->email, MUTT_SEND2_HOOK);
   rc = IR_SUCCESS;
 
 done:
@@ -334,7 +327,6 @@ static int op_envelope_edit_to(struct EnvelopeWindowData *wdata, int op)
     return IR_NO_ACTION;
 
   update_crypt_info(wdata);
-  // mutt_message_hook(NULL, wdata->email, MUTT_SEND2_HOOK);
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_TO);
   return IR_SUCCESS;
 }

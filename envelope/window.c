@@ -882,6 +882,13 @@ static int env_email_observer(struct NotifyCallback *nc)
 
   struct MuttWindow *win_env = nc->global_data;
 
+  // pgp/smime/autocrypt menu, or external change
+  if (nc->event_type == NT_EMAIL)
+  {
+    struct EnvelopeWindowData *wdata = win_env->wdata;
+    update_crypt_info(wdata);
+  }
+
   win_env->actions |= WA_RECALC;
   mutt_debug(LL_DEBUG5, "email done, request WA_RECALC\n");
   return 0;
@@ -905,7 +912,7 @@ static int env_header_observer(struct NotifyCallback *nc)
   {
     header_set(&env->userhdrs, ev_h->header);
     mutt_debug(LL_DEBUG5, "header done, request reflow\n");
-    env_recalc(win_env);
+    win_env->actions |= WA_RECALC;
     return 0;
   }
 
@@ -916,7 +923,7 @@ static int env_header_observer(struct NotifyCallback *nc)
     {
       header_free(&env->userhdrs, removed);
       mutt_debug(LL_DEBUG5, "header done, request reflow\n");
-      env_recalc(win_env);
+      win_env->actions |= WA_RECALC;
     }
     return 0;
   }

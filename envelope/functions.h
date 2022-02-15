@@ -47,6 +47,7 @@ struct EnvelopeFunction
 };
 
 int env_function_dispatcher(struct MuttWindow *win_env, int op);
+void update_crypt_info(struct EnvelopeWindowData *wdata);
 
 extern struct EnvelopeFunction EnvelopeFunctions[];
 

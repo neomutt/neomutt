@@ -1647,7 +1647,6 @@ static int op_envelope_edit_headers(struct ComposeSharedData *shared, int op)
     mutt_error(_("Bad IDN in '%s': '%s'"), tag, err);
     FREE(&err);
   }
-  update_crypt_info(shared);
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ENVELOPE, NULL);
 
   mutt_rfc3676_space_stuff(shared->email);

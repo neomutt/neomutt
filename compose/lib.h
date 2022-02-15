@@ -41,8 +41,6 @@
 #define MUTT_COMPOSE_LIB_H
 
 #include <stdint.h>
-#include "private.h"
-#include "shared_data.h"
 
 struct Buffer;
 struct ConfigSubset;

@@ -25,8 +25,6 @@
 
 #include "config.h"
 
-struct ComposeSharedData;
-
 /**
  * enum HeaderField - Ordered list of headers for the compose screen
  *

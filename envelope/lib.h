@@ -35,13 +35,16 @@
 #ifndef MUTT_ENVELOPE_LIB_H
 #define MUTT_ENVELOPE_LIB_H
 
-#include "private.h"
-#include "wdata.h"
+#include "config.h"
+#ifdef USE_AUTOCRYPT
+#include "autocrypt/lib.h"
+#endif
 
+struct Buffer;
+struct ConfigSubset;
+struct Email;
+struct EnvelopeWindowData;
 struct MuttWindow;
-
-extern int HeaderPadding[];
-extern int MaxHeaderWidth;
 
 struct MuttWindow *env_window_new(struct Email *e, struct Buffer *fcc, struct ConfigSubset *sub);
 int env_function_dispatcher(struct MuttWindow *win, int op);

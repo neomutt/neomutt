@@ -84,6 +84,7 @@
 #include "cbar.h"
 #include "context.h"
 #include "functions.h"
+#include "hook.h"
 #include "mutt_globals.h"
 #include "opcodes.h"
 #include "options.h"
@@ -151,6 +152,25 @@ static int compose_config_observer(struct NotifyCallback *nc)
 
   mutt_window_reflow(dlg);
   mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
+  return 0;
+}
+
+/**
+ * compose_email_observer - Notification that an Email has changed - Implements ::observer_t - @ingroup observer_api
+ */
+static int compose_email_observer(struct NotifyCallback *nc)
+{
+  if (!nc->global_data || !nc->event_data)
+    return -1;
+  if (nc->event_type != NT_ENVELOPE)
+    return 0;
+
+  struct ComposeSharedData *shared = nc->global_data;
+
+  if (nc->event_subtype == NT_ENVELOPE_FCC)
+    shared->fcc_set = true;
+
+  mutt_message_hook(shared->mailbox, shared->email, MUTT_SEND2_HOOK);
   return 0;
 }
 
@@ -254,7 +274,7 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
   dlg->wdata = shared;
   dlg->wdata_free = compose_shared_data_free;
 
-  struct MuttWindow *win_env = env_window_new(shared->email, fcc, sub);
+  struct MuttWindow *win_env = env_window_new(e, fcc, sub);
   struct MuttWindow *win_attach = attach_new(dlg, shared);
   struct MuttWindow *win_cbar = cbar_new(shared);
   struct MuttWindow *win_abar = sbar_new();
@@ -307,16 +327,14 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   shared->fcc_set = false;
   shared->flags = flags;
   shared->rc = -1;
-#ifdef USE_NNTP
-  shared->news = OptNewsSend;
-#endif
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, compose_config_observer, dlg);
+  notify_observer_add(e->notify, NT_ALL, compose_email_observer, shared);
   notify_observer_add(dlg->notify, NT_WINDOW, compose_window_observer, dlg);
   dialog_push(dlg);
 
 #ifdef USE_NNTP
-  if (shared->news)
+  if (OptNewsSend)
     dlg->help_data = ComposeNewsHelp;
   else
 #endif
@@ -324,7 +342,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   dlg->help_menu = MENU_COMPOSE;
 
   update_menu(shared->adata->actx, shared->adata->menu, true);
-  update_crypt_info(shared);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE, NULL);
 
   struct MuttWindow *win_env = window_find_child(dlg, WT_CUSTOM);
   while (loop)
