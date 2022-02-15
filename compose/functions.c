@@ -1793,19 +1793,24 @@ static int op_envelope_edit_fcc(struct ComposeSharedData *shared, int op)
   int rc = IR_NO_ACTION;
   struct Buffer *fname = mutt_buffer_pool_get();
   mutt_buffer_copy(fname, shared->fcc);
+
   if (mutt_buffer_get_field(Prompts[HDR_FCC], fname, MUTT_COMP_FILE | MUTT_COMP_CLEAR,
-                            false, NULL, NULL, NULL) == 0)
+                            false, NULL, NULL, NULL) != 0)
   {
-    if (!mutt_str_equal(shared->fcc->data, fname->data))
-    {
-      mutt_buffer_copy(shared->fcc, fname);
-      mutt_buffer_pretty_mailbox(shared->fcc);
-      shared->fcc_set = true;
-      notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
-      mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-      rc = IR_SUCCESS;
-    }
+    goto done; // aborted
   }
+
+  if (mutt_str_equal(shared->fcc->data, fname->data))
+    goto done; // no change
+
+  mutt_buffer_copy(shared->fcc, fname);
+  mutt_buffer_pretty_mailbox(shared->fcc);
+  shared->fcc_set = true;
+  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  rc = IR_SUCCESS;
+
+done:
   mutt_buffer_pool_release(&fname);
   return rc;
 }
@@ -1894,17 +1899,20 @@ static int op_envelope_edit_subject(struct ComposeSharedData *shared, int op)
 
   mutt_buffer_strcpy(buf, shared->email->env->subject);
   if (mutt_buffer_get_field(Prompts[HDR_SUBJECT], buf, MUTT_COMP_NO_FLAGS,
-                            false, NULL, NULL, NULL) == 0)
+                            false, NULL, NULL, NULL) != 0)
   {
-    if (!mutt_str_equal(shared->email->env->subject, mutt_buffer_string(buf)))
-    {
-      mutt_str_replace(&shared->email->env->subject, mutt_buffer_string(buf));
-      notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
-      mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
-      rc = IR_SUCCESS;
-    }
+    goto done; // aborted
   }
 
+  if (mutt_str_equal(shared->email->env->subject, mutt_buffer_string(buf)))
+    goto done; // no change
+
+  mutt_str_replace(&shared->email->env->subject, mutt_buffer_string(buf));
+  notify_send(shared->notify, NT_COMPOSE, NT_COMPOSE_ENVELOPE, NULL);
+  mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
+  rc = IR_SUCCESS;
+
+done:
   mutt_buffer_pool_release(&buf);
   return rc;
 }
@@ -2025,7 +2033,7 @@ static int op_compose_pgp_menu(struct ComposeSharedData *shared, int op)
   }
   shared->email->security = crypt_pgp_send_menu(shared->email);
   update_crypt_info(shared);
-  if (old_flags == shared->email->security)
+  if (shared->email->security == old_flags)
     return IR_NO_ACTION;
 
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
@@ -2160,7 +2168,7 @@ static int op_compose_smime_menu(struct ComposeSharedData *shared, int op)
   }
   shared->email->security = crypt_smime_send_menu(shared->email);
   update_crypt_info(shared);
-  if (old_flags == shared->email->security)
+  if (shared->email->security == old_flags)
     return IR_NO_ACTION;
 
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
@@ -2207,8 +2215,8 @@ static int op_compose_write_message(struct ComposeSharedData *shared, int op)
  * op_display_headers - Display message and toggle header weeding - Implements ::compose_function_t - @ingroup compose_function_api
  *
  * This function handles:
- * - OP_ATTACHMENT_VIEW 
- * - OP_DISPLAY_HEADERS 
+ * - OP_ATTACHMENT_VIEW
+ * - OP_DISPLAY_HEADERS
  */
 static int op_display_headers(struct ComposeSharedData *shared, int op)
 {
@@ -2294,7 +2302,7 @@ static int op_compose_autocrypt_menu(struct ComposeSharedData *shared, int op)
   }
   autocrypt_compose_menu(shared->email, shared->sub);
   update_crypt_info(shared);
-  if (old_flags == shared->email->security)
+  if (shared->email->security == old_flags)
     return IR_NO_ACTION;
 
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);

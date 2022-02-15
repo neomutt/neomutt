@@ -54,6 +54,7 @@ struct Email;
 struct Menu;
 struct MuttWindow;
 
+// Observers of #NT_INDEX will be passed an #IndexSharedData.
 typedef uint8_t NotifyIndex;         ///< Flags, e.g. #NT_INDEX_ACCOUNT
 #define NT_INDEX_NO_FLAGS        0   ///< No flags are set
 #define NT_INDEX_ADD       (1 << 0)  ///< New Index Shared Data has been created

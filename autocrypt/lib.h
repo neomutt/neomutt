@@ -171,7 +171,7 @@ int               mutt_autocrypt_init                    (bool can_create);
 int               mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *env);
 int               mutt_autocrypt_process_gossip_header   (struct Email *e, struct Envelope *prot_headers);
 int               mutt_autocrypt_set_sign_as_default_key (struct Email *e);
-enum AutocryptRec mutt_autocrypt_ui_recommendation       (struct Email *e, char **keylist);
+enum AutocryptRec mutt_autocrypt_ui_recommendation       (const struct Email *e, char **keylist);
 int               mutt_autocrypt_write_autocrypt_header  (struct Envelope *env, FILE *fp);
 int               mutt_autocrypt_write_gossip_headers    (struct Envelope *env, FILE *fp);
 

@@ -31,6 +31,8 @@ struct Mailbox;
 /**
  * enum NotifyAttach - Attachments notification types
  *
+ * Observers of #NT_ATTACH will not be passed any Event data.
+ *
  * @note Notifications are sent **after** the event.
  */
 enum NotifyAttach

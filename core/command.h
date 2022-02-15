@@ -41,6 +41,8 @@ enum CommandResult
 /**
  * @defgroup command_api Command API
  *
+ * Observers of #NT_COMMAND will be passed a #Command.
+ *
  * A user-callable command
  */
 struct Command

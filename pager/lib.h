@@ -168,6 +168,7 @@ struct PagerView
   struct MuttWindow *win_pager; ///< Pager Window
 };
 
+// Observers of #NT_PAGER will be passed a #PagerPrivateData.
 typedef uint8_t NotifyPager;         ///< Flags, e.g. #NT_PAGER_DELETE
 #define NT_PAGER_NO_FLAGS        0   ///< No flags are set
 #define NT_PAGER_DELETE    (1 << 0)  ///< Pager Private Data is about to be freed

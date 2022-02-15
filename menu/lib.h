@@ -47,6 +47,7 @@
 
 struct ConfigSubset;
 
+// Observers of #NT_MENU will not be passed any Event data.
 typedef uint8_t MenuRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX
 #define MENU_REDRAW_NO_FLAGS        0  ///< No flags are set
 #define MENU_REDRAW_INDEX     (1 << 0) ///< Redraw the index

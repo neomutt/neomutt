@@ -388,6 +388,8 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
   /* merge temp key back into real key */
   if (!(is_uid || is_fpr || (*is_subkey && c_pgp_ignore_subkeys)))
     k = mutt_mem_malloc(sizeof(*k));
+  if (!k)
+    return NULL;
   memcpy(k, &tmp, sizeof(*k));
   /* fixup parentship of uids after merging the temp key into
    * the real key */

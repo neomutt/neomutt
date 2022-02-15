@@ -32,6 +32,8 @@ struct Buffer;
 /**
  * enum NotifyAlternates - Alternates command notification types
  *
+ * Observers of #NT_ALTERN will not be passed any Event data.
+ *
  * @note Notifications are sent **after** the event.
  */
 enum NotifyAlternates

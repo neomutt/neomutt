@@ -144,10 +144,10 @@ STAILQ_HEAD(EmailList, EmailNode);
  */
 enum NotifyEmail
 {
-  NT_EMAIL_ADD = 1,    ///< Email has been added
-  NT_EMAIL_DELETE,     ///< Email is about to be deleted
-  NT_EMAIL_DELETE_ALL, ///< All the Emails are about to be deleted
-  NT_EMAIL_CHANGE,     ///< Email has changed
+  NT_EMAIL_ADD = 1,         ///< Email has been added
+  NT_EMAIL_DELETE,          ///< Email is about to be deleted
+  NT_EMAIL_DELETE_ALL,      ///< All the Emails are about to be deleted
+  NT_EMAIL_CHANGE,          ///< Email has changed
 };
 
 /**
@@ -162,7 +162,7 @@ struct EventEmail
 /**
  * enum NotifyHeader - Types of Header Event
  *
- * Observers on #NT_HEADER will be passed an #EventHeader
+ * Observers of #NT_HEADER will be passed an #EventHeader.
  */
 enum NotifyHeader
 {
