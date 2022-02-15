@@ -29,34 +29,41 @@
 #include "config.h"
 #include "mutt/lib.h"
 #include "wdata.h"
+#ifdef USE_AUTOCRYPT
+#include "autocrypt/lib.h"
+#endif
 
 /**
- * env_data_free - Free the Compose Envelope Data - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
+ * env_wdata_free - Free the Envelope Data - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  */
-void env_data_free(struct MuttWindow *win, void **ptr)
+void env_wdata_free(struct MuttWindow *win, void **ptr)
 {
-  struct ComposeEnvelopeData *env_data = *ptr;
+  struct EnvelopeWindowData *wdata = *ptr;
 
   // Don't free email, env, fcc, sub -- we don't own them
-  mutt_list_free(&env_data->to_list);
-  mutt_list_free(&env_data->cc_list);
-  mutt_list_free(&env_data->bcc_list);
+  mutt_list_free(&wdata->to_list);
+  mutt_list_free(&wdata->cc_list);
+  mutt_list_free(&wdata->bcc_list);
 
   FREE(ptr);
 }
 
 /**
- * env_data_new - Create new Compose Envelope Data
- * @retval ptr New Compose Envelope Data
+ * env_wdata_new - Create new Envelope Data
+ * @retval ptr New Envelope Data
  */
-struct ComposeEnvelopeData *env_data_new(void)
+struct EnvelopeWindowData *env_wdata_new(void)
 {
-  struct ComposeEnvelopeData *env_data =
-      mutt_mem_calloc(1, sizeof(struct ComposeEnvelopeData));
+  struct EnvelopeWindowData *wdata =
+      mutt_mem_calloc(1, sizeof(struct EnvelopeWindowData));
 
-  STAILQ_INIT(&env_data->to_list);
-  STAILQ_INIT(&env_data->cc_list);
-  STAILQ_INIT(&env_data->bcc_list);
+  STAILQ_INIT(&wdata->to_list);
+  STAILQ_INIT(&wdata->cc_list);
+  STAILQ_INIT(&wdata->bcc_list);
 
-  return env_data;
+#ifdef USE_AUTOCRYPT
+  wdata->autocrypt_rec = AUTOCRYPT_REC_OFF;
+#endif
+
+  return wdata;
 }

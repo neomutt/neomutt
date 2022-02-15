@@ -43,6 +43,7 @@ struct MuttWindow;
 extern int HeaderPadding[];
 extern int MaxHeaderWidth;
 
+struct MuttWindow *env_window_new(struct Email *e, struct Buffer *fcc, struct ConfigSubset *sub);
 int env_function_dispatcher(struct MuttWindow *win, int op);
 
 #endif /* MUTT_ENVELOPE_LIB_H */

@@ -254,7 +254,7 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
   dlg->wdata = shared;
   dlg->wdata_free = compose_shared_data_free;
 
-  struct MuttWindow *win_env = compose_env_new(shared, fcc);
+  struct MuttWindow *win_env = env_window_new(shared->email, fcc, sub);
   struct MuttWindow *win_attach = attach_new(dlg, shared);
   struct MuttWindow *win_cbar = cbar_new(shared);
   struct MuttWindow *win_abar = sbar_new();

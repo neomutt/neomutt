@@ -1641,6 +1641,7 @@ static int op_envelope_edit_headers(struct ComposeSharedData *shared, int op)
     mutt_edit_headers(NONULL(c_editor), shared->email->body->filename,
                       shared->email, shared->fcc);
   }
+
   if (mutt_env_to_intl(shared->email->env, &tag, &err))
   {
     mutt_error(_("Bad IDN in '%s': '%s'"), tag, err);
@@ -1961,39 +1962,15 @@ struct ComposeFunction ComposeFunctions[] = {
   { OP_ATTACHMENT_UNGROUP,                op_attachment_ungroup },
   { OP_ATTACHMENT_UPDATE_ENCODING,        op_attachment_update_encoding },
   { OP_ATTACHMENT_VIEW,                   op_display_headers },
-#ifdef USE_AUTOCRYPT
-  { OP_COMPOSE_AUTOCRYPT_MENU,            op_compose_autocrypt_menu },
-#endif
   { OP_COMPOSE_EDIT_FILE,                 op_compose_edit_file },
   { OP_COMPOSE_EDIT_MESSAGE,              op_compose_edit_message },
   { OP_COMPOSE_ISPELL,                    op_compose_ispell },
-#ifdef MIXMASTER
-  { OP_COMPOSE_MIX,                       op_compose_mix },
-#endif
-  { OP_COMPOSE_PGP_MENU,                  op_compose_pgp_menu },
   { OP_COMPOSE_POSTPONE_MESSAGE,          op_compose_postpone_message },
   { OP_COMPOSE_RENAME_FILE,               op_compose_rename_file },
   { OP_COMPOSE_SEND_MESSAGE,              op_compose_send_message },
-  { OP_COMPOSE_SMIME_MENU,                op_compose_smime_menu },
   { OP_COMPOSE_WRITE_MESSAGE,             op_compose_write_message },
   { OP_DISPLAY_HEADERS,                   op_display_headers },
-  { OP_ENVELOPE_EDIT_BCC,                 op_envelope_edit_bcc },
-  { OP_ENVELOPE_EDIT_CC,                  op_envelope_edit_cc },
-  { OP_ENVELOPE_EDIT_FCC,                 op_envelope_edit_fcc },
-#ifdef USE_NNTP
-  { OP_ENVELOPE_EDIT_FOLLOWUP_TO,         op_envelope_edit_followup_to },
-#endif
-  { OP_ENVELOPE_EDIT_FROM,                op_envelope_edit_from },
   { OP_ENVELOPE_EDIT_HEADERS,             op_envelope_edit_headers },
-#ifdef USE_NNTP
-  { OP_ENVELOPE_EDIT_NEWSGROUPS,          op_envelope_edit_newsgroups },
-#endif
-  { OP_ENVELOPE_EDIT_REPLY_TO,            op_envelope_edit_reply_to },
-  { OP_ENVELOPE_EDIT_SUBJECT,             op_envelope_edit_subject },
-  { OP_ENVELOPE_EDIT_TO,                  op_envelope_edit_to },
-#ifdef USE_NNTP
-  { OP_ENVELOPE_EDIT_X_COMMENT_TO,        op_envelope_edit_x_comment_to },
-#endif
   { OP_EXIT,                              op_exit },
   { OP_FORGET_PASSPHRASE,                 op_forget_passphrase },
   { 0, NULL },
