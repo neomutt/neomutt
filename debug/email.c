@@ -33,6 +33,7 @@
 #include "address/lib.h"
 #include "email/lib.h"
 #include "lib.h"
+#include "attach/lib.h"
 #include "ncrypt/lib.h"
 
 void dump_addr_list(char *buf, size_t buflen, const struct AddressList *al, const char *name)
@@ -251,7 +252,6 @@ void dump_body(const struct Body *body)
 #define ADD_FLAG(F) add_flag(&buf, body->F, #F)
   ADD_FLAG(attach_qualifies);
   ADD_FLAG(badsig);
-  ADD_FLAG(collapsed);
   ADD_FLAG(deleted);
   ADD_FLAG(force_charset);
   ADD_FLAG(goodsig);
@@ -332,6 +332,7 @@ void dump_attach(const struct AttachPtr *att)
 #define ADD_FLAG(F) add_flag(&buf, att->F, #F)
   ADD_FLAG(unowned);
   ADD_FLAG(decrypted);
+  ADD_FLAG(collapsed);
 #undef ADD_FLAG
 
   if (att->fp)

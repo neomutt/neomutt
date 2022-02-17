@@ -247,8 +247,7 @@ bail:
  */
 static void parse_content_disposition(const char *s, struct Body *ct)
 {
-  struct ParameterList pl;
-  TAILQ_INIT(&pl);
+  struct ParameterList pl = TAILQ_HEAD_INITIALIZER(pl);
 
   if (mutt_istr_startswith(s, "inline"))
     ct->disposition = DISP_INLINE;
