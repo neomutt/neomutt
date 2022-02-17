@@ -2168,6 +2168,7 @@ static enum MxStatus nm_mbox_check(struct Mailbox *m)
       struct Email e_tmp = { 0 };
       e_tmp.edata = maildir_edata_new();
       maildir_parse_flags(&e_tmp, new_file);
+      e_tmp.old = e->old;
       maildir_update_flags(m, e, &e_tmp);
       maildir_edata_free(&e_tmp.edata);
     }
