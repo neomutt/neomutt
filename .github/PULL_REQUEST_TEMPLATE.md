@@ -14,6 +14,6 @@
    - Added [doxygen code documentation](https://neomutt.org/dev/doxygen)
      [syntax](http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html)
 
-   - Code follows the [style guide](https://neomutt.org/dev/coding-style)
+   - Code follows the [style guide](https://neomutt.org/dev/code)
 
 * **What are the relevant issue numbers?**
