@@ -1221,7 +1221,7 @@ const struct MenuFuncOp *km_get_table(enum MenuType mtype)
       return OpAttach;
 #ifdef USE_AUTOCRYPT
     case MENU_AUTOCRYPT_ACCT:
-      return OpAutocryptAcct;
+      return OpAutocrypt;
 #endif
     case MENU_COMPOSE:
       return OpCompose;
@@ -1248,7 +1248,7 @@ const struct MenuFuncOp *km_get_table(enum MenuType mtype)
     case MENU_PGP:
       return (WithCrypto & APPLICATION_PGP) ? OpPgp : NULL;
     case MENU_POSTPONE:
-      return OpPost;
+      return OpPostpone;
     case MENU_QUERY:
       return OpQuery;
     default:

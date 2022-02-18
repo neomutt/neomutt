@@ -29,7 +29,7 @@
 extern struct MenuFuncOp OpAlias[];
 extern struct MenuFuncOp OpAttach[];
 #ifdef USE_AUTOCRYPT
-extern struct MenuFuncOp OpAutocryptAcct[];
+extern struct MenuFuncOp OpAutocrypt[];
 #endif
 extern struct MenuFuncOp OpBrowser[];
 extern struct MenuFuncOp OpCompose[];
@@ -41,7 +41,7 @@ extern struct MenuFuncOp OpMix[];
 #endif
 extern struct MenuFuncOp OpPager[];
 extern struct MenuFuncOp OpPgp[];
-extern struct MenuFuncOp OpPost[];
+extern struct MenuFuncOp OpPostpone[];
 extern struct MenuFuncOp OpQuery[];
 extern struct MenuFuncOp OpSmime[];
 

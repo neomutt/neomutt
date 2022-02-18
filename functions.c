@@ -101,9 +101,9 @@ const struct MenuFuncOp OpAttach[] = { /* map: attachment */
 
 #ifdef USE_AUTOCRYPT
 /**
- * OpAutocryptAcct - Functions for the Autocrypt Account
+ * OpAutocrypt - Functions for the Autocrypt Account
  */
-const struct MenuFuncOp OpAutocryptAcct[] = { /* map: autocrypt account */
+const struct MenuFuncOp OpAutocrypt[] = { /* map: autocrypt account */
   { "create-account",                OP_AUTOCRYPT_CREATE_ACCT },
   { "delete-account",                OP_AUTOCRYPT_DELETE_ACCT },
   { "toggle-active",                 OP_AUTOCRYPT_TOGGLE_ACTIVE },
@@ -665,9 +665,9 @@ const struct MenuFuncOp OpPgp[] = { /* map: pgp */
 };
 
 /**
- * OpPost - Functions for the Postpone Menu
+ * OpPostpone - Functions for the Postpone Menu
  */
-const struct MenuFuncOp OpPost[] = { /* map: postpone */
+const struct MenuFuncOp OpPostpone[] = { /* map: postpone */
   { "delete-entry",                  OP_DELETE },
   { "undelete-entry",                OP_UNDELETE },
   { NULL, 0 },
