@@ -1229,7 +1229,8 @@ static int op_attachment_filter(struct ComposeSharedData *shared, int op)
     mutt_error(_("Can't filter multipart attachments"));
     return IR_ERROR;
   }
-  mutt_pipe_attachment_list(actx, NULL, menu->tagprefix, cur_att->body, (op == OP_FILTER));
+  mutt_pipe_attachment_list(actx, NULL, menu->tagprefix, cur_att->body,
+                            (op == OP_ATTACHMENT_FILTER));
   if (op == OP_ATTACHMENT_FILTER) /* cte might have changed */
   {
     menu_queue_redraw(menu, menu->tagprefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);

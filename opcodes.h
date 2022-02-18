@@ -143,7 +143,6 @@
   _fmt(OP_ENTER_COMMAND,                      N_("enter a neomuttrc command")) \
   _fmt(OP_ENTER_MASK,                         N_("enter a file mask")) \
   _fmt(OP_EXIT,                               N_("exit this menu")) \
-  _fmt(OP_FILTER,                             N_("filter attachment through a shell command")) \
   _fmt(OP_FIRST_ENTRY,                        N_("move to the first entry")) \
   _fmt(OP_FLAG_MESSAGE,                       N_("toggle a message's 'important' flag")) \
   _fmt(OP_FOLLOWUP,                           N_("followup to newsgroup")) \
