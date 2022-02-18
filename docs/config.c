@@ -1524,8 +1524,9 @@
 { "header_cache_backend", DT_STRING, 0 },
 /*
 ** .pp
-** This variable specifies the header cache backend.  By default it is
-** \fIunset\fP so no header caching will be used.
+** This variable specifies the header cache backend.  If no backend is
+** specified, the first available backend will be used in the following order:
+** tokyocabinet, kyotocabinet, qdbm, rocksdb, gdbm, bdb, tdb, lmdb.
 */
 
 #ifdef USE_HCACHE_COMPRESSION
