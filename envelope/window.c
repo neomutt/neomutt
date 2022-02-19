@@ -1,6 +1,6 @@
 /**
  * @file
- * Compose Envelope
+ * Envelope Window
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -21,15 +21,15 @@
  */
 
 /**
- * @page compose_envelope Envelope Window
+ * @page envelope_window Envelope Window
  *
- * The Compose Envelope Window displays the header fields of an email.
+ * The Envelope Window displays the header fields of an email.
  *
  * ## Windows
  *
- * | Name                    | Type      | See Also          |
- * | :---------------------- | :-------- | :---------------- |
- * | Compose Envelope Window | WT_CUSTOM | compose_env_new() |
+ * | Name            | Type      | See Also          |
+ * | :-------------- | :-------- | :---------------- |
+ * | Envelope Window | WT_CUSTOM | env_window_new()  |
  *
  * **Parent**
  * - @ref compose_dialog
@@ -39,24 +39,23 @@
  * None.
  *
  * ## Data
- * - #ComposeEnvelopeData
+ * - #EnvelopeWindowData
  *
- * The Compose Envelope Window stores its data (#ComposeEnvelopeData) in
- * MuttWindow::wdata.
+ * The Envelope Window stores its data (#EnvelopeWindowData) in MuttWindow::wdata.
  *
  * ## Events
  *
  * Once constructed, it is controlled by the following events:
  *
- * | Event Type            | Handler                |
- * | :-------------------- | :--------------------- |
- * | #NT_COLOR             | env_color_observer()   |
- * | #NT_COMPOSE           | env_compose_observer() |
- * | #NT_CONFIG            | env_config_observer()  |
- * | #NT_HEADER            | env_header_observer()  |
- * | #NT_WINDOW            | env_window_observer()  |
- * | MuttWindow::recalc()  | env_recalc()           |
- * | MuttWindow::repaint() | env_repaint()          |
+ * | Event Type               | Handler                |
+ * | :----------------------- | :--------------------- |
+ * | #NT_COLOR                | env_color_observer()   |
+ * | #NT_CONFIG               | env_config_observer()  |
+ * | #NT_EMAIL (#NT_ENVELOPE) | env_email_observer()   |
+ * | #NT_HEADER               | env_header_observer()  |
+ * | #NT_WINDOW               | env_window_observer()  |
+ * | MuttWindow::recalc()     | env_recalc()           |
+ * | MuttWindow::repaint()    | env_repaint()          |
  */
 
 #include "config.h"
@@ -71,11 +70,14 @@
 #include "gui/lib.h"
 #include "color/lib.h"
 #include "ncrypt/lib.h"
-#include "env_data.h"
+#include "functions.h"
 #include "options.h"
-#include "shared_data.h"
+#include "wdata.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
+#ifdef USE_AUTOCRYPT
+#include "autocrypt/lib.h"
 #endif
 
 /// Maximum number of rows to use for the To:, Cc:, Bcc: fields
@@ -83,6 +85,51 @@
 
 /// Maximum number of rows to use for the Headers: field
 #define MAX_USER_HDR_ROWS 5
+
+int HeaderPadding[HDR_ATTACH_TITLE] = { 0 };
+int MaxHeaderWidth = 0;
+
+const char *const Prompts[] = {
+  /* L10N: Compose menu field.  May not want to translate. */
+  N_("From: "),
+  /* L10N: Compose menu field.  May not want to translate. */
+  N_("To: "),
+  /* L10N: Compose menu field.  May not want to translate. */
+  N_("Cc: "),
+  /* L10N: Compose menu field.  May not want to translate. */
+  N_("Bcc: "),
+  /* L10N: Compose menu field.  May not want to translate. */
+  N_("Subject: "),
+  /* L10N: Compose menu field.  May not want to translate. */
+  N_("Reply-To: "),
+  /* L10N: Compose menu field.  May not want to translate. */
+  N_("Fcc: "),
+#ifdef MIXMASTER
+  /* L10N: "Mix" refers to the MixMaster chain for anonymous email */
+  N_("Mix: "),
+#endif
+  /* L10N: Compose menu field.  Holds "Encrypt", "Sign" related information */
+  N_("Security: "),
+  /* L10N: This string is used by the compose menu.
+     Since it is hidden by default, it does not increase the indentation of
+     other compose menu fields.  However, if possible, it should not be longer
+     than the other compose menu fields.  Since it shares the row with "Encrypt
+     with:", it should not be longer than 15-20 character cells.  */
+  N_("Sign as: "),
+#ifdef USE_AUTOCRYPT
+  // L10N: The compose menu autocrypt line
+  N_("Autocrypt: "),
+#endif
+#ifdef USE_NNTP
+  /* L10N: Compose menu field.  May not want to translate. */
+  N_("Newsgroups: "),
+  /* L10N: Compose menu field.  May not want to translate. */
+  N_("Followup-To: "),
+  /* L10N: Compose menu field.  May not want to translate. */
+  N_("X-Comment-To: "),
+#endif
+  N_("Headers: "),
+};
 
 #ifdef USE_AUTOCRYPT
 static const char *const AutocryptRecUiFlags[] = {
@@ -108,6 +155,59 @@ static const char *const AutocryptRecUiFlags[] = {
   N_("Yes"),
 };
 #endif
+
+/**
+ * calc_header_width_padding - Calculate the width needed for the compose labels
+ * @param idx      Store the result at this index of HeaderPadding
+ * @param header   Header string
+ * @param calc_max If true, calculate the maximum width
+ */
+static void calc_header_width_padding(int idx, const char *header, bool calc_max)
+{
+  int width;
+
+  HeaderPadding[idx] = mutt_str_len(header);
+  width = mutt_strwidth(header);
+  if (calc_max && (MaxHeaderWidth < width))
+    MaxHeaderWidth = width;
+  HeaderPadding[idx] -= width;
+}
+
+/**
+ * init_header_padding - Calculate how much padding the compose table will need
+ *
+ * The padding needed for each header is strlen() + max_width - strwidth().
+ *
+ * calc_header_width_padding sets each entry in HeaderPadding to strlen -
+ * width.  Then, afterwards, we go through and add max_width to each entry.
+ */
+static void init_header_padding(void)
+{
+  static bool done = false;
+
+  if (done)
+    return;
+  done = true;
+
+  for (int i = 0; i < HDR_ATTACH_TITLE; i++)
+  {
+    if (i == HDR_CRYPTINFO)
+      continue;
+    calc_header_width_padding(i, _(Prompts[i]), true);
+  }
+
+  /* Don't include "Sign as: " in the MaxHeaderWidth calculation.  It
+   * doesn't show up by default, and so can make the indentation of
+   * the other fields look funny. */
+  calc_header_width_padding(HDR_CRYPTINFO, _(Prompts[HDR_CRYPTINFO]), false);
+
+  for (int i = 0; i < HDR_ATTACH_TITLE; i++)
+  {
+    HeaderPadding[i] += MaxHeaderWidth;
+    if (HeaderPadding[i] < 0)
+      HeaderPadding[i] = 0;
+  }
+}
 
 /**
  * calc_address - Calculate how many rows an AddressList will need
@@ -202,40 +302,38 @@ static int calc_user_hdrs(const struct ListHead *hdrs)
 /**
  * calc_envelope - Calculate how many rows the envelope will need
  * @param win    Window to draw on
- * @param shared Shared compose data
- * @param edata  Envelope data
+ * @param wdata  Envelope Window data
  * @retval num Rows needed
  */
-static int calc_envelope(struct MuttWindow *win, struct ComposeSharedData *shared,
-                         struct ComposeEnvelopeData *edata)
+static int calc_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wdata)
 {
   int rows = 4; // 'From:', 'Subject:', 'Reply-To:', 'Fcc:'
 #ifdef MIXMASTER
   rows++;
 #endif
 
-  struct Email *e = shared->email;
+  struct Email *e = wdata->email;
   struct Envelope *env = e->env;
   const int cols = win->state.cols - MaxHeaderWidth;
 
 #ifdef USE_NNTP
-  if (OptNewsSend)
+  if (wdata->is_news)
   {
     rows += 2; // 'Newsgroups:' and 'Followup-To:'
-    const bool c_x_comment_to = cs_subset_bool(shared->sub, "x_comment_to");
+    const bool c_x_comment_to = cs_subset_bool(wdata->sub, "x_comment_to");
     if (c_x_comment_to)
       rows++;
   }
   else
 #endif
   {
-    rows += calc_address(&env->to, &edata->to_list, cols, &edata->to_rows);
-    rows += calc_address(&env->cc, &edata->cc_list, cols, &edata->cc_rows);
-    rows += calc_address(&env->bcc, &edata->bcc_list, cols, &edata->bcc_rows);
+    rows += calc_address(&env->to, &wdata->to_list, cols, &wdata->to_rows);
+    rows += calc_address(&env->cc, &wdata->cc_list, cols, &wdata->cc_rows);
+    rows += calc_address(&env->bcc, &wdata->bcc_list, cols, &wdata->bcc_rows);
   }
-  rows += calc_security(e, &edata->sec_rows, shared->sub);
+  rows += calc_security(e, &wdata->sec_rows, wdata->sub);
   const bool c_compose_show_user_headers =
-      cs_subset_bool(shared->sub, "compose_show_user_headers");
+      cs_subset_bool(wdata->sub, "compose_show_user_headers");
   if (c_compose_show_user_headers)
     rows += calc_user_hdrs(&env->userhdrs);
 
@@ -288,15 +386,13 @@ static void draw_header_content(struct MuttWindow *win, int row,
 /**
  * draw_crypt_lines - Update the encryption info in the compose window
  * @param win    Window to draw on
- * @param shared Shared compose data
- * @param edata  Envelope data
+ * @param wdata  Envelope Window data
  * @param row    Window row to start drawing
  * @retval num Number of lines used
  */
-static int draw_crypt_lines(struct MuttWindow *win, struct ComposeSharedData *shared,
-                            struct ComposeEnvelopeData *edata, int row)
+static int draw_crypt_lines(struct MuttWindow *win, struct EnvelopeWindowData *wdata, int row)
 {
-  struct Email *e = shared->email;
+  struct Email *e = wdata->email;
 
   draw_header(win, row++, HDR_CRYPT);
 
@@ -343,7 +439,7 @@ static int draw_crypt_lines(struct MuttWindow *win, struct ComposeSharedData *sh
   }
 
   const bool c_crypt_opportunistic_encrypt =
-      cs_subset_bool(shared->sub, "crypt_opportunistic_encrypt");
+      cs_subset_bool(wdata->sub, "crypt_opportunistic_encrypt");
   if (c_crypt_opportunistic_encrypt && (e->security & SEC_OPPENCRYPT))
     mutt_window_addstr(win, _(" (OppEnc mode)"));
 
@@ -354,7 +450,7 @@ static int draw_crypt_lines(struct MuttWindow *win, struct ComposeSharedData *sh
   {
     draw_header(win, row++, HDR_CRYPTINFO);
     const char *const c_pgp_sign_as =
-        cs_subset_string(shared->sub, "pgp_sign_as");
+        cs_subset_string(wdata->sub, "pgp_sign_as");
     mutt_window_printf(win, "%s", c_pgp_sign_as ? c_pgp_sign_as : _("<default>"));
   }
 
@@ -363,12 +459,12 @@ static int draw_crypt_lines(struct MuttWindow *win, struct ComposeSharedData *sh
   {
     draw_header(win, row++, HDR_CRYPTINFO);
     const char *const c_smime_sign_as =
-        cs_subset_string(shared->sub, "pgp_sign_as");
+        cs_subset_string(wdata->sub, "pgp_sign_as");
     mutt_window_printf(win, "%s", c_smime_sign_as ? c_smime_sign_as : _("<default>"));
   }
 
   const char *const c_smime_encrypt_with =
-      cs_subset_string(shared->sub, "smime_encrypt_with");
+      cs_subset_string(wdata->sub, "smime_encrypt_with");
   if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME) &&
       (e->security & SEC_ENCRYPT) && c_smime_encrypt_with)
   {
@@ -377,7 +473,7 @@ static int draw_crypt_lines(struct MuttWindow *win, struct ComposeSharedData *sh
   }
 
 #ifdef USE_AUTOCRYPT
-  const bool c_autocrypt = cs_subset_bool(shared->sub, "autocrypt");
+  const bool c_autocrypt = cs_subset_bool(wdata->sub, "autocrypt");
   if (c_autocrypt)
   {
     draw_header(win, row, HDR_AUTOCRYPT);
@@ -396,7 +492,7 @@ static int draw_crypt_lines(struct MuttWindow *win, struct ComposeSharedData *sh
        Displays the output of the recommendation engine
        (Off, No, Discouraged, Available, Yes) */
     draw_floating(win, 40, row, _("Recommendation: "));
-    mutt_window_printf(win, "%s", _(AutocryptRecUiFlags[edata->autocrypt_rec]));
+    mutt_window_printf(win, "%s", _(AutocryptRecUiFlags[wdata->autocrypt_rec]));
 
     used++;
   }
@@ -557,17 +653,17 @@ static int draw_envelope_addr(int field, struct AddressList *al,
 /**
  * draw_envelope_user_hdrs - Write user-defined headers to the compose window
  * @param win    Window to draw on
- * @param shared Shared compose data
+ * @param wdata  Envelope Window data
  * @param row    Window row to start drawing from
  * @retval num Rows used
  */
 static int draw_envelope_user_hdrs(struct MuttWindow *win,
-                                   struct ComposeSharedData *shared, int row)
+                                   struct EnvelopeWindowData *wdata, int row)
 {
   const char *overflow_text = "...";
   int rows_used = 0;
 
-  struct ListNode *first = STAILQ_FIRST(&shared->email->env->userhdrs);
+  struct ListNode *first = STAILQ_FIRST(&wdata->email->env->userhdrs);
   if (!first)
     return rows_used;
 
@@ -584,7 +680,7 @@ static int draw_envelope_user_hdrs(struct MuttWindow *win,
   if (!np)
     return rows_used;
 
-  STAILQ_FOREACH_FROM(np, &shared->email->env->userhdrs, entries)
+  STAILQ_FOREACH_FROM(np, &wdata->email->env->userhdrs, entries)
   {
     if ((rows_used == (MAX_USER_HDR_ROWS - 1)) && STAILQ_NEXT(np, entries))
     {
@@ -601,21 +697,19 @@ static int draw_envelope_user_hdrs(struct MuttWindow *win,
 /**
  * draw_envelope - Write the email headers to the compose window
  * @param win    Window to draw on
- * @param shared Shared compose data
- * @param edata  Envelope data
+ * @param wdata  Envelope Window data
  */
-static void draw_envelope(struct MuttWindow *win, struct ComposeSharedData *shared,
-                          struct ComposeEnvelopeData *edata)
+static void draw_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wdata)
 {
-  struct Email *e = shared->email;
-  const char *fcc = mutt_buffer_string(edata->fcc);
+  struct Email *e = wdata->email;
+  const char *fcc = mutt_buffer_string(wdata->fcc);
   const int cols = win->state.cols - MaxHeaderWidth;
 
   mutt_window_clear(win);
   int row = draw_envelope_addr(HDR_FROM, &e->env->from, win, 0, 1);
 
 #ifdef USE_NNTP
-  if (OptNewsSend)
+  if (wdata->is_news)
   {
     draw_header(win, row++, HDR_NEWSGROUPS);
     mutt_paddstr(win, cols, NONULL(e->env->newsgroups));
@@ -623,7 +717,7 @@ static void draw_envelope(struct MuttWindow *win, struct ComposeSharedData *shar
     draw_header(win, row++, HDR_FOLLOWUPTO);
     mutt_paddstr(win, cols, NONULL(e->env->followup_to));
 
-    const bool c_x_comment_to = cs_subset_bool(shared->sub, "x_comment_to");
+    const bool c_x_comment_to = cs_subset_bool(wdata->sub, "x_comment_to");
     if (c_x_comment_to)
     {
       draw_header(win, row++, HDR_XCOMMENTTO);
@@ -633,9 +727,9 @@ static void draw_envelope(struct MuttWindow *win, struct ComposeSharedData *shar
   else
 #endif
   {
-    row += draw_envelope_addr(HDR_TO, &e->env->to, win, row, edata->to_rows);
-    row += draw_envelope_addr(HDR_CC, &e->env->cc, win, row, edata->cc_rows);
-    row += draw_envelope_addr(HDR_BCC, &e->env->bcc, win, row, edata->bcc_rows);
+    row += draw_envelope_addr(HDR_TO, &e->env->to, win, row, wdata->to_rows);
+    row += draw_envelope_addr(HDR_CC, &e->env->cc, win, row, wdata->cc_rows);
+    row += draw_envelope_addr(HDR_BCC, &e->env->bcc, win, row, wdata->bcc_rows);
   }
 
   draw_header(win, row++, HDR_SUBJECT);
@@ -647,15 +741,15 @@ static void draw_envelope(struct MuttWindow *win, struct ComposeSharedData *shar
   mutt_paddstr(win, cols, fcc);
 
   if (WithCrypto)
-    row += draw_crypt_lines(win, shared, edata, row);
+    row += draw_crypt_lines(win, wdata, row);
 
 #ifdef MIXMASTER
   draw_mix_line(&e->chain, win, row++);
 #endif
   const bool c_compose_show_user_headers =
-      cs_subset_bool(shared->sub, "compose_show_user_headers");
+      cs_subset_bool(wdata->sub, "compose_show_user_headers");
   if (c_compose_show_user_headers)
-    row += draw_envelope_user_hdrs(win, shared, row);
+    row += draw_envelope_user_hdrs(win, wdata, row);
 
   mutt_curses_set_color_by_id(MT_COLOR_STATUS);
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
@@ -666,11 +760,10 @@ static void draw_envelope(struct MuttWindow *win, struct ComposeSharedData *shar
  */
 static int env_recalc(struct MuttWindow *win)
 {
-  struct ComposeSharedData *shared = win->parent->wdata;
-  struct ComposeEnvelopeData *edata = win->wdata;
+  struct EnvelopeWindowData *wdata = win->wdata;
 
   const int cur_rows = win->state.rows;
-  const int new_rows = calc_envelope(win, shared, edata);
+  const int new_rows = calc_envelope(win, wdata);
 
   if (new_rows != cur_rows)
   {
@@ -691,10 +784,9 @@ static int env_repaint(struct MuttWindow *win)
   if (!mutt_window_is_visible(win))
     return 0;
 
-  struct ComposeSharedData *shared = win->parent->wdata;
-  struct ComposeEnvelopeData *edata = win->wdata;
+  struct EnvelopeWindowData *wdata = win->wdata;
 
-  draw_envelope(win, shared, edata);
+  draw_envelope(win, wdata);
   mutt_debug(LL_DEBUG5, "repaint done\n");
   return 0;
 }
@@ -730,25 +822,6 @@ static int env_color_observer(struct NotifyCallback *nc)
     default:
       break;
   }
-  return 0;
-}
-
-/**
- * env_compose_observer - Notification that the Compose data has changed - Implements ::observer_t - @ingroup observer_api
- */
-static int env_compose_observer(struct NotifyCallback *nc)
-{
-  if ((nc->event_type != NT_COMPOSE) || !nc->global_data)
-    return -1;
-
-  if (nc->event_subtype != NT_COMPOSE_ENVELOPE)
-    return 0;
-
-  struct MuttWindow *win_env = nc->global_data;
-
-  win_env->actions |= WA_RECALC;
-  mutt_debug(LL_DEBUG5, "compose done, request WA_RECALC\n");
-
   return 0;
 }
 
@@ -798,6 +871,30 @@ static int env_config_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * env_email_observer - Notification that the Email has changed - Implements ::observer_t - @ingroup observer_api
+ */
+static int env_email_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_EMAIL) && (nc->event_type != NT_ENVELOPE))
+    return -1;
+  if (!nc->global_data)
+    return -1;
+
+  struct MuttWindow *win_env = nc->global_data;
+
+  // pgp/smime/autocrypt menu, or external change
+  if (nc->event_type == NT_EMAIL)
+  {
+    struct EnvelopeWindowData *wdata = win_env->wdata;
+    update_crypt_info(wdata);
+  }
+
+  win_env->actions |= WA_RECALC;
+  mutt_debug(LL_DEBUG5, "email done, request WA_RECALC\n");
+  return 0;
+}
+
+/**
  * env_header_observer - Notification that a User Header has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int env_header_observer(struct NotifyCallback *nc)
@@ -807,17 +904,15 @@ static int env_header_observer(struct NotifyCallback *nc)
 
   const struct EventHeader *ev_h = nc->event_data;
   struct MuttWindow *win_env = nc->global_data;
-  // struct ComposeEnvelopeData *edata = win_env->wdata;
-  struct MuttWindow *dlg = win_env->parent;
-  struct ComposeSharedData *shared = dlg->wdata;
+  struct EnvelopeWindowData *wdata = win_env->wdata;
 
-  struct Envelope *env = shared->email->env;
+  struct Envelope *env = wdata->email->env;
 
   if ((nc->event_subtype == NT_HEADER_ADD) || (nc->event_subtype == NT_HEADER_CHANGE))
   {
     header_set(&env->userhdrs, ev_h->header);
     mutt_debug(LL_DEBUG5, "header done, request reflow\n");
-    env_recalc(win_env);
+    win_env->actions |= WA_RECALC;
     return 0;
   }
 
@@ -828,7 +923,7 @@ static int env_header_observer(struct NotifyCallback *nc)
     {
       header_free(&env->userhdrs, removed);
       mutt_debug(LL_DEBUG5, "header done, request reflow\n");
-      env_recalc(win_env);
+      win_env->actions |= WA_RECALC;
     }
     return 0;
   }
@@ -856,10 +951,10 @@ static int env_window_observer(struct NotifyCallback *nc)
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
-    struct ComposeSharedData *shared = win_env->parent->wdata;
+    struct EnvelopeWindowData *wdata = win_env->wdata;
 
     notify_observer_remove(NeoMutt->notify, env_color_observer, win_env);
-    notify_observer_remove(shared->notify, env_compose_observer, win_env);
+    notify_observer_remove(wdata->email->notify, env_email_observer, win_env);
     notify_observer_remove(NeoMutt->notify, env_config_observer, win_env);
     notify_observer_remove(NeoMutt->notify, env_header_observer, win_env);
     notify_observer_remove(win_env->notify, env_window_observer, win_env);
@@ -870,30 +965,34 @@ static int env_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * compose_env_new - Create the Envelope Window
- * @param shared Shared compose data
+ * env_window_new - Create the Envelope Window
+ * @param e      Email
  * @param fcc    Buffer to save FCC
+ * @param sub    ConfigSubset
  * @retval ptr New Window
  */
-struct MuttWindow *compose_env_new(struct ComposeSharedData *shared, struct Buffer *fcc)
+struct MuttWindow *env_window_new(struct Email *e, struct Buffer *fcc, struct ConfigSubset *sub)
 {
+  init_header_padding();
+
   struct MuttWindow *win_env =
       mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                       MUTT_WIN_SIZE_UNLIMITED, HDR_ATTACH_TITLE - 1);
 
   notify_observer_add(NeoMutt->notify, NT_COLOR, env_color_observer, win_env);
-  notify_observer_add(shared->notify, NT_COMPOSE, env_compose_observer, win_env);
+  notify_observer_add(e->notify, NT_ALL, env_email_observer, win_env);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, env_config_observer, win_env);
   notify_observer_add(NeoMutt->notify, NT_HEADER, env_header_observer, win_env);
   notify_observer_add(win_env->notify, NT_WINDOW, env_window_observer, win_env);
 
-  struct ComposeEnvelopeData *env_data = env_data_new();
-  env_data->fcc = fcc;
+  struct EnvelopeWindowData *wdata = env_wdata_new();
+  wdata->fcc = fcc;
+  wdata->email = e;
+  wdata->sub = sub;
+  wdata->is_news = OptNewsSend;
 
-  shared->edata = env_data;
-
-  win_env->wdata = env_data;
-  win_env->wdata_free = env_data_free;
+  win_env->wdata = wdata;
+  win_env->wdata_free = env_wdata_free;
   win_env->recalc = env_recalc;
   win_env->repaint = env_repaint;
 

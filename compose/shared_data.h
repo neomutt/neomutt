@@ -36,7 +36,6 @@ struct ComposeSharedData
   struct Email *email;               ///< Email being composed
   struct ComposeAttachData *adata;   ///< Attachments
   struct ComposeEnvelopeData *edata; ///< Envelope data
-  struct Notify *notify;             ///< Notifications: #NotifyCompose
 
   struct Buffer *fcc;                ///< Buffer to save FCC
   int flags;                         ///< Flags, e.g. #MUTT_COMPOSE_NOFREEHEADER

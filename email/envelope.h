@@ -29,6 +29,8 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 
+struct Email;
+
 #define MUTT_ENV_CHANGED_IRT     (1 << 0)  ///< In-Reply-To changed to link/break threads
 #define MUTT_ENV_CHANGED_REFS    (1 << 1)  ///< References changed to break thread
 #define MUTT_ENV_CHANGED_XLABEL  (1 << 2)  ///< X-Label edited
@@ -90,12 +92,36 @@ struct Envelope
   unsigned char changed; ///< Changed fields, e.g. #MUTT_ENV_CHANGED_SUBJECT
 };
 
-bool             mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2);
-void             mutt_env_free      (struct Envelope **ptr);
-void             mutt_env_merge     (struct Envelope *base, struct Envelope **extra);
-struct Envelope *mutt_env_new       (void);
-int              mutt_env_to_intl   (struct Envelope *env, const char **tag, char **err);
-void             mutt_env_to_local  (struct Envelope *env);
+/**
+ * enum NotifyEnvelope - Types of Envelope Event
+ *
+ * Observers of #NT_ENVELOPE will not be passed any Event data.
+ *
+ * Notifications that an Envelope field has changed.
+ * Envelope doesn't support notifications, so events will be passed to the Email.
+ */
+enum NotifyEnvelope
+{
+  NT_ENVELOPE_BCC  = 1,        ///< "Bcc:"          header has changed
+  NT_ENVELOPE_CC,              ///< "Cc:"           header has changed
+  NT_ENVELOPE_FCC,             ///< "Fcc:"          header has changed
+  NT_ENVELOPE_FOLLOWUP_TO,     ///< "Followup-To:"  header has changed
+  NT_ENVELOPE_FROM,            ///< "From:"         header has changed
+  NT_ENVELOPE_MIXMASTER,       ///< MixMaster chain        has changed
+  NT_ENVELOPE_NEWSGROUPS,      ///< "Newsgroups:"   header has changed
+  NT_ENVELOPE_REPLY_TO,        ///< "Reply-To:"     header has changed
+  NT_ENVELOPE_SUBJECT,         ///< "Subject:"      header has changed
+  NT_ENVELOPE_TO,              ///< "To:"           header has changed
+  NT_ENVELOPE_X_COMMENT_TO,    ///< "X-Comment-To:" header has changed
+};
+
+bool             mutt_env_cmp_strict (const struct Envelope *e1, const struct Envelope *e2);
+void             mutt_env_free       (struct Envelope **ptr);
+void             mutt_env_merge      (struct Envelope *base, struct Envelope **extra);
+struct Envelope *mutt_env_new        (void);
+bool             mutt_env_notify_send(struct Email *e, enum NotifyEnvelope type);
+int              mutt_env_to_intl    (struct Envelope *env, const char **tag, char **err);
+void             mutt_env_to_local   (struct Envelope *env);
 
 #ifdef USE_AUTOCRYPT
 struct AutocryptHeader *mutt_autocrypthdr_new(void);

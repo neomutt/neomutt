@@ -341,9 +341,14 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
              (plen = mutt_istr_startswith(np->data, "pgp:")))
     {
-      e->security = mutt_parse_crypt_hdr(np->data + plen, false, APPLICATION_PGP);
-      if (e->security)
-        e->security |= APPLICATION_PGP;
+      SecurityFlags sec = mutt_parse_crypt_hdr(np->data + plen, false, APPLICATION_PGP);
+      if (sec != SEC_NO_FLAGS)
+        sec |= APPLICATION_PGP;
+      if (sec != e->security)
+      {
+        e->security = sec;
+        notify_send(e->notify, NT_EMAIL, NT_EMAIL_CHANGE, NULL);
+      }
       keep = false;
     }
 

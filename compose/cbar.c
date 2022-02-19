@@ -51,8 +51,8 @@
  * | Event Type            | Handler                 |
  * | :-------------------- | :---------------------- |
  * | #NT_COLOR             | cbar_color_observer()   |
- * | #NT_COMPOSE           | cbar_compose_observer() |
  * | #NT_CONFIG            | cbar_config_observer()  |
+ * | #NT_EMAIL             | cbar_email_observer()   |
  * | #NT_WINDOW            | cbar_window_observer()  |
  * | MuttWindow::recalc()  | cbar_recalc()           |
  * | MuttWindow::repaint() | cbar_repaint()          |
@@ -65,6 +65,7 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
@@ -222,21 +223,6 @@ int cbar_color_observer(struct NotifyCallback *nc)
 }
 
 /**
- * cbar_compose_observer - Notification that the Compose data has changed - Implements ::observer_t - @ingroup observer_api
- */
-int cbar_compose_observer(struct NotifyCallback *nc)
-{
-  if ((nc->event_type != NT_COMPOSE) || !nc->global_data || !nc->event_data)
-    return -1;
-
-  struct MuttWindow *win_cbar = nc->global_data;
-  win_cbar->actions |= WA_REPAINT;
-  mutt_debug(LL_DEBUG5, "compose done, request WA_REPAINT\n");
-
-  return 0;
-}
-
-/**
  * cbar_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 int cbar_config_observer(struct NotifyCallback *nc)
@@ -251,6 +237,21 @@ int cbar_config_observer(struct NotifyCallback *nc)
   struct MuttWindow *win_cbar = nc->global_data;
   win_cbar->actions |= WA_RECALC;
   mutt_debug(LL_DEBUG5, "config done, request WA_RECALC\n");
+
+  return 0;
+}
+
+/**
+ * cbar_email_observer - Notification that the Email has changed - Implements ::observer_t - @ingroup observer_api
+ */
+int cbar_email_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_EMAIL) || !nc->global_data || !nc->event_data)
+    return -1;
+
+  struct MuttWindow *win_cbar = nc->global_data;
+  win_cbar->actions |= WA_RECALC;
+  mutt_debug(LL_DEBUG5, "compose done, request WA_RECALC\n");
 
   return 0;
 }
@@ -279,8 +280,8 @@ int cbar_window_observer(struct NotifyCallback *nc)
     struct ComposeSharedData *shared = dlg->wdata;
 
     notify_observer_remove(NeoMutt->notify, cbar_color_observer, win_cbar);
-    notify_observer_remove(shared->notify, cbar_compose_observer, win_cbar);
     notify_observer_remove(NeoMutt->notify, cbar_config_observer, win_cbar);
+    notify_observer_remove(shared->email->notify, cbar_email_observer, win_cbar);
     notify_observer_remove(win_cbar->notify, cbar_window_observer, win_cbar);
 
     mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -305,8 +306,8 @@ struct MuttWindow *cbar_new(struct ComposeSharedData *shared)
   win_cbar->repaint = cbar_repaint;
 
   notify_observer_add(NeoMutt->notify, NT_COLOR, cbar_color_observer, win_cbar);
-  notify_observer_add(shared->notify, NT_COMPOSE, cbar_compose_observer, win_cbar);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, cbar_config_observer, win_cbar);
+  notify_observer_add(shared->email->notify, NT_EMAIL, cbar_email_observer, win_cbar);
   notify_observer_add(win_cbar->notify, NT_WINDOW, cbar_window_observer, win_cbar);
 
   return win_cbar;

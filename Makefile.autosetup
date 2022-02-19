@@ -215,8 +215,7 @@ $(PWD)/compmbox:
 LIBCOMPOSE=	libcompose.a
 LIBCOMPOSEOBJS=	compose/attach.o compose/attach_data.o compose/cbar.o \
 		compose/cbar_data.o compose/compose.o compose/config.o \
-		compose/env_data.o compose/envelope.o compose/functions.o \
-		compose/shared_data.o
+		compose/functions.o compose/shared_data.o
 
 CLEANFILES+=	$(LIBCOMPOSE) $(LIBCOMPOSEOBJS)
 ALLOBJS+=	$(LIBCOMPOSEOBJS)
@@ -370,6 +369,19 @@ $(LIBENTER): $(PWD)/enter $(LIBENTEROBJS)
 	$(RANLIB) $@
 $(PWD)/enter:
 	$(MKDIR_P) $(PWD)/enter
+
+###############################################################################
+# libenvelope
+LIBENVELOPE=	libenvelope.a
+LIBENVELOPEOBJS= envelope/functions.o envelope/wdata.o envelope/window.o
+CLEANFILES+=	$(LIBENVELOPE) $(LIBENVELOPEOBJS)
+ALLOBJS+=	$(LIBENVELOPEOBJS)
+
+$(LIBENVELOPE): $(PWD)/envelope $(LIBENVELOPEOBJS)
+	$(AR) cr $@ $(LIBENVELOPEOBJS)
+	$(RANLIB) $@
+$(PWD)/envelope:
+	$(MKDIR_P) $(PWD)/envelope
 
 ###############################################################################
 # libgui
@@ -750,11 +762,11 @@ $(ALLOBJS):
 MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) \
 		$(LIBBROWSER) $(LIBNNTP) $(LIBCOMPMBOX) $(LIBSTORE) \
 		$(LIBPROGRESS) $(LIBQUESTION) $(LIBMENU) $(LIBCOLOR) \
-		$(LIBGUI) $(LIBENTER) $(LIBPATTERN) $(LIBHELPBAR) $(LIBMBOX) \
-		$(LIBNOTMUCH) $(LIBSEND) $(LIBCOMPOSE) $(LIBATTACH) \
-		$(LIBMAILDIR) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
-		$(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) \
-		$(LIBALIAS) $(LIBCORE) $(LIBCONFIG) $(LIBEMAIL) \
+		$(LIBSEND) $(LIBCOMPOSE) $(LIBENVELOPE) $(LIBGUI) $(LIBENTER) \
+		$(LIBPATTERN) $(LIBHELPBAR) $(LIBMBOX) $(LIBNOTMUCH) \
+		$(LIBATTACH) $(LIBMAILDIR) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) \
+		$(LIBHCACHE) $(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) \
+		$(LIBHISTORY) $(LIBALIAS) $(LIBCORE) $(LIBCONFIG) $(LIBEMAIL) \
 		$(LIBADDRESS) $(LIBDEBUG) $(LIBMUTT)
 
 # neomutt

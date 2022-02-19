@@ -148,6 +148,9 @@ enum NotifyEmail
   NT_EMAIL_DELETE,          ///< Email is about to be deleted
   NT_EMAIL_DELETE_ALL,      ///< All the Emails are about to be deleted
   NT_EMAIL_CHANGE,          ///< Email has changed
+  NT_EMAIL_CHANGE_ENVELOPE, ///< Email's Envelope has changed
+  NT_EMAIL_CHANGE_ATTACH,   ///< Email's Attachments have changed
+  NT_EMAIL_CHANGE_SECURITY, ///< Email's security settings have changed
 };
 
 /**

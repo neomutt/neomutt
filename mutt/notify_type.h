@@ -40,10 +40,10 @@ enum NotifyType
   NT_BINDING,   ///< Key binding has changed,       #NotifyBinding,   #EventBinding
   NT_COLOR,     ///< Colour has changed,            #NotifyColor,     #EventColor
   NT_COMMAND,   ///< A Command has been executed,   #Command
-  NT_COMPOSE,   ///< Compose data has changed,      #NotifyCompose
   NT_CONFIG,    ///< Config has changed,            #NotifyConfig,    #EventConfig
   NT_CONTEXT,   ///< Context has changed,           #NotifyContext,   #EventContext
   NT_EMAIL,     ///< Email has changed,             #NotifyEmail,     #EventEmail
+  NT_ENVELOPE,  ///< Envelope has changed,          #NotifyEnvelope
   NT_GLOBAL,    ///< Not object-related,            #NotifyGlobal
   NT_HEADER,    ///< A header has changed,          #NotifyHeader     #EventHeader
   NT_INDEX,     ///< Index data has changed,        #NotifyIndex,     #IndexSharedData

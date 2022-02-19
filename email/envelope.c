@@ -34,6 +34,7 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "envelope.h"
+#include "email.h"
 
 /**
  * mutt_env_new - Create a new Envelope
@@ -140,6 +141,18 @@ void mutt_env_free(struct Envelope **ptr)
 #endif
 
   FREE(ptr);
+}
+
+/**
+ * mutt_env_notify_send - Send an Envelope change notification
+ * @param e Email
+ * @param type Notification type, e.g. #NT_ENVELOPE_SUBJECT
+ * @retval true Successfully sent
+ */
+bool mutt_env_notify_send(struct Email *e, enum NotifyEnvelope type)
+{
+  struct EventEmail ev_e = { 1, &e };
+  return notify_send(e->notify, NT_ENVELOPE, type, &ev_e);
 }
 
 /**

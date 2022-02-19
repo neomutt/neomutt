@@ -1,6 +1,6 @@
 /**
  * @file
- * Compose Envelope Data
+ * Envelope Window Data
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMPOSE_ENV_DATA_H
-#define MUTT_COMPOSE_ENV_DATA_H
+#ifndef MUTT_ENVELOPE_WDATA_H
+#define MUTT_ENVELOPE_WDATA_H
 
 #include "config.h"
 #include "mutt/lib.h"
@@ -32,10 +32,12 @@
 struct MuttWindow;
 
 /**
- * struct ComposeEnvelopeData - Data to fill the Compose Envelope Window
+ * struct EnvelopeWindowData - Data to fill the Envelope Window
  */
-struct ComposeEnvelopeData
+struct EnvelopeWindowData
 {
+  struct ConfigSubset *sub;        ///< Inherited config items
+  struct Email *email;             ///< Email being composed
   struct Buffer *fcc;              ///< Where the outgoing Email will be saved
 
   struct ListHead to_list;         ///< 'To:' list of addresses
@@ -47,12 +49,15 @@ struct ComposeEnvelopeData
   short bcc_rows;                  ///< Number of rows used by the 'Bcc:' field
   short sec_rows;                  ///< Number of rows used by the security fields
 
+#ifdef USE_NNTP
+  bool is_news;                    ///< Email is a news article
+#endif
 #ifdef USE_AUTOCRYPT
   enum AutocryptRec autocrypt_rec; ///< Autocrypt recommendation
 #endif
 };
 
-void env_data_free(struct MuttWindow *win, void **ptr);
-struct ComposeEnvelopeData *env_data_new(void);
+void                       env_wdata_free(struct MuttWindow *win, void **ptr);
+struct EnvelopeWindowData *env_wdata_new (void);
 
-#endif /* MUTT_COMPOSE_ENV_DATA_H */
+#endif /* MUTT_ENVELOPE_WDATA_H */
