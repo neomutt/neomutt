@@ -73,7 +73,7 @@ typedef uint8_t CheckFlags;       ///< Flags, e.g. #CHECK_IN_MAILBOX
 #define CHECK_READONLY   (1 << 3) ///< Is the mailbox readonly?
 #define CHECK_ATTACH     (1 << 4) ///< Is the user in message-attach mode?
 
-int  index_color(struct Menu *menu, int line);
+struct AttrColor *index_color(struct Menu *menu, int line);
 void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line);
 void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, size_t buflen);
 struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m);

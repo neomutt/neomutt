@@ -30,6 +30,7 @@
 #include <sys/stat.h>
 #include "mutt/lib.h"
 #include "lib.h"
+#include "color/lib.h"
 #include "menu/lib.h"
 
 struct MuttWindow;
@@ -70,9 +71,10 @@ struct PagerPrivateData
   int index_size;              ///< Size of the mini-index Window `$pager_index_lines`
   int indicator;               ///< Preferred position of the indicator line in the mini-index Window
 
-  bool force_redraw;           ///< Repaint is needed
-  MenuRedrawFlags redraw;      ///< When to redraw the screen
-  struct Notify *notify;       ///< Notifications: #NotifyPager, #PagerPrivateData
+  bool force_redraw;              ///< Repaint is needed
+  MenuRedrawFlags redraw;         ///< When to redraw the screen
+  struct AttrColorList ansi_list; ///< List of ANSI colours used in the Pager
+  struct Notify *notify;          ///< Notifications: #NotifyPager, #PagerPrivateData
 
   int rc;                        ///< Return code from functions
   int searchctx;                 ///< Space to show around search matches

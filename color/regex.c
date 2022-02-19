@@ -33,14 +33,17 @@
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
-#include "gui/lib.h"
 #include "index/lib.h"
 #include "pattern/lib.h"
+#include "attr.h"
 #include "color.h"
+#include "command2.h"
 #include "context.h"
+#include "curses2.h"
+#include "debug.h"
 #include "mutt_globals.h"
+#include "notify2.h"
 #include "regex4.h"
 
 // clang-format off
@@ -56,45 +59,11 @@ struct RegexColorList StatusList;       ///< List of colours applied to the stat
 // clang-format on
 
 /**
- * regex_color_free - Free a RegexColor
- * @param ptr         RegexColor to free
- * @param free_colors If true, free its colours too
- */
-void regex_color_free(struct RegexColor **ptr, bool free_colors)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct RegexColor *cl = *ptr;
-
-  if (free_colors && (cl->fg != COLOR_UNSET) && (cl->bg != COLOR_UNSET))
-    mutt_color_free(cl->fg, cl->bg);
-
-  regfree(&cl->regex);
-  mutt_pattern_free(&cl->color_pattern);
-  FREE(&cl->pattern);
-  FREE(ptr);
-}
-
-/**
- * regex_color_list_clear - Clear a list of colours
- * @param rcl RegexColor List
- */
-void regex_color_list_clear(struct RegexColorList *rcl)
-{
-  struct RegexColor *np = NULL, *tmp = NULL;
-  STAILQ_FOREACH_SAFE(np, rcl, entries, tmp)
-  {
-    STAILQ_REMOVE(rcl, np, RegexColor, entries);
-    regex_color_free(&np, true);
-  }
-}
-
-/**
  * regex_colors_init - Initialise the Regex colours
  */
 void regex_colors_init(void)
 {
+  color_debug(LL_DEBUG5, "init AttachList, BodyList, etc\n");
   STAILQ_INIT(&AttachList);
   STAILQ_INIT(&BodyList);
   STAILQ_INIT(&HeaderList);
@@ -111,6 +80,7 @@ void regex_colors_init(void)
  */
 void regex_colors_clear(void)
 {
+  color_debug(LL_DEBUG5, "clean up regex\n");
   regex_color_list_clear(&AttachList);
   regex_color_list_clear(&BodyList);
   regex_color_list_clear(&HeaderList);
@@ -120,6 +90,74 @@ void regex_colors_clear(void)
   regex_color_list_clear(&IndexSubjectList);
   regex_color_list_clear(&IndexTagList);
   regex_color_list_clear(&StatusList);
+}
+
+/**
+ * regex_color_clear - Free the contents of a Regex colour
+ * @param rcol RegexColor to empty
+ *
+ * @note The RegexColor object isn't freed
+ */
+void regex_color_clear(struct RegexColor *rcol)
+{
+  if (!rcol)
+    return;
+
+  rcol->match = 0;
+  rcol->stop_matching = false;
+
+  attr_color_clear(&rcol->attr_color);
+  FREE(&rcol->pattern);
+  regfree(&rcol->regex);
+  mutt_pattern_free(&rcol->color_pattern);
+}
+
+/**
+ * regex_color_free - Free a Regex colour
+ * @param list RegexColorList holding the colour
+ * @param ptr  RegexColor to free
+ */
+void regex_color_free(struct RegexColorList *list, struct RegexColor **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct RegexColor *rcol = *ptr;
+  regex_color_clear(rcol);
+
+  FREE(ptr);
+}
+
+/**
+ * regex_color_new - Create a new RegexColor
+ * @retval ptr New RegexColor
+ */
+struct RegexColor *regex_color_new(void)
+{
+  struct RegexColor *rcol = mutt_mem_calloc(1, sizeof(*rcol));
+
+  return rcol;
+}
+
+/**
+ * regex_color_list_clear - Free the contents of a RegexColorList
+ * @param rcl List to clear
+ *
+ * Free each of the RegexColorList in a list.
+ *
+ * @note The list object isn't freed, only emptied
+ */
+void regex_color_list_clear(struct RegexColorList *rcl)
+{
+  if (!rcl)
+    return;
+
+  struct RegexColor *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, rcl, entries, tmp)
+  {
+    STAILQ_REMOVE(rcl, np, RegexColor, entries);
+    regex_color_free(rcl, &np);
+  }
 }
 
 /**
@@ -155,27 +193,13 @@ struct RegexColorList *regex_colors_get_list(enum ColorId cid)
 }
 
 /**
- * regex_color_new - Create a new RegexColor
- * @retval ptr Newly allocated RegexColor
- */
-struct RegexColor *regex_color_new(void)
-{
-  struct RegexColor *cl = mutt_mem_calloc(1, sizeof(struct RegexColor));
-
-  cl->fg = COLOR_UNSET;
-  cl->bg = COLOR_UNSET;
-
-  return cl;
-}
-
-/**
  * add_pattern - Associate a colour to a pattern
  * @param rcl       List of existing colours
  * @param s         String to match
  * @param sensitive true if the pattern case-sensitive
  * @param fg        Foreground colour
  * @param bg        Background colour
- * @param attr      Attributes, e.g. A_UNDERLINE
+ * @param attrs     Attributes, e.g. A_UNDERLINE
  * @param err       Buffer for error messages
  * @param is_index  true of this is for the index
  * @param match     Number of regex subexpression to match (0 for entire pattern)
@@ -184,9 +208,9 @@ struct RegexColor *regex_color_new(void)
  * is_index used to store compiled pattern only for 'index' color object when
  * called from mutt_parse_color()
  */
-enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
-                               bool sensitive, uint32_t fg, uint32_t bg, int attr,
-                               struct Buffer *err, bool is_index, int match)
+static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
+                                      bool sensitive, uint32_t fg, uint32_t bg, int attrs,
+                                      struct Buffer *err, bool is_index, int match)
 {
   struct RegexColor *rcol = NULL;
 
@@ -199,21 +223,21 @@ enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
     }
   }
 
-  if (rcol)
+  if (rcol) // found a matching regex
   {
-    if ((fg != COLOR_UNSET) && (bg != COLOR_UNSET))
+    struct AttrColor *ac = &rcol->attr_color;
+    struct CursesColor *cc = ac->curses_color;
+
+    // different colours
+    if (cc && ((cc->fg != fg) || (cc->bg != bg)))
     {
-      if ((rcol->fg != fg) || (rcol->bg != bg))
-      {
-        mutt_color_free(rcol->fg, rcol->bg);
-        rcol->fg = fg;
-        rcol->bg = bg;
-        attr |= mutt_color_alloc(fg, bg);
-      }
-      else
-        attr |= (rcol->pair & ~A_BOLD);
+      attr_color_clear(&rcol->attr_color);
+      cc = curses_color_new(fg, bg);
+      cc->fg = fg;
+      cc->bg = bg;
+      ac->curses_color = cc;
     }
-    rcol->pair = attr;
+    ac->attrs = attrs;
   }
   else
   {
@@ -232,7 +256,7 @@ enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
       mutt_buffer_pool_release(&buf);
       if (!rcol->color_pattern)
       {
-        regex_color_free(&rcol, true);
+        regex_color_free(rcl, &rcol);
         return MUTT_CMD_ERROR;
       }
     }
@@ -248,20 +272,17 @@ enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
       if (r != 0)
       {
         regerror(r, &rcol->regex, err->data, err->dsize);
-        regex_color_free(&rcol, true);
+        regex_color_free(rcl, &rcol);
         return MUTT_CMD_ERROR;
       }
     }
     rcol->pattern = mutt_str_dup(s);
     rcol->match = match;
-    if ((fg != COLOR_UNSET) && (bg != COLOR_UNSET))
-    {
-      rcol->fg = fg;
-      rcol->bg = bg;
-      attr |= mutt_color_alloc(fg, bg);
-    }
-    rcol->pair = attr;
-    STAILQ_INSERT_HEAD(rcl, rcol, entries);
+    struct CursesColor *cc = curses_color_new(fg, bg);
+    struct AttrColor *ac = &rcol->attr_color;
+    ac->curses_color = cc;
+    ac->attrs = attrs;
+    STAILQ_INSERT_TAIL(rcl, rcol, entries);
   }
 
   if (is_index)
@@ -291,36 +312,49 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat, uint32_t f
                                    uint32_t bg, int attrs, int *rc, struct Buffer *err)
 
 {
+  if (cid == MT_COLOR_STATUS)
+    return false;
+
+  struct RegexColorList *rcl = regex_colors_get_list(cid);
+  if (!rcl)
+    return false;
+
+  bool sensitive = false;
+  bool is_index = false;
   switch (cid)
   {
     case MT_COLOR_ATTACH_HEADERS:
-      *rc = add_pattern(&AttachList, pat, true, fg, bg, attrs, err, false, 0);
-      break;
     case MT_COLOR_BODY:
-      *rc = add_pattern(&BodyList, pat, true, fg, bg, attrs, err, false, 0);
+      sensitive = true;
+      is_index = false;
       break;
     case MT_COLOR_HEADER:
-      *rc = add_pattern(&HeaderList, pat, false, fg, bg, attrs, err, false, 0);
+      sensitive = false;
+      is_index = false;
       break;
     case MT_COLOR_INDEX:
-      *rc = add_pattern(&IndexList, pat, true, fg, bg, attrs, err, true, 0);
-      break;
     case MT_COLOR_INDEX_AUTHOR:
-      *rc = add_pattern(&IndexAuthorList, pat, true, fg, bg, attrs, err, true, 0);
-      break;
     case MT_COLOR_INDEX_FLAGS:
-      *rc = add_pattern(&IndexFlagsList, pat, true, fg, bg, attrs, err, true, 0);
-      break;
     case MT_COLOR_INDEX_SUBJECT:
-      *rc = add_pattern(&IndexSubjectList, pat, true, fg, bg, attrs, err, true, 0);
-      break;
     case MT_COLOR_INDEX_TAG:
-      *rc = add_pattern(&IndexTagList, pat, true, fg, bg, attrs, err, true, 0);
+      sensitive = true;
+      is_index = true;
       break;
     default:
       return false;
   }
 
+  *rc = add_pattern(rcl, pat, sensitive, fg, bg, attrs, err, is_index, 0);
+
+  struct Buffer *buf = mutt_buffer_pool_get();
+  get_colorid_name(cid, buf);
+  color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
+  mutt_buffer_pool_release(&buf);
+
+  struct EventColor ev_c = { cid, NULL };
+  notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
+
+  regex_colors_dump_all();
   return true;
 }
 
@@ -342,5 +376,70 @@ int regex_colors_parse_status_list(enum ColorId cid, const char *pat, uint32_t f
     return -1;
 
   int rc = add_pattern(&StatusList, pat, true, fg, bg, attrs, err, false, match);
+  if (rc != MUTT_CMD_SUCCESS)
+    return rc;
+
+  struct Buffer *buf = mutt_buffer_pool_get();
+  get_colorid_name(cid, buf);
+  color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
+  mutt_buffer_pool_release(&buf);
+
+  struct EventColor ev_c = { cid, NULL };
+  notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
+
+  regex_colors_dump_all();
+  return rc;
+}
+
+/**
+ * regex_colors_parse_uncolor - Parse a Regex 'uncolor' command
+ * @param cid     Colour Id, e.g. #MT_COLOR_STATUS
+ * @param pat     Pattern to remove (NULL to remove all)
+ * @param uncolor true if 'uncolor', false if 'unmono'
+ * @retval true If colours were unset
+ */
+bool regex_colors_parse_uncolor(enum ColorId cid, const char *pat, bool uncolor)
+{
+  struct RegexColorList *cl = regex_colors_get_list(cid);
+  if (!cl)
+    return false;
+
+  if (!pat) // Reset all patterns
+  {
+    bool rc = STAILQ_FIRST(cl);
+
+    mutt_debug(LL_NOTIFY, "NT_COLOR_RESET: [ALL]\n");
+    struct EventColor ev_c = { cid, NULL };
+    notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
+
+    regex_color_list_clear(cl);
+    return rc;
+  }
+
+  bool rc = false;
+  struct RegexColor *np = NULL, *prev = NULL;
+  prev = NULL;
+  STAILQ_FOREACH(np, cl, entries)
+  {
+    if (mutt_str_equal(pat, np->pattern))
+    {
+      rc = true;
+
+      mutt_debug(LL_DEBUG1, "Freeing pattern \"%s\" from XXX\n", pat);
+      if (prev)
+        STAILQ_REMOVE_AFTER(cl, prev, entries);
+      else
+        STAILQ_REMOVE_HEAD(cl, entries);
+
+      mutt_debug(LL_NOTIFY, "NT_COLOR_RESET: XXX\n");
+      struct EventColor ev_c = { cid, &np->attr_color };
+      notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
+
+      regex_color_free(cl, &np);
+      break;
+    }
+    prev = np;
+  }
+
   return rc;
 }

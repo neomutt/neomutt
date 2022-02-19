@@ -109,7 +109,7 @@ static void *dump(struct HeaderCache *hc, const struct Email *e, int *off, uint3
   e_dump.visible = true;
   e_dump.num_hidden = 0;
   e_dump.recipient = 0;
-  e_dump.pair = 0;
+  e_dump.attr_color = NULL;
   e_dump.attach_valid = false;
   e_dump.path = NULL;
   e_dump.tree = NULL;

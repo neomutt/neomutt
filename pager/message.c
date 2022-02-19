@@ -295,7 +295,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile,
 
     /* Remove color cache for this message, in case there
      * are color patterns for both ~g and ~V */
-    e->pair = 0;
+    e->attr_color = NULL;
 
     /* Process protected headers and autocrypt gossip headers */
     process_protected_headers(m, e);

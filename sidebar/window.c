@@ -248,36 +248,64 @@ static size_t add_indent(char *buf, size_t buflen, const struct SbEntry *sbe)
  * @param highlight true, if this Mailbox has the highlight on it
  * @retval num ColorId, e.g. #MT_COLOR_SIDEBAR_NEW
  */
-static enum ColorId calc_color(const struct Mailbox *m, bool current, bool highlight)
+static struct AttrColor *calc_color(const struct Mailbox *m, bool current, bool highlight)
 {
-  if (current)
-  {
-    if (simple_color_is_set(MT_COLOR_SIDEBAR_INDICATOR))
-      return MT_COLOR_SIDEBAR_INDICATOR;
-    return MT_COLOR_INDICATOR;
-  }
-
-  if (highlight)
-    return MT_COLOR_SIDEBAR_HIGHLIGHT;
+  enum ColorId color = MT_COLOR_NORMAL;
+  struct AttrColor *ac = NULL;
 
   if (m->has_new)
-    return MT_COLOR_SIDEBAR_NEW;
+  {
+    color = MT_COLOR_SIDEBAR_NEW;
+    goto done;
+  }
   if (m->msg_unread > 0)
-    return MT_COLOR_SIDEBAR_UNREAD;
+  {
+    color = MT_COLOR_SIDEBAR_UNREAD;
+    goto done;
+  }
   if (m->msg_flagged > 0)
-    return MT_COLOR_SIDEBAR_FLAGGED;
+  {
+    color = MT_COLOR_SIDEBAR_FLAGGED;
+    goto done;
+  }
 
   const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
   if (simple_color_is_set(MT_COLOR_SIDEBAR_SPOOLFILE) &&
       mutt_str_equal(mailbox_path(m), c_spool_file))
   {
-    return MT_COLOR_SIDEBAR_SPOOLFILE;
+    color = MT_COLOR_SIDEBAR_SPOOLFILE;
+    goto done;
   }
 
   if (simple_color_is_set(MT_COLOR_SIDEBAR_ORDINARY))
-    return MT_COLOR_SIDEBAR_ORDINARY;
+  {
+    color = MT_COLOR_SIDEBAR_ORDINARY;
+    goto done;
+  }
 
-  return MT_COLOR_NORMAL;
+done:
+  ac = simple_color_get(color);
+
+  if (current || highlight)
+  {
+    if (current)
+    {
+      if (simple_color_is_set(MT_COLOR_SIDEBAR_INDICATOR))
+        color = MT_COLOR_SIDEBAR_INDICATOR;
+      else
+        color = MT_COLOR_INDICATOR;
+    }
+    else
+    {
+      color = MT_COLOR_SIDEBAR_HIGHLIGHT;
+    }
+
+    struct AttrColor *ac_overlay = simple_color_get(color);
+
+    ac = merged_color_overlay(ac, ac_overlay);
+  }
+
+  return ac;
 }
 
 /**
@@ -746,7 +774,7 @@ int sb_recalc(struct MuttWindow *win)
     struct Mailbox *m = entry->mailbox;
 
     const int entryidx = ARRAY_FOREACH_IDX;
-    entry->cid =
+    entry->color =
         calc_color(m, (entryidx == wdata->opn_index), (entryidx == wdata->hil_index));
 
     if (m_cur && (m_cur->realpath[0] != '\0') &&
@@ -920,7 +948,7 @@ int sb_repaint(struct MuttWindow *win)
 
       struct SbEntry *entry = (*sbep);
       mutt_window_move(win, col, row);
-      mutt_curses_set_color_by_id(entry->cid);
+      mutt_curses_set_color(entry->color);
       mutt_window_printf(win, "%s", entry->display);
       mutt_refresh();
       row++;

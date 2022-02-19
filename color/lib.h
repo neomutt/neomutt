@@ -27,8 +27,13 @@
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |
+ * | color/ansi.c        | @subpage color_ansi        |
+ * | color/attr.c        | @subpage color_attr        |
  * | color/color.c       | @subpage color_color       |
  * | color/command.c     | @subpage color_command     |
+ * | color/curses.c      | @subpage color_curses      |
+ * | color/debug.c       | @subpage color_debug       |
+ * | color/merged.c      | @subpage color_merge       |
  * | color/notify.c      | @subpage color_notify      |
  * | color/quoted.c      | @subpage color_quote       |
  * | color/regex.c       | @subpage color_regex       |
@@ -38,29 +43,18 @@
 #ifndef MUTT_COLOR_LIB_H
 #define MUTT_COLOR_LIB_H
 
-#include "config.h"
-#include <stdbool.h>
-#include <stdint.h>
-#include "mutt/lib.h"
-#include "core/lib.h"
-
 // IWYU pragma: begin_exports
+#include "ansi.h"
+#include "attr.h"
 #include "color.h"
 #include "command2.h"
+#include "curses2.h"
+#include "debug.h"
+#include "merged.h"
 #include "notify2.h"
 #include "quoted.h"
 #include "regex4.h"
 #include "simple2.h"
 // IWYU pragma: end_exports
-
-bool mutt_color_is_header(enum ColorId color_id);
-int mutt_color_alloc  (uint32_t fg, uint32_t bg);
-int mutt_color_combine(uint32_t fg_attr, uint32_t bg_attr);
-void mutt_color_free  (uint32_t fg, uint32_t bg);
-
-void mutt_colors_init(void);
-void mutt_colors_cleanup(void);
-
-void colors_clear(void);
 
 #endif /* MUTT_COLOR_LIB_H */

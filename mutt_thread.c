@@ -1453,7 +1453,7 @@ int mutt_traverse_thread(struct Email *e_cur, MuttThreadFlags flag)
 
   if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
   {
-    e_cur->pair = 0; /* force index entry's color to be re-evaluated */
+    e_cur->attr_color = NULL; /* force index entry's color to be re-evaluated */
     e_cur->collapsed = flag & MUTT_THREAD_COLLAPSE;
     if (e_cur->vnum != -1)
     {
@@ -1487,7 +1487,7 @@ int mutt_traverse_thread(struct Email *e_cur, MuttThreadFlags flag)
     {
       if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
       {
-        e_cur->pair = 0; /* force index entry's color to be re-evaluated */
+        e_cur->attr_color = NULL; /* force index entry's color to be re-evaluated */
         e_cur->collapsed = flag & MUTT_THREAD_COLLAPSE;
         if (!e_root && e_cur->visible)
         {

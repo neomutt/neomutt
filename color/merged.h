@@ -1,6 +1,6 @@
 /**
  * @file
- * Simple colour
+ * Merged colours
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -20,23 +20,20 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COLOR_SIMPLE2_H
-#define MUTT_COLOR_SIMPLE2_H
+#ifndef MUTT_COLOR_MERGED_H
+#define MUTT_COLOR_MERGED_H
 
 #include "config.h"
-#include <stdbool.h>
 #include "attr.h"
-#include "color.h"
 
-extern struct AttrColor SimpleColors[];
+#ifdef USE_DEBUG_COLOR
+extern struct AttrColorList MergedColors;
+#endif
 
-struct AttrColor *simple_color_get      (enum ColorId cid);
-bool              simple_color_is_header(enum ColorId cid);
-bool              simple_color_is_set   (enum ColorId cid);
-void              simple_color_reset    (enum ColorId cid);
-struct AttrColor *simple_color_set      (enum ColorId cid, int fg, int bg, int attrs);
+struct AttrColor * merged_color_overlay(struct AttrColor *base, struct AttrColor *over);
 
-void              simple_colors_clear(void);
-void              simple_colors_init(void);
+void               merged_colors_clear(void);
+struct AttrColor * merged_colors_find(int fg, int bg, int attrs);
+void               merged_colors_init(void);
 
-#endif /* MUTT_COLOR_SIMPLE2_H */
+#endif /* MUTT_COLOR_MERGED_H */

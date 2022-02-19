@@ -25,44 +25,23 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "lib.h"
 
+struct AttrColorList;
 struct MuttWindow;
-
-// clang-format off
-typedef uint8_t AnsiFlags;      ///< Flags, e.g. #ANSI_OFF
-#define ANSI_NO_FLAGS        0  ///< No flags are set
-#define ANSI_OFF       (1 << 0) ///< Turn off colours and attributes
-#define ANSI_BLINK     (1 << 1) ///< Blinking text
-#define ANSI_BOLD      (1 << 2) ///< Bold text
-#define ANSI_UNDERLINE (1 << 3) ///< Underlined text
-#define ANSI_REVERSE   (1 << 4) ///< Reverse video
-#define ANSI_COLOR     (1 << 5) ///< Use colours
-// clang-format on
 
 /**
  * struct TextSyntax - Highlighting for a piece of text
  */
 struct TextSyntax
 {
-  int color; ///< Curses colour of text
+  struct AttrColor *attr_color; ///< Curses colour of text
   int first; ///< First character in line to be coloured
-  int last;  ///< Last character in line to be coloured
+  int last;  ///< Last character in line to be coloured (not included)
 };
-
-/**
- * struct AnsiAttr - An ANSI escape sequence
- */
-struct AnsiAttr
-{
-  AnsiFlags attr; ///< Attributes, e.g. #ANSI_BOLD
-  int fg;         ///< ANSI Foreground colour, e.g. 1 red, 2 green, etc
-  int bg;         ///< ANSI Background colour, e.g. 1 red, 2 green, etc
-  int pair;       ///< Curses colour pair
-};
+ARRAY_HEAD(TextSyntaxArray, struct TextSyntax);
 
 /**
  * struct Line - A line of text in the pager
@@ -83,8 +62,9 @@ struct Line
   struct QuoteStyle *quote;  ///< Quoting style for this line (pointer into PagerPrivateData->quote_list)
 };
 
-int display_line(FILE *fp, LOFF_T *last_pos, struct Line **lines, int n, int *last,
-                 int *max, PagerFlags flags, struct QuoteStyle **quote_list, int *q_level,
-                 bool *force_redraw, regex_t *search_re, struct MuttWindow *win_pager);
+int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
+                 int line_num, int *lines_used, int *lines_max, PagerFlags flags,
+                 struct QuoteStyle **quote_list, int *q_level, bool *force_redraw,
+                 regex_t *search_re, struct MuttWindow *win_pager, struct AttrColorList *ansi_list);
 
 #endif /* MUTT_PAGER_DISPLAY_H */

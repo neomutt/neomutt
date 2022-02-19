@@ -58,9 +58,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
   bool redraw = true;
   int prompt_lines = 1;
 
-  const bool opt_cols =
-      (simple_color_is_set(MT_COLOR_OPTIONS) &&
-       (simple_color_get(MT_COLOR_OPTIONS) != simple_color_get(MT_COLOR_PROMPT)));
+  const bool opt_cols = simple_color_is_set(MT_COLOR_OPTIONS);
 
   struct MuttWindow *old_focus = window_set_focus(win);
   window_redraw(NULL);
@@ -168,6 +166,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
     msgwin_set_height(1);
     window_redraw(NULL);
   }
+  mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   window_set_focus(old_focus);
   mutt_refresh();
   return choice;
