@@ -280,8 +280,8 @@ static int index_color_observer(struct NotifyCallback *nc)
   if (!m)
     return 0;
 
-  // Colour deleted from a list
-  if ((nc->event_subtype == NT_COLOR_RESET) && lists)
+  // Colour added/deleted from a list
+  if (lists)
   {
     // Force re-caching of index colours
     for (int i = 0; i < m->msg_count; i++)
