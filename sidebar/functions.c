@@ -336,8 +336,8 @@ static int op_sidebar_prev_new(struct SidebarWindowData *wdata, int op)
  */
 static int op_sidebar_toggle_visible(struct SidebarWindowData *wdata, int op)
 {
-  // Config notifications will do the rest
   bool_str_toggle(NeoMutt->sub, "sidebar_visible", NULL);
+  mutt_window_reflow(NULL);
   return IR_SUCCESS;
 }
 
