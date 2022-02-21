@@ -50,9 +50,14 @@ ARRAY_HEAD(AliasViewArray, struct AliasView);
  */
 struct AliasMenuData
 {
-  char *str;                 ///< String representing the limit being used
-  struct AliasViewArray ava; ///< Array of AliasView
-  struct ConfigSubset *sub;  ///< Config items
+  struct AliasViewArray ava;    ///< All Aliases/Queries
+  struct AliasList *al;         ///< Alias data
+  struct ConfigSubset *sub;     ///< Config items
+  struct Menu *menu;            ///< Menu
+  struct Buffer *query;         ///< Query string
+  char *limit;                  ///< Limit being used
+  struct MuttWindow *sbar;      ///< Status Bar
+  char *title;                  ///< Title for the status bar
 };
 
 int alias_config_observer(struct NotifyCallback *nc);

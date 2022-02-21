@@ -25,7 +25,13 @@
 
 #include <stdbool.h>
 
+struct AddressList;
+struct Alias;
+struct AliasList;
 struct AliasMenuData;
+struct AliasViewArray;
+struct ConfigSubset;
+struct MuttWindow;
 
 /**
  * @defgroup alias_function_api Alias Function API
@@ -48,5 +54,11 @@ struct AliasFunction
 };
 
 extern struct AliasFunction AliasFunctions[];
+
+void alias_array_sort(struct AliasViewArray *ava, const struct ConfigSubset *sub);
+int alias_function_dispatcher(struct MuttWindow *win, int op);
+bool alias_to_addrlist(struct AddressList *al, struct Alias *alias);
+int query_run(const char *s, bool verbose, struct AliasList *al, const struct ConfigSubset *sub);
+
 
 #endif /* MUTT_ALIAS_FUNCTIONS_H */

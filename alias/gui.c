@@ -34,6 +34,7 @@
 #include "gui.h"
 #include "lib.h"
 #include "menu/lib.h"
+#include "functions.h"
 
 /**
  * alias_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
