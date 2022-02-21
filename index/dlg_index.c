@@ -1401,6 +1401,7 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
 
   struct RegexColor *color = NULL;
   struct PatternCache cache = { 0 };
+  bool match = false;
 
   STAILQ_FOREACH(color, regex_colors_get_list(MT_COLOR_INDEX), entries)
   {
@@ -1408,10 +1409,12 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
                           MUTT_MATCH_FULL_ADDRESS, m, e, &cache))
     {
       e->attr_color = &color->attr_color;
-      return;
+      match = true;
     }
   }
-  e->attr_color = simple_color_get(MT_COLOR_NORMAL);
+
+  if (!match)
+    e->attr_color = simple_color_get(MT_COLOR_NORMAL);
 }
 
 /**
