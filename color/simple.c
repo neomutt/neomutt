@@ -131,7 +131,7 @@ struct AttrColor *simple_color_set(enum ColorId cid, int fg, int bg, int attrs)
   color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
   mutt_buffer_pool_release(&buf);
 
-  struct EventColor ev_c = { cid };
+  struct EventColor ev_c = { cid, NULL };
   notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
 
   return ac;

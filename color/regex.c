@@ -288,7 +288,7 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
   if (is_index)
   {
     /* force re-caching of index colors */
-    struct EventColor ev_c = { MT_COLOR_INDEX };
+    struct EventColor ev_c = { MT_COLOR_INDEX, NULL };
     notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
   }
 

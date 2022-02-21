@@ -646,7 +646,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
   {
     get_colorid_name(cid, buf);
     color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
-    struct EventColor ev_c = { cid };
+    struct EventColor ev_c = { cid, NULL };
     notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
   }
 
