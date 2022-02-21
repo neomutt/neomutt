@@ -490,7 +490,12 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
   {
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     if (mutt_str_equal("*", buf->data))
-      return regex_colors_parse_uncolor(cid, NULL, uncolor);
+    {
+      if (regex_colors_parse_uncolor(cid, NULL, uncolor))
+        return MUTT_CMD_SUCCESS;
+      else
+        return MUTT_CMD_ERROR;
+    }
 
     changes |= regex_colors_parse_uncolor(cid, buf->data, uncolor);
 
