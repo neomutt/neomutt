@@ -638,8 +638,9 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
   {
     color_debug(LL_DEBUG5, "simple\n");
     if (simple_color_set(cid, fg, bg, attrs))
-      return MUTT_CMD_SUCCESS;
-    return MUTT_CMD_ERROR;
+      rc = MUTT_CMD_SUCCESS;
+    else
+      rc = MUTT_CMD_ERROR;
   }
 
   if (rc == MUTT_CMD_SUCCESS)

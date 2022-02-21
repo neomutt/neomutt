@@ -373,13 +373,13 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat, uint32_t f
  * @param attrs   Attributes, e.g. A_UNDERLINE
  * @param match   Use the nth regex submatch
  * @param err     Buffer for error messages
- * @retval true Colour was parsed
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
 int regex_colors_parse_status_list(enum ColorId cid, const char *pat, uint32_t fg,
                                    uint32_t bg, int attrs, int match, struct Buffer *err)
 {
   if (cid != MT_COLOR_STATUS)
-    return -1;
+    return MUTT_CMD_ERROR;
 
   int rc = add_pattern(&StatusList, pat, true, fg, bg, attrs, err, false, match);
   if (rc != MUTT_CMD_SUCCESS)
