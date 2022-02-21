@@ -351,8 +351,11 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat, uint32_t f
   color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
   mutt_buffer_pool_release(&buf);
 
-  struct EventColor ev_c = { cid, NULL };
-  notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
+  if (!is_index) // else it will be logged in add_pattern()
+  {
+    struct EventColor ev_c = { cid, NULL };
+    notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
+  }
 
   regex_colors_dump_all();
   return true;
