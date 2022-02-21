@@ -227,7 +227,7 @@ static int op_envelope_edit_fcc(struct EnvelopeWindowData *wdata, int op)
   buf_copy(fname, wdata->fcc);
 
   struct FileCompletionData cdata = { false, NULL, NULL, NULL };
-  if (mw_get_field(Prompts[HDR_FCC], fname, MUTT_COMP_CLEAR, HC_FILE,
+  if (mw_get_field(Prompts[HDR_FCC], fname, MUTT_COMP_CLEAR, HC_MAILBOX,
                    &CompleteMailboxOps, &cdata) != 0)
   {
     goto done; // aborted
