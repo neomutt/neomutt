@@ -231,11 +231,14 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
     // different colours
     if (cc && ((cc->fg != fg) || (cc->bg != bg)))
     {
-      attr_color_clear(&rcol->attr_color);
       cc = curses_color_new(fg, bg);
-      cc->fg = fg;
-      cc->bg = bg;
-      ac->curses_color = cc;
+      if (cc)
+      {
+        attr_color_clear(&rcol->attr_color);
+        cc->fg = fg;
+        cc->bg = bg;
+        ac->curses_color = cc;
+      }
     }
     ac->attrs = attrs;
   }
