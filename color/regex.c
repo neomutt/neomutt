@@ -412,14 +412,15 @@ bool regex_colors_parse_uncolor(enum ColorId cid, const char *pat, bool uncolor)
 
   if (!pat) // Reset all patterns
   {
-    bool rc = STAILQ_FIRST(cl);
+    if (STAILQ_EMPTY(cl))
+      return true;
 
     mutt_debug(LL_NOTIFY, "NT_COLOR_RESET: [ALL]\n");
     struct EventColor ev_c = { cid, NULL };
     notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
 
     regex_color_list_clear(cl);
-    return rc;
+    return true;
   }
 
   bool rc = false;
