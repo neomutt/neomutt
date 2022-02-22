@@ -216,18 +216,8 @@ void mutt_file_unlink(const char *s)
     return;
   }
 
-  FILE *fp = fdopen(fd, "r+");
-  if (fp)
-  {
-    unlink(s);
-    char buf[2048] = { 0 };
-    while (st.st_size > 0)
-    {
-      fwrite(buf, 1, MIN(sizeof(buf), st.st_size), fp);
-      st.st_size -= MIN(sizeof(buf), st.st_size);
-    }
-    mutt_file_fclose(&fp);
-  }
+  unlink(s);
+  close(fd);
 }
 
 /**
