@@ -79,17 +79,22 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "index/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "question/lib.h"
+#include "send/lib.h"
 #include "alias.h"
 #include "format_flags.h"
 #include "gui.h"
 #include "muttlib.h"
 #include "opcodes.h"
+
+bool alias_to_addrlist(struct AddressList *al, struct Alias *alias);
 
 /// Help Bar for the Alias dialog (address book)
 static const struct Mapping AliasHelp[] = {
@@ -310,9 +315,6 @@ static void dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
   struct Menu *menu = dlg->wdata;
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
 
-  int t = -1;
-  bool done = false;
-
   alias_array_sort(&mdata->ava, mdata->sub);
 
   struct AliasView *avp = NULL;
@@ -321,7 +323,9 @@ static void dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
     avp->num = ARRAY_FOREACH_IDX;
   }
 
-  while (!done)
+  int t = -1;
+  int done = 0;
+  while (done == 0)
   {
     int op = menu_loop(menu);
     switch (op)
@@ -423,11 +427,46 @@ static void dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
         t = menu_get_index(menu);
         if (t >= ARRAY_SIZE(&mdata->ava))
           t = -1;
-        done = true;
+        done = 1;
         break;
 
+      case OP_MAIL:
+      {
+        struct Email *e = email_new();
+        e->env = mutt_env_new();
+        if (menu->tag_prefix)
+        {
+          ARRAY_FOREACH(avp, &mdata->ava)
+          {
+            if (avp->is_tagged)
+            {
+              struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+              if (alias_to_addrlist(&al, avp->alias))
+              {
+                mutt_addrlist_copy(&e->env->to, &al, false);
+                mutt_addrlist_clear(&al);
+              }
+            }
+          }
+        }
+        else
+        {
+          struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+          if (alias_to_addrlist(&al,
+                                ARRAY_GET(&mdata->ava, menu_get_index(menu))->alias))
+          {
+            mutt_addrlist_copy(&e->env->to, &al, false);
+            mutt_addrlist_clear(&al);
+          }
+        }
+        struct Mailbox *m_cur = get_current_mailbox();
+        mutt_send_message(SEND_NO_FLAGS, e, NULL, m_cur, NULL, NeoMutt->sub);
+        menu_queue_redraw(menu, MENU_REDRAW_FULL);
+        break;
+      }
+
       case OP_EXIT:
-        done = true;
+        done = 1;
         break;
     }
   }

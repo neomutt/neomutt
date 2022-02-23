@@ -117,7 +117,7 @@ static const struct Mapping QueryHelp[] = {
  * @param alias Alias to use
  * @retval true Success
  */
-static bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
+bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
 {
   if (!al || !TAILQ_EMPTY(al) || !alias)
     return false;

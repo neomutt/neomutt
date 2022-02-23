@@ -55,6 +55,7 @@
 const struct MenuFuncOp OpAlias[] = { /* map: alias */
   { "delete-entry",                  OP_DELETE },
   { "limit",                         OP_MAIN_LIMIT },
+  { "mail",                          OP_MAIL },
   { "sort-alias",                    OP_SORT },
   { "sort-alias-reverse",            OP_SORT_REVERSE },
   { "undelete-entry",                OP_UNDELETE },
@@ -704,6 +705,7 @@ const struct MenuFuncOp OpSmime[] = { /* map: smime */
  */
 const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
   { OP_DELETE,                             "d" },
+  { OP_MAIL,                               "m" },
   { OP_MAIN_LIMIT,                         "l" },
   { OP_SORT,                               "o" },
   { OP_SORT_REVERSE,                       "O" },
