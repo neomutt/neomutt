@@ -324,6 +324,7 @@ const struct MenuFuncOp OpGeneric[] = { /* map: generic */
  * OpIndex - Functions for the Index Menu
  */
 const struct MenuFuncOp OpIndex[] = { /* map: index */
+  { "alias-dialog",                  OP_ALIAS_DIALOG },
 #ifdef USE_AUTOCRYPT
   { "autocrypt-acct-menu",           OP_AUTOCRYPT_ACCT_MENU },
 #endif

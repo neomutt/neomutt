@@ -76,6 +76,7 @@
 #endif
 
 #define OPS_CORE(_fmt) \
+  _fmt(OP_ALIAS_DIALOG,                       N_("open the aliases dialog")) \
   _fmt(OP_BOTTOM_PAGE,                        N_("move to the bottom of the page")) \
   _fmt(OP_BOUNCE_MESSAGE,                     N_("remail a message to another user")) \
   _fmt(OP_BROWSER_GOTO_FOLDER,                N_("swap the current folder position with $folder if it exists")) \

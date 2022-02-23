@@ -68,6 +68,7 @@ enum CommandResult parse_alias  (struct Buffer *buf, struct Buffer *s, intptr_t 
 enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
 int  alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub);
+void alias_dialog  (struct ConfigSubset *sub);
 
 int  query_complete(struct Buffer *buf, struct ConfigSubset *sub);
 void query_index   (struct ConfigSubset *sub);

@@ -432,19 +432,23 @@ static void dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
     }
   }
 
-  mutt_buffer_alloc(buf, 8192);
-  ARRAY_FOREACH(avp, &mdata->ava)
+  if (buf)
   {
-    if (avp->is_tagged)
+    mutt_buffer_alloc(buf, 8192);
+    ARRAY_FOREACH(avp, &mdata->ava)
     {
-      mutt_addrlist_write(&avp->alias->addr, buf->data, buf->dsize, true);
-      t = -1;
+      if (avp->is_tagged)
+      {
+        mutt_addrlist_write(&avp->alias->addr, buf->data, buf->dsize, true);
+        t = -1;
+      }
     }
-  }
 
-  if (t != -1)
-  {
-    mutt_addrlist_write(&ARRAY_GET(&mdata->ava, t)->alias->addr, buf->data, buf->dsize, true);
+    if (t != -1)
+    {
+      mutt_addrlist_write(&ARRAY_GET(&mdata->ava, t)->alias->addr, buf->data,
+                          buf->dsize, true);
+    }
   }
 
   simple_dialog_free(&dlg);
@@ -555,4 +559,37 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
   FREE(&mdata.str);
 
   return 0;
+}
+
+/**
+ * alias_dialog - Open the aliases dialog
+ * @param sub Config items
+ */
+void alias_dialog(struct ConfigSubset *sub)
+{
+  struct Alias *np = NULL;
+
+  struct AliasMenuData mdata = { NULL, ARRAY_HEAD_INITIALIZER, sub };
+
+  TAILQ_FOREACH(np, &Aliases, entries)
+  {
+    alias_array_alias_add(&mdata.ava, np);
+  }
+
+  alias_array_sort(&mdata.ava, mdata.sub);
+
+  dlg_select_alias(NULL, &mdata);
+
+  struct AliasView *avp = NULL;
+  ARRAY_FOREACH(avp, &mdata.ava)
+  {
+    if (!avp->is_deleted)
+      continue;
+
+    TAILQ_REMOVE(&Aliases, avp->alias, entries);
+    alias_free(&avp->alias);
+  }
+
+  ARRAY_FREE(&mdata.ava);
+  FREE(&mdata.str);
 }

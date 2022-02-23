@@ -106,6 +106,16 @@ const struct Mapping RetvalNames[] = {
 // -----------------------------------------------------------------------------
 
 /**
+ * op_alias_dialog - Open the aliases dialog - Implements ::index_function_t - @ingroup index_function_api
+ */
+static int op_alias_dialog(struct IndexSharedData *shared,
+                           struct IndexPrivateData *priv, int op)
+{
+  alias_dialog(shared->sub);
+  return IR_SUCCESS;
+}
+
+/**
  * op_attachment_edit_type - Edit attachment content type - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_attachment_edit_type(struct IndexSharedData *shared,
@@ -3187,6 +3197,7 @@ int index_function_dispatcher(struct MuttWindow *win_index, int op)
  */
 struct IndexFunction IndexFunctions[] = {
   // clang-format off
+  { OP_ALIAS_DIALOG,                        op_alias_dialog,                      CHECK_NO_FLAGS },
   { OP_ATTACHMENT_EDIT_TYPE,                op_attachment_edit_type,              CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_BOTTOM_PAGE,                         op_menu_move,                         CHECK_NO_FLAGS },
   { OP_BOUNCE_MESSAGE,                      op_bounce_message,                    CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
