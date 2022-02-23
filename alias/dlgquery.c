@@ -478,14 +478,14 @@ static void dlg_select_query(struct Buffer *buf, struct AliasList *all,
         break;
 
       case OP_GENERIC_SELECT_ENTRY:
+      case OP_MAIL:
+      {
         if (retbuf)
         {
           done = 2;
           break;
         }
-      /* fallthrough */
-      case OP_MAIL:
-      {
+
         struct Email *e = email_new();
         e->env = mutt_env_new();
         if (menu->tag_prefix)
@@ -599,45 +599,45 @@ static void dlg_select_query(struct Buffer *buf, struct AliasList *all,
   /* if we need to return the selected entries */
   if (retbuf && (done == 2))
   {
-    bool tagged = false;
-    size_t curpos = 0;
-
     mutt_buffer_reset(buf);
 
-    /* check for tagged entries */
-    struct AliasView *avp = NULL;
-    ARRAY_FOREACH(avp, &mdata.ava)
+    if (menu->tag_prefix)
     {
-      if (!avp->is_tagged)
-        continue;
+      size_t curpos = 0;
 
-      if (curpos == 0)
+      /* check for tagged entries */
+      struct AliasView *avp = NULL;
+      ARRAY_FOREACH(avp, &mdata.ava)
       {
-        struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-        if (alias_to_addrlist(&al, avp->alias))
+        if (!avp->is_tagged)
+          continue;
+
+        if (curpos == 0)
         {
-          mutt_addrlist_to_local(&al);
-          tagged = true;
-          mutt_addrlist_write(&al, buf->data, buf->dsize, false);
-          curpos = mutt_buffer_len(buf);
-          mutt_addrlist_clear(&al);
+          struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+          if (alias_to_addrlist(&al, avp->alias))
+          {
+            mutt_addrlist_to_local(&al);
+            mutt_addrlist_write(&al, buf->data, buf->dsize, false);
+            curpos = mutt_buffer_len(buf);
+            mutt_addrlist_clear(&al);
+          }
         }
-      }
-      else if ((curpos + 2) < buf->dsize)
-      {
-        struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-        if (alias_to_addrlist(&al, avp->alias))
+        else if ((curpos + 2) < buf->dsize)
         {
-          mutt_addrlist_to_local(&al);
-          mutt_buffer_addstr(buf, ", ");
-          mutt_addrlist_write(&al, buf->data + curpos + 2, buf->dsize - curpos - 2, false);
-          curpos = mutt_buffer_len(buf);
-          mutt_addrlist_clear(&al);
+          struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+          if (alias_to_addrlist(&al, avp->alias))
+          {
+            mutt_addrlist_to_local(&al);
+            mutt_buffer_addstr(buf, ", ");
+            mutt_addrlist_write(&al, buf->data + curpos + 2, buf->dsize - curpos - 2, false);
+            curpos = mutt_buffer_len(buf);
+            mutt_addrlist_clear(&al);
+          }
         }
       }
     }
-    /* then enter current message */
-    if (!tagged)
+    else
     {
       struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
       if (alias_to_addrlist(&al, ARRAY_GET(&mdata.ava, menu_get_index(menu))->alias))

@@ -323,7 +323,6 @@ static void dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
     avp->num = ARRAY_FOREACH_IDX;
   }
 
-  int t = -1;
   int done = 0;
   while (done == 0)
   {
@@ -424,14 +423,14 @@ static void dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
       }
 
       case OP_GENERIC_SELECT_ENTRY:
-        t = menu_get_index(menu);
-        if (t >= ARRAY_SIZE(&mdata->ava))
-          t = -1;
-        done = 1;
-        break;
-
       case OP_MAIL:
       {
+        if (buf)
+        {
+          done = 2;
+          break;
+        }
+
         struct Email *e = email_new();
         e->env = mutt_env_new();
         if (menu->tag_prefix)
@@ -474,19 +473,26 @@ static void dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
   if (buf)
   {
     mutt_buffer_alloc(buf, 8192);
-    ARRAY_FOREACH(avp, &mdata->ava)
+    if (menu->tag_prefix)
     {
-      if (avp->is_tagged)
+      ARRAY_FOREACH(avp, &mdata->ava)
       {
+        if (!avp->is_tagged)
+          continue;
+
         mutt_addrlist_write(&avp->alias->addr, buf->data, buf->dsize, true);
-        t = -1;
       }
     }
-
-    if (t != -1)
+    else
     {
-      mutt_addrlist_write(&ARRAY_GET(&mdata->ava, t)->alias->addr, buf->data,
-                          buf->dsize, true);
+      int idx = menu_get_index(menu);
+      if (idx >= ARRAY_SIZE(&mdata->ava))
+        idx = -1;
+      if (idx != -1)
+      {
+        mutt_addrlist_write(&ARRAY_GET(&mdata->ava, idx)->alias->addr,
+                            buf->data, buf->dsize, true);
+      }
     }
   }
 
