@@ -296,10 +296,9 @@ struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
 /**
  * dlg_select_alias - Display a menu of Aliases
  * @param buf    Buffer for expanded aliases
- * @param buflen Length of buffer
  * @param mdata  Menu data holding Aliases
  */
-static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mdata)
+static void dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
 {
   if (ARRAY_EMPTY(&mdata->ava))
   {
@@ -433,18 +432,19 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
     }
   }
 
+  mutt_buffer_alloc(buf, 8192);
   ARRAY_FOREACH(avp, &mdata->ava)
   {
     if (avp->is_tagged)
     {
-      mutt_addrlist_write(&avp->alias->addr, buf, buflen, true);
+      mutt_addrlist_write(&avp->alias->addr, buf->data, buf->dsize, true);
       t = -1;
     }
   }
 
   if (t != -1)
   {
-    mutt_addrlist_write(&ARRAY_GET(&mdata->ava, t)->alias->addr, buf, buflen, true);
+    mutt_addrlist_write(&ARRAY_GET(&mdata->ava, t)->alias->addr, buf->data, buf->dsize, true);
   }
 
   simple_dialog_free(&dlg);
@@ -535,10 +535,11 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
 
   alias_array_sort(&mdata.ava, mdata.sub);
 
-  bestname[0] = '\0';
-  dlg_select_alias(bestname, sizeof(bestname), &mdata);
-  if (bestname[0] != '\0')
-    mutt_str_copy(buf, bestname, buflen);
+  struct Buffer *result = mutt_buffer_pool_get();
+  dlg_select_alias(result, &mdata);
+  if (!mutt_buffer_is_empty(result))
+    mutt_str_copy(buf, mutt_buffer_string(result), buflen);
+  mutt_buffer_pool_release(&result);
 
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, &mdata.ava)
