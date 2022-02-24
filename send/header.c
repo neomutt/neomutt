@@ -379,17 +379,17 @@ static struct UserHdrsOverride write_userhdrs(FILE *fp, const struct ListHead *u
     }
 
     /* check whether the current user-header is an override */
-    size_t curr_override = (size_t) -1;
+    size_t cur_override = (size_t) -1;
     const char *const *idx = bsearch(tmp->data, userhdrs_override_headers,
                                      mutt_array_size(userhdrs_override_headers),
                                      sizeof(char *), userhdrs_override_cmp);
     if (idx != NULL)
     {
-      curr_override = idx - userhdrs_override_headers;
-      overrides.is_overridden[curr_override] = true;
+      cur_override = idx - userhdrs_override_headers;
+      overrides.is_overridden[cur_override] = true;
     }
 
-    if (privacy && (curr_override == USERHDRS_OVERRIDE_USER_AGENT))
+    if (privacy && (cur_override == USERHDRS_OVERRIDE_USER_AGENT))
     {
       continue;
     }

@@ -132,20 +132,20 @@ struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype,
   dlg->help_menu = mtype;
   dlg->help_data = help_data;
 
-  struct MuttWindow *win_index = menu_new_window(mtype, NeoMutt->sub);
-  dlg->focus = win_index;
-  dlg->wdata = win_index->wdata;
+  struct MuttWindow *win_menu = menu_new_window(mtype, NeoMutt->sub);
+  dlg->focus = win_menu;
+  dlg->wdata = win_menu->wdata;
 
   struct MuttWindow *win_sbar = sbar_new();
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)
   {
     mutt_window_add_child(dlg, win_sbar);
-    mutt_window_add_child(dlg, win_index);
+    mutt_window_add_child(dlg, win_menu);
   }
   else
   {
-    mutt_window_add_child(dlg, win_index);
+    mutt_window_add_child(dlg, win_menu);
     mutt_window_add_child(dlg, win_sbar);
   }
 
