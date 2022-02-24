@@ -137,37 +137,6 @@ static bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
 }
 
 /**
- * query_search - Search a Address menu item - Implements Menu::search() - @ingroup menu_search
- *
- * Try to match various Address fields.
- */
-static int query_search(struct Menu *menu, regex_t *rx, int line)
-{
-  const struct AliasViewArray *ava = &((struct AliasMenuData *) menu->mdata)->ava;
-  struct AliasView *av = ARRAY_GET(ava, line);
-  struct Alias *alias = av->alias;
-
-  if (alias->name && (regexec(rx, alias->name, 0, NULL, 0) == 0))
-    return 0;
-  if (alias->comment && (regexec(rx, alias->comment, 0, NULL, 0) == 0))
-    return 0;
-  if (!TAILQ_EMPTY(&alias->addr))
-  {
-    struct Address *addr = TAILQ_FIRST(&alias->addr);
-    if (addr->personal && (regexec(rx, addr->personal, 0, NULL, 0) == 0))
-    {
-      return 0;
-    }
-    if (addr->mailbox && (regexec(rx, addr->mailbox, 0, NULL, 0) == 0))
-    {
-      return 0;
-    }
-  }
-
-  return REG_NOMATCH;
-}
-
-/**
  * query_format_str - Format a string for the query menu - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
@@ -385,7 +354,6 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
   struct Menu *menu = dlg->wdata;
 
   menu->make_entry = query_make_entry;
-  menu->search = query_search;
   menu->custom_search = true;
   menu->tag = query_tag;
   menu->max = ARRAY_SIZE(&mdata->ava);
