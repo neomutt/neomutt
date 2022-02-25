@@ -24,6 +24,7 @@ html
 lib*.a
 po/*.mo
 po/neomutt.pot
+po/POTFILES
 
 # Docs
 docs/*.html
