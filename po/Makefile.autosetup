@@ -29,7 +29,7 @@ po:
 clean-po:
 	$(RM) $(MOFILES)
 	$(RM) $(POTFILE)
-	$(RM) po/*~
+	$(RM) po/*~ po/POTFILES
 
 install-po: all-po
 	@catalogs='$(MOFILES)'; \
@@ -54,10 +54,14 @@ update-po: clean-po
 	$(MAKE) $(PACKAGE).pot-update
 	$(MAKE) all-po
 
-$(PACKAGE).pot-update: po
+po/POTFILES: po
+	@echo opcodes.h > $@
+	@(cd $(SRCDIR); find . -type f -name '*.c') | grep -v -e test/ -e jimsh0 -e docs/ -e conststrings -e git_ver >> $@
+
+$(PACKAGE).pot-update: po po/POTFILES
 	$(XGETTEXT) --default-domain=$(PACKAGE) --directory=$(SRCDIR) \
 	    $(XGETTEXT_OPTIONS) \
-	    --files-from=$(SRCDIR)/po/POTFILES.in \
+	    --files-from=po/POTFILES \
 	    --copyright-holder='$(COPYRIGHT_HOLDER)' \
 	    --package-name="$(PACKAGE)" \
 	    --package-version="$(PACKAGE_VERSION)" \
