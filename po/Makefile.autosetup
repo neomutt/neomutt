@@ -6,7 +6,7 @@ localedir	= @MUTTLOCALEDIR@
 XGETTEXT	= @XGETTEXT@
 XGETTEXT_OPTIONS= --keyword=_ --keyword=N_ --no-wrap --add-comments=L10N
 MSGMERGE	= @MSGMERGE@
-MSGMERGE_UPDATE = @MSGMERGE@ --update --no-wrap --sort-by-file
+MSGMERGE_UPDATE = @MSGMERGE@ --update --no-wrap --sort-by-file --backup=none
 
 MOFILES		= po/bg.mo po/ca.mo po/cs.mo po/da.mo po/de.mo po/el.mo \
 		po/en_GB.mo po/eo.mo po/es.mo po/et.mo po/eu.mo po/fi.mo \
@@ -54,10 +54,10 @@ update-po: clean-po
 	$(MAKE) $(PACKAGE).pot-update
 	$(MAKE) all-po
 
-$(PACKAGE).pot-update:
+$(PACKAGE).pot-update: po
 	$(XGETTEXT) --default-domain=$(PACKAGE) --directory=$(SRCDIR) \
 	    $(XGETTEXT_OPTIONS) \
-	    --files-from=po/POTFILES.in \
+	    --files-from=$(SRCDIR)/po/POTFILES.in \
 	    --copyright-holder='$(COPYRIGHT_HOLDER)' \
 	    --package-name="$(PACKAGE)" \
 	    --package-version="$(PACKAGE_VERSION)" \
@@ -67,7 +67,7 @@ $(PACKAGE).pot-update:
 	for cat in $$catalogs; do \
 	  lang=`echo $$cat | sed -e 's/\.mo$$//'`; \
 	  echo "$(MSGMERGE_UPDATE) $${lang}.po $(POTFILE)"; \
-	  $(MSGMERGE_UPDATE) $${lang}.po $(POTFILE); \
+	  $(MSGMERGE_UPDATE) $(SRCDIR)/$${lang}.po $(POTFILE); \
 	done
 
 @else
