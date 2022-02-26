@@ -38,6 +38,131 @@
 int menu_dialog_dokey(struct Menu *menu, int *ip);
 int menu_dialog_translate_op(int i);
 
+/**
+ * menu_jump - Jump to another item in the menu
+ * @param menu Current Menu
+ *
+ * Ask the user for a message number to jump to.
+ */
+void menu_jump(struct Menu *menu)
+{
+  if (menu->max == 0)
+  {
+    mutt_error(_("No entries"));
+    return;
+  }
+
+  mutt_unget_event(LastKey, 0);
+
+  struct Buffer *buf = mutt_buffer_pool_get();
+  if ((mutt_buffer_get_field(_("Jump to: "), buf, MUTT_COMP_NO_FLAGS, false,
+                             NULL, NULL, NULL) == 0) &&
+      !mutt_buffer_is_empty(buf))
+  {
+    int n = 0;
+    if (mutt_str_atoi_full(mutt_buffer_string(buf), &n) && (n > 0) && (n < (menu->max + 1)))
+    {
+      menu_set_index(menu, n - 1); // msg numbers are 0-based
+    }
+    else
+    {
+      mutt_error(_("Invalid index number"));
+    }
+  }
+
+  mutt_buffer_pool_release(&buf);
+}
+
+// -----------------------------------------------------------------------------
+
+/**
+ * menu_movement - Handle all the common Menu movements - Implements ::menu_function_t - @ingroup menu_function_api
+ */
+static int menu_movement(struct Menu *menu, int op)
+{
+  switch (op)
+  {
+    case OP_BOTTOM_PAGE:
+      menu_bottom_page(menu);
+      return IR_SUCCESS;
+
+    case OP_CURRENT_BOTTOM:
+      menu_current_bottom(menu);
+      return IR_SUCCESS;
+
+    case OP_CURRENT_MIDDLE:
+      menu_current_middle(menu);
+      return IR_SUCCESS;
+
+    case OP_CURRENT_TOP:
+      menu_current_top(menu);
+      return IR_SUCCESS;
+
+    case OP_FIRST_ENTRY:
+      menu_first_entry(menu);
+      return IR_SUCCESS;
+
+    case OP_HALF_DOWN:
+      menu_half_down(menu);
+      return IR_SUCCESS;
+
+    case OP_HALF_UP:
+      menu_half_up(menu);
+      return IR_SUCCESS;
+
+    case OP_LAST_ENTRY:
+      menu_last_entry(menu);
+      return IR_SUCCESS;
+
+    case OP_MIDDLE_PAGE:
+      menu_middle_page(menu);
+      return IR_SUCCESS;
+
+    case OP_NEXT_ENTRY:
+      menu_next_entry(menu);
+      return IR_SUCCESS;
+
+    case OP_NEXT_LINE:
+      menu_next_line(menu);
+      return IR_SUCCESS;
+
+    case OP_NEXT_PAGE:
+      menu_next_page(menu);
+      return IR_SUCCESS;
+
+    case OP_PREV_ENTRY:
+      menu_prev_entry(menu);
+      return IR_SUCCESS;
+
+    case OP_PREV_LINE:
+      menu_prev_line(menu);
+      return IR_SUCCESS;
+
+    case OP_PREV_PAGE:
+      menu_prev_page(menu);
+      return IR_SUCCESS;
+
+    case OP_TOP_PAGE:
+      menu_top_page(menu);
+      return IR_SUCCESS;
+
+    default:
+      return IR_UNKNOWN;
+  }
+}
+
+/**
+ * op_jump - Jump to an index number - Implements ::menu_function_t - @ingroup menu_function_api
+ */
+static int op_jump(struct Menu *menu, int op)
+{
+  if (ARRAY_EMPTY(&menu->dialog))
+    menu_jump(menu);
+  else
+    mutt_error(_("Jumping is not implemented for dialogs"));
+  return IR_SUCCESS;
+}
+
 // -----------------------------------------------------------------------------
 
 /**
@@ -45,6 +170,23 @@ int menu_dialog_translate_op(int i);
  */
 struct MenuFunction MenuFunctions[] = {
   // clang-format off
+  { OP_BOTTOM_PAGE,            menu_movement },
+  { OP_CURRENT_BOTTOM,         menu_movement },
+  { OP_CURRENT_MIDDLE,         menu_movement },
+  { OP_CURRENT_TOP,            menu_movement },
+  { OP_FIRST_ENTRY,            menu_movement },
+  { OP_HALF_DOWN,              menu_movement },
+  { OP_HALF_UP,                menu_movement },
+  { OP_JUMP,                   op_jump },
+  { OP_LAST_ENTRY,             menu_movement },
+  { OP_MIDDLE_PAGE,            menu_movement },
+  { OP_NEXT_ENTRY,             menu_movement },
+  { OP_NEXT_LINE,              menu_movement },
+  { OP_NEXT_PAGE,              menu_movement },
+  { OP_PREV_ENTRY,             menu_movement },
+  { OP_PREV_LINE,              menu_movement },
+  { OP_PREV_PAGE,              menu_movement },
+  { OP_TOP_PAGE,               menu_movement },
   { 0, NULL },
   // clang-format on
 };
