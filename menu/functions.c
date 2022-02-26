@@ -38,6 +38,96 @@
 int menu_dialog_dokey(struct Menu *menu, int *ip);
 int menu_dialog_translate_op(int i);
 
+extern char *SearchBuffers[];
+
+#define MUTT_SEARCH_UP 1
+#define MUTT_SEARCH_DOWN 2
+
+/**
+ * search - Search a menu
+ * @param menu Menu to search
+ * @param op   Search operation, e.g. OP_SEARCH_NEXT
+ * @retval >=0 Index of matching item
+ * @retval -1  Search failed, or was cancelled
+ */
+int search(struct Menu *menu, int op)
+{
+  int rc = -1;
+  int wrap = 0;
+  int search_dir;
+  regex_t re = { 0 };
+  struct Buffer *buf = mutt_buffer_pool_get();
+
+  char *search_buf = ((menu->type < MENU_MAX)) ? SearchBuffers[menu->type] : NULL;
+
+  if (!(search_buf && *search_buf) || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
+  {
+    mutt_buffer_strcpy(buf, search_buf && (search_buf[0] != '\0') ? search_buf : "");
+    if ((mutt_buffer_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
+                                   _("Search for: ") :
+                                   _("Reverse search for: "),
+                               buf, MUTT_COMP_CLEAR, false, NULL, NULL, NULL) != 0) ||
+        mutt_buffer_is_empty(buf))
+    {
+      goto done;
+    }
+    if (menu->type < MENU_MAX)
+    {
+      mutt_str_replace(&SearchBuffers[menu->type], mutt_buffer_string(buf));
+      search_buf = SearchBuffers[menu->type];
+    }
+    menu->search_dir =
+        ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? MUTT_SEARCH_DOWN : MUTT_SEARCH_UP;
+  }
+
+  search_dir = (menu->search_dir == MUTT_SEARCH_UP) ? -1 : 1;
+  if (op == OP_SEARCH_OPPOSITE)
+    search_dir = -search_dir;
+
+  if (search_buf)
+  {
+    uint16_t flags = mutt_mb_is_lower(search_buf) ? REG_ICASE : 0;
+    rc = REG_COMP(&re, search_buf, REG_NOSUB | flags);
+  }
+
+  if (rc != 0)
+  {
+    regerror(rc, &re, buf->data, buf->dsize);
+    mutt_error("%s", mutt_buffer_string(buf));
+    rc = -1;
+    goto done;
+  }
+
+  rc = menu->current + search_dir;
+search_next:
+  if (wrap)
+    mutt_message(_("Search wrapped to top"));
+  while ((rc >= 0) && (rc < menu->max))
+  {
+    if (menu->search(menu, &re, rc) == 0)
+    {
+      regfree(&re);
+      goto done;
+    }
+
+    rc += search_dir;
+  }
+
+  const bool c_wrap_search = cs_subset_bool(menu->sub, "wrap_search");
+  if (c_wrap_search && (wrap++ == 0))
+  {
+    rc = (search_dir == 1) ? 0 : menu->max - 1;
+    goto search_next;
+  }
+  regfree(&re);
+  mutt_error(_("Not found"));
+  rc = -1;
+
+done:
+  mutt_buffer_pool_release(&buf);
+  return rc;
+}
+
 /**
  * menu_jump - Jump to another item in the menu
  * @param menu Current Menu
@@ -152,6 +242,25 @@ static int menu_movement(struct Menu *menu, int op)
 }
 
 /**
+ * menu_search - Handle Menu searching - Implements ::menu_function_t - @ingroup menu_function_api
+ */
+static int menu_search(struct Menu *menu, int op)
+{
+  if (menu->search && ARRAY_EMPTY(&menu->dialog)) /* Searching dialogs won't work */
+  {
+    int index = search(menu, op);
+    if (index != -1)
+      menu_set_index(menu, index);
+  }
+  else
+  {
+    mutt_error(_("Search is not implemented for this menu"));
+  }
+
+  return IR_SUCCESS;
+}
+
+/**
  * op_jump - Jump to an index number - Implements ::menu_function_t - @ingroup menu_function_api
  */
 static int op_jump(struct Menu *menu, int op)
@@ -186,6 +295,10 @@ struct MenuFunction MenuFunctions[] = {
   { OP_PREV_ENTRY,             menu_movement },
   { OP_PREV_LINE,              menu_movement },
   { OP_PREV_PAGE,              menu_movement },
+  { OP_SEARCH,                 menu_search },
+  { OP_SEARCH_NEXT,            menu_search },
+  { OP_SEARCH_OPPOSITE,        menu_search },
+  { OP_SEARCH_REVERSE,         menu_search },
   { OP_TOP_PAGE,               menu_movement },
   { 0, NULL },
   // clang-format on
