@@ -210,4 +210,6 @@ MenuRedrawFlags menu_move_view_relative(struct Menu *menu, int relative);
 MenuRedrawFlags menu_set_and_notify(struct Menu *menu, int top, int index);
 void menu_adjust(struct Menu *menu);
 
+int menu_function_dispatcher(struct MuttWindow *win, int op);
+
 #endif /* MUTT_MENU_LIB_H */
