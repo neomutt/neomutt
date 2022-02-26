@@ -34,8 +34,54 @@
 #include "global.h"
 #include "lib.h"
 #include "index/lib.h"
+#include "commands.h"
+#include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "opcodes.h"
+
+/**
+ * op_check_stats - Calculate message statistics for all mailboxes - Implements ::global_function_t - @ingroup global_function_api
+ */
+static int op_check_stats(int op)
+{
+  struct Mailbox *m_cur = get_current_mailbox();
+  mutt_check_stats(m_cur);
+  return IR_SUCCESS;
+}
+
+/**
+ * op_enter_command - Enter a neomuttrc command - Implements ::global_function_t - @ingroup global_function_api
+ */
+static int op_enter_command(int op)
+{
+  mutt_enter_command();
+  window_redraw(NULL);
+  return IR_SUCCESS;
+}
+
+/**
+ * op_redraw - Clear and redraw the screen - Implements ::global_function_t - @ingroup global_function_api
+ */
+static int op_redraw(int op)
+{
+  clearok(stdscr, true);
+  mutt_resize_screen();
+  window_redraw(NULL);
+  return IR_SUCCESS;
+}
+
+/**
+ * op_shell_escape - Invoke a command in a subshell - Implements ::global_function_t - @ingroup global_function_api
+ */
+static int op_shell_escape(int op)
+{
+  if (mutt_shell_escape())
+  {
+    struct Mailbox *m_cur = get_current_mailbox();
+    mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_FORCE);
+  }
+  return IR_SUCCESS;
+}
 
 /**
  * op_version - Show the NeoMutt version number - Implements ::global_function_t - @ingroup global_function_api
@@ -55,11 +101,17 @@ static int op_what_key(int op)
   return IR_SUCCESS;
 }
 
+// -----------------------------------------------------------------------------
+
 /**
  * GlobalFunctions - All the NeoMutt functions that the Global supports
  */
 struct GlobalFunction GlobalFunctions[] = {
   // clang-format off
+  { OP_CHECK_STATS,           op_check_stats },
+  { OP_ENTER_COMMAND,         op_enter_command },
+  { OP_REDRAW,                op_redraw },
+  { OP_SHELL_ESCAPE,          op_shell_escape },
   { OP_VERSION,               op_version },
   { OP_WHAT_KEY,              op_what_key },
   { 0, NULL },
