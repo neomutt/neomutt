@@ -34,6 +34,7 @@
 #include "index/lib.h"
 #include "mutt_logging.h"
 #include "opcodes.h"
+#include "protos.h"
 
 int menu_dialog_dokey(struct Menu *menu, int *ip);
 int menu_dialog_translate_op(int i);
@@ -261,6 +262,16 @@ static int menu_search(struct Menu *menu, int op)
 }
 
 /**
+ * op_help - Show the help screen - Implements ::menu_function_t - @ingroup menu_function_api
+ */
+static int op_help(struct Menu *menu, int op)
+{
+  mutt_help(menu->type);
+  menu->redraw = MENU_REDRAW_FULL;
+  return IR_SUCCESS;
+}
+
+/**
  * op_jump - Jump to an index number - Implements ::menu_function_t - @ingroup menu_function_api
  */
 static int op_jump(struct Menu *menu, int op)
@@ -286,6 +297,7 @@ struct MenuFunction MenuFunctions[] = {
   { OP_FIRST_ENTRY,            menu_movement },
   { OP_HALF_DOWN,              menu_movement },
   { OP_HALF_UP,                menu_movement },
+  { OP_HELP,                   op_help },
   { OP_JUMP,                   op_jump },
   { OP_LAST_ENTRY,             menu_movement },
   { OP_MIDDLE_PAGE,            menu_movement },
