@@ -92,6 +92,7 @@
 #include "format_flags.h"
 #include "functions.h"
 #include "gui.h"
+#include "mutt_logging.h"
 #include "muttlib.h"
 #include "opcodes.h"
 
@@ -288,7 +289,7 @@ struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
   win_menu->recalc = alias_recalc;
 
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
-  alias_set_title(sbar, _("Aliases"), mdata->limit);
+  alias_set_title(sbar, mdata->title, mdata->limit);
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->notify, NT_ALIAS, alias_alias_observer, menu);
@@ -311,12 +312,14 @@ static void dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
     return;
   }
 
+  mdata->query = buf;
+  mdata->title = mutt_str_dup(_("Aliases"));
+
   struct MuttWindow *dlg = alias_dialog_new(mdata);
   struct Menu *menu = dlg->wdata;
   struct MuttWindow *win_sbar = window_find_child(dlg, WT_STATUS_BAR);
   mdata->menu = menu;
   mdata->sbar = win_sbar;
-  mdata->query = buf;
 
   alias_array_sort(&mdata->ava, mdata->sub);
 
@@ -326,17 +329,33 @@ static void dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
     avp->num = ARRAY_FOREACH_IDX;
   }
 
+  // ---------------------------------------------------------------------------
+  // Event Loop
   int rc = 0;
-  while (true)
+  int op = OP_NULL;
+  do
   {
-    const int op = menu_loop(menu);
+    menu_tagging_dispatcher(menu, op);
+    window_redraw(NULL);
+
+    op = km_dokey(menu->type);
+    mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
+    if (op < 0)
+      continue;
+    if (op == OP_NULL)
+    {
+      km_error_key(menu->type);
+      continue;
+    }
+    mutt_clear_error();
 
     rc = alias_function_dispatcher(dlg, op);
-    if (rc == IR_DONE)
-      break;
-    if (rc == IR_CONTINUE)
-      break;
-  }
+    if (rc == IR_UNKNOWN)
+      rc = menu_function_dispatcher(menu->win, op);
+    if (rc == IR_UNKNOWN)
+      rc = global_function_dispatcher(menu->win, op);
+  } while ((rc != IR_DONE) && (rc != IR_CONTINUE));
+  // ---------------------------------------------------------------------------
 
   if (buf && (rc == IR_CONTINUE))
   {
@@ -472,6 +491,7 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
 
   ARRAY_FREE(&mdata.ava);
   FREE(&mdata.limit);
+  FREE(&mdata.title);
 
   return 0;
 }
