@@ -296,7 +296,7 @@ struct MuttWindow *attach_new(struct MuttWindow *parent, struct ComposeSharedDat
   notify_observer_add(win_attach->notify, NT_WINDOW, attach_window_observer, win_attach);
 
   struct Menu *menu = win_attach->wdata;
-  menu->pagelen = win_attach->state.rows;
+  menu->page_len = win_attach->state.rows;
   menu->win = win_attach;
 
   menu->make_entry = compose_make_entry;

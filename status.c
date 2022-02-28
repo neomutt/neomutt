@@ -285,7 +285,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!menu)
         break;
       char *cp = NULL;
-      if (menu->top + menu->pagelen >= menu->max)
+      if (menu->top + menu->page_len >= menu->max)
       {
         cp = menu->top ?
                  /* L10N: Status bar message: the end of the list emails is visible in the index */
@@ -295,7 +295,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       }
       else
       {
-        int count = (100 * (menu->top + menu->pagelen)) / menu->max;
+        int count = (100 * (menu->top + menu->page_len)) / menu->max;
         snprintf(tmp, sizeof(tmp), "%d%%", count);
         cp = tmp;
       }

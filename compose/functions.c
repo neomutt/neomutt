@@ -425,7 +425,7 @@ static int group_attachments(struct ComposeSharedData *shared, char *subtype)
   // Can't group all attachments unless at top level
   if (bptr_parent)
   {
-    if (shared->adata->menu->tagged == attach_body_count(bptr_parent->parts, false))
+    if (shared->adata->menu->num_tagged == attach_body_count(bptr_parent->parts, false))
     {
       mutt_error(_("Can't leave group with only one attachment"));
       return IR_ERROR;
@@ -472,7 +472,7 @@ static int group_attachments(struct ComposeSharedData *shared, char *subtype)
         }
       }
 
-      shared->adata->menu->tagged--;
+      shared->adata->menu->num_tagged--;
       bptr->tagged = false;
       bptr->aptr->level++;
       bptr->aptr->parent_type = TYPE_MULTIPART;
@@ -855,11 +855,11 @@ static int op_attachment_detach(struct ComposeSharedData *shared, int op)
   if (delete_attachment(actx, index) == -1)
     return IR_ERROR;
 
-  menu->tagged = 0;
+  menu->num_tagged = 0;
   for (int i = 0; i < actx->idxlen; i++)
   {
     if (actx->idx[i]->body->tagged)
-      menu->tagged++;
+      menu->num_tagged++;
   }
 
   update_menu(actx, menu, false);
@@ -1098,11 +1098,11 @@ static int op_attachment_filter(struct ComposeSharedData *shared, int op)
     mutt_error(_("Can't filter multipart attachments"));
     return IR_ERROR;
   }
-  mutt_pipe_attachment_list(actx, NULL, menu->tagprefix, cur_att->body,
+  mutt_pipe_attachment_list(actx, NULL, menu->tag_prefix, cur_att->body,
                             (op == OP_ATTACHMENT_FILTER));
   if (op == OP_ATTACHMENT_FILTER) /* cte might have changed */
   {
-    menu_queue_redraw(menu, menu->tagprefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
+    menu_queue_redraw(menu, menu->tag_prefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
   }
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
@@ -1150,7 +1150,7 @@ done:
  */
 static int op_attachment_group_alts(struct ComposeSharedData *shared, int op)
 {
-  if (shared->adata->menu->tagged < 2)
+  if (shared->adata->menu->num_tagged < 2)
   {
     mutt_error(
         _("Grouping 'alternatives' requires at least 2 tagged messages"));
@@ -1165,7 +1165,7 @@ static int op_attachment_group_alts(struct ComposeSharedData *shared, int op)
  */
 static int op_attachment_group_lingual(struct ComposeSharedData *shared, int op)
 {
-  if (shared->adata->menu->tagged < 2)
+  if (shared->adata->menu->num_tagged < 2)
   {
     mutt_error(
         _("Grouping 'multilingual' requires at least 2 tagged messages"));
@@ -1178,7 +1178,7 @@ static int op_attachment_group_lingual(struct ComposeSharedData *shared, int op)
     if (b->tagged && b->language && *b->language)
       tagged_with_lang_num++;
 
-  if (shared->adata->menu->tagged != tagged_with_lang_num)
+  if (shared->adata->menu->num_tagged != tagged_with_lang_num)
   {
     if (mutt_yesorno(_("Not all parts have 'Content-Language' set, continue?"), MUTT_YES) != MUTT_YES)
     {
@@ -1195,7 +1195,7 @@ static int op_attachment_group_lingual(struct ComposeSharedData *shared, int op)
  */
 static int op_attachment_group_related(struct ComposeSharedData *shared, int op)
 {
-  if (shared->adata->menu->tagged < 2)
+  if (shared->adata->menu->num_tagged < 2)
   {
     mutt_error(_("Grouping 'related' requires at least 2 tagged messages"));
     return IR_ERROR;
@@ -1412,7 +1412,7 @@ static int op_attachment_print(struct ComposeSharedData *shared, int op)
     return IR_ERROR;
   }
 
-  mutt_print_attachment_list(actx, NULL, menu->tagprefix, cur_att->body);
+  mutt_print_attachment_list(actx, NULL, menu->tag_prefix, cur_att->body);
   /* no send2hook, since this doesn't modify the message */
   return IR_SUCCESS;
 }
@@ -1462,7 +1462,7 @@ static int op_attachment_save(struct ComposeSharedData *shared, int op)
     return IR_ERROR;
   }
 
-  mutt_save_attachment_list(actx, NULL, menu->tagprefix, cur_att->body, NULL, menu);
+  mutt_save_attachment_list(actx, NULL, menu->tag_prefix, cur_att->body, NULL, menu);
   /* no send2hook, since this doesn't modify the message */
   return IR_SUCCESS;
 }

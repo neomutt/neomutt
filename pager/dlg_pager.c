@@ -243,8 +243,8 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
       const int index = menu_get_index(priv->menu);
       if ((index - priv->indicator) < 0)
         priv->menu->top = 0;
-      else if ((priv->menu->max - index) < (priv->menu->pagelen - priv->indicator))
-        priv->menu->top = priv->menu->max - priv->menu->pagelen;
+      else if ((priv->menu->max - index) < (priv->menu->page_len - priv->indicator))
+        priv->menu->top = priv->menu->max - priv->menu->page_len;
       else
         priv->menu->top = index - priv->indicator;
 

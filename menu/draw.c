@@ -334,7 +334,7 @@ void menu_redraw_full(struct Menu *menu)
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   mutt_window_clear(menu->win);
 
-  menu->pagelen = menu->win->state.rows;
+  menu->page_len = menu->win->state.rows;
 
   menu->redraw = MENU_REDRAW_INDEX;
 }
@@ -348,7 +348,7 @@ void menu_redraw_index(struct Menu *menu)
   char buf[1024];
   struct AttrColor *ac = NULL;
 
-  for (int i = menu->top; i < (menu->top + menu->pagelen); i++)
+  for (int i = menu->top; i < (menu->top + menu->page_len); i++)
   {
     if (i < menu->max)
     {
@@ -413,8 +413,8 @@ void menu_redraw_motion(struct Menu *menu)
    * over imap (if matching against ~h for instance).  This can
    * generate status messages.  So we want to call it *before* we
    * position the cursor for drawing. */
-  struct AttrColor *old_color = menu->color(menu, menu->oldcurrent);
-  mutt_window_move(menu->win, 0, menu->oldcurrent - menu->top);
+  struct AttrColor *old_color = menu->color(menu, menu->old_current);
+  mutt_window_move(menu->win, 0, menu->old_current - menu->top);
   mutt_curses_set_color(old_color);
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
@@ -427,11 +427,11 @@ void menu_redraw_motion(struct Menu *menu)
     /* Print space chars to match the screen width of `$arrow_string` */
     mutt_window_printf(menu->win, "%*s", mutt_strwidth(c_arrow_string) + 1, "");
 
-    menu_make_entry(menu, buf, sizeof(buf), menu->oldcurrent);
+    menu_make_entry(menu, buf, sizeof(buf), menu->old_current);
     menu_pad_string(menu, buf, sizeof(buf));
     mutt_window_move(menu->win, mutt_strwidth(c_arrow_string) + 1,
-                     menu->oldcurrent - menu->top);
-    print_enriched_string(menu->win, menu->oldcurrent, old_color, NULL,
+                     menu->old_current - menu->top);
+    print_enriched_string(menu->win, menu->old_current, old_color, NULL,
                           (unsigned char *) buf, menu->sub);
 
     /* now draw it in the new location */
@@ -441,9 +441,9 @@ void menu_redraw_motion(struct Menu *menu)
   else
   {
     /* erase the current indicator */
-    menu_make_entry(menu, buf, sizeof(buf), menu->oldcurrent);
+    menu_make_entry(menu, buf, sizeof(buf), menu->old_current);
     menu_pad_string(menu, buf, sizeof(buf));
-    print_enriched_string(menu->win, menu->oldcurrent, old_color, NULL,
+    print_enriched_string(menu->win, menu->old_current, old_color, NULL,
                           (unsigned char *) buf, menu->sub);
 
     /* now draw the new one to reflect the change */

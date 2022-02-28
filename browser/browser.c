@@ -901,7 +901,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
   if (menu->top > index)
     menu->top = 0;
 
-  menu->tagged = 0;
+  menu->num_tagged = 0;
 
 #ifdef USE_NNTP
   if (OptNews)
@@ -1531,9 +1531,9 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         {
           char **tfiles = NULL;
 
-          if (menu->tagged)
+          if (menu->num_tagged)
           {
-            *numfiles = menu->tagged;
+            *numfiles = menu->num_tagged;
             tfiles = mutt_mem_calloc(*numfiles, sizeof(char *));
             size_t j = 0;
             struct FolderFile *ff = NULL;

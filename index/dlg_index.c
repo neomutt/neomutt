@@ -798,10 +798,10 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
       int edgemsgno;
       if (reverse)
       {
-        if (menu->top + menu->pagelen > menu->max)
+        if (menu->top + menu->page_len > menu->max)
           edgemsgno = m->v2r[menu->max - 1];
         else
-          edgemsgno = m->v2r[menu->top + menu->pagelen - 1];
+          edgemsgno = m->v2r[menu->top + menu->page_len - 1];
       }
       else
         edgemsgno = m->v2r[menu->top];

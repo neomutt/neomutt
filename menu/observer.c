@@ -99,7 +99,7 @@ static int menu_window_observer(struct NotifyCallback *nc)
 
   if (nc->event_subtype == NT_WINDOW_STATE)
   {
-    menu->pagelen = win->state.rows;
+    menu->page_len = win->state.rows;
     menu->redraw |= MENU_REDRAW_FULL;
 
     win->actions |= WA_RECALC | WA_REPAINT;

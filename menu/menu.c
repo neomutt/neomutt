@@ -300,10 +300,10 @@ int menu_loop(struct Menu *menu)
   {
     /* Clear the tag prefix unless we just started it.  Don't clear
      * the prefix on a timeout (op==-2), but do clear on an abort (op==-1) */
-    if (menu->tagprefix && (op != OP_TAG_PREFIX) &&
+    if (menu->tag_prefix && (op != OP_TAG_PREFIX) &&
         (op != OP_TAG_PREFIX_COND) && (op != -2))
     {
-      menu->tagprefix = false;
+      menu->tag_prefix = false;
     }
 
     mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
@@ -312,7 +312,7 @@ int menu_loop(struct Menu *menu)
       return OP_REDRAW;
 
     /* give visual indication that the next command is a tag- command */
-    if (menu->tagprefix)
+    if (menu->tag_prefix)
       msgwin_set_text(MT_COLOR_NORMAL, "tag-");
 
     const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
@@ -347,16 +347,16 @@ int menu_loop(struct Menu *menu)
     op = km_dokey(menu->type);
     if ((op == OP_TAG_PREFIX) || (op == OP_TAG_PREFIX_COND))
     {
-      if (menu->tagprefix)
+      if (menu->tag_prefix)
       {
-        menu->tagprefix = false;
+        menu->tag_prefix = false;
         msgwin_clear_text();
         continue;
       }
 
-      if (menu->tagged)
+      if (menu->num_tagged)
       {
-        menu->tagprefix = true;
+        menu->tag_prefix = true;
         continue;
       }
       else if (op == OP_TAG_PREFIX)
@@ -371,14 +371,14 @@ int menu_loop(struct Menu *menu)
         op = -1;
       }
     }
-    else if (menu->tagged && c_auto_tag)
-      menu->tagprefix = true;
+    else if (menu->num_tagged && c_auto_tag)
+      menu->tag_prefix = true;
 
     mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
     if (op < 0)
     {
-      if (menu->tagprefix)
+      if (menu->tag_prefix)
         msgwin_clear_text();
       continue;
     }
@@ -473,16 +473,16 @@ int menu_loop(struct Menu *menu)
         {
           const bool c_resolve = cs_subset_bool(menu->sub, "resolve");
 
-          if (menu->tagprefix && !c_auto_tag)
+          if (menu->tag_prefix && !c_auto_tag)
           {
             for (int i = 0; i < menu->max; i++)
-              menu->tagged += menu->tag(menu, i, 0);
+              menu->num_tagged += menu->tag(menu, i, 0);
             menu->redraw |= MENU_REDRAW_INDEX;
           }
           else if (menu->max != 0)
           {
             int j = menu->tag(menu, menu->current, -1);
-            menu->tagged += j;
+            menu->num_tagged += j;
             if (j && c_resolve && (menu->current < (menu->max - 1)))
             {
               menu_set_index(menu, menu->current + 1);
@@ -607,7 +607,7 @@ struct Menu *menu_new(enum MenuType type, struct MuttWindow *win, struct ConfigS
   menu->search = generic_search;
   menu->notify = notify_new();
   menu->win = win;
-  menu->pagelen = win->state.rows;
+  menu->page_len = win->state.rows;
   menu->sub = sub;
 
   notify_set_parent(menu->notify, win->notify);

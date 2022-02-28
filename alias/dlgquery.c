@@ -477,7 +477,7 @@ static void dlg_select_query(struct Buffer *buf, struct AliasList *all,
       }
 
       case OP_CREATE_ALIAS:
-        if (menu->tagprefix)
+        if (menu->tag_prefix)
         {
           struct AddressList naddr = TAILQ_HEAD_INITIALIZER(naddr);
 
@@ -520,7 +520,7 @@ static void dlg_select_query(struct Buffer *buf, struct AliasList *all,
       {
         struct Email *e = email_new();
         e->env = mutt_env_new();
-        if (menu->tagprefix)
+        if (menu->tag_prefix)
         {
           struct AliasView *avp = NULL;
           ARRAY_FOREACH(avp, &mdata.ava)

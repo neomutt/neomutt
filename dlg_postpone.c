@@ -208,7 +208,7 @@ struct Email *dlg_select_postponed_email(struct Mailbox *m)
         if (c_resolve && (index < (menu->max - 1)))
         {
           menu_set_index(menu, index + 1);
-          if (index >= (menu->top + menu->pagelen))
+          if (index >= (menu->top + menu->page_len))
           {
             menu->top = index;
             menu_queue_redraw(menu, MENU_REDRAW_INDEX);

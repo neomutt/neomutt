@@ -72,8 +72,8 @@ struct Menu
   int max;                  ///< Number of entries in the menu
   MenuRedrawFlags redraw;   ///< When to redraw the screen
   enum MenuType type;       ///< Menu definition for keymap entries
-  int pagelen;              ///< Number of entries per screen
-  bool tagprefix : 1;       ///< User has pressed <tag-prefix>
+  int page_len;             ///< Number of entries per screen
+  bool tag_prefix : 1;      ///< User has pressed <tag-prefix>
   struct MuttWindow *win;   ///< Window holding the Menu
   struct ConfigSubset *sub; ///< Inherited config items
 
@@ -87,9 +87,9 @@ struct Menu
 
   /* the following are used only by menu_loop() */
   int top;                ///< Entry that is the top of the current page
-  int oldcurrent;         ///< For driver use only
+  int old_current;        ///< For driver use only
   int search_dir;         ///< Direction of search
-  int tagged;             ///< Number of tagged entries
+  int num_tagged;         ///< Number of tagged entries
   bool custom_search : 1; ///< The menu implements its own non-Menu::search()-compatible search, trickle OP_SEARCH*
 
   /**

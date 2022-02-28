@@ -329,7 +329,7 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
     {
       case OP_DELETE:
       case OP_UNDELETE:
-        if (menu->tagprefix)
+        if (menu->tag_prefix)
         {
           ARRAY_FOREACH(avp, &mdata->ava)
           {
