@@ -49,6 +49,7 @@ struct Buffer;
 struct Context;
 struct ListHead;
 struct NotifyCallback;
+struct PagerPrivateData;
 
 // Backtrace
 void show_backtrace(void);
@@ -79,6 +80,9 @@ const char *get_content_type       (enum ContentType type);
 // Notify
 int debug_all_observer(struct NotifyCallback *nc);
 const char *get_mailbox_type(enum MailboxType type);
+
+// Pager
+void dump_pager(struct PagerPrivateData *priv);
 
 // Parse Set
 void test_parse_set(void);
