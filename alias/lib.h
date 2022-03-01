@@ -52,6 +52,7 @@ struct AliasViewArray;
 struct Buffer;
 struct ConfigSubset;
 struct Envelope;
+struct MuttWindow;
 
 void alias_init    (void);
 void alias_shutdown(void);
@@ -68,12 +69,11 @@ enum CommandResult parse_alias  (struct Buffer *buf, struct Buffer *s, intptr_t 
 enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
 int  alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub);
+void alias_dialog  (struct ConfigSubset *sub);
 
 int  query_complete(struct Buffer *buf, struct ConfigSubset *sub);
 void query_index   (struct ConfigSubset *sub);
 
 struct Address *alias_reverse_lookup(const struct Address *addr);
-
-void alias_array_sort(struct AliasViewArray *ava, const struct ConfigSubset *sub);
 
 #endif /* MUTT_ALIAS_LIB_H */

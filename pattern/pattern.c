@@ -246,7 +246,7 @@ int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Me
   struct Progress *progress = NULL;
   struct Buffer *buf = mutt_buffer_pool_get();
 
-  mutt_buffer_strcpy(buf, mdata->str);
+  mutt_buffer_strcpy(buf, mdata->limit);
   if (prompt)
   {
     if ((mutt_buffer_get_field(prompt, buf, MUTT_COMP_PATTERN | MUTT_COMP_CLEAR,
@@ -307,10 +307,10 @@ int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Me
   }
   progress_free(&progress);
 
-  FREE(&mdata->str);
+  FREE(&mdata->limit);
   if (!match_all)
   {
-    mdata->str = simple;
+    mdata->limit = simple;
     simple = NULL;
   }
 

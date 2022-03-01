@@ -90,6 +90,7 @@
 #include "alias.h"
 #include "context.h"
 #include "format_flags.h"
+#include "functions.h"
 #include "gui.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
@@ -117,7 +118,7 @@ static const struct Mapping QueryHelp[] = {
  * @param alias Alias to use
  * @retval true Success
  */
-static bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
+bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
 {
   if (!al || !TAILQ_EMPTY(al) || !alias)
     return false;
@@ -134,37 +135,6 @@ static bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
   }
 
   return true;
-}
-
-/**
- * query_search - Search a Address menu item - Implements Menu::search() - @ingroup menu_search
- *
- * Try to match various Address fields.
- */
-static int query_search(struct Menu *menu, regex_t *rx, int line)
-{
-  const struct AliasViewArray *ava = &((struct AliasMenuData *) menu->mdata)->ava;
-  struct AliasView *av = ARRAY_GET(ava, line);
-  struct Alias *alias = av->alias;
-
-  if (alias->name && (regexec(rx, alias->name, 0, NULL, 0) == 0))
-    return 0;
-  if (alias->comment && (regexec(rx, alias->comment, 0, NULL, 0) == 0))
-    return 0;
-  if (!TAILQ_EMPTY(&alias->addr))
-  {
-    struct Address *addr = TAILQ_FIRST(&alias->addr);
-    if (addr->personal && (regexec(rx, addr->personal, 0, NULL, 0) == 0))
-    {
-      return 0;
-    }
-    if (addr->mailbox && (regexec(rx, addr->mailbox, 0, NULL, 0) == 0))
-    {
-      return 0;
-    }
-  }
-
-  return REG_NOMATCH;
 }
 
 /**
@@ -281,8 +251,7 @@ static int query_tag(struct Menu *menu, int sel, int act)
  * @retval  0 Success
  * @retval -1 Error
  */
-static int query_run(const char *s, bool verbose, struct AliasList *al,
-                     const struct ConfigSubset *sub)
+int query_run(const char *s, bool verbose, struct AliasList *al, const struct ConfigSubset *sub)
 {
   FILE *fp = NULL;
   char *buf = NULL;
@@ -380,12 +349,10 @@ int query_window_observer(struct NotifyCallback *nc)
 static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const char *query)
 {
   struct MuttWindow *dlg = simple_dialog_new(MENU_QUERY, WT_DLG_QUERY, QueryHelp);
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
 
   struct Menu *menu = dlg->wdata;
 
   menu->make_entry = query_make_entry;
-  menu->search = query_search;
   menu->custom_search = true;
   menu->tag = query_tag;
   menu->max = ARRAY_SIZE(&mdata->ava);
@@ -398,6 +365,7 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
 
   char title[256];
   snprintf(title, sizeof(title), "%s%s", _("Query: "), query);
+  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   sbar_set_title(sbar, title);
 
   // NT_COLOR is handled by the SimpleDialog
@@ -417,7 +385,10 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
 static void dlg_select_query(struct Buffer *buf, struct AliasList *all,
                              bool retbuf, struct ConfigSubset *sub)
 {
-  struct AliasMenuData mdata = { NULL, ARRAY_HEAD_INITIALIZER, sub };
+  struct AliasMenuData mdata = { 0 };
+  ARRAY_INIT(&mdata.ava);
+  mdata.sub = sub;
+
   struct Alias *np = NULL;
   TAILQ_FOREACH(np, all, entries)
   {
@@ -427,249 +398,68 @@ static void dlg_select_query(struct Buffer *buf, struct AliasList *all,
 
   struct MuttWindow *dlg = query_dialog_new(&mdata, mutt_buffer_string(buf));
   struct Menu *menu = dlg->wdata;
+  struct MuttWindow *win_query = window_find_child(dlg, WT_MENU);
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
+  mdata.menu = menu;
+  mdata.sbar = sbar;
+  if (retbuf)
+    mdata.query = buf;
 
-  int done = 0;
-  while (done == 0)
+  int rc = 0;
+  while (true)
   {
     const int op = menu_loop(menu);
-    switch (op)
-    {
-      case OP_QUERY_APPEND:
-      case OP_QUERY:
-      {
-        if ((mutt_buffer_get_field(_("Query: "), buf, MUTT_COMP_NO_FLAGS, false,
-                                   NULL, NULL, NULL) != 0) ||
-            mutt_buffer_is_empty(buf))
-        {
-          break;
-        }
 
-        if (op == OP_QUERY)
-        {
-          ARRAY_FREE(&mdata.ava);
-          aliaslist_free(all);
-        }
-
-        struct AliasList al = TAILQ_HEAD_INITIALIZER(al);
-        query_run(mutt_buffer_string(buf), true, &al, sub);
-        menu_queue_redraw(menu, MENU_REDRAW_FULL);
-        char title[256];
-        snprintf(title, sizeof(title), "%s%s", _("Query: "), mutt_buffer_string(buf));
-        sbar_set_title(sbar, title);
-
-        if (TAILQ_EMPTY(&al))
-        {
-          menu->max = 0;
-          break;
-        }
-
-        struct Alias *tmp = NULL;
-        TAILQ_FOREACH_SAFE(np, &al, entries, tmp)
-        {
-          alias_array_alias_add(&mdata.ava, np);
-          TAILQ_REMOVE(&al, np, entries);
-          TAILQ_INSERT_TAIL(all, np, entries); // Transfer
-        }
-        alias_array_sort(&mdata.ava, mdata.sub);
-        menu->max = ARRAY_SIZE(&mdata.ava);
-        break;
-      }
-
-      case OP_CREATE_ALIAS:
-        if (menu->tag_prefix)
-        {
-          struct AddressList naddr = TAILQ_HEAD_INITIALIZER(naddr);
-
-          struct AliasView *avp = NULL;
-          ARRAY_FOREACH(avp, &mdata.ava)
-          {
-            if (avp->is_tagged)
-            {
-              struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-              if (alias_to_addrlist(&al, avp->alias))
-              {
-                mutt_addrlist_copy(&naddr, &al, false);
-                mutt_addrlist_clear(&al);
-              }
-            }
-          }
-
-          alias_create(&naddr, sub);
-          mutt_addrlist_clear(&naddr);
-        }
-        else
-        {
-          struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-          if (alias_to_addrlist(&al, ARRAY_GET(&mdata.ava, menu_get_index(menu))->alias))
-          {
-            alias_create(&al, sub);
-            mutt_addrlist_clear(&al);
-          }
-        }
-        break;
-
-      case OP_GENERIC_SELECT_ENTRY:
-        if (retbuf)
-        {
-          done = 2;
-          break;
-        }
-      /* fallthrough */
-      case OP_MAIL:
-      {
-        struct Email *e = email_new();
-        e->env = mutt_env_new();
-        if (menu->tag_prefix)
-        {
-          struct AliasView *avp = NULL;
-          ARRAY_FOREACH(avp, &mdata.ava)
-          {
-            if (avp->is_tagged)
-            {
-              struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-              if (alias_to_addrlist(&al, avp->alias))
-              {
-                mutt_addrlist_copy(&e->env->to, &al, false);
-                mutt_addrlist_clear(&al);
-              }
-            }
-          }
-        }
-        else
-        {
-          struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-          if (alias_to_addrlist(&al, ARRAY_GET(&mdata.ava, menu_get_index(menu))->alias))
-          {
-            mutt_addrlist_copy(&e->env->to, &al, false);
-            mutt_addrlist_clear(&al);
-          }
-        }
-        struct Mailbox *m_cur = get_current_mailbox();
-        mutt_send_message(SEND_NO_FLAGS, e, NULL, m_cur, NULL, NeoMutt->sub);
-        menu_queue_redraw(menu, MENU_REDRAW_FULL);
-        break;
-      }
-
-      case OP_SORT:
-      case OP_SORT_REVERSE:
-      {
-        int sort = cs_subset_sort(sub, "sort_alias");
-
-        bool resort = true;
-        bool reverse = (op == OP_SORT_REVERSE);
-
-        switch (mutt_multi_choice(
-            reverse ?
-                /* L10N: The highlighted letters must match the "Sort" options */
-                _("Rev-Sort (a)lias, a(d)dress or (u)nsorted?") :
-                /* L10N: The highlighted letters must match the "Rev-Sort" options */
-                _("Sort (a)lias, a(d)dress or (u)nsorted?"),
-            /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
-            _("adu")))
-        {
-          case -1: /* abort */
-            resort = false;
-            break;
-
-          case 1: /* (a)lias */
-            sort = SORT_ALIAS;
-            break;
-
-          case 2: /* a(d)dress */
-            sort = SORT_ADDRESS;
-            break;
-
-          case 3: /* (u)nsorted */
-            sort = SORT_ORDER;
-            break;
-        }
-
-        if (resort)
-        {
-          sort |= reverse ? SORT_REVERSE : 0;
-
-          cs_subset_str_native_set(sub, "sort_alias", sort, NULL);
-          menu_queue_redraw(menu, MENU_REDRAW_FULL);
-        }
-
-        break;
-      }
-
-      case OP_SEARCH_REVERSE:
-      case OP_SEARCH_NEXT:
-      case OP_SEARCH_OPPOSITE:
-      case OP_SEARCH:
-      {
-        int index = mutt_search_alias_command(menu, menu_get_index(menu), op);
-        if (index == -1)
-          break;
-
-        menu_set_index(menu, index);
-        break;
-      }
-
-      case OP_MAIN_LIMIT:
-      {
-        int rc = mutt_pattern_alias_func(_("Limit to addresses matching: "), &mdata, menu);
-        if (rc == 0)
-        {
-          alias_array_sort(&mdata.ava, mdata.sub);
-          alias_set_title(sbar, _("Query"), mdata.str);
-          menu_queue_redraw(menu, MENU_REDRAW_FULL);
-        }
-
-        break;
-      }
-
-      case OP_EXIT:
-        done = 1;
-        break;
-    }
+    rc = alias_function_dispatcher(win_query, op);
+    if (rc == IR_DONE)
+      break;
+    if (rc == IR_CONTINUE)
+      break;
   }
 
   /* if we need to return the selected entries */
-  if (retbuf && (done == 2))
+  if (retbuf && (rc == IR_CONTINUE))
   {
-    bool tagged = false;
-    size_t curpos = 0;
+    // mutt_buffer_reset(buf);
+    mutt_buffer_alloc(buf, 8192);
 
-    mutt_buffer_reset(buf);
-
-    /* check for tagged entries */
-    struct AliasView *avp = NULL;
-    ARRAY_FOREACH(avp, &mdata.ava)
+    if (menu->tag_prefix)
     {
-      if (!avp->is_tagged)
-        continue;
+      size_t curpos = 0;
 
-      if (curpos == 0)
+      /* check for tagged entries */
+      struct AliasView *avp = NULL;
+      ARRAY_FOREACH(avp, &mdata.ava)
       {
-        struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-        if (alias_to_addrlist(&al, avp->alias))
+        if (!avp->is_tagged)
+          continue;
+
+        if (curpos == 0)
         {
-          mutt_addrlist_to_local(&al);
-          tagged = true;
-          mutt_addrlist_write(&al, buf->data, buf->dsize, false);
-          curpos = mutt_buffer_len(buf);
-          mutt_addrlist_clear(&al);
+          struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+          if (alias_to_addrlist(&al, avp->alias))
+          {
+            mutt_addrlist_to_local(&al);
+            mutt_addrlist_write(&al, buf->data, buf->dsize, false);
+            curpos = mutt_buffer_len(buf);
+            mutt_addrlist_clear(&al);
+          }
         }
-      }
-      else if ((curpos + 2) < buf->dsize)
-      {
-        struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-        if (alias_to_addrlist(&al, avp->alias))
+        else if ((curpos + 2) < buf->dsize)
         {
-          mutt_addrlist_to_local(&al);
-          mutt_buffer_addstr(buf, ", ");
-          mutt_addrlist_write(&al, buf->data + curpos + 2, buf->dsize - curpos - 2, false);
-          curpos = mutt_buffer_len(buf);
-          mutt_addrlist_clear(&al);
+          struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+          if (alias_to_addrlist(&al, avp->alias))
+          {
+            mutt_addrlist_to_local(&al);
+            mutt_buffer_addstr(buf, ", ");
+            mutt_addrlist_write(&al, buf->data + curpos + 2, buf->dsize - curpos - 2, false);
+            curpos = mutt_buffer_len(buf);
+            mutt_addrlist_clear(&al);
+          }
         }
       }
     }
-    /* then enter current message */
-    if (!tagged)
+    else
     {
       struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
       if (alias_to_addrlist(&al, ARRAY_GET(&mdata.ava, menu_get_index(menu))->alias))

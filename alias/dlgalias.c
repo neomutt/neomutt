@@ -79,14 +79,18 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "index/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "question/lib.h"
+#include "send/lib.h"
 #include "alias.h"
 #include "format_flags.h"
+#include "functions.h"
 #include "gui.h"
 #include "muttlib.h"
 #include "opcodes.h"
@@ -270,6 +274,7 @@ struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
   struct MuttWindow *dlg = simple_dialog_new(MENU_ALIAS, WT_DLG_ALIAS, AliasHelp);
 
   struct Menu *menu = dlg->wdata;
+
   menu->make_entry = alias_make_entry;
   menu->custom_search = true;
   menu->tag = alias_tag;
@@ -282,8 +287,7 @@ struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
   win_menu->recalc = alias_recalc;
 
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
-
-  alias_set_title(sbar, _("Aliases"), mdata->str);
+  alias_set_title(sbar, _("Aliases"), mdata->limit);
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->notify, NT_ALIAS, alias_alias_observer, menu);
@@ -296,10 +300,9 @@ struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
 /**
  * dlg_select_alias - Display a menu of Aliases
  * @param buf    Buffer for expanded aliases
- * @param buflen Length of buffer
  * @param mdata  Menu data holding Aliases
  */
-static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mdata)
+static void dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
 {
   if (ARRAY_EMPTY(&mdata->ava))
   {
@@ -310,9 +313,9 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
   struct MuttWindow *dlg = alias_dialog_new(mdata);
   struct Menu *menu = dlg->wdata;
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
-
-  int t = -1;
-  bool done = false;
+  mdata->menu = menu;
+  mdata->sbar = sbar;
+  mdata->query = buf;
 
   alias_array_sort(&mdata->ava, mdata->sub);
 
@@ -322,129 +325,42 @@ static void dlg_select_alias(char *buf, size_t buflen, struct AliasMenuData *mda
     avp->num = ARRAY_FOREACH_IDX;
   }
 
-  while (!done)
+  int rc = 0;
+  while (true)
   {
-    int op = menu_loop(menu);
-    switch (op)
-    {
-      case OP_DELETE:
-      case OP_UNDELETE:
-        if (menu->tag_prefix)
-        {
-          ARRAY_FOREACH(avp, &mdata->ava)
-          {
-            if (avp->is_tagged)
-              avp->is_deleted = (op == OP_DELETE);
-          }
-          menu_queue_redraw(menu, MENU_REDRAW_INDEX);
-        }
-        else
-        {
-          int index = menu_get_index(menu);
-          ARRAY_GET(&mdata->ava, index)->is_deleted = (op == OP_DELETE);
-          menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
-          const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
-          if (c_resolve && (index < (menu->max - 1)))
-          {
-            menu_set_index(menu, index + 1);
-            menu_queue_redraw(menu, MENU_REDRAW_INDEX);
-          }
-        }
-        break;
-      case OP_SORT:
-      case OP_SORT_REVERSE:
-      {
-        int sort = cs_subset_sort(mdata->sub, "sort_alias");
-        bool resort = true;
-        bool reverse = (op == OP_SORT_REVERSE);
+    const int op = menu_loop(menu);
 
-        switch (mutt_multi_choice(
-            reverse ?
-                /* L10N: The highlighted letters must match the "Sort" options */
-                _("Rev-Sort (a)lias, a(d)dress or (u)nsorted?") :
-                /* L10N: The highlighted letters must match the "Rev-Sort" options */
-                _("Sort (a)lias, a(d)dress or (u)nsorted?"),
-            /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
-            _("adu")))
-        {
-          case -1: /* abort */
-            resort = false;
-            break;
-
-          case 1: /* (a)lias */
-            sort = SORT_ALIAS;
-            break;
-
-          case 2: /* a(d)dress */
-            sort = SORT_ADDRESS;
-            break;
-
-          case 3: /* (u)nsorted */
-            sort = SORT_ORDER;
-            break;
-        }
-
-        if (resort)
-        {
-          sort |= reverse ? SORT_REVERSE : 0;
-
-          // This will trigger a WA_RECALC
-          cs_subset_str_native_set(mdata->sub, "sort_alias", sort, NULL);
-        }
-
-        break;
-      }
-      case OP_SEARCH_REVERSE:
-      case OP_SEARCH_NEXT:
-      case OP_SEARCH_OPPOSITE:
-      case OP_SEARCH:
-      {
-        int index = mutt_search_alias_command(menu, menu_get_index(menu), op);
-        if (index == -1)
-          break;
-
-        menu_set_index(menu, index);
-        break;
-      }
-
-      case OP_MAIN_LIMIT:
-      {
-        int rc = mutt_pattern_alias_func(_("Limit to addresses matching: "), mdata, menu);
-        if (rc == 0)
-        {
-          alias_set_title(sbar, _("Aliases"), mdata->str);
-          menu_queue_redraw(menu, MENU_REDRAW_FULL);
-          window_redraw(NULL);
-        }
-
-        break;
-      }
-
-      case OP_GENERIC_SELECT_ENTRY:
-        t = menu_get_index(menu);
-        if (t >= ARRAY_SIZE(&mdata->ava))
-          t = -1;
-        done = true;
-        break;
-
-      case OP_EXIT:
-        done = true;
-        break;
-    }
+    rc = alias_function_dispatcher(dlg, op);
+    if (rc == IR_DONE)
+      break;
+    if (rc == IR_CONTINUE)
+      break;
   }
 
-  ARRAY_FOREACH(avp, &mdata->ava)
+  if (buf && (rc == IR_CONTINUE))
   {
-    if (avp->is_tagged)
+    mutt_buffer_alloc(buf, 8192);
+    if (menu->tag_prefix)
     {
-      mutt_addrlist_write(&avp->alias->addr, buf, buflen, true);
-      t = -1;
-    }
-  }
+      ARRAY_FOREACH(avp, &mdata->ava)
+      {
+        if (!avp->is_tagged)
+          continue;
 
-  if (t != -1)
-  {
-    mutt_addrlist_write(&ARRAY_GET(&mdata->ava, t)->alias->addr, buf, buflen, true);
+        mutt_addrlist_write(&avp->alias->addr, buf->data, buf->dsize, true);
+      }
+    }
+    else
+    {
+      int idx = menu_get_index(menu);
+      if (idx >= ARRAY_SIZE(&mdata->ava))
+        idx = -1;
+      if (idx != -1)
+      {
+        mutt_addrlist_write(&ARRAY_GET(&mdata->ava, idx)->alias->addr,
+                            buf->data, buf->dsize, true);
+      }
+    }
   }
 
   simple_dialog_free(&dlg);
@@ -467,8 +383,10 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
   struct Alias *np = NULL;
   char bestname[8192] = { 0 };
 
-  struct AliasMenuData mdata = { NULL, ARRAY_HEAD_INITIALIZER, sub };
-  mdata.str = mutt_str_dup(buf);
+  struct AliasMenuData mdata = { 0 };
+  ARRAY_INIT(&mdata.ava);
+  mdata.sub = sub;
+  mdata.limit = mutt_str_dup(buf);
 
   if (buf[0] != '\0')
   {
@@ -497,14 +415,14 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
       /* fake the pattern for menu title */
       char *mtitle = NULL;
       mutt_str_asprintf(&mtitle, "~f ^%s", buf);
-      FREE(&mdata.str);
-      mdata.str = mtitle;
+      FREE(&mdata.limit);
+      mdata.limit = mtitle;
 
       if (!mutt_str_equal(bestname, buf))
       {
         /* we are adding something to the completion */
         mutt_str_copy(buf, bestname, mutt_str_len(bestname) + 1);
-        FREE(&mdata.str);
+        FREE(&mdata.limit);
         return 1;
       }
 
@@ -535,10 +453,11 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
 
   alias_array_sort(&mdata.ava, mdata.sub);
 
-  bestname[0] = '\0';
-  dlg_select_alias(bestname, sizeof(bestname), &mdata);
-  if (bestname[0] != '\0')
-    mutt_str_copy(buf, bestname, buflen);
+  struct Buffer *result = mutt_buffer_pool_get();
+  dlg_select_alias(result, &mdata);
+  if (!mutt_buffer_is_empty(result))
+    mutt_str_copy(buf, mutt_buffer_string(result), buflen);
+  mutt_buffer_pool_release(&result);
 
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, &mdata.ava)
@@ -551,7 +470,40 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
   }
 
   ARRAY_FREE(&mdata.ava);
-  FREE(&mdata.str);
+  FREE(&mdata.limit);
 
   return 0;
+}
+
+/**
+ * alias_dialog - Open the aliases dialog
+ * @param sub Config items
+ */
+void alias_dialog(struct ConfigSubset *sub)
+{
+  struct Alias *np = NULL;
+
+  struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
+
+  TAILQ_FOREACH(np, &Aliases, entries)
+  {
+    alias_array_alias_add(&mdata.ava, np);
+  }
+
+  alias_array_sort(&mdata.ava, mdata.sub);
+
+  dlg_select_alias(NULL, &mdata);
+
+  struct AliasView *avp = NULL;
+  ARRAY_FOREACH(avp, &mdata.ava)
+  {
+    if (!avp->is_deleted)
+      continue;
+
+    TAILQ_REMOVE(&Aliases, avp->alias, entries);
+    alias_free(&avp->alias);
+  }
+
+  ARRAY_FREE(&mdata.ava);
+  FREE(&mdata.title);
 }
