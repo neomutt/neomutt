@@ -514,7 +514,8 @@ $(PWD)/mbox:
 # libmenu
 LIBMENU=	libmenu.a
 LIBMENUOBJS=	menu/config.o menu/draw.o menu/functions.o menu/menu.o \
-		menu/move.o menu/observer.o menu/type.o menu/window.o
+		menu/move.o menu/observer.o menu/tagging.o menu/type.o \
+		menu/window.o
 CLEANFILES+=	$(LIBMENU) $(LIBMENUOBJS)
 ALLOBJS+=	$(LIBMENUOBJS)
 
