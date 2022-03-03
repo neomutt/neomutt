@@ -46,6 +46,14 @@ static const char *get_event_type(enum NotifyType type)
   {
     case NT_ACCOUNT:
       return "account";
+    case NT_ALIAS:
+      return "alias";
+    case NT_ALTERN:
+      return "altern";
+    case NT_ATTACH:
+      return "attach";
+    case NT_BINDING:
+      return "binding";
     case NT_COLOR:
       return "color";
     case NT_COMMAND:
@@ -56,10 +64,24 @@ static const char *get_event_type(enum NotifyType type)
       return "context";
     case NT_EMAIL:
       return "email";
+    case NT_ENVELOPE:
+      return "envelope";
     case NT_GLOBAL:
       return "global";
+    case NT_HEADER:
+      return "header";
+    case NT_INDEX:
+      return "index";
     case NT_MAILBOX:
       return "mailbox";
+    case NT_MENU:
+      return "menu";
+    case NT_PAGER:
+      return "pager";
+    case NT_SCORE:
+      return "score";
+    case NT_SUBJRX:
+      return "subjrx";
     case NT_WINDOW:
       return "window";
     default:
