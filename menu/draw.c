@@ -348,6 +348,8 @@ void menu_redraw_index(struct Menu *menu)
   char buf[1024];
   struct AttrColor *ac = NULL;
 
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
   for (int i = menu->top; i < (menu->top + menu->page_len); i++)
   {
     if (i < menu->max)
@@ -364,23 +366,20 @@ void menu_redraw_index(struct Menu *menu)
       mutt_curses_set_color(ac);
       mutt_window_move(menu->win, 0, i - menu->top);
 
-      const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
-      const char *const c_arrow_string =
-          cs_subset_string(menu->sub, "arrow_string");
-      if (i == menu->current)
+      if (c_arrow_cursor)
       {
-        mutt_curses_set_color(ac_ind);
-        if (c_arrow_cursor)
+        if (i == menu->current)
         {
+          mutt_curses_set_color(ac_ind);
           mutt_window_addstr(menu->win, c_arrow_string);
           mutt_curses_set_color(ac);
           mutt_window_addch(menu->win, ' ');
         }
-      }
-      else if (c_arrow_cursor)
-      {
-        /* Print space chars to match the screen width of `$arrow_string` */
-        mutt_window_printf(menu->win, "%*s", mutt_strwidth(c_arrow_string) + 1, "");
+        else
+        {
+          /* Print space chars to match the screen width of `$arrow_string` */
+          mutt_window_printf(menu->win, "%*s", mutt_strwidth(c_arrow_string) + 1, "");
+        }
       }
 
       print_enriched_string(menu->win, i, ac, ac_ind, (unsigned char *) buf, menu->sub);
