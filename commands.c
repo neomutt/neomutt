@@ -1089,8 +1089,7 @@ errcleanup:
     }
   }
 
-  if (m_save && (m_save->flags == MB_HIDDEN))
-    mailbox_free(&m_save);
+  mailbox_free(&m_save);
 
 cleanup:
   mutt_buffer_pool_release(&buf);

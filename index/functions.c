@@ -2012,8 +2012,7 @@ static int op_quit(struct IndexSharedData *shared, struct IndexPrivateData *priv
     if (!shared->ctx || ((check = mx_mbox_close(shared->mailbox)) == MX_STATUS_OK))
     {
       ctx_free(&shared->ctx);
-      if (shared->mailbox && (shared->mailbox->flags == MB_HIDDEN))
-        mailbox_free(&shared->mailbox);
+      mailbox_free(&shared->mailbox);
       return IR_DONE;
     }
 

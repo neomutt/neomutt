@@ -71,6 +71,7 @@ struct Mailbox *mailbox_new(void)
 
   mutt_buffer_init(&m->pathbuf);
   m->notify = notify_new();
+  m->flags = MB_HIDDEN;
 
   m->email_max = 25;
   m->emails = mutt_mem_calloc(m->email_max, sizeof(struct Email *));
@@ -90,6 +91,17 @@ void mailbox_free(struct Mailbox **ptr)
     return;
 
   struct Mailbox *m = *ptr;
+
+  const bool do_free = (m->opened == 0) && (m->flags == MB_HIDDEN);
+
+  mutt_debug(LL_DEBUG3, "%sfreeing %s mailbox %s with refcount %d\n",
+             do_free ? "" : "not ", m->flags == MB_HIDDEN ? "invisible" : "visible",
+             mutt_buffer_string(&m->pathbuf), m->opened);
+
+  if (!do_free)
+  {
+    return;
+  }
 
   mutt_debug(LL_NOTIFY, "NT_MAILBOX_DELETE: %s %p\n", mailbox_get_type_name(m->type), m);
   struct EventMailbox ev_m = { m };

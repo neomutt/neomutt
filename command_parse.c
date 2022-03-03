@@ -601,9 +601,12 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       }
     }
 
-    if (!mx_ac_add(a, m))
+    if (mx_ac_add(a, m))
     {
-      //error
+      m->flags = MB_NORMAL; // make it finally visible
+    }
+    else
+    {
       mailbox_free(&m);
       if (new_account)
       {

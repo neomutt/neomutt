@@ -1744,8 +1744,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
 
 done:
   m_fcc->append = old_append;
-  if (m_fcc->flags == MB_HIDDEN)
-    mailbox_free(&m_fcc);
+  mailbox_free(&m_fcc);
 
 #ifdef RECORD_FOLDER_HOOK
   /* We ran a folder hook for the destination mailbox,
