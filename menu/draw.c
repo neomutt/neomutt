@@ -350,14 +350,11 @@ void menu_redraw_index(struct Menu *menu)
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+  struct AttrColor *ac_ind = simple_color_get(MT_COLOR_INDICATOR);
   for (int i = menu->top; i < (menu->top + menu->page_len); i++)
   {
     if (i < menu->max)
     {
-      struct AttrColor *ac_ind = NULL;
-      if (i == menu->current)
-        ac_ind = simple_color_get(MT_COLOR_INDICATOR);
-
       ac = menu->color(menu, i);
 
       menu_make_entry(menu, buf, sizeof(buf), i);
@@ -382,7 +379,10 @@ void menu_redraw_index(struct Menu *menu)
         }
       }
 
-      print_enriched_string(menu->win, i, ac, ac_ind, (unsigned char *) buf, menu->sub);
+      if ((i == menu->current) && !c_arrow_cursor)
+        print_enriched_string(menu->win, i, ac, ac_ind, (unsigned char *) buf, menu->sub);
+      else
+        print_enriched_string(menu->win, i, ac, NULL, (unsigned char *) buf, menu->sub);
     }
     else
     {
@@ -425,6 +425,7 @@ void menu_redraw_motion(struct Menu *menu)
     /* clear the arrow */
     /* Print space chars to match the screen width of `$arrow_string` */
     mutt_window_printf(menu->win, "%*s", mutt_strwidth(c_arrow_string) + 1, "");
+    mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 
     menu_make_entry(menu, buf, sizeof(buf), menu->old_current);
     menu_pad_string(menu, buf, sizeof(buf));
@@ -439,6 +440,7 @@ void menu_redraw_motion(struct Menu *menu)
   }
   else
   {
+    mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
     /* erase the current indicator */
     menu_make_entry(menu, buf, sizeof(buf), menu->old_current);
     menu_pad_string(menu, buf, sizeof(buf));
