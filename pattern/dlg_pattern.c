@@ -22,7 +22,7 @@
  */
 
 /**
- * @page pattern_dlgpattern Pattern Selection Dialog
+ * @page pattern_dlg_pattern Pattern Selection Dialog
  *
  * The Pattern Selection Dialog lets the user select a pattern.
  *

@@ -38,7 +38,7 @@
  *
  * The Menu Window has many possible parents, e.g.
  *
- * - @ref index_dialog
+ * - @ref index_dlg_index
  * - @ref compose_dialog
  * - ...
  *

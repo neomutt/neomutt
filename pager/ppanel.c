@@ -33,7 +33,7 @@
  * | Pager Panel | #WT_PAGER | ppanel_new() |
  *
  * **Parent**
- * - @ref index_dialog
+ * - @ref index_dlg_index
  *
  * **Children**
  * - @ref pager_pager

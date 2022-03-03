@@ -23,7 +23,7 @@
  */
 
 /**
- * @page alias_dlgquery Address Query Dialog
+ * @page alias_dlg_query Address Query Dialog
  *
  * The Address Query Dialog will show aliases from an external query.
  * User can select aliases from the list.

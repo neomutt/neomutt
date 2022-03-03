@@ -110,7 +110,7 @@ $(PWD)/address:
 # libalias
 LIBALIAS=	libalias.a
 LIBALIASOBJS=	alias/alias.o alias/array.o alias/commands.o alias/config.o \
-		alias/dlgalias.o alias/dlgquery.o alias/functions.o \
+		alias/dlg_alias.o alias/dlg_query.o alias/functions.o \
 		alias/gui.o alias/reverse.o alias/sort.o
 CLEANFILES+=	$(LIBALIAS) $(LIBALIASOBJS)
 ALLOBJS+=	$(LIBALIASOBJS)
@@ -140,7 +140,7 @@ $(PWD)/attach:
 # libautocrypt
 @if USE_AUTOCRYPT
 LIBAUTOCRYPT=	libautocrypt.a
-LIBAUTOCRYPTOBJS=autocrypt/autocrypt.o autocrypt/dlgautocrypt.o \
+LIBAUTOCRYPTOBJS=autocrypt/autocrypt.o autocrypt/dlg_autocrypt.o \
 		 autocrypt/config.o autocrypt/db.o autocrypt/gpgme.o \
 		 autocrypt/schema.o
 CLEANFILES+=	$(LIBAUTOCRYPT) $(LIBAUTOCRYPTOBJS)
@@ -276,7 +276,7 @@ LIBCONNOBJS=	conn/config.o conn/connaccount.o conn/getdomain.o conn/raw.o \
 LIBCONNOBJS+=	conn/sasl.o
 @endif
 @if USE_SSL
-LIBCONNOBJS+=	conn/dlgverifycert.o
+LIBCONNOBJS+=	conn/dlg_verifycert.o
 @endif
 @if USE_SSL_GNUTLS
 LIBCONNOBJS+=	conn/gnutls.o
@@ -433,7 +433,7 @@ $(PWD)/helpbar:
 ###############################################################################
 # libhistory
 LIBHISTORY=	libhistory.a
-LIBHISTORYOBJS=	history/config.o history/dlghistory.o history/history.o
+LIBHISTORYOBJS=	history/config.o history/dlg_history.o history/history.o
 CLEANFILES+=	$(LIBHISTORY) $(LIBHISTORYOBJS)
 ALLOBJS+=	$(LIBHISTORYOBJS)
 
@@ -550,16 +550,16 @@ LIBNCRYPT=	libncrypt.a
 LIBNCRYPTOBJS=	ncrypt/config.o ncrypt/crypt.o ncrypt/cryptglue.o \
 		ncrypt/crypt_mod.o
 @if HAVE_GPGME
-LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/dlggpgme.o ncrypt/crypt_mod_pgp_gpgme.o \
+LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/dlg_gpgme.o ncrypt/crypt_mod_pgp_gpgme.o \
 		ncrypt/crypt_mod_smime_gpgme.o
 @endif
 @if HAVE_PGP
-LIBNCRYPTOBJS+=	ncrypt/crypt_mod_pgp_classic.o ncrypt/dlgpgp.o ncrypt/gnupgparse.o \
+LIBNCRYPTOBJS+=	ncrypt/crypt_mod_pgp_classic.o ncrypt/dlg_pgp.o ncrypt/gnupgparse.o \
 		ncrypt/pgp.o ncrypt/pgpinvoke.o ncrypt/pgpkey.o ncrypt/pgplib.o \
 		ncrypt/pgpmicalg.o ncrypt/pgppacket.o
 @endif
 @if HAVE_SMIME
-LIBNCRYPTOBJS+=	ncrypt/crypt_mod_smime_classic.o ncrypt/dlgsmime.o ncrypt/smime.o
+LIBNCRYPTOBJS+=	ncrypt/crypt_mod_smime_classic.o ncrypt/dlg_smime.o ncrypt/smime.o
 @endif
 CLEANFILES+=	$(LIBNCRYPT) $(LIBNCRYPTOBJS)
 ALLOBJS+=	$(LIBNCRYPTOBJS)
@@ -619,7 +619,7 @@ $(PWD)/pager:
 ###############################################################################
 # libpattern
 LIBPATTERN=	libpattern.a
-LIBPATTERNOBJS=	pattern/compile.o pattern/config.o pattern/dlgpattern.o \
+LIBPATTERNOBJS=	pattern/compile.o pattern/config.o pattern/dlg_pattern.o \
 		pattern/exec.o pattern/flags.o pattern/pattern.o
 CLEANFILES+=	$(LIBPATTERN) $(LIBPATTERNOBJS)
 ALLOBJS+=	$(LIBPATTERNOBJS)

@@ -24,7 +24,7 @@
  * @page gui_dialog Dialog Windows
  *
  * A Dialog is an interactive set of windows allowing the user to perform some
- * task, e.g. @ref alias_dlgalias
+ * task, e.g. @ref alias_dlg_alias
  *
  * The All Dialogs window is a container window and not visible.  All active dialogs
  * will be children of this window, though only one will be active at a time.
@@ -42,9 +42,9 @@
  *
  * The All Dialogs window has many possible children, e.g.
  *
- * - @ref alias_dlgalias
+ * - @ref alias_dlg_alias
  * - @ref compose_dialog
- * - @ref crypt_dlggpgme
+ * - @ref crypt_dlg_gpgme
  * - ...
  *
  * ## Data

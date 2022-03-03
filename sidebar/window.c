@@ -37,7 +37,7 @@
  * | Sidebar Window | WT_SIDEBAR | mutt_window_new() |
  *
  * **Parent**
- * - @ref index_dialog
+ * - @ref index_dlg_index
  *
  * **Children**
  *

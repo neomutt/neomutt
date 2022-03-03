@@ -22,13 +22,13 @@
  */
 
 /**
- * @page pager_dialog Pager Dialog
+ * @page pager_dlg_pager Pager Dialog
  *
  * The Pager Dialog displays some text to the user that can be paged through.
  * The actual contents depend on the caller, but are usually an email, file or help.
  *
  * This dialog doesn't exist on its own.  The @ref pager_ppanel is packaged up
- * as part of the @ref index_dialog or the @ref pager_dopager.
+ * as part of the @ref index_dlg_index or the @ref pager_dopager.
  */
 
 #include "config.h"

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page conn_gui Certificate Verification Dialog
+ * @page conn_dlg_verifycert Certificate Verification Dialog
  *
  * The Certificate Verification Dialog lets the user check the details of a
  * certificate.

@@ -23,7 +23,7 @@
  */
 
 /**
- * @page alias_dlgalias Address Book Dialog
+ * @page alias_dlg_alias Address Book Dialog
  *
  * The Address Book Dialog allows the user to select, add or delete aliases.
  *

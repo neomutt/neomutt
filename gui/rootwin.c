@@ -43,7 +43,7 @@
  *
  * - **Dialog**:
  *   A set of nested Windows that form an interactive component.  This is the
- *   main way that users interact with NeoMutt. e.g. @ref index_dialog,
+ *   main way that users interact with NeoMutt. e.g. @ref index_dlg_index,
  *   @ref compose_dialog.
  *
  * - **Panel**

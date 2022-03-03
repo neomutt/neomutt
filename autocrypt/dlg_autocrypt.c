@@ -21,7 +21,7 @@
  */
 
 /**
- * @page autocrypt_account Autocrypt account dialog
+ * @page autocrypt_dlg_autocrypt Autocrypt account dialog
  *
  * The Autocrypt Account Dialog lets the user set up or update an Autocrypt Account.
  *

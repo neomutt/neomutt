@@ -78,14 +78,14 @@
  * Any changes to the database should bump the schema version by adding a call
  * in mutt_autocrypt_schema_update().
  *
- * | File                   | Description                  |
- * | :--------------------- | :--------------------------- |
- * | autocrypt/autocrypt.c  | @subpage autocrypt_autocrypt |
- * | autocrypt/acct_menu.c  | @subpage autocrypt_account   |
- * | autocrypt/config.c     | @subpage autocrypt_config    |
- * | autocrypt/db.c         | @subpage autocrypt_db        |
- * | autocrypt/gpgme.c      | @subpage autocrypt_gpgme     |
- * | autocrypt/schema.c     | @subpage autocrypt_schema    |
+ * | File                   | Description                      |
+ * | :--------------------- | :------------------------------- |
+ * | autocrypt/autocrypt.c  | @subpage autocrypt_autocrypt     |
+ * | autocrypt/acct_menu.c  | @subpage autocrypt_dlg_autocrypt |
+ * | autocrypt/config.c     | @subpage autocrypt_config        |
+ * | autocrypt/db.c         | @subpage autocrypt_db            |
+ * | autocrypt/gpgme.c      | @subpage autocrypt_gpgme         |
+ * | autocrypt/schema.c     | @subpage autocrypt_schema        |
  */
 
 #ifndef MUTT_AUTOCRYPT_LIB_H

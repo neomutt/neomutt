@@ -29,7 +29,7 @@
  * | :------------------- | :-------------------------- |
  * | pager/config.c       | @subpage pager_config       |
  * | pager/display.c      | @subpage pager_display      |
- * | pager/dlg_pager.c    | @subpage pager_dialog       |
+ * | pager/dlg_pager.c    | @subpage pager_dlg_pager    |
  * | pager/do_pager.c     | @subpage pager_dopager      |
  * | pager/functions.c    | @subpage pager_functions    |
  * | pager/message.c      | @subpage pager_message      |

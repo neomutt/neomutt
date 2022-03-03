@@ -33,7 +33,7 @@
  * | Index Panel | #WT_INDEX | ipanel_new() |
  *
  * **Parent**
- * - @ref index_dialog
+ * - @ref index_dlg_index
  *
  * **Children**
  * - @ref index_index

@@ -38,9 +38,9 @@
  * | ncrypt/crypt_mod_pgp_gpgme.c     | @subpage crypt_crypt_mod_pgp_gpgme   |
  * | ncrypt/crypt_mod_smime_classic.c | @subpage crypt_crypt_mod_smime       |
  * | ncrypt/crypt_mod_smime_gpgme.c   | @subpage crypt_crypt_mod_smime_gpgme |
- * | ncrypt/dlggpgme.c                | @subpage crypt_dlggpgme              |
- * | ncrypt/dlgpgp.c                  | @subpage crypt_dlgpgp                |
- * | ncrypt/dlgsmime.c                | @subpage crypt_dlgsmime              |
+ * | ncrypt/dlggpgme.c                | @subpage crypt_dlg_gpgme             |
+ * | ncrypt/dlgpgp.c                  | @subpage crypt_dlg_pgp               |
+ * | ncrypt/dlgsmime.c                | @subpage crypt_dlg_smime             |
  * | ncrypt/gnupgparse.c              | @subpage crypt_gnupg                 |
  * | ncrypt/pgp.c                     | @subpage crypt_pgp                   |
  * | ncrypt/pgpinvoke.c               | @subpage crypt_pgpinvoke             |

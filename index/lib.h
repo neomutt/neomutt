@@ -29,7 +29,7 @@
  * | :------------------- | :-------------------------- |
  * | index/config.c       | @subpage index_config       |
  * | index/functions.c    | @subpage index_functions    |
- * | index/dlg_index.c    | @subpage index_dialog       |
+ * | index/dlg_index.c    | @subpage index_dlg_index    |
  * | index/ibar.c         | @subpage index_ibar         |
  * | index/index.c        | @subpage index_index        |
  * | index/ipanel.c       | @subpage index_ipanel       |

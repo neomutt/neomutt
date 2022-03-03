@@ -25,11 +25,11 @@
  *
  * Read/write command history from/to a file
  *
- * | File                 | Description                 |
- * | :------------------- | :-------------------------- |
- * | history/config.c     | @subpage history_config     |
- * | history/dlghistory.c | @subpage history_dlghistory |
- * | history/history.c    | @subpage history_history    |
+ * | File                 | Description                  |
+ * | :------------------- | :--------------------------- |
+ * | history/config.c     | @subpage history_config      |
+ * | history/dlghistory.c | @subpage history_dlg_history |
+ * | history/history.c    | @subpage history_history     |
  */
 
 #ifndef MUTT_HISTORY_LIB_H

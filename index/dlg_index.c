@@ -22,10 +22,10 @@
  */
 
 /**
- * @page index_dialog Index Dialog
+ * @page index_dlg_index Index Dialog
  *
  * The Index Dialog is the main screen within NeoMutt.  It contains @ref
- * index_index (a list of emails), @ref pager_dialog (a view of an email) and
+ * index_index (a list of emails), @ref pager_dlg_pager (a view of an email) and
  * @ref sidebar_window (a list of mailboxes).
  *
  * ## Windows

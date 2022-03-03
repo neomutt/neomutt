@@ -22,7 +22,7 @@
  */
 
 /**
- * @page attach_dialog Attachment Selection Dialog
+ * @page attach_dlg_attach Attachment Selection Dialog
  *
  * The Attachment Selection Dialog lets the user select an email attachment.
  *

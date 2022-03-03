@@ -21,7 +21,7 @@
  */
 
 /**
- * @page crypt_dlgpgp PGP Key Selection Dialog
+ * @page crypt_dlg_pgp PGP Key Selection Dialog
  *
  * The PGP Key Selection Dialog lets the user select a PGP key.
  *
