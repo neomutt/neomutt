@@ -1880,6 +1880,8 @@ full_fcc:
      * the From_ line contains the current time instead of when the
      * message was first postponed.  */
     e->received = mutt_date_epoch();
+    const int old_flags = m->flags;
+    m->flags = MB_NORMAL;
     rc = mutt_write_multiple_fcc(mutt_buffer_string(fcc), e, NULL, false, NULL,
                                  finalpath, sub);
     while (rc && !(flags & SEND_BATCH))
@@ -1920,6 +1922,7 @@ full_fcc:
           break;
       }
     }
+    m->flags = old_flags;
   }
 
   if (!c_fcc_before_send)
