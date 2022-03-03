@@ -210,6 +210,21 @@ struct MuttWindow *msgwin_new(void)
 }
 
 /**
+ * msgwin_get_text - Get the text from the Message Window
+ *
+ * @note Do not free the returned string
+ */
+const char *msgwin_get_text(void)
+{
+  if (!MessageWindow)
+    return NULL;
+
+  struct MsgWinPrivateData *priv = MessageWindow->wdata;
+
+  return priv->text;
+}
+
+/**
  * msgwin_set_text - Set the text for the Message Window
  * @param cid  Colour Id, e.g. #MT_COLOR_MESSAGE
  * @param text Text to set

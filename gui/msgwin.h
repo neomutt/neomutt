@@ -27,7 +27,8 @@
 #include "color/lib.h"
 
 void               msgwin_clear_text(void);
-struct MuttWindow *msgwin_new    (void);
+struct MuttWindow *msgwin_new       (void);
+const char *       msgwin_get_text  (void);
 size_t             msgwin_get_width (void);
 struct MuttWindow *msgwin_get_window(void);
 void               msgwin_set_height(short height);
