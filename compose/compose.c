@@ -352,8 +352,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 #endif
     window_redraw(NULL);
     const int op = menu_loop(shared->adata->menu);
-    if (op >= 0)
-      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
+    mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
 
     int rc = compose_function_dispatcher(dlg, op);
     if (rc == IR_UNKNOWN)

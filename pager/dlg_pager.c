@@ -823,10 +823,9 @@ int mutt_pager(struct PagerView *pview)
     op = km_dokey(MENU_PAGER);
 
     if (op >= 0)
-    {
       mutt_clear_error();
-      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
-    }
+
+    mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
 
     if (op < 0)
     {

@@ -1283,7 +1283,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         continue;
       }
 
-      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
+      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
 
       /* special handling for the priv->tag-prefix function */
       const bool c_auto_tag = cs_subset_bool(shared->sub, "auto_tag");
