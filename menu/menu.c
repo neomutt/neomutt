@@ -306,8 +306,6 @@ int menu_loop(struct Menu *menu)
       menu->tag_prefix = false;
     }
 
-    mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
-
     if (menu_redraw(menu) == OP_REDRAW)
       return OP_REDRAW;
 
@@ -373,8 +371,6 @@ int menu_loop(struct Menu *menu)
     }
     else if (menu->num_tagged && c_auto_tag)
       menu->tag_prefix = true;
-
-    mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
     if (op < 0)
     {

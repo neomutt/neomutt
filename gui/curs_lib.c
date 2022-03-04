@@ -381,7 +381,7 @@ void mutt_edit_file(const char *editor, const char *file)
 void mutt_query_exit(void)
 {
   mutt_flushinp();
-  mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
+  enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
   if (c_timeout)
     mutt_getch_timeout(-1); /* restore blocking operation */
@@ -390,7 +390,7 @@ void mutt_query_exit(void)
     mutt_exit(1);
   }
   mutt_clear_error();
-  mutt_curses_set_cursor(MUTT_CURSOR_RESTORE_LAST);
+  mutt_curses_set_cursor(cursor);
   SigInt = false;
 }
 

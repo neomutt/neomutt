@@ -1231,14 +1231,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         priv->do_mailbox_notify = true;
     }
 
-    if (op >= 0)
-      mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
-
-    if (priv->in_pager)
-    {
-      mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE); /* fallback from the pager */
-    }
-    else
+    if (!priv->in_pager)
     {
       index_custom_redraw(priv->menu);
       window_redraw(NULL);
@@ -1291,8 +1284,6 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       }
 
       mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
-
-      mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
       /* special handling for the priv->tag-prefix function */
       const bool c_auto_tag = cs_subset_bool(shared->sub, "auto_tag");

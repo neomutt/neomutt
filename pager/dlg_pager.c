@@ -656,7 +656,6 @@ int mutt_pager(struct PagerView *pview)
     {
       mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true);
     }
-    mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
     pager_queue_redraw(priv, MENU_REDRAW_FULL);
     pager_custom_redraw(priv);
@@ -828,7 +827,6 @@ int mutt_pager(struct PagerView *pview)
       mutt_clear_error();
       mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
     }
-    mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
     if (op < 0)
     {
