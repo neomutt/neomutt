@@ -312,9 +312,9 @@ static void dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
 
   struct MuttWindow *dlg = alias_dialog_new(mdata);
   struct Menu *menu = dlg->wdata;
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
+  struct MuttWindow *win_sbar = window_find_child(dlg, WT_STATUS_BAR);
   mdata->menu = menu;
-  mdata->sbar = sbar;
+  mdata->sbar = win_sbar;
   mdata->query = buf;
 
   alias_array_sort(&mdata->ava, mdata->sub);

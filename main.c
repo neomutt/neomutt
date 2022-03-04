@@ -478,18 +478,6 @@ main
 #endif
 (int argc, char *argv[], char *envp[])
 {
-#if 0
-  if (argc != 2)
-    return 1;
-  struct AnsiColor ansi = { 0 };
-  int len = ansi_color_parse(argv[1], &ansi, NULL);
-  printf("len = %d\n", len);
-  printf("0x%06x  %4d %4d\n", ansi.attrs, ansi.fg, ansi.bg);
-  printf("%s\n", argv[1] + len);
-  const char *color = color_debug_log_color(ansi.fg, ansi.bg);
-  printf("%s\n", color);
-  return 0;
-#endif
   char *subject = NULL;
   char *include_file = NULL;
   char *draft_file = NULL;

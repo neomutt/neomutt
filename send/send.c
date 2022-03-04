@@ -1881,7 +1881,7 @@ full_fcc:
      * message was first postponed.  */
     e->received = mutt_date_epoch();
     int old_flags = MB_NORMAL;
-    if(m)
+    if (m)
     {
       old_flags = m->flags;
       m->flags = MB_NORMAL;

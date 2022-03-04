@@ -349,7 +349,8 @@ void menu_redraw_index(struct Menu *menu)
   struct AttrColor *ac = NULL;
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
-  const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+  const char *const c_arrow_string =
+      cs_subset_string(menu->sub, "arrow_string");
   struct AttrColor *ac_ind = simple_color_get(MT_COLOR_INDICATOR);
   for (int i = menu->top; i < (menu->top + menu->page_len); i++)
   {
