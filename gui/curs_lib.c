@@ -289,6 +289,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
   win->help_menu = MENU_EDITOR;
   struct MuttWindow *old_focus = window_set_focus(win);
 
+  enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   window_redraw(NULL);
   do
   {
@@ -308,6 +309,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
     ret = mutt_enter_string_full(buf->data, buf->dsize, col, complete, multiple,
                                  m, files, numfiles, es);
   } while (ret == 1);
+  mutt_curses_set_cursor(cursor);
 
   win->help_data = old_help;
   win->help_menu = old_menu;
@@ -508,10 +510,12 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
   mutt_window_clrtoeol(win);
   mutt_refresh();
 
+  enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   do
   {
     ch = mutt_getch();
   } while (ch.ch == -2); // Timeout
+  mutt_curses_set_cursor(cursor);
 
   mutt_window_move(win, 0, 0);
   mutt_window_clrtoeol(win);

@@ -261,10 +261,12 @@ static int menu_dialog_dokey(struct Menu *menu, int *ip)
   struct KeyEvent ch;
   char *p = NULL;
 
+  enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   do
   {
     ch = mutt_getch();
   } while (ch.ch == -2); // Timeout
+  mutt_curses_set_cursor(cursor);
 
   if (ch.ch < 0)
   {
