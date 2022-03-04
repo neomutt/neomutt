@@ -650,7 +650,7 @@ int mutt_pager(struct PagerView *pview)
   // ACT 3: Read user input and decide what to do with it
   //        ...but also do a whole lot of other things.
   //-------------------------------------------------------------------------
-  while (op != -1)
+  while (op != OP_ABORT)
   {
     if (check_read_delay(&priv->delay_read_timestamp))
     {
@@ -794,14 +794,14 @@ int mutt_pager(struct PagerView *pview)
         Resize->search_compiled = priv->search_compiled;
         Resize->search_back = priv->search_back;
 
-        op = -1;
+        op = OP_ABORT;
         priv->rc = OP_REFORMAT_WINCH;
       }
       else
       {
         /* note: mutt_resize_screen() -> mutt_window_reflow() sets
          * MENU_REDRAW_FULL and MENU_REDRAW_FLOW */
-        op = 0;
+        op = OP_NULL;
       }
       continue;
     }
@@ -822,14 +822,14 @@ int mutt_pager(struct PagerView *pview)
     // OP code to index. Index handles the operation and then restarts pager
     op = km_dokey(MENU_PAGER);
 
-    if (op >= 0)
+    if (op >= OP_NULL)
       mutt_clear_error();
 
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
 
-    if (op < 0)
+    if (op < OP_NULL)
     {
-      op = 0;
+      op = OP_NULL;
       mutt_timeout_hook();
       continue;
     }
@@ -858,7 +858,7 @@ int mutt_pager(struct PagerView *pview)
       break;
   }
   //-------------------------------------------------------------------------
-  // END OF ACT 3: Read user input loop - while (op != -1)
+  // END OF ACT 3: Read user input loop - while (op != OP_ABORT)
   //-------------------------------------------------------------------------
 
   if (check_read_delay(&priv->delay_read_timestamp))

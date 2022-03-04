@@ -378,7 +378,7 @@ static int op_display_message(struct IndexSharedData *shared,
   }
 
   window_set_focus(priv->win_index);
-  if (op < 0)
+  if (op < OP_NULL)
   {
     OptNeedResort = false;
     return IR_ERROR;

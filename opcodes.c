@@ -44,12 +44,12 @@ const char *OpStrings[][2] = {
  */
 const char *opcodes_get_name(int op)
 {
-  if ((op < -2) || (op >= OP_MAX))
+  if ((op < OP_TIMEOUT) || (op >= OP_MAX))
     return "[UNKNOWN]";
 
-  if (op == -1)
+  if (op == OP_ABORT)
     return "OP_ABORT";
-  if (op == -2)
+  if (op == OP_TIMEOUT)
     return "OP_TIMEOUT";
 
   return OpStrings[op][0];
@@ -62,12 +62,12 @@ const char *opcodes_get_name(int op)
  */
 const char *opcodes_get_description(int op)
 {
-  if ((op < -2) || (op >= OP_MAX))
+  if ((op < OP_TIMEOUT) || (op >= OP_MAX))
     return "[UNKNOWN]";
 
-  if (op == -1)
+  if (op == OP_ABORT)
     return "abort the current action";
-  if (op == -2)
+  if (op == OP_TIMEOUT)
     return "timeout occurred";
 
   return OpStrings[op][1];

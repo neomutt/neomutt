@@ -72,13 +72,13 @@
  * They can be temporarily ignored by setting OptIgnoreMacroEvents */
 static size_t MacroBufferCount = 0;
 static size_t MacroBufferLen = 0;
-static struct KeyEvent *MacroEvents;
+static struct KeyEvent *MacroEvents = NULL;
 
 /* These are used in all other "normal" situations, and are not
  * ignored when setting OptIgnoreMacroEvents */
 static size_t UngetCount = 0;
 static size_t UngetLen = 0;
-static struct KeyEvent *UngetKeyEvents;
+static struct KeyEvent *UngetKeyEvents = NULL;
 
 int MuttGetchTimeout = -1;
 
@@ -193,14 +193,15 @@ static int mutt_monitor_getch(void)
  * 3. Keyboard
  *
  * This function can return:
- * - Error `{ -1, OP_NULL }`
- * - Timeout `{ -2, OP_NULL }`
+ * - Error   `{ OP_ABORT,   OP_NULL }`
+ * - Timeout `{ OP_TIMEOUT, OP_NULL }`
  */
 struct KeyEvent mutt_getch(void)
 {
   int ch;
-  struct KeyEvent err = { -1, OP_NULL }, ret;
-  struct KeyEvent timeout = { -2, OP_NULL };
+  struct KeyEvent err = { OP_ABORT, OP_NULL };
+  struct KeyEvent timeout = { OP_TIMEOUT, OP_NULL };
+  struct KeyEvent ret = { OP_NULL, OP_NULL };
 
   if (UngetCount)
     return UngetKeyEvents[--UngetCount];
@@ -246,14 +247,14 @@ struct KeyEvent mutt_getch(void)
   {
     /* send ALT-x as ESC-x */
     ch &= ~0x80;
-    mutt_unget_event(ch, 0);
+    mutt_unget_event(ch, OP_NULL);
     ret.ch = '\033'; // Escape
-    ret.op = 0;
+    ret.op = OP_NULL;
     return ret;
   }
 
   ret.ch = ch;
-  ret.op = 0;
+  ret.op = OP_NULL;
   return (ch == AbortKey) ? err : ret;
 }
 
@@ -498,7 +499,7 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
   if (!win)
     return -1;
 
-  struct KeyEvent ch;
+  struct KeyEvent ch = { OP_NULL, OP_NULL };
   struct MuttWindow *old_focus = window_set_focus(win);
 
   mutt_curses_set_color_by_id(MT_COLOR_PROMPT);
@@ -514,7 +515,7 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
   do
   {
     ch = mutt_getch();
-  } while (ch.ch == -2); // Timeout
+  } while (ch.ch == OP_TIMEOUT);
   mutt_curses_set_cursor(cursor);
 
   mutt_window_move(win, 0, 0);
@@ -544,7 +545,7 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
 
     sprintf(pc, "%s: ", prompt);
     if (ch.op == OP_NULL)
-      mutt_unget_event(ch.ch, 0);
+      mutt_unget_event(ch.ch, OP_NULL);
     else
       mutt_unget_event(0, ch.op);
 
@@ -569,7 +570,7 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
  */
 void mutt_unget_event(int ch, int op)
 {
-  struct KeyEvent tmp;
+  struct KeyEvent tmp = { OP_NULL, OP_NULL };
 
   tmp.ch = ch;
   tmp.op = op;
@@ -606,7 +607,7 @@ void mutt_unget_string(const char *s)
  */
 void mutt_push_macro_event(int ch, int op)
 {
-  struct KeyEvent tmp;
+  struct KeyEvent tmp = { OP_NULL, OP_NULL };
 
   tmp.ch = ch;
   tmp.op = op;

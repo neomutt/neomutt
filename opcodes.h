@@ -29,6 +29,9 @@
 const char *opcodes_get_description(int op);
 const char *opcodes_get_name       (int op);
 
+#define OP_TIMEOUT -2
+#define OP_ABORT   -1
+
 // clang-format off
 #define OPS_ATTACHMENT(_fmt) \
   _fmt(OP_ATTACHMENT_ATTACH_FILE,             N_("attach files to this message")) \
