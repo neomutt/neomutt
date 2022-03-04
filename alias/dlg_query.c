@@ -277,7 +277,8 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
   size_t buflen;
   char *msg = NULL;
   size_t msglen = 0;
-  char *p = NULL;
+  char *tok = NULL;
+  char *next_tok = NULL;
   struct Buffer *cmd = buf_pool_get();
 
   const char *const c_query_command = cs_subset_string(sub, "query_command");
@@ -300,22 +301,32 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
   msg = mutt_file_read_line(msg, &msglen, fp, NULL, MUTT_RL_NO_FLAGS);
   while ((buf = mutt_file_read_line(buf, &buflen, fp, NULL, MUTT_RL_NO_FLAGS)))
   {
-    p = strtok(buf, "\t\n");
-    if (p)
-    {
-      struct Alias *alias = alias_new();
+    tok = buf;
+    next_tok = strchr(tok, '\t');
+    if (next_tok)
+      *next_tok++ = '\0';
 
-      mutt_addrlist_parse(&alias->addr, p);
-      p = strtok(NULL, "\t\n");
-      if (p)
-      {
-        alias->name = mutt_str_dup(p);
-        p = strtok(NULL, "\t\n");
-        parse_alias_comments(alias, p);
-      }
-      TAILQ_INSERT_TAIL(al, alias, entries);
+    if (*tok == '\0')
+      continue;
+
+    struct Alias *alias = alias_new();
+
+    mutt_addrlist_parse(&alias->addr, tok);
+
+    if (next_tok)
+    {
+      tok = next_tok;
+      next_tok = strchr(tok, '\t');
+      if (next_tok)
+        *next_tok++ = '\0';
+
+      alias->name = mutt_str_dup(tok);
+      parse_alias_comments(alias, next_tok);
     }
+
+    TAILQ_INSERT_TAIL(al, alias, entries);
   }
+
   FREE(&buf);
   mutt_file_fclose(&fp);
   if (filter_wait(pid))
