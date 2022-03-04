@@ -36,3 +36,39 @@ const char *OpStrings[][2] = {
 };
 
 #undef DEFINE_HELP_MESSAGE
+
+/**
+ * opcodes_get_name - Get the name of an opcode
+ * @param op Opcode, e.g. OP_HELP
+ * @retval str Name of the opcode
+ */
+const char *opcodes_get_name(int op)
+{
+  if ((op < -2) || (op >= OP_MAX))
+    return "[UNKNOWN]";
+
+  if (op == -1)
+    return "OP_ABORT";
+  if (op == -2)
+    return "OP_TIMEOUT";
+
+  return OpStrings[op][0];
+}
+
+/**
+ * opcodes_get_description - Get the description of an opcode
+ * @param op Opcode, e.g. OP_HELP
+ * @retval str Description of the opcode
+ */
+const char *opcodes_get_description(int op)
+{
+  if ((op < -2) || (op >= OP_MAX))
+    return "[UNKNOWN]";
+
+  if (op == -1)
+    return "abort the current action";
+  if (op == -2)
+    return "timeout occurred";
+
+  return OpStrings[op][1];
+}

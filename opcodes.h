@@ -26,6 +26,9 @@
 #include "config.h"
 #include "mutt/lib.h"
 
+const char *opcodes_get_description(int op);
+const char *opcodes_get_name       (int op);
+
 // clang-format off
 #define OPS_ATTACHMENT(_fmt) \
   _fmt(OP_ATTACHMENT_ATTACH_FILE,             N_("attach files to this message")) \
