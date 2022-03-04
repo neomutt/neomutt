@@ -363,11 +363,13 @@ void menu_redraw_index(struct Menu *menu)
       mutt_curses_set_color(ac);
       mutt_window_move(menu->win, 0, i - menu->top);
 
+      if (i == menu->current)
+        mutt_curses_set_color(ac_ind);
+
       if (c_arrow_cursor)
       {
         if (i == menu->current)
         {
-          mutt_curses_set_color(ac_ind);
           mutt_window_addstr(menu->win, c_arrow_string);
           mutt_curses_set_color(ac);
           mutt_window_addch(menu->win, ' ');
