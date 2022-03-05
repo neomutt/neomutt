@@ -261,10 +261,12 @@ static int menu_dialog_dokey(struct Menu *menu, int *ip)
   struct KeyEvent ch;
   char *p = NULL;
 
+  enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   do
   {
     ch = mutt_getch();
   } while (ch.ch == -2); // Timeout
+  mutt_curses_set_cursor(cursor);
 
   if (ch.ch < 0)
   {
@@ -305,8 +307,6 @@ int menu_loop(struct Menu *menu)
     {
       menu->tag_prefix = false;
     }
-
-    mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
     if (menu_redraw(menu) == OP_REDRAW)
       return OP_REDRAW;
@@ -373,8 +373,6 @@ int menu_loop(struct Menu *menu)
     }
     else if (menu->num_tagged && c_auto_tag)
       menu->tag_prefix = true;
-
-    mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
     if (op < 0)
     {

@@ -72,19 +72,20 @@ struct AttrColor *mutt_curses_set_color_by_id(enum ColorId cid)
 /**
  * mutt_curses_set_cursor - Set the cursor state
  * @param state State to set, e.g. #MUTT_CURSOR_INVISIBLE
+ * @retval enum Old state, e.g. #MUTT_CURSOR_VISIBLE
  */
-void mutt_curses_set_cursor(enum MuttCursorState state)
+enum MuttCursorState mutt_curses_set_cursor(enum MuttCursorState state)
 {
-  static int SavedCursor = MUTT_CURSOR_VISIBLE;
+  static enum MuttCursorState SavedCursor = MUTT_CURSOR_VISIBLE;
 
-  if (state == MUTT_CURSOR_RESTORE_LAST)
-    state = SavedCursor;
-  else
-    SavedCursor = state;
+  enum MuttCursorState OldCursor = SavedCursor;
+  SavedCursor = state;
 
   if (curs_set(state) == ERR)
   {
     if (state == MUTT_CURSOR_VISIBLE)
       curs_set(MUTT_CURSOR_VERY_VISIBLE);
   }
+
+  return OldCursor;
 }

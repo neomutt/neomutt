@@ -1376,7 +1376,9 @@ main
       mutt_debug(LL_NOTIFY, "NT_MAILBOX_SWITCH: %p\n", m);
       notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &ev_m);
 
+      mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
       m = mutt_index_menu(dlg, m);
+      mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
       if (m && (m->flags == MB_HIDDEN))
         mailbox_free(&m);
 

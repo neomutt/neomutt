@@ -61,6 +61,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
   const bool opt_cols = simple_color_is_set(MT_COLOR_OPTIONS);
 
   struct MuttWindow *old_focus = window_set_focus(win);
+  enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   window_redraw(NULL);
   while (true)
   {
@@ -157,6 +158,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
     }
     mutt_beep(false);
   }
+
   if (win->state.rows == 1)
   {
     mutt_window_clearline(win, 0);
@@ -166,8 +168,10 @@ int mutt_multi_choice(const char *prompt, const char *letters)
     msgwin_set_height(1);
     window_redraw(NULL);
   }
+
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   window_set_focus(old_focus);
+  mutt_curses_set_cursor(cursor);
   mutt_refresh();
   return choice;
 }
@@ -237,6 +241,8 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
   msg_wid = mutt_strwidth(msg);
 
   struct MuttWindow *old_focus = window_set_focus(win);
+
+  enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   window_redraw(NULL);
   while (true)
   {
@@ -307,6 +313,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
     }
   }
   window_set_focus(old_focus);
+  mutt_curses_set_cursor(cursor);
 
   FREE(&answer_string);
 

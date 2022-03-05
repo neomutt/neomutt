@@ -451,10 +451,12 @@ int mutt_change_flag(struct Mailbox *m, struct EmailList *el, bool bf)
   mutt_window_clrtoeol(win);
   window_redraw(NULL);
 
+  enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   do
   {
     event = mutt_getch();
   } while (event.ch == -2); // Timeout
+  mutt_curses_set_cursor(cursor);
 
   window_set_focus(old_focus);
   msgwin_clear_text();
