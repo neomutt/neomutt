@@ -627,12 +627,24 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
 {
   struct stat st = { 0 };
 
+  bool file_exists = false;
+  bool is_dir      = false;
+
   mutt_buffer_strcpy(fname, path);
-  if (access(mutt_buffer_string(fname), F_OK) != 0)
+
+  if (access(mutt_buffer_string(fname), F_OK) == 0)
+    file_exists = true;
+
+  if (!file_exists)
     return 0;
+
   if (stat(mutt_buffer_string(fname), &st) != 0)
     return -1;
+
   if (S_ISDIR(st.st_mode))
+    is_dir = true;
+
+  if (is_dir)
   {
     enum QuadOption ans = MUTT_NO;
     if (directory)
@@ -660,7 +672,10 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
     /* L10N: Means "The path you specified as the destination file is a directory."
        See the msgid "Save to file: " (alias.c, recvattach.c) */
     else if ((ans = mutt_yesorno(_("File is a directory, save under it?"), MUTT_YES)) != MUTT_YES)
+    {
       return (ans == MUTT_NO) ? 1 : -1;
+    }
+
 
     struct Buffer *tmp = mutt_buffer_pool_get();
     mutt_buffer_strcpy(tmp, mutt_path_basename(NONULL(attname)));
@@ -675,7 +690,7 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
     mutt_buffer_pool_release(&tmp);
   }
 
-  if ((*opt == MUTT_SAVE_NO_FLAGS) && (access(mutt_buffer_string(fname), F_OK) == 0))
+  if (file_exists && (*opt == MUTT_SAVE_NO_FLAGS))
   {
     char buf[4096] = { 0 };
     snprintf(buf, sizeof(buf), "%s - %s", mutt_buffer_string(fname),
