@@ -1627,7 +1627,9 @@ void mutt_what_key(void)
   if (!win)
     return;
 
+  mutt_curses_set_color_by_id(MT_COLOR_PROMPT);
   mutt_window_mvprintw(win, 0, 0, _("Enter keys (%s to abort): "), km_keyname(AbortKey));
+  mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   do
   {
