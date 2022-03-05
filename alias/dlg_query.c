@@ -356,6 +356,7 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
   menu->custom_search = true;
   menu->tag = query_tag;
   menu->max = ARRAY_SIZE(&mdata->ava);
+  mdata->title = mutt_str_dup(_("Query"));
   menu->mdata = mdata;
   menu->mdata_free = NULL; // Menu doesn't own the data
 
@@ -365,7 +366,7 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
   win_menu->recalc = alias_recalc;
 
   char title[256];
-  snprintf(title, sizeof(title), "%s%s", _("Query: "), query);
+  snprintf(title, sizeof(title), "%s: %s", mdata->title, query);
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   sbar_set_title(sbar, title);
 
@@ -399,24 +400,40 @@ static void dlg_select_query(struct Buffer *buf, struct AliasList *all,
 
   struct MuttWindow *dlg = query_dialog_new(&mdata, mutt_buffer_string(buf));
   struct Menu *menu = dlg->wdata;
-  struct MuttWindow *win_query = window_find_child(dlg, WT_MENU);
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
+  struct MuttWindow *win_sbar = window_find_child(dlg, WT_STATUS_BAR);
+  struct MuttWindow *win_menu = window_find_child(dlg, WT_MENU);
   mdata.menu = menu;
-  mdata.sbar = sbar;
+  mdata.sbar = win_sbar;
   if (retbuf)
     mdata.query = buf;
 
+  // ---------------------------------------------------------------------------
+  // Event Loop
   int rc = 0;
-  while (true)
+  int op = OP_NULL;
+  do
   {
-    const int op = menu_loop(menu);
+    menu_tagging_dispatcher(menu, op);
+    window_redraw(NULL);
 
-    rc = alias_function_dispatcher(win_query, op);
-    if (rc == IR_DONE)
-      break;
-    if (rc == IR_CONTINUE)
-      break;
-  }
+    op = km_dokey(menu->type);
+    mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
+    if (op < 0)
+      continue;
+    if (op == OP_NULL)
+    {
+      km_error_key(menu->type);
+      continue;
+    }
+    mutt_clear_error();
+
+    rc = alias_function_dispatcher(dlg, op);
+    if (rc == IR_UNKNOWN)
+      rc = menu_function_dispatcher(win_menu, op);
+    if (rc == IR_UNKNOWN)
+      rc = global_function_dispatcher(win_menu, op);
+  } while ((rc != IR_DONE) && (rc != IR_CONTINUE));
+  // ---------------------------------------------------------------------------
 
   /* if we need to return the selected entries */
   if (retbuf && (rc == IR_CONTINUE))
@@ -475,6 +492,7 @@ static void dlg_select_query(struct Buffer *buf, struct AliasList *all,
 
   simple_dialog_free(&dlg);
   ARRAY_FREE(&mdata.ava);
+  FREE(&mdata.title);
 }
 
 /**
