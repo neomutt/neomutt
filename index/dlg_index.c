@@ -1101,10 +1101,12 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
   while (true)
   {
-    /* Clear the tag prefix unless we just started it.  Don't clear
-     * the prefix on a timeout (op==-2), but do clear on an abort (op==-1) */
-    if (priv->tag && (op != OP_TAG_PREFIX) && (op != OP_TAG_PREFIX_COND) && (op != -2))
+    /* Clear the tag prefix unless we just started it.
+     * Don't clear the prefix on a timeout, but do clear on an abort */
+    if (priv->tag && (op != OP_TAG_PREFIX) && (op != OP_TAG_PREFIX_COND) && (op != OP_TIMEOUT))
+    {
       priv->tag = false;
+    }
 
     /* check if we need to resort the index because just about
      * any 'op' below could do mutt_enter_command(), either here or
@@ -1275,7 +1277,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       op = km_dokey(MENU_INDEX);
 
       /* either user abort or timeout */
-      if (op < 0)
+      if (op < OP_NULL)
       {
         mutt_timeout_hook();
         if (priv->tag)
@@ -1283,7 +1285,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         continue;
       }
 
-      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
+      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
 
       /* special handling for the priv->tag-prefix function */
       const bool c_auto_tag = cs_subset_bool(shared->sub, "auto_tag");

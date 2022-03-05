@@ -336,7 +336,8 @@ static void dump_menu(FILE *fp, enum MenuType menu, int wraplen)
       {
         const struct MenuFuncOp *funcs = help_lookup_function(map->op, menu);
         format_line(fp, 0, buf, funcs ? funcs->name : "UNKNOWN",
-                    funcs ? _(OpStrings[funcs->op][1]) : _("ERROR: please report this bug"),
+                    funcs ? _(opcodes_get_description(funcs->op)) :
+                            _("ERROR: please report this bug"),
                     wraplen);
       }
     }
@@ -374,7 +375,7 @@ static void dump_unbound(FILE *fp, const struct MenuFuncOp *funcs,
   for (int i = 0; funcs[i].name; i++)
   {
     if (!is_bound(km_list, funcs[i].op) && (!aux || !is_bound(aux, funcs[i].op)))
-      format_line(fp, 0, funcs[i].name, "", _(OpStrings[funcs[i].op][1]), wraplen);
+      format_line(fp, 0, funcs[i].name, "", _(opcodes_get_description(funcs[i].op)), wraplen);
   }
 }
 

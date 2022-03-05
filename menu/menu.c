@@ -300,10 +300,10 @@ int menu_loop(struct Menu *menu)
 
   while (true)
   {
-    /* Clear the tag prefix unless we just started it.  Don't clear
-     * the prefix on a timeout (op==-2), but do clear on an abort (op==-1) */
+    /* Clear the tag prefix unless we just started it.
+     * Don't clear the prefix on a timeout, but do clear on an abort */
     if (menu->tag_prefix && (op != OP_TAG_PREFIX) &&
-        (op != OP_TAG_PREFIX_COND) && (op != -2))
+        (op != OP_TAG_PREFIX_COND) && (op != OP_TIMEOUT))
     {
       menu->tag_prefix = false;
     }
@@ -362,19 +362,19 @@ int menu_loop(struct Menu *menu)
       else if (op == OP_TAG_PREFIX)
       {
         mutt_error(_("No tagged entries"));
-        op = -1;
+        op = OP_ABORT;
       }
       else /* None tagged, OP_TAG_PREFIX_COND */
       {
         mutt_flush_macro_to_endcond();
         mutt_message(_("Nothing to do"));
-        op = -1;
+        op = OP_ABORT;
       }
     }
     else if (menu->num_tagged && c_auto_tag)
       menu->tag_prefix = true;
 
-    if (op < 0)
+    if (op < OP_NULL)
     {
       if (menu->tag_prefix)
         msgwin_clear_text();

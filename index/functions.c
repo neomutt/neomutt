@@ -378,7 +378,7 @@ static int op_display_message(struct IndexSharedData *shared,
   }
 
   window_set_focus(priv->win_index);
-  if (op < 0)
+  if (op < OP_NULL)
   {
     OptNeedResort = false;
     return IR_ERROR;
@@ -3187,7 +3187,7 @@ int index_function_dispatcher(struct MuttWindow *win_index, int op)
     return rc;
 
   const char *result = mutt_map_get_name(rc, RetvalNames);
-  mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", OpStrings[op][0], op, NONULL(result));
+  mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
 
   return rc;
 }

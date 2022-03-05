@@ -39,6 +39,7 @@
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
+#include "opcodes.h"
 
 /**
  * mutt_multi_choice - Offer the user a multiple choice question
@@ -53,7 +54,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
   if (!win)
     return -1;
 
-  struct KeyEvent ch;
+  struct KeyEvent ch = { OP_NULL, OP_NULL };
   int choice;
   bool redraw = true;
   int prompt_lines = 1;
@@ -133,7 +134,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
     mutt_getch_timeout(30 * 1000);
     ch = mutt_getch();
     mutt_getch_timeout(-1);
-    if (ch.ch == -2) // Timeout
+    if (ch.ch == OP_TIMEOUT)
       continue;
     /* (ch.ch == 0) is technically possible.  Treat the same as < 0 (abort) */
     if ((ch.ch <= 0) || CI_is_return(ch.ch))
@@ -188,7 +189,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
   if (!win)
     return MUTT_ABORT;
 
-  struct KeyEvent ch;
+  struct KeyEvent ch = { OP_NULL, OP_NULL };
   char *answer_string = NULL;
   int answer_string_wid, msg_wid;
   size_t trunc_msg_len;
@@ -286,7 +287,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
     mutt_getch_timeout(30 * 1000);
     ch = mutt_getch();
     mutt_getch_timeout(-1);
-    if (ch.ch == -2) // Timeout
+    if (ch.ch == OP_TIMEOUT)
       continue;
     if (CI_is_return(ch.ch))
       break;

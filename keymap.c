@@ -630,7 +630,7 @@ static int retry_generic(enum MenuType mtype, keycode_t *keys, int keyslen, int 
  */
 int km_dokey(enum MenuType mtype)
 {
-  struct KeyEvent tmp;
+  struct KeyEvent tmp = { OP_NULL, OP_NULL };
   struct Keymap *map = STAILQ_FIRST(&Keymaps[mtype]);
   int pos = 0;
   int n = 0;
@@ -663,7 +663,7 @@ int km_dokey(enum MenuType mtype)
           /* If a timeout was not received, or the window was resized, exit the
            * loop now.  Otherwise, continue to loop until reaching a total of
            * $timeout seconds.  */
-          if ((tmp.ch != -2) || SigWinch)
+          if ((tmp.ch != OP_TIMEOUT) || SigWinch)
             goto gotkey;
 #ifdef USE_INOTIFY
           if (MonitorFilesChanged)
@@ -684,7 +684,7 @@ int km_dokey(enum MenuType mtype)
   gotkey:
 #endif
     /* hide timeouts, but not window resizes, from the line editor. */
-    if ((mtype == MENU_EDITOR) && (tmp.ch == -2) && !SigWinch)
+    if ((mtype == MENU_EDITOR) && (tmp.ch == OP_TIMEOUT) && !SigWinch)
       continue;
 
     LastKey = tmp.ch;
@@ -692,7 +692,7 @@ int km_dokey(enum MenuType mtype)
       return LastKey;
 
     /* do we have an op already? */
-    if (tmp.op)
+    if (tmp.op != OP_NULL)
     {
       const char *func = NULL;
       const struct MenuFuncOp *funcs = NULL;

@@ -1352,8 +1352,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
       menu_set_index(menu, last_selected_mailbox);
     }
     int op = menu_loop(menu);
-    if (op >= 0)
-      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", OpStrings[op][0], op);
+    mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     switch (op)
     {
       case OP_DESCEND_DIRECTORY:

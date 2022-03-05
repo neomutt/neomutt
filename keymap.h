@@ -63,8 +63,8 @@ STAILQ_HEAD(KeymapList, Keymap);
  */
 struct KeyEvent
 {
-  int ch; ///< raw key pressed
-  int op; ///< function op
+  int ch; ///< Raw key pressed
+  int op; ///< Function opcode, e.g. OP_HELP
 };
 
 int km_expand_key(char *s, size_t len, struct Keymap *map);

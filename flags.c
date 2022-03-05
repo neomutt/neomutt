@@ -38,6 +38,7 @@
 #include "index/lib.h"
 #include "keymap.h"
 #include "mutt_thread.h"
+#include "opcodes.h"
 #include "protos.h"
 
 /**
@@ -443,7 +444,7 @@ int mutt_change_flag(struct Mailbox *m, struct EmailList *el, bool bf)
     return -1;
 
   enum MessageType flag = MUTT_NONE;
-  struct KeyEvent event;
+  struct KeyEvent event = { OP_NULL, OP_NULL };
 
   struct MuttWindow *old_focus = window_set_focus(win);
 

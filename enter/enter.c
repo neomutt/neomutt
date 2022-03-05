@@ -689,11 +689,11 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
 
         case OP_EDITOR_QUOTE_CHAR:
         {
-          struct KeyEvent event;
+          struct KeyEvent event = { OP_NULL, OP_NULL };
           do
           {
             event = mutt_getch();
-          } while (event.ch == -2); // Timeout
+          } while (event.ch == OP_TIMEOUT);
           if (event.ch >= 0)
           {
             LastKey = event.ch;
