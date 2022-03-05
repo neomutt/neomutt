@@ -111,6 +111,9 @@ static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
   else
   {
     pat->p.regex = mutt_mem_calloc(1, sizeof(regex_t));
+#ifdef USE_DEBUG_GRAPHVIZ
+    pat->raw_pattern = mutt_str_dup(buf.data);
+#endif
     uint16_t case_flags = mutt_mb_is_lower(buf.data) ? REG_ICASE : 0;
     int rc = REG_COMP(pat->p.regex, buf.data, REG_NEWLINE | REG_NOSUB | case_flags);
     if (rc != 0)
@@ -1058,6 +1061,9 @@ void mutt_pattern_free(struct PatternList **pat)
       FREE(&np->p.regex);
     }
 
+#ifdef USE_DEBUG_GRAPHVIZ
+    FREE(&np->raw_pattern);
+#endif
     mutt_pattern_free(&np->child);
     FREE(&np);
 

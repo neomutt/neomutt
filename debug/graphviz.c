@@ -47,6 +47,7 @@
 #include "ncrypt/lib.h"
 #include "nntp/lib.h"
 #include "notmuch/lib.h"
+#include "pattern/lib.h"
 #include "pop/lib.h"
 #include "context.h"
 #include "imap/adata.h"      // IWYU pragma: keep
@@ -75,6 +76,7 @@
 
 void dot_email(FILE *fp, struct Email *e, struct ListHead *links);
 void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links);
+void dot_patternlist(FILE *fp, struct PatternList *pl, struct ListHead *links);
 
 const char *get_content_type(enum ContentType type)
 {
@@ -1685,3 +1687,163 @@ void dump_graphviz_attach_ctx(struct AttachCtx *actx)
   fclose(fp);
   mutt_list_free(&links);
 }
+
+const char *pattern_type_name(int type)
+{
+  static struct Mapping PatternNames[] = {
+    // clang-format off
+    { "address",         MUTT_PAT_ADDRESS },
+    { "AND",             MUTT_PAT_AND },
+    { "body",            MUTT_PAT_BODY },
+    { "broken",          MUTT_PAT_BROKEN },
+    { "cc",              MUTT_PAT_CC },
+    { "children",        MUTT_PAT_CHILDREN },
+    { "collapsed",       MUTT_PAT_COLLAPSED },
+    { "crypt_encrypt",   MUTT_PAT_CRYPT_ENCRYPT },
+    { "crypt_sign",      MUTT_PAT_CRYPT_SIGN },
+    { "crypt_verified",  MUTT_PAT_CRYPT_VERIFIED },
+    { "date",            MUTT_PAT_DATE },
+    { "date_received",   MUTT_PAT_DATE_RECEIVED },
+    { "driver_tags",     MUTT_PAT_DRIVER_TAGS },
+    { "duplicated",      MUTT_PAT_DUPLICATED },
+    { "from",            MUTT_PAT_FROM },
+    { "header",          MUTT_PAT_HEADER },
+    { "hormel",          MUTT_PAT_HORMEL },
+    { "id",              MUTT_PAT_ID },
+    { "id_external",     MUTT_PAT_ID_EXTERNAL },
+    { "list",            MUTT_PAT_LIST },
+    { "message",         MUTT_PAT_MESSAGE },
+    { "mimeattach",      MUTT_PAT_MIMEATTACH },
+    { "mimetype",        MUTT_PAT_MIMETYPE },
+    { "newsgroups",      MUTT_PAT_NEWSGROUPS },
+    { "OR",              MUTT_PAT_OR },
+    { "parent",          MUTT_PAT_PARENT },
+    { "personal_from",   MUTT_PAT_PERSONAL_FROM },
+    { "personal_recip",  MUTT_PAT_PERSONAL_RECIP },
+    { "pgp_key",         MUTT_PAT_PGP_KEY },
+    { "recipient",       MUTT_PAT_RECIPIENT },
+    { "reference",       MUTT_PAT_REFERENCE },
+    { "score",           MUTT_PAT_SCORE },
+    { "sender",          MUTT_PAT_SENDER },
+    { "serversearch",    MUTT_PAT_SERVERSEARCH },
+    { "size",            MUTT_PAT_SIZE },
+    { "subject",         MUTT_PAT_SUBJECT },
+    { "subscribed_list", MUTT_PAT_SUBSCRIBED_LIST },
+    { "thread",          MUTT_PAT_THREAD },
+    { "to",              MUTT_PAT_TO },
+    { "unreferenced",    MUTT_PAT_UNREFERENCED },
+    { "whole_msg",       MUTT_PAT_WHOLE_MSG },
+    { "xlabel",          MUTT_PAT_XLABEL },
+    { NULL, 0 },
+    // clang-format on
+  };
+
+  return mutt_map_get_name(type, PatternNames);
+}
+
+void dot_pattern(FILE *fp, struct Pattern *pat, struct ListHead *links)
+{
+  struct Buffer buf = mutt_buffer_make(256);
+  dot_object_header(fp, pat, "Pattern", "#c040c0");
+
+  dot_type_string(fp, "op", pattern_type_name(pat->op), true);
+  if ((pat->min != 0) || (pat->max != 0))
+  {
+    dot_type_number(fp, "min", pat->min);
+    dot_type_number(fp, "max", pat->max);
+  }
+
+#define ADD_BOOL(F) add_flag(&buf, pat->F, #F)
+  ADD_BOOL(pat_not);
+  ADD_BOOL(all_addr);
+  ADD_BOOL(string_match);
+  ADD_BOOL(group_match);
+  ADD_BOOL(ign_case);
+  ADD_BOOL(is_alias);
+  ADD_BOOL(dynamic);
+  ADD_BOOL(sendmode);
+  ADD_BOOL(is_multi);
+#undef ADD_BOOL
+  dot_type_string(fp, "flags", mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_buffer_string(&buf), true);
+
+  if (pat->group_match)
+  {
+    // struct Group *group;         ///< Address group if group_match is set
+  }
+  else if (pat->string_match)
+  {
+    dot_type_string(fp, "str", pat->p.str, true);
+  }
+  else if (pat->is_multi)
+  {
+    // struct ListHead multi_cases; ///< Multiple strings for ~I pattern
+  }
+  else
+  {
+    if (pat->p.regex)
+    {
+      dot_ptr(fp, "regex", pat->p.regex, NULL);
+      dot_type_string(fp, "pattern", pat->raw_pattern, true);
+    }
+  }
+
+  dot_object_footer(fp);
+
+  if (pat->child)
+  {
+    dot_patternlist(fp, pat->child, links);
+    struct Pattern *first = SLIST_FIRST(pat->child);
+    dot_add_link(links, pat, first, "Patern->child", false, "#00ff00");
+  }
+  mutt_buffer_dealloc(&buf);
+}
+
+void dot_patternlist(FILE *fp, struct PatternList *pl, struct ListHead *links)
+{
+  struct Buffer buf;
+  mutt_buffer_init(&buf);
+
+  char name[256] = { 0 };
+  mutt_buffer_addstr(&buf, "{ rank=same ");
+
+  struct Pattern *prev = NULL;
+  struct Pattern *np = NULL;
+  SLIST_FOREACH(np, pl, entries)
+  {
+    dot_pattern(fp, np, links);
+    if (prev)
+      dot_add_link(links, prev, np, "PatternList->next", false, "#ff0000");
+    prev = np;
+
+    dot_ptr_name(name, sizeof(name), np);
+    mutt_buffer_add_printf(&buf, "%s ", name);
+  }
+
+  mutt_buffer_addstr(&buf, "}");
+
+  mutt_list_insert_tail(links, mutt_str_dup(buf.data));
+  mutt_buffer_dealloc(&buf);
+}
+
+void dump_graphviz_patternlist(struct PatternList *pl)
+{
+  char name[256] = { 0 };
+  struct ListHead links = STAILQ_HEAD_INITIALIZER(links);
+
+  time_t now = time(NULL);
+  mutt_date_localtime_format(name, sizeof(name), "%T-pattern.gv", now);
+
+  umask(022);
+  FILE *fp = fopen(name, "w");
+  if (!fp)
+    return;
+
+  dot_graph_header(fp);
+
+  dot_patternlist(fp, pl, &links);
+
+  dot_graph_footer(fp, &links);
+  fclose(fp);
+  mutt_list_free(&links);
+}
+

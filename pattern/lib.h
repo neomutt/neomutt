@@ -67,7 +67,7 @@ typedef uint8_t PatternCompFlags;           ///< Flags for mutt_pattern_comp(), 
  */
 struct Pattern
 {
-  short op;                      ///< Operation, e.g. MUTT_PAT_SCORE
+  short op;                      ///< Operation, e.g. #MUTT_PAT_SCORE
   bool pat_not      : 1;         ///< Pattern should be inverted (not)
   bool all_addr     : 1;         ///< All Addresses in the list must match
   bool string_match : 1;         ///< Check a string for a match
@@ -86,6 +86,9 @@ struct Pattern
     char *str;                   ///< String, if string_match is set
     struct ListHead multi_cases; ///< Multiple strings for ~I pattern
   } p;
+#ifdef USE_DEBUG_GRAPHVIZ
+  const char *raw_pattern;
+#endif
   SLIST_ENTRY(Pattern) entries;  ///< Linked list
 };
 SLIST_HEAD(PatternList, Pattern);
