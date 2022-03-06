@@ -444,11 +444,12 @@ static void log_translation(void)
 {
   const char *header = ""; // Do not merge these two lines
   header = _(header);      // otherwise the .po files will end up badly ordered
-  const char *lang = mutt_istr_find(header, "Language:");
+  const char *label = "Language:"; // the start of the lookup/needle
+  const char *lang = mutt_istr_find(header, label);
   int len = 64;
   if (lang)
   {
-    lang += 9; // skip label
+    lang += strlen(label); // skip label
     SKIPWS(lang);
     char *nl = strchr(lang, '\n');
     if (nl)
