@@ -55,7 +55,9 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
+#include "index/lib.h"
 #include "menu/lib.h"
+#include "mutt_logging.h"
 #include "opcodes.h"
 #include "options.h"
 #include "ssl.h"
@@ -79,34 +81,31 @@ static const struct Mapping VerifyHelp[] = {
 int menu_dialog_dokey(struct Menu *menu, int *id)
 {
   struct KeyEvent ch = { OP_NULL, OP_NULL };
-  char *p = NULL;
 
-  enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
-  do
-  {
-    ch = mutt_getch();
-  } while (ch.ch == OP_TIMEOUT);
-  mutt_curses_set_cursor(cursor);
+  // enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
+  mutt_getch_timeout(5000);
+  ch = mutt_getch();
+  mutt_getch_timeout(-1);
+  // mutt_curses_set_cursor(cursor);
 
-  if (ch.ch < 0)
+  if (ch.ch < OP_NULL)
   {
-    *id = -1;
+    *id = ch.ch;
     return 0;
   }
 
+  char *p = NULL;
   if ((ch.ch != 0) && (p = strchr(menu->keys, ch.ch)))
   {
     *id = OP_MAX + (p - menu->keys + 1);
     return 0;
   }
+
+  if (ch.op == OP_NULL)
+    mutt_unget_event(ch.ch, OP_NULL);
   else
-  {
-    if (ch.op == OP_NULL)
-      mutt_unget_event(ch.ch, OP_NULL);
-    else
-      mutt_unget_event(0, ch.op);
-    return -1;
-  }
+    mutt_unget_event(0, ch.op);
+  return -1;
 }
 
 /**
@@ -217,34 +216,73 @@ int dlg_verify_certificate(const char *title, struct CertArray *carr,
       menu->keys = _("ro");
     }
   }
+  msgwin_set_text(MT_COLOR_PROMPT, menu->prompt);
 
   bool old_ime = OptIgnoreMacroEvents;
   OptIgnoreMacroEvents = true;
 
-  int rc = 0;
-  while (rc == 0)
+  // ---------------------------------------------------------------------------
+  // Event Loop
+  int choice = 0;
+  int op = OP_NULL;
+  do
   {
-    switch (menu_loop(menu))
+    window_redraw(NULL);
+    msgwin_set_text(MT_COLOR_PROMPT, menu->prompt);
+
+    // Try to catch dialog keys before ops
+    if (menu_dialog_dokey(menu, &op) != 0)
+    {
+      op = km_dokey(menu->type);
+    }
+
+    if (op == OP_TIMEOUT)
+      continue;
+
+    // Convert menubar movement to scrolling
+    op = menu_dialog_translate_op(op);
+
+    if (op <= OP_MAX)
+      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
+    else
+      mutt_debug(LL_DEBUG1, "Got choice %d\n", op - OP_MAX);
+
+    switch (op)
     {
       case -1:         // Abort: Ctrl-G
       case OP_EXIT:    // Q)uit
       case OP_MAX + 1: // R)eject
-        rc = 1;
+        choice = 1;
         break;
       case OP_MAX + 2: // O)nce
-        rc = 2;
+        choice = 2;
         break;
       case OP_MAX + 3: // A)lways / S)kip
-        rc = 3;
+        choice = 3;
         break;
       case OP_MAX + 4: // S)kip
-        rc = 4;
+        choice = 4;
         break;
+
+      case OP_JUMP:
+        mutt_error(_("Jumping is not implemented for dialogs"));
+        continue;
+
+      case OP_SEARCH:
+      case OP_SEARCH_NEXT:
+      case OP_SEARCH_OPPOSITE:
+      case OP_SEARCH_REVERSE:
+        mutt_error(_("Search is not implemented for this menu"));
+        continue;
     }
-  }
+
+    menu_function_dispatcher(menu->win, op);
+  } while (choice == 0);
+  // ---------------------------------------------------------------------------
+
   OptIgnoreMacroEvents = old_ime;
 
   simple_dialog_free(&dlg);
 
-  return rc;
+  return choice;
 }
