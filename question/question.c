@@ -45,7 +45,7 @@
  * mutt_multi_choice - Offer the user a multiple choice question
  * @param prompt  Message prompt
  * @param letters Allowable selection keys
- * @retval >=0 0-based user selection
+ * @retval >=1 1-based user selection
  * @retval  -1 Selection aborted
  */
 int mutt_multi_choice(const char *prompt, const char *letters)
