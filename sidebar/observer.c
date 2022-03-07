@@ -171,7 +171,7 @@ static void sb_init_data(struct MuttWindow *win)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {
-    if (!(np->mailbox->flags & MB_HIDDEN))
+    if (np->mailbox->visible)
       sb_add_mailbox(wdata, np->mailbox);
   }
   neomutt_mailboxlist_clear(&ml);

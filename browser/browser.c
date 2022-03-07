@@ -504,7 +504,7 @@ static void add_folder(struct Menu *menu, struct BrowserState *state,
                        const char *name, const char *desc,
                        const struct stat *st, struct Mailbox *m, void *data)
 {
-  if ((!menu || state->is_mailbox_list) && m && (m->flags & MB_HIDDEN))
+  if ((!menu || state->is_mailbox_list) && m && !m->visible)
   {
     return;
   }

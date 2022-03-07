@@ -458,7 +458,7 @@ void mx_fastclose_mailbox(struct Mailbox *m, bool keep_account)
     }
   }
 
-  if (m->flags & MB_HIDDEN)
+  if (!m->visible)
   {
     mx_ac_remove(m, keep_account);
   }

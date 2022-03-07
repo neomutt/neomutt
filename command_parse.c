@@ -583,10 +583,9 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       struct Mailbox *m_old = mx_mbox_find(a, m->realpath);
       if (m_old)
       {
-        const bool show = (m_old->flags == MB_HIDDEN);
-        if (show)
+        if (!m_old->visible)
         {
-          m_old->flags = MB_NORMAL;
+          m_old->visible = true;
           m_old->gen = mailbox_gen();
         }
 
@@ -601,11 +600,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       }
     }
 
-    if (mx_ac_add(a, m))
-    {
-      m->flags = MB_NORMAL; // make it finally visible
-    }
-    else
+    if (!mx_ac_add(a, m))
     {
       mailbox_free(&m);
       if (new_account)
@@ -621,6 +616,9 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     {
       neomutt_account_add(NeoMutt, a);
     }
+
+    // this is finally a visible mailbox in the sidebar and mailboxes list
+    m->visible = true;
 
 #ifdef USE_INOTIFY
     mutt_monitor_add(m);
@@ -1488,7 +1486,7 @@ static void do_unmailboxes(struct Mailbox *m)
 #ifdef USE_INOTIFY
   mutt_monitor_remove(m);
 #endif
-  m->flags = MB_HIDDEN;
+  m->visible = false;
   m->gen = -1;
   if (m->opened)
   {

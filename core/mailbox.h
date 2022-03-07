@@ -34,9 +34,6 @@
 struct ConfigSubset;
 struct Email;
 
-#define MB_NORMAL 0
-#define MB_HIDDEN 1
-
 /**
  * enum MailboxType - Supported mailbox formats
  */
@@ -131,7 +128,7 @@ struct Mailbox
   struct Account *account;            ///< Account that owns this Mailbox
   int opened;                         ///< Number of times mailbox is opened
 
-  uint8_t flags;                      ///< e.g. #MB_NORMAL
+  bool visible;                       ///< True if a result of "mailboxes"
 
   void *mdata;                        ///< Driver specific data
 

@@ -121,8 +121,8 @@ bool account_mailbox_remove(struct Account *a, struct Mailbox *m)
     }
     else
     {
-      // we set MB_HIDDEN here to force the deletion of the mailbox
-      np->mailbox->flags = MB_HIDDEN;
+      // we make it invisible here to force the deletion of the mailbox
+      np->mailbox->visible = false;
       mailbox_free(&np->mailbox);
     }
     FREE(&np);

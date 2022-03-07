@@ -214,7 +214,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {
-    if (np->mailbox->flags & MB_HIDDEN)
+    if (!np->mailbox->visible)
       continue;
 
     mailbox_check(m_cur, np->mailbox, &st_ctx,
