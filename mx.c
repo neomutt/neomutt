@@ -458,7 +458,7 @@ void mx_fastclose_mailbox(struct Mailbox *m, bool keep_account)
     }
   }
 
-  if (m->flags & MB_HIDDEN)
+  if (!m->visible)
   {
     mx_ac_remove(m, keep_account);
   }
@@ -593,8 +593,7 @@ static int trash_append(struct Mailbox *m)
 
   mx_mbox_close(m_trash);
   m_trash->append = old_append;
-  if (m_trash->flags == MB_HIDDEN)
-    mailbox_free(&m_trash);
+  mailbox_free(&m_trash);
 
   return 0;
 }
@@ -1688,7 +1687,6 @@ struct Mailbox *mx_path_resolve(const char *path)
     return m;
 
   m = mailbox_new();
-  m->flags = MB_HIDDEN;
   mutt_buffer_strcpy(&m->pathbuf, path);
   const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
   mx_path_canon2(m, c_folder);

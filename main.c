@@ -1380,8 +1380,7 @@ main
       mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
       m = mutt_index_menu(dlg, m);
       mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
-      if (m && (m->flags == MB_HIDDEN))
-        mailbox_free(&m);
+      mailbox_free(&m);
 
       dialog_pop();
       mutt_window_free(&dlg);

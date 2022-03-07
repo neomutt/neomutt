@@ -91,6 +91,17 @@ void mailbox_free(struct Mailbox **ptr)
 
   struct Mailbox *m = *ptr;
 
+  const bool do_free = (m->opened == 0) && !m->visible;
+
+  mutt_debug(LL_DEBUG3, "%sfreeing %s mailbox %s with refcount %d\n",
+             do_free ? "" : "not ", m->visible ? "visible" : "invisible",
+             mutt_buffer_string(&m->pathbuf), m->opened);
+
+  if (!do_free)
+  {
+    return;
+  }
+
   mutt_debug(LL_NOTIFY, "NT_MAILBOX_DELETE: %s %p\n", mailbox_get_type_name(m->type), m);
   struct EventMailbox ev_m = { m };
   notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_DELETE, &ev_m);

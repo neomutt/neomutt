@@ -588,7 +588,7 @@ static void update_entries_visibility(struct SidebarWindowData *wdata)
 
     sbe->is_hidden = false;
 
-    if (sbe->mailbox->flags & MB_HIDDEN)
+    if (!sbe->mailbox->visible)
     {
       sbe->is_hidden = true;
       continue;
@@ -661,9 +661,9 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
   {
     ARRAY_FOREACH(sbep, &wdata->entries)
     {
-      if ((opn_entry == *sbep) && ((*sbep)->mailbox->flags != MB_HIDDEN))
+      if ((opn_entry == *sbep) && (*sbep)->mailbox->visible)
         wdata->opn_index = ARRAY_FOREACH_IDX;
-      if ((hil_entry == *sbep) && ((*sbep)->mailbox->flags != MB_HIDDEN))
+      if ((hil_entry == *sbep) && (*sbep)->mailbox->visible)
         wdata->hil_index = ARRAY_FOREACH_IDX;
     }
   }
@@ -737,7 +737,7 @@ int sb_recalc(struct MuttWindow *win)
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &ml, entries)
     {
-      if (!(np->mailbox->flags & MB_HIDDEN))
+      if (np->mailbox->visible)
         sb_add_mailbox(wdata, np->mailbox);
     }
     neomutt_mailboxlist_clear(&ml);

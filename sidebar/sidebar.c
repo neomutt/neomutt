@@ -187,7 +187,7 @@ void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
         break;
       }
     }
-    (*sbep)->is_hidden = ((*sbep)->mailbox->flags & MB_HIDDEN);
+    (*sbep)->is_hidden = !(*sbep)->mailbox->visible;
   }
 }
 
