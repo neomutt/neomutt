@@ -826,6 +826,9 @@ static int smtp_open(struct SmtpAccountData *adata, bool esmtp)
   if (mutt_socket_open(adata->conn))
     return -1;
 
+  const bool force_auth = cs_subset_string(adata->sub, "smtp_user");
+  esmtp |= force_auth;
+
   /* get greeting string */
   rc = smtp_get_resp(adata);
   if (rc != 0)
@@ -874,7 +877,7 @@ static int smtp_open(struct SmtpAccountData *adata, bool esmtp)
   }
 #endif
 
-  if (adata->conn->account.flags & MUTT_ACCT_USER)
+  if (force_auth || adata->conn->account.flags & MUTT_ACCT_USER)
   {
     if (!(adata->capabilities & SMTP_CAP_AUTH))
     {
