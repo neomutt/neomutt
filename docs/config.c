@@ -2667,21 +2667,27 @@
 { "nm_record", DT_BOOL, false },
 /*
 ** .pp
-** This variable specifies if the NeoMutt record should indexed by notmuch.
+** This variable specifies whether, when writing a just-sent message to the
+** $$record, the message should also be added to the notmuch DB. Replies inherit
+** the notmuch tags from the original message. See $$nm_record_tags for how to
+** modify the set of notmuch tags assigned to sent messages written to the
+** record.
 */
 
 { "nm_record_tags", DT_STRING, 0 },
 /*
 ** .pp
-** This variable specifies the default tags applied to messages stored to the NeoMutt record.
-** When set to 0 this variable disable the window feature.
+** This variable specifies the notmuch tag modifications (addition, removal,
+** toggling) applied to messages added to the Neomutt record when $$nm_record is
+** true. See the description of the \fC<modify-labels>\fP function for the
+** syntax.
 */
 
 { "nm_replied_tag", DT_STRING, "replied" },
 /*
 ** .pp
 ** This variable specifies notmuch tag which is used for replied messages. The
-** variable is used to set the replied flag when modifiying tags. All other NeoMutt
+** variable is used to set the replied flag when modifying tags. All other NeoMutt
 ** commands use standard (e.g. maildir) flags.
 */
 

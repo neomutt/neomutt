@@ -16367,17 +16367,16 @@ set nm_open_timeout = 5
 <emphasis role="comment"># This variable specifies notmuch query type, supported types: 'threads' and</emphasis>
 <emphasis role="comment"># 'messages'.</emphasis>
 set nm_query_type = messages
-<emphasis role="comment"># Add messages stored to the NeoMutt record (see $record in the NeoMutt docs)</emphasis>
-<emphasis role="comment"># also to notmuch DB. If you reply to an email then the new email inherits</emphasis>
-<emphasis role="comment"># tags from the original email.</emphasis>
+<emphasis role="comment"># When writing a message in the NeoMutt record (see $record in the NeoMutt docs),</emphasis>
+<emphasis role="comment"># also add it to the notmuch DB. Replies inherit the tags from the original email.</emphasis>
 set nm_record = no
-<emphasis role="comment"># Tags that should be removed or added to the to the messages stored in the NeoMutt record.</emphasis>
+<emphasis role="comment"># Tags modifications to the messages stored in the NeoMutt record.</emphasis>
 <emphasis role="comment"># example:</emphasis>
 <emphasis role="comment">#   set record = "~/sent-mails"</emphasis>
 <emphasis role="comment">#   set nm_record = yes</emphasis>
 <emphasis role="comment">#   set nm_record_tags = "-inbox,archive,me"</emphasis>
 set nm_record_tags = ""
-<emphasis role="comment"># This variable specifies notmuch tag which is used for unread messages.</emphasis>
+<emphasis role="comment"># This variable specifies the notmuch tag used for unread messages.</emphasis>
 set nm_unread_tag = unread
 <emphasis role="comment"># This variable allows you to customize the file browser display for virtual</emphasis>
 <emphasis role="comment"># folders to your personal taste.</emphasis>
