@@ -1,0 +1,59 @@
+name: ASAN Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - 'master'
+      - 'devel/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: ASAN Build
+    runs-on: ubuntu-latest
+    container: ghcr.io/neomutt/docker-build
+
+    env:
+      ASAN_OPTIONS: detect_leaks=1:color=never:log_path=asan:print_legend=false:print_summary=false
+      CONFIGURE_OPTIONS: --asan --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Checkout Test Files
+      uses: actions/checkout@v2
+      with:
+        repository: neomutt/neomutt-test-files
+        path: test-files
+
+    - name: Set Up Test Files
+      run: |
+        cd test-files
+        ./setup.sh
+
+    - name: Compilation Cache
+      uses: hendrikmuhs/ccache-action@v1
+
+    - name: Configure Neomutt
+      run: ./configure $CONFIGURE_OPTIONS
+
+    - name: Build Tests
+      run: make -j 2 test/neomutt-test
+
+    - name: Run Tests
+      run: |
+        export ASAN_OPTIONS="$ASAN_OPTIONS"
+        export NEOMUTT_TEST_DIR="$GITHUB_WORKSPACE/test-files"
+        make test
+
+    - name: Upload ASAN Log
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: asan-log
+        path: ${{ github.workspace }}/asan.*
+        retention-days: 10
+        if-no-files-found: ignore
+
