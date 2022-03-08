@@ -79,6 +79,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "index/lib.h"
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "question/lib.h"
@@ -589,7 +590,6 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
   struct PgpUid **key_table = NULL;
   struct Menu *menu = NULL;
   int i;
-  bool done = false;
   char buf[1024], tmpbuf[256];
   struct PgpKeyInfo *kp = NULL;
   struct PgpUid *a = NULL;
@@ -679,9 +679,28 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
 
   mutt_clear_error();
 
-  while (!done)
+  // ---------------------------------------------------------------------------
+  // Event Loop
+  int op = OP_NULL;
+  int rc;
+  do
   {
-    switch (menu_loop(menu))
+    rc = IR_UNKNOWN;
+    menu_tagging_dispatcher(menu, op);
+    window_redraw(NULL);
+
+    op = km_dokey(menu->type);
+    mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
+    if (op < 0)
+      continue;
+    if (op == OP_NULL)
+    {
+      km_error_key(menu->type);
+      continue;
+    }
+    mutt_clear_error();
+
+    switch (op)
     {
       case OP_VERIFY_KEY:
       {
@@ -689,7 +708,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
         if (!fp_null)
         {
           mutt_perror(_("Can't open /dev/null"));
-          break;
+          continue;
         }
         tempfile = mutt_buffer_pool_get();
         mutt_buffer_mktemp(tempfile);
@@ -699,7 +718,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
           mutt_perror(_("Can't create temporary file"));
           mutt_file_fclose(&fp_null);
           mutt_buffer_pool_release(&tempfile);
-          break;
+          continue;
         }
 
         mutt_message(_("Invoking PGP..."));
@@ -739,7 +758,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
         mutt_do_pager(&pview, NULL);
         mutt_buffer_pool_release(&tempfile);
         menu_queue_redraw(menu, MENU_REDRAW_FULL);
-        break;
+        continue;
       }
 
       case OP_VIEW_ID:
@@ -747,7 +766,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
         const int index = menu_get_index(menu);
         struct PgpUid *cur_key = key_table[index];
         mutt_message("%s", NONULL(cur_key->addr));
-        break;
+        continue;
       }
 
       case OP_GENERIC_SELECT_ENTRY:
@@ -761,7 +780,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
           if (!pgp_key_is_valid(cur_key->parent))
           {
             mutt_error(_("This key can't be used: expired/disabled/revoked"));
-            break;
+            continue;
           }
         }
 
@@ -798,22 +817,27 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
           if (mutt_yesorno(buf2, MUTT_NO) != MUTT_YES)
           {
             mutt_clear_error();
-            break;
+            continue;
           }
         }
 
         kp = cur_key->parent;
-        done = true;
+        rc = IR_DONE;
         break;
       }
 
       case OP_EXIT:
-
         kp = NULL;
-        done = true;
+        rc = IR_DONE;
         break;
     }
-  }
+
+    if (rc == IR_UNKNOWN)
+      rc = menu_function_dispatcher(menu->win, op);
+    if (rc == IR_UNKNOWN)
+      rc = global_function_dispatcher(menu->win, op);
+  } while (rc != IR_DONE);
+  // ---------------------------------------------------------------------------
 
   simple_dialog_free(&dlg);
   return kp;
