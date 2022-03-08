@@ -48,7 +48,7 @@ extern char *SearchBuffers[];
  * @retval >=0 Index of matching item
  * @retval -1  Search failed, or was cancelled
  */
-int search(struct Menu *menu, int op)
+static int search(struct Menu *menu, int op)
 {
   int rc = -1;
   int wrap = 0;
@@ -132,7 +132,7 @@ done:
  *
  * Ask the user for a message number to jump to.
  */
-void menu_jump(struct Menu *menu)
+static void menu_jump(struct Menu *menu)
 {
   if (menu->max == 0)
   {

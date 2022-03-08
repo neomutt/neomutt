@@ -191,7 +191,6 @@ void         menu_add_dialog_row(struct Menu *menu, const char *row);
 void         menu_cleanup(void);
 enum MenuType menu_get_current_type(void);
 void         menu_init(void);
-int          menu_loop(struct Menu *menu);
 
 struct MuttWindow *menu_new_window(enum MenuType type, struct ConfigSubset *sub);
 
