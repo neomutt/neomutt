@@ -267,8 +267,7 @@ void test_mutt_pattern_comp(void)
       TEST_MSG("Actual  : pat == NULL");
     }
 
-    struct PatternList expected;
-    SLIST_INIT(&expected);
+    struct PatternList expected = SLIST_HEAD_INITIALIZER(expected);
     struct Pattern e = { .op = MUTT_PAT_SUBJECT,
                          .pat_not = false,
                          .all_addr = false,
@@ -313,8 +312,7 @@ void test_mutt_pattern_comp(void)
       TEST_MSG("Actual  : pat == NULL");
     }
 
-    struct PatternList expected;
-    SLIST_INIT(&expected);
+    struct PatternList expected = SLIST_HEAD_INITIALIZER(expected);
     struct Pattern e = { .op = MUTT_PAT_SUBJECT,
                          .pat_not = true,
                          .all_addr = false,
@@ -360,7 +358,7 @@ void test_mutt_pattern_comp(void)
       TEST_MSG("Actual  : pat == NULL");
     }
 
-    struct PatternList expected;
+    struct PatternList expected = SLIST_HEAD_INITIALIZER(expected);
 
     struct Pattern e[3] = { /* root */
                             { .op = MUTT_PAT_AND,
@@ -400,10 +398,8 @@ void test_mutt_pattern_comp(void)
                               .p.str = "bar" }
     };
 
-    SLIST_INIT(&expected);
     SLIST_INSERT_HEAD(&expected, &e[0], entries);
-    struct PatternList child;
-    SLIST_INIT(&child);
+    struct PatternList child = SLIST_HEAD_INITIALIZER(child);
     e[0].child = &child;
     SLIST_INSERT_HEAD(e[0].child, &e[1], entries);
     SLIST_INSERT_AFTER(&e[1], &e[2], entries);
@@ -439,7 +435,7 @@ void test_mutt_pattern_comp(void)
       TEST_MSG("Actual  : pat == NULL");
     }
 
-    struct PatternList expected;
+    struct PatternList expected = SLIST_HEAD_INITIALIZER(expected);
 
     struct Pattern e[3] = { /* root */
                             { .op = MUTT_PAT_AND,
@@ -479,10 +475,8 @@ void test_mutt_pattern_comp(void)
                               .p.str = "bar" }
     };
 
-    SLIST_INIT(&expected);
     SLIST_INSERT_HEAD(&expected, &e[0], entries);
-    struct PatternList child;
-    SLIST_INIT(&child);
+    struct PatternList child = SLIST_HEAD_INITIALIZER(child);
     e[0].child = &child;
     SLIST_INSERT_HEAD(e[0].child, &e[1], entries);
     SLIST_INSERT_AFTER(&e[1], &e[2], entries);
@@ -518,7 +512,7 @@ void test_mutt_pattern_comp(void)
       TEST_MSG("Actual  : pat == NULL");
     }
 
-    struct PatternList expected;
+    struct PatternList expected = SLIST_HEAD_INITIALIZER(expected);
 
     struct Pattern e[3] = { /* root */
                             { .op = MUTT_PAT_AND,
@@ -558,10 +552,8 @@ void test_mutt_pattern_comp(void)
                               .p.str = "bar" }
     };
 
-    SLIST_INIT(&expected);
     SLIST_INSERT_HEAD(&expected, &e[0], entries);
-    struct PatternList child;
-    SLIST_INIT(&child);
+    struct PatternList child = SLIST_HEAD_INITIALIZER(child);
     e[0].child = &child;
     SLIST_INSERT_HEAD(e[0].child, &e[1], entries);
     SLIST_INSERT_AFTER(&e[1], &e[2], entries);
@@ -597,7 +589,7 @@ void test_mutt_pattern_comp(void)
       TEST_MSG("Actual  : pat == NULL");
     }
 
-    struct PatternList expected;
+    struct PatternList expected = SLIST_HEAD_INITIALIZER(expected);
 
     struct Pattern e[4] = { /* root */
                             { .op = MUTT_PAT_AND,
@@ -649,9 +641,8 @@ void test_mutt_pattern_comp(void)
                               .p.str = "quux" }
     };
 
-    SLIST_INIT(&expected);
     SLIST_INSERT_HEAD(&expected, &e[0], entries);
-    struct PatternList child;
+    struct PatternList child = SLIST_HEAD_INITIALIZER(child);
     e[0].child = &child;
     SLIST_INSERT_HEAD(e[0].child, &e[1], entries);
     SLIST_INSERT_AFTER(&e[1], &e[2], entries);
@@ -688,7 +679,7 @@ void test_mutt_pattern_comp(void)
       TEST_MSG("Actual  : pat == NULL");
     }
 
-    struct PatternList expected;
+    struct PatternList expected = SLIST_HEAD_INITIALIZER(expected);
 
     struct Pattern e[5] = { /* root */
                             { .op = MUTT_PAT_AND,
@@ -752,13 +743,11 @@ void test_mutt_pattern_comp(void)
                               .p.str = "quux" }
     };
 
-    SLIST_INIT(&expected);
     SLIST_INSERT_HEAD(&expected, &e[0], entries);
-    struct PatternList child1, child2;
-    SLIST_INIT(&child1);
+    struct PatternList child1 = SLIST_HEAD_INITIALIZER(child1);
+    struct PatternList child2 = SLIST_HEAD_INITIALIZER(child2);
     e[0].child = &child1;
     SLIST_INSERT_HEAD(e[0].child, &e[1], entries);
-    SLIST_INIT(&child2);
     e[1].child = &child2;
     SLIST_INSERT_HEAD(e[1].child, &e[2], entries);
     SLIST_INSERT_AFTER(&e[2], &e[3], entries);
