@@ -62,6 +62,7 @@
 #include "config/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "index/lib.h"
 #include "menu/lib.h"
 #include "question/lib.h"
 #include "mutt_logging.h"
@@ -199,7 +200,6 @@ struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, const char *query)
   struct SmimeKey *selected_key = NULL;
   char buf[1024];
   const char *s = "";
-  bool done = false;
 
   for (table_index = 0, key = keys; key; key = key->next)
   {
@@ -228,10 +228,28 @@ struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, const char *query)
 
   mutt_clear_error();
 
-  done = false;
-  while (!done)
+  // ---------------------------------------------------------------------------
+  // Event Loop
+  int op = OP_NULL;
+  int rc;
+  do
   {
-    switch (menu_loop(menu))
+    rc = IR_UNKNOWN;
+    menu_tagging_dispatcher(menu, op);
+    window_redraw(NULL);
+
+    op = km_dokey(menu->type);
+    mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
+    if (op < 0)
+      continue;
+    if (op == OP_NULL)
+    {
+      km_error_key(menu->type);
+      continue;
+    }
+    mutt_clear_error();
+
+    switch (op)
     {
       case OP_GENERIC_SELECT_ENTRY:
       {
@@ -261,20 +279,25 @@ struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, const char *query)
           if (mutt_yesorno(buf, MUTT_NO) != MUTT_YES)
           {
             mutt_clear_error();
-            break;
+            continue;
           }
         }
 
         selected_key = cur_key;
-        done = true;
+        rc = IR_DONE;
         break;
       }
 
       case OP_EXIT:
-        done = true;
+        rc = IR_DONE;
         break;
     }
-  }
+
+    if (rc == IR_UNKNOWN)
+      rc = menu_function_dispatcher(menu->win, op);
+    if (rc == IR_UNKNOWN)
+      rc = global_function_dispatcher(menu->win, op);
+  } while (rc != IR_DONE);
 
   simple_dialog_free(&dlg);
   return selected_key;
