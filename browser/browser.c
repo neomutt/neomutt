@@ -86,11 +86,13 @@
 #include "mutt.h"
 #include "lib.h"
 #include "attach/lib.h"
+#include "index/lib.h"
 #include "menu/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "format_flags.h"
 #include "mutt_globals.h"
+#include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -1348,15 +1350,33 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
   int last_selected_mailbox = -1;
 
-  while (true)
+  // ---------------------------------------------------------------------------
+  // Event Loop
+  int op = OP_NULL;
+  int rc;
+  do
   {
     if (state.is_mailbox_list && (last_selected_mailbox >= 0) &&
         (last_selected_mailbox < menu->max))
     {
       menu_set_index(menu, last_selected_mailbox);
     }
-    int op = menu_loop(menu);
+
+    rc = IR_UNKNOWN;
+    menu_tagging_dispatcher(menu, op);
+    window_redraw(NULL);
+
+    op = km_dokey(menu->type);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
+    if (op < 0)
+      continue;
+    if (op == OP_NULL)
+    {
+      km_error_key(menu->type);
+      continue;
+    }
+    mutt_clear_error();
+
     switch (op)
     {
       case OP_DESCEND_DIRECTORY:
@@ -1365,7 +1385,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         if (ARRAY_EMPTY(&state.entry))
         {
           mutt_error(_("No files match the file mask"));
-          break;
+          continue;
         }
 
         int index = menu_get_index(menu);
@@ -1498,19 +1518,19 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
               }
               /* resolve paths navigated from GUI */
               if (mutt_path_realpath(LastDir.data) == 0)
-                break;
+                continue;
             }
 
             browser_highlight_default(&state, menu);
             init_menu(&state, menu, m, sbar);
             goto_swapper[0] = '\0';
-            break;
+            continue;
           }
         }
         else if (op == OP_DESCEND_DIRECTORY)
         {
           mutt_error(_("%s is not a directory"), ARRAY_GET(&state.entry, index)->name);
-          break;
+          continue;
         }
 
         if (state.is_mailbox_list || OptNews) /* USE_NNTP */
@@ -1573,7 +1593,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         int index = menu_get_index(menu);
         if (!ARRAY_EMPTY(&state.entry))
           mutt_message("%s", ARRAY_GET(&state.entry, index)->name);
-        break;
+        continue;
       }
 
 #ifdef USE_IMAP
@@ -1582,7 +1602,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         bool_str_toggle(NeoMutt->sub, "imap_list_subscribed", NULL);
 
         mutt_unget_event(0, OP_CHECK_NEW);
-        break;
+        continue;
       }
 
       case OP_CREATE_MAILBOX:
@@ -1590,7 +1610,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         if (!state.imap_browse)
         {
           mutt_error(_("Create is only supported for IMAP mailboxes"));
-          break;
+          continue;
         }
 
         if (imap_mailbox_create(mutt_buffer_string(&LastDir)) == 0)
@@ -1608,7 +1628,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           init_menu(&state, menu, m, sbar);
         }
         /* else leave error on screen */
-        break;
+        continue;
       }
 
       case OP_RENAME_MAILBOX:
@@ -1634,7 +1654,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             init_menu(&state, menu, m, sbar);
           }
         }
-        break;
+        continue;
       }
 
       case OP_DELETE_MAILBOX:
@@ -1655,7 +1675,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           if (mutt_str_equal(mailbox_path(m), ff->name))
           {
             mutt_error(_("Can't delete currently selected mailbox"));
-            break;
+            continue;
           }
 
           snprintf(msg, sizeof(msg), _("Really delete mailbox \"%s\"?"), ff->name);
@@ -1681,7 +1701,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             mutt_message(_("Mailbox not deleted"));
           }
         }
-        break;
+        continue;
       }
 #endif
 
@@ -1690,7 +1710,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
       {
 #ifdef USE_NNTP
         if (OptNews)
-          break;
+          continue;
 #endif
         struct Buffer *buf = mutt_buffer_pool_get();
         mutt_buffer_copy(buf, &LastDir);
@@ -1711,7 +1731,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           if ((ret != 0) && mutt_buffer_is_empty(buf))
           {
             mutt_buffer_pool_release(&buf);
-            break;
+            continue;
           }
         }
         else if (op == OP_GOTO_PARENT)
@@ -1754,7 +1774,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             if (mutt_path_realpath(buf->data) == 0)
             {
               mutt_buffer_pool_release(&buf);
-              break;
+              continue;
             }
 
             struct stat st = { 0 };
@@ -1792,7 +1812,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           }
         }
         mutt_buffer_pool_release(&buf);
-        break;
+        continue;
       }
 
       case OP_ENTER_MASK:
@@ -1804,7 +1824,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
                                   false, NULL, NULL, NULL) != 0)
         {
           mutt_buffer_pool_release(&buf);
-          break;
+          continue;
         }
 
         mutt_buffer_fix_dptr(buf);
@@ -1815,17 +1835,17 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           mutt_buffer_strcpy(buf, ".");
 
         struct Buffer errmsg = mutt_buffer_make(256);
-        int rc = cs_subset_str_string_set(NeoMutt->sub, "mask",
-                                          mutt_buffer_string(buf), &errmsg);
+        int rc2 = cs_subset_str_string_set(NeoMutt->sub, "mask",
+                                           mutt_buffer_string(buf), &errmsg);
         mutt_buffer_pool_release(&buf);
-        if (CSR_RESULT(rc) != CSR_SUCCESS)
+        if (CSR_RESULT(rc2) != CSR_SUCCESS)
         {
           if (!mutt_buffer_is_empty(&errmsg))
           {
             mutt_error("%s", mutt_buffer_string(&errmsg));
             mutt_buffer_dealloc(&errmsg);
           }
-          break;
+          continue;
         }
         mutt_buffer_dealloc(&errmsg);
 
@@ -1856,9 +1876,9 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         if (ARRAY_EMPTY(&state.entry))
         {
           mutt_error(_("No files match the file mask"));
-          break;
+          continue;
         }
-        break;
+        continue;
       }
 
       case OP_SORT:
@@ -1923,7 +1943,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         {
           cs_subset_str_native_set(NeoMutt->sub, "sort_browser", sort, NULL);
         }
-        break;
+        continue;
       }
 
       case OP_TOGGLE_MAILBOXES:
@@ -1992,13 +2012,13 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           goto bail;
         }
         init_menu(&state, menu, m, sbar);
-        break;
+        continue;
       }
 
       case OP_MAILBOX_LIST:
       {
         mutt_mailbox_list();
-        break;
+        continue;
       }
 
       case OP_BROWSER_NEW_FILE:
@@ -2015,7 +2035,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           goto bail;
         }
         mutt_buffer_pool_release(&buf);
-        break;
+        continue;
       }
 
       case OP_BROWSER_VIEW_FILE:
@@ -2023,7 +2043,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         if (ARRAY_EMPTY(&state.entry))
         {
           mutt_error(_("No files match the file mask"));
-          break;
+          continue;
         }
 
         int index = menu_get_index(menu);
@@ -2041,7 +2061,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
                 (S_ISLNK(ff->mode) && link_is_dir(mutt_buffer_string(&LastDir), ff->name)))
         {
           mutt_error(_("Can't view a directory"));
-          break;
+          continue;
         }
         else
         {
@@ -2060,7 +2080,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             mutt_error(_("Error trying to view file"));
           }
         }
-        break;
+        continue;
       }
 
 #ifdef USE_NNTP
@@ -2068,13 +2088,13 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
       case OP_UNCATCHUP:
       {
         if (!OptNews)
-          break;
+          continue;
 
         struct NntpMboxData *mdata = NULL;
 
-        int rc = nntp_newsrc_parse(CurrentNewsSrv);
-        if (rc < 0)
-          break;
+        int rc2 = nntp_newsrc_parse(CurrentNewsSrv);
+        if (rc2 < 0)
+          continue;
 
         int index = menu_get_index(menu);
         struct FolderFile *ff = ARRAY_GET(&state.entry, index);
@@ -2090,21 +2110,21 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           if (index < menu->max)
             menu_set_index(menu, index);
         }
-        if (rc)
+        if (rc2 != 0)
           menu_queue_redraw(menu, MENU_REDRAW_INDEX);
         nntp_newsrc_close(CurrentNewsSrv);
-        break;
+        continue;
       }
 
       case OP_LOAD_ACTIVE:
       {
         if (!OptNews)
-          break;
+          continue;
 
         struct NntpAccountData *adata = CurrentNewsSrv;
 
         if (nntp_newsrc_parse(adata) < 0)
-          break;
+          continue;
 
         for (size_t i = 0; i < adata->groups_num; i++)
         {
@@ -2124,10 +2144,10 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         else
         {
           if (examine_directory(m, menu, &state, NULL, NULL) == -1)
-            break;
+            continue;
         }
         init_menu(&state, menu, m, sbar);
-        break;
+        continue;
       }
 #endif /* USE_NNTP */
 
@@ -2160,7 +2180,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
                 mutt_buffer_is_empty(buf))
             {
               mutt_buffer_pool_release(&buf);
-              break;
+              continue;
             }
 
             int err = REG_COMP(&rx, buf->data, REG_NOSUB);
@@ -2170,7 +2190,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
               regfree(&rx);
               mutt_error("%s", mutt_buffer_string(buf));
               mutt_buffer_pool_release(&buf);
-              break;
+              continue;
             }
             menu_queue_redraw(menu, MENU_REDRAW_FULL);
             index = 0;
@@ -2179,12 +2199,12 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           else if (ARRAY_EMPTY(&state.entry))
           {
             mutt_error(_("No newsgroups match the mask"));
-            break;
+            continue;
           }
 
-          int rc = nntp_newsrc_parse(adata);
-          if (rc < 0)
-            break;
+          int rc2 = nntp_newsrc_parse(adata);
+          if (rc2 < 0)
+            continue;
 
           struct FolderFile *ff = NULL;
           ARRAY_FOREACH_FROM(ff, &state.entry, index)
@@ -2201,7 +2221,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             {
               if ((index + 1) < menu->max)
                 menu_set_index(menu, index + 1);
-              break;
+              continue;
             }
           }
 
@@ -2221,7 +2241,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             }
             init_menu(&state, menu, m, sbar);
           }
-          if (rc > 0)
+          if (rc2 > 0)
             menu_queue_redraw(menu, MENU_REDRAW_FULL);
           nntp_newsrc_update(adata);
           nntp_clear_cache(adata);
@@ -2243,9 +2263,16 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           imap_subscribe(tmp2, (op == OP_BROWSER_SUBSCRIBE));
         }
 #endif /* USE_IMAP */
+        continue;
       }
     }
-  }
+
+    if (rc == IR_UNKNOWN)
+      rc = menu_function_dispatcher(menu->win, op);
+    if (rc == IR_UNKNOWN)
+      rc = global_function_dispatcher(menu->win, op);
+  } while (rc != IR_DONE);
+  // ---------------------------------------------------------------------------
 
 bail:
   mutt_buffer_pool_release(&OldLastDir);
