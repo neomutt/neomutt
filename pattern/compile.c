@@ -1152,9 +1152,8 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
             pat = SLIST_FIRST(tmp);
             pat->op = MUTT_PAT_AND;
             pat->child = curlist;
-
-            curlist = tmp;
-            last = curlist;
+            FREE(&last);
+            last = curlist = tmp;
           }
 
           pat_or = true;
@@ -1197,15 +1196,11 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
           pat = SLIST_FIRST(tmp);
           pat->op = thread_op;
           if (last)
-          {
             SLIST_NEXT(SLIST_FIRST(last), entries) = pat;
-            if (last != curlist)
-              FREE(&last);
-          }
           else
-          {
             curlist = tmp;
-          }
+          if (curlist != last)
+            FREE(&last);
           last = tmp;
           pat->pat_not ^= pat_not;
           pat->all_addr |= all_addr;
@@ -1234,8 +1229,8 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
           pat = SLIST_FIRST(tmp);
           pat->op = MUTT_PAT_OR;
           pat->child = curlist;
-          curlist = tmp;
-          last = tmp;
+          FREE(&last);
+          last = curlist = tmp;
           pat_or = false;
         }
 
@@ -1334,6 +1329,8 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
           SLIST_NEXT(SLIST_FIRST(last), entries) = pat;
         else
           curlist = tmp;
+        if (last != curlist)
+          FREE(&last);
         last = tmp;
         pat = SLIST_FIRST(tmp);
         pat->pat_not ^= pat_not;

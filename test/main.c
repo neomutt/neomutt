@@ -443,6 +443,7 @@
                                                                                \
   /* pattern */                                                                \
   NEOMUTT_TEST_ITEM(test_mutt_pattern_comp)                                    \
+  NEOMUTT_TEST_ITEM(test_mutt_pattern_leak)                                    \
                                                                                \
   /* prex */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_prex_capture)                                    \
