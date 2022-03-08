@@ -1329,6 +1329,8 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
           SLIST_NEXT(SLIST_FIRST(last), entries) = pat;
         else
           curlist = tmp;
+        if (last != curlist)
+          FREE(&last);
         last = tmp;
         pat = SLIST_FIRST(tmp);
         pat->pat_not ^= pat_not;
