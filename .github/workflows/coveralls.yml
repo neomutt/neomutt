@@ -16,11 +16,6 @@ jobs:
       OPTIONS: --coverage --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
 
     steps:
-    - name: Install Build Software
-      run: |
-        apt-get update
-        apt install -y lcov
-
     - name: Checkout Code
       uses: actions/checkout@v2
 

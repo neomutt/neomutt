@@ -44,7 +44,7 @@ jobs:
         sed -i '/TOKEN=/d' cov-int/build-log.txt
 
     - name: Upload build log
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: build-log
         path: cov-int/build-log.txt
