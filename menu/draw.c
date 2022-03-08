@@ -293,13 +293,15 @@ static void print_enriched_string(struct MuttWindow *win, int index,
  */
 void menu_make_entry(struct Menu *menu, char *buf, size_t buflen, int i)
 {
-  if (!ARRAY_EMPTY(&menu->dialog))
+  if (ARRAY_EMPTY(&menu->dialog))
+  {
+    menu->make_entry(menu, buf, buflen, i);
+  }
+  else
   {
     mutt_str_copy(buf, NONULL(*ARRAY_GET(&menu->dialog, i)), buflen);
     menu->current = -1; /* hide menubar */
   }
-  else
-    menu->make_entry(menu, buf, buflen, i);
 }
 
 /**

@@ -225,12 +225,12 @@ done:
 
 /**
  * menu_dialog_translate_op - Convert menubar movement to scrolling
- * @param i Action requested, e.g. OP_NEXT_ENTRY
+ * @param op Action requested, e.g. OP_NEXT_ENTRY
  * @retval num Action to perform, e.g. OP_NEXT_LINE
  */
-static int menu_dialog_translate_op(int i)
+static int menu_dialog_translate_op(int op)
 {
-  switch (i)
+  switch (op)
   {
     case OP_NEXT_ENTRY:
       return OP_NEXT_LINE;
@@ -246,43 +246,43 @@ static int menu_dialog_translate_op(int i)
       return OP_MIDDLE_PAGE;
   }
 
-  return i;
+  return op;
 }
 
 /**
  * menu_dialog_dokey - Check if there are any menu key events to process
  * @param menu Current Menu
- * @param ip   KeyEvent ID
+ * @param id   KeyEvent ID
  * @retval  0 An event occurred for the menu, or a timeout
  * @retval -1 There was an event, but not for menu
  */
-static int menu_dialog_dokey(struct Menu *menu, int *ip)
+static int menu_dialog_dokey(struct Menu *menu, int *id)
 {
-  struct KeyEvent ch;
+  struct KeyEvent ch = { OP_NULL, OP_NULL };
   char *p = NULL;
 
   enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   do
   {
     ch = mutt_getch();
-  } while (ch.ch == -2); // Timeout
+  } while (ch.ch == OP_TIMEOUT);
   mutt_curses_set_cursor(cursor);
 
   if (ch.ch < 0)
   {
-    *ip = -1;
+    *id = -1;
     return 0;
   }
 
-  if (ch.ch && (p = strchr(menu->keys, ch.ch)))
+  if ((ch.ch != 0) && (p = strchr(menu->keys, ch.ch)))
   {
-    *ip = OP_MAX + (p - menu->keys + 1);
+    *id = OP_MAX + (p - menu->keys + 1);
     return 0;
   }
   else
   {
     if (ch.op == OP_NULL)
-      mutt_unget_event(ch.ch, 0);
+      mutt_unget_event(ch.ch, OP_NULL);
     else
       mutt_unget_event(0, ch.op);
     return -1;

@@ -1764,7 +1764,8 @@ void dot_pattern(FILE *fp, struct Pattern *pat, struct ListHead *links)
   ADD_BOOL(sendmode);
   ADD_BOOL(is_multi);
 #undef ADD_BOOL
-  dot_type_string(fp, "flags", mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_buffer_string(&buf), true);
+  dot_type_string(fp, "flags",
+                  mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_buffer_string(&buf), true);
 
   if (pat->group_match)
   {
@@ -1846,4 +1847,3 @@ void dump_graphviz_patternlist(struct PatternList *pl)
   fclose(fp);
   mutt_list_free(&links);
 }
-
