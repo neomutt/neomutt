@@ -13,4 +13,5 @@ void test_mutt_pattern_leak(void)
 {
   test_one_leak("~E ~F | ~D");
   test_one_leak("~D | ~E ~F");
+  test_one_leak("~D | (~E ~F)");
 }
