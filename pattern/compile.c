@@ -80,55 +80,52 @@ enum EatRangeError
 static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
                       struct Buffer *s, struct Buffer *err)
 {
-  struct Buffer buf;
-
-  mutt_buffer_init(&buf);
+  struct Buffer *buf = mutt_buffer_pool_get();
+  bool rc = false;
   char *pexpr = s->dptr;
-  if ((mutt_extract_token(&buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0) || !buf.data)
+  if ((mutt_extract_token(buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0) || !buf->data)
   {
     mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
-    FREE(&buf.data);
-    return false;
+    goto out;
   }
-  if (buf.data[0] == '\0')
+  if (buf->data[0] == '\0')
   {
     mutt_buffer_printf(err, "%s", _("Empty expression"));
-    FREE(&buf.data);
-    return false;
+    goto out;
   }
 
   if (pat->string_match)
   {
-    pat->p.str = mutt_str_dup(buf.data);
-    pat->ign_case = mutt_mb_is_lower(buf.data);
-    FREE(&buf.data);
+    pat->p.str = mutt_str_dup(buf->data);
+    pat->ign_case = mutt_mb_is_lower(buf->data);
   }
   else if (pat->group_match)
   {
-    pat->p.group = mutt_pattern_group(buf.data);
-    FREE(&buf.data);
+    pat->p.group = mutt_pattern_group(buf->data);
   }
   else
   {
     pat->p.regex = mutt_mem_calloc(1, sizeof(regex_t));
 #ifdef USE_DEBUG_GRAPHVIZ
-    pat->raw_pattern = mutt_str_dup(buf.data);
+    pat->raw_pattern = mutt_str_dup(buf->data);
 #endif
-    uint16_t case_flags = mutt_mb_is_lower(buf.data) ? REG_ICASE : 0;
-    int rc = REG_COMP(pat->p.regex, buf.data, REG_NEWLINE | REG_NOSUB | case_flags);
-    if (rc != 0)
+    uint16_t case_flags = mutt_mb_is_lower(buf->data) ? REG_ICASE : 0;
+    int rc2 = REG_COMP(pat->p.regex, buf->data, REG_NEWLINE | REG_NOSUB | case_flags);
+    if (rc2 != 0)
     {
       char errmsg[256];
-      regerror(rc, pat->p.regex, errmsg, sizeof(errmsg));
-      mutt_buffer_add_printf(err, "'%s': %s", buf.data, errmsg);
-      FREE(&buf.data);
+      regerror(rc2, pat->p.regex, errmsg, sizeof(errmsg));
+      mutt_buffer_add_printf(err, "'%s': %s", buf->data, errmsg);
       FREE(&pat->p.regex);
-      return false;
+      goto out;
     }
-    FREE(&buf.data);
   }
 
-  return true;
+  rc = true;
+
+out:
+  mutt_buffer_pool_release(&buf);
+  return rc;
 }
 
 /**
@@ -158,8 +155,10 @@ static bool add_query_msgid(char *line, int line_num, void *user_data)
 static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
                       struct Buffer *s, struct Buffer *err, struct Mailbox *m)
 {
-  struct Buffer cmd_buf;
-  struct Buffer tok_buf;
+  struct Buffer *cmd_buf = mutt_buffer_pool_get();
+  struct Buffer *tok_buf = mutt_buffer_pool_get();
+  bool rc = false;
+
   FILE *fp = NULL;
 
   const char *const c_external_search_command =
@@ -167,60 +166,60 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
   if (!c_external_search_command)
   {
     mutt_buffer_printf(err, "%s", _("No search command defined"));
-    return false;
+    goto out;
   }
 
-  mutt_buffer_init(&tok_buf);
   char *pexpr = s->dptr;
-  if ((mutt_extract_token(&tok_buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0) ||
-      !tok_buf.data)
+  if ((mutt_extract_token(tok_buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0) ||
+      !tok_buf->data)
   {
     mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
-    return false;
+    goto out;
   }
-  if (*tok_buf.data == '\0')
+  if (*tok_buf->data == '\0')
   {
     mutt_buffer_printf(err, "%s", _("Empty expression"));
-    FREE(&tok_buf.data);
-    return false;
+    goto out;
   }
 
-  mutt_buffer_init(&cmd_buf);
-  mutt_buffer_addstr(&cmd_buf, c_external_search_command);
-  mutt_buffer_addch(&cmd_buf, ' ');
+  mutt_buffer_addstr(cmd_buf, c_external_search_command);
+  mutt_buffer_addch(cmd_buf, ' ');
 
   if (m)
   {
     char *escaped_folder = mutt_path_escape(mailbox_path(m));
     mutt_debug(LL_DEBUG2, "escaped folder path: %s\n", escaped_folder);
-    mutt_buffer_addch(&cmd_buf, '\'');
-    mutt_buffer_addstr(&cmd_buf, escaped_folder);
-    mutt_buffer_addch(&cmd_buf, '\'');
+    mutt_buffer_addch(cmd_buf, '\'');
+    mutt_buffer_addstr(cmd_buf, escaped_folder);
+    mutt_buffer_addch(cmd_buf, '\'');
   }
   else
   {
-    mutt_buffer_addch(&cmd_buf, '/');
+    mutt_buffer_addch(cmd_buf, '/');
   }
-  mutt_buffer_addch(&cmd_buf, ' ');
-  mutt_buffer_addstr(&cmd_buf, tok_buf.data);
-  FREE(&tok_buf.data);
+  mutt_buffer_addch(cmd_buf, ' ');
+  mutt_buffer_addstr(cmd_buf, tok_buf->data);
 
-  mutt_message(_("Running search command: %s ..."), cmd_buf.data);
+  mutt_message(_("Running search command: %s ..."), cmd_buf->data);
   pat->is_multi = true;
   mutt_list_clear(&pat->p.multi_cases);
-  pid_t pid = filter_create(cmd_buf.data, NULL, &fp, NULL);
+  pid_t pid = filter_create(cmd_buf->data, NULL, &fp, NULL);
   if (pid < 0)
   {
-    mutt_buffer_printf(err, "unable to fork command: %s\n", cmd_buf.data);
-    FREE(&cmd_buf.data);
-    return false;
+    mutt_buffer_printf(err, "unable to fork command: %s\n", cmd_buf->data);
+    goto out;
   }
 
   mutt_file_map_lines(add_query_msgid, &pat->p.multi_cases, fp, MUTT_RL_NO_FLAGS);
   mutt_file_fclose(&fp);
   filter_wait(pid);
-  FREE(&cmd_buf.data);
-  return true;
+
+  rc = true;
+
+out:
+  mutt_buffer_pool_release(&cmd_buf);
+  mutt_buffer_pool_release(&tok_buf);
+  return rc;
 }
 
 /**
@@ -1005,7 +1004,6 @@ static bool eat_date(struct Pattern *pat, PatternCompFlags flags,
 
 out:
   mutt_buffer_pool_release(&tmp);
-
   return rc;
 }
 
