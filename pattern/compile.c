@@ -1255,9 +1255,9 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
           }
           struct Pattern *leaf = attach_new_leaf(&curlist);
           leaf->op = thread_op;
-          leaf->pat_not ^= pat_not;
-          leaf->all_addr |= all_addr;
-          leaf->is_alias |= is_alias;
+          leaf->pat_not = pat_not;
+          leaf->all_addr = all_addr;
+          leaf->is_alias = is_alias;
           pat_not = false;
           all_addr = false;
           is_alias = false;
