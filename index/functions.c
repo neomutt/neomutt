@@ -1016,18 +1016,18 @@ static int op_main_limit(struct IndexSharedData *shared, struct IndexPrivateData
     {
       priv->menu->max = shared->mailbox->vcount;
       /* try to find what used to be the current message */
-      int i;
-      for (i = 0; i < shared->mailbox->vcount; i++)
+      menu_set_index(priv->menu, 0);
+      for (size_t i = 0; i < shared->mailbox->vcount; i++)
       {
         struct Email *e = mutt_get_virt_email(shared->mailbox, i);
         if (!e)
           continue;
         if (e->index == old_index)
         {
+          menu_set_index(priv->menu, i);
           break;
         }
       }
-      menu_set_index(priv->menu, i);
     }
 
     if ((shared->mailbox->msg_count != 0) && mutt_using_threads())
