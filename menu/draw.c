@@ -518,7 +518,7 @@ static void menu_redraw_prompt(struct Menu *menu)
   if (ErrorBufMessage)
     mutt_clear_error();
 
-  msgwin_set_text(MT_COLOR_NORMAL, menu->prompt);
+  msgwin_set_text(MT_COLOR_PROMPT, menu->prompt);
 }
 
 /**

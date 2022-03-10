@@ -123,8 +123,9 @@ static int msgwin_repaint(struct MuttWindow *win)
 
   mutt_curses_set_color_by_id(priv->cid);
   mutt_window_move(win, 0, 0);
-  mutt_paddstr(win, win->state.cols, priv->text);
+  mutt_window_addstr(win, priv->text);
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
+  mutt_window_clrtoeol(win);
 
   mutt_debug(LL_DEBUG5, "repaint done\n");
   return 0;
