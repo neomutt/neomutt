@@ -80,55 +80,52 @@ enum EatRangeError
 static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
                       struct Buffer *s, struct Buffer *err)
 {
-  struct Buffer buf;
-
-  mutt_buffer_init(&buf);
+  struct Buffer *buf = mutt_buffer_pool_get();
+  bool rc = false;
   char *pexpr = s->dptr;
-  if ((mutt_extract_token(&buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0) || !buf.data)
+  if ((mutt_extract_token(buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0) || !buf->data)
   {
     mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
-    FREE(&buf.data);
-    return false;
+    goto out;
   }
-  if (buf.data[0] == '\0')
+  if (buf->data[0] == '\0')
   {
     mutt_buffer_printf(err, "%s", _("Empty expression"));
-    FREE(&buf.data);
-    return false;
+    goto out;
   }
 
   if (pat->string_match)
   {
-    pat->p.str = mutt_str_dup(buf.data);
-    pat->ign_case = mutt_mb_is_lower(buf.data);
-    FREE(&buf.data);
+    pat->p.str = mutt_str_dup(buf->data);
+    pat->ign_case = mutt_mb_is_lower(buf->data);
   }
   else if (pat->group_match)
   {
-    pat->p.group = mutt_pattern_group(buf.data);
-    FREE(&buf.data);
+    pat->p.group = mutt_pattern_group(buf->data);
   }
   else
   {
     pat->p.regex = mutt_mem_calloc(1, sizeof(regex_t));
 #ifdef USE_DEBUG_GRAPHVIZ
-    pat->raw_pattern = mutt_str_dup(buf.data);
+    pat->raw_pattern = mutt_str_dup(buf->data);
 #endif
-    uint16_t case_flags = mutt_mb_is_lower(buf.data) ? REG_ICASE : 0;
-    int rc = REG_COMP(pat->p.regex, buf.data, REG_NEWLINE | REG_NOSUB | case_flags);
-    if (rc != 0)
+    uint16_t case_flags = mutt_mb_is_lower(buf->data) ? REG_ICASE : 0;
+    int rc2 = REG_COMP(pat->p.regex, buf->data, REG_NEWLINE | REG_NOSUB | case_flags);
+    if (rc2 != 0)
     {
       char errmsg[256];
-      regerror(rc, pat->p.regex, errmsg, sizeof(errmsg));
-      mutt_buffer_add_printf(err, "'%s': %s", buf.data, errmsg);
-      FREE(&buf.data);
+      regerror(rc2, pat->p.regex, errmsg, sizeof(errmsg));
+      mutt_buffer_add_printf(err, "'%s': %s", buf->data, errmsg);
       FREE(&pat->p.regex);
-      return false;
+      goto out;
     }
-    FREE(&buf.data);
   }
 
-  return true;
+  rc = true;
+
+out:
+  mutt_buffer_pool_release(&buf);
+  return rc;
 }
 
 /**
@@ -158,8 +155,10 @@ static bool add_query_msgid(char *line, int line_num, void *user_data)
 static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
                       struct Buffer *s, struct Buffer *err, struct Mailbox *m)
 {
-  struct Buffer cmd_buf;
-  struct Buffer tok_buf;
+  struct Buffer *cmd_buf = mutt_buffer_pool_get();
+  struct Buffer *tok_buf = mutt_buffer_pool_get();
+  bool rc = false;
+
   FILE *fp = NULL;
 
   const char *const c_external_search_command =
@@ -167,60 +166,60 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
   if (!c_external_search_command)
   {
     mutt_buffer_printf(err, "%s", _("No search command defined"));
-    return false;
+    goto out;
   }
 
-  mutt_buffer_init(&tok_buf);
   char *pexpr = s->dptr;
-  if ((mutt_extract_token(&tok_buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0) ||
-      !tok_buf.data)
+  if ((mutt_extract_token(tok_buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0) ||
+      !tok_buf->data)
   {
     mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
-    return false;
+    goto out;
   }
-  if (*tok_buf.data == '\0')
+  if (*tok_buf->data == '\0')
   {
     mutt_buffer_printf(err, "%s", _("Empty expression"));
-    FREE(&tok_buf.data);
-    return false;
+    goto out;
   }
 
-  mutt_buffer_init(&cmd_buf);
-  mutt_buffer_addstr(&cmd_buf, c_external_search_command);
-  mutt_buffer_addch(&cmd_buf, ' ');
+  mutt_buffer_addstr(cmd_buf, c_external_search_command);
+  mutt_buffer_addch(cmd_buf, ' ');
 
   if (m)
   {
     char *escaped_folder = mutt_path_escape(mailbox_path(m));
     mutt_debug(LL_DEBUG2, "escaped folder path: %s\n", escaped_folder);
-    mutt_buffer_addch(&cmd_buf, '\'');
-    mutt_buffer_addstr(&cmd_buf, escaped_folder);
-    mutt_buffer_addch(&cmd_buf, '\'');
+    mutt_buffer_addch(cmd_buf, '\'');
+    mutt_buffer_addstr(cmd_buf, escaped_folder);
+    mutt_buffer_addch(cmd_buf, '\'');
   }
   else
   {
-    mutt_buffer_addch(&cmd_buf, '/');
+    mutt_buffer_addch(cmd_buf, '/');
   }
-  mutt_buffer_addch(&cmd_buf, ' ');
-  mutt_buffer_addstr(&cmd_buf, tok_buf.data);
-  FREE(&tok_buf.data);
+  mutt_buffer_addch(cmd_buf, ' ');
+  mutt_buffer_addstr(cmd_buf, tok_buf->data);
 
-  mutt_message(_("Running search command: %s ..."), cmd_buf.data);
+  mutt_message(_("Running search command: %s ..."), cmd_buf->data);
   pat->is_multi = true;
   mutt_list_clear(&pat->p.multi_cases);
-  pid_t pid = filter_create(cmd_buf.data, NULL, &fp, NULL);
+  pid_t pid = filter_create(cmd_buf->data, NULL, &fp, NULL);
   if (pid < 0)
   {
-    mutt_buffer_printf(err, "unable to fork command: %s\n", cmd_buf.data);
-    FREE(&cmd_buf.data);
-    return false;
+    mutt_buffer_printf(err, "unable to fork command: %s\n", cmd_buf->data);
+    goto out;
   }
 
   mutt_file_map_lines(add_query_msgid, &pat->p.multi_cases, fp, MUTT_RL_NO_FLAGS);
   mutt_file_fclose(&fp);
   filter_wait(pid);
-  FREE(&cmd_buf.data);
-  return true;
+
+  rc = true;
+
+out:
+  mutt_buffer_pool_release(&cmd_buf);
+  mutt_buffer_pool_release(&tok_buf);
+  return rc;
 }
 
 /**
@@ -1005,7 +1004,6 @@ static bool eat_date(struct Pattern *pat, PatternCompFlags flags,
 
 out:
   mutt_buffer_pool_release(&tmp);
-
   return rc;
 }
 
@@ -1074,16 +1072,81 @@ void mutt_pattern_free(struct PatternList **pat)
 }
 
 /**
- * mutt_pattern_node_new - Create a new list containing a Pattern
+ * mutt_pattern_new - Create a new Pattern
+ * @retval ptr Newly created Pattern
+ */
+static struct Pattern *mutt_pattern_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct Pattern));
+}
+
+/**
+ * mutt_pattern_list_new - Create a new list containing a Pattern
  * @retval ptr Newly created list containing a single node with a Pattern
  */
-static struct PatternList *mutt_pattern_node_new(void)
+static struct PatternList *mutt_pattern_list_new(void)
 {
   struct PatternList *h = mutt_mem_calloc(1, sizeof(struct PatternList));
   SLIST_INIT(h);
-  struct Pattern *p = mutt_mem_calloc(1, sizeof(struct Pattern));
+  struct Pattern *p = mutt_pattern_new();
   SLIST_INSERT_HEAD(h, p, entries);
   return h;
+}
+
+/**
+ * attach_leaf - Attach a Pattern to a Pattern List
+ * @param list Pattern List to attach to
+ * @param leaf Pattern to attach
+ * @retval ptr Attached leaf
+ */
+static struct Pattern *attach_leaf(struct PatternList *list, struct Pattern *leaf)
+{
+  struct Pattern *last = NULL;
+  SLIST_FOREACH(last, list, entries)
+  {
+    // TODO - or we could use a doubly-linked list
+    if (SLIST_NEXT(last, entries) == NULL)
+    {
+      SLIST_NEXT(last, entries) = leaf;
+      break;
+    }
+  }
+  return leaf;
+}
+
+/**
+ * attach_new_root - Create a new Pattern as a parent for a List
+ * @param curlist Pattern List
+ * @retval ptr First Pattern in the original List
+ *
+ * @note curlist will be altered to the new root Pattern
+ */
+static struct Pattern *attach_new_root(struct PatternList **curlist)
+{
+  struct PatternList *root = mutt_pattern_list_new();
+  struct Pattern *leaf = SLIST_FIRST(root);
+  leaf->child = *curlist;
+  *curlist = root;
+  return leaf;
+}
+
+/**
+ * attach_new_leaf - Attach a new Pattern to a List
+ * @param curlist Pattern List
+ * @retval ptr New Pattern in the original List
+ *
+ * @note curlist may be altered
+ */
+static struct Pattern *attach_new_leaf(struct PatternList **curlist)
+{
+  if (*curlist)
+  {
+    return attach_leaf(*curlist, mutt_pattern_new());
+  }
+  else
+  {
+    return attach_new_root(curlist);
+  }
 }
 
 /**
@@ -1101,8 +1164,6 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
   /* curlist when assigned will always point to a list containing at least one node
    * with a Pattern value.  */
   struct PatternList *curlist = NULL;
-  struct PatternList *tmp = NULL, *tmp2 = NULL;
-  struct PatternList *last = NULL;
   bool pat_not = false;
   bool all_addr = false;
   bool pat_or = false;
@@ -1150,16 +1211,11 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
           }
 
           struct Pattern *pat = SLIST_FIRST(curlist);
-
           if (SLIST_NEXT(pat, entries))
           {
             /* A & B | C == (A & B) | C */
-            tmp = mutt_pattern_node_new();
-            pat = SLIST_FIRST(tmp);
-            pat->op = MUTT_PAT_AND;
-            pat->child = curlist;
-            FREE(&last);
-            last = curlist = tmp;
+            struct Pattern *root = attach_new_root(&curlist);
+            root->op = MUTT_PAT_AND;
           }
 
           pat_or = true;
@@ -1174,7 +1230,6 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
       case '=':
       case '~':
       {
-        struct Pattern *pat = NULL;
         if (ps.dptr[1] == '\0')
         {
           mutt_buffer_printf(err, _("missing pattern: %s"), ps.dptr);
@@ -1198,32 +1253,23 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
             mutt_buffer_printf(err, _("mismatched parentheses: %s"), ps.dptr);
             goto cleanup;
           }
-          tmp = mutt_pattern_node_new();
-          pat = SLIST_FIRST(tmp);
-          pat->op = thread_op;
-          if (last)
-            SLIST_NEXT(SLIST_FIRST(last), entries) = pat;
-          else
-            curlist = tmp;
-          if (curlist != last)
-            FREE(&last);
-          last = tmp;
-          pat->pat_not ^= pat_not;
-          pat->all_addr |= all_addr;
-          pat->is_alias |= is_alias;
+          struct Pattern *leaf = attach_new_leaf(&curlist);
+          leaf->op = thread_op;
+          leaf->pat_not = pat_not;
+          leaf->all_addr = all_addr;
+          leaf->is_alias = is_alias;
           pat_not = false;
           all_addr = false;
           is_alias = false;
           /* compile the sub-expression */
           buf = mutt_strn_dup(ps.dptr + 1, p - (ps.dptr + 1));
-          tmp2 = mutt_pattern_comp(m, menu, buf, flags, err);
-          if (!tmp2)
+          leaf->child = mutt_pattern_comp(m, menu, buf, flags, err);
+          if (!leaf->child)
           {
             FREE(&buf);
             goto cleanup;
           }
           FREE(&buf);
-          pat->child = tmp2;
           ps.dptr = p + 1; /* restore location */
           SKIPWS(ps.dptr);
           break;
@@ -1231,36 +1277,12 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
         if (implicit && pat_or)
         {
           /* A | B & C == (A | B) & C */
-          tmp = mutt_pattern_node_new();
-          pat = SLIST_FIRST(tmp);
-          pat->op = MUTT_PAT_OR;
-          pat->child = curlist;
-          FREE(&last);
-          last = curlist = tmp;
+          struct Pattern *root = attach_new_root(&curlist);
+          root->op = MUTT_PAT_OR;
           pat_or = false;
         }
 
-        tmp = mutt_pattern_node_new();
-        pat = SLIST_FIRST(tmp);
-        pat->pat_not = pat_not;
-        pat->all_addr = all_addr;
-        pat->is_alias = is_alias;
-        pat->string_match = (ps.dptr[0] == '=');
-        pat->group_match = (ps.dptr[0] == '%');
-        pat_not = false;
-        all_addr = false;
-        is_alias = false;
-
-        if (last)
-          SLIST_NEXT(SLIST_FIRST(last), entries) = pat;
-        else
-          curlist = tmp;
-        if (curlist != last)
-          FREE(&last);
-        last = tmp;
-
-        ps.dptr++; /* move past the ~ */
-        entry = lookup_tag(*ps.dptr);
+        entry = lookup_tag(ps.dptr[1]);
         if (!entry)
         {
           mutt_buffer_printf(err, _("%c: invalid pattern modifier"), *ps.dptr);
@@ -1271,14 +1293,22 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
           mutt_buffer_printf(err, _("%c: not supported in this mode"), *ps.dptr);
           goto cleanup;
         }
-        if (flags & MUTT_PC_SEND_MODE_SEARCH)
-          pat->sendmode = true;
 
-        pat->op = entry->op;
+        struct Pattern *leaf = attach_new_leaf(&curlist);
+        leaf->pat_not = pat_not;
+        leaf->all_addr = all_addr;
+        leaf->is_alias = is_alias;
+        leaf->string_match = (ps.dptr[0] == '=');
+        leaf->group_match = (ps.dptr[0] == '%');
+        leaf->sendmode = (flags & MUTT_PC_SEND_MODE_SEARCH);
+        leaf->op = entry->op;
+        pat_not = false;
+        all_addr = false;
+        is_alias = false;
 
+        ps.dptr++; /* move past the ~ */
         ps.dptr++; /* eat the operator and any optional whitespace */
         SKIPWS(ps.dptr);
-
         if (entry->eat_arg)
         {
           if (ps.dptr[0] == '\0')
@@ -1289,23 +1319,23 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
           switch (entry->eat_arg)
           {
             case EAT_REGEX:
-              if (!eat_regex(pat, flags, &ps, err))
+              if (!eat_regex(leaf, flags, &ps, err))
                 goto cleanup;
               break;
             case EAT_DATE:
-              if (!eat_date(pat, flags, &ps, err))
+              if (!eat_date(leaf, flags, &ps, err))
                 goto cleanup;
               break;
             case EAT_RANGE:
-              if (!eat_range(pat, flags, &ps, err))
+              if (!eat_range(leaf, flags, &ps, err))
                 goto cleanup;
               break;
             case EAT_MESSAGE_RANGE:
-              if (!eat_message_range(pat, flags, &ps, err, m, menu))
+              if (!eat_message_range(leaf, flags, &ps, err, m, menu))
                 goto cleanup;
               break;
             case EAT_QUERY:
-              if (!eat_query(pat, flags, &ps, err, m))
+              if (!eat_query(leaf, flags, &ps, err, m))
                 goto cleanup;
               break;
             default:
@@ -1326,22 +1356,23 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
         }
         /* compile the sub-expression */
         buf = mutt_strn_dup(ps.dptr + 1, p - (ps.dptr + 1));
-        tmp = mutt_pattern_comp(m, menu, buf, flags, err);
+        struct PatternList *sub = mutt_pattern_comp(m, menu, buf, flags, err);
         FREE(&buf);
-        if (!tmp)
+        if (!sub)
           goto cleanup;
-        struct Pattern *pat = SLIST_FIRST(tmp);
-        if (last)
-          SLIST_NEXT(SLIST_FIRST(last), entries) = pat;
+        struct Pattern *leaf = SLIST_FIRST(sub);
+        if (curlist)
+        {
+          attach_leaf(curlist, leaf);
+          FREE(&sub);
+        }
         else
-          curlist = tmp;
-        if (last != curlist)
-          FREE(&last);
-        last = tmp;
-        pat = SLIST_FIRST(tmp);
-        pat->pat_not ^= pat_not;
-        pat->all_addr |= all_addr;
-        pat->is_alias |= is_alias;
+        {
+          curlist = sub;
+        }
+        leaf->pat_not ^= pat_not;
+        leaf->all_addr |= all_addr;
+        leaf->is_alias |= is_alias;
         pat_not = false;
         all_addr = false;
         is_alias = false;
@@ -1355,20 +1386,17 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
         goto cleanup;
     }
   }
+
   if (!curlist)
   {
     mutt_buffer_strcpy(err, _("empty pattern"));
     return NULL;
   }
-  if (curlist != tmp)
-    FREE(&tmp);
+
   if (SLIST_NEXT(SLIST_FIRST(curlist), entries))
   {
-    tmp = mutt_pattern_node_new();
-    struct Pattern *pat = SLIST_FIRST(tmp);
-    pat->op = pat_or ? MUTT_PAT_OR : MUTT_PAT_AND;
-    pat->child = curlist;
-    curlist = tmp;
+    struct Pattern *root = attach_new_root(&curlist);
+    root->op = pat_or ? MUTT_PAT_OR : MUTT_PAT_AND;
   }
 
   return curlist;
