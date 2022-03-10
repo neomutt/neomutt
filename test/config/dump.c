@@ -76,7 +76,7 @@ static struct ConfigDef Vars[] = {
   { "Hawthorn",   DT_ENUM,                           2,                           IP &MboxTypeDef,     NULL, },
   { "Ilama",      DT_MBTABLE,                        0,                           0,                   NULL, },
   { "Jackfruit",  DT_PATH|DT_PATH_FILE,              IP "/etc/passwd",            0,                   NULL, },
-  { "Kumquat",    DT_QUAD,                           0,                           0,                   NULL, },
+  { "Kumquat",    DT_QUAD|DT_DISABLED,               0,                           0,                   NULL, },
   { "Lemon",      DT_REGEX,                          0,                           0,                   NULL, },
   { "Mango",      DT_SORT,                           1,                           IP SortMangoMethods, NULL, },
   { "Nectarine",  DT_STRING|DT_SENSITIVE,            IP "nectarine",              0,                   NULL, },
@@ -329,6 +329,7 @@ bool test_dump_config(void)
     TEST_CHECK(dump_config(cs, CS_DUMP_ONLY_CHANGED | CS_DUMP_HIDE_SENSITIVE, fp));
     TEST_CHECK(dump_config(cs, CS_DUMP_HIDE_VALUE | CS_DUMP_SHOW_DEFAULTS, fp));
     TEST_CHECK(dump_config(cs, CS_DUMP_SHOW_DOCS, fp));
+    TEST_CHECK(dump_config(cs, CS_DUMP_SHOW_DISABLED, fp));
 
     struct ConfigSet *cs_bad = cs_new(30);
     TEST_CHECK(dump_config(cs_bad, CS_DUMP_NO_FLAGS, fp));

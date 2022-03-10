@@ -853,6 +853,7 @@ coverage: all test
 	  --directory email \
 	  --directory mutt \
 	  --directory notmuch \
+	  --directory pattern \
 	  --directory store \
 	  --exclude '*/include/*'
 	-genhtml --output-directory coverage --frames coverage.info
