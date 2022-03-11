@@ -1,0 +1,88 @@
+name: Debug options
+
+on:
+  schedule:
+    - cron: '50 3 * * 1'
+      # Mondays at 03:50
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: ${{ matrix.cfg.name }}
+    runs-on: ubuntu-latest
+    container: ghcr.io/neomutt/docker-build
+    continue-on-error: true
+
+    env:
+      CONFIGURE_OPTIONS: --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
+
+    strategy:
+      # Limit jobs to one at a time so that ccache really helps later builds
+      max-parallel: 1
+      matrix:
+        cfg:
+          - name:    none
+            options:
+          - name:    backtrace
+            options: --debug-backtrace
+          - name:    color
+            options: --debug-color
+          - name:    email
+            options: --debug-email
+          - name:    graphviz
+            options: --debug-graphviz
+          - name:    notify
+            options: --debug-notify
+          - name:    parse-test
+            options: --debug-parse-test
+          - name:    queue
+            options: --debug-queue
+          - name:    window
+            options: --debug-window
+          - name:    coverage
+            options: --coverage
+          - name:    fuzzing
+            options: --fuzzing
+            extras:  CC=clang CXX=clang fuzz
+          - name:    all
+            options: --debug-backtrace --debug-color --debug-email --debug-graphviz --debug-notify --debug-parse-test --debug-queue --debug-window --coverage
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Checkout Test Files
+      uses: actions/checkout@v2
+      with:
+        repository: neomutt/neomutt-test-files
+        path: test-files
+
+    - name: Set Up Test Files
+      run: |
+        cd test-files
+        ./setup.sh
+
+    - name: Compilation Cache
+      uses: hendrikmuhs/ccache-action@v1
+
+    - name: Configure Neomutt
+      run: ./configure --disable-doc --testing ${{ matrix.cfg.options }}
+
+    - name: Build Neomutt
+      run: |
+        export PATH="$PATH:/usr/lib/llvm-10/bin"
+        make -j 2 ${{ matrix.cfg.extras }}
+
+    - name: Neomutt Version
+      run: |
+        test -f neomutt && ./neomutt -v || :
+
+    - name: Build Tests
+      run: |
+        test -f neomutt && make -j 2 test/neomutt-test || :
+
+    - name: Run Tests
+      run: |
+        export NEOMUTT_TEST_DIR=$GITHUB_WORKSPACE/test-files
+        test -f nemoutt && make test || :
+
