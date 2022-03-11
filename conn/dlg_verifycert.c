@@ -60,7 +60,6 @@
 #include "options.h"
 #include "ssl.h"
 
-#ifdef USE_SSL
 /// Help Bar for the Certificate Verification dialog
 static const struct Mapping VerifyHelp[] = {
   // clang-format off
@@ -69,9 +68,7 @@ static const struct Mapping VerifyHelp[] = {
   { NULL, 0 },
   // clang-format on
 };
-#endif
 
-#ifdef USE_SSL
 /**
  * dlg_verify_certificate - Ask the user to validate the certificate
  * @param title        Menu title
@@ -172,4 +169,3 @@ int dlg_verify_certificate(const char *title, struct ListHead *list,
 
   return rc;
 }
-#endif
