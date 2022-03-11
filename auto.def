@@ -619,13 +619,6 @@ if {[get-define want-testing]} {
 }
 
 ###############################################################################
-# Fuzz Testing
-if {[get-define want-fuzzing]} {
-  define ENABLE_FUZZ_TESTS
-  lappend subdirs fuzz
-}
-
-###############################################################################
 # Lua
 if {[get-define want-lua]} {
 
@@ -1265,6 +1258,15 @@ if {[get-define want-asan]} {
   define-append CFLAGS -fsanitize=address -O0 -fno-omit-frame-pointer -fno-common
   define-append LDFLAGS -fsanitize=address
   define USE_ASAN
+}
+
+###############################################################################
+# Fuzz Testing
+if {[get-define want-fuzzing]} {
+  define ENABLE_FUZZ_TESTS
+  lappend subdirs fuzz
+  define-append CFLAGS -fsanitize=fuzzer
+  define-append LDFLAGS -fsanitize=fuzzer
 }
 
 ###############################################################################
