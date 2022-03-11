@@ -96,17 +96,6 @@ void menu_init(void)
 }
 
 /**
- * menu_add_dialog_row - Add a row to a Menu
- * @param menu Menu to add to
- * @param row  Row of text to add
- */
-void menu_add_dialog_row(struct Menu *menu, const char *row)
-{
-  ARRAY_SET(&menu->dialog, menu->max, mutt_str_dup(row));
-  menu->max++;
-}
-
-/**
  * menu_loop - Menu event loop
  * @param menu Current Menu
  * @retval num An event id that the menu can't process
@@ -155,10 +144,6 @@ int menu_loop(struct Menu *menu)
       clearok(stdscr, true); /* force complete redraw */
     }
 
-    /* try to catch dialog keys before ops */
-    if (!ARRAY_EMPTY(&menu->dialog) && (menu_dialog_dokey(menu, &op) == 0))
-      return op;
-
     window_redraw(NULL);
     const bool c_auto_tag = cs_subset_bool(menu->sub, "auto_tag");
     op = km_dokey(menu->type);
@@ -198,12 +183,7 @@ int menu_loop(struct Menu *menu)
       continue;
     }
 
-    if (ARRAY_EMPTY(&menu->dialog))
-      mutt_clear_error();
-
-    /* Convert menubar movement to scrolling */
-    if (!ARRAY_EMPTY(&menu->dialog))
-      op = menu_dialog_translate_op(op);
+    mutt_clear_error();
 
     switch (op)
     {
@@ -261,21 +241,16 @@ int menu_loop(struct Menu *menu)
       case OP_SEARCH_OPPOSITE:
         if (menu->custom_search)
           return op;
-        else if (menu->search && ARRAY_EMPTY(&menu->dialog)) /* Searching dialogs won't work */
+        if (menu->search)
         {
           int index = search(menu, op);
           if (index != -1)
             menu_set_index(menu, index);
         }
-        else
-          mutt_error(_("Search is not implemented for this menu"));
         break;
 
       case OP_JUMP:
-        if (!ARRAY_EMPTY(&menu->dialog))
-          mutt_error(_("Jumping is not implemented for dialogs"));
-        else
-          menu_jump(menu);
+        menu_jump(menu);
         break;
 
       case OP_ENTER_COMMAND:
@@ -284,7 +259,7 @@ int menu_loop(struct Menu *menu)
         break;
 
       case OP_TAG:
-        if (menu->tag && ARRAY_EMPTY(&menu->dialog))
+        if (menu->tag)
         {
           const bool c_resolve = cs_subset_bool(menu->sub, "resolve");
 
@@ -365,7 +340,7 @@ enum MenuType menu_get_current_type(void)
   while (win && win->focus)
     win = win->focus;
 
-  // This should only happen before the first dialog is created
+  // This should only happen before the first window is created
   if (!win)
     return MENU_INDEX;
 
@@ -394,13 +369,6 @@ void menu_free(struct Menu **ptr)
 
   if (menu->mdata_free && menu->mdata)
     menu->mdata_free(menu, &menu->mdata); // Custom function to free private data
-
-  char **line = NULL;
-  ARRAY_FOREACH(line, &menu->dialog)
-  {
-    FREE(line);
-  }
-  ARRAY_FREE(&menu->dialog);
 
   FREE(ptr);
 }

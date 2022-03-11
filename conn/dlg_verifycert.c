@@ -78,7 +78,7 @@ static const struct Mapping VerifyHelp[] = {
  * @retval  0 An event occurred for the menu, or a timeout
  * @retval -1 There was an event, but not for menu
  */
-int menu_dialog_dokey(struct Menu *menu, int *id)
+static int menu_dialog_dokey(struct Menu *menu, int *id)
 {
   struct KeyEvent ch = { OP_NULL, OP_NULL };
 
@@ -114,7 +114,7 @@ int menu_dialog_dokey(struct Menu *menu, int *id)
  * @param op Action requested, e.g. OP_NEXT_ENTRY
  * @retval num Action to perform, e.g. OP_NEXT_LINE
  */
-int menu_dialog_translate_op(int op)
+static int menu_dialog_translate_op(int op)
 {
   switch (op)
   {
@@ -248,7 +248,7 @@ int dlg_verify_certificate(const char *title, struct CertArray *carr,
   do
   {
     window_redraw(NULL);
-    msgwin_set_text(MT_COLOR_PROMPT, menu->prompt);
+    msgwin_set_text(MT_COLOR_PROMPT, mdata.prompt);
 
     // Try to catch dialog keys before ops
     if (menu_dialog_dokey(menu, &op) != 0)

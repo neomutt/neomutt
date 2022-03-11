@@ -387,12 +387,6 @@ void menu_redraw_motion(struct Menu *menu)
 {
   char buf[1024];
 
-  if (!ARRAY_EMPTY(&menu->dialog))
-  {
-    menu->redraw &= ~MENU_REDRAW_MOTION;
-    return;
-  }
-
   /* Note: menu->color() for the index can end up retrieving a message
    * over imap (if matching against ~h for instance).  This can
    * generate status messages.  So we want to call it *before* we
@@ -481,27 +475,6 @@ void menu_redraw_current(struct Menu *menu)
 }
 
 /**
- * menu_redraw_prompt - Force the redraw of the message window
- * @param menu Current Menu
- */
-static void menu_redraw_prompt(struct Menu *menu)
-{
-  if (!menu || ARRAY_EMPTY(&menu->dialog))
-    return;
-
-  if (OptMsgErr)
-  {
-    mutt_sleep(1);
-    OptMsgErr = false;
-  }
-
-  if (ErrorBufMessage)
-    mutt_clear_error();
-
-  msgwin_set_text(MT_COLOR_PROMPT, menu->prompt);
-}
-
-/**
  * menu_redraw - Redraw the parts of the screen that have been flagged to be redrawn
  * @param menu Menu to redraw
  * @retval OP_NULL   Menu was redrawn
@@ -529,9 +502,6 @@ int menu_redraw(struct Menu *menu)
     menu_redraw_motion(menu);
   else if (menu->redraw == MENU_REDRAW_CURRENT)
     menu_redraw_current(menu);
-
-  if (!ARRAY_EMPTY(&menu->dialog))
-    menu_redraw_prompt(menu);
 
   return OP_NULL;
 }

@@ -36,9 +36,6 @@
 #include "opcodes.h"
 #include "protos.h"
 
-int menu_dialog_dokey(struct Menu *menu, int *ip);
-int menu_dialog_translate_op(int i);
-
 extern char *SearchBuffers[];
 
 #define MUTT_SEARCH_UP 1
@@ -247,17 +244,12 @@ static int menu_movement(struct Menu *menu, int op)
  */
 static int menu_search(struct Menu *menu, int op)
 {
-  if (menu->search && ARRAY_EMPTY(&menu->dialog)) /* Searching dialogs won't work */
+  if (menu->search)
   {
     int index = search(menu, op);
     if (index != -1)
       menu_set_index(menu, index);
   }
-  else
-  {
-    mutt_error(_("Search is not implemented for this menu"));
-  }
-
   return IR_SUCCESS;
 }
 
@@ -276,10 +268,7 @@ static int op_help(struct Menu *menu, int op)
  */
 static int op_jump(struct Menu *menu, int op)
 {
-  if (ARRAY_EMPTY(&menu->dialog))
-    menu_jump(menu);
-  else
-    mutt_error(_("Jumping is not implemented for dialogs"));
+  menu_jump(menu);
   return IR_SUCCESS;
 }
 

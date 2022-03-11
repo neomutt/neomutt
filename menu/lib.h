@@ -78,14 +78,6 @@ struct Menu
   struct MuttWindow *win;   ///< Window holding the Menu
   struct ConfigSubset *sub; ///< Inherited config items
 
-  /* Setting a non-empty dialog overrides normal menu behavior.
-   * In dialog mode menubar is hidden and prompt keys are checked before
-   * normal menu movement keys. This can cause problems with scrolling, if
-   * prompt keys override movement keys.  */
-  struct DialogLines dialog;   ///< Dialog lines themselves
-  char *prompt;                ///< Prompt for user, similar to mutt_multi_choice
-  char *keys;                  ///< Keys used in the prompt
-
   /* the following are used only by menu_loop() */
   int top;                ///< Entry that is the top of the current page
   int old_current;        ///< For driver use only

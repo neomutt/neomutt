@@ -83,7 +83,7 @@ static int op_tag(struct Menu *menu, int op)
   if ((menu->num_tagged != 0) && c_auto_tag)
     menu->tag_prefix = true;
 
-  if (!menu->tag || !ARRAY_EMPTY(&menu->dialog))
+  if (!menu->tag)
   {
     mutt_error(_("Tagging is not supported"));
     return IR_ERROR;
