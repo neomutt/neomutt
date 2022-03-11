@@ -73,7 +73,7 @@ static int generic_search(struct Menu *menu, regex_t *rx, int line)
 {
   char buf[1024];
 
-  menu_make_entry(menu, buf, sizeof(buf), line);
+  menu->make_entry(menu, buf, sizeof(buf), line);
   return regexec(rx, buf, 0, NULL, 0);
 }
 

@@ -35,6 +35,4 @@ struct Menu *menu_new(enum MenuType type, struct MuttWindow *win, struct ConfigS
 
 void menu_add_observers   (struct Menu *menu);
 
-void menu_make_entry(struct Menu *menu, char *buf, size_t buflen, int i);
-
 #endif /* MUTT_MENU_PRIVATE_H */
