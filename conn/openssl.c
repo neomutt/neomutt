@@ -849,9 +849,9 @@ static int ssl_cache_trusted_cert(X509 *c)
  * @param title  Title for this block of certificate info
  * @param cert   Certificate
  * @param issuer If true, look up the issuer rather than owner details
- * @param list   List to save info to
+ * @param carr   Array to save info to
  */
-static void add_cert(const char *title, X509 *cert, bool issuer, struct ListHead *list)
+static void add_cert(const char *title, X509 *cert, bool issuer, struct CertArray *carr)
 {
   static const int part[] = {
     NID_commonName,             // CN
@@ -869,8 +869,8 @@ static void add_cert(const char *title, X509 *cert, bool issuer, struct ListHead
   else
     x509 = X509_get_subject_name(cert);
 
-  // Allocate formatted strings and let the ListHead take ownership
-  mutt_list_insert_tail(list, mutt_str_dup(title));
+  // Allocate formatted strings and let the array take ownership
+  ARRAY_ADD(carr, mutt_str_dup(title));
 
   char *line = NULL;
   char *text = NULL;
@@ -880,7 +880,7 @@ static void add_cert(const char *title, X509 *cert, bool issuer, struct ListHead
     if (text)
     {
       mutt_str_asprintf(&line, "   %s", text);
-      mutt_list_insert_tail(list, line);
+      ARRAY_ADD(carr, line);
     }
   }
 }
@@ -898,34 +898,34 @@ static void add_cert(const char *title, X509 *cert, bool issuer, struct ListHead
 static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bool allow_always)
 {
   char buf[256];
-  struct ListHead list = STAILQ_HEAD_INITIALIZER(list);
+  struct CertArray carr = ARRAY_HEAD_INITIALIZER;
 
-  add_cert(_("This certificate belongs to:"), cert, false, &list);
-  mutt_list_insert_tail(&list, NULL);
-  add_cert(_("This certificate was issued by:"), cert, true, &list);
+  add_cert(_("This certificate belongs to:"), cert, false, &carr);
+  ARRAY_ADD(&carr, NULL);
+  add_cert(_("This certificate was issued by:"), cert, true, &carr);
 
   char *line = NULL;
-  mutt_list_insert_tail(&list, NULL);
-  mutt_list_insert_tail(&list, mutt_str_dup(_("This certificate is valid")));
+  ARRAY_ADD(&carr, NULL);
+  ARRAY_ADD(&carr, mutt_str_dup(_("This certificate is valid")));
   mutt_str_asprintf(&line, _("   from %s"), asn1time_to_string(X509_getm_notBefore(cert)));
-  mutt_list_insert_tail(&list, line);
+  ARRAY_ADD(&carr, line);
   mutt_str_asprintf(&line, _("     to %s"), asn1time_to_string(X509_getm_notAfter(cert)));
-  mutt_list_insert_tail(&list, line);
+  ARRAY_ADD(&carr, line);
 
-  mutt_list_insert_tail(&list, NULL);
+  ARRAY_ADD(&carr, NULL);
   buf[0] = '\0';
   x509_fingerprint(buf, sizeof(buf), cert, EVP_sha1);
   mutt_str_asprintf(&line, _("SHA1 Fingerprint: %s"), buf);
-  mutt_list_insert_tail(&list, line);
+  ARRAY_ADD(&carr, line);
   buf[0] = '\0';
   buf[40] = '\0'; /* Ensure the second printed line is null terminated */
   x509_fingerprint(buf, sizeof(buf), cert, EVP_sha256);
   buf[39] = '\0'; /* Divide into two lines of output */
   mutt_str_asprintf(&line, "%s%s", _("SHA256 Fingerprint: "), buf);
-  mutt_list_insert_tail(&list, line);
+  ARRAY_ADD(&carr, line);
   mutt_str_asprintf(&line, "%*s%s",
                     (int) mutt_str_len(_("SHA256 Fingerprint: ")), "", buf + 40);
-  mutt_list_insert_tail(&list, line);
+  ARRAY_ADD(&carr, line);
 
   bool allow_skip = false;
 /* The leaf/host certificate can't be skipped. */
@@ -949,7 +949,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   allow_always = allow_always && c_certificate_file &&
                  check_certificate_expiration(cert, true);
 
-  int rc = dlg_verify_certificate(title, &list, allow_always, allow_skip);
+  int rc = dlg_verify_certificate(title, &carr, allow_always, allow_skip);
   if ((rc == 3) && !allow_always)
     rc = 4;
 
@@ -986,7 +986,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
       break;
   }
 
-  mutt_list_free(&list);
+  cert_array_clear(&carr);
   return (rc > 1);
 }
 

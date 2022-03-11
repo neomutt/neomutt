@@ -25,13 +25,18 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include "mutt/lib.h"
 
 struct Connection;
-struct ListHead;
 
 #ifdef USE_SSL
+/// Array of text making up a Certificate
+ARRAY_HEAD(CertArray, const char *);
+
+void cert_array_clear(struct CertArray *carr);
+
 int mutt_ssl_socket_setup(struct Connection *conn);
-int dlg_verify_certificate(const char *title, struct ListHead *list, bool allow_always, bool allow_skip);
+int dlg_verify_certificate(const char *title, struct CertArray *carr, bool allow_always, bool allow_skip);
 #else
 /**
  * [Dummy] Set up the socket multiplexor

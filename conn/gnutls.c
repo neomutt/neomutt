@@ -422,10 +422,10 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
  * @param title  Title for this block of certificate info
  * @param cert   Certificate
  * @param issuer If true, look up the issuer rather than owner details
- * @param list   List to save info to
+ * @param carr   Array to save info to
  */
 static void add_cert(const char *title, gnutls_x509_crt_t cert, bool issuer,
-                     struct ListHead *list)
+                     struct CertArray *carr)
 {
   static const char *part[] = {
     GNUTLS_OID_X520_COMMON_NAME,              // CN
@@ -440,8 +440,8 @@ static void add_cert(const char *title, gnutls_x509_crt_t cert, bool issuer,
   char buf[128];
   int rc;
 
-  // Allocate formatted strings and let the ListHead take ownership
-  mutt_list_insert_tail(list, mutt_str_dup(title));
+  // Allocate formatted strings and let the array take ownership
+  ARRAY_ADD(carr, mutt_str_dup(title));
 
   for (size_t i = 0; i < mutt_array_size(part); i++)
   {
@@ -455,7 +455,7 @@ static void add_cert(const char *title, gnutls_x509_crt_t cert, bool issuer,
 
     char *line = NULL;
     mutt_str_asprintf(&line, "   %s", buf);
-    mutt_list_insert_tail(list, line);
+    ARRAY_ADD(carr, line);
   }
 }
 
@@ -473,7 +473,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
                                      gnutls_certificate_status_t certstat,
                                      const char *hostname, int idx, size_t len)
 {
-  struct ListHead list = STAILQ_HEAD_INITIALIZER(list);
+  struct CertArray carr = ARRAY_HEAD_INITIALIZER;
   int certerr, savedcert;
   gnutls_x509_crt_t cert;
   char fpbuf[128];
@@ -499,74 +499,72 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
     return 0;
   }
 
-  add_cert(_("This certificate belongs to:"), cert, false, &list);
-  mutt_list_insert_tail(&list, NULL);
-  add_cert(_("This certificate was issued by:"), cert, true, &list);
+  add_cert(_("This certificate belongs to:"), cert, false, &carr);
+  ARRAY_ADD(&carr, NULL);
+  add_cert(_("This certificate was issued by:"), cert, true, &carr);
 
-  mutt_list_insert_tail(&list, NULL);
-  mutt_list_insert_tail(&list, mutt_str_dup(_("This certificate is valid")));
+  ARRAY_ADD(&carr, NULL);
+  ARRAY_ADD(&carr, mutt_str_dup(_("This certificate is valid")));
 
   char *line = NULL;
   t = gnutls_x509_crt_get_activation_time(cert);
   mutt_date_make_tls(datestr, sizeof(datestr), t);
   mutt_str_asprintf(&line, _("   from %s"), datestr);
-  mutt_list_insert_tail(&list, line);
+  ARRAY_ADD(&carr, line);
 
   t = gnutls_x509_crt_get_expiration_time(cert);
   mutt_date_make_tls(datestr, sizeof(datestr), t);
   mutt_str_asprintf(&line, _("     to %s"), datestr);
-  mutt_list_insert_tail(&list, line);
-  mutt_list_insert_tail(&list, NULL);
+  ARRAY_ADD(&carr, line);
+  ARRAY_ADD(&carr, NULL);
 
   fpbuf[0] = '\0';
   tls_fingerprint(GNUTLS_DIG_SHA, fpbuf, sizeof(fpbuf), certdata);
   mutt_str_asprintf(&line, _("SHA1 Fingerprint: %s"), fpbuf);
-  mutt_list_insert_tail(&list, line);
+  ARRAY_ADD(&carr, line);
   fpbuf[0] = '\0';
   fpbuf[40] = '\0'; /* Ensure the second printed line is null terminated */
   tls_fingerprint(GNUTLS_DIG_SHA256, fpbuf, sizeof(fpbuf), certdata);
-  fpbuf[39] = '\0'; /* Divide into two lines of output */
+  fpbuf[39] = '\0'; /* Divide into two carr of output */
   mutt_str_asprintf(&line, "%s%s", _("SHA256 Fingerprint: "), fpbuf);
-  mutt_list_insert_tail(&list, line);
+  ARRAY_ADD(&carr, line);
   mutt_str_asprintf(&line, "%*s%s", (int) mutt_str_len(_("SHA256 Fingerprint: ")),
                     "", fpbuf + 40);
-  mutt_list_insert_tail(&list, line);
+  ARRAY_ADD(&carr, line);
 
   if (certerr)
-    mutt_list_insert_tail(&list, NULL);
+    ARRAY_ADD(&carr, NULL);
 
   if (certerr & CERTERR_NOTYETVALID)
   {
-    mutt_list_insert_tail(
-        &list, mutt_str_dup(_("WARNING: Server certificate is not yet valid")));
+    ARRAY_ADD(&carr,
+              mutt_str_dup(_("WARNING: Server certificate is not yet valid")));
   }
   if (certerr & CERTERR_EXPIRED)
   {
-    mutt_list_insert_tail(
-        &list, mutt_str_dup(_("WARNING: Server certificate has expired")));
+    ARRAY_ADD(&carr,
+              mutt_str_dup(_("WARNING: Server certificate has expired")));
   }
   if (certerr & CERTERR_REVOKED)
   {
-    mutt_list_insert_tail(
-        &list, mutt_str_dup(_("WARNING: Server certificate has been revoked")));
+    ARRAY_ADD(&carr,
+              mutt_str_dup(_("WARNING: Server certificate has been revoked")));
   }
   if (certerr & CERTERR_HOSTNAME)
   {
-    mutt_list_insert_tail(
-        &list,
+    ARRAY_ADD(
+        &carr,
         mutt_str_dup(_("WARNING: Server hostname does not match certificate")));
   }
   if (certerr & CERTERR_SIGNERNOTCA)
   {
-    mutt_list_insert_tail(
-        &list,
-        mutt_str_dup(_("WARNING: Signer of server certificate is not a CA")));
+    ARRAY_ADD(&carr, mutt_str_dup(_(
+                         "WARNING: Signer of server certificate is not a CA")));
   }
   if (certerr & CERTERR_INSECUREALG)
   {
-    mutt_list_insert_tail(
-        &list, mutt_str_dup(_("Warning: Server certificate was signed using "
-                              "an insecure algorithm")));
+    ARRAY_ADD(&carr, mutt_str_dup(_("Warning: Server certificate was signed "
+                                    "using an insecure algorithm")));
   }
 
   snprintf(title, sizeof(title),
@@ -577,7 +575,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   const bool allow_always =
       (c_certificate_file && !savedcert &&
        !(certerr & (CERTERR_EXPIRED | CERTERR_NOTYETVALID | CERTERR_REVOKED)));
-  int rc = dlg_verify_certificate(title, &list, allow_always, false);
+  int rc = dlg_verify_certificate(title, &carr, allow_always, false);
   if (rc == 3) // Accept always
   {
     bool saved = false;
@@ -611,7 +609,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
       mutt_error(_("Warning: Couldn't save certificate"));
   }
 
-  mutt_list_free(&list);
+  cert_array_clear(&carr);
   gnutls_x509_crt_deinit(cert);
   return (rc > 1);
 }

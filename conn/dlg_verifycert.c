@@ -70,9 +70,24 @@ static const struct Mapping VerifyHelp[] = {
 };
 
 /**
+ * cert_array_clear - Free all memory of a CertArray
+ * @param carr Array of text to clear
+ *
+ * @note Array is emptied, but not freed
+ */
+void cert_array_clear(struct CertArray *carr)
+{
+  const char **line = NULL;
+  ARRAY_FOREACH(line, carr)
+  {
+    FREE(line);
+  }
+}
+
+/**
  * dlg_verify_certificate - Ask the user to validate the certificate
  * @param title        Menu title
- * @param list         Certificate text to display
+ * @param carr         Certificate text to display
  * @param allow_always If true, allow the user to always accept the certificate
  * @param allow_skip   If true, allow the user to skip the verification
  * @retval 1 Reject certificate (or menu aborted)
@@ -84,7 +99,7 @@ static const struct Mapping VerifyHelp[] = {
  * The options are given in the order: Reject, Once, Always, Skip.
  * The retval represents the chosen option.
  */
-int dlg_verify_certificate(const char *title, struct ListHead *list,
+int dlg_verify_certificate(const char *title, struct CertArray *carr,
                            bool allow_always, bool allow_skip)
 {
   struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_CERTIFICATE, VerifyHelp);
@@ -94,10 +109,10 @@ int dlg_verify_certificate(const char *title, struct ListHead *list,
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   sbar_set_title(sbar, title);
 
-  struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, list, entries)
+  const char **line = NULL;
+  ARRAY_FOREACH(line, carr)
   {
-    menu_add_dialog_row(menu, NONULL(np->data));
+    menu_add_dialog_row(menu, NONULL(*line));
   }
 
   if (allow_always)
