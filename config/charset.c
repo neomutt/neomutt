@@ -59,7 +59,7 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   for (char *p = strtok_r(s, ":", &q); p; p = strtok_r(NULL, ":", &q))
   {
     if (*p == '\0')
-      continue;
+      continue; // LCOV_EXCL_LINE
     if (!mutt_ch_check_charset(p, strict))
     {
       rc = CSR_ERR_INVALID;

@@ -54,6 +54,8 @@ static struct ConfigDef Vars[] = {
   { "Raspberry",  DT_STRING,              IP "raspberry",  0, validator_fail,    },
   { "Strawberry", DT_STRING,              0,               0, NULL,              }, /* test_inherit */
   { "Tangerine",  DT_STRING,              0,               0, NULL,              }, /* test_plus_equals */
+  { "Ugli",       DT_STRING|DT_CHARSET_SINGLE, 0,          0, charset_validator, },
+  { "Vanilla",    DT_STRING|DT_CHARSET_STRICT, 0,          0, charset_validator, },
   { NULL },
 };
 // clang-format on
@@ -626,6 +628,56 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   }
   const char *VarOlive = cs_subset_string(sub, "Olive");
   TEST_MSG("String: %s = %s\n", name, VarOlive);
+
+  name = "Ugli";
+  mutt_buffer_reset(err);
+  rc = cs_str_string_set(cs, name, "utf-8", err);
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("%s\n", mutt_buffer_string(err));
+  }
+  else
+  {
+    TEST_MSG("%s\n", mutt_buffer_string(err));
+    return false;
+  }
+
+  mutt_buffer_reset(err);
+  rc = cs_str_string_set(cs, name, NULL, err);
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("%s\n", mutt_buffer_string(err));
+  }
+  else
+  {
+    TEST_MSG("%s\n", mutt_buffer_string(err));
+    return false;
+  }
+
+  mutt_buffer_reset(err);
+  rc = cs_str_string_set(cs, name, "utf-8:us-ascii", err);
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  {
+    TEST_MSG("Expected error: %s\n", mutt_buffer_string(err));
+  }
+  else
+  {
+    TEST_MSG("%s\n", mutt_buffer_string(err));
+    return false;
+  }
+
+  name = "Vanilla";
+  mutt_buffer_reset(err);
+  rc = cs_str_string_set(cs, name, "apple", err);
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  {
+    TEST_MSG("Expected error: %s\n", mutt_buffer_string(err));
+  }
+  else
+  {
+    TEST_MSG("%s\n", mutt_buffer_string(err));
+    return false;
+  }
 
   log_line(__func__);
   return true;

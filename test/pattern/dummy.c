@@ -27,6 +27,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include "core/lib.h"
+#include "menu/lib.h"
 #include "context.h"
 
 struct Address;
@@ -57,11 +58,6 @@ const char *g_myvar = "hello";
 short AbortKey;
 
 extern struct Context *Context;
-
-enum MenuType
-{
-  mt_dummy
-};
 
 typedef uint8_t MuttFormatFlags;
 typedef uint16_t CompletionFlags;
@@ -187,7 +183,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
 struct Menu *menu_new(enum MenuType type)
 {
-  return NULL;
+  return mutt_mem_calloc(1, sizeof(struct Menu));
 }
 
 void menu_pop_current(struct Menu *menu)
@@ -239,6 +235,7 @@ void mutt_enter_state_free(struct EnterState **ptr)
 
 void menu_free(struct Menu **ptr)
 {
+  FREE(ptr);
 }
 
 int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct Pager *extra)
@@ -277,7 +274,7 @@ int menu_get_index(struct Menu *menu)
   return -1;
 }
 
-bool menu_set_index(struct Menu *menu, int index)
+MenuRedrawFlags menu_set_index(struct Menu *menu, int index)
 {
   return true;
 }

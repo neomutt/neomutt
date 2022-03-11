@@ -47,6 +47,7 @@ static void test_one_leak(const char *pattern)
 
 void test_mutt_pattern_leak(void)
 {
+  MuttLogger = log_disp_null;
   NeoMutt = test_neomutt_create();
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
 
