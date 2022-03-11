@@ -715,6 +715,7 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
   menu->make_entry = mix_make_entry;
   menu->tag = NULL;
   menu->mdata = type2_list;
+  menu->mdata_free = NULL; // Menu doesn't own the data
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, remailer_config_observer, dlg);
   notify_observer_add(dlg->notify, NT_WINDOW, remailer_window_observer, dlg);

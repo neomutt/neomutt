@@ -280,6 +280,7 @@ struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
   menu->tag = alias_tag;
   menu->max = alias_array_count_visible(&mdata->ava);
   menu->mdata = mdata;
+  menu->mdata_free = NULL; // Menu doesn't own the data
 
   struct MuttWindow *win_menu = menu->win;
 

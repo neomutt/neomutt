@@ -175,6 +175,7 @@ struct Email *dlg_select_postponed_email(struct Mailbox *m)
   menu->make_entry = post_make_entry;
   menu->max = m->msg_count;
   menu->mdata = m;
+  menu->mdata_free = NULL; // Menu doesn't own the data
   menu->custom_search = true;
 
   struct MuttWindow *win_menu = menu->win;

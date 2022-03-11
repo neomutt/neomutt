@@ -289,7 +289,6 @@ static int op_sort(struct AliasMenuData *mdata, int op)
 
     // This will trigger a WA_RECALC
     cs_subset_str_native_set(mdata->sub, "sort_alias", sort, NULL);
-    //QWQ menu_queue_redraw(menu, MENU_REDRAW_FULL);
   }
 
   return IR_SUCCESS;

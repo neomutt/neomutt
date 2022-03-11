@@ -357,6 +357,7 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
   menu->tag = query_tag;
   menu->max = ARRAY_SIZE(&mdata->ava);
   menu->mdata = mdata;
+  menu->mdata_free = NULL; // Menu doesn't own the data
 
   struct MuttWindow *win_menu = menu->win;
 

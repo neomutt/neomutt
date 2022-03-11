@@ -135,6 +135,7 @@ void dlg_select_history(char *buf, size_t buflen, char **matches, int match_coun
   menu->make_entry = history_make_entry;
   menu->max = match_count;
   menu->mdata = matches;
+  menu->mdata_free = NULL; // Menu doesn't own the data
 
   bool done = false;
   while (!done)

@@ -561,7 +561,10 @@ static void init_state(struct BrowserState *state, struct Menu *menu)
   state->imap_browse = false;
 #endif
   if (menu)
+  {
     menu->mdata = &state->entry;
+    menu->mdata_free = NULL; // Menu doesn't own the data
+  }
 }
 
 /**
@@ -1341,6 +1344,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
   init_menu(&state, menu, m, sbar);
   // only now do we have a valid state to attach
   menu->mdata = &state.entry;
+  menu->mdata_free = NULL; // Menu doesn't own the data
 
   int last_selected_mailbox = -1;
 
@@ -1475,6 +1479,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
               imap_browse(mutt_buffer_string(&LastDir), &state);
               browser_sort(&state);
               menu->mdata = &state.entry;
+              menu->mdata_free = NULL; // Menu doesn't own the data
             }
             else
 #endif
@@ -1598,6 +1603,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           imap_browse(mutt_buffer_string(&LastDir), &state);
           browser_sort(&state);
           menu->mdata = &state.entry;
+          menu->mdata_free = NULL; // Menu doesn't own the data
           browser_highlight_default(&state, menu);
           init_menu(&state, menu, m, sbar);
         }
@@ -1623,6 +1629,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             imap_browse(mutt_buffer_string(&LastDir), &state);
             browser_sort(&state);
             menu->mdata = &state.entry;
+            menu->mdata_free = NULL; // Menu doesn't own the data
             browser_highlight_default(&state, menu);
             init_menu(&state, menu, m, sbar);
           }
@@ -1724,6 +1731,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             imap_browse(mutt_buffer_string(&LastDir), &state);
             browser_sort(&state);
             menu->mdata = &state.entry;
+            menu->mdata_free = NULL; // Menu doesn't own the data
             browser_highlight_default(&state, menu);
             init_menu(&state, menu, m, sbar);
           }
@@ -1830,6 +1838,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           imap_browse(mutt_buffer_string(&LastDir), &state);
           browser_sort(&state);
           menu->mdata = &state.entry;
+          menu->mdata_free = NULL; // Menu doesn't own the data
           init_menu(&state, menu, m, sbar);
         }
         else
@@ -1974,6 +1983,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           imap_browse(mutt_buffer_string(&LastDir), &state);
           browser_sort(&state);
           menu->mdata = &state.entry;
+          menu->mdata_free = NULL; // Menu doesn't own the data
         }
 #endif
         else if (examine_directory(m, menu, &state, mutt_buffer_string(&LastDir),
