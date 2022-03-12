@@ -94,10 +94,11 @@ int menu_dialog_dokey(struct Menu *menu, int *id)
     return 0;
   }
 
+  struct CertMenuData *mdata = menu->mdata;
   char *p = NULL;
-  if ((ch.ch != 0) && (p = strchr(menu->keys, ch.ch)))
+  if ((ch.ch != 0) && (p = strchr(mdata->keys, ch.ch)))
   {
-    *id = OP_MAX + (p - menu->keys + 1);
+    *id = OP_MAX + (p - mdata->keys + 1);
     return 0;
   }
 
@@ -130,6 +131,25 @@ int menu_dialog_translate_op(int op)
   }
 
   return op;
+}
+
+/**
+ * cert_make_entry - Create a string to display in a Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
+ */
+void cert_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+{
+  struct CertMenuData *mdata = menu->mdata;
+
+  menu->current = -1; /* hide menubar */
+
+  const char **line_ptr = ARRAY_GET(mdata->carr, line);
+  if (!line_ptr)
+  {
+    buf[0] = '\0';
+    return;
+  }
+
+  mutt_str_copy(buf, *line_ptr, buflen);
 }
 
 /**
@@ -167,56 +187,56 @@ int dlg_verify_certificate(const char *title, struct CertArray *carr,
 {
   struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_CERTIFICATE, VerifyHelp);
 
+  struct CertMenuData mdata = { carr };
+
   struct Menu *menu = dlg->wdata;
+  menu->mdata = &mdata;
+  menu->mdata_free = NULL; // Menu doesn't own the data
+  menu->make_entry = cert_make_entry;
+  menu->max = ARRAY_SIZE(carr);
 
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   sbar_set_title(sbar, title);
-
-  const char **line = NULL;
-  ARRAY_FOREACH(line, carr)
-  {
-    menu_add_dialog_row(menu, NONULL(*line));
-  }
 
   if (allow_always)
   {
     if (allow_skip)
     {
-      menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always, (s)kip");
+      mdata.prompt = _("(r)eject, accept (o)nce, (a)ccept always, (s)kip");
       /* L10N: The letters correspond to the choices in the string:
          "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
          This is an interactive certificate confirmation prompt for an SSL connection. */
-      menu->keys = _("roas");
+      mdata.keys = _("roas");
     }
     else
     {
-      menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
+      mdata.prompt = _("(r)eject, accept (o)nce, (a)ccept always");
       /* L10N: The letters correspond to the choices in the string:
          "(r)eject, accept (o)nce, (a)ccept always"
          This is an interactive certificate confirmation prompt for an SSL connection. */
-      menu->keys = _("roa");
+      mdata.keys = _("roa");
     }
   }
   else
   {
     if (allow_skip)
     {
-      menu->prompt = _("(r)eject, accept (o)nce, (s)kip");
+      mdata.prompt = _("(r)eject, accept (o)nce, (s)kip");
       /* L10N: The letters correspond to the choices in the string:
          "(r)eject, accept (o)nce, (s)kip"
          This is an interactive certificate confirmation prompt for an SSL connection. */
-      menu->keys = _("ros");
+      mdata.keys = _("ros");
     }
     else
     {
-      menu->prompt = _("(r)eject, accept (o)nce");
+      mdata.prompt = _("(r)eject, accept (o)nce");
       /* L10N: The letters correspond to the choices in the string:
          "(r)eject, accept (o)nce"
          This is an interactive certificate confirmation prompt for an SSL connection. */
-      menu->keys = _("ro");
+      mdata.keys = _("ro");
     }
   }
-  msgwin_set_text(MT_COLOR_PROMPT, menu->prompt);
+  msgwin_set_text(MT_COLOR_PROMPT, mdata.prompt);
 
   bool old_ime = OptIgnoreMacroEvents;
   OptIgnoreMacroEvents = true;
