@@ -462,6 +462,7 @@ static void dlg_select_query(struct Buffer *buf, struct AliasList *all,
     }
     else
     {
+      mutt_buffer_reset(buf);
       struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
       if (alias_to_addrlist(&al, ARRAY_GET(&mdata.ava, menu_get_index(menu))->alias))
       {
