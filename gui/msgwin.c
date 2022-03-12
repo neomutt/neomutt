@@ -230,8 +230,6 @@ const char *msgwin_get_text(void)
  * @param cid  Colour Id, e.g. #MT_COLOR_MESSAGE
  * @param text Text to set
  *
- * @note Changes will appear on screen immediately
- *
  * @note The text string will be copied
  */
 void msgwin_set_text(enum ColorId cid, const char *text)
@@ -245,13 +243,10 @@ void msgwin_set_text(enum ColorId cid, const char *text)
   mutt_str_replace(&priv->text, text);
 
   MessageWindow->actions |= WA_RECALC;
-  window_redraw(MessageWindow);
 }
 
 /**
  * msgwin_clear_text - Clear the text in the Message Window
- *
- * @note Changes will appear on screen immediately
  */
 void msgwin_clear_text(void)
 {

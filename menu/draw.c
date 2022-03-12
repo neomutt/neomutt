@@ -490,11 +490,7 @@ int menu_redraw(struct Menu *menu)
 
   /* See if all or part of the screen needs to be updated.  */
   if (menu->redraw & MENU_REDRAW_FULL)
-  {
     menu_redraw_full(menu);
-    /* allow the caller to do any local configuration */
-    return OP_REDRAW;
-  }
 
   if (menu->redraw & MENU_REDRAW_INDEX)
     menu_redraw_index(menu);

@@ -111,6 +111,7 @@ static int menu_window_observer(struct NotifyCallback *nc)
     notify_observer_remove(NeoMutt->notify, menu_config_observer, menu);
     notify_observer_remove(win->notify, menu_window_observer, menu);
     mutt_color_observer_remove(menu_color_observer, menu);
+    msgwin_clear_text();
     mutt_debug(LL_DEBUG5, "window delete done\n");
   }
 
