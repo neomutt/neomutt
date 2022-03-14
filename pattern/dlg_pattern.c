@@ -77,8 +77,10 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "index/lib.h"
 #include "menu/lib.h"
 #include "format_flags.h"
+#include "mutt_logging.h"
 #include "muttlib.h"
 #include "opcodes.h"
 
@@ -353,28 +355,52 @@ bool dlg_select_pattern(char *buf, size_t buflen)
   notify_observer_add(NeoMutt->notify, NT_CONFIG, pattern_config_observer, menu);
   notify_observer_add(win_menu->notify, NT_WINDOW, pattern_window_observer, win_menu);
 
-  bool rc = false;
-  bool done = false;
-  while (!done)
+  // ---------------------------------------------------------------------------
+  // Event Loop
+  int op = OP_NULL;
+  bool result = false;
+  int rc;
+  do
   {
-    switch (menu_loop(menu))
+    rc = IR_UNKNOWN;
+    menu_tagging_dispatcher(menu, op);
+    window_redraw(NULL);
+
+    op = km_dokey(menu->type);
+    mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
+    if (op < 0)
+      continue;
+    if (op == OP_NULL)
+    {
+      km_error_key(menu->type);
+      continue;
+    }
+    mutt_clear_error();
+
+    switch (op)
     {
       case OP_GENERIC_SELECT_ENTRY:
       {
         const int index = menu_get_index(menu);
         struct PatternEntry *entry = ((struct PatternEntry *) menu->mdata) + index;
         mutt_str_copy(buf, entry->tag, buflen);
-        rc = true;
-        done = true;
+        result = true;
+        rc = IR_DONE;
         break;
       }
 
       case OP_EXIT:
-        done = true;
+        rc = IR_DONE;
         break;
     }
-  }
+
+    if (rc == IR_UNKNOWN)
+      rc = menu_function_dispatcher(menu->win, op);
+    if (rc == IR_UNKNOWN)
+      rc = global_function_dispatcher(menu->win, op);
+  } while (rc != IR_DONE);
+  // ---------------------------------------------------------------------------
 
   simple_dialog_free(&dlg);
-  return rc;
+  return result;
 }

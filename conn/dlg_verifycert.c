@@ -55,7 +55,9 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
+#include "index/lib.h"
 #include "menu/lib.h"
+#include "mutt_logging.h"
 #include "opcodes.h"
 #include "options.h"
 #include "ssl.h"
@@ -68,6 +70,87 @@ static const struct Mapping VerifyHelp[] = {
   { NULL, 0 },
   // clang-format on
 };
+
+/**
+ * menu_dialog_dokey - Check if there are any menu key events to process
+ * @param menu Current Menu
+ * @param id   KeyEvent ID
+ * @retval  0 An event occurred for the menu, or a timeout
+ * @retval -1 There was an event, but not for menu
+ */
+static int menu_dialog_dokey(struct Menu *menu, int *id)
+{
+  struct KeyEvent ch = { OP_NULL, OP_NULL };
+
+  // enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
+  mutt_getch_timeout(5000);
+  ch = mutt_getch();
+  mutt_getch_timeout(-1);
+  // mutt_curses_set_cursor(cursor);
+
+  if (ch.ch < OP_NULL)
+  {
+    *id = ch.ch;
+    return 0;
+  }
+
+  struct CertMenuData *mdata = menu->mdata;
+  char *p = NULL;
+  if ((ch.ch != 0) && (p = strchr(mdata->keys, ch.ch)))
+  {
+    *id = OP_MAX + (p - mdata->keys + 1);
+    return 0;
+  }
+
+  if (ch.op == OP_NULL)
+    mutt_unget_event(ch.ch, OP_NULL);
+  else
+    mutt_unget_event(0, ch.op);
+  return -1;
+}
+
+/**
+ * menu_dialog_translate_op - Convert menubar movement to scrolling
+ * @param op Action requested, e.g. OP_NEXT_ENTRY
+ * @retval num Action to perform, e.g. OP_NEXT_LINE
+ */
+static int menu_dialog_translate_op(int op)
+{
+  switch (op)
+  {
+    case OP_NEXT_ENTRY:
+      return OP_NEXT_LINE;
+    case OP_PREV_ENTRY:
+      return OP_PREV_LINE;
+    case OP_CURRENT_TOP:
+      return OP_TOP_PAGE;
+    case OP_CURRENT_BOTTOM:
+      return OP_BOTTOM_PAGE;
+    case OP_CURRENT_MIDDLE:
+      return OP_MIDDLE_PAGE;
+  }
+
+  return op;
+}
+
+/**
+ * cert_make_entry - Create a string to display in a Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
+ */
+void cert_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+{
+  struct CertMenuData *mdata = menu->mdata;
+
+  menu->current = -1; /* hide menubar */
+
+  const char **line_ptr = ARRAY_GET(mdata->carr, line);
+  if (!line_ptr)
+  {
+    buf[0] = '\0';
+    return;
+  }
+
+  mutt_str_copy(buf, *line_ptr, buflen);
+}
 
 /**
  * cert_array_clear - Free all memory of a CertArray
@@ -104,83 +187,122 @@ int dlg_verify_certificate(const char *title, struct CertArray *carr,
 {
   struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_CERTIFICATE, VerifyHelp);
 
+  struct CertMenuData mdata = { carr };
+
   struct Menu *menu = dlg->wdata;
+  menu->mdata = &mdata;
+  menu->mdata_free = NULL; // Menu doesn't own the data
+  menu->make_entry = cert_make_entry;
+  menu->max = ARRAY_SIZE(carr);
 
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   sbar_set_title(sbar, title);
-
-  const char **line = NULL;
-  ARRAY_FOREACH(line, carr)
-  {
-    menu_add_dialog_row(menu, NONULL(*line));
-  }
 
   if (allow_always)
   {
     if (allow_skip)
     {
-      menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always, (s)kip");
+      mdata.prompt = _("(r)eject, accept (o)nce, (a)ccept always, (s)kip");
       /* L10N: The letters correspond to the choices in the string:
          "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
          This is an interactive certificate confirmation prompt for an SSL connection. */
-      menu->keys = _("roas");
+      mdata.keys = _("roas");
     }
     else
     {
-      menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
+      mdata.prompt = _("(r)eject, accept (o)nce, (a)ccept always");
       /* L10N: The letters correspond to the choices in the string:
          "(r)eject, accept (o)nce, (a)ccept always"
          This is an interactive certificate confirmation prompt for an SSL connection. */
-      menu->keys = _("roa");
+      mdata.keys = _("roa");
     }
   }
   else
   {
     if (allow_skip)
     {
-      menu->prompt = _("(r)eject, accept (o)nce, (s)kip");
+      mdata.prompt = _("(r)eject, accept (o)nce, (s)kip");
       /* L10N: The letters correspond to the choices in the string:
          "(r)eject, accept (o)nce, (s)kip"
          This is an interactive certificate confirmation prompt for an SSL connection. */
-      menu->keys = _("ros");
+      mdata.keys = _("ros");
     }
     else
     {
-      menu->prompt = _("(r)eject, accept (o)nce");
+      mdata.prompt = _("(r)eject, accept (o)nce");
       /* L10N: The letters correspond to the choices in the string:
          "(r)eject, accept (o)nce"
          This is an interactive certificate confirmation prompt for an SSL connection. */
-      menu->keys = _("ro");
+      mdata.keys = _("ro");
     }
   }
+  msgwin_set_text(MT_COLOR_PROMPT, mdata.prompt);
 
   bool old_ime = OptIgnoreMacroEvents;
   OptIgnoreMacroEvents = true;
 
-  int rc = 0;
-  while (rc == 0)
+  // ---------------------------------------------------------------------------
+  // Event Loop
+  int choice = 0;
+  int op = OP_NULL;
+  do
   {
-    switch (menu_loop(menu))
+    window_redraw(NULL);
+    msgwin_set_text(MT_COLOR_PROMPT, mdata.prompt);
+
+    // Try to catch dialog keys before ops
+    if (menu_dialog_dokey(menu, &op) != 0)
+    {
+      op = km_dokey(menu->type);
+    }
+
+    if (op == OP_TIMEOUT)
+      continue;
+
+    // Convert menubar movement to scrolling
+    op = menu_dialog_translate_op(op);
+
+    if (op <= OP_MAX)
+      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
+    else
+      mutt_debug(LL_DEBUG1, "Got choice %d\n", op - OP_MAX);
+
+    switch (op)
     {
       case -1:         // Abort: Ctrl-G
       case OP_EXIT:    // Q)uit
       case OP_MAX + 1: // R)eject
-        rc = 1;
+        choice = 1;
         break;
       case OP_MAX + 2: // O)nce
-        rc = 2;
+        choice = 2;
         break;
       case OP_MAX + 3: // A)lways / S)kip
-        rc = 3;
+        choice = 3;
         break;
       case OP_MAX + 4: // S)kip
-        rc = 4;
+        choice = 4;
         break;
+
+      case OP_JUMP:
+        mutt_error(_("Jumping is not implemented for dialogs"));
+        continue;
+
+      case OP_SEARCH:
+      case OP_SEARCH_NEXT:
+      case OP_SEARCH_OPPOSITE:
+      case OP_SEARCH_REVERSE:
+        mutt_error(_("Search is not implemented for this menu"));
+        continue;
     }
-  }
+
+    menu_function_dispatcher(menu->win, op);
+  } while (choice == 0);
+  // ---------------------------------------------------------------------------
+
   OptIgnoreMacroEvents = old_ime;
 
   simple_dialog_free(&dlg);
 
-  return rc;
+  return choice;
 }

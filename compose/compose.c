@@ -86,6 +86,7 @@
 #include "functions.h"
 #include "hook.h"
 #include "mutt_globals.h"
+#include "mutt_logging.h"
 #include "opcodes.h"
 #include "options.h"
 #include "shared_data.h"
@@ -316,8 +317,6 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
 int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
                       struct ConfigSubset *sub)
 {
-  bool loop = true;
-
   struct MuttWindow *dlg = compose_dlg_init(sub, e, fcc);
   struct ComposeSharedData *shared = dlg->wdata;
   shared->mailbox = get_current_mailbox();
@@ -341,27 +340,44 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
     dlg->help_data = ComposeHelp;
   dlg->help_menu = MENU_COMPOSE;
 
-  update_menu(shared->adata->actx, shared->adata->menu, true);
+  struct Menu *menu = shared->adata->menu;
+  update_menu(shared->adata->actx, menu, true);
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE, NULL);
 
   struct MuttWindow *win_env = window_find_child(dlg, WT_CUSTOM);
-  while (loop)
+
+  // ---------------------------------------------------------------------------
+  // Event Loop
+  int rc = 0;
+  int op = OP_NULL;
+  do
   {
 #ifdef USE_NNTP
     OptNews = false; /* for any case */
 #endif
+    menu_tagging_dispatcher(menu, op);
     window_redraw(NULL);
-    const int op = menu_loop(shared->adata->menu);
-    mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
 
-    int rc = compose_function_dispatcher(dlg, op);
-    if (rc == IR_UNKNOWN)
+    op = km_dokey(menu->type);
+    mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
+    if (op < 0)
+      continue;
+    if (op == OP_NULL)
     {
-      rc = env_function_dispatcher(win_env, op);
+      km_error_key(menu->type);
+      continue;
     }
-    if (rc == IR_DONE)
-      break;
-  }
+    mutt_clear_error();
+
+    rc = compose_function_dispatcher(dlg, op);
+    if (rc == IR_UNKNOWN)
+      rc = env_function_dispatcher(win_env, op);
+    if (rc == IR_UNKNOWN)
+      rc = menu_function_dispatcher(menu->win, op);
+    if (rc == IR_UNKNOWN)
+      rc = global_function_dispatcher(menu->win, op);
+  } while (rc != IR_DONE);
+  // ---------------------------------------------------------------------------
 
 #ifdef USE_AUTOCRYPT
   /* This is a fail-safe to make sure the bit isn't somehow turned
@@ -377,7 +393,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
   else
     e->body = NULL;
 
-  const int rc = shared->rc;
+  rc = shared->rc;
 
   dialog_pop();
   mutt_window_free(&dlg);

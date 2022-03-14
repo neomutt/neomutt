@@ -32,6 +32,7 @@
  * | menu/menu.c      | @subpage menu_menu      |
  * | menu/move.c      | @subpage menu_move      |
  * | menu/observer.c  | @subpage menu_observer  |
+ * | menu/tagging.c   | @subpage menu_tagging   |
  * | menu/window.c    | @subpage menu_window    |
  */
 
@@ -76,14 +77,6 @@ struct Menu
   bool tag_prefix : 1;      ///< User has pressed <tag-prefix>
   struct MuttWindow *win;   ///< Window holding the Menu
   struct ConfigSubset *sub; ///< Inherited config items
-
-  /* Setting a non-empty dialog overrides normal menu behavior.
-   * In dialog mode menubar is hidden and prompt keys are checked before
-   * normal menu movement keys. This can cause problems with scrolling, if
-   * prompt keys override movement keys.  */
-  struct DialogLines dialog;   ///< Dialog lines themselves
-  char *prompt;                ///< Prompt for user, similar to mutt_multi_choice
-  char *keys;                  ///< Keys used in the prompt
 
   /* the following are used only by menu_loop() */
   int top;                ///< Entry that is the top of the current page
@@ -198,7 +191,6 @@ void         menu_add_dialog_row(struct Menu *menu, const char *row);
 void         menu_cleanup(void);
 enum MenuType menu_get_current_type(void);
 void         menu_init(void);
-int          menu_loop(struct Menu *menu);
 
 struct MuttWindow *menu_new_window(enum MenuType type, struct ConfigSubset *sub);
 
@@ -209,5 +201,8 @@ void menu_queue_redraw(struct Menu *menu, MenuRedrawFlags redraw);
 MenuRedrawFlags menu_move_view_relative(struct Menu *menu, int relative);
 MenuRedrawFlags menu_set_and_notify(struct Menu *menu, int top, int index);
 void menu_adjust(struct Menu *menu);
+
+int menu_function_dispatcher(struct MuttWindow *win, int op);
+int menu_tagging_dispatcher(struct Menu *menu, int op);
 
 #endif /* MUTT_MENU_LIB_H */

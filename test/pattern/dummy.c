@@ -69,6 +69,11 @@ typedef const char *(format_t) (char *buf, size_t buflen, size_t col, int cols,
                                 const char *if_str, const char *else_str,
                                 intptr_t data, MuttFormatFlags flags);
 
+struct Address *alias_reverse_lookup(const struct Address *addr)
+{
+  return NULL;
+}
+
 int crypt_valid_passphrase(int flags)
 {
   return 0;

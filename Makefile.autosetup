@@ -513,8 +513,9 @@ $(PWD)/mbox:
 ###############################################################################
 # libmenu
 LIBMENU=	libmenu.a
-LIBMENUOBJS=	menu/config.o menu/draw.o menu/menu.o menu/move.o \
-		menu/observer.o menu/type.o menu/window.o
+LIBMENUOBJS=	menu/config.o menu/draw.o menu/functions.o menu/menu.o \
+		menu/move.o menu/observer.o menu/tagging.o menu/type.o \
+		menu/window.o
 CLEANFILES+=	$(LIBMENU) $(LIBMENUOBJS)
 ALLOBJS+=	$(LIBMENUOBJS)
 
@@ -764,13 +765,14 @@ $(ALLOBJS):
 # The libraries with the most dependencies will come first.
 MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) \
 		$(LIBBROWSER) $(LIBNNTP) $(LIBCOMPMBOX) $(LIBSTORE) \
-		$(LIBPROGRESS) $(LIBQUESTION) $(LIBMENU) $(LIBCOLOR) \
-		$(LIBSEND) $(LIBCOMPOSE) $(LIBENVELOPE) $(LIBGUI) $(LIBENTER) \
-		$(LIBPATTERN) $(LIBHELPBAR) $(LIBMBOX) $(LIBNOTMUCH) \
-		$(LIBATTACH) $(LIBMAILDIR) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) \
-		$(LIBHCACHE) $(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) \
-		$(LIBHISTORY) $(LIBALIAS) $(LIBCORE) $(LIBCONFIG) $(LIBEMAIL) \
-		$(LIBADDRESS) $(LIBDEBUG) $(LIBMUTT)
+		$(LIBPROGRESS) $(LIBQUESTION) $(LIBALIAS) $(LIBSEND) \
+		$(LIBCOMPOSE) $(LIBATTACH) $(LIBGUI) $(LIBENTER) \
+		$(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) $(LIBENVELOPE) \
+		$(LIBHELPBAR) $(LIBMBOX) $(LIBNOTMUCH) $(LIBMAILDIR) \
+		$(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
+		$(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) \
+		$(LIBCORE) $(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) $(LIBDEBUG) \
+		$(LIBMUTT)
 
 # neomutt
 $(NEOMUTT): $(GENERATED) $(NEOMUTTOBJS) $(MUTTLIBS)

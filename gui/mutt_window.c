@@ -34,6 +34,7 @@
 #include "mutt_window.h"
 #include "curs_lib.h"
 #include "mutt_curses.h"
+#include "mutt_globals.h"
 #include "options.h"
 #include "reflow.h"
 #include "rootwin.h"
@@ -604,6 +605,13 @@ void window_redraw(struct MuttWindow *win)
 {
   if (!win)
     win = RootWindow;
+
+  if (SigWinch)
+  {
+    SigWinch = false;
+    window_invalidate_all();
+    mutt_resize_screen();
+  }
 
   window_reflow(win);
   window_notify_all(win);

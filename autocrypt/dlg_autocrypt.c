@@ -75,9 +75,11 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "index/lib.h"
 #include "menu/lib.h"
 #include "question/lib.h"
 #include "format_flags.h"
+#include "mutt_logging.h"
 #include "muttlib.h"
 #include "opcodes.h"
 
@@ -367,24 +369,42 @@ void dlg_select_autocrypt_account(void)
   notify_observer_add(NeoMutt->notify, NT_CONFIG, autocrypt_config_observer, menu);
   notify_observer_add(win_menu->notify, NT_WINDOW, autocrypt_window_observer, win_menu);
 
-  bool done = false;
-  while (!done)
+  // ---------------------------------------------------------------------------
+  // Event Loop
+  int op = OP_NULL;
+  int rc;
+  do
   {
-    switch (menu_loop(menu))
+    rc = IR_UNKNOWN;
+    menu_tagging_dispatcher(menu, op);
+    window_redraw(NULL);
+
+    op = km_dokey(menu->type);
+    mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
+    if (op < 0)
+      continue;
+    if (op == OP_NULL)
+    {
+      km_error_key(menu->type);
+      continue;
+    }
+    mutt_clear_error();
+
+    switch (op)
     {
       case OP_EXIT:
-        done = true;
+        rc = IR_DONE;
         break;
 
       case OP_AUTOCRYPT_CREATE_ACCT:
         if (mutt_autocrypt_account_init(false) == 0)
           populate_menu(menu);
-        break;
+        continue;
 
       case OP_AUTOCRYPT_DELETE_ACCT:
       {
         if (!menu->mdata)
-          break;
+          continue;
 
         const int index = menu_get_index(menu);
         struct AccountEntry *entry = ((struct AccountEntry *) menu->mdata) + index;
@@ -393,39 +413,45 @@ void dlg_select_autocrypt_account(void)
                  // L10N: Confirmation message when deleting an autocrypt account
                  _("Really delete account \"%s\"?"), entry->addr->mailbox);
         if (mutt_yesorno(msg, MUTT_NO) != MUTT_YES)
-          break;
+          continue;
 
         if (mutt_autocrypt_db_account_delete(entry->account) == 0)
           populate_menu(menu);
 
-        break;
+        continue;
       }
 
       case OP_AUTOCRYPT_TOGGLE_ACTIVE:
       {
         if (!menu->mdata)
-          break;
+          continue;
 
         const int index = menu_get_index(menu);
         struct AccountEntry *entry = ((struct AccountEntry *) menu->mdata) + index;
         toggle_active(entry);
         menu_queue_redraw(menu, MENU_REDRAW_FULL);
-        break;
+        continue;
       }
 
       case OP_AUTOCRYPT_TOGGLE_PREFER:
       {
         if (!menu->mdata)
-          break;
+          continue;
 
         const int index = menu_get_index(menu);
         struct AccountEntry *entry = (struct AccountEntry *) (menu->mdata) + index;
         toggle_prefer_encrypt(entry);
         menu_queue_redraw(menu, MENU_REDRAW_FULL);
-        break;
+        continue;
       }
     }
-  }
+
+    if (rc == IR_UNKNOWN)
+      rc = menu_function_dispatcher(menu->win, op);
+    if (rc == IR_UNKNOWN)
+      rc = global_function_dispatcher(menu->win, op);
+  } while (rc != IR_DONE);
+  // ---------------------------------------------------------------------------
 
   simple_dialog_free(&dlg);
 }

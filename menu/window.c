@@ -68,6 +68,7 @@
 #include "config.h"
 #include "private.h"
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
 #include "type.h"
@@ -97,9 +98,23 @@ static int menu_repaint(struct MuttWindow *win)
   if (win->type != WT_MENU)
     return 0;
 
-  // struct Menu *menu = win->wdata;
-  // menu_redraw(menu);
-  // menu->redraw = MENU_REDRAW_NO_FLAGS;
+  struct Menu *menu = win->wdata;
+  menu->redraw |= MENU_REDRAW_FULL;
+  menu_redraw(menu);
+  menu->redraw = MENU_REDRAW_NO_FLAGS;
+
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  const bool c_braille_friendly = cs_subset_bool(menu->sub, "braille_friendly");
+
+  /* move the cursor out of the way */
+  if (c_arrow_cursor)
+    mutt_window_move(menu->win, 2, menu->current - menu->top);
+  else if (c_braille_friendly)
+    mutt_window_move(menu->win, 0, menu->current - menu->top);
+  else
+  {
+    mutt_window_move(menu->win, menu->win->state.cols - 1, menu->current - menu->top);
+  }
 
   mutt_debug(LL_DEBUG5, "repaint done\n");
   return 0;
@@ -131,6 +146,7 @@ struct MuttWindow *menu_new_window(enum MenuType type, struct ConfigSubset *sub)
   win->repaint = menu_repaint;
   win->wdata = menu;
   win->wdata_free = menu_wdata_free;
+  win->actions |= WA_RECALC;
 
   return win;
 }

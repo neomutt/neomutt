@@ -75,10 +75,12 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "index/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "format_flags.h"
 #include "hdrline.h"
+#include "mutt_logging.h"
 #include "opcodes.h"
 #include "protos.h"
 
@@ -167,7 +169,6 @@ static int postponed_window_observer(struct NotifyCallback *nc)
 struct Email *dlg_select_postponed_email(struct Mailbox *m)
 {
   int r = -1;
-  bool done = false;
 
   struct MuttWindow *dlg = simple_dialog_new(MENU_POSTPONE, WT_DLG_POSTPONE, PostponeHelp);
 
@@ -193,9 +194,27 @@ struct Email *dlg_select_postponed_email(struct Mailbox *m)
   const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
 
-  while (!done)
+  // ---------------------------------------------------------------------------
+  // Event Loop
+  int op = OP_NULL;
+  int rc;
+  do
   {
-    const int op = menu_loop(menu);
+    rc = IR_UNKNOWN;
+    menu_tagging_dispatcher(menu, op);
+    window_redraw(NULL);
+
+    op = km_dokey(menu->type);
+    mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
+    if (op < 0)
+      continue;
+    if (op == OP_NULL)
+    {
+      km_error_key(menu->type);
+      continue;
+    }
+    mutt_clear_error();
+
     switch (op)
     {
       case OP_DELETE:
@@ -217,7 +236,7 @@ struct Email *dlg_select_postponed_email(struct Mailbox *m)
         }
         else
           menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
-        break;
+        continue;
       }
 
       // All search operations must exist to show the menu
@@ -230,19 +249,25 @@ struct Email *dlg_select_postponed_email(struct Mailbox *m)
         index = mutt_search_command(m, menu, index, op);
         if (index != -1)
           menu_set_index(menu, index);
-        break;
+        continue;
       }
 
       case OP_GENERIC_SELECT_ENTRY:
         r = menu_get_index(menu);
-        done = true;
+        rc = IR_DONE;
         break;
 
       case OP_EXIT:
-        done = true;
+        rc = IR_DONE;
         break;
     }
-  }
+
+    if (rc == IR_UNKNOWN)
+      rc = menu_function_dispatcher(menu->win, op);
+    if (rc == IR_UNKNOWN)
+      rc = global_function_dispatcher(menu->win, op);
+  } while (rc != IR_DONE);
+  // ---------------------------------------------------------------------------
 
   cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
   simple_dialog_free(&dlg);

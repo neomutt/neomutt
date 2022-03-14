@@ -84,6 +84,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "index/lib.h"
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "question/lib.h"
@@ -1320,7 +1321,6 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
 {
   int keymax;
   int i;
-  bool done = false;
   struct CryptKeyInfo *k = NULL;
   int (*f)(const void *, const void *);
   enum MenuType menu_to_use = MENU_GENERIC;
@@ -1427,10 +1427,30 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
 
   mutt_clear_error();
   k = NULL;
-  while (!done)
+
+  // ---------------------------------------------------------------------------
+  // Event Loop
+  int op = OP_NULL;
+  int rc;
+  do
   {
+    rc = IR_UNKNOWN;
+    menu_tagging_dispatcher(menu, op);
+    window_redraw(NULL);
+
+    op = km_dokey(menu->type);
+    mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
+    if (op < 0)
+      continue;
+    if (op == OP_NULL)
+    {
+      km_error_key(menu->type);
+      continue;
+    }
+    mutt_clear_error();
+
     *forced_valid = 0;
-    switch (menu_loop(menu))
+    switch (op)
     {
       case OP_VERIFY_KEY:
       {
@@ -1438,7 +1458,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
         struct CryptKeyInfo *cur_key = key_table[index];
         verify_key(cur_key);
         menu_queue_redraw(menu, MENU_REDRAW_FULL);
-        break;
+        continue;
       }
 
       case OP_VIEW_ID:
@@ -1446,7 +1466,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
         const int index = menu_get_index(menu);
         struct CryptKeyInfo *cur_key = key_table[index];
         mutt_message("%s", cur_key->uid);
-        break;
+        continue;
       }
 
       case OP_GENERIC_SELECT_ENTRY:
@@ -1461,7 +1481,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
           {
             mutt_error(_("This key can't be used: "
                          "expired/disabled/revoked"));
-            break;
+            continue;
           }
         }
 
@@ -1504,7 +1524,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
           if (mutt_yesorno(buf2, MUTT_NO) != MUTT_YES)
           {
             mutt_clear_error();
-            break;
+            continue;
           }
 
           /* A '!' is appended to a key in find_keys() when forced_valid is
@@ -1522,16 +1542,22 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
         }
 
         k = crypt_copy_key(cur_key);
-        done = true;
+        rc = IR_DONE;
         break;
       }
 
       case OP_EXIT:
         k = NULL;
-        done = true;
+        rc = IR_DONE;
         break;
     }
-  }
+
+    if (rc == IR_UNKNOWN)
+      rc = menu_function_dispatcher(menu->win, op);
+    if (rc == IR_UNKNOWN)
+      rc = global_function_dispatcher(menu->win, op);
+  } while (rc != IR_DONE);
+  // ---------------------------------------------------------------------------
 
   simple_dialog_free(&dlg);
   return k;

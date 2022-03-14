@@ -87,6 +87,7 @@
 #include "hdrline.h"
 #include "hook.h"
 #include "mutt_attach.h"
+#include "mutt_logging.h"
 #include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
@@ -455,8 +456,6 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
   if (!m || !e || !fp)
     return;
 
-  int op = OP_NULL;
-
   /* make sure we have parsed this message */
   mutt_parse_mime_message(e, fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
@@ -479,23 +478,39 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
   menu->mdata = priv;
   menu->mdata_free = attach_private_data_free;
 
-  struct MuttWindow *win_menu = menu->win;
-
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->notify, NT_CONFIG, attach_config_observer, menu);
-  notify_observer_add(win_menu->notify, NT_WINDOW, attach_window_observer, win_menu);
+  notify_observer_add(menu->win->notify, NT_WINDOW, attach_window_observer, menu->win);
 
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   sbar_set_title(sbar, _("Attachments"));
 
-  while (true)
+  // ---------------------------------------------------------------------------
+  // Event Loop
+  int rc = 0;
+  int op = OP_NULL;
+  do
   {
+    menu_tagging_dispatcher(menu, op);
+    window_redraw(NULL);
+
+    op = km_dokey(menu->type);
+    mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
+    if (op < 0)
+      continue;
     if (op == OP_NULL)
-      op = menu_loop(menu);
-    window_redraw(dlg);
-    int rc = attach_function_dispatcher(dlg, op);
-    if (rc == IR_DONE)
-      break;
+    {
+      km_error_key(menu->type);
+      continue;
+    }
+    mutt_clear_error();
+
+    rc = attach_function_dispatcher(dlg, op);
+    if (rc == IR_UNKNOWN)
+      rc = menu_function_dispatcher(menu->win, op);
+    if (rc == IR_UNKNOWN)
+      rc = global_function_dispatcher(menu->win, op);
+
     if (rc == IR_CONTINUE)
     {
       op = priv->op;
@@ -503,7 +518,8 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
     }
 
     op = OP_NULL;
-  }
+  } while (rc != IR_DONE);
+  // ---------------------------------------------------------------------------
 
   simple_dialog_free(&dlg);
 }

@@ -35,6 +35,16 @@ ARRAY_HEAD(CertArray, const char *);
 
 void cert_array_clear(struct CertArray *carr);
 
+/**
+ * CertMenuData - Certificate data to use in the Menu
+ */
+struct CertMenuData
+{
+  struct CertArray *carr;      ///< Lines of the Certificate
+  char *prompt;                ///< Prompt for user, similar to mutt_multi_choice
+  char *keys;                  ///< Keys used in the prompt
+};
+
 int mutt_ssl_socket_setup(struct Connection *conn);
 int dlg_verify_certificate(const char *title, struct CertArray *carr, bool allow_always, bool allow_skip);
 #else

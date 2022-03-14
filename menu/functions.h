@@ -1,9 +1,9 @@
 /**
  * @file
- * Private Menu functions
+ * Menu functions
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,19 +20,33 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MENU_PRIVATE_H
-#define MUTT_MENU_PRIVATE_H
+#ifndef MUTT_MENU_FUNCTIONS_H
+#define MUTT_MENU_FUNCTIONS_H
 
-#include <stddef.h>
-#include "type.h"
+#include <stdbool.h>
 
-struct ConfigSubset;
 struct Menu;
-struct MuttWindow;
 
-void         menu_free(struct Menu **ptr);
-struct Menu *menu_new(enum MenuType type, struct MuttWindow *win, struct ConfigSubset *sub);
+/**
+ * @defgroup menu_function_api Menu Function API
+ *
+ * Prototype for a Menu Function
+ *
+ * @param menu Menu
+ * @param op   Operation to perform, e.g. OP_NEXT_PAGE
+ * @retval enum #IndexRetval
+ */
+typedef int (*menu_function_t)(struct Menu *menu, int op);
 
-void menu_add_observers   (struct Menu *menu);
+/**
+ * struct MenuFunction - A NeoMutt function
+ */
+struct MenuFunction
+{
+  int op;                    ///< Op code, e.g. OP_SEARCH
+  menu_function_t function; ///< Function to call
+};
 
-#endif /* MUTT_MENU_PRIVATE_H */
+extern struct MenuFunction MenuFunctions[];
+
+#endif /* MUTT_MENU_FUNCTIONS_H */
