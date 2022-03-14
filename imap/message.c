@@ -1072,7 +1072,6 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
-  int idx = m->msg_count;
 
   if (!adata || (adata->mailbox != m))
     return -1;
@@ -1204,7 +1203,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         if (m->msg_count >= m->email_max)
           mx_alloc_memory(m);
 
-        m->emails[idx] = e;
+        m->emails[m->msg_count++] = e;
 
         imap_msn_set(&mdata->msn, h.edata->msn - 1, e);
         mutt_hash_int_insert(mdata->uid_hash, h.edata->uid, e);
@@ -1244,10 +1243,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         imap_hcache_put(mdata, e);
 #endif /* USE_HCACHE */
 
-        m->msg_count++;
-
         h.edata = NULL;
-        idx++;
       } while (mfhrc == -1);
 
       imap_edata_free((void **) &h.edata);
