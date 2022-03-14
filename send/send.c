@@ -268,7 +268,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
 #endif
   {
     const bool c_fast_reply = cs_subset_bool(sub, "fast_reply");
-    if (TAILQ_EMPTY(&en->to) || !c_fast_reply)
+    if (TAILQ_EMPTY(&en->to) || !c_fast_reply || (flags & SEND_REVIEW_TO))
     {
       if ((mutt_edit_address(&en->to, _("To: "), true) == -1))
         goto done;
