@@ -1201,6 +1201,9 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         }
 
         struct Email *e = email_new();
+        if (m->msg_count >= m->email_max)
+          mx_alloc_memory(m);
+
         m->emails[idx] = e;
 
         imap_msn_set(&mdata->msn, h.edata->msn - 1, e);
