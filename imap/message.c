@@ -1317,7 +1317,6 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
   bool has_qresync = false;
   bool eval_condstore = false;
   bool eval_qresync = false;
-  unsigned long long *pmodseq = NULL;
   unsigned long long hc_modseq = 0;
   char *uid_seqset = NULL;
 #endif /* USE_HCACHE */
@@ -1372,7 +1371,8 @@ retry:
     {
       size_t dlen2 = 0;
       evalhc = true;
-      pmodseq = mutt_hcache_fetch_raw(mdata->hcache, "/MODSEQ", 7, &dlen2);
+      const unsigned long long *pmodseq =
+          mutt_hcache_fetch_raw(mdata->hcache, "/MODSEQ", 7, &dlen2);
       if (pmodseq)
       {
         hc_modseq = *pmodseq;
