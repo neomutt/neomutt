@@ -379,33 +379,27 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
 
 /**
  * dlg_select_query - Get the user to enter an Address Query
- * @param buf    Buffer for the query
- * @param all    Alias List
- * @param retbuf If true, populate the results
- * @param sub    Config items
+ * @param buf   Buffer for the query
+ * @param mdata Menu data holding Aliases
+ * @retval true Selection was made
  */
-static void dlg_select_query(struct Buffer *buf, struct AliasList *all,
-                             bool retbuf, struct ConfigSubset *sub)
+static bool dlg_select_query(struct Buffer *buf, struct AliasMenuData *mdata)
 {
-  struct AliasMenuData mdata = { 0 };
-  ARRAY_INIT(&mdata.ava);
-  mdata.sub = sub;
-
-  struct Alias *np = NULL;
-  TAILQ_FOREACH(np, all, entries)
-  {
-    alias_array_alias_add(&mdata.ava, np);
-  }
-  alias_array_sort(&mdata.ava, mdata.sub);
-
-  struct MuttWindow *dlg = query_dialog_new(&mdata, mutt_buffer_string(buf));
+  struct MuttWindow *dlg = query_dialog_new(mdata, mutt_buffer_string(buf));
   struct Menu *menu = dlg->wdata;
   struct MuttWindow *win_sbar = window_find_child(dlg, WT_STATUS_BAR);
   struct MuttWindow *win_menu = window_find_child(dlg, WT_MENU);
-  mdata.menu = menu;
-  mdata.sbar = win_sbar;
-  if (retbuf)
-    mdata.query = buf;
+  mdata->menu = menu;
+  mdata->sbar = win_sbar;
+  mdata->query = buf;
+
+  alias_array_sort(&mdata->ava, mdata->sub);
+
+  struct AliasView *avp = NULL;
+  ARRAY_FOREACH(avp, &mdata->ava)
+  {
+    avp->num = ARRAY_FOREACH_IDX;
+  }
 
   // ---------------------------------------------------------------------------
   // Event Loop
@@ -435,64 +429,9 @@ static void dlg_select_query(struct Buffer *buf, struct AliasList *all,
   } while ((rc != IR_DONE) && (rc != IR_CONTINUE));
   // ---------------------------------------------------------------------------
 
-  /* if we need to return the selected entries */
-  if (retbuf && (rc == IR_CONTINUE))
-  {
-    // mutt_buffer_reset(buf);
-    mutt_buffer_alloc(buf, 8192);
-
-    if (menu->tag_prefix)
-    {
-      size_t curpos = 0;
-
-      /* check for tagged entries */
-      struct AliasView *avp = NULL;
-      ARRAY_FOREACH(avp, &mdata.ava)
-      {
-        if (!avp->is_tagged)
-          continue;
-
-        if (curpos == 0)
-        {
-          struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-          if (alias_to_addrlist(&al, avp->alias))
-          {
-            mutt_addrlist_to_local(&al);
-            mutt_addrlist_write(&al, buf->data, buf->dsize, false);
-            curpos = mutt_buffer_len(buf);
-            mutt_addrlist_clear(&al);
-          }
-        }
-        else if ((curpos + 2) < buf->dsize)
-        {
-          struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-          if (alias_to_addrlist(&al, avp->alias))
-          {
-            mutt_addrlist_to_local(&al);
-            mutt_buffer_addstr(buf, ", ");
-            mutt_addrlist_write(&al, buf->data + curpos + 2, buf->dsize - curpos - 2, false);
-            curpos = mutt_buffer_len(buf);
-            mutt_addrlist_clear(&al);
-          }
-        }
-      }
-    }
-    else
-    {
-      mutt_buffer_reset(buf);
-      struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-      if (alias_to_addrlist(&al, ARRAY_GET(&mdata.ava, menu_get_index(menu))->alias))
-      {
-        mutt_addrlist_to_local(&al);
-        mutt_addrlist_write(&al, buf->data, buf->dsize, false);
-        mutt_addrlist_clear(&al);
-      }
-    }
-  }
-
   simple_dialog_free(&dlg);
-  ARRAY_FREE(&mdata.ava);
-  FREE(&mdata.title);
+  window_redraw(NULL);
+  return (rc == IR_CONTINUE); // Was a selection made?
 }
 
 /**
@@ -503,6 +442,8 @@ static void dlg_select_query(struct Buffer *buf, struct AliasList *all,
  */
 int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
 {
+  struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
+
   struct AliasList al = TAILQ_HEAD_INITIALIZER(al);
   const char *const query_command = cs_subset_string(sub, "query_command");
   if (!query_command)
@@ -514,6 +455,8 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
   query_run(mutt_buffer_string(buf), true, &al, sub);
   if (TAILQ_EMPTY(&al))
     goto done;
+
+  mdata.al = &al;
 
   struct Alias *a_first = TAILQ_FIRST(&al);
   if (!TAILQ_NEXT(a_first, entries)) // only one response?
@@ -530,10 +473,55 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
     goto done;
   }
 
+  struct Alias *np = NULL;
+  TAILQ_FOREACH(np, mdata.al, entries)
+  {
+    alias_array_alias_add(&mdata.ava, np);
+  }
+
   /* multiple results, choose from query menu */
-  dlg_select_query(buf, &al, true, sub);
+  if (!dlg_select_query(buf, &mdata))
+    goto done;
+
+  mutt_buffer_reset(buf);
+  mutt_buffer_alloc(buf, 8192);
+  size_t curpos = 0;
+
+  struct AliasView *avp = NULL;
+  ARRAY_FOREACH(avp, &mdata.ava)
+  {
+    if (!avp->is_tagged)
+      continue;
+
+    if (curpos == 0)
+    {
+      struct AddressList al_copy = TAILQ_HEAD_INITIALIZER(al_copy);
+      if (alias_to_addrlist(&al_copy, avp->alias))
+      {
+        mutt_addrlist_to_local(&al_copy);
+        mutt_addrlist_write(&al_copy, buf->data, buf->dsize, false);
+        curpos = mutt_buffer_len(buf);
+        mutt_addrlist_clear(&al_copy);
+      }
+    }
+    else if ((curpos + 2) < buf->dsize)
+    {
+      struct AddressList al_copy = TAILQ_HEAD_INITIALIZER(al_copy);
+      if (alias_to_addrlist(&al_copy, avp->alias))
+      {
+        mutt_addrlist_to_local(&al_copy);
+        mutt_buffer_addstr(buf, ", ");
+        mutt_addrlist_write(&al_copy, buf->data + curpos + 2, buf->dsize - curpos - 2, false);
+        curpos = mutt_buffer_len(buf);
+        mutt_addrlist_clear(&al_copy);
+      }
+    }
+  }
 
 done:
+  ARRAY_FREE(&mdata.ava);
+  FREE(&mdata.title);
+  FREE(&mdata.limit);
   aliaslist_free(&al);
   return 0;
 }
@@ -552,6 +540,10 @@ void query_index(struct Mailbox *m, struct ConfigSubset *sub)
     return;
   }
 
+  struct AliasList al = TAILQ_HEAD_INITIALIZER(al);
+  struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
+  mdata.al = &al;
+
   struct Buffer *buf = mutt_buffer_pool_get();
   if ((mutt_buffer_get_field(_("Query: "), buf, MUTT_COMP_NO_FLAGS, false, NULL,
                              NULL, NULL) != 0) ||
@@ -560,14 +552,43 @@ void query_index(struct Mailbox *m, struct ConfigSubset *sub)
     goto done;
   }
 
-  struct AliasList al = TAILQ_HEAD_INITIALIZER(al);
   query_run(mutt_buffer_string(buf), false, &al, sub);
   if (TAILQ_EMPTY(&al))
     goto done;
 
-  dlg_select_query(buf, &al, false, sub);
-  aliaslist_free(&al);
+  struct Alias *np = NULL;
+  TAILQ_FOREACH(np, mdata.al, entries)
+  {
+    alias_array_alias_add(&mdata.ava, np);
+  }
+
+  if (!dlg_select_query(buf, &mdata))
+    goto done;
+
+  // Prepare the "To:" field of a new email
+  struct Email *e = email_new();
+  e->env = mutt_env_new();
+
+  struct AliasView *avp = NULL;
+  ARRAY_FOREACH(avp, &mdata.ava)
+  {
+    if (!avp->is_tagged)
+      continue;
+
+    struct AddressList al_copy = TAILQ_HEAD_INITIALIZER(al_copy);
+    if (alias_to_addrlist(&al_copy, avp->alias))
+    {
+      mutt_addrlist_copy(&e->env->to, &al_copy, false);
+      mutt_addrlist_clear(&al_copy);
+    }
+  }
+
+  mutt_send_message(SEND_REVIEW_TO, e, NULL, m, NULL, sub);
 
 done:
+  ARRAY_FREE(&mdata.ava);
+  FREE(&mdata.title);
+  FREE(&mdata.limit);
+  aliaslist_free(&al);
   mutt_buffer_pool_release(&buf);
 }

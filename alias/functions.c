@@ -214,7 +214,8 @@ static int op_query(struct AliasMenuData *mdata, int op)
 
   if (TAILQ_EMPTY(&al))
   {
-    menu->max = 0;
+    if (op == OP_QUERY)
+      menu->max = 0;
     return IR_NO_ACTION;
   }
 
