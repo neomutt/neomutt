@@ -498,9 +498,10 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
 
 /**
  * alias_dialog - Open the aliases dialog
- * @param sub Config items
+ * @param m   Mailbox
+ * @param sub Config item
  */
-void alias_dialog(struct ConfigSubset *sub)
+void alias_dialog(struct Mailbox *m, struct ConfigSubset *sub)
 {
   struct Alias *np = NULL;
 

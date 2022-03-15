@@ -540,9 +540,10 @@ done:
 
 /**
  * query_index - Perform an Alias Query and display the results
- * @param sub    Config item
+ * @param m   Mailbox
+ * @param sub Config item
  */
-void query_index(struct ConfigSubset *sub)
+void query_index(struct Mailbox *m, struct ConfigSubset *sub)
 {
   const char *const query_command = cs_subset_string(sub, "query_command");
   if (!query_command)

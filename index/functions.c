@@ -111,7 +111,7 @@ const struct Mapping RetvalNames[] = {
 static int op_alias_dialog(struct IndexSharedData *shared,
                            struct IndexPrivateData *priv, int op)
 {
-  alias_dialog(shared->sub);
+  alias_dialog(shared->mailbox, shared->sub);
   return IR_SUCCESS;
 }
 
@@ -1988,7 +1988,7 @@ static int op_print(struct IndexSharedData *shared, struct IndexPrivateData *pri
  */
 static int op_query(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
-  query_index(shared->sub);
+  query_index(shared->mailbox, shared->sub);
   return IR_SUCCESS;
 }
 
