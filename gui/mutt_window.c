@@ -727,7 +727,7 @@ static void window_invalidate(struct MuttWindow *win)
   if (!win)
     return;
 
-  win->actions |= WA_REPAINT;
+  win->actions |= WA_RECALC | WA_REPAINT;
 
   struct MuttWindow *np = NULL;
   TAILQ_FOREACH(np, &win->children, entries)

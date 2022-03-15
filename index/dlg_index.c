@@ -1265,6 +1265,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       if (SigWinch)
       {
         SigWinch = false;
+        window_invalidate_all();
         mutt_resize_screen();
         priv->menu->top = 0; /* so we scroll the right amount */
         /* force a real complete redraw.  clrtobot() doesn't seem to be able
