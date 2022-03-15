@@ -301,15 +301,16 @@ static struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
 
 /**
  * dlg_select_alias - Display a menu of Aliases
- * @param buf    Buffer for expanded aliases
- * @param mdata  Menu data holding Aliases
+ * @param buf   Buffer for expanded aliases
+ * @param mdata Menu data holding Aliases
+ * @retval true Selection was made
  */
-static void dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
+static bool dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
 {
   if (ARRAY_EMPTY(&mdata->ava))
   {
     mutt_warning(_("You have no aliases"));
-    return;
+    return false;
   }
 
   mdata->query = buf;
@@ -357,33 +358,9 @@ static void dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
   } while ((rc != IR_DONE) && (rc != IR_CONTINUE));
   // ---------------------------------------------------------------------------
 
-  if (buf && (rc == IR_CONTINUE))
-  {
-    mutt_buffer_alloc(buf, 8192);
-    if (menu->tag_prefix)
-    {
-      ARRAY_FOREACH(avp, &mdata->ava)
-      {
-        if (!avp->is_tagged)
-          continue;
-
-        mutt_addrlist_write(&avp->alias->addr, buf->data, buf->dsize, true);
-      }
-    }
-    else
-    {
-      int idx = menu_get_index(menu);
-      if (idx >= ARRAY_SIZE(&mdata->ava))
-        idx = -1;
-      if (idx != -1)
-      {
-        mutt_addrlist_write(&ARRAY_GET(&mdata->ava, idx)->alias->addr,
-                            buf->data, buf->dsize, true);
-      }
-    }
-  }
-
   simple_dialog_free(&dlg);
+  window_redraw(NULL);
+  return (rc == IR_CONTINUE); // Was a selection made?
 }
 
 /**
@@ -403,9 +380,7 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
   struct Alias *np = NULL;
   char bestname[8192] = { 0 };
 
-  struct AliasMenuData mdata = { 0 };
-  ARRAY_INIT(&mdata.ava);
-  mdata.sub = sub;
+  struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
   mdata.limit = mutt_str_dup(buf);
 
   if (buf[0] != '\0')
@@ -430,7 +405,16 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
       }
     }
 
-    if (bestname[0] != '\0')
+    if (bestname[0] == '\0')
+    {
+      // Create a View Array of all the Aliases
+      FREE(&mdata.limit);
+      TAILQ_FOREACH(np, &Aliases, entries)
+      {
+        alias_array_alias_add(&mdata.ava, np);
+      }
+    }
+    else
     {
       /* fake the pattern for menu title */
       char *mtitle = NULL;
@@ -471,15 +455,23 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
     mutt_pattern_alias_func(NULL, &mdata, NULL);
   }
 
-  alias_array_sort(&mdata.ava, mdata.sub);
+  if (!dlg_select_alias(NULL, &mdata))
+    goto done;
 
-  struct Buffer *result = mutt_buffer_pool_get();
-  dlg_select_alias(result, &mdata);
-  if (!mutt_buffer_is_empty(result))
-    mutt_str_copy(buf, mutt_buffer_string(result), buflen);
-  mutt_buffer_pool_release(&result);
+  buf[0] = '\0';
 
+  // Extract the selected aliases
   struct AliasView *avp = NULL;
+  ARRAY_FOREACH(avp, &mdata.ava)
+  {
+    if (!avp->is_tagged)
+      continue;
+
+    mutt_addrlist_write(&avp->alias->addr, buf, buflen, true);
+  }
+
+done:
+  // Process any deleted aliases
   ARRAY_FOREACH(avp, &mdata.ava)
   {
     if (!avp->is_deleted)
@@ -507,25 +499,47 @@ void alias_dialog(struct Mailbox *m, struct ConfigSubset *sub)
 
   struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
 
+  // Create a View Array of all the Aliases
   TAILQ_FOREACH(np, &Aliases, entries)
   {
     alias_array_alias_add(&mdata.ava, np);
   }
 
-  alias_array_sort(&mdata.ava, mdata.sub);
+  if (!dlg_select_alias(NULL, &mdata))
+    goto done;
 
-  dlg_select_alias(NULL, &mdata);
+  // Prepare the "To:" field of a new email
+  struct Email *e = email_new();
+  e->env = mutt_env_new();
 
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, &mdata.ava)
   {
-    if (!avp->is_deleted)
+    if (!avp->is_tagged)
       continue;
 
-    TAILQ_REMOVE(&Aliases, avp->alias, entries);
-    alias_free(&avp->alias);
+    struct AddressList al_copy = TAILQ_HEAD_INITIALIZER(al_copy);
+    if (alias_to_addrlist(&al_copy, avp->alias))
+    {
+      mutt_addrlist_copy(&e->env->to, &al_copy, false);
+      mutt_addrlist_clear(&al_copy);
+    }
+  }
+
+  mutt_send_message(SEND_REVIEW_TO, e, NULL, m, NULL, sub);
+
+done:
+  // Process any deleted aliases
+  ARRAY_FOREACH(avp, &mdata.ava)
+  {
+    if (avp->is_deleted)
+    {
+      TAILQ_REMOVE(&Aliases, avp->alias, entries);
+      alias_free(&avp->alias);
+    }
   }
 
   ARRAY_FREE(&mdata.ava);
+  FREE(&mdata.limit);
   FREE(&mdata.title);
 }
