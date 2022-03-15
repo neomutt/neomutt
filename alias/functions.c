@@ -132,45 +132,34 @@ static int op_exit(struct AliasMenuData *mdata, int op)
  * This function handles:
  * - OP_GENERIC_SELECT_ENTRY
  * - OP_MAIL
+ *
+ * @note AliasMenuData.is_tagged will show the user's selection
  */
 static int op_generic_select_entry(struct AliasMenuData *mdata, int op)
 {
-  if (mdata->query)
-    return IR_CONTINUE;
-
   struct Menu *menu = mdata->menu;
-  struct Email *e = email_new();
-  e->env = mutt_env_new();
-
   if (menu->tag_prefix)
   {
+    // Untag any non-visible aliases
     struct AliasView *avp = NULL;
     ARRAY_FOREACH(avp, &mdata->ava)
     {
-      if (!avp->is_tagged)
-        continue;
-
-      struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-      if (alias_to_addrlist(&al, avp->alias))
-      {
-        mutt_addrlist_copy(&e->env->to, &al, false);
-        mutt_addrlist_clear(&al);
-      }
+      if (avp->is_tagged && !avp->is_visible)
+        avp->is_tagged = false;
     }
   }
   else
   {
-    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-    if (alias_to_addrlist(&al, ARRAY_GET(&mdata->ava, menu_get_index(menu))->alias))
+    // Untag all but the current alias
+    struct AliasView *avp = NULL;
+    const int idx = menu_get_index(menu);
+    ARRAY_FOREACH(avp, &mdata->ava)
     {
-      mutt_addrlist_copy(&e->env->to, &al, false);
-      mutt_addrlist_clear(&al);
+      avp->is_tagged = (ARRAY_FOREACH_IDX == idx);
     }
   }
-  struct Mailbox *m_cur = get_current_mailbox();
-  mutt_send_message(SEND_NO_FLAGS, e, NULL, m_cur, NULL, mdata->sub);
-  menu_queue_redraw(menu, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+
+  return IR_CONTINUE;
 }
 
 /**
