@@ -13,9 +13,9 @@ msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2022-03-16 13:46+0000\n"
-"PO-Revision-Date: 2022-02-11 23:00+0300\n"
+"PO-Revision-Date: 2022-03-16 23:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
-"Language-Team: https://github.com/neomutt/neomuttmutt\n"
+"Language-Team: https://github.com/neomutt/neomutt\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -867,7 +867,7 @@ msgstr "%s: Geçersiz numara: %s"
 #: color/curses.c:92
 #, c-format
 msgid "Too many colors: %d / %d"
-msgstr ""
+msgstr "Pek fazla renk: %d / %d"
 
 #: color/quoted.c:110
 #, c-format
@@ -5469,9 +5469,8 @@ msgid "show autocrypt compose menu options"
 msgstr "autocrypt oluştur menü seçeneklerini göster"
 
 #: opcodes.h:85
-#, fuzzy
 msgid "open the aliases dialog"
-msgstr "Son iletidesiniz"
+msgstr "armalar iletişim kutusunu aç"
 
 #: opcodes.h:86
 msgid "move to the bottom of the page"
