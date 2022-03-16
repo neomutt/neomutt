@@ -1033,6 +1033,9 @@ static int imap_verify_qresync(struct Mailbox *m)
 fail:
   imap_msn_free(&mdata->msn);
   mutt_hash_free(&mdata->uid_hash);
+  mutt_hash_free(&m->subj_hash);
+  mutt_hash_free(&m->id_hash);
+  mutt_hash_free(&m->label_hash);
 
   for (int i = 0; i < m->msg_count; i++)
   {
@@ -1041,6 +1044,7 @@ fail:
     email_free(&m->emails[i]);
   }
   m->msg_count = 0;
+  m->size = 0;
   mutt_hcache_delete_record(mdata->hcache, "/MODSEQ", 7);
   imap_hcache_clear_uid_seqset(mdata);
   imap_hcache_close(mdata);
