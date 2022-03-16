@@ -661,6 +661,9 @@ void alias_free(struct Alias **ptr)
  */
 void aliaslist_free(struct AliasList *al)
 {
+  if (!al)
+    return;
+
   struct Alias *np = NULL, *tmp = NULL;
   TAILQ_FOREACH_SAFE(np, al, entries, tmp)
   {

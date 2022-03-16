@@ -234,9 +234,9 @@ int menu_tagging_dispatcher(struct Menu *menu, int op)
       return op_tag_prefix(menu, op);
     case OP_TAG_PREFIX_COND:
       return op_tag_prefix_cond(menu, op);
-    case -1: // Abort / Error
+    case OP_ABORT:
       return menu_abort(menu);
-    case -2: // Timeout
+    case OP_TIMEOUT:
       return menu_timeout(menu);
     default:
       return menu_other(menu);

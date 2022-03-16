@@ -128,6 +128,10 @@ static int op_exit(struct AliasMenuData *mdata, int op)
 
 /**
  * op_generic_select_entry - select the current entry - Implements ::alias_function_t - @ingroup alias_function_api
+ *
+ * This function handles:
+ * - OP_GENERIC_SELECT_ENTRY
+ * - OP_MAIL
  */
 static int op_generic_select_entry(struct AliasMenuData *mdata, int op)
 {
@@ -189,6 +193,10 @@ static int op_main_limit(struct AliasMenuData *mdata, int op)
 
 /**
  * op_query - query external program for addresses - Implements ::alias_function_t - @ingroup alias_function_api
+ *
+ * This function handles:
+ * - OP_QUERY
+ * - OP_QUERY_APPEND
  */
 static int op_query(struct AliasMenuData *mdata, int op)
 {
@@ -236,6 +244,12 @@ static int op_query(struct AliasMenuData *mdata, int op)
 
 /**
  * op_search - search for a regular expression - Implements ::alias_function_t - @ingroup alias_function_api
+ *
+ * This function handles:
+ * - OP_SEARCH
+ * - OP_SEARCH_NEXT
+ * - OP_SEARCH_OPPOSITE
+ * - OP_SEARCH_REVERSE
  */
 static int op_search(struct AliasMenuData *mdata, int op)
 {
@@ -250,6 +264,10 @@ static int op_search(struct AliasMenuData *mdata, int op)
 
 /**
  * op_sort - sort aliases - Implements ::alias_function_t - @ingroup alias_function_api
+ *
+ * This function handles:
+ * - OP_SORT
+ * - OP_SORT_REVERSE
  */
 static int op_sort(struct AliasMenuData *mdata, int op)
 {

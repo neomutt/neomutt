@@ -57,7 +57,7 @@
  * | Event Type            | Handler                    |
  * | :-------------------- | :------------------------- |
  * | #NT_CONFIG            | alias_config_observer()    |
- * | #NT_WINDOW            | alias_window_observer()    |
+ * | #NT_WINDOW            | query_window_observer()    |
  * | MuttWindow::recalc()  | alias_recalc()             |
  *
  * The Address Query Dialog doesn't have any specific colours, so it doesn't
@@ -318,7 +318,7 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
 /**
  * query_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
-int query_window_observer(struct NotifyCallback *nc)
+static int query_window_observer(struct NotifyCallback *nc)
 {
   if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
     return -1;

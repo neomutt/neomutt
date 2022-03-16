@@ -242,7 +242,7 @@ static int alias_alias_observer(struct NotifyCallback *nc)
  *
  * - Delete (this window): clean up the resources held by the Help Bar
  */
-int alias_window_observer(struct NotifyCallback *nc)
+static int alias_window_observer(struct NotifyCallback *nc)
 {
   if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
     return -1;
@@ -270,7 +270,7 @@ int alias_window_observer(struct NotifyCallback *nc)
  * @param mdata Menu data holding Aliases
  * @retval ptr New Dialog
  */
-struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
+static struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
 {
   struct MuttWindow *dlg = simple_dialog_new(MENU_ALIAS, WT_DLG_ALIAS, AliasHelp);
 
