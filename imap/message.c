@@ -965,7 +965,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
   if (mdata->reopen & IMAP_EXPUNGE_PENDING)
   {
     imap_hcache_close(mdata);
-    imap_expunge_mailbox(m);
+    imap_expunge_mailbox(m, false);
 
     imap_hcache_open(adata, mdata);
     mdata->reopen &= ~IMAP_EXPUNGE_PENDING;

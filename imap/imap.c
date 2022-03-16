@@ -668,12 +668,13 @@ void imap_notify_delete_email(struct Mailbox *m, struct Email *e)
 /**
  * imap_expunge_mailbox - Purge messages from the server
  * @param m Mailbox
+ * @param resort Trigger a resort?
  *
  * Purge IMAP portion of expunged messages from the context. Must not be done
  * while something has a handle on any headers (eg inside pager or editor).
  * That is, check #IMAP_REOPEN_ALLOW.
  */
-void imap_expunge_mailbox(struct Mailbox *m)
+void imap_expunge_mailbox(struct Mailbox *m, bool resort)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
@@ -733,7 +734,10 @@ void imap_expunge_mailbox(struct Mailbox *m)
 #endif
 
   mailbox_changed(m, NT_MAILBOX_UPDATE);
-  mailbox_changed(m, NT_MAILBOX_RESORT);
+  if (resort)
+  {
+    mailbox_changed(m, NT_MAILBOX_RESORT);
+  }
 }
 
 /**
