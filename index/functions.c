@@ -2175,8 +2175,6 @@ static int op_search(struct IndexSharedData *shared, struct IndexPrivateData *pr
   index = mutt_search_command(shared->mailbox, priv->menu, index, op);
   if (index != -1)
     menu_set_index(priv->menu, index);
-  else
-    menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
 
   return IR_SUCCESS;
 }
