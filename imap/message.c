@@ -1072,7 +1072,6 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
-  int idx = m->msg_count;
 
   if (!adata || (adata->mailbox != m))
     return -1;
@@ -1201,7 +1200,10 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         }
 
         struct Email *e = email_new();
-        m->emails[idx] = e;
+        if (m->msg_count >= m->email_max)
+          mx_alloc_memory(m);
+
+        m->emails[m->msg_count++] = e;
 
         imap_msn_set(&mdata->msn, h.edata->msn - 1, e);
         mutt_hash_int_insert(mdata->uid_hash, h.edata->uid, e);
@@ -1241,10 +1243,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         imap_hcache_put(mdata, e);
 #endif /* USE_HCACHE */
 
-        m->msg_count++;
-
         h.edata = NULL;
-        idx++;
       } while (mfhrc == -1);
 
       imap_edata_free((void **) &h.edata);
@@ -1318,7 +1317,6 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
   bool has_qresync = false;
   bool eval_condstore = false;
   bool eval_qresync = false;
-  unsigned long long *pmodseq = NULL;
   unsigned long long hc_modseq = 0;
   char *uid_seqset = NULL;
 #endif /* USE_HCACHE */
@@ -1373,7 +1371,8 @@ retry:
     {
       size_t dlen2 = 0;
       evalhc = true;
-      pmodseq = mutt_hcache_fetch_raw(mdata->hcache, "/MODSEQ", 7, &dlen2);
+      const unsigned long long *pmodseq =
+          mutt_hcache_fetch_raw(mdata->hcache, "/MODSEQ", 7, &dlen2);
       if (pmodseq)
       {
         hc_modseq = *pmodseq;
