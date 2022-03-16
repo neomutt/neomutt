@@ -117,9 +117,7 @@ static int op_tag(struct Menu *menu, int op)
     rc = IR_ERROR;
   }
 
-  // Clear the tag prefix unless we just started it
-  if (menu->tag_prefix)
-    menu->tag_prefix = false;
+  menu->tag_prefix = ((menu->num_tagged != 0) && c_auto_tag);
 
   /* give visual indication that the next command is a tag- command */
   if (menu->tag_prefix)
