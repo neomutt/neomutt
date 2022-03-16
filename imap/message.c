@@ -859,9 +859,8 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
 
       mailbox_size_add(m, e);
       m->emails[m->msg_count++] = e;
-
-      msn++;
     }
+    msn++;
   }
 
   mutt_seqset_iterator_free(&iter);
