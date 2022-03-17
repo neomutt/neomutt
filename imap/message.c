@@ -862,6 +862,21 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
 
       msn++;
     }
+    /* A non-zero uid missing from the header cache is either the
+     * result of an expunged message (not recorded in the uid seqset)
+     * or a hole in the header cache.
+     *
+     * We have to assume it's an earlier expunge and compact the msn's
+     * in that case, because cmd_parse_vanished() won't find it in the
+     * uid_hash and decrement later msn's there.
+     *
+     * Thus we only increment the uid if the uid was 0: an actual
+     * stored "blank" in the uid seqset.
+     */
+    else if (!uid)
+    {
+      msn++;
+    }
   }
 
   mutt_seqset_iterator_free(&iter);
@@ -950,7 +965,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
   if (mdata->reopen & IMAP_EXPUNGE_PENDING)
   {
     imap_hcache_close(mdata);
-    imap_expunge_mailbox(m);
+    imap_expunge_mailbox(m, false);
 
     imap_hcache_open(adata, mdata);
     mdata->reopen &= ~IMAP_EXPUNGE_PENDING;
@@ -1018,6 +1033,9 @@ static int imap_verify_qresync(struct Mailbox *m)
 fail:
   imap_msn_free(&mdata->msn);
   mutt_hash_free(&mdata->uid_hash);
+  mutt_hash_free(&m->subj_hash);
+  mutt_hash_free(&m->id_hash);
+  mutt_hash_free(&m->label_hash);
 
   for (int i = 0; i < m->msg_count; i++)
   {
@@ -1026,6 +1044,7 @@ fail:
     email_free(&m->emails[i]);
   }
   m->msg_count = 0;
+  m->size = 0;
   mutt_hcache_delete_record(mdata->hcache, "/MODSEQ", 7);
   imap_hcache_clear_uid_seqset(mdata);
   imap_hcache_close(mdata);
@@ -1319,6 +1338,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
   bool eval_qresync = false;
   unsigned long long hc_modseq = 0;
   char *uid_seqset = NULL;
+  const unsigned int msn_begin_save = msn_begin;
 #endif /* USE_HCACHE */
 
   struct ImapAccountData *adata = imap_adata_get(m);
@@ -1442,6 +1462,7 @@ retry:
       FREE(&uid_seqset);
       uidvalidity = NULL;
       uid_next = 0;
+      msn_begin = msn_begin_save;
 
       goto retry;
     }
