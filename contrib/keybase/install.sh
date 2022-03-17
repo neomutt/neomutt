@@ -35,11 +35,13 @@ cp keybase.py "$HOME/.neomutt/keybaseMutt"
 cp pgpdecrypt.sh decrypt.sh verify.sh pgpverify.sh "$HOME/.neomutt/keybaseMutt/scripts"
 
 # Yay! Stuff's installed!
-echo "You'll need to include '~/.neomutt/keybaseMutt/scripts' in your \$PATH."
-echo "This can be done manually by installing in your ~/.profile."
-echo "If you've done this previously on your computer, select 'n'."
-echo "Do you want to proceed? [n]"
-read -r shellInput
-[ -n "$shellInput" ] && [ "$shellInput" != 'n' ] && echo 'PATH="$PATH:$HOME/.neomutt/keybaseMutt/scripts"' >> "$HOME/.profile"
+if ! awk 'BEGIN {split(ENVIRON["PATH"], path, ":"); for(i = 1; i <= length(path); ++i) if(path[i] == (ENVIRON["HOME"] "/.neomutt/keybaseMutt/scripts")) exit 0; exit 1}'; then
+	echo "You'll need to include '~/.neomutt/keybaseMutt/scripts' in your \$PATH."
+	echo "This can be done manually by installing in your ~/.profile."
+	echo "If you've done this previously on your computer, select 'n'."
+	echo "Do you want to proceed? [n]"
+	read -r shellInput
+	[ -n "$shellInput" ] && [ "$shellInput" != 'n' ] && echo 'PATH="$PATH:$HOME/.neomutt/keybaseMutt/scripts"' >> "$HOME/.profile"
+fi
 
 echo "Please restart your shell to be able to use the scripts ('exec $SHELL' or reopening the terminal is easiest)."
