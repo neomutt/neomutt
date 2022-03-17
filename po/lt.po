@@ -868,7 +868,7 @@ msgstr "%s: blogas skaičius: %s"
 #: color/curses.c:92
 #, c-format
 msgid "Too many colors: %d / %d"
-msgstr ""
+msgstr "Per daug spalvų: %d / %d"
 
 #: color/quoted.c:110
 #, c-format
@@ -5487,9 +5487,8 @@ msgid "show autocrypt compose menu options"
 msgstr "rodyti automatinio šifravimo meniu parinktis"
 
 #: opcodes.h:85
-#, fuzzy
 msgid "open the aliases dialog"
-msgstr "Tu esi ties paskutiniu laišku"
+msgstr "atidaryti aliasų dialogą"
 
 #: opcodes.h:86
 msgid "move to the bottom of the page"
