@@ -203,6 +203,7 @@ int log_disp_curses(time_t stamp, const char *file, int line,
     LastError = 0;
   }
 
+  window_redraw(msgwin_get_window());
   return ret;
 }
 
