@@ -371,7 +371,7 @@ int el_add_tagged(struct EmailList *el, struct Context *ctx, struct Email *e, bo
       return -1;
 
     struct Mailbox *m = ctx->mailbox;
-    for (size_t i = 0; i < m->msg_count; i++)
+    for (int i = 0; i < m->msg_count; i++)
     {
       e = m->emails[i];
       if (!e)
