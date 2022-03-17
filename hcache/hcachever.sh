@@ -56,7 +56,7 @@ md5prog () {
   # Use OpenSSL if it's installed
   if openssl=$(command -v openssl); then
     # Check that openssl supports the -r option (requires version 1.1.0)
-    if echo test | openssl md5 -r > /dev/null 2>&1; then
+    if echo test | $openssl md5 -r > /dev/null 2>&1; then
       echo "$openssl md5 -r"
       return
     fi
