@@ -52,16 +52,7 @@
 #include "opcodes.h"
 #include "protos.h"
 #include "state.h" // IWYU pragma: keep
-
-/**
- * enum EnterRedrawFlags - Redraw flags for mutt_enter_string_full()
- */
-enum EnterRedrawFlags
-{
-  ENTER_REDRAW_NONE = 0, ///< Nothing to redraw
-  ENTER_REDRAW_INIT,     ///< Go to end of line and redraw
-  ENTER_REDRAW_LINE,     ///< Redraw entire line
-};
+#include "wdata.h"
 
 /* combining mark / non-spacing character */
 #define COMB_CHAR(wc) (IsWPrint(wc) && !wcwidth(wc))
