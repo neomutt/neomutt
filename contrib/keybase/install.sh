@@ -42,18 +42,11 @@ cp ./verify.sh "$HOME/.neomutt/keybaseMutt/scripts"
 cp ./pgpverify.sh "$HOME/.neomutt/keybaseMutt/scripts"
 
 # Yay! Stuff's installed!
-echo "You'll need to include a path to '~/.neomutt/keybaseMutt/scripts' in your shell's rc file. If you've done this previously on your computer, press 'n'."
-echo "Do you use [b]ash, [k]sh, or [z]sh? [n]"
-echo "(You use $SHELL)"
+echo "You'll need to include '~/.neomutt/keybaseMutt/scripts' in your \$PATH."
+echo "This can be done manually by installing in your ~/.profile."
+echo "If you've done this previously on your computer, select 'n'."
+echo "Do you want to proceed? [n]"
 read -r shellInput
-if [ "$shellInput" = 'b' ]; then
-	echo 'export PATH="$PATH:~/.neomutt/keybaseMutt/scripts"' >> "$HOME/.bashrc"
-elif [ "$shellInput" = 'k' ]; then
-	echo 'export PATH="$PATH:~/.neomutt/keybaseMutt/scripts"' >> "$HOME/.kshrc"
-elif [ "$shellInput" = 'z' ]; then
-	echo 'export PATH="$PATH:~/.neomutt/keybaseMutt/scripts"' >> "$HOME/.zshrc"
-else
-	echo "If you use something another shell, you'll need to add the path manually."
-fi
+[ -n "$shellInput" ] && [ "$shellInput" != 'n' ] && echo 'PATH="$PATH:$HOME/.neomutt/keybaseMutt/scripts"' >> "$HOME/.profile"
 
-echo "Please restart your shell to be able to use the scripts (closing and reopening the terminal is easiest)."
+echo "Please restart your shell to be able to use the scripts ('exec $SHELL' or reopening the terminal is easiest)."

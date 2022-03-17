@@ -132,7 +132,7 @@ popular choice is gpg. To use this:
    whatever you picked above) in the ENCRYPTION_PIPE line.
  - For the gpg-agent to be able to ask you the unlock passphrase,
    the environment variable GPG_TTY must be set to the current tty.
-   Typically you would put the following inside your .bashrc or equivalent:
+   Typically you would put the following inside your .profile or equivalent:
      export GPG_TTY=$(tty)
 
 
