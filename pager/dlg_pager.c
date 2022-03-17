@@ -545,6 +545,7 @@ int mutt_pager(struct PagerView *pview)
   priv->first = true;
   priv->wrapped = false;
   priv->delay_read_timestamp = 0;
+  bool pager_redraw = false;
 
   {
     // Wipe any previous state info
@@ -772,9 +773,9 @@ int mutt_pager(struct PagerView *pview)
     }
     //-------------------------------------------------------------------------
 
-    if (SigWinch)
+    if (pager_redraw)
     {
-      SigWinch = false;
+      pager_redraw = false;
       mutt_resize_screen();
       clearok(stdscr, true); /* force complete redraw */
       msgwin_clear_text();
@@ -821,6 +822,8 @@ int mutt_pager(struct PagerView *pview)
     // Some OP codes are not handled by pager, they cause pager to quit returning
     // OP code to index. Index handles the operation and then restarts pager
     op = km_dokey(MENU_PAGER);
+    if (SigWinch)
+      pager_redraw = true;
 
     if (op >= OP_NULL)
       mutt_clear_error();
