@@ -89,22 +89,6 @@
 static const char *Not_available_in_this_menu =
     N_("Not available in this menu");
 
-/// Lookup for function results
-const struct Mapping RetvalNames[] = {
-  // clang-format off
-  { "continue",  FR_CONTINUE },
-  { "done",      FR_DONE },
-  { "error",     FR_ERROR },
-  { "no action", FR_NO_ACTION },
-  { "not impl",  FR_NOT_IMPL },
-  { "success",   FR_SUCCESS },
-  { "unknown",   FR_UNKNOWN },
-  { NULL, 0 },
-  // clang-format on
-};
-
-// -----------------------------------------------------------------------------
-
 /**
  * op_alias_dialog - Open the aliases dialog - Implements ::index_function_t - @ingroup index_function_api
  */
@@ -3181,7 +3165,7 @@ int index_function_dispatcher(struct MuttWindow *win, int op)
   if (rc == FR_UNKNOWN) // Not our function
     return rc;
 
-  const char *result = mutt_map_get_name(rc, RetvalNames);
+  const char *result = dispacher_get_retval_name(rc);
   mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
 
   return rc;

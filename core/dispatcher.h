@@ -20,12 +20,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @page core_dispatcher Dispatcher of functions
- *
- * Dispatcher of functions
- */
-
 #ifndef MUTT_CORE_DISPATCHER_H
 #define MUTT_CORE_DISPATCHER_H
 
@@ -56,5 +50,7 @@ enum FunctionRetval
  * @retval num FunctionRetval
  */
 typedef int (*function_dispatcher_t)(struct MuttWindow *win, int op);
+
+const char *dispacher_get_retval_name(int rv);
 
 #endif /* MUTT_CORE_DISPATCHER_H */

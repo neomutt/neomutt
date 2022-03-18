@@ -27,8 +27,6 @@ struct IndexPrivateData;
 struct IndexSharedData;
 struct MuttWindow;
 
-extern const struct Mapping RetvalNames[];
-
 /**
  * @defgroup index_function_api Index Function API
  * @ingroup dispatcher_api

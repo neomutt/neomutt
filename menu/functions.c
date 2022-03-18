@@ -329,7 +329,7 @@ int menu_function_dispatcher(struct MuttWindow *win, int op)
   if (rc == FR_UNKNOWN) // Not our function
     return rc;
 
-  const char *result = mutt_map_get_name(rc, RetvalNames);
+  const char *result = dispacher_get_retval_name(rc);
   mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
 
   return rc;

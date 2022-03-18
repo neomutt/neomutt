@@ -28,7 +28,7 @@
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | core/account.c      | @subpage core_account      |
- * | core/dispatcher.h   | @subpage core_dispatcher   |
+ * | core/dispatcher.c   | @subpage core_dispatcher   |
  * | core/mailbox.c      | @subpage core_mailbox      |
  * | core/neomutt.c      | @subpage core_neomutt      |
  */
