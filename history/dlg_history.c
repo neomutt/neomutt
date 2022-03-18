@@ -146,7 +146,7 @@ void dlg_select_history(char *buf, size_t buflen, char **matches, int match_coun
   do
   {
     rc = FR_UNKNOWN;
-    menu_tagging_dispatcher(menu, op);
+    menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
     op = km_dokey(menu->type);

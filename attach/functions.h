@@ -50,7 +50,7 @@ struct AttachFunction
   attach_function_t function; ///< Function to call
 };
 
-int attach_function_dispatcher(struct MuttWindow *win_attach, int op);
+int attach_function_dispatcher(struct MuttWindow *win, int op);
 
 extern struct AttachFunction AttachFunctions[];
 

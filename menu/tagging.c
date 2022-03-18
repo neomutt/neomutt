@@ -216,12 +216,14 @@ static int menu_other(struct Menu *menu)
 
 /**
  * menu_tagging_dispatcher - Perform taggings operations on the Menu
- * @param menu Menu
+ * @param win  Window
  * @param op   Operation to perform, e.g. OP_TAG
  * @retval enum #FunctionRetval
  */
-int menu_tagging_dispatcher(struct Menu *menu, int op)
+int menu_tagging_dispatcher(struct MuttWindow *win, int op)
 {
+  struct Menu *menu = win->wdata;
+
   switch (op)
   {
     case OP_END_COND:

@@ -201,7 +201,7 @@ struct Email *dlg_select_postponed_email(struct Mailbox *m)
   do
   {
     rc = FR_UNKNOWN;
-    menu_tagging_dispatcher(menu, op);
+    menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
     op = km_dokey(menu->type);

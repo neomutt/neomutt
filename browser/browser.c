@@ -1363,7 +1363,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
     }
 
     rc = FR_UNKNOWN;
-    menu_tagging_dispatcher(menu, op);
+    menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
     op = km_dokey(menu->type);

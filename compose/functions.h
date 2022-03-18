@@ -46,7 +46,7 @@ struct ComposeFunction
   compose_function_t function; ///< Function to call
 };
 
-int compose_function_dispatcher(struct MuttWindow *win_compose, int op);
+int compose_function_dispatcher(struct MuttWindow *win, int op);
 
 extern struct ComposeFunction ComposeFunctions[];
 

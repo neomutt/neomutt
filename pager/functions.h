@@ -51,7 +51,7 @@ struct PagerFunction
   pager_function_t function; ///< Function to call
 };
 
-int pager_function_dispatcher(struct MuttWindow *win_index, int op);
+int pager_function_dispatcher(struct MuttWindow *win, int op);
 bool jump_to_bottom(struct PagerPrivateData *priv, struct PagerView *pview);
 
 extern struct PagerFunction PagerFunctions[];

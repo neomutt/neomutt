@@ -639,24 +639,24 @@ struct AttachFunction AttachFunctions[] = {
 
 /**
  * attach_function_dispatcher - Perform a Attach function
- * @param win_attach Window for the Index
- * @param op        Operation to perform, e.g. OP_MAIN_LIMIT
+ * @param win Window
+ * @param op  Operation to perform, e.g. OP_MAIN_LIMIT
  * @retval num #FunctionRetval, e.g. #FR_SUCCESS
  */
-int attach_function_dispatcher(struct MuttWindow *win_attach, int op)
+int attach_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win_attach)
+  if (!win)
   {
     mutt_error(_(Not_available_in_this_menu));
     return FR_ERROR;
   }
 
-  struct Menu *menu = win_attach->wdata;
+  struct Menu *menu = win->wdata;
   struct AttachPrivateData *priv = menu->mdata;
   if (!priv)
     return FR_ERROR;
 
-  struct MuttWindow *dlg = dialog_find(win_attach);
+  struct MuttWindow *dlg = dialog_find(win);
   if (!dlg || !dlg->wdata)
     return FR_ERROR;
 

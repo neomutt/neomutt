@@ -407,7 +407,7 @@ static bool dlg_select_query(struct Buffer *buf, struct AliasMenuData *mdata)
   int op = OP_NULL;
   do
   {
-    menu_tagging_dispatcher(menu, op);
+    menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
     op = km_dokey(menu->type);

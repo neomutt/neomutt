@@ -3143,23 +3143,23 @@ bool prereq(struct Context *ctx, struct Menu *menu, CheckFlags checks)
 
 /**
  * index_function_dispatcher - Perform an Index function
- * @param win_index Window for the Index
- * @param op        Operation to perform, e.g. OP_MAIN_LIMIT
+ * @param win Window
+ * @param op  Operation to perform, e.g. OP_MAIN_LIMIT
  * @retval num FunctionRetval or opcode
  */
-int index_function_dispatcher(struct MuttWindow *win_index, int op)
+int index_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win_index)
+  if (!win)
   {
     mutt_error(_(Not_available_in_this_menu));
     return FR_ERROR;
   }
 
-  struct IndexPrivateData *priv = win_index->parent->wdata;
+  struct IndexPrivateData *priv = win->parent->wdata;
   if (!priv)
     return FR_ERROR;
 
-  struct MuttWindow *dlg = dialog_find(win_index);
+  struct MuttWindow *dlg = dialog_find(win);
   if (!dlg || !dlg->wdata)
     return FR_ERROR;
 

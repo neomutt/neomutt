@@ -740,7 +740,7 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
     c_old = c_cur;
 
     rc = FR_UNKNOWN;
-    menu_tagging_dispatcher(menu, op);
+    menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
     op = km_dokey(menu->type);

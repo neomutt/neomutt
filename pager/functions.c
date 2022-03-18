@@ -1920,23 +1920,23 @@ struct PagerFunction PagerFunctions[] = {
 
 /**
  * pager_function_dispatcher - Perform a Pager function
- * @param win_pager Window for the Index
- * @param op        Operation to perform, e.g. OP_MAIN_LIMIT
+ * @param win Window for the Index
+ * @param op  Operation to perform, e.g. OP_MAIN_LIMIT
  * @retval num #FunctionRetval, e.g. #FR_SUCCESS
  */
-int pager_function_dispatcher(struct MuttWindow *win_pager, int op)
+int pager_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win_pager)
+  if (!win)
   {
     mutt_error(_(Not_available_in_this_menu));
     return FR_ERROR;
   }
 
-  struct PagerPrivateData *priv = win_pager->parent->wdata;
+  struct PagerPrivateData *priv = win->parent->wdata;
   if (!priv)
     return FR_ERROR;
 
-  struct MuttWindow *dlg = dialog_find(win_pager);
+  struct MuttWindow *dlg = dialog_find(win);
   if (!dlg || !dlg->wdata)
     return FR_ERROR;
 

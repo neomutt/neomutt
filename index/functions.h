@@ -51,7 +51,7 @@ struct IndexFunction
   int flags;                 ///< Prerequisites for the function, e.g. #CHECK_IN_MAILBOX
 };
 
-int index_function_dispatcher(struct MuttWindow *win_index, int op);
+int index_function_dispatcher(struct MuttWindow *win, int op);
 
 extern struct IndexFunction IndexFunctions[];
 

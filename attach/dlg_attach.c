@@ -491,7 +491,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
   int op = OP_NULL;
   do
   {
-    menu_tagging_dispatcher(menu, op);
+    menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
     op = km_dokey(menu->type);
