@@ -3793,8 +3793,8 @@ my_hdr X-Disclaimer: Why are you listening to me?   <emphasis role="comment"># T
         <emphasis>not</emphasis> for single quotes.
       </para>
       <para>
-        <quote>\</quote> quotes the next character, just as in shells such as
-        bash and zsh. For example, if want to put quotes <quote>"</quote>
+        <quote>\</quote> quotes the next character, just like in a shell.
+        For example, if want to put quotes <quote>"</quote>
         inside of a string, you can use <quote>\</quote> to force the next
         character to be a literal instead of interpreted character.
       </para>
@@ -4574,7 +4574,7 @@ bind index gg first-entry
           undef</quote>.  For example, <quote><literal>stty quit
           undef</literal></quote> will unbind <literal>^\</literal> (and
           <literal>^4</literal>) from sending the quit signal.  Once unbound
-          (e.g, by placing that line in your .bashrc, or in a NeoMutt wrapper
+          (e.g, by placing that line in your .profile, or in a NeoMutt wrapper
           script/function) you can use the key sequence in your NeoMutt
           bindings.
         </para>

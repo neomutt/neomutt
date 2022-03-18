@@ -964,7 +964,7 @@ out:
  * @param s String to be measured
  * @retval num Screen cells string would use
  */
-int mutt_strwidth(const char *s)
+size_t mutt_strwidth(const char *s)
 {
   if (!s)
     return 0;
@@ -977,7 +977,7 @@ int mutt_strwidth(const char *s)
  * @param n Length of string to be measured
  * @retval num Screen cells string would use
  */
-int mutt_strnwidth(const char *s, size_t n)
+size_t mutt_strnwidth(const char *s, size_t n)
 {
   if (!s)
     return 0;

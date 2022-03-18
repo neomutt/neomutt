@@ -386,7 +386,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
   src = twinbuf[switcher];
   dst = src;
 
-  mutt_str_copy(src, str, 1024);
+  mutt_str_copy(src, str, sizeof(*twinbuf));
 
   struct Replace *np = NULL;
   STAILQ_FOREACH(np, rl, entries)
@@ -409,7 +409,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
       /* Copy into other twinbuf with substitutions */
       if (np->templ)
       {
-        for (p = np->templ; *p && (tlen < 1023);)
+        for (p = np->templ; *p && (tlen < (sizeof(*twinbuf) - 1));)
         {
           if (*p == '%')
           {
@@ -417,14 +417,14 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
             if (*p == 'L')
             {
               p++;
-              cpysize = MIN(pmatch[0].rm_so, 1023 - tlen);
+              cpysize = MIN(pmatch[0].rm_so, (sizeof(*twinbuf) - 1) - tlen);
               strncpy(&dst[tlen], src, cpysize);
               tlen += cpysize;
             }
             else if (*p == 'R')
             {
               p++;
-              cpysize = MIN(strlen(src) - pmatch[0].rm_eo, 1023 - tlen);
+              cpysize = MIN(strlen(src) - pmatch[0].rm_eo, (sizeof(*twinbuf) - 1) - tlen);
               strncpy(&dst[tlen], &src[pmatch[0].rm_eo], cpysize);
               tlen += cpysize;
             }
@@ -435,7 +435,8 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
               {
                 while (isdigit((unsigned char) *p)) /* skip subst token */
                   p++;
-                for (int i = pmatch[n].rm_so; (i < pmatch[n].rm_eo) && (tlen < 1023); i++)
+                for (int i = pmatch[n].rm_so;
+                     (i < pmatch[n].rm_eo) && (tlen < (sizeof(*twinbuf) - 1)); i++)
                 {
                   dst[tlen++] = src[i];
                 }

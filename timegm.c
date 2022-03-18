@@ -27,8 +27,8 @@
  */
 
 #include "config.h"
-#include <time.h>
 #include <stdbool.h>
+#include <time.h>
 
 /**
  * is_leap_year - Is this a Leap Year?
