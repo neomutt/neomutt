@@ -219,12 +219,16 @@ static struct Remailer **mix_type2_list(size_t *l)
   if (fd_null == -1)
     return NULL;
 
-  struct Buffer *cmd = mutt_buffer_pool_get();
   const char *const c_mixmaster = cs_subset_string(NeoMutt->sub, "mixmaster");
+  if (!c_mixmaster)
+    return NULL;
+
+  struct Buffer *cmd = mutt_buffer_pool_get();
   mutt_buffer_printf(cmd, "%s -T", c_mixmaster);
 
   pid_t mm_pid =
       filter_create_fd(mutt_buffer_string(cmd), NULL, &fp, NULL, fd_null, -1, fd_null);
+  window_invalidate_all();
   if (mm_pid == -1)
   {
     mutt_buffer_pool_release(&cmd);
