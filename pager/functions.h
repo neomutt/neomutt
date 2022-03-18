@@ -38,7 +38,7 @@ struct PagerView;
  * @param shared Shared Index data
  * @param priv   Private Index data
  * @param op     Operation to perform, e.g. OP_MAIN_LIMIT
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 typedef int (*pager_function_t)(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op);
 

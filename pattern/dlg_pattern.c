@@ -362,7 +362,7 @@ bool dlg_select_pattern(char *buf, size_t buflen)
   int rc;
   do
   {
-    rc = IR_UNKNOWN;
+    rc = FR_UNKNOWN;
     menu_tagging_dispatcher(menu, op);
     window_redraw(NULL);
 
@@ -385,20 +385,20 @@ bool dlg_select_pattern(char *buf, size_t buflen)
         struct PatternEntry *entry = ((struct PatternEntry *) menu->mdata) + index;
         mutt_str_copy(buf, entry->tag, buflen);
         result = true;
-        rc = IR_DONE;
+        rc = FR_DONE;
         break;
       }
 
       case OP_EXIT:
-        rc = IR_DONE;
+        rc = FR_DONE;
         break;
     }
 
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(menu->win, op);
-  } while (rc != IR_DONE);
+  } while (rc != FR_DONE);
   // ---------------------------------------------------------------------------
 
   simple_dialog_free(&dlg);

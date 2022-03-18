@@ -145,7 +145,7 @@ void dlg_select_history(char *buf, size_t buflen, char **matches, int match_coun
   int rc;
   do
   {
-    rc = IR_UNKNOWN;
+    rc = FR_UNKNOWN;
     menu_tagging_dispatcher(menu, op);
     window_redraw(NULL);
 
@@ -166,20 +166,20 @@ void dlg_select_history(char *buf, size_t buflen, char **matches, int match_coun
       {
         const int index = menu_get_index(menu);
         mutt_str_copy(buf, matches[index], buflen);
-        rc = IR_DONE;
+        rc = FR_DONE;
         break;
       }
 
       case OP_EXIT:
-        rc = IR_DONE;
+        rc = FR_DONE;
         break;
     }
 
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(menu->win, op);
-  } while (rc != IR_DONE);
+  } while (rc != FR_DONE);
   // ---------------------------------------------------------------------------
 
   simple_dialog_free(&dlg);

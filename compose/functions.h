@@ -33,7 +33,7 @@ struct ComposeSharedData;
  *
  * @param shared Shared Compose data
  * @param op     Operation to perform, e.g. OP_COMPOSE_WRITE_MESSAGE
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 typedef int (*compose_function_t)(struct ComposeSharedData *priv, int op);
 

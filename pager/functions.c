@@ -221,7 +221,7 @@ static int op_pager_bottom(struct IndexSharedData *shared,
   if (!jump_to_bottom(priv, priv->pview))
     mutt_message(_("Bottom of message is shown"));
 
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -246,9 +246,9 @@ static int op_pager_half_down(struct IndexSharedData *shared,
   {
     /* end of the current message, so display the next message. */
     priv->rc = OP_MAIN_NEXT_UNDELETED;
-    return IR_DONE;
+    return FR_DONE;
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -266,7 +266,7 @@ static int op_pager_half_up(struct IndexSharedData *shared,
   }
   else
     mutt_message(_("Top of message is shown"));
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -276,7 +276,7 @@ static int op_pager_hide_quoted(struct IndexSharedData *shared,
                                 struct PagerPrivateData *priv, int op)
 {
   if (!priv->has_types)
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   priv->hide_quoted ^= MUTT_HIDE;
   if (priv->hide_quoted && (priv->lines[priv->top_line].cid == MT_COLOR_QUOTED))
@@ -288,7 +288,7 @@ static int op_pager_hide_quoted(struct IndexSharedData *shared,
     pager_queue_redraw(priv, MENU_REDRAW_BODY);
   }
   notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -314,7 +314,7 @@ static int op_pager_next_line(struct IndexSharedData *shared,
   {
     mutt_message(_("Bottom of message is shown"));
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -341,9 +341,9 @@ static int op_pager_next_page(struct IndexSharedData *shared,
   {
     /* end of the current message, so display the next message. */
     priv->rc = OP_MAIN_NEXT_UNDELETED;
-    return IR_DONE;
+    return FR_DONE;
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -361,7 +361,7 @@ static int op_pager_prev_line(struct IndexSharedData *shared,
   {
     mutt_message(_("Top of message is shown"));
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -382,7 +382,7 @@ static int op_pager_prev_page(struct IndexSharedData *shared,
                                 priv->lines, priv->top_line, priv->hide_quoted);
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -397,7 +397,7 @@ static int op_pager_search(struct IndexSharedData *shared,
 {
   struct PagerView *pview = priv->pview;
 
-  int rc = IR_NO_ACTION;
+  int rc = FR_NO_ACTION;
   struct Buffer *buf = mutt_buffer_pool_get();
 
   mutt_buffer_strcpy(buf, priv->search_str);
@@ -528,7 +528,7 @@ static int op_pager_search(struct IndexSharedData *shared,
   }
   pager_queue_redraw(priv, MENU_REDRAW_BODY);
   notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-  rc = IR_SUCCESS;
+  rc = FR_SUCCESS;
 
 done:
   mutt_buffer_pool_release(&buf);
@@ -620,7 +620,7 @@ static int op_pager_search_next(struct IndexSharedData *shared,
     }
 
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-    return IR_SUCCESS;
+    return FR_SUCCESS;
   }
 
   /* no previous search pattern */
@@ -636,7 +636,7 @@ static int op_pager_skip_headers(struct IndexSharedData *shared,
   struct PagerView *pview = priv->pview;
 
   if (!priv->has_types)
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   int dretval = 0;
   int new_topline = 0;
@@ -659,11 +659,11 @@ static int op_pager_skip_headers(struct IndexSharedData *shared,
        (I don't think this is actually possible in Mutt's code, but
        display some kind of message in case it somehow occurs.) */
     mutt_warning(_("No text past headers"));
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
   }
   priv->top_line = new_topline;
   notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -675,7 +675,7 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
   struct PagerView *pview = priv->pview;
 
   if (!priv->has_types)
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   const short c_skip_quoted_context =
       cs_subset_number(NeoMutt->sub, "pager_skip_quoted_context");
@@ -698,7 +698,7 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
     }
     priv->top_line = new_topline;
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-    return IR_SUCCESS;
+    return FR_SUCCESS;
   }
 
   /* Already in the body? Skip past previous "context" quoted lines */
@@ -719,7 +719,7 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
     if (dretval < 0)
     {
       mutt_error(_("No more unquoted text after quoted text"));
-      return IR_NO_ACTION;
+      return FR_NO_ACTION;
     }
   }
 
@@ -741,7 +741,7 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
     if (dretval < 0)
     {
       mutt_error(_("No more quoted text"));
-      return IR_NO_ACTION;
+      return FR_NO_ACTION;
     }
 
     while (((new_topline < priv->lines_used) ||
@@ -759,12 +759,12 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
     if (dretval < 0)
     {
       mutt_error(_("No more unquoted text after quoted text"));
-      return IR_NO_ACTION;
+      return FR_NO_ACTION;
     }
   }
   priv->top_line = new_topline - MIN(c_skip_quoted_context, num_quoted);
   notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -776,7 +776,7 @@ static int op_pager_top(struct IndexSharedData *shared, struct PagerPrivateData 
     priv->top_line = 0;
   else
     mutt_message(_("Top of message is shown"));
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 // -----------------------------------------------------------------------------
@@ -791,10 +791,10 @@ static int op_bounce_message(struct IndexSharedData *shared,
 
   if (!assert_pager_mode((pview->mode == PAGER_MODE_EMAIL) || (pview->mode == PAGER_MODE_ATTACH_E)))
   {
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   }
   if (assert_attach_msg_mode(OptAttachMsg))
-    return IR_ERROR;
+    return FR_ERROR;
   if (pview->mode == PAGER_MODE_ATTACH_E)
   {
     mutt_attach_bounce(shared->mailbox, pview->pdata->fp, pview->pdata->actx,
@@ -807,7 +807,7 @@ static int op_bounce_message(struct IndexSharedData *shared,
     ci_bounce_message(shared->mailbox, &el);
     emaillist_clear(&el);
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -817,7 +817,7 @@ static int op_check_stats(struct IndexSharedData *shared,
                           struct PagerPrivateData *priv, int op)
 {
   mutt_check_stats(shared->mailbox);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -829,15 +829,15 @@ static int op_check_traditional(struct IndexSharedData *shared,
   struct PagerView *pview = priv->pview;
 
   if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   if (!(WithCrypto & APPLICATION_PGP))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
   if (!(shared->email->security & PGP_TRADITIONAL_CHECKED))
   {
     priv->rc = OP_CHECK_TRADITIONAL;
-    return IR_DONE;
+    return FR_DONE;
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -850,10 +850,10 @@ static int op_compose_to_sender(struct IndexSharedData *shared,
 
   if (!assert_pager_mode((pview->mode == PAGER_MODE_EMAIL) || (pview->mode == PAGER_MODE_ATTACH_E)))
   {
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   }
   if (assert_attach_msg_mode(OptAttachMsg))
-    return IR_ERROR;
+    return FR_ERROR;
   if (pview->mode == PAGER_MODE_ATTACH_E)
   {
     mutt_attach_mail_sender(pview->pdata->actx, pview->pdata->body);
@@ -867,7 +867,7 @@ static int op_compose_to_sender(struct IndexSharedData *shared,
     emaillist_clear(&el);
   }
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -883,10 +883,10 @@ static int op_copy_message(struct IndexSharedData *shared,
                            struct PagerPrivateData *priv, int op)
 {
   if (!(WithCrypto != 0) && (op == OP_DECRYPT_COPY))
-    return IR_DONE;
+    return FR_DONE;
 
   if (!assert_pager_mode(priv->pview->mode == PAGER_MODE_EMAIL))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, shared->email);
 
@@ -907,12 +907,12 @@ static int op_copy_message(struct IndexSharedData *shared,
     if (c_resolve)
     {
       priv->rc = OP_MAIN_NEXT_UNDELETED;
-      return IR_DONE;
+      return FR_DONE;
     }
     else
       pager_queue_redraw(priv, MENU_REDRAW_INDEX);
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -925,7 +925,7 @@ static int op_create_alias(struct IndexSharedData *shared,
 
   if (!assert_pager_mode((pview->mode == PAGER_MODE_EMAIL) || (pview->mode == PAGER_MODE_ATTACH_E)))
   {
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   }
   struct AddressList *al = NULL;
   if (pview->mode == PAGER_MODE_ATTACH_E)
@@ -933,7 +933,7 @@ static int op_create_alias(struct IndexSharedData *shared,
   else
     al = mutt_get_address(shared->email->env, NULL);
   alias_create(al, NeoMutt->sub);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -946,13 +946,13 @@ static int op_create_alias(struct IndexSharedData *shared,
 static int op_delete(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   if (!assert_pager_mode(priv->pview->mode == PAGER_MODE_EMAIL))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   if (!assert_mailbox_writable(shared->mailbox))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
   /* L10N: CHECK_ACL */
   if (!assert_mailbox_permissions(shared->mailbox, MUTT_ACL_DELETE, _("Can't delete message")))
   {
-    return IR_ERROR;
+    return FR_ERROR;
   }
 
   mutt_set_flag(shared->mailbox, shared->email, MUTT_DELETE, true);
@@ -965,9 +965,9 @@ static int op_delete(struct IndexSharedData *shared, struct PagerPrivateData *pr
   if (c_resolve)
   {
     priv->rc = OP_MAIN_NEXT_UNDELETED;
-    return IR_DONE;
+    return FR_DONE;
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -982,27 +982,27 @@ static int op_delete_thread(struct IndexSharedData *shared,
                             struct PagerPrivateData *priv, int op)
 {
   if (!assert_pager_mode(priv->pview->mode == PAGER_MODE_EMAIL))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   if (!assert_mailbox_writable(shared->mailbox))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
   /* L10N: CHECK_ACL */
   /* L10N: Due to the implementation details we do not know whether we
      delete zero, 1, 12, ... messages. So in English we use
      "messages". Your language might have other means to express this.  */
   if (!assert_mailbox_permissions(shared->mailbox, MUTT_ACL_DELETE, _("Can't delete messages")))
   {
-    return IR_ERROR;
+    return FR_ERROR;
   }
 
   int subthread = (op == OP_DELETE_SUBTHREAD);
   int r = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_DELETE, 1, subthread);
   if (r == -1)
-    return IR_ERROR;
+    return FR_ERROR;
   if (op == OP_PURGE_THREAD)
   {
     r = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_PURGE, true, subthread);
     if (r == -1)
-      return IR_ERROR;
+      return FR_ERROR;
   }
 
   const bool c_delete_untag = cs_subset_bool(NeoMutt->sub, "delete_untag");
@@ -1021,9 +1021,9 @@ static int op_delete_thread(struct IndexSharedData *shared,
     pager_queue_redraw(priv, MENU_REDRAW_INDEX);
 
   if (c_resolve)
-    return IR_DONE;
+    return FR_DONE;
 
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1036,13 +1036,13 @@ static int op_display_address(struct IndexSharedData *shared,
 
   if (!assert_pager_mode((pview->mode == PAGER_MODE_EMAIL) || (pview->mode == PAGER_MODE_ATTACH_E)))
   {
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   }
   if (pview->mode == PAGER_MODE_ATTACH_E)
     mutt_display_address(pview->pdata->body->email->env);
   else
     mutt_display_address(shared->email->env);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1051,7 +1051,7 @@ static int op_display_address(struct IndexSharedData *shared,
 static int op_edit_label(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   if (!assert_pager_mode(priv->pview->mode == PAGER_MODE_EMAIL))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, shared->email);
@@ -1068,7 +1068,7 @@ static int op_edit_label(struct IndexSharedData *shared, struct PagerPrivateData
   {
     mutt_message(_("No labels changed"));
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1084,17 +1084,17 @@ static int op_enter_command(struct IndexSharedData *shared,
   {
     OptNeedResort = false;
     if (!assert_pager_mode(priv->pview->mode == PAGER_MODE_EMAIL))
-      return IR_NOT_IMPL;
+      return FR_NOT_IMPL;
     OptNeedResort = true;
   }
 
   if ((priv->redraw & MENU_REDRAW_FLOW) && (priv->pview->flags & MUTT_PAGER_RETWINCH))
   {
     priv->rc = OP_REFORMAT_WINCH;
-    return IR_DONE;
+    return FR_DONE;
   }
 
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1103,7 +1103,7 @@ static int op_enter_command(struct IndexSharedData *shared,
 static int op_exit(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   priv->rc = -1;
-  return IR_DONE;
+  return FR_DONE;
 }
 
 /**
@@ -1113,17 +1113,17 @@ static int op_extract_keys(struct IndexSharedData *shared,
                            struct PagerPrivateData *priv, int op)
 {
   if (!WithCrypto)
-    return IR_DONE;
+    return FR_DONE;
 
   if (!assert_pager_mode(priv->pview->mode == PAGER_MODE_EMAIL))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, shared->email);
   crypt_extract_keys_from_messages(shared->mailbox, &el);
   emaillist_clear(&el);
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1133,12 +1133,12 @@ static int op_flag_message(struct IndexSharedData *shared,
                            struct PagerPrivateData *priv, int op)
 {
   if (!assert_pager_mode(priv->pview->mode == PAGER_MODE_EMAIL))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   if (!assert_mailbox_writable(shared->mailbox))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
   /* L10N: CHECK_ACL */
   if (!assert_mailbox_permissions(shared->mailbox, MUTT_ACL_WRITE, "Can't flag message"))
-    return IR_ERROR;
+    return FR_ERROR;
 
   mutt_set_flag(shared->mailbox, shared->email, MUTT_FLAG, !shared->email->flagged);
   pager_queue_redraw(priv, MENU_REDRAW_INDEX);
@@ -1146,9 +1146,9 @@ static int op_flag_message(struct IndexSharedData *shared,
   if (c_resolve)
   {
     priv->rc = OP_MAIN_NEXT_UNDELETED;
-    return IR_DONE;
+    return FR_DONE;
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1158,7 +1158,7 @@ static int op_forget_passphrase(struct IndexSharedData *shared,
                                 struct PagerPrivateData *priv, int op)
 {
   crypt_forget_passphrase();
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1171,10 +1171,10 @@ static int op_forward_message(struct IndexSharedData *shared,
 
   if (!assert_pager_mode((pview->mode == PAGER_MODE_EMAIL) || (pview->mode == PAGER_MODE_ATTACH_E)))
   {
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   }
   if (assert_attach_msg_mode(OptAttachMsg))
-    return IR_ERROR;
+    return FR_ERROR;
   if (pview->mode == PAGER_MODE_ATTACH_E)
   {
     mutt_attach_forward(pview->pdata->fp, shared->email, pview->pdata->actx,
@@ -1189,7 +1189,7 @@ static int op_forward_message(struct IndexSharedData *shared,
     emaillist_clear(&el);
   }
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1201,11 +1201,11 @@ static int op_help(struct IndexSharedData *shared, struct PagerPrivateData *priv
   {
     /* don't let the user enter the help-menu from the help screen! */
     mutt_error(_("Help is currently being shown"));
-    return IR_ERROR;
+    return FR_ERROR;
   }
   mutt_help(MENU_PAGER);
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1214,7 +1214,7 @@ static int op_help(struct IndexSharedData *shared, struct PagerPrivateData *priv
 static int op_list_subscribe(struct IndexSharedData *shared,
                              struct PagerPrivateData *priv, int op)
 {
-  const int rc = mutt_send_list_subscribe(shared->mailbox, shared->email) ? IR_SUCCESS : IR_NO_ACTION;
+  const int rc = mutt_send_list_subscribe(shared->mailbox, shared->email) ? FR_SUCCESS : FR_NO_ACTION;
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
   return rc;
 }
@@ -1226,8 +1226,8 @@ static int op_list_unsubscribe(struct IndexSharedData *shared,
                                struct PagerPrivateData *priv, int op)
 {
   const int rc = mutt_send_list_unsubscribe(shared->mailbox, shared->email) ?
-                     IR_SUCCESS :
-                     IR_NO_ACTION;
+                     FR_SUCCESS :
+                     FR_NO_ACTION;
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
   return rc;
 }
@@ -1238,13 +1238,13 @@ static int op_list_unsubscribe(struct IndexSharedData *shared,
 static int op_mail(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   if (!assert_pager_mode(priv->pview->mode == PAGER_MODE_EMAIL))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   if (assert_attach_msg_mode(OptAttachMsg))
-    return IR_ERROR;
+    return FR_ERROR;
 
   mutt_send_message(SEND_NO_FLAGS, NULL, NULL, shared->mailbox, NULL, NeoMutt->sub);
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1254,7 +1254,7 @@ static int op_mailbox_list(struct IndexSharedData *shared,
                            struct PagerPrivateData *priv, int op)
 {
   mutt_mailbox_list();
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1263,18 +1263,18 @@ static int op_mailbox_list(struct IndexSharedData *shared,
 static int op_mail_key(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   if (!(WithCrypto & APPLICATION_PGP))
-    return IR_DONE;
+    return FR_DONE;
   if (!assert_pager_mode(priv->pview->mode == PAGER_MODE_EMAIL))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   if (assert_attach_msg_mode(OptAttachMsg))
-    return IR_ERROR;
+    return FR_ERROR;
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, shared->email);
 
   mutt_send_message(SEND_KEY, NULL, NULL, shared->mailbox, &el, NeoMutt->sub);
   emaillist_clear(&el);
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1288,9 +1288,9 @@ static int op_main_set_flag(struct IndexSharedData *shared,
                             struct PagerPrivateData *priv, int op)
 {
   if (!assert_pager_mode(priv->pview->mode == PAGER_MODE_EMAIL))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   if (!assert_mailbox_writable(shared->mailbox))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, shared->email);
@@ -1303,9 +1303,9 @@ static int op_main_set_flag(struct IndexSharedData *shared,
   if (shared->email->deleted && c_resolve)
   {
     priv->rc = OP_MAIN_NEXT_UNDELETED;
-    return IR_DONE;
+    return FR_DONE;
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1317,7 +1317,7 @@ static int op_pipe(struct IndexSharedData *shared, struct PagerPrivateData *priv
 
   if (!assert_pager_mode((pview->mode == PAGER_MODE_EMAIL) || (pview->mode == PAGER_MODE_ATTACH)))
   {
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   }
   if (pview->mode == PAGER_MODE_ATTACH)
   {
@@ -1331,7 +1331,7 @@ static int op_pipe(struct IndexSharedData *shared, struct PagerPrivateData *priv
     mutt_pipe_message(shared->mailbox, &el);
     emaillist_clear(&el);
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1343,7 +1343,7 @@ static int op_print(struct IndexSharedData *shared, struct PagerPrivateData *pri
 
   if (!assert_pager_mode((pview->mode == PAGER_MODE_EMAIL) || (pview->mode == PAGER_MODE_ATTACH)))
   {
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   }
   if (pview->mode == PAGER_MODE_ATTACH)
   {
@@ -1357,7 +1357,7 @@ static int op_print(struct IndexSharedData *shared, struct PagerPrivateData *pri
     mutt_print_message(shared->mailbox, &el);
     emaillist_clear(&el);
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1370,9 +1370,9 @@ static int op_quit(struct IndexSharedData *shared, struct PagerPrivateData *priv
   {
     /* avoid prompting again in the index menu */
     cs_subset_str_native_set(NeoMutt->sub, "quit", MUTT_YES, NULL);
-    return IR_DONE;
+    return FR_DONE;
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1382,16 +1382,16 @@ static int op_recall_message(struct IndexSharedData *shared,
                              struct PagerPrivateData *priv, int op)
 {
   if (!assert_pager_mode(priv->pview->mode == PAGER_MODE_EMAIL))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   if (assert_attach_msg_mode(OptAttachMsg))
-    return IR_ERROR;
+    return FR_ERROR;
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, shared->email);
 
   mutt_send_message(SEND_POSTPONED, NULL, NULL, shared->mailbox, &el, NeoMutt->sub);
   emaillist_clear(&el);
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1403,7 +1403,7 @@ static int op_redraw(struct IndexSharedData *shared, struct PagerPrivateData *pr
   mutt_window_reflow(NULL);
   clearok(stdscr, true);
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1421,10 +1421,10 @@ static int op_reply(struct IndexSharedData *shared, struct PagerPrivateData *pri
 
   if (!assert_pager_mode((pview->mode == PAGER_MODE_EMAIL) || (pview->mode == PAGER_MODE_ATTACH_E)))
   {
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   }
   if (assert_attach_msg_mode(OptAttachMsg))
-    return IR_ERROR;
+    return FR_ERROR;
 
   SendFlags replyflags = SEND_REPLY;
   if (op == OP_GROUP_REPLY)
@@ -1447,7 +1447,7 @@ static int op_reply(struct IndexSharedData *shared, struct PagerPrivateData *pri
     emaillist_clear(&el);
   }
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1459,10 +1459,10 @@ static int op_resend(struct IndexSharedData *shared, struct PagerPrivateData *pr
 
   if (!assert_pager_mode((pview->mode == PAGER_MODE_EMAIL) || (pview->mode == PAGER_MODE_ATTACH_E)))
   {
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   }
   if (assert_attach_msg_mode(OptAttachMsg))
-    return IR_ERROR;
+    return FR_ERROR;
   if (pview->mode == PAGER_MODE_ATTACH_E)
   {
     mutt_attach_resend(pview->pdata->fp, shared->mailbox, pview->pdata->actx,
@@ -1473,7 +1473,7 @@ static int op_resend(struct IndexSharedData *shared, struct PagerPrivateData *pr
     mutt_resend_message(NULL, shared->mailbox, shared->email, NeoMutt->sub);
   }
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1486,7 +1486,7 @@ static int op_resend(struct IndexSharedData *shared, struct PagerPrivateData *pr
 static int op_save(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   if ((op == OP_DECRYPT_SAVE) && !WithCrypto)
-    return IR_DONE;
+    return FR_DONE;
 
   struct PagerView *pview = priv->pview;
 
@@ -1494,7 +1494,7 @@ static int op_save(struct IndexSharedData *shared, struct PagerPrivateData *priv
   {
     mutt_save_attachment_list(pview->pdata->actx, pview->pdata->fp, false,
                               pview->pdata->body, shared->email, NULL);
-    return IR_SUCCESS;
+    return FR_SUCCESS;
   }
 
   return op_copy_message(shared, priv, op);
@@ -1511,7 +1511,7 @@ static int op_search_toggle(struct IndexSharedData *shared,
     priv->search_flag ^= MUTT_SEARCH;
     pager_queue_redraw(priv, MENU_REDRAW_BODY);
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1524,7 +1524,7 @@ static int op_shell_escape(struct IndexSharedData *shared,
   {
     mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_FORCE);
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1537,14 +1537,14 @@ static int op_shell_escape(struct IndexSharedData *shared,
 static int op_sort(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   if (!assert_pager_mode(priv->pview->mode == PAGER_MODE_EMAIL))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   if (mutt_select_sort(op == OP_SORT_REVERSE))
   {
     OptNeedResort = true;
     priv->rc = OP_DISPLAY_MESSAGE;
-    return IR_DONE;
+    return FR_DONE;
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1553,7 +1553,7 @@ static int op_sort(struct IndexSharedData *shared, struct PagerPrivateData *priv
 static int op_tag(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   if (!assert_pager_mode(priv->pview->mode == PAGER_MODE_EMAIL))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   mutt_set_flag(shared->mailbox, shared->email, MUTT_TAG, !shared->email->tagged);
 
   pager_queue_redraw(priv, MENU_REDRAW_INDEX);
@@ -1561,9 +1561,9 @@ static int op_tag(struct IndexSharedData *shared, struct PagerPrivateData *priv,
   if (c_resolve)
   {
     priv->rc = OP_NEXT_ENTRY;
-    return IR_DONE;
+    return FR_DONE;
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1572,12 +1572,12 @@ static int op_tag(struct IndexSharedData *shared, struct PagerPrivateData *priv,
 static int op_toggle_new(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   if (!assert_pager_mode(priv->pview->mode == PAGER_MODE_EMAIL))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   if (!assert_mailbox_writable(shared->mailbox))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
   /* L10N: CHECK_ACL */
   if (!assert_mailbox_permissions(shared->mailbox, MUTT_ACL_SEEN, _("Can't toggle new")))
-    return IR_ERROR;
+    return FR_ERROR;
 
   if (shared->email->read || shared->email->old)
     mutt_set_flag(shared->mailbox, shared->email, MUTT_NEW, true);
@@ -1592,9 +1592,9 @@ static int op_toggle_new(struct IndexSharedData *shared, struct PagerPrivateData
   if (c_resolve)
   {
     priv->rc = OP_MAIN_NEXT_UNDELETED;
-    return IR_DONE;
+    return FR_DONE;
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1603,13 +1603,13 @@ static int op_toggle_new(struct IndexSharedData *shared, struct PagerPrivateData
 static int op_undelete(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   if (!assert_pager_mode(priv->pview->mode == PAGER_MODE_EMAIL))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   if (!assert_mailbox_writable(shared->mailbox))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
   /* L10N: CHECK_ACL */
   if (!assert_mailbox_permissions(shared->mailbox, MUTT_ACL_DELETE, _("Can't undelete message")))
   {
-    return IR_ERROR;
+    return FR_ERROR;
   }
 
   mutt_set_flag(shared->mailbox, shared->email, MUTT_DELETE, false);
@@ -1619,9 +1619,9 @@ static int op_undelete(struct IndexSharedData *shared, struct PagerPrivateData *
   if (c_resolve)
   {
     priv->rc = OP_NEXT_ENTRY;
-    return IR_DONE;
+    return FR_DONE;
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1631,16 +1631,16 @@ static int op_undelete_thread(struct IndexSharedData *shared,
                               struct PagerPrivateData *priv, int op)
 {
   if (!assert_pager_mode(priv->pview->mode == PAGER_MODE_EMAIL))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   if (!assert_mailbox_writable(shared->mailbox))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
   /* L10N: CHECK_ACL */
   /* L10N: Due to the implementation details we do not know whether we
      undelete zero, 1, 12, ... messages. So in English we use
      "messages". Your language might have other means to express this. */
   if (!assert_mailbox_permissions(shared->mailbox, MUTT_ACL_DELETE, _("Can't undelete messages")))
   {
-    return IR_ERROR;
+    return FR_ERROR;
   }
 
   int r = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_DELETE,
@@ -1664,9 +1664,9 @@ static int op_undelete_thread(struct IndexSharedData *shared,
       pager_queue_redraw(priv, MENU_REDRAW_INDEX);
 
     if (c_resolve)
-      return IR_DONE;
+      return FR_DONE;
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1675,7 +1675,7 @@ static int op_undelete_thread(struct IndexSharedData *shared,
 static int op_version(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   mutt_message(mutt_make_version());
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1689,17 +1689,17 @@ static int op_view_attachments(struct IndexSharedData *shared,
   if (pview->flags & MUTT_PAGER_ATTACHMENT)
   {
     priv->rc = OP_ATTACHMENT_COLLAPSE;
-    return IR_DONE;
+    return FR_DONE;
   }
 
   if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   dlg_select_attachment(NeoMutt->sub, shared->mailbox, shared->email,
                         pview->pdata->fp);
   if (shared->email->attach_del)
     shared->mailbox->changed = true;
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1708,7 +1708,7 @@ static int op_view_attachments(struct IndexSharedData *shared,
 static int op_what_key(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   mutt_what_key();
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 // -----------------------------------------------------------------------------
@@ -1723,10 +1723,10 @@ static int op_followup(struct IndexSharedData *shared, struct PagerPrivateData *
 
   if (!assert_pager_mode((pview->mode == PAGER_MODE_EMAIL) || (pview->mode == PAGER_MODE_ATTACH_E)))
   {
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   }
   if (assert_attach_msg_mode(OptAttachMsg))
-    return IR_ERROR;
+    return FR_ERROR;
 
   char *followup_to = NULL;
   if (pview->mode == PAGER_MODE_ATTACH_E)
@@ -1745,7 +1745,7 @@ static int op_followup(struct IndexSharedData *shared, struct PagerPrivateData *
     if ((shared->mailbox->type == MUTT_NNTP) &&
         !((struct NntpMboxData *) shared->mailbox->mdata)->allowed && (query_quadoption(c_post_moderated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
     {
-      return IR_ERROR;
+      return FR_ERROR;
     }
     if (pview->mode == PAGER_MODE_ATTACH_E)
     {
@@ -1761,7 +1761,7 @@ static int op_followup(struct IndexSharedData *shared, struct PagerPrivateData *
       emaillist_clear(&el);
     }
     pager_queue_redraw(priv, MENU_REDRAW_FULL);
-    return IR_SUCCESS;
+    return FR_SUCCESS;
   }
 
   return op_reply(shared, priv, op);
@@ -1777,16 +1777,16 @@ static int op_forward_to_group(struct IndexSharedData *shared,
 
   if (!assert_pager_mode((pview->mode == PAGER_MODE_EMAIL) || (pview->mode == PAGER_MODE_ATTACH_E)))
   {
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   }
   if (assert_attach_msg_mode(OptAttachMsg))
-    return IR_ERROR;
+    return FR_ERROR;
   const enum QuadOption c_post_moderated =
       cs_subset_quad(NeoMutt->sub, "post_moderated");
   if ((shared->mailbox->type == MUTT_NNTP) &&
       !((struct NntpMboxData *) shared->mailbox->mdata)->allowed && (query_quadoption(c_post_moderated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
   {
-    return IR_ERROR;
+    return FR_ERROR;
   }
   if (pview->mode == PAGER_MODE_ATTACH_E)
   {
@@ -1803,7 +1803,7 @@ static int op_forward_to_group(struct IndexSharedData *shared,
     emaillist_clear(&el);
   }
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -1812,20 +1812,20 @@ static int op_forward_to_group(struct IndexSharedData *shared,
 static int op_post(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   if (!assert_pager_mode(priv->pview->mode == PAGER_MODE_EMAIL))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   if (assert_attach_msg_mode(OptAttachMsg))
-    return IR_ERROR;
+    return FR_ERROR;
   const enum QuadOption c_post_moderated =
       cs_subset_quad(NeoMutt->sub, "post_moderated");
   if ((shared->mailbox->type == MUTT_NNTP) &&
       !((struct NntpMboxData *) shared->mailbox->mdata)->allowed && (query_quadoption(c_post_moderated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
   {
-    return IR_ERROR;
+    return FR_ERROR;
   }
 
   mutt_send_message(SEND_NEWS, NULL, NULL, shared->mailbox, NULL, NeoMutt->sub);
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 #endif
 
@@ -1922,25 +1922,25 @@ struct PagerFunction PagerFunctions[] = {
  * pager_function_dispatcher - Perform a Pager function
  * @param win_pager Window for the Index
  * @param op        Operation to perform, e.g. OP_MAIN_LIMIT
- * @retval num #IndexRetval, e.g. #IR_SUCCESS
+ * @retval num #FunctionRetval, e.g. #FR_SUCCESS
  */
 int pager_function_dispatcher(struct MuttWindow *win_pager, int op)
 {
   if (!win_pager)
   {
     mutt_error(_(Not_available_in_this_menu));
-    return IR_ERROR;
+    return FR_ERROR;
   }
 
   struct PagerPrivateData *priv = win_pager->parent->wdata;
   if (!priv)
-    return IR_ERROR;
+    return FR_ERROR;
 
   struct MuttWindow *dlg = dialog_find(win_pager);
   if (!dlg || !dlg->wdata)
-    return IR_ERROR;
+    return FR_ERROR;
 
-  int rc = IR_UNKNOWN;
+  int rc = FR_UNKNOWN;
   for (size_t i = 0; PagerFunctions[i].op != OP_NULL; i++)
   {
     const struct PagerFunction *fn = &PagerFunctions[i];
@@ -1952,7 +1952,7 @@ int pager_function_dispatcher(struct MuttWindow *win_pager, int op)
     }
   }
 
-  if (rc == IR_UNKNOWN) // Not our function
+  if (rc == FR_UNKNOWN) // Not our function
     return rc;
 
   const char *result = mutt_map_get_name(rc, RetvalNames);

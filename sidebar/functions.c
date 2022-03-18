@@ -129,10 +129,10 @@ static struct SbEntry **sb_prev_new(struct SidebarWindowData *wdata, size_t begi
 static int op_sidebar_first(struct SidebarWindowData *wdata, int op)
 {
   if (!mutt_window_is_visible(wdata->win))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   int orig_hil_index = wdata->hil_index;
 
@@ -142,10 +142,10 @@ static int op_sidebar_first(struct SidebarWindowData *wdata, int op)
       wdata->hil_index = orig_hil_index;
 
   if (orig_hil_index == wdata->hil_index)
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   wdata->win->actions |= WA_RECALC;
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -154,10 +154,10 @@ static int op_sidebar_first(struct SidebarWindowData *wdata, int op)
 static int op_sidebar_last(struct SidebarWindowData *wdata, int op)
 {
   if (!mutt_window_is_visible(wdata->win))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   int orig_hil_index = wdata->hil_index;
 
@@ -166,10 +166,10 @@ static int op_sidebar_last(struct SidebarWindowData *wdata, int op)
     wdata->hil_index = orig_hil_index;
 
   if (orig_hil_index == wdata->hil_index)
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   wdata->win->actions |= WA_RECALC;
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -178,16 +178,16 @@ static int op_sidebar_last(struct SidebarWindowData *wdata, int op)
 static int op_sidebar_next(struct SidebarWindowData *wdata, int op)
 {
   if (!mutt_window_is_visible(wdata->win))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   if (!sb_next(wdata))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   wdata->win->actions |= WA_RECALC;
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -198,11 +198,11 @@ static int op_sidebar_next(struct SidebarWindowData *wdata, int op)
 static int op_sidebar_next_new(struct SidebarWindowData *wdata, int op)
 {
   if (!mutt_window_is_visible(wdata->win))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   const size_t max_entries = ARRAY_SIZE(&wdata->entries);
   if ((max_entries == 0) || (wdata->hil_index < 0))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   const bool c_sidebar_next_new_wrap =
       cs_subset_bool(NeoMutt->sub, "sidebar_next_new_wrap");
@@ -212,10 +212,10 @@ static int op_sidebar_next_new(struct SidebarWindowData *wdata, int op)
   {
     wdata->hil_index = ARRAY_IDX(&wdata->entries, sbep);
     wdata->win->actions |= WA_RECALC;
-    return IR_SUCCESS;
+    return FR_SUCCESS;
   }
 
-  return IR_NO_ACTION;
+  return FR_NO_ACTION;
 }
 
 /**
@@ -225,11 +225,11 @@ static int op_sidebar_open(struct SidebarWindowData *wdata, int op)
 {
   struct MuttWindow *win_sidebar = wdata->win;
   if (!mutt_window_is_visible(win_sidebar))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   struct MuttWindow *dlg = dialog_find(win_sidebar);
   dlg_change_folder(dlg, sb_get_highlight(win_sidebar));
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -238,10 +238,10 @@ static int op_sidebar_open(struct SidebarWindowData *wdata, int op)
 static int op_sidebar_page_down(struct SidebarWindowData *wdata, int op)
 {
   if (!mutt_window_is_visible(wdata->win))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->bot_index < 0))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   int orig_hil_index = wdata->hil_index;
 
@@ -252,10 +252,10 @@ static int op_sidebar_page_down(struct SidebarWindowData *wdata, int op)
     sb_prev(wdata);
 
   if (orig_hil_index == wdata->hil_index)
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   wdata->win->actions |= WA_RECALC;
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -264,10 +264,10 @@ static int op_sidebar_page_down(struct SidebarWindowData *wdata, int op)
 static int op_sidebar_page_up(struct SidebarWindowData *wdata, int op)
 {
   if (!mutt_window_is_visible(wdata->win))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->top_index < 0))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   int orig_hil_index = wdata->hil_index;
 
@@ -278,10 +278,10 @@ static int op_sidebar_page_up(struct SidebarWindowData *wdata, int op)
     sb_next(wdata);
 
   if (orig_hil_index == wdata->hil_index)
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   wdata->win->actions |= WA_RECALC;
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -290,16 +290,16 @@ static int op_sidebar_page_up(struct SidebarWindowData *wdata, int op)
 static int op_sidebar_prev(struct SidebarWindowData *wdata, int op)
 {
   if (!mutt_window_is_visible(wdata->win))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   if (!sb_prev(wdata))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   wdata->win->actions |= WA_RECALC;
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -310,11 +310,11 @@ static int op_sidebar_prev(struct SidebarWindowData *wdata, int op)
 static int op_sidebar_prev_new(struct SidebarWindowData *wdata, int op)
 {
   if (!mutt_window_is_visible(wdata->win))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   const size_t max_entries = ARRAY_SIZE(&wdata->entries);
   if ((max_entries == 0) || (wdata->hil_index < 0))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   const bool c_sidebar_next_new_wrap =
       cs_subset_bool(NeoMutt->sub, "sidebar_next_new_wrap");
@@ -325,10 +325,10 @@ static int op_sidebar_prev_new(struct SidebarWindowData *wdata, int op)
   {
     wdata->hil_index = ARRAY_IDX(&wdata->entries, sbep);
     wdata->win->actions |= WA_RECALC;
-    return IR_SUCCESS;
+    return FR_SUCCESS;
   }
 
-  return IR_NO_ACTION;
+  return FR_NO_ACTION;
 }
 
 /**
@@ -338,7 +338,7 @@ static int op_sidebar_toggle_visible(struct SidebarWindowData *wdata, int op)
 {
   bool_str_toggle(NeoMutt->sub, "sidebar_visible", NULL);
   mutt_window_reflow(NULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 // -----------------------------------------------------------------------------
@@ -366,15 +366,15 @@ struct SidebarFunction SidebarFunctions[] = {
  * sb_function_dispatcher - Perform a Sidebar function
  * @param win Sidebar Window
  * @param op  Operation to perform, e.g. OP_SIDEBAR_NEXT
- * @retval num #IndexRetval, e.g. #IR_SUCCESS
+ * @retval num #FunctionRetval, e.g. #FR_SUCCESS
  */
 int sb_function_dispatcher(struct MuttWindow *win, int op)
 {
   if (!win || !win->wdata)
-    return IR_UNKNOWN;
+    return FR_UNKNOWN;
 
   struct SidebarWindowData *wdata = win->wdata;
-  int rc = IR_UNKNOWN;
+  int rc = FR_UNKNOWN;
   for (size_t i = 0; SidebarFunctions[i].op != OP_NULL; i++)
   {
     const struct SidebarFunction *fn = &SidebarFunctions[i];
@@ -385,11 +385,11 @@ int sb_function_dispatcher(struct MuttWindow *win, int op)
     }
   }
 
-  if (rc == IR_UNKNOWN) // Not our function
+  if (rc == FR_UNKNOWN) // Not our function
     return rc;
 
   const char *result = mutt_map_get_name(rc, RetvalNames);
   mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
 
-  return IR_SUCCESS; // Whatever the outcome, we handled it
+  return FR_SUCCESS; // Whatever the outcome, we handled it
 }

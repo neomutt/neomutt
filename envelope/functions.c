@@ -207,14 +207,14 @@ static int op_envelope_edit_bcc(struct EnvelopeWindowData *wdata, int op)
 {
 #ifdef USE_NNTP
   if (wdata->is_news)
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 #endif
   if (!edit_address_list(HDR_BCC, &wdata->email->env->bcc))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   update_crypt_info(wdata);
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_BCC);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -224,14 +224,14 @@ static int op_envelope_edit_cc(struct EnvelopeWindowData *wdata, int op)
 {
 #ifdef USE_NNTP
   if (wdata->is_news)
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 #endif
   if (!edit_address_list(HDR_CC, &wdata->email->env->cc))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   update_crypt_info(wdata);
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_CC);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -239,7 +239,7 @@ static int op_envelope_edit_cc(struct EnvelopeWindowData *wdata, int op)
  */
 static int op_envelope_edit_fcc(struct EnvelopeWindowData *wdata, int op)
 {
-  int rc = IR_NO_ACTION;
+  int rc = FR_NO_ACTION;
   struct Buffer *fname = mutt_buffer_pool_get();
   mutt_buffer_copy(fname, wdata->fcc);
 
@@ -255,7 +255,7 @@ static int op_envelope_edit_fcc(struct EnvelopeWindowData *wdata, int op)
   mutt_buffer_copy(wdata->fcc, fname);
   mutt_buffer_pretty_mailbox(wdata->fcc);
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_FCC);
-  rc = IR_SUCCESS;
+  rc = FR_SUCCESS;
 
 done:
   mutt_buffer_pool_release(&fname);
@@ -268,11 +268,11 @@ done:
 static int op_envelope_edit_from(struct EnvelopeWindowData *wdata, int op)
 {
   if (!edit_address_list(HDR_FROM, &wdata->email->env->from))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   update_crypt_info(wdata);
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_FROM);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -281,10 +281,10 @@ static int op_envelope_edit_from(struct EnvelopeWindowData *wdata, int op)
 static int op_envelope_edit_reply_to(struct EnvelopeWindowData *wdata, int op)
 {
   if (!edit_address_list(HDR_REPLYTO, &wdata->email->env->reply_to))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_REPLY_TO);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -292,7 +292,7 @@ static int op_envelope_edit_reply_to(struct EnvelopeWindowData *wdata, int op)
  */
 static int op_envelope_edit_subject(struct EnvelopeWindowData *wdata, int op)
 {
-  int rc = IR_NO_ACTION;
+  int rc = FR_NO_ACTION;
   struct Buffer *buf = mutt_buffer_pool_get();
 
   mutt_buffer_strcpy(buf, wdata->email->env->subject);
@@ -307,7 +307,7 @@ static int op_envelope_edit_subject(struct EnvelopeWindowData *wdata, int op)
 
   mutt_str_replace(&wdata->email->env->subject, mutt_buffer_string(buf));
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_SUBJECT);
-  rc = IR_SUCCESS;
+  rc = FR_SUCCESS;
 
 done:
   mutt_buffer_pool_release(&buf);
@@ -321,14 +321,14 @@ static int op_envelope_edit_to(struct EnvelopeWindowData *wdata, int op)
 {
 #ifdef USE_NNTP
   if (wdata->is_news)
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 #endif
   if (!edit_address_list(HDR_TO, &wdata->email->env->to))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   update_crypt_info(wdata);
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_TO);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -338,11 +338,11 @@ static int op_compose_pgp_menu(struct EnvelopeWindowData *wdata, int op)
 {
   const SecurityFlags old_flags = wdata->email->security;
   if (!(WithCrypto & APPLICATION_PGP))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   if (!crypt_has_module_backend(APPLICATION_PGP))
   {
     mutt_error(_("No PGP backend configured"));
-    return IR_ERROR;
+    return FR_ERROR;
   }
   if (((WithCrypto & APPLICATION_SMIME) != 0) && (wdata->email->security & APPLICATION_SMIME))
   {
@@ -351,7 +351,7 @@ static int op_compose_pgp_menu(struct EnvelopeWindowData *wdata, int op)
       if (mutt_yesorno(_("S/MIME already selected. Clear and continue?"), MUTT_YES) != MUTT_YES)
       {
         mutt_clear_error();
-        return IR_NO_ACTION;
+        return FR_NO_ACTION;
       }
       wdata->email->security &= ~(SEC_ENCRYPT | SEC_SIGN);
     }
@@ -362,11 +362,11 @@ static int op_compose_pgp_menu(struct EnvelopeWindowData *wdata, int op)
   wdata->email->security = crypt_pgp_send_menu(wdata->email);
   update_crypt_info(wdata);
   if (wdata->email->security == old_flags)
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   mutt_message_hook(NULL, wdata->email, MUTT_SEND2_HOOK);
   notify_send(wdata->email->notify, NT_EMAIL, NT_EMAIL_CHANGE, NULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -376,11 +376,11 @@ static int op_compose_smime_menu(struct EnvelopeWindowData *wdata, int op)
 {
   const SecurityFlags old_flags = wdata->email->security;
   if (!(WithCrypto & APPLICATION_SMIME))
-    return IR_NOT_IMPL;
+    return FR_NOT_IMPL;
   if (!crypt_has_module_backend(APPLICATION_SMIME))
   {
     mutt_error(_("No S/MIME backend configured"));
-    return IR_ERROR;
+    return FR_ERROR;
   }
 
   if (((WithCrypto & APPLICATION_PGP) != 0) && (wdata->email->security & APPLICATION_PGP))
@@ -390,7 +390,7 @@ static int op_compose_smime_menu(struct EnvelopeWindowData *wdata, int op)
       if (mutt_yesorno(_("PGP already selected. Clear and continue?"), MUTT_YES) != MUTT_YES)
       {
         mutt_clear_error();
-        return IR_NO_ACTION;
+        return FR_NO_ACTION;
       }
       wdata->email->security &= ~(SEC_ENCRYPT | SEC_SIGN);
     }
@@ -401,11 +401,11 @@ static int op_compose_smime_menu(struct EnvelopeWindowData *wdata, int op)
   wdata->email->security = crypt_smime_send_menu(wdata->email);
   update_crypt_info(wdata);
   if (wdata->email->security == old_flags)
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   mutt_message_hook(NULL, wdata->email, MUTT_SEND2_HOOK);
   notify_send(wdata->email->notify, NT_EMAIL, NT_EMAIL_CHANGE, NULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 #ifdef USE_AUTOCRYPT
@@ -417,7 +417,7 @@ static int op_compose_autocrypt_menu(struct EnvelopeWindowData *wdata, int op)
   const SecurityFlags old_flags = wdata->email->security;
   const bool c_autocrypt = cs_subset_bool(wdata->sub, "autocrypt");
   if (!c_autocrypt)
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   if ((WithCrypto & APPLICATION_SMIME) && (wdata->email->security & APPLICATION_SMIME))
   {
@@ -426,7 +426,7 @@ static int op_compose_autocrypt_menu(struct EnvelopeWindowData *wdata, int op)
       if (mutt_yesorno(_("S/MIME already selected. Clear and continue?"), MUTT_YES) != MUTT_YES)
       {
         mutt_clear_error();
-        return IR_NO_ACTION;
+        return FR_NO_ACTION;
       }
       wdata->email->security &= ~(SEC_ENCRYPT | SEC_SIGN);
     }
@@ -437,11 +437,11 @@ static int op_compose_autocrypt_menu(struct EnvelopeWindowData *wdata, int op)
   autocrypt_compose_menu(wdata->email, wdata->sub);
   update_crypt_info(wdata);
   if (wdata->email->security == old_flags)
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   mutt_message_hook(NULL, wdata->email, MUTT_SEND2_HOOK);
   notify_send(wdata->email->notify, NT_EMAIL, NT_EMAIL_CHANGE, NULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 #endif
 
@@ -454,9 +454,9 @@ static int op_compose_autocrypt_menu(struct EnvelopeWindowData *wdata, int op)
 static int op_envelope_edit_followup_to(struct EnvelopeWindowData *wdata, int op)
 {
   if (!wdata->is_news)
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
-  int rc = IR_NO_ACTION;
+  int rc = FR_NO_ACTION;
   struct Buffer *buf = mutt_buffer_pool_get();
 
   mutt_buffer_strcpy(buf, wdata->email->env->followup_to);
@@ -465,7 +465,7 @@ static int op_envelope_edit_followup_to(struct EnvelopeWindowData *wdata, int op
   {
     mutt_str_replace(&wdata->email->env->followup_to, mutt_buffer_string(buf));
     mutt_env_notify_send(wdata->email, NT_ENVELOPE_FOLLOWUP_TO);
-    rc = IR_SUCCESS;
+    rc = FR_SUCCESS;
   }
 
   mutt_buffer_pool_release(&buf);
@@ -478,9 +478,9 @@ static int op_envelope_edit_followup_to(struct EnvelopeWindowData *wdata, int op
 static int op_envelope_edit_newsgroups(struct EnvelopeWindowData *wdata, int op)
 {
   if (!wdata->is_news)
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
-  int rc = IR_NO_ACTION;
+  int rc = FR_NO_ACTION;
   struct Buffer *buf = mutt_buffer_pool_get();
 
   mutt_buffer_strcpy(buf, wdata->email->env->newsgroups);
@@ -489,7 +489,7 @@ static int op_envelope_edit_newsgroups(struct EnvelopeWindowData *wdata, int op)
   {
     mutt_str_replace(&wdata->email->env->newsgroups, mutt_buffer_string(buf));
     mutt_env_notify_send(wdata->email, NT_ENVELOPE_NEWSGROUPS);
-    rc = IR_SUCCESS;
+    rc = FR_SUCCESS;
   }
 
   mutt_buffer_pool_release(&buf);
@@ -503,9 +503,9 @@ static int op_envelope_edit_x_comment_to(struct EnvelopeWindowData *wdata, int o
 {
   const bool c_x_comment_to = cs_subset_bool(wdata->sub, "x_comment_to");
   if (!(wdata->is_news && c_x_comment_to))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
-  int rc = IR_NO_ACTION;
+  int rc = FR_NO_ACTION;
   struct Buffer *buf = mutt_buffer_pool_get();
 
   mutt_buffer_strcpy(buf, wdata->email->env->x_comment_to);
@@ -514,7 +514,7 @@ static int op_envelope_edit_x_comment_to(struct EnvelopeWindowData *wdata, int o
   {
     mutt_str_replace(&wdata->email->env->x_comment_to, mutt_buffer_string(buf));
     mutt_env_notify_send(wdata->email, NT_ENVELOPE_X_COMMENT_TO);
-    rc = IR_SUCCESS;
+    rc = FR_SUCCESS;
   }
 
   mutt_buffer_pool_release(&buf);
@@ -531,7 +531,7 @@ static int op_compose_mix(struct EnvelopeWindowData *wdata, int op)
   dlg_select_mixmaster_chain(&wdata->email->chain);
   mutt_message_hook(NULL, wdata->email, MUTT_SEND2_HOOK);
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_MIXMASTER);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 #endif
 
@@ -574,14 +574,14 @@ struct EnvelopeFunction EnvelopeFunctions[] = {
  * env_function_dispatcher - Perform an Envelope function
  * @param win Envelope Window
  * @param op  Operation to perform, e.g. OP_ENVELOPE_EDIT_TO
- * @retval num #IndexRetval, e.g. #IR_SUCCESS
+ * @retval num #FunctionRetval, e.g. #FR_SUCCESS
  */
 int env_function_dispatcher(struct MuttWindow *win, int op)
 {
   if (!win || !win->wdata)
-    return IR_UNKNOWN;
+    return FR_UNKNOWN;
 
-  int rc = IR_UNKNOWN;
+  int rc = FR_UNKNOWN;
   for (size_t i = 0; EnvelopeFunctions[i].op != OP_NULL; i++)
   {
     const struct EnvelopeFunction *fn = &EnvelopeFunctions[i];
@@ -593,7 +593,7 @@ int env_function_dispatcher(struct MuttWindow *win, int op)
     }
   }
 
-  if (rc == IR_UNKNOWN) // Not our function
+  if (rc == FR_UNKNOWN) // Not our function
     return rc;
 
   const char *result = mutt_map_get_name(rc, RetvalNames);

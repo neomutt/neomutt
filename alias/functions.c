@@ -83,7 +83,7 @@ static int op_create_alias(struct AliasMenuData *mdata, int op)
       mutt_addrlist_clear(&al);
     }
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -115,7 +115,7 @@ static int op_delete(struct AliasMenuData *mdata, int op)
       menu_queue_redraw(menu, MENU_REDRAW_INDEX);
     }
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -123,7 +123,7 @@ static int op_delete(struct AliasMenuData *mdata, int op)
  */
 static int op_exit(struct AliasMenuData *mdata, int op)
 {
-  return IR_DONE;
+  return FR_DONE;
 }
 
 /**
@@ -159,7 +159,7 @@ static int op_generic_select_entry(struct AliasMenuData *mdata, int op)
     }
   }
 
-  return IR_CONTINUE;
+  return FR_CONTINUE;
 }
 
 /**
@@ -170,14 +170,14 @@ static int op_main_limit(struct AliasMenuData *mdata, int op)
   struct Menu *menu = mdata->menu;
   int rc = mutt_pattern_alias_func(_("Limit to addresses matching: "), mdata, menu);
   if (rc != 0)
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   alias_array_sort(&mdata->ava, mdata->sub);
   alias_set_title(mdata->sbar, mdata->title, mdata->limit);
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
   window_redraw(NULL);
 
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -194,7 +194,7 @@ static int op_query(struct AliasMenuData *mdata, int op)
                              NULL, NULL) != 0) ||
       mutt_buffer_is_empty(buf))
   {
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
   }
 
   if (op == OP_QUERY)
@@ -216,7 +216,7 @@ static int op_query(struct AliasMenuData *mdata, int op)
   {
     if (op == OP_QUERY)
       menu->max = 0;
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
   }
 
   struct Alias *np = NULL;
@@ -229,7 +229,7 @@ static int op_query(struct AliasMenuData *mdata, int op)
   }
   alias_array_sort(&mdata->ava, mdata->sub);
   menu->max = ARRAY_SIZE(&mdata->ava);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -246,10 +246,10 @@ static int op_search(struct AliasMenuData *mdata, int op)
   struct Menu *menu = mdata->menu;
   int index = mutt_search_alias_command(menu, menu_get_index(menu), op);
   if (index == -1)
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   menu_set_index(menu, index);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -299,7 +299,7 @@ static int op_sort(struct AliasMenuData *mdata, int op)
     cs_subset_str_native_set(mdata->sub, "sort_alias", sort, NULL);
   }
 
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 // -----------------------------------------------------------------------------
@@ -332,16 +332,16 @@ struct AliasFunction AliasFunctions[] = {
  * alias_function_dispatcher - Perform a Alias function
  * @param win Alias Window
  * @param op  Operation to perform, e.g. OP_ALIAS_NEXT
- * @retval num #IndexRetval, e.g. #IR_SUCCESS
+ * @retval num #FunctionRetval, e.g. #FR_SUCCESS
  */
 int alias_function_dispatcher(struct MuttWindow *win, int op)
 {
   if (!win || !win->wdata)
-    return IR_UNKNOWN;
+    return FR_UNKNOWN;
 
   struct Menu *menu = win->wdata;
   struct AliasMenuData *mdata = menu->mdata;
-  int rc = IR_UNKNOWN;
+  int rc = FR_UNKNOWN;
   for (size_t i = 0; AliasFunctions[i].op != OP_NULL; i++)
   {
     const struct AliasFunction *fn = &AliasFunctions[i];
@@ -352,7 +352,7 @@ int alias_function_dispatcher(struct MuttWindow *win, int op)
     }
   }
 
-  if (rc == IR_UNKNOWN) // Not our function
+  if (rc == FR_UNKNOWN) // Not our function
     return rc;
 
   const char *result = mutt_map_get_name(rc, RetvalNames);

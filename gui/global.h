@@ -31,7 +31,7 @@ struct MuttWindow;
  * Prototype for a Global Function
  *
  * @param op Operation to perform, e.g. OP_VERSION
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 typedef int (*global_function_t)(int op);
 

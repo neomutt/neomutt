@@ -375,7 +375,7 @@ void dlg_select_autocrypt_account(void)
   int rc;
   do
   {
-    rc = IR_UNKNOWN;
+    rc = FR_UNKNOWN;
     menu_tagging_dispatcher(menu, op);
     window_redraw(NULL);
 
@@ -393,7 +393,7 @@ void dlg_select_autocrypt_account(void)
     switch (op)
     {
       case OP_EXIT:
-        rc = IR_DONE;
+        rc = FR_DONE;
         break;
 
       case OP_AUTOCRYPT_CREATE_ACCT:
@@ -446,11 +446,11 @@ void dlg_select_autocrypt_account(void)
       }
     }
 
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(menu->win, op);
-  } while (rc != IR_DONE);
+  } while (rc != FR_DONE);
   // ---------------------------------------------------------------------------
 
   simple_dialog_free(&dlg);

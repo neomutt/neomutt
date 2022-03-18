@@ -200,7 +200,7 @@ struct Email *dlg_select_postponed_email(struct Mailbox *m)
   int rc;
   do
   {
-    rc = IR_UNKNOWN;
+    rc = FR_UNKNOWN;
     menu_tagging_dispatcher(menu, op);
     window_redraw(NULL);
 
@@ -254,19 +254,19 @@ struct Email *dlg_select_postponed_email(struct Mailbox *m)
 
       case OP_GENERIC_SELECT_ENTRY:
         r = menu_get_index(menu);
-        rc = IR_DONE;
+        rc = FR_DONE;
         break;
 
       case OP_EXIT:
-        rc = IR_DONE;
+        rc = FR_DONE;
         break;
     }
 
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(menu->win, op);
-  } while (rc != IR_DONE);
+  } while (rc != FR_DONE);
   // ---------------------------------------------------------------------------
 
   cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);

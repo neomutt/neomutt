@@ -33,7 +33,7 @@ struct EnvelopeWindowData;
  *
  * @param wdata Envelope Window data
  * @param op    Operation to perform, e.g. OP_ENVELOPE_EDIT_FROM
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 typedef int (*envelope_function_t)(struct EnvelopeWindowData *wdata, int op);
 

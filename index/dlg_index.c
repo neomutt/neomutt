@@ -1342,14 +1342,14 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     int rc = index_function_dispatcher(priv->win_index, op);
 
 #ifdef USE_SIDEBAR
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
     {
       struct MuttWindow *win_sidebar = window_find_child(dlg, WT_SIDEBAR);
       rc = sb_function_dispatcher(win_sidebar, op);
     }
 #endif
 
-    if (rc == IR_CONTINUE)
+    if (rc == FR_CONTINUE)
     {
       op = OP_DISPLAY_MESSAGE;
       continue;
@@ -1361,7 +1361,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       continue;
     }
 
-    if ((rc == IR_UNKNOWN) && !priv->in_pager)
+    if ((rc == FR_UNKNOWN) && !priv->in_pager)
       km_error_key(MENU_INDEX);
 
 #ifdef USE_NOTMUCH
@@ -1375,7 +1375,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
     }
 
-    if (rc == IR_DONE)
+    if (rc == FR_DONE)
       break;
   }
 

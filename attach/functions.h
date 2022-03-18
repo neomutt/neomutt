@@ -37,7 +37,7 @@ struct MuttWindow;
  *
  * @param priv   Private Attach data
  * @param op     Operation to perform, e.g. OP_ATTACHMENT_COLLAPSE
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 typedef int (*attach_function_t)(struct AttachPrivateData *priv, int op);
 

@@ -1434,7 +1434,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   int rc;
   do
   {
-    rc = IR_UNKNOWN;
+    rc = FR_UNKNOWN;
     menu_tagging_dispatcher(menu, op);
     window_redraw(NULL);
 
@@ -1542,21 +1542,21 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
         }
 
         k = crypt_copy_key(cur_key);
-        rc = IR_DONE;
+        rc = FR_DONE;
         break;
       }
 
       case OP_EXIT:
         k = NULL;
-        rc = IR_DONE;
+        rc = FR_DONE;
         break;
     }
 
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(menu->win, op);
-  } while (rc != IR_DONE);
+  } while (rc != FR_DONE);
   // ---------------------------------------------------------------------------
 
   simple_dialog_free(&dlg);

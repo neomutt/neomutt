@@ -422,16 +422,16 @@ static bool dlg_select_query(struct Buffer *buf, struct AliasMenuData *mdata)
     mutt_clear_error();
 
     rc = alias_function_dispatcher(dlg, op);
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(win_menu, op);
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(win_menu, op);
-  } while ((rc != IR_DONE) && (rc != IR_CONTINUE));
+  } while ((rc != FR_DONE) && (rc != FR_CONTINUE));
   // ---------------------------------------------------------------------------
 
   simple_dialog_free(&dlg);
   window_redraw(NULL);
-  return (rc == IR_CONTINUE); // Was a selection made?
+  return (rc == FR_CONTINUE); // Was a selection made?
 }
 
 /**

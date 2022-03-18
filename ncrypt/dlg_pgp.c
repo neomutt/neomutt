@@ -685,7 +685,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
   int rc;
   do
   {
-    rc = IR_UNKNOWN;
+    rc = FR_UNKNOWN;
     menu_tagging_dispatcher(menu, op);
     window_redraw(NULL);
 
@@ -822,21 +822,21 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
         }
 
         kp = cur_key->parent;
-        rc = IR_DONE;
+        rc = FR_DONE;
         break;
       }
 
       case OP_EXIT:
         kp = NULL;
-        rc = IR_DONE;
+        rc = FR_DONE;
         break;
     }
 
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(menu->win, op);
-  } while (rc != IR_DONE);
+  } while (rc != FR_DONE);
   // ---------------------------------------------------------------------------
 
   simple_dialog_free(&dlg);

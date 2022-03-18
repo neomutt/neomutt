@@ -34,7 +34,7 @@ struct SidebarWindowData;
  *
  * @param wdata  Sidebar Window data
  * @param op     Operation to perform, e.g. OP_SIDEBAR_NEXT
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 typedef int (*sidebar_function_t)(struct SidebarWindowData *wdata, int op);
 
