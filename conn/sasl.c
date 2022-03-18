@@ -288,7 +288,7 @@ static int mutt_sasl_start(void)
 
   /* set up default logging callback */
   callbacks[0].id = SASL_CB_LOG;
-  callbacks[0].proc = (int (*)(void)) mutt_sasl_cb_log;
+  callbacks[0].proc = (int (*)(void))(intptr_t) mutt_sasl_cb_log;
   callbacks[0].context = NULL;
 
   callbacks[1].id = SASL_CB_LIST_END;
@@ -393,17 +393,17 @@ static sasl_callback_t *mutt_sasl_get_callbacks(struct ConnAccount *cac)
   sasl_callback_t *callback = MuttSaslCallbacks;
 
   callback->id = SASL_CB_USER;
-  callback->proc = (int (*)(void)) mutt_sasl_cb_authname;
+  callback->proc = (int (*)(void))(intptr_t) mutt_sasl_cb_authname;
   callback->context = cac;
   callback++;
 
   callback->id = SASL_CB_AUTHNAME;
-  callback->proc = (int (*)(void)) mutt_sasl_cb_authname;
+  callback->proc = (int (*)(void))(intptr_t) mutt_sasl_cb_authname;
   callback->context = cac;
   callback++;
 
   callback->id = SASL_CB_PASS;
-  callback->proc = (int (*)(void)) mutt_sasl_cb_pass;
+  callback->proc = (int (*)(void))(intptr_t) mutt_sasl_cb_pass;
   callback->context = cac;
   callback++;
 
