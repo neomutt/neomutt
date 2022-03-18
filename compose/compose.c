@@ -355,7 +355,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
 #ifdef USE_NNTP
     OptNews = false; /* for any case */
 #endif
-    menu_tagging_dispatcher(menu, op);
+    menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
     op = km_dokey(menu->type);
@@ -370,13 +370,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
     mutt_clear_error();
 
     rc = compose_function_dispatcher(dlg, op);
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = env_function_dispatcher(win_env, op);
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(menu->win, op);
-  } while (rc != IR_DONE);
+  } while (rc != FR_DONE);
   // ---------------------------------------------------------------------------
 
 #ifdef USE_AUTOCRYPT

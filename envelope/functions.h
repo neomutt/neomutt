@@ -28,12 +28,13 @@ struct EnvelopeWindowData;
 
 /**
  * @defgroup envelope_function_api Envelope Function API
+ * @ingroup dispatcher_api
  *
  * Prototype for a Envelope Function
  *
  * @param wdata Envelope Window data
  * @param op    Operation to perform, e.g. OP_ENVELOPE_EDIT_FROM
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 typedef int (*envelope_function_t)(struct EnvelopeWindowData *wdata, int op);
 
@@ -46,7 +47,7 @@ struct EnvelopeFunction
   envelope_function_t function; ///< Function to call
 };
 
-int env_function_dispatcher(struct MuttWindow *win_env, int op);
+int env_function_dispatcher(struct MuttWindow *win, int op);
 void update_crypt_info(struct EnvelopeWindowData *wdata);
 
 extern struct EnvelopeFunction EnvelopeFunctions[];

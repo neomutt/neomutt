@@ -178,11 +178,11 @@ static int op_attachment_collapse(struct AttachPrivateData *priv, int op)
   if (!cur_att->body->parts)
   {
     mutt_error(_("There are no subparts to show"));
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
   }
   attach_collapse(priv->actx, priv->menu);
   mutt_update_recvattach_menu(priv->actx, priv->menu, false);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -191,14 +191,14 @@ static int op_attachment_collapse(struct AttachPrivateData *priv, int op)
 static int op_attachment_delete(struct AttachPrivateData *priv, int op)
 {
   if (check_readonly(priv->mailbox))
-    return IR_ERROR;
+    return FR_ERROR;
 
 #ifdef USE_POP
   if (priv->mailbox->type == MUTT_POP)
   {
     mutt_flushinp();
     mutt_error(_("Can't delete attachment from POP server"));
-    return IR_ERROR;
+    return FR_ERROR;
   }
 #endif
 
@@ -207,7 +207,7 @@ static int op_attachment_delete(struct AttachPrivateData *priv, int op)
   {
     mutt_flushinp();
     mutt_error(_("Can't delete attachment from news server"));
-    return IR_ERROR;
+    return FR_ERROR;
   }
 #endif
 
@@ -215,7 +215,7 @@ static int op_attachment_delete(struct AttachPrivateData *priv, int op)
   {
     mutt_message(_("Deletion of attachments from encrypted messages is "
                    "unsupported"));
-    return IR_ERROR;
+    return FR_ERROR;
   }
   if ((WithCrypto != 0) && (priv->actx->email->security & (SEC_SIGN | SEC_PARTSIGN)))
   {
@@ -262,7 +262,7 @@ static int op_attachment_delete(struct AttachPrivateData *priv, int op)
     }
   }
 
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -272,7 +272,7 @@ static int op_attachment_edit_type(struct AttachPrivateData *priv, int op)
 {
   recvattach_edit_content_type(priv->actx, priv->menu, priv->actx->email);
   menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -283,7 +283,7 @@ static int op_attachment_pipe(struct AttachPrivateData *priv, int op)
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_pipe_attachment_list(priv->actx, cur_att->fp, priv->menu->tag_prefix,
                             cur_att->body, false);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -294,7 +294,7 @@ static int op_attachment_print(struct AttachPrivateData *priv, int op)
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_print_attachment_list(priv->actx, cur_att->fp, priv->menu->tag_prefix,
                              cur_att->body);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -310,7 +310,7 @@ static int op_attachment_save(struct AttachPrivateData *priv, int op)
   const int index = menu_get_index(priv->menu) + 1;
   if (!priv->menu->tag_prefix && c_resolve && (index < priv->menu->max))
     menu_set_index(priv->menu, index);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -319,7 +319,7 @@ static int op_attachment_save(struct AttachPrivateData *priv, int op)
 static int op_attachment_undelete(struct AttachPrivateData *priv, int op)
 {
   if (check_readonly(priv->mailbox))
-    return IR_ERROR;
+    return FR_ERROR;
   if (!priv->menu->tag_prefix)
   {
     struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
@@ -344,7 +344,7 @@ static int op_attachment_undelete(struct AttachPrivateData *priv, int op)
       }
     }
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -356,7 +356,7 @@ static int op_attachment_view(struct AttachPrivateData *priv, int op)
                                       priv->actx->email, priv->actx, true);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
 
-  return IR_CONTINUE;
+  return FR_CONTINUE;
 }
 
 /**
@@ -368,7 +368,7 @@ static int op_attachment_view_mailcap(struct AttachPrivateData *priv, int op)
   mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_MAILCAP,
                        priv->actx->email, priv->actx, priv->menu->win);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -380,7 +380,7 @@ static int op_attachment_view_pager(struct AttachPrivateData *priv, int op)
   mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_PAGER,
                        priv->actx->email, priv->actx, priv->menu->win);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -392,7 +392,7 @@ static int op_attachment_view_text(struct AttachPrivateData *priv, int op)
   mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_AS_TEXT,
                        priv->actx->email, priv->actx, priv->menu->win);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -401,12 +401,12 @@ static int op_attachment_view_text(struct AttachPrivateData *priv, int op)
 static int op_bounce_message(struct AttachPrivateData *priv, int op)
 {
   if (check_attach())
-    return IR_ERROR;
+    return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_attach_bounce(priv->mailbox, cur_att->fp, priv->actx,
                      priv->menu->tag_prefix ? NULL : cur_att->body);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -420,7 +420,7 @@ static int op_check_traditional(struct AttachPrivateData *priv, int op)
     priv->actx->email->security = crypt_query(NULL);
     menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -429,11 +429,11 @@ static int op_check_traditional(struct AttachPrivateData *priv, int op)
 static int op_compose_to_sender(struct AttachPrivateData *priv, int op)
 {
   if (check_attach())
-    return IR_ERROR;
+    return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_attach_mail_sender(priv->actx, priv->menu->tag_prefix ? NULL : cur_att->body);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -454,7 +454,7 @@ static int op_exit(struct AttachPrivateData *priv, int op)
     priv->actx->email->changed = true;
 
   mutt_actx_free(&priv->actx);
-  return IR_DONE;
+  return FR_DONE;
 }
 
 /**
@@ -463,12 +463,12 @@ static int op_exit(struct AttachPrivateData *priv, int op)
 static int op_extract_keys(struct AttachPrivateData *priv, int op)
 {
   if (!(WithCrypto & APPLICATION_PGP))
-    return IR_NO_ACTION;
+    return FR_NO_ACTION;
 
   recvattach_extract_pgp_keys(priv->actx, priv->menu);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
 
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -477,7 +477,7 @@ static int op_extract_keys(struct AttachPrivateData *priv, int op)
 static int op_forget_passphrase(struct AttachPrivateData *priv, int op)
 {
   crypt_forget_passphrase();
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -486,12 +486,12 @@ static int op_forget_passphrase(struct AttachPrivateData *priv, int op)
 static int op_forward_message(struct AttachPrivateData *priv, int op)
 {
   if (check_attach())
-    return IR_ERROR;
+    return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_attach_forward(cur_att->fp, priv->actx->email, priv->actx,
                       priv->menu->tag_prefix ? NULL : cur_att->body, SEND_NO_FLAGS);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -501,7 +501,7 @@ static int op_list_subscribe(struct AttachPrivateData *priv, int op)
 {
   if (!check_attach())
     mutt_send_list_subscribe(priv->mailbox, priv->actx->email);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -511,7 +511,7 @@ static int op_list_unsubscribe(struct AttachPrivateData *priv, int op)
 {
   if (!check_attach())
     mutt_send_list_unsubscribe(priv->mailbox, priv->actx->email);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -520,7 +520,7 @@ static int op_list_unsubscribe(struct AttachPrivateData *priv, int op)
 static int op_reply(struct AttachPrivateData *priv, int op)
 {
   if (check_attach())
-    return IR_ERROR;
+    return FR_ERROR;
 
   SendFlags flags = SEND_REPLY;
   if (op == OP_GROUP_REPLY)
@@ -534,7 +534,7 @@ static int op_reply(struct AttachPrivateData *priv, int op)
   mutt_attach_reply(cur_att->fp, priv->mailbox, priv->actx->email, priv->actx,
                     priv->menu->tag_prefix ? NULL : cur_att->body, flags);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -543,12 +543,12 @@ static int op_reply(struct AttachPrivateData *priv, int op)
 static int op_resend(struct AttachPrivateData *priv, int op)
 {
   if (check_attach())
-    return IR_ERROR;
+    return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_attach_resend(cur_att->fp, priv->mailbox, priv->actx,
                      priv->menu->tag_prefix ? NULL : cur_att->body);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 // -----------------------------------------------------------------------------
@@ -560,7 +560,7 @@ static int op_resend(struct AttachPrivateData *priv, int op)
 static int op_followup(struct AttachPrivateData *priv, int op)
 {
   if (check_attach())
-    return IR_ERROR;
+    return FR_ERROR;
 
   const enum QuadOption c_followup_to_poster =
       cs_subset_quad(NeoMutt->sub, "followup_to_poster");
@@ -573,7 +573,7 @@ static int op_followup(struct AttachPrivateData *priv, int op)
     mutt_attach_reply(cur_att->fp, priv->mailbox, priv->actx->email, priv->actx,
                       priv->menu->tag_prefix ? NULL : cur_att->body, SEND_NEWS | SEND_REPLY);
     menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-    return IR_SUCCESS;
+    return FR_SUCCESS;
   }
 
   return op_reply(priv, op);
@@ -585,12 +585,12 @@ static int op_followup(struct AttachPrivateData *priv, int op)
 static int op_forward_to_group(struct AttachPrivateData *priv, int op)
 {
   if (check_attach())
-    return IR_ERROR;
+    return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_attach_forward(cur_att->fp, priv->actx->email, priv->actx,
                       priv->menu->tag_prefix ? NULL : cur_att->body, SEND_NEWS);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 #endif
 
@@ -638,29 +638,26 @@ struct AttachFunction AttachFunctions[] = {
 };
 
 /**
- * attach_function_dispatcher - Perform a Attach function
- * @param win_attach Window for the Index
- * @param op        Operation to perform, e.g. OP_MAIN_LIMIT
- * @retval num #IndexRetval, e.g. #IR_SUCCESS
+ * attach_function_dispatcher - Perform a Attach function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int attach_function_dispatcher(struct MuttWindow *win_attach, int op)
+int attach_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win_attach)
+  if (!win)
   {
     mutt_error(_(Not_available_in_this_menu));
-    return IR_ERROR;
+    return FR_ERROR;
   }
 
-  struct Menu *menu = win_attach->wdata;
+  struct Menu *menu = win->wdata;
   struct AttachPrivateData *priv = menu->mdata;
   if (!priv)
-    return IR_ERROR;
+    return FR_ERROR;
 
-  struct MuttWindow *dlg = dialog_find(win_attach);
+  struct MuttWindow *dlg = dialog_find(win);
   if (!dlg || !dlg->wdata)
-    return IR_ERROR;
+    return FR_ERROR;
 
-  int rc = IR_UNKNOWN;
+  int rc = FR_UNKNOWN;
   for (size_t i = 0; AttachFunctions[i].op != OP_NULL; i++)
   {
     const struct AttachFunction *fn = &AttachFunctions[i];

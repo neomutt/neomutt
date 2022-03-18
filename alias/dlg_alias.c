@@ -336,7 +336,7 @@ static bool dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
   int op = OP_NULL;
   do
   {
-    menu_tagging_dispatcher(menu, op);
+    menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
     op = km_dokey(menu->type);
@@ -351,16 +351,16 @@ static bool dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
     mutt_clear_error();
 
     rc = alias_function_dispatcher(dlg, op);
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(menu->win, op);
-  } while ((rc != IR_DONE) && (rc != IR_CONTINUE));
+  } while ((rc != FR_DONE) && (rc != FR_CONTINUE));
   // ---------------------------------------------------------------------------
 
   simple_dialog_free(&dlg);
   window_redraw(NULL);
-  return (rc == IR_CONTINUE); // Was a selection made?
+  return (rc == FR_CONTINUE); // Was a selection made?
 }
 
 /**

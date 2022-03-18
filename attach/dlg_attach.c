@@ -491,7 +491,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
   int op = OP_NULL;
   do
   {
-    menu_tagging_dispatcher(menu, op);
+    menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
     op = km_dokey(menu->type);
@@ -506,19 +506,19 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
     mutt_clear_error();
 
     rc = attach_function_dispatcher(dlg, op);
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(menu->win, op);
 
-    if (rc == IR_CONTINUE)
+    if (rc == FR_CONTINUE)
     {
       op = priv->op;
       continue;
     }
 
     op = OP_NULL;
-  } while (rc != IR_DONE);
+  } while (rc != FR_DONE);
   // ---------------------------------------------------------------------------
 
   simple_dialog_free(&dlg);

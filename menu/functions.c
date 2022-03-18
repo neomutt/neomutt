@@ -172,70 +172,70 @@ static int menu_movement(struct Menu *menu, int op)
   {
     case OP_BOTTOM_PAGE:
       menu_bottom_page(menu);
-      return IR_SUCCESS;
+      return FR_SUCCESS;
 
     case OP_CURRENT_BOTTOM:
       menu_current_bottom(menu);
-      return IR_SUCCESS;
+      return FR_SUCCESS;
 
     case OP_CURRENT_MIDDLE:
       menu_current_middle(menu);
-      return IR_SUCCESS;
+      return FR_SUCCESS;
 
     case OP_CURRENT_TOP:
       menu_current_top(menu);
-      return IR_SUCCESS;
+      return FR_SUCCESS;
 
     case OP_FIRST_ENTRY:
       menu_first_entry(menu);
-      return IR_SUCCESS;
+      return FR_SUCCESS;
 
     case OP_HALF_DOWN:
       menu_half_down(menu);
-      return IR_SUCCESS;
+      return FR_SUCCESS;
 
     case OP_HALF_UP:
       menu_half_up(menu);
-      return IR_SUCCESS;
+      return FR_SUCCESS;
 
     case OP_LAST_ENTRY:
       menu_last_entry(menu);
-      return IR_SUCCESS;
+      return FR_SUCCESS;
 
     case OP_MIDDLE_PAGE:
       menu_middle_page(menu);
-      return IR_SUCCESS;
+      return FR_SUCCESS;
 
     case OP_NEXT_ENTRY:
       menu_next_entry(menu);
-      return IR_SUCCESS;
+      return FR_SUCCESS;
 
     case OP_NEXT_LINE:
       menu_next_line(menu);
-      return IR_SUCCESS;
+      return FR_SUCCESS;
 
     case OP_NEXT_PAGE:
       menu_next_page(menu);
-      return IR_SUCCESS;
+      return FR_SUCCESS;
 
     case OP_PREV_ENTRY:
       menu_prev_entry(menu);
-      return IR_SUCCESS;
+      return FR_SUCCESS;
 
     case OP_PREV_LINE:
       menu_prev_line(menu);
-      return IR_SUCCESS;
+      return FR_SUCCESS;
 
     case OP_PREV_PAGE:
       menu_prev_page(menu);
-      return IR_SUCCESS;
+      return FR_SUCCESS;
 
     case OP_TOP_PAGE:
       menu_top_page(menu);
-      return IR_SUCCESS;
+      return FR_SUCCESS;
 
     default:
-      return IR_UNKNOWN;
+      return FR_UNKNOWN;
   }
 }
 
@@ -250,7 +250,7 @@ static int menu_search(struct Menu *menu, int op)
     if (index != -1)
       menu_set_index(menu, index);
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -260,7 +260,7 @@ static int op_help(struct Menu *menu, int op)
 {
   mutt_help(menu->type);
   menu->redraw = MENU_REDRAW_FULL;
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -269,7 +269,7 @@ static int op_help(struct Menu *menu, int op)
 static int op_jump(struct Menu *menu, int op)
 {
   menu_jump(menu);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 // -----------------------------------------------------------------------------
@@ -306,19 +306,16 @@ struct MenuFunction MenuFunctions[] = {
 };
 
 /**
- * menu_function_dispatcher - Perform a Menu function
- * @param win Menu Window
- * @param op  Operation to perform, e.g. OP_MENU_NEXT
- * @retval num #IndexRetval, e.g. #IR_SUCCESS
+ * menu_function_dispatcher - Perform a Menu function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
 int menu_function_dispatcher(struct MuttWindow *win, int op)
 {
   if (!win || !win->wdata)
-    return IR_UNKNOWN;
+    return FR_UNKNOWN;
 
   struct Menu *menu = win->wdata;
 
-  int rc = IR_UNKNOWN;
+  int rc = FR_UNKNOWN;
   for (size_t i = 0; MenuFunctions[i].op != OP_NULL; i++)
   {
     const struct MenuFunction *fn = &MenuFunctions[i];
@@ -329,7 +326,7 @@ int menu_function_dispatcher(struct MuttWindow *win, int op)
     }
   }
 
-  if (rc == IR_UNKNOWN) // Not our function
+  if (rc == FR_UNKNOWN) // Not our function
     return rc;
 
   const char *result = mutt_map_get_name(rc, RetvalNames);

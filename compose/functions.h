@@ -28,12 +28,13 @@ struct ComposeSharedData;
 
 /**
  * @defgroup compose_function_api Compose Function API
+ * @ingroup dispatcher_api
  *
  * Prototype for a Compose Function
  *
  * @param shared Shared Compose data
  * @param op     Operation to perform, e.g. OP_COMPOSE_WRITE_MESSAGE
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 typedef int (*compose_function_t)(struct ComposeSharedData *priv, int op);
 
@@ -46,7 +47,7 @@ struct ComposeFunction
   compose_function_t function; ///< Function to call
 };
 
-int compose_function_dispatcher(struct MuttWindow *win_compose, int op);
+int compose_function_dispatcher(struct MuttWindow *win, int op);
 
 extern struct ComposeFunction ComposeFunctions[];
 

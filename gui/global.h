@@ -27,11 +27,12 @@ struct MuttWindow;
 
 /**
  * @defgroup global_function_api Global Function API
+ * @ingroup dispatcher_api
  *
  * Prototype for a Global Function
  *
  * @param op Operation to perform, e.g. OP_VERSION
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 typedef int (*global_function_t)(int op);
 

@@ -46,7 +46,7 @@ static int op_check_stats(int op)
 {
   struct Mailbox *m_cur = get_current_mailbox();
   mutt_check_stats(m_cur);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -56,7 +56,7 @@ static int op_enter_command(int op)
 {
   mutt_enter_command();
   window_redraw(NULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -67,7 +67,7 @@ static int op_redraw(int op)
   clearok(stdscr, true);
   mutt_resize_screen();
   window_redraw(NULL);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -80,7 +80,7 @@ static int op_shell_escape(int op)
     struct Mailbox *m_cur = get_current_mailbox();
     mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_FORCE);
   }
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -89,7 +89,7 @@ static int op_shell_escape(int op)
 static int op_version(int op)
 {
   mutt_message(mutt_make_version());
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
@@ -98,7 +98,7 @@ static int op_version(int op)
 static int op_what_key(int op)
 {
   mutt_what_key();
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 // -----------------------------------------------------------------------------
@@ -119,14 +119,11 @@ struct GlobalFunction GlobalFunctions[] = {
 };
 
 /**
- * global_function_dispatcher - Perform a Global function
- * @param win Window
- * @param op  Operation to perform, e.g. OP_VERSION
- * @retval num #IndexRetval, e.g. #IR_SUCCESS
+ * global_function_dispatcher - Perform a Global function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
 int global_function_dispatcher(struct MuttWindow *win, int op)
 {
-  int rc = IR_UNKNOWN;
+  int rc = FR_UNKNOWN;
   for (size_t i = 0; GlobalFunctions[i].op != OP_NULL; i++)
   {
     const struct GlobalFunction *fn = &GlobalFunctions[i];
@@ -137,11 +134,11 @@ int global_function_dispatcher(struct MuttWindow *win, int op)
     }
   }
 
-  if (rc == IR_UNKNOWN) // Not our function
+  if (rc == FR_UNKNOWN) // Not our function
     return rc;
 
   const char *result = mutt_map_get_name(rc, RetvalNames);
   mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
 
-  return IR_SUCCESS; // Whatever the outcome, we handled it
+  return FR_SUCCESS; // Whatever the outcome, we handled it
 }

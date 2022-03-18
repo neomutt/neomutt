@@ -27,31 +27,18 @@ struct IndexPrivateData;
 struct IndexSharedData;
 struct MuttWindow;
 
-/**
- * enum IndexRetval - Possible return values for Index functions
- */
-enum IndexRetval
-{
-  IR_UNKNOWN   = -7, ///< Unknown function
-  IR_CONTINUE  = -6, ///< Return to the Pager
-  IR_DONE      = -5, ///< Exit the Index
-  IR_NOT_IMPL  = -4, ///< Invalid function - feature not enabled
-  IR_NO_ACTION = -3, ///< Valid function - no action performed
-  IR_ERROR     = -2, ///< Valid function - error occurred
-  IR_SUCCESS   = -1, ///< Valid function - successfully performed
-};
-
 extern const struct Mapping RetvalNames[];
 
 /**
  * @defgroup index_function_api Index Function API
+ * @ingroup dispatcher_api
  *
  * Prototype for an Index Function
  *
  * @param shared Shared Index data
  * @param priv   Private Index data
  * @param op     Operation to perform, e.g. OP_MAIN_LIMIT
- * @retval num #IndexRetval or opcode, e.g. OP_JUMP
+ * @retval num #FunctionRetval or opcode, e.g. OP_JUMP
  */
 typedef int (*index_function_t)(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op);
 
@@ -65,7 +52,7 @@ struct IndexFunction
   int flags;                 ///< Prerequisites for the function, e.g. #CHECK_IN_MAILBOX
 };
 
-int index_function_dispatcher(struct MuttWindow *win_index, int op);
+int index_function_dispatcher(struct MuttWindow *win, int op);
 
 extern struct IndexFunction IndexFunctions[];
 

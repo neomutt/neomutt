@@ -47,6 +47,6 @@ struct MuttWindow;
 void sb_init    (void);
 void sb_shutdown(void);
 
-int sb_function_dispatcher(struct MuttWindow *win_sidebar, int op);
+int sb_function_dispatcher(struct MuttWindow *win, int op);
 
 #endif /* MUTT_SIDEBAR_LIB_H */

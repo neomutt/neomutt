@@ -234,8 +234,8 @@ struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, const char *query)
   int rc;
   do
   {
-    rc = IR_UNKNOWN;
-    menu_tagging_dispatcher(menu, op);
+    rc = FR_UNKNOWN;
+    menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
     op = km_dokey(menu->type);
@@ -284,20 +284,20 @@ struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, const char *query)
         }
 
         selected_key = cur_key;
-        rc = IR_DONE;
+        rc = FR_DONE;
         break;
       }
 
       case OP_EXIT:
-        rc = IR_DONE;
+        rc = FR_DONE;
         break;
     }
 
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(menu->win, op);
-  } while (rc != IR_DONE);
+  } while (rc != FR_DONE);
 
   simple_dialog_free(&dlg);
   return selected_key;

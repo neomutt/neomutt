@@ -60,25 +60,25 @@ static void menu_set_prefix(struct Menu *menu)
  * op_end_cond - End of conditional execution (noop)
  * @param menu Menu
  * @param op   Operation to perform, e.g. OP_END_COND
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 static int op_end_cond(struct Menu *menu, int op)
 {
   menu->tag_prefix = false;
   menu_set_prefix(menu);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
  * op_tag - Tag the current entry
  * @param menu Menu
  * @param op   Operation to perform, e.g. OP_TAG
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 static int op_tag(struct Menu *menu, int op)
 {
   const bool c_auto_tag = cs_subset_bool(menu->sub, "auto_tag");
-  int rc = IR_SUCCESS;
+  int rc = FR_SUCCESS;
 
   if ((menu->num_tagged != 0) && c_auto_tag)
     menu->tag_prefix = true;
@@ -86,7 +86,7 @@ static int op_tag(struct Menu *menu, int op)
   if (!menu->tag)
   {
     mutt_error(_("Tagging is not supported"));
-    return IR_ERROR;
+    return FR_ERROR;
   }
 
   if (menu->tag_prefix && !c_auto_tag)
@@ -114,7 +114,7 @@ static int op_tag(struct Menu *menu, int op)
   else
   {
     mutt_error(_("No entries"));
-    rc = IR_ERROR;
+    rc = FR_ERROR;
   }
 
   menu->tag_prefix = ((menu->num_tagged != 0) && c_auto_tag);
@@ -131,7 +131,7 @@ static int op_tag(struct Menu *menu, int op)
  * op_tag_prefix - Apply next function to tagged messages
  * @param menu Menu
  * @param op   Operation to perform, e.g. OP_TAG_PREFIX
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 static int op_tag_prefix(struct Menu *menu, int op)
 {
@@ -150,14 +150,14 @@ static int op_tag_prefix(struct Menu *menu, int op)
     menu_set_prefix(menu);
   }
 
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
  * op_tag_prefix_cond - Apply next function ONLY to tagged messages
  * @param menu Menu
  * @param op   Operation to perform, e.g. OP_TAG_PREFIX_COND
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 static int op_tag_prefix_cond(struct Menu *menu, int op)
 {
@@ -176,52 +176,51 @@ static int op_tag_prefix_cond(struct Menu *menu, int op)
   }
 
   menu_set_prefix(menu);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
  * menu_abort - User aborted an operation
  * @param menu Menu
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 static int menu_abort(struct Menu *menu)
 {
   menu->tag_prefix = false;
   menu_set_prefix(menu);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
  * menu_timeout - Timeout waiting for a keypress
  * @param menu Menu
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 static int menu_timeout(struct Menu *menu)
 {
   menu_set_prefix(menu);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
  * menu_other - Some non-tagging operation occurred
  * @param menu Menu
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 static int menu_other(struct Menu *menu)
 {
   menu->tag_prefix = false;
   menu_set_prefix(menu);
-  return IR_SUCCESS;
+  return FR_SUCCESS;
 }
 
 /**
- * menu_tagging_dispatcher - Perform taggings operations on the Menu
- * @param menu Menu
- * @param op   Operation to perform, e.g. OP_TAG
- * @retval enum #IndexRetval
+ * menu_tagging_dispatcher - Perform tagging operations on the Menu - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int menu_tagging_dispatcher(struct Menu *menu, int op)
+int menu_tagging_dispatcher(struct MuttWindow *win, int op)
 {
+  struct Menu *menu = win->wdata;
+
   switch (op)
   {
     case OP_END_COND:

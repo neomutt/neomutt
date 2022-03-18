@@ -29,12 +29,13 @@ struct Menu;
 
 /**
  * @defgroup menu_function_api Menu Function API
+ * @ingroup dispatcher_api
  *
  * Prototype for a Menu Function
  *
  * @param menu Menu
  * @param op   Operation to perform, e.g. OP_NEXT_PAGE
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 typedef int (*menu_function_t)(struct Menu *menu, int op);
 

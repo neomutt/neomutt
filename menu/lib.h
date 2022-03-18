@@ -203,6 +203,6 @@ MenuRedrawFlags menu_set_and_notify(struct Menu *menu, int top, int index);
 void menu_adjust(struct Menu *menu);
 
 int menu_function_dispatcher(struct MuttWindow *win, int op);
-int menu_tagging_dispatcher(struct Menu *menu, int op);
+int menu_tagging_dispatcher(struct MuttWindow *win, int op);
 
 #endif /* MUTT_MENU_LIB_H */

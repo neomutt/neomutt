@@ -32,12 +32,13 @@ struct MuttWindow;
 
 /**
  * @defgroup attach_function_api Attachment Function API
+ * @ingroup dispatcher_api
  *
  * Prototype for an Attachment Function
  *
  * @param priv   Private Attach data
  * @param op     Operation to perform, e.g. OP_ATTACHMENT_COLLAPSE
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 typedef int (*attach_function_t)(struct AttachPrivateData *priv, int op);
 
@@ -50,7 +51,7 @@ struct AttachFunction
   attach_function_t function; ///< Function to call
 };
 
-int attach_function_dispatcher(struct MuttWindow *win_attach, int op);
+int attach_function_dispatcher(struct MuttWindow *win, int op);
 
 extern struct AttachFunction AttachFunctions[];
 

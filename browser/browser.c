@@ -1362,8 +1362,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
       menu_set_index(menu, last_selected_mailbox);
     }
 
-    rc = IR_UNKNOWN;
-    menu_tagging_dispatcher(menu, op);
+    rc = FR_UNKNOWN;
+    menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
     op = km_dokey(menu->type);
@@ -2267,11 +2267,11 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
       }
     }
 
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
-    if (rc == IR_UNKNOWN)
+    if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(menu->win, op);
-  } while (rc != IR_DONE);
+  } while (rc != FR_DONE);
   // ---------------------------------------------------------------------------
 
 bail:

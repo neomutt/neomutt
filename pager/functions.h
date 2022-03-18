@@ -32,13 +32,14 @@ struct PagerView;
 
 /**
  * @defgroup pager_function_api Pager Function API
+ * @ingroup dispatcher_api
  *
  * Prototype for a Pager Function
  *
  * @param shared Shared Index data
  * @param priv   Private Index data
  * @param op     Operation to perform, e.g. OP_MAIN_LIMIT
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 typedef int (*pager_function_t)(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op);
 
@@ -51,7 +52,7 @@ struct PagerFunction
   pager_function_t function; ///< Function to call
 };
 
-int pager_function_dispatcher(struct MuttWindow *win_index, int op);
+int pager_function_dispatcher(struct MuttWindow *win, int op);
 bool jump_to_bottom(struct PagerPrivateData *priv, struct PagerView *pview);
 
 extern struct PagerFunction PagerFunctions[];
