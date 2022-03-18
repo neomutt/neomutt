@@ -1977,10 +1977,7 @@ struct ComposeFunction ComposeFunctions[] = {
 };
 
 /**
- * compose_function_dispatcher - Perform a Compose function
- * @param win Compose Window
- * @param op  Operation to perform, e.g. OP_COMPOSE_WRITE_MESSAGE
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ * compose_function_dispatcher - Perform a Compose function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
 int compose_function_dispatcher(struct MuttWindow *win, int op)
 {

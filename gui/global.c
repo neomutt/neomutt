@@ -119,10 +119,7 @@ struct GlobalFunction GlobalFunctions[] = {
 };
 
 /**
- * global_function_dispatcher - Perform a Global function
- * @param win Window
- * @param op  Operation to perform, e.g. OP_VERSION
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ * global_function_dispatcher - Perform a Global function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
 int global_function_dispatcher(struct MuttWindow *win, int op)
 {

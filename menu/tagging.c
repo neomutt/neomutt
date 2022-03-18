@@ -215,10 +215,7 @@ static int menu_other(struct Menu *menu)
 }
 
 /**
- * menu_tagging_dispatcher - Perform taggings operations on the Menu
- * @param win  Window
- * @param op   Operation to perform, e.g. OP_TAG
- * @retval enum #FunctionRetval
+ * menu_tagging_dispatcher - Perform tagging operations on the Menu - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
 int menu_tagging_dispatcher(struct MuttWindow *win, int op)
 {

@@ -35,6 +35,7 @@ struct MuttWindow;
 
 /**
  * @defgroup alias_function_api Alias Function API
+ * @ingroup dispatcher_api
  *
  * Prototype for a Alias Function
  *

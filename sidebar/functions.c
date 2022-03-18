@@ -363,10 +363,7 @@ struct SidebarFunction SidebarFunctions[] = {
 };
 
 /**
- * sb_function_dispatcher - Perform a Sidebar function
- * @param win Sidebar Window
- * @param op  Operation to perform, e.g. OP_SIDEBAR_NEXT
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ * sb_function_dispatcher - Perform a Sidebar function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
 int sb_function_dispatcher(struct MuttWindow *win, int op)
 {

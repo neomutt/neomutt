@@ -32,6 +32,7 @@ struct MuttWindow;
 
 /**
  * @defgroup attach_function_api Attachment Function API
+ * @ingroup dispatcher_api
  *
  * Prototype for an Attachment Function
  *

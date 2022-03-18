@@ -29,6 +29,7 @@ struct SidebarWindowData;
 
 /**
  * @defgroup sidebar_function_api Sidebar Function API
+ * @ingroup dispatcher_api
  *
  * Prototype for a Sidebar Function
  *

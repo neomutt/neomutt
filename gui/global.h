@@ -27,6 +27,7 @@ struct MuttWindow;
 
 /**
  * @defgroup global_function_api Global Function API
+ * @ingroup dispatcher_api
  *
  * Prototype for a Global Function
  *

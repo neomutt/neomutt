@@ -329,10 +329,7 @@ struct AliasFunction AliasFunctions[] = {
 };
 
 /**
- * alias_function_dispatcher - Perform a Alias function
- * @param win Alias Window
- * @param op  Operation to perform, e.g. OP_ALIAS_NEXT
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ * alias_function_dispatcher - Perform a Alias function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
 int alias_function_dispatcher(struct MuttWindow *win, int op)
 {

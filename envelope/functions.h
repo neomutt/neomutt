@@ -28,6 +28,7 @@ struct EnvelopeWindowData;
 
 /**
  * @defgroup envelope_function_api Envelope Function API
+ * @ingroup dispatcher_api
  *
  * Prototype for a Envelope Function
  *

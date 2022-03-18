@@ -31,6 +31,7 @@ extern const struct Mapping RetvalNames[];
 
 /**
  * @defgroup index_function_api Index Function API
+ * @ingroup dispatcher_api
  *
  * Prototype for an Index Function
  *

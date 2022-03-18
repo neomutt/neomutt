@@ -1919,10 +1919,7 @@ struct PagerFunction PagerFunctions[] = {
 };
 
 /**
- * pager_function_dispatcher - Perform a Pager function
- * @param win Window for the Index
- * @param op  Operation to perform, e.g. OP_MAIN_LIMIT
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ * pager_function_dispatcher - Perform a Pager function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
 int pager_function_dispatcher(struct MuttWindow *win, int op)
 {

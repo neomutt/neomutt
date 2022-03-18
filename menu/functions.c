@@ -306,10 +306,7 @@ struct MenuFunction MenuFunctions[] = {
 };
 
 /**
- * menu_function_dispatcher - Perform a Menu function
- * @param win Menu Window
- * @param op  Operation to perform, e.g. OP_MENU_NEXT
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ * menu_function_dispatcher - Perform a Menu function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
 int menu_function_dispatcher(struct MuttWindow *win, int op)
 {

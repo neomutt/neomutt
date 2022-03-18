@@ -638,10 +638,7 @@ struct AttachFunction AttachFunctions[] = {
 };
 
 /**
- * attach_function_dispatcher - Perform a Attach function
- * @param win Window
- * @param op  Operation to perform, e.g. OP_MAIN_LIMIT
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ * attach_function_dispatcher - Perform a Attach function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
 int attach_function_dispatcher(struct MuttWindow *win, int op)
 {

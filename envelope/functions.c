@@ -571,10 +571,7 @@ struct EnvelopeFunction EnvelopeFunctions[] = {
 };
 
 /**
- * env_function_dispatcher - Perform an Envelope function
- * @param win Envelope Window
- * @param op  Operation to perform, e.g. OP_ENVELOPE_EDIT_TO
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ * env_function_dispatcher - Perform an Envelope function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
 int env_function_dispatcher(struct MuttWindow *win, int op)
 {

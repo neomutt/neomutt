@@ -28,6 +28,7 @@ struct ComposeSharedData;
 
 /**
  * @defgroup compose_function_api Compose Function API
+ * @ingroup dispatcher_api
  *
  * Prototype for a Compose Function
  *

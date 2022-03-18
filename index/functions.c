@@ -3142,10 +3142,7 @@ bool prereq(struct Context *ctx, struct Menu *menu, CheckFlags checks)
 }
 
 /**
- * index_function_dispatcher - Perform an Index function
- * @param win Window
- * @param op  Operation to perform, e.g. OP_MAIN_LIMIT
- * @retval num FunctionRetval or opcode
+ * index_function_dispatcher - Perform an Index function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
 int index_function_dispatcher(struct MuttWindow *win, int op)
 {

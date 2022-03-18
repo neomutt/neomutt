@@ -32,6 +32,7 @@ struct PagerView;
 
 /**
  * @defgroup pager_function_api Pager Function API
+ * @ingroup dispatcher_api
  *
  * Prototype for a Pager Function
  *
