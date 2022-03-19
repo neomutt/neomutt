@@ -546,6 +546,11 @@ struct QuoteStyle *qstyle_classify(struct QuoteStyle **quote_list, const char *q
 
     if (*quote_list)
     {
+      if ((*quote_list)->next)
+      {
+        qc->next = (*quote_list)->next;
+        qc->next->prev = qc;
+      }
       (*quote_list)->next = qc;
       qc->prev = *quote_list;
     }
