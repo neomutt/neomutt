@@ -40,7 +40,6 @@
 #include "mutt.h"
 #include "functions.h"
 #include "lib.h"
-#include "autocrypt/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
 #include "hook.h"
@@ -50,6 +49,9 @@
 #include "wdata.h"
 #ifdef MIXMASTER
 #include "remailer.h"
+#endif
+#ifdef USE_AUTOCRYPT
+#include "autocrypt/lib.h"
 #endif
 
 #ifdef USE_AUTOCRYPT
