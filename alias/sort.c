@@ -32,7 +32,6 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "sort.h"
-#include "lib.h"
 #include "alias.h"
 #include "gui.h"
 

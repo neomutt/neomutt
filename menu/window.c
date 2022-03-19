@@ -66,14 +66,13 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
 #include "type.h"
-
-struct ConfigSubset;
 
 /**
  * menu_recalc - Recalculate the Window data - Implements MuttWindow::recalc() - @ingroup window_recalc

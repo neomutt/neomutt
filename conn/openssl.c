@@ -46,7 +46,6 @@
 #include <string.h>
 #include <strings.h>
 #include <sys/stat.h>
-#include <time.h>
 #include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"

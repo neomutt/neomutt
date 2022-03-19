@@ -28,27 +28,15 @@
  */
 
 #include "config.h"
-#include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
-#include <string.h>
 #include "private.h"
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "color/lib.h"
-#include "index/lib.h"
 #include "menu/lib.h"
-#include "commands.h"
-#include "context.h"
-#include "keymap.h"
-#include "mutt_globals.h"
-#include "mutt_logging.h"
-#include "mutt_mailbox.h"
-#include "opcodes.h"
-#include "protos.h"
 #include "type.h"
+
+struct ConfigSubset;
 
 char *SearchBuffers[MENU_MAX];
 

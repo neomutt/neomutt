@@ -28,9 +28,10 @@
 
 #include "config.h"
 #include <stddef.h>
+#include <stdbool.h>
 #include "mutt/lib.h"
-#include "gui/lib.h"
-#include "debug.h"
+#include "gui/lib.h" // IWYU pragma: keep
+#include "lib.h"
 
 struct CursesColorList CursesColors; ///< List of all Curses colours
 int NumCursesColors;

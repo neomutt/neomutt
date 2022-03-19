@@ -43,7 +43,6 @@
 #include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"
-#include "context.h"
 #include "format_flags.h"
 #include "handler.h"
 #include "hdrline.h"

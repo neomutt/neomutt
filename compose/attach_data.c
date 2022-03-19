@@ -28,7 +28,6 @@
 
 #include "config.h"
 #include "mutt/lib.h"
-#include "email/lib.h"
 #include "attach_data.h"
 #include "attach/lib.h"
 

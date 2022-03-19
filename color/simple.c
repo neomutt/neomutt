@@ -32,7 +32,7 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
-#include "debug.h"
+#include "lib.h"
 
 struct AttrColor SimpleColors[MT_COLOR_MAX]; ///< Array of Simple colours
 

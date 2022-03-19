@@ -34,7 +34,6 @@
 #include "shared_data.h"
 #include "lib.h"
 #include "context.h"
-#include "mutt_globals.h"
 
 /**
  * index_shared_context_observer - Notification that the Context has changed - Implements ::observer_t - @ingroup observer_api

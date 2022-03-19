@@ -27,7 +27,10 @@
  */
 
 #include "config.h"
-#include "gui/lib.h"
+#include <stdio.h>
+#include "mutt/lib.h"
+#include "color/lib.h"
+#include "pager/lib.h"
 #include "pager/display.h"
 #include "pager/private_data.h"
 

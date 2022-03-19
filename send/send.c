@@ -29,12 +29,12 @@
 
 #include "config.h"
 #include <errno.h>
+#include <limits.h>
 #include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <time.h>
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "address/lib.h"

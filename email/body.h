@@ -26,6 +26,7 @@
 #include "config.h"
 #include <stdbool.h>
 #include <time.h>
+#include "mutt/lib.h"
 #include "parameter.h"
 
 /**

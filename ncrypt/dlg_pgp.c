@@ -69,6 +69,7 @@
 #include <ctype.h>
 #include <locale.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -79,11 +80,11 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
-#include "index/lib.h"
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "question/lib.h"
 #include "format_flags.h"
+#include "keymap.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "opcodes.h"

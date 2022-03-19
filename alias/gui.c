@@ -32,7 +32,6 @@
 #include "config/lib.h"
 #include "gui/lib.h"
 #include "gui.h"
-#include "lib.h"
 #include "menu/lib.h"
 #include "functions.h"
 

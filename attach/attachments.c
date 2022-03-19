@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <regex.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -40,7 +41,6 @@
 #include "attachments.h"
 #include "ncrypt/lib.h"
 #include "init.h"
-#include "mutt_commands.h"
 
 /**
  * struct AttachMatch - An attachment matching a regex for attachment counter

@@ -23,7 +23,6 @@
 #ifndef MUTT_PATTERN_PRIVATE_H
 #define MUTT_PATTERN_PRIVATE_H
 
-#include "config.h"
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "lib.h"

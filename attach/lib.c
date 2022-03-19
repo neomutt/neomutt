@@ -26,7 +26,8 @@
  * Attachment helper functions
  */
 
-#include "email/body.h"
+#include <stdbool.h>
+#include "email/lib.h"
 
 /**
  * attach_body_count - Count bodies

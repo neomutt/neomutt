@@ -39,10 +39,8 @@
 #include "attr.h"
 #include "color.h"
 #include "command2.h"
-#include "context.h"
 #include "curses2.h"
 #include "debug.h"
-#include "mutt_globals.h"
 #include "notify2.h"
 #include "regex4.h"
 

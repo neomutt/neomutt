@@ -28,13 +28,14 @@
 
 #include "config.h"
 #include <stddef.h>
+#include <stdbool.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
-#include "gui/lib.h"
 #include "global.h"
 #include "lib.h"
 #include "index/lib.h"
 #include "commands.h"
+#include "keymap.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "opcodes.h"

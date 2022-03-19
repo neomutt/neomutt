@@ -76,9 +76,6 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
-#ifdef USE_AUTOCRYPT
-#include "autocrypt/lib.h"
-#endif
 
 /// Maximum number of rows to use for the To:, Cc:, Bcc: fields
 #define MAX_ADDR_ROWS 5

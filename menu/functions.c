@@ -27,14 +27,20 @@
  */
 
 #include "config.h"
+#include <stddef.h>
+#include <stdbool.h>
+#include <stdint.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
+#include "mutt.h"
 #include "functions.h"
 #include "lib.h"
-#include "index/lib.h"
-#include "mutt_logging.h"
+#include "keymap.h"
 #include "opcodes.h"
 #include "protos.h"
+#include "type.h"
 
 extern char *SearchBuffers[];
 

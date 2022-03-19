@@ -29,7 +29,7 @@
 
 #include "config.h"
 #include <ctype.h>
-#include <errno.h>
+#include <regex.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>

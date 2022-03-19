@@ -53,11 +53,12 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
-#include "index/lib.h"
+#include "color/lib.h"
 #include "menu/lib.h"
-#include "mutt_logging.h"
+#include "keymap.h"
 #include "opcodes.h"
 #include "options.h"
 #include "ssl.h"

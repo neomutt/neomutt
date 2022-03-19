@@ -25,10 +25,8 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 
 struct AttachCtx;
-struct Buffer;
 struct ComposeAttachData;
 struct ComposeSharedData;
 struct ConfigSubset;

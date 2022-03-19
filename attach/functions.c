@@ -30,16 +30,21 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
+#include "email/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "functions.h"
-#include "index/lib.h"
 #include "menu/lib.h"
+#include "ncrypt/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "attach.h"
+#include "mutt_attach.h"
 #include "opcodes.h"
 #include "options.h"
 #include "private_data.h"
+#include "recvattach.h"
 #include "recvcmd.h"
 
 static const char *Not_available_in_this_menu =

@@ -48,7 +48,6 @@
 #include "menu/lib.h"
 #include "init.h"
 #include "keymap.h"
-#include "monitor.h"
 #include "mutt_commands.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
@@ -56,6 +55,9 @@
 #include "myvar.h"
 #include "options.h"
 #include "version.h"
+#ifdef USE_INOTIFY
+#include "monitor.h"
+#endif
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

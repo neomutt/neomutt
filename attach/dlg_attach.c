@@ -68,32 +68,27 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
-#include <sys/stat.h>
-#include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "index/lib.h"
 #include "menu/lib.h"
-#include "ncrypt/lib.h"
-#include "question/lib.h"
-#include "send/lib.h"
+#include "attach.h"
 #include "attachments.h"
 #include "format_flags.h"
 #include "functions.h"
 #include "hdrline.h"
 #include "hook.h"
-#include "mutt_attach.h"
+#include "keymap.h"
+#include "menu/type.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "options.h"
 #include "private_data.h"
 #include "recvattach.h"
-#include "recvcmd.h"
 
 /// Help Bar for the Attachment selection dialog
 static const struct Mapping AttachHelp[] = {

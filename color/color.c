@@ -28,19 +28,11 @@
  */
 
 #include "config.h"
-#include <assert.h>
-#include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
-#include "gui/lib.h"
+#include "gui/lib.h" // IWYU pragma: keep
 #include "lib.h"
-#include "pattern/lib.h"
-#include "context.h"
-#include "debug.h"
-#include "mutt_globals.h"
 
 const struct Mapping ColorNames[] = {
   // clang-format off

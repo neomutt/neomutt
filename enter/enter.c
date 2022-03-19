@@ -51,7 +51,7 @@
 #include "muttlib.h"
 #include "opcodes.h"
 #include "protos.h"
-#include "state.h"
+#include "state.h" // IWYU pragma: keep
 
 /**
  * enum EnterRedrawFlags - Redraw flags for mutt_enter_string_full()

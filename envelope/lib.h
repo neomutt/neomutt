@@ -43,7 +43,6 @@
 struct Buffer;
 struct ConfigSubset;
 struct Email;
-struct EnvelopeWindowData;
 struct MuttWindow;
 
 struct MuttWindow *env_window_new(struct Email *e, struct Buffer *fcc, struct ConfigSubset *sub);

@@ -31,6 +31,7 @@
 
 struct AttrColorList;
 struct MuttWindow;
+struct QuoteStyle;
 
 /**
  * struct TextSyntax - Highlighting for a piece of text

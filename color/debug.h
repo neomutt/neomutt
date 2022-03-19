@@ -28,7 +28,9 @@
 #include "mutt/lib.h"
 #include "color.h"
 
+struct AttrColor;
 struct AttrColorList;
+struct CursesColor;
 struct RegexColor;
 struct RegexColorList;
 

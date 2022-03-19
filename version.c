@@ -29,7 +29,6 @@
  */
 
 #include "config.h"
-#include <errno.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>

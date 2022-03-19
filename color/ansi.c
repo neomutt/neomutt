@@ -32,11 +32,9 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
-#include "core/lib.h"
 #include "gui/lib.h" // IWYU pragma: keep
 #include "ansi.h"
-#include "debug.h"
+#include "lib.h"
 
 /**
  * ansi_is_end_char - Is this the end of a sequence?

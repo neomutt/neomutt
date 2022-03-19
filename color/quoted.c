@@ -32,9 +32,7 @@
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
-#include "gui/lib.h"
-#include "debug.h"
-#include "options.h"
+#include "lib.h"
 
 struct AttrColor QuotedColors[COLOR_QUOTES_MAX]; ///< Array of colours for quoted email text
 int NumQuotedColors; ///< Number of colours for quoted email text

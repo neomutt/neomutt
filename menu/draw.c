@@ -40,12 +40,8 @@
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "context.h"
-#include "mutt_globals.h"
-#include "mutt_logging.h"
 #include "mutt_thread.h"
-#include "muttlib.h"
 #include "opcodes.h"
-#include "options.h"
 
 /**
  * get_color - Choose a colour for a line of the index

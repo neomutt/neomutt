@@ -31,6 +31,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 
+struct Buffer;
 struct Email;
 
 extern const struct MxOps *mx_ops[];

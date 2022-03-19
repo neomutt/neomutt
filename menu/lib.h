@@ -40,13 +40,14 @@
 #define MUTT_MENU_LIB_H
 
 #include "config.h"
+#include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
 #include "mutt/lib.h"
 #include "type.h"
 
 struct ConfigSubset;
+struct MuttWindow;
 
 // Observers of #NT_MENU will not be passed any Event data.
 typedef uint8_t MenuRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX

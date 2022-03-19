@@ -33,8 +33,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
-#include "gui/lib.h"
 #include "attr.h"
+#include "color.h"
+#include "curses2.h"
 #include "debug.h"
 
 struct AttrColorList MergedColors; ///< Array of user colours

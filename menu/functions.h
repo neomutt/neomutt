@@ -23,8 +23,6 @@
 #ifndef MUTT_MENU_FUNCTIONS_H
 #define MUTT_MENU_FUNCTIONS_H
 
-#include <stdbool.h>
-
 struct Menu;
 
 /**

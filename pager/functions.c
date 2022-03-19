@@ -31,8 +31,6 @@
 #include <assert.h>
 #include <inttypes.h> // IWYU pragma: keep
 #include <stdbool.h>
-#include <stdint.h>
-#include <string.h>
 #include <sys/stat.h>
 #include "mutt/lib.h"
 #include "config/lib.h"

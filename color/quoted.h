@@ -24,9 +24,11 @@
 #define MUTT_COLOR_QUOTED_H
 
 #include "config.h"
+#include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include "core/lib.h"
+#include "attr.h"
 #include "color.h"
 
 struct Buffer;

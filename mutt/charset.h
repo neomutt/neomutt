@@ -26,7 +26,6 @@
 #include <iconv.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <wchar.h>
 
 struct Buffer;

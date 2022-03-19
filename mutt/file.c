@@ -38,7 +38,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <time.h>
 #include <unistd.h>
 #include <utime.h>
 #include "config/lib.h"

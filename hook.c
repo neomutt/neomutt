@@ -45,7 +45,6 @@
 #include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "pattern/lib.h"
-#include "context.h"
 #include "format_flags.h"
 #include "hdrline.h"
 #include "init.h"

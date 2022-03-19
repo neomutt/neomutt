@@ -27,13 +27,8 @@
  */
 
 #include "config.h"
-#include <errno.h>
-#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
@@ -41,29 +36,17 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
-#include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "functions.h"
 #include "lib.h"
-#include "attach/lib.h"
-#include "browser/lib.h"
-#include "index/lib.h"
-#include "menu/lib.h"
+#include "autocrypt/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
-#include "send/lib.h"
-#include "commands.h"
-#include "context.h"
 #include "hook.h"
-#include "mutt_header.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "opcodes.h"
-#include "options.h"
-#include "protos.h"
-#include "rfc3676.h"
 #include "wdata.h"
 #ifdef MIXMASTER
 #include "remailer.h"

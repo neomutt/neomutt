@@ -39,7 +39,6 @@
 #include <inttypes.h>
 #include <limits.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -56,10 +55,12 @@
 #include "errno.h"
 #include "mdata.h"
 #include "mdemail.h"
-#include "monitor.h"
 #include "mutt_globals.h"
 #include "mx.h"
 #include "sequence.h"
+#ifdef USE_INOTIFY
+#include "monitor.h"
+#endif
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
 #endif

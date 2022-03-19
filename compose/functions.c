@@ -36,11 +36,9 @@
 #include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
-#include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "alias/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
@@ -48,7 +46,6 @@
 #include "lib.h"
 #include "attach/lib.h"
 #include "browser/lib.h"
-#include "envelope/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
@@ -82,9 +79,6 @@
 #endif
 #ifdef USE_IMAP
 #include "imap/lib.h"
-#endif
-#ifdef USE_AUTOCRYPT
-#include "autocrypt/lib.h"
 #endif
 
 /**

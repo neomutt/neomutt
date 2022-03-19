@@ -23,11 +23,7 @@
 #ifndef MUTT_ATTACH_FUNCTIONS_H
 #define MUTT_ATTACH_FUNCTIONS_H
 
-#include <stdbool.h>
-
-struct AttachCtx;
 struct AttachPrivateData;
-struct Mailbox;
 struct MuttWindow;
 
 /**

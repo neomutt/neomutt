@@ -33,9 +33,6 @@
 #include "lib.h"
 #include "muttlib.h"
 #include "options.h"
-#ifdef USE_NNTP
-#include "nntp/lib.h"
-#endif
 
 /**
  * browser_compare_subject - Compare the subject of two browser entries - Implements ::sort_t - @ingroup sort_api

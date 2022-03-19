@@ -27,12 +27,12 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
+#include "lib.h"
 
 /**
  * color_debug - Write to the log file

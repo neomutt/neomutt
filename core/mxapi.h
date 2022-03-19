@@ -32,6 +32,7 @@
 #include "mailbox.h"
 
 struct Account;
+struct Buffer;
 struct Email;
 struct stat;
 

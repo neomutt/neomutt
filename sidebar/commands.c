@@ -32,7 +32,6 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
-#include "lib.h"
 #include "init.h"
 #include "muttlib.h"
 

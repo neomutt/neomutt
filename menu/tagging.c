@@ -27,10 +27,13 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
-#include "index/lib.h"
+#include "color/color.h"
 #include "opcodes.h"
 
 /**

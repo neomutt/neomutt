@@ -23,6 +23,7 @@
 #ifndef MUTT_ENVELOPE_WDATA_H
 #define MUTT_ENVELOPE_WDATA_H
 
+#include <stdbool.h>
 #include "config.h"
 #include "mutt/lib.h"
 #ifdef USE_AUTOCRYPT

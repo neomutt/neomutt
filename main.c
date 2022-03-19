@@ -172,7 +172,6 @@
 #include "send/lib.h"
 #include "alternates.h"
 #include "commands.h"
-#include "context.h"
 #include "hook.h"
 #include "init.h"
 #include "keymap.h"

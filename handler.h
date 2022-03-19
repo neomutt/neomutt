@@ -23,7 +23,6 @@
 #ifndef MUTT_HANDLER_H
 #define MUTT_HANDLER_H
 
-#include <stddef.h>
 #include <iconv.h>
 #include <stdbool.h>
 

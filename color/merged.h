@@ -24,7 +24,8 @@
 #define MUTT_COLOR_MERGED_H
 
 #include "config.h"
-#include "attr.h"
+
+struct AttrColor;
 
 #ifdef USE_DEBUG_COLOR
 extern struct AttrColorList MergedColors;

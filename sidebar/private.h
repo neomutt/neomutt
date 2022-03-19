@@ -24,12 +24,12 @@
 #define MUTT_SIDEBAR_PRIVATE_H
 
 #include <stdbool.h>
+#include <stdint.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "color/lib.h"
+#include "core/lib.h"
 
 struct IndexSharedData;
-struct Mailbox;
 struct MuttWindow;
 
 extern struct ListHead SidebarWhitelist;

@@ -56,15 +56,15 @@
  */
 
 #include "config.h"
-#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
-#include "index/lib.h"
 #include "menu/lib.h"
 #include "format_flags.h"
+#include "keymap.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "opcodes.h"

@@ -45,6 +45,7 @@
 
 struct AddressList;
 struct AttachCtx;
+struct AttachPtr;
 struct Buffer;
 struct Context;
 struct ListHead;

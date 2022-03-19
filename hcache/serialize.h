@@ -26,7 +26,6 @@
 #ifndef MUTT_HCACHE_SERIALIZE_H
 #define MUTT_HCACHE_SERIALIZE_H
 
-#include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <sys/types.h>

@@ -42,18 +42,15 @@
 #define MUTT_ALIAS_LIB_H
 
 #include <stddef.h>
+#include "core/lib.h"
 #include <stdbool.h>
 #include <stdint.h>
-#include "core/command.h"
 
 struct Address;
 struct AddressList;
-struct AliasViewArray;
 struct Buffer;
 struct ConfigSubset;
 struct Envelope;
-struct Mailbox;
-struct MuttWindow;
 
 void alias_init    (void);
 void alias_shutdown(void);

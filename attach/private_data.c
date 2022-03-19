@@ -29,7 +29,6 @@
 #include "config.h"
 #include "mutt/lib.h"
 #include "private_data.h"
-#include "attach/lib.h"
 
 /**
  * attach_private_data_free - Free Attach Data - Implements Menu::mdata_free() - @ingroup menu_mdata_free

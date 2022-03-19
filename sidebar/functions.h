@@ -23,8 +23,6 @@
 #ifndef MUTT_SIDEBAR_FUNCTIONS_H
 #define MUTT_SIDEBAR_FUNCTIONS_H
 
-#include <stdbool.h>
-
 struct SidebarWindowData;
 
 /**

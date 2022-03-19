@@ -40,13 +40,13 @@
 #ifndef MUTT_ATTACH_LIB_H
 #define MUTT_ATTACH_LIB_H
 
+#include <stdbool.h>
 // IWYU pragma: begin_exports
 #include "attach.h"
 #include "attachments.h"
 #include "mutt_attach.h"
 #include "recvattach.h"
 // IWYU pragma: end_exports
-
 
 struct Body;
 

@@ -74,6 +74,7 @@
 #include <locale.h>
 #include <pwd.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -86,11 +87,11 @@
 #include "mutt.h"
 #include "lib.h"
 #include "attach/lib.h"
-#include "index/lib.h"
 #include "menu/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "format_flags.h"
+#include "keymap.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"

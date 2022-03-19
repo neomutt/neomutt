@@ -72,11 +72,11 @@
 #include <limits.h>
 #include <locale.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
@@ -84,12 +84,12 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
-#include "index/lib.h"
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "question/lib.h"
 #include "crypt_gpgme.h"
 #include "format_flags.h"
+#include "keymap.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "opcodes.h"

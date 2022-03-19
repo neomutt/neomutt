@@ -31,7 +31,6 @@
 #include "format_flags.h"
 
 struct AttachCtx;
-struct AttachPtr;
 struct Body;
 struct BodyArray;
 struct ConfigSubset;

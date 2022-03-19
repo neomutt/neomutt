@@ -32,6 +32,7 @@
 #include "config.h"
 #include <fcntl.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
 #include "mutt/lib.h"
