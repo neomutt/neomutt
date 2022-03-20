@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 1996-2002,2004,2007 Michael R. Elkins <me@mutt.org>, and others
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2022 Oliver Bandel <oliver@first.in-berlin.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -72,6 +73,49 @@ static struct HookList Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 
 static struct HashTable *IdxFmtHooks = NULL;
 static HookFlags current_hook_type = MUTT_HOOK_NO_FLAGS;
+
+/**
+ * mutt_parse_charset_iconv_hook - Parse 'charset-hook' and 'iconv-hook' commands - Implements Command::parse() - @ingroup command_parse
+ */
+enum CommandResult mutt_parse_charset_iconv_hook(struct Buffer *buf, struct Buffer *s,
+                                                 intptr_t data, struct Buffer *err)
+{
+  struct Buffer *alias = mutt_buffer_pool_get();
+  struct Buffer *charset = mutt_buffer_pool_get();
+
+  int rc = MUTT_CMD_ERROR;
+  int retval = 0;
+
+  retval += mutt_extract_token(alias, s, MUTT_TOKEN_NO_FLAGS);
+  retval += mutt_extract_token(charset, s, MUTT_TOKEN_NO_FLAGS);
+  if (retval != 0)
+    goto done;
+
+  const enum LookupType type = (data & MUTT_ICONV_HOOK) ? MUTT_LOOKUP_ICONV : MUTT_LOOKUP_CHARSET;
+
+  if (mutt_buffer_is_empty(alias) || mutt_buffer_is_empty(charset))
+  {
+    mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
+    rc = MUTT_CMD_WARNING;
+  }
+  else if (MoreArgs(s))
+  {
+    mutt_buffer_printf(err, _("%s: too many arguments"), buf->data);
+    mutt_buffer_reset(s); // clean up buffer to avoid a mess with further rcfile processing
+    rc = MUTT_CMD_WARNING;
+  }
+  else if (mutt_ch_lookup_add(type, mutt_buffer_string(alias),
+                              mutt_buffer_string(charset), err))
+  {
+    rc = MUTT_CMD_SUCCESS;
+  }
+
+done:
+  mutt_buffer_pool_release(&alias);
+  mutt_buffer_pool_release(&charset);
+
+  return rc;
+}
 
 /**
  * mutt_parse_hook - Parse the 'hook' family of commands - Implements Command::parse() - @ingroup command_parse
@@ -189,8 +233,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   }
 #endif
   else if (c_default_hook && (~data & MUTT_GLOBAL_HOOK) &&
-           !(data & (MUTT_CHARSET_HOOK | MUTT_ICONV_HOOK | MUTT_ACCOUNT_HOOK)) &&
-           (!WithCrypto || !(data & MUTT_CRYPT_HOOK)))
+           !(data & (MUTT_ACCOUNT_HOOK)) && (!WithCrypto || !(data & MUTT_CRYPT_HOOK)))
   {
     /* At this stage remain only message-hooks, reply-hooks, send-hooks,
      * send2-hooks, save-hooks, and fcc-hooks: All those allowing full
@@ -246,16 +289,8 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     }
   }
 
-  if (data & (MUTT_CHARSET_HOOK | MUTT_ICONV_HOOK))
-  {
-    /* These are managed separately by the charset code */
-    enum LookupType type = (data & MUTT_CHARSET_HOOK) ? MUTT_LOOKUP_CHARSET : MUTT_LOOKUP_ICONV;
-    if (mutt_ch_lookup_add(type, mutt_buffer_string(pattern), mutt_buffer_string(cmd), err))
-      rc = MUTT_CMD_SUCCESS;
-    goto cleanup;
-  }
-  else if (data & (MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_SAVE_HOOK |
-                   MUTT_FCC_HOOK | MUTT_MESSAGE_HOOK | MUTT_REPLY_HOOK))
+  if (data & (MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_SAVE_HOOK |
+              MUTT_FCC_HOOK | MUTT_MESSAGE_HOOK | MUTT_REPLY_HOOK))
   {
     PatternCompFlags comp_flags;
 
