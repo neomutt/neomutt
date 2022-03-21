@@ -71,6 +71,7 @@
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "display.h"
+#include "opcodes.h"
 #include "private_data.h"
 
 /**
@@ -206,6 +207,32 @@ static int pager_config_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * pager_global_observer - Notification that a Global Event occurred - Implements ::observer_t - @ingroup observer_api
+ */
+static int pager_global_observer(struct NotifyCallback *nc)
+{
+  if ((nc->event_type != NT_GLOBAL) || !nc->global_data)
+    return -1;
+  if (nc->event_subtype != NT_GLOBAL_COMMAND)
+    return 0;
+
+  struct MuttWindow *win_pager = nc->global_data;
+  if (!win_pager)
+    return 0;
+
+  struct PagerPrivateData *priv = win_pager->wdata;
+  if (!priv)
+    return 0;
+
+  if ((priv->redraw & MENU_REDRAW_FLOW) && (priv->pview->flags & MUTT_PAGER_RETWINCH))
+  {
+    priv->rc = OP_REFORMAT_WINCH;
+  }
+
+  return 0;
+}
+
+/**
  * pager_index_observer - Notification that the Index has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int pager_index_observer(struct NotifyCallback *nc)
@@ -278,6 +305,7 @@ static int pager_window_observer(struct NotifyCallback *nc)
 
   notify_observer_remove(NeoMutt->notify, pager_color_observer, win_pager);
   notify_observer_remove(NeoMutt->notify, pager_config_observer, win_pager);
+  notify_observer_remove(NeoMutt->notify, pager_global_observer, win_pager);
   notify_observer_remove(shared->notify, pager_index_observer, win_pager);
   notify_observer_remove(shared->notify, pager_pager_observer, win_pager);
   notify_observer_remove(win_pager->notify, pager_window_observer, win_pager);
@@ -305,6 +333,7 @@ struct MuttWindow *pager_window_new(struct IndexSharedData *shared,
 
   notify_observer_add(NeoMutt->notify, NT_COLOR, pager_color_observer, win);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, pager_config_observer, win);
+  notify_observer_add(NeoMutt->notify, NT_GLOBAL, pager_global_observer, win);
   notify_observer_add(shared->notify, NT_INDEX, pager_index_observer, win);
   notify_observer_add(shared->notify, NT_PAGER, pager_pager_observer, win);
   notify_observer_add(win->notify, NT_WINDOW, pager_window_observer, win);

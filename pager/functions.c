@@ -809,16 +809,6 @@ static int op_bounce_message(struct IndexSharedData *shared,
 }
 
 /**
- * op_check_stats - Calculate message statistics for all mailboxes - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_check_stats(struct IndexSharedData *shared,
-                          struct PagerPrivateData *priv, int op)
-{
-  mutt_check_stats(shared->mailbox);
-  return FR_SUCCESS;
-}
-
-/**
  * op_check_traditional - Check for classic PGP - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_check_traditional(struct IndexSharedData *shared,
@@ -1066,32 +1056,6 @@ static int op_edit_label(struct IndexSharedData *shared, struct PagerPrivateData
   {
     mutt_message(_("No labels changed"));
   }
-  return FR_SUCCESS;
-}
-
-/**
- * op_enter_command - Enter a neomuttrc command - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_enter_command(struct IndexSharedData *shared,
-                            struct PagerPrivateData *priv, int op)
-{
-  mutt_enter_command();
-  pager_queue_redraw(priv, MENU_REDRAW_FULL);
-
-  if (OptNeedResort)
-  {
-    OptNeedResort = false;
-    if (!assert_pager_mode(priv->pview->mode == PAGER_MODE_EMAIL))
-      return FR_NOT_IMPL;
-    OptNeedResort = true;
-  }
-
-  if ((priv->redraw & MENU_REDRAW_FLOW) && (priv->pview->flags & MUTT_PAGER_RETWINCH))
-  {
-    priv->rc = OP_REFORMAT_WINCH;
-    return FR_DONE;
-  }
-
   return FR_SUCCESS;
 }
 
@@ -1393,18 +1357,6 @@ static int op_recall_message(struct IndexSharedData *shared,
 }
 
 /**
- * op_redraw - Clear and redraw the screen - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_redraw(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
-{
-  window_invalidate_all();
-  mutt_window_reflow(NULL);
-  clearok(stdscr, true);
-  pager_queue_redraw(priv, MENU_REDRAW_FULL);
-  return FR_SUCCESS;
-}
-
-/**
  * op_reply - Reply to a message - Implements ::pager_function_t - @ingroup pager_function_api
  *
  * This function handles:
@@ -1508,19 +1460,6 @@ static int op_search_toggle(struct IndexSharedData *shared,
   {
     priv->search_flag ^= MUTT_SEARCH;
     pager_queue_redraw(priv, MENU_REDRAW_BODY);
-  }
-  return FR_SUCCESS;
-}
-
-/**
- * op_shell_escape - Invoke a command in a subshell - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_shell_escape(struct IndexSharedData *shared,
-                           struct PagerPrivateData *priv, int op)
-{
-  if (mutt_shell_escape())
-  {
-    mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_FORCE);
   }
   return FR_SUCCESS;
 }
@@ -1668,15 +1607,6 @@ static int op_undelete_thread(struct IndexSharedData *shared,
 }
 
 /**
- * op_version - Show the NeoMutt version number and date - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_version(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
-{
-  mutt_message(mutt_make_version());
-  return FR_SUCCESS;
-}
-
-/**
  * op_view_attachments - Show MIME attachments - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_view_attachments(struct IndexSharedData *shared,
@@ -1697,15 +1627,6 @@ static int op_view_attachments(struct IndexSharedData *shared,
   if (shared->email->attach_del)
     shared->mailbox->changed = true;
   pager_queue_redraw(priv, MENU_REDRAW_FULL);
-  return FR_SUCCESS;
-}
-
-/**
- * op_what_key - Display the keycode for a key press - Implements ::pager_function_t - @ingroup pager_function_api
- */
-static int op_what_key(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
-{
-  mutt_what_key();
   return FR_SUCCESS;
 }
 
@@ -1835,7 +1756,6 @@ static int op_post(struct IndexSharedData *shared, struct PagerPrivateData *priv
 struct PagerFunction PagerFunctions[] = {
   // clang-format off
   { OP_BOUNCE_MESSAGE,         op_bounce_message },
-  { OP_CHECK_STATS,            op_check_stats },
   { OP_CHECK_TRADITIONAL,      op_check_traditional },
   { OP_COMPOSE_TO_SENDER,      op_compose_to_sender },
   { OP_COPY_MESSAGE,           op_copy_message },
@@ -1851,7 +1771,6 @@ struct PagerFunction PagerFunctions[] = {
   { OP_PURGE_THREAD,           op_delete_thread },
   { OP_DISPLAY_ADDRESS,        op_display_address },
   { OP_EDIT_LABEL,             op_edit_label },
-  { OP_ENTER_COMMAND,          op_enter_command },
   { OP_EXIT,                   op_exit },
   { OP_EXTRACT_KEYS,           op_extract_keys },
   { OP_FLAG_MESSAGE,           op_flag_message },
@@ -1887,7 +1806,6 @@ struct PagerFunction PagerFunctions[] = {
   { OP_PRINT,                  op_print },
   { OP_QUIT,                   op_quit },
   { OP_RECALL_MESSAGE,         op_recall_message },
-  { OP_REDRAW,                 op_redraw },
   { OP_GROUP_CHAT_REPLY,       op_reply },
   { OP_GROUP_REPLY,            op_reply },
   { OP_LIST_REPLY,             op_reply },
@@ -1901,7 +1819,6 @@ struct PagerFunction PagerFunctions[] = {
   { OP_SEARCH_NEXT,            op_pager_search_next },
   { OP_SEARCH_OPPOSITE,        op_pager_search_next },
   { OP_SEARCH_TOGGLE,          op_search_toggle },
-  { OP_SHELL_ESCAPE,           op_shell_escape },
   { OP_SORT,                   op_sort },
   { OP_SORT_REVERSE,           op_sort },
   { OP_TAG,                    op_tag },
@@ -1909,9 +1826,7 @@ struct PagerFunction PagerFunctions[] = {
   { OP_UNDELETE,               op_undelete },
   { OP_UNDELETE_SUBTHREAD,     op_undelete_thread },
   { OP_UNDELETE_THREAD,        op_undelete_thread },
-  { OP_VERSION,                op_version },
   { OP_VIEW_ATTACHMENTS,       op_view_attachments },
-  { OP_WHAT_KEY,               op_what_key },
   { 0, NULL },
   // clang-format on
 };
