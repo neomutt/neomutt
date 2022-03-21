@@ -1348,6 +1348,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       rc = sb_function_dispatcher(win_sidebar, op);
     }
 #endif
+    if (rc == FR_UNKNOWN)
+      rc = global_function_dispatcher(dlg, op);
 
     if (rc == FR_CONTINUE)
     {
