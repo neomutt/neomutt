@@ -341,6 +341,14 @@ static int op_sidebar_toggle_visible(struct SidebarWindowData *wdata, int op)
   return FR_SUCCESS;
 }
 
+/**
+ * op_sidebar_toggle_virtual - Deprecated - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_toggle_virtual(struct SidebarWindowData *wdata, int op)
+{
+  return FR_SUCCESS;
+}
+
 // -----------------------------------------------------------------------------
 
 /**
@@ -357,6 +365,7 @@ struct SidebarFunction SidebarFunctions[] = {
   { OP_SIDEBAR_PAGE_UP,        op_sidebar_page_up },
   { OP_SIDEBAR_PREV,           op_sidebar_prev },
   { OP_SIDEBAR_PREV_NEW,       op_sidebar_prev_new },
+  { OP_SIDEBAR_TOGGLE_VIRTUAL, op_sidebar_toggle_virtual },
   { OP_SIDEBAR_TOGGLE_VISIBLE, op_sidebar_toggle_visible },
   { 0, NULL },
   // clang-format on
