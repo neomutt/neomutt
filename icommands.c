@@ -45,6 +45,11 @@
 #include "muttlib.h"
 #include "opcodes.h"
 #include "version.h"
+#ifdef USE_DEBUG_COLOR
+#include "gui/lib.h"
+#include "color/lib.h"
+#include "pager/private_data.h"
+#endif
 
 // clang-format off
 static enum CommandResult icmd_bind   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
