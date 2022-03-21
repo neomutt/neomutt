@@ -685,6 +685,12 @@ void mutt_enter_command(void)
   }
   /* else successful command */
 
+  if (NeoMutt)
+  {
+    // Running commands could cause anything to change, so let others know
+    notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_COMMAND, NULL);
+  }
+
 done:
   mutt_buffer_pool_release(&buf);
   mutt_buffer_pool_release(&err);
