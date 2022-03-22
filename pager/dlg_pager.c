@@ -853,6 +853,8 @@ int mutt_pager(struct PagerView *pview)
       rc = sb_function_dispatcher(win_sidebar, op);
     }
 #endif
+    if (rc == FR_UNKNOWN)
+      rc = global_function_dispatcher(dlg, op);
 
     if (rc == FR_DONE)
       break;

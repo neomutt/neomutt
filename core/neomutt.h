@@ -52,6 +52,7 @@ enum NotifyGlobal
   NT_GLOBAL_STARTUP = 1, ///< NeoMutt is initialised
   NT_GLOBAL_SHUTDOWN,    ///< NeoMutt is about to close
   NT_GLOBAL_TIMEOUT,     ///< A timer has elapsed
+  NT_GLOBAL_COMMAND,     ///< A NeoMutt command
 };
 
 bool            neomutt_account_add   (struct NeoMutt *n, struct Account *a);

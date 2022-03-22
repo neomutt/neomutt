@@ -131,16 +131,6 @@ static int op_bounce_message(struct IndexSharedData *shared,
 }
 
 /**
- * op_check_stats - Calculate message statistics for all mailboxes - Implements ::index_function_t - @ingroup index_function_api
- */
-static int op_check_stats(struct IndexSharedData *shared,
-                          struct IndexPrivateData *priv, int op)
-{
-  mutt_check_stats(shared->mailbox);
-  return FR_SUCCESS;
-}
-
-/**
  * op_check_traditional - Check for classic PGP - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_check_traditional(struct IndexSharedData *shared,
@@ -458,19 +448,6 @@ static int op_edit_raw_message(struct IndexSharedData *shared,
  */
 static int op_end_cond(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
-  return FR_SUCCESS;
-}
-
-/**
- * op_enter_command - Enter a neomuttrc command - Implements ::index_function_t - @ingroup index_function_api
- */
-static int op_enter_command(struct IndexSharedData *shared,
-                            struct IndexPrivateData *priv, int op)
-{
-  mutt_enter_command();
-  mutt_check_rescore(shared->mailbox);
-  menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-
   return FR_SUCCESS;
 }
 
@@ -2026,18 +2003,6 @@ static int op_recall_message(struct IndexSharedData *shared,
 }
 
 /**
- * op_redraw - Clear and redraw the screen - Implements ::index_function_t - @ingroup index_function_api
- */
-static int op_redraw(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
-{
-  window_invalidate_all();
-  mutt_window_reflow(NULL);
-  clearok(stdscr, true);
-  menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-  return FR_SUCCESS;
-}
-
-/**
  * op_reply - Reply to a message - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_reply(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
@@ -2159,20 +2124,6 @@ static int op_search(struct IndexSharedData *shared, struct IndexPrivateData *pr
   index = mutt_search_command(shared->mailbox, priv->menu, index, op);
   if (index != -1)
     menu_set_index(priv->menu, index);
-
-  return FR_SUCCESS;
-}
-
-/**
- * op_shell_escape - Invoke a command in a subshell - Implements ::index_function_t - @ingroup index_function_api
- */
-static int op_shell_escape(struct IndexSharedData *shared,
-                           struct IndexPrivateData *priv, int op)
-{
-  if (mutt_shell_escape())
-  {
-    mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_FORCE);
-  }
 
   return FR_SUCCESS;
 }
@@ -2459,15 +2410,6 @@ static int op_undelete_thread(struct IndexSharedData *shared,
 }
 
 /**
- * op_version - Show the NeoMutt version number and date - Implements ::index_function_t - @ingroup index_function_api
- */
-static int op_version(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
-{
-  mutt_message(mutt_make_version());
-  return FR_SUCCESS;
-}
-
-/**
  * op_view_attachments - Show MIME attachments - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_view_attachments(struct IndexSharedData *shared,
@@ -2490,15 +2432,6 @@ static int op_view_attachments(struct IndexSharedData *shared,
   }
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
   return rc;
-}
-
-/**
- * op_what_key - Display the keycode for a key press - Implements ::index_function_t - @ingroup index_function_api
- */
-static int op_what_key(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
-{
-  mutt_what_key();
-  return FR_SUCCESS;
 }
 
 // -----------------------------------------------------------------------------
@@ -3180,7 +3113,6 @@ struct IndexFunction IndexFunctions[] = {
   { OP_ATTACHMENT_EDIT_TYPE,                op_attachment_edit_type,              CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_BOTTOM_PAGE,                         op_menu_move,                         CHECK_NO_FLAGS },
   { OP_BOUNCE_MESSAGE,                      op_bounce_message,                    CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_CHECK_STATS,                         op_check_stats,                       CHECK_NO_FLAGS },
   { OP_CHECK_TRADITIONAL,                   op_check_traditional,                 CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_COMPOSE_TO_SENDER,                   op_compose_to_sender,                 CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_COPY_MESSAGE,                        op_save,                              CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
@@ -3202,7 +3134,6 @@ struct IndexFunction IndexFunctions[] = {
   { OP_EDIT_OR_VIEW_RAW_MESSAGE,            op_edit_raw_message,                  CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_EDIT_RAW_MESSAGE,                    op_edit_raw_message,                  CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_END_COND,                            op_end_cond,                          CHECK_NO_FLAGS },
-  { OP_ENTER_COMMAND,                       op_enter_command,                     CHECK_NO_FLAGS },
   { OP_EXIT,                                op_exit,                              CHECK_NO_FLAGS },
   { OP_EXTRACT_KEYS,                        op_extract_keys,                      CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_FIRST_ENTRY,                         op_menu_move,                         CHECK_NO_FLAGS },
@@ -3273,7 +3204,6 @@ struct IndexFunction IndexFunctions[] = {
   { OP_QUERY,                               op_query,                             CHECK_ATTACH },
   { OP_QUIT,                                op_quit,                              CHECK_NO_FLAGS },
   { OP_RECALL_MESSAGE,                      op_recall_message,                    CHECK_ATTACH },
-  { OP_REDRAW,                              op_redraw,                            CHECK_NO_FLAGS },
   { OP_REPLY,                               op_reply,                             CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_RESEND,                              op_resend,                            CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SAVE,                                op_save,                              CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
@@ -3281,7 +3211,6 @@ struct IndexFunction IndexFunctions[] = {
   { OP_SEARCH_NEXT,                         op_search,                            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SEARCH_OPPOSITE,                     op_search,                            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SEARCH_REVERSE,                      op_search,                            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_SHELL_ESCAPE,                        op_shell_escape,                      CHECK_NO_FLAGS },
   { OP_SHOW_LOG_MESSAGES,                   op_show_log_messages,                 CHECK_NO_FLAGS },
   { OP_SORT,                                op_sort,                              CHECK_NO_FLAGS },
   { OP_SORT_REVERSE,                        op_sort,                              CHECK_NO_FLAGS },
@@ -3295,10 +3224,8 @@ struct IndexFunction IndexFunctions[] = {
   { OP_UNDELETE,                            op_undelete,                          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_UNDELETE_SUBTHREAD,                  op_undelete_thread,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_UNDELETE_THREAD,                     op_undelete_thread,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
-  { OP_VERSION,                             op_version,                           CHECK_NO_FLAGS },
   { OP_VIEW_ATTACHMENTS,                    op_view_attachments,                  CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_VIEW_RAW_MESSAGE,                    op_edit_raw_message,                  CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_WHAT_KEY,                            op_what_key,                          CHECK_NO_FLAGS },
 #ifdef USE_AUTOCRYPT
   { OP_AUTOCRYPT_ACCT_MENU,                 op_autocrypt_acct_menu,               CHECK_NO_FLAGS },
 #endif
