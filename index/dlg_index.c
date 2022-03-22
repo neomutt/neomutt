@@ -1341,6 +1341,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
     int rc = index_function_dispatcher(priv->win_index, op);
 
+    if (rc == FR_UNKNOWN)
+      rc = menu_function_dispatcher(priv->win_index, op);
+
 #ifdef USE_SIDEBAR
     if (rc == FR_UNKNOWN)
     {

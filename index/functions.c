@@ -609,16 +609,6 @@ static int op_group_reply(struct IndexSharedData *shared,
 }
 
 /**
- * op_help - This screen - Implements ::index_function_t - @ingroup index_function_api
- */
-static int op_help(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
-{
-  mutt_help(MENU_INDEX);
-  menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-  return FR_SUCCESS;
-}
-
-/**
  * op_jump - Jump to an index number - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_jump(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
@@ -1790,76 +1780,6 @@ static int op_mark_msg(struct IndexSharedData *shared, struct IndexPrivateData *
   }
 
   return rc;
-}
-
-/**
- * op_menu_move - Move to the bottom of the page - Implements ::index_function_t - @ingroup index_function_api
- *
- * This function handles:
- * - OP_BOTTOM_PAGE
- * - OP_CURRENT_BOTTOM
- * - OP_CURRENT_MIDDLE
- * - OP_CURRENT_TOP
- * - OP_FIRST_ENTRY
- * - OP_HALF_DOWN
- * - OP_HALF_UP
- * - OP_LAST_ENTRY
- * - OP_MIDDLE_PAGE
- * - OP_NEXT_LINE
- * - OP_NEXT_PAGE
- * - OP_PREV_LINE
- * - OP_PREV_PAGE
- * - OP_TOP_PAGE
- */
-static int op_menu_move(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
-{
-  switch (op)
-  {
-    case OP_BOTTOM_PAGE:
-      menu_bottom_page(priv->menu);
-      return FR_SUCCESS;
-    case OP_CURRENT_BOTTOM:
-      menu_current_bottom(priv->menu);
-      return FR_SUCCESS;
-    case OP_CURRENT_MIDDLE:
-      menu_current_middle(priv->menu);
-      return FR_SUCCESS;
-    case OP_CURRENT_TOP:
-      menu_current_top(priv->menu);
-      return FR_SUCCESS;
-    case OP_FIRST_ENTRY:
-      menu_first_entry(priv->menu);
-      return FR_SUCCESS;
-    case OP_HALF_DOWN:
-      menu_half_down(priv->menu);
-      return FR_SUCCESS;
-    case OP_HALF_UP:
-      menu_half_up(priv->menu);
-      return FR_SUCCESS;
-    case OP_LAST_ENTRY:
-      menu_last_entry(priv->menu);
-      return FR_SUCCESS;
-    case OP_MIDDLE_PAGE:
-      menu_middle_page(priv->menu);
-      return FR_SUCCESS;
-    case OP_NEXT_LINE:
-      menu_next_line(priv->menu);
-      return FR_SUCCESS;
-    case OP_NEXT_PAGE:
-      menu_next_page(priv->menu);
-      return FR_SUCCESS;
-    case OP_PREV_LINE:
-      menu_prev_line(priv->menu);
-      return FR_SUCCESS;
-    case OP_PREV_PAGE:
-      menu_prev_page(priv->menu);
-      return FR_SUCCESS;
-    case OP_TOP_PAGE:
-      menu_top_page(priv->menu);
-      return FR_SUCCESS;
-  }
-
-  return FR_ERROR;
 }
 
 /**
@@ -3115,15 +3035,11 @@ struct IndexFunction IndexFunctions[] = {
   // clang-format off
   { OP_ALIAS_DIALOG,                        op_alias_dialog,                      CHECK_NO_FLAGS },
   { OP_ATTACHMENT_EDIT_TYPE,                op_attachment_edit_type,              CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_BOTTOM_PAGE,                         op_menu_move,                         CHECK_NO_FLAGS },
   { OP_BOUNCE_MESSAGE,                      op_bounce_message,                    CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_CHECK_TRADITIONAL,                   op_check_traditional,                 CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_COMPOSE_TO_SENDER,                   op_compose_to_sender,                 CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_COPY_MESSAGE,                        op_save,                              CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_CREATE_ALIAS,                        op_create_alias,                      CHECK_NO_FLAGS },
-  { OP_CURRENT_BOTTOM,                      op_menu_move,                         CHECK_NO_FLAGS },
-  { OP_CURRENT_MIDDLE,                      op_menu_move,                         CHECK_NO_FLAGS },
-  { OP_CURRENT_TOP,                         op_menu_move,                         CHECK_NO_FLAGS },
   { OP_DECODE_COPY,                         op_save,                              CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_DECODE_SAVE,                         op_save,                              CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_DECRYPT_COPY,                        op_save,                              CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
@@ -3140,15 +3056,11 @@ struct IndexFunction IndexFunctions[] = {
   { OP_END_COND,                            op_end_cond,                          CHECK_NO_FLAGS },
   { OP_EXIT,                                op_exit,                              CHECK_NO_FLAGS },
   { OP_EXTRACT_KEYS,                        op_extract_keys,                      CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_FIRST_ENTRY,                         op_menu_move,                         CHECK_NO_FLAGS },
   { OP_FLAG_MESSAGE,                        op_flag_message,                      CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_FORGET_PASSPHRASE,                   op_forget_passphrase,                 CHECK_NO_FLAGS },
   { OP_FORWARD_MESSAGE,                     op_forward_message,                   CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_GROUP_CHAT_REPLY,                    op_group_reply,                       CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_GROUP_REPLY,                         op_group_reply,                       CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_HALF_DOWN,                           op_menu_move,                         CHECK_NO_FLAGS },
-  { OP_HALF_UP,                             op_menu_move,                         CHECK_NO_FLAGS },
-  { OP_HELP,                                op_help,                              CHECK_NO_FLAGS },
   { OP_JUMP,                                op_jump,                              CHECK_IN_MAILBOX },
   { OP_JUMP_1,                              op_jump,                              CHECK_IN_MAILBOX },
   { OP_JUMP_2,                              op_jump,                              CHECK_IN_MAILBOX },
@@ -3159,7 +3071,6 @@ struct IndexFunction IndexFunctions[] = {
   { OP_JUMP_7,                              op_jump,                              CHECK_IN_MAILBOX },
   { OP_JUMP_8,                              op_jump,                              CHECK_IN_MAILBOX },
   { OP_JUMP_9,                              op_jump,                              CHECK_IN_MAILBOX },
-  { OP_LAST_ENTRY,                          op_menu_move,                         CHECK_NO_FLAGS },
   { OP_LIMIT_CURRENT_THREAD,                op_main_limit,                        CHECK_IN_MAILBOX },
   { OP_LIST_REPLY,                          op_list_reply,                        CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_LIST_SUBSCRIBE,                      op_list_subscribe,                    CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
@@ -3203,14 +3114,9 @@ struct IndexFunction IndexFunctions[] = {
   { OP_MAIN_UNDELETE_PATTERN,               op_main_undelete_pattern,             CHECK_IN_MAILBOX | CHECK_READONLY },
   { OP_MAIN_UNTAG_PATTERN,                  op_main_untag_pattern,                CHECK_IN_MAILBOX },
   { OP_MARK_MSG,                            op_mark_msg,                          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_MIDDLE_PAGE,                         op_menu_move,                         CHECK_NO_FLAGS },
   { OP_NEXT_ENTRY,                          op_next_entry,                        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_NEXT_LINE,                           op_menu_move,                         CHECK_NO_FLAGS },
-  { OP_NEXT_PAGE,                           op_menu_move,                         CHECK_NO_FLAGS },
   { OP_PIPE,                                op_pipe,                              CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_PREV_ENTRY,                          op_prev_entry,                        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_PREV_LINE,                           op_menu_move,                         CHECK_NO_FLAGS },
-  { OP_PREV_PAGE,                           op_menu_move,                         CHECK_NO_FLAGS },
   { OP_PRINT,                               op_print,                             CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_PURGE_MESSAGE,                       op_delete,                            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_PURGE_THREAD,                        op_delete_thread,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
@@ -3233,7 +3139,6 @@ struct IndexFunction IndexFunctions[] = {
   { OP_TOGGLE_NEW,                          op_toggle_new,                        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_TOGGLE_READ,                         op_main_limit,                        CHECK_IN_MAILBOX },
   { OP_TOGGLE_WRITE,                        op_toggle_write,                      CHECK_IN_MAILBOX },
-  { OP_TOP_PAGE,                            op_menu_move,                         CHECK_NO_FLAGS },
   { OP_UNDELETE,                            op_undelete,                          CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_UNDELETE_SUBTHREAD,                  op_undelete_thread,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_UNDELETE_THREAD,                     op_undelete_thread,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
