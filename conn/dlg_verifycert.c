@@ -286,6 +286,15 @@ int dlg_verify_certificate(const char *title, struct CertArray *carr,
         break;
 
       case OP_JUMP:
+      case OP_JUMP_1:
+      case OP_JUMP_2:
+      case OP_JUMP_3:
+      case OP_JUMP_4:
+      case OP_JUMP_5:
+      case OP_JUMP_6:
+      case OP_JUMP_7:
+      case OP_JUMP_8:
+      case OP_JUMP_9:
         mutt_error(_("Jumping is not implemented for dialogs"));
         continue;
 
