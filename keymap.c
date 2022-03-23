@@ -613,12 +613,13 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
  */
 static int retry_generic(enum MenuType mtype, keycode_t *keys, int keyslen, int lastkey)
 {
+  if (lastkey)
+    mutt_unget_event(lastkey, 0);
+  for (; keyslen; keyslen--)
+    mutt_unget_event(keys[keyslen - 1], 0);
+
   if ((mtype != MENU_EDITOR) && (mtype != MENU_GENERIC) && (mtype != MENU_PAGER))
   {
-    if (lastkey)
-      mutt_unget_event(lastkey, 0);
-    for (; keyslen; keyslen--)
-      mutt_unget_event(keys[keyslen - 1], 0);
     return km_dokey(MENU_GENERIC);
   }
   if (mtype != MENU_EDITOR)
@@ -626,6 +627,8 @@ static int retry_generic(enum MenuType mtype, keycode_t *keys, int keyslen, int 
     /* probably a good idea to flush input here so we can abort macros */
     mutt_flushinp();
   }
+
+  LastKey = mutt_getch().ch;
   return OP_NULL;
 }
 
