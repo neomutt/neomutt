@@ -322,6 +322,8 @@ static int index_config_observer(struct NotifyCallback *nc)
     OptNeedResort = true;
   if (flags & R_RESORT_INIT)
     OptResortInit = true;
+  if (!(flags & R_INDEX))
+    return 0;
 
   if (mutt_str_equal(ev_c->name, "reply_regex"))
   {
@@ -341,6 +343,7 @@ static int index_config_observer(struct NotifyCallback *nc)
     mutt_debug(LL_DEBUG5, "config done\n");
   }
 
+  win->actions |= WA_RECALC;
   return 0;
 }
 
