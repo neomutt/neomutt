@@ -426,17 +426,24 @@ static enum CommandResult km_bind_err(const char *s, enum MenuType mtype, int op
     }
   }
 
-  if (last) /* if queue has at least one entry */
+  if (map->op == OP_NULL)
   {
-    if (STAILQ_NEXT(last, entries))
-      STAILQ_INSERT_AFTER(&Keymaps[mtype], last, map, entries);
-    else /* last entry in the queue */
-      STAILQ_INSERT_TAIL(&Keymaps[mtype], map, entries);
-    last->eq = lastpos;
+    mutt_keymap_free(&map);
   }
-  else /* queue is empty, so insert from head */
+  else
   {
-    STAILQ_INSERT_HEAD(&Keymaps[mtype], map, entries);
+    if (last) /* if queue has at least one entry */
+    {
+      if (STAILQ_NEXT(last, entries))
+        STAILQ_INSERT_AFTER(&Keymaps[mtype], last, map, entries);
+      else /* last entry in the queue */
+        STAILQ_INSERT_TAIL(&Keymaps[mtype], map, entries);
+      last->eq = lastpos;
+    }
+    else /* queue is empty, so insert from head */
+    {
+      STAILQ_INSERT_HEAD(&Keymaps[mtype], map, entries);
+    }
   }
 
   return rc;
