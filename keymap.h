@@ -77,10 +77,10 @@ int main_config_observer(struct NotifyCallback *nc);
 
 enum CommandResult km_bind(char *s, enum MenuType menu, int op, char *macro, char *desc);
 int km_dokey(enum MenuType menu);
+struct KeyEvent km_dokey_event(enum MenuType menu);
 
 extern struct KeymapList Keymaps[]; ///< Array of Keymap keybindings, one for each Menu
 
-extern int LastKey; ///< Last real key pressed, recorded by dokey()
 extern keycode_t AbortKey; ///< key to abort edits etc, normally Ctrl-G
 
 extern const struct Mapping Menus[];

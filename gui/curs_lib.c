@@ -68,17 +68,59 @@
 /* not possible to unget more than one char under some curses libs, so roll our
  * own input buffering routines.  */
 
+ARRAY_HEAD(KeyEventArray, struct KeyEvent);
+
 /* These are used for macros and exec/push commands.
  * They can be temporarily ignored by setting OptIgnoreMacroEvents */
-static size_t MacroBufferCount = 0;
-static size_t MacroBufferLen = 0;
-static struct KeyEvent *MacroEvents = NULL;
+static struct KeyEventArray MacroEvents = ARRAY_HEAD_INITIALIZER;
 
 /* These are used in all other "normal" situations, and are not
  * ignored when setting OptIgnoreMacroEvents */
-static size_t UngetCount = 0;
-static size_t UngetLen = 0;
-static struct KeyEvent *UngetKeyEvents = NULL;
+static struct KeyEventArray UngetKeyEvents = ARRAY_HEAD_INITIALIZER;
+
+/**
+ * array_pop - Remove an event from the array
+ * @param a Array
+ * @retval ptr Event
+ */
+static struct KeyEvent *array_pop(struct KeyEventArray *a)
+{
+  if (ARRAY_EMPTY(a))
+  {
+    return NULL;
+  }
+
+  struct KeyEvent *event = ARRAY_LAST(a);
+  ARRAY_SHRINK(a, 1);
+  return event;
+}
+
+/**
+ * array_add - Add an event to the end of the array
+ * @param a  Array
+ * @param ch Character
+ * @param op Operation, e.g. OP_DELETE
+ */
+static void array_add(struct KeyEventArray *a, int ch, int op)
+{
+  struct KeyEvent event = { .ch = ch, .op = op };
+  ARRAY_ADD(a, event);
+}
+
+/**
+ * array_to_endcond - Clear the array until an OP_END_COND
+ * @param a Array
+ */
+static void array_to_endcond(struct KeyEventArray *a)
+{
+  while (!ARRAY_EMPTY(a))
+  {
+    if (array_pop(a)->op == OP_END_COND)
+    {
+      return;
+    }
+  }
+}
 
 int MuttGetchTimeout = -1;
 
@@ -118,7 +160,7 @@ void mutt_refresh(void)
     return;
 
   /* don't refresh in the middle of macros unless necessary */
-  if (MacroBufferCount && !OptForceRefresh && !OptIgnoreMacroEvents)
+  if (!ARRAY_EMPTY(&MacroEvents) && !OptForceRefresh && !OptIgnoreMacroEvents)
     return;
 
   /* else */
@@ -199,15 +241,19 @@ static int mutt_monitor_getch(void)
 struct KeyEvent mutt_getch(void)
 {
   int ch;
-  struct KeyEvent err = { OP_ABORT, OP_NULL };
-  struct KeyEvent timeout = { OP_TIMEOUT, OP_NULL };
-  struct KeyEvent ret = { OP_NULL, OP_NULL };
+  const struct KeyEvent err = { OP_ABORT, OP_NULL };
+  const struct KeyEvent timeout = { OP_TIMEOUT, OP_NULL };
 
-  if (UngetCount)
-    return UngetKeyEvents[--UngetCount];
+  struct KeyEvent *key = array_pop(&UngetKeyEvents);
+  if (key)
+  {
+    return *key;
+  }
 
-  if (!OptIgnoreMacroEvents && MacroBufferCount)
-    return MacroEvents[--MacroBufferCount];
+  if (!OptIgnoreMacroEvents && (key = array_pop(&MacroEvents)))
+  {
+    return *key;
+  }
 
   SigInt = false;
 
@@ -248,14 +294,13 @@ struct KeyEvent mutt_getch(void)
     /* send ALT-x as ESC-x */
     ch &= ~0x80;
     mutt_unget_event(ch, OP_NULL);
-    ret.ch = '\033'; // Escape
-    ret.op = OP_NULL;
-    return ret;
+    return (struct KeyEvent){ .ch = '\033' /* Escape */, .op = OP_NULL };
   }
 
-  ret.ch = ch;
-  ret.op = OP_NULL;
-  return (ch == AbortKey) ? err : ret;
+  if (ch == AbortKey)
+    return err;
+
+  return (struct KeyEvent){ .ch = ch, .op = OP_NULL };
 }
 
 /**
@@ -411,6 +456,9 @@ void mutt_endwin(void)
    * doesn't properly flush the screen without an explicit call.  */
   mutt_refresh();
   endwin();
+
+  ARRAY_FREE(&MacroEvents);
+  ARRAY_FREE(&UngetKeyEvents);
 
   errno = e;
 }
@@ -570,15 +618,7 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
  */
 void mutt_unget_event(int ch, int op)
 {
-  struct KeyEvent tmp = { OP_NULL, OP_NULL };
-
-  tmp.ch = ch;
-  tmp.op = op;
-
-  if (UngetCount >= UngetLen)
-    mutt_mem_realloc(&UngetKeyEvents, (UngetLen += 16) * sizeof(struct KeyEvent));
-
-  UngetKeyEvents[UngetCount++] = tmp;
+  array_add(&UngetKeyEvents, ch, op);
 }
 
 /**
@@ -607,15 +647,7 @@ void mutt_unget_string(const char *s)
  */
 void mutt_push_macro_event(int ch, int op)
 {
-  struct KeyEvent tmp = { OP_NULL, OP_NULL };
-
-  tmp.ch = ch;
-  tmp.op = op;
-
-  if (MacroBufferCount >= MacroBufferLen)
-    mutt_mem_realloc(&MacroEvents, (MacroBufferLen += 128) * sizeof(struct KeyEvent));
-
-  MacroEvents[MacroBufferCount++] = tmp;
+  array_add(&MacroEvents, ch, op);
 }
 
 /**
@@ -626,12 +658,7 @@ void mutt_push_macro_event(int ch, int op)
  */
 void mutt_flush_macro_to_endcond(void)
 {
-  UngetCount = 0;
-  while (MacroBufferCount > 0)
-  {
-    if (MacroEvents[--MacroBufferCount].op == OP_END_COND)
-      return;
-  }
+  array_to_endcond(&MacroEvents);
 }
 
 /**
@@ -643,11 +670,7 @@ void mutt_flush_macro_to_endcond(void)
  */
 void mutt_flush_unget_to_endcond(void)
 {
-  while (UngetCount > 0)
-  {
-    if (UngetKeyEvents[--UngetCount].op == OP_END_COND)
-      return;
-  }
+  array_to_endcond(&UngetKeyEvents);
 }
 
 /**
@@ -655,8 +678,8 @@ void mutt_flush_unget_to_endcond(void)
  */
 void mutt_flushinp(void)
 {
-  UngetCount = 0;
-  MacroBufferCount = 0;
+  ARRAY_SHRINK(&UngetKeyEvents, ARRAY_SIZE(&UngetKeyEvents));
+  ARRAY_SHRINK(&MacroEvents, ARRAY_SIZE(&MacroEvents));
   flushinp();
 }
 

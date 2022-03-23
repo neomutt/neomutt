@@ -150,7 +150,6 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
   enum EnterRedrawFlags redraw = ENTER_REDRAW_NONE;
   bool pass = (flags & MUTT_COMP_PASS);
   bool first = true;
-  int ch;
   wchar_t *tempbuf = NULL;
   size_t templen = 0;
   enum HistoryClass hclass;
@@ -222,20 +221,20 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
     }
     mutt_refresh();
 
-    ch = km_dokey(MENU_EDITOR);
-    if (ch < 0)
+    struct KeyEvent event = km_dokey_event(MENU_EDITOR);
+    if (event.op < 0)
     {
-      rc = (SigWinch && (ch == -2)) ? 1 : -1;
+      rc = (SigWinch && (event.op == -2)) ? 1 : -1;
       goto bye;
     }
 
-    if (ch != OP_NULL)
+    if (event.op != OP_NULL)
     {
       first = false;
-      if ((ch != OP_EDITOR_COMPLETE) && (ch != OP_EDITOR_COMPLETE_QUERY))
+      if ((event.op != OP_EDITOR_COMPLETE) && (event.op != OP_EDITOR_COMPLETE_QUERY))
         state->tabs = 0;
       redraw = ENTER_REDRAW_LINE;
-      switch (ch)
+      switch (event.op)
       {
         case OP_EDITOR_HISTORY_UP:
           state->curpos = state->lastchar;
@@ -380,13 +379,13 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
           while ((state->curpos < state->lastchar) &&
                  !iswspace(state->wbuf[state->curpos]))
           {
-            if (ch == OP_EDITOR_DOWNCASE_WORD)
+            if (event.op == OP_EDITOR_DOWNCASE_WORD)
               state->wbuf[state->curpos] = towlower(state->wbuf[state->curpos]);
             else
             {
               state->wbuf[state->curpos] = towupper(state->wbuf[state->curpos]);
-              if (ch == OP_EDITOR_CAPITALIZE_WORD)
-                ch = OP_EDITOR_DOWNCASE_WORD;
+              if (event.op == OP_EDITOR_CAPITALIZE_WORD)
+                event.op = OP_EDITOR_DOWNCASE_WORD;
             }
             state->curpos++;
           }
@@ -519,7 +518,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
 
             replace_part(state, i, buf);
           }
-          else if ((flags & MUTT_COMP_ALIAS) && (ch == OP_EDITOR_COMPLETE))
+          else if ((flags & MUTT_COMP_ALIAS) && (event.op == OP_EDITOR_COMPLETE))
           {
             /* invoke the alias-menu to get more addresses */
             size_t i;
@@ -540,7 +539,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
             }
             break;
           }
-          else if ((flags & MUTT_COMP_LABEL) && (ch == OP_EDITOR_COMPLETE))
+          else if ((flags & MUTT_COMP_LABEL) && (event.op == OP_EDITOR_COMPLETE))
           {
             size_t i;
             for (i = state->curpos;
@@ -560,7 +559,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
             }
             break;
           }
-          else if ((flags & MUTT_COMP_PATTERN) && (ch == OP_EDITOR_COMPLETE))
+          else if ((flags & MUTT_COMP_PATTERN) && (event.op == OP_EDITOR_COMPLETE))
           {
             size_t i = state->curpos;
             if (i && (state->wbuf[i - 1] == '~'))
@@ -590,7 +589,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
               goto self_insert;
             break;
           }
-          else if ((flags & MUTT_COMP_ALIAS) && (ch == OP_EDITOR_COMPLETE_QUERY))
+          else if ((flags & MUTT_COMP_ALIAS) && (event.op == OP_EDITOR_COMPLETE_QUERY))
           {
             size_t i = state->curpos;
             if (i != 0)
@@ -688,14 +687,14 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
 
         case OP_EDITOR_QUOTE_CHAR:
         {
-          struct KeyEvent event = { OP_NULL, OP_NULL };
+          struct KeyEvent quote_event = { OP_NULL, OP_NULL };
           do
           {
-            event = mutt_getch();
-          } while (event.ch == OP_TIMEOUT);
-          if (event.ch >= 0)
+            quote_event = mutt_getch();
+          } while (quote_event.ch == OP_TIMEOUT);
+          if (quote_event.ch >= 0)
           {
-            LastKey = event.ch;
+            event = quote_event;
             goto self_insert;
           }
           break;
@@ -727,7 +726,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
       state->tabs = 0;
       wchar_t wc = 0;
       /* use the raw keypress */
-      ch = LastKey;
+      int ch = event.ch;
 
       /* quietly ignore all other function keys */
       if (ch & ~0xff)
