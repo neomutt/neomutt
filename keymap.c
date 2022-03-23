@@ -426,17 +426,24 @@ static enum CommandResult km_bind_err(const char *s, enum MenuType mtype, int op
     }
   }
 
-  if (last) /* if queue has at least one entry */
+  if (map->op == OP_NULL)
   {
-    if (STAILQ_NEXT(last, entries))
-      STAILQ_INSERT_AFTER(&Keymaps[mtype], last, map, entries);
-    else /* last entry in the queue */
-      STAILQ_INSERT_TAIL(&Keymaps[mtype], map, entries);
-    last->eq = lastpos;
+    mutt_keymap_free(&map);
   }
-  else /* queue is empty, so insert from head */
+  else
   {
-    STAILQ_INSERT_HEAD(&Keymaps[mtype], map, entries);
+    if (last) /* if queue has at least one entry */
+    {
+      if (STAILQ_NEXT(last, entries))
+        STAILQ_INSERT_AFTER(&Keymaps[mtype], last, map, entries);
+      else /* last entry in the queue */
+        STAILQ_INSERT_TAIL(&Keymaps[mtype], map, entries);
+      last->eq = lastpos;
+    }
+    else /* queue is empty, so insert from head */
+    {
+      STAILQ_INSERT_HEAD(&Keymaps[mtype], map, entries);
+    }
   }
 
   return rc;
@@ -606,12 +613,13 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
  */
 static int retry_generic(enum MenuType mtype, keycode_t *keys, int keyslen, int lastkey)
 {
+  if (lastkey)
+    mutt_unget_event(lastkey, 0);
+  for (; keyslen; keyslen--)
+    mutt_unget_event(keys[keyslen - 1], 0);
+
   if ((mtype != MENU_EDITOR) && (mtype != MENU_GENERIC) && (mtype != MENU_PAGER))
   {
-    if (lastkey)
-      mutt_unget_event(lastkey, 0);
-    for (; keyslen; keyslen--)
-      mutt_unget_event(keys[keyslen - 1], 0);
     return km_dokey(MENU_GENERIC);
   }
   if (mtype != MENU_EDITOR)
@@ -619,6 +627,8 @@ static int retry_generic(enum MenuType mtype, keycode_t *keys, int keyslen, int 
     /* probably a good idea to flush input here so we can abort macros */
     mutt_flushinp();
   }
+
+  LastKey = mutt_getch().ch;
   return OP_NULL;
 }
 

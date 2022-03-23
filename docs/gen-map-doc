@@ -29,10 +29,12 @@ while (<STDIN>) {
       elsif (/{\s*"(.+)"\s*,\s*(\w+)\s*}/) {
         my ($function, $op) = ($1, $2);
         die "unknown OP $op" unless $OPS{$op};
-        $MAP_FUNC_TO_OP{$map}->{$function} = $op;
         $MAP_OP_TO_SEQSET{$map}->{$op} = {};
-        if ($map eq "generic") {
-          $GENERIC_OP_TO_FUNC{$op} = $function;
+        if (!exists($MAP_FUNC_TO_OP{$map}->{$function})) {
+          $MAP_FUNC_TO_OP{$map}->{$function} = $op;
+        }
+        if ($map eq "generic" && !exists($GENERIC_OP_TO_FUNC{$op})) {
+            $GENERIC_OP_TO_FUNC{$op} = $function;
         }
       }
     }

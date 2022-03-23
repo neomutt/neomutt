@@ -626,9 +626,13 @@ static int op_jump(struct IndexSharedData *shared, struct IndexPrivateData *priv
   int rc = FR_ERROR;
   struct Buffer *buf = mutt_buffer_pool_get();
 
+  const int digit = op - OP_JUMP;
+  if (digit > 0 && digit < 10)
+  {
+    mutt_unget_event('0' + digit, 0);
+  }
+
   int msg_num = 0;
-  if (isdigit(LastKey))
-    mutt_unget_event(LastKey, 0);
   if ((mutt_buffer_get_field(_("Jump to message: "), buf, MUTT_COMP_NO_FLAGS,
                              false, NULL, NULL, NULL) != 0) ||
       mutt_buffer_is_empty(buf))
@@ -3146,6 +3150,15 @@ struct IndexFunction IndexFunctions[] = {
   { OP_HALF_UP,                             op_menu_move,                         CHECK_NO_FLAGS },
   { OP_HELP,                                op_help,                              CHECK_NO_FLAGS },
   { OP_JUMP,                                op_jump,                              CHECK_IN_MAILBOX },
+  { OP_JUMP_1,                              op_jump,                              CHECK_IN_MAILBOX },
+  { OP_JUMP_2,                              op_jump,                              CHECK_IN_MAILBOX },
+  { OP_JUMP_3,                              op_jump,                              CHECK_IN_MAILBOX },
+  { OP_JUMP_4,                              op_jump,                              CHECK_IN_MAILBOX },
+  { OP_JUMP_5,                              op_jump,                              CHECK_IN_MAILBOX },
+  { OP_JUMP_6,                              op_jump,                              CHECK_IN_MAILBOX },
+  { OP_JUMP_7,                              op_jump,                              CHECK_IN_MAILBOX },
+  { OP_JUMP_8,                              op_jump,                              CHECK_IN_MAILBOX },
+  { OP_JUMP_9,                              op_jump,                              CHECK_IN_MAILBOX },
   { OP_LAST_ENTRY,                          op_menu_move,                         CHECK_NO_FLAGS },
   { OP_LIMIT_CURRENT_THREAD,                op_main_limit,                        CHECK_IN_MAILBOX },
   { OP_LIST_REPLY,                          op_list_reply,                        CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },

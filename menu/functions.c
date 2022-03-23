@@ -132,41 +132,6 @@ done:
   return rc;
 }
 
-/**
- * menu_jump - Jump to another item in the menu
- * @param menu Current Menu
- *
- * Ask the user for a message number to jump to.
- */
-static void menu_jump(struct Menu *menu)
-{
-  if (menu->max == 0)
-  {
-    mutt_error(_("No entries"));
-    return;
-  }
-
-  mutt_unget_event(LastKey, 0);
-
-  struct Buffer *buf = mutt_buffer_pool_get();
-  if ((mutt_buffer_get_field(_("Jump to: "), buf, MUTT_COMP_NO_FLAGS, false,
-                             NULL, NULL, NULL) == 0) &&
-      !mutt_buffer_is_empty(buf))
-  {
-    int n = 0;
-    if (mutt_str_atoi_full(mutt_buffer_string(buf), &n) && (n > 0) && (n < (menu->max + 1)))
-    {
-      menu_set_index(menu, n - 1); // msg numbers are 0-based
-    }
-    else
-    {
-      mutt_error(_("Invalid index number"));
-    }
-  }
-
-  mutt_buffer_pool_release(&buf);
-}
-
 // -----------------------------------------------------------------------------
 
 /**
@@ -274,7 +239,35 @@ static int op_help(struct Menu *menu, int op)
  */
 static int op_jump(struct Menu *menu, int op)
 {
-  menu_jump(menu);
+  if (menu->max == 0)
+  {
+    mutt_error(_("No entries"));
+    return FR_SUCCESS;
+  }
+
+  const int digit = op - OP_JUMP;
+  if (digit > 0 && digit < 10)
+  {
+    mutt_unget_event('0' + digit, 0);
+  }
+
+  struct Buffer *buf = mutt_buffer_pool_get();
+  if ((mutt_buffer_get_field(_("Jump to: "), buf, MUTT_COMP_NO_FLAGS, false,
+                             NULL, NULL, NULL) == 0) &&
+      !mutt_buffer_is_empty(buf))
+  {
+    int n = 0;
+    if (mutt_str_atoi_full(mutt_buffer_string(buf), &n) && (n > 0) && (n < (menu->max + 1)))
+    {
+      menu_set_index(menu, n - 1); // msg numbers are 0-based
+    }
+    else
+    {
+      mutt_error(_("Invalid index number"));
+    }
+  }
+
+  mutt_buffer_pool_release(&buf);
   return FR_SUCCESS;
 }
 
@@ -294,6 +287,15 @@ struct MenuFunction MenuFunctions[] = {
   { OP_HALF_UP,                menu_movement },
   { OP_HELP,                   op_help },
   { OP_JUMP,                   op_jump },
+  { OP_JUMP_1,                 op_jump },
+  { OP_JUMP_2,                 op_jump },
+  { OP_JUMP_3,                 op_jump },
+  { OP_JUMP_4,                 op_jump },
+  { OP_JUMP_5,                 op_jump },
+  { OP_JUMP_6,                 op_jump },
+  { OP_JUMP_7,                 op_jump },
+  { OP_JUMP_8,                 op_jump },
+  { OP_JUMP_9,                 op_jump },
   { OP_LAST_ENTRY,             menu_movement },
   { OP_MIDDLE_PAGE,            menu_movement },
   { OP_NEXT_ENTRY,             menu_movement },
