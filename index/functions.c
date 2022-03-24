@@ -2053,39 +2053,6 @@ static int op_search(struct IndexSharedData *shared, struct IndexPrivateData *pr
 }
 
 /**
- * op_show_log_messages - Show log (and debug) messages - Implements ::index_function_t - @ingroup index_function_api
- */
-static int op_show_log_messages(struct IndexSharedData *shared,
-                                struct IndexPrivateData *priv, int op)
-{
-  char tempfile[PATH_MAX];
-  mutt_mktemp(tempfile, sizeof(tempfile));
-
-  FILE *fp = mutt_file_fopen(tempfile, "a+");
-  if (!fp)
-  {
-    mutt_perror("fopen");
-    return FR_ERROR;
-  }
-
-  log_queue_save(fp);
-  mutt_file_fclose(&fp);
-
-  struct PagerData pdata = { 0 };
-  struct PagerView pview = { &pdata };
-
-  pdata.fname = tempfile;
-
-  pview.banner = "messages";
-  pview.flags = MUTT_PAGER_LOGS | MUTT_PAGER_BOTTOM;
-  pview.mode = PAGER_MODE_OTHER;
-
-  mutt_do_pager(&pview, NULL);
-
-  return FR_SUCCESS;
-}
-
-/**
  * op_sort - Sort messages - Implements ::index_function_t - @ingroup index_function_api
  *
  * This function handles:
@@ -3130,7 +3097,6 @@ struct IndexFunction IndexFunctions[] = {
   { OP_SEARCH_NEXT,                         op_search,                            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SEARCH_OPPOSITE,                     op_search,                            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SEARCH_REVERSE,                      op_search,                            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_SHOW_LOG_MESSAGES,                   op_show_log_messages,                 CHECK_NO_FLAGS },
   { OP_SORT,                                op_sort,                              CHECK_NO_FLAGS },
   { OP_SORT_REVERSE,                        op_sort,                              CHECK_NO_FLAGS },
   { OP_TAG,                                 op_tag,                               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
