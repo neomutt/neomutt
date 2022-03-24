@@ -126,8 +126,7 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
 
   const bool needs_head = (pat->op == MUTT_PAT_HEADER) || (pat->op == MUTT_PAT_WHOLE_MSG);
   const bool needs_body = (pat->op == MUTT_PAT_BODY) || (pat->op == MUTT_PAT_WHOLE_MSG);
-  const bool c_thorough_search =
-      cs_subset_bool(NeoMutt->sub, "thorough_search");
+  const bool c_thorough_search = cs_subset_bool(NeoMutt->sub, "thorough_search");
   if (c_thorough_search)
   {
     /* decode the header / body */
@@ -968,8 +967,8 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
         int *cache_entry = pat->all_addr ? &cache->sub_all : &cache->sub_one;
         if (!is_pattern_cache_set(*cache_entry))
         {
-          set_pattern_cache_value(
-              cache_entry, mutt_is_subscribed_list_recipient(pat->all_addr, e->env));
+          set_pattern_cache_value(cache_entry,
+                                  mutt_is_subscribed_list_recipient(pat->all_addr, e->env));
         }
         result = get_pattern_cache_value(*cache_entry);
       }
@@ -988,8 +987,8 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
         int *cache_entry = pat->all_addr ? &cache->pers_recip_all : &cache->pers_recip_one;
         if (!is_pattern_cache_set(*cache_entry))
         {
-          set_pattern_cache_value(
-              cache_entry, match_user(pat->all_addr, &e->env->to, &e->env->cc));
+          set_pattern_cache_value(cache_entry,
+                                  match_user(pat->all_addr, &e->env->to, &e->env->cc));
         }
         result = get_pattern_cache_value(*cache_entry);
       }

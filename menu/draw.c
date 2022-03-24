@@ -129,8 +129,7 @@ static void print_enriched_string(struct MuttWindow *win, int index,
   {
     if (*s < MUTT_TREE_MAX)
     {
-      struct AttrColor *ac_merge =
-          merged_color_overlay(ac_def, simple_color_get(MT_COLOR_TREE));
+      struct AttrColor *ac_merge = merged_color_overlay(ac_def, simple_color_get(MT_COLOR_TREE));
       ac_merge = merged_color_overlay(ac_merge, ac_ind);
 
       /* Combining tree fg color and another bg color requires having
@@ -299,8 +298,7 @@ static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
 {
   char *scratch = mutt_str_dup(buf);
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
-  const char *const c_arrow_string =
-      cs_subset_string(menu->sub, "arrow_string");
+  const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
   int shift = c_arrow_cursor ? mutt_strwidth(c_arrow_string) + 1 : 0;
   int cols = menu->win->state.cols - shift;
 
@@ -334,8 +332,7 @@ void menu_redraw_index(struct Menu *menu)
   struct AttrColor *ac = NULL;
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
-  const char *const c_arrow_string =
-      cs_subset_string(menu->sub, "arrow_string");
+  const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
   struct AttrColor *ac_ind = simple_color_get(MT_COLOR_INDICATOR);
   for (int i = menu->top; i < (menu->top + menu->page_len); i++)
   {
@@ -399,8 +396,7 @@ void menu_redraw_motion(struct Menu *menu)
   mutt_curses_set_color(old_color);
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
-  const char *const c_arrow_string =
-      cs_subset_string(menu->sub, "arrow_string");
+  const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
   struct AttrColor *ac_ind = simple_color_get(MT_COLOR_INDICATOR);
   if (c_arrow_cursor)
   {
@@ -457,8 +453,7 @@ void menu_redraw_current(struct Menu *menu)
 
   struct AttrColor *ac_ind = simple_color_get(MT_COLOR_INDICATOR);
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
-  const char *const c_arrow_string =
-      cs_subset_string(menu->sub, "arrow_string");
+  const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
   if (c_arrow_cursor)
   {
     mutt_curses_set_color(ac_ind);

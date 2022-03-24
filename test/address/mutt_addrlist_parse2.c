@@ -58,8 +58,7 @@ void test_mutt_addrlist_parse2(void)
   {
     /* Not extremely nice, but this is the way it works... */
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
-    int parsed = mutt_addrlist_parse2(
-        &alist, "test@example.com John Doe <john@doe.org>");
+    int parsed = mutt_addrlist_parse2(&alist, "test@example.com John Doe <john@doe.org>");
     TEST_CHECK(parsed == 1);
     TEST_CHECK(!TAILQ_EMPTY(&alist));
     struct Address *a = TAILQ_FIRST(&alist);
@@ -70,8 +69,7 @@ void test_mutt_addrlist_parse2(void)
 
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
-    int parsed = mutt_addrlist_parse2(
-        &alist, "test@example.com john@doe.org foo@bar.baz");
+    int parsed = mutt_addrlist_parse2(&alist, "test@example.com john@doe.org foo@bar.baz");
     TEST_CHECK(parsed == 3);
     TEST_CHECK(!TAILQ_EMPTY(&alist));
     struct Address *a = TAILQ_FIRST(&alist);

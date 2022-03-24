@@ -226,8 +226,8 @@ static struct Remailer **mix_type2_list(size_t *l)
   struct Buffer *cmd = mutt_buffer_pool_get();
   mutt_buffer_printf(cmd, "%s -T", c_mixmaster);
 
-  pid_t mm_pid =
-      filter_create_fd(mutt_buffer_string(cmd), NULL, &fp, NULL, fd_null, -1, fd_null);
+  pid_t mm_pid = filter_create_fd(mutt_buffer_string(cmd), NULL, &fp, NULL,
+                                  fd_null, -1, fd_null);
   window_invalidate_all();
   if (mm_pid == -1)
   {
@@ -553,8 +553,7 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
 static void mix_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
 {
   struct Remailer **type2_list = menu->mdata;
-  const char *const c_mix_entry_format =
-      cs_subset_string(NeoMutt->sub, "mix_entry_format");
+  const char *const c_mix_entry_format = cs_subset_string(NeoMutt->sub, "mix_entry_format");
   mutt_expando_format(buf, buflen, 0, menu->win->state.cols,
                       NONULL(c_mix_entry_format), mix_format_str,
                       (intptr_t) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
@@ -677,18 +676,18 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
       chain->ch[i] = 0;
   }
 
-  struct MuttWindow *dlg =
-      mutt_window_new(WT_DLG_REMAILER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *dlg = mutt_window_new(WT_DLG_REMAILER, MUTT_WIN_ORIENT_VERTICAL,
+                                           MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
+                                           MUTT_WIN_SIZE_UNLIMITED);
   dlg->help_menu = MENU_MIX;
   dlg->help_data = RemailerHelp;
 
   struct MuttWindow *win_hosts = menu_new_window(MENU_MIX, NeoMutt->sub);
   win_hosts->focus = win_hosts;
 
-  struct MuttWindow *win_chain =
-      mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                      MUTT_WIN_SIZE_UNLIMITED, 4);
+  struct MuttWindow *win_chain = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL,
+                                                 MUTT_WIN_SIZE_FIXED,
+                                                 MUTT_WIN_SIZE_UNLIMITED, 4);
 
   struct MuttWindow *win_cbar = sbar_new();
   struct MuttWindow *win_rbar = sbar_new();
@@ -788,9 +787,8 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
         if (chain->cl && chain->ch[chain->cl - 1] &&
             (type2_list[chain->ch[chain->cl - 1]]->caps & MIX_CAP_MIDDLEMAN))
         {
-          mutt_error(
-              _("Error: %s can't be used as the final remailer of a chain"),
-              type2_list[chain->ch[chain->cl - 1]]->shortname);
+          mutt_error(_("Error: %s can't be used as the final remailer of a chain"),
+                     type2_list[chain->ch[chain->cl - 1]]->shortname);
           continue;
         }
 
@@ -937,8 +935,7 @@ int mix_check_message(struct Email *e)
     const char *fqdn = mutt_fqdn(true, NeoMutt->sub);
     if (!fqdn)
     {
-      mutt_error(_("Please set the hostname variable to a proper value when "
-                   "using mixmaster"));
+      mutt_error(_("Please set the hostname variable to a proper value when using mixmaster"));
       return -1;
     }
 

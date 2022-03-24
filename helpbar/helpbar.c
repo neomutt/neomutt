@@ -328,9 +328,9 @@ static int helpbar_window_observer(struct NotifyCallback *nc)
  */
 struct MuttWindow *helpbar_new(void)
 {
-  struct MuttWindow *win =
-      mutt_window_new(WT_HELP_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
+  struct MuttWindow *win = mutt_window_new(WT_HELP_BAR, MUTT_WIN_ORIENT_VERTICAL,
+                                           MUTT_WIN_SIZE_FIXED,
+                                           MUTT_WIN_SIZE_UNLIMITED, 1);
   win->state.visible = cs_subset_bool(NeoMutt->sub, "help");
 
   win->recalc = helpbar_recalc;

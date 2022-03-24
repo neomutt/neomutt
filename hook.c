@@ -146,8 +146,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     }
 
     mutt_extract_token(pattern, s, MUTT_TOKEN_NO_FLAGS);
-    if (folder_or_mbox &&
-        mutt_str_equal(mutt_buffer_string(pattern), "-noregex"))
+    if (folder_or_mbox && mutt_str_equal(mutt_buffer_string(pattern), "-noregex"))
     {
       use_regex = false;
       if (!MoreArgs(s))
@@ -187,8 +186,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     goto cleanup;
   }
 
-  const char *const c_default_hook =
-      cs_subset_string(NeoMutt->sub, "default_hook");
+  const char *const c_default_hook = cs_subset_string(NeoMutt->sub, "default_hook");
   if (folder_or_mbox)
   {
     /* Accidentally using the ^ mailbox shortcut in the .neomuttrc is a
@@ -449,8 +447,7 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
     goto out;
   }
 
-  const char *const c_default_hook =
-      cs_subset_string(NeoMutt->sub, "default_hook");
+  const char *const c_default_hook = cs_subset_string(NeoMutt->sub, "default_hook");
   if (c_default_hook)
     mutt_check_simple(pattern, c_default_hook);
 
@@ -476,9 +473,9 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
    * the hook compilation time.  */
   struct Mailbox *m_cur = get_current_mailbox();
   struct Menu *menu = get_current_menu();
-  struct PatternList *pat =
-      mutt_pattern_comp(m_cur, menu, mutt_buffer_string(pattern),
-                        MUTT_PC_FULL_MSG | MUTT_PC_PATTERN_DYNAMIC, err);
+  struct PatternList *pat = mutt_pattern_comp(m_cur, menu, mutt_buffer_string(pattern),
+                                              MUTT_PC_FULL_MSG | MUTT_PC_PATTERN_DYNAMIC,
+                                              err);
   if (!pat)
     goto out;
 

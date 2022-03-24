@@ -113,8 +113,7 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
   {
     struct Mailbox *m_cur = get_current_mailbox();
     struct Menu *menu = get_current_menu();
-    struct PatternList *pat =
-        mutt_pattern_comp(m_cur, menu, pattern, MUTT_PC_NO_FLAGS, err);
+    struct PatternList *pat = mutt_pattern_comp(m_cur, menu, pattern, MUTT_PC_NO_FLAGS, err);
     if (!pat)
     {
       FREE(&pattern);
@@ -178,12 +177,9 @@ void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
   if (e->score < 0)
     e->score = 0;
 
-  const short c_score_threshold_delete =
-      cs_subset_number(NeoMutt->sub, "score_threshold_delete");
-  const short c_score_threshold_flag =
-      cs_subset_number(NeoMutt->sub, "score_threshold_flag");
-  const short c_score_threshold_read =
-      cs_subset_number(NeoMutt->sub, "score_threshold_read");
+  const short c_score_threshold_delete = cs_subset_number(NeoMutt->sub, "score_threshold_delete");
+  const short c_score_threshold_flag = cs_subset_number(NeoMutt->sub, "score_threshold_flag");
+  const short c_score_threshold_read = cs_subset_number(NeoMutt->sub, "score_threshold_read");
 
   if (e->score <= c_score_threshold_delete)
     mutt_set_flag_update(m, e, MUTT_DELETE, true, upd_mbox);

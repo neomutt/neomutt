@@ -316,8 +316,7 @@ int mutt_ch_convert_nonmime_string(char **ps)
 
   const char *c1 = NULL;
 
-  const char *const c_assumed_charset =
-      cs_subset_string(NeoMutt->sub, "assumed_charset");
+  const char *const c_assumed_charset = cs_subset_string(NeoMutt->sub, "assumed_charset");
   const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
   for (const char *c = c_assumed_charset; c; c = c1 ? c1 + 1 : 0)
   {
@@ -443,8 +442,7 @@ bool mutt_ch_chscmp(const char *cs1, const char *cs2)
 char *mutt_ch_get_default_charset(void)
 {
   static char fcharset[128];
-  const char *const c_assumed_charset =
-      cs_subset_string(NeoMutt->sub, "assumed_charset");
+  const char *const c_assumed_charset = cs_subset_string(NeoMutt->sub, "assumed_charset");
   const char *c = c_assumed_charset;
   const char *c1 = NULL;
 

@@ -505,13 +505,11 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
 
   if (b && (b->type == TYPE_TEXT) && (!b->noconv && !b->force_charset))
   {
-    const char *const c_attach_charset =
-        cs_subset_string(sub, "attach_charset");
+    const char *const c_attach_charset = cs_subset_string(sub, "attach_charset");
     const char *const c_send_charset = cs_subset_string(sub, "send_charset");
 
     char *chs = mutt_param_get(&b->parameter, "charset");
-    const char *fchs =
-        b->use_disp ? (c_attach_charset ? c_attach_charset : c_charset) : c_charset;
+    const char *fchs = b->use_disp ? (c_attach_charset ? c_attach_charset : c_charset) : c_charset;
     if (c_charset && (chs || c_send_charset) &&
         (convert_file_from_to(fp, fchs, chs ? chs : c_send_charset, &fromcode,
                               &tocode, info) != (size_t) (-1)))
@@ -540,10 +538,9 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
   if (b && (b->type == TYPE_TEXT) && (!b->noconv && !b->force_charset))
   {
     mutt_param_set(&b->parameter, "charset",
-                   (!info->hibin ? "us-ascii" :
-                    c_charset && !mutt_ch_is_us_ascii(c_charset) ?
-                                   c_charset :
-                                   "unknown-8bit"));
+                   (!info->hibin                                 ? "us-ascii" :
+                    c_charset && !mutt_ch_is_us_ascii(c_charset) ? c_charset :
+                                                                   "unknown-8bit"));
   }
 
   return info;
@@ -868,8 +865,7 @@ static void set_encoding(struct Body *b, struct Content *info, struct ConfigSubs
     else
       b->encoding = ENC_7BIT;
   }
-  else if ((b->type == TYPE_APPLICATION) &&
-           mutt_istr_equal(b->subtype, "pgp-keys"))
+  else if ((b->type == TYPE_APPLICATION) && mutt_istr_equal(b->subtype, "pgp-keys"))
   {
     b->encoding = ENC_7BIT;
   }
@@ -1056,8 +1052,7 @@ static void run_mime_type_query(struct Body *att, struct ConfigSubset *sub)
   pid_t pid;
   struct Buffer *cmd = mutt_buffer_pool_get();
 
-  const char *const c_mime_type_query_command =
-      cs_subset_string(sub, "mime_type_query_command");
+  const char *const c_mime_type_query_command = cs_subset_string(sub, "mime_type_query_command");
 
   mutt_buffer_file_expand_fmt_quote(cmd, c_mime_type_query_command, att->filename);
 
@@ -1098,10 +1093,8 @@ struct Body *mutt_make_file_attach(const char *path, struct ConfigSubset *sub)
   struct Body *att = mutt_body_new();
   att->filename = mutt_str_dup(path);
 
-  const char *const c_mime_type_query_command =
-      cs_subset_string(sub, "mime_type_query_command");
-  const bool c_mime_type_query_first =
-      cs_subset_bool(sub, "mime_type_query_first");
+  const char *const c_mime_type_query_command = cs_subset_string(sub, "mime_type_query_command");
+  const bool c_mime_type_query_first = cs_subset_bool(sub, "mime_type_query_first");
 
   if (c_mime_type_query_command && c_mime_type_query_first)
     run_mime_type_query(att, sub);
@@ -1579,15 +1572,15 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
     goto done;
   }
 
-  const bool c_crypt_protected_headers_read =
-      cs_subset_bool(sub, "crypt_protected_headers_read");
+  const bool c_crypt_protected_headers_read = cs_subset_bool(sub, "crypt_protected_headers_read");
 
   /* post == 1 => postpone message.
    * post == 0 => Normal mode.  */
-  mutt_rfc822_write_header(
-      msg->fp, e->env, e->body,
-      post ? MUTT_WRITE_HEADER_POSTPONE : MUTT_WRITE_HEADER_FCC, false,
-      c_crypt_protected_headers_read && mutt_should_hide_protected_subject(e), sub);
+  mutt_rfc822_write_header(msg->fp, e->env, e->body,
+                           post ? MUTT_WRITE_HEADER_POSTPONE : MUTT_WRITE_HEADER_FCC, false,
+                           c_crypt_protected_headers_read &&
+                               mutt_should_hide_protected_subject(e),
+                           sub);
 
   /* (postponement) if this was a reply of some sort, <msgid> contains the
    * Message-ID: of message replied to.  Save it using a special X-Mutt-
@@ -1640,8 +1633,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
     {
       fputc('E', msg->fp);
 
-      const char *const c_smime_encrypt_with =
-          cs_subset_string(sub, "smime_encrypt_with");
+      const char *const c_smime_encrypt_with = cs_subset_string(sub, "smime_encrypt_with");
       if (c_smime_encrypt_with)
         fprintf(msg->fp, "C<%s>", c_smime_encrypt_with);
     }
@@ -1651,8 +1643,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
     {
       fputc('S', msg->fp);
 
-      const char *const c_smime_sign_as =
-          cs_subset_string(sub, "smime_sign_as");
+      const char *const c_smime_sign_as = cs_subset_string(sub, "smime_sign_as");
       if (c_smime_sign_as)
         fprintf(msg->fp, "<%s>", c_smime_sign_as);
     }

@@ -66,8 +66,7 @@ void test_mutt_addrlist_remove_xrefs(void)
     mutt_addrlist_append(&al1, mutt_addr_create(NULL, "john@doe.org"));
     mutt_addrlist_append(&al1, mutt_addr_create(NULL, "foo@bar.baz"));
     mutt_addrlist_append(&al2, mutt_addr_create(NULL, "foo@bar.baz"));
-    mutt_addrlist_append(&al2,
-                         mutt_addr_create(NULL, "mr.pink@reservoir.movie"));
+    mutt_addrlist_append(&al2, mutt_addr_create(NULL, "mr.pink@reservoir.movie"));
     mutt_addrlist_remove_xrefs(&al1, &al2);
     struct Address *a = TAILQ_FIRST(&al1);
     TEST_CHECK_STR_EQ("foo@example.com", a->mailbox);

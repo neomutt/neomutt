@@ -321,8 +321,7 @@ static void pgp_add_string_to_hints(const char *str, struct ListHead *hints)
   if (!scratch)
     return;
 
-  for (char *t = strtok(scratch, " ,.:\"()<>\n"); t;
-       t = strtok(NULL, " ,.:\"()<>\n"))
+  for (char *t = strtok(scratch, " ,.:\"()<>\n"); t; t = strtok(NULL, " ,.:\"()<>\n"))
   {
     if (strlen(t) > 3)
       mutt_list_insert_tail(hints, mutt_str_dup(t));
@@ -444,8 +443,8 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
   {
     if (oppenc_mode)
     {
-      const bool c_crypt_opportunistic_encrypt_strong_keys = cs_subset_bool(
-          NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
+      const bool c_crypt_opportunistic_encrypt_strong_keys =
+          cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
       if (the_strong_valid_key)
       {
         pgp_remove_key(&matches, the_strong_valid_key);

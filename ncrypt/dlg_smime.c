@@ -262,12 +262,10 @@ struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, const char *query)
             case 'e':
             case 'i':
             case 'r':
-              s = _("ID is expired/disabled/revoked. Do you really want to use "
-                    "the key?");
+              s = _("ID is expired/disabled/revoked. Do you really want to use the key?");
               break;
             case 'u':
-              s = _("ID has undefined validity. Do you really want to use the "
-                    "key?");
+              s = _("ID has undefined validity. Do you really want to use the key?");
               break;
             case 'v':
               s = _("ID is not trusted. Do you really want to use the key?");

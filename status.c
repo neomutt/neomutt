@@ -318,8 +318,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                                                             0);
       }
 
-      const struct MbTable *c_status_chars =
-          cs_subset_mbtable(NeoMutt->sub, "status_chars");
+      const struct MbTable *c_status_chars = cs_subset_mbtable(NeoMutt->sub, "status_chars");
       if (!c_status_chars || !c_status_chars->len)
         buf[0] = '\0';
       else if (i >= c_status_chars->len)

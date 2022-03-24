@@ -89,8 +89,7 @@ static int compress_level_validator(const struct ConfigSet *cs, const struct Con
                                     intptr_t value, struct Buffer *err)
 {
 #ifdef USE_HCACHE_COMPRESSION
-  const char *const c_header_cache_compress_method =
-      cs_subset_string(NeoMutt->sub, "header_cache_compress_method");
+  const char *const c_header_cache_compress_method = cs_subset_string(NeoMutt->sub, "header_cache_compress_method");
   if (!c_header_cache_compress_method)
   {
     mutt_buffer_printf(err, _("Set option %s before setting %s"),

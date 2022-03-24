@@ -80,8 +80,9 @@ static int search(struct Menu *menu, int op)
       mutt_str_replace(&SearchBuffers[menu->type], mutt_buffer_string(buf));
       search_buf = SearchBuffers[menu->type];
     }
-    menu->search_dir =
-        ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? MUTT_SEARCH_DOWN : MUTT_SEARCH_UP;
+    menu->search_dir = ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
+                           MUTT_SEARCH_DOWN :
+                           MUTT_SEARCH_UP;
   }
 
   search_dir = (menu->search_dir == MUTT_SEARCH_UP) ? -1 : 1;

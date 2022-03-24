@@ -193,8 +193,7 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
   size_t linestrsize = 0;
 
   /* try checking against names stored in stored certs file */
-  const char *const c_certificate_file =
-      cs_subset_path(NeoMutt->sub, "certificate_file");
+  const char *const c_certificate_file = cs_subset_path(NeoMutt->sub, "certificate_file");
   FILE *fp = mutt_file_fopen(c_certificate_file, "r");
   if (!fp)
     return 0;
@@ -241,8 +240,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
   unsigned char *b64_data_data = NULL;
   struct stat st = { 0 };
 
-  const char *const c_certificate_file =
-      cs_subset_path(NeoMutt->sub, "certificate_file");
+  const char *const c_certificate_file = cs_subset_path(NeoMutt->sub, "certificate_file");
   if (stat(c_certificate_file, &st) == -1)
     return 0;
 
@@ -337,8 +335,7 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
    * gnutls_certificate_set_verify_flags() with a flag disabling
    * GnuTLS checking of the dates.  So certstat shouldn't have the
    * GNUTLS_CERT_EXPIRED and GNUTLS_CERT_NOT_ACTIVATED bits set. */
-  const bool c_ssl_verify_dates =
-      cs_subset_bool(NeoMutt->sub, "ssl_verify_dates");
+  const bool c_ssl_verify_dates = cs_subset_bool(NeoMutt->sub, "ssl_verify_dates");
   if (c_ssl_verify_dates != MUTT_NO)
   {
     if (gnutls_x509_crt_get_expiration_time(cert) < mutt_date_epoch())
@@ -347,8 +344,7 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
       *certerr |= CERTERR_NOTYETVALID;
   }
 
-  const bool c_ssl_verify_host =
-      cs_subset_bool(NeoMutt->sub, "ssl_verify_host");
+  const bool c_ssl_verify_host = cs_subset_bool(NeoMutt->sub, "ssl_verify_host");
   if ((chainidx == 0) && (c_ssl_verify_host != MUTT_NO) &&
       !gnutls_x509_crt_check_hostname(cert, hostname) &&
       !tls_check_stored_hostname(certdata, hostname))
@@ -538,44 +534,35 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
 
   if (certerr & CERTERR_NOTYETVALID)
   {
-    ARRAY_ADD(&carr,
-              mutt_str_dup(_("WARNING: Server certificate is not yet valid")));
+    ARRAY_ADD(&carr, mutt_str_dup(_("WARNING: Server certificate is not yet valid")));
   }
   if (certerr & CERTERR_EXPIRED)
   {
-    ARRAY_ADD(&carr,
-              mutt_str_dup(_("WARNING: Server certificate has expired")));
+    ARRAY_ADD(&carr, mutt_str_dup(_("WARNING: Server certificate has expired")));
   }
   if (certerr & CERTERR_REVOKED)
   {
-    ARRAY_ADD(&carr,
-              mutt_str_dup(_("WARNING: Server certificate has been revoked")));
+    ARRAY_ADD(&carr, mutt_str_dup(_("WARNING: Server certificate has been revoked")));
   }
   if (certerr & CERTERR_HOSTNAME)
   {
-    ARRAY_ADD(
-        &carr,
-        mutt_str_dup(_("WARNING: Server hostname does not match certificate")));
+    ARRAY_ADD(&carr, mutt_str_dup(_("WARNING: Server hostname does not match certificate")));
   }
   if (certerr & CERTERR_SIGNERNOTCA)
   {
-    ARRAY_ADD(&carr, mutt_str_dup(_(
-                         "WARNING: Signer of server certificate is not a CA")));
+    ARRAY_ADD(&carr, mutt_str_dup(_("WARNING: Signer of server certificate is not a CA")));
   }
   if (certerr & CERTERR_INSECUREALG)
   {
-    ARRAY_ADD(&carr, mutt_str_dup(_("Warning: Server certificate was signed "
-                                    "using an insecure algorithm")));
+    ARRAY_ADD(&carr, mutt_str_dup(_("Warning: Server certificate was signed using an insecure algorithm")));
   }
 
   snprintf(title, sizeof(title),
            _("SSL Certificate check (certificate %zu of %zu in chain)"), len - idx, len);
 
-  const char *const c_certificate_file =
-      cs_subset_path(NeoMutt->sub, "certificate_file");
-  const bool allow_always =
-      (c_certificate_file && !savedcert &&
-       !(certerr & (CERTERR_EXPIRED | CERTERR_NOTYETVALID | CERTERR_REVOKED)));
+  const char *const c_certificate_file = cs_subset_path(NeoMutt->sub, "certificate_file");
+  const bool allow_always = (c_certificate_file && !savedcert &&
+                             !(certerr & (CERTERR_EXPIRED | CERTERR_NOTYETVALID | CERTERR_REVOKED)));
   int rc = dlg_verify_certificate(title, &carr, allow_always, false);
   if (rc == 3) // Accept always
   {
@@ -681,8 +668,8 @@ static int tls_check_certificate(struct Connection *conn)
     /* add signers to trust set, then reverify */
     if (i)
     {
-      int rcsettrust = gnutls_certificate_set_x509_trust_mem(
-          data->xcred, &cert_list[i], GNUTLS_X509_FMT_DER);
+      int rcsettrust = gnutls_certificate_set_x509_trust_mem(data->xcred, &cert_list[i],
+                                                             GNUTLS_X509_FMT_DER);
       if (rcsettrust != 1)
         mutt_debug(LL_DEBUG1, "error trusting certificate %d: %d\n", i, rcsettrust);
 
@@ -768,29 +755,25 @@ static int tls_set_priority(struct TlsSockData *data)
 
   struct Buffer *priority = mutt_buffer_pool_get();
 
-  const char *const c_ssl_ciphers =
-      cs_subset_string(NeoMutt->sub, "ssl_ciphers");
+  const char *const c_ssl_ciphers = cs_subset_string(NeoMutt->sub, "ssl_ciphers");
   if (c_ssl_ciphers)
     mutt_buffer_strcpy(priority, c_ssl_ciphers);
   else
     mutt_buffer_strcpy(priority, "NORMAL");
 
-  const bool c_ssl_use_tlsv1_3 =
-      cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_3");
+  const bool c_ssl_use_tlsv1_3 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_3");
   if (!c_ssl_use_tlsv1_3)
   {
     nproto--;
     mutt_buffer_addstr(priority, ":-VERS-TLS1.3");
   }
-  const bool c_ssl_use_tlsv1_2 =
-      cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_2");
+  const bool c_ssl_use_tlsv1_2 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_2");
   if (!c_ssl_use_tlsv1_2)
   {
     nproto--;
     mutt_buffer_addstr(priority, ":-VERS-TLS1.2");
   }
-  const bool c_ssl_use_tlsv1_1 =
-      cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_1");
+  const bool c_ssl_use_tlsv1_1 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_1");
   if (!c_ssl_use_tlsv1_1)
   {
     nproto--;
@@ -841,12 +824,10 @@ static int tls_set_priority(struct TlsSockData *data)
 {
   size_t nproto = 0; /* number of tls/ssl protocols */
 
-  const bool c_ssl_use_tlsv1_2 =
-      cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_2");
+  const bool c_ssl_use_tlsv1_2 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_2");
   if (c_ssl_use_tlsv1_2)
     protocol_priority[nproto++] = GNUTLS_TLS1_2;
-  const bool c_ssl_use_tlsv1_1 =
-      cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_1");
+  const bool c_ssl_use_tlsv1_1 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_1");
   if (c_ssl_use_tlsv1_1)
     protocol_priority[nproto++] = GNUTLS_TLS1_1;
   const bool c_ssl_use_tlsv1 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1");
@@ -863,12 +844,10 @@ static int tls_set_priority(struct TlsSockData *data)
     return -1;
   }
 
-  const char *const c_ssl_ciphers =
-      cs_subset_string(NeoMutt->sub, "ssl_ciphers");
+  const char *const c_ssl_ciphers = cs_subset_string(NeoMutt->sub, "ssl_ciphers");
   if (c_ssl_ciphers)
   {
-    mutt_error(
-        _("Explicit ciphersuite selection via $ssl_ciphers not supported"));
+    mutt_error(_("Explicit ciphersuite selection via $ssl_ciphers not supported"));
   }
 
   /* We use default priorities (see gnutls documentation),
@@ -900,21 +879,18 @@ static int tls_negotiate(struct Connection *conn)
     return -1;
   }
 
-  const char *const c_certificate_file =
-      cs_subset_path(NeoMutt->sub, "certificate_file");
+  const char *const c_certificate_file = cs_subset_path(NeoMutt->sub, "certificate_file");
   gnutls_certificate_set_x509_trust_file(data->xcred, c_certificate_file, GNUTLS_X509_FMT_PEM);
   /* ignore errors, maybe file doesn't exist yet */
 
-  const char *const c_ssl_ca_certificates_file =
-      cs_subset_path(NeoMutt->sub, "ssl_ca_certificates_file");
+  const char *const c_ssl_ca_certificates_file = cs_subset_path(NeoMutt->sub, "ssl_ca_certificates_file");
   if (c_ssl_ca_certificates_file)
   {
     gnutls_certificate_set_x509_trust_file(data->xcred, c_ssl_ca_certificates_file,
                                            GNUTLS_X509_FMT_PEM);
   }
 
-  const char *const c_ssl_client_cert =
-      cs_subset_path(NeoMutt->sub, "ssl_client_cert");
+  const char *const c_ssl_client_cert = cs_subset_path(NeoMutt->sub, "ssl_client_cert");
   if (c_ssl_client_cert)
   {
     mutt_debug(LL_DEBUG2, "Using client certificate %s\n", c_ssl_client_cert);
@@ -949,8 +925,7 @@ static int tls_negotiate(struct Connection *conn)
     goto fail;
   }
 
-  const short c_ssl_min_dh_prime_bits =
-      cs_subset_number(NeoMutt->sub, "ssl_min_dh_prime_bits");
+  const short c_ssl_min_dh_prime_bits = cs_subset_number(NeoMutt->sub, "ssl_min_dh_prime_bits");
   if (c_ssl_min_dh_prime_bits > 0)
   {
     gnutls_dh_set_prime_bits(data->state, c_ssl_min_dh_prime_bits);

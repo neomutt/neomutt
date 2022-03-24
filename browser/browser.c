@@ -253,8 +253,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         const char *t_fmt = NULL;
         if (op == 'D')
         {
-          const char *const c_date_format =
-              cs_subset_string(NeoMutt->sub, "date_format");
+          const char *const c_date_format = cs_subset_string(NeoMutt->sub, "date_format");
           t_fmt = NONULL(c_date_format);
           if (*t_fmt == '!')
           {
@@ -265,9 +264,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         else
         {
           static const time_t one_year = 31536000;
-          t_fmt = ((mutt_date_epoch() - folder->ff->mtime) < one_year) ?
-                      "%b %d %H:%M" :
-                      "%b %d  %Y";
+          t_fmt = ((mutt_date_epoch() - folder->ff->mtime) < one_year) ? "%b %d %H:%M" : "%b %d  %Y";
         }
 
         if (!do_locales)
@@ -723,8 +720,7 @@ static int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct Browse
 
     for (unsigned int i = 0; i < adata->groups_num; i++)
     {
-      const bool c_show_only_unread =
-          cs_subset_bool(NeoMutt->sub, "show_only_unread");
+      const bool c_show_only_unread = cs_subset_bool(NeoMutt->sub, "show_only_unread");
       struct NntpMboxData *mdata = adata->groups_list[i];
       if (mdata && (mdata->has_new_mail ||
                     (mdata->subscribed && (mdata->unread || !c_show_only_unread))))
@@ -760,8 +756,7 @@ static int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct Browse
       }
 
       mutt_buffer_strcpy(mailbox, mailbox_path(np->mailbox));
-      const bool c_browser_abbreviate_mailboxes =
-          cs_subset_bool(NeoMutt->sub, "browser_abbreviate_mailboxes");
+      const bool c_browser_abbreviate_mailboxes = cs_subset_bool(NeoMutt->sub, "browser_abbreviate_mailboxes");
       if (c_browser_abbreviate_mailboxes)
         mutt_buffer_pretty_mailbox(mailbox);
 
@@ -843,8 +838,7 @@ static void folder_make_entry(struct Menu *menu, char *buf, size_t buflen, int l
 #ifdef USE_NNTP
   if (OptNews)
   {
-    const char *const c_group_index_format =
-        cs_subset_string(NeoMutt->sub, "group_index_format");
+    const char *const c_group_index_format = cs_subset_string(NeoMutt->sub, "group_index_format");
     mutt_expando_format(buf, buflen, 0, menu->win->state.cols,
                         NONULL(c_group_index_format), group_index_format_str,
                         (intptr_t) &folder, MUTT_FORMAT_ARROWCURSOR);
@@ -852,8 +846,7 @@ static void folder_make_entry(struct Menu *menu, char *buf, size_t buflen, int l
   else
 #endif
   {
-    const char *const c_folder_format =
-        cs_subset_string(NeoMutt->sub, "folder_format");
+    const char *const c_folder_format = cs_subset_string(NeoMutt->sub, "folder_format");
     mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_folder_format),
                         folder_format_str, (intptr_t) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
@@ -937,8 +930,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
       mutt_buffer_pretty_mailbox(path);
       const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
 #ifdef USE_IMAP
-      const bool c_imap_list_subscribed =
-          cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
+      const bool c_imap_list_subscribed = cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
       if (state->imap_browse && c_imap_list_subscribed)
       {
         snprintf(title, sizeof(title), _("Subscribed [%s], File mask: %s"),
@@ -1256,8 +1248,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             case MUTT_MH:
             case MUTT_MMDF:
             {
-              const char *const c_folder =
-                  cs_subset_string(NeoMutt->sub, "folder");
+              const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
               const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
               if (c_folder)
                 mutt_buffer_strcpy(&LastDir, c_folder);
@@ -1893,11 +1884,9 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         switch (mutt_multi_choice(
             (reverse) ?
                 /* L10N: The highlighted letters must match the "Sort" options */
-                _("Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, "
-                  "(c)ount, ne(w) count, or do(n)'t sort?") :
+                _("Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?") :
                 /* L10N: The highlighted letters must match the "Reverse Sort" options */
-                _("Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, "
-                  "ne(w) count, or do(n)'t sort?"),
+                _("Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"),
             /* L10N: These must match the highlighted letters from "Sort" and "Reverse Sort" */
             _("dazecwn")))
         {

@@ -442,8 +442,7 @@ static int nntp_auth(struct NntpAccountData *adata)
     }
 
     /* get list of authenticators */
-    const char *const c_nntp_authenticators =
-        cs_subset_string(NeoMutt->sub, "nntp_authenticators");
+    const char *const c_nntp_authenticators = cs_subset_string(NeoMutt->sub, "nntp_authenticators");
     if (c_nntp_authenticators)
       mutt_str_copy(authenticators, c_nntp_authenticators, sizeof(authenticators));
     else if (adata->hasCAPABILITIES)
@@ -559,8 +558,7 @@ static int nntp_auth(struct NntpAccountData *adata)
         if ((rc != SASL_OK) && (rc != SASL_CONTINUE))
         {
           sasl_dispose(&saslconn);
-          mutt_debug(LL_DEBUG1,
-                     "error starting SASL authentication exchange\n");
+          mutt_debug(LL_DEBUG1, "error starting SASL authentication exchange\n");
           continue;
         }
 
@@ -1468,8 +1466,7 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
     if (mdata->last_message < mdata->last_loaded)
     {
       mdata->last_loaded = mdata->first_message - 1;
-      const short c_nntp_context =
-          cs_subset_number(NeoMutt->sub, "nntp_context");
+      const short c_nntp_context = cs_subset_number(NeoMutt->sub, "nntp_context");
       if (c_nntp_context && (mdata->last_message - mdata->last_loaded > c_nntp_context))
         mdata->last_loaded = mdata->last_message - c_nntp_context;
     }
@@ -1782,14 +1779,12 @@ int nntp_open_connection(struct NntpAccountData *adata)
   {
     if (adata->use_tls == 0)
     {
-      const enum QuadOption c_ssl_starttls =
-          cs_subset_quad(NeoMutt->sub, "ssl_starttls");
-      adata->use_tls =
-          c_ssl_force_tls ||
-                  (query_quadoption(c_ssl_starttls,
-                                    _("Secure connection with TLS?")) == MUTT_YES) ?
-              2 :
-              1;
+      const enum QuadOption c_ssl_starttls = cs_subset_quad(NeoMutt->sub, "ssl_starttls");
+      adata->use_tls = c_ssl_force_tls ||
+                               (query_quadoption(c_ssl_starttls,
+                                                 _("Secure connection with TLS?")) == MUTT_YES) ?
+                           2 :
+                           1;
     }
     if (adata->use_tls == 2)
     {
@@ -1884,8 +1879,7 @@ int nntp_post(struct Mailbox *m, const char *msg)
     mdata = m->mdata;
   else
   {
-    const char *const c_news_server =
-        cs_subset_string(NeoMutt->sub, "news_server");
+    const char *const c_news_server = cs_subset_string(NeoMutt->sub, "news_server");
     CurrentNewsSrv = nntp_select_server(m, c_news_server, false);
     if (!CurrentNewsSrv)
       return -1;
@@ -2007,8 +2001,7 @@ int nntp_active_fetch(struct NntpAccountData *adata, bool mark_new)
     }
   }
 
-  const bool c_nntp_load_description =
-      cs_subset_bool(NeoMutt->sub, "nntp_load_description");
+  const bool c_nntp_load_description = cs_subset_bool(NeoMutt->sub, "nntp_load_description");
   if (c_nntp_load_description)
     rc = get_description(&tmp_mdata, "*", _("Loading descriptions..."));
 
@@ -2098,13 +2091,12 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
     }
 
     /* loading descriptions */
-    const bool c_nntp_load_description =
-        cs_subset_bool(NeoMutt->sub, "nntp_load_description");
+    const bool c_nntp_load_description = cs_subset_bool(NeoMutt->sub, "nntp_load_description");
     if (c_nntp_load_description)
     {
       unsigned int count = 0;
-      struct Progress *progress = progress_new(
-          _("Loading descriptions..."), MUTT_PROGRESS_READ, adata->groups_num - i);
+      struct Progress *progress = progress_new(_("Loading descriptions..."), MUTT_PROGRESS_READ,
+                                               adata->groups_num - i);
 
       for (i = groups_num; i < adata->groups_num; i++)
       {
@@ -2241,8 +2233,7 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
         mutt_error("XPAT: %s", buf);
       else
       {
-        mutt_error(_("Unable to find child articles because server does not "
-                     "support XPAT command"));
+        mutt_error(_("Unable to find child articles because server does not support XPAT command"));
       }
     }
     return -1;
@@ -2364,8 +2355,7 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
   }
 
   m->rights &= ~MUTT_ACL_INSERT; // Clear the flag
-  const bool c_save_unsubscribed =
-      cs_subset_bool(NeoMutt->sub, "save_unsubscribed");
+  const bool c_save_unsubscribed = cs_subset_bool(NeoMutt->sub, "save_unsubscribed");
   if (!mdata->newsrc_ent && !mdata->subscribed && !c_save_unsubscribed)
     m->readonly = true;
 
@@ -2411,8 +2401,7 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
     mdata->deleted = false;
 
     /* get description if empty */
-    const bool c_nntp_load_description =
-        cs_subset_bool(NeoMutt->sub, "nntp_load_description");
+    const bool c_nntp_load_description = cs_subset_bool(NeoMutt->sub, "nntp_load_description");
     if (c_nntp_load_description && !mdata->desc)
     {
       if (get_description(mdata, NULL, NULL) < 0)
@@ -2628,8 +2617,8 @@ static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     /* fetch message to cache file */
     snprintf(buf, sizeof(buf), "ARTICLE %s\r\n",
              nntp_edata_get(e)->article_num ? article : e->env->message_id);
-    const int rc =
-        nntp_fetch_lines(mdata, buf, sizeof(buf), fetch_msg, fetch_tempfile, msg->fp);
+    const int rc = nntp_fetch_lines(mdata, buf, sizeof(buf), fetch_msg,
+                                    fetch_tempfile, msg->fp);
     if (rc)
     {
       mutt_file_fclose(&msg->fp);

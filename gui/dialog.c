@@ -204,9 +204,9 @@ static int alldialogs_window_observer(struct NotifyCallback *nc)
  */
 struct MuttWindow *alldialogs_new(void)
 {
-  struct MuttWindow *win_alldlgs =
-      mutt_window_new(WT_ALL_DIALOGS, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *win_alldlgs = mutt_window_new(WT_ALL_DIALOGS, MUTT_WIN_ORIENT_VERTICAL,
+                                                   MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
+                                                   MUTT_WIN_SIZE_UNLIMITED);
 
   notify_observer_add(win_alldlgs->notify, NT_WINDOW, alldialogs_window_observer, win_alldlgs);
 

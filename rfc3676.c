@@ -90,8 +90,7 @@ static int space_quotes(struct State *s)
   if (c_text_flowed && (s->flags & MUTT_REPLYING))
     return 0;
 
-  const bool c_reflow_space_quotes =
-      cs_subset_bool(NeoMutt->sub, "reflow_space_quotes");
+  const bool c_reflow_space_quotes = cs_subset_bool(NeoMutt->sub, "reflow_space_quotes");
   return c_reflow_space_quotes;
 }
 

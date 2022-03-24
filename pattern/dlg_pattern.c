@@ -150,8 +150,7 @@ static void make_pattern_entry(struct Menu *menu, char *buf, size_t buflen, int 
 {
   struct PatternEntry *entry = &((struct PatternEntry *) menu->mdata)[num];
 
-  const char *const c_pattern_format =
-      cs_subset_string(NeoMutt->sub, "pattern_format");
+  const char *const c_pattern_format = cs_subset_string(NeoMutt->sub, "pattern_format");
   mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_pattern_format),
                       pattern_format_str, (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
 }
@@ -187,8 +186,7 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
     num_entries++;
   /* Add three more hard-coded entries */
   num_entries += 3;
-  struct PatternEntry *entries =
-      mutt_mem_calloc(num_entries, sizeof(struct PatternEntry));
+  struct PatternEntry *entries = mutt_mem_calloc(num_entries, sizeof(struct PatternEntry));
 
   struct Menu *menu = dlg->wdata;
   menu->make_entry = make_pattern_entry;
@@ -261,8 +259,7 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
   mutt_buffer_printf(entrybuf, "~(%s)", patternstr);
   entries[i].expr = mutt_str_dup(mutt_buffer_string(entrybuf));
   // L10N: Pattern Completion Menu description for ~()
-  entries[i].desc = mutt_str_dup(
-      _("messages in threads containing messages matching PATTERN"));
+  entries[i].desc = mutt_str_dup(_("messages in threads containing messages matching PATTERN"));
   i++;
 
   entries[i].num = i + 1;
@@ -270,8 +267,7 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
   mutt_buffer_printf(entrybuf, "~<(%s)", patternstr);
   entries[i].expr = mutt_str_dup(mutt_buffer_string(entrybuf));
   // L10N: Pattern Completion Menu description for ~<()
-  entries[i].desc =
-      mutt_str_dup(_("messages whose immediate parent matches PATTERN"));
+  entries[i].desc = mutt_str_dup(_("messages whose immediate parent matches PATTERN"));
   i++;
 
   entries[i].num = i + 1;
@@ -279,8 +275,7 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
   mutt_buffer_printf(entrybuf, "~>(%s)", patternstr);
   entries[i].expr = mutt_str_dup(mutt_buffer_string(entrybuf));
   // L10N: Pattern Completion Menu description for ~>()
-  entries[i].desc =
-      mutt_str_dup(_("messages having an immediate child matching PATTERN"));
+  entries[i].desc = mutt_str_dup(_("messages having an immediate child matching PATTERN"));
 
   mutt_buffer_pool_release(&entrybuf);
 

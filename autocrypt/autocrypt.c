@@ -61,8 +61,7 @@ static int autocrypt_dir_init(bool can_create)
   int rc = 0;
   struct stat st = { 0 };
 
-  const char *const c_autocrypt_dir =
-      cs_subset_path(NeoMutt->sub, "autocrypt_dir");
+  const char *const c_autocrypt_dir = cs_subset_path(NeoMutt->sub, "autocrypt_dir");
   if (stat(c_autocrypt_dir, &st) == 0)
     return 0;
 
@@ -101,8 +100,7 @@ int mutt_autocrypt_init(bool can_create)
     return 0;
 
   const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
-  const char *const c_autocrypt_dir =
-      cs_subset_path(NeoMutt->sub, "autocrypt_dir");
+  const char *const c_autocrypt_dir = cs_subset_path(NeoMutt->sub, "autocrypt_dir");
   if (!c_autocrypt || !c_autocrypt_dir)
     return -1;
 
@@ -289,8 +287,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
     return 0;
 
   /* 1.1 spec also says to skip multipart/report emails */
-  if ((e->body->type == TYPE_MULTIPART) &&
-      mutt_istr_equal(e->body->subtype, "report"))
+  if ((e->body->type == TYPE_MULTIPART) && mutt_istr_equal(e->body->subtype, "report"))
   {
     return 0;
   }
@@ -933,8 +930,7 @@ void mutt_autocrypt_scan_mailboxes(void)
      through one or more mailboxes for Autocrypt: headers.  Those headers are
      then captured in the database as peer records and used for encryption.
      If this is answered yes, they will be prompted for a mailbox.  */
-  enum QuadOption scan =
-      mutt_yesorno(_("Scan a mailbox for autocrypt headers?"), MUTT_YES);
+  enum QuadOption scan = mutt_yesorno(_("Scan a mailbox for autocrypt headers?"), MUTT_YES);
   while (scan == MUTT_YES)
   {
     struct Mailbox *m_cur = get_current_mailbox();

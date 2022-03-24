@@ -126,9 +126,9 @@ static int simple_window_observer(struct NotifyCallback *nc)
 struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype,
                                      const struct Mapping *help_data)
 {
-  struct MuttWindow *dlg =
-      mutt_window_new(wtype, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *dlg = mutt_window_new(wtype, MUTT_WIN_ORIENT_VERTICAL,
+                                           MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
+                                           MUTT_WIN_SIZE_UNLIMITED);
   dlg->help_menu = mtype;
   dlg->help_data = help_data;
 

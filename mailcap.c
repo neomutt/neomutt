@@ -73,8 +73,7 @@ int mailcap_expand_command(struct Body *a, const char *filename,
   struct Buffer *param = NULL;
   struct Buffer *type2 = NULL;
 
-  const bool c_mailcap_sanitize =
-      cs_subset_bool(NeoMutt->sub, "mailcap_sanitize");
+  const bool c_mailcap_sanitize = cs_subset_bool(NeoMutt->sub, "mailcap_sanitize");
   const char *cptr = mutt_buffer_string(command);
   while (*cptr)
   {
@@ -355,8 +354,7 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
             struct Buffer *command = mutt_buffer_pool_get();
             struct Buffer *afilename = mutt_buffer_pool_get();
             mutt_buffer_strcpy(command, test_command);
-            const bool c_mailcap_sanitize =
-                cs_subset_bool(NeoMutt->sub, "mailcap_sanitize");
+            const bool c_mailcap_sanitize = cs_subset_bool(NeoMutt->sub, "mailcap_sanitize");
             if (c_mailcap_sanitize)
               mutt_buffer_sanitize_filename(afilename, NONULL(a->filename), true);
             else
@@ -480,8 +478,7 @@ bool mailcap_lookup(struct Body *a, char *type, size_t typelen,
    * $HOME/.mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap, etc
    * and overridden by the MAILCAPS environment variable, and, just to be nice,
    * we'll make it specifiable in .neomuttrc */
-  const struct Slist *c_mailcap_path =
-      cs_subset_slist(NeoMutt->sub, "mailcap_path");
+  const struct Slist *c_mailcap_path = cs_subset_slist(NeoMutt->sub, "mailcap_path");
   if (!c_mailcap_path || (c_mailcap_path->count == 0))
   {
     /* L10N:

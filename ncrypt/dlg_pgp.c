@@ -509,8 +509,7 @@ static void pgp_make_entry(struct Menu *menu, char *buf, size_t buflen, int line
   entry.uid = key_table[line];
   entry.num = line + 1;
 
-  const char *const c_pgp_entry_format =
-      cs_subset_string(NeoMutt->sub, "pgp_entry_format");
+  const char *const c_pgp_entry_format = cs_subset_string(NeoMutt->sub, "pgp_entry_format");
   mutt_expando_format(buf, buflen, 0, menu->win->state.cols,
                       NONULL(c_pgp_entry_format), pgp_entry_format_str,
                       (intptr_t) &entry, MUTT_FORMAT_ARROWCURSOR);
@@ -600,8 +599,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
 
   int keymax = 0;
 
-  const bool c_pgp_show_unusable =
-      cs_subset_bool(NeoMutt->sub, "pgp_show_unusable");
+  const bool c_pgp_show_unusable = cs_subset_bool(NeoMutt->sub, "pgp_show_unusable");
   for (i = 0, kp = keys; kp; kp = kp->next)
   {
     if (!c_pgp_show_unusable && (kp->flags & KEYFLAG_CANTUSE))
@@ -792,23 +790,20 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
 
           if (cur_key->flags & KEYFLAG_CANTUSE)
           {
-            str = _("ID is expired/disabled/revoked. Do you really want to use "
-                    "the key?");
+            str = _("ID is expired/disabled/revoked. Do you really want to use the key?");
           }
           else
           {
             switch (cur_key->trust & 0x03)
             {
               case 0:
-                str = _("ID has undefined validity. Do you really want to use "
-                        "the key?");
+                str = _("ID has undefined validity. Do you really want to use the key?");
                 break;
               case 1:
                 str = _("ID is not valid. Do you really want to use the key?");
                 break;
               case 2:
-                str = _("ID is only marginally valid. Do you really want to "
-                        "use the key?");
+                str = _("ID is only marginally valid. Do you really want to use the key?");
                 break;
             }
           }

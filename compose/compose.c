@@ -268,9 +268,9 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
   shared->sub = sub;
   shared->email = e;
 
-  struct MuttWindow *dlg =
-      mutt_window_new(WT_DLG_COMPOSE, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *dlg = mutt_window_new(WT_DLG_COMPOSE, MUTT_WIN_ORIENT_VERTICAL,
+                                           MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
+                                           MUTT_WIN_SIZE_UNLIMITED);
   dlg->wdata = shared;
   dlg->wdata_free = compose_shared_data_free;
 

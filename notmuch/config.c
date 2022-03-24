@@ -57,8 +57,8 @@ static int nm_default_url_validator(const struct ConfigSet *cs, const struct Con
   const char *url = (const char *) value;
   if (!is_valid_notmuch_url(url))
   {
-    mutt_buffer_printf(
-        err, _("nm_default_url must be: notmuch://<absolute path> . Current: %s"), url);
+    mutt_buffer_printf(err, _("nm_default_url must be: notmuch://<absolute path> . Current: %s"),
+                       url);
     return CSR_ERR_INVALID;
   }
 #endif

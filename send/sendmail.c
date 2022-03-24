@@ -376,8 +376,7 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
     const bool c_use_envelope_from = cs_subset_bool(sub, "use_envelope_from");
     if (c_use_envelope_from)
     {
-      const struct Address *c_envelope_from_address =
-          cs_subset_address(sub, "envelope_from_address");
+      const struct Address *c_envelope_from_address = cs_subset_address(sub, "envelope_from_address");
       if (c_envelope_from_address)
       {
         ARRAY_ADD(&args, "-f");

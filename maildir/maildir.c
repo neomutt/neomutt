@@ -97,8 +97,7 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
 
   /* when $mail_check_recent is set, if the new/ directory hasn't been modified since
    * the user last exited the m, then we know there is no recent mail.  */
-  const bool c_mail_check_recent =
-      cs_subset_bool(NeoMutt->sub, "mail_check_recent");
+  const bool c_mail_check_recent = cs_subset_bool(NeoMutt->sub, "mail_check_recent");
   if (check_new && c_mail_check_recent)
   {
     if ((stat(mutt_buffer_string(path), &st) == 0) &&
@@ -289,8 +288,7 @@ int maildir_commit_message(struct Mailbox *m, struct Message *msg, struct Email 
         } while ((rc_utime == -1) && (errno == EINTR));
         if (rc_utime == -1)
         {
-          mutt_perror(
-              _("maildir_commit_message(): unable to set time on file"));
+          mutt_perror(_("maildir_commit_message(): unable to set time on file"));
           rc = -1;
           goto cleanup;
         }
@@ -602,8 +600,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
   char fn[PATH_MAX];
 
 #ifdef USE_HCACHE
-  const char *const c_header_cache =
-      cs_subset_path(NeoMutt->sub, "header_cache");
+  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
   struct HeaderCache *hc = mutt_hcache_open(c_header_cache, mailbox_path(m), NULL);
 #endif
 
@@ -623,8 +620,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
 #ifdef USE_HCACHE
     struct stat st_lastchanged = { 0 };
     int rc = 0;
-    const bool c_maildir_header_cache_verify =
-        cs_subset_bool(NeoMutt->sub, "maildir_header_cache_verify");
+    const bool c_maildir_header_cache_verify = cs_subset_bool(NeoMutt->sub, "maildir_header_cache_verify");
     if (c_maildir_header_cache_verify)
     {
       rc = stat(fn, &st_lastchanged);
@@ -1361,8 +1357,7 @@ static enum MxStatus maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 
   maildir_check_dir(m, "new", check_new, check_stats);
 
-  const bool c_maildir_check_cur =
-      cs_subset_bool(NeoMutt->sub, "maildir_check_cur");
+  const bool c_maildir_check_cur = cs_subset_bool(NeoMutt->sub, "maildir_check_cur");
   check_new = !m->has_new && c_maildir_check_cur;
   if (check_new || check_stats)
     maildir_check_dir(m, "cur", check_new, check_stats);
@@ -1384,8 +1379,7 @@ enum MxStatus maildir_mbox_sync(struct Mailbox *m)
 
   struct HeaderCache *hc = NULL;
 #ifdef USE_HCACHE
-  const char *const c_header_cache =
-      cs_subset_path(NeoMutt->sub, "header_cache");
+  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
   if (m->type == MUTT_MAILDIR)
     hc = mutt_hcache_open(c_header_cache, mailbox_path(m), NULL);
 #endif
@@ -1430,8 +1424,7 @@ enum MxStatus maildir_mbox_sync(struct Mailbox *m)
       if (!e)
         break;
 
-      const bool c_maildir_trash =
-          cs_subset_bool(NeoMutt->sub, "maildir_trash");
+      const bool c_maildir_trash = cs_subset_bool(NeoMutt->sub, "maildir_trash");
       if (!e->deleted || c_maildir_trash)
         e->index = j++;
     }
@@ -1578,8 +1571,7 @@ static int maildir_msg_save_hcache(struct Mailbox *m, struct Email *e)
 {
   int rc = 0;
 #ifdef USE_HCACHE
-  const char *const c_header_cache =
-      cs_subset_path(NeoMutt->sub, "header_cache");
+  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
   struct HeaderCache *hc = mutt_hcache_open(c_header_cache, mailbox_path(m), NULL);
   char *key = e->path + 3;
   int keylen = maildir_hcache_keylen(key);

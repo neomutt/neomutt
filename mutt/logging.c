@@ -200,12 +200,11 @@ int log_file_set_level(enum LogLevel level, bool verbose)
 
   if (LogFileLevel >= LL_DEBUG5)
   {
-    fprintf(LogFileFP,
-            "\n"
-            "WARNING:\n"
-            "    Logging at this level can reveal personal information.\n"
-            "    Review the log carefully before posting in bug reports.\n"
-            "\n");
+    fprintf(LogFileFP, "\n"
+                       "WARNING:\n"
+                       "    Logging at this level can reveal personal information.\n"
+                       "    Review the log carefully before posting in bug reports.\n"
+                       "\n");
   }
 
   return 0;

@@ -85,8 +85,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
 
   enum MailboxType mb_type = mx_path_probe(mailbox_path(m_check));
 
-  const bool c_mail_check_recent =
-      cs_subset_bool(NeoMutt->sub, "mail_check_recent");
+  const bool c_mail_check_recent = cs_subset_bool(NeoMutt->sub, "mail_check_recent");
   if ((m_cur == m_check) && c_mail_check_recent)
     m_check->has_new = false;
 
@@ -114,8 +113,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       break; // kept for consistency.
   }
 
-  const bool c_check_mbox_size =
-      cs_subset_bool(NeoMutt->sub, "check_mbox_size");
+  const bool c_check_mbox_size = cs_subset_bool(NeoMutt->sub, "check_mbox_size");
 
   /* check to see if the folder is the currently selected folder before polling */
   if (!is_same_mailbox(m_cur, m_check, st_ctx, &st))
@@ -172,10 +170,8 @@ int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
     return 0;
 
   const short c_mail_check = cs_subset_number(NeoMutt->sub, "mail_check");
-  const bool c_mail_check_stats =
-      cs_subset_bool(NeoMutt->sub, "mail_check_stats");
-  const short c_mail_check_stats_interval =
-      cs_subset_number(NeoMutt->sub, "mail_check_stats_interval");
+  const bool c_mail_check_stats = cs_subset_bool(NeoMutt->sub, "mail_check_stats");
+  const short c_mail_check_stats_interval = cs_subset_number(NeoMutt->sub, "mail_check_stats_interval");
 
   t = mutt_date_epoch();
   if ((flags == MUTT_MAILBOX_CHECK_NO_FLAGS) && (t - MailboxTime < c_mail_check))
@@ -433,8 +429,7 @@ void mutt_mailbox_cleanup(const char *path, struct stat *st)
   struct utimbuf ut;
 #endif
 
-  const bool c_check_mbox_size =
-      cs_subset_bool(NeoMutt->sub, "check_mbox_size");
+  const bool c_check_mbox_size = cs_subset_bool(NeoMutt->sub, "check_mbox_size");
   if (c_check_mbox_size)
   {
     struct Mailbox *m = mailbox_find(path);

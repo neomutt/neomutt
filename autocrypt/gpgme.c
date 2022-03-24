@@ -47,8 +47,7 @@
  */
 static int create_gpgme_context(gpgme_ctx_t *ctx)
 {
-  const char *const c_autocrypt_dir =
-      cs_subset_path(NeoMutt->sub, "autocrypt_dir");
+  const char *const c_autocrypt_dir = cs_subset_path(NeoMutt->sub, "autocrypt_dir");
   gpgme_error_t err = gpgme_new(ctx);
   if (!err)
     err = gpgme_ctx_set_engine_info(*ctx, GPGME_PROTOCOL_OpenPGP, NULL, c_autocrypt_dir);

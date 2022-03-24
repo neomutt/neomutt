@@ -296,8 +296,7 @@ static void pop_hcache_namer(const char *path, struct Buffer *dest)
  */
 static struct HeaderCache *pop_hcache_open(struct PopAccountData *adata, const char *path)
 {
-  const char *const c_header_cache =
-      cs_subset_path(NeoMutt->sub, "header_cache");
+  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
   if (!adata || !adata->conn)
     return mutt_hcache_open(c_header_cache, path, NULL);
 
@@ -384,10 +383,9 @@ static int pop_fetch_headers(struct Mailbox *m)
     }
     if (deleted > 0)
     {
-      mutt_error(
-          ngettext("%d message has been lost. Try reopening the mailbox.",
-                   "%d messages have been lost. Try reopening the mailbox.", deleted),
-          deleted);
+      mutt_error(ngettext("%d message has been lost. Try reopening the mailbox.",
+                          "%d messages have been lost. Try reopening the mailbox.", deleted),
+                 deleted);
     }
 
     bool hcached = false;
@@ -442,8 +440,7 @@ static int pop_fetch_headers(struct Mailbox *m)
        * - if 'hcached' is false, we don't have the message in our hcache:
        *        - if we also have a body: read
        *        - if we don't have a body: new */
-      const bool bcached =
-          (mutt_bcache_exists(adata->bcache, cache_id(edata->uid)) == 0);
+      const bool bcached = (mutt_bcache_exists(adata->bcache, cache_id(edata->uid)) == 0);
       m->emails[i]->old = false;
       m->emails[i]->read = false;
       if (hcached)
@@ -479,8 +476,7 @@ static int pop_fetch_headers(struct Mailbox *m)
   /* after putting the result into our structures,
    * clean up cache, i.e. wipe messages deleted outside
    * the availability of our cache */
-  const bool c_message_cache_clean =
-      cs_subset_bool(NeoMutt->sub, "message_cache_clean");
+  const bool c_message_cache_clean = cs_subset_bool(NeoMutt->sub, "message_cache_clean");
   if (c_message_cache_clean)
     mutt_bcache_list(adata->bcache, msg_cache_check, m);
 
@@ -601,10 +597,8 @@ void pop_fetch_mail(void)
   bool old_append = m_spool->append;
   m_spool->append = true;
 
-  const enum QuadOption c_pop_delete =
-      cs_subset_quad(NeoMutt->sub, "pop_delete");
-  enum QuadOption delanswer =
-      query_quadoption(c_pop_delete, _("Delete messages from server?"));
+  const enum QuadOption c_pop_delete = cs_subset_quad(NeoMutt->sub, "pop_delete");
+  enum QuadOption delanswer = query_quadoption(c_pop_delete, _("Delete messages from server?"));
 
   snprintf(msgbuf, sizeof(msgbuf),
            ngettext("Reading new messages (%d byte)...",
@@ -826,8 +820,7 @@ static enum MxStatus pop_mbox_check(struct Mailbox *m)
 {
   struct PopAccountData *adata = pop_adata_get(m);
 
-  const short c_pop_check_interval =
-      cs_subset_number(NeoMutt->sub, "pop_check_interval");
+  const short c_pop_check_interval = cs_subset_number(NeoMutt->sub, "pop_check_interval");
   if ((adata->check_time + c_pop_check_interval) > mutt_date_epoch())
     return MX_STATUS_OK;
 
@@ -1029,8 +1022,7 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     /* verify that massage index is correct */
     if (edata->refno < 0)
     {
-      mutt_error(
-          _("The message index is incorrect. Try reopening the mailbox."));
+      mutt_error(_("The message index is incorrect. Try reopening the mailbox."));
       goto cleanup;
     }
 

@@ -42,16 +42,16 @@ void test_nm_windowed_query_from_query(void)
   // Ensure legacy-behavior functions as expected with duration = 0
   {
     char buf[1024] = "\0";
-    enum NmWindowQueryRc rc =
-        nm_windowed_query_from_query(buf, 1024, false, 0, 0, "tag:inbox", "month", "");
+    enum NmWindowQueryRc rc = nm_windowed_query_from_query(buf, 1024, false, 0, 0,
+                                                           "tag:inbox", "month", "");
     TEST_CHECK(rc == NM_WINDOW_QUERY_INVALID_DURATION);
   }
 
   // Check invalid timebase
   {
     char buf[1024] = "\0";
-    enum NmWindowQueryRc rc =
-        nm_windowed_query_from_query(buf, 1024, false, 3, 3, "tag:inbox", "months", "");
+    enum NmWindowQueryRc rc = nm_windowed_query_from_query(buf, 1024, false, 3, 3,
+                                                           "tag:inbox", "months", "");
     TEST_CHECK(rc == NM_WINDOW_QUERY_INVALID_TIMEBASE);
   }
 
@@ -78,9 +78,10 @@ void test_nm_windowed_query_from_query(void)
     const struct TestCase *t = &tests[i];
     char buf[1024] = "\0";
 
-    enum NmWindowQueryRc rc =
-        nm_windowed_query_from_query(buf, 1024, t->force_enable, t->duration, t->cur_pos,
-                                     t->curr_search, t->timebase, t->or_terms);
+    enum NmWindowQueryRc rc = nm_windowed_query_from_query(buf, 1024, t->force_enable,
+                                                           t->duration, t->cur_pos,
+                                                           t->curr_search,
+                                                           t->timebase, t->or_terms);
 
     TEST_CHECK(rc == NM_WINDOW_QUERY_SUCCESS);
     TEST_CHECK_(mutt_str_equal(buf, t->expected),

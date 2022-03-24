@@ -49,8 +49,7 @@ void sb_win_remove_observers(struct MuttWindow *win);
 static bool calc_divider(struct SidebarWindowData *wdata)
 {
   enum DivType type = SB_DIV_USER;
-  const char *const c_sidebar_divider_char =
-      cs_subset_string(NeoMutt->sub, "sidebar_divider_char");
+  const char *const c_sidebar_divider_char = cs_subset_string(NeoMutt->sub, "sidebar_divider_char");
 
   // Calculate the width of the delimiter in screen cells
   int width = mutt_strwidth(c_sidebar_divider_char);
@@ -108,9 +107,9 @@ static struct MuttWindow *sb_win_init(struct MuttWindow *dlg)
   struct MuttWindow *pager_panel = TAILQ_FIRST(&dlg->children);
   mutt_window_remove_child(dlg, pager_panel);
 
-  struct MuttWindow *cont_right =
-      mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *cont_right = mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL,
+                                                  MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
+                                                  MUTT_WIN_SIZE_UNLIMITED);
   dlg->focus = cont_right;
 
   mutt_window_add_child(cont_right, index_panel);
@@ -118,11 +117,10 @@ static struct MuttWindow *sb_win_init(struct MuttWindow *dlg)
   cont_right->focus = index_panel;
 
   const short c_sidebar_width = cs_subset_number(NeoMutt->sub, "sidebar_width");
-  struct MuttWindow *win_sidebar =
-      mutt_window_new(WT_SIDEBAR, MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                      c_sidebar_width, MUTT_WIN_SIZE_UNLIMITED);
-  const bool c_sidebar_visible =
-      cs_subset_bool(NeoMutt->sub, "sidebar_visible");
+  struct MuttWindow *win_sidebar = mutt_window_new(WT_SIDEBAR, MUTT_WIN_ORIENT_HORIZONTAL,
+                                                   MUTT_WIN_SIZE_FIXED, c_sidebar_width,
+                                                   MUTT_WIN_SIZE_UNLIMITED);
+  const bool c_sidebar_visible = cs_subset_bool(NeoMutt->sub, "sidebar_visible");
   win_sidebar->state.visible = c_sidebar_visible && (c_sidebar_width > 0);
 
   struct IndexSharedData *shared = dlg->wdata;
@@ -134,8 +132,7 @@ static struct MuttWindow *sb_win_init(struct MuttWindow *dlg)
   win_sidebar->recalc = sb_recalc;
   win_sidebar->repaint = sb_repaint;
 
-  const bool c_sidebar_on_right =
-      cs_subset_bool(NeoMutt->sub, "sidebar_on_right");
+  const bool c_sidebar_on_right = cs_subset_bool(NeoMutt->sub, "sidebar_on_right");
   if (c_sidebar_on_right)
   {
     mutt_window_add_child(dlg, cont_right);
@@ -282,8 +279,7 @@ static int sb_config_observer(struct NotifyCallback *nc)
 
   if (mutt_str_equal(ev_c->name, "sidebar_visible"))
   {
-    const bool c_sidebar_visible =
-        cs_subset_bool(NeoMutt->sub, "sidebar_visible");
+    const bool c_sidebar_visible = cs_subset_bool(NeoMutt->sub, "sidebar_visible");
     window_set_visible(win, c_sidebar_visible);
     window_reflow(win->parent);
     mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
@@ -292,8 +288,7 @@ static int sb_config_observer(struct NotifyCallback *nc)
 
   if (mutt_str_equal(ev_c->name, "sidebar_width"))
   {
-    const short c_sidebar_width =
-        cs_subset_number(NeoMutt->sub, "sidebar_width");
+    const short c_sidebar_width = cs_subset_number(NeoMutt->sub, "sidebar_width");
     win->req_cols = c_sidebar_width;
     window_reflow(win->parent);
     mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
@@ -311,8 +306,7 @@ static int sb_config_observer(struct NotifyCallback *nc)
   {
     struct MuttWindow *parent = win->parent;
     struct MuttWindow *first = TAILQ_FIRST(&parent->children);
-    const bool c_sidebar_on_right =
-        cs_subset_bool(NeoMutt->sub, "sidebar_on_right");
+    const bool c_sidebar_on_right = cs_subset_bool(NeoMutt->sub, "sidebar_on_right");
 
     if ((c_sidebar_on_right && (first == win)) || (!c_sidebar_on_right && (first != win)))
     {

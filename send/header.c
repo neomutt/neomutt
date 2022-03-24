@@ -665,8 +665,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
         ((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_FCC) ||
          (mode == MUTT_WRITE_HEADER_POSTPONE)))
     {
-      const char *const c_crypt_protected_headers_subject =
-          cs_subset_string(sub, "crypt_protected_headers_subject");
+      const char *const c_crypt_protected_headers_subject = cs_subset_string(sub, "crypt_protected_headers_subject");
       mutt_write_one_header(fp, "Subject", c_crypt_protected_headers_subject,
                             NULL, 0, CH_NO_FLAGS, sub);
     }
@@ -700,8 +699,8 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
   }
 
   /* Add any user defined headers */
-  struct UserHdrsOverride userhdrs_overrides =
-      write_userhdrs(fp, &env->userhdrs, privacy, sub);
+  struct UserHdrsOverride userhdrs_overrides = write_userhdrs(fp, &env->userhdrs,
+                                                              privacy, sub);
 
   if ((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_FCC) ||
       (mode == MUTT_WRITE_HEADER_POSTPONE) || (mode == MUTT_WRITE_HEADER_MIME))
@@ -900,8 +899,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp, struct ConfigSubset *sub)
   if (a->encoding != ENC_7BIT)
     fprintf(fp, "Content-Transfer-Encoding: %s\n", ENCODING(a->encoding));
 
-  const bool c_crypt_protected_headers_write =
-      cs_subset_bool(sub, "crypt_protected_headers_write");
+  const bool c_crypt_protected_headers_write = cs_subset_bool(sub, "crypt_protected_headers_write");
   bool autocrypt = false;
 #ifdef USE_AUTOCRYPT
   autocrypt = cs_subset_bool(sub, "autocrypt");

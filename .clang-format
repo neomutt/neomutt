@@ -86,6 +86,10 @@ SpacesInCStyleCastParentheses:    false
 SpacesInParentheses:              false
 SpacesInSquareBrackets:           false
 
+PenaltyBreakAssignment: 100
+PenaltyBreakBeforeFirstCallParameter: 100
+BreakStringLiterals: false
+
 # Allow some slightly over-long lines
 PenaltyExcessCharacter: 1
 

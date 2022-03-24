@@ -188,8 +188,7 @@ static int count_body_parts(struct Body *body)
       shallrecurse = true;
       if (mutt_istr_equal(bp->subtype, "alternative"))
       {
-        const bool c_count_alternatives =
-            cs_subset_bool(NeoMutt->sub, "count_alternatives");
+        const bool c_count_alternatives = cs_subset_bool(NeoMutt->sub, "count_alternatives");
         shallrecurse = c_count_alternatives;
       }
     }
@@ -592,8 +591,8 @@ enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer *s,
  */
 void mutt_parse_mime_message(struct Email *e, FILE *fp)
 {
-  const bool right_type =
-      (e->body->type == TYPE_MESSAGE) || (e->body->type == TYPE_MULTIPART);
+  const bool right_type = (e->body->type == TYPE_MESSAGE) ||
+                          (e->body->type == TYPE_MULTIPART);
   const bool not_parsed = (e->body->parts == NULL);
 
   if (right_type && fp && not_parsed)

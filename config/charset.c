@@ -46,8 +46,7 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
   if ((cdef->type & DT_CHARSET_SINGLE) && strchr(str, ':'))
   {
-    mutt_buffer_printf(
-        err, _("'charset' must contain exactly one character set name"));
+    mutt_buffer_printf(err, _("'charset' must contain exactly one character set name"));
     return CSR_ERR_INVALID;
   }
 

@@ -88,8 +88,7 @@ struct EnumDef UseThreadsTypeDef = {
  */
 enum UseThreads mutt_thread_style(void)
 {
-  const unsigned char c_use_threads =
-      cs_subset_enum(NeoMutt->sub, "use_threads");
+  const unsigned char c_use_threads = cs_subset_enum(NeoMutt->sub, "use_threads");
   const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   if (c_use_threads > UT_FLAT)
     return c_use_threads;
@@ -145,8 +144,7 @@ static bool need_display_subject(struct Email *e)
   struct MuttThread *tree = e->thread;
 
   /* if the user disabled subject hiding, display it */
-  const bool c_hide_thread_subject =
-      cs_subset_bool(NeoMutt->sub, "hide_thread_subject");
+  const bool c_hide_thread_subject = cs_subset_bool(NeoMutt->sub, "hide_thread_subject");
   if (!c_hide_thread_subject)
     return true;
 
@@ -245,12 +243,10 @@ static void calculate_visibility(struct MuttThread *tree, int *max_depth)
 
   struct MuttThread *tmp = NULL;
   struct MuttThread *orig_tree = tree;
-  const bool c_hide_top_missing =
-      cs_subset_bool(NeoMutt->sub, "hide_top_missing");
+  const bool c_hide_top_missing = cs_subset_bool(NeoMutt->sub, "hide_top_missing");
   const bool c_hide_missing = cs_subset_bool(NeoMutt->sub, "hide_missing");
   int hide_top_missing = c_hide_top_missing && !c_hide_missing;
-  const bool c_hide_top_limited =
-      cs_subset_bool(NeoMutt->sub, "hide_top_limited");
+  const bool c_hide_top_limited = cs_subset_bool(NeoMutt->sub, "hide_top_limited");
   const bool c_hide_limited = cs_subset_bool(NeoMutt->sub, "hide_limited");
   int hide_top_limited = c_hide_top_limited && !c_hide_limited;
   int depth = 0;
@@ -297,8 +293,8 @@ static void calculate_visibility(struct MuttThread *tree, int *max_depth)
       tree->visible = false;
       tree->deep = !c_hide_missing;
     }
-    tree->next_subtree_visible =
-        tree->next && (tree->next->next_subtree_visible || tree->next->subtree_visible);
+    tree->next_subtree_visible = tree->next && (tree->next->next_subtree_visible ||
+                                                tree->next->subtree_visible);
     if (tree->child)
     {
       depth++;
@@ -527,8 +523,7 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
 
     if (dateptr)
     {
-      const bool c_thread_received =
-          cs_subset_bool(NeoMutt->sub, "thread_received");
+      const bool c_thread_received = cs_subset_bool(NeoMutt->sub, "thread_received");
       thisdate = c_thread_received ? cur->message->received : cur->message->date_sent;
       if ((*dateptr == 0) || (thisdate < *dateptr))
         *dateptr = thisdate;
@@ -587,8 +582,7 @@ static struct MuttThread *find_subject(struct Mailbox *m, struct MuttThread *cur
   {
     for (ptr = mutt_hash_find_bucket(m->subj_hash, np->data); ptr; ptr = ptr->next)
     {
-      const bool c_thread_received =
-          cs_subset_bool(NeoMutt->sub, "thread_received");
+      const bool c_thread_received = cs_subset_bool(NeoMutt->sub, "thread_received");
       tmp = ((struct Email *) ptr->data)->thread;
       if ((tmp != cur) &&                  /* don't match the same message */
           !tmp->fake_thread &&             /* don't match pseudo threads */
@@ -1042,8 +1036,7 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
    * exists.  otherwise, if there is a MuttThread that already has a message, thread
    * new message as an identical child.  if we didn't attach the message to a
    * MuttThread, make a new one for it. */
-  const bool c_duplicate_threads =
-      cs_subset_bool(NeoMutt->sub, "duplicate_threads");
+  const bool c_duplicate_threads = cs_subset_bool(NeoMutt->sub, "duplicate_threads");
   for (i = 0; i < m->msg_count; i++)
   {
     e = m->emails[i];
@@ -1771,10 +1764,8 @@ void mutt_thread_collapse(struct ThreadsContext *tctx, bool collapse)
  */
 bool mutt_thread_can_collapse(struct Email *e)
 {
-  const bool c_collapse_flagged =
-      cs_subset_bool(NeoMutt->sub, "collapse_flagged");
-  const bool c_collapse_unread =
-      cs_subset_bool(NeoMutt->sub, "collapse_unread");
+  const bool c_collapse_flagged = cs_subset_bool(NeoMutt->sub, "collapse_flagged");
+  const bool c_collapse_unread = cs_subset_bool(NeoMutt->sub, "collapse_unread");
   return (c_collapse_unread || !mutt_thread_contains_unread(e)) &&
          (c_collapse_flagged || !mutt_thread_contains_flagged(e));
 }

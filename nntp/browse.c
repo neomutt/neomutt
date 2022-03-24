@@ -71,8 +71,7 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
       if (folder->ff->nd->desc)
       {
         char *desc = mutt_str_dup(folder->ff->nd->desc);
-        const char *const c_newsgroups_charset =
-            cs_subset_string(NeoMutt->sub, "newsgroups_charset");
+        const char *const c_newsgroups_charset = cs_subset_string(NeoMutt->sub, "newsgroups_charset");
         const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
         if (c_newsgroups_charset)
           mutt_ch_convert_string(&desc, c_newsgroups_charset, c_charset, MUTT_ICONV_HOOK_FROM);

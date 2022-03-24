@@ -81,9 +81,8 @@ static const char *Copyright =
     "Copyright (C) 2014-2020 Kevin J. McCarthy <kevin@8t8.us>\n"
     "Copyright (C) 2015-2022 Richard Russon <rich@flatcap.org>\n";
 
-static const char *Thanks =
-    N_("Many others not mentioned here contributed code, fixes,\n"
-       "and suggestions.\n");
+static const char *Thanks = N_("Many others not mentioned here contributed code, fixes,\n"
+                               "and suggestions.\n");
 
 static const char *License = N_(
     "    This program is free software; you can redistribute it and/or modify\n"
@@ -98,14 +97,12 @@ static const char *License = N_(
     "\n"
     "    You should have received a copy of the GNU General Public License\n"
     "    along with this program; if not, write to the Free Software\n"
-    "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-    "02110-1301, USA.\n");
+    "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n");
 
-static const char *ReachingUs =
-    N_("To learn more about NeoMutt, visit: https://neomutt.org\n"
-       "If you find a bug in NeoMutt, please raise an issue at:\n"
-       "    https://github.com/neomutt/neomutt/issues\n"
-       "or send an email to: <neomutt-devel@neomutt.org>\n");
+static const char *ReachingUs = N_("To learn more about NeoMutt, visit: https://neomutt.org\n"
+                                   "If you find a bug in NeoMutt, please raise an issue at:\n"
+                                   "    https://github.com/neomutt/neomutt/issues\n"
+                                   "or send an email to: <neomutt-devel@neomutt.org>\n");
 
 // clang-format off
 static const char *Notice =

@@ -399,8 +399,7 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
 
       if (b->type == TYPE_TEXT)
       {
-        if (mutt_istr_equal("yes",
-                            mutt_param_get(&b->parameter, "x-mutt-noconv")))
+        if (mutt_istr_equal("yes", mutt_param_get(&b->parameter, "x-mutt-noconv")))
         {
           b->noconv = true;
         }
@@ -574,8 +573,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   {
     e_new->security |= SEC_SIGN;
     if (((WithCrypto & APPLICATION_PGP) != 0) &&
-        mutt_istr_equal(mutt_param_get(&e_new->body->parameter, "protocol"),
-                        "application/pgp-signature"))
+        mutt_istr_equal(mutt_param_get(&e_new->body->parameter, "protocol"), "application/pgp-signature"))
     {
       e_new->security |= APPLICATION_PGP;
     }
@@ -606,8 +604,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
     goto bail;
   }
 
-  const bool c_crypt_protected_headers_read =
-      cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
+  const bool c_crypt_protected_headers_read = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
   if (c_crypt_protected_headers_read && protected_headers && protected_headers->subject &&
       !mutt_str_equal(e_new->env->subject, protected_headers->subject))
   {
@@ -627,8 +624,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   /* Theoretically, both could be set. Take the one the user wants to set by default. */
   if ((e_new->security & APPLICATION_PGP) && (e_new->security & APPLICATION_SMIME))
   {
-    const bool c_smime_is_default =
-        cs_subset_bool(NeoMutt->sub, "smime_is_default");
+    const bool c_smime_is_default = cs_subset_bool(NeoMutt->sub, "smime_is_default");
     if (c_smime_is_default)
       e_new->security &= ~APPLICATION_PGP;
     else
@@ -801,8 +797,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
     FREE(&np);
   }
 
-  const bool c_crypt_opportunistic_encrypt =
-      cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt");
+  const bool c_crypt_opportunistic_encrypt = cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt");
   if (c_crypt_opportunistic_encrypt)
     crypt_opportunistic_encrypt(hdr);
 

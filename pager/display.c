@@ -223,8 +223,8 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
 
   if (!attr_color_match(&color, &last_color))
   {
-    struct AttrColor *ac_merge =
-        merged_color_overlay(simple_color_get(MT_COLOR_NORMAL), &color);
+    struct AttrColor *ac_merge = merged_color_overlay(simple_color_get(MT_COLOR_NORMAL),
+                                                      &color);
     mutt_curses_set_color(ac_merge);
     last_color = color;
   }
@@ -250,8 +250,9 @@ static void append_line(struct Line *lines, int line_num, int cnt)
       break;
 
   (lines[line_num + 1].syntax)[0].first = m;
-  (lines[line_num + 1].syntax)[0].last =
-      (lines[line_num].cont_line) ? cnt + (lines[line_num].syntax)[0].last : cnt;
+  (lines[line_num + 1].syntax)[0].last = (lines[line_num].cont_line) ?
+                                             cnt + (lines[line_num].syntax)[0].last :
+                                             cnt;
 }
 
 /**
@@ -309,8 +310,7 @@ int mutt_is_quote_line(char *line, regmatch_t *pmatch)
   if (!pmatch)
     pmatch = pmatch_internal;
 
-  const struct Regex *c_quote_regex =
-      cs_subset_regex(NeoMutt->sub, "quote_regex");
+  const struct Regex *c_quote_regex = cs_subset_regex(NeoMutt->sub, "quote_regex");
   if (mutt_regex_capture(c_quote_regex, line, 1, pmatch))
   {
     if (mutt_regex_capture(c_smileys, line, 1, smatch))
@@ -356,8 +356,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
   regmatch_t pmatch[1];
   bool found;
   bool null_rx;
-  const bool c_header_color_partial =
-      cs_subset_bool(NeoMutt->sub, "header_color_partial");
+  const bool c_header_color_partial = cs_subset_bool(NeoMutt->sub, "header_color_partial");
   int offset, i = 0;
 
   if ((line_num == 0) || simple_color_is_header(lines[line_num - 1].cid) ||
@@ -858,8 +857,8 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
       size_t k1 = mbrtowc(&wc1, (char *) buf + ch + k, cnt - ch - k, &mbstate1);
       while ((k1 != (size_t) (-2)) && (k1 != (size_t) (-1)) && (k1 > 0) && (wc1 == '\b'))
       {
-        const size_t k2 =
-            mbrtowc(&wc1, (char *) buf + ch + k + k1, cnt - ch - k - k1, &mbstate1);
+        const size_t k2 = mbrtowc(&wc1, (char *) buf + ch + k + k1,
+                                  cnt - ch - k - k1, &mbstate1);
         if ((k2 == (size_t) (-2)) || (k2 == (size_t) (-1)) || (k2 == 0) || (!IsWPrint(wc1)))
           break;
 
@@ -1060,8 +1059,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     }
 
     /* this also prevents searching through the hidden lines */
-    const short c_toggle_quoted_show_levels =
-        cs_subset_number(NeoMutt->sub, "toggle_quoted_show_levels");
+    const short c_toggle_quoted_show_levels = cs_subset_number(NeoMutt->sub, "toggle_quoted_show_levels");
     if ((flags & MUTT_HIDE) && (cur_line->cid == MT_COLOR_QUOTED) &&
         ((cur_line->quote == NULL) || (cur_line->quote->quote_n >= c_toggle_quoted_show_levels)))
     {
@@ -1084,13 +1082,12 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
       goto out;
     }
 
-    const struct Regex *c_quote_regex =
-        cs_subset_regex(NeoMutt->sub, "quote_regex");
+    const struct Regex *c_quote_regex = cs_subset_regex(NeoMutt->sub, "quote_regex");
     if (mutt_regex_capture(c_quote_regex, (char *) fmt, 1, pmatch))
     {
-      cur_line->quote =
-          qstyle_classify(quote_list, (char *) fmt + pmatch[0].rm_so,
-                          pmatch[0].rm_eo - pmatch[0].rm_so, force_redraw, q_level);
+      cur_line->quote = qstyle_classify(quote_list, (char *) fmt + pmatch[0].rm_so,
+                                        pmatch[0].rm_eo - pmatch[0].rm_so,
+                                        force_redraw, q_level);
     }
     else
     {

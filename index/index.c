@@ -92,8 +92,7 @@ static void sort_use_threads_warn(void)
   static bool warned = false;
   if (!warned)
   {
-    mutt_warning(
-        _("Changing threaded display should prefer $use_threads over $sort"));
+    mutt_warning(_("Changing threaded display should prefer $use_threads over $sort"));
     warned = true;
     mutt_sleep(0);
   }
@@ -131,8 +130,8 @@ static int config_sort(const struct ConfigSubset *sub)
      * observer for $use_threads will then adjust $sort, and our
      * 3rd-level observer for $sort will be a no-op.
      */
-    rc = cs_subset_str_native_set(
-        sub, "use_threads", (c_sort & SORT_REVERSE) ? UT_REVERSE : UT_THREADS, NULL);
+    rc = cs_subset_str_native_set(sub, "use_threads",
+                                  (c_sort & SORT_REVERSE) ? UT_REVERSE : UT_THREADS, NULL);
   }
   else
   {
@@ -195,8 +194,7 @@ static int config_reply_regex(struct Mailbox *m)
     if (!env || !env->subject)
       continue;
 
-    const struct Regex *c_reply_regex =
-        cs_subset_regex(NeoMutt->sub, "reply_regex");
+    const struct Regex *c_reply_regex = cs_subset_regex(NeoMutt->sub, "reply_regex");
     if (mutt_regex_capture(c_reply_regex, env->subject, 1, pmatch))
     {
       env->real_subj = env->subject + pmatch[0].rm_eo;

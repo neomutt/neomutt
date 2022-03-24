@@ -261,8 +261,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
         }
         else
         {
-          const char *const c_spool_file =
-              cs_subset_string(NeoMutt->sub, "spool_file");
+          const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
           mutt_buffer_strcpy(p, c_spool_file);
           tail = s + 1;
         }
@@ -369,8 +368,7 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 
   memset(dest, 0, destlen);
 
-  const struct Regex *c_gecos_mask =
-      cs_subset_regex(NeoMutt->sub, "gecos_mask");
+  const struct Regex *c_gecos_mask = cs_subset_regex(NeoMutt->sub, "gecos_mask");
   if (mutt_regex_capture(c_gecos_mask, pw->pw_gecos, 1, pat_match))
   {
     mutt_str_copy(dest, pw->pw_gecos + pat_match[0].rm_so,
@@ -497,15 +495,12 @@ void mutt_mktemp_full(char *buf, size_t buflen, const char *prefix,
                       const char *suffix, const char *src, int line)
 {
   const char *const c_tmpdir = cs_subset_path(NeoMutt->sub, "tmpdir");
-  size_t n =
-      snprintf(buf, buflen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(c_tmpdir),
-               NONULL(prefix), NONULL(ShortHostname), (int) getuid(),
-               (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));
+  size_t n = snprintf(buf, buflen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(c_tmpdir),
+                      NONULL(prefix), NONULL(ShortHostname), (int) getuid(),
+                      (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));
   if (n >= buflen)
   {
-    mutt_debug(LL_DEBUG1,
-               "%s:%d: ERROR: insufficient buffer space to hold temporary "
-               "filename! buflen=%zu but need %zu\n",
+    mutt_debug(LL_DEBUG1, "%s:%d: ERROR: insufficient buffer space to hold temporary filename! buflen=%zu but need %zu\n",
                src, line, buflen, n);
   }
   mutt_debug(LL_DEBUG3, "%s:%d: mutt_mktemp returns \"%s\"\n", src, line, buf);
@@ -794,8 +789,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
   src = src2;
 
   const bool c_arrow_cursor = cs_subset_bool(NeoMutt->sub, "arrow_cursor");
-  const char *const c_arrow_string =
-      cs_subset_string(NeoMutt->sub, "arrow_string");
+  const char *const c_arrow_string = cs_subset_string(NeoMutt->sub, "arrow_string");
 
   prefix[0] = '\0';
   buflen--; /* save room for the terminal \0 */
@@ -1374,8 +1368,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
 
   if ((type != MUTT_MAILBOX_ERROR) && (type != MUTT_UNKNOWN) && (mx_access(s, W_OK) == 0))
   {
-    const bool c_confirm_append =
-        cs_subset_bool(NeoMutt->sub, "confirm_append");
+    const bool c_confirm_append = cs_subset_bool(NeoMutt->sub, "confirm_append");
     if (c_confirm_append)
     {
       struct Buffer *tmp = mutt_buffer_pool_get();
@@ -1413,8 +1406,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
     /* pathname does not exist */
     if (errno == ENOENT)
     {
-      const bool c_confirm_create =
-          cs_subset_bool(NeoMutt->sub, "confirm_create");
+      const bool c_confirm_create = cs_subset_bool(NeoMutt->sub, "confirm_create");
       if (c_confirm_create)
       {
         struct Buffer *tmp = mutt_buffer_pool_get();
@@ -1682,13 +1674,10 @@ void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
   if (!buf || (buflen == 0))
     return;
 
-  const bool c_size_show_bytes =
-      cs_subset_bool(NeoMutt->sub, "size_show_bytes");
-  const bool c_size_show_fractions =
-      cs_subset_bool(NeoMutt->sub, "size_show_fractions");
+  const bool c_size_show_bytes = cs_subset_bool(NeoMutt->sub, "size_show_bytes");
+  const bool c_size_show_fractions = cs_subset_bool(NeoMutt->sub, "size_show_fractions");
   const bool c_size_show_mb = cs_subset_bool(NeoMutt->sub, "size_show_mb");
-  const bool c_size_units_on_left =
-      cs_subset_bool(NeoMutt->sub, "size_units_on_left");
+  const bool c_size_units_on_left = cs_subset_bool(NeoMutt->sub, "size_units_on_left");
 
   if (c_size_show_bytes && (num < 1024))
   {

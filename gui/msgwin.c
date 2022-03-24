@@ -180,8 +180,7 @@ static void msgwin_wdata_free(struct MuttWindow *win, void **ptr)
  */
 static struct MsgWinPrivateData *msgwin_wdata_new(void)
 {
-  struct MsgWinPrivateData *msgwin_data =
-      mutt_mem_calloc(1, sizeof(struct MsgWinPrivateData));
+  struct MsgWinPrivateData *msgwin_data = mutt_mem_calloc(1, sizeof(struct MsgWinPrivateData));
 
   msgwin_data->cid = MT_COLOR_NORMAL;
 
@@ -194,9 +193,8 @@ static struct MsgWinPrivateData *msgwin_wdata_new(void)
  */
 struct MuttWindow *msgwin_new(void)
 {
-  struct MuttWindow *win =
-      mutt_window_new(WT_MESSAGE, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                      MUTT_WIN_SIZE_UNLIMITED, 1);
+  struct MuttWindow *win = mutt_window_new(WT_MESSAGE, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
+                                           MUTT_WIN_SIZE_UNLIMITED, 1);
 
   win->wdata = msgwin_wdata_new();
   win->wdata_free = msgwin_wdata_free;

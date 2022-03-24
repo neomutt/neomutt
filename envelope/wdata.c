@@ -54,8 +54,7 @@ void env_wdata_free(struct MuttWindow *win, void **ptr)
  */
 struct EnvelopeWindowData *env_wdata_new(void)
 {
-  struct EnvelopeWindowData *wdata =
-      mutt_mem_calloc(1, sizeof(struct EnvelopeWindowData));
+  struct EnvelopeWindowData *wdata = mutt_mem_calloc(1, sizeof(struct EnvelopeWindowData));
 
   STAILQ_INIT(&wdata->to_list);
   STAILQ_INIT(&wdata->cc_list);

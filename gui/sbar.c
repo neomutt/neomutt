@@ -198,9 +198,9 @@ static struct SBarPrivateData *sbar_data_new(void)
  */
 struct MuttWindow *sbar_new(void)
 {
-  struct MuttWindow *win_sbar =
-      mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
+  struct MuttWindow *win_sbar = mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,
+                                                MUTT_WIN_SIZE_FIXED,
+                                                MUTT_WIN_SIZE_UNLIMITED, 1);
 
   win_sbar->wdata = sbar_data_new();
   win_sbar->wdata_free = sbar_wdata_free;

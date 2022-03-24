@@ -239,8 +239,7 @@ void mutt_tunnel_socket_setup(struct Connection *conn)
   conn->poll = tunnel_socket_poll;
   /* Note we are using ssf as a boolean in this case.  See the notes in
    * conn/connection.h */
-  const bool c_tunnel_is_secure =
-      cs_subset_bool(NeoMutt->sub, "tunnel_is_secure");
+  const bool c_tunnel_is_secure = cs_subset_bool(NeoMutt->sub, "tunnel_is_secure");
   if (c_tunnel_is_secure)
     conn->ssf = 1;
 }

@@ -329,8 +329,7 @@ static int calc_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wdat
     rows += calc_address(&env->bcc, &wdata->bcc_list, cols, &wdata->bcc_rows);
   }
   rows += calc_security(e, &wdata->sec_rows, wdata->sub);
-  const bool c_compose_show_user_headers =
-      cs_subset_bool(wdata->sub, "compose_show_user_headers");
+  const bool c_compose_show_user_headers = cs_subset_bool(wdata->sub, "compose_show_user_headers");
   if (c_compose_show_user_headers)
     rows += calc_user_hdrs(&env->userhdrs);
 
@@ -435,8 +434,7 @@ static int draw_crypt_lines(struct MuttWindow *win, struct EnvelopeWindowData *w
       mutt_window_addstr(win, _(" (S/MIME)"));
   }
 
-  const bool c_crypt_opportunistic_encrypt =
-      cs_subset_bool(wdata->sub, "crypt_opportunistic_encrypt");
+  const bool c_crypt_opportunistic_encrypt = cs_subset_bool(wdata->sub, "crypt_opportunistic_encrypt");
   if (c_crypt_opportunistic_encrypt && (e->security & SEC_OPPENCRYPT))
     mutt_window_addstr(win, _(" (OppEnc mode)"));
 
@@ -446,8 +444,7 @@ static int draw_crypt_lines(struct MuttWindow *win, struct EnvelopeWindowData *w
       (e->security & APPLICATION_PGP) && (e->security & SEC_SIGN))
   {
     draw_header(win, row++, HDR_CRYPTINFO);
-    const char *const c_pgp_sign_as =
-        cs_subset_string(wdata->sub, "pgp_sign_as");
+    const char *const c_pgp_sign_as = cs_subset_string(wdata->sub, "pgp_sign_as");
     mutt_window_printf(win, "%s", c_pgp_sign_as ? c_pgp_sign_as : _("<default>"));
   }
 
@@ -455,13 +452,11 @@ static int draw_crypt_lines(struct MuttWindow *win, struct EnvelopeWindowData *w
       (e->security & APPLICATION_SMIME) && (e->security & SEC_SIGN))
   {
     draw_header(win, row++, HDR_CRYPTINFO);
-    const char *const c_smime_sign_as =
-        cs_subset_string(wdata->sub, "pgp_sign_as");
+    const char *const c_smime_sign_as = cs_subset_string(wdata->sub, "pgp_sign_as");
     mutt_window_printf(win, "%s", c_smime_sign_as ? c_smime_sign_as : _("<default>"));
   }
 
-  const char *const c_smime_encrypt_with =
-      cs_subset_string(wdata->sub, "smime_encrypt_with");
+  const char *const c_smime_encrypt_with = cs_subset_string(wdata->sub, "smime_encrypt_with");
   if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME) &&
       (e->security & SEC_ENCRYPT) && c_smime_encrypt_with)
   {
@@ -743,8 +738,7 @@ static void draw_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wda
 #ifdef MIXMASTER
   draw_mix_line(&e->chain, win, row++);
 #endif
-  const bool c_compose_show_user_headers =
-      cs_subset_bool(wdata->sub, "compose_show_user_headers");
+  const bool c_compose_show_user_headers = cs_subset_bool(wdata->sub, "compose_show_user_headers");
   if (c_compose_show_user_headers)
     row += draw_envelope_user_hdrs(win, wdata, row);
 
@@ -971,9 +965,9 @@ struct MuttWindow *env_window_new(struct Email *e, struct Buffer *fcc, struct Co
 {
   init_header_padding();
 
-  struct MuttWindow *win_env =
-      mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                      MUTT_WIN_SIZE_UNLIMITED, HDR_ATTACH_TITLE - 1);
+  struct MuttWindow *win_env = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL,
+                                               MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED,
+                                               HDR_ATTACH_TITLE - 1);
 
   notify_observer_add(NeoMutt->notify, NT_COLOR, env_color_observer, win_env);
   notify_observer_add(e->notify, NT_ALL, env_email_observer, win_env);

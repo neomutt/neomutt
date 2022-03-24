@@ -66,8 +66,7 @@ struct NntpAccountData *nntp_adata_new(struct Connection *conn)
   adata->groups_hash = mutt_hash_new(1009, MUTT_HASH_NO_FLAGS);
   mutt_hash_set_destructor(adata->groups_hash, nntp_hashelem_free, 0);
   adata->groups_max = 16;
-  adata->groups_list =
-      mutt_mem_malloc(adata->groups_max * sizeof(struct NntpMboxData *));
+  adata->groups_list = mutt_mem_malloc(adata->groups_max * sizeof(struct NntpMboxData *));
   return adata;
 }
 

@@ -264,14 +264,13 @@ static int op_sort(struct AliasMenuData *mdata, int op)
   bool resort = true;
   bool reverse = (op == OP_SORT_REVERSE);
 
-  switch (mutt_multi_choice(
-      reverse ?
-          /* L10N: The highlighted letters must match the "Sort" options */
-          _("Rev-Sort (a)lias, a(d)dress or (u)nsorted?") :
-          /* L10N: The highlighted letters must match the "Rev-Sort" options */
-          _("Sort (a)lias, a(d)dress or (u)nsorted?"),
-      /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
-      _("adu")))
+  switch (mutt_multi_choice(reverse ?
+                                /* L10N: The highlighted letters must match the "Sort" options */
+                                _("Rev-Sort (a)lias, a(d)dress or (u)nsorted?") :
+                                /* L10N: The highlighted letters must match the "Rev-Sort" options */
+                                _("Sort (a)lias, a(d)dress or (u)nsorted?"),
+                            /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
+                            _("adu")))
   {
     case -1: /* abort */
       resort = false;

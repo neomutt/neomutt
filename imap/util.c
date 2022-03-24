@@ -323,8 +323,7 @@ void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
   url.path = mbox->data;
   url_tobuffer(&url, cachepath, U_PATH);
 
-  const char *const c_header_cache =
-      cs_subset_path(NeoMutt->sub, "header_cache");
+  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
   hc = mutt_hcache_open(c_header_cache, mutt_buffer_string(cachepath), imap_hcache_namer);
 
 cleanup:
@@ -361,8 +360,8 @@ struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)
   char key[16];
 
   sprintf(key, "/%u", uid);
-  struct HCacheEntry hce =
-      mutt_hcache_fetch(mdata->hcache, key, mutt_str_len(key), mdata->uidvalidity);
+  struct HCacheEntry hce = mutt_hcache_fetch(mdata->hcache, key, mutt_str_len(key),
+                                             mdata->uidvalidity);
   if (!hce.email && hce.uidvalidity)
   {
     mutt_debug(LL_DEBUG3, "hcache uidvalidity mismatch: %u\n", hce.uidvalidity);
@@ -615,8 +614,7 @@ void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
   if (tlen && imap_account_match(&cac_home, &cac_target) &&
       mutt_strn_equal(home_mailbox, target_mailbox, hlen))
   {
-    const char *const c_imap_delim_chars =
-        cs_subset_string(NeoMutt->sub, "imap_delim_chars");
+    const char *const c_imap_delim_chars = cs_subset_string(NeoMutt->sub, "imap_delim_chars");
     if (hlen == 0)
       home_match = true;
     else if (c_imap_delim_chars)
@@ -689,8 +687,7 @@ char *imap_fix_path(char delim, const char *mailbox, char *path, size_t plen)
   int i = 0;
   for (; mailbox && *mailbox && (i < plen - 1); i++)
   {
-    const char *const c_imap_delim_chars =
-        cs_subset_string(NeoMutt->sub, "imap_delim_chars");
+    const char *const c_imap_delim_chars = cs_subset_string(NeoMutt->sub, "imap_delim_chars");
     if (*mailbox == delim || (!delim && strchr(NONULL(c_imap_delim_chars), *mailbox)))
     {
       delim = *mailbox;
@@ -958,8 +955,7 @@ void imap_keepalive(void)
     if (!adata || !adata->mailbox)
       continue;
 
-    const short c_imap_keepalive =
-        cs_subset_number(NeoMutt->sub, "imap_keepalive");
+    const short c_imap_keepalive = cs_subset_number(NeoMutt->sub, "imap_keepalive");
     if ((adata->state >= IMAP_AUTHENTICATED) && (now >= (adata->lastread + c_imap_keepalive)))
       imap_check_mailbox(adata->mailbox, true);
   }
@@ -993,8 +989,7 @@ int imap_wait_keepalive(pid_t pid)
 
   sigaction(SIGALRM, &act, &oldalrm);
 
-  const short c_imap_keepalive =
-      cs_subset_number(NeoMutt->sub, "imap_keepalive");
+  const short c_imap_keepalive = cs_subset_number(NeoMutt->sub, "imap_keepalive");
   alarm(c_imap_keepalive);
   while ((waitpid(pid, &rc, 0) < 0) && (errno == EINTR))
   {

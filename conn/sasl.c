@@ -152,9 +152,7 @@ static int getnameinfo_err(int ret)
   switch (ret)
   {
     case EAI_AGAIN:
-      mutt_debug(LL_DEBUG1,
-                 "The name could not be resolved at this time.  Future "
-                 "attempts may succeed\n");
+      mutt_debug(LL_DEBUG1, "The name could not be resolved at this time.  Future attempts may succeed\n");
       err = SASL_TRYAGAIN;
       break;
     case EAI_BADFLAGS:
@@ -166,9 +164,7 @@ static int getnameinfo_err(int ret)
       err = SASL_FAIL;
       break;
     case EAI_FAMILY:
-      mutt_debug(LL_DEBUG1,
-                 "The address family was not recognized or the address "
-                 "length was invalid for the specified family\n");
+      mutt_debug(LL_DEBUG1, "The address family was not recognized or the address length was invalid for the specified family\n");
       err = SASL_BADPROT;
       break;
     case EAI_MEMORY:
@@ -176,16 +172,12 @@ static int getnameinfo_err(int ret)
       err = SASL_NOMEM;
       break;
     case EAI_NONAME:
-      mutt_debug(LL_DEBUG1,
-                 "The name does not resolve for the supplied parameters.  "
-                 "NI_NAMEREQD is set and the host's name can't be located, "
-                 "or both nodename and servname were null.\n");
+      mutt_debug(LL_DEBUG1, "The name does not resolve for the supplied parameters.  "
+                            "NI_NAMEREQD is set and the host's name can't be located, or both nodename and servname were null.\n");
       err = SASL_FAIL; /* no real equivalent */
       break;
     case EAI_SYSTEM:
-      mutt_debug(LL_DEBUG1,
-                 "A system error occurred.  The error code can be found in "
-                 "errno(%d,%s))\n",
+      mutt_debug(LL_DEBUG1, "A system error occurred.  The error code can be found in errno(%d,%s))\n",
                  errno, strerror(errno));
       err = SASL_FAIL; /* no real equivalent */
       break;

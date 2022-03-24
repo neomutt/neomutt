@@ -443,10 +443,7 @@ static bool test_string_minus_equals(struct ConfigSubset *sub, struct Buffer *er
 
   const char *valid[] = { "-123", "0", "-42", "456" };
   int numbers[] = { 81, -42, 0, -498 };
-  const char *invalid[] = { "32271",
-                            "-1844674407370955161000005"
-                            "junk",
-                            "", NULL };
+  const char *invalid[] = { "32271", "-1844674407370955161000005", "junk", "", NULL };
   const char *name = "Damson";
 
   int rc;

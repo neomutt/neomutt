@@ -120,8 +120,8 @@ void test_window_visible(void)
     // clang-format on
   };
 
-  struct MuttWindow *parent =
-      mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 80, 24);
+  struct MuttWindow *parent = mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_VERTICAL,
+                                              MUTT_WIN_SIZE_FIXED, 80, 24);
   struct MuttWindow *child = mutt_window_new(WT_DLG_INDEX, MUTT_WIN_ORIENT_VERTICAL,
                                              MUTT_WIN_SIZE_FIXED, 60, 20);
 

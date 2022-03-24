@@ -949,8 +949,7 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   mutt_hist_read_file();
 
 #ifdef USE_NOTMUCH
-  const bool c_virtual_spool_file =
-      cs_subset_bool(NeoMutt->sub, "virtual_spool_file");
+  const bool c_virtual_spool_file = cs_subset_bool(NeoMutt->sub, "virtual_spool_file");
   if (c_virtual_spool_file)
   {
     /* Find the first virtual folder and open it */

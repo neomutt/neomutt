@@ -247,13 +247,11 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
     {
       struct Buffer *buf = mutt_buffer_pool_get();
       mutt_buffer_strcpy(buf, s);
-      const char *const c_simple_search =
-          cs_subset_string(NeoMutt->sub, "simple_search");
+      const char *const c_simple_search = cs_subset_string(NeoMutt->sub, "simple_search");
       mutt_check_simple(buf, NONULL(c_simple_search));
       struct Mailbox *m_cur = get_current_mailbox();
       struct Menu *menu = get_current_menu();
-      rcol->color_pattern =
-          mutt_pattern_comp(m_cur, menu, buf->data, MUTT_PC_FULL_MSG, err);
+      rcol->color_pattern = mutt_pattern_comp(m_cur, menu, buf->data, MUTT_PC_FULL_MSG, err);
       mutt_buffer_pool_release(&buf);
       if (!rcol->color_pattern)
       {

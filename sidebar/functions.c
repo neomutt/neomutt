@@ -204,8 +204,7 @@ static int op_sidebar_next_new(struct SidebarWindowData *wdata, int op)
   if ((max_entries == 0) || (wdata->hil_index < 0))
     return FR_NO_ACTION;
 
-  const bool c_sidebar_next_new_wrap =
-      cs_subset_bool(NeoMutt->sub, "sidebar_next_new_wrap");
+  const bool c_sidebar_next_new_wrap = cs_subset_bool(NeoMutt->sub, "sidebar_next_new_wrap");
   struct SbEntry **sbep = NULL;
   if ((sbep = sb_next_new(wdata, wdata->hil_index + 1, max_entries)) ||
       (c_sidebar_next_new_wrap && (sbep = sb_next_new(wdata, 0, wdata->hil_index))))
@@ -316,8 +315,7 @@ static int op_sidebar_prev_new(struct SidebarWindowData *wdata, int op)
   if ((max_entries == 0) || (wdata->hil_index < 0))
     return FR_NO_ACTION;
 
-  const bool c_sidebar_next_new_wrap =
-      cs_subset_bool(NeoMutt->sub, "sidebar_next_new_wrap");
+  const bool c_sidebar_next_new_wrap = cs_subset_bool(NeoMutt->sub, "sidebar_next_new_wrap");
   struct SbEntry **sbep = NULL;
   if ((sbep = sb_prev_new(wdata, 0, wdata->hil_index)) ||
       (c_sidebar_next_new_wrap &&

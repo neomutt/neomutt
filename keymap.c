@@ -402,9 +402,7 @@ static enum CommandResult km_bind_err(const char *s, enum MenuType mtype, int op
         char new_binding[MAX_SEQ];
         km_expand_key(old_binding, MAX_SEQ, map);
         km_expand_key(new_binding, MAX_SEQ, np);
-        char *err_msg =
-            _("Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  "
-              "https://neomutt.org/guide/configuration.html#bind-warnings");
+        char *err_msg = _("Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings");
         if (err)
         {
           /* err was passed, put the string there */
@@ -651,8 +649,7 @@ int km_dokey(enum MenuType mtype)
     return retry_generic(mtype, NULL, 0, 0);
 
 #ifdef USE_IMAP
-  const short c_imap_keepalive =
-      cs_subset_number(NeoMutt->sub, "imap_keepalive");
+  const short c_imap_keepalive = cs_subset_number(NeoMutt->sub, "imap_keepalive");
 #endif
 
   while (true)
@@ -867,8 +864,8 @@ void mutt_init_abort_key(void)
   }
   if (len > 1)
   {
-    mutt_warning(
-        _("Specified abort key sequence (%s) will be truncated to first key"), c_abort_key);
+    mutt_warning(_("Specified abort key sequence (%s) will be truncated to first key"),
+                 c_abort_key);
   }
   AbortKey = buf[0];
 }

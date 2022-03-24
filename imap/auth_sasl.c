@@ -111,9 +111,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
       mutt_debug(LL_DEBUG2, "%s unavailable\n", method);
     else
     {
-      mutt_debug(
-          LL_DEBUG1,
-          "Failure starting authentication exchange. No shared mechanisms?\n");
+      mutt_debug(LL_DEBUG1, "Failure starting authentication exchange. No shared mechanisms?\n");
     }
     /* SASL doesn't support LOGIN, so fall back */
 

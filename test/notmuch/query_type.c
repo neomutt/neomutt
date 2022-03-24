@@ -108,7 +108,6 @@ void test_nm_query_type_to_string(void)
   }
 
   {
-    TEST_CHECK(mutt_str_equal(nm_query_type_to_string(NM_QUERY_TYPE_MESGS),
-                              "messages"));
+    TEST_CHECK(mutt_str_equal(nm_query_type_to_string(NM_QUERY_TYPE_MESGS), "messages"));
   }
 }

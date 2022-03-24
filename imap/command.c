@@ -674,8 +674,7 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
     return;
   }
 
-  const bool c_imap_check_subscribed =
-      cs_subset_bool(NeoMutt->sub, "imap_check_subscribed");
+  const bool c_imap_check_subscribed = cs_subset_bool(NeoMutt->sub, "imap_check_subscribed");
   if (!c_imap_check_subscribed)
     return;
 
@@ -891,8 +890,7 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
              mailbox, olduv, oldun, mdata->unseen);
 
   bool new_mail = false;
-  const bool c_mail_check_recent =
-      cs_subset_bool(NeoMutt->sub, "mail_check_recent");
+  const bool c_mail_check_recent = cs_subset_bool(NeoMutt->sub, "mail_check_recent");
   if (c_mail_check_recent)
   {
     if ((olduv != 0) && (olduv == mdata->uidvalidity))
@@ -934,8 +932,7 @@ static void cmd_parse_enabled(struct ImapAccountData *adata, const char *s)
 
   while ((s = imap_next_word((char *) s)) && (*s != '\0'))
   {
-    if (mutt_istr_startswith(s, "UTF8=ACCEPT") ||
-        mutt_istr_startswith(s, "UTF8=ONLY"))
+    if (mutt_istr_startswith(s, "UTF8=ACCEPT") || mutt_istr_startswith(s, "UTF8=ONLY"))
     {
       adata->unicode = true;
     }
@@ -992,8 +989,7 @@ static int cmd_handle_untagged(struct ImapAccountData *adata)
   char *s = imap_next_word(adata->buf);
   char *pn = imap_next_word(s);
 
-  const bool c_imap_server_noise =
-      cs_subset_bool(NeoMutt->sub, "imap_server_noise");
+  const bool c_imap_server_noise = cs_subset_bool(NeoMutt->sub, "imap_server_noise");
   if ((adata->state >= IMAP_SELECTED) && isdigit((unsigned char) *s))
   {
     /* pn vs. s: need initial seqno */
@@ -1008,8 +1004,7 @@ static int cmd_handle_untagged(struct ImapAccountData *adata)
     else if (mutt_istr_startswith(s, "FETCH"))
       cmd_parse_fetch(adata, pn);
   }
-  else if ((adata->state >= IMAP_SELECTED) &&
-           mutt_istr_startswith(s, "VANISHED"))
+  else if ((adata->state >= IMAP_SELECTED) && mutt_istr_startswith(s, "VANISHED"))
     cmd_parse_vanished(adata, pn);
   else if (mutt_istr_startswith(s, "CAPABILITY"))
     cmd_parse_capability(adata, s);
@@ -1271,8 +1266,7 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags fl
   if (flags & IMAP_CMD_QUEUE)
     return IMAP_EXEC_SUCCESS;
 
-  const short c_imap_poll_timeout =
-      cs_subset_number(NeoMutt->sub, "imap_poll_timeout");
+  const short c_imap_poll_timeout = cs_subset_number(NeoMutt->sub, "imap_poll_timeout");
   if ((flags & IMAP_CMD_POLL) && (c_imap_poll_timeout > 0) &&
       ((mutt_socket_poll(adata->conn, c_imap_poll_timeout)) == 0))
   {
@@ -1393,8 +1387,7 @@ int imap_cmd_idle(struct ImapAccountData *adata)
     return -1;
   }
 
-  const short c_imap_poll_timeout =
-      cs_subset_number(NeoMutt->sub, "imap_poll_timeout");
+  const short c_imap_poll_timeout = cs_subset_number(NeoMutt->sub, "imap_poll_timeout");
   if ((c_imap_poll_timeout > 0) &&
       ((mutt_socket_poll(adata->conn, c_imap_poll_timeout)) == 0))
   {

@@ -80,8 +80,7 @@ void test_mutt_list_insert_after(void)
     char *insert = "Zelda";
     struct ListHead start = test_list_create(start_names, false);
     struct ListHead expected = test_list_create(expected_names, false);
-    struct ListNode *after =
-        STAILQ_NEXT(STAILQ_NEXT(STAILQ_FIRST(&start), entries), entries);
+    struct ListNode *after = STAILQ_NEXT(STAILQ_NEXT(STAILQ_FIRST(&start), entries), entries);
     TEST_CHECK(mutt_list_insert_after(&start, after, insert) != NULL);
     TEST_CHECK(mutt_list_compare(&start, &expected) == true);
     mutt_list_clear(&start);

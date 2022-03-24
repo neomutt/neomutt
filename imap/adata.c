@@ -71,8 +71,7 @@ struct ImapAccountData *imap_adata_new(struct Account *a)
   static unsigned char new_seqid = 'a';
 
   adata->seqid = new_seqid;
-  const short c_imap_pipeline_depth =
-      cs_subset_number(NeoMutt->sub, "imap_pipeline_depth");
+  const short c_imap_pipeline_depth = cs_subset_number(NeoMutt->sub, "imap_pipeline_depth");
   adata->cmdslots = c_imap_pipeline_depth + 2;
   adata->cmds = mutt_mem_calloc(adata->cmdslots, sizeof(*adata->cmds));
 

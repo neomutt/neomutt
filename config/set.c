@@ -105,8 +105,8 @@ static struct HashElem *create_synonym(const struct ConfigSet *cs,
     return NULL;
   }
 
-  struct HashElem *child =
-      mutt_hash_typed_insert(cs->hash, cdef->name, cdef->type, (void *) cdef);
+  struct HashElem *child = mutt_hash_typed_insert(cs->hash, cdef->name,
+                                                  cdef->type, (void *) cdef);
   if (!child)
     return NULL; /* LCOV_EXCL_LINE */
 

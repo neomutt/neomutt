@@ -56,8 +56,7 @@ const char *nm_db_get_filename(struct Mailbox *m)
   struct NmMboxData *mdata = nm_mdata_get(m);
   const char *db_filename = NULL;
 
-  const char *const c_nm_default_url =
-      cs_subset_string(NeoMutt->sub, "nm_default_url");
+  const char *const c_nm_default_url = cs_subset_string(NeoMutt->sub, "nm_default_url");
   if (mdata && mdata->db_url && mdata->db_url->path)
     db_filename = mdata->db_url->path;
   else
@@ -93,13 +92,12 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
   char *msg = NULL;
 #endif
 
-  const short c_nm_open_timeout =
-      cs_subset_number(NeoMutt->sub, "nm_open_timeout");
+  const short c_nm_open_timeout = cs_subset_number(NeoMutt->sub, "nm_open_timeout");
   mutt_debug(LL_DEBUG1, "nm: db open '%s' %s (timeout %d)\n", filename,
              writable ? "[WRITE]" : "[READ]", c_nm_open_timeout);
 
-  const notmuch_database_mode_t mode =
-      writable ? NOTMUCH_DATABASE_MODE_READ_WRITE : NOTMUCH_DATABASE_MODE_READ_ONLY;
+  const notmuch_database_mode_t mode = writable ? NOTMUCH_DATABASE_MODE_READ_WRITE :
+                                                  NOTMUCH_DATABASE_MODE_READ_ONLY;
 
   do
   {
@@ -108,8 +106,7 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
     st = notmuch_database_open_with_config(filename, mode, NULL, NULL, &db, &msg);
     if (st == NOTMUCH_STATUS_NO_CONFIG)
     {
-      mutt_debug(LL_DEBUG1,
-                 "nm: Could not find a Notmuch configuration file\n");
+      mutt_debug(LL_DEBUG1, "nm: Could not find a Notmuch configuration file\n");
       FREE(&msg);
 
       st = notmuch_database_open_with_config(filename, mode, "", NULL, &db, &msg);

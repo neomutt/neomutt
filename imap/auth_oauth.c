@@ -65,8 +65,7 @@ enum ImapAuthRes imap_auth_oauth_xoauth2(struct ImapAccountData *adata,
   }
 
   /* If they did not explicitly request or configure oauth then fail quietly */
-  const char *const c_imap_oauth_refresh_command =
-      cs_subset_string(NeoMutt->sub, "imap_oauth_refresh_command");
+  const char *const c_imap_oauth_refresh_command = cs_subset_string(NeoMutt->sub, "imap_oauth_refresh_command");
   if (!method && !c_imap_oauth_refresh_command)
     return IMAP_AUTH_UNAVAIL;
 

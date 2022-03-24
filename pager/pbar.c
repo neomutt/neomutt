@@ -327,9 +327,9 @@ static struct PBarPrivateData *pbar_data_new(struct IndexSharedData *shared,
  */
 struct MuttWindow *pbar_new(struct IndexSharedData *shared, struct PagerPrivateData *priv)
 {
-  struct MuttWindow *win_pbar =
-      mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
+  struct MuttWindow *win_pbar = mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,
+                                                MUTT_WIN_SIZE_FIXED,
+                                                MUTT_WIN_SIZE_UNLIMITED, 1);
 
   win_pbar->wdata = pbar_data_new(shared, priv);
   win_pbar->wdata_free = pbar_data_free;

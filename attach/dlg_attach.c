@@ -188,8 +188,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       break;
     case 'd':
     {
-      const char *const c_message_format =
-          cs_subset_string(NeoMutt->sub, "message_format");
+      const char *const c_message_format = cs_subset_string(NeoMutt->sub, "message_format");
       if (!optional)
       {
         if (aptr->body->description)
@@ -387,8 +386,7 @@ static void attach_make_entry(struct Menu *menu, char *buf, size_t buflen, int l
   struct AttachPrivateData *priv = menu->mdata;
   struct AttachCtx *actx = priv->actx;
 
-  const char *const c_attach_format =
-      cs_subset_string(NeoMutt->sub, "attach_format");
+  const char *const c_attach_format = cs_subset_string(NeoMutt->sub, "attach_format");
   mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_attach_format),
                       attach_format_str, (intptr_t) (actx->idx[actx->v2r[line]]),
                       MUTT_FORMAT_ARROWCURSOR);

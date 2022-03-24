@@ -164,8 +164,7 @@ static void parse_parameters(struct ParameterList *pl, const char *s, bool allow
           s++;
           for (; *s; s++)
           {
-            const char *const c_assumed_charset =
-                cs_subset_string(NeoMutt->sub, "assumed_charset");
+            const char *const c_assumed_charset = cs_subset_string(NeoMutt->sub, "assumed_charset");
             if (c_assumed_charset)
             {
               // As iso-2022-* has a character of '"' with non-ascii state, ignore it
@@ -513,8 +512,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
     }
     else
     {
-      const char *const c_assumed_charset =
-          cs_subset_string(NeoMutt->sub, "assumed_charset");
+      const char *const c_assumed_charset = cs_subset_string(NeoMutt->sub, "assumed_charset");
       mutt_param_set(&ct->parameter, "charset",
                      (c_assumed_charset) ? (const char *) mutt_ch_get_default_charset() :
                                            "us-ascii");
@@ -719,8 +717,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, const char *na
             if (e)
             {
               unsigned long len = 0;
-              e->body->length =
-                  mutt_str_atoul(body, &len) ? MIN(len, CONTENT_TOO_BIG) : -1;
+              e->body->length = mutt_str_atoul(body, &len) ? MIN(len, CONTENT_TOO_BIG) : -1;
             }
             matched = true;
           }
@@ -820,8 +817,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, const char *na
           {
             FREE(&env->list_post);
             env->list_post = mailto;
-            const bool c_auto_subscribe =
-                cs_subset_bool(NeoMutt->sub, "auto_subscribe");
+            const bool c_auto_subscribe = cs_subset_bool(NeoMutt->sub, "auto_subscribe");
             if (c_auto_subscribe)
               mutt_auto_subscribe(env->list_post);
           }
@@ -961,8 +957,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, const char *na
             {
               case 'O':
               {
-                const bool c_mark_old =
-                    cs_subset_bool(NeoMutt->sub, "mark_old");
+                const bool c_mark_old = cs_subset_bool(NeoMutt->sub, "mark_old");
                 e->old = c_mark_old;
                 break;
               }
@@ -1226,8 +1221,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
         if ((!mutt_buffer_is_empty(&env->spam)) && (*buf != '\0'))
         {
           /* If `$spam_separator` defined, append with separator */
-          const char *const c_spam_separator =
-              cs_subset_string(NeoMutt->sub, "spam_separator");
+          const char *const c_spam_separator = cs_subset_string(NeoMutt->sub, "spam_separator");
           if (c_spam_separator)
           {
             mutt_buffer_addstr(&env->spam, c_spam_separator);
@@ -1278,8 +1272,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
     {
       regmatch_t pmatch[1];
 
-      const struct Regex *c_reply_regex =
-          cs_subset_regex(NeoMutt->sub, "reply_regex");
+      const struct Regex *c_reply_regex = cs_subset_regex(NeoMutt->sub, "reply_regex");
       if (mutt_regex_capture(c_reply_regex, env->subject, 1, pmatch))
       {
         env->real_subj = env->subject + pmatch[0].rm_eo;
@@ -1299,8 +1292,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
     /* check for missing or invalid date */
     if (e->date_sent <= 0)
     {
-      mutt_debug(LL_DEBUG1,
-                 "no date found, using received time from msg separator\n");
+      mutt_debug(LL_DEBUG1, "no date found, using received time from msg separator\n");
       e->date_sent = e->received;
     }
 

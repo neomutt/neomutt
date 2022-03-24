@@ -135,9 +135,9 @@ static void menu_wdata_free(struct MuttWindow *win, void **ptr)
  */
 struct MuttWindow *menu_new_window(enum MenuType type, struct ConfigSubset *sub)
 {
-  struct MuttWindow *win =
-      mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *win = mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL,
+                                           MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
+                                           MUTT_WIN_SIZE_UNLIMITED);
 
   struct Menu *menu = menu_new(type, win, sub);
 

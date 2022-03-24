@@ -429,8 +429,7 @@ static void include_header(bool quote, FILE *fp_in, struct Email *e, FILE *fp_ou
       mutt_str_copy(prefix2, prefix, sizeof(prefix2));
     else if (!c_text_flowed)
     {
-      const char *const c_indent_string =
-          cs_subset_string(NeoMutt->sub, "indent_string");
+      const char *const c_indent_string = cs_subset_string(NeoMutt->sub, "indent_string");
       mutt_make_string(prefix2, sizeof(prefix2), 0, NONULL(c_indent_string),
                        NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
     }
@@ -529,8 +528,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
       mutt_str_copy(prefix, ">", sizeof(prefix));
     else
     {
-      const char *const c_indent_string =
-          cs_subset_string(NeoMutt->sub, "indent_string");
+      const char *const c_indent_string = cs_subset_string(NeoMutt->sub, "indent_string");
       mutt_make_string(prefix, sizeof(prefix), 0, NONULL(c_indent_string), NULL,
                        -1, e_parent, MUTT_FORMAT_NO_FLAGS, NULL);
     }
@@ -543,8 +541,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
    *
    * The next part is more interesting: either include the message bodies,
    * or attach them.  */
-  const enum QuadOption c_mime_forward =
-      cs_subset_quad(NeoMutt->sub, "mime_forward");
+  const enum QuadOption c_mime_forward = cs_subset_quad(NeoMutt->sub, "mime_forward");
   if ((!cur || mutt_can_decode(cur)) &&
       ((ans = query_quadoption(c_mime_forward, _("Forward as attachments?"))) == MUTT_YES))
   {
@@ -559,11 +556,9 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
    * Is this intuitive?  */
   if (!mime_fwd_all && !cur && (nattach > 1) && !check_can_decode(actx, cur))
   {
-    const enum QuadOption c_mime_forward_rest =
-        cs_subset_quad(NeoMutt->sub, "mime_forward_rest");
-    ans = query_quadoption(
-        c_mime_forward_rest,
-        _("Can't decode all tagged attachments.  MIME-forward the others?"));
+    const enum QuadOption c_mime_forward_rest = cs_subset_quad(NeoMutt->sub, "mime_forward_rest");
+    ans = query_quadoption(c_mime_forward_rest,
+                           _("Can't decode all tagged attachments.  MIME-forward the others?"));
     if (ans == MUTT_ABORT)
       goto bail;
     else if (ans == MUTT_NO)
@@ -692,8 +687,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
 
   tmpbody = mutt_buffer_pool_get();
 
-  const enum QuadOption c_mime_forward =
-      cs_subset_quad(NeoMutt->sub, "mime_forward");
+  const enum QuadOption c_mime_forward = cs_subset_quad(NeoMutt->sub, "mime_forward");
   ans = query_quadoption(c_mime_forward, _("Forward MIME encapsulated?"));
   if (ans == MUTT_NO)
   {
@@ -715,8 +709,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
       cmflags |= MUTT_CM_PREFIX;
     }
 
-    const bool c_forward_decode =
-        cs_subset_bool(NeoMutt->sub, "forward_decode");
+    const bool c_forward_decode = cs_subset_bool(NeoMutt->sub, "forward_decode");
     if (c_forward_decode)
     {
       cmflags |= MUTT_CM_DECODE | MUTT_CM_CHARCONV;
@@ -985,11 +978,10 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
 
   if ((nattach > 1) && !check_can_decode(actx, e_cur))
   {
-    const enum QuadOption c_mime_forward_rest =
-        cs_subset_quad(NeoMutt->sub, "mime_forward_rest");
+    const enum QuadOption c_mime_forward_rest = cs_subset_quad(NeoMutt->sub, "mime_forward_rest");
     const enum QuadOption ans = query_quadoption(
-        c_mime_forward_rest, _("Can't decode all tagged attachments.  "
-                               "MIME-encapsulate the others?"));
+        c_mime_forward_rest,
+        _("Can't decode all tagged attachments.  MIME-encapsulate the others?"));
     if (ans == MUTT_ABORT)
       return;
     if (ans == MUTT_YES)
@@ -1001,8 +993,9 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
   e_tmp = email_new();
   e_tmp->env = mutt_env_new();
 
-  if (attach_reply_envelope_defaults(
-          e_tmp->env, actx, e_parent ? e_parent : (e_cur ? e_cur->email : NULL), flags) == -1)
+  if (attach_reply_envelope_defaults(e_tmp->env, actx,
+                                     e_parent ? e_parent : (e_cur ? e_cur->email : NULL),
+                                     flags) == -1)
   {
     goto cleanup;
   }
@@ -1044,8 +1037,7 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
     }
     else
     {
-      const char *const c_indent_string =
-          cs_subset_string(NeoMutt->sub, "indent_string");
+      const char *const c_indent_string = cs_subset_string(NeoMutt->sub, "indent_string");
       mutt_make_string(prefix, sizeof(prefix), 0, NONULL(c_indent_string), m,
                        -1, e_parent, MUTT_FORMAT_NO_FLAGS, NULL);
     }

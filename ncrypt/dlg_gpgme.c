@@ -1236,8 +1236,7 @@ static void crypt_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
   entry.key = key_table[line];
   entry.num = line + 1;
 
-  const char *const c_pgp_entry_format =
-      cs_subset_string(NeoMutt->sub, "pgp_entry_format");
+  const char *const c_pgp_entry_format = cs_subset_string(NeoMutt->sub, "pgp_entry_format");
   mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_pgp_entry_format),
                       crypt_format_str, (intptr_t) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
@@ -1334,8 +1333,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   struct CryptKeyInfo **key_table = NULL;
   for (k = keys; k; k = k->next)
   {
-    const bool c_pgp_show_unusable =
-        cs_subset_bool(NeoMutt->sub, "pgp_show_unusable");
+    const bool c_pgp_show_unusable = cs_subset_bool(NeoMutt->sub, "pgp_show_unusable");
     if (!c_pgp_show_unusable && (k->flags & KEYFLAG_CANTUSE))
     {
       unusable = true;
@@ -1479,8 +1477,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
         {
           if (!crypt_key_is_valid(cur_key))
           {
-            mutt_error(_("This key can't be used: "
-                         "expired/disabled/revoked"));
+            mutt_error(_("This key can't be used: expired/disabled/revoked"));
             continue;
           }
         }
@@ -1492,8 +1489,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
 
           if (cur_key->flags & KEYFLAG_CANTUSE)
           {
-            warn_s = _("ID is expired/disabled/revoked. Do you really want to "
-                       "use the key?");
+            warn_s = _("ID is expired/disabled/revoked. Do you really want to use the key?");
           }
           else
           {
@@ -1501,20 +1497,17 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
             switch (cur_key->validity)
             {
               case GPGME_VALIDITY_NEVER:
-                warn_s =
-                    _("ID is not valid. Do you really want to use the key?");
+                warn_s = _("ID is not valid. Do you really want to use the key?");
                 break;
               case GPGME_VALIDITY_MARGINAL:
-                warn_s = _("ID is only marginally valid. Do you really want to "
-                           "use the key?");
+                warn_s = _("ID is only marginally valid. Do you really want to use the key?");
                 break;
               case GPGME_VALIDITY_FULL:
               case GPGME_VALIDITY_ULTIMATE:
                 break;
               case GPGME_VALIDITY_UNKNOWN:
               case GPGME_VALIDITY_UNDEFINED:
-                warn_s = _("ID has undefined validity. Do you really want to "
-                           "use the key?");
+                warn_s = _("ID has undefined validity. Do you really want to use the key?");
                 break;
             }
           }

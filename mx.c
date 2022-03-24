@@ -161,10 +161,10 @@ static bool mutt_is_spool(const char *str)
   struct Url *ua = url_parse(str);
   struct Url *ub = url_parse(c_spool_file);
 
-  const bool is_spool =
-      ua && ub && (ua->scheme == ub->scheme) &&
-      mutt_istr_equal(ua->host, ub->host) && mutt_istr_equal(ua->path, ub->path) &&
-      (!ua->user || !ub->user || mutt_str_equal(ua->user, ub->user));
+  const bool is_spool = ua && ub && (ua->scheme == ub->scheme) &&
+                        mutt_istr_equal(ua->host, ub->host) &&
+                        mutt_istr_equal(ua->path, ub->path) &&
+                        (!ua->user || !ub->user || mutt_str_equal(ua->user, ub->user));
 
   url_free(&ua);
   url_free(&ub);
@@ -617,8 +617,7 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
   if (!m)
     return MX_STATUS_ERROR;
 
-  const bool c_mail_check_recent =
-      cs_subset_bool(NeoMutt->sub, "mail_check_recent");
+  const bool c_mail_check_recent = cs_subset_bool(NeoMutt->sub, "mail_check_recent");
   if (c_mail_check_recent && !m->peekonly)
     m->has_new = false;
 
@@ -642,10 +641,9 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
 
     if (mdata && mdata->adata && mdata->group)
     {
-      const enum QuadOption c_catchup_newsgroup =
-          cs_subset_quad(NeoMutt->sub, "catchup_newsgroup");
-      enum QuadOption ans =
-          query_quadoption(c_catchup_newsgroup, _("Mark all articles read?"));
+      const enum QuadOption c_catchup_newsgroup = cs_subset_quad(NeoMutt->sub, "catchup_newsgroup");
+      enum QuadOption ans = query_quadoption(c_catchup_newsgroup,
+                                             _("Mark all articles read?"));
       if (ans == MUTT_ABORT)
         goto cleanup;
       if (ans == MUTT_YES)
@@ -1404,8 +1402,7 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
     {
       if (buf[0] == '!')
       {
-        const char *const c_spool_file =
-            cs_subset_string(NeoMutt->sub, "spool_file");
+        const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
         mutt_str_inline_replace(buf, buflen, 1, c_spool_file);
       }
       else if (buf[0] == '-')

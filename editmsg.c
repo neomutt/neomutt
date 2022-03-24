@@ -79,8 +79,10 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
 
   cs_subset_str_native_set(NeoMutt->sub, "mbox_type", c_mbox_type, NULL);
 
-  const CopyHeaderFlags chflags =
-      CH_NOLEN | (((m->type == MUTT_MBOX) || (m->type == MUTT_MMDF)) ? CH_NO_FLAGS : CH_NOSTATUS);
+  const CopyHeaderFlags chflags = CH_NOLEN |
+                                  (((m->type == MUTT_MBOX) || (m->type == MUTT_MMDF)) ?
+                                       CH_NO_FLAGS :
+                                       CH_NOSTATUS);
   rc = mutt_append_message(m_fname, m, e, NULL, MUTT_CM_NO_FLAGS, chflags);
   int oerrno = errno;
 
@@ -197,8 +199,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     goto bail;
   }
   MsgOpenFlags of = MUTT_MSG_NO_FLAGS;
-  CopyHeaderFlags cf =
-      (((m->type == MUTT_MBOX) || (m->type == MUTT_MMDF)) ? CH_NO_FLAGS : CH_NOSTATUS);
+  CopyHeaderFlags cf = (((m->type == MUTT_MBOX) || (m->type == MUTT_MMDF)) ? CH_NO_FLAGS : CH_NOSTATUS);
 
   if (fgets(buf, sizeof(buf), fp) && is_from(buf, NULL, 0, NULL))
   {

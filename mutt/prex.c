@@ -81,8 +81,7 @@ struct PrexStorage
 #define PREX_MONTH "(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)"
 #define PREX_DOW "(Mon|Tue|Wed|Thu|Fri|Sat|Sun)"
 #define PREX_DOW_NOCASE                                                        \
-  "([Mm][Oo][Nn]|[Tt][Uu][Ee]|[Ww][Ee][Dd]|[Tt][Hh][Uu]|[Ff][Rr][Ii]|"         \
-  "[Ss][Aa][Tt]|[Ss][Uu][Nn])"
+  "([Mm][Oo][Nn]|[Tt][Uu][Ee]|[Ww][Ee][Dd]|[Tt][Hh][Uu]|[Ff][Rr][Ii]|[Ss][Aa][Tt]|[Ss][Uu][Nn])"
 #define PREX_TIME "([[:digit:]]{2}:[[:digit:]]{2}:[[:digit:]]{2})"
 #define PREX_YEAR "([[:digit:]]{4})"
 

@@ -118,9 +118,9 @@ static int ppanel_window_observer(struct NotifyCallback *nc)
  */
 struct MuttWindow *ppanel_new(bool status_on_top, struct IndexSharedData *shared)
 {
-  struct MuttWindow *panel_pager =
-      mutt_window_new(WT_PAGER, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *panel_pager = mutt_window_new(WT_PAGER, MUTT_WIN_ORIENT_VERTICAL,
+                                                   MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
+                                                   MUTT_WIN_SIZE_UNLIMITED);
   panel_pager->state.visible = false; // The Pager and Pager Bar are initially hidden
 
   struct PagerPrivateData *priv = pager_private_data_new();

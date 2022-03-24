@@ -91,10 +91,7 @@ void test_mutt_buffer_printf(void)
 
   {
     TEST_CASE("Static big");
-    const char *str =
-        "apple banana cherry damson elderberry fig guava hawthorn ilama "
-        "jackfruit kumquat lemon mango nectarine olive papaya quince raspberry "
-        "strawberry tangerine ugli vanilla wolfberry xigua yew ziziphus";
+    const char *str = "apple banana cherry damson elderberry fig guava hawthorn ilama jackfruit kumquat lemon mango nectarine olive papaya quince raspberry strawberry tangerine ugli vanilla wolfberry xigua yew ziziphus";
     struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_addstr(&buf, "test");
     TEST_CHECK(mutt_buffer_printf(&buf, str) == 195);

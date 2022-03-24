@@ -195,8 +195,7 @@ static enum MxStatus mh_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 
   /* when $mail_check_recent is set and the .mh_sequences file hasn't changed
    * since the last m visit, there is no "new mail" */
-  const bool c_mail_check_recent =
-      cs_subset_bool(NeoMutt->sub, "mail_check_recent");
+  const bool c_mail_check_recent = cs_subset_bool(NeoMutt->sub, "mail_check_recent");
   if (c_mail_check_recent && (mh_seq_changed(m) <= 0))
   {
     return MX_STATUS_OK;
@@ -617,8 +616,7 @@ void mh_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda, struct Prog
   char fn[PATH_MAX];
 
 #ifdef USE_HCACHE
-  const char *const c_header_cache =
-      cs_subset_path(NeoMutt->sub, "header_cache");
+  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
   struct HeaderCache *hc = mutt_hcache_open(c_header_cache, mailbox_path(m), NULL);
 #endif
 
@@ -638,8 +636,7 @@ void mh_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda, struct Prog
 #ifdef USE_HCACHE
     struct stat st_lastchanged = { 0 };
     int rc = 0;
-    const bool c_maildir_header_cache_verify =
-        cs_subset_bool(NeoMutt->sub, "maildir_header_cache_verify");
+    const bool c_maildir_header_cache_verify = cs_subset_bool(NeoMutt->sub, "maildir_header_cache_verify");
     if (c_maildir_header_cache_verify)
     {
       rc = stat(fn, &st_lastchanged);
@@ -822,8 +819,7 @@ int mh_msg_save_hcache(struct Mailbox *m, struct Email *e)
 {
   int rc = 0;
 #ifdef USE_HCACHE
-  const char *const c_header_cache =
-      cs_subset_path(NeoMutt->sub, "header_cache");
+  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
   struct HeaderCache *hc = mutt_hcache_open(c_header_cache, mailbox_path(m), NULL);
   rc = mutt_hcache_store(hc, e->path, strlen(e->path), e, 0);
   mutt_hcache_close(hc);
@@ -1046,8 +1042,7 @@ enum MxStatus mh_mbox_sync(struct Mailbox *m)
 
   struct HeaderCache *hc = NULL;
 #ifdef USE_HCACHE
-  const char *const c_header_cache =
-      cs_subset_path(NeoMutt->sub, "header_cache");
+  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
   if (m->type == MUTT_MH)
     hc = mutt_hcache_open(c_header_cache, mailbox_path(m), NULL);
 #endif

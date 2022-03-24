@@ -89,8 +89,7 @@ void driver_tags_add(struct TagList *list, char *new_tag)
   tn->transformed = mutt_str_dup(new_tag_transformed);
 
   /* filter out hidden tags */
-  const struct Slist *c_hidden_tags =
-      cs_subset_slist(NeoMutt->sub, "hidden_tags");
+  const struct Slist *c_hidden_tags = cs_subset_slist(NeoMutt->sub, "hidden_tags");
   if (c_hidden_tags)
     if (mutt_list_find(&c_hidden_tags->head, new_tag))
       tn->hidden = true;

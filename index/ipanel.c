@@ -117,9 +117,9 @@ static int ipanel_window_observer(struct NotifyCallback *nc)
  */
 struct MuttWindow *ipanel_new(bool status_on_top, struct IndexSharedData *shared)
 {
-  struct MuttWindow *panel_index =
-      mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *panel_index = mutt_window_new(WT_INDEX, MUTT_WIN_ORIENT_VERTICAL,
+                                                   MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
+                                                   MUTT_WIN_SIZE_UNLIMITED);
 
   struct IndexPrivateData *priv = index_private_data_new(shared);
   panel_index->wdata = priv;

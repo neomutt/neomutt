@@ -450,8 +450,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
   if (use_mailcap)
   {
     entry = mailcap_entry_new();
-    enum MailcapLookup mailcap_opt =
-        (mode == MUTT_VA_PAGER) ? MUTT_MC_AUTOVIEW : MUTT_MC_NO_FLAGS;
+    enum MailcapLookup mailcap_opt = (mode == MUTT_VA_PAGER) ? MUTT_MC_AUTOVIEW : MUTT_MC_NO_FLAGS;
     if (!mailcap_lookup(a, type, sizeof(type), entry, mailcap_opt))
     {
       if ((mode == MUTT_VA_REGULAR) || (mode == MUTT_VA_PAGER))
@@ -1199,10 +1198,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     goto out;
   }
 
-  const char *const c_print_command =
-      cs_subset_string(NeoMutt->sub, "print_command");
-  if (mutt_istr_equal("text/plain", type) ||
-      mutt_istr_equal("application/postscript", type))
+  const char *const c_print_command = cs_subset_string(NeoMutt->sub, "print_command");
+  if (mutt_istr_equal("text/plain", type) || mutt_istr_equal("application/postscript", type))
   {
     rc = (mutt_pipe_attachment(fp, a, NONULL(c_print_command), NULL));
     goto out;

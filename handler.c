@@ -482,8 +482,7 @@ static bool is_autoview(struct Body *b)
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
 
-  const bool c_implicit_autoview =
-      cs_subset_bool(NeoMutt->sub, "implicit_autoview");
+  const bool c_implicit_autoview = cs_subset_bool(NeoMutt->sub, "implicit_autoview");
   if (c_implicit_autoview)
   {
     /* $implicit_autoview is essentially the same as "auto_view *" */
@@ -765,8 +764,7 @@ static int external_body_handler(struct Body *b, struct State *s)
     if (s->flags & MUTT_DISPLAY)
     {
       state_mark_attach(s);
-      state_puts(s, _("[-- Error: message/external-body has no access-type "
-                      "parameter --]\n"));
+      state_puts(s, _("[-- Error: message/external-body has no access-type parameter --]\n"));
       return 0;
     }
     else
@@ -833,9 +831,7 @@ static int external_body_handler(struct Body *b, struct State *s)
                  function responsible for the prettification is
                  mutt_str_pretty_size() in mutt/string.c.  */
               "[-- This %s/%s attachment (size %s byte) has been deleted --]\n",
-              "[-- This %s/%s attachment (size %s bytes) has been deleted "
-              "--]\n",
-              size);
+              "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n", size);
         }
       }
       else
@@ -850,8 +846,7 @@ static int external_body_handler(struct Body *b, struct State *s)
 
              Caution: Argument three %3$ is also defined but should not be used
              in this translation!  */
-          str = _("[-- This %s/%s attachment has been deleted --]\n[-- on %4$s "
-                  "--]\n");
+          str = _("[-- This %s/%s attachment has been deleted --]\n[-- on %4$s --]\n");
         }
         else
         {
@@ -886,7 +881,8 @@ static int external_body_handler(struct Body *b, struct State *s)
       /* L10N: If the translation of this string is a multi line string, then
          each line should start with "[-- " and end with " --]".
          The "%s/%s" is a MIME type, e.g. "text/plain". */
-      snprintf(strbuf, sizeof(strbuf), _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated external source has --]\n[-- expired. --]\n"),
+      snprintf(strbuf, sizeof(strbuf),
+               _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated external source has --]\n[-- expired. --]\n"),
                TYPE(b->parts), b->parts->subtype);
       state_attach_puts(s, strbuf);
 
@@ -907,7 +903,8 @@ static int external_body_handler(struct Body *b, struct State *s)
          The "%s/%s" is a MIME type, e.g. "text/plain".  The %s after
          access-type is an access-type as defined by the MIME RFCs, e.g. "FTP",
          "LOCAL-FILE", "MAIL-SERVER". */
-      snprintf(strbuf, sizeof(strbuf), _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated access-type %s is unsupported --]\n"),
+      snprintf(strbuf, sizeof(strbuf),
+               _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated access-type %s is unsupported --]\n"),
                TYPE(b->parts), b->parts->subtype, access_type);
       state_attach_puts(s, strbuf);
 
@@ -940,9 +937,8 @@ static int alternative_handler(struct Body *a, struct State *s)
     mustfree = true;
     b = mutt_body_new();
     b->length = mutt_file_get_size_fp(s->fp_in);
-    b->parts =
-        mutt_parse_multipart(s->fp_in, mutt_param_get(&a->parameter, "boundary"),
-                             b->length, mutt_istr_equal("digest", a->subtype));
+    b->parts = mutt_parse_multipart(s->fp_in, mutt_param_get(&a->parameter, "boundary"),
+                                    b->length, mutt_istr_equal("digest", a->subtype));
   }
   else
     b = a;
@@ -1061,8 +1057,7 @@ static int alternative_handler(struct Body *a, struct State *s)
       mutt_file_copy_bytes(s->fp_in, s->fp_out, choice->offset - choice->hdr_offset);
     }
 
-    const char *const c_show_multipart_alternative =
-        cs_subset_string(NeoMutt->sub, "show_multipart_alternative");
+    const char *const c_show_multipart_alternative = cs_subset_string(NeoMutt->sub, "show_multipart_alternative");
     if (mutt_str_equal("info", c_show_multipart_alternative))
     {
       print_part_line(s, choice, 0);
@@ -1098,8 +1093,7 @@ static int alternative_handler(struct Body *a, struct State *s)
   {
     /* didn't find anything that we could display! */
     state_mark_attach(s);
-    state_puts(s, _("[-- Error:  Could not display any parts of "
-                    "Multipart/Alternative --]\n"));
+    state_puts(s, _("[-- Error:  Could not display any parts of Multipart/Alternative --]\n"));
     rc = -1;
   }
 
@@ -1119,17 +1113,15 @@ static int multilingual_handler(struct Body *a, struct State *s)
   bool mustfree = false;
   int rc = 0;
 
-  mutt_debug(LL_DEBUG2,
-             "RFC8255 >> entering in handler multilingual handler\n");
+  mutt_debug(LL_DEBUG2, "RFC8255 >> entering in handler multilingual handler\n");
   if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
       (a->encoding == ENC_UUENCODED))
   {
     mustfree = true;
     b = mutt_body_new();
     b->length = mutt_file_get_size_fp(s->fp_in);
-    b->parts =
-        mutt_parse_multipart(s->fp_in, mutt_param_get(&a->parameter, "boundary"),
-                             b->length, mutt_istr_equal("digest", a->subtype));
+    b->parts = mutt_parse_multipart(s->fp_in, mutt_param_get(&a->parameter, "boundary"),
+                                    b->length, mutt_istr_equal("digest", a->subtype));
   }
   else
     b = a;
@@ -1156,8 +1148,7 @@ static int multilingual_handler(struct Body *a, struct State *s)
     b = b->next;
   }
 
-  const struct Slist *c_preferred_languages =
-      cs_subset_slist(NeoMutt->sub, "preferred_languages");
+  const struct Slist *c_preferred_languages = cs_subset_slist(NeoMutt->sub, "preferred_languages");
   if (c_preferred_languages)
   {
     struct Buffer *langs = mutt_buffer_pool_get();
@@ -1229,9 +1220,8 @@ static int multipart_handler(struct Body *a, struct State *s)
   {
     b = mutt_body_new();
     b->length = mutt_file_get_size_fp(s->fp_in);
-    b->parts =
-        mutt_parse_multipart(s->fp_in, mutt_param_get(&a->parameter, "boundary"),
-                             b->length, mutt_istr_equal("digest", a->subtype));
+    b->parts = mutt_parse_multipart(s->fp_in, mutt_param_get(&a->parameter, "boundary"),
+                                    b->length, mutt_istr_equal("digest", a->subtype));
   }
   else
     b = a;
@@ -1273,8 +1263,7 @@ static int multipart_handler(struct Body *a, struct State *s)
                  TYPE(p), NONULL(p->subtype));
     }
 
-    const bool c_include_only_first =
-        cs_subset_bool(NeoMutt->sub, "include_only_first");
+    const bool c_include_only_first = cs_subset_bool(NeoMutt->sub, "include_only_first");
     if ((s->flags & MUTT_REPLYING) && c_include_only_first && (s->flags & MUTT_FIRSTDONE))
     {
       break;
@@ -1644,7 +1633,8 @@ int mutt_body_handler(struct Body *b, struct State *s)
         encrypted_handler = crypt_pgp_application_handler;
         handler = encrypted_handler;
       }
-      else if (c_reflow_text && mutt_istr_equal("flowed", mutt_param_get(&b->parameter, "format")))
+      else if (c_reflow_text &&
+               mutt_istr_equal("flowed", mutt_param_get(&b->parameter, "format")))
       {
         handler = rfc3676_handler;
       }
@@ -1669,8 +1659,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
   }
   else if (b->type == TYPE_MULTIPART)
   {
-    const char *const c_show_multipart_alternative =
-        cs_subset_string(NeoMutt->sub, "show_multipart_alternative");
+    const char *const c_show_multipart_alternative = cs_subset_string(NeoMutt->sub, "show_multipart_alternative");
     if (!mutt_str_equal("inline", c_show_multipart_alternative) &&
         mutt_istr_equal("alternative", b->subtype))
     {
@@ -1732,8 +1721,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
   {
     /* Prevent encrypted attachments from being included in replies
      * unless $include_encrypted is set. */
-    const bool c_include_encrypted =
-        cs_subset_bool(NeoMutt->sub, "include_encrypted");
+    const bool c_include_encrypted = cs_subset_bool(NeoMutt->sub, "include_encrypted");
     if ((s->flags & MUTT_REPLYING) && (s->flags & MUTT_FIRSTDONE) &&
         encrypted_handler && !c_include_encrypted)
     {
@@ -1746,8 +1734,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
    * if we're not already being called from there */
   else if (s->flags & MUTT_DISPLAY)
   {
-    const bool c_honor_disposition =
-        cs_subset_bool(NeoMutt->sub, "honor_disposition");
+    const bool c_honor_disposition = cs_subset_bool(NeoMutt->sub, "honor_disposition");
     struct Buffer msg = mutt_buffer_make(256);
 
     if (!OptViewAttach)
@@ -1774,8 +1761,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
       {
         if (c_honor_disposition && (b->disposition == DISP_ATTACH))
         {
-          mutt_buffer_strcpy(&msg, _("[-- This is an attachment (need "
-                                     "'view-attachments' bound to key) --]\n"));
+          mutt_buffer_strcpy(&msg, _("[-- This is an attachment (need 'view-attachments' bound to key) --]\n"));
         }
         else
         {
@@ -1892,8 +1878,7 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
     const char *charset = b->charset;
     if (!charset)
     {
-      const char *const c_assumed_charset =
-          cs_subset_string(NeoMutt->sub, "assumed_charset");
+      const char *const c_assumed_charset = cs_subset_string(NeoMutt->sub, "assumed_charset");
       charset = mutt_param_get(&b->parameter, "charset");
       if (!charset && c_assumed_charset)
         charset = mutt_ch_get_default_charset();

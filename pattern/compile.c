@@ -161,8 +161,7 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
 
   FILE *fp = NULL;
 
-  const char *const c_external_search_command =
-      cs_subset_string(NeoMutt->sub, "external_search_command");
+  const char *const c_external_search_command = cs_subset_string(NeoMutt->sub, "external_search_command");
   if (!c_external_search_command)
   {
     mutt_buffer_printf(err, "%s", _("No search command defined"));

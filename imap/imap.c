@@ -102,8 +102,7 @@ static int check_capabilities(struct ImapAccountData *adata)
 
   if (!((adata->capabilities & IMAP_CAP_IMAP4) || (adata->capabilities & IMAP_CAP_IMAP4REV1)))
   {
-    mutt_error(
-        _("This IMAP server is ancient. NeoMutt does not work with it."));
+    mutt_error(_("This IMAP server is ancient. NeoMutt does not work with it."));
     return -1;
   }
 
@@ -544,8 +543,7 @@ static void imap_logout(struct ImapAccountData *adata)
 
   adata->status = IMAP_BYE;
   imap_cmd_start(adata, "LOGOUT");
-  const short c_imap_poll_timeout =
-      cs_subset_number(NeoMutt->sub, "imap_poll_timeout");
+  const short c_imap_poll_timeout = cs_subset_number(NeoMutt->sub, "imap_poll_timeout");
   if ((c_imap_poll_timeout <= 0) ||
       (mutt_socket_poll(adata->conn, c_imap_poll_timeout) != 0))
   {
@@ -773,12 +771,10 @@ int imap_open_connection(struct ImapAccountData *adata)
     {
       enum QuadOption ans;
 
-      const enum QuadOption c_ssl_starttls =
-          cs_subset_quad(NeoMutt->sub, "ssl_starttls");
+      const enum QuadOption c_ssl_starttls = cs_subset_quad(NeoMutt->sub, "ssl_starttls");
       if (c_ssl_force_tls)
         ans = MUTT_YES;
-      else if ((ans = query_quadoption(c_ssl_starttls,
-                                       _("Secure connection with TLS?"))) == MUTT_ABORT)
+      else if ((ans = query_quadoption(c_ssl_starttls, _("Secure connection with TLS?"))) == MUTT_ABORT)
       {
         goto bail;
       }
@@ -1121,8 +1117,7 @@ enum MxStatus imap_check_mailbox(struct Mailbox *m, bool force)
 
   /* try IDLE first, unless force is set */
   const bool c_imap_idle = cs_subset_bool(NeoMutt->sub, "imap_idle");
-  const short c_imap_keepalive =
-      cs_subset_number(NeoMutt->sub, "imap_keepalive");
+  const short c_imap_keepalive = cs_subset_number(NeoMutt->sub, "imap_keepalive");
   if (!force && c_imap_idle && (adata->capabilities & IMAP_CAP_IDLE) &&
       ((adata->state != IMAP_IDLE) || (mutt_date_epoch() >= adata->lastread + c_imap_keepalive)))
   {
@@ -1314,8 +1309,7 @@ int imap_subscribe(char *path, bool subscribe)
     return -1;
   }
 
-  const bool c_imap_check_subscribed =
-      cs_subset_bool(NeoMutt->sub, "imap_check_subscribed");
+  const bool c_imap_check_subscribed = cs_subset_bool(NeoMutt->sub, "imap_check_subscribed");
   if (c_imap_check_subscribed)
   {
     char mbox[1024];
@@ -1367,8 +1361,7 @@ int imap_complete(char *buf, size_t buflen, const char *path)
   }
 
   /* fire off command */
-  const bool c_imap_list_subscribed =
-      cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
+  const bool c_imap_list_subscribed = cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
   snprintf(tmp, sizeof(tmp), "%s \"\" \"%s%%\"",
            c_imap_list_subscribed ? "LSUB" : "LIST", mdata->real_name);
 
@@ -1502,8 +1495,7 @@ int imap_fast_trash(struct Mailbox *m, const char *dest)
         break;
       mutt_debug(LL_DEBUG3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), dest_mdata->name);
-      const bool c_confirm_create =
-          cs_subset_bool(NeoMutt->sub, "confirm_create");
+      const bool c_confirm_create = cs_subset_bool(NeoMutt->sub, "confirm_create");
       if (c_confirm_create && (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES))
       {
         mutt_clear_error();
@@ -1738,8 +1730,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
     adata->state = IMAP_AUTHENTICATED;
   }
 
-  const bool c_message_cache_clean =
-      cs_subset_bool(NeoMutt->sub, "message_cache_clean");
+  const bool c_message_cache_clean = cs_subset_bool(NeoMutt->sub, "message_cache_clean");
   if (c_message_cache_clean)
     imap_cache_clean(m);
 
@@ -1982,8 +1973,7 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
     imap_mailbox_status(m_postponed, true);
   }
 
-  const bool c_imap_check_subscribed =
-      cs_subset_bool(NeoMutt->sub, "imap_check_subscribed");
+  const bool c_imap_check_subscribed = cs_subset_bool(NeoMutt->sub, "imap_check_subscribed");
   if (c_imap_check_subscribed)
     imap_exec(adata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
 

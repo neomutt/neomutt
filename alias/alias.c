@@ -187,8 +187,7 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
  */
 static void recode_buf(char *buf, size_t buflen)
 {
-  const char *const c_config_charset =
-      cs_subset_string(NeoMutt->sub, "config_charset");
+  const char *const c_config_charset = cs_subset_string(NeoMutt->sub, "config_charset");
   const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
   if (!c_config_charset || !c_charset)
     return;

@@ -47,10 +47,9 @@
 #include "recvattach.h"
 #include "recvcmd.h"
 
-static const char *Not_available_in_this_menu =
-    N_("Not available in this menu");
-static const char *Function_not_permitted_in_attach_message_mode =
-    N_("Function not permitted in attach-message mode");
+static const char *Not_available_in_this_menu = N_("Not available in this menu");
+static const char *Function_not_permitted_in_attach_message_mode = N_(
+    "Function not permitted in attach-message mode");
 
 /**
  * attach_collapse - Close the tree of the current attachment
@@ -71,8 +70,7 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
   const int index = menu_get_index(menu);
   rindex = actx->v2r[index] + 1;
 
-  const bool c_digest_collapse =
-      cs_subset_bool(NeoMutt->sub, "digest_collapse");
+  const bool c_digest_collapse = cs_subset_bool(NeoMutt->sub, "digest_collapse");
   while ((rindex < actx->idxlen) && (actx->idx[rindex]->level > curlevel))
   {
     if (c_digest_collapse && (actx->idx[rindex]->body->type == TYPE_MULTIPART) &&
@@ -218,14 +216,12 @@ static int op_attachment_delete(struct AttachPrivateData *priv, int op)
 
   if ((WithCrypto != 0) && (priv->actx->email->security & SEC_ENCRYPT))
   {
-    mutt_message(_("Deletion of attachments from encrypted messages is "
-                   "unsupported"));
+    mutt_message(_("Deletion of attachments from encrypted messages is unsupported"));
     return FR_ERROR;
   }
   if ((WithCrypto != 0) && (priv->actx->email->security & (SEC_SIGN | SEC_PARTSIGN)))
   {
-    mutt_message(_("Deletion of attachments from signed messages may "
-                   "invalidate the signature"));
+    mutt_message(_("Deletion of attachments from signed messages may invalidate the signature"));
   }
   if (!priv->menu->tag_prefix)
   {
@@ -260,8 +256,7 @@ static int op_attachment_delete(struct AttachPrivateData *priv, int op)
         }
         else
         {
-          mutt_message(
-              _("Only deletion of multipart attachments is supported"));
+          mutt_message(_("Only deletion of multipart attachments is supported"));
         }
       }
     }
@@ -567,13 +562,11 @@ static int op_followup(struct AttachPrivateData *priv, int op)
   if (check_attach())
     return FR_ERROR;
 
-  const enum QuadOption c_followup_to_poster =
-      cs_subset_quad(NeoMutt->sub, "followup_to_poster");
+  const enum QuadOption c_followup_to_poster = cs_subset_quad(NeoMutt->sub, "followup_to_poster");
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   if (!cur_att->body->email->env->followup_to ||
       !mutt_istr_equal(cur_att->body->email->env->followup_to, "poster") ||
-      (query_quadoption(c_followup_to_poster,
-                        _("Reply by mail as poster prefers?")) != MUTT_YES))
+      (query_quadoption(c_followup_to_poster, _("Reply by mail as poster prefers?")) != MUTT_YES))
   {
     mutt_attach_reply(cur_att->fp, priv->mailbox, priv->actx->email, priv->actx,
                       priv->menu->tag_prefix ? NULL : cur_att->body, SEND_NEWS | SEND_REPLY);

@@ -859,8 +859,7 @@ void mbox_reset_atime(struct Mailbox *m, struct stat *st)
 
   /* When $mbox_check_recent is set, existing new mail is ignored, so do not
    * reset the atime to mtime-1 to signal new mail.  */
-  const bool c_mail_check_recent =
-      cs_subset_bool(NeoMutt->sub, "mail_check_recent");
+  const bool c_mail_check_recent = cs_subset_bool(NeoMutt->sub, "mail_check_recent");
   if (!c_mail_check_recent && (utimebuf.actime >= utimebuf.modtime) && mbox_has_new(m))
   {
     utimebuf.actime = utimebuf.modtime - 1;
@@ -995,8 +994,7 @@ static bool mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
     }
     FREE(&tmp_path);
 
-    adata->fp =
-        mutt_file_fopen(mailbox_path(m), (flags & MUTT_NEWFOLDER) ? "w+" : "a+");
+    adata->fp = mutt_file_fopen(mailbox_path(m), (flags & MUTT_NEWFOLDER) ? "w+" : "a+");
     if (!adata->fp)
     {
       mutt_perror(mailbox_path(m));
@@ -1248,8 +1246,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
     /* this means ctx->changed or m->msg_deleted was set, but no
      * messages were found to be changed or deleted.  This should
      * never happen, is we presume it is a bug in neomutt.  */
-    mutt_error(
-        _("sync: mbox modified, but no modified messages (report this bug)"));
+    mutt_error(_("sync: mbox modified, but no modified messages (report this bug)"));
     mutt_debug(LL_DEBUG1, "no modified messages\n");
     goto bail;
   }
@@ -1470,8 +1467,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   mutt_buffer_pool_release(&tempfile);
   mutt_sig_unblock();
 
-  const bool c_check_mbox_size =
-      cs_subset_bool(NeoMutt->sub, "check_mbox_size");
+  const bool c_check_mbox_size = cs_subset_bool(NeoMutt->sub, "check_mbox_size");
   if (c_check_mbox_size)
   {
     struct Mailbox *m_tmp = mailbox_find(mailbox_path(m));
@@ -1682,8 +1678,7 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
   }
   mutt_file_fclose(&fp);
 
-  const bool c_check_mbox_size =
-      cs_subset_bool(NeoMutt->sub, "check_mbox_size");
+  const bool c_check_mbox_size = cs_subset_bool(NeoMutt->sub, "check_mbox_size");
   if (!c_check_mbox_size)
   {
     /* need to restore the times here, the file was not really accessed,
@@ -1791,8 +1786,7 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 
   bool new_or_changed;
 
-  const bool c_check_mbox_size =
-      cs_subset_bool(NeoMutt->sub, "check_mbox_size");
+  const bool c_check_mbox_size = cs_subset_bool(NeoMutt->sub, "check_mbox_size");
   if (c_check_mbox_size)
     new_or_changed = (st.st_size > m->size);
   else
@@ -1806,8 +1800,7 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 
   if (new_or_changed)
   {
-    const bool c_mail_check_recent =
-        cs_subset_bool(NeoMutt->sub, "mail_check_recent");
+    const bool c_mail_check_recent = cs_subset_bool(NeoMutt->sub, "mail_check_recent");
     if (!c_mail_check_recent ||
         (mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->last_visited) > 0))
     {

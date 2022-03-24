@@ -836,8 +836,7 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
     }
   }
 
-  const char *const c_index_format =
-      cs_subset_string(shared->sub, "index_format");
+  const char *const c_index_format = cs_subset_string(shared->sub, "index_format");
   int msg_in_pager = shared->ctx ? shared->ctx->msg_in_pager : 0;
   mutt_make_string(buf, buflen, menu->win->state.cols, NONULL(c_index_format),
                    m, msg_in_pager, e, flags, NULL);
@@ -899,8 +898,8 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
     int last;  ///< Last character of that colour
   } *syntax = NULL;
 
-  struct AttrColor *ac_base = merged_color_overlay(
-      simple_color_get(MT_COLOR_NORMAL), simple_color_get(MT_COLOR_STATUS));
+  struct AttrColor *ac_base = merged_color_overlay(simple_color_get(MT_COLOR_NORMAL),
+                                                   simple_color_get(MT_COLOR_STATUS));
   do
   {
     struct RegexColor *cl = NULL;
@@ -1163,8 +1162,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         /* notify the user of new mail */
         if (check == MX_STATUS_REOPENED)
         {
-          mutt_error(
-              _("Mailbox was externally modified.  Flags may be wrong."));
+          mutt_error(_("Mailbox was externally modified.  Flags may be wrong."));
         }
         else if (check == MX_STATUS_NEW_MAIL)
         {
@@ -1177,8 +1175,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               const bool c_beep_new = cs_subset_bool(shared->sub, "beep_new");
               if (c_beep_new)
                 mutt_beep(true);
-              const char *const c_new_mail_command =
-                  cs_subset_string(shared->sub, "new_mail_command");
+              const char *const c_new_mail_command = cs_subset_string(shared->sub, "new_mail_command");
               if (c_new_mail_command)
               {
                 char cmd[1024];
@@ -1208,8 +1205,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         OptSearchInvalid = true;
       }
 
-      index_shared_data_set_email(
-          shared, mutt_get_virt_email(shared->mailbox, menu_get_index(priv->menu)));
+      index_shared_data_set_email(shared, mutt_get_virt_email(shared->mailbox,
+                                                              menu_get_index(priv->menu)));
     }
 
     if (!priv->attach_msg)
@@ -1224,8 +1221,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           const bool c_beep_new = cs_subset_bool(shared->sub, "beep_new");
           if (c_beep_new)
             mutt_beep(true);
-          const char *const c_new_mail_command =
-              cs_subset_string(shared->sub, "new_mail_command");
+          const char *const c_new_mail_command = cs_subset_string(shared->sub, "new_mail_command");
           if (c_new_mail_command)
           {
             char cmd[1024];
@@ -1248,8 +1244,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       msgwin_set_text(MT_COLOR_NORMAL, "tag-");
 
     const bool c_arrow_cursor = cs_subset_bool(shared->sub, "arrow_cursor");
-    const bool c_braille_friendly =
-        cs_subset_bool(shared->sub, "braille_friendly");
+    const bool c_braille_friendly = cs_subset_bool(shared->sub, "braille_friendly");
     const int index = menu_get_index(priv->menu);
     if (c_arrow_cursor)
     {
@@ -1408,9 +1403,9 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
  */
 struct MuttWindow *index_pager_init(void)
 {
-  struct MuttWindow *dlg =
-      mutt_window_new(WT_DLG_INDEX, MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *dlg = mutt_window_new(WT_DLG_INDEX, MUTT_WIN_ORIENT_HORIZONTAL,
+                                           MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
+                                           MUTT_WIN_SIZE_UNLIMITED);
 
   struct IndexSharedData *shared = index_shared_data_new();
   notify_set_parent(shared->notify, dlg->notify);

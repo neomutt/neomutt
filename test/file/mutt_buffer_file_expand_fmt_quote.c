@@ -31,8 +31,7 @@ void test_mutt_buffer_file_expand_fmt_quote(void)
 
   {
     mutt_buffer_file_expand_fmt_quote(NULL, "apple", "banana");
-    TEST_CHECK_(
-        1, "mutt_buffer_file_expand_fmt_quote(NULL, \"apple\", \"banana\")");
+    TEST_CHECK_(1, "mutt_buffer_file_expand_fmt_quote(NULL, \"apple\", \"banana\")");
   }
 
   {

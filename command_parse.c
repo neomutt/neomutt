@@ -199,8 +199,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
 
   while ((line = mutt_file_read_line(line, &linelen, fp, &lineno, MUTT_RL_CONT)) != NULL)
   {
-    const char *const c_config_charset =
-        cs_subset_string(NeoMutt->sub, "config_charset");
+    const char *const c_config_charset = cs_subset_string(NeoMutt->sub, "config_charset");
     const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
     const bool conv = c_config_charset && c_charset;
     if (conv)
@@ -257,7 +256,10 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
   {
     /* the neomuttrc source keyword */
     mutt_buffer_reset(err);
-    mutt_buffer_printf(err, (rc >= -MAX_ERRS) ? _("source: errors in %s") : _("source: reading aborted due to too many errors in %s"),
+    mutt_buffer_printf(err,
+                       (rc >= -MAX_ERRS) ?
+                           _("source: errors in %s") :
+                           _("source: reading aborted due to too many errors in %s"),
                        rcfile);
     rc = -1;
   }
@@ -759,8 +761,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     {
       if (prefix)
       {
-        mutt_buffer_printf(err,
-                           _("Can't use a prefix when querying a variable"));
+        mutt_buffer_printf(err, _("Can't use a prefix when querying a variable"));
         return MUTT_CMD_WARNING;
       }
 
@@ -778,9 +779,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     {
       if (prefix)
       {
-        mutt_buffer_printf(
-            err,
-            _("Can't use prefix when incrementing or decrementing a variable"));
+        mutt_buffer_printf(err, _("Can't use prefix when incrementing or decrementing a variable"));
         return MUTT_CMD_WARNING;
       }
 
@@ -830,8 +829,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     {
       if (data == MUTT_SET_SET)
       {
-        mutt_buffer_printf(err, _("Prefixes 'no' and 'inv' may only be used "
-                                  "with bool/quad variables"));
+        mutt_buffer_printf(err, _("Prefixes 'no' and 'inv' may only be used with bool/quad variables"));
       }
       else
       {

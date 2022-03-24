@@ -125,8 +125,7 @@ bool pgp_use_gpg_agent(void)
   char *tty = NULL;
 
   /* GnuPG 2.1 no longer exports GPG_AGENT_INFO */
-  const bool c_pgp_use_gpg_agent =
-      cs_subset_bool(NeoMutt->sub, "pgp_use_gpg_agent");
+  const bool c_pgp_use_gpg_agent = cs_subset_bool(NeoMutt->sub, "pgp_use_gpg_agent");
   if (!c_pgp_use_gpg_agent)
     return false;
 
@@ -147,8 +146,7 @@ bool pgp_use_gpg_agent(void)
  */
 static struct PgpKeyInfo *key_parent(struct PgpKeyInfo *k)
 {
-  const bool c_pgp_ignore_subkeys =
-      cs_subset_bool(NeoMutt->sub, "pgp_ignore_subkeys");
+  const bool c_pgp_ignore_subkeys = cs_subset_bool(NeoMutt->sub, "pgp_ignore_subkeys");
   if ((k->flags & KEYFLAG_SUBKEY) && k->parent && c_pgp_ignore_subkeys)
     k = k->parent;
 
@@ -253,8 +251,7 @@ static int pgp_copy_checksig(FILE *fp_in, FILE *fp_out)
 
   int rc = -1;
 
-  const struct Regex *c_pgp_good_sign =
-      cs_subset_regex(NeoMutt->sub, "pgp_good_sign");
+  const struct Regex *c_pgp_good_sign = cs_subset_regex(NeoMutt->sub, "pgp_good_sign");
   if (c_pgp_good_sign && c_pgp_good_sign->regex)
   {
     char *line = NULL;
@@ -301,8 +298,7 @@ static int pgp_check_pgp_decryption_okay_regex(FILE *fp_in)
 {
   int rc = -1;
 
-  const struct Regex *c_pgp_decryption_okay =
-      cs_subset_regex(NeoMutt->sub, "pgp_decryption_okay");
+  const struct Regex *c_pgp_decryption_okay = cs_subset_regex(NeoMutt->sub, "pgp_decryption_okay");
   if (c_pgp_decryption_okay && c_pgp_decryption_okay->regex)
   {
     char *line = NULL;
@@ -357,8 +353,7 @@ static int pgp_check_decryption_okay(FILE *fp_in)
   size_t linelen;
   int inside_decrypt = 0;
 
-  const bool c_pgp_check_gpg_decrypt_status_fd =
-      cs_subset_bool(NeoMutt->sub, "pgp_check_gpg_decrypt_status_fd");
+  const bool c_pgp_check_gpg_decrypt_status_fd = cs_subset_bool(NeoMutt->sub, "pgp_check_gpg_decrypt_status_fd");
   if (!c_pgp_check_gpg_decrypt_status_fd)
     return pgp_check_pgp_decryption_okay_regex(fp_in);
 
@@ -377,8 +372,7 @@ static int pgp_check_decryption_okay(FILE *fp_in)
     {
       if (!inside_decrypt)
       {
-        mutt_debug(LL_DEBUG2,
-                   "    PLAINTEXT encountered outside of DECRYPTION\n");
+        mutt_debug(LL_DEBUG2, "    PLAINTEXT encountered outside of DECRYPTION\n");
         rc = -2;
         break;
       }
@@ -426,8 +420,7 @@ static void pgp_copy_clearsigned(FILE *fp_in, struct State *s, char *charset)
    * be a wrong label, so we want the ability to do corrections via
    * charset-hooks. Therefore we set flags to MUTT_ICONV_HOOK_FROM.  */
   const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-  struct FgetConv *fc =
-      mutt_ch_fgetconv_open(fp_in, charset, c_charset, MUTT_ICONV_HOOK_FROM);
+  struct FgetConv *fc = mutt_ch_fgetconv_open(fp_in, charset, c_charset, MUTT_ICONV_HOOK_FROM);
 
   for (complete = true, armor_header = true;
        mutt_ch_fgetconvs(buf, sizeof(buf), fc); complete = (strchr(buf, '\n')))
@@ -554,9 +547,8 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
         fputs(buf, fp_tmp);
 
         if ((needpass && mutt_str_equal("-----END PGP MESSAGE-----\n", buf)) ||
-            (!needpass &&
-             (mutt_str_equal("-----END PGP SIGNATURE-----\n", buf) ||
-              mutt_str_equal("-----END PGP PUBLIC KEY BLOCK-----\n", buf))))
+            (!needpass && (mutt_str_equal("-----END PGP SIGNATURE-----\n", buf) ||
+                           mutt_str_equal("-----END PGP PUBLIC KEY BLOCK-----\n", buf))))
         {
           break;
         }
@@ -602,8 +594,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
           mutt_file_fclose(&fp_pgp_out);
           maybe_goodsig = false;
           fp_pgp_in = NULL;
-          state_attach_puts(
-              s, _("[-- Error: unable to create PGP subprocess --]\n"));
+          state_attach_puts(s, _("[-- Error: unable to create PGP subprocess --]\n"));
         }
         else /* PGP started successfully */
         {
@@ -773,8 +764,7 @@ out:
 
   if (needpass == -1)
   {
-    state_attach_puts(
-        s, _("[-- Error: could not find beginning of PGP message --]\n\n"));
+    state_attach_puts(s, _("[-- Error: could not find beginning of PGP message --]\n\n"));
     return -1;
   }
 
@@ -1060,8 +1050,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
     unlink(mutt_buffer_string(pgptmpfile));
     if (s->flags & MUTT_DISPLAY)
     {
-      state_attach_puts(
-          s, _("[-- Error: could not create a PGP subprocess --]\n\n"));
+      state_attach_puts(s, _("[-- Error: could not create a PGP subprocess --]\n\n"));
     }
     goto cleanup;
   }
@@ -1086,8 +1075,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   mutt_file_fclose(&fp_pgp_out);
 
   rv = filter_wait(pid);
-  const bool c_pgp_use_gpg_agent =
-      cs_subset_bool(NeoMutt->sub, "pgp_use_gpg_agent");
+  const bool c_pgp_use_gpg_agent = cs_subset_bool(NeoMutt->sub, "pgp_use_gpg_agent");
   if (c_pgp_use_gpg_agent)
     mutt_need_hard_redraw();
 
@@ -1244,8 +1232,7 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
     mutt_perror(_("Can't create temporary file"));
     if (s->flags & MUTT_DISPLAY)
     {
-      state_attach_puts(s,
-                        _("[-- Error: could not create temporary file --]\n"));
+      state_attach_puts(s, _("[-- Error: could not create temporary file --]\n"));
     }
     return -1;
   }
@@ -1258,8 +1245,7 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
   {
     if (s->flags & MUTT_DISPLAY)
     {
-      state_attach_puts(
-          s, _("[-- The following data is PGP/MIME encrypted --]\n\n"));
+      state_attach_puts(s, _("[-- The following data is PGP/MIME encrypted --]\n\n"));
       mutt_protected_headers_handler(tattach, s);
     }
 
@@ -1483,8 +1469,7 @@ char *pgp_class_find_keys(const struct AddressList *addrlist, bool oppenc_mode)
       {
         keyid = crypt_hook->data;
         enum QuadOption ans = MUTT_YES;
-        const bool c_crypt_confirm_hook =
-            cs_subset_bool(NeoMutt->sub, "crypt_confirm_hook");
+        const bool c_crypt_confirm_hook = cs_subset_bool(NeoMutt->sub, "crypt_confirm_hook");
         if (!oppenc_mode && c_crypt_confirm_hook)
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyid, p->mailbox);
@@ -1898,8 +1883,7 @@ SecurityFlags pgp_class_send_menu(struct Email *e)
     return e->security;
 
   /* If autoinline and no crypto options set, then set inline. */
-  const bool c_pgp_auto_inline =
-      cs_subset_bool(NeoMutt->sub, "pgp_auto_inline");
+  const bool c_pgp_auto_inline = cs_subset_bool(NeoMutt->sub, "pgp_auto_inline");
   if (c_pgp_auto_inline &&
       !((e->security & APPLICATION_PGP) && (e->security & (SEC_SIGN | SEC_ENCRYPT))))
   {
@@ -1925,16 +1909,14 @@ SecurityFlags pgp_class_send_menu(struct Email *e)
    * between inline and mime, but not turn encryption on or off.
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.  */
-  const bool c_crypt_opportunistic_encrypt =
-      cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt");
+  const bool c_crypt_opportunistic_encrypt = cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt");
   if (c_crypt_opportunistic_encrypt && (e->security & SEC_OPPENCRYPT))
   {
     if (e->security & (SEC_ENCRYPT | SEC_SIGN))
     {
       snprintf(promptbuf, sizeof(promptbuf),
                /* L10N: PGP options (inline) (opportunistic encryption is on) */
-               _("PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode "
-                 "off?"),
+               _("PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"),
                mime_inline);
       prompt = promptbuf;
       /* L10N: PGP options (inline) (opportunistic encryption is on)
@@ -1961,8 +1943,7 @@ SecurityFlags pgp_class_send_menu(struct Email *e)
     {
       snprintf(promptbuf, sizeof(promptbuf),
                /* L10N: PGP options (inline) (opportunistic encryption is off) */
-               _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, "
-                 "(c)lear, or (o)ppenc mode?"),
+               _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"),
                mime_inline);
       prompt = promptbuf;
       /* L10N: PGP options (inline) (opportunistic encryption is off)
@@ -1973,8 +1954,7 @@ SecurityFlags pgp_class_send_menu(struct Email *e)
     else
     {
       /* L10N: PGP options (opportunistic encryption is off) */
-      prompt = _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or "
-                 "(o)ppenc mode?");
+      prompt = _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?");
       /* L10N: PGP options (opportunistic encryption is off) */
       letters = _("esabco");
       choices = "esabcO";
@@ -1987,8 +1967,7 @@ SecurityFlags pgp_class_send_menu(struct Email *e)
     {
       snprintf(promptbuf, sizeof(promptbuf),
                /* L10N: PGP options (inline) */
-               _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or "
-                 "(c)lear?"),
+               _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"),
                mime_inline);
       prompt = promptbuf;
       /* L10N: PGP options (inline)

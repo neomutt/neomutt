@@ -210,10 +210,8 @@ static void pipe_set_flags(bool decode, bool print, CopyMessageFlags *cmflags,
     *chflags |= CH_DECODE | CH_REORDER;
     *cmflags |= MUTT_CM_DECODE | MUTT_CM_CHARCONV;
 
-    const bool c_print_decode_weed =
-        cs_subset_bool(NeoMutt->sub, "print_decode_weed");
-    const bool c_pipe_decode_weed =
-        cs_subset_bool(NeoMutt->sub, "pipe_decode_weed");
+    const bool c_print_decode_weed = cs_subset_bool(NeoMutt->sub, "print_decode_weed");
+    const bool c_pipe_decode_weed = cs_subset_bool(NeoMutt->sub, "pipe_decode_weed");
     if (print ? c_print_decode_weed : c_pipe_decode_weed)
     {
       *chflags |= CH_WEED;
@@ -457,8 +455,7 @@ void mutt_print_message(struct Mailbox *m, struct EmailList *el)
     return;
 
   const enum QuadOption c_print = cs_subset_quad(NeoMutt->sub, "print");
-  const char *const c_print_command =
-      cs_subset_string(NeoMutt->sub, "print_command");
+  const char *const c_print_command = cs_subset_string(NeoMutt->sub, "print_command");
   if (c_print && !c_print_command)
   {
     mutt_message(_("No printing command has been defined"));
@@ -472,9 +469,8 @@ void mutt_print_message(struct Mailbox *m, struct EmailList *el)
     msg_count++;
   }
 
-  if (query_quadoption(c_print, (msg_count == 1) ?
-                                    _("Print message?") :
-                                    _("Print tagged messages?")) != MUTT_YES)
+  if (query_quadoption(c_print, (msg_count == 1) ? _("Print message?") :
+                                                   _("Print tagged messages?")) != MUTT_YES)
   {
     return;
   }
@@ -499,17 +495,14 @@ bool mutt_select_sort(bool reverse)
 {
   enum SortType sort = SORT_DATE;
 
-  switch (mutt_multi_choice(reverse ?
-                                /* L10N: The highlighted letters must match the "Sort" options */
-                                _("Rev-Sort "
-                                  "(d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)"
-                                  "nsort,si(z)e,s(c)ore,s(p)am,(l)abel?") :
-                                /* L10N: The highlighted letters must match the "Rev-Sort" options */
-                                _("Sort "
-                                  "(d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)"
-                                  "nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"),
-                            /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
-                            _("dfrsotuzcpl")))
+  switch (mutt_multi_choice(
+      reverse ?
+          /* L10N: The highlighted letters must match the "Sort" options */
+          _("Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?") :
+          /* L10N: The highlighted letters must match the "Rev-Sort" options */
+          _("Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"),
+      /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
+      _("dfrsotuzcpl")))
   {
     case -1: /* abort - don't resort */
       return -1;
@@ -559,8 +552,7 @@ bool mutt_select_sort(bool reverse)
       break;
   }
 
-  const unsigned char c_use_threads =
-      cs_subset_enum(NeoMutt->sub, "use_threads");
+  const unsigned char c_use_threads = cs_subset_enum(NeoMutt->sub, "use_threads");
   const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   int rc = CSR_ERR_CODE;
   if ((sort != SORT_THREADS) || (c_use_threads == UT_UNSET))
@@ -731,8 +723,8 @@ static void set_copy_flags(struct Email *e, enum MessageTransformOpt transform_o
   *cmflags = MUTT_CM_NO_FLAGS;
   *chflags = CH_UPDATE_LEN;
 
-  const bool need_decrypt =
-      (transform_opt == TRANSFORM_DECRYPT) && (e->security & SEC_ENCRYPT);
+  const bool need_decrypt = (transform_opt == TRANSFORM_DECRYPT) &&
+                            (e->security & SEC_ENCRYPT);
   const bool want_pgp = (WithCrypto & APPLICATION_PGP);
   const bool want_smime = (WithCrypto & APPLICATION_SMIME);
   const bool is_pgp = mutt_is_application_pgp(e->body) & SEC_ENCRYPT;
@@ -757,8 +749,7 @@ static void set_copy_flags(struct Email *e, enum MessageTransformOpt transform_o
   {
     *chflags = CH_XMIT | CH_MIME | CH_TXTPLAIN | CH_DECODE; // then decode RFC2047
     *cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
-    const bool c_copy_decode_weed =
-        cs_subset_bool(NeoMutt->sub, "copy_decode_weed");
+    const bool c_copy_decode_weed = cs_subset_bool(NeoMutt->sub, "copy_decode_weed");
     if (c_copy_decode_weed)
     {
       *chflags |= CH_WEED; // and respect $weed
@@ -1050,8 +1041,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     }
   }
 
-  const bool need_mailbox_cleanup =
-      ((m_save->type == MUTT_MBOX) || (m_save->type == MUTT_MMDF));
+  const bool need_mailbox_cleanup = ((m_save->type == MUTT_MBOX) ||
+                                     (m_save->type == MUTT_MMDF));
 
   mx_mbox_close(m_save);
   m_save->append = old_append;
@@ -1161,8 +1152,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   {
     mutt_buffer_printf(tmp, _("Convert to %s upon sending?"),
                        mutt_param_get(&b->parameter, "charset"));
-    enum QuadOption ans =
-        mutt_yesorno(mutt_buffer_string(tmp), b->noconv ? MUTT_NO : MUTT_YES);
+    enum QuadOption ans = mutt_yesorno(mutt_buffer_string(tmp), b->noconv ? MUTT_NO : MUTT_YES);
     if (ans != MUTT_ABORT)
       b->noconv = (ans == MUTT_NO);
   }

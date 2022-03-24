@@ -576,8 +576,7 @@ gpgme_ctx_t create_gpgme_context(bool for_smime)
   gpgme_error_t err = gpgme_new(&ctx);
 
 #ifdef USE_AUTOCRYPT
-  const char *const c_autocrypt_dir =
-      cs_subset_path(NeoMutt->sub, "autocrypt_dir");
+  const char *const c_autocrypt_dir = cs_subset_path(NeoMutt->sub, "autocrypt_dir");
   if (!err && OptAutocryptGpgme)
     err = gpgme_ctx_set_engine_info(ctx, GPGME_PROTOCOL_OpenPGP, NULL, c_autocrypt_dir);
 #endif
@@ -1048,14 +1047,10 @@ static int set_signer(gpgme_ctx_t ctx, const struct AddressList *al, bool for_sm
 {
   const char *signid = NULL;
 
-  const char *const c_smime_sign_as =
-      cs_subset_string(NeoMutt->sub, "smime_sign_as");
-  const char *const c_pgp_sign_as =
-      cs_subset_string(NeoMutt->sub, "pgp_sign_as");
-  const char *const c_pgp_default_key =
-      cs_subset_string(NeoMutt->sub, "pgp_default_key");
-  const char *const c_smime_default_key =
-      cs_subset_string(NeoMutt->sub, "smime_default_key");
+  const char *const c_smime_sign_as = cs_subset_string(NeoMutt->sub, "smime_sign_as");
+  const char *const c_pgp_sign_as = cs_subset_string(NeoMutt->sub, "pgp_sign_as");
+  const char *const c_pgp_default_key = cs_subset_string(NeoMutt->sub, "pgp_default_key");
+  const char *const c_smime_default_key = cs_subset_string(NeoMutt->sub, "smime_default_key");
   if (for_smime)
     signid = c_smime_sign_as ? c_smime_sign_as : c_smime_default_key;
 #ifdef USE_AUTOCRYPT
@@ -1314,8 +1309,7 @@ static struct Body *sign_message(struct Body *a, const struct AddressList *from,
   {
     gpgme_data_release(signature);
     gpgme_release(ctx);
-    mutt_error(_("$pgp_sign_as unset and no default key specified in "
-                 "~/.gnupg/gpg.conf"));
+    mutt_error(_("$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"));
     return NULL;
   }
 
@@ -1502,8 +1496,7 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
     time_t at = key->subkeys->expires ? key->subkeys->expires : 0;
     if (at)
     {
-      state_puts(
-          s, _("Warning: The key used to create the signature expired at: "));
+      state_puts(s, _("Warning: The key used to create the signature expired at: "));
       print_time(at, s);
       state_puts(s, "\n");
     }
@@ -1676,19 +1669,15 @@ static void show_one_sig_validity(gpgme_ctx_t ctx, int idx, struct State *s)
   switch (sig ? sig->validity : 0)
   {
     case GPGME_VALIDITY_UNKNOWN:
-      txt = _("WARNING: We have NO indication whether "
-              "the key belongs to the person named "
-              "as shown above\n");
+      txt = _("WARNING: We have NO indication whether the key belongs to the person named as shown above\n");
       break;
     case GPGME_VALIDITY_UNDEFINED:
       break;
     case GPGME_VALIDITY_NEVER:
-      txt = _("WARNING: The key does NOT BELONG to "
-              "the person named as shown above\n");
+      txt = _("WARNING: The key does NOT BELONG to the person named as shown above\n");
       break;
     case GPGME_VALIDITY_MARGINAL:
-      txt = _("WARNING: It is NOT certain that the key "
-              "belongs to the person named as shown above\n");
+      txt = _("WARNING: It is NOT certain that the key belongs to the person named as shown above\n");
       break;
     case GPGME_VALIDITY_FULL:
     case GPGME_VALIDITY_ULTIMATE:
@@ -3013,8 +3002,8 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
         int c;
         rewind(fp_out);
         const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-        struct FgetConv *fc =
-            mutt_ch_fgetconv_open(fp_out, "utf-8", c_charset, MUTT_ICONV_NO_FLAGS);
+        struct FgetConv *fc = mutt_ch_fgetconv_open(fp_out, "utf-8", c_charset,
+                                                    MUTT_ICONV_NO_FLAGS);
         while ((c = mutt_ch_fgetconv(fc)) != EOF)
         {
           state_putc(s, c);
@@ -3052,8 +3041,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 
   if (needpass == -1)
   {
-    state_attach_puts(
-        s, _("[-- Error: could not find beginning of PGP message --]\n\n"));
+    state_attach_puts(s, _("[-- Error: could not find beginning of PGP message --]\n\n"));
     return 1;
   }
   mutt_debug(LL_DEBUG2, "Leaving handler\n");
@@ -3080,8 +3068,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
     mutt_perror(_("Can't create temporary file"));
     if (s->flags & MUTT_DISPLAY)
     {
-      state_attach_puts(s,
-                        _("[-- Error: could not create temporary file --]\n"));
+      state_attach_puts(s, _("[-- Error: could not create temporary file --]\n"));
     }
     return -1;
   }
@@ -3093,11 +3080,9 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
 
     if (s->flags & MUTT_DISPLAY)
     {
-      state_attach_puts(
-          s, is_signed ?
-                 _("[-- The following data is PGP/MIME signed and encrypted "
-                   "--]\n\n") :
-                 _("[-- The following data is PGP/MIME encrypted --]\n\n"));
+      state_attach_puts(s, is_signed ?
+                               _("[-- The following data is PGP/MIME signed and encrypted --]\n\n") :
+                               _("[-- The following data is PGP/MIME encrypted --]\n\n"));
       mutt_protected_headers_handler(tattach, s);
     }
 
@@ -3135,10 +3120,8 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
     if (s->flags & MUTT_DISPLAY)
     {
       state_puts(s, "\n");
-      state_attach_puts(
-          s, is_signed ?
-                 _("[-- End of PGP/MIME signed and encrypted data --]\n") :
-                 _("[-- End of PGP/MIME encrypted data --]\n"));
+      state_attach_puts(s, is_signed ? _("[-- End of PGP/MIME signed and encrypted data --]\n") :
+                                       _("[-- End of PGP/MIME encrypted data --]\n"));
     }
 
     mutt_body_free(&tattach);
@@ -3180,8 +3163,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
     mutt_perror(_("Can't create temporary file"));
     if (s->flags & MUTT_DISPLAY)
     {
-      state_attach_puts(s,
-                        _("[-- Error: could not create temporary file --]\n"));
+      state_attach_puts(s, _("[-- Error: could not create temporary file --]\n"));
     }
     return -1;
   }
@@ -3193,10 +3175,9 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
 
     if (s->flags & MUTT_DISPLAY)
     {
-      state_attach_puts(
-          s, is_signed ?
-                 _("[-- The following data is S/MIME signed --]\n\n") :
-                 _("[-- The following data is S/MIME encrypted --]\n\n"));
+      state_attach_puts(s, is_signed ?
+                               _("[-- The following data is S/MIME signed --]\n\n") :
+                               _("[-- The following data is S/MIME encrypted --]\n\n"));
       mutt_protected_headers_handler(tattach, s);
     }
 
@@ -3242,9 +3223,8 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
     if (s->flags & MUTT_DISPLAY)
     {
       state_puts(s, "\n");
-      state_attach_puts(s, is_signed ?
-                               _("[-- End of S/MIME signed data --]\n") :
-                               _("[-- End of S/MIME encrypted data --]\n"));
+      state_attach_puts(s, is_signed ? _("[-- End of S/MIME signed data --]\n") :
+                                       _("[-- End of S/MIME encrypted data --]\n"));
     }
 
     mutt_body_free(&tattach);
@@ -3540,8 +3520,7 @@ static void crypt_add_string_to_hints(const char *str, struct ListHead *hints)
   if (!scratch)
     return;
 
-  for (char *t = strtok(scratch, " ,.:\"()<>\n"); t;
-       t = strtok(NULL, " ,.:\"()<>\n"))
+  for (char *t = strtok(scratch, " ,.:\"()<>\n"); t; t = strtok(NULL, " ,.:\"()<>\n"))
   {
     if (strlen(t) > 3)
       mutt_list_insert_tail(hints, mutt_str_dup(t));
@@ -3654,8 +3633,8 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
   {
     if (oppenc_mode)
     {
-      const bool c_crypt_opportunistic_encrypt_strong_keys = cs_subset_bool(
-          NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
+      const bool c_crypt_opportunistic_encrypt_strong_keys =
+          cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
       if (the_strong_valid_key)
         k = crypt_copy_key(the_strong_valid_key);
       else if (a_valid_addrmatch_key && !c_crypt_opportunistic_encrypt_strong_keys)
@@ -3867,8 +3846,7 @@ static char *find_keys(const struct AddressList *addrlist, unsigned int app, boo
       {
         keyid = crypt_hook->data;
         enum QuadOption ans = MUTT_YES;
-        const bool c_crypt_confirm_hook =
-            cs_subset_bool(NeoMutt->sub, "crypt_confirm_hook");
+        const bool c_crypt_confirm_hook = cs_subset_bool(NeoMutt->sub, "crypt_confirm_hook");
         if (!oppenc_mode && c_crypt_confirm_hook)
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyid, p->mailbox);
@@ -4209,15 +4187,13 @@ static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.
    */
-  const bool c_crypt_opportunistic_encrypt =
-      cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt");
+  const bool c_crypt_opportunistic_encrypt = cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt");
   if (c_crypt_opportunistic_encrypt && (e->security & SEC_OPPENCRYPT))
   {
     if (is_smime)
     {
       /* L10N: S/MIME options (opportunistic encryption is on) */
-      prompt =
-          _("S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?");
+      prompt = _("S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?");
       /* L10N: S/MIME options (opportunistic encryption is on) */
       letters = _("sapco");
       choices = "SapCo";
@@ -4225,8 +4201,7 @@ static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
     else
     {
       /* L10N: PGP options (opportunistic encryption is on) */
-      prompt =
-          _("PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?");
+      prompt = _("PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?");
       /* L10N: PGP options (opportunistic encryption is on) */
       letters = _("samco");
       choices = "SamCo";
@@ -4238,8 +4213,7 @@ static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
     if (is_smime)
     {
       /* L10N: S/MIME options (opportunistic encryption is off) */
-      prompt = _("S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, "
-                 "or (o)ppenc mode?");
+      prompt = _("S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?");
       /* L10N: S/MIME options (opportunistic encryption is off) */
       letters = _("esabpco");
       choices = "esabpcO";
@@ -4247,8 +4221,7 @@ static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
     else
     {
       /* L10N: PGP options (opportunistic encryption is off) */
-      prompt = _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, "
-                 "or (o)ppenc mode?");
+      prompt = _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?");
       /* L10N: PGP options (opportunistic encryption is off) */
       letters = _("esabmco");
       choices = "esabmcO";
@@ -4260,8 +4233,7 @@ static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
     if (is_smime)
     {
       /* L10N: S/MIME options */
-      prompt =
-          _("S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?");
+      prompt = _("S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?");
       /* L10N: S/MIME options */
       letters = _("esabpc");
       choices = "esabpc";
@@ -4269,8 +4241,7 @@ static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
     else
     {
       /* L10N: PGP options */
-      prompt =
-          _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?");
+      prompt = _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?");
       /* L10N: PGP options */
       letters = _("esabmc");
       choices = "esabmc";
@@ -4423,8 +4394,7 @@ static bool verify_sender(struct Email *e)
             mailbox_match = mutt_strn_equal(tmp_email, tmp_sender, mailbox_length);
             tmp_email += mailbox_length;
             tmp_sender += mailbox_length;
-            domainname_match =
-                (mutt_istrn_cmp(tmp_email, tmp_sender, domainname_length) == 0);
+            domainname_match = (mutt_istrn_cmp(tmp_email, tmp_sender, domainname_length) == 0);
             if (mailbox_match && domainname_match)
               rc = false;
           }

@@ -525,8 +525,8 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
   }
   else if (mutt_regmatch_start(mtzobs) != -1)
   {
-    const struct Tz *tz =
-        find_tz(s + mutt_regmatch_start(mtzobs), mutt_regmatch_len(mtzobs));
+    const struct Tz *tz = find_tz(s + mutt_regmatch_start(mtzobs),
+                                  mutt_regmatch_len(mtzobs));
     if (tz)
     {
       zhours = tz->zhours;

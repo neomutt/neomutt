@@ -88,8 +88,7 @@ static void autocrypt_compose_menu(struct Email *e, const struct ConfigSubset *s
     case 3:
     {
       e->security &= ~SEC_AUTOCRYPT_OVERRIDE;
-      const bool c_crypt_opportunistic_encrypt =
-          cs_subset_bool(sub, "crypt_opportunistic_encrypt");
+      const bool c_crypt_opportunistic_encrypt = cs_subset_bool(sub, "crypt_opportunistic_encrypt");
       if (c_crypt_opportunistic_encrypt)
         e->security |= SEC_OPPENCRYPT;
       break;
@@ -133,8 +132,7 @@ static bool edit_address_list(enum HeaderField field, struct AddressList *al)
     FREE(&err);
   }
 
-  const bool rc =
-      !mutt_str_equal(mutt_buffer_string(new_list), mutt_buffer_string(old_list));
+  const bool rc = !mutt_str_equal(mutt_buffer_string(new_list), mutt_buffer_string(old_list));
   mutt_buffer_pool_release(&old_list);
   mutt_buffer_pool_release(&new_list);
   return rc;
@@ -148,8 +146,7 @@ void update_crypt_info(struct EnvelopeWindowData *wdata)
 {
   struct Email *e = wdata->email;
 
-  const bool c_crypt_opportunistic_encrypt =
-      cs_subset_bool(wdata->sub, "crypt_opportunistic_encrypt");
+  const bool c_crypt_opportunistic_encrypt = cs_subset_bool(wdata->sub, "crypt_opportunistic_encrypt");
   if (c_crypt_opportunistic_encrypt)
     crypt_opportunistic_encrypt(e);
 

@@ -1121,8 +1121,7 @@ main
         {
           if (mutt_istr_startswith(np->data, "X-Mutt-Resume-Draft:"))
           {
-            const bool c_resume_edited_draft_files =
-                cs_subset_bool(NeoMutt->sub, "resume_edited_draft_files");
+            const bool c_resume_edited_draft_files = cs_subset_bool(NeoMutt->sub, "resume_edited_draft_files");
             if (c_resume_edited_draft_files)
               cs_str_native_set(cs, "resume_draft_files", true, NULL);
 
@@ -1220,14 +1219,12 @@ main
           mutt_env_to_intl(e->env, NULL, NULL);
         }
 
-        const bool c_crypt_protected_headers_read =
-            cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
-        mutt_rfc822_write_header(
-            fp_out, e->env, e->body, MUTT_WRITE_HEADER_POSTPONE, false,
-            c_crypt_protected_headers_read && mutt_should_hide_protected_subject(e),
-            NeoMutt->sub);
-        const bool c_resume_edited_draft_files =
-            cs_subset_bool(NeoMutt->sub, "resume_edited_draft_files");
+        const bool c_crypt_protected_headers_read = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
+        mutt_rfc822_write_header(fp_out, e->env, e->body, MUTT_WRITE_HEADER_POSTPONE, false,
+                                 c_crypt_protected_headers_read &&
+                                     mutt_should_hide_protected_subject(e),
+                                 NeoMutt->sub);
+        const bool c_resume_edited_draft_files = cs_subset_bool(NeoMutt->sub, "resume_edited_draft_files");
         if (c_resume_edited_draft_files)
           fprintf(fp_out, "X-Mutt-Resume-Draft: 1\n");
         fputc('\n', fp_out);
@@ -1284,8 +1281,7 @@ main
 #ifdef USE_NNTP
       if (flags & MUTT_CLI_NEWS)
       {
-        const char *const c_news_server =
-            cs_subset_string(NeoMutt->sub, "news_server");
+        const char *const c_news_server = cs_subset_string(NeoMutt->sub, "news_server");
         OptNews = true;
         struct Mailbox *m_cur = get_current_mailbox();
         CurrentNewsSrv = nntp_select_server(m_cur, c_news_server, false);
@@ -1310,8 +1306,7 @@ main
 
     if (mutt_buffer_is_empty(&folder))
     {
-      const char *const c_spool_file =
-          cs_subset_string(NeoMutt->sub, "spool_file");
+      const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
       if (c_spool_file)
       {
         // Check if `$spool_file` corresponds a mailboxes' description.

@@ -80,9 +80,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
 
   if ((rc != SASL_OK) && (rc != SASL_CONTINUE))
   {
-    mutt_debug(
-        LL_DEBUG1,
-        "Failure starting authentication exchange. No shared mechanisms?\n");
+    mutt_debug(LL_DEBUG1, "Failure starting authentication exchange. No shared mechanisms?\n");
 
     /* SASL doesn't support suggested mechanisms, so fall back */
     sasl_dispose(&saslconn);
@@ -330,8 +328,7 @@ static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *m
 static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *method)
 {
   /* If they did not explicitly request or configure oauth then fail quietly */
-  const char *const c_pop_oauth_refresh_command =
-      cs_subset_string(NeoMutt->sub, "pop_oauth_refresh_command");
+  const char *const c_pop_oauth_refresh_command = cs_subset_string(NeoMutt->sub, "pop_oauth_refresh_command");
   if (!method && !c_pop_oauth_refresh_command)
     return POP_A_UNAVAIL;
 
@@ -437,10 +434,8 @@ int pop_authenticate(struct PopAccountData *adata)
     return -3;
   }
 
-  const struct Slist *c_pop_authenticators =
-      cs_subset_slist(NeoMutt->sub, "pop_authenticators");
-  const bool c_pop_auth_try_all =
-      cs_subset_bool(NeoMutt->sub, "pop_auth_try_all");
+  const struct Slist *c_pop_authenticators = cs_subset_slist(NeoMutt->sub, "pop_authenticators");
+  const bool c_pop_auth_try_all = cs_subset_bool(NeoMutt->sub, "pop_auth_try_all");
   if (c_pop_authenticators && (c_pop_authenticators->count > 0))
   {
     /* Try user-specified list of authentication methods */

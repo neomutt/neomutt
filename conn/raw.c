@@ -82,8 +82,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
     return -1;
   }
 
-  const short c_connect_timeout =
-      cs_subset_number(NeoMutt->sub, "connect_timeout");
+  const short c_connect_timeout = cs_subset_number(NeoMutt->sub, "connect_timeout");
   if (c_connect_timeout > 0)
     alarm(c_connect_timeout);
 

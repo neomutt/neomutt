@@ -94,8 +94,7 @@ extern struct CryptModuleSpecs CryptModSmimeGpgme;
 void crypt_init(void)
 {
 #ifdef CRYPT_BACKEND_GPGME
-  const bool c_crypt_use_gpgme =
-      cs_subset_bool(NeoMutt->sub, "crypt_use_gpgme");
+  const bool c_crypt_use_gpgme = cs_subset_bool(NeoMutt->sub, "crypt_use_gpgme");
 #endif
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
   if (

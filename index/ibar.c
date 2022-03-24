@@ -108,8 +108,7 @@ static int ibar_recalc(struct MuttWindow *win)
   const bool c_ts_enabled = cs_subset_bool(shared->sub, "ts_enabled");
   if (c_ts_enabled && TsSupported)
   {
-    const char *c_ts_status_format =
-        cs_subset_string(shared->sub, "ts_status_format");
+    const char *c_ts_status_format = cs_subset_string(shared->sub, "ts_status_format");
     menu_status_line(buf, sizeof(buf), shared, priv->menu, sizeof(buf),
                      NONULL(c_ts_status_format));
     if (!mutt_str_equal(buf, ibar_data->ts_status_format))
@@ -119,8 +118,7 @@ static int ibar_recalc(struct MuttWindow *win)
       mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
     }
 
-    const char *c_ts_icon_format =
-        cs_subset_string(shared->sub, "ts_icon_format");
+    const char *c_ts_icon_format = cs_subset_string(shared->sub, "ts_icon_format");
     menu_status_line(buf, sizeof(buf), shared, priv->menu, sizeof(buf),
                      NONULL(c_ts_icon_format));
     if (!mutt_str_equal(buf, ibar_data->ts_icon_format))
@@ -328,9 +326,9 @@ static struct IBarPrivateData *ibar_data_new(struct IndexSharedData *shared,
 struct MuttWindow *ibar_new(struct MuttWindow *parent, struct IndexSharedData *shared,
                             struct IndexPrivateData *priv)
 {
-  struct MuttWindow *win_ibar =
-      mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
+  struct MuttWindow *win_ibar = mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,
+                                                MUTT_WIN_SIZE_FIXED,
+                                                MUTT_WIN_SIZE_UNLIMITED, 1);
 
   win_ibar->wdata = ibar_data_new(shared, priv);
   win_ibar->wdata_free = ibar_data_free;

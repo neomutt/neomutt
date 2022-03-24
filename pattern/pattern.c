@@ -367,8 +367,7 @@ int mutt_pattern_func(struct Context *ctx, int op, char *prompt)
   mutt_message(_("Compiling search pattern..."));
 
   char *simple = mutt_buffer_strdup(buf);
-  const char *const c_simple_search =
-      cs_subset_string(NeoMutt->sub, "simple_search");
+  const char *const c_simple_search = cs_subset_string(NeoMutt->sub, "simple_search");
   mutt_check_simple(buf, NONULL(c_simple_search));
   const char *pbuf = buf->data;
   while (*pbuf == ' ')
@@ -378,8 +377,8 @@ int mutt_pattern_func(struct Context *ctx, int op, char *prompt)
   mutt_buffer_init(&err);
   err.dsize = 256;
   err.data = mutt_mem_malloc(err.dsize);
-  struct PatternList *pat =
-      mutt_pattern_comp(m, ctx->menu, buf->data, MUTT_PC_FULL_MSG, &err);
+  struct PatternList *pat = mutt_pattern_comp(m, ctx->menu, buf->data,
+                                              MUTT_PC_FULL_MSG, &err);
   if (!pat)
   {
     mutt_error("%s", err.data);
@@ -469,8 +468,8 @@ int mutt_pattern_func(struct Context *ctx, int op, char *prompt)
     {
       ctx->pattern = simple;
       simple = NULL; /* don't clobber it */
-      ctx->limit_pattern =
-          mutt_pattern_comp(m, ctx->menu, buf->data, MUTT_PC_FULL_MSG, &err);
+      ctx->limit_pattern = mutt_pattern_comp(m, ctx->menu, buf->data,
+                                             MUTT_PC_FULL_MSG, &err);
     }
   }
 
@@ -504,9 +503,11 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
   {
     buf = mutt_buffer_pool_get();
     mutt_buffer_strcpy(buf, (LastSearch[0] != '\0') ? LastSearch : "");
-    if ((mutt_buffer_get_field(
-             ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
-             buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL, NULL) != 0) ||
+    if ((mutt_buffer_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
+                                   _("Search for: ") :
+                                   _("Reverse search for: "),
+                               buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false,
+                               NULL, NULL, NULL) != 0) ||
         mutt_buffer_is_empty(buf))
     {
       goto done;
@@ -521,8 +522,7 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
      * $simple_search has changed while we were searching */
     struct Buffer *tmp = mutt_buffer_pool_get();
     mutt_buffer_copy(tmp, buf);
-    const char *const c_simple_search =
-        cs_subset_string(NeoMutt->sub, "simple_search");
+    const char *const c_simple_search = cs_subset_string(NeoMutt->sub, "simple_search");
     mutt_check_simple(tmp, NONULL(c_simple_search));
 
     if (!SearchPattern || !mutt_str_equal(mutt_buffer_string(tmp), LastSearchExpn))
@@ -664,9 +664,11 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
   {
     buf = mutt_buffer_pool_get();
     mutt_buffer_strcpy(buf, (LastSearch[0] != '\0') ? LastSearch : "");
-    if ((mutt_buffer_get_field(
-             ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
-             buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL, NULL) != 0) ||
+    if ((mutt_buffer_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
+                                   _("Search for: ") :
+                                   _("Reverse search for: "),
+                               buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false,
+                               NULL, NULL, NULL) != 0) ||
         mutt_buffer_is_empty(buf))
     {
       goto done;

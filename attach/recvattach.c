@@ -161,8 +161,7 @@ static void prepend_savedir(struct Buffer *buf)
     return;
 
   struct Buffer *tmp = mutt_buffer_pool_get();
-  const char *const c_attach_save_dir =
-      cs_subset_path(NeoMutt->sub, "attach_save_dir");
+  const char *const c_attach_save_dir = cs_subset_path(NeoMutt->sub, "attach_save_dir");
   if (c_attach_save_dir)
   {
     mutt_buffer_addstr(tmp, c_attach_save_dir);
@@ -424,8 +423,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
   const bool c_attach_split = cs_subset_bool(NeoMutt->sub, "attach_split");
   const char *const c_attach_sep = cs_subset_string(NeoMutt->sub, "attach_sep");
-  const bool c_attach_save_without_prompting =
-      cs_subset_bool(NeoMutt->sub, "attach_save_without_prompting");
+  const bool c_attach_save_without_prompting = cs_subset_bool(NeoMutt->sub, "attach_save_without_prompting");
 
   for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
@@ -828,8 +826,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           {
             if (!state->fp_out)
             {
-              mutt_error(
-                  "BUG in print_attachment_list().  Please report this. ");
+              mutt_error("BUG in print_attachment_list().  Please report this. ");
               return;
             }
 
@@ -891,8 +888,7 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
     if (!can_print(actx, top, tag))
       return;
     mutt_endwin();
-    const char *const c_print_command =
-        cs_subset_string(NeoMutt->sub, "print_command");
+    const char *const c_print_command = cs_subset_string(NeoMutt->sub, "print_command");
     pid_t pid = filter_create(NONULL(c_print_command), &state.fp_out, NULL, NULL);
     print_attachment_list(actx, fp, tag, top, &state);
     mutt_file_fclose(&state.fp_out);
@@ -918,8 +914,7 @@ void recvattach_edit_content_type(struct AttachCtx *actx, struct Menu *menu, str
    * made to a decrypted cur_att->body, so warn the user. */
   if (cur_att->decrypted)
   {
-    mutt_message(
-        _("Structural changes to decrypted attachments are not supported"));
+    mutt_message(_("Structural changes to decrypted attachments are not supported"));
     mutt_sleep(1);
   }
   /* Editing the content type can rewrite the body structure. */
@@ -1175,17 +1170,16 @@ void mutt_attach_init(struct AttachCtx *actx)
    * the outer container is of type 'multipart/digest' */
   bool digest = mutt_istr_equal(actx->email->body->subtype, "digest");
 
-  const bool c_digest_collapse =
-      cs_subset_bool(NeoMutt->sub, "digest_collapse");
+  const bool c_digest_collapse = cs_subset_bool(NeoMutt->sub, "digest_collapse");
   for (int i = 0; i < actx->idxlen; i++)
   {
     actx->idx[i]->body->tagged = false;
 
     /* OR an inner container is of type 'multipart/digest' */
-    actx->idx[i]->collapsed =
-        (c_digest_collapse &&
-         (digest || ((actx->idx[i]->body->type == TYPE_MULTIPART) &&
-                     mutt_istr_equal(actx->idx[i]->body->subtype, "digest"))));
+    actx->idx[i]->collapsed = (c_digest_collapse &&
+                               (digest ||
+                                ((actx->idx[i]->body->type == TYPE_MULTIPART) &&
+                                 mutt_istr_equal(actx->idx[i]->body->subtype, "digest"))));
   }
 }
 

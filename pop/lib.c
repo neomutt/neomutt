@@ -102,8 +102,7 @@ int pop_parse_path(const char *path, struct ConnAccount *cac)
   if (url->scheme == U_POPS)
     cac->flags |= MUTT_ACCT_SSL;
 
-  struct servent *service =
-      getservbyname((url->scheme == U_POP) ? "pop3" : "pop3s", "tcp");
+  struct servent *service = getservbyname((url->scheme == U_POP) ? "pop3" : "pop3s", "tcp");
   if (cac->port == 0)
   {
     if (service)
@@ -330,10 +329,8 @@ int pop_open_connection(struct PopAccountData *adata)
       adata->use_stls = 2;
     if (adata->use_stls == 0)
     {
-      const enum QuadOption c_ssl_starttls =
-          cs_subset_quad(NeoMutt->sub, "ssl_starttls");
-      enum QuadOption ans =
-          query_quadoption(c_ssl_starttls, _("Secure connection with TLS?"));
+      const enum QuadOption c_ssl_starttls = cs_subset_quad(NeoMutt->sub, "ssl_starttls");
+      enum QuadOption ans = query_quadoption(c_ssl_starttls, _("Secure connection with TLS?"));
       if (ans == MUTT_ABORT)
         return -2;
       adata->use_stls = 1;
@@ -519,8 +516,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
 
   while (true)
   {
-    const int chunk =
-        mutt_socket_readln_d(buf, sizeof(buf), adata->conn, MUTT_SOCK_LOG_FULL);
+    const int chunk = mutt_socket_readln_d(buf, sizeof(buf), adata->conn, MUTT_SOCK_LOG_FULL);
     if (chunk < 0)
     {
       adata->status = POP_DISCONNECTED;
@@ -615,8 +611,8 @@ int pop_reconnect(struct Mailbox *m)
     int ret = pop_open_connection(adata);
     if (ret == 0)
     {
-      struct Progress *progress =
-          progress_new(_("Verifying message indexes..."), MUTT_PROGRESS_NET, 0);
+      struct Progress *progress = progress_new(_("Verifying message indexes..."),
+                                               MUTT_PROGRESS_NET, 0);
 
       for (int i = 0; i < m->msg_count; i++)
       {
@@ -640,10 +636,8 @@ int pop_reconnect(struct Mailbox *m)
     if (ret < -1)
       return -1;
 
-    const enum QuadOption c_pop_reconnect =
-        cs_subset_quad(NeoMutt->sub, "pop_reconnect");
-    if (query_quadoption(c_pop_reconnect,
-                         _("Connection lost. Reconnect to POP server?")) != MUTT_YES)
+    const enum QuadOption c_pop_reconnect = cs_subset_quad(NeoMutt->sub, "pop_reconnect");
+    if (query_quadoption(c_pop_reconnect, _("Connection lost. Reconnect to POP server?")) != MUTT_YES)
     {
       return -1;
     }

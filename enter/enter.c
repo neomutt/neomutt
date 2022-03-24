@@ -194,16 +194,16 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
       {
         /* Go to end of line */
         state->curpos = state->lastchar;
-        state->begin = mutt_mb_width_ceiling(
-            state->wbuf, state->lastchar,
-            mutt_mb_wcswidth(state->wbuf, state->lastchar) - width + 1);
+        state->begin = mutt_mb_width_ceiling(state->wbuf, state->lastchar,
+                                             mutt_mb_wcswidth(state->wbuf, state->lastchar) -
+                                                 width + 1);
       }
       if ((state->curpos < state->begin) ||
           (mutt_mb_wcswidth(state->wbuf + state->begin, state->curpos - state->begin) >= width))
       {
-        state->begin = mutt_mb_width_ceiling(
-            state->wbuf, state->lastchar,
-            mutt_mb_wcswidth(state->wbuf, state->curpos) - (width / 2));
+        state->begin = mutt_mb_width_ceiling(state->wbuf, state->lastchar,
+                                             mutt_mb_wcswidth(state->wbuf, state->curpos) -
+                                                 (width / 2));
       }
       mutt_window_move(win, col, 0);
       int w = 0;
@@ -272,8 +272,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
           if (state->curpos == 0)
           {
             // Pressing backspace when no text is in the command prompt should exit the prompt
-            const bool c_abort_backspace =
-                cs_subset_bool(NeoMutt->sub, "abort_backspace");
+            const bool c_abort_backspace = cs_subset_bool(NeoMutt->sub, "abort_backspace");
             if (c_abort_backspace && (state->lastchar == 0))
               goto bye;
             // Pressing backspace with text in the command prompt should just beep
@@ -479,8 +478,8 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
             mutt_str_copy(buf, mutt_buffer_string(pool), buflen);
             mutt_buffer_pool_release(&pool);
 
-            state->curpos = state->lastchar =
-                mutt_mb_mbstowcs(&state->wbuf, &state->wbuflen, 0, buf);
+            state->curpos = state->lastchar = mutt_mb_mbstowcs(&state->wbuf,
+                                                               &state->wbuflen, 0, buf);
             break;
           }
           else if (!(flags & MUTT_COMP_FILE))

@@ -199,8 +199,7 @@ int imap_browse(const char *path, struct BrowserState *state)
     return -1;
   }
 
-  const bool c_imap_check_subscribed =
-      cs_subset_bool(NeoMutt->sub, "imap_check_subscribed");
+  const bool c_imap_check_subscribed = cs_subset_bool(NeoMutt->sub, "imap_check_subscribed");
   cs_subset_str_native_set(NeoMutt->sub, "imap_check_subscribed", false, NULL);
 
   // Pick first mailbox connected to the same server
@@ -219,8 +218,7 @@ int imap_browse(const char *path, struct BrowserState *state)
   if (!adata)
     goto fail;
 
-  const bool c_imap_list_subscribed =
-      cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
+  const bool c_imap_list_subscribed = cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
   if (c_imap_list_subscribed)
   {
     /* RFC3348 section 3 states LSUB is unreliable for hierarchy information.

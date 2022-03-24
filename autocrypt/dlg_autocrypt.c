@@ -194,8 +194,7 @@ static void autocrypt_make_entry(struct Menu *menu, char *buf, size_t buflen, in
 {
   struct AccountEntry *entry = &((struct AccountEntry *) menu->mdata)[num];
 
-  const char *const c_autocrypt_acct_format =
-      cs_subset_string(NeoMutt->sub, "autocrypt_acct_format");
+  const char *const c_autocrypt_acct_format = cs_subset_string(NeoMutt->sub, "autocrypt_acct_format");
   mutt_expando_format(buf, buflen, 0, menu->win->state.cols,
                       NONULL(c_autocrypt_acct_format), autocrypt_format_str,
                       (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
@@ -234,8 +233,7 @@ static bool populate_menu(struct Menu *menu)
   if (mutt_autocrypt_db_account_get_all(&accounts, &num_accounts) < 0)
     return false;
 
-  struct AccountEntry *entries =
-      mutt_mem_calloc(num_accounts, sizeof(struct AccountEntry));
+  struct AccountEntry *entries = mutt_mem_calloc(num_accounts, sizeof(struct AccountEntry));
   menu->mdata = entries;
   menu->mdata_free = autocrypt_menu_free;
   menu->max = num_accounts;
@@ -351,8 +349,8 @@ void dlg_select_autocrypt_account(void)
   if (mutt_autocrypt_init(false))
     return;
 
-  struct MuttWindow *dlg =
-      simple_dialog_new(MENU_AUTOCRYPT_ACCT, WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
+  struct MuttWindow *dlg = simple_dialog_new(MENU_AUTOCRYPT_ACCT,
+                                             WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
 
   struct Menu *menu = dlg->wdata;
   menu->make_entry = autocrypt_make_entry;

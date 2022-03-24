@@ -133,8 +133,8 @@ const char *color_debug_log_attrs(int attrs)
   {
     if (attrs & attr_names[i].value)
     {
-      offset +=
-          snprintf(text + offset, sizeof(text) - offset, "%s ", attr_names[i].name);
+      offset += snprintf(text + offset, sizeof(text) - offset, "%s ",
+                         attr_names[i].name);
     }
   }
   return text;
@@ -310,8 +310,7 @@ void quoted_color_dump(struct AttrColor *ac, int q_level, const char *prefix)
 void quoted_color_list_dump(void)
 {
   color_debug(LL_DEBUG5, "\033[1;32mQuotedColors:\033[0m (%d)\n", NumQuotedColors);
-  color_debug(LL_DEBUG5,
-              "    | Name    | Index | Colour | Attrs      | Attrs\n");
+  color_debug(LL_DEBUG5, "    | Name    | Index | Colour | Attrs      | Attrs\n");
   for (size_t i = 0; i < COLOR_QUOTES_MAX; i++)
   {
     quoted_color_dump(&QuotedColors[i], i, "    ");
@@ -366,8 +365,7 @@ void regex_color_list_dump(const char *name, struct RegexColorList *rcl)
   if (count == 0)
     return;
 
-  color_debug(LL_DEBUG5,
-              "    | Index | Colour | Attrs      | Attrs    | Pattern\n");
+  color_debug(LL_DEBUG5, "    | Index | Colour | Attrs      | Attrs    | Pattern\n");
   STAILQ_FOREACH(rcol, rcl, entries)
   {
     regex_color_dump(rcol, "    ");
@@ -432,9 +430,7 @@ void simple_color_dump(enum ColorId cid, const char *prefix)
 void simple_colors_dump(bool force)
 {
   color_debug(LL_DEBUG5, "\033[1;32mSimpleColors:\033[0m\n");
-  color_debug(
-      LL_DEBUG5,
-      "    | Name              | Index | Colour | Attrs      | Attrs\n");
+  color_debug(LL_DEBUG5, "    | Name              | Index | Colour | Attrs      | Attrs\n");
   for (enum ColorId cid = MT_COLOR_NONE; cid < MT_COLOR_MAX; cid++)
   {
     struct AttrColor *ac = &SimpleColors[cid];

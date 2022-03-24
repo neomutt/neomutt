@@ -90,8 +90,8 @@ static struct BodyCache *msg_cache_open(struct Mailbox *m)
   struct Buffer *mailbox = mutt_buffer_pool_get();
   imap_cachepath(adata->delim, mdata->name, mailbox);
 
-  struct BodyCache *bc =
-      mutt_bcache_open(&adata->conn->account, mutt_buffer_string(mailbox));
+  struct BodyCache *bc = mutt_bcache_open(&adata->conn->account,
+                                          mutt_buffer_string(mailbox));
   mutt_buffer_pool_release(&mailbox);
 
   return bc;
@@ -351,8 +351,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       if (!mutt_str_atol(tmp, &h->content_length))
         return -1;
     }
-    else if (mutt_istr_startswith(s, "BODY") ||
-             mutt_istr_startswith(s, "RFC822.HEADER"))
+    else if (mutt_istr_startswith(s, "BODY") || mutt_istr_startswith(s, "RFC822.HEADER"))
     {
       /* handle above, in msg_fetch_header */
       return -2;
@@ -549,8 +548,7 @@ static unsigned int imap_fetch_msn_seqset(struct Buffer *buf, struct ImapAccount
   if (msn_end < msn_begin)
     return 0;
 
-  const long c_imap_fetch_chunk_size =
-      cs_subset_long(NeoMutt->sub, "imap_fetch_chunk_size");
+  const long c_imap_fetch_chunk_size = cs_subset_long(NeoMutt->sub, "imap_fetch_chunk_size");
   if (c_imap_fetch_chunk_size > 0)
     max_headers_per_fetch = c_imap_fetch_chunk_size;
 
@@ -1084,10 +1082,10 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   FILE *fp = NULL;
   struct ImapHeader h;
   struct Buffer *buf = NULL;
-  static const char *const want_headers =
-      "DATE FROM SENDER SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE "
-      "CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST "
-      "LIST-SUBSCRIBE LIST-UNSUBSCRIBE X-LABEL X-ORIGINAL-TO";
+  static const char *const want_headers = "DATE FROM SENDER SUBJECT TO CC MESSAGE-ID REFERENCES "
+                                          "CONTENT-TYPE CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO "
+                                          "LINES LIST-POST LIST-SUBSCRIBE LIST-UNSUBSCRIBE X-LABEL "
+                                          "X-ORIGINAL-TO";
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
@@ -1097,8 +1095,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
   struct Buffer *hdr_list = mutt_buffer_pool_get();
   mutt_buffer_strcpy(hdr_list, want_headers);
-  const char *const c_imap_headers =
-      cs_subset_string(NeoMutt->sub, "imap_headers");
+  const char *const c_imap_headers = cs_subset_string(NeoMutt->sub, "imap_headers");
   if (c_imap_headers)
   {
     mutt_buffer_addch(hdr_list, ' ');
@@ -1376,8 +1373,7 @@ retry:
 
     if (mdata->modseq)
     {
-      const bool c_imap_condstore =
-          cs_subset_bool(NeoMutt->sub, "imap_condstore");
+      const bool c_imap_condstore = cs_subset_bool(NeoMutt->sub, "imap_condstore");
       if ((adata->capabilities & IMAP_CAP_CONDSTORE) && c_imap_condstore)
         has_condstore = true;
 
@@ -1391,8 +1387,8 @@ retry:
     {
       size_t dlen2 = 0;
       evalhc = true;
-      const unsigned long long *pmodseq =
-          mutt_hcache_fetch_raw(mdata->hcache, "/MODSEQ", 7, &dlen2);
+      const unsigned long long *pmodseq = mutt_hcache_fetch_raw(mdata->hcache,
+                                                                "/MODSEQ", 7, &dlen2);
       if (pmodseq)
       {
         hc_modseq = *pmodseq;
@@ -1724,8 +1720,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el,
       {
         if (en->email->attach_del)
         {
-          mutt_debug(LL_DEBUG3,
-                     "#2 Message contains attachments to be deleted\n");
+          mutt_debug(LL_DEBUG3, "#2 Message contains attachments to be deleted\n");
           return 1;
         }
 
@@ -1794,8 +1789,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el,
         break;
       mutt_debug(LL_DEBUG3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
-      const bool c_confirm_create =
-          cs_subset_bool(NeoMutt->sub, "confirm_create");
+      const bool c_confirm_create = cs_subset_bool(NeoMutt->sub, "confirm_create");
       if (c_confirm_create && (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES))
       {
         mutt_clear_error();
@@ -2037,8 +2031,7 @@ bool imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
             goto bail;
           if (uid != imap_edata_get(e)->uid)
           {
-            mutt_error(_(
-                "The message index is incorrect. Try reopening the mailbox."));
+            mutt_error(_("The message index is incorrect. Try reopening the mailbox."));
           }
         }
         else if (mutt_istr_startswith(pc, "RFC822") || mutt_istr_startswith(pc, "BODY[]"))
@@ -2049,10 +2042,10 @@ bool imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
             imap_error("imap_msg_open()", buf);
             goto bail;
           }
-          struct Progress *progress =
-              output_progress ?
-                  progress_new(_("Fetching message..."), MUTT_PROGRESS_NET, bytes) :
-                  NULL;
+          struct Progress *progress = output_progress ?
+                                          progress_new(_("Fetching message..."),
+                                                       MUTT_PROGRESS_NET, bytes) :
+                                          NULL;
           const int res = imap_read_literal(msg->fp, adata, bytes, progress);
           progress_free(&progress);
           if (res < 0)

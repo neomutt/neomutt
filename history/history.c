@@ -205,14 +205,12 @@ static void shrink_histfile(void)
   bool regen_file = false;
   struct HashTable *dup_hashes[HC_MAX] = { 0 };
 
-  const char *const c_history_file =
-      cs_subset_path(NeoMutt->sub, "history_file");
+  const char *const c_history_file = cs_subset_path(NeoMutt->sub, "history_file");
   FILE *fp = mutt_file_fopen(c_history_file, "r");
   if (!fp)
     return;
 
-  const bool c_history_remove_dups =
-      cs_subset_bool(NeoMutt->sub, "history_remove_dups");
+  const bool c_history_remove_dups = cs_subset_bool(NeoMutt->sub, "history_remove_dups");
   const short c_save_history = cs_subset_number(NeoMutt->sub, "save_history");
   if (c_history_remove_dups)
   {
@@ -315,8 +313,7 @@ static void save_history(enum HistoryClass hclass, const char *str)
   if (!str || (*str == '\0')) /* This shouldn't happen, but it's safer. */
     return;
 
-  const char *const c_history_file =
-      cs_subset_path(NeoMutt->sub, "history_file");
+  const char *const c_history_file = cs_subset_path(NeoMutt->sub, "history_file");
   FILE *fp = mutt_file_fopen(c_history_file, "a");
   if (!fp)
     return;
@@ -501,14 +498,11 @@ void mutt_hist_add(enum HistoryClass hclass, const char *str, bool save)
      *  - repeated lines */
     if ((*str != ' ') && (!h->hist[prev] || !mutt_str_equal(h->hist[prev], str)))
     {
-      const bool c_history_remove_dups =
-          cs_subset_bool(NeoMutt->sub, "history_remove_dups");
+      const bool c_history_remove_dups = cs_subset_bool(NeoMutt->sub, "history_remove_dups");
       if (c_history_remove_dups)
         remove_history_dups(hclass, str);
-      const short c_save_history =
-          cs_subset_number(NeoMutt->sub, "save_history");
-      const char *const c_history_file =
-          cs_subset_path(NeoMutt->sub, "history_file");
+      const short c_save_history = cs_subset_number(NeoMutt->sub, "save_history");
+      const char *const c_history_file = cs_subset_path(NeoMutt->sub, "history_file");
       if (save && (c_save_history != 0) && c_history_file)
         save_history(hclass, str);
       mutt_str_replace(&h->hist[h->last++], str);
@@ -602,8 +596,7 @@ void mutt_hist_read_file(void)
   char *linebuf = NULL, *p = NULL;
   size_t buflen;
 
-  const char *const c_history_file =
-      cs_subset_path(NeoMutt->sub, "history_file");
+  const char *const c_history_file = cs_subset_path(NeoMutt->sub, "history_file");
   if (!c_history_file)
     return;
 

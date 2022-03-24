@@ -321,8 +321,7 @@ static const char *smtp_get_field(enum ConnAccountField field, void *gf_data)
     }
     case MUTT_CA_OAUTH_CMD:
     {
-      const char *const c_smtp_oauth_refresh_command =
-          cs_subset_string(adata->sub, "smtp_oauth_refresh_command");
+      const char *const c_smtp_oauth_refresh_command = cs_subset_string(adata->sub, "smtp_oauth_refresh_command");
       return c_smtp_oauth_refresh_command;
     }
     case MUTT_CA_HOST:
@@ -403,8 +402,7 @@ static int smtp_helo(struct SmtpAccountData *adata, bool esmtp)
       esmtp = true;
 #ifdef USE_SSL
     const bool c_ssl_force_tls = cs_subset_bool(adata->sub, "ssl_force_tls");
-    const enum QuadOption c_ssl_starttls =
-        cs_subset_quad(adata->sub, "ssl_starttls");
+    const enum QuadOption c_ssl_starttls = cs_subset_quad(adata->sub, "ssl_starttls");
 
     if (c_ssl_force_tls || (c_ssl_starttls != MUTT_NO))
       esmtp = true;
@@ -614,9 +612,10 @@ static int smtp_auth_plain(struct SmtpAccountData *adata, const char *method)
   }
 
   /* Build the initial client response. */
-  size_t len =
-      mutt_sasl_plain_msg(buf, sizeof(buf), "AUTH PLAIN", adata->conn->account.user,
-                          adata->conn->account.user, adata->conn->account.pass);
+  size_t len = mutt_sasl_plain_msg(buf, sizeof(buf), "AUTH PLAIN",
+                                   adata->conn->account.user,
+                                   adata->conn->account.user,
+                                   adata->conn->account.pass);
 
   /* Terminate as per SMTP protocol. Bail out if there's no room left. */
   if (snprintf(buf + len, sizeof(buf) - len, "\r\n") != 2)
@@ -758,8 +757,7 @@ static int smtp_authenticate(struct SmtpAccountData *adata)
 {
   int r = SMTP_AUTH_UNAVAIL;
 
-  const struct Slist *c_smtp_authenticators =
-      cs_subset_slist(adata->sub, "smtp_authenticators");
+  const struct Slist *c_smtp_authenticators = cs_subset_slist(adata->sub, "smtp_authenticators");
   if (c_smtp_authenticators && (c_smtp_authenticators->count > 0))
   {
     mutt_debug(LL_DEBUG2, "Trying user-defined smtp_authenticators\n");
@@ -839,16 +837,14 @@ static int smtp_open(struct SmtpAccountData *adata, bool esmtp)
 
 #ifdef USE_SSL
   const bool c_ssl_force_tls = cs_subset_bool(adata->sub, "ssl_force_tls");
-  const enum QuadOption c_ssl_starttls =
-      cs_subset_quad(adata->sub, "ssl_starttls");
+  const enum QuadOption c_ssl_starttls = cs_subset_quad(adata->sub, "ssl_starttls");
   enum QuadOption ans = MUTT_NO;
   if (adata->conn->ssf != 0)
     ans = MUTT_NO;
   else if (c_ssl_force_tls)
     ans = MUTT_YES;
   else if ((adata->capabilities & SMTP_CAP_STARTTLS) &&
-           ((ans = query_quadoption(c_ssl_starttls,
-                                    _("Secure connection with TLS?"))) == MUTT_ABORT))
+           ((ans = query_quadoption(c_ssl_starttls, _("Secure connection with TLS?"))) == MUTT_ABORT))
   {
     return -1;
   }
@@ -917,8 +913,7 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
   if (!adata.fqdn)
     adata.fqdn = NONULL(ShortHostname);
 
-  const struct Address *c_envelope_from_address =
-      cs_subset_address(adata.sub, "envelope_from_address");
+  const struct Address *c_envelope_from_address = cs_subset_address(adata.sub, "envelope_from_address");
 
   /* it might be better to synthesize an envelope from from user and host
    * but this condition is most likely arrived at accidentally */

@@ -57,8 +57,7 @@ static const struct Command sb_commands[] = {
  */
 struct Mailbox *sb_get_highlight(struct MuttWindow *win)
 {
-  const bool c_sidebar_visible =
-      cs_subset_bool(NeoMutt->sub, "sidebar_visible");
+  const bool c_sidebar_visible = cs_subset_bool(NeoMutt->sub, "sidebar_visible");
   if (!c_sidebar_visible)
     return NULL;
 

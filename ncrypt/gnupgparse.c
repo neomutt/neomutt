@@ -154,8 +154,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
 
   mutt_debug(LL_DEBUG2, "buf = '%s'\n", buf);
 
-  const bool c_pgp_ignore_subkeys =
-      cs_subset_bool(NeoMutt->sub, "pgp_ignore_subkeys");
+  const bool c_pgp_ignore_subkeys = cs_subset_bool(NeoMutt->sub, "pgp_ignore_subkeys");
   for (p = buf; p; p = pend)
   {
     pend = strchr(p, ':');

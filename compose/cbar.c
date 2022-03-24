@@ -162,8 +162,7 @@ static int cbar_recalc(struct MuttWindow *win)
   char buf[1024] = { 0 };
   struct ComposeSharedData *shared = win->parent->wdata;
 
-  const char *const c_compose_format =
-      cs_subset_string(shared->sub, "compose_format");
+  const char *const c_compose_format = cs_subset_string(shared->sub, "compose_format");
   mutt_expando_format(buf, sizeof(buf), 0, win->state.cols, NONULL(c_compose_format),
                       compose_format_str, (intptr_t) shared, MUTT_FORMAT_NO_FLAGS);
 
@@ -299,9 +298,9 @@ int cbar_window_observer(struct NotifyCallback *nc)
  */
 struct MuttWindow *cbar_new(struct ComposeSharedData *shared)
 {
-  struct MuttWindow *win_cbar =
-      mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,
-                      MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
+  struct MuttWindow *win_cbar = mutt_window_new(WT_STATUS_BAR, MUTT_WIN_ORIENT_VERTICAL,
+                                                MUTT_WIN_SIZE_FIXED,
+                                                MUTT_WIN_SIZE_UNLIMITED, 1);
 
   win_cbar->wdata = cbar_data_new();
   win_cbar->wdata_free = cbar_data_free;

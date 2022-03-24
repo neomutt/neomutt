@@ -68,8 +68,7 @@
 #include <libintl.h>
 #endif
 
-static const char *Not_available_in_this_menu =
-    N_("Not available in this menu");
+static const char *Not_available_in_this_menu = N_("Not available in this menu");
 
 static int op_pager_search_next(struct IndexSharedData *shared,
                                 struct PagerPrivateData *priv, int op);
@@ -257,10 +256,8 @@ static int op_pager_next_page(struct IndexSharedData *shared,
   const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
   if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
   {
-    const short c_pager_context =
-        cs_subset_number(NeoMutt->sub, "pager_context");
-    priv->top_line =
-        up_n_lines(c_pager_context, priv->lines, priv->cur_line, priv->hide_quoted);
+    const short c_pager_context = cs_subset_number(NeoMutt->sub, "pager_context");
+    priv->top_line = up_n_lines(c_pager_context, priv->lines, priv->cur_line, priv->hide_quoted);
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
   }
   else if (c_pager_stop)
@@ -306,8 +303,7 @@ static int op_pager_prev_page(struct IndexSharedData *shared,
   }
   else
   {
-    const short c_pager_context =
-        cs_subset_number(NeoMutt->sub, "pager_context");
+    const short c_pager_context = cs_subset_number(NeoMutt->sub, "pager_context");
     priv->top_line = up_n_lines(priv->pview->win_pager->state.rows - c_pager_context,
                                 priv->lines, priv->top_line, priv->hide_quoted);
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
@@ -331,9 +327,11 @@ static int op_pager_search(struct IndexSharedData *shared,
   struct Buffer *buf = mutt_buffer_pool_get();
 
   mutt_buffer_strcpy(buf, priv->search_str);
-  if (mutt_buffer_get_field(
-          ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
-          buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL, NULL) != 0)
+  if (mutt_buffer_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
+                                _("Search for: ") :
+                                _("Reverse search for: "),
+                            buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false,
+                            NULL, NULL, NULL) != 0)
   {
     goto done;
   }
@@ -444,8 +442,7 @@ static int op_pager_search(struct IndexSharedData *shared,
     }
     else
     {
-      const short c_search_context =
-          cs_subset_number(NeoMutt->sub, "search_context");
+      const short c_search_context = cs_subset_number(NeoMutt->sub, "search_context");
       priv->search_flag = MUTT_SEARCH;
       /* give some context for search results */
       if (c_search_context < priv->pview->win_pager->state.rows)
@@ -477,8 +474,7 @@ static int op_pager_search_next(struct IndexSharedData *shared,
 {
   if (priv->search_compiled)
   {
-    const short c_search_context =
-        cs_subset_number(NeoMutt->sub, "search_context");
+    const short c_search_context = cs_subset_number(NeoMutt->sub, "search_context");
     priv->wrapped = false;
 
     if (c_search_context < priv->pview->win_pager->state.rows)
@@ -572,11 +568,12 @@ static int op_pager_skip_headers(struct IndexSharedData *shared,
   int new_topline = 0;
 
   while (((new_topline < priv->lines_used) ||
-          (0 == (dretval = display_line(
-                     priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
-                     &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
-                     &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                     &priv->search_re, priv->pview->win_pager, &priv->ansi_list)))) &&
+          (0 == (dretval = display_line(priv->fp, &priv->bytes_read, &priv->lines,
+                                        new_topline, &priv->lines_used, &priv->lines_max,
+                                        MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
+                                        &priv->quote_list, &priv->q_level,
+                                        &priv->force_redraw, &priv->search_re,
+                                        priv->pview->win_pager, &priv->ansi_list)))) &&
          simple_color_is_header(priv->lines[new_topline].cid))
   {
     new_topline++;
@@ -607,8 +604,7 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
   if (!priv->has_types)
     return FR_NO_ACTION;
 
-  const short c_skip_quoted_context =
-      cs_subset_number(NeoMutt->sub, "pager_skip_quoted_context");
+  const short c_skip_quoted_context = cs_subset_number(NeoMutt->sub, "pager_skip_quoted_context");
   int dretval = 0;
   int new_topline = priv->top_line;
   int num_quoted = 0;

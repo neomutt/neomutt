@@ -73,8 +73,7 @@ void state_mark_attach(struct State *s)
   if (!s || !s->fp_out)
     return;
   const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
-  if ((s->flags & MUTT_DISPLAY) &&
-      (!c_pager || mutt_str_equal(c_pager, "builtin")))
+  if ((s->flags & MUTT_DISPLAY) && (!c_pager || mutt_str_equal(c_pager, "builtin")))
   {
     state_puts(s, state_attachment_marker());
   }
@@ -87,8 +86,7 @@ void state_mark_attach(struct State *s)
 void state_mark_protected_header(struct State *s)
 {
   const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
-  if ((s->flags & MUTT_DISPLAY) &&
-      (!c_pager || mutt_str_equal(c_pager, "builtin")))
+  if ((s->flags & MUTT_DISPLAY) && (!c_pager || mutt_str_equal(c_pager, "builtin")))
   {
     state_puts(s, state_protected_header_marker());
   }

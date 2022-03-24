@@ -267,8 +267,8 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
       }
       if (win->state.cols)
       {
-        prompt_lines =
-            (msg_wid + answer_string_wid + win->state.cols - 1) / win->state.cols;
+        prompt_lines = (msg_wid + answer_string_wid + win->state.cols - 1) /
+                       win->state.cols;
         prompt_lines = MAX(1, MIN(3, prompt_lines));
       }
       if (prompt_lines != win->state.rows)
@@ -278,9 +278,10 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
       }
 
       /* maxlen here is sort of arbitrary, so pick a reasonable upper bound */
-      trunc_msg_len = mutt_wstr_trunc(
-          msg, (size_t) 4 * prompt_lines * win->state.cols,
-          ((size_t) prompt_lines * win->state.cols) - answer_string_wid, NULL);
+      trunc_msg_len = mutt_wstr_trunc(msg,
+                                      (size_t) 4 * prompt_lines * win->state.cols,
+                                      ((size_t) prompt_lines * win->state.cols) - answer_string_wid,
+                                      NULL);
 
       mutt_window_move(win, 0, 0);
       mutt_curses_set_normal_backed_color_by_id(MT_COLOR_PROMPT);

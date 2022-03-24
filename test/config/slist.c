@@ -312,16 +312,14 @@ static bool test_slist_add_list(struct Buffer *err)
 
 static bool test_slist_compare(struct Buffer *err)
 {
-  struct Slist *list1 =
-      slist_parse("apple:banana::cherry", SLIST_SEP_COLON | SLIST_ALLOW_EMPTY);
+  struct Slist *list1 = slist_parse("apple:banana::cherry", SLIST_SEP_COLON | SLIST_ALLOW_EMPTY);
   slist_dump(list1, err);
 
-  struct Slist *list2 =
-      slist_parse("apple,banana,,cherry", SLIST_SEP_COMMA | SLIST_ALLOW_EMPTY);
+  struct Slist *list2 = slist_parse("apple,banana,,cherry", SLIST_SEP_COMMA | SLIST_ALLOW_EMPTY);
   slist_dump(list2, err);
 
-  struct Slist *list3 =
-      slist_parse("apple,banana,,cherry,damson", SLIST_SEP_COMMA | SLIST_ALLOW_EMPTY);
+  struct Slist *list3 = slist_parse("apple,banana,,cherry,damson",
+                                    SLIST_SEP_COMMA | SLIST_ALLOW_EMPTY);
   slist_dump(list2, err);
 
   bool result = true;

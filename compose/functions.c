@@ -402,8 +402,7 @@ static int group_attachments(struct ComposeSharedData *shared, char *subtype)
             mutt_debug(LL_DEBUG5, "can't find parent\n");
           if (bptr_test != bptr_parent)
           {
-            mutt_error(
-                _("Attachments to be grouped must have the same parent"));
+            mutt_error(_("Attachments to be grouped must have the same parent"));
             return FR_ERROR;
           }
         }
@@ -688,8 +687,7 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
   OptNews = false;
   if (shared->mailbox && (op == OP_ATTACHMENT_ATTACH_NEWS_MESSAGE))
   {
-    const char *const c_news_server =
-        cs_subset_string(shared->sub, "news_server");
+    const char *const c_news_server = cs_subset_string(shared->sub, "news_server");
     CurrentNewsSrv = nntp_select_server(shared->mailbox, c_news_server, false);
     if (!CurrentNewsSrv)
       return FR_NO_ACTION;
@@ -769,8 +767,7 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
   /* `$sort`, `$sort_aux`, `$use_threads` could be changed in mutt_index_menu() */
   const enum SortType old_sort = cs_subset_sort(shared->sub, "sort");
   const enum SortType old_sort_aux = cs_subset_sort(shared->sub, "sort_aux");
-  const unsigned char old_use_threads =
-      cs_subset_enum(shared->sub, "use_threads");
+  const unsigned char old_use_threads = cs_subset_enum(shared->sub, "use_threads");
 
   OptAttachMsg = true;
   mutt_message(_("Tag the messages you want to attach"));
@@ -877,8 +874,8 @@ static int op_attachment_edit_content_id(struct ComposeSharedData *shared, int o
 
   int rc = FR_NO_ACTION;
   struct Buffer *buf = mutt_buffer_pool_get();
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
+  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
+                                                 shared->adata->menu);
 
   char *id = mutt_param_get(&cur_att->body->parameter, "content-id");
   if (id)
@@ -907,8 +904,7 @@ static int op_attachment_edit_content_id(struct ComposeSharedData *shared, int o
       }
       else
       {
-        mutt_error(
-            _("Content-ID can only contain the characters: -.0-9@A-Z_a-z"));
+        mutt_error(_("Content-ID can only contain the characters: -.0-9@A-Z_a-z"));
         rc = FR_ERROR;
       }
     }
@@ -933,8 +929,8 @@ static int op_attachment_edit_description(struct ComposeSharedData *shared, int 
   int rc = FR_NO_ACTION;
   struct Buffer *buf = mutt_buffer_pool_get();
 
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
+  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
+                                                 shared->adata->menu);
   mutt_buffer_strcpy(buf, cur_att->body->description);
 
   /* header names should not be translated */
@@ -965,8 +961,8 @@ static int op_attachment_edit_encoding(struct ComposeSharedData *shared, int op)
   int rc = FR_NO_ACTION;
   struct Buffer *buf = mutt_buffer_pool_get();
 
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
+  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
+                                                 shared->adata->menu);
   mutt_buffer_strcpy(buf, ENCODING(cur_att->body->encoding));
 
   if ((mutt_buffer_get_field("Content-Transfer-Encoding: ", buf,
@@ -1007,8 +1003,8 @@ static int op_attachment_edit_language(struct ComposeSharedData *shared, int op)
 
   int rc = FR_NO_ACTION;
   struct Buffer *buf = mutt_buffer_pool_get();
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
+  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
+                                                 shared->adata->menu);
 
   mutt_buffer_strcpy(buf, cur_att->body->language);
   if (mutt_buffer_get_field("Content-Language: ", buf, MUTT_COMP_NO_FLAGS,
@@ -1041,8 +1037,8 @@ static int op_attachment_edit_mime(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
+  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
+                                                 shared->adata->menu);
   if (!mutt_edit_attachment(cur_att->body))
     return FR_NO_ACTION;
 
@@ -1060,8 +1056,8 @@ static int op_attachment_edit_type(struct ComposeSharedData *shared, int op)
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
 
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
+  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
+                                                 shared->adata->menu);
   if (!mutt_edit_content_type(NULL, cur_att->body, NULL))
     return FR_NO_ACTION;
 
@@ -1146,8 +1142,7 @@ static int op_attachment_group_alts(struct ComposeSharedData *shared, int op)
 {
   if (shared->adata->menu->num_tagged < 2)
   {
-    mutt_error(
-        _("Grouping 'alternatives' requires at least 2 tagged messages"));
+    mutt_error(_("Grouping 'alternatives' requires at least 2 tagged messages"));
     return FR_ERROR;
   }
 
@@ -1161,8 +1156,7 @@ static int op_attachment_group_lingual(struct ComposeSharedData *shared, int op)
 {
   if (shared->adata->menu->num_tagged < 2)
   {
-    mutt_error(
-        _("Grouping 'multilingual' requires at least 2 tagged messages"));
+    mutt_error(_("Grouping 'multilingual' requires at least 2 tagged messages"));
     return FR_ERROR;
   }
 
@@ -1366,8 +1360,8 @@ static int op_attachment_new_mime(struct ComposeSharedData *shared, int op)
   update_idx(shared->adata->menu, shared->adata->actx, ap);
   ap = NULL; // shared->adata->actx has taken ownership
 
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
+  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
+                                                 shared->adata->menu);
   cur_att->body->type = itype;
   mutt_str_replace(&cur_att->body->subtype, p);
   cur_att->body->unlink = true;
@@ -1419,8 +1413,8 @@ static int op_attachment_rename_attachment(struct ComposeSharedData *shared, int
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
   char *src = NULL;
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
+  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
+                                                 shared->adata->menu);
   if (cur_att->body->d_filename)
     src = cur_att->body->d_filename;
   else
@@ -1467,10 +1461,11 @@ static int op_attachment_save(struct ComposeSharedData *shared, int op)
 static int op_attachment_toggle_disposition(struct ComposeSharedData *shared, int op)
 {
   /* toggle the content-disposition between inline/attachment */
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
-  cur_att->body->disposition =
-      (cur_att->body->disposition == DISP_INLINE) ? DISP_ATTACH : DISP_INLINE;
+  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
+                                                 shared->adata->menu);
+  cur_att->body->disposition = (cur_att->body->disposition == DISP_INLINE) ?
+                                   DISP_ATTACH :
+                                   DISP_INLINE;
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
   return FR_SUCCESS;
 }
@@ -1482,8 +1477,8 @@ static int op_attachment_toggle_recode(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
+  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
+                                                 shared->adata->menu);
   if (!mutt_is_text_part(cur_att->body))
   {
     mutt_error(_("Recoding only affects text attachments"));
@@ -1506,8 +1501,8 @@ static int op_attachment_toggle_unlink(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
+  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
+                                                 shared->adata->menu);
   cur_att->body->unlink = !cur_att->body->unlink;
 
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
@@ -1667,8 +1662,8 @@ static int op_compose_edit_file(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
+  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
+                                                 shared->adata->menu);
   if (cur_att->body->type == TYPE_MULTIPART)
   {
     mutt_error(_("Can't edit multipart attachments"));
@@ -1748,8 +1743,8 @@ static int op_compose_rename_file(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
-  struct AttachPtr *cur_att =
-      current_attachment(shared->adata->actx, shared->adata->menu);
+  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
+                                                 shared->adata->menu);
   if (cur_att->body->type == TYPE_MULTIPART)
   {
     mutt_error(_("Can't rename multipart attachments"));
@@ -1810,8 +1805,7 @@ static int op_compose_send_message(struct ComposeSharedData *shared, int op)
   if (!shared->fcc_set && !mutt_buffer_is_empty(shared->fcc))
   {
     const enum QuadOption c_copy = cs_subset_quad(shared->sub, "copy");
-    enum QuadOption ans =
-        query_quadoption(c_copy, _("Save a copy of this message?"));
+    enum QuadOption ans = query_quadoption(c_copy, _("Save a copy of this message?"));
     if (ans == MUTT_ABORT)
       return FR_NO_ACTION;
     else if (ans == MUTT_NO)
@@ -1881,8 +1875,7 @@ static int op_display_headers(struct ComposeSharedData *shared, int op)
 static int op_exit(struct ComposeSharedData *shared, int op)
 {
   const enum QuadOption c_postpone = cs_subset_quad(shared->sub, "postpone");
-  enum QuadOption ans =
-      query_quadoption(c_postpone, _("Save (postpone) draft message?"));
+  enum QuadOption ans = query_quadoption(c_postpone, _("Save (postpone) draft message?"));
   if (ans == MUTT_NO)
   {
     for (int i = 0; i < shared->adata->actx->idxlen; i++)
