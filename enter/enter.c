@@ -692,7 +692,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
           {
             quote_event = mutt_getch();
           } while (quote_event.ch == OP_TIMEOUT);
-          if (quote_event.ch >= 0)
+          if (quote_event.op != OP_ABORT)
           {
             event = quote_event;
             goto self_insert;

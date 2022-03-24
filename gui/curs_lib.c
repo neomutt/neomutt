@@ -258,8 +258,8 @@ static int mutt_monitor_getch(void)
 struct KeyEvent mutt_getch(void)
 {
   int ch;
-  const struct KeyEvent err = { OP_ABORT, OP_NULL };
-  const struct KeyEvent timeout = { OP_TIMEOUT, OP_NULL };
+  const struct KeyEvent err = { 0, OP_ABORT };
+  const struct KeyEvent timeout = { 0, OP_TIMEOUT };
 
   struct KeyEvent *key = array_pop(&UngetKeyEvents);
   if (key)
@@ -311,6 +311,7 @@ struct KeyEvent mutt_getch(void)
     /* send ALT-x as ESC-x */
     ch &= ~0x80;
     mutt_unget_ch(ch);
+    ch = '\033';
     return (struct KeyEvent){ .ch = '\033' /* Escape */, .op = OP_NULL };
   }
 
@@ -580,7 +581,7 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
   do
   {
     ch = mutt_getch();
-  } while (ch.ch == OP_TIMEOUT);
+  } while (ch.op == OP_TIMEOUT);
   mutt_curses_set_cursor(cursor);
 
   mutt_window_move(win, 0, 0);

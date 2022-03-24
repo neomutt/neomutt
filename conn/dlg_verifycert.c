@@ -87,9 +87,9 @@ static int menu_dialog_dokey(struct Menu *menu, int *id)
   ch = mutt_getch_timeout(5000);
   // mutt_curses_set_cursor(cursor);
 
-  if (ch.ch < OP_NULL)
+  if ((ch.op == OP_TIMEOUT) || (ch.op == OP_ABORT))
   {
-    *id = ch.ch;
+    *id = ch.op;
     return 0;
   }
 
