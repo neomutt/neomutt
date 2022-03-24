@@ -70,7 +70,8 @@ void         mutt_refresh(void);
 void         mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width, enum FormatJustify justify, char pad_char, const char *s, size_t n, bool arboreal);
 size_t       mutt_strwidth(const char *s);
 size_t       mutt_strnwidth(const char *s, size_t len);
-void         mutt_unget_event(int ch, int op);
+void         mutt_unget_ch(int ch);
+void         mutt_unget_op(int op);
 void         mutt_unget_string(const char *s);
 size_t       mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width);
 

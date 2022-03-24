@@ -293,7 +293,7 @@ struct KeyEvent mutt_getch(void)
   {
     /* send ALT-x as ESC-x */
     ch &= ~0x80;
-    mutt_unget_event(ch, OP_NULL);
+    mutt_unget_ch(ch);
     return (struct KeyEvent){ .ch = '\033' /* Escape */, .op = OP_NULL };
   }
 
@@ -593,9 +593,9 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
 
     sprintf(pc, "%s: ", prompt);
     if (ch.op == OP_NULL)
-      mutt_unget_event(ch.ch, OP_NULL);
+      mutt_unget_ch(ch.ch);
     else
-      mutt_unget_event(0, ch.op);
+      mutt_unget_op(ch.op);
 
     mutt_buffer_alloc(fname, 1024);
     if (mutt_buffer_get_field(pc, fname, (mailbox ? MUTT_COMP_FILE_MBOX : MUTT_COMP_FILE) | MUTT_COMP_CLEAR,
@@ -610,15 +610,25 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
 }
 
 /**
- * mutt_unget_event - Return a keystroke to the input buffer
+ * mutt_unget_ch - Return a keystroke to the input buffer
  * @param ch Key press
+ *
+ * This puts events into the `UngetKeyEvents` buffer
+ */
+void mutt_unget_ch(int ch)
+{
+  array_add(&UngetKeyEvents, ch, OP_NULL);
+}
+
+/**
+ * mutt_unget_op - Return an operation to the input buffer
  * @param op Operation, e.g. OP_DELETE
  *
  * This puts events into the `UngetKeyEvents` buffer
  */
-void mutt_unget_event(int ch, int op)
+void mutt_unget_op(int op)
 {
-  array_add(&UngetKeyEvents, ch, op);
+  array_add(&UngetKeyEvents, 0, op);
 }
 
 /**
@@ -633,7 +643,7 @@ void mutt_unget_string(const char *s)
 
   while (p >= s)
   {
-    mutt_unget_event((unsigned char) *p--, 0);
+    mutt_unget_ch((unsigned char) *p--);
   }
 }
 

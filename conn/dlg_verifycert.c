@@ -104,9 +104,9 @@ static int menu_dialog_dokey(struct Menu *menu, int *id)
   }
 
   if (ch.op == OP_NULL)
-    mutt_unget_event(ch.ch, OP_NULL);
+    mutt_unget_ch(ch.ch);
   else
-    mutt_unget_event(0, ch.op);
+    mutt_unget_op(ch.op);
   return -1;
 }
 

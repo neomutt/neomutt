@@ -344,7 +344,7 @@ int external_pager(struct Mailbox *m, struct Email *e, const char *command)
   const bool c_prompt_after = cs_subset_bool(NeoMutt->sub, "prompt_after");
   if ((r != -1) && c_prompt_after)
   {
-    mutt_unget_event(mutt_any_key_to_continue(_("Command: ")), 0);
+    mutt_unget_ch(mutt_any_key_to_continue(_("Command: ")));
     rc = km_dokey(MENU_PAGER);
   }
   else

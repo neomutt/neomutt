@@ -612,9 +612,9 @@ static struct KeyEvent retry_generic(enum MenuType mtype, keycode_t *keys,
                                      int keyslen, int lastkey)
 {
   if (lastkey)
-    mutt_unget_event(lastkey, 0);
+    mutt_unget_ch(lastkey);
   for (; keyslen; keyslen--)
-    mutt_unget_event(keys[keyslen - 1], 0);
+    mutt_unget_ch(keys[keyslen - 1]);
 
   if ((mtype != MENU_EDITOR) && (mtype != MENU_GENERIC) && (mtype != MENU_PAGER))
   {
@@ -730,9 +730,9 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
           func = mutt_get_func(funcs, tmp.op);
           if (func)
           {
-            mutt_unget_event('>', 0);
+            mutt_unget_ch('>');
             mutt_unget_string(func);
-            mutt_unget_event('<', 0);
+            mutt_unget_ch('<');
             break;
           }
         }
@@ -1084,10 +1084,10 @@ void km_error_key(enum MenuType mtype)
    * Note that km_expand_key() + tokenize_unget_string() should
    * not be used here: control sequences are expanded to a form
    * (e.g. "^H") not recognized by km_dokey(). */
-  mutt_unget_event(0, OP_END_COND);
+  mutt_unget_op(OP_END_COND);
   p = key->len;
   while (p--)
-    mutt_unget_event(key->keys[p], 0);
+    mutt_unget_ch(key->keys[p]);
 
   /* Note, e.g. for the index menu:
    *   bind generic ?   noop
