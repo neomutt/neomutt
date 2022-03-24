@@ -794,7 +794,6 @@ static int op_main_break_thread(struct IndexSharedData *shared,
 static int op_main_change_folder(struct IndexSharedData *shared,
                                  struct IndexPrivateData *priv, int op)
 {
-  bool pager_return = true; /* return to display message in pager */
   struct Buffer *folderbuf = mutt_buffer_pool_get();
   mutt_buffer_alloc(folderbuf, PATH_MAX);
 
@@ -842,12 +841,11 @@ static int op_main_change_folder(struct IndexSharedData *shared,
   if (m)
   {
     change_folder_mailbox(priv->menu, m, &priv->oldcount, shared, read_only);
-    pager_return = false;
   }
   else
   {
     change_folder_string(priv->menu, folderbuf->data, folderbuf->dsize,
-                         &priv->oldcount, shared, &pager_return, read_only);
+                         &priv->oldcount, shared, read_only);
   }
 
 changefoldercleanup:
@@ -2447,7 +2445,6 @@ done:
 static int op_main_change_group(struct IndexSharedData *shared,
                                 struct IndexPrivateData *priv, int op)
 {
-  bool pager_return = true; /* return to display message in pager */
   struct Buffer *folderbuf = mutt_buffer_pool_get();
   mutt_buffer_alloc(folderbuf, PATH_MAX);
 
@@ -2503,12 +2500,11 @@ static int op_main_change_group(struct IndexSharedData *shared,
   if (m)
   {
     change_folder_mailbox(priv->menu, m, &priv->oldcount, shared, read_only);
-    pager_return = false;
   }
   else
   {
     change_folder_string(priv->menu, folderbuf->data, folderbuf->dsize,
-                         &priv->oldcount, shared, &pager_return, read_only);
+                         &priv->oldcount, shared, read_only);
   }
   struct MuttWindow *dlg = dialog_find(priv->win_index);
   dlg->help_data = IndexNewsHelp;

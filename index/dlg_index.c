@@ -718,11 +718,10 @@ struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, 
  * @param buflen       Length of buffer
  * @param oldcount     How many items are currently in the index
  * @param shared       Shared Index data
- * @param pager_return Return to the pager afterwards
  * @param read_only    Open Mailbox in read-only mode
  */
 void change_folder_string(struct Menu *menu, char *buf, size_t buflen, int *oldcount,
-                          struct IndexSharedData *shared, bool *pager_return, bool read_only)
+                          struct IndexSharedData *shared, bool read_only)
 {
 #ifdef USE_NNTP
   if (OptNews)
@@ -745,7 +744,6 @@ void change_folder_string(struct Menu *menu, char *buf, size_t buflen, int *oldc
     if (m)
     {
       change_folder_mailbox(menu, m, oldcount, shared, read_only);
-      *pager_return = false;
     }
     else
       mutt_error(_("%s is not a mailbox"), buf);
@@ -753,7 +751,6 @@ void change_folder_string(struct Menu *menu, char *buf, size_t buflen, int *oldc
   }
 
   /* past this point, we don't return to the pager on error */
-  *pager_return = false;
 
   struct Mailbox *m = mx_path_resolve(buf);
   change_folder_mailbox(menu, m, oldcount, shared, read_only);
@@ -1096,7 +1093,8 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     }
   }
 
-  while (true)
+  int rc = 0;
+  do
   {
     /* Clear the tag prefix unless we just started it.
      * Don't clear the prefix on a timeout, but do clear on an abort */
@@ -1332,7 +1330,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     nm_db_debug_check(shared->mailbox);
 #endif
 
-    int rc = index_function_dispatcher(priv->win_index, op);
+    rc = index_function_dispatcher(priv->win_index, op);
 
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(priv->win_index, op);
@@ -1347,28 +1345,13 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(dlg, op);
 
-    if (rc == FR_CONTINUE)
-    {
-      op = OP_DISPLAY_MESSAGE;
-      continue;
-    }
-
-    if (rc > 0)
-    {
-      op = rc;
-      continue;
-    }
-
     if (rc == FR_UNKNOWN)
       km_error_key(MENU_INDEX);
 
 #ifdef USE_NOTMUCH
     nm_db_debug_check(shared->mailbox);
 #endif
-
-    if (rc == FR_DONE)
-      break;
-  }
+  } while (rc != FR_DONE);
 
   ctx_free(&shared->ctx);
 
