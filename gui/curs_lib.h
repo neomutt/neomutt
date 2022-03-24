@@ -58,7 +58,7 @@ void         mutt_flush_unget_to_endcond(void);
 void         mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s);
 void         mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *s);
 void         mutt_format_s_x(char *buf, size_t buflen, const char *prec, const char *s, bool arboreal);
-void         mutt_getch_timeout(int delay);
+struct KeyEvent mutt_getch_timeout(int delay);
 struct KeyEvent mutt_getch(void);
 int          mutt_get_field_unbuffered(const char *msg, struct Buffer *buf, CompletionFlags flags);
 void         mutt_need_hard_redraw(void);

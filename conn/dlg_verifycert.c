@@ -84,9 +84,7 @@ static int menu_dialog_dokey(struct Menu *menu, int *id)
   struct KeyEvent ch = { OP_NULL, OP_NULL };
 
   // enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
-  mutt_getch_timeout(5000);
-  ch = mutt_getch();
-  mutt_getch_timeout(-1);
+  ch = mutt_getch_timeout(5000);
   // mutt_curses_set_cursor(cursor);
 
   if (ch.ch < OP_NULL)

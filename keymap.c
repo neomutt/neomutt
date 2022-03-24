@@ -662,9 +662,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
       {
         while (c_imap_keepalive && (c_imap_keepalive < i))
         {
-          mutt_getch_timeout(c_imap_keepalive * 1000);
-          tmp = mutt_getch();
-          mutt_getch_timeout(-1);
+          tmp = mutt_getch_timeout(c_imap_keepalive * 1000);
           /* If a timeout was not received, or the window was resized, exit the
            * loop now.  Otherwise, continue to loop until reaching a total of
            * $timeout seconds.  */
@@ -681,9 +679,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
     }
 #endif
 
-    mutt_getch_timeout(i * 1000);
-    tmp = mutt_getch();
-    mutt_getch_timeout(-1);
+    tmp = mutt_getch_timeout(i * 1000);
 
 #ifdef USE_IMAP
   gotkey:

@@ -142,9 +142,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
 
     mutt_refresh();
     /* SigWinch is not processed unless timeout is set */
-    mutt_getch_timeout(30 * 1000);
-    ch = mutt_getch();
-    mutt_getch_timeout(-1);
+    ch = mutt_getch_timeout(30 * 1000);
     if (ch.ch == OP_TIMEOUT)
       continue;
     /* (ch.ch == 0) is technically possible.  Treat the same as < 0 (abort) */
@@ -319,9 +317,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
 
     mutt_refresh();
     /* SigWinch is not processed unless timeout is set */
-    mutt_getch_timeout(30 * 1000);
-    ch = mutt_getch();
-    mutt_getch_timeout(-1);
+    ch = mutt_getch_timeout(30 * 1000);
     if (ch.ch == OP_TIMEOUT)
       continue;
     if (CI_is_return(ch.ch))
