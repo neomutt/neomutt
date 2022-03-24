@@ -18,7 +18,7 @@
 /*
 ** .pp
 ** Specifies the key that can be used to abort prompts.  The format is the
-** same as used in "bind" commands.  The default is equivalent to "\G".
+** same as used in "bind" commands.  The default is equivalent to "Ctrl-G".
 ** Note that the specified key should not be used in other bindings, as the
 ** abort operation has higher precedence and the binding will not have the
 ** desired effect.
