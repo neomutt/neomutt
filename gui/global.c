@@ -34,6 +34,7 @@
 #include "global.h"
 #include "lib.h"
 #include "index/lib.h"
+#include "pager/lib.h"
 #include "commands.h"
 #include "keymap.h"
 #include "mutt_mailbox.h"
@@ -85,6 +86,38 @@ static int op_shell_escape(int op)
 }
 
 /**
+ * op_show_log_messages - Show log (and debug) messages - Implements ::global_function_t - @ingroup global_function_api
+ */
+static int op_show_log_messages(int op)
+{
+  char tempfile[PATH_MAX];
+  mutt_mktemp(tempfile, sizeof(tempfile));
+
+  FILE *fp = mutt_file_fopen(tempfile, "a+");
+  if (!fp)
+  {
+    mutt_perror("fopen");
+    return FR_ERROR;
+  }
+
+  log_queue_save(fp);
+  mutt_file_fclose(&fp);
+
+  struct PagerData pdata = { 0 };
+  struct PagerView pview = { &pdata };
+
+  pdata.fname = tempfile;
+
+  pview.banner = "messages";
+  pview.flags = MUTT_PAGER_LOGS | MUTT_PAGER_BOTTOM;
+  pview.mode = PAGER_MODE_OTHER;
+
+  mutt_do_pager(&pview, NULL);
+
+  return FR_SUCCESS;
+}
+
+/**
  * op_version - Show the NeoMutt version number - Implements ::global_function_t - @ingroup global_function_api
  */
 static int op_version(int op)
@@ -113,6 +146,7 @@ struct GlobalFunction GlobalFunctions[] = {
   { OP_ENTER_COMMAND,         op_enter_command },
   { OP_REDRAW,                op_redraw },
   { OP_SHELL_ESCAPE,          op_shell_escape },
+  { OP_SHOW_LOG_MESSAGES,     op_show_log_messages },
   { OP_VERSION,               op_version },
   { OP_WHAT_KEY,              op_what_key },
   { 0, NULL },

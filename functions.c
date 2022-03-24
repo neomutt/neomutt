@@ -161,7 +161,7 @@ const struct MenuFuncOp OpBrowser[] = { /* map: browser */
   { "unsubscribe-pattern",           OP_UNSUBSCRIBE_PATTERN },
 #endif
   { "view-file",                     OP_BROWSER_VIEW_FILE },
-  // This is deprecated.  Leave it last so it doesn't show up in the help.
+  // Deprecated
   { "buffy-list",                    OP_MAILBOX_LIST },
   { NULL, 0 },
 };
@@ -268,7 +268,7 @@ const struct MenuFuncOp OpEditor[] = { /* map: editor */
   { "quote-char",                    OP_EDITOR_QUOTE_CHAR },
   { "transpose-chars",               OP_EDITOR_TRANSPOSE_CHARS },
   { "upcase-word",                   OP_EDITOR_UPCASE_WORD },
-  // This is deprecated.  Leave it last so it doesn't show up in the help.
+  // Deprecated
   { "buffy-cycle",                   OP_EDITOR_MAILBOX_CYCLE },
   { NULL, 0 },
 };
@@ -322,11 +322,14 @@ const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   { "search-reverse",                OP_SEARCH_REVERSE },
   { "select-entry",                  OP_GENERIC_SELECT_ENTRY },
   { "shell-escape",                  OP_SHELL_ESCAPE },
+  { "show-log-messages",             OP_SHOW_LOG_MESSAGES },
   { "tag-entry",                     OP_TAG },
   { "tag-prefix",                    OP_TAG_PREFIX },
   { "tag-prefix-cond",               OP_TAG_PREFIX_COND },
   { "top-page",                      OP_TOP_PAGE },
   { "what-key",                      OP_WHAT_KEY },
+  // Deprecated
+  { "error-history",                 OP_SHOW_LOG_MESSAGES },
   { NULL, 0 },
 };
 
@@ -450,7 +453,6 @@ const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "save-message",                  OP_SAVE },
   { "set-flag",                      OP_MAIN_SET_FLAG },
   { "show-limit",                    OP_MAIN_SHOW_LIMIT },
-  { "show-log-messages",             OP_SHOW_LOG_MESSAGES },
   { "show-version",                  OP_VERSION },
 #ifdef USE_SIDEBAR
   { "sidebar-first",                 OP_SIDEBAR_FIRST },
@@ -488,7 +490,7 @@ const struct MenuFuncOp OpIndex[] = { /* map: index */
 #endif
   { "view-attachments",              OP_VIEW_ATTACHMENTS },
   { "view-raw-message",              OP_VIEW_RAW_MESSAGE },
-  // This is deprecated.  Leave it last so it doesn't show up in the help.
+  // Deprecated
   { "buffy-list",                    OP_MAILBOX_LIST },
   { NULL, 0 },
 };
@@ -637,6 +639,7 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "search-toggle",                 OP_SEARCH_TOGGLE },
   { "set-flag",                      OP_MAIN_SET_FLAG },
   { "shell-escape",                  OP_SHELL_ESCAPE },
+  { "show-log-messages",             OP_SHOW_LOG_MESSAGES },
   { "show-version",                  OP_VERSION },
 #ifdef USE_SIDEBAR
   { "sidebar-first",                 OP_SIDEBAR_FIRST },
@@ -670,8 +673,9 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "view-attachments",              OP_VIEW_ATTACHMENTS },
   { "view-raw-message",              OP_VIEW_RAW_MESSAGE },
   { "what-key",                      OP_WHAT_KEY },
-  // This is deprecated.  Leave it last so it doesn't show up in the help.
+  // Deprecated
   { "buffy-list",                    OP_MAILBOX_LIST },
+  { "error-history",                 OP_SHOW_LOG_MESSAGES },
   { NULL, 0 },
 };
 
