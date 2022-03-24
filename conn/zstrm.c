@@ -100,7 +100,7 @@ static int zstrm_close(struct Connection *conn)
 
   int rc = zctx->next_conn.close(&zctx->next_conn);
 
-  mutt_debug(LL_DEBUG5, "read %llu->%llu (%.1fx) wrote %llu<-%llu (%.1fx)\n",
+  mutt_debug(LL_DEBUG5, "read %lu->%lu (%.1fx) wrote %lu<-%lu (%.1fx)\n",
              zctx->read.z.total_in, zctx->read.z.total_out,
              (float) zctx->read.z.total_out / (float) zctx->read.z.total_in,
              zctx->write.z.total_in, zctx->write.z.total_out,
@@ -157,7 +157,7 @@ retry:
   zctx->read.z.next_out = (Bytef *) buf;
 
   zrc = inflate(&zctx->read.z, Z_SYNC_FLUSH);
-  mutt_debug(LL_DEBUG5, "rc=%d, consumed %u/%u bytes, produced %u/%u bytes\n",
+  mutt_debug(LL_DEBUG5, "rc=%d, consumed %u/%u bytes, produced %lu/%lu bytes\n",
              zrc, zctx->read.pos - zctx->read.z.avail_in, zctx->read.pos,
              len - zctx->read.z.avail_out, len);
 
@@ -243,7 +243,7 @@ static int zstrm_write(struct Connection *conn, const char *buf, size_t count)
       /* push out produced data to the underlying stream */
       zctx->write.pos = zctx->write.len - zctx->write.z.avail_out;
       char *wbufp = zctx->write.buf;
-      mutt_debug(LL_DEBUG5, "deflate consumed %d/%d bytes\n",
+      mutt_debug(LL_DEBUG5, "deflate consumed %lu/%lu bytes\n",
                  count - zctx->write.z.avail_in, count);
       while (zctx->write.pos > 0)
       {

@@ -232,7 +232,7 @@ FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
     }
   }
 
-  mutt_debug(LL_DEBUG3, "bcache: put: '%s'\n", path);
+  mutt_debug(LL_DEBUG3, "bcache: put: '%s'\n", mutt_buffer_string(path));
 
   FILE *fp = mutt_file_fopen(mutt_buffer_string(path), "w+");
   mutt_buffer_pool_release(&path);

@@ -139,7 +139,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value, size_t 
   const bool display = (chflags & CH_DISPLAY);
 
   mutt_debug(LL_DEBUG5, "pfx=[%s], tag=[%s], flags=%d value=[%.*s]\n", pfx, tag,
-             chflags, ((value[vlen - 1] == '\n') ? vlen - 1 : vlen), value);
+             chflags, (int) ((value[vlen - 1] == '\n') ? vlen - 1 : vlen), value);
 
   if (tag && *tag && (fprintf(fp, "%s%s: ", NONULL(pfx), tag) < 0))
     return -1;
@@ -303,7 +303,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
   const bool short_enough = (pfxw + max <= wraplen);
 
   mutt_debug((short_enough ? LL_DEBUG2 : LL_DEBUG5), "buf[%s%.*s] %s, max width = %d %s %d\n",
-             NONULL(pfx), vallen - 1 /* skip newline */, start,
+             NONULL(pfx), (int) (vallen - 1) /* skip newline */, start,
              (short_enough ? "short enough" : "too long"), max,
              (short_enough ? "<=" : ">"), wraplen);
 

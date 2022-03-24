@@ -583,7 +583,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
     mutt_debug(LL_DEBUG3, "text: '%s'  len: %d\n", more, more_len);
 
     int reserve = ((count > 0) && (lines_used == max_lines)) ? more_len : 0;
-    mutt_debug(LL_DEBUG3, "processing: %s (al:%ld, wl:%d, r:%d, lu:%ld)\n",
+    mutt_debug(LL_DEBUG3, "processing: %s (al:%d, wl:%d, r:%d, lu:%d)\n",
                np->data, addr_len, width_left, reserve, lines_used);
     if (addr_len >= (width_left - reserve))
     {
@@ -619,7 +619,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
       mutt_window_addstr(win, sep);
       width_left -= addr_len;
     }
-    mutt_debug(LL_DEBUG3, "%ld addresses remaining\n", count);
+    mutt_debug(LL_DEBUG3, "%d addresses remaining\n", count);
     mutt_debug(LL_DEBUG3, "%ld lines remaining\n", max_lines - lines_used);
   }
   mutt_list_free(&list);
@@ -630,7 +630,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
     mutt_curses_set_color_by_id(MT_COLOR_BOLD);
     mutt_window_addstr(win, more);
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
-    mutt_debug(LL_DEBUG3, "%ld more (len %d)\n", count, more_len);
+    mutt_debug(LL_DEBUG3, "%d more (len %d)\n", count, more_len);
   }
   else
   {

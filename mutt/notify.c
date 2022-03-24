@@ -121,7 +121,7 @@ static bool send(struct Notify *source, struct Notify *current,
   if (!source || !current)
     return false;
 
-  mutt_debug(LL_NOTIFY, "send: %d, %ld\n", event_type, event_data);
+  mutt_debug(LL_NOTIFY, "send: %d, %p\n", event_type, event_data);
   struct ObserverNode *np = NULL;
   STAILQ_FOREACH(np, &current->observers, entries)
   {

@@ -1360,8 +1360,8 @@ void imap_cmd_finish(struct ImapAccountData *adata)
         if (!(mdata->reopen & IMAP_EXPUNGE_PENDING))
           mdata->check_status |= IMAP_NEWMAIL_PENDING;
 
-        mutt_debug(LL_DEBUG2, "Fetching new mails from %d to %d\n", max_msn + 1,
-                   mdata->new_mail_count);
+        mutt_debug(LL_DEBUG2, "Fetching new mails from %ld to %u\n",
+                   max_msn + 1, mdata->new_mail_count);
         imap_read_headers(adata->mailbox, max_msn + 1, mdata->new_mail_count, false);
       }
     }

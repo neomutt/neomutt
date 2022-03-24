@@ -544,7 +544,8 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       mutt_file_fclose(&fp);
       int rc = filter_wait(pid);
       if (rc != 0)
-        mutt_debug(LL_DEBUG1, "backticks exited code %d for command: %s\n", rc, cmd);
+        mutt_debug(LL_DEBUG1, "backticks exited code %d for command: %s\n", rc,
+                   mutt_buffer_string(&cmd));
       FREE(&cmd.data);
 
       /* if we got output, make a new string consisting of the shell output
