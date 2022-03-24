@@ -20,10 +20,10 @@ jobs:
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Checkout Test Files
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: neomutt/neomutt-test-files
         path: test-files
@@ -34,7 +34,7 @@ jobs:
         ./setup.sh
 
     - name: Compilation Cache
-      uses: hendrikmuhs/ccache-action@v1
+      uses: hendrikmuhs/ccache-action@v1.2
 
     - name: Configure Neomutt
       run: ./configure $CONFIGURE_OPTIONS
