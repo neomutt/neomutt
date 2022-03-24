@@ -167,9 +167,6 @@ static int op_attachment_edit_type(struct IndexSharedData *shared,
   if (!shared->email)
     return FR_NO_ACTION;
   mutt_edit_content_type(shared->email, shared->email->body, NULL);
-  /* if we were in the pager, redisplay the message */
-  if (priv->in_pager)
-    return FR_CONTINUE;
 
   menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
   return FR_SUCCESS;
@@ -208,9 +205,6 @@ static int op_check_traditional(struct IndexSharedData *shared,
       menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
     emaillist_clear(&el);
   }
-
-  if (priv->in_pager)
-    return FR_CONTINUE;
 
   return FR_SUCCESS;
 }
@@ -275,15 +269,8 @@ static int op_delete(struct IndexSharedData *shared, struct IndexPrivateData *pr
   }
   else
   {
-    if (resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED))
-    {
-      if (priv->in_pager)
-        return FR_CONTINUE;
-    }
-    else
-    {
+    if (!resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED))
       menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
-    }
   }
 
   return FR_SUCCESS;
@@ -400,10 +387,6 @@ static int op_display_message(struct IndexSharedData *shared,
     return FR_ERROR;
   }
 
-  /* This is used to redirect a single operation back here afterwards.  If
-   * mutt_display_message() returns 0, then this flag and pager state will
-   * be cleaned up after this switch statement. */
-  priv->in_pager = true;
   if (shared->mailbox)
   {
     update_index(priv->menu, shared->ctx, MX_STATUS_NEW_MAIL,
@@ -498,12 +481,11 @@ static int op_end_cond(struct IndexSharedData *shared, struct IndexPrivateData *
  */
 static int op_exit(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
-  if ((!priv->in_pager) && priv->attach_msg)
+  if (priv->attach_msg)
     return FR_DONE;
 
   const enum QuadOption c_quit = cs_subset_quad(shared->sub, "quit");
-  if ((!priv->in_pager) &&
-      (query_quadoption(c_quit, _("Exit NeoMutt without saving?")) == MUTT_YES))
+  if (query_quadoption(c_quit, _("Exit NeoMutt without saving?")) == MUTT_YES)
   {
     if (shared->ctx)
     {
@@ -684,9 +666,6 @@ static int op_jump(struct IndexSharedData *shared, struct IndexPrivateData *priv
     rc = FR_SUCCESS;
   }
 
-  if (priv->in_pager)
-    rc = FR_CONTINUE;
-
   mutt_buffer_pool_release(&buf);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
   return rc;
@@ -794,9 +773,6 @@ static int op_main_break_thread(struct IndexSharedData *shared,
     shared->mailbox->changed = true;
     mutt_message(_("Thread broken"));
 
-    if (priv->in_pager)
-      return FR_CONTINUE;
-
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
   else
@@ -876,9 +852,6 @@ static int op_main_change_folder(struct IndexSharedData *shared,
 
 changefoldercleanup:
   mutt_buffer_pool_release(&folderbuf);
-  if (priv->in_pager && pager_return)
-    return FR_CONTINUE;
-
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
 
   return FR_SUCCESS;
@@ -1071,9 +1044,6 @@ static int op_main_link_threads(struct IndexSharedData *shared,
     emaillist_clear(&el);
   }
 
-  if (priv->in_pager)
-    return FR_CONTINUE;
-
   menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   return rc;
 }
@@ -1179,11 +1149,6 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
 #endif
       shared->email->quasi_deleted = !still_queried;
       m->changed = true;
-    }
-    if (priv->in_pager)
-    {
-      rc = FR_CONTINUE;
-      goto done;
     }
 
     if (!resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED))
@@ -1318,9 +1283,6 @@ static int op_main_next_new(struct IndexSharedData *shared,
     mutt_message(_("Search wrapped to bottom"));
   }
 
-  if (priv->in_pager)
-    return FR_CONTINUE;
-
   menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
   return FR_SUCCESS;
 }
@@ -1367,10 +1329,6 @@ static int op_main_next_thread(struct IndexSharedData *shared,
     else
       mutt_error(_("You are on the first thread"));
   }
-  else if (priv->in_pager)
-  {
-    return FR_CONTINUE;
-  }
   else
     menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
 
@@ -1386,8 +1344,7 @@ static int op_main_next_undeleted(struct IndexSharedData *shared,
   int index = menu_get_index(priv->menu);
   if (index >= (shared->mailbox->vcount - 1))
   {
-    if (!priv->in_pager)
-      mutt_message(_("You are on the last message"));
+    mutt_message(_("You are on the last message"));
     return FR_ERROR;
   }
   index = ci_next_undeleted(shared->mailbox, index);
@@ -1396,12 +1353,7 @@ static int op_main_next_undeleted(struct IndexSharedData *shared,
 
   if (index == -1)
   {
-    if (!priv->in_pager)
-      mutt_error(_("No undeleted messages"));
-  }
-  else if (priv->in_pager)
-  {
-    return FR_CONTINUE;
+    mutt_error(_("No undeleted messages"));
   }
   else
     menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
@@ -1450,12 +1402,7 @@ static int op_main_prev_undeleted(struct IndexSharedData *shared,
 
   if (index == -1)
   {
-    if (!priv->in_pager)
-      mutt_error(_("No undeleted messages"));
-  }
-  else if (priv->in_pager)
-  {
-    return FR_CONTINUE;
+    mutt_error(_("No undeleted messages"));
   }
   else
     menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
@@ -1518,11 +1465,7 @@ static int op_main_read_thread(struct IndexSharedData *shared,
   {
     const enum ResolveMethod rm =
         (op == OP_MAIN_READ_THREAD) ? RESOLVE_NEXT_THREAD : RESOLVE_NEXT_SUBTHREAD;
-    if (resolve_email(priv->menu, shared, rm))
-    {
-      if (priv->in_pager)
-        return FR_CONTINUE;
-    }
+    resolve_email(priv->menu, shared, rm);
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
 
@@ -1543,13 +1486,7 @@ static int op_main_root_message(struct IndexSharedData *shared,
   if (index != -1)
     menu_set_index(priv->menu, index);
 
-  if (priv->in_pager)
-  {
-    return FR_CONTINUE;
-  }
-  else
-    menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
-
+  menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
   return FR_SUCCESS;
 }
 
@@ -1668,11 +1605,6 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
     ctx_free(&shared->ctx);
   }
 
-  /* if we were in the pager, redisplay the message */
-  if (priv->in_pager)
-  {
-    return FR_CONTINUE;
-  }
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
 
   return FR_SUCCESS;
@@ -1787,13 +1719,10 @@ static int op_next_entry(struct IndexSharedData *shared, struct IndexPrivateData
   const int index = menu_get_index(priv->menu) + 1;
   if (index >= shared->mailbox->vcount)
   {
-    if (!priv->in_pager)
-      mutt_message(_("You are on the last message"));
+    mutt_message(_("You are on the last message"));
     return FR_ERROR;
   }
   menu_set_index(priv->menu, index);
-  if (priv->in_pager)
-    return FR_CONTINUE;
 
   menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
   return FR_SUCCESS;
@@ -1830,13 +1759,10 @@ static int op_prev_entry(struct IndexSharedData *shared, struct IndexPrivateData
   int index = menu_get_index(priv->menu);
   if (index < 1)
   {
-    if (!priv->in_pager)
-      mutt_message(_("You are on the first message"));
+    mutt_message(_("You are on the first message"));
     return FR_ERROR;
   }
   menu_set_index(priv->menu, index - 1);
-  if (priv->in_pager)
-    return FR_CONTINUE;
 
   menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
   return FR_SUCCESS;
@@ -2056,8 +1982,6 @@ static int op_sort(struct IndexSharedData *shared, struct IndexPrivateData *priv
     resort_index(shared->ctx, priv->menu);
     OptSearchInvalid = true;
   }
-  if (priv->in_pager)
-    return FR_CONTINUE;
 
   return FR_SUCCESS;
 }
@@ -2168,12 +2092,7 @@ static int op_toggle_new(struct IndexSharedData *shared, struct IndexPrivateData
 static int op_toggle_write(struct IndexSharedData *shared,
                            struct IndexPrivateData *priv, int op)
 {
-  if (mx_toggle_write(shared->mailbox) == 0)
-  {
-    if (priv->in_pager)
-      return FR_CONTINUE;
-  }
-
+  mx_toggle_write(shared->mailbox);
   return FR_SUCCESS;
 }
 
@@ -2400,8 +2319,6 @@ static int op_get_children(struct IndexSharedData *shared,
   /* at least one message has been loaded */
   if (shared->mailbox->msg_count > oldmsgcount)
   {
-    const int index = menu_get_index(priv->menu);
-    struct Email *e_oldcur = mutt_get_virt_email(shared->mailbox, index);
     bool verbose = shared->mailbox->verbose;
 
     if (rc < 0)
@@ -2409,15 +2326,6 @@ static int op_get_children(struct IndexSharedData *shared,
     mutt_sort_headers(shared->mailbox, shared->ctx->threads,
                       (op == OP_RECONSTRUCT_THREAD), &shared->ctx->vsize);
     shared->mailbox->verbose = verbose;
-
-    /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
-     * update the index */
-    if (priv->in_pager)
-    {
-      menu_set_index(priv->menu, e_oldcur->vnum);
-      menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
-      return FR_CONTINUE;
-    }
 
     /* if the root message was retrieved, move to it */
     struct Email *e = mutt_hash_find(shared->mailbox->id_hash, buf);
@@ -2445,12 +2353,6 @@ static int op_get_children(struct IndexSharedData *shared,
   else if (rc >= 0)
   {
     mutt_error(_("No deleted messages found in the thread"));
-    /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
-     * update the index */
-    if (priv->in_pager)
-    {
-      return FR_CONTINUE;
-    }
   }
 
   return FR_SUCCESS;
@@ -2613,9 +2515,6 @@ static int op_main_change_group(struct IndexSharedData *shared,
 
 changefoldercleanup2:
   mutt_buffer_pool_release(&folderbuf);
-  if (priv->in_pager && pager_return)
-    return FR_CONTINUE;
-
   return FR_SUCCESS;
 }
 
@@ -2725,8 +2624,6 @@ static int op_main_entire_thread(struct IndexSharedData *shared,
     menu_set_index(priv->menu, index);
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
-  if (priv->in_pager)
-    return FR_CONTINUE;
 
   return FR_SUCCESS;
 }
