@@ -1043,14 +1043,14 @@ static int op_edit_label(struct IndexSharedData *shared, struct PagerPrivateData
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, shared->email);
-  priv->rc = mutt_label_message(shared->mailbox, &el);
+  int rc = mutt_label_message(shared->mailbox, &el);
   emaillist_clear(&el);
 
-  if (priv->rc > 0)
+  if (rc > 0)
   {
     shared->mailbox->changed = true;
     pager_queue_redraw(priv, MENU_REDRAW_FULL);
-    mutt_message(ngettext("%d label changed", "%d labels changed", priv->rc), priv->rc);
+    mutt_message(ngettext("%d label changed", "%d labels changed", rc), rc);
   }
   else
   {

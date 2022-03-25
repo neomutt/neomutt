@@ -483,6 +483,7 @@ int mutt_pager(struct PagerView *pview)
 
   struct MuttWindow *dlg = dialog_find(pview->win_pager);
   struct IndexSharedData *shared = dlg->wdata;
+  struct MuttWindow *win_sidebar = window_find_child(dlg, WT_SIDEBAR);
 
   switch (pview->mode)
   {
@@ -846,12 +847,11 @@ int mutt_pager(struct PagerView *pview)
 
     int rc = pager_function_dispatcher(priv->pview->win_pager, op);
 
+    if (rc == FR_UNKNOWN)
+      rc = index_function_dispatcher(priv->pview->win_index, op);
 #ifdef USE_SIDEBAR
     if (rc == FR_UNKNOWN)
-    {
-      struct MuttWindow *win_sidebar = window_find_child(dlg, WT_SIDEBAR);
       rc = sb_function_dispatcher(win_sidebar, op);
-    }
 #endif
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(dlg, op);
