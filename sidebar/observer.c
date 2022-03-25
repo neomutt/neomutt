@@ -183,6 +183,8 @@ static int sb_account_observer(struct NotifyCallback *nc)
 {
   if ((nc->event_type != NT_ACCOUNT) || !nc->global_data || !nc->event_data)
     return -1;
+  if (nc->event_subtype == NT_ACCOUNT_DELETE)
+    return 0;
 
   struct MuttWindow *win = nc->global_data;
   struct SidebarWindowData *wdata = sb_wdata_get(win);
@@ -347,25 +349,20 @@ static int sb_config_observer(struct NotifyCallback *nc)
  */
 static int sb_index_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_INDEX) || !nc->global_data)
-    return -1;
-
-  struct MuttWindow *win_ibar = nc->global_data;
-  if (!win_ibar)
+  if ((nc->event_type != NT_INDEX) || !nc->global_data || !nc->event_data)
     return 0;
 
+  if (!(nc->event_subtype & NT_INDEX_MAILBOX))
+    return 0;
+
+  struct MuttWindow *win_sidebar = nc->global_data;
   struct IndexSharedData *shared = nc->event_data;
-  if (!shared)
-    return 0;
 
-  if (nc->event_subtype & NT_INDEX_MAILBOX)
-  {
-    struct SidebarWindowData *wdata = sb_wdata_get(win_ibar);
-    sb_set_current_mailbox(wdata, shared->mailbox);
+  struct SidebarWindowData *wdata = sb_wdata_get(win_sidebar);
+  sb_set_current_mailbox(wdata, shared->mailbox);
 
-    win_ibar->actions |= WA_RECALC;
-    mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
-  }
+  win_sidebar->actions |= WA_RECALC;
+  mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
 
   return 0;
 }
@@ -432,11 +429,13 @@ void sb_win_add_observers(struct MuttWindow *win)
   if (!win || !NeoMutt)
     return;
 
+  struct MuttWindow *dlg = window_find_parent(win, WT_DLG_INDEX);
+
   notify_observer_add(NeoMutt->notify, NT_ACCOUNT, sb_account_observer, win);
   notify_observer_add(NeoMutt->notify, NT_COLOR, sb_color_observer, win);
   notify_observer_add(NeoMutt->notify, NT_COMMAND, sb_command_observer, win);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, sb_config_observer, win);
-  notify_observer_add(NeoMutt->notify, NT_INDEX, sb_index_observer, win);
+  notify_observer_add(dlg->notify, NT_ALL, sb_index_observer, win);
   notify_observer_add(NeoMutt->notify, NT_MAILBOX, sb_mailbox_observer, win);
   notify_observer_add(win->notify, NT_WINDOW, sb_window_observer, win);
 }
@@ -450,11 +449,13 @@ void sb_win_remove_observers(struct MuttWindow *win)
   if (!win || !NeoMutt)
     return;
 
+  struct MuttWindow *dlg = window_find_parent(win, WT_DLG_INDEX);
+
   notify_observer_remove(NeoMutt->notify, sb_account_observer, win);
   notify_observer_remove(NeoMutt->notify, sb_color_observer, win);
   notify_observer_remove(NeoMutt->notify, sb_command_observer, win);
   notify_observer_remove(NeoMutt->notify, sb_config_observer, win);
-  notify_observer_remove(NeoMutt->notify, sb_index_observer, win);
+  notify_observer_remove(dlg->notify, sb_index_observer, win);
   notify_observer_remove(NeoMutt->notify, sb_mailbox_observer, win);
   notify_observer_remove(win->notify, sb_window_observer, win);
 }

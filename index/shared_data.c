@@ -43,10 +43,10 @@ static int index_shared_context_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_CONTEXT) || !nc->global_data || !nc->event_data)
     return -1;
 
-  struct EventContext *ev_c = nc->event_data;
   if (nc->event_subtype == NT_CONTEXT_ADD)
     return 0;
 
+  struct EventContext *ev_c = nc->event_data;
   struct IndexSharedData *shared = nc->global_data;
   if (ev_c->ctx != shared->ctx)
     return 0;
@@ -54,9 +54,8 @@ static int index_shared_context_observer(struct NotifyCallback *nc)
   if (nc->event_subtype == NT_CONTEXT_DELETE)
     shared->ctx = NULL;
 
-  // Relay the message
-  mutt_debug(LL_NOTIFY, "NT_INDEX_CONTEXT\n");
-  notify_send(shared->notify, NT_INDEX, NT_INDEX_CONTEXT, shared);
+  mutt_debug(LL_NOTIFY, "relay NT_CONTEXT to shared data observers\n");
+  notify_send(shared->notify, nc->event_type, nc->event_subtype, shared);
   return 0;
 }
 
@@ -68,10 +67,10 @@ static int index_shared_account_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_ACCOUNT) || !nc->global_data || !nc->event_data)
     return -1;
 
-  struct EventAccount *ev_a = nc->event_data;
   if (nc->event_subtype == NT_ACCOUNT_ADD)
     return 0;
 
+  struct EventAccount *ev_a = nc->event_data;
   struct IndexSharedData *shared = nc->global_data;
   if (ev_a->account != shared->account)
     return 0;
@@ -79,9 +78,8 @@ static int index_shared_account_observer(struct NotifyCallback *nc)
   if (nc->event_subtype == NT_ACCOUNT_DELETE)
     shared->account = NULL;
 
-  // Relay the message
-  mutt_debug(LL_NOTIFY, "NT_INDEX_ACCOUNT\n");
-  notify_send(shared->notify, NT_INDEX, NT_INDEX_ACCOUNT, shared);
+  mutt_debug(LL_NOTIFY, "relay NT_ACCOUNT to shared data observers\n");
+  notify_send(shared->notify, nc->event_type, nc->event_subtype, shared);
   return 0;
 }
 
@@ -93,10 +91,10 @@ static int index_shared_mailbox_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_MAILBOX) || !nc->global_data || !nc->event_data)
     return -1;
 
-  struct EventMailbox *ev_m = nc->event_data;
   if (nc->event_subtype == NT_MAILBOX_ADD)
     return 0;
 
+  struct EventMailbox *ev_m = nc->event_data;
   struct IndexSharedData *shared = nc->global_data;
   if (ev_m->mailbox != shared->mailbox)
     return 0;
@@ -104,9 +102,8 @@ static int index_shared_mailbox_observer(struct NotifyCallback *nc)
   if (nc->event_subtype == NT_MAILBOX_DELETE)
     shared->mailbox = NULL;
 
-  // Relay the message
-  mutt_debug(LL_NOTIFY, "NT_INDEX_MAILBOX\n");
-  notify_send(shared->notify, NT_INDEX, NT_INDEX_MAILBOX, shared);
+  mutt_debug(LL_NOTIFY, "relay NT_MAILBOX to shared data observers\n");
+  notify_send(shared->notify, nc->event_type, nc->event_subtype, ev_m);
   return 0;
 }
 
@@ -118,10 +115,10 @@ static int index_shared_email_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_EMAIL) || !nc->global_data || !nc->event_data)
     return -1;
 
-  struct EventEmail *ev_e = nc->event_data;
   if (nc->event_subtype == NT_EMAIL_ADD)
     return 0;
 
+  struct EventEmail *ev_e = nc->event_data;
   struct IndexSharedData *shared = nc->global_data;
   bool match = false;
   for (int i = 0; i < ev_e->num_emails; i++)
@@ -139,9 +136,8 @@ static int index_shared_email_observer(struct NotifyCallback *nc)
   if (nc->event_subtype == NT_EMAIL_DELETE)
     shared->email = NULL;
 
-  // Relay the message
-  mutt_debug(LL_NOTIFY, "NT_INDEX_EMAIL: %p\n", shared->email);
-  notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, shared);
+  mutt_debug(LL_NOTIFY, "relay NT_EMAIL %p to shared data observers\n", shared->email);
+  notify_send(shared->notify, nc->event_type, nc->event_subtype, shared);
   return 0;
 }
 

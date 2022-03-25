@@ -213,31 +213,21 @@ static int pbar_config_observer(struct NotifyCallback *nc)
 
 /**
  * pbar_index_observer - Notification that the Index has changed - Implements ::observer_t - @ingroup observer_api
+ *
+ * This function receives two sorts of notification:
+ * - NT_INDEX:
+ *   User has changed to a different Mailbox/Email
+ * - NT_CONTEXT/NT_ACCOUNT/NT_MAILBOX/NT_EMAIL:
+ *   The state of an object has changed
  */
 static int pbar_index_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_INDEX) || !nc->global_data)
+  if (!nc->global_data)
     return -1;
 
   struct MuttWindow *win_pbar = nc->global_data;
-  if (!win_pbar)
-    return 0;
-
-  struct IndexSharedData *shared = nc->event_data;
-  if (!shared)
-    return 0;
-
-  if (nc->event_subtype & NT_INDEX_MAILBOX)
-  {
-    win_pbar->actions |= WA_RECALC;
-    mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
-  }
-
-  if (nc->event_subtype & NT_INDEX_EMAIL)
-  {
-    win_pbar->actions |= WA_RECALC;
-    mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
-  }
+  win_pbar->actions |= WA_RECALC;
+  mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
 
   return 0;
 }
@@ -346,7 +336,7 @@ struct MuttWindow *pbar_new(struct IndexSharedData *shared, struct PagerPrivateD
 
   notify_observer_add(NeoMutt->notify, NT_COLOR, pbar_color_observer, win_pbar);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, pbar_config_observer, win_pbar);
-  notify_observer_add(shared->notify, NT_INDEX, pbar_index_observer, win_pbar);
+  notify_observer_add(shared->notify, NT_ALL, pbar_index_observer, win_pbar);
   notify_observer_add(priv->notify, NT_PAGER, pbar_pager_observer, win_pbar);
   notify_observer_add(win_pbar->notify, NT_WINDOW, pbar_window_observer, win_pbar);
 

@@ -53,7 +53,6 @@
  * | #NT_COLOR             | ibar_color_observer()   |
  * | #NT_CONFIG            | ibar_config_observer()  |
  * | #NT_INDEX             | ibar_index_observer()   |
- * | #NT_MAILBOX           | ibar_mailbox_observer() |
  * | #NT_MENU              | ibar_menu_observer()    |
  * | #NT_WINDOW            | ibar_window_observer()  |
  * | MuttWindow::recalc()  | ibar_recalc()           |
@@ -216,46 +215,21 @@ static int ibar_config_observer(struct NotifyCallback *nc)
 
 /**
  * ibar_index_observer - Notification that the Index has changed - Implements ::observer_t - @ingroup observer_api
+ *
+ * This function receives two sorts of notification:
+ * - NT_INDEX:
+ *   User has changed to a different Mailbox/Email
+ * - NT_CONTEXT/NT_ACCOUNT/NT_MAILBOX/NT_EMAIL:
+ *   The state of an object has changed
  */
 static int ibar_index_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_INDEX) || !nc->global_data)
-    return -1;
-
-  struct MuttWindow *win_ibar = nc->global_data;
-  if (!win_ibar)
-    return 0;
-
-  struct IndexSharedData *shared = nc->event_data;
-  if (!shared)
-    return 0;
-
-  if (nc->event_subtype & NT_INDEX_MAILBOX)
-  {
-    win_ibar->actions |= WA_RECALC;
-    mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
-  }
-
-  if (nc->event_subtype & NT_INDEX_EMAIL)
-  {
-    win_ibar->actions |= WA_RECALC;
-    mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
-  }
-
-  return 0;
-}
-
-/**
- * ibar_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t - @ingroup observer_api
- */
-static int ibar_mailbox_observer(struct NotifyCallback *nc)
-{
-  if ((nc->event_type != NT_MAILBOX) || !nc->global_data)
+  if (!nc->global_data)
     return -1;
 
   struct MuttWindow *win_ibar = nc->global_data;
   win_ibar->actions |= WA_RECALC;
-  mutt_debug(LL_DEBUG5, "mailbox done, request WA_RECALC\n");
+  mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
 
   return 0;
 }
@@ -301,7 +275,6 @@ static int ibar_window_observer(struct NotifyCallback *nc)
     notify_observer_remove(NeoMutt->notify, ibar_color_observer, win_ibar);
     notify_observer_remove(NeoMutt->notify, ibar_config_observer, win_ibar);
     notify_observer_remove(shared->notify, ibar_index_observer, win_ibar);
-    notify_observer_remove(NeoMutt->notify, ibar_mailbox_observer, win_ibar);
     notify_observer_remove(win_ibar->parent->notify, ibar_menu_observer, win_ibar);
     notify_observer_remove(win_ibar->notify, ibar_window_observer, win_ibar);
 
@@ -363,8 +336,7 @@ struct MuttWindow *ibar_new(struct MuttWindow *parent, struct IndexSharedData *s
 
   notify_observer_add(NeoMutt->notify, NT_COLOR, ibar_color_observer, win_ibar);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, ibar_config_observer, win_ibar);
-  notify_observer_add(shared->notify, NT_INDEX, ibar_index_observer, win_ibar);
-  notify_observer_add(NeoMutt->notify, NT_MAILBOX, ibar_mailbox_observer, win_ibar);
+  notify_observer_add(shared->notify, NT_ALL, ibar_index_observer, win_ibar);
   notify_observer_add(parent->notify, NT_MENU, ibar_menu_observer, win_ibar);
   notify_observer_add(win_ibar->notify, NT_WINDOW, ibar_window_observer, win_ibar);
 
