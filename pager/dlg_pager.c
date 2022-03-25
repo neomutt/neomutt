@@ -77,10 +77,6 @@ struct Resize
   bool search_back;
 };
 
-/* hack to return to position when returning from index to same message */
-static int TopLine = 0;
-static struct Email *OldEmail = NULL;
-
 int braille_row = -1;
 int braille_col = -1;
 
@@ -138,15 +134,6 @@ static const struct Mapping PagerNewsHelp[] = {
   // clang-format on
 };
 #endif
-
-/**
- * mutt_clear_pager_position - Reset the pager's viewing position
- */
-void mutt_clear_pager_position(void)
-{
-  TopLine = 0;
-  OldEmail = NULL;
-}
 
 /**
  * pager_queue_redraw - Queue a request for a redraw
@@ -459,23 +446,6 @@ int mutt_pager(struct PagerView *pview)
   }
   unlink(pview->pdata->fname);
 
-  //---------- restore global state if needed ---------------------------------
-  while ((pview->mode == PAGER_MODE_EMAIL) && (OldEmail == shared->email) && // are we "resuming" to the same Email?
-         (TopLine != priv->top_line) && // is saved offset different?
-         (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1)))
-  {
-    pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
-    pager_custom_redraw(priv);
-    // trick user, as if nothing happened
-    // scroll down to previously saved offset
-    priv->top_line = ((TopLine - priv->top_line) > priv->win_height) ?
-                         priv->top_line + priv->win_height :
-                         TopLine;
-  }
-
-  TopLine = 0;
-  OldEmail = NULL;
-
   //---------- show windows, set focus and visibility --------------------------
   window_set_visible(pview->win_pager->parent, true);
   mutt_window_reflow(dlg);
@@ -713,17 +683,6 @@ int mutt_pager(struct PagerView *pview)
   {
     shared->ctx->msg_in_pager = -1;
     priv->win_pbar->actions |= WA_RECALC;
-    switch (priv->rc)
-    {
-      case -1:
-      case OP_DISPLAY_HEADERS:
-        mutt_clear_pager_position();
-        break;
-      default:
-        TopLine = priv->top_line;
-        OldEmail = shared->email;
-        break;
-    }
   }
 
   qstyle_free_tree(&priv->quote_list);
