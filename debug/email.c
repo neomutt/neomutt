@@ -344,3 +344,55 @@ void dump_attach(const struct AttachPtr *att)
   // struct Body *content; ///< Attachment
   mutt_buffer_dealloc(&buf);
 }
+
+char body_name(const struct Body *b)
+{
+  if (!b)
+    return '!';
+
+  if (b->type == TYPE_MULTIPART)
+    return '&';
+
+  if (b->description)
+    return b->description[0];
+
+  if (b->filename)
+  {
+    const char *base = basename(b->filename);
+    if (mutt_str_startswith(base, "neomutt-"))
+      return '0';
+
+    return base[0];
+  }
+
+  return '!';
+}
+
+void dump_body_next(struct Buffer *buf, const struct Body *b)
+{
+  if (!b)
+    return;
+
+  mutt_buffer_addstr(buf, "<");
+  for (; b; b = b->next)
+  {
+    mutt_buffer_add_printf(buf, "%c", body_name(b));
+    dump_body_next(buf, b->parts);
+    if (b->next)
+      mutt_buffer_addch(buf, ',');
+  }
+  mutt_buffer_addstr(buf, ">");
+}
+
+void dump_body_one_line(const struct Body *b)
+{
+  if (!b)
+    return;
+
+  struct Buffer *buf = mutt_buffer_pool_get();
+  mutt_buffer_addstr(buf, "Body layout: ");
+  dump_body_next(buf, b);
+
+  mutt_message(mutt_buffer_string(buf));
+  mutt_buffer_pool_release(&buf);
+}

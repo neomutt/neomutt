@@ -57,9 +57,12 @@ void show_backtrace(void);
 
 // Email
 void        add_flag               (struct Buffer *buf, bool is_set, const char *name);
+char        body_name              (const struct Body *b);
 void        dump_addr_list         (char *buf, size_t buflen, const struct AddressList *al, const char *name);
 void        dump_attach            (const struct AttachPtr *att);
 void        dump_body              (const struct Body *body);
+void        dump_body_next         (struct Buffer *buf, const struct Body *b);
+void        dump_body_one_line     (const struct Body *b);
 void        dump_email             (const struct Email *e);
 void        dump_envelope          (const struct Envelope *env);
 void        dump_list_head         (const struct ListHead *list, const char *name);
