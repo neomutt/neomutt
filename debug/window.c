@@ -33,6 +33,8 @@
 #include "gui/lib.h"
 #include "lib.h"
 
+// #define DEBUG_SHOW_SERIALISE
+
 static struct MuttWindow *win_focus = NULL;
 
 static const char *win_size(const struct MuttWindow *win)
@@ -72,6 +74,7 @@ static void win_dump(struct MuttWindow *win, int indent)
   }
 }
 
+#ifdef DEBUG_SHOW_SERIALISE
 static void win_serialise(struct MuttWindow *win, struct Buffer *buf)
 {
   if (!mutt_window_is_visible(win))
@@ -87,6 +90,7 @@ static void win_serialise(struct MuttWindow *win, struct Buffer *buf)
   }
   mutt_buffer_addstr(buf, ">");
 }
+#endif
 
 void debug_win_dump(void)
 {
@@ -94,9 +98,11 @@ void debug_win_dump(void)
   mutt_debug(LL_DEBUG1, "\n");
   win_dump(RootWindow, 0);
   mutt_debug(LL_DEBUG1, "\n");
+#ifdef DEBUG_SHOW_SERIALISE
   struct Buffer buf = mutt_buffer_make(1024);
   win_serialise(RootWindow, &buf);
   mutt_debug(LL_DEBUG1, "%s\n", mutt_buffer_string(&buf));
   mutt_buffer_dealloc(&buf);
+#endif
   win_focus = NULL;
 }
