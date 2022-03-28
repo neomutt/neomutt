@@ -383,11 +383,7 @@ static int sb_mailbox_observer(struct NotifyCallback *nc)
   struct SidebarWindowData *wdata = sb_wdata_get(win);
   struct EventMailbox *ev_m = nc->event_data;
 
-  if (nc->event_subtype == NT_MAILBOX_SWITCH)
-  {
-    sb_set_current_mailbox(wdata, ev_m->mailbox);
-  }
-  else if (nc->event_subtype == NT_MAILBOX_ADD)
+  if (nc->event_subtype == NT_MAILBOX_ADD)
   {
     sb_add_mailbox(wdata, ev_m->mailbox);
   }

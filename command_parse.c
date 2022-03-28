@@ -1493,8 +1493,8 @@ static void do_unmailboxes(struct Mailbox *m)
   if (m->opened)
   {
     struct EventMailbox ev_m = { NULL };
-    mutt_debug(LL_NOTIFY, "NT_MAILBOX_SWITCH: NULL\n");
-    notify_send(NeoMutt->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &ev_m);
+    mutt_debug(LL_NOTIFY, "NT_MAILBOX_CHANGE: NULL\n");
+    notify_send(NeoMutt->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
   }
   else
   {
