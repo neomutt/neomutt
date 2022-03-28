@@ -657,8 +657,7 @@ void mutt_opts_free(void)
   mutt_regexlist_free(&UnSubscribedLists);
 
   mutt_grouplist_free();
-  mutt_hash_free(&TagFormats);
-  mutt_hash_free(&TagTransforms);
+  driver_tags_cleanup();
 
   /* Lists of strings */
   mutt_list_free(&AlternativeOrderList);
@@ -737,8 +736,7 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
 #ifdef USE_LUA
   mutt_lua_init();
 #endif
-  TagTransforms = mutt_hash_new(64, MUTT_HASH_STRCASECMP);
-  TagFormats = mutt_hash_new(64, MUTT_HASH_NO_FLAGS);
+  driver_tags_init();
 
   menu_init();
 #ifdef USE_SIDEBAR
