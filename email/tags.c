@@ -35,6 +35,7 @@
 #include "tags.h"
 
 struct HashTable *TagTransforms; ///< Lookup table of alternative tag names
+struct HashTable *TagFormats;    ///< Hash Table of tag-formats (tag -> format string)
 
 /**
  * driver_tags_getter - Get transformed tags
@@ -201,4 +202,33 @@ bool driver_tags_replace(struct TagList *head, const char *tags)
     mutt_list_clear(&hsplit);
   }
   return true;
+}
+
+/**
+ * tags_deleter - Delete a tag - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
+ */
+static void tags_deleter(int type, void *obj, intptr_t data)
+{
+  FREE(&obj);
+}
+
+/**
+ * driver_tags_init - Initialize structures used for tags
+ */
+void driver_tags_init(void)
+{
+  TagTransforms = mutt_hash_new(64, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS);
+  mutt_hash_set_destructor(TagTransforms, tags_deleter, 0);
+
+  TagFormats = mutt_hash_new(64, MUTT_HASH_STRDUP_KEYS);
+  mutt_hash_set_destructor(TagFormats, tags_deleter, 0);
+}
+
+/**
+ * driver_tags_init - Deinitialize structures used for tags
+ */
+void driver_tags_cleanup(void)
+{
+  mutt_hash_free(&TagFormats);
+  mutt_hash_free(&TagTransforms);
 }
