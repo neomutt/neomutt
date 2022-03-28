@@ -178,7 +178,7 @@ void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
   struct SbEntry **sbep = NULL;
   ARRAY_FOREACH(sbep, &wdata->entries)
   {
-    if (m)
+    if (m && m->visible)
     {
       if (mutt_str_equal((*sbep)->mailbox->realpath, m->realpath))
       {
