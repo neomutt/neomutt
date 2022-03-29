@@ -1389,7 +1389,7 @@ enum CommandResult parse_tag_formats(struct Buffer *buf, struct Buffer *s,
     const char *tmp = mutt_hash_find(TagFormats, fmt);
     if (tmp)
     {
-      mutt_debug(LL_DEBUG3, "tag format '%s' already registered as '%s'\n", fmt, tmp);
+      mutt_warning(_("tag format '%s' already registered as '%s'"), fmt, tmp);
       continue;
     }
 
@@ -1432,7 +1432,7 @@ enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
     const char *tmp = mutt_hash_find(TagTransforms, tag);
     if (tmp)
     {
-      mutt_debug(LL_DEBUG3, "tag tranform '%s' already registered as '%s'\n", tag, tmp);
+      mutt_warning(_("tag transform '%s' already registered as '%s'"), tag, tmp);
       continue;
     }
 
