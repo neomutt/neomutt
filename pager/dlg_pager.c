@@ -148,66 +148,6 @@ void pager_queue_redraw(struct PagerPrivateData *priv, PagerRedrawFlags redraw)
 }
 
 /**
- * pager_custom_redraw - Redraw the pager window
- * @param priv Private Pager data
- */
-static void pager_custom_redraw(struct PagerPrivateData *priv)
-{
-  char buf[1024] = { 0 };
-  struct IndexSharedData *shared = dialog_find(priv->pview->win_pager)->wdata;
-
-  const short c_pager_index_lines =
-      cs_subset_number(NeoMutt->sub, "pager_index_lines");
-
-  if (priv->redraw & PAGER_REDRAW_PAGER)
-  {
-    mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
-    mutt_window_clear(priv->pview->win_pager);
-
-    if ((priv->pview->mode == PAGER_MODE_EMAIL) &&
-        ((shared->mailbox->vcount + 1) < c_pager_index_lines))
-    {
-      priv->index_size = shared->mailbox->vcount + 1;
-    }
-    else
-    {
-      priv->index_size = c_pager_index_lines;
-    }
-
-    priv->indicator = priv->index_size / 3;
-
-    if (Resize)
-    {
-      priv->search_compiled = Resize->search_compiled;
-      if (priv->search_compiled)
-      {
-        uint16_t flags = mutt_mb_is_lower(priv->search_str) ? REG_ICASE : 0;
-        const int err = REG_COMP(&priv->search_re, priv->search_str, REG_NEWLINE | flags);
-        if (err == 0)
-        {
-          priv->search_flag = MUTT_SEARCH;
-          priv->search_back = Resize->search_back;
-        }
-        else
-        {
-          regerror(err, &priv->search_re, buf, sizeof(buf));
-          mutt_error("%s", buf);
-          priv->search_compiled = false;
-        }
-      }
-      priv->win_height = Resize->line;
-      pager_queue_redraw(priv, PAGER_REDRAW_FLOW);
-
-      FREE(&Resize);
-    }
-
-    pager_queue_redraw(priv, PAGER_REDRAW_PAGER | PAGER_REDRAW_INDEX);
-  }
-
-  mutt_debug(LL_DEBUG5, "repaint done\n");
-}
-
-/**
  * pager_resolve_help_mapping - Determine help mapping based on pager mode and mailbox type
  * @param mode pager mode
  * @param type mailbox type
@@ -343,10 +283,6 @@ int mutt_pager(struct PagerView *pview)
   // ACT 2 - Declare, initialize local variables, read config, etc.
   //===========================================================================
 
-  //---------- reading config values needed now--------------------------------
-  const short c_pager_index_lines =
-      cs_subset_number(NeoMutt->sub, "pager_index_lines");
-
   //---------- local variables ------------------------------------------------
   int op = 0;
   enum MailboxType mailbox_type = shared->mailbox ? shared->mailbox->type : MUTT_UNKNOWN;
@@ -393,8 +329,6 @@ int mutt_pager(struct PagerView *pview)
   //---------- initialize redraw pdata  -----------------------------------------
   pview->win_pager->size = MUTT_WIN_SIZE_MAXIMISE;
   priv->pview = pview;
-  priv->index_size = c_pager_index_lines;
-  priv->indicator = priv->index_size / 3;
   priv->lines_max = LINES; // number of lines on screen, from curses
   priv->lines = mutt_mem_calloc(priv->lines_max, sizeof(struct Line));
   priv->fp = fopen(pview->pdata->fname, "r");
@@ -451,7 +385,6 @@ int mutt_pager(struct PagerView *pview)
     }
 
     pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
-    pager_custom_redraw(priv);
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
     window_redraw(NULL);
 

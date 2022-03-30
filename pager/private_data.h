@@ -66,9 +66,6 @@ struct PagerPrivateData
   regex_t search_re;           ///< Compiled search string
   bool search_back;            ///< Search backwards
 
-  int index_size;              ///< Size of the mini-index Window `$pager_index_lines`
-  int indicator;               ///< Preferred position of the indicator line in the mini-index Window
-
   bool force_redraw;              ///< Repaint is needed
   PagerRedrawFlags redraw;        ///< When to redraw the screen
   struct AttrColorList ansi_list; ///< List of ANSI colours used in the Pager
