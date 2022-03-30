@@ -397,6 +397,56 @@ static void notify_crypto(struct Email *e, struct Message *msg, CopyMessageFlags
 }
 
 /**
+ * squash_index_panel - Shrink or hide the Index Panel
+ * @param m      Mailbox
+ * @param win_index Index Window
+ * @param win_pager Pager Window
+ */
+static void squash_index_panel(struct Mailbox *m, struct MuttWindow *win_index,
+                               struct MuttWindow *win_pager)
+{
+  const short c_pager_index_lines =
+      cs_subset_number(NeoMutt->sub, "pager_index_lines");
+
+  const int index_space = MIN(c_pager_index_lines, m->vcount);
+  if (index_space > 0)
+  {
+    win_index->size = MUTT_WIN_SIZE_FIXED;
+    win_index->req_rows = index_space;
+    win_index->parent->size = MUTT_WIN_SIZE_MINIMISE;
+  }
+  window_set_visible(win_index->parent, (index_space > 0));
+
+  window_set_visible(win_pager->parent, true);
+
+  struct MuttWindow *dlg = dialog_find(win_index);
+  mutt_window_reflow(dlg);
+
+  // Force the menu to reframe itself
+  struct Menu *menu = win_index->wdata;
+  menu_set_index(menu, menu_get_index(menu));
+}
+
+/**
+ * expand_index_panel - Restore the Index Panel
+ * @param win_index Index Window
+ * @param win_pager Pager Window
+ */
+static void expand_index_panel(struct MuttWindow *win_index, struct MuttWindow *win_pager)
+{
+  win_index->size = MUTT_WIN_SIZE_MAXIMISE;
+  win_index->req_rows = MUTT_WIN_SIZE_UNLIMITED;
+  win_index->parent->size = MUTT_WIN_SIZE_MAXIMISE;
+  win_index->parent->req_rows = MUTT_WIN_SIZE_UNLIMITED;
+  window_set_visible(win_index->parent, true);
+
+  window_set_visible(win_pager->parent, false);
+
+  struct MuttWindow *dlg = dialog_find(win_index);
+  mutt_window_reflow(dlg);
+}
+
+/**
  * mutt_display_message - Display a message in the pager
  * @param win_index Index Window
  * @param win_pager Pager Window
@@ -438,7 +488,10 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_pa
   pview.win_index = win_index;
   pview.win_pbar = win_pbar;
   pview.win_pager = win_pager;
+
+  squash_index_panel(shared->mailbox, win_index, win_pager);
   rc = mutt_pager(&pview);
+  expand_index_panel(win_index, win_pager);
 
 cleanup:
   mx_msg_close(shared->mailbox, &msg);
