@@ -764,7 +764,7 @@ int mutt_pager(struct PagerView *pview)
         if (c_new_mail_command)
         {
           char cmd[1024];
-          menu_status_line(cmd, sizeof(cmd), shared, priv->menu, sizeof(cmd),
+          menu_status_line(cmd, sizeof(cmd), shared, NULL, sizeof(cmd),
                            NONULL(c_new_mail_command));
           if (mutt_system(cmd) != 0)
             mutt_error(_("Error running \"%s\""), cmd);
