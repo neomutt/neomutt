@@ -188,7 +188,7 @@ int mutt_do_pager(struct PagerView *pview, struct Email *e);
 void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src, bool strip_markers);
 struct MuttWindow *ppanel_new(bool status_on_top, struct IndexSharedData *shared);
 struct MuttWindow *pager_window_new(struct IndexSharedData *shared, struct PagerPrivateData *priv);
-int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_pager, struct MuttWindow *win_pbar, struct IndexSharedData *shared);
+int mutt_display_message(struct MuttWindow *win_index, struct IndexSharedData *shared);
 int external_pager(struct Mailbox *m, struct Email *e, const char *command);
 void pager_queue_redraw(struct PagerPrivateData *priv, PagerRedrawFlags redraw);
 

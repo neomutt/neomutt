@@ -377,7 +377,7 @@ static int op_display_message(struct IndexSharedData *shared,
   }
   else
   {
-    op = mutt_display_message(priv->win_index, priv->win_pager, priv->win_pbar, shared);
+    op = mutt_display_message(priv->win_index, shared);
   }
 
   window_set_focus(priv->win_index);

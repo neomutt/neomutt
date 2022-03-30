@@ -1048,14 +1048,11 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   index_shared_data_set_context(shared, ctx_new(m_init));
 
   struct MuttWindow *panel_index = window_find_child(dlg, WT_INDEX);
-  struct MuttWindow *panel_pager = window_find_child(dlg, WT_PAGER);
 
   struct IndexPrivateData *priv = panel_index->wdata;
   priv->attach_msg = OptAttachMsg;
   priv->win_index = window_find_child(panel_index, WT_MENU);
   priv->win_ibar = window_find_child(panel_index, WT_STATUS_BAR);
-  priv->win_pager = window_find_child(panel_pager, WT_CUSTOM);
-  priv->win_pbar = window_find_child(panel_pager, WT_STATUS_BAR);
 
   int op = OP_NULL;
 

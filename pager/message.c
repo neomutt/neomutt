@@ -449,14 +449,11 @@ static void expand_index_panel(struct MuttWindow *win_index, struct MuttWindow *
 /**
  * mutt_display_message - Display a message in the pager
  * @param win_index Index Window
- * @param win_pager Pager Window
- * @param win_pbar  Pager Bar Window
  * @param shared    Shared Index data
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_pager,
-                         struct MuttWindow *win_pbar, struct IndexSharedData *shared)
+int mutt_display_message(struct MuttWindow *win_index, struct IndexSharedData *shared)
 {
   struct Message *msg = mx_msg_open(shared->mailbox, shared->email->msgno);
   if (!msg)
@@ -465,6 +462,10 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_pa
   struct Buffer *tempfile = mutt_buffer_pool_get();
 
   CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
+
+  struct MuttWindow *dlg = dialog_find(win_index);
+  struct MuttWindow *win_pager = window_find_child(dlg, WT_CUSTOM);
+  struct MuttWindow *win_pbar = window_find_child(dlg, WT_STATUS_BAR);
 
   // win_pager might not be visible and have a size yet, so use win_index
   int rc = email_to_file(msg, tempfile, shared->mailbox, shared->email, NULL,
