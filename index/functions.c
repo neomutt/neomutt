@@ -347,8 +347,7 @@ static int op_display_message(struct IndexSharedData *shared,
   }
   else
   {
-    op = mutt_display_message(priv->win_index, priv->win_pager, priv->win_pbar,
-                              shared->mailbox, shared->email);
+    op = mutt_display_message(priv->win_index, priv->win_pager, priv->win_pbar, shared);
   }
 
   window_set_focus(priv->win_index);
