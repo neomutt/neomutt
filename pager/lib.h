@@ -174,6 +174,12 @@ typedef uint8_t NotifyPager;         ///< Flags, e.g. #NT_PAGER_DELETE
 #define NT_PAGER_DELETE    (1 << 0)  ///< Pager Private Data is about to be freed
 #define NT_PAGER_VIEW      (1 << 1)  ///< Pager View has changed
 
+typedef uint8_t PagerRedrawFlags;       ///< Flags, e.g. #PAGER_REDRAW_PAGER
+#define PAGER_REDRAW_NO_FLAGS        0  ///< No flags are set
+#define PAGER_REDRAW_PAGER     (1 << 5) ///< Redraw the pager
+#define PAGER_REDRAW_FLOW      (1 << 6) ///< Reflow the pager
+#define PAGER_REDRAW_INDEX     (1 << 7) ///< Redraw the mini-Index
+
 extern int braille_row;
 extern int braille_col;
 
@@ -184,7 +190,7 @@ struct MuttWindow *ppanel_new(bool status_on_top, struct IndexSharedData *shared
 struct MuttWindow *pager_window_new(struct IndexSharedData *shared, struct PagerPrivateData *priv);
 int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_pager, struct MuttWindow *win_pbar, struct IndexSharedData *shared);
 int external_pager(struct Mailbox *m, struct Email *e, const char *command);
-void pager_queue_redraw(struct PagerPrivateData *priv, MenuRedrawFlags redraw);
+void pager_queue_redraw(struct PagerPrivateData *priv, PagerRedrawFlags redraw);
 
 void mutt_clear_pager_position(void);
 

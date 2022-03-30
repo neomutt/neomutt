@@ -56,8 +56,6 @@ typedef uint8_t MenuRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX
 #define MENU_REDRAW_MOTION    (1 << 1) ///< Redraw after moving the menu list
 #define MENU_REDRAW_CURRENT   (1 << 2) ///< Redraw the current line of the menu
 #define MENU_REDRAW_FULL      (1 << 3) ///< Redraw everything
-#define MENU_REDRAW_BODY      (1 << 4) ///< Redraw the pager
-#define MENU_REDRAW_FLOW      (1 << 5) ///< Used by pager to reflow text
 
 ARRAY_HEAD(DialogLines, char *);
 

@@ -151,12 +151,12 @@ void mutt_clear_pager_position(void)
 /**
  * pager_queue_redraw - Queue a request for a redraw
  * @param priv   Private Pager data
- * @param redraw Item to redraw, e.g. #MENU_REDRAW_FULL
+ * @param redraw Item to redraw, e.g. #PAGER_REDRAW_PAGER
  */
-void pager_queue_redraw(struct PagerPrivateData *priv, MenuRedrawFlags redraw)
+void pager_queue_redraw(struct PagerPrivateData *priv, PagerRedrawFlags redraw)
 {
   priv->redraw |= redraw;
-  // win_pager->actions |= WA_RECALC;
+  priv->pview->win_pager->actions |= WA_RECALC;
 }
 
 /**
@@ -192,7 +192,7 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
   const short c_pager_index_lines =
       cs_subset_number(NeoMutt->sub, "pager_index_lines");
 
-  if (priv->redraw & MENU_REDRAW_FULL)
+  if (priv->redraw & PAGER_REDRAW_PAGER)
   {
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
     mutt_window_clear(priv->pview->win_pager);
@@ -229,7 +229,7 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
         }
       }
       priv->win_height = Resize->line;
-      pager_queue_redraw(priv, MENU_REDRAW_FLOW);
+      pager_queue_redraw(priv, PAGER_REDRAW_FLOW);
 
       FREE(&Resize);
     }
@@ -250,12 +250,12 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
       menu_redraw_index(priv->menu);
     }
 
-    pager_queue_redraw(priv, MENU_REDRAW_BODY | MENU_REDRAW_INDEX);
+    pager_queue_redraw(priv, PAGER_REDRAW_PAGER | PAGER_REDRAW_INDEX);
   }
 
   // We need to populate more lines, but not change position
   const bool repopulate = (priv->cur_line > priv->lines_used);
-  if ((priv->redraw & MENU_REDRAW_FLOW) || repopulate)
+  if ((priv->redraw & PAGER_REDRAW_FLOW) || repopulate)
   {
     if (!(priv->pview->flags & MUTT_PAGER_RETWINCH))
     {
@@ -301,7 +301,7 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
     }
   }
 
-  if ((priv->redraw & MENU_REDRAW_BODY) || (priv->top_line != priv->old_top_line))
+  if ((priv->redraw & PAGER_REDRAW_PAGER) || (priv->top_line != priv->old_top_line))
   {
     do
     {
@@ -342,7 +342,7 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   }
 
-  priv->redraw = MENU_REDRAW_NO_FLAGS;
+  priv->redraw = PAGER_REDRAW_NO_FLAGS;
   mutt_debug(LL_DEBUG5, "repaint done\n");
 }
 
@@ -625,7 +625,7 @@ int mutt_pager(struct PagerView *pview)
          (TopLine != priv->top_line) && // is saved offset different?
          (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1)))
   {
-    pager_queue_redraw(priv, MENU_REDRAW_FULL);
+    pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
     pager_custom_redraw(priv);
     // trick user, as if nothing happened
     // scroll down to previously saved offset
@@ -658,7 +658,7 @@ int mutt_pager(struct PagerView *pview)
       mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true);
     }
 
-    pager_queue_redraw(priv, MENU_REDRAW_FULL);
+    pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
     pager_custom_redraw(priv);
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
     window_redraw(NULL);
@@ -695,7 +695,7 @@ int mutt_pager(struct PagerView *pview)
         if (!shared->mailbox || mutt_buffer_is_empty(&shared->mailbox->pathbuf))
         {
           /* fatal error occurred */
-          pager_queue_redraw(priv, MENU_REDRAW_FULL);
+          pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
           break;
         }
       }
@@ -749,7 +749,7 @@ int mutt_pager(struct PagerView *pview)
             }
           }
 
-          pager_queue_redraw(priv, MENU_REDRAW_FULL);
+          pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
           OptSearchInvalid = true;
         }
       }
@@ -780,7 +780,7 @@ int mutt_pager(struct PagerView *pview)
       clearok(stdscr, true); /* force complete redraw */
       msgwin_clear_text();
 
-      pager_queue_redraw(priv, MENU_REDRAW_FLOW);
+      pager_queue_redraw(priv, PAGER_REDRAW_FLOW);
       if (pview->flags & MUTT_PAGER_RETWINCH)
       {
         /* Store current position. */
@@ -801,7 +801,7 @@ int mutt_pager(struct PagerView *pview)
       else
       {
         /* note: mutt_resize_screen() -> mutt_window_reflow() sets
-         * MENU_REDRAW_FULL and MENU_REDRAW_FLOW */
+         * PAGER_REDRAW_PAGER and PAGER_REDRAW_FLOW */
         op = OP_NULL;
       }
       continue;

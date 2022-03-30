@@ -283,7 +283,7 @@ static int op_pager_hide_quoted(struct IndexSharedData *shared,
   }
   else
   {
-    pager_queue_redraw(priv, MENU_REDRAW_BODY);
+    pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   }
   notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
   return FR_SUCCESS;
@@ -524,7 +524,7 @@ static int op_pager_search(struct IndexSharedData *shared,
         priv->top_line -= priv->searchctx;
     }
   }
-  pager_queue_redraw(priv, MENU_REDRAW_BODY);
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
   rc = FR_SUCCESS;
 
@@ -854,7 +854,7 @@ static int op_compose_to_sender(struct IndexSharedData *shared,
     mutt_send_message(SEND_TO_SENDER, NULL, NULL, shared->mailbox, &el, NeoMutt->sub);
     emaillist_clear(&el);
   }
-  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return FR_SUCCESS;
 }
 
@@ -898,7 +898,7 @@ static int op_copy_message(struct IndexSharedData *shared,
       return FR_DONE;
     }
     else
-      pager_queue_redraw(priv, MENU_REDRAW_INDEX);
+      pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
   }
   return FR_SUCCESS;
 }
@@ -948,7 +948,7 @@ static int op_delete(struct IndexSharedData *shared, struct PagerPrivateData *pr
   const bool c_delete_untag = cs_subset_bool(NeoMutt->sub, "delete_untag");
   if (c_delete_untag)
     mutt_set_flag(shared->mailbox, shared->email, MUTT_TAG, false);
-  pager_queue_redraw(priv, MENU_REDRAW_INDEX);
+  pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
   if (c_resolve)
   {
@@ -1004,9 +1004,9 @@ static int op_delete_thread(struct IndexSharedData *shared,
   }
 
   if (!c_resolve && (cs_subset_number(NeoMutt->sub, "pager_index_lines") != 0))
-    pager_queue_redraw(priv, MENU_REDRAW_FULL);
+    pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   else
-    pager_queue_redraw(priv, MENU_REDRAW_INDEX);
+    pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
 
   if (c_resolve)
     return FR_DONE;
@@ -1049,7 +1049,7 @@ static int op_edit_label(struct IndexSharedData *shared, struct PagerPrivateData
   if (rc > 0)
   {
     shared->mailbox->changed = true;
-    pager_queue_redraw(priv, MENU_REDRAW_FULL);
+    pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
     mutt_message(ngettext("%d label changed", "%d labels changed", rc), rc);
   }
   else
@@ -1084,7 +1084,7 @@ static int op_extract_keys(struct IndexSharedData *shared,
   emaillist_add_email(&el, shared->email);
   crypt_extract_keys_from_messages(shared->mailbox, &el);
   emaillist_clear(&el);
-  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return FR_SUCCESS;
 }
 
@@ -1103,7 +1103,7 @@ static int op_flag_message(struct IndexSharedData *shared,
     return FR_ERROR;
 
   mutt_set_flag(shared->mailbox, shared->email, MUTT_FLAG, !shared->email->flagged);
-  pager_queue_redraw(priv, MENU_REDRAW_INDEX);
+  pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
   if (c_resolve)
   {
@@ -1150,7 +1150,7 @@ static int op_forward_message(struct IndexSharedData *shared,
     mutt_send_message(SEND_FORWARD, NULL, NULL, shared->mailbox, &el, NeoMutt->sub);
     emaillist_clear(&el);
   }
-  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return FR_SUCCESS;
 }
 
@@ -1166,7 +1166,7 @@ static int op_help(struct IndexSharedData *shared, struct PagerPrivateData *priv
     return FR_ERROR;
   }
   mutt_help(MENU_PAGER);
-  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return FR_SUCCESS;
 }
 
@@ -1177,7 +1177,7 @@ static int op_list_subscribe(struct IndexSharedData *shared,
                              struct PagerPrivateData *priv, int op)
 {
   const int rc = mutt_send_list_subscribe(shared->mailbox, shared->email) ? FR_SUCCESS : FR_NO_ACTION;
-  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return rc;
 }
 
@@ -1190,7 +1190,7 @@ static int op_list_unsubscribe(struct IndexSharedData *shared,
   const int rc = mutt_send_list_unsubscribe(shared->mailbox, shared->email) ?
                      FR_SUCCESS :
                      FR_NO_ACTION;
-  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return rc;
 }
 
@@ -1205,7 +1205,7 @@ static int op_mail(struct IndexSharedData *shared, struct PagerPrivateData *priv
     return FR_ERROR;
 
   mutt_send_message(SEND_NO_FLAGS, NULL, NULL, shared->mailbox, NULL, NeoMutt->sub);
-  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return FR_SUCCESS;
 }
 
@@ -1235,7 +1235,7 @@ static int op_mail_key(struct IndexSharedData *shared, struct PagerPrivateData *
 
   mutt_send_message(SEND_KEY, NULL, NULL, shared->mailbox, &el, NeoMutt->sub);
   emaillist_clear(&el);
-  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return FR_SUCCESS;
 }
 
@@ -1258,7 +1258,7 @@ static int op_main_set_flag(struct IndexSharedData *shared,
   emaillist_add_email(&el, shared->email);
 
   if (mutt_change_flag(shared->mailbox, &el, (op == OP_MAIN_SET_FLAG)) == 0)
-    pager_queue_redraw(priv, MENU_REDRAW_INDEX);
+    pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
   emaillist_clear(&el);
 
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
@@ -1352,7 +1352,7 @@ static int op_recall_message(struct IndexSharedData *shared,
 
   mutt_send_message(SEND_POSTPONED, NULL, NULL, shared->mailbox, &el, NeoMutt->sub);
   emaillist_clear(&el);
-  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return FR_SUCCESS;
 }
 
@@ -1396,7 +1396,7 @@ static int op_reply(struct IndexSharedData *shared, struct PagerPrivateData *pri
     mutt_send_message(replyflags, NULL, NULL, shared->mailbox, &el, NeoMutt->sub);
     emaillist_clear(&el);
   }
-  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return FR_SUCCESS;
 }
 
@@ -1422,7 +1422,7 @@ static int op_resend(struct IndexSharedData *shared, struct PagerPrivateData *pr
   {
     mutt_resend_message(NULL, shared->mailbox, shared->email, NeoMutt->sub);
   }
-  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return FR_SUCCESS;
 }
 
@@ -1459,7 +1459,7 @@ static int op_search_toggle(struct IndexSharedData *shared,
   if (priv->search_compiled)
   {
     priv->search_flag ^= MUTT_SEARCH;
-    pager_queue_redraw(priv, MENU_REDRAW_BODY);
+    pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   }
   return FR_SUCCESS;
 }
@@ -1493,7 +1493,7 @@ static int op_tag(struct IndexSharedData *shared, struct PagerPrivateData *priv,
     return FR_NOT_IMPL;
   mutt_set_flag(shared->mailbox, shared->email, MUTT_TAG, !shared->email->tagged);
 
-  pager_queue_redraw(priv, MENU_REDRAW_INDEX);
+  pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
   if (c_resolve)
   {
@@ -1524,7 +1524,7 @@ static int op_toggle_new(struct IndexSharedData *shared, struct PagerPrivateData
   priv->first = false;
   shared->ctx->msg_in_pager = -1;
   priv->win_pbar->actions |= WA_RECALC;
-  pager_queue_redraw(priv, MENU_REDRAW_INDEX);
+  pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
   if (c_resolve)
   {
@@ -1551,7 +1551,7 @@ static int op_undelete(struct IndexSharedData *shared, struct PagerPrivateData *
 
   mutt_set_flag(shared->mailbox, shared->email, MUTT_DELETE, false);
   mutt_set_flag(shared->mailbox, shared->email, MUTT_PURGE, false);
-  pager_queue_redraw(priv, MENU_REDRAW_INDEX);
+  pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
   if (c_resolve)
   {
@@ -1596,9 +1596,9 @@ static int op_undelete_thread(struct IndexSharedData *shared,
     }
 
     if (!c_resolve && (cs_subset_number(NeoMutt->sub, "pager_index_lines") != 0))
-      pager_queue_redraw(priv, MENU_REDRAW_FULL);
+      pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
     else
-      pager_queue_redraw(priv, MENU_REDRAW_INDEX);
+      pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
 
     if (c_resolve)
       return FR_DONE;
@@ -1626,7 +1626,7 @@ static int op_view_attachments(struct IndexSharedData *shared,
                         pview->pdata->fp);
   if (shared->email->attach_del)
     shared->mailbox->changed = true;
-  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return FR_SUCCESS;
 }
 
@@ -1679,7 +1679,7 @@ static int op_followup(struct IndexSharedData *shared, struct PagerPrivateData *
                         &el, NeoMutt->sub);
       emaillist_clear(&el);
     }
-    pager_queue_redraw(priv, MENU_REDRAW_FULL);
+    pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
     return FR_SUCCESS;
   }
 
@@ -1721,7 +1721,7 @@ static int op_forward_to_group(struct IndexSharedData *shared,
                       &el, NeoMutt->sub);
     emaillist_clear(&el);
   }
-  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return FR_SUCCESS;
 }
 
@@ -1743,7 +1743,7 @@ static int op_post(struct IndexSharedData *shared, struct PagerPrivateData *priv
   }
 
   mutt_send_message(SEND_NEWS, NULL, NULL, shared->mailbox, NULL, NeoMutt->sub);
-  pager_queue_redraw(priv, MENU_REDRAW_FULL);
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return FR_SUCCESS;
 }
 #endif

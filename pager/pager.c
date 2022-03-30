@@ -224,7 +224,7 @@ static int pager_global_observer(struct NotifyCallback *nc)
   if (!priv)
     return 0;
 
-  if ((priv->redraw & MENU_REDRAW_FLOW) && (priv->pview->flags & MUTT_PAGER_RETWINCH))
+  if ((priv->redraw & PAGER_REDRAW_FLOW) && (priv->pview->flags & MUTT_PAGER_RETWINCH))
   {
     priv->rc = OP_REFORMAT_WINCH;
   }
