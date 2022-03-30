@@ -897,8 +897,6 @@ static int op_copy_message(struct IndexSharedData *shared,
       priv->rc = OP_MAIN_NEXT_UNDELETED;
       return FR_DONE;
     }
-    else
-      pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
   }
   return FR_SUCCESS;
 }
@@ -948,7 +946,6 @@ static int op_delete(struct IndexSharedData *shared, struct PagerPrivateData *pr
   const bool c_delete_untag = cs_subset_bool(NeoMutt->sub, "delete_untag");
   if (c_delete_untag)
     mutt_set_flag(shared->mailbox, shared->email, MUTT_TAG, false);
-  pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
   if (c_resolve)
   {
@@ -1005,8 +1002,6 @@ static int op_delete_thread(struct IndexSharedData *shared,
 
   if (!c_resolve && (cs_subset_number(NeoMutt->sub, "pager_index_lines") != 0))
     pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
-  else
-    pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
 
   if (c_resolve)
     return FR_DONE;
@@ -1103,7 +1098,6 @@ static int op_flag_message(struct IndexSharedData *shared,
     return FR_ERROR;
 
   mutt_set_flag(shared->mailbox, shared->email, MUTT_FLAG, !shared->email->flagged);
-  pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
   if (c_resolve)
   {
@@ -1257,8 +1251,7 @@ static int op_main_set_flag(struct IndexSharedData *shared,
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   emaillist_add_email(&el, shared->email);
 
-  if (mutt_change_flag(shared->mailbox, &el, (op == OP_MAIN_SET_FLAG)) == 0)
-    pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
+  mutt_change_flag(shared->mailbox, &el, (op == OP_MAIN_SET_FLAG));
   emaillist_clear(&el);
 
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
@@ -1493,7 +1486,6 @@ static int op_tag(struct IndexSharedData *shared, struct PagerPrivateData *priv,
     return FR_NOT_IMPL;
   mutt_set_flag(shared->mailbox, shared->email, MUTT_TAG, !shared->email->tagged);
 
-  pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
   if (c_resolve)
   {
@@ -1523,7 +1515,6 @@ static int op_toggle_new(struct IndexSharedData *shared, struct PagerPrivateData
   priv->delay_read_timestamp = 0;
   priv->first = false;
   shared->ctx->msg_in_pager = -1;
-  pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
   if (c_resolve)
   {
@@ -1550,7 +1541,6 @@ static int op_undelete(struct IndexSharedData *shared, struct PagerPrivateData *
 
   mutt_set_flag(shared->mailbox, shared->email, MUTT_DELETE, false);
   mutt_set_flag(shared->mailbox, shared->email, MUTT_PURGE, false);
-  pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
   if (c_resolve)
   {
@@ -1596,8 +1586,6 @@ static int op_undelete_thread(struct IndexSharedData *shared,
 
     if (!c_resolve && (cs_subset_number(NeoMutt->sub, "pager_index_lines") != 0))
       pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
-    else
-      pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
 
     if (c_resolve)
       return FR_DONE;
