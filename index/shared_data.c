@@ -134,7 +134,11 @@ static int index_shared_email_observer(struct NotifyCallback *nc)
     return 0;
 
   if (nc->event_subtype == NT_EMAIL_DELETE)
+  {
     shared->email = NULL;
+    mutt_debug(LL_NOTIFY, "NT_INDEX_EMAIL: %p\n", shared->email);
+    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, shared);
+  }
 
   mutt_debug(LL_NOTIFY, "relay NT_EMAIL %p to shared data observers\n", shared->email);
   notify_send(shared->notify, nc->event_type, nc->event_subtype, shared);

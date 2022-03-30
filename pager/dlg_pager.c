@@ -292,7 +292,7 @@ int mutt_pager(struct PagerView *pview)
   priv->first = true;
   priv->wrapped = false;
   priv->delay_read_timestamp = 0;
-  bool pager_redraw = false;
+  priv->pager_redraw = false;
 
   {
     // Wipe any previous state info
@@ -377,7 +377,8 @@ int mutt_pager(struct PagerView *pview)
   // ACT 3: Read user input and decide what to do with it
   //        ...but also do a whole lot of other things.
   //-------------------------------------------------------------------------
-  while (op != OP_ABORT)
+  priv->loop = PAGER_LOOP_CONTINUE;
+  do
   {
     if (check_read_delay(&priv->delay_read_timestamp))
     {
@@ -469,9 +470,9 @@ int mutt_pager(struct PagerView *pview)
     }
     //-------------------------------------------------------------------------
 
-    if (pager_redraw)
+    if (priv->pager_redraw)
     {
-      pager_redraw = false;
+      priv->pager_redraw = false;
       mutt_resize_screen();
       clearok(stdscr, true); /* force complete redraw */
       msgwin_clear_text();
@@ -493,6 +494,7 @@ int mutt_pager(struct PagerView *pview)
 
         op = OP_ABORT;
         priv->rc = OP_REFORMAT_WINCH;
+        break;
       }
       else
       {
@@ -519,7 +521,7 @@ int mutt_pager(struct PagerView *pview)
     // OP code to index. Index handles the operation and then restarts pager
     op = km_dokey(MENU_PAGER);
     if (SigWinch)
-      pager_redraw = true;
+      priv->pager_redraw = true;
 
     if (op >= OP_NULL)
       mutt_clear_error();
@@ -533,8 +535,6 @@ int mutt_pager(struct PagerView *pview)
       continue;
     }
 
-    priv->rc = op;
-
     if (op == OP_NULL)
     {
       km_error_key(MENU_PAGER);
@@ -543,6 +543,8 @@ int mutt_pager(struct PagerView *pview)
 
     int rc = pager_function_dispatcher(priv->pview->win_pager, op);
 
+    if ((rc == FR_UNKNOWN) && priv->pview->win_index)
+      rc = index_function_dispatcher(priv->pview->win_index, op);
 #ifdef USE_SIDEBAR
     if (rc == FR_UNKNOWN)
       rc = sb_function_dispatcher(win_sidebar, op);
@@ -550,11 +552,15 @@ int mutt_pager(struct PagerView *pview)
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(dlg, op);
 
-    if (rc == FR_DONE)
+    if (rc == FR_UNKNOWN &&
+        ((pview->mode == PAGER_MODE_ATTACH) || (pview->mode == PAGER_MODE_ATTACH_E)))
+    {
+      // Some attachment functions still need to be delegated
+      priv->rc = op;
       break;
-    if (rc == FR_UNKNOWN)
-      break;
-  }
+    }
+  } while (priv->loop == PAGER_LOOP_CONTINUE);
+
   //-------------------------------------------------------------------------
   // END OF ACT 3: Read user input loop - while (op != OP_ABORT)
   //-------------------------------------------------------------------------
@@ -566,7 +572,8 @@ int mutt_pager(struct PagerView *pview)
   mutt_file_fclose(&priv->fp);
   if (pview->mode == PAGER_MODE_EMAIL)
   {
-    shared->ctx->msg_in_pager = -1;
+    if (shared->ctx)
+      shared->ctx->msg_in_pager = -1;
   }
 
   qstyle_free_tree(&priv->quote_list);
@@ -593,6 +600,9 @@ int mutt_pager(struct PagerView *pview)
     }
     color_debug(LL_DEBUG5, "AnsiColors %d\n", count);
   }
+
+  if (priv->loop == PAGER_LOOP_RELOAD)
+    return PAGER_LOOP_RELOAD;
 
   return (priv->rc != -1) ? priv->rc : 0;
 }
