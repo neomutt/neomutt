@@ -37,7 +37,7 @@ struct IndexPrivateData
   int  oldcount;                 ///< Old count of Emails in the Mailbox
   int  newcount;                 ///< New count of Emails in the Mailbox
   bool do_mailbox_notify;        ///< Do we need to notify the user of new mail?
-  int  attach_msg;               ///< Are we in "attach message" mode?
+  bool attach_msg;               ///< Are we in "attach message" mode?
   bool in_pager;                 ///< Is the Pager active?
 
   struct IndexSharedData *shared; ///< Shared Index data

@@ -35,7 +35,7 @@
 #include "tags.h"
 
 struct HashTable *TagTransforms; ///< Lookup table of alternative tag names
-struct HashTable *TagFormats;    ///< Hash Table of tag-formats (tag -> format string)
+struct HashTable *TagFormats; ///< Hash Table of tag-formats (tag -> format string)
 
 /**
  * driver_tags_getter - Get transformed tags
@@ -225,7 +225,7 @@ void driver_tags_init(void)
 }
 
 /**
- * driver_tags_init - Deinitialize structures used for tags
+ * driver_tags_cleanup - Deinitialize structures used for tags
  */
 void driver_tags_cleanup(void)
 {

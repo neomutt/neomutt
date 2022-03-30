@@ -1368,7 +1368,6 @@ enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
 enum CommandResult parse_tag_formats(struct Buffer *buf, struct Buffer *s,
                                      intptr_t data, struct Buffer *err)
 {
-
   if (!s)
     return MUTT_CMD_ERROR;
 
@@ -1421,9 +1420,8 @@ enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
   {
     mutt_extract_token(tagbuf, s, MUTT_TOKEN_NO_FLAGS);
     const char *tag = mutt_buffer_string(tagbuf);
-    if (*tag  == '\0')
+    if (*tag == '\0')
       continue;
-
 
     mutt_extract_token(trnbuf, s, MUTT_TOKEN_NO_FLAGS);
     const char *trn = mutt_buffer_string(trnbuf);
