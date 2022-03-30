@@ -719,6 +719,7 @@ static int op_pager_top(struct IndexSharedData *shared, struct PagerPrivateData 
 static int op_exit(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
   priv->rc = -1;
+  priv->loop = PAGER_LOOP_QUIT;
   return FR_DONE;
 }
 
@@ -760,11 +761,9 @@ static int op_view_attachments(struct IndexSharedData *shared,
 {
   struct PagerView *pview = priv->pview;
 
+  // This needs to be delegated
   if (pview->flags & MUTT_PAGER_ATTACHMENT)
-  {
-    priv->rc = OP_ATTACHMENT_COLLAPSE;
-    return FR_DONE;
-  }
+    return FR_UNKNOWN;
 
   if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
     return FR_NOT_IMPL;

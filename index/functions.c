@@ -344,7 +344,12 @@ static int op_display_message(struct IndexSharedData *shared,
   /* toggle the weeding of headers so that a user can press the key
    * again while reading the message.  */
   if (op == OP_DISPLAY_HEADERS)
+  {
     bool_str_toggle(shared->sub, "weed", NULL);
+    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, shared);
+    if (!window_is_focused(priv->win_index))
+      return FR_SUCCESS;
+  }
 
   OptNeedResort = false;
 
@@ -1718,6 +1723,7 @@ static int op_next_entry(struct IndexSharedData *shared, struct IndexPrivateData
   if (index >= shared->mailbox->vcount)
   {
     mutt_message(_("You are on the last message"));
+    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
     return FR_ERROR;
   }
   menu_set_index(priv->menu, index);

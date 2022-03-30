@@ -750,8 +750,6 @@ void change_folder_string(struct Menu *menu, char *buf, size_t buflen, int *oldc
     return;
   }
 
-  /* past this point, we don't return to the pager on error */
-
   struct Mailbox *m = mx_path_resolve(buf);
   change_folder_mailbox(menu, m, oldcount, shared, read_only);
 }
@@ -1038,9 +1036,6 @@ static void index_custom_redraw(struct Menu *menu)
  * @param dlg Dialog containing Windows to draw on
  * @param m_init Initial mailbox
  * @retval Mailbox open in the index
- *
- * This function handles the message index window as well as commands returned
- * from the pager (MENU_PAGER).
  */
 struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 {
@@ -1120,7 +1115,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       }
     }
 
-    if (shared->mailbox)
+    if (shared->mailbox && shared->ctx)
     {
       mailbox_gc_run();
 
@@ -1347,7 +1342,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 #ifdef USE_NOTMUCH
     nm_db_debug_check(shared->mailbox);
 #endif
-  } while (rc != FR_DONE);
+  } while ((rc != FR_DONE) && shared->ctx);
 
   ctx_free(&shared->ctx);
 

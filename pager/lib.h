@@ -143,6 +143,16 @@ enum PagerMode
 };
 
 /**
+ * enum PagerLoopMode - What the Pager Event Loop should do next
+ */
+enum PagerLoopMode
+{
+  PAGER_LOOP_CONTINUE = -7,  ///< Stay in the Pager Event Loop
+  PAGER_LOOP_QUIT     = -6,  ///< Quit the Pager
+  PAGER_LOOP_RELOAD   = -5,  ///< Reload the Pager from scratch
+};
+
+/**
  * struct PagerData - Data to be displayed by PagerView
  */
 struct PagerData

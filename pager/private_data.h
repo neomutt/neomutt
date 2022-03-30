@@ -76,6 +76,8 @@ struct PagerPrivateData
   bool first;                    ///< First time flag for toggle-new
   bool wrapped;                  ///< Has the search/next wrapped around?
   uint64_t delay_read_timestamp; ///< Time that email was first shown
+  bool pager_redraw;             ///< Force a complete redraw
+  enum PagerLoopMode loop;       ///< What the Event Loop should do next, e.g. #PAGER_LOOP_CONTINUE
 };
 
 void                     pager_private_data_free(struct MuttWindow *win, void **ptr);
