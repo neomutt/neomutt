@@ -353,11 +353,6 @@ static int pager_index_observer(struct NotifyCallback *nc)
 
   struct MuttWindow *win_pager = nc->global_data;
 
-  struct PagerPrivateData *priv = win_pager->wdata;
-  if (!priv)
-    return 0;
-
-  menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
   win_pager->actions |= WA_RECALC;
   mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
 

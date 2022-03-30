@@ -40,7 +40,6 @@ struct MuttWindow;
  */
 struct PagerPrivateData
 {
-  struct Menu *menu;           ///< Pager Menu
   struct MuttWindow *win_pbar; ///< Pager Bar
   struct PagerView *pview;     ///< Object to view in the pager
 

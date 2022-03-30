@@ -1,4 +1,5 @@
 /**
+          pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
  * @file
  * Pager Dialog
  *
@@ -200,22 +201,6 @@ static void pager_custom_redraw(struct PagerPrivateData *priv)
       FREE(&Resize);
     }
 
-    if ((priv->pview->mode == PAGER_MODE_EMAIL) && (c_pager_index_lines != 0) && priv->menu)
-    {
-      mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
-
-      /* some fudge to work out whereabouts the indicator should go */
-      const int index = menu_get_index(priv->menu);
-      if ((index - priv->indicator) < 0)
-        priv->menu->top = 0;
-      else if ((priv->menu->max - index) < (priv->menu->page_len - priv->indicator))
-        priv->menu->top = priv->menu->max - priv->menu->page_len;
-      else
-        priv->menu->top = index - priv->indicator;
-
-      menu_redraw_index(priv->menu);
-    }
-
     pager_queue_redraw(priv, PAGER_REDRAW_PAGER | PAGER_REDRAW_INDEX);
   }
 
@@ -375,12 +360,10 @@ int mutt_pager(struct PagerView *pview)
 
   {
     // Wipe any previous state info
-    struct Menu *menu = priv->menu;
     struct Notify *notify = priv->notify;
     int rc = priv->rc;
     memset(priv, 0, sizeof(*priv));
     priv->rc = rc;
-    priv->menu = menu;
     priv->notify = notify;
     priv->win_pbar = pview->win_pbar;
     TAILQ_INIT(&priv->ansi_list);
@@ -531,35 +514,6 @@ int mutt_pager(struct PagerView *pview)
 
         if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
         {
-          if (priv->menu && shared->mailbox)
-          {
-            /* After the mailbox has been updated, selection might be invalid */
-            int index = menu_get_index(priv->menu);
-            menu_set_index(priv->menu, MIN(index, MAX(shared->mailbox->msg_count - 1, 0)));
-            index = menu_get_index(priv->menu);
-            struct Email *e = mutt_get_virt_email(shared->mailbox, index);
-            if (!e)
-              continue;
-
-            bool verbose = shared->mailbox->verbose;
-            shared->mailbox->verbose = false;
-            mutt_update_index(priv->menu, shared->ctx, check, oldcount, shared);
-            shared->mailbox->verbose = verbose;
-
-            priv->menu->max = shared->mailbox->vcount;
-
-            /* If these header pointers don't match, then our email may have
-             * been deleted.  Make the pointer safe, then leave the pager.
-             * This have a unpleasant behaviour to close the pager even the
-             * deleted message is not the opened one, but at least it's safe. */
-            e = mutt_get_virt_email(shared->mailbox, index);
-            if (shared->email != e)
-            {
-              shared->email = e;
-              break;
-            }
-          }
-
           pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
           OptSearchInvalid = true;
         }
