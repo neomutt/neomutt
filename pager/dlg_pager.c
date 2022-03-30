@@ -365,7 +365,6 @@ int mutt_pager(struct PagerView *pview)
     memset(priv, 0, sizeof(*priv));
     priv->rc = rc;
     priv->notify = notify;
-    priv->win_pbar = pview->win_pbar;
     TAILQ_INIT(&priv->ansi_list);
   }
 
@@ -376,7 +375,6 @@ int mutt_pager(struct PagerView *pview)
   if ((pview->mode == PAGER_MODE_EMAIL) && !shared->email->read)
   {
     shared->ctx->msg_in_pager = shared->email->msgno;
-    priv->win_pbar->actions |= WA_RECALC;
     const short c_pager_read_delay =
         cs_subset_number(NeoMutt->sub, "pager_read_delay");
     if (c_pager_read_delay == 0)
@@ -636,7 +634,6 @@ int mutt_pager(struct PagerView *pview)
   if (pview->mode == PAGER_MODE_EMAIL)
   {
     shared->ctx->msg_in_pager = -1;
-    priv->win_pbar->actions |= WA_RECALC;
   }
 
   qstyle_free_tree(&priv->quote_list);

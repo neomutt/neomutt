@@ -1523,7 +1523,6 @@ static int op_toggle_new(struct IndexSharedData *shared, struct PagerPrivateData
   priv->delay_read_timestamp = 0;
   priv->first = false;
   shared->ctx->msg_in_pager = -1;
-  priv->win_pbar->actions |= WA_RECALC;
   pager_queue_redraw(priv, PAGER_REDRAW_INDEX);
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
   if (c_resolve)

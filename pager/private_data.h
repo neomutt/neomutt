@@ -40,7 +40,6 @@ struct MuttWindow;
  */
 struct PagerPrivateData
 {
-  struct MuttWindow *win_pbar; ///< Pager Bar
   struct PagerView *pview;     ///< Object to view in the pager
 
   FILE *fp;                    ///< File containing decrypted/decoded/weeded Email
