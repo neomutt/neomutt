@@ -313,13 +313,7 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
   pview.flags = MUTT_PAGER_NO_FLAGS;
   pview.mode = PAGER_MODE_OTHER;
 
-  if (mutt_do_pager(&pview, NULL) == -1)
-  {
-    // L10N: '%s' is the file name of the temporary file
-    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
-    return MUTT_CMD_ERROR;
-  }
-
+  mutt_do_pager(&pview, NULL);
   return MUTT_CMD_SUCCESS;
 }
 
@@ -499,13 +493,7 @@ static enum CommandResult icmd_color(struct Buffer *buf, struct Buffer *s,
   pview.flags = MUTT_SHOWCOLOR;
   pview.mode = PAGER_MODE_OTHER;
 
-  if (mutt_do_pager(&pview, NULL) == -1)
-  {
-    // L10N: '%s' is the file name of the temporary file
-    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
-    return MUTT_CMD_ERROR;
-  }
-
+  mutt_do_pager(&pview, NULL);
   return MUTT_CMD_SUCCESS;
 }
 #endif
@@ -583,12 +571,6 @@ static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s,
   pview.flags = MUTT_PAGER_NO_FLAGS;
   pview.mode = PAGER_MODE_OTHER;
 
-  if (mutt_do_pager(&pview, NULL) == -1)
-  {
-    // L10N: '%s' is the file name of the temporary file
-    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
-    return MUTT_CMD_ERROR;
-  }
-
+  mutt_do_pager(&pview, NULL);
   return MUTT_CMD_SUCCESS;
 }
