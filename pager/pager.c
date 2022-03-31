@@ -60,6 +60,7 @@
 
 #include "config.h"
 #include <stddef.h>
+#include <assert.h>
 #include <inttypes.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include "mutt/lib.h"
@@ -136,9 +137,119 @@ static int pager_recalc(struct MuttWindow *win)
  */
 static int pager_repaint(struct MuttWindow *win)
 {
-  if (!mutt_window_is_visible(win))
-    return 0;
+  struct PagerPrivateData *priv = win->wdata;
+  //---------------------------------------------------------------------------
+  // ASSUMPTIONS & SANITY CHECKS
+  //---------------------------------------------------------------------------
+  // Since pager_custom_redraw() is a static function and it is always called
+  // after mutt_pager() we can rely on a series of sanity checks in
+  // mutt_pager(), namely:
+  // - PAGER_MODE_EMAIL  guarantees ( data->email) and (!data->body)
+  // - PAGER_MODE_ATTACH guarantees ( data->email) and ( data->body)
+  // - PAGER_MODE_OTHER  guarantees (!data->email) and (!data->body)
+  //
+  // Additionally, while refactoring is still in progress the following checks
+  // are still here to ensure data model consistency.
+  assert(priv);        // Redraw function can't be called without its data.
+  assert(priv->pview); // Redraw data can't exist separately without the view.
+  assert(priv->pview->pdata); // View can't exist without its data
+  //---------------------------------------------------------------------------
 
+#ifdef USE_DEBUG_COLOR
+  dump_pager(priv);
+#endif
+
+  // We need to populate more lines, but not change position
+  const bool repopulate = (priv->cur_line > priv->lines_used);
+  if ((priv->redraw & PAGER_REDRAW_FLOW) || repopulate)
+  {
+    if (!(priv->pview->flags & MUTT_PAGER_RETWINCH))
+    {
+      priv->win_height = -1;
+      for (int i = 0; i <= priv->top_line; i++)
+        if (!priv->lines[i].cont_line)
+          priv->win_height++;
+      for (int i = 0; i < priv->lines_max; i++)
+      {
+        priv->lines[i].offset = 0;
+        priv->lines[i].cid = -1;
+        priv->lines[i].cont_line = 0;
+        priv->lines[i].syntax_arr_size = 0;
+        priv->lines[i].search_arr_size = -1;
+        priv->lines[i].quote = NULL;
+
+        mutt_mem_realloc(&(priv->lines[i].syntax), sizeof(struct TextSyntax));
+        if (priv->search_compiled && priv->lines[i].search)
+          FREE(&(priv->lines[i].search));
+      }
+
+      if (!repopulate)
+      {
+        priv->lines_used = 0;
+        priv->top_line = 0;
+      }
+    }
+    int i = -1;
+    int j = -1;
+    while (display_line(priv->fp, &priv->bytes_read, &priv->lines, ++i,
+                        &priv->lines_used, &priv->lines_max,
+                        priv->has_types | priv->search_flag | (priv->pview->flags & MUTT_PAGER_NOWRAP),
+                        &priv->quote_list, &priv->q_level, &priv->force_redraw,
+                        &priv->search_re, priv->pview->win_pager, &priv->ansi_list) == 0)
+    {
+      if (!priv->lines[i].cont_line && (++j == priv->win_height))
+      {
+        if (!repopulate)
+          priv->top_line = i;
+        if (!priv->search_flag)
+          break;
+      }
+    }
+  }
+
+  if ((priv->redraw & PAGER_REDRAW_PAGER) || (priv->top_line != priv->old_top_line))
+  {
+    do
+    {
+      mutt_window_move(priv->pview->win_pager, 0, 0);
+      priv->cur_line = priv->top_line;
+      priv->old_top_line = priv->top_line;
+      priv->win_height = 0;
+      priv->force_redraw = false;
+
+      while ((priv->win_height < priv->pview->win_pager->state.rows) &&
+             (priv->lines[priv->cur_line].offset <= priv->st.st_size - 1))
+      {
+        if (display_line(priv->fp, &priv->bytes_read, &priv->lines,
+                         priv->cur_line, &priv->lines_used, &priv->lines_max,
+                         (priv->pview->flags & MUTT_DISPLAYFLAGS) | priv->hide_quoted |
+                             priv->search_flag | (priv->pview->flags & MUTT_PAGER_NOWRAP),
+                         &priv->quote_list, &priv->q_level, &priv->force_redraw,
+                         &priv->search_re, priv->pview->win_pager, &priv->ansi_list) > 0)
+        {
+          priv->win_height++;
+        }
+        priv->cur_line++;
+        mutt_window_move(priv->pview->win_pager, 0, priv->win_height);
+      }
+    } while (priv->force_redraw);
+    // curses_colors_dump();
+    // attr_color_list_dump(&priv->ansi_list, "All AnsiColors");
+
+    const bool c_tilde = cs_subset_bool(NeoMutt->sub, "tilde");
+    mutt_curses_set_color_by_id(MT_COLOR_TILDE);
+    while (priv->win_height < priv->pview->win_pager->state.rows)
+    {
+      mutt_window_clrtoeol(priv->pview->win_pager);
+      if (c_tilde)
+        mutt_window_addch(priv->pview->win_pager, '~');
+      priv->win_height++;
+      mutt_window_move(priv->pview->win_pager, 0, priv->win_height);
+    }
+    mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
+  }
+
+  priv->redraw = PAGER_REDRAW_NO_FLAGS;
   mutt_debug(LL_DEBUG5, "repaint done\n");
   return 0;
 }
