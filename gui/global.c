@@ -39,6 +39,7 @@
 #include "pager/lib.h"
 #include "commands.h"
 #include "keymap.h"
+#include "mutt_globals.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "opcodes.h"
@@ -62,14 +63,15 @@ static int op_dump_screen(int op)
     cs_subset_path(NeoMutt->sub, "dump_screen_file");
   if (c_dump_screen_file)
   {
-    struct Buffer *expanded = mutt_buffer_pool_get();
-    mutt_buffer_addstr(expanded, c_dump_screen_file);
-    mutt_buffer_expand_path(expanded);
-    const char* rotated = mutt_file_rotate(mutt_buffer_string(expanded), 100);
-    mutt_buffer_pool_release(&expanded);
-    mutt_dump_screen(rotated);
-    FREE(&rotated);
-    mutt_warning(_("Screen dumped"));
+    char canon[PATH_MAX] = { 0 };
+    mutt_str_copy(canon, c_dump_screen_file, sizeof(canon));
+    if (mutt_path_canon(canon, sizeof(canon), HomeDir, false))
+    {
+      const char* rotated = mutt_file_rotate(canon, 100);
+      mutt_dump_screen(rotated);
+      FREE(&rotated);
+      mutt_warning(_("Screen dumped"));
+    }
   }
   return FR_SUCCESS;
 }
