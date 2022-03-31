@@ -1076,6 +1076,13 @@
 ** depends on the server whether DSN will be used or not.
 */
 
+{ "dump_screen_file", DT_PATH, "~/.neomutt-dump-screen" },
+/*
+** .pp
+** Name of the file that gets the output of dump-screen.  NeoMutt will add "0"
+** to the end. Each time dump-screen is called, the log files are rotated.
+*/
+
 { "duplicate_threads", DT_BOOL, true },
 /*
 ** .pp

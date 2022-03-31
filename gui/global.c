@@ -54,6 +54,27 @@ static int op_check_stats(int op)
 }
 
 /**
+ * op_dump_screen - Dump the screen contents to file - Implements ::global_function_t - @ingroup global_function_api
+ */
+static int op_dump_screen(int op)
+{
+  const char *const c_dump_screen_file =
+    cs_subset_path(NeoMutt->sub, "dump_screen_file");
+  if (c_dump_screen_file)
+  {
+    struct Buffer *expanded = mutt_buffer_pool_get();
+    mutt_buffer_addstr(expanded, c_dump_screen_file);
+    mutt_buffer_expand_path(expanded);
+    const char* rotated = mutt_file_rotate(mutt_buffer_string(expanded), 100);
+    mutt_buffer_pool_release(&expanded);
+    mutt_dump_screen(rotated);
+    FREE(&rotated);
+    mutt_warning(_("Screen dumped"));
+  }
+  return FR_SUCCESS;
+}
+
+/**
  * op_enter_command - Enter a neomuttrc command - Implements ::global_function_t - @ingroup global_function_api
  */
 static int op_enter_command(int op)
@@ -146,6 +167,7 @@ static int op_what_key(int op)
 struct GlobalFunction GlobalFunctions[] = {
   // clang-format off
   { OP_CHECK_STATS,           op_check_stats },
+  { OP_DUMP_SCREEN,           op_dump_screen },
   { OP_ENTER_COMMAND,         op_enter_command },
   { OP_REDRAW,                op_redraw },
   { OP_SHELL_ESCAPE,          op_shell_escape },

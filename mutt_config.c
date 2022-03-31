@@ -248,6 +248,9 @@ static struct ConfigDef MainVars[] = {
   { "digest_collapse", DT_BOOL, true, 0, NULL,
     "Hide the subparts of a multipart/digest"
   },
+  { "dump_screen_file", DT_PATH|DT_PATH_FILE, IP "~/.neomutt-dump-screen", 0, NULL,
+    "File to save dump-screen output"
+  },
   { "duplicate_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, true, 0, NULL,
     "Highlight messages with duplicated message IDs"
   },

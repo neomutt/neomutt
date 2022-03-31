@@ -949,3 +949,16 @@ size_t mutt_strnwidth(const char *s, size_t n)
   }
   return w;
 }
+
+/**
+ * mutt_dump_screen - dump the screen contents to file
+ * @param path Path to the output file
+ */
+void mutt_dump_screen(const char *path)
+{
+  if (!*NONULL(path))
+  {
+    return;
+  }
+  scr_dump(path);
+}
