@@ -385,7 +385,6 @@ static void dump_unbound(FILE *fp, const struct MenuFuncOp *funcs,
  */
 void mutt_help(enum MenuType menu)
 {
-  const int wraplen = AllDialogsWindow->state.cols;
   char banner[128];
   FILE *fp = NULL;
 
@@ -413,6 +412,7 @@ void mutt_help(enum MenuType menu)
       goto cleanup;
     }
 
+    const int wraplen = AllDialogsWindow->state.cols;
     dump_menu(fp, menu, wraplen);
     if ((menu != MENU_EDITOR) && (menu != MENU_PAGER) && (menu != MENU_GENERIC))
     {
