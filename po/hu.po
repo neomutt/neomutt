@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2022-03-16 13:46+0000\n"
+"POT-Creation-Date: 2022-04-02 01:23+0100\n"
 "PO-Revision-Date: 2003-08-01 13:56+0000\n"
 "Last-Translator: Szabolcs Horváth <horvaths@fi.inf.elte.hu>\n"
 "Language-Team: LME Magyaritasok Lista <magyar@lists.linux.hu>\n"
@@ -160,9 +160,8 @@ msgid "Waiting for response..."
 msgstr "Várakozás a válaszra..."
 
 #: alias/dlg_query.c:359
-#, fuzzy
 msgid "Query"
-msgstr "Lekérdezés: "
+msgstr "Lekérdezés"
 
 #: alias/dlg_query.c:451 alias/dlg_query.c:539
 msgid "Query command not defined"
@@ -1062,12 +1061,10 @@ msgid "Warning: message contains no From: header"
 msgstr ""
 
 #: commands.c:117 recvcmd.c:202
-#, fuzzy
 msgid "Bounce message to: "
 msgstr "Levél visszaküldése. Címzett: "
 
 #: commands.c:119 recvcmd.c:204
-#, fuzzy
 msgid "Bounce tagged messages to: "
 msgstr "Kijelölt levelek visszaküldése. Címzett: "
 
@@ -1083,14 +1080,12 @@ msgstr[0] "Levél visszaküldése %s részére"
 msgstr[1] "Levél visszaküldése %s részére"
 
 #: commands.c:165 recvcmd.c:258
-#, fuzzy
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
 msgstr[0] "A levél nem lett visszaküldve"
 msgstr[1] "A levél nem lett visszaküldve"
 
 #: commands.c:190 recvcmd.c:285
-#, fuzzy
 msgid "Message bounced"
 msgid_plural "Messages bounced"
 msgstr[0] "Levél visszaküldve"
@@ -1109,28 +1104,24 @@ msgid "No printing command has been defined"
 msgstr "Nincs nyomtatási parancs megadva"
 
 #: commands.c:477
-#, fuzzy
 msgid "Print message?"
 msgstr "Kinyomtatod a levelet?"
 
 #: commands.c:478
-#, fuzzy
 msgid "Print tagged messages?"
 msgstr "Kinyomtatod a kijelölt leveleket?"
 
 #: commands.c:486
-#, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Levél kinyomtatva"
 msgstr[1] "Levél kinyomtatva"
 
 #: commands.c:489
-#, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "A levelet nem tudtam kinyomtatni"
-msgstr[1] "A leveleket nem tudtam kinyomtatni"
+msgstr[1] "A levelet nem tudtam kinyomtatni"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:505
@@ -2941,7 +2932,6 @@ msgid "QRESYNC failed.  Reopening mailbox."
 msgstr "Nem lehetett újra megnyitni a postafiókot"
 
 #: imap/message.c:1107
-#, fuzzy
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Nem lehet a fejléceket letölteni ezen verziójú IMAP szerverről"
 
@@ -4122,7 +4112,7 @@ msgstr[0] "Az olvasott leveleket mozgassam a %s postafiókba?"
 msgstr[1] "Az olvasott leveleket mozgassam a %s postafiókba?"
 
 #: mx.c:715 mx.c:959
-#, fuzzy, c-format
+#, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Töröljem a %d töröltnek jelölt levelet?"
@@ -7835,42 +7825,3 @@ msgstr "Fordítási opciók:"
 msgid "Devel options:"
 msgstr "Fordítási opciók:"
 
-#, fuzzy, c-format
-#~ msgid "%s authentication failed, trying next method"
-#~ msgstr "SASL azonosítás nem sikerült."
-
-#, fuzzy
-#~ msgid "Content type is too long"
-#~ msgstr "Tartalom-típus megváltoztatva %s-ra"
-
-#, fuzzy
-#~ msgid "Debug options:"
-#~ msgstr "Fordítási opciók:"
-
-#, fuzzy
-#~ msgid "Error seeking in alias file"
-#~ msgstr "Hiba a fájl megjelenítéskor"
-
-#~ msgid "Exit  "
-#~ msgstr "Kilép  "
-
-#, c-format
-#~ msgid "Query '%s'"
-#~ msgstr "'%s' lekérdezése"
-
-#~ msgid "Select  "
-#~ msgstr "Választ  "
-
-#, fuzzy
-#~ msgid "The fundamental part can't be moved"
-#~ msgstr "Ez a melléklet nem lesz konvertálva"
-
-#~ msgid "You are on the first page"
-#~ msgstr "Ez az első oldal"
-
-#~ msgid "You are on the last page"
-#~ msgstr "Ez az utolsó oldal"
-
-#, fuzzy
-#~ msgid "skip beyond headers"
-#~ msgstr "idézett szöveg átlépése"
