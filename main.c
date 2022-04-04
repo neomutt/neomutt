@@ -1001,7 +1001,10 @@ main
       goto main_curses; // TEST26: neomutt -s test (with auto_edit=yes)
     }
 
-    e->env->subject = mutt_str_dup(subject);
+    if (subject)
+    {
+      mutt_str_replace(&e->env->subject, subject);
+    }
 
     if (draft_file)
     {
