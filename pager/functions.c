@@ -70,9 +70,6 @@
 
 static const char *Not_available_in_this_menu =
     N_("Not available in this menu");
-static const char *Mailbox_is_read_only = N_("Mailbox is read-only");
-static const char *Function_not_permitted_in_attach_message_mode =
-    N_("Function not permitted in attach-message mode");
 
 static int op_pager_search_next(struct IndexSharedData *shared,
                                 struct PagerPrivateData *priv, int op);
@@ -92,69 +89,6 @@ static inline bool assert_pager_mode(bool test)
 
   mutt_flushinp();
   mutt_error(_(Not_available_in_this_menu));
-  return false;
-}
-
-/**
- * assert_mailbox_writable - Checks that mailbox is writable
- * @param mailbox mailbox to check
- * @retval true  Mailbox is writable
- * @retval false Mailbox is not writable
- *
- * @note On failure, the input will be flushed and an error message displayed
- */
-static inline bool assert_mailbox_writable(struct Mailbox *mailbox)
-{
-  assert(mailbox);
-  if (mailbox->readonly)
-  {
-    mutt_flushinp();
-    mutt_error(_(Mailbox_is_read_only));
-    return false;
-  }
-  return true;
-}
-
-/**
- * assert_attach_msg_mode - Check that attach message mode is on
- * @param attach_msg Globally-named boolean pseudo-option
- * @retval true  Attach message mode in on
- * @retval false Attach message mode is off
- *
- * @note On true, the input will be flushed and an error message displayed
- */
-static inline bool assert_attach_msg_mode(bool attach_msg)
-{
-  if (attach_msg)
-  {
-    mutt_flushinp();
-    mutt_error(_(Function_not_permitted_in_attach_message_mode));
-    return true;
-  }
-  return false;
-}
-
-/**
- * assert_mailbox_permissions - Checks that mailbox is has requested acl flags set
- * @param m      Mailbox to check
- * @param acl    AclFlags required to be set on a given mailbox
- * @param action String to augment error message
- * @retval true  Mailbox has necessary flags set
- * @retval false Mailbox does not have necessary flags set
- *
- * @note On failure, the input will be flushed and an error message displayed
- */
-static inline bool assert_mailbox_permissions(struct Mailbox *m, AclFlags acl, char *action)
-{
-  assert(m);
-  assert(action);
-  if (m->rights & acl)
-  {
-    return true;
-  }
-  mutt_flushinp();
-  /* L10N: %s is one of the CHECK_ACL entries below. */
-  mutt_error(_("%s: Operation not permitted by ACL"), action);
   return false;
 }
 
