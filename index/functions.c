@@ -90,6 +90,65 @@ static const char *Not_available_in_this_menu =
     N_("Not available in this menu");
 
 /**
+ * enum ResolveMethod - How to advance the cursor
+ */
+enum ResolveMethod
+{
+  RESOLVE_NEXT_EMAIL,     ///< Next email, whatever its state
+  RESOLVE_NEXT_UNDELETED, ///< Next undeleted email
+  RESOLVE_NEXT_THREAD,    ///< Next top-level thread
+  RESOLVE_NEXT_SUBTHREAD, ///< Next sibling sub-thread
+};
+
+/**
+ * resolve_email - Pick the next Email to advance the cursor to
+ * @param menu   Menu
+ * @param shared Shared Index data
+ * @param rm     How to advance the cursor, e.g. #RESOLVE_NEXT_EMAIL
+ */
+static bool resolve_email(struct Menu *menu, struct IndexSharedData *shared, enum ResolveMethod rm)
+{
+  if (!menu || !shared || !shared->mailbox || !shared->email)
+    return false;
+
+  const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
+  if (!c_resolve)
+    return false;
+
+  int index = -1;
+  switch (rm)
+  {
+    case RESOLVE_NEXT_EMAIL:
+      index = menu_get_index(menu) + 1;
+      break;
+
+    case RESOLVE_NEXT_UNDELETED:
+      index = ci_next_undeleted(shared->mailbox, menu_get_index(menu));
+      break;
+
+    case RESOLVE_NEXT_THREAD:
+      index = mutt_next_thread(shared->email);
+      break;
+
+    case RESOLVE_NEXT_SUBTHREAD:
+      index = mutt_next_subthread(shared->email);
+      break;
+  }
+
+  if ((index < 0) || (index >= shared->mailbox->vcount))
+  {
+    // Resolve failed
+    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
+    return false;
+  }
+
+  menu_set_index(menu, index);
+  return true;
+}
+
+// -----------------------------------------------------------------------------
+
+/**
  * op_alias_dialog - Open the aliases dialog - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_alias_dialog(struct IndexSharedData *shared,
