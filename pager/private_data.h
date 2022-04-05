@@ -40,8 +40,6 @@ struct MuttWindow;
  */
 struct PagerPrivateData
 {
-  struct Menu *menu;           ///< Pager Menu
-  struct MuttWindow *win_pbar; ///< Pager Bar
   struct PagerView *pview;     ///< Object to view in the pager
 
   FILE *fp;                    ///< File containing decrypted/decoded/weeded Email
@@ -68,9 +66,6 @@ struct PagerPrivateData
   regex_t search_re;           ///< Compiled search string
   bool search_back;            ///< Search backwards
 
-  int index_size;              ///< Size of the mini-index Window `$pager_index_lines`
-  int indicator;               ///< Preferred position of the indicator line in the mini-index Window
-
   bool force_redraw;              ///< Repaint is needed
   PagerRedrawFlags redraw;        ///< When to redraw the screen
   struct AttrColorList ansi_list; ///< List of ANSI colours used in the Pager
@@ -81,6 +76,8 @@ struct PagerPrivateData
   bool first;                    ///< First time flag for toggle-new
   bool wrapped;                  ///< Has the search/next wrapped around?
   uint64_t delay_read_timestamp; ///< Time that email was first shown
+  bool pager_redraw;             ///< Force a complete redraw
+  enum PagerLoopMode loop;       ///< What the Event Loop should do next, e.g. #PAGER_LOOP_CONTINUE
 };
 
 void                     pager_private_data_free(struct MuttWindow *win, void **ptr);

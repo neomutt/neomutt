@@ -357,9 +357,29 @@ static int pager_index_observer(struct NotifyCallback *nc)
   if (!priv)
     return 0;
 
-  menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-  win_pager->actions |= WA_RECALC;
-  mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
+  struct IndexSharedData *shared = nc->event_data;
+
+  if (nc->event_subtype & NT_INDEX_MAILBOX)
+  {
+    win_pager->actions |= WA_RECALC;
+    mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
+    priv->loop = PAGER_LOOP_QUIT;
+  }
+  else if (nc->event_subtype & NT_INDEX_EMAIL)
+  {
+    win_pager->actions |= WA_RECALC;
+    mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
+    priv->pager_redraw = true;
+    if (shared && shared->email && (priv->loop != PAGER_LOOP_QUIT))
+    {
+      priv->loop = PAGER_LOOP_RELOAD;
+    }
+    else
+    {
+      priv->loop = PAGER_LOOP_QUIT;
+      priv->rc = 0;
+    }
+  }
 
   return 0;
 }

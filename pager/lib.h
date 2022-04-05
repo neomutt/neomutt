@@ -143,6 +143,16 @@ enum PagerMode
 };
 
 /**
+ * enum PagerLoopMode - What the Pager Event Loop should do next
+ */
+enum PagerLoopMode
+{
+  PAGER_LOOP_CONTINUE = -7,  ///< Stay in the Pager Event Loop
+  PAGER_LOOP_QUIT     = -6,  ///< Quit the Pager
+  PAGER_LOOP_RELOAD   = -5,  ///< Reload the Pager from scratch
+};
+
+/**
  * struct PagerData - Data to be displayed by PagerView
  */
 struct PagerData
@@ -176,9 +186,8 @@ typedef uint8_t NotifyPager;         ///< Flags, e.g. #NT_PAGER_DELETE
 
 typedef uint8_t PagerRedrawFlags;       ///< Flags, e.g. #PAGER_REDRAW_PAGER
 #define PAGER_REDRAW_NO_FLAGS        0  ///< No flags are set
-#define PAGER_REDRAW_PAGER     (1 << 5) ///< Redraw the pager
-#define PAGER_REDRAW_FLOW      (1 << 6) ///< Reflow the pager
-#define PAGER_REDRAW_INDEX     (1 << 7) ///< Redraw the mini-Index
+#define PAGER_REDRAW_PAGER     (1 << 1) ///< Redraw the pager
+#define PAGER_REDRAW_FLOW      (1 << 2) ///< Reflow the pager
 
 extern int braille_row;
 extern int braille_col;
@@ -188,7 +197,7 @@ int mutt_do_pager(struct PagerView *pview, struct Email *e);
 void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src, bool strip_markers);
 struct MuttWindow *ppanel_new(bool status_on_top, struct IndexSharedData *shared);
 struct MuttWindow *pager_window_new(struct IndexSharedData *shared, struct PagerPrivateData *priv);
-int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_pager, struct MuttWindow *win_pbar, struct IndexSharedData *shared);
+int mutt_display_message(struct MuttWindow *win_index, struct IndexSharedData *shared);
 int external_pager(struct Mailbox *m, struct Email *e, const char *command);
 void pager_queue_redraw(struct PagerPrivateData *priv, PagerRedrawFlags redraw);
 

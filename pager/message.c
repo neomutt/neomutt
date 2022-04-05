@@ -449,51 +449,59 @@ static void expand_index_panel(struct MuttWindow *win_index, struct MuttWindow *
 /**
  * mutt_display_message - Display a message in the pager
  * @param win_index Index Window
- * @param win_pager Pager Window
- * @param win_pbar  Pager Bar Window
  * @param shared    Shared Index data
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_pager,
-                         struct MuttWindow *win_pbar, struct IndexSharedData *shared)
+int mutt_display_message(struct MuttWindow *win_index, struct IndexSharedData *shared)
 {
-  struct Message *msg = mx_msg_open(shared->mailbox, shared->email->msgno);
-  if (!msg)
-    return -1;
-
+  struct MuttWindow *dlg = dialog_find(win_index);
+  struct MuttWindow *win_pager = window_find_child(dlg, WT_CUSTOM);
+  struct MuttWindow *win_pbar = window_find_child(dlg, WT_STATUS_BAR);
   struct Buffer *tempfile = mutt_buffer_pool_get();
-
-  CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
-
-  // win_pager might not be visible and have a size yet, so use win_index
-  int rc = email_to_file(msg, tempfile, shared->mailbox, shared->email, NULL,
-                         win_index->state.cols, &cmflags);
-  if (rc < 0)
-    goto cleanup;
-
-  notify_crypto(shared->email, msg, cmflags);
-
-  /* Invoke the builtin pager */
-  struct PagerData pdata = { 0 };
-  struct PagerView pview = { &pdata };
-
-  pdata.fp = msg->fp;
-  pdata.fname = mutt_buffer_string(tempfile);
-
-  pview.mode = PAGER_MODE_EMAIL;
-  pview.banner = NULL;
-  pview.flags =
-      MUTT_PAGER_MESSAGE | (shared->email->body->nowrap ? MUTT_PAGER_NOWRAP : 0);
-  pview.win_index = win_index;
-  pview.win_pbar = win_pbar;
-  pview.win_pager = win_pager;
+  struct Message *msg = NULL;
 
   squash_index_panel(shared->mailbox, win_index, win_pager);
-  rc = mutt_pager(&pview);
+
+  int rc = PAGER_LOOP_QUIT;
+  do
+  {
+    msg = mx_msg_open(shared->mailbox, shared->email->msgno);
+    if (!msg)
+      break;
+
+    CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
+
+    mutt_buffer_reset(tempfile);
+    // win_pager might not be visible and have a size yet, so use win_index
+    rc = email_to_file(msg, tempfile, shared->mailbox, shared->email, NULL,
+                       win_index->state.cols, &cmflags);
+    if (rc < 0)
+      break;
+
+    notify_crypto(shared->email, msg, cmflags);
+
+    /* Invoke the builtin pager */
+    struct PagerData pdata = { 0 };
+    struct PagerView pview = { &pdata };
+
+    pdata.fp = msg->fp;
+    pdata.fname = mutt_buffer_string(tempfile);
+
+    pview.mode = PAGER_MODE_EMAIL;
+    pview.banner = NULL;
+    pview.flags = MUTT_PAGER_MESSAGE |
+                  (shared->email->body->nowrap ? MUTT_PAGER_NOWRAP : 0);
+    pview.win_index = win_index;
+    pview.win_pbar = win_pbar;
+    pview.win_pager = win_pager;
+
+    rc = mutt_pager(&pview);
+    mx_msg_close(shared->mailbox, &msg);
+  } while (rc == PAGER_LOOP_RELOAD);
+
   expand_index_panel(win_index, win_pager);
 
-cleanup:
   mx_msg_close(shared->mailbox, &msg);
   mutt_buffer_pool_release(&tempfile);
   return rc;

@@ -291,7 +291,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
   struct MuttWindow *old_focus = window_set_focus(win);
 
   enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
-  window_redraw(NULL);
+  window_redraw(win);
   do
   {
     if (SigWinch)

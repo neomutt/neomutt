@@ -1,4 +1,5 @@
 /**
+          pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
  * @file
  * Pager Dialog
  *
@@ -77,10 +78,6 @@ struct Resize
   bool search_back;
 };
 
-/* hack to return to position when returning from index to same message */
-static int TopLine = 0;
-static struct Email *OldEmail = NULL;
-
 int braille_row = -1;
 int braille_col = -1;
 
@@ -140,15 +137,6 @@ static const struct Mapping PagerNewsHelp[] = {
 #endif
 
 /**
- * mutt_clear_pager_position - Reset the pager's viewing position
- */
-void mutt_clear_pager_position(void)
-{
-  TopLine = 0;
-  OldEmail = NULL;
-}
-
-/**
  * pager_queue_redraw - Queue a request for a redraw
  * @param priv   Private Pager data
  * @param redraw Item to redraw, e.g. #PAGER_REDRAW_PAGER
@@ -157,82 +145,6 @@ void pager_queue_redraw(struct PagerPrivateData *priv, PagerRedrawFlags redraw)
 {
   priv->redraw |= redraw;
   priv->pview->win_pager->actions |= WA_RECALC;
-}
-
-/**
- * pager_custom_redraw - Redraw the pager window
- * @param priv Private Pager data
- */
-static void pager_custom_redraw(struct PagerPrivateData *priv)
-{
-  char buf[1024] = { 0 };
-  struct IndexSharedData *shared = dialog_find(priv->pview->win_pager)->wdata;
-
-  const short c_pager_index_lines =
-      cs_subset_number(NeoMutt->sub, "pager_index_lines");
-
-  if (priv->redraw & PAGER_REDRAW_PAGER)
-  {
-    mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
-    mutt_window_clear(priv->pview->win_pager);
-
-    if ((priv->pview->mode == PAGER_MODE_EMAIL) &&
-        ((shared->mailbox->vcount + 1) < c_pager_index_lines))
-    {
-      priv->index_size = shared->mailbox->vcount + 1;
-    }
-    else
-    {
-      priv->index_size = c_pager_index_lines;
-    }
-
-    priv->indicator = priv->index_size / 3;
-
-    if (Resize)
-    {
-      priv->search_compiled = Resize->search_compiled;
-      if (priv->search_compiled)
-      {
-        uint16_t flags = mutt_mb_is_lower(priv->search_str) ? REG_ICASE : 0;
-        const int err = REG_COMP(&priv->search_re, priv->search_str, REG_NEWLINE | flags);
-        if (err == 0)
-        {
-          priv->search_flag = MUTT_SEARCH;
-          priv->search_back = Resize->search_back;
-        }
-        else
-        {
-          regerror(err, &priv->search_re, buf, sizeof(buf));
-          mutt_error("%s", buf);
-          priv->search_compiled = false;
-        }
-      }
-      priv->win_height = Resize->line;
-      pager_queue_redraw(priv, PAGER_REDRAW_FLOW);
-
-      FREE(&Resize);
-    }
-
-    if ((priv->pview->mode == PAGER_MODE_EMAIL) && (c_pager_index_lines != 0) && priv->menu)
-    {
-      mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
-
-      /* some fudge to work out whereabouts the indicator should go */
-      const int index = menu_get_index(priv->menu);
-      if ((index - priv->indicator) < 0)
-        priv->menu->top = 0;
-      else if ((priv->menu->max - index) < (priv->menu->page_len - priv->indicator))
-        priv->menu->top = priv->menu->max - priv->menu->page_len;
-      else
-        priv->menu->top = index - priv->indicator;
-
-      menu_redraw_index(priv->menu);
-    }
-
-    pager_queue_redraw(priv, PAGER_REDRAW_PAGER | PAGER_REDRAW_INDEX);
-  }
-
-  mutt_debug(LL_DEBUG5, "repaint done\n");
 }
 
 /**
@@ -371,10 +283,6 @@ int mutt_pager(struct PagerView *pview)
   // ACT 2 - Declare, initialize local variables, read config, etc.
   //===========================================================================
 
-  //---------- reading config values needed now--------------------------------
-  const short c_pager_index_lines =
-      cs_subset_number(NeoMutt->sub, "pager_index_lines");
-
   //---------- local variables ------------------------------------------------
   int op = 0;
   enum MailboxType mailbox_type = shared->mailbox ? shared->mailbox->type : MUTT_UNKNOWN;
@@ -384,18 +292,15 @@ int mutt_pager(struct PagerView *pview)
   priv->first = true;
   priv->wrapped = false;
   priv->delay_read_timestamp = 0;
-  bool pager_redraw = false;
+  priv->pager_redraw = false;
 
   {
     // Wipe any previous state info
-    struct Menu *menu = priv->menu;
     struct Notify *notify = priv->notify;
     int rc = priv->rc;
     memset(priv, 0, sizeof(*priv));
     priv->rc = rc;
-    priv->menu = menu;
     priv->notify = notify;
-    priv->win_pbar = pview->win_pbar;
     TAILQ_INIT(&priv->ansi_list);
   }
 
@@ -406,7 +311,6 @@ int mutt_pager(struct PagerView *pview)
   if ((pview->mode == PAGER_MODE_EMAIL) && !shared->email->read)
   {
     shared->ctx->msg_in_pager = shared->email->msgno;
-    priv->win_pbar->actions |= WA_RECALC;
     const short c_pager_read_delay =
         cs_subset_number(NeoMutt->sub, "pager_read_delay");
     if (c_pager_read_delay == 0)
@@ -425,8 +329,6 @@ int mutt_pager(struct PagerView *pview)
   //---------- initialize redraw pdata  -----------------------------------------
   pview->win_pager->size = MUTT_WIN_SIZE_MAXIMISE;
   priv->pview = pview;
-  priv->index_size = c_pager_index_lines;
-  priv->indicator = priv->index_size / 3;
   priv->lines_max = LINES; // number of lines on screen, from curses
   priv->lines = mutt_mem_calloc(priv->lines_max, sizeof(struct Line));
   priv->fp = fopen(pview->pdata->fname, "r");
@@ -459,23 +361,6 @@ int mutt_pager(struct PagerView *pview)
   }
   unlink(pview->pdata->fname);
 
-  //---------- restore global state if needed ---------------------------------
-  while ((pview->mode == PAGER_MODE_EMAIL) && (OldEmail == shared->email) && // are we "resuming" to the same Email?
-         (TopLine != priv->top_line) && // is saved offset different?
-         (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1)))
-  {
-    pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
-    pager_custom_redraw(priv);
-    // trick user, as if nothing happened
-    // scroll down to previously saved offset
-    priv->top_line = ((TopLine - priv->top_line) > priv->win_height) ?
-                         priv->top_line + priv->win_height :
-                         TopLine;
-  }
-
-  TopLine = 0;
-  OldEmail = NULL;
-
   //---------- show windows, set focus and visibility --------------------------
   window_set_visible(pview->win_pager->parent, true);
   mutt_window_reflow(dlg);
@@ -492,7 +377,8 @@ int mutt_pager(struct PagerView *pview)
   // ACT 3: Read user input and decide what to do with it
   //        ...but also do a whole lot of other things.
   //-------------------------------------------------------------------------
-  while (op != OP_ABORT)
+  priv->loop = PAGER_LOOP_CONTINUE;
+  do
   {
     if (check_read_delay(&priv->delay_read_timestamp))
     {
@@ -500,7 +386,6 @@ int mutt_pager(struct PagerView *pview)
     }
 
     pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
-    pager_custom_redraw(priv);
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
     window_redraw(NULL);
 
@@ -561,35 +446,6 @@ int mutt_pager(struct PagerView *pview)
 
         if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
         {
-          if (priv->menu && shared->mailbox)
-          {
-            /* After the mailbox has been updated, selection might be invalid */
-            int index = menu_get_index(priv->menu);
-            menu_set_index(priv->menu, MIN(index, MAX(shared->mailbox->msg_count - 1, 0)));
-            index = menu_get_index(priv->menu);
-            struct Email *e = mutt_get_virt_email(shared->mailbox, index);
-            if (!e)
-              continue;
-
-            bool verbose = shared->mailbox->verbose;
-            shared->mailbox->verbose = false;
-            mutt_update_index(priv->menu, shared->ctx, check, oldcount, shared);
-            shared->mailbox->verbose = verbose;
-
-            priv->menu->max = shared->mailbox->vcount;
-
-            /* If these header pointers don't match, then our email may have
-             * been deleted.  Make the pointer safe, then leave the pager.
-             * This have a unpleasant behaviour to close the pager even the
-             * deleted message is not the opened one, but at least it's safe. */
-            e = mutt_get_virt_email(shared->mailbox, index);
-            if (shared->email != e)
-            {
-              shared->email = e;
-              break;
-            }
-          }
-
           pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
           OptSearchInvalid = true;
         }
@@ -614,9 +470,9 @@ int mutt_pager(struct PagerView *pview)
     }
     //-------------------------------------------------------------------------
 
-    if (pager_redraw)
+    if (priv->pager_redraw)
     {
-      pager_redraw = false;
+      priv->pager_redraw = false;
       mutt_resize_screen();
       clearok(stdscr, true); /* force complete redraw */
       msgwin_clear_text();
@@ -638,6 +494,7 @@ int mutt_pager(struct PagerView *pview)
 
         op = OP_ABORT;
         priv->rc = OP_REFORMAT_WINCH;
+        break;
       }
       else
       {
@@ -664,7 +521,7 @@ int mutt_pager(struct PagerView *pview)
     // OP code to index. Index handles the operation and then restarts pager
     op = km_dokey(MENU_PAGER);
     if (SigWinch)
-      pager_redraw = true;
+      priv->pager_redraw = true;
 
     if (op >= OP_NULL)
       mutt_clear_error();
@@ -678,8 +535,6 @@ int mutt_pager(struct PagerView *pview)
       continue;
     }
 
-    priv->rc = op;
-
     if (op == OP_NULL)
     {
       km_error_key(MENU_PAGER);
@@ -688,6 +543,8 @@ int mutt_pager(struct PagerView *pview)
 
     int rc = pager_function_dispatcher(priv->pview->win_pager, op);
 
+    if ((rc == FR_UNKNOWN) && priv->pview->win_index)
+      rc = index_function_dispatcher(priv->pview->win_index, op);
 #ifdef USE_SIDEBAR
     if (rc == FR_UNKNOWN)
       rc = sb_function_dispatcher(win_sidebar, op);
@@ -695,11 +552,15 @@ int mutt_pager(struct PagerView *pview)
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(dlg, op);
 
-    if (rc == FR_DONE)
+    if (rc == FR_UNKNOWN &&
+        ((pview->mode == PAGER_MODE_ATTACH) || (pview->mode == PAGER_MODE_ATTACH_E)))
+    {
+      // Some attachment functions still need to be delegated
+      priv->rc = op;
       break;
-    if (rc == FR_UNKNOWN)
-      break;
-  }
+    }
+  } while (priv->loop == PAGER_LOOP_CONTINUE);
+
   //-------------------------------------------------------------------------
   // END OF ACT 3: Read user input loop - while (op != OP_ABORT)
   //-------------------------------------------------------------------------
@@ -711,19 +572,8 @@ int mutt_pager(struct PagerView *pview)
   mutt_file_fclose(&priv->fp);
   if (pview->mode == PAGER_MODE_EMAIL)
   {
-    shared->ctx->msg_in_pager = -1;
-    priv->win_pbar->actions |= WA_RECALC;
-    switch (priv->rc)
-    {
-      case -1:
-      case OP_DISPLAY_HEADERS:
-        mutt_clear_pager_position();
-        break;
-      default:
-        TopLine = priv->top_line;
-        OldEmail = shared->email;
-        break;
-    }
+    if (shared->ctx)
+      shared->ctx->msg_in_pager = -1;
   }
 
   qstyle_free_tree(&priv->quote_list);
@@ -750,6 +600,9 @@ int mutt_pager(struct PagerView *pview)
     }
     color_debug(LL_DEBUG5, "AnsiColors %d\n", count);
   }
+
+  if (priv->loop == PAGER_LOOP_RELOAD)
+    return PAGER_LOOP_RELOAD;
 
   return (priv->rc != -1) ? priv->rc : 0;
 }
