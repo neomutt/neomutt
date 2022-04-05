@@ -275,25 +275,15 @@ static int op_delete(struct IndexSharedData *shared, struct IndexPrivateData *pr
   }
   else
   {
-    const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
-    if (c_resolve)
+    if (resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED))
     {
-      int index = menu_get_index(priv->menu);
-      index = ci_next_undeleted(shared->mailbox, index);
-      if (index != -1)
-        menu_set_index(priv->menu, index);
-
-      if (index == -1)
-      {
-        menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
-      }
-      else if (priv->in_pager)
-      {
+      if (priv->in_pager)
         return FR_CONTINUE;
-      }
     }
     else
+    {
       menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+    }
   }
 
   return FR_SUCCESS;
@@ -333,14 +323,8 @@ static int op_delete_thread(struct IndexSharedData *shared,
   const bool c_delete_untag = cs_subset_bool(shared->sub, "delete_untag");
   if (c_delete_untag)
     mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_TAG, false, subthread);
-  const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
-  if (c_resolve)
-  {
-    int index = menu_get_index(priv->menu);
-    index = ci_next_undeleted(shared->mailbox, index);
-    if (index != -1)
-      menu_set_index(priv->menu, index);
-  }
+
+  resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED);
   menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   return FR_SUCCESS;
 }
@@ -578,21 +562,8 @@ static int op_flag_message(struct IndexSharedData *shared,
     if (!shared->email)
       return FR_NO_ACTION;
     mutt_set_flag(m, shared->email, MUTT_FLAG, !shared->email->flagged);
-    const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
-    if (c_resolve)
-    {
-      int index = menu_get_index(priv->menu);
-      index = ci_next_undeleted(shared->mailbox, index);
-      if (index == -1)
-      {
-        menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
-      }
-      else
-      {
-        menu_set_index(priv->menu, index);
-      }
-    }
-    else
+
+    if (!resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED))
       menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
   }
 
@@ -1215,24 +1186,8 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
       goto done;
     }
 
-    const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
-    if (c_resolve)
-    {
-      int index = menu_get_index(priv->menu);
-      index = ci_next_undeleted(shared->mailbox, index);
-      if (index == -1)
-      {
-        menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
-      }
-      else
-      {
-        menu_set_index(priv->menu, index);
-      }
-    }
-    else
-    {
+    if (!resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED))
       menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
-    }
   }
   rc = FR_SUCCESS;
 
@@ -1561,18 +1516,12 @@ static int op_main_read_thread(struct IndexSharedData *shared,
                                 (op != OP_MAIN_READ_THREAD));
   if (rc != -1)
   {
-    const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
-    if (c_resolve)
+    const enum ResolveMethod rm =
+        (op == OP_MAIN_READ_THREAD) ? RESOLVE_NEXT_THREAD : RESOLVE_NEXT_SUBTHREAD;
+    if (resolve_email(priv->menu, shared, rm))
     {
-      int index = ((op == OP_MAIN_READ_THREAD) ? mutt_next_thread(shared->email) :
-                                                 mutt_next_subthread(shared->email));
-      if (index != -1)
-        menu_set_index(priv->menu, index);
-
       if (priv->in_pager)
-      {
         return FR_CONTINUE;
-      }
     }
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
@@ -1620,24 +1569,14 @@ static int op_main_set_flag(struct IndexSharedData *shared,
 
   if (mutt_change_flag(shared->mailbox, &el, (op == OP_MAIN_SET_FLAG)) == 0)
   {
-    const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
     if (priv->tag)
-      menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
-    else if (c_resolve)
     {
-      int index = menu_get_index(priv->menu);
-      index = ci_next_undeleted(shared->mailbox, index);
-      if (index == -1)
-      {
-        menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
-      }
-      else
-      {
-        menu_set_index(priv->menu, index);
-      }
+      menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
     }
-    else
+    else if (!resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED))
+    {
       menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+    }
   }
   emaillist_clear(&el);
 
@@ -2064,24 +2003,14 @@ static int op_save(struct IndexSharedData *shared, struct IndexPrivateData *priv
   const int rc = mutt_save_message(shared->mailbox, &el, save_opt, transform_opt);
   if ((rc == 0) && (save_opt == SAVE_MOVE))
   {
-    const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
     if (priv->tag)
-      menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
-    else if (c_resolve)
     {
-      int index = menu_get_index(priv->menu);
-      index = ci_next_undeleted(shared->mailbox, index);
-      if (index == -1)
-      {
-        menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
-      }
-      else
-      {
-        menu_set_index(priv->menu, index);
-      }
+      menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
     }
-    else
+    else if (!resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED))
+    {
       menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+    }
   }
   emaillist_clear(&el);
 
@@ -2159,16 +2088,8 @@ static int op_tag(struct IndexSharedData *shared, struct IndexPrivateData *priv,
 
   mutt_set_flag(shared->mailbox, shared->email, MUTT_TAG, !shared->email->tagged);
 
-  const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
-  const int index = menu_get_index(priv->menu) + 1;
-  if (c_resolve && (index < shared->mailbox->vcount))
-  {
-    menu_set_index(priv->menu, index);
-  }
-  else
-  {
+  if (!resolve_email(priv->menu, shared, RESOLVE_NEXT_EMAIL))
     menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
-  }
 
   return FR_SUCCESS;
 }
@@ -2189,18 +2110,9 @@ static int op_tag_thread(struct IndexSharedData *shared, struct IndexPrivateData
                                 !shared->email->tagged, (op != OP_TAG_THREAD));
   if (rc != -1)
   {
-    const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
-    if (c_resolve)
-    {
-      int index;
-      if (op == OP_TAG_THREAD)
-        index = mutt_next_thread(shared->email);
-      else
-        index = mutt_next_subthread(shared->email);
-
-      if (index != -1)
-        menu_set_index(priv->menu, index);
-    }
+    const enum ResolveMethod rm =
+        (op == OP_TAG_THREAD) ? RESOLVE_NEXT_THREAD : RESOLVE_NEXT_SUBTHREAD;
+    resolve_email(priv->menu, shared, rm);
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
 
@@ -2243,21 +2155,7 @@ static int op_toggle_new(struct IndexSharedData *shared, struct IndexPrivateData
     else
       mutt_set_flag(m, shared->email, MUTT_READ, true);
 
-    const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
-    if (c_resolve)
-    {
-      int index = menu_get_index(priv->menu);
-      index = ci_next_undeleted(shared->mailbox, index);
-      if (index == -1)
-      {
-        menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
-      }
-      else
-      {
-        menu_set_index(priv->menu, index);
-      }
-    }
-    else
+    if (!resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED))
       menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
   }
 
@@ -2301,13 +2199,7 @@ static int op_undelete(struct IndexSharedData *shared, struct IndexPrivateData *
   }
   else
   {
-    const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
-    const int index = menu_get_index(priv->menu) + 1;
-    if (c_resolve && (index < shared->mailbox->vcount))
-    {
-      menu_set_index(priv->menu, index);
-    }
-    else
+    if (!resolve_email(priv->menu, shared, RESOLVE_NEXT_EMAIL))
       menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
   }
 
@@ -2340,18 +2232,9 @@ static int op_undelete_thread(struct IndexSharedData *shared,
   }
   if (rc != -1)
   {
-    const bool c_resolve = cs_subset_bool(shared->sub, "resolve");
-    if (c_resolve)
-    {
-      int index;
-      if (op == OP_UNDELETE_THREAD)
-        index = mutt_next_thread(shared->email);
-      else
-        index = mutt_next_subthread(shared->email);
-
-      if (index != -1)
-        menu_set_index(priv->menu, index);
-    }
+    const enum ResolveMethod rm =
+        (op == OP_UNDELETE_THREAD) ? RESOLVE_NEXT_THREAD : RESOLVE_NEXT_SUBTHREAD;
+    resolve_email(priv->menu, shared, rm);
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
 
