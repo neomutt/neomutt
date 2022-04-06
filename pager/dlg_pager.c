@@ -365,6 +365,7 @@ int mutt_pager(struct PagerView *pview)
   //---------- show windows, set focus and visibility --------------------------
   window_set_visible(pview->win_pager->parent, true);
   mutt_window_reflow(dlg);
+  window_invalidate_all();
 
   window_set_focus(pview->win_pager);
 
@@ -378,6 +379,11 @@ int mutt_pager(struct PagerView *pview)
   // ACT 3: Read user input and decide what to do with it
   //        ...but also do a whole lot of other things.
   //-------------------------------------------------------------------------
+
+  // Force an initial paint, which will populate priv->lines
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
+  window_redraw(NULL);
+
   priv->loop = PAGER_LOOP_CONTINUE;
   do
   {

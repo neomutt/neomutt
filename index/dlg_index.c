@@ -767,6 +767,8 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
   struct IndexPrivateData *priv = menu->mdata;
   struct IndexSharedData *shared = priv->shared;
   struct Mailbox *m = shared->mailbox;
+  if (!shared->ctx)
+    menu->current = -1;
 
   if (!m || (line < 0) || (line >= m->email_max))
     return;
