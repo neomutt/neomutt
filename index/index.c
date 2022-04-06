@@ -47,16 +47,18 @@
  *
  * Once constructed, it is controlled by the following events:
  *
- * | Event Type | Handler                 |
- * | :--------- | :---------------------- |
- * | #NT_ALTERN | index_altern_observer() |
- * | #NT_ATTACH | index_attach_observer() |
- * | #NT_COLOR  | index_color_observer()  |
- * | #NT_CONFIG | index_config_observer() |
- * | #NT_MENU   | index_menu_observer()   |
- * | #NT_SCORE  | index_score_observer()  |
- * | #NT_SUBJRX | index_subjrx_observer() |
- * | #NT_WINDOW | index_window_observer() |
+ * | Event Type            | Handler                 |
+ * | :-------------------- | :---------------------- |
+ * | #NT_ALTERN            | index_altern_observer() |
+ * | #NT_ATTACH            | index_attach_observer() |
+ * | #NT_COLOR             | index_color_observer()  |
+ * | #NT_CONFIG            | index_config_observer() |
+ * | #NT_MENU              | index_menu_observer()   |
+ * | #NT_SCORE             | index_score_observer()  |
+ * | #NT_SUBJRX            | index_subjrx_observer() |
+ * | #NT_WINDOW            | index_window_observer() |
+ * | MuttWindow::recalc()  | index_recalc()          |
+ * | MuttWindow::repaint() | index_repaint()         |
  *
  * The Index Window does not implement MuttWindow::recalc() or MuttWindow::repaint().
  *
@@ -468,12 +470,72 @@ static int index_window_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * index_recalc - Recalculate the Index display - Implements MuttWindow::recalc() - @ingroup window_recalc
+ */
+static int index_recalc(struct MuttWindow *win)
+{
+  win->actions |= WA_REPAINT;
+  mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
+  return 0;
+}
+
+/**
+ * index_repaint - Repaint the Index display - Implements MuttWindow::repaint() - @ingroup window_repaint
+ */
+static int index_repaint(struct MuttWindow *win)
+{
+  struct Menu *menu = win->wdata;
+
+  if (menu->redraw & MENU_REDRAW_FULL)
+    menu_redraw_full(menu);
+
+  // If we don't have the focus, then this is a mini-Index ($pager_index_lines)
+  if (!window_is_focused(menu->win))
+  {
+    int indicator = menu->page_len / 3;
+
+    /* some fudge to work out whereabouts the indicator should go */
+    const int index = menu_get_index(menu);
+    if ((index - indicator) < 0)
+      menu->top = 0;
+    else if ((menu->max - index) < (menu->page_len - indicator))
+      menu->top = menu->max - menu->page_len;
+    else
+      menu->top = index - indicator;
+    menu_adjust(menu);
+    menu->redraw = MENU_REDRAW_INDEX;
+  }
+
+  struct IndexPrivateData *priv = menu->mdata;
+  struct IndexSharedData *shared = priv->shared;
+  struct Mailbox *m = shared->mailbox;
+  const int index = menu_get_index(menu);
+  if (m && m->emails && (index < m->vcount))
+  {
+    if (menu->redraw & MENU_REDRAW_INDEX)
+    {
+      menu_redraw_index(menu);
+    }
+    else if (menu->redraw & MENU_REDRAW_MOTION)
+      menu_redraw_motion(menu);
+    else if (menu->redraw & MENU_REDRAW_CURRENT)
+      menu_redraw_current(menu);
+  }
+
+  menu->redraw = MENU_REDRAW_NO_FLAGS;
+  mutt_debug(LL_DEBUG5, "repaint done\n");
+  return 0;
+}
+
+/**
  * index_window_new - Create a new Index Window (list of Emails)
  * @retval ptr New Window
  */
 struct MuttWindow *index_window_new(struct IndexPrivateData *priv)
 {
   struct MuttWindow *win = menu_new_window(MENU_INDEX, NeoMutt->sub);
+  win->recalc = index_recalc;
+  win->repaint = index_repaint;
 
   struct Menu *menu = win->wdata;
   menu->mdata = priv;

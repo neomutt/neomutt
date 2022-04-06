@@ -133,15 +133,6 @@ struct Menu
    */
   struct AttrColor *(*color)(struct Menu *menu, int line);
 
-  /**
-   * @defgroup menu_custom_redraw custom_redraw()
-   * @ingroup menu_api
-   *
-   * custom_redraw - Redraw the menu
-   * @param menu Menu to redraw
-   */
-  void (*custom_redraw)(struct Menu *menu);
-
   struct Notify *notify;  ///< Notifications
 
   void *mdata;            ///< Private data

@@ -480,12 +480,6 @@ void menu_redraw_current(struct Menu *menu)
  */
 int menu_redraw(struct Menu *menu)
 {
-  if (menu->custom_redraw)
-  {
-    menu->custom_redraw(menu);
-    return OP_NULL;
-  }
-
   /* See if all or part of the screen needs to be updated.  */
   if (menu->redraw & MENU_REDRAW_FULL)
     menu_redraw_full(menu);

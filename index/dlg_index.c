@@ -1008,50 +1008,6 @@ dsl_finish:
 }
 
 /**
- * index_custom_redraw - Redraw the index - Implements Menu::custom_redraw() - @ingroup menu_custom_redraw
- */
-static void index_custom_redraw(struct Menu *menu)
-{
-  if (menu->redraw & MENU_REDRAW_FULL)
-    menu_redraw_full(menu);
-
-  // If we don't have the focus, then this is a mini-Index ($pager_index_lines)
-  if (!window_is_focused(menu->win))
-  {
-    int indicator = menu->page_len / 3;
-
-    /* some fudge to work out whereabouts the indicator should go */
-    const int index = menu_get_index(menu);
-    if ((index - indicator) < 0)
-      menu->top = 0;
-    else if ((menu->max - index) < (menu->page_len - indicator))
-      menu->top = menu->max - menu->page_len;
-    else
-      menu->top = index - indicator;
-    menu_adjust(menu);
-  }
-
-  struct IndexPrivateData *priv = menu->mdata;
-  struct IndexSharedData *shared = priv->shared;
-  struct Mailbox *m = shared->mailbox;
-  const int index = menu_get_index(menu);
-  if (m && m->emails && (index < m->vcount))
-  {
-    if (menu->redraw & MENU_REDRAW_INDEX)
-    {
-      menu_redraw_index(menu);
-    }
-    else if (menu->redraw & MENU_REDRAW_MOTION)
-      menu_redraw_motion(menu);
-    else if (menu->redraw & MENU_REDRAW_CURRENT)
-      menu_redraw_current(menu);
-  }
-
-  menu->redraw = MENU_REDRAW_NO_FLAGS;
-  mutt_debug(LL_DEBUG5, "repaint done\n");
-}
-
-/**
  * mutt_index_menu - Display a list of emails
  * @param dlg Dialog containing Windows to draw on
  * @param m_init Initial mailbox
@@ -1081,7 +1037,6 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   priv->menu = priv->win_index->wdata;
   priv->menu->make_entry = index_make_entry;
   priv->menu->color = index_color;
-  priv->menu->custom_redraw = index_custom_redraw;
   priv->menu->max = shared->mailbox ? shared->mailbox->vcount : 0;
   menu_set_index(priv->menu, ci_first_message(shared->mailbox));
   mutt_window_reflow(NULL);
@@ -1236,7 +1191,6 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         priv->do_mailbox_notify = true;
     }
 
-    index_custom_redraw(priv->menu);
     window_redraw(NULL);
 
     /* give visual indication that the next command is a tag- command */
