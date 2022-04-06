@@ -1011,6 +1011,22 @@ static void index_custom_redraw(struct Menu *menu)
   if (menu->redraw & MENU_REDRAW_FULL)
     menu_redraw_full(menu);
 
+  // If we don't have the focus, then this is a mini-Index ($pager_index_lines)
+  if (!window_is_focused(menu->win))
+  {
+    int indicator = menu->page_len / 3;
+
+    /* some fudge to work out whereabouts the indicator should go */
+    const int index = menu_get_index(menu);
+    if ((index - indicator) < 0)
+      menu->top = 0;
+    else if ((menu->max - index) < (menu->page_len - indicator))
+      menu->top = menu->max - menu->page_len;
+    else
+      menu->top = index - indicator;
+    menu_adjust(menu);
+  }
+
   struct IndexPrivateData *priv = menu->mdata;
   struct IndexSharedData *shared = priv->shared;
   struct Mailbox *m = shared->mailbox;
