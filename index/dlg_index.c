@@ -835,8 +835,9 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 
   const char *const c_index_format =
       cs_subset_string(shared->sub, "index_format");
+  int msg_in_pager = shared->ctx ? shared->ctx->msg_in_pager : 0;
   mutt_make_string(buf, buflen, menu->win->state.cols, NONULL(c_index_format),
-                   m, shared->ctx->msg_in_pager, e, flags, NULL);
+                   m, msg_in_pager, e, flags, NULL);
 }
 
 /**
@@ -1123,7 +1124,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     priv->oldcount = shared->mailbox ? shared->mailbox->msg_count : 0;
 
     {
-      if (OptRedrawTree && shared->mailbox &&
+      if (shared->ctx && OptRedrawTree && shared->mailbox &&
           (shared->mailbox->msg_count != 0) && mutt_using_threads())
       {
         mutt_draw_tree(shared->ctx->threads);
@@ -1358,7 +1359,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 #ifdef USE_NOTMUCH
     nm_db_debug_check(shared->mailbox);
 #endif
-  } while ((rc != FR_DONE) && shared->ctx);
+  } while (rc != FR_DONE);
 
   ctx_free(&shared->ctx);
 

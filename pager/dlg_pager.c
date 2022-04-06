@@ -310,7 +310,8 @@ int mutt_pager(struct PagerView *pview)
 
   if ((pview->mode == PAGER_MODE_EMAIL) && !shared->email->read)
   {
-    shared->ctx->msg_in_pager = shared->email->msgno;
+    if (shared->ctx)
+      shared->ctx->msg_in_pager = shared->email->msgno;
     const short c_pager_read_delay =
         cs_subset_number(NeoMutt->sub, "pager_read_delay");
     if (c_pager_read_delay == 0)
