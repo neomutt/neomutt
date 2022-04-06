@@ -1118,6 +1118,7 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
       if (m->verbose)
         progress_update(progress, ++px, -1);
       mx_tags_commit(m, e, mutt_buffer_string(buf));
+      e->attr_color = NULL;
       if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
       {
         bool still_queried = false;
@@ -1143,6 +1144,7 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
       mutt_message(_("Failed to modify tags, aborting"));
       goto done;
     }
+    shared->email->attr_color = NULL;
     if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
     {
       bool still_queried = false;
