@@ -3217,59 +3217,55 @@ msgid "Article has no parent reference"
 msgstr "A cikknek nincs szülő hivatkozása"
 
 #: index/functions.c:2764
-#, fuzzy
 msgid "Message is not visible in limited view"
-msgstr "A nyitóüzenet nem látható a szűkített nézetben"
+msgstr "Az üzenet nem látható a szűkített nézetben"
 
 #: index/functions.c:2769
-#, fuzzy, c-format
+#, c-format
 msgid "Fetching %s from server..."
-msgstr "Levelek törlése a szerverről..."
+msgstr "%s letöltése a szerverről folyamatban..."
 
 #: index/functions.c:2782 nntp/nntp.c:2645
 #, c-format
 msgid "Article %s not found on the server"
-msgstr ""
+msgstr "%s cikk nem található a kiszolgálón"
 
 #: index/functions.c:2811
-#, fuzzy
 msgid "Open newsgroup in read-only mode"
-msgstr "Postafiók megnyitása csak olvasásra"
+msgstr "Hírcsoport megnyitása csak olvasásra"
 
 #: index/functions.c:2816
 msgid "Open newsgroup"
-msgstr ""
+msgstr "Hírcsoport megnyitása"
 
 #: index/functions.c:2897 pager/functions.c:1746 pager/functions.c:1787
 #: pager/functions.c:1821
 msgid "Posting to this group not allowed, may be moderated. Continue?"
-msgstr ""
+msgstr "Ebben a csoportban nem lehet közzé tenni, lehet hogy moderálják. Folytatja?"
 
 #: index/functions.c:2932
-#, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
-msgstr "Nincs tárgy megadva, megszakítom"
+msgstr "Nincs virtuális mappa és nincs Üzenet-Id, megszakítva"
 
 #: index/functions.c:2952
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
-msgstr ""
+msgstr "Az üzenet nem található a notmuch adatbázisban. Futtassa a 'notmuch new' parancsot."
 
 #: index/functions.c:2962
 msgid "Failed to read thread, aborting"
-msgstr ""
+msgstr "A téma olvasása sikertelen, megszakítva"
 
 #: index/functions.c:3003
-#, fuzzy
 msgid "No query, aborting"
-msgstr "Nincs tárgy megadva, megszakítom"
+msgstr "Nincs lekérdezés, megszakítva"
 
 #: index/functions.c:3046
 msgid "Windowed queries disabled"
-msgstr ""
+msgstr "Ablak lekérdezések letiltva"
 
 #: index/functions.c:3053
 msgid "No notmuch vfolder currently loaded"
-msgstr ""
+msgstr "Jelenleg nincs notmuch virtuális mappa betöltve"
 
 #: index/functions.c:3117
 msgid "There are no messages"
@@ -3281,7 +3277,7 @@ msgstr "Nincs látható levél"
 
 #: index/index.c:96
 msgid "Changing threaded display should prefer $use_threads over $sort"
-msgstr ""
+msgstr "Téma szerinti megjelenítésnél $use_threads-t kell érdemes választani a $sort helyett"
 
 #: init.c:218
 #, c-format
@@ -3289,14 +3285,13 @@ msgid "Error in command line: %s"
 msgstr "Hibás parancssor: %s"
 
 #: init.c:220
-#, fuzzy, c-format
+#, c-format
 msgid "Warning in command line: %s"
-msgstr "Hibás parancssor: %s"
+msgstr "Figyelmeztetés a következő parancssorban: %s"
 
 #: init.c:330
-#, fuzzy
 msgid "unable to determine nodename via uname()"
-msgstr "meghatározhatatlan felhasználónév"
+msgstr "nem meghatározható a csomópontnév az uname() hívásával"
 
 #: init.c:1029
 #, c-format
@@ -3306,12 +3301,12 @@ msgstr "%s: ismeretlen parancs"
 #: init.c:1089
 #, c-format
 msgid "Config variable '%s' is deprecated"
-msgstr ""
+msgstr "A '%s' konvigurációs változó használata elavult"
 
 #: keymap.c:404
 #, c-format
 msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
-msgstr ""
+msgstr "'%s' összekötése '%s' álnévvel folyamatban. Ezelőtt, próbálja meg: 'bind %s %s noop' https://neomutt.org/guide/configuration.html#bind-warnings"
 
 #: keymap.c:775
 msgid "Macro loop detected"
@@ -3319,12 +3314,12 @@ msgstr "Végtelen ciklus a makróban"
 
 #: keymap.c:852
 msgid "Abort key is not set, defaulting to Ctrl-G"
-msgstr ""
+msgstr "Megszakítás gomb nincs beállítva, alapértelmezett a Ctrc-G"
 
 #: keymap.c:859
 #, c-format
 msgid "Specified abort key sequence (%s) will be truncated to first key"
-msgstr ""
+msgstr "A megadott megszakítás billentyű szekvencia (%s) rövidítve lesz az első billentyűre"
 
 #: keymap.c:1055 keymap.c:1090
 msgid "Key is not bound"
@@ -3343,7 +3338,7 @@ msgstr "%s: üres billentyűzet-szekvencia"
 #: keymap.c:1203
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
-msgstr ""
+msgstr "'%s' funkció nem elérhető a(z) '%s' menühöz"
 
 #: keymap.c:1512
 msgid "macro: empty key sequence"
@@ -3387,9 +3382,8 @@ msgstr "Nem megfelelően formázott bejegyzés a(z) %s típushoz a(z) \"%s\" fá
 #. unset mailcap_path
 #.
 #: mailcap.c:500
-#, fuzzy
 msgid "Neither mailcap_path nor MAILCAPS specified"
-msgstr "Nincs mailcap útvonal megadva"
+msgstr "Nincs sem mailcap útvonal sem MAILCAPS megadva"
 
 #: mailcap.c:524
 #, c-format
@@ -3397,19 +3391,17 @@ msgid "mailcap entry for type %s not found"
 msgstr "mailcap bejegyzés a(z) %s típushoz nem található"
 
 #: maildir/maildir.c:245 maildir/mh.c:303
-#, fuzzy
 msgid "Could not flush message to disk"
-msgstr "Nem tudtam a levelet elküldeni."
+msgstr "Nem tudtam a levelet lemezre menteni"
 
 #: maildir/maildir.c:292
-#, fuzzy
 msgid "maildir_commit_message(): unable to set time on file"
-msgstr "maildir_commit_message (): a fájlidő beállítása nem sikerült"
+msgstr "maildir_commit_message(): a fájlidő beállítása nem sikerült"
 
 #: maildir/maildir.c:684 maildir/mh.c:705
-#, fuzzy, c-format
+#, c-format
 msgid "Scanning %s..."
-msgstr "%s választása..."
+msgstr "%s vizsgálata folyamatban..."
 
 #: maildir/maildir.c:705 maildir/mh.c:728 mbox/mbox.c:216 mbox/mbox.c:382
 #: mx.c:372
@@ -3427,7 +3419,7 @@ msgstr "%s írása..."
 #. L10N: Try to limit to 80 columns
 #: main.c:271
 msgid "usage:"
-msgstr ""
+msgstr "használat:"
 
 #: main.c:272
 msgid ""
@@ -3435,166 +3427,178 @@ msgid ""
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 msgstr ""
+"  neomutt [-Enx] [-e <parancs>] [-F <konfig>] [-H <piszkozat>] [-i <beilleszt>]\n"
+"          [-b <cím>] [-c <cím>] [-s <tárgy>] [-a <file> [...] --]\n"
+"          <cím> [...]"
 
 #: main.c:275
 msgid ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 msgstr ""
+"  neomutt [-nx] [-e <parancs>] [-F <konfig>] [-b <cím>] [-c <cím>]\n"
+"          [-s <tárgy>] [-a <file> [...] --] <cím> [...] < message"
 
 #: main.c:277
 msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
-msgstr ""
+msgstr "  neomutt [-nRy] [-e <parancs>] [-F <konfig>] [-f <postafiók>] [-m <típus>]"
 
 #: main.c:278
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
-msgstr ""
+msgstr "  neomutt [-n] [-e <parancs>] [-F <konfig>] -A <álnév>"
 
 #: main.c:279
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
-msgstr ""
+msgstr "  neomutt [-n] [-e <parancs>] [-F <konfig>] -B"
 
 #: main.c:280
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
-msgstr ""
+msgstr "  neomutt [-n] [-e <parancs>] [-F <konfig>] -D [-S] [-O]"
 
 #: main.c:281
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
-msgstr ""
+msgstr "  neomutt [-n] [-e <parancs>] [-F <konfig>] -d <level> -l <file>"
 
 #: main.c:282
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
-msgstr ""
+msgstr "  neomutt [-n] [-e <parancs>] [-F <konfig>] -G"
 
 #: main.c:283
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
-msgstr ""
+msgstr "  neomutt [-n] [-e <parancs>] [-F <konfig>] -g <server>"
 
 #: main.c:284
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
-msgstr ""
+msgstr "  neomutt [-n] [-e <parancs>] [-F <konfig>] -p"
 
 #: main.c:285
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
-msgstr ""
+msgstr "  neomutt [-n] [-e <parancs>] [-F <konfig>] -Q <változó> [-O]"
 
 #: main.c:286
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
-msgstr ""
+msgstr "  neomutt [-n] [-e <parancs>] [-F <konfig>] -Z"
 
 #: main.c:287
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
-msgstr ""
+msgstr "  neomutt [-n] [-e <parancs>] [-F <konfig>] -z [-f <postafiók>]"
 
 #: main.c:288
 msgid "  neomutt -v[v]\n"
-msgstr ""
+msgstr "  neomutt -v[v]\n"
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
 #: main.c:291
-#, fuzzy
 msgid "options:"
-msgstr "Fordítási opciók:"
+msgstr "opciók:"
 
 #: main.c:292
 msgid ""
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 "                remaining arguments as addresses even if they start with a dash"
 msgstr ""
+" Speciális argumentum arra készteti a NeoMuttot, hogy hagyha abba a feldolgozást\n"
+" és címként kezelje a maradék argumentumokat akkor is, ha gondolatjellel kezdődnek"
 
 #: main.c:294
 msgid "  -A <alias>    Print an expanded version of the given alias to stdout and exit"
-msgstr ""
+msgstr "  -A <alias>   Az adott álnév bővített verzióját küldi a stdout-ra és kilép"
 
 #: main.c:295
 msgid ""
 "  -a <file>     Attach one or more files to a message (must be the last option)\n"
 "                Add any addresses after the '--' argument"
 msgstr ""
+"  -a <file>     Egy vagy több file üzentehez csatolása (utolsó opció legyen)"
+"                Adjon akárhány címet a '--' argumentum után" 
 
 #: main.c:297
 msgid "  -B            Run in batch mode (do not start the ncurses UI)"
-msgstr ""
+msgstr "  -B           Kötegelt mód (batch) (nincs ncourses felület)"
 
 #: main.c:298
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
-msgstr ""
+msgstr "  -b <cím>  Titkos másolatot kapó címzett (Bcc) megadása"
 
 #: main.c:299
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
-msgstr ""
+msgstr "  -c <cím>  Másolatot kapó cím (Cc) megadása"
 
 #: main.c:300
 msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
-msgstr ""
+msgstr "  -D            Az összes változó stdout-ra küldése 'név=érték' párokként"
 
 #: main.c:301
 msgid "  -D -O         Like -D, but show one-liner documentation"
-msgstr ""
+msgstr "  -D -O         Mint -D, de egysoros dokumentáció megjelenítésével"
 
 #: main.c:302
 msgid "  -D -S         Like -D, but hide the value of sensitive variables"
-msgstr ""
+msgstr "  -D -S         Mint -D, de a érzékeny információt tart. változók kihagyásával"
 
 #: main.c:303
 msgid ""
 "  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
 "                The level can range from 1-5 and affects verbosity"
 msgstr ""
+"  -d <szint>    Hibakereső kimenet file-ba loggolása (alapért.: \"~/.neomuttdebug0\")\n"
+"                A szint 1-5 között változhat és meghatározza a részletezettséget"
 
 #: main.c:305
 msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
-msgstr ""
+msgstr "  -E            Piszkozat szerkesztése (-H) vagy file beillesztése (-i) üzenetszerkesztés közben"
 
 #: main.c:306
 msgid "  -e <command>  Specify a command to be run after reading the config files"
-msgstr ""
+msgstr "  -e <parancs>  A konfig. fileok beolvasása után futtatandó parancs megadása "
 
 #: main.c:307
 msgid "  -F <config>   Specify an alternative initialization file to read"
-msgstr ""
+msgstr "  -F <konfig>   Beolvasandó alternatív inicializáló file megadása"
 
 #: main.c:308
 msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
-msgstr ""
+msgstr "  -f <postafiók>  Betöltendő postafiók megadása (ahogy a 'mailboxes' parancs definiálja)"
 
 #: main.c:309
 msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
-msgstr ""
+msgstr "  -G            NeoMutt elindítása a feliratkozott hírcsoportok listázásával"
 
 #: main.c:310
 msgid "  -g <server>   Like -G, but start at specified news server"
-msgstr ""
+msgstr "  -g <kiszolgáló>   Mint -G, de az itt meghatározott hírkiszolgálóval"
 
 #: main.c:311
 msgid "  -H <draft>    Specify a draft file with header and body for message composing"
-msgstr ""
+msgstr "  -H <piszkozat> Piszkozat file megadása fejléccel és szövegtesttel az üzenet szerkesztéshez"
 
 #: main.c:312
 msgid "  -h            Print this help message and exit"
-msgstr ""
+msgstr "  -h            Segítség megjelenítése és kilépés"
 
 #: main.c:313
 msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
-msgstr ""
+msgstr "  -i <beágyazandó>  Beágyazandó file beillesztése az üzenettörzsbe"
 
 #: main.c:314
 msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
-msgstr ""
+msgstr "  -l <file>    Hibakeresés kimeneti file megadása (alapértelmezett \"~/.neomuttdebug0\")"
 
 #: main.c:315
 msgid ""
 "  -m <type>     Specify a default mailbox format type for newly created folders\n"
 "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
 msgstr ""
+"  -m <type>     Postafiók alap formátum típusának megadása az új mappák számára\n"
+"                A típus MH, MMDF, Maildir vagy mbox (kis-nagy betü nem megkül.)"
 
 #: main.c:317
 msgid "  -n            Do not read the system-wide configuration file"
-msgstr ""
+msgstr "  -n           Ne olvassa be az alap konfigurációs filet"
 
 #: main.c:318
 msgid "  -p            Resume a prior postponed message, if any"
-msgstr ""
+msgstr "  -p           Korábban elhalasztott üzenet újra megnyitás, ha van ilyen"
 
 #: main.c:319
 msgid ""
@@ -3602,19 +3606,21 @@ msgid ""
 "                (after the config has been read and any commands executed)\n"
 "                Add -O for one-liner documentation"
 msgstr ""
+"  -Q <változó>  Konfigurációs változó lekérdezése és stdout-ra küldése\n"
+"                (miután a konfigurációt beolvasta és parancsokat végrehajtotta)\n"
+"                Használja -O kapcsolót az egysoros dokumentáció megjelenítéséhez"
 
 #: main.c:322
-#, fuzzy
 msgid "  -R            Open mailbox in read-only mode"
-msgstr "Postafiók megnyitása csak olvasásra"
+msgstr "  -R            Postafiók megnyitása csak-olvasás módban"
 
 #: main.c:323
 msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
-msgstr ""
+msgstr "  -s <tárgy>  Tárgy megadása (Idézőjel közé kell tenni ha szóközt tartalmaz)"
 
 #: main.c:324
 msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
-msgstr ""
+msgstr "  -v            NeoMutt verzió és fordításkori beállítások megjelenítése és kilépés"
 
 #: main.c:325
 msgid "  -vv           Print the NeoMutt license and copyright information and exit"
