@@ -342,7 +342,7 @@ int mutt_pager(struct PagerView *pview)
   {
     priv->lines[i].cid = -1;
     priv->lines[i].search_arr_size = -1;
-    priv->lines[i].syntax = mutt_mem_malloc(sizeof(struct TextSyntax));
+    priv->lines[i].syntax = mutt_mem_calloc(1, sizeof(struct TextSyntax));
     (priv->lines[i].syntax)[0].first = -1;
     (priv->lines[i].syntax)[0].last = -1;
   }

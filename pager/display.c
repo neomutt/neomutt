@@ -178,7 +178,8 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
     if (matching_chunk && (cnt >= matching_chunk->first) &&
         (cnt < matching_chunk->last))
     {
-      color = *matching_chunk->attr_color;
+      if (matching_chunk->attr_color)
+        color = *matching_chunk->attr_color;
     }
   }
 
@@ -963,7 +964,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
       memset(&((*lines)[ch]), 0, sizeof(struct Line));
       (*lines)[ch].cid = -1;
       (*lines)[ch].search_arr_size = -1;
-      (*lines)[ch].syntax = mutt_mem_malloc(sizeof(struct TextSyntax));
+      (*lines)[ch].syntax = mutt_mem_calloc(1, sizeof(struct TextSyntax));
       ((*lines)[ch].syntax)[0].first = -1;
       ((*lines)[ch].syntax)[0].last = -1;
     }
