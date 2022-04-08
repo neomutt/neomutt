@@ -59,6 +59,8 @@ static int op_check_stats(int op)
  */
 static int op_dump_screen(int op)
 {
+  static const int max_rotations = 100;
+
   const char *const c_dump_screen_file =
     cs_subset_path(NeoMutt->sub, "dump_screen_file");
   if (c_dump_screen_file)
@@ -67,7 +69,7 @@ static int op_dump_screen(int op)
     mutt_str_copy(canon, c_dump_screen_file, sizeof(canon));
     if (mutt_path_canon(canon, sizeof(canon), HomeDir, false))
     {
-      const char* rotated = mutt_file_rotate(canon, 100);
+      const char* rotated = mutt_file_rotate(canon, max_rotations);
       mutt_dump_screen(rotated);
       FREE(&rotated);
       mutt_warning(_("Screen dumped"));
