@@ -138,22 +138,8 @@ static int pager_recalc(struct MuttWindow *win)
 static int pager_repaint(struct MuttWindow *win)
 {
   struct PagerPrivateData *priv = win->wdata;
-  //---------------------------------------------------------------------------
-  // ASSUMPTIONS & SANITY CHECKS
-  //---------------------------------------------------------------------------
-  // Since pager_custom_redraw() is a static function and it is always called
-  // after mutt_pager() we can rely on a series of sanity checks in
-  // mutt_pager(), namely:
-  // - PAGER_MODE_EMAIL  guarantees ( data->email) and (!data->body)
-  // - PAGER_MODE_ATTACH guarantees ( data->email) and ( data->body)
-  // - PAGER_MODE_OTHER  guarantees (!data->email) and (!data->body)
-  //
-  // Additionally, while refactoring is still in progress the following checks
-  // are still here to ensure data model consistency.
-  assert(priv);        // Redraw function can't be called without its data.
-  assert(priv->pview); // Redraw data can't exist separately without the view.
-  assert(priv->pview->pdata); // View can't exist without its data
-  //---------------------------------------------------------------------------
+  if (!priv || !priv->pview || !priv->pview->pdata)
+    return 0;
 
 #ifdef USE_DEBUG_COLOR
   dump_pager(priv);
