@@ -68,7 +68,6 @@
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "pattern/lib.h"
-#include "context.h"
 #include "format_flags.h"
 #include "functions.h"
 #include "hdrline.h"
@@ -78,6 +77,7 @@
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "mutt_thread.h"
+#include "mview.h"
 #include "mx.h"
 #include "opcodes.h"
 #include "options.h"
@@ -157,7 +157,7 @@ bool check_acl(struct Mailbox *m, AclFlags acl, const char *msg)
 
 /**
  * collapse_all - Collapse/uncollapse all threads
- * @param ctx    Context
+ * @param mv     Mailbox View
  * @param menu   current menu
  * @param toggle toggle collapsed state
  *
@@ -167,12 +167,12 @@ bool check_acl(struct Mailbox *m, AclFlags acl, const char *msg)
  * threads. In the second case, the @a toggle parameter is 0, actually turning
  * this function into a one-way collapse.
  */
-void collapse_all(struct Context *ctx, struct Menu *menu, int toggle)
+void collapse_all(struct MailboxView *mv, struct Menu *menu, int toggle)
 {
-  if (!ctx || !ctx->mailbox || (ctx->mailbox->msg_count == 0) || !menu)
+  if (!mv || !mv->mailbox || (mv->mailbox->msg_count == 0) || !menu)
     return;
 
-  struct Email *e_cur = mutt_get_virt_email(ctx->mailbox, menu_get_index(menu));
+  struct Email *e_cur = mutt_get_virt_email(mv->mailbox, menu_get_index(menu));
   if (!e_cur)
     return;
 
@@ -190,20 +190,20 @@ void collapse_all(struct Context *ctx, struct Menu *menu, int toggle)
   if (final == -1)
     return;
 
-  struct Email *base = mutt_get_virt_email(ctx->mailbox, final);
+  struct Email *base = mutt_get_virt_email(mv->mailbox, final);
   if (!base)
     return;
 
   /* Iterate all threads, perform collapse/uncollapse as needed */
-  ctx->collapsed = toggle ? !ctx->collapsed : true;
-  mutt_thread_collapse(ctx->threads, ctx->collapsed);
+  mv->collapsed = toggle ? !mv->collapsed : true;
+  mutt_thread_collapse(mv->threads, mv->collapsed);
 
   /* Restore the cursor */
-  mutt_set_vnum(ctx->mailbox);
-  menu->max = ctx->mailbox->vcount;
-  for (int i = 0; i < ctx->mailbox->vcount; i++)
+  mutt_set_vnum(mv->mailbox);
+  menu->max = mv->mailbox->vcount;
+  for (int i = 0; i < mv->mailbox->vcount; i++)
   {
-    struct Email *e = mutt_get_virt_email(ctx->mailbox, i);
+    struct Email *e = mutt_get_virt_email(mv->mailbox, i);
     if (!e)
       break;
     if (e->index == base->index)
@@ -323,20 +323,20 @@ int ci_first_message(struct Mailbox *m)
 
 /**
  * resort_index - Resort the index
- * @param ctx  Context
+ * @param mv   Mailbox View
  * @param menu Current Menu
  */
-void resort_index(struct Context *ctx, struct Menu *menu)
+void resort_index(struct MailboxView *mv, struct Menu *menu)
 {
-  if (!ctx || !ctx->mailbox || !menu)
+  if (!mv || !mv->mailbox || !menu)
     return;
 
-  struct Mailbox *m = ctx->mailbox;
+  struct Mailbox *m = mv->mailbox;
   const int old_index = menu_get_index(menu);
   struct Email *e_cur = mutt_get_virt_email(m, old_index);
 
   int new_index = -1;
-  mutt_sort_headers(m, ctx->threads, false, &ctx->vsize);
+  mutt_sort_headers(m, mv->threads, false, &mv->vsize);
 
   /* Restore the current message */
   for (int i = 0; i < m->vcount; i++)
@@ -364,16 +364,16 @@ void resort_index(struct Context *ctx, struct Menu *menu)
 
 /**
  * update_index_threaded - Update the index (if threaded)
- * @param ctx      Mailbox
+ * @param mv      Mailbox
  * @param check    Flags, e.g. #MX_STATUS_REOPENED
  * @param oldcount How many items are currently in the index
  */
-static void update_index_threaded(struct Context *ctx, enum MxStatus check, int oldcount)
+static void update_index_threaded(struct MailboxView *mv, enum MxStatus check, int oldcount)
 {
   struct Email **save_new = NULL;
-  const bool lmt = ctx_has_limit(ctx);
+  const bool lmt = mview_has_limit(mv);
 
-  struct Mailbox *m = ctx->mailbox;
+  struct Mailbox *m = mv->mailbox;
   int num_new = MAX(0, m->msg_count - oldcount);
 
   const bool c_uncollapse_new = cs_subset_bool(m->sub, "uncollapse_new");
@@ -390,7 +390,7 @@ static void update_index_threaded(struct Context *ctx, enum MxStatus check, int 
    * require the threading information.
    *
    * If the mailbox was reopened, need to rethread from scratch. */
-  mutt_sort_headers(m, ctx->threads, (check == MX_STATUS_REOPENED), &ctx->vsize);
+  mutt_sort_headers(m, mv->threads, (check == MX_STATUS_REOPENED), &mv->vsize);
 
   if (lmt)
   {
@@ -401,7 +401,7 @@ static void update_index_threaded(struct Context *ctx, enum MxStatus check, int 
     for (int i = 0; i < m->msg_count; i++)
     {
       struct Email *e = m->emails[i];
-      if ((e->vnum != -1) || mutt_pattern_exec(SLIST_FIRST(ctx->limit_pattern),
+      if ((e->vnum != -1) || mutt_pattern_exec(SLIST_FIRST(mv->limit_pattern),
                                                MUTT_MATCH_FULL_ADDRESS, m, e, NULL))
       {
         /* vnum will get properly set by mutt_set_vnum(), which
@@ -416,7 +416,7 @@ static void update_index_threaded(struct Context *ctx, enum MxStatus check, int 
       }
     }
     /* Need a second sort to set virtual numbers and redraw the tree */
-    mutt_sort_headers(m, ctx->threads, false, &ctx->vsize);
+    mutt_sort_headers(m, mv->threads, false, &mv->vsize);
   }
 
   /* uncollapse threads with new mail */
@@ -424,8 +424,8 @@ static void update_index_threaded(struct Context *ctx, enum MxStatus check, int 
   {
     if (check == MX_STATUS_REOPENED)
     {
-      ctx->collapsed = false;
-      mutt_thread_collapse(ctx->threads, ctx->collapsed);
+      mv->collapsed = false;
+      mutt_thread_collapse(mv->threads, mv->collapsed);
       mutt_set_vnum(m);
     }
     else if (oldcount > 0)
@@ -446,33 +446,33 @@ static void update_index_threaded(struct Context *ctx, enum MxStatus check, int 
 
 /**
  * update_index_unthreaded - Update the index (if unthreaded)
- * @param ctx      Mailbox
+ * @param mv      Mailbox
  * @param check    Flags, e.g. #MX_STATUS_REOPENED
  */
-static void update_index_unthreaded(struct Context *ctx, enum MxStatus check)
+static void update_index_unthreaded(struct MailboxView *mv, enum MxStatus check)
 {
   /* We are in a limited view. Check if the new message(s) satisfy
    * the limit criteria. If they do, set their virtual msgno so that
    * they will be visible in the limited view */
-  if (ctx_has_limit(ctx))
+  if (mview_has_limit(mv))
   {
-    int padding = mx_msg_padding_size(ctx->mailbox);
-    ctx->mailbox->vcount = ctx->vsize = 0;
-    for (int i = 0; i < ctx->mailbox->msg_count; i++)
+    int padding = mx_msg_padding_size(mv->mailbox);
+    mv->mailbox->vcount = mv->vsize = 0;
+    for (int i = 0; i < mv->mailbox->msg_count; i++)
     {
-      struct Email *e = ctx->mailbox->emails[i];
+      struct Email *e = mv->mailbox->emails[i];
       if (!e)
         break;
-      if (mutt_pattern_exec(SLIST_FIRST(ctx->limit_pattern),
-                            MUTT_MATCH_FULL_ADDRESS, ctx->mailbox, e, NULL))
+      if (mutt_pattern_exec(SLIST_FIRST(mv->limit_pattern),
+                            MUTT_MATCH_FULL_ADDRESS, mv->mailbox, e, NULL))
       {
-        assert(ctx->mailbox->vcount < ctx->mailbox->msg_count);
-        e->vnum = ctx->mailbox->vcount;
-        ctx->mailbox->v2r[ctx->mailbox->vcount] = i;
+        assert(mv->mailbox->vcount < mv->mailbox->msg_count);
+        e->vnum = mv->mailbox->vcount;
+        mv->mailbox->v2r[mv->mailbox->vcount] = i;
         e->visible = true;
-        ctx->mailbox->vcount++;
+        mv->mailbox->vcount++;
         struct Body *b = e->body;
-        ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
+        mv->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
       else
       {
@@ -482,28 +482,28 @@ static void update_index_unthreaded(struct Context *ctx, enum MxStatus check)
   }
 
   /* if the mailbox was reopened, need to rethread from scratch */
-  mutt_sort_headers(ctx->mailbox, ctx->threads, (check == MX_STATUS_REOPENED), &ctx->vsize);
+  mutt_sort_headers(mv->mailbox, mv->threads, (check == MX_STATUS_REOPENED), &mv->vsize);
 }
 
 /**
  * update_index - Update the index
  * @param menu     Current Menu
- * @param ctx      Mailbox
+ * @param mv      Mailbox
  * @param check    Flags, e.g. #MX_STATUS_REOPENED
  * @param oldcount How many items are currently in the index
  * @param shared   Shared Index data
  */
-void update_index(struct Menu *menu, struct Context *ctx, enum MxStatus check,
+void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check,
                   int oldcount, const struct IndexSharedData *shared)
 {
-  if (!menu || !ctx)
+  if (!menu || !mv)
     return;
 
-  struct Mailbox *m = ctx->mailbox;
+  struct Mailbox *m = mv->mailbox;
   if (mutt_using_threads())
-    update_index_threaded(ctx, check, oldcount);
+    update_index_threaded(mv, check, oldcount);
   else
-    update_index_unthreaded(ctx, check);
+    update_index_unthreaded(mv, check);
 
   const int old_index = menu_get_index(menu);
   int index = -1;
@@ -533,15 +533,15 @@ void update_index(struct Menu *menu, struct Context *ctx, enum MxStatus check,
 /**
  * mutt_update_index - Update the index
  * @param menu      Current Menu
- * @param ctx       Mailbox
+ * @param mv       Mailbox
  * @param check     Flags, e.g. #MX_STATUS_REOPENED
  * @param oldcount  How many items are currently in the index
  * @param shared    Shared Index data
  */
-void mutt_update_index(struct Menu *menu, struct Context *ctx, enum MxStatus check,
+void mutt_update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check,
                        int oldcount, struct IndexSharedData *shared)
 {
-  update_index(menu, ctx, check, oldcount, shared);
+  update_index(menu, mv, check, oldcount, shared);
 }
 
 /**
@@ -583,7 +583,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
   /* keepalive failure in mutt_enter_fname may kill connection. */
   if (shared->mailbox && (mutt_buffer_is_empty(&shared->mailbox->pathbuf)))
   {
-    ctx_free(&shared->ctx);
+    mview_free(&shared->mailboxview);
     mailbox_free(&shared->mailbox);
   }
 
@@ -604,7 +604,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
     const enum MxStatus check = mx_mbox_close(shared->mailbox);
     if (check == MX_STATUS_OK)
     {
-      ctx_free(&shared->ctx);
+      mview_free(&shared->mailboxview);
       if (shared->mailbox != m)
       {
         mailbox_free(&shared->mailbox);
@@ -617,7 +617,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
         mutt_monitor_add(NULL);
 #endif
       if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
-        update_index(menu, shared->ctx, check, *oldcount, shared);
+        update_index(menu, shared->mailboxview, check, *oldcount, shared);
 
       FREE(&new_last_folder);
       OptSearchInvalid = true;
@@ -659,8 +659,8 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
   const OpenMailboxFlags flags = read_only ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS;
   if (mx_mbox_open(m, flags))
   {
-    struct Context *ctx = ctx_new(m);
-    index_shared_data_set_context(shared, ctx);
+    struct MailboxView *mv = mview_new(m);
+    index_shared_data_set_context(shared, mv);
 
     menu->max = m->msg_count;
     menu_set_index(menu, ci_first_message(shared->mailbox));
@@ -676,7 +676,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
 
   const bool c_collapse_all = cs_subset_bool(shared->sub, "collapse_all");
   if (mutt_using_threads() && c_collapse_all)
-    collapse_all(shared->ctx, menu, 0);
+    collapse_all(shared->mailboxview, menu, 0);
 
   mutt_clear_error();
   /* force the mailbox check after we have changed the folder */
@@ -768,7 +768,7 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
   struct IndexPrivateData *priv = menu->mdata;
   struct IndexSharedData *shared = priv->shared;
   struct Mailbox *m = shared->mailbox;
-  if (!shared->ctx)
+  if (!shared->mailboxview)
     menu->current = -1;
 
   if (!m || (line < 0) || (line >= m->email_max))
@@ -837,7 +837,7 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
   }
 
   const char *const c_index_format = cs_subset_string(shared->sub, "index_format");
-  int msg_in_pager = shared->ctx ? shared->ctx->msg_in_pager : 0;
+  int msg_in_pager = shared->mailboxview ? shared->mailboxview->msg_in_pager : 0;
   mutt_make_string(buf, buflen, menu->win->state.cols, NONULL(c_index_format),
                    m, msg_in_pager, e, flags, NULL);
 }
@@ -1016,7 +1016,7 @@ dsl_finish:
 struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 {
   struct IndexSharedData *shared = dlg->wdata;
-  index_shared_data_set_context(shared, ctx_new(m_init));
+  index_shared_data_set_context(shared, mview_new(m_init));
 
   struct MuttWindow *panel_index = window_find_child(dlg, WT_INDEX);
 
@@ -1054,7 +1054,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     const bool c_collapse_all = cs_subset_bool(shared->sub, "collapse_all");
     if (mutt_using_threads() && c_collapse_all)
     {
-      collapse_all(shared->ctx, priv->menu, 0);
+      collapse_all(shared->mailboxview, priv->menu, 0);
       menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
     }
   }
@@ -1075,26 +1075,26 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     if (OptNeedResort && shared->mailbox && (shared->mailbox->msg_count != 0) &&
         (menu_get_index(priv->menu) >= 0))
     {
-      resort_index(shared->ctx, priv->menu);
+      resort_index(shared->mailboxview, priv->menu);
     }
 
     priv->menu->max = shared->mailbox ? shared->mailbox->vcount : 0;
     priv->oldcount = shared->mailbox ? shared->mailbox->msg_count : 0;
 
     {
-      if (shared->ctx && OptRedrawTree && shared->mailbox &&
+      if (shared->mailboxview && OptRedrawTree && shared->mailbox &&
           (shared->mailbox->msg_count != 0) && mutt_using_threads())
       {
-        mutt_draw_tree(shared->ctx->threads);
+        mutt_draw_tree(shared->mailboxview->threads);
         OptRedrawTree = false;
       }
     }
 
-    if (shared->mailbox && shared->ctx)
+    if (shared->mailbox && shared->mailboxview)
     {
       mailbox_gc_run();
 
-      shared->ctx->menu = priv->menu;
+      shared->mailboxview->menu = priv->menu;
       /* check for new mail in the mailbox.  If nonzero, then something has
        * changed about the file (either we got new mail or the file was
        * modified underneath us.) */
@@ -1105,7 +1105,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         if (mutt_buffer_is_empty(&shared->mailbox->pathbuf))
         {
           /* fatal error occurred */
-          ctx_free(&shared->ctx);
+          mview_free(&shared->mailboxview);
           menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         }
 
@@ -1153,7 +1153,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
         bool verbose = shared->mailbox->verbose;
         shared->mailbox->verbose = false;
-        update_index(priv->menu, shared->ctx, check, priv->oldcount, shared);
+        update_index(priv->menu, shared->mailboxview, check, priv->oldcount, shared);
         shared->mailbox->verbose = verbose;
         priv->menu->max = shared->mailbox->vcount;
         menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
@@ -1314,7 +1314,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 #endif
   } while (rc != FR_DONE);
 
-  ctx_free(&shared->ctx);
+  mview_free(&shared->mailboxview);
 
   return shared->mailbox;
 }

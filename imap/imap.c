@@ -943,7 +943,7 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
 
   /* We make a copy of the headers just in case resorting doesn't give
    exactly the original order (duplicate messages?), because other parts of
-   the ctx are tied to the header order. This may be overkill. */
+   the mv are tied to the header order. This may be overkill. */
   const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   if (c_sort != SORT_ORDER)
   {
@@ -2136,7 +2136,7 @@ static bool imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
     return false;
 
   /* in APPEND mode, we appear to hijack an existing IMAP connection -
-   * ctx is brand new and mostly empty */
+   * mailbox is brand new and mostly empty */
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
@@ -2168,7 +2168,7 @@ static enum MxStatus imap_mbox_check(struct Mailbox *m)
 {
   imap_allow_reopen(m);
   enum MxStatus rc = imap_check_mailbox(m, false);
-  /* NOTE - ctx might have been changed at this point. In particular,
+  /* NOTE - mv might have been changed at this point. In particular,
    * m could be NULL. Beware. */
   imap_disallow_reopen(m);
 

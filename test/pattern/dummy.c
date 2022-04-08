@@ -28,7 +28,7 @@
 #include <unistd.h>
 #include "core/lib.h"
 #include "menu/lib.h"
-#include "context.h"
+#include "mview.h"
 
 struct Address;
 struct Body;
@@ -56,8 +56,6 @@ bool g_is_mail_list = false;
 bool g_is_subscribed_list = false;
 const char *g_myvar = "hello";
 short AbortKey;
-
-extern struct Context *Context;
 
 typedef uint8_t MuttFormatFlags;
 typedef uint16_t CompletionFlags;
@@ -263,15 +261,9 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 {
 }
 
-/**
- * ctx_mailbox - wrapper to get the mailbox in a Context, or NULL
- * @param ctx Context
- * @retval ptr The mailbox in the Context
- * @retval NULL Context is NULL or doesn't have a mailbox
- */
-struct Mailbox *ctx_mailbox(struct Context *ctx)
+struct Mailbox *mview_mailbox(struct MailboxView *mv)
 {
-  return ctx ? ctx->mailbox : NULL;
+  return mv ? mv->mailbox : NULL;
 }
 
 int menu_get_index(struct Menu *menu)

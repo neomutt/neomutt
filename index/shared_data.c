@@ -33,28 +33,28 @@
 #include "core/lib.h"
 #include "shared_data.h"
 #include "lib.h"
-#include "context.h"
+#include "mview.h"
 
 /**
- * index_shared_context_observer - Notification that the Context has changed - Implements ::observer_t - @ingroup observer_api
+ * index_shared_context_observer - Notification that the MailboxView has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int index_shared_context_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_CONTEXT) || !nc->global_data || !nc->event_data)
+  if ((nc->event_type != NT_MVIEW) || !nc->global_data || !nc->event_data)
     return -1;
 
-  if (nc->event_subtype == NT_CONTEXT_ADD)
+  if (nc->event_subtype == NT_MVIEW_ADD)
     return 0;
 
-  struct EventContext *ev_c = nc->event_data;
+  struct EventMview *ev_m = nc->event_data;
   struct IndexSharedData *shared = nc->global_data;
-  if (ev_c->ctx != shared->ctx)
+  if (ev_m->mv != shared->mailboxview)
     return 0;
 
-  if (nc->event_subtype == NT_CONTEXT_DELETE)
-    shared->ctx = NULL;
+  if (nc->event_subtype == NT_MVIEW_DELETE)
+    shared->mailboxview = NULL;
 
-  mutt_debug(LL_NOTIFY, "relay NT_CONTEXT to shared data observers\n");
+  mutt_debug(LL_NOTIFY, "relay NT_MVIEW to shared data observers\n");
   notify_send(shared->notify, nc->event_type, nc->event_subtype, shared);
   return 0;
 }
@@ -146,30 +146,31 @@ static int index_shared_email_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_shared_data_set_context - Set the Context for the Index and friends
+ * index_shared_data_set_context - Set the MailboxView for the Index and friends
  * @param shared Shared Index data
- * @param ctx    New Context, may be NULL
+ * @param mv     Mailbox View, may be NULL
  */
-void index_shared_data_set_context(struct IndexSharedData *shared, struct Context *ctx)
+void index_shared_data_set_context(struct IndexSharedData *shared, struct MailboxView *mv)
 {
   if (!shared)
     return;
 
   NotifyIndex subtype = NT_INDEX_NO_FLAGS;
 
-  if (shared->ctx != ctx)
+  if (shared->mailboxview != mv)
   {
-    if (shared->ctx)
-      notify_observer_remove(shared->ctx->notify, index_shared_context_observer, shared);
+    if (shared->mailboxview)
+      notify_observer_remove(shared->mailboxview->notify,
+                             index_shared_context_observer, shared);
 
-    shared->ctx = ctx;
-    subtype |= NT_INDEX_CONTEXT;
+    shared->mailboxview = mv;
+    subtype |= NT_INDEX_MVIEW;
 
-    if (ctx)
-      notify_observer_add(ctx->notify, NT_CONTEXT, index_shared_context_observer, shared);
+    if (mv)
+      notify_observer_add(mv->notify, NT_MVIEW, index_shared_context_observer, shared);
   }
 
-  struct Mailbox *m = ctx_mailbox(ctx);
+  struct Mailbox *m = mview_mailbox(mv);
   if (shared->mailbox != m)
   {
     if (shared->mailbox)
@@ -278,8 +279,8 @@ void index_shared_data_free(struct MuttWindow *win, void **ptr)
 
   if (shared->account)
     notify_observer_remove(shared->account->notify, index_shared_account_observer, shared);
-  if (shared->ctx)
-    notify_observer_remove(shared->ctx->notify, index_shared_context_observer, shared);
+  if (shared->mailboxview)
+    notify_observer_remove(shared->mailboxview->notify, index_shared_context_observer, shared);
   if (shared->mailbox)
     notify_observer_remove(shared->mailbox->notify, index_shared_mailbox_observer, shared);
   if (shared->email)

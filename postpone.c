@@ -41,11 +41,11 @@
 #include "mutt.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"
-#include "context.h"
 #include "handler.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
+#include "mview.h"
 #include "mx.h"
 #include "options.h"
 #include "protos.h"
@@ -704,7 +704,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
   const enum QuadOption c_delete = cs_subset_quad(NeoMutt->sub, "delete");
   cs_subset_str_native_set(NeoMutt->sub, "delete", MUTT_YES, NULL);
 
-  struct Context *ctx = (m_cur != m) ? ctx_new(m) : NULL;
+  struct MailboxView *mv = (m_cur != m) ? mview_new(m) : NULL;
   if (m->msg_count == 1)
   {
     /* only one message, so just use that one. */
@@ -805,7 +805,7 @@ cleanup:
   if (m_cur != m)
   {
     hardclose(m);
-    ctx_free(&ctx);
+    mview_free(&mv);
     mailbox_free(&m);
   }
 

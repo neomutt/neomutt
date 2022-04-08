@@ -970,7 +970,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
   }
 
   /* undo expunge count updates.
-   * ctx_update() will do this at the end of the header fetch. */
+   * mview_update() will do this at the end of the header fetch. */
   m->vcount = 0;
   m->msg_tagged = 0;
   m->msg_deleted = 0;

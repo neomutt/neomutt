@@ -21,7 +21,7 @@
  */
 
 /**
- * @page neo_ctx The "currently-open" mailbox
+ * @page neo_mview The "currently-open" mailbox
  *
  * The "currently-open" mailbox
  */
@@ -32,7 +32,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "context.h"
+#include "mview.h"
 #include "imap/lib.h"
 #include "ncrypt/lib.h"
 #include "pattern/lib.h"
@@ -43,91 +43,91 @@
 #include "sort.h"
 
 /**
- * ctx_free - Free a Context
- * @param[out] ptr Context to free
+ * mview_free - Free a MailboxView
+ * @param[out] ptr MailboxView to free
  */
-void ctx_free(struct Context **ptr)
+void mview_free(struct MailboxView **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
-  struct Context *ctx = *ptr;
+  struct MailboxView *mv = *ptr;
 
-  struct EventContext ev_c = { ctx };
-  mutt_debug(LL_NOTIFY, "NT_CONTEXT_DELETE: %p\n", ctx);
-  notify_send(ctx->notify, NT_CONTEXT, NT_CONTEXT_DELETE, &ev_c);
+  struct EventMview ev_m = { mv };
+  mutt_debug(LL_NOTIFY, "NT_MVIEW_DELETE: %p\n", mv);
+  notify_send(mv->notify, NT_MVIEW, NT_MVIEW_DELETE, &ev_m);
 
-  if (ctx->mailbox)
-    notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer, ctx);
+  if (mv->mailbox)
+    notify_observer_remove(mv->mailbox->notify, mview_mailbox_observer, mv);
 
-  mutt_thread_ctx_free(&ctx->threads);
-  notify_free(&ctx->notify);
-  FREE(&ctx->pattern);
-  mutt_pattern_free(&ctx->limit_pattern);
+  mutt_thread_ctx_free(&mv->threads);
+  notify_free(&mv->notify);
+  FREE(&mv->pattern);
+  mutt_pattern_free(&mv->limit_pattern);
 
-  FREE(&ctx);
+  FREE(&mv);
   *ptr = NULL;
 }
 
 /**
- * ctx_new - Create a new Context
+ * mview_new - Create a new MailboxView
  * @param m Mailbox
- * @retval ptr New Context
+ * @retval ptr New MailboxView
  */
-struct Context *ctx_new(struct Mailbox *m)
+struct MailboxView *mview_new(struct Mailbox *m)
 {
   if (!m)
     return NULL;
 
-  struct Context *ctx = mutt_mem_calloc(1, sizeof(struct Context));
+  struct MailboxView *mv = mutt_mem_calloc(1, sizeof(struct MailboxView));
 
-  ctx->notify = notify_new();
-  notify_set_parent(ctx->notify, NeoMutt->notify);
-  struct EventContext ev_c = { ctx };
-  mutt_debug(LL_NOTIFY, "NT_CONTEXT_ADD: %p\n", ctx);
-  notify_send(ctx->notify, NT_CONTEXT, NT_CONTEXT_ADD, &ev_c);
-  // If the Mailbox is closed, ctx->mailbox must be set to NULL
-  notify_observer_add(m->notify, NT_MAILBOX, ctx_mailbox_observer, ctx);
+  mv->notify = notify_new();
+  notify_set_parent(mv->notify, NeoMutt->notify);
+  struct EventMview ev_m = { mv };
+  mutt_debug(LL_NOTIFY, "NT_MVIEW_ADD: %p\n", mv);
+  notify_send(mv->notify, NT_MVIEW, NT_MVIEW_ADD, &ev_m);
+  // If the Mailbox is closed, mv->mailbox must be set to NULL
+  notify_observer_add(m->notify, NT_MAILBOX, mview_mailbox_observer, mv);
 
-  ctx->mailbox = m;
-  ctx->threads = mutt_thread_ctx_init(m);
-  ctx->msg_in_pager = -1;
-  ctx->collapsed = false;
-  ctx_update(ctx);
+  mv->mailbox = m;
+  mv->threads = mutt_thread_ctx_init(m);
+  mv->msg_in_pager = -1;
+  mv->collapsed = false;
+  mview_update(mv);
 
-  return ctx;
+  return mv;
 }
 
 /**
- * ctx_cleanup - Release memory and initialize a Context object
- * @param ctx Context to cleanup
+ * ctx_cleanup - Release memory and initialize a MailboxView
+ * @param mv MailboxView to cleanup
  */
-static void ctx_cleanup(struct Context *ctx)
+static void ctx_cleanup(struct MailboxView *mv)
 {
-  FREE(&ctx->pattern);
-  mutt_pattern_free(&ctx->limit_pattern);
-  if (ctx->mailbox)
-    notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer, ctx);
+  FREE(&mv->pattern);
+  mutt_pattern_free(&mv->limit_pattern);
+  if (mv->mailbox)
+    notify_observer_remove(mv->mailbox->notify, mview_mailbox_observer, mv);
 
-  struct Notify *notify = ctx->notify;
-  struct Mailbox *m = ctx->mailbox;
-  memset(ctx, 0, sizeof(struct Context));
-  ctx->notify = notify;
-  ctx->mailbox = m;
+  struct Notify *notify = mv->notify;
+  struct Mailbox *m = mv->mailbox;
+  memset(mv, 0, sizeof(struct MailboxView));
+  mv->notify = notify;
+  mv->mailbox = m;
 }
 
 /**
- * ctx_update - Update the Context's message counts
- * @param ctx          Mailbox
+ * mview_update - Update the MailboxView's message counts
+ * @param mv Mailbox View
  *
- * this routine is called to update the counts in the context structure
+ * this routine is called to update the counts in the MailboxView structure
  */
-void ctx_update(struct Context *ctx)
+void mview_update(struct MailboxView *mv)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!mv || !mv->mailbox)
     return;
 
-  struct Mailbox *m = ctx->mailbox;
+  struct Mailbox *m = mv->mailbox;
 
   mutt_hash_free(&m->subj_hash);
   mutt_hash_free(&m->id_hash);
@@ -141,7 +141,7 @@ void ctx_update(struct Context *ctx)
   m->vcount = 0;
   m->changed = false;
 
-  mutt_clear_threads(ctx->threads);
+  mutt_clear_threads(mv->threads);
 
   const bool c_score = cs_subset_bool(NeoMutt->sub, "score");
   struct Email *e = NULL;
@@ -157,7 +157,7 @@ void ctx_update(struct Context *ctx)
       e->security = crypt_query(e->body);
     }
 
-    if (ctx_has_limit(ctx))
+    if (mview_has_limit(mv))
     {
       e->vnum = -1;
     }
@@ -180,7 +180,7 @@ void ctx_update(struct Context *ctx)
       {
         e2->superseded = true;
         if (c_score)
-          mutt_score_message(ctx->mailbox, e2, true);
+          mutt_score_message(mv->mailbox, e2, true);
       }
     }
 
@@ -192,7 +192,7 @@ void ctx_update(struct Context *ctx)
     mutt_label_hash_add(m, e);
 
     if (c_score)
-      mutt_score_message(ctx->mailbox, e, false);
+      mutt_score_message(mv->mailbox, e, false);
 
     if (e->changed)
       m->changed = true;
@@ -211,25 +211,25 @@ void ctx_update(struct Context *ctx)
   }
 
   /* rethread from scratch */
-  mutt_sort_headers(ctx->mailbox, ctx->threads, true, &ctx->vsize);
+  mutt_sort_headers(mv->mailbox, mv->threads, true, &mv->vsize);
 }
 
 /**
- * update_tables - Update a Context structure's internal tables
- * @param ctx        Mailbox
+ * update_tables - Update a MailboxView's internal tables
+ * @param mv Mailbox
  */
-static void update_tables(struct Context *ctx)
+static void update_tables(struct MailboxView *mv)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!mv || !mv->mailbox)
     return;
 
-  struct Mailbox *m = ctx->mailbox;
+  struct Mailbox *m = mv->mailbox;
 
   int i, j, padding;
 
   /* update memory to reflect the new state of the mailbox */
   m->vcount = 0;
-  ctx->vsize = 0;
+  mv->vsize = 0;
   m->msg_tagged = 0;
   m->msg_deleted = 0;
   m->msg_new = 0;
@@ -256,7 +256,7 @@ static void update_tables(struct Context *ctx)
         m->v2r[m->vcount] = j;
         m->emails[j]->vnum = m->vcount++;
         struct Body *b = m->emails[j]->body;
-        ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
+        mv->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
 
       m->emails[j]->changed = false;
@@ -308,29 +308,29 @@ static void update_tables(struct Context *ctx)
 }
 
 /**
- * ctx_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t - @ingroup observer_api
+ * mview_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t - @ingroup observer_api
  */
-int ctx_mailbox_observer(struct NotifyCallback *nc)
+int mview_mailbox_observer(struct NotifyCallback *nc)
 {
   if ((nc->event_type != NT_MAILBOX) || !nc->global_data)
     return -1;
 
-  struct Context *ctx = nc->global_data;
+  struct MailboxView *mv = nc->global_data;
 
   switch (nc->event_subtype)
   {
     case NT_MAILBOX_DELETE:
-      mutt_clear_threads(ctx->threads);
-      ctx_cleanup(ctx);
+      mutt_clear_threads(mv->threads);
+      ctx_cleanup(mv);
       break;
     case NT_MAILBOX_INVALID:
-      ctx_update(ctx);
+      mview_update(mv);
       break;
     case NT_MAILBOX_UPDATE:
-      update_tables(ctx);
+      update_tables(mv);
       break;
     case NT_MAILBOX_RESORT:
-      mutt_sort_headers(ctx->mailbox, ctx->threads, true, &ctx->vsize);
+      mutt_sort_headers(mv->mailbox, mv->threads, true, &mv->vsize);
       break;
     default:
       return 0;
@@ -355,22 +355,22 @@ bool message_is_tagged(struct Email *e)
 /**
  * el_add_tagged - Get a list of the tagged Emails
  * @param el         Empty EmailList to populate
- * @param ctx        Current Mailbox
+ * @param mv        Current Mailbox
  * @param e          Current Email
  * @param use_tagged Use tagged Emails
  * @retval num Number of selected emails
  * @retval -1  Error
  */
-int el_add_tagged(struct EmailList *el, struct Context *ctx, struct Email *e, bool use_tagged)
+int el_add_tagged(struct EmailList *el, struct MailboxView *mv, struct Email *e, bool use_tagged)
 {
   int count = 0;
 
   if (use_tagged)
   {
-    if (!ctx || !ctx->mailbox || !ctx->mailbox->emails)
+    if (!mv || !mv->mailbox || !mv->mailbox->emails)
       return -1;
 
-    struct Mailbox *m = ctx->mailbox;
+    struct Mailbox *m = mv->mailbox;
     for (int i = 0; i < m->msg_count; i++)
     {
       e = m->emails[i];
@@ -425,23 +425,23 @@ struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum)
 }
 
 /**
- * ctx_has_limit - Is a limit active?
- * @param ctx Context
+ * mview_has_limit - Is a limit active?
+ * @param mv MailboxView
  * @retval true A limit is active
  * @retval false No limit is active
  */
-bool ctx_has_limit(const struct Context *ctx)
+bool mview_has_limit(const struct MailboxView *mv)
 {
-  return ctx && ctx->pattern;
+  return mv && mv->pattern;
 }
 
 /**
- * ctx_mailbox - Wrapper to get the mailbox in a Context, or NULL
- * @param ctx Context
- * @retval ptr The mailbox in the Context
- * @retval NULL Context is NULL or doesn't have a mailbox
+ * mview_mailbox - Wrapper to get the mailbox in a MailboxView, or NULL
+ * @param mv MailboxView
+ * @retval ptr The mailbox in the MailboxView
+ * @retval NULL MailboxView is NULL or doesn't have a mailbox
  */
-struct Mailbox *ctx_mailbox(struct Context *ctx)
+struct Mailbox *mview_mailbox(struct MailboxView *mv)
 {
-  return ctx ? ctx->mailbox : NULL;
+  return mv ? mv->mailbox : NULL;
 }

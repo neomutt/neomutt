@@ -39,8 +39,8 @@
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
-#include "context.h"
 #include "mutt_thread.h"
+#include "mview.h"
 #include "opcodes.h"
 
 /**

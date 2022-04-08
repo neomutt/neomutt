@@ -36,12 +36,12 @@
 #include "status.h"
 #include "index/lib.h"
 #include "menu/lib.h"
-#include "context.h"
 #include "format_flags.h"
 #include "mutt_globals.h"
 #include "mutt_mailbox.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
+#include "mview.h"
 #include "options.h"
 #include "protos.h"
 
@@ -107,7 +107,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
   struct MenuStatusLineData *msld = (struct MenuStatusLineData *) data;
   struct IndexSharedData *shared = msld->shared;
-  struct Context *ctx = shared->ctx;
+  struct MailboxView *mv = shared->mailboxview;
   struct Mailbox *m = shared->mailbox;
   struct Menu *menu = msld->menu;
 
@@ -210,10 +210,10 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        mutt_str_pretty_size(tmp, sizeof(tmp), ctx ? ctx->vsize : 0);
+        mutt_str_pretty_size(tmp, sizeof(tmp), mv ? mv->vsize : 0);
         snprintf(buf, buflen, fmt, tmp);
       }
-      else if (!ctx_has_limit(ctx))
+      else if (!mview_has_limit(mv))
         optional = false;
       break;
 
@@ -236,7 +236,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, m ? m->vcount : 0);
       }
-      else if (!ctx_has_limit(ctx))
+      else if (!mview_has_limit(mv))
         optional = false;
       break;
 
@@ -401,9 +401,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, ctx_has_limit(ctx) ? ctx->pattern : "");
+        snprintf(buf, buflen, fmt, mview_has_limit(mv) ? mv->pattern : "");
       }
-      else if (!ctx_has_limit(ctx))
+      else if (!mview_has_limit(mv))
         optional = false;
       break;
 

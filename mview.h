@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_CONTEXT_H
-#define MUTT_CONTEXT_H
+#ifndef MUTT_MVIEW_H
+#define MUTT_MVIEW_H
 
 #include <stdbool.h>
 #include <sys/types.h>
@@ -32,9 +32,9 @@ struct Mailbox;
 struct NotifyCallback;
 
 /**
- * struct Context - The "current" mailbox
+ * struct MailboxView - The "current" mailbox
  */
-struct Context
+struct MailboxView
 {
   off_t vsize;                       ///< Size (in bytes) of the messages shown
   char *pattern;                     ///< Limit pattern string
@@ -47,39 +47,39 @@ struct Context
   bool collapsed : 1;                ///< Are all threads collapsed?
 
   struct Mailbox *mailbox;           ///< Current Mailbox
-  struct Notify *notify;             ///< Notifications: #NotifyContext, #EventContext
+  struct Notify *notify;             ///< Notifications: #NotifyMview, #EventMview
 };
 
 /**
- * enum NotifyContext - Types of Context Event
+ * enum NotifyMview - Types of MailboxView Event
  *
- * Observers of #NT_CONTEXT will be passed an #EventContext.
+ * Observers of #NT_MVIEW will be passed an #EventMview.
  */
-enum NotifyContext
+enum NotifyMview
 {
-  NT_CONTEXT_ADD = 1, ///< The Context has been opened
-  NT_CONTEXT_DELETE,  ///< The Context is about to be destroyed
-  NT_CONTEXT_CHANGE,  ///< The Context has changed
+  NT_MVIEW_ADD = 1, ///< The Mview has been opened
+  NT_MVIEW_DELETE,  ///< The Mview is about to be destroyed
+  NT_MVIEW_CHANGE,  ///< The Mview has changed
 };
 
 /**
- * struct EventContext - An Event that happened to an Context
+ * struct EventMview - An Event that happened to an MailboxView
  */
-struct EventContext
+struct EventMview
 {
-  struct Context *ctx; ///< The Context this Event relates to
+  struct MailboxView *mv; ///< The MailboxView this Event relates to
 };
 
-void            ctx_free            (struct Context **ptr);
-int             ctx_mailbox_observer(struct NotifyCallback *nc);
-struct Context *ctx_new             (struct Mailbox *m);
-void            ctx_update          (struct Context *ctx);
-bool            ctx_has_limit       (const struct Context *ctx);
-struct Mailbox* ctx_mailbox         (struct Context *ctx);
+void                mview_free            (struct MailboxView **ptr);
+int                 mview_mailbox_observer(struct NotifyCallback *nc);
+struct MailboxView *mview_new             (struct Mailbox *m);
+void                mview_update          (struct MailboxView *mv);
+bool                mview_has_limit       (const struct MailboxView *mv);
+struct Mailbox*     mview_mailbox         (struct MailboxView *mv);
 
 bool message_is_tagged(struct Email *e);
 struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum);
 
-int  el_add_tagged  (struct EmailList *el, struct Context *ctx, struct Email *e, bool use_tagged);
+int  el_add_tagged(struct EmailList *el, struct MailboxView *mv, struct Email *e, bool use_tagged);
 
-#endif /* MUTT_CONTEXT_H */
+#endif /* MUTT_MVIEW_H */

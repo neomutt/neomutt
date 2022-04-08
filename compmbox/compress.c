@@ -73,7 +73,7 @@ void mutt_comp_init(void)
 }
 
 /**
- * lock_realpath - Try to lock the ctx->realpath
+ * lock_realpath - Try to lock the Mailbox.realpath
  * @param m    Mailbox to lock
  * @param excl Lock exclusively?
  * @retval true  Success (locked or readonly)

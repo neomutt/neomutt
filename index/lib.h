@@ -49,8 +49,8 @@
 #include "mx.h"          // IWYU pragma: keep
 #include "shared_data.h" // IWYU pragma: keep
 
-struct Context;
 struct Email;
+struct MailboxView;
 struct Menu;
 struct MuttWindow;
 
@@ -61,7 +61,7 @@ typedef uint8_t NotifyIndex;         ///< Flags, e.g. #NT_INDEX_ACCOUNT
 #define NT_INDEX_DELETE    (1 << 1)  ///< Index Shared Data is about to be freed
 #define NT_INDEX_SUBSET    (1 << 2)  ///< Config Subset has changed
 #define NT_INDEX_ACCOUNT   (1 << 3)  ///< Account has changed
-#define NT_INDEX_CONTEXT   (1 << 4)  ///< Context has changed
+#define NT_INDEX_MVIEW     (1 << 4)  ///< MailboxView has changed
 #define NT_INDEX_MAILBOX   (1 << 5)  ///< Mailbox has changed
 #define NT_INDEX_EMAIL     (1 << 6)  ///< Email has changed
 
@@ -78,18 +78,18 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line);
 void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, size_t buflen);
 struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m);
 void mutt_set_header_color(struct Mailbox *m, struct Email *e);
-void mutt_update_index(struct Menu *menu, struct Context *ctx, enum MxStatus check, int oldcount, struct IndexSharedData *shared);
+void mutt_update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check, int oldcount, struct IndexSharedData *shared);
 struct MuttWindow *index_pager_init(void);
 int mutt_dlgindex_observer(struct NotifyCallback *nc);
 bool check_acl(struct Mailbox *m, AclFlags acl, const char *msg);
 int ci_next_undeleted(struct Mailbox *m, int msgno);
-void update_index(struct Menu *menu, struct Context *ctx, enum MxStatus check, int oldcount, const struct IndexSharedData *shared);
+void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check, int oldcount, const struct IndexSharedData *shared);
 void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount, struct IndexSharedData *shared, bool read_only);
-void collapse_all(struct Context *ctx, struct Menu *menu, int toggle);
+void collapse_all(struct MailboxView *mv, struct Menu *menu, int toggle);
 void change_folder_string(struct Menu *menu, char *buf, size_t buflen, int *oldcount, struct IndexSharedData *shared, bool read_only);
 int ci_previous_undeleted(struct Mailbox *m, int msgno);
 int ci_first_message(struct Mailbox *m);
-void resort_index(struct Context *ctx, struct Menu *menu);
+void resort_index(struct MailboxView *mv, struct Menu *menu);
 int mx_toggle_write(struct Mailbox *m);
 extern const struct Mapping IndexNewsHelp[];
 struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, int *oldcount, struct IndexSharedData *shared, bool read_only);

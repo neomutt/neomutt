@@ -88,7 +88,7 @@ typedef uint16_t PagerFlags;              ///< Flags for mutt_pager(), e.g. #MUT
 //
 // 2. mutt_view_attachment -> mutt_do_pager -> mutt_pager
 //
-//    this path always results in email, body, ctx set
+//    this path always results in email, body, mailboxview set
 //    this invocation can be identified by one of the two macros
 //    - IsAttach (viewing a regular attachment)
 //    - IsMsgAttach (viewing nested email)

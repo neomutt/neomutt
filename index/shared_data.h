@@ -26,7 +26,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-struct Context;
+struct MailboxView;
 struct Email;
 struct MuttWindow;
 
@@ -35,20 +35,20 @@ struct MuttWindow;
  */
 struct IndexSharedData
 {
-  struct ConfigSubset *sub; ///< Config set to use
-  struct Context *ctx;      ///< Current Mailbox view
-  struct Account *account;  ///< Current Account
-  struct Mailbox *mailbox;  ///< Current Mailbox
-  struct Email *email;      ///< Currently selected Email
-  size_t email_seq;         ///< Sequence number of the current email
-  struct Notify *notify;    ///< Notifications: #NotifyIndex, #IndexSharedData
+  struct ConfigSubset *sub;         ///< Config set to use
+  struct MailboxView *mailboxview;  ///< Current Mailbox view
+  struct Account *account;          ///< Current Account
+  struct Mailbox *mailbox;          ///< Current Mailbox
+  struct Email *email;              ///< Currently selected Email
+  size_t email_seq;                 ///< Sequence number of the current email
+  struct Notify *notify;            ///< Notifications: #NotifyIndex, #IndexSharedData
 };
 
 void                    index_shared_data_free(struct MuttWindow *win, void **ptr);
 struct IndexSharedData *index_shared_data_new (void);
 
 bool index_shared_data_is_cur_email(const struct IndexSharedData *shared, const struct Email *e);
-void index_shared_data_set_context (struct IndexSharedData *shared, struct Context *ctx);
+void index_shared_data_set_context (struct IndexSharedData *shared, struct MailboxView *mv);
 void index_shared_data_set_email   (struct IndexSharedData *shared, struct Email *e);
 
 #endif /* MUTT_INDEX_SHARED_DATA_H */

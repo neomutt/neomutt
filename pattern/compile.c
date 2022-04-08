@@ -45,8 +45,8 @@
 #include "mutt.h"
 #include "lib.h"
 #include "menu/lib.h"
-#include "context.h"
 #include "init.h"
+#include "mview.h"
 
 // clang-format off
 typedef uint16_t ParseDateRangeFlags; ///< Flags for parse_date_range(), e.g. #MUTT_PDR_MINUS
@@ -68,7 +68,7 @@ enum EatRangeError
 {
   RANGE_E_OK,     ///< Range is valid
   RANGE_E_SYNTAX, ///< Range contains syntax error
-  RANGE_E_CTX,    ///< Range requires Context, but none available
+  RANGE_E_MVIEW,  ///< Range requires MailboxView, but none available
 };
 
 #define KILO 1024
@@ -727,13 +727,13 @@ static int report_regerror(int regerr, regex_t *preg, struct Buffer *err)
 }
 
 /**
- * is_menu_available - Do we need a Context for this Pattern?
+ * is_menu_available - Do we need a MailboxView for this Pattern?
  * @param s      String to check
  * @param pmatch Regex matches
  * @param kind   Range type, e.g. #RANGE_K_REL
  * @param err    Buffer for error messages
  * @param menu   Current Menu
- * @retval false Context is required, but not available
+ * @retval false MailboxView is required, but not available
  * @retval true  Otherwise
  */
 static bool is_menu_available(struct Buffer *s, regmatch_t pmatch[], int kind,
@@ -888,7 +888,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
     return report_regerror(regerr, &pspec->cooked, err);
 
   if (!is_menu_available(s, pmatch, kind, err, menu))
-    return RANGE_E_CTX;
+    return RANGE_E_MVIEW;
 
   /* Snarf the contents of the two sides of the range. */
   pat->min = scan_range_slot(s, pmatch, pspec->lgrp, RANGE_S_LEFT, kind, m, menu);
@@ -901,11 +901,11 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
     if (!m || !menu)
     {
       mutt_buffer_strcpy(err, _("No current message"));
-      return RANGE_E_CTX;
+      return RANGE_E_MVIEW;
     }
     struct Email *e = mutt_get_virt_email(m, menu_get_index(menu));
     if (!e)
-      return RANGE_E_CTX;
+      return RANGE_E_MVIEW;
 
     pat->max = EMSG(e);
     pat->min = pat->max;
@@ -954,7 +954,7 @@ static bool eat_message_range(struct Pattern *pat, PatternCompFlags flags,
   {
     switch (eat_range_by_regex(pat, s, i_kind, err, m, menu))
     {
-      case RANGE_E_CTX:
+      case RANGE_E_MVIEW:
         /* This means it matched syntactically but lacked context.
          * No point in continuing. */
         break;

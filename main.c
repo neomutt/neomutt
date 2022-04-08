@@ -69,7 +69,6 @@
  * | commands.c      | @subpage neo_commands      |
  * | command_parse.c | @subpage neo_command_parse |
  * | complete.c      | @subpage neo_complete      |
- * | context.c       | @subpage neo_ctx           |
  * | copy.c          | @subpage neo_copy          |
  * | dlg_postpone.c  | @subpage neo_dlg_postpone  |
  * | editmsg.c       | @subpage neo_editmsg       |
@@ -102,6 +101,7 @@
  * | mutt_socket.c   | @subpage neo_mutt_socket   |
  * | mutt_thread.c   | @subpage neo_mutt_thread   |
  * | mx.c            | @subpage neo_mx            |
+ * | mview.c         | @subpage neo_mview         |
  * | myvar.c         | @subpage neo_myvar         |
  * | opcodes.c       | @subpage neo_opcode        |
  * | options.h       | @subpage neo_options       |

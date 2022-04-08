@@ -2672,7 +2672,7 @@ static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   nntp_edata_get(e)->parsed = true;
   mutt_parse_mime_message(e, msg->fp);
 
-  /* these would normally be updated in ctx_update(), but the
+  /* these would normally be updated in mview_update(), but the
    * full headers aren't parsed with overview, so the information wasn't
    * available then */
   if (WithCrypto)

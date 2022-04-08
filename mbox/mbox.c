@@ -1243,7 +1243,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   }
   if (i == m->msg_count)
   {
-    /* this means ctx->changed or m->msg_deleted was set, but no
+    /* this means m->changed or m->msg_deleted was set, but no
      * messages were found to be changed or deleted.  This should
      * never happen, is we presume it is a bug in neomutt.  */
     mutt_error(_("sync: mbox modified, but no modified messages (report this bug)"));

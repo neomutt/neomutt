@@ -51,13 +51,13 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "commands.h"
-#include "context.h"
 #include "hook.h"
 #include "keymap.h"
 #include "mutt_header.h"
 #include "mutt_mailbox.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
+#include "mview.h"
 #include "mx.h"
 #include "opcodes.h"
 #include "options.h"
@@ -207,7 +207,7 @@ static int op_bounce_message(struct IndexSharedData *shared,
                              struct IndexPrivateData *priv, int op)
 {
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+  el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
   ci_bounce_message(shared->mailbox, &el);
   emaillist_clear(&el);
 
@@ -228,7 +228,7 @@ static int op_check_traditional(struct IndexSharedData *shared,
   if (priv->tag || !(shared->email->security & PGP_TRADITIONAL_CHECKED))
   {
     struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-    el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+    el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
     if (mutt_check_traditional_pgp(shared->mailbox, &el))
       menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
     emaillist_clear(&el);
@@ -244,7 +244,7 @@ static int op_compose_to_sender(struct IndexSharedData *shared,
                                 struct IndexPrivateData *priv, int op)
 {
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+  el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
   int rc = mutt_send_message(SEND_TO_SENDER, NULL, NULL, shared->mailbox, &el,
                              shared->sub);
   emaillist_clear(&el);
@@ -282,7 +282,7 @@ static int op_delete(struct IndexSharedData *shared, struct IndexPrivateData *pr
     return FR_ERROR;
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+  el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
 
   mutt_emails_set_flag(shared->mailbox, &el, MUTT_DELETE, true);
   mutt_emails_set_flag(shared->mailbox, &el, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
@@ -394,7 +394,7 @@ static int op_display_message(struct IndexSharedData *shared,
   if (c_pgp_auto_decode && (priv->tag || !(shared->email->security & PGP_TRADITIONAL_CHECKED)))
   {
     struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-    el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+    el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
     if (mutt_check_traditional_pgp(shared->mailbox, &el))
       menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
     emaillist_clear(&el);
@@ -421,7 +421,7 @@ static int op_display_message(struct IndexSharedData *shared,
 
   if (shared->mailbox)
   {
-    update_index(priv->menu, shared->ctx, MX_STATUS_NEW_MAIL,
+    update_index(priv->menu, shared->mailboxview, MX_STATUS_NEW_MAIL,
                  shared->mailbox->msg_count, shared);
   }
 
@@ -434,7 +434,7 @@ static int op_display_message(struct IndexSharedData *shared,
 static int op_edit_label(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+  el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
   int num_changed = mutt_label_message(shared->mailbox, &el);
   emaillist_clear(&el);
 
@@ -489,13 +489,13 @@ static int op_edit_raw_message(struct IndexSharedData *shared,
   if (c_pgp_auto_decode && (priv->tag || !(shared->email->security & PGP_TRADITIONAL_CHECKED)))
   {
     struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-    el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+    el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
     if (mutt_check_traditional_pgp(shared->mailbox, &el))
       menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
     emaillist_clear(&el);
   }
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+  el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
   mutt_ev_message(shared->mailbox, &el, edit ? EVM_EDIT : EVM_VIEW);
   emaillist_clear(&el);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
@@ -522,10 +522,10 @@ static int op_exit(struct IndexSharedData *shared, struct IndexPrivateData *priv
   const enum QuadOption c_quit = cs_subset_quad(shared->sub, "quit");
   if (query_quadoption(c_quit, _("Exit NeoMutt without saving?")) == MUTT_YES)
   {
-    if (shared->ctx)
+    if (shared->mailboxview)
     {
       mx_fastclose_mailbox(shared->mailbox, false);
-      ctx_free(&shared->ctx);
+      mview_free(&shared->mailboxview);
     }
     return FR_DONE;
   }
@@ -542,7 +542,7 @@ static int op_extract_keys(struct IndexSharedData *shared,
   if (!WithCrypto)
     return FR_NOT_IMPL;
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+  el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
   crypt_extract_keys_from_messages(shared->mailbox, &el);
   emaillist_clear(&el);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
@@ -606,7 +606,7 @@ static int op_forward_message(struct IndexSharedData *shared,
   if (!shared->email)
     return FR_NO_ACTION;
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+  el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
   const bool c_pgp_auto_decode = cs_subset_bool(shared->sub, "pgp_auto_decode");
   if (c_pgp_auto_decode && (priv->tag || !(shared->email->security & PGP_TRADITIONAL_CHECKED)))
   {
@@ -639,7 +639,7 @@ static int op_group_reply(struct IndexSharedData *shared,
   if (!shared->email)
     return FR_NO_ACTION;
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+  el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
   const bool c_pgp_auto_decode = cs_subset_bool(shared->sub, "pgp_auto_decode");
   if (c_pgp_auto_decode && (priv->tag || !(shared->email->security & PGP_TRADITIONAL_CHECKED)))
   {
@@ -714,7 +714,7 @@ static int op_list_reply(struct IndexSharedData *shared, struct IndexPrivateData
   if (!shared->email)
     return FR_NO_ACTION;
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+  el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
   const bool c_pgp_auto_decode = cs_subset_bool(shared->sub, "pgp_auto_decode");
   if (c_pgp_auto_decode && (priv->tag || !(shared->email->security & PGP_TRADITIONAL_CHECKED)))
   {
@@ -800,8 +800,8 @@ static int op_main_break_thread(struct IndexSharedData *shared,
   {
     {
       mutt_break_thread(shared->email);
-      mutt_sort_headers(shared->mailbox, shared->ctx->threads, true,
-                        &shared->ctx->vsize);
+      mutt_sort_headers(shared->mailbox, shared->mailboxview->threads, true,
+                        &shared->mailboxview->vsize);
       menu_set_index(priv->menu, shared->email->vnum);
     }
 
@@ -854,7 +854,7 @@ static int op_main_change_folder(struct IndexSharedData *shared,
     mutt_buffer_pretty_mailbox(folderbuf);
   }
   /* By default, fill buf with the next mailbox that contains unread mail */
-  mutt_mailbox_next(shared->ctx ? shared->mailbox : NULL, folderbuf);
+  mutt_mailbox_next(shared->mailboxview ? shared->mailbox : NULL, folderbuf);
 
   if (mutt_buffer_enter_fname(cp, folderbuf, true, shared->mailbox, false, NULL,
                               NULL, MUTT_SEL_NO_FLAGS) == -1)
@@ -900,7 +900,7 @@ static int op_main_collapse_all(struct IndexSharedData *shared,
     mutt_error(_("Threading is not enabled"));
     return FR_ERROR;
   }
-  collapse_all(shared->ctx, priv->menu, 1);
+  collapse_all(shared->mailboxview, priv->menu, 1);
 
   return FR_SUCCESS;
 }
@@ -958,7 +958,7 @@ static int op_main_delete_pattern(struct IndexSharedData *shared,
   if (!check_acl(shared->mailbox, MUTT_ACL_DELETE, _("Can't delete messages")))
     return FR_ERROR;
 
-  mutt_pattern_func(shared->ctx, MUTT_DELETE, _("Delete messages matching: "));
+  mutt_pattern_func(shared->mailboxview, MUTT_DELETE, _("Delete messages matching: "));
   menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
 
   return FR_SUCCESS;
@@ -974,31 +974,31 @@ static int op_main_delete_pattern(struct IndexSharedData *shared,
  */
 static int op_main_limit(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
-  const bool lmt = ctx_has_limit(shared->ctx);
+  const bool lmt = mview_has_limit(shared->mailboxview);
   int old_index = shared->email ? shared->email->index : -1;
   if (op == OP_TOGGLE_READ)
   {
     char buf2[1024];
 
-    if (!lmt || !mutt_strn_equal(shared->ctx->pattern, "!~R!~D~s", 8))
+    if (!lmt || !mutt_strn_equal(shared->mailboxview->pattern, "!~R!~D~s", 8))
     {
-      snprintf(buf2, sizeof(buf2), "!~R!~D~s%s", lmt ? shared->ctx->pattern : ".*");
+      snprintf(buf2, sizeof(buf2), "!~R!~D~s%s", lmt ? shared->mailboxview->pattern : ".*");
     }
     else
     {
-      mutt_str_copy(buf2, shared->ctx->pattern + 8, sizeof(buf2));
+      mutt_str_copy(buf2, shared->mailboxview->pattern + 8, sizeof(buf2));
       if ((*buf2 == '\0') || mutt_strn_equal(buf2, ".*", 2))
         snprintf(buf2, sizeof(buf2), "~A");
     }
-    mutt_str_replace(&shared->ctx->pattern, buf2);
-    mutt_pattern_func(shared->ctx, MUTT_LIMIT, NULL);
+    mutt_str_replace(&shared->mailboxview->pattern, buf2);
+    mutt_pattern_func(shared->mailboxview, MUTT_LIMIT, NULL);
   }
 
   if (((op == OP_LIMIT_CURRENT_THREAD) &&
-       mutt_limit_current_thread(shared->ctx, shared->email)) ||
+       mutt_limit_current_thread(shared->mailboxview, shared->email)) ||
       (op == OP_TOGGLE_READ) ||
-      ((op == OP_MAIN_LIMIT) &&
-       (mutt_pattern_func(shared->ctx, MUTT_LIMIT, _("Limit to messages matching: ")) == 0)))
+      ((op == OP_MAIN_LIMIT) && (mutt_pattern_func(shared->mailboxview, MUTT_LIMIT,
+                                                   _("Limit to messages matching: ")) == 0)))
   {
     if (old_index >= 0)
     {
@@ -1022,8 +1022,8 @@ static int op_main_limit(struct IndexSharedData *shared, struct IndexPrivateData
     {
       const bool c_collapse_all = cs_subset_bool(shared->sub, "collapse_all");
       if (c_collapse_all)
-        collapse_all(shared->ctx, priv->menu, 0);
-      mutt_draw_tree(shared->ctx->threads);
+        collapse_all(shared->mailboxview, priv->menu, 0);
+      mutt_draw_tree(shared->mailboxview->threads);
     }
     menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
   }
@@ -1054,12 +1054,12 @@ static int op_main_link_threads(struct IndexSharedData *shared,
   else
   {
     struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-    el_add_tagged(&el, shared->ctx, NULL, true);
+    el_add_tagged(&el, shared->mailboxview, NULL, true);
 
     if (mutt_link_threads(shared->email, &el, shared->mailbox))
     {
-      mutt_sort_headers(shared->mailbox, shared->ctx->threads, true,
-                        &shared->ctx->vsize);
+      mutt_sort_headers(shared->mailbox, shared->mailboxview->threads, true,
+                        &shared->mailboxview->vsize);
       menu_set_index(priv->menu, shared->email->vnum);
 
       shared->mailbox->changed = true;
@@ -1283,14 +1283,14 @@ static int op_main_next_new(struct IndexSharedData *shared,
     menu_set_index(priv->menu, saved_current);
     if ((op == OP_MAIN_NEXT_NEW) || (op == OP_MAIN_PREV_NEW))
     {
-      if (ctx_has_limit(shared->ctx))
+      if (mview_has_limit(shared->mailboxview))
         mutt_error(_("No new messages in this limited view"));
       else
         mutt_error(_("No new messages"));
     }
     else
     {
-      if (ctx_has_limit(shared->ctx))
+      if (mview_has_limit(shared->mailboxview))
         mutt_error(_("No unread messages in this limited view"));
       else
         mutt_error(_("No unread messages"));
@@ -1542,7 +1542,7 @@ static int op_main_set_flag(struct IndexSharedData *shared,
 {
   /* check_acl(MUTT_ACL_WRITE); */
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+  el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
 
   if (mutt_change_flag(shared->mailbox, &el, (op == OP_MAIN_SET_FLAG)) == 0)
   {
@@ -1566,13 +1566,13 @@ static int op_main_set_flag(struct IndexSharedData *shared,
 static int op_main_show_limit(struct IndexSharedData *shared,
                               struct IndexPrivateData *priv, int op)
 {
-  if (!ctx_has_limit(shared->ctx))
+  if (!mview_has_limit(shared->mailboxview))
     mutt_message(_("No limit pattern is in effect"));
   else
   {
     char buf2[256];
     /* L10N: ask for a limit to apply */
-    snprintf(buf2, sizeof(buf2), _("Limit: %s"), shared->ctx->pattern);
+    snprintf(buf2, sizeof(buf2), _("Limit: %s"), shared->mailboxview->pattern);
     mutt_message("%s", buf2);
   }
 
@@ -1628,7 +1628,7 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
   }
   else if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
   {
-    update_index(priv->menu, shared->ctx, check, oc, shared);
+    update_index(priv->menu, shared->mailboxview, check, oc, shared);
   }
 
   /* do a sanity check even if mx_mbox_sync failed.  */
@@ -1642,7 +1642,7 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
   /* check for a fatal error, or all messages deleted */
   if (shared->mailbox && mutt_buffer_is_empty(&shared->mailbox->pathbuf))
   {
-    ctx_free(&shared->ctx);
+    mview_free(&shared->mailboxview);
   }
 
   priv->menu->max = shared->mailbox->vcount;
@@ -1657,7 +1657,7 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
 static int op_main_tag_pattern(struct IndexSharedData *shared,
                                struct IndexPrivateData *priv, int op)
 {
-  mutt_pattern_func(shared->ctx, MUTT_TAG, _("Tag messages matching: "));
+  mutt_pattern_func(shared->mailboxview, MUTT_TAG, _("Tag messages matching: "));
   menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
 
   return FR_SUCCESS;
@@ -1676,7 +1676,8 @@ static int op_main_undelete_pattern(struct IndexSharedData *shared,
   if (!check_acl(shared->mailbox, MUTT_ACL_DELETE, _("Can't undelete messages")))
     return FR_ERROR;
 
-  if (mutt_pattern_func(shared->ctx, MUTT_UNDELETE, _("Undelete messages matching: ")) == 0)
+  if (mutt_pattern_func(shared->mailboxview, MUTT_UNDELETE,
+                        _("Undelete messages matching: ")) == 0)
   {
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
@@ -1690,7 +1691,7 @@ static int op_main_undelete_pattern(struct IndexSharedData *shared,
 static int op_main_untag_pattern(struct IndexSharedData *shared,
                                  struct IndexPrivateData *priv, int op)
 {
-  if (mutt_pattern_func(shared->ctx, MUTT_UNTAG, _("Untag messages matching: ")) == 0)
+  if (mutt_pattern_func(shared->mailboxview, MUTT_UNTAG, _("Untag messages matching: ")) == 0)
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
 
   return FR_SUCCESS;
@@ -1775,7 +1776,7 @@ static int op_next_entry(struct IndexSharedData *shared, struct IndexPrivateData
 static int op_pipe(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+  el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
   mutt_pipe_message(shared->mailbox, &el);
   emaillist_clear(&el);
 
@@ -1816,7 +1817,7 @@ static int op_prev_entry(struct IndexSharedData *shared, struct IndexPrivateData
 static int op_print(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+  el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
   mutt_print_message(shared->mailbox, &el);
   emaillist_clear(&el);
 
@@ -1860,16 +1861,16 @@ static int op_quit(struct IndexSharedData *shared, struct IndexPrivateData *priv
     notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_SHUTDOWN, NULL);
 
     enum MxStatus check = MX_STATUS_OK;
-    if (!shared->ctx || ((check = mx_mbox_close(shared->mailbox)) == MX_STATUS_OK))
+    if (!shared->mailboxview || ((check = mx_mbox_close(shared->mailbox)) == MX_STATUS_OK))
     {
-      ctx_free(&shared->ctx);
+      mview_free(&shared->mailboxview);
       mailbox_free(&shared->mailbox);
       return FR_DONE;
     }
 
     if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
     {
-      update_index(priv->menu, shared->ctx, check, priv->oldcount, shared);
+      update_index(priv->menu, shared->mailboxview, check, priv->oldcount, shared);
     }
 
     menu_queue_redraw(priv->menu, MENU_REDRAW_FULL); /* new mail arrived? */
@@ -1899,7 +1900,7 @@ static int op_reply(struct IndexSharedData *shared, struct IndexPrivateData *pri
   if (!shared->email)
     return FR_NO_ACTION;
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+  el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
   const bool c_pgp_auto_decode = cs_subset_bool(shared->sub, "pgp_auto_decode");
   if (c_pgp_auto_decode && (priv->tag || !(shared->email->security & PGP_TRADITIONAL_CHECKED)))
   {
@@ -1958,7 +1959,7 @@ static int op_save(struct IndexSharedData *shared, struct IndexPrivateData *priv
     return FR_NOT_IMPL;
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+  el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
 
   const enum MessageSaveOpt save_opt = ((op == OP_SAVE) || (op == OP_DECODE_SAVE) ||
                                         (op == OP_DECRYPT_SAVE)) ?
@@ -2023,7 +2024,7 @@ static int op_sort(struct IndexSharedData *shared, struct IndexPrivateData *priv
 
   if (shared->mailbox && (shared->mailbox->msg_count != 0))
   {
-    resort_index(shared->ctx, priv->menu);
+    resort_index(shared->mailboxview, priv->menu);
     OptSearchInvalid = true;
   }
 
@@ -2150,7 +2151,7 @@ static int op_undelete(struct IndexSharedData *shared, struct IndexPrivateData *
     return FR_ERROR;
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+  el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
 
   mutt_emails_set_flag(shared->mailbox, &el, MUTT_DELETE, false);
   mutt_emails_set_flag(shared->mailbox, &el, MUTT_PURGE, false);
@@ -2268,13 +2269,13 @@ static int op_main_imap_logout_all(struct IndexSharedData *shared,
     const enum MxStatus check = mx_mbox_close(shared->mailbox);
     if (check == MX_STATUS_OK)
     {
-      ctx_free(&shared->ctx);
+      mview_free(&shared->mailboxview);
     }
     else
     {
       if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
       {
-        update_index(priv->menu, shared->ctx, check, priv->oldcount, shared);
+        update_index(priv->menu, shared->mailboxview, check, priv->oldcount, shared);
       }
       OptSearchInvalid = true;
       menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
@@ -2367,8 +2368,8 @@ static int op_get_children(struct IndexSharedData *shared,
 
     if (rc < 0)
       shared->mailbox->verbose = false;
-    mutt_sort_headers(shared->mailbox, shared->ctx->threads,
-                      (op == OP_RECONSTRUCT_THREAD), &shared->ctx->vsize);
+    mutt_sort_headers(shared->mailbox, shared->mailboxview->threads,
+                      (op == OP_RECONSTRUCT_THREAD), &shared->mailboxview->vsize);
     shared->mailbox->verbose = verbose;
 
     /* if the root message was retrieved, move to it */
@@ -2464,8 +2465,8 @@ static int op_get_message(struct IndexSharedData *shared,
     if (rc2 == 0)
     {
       e = shared->mailbox->emails[shared->mailbox->msg_count - 1];
-      mutt_sort_headers(shared->mailbox, shared->ctx->threads, false,
-                        &shared->ctx->vsize);
+      mutt_sort_headers(shared->mailbox, shared->mailboxview->threads, false,
+                        &shared->mailboxview->vsize);
       menu_set_index(priv->menu, e->vnum);
       menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
       rc = FR_SUCCESS;
@@ -2588,7 +2589,7 @@ static int op_post(struct IndexSharedData *shared, struct IndexPrivateData *priv
     else
     {
       struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-      el_add_tagged(&el, shared->ctx, shared->email, priv->tag);
+      el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
       mutt_send_message(((op == OP_FOLLOWUP) ? SEND_REPLY : SEND_FORWARD) | SEND_NEWS,
                         NULL, NULL, shared->mailbox, &el, shared->sub);
       emaillist_clear(&el);
@@ -2654,7 +2655,7 @@ static int op_main_entire_thread(struct IndexSharedData *shared,
   {
     /* nm_read_entire_thread() triggers mutt_sort_headers() if necessary */
     index = e_oldcur->vnum;
-    if (e_oldcur->collapsed || shared->ctx->collapsed)
+    if (e_oldcur->collapsed || shared->mailboxview->collapsed)
     {
       index = mutt_uncollapse_thread(e_oldcur);
       mutt_set_vnum(shared->mailbox);
@@ -2775,38 +2776,38 @@ static int op_main_fetch_mail(struct IndexSharedData *shared,
 
 /**
  * prereq - Check the pre-requisites for a function
- * @param ctx    Mailbox
+ * @param mv     Mailbox View
  * @param menu   Current Menu
  * @param checks Checks to perform, see #CheckFlags
  * @retval true The checks pass successfully
  */
-bool prereq(struct Context *ctx, struct Menu *menu, CheckFlags checks)
+bool prereq(struct MailboxView *mv, struct Menu *menu, CheckFlags checks)
 {
   bool result = true;
 
   if (checks & (CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
     checks |= CHECK_IN_MAILBOX;
 
-  if ((checks & CHECK_IN_MAILBOX) && (!ctx || !ctx->mailbox))
+  if ((checks & CHECK_IN_MAILBOX) && (!mv || !mv->mailbox))
   {
     mutt_error(_("No mailbox is open"));
     result = false;
   }
 
-  if (result && (checks & CHECK_MSGCOUNT) && (ctx->mailbox->msg_count == 0))
+  if (result && (checks & CHECK_MSGCOUNT) && (mv->mailbox->msg_count == 0))
   {
     mutt_error(_("There are no messages"));
     result = false;
   }
 
   int index = menu_get_index(menu);
-  if (result && (checks & CHECK_VISIBLE) && (index >= ctx->mailbox->vcount))
+  if (result && (checks & CHECK_VISIBLE) && (index >= mv->mailbox->vcount))
   {
     mutt_error(_("No visible messages"));
     result = false;
   }
 
-  if (result && (checks & CHECK_READONLY) && ctx->mailbox->readonly)
+  if (result && (checks & CHECK_READONLY) && mv->mailbox->readonly)
   {
     mutt_error(_("Mailbox is read-only"));
     result = false;
@@ -2851,7 +2852,7 @@ int index_function_dispatcher(struct MuttWindow *win, int op)
     const struct IndexFunction *fn = &IndexFunctions[i];
     if (fn->op == op)
     {
-      if (!prereq(shared->ctx, priv->menu, fn->flags))
+      if (!prereq(shared->mailboxview, priv->menu, fn->flags))
       {
         rc = FR_ERROR;
         break;
