@@ -1595,7 +1595,7 @@ acutest_is_tracer_present_(void)
     /* Must be large enough so the line 'TracerPid: ${PID}' can fit in. */
     static const int OVERLAP = 32;
 
-    char buf[256+OVERLAP+1];
+    char buf[512];
     int tracer_present = 0;
     int fd;
     size_t n_read = 0;
@@ -1625,8 +1625,10 @@ acutest_is_tracer_present_(void)
             break;
         }
 
-        if(n_read == sizeof(buf)-1) {
-            memmove(buf, buf + sizeof(buf)-1 - OVERLAP, OVERLAP);
+        if(n_read == sizeof(buf) - 1) {
+            /* Move the tail with the potentially incomplete line we're looking
+             * for to the beginning of the buffer. */
+            memmove(buf, buf + sizeof(buf) - 1 - OVERLAP, OVERLAP);
             n_read = OVERLAP;
         } else {
             break;
