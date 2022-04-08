@@ -1,3 +1,77 @@
+2022-04-08  Richard Russon  <rich@flatcap.org>
+* Features
+  - Compose multipart emails
+* Bug Fixes
+  - Fix screen mode after attempting decryption
+  - imap: increase max size of oauth2 token
+  - Fix autocrypt
+  - Unify Alias/Query workflow
+  - Fix colours
+  - Say which file exists when saving attachments
+  - Force SMTP authentication if `smtp_user` is set
+  - Fix selecting the right email after limiting
+  - Make sure we have enough memory for a new email
+  - Don't overwrite with zeroes after unlinking the file
+  - Fix crash when forwarding attachments
+  - Fix help reformatting on window resize
+  - Fix poll to use PollFdsCount and not PollFdsLen
+  - regex: range check arrays strictly
+  - Fix Coverity defects
+  - Fix out of bounds write with long log lines
+  - Apply `fast_reply` to 'to', 'cc', or 'bcc'
+  - Prevent warning on empty emails
+* Changed Config
+  - New default: `set rfc2047_parameters = yes`
+* Translations
+  - 100% German
+  - 100% Lithuanian
+  - 100% Serbian
+  - 100% Czech
+  - 100% Turkish
+  - 72% Hungarian
+* Docs
+  - Improve header cache explanation
+  - Improve description of some notmuch variables
+  - Explain how timezones and `!`s work inside `%{}`, `%[]` and `%()`
+  - Document config synonyms and deprecations
+* Build
+  - Create lots of GitHub Actions
+  - Drop TravisCI
+  - Add automated Fuzzing tests
+  - Add automated ASAN tests
+  - Create Dockers for building Centos/Fedora
+  - Build fixes for Solaris 10
+  - New libraries: browser, enter, envelope
+  - New configure options: `--fuzzing` `--debug-color` `--debug-queue`
+* Code
+  - Split Index/Pager GUIs/functions
+  - Add lots of function dispatchers
+  - Eliminate `menu_loop()`
+  - Refactor function opcodes
+  - Refactor cursor setting
+  - Unify Alias/Query functions
+  - Refactor Compose/Envelope functions
+  - Modernise the Colour handling
+  - Refactor the Attachment View
+  - Eliminate the global `Context`
+  - Upgrade `mutt_get_field()`
+  - Refactor the `color quoted` code
+  - Fix lots of memory leaks
+  - Refactor Index resolve code
+  - Refactor PatternList parsing
+  - Refactor Mailbox freeing
+  - Improve key mapping
+  - Factor out charset hooks
+  - Expose mutt_file_seek API
+  - Improve API of `strto*` wrappers
+* Upstream
+  - imap QRESYNC fixes
+  - Allow an empty To: address prompt
+  - Fix argc==0 handling
+  - Don't queue IMAP close commands
+  - Fix IMAP UTF-7 for code points >= U+10000
+  - Don't include inactive messages in msgset generation
+
 2021-10-29  Richard Russon  <rich@flatcap.org>
 * Features
   - Notmuch: support separate database and mail roots without .notmuch

@@ -2,7 +2,7 @@
 
 [![Stars](https://img.shields.io/github/stars/neomutt/neomutt.svg?style=social&label=Stars)](https://github.com/neomutt/neomutt "Give us a Star")
 [![Twitter](https://img.shields.io/twitter/follow/NeoMutt_Org.svg?style=social&label=Follow)](https://twitter.com/NeoMutt_Org "Follow us on Twitter")
-[![Contributors](https://img.shields.io/badge/Contributors-233-orange.svg)](https://github.com/neomutt/neomutt/blob/master/AUTHORS.md "All of NeoMutt's Contributors")
+[![Contributors](https://img.shields.io/badge/Contributors-234-orange.svg)](https://github.com/neomutt/neomutt/blob/master/AUTHORS.md "All of NeoMutt's Contributors")
 [![Release](https://img.shields.io/github/release/neomutt/neomutt.svg)](https://github.com/neomutt/neomutt/releases/latest "Latest Release Notes")
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://github.com/neomutt/neomutt/blob/master/LICENSE.md "Copyright Statement")
 [![Code build](https://github.com/neomutt/neomutt/actions/workflows/build-and-test.yml/badge.svg?branch=master&event=push)](https://github.com/neomutt/neomutt/actions/workflows/build-and-test.yml "Latest Automatic Code Build")
@@ -103,5 +103,5 @@ The principal authors of NeoMutt are:
 - Copyright (C) 2000-2019 David Champion `<dgc.mutt@c13.us>`
 - Copyright (C) 2006-2009 Rocco Rutte `<pdmef@gmx.net>`
 - Copyright (C) 2014-2020 Kevin J. McCarthy `<kevin@8t8.us>`
-- Copyright (C) 2015-2021 Richard Russon `<rich@flatcap.org>`
+- Copyright (C) 2015-2022 Richard Russon `<rich@flatcap.org>`
 
