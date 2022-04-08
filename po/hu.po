@@ -5288,7 +5288,7 @@ msgstr "nem sikerült a határértéket (limit) feldolgozni: %s"
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] "Nem tudom a %d üzenetet szinkronizálni a külső postafiók módosulása miatt"
-msgstr[0] "Nem tudom a %d üzeneteket szinkronizálni a külső postafiók módosulása miatt"
+msgstr[1] "Nem tudom a %d üzeneteket szinkronizálni a külső postafiók módosulása miatt"
 
 #: notmuch/notmuch.c:2385
 msgid "Can't write to virtual folder"
