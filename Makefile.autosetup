@@ -254,10 +254,10 @@ $(PWD)/compress:
 # libconfig
 LIBCONFIG=	libconfig.a
 LIBCONFIGOBJS=	config/address.o config/bool.o config/charset.o config/dump.o \
-		config/enum.o config/helpers.o \
-		config/long.o config/mbtable.o config/number.o config/path.o config/quad.o \
-		config/regex.o config/set.o config/slist.o config/sort.o \
-		config/string.o config/subset.o
+		config/enum.o config/helpers.o config/long.o config/mbtable.o \
+		config/number.o config/path.o config/quad.o config/regex.o \
+		config/set.o config/slist.o config/sort.o config/string.o \
+		config/subset.o
 CLEANFILES+=	$(LIBCONFIG) $(LIBCONFIGOBJS)
 ALLOBJS+=	$(LIBCONFIGOBJS)
 
@@ -551,13 +551,14 @@ LIBNCRYPT=	libncrypt.a
 LIBNCRYPTOBJS=	ncrypt/config.o ncrypt/crypt.o ncrypt/cryptglue.o \
 		ncrypt/crypt_mod.o
 @if HAVE_GPGME
-LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/dlg_gpgme.o ncrypt/crypt_mod_pgp_gpgme.o \
-		ncrypt/crypt_mod_smime_gpgme.o
+LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/dlg_gpgme.o \
+		ncrypt/crypt_mod_pgp_gpgme.o ncrypt/crypt_mod_smime_gpgme.o
 @endif
 @if HAVE_PGP
-LIBNCRYPTOBJS+=	ncrypt/crypt_mod_pgp_classic.o ncrypt/dlg_pgp.o ncrypt/gnupgparse.o \
-		ncrypt/pgp.o ncrypt/pgpinvoke.o ncrypt/pgpkey.o ncrypt/pgplib.o \
-		ncrypt/pgpmicalg.o ncrypt/pgppacket.o
+LIBNCRYPTOBJS+=	ncrypt/crypt_mod_pgp_classic.o ncrypt/dlg_pgp.o \
+		ncrypt/gnupgparse.o ncrypt/pgp.o ncrypt/pgpinvoke.o \
+		ncrypt/pgpkey.o ncrypt/pgplib.o ncrypt/pgpmicalg.o \
+		ncrypt/pgppacket.o
 @endif
 @if HAVE_SMIME
 LIBNCRYPTOBJS+=	ncrypt/crypt_mod_smime_classic.o ncrypt/dlg_smime.o ncrypt/smime.o
@@ -605,9 +606,9 @@ $(PWD)/notmuch:
 ###############################################################################
 # libpager
 LIBPAGER=	libpager.a
-LIBPAGEROBJS=	pager/config.o pager/display.o pager/dlg_pager.o pager/do_pager.o \
-		pager/functions.o pager/message.o pager/pager.o pager/pbar.o pager/ppanel.o \
-		pager/private_data.o
+LIBPAGEROBJS=	pager/config.o pager/display.o pager/dlg_pager.o \
+		pager/do_pager.o pager/functions.o pager/message.o \
+		pager/pager.o pager/pbar.o pager/ppanel.o pager/private_data.o
 CLEANFILES+=	$(LIBPAGER) $(LIBPAGEROBJS)
 ALLOBJS+=	$(LIBPAGEROBJS)
 
@@ -674,7 +675,8 @@ $(PWD)/question:
 ###############################################################################
 # libsend
 LIBSEND=	libsend.a
-LIBSENDOBJS=	send/body.o send/config.o send/header.o send/multipart.o send/send.o send/sendlib.o send/sendmail.o send/smtp.o
+LIBSENDOBJS=	send/body.o send/config.o send/header.o send/multipart.o \
+		send/send.o send/sendlib.o send/sendmail.o send/smtp.o
 CLEANFILES+=	$(LIBSEND) $(LIBSENDOBJS)
 ALLOBJS+=	$(LIBSENDOBJS)
 
