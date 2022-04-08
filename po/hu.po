@@ -3939,29 +3939,27 @@ msgid "Append messages to %s?"
 msgstr "Levelek hozzáfűzése %s postafiókhoz?"
 
 #: muttlib.c:1395
-#, fuzzy
 msgid "Can't save message to news server"
-msgstr "A POP szerveren nem lehet szerkeszteni a levelet"
+msgstr "Nem tudom menteni az üzenetet a hírszerverre"
 
 #: mx.c:404
-#, fuzzy, c-format
+#, c-format
 msgid "Reading from %s interrupted..."
-msgstr "Keresés megszakítva."
+msgstr "Olvasás %s -ból(ből) megszakítva..."
 
 #. L10N: Displayed if a mailbox sync fails
 #: mx.c:490
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to write %s"
-msgstr "%s nem csatolható"
+msgstr "%s nem írható"
 
 #. L10N: Although we know the precise number of messages, we do not show it to the user.
 #. So feel free to use a "generic plural" as plural translation if your language has one.
 #: mx.c:547
-#, fuzzy
 msgid "message not deleted"
 msgid_plural "messages not deleted"
-msgstr[0] "%d levél megjelölése töröltnek..."
-msgstr[1] "%d levél megjelölése töröltnek..."
+msgstr[0] "üzenetet nem töröltük"
+msgstr[1] "üzeneteket nem töröltük"
 
 #: mx.c:569
 msgid "Can't open trash folder"
@@ -4030,9 +4028,9 @@ msgid "Mailbox checkpointed"
 msgstr "A postafiók ellenőrizve"
 
 #: mx.c:1355
-#, fuzzy, c-format
+#, c-format
 msgid "Can't open %s: it is a pipe"
-msgstr "A(z) %s levélfájl üres"
+msgstr "Nem tudom megnyitni %s-t: ez egy pipe"
 
 #: mx.c:1858
 msgid "Can't toggle write on a readonly mailbox"
@@ -4520,9 +4518,9 @@ msgid "Please enter the key ID: "
 msgstr "Kérlek írd be a kulcs ID-t: "
 
 #: ncrypt/crypt_gpgme.c:4094
-#, fuzzy, c-format
+#, c-format
 msgid "Error exporting key: %s"
-msgstr "hiba a mintában: %s"
+msgstr "Hiba a kulcs exportálásakor: %s"
 
 #. L10N: MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
@@ -5041,7 +5039,7 @@ msgstr "Nincs kimenet az OpenSSLtől..."
 
 #: ncrypt/smime.c:1554
 msgid "Can't sign: No key specified. Use Sign As."
-msgstr ""
+msgstr "Nem tudom aláírni: Nincs kulcs megadva. Használja az 'aláír mint'-et!"
 
 #: ncrypt/smime.c:1605
 msgid "Can't open OpenSSL subprocess"
@@ -5164,166 +5162,154 @@ msgstr "A szerver lezárta a kapcsolatot"
 
 #: nntp/nntp.c:234
 msgid "Server doesn't support reader mode"
-msgstr ""
+msgstr "Szerver nem támogatja az olvasó üzemmódot"
 
 #: nntp/nntp.c:473 pop/auth.c:527 send/smtp.c:808
 msgid "No authenticators available"
 msgstr "Egyetlen azonosító sem érhető el"
 
 #: nntp/nntp.c:723
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s lost. Reconnect?"
-msgstr "%s kapcsolat lezárva"
+msgstr "%s kapcsolat megszakadt. Újrakapcsólódás?"
 
 #: nntp/nntp.c:1184
-#, fuzzy
 msgid "Fetching list of articles..."
-msgstr "Üzenetek listájának letöltése..."
+msgstr "Cikkek listájának letöltése folyamatban..."
 
 #: nntp/nntp.c:1446 nntp/nntp.c:2046 pop/pop.c:560 pop/pop.c:843
 msgid "Checking for new messages..."
 msgstr "Új levelek letöltése..."
 
 #: nntp/nntp.c:1761 nntp/nntp.c:1857
-#, fuzzy
 msgid "Could not switch to reader mode"
-msgstr "nem lehet írni a(z) %s ideiglenes postafiókba"
+msgstr "Nem lehet olvasási módba kapcsolni"
 
 #: nntp/nntp.c:1774
-#, fuzzy, c-format
+#, c-format
 msgid "Connected to %s. %s"
-msgstr "Kapcsolódás %s-hez..."
+msgstr "Kapcsolódva %s-hez. %s"
 
 #: nntp/nntp.c:1775
 msgid "Posting is NOT ok"
-msgstr ""
+msgstr "Közzététel nincs rendben"
 
 #: nntp/nntp.c:1775
-#, fuzzy
 msgid "Posting is ok"
-msgstr "Kapcsolódás %s-hez.."
+msgstr "Közzététel rendben"
 
 #: nntp/nntp.c:1913 nntp/nntp.c:1948
-#, fuzzy, c-format
+#, c-format
 msgid "Can't post article: %s"
-msgstr "%s nem olvasható: %s"
+msgstr "Nem tudom közzétenni a következő cikket: %s"
 
 #: nntp/nntp.c:1969
-#, fuzzy, c-format
+#, c-format
 msgid "Loading list of groups from server %s..."
-msgstr "Levelek törlése a szerverről..."
+msgstr "A csoportlista letöltése a(z) %s szerverről folyamatban..."
 
 #: nntp/nntp.c:2013 nntp/nntp.c:2107
-#, fuzzy
 msgid "Loading descriptions..."
-msgstr "Bejelentkezés..."
+msgstr "Leírások betöltése folyamatban..."
 
 #: nntp/nntp.c:2035
-#, fuzzy
 msgid "Checking for new newsgroups..."
-msgstr "Új levelek letöltése..."
+msgstr "Új hírcsoportok keresése folyamatban..."
 
 #: nntp/nntp.c:2244
 msgid "Unable to find child articles because server does not support XPAT command"
-msgstr ""
+msgstr "Nem tudok gyermek cikkeket találni, mert a szerver nem támogatja XPAT parancsot"
 
 #: nntp/nntp.c:2322
-#, fuzzy, c-format
+#, c-format
 msgid "%s is an invalid newsgroup specification"
-msgstr "%s érvénytelen POP útvonal"
+msgstr "%s érvénytelen hírcsoport meghatározás"
 
 #: nntp/nntp.c:2361
 #, c-format
 msgid "Newsgroup %s not found on the server"
-msgstr ""
+msgstr "A %s hírcsoport nem található a szerveren"
 
 #: nntp/nntp.c:2385
 #, c-format
 msgid "Newsgroup %s has been removed from the server"
-msgstr ""
+msgstr "A %s hírcsoportot eltávolították a szerverről"
 
 #: notmuch/config.c:61
 #, c-format
 msgid "nm_default_url must be: notmuch://<absolute path> . Current: %s"
-msgstr ""
+msgstr "nm_default_url ez kell legyen: notmuch://<teljes elérési út> . Jelenlegi: %s"
 
 #. L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
 #. They should not be translated.
 #: notmuch/config.c:89 notmuch/notmuch.c:317
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
-msgstr ""
+msgstr "Érvénytelen nm_query_window_timebase érték (érvényes értékek: hour, day, week, month, year)"
 
 #: notmuch/db.c:131
-#, fuzzy, c-format
+#, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
-msgstr "Várakozás az fcntl lock-ra... %d"
+msgstr "Várakozás a notmuch adatbázisra... (%d mp)"
 
 #: notmuch/db.c:154
 #, c-format
 msgid "Can't open notmuch database: %s: %s"
-msgstr ""
+msgstr "Nem tudom megnyitni a notmuch adatbázist: %s: %s"
 
 #: notmuch/db.c:155
-#, fuzzy
 msgid "unknown reason"
-msgstr "ismeretlen hiba"
+msgstr "ismeretlen ok"
 
 #: notmuch/mdata.c:85 notmuch/notmuch.c:1794
 #, c-format
 msgid "failed to parse notmuch url: %s"
-msgstr ""
+msgstr "nem sikerült a notmuch url-t feldolgozni: %s"
 
 #: notmuch/notmuch.c:366
 #, c-format
 msgid "failed to parse notmuch limit: %s"
-msgstr ""
+msgstr "nem sikerült a notmuch felső határát (limit) feldolgozni: %s"
 
 #: notmuch/notmuch.c:686
-#, fuzzy
 msgid "Reading messages..."
-msgstr "Levél elküldése..."
+msgstr "Üzenetek feldolgozása folyamatban..."
 
 #: notmuch/notmuch.c:1552
-#, fuzzy
 msgid "No more messages in the thread"
-msgstr "A nyitóüzenet nem látható a szűkített nézetben"
+msgstr "Nincs több üzenet a témában"
 
 #: notmuch/notmuch.c:1807
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse limit: %s"
-msgstr "%s nem csatolható"
+msgstr "nem sikerült a határértéket (limit) feldolgozni: %s"
 
 #: notmuch/notmuch.c:2322
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Nem tudom a %d üzenetet szinkronizálni a külső postafiók módosulása miatt"
+msgstr[0] "Nem tudom a %d üzeneteket szinkronizálni a külső postafiók módosulása miatt"
 
 #: notmuch/notmuch.c:2385
-#, fuzzy
 msgid "Can't write to virtual folder"
-msgstr "Nem lehet hozzáfűzni a(z) %s postafiókhoz"
+msgstr "Nem tudok írni a virtuális könyvtárba"
 
 #: notmuch/query.c:116
 #, c-format
 msgid "failed to parse notmuch query type: %s"
-msgstr ""
+msgstr "notmuch lekérdezés típus feldolgozása sikertelen: %s"
 
 #: opcodes.h:37
-#, fuzzy
 msgid "attach files to this message"
-msgstr "fájl(ok) csatolása ezen üzenethez"
+msgstr "fájlok csatolása ehhez az üzenethez"
 
 #: opcodes.h:38
-#, fuzzy
 msgid "attach messages to this message"
-msgstr "üzenet(ek) csatolása ezen üzenethez"
+msgstr "üzenetek csatolása ehhez az üzenethez"
 
 #: opcodes.h:39
-#, fuzzy
 msgid "attach news articles to this message"
-msgstr "fájl(ok) csatolása ezen üzenethez"
+msgstr "hírcsoport cikk csatolása ezen üzenethez"
 
 #: opcodes.h:40
 msgid "toggle display of subparts"
@@ -5334,9 +5320,8 @@ msgid "delete the current entry"
 msgstr "aktuális bejegyzés törlése"
 
 #: opcodes.h:43
-#, fuzzy
 msgid "edit the 'Content-ID' of the attachment"
-msgstr "csatolandó fájl szerkesztése"
+msgstr "melléklet 'Content-ID' szerkesztése"
 
 #: opcodes.h:44
 msgid "edit attachment description"
@@ -5347,9 +5332,8 @@ msgid "edit attachment transfer-encoding"
 msgstr "melléklet átviteli-kódolás szerkesztése"
 
 #: opcodes.h:46
-#, fuzzy
 msgid "edit the 'Content-Language' of the attachment"
-msgstr "csatolandó fájl szerkesztése"
+msgstr "melléklet 'Content-Language' szerkesztése"
 
 #: opcodes.h:47
 msgid "edit attachment using mailcap entry"
@@ -5369,26 +5353,23 @@ msgstr "ideiglenes másolat készítése a mellékletről"
 
 #: opcodes.h:51
 msgid "group tagged attachments as 'multipart/alternative'"
-msgstr ""
+msgstr "Mellékletek csoportosan megjelölve 'multipart/alternative'-nak"
 
 #: opcodes.h:52
 msgid "group tagged attachments as 'multipart/multilingual'"
-msgstr ""
+msgstr "Mellékletek csoportosan megjelölve 'multipart/multilingual'-nak"
 
 #: opcodes.h:53
-#, fuzzy
 msgid "group tagged attachments as 'multipart/related'"
-msgstr "A melléklet elmentve"
+msgstr "Mellékletek csoportosan megjelölve 'multipart/related'-nak"
 
 #: opcodes.h:54
-#, fuzzy
 msgid "move an attachment down in the attachment list"
-msgstr "melléklet megtekintése szövegként"
+msgstr "melléklet lejjebb mozgatása a mellékletlistában"
 
 #: opcodes.h:55
-#, fuzzy
 msgid "move an attachment up in the attachment list"
-msgstr "melléklet megtekintése szövegként"
+msgstr "melléklet feljebb mozgatása a mellékletlistában"
 
 #: opcodes.h:56
 msgid "compose new attachment using mailcap entry"
@@ -5403,14 +5384,12 @@ msgid "print the current entry"
 msgstr "bejegyzés nyomtatása"
 
 #: opcodes.h:59
-#, fuzzy
 msgid "send attachment with a different name"
-msgstr "melléklet átviteli-kódolás szerkesztése"
+msgstr "melléklet küldése más néven"
 
 #: opcodes.h:60 opcodes.h:255
-#, fuzzy
 msgid "save message/attachment to a mailbox/file"
-msgstr "levél/melléklet mentése fájlba"
+msgstr "üzenet/melléklet mentése postafiókba/fájlba"
 
 #: opcodes.h:61
 msgid "toggle disposition between inline/attachment"
@@ -5430,7 +5409,7 @@ msgstr "aktuális bejegyzés visszaállítása"
 
 #: opcodes.h:65
 msgid "ungroup 'multipart' attachment"
-msgstr ""
+msgstr "csoportosítás feloldása a 'multipart' csatolmánynál"
 
 #: opcodes.h:66
 msgid "update an attachment's encoding info"
@@ -5445,9 +5424,8 @@ msgid "force viewing of attachment using mailcap"
 msgstr "melléklet megtekintése mailcap segítségével"
 
 #: opcodes.h:69
-#, fuzzy
 msgid "view attachment in pager using copiousoutput mailcap"
-msgstr "melléklet megtekintése mailcap segítségével"
+msgstr "melléklet megtekintése copiousoutput mailcap segítségével"
 
 #: opcodes.h:70
 msgid "view attachment as text"
@@ -5455,33 +5433,31 @@ msgstr "melléklet megtekintése szövegként"
 
 #: opcodes.h:74
 msgid "manage autocrypt accounts"
-msgstr ""
+msgstr "autocrypt fiókok kezelése"
 
 #: opcodes.h:75
 msgid "create a new autocrypt account"
-msgstr ""
+msgstr "új autocrypt fiók létrehozása"
 
 #: opcodes.h:76
-#, fuzzy
 msgid "delete the current account"
-msgstr "aktuális bejegyzés törlése"
+msgstr "aktuális fiók törlése"
 
 #: opcodes.h:77
 msgid "toggle the current account active/inactive"
-msgstr ""
+msgstr "jelenlegi fiók váltása aktív/inaktív-ra"
 
 #: opcodes.h:78
 msgid "toggle the current account prefer-encrypt flag"
-msgstr ""
+msgstr "jelenlegi fiók titkosítás-preferálás váltása"
 
 #: opcodes.h:79
 msgid "show autocrypt compose menu options"
-msgstr ""
+msgstr "autocrypt szerkesztés menü opciók mutatása"
 
 #: opcodes.h:85
-#, fuzzy
 msgid "open the aliases dialog"
-msgstr "Ez az utolsó levél"
+msgstr "álnevek dialógusablak megnyitása"
 
 #: opcodes.h:86
 msgid "move to the bottom of the page"
@@ -5493,14 +5469,13 @@ msgstr "levél újraküldése egy másik felhasználónak"
 
 #: opcodes.h:88
 msgid "swap the current folder position with $folder if it exists"
-msgstr ""
+msgstr "a jelenlegi könyvtár pozíció cseréje a $folder -el ha létezik"
 
 #: opcodes.h:89
 msgid "select a new file in this directory"
 msgstr "válassz egy új fájlt ebben a könyvtárban"
 
 #: opcodes.h:90
-#, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "aktuális postafiók felírása (csak IMAP)"
 
@@ -5513,9 +5488,8 @@ msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "váltás az összes/felírt postafiók nézetek között (csak IMAP)"
 
 #: opcodes.h:93
-#, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-msgstr "aktuális postafiók leírása (csak IMAP)"
+msgstr "leiratkozás a jelenlegi postafiókról (csak IMAP/NNTP)"
 
 #: opcodes.h:94
 msgid "view file"
@@ -5523,7 +5497,7 @@ msgstr "fájl megtekintése"
 
 #: opcodes.h:95
 msgid "mark all articles in newsgroup as read"
-msgstr ""
+msgstr "a hírcsoport minden cikkje megjelölése olvasottként"
 
 #: opcodes.h:96
 msgid "change directories"
@@ -5534,9 +5508,8 @@ msgid "check mailboxes for new mail"
 msgstr "új levél keresése a postafiókokban"
 
 #: opcodes.h:98
-#, fuzzy
 msgid "calculate message statistics for all mailboxes"
-msgstr "levél/melléklet mentése fájlba"
+msgstr "üzenet statisztika számolása az összes postafiókhoz"
 
 #: opcodes.h:99
 msgid "edit the file to be attached"
@@ -5563,9 +5536,8 @@ msgid "send the message"
 msgstr "üzenet elküldése"
 
 #: opcodes.h:105
-#, fuzzy
 msgid "compose new message to the current message sender"
-msgstr "új levél szerkesztése"
+msgstr "új üzenet készítése az aktuális küldő számára"
 
 #: opcodes.h:106
 msgid "write the message to a folder"
@@ -5616,9 +5588,8 @@ msgid "delete all messages in thread"
 msgstr "téma összes üzenetének törlése"
 
 #: opcodes.h:119
-#, fuzzy
 msgid "descend into a directory"
-msgstr "A(z) %s nem könyvtár"
+msgstr "könyvtár megnyitása"
 
 #: opcodes.h:120
 msgid "display full address of sender"
@@ -5685,9 +5656,8 @@ msgid "scroll down through the history list"
 msgstr "lapozás lefelé az előzményekben"
 
 #: opcodes.h:136
-#, fuzzy
 msgid "search through the history list"
-msgstr "lapozás felfelé az előzményekben"
+msgstr "keresés a történet listában"
 
 #: opcodes.h:137
 msgid "scroll up through the history list"
@@ -5727,19 +5697,19 @@ msgstr "szó nagybetűssé alakítása"
 
 #: opcodes.h:146
 msgid "add, change, or delete a message's label"
-msgstr ""
+msgstr "hozzáad, változtat, vagy törli az üzenet cimkéjét"
 
 #: opcodes.h:147
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
-msgstr ""
+msgstr "üzenet szerkesztése a fejléccel együtt, ha a postafiók nem csak olvasható, egyébként csak megtekintés"
 
 #: opcodes.h:148
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
-msgstr ""
+msgstr "fejlécekkel együttes üzenet szerkesztés (edit és edit-raw-message szinonímák)"
 
 #: opcodes.h:149
 msgid "end of conditional execution (noop)"
-msgstr ""
+msgstr "vége a feltételes végrehajtásnak (noop)"
 
 #: opcodes.h:150
 msgid "enter a neomuttrc command"
@@ -5762,9 +5732,8 @@ msgid "toggle a message's 'important' flag"
 msgstr "üzenet 'fontos' jelzőjének állítása"
 
 #: opcodes.h:155
-#, fuzzy
 msgid "followup to newsgroup"
-msgstr "Válasz a %s%s címre?"
+msgstr "hírcsoport nyomonkövetése"
 
 #: opcodes.h:156
 msgid "forward a message with comments"
@@ -5772,36 +5741,31 @@ msgstr "üzenet továbbítása kommentekkel"
 
 #: opcodes.h:157
 msgid "forward to newsgroup"
-msgstr ""
+msgstr "hírcsoportnak továbbít"
 
 #: opcodes.h:158
 msgid "select the current entry"
 msgstr "aktuális bejegyzés kijelölése"
 
 #: opcodes.h:159
-#, fuzzy
 msgid "get all children of the current message"
-msgstr "Ez az első levél."
+msgstr "aktuális üzenet minden gyermekének mutatása"
 
 #: opcodes.h:160
-#, fuzzy
 msgid "get message with Message-Id"
-msgstr "üzenet szerkesztése fejlécekkel együtt"
+msgstr "Message-Id hez tartozó üzenet keresése"
 
 #: opcodes.h:161
-#, fuzzy
 msgid "get parent of the current message"
-msgstr "Ez az első levél."
+msgstr "aktuális üzenet szülőjének megkeresée"
 
 #: opcodes.h:162
-#, fuzzy
 msgid "go to parent directory"
-msgstr "A(z) %s nem könyvtár."
+msgstr "szülő könyvtárhoz ugrás"
 
 #: opcodes.h:163
-#, fuzzy
 msgid "reply to all recipients preserving To/Cc"
-msgstr "válasz az összes címzettnek"
+msgstr "válaszol minden címzettnek a To/Cc mezők megtartásával"
 
 #: opcodes.h:164
 msgid "reply to all recipients"
@@ -5829,27 +5793,24 @@ msgid "move to the last entry"
 msgstr "ugrás az utolsó bejegyzésre"
 
 #: opcodes.h:179
-#, fuzzy
 msgid "limit view to current thread"
-msgstr "téma megjelölése"
+msgstr "nézet korlátozása aktuális témára"
 
 #: opcodes.h:180
 msgid "reply to specified mailing list"
 msgstr "válasz a megadott levelezőlistára"
 
 #: opcodes.h:181
-#, fuzzy
 msgid "subscribe to a mailing list"
-msgstr "válasz a megadott levelezőlistára"
+msgstr "feliratkozás hírcsoportra"
 
 #: opcodes.h:182
-#, fuzzy
 msgid "unsubscribe from a mailing list"
-msgstr "%s leírása..."
+msgstr "leiratkozás hírcsoportról"
 
 #: opcodes.h:183
 msgid "load list of all newsgroups from NNTP server"
-msgstr ""
+msgstr "összes hírcsoport letöltése az NNTP szerverről"
 
 #: opcodes.h:184
 msgid "execute a macro"
@@ -5865,7 +5826,7 @@ msgstr "új levelet tartalmazó postafiókok"
 
 #: opcodes.h:187
 msgid "break the thread in two"
-msgstr ""
+msgstr "téma ketté válaszás"
 
 #: opcodes.h:188
 msgid "open a different folder"
@@ -5876,14 +5837,12 @@ msgid "open a different folder in read only mode"
 msgstr "más postafiók megnyitása csak olvasásra"
 
 #: opcodes.h:190
-#, fuzzy
 msgid "open a different newsgroup"
-msgstr "más postafiók megnyitása"
+msgstr "más hírcsoport megnyitása"
 
 #: opcodes.h:191
-#, fuzzy
 msgid "open a different newsgroup in read only mode"
-msgstr "más postafiók megnyitása csak olvasásra"
+msgstr "más hírcsoport megnyitása csak olvasásra"
 
 #: opcodes.h:192
 msgid "clear a status flag from a message"
@@ -5911,25 +5870,23 @@ msgstr "kényszerített levélletöltés az IMAP szerverről"
 
 #: opcodes.h:198
 msgid "logout from all IMAP servers"
-msgstr ""
+msgstr "kijelentkezés az IMAP szerverekről"
 
 #: opcodes.h:199
 msgid "show only messages matching a pattern"
 msgstr "csak a mintára illeszkedő levelek mutatása"
 
 #: opcodes.h:200
-#, fuzzy
 msgid "link tagged message to the current one"
-msgstr "Kijelölt levelek visszaküldése. Címzett: "
+msgstr "kijelölt üzenet aktuálishoz kapcsolása"
 
 #: opcodes.h:201
 msgid "modify (notmuch/imap) tags"
-msgstr ""
+msgstr "(notmuch/imap) címkék módosítása"
 
 #: opcodes.h:202
-#, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
-msgstr "Ez az első levél."
+msgstr "(notmuch/imap) címkék megváltoztatása, és üzenet elrejtése"
 
 #: opcodes.h:203
 msgid "jump to the next new message"
@@ -5956,9 +5913,8 @@ msgid "jump to the next unread message"
 msgstr "ugrás a következő olvasatlan levélre"
 
 #: opcodes.h:209
-#, fuzzy
 msgid "open next mailbox with new mail"
-msgstr "Nincs új levél egyik postafiókban sem."
+msgstr "következő új levelet tartalmazó postafiók megnyitása"
 
 #: opcodes.h:210
 msgid "jump to parent message in thread"
@@ -5990,7 +5946,7 @@ msgstr "ugrás az előző olvasatlan levélre"
 
 #: opcodes.h:217
 msgid "delete from NeoMutt, don't touch on disk"
-msgstr ""
+msgstr "törlés NeoMutt-ról, a lemezől törlés nélkül"
 
 #: opcodes.h:218
 msgid "mark the current subthread as read"
@@ -6001,9 +5957,8 @@ msgid "mark the current thread as read"
 msgstr "téma jelölése olvasottnak"
 
 #: opcodes.h:220
-#, fuzzy
 msgid "jump to root message in thread"
-msgstr "ugrás a levél előzményére ebben a témában"
+msgstr "ugrás ebben a témában az első üzenetre"
 
 #: opcodes.h:221
 msgid "set a status flag on a message"
@@ -6030,9 +5985,8 @@ msgid "untag messages matching a pattern"
 msgstr "kijelölés megszüntetése mintára illesztéssel"
 
 #: opcodes.h:227
-#, fuzzy
 msgid "create a hotkey macro for the current message"
-msgstr "Ez az első levél."
+msgstr "jelenlegi üzenethez billentyű makró létrehozása"
 
 #: opcodes.h:228
 msgid "move to the middle of the page"
@@ -6059,9 +6013,8 @@ msgid "toggle display of quoted text"
 msgstr "idézett szöveg mutatása/elrejtése"
 
 #: opcodes.h:234
-#, fuzzy
 msgid "jump to first line after headers"
-msgstr "ugrás a következő témára"
+msgstr "a fejléc utáni első sorra ugrás"
 
 #: opcodes.h:235
 msgid "skip beyond quoted text"
@@ -6072,9 +6025,8 @@ msgid "jump to the top of the message"
 msgstr "ugrás az üzenet tetejére"
 
 #: opcodes.h:238
-#, fuzzy
 msgid "post message to newsgroup"
-msgstr "Levél visszaküldése %s részére"
+msgstr "üzenet közzététele a hírcsoportban"
 
 #: opcodes.h:239
 msgid "move to the previous entry"
@@ -6090,11 +6042,11 @@ msgstr "ugrás az előző oldalra"
 
 #: opcodes.h:243
 msgid "delete the current entry, bypassing the trash folder"
-msgstr ""
+msgstr "aktuális elem törlése a szemét könyvtár mellőzésével"
 
 #: opcodes.h:244
 msgid "delete the current thread, bypassing the trash folder"
-msgstr ""
+msgstr "aktuális téma törlése, a szemét könyvtár mellőzésével"
 
 #: opcodes.h:245
 msgid "query external program for addresses"
@@ -6113,9 +6065,8 @@ msgid "recall a postponed message"
 msgstr "elhalasztott levél újrahívása"
 
 #: opcodes.h:249
-#, fuzzy
 msgid "reconstruct thread containing current message"
-msgstr "A témában olvasatlan levelek vannak."
+msgstr "aktuális üzenetet tartalmazó téma újraépítése"
 
 #: opcodes.h:250
 msgid "clear and redraw the screen"
@@ -6126,9 +6077,8 @@ msgid "{internal}"
 msgstr "(belső)"
 
 #: opcodes.h:252
-#, fuzzy
 msgid "rename the current mailbox (IMAP only)"
-msgstr "aktuális postafiók törlése (csak IMAP)"
+msgstr "aktuális postafiók átnevezése (csak IMAP esetén)"
 
 #: opcodes.h:253
 msgid "reply to a message"
@@ -6163,9 +6113,8 @@ msgid "invoke a command in a subshell"
 msgstr "parancs végrehajtása rész-shellben"
 
 #: opcodes.h:262
-#, fuzzy
 msgid "show log (and debug) messages"
-msgstr "üzenetek rendezése"
+msgstr "loggolási és hibajavítási üzenetek megjelenítése"
 
 #: opcodes.h:263
 msgid "sort messages"
@@ -6176,9 +6125,8 @@ msgid "sort messages in reverse order"
 msgstr "üzenetek rendezése fordított sorrendben"
 
 #: opcodes.h:265
-#, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
-msgstr "kijelölés megszüntetése mintára illesztéssel"
+msgstr "feliratkozni a mintához illeszkedő hírcsoportokra"
 
 #: opcodes.h:266
 msgid "tag the current entry"
@@ -6189,9 +6137,8 @@ msgid "apply next function to tagged messages"
 msgstr "csoportos művelet végrehajtás a kijelölt üzenetekre"
 
 #: opcodes.h:268
-#, fuzzy
 msgid "apply next function ONLY to tagged messages"
-msgstr "csoportos művelet végrehajtás a kijelölt üzenetekre"
+msgstr "kizárólag a következő funkció alkalmazása a megjelült üzenetekre"
 
 #: opcodes.h:269
 msgid "tag the current subthread"
@@ -6210,9 +6157,8 @@ msgid "toggle a message's 'new' flag"
 msgstr "levél 'új' jelzőjének állítása"
 
 #: opcodes.h:273
-#, fuzzy
 msgid "toggle view of read messages"
-msgstr "ugrás az előző új vagy olvasatlan levélre"
+msgstr "olvasott üzenetek nézetének váltása"
 
 #: opcodes.h:274
 msgid "toggle whether the mailbox will be rewritten"
@@ -6224,7 +6170,7 @@ msgstr "ugrás az oldal tetejére"
 
 #: opcodes.h:276
 msgid "mark all articles in newsgroup as unread"
-msgstr ""
+msgstr "a hírcsoport minden cikkét olvasatlannak jelölése"
 
 #: opcodes.h:278
 msgid "undelete all messages in subthread"
@@ -6235,9 +6181,8 @@ msgid "undelete all messages in thread"
 msgstr "a téma összes levelének visszaállítása"
 
 #: opcodes.h:280
-#, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
-msgstr "kijelölés megszüntetése mintára illesztéssel"
+msgstr "leiratkozás a mintára illeszkedő hírcsoportokról"
 
 #: opcodes.h:281
 msgid "show the NeoMutt version number and date"
@@ -6248,9 +6193,8 @@ msgid "show MIME attachments"
 msgstr "MIME mellékletek mutatása"
 
 #: opcodes.h:283
-#, fuzzy
 msgid "show the raw message"
-msgstr "nyers üzenet szerkesztése"
+msgstr "nyers üzenet mutatása"
 
 #: opcodes.h:284
 msgid "display the keycode for a key press"
@@ -6269,9 +6213,8 @@ msgid "extract supported public keys"
 msgstr "támogatott nyilvános kulcsok kibontása"
 
 #: opcodes.h:290
-#, fuzzy
 msgid "wipe passphrases from memory"
-msgstr "jelszó törlése a memóriából"
+msgstr "jelszavak törlése a memóriából"
 
 #: opcodes.h:293
 msgid "edit the BCC list"
@@ -6286,9 +6229,8 @@ msgid "enter a file to save a copy of this message in"
 msgstr "adj meg egy fájlnevet, ahova a levél másolatát elmentem"
 
 #: opcodes.h:296
-#, fuzzy
 msgid "edit the Followup-To field"
-msgstr "Válaszcím szerkesztése"
+msgstr "Followup-To mező szerkesztése"
 
 #: opcodes.h:297
 msgid "edit the from field"
@@ -6299,9 +6241,8 @@ msgid "edit the message with headers"
 msgstr "üzenet szerkesztése fejlécekkel együtt"
 
 #: opcodes.h:299
-#, fuzzy
 msgid "edit the newsgroups list"
-msgstr "Másolatot kap lista (CC) szerkesztése"
+msgstr "hírcsoport lista szerkesztése"
 
 #: opcodes.h:300
 msgid "edit the Reply-To field"
@@ -6316,81 +6257,72 @@ msgid "edit the TO list"
 msgstr "Címzett lista (TO) szerkesztése"
 
 #: opcodes.h:303
-#, fuzzy
 msgid "edit the X-Comment-To field"
-msgstr "Válaszcím szerkesztése"
+msgstr "X-Comment-To mező szerkesztése"
 
 #: opcodes.h:307
 msgid "send the message through a mixmaster remailer chain"
 msgstr "üzenet küldése egy mixmaster újraküldő láncon keresztül"
 
 #: opcodes.h:308
-#, fuzzy
 msgid "append a remailer to the chain"
-msgstr "Újraküldő hozzáfűzése a lánchoz"
+msgstr "levél-újraküldő (remailer) hozzákapcsolása a lánchoz"
 
 #: opcodes.h:309
-#, fuzzy
 msgid "select the next element of the chain"
-msgstr "A lánc következő elemének kijelölése"
+msgstr "a lánc következő elemének kijelölése"
 
 #: opcodes.h:310
-#, fuzzy
 msgid "select the previous element of the chain"
-msgstr "A lánc előző elemének kijelölése"
+msgstr "a lánc előző elemének kijelölése"
 
 #: opcodes.h:311
-#, fuzzy
 msgid "delete a remailer from the chain"
-msgstr "Újraküldő törlése a láncból"
+msgstr "újraküldő (remailer) törlése a láncból"
 
 #: opcodes.h:312
-#, fuzzy
 msgid "insert a remailer into the chain"
-msgstr "Újraküldő beszúrása a láncba"
+msgstr "újraküldő (remailer) beszúrása a láncba"
 
 #: opcodes.h:313
-#, fuzzy
 msgid "accept the chain constructed"
-msgstr "Összeállított lánc elfogadása"
+msgstr "összeállított lánc elfogadása"
 
 #: opcodes.h:320
-#, fuzzy
 msgid "open a different virtual folder"
-msgstr "más postafiók megnyitása"
+msgstr "másik virtuális postafiók megnyitása"
 
 #: opcodes.h:321
 msgid "read entire thread of the current message"
-msgstr ""
+msgstr "az aktuális üzenet teljes témájának beolvasása"
 
 #: opcodes.h:322
 msgid "generate virtual folder from query"
-msgstr ""
+msgstr "virtuális könyvtár létrehozása lekérdezésből"
 
 #: opcodes.h:323
 msgid "generate a read-only virtual folder from query"
-msgstr ""
+msgstr "csal olvasható virtuális könyvtár létrehozása lekérdezésből"
 
 #: opcodes.h:324
 msgid "shifts virtual folder time window backwards"
-msgstr ""
+msgstr "virtuális könyvtár időablakát visszább állítja"
 
 #: opcodes.h:325
 msgid "shifts virtual folder time window forwards"
-msgstr ""
+msgstr "virtuális könyvtár időablakát előrébb állítja"
 
 #: opcodes.h:326
 msgid "resets virtual folder time window to the present"
-msgstr ""
+msgstr "virtuális könyvtár időablakát a jelenre állítja vissza"
 
 #: opcodes.h:332
 msgid "attach a PGP public key"
 msgstr "PGP nyilvános kulcs csatolása"
 
 #: opcodes.h:333
-#, fuzzy
 msgid "check for classic PGP"
-msgstr "klasszikus php keresése"
+msgstr "hagyományos PGP keresése"
 
 #: opcodes.h:334
 msgid "show PGP options"
@@ -6409,57 +6341,48 @@ msgid "view the key's user id"
 msgstr "a kulcstulajdonos azonosítójának megtekintése"
 
 #: opcodes.h:340
-#, fuzzy
 msgid "move the highlight to the first mailbox"
-msgstr "ugrás az előző oldalra"
+msgstr "kiemelés mozgatása az első postafiókra"
 
 #: opcodes.h:341
-#, fuzzy
 msgid "move the highlight to the last mailbox"
-msgstr "ugrás az előző oldalra"
+msgstr "kiemelés mozgatása az utolsó postafiókra"
 
 #: opcodes.h:342
 msgid "move the highlight to next mailbox"
-msgstr ""
+msgstr "kiemelés mozgatása az következő postafiókra"
 
 #: opcodes.h:343
-#, fuzzy
 msgid "move the highlight to next mailbox with new mail"
-msgstr "Nincs új levél egyik postafiókban sem."
+msgstr "kiemelés mozgatása az következő, új levelet tartalmazó postafiókra"
 
 #: opcodes.h:344
-#, fuzzy
 msgid "open highlighted mailbox"
-msgstr "Postafiók újra megnyitása..."
+msgstr "kiemelt postafiók megnyitása"
 
 #: opcodes.h:345
-#, fuzzy
 msgid "scroll the sidebar down 1 page"
-msgstr "fél oldal lapozás lefelé"
+msgstr "egy oldal lapozás lefelé"
 
 #: opcodes.h:346
-#, fuzzy
 msgid "scroll the sidebar up 1 page"
-msgstr "fél oldal lapozás felfelé"
+msgstr "teljes oldal lapozás felfelé"
 
 #: opcodes.h:347
-#, fuzzy
 msgid "move the highlight to previous mailbox"
-msgstr "ugrás az előző oldalra"
+msgstr "kiemelés mozgatása az előző postafiókra"
 
 #: opcodes.h:348
-#, fuzzy
 msgid "move the highlight to previous mailbox with new mail"
-msgstr "Nincs új levél egyik postafiókban sem."
+msgstr "kiemelés mozgatása az új levelet tartalmazó előző postafiókra"
 
 #: opcodes.h:349
-#, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
-msgstr "váltás a csak postafiókok/összes fájl böngészése között"
+msgstr "váltás a csak postafiókok és virtuális postafiókok között"
 
 #: opcodes.h:350
 msgid "make the sidebar (in)visible"
-msgstr ""
+msgstr "az oldalablakot láthatóvá/láthatatlanná teszi"
 
 #: opcodes.h:353
 msgid "show S/MIME options"
@@ -6503,7 +6426,7 @@ msgstr "Ez az üzenet eleje"
 #. display some kind of message in case it somehow occurs.)
 #: pager/functions.c:593
 msgid "No text past headers"
-msgstr ""
+msgstr "Nincs szöveg a fejlécen túl"
 
 #: pager/functions.c:653 pager/functions.c:693
 msgid "No more unquoted text after quoted text"
@@ -6521,7 +6444,7 @@ msgstr "A súgó már meg van jelenítve"
 #. L10N: Status bar message: all the emails are visible in the index
 #: pager/message.c:59 pager/pbar.c:121 status.c:293
 msgid "all"
-msgstr ""
+msgstr "mind"
 
 #: pager/message.c:210
 msgid "Verify signature?"
@@ -6549,7 +6472,7 @@ msgstr "Az S/MIME tanúsítvány tulajdonosa nem egyezik a küldővel. "
 
 #: pager/message.c:383 pager/message.c:393
 msgid "Warning: Part of this message has not been signed"
-msgstr ""
+msgstr "Figyelem: Az üzenet egy részét nem írták alá"
 
 #: pager/message.c:385
 msgid "S/MIME signature could NOT be verified"
@@ -6567,7 +6490,7 @@ msgstr "A PGP aláírást NEM tudtam ellenőrizni"
 #. L10N: Status bar message: the end of the list emails is visible in the index
 #: pager/pbar.c:123 status.c:291
 msgid "end"
-msgstr ""
+msgstr "vége"
 
 #: pattern/compile.c:88 pattern/compile.c:176 pattern/compile.c:987
 #, c-format
@@ -6575,19 +6498,17 @@ msgid "Error in expression: %s"
 msgstr "Hiba a kifejezésben: %s"
 
 #: pattern/compile.c:93 pattern/compile.c:181 pattern/compile.c:993
-#, fuzzy
 msgid "Empty expression"
-msgstr "hiba a kifejezésben"
+msgstr "Üres kifejezés"
 
 #: pattern/compile.c:168
-#, fuzzy
 msgid "No search command defined"
-msgstr "A lekérdezés parancs nincs megadva"
+msgstr "Nincs kereső parancs megadva"
 
 #: pattern/compile.c:203
-#, fuzzy, c-format
+#, c-format
 msgid "Running search command: %s ..."
-msgstr "Megjelenítő parancs indítása: %s"
+msgstr "Következő kereső parancs futtatása: %s ..."
 
 #: pattern/compile.c:321 pattern/compile.c:336
 #, c-format
@@ -6622,9 +6543,9 @@ msgid "error in pattern at: %s"
 msgstr "hiba a mintában: %s"
 
 #: pattern/compile.c:1235
-#, fuzzy, c-format
+#, c-format
 msgid "missing pattern: %s"
-msgstr "hiányzó paraméter"
+msgstr "hiányzó minta: %s"
 
 #: pattern/compile.c:1253 pattern/compile.c:1354
 #, c-format
@@ -6632,9 +6553,9 @@ msgid "mismatched parentheses: %s"
 msgstr "nem megegyező zárójelek: %s"
 
 #: pattern/compile.c:1288
-#, fuzzy, c-format
+#, c-format
 msgid "%c: invalid pattern modifier"
-msgstr "%c: érvénytelen parancs"
+msgstr "%c: érvénytelen minta módosító"
 
 #: pattern/compile.c:1293
 #, c-format
@@ -6717,24 +6638,20 @@ msgid "error: unknown op %d (report this error)"
 msgstr "hiba: ismeretlen operandus %d (jelentsd ezt a hibát)"
 
 #: pattern/exec.c:141
-#, fuzzy
 msgid "Error opening 'memory stream'"
-msgstr "Hiba a postafiók megnyitásaor"
+msgstr "'memória stream' megnyitási hiba"
 
 #: pattern/exec.c:191
-#, fuzzy
 msgid "Error re-opening 'memory stream'"
-msgstr "Hiba a postafiók megnyitásaor"
+msgstr "Hiba a 'memória stream' újranyitása közben"
 
 #: pattern/exec.c:201
-#, fuzzy
 msgid "Error opening /dev/null"
 msgstr "Nem lehet a /dev/null-t megnyitni"
 
 #: pattern/exec.c:210
-#, fuzzy
 msgid "Error checking length of temporary file"
-msgstr "Hiba a(z) %s ideiglenes fájl mentésekor"
+msgstr "Hiba az ideiglenes fájl hosszának ellenőrzésekor"
 
 #: pattern/exec.c:887
 msgid "error: server custom search only supported with IMAP"
@@ -6994,9 +6911,8 @@ msgid "No messages matched criteria"
 msgstr "Nincs a kritériumnak megfelelő levél"
 
 #: pattern/pattern.c:571 pattern/pattern.c:729
-#, fuzzy
 msgid "Searching..."
-msgstr "Mentés..."
+msgstr "Keresés..."
 
 #: pattern/pattern.c:585 pattern/pattern.c:743
 msgid "Search hit bottom without finding match"
@@ -7019,14 +6935,13 @@ msgid "Command USER is not supported by server"
 msgstr "A USER parancsot nem ismeri ez a szerver"
 
 #: pop/auth.c:379
-#, fuzzy
 msgid "Authentication failed"
-msgstr "SASL azonosítás nem sikerült"
+msgstr "Hitelesítés sikertelen"
 
 #: pop/lib.c:98
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid POP URL: %s"
-msgstr "Érvénytelen   "
+msgstr "Érvénytelen POP URL: %s"
 
 #: pop/lib.c:252
 msgid "Unable to leave messages on server"
@@ -7062,11 +6977,11 @@ msgid "Can't write header to temporary file"
 msgstr "Nem lehet írni az ideiglenes fájlba"
 
 #: pop/pop.c:388
-#, fuzzy, c-format
+#, c-format
 msgid "%d message has been lost. Try reopening the mailbox."
 msgid_plural "%d messages have been lost. Try reopening the mailbox."
-msgstr[0] "A levelek tartalomjegyzéke hibás. Próbáld megnyitni újra a postafiókot."
-msgstr[1] "A levelek tartalomjegyzéke hibás. Próbáld megnyitni újra a postafiókot."
+msgstr[0] "%d üzenet elveszett. Próbálja újranyitni a postafiókot."
+msgstr[1] "%d üzenetek elvesztek. Próbálja újranyitni a postafiókot."
 
 #: pop/pop.c:520
 msgid "POP host is not defined"
@@ -7086,10 +7001,10 @@ msgid "Delete messages from server?"
 msgstr "Levelek törlése a szerverről?"
 
 #: pop/pop.c:610
-#, fuzzy, c-format
+#, c-format
 msgid "Reading new messages (%d byte)..."
 msgid_plural "Reading new messages (%d bytes)..."
-msgstr[0] "Új levelek olvasása (%d bytes)..."
+msgstr[0] "Új levél olvasása (%d bytes)..."
 msgstr[1] "Új levelek olvasása (%d bytes)..."
 
 #: pop/pop.c:658
@@ -7099,7 +7014,7 @@ msgstr "Hiba a postafiók írásakor"
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. the %d right before 'messages', i.e. the total number of messages.
 #: pop/pop.c:664
-#, fuzzy, c-format
+#, c-format
 msgid "%s [%d of %d message read]"
 msgid_plural "%s [%d of %d messages read]"
 msgstr[0] "%s [%d/%d levél beolvasva]"
@@ -7110,9 +7025,8 @@ msgid "Fetching list of messages..."
 msgstr "Üzenetek listájának letöltése..."
 
 #: pop/pop.c:895
-#, fuzzy
 msgid "Marking messages deleted..."
-msgstr "%d levél megjelölése töröltnek..."
+msgstr "Levelek megjelölése töröltnek..."
 
 #: pop/pop.c:1078
 msgid "Can't write message to temporary file"
@@ -7123,14 +7037,12 @@ msgid "Illegal S/MIME header"
 msgstr "Érvénytelen S/MIME fejléc"
 
 #: postpone.c:270 postpone.c:309 postpone.c:318
-#, fuzzy
 msgid "Illegal crypto header"
-msgstr "Érvénytelen PGP fejléc"
+msgstr "Érvénytelen titkosítási fejléc"
 
 #: postpone.c:428 postpone.c:456 postpone.c:552
-#, fuzzy
 msgid "Decrypting message..."
-msgstr "Levél letöltése..."
+msgstr "Üzenet dekódolása folyamatban..."
 
 #: postpone.c:687 postpone.c:698
 msgid "No postponed messages"
@@ -7149,11 +7061,10 @@ msgid "You may only bounce message/rfc822 parts"
 msgstr "Csak levél/rfc822 részeket lehet visszaküldeni"
 
 #: recvcmd.c:288
-#, fuzzy
 msgid "Error bouncing message"
 msgid_plural "Error bouncing messages"
-msgstr[0] "Hiba a levél újraküldésekor."
-msgstr[1] "Hiba a levelek újraküldésekor."
+msgstr[0] "Hiba visszapattanó levél"
+msgstr[1] "Hiba visszapattanó levelek"
 
 #: recvcmd.c:515
 #, c-format
@@ -7192,9 +7103,8 @@ msgstr "Nem tudom az összes kijelölt mellékletet visszaalakítani.  A többit
 #. L10N: You will see this error message if you invoke <compose-to-sender>
 #. when you are on a normal attachment.
 #: recvcmd.c:1128
-#, fuzzy
 msgid "You may only compose to sender with message/rfc822 parts"
-msgstr "Csak levél/rfc822 részeket lehet visszaküldeni"
+msgstr "A feladónak csak message/rfc822 részekkel lehet szerkeszteni"
 
 #: remailer.c:101
 msgid "Append"
@@ -7288,9 +7198,8 @@ msgstr "Nincs tárgy megadva, megszakítom"
 #. message contents, but other attachment, such as PDF files, will also
 #. be added as attachments to the new mail, if this is answered yes.
 #: send/send.c:606
-#, fuzzy
 msgid "Forward attachments?"
-msgstr "Továbbítás mellékletként?"
+msgstr "Mellékletek továbbítása?"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
@@ -7325,9 +7234,8 @@ msgid "Preparing forwarded message..."
 msgstr "Továbbított levél előkészítése..."
 
 #: send/send.c:1787
-#, fuzzy
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
-msgstr "%c: nincs támogatva ebben a módban"
+msgstr "Figyelem: IMAP postafiók számára Fcc nem támogatott kötegelt módban"
 
 #. L10N: Printed after the "Fcc to an IMAP mailbox is not supported" message.
 #. To make it clearer that the message doesn't mean NeoMutt is aborting
@@ -7409,9 +7317,8 @@ msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "Nem állított be titkosító motort. Üzenet biztonsági beállítások letiltása."
 
 #: send/send.c:2773
-#, fuzzy
 msgid "Article not posted"
-msgstr "A levél nem lett elküldve"
+msgstr "Cikk nem került közzétételre"
 
 #: send/send.c:2783
 msgid "Message postponed"
@@ -7426,9 +7333,8 @@ msgid "No subject specified"
 msgstr "Nincs tárgy megadva"
 
 #: send/send.c:2835
-#, fuzzy
 msgid "No newsgroup specified"
-msgstr "Nincs tárgy megadva"
+msgstr "Nincs hírcsoport megadva"
 
 #: send/send.c:2897 send/smtp.c:244
 msgid "Sending message..."
@@ -7451,19 +7357,16 @@ msgid "Mail sent"
 msgstr "Levél elküldve"
 
 #: send/send.c:3031
-#, fuzzy
 msgid "No recipient specified"
 msgstr "Nincs címzett megadva"
 
 #: send/send.c:3076
-#, fuzzy
 msgid "No List-Subscribe header found"
-msgstr "Nem található"
+msgstr "Nem található List-Subscribe fejléc"
 
 #: send/send.c:3100
-#, fuzzy
 msgid "No List-Unsubscribe header found"
-msgstr "%s leírása..."
+msgstr "Nem található List-Unsubscribe fejléc"
 
 #: send/sendlib.c:491
 #, c-format
@@ -7471,9 +7374,8 @@ msgid "%s isn't a regular file"
 msgstr "%s nem egy hagyományos fájl"
 
 #: send/sendlib.c:665
-#, fuzzy
 msgid "Could not find any mime.types file"
-msgstr "Nem tudtam a levelet elküldeni"
+msgstr "Nem találtam egy mime.types file-t sem"
 
 #: send/sendlib.c:758
 #, c-format
@@ -7499,28 +7401,27 @@ msgid "Output of the delivery process"
 msgstr "A kézbesítő folyamat kimenete"
 
 #: send/smtp.c:175
-#, fuzzy, c-format
+#, c-format
 msgid "SMTP session failed: %s"
-msgstr "SSL sikertelen: %s"
+msgstr "SMTP kapcsolat sikertelen: %s"
 
 #: send/smtp.c:234
-#, fuzzy, c-format
+#, c-format
 msgid "SMTP session failed: unable to open %s"
-msgstr "SSL sikertelen: %s"
+msgstr "SMTP kapcsolat sikertelen: nem megnyitható %s"
 
 #: send/smtp.c:357
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid SMTP URL: %s"
-msgstr "Érvénytelen   "
+msgstr "Érvénytelen SMTP URL: %s"
 
 #: send/smtp.c:793
-#, fuzzy
 msgid "SMTP authentication requires SASL"
-msgstr "GSSAPI azonosítás nem sikerült"
+msgstr "SMTP azonosítás SASL-t igényel"
 
 #: send/smtp.c:883
 msgid "SMTP server does not support authentication"
-msgstr "SMTP szerver nem támogatja a hitelesítést"
+msgstr "SMTP szerver nem támogatja a azonosítást"
 
 #: send/smtp.c:931
 msgid "No from address given"
