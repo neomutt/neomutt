@@ -445,6 +445,9 @@ static int op_edit_label(struct IndexSharedData *shared, struct IndexPrivateData
     /* L10N: This is displayed when the x-label on one or more
        messages is edited. */
     mutt_message(ngettext("%d label changed", "%d labels changed", num_changed), num_changed);
+
+    if (!priv->tag)
+      resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED);
     return FR_SUCCESS;
   }
 
