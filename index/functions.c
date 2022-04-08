@@ -1267,6 +1267,7 @@ static int op_main_next_new(struct IndexSharedData *shared,
       else
         mutt_error(_("No unread messages"));
     }
+    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
     return FR_ERROR;
   }
   else
@@ -1333,6 +1334,8 @@ static int op_main_next_thread(struct IndexSharedData *shared,
       mutt_error(_("No more threads"));
     else
       mutt_error(_("You are on the first thread"));
+
+    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
   }
   else
     menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
@@ -1349,6 +1352,7 @@ static int op_main_next_undeleted(struct IndexSharedData *shared,
   int index = menu_get_index(priv->menu);
   if (index >= (shared->mailbox->vcount - 1))
   {
+    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
     mutt_message(_("You are on the last message"));
     return FR_ERROR;
   }
@@ -1358,6 +1362,7 @@ static int op_main_next_undeleted(struct IndexSharedData *shared,
 
   if (index == -1)
   {
+    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
     mutt_error(_("No undeleted messages"));
   }
   else
@@ -1398,6 +1403,7 @@ static int op_main_prev_undeleted(struct IndexSharedData *shared,
   int index = menu_get_index(priv->menu);
   if (index < 1)
   {
+    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
     mutt_message(_("You are on the first message"));
     return FR_ERROR;
   }
@@ -1408,6 +1414,7 @@ static int op_main_prev_undeleted(struct IndexSharedData *shared,
   if (index == -1)
   {
     mutt_error(_("No undeleted messages"));
+    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
   }
   else
     menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
@@ -1765,6 +1772,7 @@ static int op_prev_entry(struct IndexSharedData *shared, struct IndexPrivateData
   int index = menu_get_index(priv->menu);
   if (index < 1)
   {
+    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
     mutt_message(_("You are on the first message"));
     return FR_ERROR;
   }
