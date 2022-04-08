@@ -100,6 +100,8 @@ static int pbar_recalc(struct MuttWindow *win)
   struct PBarPrivateData *pbar_data = win->wdata;
   struct IndexSharedData *shared = pbar_data->shared;
   struct PagerPrivateData *priv = pbar_data->priv;
+  if (!priv || !priv->pview)
+    return 0;
 
   char pager_progress_str[65]; /* Lots of space for translations */
 
