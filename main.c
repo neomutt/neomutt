@@ -1267,8 +1267,8 @@ main
       const bool c_imap_passive = cs_subset_bool(NeoMutt->sub, "imap_passive");
       cs_subset_str_native_set(NeoMutt->sub, "imap_passive", false, NULL);
 #endif
-      const CheckStatsFlags flags = MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_IMMEDIATE;
-      if (mutt_mailbox_check(NULL, flags) == 0)
+      const CheckStatsFlags csflags = MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_IMMEDIATE;
+      if (mutt_mailbox_check(NULL, csflags) == 0)
       {
         mutt_message(_("No mailbox with new mail"));
         goto main_curses; // TEST37: neomutt -Z (no new mail)

@@ -1,5 +1,4 @@
 /**
-          pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
  * @file
  * Pager Dialog
  *
@@ -559,7 +558,7 @@ int mutt_pager(struct PagerView *pview)
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(dlg, op);
 
-    if (rc == FR_UNKNOWN &&
+    if ((rc == FR_UNKNOWN) &&
         ((pview->mode == PAGER_MODE_ATTACH) || (pview->mode == PAGER_MODE_ATTACH_E)))
     {
       // Some attachment functions still need to be delegated

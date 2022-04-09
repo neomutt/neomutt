@@ -478,8 +478,8 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
     {
       color_line->stop_matching = false;
     }
-    do
 
+    do
     {
       if (!buf[offset])
         break;
