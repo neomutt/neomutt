@@ -73,13 +73,13 @@ static bool is_same_mailbox(struct Mailbox *m1, struct Mailbox *m2,
 
 /**
  * mailbox_check - Check a mailbox for new mail
- * @param m_cur       Current Mailbox
- * @param m_check     Mailbox to check
- * @param st_ctx      stat() info for the current Mailbox
- * @param check_stats If true, also count the total, new and flagged messages
+ * @param m_cur   Current Mailbox
+ * @param m_check Mailbox to check
+ * @param st_ctx  stat() info for the current Mailbox
+ * @param flags   Flags, e.g. #MUTT_MAILBOX_CHECK_FORCE
  */
 static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
-                          struct stat *st_ctx, bool check_stats)
+                          struct stat *st_ctx, CheckStatsFlags flags)
 {
   struct stat st = { 0 };
 
@@ -125,7 +125,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       case MUTT_NOTMUCH:
         // Remove this when non-notmuch backends only check unread, flagged,
         // and total counts per 'mbox_check_stats' docs.
-        if (!check_stats)
+        if ((flags & MUTT_MAILBOX_CHECK_FORCE_STATS) == 0)
           break;
         /* fall through */
       case MUTT_IMAP:
@@ -133,7 +133,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       case MUTT_MMDF:
       case MUTT_MAILDIR:
       case MUTT_MH:
-        mx_mbox_check_stats(m_check, check_stats);
+        mx_mbox_check_stats(m_check, flags);
         break;
       default:; /* do nothing */
     }
@@ -150,26 +150,20 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
 /**
  * mutt_mailbox_check - Check all all Mailboxes for new mail
  * @param m_cur Current Mailbox
- * @param force Force flags, see below
+ * @param flags Flags, e.g. #MUTT_MAILBOX_CHECK_FORCE
  * @retval num Number of mailboxes with new mail
- *
- * The force argument may be any combination of the following values:
- * - MUTT_MAILBOX_CHECK_FORCE        ignore MailboxTime and check for new mail
- * - MUTT_MAILBOX_CHECK_FORCE_STATS  ignore MailboxTime and calculate statistics
  *
  * Check all all Mailboxes for new mail and total/new/flagged messages
  */
-int mutt_mailbox_check(struct Mailbox *m_cur, int force)
+int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
 {
   struct stat st_ctx = { 0 };
   time_t t;
-  bool check_stats = false;
   st_ctx.st_dev = 0;
   st_ctx.st_ino = 0;
 
 #ifdef USE_IMAP
-  /* update postponed count as well, on force */
-  if (force & MUTT_MAILBOX_CHECK_FORCE)
+  if (flags & MUTT_MAILBOX_CHECK_FORCE)
     mutt_update_num_postponed();
 #endif
 
@@ -184,13 +178,13 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
       cs_subset_number(NeoMutt->sub, "mail_check_stats_interval");
 
   t = mutt_date_epoch();
-  if (!force && (t - MailboxTime < c_mail_check))
+  if ((flags == MUTT_MAILBOX_CHECK_NO_FLAGS) && (t - MailboxTime < c_mail_check))
     return MailboxCount;
 
-  if ((force & MUTT_MAILBOX_CHECK_FORCE_STATS) ||
+  if ((flags & MUTT_MAILBOX_CHECK_FORCE_STATS) ||
       (c_mail_check_stats && ((t - MailboxStatsTime) >= c_mail_check_stats_interval)))
   {
-    check_stats = true;
+    flags |= MUTT_MAILBOX_CHECK_FORCE_STATS;
     MailboxStatsTime = t;
   }
 
@@ -217,8 +211,12 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
     if (!np->mailbox->visible)
       continue;
 
-    mailbox_check(m_cur, np->mailbox, &st_ctx,
-                  check_stats || (!np->mailbox->first_check_stats_done && c_mail_check_stats));
+    CheckStatsFlags m_flags = flags;
+    if (!np->mailbox->first_check_stats_done && c_mail_check_stats)
+    {
+      m_flags |= MUTT_MAILBOX_CHECK_FORCE_STATS;
+    }
+    mailbox_check(m_cur, np->mailbox, &st_ctx, m_flags);
     if (np->mailbox->has_new)
       MailboxCount++;
     np->mailbox->first_check_stats_done = true;
@@ -235,7 +233,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
  */
 bool mutt_mailbox_notify(struct Mailbox *m_cur)
 {
-  if ((mutt_mailbox_check(m_cur, 0) > 0) && MailboxNotify)
+  if ((mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_NO_FLAGS) > 0) && MailboxNotify)
   {
     return mutt_mailbox_list();
   }
@@ -385,7 +383,7 @@ struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
 {
   mutt_buffer_expand_path(s);
 
-  if (mutt_mailbox_check(m_cur, 0) > 0)
+  if (mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_NO_FLAGS) > 0)
   {
     struct Mailbox *m_res = find_next_mailbox(s, true);
     if (m_res)

@@ -1823,8 +1823,8 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   if (m->newly_created && ((st.st_ctime != st.st_mtime) || (st.st_ctime != st.st_atime)))
     m->newly_created = false;
 
-  if ((flags != 0) && mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME,
-                                                      &m->stats_last_checked) > 0)
+  const bool force = flags & (MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS);
+  if (force && mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->stats_last_checked) > 0)
   {
     bool old_peek = m->peekonly;
     mx_mbox_open(m, MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);

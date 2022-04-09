@@ -638,7 +638,7 @@ static int examine_directory(struct Mailbox *m, struct Menu *menu,
     }
 
     if (m)
-      mutt_mailbox_check(m, 0);
+      mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_NO_FLAGS);
 
     dp = opendir(d);
     if (!dp)
@@ -743,7 +743,7 @@ static int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct Browse
     mailbox = mutt_buffer_pool_get();
     md = mutt_buffer_pool_get();
 
-    mutt_mailbox_check(m, 0);
+    mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_NO_FLAGS);
 
     struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
     neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
@@ -927,7 +927,8 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
   {
     if (state->is_mailbox_list)
     {
-      snprintf(title, sizeof(title), _("Mailboxes [%d]"), mutt_mailbox_check(m, 0));
+      snprintf(title, sizeof(title), _("Mailboxes [%d]"),
+               mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_NO_FLAGS));
     }
     else
     {

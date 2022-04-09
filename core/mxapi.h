@@ -69,6 +69,13 @@ typedef uint8_t OpenMailboxFlags;   ///< Flags for mutt_open_mailbox(), e.g. #MU
 #define MUTT_PEEK          (1 << 5) ///< Revert atime back after taking a look (if applicable)
 #define MUTT_APPENDNEW     (1 << 6) ///< Set in mx_open_mailbox_append if the mailbox doesn't exist.
                                     ///< Used by maildir/mh to create the mailbox.
+
+typedef uint8_t CheckStatsFlags;                ///< Flags for mutt_mailbox_check
+#define MUTT_MAILBOX_CHECK_NO_FLAGS          0  ///< No flags are set
+#define MUTT_MAILBOX_CHECK_FORCE       (1 << 0) ///< Ignore MailboxTime and check for new mail
+#define MUTT_MAILBOX_CHECK_FORCE_STATS (1 << 1) ///< Ignore MailboxType and calculate statistics
+#define MUTT_MAILBOX_CHECK_IMMEDIATE   (1 << 2) ///< Don't postpone the actual checking
+
 /**
  * enum MxStatus - Return values from mbox_check(), mbox_check_stats(),
  * mbox_snc(), and mbox_close()
@@ -192,7 +199,7 @@ struct MxOps
    * **Contract**
    * - @a m is not NULL
    */
-  enum MxStatus (*mbox_check_stats)(struct Mailbox *m, uint8_t flags);
+  enum MxStatus (*mbox_check_stats)(struct Mailbox *m, CheckStatsFlags flags);
 
   /**
    * @defgroup mx_mbox_sync mbox_sync()

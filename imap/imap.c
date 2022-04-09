@@ -1225,7 +1225,8 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
  */
 static enum MxStatus imap_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
-  const int new_msgs = imap_mailbox_status(m, true);
+  const bool queue = (flags & MUTT_MAILBOX_CHECK_IMMEDIATE) == 0;
+  const int new_msgs = imap_mailbox_status(m, queue);
   if (new_msgs == -1)
     return MX_STATUS_ERROR;
   if (new_msgs == 0)
