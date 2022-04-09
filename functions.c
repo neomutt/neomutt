@@ -1123,10 +1123,6 @@ const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_MAIN_BREAK_THREAD,                  "#" },
   { OP_MAIN_CHANGE_FOLDER,                 "c" },
   { OP_MAIN_CHANGE_FOLDER_READONLY,        "\033c" },          // <Alt-c>
-#ifdef USE_NNTP
-  { OP_MAIN_CHANGE_GROUP,                  "i" },
-  { OP_MAIN_CHANGE_GROUP_READONLY,         "\033i" },          // <Alt-i>
-#endif
   { OP_MAIN_CLEAR_FLAG,                    "W" },
   { OP_MAIN_LINK_THREADS,                  "&" },
   { OP_MAIN_NEXT_NEW_THEN_UNREAD,          "\t" },             // <Tab>
