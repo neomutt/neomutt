@@ -116,7 +116,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
   {
     case 'b':
     {
-      const int num = mutt_mailbox_check(m, 0);
+      const int num = mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_NO_FLAGS);
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);

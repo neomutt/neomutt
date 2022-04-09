@@ -1348,7 +1348,7 @@ enum MxStatus maildir_mbox_check(struct Mailbox *m)
  */
 static enum MxStatus maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
-  bool check_stats = flags;
+  bool check_stats = flags & MUTT_MAILBOX_CHECK_FORCE_STATS;
   bool check_new = true;
 
   if (check_stats)

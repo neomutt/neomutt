@@ -1265,11 +1265,3 @@ bool mutt_check_traditional_pgp(struct Mailbox *m, struct EmailList *el)
 
   return rc;
 }
-
-/**
- * mutt_check_stats - Forcibly update mailbox stats
- */
-void mutt_check_stats(struct Mailbox *m)
-{
-  mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS);
-}
