@@ -1012,6 +1012,27 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
         break;
       }
       /* functions which are passed through from the pager */
+      case OP_ATTACHMENT_PIPE:
+      {
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_pipe_attachment_list(actx, cur_att->fp, false, cur_att->body, false);
+        op = OP_ATTACHMENT_VIEW;
+        break;
+      }
+      case OP_ATTACHMENT_PRINT:
+      {
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_print_attachment_list(actx, cur_att->fp, false, cur_att->body);
+        op = OP_ATTACHMENT_VIEW;
+        break;
+      }
+      case OP_ATTACHMENT_SAVE:
+      {
+        struct AttachPtr *cur_att = current_attachment(actx, menu);
+        mutt_save_attachment_list(actx, cur_att->fp, false, cur_att->body, e, NULL);
+        op = OP_ATTACHMENT_VIEW;
+        break;
+      }
       case OP_CHECK_TRADITIONAL:
         if (!(WithCrypto & APPLICATION_PGP) || (e && e->security & PGP_TRADITIONAL_CHECKED))
         {

@@ -603,6 +603,7 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "next-unread",                   OP_MAIN_NEXT_UNREAD },
   { "next-unread-mailbox",           OP_MAIN_NEXT_UNREAD_MAILBOX },
   { "parent-message",                OP_MAIN_PARENT_MESSAGE },
+  { "pipe-entry",                    OP_ATTACHMENT_PIPE },
   { "pipe-message",                  OP_PIPE },
 #ifdef USE_NNTP
   { "post-message",                  OP_POST },
@@ -616,6 +617,7 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "previous-thread",               OP_MAIN_PREV_THREAD },
   { "previous-undeleted",            OP_MAIN_PREV_UNDELETED },
   { "previous-unread",               OP_MAIN_PREV_UNREAD },
+  { "print-entry",                   OP_ATTACHMENT_PRINT },
   { "print-message",                 OP_PRINT },
   { "purge-message",                 OP_PURGE_MESSAGE },
   { "purge-thread",                  OP_PURGE_THREAD },
@@ -631,6 +633,7 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "reply",                         OP_REPLY },
   { "resend-message",                OP_RESEND },
   { "root-message",                  OP_MAIN_ROOT_MESSAGE },
+  { "save-entry",                    OP_ATTACHMENT_SAVE },
   { "save-message",                  OP_SAVE },
   { "search",                        OP_SEARCH },
   { "search-next",                   OP_SEARCH_NEXT },
