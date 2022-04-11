@@ -629,16 +629,12 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     else
     {
       /* Use built-in handler */
-      OptViewAttach = true; /* disable the "use 'v' to view this part"
-                             * message in case of error */
       if (mutt_decode_save_attachment(fp, a, mutt_buffer_string(pagerfile),
-                                      MUTT_DISPLAY, MUTT_SAVE_NO_FLAGS))
+                                      MUTT_DISPLAY | MUTT_DISPLAY_ATTACH, MUTT_SAVE_NO_FLAGS))
       {
-        OptViewAttach = false;
         goto return_error;
       }
       unlink_pagerfile = true;
-      OptViewAttach = false;
     }
 
     if (a->description)

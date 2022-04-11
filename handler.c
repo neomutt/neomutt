@@ -1605,7 +1605,8 @@ int mutt_body_handler(struct Body *b, struct State *s)
   int rc = 0;
   static unsigned short recurse_level = 0;
 
-  int oflags = s->flags;
+  const int oflags = s->flags;
+  const bool is_attachment_display = (oflags & MUTT_DISPLAY_ATTACH);
 
   if (recurse_level >= MUTT_MIME_MAX_DEPTH)
   {
@@ -1717,7 +1718,9 @@ int mutt_body_handler(struct Body *b, struct State *s)
     }
   }
 
-  if ((plaintext || handler) && !mutt_prefer_as_attachment(b))
+  /* only respect disposition == attachment if we're not
+   * displaying from the attachment menu (i.e. pager) */
+  if ((plaintext || handler) && (is_attachment_display || !mutt_prefer_as_attachment(b)))
   {
     /* Prevent encrypted attachments from being included in replies
      * unless $include_encrypted is set. */
@@ -1737,7 +1740,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
     const bool c_honor_disposition = cs_subset_bool(NeoMutt->sub, "honor_disposition");
     struct Buffer msg = mutt_buffer_make(256);
 
-    if (!OptViewAttach)
+    if (!is_attachment_display)
     {
       char keystroke[128] = { 0 };
       if (km_expand_key(keystroke, sizeof(keystroke),
@@ -1810,9 +1813,7 @@ bool mutt_prefer_as_attachment(struct Body *b)
   if (!mutt_can_decode(b))
     return true;
 
-  /* only respect disposition == attachment if we're not
-   * displaying from the attachment menu (i.e. pager) */
-  if ((b->disposition != DISP_ATTACH) || OptViewAttach)
+  if (b->disposition != DISP_ATTACH)
     return false;
 
   return cs_subset_bool(NeoMutt->sub, "honor_disposition");
