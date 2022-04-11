@@ -105,6 +105,7 @@ enum ResolveMethod
  * @param menu   Menu
  * @param shared Shared Index data
  * @param rm     How to advance the cursor, e.g. #RESOLVE_NEXT_EMAIL
+ * @retval true Resolve succeeded
  */
 static bool resolve_email(struct Menu *menu, struct IndexSharedData *shared, enum ResolveMethod rm)
 {
@@ -138,6 +139,34 @@ static bool resolve_email(struct Menu *menu, struct IndexSharedData *shared, enu
   if ((index < 0) || (index >= shared->mailbox->vcount))
   {
     // Resolve failed
+    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
+    return false;
+  }
+
+  menu_set_index(menu, index);
+  return true;
+}
+
+/**
+ * index_next_undeleted - Select the next undeleted Email (if possible)
+ * @param win_index Index Window
+ * @retval true Selection succeeded
+ */
+bool index_next_undeleted(struct MuttWindow *win_index)
+{
+  struct MuttWindow *dlg = dialog_find(win_index);
+  if (!dlg)
+    return false;
+
+  struct Menu *menu = win_index->wdata;
+  struct IndexSharedData *shared = dlg->wdata;
+  if (!shared)
+    return false;
+
+  int index = ci_next_undeleted(shared->mailbox, menu_get_index(menu));
+  if ((index < 0) || (index >= shared->mailbox->vcount))
+  {
+    // Selection failed
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
     return false;
   }
