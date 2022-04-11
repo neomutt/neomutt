@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include <wchar.h>
 
-typedef uint8_t StateFlags;          ///< Flags for State->flags, e.g. #MUTT_DISPLAY
+typedef uint16_t StateFlags;         ///< Flags for State->flags, e.g. #MUTT_DISPLAY
 #define MUTT_STATE_NO_FLAGS       0  ///< No flags are set
 #define MUTT_DISPLAY        (1 << 0) ///< Output is displayed to the user
 #define MUTT_VERIFY         (1 << 1) ///< Perform signature verification
@@ -37,6 +37,7 @@ typedef uint8_t StateFlags;          ///< Flags for State->flags, e.g. #MUTT_DIS
 #define MUTT_PRINTING       (1 << 5) ///< Are we printing? - MUTT_DISPLAY "light"
 #define MUTT_REPLYING       (1 << 6) ///< Are we replying?
 #define MUTT_FIRSTDONE      (1 << 7) ///< The first attachment has been done
+#define MUTT_DISPLAY_ATTACH (1 << 8) ///< We are displaying an attachment
 
 /**
  * struct State - Keep track when processing files

@@ -57,6 +57,5 @@ WHERE bool OptResortInit;          ///< (pseudo) used to force the next resort t
 WHERE bool OptSearchInvalid;       ///< (pseudo) used to invalidate the search pattern
 WHERE bool OptSearchReverse;       ///< (pseudo) used by ci_search_command
 WHERE bool OptSortSubthreads;      ///< (pseudo) used when $sort_aux changes
-WHERE bool OptViewAttach;          ///< (pseudo) signals that we are viewing attachments
 
 #endif /* MUTT_OPTIONS_H */
