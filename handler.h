@@ -30,7 +30,8 @@ struct Body;
 struct State;
 
 int  mutt_body_handler(struct Body *b, struct State *s);
-bool mutt_can_decode(struct Body *a);
+bool mutt_can_decode(struct Body *b);
+bool mutt_prefer_as_attachment(struct Body *b);
 void mutt_decode_attachment(struct Body *b, struct State *s);
 void mutt_decode_base64(struct State *s, size_t len, bool istext, iconv_t cd);
 

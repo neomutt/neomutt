@@ -585,7 +585,7 @@ static int inline_forward_attachments(struct Mailbox *m, struct Email *e,
   for (i = 0; i < actx->idxlen; i++)
   {
     body = actx->idx[i]->body;
-    if ((body->type != TYPE_MULTIPART) && !mutt_can_decode(body) &&
+    if ((body->type != TYPE_MULTIPART) && mutt_prefer_as_attachment(body) &&
         !((body->type == TYPE_APPLICATION) &&
           (mutt_istr_equal(body->subtype, "pgp-signature") ||
            mutt_istr_equal(body->subtype, "x-pkcs7-signature") ||
