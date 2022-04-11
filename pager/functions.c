@@ -177,8 +177,7 @@ static int op_pager_half_down(struct IndexSharedData *shared,
   else
   {
     /* end of the current message, so display the next message. */
-    priv->rc = OP_MAIN_NEXT_UNDELETED;
-    return FR_DONE;
+    index_next_undeleted(priv->pview->win_index);
   }
   return FR_SUCCESS;
 }
@@ -272,8 +271,7 @@ static int op_pager_next_page(struct IndexSharedData *shared,
   else
   {
     /* end of the current message, so display the next message. */
-    priv->rc = OP_MAIN_NEXT_UNDELETED;
-    return FR_DONE;
+    index_next_undeleted(priv->pview->win_index);
   }
   return FR_SUCCESS;
 }

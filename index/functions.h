@@ -51,6 +51,7 @@ struct IndexFunction
 };
 
 int index_function_dispatcher(struct MuttWindow *win, int op);
+bool index_next_undeleted(struct MuttWindow *win_index);
 
 extern struct IndexFunction IndexFunctions[];
 
