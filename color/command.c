@@ -678,12 +678,8 @@ enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s,
 enum CommandResult mutt_parse_unmono(struct Buffer *buf, struct Buffer *s,
                                      intptr_t data, struct Buffer *err)
 {
-  if (OptNoCurses)
-  {
-    *s->dptr = '\0'; /* fake that we're done parsing */
-    return MUTT_CMD_SUCCESS;
-  }
-  return parse_uncolor(buf, s, err, false);
+  *s->dptr = '\0'; /* fake that we're done parsing */
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
@@ -707,7 +703,5 @@ enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s,
 enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
 {
-  bool dry_run = OptNoCurses;
-
-  return parse_color(buf, s, err, parse_attr_spec, dry_run, false);
+  return parse_color(buf, s, err, parse_attr_spec, true, false);
 }
