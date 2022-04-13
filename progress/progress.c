@@ -89,7 +89,7 @@ static void message_bar(struct MuttWindow *win, int percent, const char *fmt, ..
     if (l < w)
     {
       /* The string fits within the colour bar */
-      mutt_curses_set_color_by_id(MT_COLOR_PROGRESS);
+      mutt_curses_set_normal_backed_color_by_id(MT_COLOR_PROGRESS);
       mutt_window_addstr(win, buf2);
       w -= l;
       while (w-- > 0)
@@ -105,7 +105,7 @@ static void message_bar(struct MuttWindow *win, int percent, const char *fmt, ..
 
       char ch = buf2[off];
       buf2[off] = '\0';
-      mutt_curses_set_color_by_id(MT_COLOR_PROGRESS);
+      mutt_curses_set_normal_backed_color_by_id(MT_COLOR_PROGRESS);
       mutt_window_addstr(win, buf2);
       buf2[off] = ch;
       mutt_curses_set_color_by_id(MT_COLOR_NORMAL);

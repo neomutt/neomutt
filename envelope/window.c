@@ -346,7 +346,7 @@ static int calc_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wdat
  */
 static void draw_floating(struct MuttWindow *win, int col, int row, const char *text)
 {
-  mutt_curses_set_color_by_id(MT_COLOR_COMPOSE_HEADER);
+  mutt_curses_set_normal_backed_color_by_id(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(win, col, row, "%s", text);
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 }
@@ -359,7 +359,7 @@ static void draw_floating(struct MuttWindow *win, int col, int row, const char *
  */
 static void draw_header(struct MuttWindow *win, int row, enum HeaderField field)
 {
-  mutt_curses_set_color_by_id(MT_COLOR_COMPOSE_HEADER);
+  mutt_curses_set_normal_backed_color_by_id(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(win, 0, row, "%*s", HeaderPadding[field], _(Prompts[field]));
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 }
@@ -400,23 +400,23 @@ static int draw_crypt_lines(struct MuttWindow *win, struct EnvelopeWindowData *w
   int used = 2;
   if ((e->security & (SEC_ENCRYPT | SEC_SIGN)) == (SEC_ENCRYPT | SEC_SIGN))
   {
-    mutt_curses_set_color_by_id(MT_COLOR_COMPOSE_SECURITY_BOTH);
+    mutt_curses_set_normal_backed_color_by_id(MT_COLOR_COMPOSE_SECURITY_BOTH);
     mutt_window_addstr(win, _("Sign, Encrypt"));
   }
   else if (e->security & SEC_ENCRYPT)
   {
-    mutt_curses_set_color_by_id(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
+    mutt_curses_set_normal_backed_color_by_id(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
     mutt_window_addstr(win, _("Encrypt"));
   }
   else if (e->security & SEC_SIGN)
   {
-    mutt_curses_set_color_by_id(MT_COLOR_COMPOSE_SECURITY_SIGN);
+    mutt_curses_set_normal_backed_color_by_id(MT_COLOR_COMPOSE_SECURITY_SIGN);
     mutt_window_addstr(win, _("Sign"));
   }
   else
   {
     /* L10N: This refers to the encryption of the email, e.g. "Security: None" */
-    mutt_curses_set_color_by_id(MT_COLOR_COMPOSE_SECURITY_NONE);
+    mutt_curses_set_normal_backed_color_by_id(MT_COLOR_COMPOSE_SECURITY_NONE);
     mutt_window_addstr(win, _("None"));
     used = 1; // 'Sign as:' won't be needed
   }
@@ -476,12 +476,12 @@ static int draw_crypt_lines(struct MuttWindow *win, struct EnvelopeWindowData *w
     draw_header(win, row, HDR_AUTOCRYPT);
     if (e->security & SEC_AUTOCRYPT)
     {
-      mutt_curses_set_color_by_id(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
+      mutt_curses_set_normal_backed_color_by_id(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
       mutt_window_addstr(win, _("Encrypt"));
     }
     else
     {
-      mutt_curses_set_color_by_id(MT_COLOR_COMPOSE_SECURITY_NONE);
+      mutt_curses_set_normal_backed_color_by_id(MT_COLOR_COMPOSE_SECURITY_NONE);
       mutt_window_addstr(win, _("Off"));
     }
 
@@ -627,7 +627,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
   if (count > 0)
   {
     mutt_window_move(win, win->state.cols - more_len, row);
-    mutt_curses_set_color_by_id(MT_COLOR_BOLD);
+    mutt_curses_set_normal_backed_color_by_id(MT_COLOR_BOLD);
     mutt_window_addstr(win, more);
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
     mutt_debug(LL_DEBUG3, "%d more (len %d)\n", count, more_len);
@@ -748,7 +748,6 @@ static void draw_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wda
   if (c_compose_show_user_headers)
     row += draw_envelope_user_hdrs(win, wdata, row);
 
-  mutt_curses_set_color_by_id(MT_COLOR_STATUS);
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 }
 

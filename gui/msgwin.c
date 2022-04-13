@@ -120,7 +120,7 @@ static int msgwin_repaint(struct MuttWindow *win)
 
   mutt_window_move(win, 0, 0);
 
-  mutt_curses_set_color_by_id(priv->cid);
+  mutt_curses_set_normal_backed_color_by_id(priv->cid);
   mutt_window_move(win, 0, 0);
   mutt_window_addstr(win, priv->text);
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);

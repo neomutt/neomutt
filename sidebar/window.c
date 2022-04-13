@@ -858,7 +858,7 @@ static int draw_divider(struct SidebarWindowData *wdata, struct MuttWindow *win,
   const char *const c_sidebar_divider_char =
       cs_subset_string(NeoMutt->sub, "sidebar_divider_char");
 
-  mutt_curses_set_color_by_id(MT_COLOR_SIDEBAR_DIVIDER);
+  mutt_curses_set_normal_backed_color_by_id(MT_COLOR_SIDEBAR_DIVIDER);
 
   const bool c_sidebar_on_right =
       cs_subset_bool(NeoMutt->sub, "sidebar_on_right");
