@@ -11534,7 +11534,7 @@ set preferred_languages="fr,en,de"
 
         <para>
           As in <link linkend="compose-alternative-order">Composing Multipart/Alternative</link>, you can
-          also use Neomutt's macro and some external scripts to combine these procedure into one.
+          also use Neomutt's macro and some external scripts to combine this procedure into one.
         </para>
 
         <para>
