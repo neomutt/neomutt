@@ -803,6 +803,7 @@ int mutt_ch_convert_string(char **ps, const char *from, const char *to, uint8_t 
   char *ob = buf;
 
   mutt_ch_iconv(cd, &ib, &ibl, &ob, &obl, inrepls, outrepl, &rc);
+  iconv(cd, 0, 0, &ob, &obl);
   iconv_close(cd);
 
   *ob = '\0';
