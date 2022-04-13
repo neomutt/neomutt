@@ -781,10 +781,6 @@ int mutt_ch_convert_string(char **ps, const char *from, const char *to, uint8_t 
   if (cd == (iconv_t) -1)
     return -1;
 
-  size_t len;
-  const char *ib = NULL;
-  char *buf = NULL, *ob = NULL;
-  size_t ibl, obl;
   const char **inrepls = NULL;
   const char *outrepl = NULL;
 
@@ -795,12 +791,16 @@ int mutt_ch_convert_string(char **ps, const char *from, const char *to, uint8_t 
   else
     outrepl = "?";
 
-  len = strlen(s);
-  ib = s;
-  ibl = len + 1;
-  obl = MB_LEN_MAX * ibl;
-  buf = mutt_mem_malloc(obl + 1);
-  ob = buf;
+  const char *ib = s;
+  size_t ibl = strlen(s);
+  if (ibl >= (SIZE_MAX / MB_LEN_MAX))
+  {
+    iconv_close(cd);
+    return -1;
+  }
+  size_t obl = MB_LEN_MAX * ibl;
+  char *buf = mutt_mem_malloc(obl + 1);
+  char *ob = buf;
 
   mutt_ch_iconv(cd, &ib, &ibl, &ob, &obl, inrepls, outrepl, &rc);
   iconv_close(cd);
