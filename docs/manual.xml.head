@@ -11437,13 +11437,13 @@ alternative_order text/enriched text/plain text application/postscript image/*
           part to the main body of an email and sends it could be the following:
 
 <screen>
-  macro compose Y "&lt;first-entry&gt;&lt;enter-command&gt;set wait_key=no&lt;enter&gt; \
-    | pandoc -o /tmp/neomutt-alternative.html&lt;enter&gt; \
-    &lt;attach-file&gt;/tmp/neomutt-alternative.html&lt;enter&gt; \
-    &lt;toggle-unlink&gt;&lt;toggle-disposition&gt; \
-    &lt;tag-entry&gt;&lt;first-entry&gt;&lt;tag-entry&gt;&lt;group-alternatives&gt; \
-    &lt;enter-command&gt;set wait_key=yes&lt;enter&gt;&lt;send-message&gt;" \
-    "send the message as 'multipart/alternative'"
+macro compose Y "&lt;first-entry&gt;&lt;enter-command&gt;set wait_key=no&lt;enter&gt;\
+&lt;pipe-entry&gt;pandoc -o /tmp/neomutt-alternative.html&lt;enter&gt;\
+&lt;attach-file&gt;/tmp/neomutt-alternative.html&lt;enter&gt;\
+&lt;toggle-unlink&gt;&lt;toggle-disposition&gt;\
+&lt;tag-entry&gt;&lt;first-entry&gt;&lt;tag-entry&gt;&lt;group-alternatives&gt;\
+&lt;enter-command&gt;set wait_key=yes&lt;enter&gt;&lt;send-message&gt;" \
+"send the message as 'multipart/alternative'"
 </screen>
         </para>
       </sect2>
