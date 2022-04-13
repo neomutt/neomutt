@@ -390,9 +390,9 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
     pt = tmps;
     const unsigned char linelen = decode_byte(*pt);
     pt++;
-    for (unsigned char c = 0; c < linelen;)
+    for (unsigned char c = 0; (c < linelen) && *pt;)
     {
-      for (char l = 2; l <= 6; l += 2)
+      for (char l = 2; (l <= 6) && pt[0] && pt[1]; l += 2)
       {
         char out = decode_byte(*pt) << l;
         pt++;
