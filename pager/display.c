@@ -488,52 +488,53 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
       null_rx = false;
       STAILQ_FOREACH(color_line, head, entries)
       {
-        if (!color_line->stop_matching &&
-            (regexec(&color_line->regex, buf + offset, 1, pmatch,
-                     ((offset != 0) ? REG_NOTBOL : 0)) == 0))
-        {
-          if (pmatch[0].rm_eo == pmatch[0].rm_so)
-          {
-            null_rx = true; /* empty regex; don't add it, but keep looking */
-            continue;
-          }
+        if (color_line->stop_matching)
+          continue;
 
-          if (!found)
-          {
-            /* Abort if we fill up chunks.
-              * Yes, this really happened. */
-            if (lines[line_num].syntax_arr_size == SHRT_MAX)
-            {
-              null_rx = false;
-              break;
-            }
-            if (++(lines[line_num].syntax_arr_size) > 1)
-            {
-              mutt_mem_realloc(&(lines[line_num].syntax),
-                               (lines[line_num].syntax_arr_size) * sizeof(struct TextSyntax));
-            }
-          }
-          i = lines[line_num].syntax_arr_size - 1;
-          pmatch[0].rm_so += offset;
-          pmatch[0].rm_eo += offset;
-          if (!found || (pmatch[0].rm_so < (lines[line_num].syntax)[i].first) ||
-              ((pmatch[0].rm_so == (lines[line_num].syntax)[i].first) &&
-               (pmatch[0].rm_eo > (lines[line_num].syntax)[i].last)))
-          {
-            (lines[line_num].syntax)[i].attr_color = &color_line->attr_color;
-            (lines[line_num].syntax)[i].first = pmatch[0].rm_so;
-            (lines[line_num].syntax)[i].last = pmatch[0].rm_eo;
-          }
-          found = true;
-          null_rx = false;
-        }
-        else
+        if ((regexec(&color_line->regex, buf + offset, 1, pmatch,
+                     ((offset != 0) ? REG_NOTBOL : 0)) != 0))
         {
-          /* Once a regexp fails to match, don't try matching it again.
+          /* Once a regex fails to match, don't try matching it again.
            * On very long lines this can cause a performance issue if there
-           * are other regexps that have many matches. */
+           * are other regexes that have many matches. */
           color_line->stop_matching = true;
+          continue;
         }
+
+        if (pmatch[0].rm_eo == pmatch[0].rm_so)
+        {
+          null_rx = true; /* empty regex; don't add it, but keep looking */
+          continue;
+        }
+
+        if (!found)
+        {
+          // Abort if we fill up chunks. Yes, this really happened.
+          if (lines[line_num].syntax_arr_size == SHRT_MAX)
+          {
+            null_rx = false;
+            break;
+          }
+          if (++(lines[line_num].syntax_arr_size) > 1)
+          {
+            mutt_mem_realloc(&(lines[line_num].syntax),
+                             (lines[line_num].syntax_arr_size) * sizeof(struct TextSyntax));
+          }
+        }
+        i = lines[line_num].syntax_arr_size - 1;
+        pmatch[0].rm_so += offset;
+        pmatch[0].rm_eo += offset;
+
+        if (!found || (pmatch[0].rm_so < (lines[line_num].syntax)[i].first) ||
+            ((pmatch[0].rm_so == (lines[line_num].syntax)[i].first) &&
+             (pmatch[0].rm_eo > (lines[line_num].syntax)[i].last)))
+        {
+          (lines[line_num].syntax)[i].attr_color = &color_line->attr_color;
+          (lines[line_num].syntax)[i].first = pmatch[0].rm_so;
+          (lines[line_num].syntax)[i].last = pmatch[0].rm_eo;
+        }
+        found = true;
+        null_rx = false;
       }
 
       if (null_rx)
