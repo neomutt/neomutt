@@ -53,8 +53,6 @@
  * | #NT_CONFIG            | attach_config_observer()  |
  * | #NT_EMAIL             | attach_email_observer()   |
  * | #NT_WINDOW            | attach_window_observer()  |
- * | MuttWindow::recalc()  | attach_recalc()           |
- * | MuttWindow::repaint() | attach_repaint()          |
  */
 
 #include "config.h"
@@ -121,55 +119,6 @@ unsigned long cum_attachs_size(struct ConfigSubset *sub, struct ComposeAttachDat
   }
 
   return s;
-}
-
-/**
- * attach_recalc - Recalculate the Window data - Implements MuttWindow::recalc() - @ingroup window_recalc
- */
-int attach_recalc(struct MuttWindow *win)
-{
-#if 0
-  struct ComposeBarData *attach_data = win->wdata;
-  struct ComposeRedrawData *rd = attach_data->rd;
-
-  char buf[1024] = { 0 };
-  const char *const c_compose_format =
-      cs_subset_string(rd->sub, "compose_format");
-  mutt_expando_format(buf, sizeof(buf), 0, win->state.cols, NONULL(c_compose_format),
-                      compose_format_str, (intptr_t) rd->menu, MUTT_FORMAT_NO_FLAGS);
-
-  if (!mutt_str_equal(buf, attach_data->compose_format))
-  {
-    mutt_str_replace(&attach_data->compose_format, buf);
-    win->actions |= WA_REPAINT;
-  }
-#endif
-  win->actions |= WA_REPAINT;
-  mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
-  return 0;
-}
-
-/**
- * attach_repaint - Repaint the Window - Implements MuttWindow::repaint() - @ingroup window_repaint
- */
-int attach_repaint(struct MuttWindow *win)
-{
-  if (!mutt_window_is_visible(win))
-    return 0;
-#if 0
-  struct ComposeBarData *attach_data = win->wdata;
-
-  mutt_window_move(win, 0, 0);
-  mutt_curses_set_color_by_id(MT_COLOR_STATUS);
-  mutt_window_clrtoeol(win);
-
-  mutt_window_move(win, 0, 0);
-  mutt_draw_statusline(win->state.cols, attach_data->compose_format,
-                       mutt_str_len(attach_data->compose_format));
-  mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
-#endif
-  mutt_debug(LL_DEBUG5, "repaint done\n");
-  return 0;
 }
 
 /**
@@ -286,9 +235,6 @@ struct MuttWindow *attach_new(struct MuttWindow *parent, struct ComposeSharedDat
   struct ComposeAttachData *adata = attach_data_new(shared->email);
 
   shared->adata = adata;
-
-  // win_attach->recalc = attach_recalc;
-  // win_attach->repaint = attach_repaint;
 
   // NT_COLOR is handled by the Menu Window
   notify_observer_add(NeoMutt->notify, NT_CONFIG, attach_config_observer, win_attach);
