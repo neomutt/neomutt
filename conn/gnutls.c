@@ -611,6 +611,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   }
 
   cert_array_clear(&carr);
+  ARRAY_FREE(&carr);
   gnutls_x509_crt_deinit(cert);
   return (rc > 1);
 }
