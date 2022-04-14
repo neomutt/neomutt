@@ -375,7 +375,7 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
   while (len > 0)
   {
     if (!fgets(tmps, sizeof(tmps), s->fp_in))
-      return;
+      goto cleanup;
     len -= mutt_str_len(tmps);
     if (mutt_str_startswith(tmps, "begin "))
       break;
@@ -383,16 +383,16 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
   while (len > 0)
   {
     if (!fgets(tmps, sizeof(tmps), s->fp_in))
-      return;
+      goto cleanup;
     len -= mutt_str_len(tmps);
     if (mutt_str_startswith(tmps, "end"))
       break;
     pt = tmps;
     const unsigned char linelen = decode_byte(*pt);
     pt++;
-    for (unsigned char c = 0; c < linelen;)
+    for (unsigned char c = 0; (c < linelen) && *pt;)
     {
-      for (char l = 2; l <= 6; l += 2)
+      for (char l = 2; (l <= 6) && pt[0] && pt[1]; l += 2)
       {
         char out = decode_byte(*pt) << l;
         pt++;
@@ -407,6 +407,7 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
     }
   }
 
+cleanup:
   convert_to_state(cd, bufi, &k, s);
   convert_to_state(cd, 0, 0, s);
 
