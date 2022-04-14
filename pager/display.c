@@ -1110,6 +1110,10 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
       {
         mutt_mem_realloc(&(cur_line->search),
                          (cur_line->search_arr_size) * sizeof(struct TextSyntax));
+        // Zero the new entry
+        const int index = cur_line->search_arr_size - 1;
+        struct TextSyntax *ts = &cur_line->search[index];
+        memset(ts, 0, sizeof(*ts));
       }
       else
       {
