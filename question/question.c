@@ -59,7 +59,15 @@ int mutt_multi_choice(const char *prompt, const char *letters)
   bool redraw = true;
   int prompt_lines = 1;
 
-  const bool opt_cols = simple_color_is_set(MT_COLOR_OPTIONS);
+  struct AttrColor *ac_opts = NULL;
+  if (simple_color_is_set(MT_COLOR_OPTIONS))
+  {
+    struct AttrColor *ac_base = simple_color_get(MT_COLOR_NORMAL);
+    ac_base = merged_color_overlay(ac_base, simple_color_get(MT_COLOR_PROMPT));
+
+    ac_opts = simple_color_get(MT_COLOR_OPTIONS);
+    ac_opts = merged_color_overlay(ac_base, ac_opts);
+  }
 
   struct MuttWindow *old_focus = window_set_focus(win);
   enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
@@ -81,7 +89,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
         int width = mutt_strwidth(prompt) + 2; // + '?' + space
         /* If we're going to colour the options,
          * make an assumption about the modified prompt size. */
-        if (opt_cols)
+        if (ac_opts)
           width -= 2 * mutt_str_len(letters);
 
         prompt_lines = (width + win->state.cols - 1) / win->state.cols;
@@ -95,7 +103,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
 
       mutt_window_move(win, 0, 0);
 
-      if (opt_cols)
+      if (ac_opts)
       {
         char *cur = NULL;
 
@@ -108,7 +116,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
           if (isalnum(cur[1]) && (cur[2] == ')'))
           {
             // we have a single letter within parentheses
-            mutt_curses_set_color_by_id(MT_COLOR_OPTIONS);
+            mutt_curses_set_color(ac_opts);
             mutt_window_addch(win, cur[1]);
             prompt = cur + 3;
           }
