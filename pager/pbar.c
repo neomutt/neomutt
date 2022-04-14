@@ -184,7 +184,7 @@ static int pbar_color_observer(struct NotifyCallback *nc)
   struct EventColor *ev_c = nc->event_data;
   enum ColorId cid = ev_c->cid;
 
-  if (cid != MT_COLOR_STATUS)
+  if ((cid != MT_COLOR_STATUS) && (cid != MT_COLOR_NORMAL) && (cid != MT_COLOR_MAX))
     return 0;
 
   struct MuttWindow *win_pbar = nc->global_data;

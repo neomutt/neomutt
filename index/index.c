@@ -266,7 +266,8 @@ static int index_color_observer(struct NotifyCallback *nc)
 
   bool lists = (cid == MT_COLOR_INDEX) || (cid == MT_COLOR_INDEX_AUTHOR) ||
                (cid == MT_COLOR_INDEX_FLAGS) || (cid == MT_COLOR_INDEX_SUBJECT) ||
-               (cid == MT_COLOR_INDEX_TAG) || (cid == MT_COLOR_MAX);
+               (cid == MT_COLOR_INDEX_TAG) || (cid == MT_COLOR_TREE) ||
+               (cid == MT_COLOR_NORMAL) || (cid == MT_COLOR_MAX);
 
   // The changes aren't relevant to the index menu
   if (!simple && !lists)
@@ -297,6 +298,7 @@ static int index_color_observer(struct NotifyCallback *nc)
   struct IndexPrivateData *priv = panel_index->wdata;
   struct Menu *menu = priv->menu;
   menu->redraw = MENU_REDRAW_FULL;
+  win->actions |= WA_REPAINT;
   mutt_debug(LL_DEBUG5, "color done, request MENU_REDRAW_FULL\n");
 
   return 0;
