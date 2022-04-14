@@ -1646,6 +1646,7 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
     ctx_free(&shared->ctx);
   }
 
+  priv->menu->max = shared->mailbox->vcount;
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
 
   return FR_SUCCESS;
