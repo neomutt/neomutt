@@ -337,8 +337,8 @@ void resort_index(struct Context *ctx, struct Menu *menu)
 
   int new_index = -1;
   mutt_sort_headers(m, ctx->threads, false, &ctx->vsize);
-  /* Restore the current message */
 
+  /* Restore the current message */
   for (int i = 0; i < m->vcount; i++)
   {
     struct Email *e = mutt_get_virt_email(m, i);
@@ -357,6 +357,7 @@ void resort_index(struct Context *ctx, struct Menu *menu)
   if (old_index < 0)
     new_index = ci_first_message(m);
 
+  menu->max = m->vcount;
   menu_set_index(menu, new_index);
   menu_queue_redraw(menu, MENU_REDRAW_INDEX);
 }
