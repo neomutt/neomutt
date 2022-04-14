@@ -99,7 +99,7 @@ static int sbar_repaint(struct MuttWindow *win)
 
   mutt_window_move(win, 0, 0);
 
-  mutt_curses_set_color_by_id(MT_COLOR_STATUS);
+  mutt_curses_set_normal_backed_color_by_id(MT_COLOR_STATUS);
   mutt_window_move(win, 0, 0);
   mutt_paddstr(win, win->state.cols, priv->display);
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);

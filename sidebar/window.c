@@ -250,44 +250,40 @@ static size_t add_indent(char *buf, size_t buflen, const struct SbEntry *sbe)
  */
 static struct AttrColor *calc_color(const struct Mailbox *m, bool current, bool highlight)
 {
-  enum ColorId color = MT_COLOR_NORMAL;
   struct AttrColor *ac = NULL;
-
-  if (m->has_new)
-  {
-    color = MT_COLOR_SIDEBAR_NEW;
-    goto done;
-  }
-  if (m->msg_unread > 0)
-  {
-    color = MT_COLOR_SIDEBAR_UNREAD;
-    goto done;
-  }
-  if (m->msg_flagged > 0)
-  {
-    color = MT_COLOR_SIDEBAR_FLAGGED;
-    goto done;
-  }
 
   const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
   if (simple_color_is_set(MT_COLOR_SIDEBAR_SPOOLFILE) &&
       mutt_str_equal(mailbox_path(m), c_spool_file))
   {
-    color = MT_COLOR_SIDEBAR_SPOOLFILE;
-    goto done;
+    ac = merged_color_overlay(ac, simple_color_get(MT_COLOR_SIDEBAR_SPOOLFILE));
   }
 
-  if (simple_color_is_set(MT_COLOR_SIDEBAR_ORDINARY))
+  if (simple_color_is_set(MT_COLOR_SIDEBAR_FLAGGED) && (m->msg_flagged > 0))
   {
-    color = MT_COLOR_SIDEBAR_ORDINARY;
-    goto done;
+    ac = merged_color_overlay(ac, simple_color_get(MT_COLOR_SIDEBAR_FLAGGED));
   }
 
-done:
-  ac = simple_color_get(color);
+  if (simple_color_is_set(MT_COLOR_SIDEBAR_UNREAD) && (m->msg_unread > 0))
+  {
+    ac = merged_color_overlay(ac, simple_color_get(MT_COLOR_SIDEBAR_UNREAD));
+  }
+
+  if (simple_color_is_set(MT_COLOR_SIDEBAR_NEW) && m->has_new)
+  {
+    ac = merged_color_overlay(ac, simple_color_get(MT_COLOR_SIDEBAR_NEW));
+  }
+
+  if (!ac && simple_color_is_set(MT_COLOR_SIDEBAR_ORDINARY))
+  {
+    ac = simple_color_get(MT_COLOR_SIDEBAR_ORDINARY);
+  }
+
+  ac = merged_color_overlay(simple_color_get(MT_COLOR_NORMAL), ac);
 
   if (current || highlight)
   {
+    int color;
     if (current)
     {
       if (simple_color_is_set(MT_COLOR_SIDEBAR_INDICATOR))
@@ -300,9 +296,7 @@ done:
       color = MT_COLOR_SIDEBAR_HIGHLIGHT;
     }
 
-    struct AttrColor *ac_overlay = simple_color_get(color);
-
-    ac = merged_color_overlay(ac, ac_overlay);
+    ac = merged_color_overlay(ac, simple_color_get(color));
   }
 
   return ac;
@@ -858,7 +852,7 @@ static int draw_divider(struct SidebarWindowData *wdata, struct MuttWindow *win,
   const char *const c_sidebar_divider_char =
       cs_subset_string(NeoMutt->sub, "sidebar_divider_char");
 
-  mutt_curses_set_color_by_id(MT_COLOR_SIDEBAR_DIVIDER);
+  mutt_curses_set_normal_backed_color_by_id(MT_COLOR_SIDEBAR_DIVIDER);
 
   const bool c_sidebar_on_right =
       cs_subset_bool(NeoMutt->sub, "sidebar_on_right");

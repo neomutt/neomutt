@@ -302,7 +302,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
       window_redraw(NULL);
     }
     mutt_window_clearline(win, 0);
-    mutt_curses_set_color_by_id(MT_COLOR_PROMPT);
+    mutt_curses_set_normal_backed_color_by_id(MT_COLOR_PROMPT);
     mutt_window_addstr(win, field);
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
     mutt_refresh();
@@ -502,7 +502,7 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
   struct KeyEvent ch = { OP_NULL, OP_NULL };
   struct MuttWindow *old_focus = window_set_focus(win);
 
-  mutt_curses_set_color_by_id(MT_COLOR_PROMPT);
+  mutt_curses_set_normal_backed_color_by_id(MT_COLOR_PROMPT);
   mutt_window_mvaddstr(win, 0, 0, prompt);
   mutt_window_addstr(win, _(" ('?' for list): "));
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);

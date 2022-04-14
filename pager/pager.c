@@ -223,7 +223,7 @@ static int pager_repaint(struct MuttWindow *win)
     // attr_color_list_dump(&priv->ansi_list, "All AnsiColors");
 
     const bool c_tilde = cs_subset_bool(NeoMutt->sub, "tilde");
-    mutt_curses_set_color_by_id(MT_COLOR_TILDE);
+    mutt_curses_set_normal_backed_color_by_id(MT_COLOR_TILDE);
     while (priv->win_height < priv->pview->win_pager->state.rows)
     {
       mutt_window_clrtoeol(priv->pview->win_pager);

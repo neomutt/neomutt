@@ -189,7 +189,7 @@ static int cbar_repaint(struct MuttWindow *win)
   struct ComposeBarData *cbar_data = win->wdata;
 
   mutt_window_move(win, 0, 0);
-  mutt_curses_set_color_by_id(MT_COLOR_STATUS);
+  mutt_curses_set_normal_backed_color_by_id(MT_COLOR_STATUS);
   mutt_window_clrtoeol(win);
 
   mutt_window_move(win, 0, 0);

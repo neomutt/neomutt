@@ -72,31 +72,38 @@ static struct AttrColor *get_color(int index, unsigned char *s)
       rcl = regex_colors_get_list(MT_COLOR_INDEX_SUBJECT);
       break;
     case MT_COLOR_INDEX_TAG:
+    {
+      struct AttrColor *ac_merge = NULL;
       STAILQ_FOREACH(np, regex_colors_get_list(MT_COLOR_INDEX_TAG), entries)
       {
         if (mutt_strn_equal((const char *) (s + 1), np->pattern, strlen(np->pattern)))
-          return &np->attr_color;
+        {
+          ac_merge = merged_color_overlay(ac_merge, &np->attr_color);
+          continue;
+        }
         const char *transform = mutt_hash_find(TagTransforms, np->pattern);
         if (transform && mutt_strn_equal((const char *) (s + 1), transform, strlen(transform)))
         {
-          return &np->attr_color;
+          ac_merge = merged_color_overlay(ac_merge, &np->attr_color);
         }
       }
-      return NULL;
+      return ac_merge;
+    }
     default:
       return simple_color_get(type);
   }
 
+  struct AttrColor *ac_merge = NULL;
   STAILQ_FOREACH(np, rcl, entries)
   {
     if (mutt_pattern_exec(SLIST_FIRST(np->color_pattern),
                           MUTT_MATCH_FULL_ADDRESS, m_cur, e, NULL))
     {
-      return &np->attr_color;
+      ac_merge = merged_color_overlay(ac_merge, &np->attr_color);
     }
   }
 
-  return NULL;
+  return ac_merge;
 }
 
 /**

@@ -133,6 +133,16 @@ bool quoted_colors_parse_color(enum ColorId cid, uint32_t fg, uint32_t bg,
   color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
   mutt_buffer_pool_release(&buf);
 
+  if (q_level == 0)
+  {
+    // Copy the colour into the SimpleColors
+    struct AttrColor *ac_quoted = simple_color_get(MT_COLOR_QUOTED);
+    *ac_quoted = *ac;
+    ac_quoted->ref_count = 1;
+    if (ac_quoted->curses_color)
+      ac_quoted->curses_color->ref_count++;
+  }
+
   struct EventColor ev_c = { cid, ac };
   notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
 
