@@ -148,11 +148,17 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
     def_color = *(lines[line_num].syntax[0].attr_color);
   }
   else if (!(flags & MUTT_SHOWCOLOR))
+  {
     def_color = *simple_color_get(MT_COLOR_NORMAL);
-  else if (lines[m].cid == MT_COLOR_HEADER)
+  }
+  else if ((lines[m].cid == MT_COLOR_HEADER) && lines[m].syntax[0].attr_color)
+  {
     def_color = *lines[m].syntax[0].attr_color;
+  }
   else
+  {
     def_color = *simple_color_get(lines[m].cid);
+  }
 
   if ((flags & MUTT_SHOWCOLOR) && (lines[m].cid == MT_COLOR_QUOTED))
   {
