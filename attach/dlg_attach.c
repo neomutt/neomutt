@@ -509,10 +509,8 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
     if (rc == FR_CONTINUE)
     {
       op = priv->op;
-      continue;
     }
 
-    op = OP_NULL;
   } while (rc != FR_DONE);
   // ---------------------------------------------------------------------------
 
