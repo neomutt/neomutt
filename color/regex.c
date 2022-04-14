@@ -227,7 +227,7 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
     struct CursesColor *cc = ac->curses_color;
 
     // different colours
-    if (cc && ((cc->fg != fg) || (cc->bg != bg)))
+    if (!cc || (cc && ((cc->fg != fg) || (cc->bg != bg))))
     {
       cc = curses_color_new(fg, bg);
       if (cc)
@@ -235,8 +235,8 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
         attr_color_clear(&rcol->attr_color);
         cc->fg = fg;
         cc->bg = bg;
-        ac->curses_color = cc;
       }
+      ac->curses_color = cc;
     }
     ac->attrs = attrs;
   }
