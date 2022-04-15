@@ -1012,7 +1012,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
         break;
       }
       /* functions which are passed through from the pager */
-      case OP_ATTACHMENT_PIPE:
+      case OP_PIPE:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_pipe_attachment_list(actx, cur_att->fp, false, cur_att->body, false);

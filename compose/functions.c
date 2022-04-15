@@ -1077,7 +1077,7 @@ static int op_attachment_edit_type(struct ComposeSharedData *shared, int op)
  *
  * This function handles:
  * - OP_ATTACHMENT_FILTER
- * - OP_ATTACHMENT_PIPE
+ * - OP_PIPE
  */
 static int op_attachment_filter(struct ComposeSharedData *shared, int op)
 {
@@ -1945,7 +1945,7 @@ struct ComposeFunction ComposeFunctions[] = {
   { OP_ATTACHMENT_MOVE_DOWN,              op_attachment_move_down },
   { OP_ATTACHMENT_MOVE_UP,                op_attachment_move_up },
   { OP_ATTACHMENT_NEW_MIME,               op_attachment_new_mime },
-  { OP_ATTACHMENT_PIPE,                   op_attachment_filter },
+  { OP_PIPE,                              op_attachment_filter },
   { OP_ATTACHMENT_PRINT,                  op_attachment_print },
   { OP_ATTACHMENT_RENAME_ATTACHMENT,      op_attachment_rename_attachment },
   { OP_ATTACHMENT_SAVE,                   op_attachment_save },

@@ -609,7 +609,7 @@ struct AttachFunction AttachFunctions[] = {
   { OP_ATTACHMENT_COLLAPSE,         op_attachment_collapse },
   { OP_ATTACHMENT_DELETE,           op_attachment_delete },
   { OP_ATTACHMENT_EDIT_TYPE,        op_attachment_edit_type },
-  { OP_ATTACHMENT_PIPE,             op_attachment_pipe },
+  { OP_PIPE,                        op_attachment_pipe },
   { OP_ATTACHMENT_PRINT,            op_attachment_print },
   { OP_ATTACHMENT_SAVE,             op_attachment_save },
   { OP_ATTACHMENT_UNDELETE,         op_attachment_undelete },
