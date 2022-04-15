@@ -20,7 +20,7 @@ git clone https://github.com/neomutt/neomutt
 ```
 
 It's recommended to use the latest tagged version.
-The 'master' branch is used for development and may not be as stable.
+The 'main' branch is used for development and may not be as stable.
 
 ### Source Archive
 

@@ -3749,7 +3749,7 @@ set crypt_use_gpgme
         configurability can make it difficult when just getting started.  A few
         sample neomuttrc files come with NeoMutt, under
         <literal>doc/neomutt/samples/</literal>.  Among them,
-        <ulink url="https://github.com/neomutt/neomutt/blob/master/contrib/samples/sample.neomuttrc-starter">sample.neomuttrc-starter</ulink>
+        <ulink url="https://github.com/neomutt/neomutt/blob/main/contrib/samples/sample.neomuttrc-starter">sample.neomuttrc-starter</ulink>
         is a basic example config with a few suggested settings and pointers to
         useful programs.
       </para>
@@ -12280,12 +12280,12 @@ set imap_oauth_refresh_command="/path/to/oauth2.py --quiet --user=[email_address
       <para>
         For Office365, you can use the <literal>mutt_oauth2.py</literal> script
         written by Alexander Perlis:
-        <ulink url="https://github.com/neomutt/neomutt/blob/master/contrib/oauth2/mutt_oauth2.py">https://github.com/neomutt/neomutt/blob/master/contrib/oauth2/mutt_oauth2.py</ulink>
+        <ulink url="https://github.com/neomutt/neomutt/blob/main/contrib/oauth2/mutt_oauth2.py">https://github.com/neomutt/neomutt/blob/main/contrib/oauth2/mutt_oauth2.py</ulink>
       </para>
       <para>
         You'll need to get your own oauth client credentials by following the
         script instructions:
-        <ulink url="https://github.com/neomutt/neomutt/blob/master/contrib/oauth2/mutt_oauth2.py.README">https://github.com/neomutt/neomutt/blob/master/contrib/oauth2/mutt_oauth2.py.README</ulink>
+        <ulink url="https://github.com/neomutt/neomutt/blob/main/contrib/oauth2/mutt_oauth2.py.README">https://github.com/neomutt/neomutt/blob/main/contrib/oauth2/mutt_oauth2.py.README</ulink>
       </para>
 
 <screen>
@@ -12431,7 +12431,7 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
         </para>
          <para>
           Take a look at the benchmark script provided in the following directory:
-          <ulink url="https://github.com/neomutt/neomutt/blob/master/contrib/hcache-bench">contrib/hcache-bench</ulink>
+          <ulink url="https://github.com/neomutt/neomutt/blob/main/contrib/hcache-bench">contrib/hcache-bench</ulink>
           of the neomutt sources, there you can find a way of finding the
           storage backend for your needs.
         </para>
