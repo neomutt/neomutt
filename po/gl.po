@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2022-04-08 00:32+0100\n"
+"POT-Creation-Date: 2022-04-15 13:40+0100\n"
 "PO-Revision-Date: 2001-04-22 22:05+0200\n"
 "Last-Translator: Roberto Suarez Soto <ask4it@bigfoot.com>\n"
 "Language-Team: Galician <trasno@ceu.fi.udc.es>\n"
@@ -92,13 +92,13 @@ msgstr ""
 #: autocrypt/dlg_autocrypt.c:99 browser/browser.c:114 browser/browser.c:127
 #: conn/dlg_verifycert.c:69 dlg_postpone.c:92 history/dlg_history.c:75
 #: ncrypt/dlg_gpgme.c:104 ncrypt/dlg_pgp.c:100 ncrypt/dlg_smime.c:75
-#: pager/dlg_pager.c:89 pager/dlg_pager.c:100 pager/dlg_pager.c:110
-#: pager/dlg_pager.c:126 pattern/dlg_pattern.c:101
+#: pager/dlg_pager.c:88 pager/dlg_pager.c:99 pager/dlg_pager.c:109
+#: pager/dlg_pager.c:125 pattern/dlg_pattern.c:101
 msgid "Exit"
 msgstr "Saír"
 
 #: alias/dlg_alias.c:102 dlg_postpone.c:93 index/dlg_index.c:108
-#: index/dlg_index.c:124 pager/dlg_pager.c:114 pager/dlg_pager.c:131
+#: index/dlg_index.c:124 pager/dlg_pager.c:113 pager/dlg_pager.c:130
 msgid "Del"
 msgstr "Borrar"
 
@@ -125,8 +125,8 @@ msgstr "Seleccionar"
 #: compose/compose.c:106 compose/compose.c:121 conn/dlg_verifycert.c:70
 #: dlg_postpone.c:95 history/dlg_history.c:78 index/dlg_index.c:114
 #: index/dlg_index.c:130 ncrypt/dlg_gpgme.c:107 ncrypt/dlg_pgp.c:103
-#: ncrypt/dlg_smime.c:77 pager/dlg_pager.c:92 pager/dlg_pager.c:117
-#: pager/dlg_pager.c:133 pattern/dlg_pattern.c:103
+#: ncrypt/dlg_smime.c:77 pager/dlg_pager.c:91 pager/dlg_pager.c:116
+#: pager/dlg_pager.c:132 pattern/dlg_pattern.c:103
 msgid "Help"
 msgstr "Axuda"
 
@@ -192,7 +192,7 @@ msgid "adu"
 msgstr ""
 
 #. L10N: ask for a limit to apply
-#: alias/gui.c:79 index/functions.c:1540
+#: alias/gui.c:79 index/functions.c:1576
 #, c-format
 msgid "Limit: %s"
 msgstr "Límite: %s"
@@ -243,11 +243,11 @@ msgid "Not available in this menu"
 msgstr "Non dispoñible neste menú"
 
 #
-#: attach/functions.c:53 index/functions.c:2784
+#: attach/functions.c:53 index/functions.c:2822
 msgid "Function not permitted in attach-message mode"
 msgstr "Función non permitida no modo \"adxuntar-mensaxe\""
 
-#: attach/functions.c:117 index/functions.c:2778 mx.c:943
+#: attach/functions.c:117 index/functions.c:2816 mx.c:943
 msgid "Mailbox is read-only"
 msgstr "O buzón é de só lectura"
 
@@ -279,7 +279,7 @@ msgstr "O borrado de adxuntos de mensaxes PGP non está soportado"
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Só o borrado de adxuntos de mensaxes multiparte está soportado"
 
-#: attach/functions.c:576 index/functions.c:2542
+#: attach/functions.c:576 index/functions.c:2580
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
@@ -293,8 +293,8 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "A entrada \"compose\" no ficheiro Mailcap require %%s"
 
 #: attach/mutt_attach.c:158 attach/mutt_attach.c:297 compmbox/compress.c:343
-#: compose/functions.c:1720 gui/curs_lib.c:369 index/dlg_index.c:1186
-#: index/dlg_index.c:1233 pager/dlg_pager.c:474 pager/do_pager.c:168
+#: compose/functions.c:1720 gui/curs_lib.c:369 index/dlg_index.c:1188
+#: index/dlg_index.c:1235 pager/dlg_pager.c:473 pager/do_pager.c:168
 #: pager/message.c:342 send/sendlib.c:1067
 #, c-format
 msgid "Error running \"%s\""
@@ -339,7 +339,7 @@ msgid "MIME type not defined.  Can't view attachment."
 msgstr "Tipo MIME non definido. Non se pode ver-lo ficheiro adxunto."
 
 #: attach/mutt_attach.c:547 attach/mutt_attach.c:747 attach/mutt_attach.c:1171
-#: attach/mutt_attach.c:1239 handler.c:587 ncrypt/dlg_pgp.c:736
+#: attach/mutt_attach.c:1239 handler.c:588 ncrypt/dlg_pgp.c:736
 #: ncrypt/pgpkey.c:280
 msgid "Can't create filter"
 msgstr "Non podo crea-lo filtro"
@@ -423,7 +423,7 @@ msgstr "¿Imprimir adxunto?"
 msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
-#: attach/recvattach.c:1114
+#: attach/recvattach.c:1135
 #, fuzzy
 msgid "Can't decrypt encrypted message"
 msgstr "Non foi posible atopar ningunha mensaxe marcada."
@@ -715,7 +715,7 @@ msgstr "Borrando a subscripción con %s..."
 msgid "Catchup"
 msgstr ""
 
-#: browser/browser.c:636 browser/browser.c:1533 browser/browser.c:1806
+#: browser/browser.c:636 browser/browser.c:1534 browser/browser.c:1807
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s non é un directorio"
@@ -735,112 +735,112 @@ msgstr ""
 msgid "Mailboxes [%d]"
 msgstr "Buzóns [%d]"
 
-#: browser/browser.c:943
+#: browser/browser.c:944
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Subscrito [%s], máscara de ficheiro: %s"
 
-#: browser/browser.c:949
+#: browser/browser.c:950
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Directorio [%s], máscara de ficheiro: %s"
 
-#: browser/browser.c:1012
+#: browser/browser.c:1013
 msgid "Can't attach a directory"
 msgstr "Non é posible adxuntar un directorio"
 
-#: browser/browser.c:1388 browser/browser.c:1879 browser/browser.c:2046
+#: browser/browser.c:1389 browser/browser.c:1880 browser/browser.c:2047
 msgid "No files match the file mask"
 msgstr "Non hai ficheiros que coincidan coa máscara"
 
-#: browser/browser.c:1613
+#: browser/browser.c:1614
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "A operación 'Crear' está soportada só en buzóns IMAP"
 
-#: browser/browser.c:1641
+#: browser/browser.c:1642
 #, fuzzy
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "A operación 'Crear' está soportada só en buzóns IMAP"
 
-#: browser/browser.c:1667
+#: browser/browser.c:1668
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "A operación 'Borrar' está soportada só en buzóns IMAP"
 
-#: browser/browser.c:1678
+#: browser/browser.c:1679
 #, fuzzy
 msgid "Can't delete currently selected mailbox"
 msgstr "ve-lo nome do ficheiro seleccioado actualmente"
 
-#: browser/browser.c:1682
+#: browser/browser.c:1683
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "¿Seguro de borra-lo buzón \"%s\"?"
 
-#: browser/browser.c:1692
+#: browser/browser.c:1693
 msgid "Mailbox deleted"
 msgstr "Buzón borrado"
 
-#: browser/browser.c:1697
+#: browser/browser.c:1698
 #, fuzzy
 msgid "Mailbox deletion failed"
 msgstr "Buzón borrado"
 
-#: browser/browser.c:1702
+#: browser/browser.c:1703
 msgid "Mailbox not deleted"
 msgstr "Buzón non borrado"
 
-#: browser/browser.c:1730
+#: browser/browser.c:1731
 msgid "Chdir to: "
 msgstr "Cambiar directorio a: "
 
-#: browser/browser.c:1794 browser/browser.c:1873
+#: browser/browser.c:1795 browser/browser.c:1874
 msgid "Error scanning directory"
 msgstr "Erro lendo directorio"
 
-#: browser/browser.c:1824
+#: browser/browser.c:1825
 msgid "File Mask: "
 msgstr "Máscara de ficheiro: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser/browser.c:1895
+#: browser/browser.c:1896
 #, fuzzy
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "¿Ordear inversamente por (d)ata, (a)lfabeto, (t)amaño ou (s)en orden?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser/browser.c:1898
+#: browser/browser.c:1899
 #, fuzzy
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "¿Ordear por (d)ata, (a)lfabeto, (t)amaño ou (s)en orden?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser/browser.c:1901
+#: browser/browser.c:1902
 msgid "dazecwn"
 msgstr ""
 
-#: browser/browser.c:2030
+#: browser/browser.c:2031
 msgid "New file name: "
 msgstr "Novo nome de ficheiro: "
 
-#: browser/browser.c:2064
+#: browser/browser.c:2065
 msgid "Can't view a directory"
 msgstr "Non é posible ver un directorio"
 
-#: browser/browser.c:2081
+#: browser/browser.c:2082
 msgid "Error trying to view file"
 msgstr "Erro intentando ver ficheiro"
 
-#: browser/browser.c:2175
+#: browser/browser.c:2176
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "Subscribindo a %s..."
 
-#: browser/browser.c:2177
+#: browser/browser.c:2178
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Borrando a subscripción con %s..."
 
-#: browser/browser.c:2202
+#: browser/browser.c:2203
 #, fuzzy
 msgid "No newsgroups match the mask"
 msgstr "Non hai ficheiros que coincidan coa máscara"
@@ -1038,7 +1038,7 @@ msgstr "marcar mensaxes coincidintes cun patrón"
 msgid "nospam: no matching pattern"
 msgstr "quitar marca a mensaxes coincidintes cun patrón"
 
-#: command_parse.c:1344 imap/imap.c:1332
+#: command_parse.c:1344 imap/imap.c:1333
 #, fuzzy, c-format
 msgid "Subscribed to %s"
 msgstr "Subscribindo a %s..."
@@ -1053,7 +1053,17 @@ msgstr "Subscribindo a %s..."
 msgid "No folder specified"
 msgstr "Non se especificou tema."
 
-#: command_parse.c:1680 imap/imap.c:1334
+#: command_parse.c:1391
+#, c-format
+msgid "tag format '%s' already registered as '%s'"
+msgstr ""
+
+#: command_parse.c:1433
+#, c-format
+msgid "tag transform '%s' already registered as '%s'"
+msgstr ""
+
+#: command_parse.c:1680 imap/imap.c:1335
 #, fuzzy, c-format
 msgid "Unsubscribed from %s"
 msgstr "Borrando a subscripción con %s..."
@@ -1431,7 +1441,7 @@ msgstr "Abrir buzón do que adxuntar mensaxe"
 msgid "Open newsgroup to attach message from"
 msgstr "Abrir buzón do que adxuntar mensaxe"
 
-#: compose/functions.c:754 main.c:1370
+#: compose/functions.c:754 main.c:1371
 #, fuzzy, c-format
 msgid "Unable to open mailbox %s"
 msgstr "¡Imposible bloquea-lo buzón!"
@@ -1802,7 +1812,7 @@ msgstr "O salto non está implementado nos diálogos"
 msgid "Search is not implemented for this menu"
 msgstr "A búsqueda non está implementada neste menú"
 
-#: conn/gnutls.c:145 conn/gnutls.c:646
+#: conn/gnutls.c:145 conn/gnutls.c:647
 msgid "Unable to get certificate from peer"
 msgstr "Non foi posible obter un certificado do outro extremo"
 
@@ -1898,27 +1908,27 @@ msgstr "Certificado gardado"
 msgid "Warning: Couldn't save certificate"
 msgstr "Atención: non foi posible garda-lo certificado"
 
-#: conn/gnutls.c:813 conn/gnutls.c:861
+#: conn/gnutls.c:814 conn/gnutls.c:862
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr ""
 
-#: conn/gnutls.c:870
+#: conn/gnutls.c:871
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr ""
 
 #. L10N: This is a warning when trying to set the host name for
 #. TLS Server Name Indication (SNI).  This allows the server to present
 #. the correct certificate if it supports multiple hosts.
-#: conn/gnutls.c:943 conn/openssl.c:1164
+#: conn/gnutls.c:944 conn/openssl.c:1164
 msgid "Warning: unable to set TLS SNI host name"
 msgstr ""
 
-#: conn/gnutls.c:990
+#: conn/gnutls.c:991
 #, fuzzy, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "Conectando mediante SSL usando %s (%s)"
 
-#: conn/gnutls.c:1072 conn/gnutls.c:1101
+#: conn/gnutls.c:1073 conn/gnutls.c:1102
 msgid "Error: no TLS socket open"
 msgstr ""
 
@@ -2339,8 +2349,8 @@ msgid_plural "(+%d more)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: flags.c:386 index/functions.c:767 index/functions.c:871
-#: index/functions.c:887 index/functions.c:1023 mutt_thread.c:1264
+#: flags.c:386 index/functions.c:796 index/functions.c:900
+#: index/functions.c:916 index/functions.c:1052 mutt_thread.c:1264
 #: mutt_thread.c:1330 mutt_thread.c:1416
 msgid "Threading is not enabled"
 msgstr "Enfiamento non habilitado"
@@ -2408,27 +2418,27 @@ msgstr "[-- Tipo: %s/%s, Codificación: %s, Tamaño: %s --]\n"
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Tipo: %s/%s, Codificación: %s, Tamaño: %s --]\n"
 
-#: handler.c:556
+#: handler.c:557
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Automostra usando %s --]\n"
 
-#: handler.c:557
+#: handler.c:558
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Chamando ó comando de automostra: %s"
 
-#: handler.c:591
+#: handler.c:592
 #, fuzzy, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- o %s --]\n"
 
-#: handler.c:617 handler.c:638
+#: handler.c:618 handler.c:639
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Automostra da stderr de %s --]\n"
 
-#: handler.c:767
+#: handler.c:768
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- Erro: mensaxe/corpo externo non ten parámetro \"access-type\"--]\n"
 
@@ -2447,7 +2457,7 @@ msgstr "[-- Erro: mensaxe/corpo externo non ten parámetro \"access-type\"--]\n"
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
-#: handler.c:811
+#: handler.c:812
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
@@ -2476,7 +2486,7 @@ msgstr[1] ""
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
-#: handler.c:834
+#: handler.c:835
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 msgid_plural "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
@@ -2490,7 +2500,7 @@ msgstr[1] "[-- Este adxunto %s/%s (tamaño %s bytes) foi borrado --]\n"
 #.
 #. Caution: Argument three %3$ is also defined but should not be used
 #. in this translation!
-#: handler.c:852
+#: handler.c:853
 #, fuzzy
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
@@ -2502,12 +2512,12 @@ msgstr ""
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
-#: handler.c:860
+#: handler.c:861
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
 msgstr "[-- Este adxunto %s/%s foi borrado --]\n"
 
-#: handler.c:870
+#: handler.c:871
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- nome: %s --]\n"
@@ -2515,7 +2525,7 @@ msgstr "[-- nome: %s --]\n"
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
 #. The "%s/%s" is a MIME type, e.g. "text/plain".
-#: handler.c:888
+#: handler.c:889
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -2530,7 +2540,7 @@ msgstr ""
 #. The "%s/%s" is a MIME type, e.g. "text/plain".  The %s after
 #. access-type is an access-type as defined by the MIME RFCs, e.g. "FTP",
 #. "LOCAL-FILE", "MAIL-SERVER".
-#: handler.c:909
+#: handler.c:910
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -2539,74 +2549,74 @@ msgstr ""
 "[-- Este adxunto %s/%s non está incluido, --]\n"
 "[-- e o \"access-type\" %s indicado non está soportado --]\n"
 
-#: handler.c:1100
+#: handler.c:1101
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
 msgstr "[-- Erro: ¡Non foi posible amosar ningunha parte de Multipart/Alternative--]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
-#: handler.c:1246
+#: handler.c:1247
 #, fuzzy, c-format
 msgid "[-- Attachment #%d: %s --]\n"
 msgstr "[-- Adxunto #%d: %s --]\n"
 
-#: handler.c:1252
+#: handler.c:1253
 #, fuzzy, c-format
 msgid "[-- Attachment #%d --]\n"
 msgstr "[-- Adxunto #%d --]\n"
 
-#: handler.c:1270
+#: handler.c:1271
 msgid "One or more parts of this message could not be displayed"
 msgstr ""
 
-#: handler.c:1341
+#: handler.c:1342
 #, fuzzy
 msgid "Unable to open 'memory stream'"
 msgstr "¡Non foi posible abri-lo ficheiro temporal"
 
-#: handler.c:1351
+#: handler.c:1352
 msgid "Unable to open temporary file"
 msgstr "¡Non foi posible abri-lo ficheiro temporal"
 
-#: handler.c:1400
+#: handler.c:1401
 #, fuzzy
 msgid "failed to re-open 'memory stream'"
 msgstr "¡Non foi posible abri-lo ficheiro temporal"
 
-#: handler.c:1686
+#: handler.c:1687
 msgid "Error: multipart/signed has no protocol"
 msgstr "Erro: multipart/signed non ten protocolo"
 
 #. L10N: %s expands to a keystroke/key binding, e.g. 'v'.
-#: handler.c:1764
+#: handler.c:1762
 #, fuzzy, c-format
 msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
 msgstr "[-- Este adxunto %s/%s (use '%s' para ver esta parte) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #. The last %s expands to a keystroke/key binding, e.g. 'v'.
-#: handler.c:1771
+#: handler.c:1769
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
 msgstr "[-- %s/%s non está soportado (use '%s' para ver esta parte) --]\n"
 
-#: handler.c:1779
+#: handler.c:1777
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- Este adxunto %s/%s (cómpre que 'view-attachments' esté vinculado a unha tecla) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
-#: handler.c:1785
+#: handler.c:1783
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- %s/%s non está soportado (cómpre que 'view-attachments' esté vinculado a unha tecla) --]\n"
 
-#: handler.c:1794
+#: handler.c:1792
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
 msgstr "[-- Este adxunto %s/%s --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
-#: handler.c:1799
+#: handler.c:1797
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- %s/%s non está soportado --]\n"
@@ -2851,79 +2861,79 @@ msgstr ""
 msgid "Encrypted connection unavailable"
 msgstr "Chave da sesión encriptada"
 
-#: imap/imap.c:1304
+#: imap/imap.c:1305
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Subscribindo a %s..."
 
-#: imap/imap.c:1306
+#: imap/imap.c:1307
 #, fuzzy, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Borrando a subscripción con %s..."
 
-#: imap/imap.c:1486 imap/message.c:1757
+#: imap/imap.c:1487 imap/message.c:1757
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Copiando %d mensaxes a %s..."
 msgstr[1] "Copiando %d mensaxes a %s..."
 
-#: imap/imap.c:1503 imap/imap.c:2159 imap/message.c:1796 muttlib.c:1421
+#: imap/imap.c:1504 imap/imap.c:2160 imap/message.c:1796 muttlib.c:1421
 #, c-format
 msgid "Create %s?"
 msgstr "¿Crear %s?"
 
-#: imap/imap.c:1573
+#: imap/imap.c:1574
 #, fuzzy
 msgid "Expunge failed"
 msgstr "O login fallou."
 
-#: imap/imap.c:1591
+#: imap/imap.c:1592
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "Marcando %d mensaxes borradas ..."
 msgstr[1] "Marcando %d mensaxes borradas ..."
 
-#: imap/imap.c:1631
+#: imap/imap.c:1632
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "Gardando indicadores de estado da mensaxe... [%d/%d]"
 msgstr[1] "Gardando indicadores de estado da mensaxe... [%d/%d]"
 
-#: imap/imap.c:1688
+#: imap/imap.c:1689
 msgid "Error saving flags. Close anyway?"
 msgstr ""
 
-#: imap/imap.c:1695
+#: imap/imap.c:1696
 #, fuzzy
 msgid "Error saving flags"
 msgstr "¡Erro analizando enderezo!"
 
-#: imap/imap.c:1721
+#: imap/imap.c:1722
 msgid "Expunging messages from server..."
 msgstr "Borrando mensaxes do servidor..."
 
-#: imap/imap.c:1727
+#: imap/imap.c:1728
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr ""
 
-#: imap/imap.c:1959 nntp/nntp.c:2373
+#: imap/imap.c:1960 nntp/nntp.c:2373
 #, c-format
 msgid "Selecting %s..."
 msgstr "Seleccionando %s..."
 
-#: imap/imap.c:2126
+#: imap/imap.c:2127
 #, fuzzy
 msgid "Error opening mailbox"
 msgstr "¡Erro cando se estaba a escribi-lo buzón!"
 
-#: imap/imap.c:2269
+#: imap/imap.c:2270
 msgid "IMAP server doesn't support custom flags"
 msgstr ""
 
-#: imap/imap.c:2313
+#: imap/imap.c:2314
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "Mes inválido: %s"
@@ -2958,7 +2968,7 @@ msgstr "¡Non foi posible reabri-lo buzón"
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Non foi posible recoller cabeceiras da versión de IMAP do servidor"
 
-#: imap/message.c:1147 index/functions.c:2298 nntp/nntp.c:1227 pop/pop.c:369
+#: imap/message.c:1147 index/functions.c:2336 nntp/nntp.c:1227 pop/pop.c:369
 #, fuzzy
 msgid "Fetching message headers..."
 msgstr "Recollendo cabeceiras de mensaxes... [%d/%d]"
@@ -3004,7 +3014,7 @@ msgstr "¿Seguir?"
 msgid "Quit"
 msgstr "Saír"
 
-#: index/dlg_index.c:112 pager/dlg_pager.c:115
+#: index/dlg_index.c:112 pager/dlg_pager.c:114
 msgid "Reply"
 msgstr "Responder"
 
@@ -3012,11 +3022,11 @@ msgstr "Responder"
 msgid "Group"
 msgstr "Grupo"
 
-#: index/dlg_index.c:127 pager/dlg_pager.c:129
+#: index/dlg_index.c:127 pager/dlg_pager.c:128
 msgid "Post"
 msgstr ""
 
-#: index/dlg_index.c:128 pager/dlg_pager.c:130
+#: index/dlg_index.c:128 pager/dlg_pager.c:129
 #, fuzzy
 msgid "Followup"
 msgstr "¿Responder a %s%s?"
@@ -3027,43 +3037,43 @@ msgstr "¿Responder a %s%s?"
 msgid "%s: Operation not permitted by ACL"
 msgstr ""
 
-#: index/dlg_index.c:704
+#: index/dlg_index.c:705
 msgid "Failed to create query, aborting"
 msgstr ""
 
-#: index/dlg_index.c:749 muttlib.c:1404 mx.c:221 mx.c:359
+#: index/dlg_index.c:750 muttlib.c:1404 mx.c:221 mx.c:359
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "¡%s non é un buzón"
 
-#: index/dlg_index.c:1165
+#: index/dlg_index.c:1167
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "O buzón foi modificado externamente. Os indicadores poden ser erróneos"
 
-#: index/dlg_index.c:1174 pager/dlg_pager.c:447
+#: index/dlg_index.c:1176 pager/dlg_pager.c:446
 msgid "New mail in this mailbox"
 msgstr "Novo correo neste buzón"
 
-#: index/dlg_index.c:1194
+#: index/dlg_index.c:1196
 #, fuzzy
 msgid "Mailbox was externally modified"
 msgstr "O buzón foi modificado externamente. Os indicadores poden ser erróneos"
 
-#: index/dlg_index.c:1308 index/functions.c:2759
+#: index/dlg_index.c:1310 index/functions.c:2797
 msgid "No mailbox is open"
 msgstr "Non hai buzóns abertos"
 
-#: index/dlg_index.c:1315
+#: index/dlg_index.c:1317
 msgid "No tagged messages"
 msgstr "Non hai mensaxes marcadas"
 
-#: index/dlg_index.c:1319 index/functions.c:646
+#: index/dlg_index.c:1321 index/functions.c:675
 #, fuzzy
 msgid "Nothing to do"
 msgstr "Conectando con %s.."
 
 #. L10N: CHECK_ACL
-#: index/functions.c:253
+#: index/functions.c:282
 #, fuzzy
 msgid "Can't delete message"
 msgstr "Non hai mensaxes recuperadas."
@@ -3072,14 +3082,14 @@ msgstr "Non hai mensaxes recuperadas."
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:294 index/functions.c:930
+#: index/functions.c:323 index/functions.c:959
 #, fuzzy
 msgid "Can't delete messages"
 msgstr "Non hai mensaxes recuperadas."
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index/functions.c:420
+#: index/functions.c:449
 #, fuzzy, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -3089,169 +3099,169 @@ msgstr[1] "O buzón non cambiou"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index/functions.c:427
+#: index/functions.c:456
 #, fuzzy
 msgid "No labels changed"
 msgstr "O buzón non cambiou"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:447
+#: index/functions.c:476
 #, fuzzy
 msgid "Can't edit message"
 msgstr "Non foi posible escribi-la mensaxe"
 
-#: index/functions.c:493
+#: index/functions.c:522
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "¿Saír de NeoMutt sen gardar?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:530
+#: index/functions.c:559
 #, fuzzy
 msgid "Can't flag message"
 msgstr "amosar unha mensaxe"
 
-#: index/functions.c:642
+#: index/functions.c:671
 msgid "Jump to message: "
 msgstr "Saltar á mensaxe: "
 
-#: index/functions.c:651
+#: index/functions.c:680
 msgid "Argument must be a message number"
 msgstr "O parámetro debe ser un número de mensaxe"
 
-#: index/functions.c:655
+#: index/functions.c:684
 msgid "Invalid message number"
 msgstr "Número de mensaxe inválido"
 
-#: index/functions.c:659
+#: index/functions.c:688
 msgid "That message is not visible"
 msgstr "Esa mensaxe non é visible"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:761
+#: index/functions.c:790
 #, fuzzy
 msgid "Can't break thread"
 msgstr "Non se puido crea-lo filtro"
 
-#: index/functions.c:779
+#: index/functions.c:808
 msgid "Thread broken"
 msgstr ""
 
-#: index/functions.c:785
+#: index/functions.c:814
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr ""
 
-#: index/functions.c:810
+#: index/functions.c:839
 msgid "Open mailbox in read-only mode"
 msgstr "Abrir buzón en modo de só lectura"
 
-#: index/functions.c:815
+#: index/functions.c:844
 msgid "Open mailbox"
 msgstr "Abrir buzón"
 
-#: index/functions.c:911
+#: index/functions.c:940
 #, fuzzy
 msgid "Thread contains unread or flagged messages"
 msgstr "O fío contén mensaxes sen ler"
 
-#: index/functions.c:933
+#: index/functions.c:962
 msgid "Delete messages matching: "
 msgstr "Borrar as mensaxes que coincidan con: "
 
-#: index/functions.c:973
+#: index/functions.c:1002
 msgid "Limit to messages matching: "
 msgstr "Limitar ás mensaxes que coincidan con: "
 
-#: index/functions.c:1003
+#: index/functions.c:1032
 msgid "To view all messages, limit to \"all\""
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: index/functions.c:1015
+#: index/functions.c:1044
 msgid "Can't link threads"
 msgstr ""
 
-#: index/functions.c:1025
+#: index/functions.c:1054
 msgid "No Message-ID: header available to link thread"
 msgstr ""
 
-#: index/functions.c:1038
+#: index/functions.c:1067
 msgid "Threads linked"
 msgstr ""
 
-#: index/functions.c:1043
+#: index/functions.c:1072
 msgid "No thread linked"
 msgstr ""
 
-#: index/functions.c:1072 mx.c:1290 mx.c:1310
+#: index/functions.c:1101 mx.c:1290 mx.c:1310
 msgid "Folder doesn't support tagging, aborting"
 msgstr ""
 
-#: index/functions.c:1093
+#: index/functions.c:1122
 #, fuzzy
 msgid "No tag specified, aborting"
 msgstr "Non hai tema, cancelando"
 
-#: index/functions.c:1103
+#: index/functions.c:1132
 msgid "Update tags..."
 msgstr ""
 
-#: index/functions.c:1144
+#: index/functions.c:1173
 msgid "Failed to modify tags, aborting"
 msgstr ""
 
-#: index/functions.c:1259
+#: index/functions.c:1288
 #, fuzzy
 msgid "No new messages in this limited view"
 msgstr "A mensaxe pai non é visible na vista limitada"
 
-#: index/functions.c:1261
+#: index/functions.c:1290
 #, fuzzy
 msgid "No new messages"
 msgstr "Non hai novas mensaxes"
 
-#: index/functions.c:1266
+#: index/functions.c:1295
 #, fuzzy
 msgid "No unread messages in this limited view"
 msgstr "A mensaxe pai non é visible na vista limitada"
 
-#: index/functions.c:1268
+#: index/functions.c:1297
 #, fuzzy
 msgid "No unread messages"
 msgstr "Non hai mensaxes sen ler"
 
-#: index/functions.c:1283 menu/functions.c:108 pager/functions.c:514
+#: index/functions.c:1313 menu/functions.c:108 pager/functions.c:512
 #: pattern/pattern.c:582 pattern/pattern.c:740
 msgid "Search wrapped to top"
 msgstr "A búsqueda volveu ó principio"
 
-#: index/functions.c:1288 pager/functions.c:540 pattern/pattern.c:593
+#: index/functions.c:1318 pager/functions.c:538 pattern/pattern.c:593
 #: pattern/pattern.c:751
 msgid "Search wrapped to bottom"
 msgstr "A búsqueda volveu ó final"
 
-#: index/functions.c:1333
+#: index/functions.c:1363
 msgid "No more threads"
 msgstr "Non hai máis fíos"
 
-#: index/functions.c:1335
+#: index/functions.c:1365
 msgid "You are on the first thread"
 msgstr "Está no primeiro fío"
 
-#: index/functions.c:1352 index/functions.c:1727
+#: index/functions.c:1385 index/functions.c:1764
 msgid "You are on the last message"
 msgstr "Está na última mensaxe"
 
-#: index/functions.c:1361 index/functions.c:1410
+#: index/functions.c:1395 index/functions.c:1445
 msgid "No undeleted messages"
 msgstr "Non hai mensaxes recuperadas"
 
-#: index/functions.c:1384
+#: index/functions.c:1418
 #, fuzzy
 msgid "No mailboxes have new mail"
 msgstr "Non hai buzóns con novo correo."
 
-#: index/functions.c:1401 index/functions.c:1768
+#: index/functions.c:1436 index/functions.c:1806
 msgid "You are on the first message"
 msgstr "Está na primeira mensaxe"
 
@@ -3259,16 +3269,16 @@ msgstr "Está na primeira mensaxe"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1464
+#: index/functions.c:1500
 #, fuzzy
 msgid "Can't mark messages as read"
 msgstr "saltar á mensaxe pai no fío"
 
-#: index/functions.c:1535
+#: index/functions.c:1571
 msgid "No limit pattern is in effect"
 msgstr "Non hai patrón limitante efectivo"
 
-#: index/functions.c:1624
+#: index/functions.c:1661
 msgid "Tag messages matching: "
 msgstr "Marcar as mensaxes que coincidan con: "
 
@@ -3276,30 +3286,30 @@ msgstr "Marcar as mensaxes que coincidan con: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1640 index/functions.c:2148
+#: index/functions.c:1677 index/functions.c:2186
 #, fuzzy
 msgid "Can't undelete messages"
 msgstr "Non hai mensaxes recuperadas."
 
-#: index/functions.c:1643
+#: index/functions.c:1680
 msgid "Undelete messages matching: "
 msgstr "Recuperar as mensaxes que coincidan con: "
 
-#: index/functions.c:1657
+#: index/functions.c:1694
 msgid "Untag messages matching: "
 msgstr "Desmarcar as mensaxes que coincidan con: "
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index/functions.c:1680
+#: index/functions.c:1717
 #, fuzzy
 msgid "Enter macro stroke: "
 msgstr "Introduza keyID para %s: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index/functions.c:1697
+#: index/functions.c:1734
 #, fuzzy
 msgid "message hotkey"
 msgstr "Mensaxe posposta."
@@ -3307,116 +3317,116 @@ msgstr "Mensaxe posposta."
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index/functions.c:1702
+#: index/functions.c:1739
 #, fuzzy, c-format
 msgid "Message bound to %s"
 msgstr "Mensaxe rebotada"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index/functions.c:1712
+#: index/functions.c:1749
 #, fuzzy
 msgid "No message ID to macro"
 msgstr "Non hai mensaxes nese buzón"
 
-#: index/functions.c:1818
+#: index/functions.c:1856
 msgid "Quit NeoMutt?"
 msgstr "¿Saír de NeoMutt?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2058
+#: index/functions.c:2096
 msgid "Can't toggle new"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2111
+#: index/functions.c:2149
 #, fuzzy
 msgid "Can't undelete message"
 msgstr "Non hai mensaxes recuperadas."
 
-#: index/functions.c:2247
+#: index/functions.c:2285
 #, fuzzy
 msgid "Logged out of IMAP servers"
 msgstr "Pechando conexión ó servidor IMAP.."
 
-#: index/functions.c:2294
+#: index/functions.c:2332
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: index/functions.c:2361
+#: index/functions.c:2399
 #, fuzzy
 msgid "No deleted messages found in the thread"
 msgstr "borrar tódalas mensaxes no fío"
 
-#: index/functions.c:2385
+#: index/functions.c:2423
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Introduza keyID para %s: "
 
-#: index/functions.c:2396
+#: index/functions.c:2434
 msgid "Article has no parent reference"
 msgstr ""
 
-#: index/functions.c:2419
+#: index/functions.c:2457
 #, fuzzy
 msgid "Message is not visible in limited view"
 msgstr "A mensaxe pai non é visible na vista limitada"
 
-#: index/functions.c:2424
+#: index/functions.c:2462
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "Borrando mensaxes do servidor..."
 
-#: index/functions.c:2437 nntp/nntp.c:2645
+#: index/functions.c:2475 nntp/nntp.c:2645
 #, c-format
 msgid "Article %s not found on the server"
 msgstr ""
 
-#: index/functions.c:2465
+#: index/functions.c:2503
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Abrir buzón en modo de só lectura"
 
-#: index/functions.c:2470
+#: index/functions.c:2508
 msgid "Open newsgroup"
 msgstr ""
 
-#: index/functions.c:2547
+#: index/functions.c:2585
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
-#: index/functions.c:2582
+#: index/functions.c:2620
 #, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Non hai tema, cancelando"
 
-#: index/functions.c:2602
+#: index/functions.c:2640
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr ""
 
-#: index/functions.c:2612
+#: index/functions.c:2650
 msgid "Failed to read thread, aborting"
 msgstr ""
 
-#: index/functions.c:2651
+#: index/functions.c:2689
 #, fuzzy
 msgid "No query, aborting"
 msgstr "Non hai tema, cancelando"
 
-#: index/functions.c:2694
+#: index/functions.c:2732
 msgid "Windowed queries disabled"
 msgstr ""
 
-#: index/functions.c:2701
+#: index/functions.c:2739
 msgid "No notmuch vfolder currently loaded"
 msgstr ""
 
 #
-#: index/functions.c:2765
+#: index/functions.c:2803
 msgid "There are no messages"
 msgstr "Non hai mensaxes"
 
-#: index/functions.c:2772
+#: index/functions.c:2810
 #, fuzzy
 msgid "No visible messages"
 msgstr "Non hai novas mensaxes"
@@ -3817,15 +3827,15 @@ msgstr "Non foi posible abri-lo ficheiro da mensaxe: %s"
 msgid "%s: unable to attach file"
 msgstr "%s: non foi posible adxuntar ficheiro"
 
-#: main.c:1272
+#: main.c:1273
 msgid "No mailbox with new mail"
 msgstr "Non hai buzóns con novo correo"
 
-#: main.c:1298
+#: main.c:1299
 msgid "No incoming mailboxes defined"
 msgstr "Non se definiron buzóns para correo entrante"
 
-#: main.c:1351
+#: main.c:1352
 msgid "Mailbox is empty"
 msgstr "O buzón está valeiro"
 
@@ -3872,18 +3882,18 @@ msgstr "¡Non foi posible reabri-lo buzón"
 msgid "Can't write message"
 msgstr "Non foi posible escribi-la mensaxe"
 
-#: menu/functions.c:71 pager/functions.c:337 pattern/pattern.c:508
+#: menu/functions.c:71 pager/functions.c:335 pattern/pattern.c:508
 #: pattern/pattern.c:668
 msgid "Search for: "
 msgstr "Búsqueda de: "
 
-#: menu/functions.c:72 pager/functions.c:337 pattern/pattern.c:508
+#: menu/functions.c:72 pager/functions.c:335 pattern/pattern.c:508
 #: pattern/pattern.c:668
 msgid "Reverse search for: "
 msgstr "Búsqueda inversa de: "
 
-#: menu/functions.c:127 pager/functions.c:445 pager/functions.c:511
-#: pager/functions.c:537 pattern/pattern.c:640 pattern/pattern.c:798
+#: menu/functions.c:127 pager/functions.c:443 pager/functions.c:509
+#: pager/functions.c:535 pattern/pattern.c:640 pattern/pattern.c:798
 msgid "Not found"
 msgstr "Non se atopou"
 
@@ -4022,7 +4032,7 @@ msgstr ""
 msgid "Couldn't source lua source: %s"
 msgstr "Non foi posible bloquear %s.\n"
 
-#: mutt_mailbox.c:260
+#: mutt_mailbox.c:258
 #, fuzzy
 msgid "New mail in "
 msgstr "Novo correo en %s."
@@ -6727,31 +6737,31 @@ msgstr "amosa-las opcións S/MIME"
 msgid "null operation"
 msgstr "operación nula"
 
-#: pager/dlg_pager.c:90 pager/dlg_pager.c:101 pager/dlg_pager.c:111
-#: pager/dlg_pager.c:127
+#: pager/dlg_pager.c:89 pager/dlg_pager.c:100 pager/dlg_pager.c:110
+#: pager/dlg_pager.c:126
 msgid "PrevPg"
 msgstr "PáxAnt"
 
-#: pager/dlg_pager.c:91 pager/dlg_pager.c:102 pager/dlg_pager.c:112
-#: pager/dlg_pager.c:128
+#: pager/dlg_pager.c:90 pager/dlg_pager.c:101 pager/dlg_pager.c:111
+#: pager/dlg_pager.c:127
 msgid "NextPg"
 msgstr "SegPáx"
 
-#: pager/dlg_pager.c:113
+#: pager/dlg_pager.c:112
 msgid "View Attachm."
 msgstr "Ver adxunto"
 
-#: pager/dlg_pager.c:116 pager/dlg_pager.c:132
+#: pager/dlg_pager.c:115 pager/dlg_pager.c:131
 msgid "Next"
 msgstr "Seguinte"
 
-#: pager/functions.c:154 pager/functions.c:175 pager/functions.c:247
-#: pager/functions.c:270
+#: pager/functions.c:154 pager/functions.c:175 pager/functions.c:246
+#: pager/functions.c:269
 msgid "Bottom of message is shown"
 msgstr "Amosase o final da mensaxe"
 
-#: pager/functions.c:200 pager/functions.c:294 pager/functions.c:307
-#: pager/functions.c:710
+#: pager/functions.c:199 pager/functions.c:292 pager/functions.c:305
+#: pager/functions.c:708
 msgid "Top of message is shown"
 msgstr "Amosase o principio da mensaxe"
 
@@ -6759,25 +6769,25 @@ msgstr "Amosase o principio da mensaxe"
 #. there is no text past the headers.
 #. (I don't think this is actually possible in Mutt's code, but
 #. display some kind of message in case it somehow occurs.)
-#: pager/functions.c:593
+#: pager/functions.c:591
 msgid "No text past headers"
 msgstr ""
 
-#: pager/functions.c:653 pager/functions.c:693
+#: pager/functions.c:651 pager/functions.c:691
 msgid "No more unquoted text after quoted text"
 msgstr "Non hai máis texto sen citar despois do texto citado"
 
-#: pager/functions.c:675
+#: pager/functions.c:673
 msgid "No more quoted text"
 msgstr "Non hai máis texto citado"
 
-#: pager/functions.c:734
+#: pager/functions.c:732
 msgid "Help is currently being shown"
 msgstr "Estase a amosa-la axuda"
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
-#: pager/message.c:59 pager/pbar.c:121 status.c:293
+#: pager/message.c:59 pager/pbar.c:123 status.c:293
 msgid "all"
 msgstr ""
 
@@ -6825,7 +6835,7 @@ msgstr "Non foi posible verifica-la sinatura PGP"
 
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
-#: pager/pbar.c:123 status.c:291
+#: pager/pbar.c:125 status.c:291
 msgid "end"
 msgstr ""
 
@@ -7421,11 +7431,11 @@ msgstr "Recollendo mensaxe..."
 msgid "No postponed messages"
 msgstr "Non hai mensaxes pospostas"
 
-#: question/question.c:200
+#: question/question.c:208
 msgid "yes"
 msgstr "sí"
 
-#: question/question.c:201
+#: question/question.c:209
 msgid "no"
 msgstr "non"
 
@@ -7877,7 +7887,7 @@ msgstr ""
 #: version.c:112
 #, fuzzy
 msgid ""
-"Copyright (C) 1996-2020 Michael R. Elkins and others.\n"
+"Copyright (C) 1996-2022 Michael R. Elkins and others.\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type 'neomutt -vv' for details.\n"
