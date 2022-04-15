@@ -1,3 +1,32 @@
+2022-04-15  Richard Russon  <rich@flatcap.org>
+* Security
+  - Fix uudecode buffer overflow (CVE-2022-1328)
+* Features
+  - Colours, colours, colours
+* Bug Fixes
+  - Pager: fix pager_stop
+  - Merge colours with normal
+  - Color: disable mono command
+  - Fix forwarding text attachments when honor_disposition is set
+  - Pager: drop the nntp change-group bindings
+  - Use mailbox_check flags coherently, add IMMEDIATE flag
+  - Fix: tagging in attachment list
+  - Fix: misalignment of mini-index
+  - Make sure to update the menu size after a resort
+* Translations
+  - 100% Hungarian
+* Build
+  - Update acutest
+* Code
+  - Unify pipe functions
+  - Index: notify if navigation fails
+  - Gui: set colour to be merged with normal
+  - Fix: leak in tls_check_one_certificate()
+* Upstream
+  - Flush iconv() in mutt_convert_string()
+  - Fix integer overflow in mutt_convert_string()
+  - Fix uudecode cleanup on unexpected eof
+
 2022-04-08  Richard Russon  <rich@flatcap.org>
 * Features
   - Compose multipart emails
