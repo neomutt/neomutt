@@ -269,6 +269,8 @@ MenuRedrawFlags menu_move_view_relative(struct Menu *menu, int relative)
   {
     top = menu->max - menu->page_len;
   }
+  if (top < 0)
+    top = 0;
 
   // Move the selection on-screen
   int index = menu->current;
