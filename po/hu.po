@@ -1022,12 +1022,12 @@ msgstr "Nincs könyvtár megadva."
 #: command_parse.c:1391
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
-msgstr ""
+msgstr "'%s' megjelőlés formátum már '%s'-ként regisztrálva van"
 
 #: command_parse.c:1433
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
-msgstr ""
+msgstr "'%s' megjelőléses transzformáció már '%s'-ként regisztrálva van"
 
 #: command_parse.c:1680 imap/imap.c:1335
 #, c-format
