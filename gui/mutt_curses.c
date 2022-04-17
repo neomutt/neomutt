@@ -45,7 +45,7 @@ void mutt_curses_set_color(struct AttrColor *ac)
   int index = ac->curses_color ? ac->curses_color->index : 0;
 
 #if defined(HAVE_SETCCHAR) && defined(HAVE_BKGRNDSET)
-  cchar_t cch = { 0 };
+  wchar_t cch = { 0 };
   setcchar(&cch, L" ", ac->attrs, index, NULL);
   bkgrndset(&cch);
 #elif defined(HAVE_BKGDSET)
