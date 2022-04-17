@@ -2,7 +2,7 @@ freebsd_instance:
   image_family: freebsd-13-0
 
 task:
-  only_if: $CIRRUS_BRANCH == "master" || $CIRRUS_PR != ""
+  only_if: $CIRRUS_BRANCH == "main" || $CIRRUS_PR != ""
   skip: $CIRRUS_PR_DRAFT == "true"
   env:
     CIRRUS_CLONE_DEPTH: 3

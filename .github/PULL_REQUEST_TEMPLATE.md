@@ -6,7 +6,7 @@
   this section can be removed if you fulfill it.)
 
    - Documentation created/updated (you have to edit
-     [doc/manual.xml.head](https://www.github.com/neomutt/neomutt/blob/master/doc/manual.xml.head)
+     [docs/manual.xml.head](https://www.github.com/neomutt/neomutt/blob/main/docs/manual.xml.head)
      for that)
 
    - All builds and tests are passing
