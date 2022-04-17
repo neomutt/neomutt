@@ -57,8 +57,6 @@ typedef uint8_t MenuRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX
 #define MENU_REDRAW_CURRENT   (1 << 2) ///< Redraw the current line of the menu
 #define MENU_REDRAW_FULL      (1 << 3) ///< Redraw everything
 
-ARRAY_HEAD(DialogLines, char *);
-
 /**
  * @defgroup menu_api Menu API
  *

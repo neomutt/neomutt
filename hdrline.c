@@ -51,7 +51,6 @@
 #include "format_flags.h"
 #include "hook.h"
 #include "maillist.h"
-#include "mutt_globals.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"

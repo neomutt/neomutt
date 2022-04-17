@@ -46,7 +46,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "menu/lib.h"
 
 struct Buffer;
 struct Email;

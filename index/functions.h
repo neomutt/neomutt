@@ -23,6 +23,8 @@
 #ifndef MUTT_INDEX_FUNCTIONS_H
 #define MUTT_INDEX_FUNCTIONS_H
 
+#include <stdbool.h>
+
 struct IndexPrivateData;
 struct IndexSharedData;
 struct MuttWindow;

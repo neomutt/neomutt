@@ -28,7 +28,6 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <assert.h>
 #include <inttypes.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include <sys/stat.h>
@@ -36,7 +35,6 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "functions.h"
@@ -45,25 +43,10 @@
 #include "color/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
-#include "ncrypt/lib.h"
-#include "question/lib.h"
-#include "send/lib.h"
-#include "commands.h"
 #include "display.h"
-#include "keymap.h"
-#include "mutt_header.h"
-#include "mutt_mailbox.h"
-#include "muttlib.h"
-#include "mview.h"
 #include "opcodes.h"
-#include "options.h"
 #include "private_data.h"
 #include "protos.h"
-#include "recvcmd.h"
-#ifdef USE_NNTP
-#include "nntp/lib.h"
-#include "nntp/mdata.h" // IWYU pragma: keep
-#endif
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

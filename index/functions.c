@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -63,7 +62,6 @@
 #include "options.h"
 #include "private_data.h"
 #include "protos.h"
-#include "score.h"
 #include "shared_data.h"
 #include "sort.h"
 #ifdef USE_AUTOCRYPT

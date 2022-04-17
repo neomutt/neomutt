@@ -52,7 +52,6 @@
 #include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "options.h"
 #include "protos.h"
 #include "rfc3676.h"
 #ifdef USE_IMAP

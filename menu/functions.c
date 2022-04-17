@@ -37,7 +37,6 @@
 #include "mutt.h"
 #include "functions.h"
 #include "lib.h"
-#include "keymap.h"
 #include "opcodes.h"
 #include "protos.h"
 #include "type.h"

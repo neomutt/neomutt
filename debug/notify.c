@@ -35,7 +35,7 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "color/lib.h"
-#include "context.h"
+#include "mview.h"
 
 extern const struct Mapping ColorFields[];
 extern const struct Mapping ComposeColorFields[];
@@ -60,8 +60,8 @@ static const char *get_event_type(enum NotifyType type)
       return "command";
     case NT_CONFIG:
       return "config";
-    case NT_CONTEXT:
-      return "context";
+    case NT_MVIEW:
+      return "mailboxview";
     case NT_EMAIL:
       return "email";
     case NT_ENVELOPE:
@@ -165,13 +165,13 @@ static const char *get_mailbox_event(int id)
   }
 }
 
-static const char *get_context(int id)
+static const char *get_mview(int id)
 {
   switch (id)
   {
-    case NT_CONTEXT_DELETE:
+    case NT_MVIEW_DELETE:
       return "delete";
-    case NT_CONTEXT_ADD:
+    case NT_MVIEW_ADD:
       return "add";
     default:
       return "UNKNOWN";
@@ -237,15 +237,15 @@ static void notify_dump_config(struct NotifyCallback *nc)
   mutt_buffer_dealloc(&value);
 }
 
-static void notify_dump_context(struct NotifyCallback *nc)
+static void notify_dump_mview(struct NotifyCallback *nc)
 {
-  struct EventContext *ev_c = nc->event_data;
+  struct EventMview *ev_m = nc->event_data;
 
   const char *path = "NONE";
-  if (ev_c->ctx && ev_c->ctx->mailbox)
-    path = mailbox_path(ev_c->ctx->mailbox);
+  if (ev_m->mv && ev_m->mv->mailbox)
+    path = mailbox_path(ev_m->mv->mailbox);
 
-  mutt_debug(LL_DEBUG1, "    Context: %s %s\n", get_context(nc->event_subtype), path);
+  mutt_debug(LL_DEBUG1, "    MailboxView: %s %s\n", get_mview(nc->event_subtype), path);
 }
 
 static void notify_dump_email(struct NotifyCallback *nc)
@@ -357,8 +357,8 @@ int debug_all_observer(struct NotifyCallback *nc)
     case NT_CONFIG:
       notify_dump_config(nc);
       break;
-    case NT_CONTEXT:
-      notify_dump_context(nc);
+    case NT_MVIEW:
+      notify_dump_mview(nc);
       break;
     case NT_EMAIL:
       notify_dump_email(nc);

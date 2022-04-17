@@ -26,7 +26,6 @@
 #include "core/lib.h"
 
 struct Buffer;
-struct Mailbox;
 struct stat;
 
 int  mutt_mailbox_check       (struct Mailbox *m_cur, CheckStatsFlags flags);

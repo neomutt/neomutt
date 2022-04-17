@@ -60,9 +60,9 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <assert.h>
 #include <inttypes.h> // IWYU pragma: keep
 #include <stdbool.h>
+#include <sys/stat.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
@@ -70,7 +70,6 @@
 #include "lib.h"
 #include "color/lib.h"
 #include "index/lib.h"
-#include "menu/lib.h"
 #include "display.h"
 #include "opcodes.h"
 #include "private_data.h"

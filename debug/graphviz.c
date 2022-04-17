@@ -49,13 +49,13 @@
 #include "notmuch/lib.h"
 #include "pattern/lib.h"
 #include "pop/lib.h"
-#include "context.h"
 #include "imap/adata.h"      // IWYU pragma: keep
 #include "imap/mdata.h"      // IWYU pragma: keep
 #include "imap/private.h"    // IWYU pragma: keep
 #include "maildir/edata.h"   // IWYU pragma: keep
 #include "maildir/mdata.h"   // IWYU pragma: keep
 #include "maildir/private.h" // IWYU pragma: keep
+#include "mview.h"
 #include "nntp/adata.h"      // IWYU pragma: keep
 #include "nntp/mdata.h"      // IWYU pragma: keep
 #include "notmuch/adata.h"   // IWYU pragma: keep
@@ -64,8 +64,8 @@
 #include "pop/adata.h"       // IWYU pragma: keep
 #include "pop/private.h"     // IWYU pragma: keep
 
-// #define GV_HIDE_CONTEXT
-#define GV_HIDE_CONTEXT_CONTENTS
+// #define GV_HIDE_MVIEW
+#define GV_HIDE_MVIEW_CONTENTS
 // #define GV_HIDE_MBOX
 // #define GV_HIDE_NEOMUTT
 // #define GV_HIDE_CONFIG
@@ -950,21 +950,21 @@ void dot_account_list(FILE *fp, struct AccountList *al, struct ListHead *links)
   }
 }
 
-#ifndef GV_HIDE_CONTEXT
-void dot_context(FILE *fp, struct Context *ctx, struct ListHead *links)
+#ifndef GV_HIDE_MVIEW
+void dot_mview(FILE *fp, struct MailboxView *mv, struct ListHead *links)
 {
-  dot_object_header(fp, ctx, "Context", "#ff80ff");
-  dot_ptr(fp, "mailbox", ctx->mailbox, "#80ff80");
-#ifdef GV_HIDE_CONTEXT_CONTENTS
-  dot_type_number(fp, "vsize", ctx->vsize);
-  dot_type_string(fp, "pattern", ctx->pattern, true);
-  dot_type_bool(fp, "collapsed", ctx->collapsed);
+  dot_object_header(fp, mv, "MailboxView", "#ff80ff");
+  dot_ptr(fp, "mailbox", mv->mailbox, "#80ff80");
+#ifdef GV_HIDE_MVIEW_CONTENTS
+  dot_type_number(fp, "vsize", mv->vsize);
+  dot_type_string(fp, "pattern", mv->pattern, true);
+  dot_type_bool(fp, "collapsed", mv->collapsed);
 #endif
   dot_object_footer(fp);
 }
 #endif
 
-void dump_graphviz(const char *title, struct Context *ctx)
+void dump_graphviz(const char *title, struct MailboxView *mv)
 {
   char name[256] = { 0 };
   struct ListHead links = STAILQ_HEAD_INITIALIZER(links);
@@ -1008,16 +1008,16 @@ void dump_graphviz(const char *title, struct Context *ctx)
 
   dot_account_list(fp, &NeoMutt->accounts, &links);
 
-#ifndef GV_HIDE_CONTEXT
-  if (ctx)
-    dot_context(fp, ctx, &links);
+#ifndef GV_HIDE_MVIEW
+  if (mv)
+    dot_mview(fp, mv, &links);
 
 #ifndef GV_HIDE_NEOMUTT
   /* Globals */
   fprintf(fp, "\t{ rank=same ");
-  if (ctx)
+  if (mv)
   {
-    dot_ptr_name(name, sizeof(name), ctx);
+    dot_ptr_name(name, sizeof(name), mv);
     fprintf(fp, "%s ", name);
   }
   dot_ptr_name(name, sizeof(name), NeoMutt);
