@@ -72,7 +72,7 @@
 #include "nntp/mdata.h"
 #endif
 #ifdef MIXMASTER
-#include "remailer.h"
+#include "mixmaster/lib.h"
 #endif
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"

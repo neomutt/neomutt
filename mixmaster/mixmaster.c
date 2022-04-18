@@ -1,6 +1,6 @@
 /**
  * @file
- * Mixmaster Remailer Dialog
+ * Mixmaster Remailer
  *
  * @authors
  * Copyright (C) 1999-2001 Thomas Roessler <roessler@does-not-exist.org>
@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_remailer Mixmaster Remailer Dialog
+ * @page lib_mixmaster Mixmaster Remailer
  *
  * The Mixmaster Remailer Dialog lets the user edit anonymous remailer chain.
  *
@@ -72,6 +72,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "lib.h"
 #include "color/lib.h"
 #include "menu/lib.h"
 #include "send/lib.h"
@@ -82,9 +83,6 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
-#ifdef MIXMASTER
-#include "remailer.h"
-#endif
 
 /**
  * struct Coord - Screen coordinates

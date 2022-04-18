@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_REMAILER_H
-#define MUTT_REMAILER_H
+#ifndef MUTT_MIXMASTER_LIB_H
+#define MUTT_MIXMASTER_LIB_H
 
 #include <stddef.h>
 #include <stdint.h>
@@ -64,4 +64,4 @@ int mix_send_message(struct ListHead *chain, const char *tempfile);
 int mix_check_message(struct Email *e);
 void dlg_select_mixmaster_chain(struct ListHead *chainhead);
 
-#endif /* MUTT_REMAILER_H */
+#endif /* MUTT_MIXMASTER_LIB_H */

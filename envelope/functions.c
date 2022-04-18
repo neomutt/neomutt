@@ -48,7 +48,7 @@
 #include "opcodes.h"
 #include "wdata.h"
 #ifdef MIXMASTER
-#include "remailer.h"
+#include "mixmaster/lib.h"
 #endif
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
