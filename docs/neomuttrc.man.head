@@ -968,6 +968,12 @@ _
 messages which match \fIEXPR\fP in the \(lqMessage-ID:\(rq field
 T}
 _
+\0~I \fIQUERY\fP|T{
+messages whose \fIMessage-ID\fP field is included in the results returned from
+an external search program, when the program is run with \fIQUERY\fP as its
+argument. See $external_search_command
+T}
+_
 \0~k|T{
 messages containing PGP key material
 T}
