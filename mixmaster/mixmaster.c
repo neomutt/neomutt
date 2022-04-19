@@ -22,7 +22,7 @@
  */
 
 /**
- * @page lib_mixmaster Mixmaster Remailer
+ * @page mixmaster_mixmaster Mixmaster Remailer
  *
  * The Mixmaster Remailer Dialog lets the user edit anonymous remailer chain.
  *

@@ -20,6 +20,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page lib_mixmaster Mixmaster
+ *
+ * Support of Mixmaster anonymous remailer
+ *
+ * | File                      | Description                      |
+ * | :------------------------ | :------------------------------- |
+ * | mixmaster/functions.c     | @subpage mixmaster_functions     |
+ * | mixmaster/mixmaster.c     | @subpage mixmaster_mixmaster     |
+ */
+
 #ifndef MUTT_MIXMASTER_LIB_H
 #define MUTT_MIXMASTER_LIB_H
 
