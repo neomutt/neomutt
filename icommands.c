@@ -506,8 +506,8 @@ static enum CommandResult icmd_color(struct Buffer *buf, struct Buffer *s,
 static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
 {
-  const bool set = mutt_str_startswith(s->data, "set");
-  const bool set_all = mutt_str_startswith(s->data, "set all");
+  const bool set = mutt_str_equal(s->data, "set");
+  const bool set_all = mutt_str_equal(s->data, "set all");
 
   if (!set && !set_all)
     return MUTT_CMD_ERROR;
