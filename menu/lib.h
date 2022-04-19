@@ -29,6 +29,7 @@
  * | :--------------- | :---------------------- |
  * | menu/config.c    | @subpage menu_config    |
  * | menu/draw.c      | @subpage menu_draw      |
+ * | menu/functions.c | @subpage menu_functions |
  * | menu/menu.c      | @subpage menu_menu      |
  * | menu/move.c      | @subpage menu_move      |
  * | menu/observer.c  | @subpage menu_observer  |

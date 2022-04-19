@@ -33,6 +33,7 @@
  * | alias/config.c      | @subpage alias_config      |
  * | alias/dlgalias.c    | @subpage alias_dlg_alias   |
  * | alias/dlgquery.c    | @subpage alias_dlg_query   |
+ * | alias/functions.c   | @subpage alias_functions   |
  * | alias/gui.c         | @subpage alias_gui         |
  * | alias/reverse.c     | @subpage alias_reverse     |
  * | alias/sort.c        | @subpage alias_sort        |

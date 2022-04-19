@@ -26,10 +26,11 @@
 /**
  * @page crypt_pgp PGP sign, encrypt, check routines
  *
- * This file contains all of the PGP routines necessary to sign, encrypt,
- * verify and decrypt PGP messages in either the new PGP/MIME format, or in
- * the older Application/Pgp format.  It also contains some code to cache the
- * user's passphrase for repeat use when decrypting or signing a message.
+ * Code to sign, encrypt, verify and decrypt PGP messages.
+ *
+ * The code accepts messages in either the new PGP/MIME format, or in the older
+ * Application/Pgp format.  It also contains some code to cache the user's
+ * passphrase for repeat use when decrypting or signing a message.
  */
 
 #include "config.h"

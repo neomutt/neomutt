@@ -31,6 +31,7 @@
  * | debug/email.c       | @subpage debug_email       |
  * | debug/graphviz.c    | @subpage debug_graphviz    |
  * | debug/notify.c      | @subpage debug_notify      |
+ * | debug/pager.c       | @subpage debug_pager       |
  * | debug/parse_test.c  | @subpage debug_parse       |
  * | debug/window.c      | @subpage debug_window      |
  */
