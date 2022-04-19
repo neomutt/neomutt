@@ -26,6 +26,11 @@
 #include <stddef.h>
 #include <stdint.h>
 
+struct Coord;
+struct MixChain;
+struct MuttWindow;
+struct Remailer;
+
 /* Mixmaster's maximum chain length.  Don't change this. */
 #define MAX_MIXES 19
 
@@ -56,5 +61,9 @@ struct MixChain
   size_t cl;         ///< Length of chain
   int ch[MAX_MIXES]; ///< Indexes of chain hosts
 };
+
+void mix_redraw_chain      (struct MuttWindow *win, struct Remailer **type2_list, struct Coord *coords, struct MixChain *chain, int cur);
+void mix_redraw_head       (struct MuttWindow *win, struct MixChain *chain);
+void mix_screen_coordinates(struct MuttWindow *win, struct Remailer **type2_list, struct Coord **coordsp, struct MixChain *chain, int i);
 
 #endif /* MUTT_MIXMASTER_PRIVATE_H */
