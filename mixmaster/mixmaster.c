@@ -82,16 +82,8 @@
 #include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
+#include "private_data.h"
 #include "protos.h"
-
-/**
- * struct Coord - Screen coordinates
- */
-struct Coord
-{
-  short r; ///< row
-  short c; ///< column
-};
 
 /// Help Bar for the Mixmaster dialog
 static const struct Mapping RemailerHelp[] = {
@@ -644,34 +636,32 @@ static int remailer_window_observer(struct NotifyCallback *nc)
  */
 void dlg_select_mixmaster_chain(struct ListHead *chainhead)
 {
-  int c_cur = 0, c_old = 0;
-  bool c_redraw = true;
+  struct MixmasterPrivateData priv = { 0 };
   size_t ttll = 0;
-  struct Coord *coords = NULL;
-  struct Menu *menu = NULL;
-  char *t = NULL;
 
-  struct Remailer **type2_list = mix_type2_list(&ttll);
-  if (!type2_list)
+  priv.c_redraw = true;
+
+  priv.type2_list = mix_type2_list(&ttll);
+  if (!priv.type2_list)
   {
     mutt_error(_("Can't get mixmaster's type2.list"));
     return;
   }
 
-  struct MixChain *chain = mutt_mem_calloc(1, sizeof(struct MixChain));
+  priv.chain = mutt_mem_calloc(1, sizeof(struct MixChain));
 
   struct ListNode *p = NULL;
   STAILQ_FOREACH(p, chainhead, entries)
   {
-    mix_chain_add(chain, p->data, type2_list);
+    mix_chain_add(priv.chain, p->data, priv.type2_list);
   }
   mutt_list_free(chainhead);
 
   /* safety check */
-  for (int i = 0; i < chain->cl; i++)
+  for (int i = 0; i < priv.chain->cl; i++)
   {
-    if (chain->ch[i] >= ttll)
-      chain->ch[i] = 0;
+    if (priv.chain->ch[i] >= ttll)
+      priv.chain->ch[i] = 0;
   }
 
   struct MuttWindow *dlg = mutt_window_new(WT_DLG_REMAILER, MUTT_WIN_ORIENT_VERTICAL,
@@ -683,11 +673,10 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
   struct MuttWindow *win_hosts = menu_new_window(MENU_MIX, NeoMutt->sub);
   win_hosts->focus = win_hosts;
 
-  struct MuttWindow *win_chain = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL,
-                                                 MUTT_WIN_SIZE_FIXED,
-                                                 MUTT_WIN_SIZE_UNLIMITED, 4);
+  priv.win_chain = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL,
+                                   MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 4);
 
-  struct MuttWindow *win_cbar = sbar_new();
+  priv.win_cbar = sbar_new();
   struct MuttWindow *win_rbar = sbar_new();
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
@@ -695,26 +684,26 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
   {
     mutt_window_add_child(dlg, win_rbar);
     mutt_window_add_child(dlg, win_hosts);
-    mutt_window_add_child(dlg, win_cbar);
-    mutt_window_add_child(dlg, win_chain);
+    mutt_window_add_child(dlg, priv.win_cbar);
+    mutt_window_add_child(dlg, priv.win_chain);
   }
   else
   {
     mutt_window_add_child(dlg, win_hosts);
-    mutt_window_add_child(dlg, win_cbar);
-    mutt_window_add_child(dlg, win_chain);
+    mutt_window_add_child(dlg, priv.win_cbar);
+    mutt_window_add_child(dlg, priv.win_chain);
     mutt_window_add_child(dlg, win_rbar);
   }
   sbar_set_title(win_rbar, _("Select a remailer chain"));
 
-  mix_screen_coordinates(dlg, type2_list, &coords, chain, 0);
+  mix_screen_coordinates(dlg, priv.type2_list, &priv.coords, priv.chain, 0);
 
-  menu = win_hosts->wdata;
-  menu->max = ttll;
-  menu->make_entry = mix_make_entry;
-  menu->tag = NULL;
-  menu->mdata = type2_list;
-  menu->mdata_free = NULL; // Menu doesn't own the data
+  priv.menu = win_hosts->wdata;
+  priv.menu->max = ttll;
+  priv.menu->make_entry = mix_make_entry;
+  priv.menu->tag = NULL;
+  priv.menu->mdata = priv.type2_list;
+  priv.menu->mdata_free = NULL; // Menu doesn't own the data
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, remailer_config_observer, dlg);
   notify_observer_add(dlg->notify, NT_WINDOW, remailer_window_observer, dlg);
@@ -726,31 +715,33 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
   int rc;
   do
   {
-    if (c_redraw)
+    if (priv.c_redraw)
     {
-      mix_redraw_head(win_cbar, chain);
-      mix_redraw_chain(win_chain, type2_list, coords, chain, c_cur);
-      c_redraw = false;
+      mix_redraw_head(priv.win_cbar, priv.chain);
+      mix_redraw_chain(priv.win_chain, priv.type2_list, priv.coords, priv.chain, priv.c_cur);
+      priv.c_redraw = false;
     }
-    else if (c_cur != c_old)
+    else if (priv.c_cur != priv.c_old)
     {
-      mix_redraw_ce(win_chain, type2_list, coords, chain, c_old, false);
-      mix_redraw_ce(win_chain, type2_list, coords, chain, c_cur, true);
+      mix_redraw_ce(priv.win_chain, priv.type2_list, priv.coords, priv.chain,
+                    priv.c_old, false);
+      mix_redraw_ce(priv.win_chain, priv.type2_list, priv.coords, priv.chain,
+                    priv.c_cur, true);
     }
 
-    c_old = c_cur;
+    priv.c_old = priv.c_cur;
 
     rc = FR_UNKNOWN;
-    menu_tagging_dispatcher(menu->win, op);
+    menu_tagging_dispatcher(priv.menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(menu->type);
+    op = km_dokey(priv.menu->type);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(menu->type);
+      km_error_key(priv.menu->type);
       continue;
     }
     mutt_clear_error();
@@ -759,34 +750,37 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
     {
       case OP_REDRAW:
       {
-        mix_redraw_head(win_cbar, chain);
-        mix_screen_coordinates(menu->win, type2_list, &coords, chain, 0);
-        mix_redraw_chain(win_chain, type2_list, coords, chain, c_cur);
+        mix_redraw_head(priv.win_cbar, priv.chain);
+        mix_screen_coordinates(priv.menu->win, priv.type2_list, &priv.coords,
+                               priv.chain, 0);
+        mix_redraw_chain(priv.win_chain, priv.type2_list, priv.coords,
+                         priv.chain, priv.c_cur);
         continue;
       }
 
       case OP_EXIT:
       {
-        chain->cl = 0;
+        priv.chain->cl = 0;
         rc = FR_DONE;
         break;
       }
 
       case OP_MIX_USE:
       {
-        if (!chain->cl)
+        if (!priv.chain->cl)
         {
-          chain->cl++;
-          chain->ch[0] = menu_get_index(menu);
-          mix_screen_coordinates(menu->win, type2_list, &coords, chain, c_cur);
-          c_redraw = true;
+          priv.chain->cl++;
+          priv.chain->ch[0] = menu_get_index(priv.menu);
+          mix_screen_coordinates(priv.menu->win, priv.type2_list, &priv.coords,
+                                 priv.chain, priv.c_cur);
+          priv.c_redraw = true;
         }
 
-        if (chain->cl && chain->ch[chain->cl - 1] &&
-            (type2_list[chain->ch[chain->cl - 1]]->caps & MIX_CAP_MIDDLEMAN))
+        if (priv.chain->cl && priv.chain->ch[priv.chain->cl - 1] &&
+            (priv.type2_list[priv.chain->ch[priv.chain->cl - 1]]->caps & MIX_CAP_MIDDLEMAN))
         {
           mutt_error(_("Error: %s can't be used as the final remailer of a chain"),
-                     type2_list[chain->ch[chain->cl - 1]]->shortname);
+                     priv.type2_list[priv.chain->ch[priv.chain->cl - 1]]->shortname);
           continue;
         }
 
@@ -797,26 +791,27 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
       case OP_GENERIC_SELECT_ENTRY:
       case OP_MIX_APPEND:
       {
-        if ((chain->cl < MAX_MIXES) && (c_cur < chain->cl))
-          c_cur++;
+        if ((priv.chain->cl < MAX_MIXES) && (priv.c_cur < priv.chain->cl))
+          priv.c_cur++;
       }
       /* fallthrough */
       case OP_MIX_INSERT:
       {
-        if (chain->cl < MAX_MIXES)
+        if (priv.chain->cl < MAX_MIXES)
         {
-          chain->cl++;
-          for (int i = chain->cl - 1; i > c_cur; i--)
-            chain->ch[i] = chain->ch[i - 1];
+          priv.chain->cl++;
+          for (int i = priv.chain->cl - 1; i > priv.c_cur; i--)
+            priv.chain->ch[i] = priv.chain->ch[i - 1];
 
-          chain->ch[c_cur] = menu_get_index(menu);
-          mix_screen_coordinates(menu->win, type2_list, &coords, chain, c_cur);
-          c_redraw = true;
+          priv.chain->ch[priv.c_cur] = menu_get_index(priv.menu);
+          mix_screen_coordinates(priv.menu->win, priv.type2_list, &priv.coords,
+                                 priv.chain, priv.c_cur);
+          priv.c_redraw = true;
         }
         else
         {
           /* L10N The '%d' here hard-coded to 19 */
-          mutt_error(_("Mixmaster chains are limited to %d elements"), MAX_MIXES);
+          mutt_error(_("Mixmaster priv.chains are limited to %d elements"), MAX_MIXES);
         }
 
         continue;
@@ -824,18 +819,19 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
 
       case OP_MIX_DELETE:
       {
-        if (chain->cl)
+        if (priv.chain->cl)
         {
-          chain->cl--;
+          priv.chain->cl--;
 
-          for (int i = c_cur; i < chain->cl; i++)
-            chain->ch[i] = chain->ch[i + 1];
+          for (int i = priv.c_cur; i < priv.chain->cl; i++)
+            priv.chain->ch[i] = priv.chain->ch[i + 1];
 
-          if ((c_cur == chain->cl) && c_cur)
-            c_cur--;
+          if ((priv.c_cur == priv.chain->cl) && priv.c_cur)
+            priv.c_cur--;
 
-          mix_screen_coordinates(menu->win, type2_list, &coords, chain, c_cur);
-          c_redraw = true;
+          mix_screen_coordinates(priv.menu->win, priv.type2_list, &priv.coords,
+                                 priv.chain, priv.c_cur);
+          priv.c_redraw = true;
         }
         else
         {
@@ -846,8 +842,8 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
 
       case OP_MIX_CHAIN_PREV:
       {
-        if (c_cur)
-          c_cur--;
+        if (priv.c_cur)
+          priv.c_cur--;
         else
           mutt_error(_("You already have the first chain element selected"));
 
@@ -856,8 +852,8 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
 
       case OP_MIX_CHAIN_NEXT:
       {
-        if (chain->cl && (c_cur < chain->cl - 1))
-          c_cur++;
+        if (priv.chain->cl && (priv.c_cur < priv.chain->cl - 1))
+          priv.c_cur++;
         else
           mutt_error(_("You already have the last chain element selected"));
 
@@ -866,9 +862,9 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
     }
 
     if (rc == FR_UNKNOWN)
-      rc = menu_function_dispatcher(menu->win, op);
+      rc = menu_function_dispatcher(priv.menu->win, op);
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(menu->win, op);
+      rc = global_function_dispatcher(priv.menu->win, op);
   } while (rc != FR_DONE);
   // ---------------------------------------------------------------------------
 
@@ -877,13 +873,14 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
 
   /* construct the remailer list */
 
-  if (chain->cl)
+  if (priv.chain->cl)
   {
-    for (int i = 0; i < chain->cl; i++)
+    char *t = NULL;
+    for (int i = 0; i < priv.chain->cl; i++)
     {
-      const int j = chain->ch[i];
+      const int j = priv.chain->ch[i];
       if (j != 0)
-        t = type2_list[j]->shortname;
+        t = priv.type2_list[j]->shortname;
       else
         t = "*";
 
@@ -891,9 +888,9 @@ void dlg_select_mixmaster_chain(struct ListHead *chainhead)
     }
   }
 
-  mix_type2_list_free(&type2_list);
-  FREE(&coords);
-  FREE(&chain);
+  mix_type2_list_free(&priv.type2_list);
+  FREE(&priv.coords);
+  FREE(&priv.chain);
 }
 
 /**
