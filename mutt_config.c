@@ -164,7 +164,7 @@ static struct ConfigDef MainVars[] = {
   { "ask_cc", DT_BOOL, false, 0, NULL,
     "Ask the user for the carbon-copy recipients"
   },
-  { "assumed_charset", DT_STRING, 0, 0, charset_validator,
+  { "assumed_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
     "If a message is missing a character set, assume this character set"
   },
   { "attach_format", DT_STRING|DT_NOT_EMPTY, IP "%u%D%I %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] ", 0, NULL,

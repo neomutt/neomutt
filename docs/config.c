@@ -191,7 +191,7 @@
 */
 #endif
 
-{ "assumed_charset", DT_STRING, 0 },
+{ "assumed_charset", DT_SLIST, 0 },
 /*
 ** .pp
 ** This variable is a colon-separated list of character encoding

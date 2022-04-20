@@ -33,8 +33,8 @@
 
 static struct ConfigDef Vars[] = {
   // clang-format off
-  { "assumed_charset", DT_STRING,                                0,          0, NULL, },
-  { "charset",         DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, IP "utf-8", 0, NULL, },
+  { "assumed_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY, 0,          0, NULL, },
+  { "charset",         DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE,   IP "utf-8", 0, NULL, },
   { NULL },
   // clang-format on
 };
