@@ -72,16 +72,17 @@ struct ConfigDef VarsSpace[] = {
 };
 
 struct ConfigDef VarsOther[] = {
-  { "Ilama",      DT_SLIST|SLIST_SEP_COLON, 0,                        0, NULL,              }, /* test_native_set */
-  { "Jackfruit",  DT_SLIST|SLIST_SEP_COLON, IP "apple:banana:cherry", 0, NULL,              }, /* test_native_get */
-  { "Lemon",      DT_SLIST|SLIST_SEP_COLON, IP "lemon",               0, NULL,              }, /* test_reset */
-  { "Mango",      DT_SLIST|SLIST_SEP_COLON, IP "mango",               0, validator_fail,    },
-  { "Nectarine",  DT_SLIST|SLIST_SEP_COLON, IP "nectarine",           0, validator_succeed, }, /* test_validator */
-  { "Olive",      DT_SLIST|SLIST_SEP_COLON, IP "olive",               0, validator_warn,    },
-  { "Papaya",     DT_SLIST|SLIST_SEP_COLON, IP "papaya",              0, validator_fail,    },
-  { "Quince",     DT_SLIST|SLIST_SEP_COLON, 0,                        0, NULL,              }, /* test_inherit */
-  { "Raspberry",  DT_SLIST|SLIST_SEP_COLON, 0,                        0, NULL,              }, /* test_plus_equals */
-  { "Strawberry", DT_SLIST|SLIST_SEP_COLON, 0,                        0, NULL,              }, /* test_minus_equals */
+  { "Ilama",      DT_SLIST|SLIST_SEP_COLON, 0,                        0, NULL,                    }, /* test_native_set */
+  { "Jackfruit",  DT_SLIST|SLIST_SEP_COLON, IP "apple:banana:cherry", 0, NULL,                    }, /* test_native_get */
+  { "Lemon",      DT_SLIST|SLIST_SEP_COLON, IP "lemon",               0, NULL,                    }, /* test_reset */
+  { "Mango",      DT_SLIST|SLIST_SEP_COLON, IP "mango",               0, validator_fail,          },
+  { "Nectarine",  DT_SLIST|SLIST_SEP_COLON, IP "nectarine",           0, validator_succeed,       }, /* test_validator */
+  { "Olive",      DT_SLIST|SLIST_SEP_COLON, IP "olive",               0, validator_warn,          },
+  { "Papaya",     DT_SLIST|SLIST_SEP_COLON, IP "papaya",              0, validator_fail,          },
+  { "Quince",     DT_SLIST|SLIST_SEP_COLON, 0,                        0, NULL,                    }, /* test_inherit */
+  { "Raspberry",  DT_SLIST|SLIST_SEP_COLON, 0,                        0, NULL,                    }, /* test_plus_equals */
+  { "Strawberry", DT_SLIST|SLIST_SEP_COLON, 0,                        0, NULL,                    }, /* test_minus_equals */
+  { "Wolfberry",  DT_SLIST|SLIST_SEP_COLON, IP "utf-8",               0, charset_slist_validator, }, /* test_charset_validator */
   { NULL },
 };
 // clang-format on
@@ -978,6 +979,66 @@ tv_out:
   return result;
 }
 
+static bool test_charset_validator(struct ConfigSubset *sub, struct Buffer *err)
+{
+  log_line(__func__);
+
+  struct ConfigSet *cs = sub->cs;
+  char *item = NULL;
+  struct Slist *list = slist_parse("utf-8", SLIST_SEP_COLON);
+  bool result = false;
+
+  const char *name = "Wolfberry";
+  mutt_buffer_reset(err);
+  int rc = cs_str_string_set(cs, name, "utf-8", err);
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("%s\n", mutt_buffer_string(err));
+  }
+  else
+  {
+    TEST_MSG("%s\n", mutt_buffer_string(err));
+    goto tv_out;
+  }
+  const struct Slist *VarWolfberry = cs_subset_slist(sub, "Wolfberry");
+  item = STAILQ_FIRST(&VarWolfberry->head)->data;
+  TEST_MSG("Address: %s = %s\n", name, item);
+
+  mutt_buffer_reset(err);
+  rc = cs_str_native_set(cs, name, IP list, err);
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("%s\n", mutt_buffer_string(err));
+  }
+  else
+  {
+    TEST_MSG("%s\n", mutt_buffer_string(err));
+    goto tv_out;
+  }
+  VarWolfberry = cs_subset_slist(sub, "Wolfberry");
+  item = STAILQ_FIRST(&VarWolfberry->head)->data;
+  TEST_MSG("Native: %s = %s\n", name, item);
+
+  // When one of the charsets is invalid, it fails
+  mutt_buffer_reset(err);
+  rc = cs_str_string_set(cs, name, "us-ascii:utf-3", err);
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  {
+    TEST_MSG("%s\n", mutt_buffer_string(err));
+  }
+  else
+  {
+    TEST_MSG("%s\n", mutt_buffer_string(err));
+    goto tv_out;
+  }
+
+  result = true;
+tv_out:
+  slist_free(&list);
+  log_line(__func__);
+  return result;
+}
+
 static void dump_native(struct ConfigSet *cs, const char *parent, const char *child)
 {
   intptr_t pval = cs_str_native_get(cs, parent, NULL);
@@ -1124,6 +1185,7 @@ void test_config_slist(void)
   TEST_CHECK(test_minus_equals(sub, err));
   TEST_CHECK(test_reset(sub, err));
   TEST_CHECK(test_validator(sub, err));
+  TEST_CHECK(test_charset_validator(sub, err));
   TEST_CHECK(test_inherit(cs, err));
   mutt_buffer_pool_release(&err);
 

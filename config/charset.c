@@ -71,3 +71,33 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   FREE(&s);
   return rc;
 }
+
+/**
+ * charset_slist_validator - Validate the "charset" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ * This is a version for charset options is Slist.
+ */
+int charset_slist_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                            intptr_t value, struct Buffer *err)
+{
+  if (value == 0)
+    return CSR_SUCCESS;
+
+  const struct Slist *list = (const struct Slist *) value;
+
+  int rc = CSR_SUCCESS;
+  bool strict = (cdef->type & DT_CHARSET_STRICT);
+
+  const struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, &list->head, entries)
+  {
+    char const *charset = np->data;
+    if (!mutt_ch_check_charset(charset, strict))
+    {
+      rc = CSR_ERR_INVALID;
+      mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, charset);
+      break;
+    }
+  }
+
+  return rc;
+}
