@@ -381,6 +381,31 @@ static int index_global_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * index_index_observer - Notification that the Index has changed - Implements ::observer_t - @ingroup observer_api
+ */
+static int index_index_observer(struct NotifyCallback *nc)
+{
+  if (!nc->global_data)
+    return -1;
+
+  struct MuttWindow *win = nc->global_data;
+  win->actions |= WA_RECALC;
+
+  struct Menu *menu = win->wdata;
+  menu_queue_redraw(menu, MENU_REDRAW_INDEX);
+  mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");
+
+  struct IndexPrivateData *priv = menu->mdata;
+  struct IndexSharedData *shared = priv->shared;
+  if (shared && shared->mailbox)
+    menu->max = shared->mailbox->vcount;
+  else
+    menu->max = 0;
+
+  return 0;
+}
+
+/**
  * index_menu_observer - Notification that the Menu has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int index_menu_observer(struct NotifyCallback *nc)
@@ -464,12 +489,14 @@ static int index_window_observer(struct NotifyCallback *nc)
     return 0;
 
   struct Menu *menu = win->wdata;
+  struct IndexPrivateData *priv = menu->mdata;
 
   notify_observer_remove(NeoMutt->notify, index_altern_observer, win);
   notify_observer_remove(NeoMutt->notify, index_attach_observer, win);
   notify_observer_remove(NeoMutt->notify, index_color_observer, win);
   notify_observer_remove(NeoMutt->notify, index_config_observer, win);
   notify_observer_remove(NeoMutt->notify, index_global_observer, win);
+  notify_observer_remove(priv->shared->notify, index_index_observer, win);
   notify_observer_remove(menu->notify, index_menu_observer, win);
   notify_observer_remove(NeoMutt->notify, index_score_observer, win);
   notify_observer_remove(NeoMutt->notify, index_subjrx_observer, win);
@@ -557,6 +584,7 @@ struct MuttWindow *index_window_new(struct IndexPrivateData *priv)
   notify_observer_add(NeoMutt->notify, NT_COLOR, index_color_observer, win);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, index_config_observer, win);
   notify_observer_add(NeoMutt->notify, NT_GLOBAL, index_global_observer, win);
+  notify_observer_add(priv->shared->notify, NT_ALL, index_index_observer, win);
   notify_observer_add(menu->notify, NT_MENU, index_menu_observer, win);
   notify_observer_add(NeoMutt->notify, NT_SCORE, index_score_observer, win);
   notify_observer_add(NeoMutt->notify, NT_SUBJRX, index_subjrx_observer, win);
