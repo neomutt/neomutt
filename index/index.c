@@ -345,7 +345,7 @@ static int index_config_observer(struct NotifyCallback *nc)
     mutt_debug(LL_DEBUG5, "config done\n");
   }
 
-  win->actions |= WA_RECALC;
+  menu_queue_redraw(win->wdata, MENU_REDRAW_INDEX);
   return 0;
 }
 
