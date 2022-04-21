@@ -175,6 +175,16 @@ static int config_use_threads(const struct ConfigSubset *sub)
 }
 
 /**
+ * index_adjust_sort_threads - Adjust use_threads/sort/sort_aux
+ * @param sub the config subset that was just updated
+ */
+void index_adjust_sort_threads(const struct ConfigSubset *sub)
+{
+  /* For lack of a better way, we fake a "set use_threads" */
+  config_use_threads(sub);
+}
+
+/**
  * config_reply_regex - React to changes to $reply_regex
  * @param m Mailbox
  * @retval  0 Successfully handled

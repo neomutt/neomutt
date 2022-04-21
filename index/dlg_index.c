@@ -1059,6 +1059,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     }
   }
 
+  /* Make sure use_threads/sort/sort_aux are coherent */
+  index_adjust_sort_threads(NeoMutt->sub);
+
   int rc = 0;
   do
   {
