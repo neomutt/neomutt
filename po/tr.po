@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2022-04-15 13:40+0100\n"
-"PO-Revision-Date: 2022-03-16 23:00+0300\n"
+"PO-Revision-Date: 2022-04-21 23:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
 "Language: tr\n"
@@ -1023,12 +1023,12 @@ msgstr "Dizin belirtilmedi"
 #: command_parse.c:1391
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
-msgstr ""
+msgstr "etiket biçimi '%s', halihazırda '%s' olarak kaydedilmiş"
 
 #: command_parse.c:1433
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
-msgstr ""
+msgstr "etiket dönüştürmesi '%s', halihazırda '%s' olarak kaydedilmiş"
 
 #: command_parse.c:1680 imap/imap.c:1335
 #, c-format
@@ -2490,7 +2490,8 @@ msgstr "[-- Bu bir ek (bu bölümü görüntülemek için '%s' kullanın) --]\n"
 #: handler.c:1769
 #, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "[-- %s/%s desteklenmiyor (bu bölümü görüntülemek için'%s' kullanın) --]\n"
+msgstr ""
+"[-- %s/%s desteklenmiyor (bu bölümü görüntülemek için '%s' kullanın) --]\n"
 
 #: handler.c:1777
 msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
