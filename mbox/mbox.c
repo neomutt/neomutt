@@ -54,6 +54,7 @@
 #include "copy.h"
 #include "mutt_globals.h"
 #include "mutt_header.h"
+#include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "protos.h"
@@ -1165,9 +1166,9 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   char buf[32];
   int j;
   bool unlink_tempfile = false;
-  int need_sort = 0; /* flag to resort mailbox if new mail arrives */
-  int first = -1;    /* first message to be written */
-  LOFF_T offset;     /* location in mailbox to write changed messages */
+  bool need_sort = false; /* flag to resort mailbox if new mail arrives */
+  int first = -1;         /* first message to be written */
+  LOFF_T offset;          /* location in mailbox to write changed messages */
   struct stat st = { 0 };
   struct MUpdate *new_offset = NULL;
   struct MUpdate *old_offset = NULL;
@@ -1177,12 +1178,15 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
 
   /* sort message by their position in the mailbox on disk */
   const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const unsigned char c_use_threads = cs_subset_enum(NeoMutt->sub, "use_threads");
   if (c_sort != SORT_ORDER)
   {
     cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
+    cs_subset_str_native_set(NeoMutt->sub, "use_threads", UT_FLAT, NULL);
     mailbox_changed(m, NT_MAILBOX_RESORT);
     cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
-    need_sort = 1;
+    cs_subset_str_native_set(NeoMutt->sub, "use_threads", c_use_threads, NULL);
+    need_sort = true;
   }
 
   /* need to open the file for writing in such a way that it does not truncate
