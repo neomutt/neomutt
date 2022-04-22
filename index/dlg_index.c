@@ -1015,6 +1015,9 @@ dsl_finish:
  */
 struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 {
+  /* Make sure use_threads/sort/sort_aux are coherent */
+  index_adjust_sort_threads(NeoMutt->sub);
+
   struct IndexSharedData *shared = dlg->wdata;
   index_shared_data_set_context(shared, mview_new(m_init));
 
@@ -1058,9 +1061,6 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
     }
   }
-
-  /* Make sure use_threads/sort/sort_aux are coherent */
-  index_adjust_sort_threads(NeoMutt->sub);
 
   int rc = 0;
   do
