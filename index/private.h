@@ -27,8 +27,10 @@
 
 struct IndexPrivateData;
 struct IndexSharedData;
+struct ConfigSubset;
 
 struct MuttWindow *index_window_new(struct IndexPrivateData *priv);
 struct MuttWindow *ipanel_new(bool status_on_top, struct IndexSharedData *shared);
+int index_adjust_sort_threads(const struct ConfigSubset *sub);
 
 #endif /* MUTT_INDEX_PRIVATE_H */
