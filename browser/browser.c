@@ -1349,12 +1349,6 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
   int rc;
   do
   {
-    if (state.is_mailbox_list && (last_selected_mailbox >= 0) &&
-        (last_selected_mailbox < menu->max))
-    {
-      menu_set_index(menu, last_selected_mailbox);
-    }
-
     rc = FR_UNKNOWN;
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
@@ -1942,9 +1936,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
       case OP_CHECK_NEW:
       {
         if (state.is_mailbox_list)
-        {
-          last_selected_mailbox = menu->current;
-        }
+          last_selected_mailbox = menu_get_index(menu);
 
         if (op == OP_TOGGLE_MAILBOXES)
         {
@@ -2003,6 +1995,9 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           goto bail;
         }
         init_menu(&state, menu, m, sbar);
+        if (state.is_mailbox_list)
+          menu_set_index(menu, last_selected_mailbox);
+
         continue;
       }
 
