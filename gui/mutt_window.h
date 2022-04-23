@@ -88,7 +88,7 @@ enum WindowType
   WT_DLG_PGP,         ///< Pgp Dialog,         dlg_select_pgp_key()
   WT_DLG_POSTPONE,    ///< Postpone Dialog,    dlg_select_postponed_email()
   WT_DLG_QUERY,       ///< Query Dialog,       dlg_select_query()
-  WT_DLG_REMAILER,    ///< Remailer Dialog,    dlg_select_mixmaster_chain()
+  WT_DLG_REMAILER,    ///< Remailer Dialog,    dlg_mixmaster()
   WT_DLG_SMIME,       ///< Smime Dialog,       dlg_select_smime_key()
 
   // Common Windows

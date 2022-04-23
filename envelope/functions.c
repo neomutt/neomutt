@@ -510,7 +510,7 @@ static int op_envelope_edit_x_comment_to(struct EnvelopeWindowData *wdata, int o
  */
 static int op_compose_mix(struct EnvelopeWindowData *wdata, int op)
 {
-  dlg_select_mixmaster_chain(&wdata->email->chain);
+  dlg_mixmaster(&wdata->email->chain);
   mutt_message_hook(NULL, wdata->email, MUTT_SEND2_HOOK);
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_MIXMASTER);
   return FR_SUCCESS;

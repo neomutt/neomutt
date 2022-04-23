@@ -27,6 +27,7 @@
  *
  * | File                      | Description                      |
  * | :------------------------ | :------------------------------- |
+ * | mixmaster/dlg_mixmaster.c | @subpage mixmaster_dlg_mixmaster |
  * | mixmaster/functions.c     | @subpage mixmaster_functions     |
  * | mixmaster/mixmaster.c     | @subpage mixmaster_mixmaster     |
  */
@@ -39,6 +40,7 @@ struct ListHead;
 
 int mix_send_message(struct ListHead *chain, const char *tempfile);
 int mix_check_message(struct Email *e);
-void dlg_select_mixmaster_chain(struct ListHead *chainhead);
+
+void dlg_mixmaster(struct ListHead *chainhead);
 
 #endif /* MUTT_MIXMASTER_LIB_H */
