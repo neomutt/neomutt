@@ -527,7 +527,7 @@ $(PWD)/menu:
 @if MIXMASTER
 LIBMIXMASTER=	libmixmaster.a
 LIBMIXMASTEROBJS=	mixmaster/dlg_mixmaster.o mixmaster/functions.o \
-		mixmaster/mixmaster.o
+		mixmaster/mixmaster.o mixmaster/remailer.o
 CLEANFILES+=	$(LIBMIXMASTER) $(LIBMIXMASTEROBJS)
 ALLOBJS+=	$(LIBMIXMASTEROBJS)
 

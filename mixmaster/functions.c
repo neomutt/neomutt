@@ -35,6 +35,7 @@
 #include "functions.h"
 #include "opcodes.h"
 #include "private_data.h"
+#include "remailer.h"
 
 static int op_mix_insert(struct MixmasterPrivateData *priv, int op);
 

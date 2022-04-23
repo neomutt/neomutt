@@ -30,6 +30,7 @@
  * | mixmaster/dlg_mixmaster.c | @subpage mixmaster_dlg_mixmaster |
  * | mixmaster/functions.c     | @subpage mixmaster_functions     |
  * | mixmaster/mixmaster.c     | @subpage mixmaster_mixmaster     |
+ * | mixmaster/remailer.c      | @subpage mixmaster_remailer      |
  */
 
 #ifndef MUTT_MIXMASTER_LIB_H
