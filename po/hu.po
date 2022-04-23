@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2022-04-15 13:40+0100\n"
+"POT-Creation-Date: 2022-04-23 12:03+0100\n"
 "PO-Revision-Date: 2003-08-01 13:56+0000\n"
 "Last-Translator: Robert Horvath <rob@nyar.eu>\n"
 "Language-Team: LME Magyaritasok Lista <magyar@lists.linux.hu>\n"
@@ -22,54 +22,54 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. L10N: prompt to add a new alias
-#: alias/alias.c:399
+#: alias/alias.c:398
 msgid "Alias as: "
 msgstr "Álnév: "
 
-#: alias/alias.c:409
+#: alias/alias.c:408
 msgid "You already have an alias defined with that name"
 msgstr "Már van bejegyzés ilyen álnévvel"
 
-#: alias/alias.c:415
+#: alias/alias.c:414
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "Figyelem: Ez az álnév lehet, hogy nem működik.  Javítsam?"
 
-#: alias/alias.c:440
+#: alias/alias.c:439
 msgid "Address: "
 msgstr "Cím: "
 
-#: alias/alias.c:453 commands.c:136 conn/raw.c:149 conn/raw.c:206
-#: envelope/functions.c:131 recvcmd.c:226 send/send.c:200
+#: alias/alias.c:452 commands.c:136 conn/raw.c:148 conn/raw.c:205
+#: envelope/functions.c:130 recvcmd.c:226 send/send.c:200
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "Hibás IDN: '%s'"
 
-#: alias/alias.c:464
+#: alias/alias.c:463
 msgid "Personal name: "
 msgstr "Név: "
 
-#: alias/alias.c:473
+#: alias/alias.c:472
 msgid "Comment: "
 msgstr "Megjegyzés:"
 
-#: alias/alias.c:485 alias/alias.c:490
+#: alias/alias.c:484 alias/alias.c:489
 msgid "Accept?"
 msgstr "Rendben?"
 
-#: alias/alias.c:504 attach/recvattach.c:290 attach/recvattach.c:313
-#: attach/recvattach.c:328 attach/recvattach.c:344 attach/recvattach.c:448
+#: alias/alias.c:503 attach/recvattach.c:289 attach/recvattach.c:312
+#: attach/recvattach.c:327 attach/recvattach.c:343 attach/recvattach.c:446
 msgid "Save to file: "
 msgstr "Mentés fájlba: "
 
-#: alias/alias.c:530
+#: alias/alias.c:529
 msgid "Error reading alias file"
 msgstr "Hiba a álnév (alias) fájl beolvasásakor"
 
-#: alias/alias.c:557
+#: alias/alias.c:556
 msgid "Trouble adding alias"
 msgstr "Nem lehet a álnevet (alias) hozzáadni"
 
-#: alias/alias.c:559
+#: alias/alias.c:558
 msgid "Alias added"
 msgstr "Álnév (alias) bejegyezve"
 
@@ -174,43 +174,43 @@ msgid "Limit to addresses matching: "
 msgstr "Szűkítés az illeszkedő címekre: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: alias/functions.c:270
+#: alias/functions.c:269
 msgid "Rev-Sort (a)lias, a(d)dress or (u)nsorted?"
 msgstr "Fordítva-rendez á(l)név, (c)ím, vagy (n)em rendezett?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
-#: alias/functions.c:272
+#: alias/functions.c:271
 msgid "Sort (a)lias, a(d)dress or (u)nsorted?"
 msgstr "Rendez á(l)név, (c)ím, vagy (n)em rendezett?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: alias/functions.c:274
+#: alias/functions.c:273
 msgid "adu"
 msgstr "lcn"
 
 #. L10N: ask for a limit to apply
-#: alias/gui.c:79 index/functions.c:1576
+#: alias/gui.c:79 index/functions.c:1573
 #, c-format
 msgid "Limit: %s"
 msgstr "Szűkítés: %s"
 
-#: attach/attachments.c:478
+#: attach/attachments.c:477
 msgid "attachments: no disposition"
 msgstr "mellékletek: nincs diszpozíció"
 
-#: attach/attachments.c:489
+#: attach/attachments.c:488
 msgid "Current attachments settings:"
 msgstr "Aktuális melléklet beállítások:"
 
-#: attach/attachments.c:521
+#: attach/attachments.c:520
 msgid "attachments: invalid disposition"
 msgstr "mellékletek: érvénytelen diszpozíció"
 
-#: attach/attachments.c:541
+#: attach/attachments.c:540
 msgid "unattachments: no disposition"
 msgstr "melléklet-eltávolítások: nincs diszpozíció"
 
-#: attach/attachments.c:581
+#: attach/attachments.c:580
 msgid "unattachments: invalid disposition"
 msgstr "melléklet-eltávolítások: érvénytelen diszpozíció"
 
@@ -226,203 +226,203 @@ msgstr "Átküld"
 msgid "Print"
 msgstr "Nyomtat"
 
-#: attach/dlg_attach.c:481
+#: attach/dlg_attach.c:479
 msgid "Attachments"
 msgstr "Mellékletek"
 
-#: attach/functions.c:51 index/functions.c:90 pager/functions.c:72
+#: attach/functions.c:50 index/functions.c:87 pager/functions.c:54
 msgid "Not available in this menu"
 msgstr "Nem elérhető ebben a menüben"
 
-#: attach/functions.c:53 index/functions.c:2822
+#: attach/functions.c:52 index/functions.c:2816
 msgid "Function not permitted in attach-message mode"
 msgstr "A funkció levél-csatolás módban le van tiltva"
 
-#: attach/functions.c:117 index/functions.c:2816 mx.c:943
+#: attach/functions.c:115 index/functions.c:2810 mx.c:941
 msgid "Mailbox is read-only"
 msgstr "A postafiók csak olvasható"
 
-#: attach/functions.c:185
+#: attach/functions.c:183
 msgid "There are no subparts to show"
 msgstr "Nincsenek mutatható részek"
 
-#: attach/functions.c:205
+#: attach/functions.c:203
 msgid "Can't delete attachment from POP server"
 msgstr "POP szerveren nem lehet mellékletet törölni"
 
-#: attach/functions.c:214
+#: attach/functions.c:212
 msgid "Can't delete attachment from news server"
 msgstr "Hír szerveren nem lehet mellékletet törölni"
 
-#: attach/functions.c:221
+#: attach/functions.c:219
 msgid "Deletion of attachments from encrypted messages is unsupported"
 msgstr "Mellékletek törlése a kódolt üzenetből nem támogatott"
 
-#: attach/functions.c:227
+#: attach/functions.c:224
 msgid "Deletion of attachments from signed messages may invalidate the signature"
 msgstr "Mellékletek törlése a kódolt üzenetből érvénytelenítheti az aláírást"
 
-#: attach/functions.c:247 attach/functions.c:264
+#: attach/functions.c:243 attach/functions.c:259
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Többrészes csatolásoknál csak a törlés támogatott"
 
-#: attach/functions.c:576 index/functions.c:2580
+#: attach/functions.c:569 index/functions.c:2575
 msgid "Reply by mail as poster prefers?"
 msgstr "Válasz e-mail ahogy a hírdető akarja?"
 
-#: attach/mutt_attach.c:139 attach/mutt_attach.c:279
+#: attach/mutt_attach.c:138 attach/mutt_attach.c:278
 msgid "Can't match 'nametemplate', continue?"
 msgstr "Nem felel meg a névmintának, tovább?"
 
-#: attach/mutt_attach.c:149
+#: attach/mutt_attach.c:148
 #, c-format
 msgid "Mailcap compose entry requires %%s"
 msgstr "A mailcap-ba \"compose\" bejegyzés szükséges %%s"
 
-#: attach/mutt_attach.c:158 attach/mutt_attach.c:297 compmbox/compress.c:343
-#: compose/functions.c:1720 gui/curs_lib.c:369 index/dlg_index.c:1188
-#: index/dlg_index.c:1235 pager/dlg_pager.c:473 pager/do_pager.c:168
-#: pager/message.c:342 send/sendlib.c:1067
+#: attach/mutt_attach.c:157 attach/mutt_attach.c:296 compmbox/compress.c:343
+#: compose/functions.c:1715 gui/curs_lib.c:369 index/dlg_index.c:1143
+#: index/dlg_index.c:1189 pager/dlg_pager.c:469 pager/do_pager.c:168
+#: pager/message.c:336 send/sendlib.c:1062
 #, c-format
 msgid "Error running \"%s\""
 msgstr "Hiba a(z) \"%s\" futtatásakor"
 
-#: attach/mutt_attach.c:167
+#: attach/mutt_attach.c:166
 msgid "Failure to open file to parse headers"
 msgstr "Fájl megnyitási hiba a fejléc vizsgálatakor"
 
-#: attach/mutt_attach.c:206
+#: attach/mutt_attach.c:205
 msgid "Failure to open file to strip headers"
 msgstr "Fájl megnyitási hiba a fejléc eltávolításkor"
 
-#: attach/mutt_attach.c:216
+#: attach/mutt_attach.c:215
 msgid "Failure to rename file"
 msgstr "Nem sikerült átnevezni a file-t"
 
-#: attach/mutt_attach.c:226
+#: attach/mutt_attach.c:225
 #, c-format
 msgid "No mailcap compose entry for %s, creating empty file"
 msgstr "Nincs mailcap \"compose\" bejegyzés a(z) %s esetre, üres fájl létrehozása"
 
-#: attach/mutt_attach.c:289
+#: attach/mutt_attach.c:288
 #, c-format
 msgid "Mailcap Edit entry requires %%s"
 msgstr "A mailcap-ba \"edit\" bejegyzés szükséges %%s"
 
-#: attach/mutt_attach.c:311
+#: attach/mutt_attach.c:310
 #, c-format
 msgid "No mailcap edit entry for %s"
 msgstr "Nincs \"edit\" bejegyzés a mailcap-ban a(z) %s esetre"
 
-#: attach/mutt_attach.c:461
+#: attach/mutt_attach.c:459
 msgid "No matching mailcap entry found.  Viewing as text."
 msgstr "Nincs megfelelő mailcap bejegyzés. Megjelenítés szövegként."
 
-#: attach/mutt_attach.c:474
+#: attach/mutt_attach.c:472
 msgid "MIME type not defined.  Can't view attachment."
 msgstr "A MIME típus nincs definiálva. A melléklet nem jeleníthető meg."
 
-#: attach/mutt_attach.c:547 attach/mutt_attach.c:747 attach/mutt_attach.c:1171
-#: attach/mutt_attach.c:1239 handler.c:588 ncrypt/dlg_pgp.c:736
+#: attach/mutt_attach.c:545 attach/mutt_attach.c:741 attach/mutt_attach.c:1165
+#: attach/mutt_attach.c:1231 handler.c:587 ncrypt/dlg_pgp.c:734
 #: ncrypt/pgpkey.c:280
 msgid "Can't create filter"
 msgstr "Szűrőt nem lehet létrehozni"
 
-#: attach/mutt_attach.c:555
+#: attach/mutt_attach.c:553
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
 msgstr "---Parancs: %-20.20s Leírás: %s"
 
-#: attach/mutt_attach.c:560
+#: attach/mutt_attach.c:558
 #, c-format
 msgid "---Command: %-30.30s Attachment: %s"
 msgstr "---Parancs: %-30.30s Leírás: %s"
 
-#: attach/mutt_attach.c:648
+#: attach/mutt_attach.c:642
 #, c-format
 msgid "---Attachment: %s: %s"
 msgstr "-- Mellékletek: %s: %s"
 
-#: attach/mutt_attach.c:650
+#: attach/mutt_attach.c:644
 #, c-format
 msgid "---Attachment: %s"
 msgstr "-- Melléklet: %s"
 
-#: attach/mutt_attach.c:988 attach/mutt_attach.c:996
+#: attach/mutt_attach.c:982 attach/mutt_attach.c:990
 msgid "Write fault"
 msgstr "Írási hiba"
 
-#: attach/mutt_attach.c:1263
+#: attach/mutt_attach.c:1255
 msgid "I don't know how to print that"
 msgstr "Nem ismert, hogy ezt hogyan kell kinyomtatni"
 
-#: attach/recvattach.c:333
+#: attach/recvattach.c:332
 msgid "Saving..."
 msgstr "Mentés..."
 
-#: attach/recvattach.c:338 attach/recvattach.c:518
+#: attach/recvattach.c:337 attach/recvattach.c:516
 #, c-format
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
 msgstr[0] "A melléklet elmentve"
 msgstr[1] "%d melléklet elmentve"
 
-#: attach/recvattach.c:543
+#: attach/recvattach.c:541
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "FIGYELMEZTETÉS!  %s-t felülírására készülsz, folytatod?"
 
-#: attach/recvattach.c:561
+#: attach/recvattach.c:559
 msgid "Attachment filtered"
 msgstr "Melléklet szűrve"
 
-#: attach/recvattach.c:719
+#: attach/recvattach.c:717
 msgid "Filter through: "
 msgstr "Szűrőn keresztül: "
 
-#: attach/recvattach.c:719
+#: attach/recvattach.c:717
 msgid "Pipe to: "
 msgstr "Átküld: "
 
 #. L10N: s gets replaced by a MIME type, e.g. "text/plain" or
 #. application/octet-stream.
-#: attach/recvattach.c:775
+#: attach/recvattach.c:773
 #, c-format
 msgid "I don't know how to print %s attachments"
 msgstr "Nem tudom hogyan kell nyomtatni %s csatolmányokat"
 
-#: attach/recvattach.c:877
+#: attach/recvattach.c:874
 #, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
 msgstr[0] "Kinyomtassam a kijelölt melléklet(ek)et?"
 msgstr[1] "Kinyomtassam a %d darab kijelölt mellékletet?"
 
-#: attach/recvattach.c:878
+#: attach/recvattach.c:875
 #, c-format
 msgid "Print attachment?"
 msgstr "Kinyomtassam a mellékletet?"
 
-#: attach/recvattach.c:922
+#: attach/recvattach.c:917
 msgid "Structural changes to decrypted attachments are not supported"
 msgstr "A visszafejtett mellékletek strukturális megváltoztatása nem támogatott"
 
-#: attach/recvattach.c:1135
+#: attach/recvattach.c:1130
 msgid "Can't decrypt encrypted message"
 msgstr "Nem tudtam visszafejteni a titkosított üzenetet"
 
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:76 main.c:931
+#: autocrypt/autocrypt.c:75 main.c:931
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s nem létezik. Létrehozzam?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:83 bcache/bcache.c:230 hcache/hcache.c:236 main.c:935
-#: nntp/newsrc.c:1106
+#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:935
+#: nntp/newsrc.c:1101
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "Nem tudom létrehozni %s: %s"
@@ -430,28 +430,28 @@ msgstr "Nem tudom létrehozni %s: %s"
 #. L10N: The first time NeoMutt is started with $autocrypt set, it will
 #. create $autocrypt_dir and then prompt to create an autocrypt account
 #. with this message.
-#: autocrypt/autocrypt.c:168
+#: autocrypt/autocrypt.c:166
 msgid "Create an initial autocrypt account?"
 msgstr "Kiindulási autocrypt fiók létrehozása?"
 
 #. L10N: Autocrypt is asking for the email address to use for the
 #. autocrypt account.  This will generate a key and add a record
 #. to the database for use in autocrypt operations.
-#: autocrypt/autocrypt.c:192
+#: autocrypt/autocrypt.c:190
 msgid "Autocrypt account address: "
 msgstr "Autocrypt fiók címe: "
 
 #. L10N: Autocrypt prompts for an account email address, and requires
 #. a single address.  This is shown if they entered something invalid,
 #. nothing, or more than one address for some reason.
-#: autocrypt/autocrypt.c:201
+#: autocrypt/autocrypt.c:199
 msgid "Please enter a single email address"
 msgstr "Kérem, adjon meg egy email címet"
 
 #. L10N: When creating an autocrypt account, this message will be displayed
 #. if there is already an account in the database with the email address
 #. they just entered.
-#: autocrypt/autocrypt.c:216
+#: autocrypt/autocrypt.c:214
 msgid "That email address already has an autocrypt account"
 msgstr "Ahhoz az email címhez már tartozik egy autocrypt fiók"
 
@@ -461,25 +461,25 @@ msgstr "Ahhoz az email címhez már tartozik egy autocrypt fiók"
 #. enabled.
 #. Otherwise the UI will show encryption is "available" but the user
 #. will be required to enable encryption manually.
-#: autocrypt/autocrypt.c:229
+#: autocrypt/autocrypt.c:227
 msgid "Prefer encryption?"
 msgstr "Titkosít preferálása"
 
 #. L10N: Message displayed after an autocrypt account is successfully created.
-#: autocrypt/autocrypt.c:244
+#: autocrypt/autocrypt.c:242
 msgid "Autocrypt account creation succeeded"
 msgstr "Autocrypt fiók létrehozás sikeres"
 
 #. L10N: Error message displayed if creating an autocrypt account failed
 #. or was aborted by the user.
-#: autocrypt/autocrypt.c:250
+#: autocrypt/autocrypt.c:248
 msgid "Autocrypt account creation aborted"
 msgstr "Autocrypt fiók létrehozás megszakítva"
 
 #. L10N: Error displayed if the user tries to force sending an Autocrypt
 #. email when the engine is not available.
-#: autocrypt/autocrypt.c:588 autocrypt/autocrypt.c:597
-#: autocrypt/autocrypt.c:604
+#: autocrypt/autocrypt.c:585 autocrypt/autocrypt.c:594
+#: autocrypt/autocrypt.c:601
 msgid "Autocrypt is not available"
 msgstr "Autocrypt nem elérhető"
 
@@ -487,7 +487,7 @@ msgstr "Autocrypt nem elérhető"
 #. email when the account does not exist or is not enabled.
 #. %s is the From email address used to look up the Autocrypt account.
 #.
-#: autocrypt/autocrypt.c:616
+#: autocrypt/autocrypt.c:613
 #, c-format
 msgid "Autocrypt is not enabled for %s"
 msgstr "Autocrypt nem engedélyezett ehhez: %s"
@@ -495,17 +495,21 @@ msgstr "Autocrypt nem engedélyezett ehhez: %s"
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
 #. The message is printed and they are returned to the compose menu.
-#: autocrypt/autocrypt.c:641 autocrypt/autocrypt.c:670
+#: autocrypt/autocrypt.c:638 autocrypt/autocrypt.c:667
 #, c-format
 msgid "No (valid) autocrypt key found for %s"
 msgstr "Nem található (érvényes) autocrypt kulcs ehhez: %s"
 
-#: autocrypt/autocrypt.c:937
+#. L10N: The first time autocrypt is enabled, NeoMutt will ask to scan
+#. through one or more mailboxes for Autocrypt: headers.  Those headers are
+#. then captured in the database as peer records and used for encryption.
+#. If this is answered yes, they will be prompted for a mailbox.
+#: autocrypt/autocrypt.c:933
 msgid "Scan a mailbox for autocrypt headers?"
 msgstr "Autocrypt fejlécek keresése a postafiókban"
 
 #. L10N: The prompt for a mailbox to scan for Autocrypt: headers
-#: autocrypt/autocrypt.c:942
+#: autocrypt/autocrypt.c:938
 msgid "Scan mailbox"
 msgstr "Keresés a postafiókban"
 
@@ -514,7 +518,7 @@ msgstr "Keresés a postafiókban"
 #. I'm purposely being extra verbose; asking first then prompting
 #. for a mailbox.  This is because this is a one-time operation
 #. and I don't want them to accidentally ctrl-g and abort it.
-#: autocrypt/autocrypt.c:963
+#: autocrypt/autocrypt.c:959
 msgid "Scan another mailbox for autocrypt headers?"
 msgstr "Autocrypt fejlécek keresése másik postafiókban?"
 
@@ -522,7 +526,7 @@ msgstr "Autocrypt fejlécek keresése másik postafiókban?"
 #. For some reason sqlite3 failed to open that database file.
 #. L10N: Error message if autocrypt couldn't open the SQLite database
 #. for some reason.  The %s is the full path of the database file.
-#: autocrypt/db.c:67 autocrypt/db.c:103
+#: autocrypt/db.c:67 autocrypt/db.c:102
 #, c-format
 msgid "Unable to open autocrypt database %s"
 msgstr "Nem tudom megnyitni az %s autocrypt adatbázist"
@@ -584,35 +588,35 @@ msgstr "inaktív"
 
 #. L10N: This error message is displayed if a database update of an
 #. account record fails for some odd reason.
-#: autocrypt/dlg_autocrypt.c:273 autocrypt/dlg_autocrypt.c:287
+#: autocrypt/dlg_autocrypt.c:271 autocrypt/dlg_autocrypt.c:285
 msgid "Error updating account record"
 msgstr "Hiba a fiók bejegyzés módosításakor"
 
 #. L10N: Autocrypt Account Management Menu title
-#: autocrypt/dlg_autocrypt.c:364
+#: autocrypt/dlg_autocrypt.c:362
 msgid "Autocrypt Accounts"
 msgstr "Autocrypt Fiókok"
 
 #. L10N: Confirmation message when deleting an autocrypt account
-#: autocrypt/dlg_autocrypt.c:414
+#: autocrypt/dlg_autocrypt.c:412
 #, c-format
 msgid "Really delete account \"%s\"?"
 msgstr "Valóban törli a \"%s\" postafiókot?"
 
-#: autocrypt/gpgme.c:57 ncrypt/crypt_gpgme.c:587
+#: autocrypt/gpgme.c:56 ncrypt/crypt_gpgme.c:586
 #, c-format
 msgid "error creating GPGME context: %s"
 msgstr "hiba a GPGME kontextus létrehozásakor ehhez: %s"
 
 #. L10N: Message displayed just before a GPG key is generated for a created
 #. autocrypt account.
-#: autocrypt/gpgme.c:176
+#: autocrypt/gpgme.c:175
 msgid "Generating autocrypt key..."
 msgstr "Autocrypt kulcs létrehozása..."
 
 #. L10N: GPGME was unable to generate a key for some reason.
 #. %s is the error message returned by GPGME.
-#: autocrypt/gpgme.c:186 autocrypt/gpgme.c:205
+#: autocrypt/gpgme.c:185 autocrypt/gpgme.c:204
 #, c-format
 msgid "Error creating autocrypt key: %s"
 msgstr "Hiba a következő autocrypt kulcs létrehozásakor: %s"
@@ -621,7 +625,7 @@ msgstr "Hiba a következő autocrypt kulcs létrehozásakor: %s"
 #. this is displayed if the key was revoked/expired/disabled/invalid
 #. or can't be used for both signing and encryption.
 #. %s is the key fingerprint.
-#: autocrypt/gpgme.c:252
+#: autocrypt/gpgme.c:251
 #, c-format
 msgid "The key %s is not usable for autocrypt"
 msgstr "A %s kulcs nem haszmálható az autocrypt-hez"
@@ -629,19 +633,19 @@ msgstr "A %s kulcs nem haszmálható az autocrypt-hez"
 #. L10N: During autocrypt account creation, this prompt asks the
 #. user whether they want to create a new GPG key for the account,
 #. or select an existing account from the keyring.
-#: autocrypt/gpgme.c:284
+#: autocrypt/gpgme.c:283
 msgid "(c)reate new, or (s)elect existing GPG key?"
 msgstr "Ú(j) GPG kulcs létrehozása, vagy létező (k)iválasztása?"
 
 #. L10N: The letters corresponding to the
 #. "(c)reate new, or (s)elect existing GPG key?" prompt.
-#: autocrypt/gpgme.c:287
+#: autocrypt/gpgme.c:286
 msgid "cs"
 msgstr "jk"
 
 #. L10N: During autocrypt account creation, if selecting an existing key fails
 #. for some reason, we prompt to see if they want to create a key instead.
-#: autocrypt/gpgme.c:299
+#: autocrypt/gpgme.c:298
 msgid "Create a new GPG key for this account, instead?"
 msgstr "Ehelyett új GPG kulcs létrehozása ehhez a fiókhoz?"
 
@@ -653,12 +657,12 @@ msgstr "Ehelyett új GPG kulcs létrehozása ehhez a fiókhoz?"
 msgid "Autocrypt database version is too new"
 msgstr "Autocrypt adatbázis verzió túl új"
 
-#: bcache/bcache.c:76
+#: bcache/bcache.c:75
 #, c-format
 msgid "Cache disabled, $message_cachedir isn't a directory: %s"
 msgstr "A gyorsítótár tiltva, $message_cachedir nem könyvtár: %s"
 
-#: bcache/bcache.c:222
+#: bcache/bcache.c:221
 #, c-format
 msgid "Message cache isn't a directory: %s"
 msgstr "A üzenet gyorsítótár nem könyvtár: %s"
@@ -691,127 +695,127 @@ msgstr "Leiratkozás"
 msgid "Catchup"
 msgstr "Felzárkózás"
 
-#: browser/browser.c:636 browser/browser.c:1534 browser/browser.c:1807
+#: browser/browser.c:633 browser/browser.c:1525 browser/browser.c:1798
 #, c-format
 msgid "%s is not a directory"
 msgstr "A(z) %s nem könyvtár"
 
-#: browser/browser.c:917
+#: browser/browser.c:910
 #, c-format
 msgid "Subscribed newsgroups"
 msgstr "Előfizetett hírcsoportok"
 
-#: browser/browser.c:921
+#: browser/browser.c:914
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr "Hírcsoportok a szerveren [%s]"
 
-#: browser/browser.c:930
+#: browser/browser.c:923
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Postafiókok [%d]"
 
-#: browser/browser.c:944
+#: browser/browser.c:936
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Feliratkozva [%s], Fájlmaszk: %s"
 
-#: browser/browser.c:950
+#: browser/browser.c:942
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Könyvtár [%s], Fájlmaszk: %s"
 
-#: browser/browser.c:1013
+#: browser/browser.c:1005
 msgid "Can't attach a directory"
 msgstr "Könyvtár nem csatolható"
 
-#: browser/browser.c:1389 browser/browser.c:1880 browser/browser.c:2047
+#: browser/browser.c:1380 browser/browser.c:1871 browser/browser.c:2036
 msgid "No files match the file mask"
 msgstr "Nincs a fájlmaszknak megfelelő fájl"
 
-#: browser/browser.c:1614
+#: browser/browser.c:1605
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "Csak IMAP postafiókok létrehozása támogatott"
 
-#: browser/browser.c:1642
+#: browser/browser.c:1633
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Csak IMAP postafiókok létrehozása támogatott"
 
-#: browser/browser.c:1668
+#: browser/browser.c:1659
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Csak IMAP postafiókok törlése támogatott"
 
-#: browser/browser.c:1679
+#: browser/browser.c:1670
 msgid "Can't delete currently selected mailbox"
 msgstr "Nem lehet törölni a jelenleg kijelölt postafiókot"
 
-#: browser/browser.c:1683
+#: browser/browser.c:1674
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Valóban törli a \"%s\" postafiókot?"
 
-#: browser/browser.c:1693
+#: browser/browser.c:1684
 msgid "Mailbox deleted"
 msgstr "Postafiók törölve"
 
-#: browser/browser.c:1698
+#: browser/browser.c:1689
 msgid "Mailbox deletion failed"
 msgstr "Postafiók törlése sikertelen"
 
-#: browser/browser.c:1703
+#: browser/browser.c:1694
 msgid "Mailbox not deleted"
 msgstr "A postafiók nem lett törölve"
 
-#: browser/browser.c:1731
+#: browser/browser.c:1722
 msgid "Chdir to: "
 msgstr "Könyvtárváltás erre: "
 
-#: browser/browser.c:1795 browser/browser.c:1874
+#: browser/browser.c:1786 browser/browser.c:1865
 msgid "Error scanning directory"
 msgstr "Hiba a könyvtár beolvasásakor"
 
-#: browser/browser.c:1825
+#: browser/browser.c:1816
 msgid "File Mask: "
 msgstr "Fájlmaszk: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser/browser.c:1896
+#: browser/browser.c:1887
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Fordított rendezés (d)átum, (n)év, (m)éret, (l)eírás, (s)zám, ú(j)ak száma szerint vagy nincs (r)endezve?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser/browser.c:1899
+#: browser/browser.c:1889
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Rendezés (d)átum, (n)év, (m)éret, (l)eírás, (s)zám, ú(j)ak száma szerint vagy nincs (r)endezve?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser/browser.c:1902
+#: browser/browser.c:1891
 msgid "dazecwn"
 msgstr "dnmlsjr"
 
-#: browser/browser.c:2031
+#: browser/browser.c:2020
 msgid "New file name: "
 msgstr "Az új fájl neve: "
 
-#: browser/browser.c:2065
+#: browser/browser.c:2054
 msgid "Can't view a directory"
 msgstr "A könyvtár nem jeleníthető meg"
 
-#: browser/browser.c:2082
+#: browser/browser.c:2071
 msgid "Error trying to view file"
 msgstr "Hiba a fájl megjelenítéskor"
 
-#: browser/browser.c:2176
+#: browser/browser.c:2165
 #, c-format
 msgid "Subscribe pattern: "
 msgstr "Feliratkozás minta: "
 
-#: browser/browser.c:2178
+#: browser/browser.c:2167
 #, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Leiratkozás minta: "
 
-#: browser/browser.c:2203
+#: browser/browser.c:2192
 msgid "No newsgroups match the mask"
 msgstr "Nincs a fájlmaszknak megfelelő hírcsoport"
 
@@ -827,9 +831,9 @@ msgstr "%s: nincs ilyen szín"
 
 #: color/command.c:220 color/command.c:260 color/command.c:307
 #: color/command.c:379 color/command.c:472 color/command.c:535
-#: color/command.c:560 command_parse.c:302 command_parse.c:324
-#: command_parse.c:469 command_parse.c:1058 command_parse.c:1145 hook.c:98
-#: hook.c:155 hook.c:164 hook.c:178 hook.c:425 hook.c:441 keymap.c:1187
+#: color/command.c:560 command_parse.c:304 command_parse.c:326
+#: command_parse.c:471 command_parse.c:1056 command_parse.c:1143 hook.c:98
+#: hook.c:154 hook.c:163 hook.c:177 hook.c:423 hook.c:439 keymap.c:1184
 #: score.c:95 subjectrx.c:72 subjectrx.c:100 subjectrx.c:108
 #, c-format
 msgid "%s: too few arguments"
@@ -846,9 +850,9 @@ msgstr "%s: nincs ilyen attribútum"
 msgid "%s: no such object"
 msgstr "%s: nincs ilyen objektum"
 
-#: color/command.c:569 color/command.c:630 command_parse.c:348
-#: command_parse.c:1335 command_parse.c:1671 hook.c:103 hook.c:185 hook.c:448
-#: keymap.c:1119 keymap.c:1292 keymap.c:1454 keymap.c:1535 mutt_lua.c:515
+#: color/command.c:569 color/command.c:630 command_parse.c:350
+#: command_parse.c:1333 command_parse.c:1669 hook.c:103 hook.c:184 hook.c:446
+#: keymap.c:1116 keymap.c:1289 keymap.c:1451 keymap.c:1532 mutt_lua.c:515
 #: score.c:103
 #, c-format
 msgid "%s: too many arguments"
@@ -891,150 +895,150 @@ msgstr "Hiba: Nem lehet felépíteni ezt az útvonalat '%s'"
 msgid "Error: Cyclic sourcing of configuration file '%s'"
 msgstr "Hiba: Az alábbi konfigurációs fájl ciklikusan lett feldolgozva '%s'"
 
-#: command_parse.c:222
+#: command_parse.c:221
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Hiba a %s-ban, sor %d: %s"
 
-#: command_parse.c:233
+#: command_parse.c:232
 #, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Figyelem a %s-ban, sor %d: %s"
 
-#: command_parse.c:260
+#: command_parse.c:261
 #, c-format
 msgid "source: errors in %s"
 msgstr "feldolgozás: hiba a %s fájlban"
 
-#: command_parse.c:260
+#: command_parse.c:262
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "feldolgozás: a beolvasás megszakadt a %s fájlban talált túl sok a hiba miatt"
 
-#: command_parse.c:269
+#: command_parse.c:271
 #, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "feldolgozás: %d figyelmeztetés a %s fájlban"
 msgstr[1] "feldolgozás: %d figyelmeztetés a %s fájlban"
 
-#: command_parse.c:385
+#: command_parse.c:387
 #, c-format
 msgid "%sgroup: missing -rx or -addr"
 msgstr "%scsoport: hiányzik -rx vagy -addr"
 
-#: command_parse.c:411
+#: command_parse.c:413
 #, c-format
 msgid "%sgroup: warning: bad IDN '%s'"
 msgstr "%s csoport: figyelmeztetés: Hibás IDN '%s'"
 
-#: command_parse.c:480
+#: command_parse.c:482
 #, c-format
 msgid "Error: %s"
 msgstr "Hiba: %s"
 
-#: command_parse.c:642
+#: command_parse.c:644
 msgid "invalid header field"
 msgstr "érvénytelen mező a fejlécben"
 
-#: command_parse.c:713
+#: command_parse.c:715
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
 msgstr "Nem használhat 'inv', 'no', '&' vagy '?' jelet a '%s' paranccsal"
 
-#: command_parse.c:747 command_parse.c:891 command_parse.c:1001
+#: command_parse.c:749 command_parse.c:889 command_parse.c:999
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: ismeretlen változó"
 
-#: command_parse.c:763 command_parse.c:1089
+#: command_parse.c:764 command_parse.c:1087
 msgid "Can't use a prefix when querying a variable"
 msgstr "Nem használhat előtagot, amikor egy változót keres"
 
-#: command_parse.c:769 command_parse.c:1069 command_parse.c:1083
+#: command_parse.c:770 command_parse.c:1067 command_parse.c:1081
 #, c-format
 msgid "Can't query a variable with the '%s' command"
 msgstr "Nem kereshet válltozót az alábbival '%s'"
 
-#: command_parse.c:783
+#: command_parse.c:782
 msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "Nem használhat előtagot, amikor növel, vagy csökkent egy változót"
 
-#: command_parse.c:789 command_parse.c:820
+#: command_parse.c:788 command_parse.c:819
 #, c-format
 msgid "Can't set a variable with the '%s' command"
 msgstr "Nem lehet változót beállítani a '%s' paranccsal"
 
-#: command_parse.c:800
+#: command_parse.c:799
 msgid "Can't decrement a my_ variable"
 msgstr "Nem lehet csökkenteni a my_ változót"
 
-#: command_parse.c:814
+#: command_parse.c:813
 msgid "Can't use prefix when setting a variable"
 msgstr "Nem használhat előtagot a változó beállításakor"
 
-#: command_parse.c:833
+#: command_parse.c:832
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
 msgstr "A 'no' és 'inv' előtagokat csak bool/quad váltózókkal együtt lehet használni"
 
-#: command_parse.c:838
+#: command_parse.c:836
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
 msgstr "A(z) '%s' parancsot csak bool/quad változókkal együtt lehet használni"
 
-#: command_parse.c:1121 command_parse.c:1129
+#: command_parse.c:1119 command_parse.c:1127
 #, c-format
 msgid "%s is unset"
 msgstr "%s beállítása törölve"
 
-#: command_parse.c:1169 mutt_lua.c:510
+#: command_parse.c:1167 mutt_lua.c:510
 #, c-format
 msgid "source: error at %s"
 msgstr "feldolgozás: hiba a %s-nál"
 
-#: command_parse.c:1177
+#: command_parse.c:1175
 #, c-format
 msgid "source: file %s could not be sourced"
 msgstr "feldolgozás: a %s file-t nem sikerült feldolgozni"
 
-#: command_parse.c:1200
+#: command_parse.c:1198
 msgid "spam: no matching pattern"
 msgstr "levélszemét: nincs megfelelő minta"
 
-#: command_parse.c:1202
+#: command_parse.c:1200
 msgid "nospam: no matching pattern"
 msgstr "nem-levélszemét: nincs megfelelő minta"
 
-#: command_parse.c:1344 imap/imap.c:1333
+#: command_parse.c:1342 imap/imap.c:1327
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Feliratkozva erre %s"
 
-#: command_parse.c:1348
+#: command_parse.c:1346
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "Nem tudtam előfizetni erre %s"
 
-#: command_parse.c:1356 command_parse.c:1692
+#: command_parse.c:1354 command_parse.c:1690
 msgid "No folder specified"
 msgstr "Nincs könyvtár megadva."
 
-#: command_parse.c:1391
+#: command_parse.c:1389
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
-msgstr ""
+msgstr "'%s' megjelőlés formátum már '%s'-ként regisztrálva van"
 
-#: command_parse.c:1433
+#: command_parse.c:1431
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
-msgstr ""
+msgstr "'%s' megjelőléses transzformáció már '%s'-ként regisztrálva van"
 
-#: command_parse.c:1680 imap/imap.c:1335
+#: command_parse.c:1678 imap/imap.c:1329
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Leiratkozva erről %s"
 
-#: command_parse.c:1684
+#: command_parse.c:1682
 #, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Nem tudtam leiratkozni erről %s"
@@ -1074,156 +1078,156 @@ msgid_plural "Messages bounced"
 msgstr[0] "Levél visszaküldve"
 msgstr[1] "Levél visszaküldve"
 
-#: commands.c:330 commands.c:373 commands.c:393
+#: commands.c:328 commands.c:371 commands.c:391
 msgid "Can't create filter process"
 msgstr "Szűrőfolyamatot nem lehet létrehozni"
 
-#: commands.c:430
+#: commands.c:428
 msgid "Pipe to command: "
 msgstr "Parancs, aminek továbbít: "
 
-#: commands.c:464
+#: commands.c:461
 msgid "No printing command has been defined"
 msgstr "Nincs nyomtatási parancs megadva"
 
-#: commands.c:476
+#: commands.c:472
 msgid "Print message?"
 msgstr "Kinyomtatod a levelet?"
 
-#: commands.c:477
+#: commands.c:473
 msgid "Print tagged messages?"
 msgstr "Kinyomtatod a megjelölt leveleket?"
 
-#: commands.c:485
+#: commands.c:481
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Levél kinyomtatva"
 msgstr[1] "Levél kinyomtatva"
 
-#: commands.c:488
+#: commands.c:484
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "A levelet nem tudtam kinyomtatni"
 msgstr[1] "A levelet nem tudtam kinyomtatni"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: commands.c:504
+#: commands.c:501
 msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Fordítva rendez (d)átum,(f)eladó,ér(k),tár(g)y,(c)ímzett,(t)éma,(r)endezetlen,(m)éret,(p)ontszám,(s)pam,cí(m)ke?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
-#: commands.c:508
+#: commands.c:503
 msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Rendez (d)átum,(f)eladó,ér(k),tár(g)y,(c)ímzett,(t)éma,(r)endezetlen,(m)éret,(p)ontszám,(s)pam,cí(m)ke?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: commands.c:512
+#: commands.c:505
 msgid "dfrsotuzcpl"
 msgstr "dfkgctrmpsm"
 
-#: commands.c:611
+#: commands.c:603
 msgid "Shell command: "
 msgstr "Shell parancs: "
 
 #. L10N: Progress meter message when copying tagged messages
-#: commands.c:853
+#: commands.c:844
 msgid "Copying tagged messages..."
 msgstr "Megjelölt üzenetek másolása folyamatban..."
 
-#: commands.c:857
+#: commands.c:848
 msgid "Copy tagged to mailbox"
 msgstr "Megjelöltek másolása postafiókba"
 
-#: commands.c:857
+#: commands.c:848
 msgid "Copy to mailbox"
 msgstr "Másolás postafiókba"
 
-#: commands.c:860
+#: commands.c:851
 msgid "Decrypt-copy tagged to mailbox"
 msgstr "Visszafejtés-másolásra megjelölt(ek) postafiókba"
 
-#: commands.c:861
+#: commands.c:852
 msgid "Decrypt-copy to mailbox"
 msgstr "Visszafejtés-másolás postafiókba"
 
-#: commands.c:864
+#: commands.c:855
 msgid "Decode-copy tagged to mailbox"
 msgstr "Dekódolás-másolásra megjelölt(ek) postafiókba"
 
-#: commands.c:865
+#: commands.c:856
 msgid "Decode-copy to mailbox"
 msgstr "Dekódolás-másolás postafiókba"
 
 #. L10N: Progress meter message when saving tagged messages
-#: commands.c:872
+#: commands.c:863
 msgid "Saving tagged messages..."
 msgstr "Megjelölt üzenetek másolása folyamatban..."
 
-#: commands.c:876
+#: commands.c:867
 msgid "Save tagged to mailbox"
 msgstr "Megjelöltek mentése postafiókba"
 
-#: commands.c:876
+#: commands.c:867
 msgid "Save to mailbox"
 msgstr "Mentés postafiókba"
 
-#: commands.c:879
+#: commands.c:870
 msgid "Decrypt-save tagged to mailbox"
 msgstr "Visszafejtés-mentésre megjelöltek postafiókba"
 
-#: commands.c:880
+#: commands.c:871
 msgid "Decrypt-save to mailbox"
 msgstr "Visszafejtés-mentés postafiókba"
 
-#: commands.c:883
+#: commands.c:874
 msgid "Decode-save tagged to mailbox"
 msgstr "Dekódolás-mentésre megjelöltek postafiókba"
 
-#: commands.c:884
+#: commands.c:875
 msgid "Decode-save to mailbox"
 msgstr "Dekódolás-mentés postafiókba"
 
-#: commands.c:931
+#: commands.c:922
 #, c-format
 msgid "Copying to %s..."
 msgstr "Másolás a(z) %s-ba..."
 
 #. L10N: Message when an index tagged save operation fails for some reason
-#: commands.c:1074
+#: commands.c:1065
 msgid "Error saving tagged messages"
 msgstr "A megjelölt üzenetek mentése közben hiba lépett fel"
 
 #. L10N: Message when an index/pager save operation fails for some reason
-#: commands.c:1079
+#: commands.c:1070
 msgid "Error saving message"
 msgstr "A levél mentéseközben hiba lépett fel"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
-#: commands.c:1086
+#: commands.c:1077
 msgid "Error copying tagged messages"
 msgstr "Megjelölt üzenetek másolása közben hiba lépett fel"
 
 #. L10N: Message when an index/pager copy operation fails for some reason
-#: commands.c:1091
+#: commands.c:1082
 msgid "Error copying message"
 msgstr "Üzenet másolása közben hiba lépett fel"
 
-#: commands.c:1162
+#: commands.c:1153
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "Átalakítsam %s formátumra küldéskor?"
 
-#: commands.c:1174
+#: commands.c:1164
 #, c-format
 msgid "Content-Type changed to %s"
 msgstr "Tartalom-típus megváltoztatva %s-ra"
 
-#: commands.c:1179
+#: commands.c:1169
 #, c-format
 msgid "Character set changed to %s; not converting"
 msgstr "Karakterkészlet megváltozott erre: %s; nem alakítom át"
 
-#: commands.c:1180
+#: commands.c:1170
 #, c-format
 msgid "Character set changed to %s; converting"
 msgstr "Karakterkészlet megváltozott erre: %s; átalakítom"
@@ -1234,7 +1238,7 @@ msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Nem tudom hozzákapcsolni az alábbi hozzáadáskori-parancsok (append-hook) vagy bezáráskori-parancsok close-hook nélkül: %s"
 
 #: compmbox/compress.c:459 compmbox/compress.c:523 compmbox/compress.c:599
-#: compmbox/compress.c:637 mbox/mbox.c:1205
+#: compmbox/compress.c:637 mbox/mbox.c:1207
 msgid "Unable to lock mailbox"
 msgstr "Nem tudom zárolni a postafiókot"
 
@@ -1275,7 +1279,7 @@ msgstr "Tömörítés folyamatban ennél: %s"
 msgid "Compressed-appending to %s..."
 msgstr "Tömörített-hozzáadás folyamatban a %s-hoz..."
 
-#: compmbox/compress.c:708 editmsg.c:259
+#: compmbox/compress.c:708 editmsg.c:260
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Hiba a(z) %s ideiglenes fájl mentésekor"
@@ -1303,7 +1307,7 @@ msgstr "Másolat:"
 msgid "Subj"
 msgstr "Tárgy:"
 
-#: compose/compose.c:104 compose/compose.c:119 compose/functions.c:592
+#: compose/compose.c:104 compose/compose.c:119 compose/functions.c:591
 msgid "Attach file"
 msgstr "Fájl csatolás"
 
@@ -1345,194 +1349,194 @@ msgstr "A &%d melléklet módosításra került. Legyen a kódolása %s?"
 msgid "You may not delete the only attachment"
 msgstr "Az egyetlen melléklet nem törölhető"
 
-#: compose/functions.c:231 compose/functions.c:424
+#: compose/functions.c:231 compose/functions.c:423
 msgid "Can't leave group with only one attachment"
 msgstr "Nem hagyhatja el a csoportot egyetlen csatolmánnyal."
 
-#: compose/functions.c:391 compose/functions.c:406
+#: compose/functions.c:391 compose/functions.c:405
 msgid "Attachments to be grouped must have the same parent"
 msgstr "A csoportosítandó csatolmányok ugyanazzal a szülővel kell rendelkezzenek"
 
-#: compose/functions.c:613
+#: compose/functions.c:612
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
 msgstr[0] "A kiválasztott fájl csatolása..."
 msgstr[1] "A kiválasztott fájlok csatolása..."
 
-#: compose/functions.c:633
+#: compose/functions.c:632
 #, c-format
 msgid "Unable to attach %s"
 msgstr "%s nem csatolható"
 
-#: compose/functions.c:685
+#: compose/functions.c:684
 msgid "Open mailbox to attach message from"
 msgstr "Postafiók megnyitása levél csatolásához"
 
-#: compose/functions.c:697
+#: compose/functions.c:695
 msgid "Open newsgroup to attach message from"
 msgstr "Hírcsoport megnyitása a küldő csatolásával"
 
-#: compose/functions.c:754 main.c:1371
+#: compose/functions.c:752 main.c:1366
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Nem tudom megnyitni a %s postafiókot!"
 
-#: compose/functions.c:765
+#: compose/functions.c:763
 msgid "No messages in that folder"
 msgstr "Nincs levél ebben a postafiókban"
 
-#: compose/functions.c:776
+#: compose/functions.c:773
 msgid "Tag the messages you want to attach"
 msgstr "Jelöld ki a csatolandó levelet"
 
-#: compose/functions.c:813
+#: compose/functions.c:810
 msgid "Unable to attach"
 msgstr "Nem lehet csatolni"
 
-#: compose/functions.c:911
+#: compose/functions.c:907
 msgid "Content-ID can only contain the characters: -.0-9@A-Z_a-z"
 msgstr "A 'Content-ID' csak az alábbi karaktereket tartalmazhatja: -.0-9@A-Z_a-z"
 
-#: compose/functions.c:991
+#: compose/functions.c:987
 msgid "Invalid encoding"
 msgstr "Érvénytelen kódolás"
 
-#: compose/functions.c:1029
+#: compose/functions.c:1025
 msgid "Empty 'Content-Language'"
 msgstr "Üres 'Tartalom-nyelve' ('Content-language') mező"
 
-#: compose/functions.c:1092
+#: compose/functions.c:1088
 msgid "Can't filter multipart attachments"
 msgstr "Nem tudom szűrni a többrészes csatolmányokat"
 
-#: compose/functions.c:1127
+#: compose/functions.c:1123
 msgid "Can't get multipart attachments"
 msgstr "Nem tudom betölteni a többrészes csatolmányokat"
 
-#: compose/functions.c:1150
+#: compose/functions.c:1145
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr "Legalább 2 üzenet megjelölése szükséges a 'alternatívák' ('alternatives') csoportosításhoz"
 
-#: compose/functions.c:1165
+#: compose/functions.c:1159
 msgid "Grouping 'multilingual' requires at least 2 tagged messages"
 msgstr "Legalább 2 üzenet megjelölése szükséges a 'többnyelvű' ('multilingual') csoportosításhoz"
 
-#: compose/functions.c:1177
+#: compose/functions.c:1171
 msgid "Not all parts have 'Content-Language' set, continue?"
 msgstr "Nem mindegyik részhez lett 'Tartalom-Nyelv' ('Content-Language') beállítva, folytassuk?"
 
-#: compose/functions.c:1179
+#: compose/functions.c:1173
 msgid "Not sending this message"
 msgstr "Nem küldöm el ezt az üzenetet"
 
-#: compose/functions.c:1194
+#: compose/functions.c:1188
 msgid "Grouping 'related' requires at least 2 tagged messages"
 msgstr "Legalább 2 üzenet megjelölése szükséges a 'kapcsolódó' ('related') csoportosításhoz"
 
-#: compose/functions.c:1233 compose/functions.c:1252
+#: compose/functions.c:1227 compose/functions.c:1246
 msgid "Attachment is already at bottom"
 msgstr "A melléklet elérte a végét"
 
-#: compose/functions.c:1239 compose/functions.c:1292
+#: compose/functions.c:1233 compose/functions.c:1286
 msgid "Attachment can't be moved out of group"
 msgstr "A mellékletet nem lehet a csoportból kimozgatni"
 
-#: compose/functions.c:1287
+#: compose/functions.c:1281
 msgid "Attachment is already at top"
 msgstr "A melléklet a legelején van"
 
-#: compose/functions.c:1318
+#: compose/functions.c:1312
 msgid "New file: "
 msgstr "Új fájl: "
 
-#: compose/functions.c:1339
+#: compose/functions.c:1333
 msgid "Content-Type is of the form base/sub"
 msgstr "A tartalom-típus alap-/altípus formájú."
 
-#: compose/functions.c:1346
+#: compose/functions.c:1340
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "%s ismeretlen tartalom-típus"
 
-#: compose/functions.c:1355
+#: compose/functions.c:1349
 #, c-format
 msgid "Can't create file %s"
 msgstr "Nem lehet a(z) %s fájlt létrehozni"
 
-#: compose/functions.c:1363
+#: compose/functions.c:1357
 msgid "What we have here is a failure to make an attachment"
 msgstr "Hiba a melléklet csatolásakor"
 
-#: compose/functions.c:1405
+#: compose/functions.c:1399
 msgid "Can't print multipart attachments"
 msgstr "Nem tudom a többrészes csatolmányokat megjeleníteni"
 
-#: compose/functions.c:1430
+#: compose/functions.c:1424
 msgid "Send attachment with name: "
 msgstr "Melléklet küldése névvel: "
 
-#: compose/functions.c:1455
+#: compose/functions.c:1449
 msgid "Can't save multipart attachments"
 msgstr "Többrészes csatolásokat nem tudom menteni"
 
-#: compose/functions.c:1489
+#: compose/functions.c:1484
 msgid "Recoding only affects text attachments"
 msgstr "Az újrakódolás csak a szöveg mellékleteket érinti"
 
-#: compose/functions.c:1494
+#: compose/functions.c:1489
 msgid "The current attachment won't be converted"
 msgstr "Ez a melléklet nem lesz konvertálva"
 
-#: compose/functions.c:1496
+#: compose/functions.c:1491
 msgid "The current attachment will be converted"
 msgstr "Ez a melléklet konvertálva lesz"
 
-#: compose/functions.c:1525
+#: compose/functions.c:1520
 msgid "Attachment is not 'multipart'"
 msgstr "A melléklet nem többrészes"
 
-#: compose/functions.c:1641 send/send.c:2808
+#: compose/functions.c:1636 send/send.c:2775
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Hibás IDN '%s': '%s'"
 
-#: compose/functions.c:1674
+#: compose/functions.c:1669
 msgid "Can't edit multipart attachments"
 msgstr "Nem tudom szerkeszteni a többrészes mellékleteket"
 
-#: compose/functions.c:1755
+#: compose/functions.c:1750
 msgid "Can't rename multipart attachments"
 msgstr "Nem tudom átnevezni a többrészes mellékleteket"
 
-#: compose/functions.c:1761
+#: compose/functions.c:1756
 msgid "Rename to: "
 msgstr "Átnevezés: "
 
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose/functions.c:1769 editmsg.c:99 editmsg.c:133 editmsg.c:152
+#: compose/functions.c:1764 editmsg.c:101 editmsg.c:135 editmsg.c:154
 #: send/sendlib.c:485
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "%s nem olvasható: %s"
 
-#: compose/functions.c:1814
+#: compose/functions.c:1808
 msgid "Save a copy of this message?"
 msgstr "Mented egy másolatát a levélnek?"
 
-#: compose/functions.c:1839
+#: compose/functions.c:1833
 msgid "Write message to mailbox"
 msgstr "Levél mentése postafiókba"
 
-#: compose/functions.c:1843
+#: compose/functions.c:1837
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Levél mentése %s-ba ..."
 
-#: compose/functions.c:1851
+#: compose/functions.c:1845
 msgid "Message written"
 msgstr "Levél elmentve"
 
-#: compose/functions.c:1885
+#: compose/functions.c:1878
 msgid "Save (postpone) draft message?"
 msgstr "Piszkozat üzenet mentése (későbbre halasztás)"
 
@@ -1546,12 +1550,12 @@ msgstr "Érvénytelen logikai érték: %s"
 msgid "Invalid boolean value: %ld"
 msgstr "Érvénytelen logikai érték: %ld"
 
-#: config/charset.c:50
+#: config/charset.c:49
 msgid "'charset' must contain exactly one character set name"
 msgstr "'karakterkészlet' ('charset') kell hogy tartalmazzon karakterkészlet nevet"
 
-#: config/charset.c:66 hcache/config.c:54 hcache/config.c:78
-#: hcache/config.c:104 mutt_config.c:126
+#: config/charset.c:65 hcache/config.c:54 hcache/config.c:78
+#: hcache/config.c:103 mutt_config.c:126
 #, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "A(z) %s opció érvénytelen értéket (%s) tartalmaz."
@@ -1609,7 +1613,7 @@ msgstr "Érvénytelen igen-nem érték (quad value): %s"
 msgid "Invalid quad value: %ld"
 msgstr "Érvénytelen igen-nem érték (quad value): %ld"
 
-#: config/set.c:104 init.c:1080
+#: config/set.c:104 init.c:1079
 #, c-format
 msgid "No such variable: %s"
 msgstr "Nincs ilyen változó: %s"
@@ -1725,7 +1729,7 @@ msgstr "Az ugrás funkció nincs megírva ehhez a menühöz"
 msgid "Search is not implemented for this menu"
 msgstr "A keresés nincs megírva ehhez a menühöz"
 
-#: conn/gnutls.c:145 conn/gnutls.c:647
+#: conn/gnutls.c:145 conn/gnutls.c:634
 msgid "Unable to get certificate from peer"
 msgstr "A szervertől nem lehet tanusítványt kapni"
 
@@ -1734,168 +1738,168 @@ msgstr "A szervertől nem lehet tanusítványt kapni"
 msgid "Certificate verification error (%s)"
 msgstr "Tanúsítvány ellenőrzési hiba (%s)"
 
-#: conn/gnutls.c:169 conn/openssl.c:392
+#: conn/gnutls.c:169 conn/openssl.c:390
 #, c-format
 msgid "[unable to calculate]"
 msgstr "[nem kiszámítható]"
 
-#: conn/gnutls.c:325 conn/gnutls.c:492
+#: conn/gnutls.c:323 conn/gnutls.c:488
 msgid "Error initialising gnutls certificate data"
 msgstr "Hiba a gnutls tanúsítvány adatok inicializálásakor."
 
-#: conn/gnutls.c:331 conn/gnutls.c:498
+#: conn/gnutls.c:329 conn/gnutls.c:494
 msgid "Error processing certificate data"
 msgstr "Hiba a taúsítvány adatok feldolgozásakor"
 
-#: conn/gnutls.c:503 conn/openssl.c:902
+#: conn/gnutls.c:499 conn/openssl.c:896
 msgid "This certificate belongs to:"
 msgstr "Akire a tanusítvány vonatkozik:"
 
-#: conn/gnutls.c:505 conn/openssl.c:904
+#: conn/gnutls.c:501 conn/openssl.c:898
 msgid "This certificate was issued by:"
 msgstr "A tanusítványt kiállította:"
 
-#: conn/gnutls.c:508 conn/openssl.c:908
+#: conn/gnutls.c:504 conn/openssl.c:902
 msgid "This certificate is valid"
 msgstr "Ez a tanúsítvány érvényes"
 
-#: conn/gnutls.c:513 conn/openssl.c:909
+#: conn/gnutls.c:509 conn/openssl.c:903
 #, c-format
 msgid "   from %s"
 msgstr "   kezdete: %s"
 
-#: conn/gnutls.c:518 conn/openssl.c:911
+#: conn/gnutls.c:514 conn/openssl.c:905
 #, c-format
 msgid "     to %s"
 msgstr "     vége: %s"
 
-#: conn/gnutls.c:524 conn/openssl.c:917
+#: conn/gnutls.c:520 conn/openssl.c:911
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "SHA1 Ujjlenyomat: %s"
 
-#: conn/gnutls.c:530 conn/gnutls.c:532 conn/openssl.c:923 conn/openssl.c:926
+#: conn/gnutls.c:526 conn/gnutls.c:528 conn/openssl.c:917 conn/openssl.c:920
 msgid "SHA256 Fingerprint: "
 msgstr "SHA256 Ujjlenyomat: %s"
 
-#: conn/gnutls.c:542
+#: conn/gnutls.c:537
 msgid "WARNING: Server certificate is not yet valid"
 msgstr "FIGYELMEZTETÉS: A szerver tanúsítványa még nem érvényes"
 
-#: conn/gnutls.c:547
+#: conn/gnutls.c:541
 msgid "WARNING: Server certificate has expired"
 msgstr "FIGYELMEZTETÉS: A szerver tanúsítványa lejárt"
 
-#: conn/gnutls.c:552
+#: conn/gnutls.c:545
 msgid "WARNING: Server certificate has been revoked"
 msgstr "FIGYELMEZTETÉS: A szerver tanúsítványa visszavonásra került"
 
-#: conn/gnutls.c:558
+#: conn/gnutls.c:549
 msgid "WARNING: Server hostname does not match certificate"
 msgstr "FIGYELMEZTETÉS: A szerver neve nem egyezik meg a tanúsítványba foglalttal"
 
-#: conn/gnutls.c:563
+#: conn/gnutls.c:553
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr "FIGYELMEZTETÉS: A szerver tanúsítója nem tanúsító hatóság"
 
-#: conn/gnutls.c:567
+#: conn/gnutls.c:557
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr "Figyelem: A szerver tanúsítványát nem biztonságos algoritmussal írták alá"
 
-#: conn/gnutls.c:572 conn/openssl.c:940
+#: conn/gnutls.c:561 conn/openssl.c:933
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr "SSL Tanúsítvány ellenőrzés (tanúsítvány %zu a láncban %zu-ból)"
 
-#: conn/gnutls.c:608 conn/openssl.c:975
+#: conn/gnutls.c:595 conn/openssl.c:967
 msgid "Certificate saved"
 msgstr "A tanúsítvány elmentve"
 
-#: conn/gnutls.c:610 conn/openssl.c:977
+#: conn/gnutls.c:597 conn/openssl.c:969
 msgid "Warning: Couldn't save certificate"
 msgstr "Figyelem: A tanúsítvány nem menthető"
 
-#: conn/gnutls.c:814 conn/gnutls.c:862
+#: conn/gnutls.c:797 conn/gnutls.c:843
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr "TLS/SSL kapcsolat minden elérhető protokollja le van tiltva"
 
-#: conn/gnutls.c:871
+#: conn/gnutls.c:850
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr "Kódolás kiválasztás a $ssl_chipers által nem támogatott"
 
 #. L10N: This is a warning when trying to set the host name for
 #. TLS Server Name Indication (SNI).  This allows the server to present
 #. the correct certificate if it supports multiple hosts.
-#: conn/gnutls.c:944 conn/openssl.c:1164
+#: conn/gnutls.c:920 conn/openssl.c:1150
 msgid "Warning: unable to set TLS SNI host name"
 msgstr "Figyelem: nem lehet beállítani szerver nevet TLS SNI-hez"
 
-#: conn/gnutls.c:991
+#: conn/gnutls.c:966
 #, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "SSL/TLS kapcsolódás a(z) %s használatával (%s/%s/%s)"
 
-#: conn/gnutls.c:1073 conn/gnutls.c:1102
+#: conn/gnutls.c:1048 conn/gnutls.c:1077
 msgid "Error: no TLS socket open"
 msgstr "Hiba: nincs TLS foglalat (socket) nyitva"
 
-#: conn/openssl.c:213
+#: conn/openssl.c:211
 #, c-format
 msgid "Filling entropy pool: %s..."
 msgstr "Entrópiát szerzek a véletlenszámgenerátorhoz: %s..."
 
-#: conn/openssl.c:219
+#: conn/openssl.c:217
 #, c-format
 msgid "%s has insecure permissions"
 msgstr "%s jogai nem biztonságosak"
 
-#: conn/openssl.c:356
+#: conn/openssl.c:354
 msgid "SSL disabled due to the lack of entropy"
 msgstr "Entrópia hiány miatt az SSL letiltva"
 
-#: conn/openssl.c:417
+#: conn/openssl.c:415
 msgid "[invalid date]"
 msgstr "[érvénytelen dátum]"
 
-#: conn/openssl.c:481
+#: conn/openssl.c:478
 msgid "Server certificate is not yet valid"
 msgstr "A szerver tanúsítványa még nem érvényes"
 
-#: conn/openssl.c:491
+#: conn/openssl.c:488
 msgid "Server certificate has expired"
 msgstr "A szerver tanúsítványa lejárt"
 
-#: conn/openssl.c:582
+#: conn/openssl.c:578
 msgid "Failed to find enough entropy on your system"
 msgstr "Nem találtam elég entrópiát ezen a rendszeren"
 
-#: conn/openssl.c:777
+#: conn/openssl.c:771
 msgid "can't get certificate subject"
 msgstr "nem érhető el a tanúsítvány tárgya"
 
-#: conn/openssl.c:786 conn/openssl.c:794
+#: conn/openssl.c:780 conn/openssl.c:788
 msgid "can't get certificate common name"
 msgstr "nem érhető el a tanusítvány neve (common name)"
 
-#: conn/openssl.c:808
+#: conn/openssl.c:802
 #, c-format
 msgid "certificate owner does not match hostname %s"
 msgstr "a tanúsítvány tulajdonosa nem egyezik a szerver nevével %s"
 
-#: conn/openssl.c:1081
+#: conn/openssl.c:1070
 #, c-format
 msgid "Certificate host check failed: %s"
 msgstr "tanúsítvány gazdájának ellenőrzése sikertelen: %s"
 
-#: conn/openssl.c:1175
+#: conn/openssl.c:1161
 msgid "I/O error"
 msgstr "I/O hiba"
 
-#: conn/openssl.c:1181 conn/raw.c:255 gui/curs_lib.c:427 mutt_logging.c:148
+#: conn/openssl.c:1167 conn/raw.c:254 gui/curs_lib.c:427 mutt_logging.c:148
 msgid "unknown error"
 msgstr "ismeretlen hiba"
 
-#: conn/openssl.c:1184
+#: conn/openssl.c:1170
 #, c-format
 msgid "SSL failed: %s"
 msgstr "SSL sikertelen: %s"
@@ -1903,61 +1907,61 @@ msgstr "SSL sikertelen: %s"
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: conn/openssl.c:1220
+#: conn/openssl.c:1206
 msgid "Unable to create SSL context"
 msgstr "Hiba: nem lehet létrehozni az SSL kontextust!"
 
-#: conn/openssl.c:1288
+#: conn/openssl.c:1268
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr "Figyelem: hiba a ssl_verify_partial_chains engedélyezésekor"
 
-#: conn/raw.c:157 conn/raw.c:214
+#: conn/raw.c:156 conn/raw.c:213
 #, c-format
 msgid "Looking up %s..."
 msgstr "%s feloldása..."
 
-#: conn/raw.c:167 conn/raw.c:224
+#: conn/raw.c:166 conn/raw.c:223
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "A \"%s\" host nem található."
 
-#: conn/raw.c:172 conn/raw.c:230
+#: conn/raw.c:171 conn/raw.c:229
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Kapcsolódás %s-hez..."
 
-#: conn/raw.c:254
+#: conn/raw.c:253
 #, c-format
 msgid "Could not connect to %s (%s)"
 msgstr "%s-hoz nem lehet kapcsolódni (%s)"
 
-#: conn/raw.c:277 conn/raw.c:310
+#: conn/raw.c:276 conn/raw.c:309
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "Hiba a %s kapcsolat közben (%s)"
 
-#: conn/raw.c:284
+#: conn/raw.c:283
 #, c-format
 msgid "Connection to %s has been aborted"
 msgstr "%s kapcsolat megszakítva"
 
-#: conn/sasl.c:622
+#: conn/sasl.c:614
 msgid "Unknown SASL profile"
 msgstr "Ismeretlen SASL profil"
 
-#: conn/sasl.c:655
+#: conn/sasl.c:647
 msgid "Error allocating SASL connection"
 msgstr "Hiba lépett fel a SASL kapcsolat létrehozásakor"
 
-#: conn/sasl.c:665
+#: conn/sasl.c:657
 msgid "Error setting SASL security properties"
 msgstr "Hiba lépett fel a SASL biztonsági adatok beállításakor"
 
-#: conn/sasl.c:676
+#: conn/sasl.c:668
 msgid "Error setting SASL external security strength"
 msgstr "Hiba lépett fel a SASL külső biztonsági szint beállításakor"
 
-#: conn/sasl.c:686
+#: conn/sasl.c:678
 msgid "Error setting SASL external user name"
 msgstr "Hiba lépett fel a SASL külső felhasználó név beállításakor"
 
@@ -1985,18 +1989,18 @@ msgstr "Alagút (tunnel) hiba lépett fel miközben kommunikáltunk vele: %s: (%
 msgid "Tunnel to %s returned error %d (%s)"
 msgstr "Alagút (tunnel) ehhez: %s hibával tért vissza %d (%s)"
 
-#: copy.c:728
+#: copy.c:716
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
 msgstr[0] "A méret számítás %ld bytettal eltér"
 msgstr[1] "A méret számítás %ld bytettal eltér"
 
-#: copy.c:810
+#: copy.c:798
 msgid "No decryption engine available for message"
 msgstr "Nem elérhető dekódoló motor az üzenethez"
 
-#: dlg_postpone.c:189
+#: dlg_postpone.c:188
 msgid "Postponed Messages"
 msgstr "Elhalasztott levelek"
 
@@ -2005,40 +2009,40 @@ msgstr "Elhalasztott levelek"
 msgid "could not create temporary folder: %s"
 msgstr "%s ideiglenes postafiók nem hozható létre"
 
-#: editmsg.c:92
+#: editmsg.c:94
 #, c-format
 msgid "could not write temporary mail folder: %s"
 msgstr "nem lehet írni a(z) %s ideiglenes postafiókba"
 
-#: editmsg.c:111
+#: editmsg.c:113
 #, c-format
 msgid "could not truncate temporary mail folder: %s"
 msgstr "nem lehet levágni a(z) %s ideiglenes postafiókból"
 
-#: editmsg.c:158
+#: editmsg.c:160
 msgid "Message file is empty"
 msgstr "A levélfájl üres"
 
-#: editmsg.c:165
+#: editmsg.c:167
 msgid "Message not modified"
 msgstr "A levél nem lett módosítva"
 
-#: editmsg.c:172
+#: editmsg.c:174
 msgid "Message of read-only mailbox modified! Ignoring changes."
 msgstr "A csak-olvasható postafiókban egy üzenet módosításra került! Változtatások figyelmen kívül hagyva."
 
-#: editmsg.c:188
+#: editmsg.c:190
 #, c-format
 msgid "Can't open message file: %s"
 msgstr "A(z) %s levélfájl üres"
 
 #. L10N: %s is from strerror(errno)
-#: editmsg.c:196 editmsg.c:225
+#: editmsg.c:198 editmsg.c:226
 #, c-format
 msgid "Can't append to folder: %s"
 msgstr "Nem lehet hozzáfűzni a(z) %s postafiókhoz"
 
-#: email/parse.c:1548
+#: email/parse.c:1540
 msgid "multipart message has no boundary parameter"
 msgstr "a többrészes üzenetnek nincs határoló paramétere"
 
@@ -2056,19 +2060,19 @@ msgstr "Autocrypt: (t)itkosít, t(i)tkosítatlan, (a)utomatikus?"
 msgid "eca"
 msgstr "tia"
 
-#: envelope/functions.c:329
+#: envelope/functions.c:326
 msgid "No PGP backend configured"
 msgstr "A PGP-t nem állította be"
 
-#: envelope/functions.c:336 envelope/functions.c:411
+#: envelope/functions.c:333 envelope/functions.c:408
 msgid "S/MIME already selected. Clear and continue?"
 msgstr "S/MIME már ki van jelölve. Törlés & folytatás?"
 
-#: envelope/functions.c:367
+#: envelope/functions.c:364
 msgid "No S/MIME backend configured"
 msgstr "Nincs S/MIME backend beállítva"
 
-#: envelope/functions.c:375
+#: envelope/functions.c:372
 msgid "PGP already selected. Clear and continue?"
 msgstr "PGP már ki van jelölve. Törlés & folytatás?"
 
@@ -2093,7 +2097,7 @@ msgid "Bcc: "
 msgstr "Titkos melléklet: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:99 send/send.c:334
+#: envelope/window.c:99 send/send.c:333
 msgid "Subject: "
 msgstr "Tárgy: "
 
@@ -2122,8 +2126,8 @@ msgstr "Biztonság: "
 #. other compose menu fields.  However, if possible, it should not be longer
 #. than the other compose menu fields.  Since it shares the row with "Encrypt
 #. with:", it should not be longer than 15-20 character cells.
-#: envelope/window.c:115 ncrypt/crypt_gpgme.c:4286 ncrypt/pgp.c:2017
-#: ncrypt/smime.c:2238
+#: envelope/window.c:115 ncrypt/crypt_gpgme.c:4257 ncrypt/pgp.c:1997
+#: ncrypt/smime.c:2205
 msgid "Sign as: "
 msgstr "Aláír mint: "
 
@@ -2153,7 +2157,7 @@ msgstr "Fejlécek: "
 
 #. L10N: Autocrypt recommendation flag: off.
 #. This is displayed when Autocrypt is turned off.
-#: envelope/window.c:135 envelope/window.c:485
+#: envelope/window.c:135 envelope/window.c:480
 msgid "Off"
 msgstr "Kikapcsolva"
 
@@ -2186,67 +2190,67 @@ msgstr "Elérhető"
 msgid "Yes"
 msgstr "Be"
 
-#: envelope/window.c:404
+#: envelope/window.c:403
 msgid "Sign, Encrypt"
 msgstr "Aláír, Titkosít"
 
-#: envelope/window.c:409 envelope/window.c:480
+#: envelope/window.c:408 envelope/window.c:475
 msgid "Encrypt"
 msgstr "Titkosít"
 
-#: envelope/window.c:414
+#: envelope/window.c:413
 msgid "Sign"
 msgstr "Aláír"
 
-#: envelope/window.c:420
+#: envelope/window.c:419
 msgid "None"
 msgstr "Nincs"
 
-#: envelope/window.c:430
+#: envelope/window.c:429
 msgid " (inline PGP)"
 msgstr " (beágyazott PGP)"
 
-#: envelope/window.c:432
+#: envelope/window.c:431
 msgid " (PGP/MIME)"
 msgstr " (PGP/MIME)"
 
-#: envelope/window.c:435
+#: envelope/window.c:434
 msgid " (S/MIME)"
 msgstr " (S/MIME)"
 
-#: envelope/window.c:441
+#: envelope/window.c:439
 msgid " (OppEnc mode)"
 msgstr " (OppEnc mód)"
 
-#: envelope/window.c:451 envelope/window.c:460
+#: envelope/window.c:448 envelope/window.c:456
 msgid "<default>"
 msgstr "<alapeset>"
 
-#: envelope/window.c:468
+#: envelope/window.c:463
 msgid "Encrypt with: "
 msgstr "Titkosítás: "
 
 #. L10N: The autocrypt compose menu Recommendation field.
 #. Displays the output of the recommendation engine
 #. (Off, No, Discouraged, Available, Yes)
-#: envelope/window.c:491
+#: envelope/window.c:486
 msgid "Recommendation: "
 msgstr "Ajánlás: "
 
-#: envelope/window.c:515
+#: envelope/window.c:510
 msgid "<no chain defined>"
 msgstr "<lánc nincs megadva>"
 
-#: envelope/window.c:582
+#: envelope/window.c:577
 #, c-format
 msgid "(+%d more)"
 msgid_plural "(+%d more)"
 msgstr[0] "(+%d-el több)"
 msgstr[1] "(+%d-al(el) több)"
 
-#: flags.c:386 index/functions.c:796 index/functions.c:900
-#: index/functions.c:916 index/functions.c:1052 mutt_thread.c:1264
-#: mutt_thread.c:1330 mutt_thread.c:1416
+#: flags.c:386 index/functions.c:795 index/functions.c:898
+#: index/functions.c:914 index/functions.c:1049 mutt_thread.c:1257
+#: mutt_thread.c:1323 mutt_thread.c:1409
 msgid "Threading is not enabled"
 msgstr "A témázás (threading) le van tiltva"
 
@@ -2312,27 +2316,27 @@ msgstr "[-- Típus: %s/%s%s%s, Kódolás: %s, Méret: %s --]\n"
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Alternatív Típus: #%d: %s/%s%s%s, Kódolás: %s, Méret: %s --]\n"
 
-#: handler.c:557
+#: handler.c:556
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Automatikus megjelenítés a(z) %s segítségével --]\n"
 
-#: handler.c:558
+#: handler.c:557
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Megjelenítő parancs indítása: %s"
 
-#: handler.c:592
+#: handler.c:591
 #, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- Nem futtatható: %s --]\n"
 
-#: handler.c:618 handler.c:639
+#: handler.c:617 handler.c:638
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- A(z) %s hiba kimenete --]\n"
 
-#: handler.c:768
+#: handler.c:767
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- Hiba: az üzenetnek/külső-törzsének nincs elérési-típus paramétere --]\n"
 
@@ -2351,7 +2355,7 @@ msgstr "[-- Hiba: az üzenetnek/külső-törzsének nincs elérési-típus param
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
-#: handler.c:812
+#: handler.c:810
 #, c-format
 msgid ""
 "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
@@ -2380,7 +2384,7 @@ msgstr[1] ""
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
-#: handler.c:835
+#: handler.c:833
 #, c-format
 msgid "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 msgid_plural "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
@@ -2394,7 +2398,7 @@ msgstr[1] "[-- Ez a %s/%s melléklet (mérete %s bájt) törölve lett --]\n"
 #.
 #. Caution: Argument three %3$ is also defined but should not be used
 #. in this translation!
-#: handler.c:853
+#: handler.c:849
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
@@ -2405,20 +2409,17 @@ msgstr ""
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
-#: handler.c:861
+#: handler.c:856
 #, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
 msgstr "[-- Ez a %s/%s melléklet  törölve lett --]\n"
 
-#: handler.c:871
+#: handler.c:866
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- név: %s --]\n"
 
-#. L10N: If the translation of this string is a multi line string, then
-#. each line should start with "[-- " and end with " --]".
-#. The "%s/%s" is a MIME type, e.g. "text/plain".
-#: handler.c:889
+#: handler.c:885
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -2429,12 +2430,7 @@ msgstr ""
 "[-- és a jelzett külső forrás --]\n"
 "[-- megszűnt. --]\n"
 
-#. L10N: If the translation of this string is a multi line string, then
-#. each line should start with "[-- " and end with " --]".
-#. The "%s/%s" is a MIME type, e.g. "text/plain".  The %s after
-#. access-type is an access-type as defined by the MIME RFCs, e.g. "FTP",
-#. "LOCAL-FILE", "MAIL-SERVER".
-#: handler.c:910
+#: handler.c:907
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -2443,75 +2439,75 @@ msgstr ""
 "[-- A %s/%s melléklet nem lett beágyazva, --]\n"
 "[-- és a jelzett elérési-típus, %s nem támogatott --]\n"
 
-#: handler.c:1101
+#: handler.c:1096
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
 msgstr "[-- Hiba:  Egy Többrészes/Alternatív rész sem jeleníthető meg --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
-#: handler.c:1247
+#: handler.c:1237
 #, c-format
 msgid "[-- Attachment #%d: %s --]\n"
 msgstr "[-- Melléklet #%d: %s --]\n"
 
-#: handler.c:1253
+#: handler.c:1243
 #, c-format
 msgid "[-- Attachment #%d --]\n"
 msgstr "[-- Melléklet #%d --]\n"
 
-#: handler.c:1271
+#: handler.c:1261
 msgid "One or more parts of this message could not be displayed"
 msgstr "Ennek az üzenetnek egy, vagy több részét nem lehet megjeleníteni"
 
-#: handler.c:1342
+#: handler.c:1331
 msgid "Unable to open 'memory stream'"
 msgstr "Nem tudom a memória folyamot megnyitni"
 
-#: handler.c:1352
+#: handler.c:1341
 msgid "Unable to open temporary file"
 msgstr "Nem lehet megnyitni átmeneti fájlt"
 
-#: handler.c:1401
+#: handler.c:1390
 msgid "failed to re-open 'memory stream'"
 msgstr "Nem lehet újra megnyitni a memória folyamot"
 
-#: handler.c:1687
+#: handler.c:1677
 msgid "Error: multipart/signed has no protocol"
 msgstr "Hiba: a többrészes/aláírt részhez nincs protokoll megadva"
 
 #. L10N: %s expands to a keystroke/key binding, e.g. 'v'.
-#: handler.c:1762
+#: handler.c:1752
 #, c-format
 msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
 msgstr "[-- Ez egy melléklet (E rész megjelenítéséhez használja a(z) '%s'-t) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #. The last %s expands to a keystroke/key binding, e.g. 'v'.
-#: handler.c:1769
+#: handler.c:1759
 #, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
 msgstr "[-- %s/%s nem támogatott (E rész megjelenítéséhez használja a(z) '%s'-t) --]\n"
 
-#: handler.c:1777
+#: handler.c:1767
 msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- Ez egy melléklet (a melléklet megtekintéséhez 'v' billentyű lenyomás szükséges) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
-#: handler.c:1783
+#: handler.c:1772
 #, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- %s/%s nem támogatott (a mellélet megtekintéshez 'v' billentyű lenyomás szükséges) --]\n"
 
-#: handler.c:1792
+#: handler.c:1781
 msgid "[-- This is an attachment --]\n"
 msgstr "[-- Ez a egy melléklet --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
-#: handler.c:1797
+#: handler.c:1786
 #, c-format
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- %s/%s nem támogatott --]\n"
 
-#: hcache/config.c:96
+#: hcache/config.c:95
 #, c-format
 msgid "Set option %s before setting %s"
 msgstr "Állítsa be a %s opciót mielőtt beállítani %s-t"
@@ -2519,7 +2515,7 @@ msgstr "Állítsa be a %s opciót mielőtt beállítani %s-t"
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
-#: hcache/config.c:113 send/config.c:51
+#: hcache/config.c:112 send/config.c:51
 #, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr "%s opció %d és %d között kell legyen"
@@ -2550,55 +2546,55 @@ msgstr "Súgó: %s"
 msgid "History '%s'"
 msgstr "'%s' történet"
 
-#: history/history.c:229 history/history.c:271 history/history.c:620
+#: history/history.c:227 history/history.c:269 history/history.c:613
 #, c-format
 msgid "Bad history file format (line %d)"
 msgstr "Rossz történet file formátum (%d. sor)"
 
-#: history/history.c:261 ncrypt/crypt_gpgme.c:819 ncrypt/crypt_gpgme.c:2251
-#: ncrypt/crypt_gpgme.c:2275 ncrypt/crypt_gpgme.c:2334
-#: ncrypt/crypt_gpgme.c:2351 ncrypt/crypt_gpgme.c:2384
-#: ncrypt/crypt_gpgme.c:2402 ncrypt/crypt_gpgme.c:2486
-#: ncrypt/crypt_gpgme.c:3080 ncrypt/crypt_gpgme.c:3180 ncrypt/dlg_gpgme.c:887
-#: ncrypt/dlg_pgp.c:719 ncrypt/pgp.c:586 ncrypt/pgp.c:593 ncrypt/pgp.c:913
-#: ncrypt/pgp.c:1030 ncrypt/pgp.c:1187 ncrypt/pgp.c:1211 ncrypt/pgp.c:1244
-#: ncrypt/pgp.c:1603 ncrypt/pgpkey.c:262 ncrypt/pgpmicalg.c:190
-#: ncrypt/smime.c:895 ncrypt/smime.c:903 ncrypt/smime.c:996 ncrypt/smime.c:1108
-#: ncrypt/smime.c:1175 ncrypt/smime.c:1182 ncrypt/smime.c:1391
-#: ncrypt/smime.c:1802 ncrypt/smime.c:1879 ncrypt/smime.c:1886
-#: ncrypt/smime.c:1993 ncrypt/smime.c:2123 ncrypt/smime.c:2139 nntp/nntp.c:1295
-#: nntp/nntp.c:2150 pattern/exec.c:148 pop/pop.c:123
+#: history/history.c:259 ncrypt/crypt_gpgme.c:818 ncrypt/crypt_gpgme.c:2240
+#: ncrypt/crypt_gpgme.c:2264 ncrypt/crypt_gpgme.c:2323
+#: ncrypt/crypt_gpgme.c:2340 ncrypt/crypt_gpgme.c:2373
+#: ncrypt/crypt_gpgme.c:2391 ncrypt/crypt_gpgme.c:2475
+#: ncrypt/crypt_gpgme.c:3068 ncrypt/crypt_gpgme.c:3163 ncrypt/dlg_gpgme.c:887
+#: ncrypt/dlg_pgp.c:717 ncrypt/pgp.c:579 ncrypt/pgp.c:586 ncrypt/pgp.c:904
+#: ncrypt/pgp.c:1021 ncrypt/pgp.c:1176 ncrypt/pgp.c:1200 ncrypt/pgp.c:1233
+#: ncrypt/pgp.c:1589 ncrypt/pgpkey.c:262 ncrypt/pgpmicalg.c:190
+#: ncrypt/smime.c:887 ncrypt/smime.c:895 ncrypt/smime.c:987 ncrypt/smime.c:1097
+#: ncrypt/smime.c:1163 ncrypt/smime.c:1170 ncrypt/smime.c:1373
+#: ncrypt/smime.c:1776 ncrypt/smime.c:1853 ncrypt/smime.c:1860
+#: ncrypt/smime.c:1964 ncrypt/smime.c:2094 ncrypt/smime.c:2110 nntp/nntp.c:1293
+#: nntp/nntp.c:2142 pattern/exec.c:147 pop/pop.c:123
 msgid "Can't create temporary file"
 msgstr "Nem lehet ideiglenes fájlt létrehozni"
 
-#: hook.c:198
+#: hook.c:196
 msgid "current mailbox shortcut '^' is unset"
 msgstr "aktuális mailbox rövidítés '^' kikapcsolva"
 
-#: hook.c:210
+#: hook.c:208
 msgid "mailbox shortcut expanded to empty regex"
 msgstr "mailbox rövidítés kiterjeszve az üres reguláris kifejezésre"
 
-#: hook.c:230
+#: hook.c:228
 msgid "badly formatted command string"
 msgstr "rosszul formázott parancs string"
 
-#: hook.c:524
+#: hook.c:521
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: Nem lehet 'unhook *'-ot végrehajtani hook parancsból"
 
-#: hook.c:537
+#: hook.c:534
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "hozzárendelés törlése: ismeretlen hozzárendelési típus: %s"
 
-#: hook.c:547
+#: hook.c:544
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s"
 msgstr "unhook: %s-t nem lehet törölni a következőből: %s"
 
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
-#: icommands.c:274 keymap.c:1164 keymap.c:1384
+#: icommands.c:274 keymap.c:1161 keymap.c:1381
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: nincs ilyen menü"
@@ -2616,28 +2612,28 @@ msgid "%s: no macros for this menu"
 msgstr "%s: nincs macro ehhez a menühöz"
 
 #. L10N: '%s' is the file name of the temporary file
-#: icommands.c:298 icommands.c:341 icommands.c:520 icommands.c:558
-#: imap/message.c:1139
+#: icommands.c:298 icommands.c:341 icommands.c:522 icommands.c:560
+#: imap/message.c:1136
 #, c-format
 msgid "Could not create temporary file %s"
 msgstr "Nem lehet a %s átmeneti fájlt létrehozni"
 
-#: imap/auth.c:151
+#: imap/auth.c:150
 msgid "No authenticators available or wrong credentials"
 msgstr "Nincs elérhető hitelesítő, vagy rossz bejelentkezési adatok"
 
 #. L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:56 imap/auth_cram.c:106 imap/auth_gss.c:168
-#: imap/auth_oauth.c:74 imap/auth_sasl.c:125 nntp/nntp.c:502 nntp/nntp.c:568
-#: pop/auth.c:98 pop/auth.c:243 pop/auth.c:339 send/smtp.c:463 send/smtp.c:551
+#: imap/auth_oauth.c:73 imap/auth_sasl.c:123 nntp/nntp.c:501 nntp/nntp.c:566
+#: pop/auth.c:96 pop/auth.c:241 pop/auth.c:336 send/smtp.c:461 send/smtp.c:549
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Azonosítás folyamatban (%s)..."
 
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:89 imap/auth_cram.c:180 imap/auth_gss.c:347
-#: imap/auth_oauth.c:107 imap/auth_sasl.c:257 nntp/nntp.c:663 pop/auth.c:196
-#: pop/auth.c:264 send/smtp.c:638 send/smtp.c:712 send/smtp.c:804
+#: imap/auth_oauth.c:106 imap/auth_sasl.c:255 nntp/nntp.c:661 pop/auth.c:194
+#: pop/auth.c:262 send/smtp.c:637 send/smtp.c:711 send/smtp.c:802
 #, c-format
 msgid "%s authentication failed"
 msgstr "%s azonosítás nem sikerült"
@@ -2646,11 +2642,11 @@ msgstr "%s azonosítás nem sikerült"
 msgid "LOGIN disabled on this server"
 msgstr "A LOGIN parancsot letiltották ezen a szerveren"
 
-#: imap/auth_login.c:60 imap/auth_plain.c:54 pop/auth.c:280
+#: imap/auth_login.c:60 imap/auth_plain.c:54 pop/auth.c:278
 msgid "Logging in..."
 msgstr "Bejelentkezés..."
 
-#: imap/auth_login.c:79 imap/auth_plain.c:94 pop/auth.c:322
+#: imap/auth_login.c:79 imap/auth_plain.c:94 pop/auth.c:320
 msgid "Login failed"
 msgstr "Sikertelen bejelentkezés"
 
@@ -2659,43 +2655,43 @@ msgstr "Sikertelen bejelentkezés"
 msgid "%s is an invalid IMAP path"
 msgstr "%s érvénytelen IMAP útvonal"
 
-#: imap/browse.c:238
+#: imap/browse.c:236
 msgid "Getting folder list..."
 msgstr "Postafiókok listájának letöltése..."
 
 #. L10N: (%s) is the name / path of the folder we were trying to browse
-#: imap/browse.c:360
+#: imap/browse.c:358
 #, c-format
 msgid "No such folder: %s"
 msgstr "Nincs ilyen postafiók: %s"
 
-#: imap/browse.c:404
+#: imap/browse.c:402
 msgid "Create mailbox: "
 msgstr "Postafiók létrehozása: "
 
-#: imap/browse.c:412 imap/browse.c:470
+#: imap/browse.c:410 imap/browse.c:468
 msgid "Mailbox must have a name"
 msgstr "A postafióknak nevet kell adni"
 
-#: imap/browse.c:420
+#: imap/browse.c:418
 msgid "Mailbox created"
 msgstr "Postafiók létrehozva"
 
-#: imap/browse.c:454
+#: imap/browse.c:452
 msgid "Can't rename root folder"
 msgstr "Nem lehet a gyökér könyvtárat átnevezni"
 
-#: imap/browse.c:461
+#: imap/browse.c:459
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "%s postafiók átnevezése erre: "
 
-#: imap/browse.c:478
+#: imap/browse.c:476
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Átnevezés sikertelen: %s"
 
-#: imap/browse.c:482
+#: imap/browse.c:480
 msgid "Mailbox renamed"
 msgstr "Postafiók átnevezve"
 
@@ -2704,12 +2700,12 @@ msgstr "Postafiók átnevezve"
 msgid "Mailbox %s@%s closed"
 msgstr "Postafiók %s@%s lezárva"
 
-#: imap/command.c:1178
+#: imap/command.c:1173
 #, c-format
 msgid "IMAP command failed: %s"
 msgstr "%s IMAP parancs sikertelen"
 
-#: imap/command.c:1279 imap/command.c:1401
+#: imap/command.c:1273 imap/command.c:1394
 #, c-format
 msgid "Connection to %s timed out"
 msgstr "%s kapcsolat idő lejárt"
@@ -2719,154 +2715,154 @@ msgstr "%s kapcsolat idő lejárt"
 msgid "Option %s: %s is not a valid authenticator"
 msgstr "%s opció: %s érvénytelen hitelesítő"
 
-#: imap/imap.c:106
+#: imap/imap.c:105
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr "Ez az IMAP szerver nagyon régi. A NeoMutt nem tud együttműködni vele."
 
-#: imap/imap.c:457
+#: imap/imap.c:456
 #, c-format
 msgid "CREATE failed: %s"
 msgstr "Létrehozás sikertelen: %s"
 
-#: imap/imap.c:580
+#: imap/imap.c:578
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "%s kapcsolat lezárása..."
 
-#: imap/imap.c:781 nntp/nntp.c:1790 pop/lib.c:336 send/smtp.c:851
+#: imap/imap.c:777 nntp/nntp.c:1785 pop/lib.c:333 send/smtp.c:847
 msgid "Secure connection with TLS?"
 msgstr "Biztonságos TLS kapcsolat?"
 
-#: imap/imap.c:797 nntp/nntp.c:1813 pop/lib.c:357 send/smtp.c:868
+#: imap/imap.c:793 nntp/nntp.c:1808 pop/lib.c:354 send/smtp.c:864
 msgid "Could not negotiate TLS connection"
 msgstr "Nem lehetett megtárgyalni a TLS kapcsolatot"
 
-#: imap/imap.c:812 imap/imap.c:829 pop/lib.c:374
+#: imap/imap.c:808 imap/imap.c:825 pop/lib.c:371
 msgid "Encrypted connection unavailable"
 msgstr "Nem elérhető a titkosított kapcsolat"
 
-#: imap/imap.c:1305
+#: imap/imap.c:1300
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "%s felírása..."
 
-#: imap/imap.c:1307
+#: imap/imap.c:1302
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Leiratkozás erről: %s..."
 
-#: imap/imap.c:1487 imap/message.c:1757
+#: imap/imap.c:1480 imap/message.c:1752
 #, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "%d levél másolása a %s postafiókba..."
 msgstr[1] "%d levél másolása a %s postafiókba..."
 
-#: imap/imap.c:1504 imap/imap.c:2160 imap/message.c:1796 muttlib.c:1421
+#: imap/imap.c:1497 imap/imap.c:2150 imap/message.c:1791 muttlib.c:1413
 #, c-format
 msgid "Create %s?"
 msgstr "%s létrehozása?"
 
-#: imap/imap.c:1574
+#: imap/imap.c:1566
 msgid "Expunge failed"
 msgstr "Sikertelen törlés"
 
-#: imap/imap.c:1592
+#: imap/imap.c:1584
 #, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "%d levél megjelölése töröltnek..."
 msgstr[1] "%d levél megjelölése töröltnek..."
 
-#: imap/imap.c:1632
+#: imap/imap.c:1624
 #, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "Módosított üzenet mentése folyamatban... [%d/%d]"
 msgstr[1] "Módosított üzenetek mentése folyamatban... [%d/%d]"
 
-#: imap/imap.c:1689
+#: imap/imap.c:1681
 msgid "Error saving flags. Close anyway?"
 msgstr "Flagek mentése sikertelen. Mindenképp bezárja?"
 
-#: imap/imap.c:1696
+#: imap/imap.c:1688
 msgid "Error saving flags"
 msgstr "Flag-ek mentése közben hiba lépett fel"
 
-#: imap/imap.c:1722
+#: imap/imap.c:1714
 msgid "Expunging messages from server..."
 msgstr "Levelek törlése a szerverről..."
 
-#: imap/imap.c:1728
+#: imap/imap.c:1720
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE sikertelen"
 
-#: imap/imap.c:1960 nntp/nntp.c:2373
+#: imap/imap.c:1951 nntp/nntp.c:2363
 #, c-format
 msgid "Selecting %s..."
 msgstr "%s választása..."
 
-#: imap/imap.c:2127
+#: imap/imap.c:2117
 msgid "Error opening mailbox"
 msgstr "Hiba a postafiók megnyitásaor"
 
-#: imap/imap.c:2270
+#: imap/imap.c:2260
 msgid "IMAP server doesn't support custom flags"
 msgstr "IMAP szerver nem támogatja az egyedi flageket"
 
-#: imap/imap.c:2314
+#: imap/imap.c:2304
 msgid "Invalid IMAP flags"
 msgstr "Érvénytelen IMAP flagek"
 
 #. L10N: This prompt is made if the user hits Ctrl-C when opening an IMAP mailbox
-#: imap/message.c:493
+#: imap/message.c:492
 msgid "Abort download and close mailbox?"
 msgstr "Letöltés megszakítása, és mailbox bezárása?"
 
 #. L10N: Comparing the cached data with the IMAP server's data
-#: imap/message.c:682 imap/message.c:823
+#: imap/message.c:680 imap/message.c:821
 msgid "Evaluating cache..."
 msgstr "Gyorsítótár egyeztetése szerverrel..."
 
 #. L10N: Fetching IMAP flag changes, using the CONDSTORE extension
-#: imap/message.c:913
+#: imap/message.c:911
 msgid "Fetching flag updates..."
 msgstr "Levél flagek frissítése folyamatban..."
 
 #. L10N: After opening an IMAP mailbox using QRESYNC, Mutt performs a quick
 #. sanity check.  If that fails, Mutt reopens the mailbox using a normal
 #. download.
-#: imap/message.c:1057
+#: imap/message.c:1055
 msgid "QRESYNC failed.  Reopening mailbox."
 msgstr "Helyi postafiók ellenőrzés sikertelen. Postafiók újranyitása folyamatban..."
 
-#: imap/message.c:1126
+#: imap/message.c:1123
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Nem lehet a fejléceket letölteni ezen verziójú IMAP szerverről"
 
-#: imap/message.c:1147 index/functions.c:2336 nntp/nntp.c:1227 pop/pop.c:369
+#: imap/message.c:1144 index/functions.c:2335 nntp/nntp.c:1225 pop/pop.c:368
 msgid "Fetching message headers..."
 msgstr "Levélfejlécek letöltése..."
 
-#: imap/message.c:1578
+#: imap/message.c:1574
 msgid "Uploading message..."
 msgstr "Levél feltöltése..."
 
-#: imap/message.c:1763
+#: imap/message.c:1758
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "%d levél másolása %s-ba ..."
 
-#: imap/message.c:1989 imap/message.c:2054 nntp/nntp.c:2610 pop/pop.c:1054
+#: imap/message.c:1983 imap/message.c:2046 nntp/nntp.c:2599 pop/pop.c:1046
 msgid "Fetching message..."
 msgstr "Levél letöltése..."
 
-#: imap/message.c:2041 pop/pop.c:1033
+#: imap/message.c:2034 pop/pop.c:1025
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "A levelek tartalomjegyzéke hibás. Próbáld megnyitni újra a postafiókot."
 
 #: imap/msn.c:47 mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134
-#: mutt/string.c:992 mx.c:1228
+#: mutt/string.c:992 mx.c:1226
 msgid "Out of memory"
 msgstr "Elfogyott a memória"
 
@@ -2880,7 +2876,7 @@ msgstr "Fejléc keresés a következő fejléc név nélkül: %s"
 msgid "Server-side custom search not supported: %s"
 msgstr "Szerver-oldali egyedi keresés nem támogatott: %s"
 
-#: imap/util.c:657
+#: imap/util.c:655
 msgid "Continue?"
 msgstr "Folytatod?"
 
@@ -2914,37 +2910,37 @@ msgstr "%s: Művelet nem engedélyezett a hozzáférési szabályok (ACL) miatt"
 msgid "Failed to create query, aborting"
 msgstr "Nem sikerült a lekérdezés, megszakítva"
 
-#: index/dlg_index.c:750 muttlib.c:1404 mx.c:221 mx.c:359
+#: index/dlg_index.c:750 muttlib.c:1397 mx.c:221 mx.c:359
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "A %s nem postafiók"
 
-#: index/dlg_index.c:1167
+#: index/dlg_index.c:1123
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "A postafiókot más program módosította. A jelzők hibásak lehetnek."
 
-#: index/dlg_index.c:1176 pager/dlg_pager.c:446
+#: index/dlg_index.c:1132 pager/dlg_pager.c:443
 msgid "New mail in this mailbox"
 msgstr "Új levél érkezett a postafiókba"
 
-#: index/dlg_index.c:1196
+#: index/dlg_index.c:1151
 msgid "Mailbox was externally modified"
 msgstr "A postafiókot más program módosította"
 
-#: index/dlg_index.c:1310 index/functions.c:2797
+#: index/dlg_index.c:1262 index/functions.c:2791
 msgid "No mailbox is open"
 msgstr "Nincs megnyitott postafiók"
 
-#: index/dlg_index.c:1317
+#: index/dlg_index.c:1269
 msgid "No tagged messages"
 msgstr "Nincs kijelölt levél"
 
-#: index/dlg_index.c:1321 index/functions.c:675
+#: index/dlg_index.c:1273 index/functions.c:674
 msgid "Nothing to do"
 msgstr "Nem csinálok semmit"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:282
+#: index/functions.c:279
 msgid "Can't delete message"
 msgstr "Nem tudom törölni az üzenetet"
 
@@ -2952,13 +2948,13 @@ msgstr "Nem tudom törölni az üzenetet"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:323 index/functions.c:959
+#: index/functions.c:320 index/functions.c:956
 msgid "Can't delete messages"
 msgstr "Nem tudom törölni az üzeneteket"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index/functions.c:449
+#: index/functions.c:445
 #, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -2968,157 +2964,157 @@ msgstr[1] "%d címkék megváltoztak"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index/functions.c:456
+#: index/functions.c:455
 msgid "No labels changed"
 msgstr "Semelyik címke nem változott meg"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:476
+#: index/functions.c:475
 msgid "Can't edit message"
 msgstr "Nem lehet szerkeszteni a levelet"
 
-#: index/functions.c:522
+#: index/functions.c:521
 msgid "Exit NeoMutt without saving?"
 msgstr "Kilépsz a NeoMuttból mentés nélül?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:559
+#: index/functions.c:558
 msgid "Can't flag message"
 msgstr "Nem lehet megjelőlni az üzenetet"
 
-#: index/functions.c:671
+#: index/functions.c:670
 msgid "Jump to message: "
 msgstr "Levélre ugrás: "
 
-#: index/functions.c:680
+#: index/functions.c:679
 msgid "Argument must be a message number"
 msgstr "A paraméternek levélszámnak kell lennie"
 
-#: index/functions.c:684
+#: index/functions.c:683
 msgid "Invalid message number"
 msgstr "Érvénytelen levélszám"
 
-#: index/functions.c:688
+#: index/functions.c:687
 msgid "That message is not visible"
 msgstr "Ez a levél nem látható"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:790
+#: index/functions.c:789
 msgid "Can't break thread"
 msgstr "Nem tudom a témát (thread) megszakítani"
 
-#: index/functions.c:808
+#: index/functions.c:807
 msgid "Thread broken"
 msgstr "Téma (thread) megszakadt"
 
-#: index/functions.c:814
+#: index/functions.c:813
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr "A témát (thread) nem lehet megszakítani, az üzenet nem része egy témának sem."
 
-#: index/functions.c:839
+#: index/functions.c:838
 msgid "Open mailbox in read-only mode"
 msgstr "Postafiók megnyitása csak olvasásra"
 
-#: index/functions.c:844
+#: index/functions.c:843
 msgid "Open mailbox"
 msgstr "Postafiók megnyitása"
 
-#: index/functions.c:940
+#: index/functions.c:937
 msgid "Thread contains unread or flagged messages"
 msgstr "A témában olvasatlan, vagy flag-gelt levelek vannak"
 
-#: index/functions.c:962
+#: index/functions.c:959
 msgid "Delete messages matching: "
 msgstr "A mintára illeszkedő levelek törlése: "
 
-#: index/functions.c:1002
+#: index/functions.c:999
 msgid "Limit to messages matching: "
 msgstr "Minta a levelek szűkítéséhez: "
 
-#: index/functions.c:1032
+#: index/functions.c:1029
 msgid "To view all messages, limit to \"all\""
 msgstr "Összes üzenet megtekintéséhez szűkítse \"mind\"-re"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:1044
+#: index/functions.c:1041
 msgid "Can't link threads"
 msgstr "Nem tudom összefűzni a témákat (thread-eket)"
 
-#: index/functions.c:1054
+#: index/functions.c:1051
 msgid "No Message-ID: header available to link thread"
 msgstr "Nincs 'Message-ID:' fejléc a téma (thread) létrehozásához"
 
-#: index/functions.c:1067
+#: index/functions.c:1064
 msgid "Threads linked"
 msgstr "Témák (thread-ek) összekötve"
 
-#: index/functions.c:1072
+#: index/functions.c:1069
 msgid "No thread linked"
 msgstr "Nincs kapcsolódó téma"
 
-#: index/functions.c:1101 mx.c:1290 mx.c:1310
+#: index/functions.c:1098 mx.c:1288 mx.c:1308
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Könyvtár nem támogatja a megjelölést, megszakítom"
 
-#: index/functions.c:1122
+#: index/functions.c:1119
 msgid "No tag specified, aborting"
 msgstr "Nincs címke megadva, megszakíva"
 
-#: index/functions.c:1132
+#: index/functions.c:1129
 msgid "Update tags..."
 msgstr "Címkék frissítése folyamatban..."
 
-#: index/functions.c:1173
+#: index/functions.c:1170
 msgid "Failed to modify tags, aborting"
 msgstr "Nem sikerült a megjelöléseket módosítani, megszakítva"
 
-#: index/functions.c:1288
+#: index/functions.c:1285
 msgid "No new messages in this limited view"
 msgstr "Nincs új üzenet ebben a szűkített nézetben"
 
-#: index/functions.c:1290
+#: index/functions.c:1287
 msgid "No new messages"
 msgstr "Nincs új levél"
 
-#: index/functions.c:1295
+#: index/functions.c:1292
 msgid "No unread messages in this limited view"
 msgstr "Nincs új üzenet ebben a szűkített nézetben"
 
-#: index/functions.c:1297
+#: index/functions.c:1294
 msgid "No unread messages"
 msgstr "Nincs olvasatlan üzenet"
 
-#: index/functions.c:1313 menu/functions.c:108 pager/functions.c:512
-#: pattern/pattern.c:582 pattern/pattern.c:740
+#: index/functions.c:1310 menu/functions.c:108 pager/functions.c:491
+#: pattern/pattern.c:581 pattern/pattern.c:741
 msgid "Search wrapped to top"
 msgstr "Keresés az elejétől"
 
-#: index/functions.c:1318 pager/functions.c:538 pattern/pattern.c:593
-#: pattern/pattern.c:751
+#: index/functions.c:1315 pager/functions.c:517 pattern/pattern.c:592
+#: pattern/pattern.c:752
 msgid "Search wrapped to bottom"
 msgstr "Keresés a végétől"
 
-#: index/functions.c:1363
+#: index/functions.c:1360
 msgid "No more threads"
 msgstr "Nincs több téma"
 
-#: index/functions.c:1365
+#: index/functions.c:1362
 msgid "You are on the first thread"
 msgstr "Ez az első téma"
 
-#: index/functions.c:1385 index/functions.c:1764
+#: index/functions.c:1382 index/functions.c:1761
 msgid "You are on the last message"
 msgstr "Ez az utolsó levél"
 
-#: index/functions.c:1395 index/functions.c:1445
+#: index/functions.c:1392 index/functions.c:1442
 msgid "No undeleted messages"
 msgstr "Nincs visszaállított levél"
 
-#: index/functions.c:1418
+#: index/functions.c:1415
 msgid "No mailboxes have new mail"
 msgstr "Nincs új levél egyik postafiókban sem."
 
-#: index/functions.c:1436 index/functions.c:1806
+#: index/functions.c:1433 index/functions.c:1803
 msgid "You are on the first message"
 msgstr "Ez az első levél"
 
@@ -3126,15 +3122,15 @@ msgstr "Ez az első levél"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1500
+#: index/functions.c:1497
 msgid "Can't mark messages as read"
 msgstr "Nem lehet olvasottként megjelölni az üzeneteket"
 
-#: index/functions.c:1571
+#: index/functions.c:1568
 msgid "No limit pattern is in effect"
 msgstr "A szűrő mintának nincs hatása"
 
-#: index/functions.c:1661
+#: index/functions.c:1658
 msgid "Tag messages matching: "
 msgstr "Minta a levelek kijelöléséhez: "
 
@@ -3142,138 +3138,138 @@ msgstr "Minta a levelek kijelöléséhez: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1677 index/functions.c:2186
+#: index/functions.c:1674 index/functions.c:2185
 msgid "Can't undelete messages"
 msgstr "Nem lehet visszaállítani az üzeneteket"
 
-#: index/functions.c:1680
+#: index/functions.c:1678
 msgid "Undelete messages matching: "
 msgstr "Minta a levelek visszaállításához: "
 
-#: index/functions.c:1694
+#: index/functions.c:1692
 msgid "Untag messages matching: "
 msgstr "Minta a levélkijelölés megszüntetéséhez:"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index/functions.c:1717
+#: index/functions.c:1715
 msgid "Enter macro stroke: "
 msgstr "Adja meg a makró billentyű(ke)t: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index/functions.c:1734
+#: index/functions.c:1731
 msgid "message hotkey"
 msgstr "üzenet billentyű"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index/functions.c:1739
+#: index/functions.c:1736
 #, c-format
 msgid "Message bound to %s"
 msgstr "Üzenet a kapcsolva ehhez: %s"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index/functions.c:1749
+#: index/functions.c:1746
 msgid "No message ID to macro"
 msgstr "Nem kapcsolódik üzenet ID ehhez a makróhoz"
 
-#: index/functions.c:1856
+#: index/functions.c:1853
 msgid "Quit NeoMutt?"
 msgstr "Kilépsz a NeoMuttból?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2096
+#: index/functions.c:2095
 msgid "Can't toggle new"
 msgstr "Nem todom váltani új-ra"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2149
+#: index/functions.c:2148
 msgid "Can't undelete message"
 msgstr "Nem tudom az üzenetet visszaállítani"
 
-#: index/functions.c:2285
+#: index/functions.c:2284
 msgid "Logged out of IMAP servers"
 msgstr "Kijelentkezve az IMAP szerverekről"
 
-#: index/functions.c:2332
+#: index/functions.c:2331
 msgid "No Message-Id. Unable to perform operation."
 msgstr "Nincs 'Message-Id'. Nem tudom a műveletet végrehajtani."
 
-#: index/functions.c:2399
+#: index/functions.c:2398
 msgid "No deleted messages found in the thread"
 msgstr "Nem találtam törölt üzenetet a témában"
 
-#: index/functions.c:2423
+#: index/functions.c:2422
 msgid "Enter Message-Id: "
 msgstr "Add meg a Message-Id-t: "
 
-#: index/functions.c:2434
+#: index/functions.c:2433
 msgid "Article has no parent reference"
 msgstr "A cikknek nincs szülő hivatkozása"
 
-#: index/functions.c:2457
+#: index/functions.c:2456
 msgid "Message is not visible in limited view"
 msgstr "Az üzenet nem látható a szűkített nézetben"
 
-#: index/functions.c:2462
+#: index/functions.c:2461
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "%s letöltése a szerverről folyamatban..."
 
-#: index/functions.c:2475 nntp/nntp.c:2645
+#: index/functions.c:2474 nntp/nntp.c:2634
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "%s cikk nem található a szerveren"
 
-#: index/functions.c:2503
+#: index/functions.c:2502
 msgid "Open newsgroup in read-only mode"
 msgstr "Hírcsoport megnyitása csak olvasásra"
 
-#: index/functions.c:2508
+#: index/functions.c:2507
 msgid "Open newsgroup"
 msgstr "Hírcsoport megnyitása"
 
-#: index/functions.c:2585
+#: index/functions.c:2580
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Ebben a csoportban nem lehet közzé tenni, lehet hogy moderálják. Folytatja?"
 
-#: index/functions.c:2620
+#: index/functions.c:2616
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Nincs virtuális könyvtár és nincs Üzenet-Id, megszakítva"
 
-#: index/functions.c:2640
+#: index/functions.c:2636
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr "Az üzenet nem található a notmuch adatbázisban. Futtassa a 'notmuch new' parancsot."
 
-#: index/functions.c:2650
+#: index/functions.c:2645
 msgid "Failed to read thread, aborting"
 msgstr "A téma olvasása sikertelen, megszakítva"
 
-#: index/functions.c:2689
+#: index/functions.c:2684
 msgid "No query, aborting"
 msgstr "Nincs lekérdezés, megszakítva"
 
-#: index/functions.c:2732
+#: index/functions.c:2727
 msgid "Windowed queries disabled"
 msgstr "Ablak lekérdezések letiltva"
 
-#: index/functions.c:2739
+#: index/functions.c:2733
 msgid "No notmuch vfolder currently loaded"
 msgstr "Jelenleg nincs notmuch virtuális könyvtár betöltve"
 
-#: index/functions.c:2803
+#: index/functions.c:2797
 msgid "There are no messages"
 msgstr "Nincs levél"
 
-#: index/functions.c:2810
+#: index/functions.c:2804
 msgid "No visible messages"
 msgstr "Nincs látható levél"
 
-#: index/index.c:96
+#: index/index.c:97
 msgid "Changing threaded display should prefer $use_threads over $sort"
 msgstr "Téma szerinti megjelenítésnél $use_threads-t kell érdemes választani a $sort helyett"
 
@@ -3291,77 +3287,77 @@ msgstr "Figyelem a következő parancssorban: %s"
 msgid "unable to determine nodename via uname()"
 msgstr "nem meghatározható a csomópontnév az uname() hívásával"
 
-#: init.c:1027
+#: init.c:1026
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: ismeretlen parancs"
 
-#: init.c:1087
+#: init.c:1086
 #, c-format
 msgid "Config variable '%s' is deprecated"
 msgstr "A '%s' konvigurációs változó használata elavult"
 
-#: keymap.c:406
+#: keymap.c:405
 #, c-format
 msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
 msgstr "'%s' összekötése '%s' álnévvel folyamatban. Ezelőtt, próbálja meg: 'bind %s %s noop' https://neomutt.org/guide/configuration.html#bind-warnings"
 
-#: keymap.c:787
+#: keymap.c:784
 msgid "Macro loop detected"
 msgstr "Végtelen ciklus a makróban"
 
-#: keymap.c:864
+#: keymap.c:861
 msgid "Abort key is not set, defaulting to Ctrl-G"
 msgstr "Megszakítás gomb nincs beállítva, alapértelmezett a Ctrc-G"
 
-#: keymap.c:871
+#: keymap.c:867
 #, c-format
 msgid "Specified abort key sequence (%s) will be truncated to first key"
 msgstr "A megadott megszakítás billentyű szekvencia (%s) rövidítve lesz az első billentyűre"
 
-#: keymap.c:1067 keymap.c:1102
+#: keymap.c:1064 keymap.c:1099
 msgid "Key is not bound"
 msgstr "A billentyűhöz nincs funkció rendelve"
 
-#: keymap.c:1107
+#: keymap.c:1104
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "A billentyűhöz nincs funkció rendelve. A súgóhoz nyomd meg a '%s'-t."
 
-#: keymap.c:1180
+#: keymap.c:1177
 #, c-format
 msgid "%s: null key sequence"
 msgstr "%s: üres billentyűzet-szekvencia"
 
-#: keymap.c:1215
+#: keymap.c:1212
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
 msgstr "'%s' funkció nem elérhető a(z) '%s' menühöz"
 
-#: keymap.c:1524
+#: keymap.c:1521
 msgid "macro: empty key sequence"
 msgstr "macro: üres billentyűzet-szekvencia"
 
-#: keymap.c:1594
+#: keymap.c:1591
 msgid "exec: no arguments"
 msgstr "exec: nincs paraméter"
 
-#: keymap.c:1617
+#: keymap.c:1614
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: nincs ilyen funkció"
 
-#: keymap.c:1643
+#: keymap.c:1640
 #, c-format
 msgid "Enter keys (%s to abort): "
 msgstr "Billentyük beírása (%s - mégse): "
 
-#: keymap.c:1651
+#: keymap.c:1648
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Karakter = %s, Oktális = %o, Decimális = %d"
 
-#: mailcap.c:215
+#: mailcap.c:214
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Nem megfelelően formázott bejegyzés a(z) %s típushoz a(z) \"%s\" fájl %d. sorában"
@@ -3379,37 +3375,37 @@ msgstr "Nem megfelelően formázott bejegyzés a(z) %s típushoz a(z) \"%s\" fá
 #. -or-
 #. unset mailcap_path
 #.
-#: mailcap.c:500
+#: mailcap.c:497
 msgid "Neither mailcap_path nor MAILCAPS specified"
 msgstr "Nincs sem mailcap útvonal sem MAILCAPS megadva"
 
-#: mailcap.c:524
+#: mailcap.c:521
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "mailcap bejegyzés a(z) %s típushoz nem található"
 
-#: maildir/maildir.c:246 maildir/mh.c:304
+#: maildir/maildir.c:245 maildir/mh.c:303
 msgid "Could not flush message to disk"
 msgstr "Nem tudtam a levelet lemezre menteni"
 
-#: maildir/maildir.c:293
+#: maildir/maildir.c:291
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): a fájlidő beállítása nem sikerült"
 
-#: maildir/maildir.c:685 maildir/mh.c:706
+#: maildir/maildir.c:681 maildir/mh.c:703
 #, c-format
 msgid "Scanning %s..."
 msgstr "%s vizsgálata folyamatban..."
 
-#: maildir/maildir.c:706 maildir/mh.c:729 mbox/mbox.c:214 mbox/mbox.c:380
+#: maildir/maildir.c:702 maildir/mh.c:726 mbox/mbox.c:215 mbox/mbox.c:381
 #: mx.c:372
 #, c-format
 msgid "Reading %s..."
 msgstr "%s olvasása..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1397 maildir/mh.c:1059 mbox/mbox.c:1274 mx.c:480
-#: notmuch/notmuch.c:2240
+#: maildir/maildir.c:1391 maildir/mh.c:1054 mbox/mbox.c:1275 mx.c:480
+#: notmuch/notmuch.c:2219
 #, c-format
 msgid "Writing %s..."
 msgstr "%s írása..."
@@ -3663,7 +3659,7 @@ msgstr "Hiba: '%s' érték érvénytelen ehhez -d "
 msgid "Failed to parse mailto: link"
 msgstr "Nem sikerült a mailto: link feldolgozása"
 
-#: main.c:999 main.c:1259 send/send.c:293 send/send.c:2798 send/send.c:2802
+#: main.c:999 main.c:1256 send/send.c:293 send/send.c:2765 send/send.c:2769
 msgid "No recipients specified"
 msgstr "Nincs címzett megadva"
 
@@ -3676,53 +3672,53 @@ msgstr "Az -E flagot nem lehet az stdin-nel együtt használni"
 msgid "Can't parse message template: %s"
 msgstr "Nem tudom feldolgozni az üzenet templatet: %s"
 
-#: main.c:1179 mutt_header.c:335
+#: main.c:1178 mutt_header.c:335
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: nem lehet csatolni a fájlt"
 
-#: main.c:1273
+#: main.c:1270
 msgid "No mailbox with new mail"
 msgstr "Nincs új levél egyik postafiókban sem"
 
-#: main.c:1299
+#: main.c:1295
 msgid "No incoming mailboxes defined"
 msgstr "Nincs bejövő postafiók megadva"
 
-#: main.c:1352
+#: main.c:1347
 msgid "Mailbox is empty"
 msgstr "A postafiók üres"
 
-#: mbox/mbox.c:256 mbox/mbox.c:316
+#: mbox/mbox.c:257 mbox/mbox.c:317
 msgid "Mailbox is corrupt"
 msgstr "A postafiók megsérült"
 
-#: mbox/mbox.c:1008
+#: mbox/mbox.c:1007
 #, c-format
 msgid "Couldn't lock %s"
 msgstr "Nem lehet lockolni %s"
 
-#: mbox/mbox.c:1153
+#: mbox/mbox.c:1152
 msgid "Mailbox was corrupted"
 msgstr "A postafiók megsérült"
 
-#: mbox/mbox.c:1196 mbox/mbox.c:1450
+#: mbox/mbox.c:1198 mbox/mbox.c:1451
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Végzetes hiba!  A postafiókot nem lehet újra megnyitni!"
 
-#: mbox/mbox.c:1233 pager/message.c:236
+#: mbox/mbox.c:1235 pager/message.c:232
 msgid "Could not create temporary file"
 msgstr "Nem lehet átmeneti fájlt létrehozni"
 
-#: mbox/mbox.c:1252
+#: mbox/mbox.c:1253
 msgid "sync: mbox modified, but no modified messages (report this bug)"
 msgstr "sync: mbox megváltozott, de nincs módosított levél (jelentsd ezt a hibát)"
 
-#: mbox/mbox.c:1395
+#: mbox/mbox.c:1396
 msgid "Committing changes..."
 msgstr "Változások mentése..."
 
-#: mbox/mbox.c:1429
+#: mbox/mbox.c:1430
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Írás nem sikerült!  Részleges postafiókot elmentettem a(z) %s fájlba"
@@ -3731,27 +3727,27 @@ msgstr "Írás nem sikerült!  Részleges postafiókot elmentettem a(z) %s fájl
 msgid "Could not reopen mailbox"
 msgstr "Nem lehetett újra megnyitni a postafiókot"
 
-#: mbox/mbox.c:1613 mbox/mbox.c:1766
+#: mbox/mbox.c:1613 mbox/mbox.c:1765
 msgid "Can't write message"
 msgstr "Nem lehet írni a levelet"
 
-#: menu/functions.c:71 pager/functions.c:335 pattern/pattern.c:508
-#: pattern/pattern.c:668
+#: menu/functions.c:70 pager/functions.c:314 pattern/pattern.c:506
+#: pattern/pattern.c:667
 msgid "Search for: "
 msgstr "Keresés: "
 
-#: menu/functions.c:72 pager/functions.c:335 pattern/pattern.c:508
+#: menu/functions.c:71 pager/functions.c:315 pattern/pattern.c:507
 #: pattern/pattern.c:668
 msgid "Reverse search for: "
 msgstr "Keresés visszafelé: "
 
-#: menu/functions.c:127 pager/functions.c:443 pager/functions.c:509
-#: pager/functions.c:535 pattern/pattern.c:640 pattern/pattern.c:798
+#: menu/functions.c:127 pager/functions.c:424 pager/functions.c:488
+#: pager/functions.c:514 pattern/pattern.c:639 pattern/pattern.c:799
 msgid "Not found"
 msgstr "Nem található"
 
-#: menu/functions.c:244 menu/move.c:342 menu/move.c:362 menu/move.c:409
-#: menu/move.c:425 menu/move.c:442 menu/move.c:463 menu/move.c:483
+#: menu/functions.c:244 menu/move.c:344 menu/move.c:364 menu/move.c:411
+#: menu/move.c:427 menu/move.c:444 menu/move.c:465 menu/move.c:485
 #: menu/tagging.c:119
 msgid "No entries"
 msgstr "Nincsenek bejegyzések"
@@ -3764,19 +3760,19 @@ msgstr "Ugrás: "
 msgid "Invalid index number"
 msgstr "Érvénytelen indexszám"
 
-#: menu/move.c:382
+#: menu/move.c:384
 msgid "You are on the first entry"
 msgstr "Az első bejegyzésen vagy"
 
-#: menu/move.c:396
+#: menu/move.c:398
 msgid "You are on the last entry"
 msgstr "Az utolsó bejegyzésen vagy"
 
-#: menu/move.c:525
+#: menu/move.c:527
 msgid "You can't scroll up farther"
 msgstr "Nem lehet tovább felfelé scrollozni"
 
-#: menu/move.c:538
+#: menu/move.c:540
 msgid "You can't scroll down farther"
 msgstr "Nem lehet tovább lefelé scrollozni"
 
@@ -3788,25 +3784,25 @@ msgstr "Kijelölés nem támogatott"
 msgid "No tagged entries"
 msgstr "Nincsenek kijelölt bejegyzések"
 
-#: mutt/file.c:663
+#: mutt/file.c:662
 #, c-format
 msgid "Failed to seek file: %s"
 msgstr "Nem sikerült megtalálni az alábbi file-t: %s"
 
-#: mutt/file.c:1225
+#: mutt/file.c:1224
 msgid "Timeout exceeded while attempting fcntl lock"
 msgstr "Lejárt a maximális várakozási idő az fcntl lock-ra"
 
-#: mutt/file.c:1231
+#: mutt/file.c:1230
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Várakozás az fcntl lock-ra... %d"
 
-#: mutt/file.c:1293
+#: mutt/file.c:1292
 msgid "Timeout exceeded while attempting flock lock"
 msgstr "Lejárt a maximális várakozási idő az flock lock-ra"
 
-#: mutt/file.c:1300
+#: mutt/file.c:1299
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Várakozás az flock-ra... %d"
@@ -3883,7 +3879,7 @@ msgstr "Hiba: Lua interpretert nem lehet betölteni"
 msgid "Couldn't source lua source: %s"
 msgstr "%s lua forrást nem lehet feldolgozni"
 
-#: mutt_mailbox.c:258
+#: mutt_mailbox.c:254
 msgid "New mail in "
 msgstr "Új levél: "
 
@@ -3892,63 +3888,63 @@ msgstr "Új levél: "
 msgid "SSL is unavailable, can't connect to %s"
 msgstr "SSL nem elérhető, nem lehet csatlakozni ehhez: %s"
 
-#: mutt_thread.c:121
+#: mutt_thread.c:120
 #, c-format
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr "Nem használható a 'last-' előtag a 'témákhoz' az alábbihoz: %s"
 
-#: mutt_thread.c:1351
+#: mutt_thread.c:1344
 msgid "Parent message is not available"
 msgstr "A nyitóüzenet nem áll rendelkezésre"
 
-#: mutt_thread.c:1357
+#: mutt_thread.c:1350
 msgid "Root message is not visible in this limited view"
 msgstr "A nyitóüzenet nem látható ebben a szűkített nézetben"
 
-#: mutt_thread.c:1359
+#: mutt_thread.c:1352
 msgid "Parent message is not visible in this limited view"
 msgstr "A nyitóüzenet nem látható a szűkített nézetben"
 
 #. L10N: Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #. These three letters correspond to the choices in the string.
-#: muttlib.c:644
+#: muttlib.c:639
 msgid "File is a directory, save under it: (y)es, (n)o, (a)ll?"
 msgstr "A file egy könyvtár, elmentsem ezalá: (i)gen, (n)em, (m)indet?"
 
-#: muttlib.c:644
+#: muttlib.c:639
 msgid "yna"
 msgstr "inm"
 
 #. L10N: Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:662
+#: muttlib.c:657
 msgid "File is a directory, save under it?"
 msgstr "A fájl egy könyvtár, elmentsem ebbe a könyvtárba?"
 
-#: muttlib.c:667
+#: muttlib.c:662
 msgid "File under directory: "
 msgstr "Könyvtárbeli fájlok: "
 
 #. L10N: Options for: File %s exists, (o)verwrite, (a)ppend, or (c)ancel?
-#: muttlib.c:683
+#: muttlib.c:678
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "A fájl létezik, (f)elülírjam, (h)ozzáfűzzem, vagy (m)égsem?"
 
-#: muttlib.c:684
+#: muttlib.c:679
 msgid "oac"
 msgstr "fhm"
 
-#: muttlib.c:1370
+#: muttlib.c:1364
 msgid "Can't save message to POP mailbox"
 msgstr "Levelet nem lehet menteni POP postafiókba"
 
-#: muttlib.c:1382
+#: muttlib.c:1375
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Levelek hozzáfűzése %s postafiókhoz?"
 
-#: muttlib.c:1395
+#: muttlib.c:1388
 msgid "Can't save message to news server"
 msgstr "Nem tudom menteni az üzenetet a hírszerverre"
 
@@ -3980,86 +3976,86 @@ msgstr "Szemét könyvtár nem megnyitható"
 msgid "Unable to append to trash folder"
 msgstr "Nem lehet hozzáadni a szemét könyvtárhoz"
 
-#: mx.c:648
+#: mx.c:646
 msgid "Mark all articles read?"
 msgstr "Minden cikket olvasottnak jelölni"
 
 #. L10N: The first argument is the number of read messages to be
 #. moved, the second argument is the target mailbox.
-#: mx.c:700
+#: mx.c:698
 #, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
 msgstr[0] "A(z) %d olvasott levelet mozgassam ide: %s ?"
 msgstr[1] "A(z) %d olvasott leveleket mozgassam ide: %s ?"
 
-#: mx.c:715 mx.c:959
+#: mx.c:713 mx.c:957
 #, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Töröljem az %d töröltnek jelölt levelet?"
 msgstr[1] "Töröljem a(z) %d töröltnek jelölt levelet?"
 
-#: mx.c:740
+#: mx.c:738
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Olvasott levelek mozgatása a %s postafiókba..."
 
-#: mx.c:809 mx.c:950
+#: mx.c:807 mx.c:948
 msgid "Mailbox is unchanged"
 msgstr "Postafiók változatlan"
 
-#: mx.c:869
+#: mx.c:867
 #, c-format
 msgid "%d kept, %d moved, %d deleted"
 msgstr "%d megtartva, %d átmozgatva, %d törölve"
 
-#: mx.c:873 mx.c:1017
+#: mx.c:871 mx.c:1015
 #, c-format
 msgid "%d kept, %d deleted"
 msgstr "%d megtartva, %d törölve"
 
-#: mx.c:934
+#: mx.c:932
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Nyomd meg a '%s' gombot az írás ki/bekapcsolásához"
 
-#: mx.c:936
+#: mx.c:934
 msgid "Use 'toggle-write' to re-enable write"
 msgstr "Használd a 'toggle-write'-ot az írás újra engedélyezéséhez"
 
-#: mx.c:938
+#: mx.c:936
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "A postafiókot megjelöltem nem írhatónak. %s"
 
-#: mx.c:1011
+#: mx.c:1009
 msgid "Mailbox checkpointed"
 msgstr "A postafiók ellenőrizve"
 
-#: mx.c:1355
+#: mx.c:1353
 #, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Nem tudom megnyitni %s-t: ez egy pipe"
 
-#: mx.c:1858
+#: mx.c:1855
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "A csak olvasható postafiókba nem lehet írni"
 
-#: mx.c:1865
+#: mx.c:1862
 msgid "Changes to folder will be written on folder exit"
 msgstr "A postafiók módosításai a postafiókból történő kilépéskor lesznek elmentve"
 
-#: mx.c:1870
+#: mx.c:1867
 msgid "Changes to folder will not be written"
 msgstr "A postafiók módosításai nem lesznek elmentve"
 
-#: ncrypt/crypt.c:81
+#: ncrypt/crypt.c:80
 #, c-format
 msgid " (current time: %c)"
 msgstr " (pontos idő: %c)"
 
-#: ncrypt/crypt.c:86
+#: ncrypt/crypt.c:85
 #, c-format
 msgid "[-- %s output follows%s --]\n"
 msgstr "[-- %s kimenet következik%s --]\n"
@@ -4068,52 +4064,52 @@ msgstr "[-- %s kimenet következik%s --]\n"
 #. by gpg-agent) we can't know whether we forgot zero, 1, 12, ...
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
-#: ncrypt/crypt.c:107
+#: ncrypt/crypt.c:106
 msgid "Passphrases forgotten"
 msgstr "Jelszó elfelejtve"
 
-#: ncrypt/crypt.c:193
+#: ncrypt/crypt.c:189
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
 msgstr "Beágyazott PGP nem alkalmazható a mellékletekre. Visszaáll PGP/MIME-ra?"
 
-#: ncrypt/crypt.c:197
+#: ncrypt/crypt.c:192
 msgid "Mail not sent: inline PGP can't be used with attachments"
 msgstr "Levélküldés sikertelen: beágyazott PGP nem használható a mellékletekhez"
 
-#: ncrypt/crypt.c:205
+#: ncrypt/crypt.c:198
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
 msgstr "Beágyazott PGP nem alkalmazható együtt ezzel format=flowed. Visszaáll PGP/MIME-ra?"
 
-#: ncrypt/crypt.c:209
+#: ncrypt/crypt.c:201
 msgid "Mail not sent: inline PGP can't be used with format=flowed"
 msgstr "Levélküldés sikertelen: beágyazott PGP-t nem lehet használni ezzel: format=flowed"
 
-#: ncrypt/crypt.c:219 ncrypt/cryptglue.c:161 ncrypt/dlg_pgp.c:725
+#: ncrypt/crypt.c:211 ncrypt/cryptglue.c:160 ncrypt/dlg_pgp.c:723
 #: ncrypt/pgpkey.c:275
 msgid "Invoking PGP..."
 msgstr "PGP betöltés..."
 
-#: ncrypt/crypt.c:231
+#: ncrypt/crypt.c:222
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Üzenetet nem lehet beágyazva elküldeni. Visszaáll PGP/MIME-ra?"
 
-#: ncrypt/crypt.c:233 send/send.c:2776
+#: ncrypt/crypt.c:224 send/send.c:2743
 msgid "Mail not sent"
 msgstr "A levél nem lett elküldve"
 
-#: ncrypt/crypt.c:660
+#: ncrypt/crypt.c:643
 msgid "S/MIME messages with no hints on content are unsupported"
 msgstr "Tartalom-útmutatás nélküli S/MIME üzenetek nem támogatottak"
 
-#: ncrypt/crypt.c:896
+#: ncrypt/crypt.c:878
 msgid "Trying to extract PGP keys...\n"
 msgstr "PGP kulcsok kibontása...\n"
 
-#: ncrypt/crypt.c:923
+#: ncrypt/crypt.c:905
 msgid "Trying to extract S/MIME certificates..."
 msgstr "S/MIME tanúsítványok kibontása..."
 
-#: ncrypt/crypt.c:1169
+#: ncrypt/crypt.c:1141
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s --]\n"
@@ -4122,7 +4118,7 @@ msgstr ""
 "[-- Hiba: Ismeretlen többrészes/aláírt protokoll %s --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1208
+#: ncrypt/crypt.c:1179
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
@@ -4130,7 +4126,7 @@ msgstr ""
 "[-- Hiba: Hiányzó vagy rossz formátumú multipart/signed aláírás --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1248
+#: ncrypt/crypt.c:1217
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -4139,7 +4135,7 @@ msgstr ""
 "[-- Figyelem: Nem tudtam leellenőrizni a %s/%s aláírásokat. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1261
+#: ncrypt/crypt.c:1229
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -4147,7 +4143,7 @@ msgstr ""
 "[-- A következő adatok alá vannak írva --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1270
+#: ncrypt/crypt.c:1237
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -4155,7 +4151,7 @@ msgstr ""
 "[-- Figyelem: Nem találtam egy aláírást sem. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1277
+#: ncrypt/crypt.c:1244
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -4163,197 +4159,197 @@ msgstr ""
 "\n"
 "[-- Aláírt adat vége --]\n"
 
-#: ncrypt/crypt_gpgme.c:596
+#: ncrypt/crypt_gpgme.c:595
 #, c-format
 msgid "error enabling CMS protocol: %s"
 msgstr "CMS protokoll engedélyezésekor hiba lépett fel: %s"
 
-#: ncrypt/crypt_gpgme.c:619
+#: ncrypt/crypt_gpgme.c:618
 #, c-format
 msgid "error creating GPGME data object: %s"
 msgstr "hiba a GPGME adat objektum létrehozásakor: %s"
 
-#: ncrypt/crypt_gpgme.c:720 ncrypt/crypt_gpgme.c:747 ncrypt/crypt_gpgme.c:1923
-#: ncrypt/crypt_gpgme.c:2690
+#: ncrypt/crypt_gpgme.c:719 ncrypt/crypt_gpgme.c:746 ncrypt/crypt_gpgme.c:1912
+#: ncrypt/crypt_gpgme.c:2679
 #, c-format
 msgid "error allocating data object: %s"
 msgstr "hiba az adat objektum allokálásakor: %s"
 
-#: ncrypt/crypt_gpgme.c:769
+#: ncrypt/crypt_gpgme.c:768
 #, c-format
 msgid "error rewinding data object: %s"
 msgstr "hiba az adat objektum visszaállításakor: %s"
 
-#: ncrypt/crypt_gpgme.c:785
+#: ncrypt/crypt_gpgme.c:784
 msgid "[tempfile]"
 msgstr "[ideiglenes fájl]"
 
-#: ncrypt/crypt_gpgme.c:791 ncrypt/crypt_gpgme.c:845
+#: ncrypt/crypt_gpgme.c:790 ncrypt/crypt_gpgme.c:844
 #, c-format
 msgid "error reading data object: %s"
 msgstr "hiba az adat objektum olvasásakor: %s"
 
-#: ncrypt/crypt_gpgme.c:962
+#: ncrypt/crypt_gpgme.c:961
 #, c-format
 msgid "error adding recipient '%s': %s"
 msgstr "hiba a '%s' címzett hozzáadásakor: %s"
 
-#: ncrypt/crypt_gpgme.c:1000
+#: ncrypt/crypt_gpgme.c:999
 #, c-format
 msgid "secret key '%s' not found: %s"
 msgstr "'%s' titkos kulcs nem található: %s"
 
-#: ncrypt/crypt_gpgme.c:1017
+#: ncrypt/crypt_gpgme.c:1016
 #, c-format
 msgid "ambiguous specification of secret key '%s'"
 msgstr "'%s' titkos kulcs kétértelműen meghatározva"
 
-#: ncrypt/crypt_gpgme.c:1033
+#: ncrypt/crypt_gpgme.c:1032
 #, c-format
 msgid "error setting secret key '%s': %s"
 msgstr "hiba a '%s' titkos kulcs beállításakor: %s"
 
-#: ncrypt/crypt_gpgme.c:1100
+#: ncrypt/crypt_gpgme.c:1095
 #, c-format
 msgid "error setting PKA signature notation: %s"
 msgstr "hiba a PKA aláírás beállításakor: %s"
 
-#: ncrypt/crypt_gpgme.c:1176
+#: ncrypt/crypt_gpgme.c:1171
 #, c-format
 msgid "error encrypting data: %s"
 msgstr "hiba az adat titkosításakor: %s"
 
-#: ncrypt/crypt_gpgme.c:1307
+#: ncrypt/crypt_gpgme.c:1302
 #, c-format
 msgid "error signing data: %s"
 msgstr "hiba az adat aláírásakor: %s"
 
-#: ncrypt/crypt_gpgme.c:1317
+#: ncrypt/crypt_gpgme.c:1312
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
 msgstr "$pgp_sign_as nincs beállítva és nincs alapértelmezett kulcs megadva a ~/.gnupg/gpg.conf fileban"
 
-#: ncrypt/crypt_gpgme.c:1496
+#: ncrypt/crypt_gpgme.c:1490
 msgid "Warning: One of the keys has been revoked\n"
 msgstr "Figyelem: Az egyik kulcsot visszavonták\n"
 
-#: ncrypt/crypt_gpgme.c:1506
+#: ncrypt/crypt_gpgme.c:1499
 msgid "Warning: The key used to create the signature expired at: "
 msgstr "Figyelem: Az aláíráshoz használt kulcs lejárt ekkor: "
 
-#: ncrypt/crypt_gpgme.c:1512
+#: ncrypt/crypt_gpgme.c:1505
 msgid "Warning: At least one certification key has expired\n"
 msgstr "Figyelem: Legalább egy hitelesítési kulcs lejárt\n"
 
-#: ncrypt/crypt_gpgme.c:1526
+#: ncrypt/crypt_gpgme.c:1519
 msgid "Warning: The signature expired at: "
 msgstr "Figyelem: Az aláírás lejárt ekkor: "
 
-#: ncrypt/crypt_gpgme.c:1533
+#: ncrypt/crypt_gpgme.c:1526
 msgid "Can't verify due to a missing key or certificate\n"
 msgstr "Nem tudom ellenőrizni mert hiányzik a kulcs vagy tanúsítvány\n"
 
-#: ncrypt/crypt_gpgme.c:1538
+#: ncrypt/crypt_gpgme.c:1531
 msgid "The CRL is not available\n"
 msgstr "A CRL (tanúsítvány visszahívási lista) nem elérhető\n"
 
-#: ncrypt/crypt_gpgme.c:1544
+#: ncrypt/crypt_gpgme.c:1537
 msgid "Available CRL is too old\n"
 msgstr "Az elérhető CRL (tanúsítvány visszahívási lista) túl régi\n"
 
-#: ncrypt/crypt_gpgme.c:1549
+#: ncrypt/crypt_gpgme.c:1542
 msgid "A policy requirement was not met\n"
 msgstr "Az irányelv elvárásának nem felelt meg\n"
 
-#: ncrypt/crypt_gpgme.c:1558
+#: ncrypt/crypt_gpgme.c:1551
 msgid "A system error occurred"
 msgstr "Rendszerhiba lépett fel"
 
-#: ncrypt/crypt_gpgme.c:1591
+#: ncrypt/crypt_gpgme.c:1584
 msgid "WARNING: PKA entry does not match signer's address: "
 msgstr "FIGYELEM: PKA elem nem egyezik az aláíró címével: "
 
-#: ncrypt/crypt_gpgme.c:1597
+#: ncrypt/crypt_gpgme.c:1590
 msgid "PKA verified signer's address is: "
 msgstr "PKA által ellenőrzött aláíró címe ez: "
 
-#: ncrypt/crypt_gpgme.c:1616 ncrypt/dlg_gpgme.c:135
+#: ncrypt/crypt_gpgme.c:1609 ncrypt/dlg_gpgme.c:135
 msgid "Fingerprint: "
 msgstr "Ujjlenyomat: "
 
-#: ncrypt/crypt_gpgme.c:1679
+#: ncrypt/crypt_gpgme.c:1672
 msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
 msgstr "FIGYELEM: Nincs utalás arra hogy a kulcs valóban a fenti személyhez tartozna\n"
 
-#: ncrypt/crypt_gpgme.c:1686
+#: ncrypt/crypt_gpgme.c:1677
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "FIGYELEM: A kulcs NEM a fenti személyhez kapcsolódik\n"
 
-#: ncrypt/crypt_gpgme.c:1690
+#: ncrypt/crypt_gpgme.c:1680
 msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr "FIGYELEM: Nem biztos hogy a kulcs a fenti személyhez tartozna\n"
 
-#: ncrypt/crypt_gpgme.c:1726 ncrypt/crypt_gpgme.c:1731 ncrypt/dlg_gpgme.c:134
+#: ncrypt/crypt_gpgme.c:1715 ncrypt/crypt_gpgme.c:1720 ncrypt/dlg_gpgme.c:134
 msgid "aka: "
 msgstr "másnéven: "
 
-#: ncrypt/crypt_gpgme.c:1743
+#: ncrypt/crypt_gpgme.c:1732
 msgid "KeyID "
 msgstr "KulcsID "
 
 #. L10N: You will see this message in place of "KeyID "
 #. if the S/MIME key has no ID. This is quite an error.
-#: ncrypt/crypt_gpgme.c:1750
+#: ncrypt/crypt_gpgme.c:1739
 msgid "no signature fingerprint available"
 msgstr "nem érhető el az aláírás ujjlenyomata"
 
-#: ncrypt/crypt_gpgme.c:1759 ncrypt/crypt_gpgme.c:1764
+#: ncrypt/crypt_gpgme.c:1748 ncrypt/crypt_gpgme.c:1753
 msgid "created: "
 msgstr "létrehozva: "
 
-#: ncrypt/crypt_gpgme.c:1839
+#: ncrypt/crypt_gpgme.c:1828
 #, c-format
 msgid "Error getting key information for KeyID %s: %s\n"
 msgstr "Hiba a %s KulcsID-hez kapcsolódó információ lekérésekor: %s\n"
 
-#: ncrypt/crypt_gpgme.c:1846 ncrypt/crypt_gpgme.c:1861
+#: ncrypt/crypt_gpgme.c:1835 ncrypt/crypt_gpgme.c:1850
 msgid "Good signature from:"
 msgstr "Jó aláírás ettől:"
 
-#: ncrypt/crypt_gpgme.c:1853
+#: ncrypt/crypt_gpgme.c:1842
 msgid "*BAD* signature from:"
 msgstr "*ROSSZ* aláírás ettől:"
 
-#: ncrypt/crypt_gpgme.c:1869
+#: ncrypt/crypt_gpgme.c:1858
 msgid "Problem signature from:"
 msgstr "Problémás aláírás ettől:"
 
 #. L10N: This is trying to match the width of the
 #. "Problem signature from:" translation just above.
-#: ncrypt/crypt_gpgme.c:1875
+#: ncrypt/crypt_gpgme.c:1864
 msgid "               expires: "
 msgstr "               lejár: "
 
-#: ncrypt/crypt_gpgme.c:1930 ncrypt/crypt_gpgme.c:2162
-#: ncrypt/crypt_gpgme.c:2965
+#: ncrypt/crypt_gpgme.c:1919 ncrypt/crypt_gpgme.c:2151
+#: ncrypt/crypt_gpgme.c:2954
 msgid "[-- Begin signature information --]\n"
 msgstr "[-- Aláírás info kezdete --]\n"
 
-#: ncrypt/crypt_gpgme.c:1941
+#: ncrypt/crypt_gpgme.c:1930
 #, c-format
 msgid "Error: verification failed: %s\n"
 msgstr "Hiba: ellenőrzés sikertelen: %s\n"
 
-#: ncrypt/crypt_gpgme.c:1992
+#: ncrypt/crypt_gpgme.c:1981
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
 msgstr "*** Bejegyzés kezdete (%s aláírásával) ***\n"
 
-#: ncrypt/crypt_gpgme.c:2011
+#: ncrypt/crypt_gpgme.c:2000
 msgid "*** End Notation ***\n"
 msgstr "*** Bejegyzés vége ***\n"
 
-#: ncrypt/crypt_gpgme.c:2019 ncrypt/crypt_gpgme.c:2176
-#: ncrypt/crypt_gpgme.c:2975
+#: ncrypt/crypt_gpgme.c:2008 ncrypt/crypt_gpgme.c:2165
+#: ncrypt/crypt_gpgme.c:2964
 msgid ""
 "[-- End signature information --]\n"
 "\n"
@@ -4361,7 +4357,7 @@ msgstr ""
 "[-- Aláírás információ vége --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2136
+#: ncrypt/crypt_gpgme.c:2125
 #, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
@@ -4370,26 +4366,26 @@ msgstr ""
 "[-- Hiba: dekódolás sikertelen: %s --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2697
+#: ncrypt/crypt_gpgme.c:2686
 #, c-format
 msgid "Error importing key: %s"
 msgstr "Hiba a kulcs importálásakor: %s"
 
-#: ncrypt/crypt_gpgme.c:2939
+#: ncrypt/crypt_gpgme.c:2928
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
 msgstr "Hiba: dekódolás/ellenőrzés sikertelen: %s\n"
 
-#: ncrypt/crypt_gpgme.c:2946 ncrypt/crypt_gpgme.c:3145 ncrypt/pgp.c:739
-#: ncrypt/pgp.c:1303
+#: ncrypt/crypt_gpgme.c:2935 ncrypt/crypt_gpgme.c:3128 ncrypt/pgp.c:731
+#: ncrypt/pgp.c:1290
 msgid "PGP message successfully decrypted"
 msgstr "A PGP üzenet sikeresen dekódolva"
 
-#: ncrypt/crypt_gpgme.c:2987
+#: ncrypt/crypt_gpgme.c:2976
 msgid "Error: copy data failed\n"
 msgstr "Hiba: adatmásolás sikertelen\n"
 
-#: ncrypt/crypt_gpgme.c:3000 ncrypt/pgp.c:686
+#: ncrypt/crypt_gpgme.c:2989 ncrypt/pgp.c:678
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -4397,11 +4393,11 @@ msgstr ""
 "[-- PGP ÜZENET KEZDETE --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:3002 ncrypt/pgp.c:688
+#: ncrypt/crypt_gpgme.c:2991 ncrypt/pgp.c:680
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP NYILVÁNOS KULCS KEZDŐDIK --]\n"
 
-#: ncrypt/crypt_gpgme.c:3004 ncrypt/pgp.c:690
+#: ncrypt/crypt_gpgme.c:2993 ncrypt/pgp.c:682
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -4409,19 +4405,19 @@ msgstr ""
 "[-- PGP ALÁÍRT LEVÉL KEZDŐDIK --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:3031 ncrypt/pgp.c:728
+#: ncrypt/crypt_gpgme.c:3020 ncrypt/pgp.c:720
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- PGP LEVÉL VÉGE --]\n"
 
-#: ncrypt/crypt_gpgme.c:3033 ncrypt/pgp.c:742
+#: ncrypt/crypt_gpgme.c:3022 ncrypt/pgp.c:734
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP NYILVÁNOS KULCS VÉGE --]\n"
 
-#: ncrypt/crypt_gpgme.c:3035 ncrypt/pgp.c:744
+#: ncrypt/crypt_gpgme.c:3024 ncrypt/pgp.c:736
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- PGP ALÁÍRT LEVÉL VÉGE --]\n"
 
-#: ncrypt/crypt_gpgme.c:3056 ncrypt/pgp.c:777
+#: ncrypt/crypt_gpgme.c:3044 ncrypt/pgp.c:768
 msgid ""
 "[-- Error: could not find beginning of PGP message --]\n"
 "\n"
@@ -4429,11 +4425,11 @@ msgstr ""
 "[-- Hiba: nem található a PGP levél kezdete --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:3084 ncrypt/crypt_gpgme.c:3184 ncrypt/pgp.c:1248
+#: ncrypt/crypt_gpgme.c:3071 ncrypt/crypt_gpgme.c:3166 ncrypt/pgp.c:1236
 msgid "[-- Error: could not create temporary file --]\n"
 msgstr "[-- Hiba: nem lehet létrehozni az ideiglenes fájlt --]\n"
 
-#: ncrypt/crypt_gpgme.c:3098
+#: ncrypt/crypt_gpgme.c:3084
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
@@ -4441,7 +4437,7 @@ msgstr ""
 "[-- A következő adat PGP/MIME-vel aláírt és titkosított --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:3100 ncrypt/pgp.c:1262
+#: ncrypt/crypt_gpgme.c:3085 ncrypt/pgp.c:1249
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -4449,20 +4445,20 @@ msgstr ""
 "[-- A következő adat PGP/MIME-vel titkosított --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:3140
+#: ncrypt/crypt_gpgme.c:3123
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- PGP/MIME által aláírt és titkosított adat vége --]\n"
 
-#: ncrypt/crypt_gpgme.c:3141 ncrypt/pgp.c:1298
+#: ncrypt/crypt_gpgme.c:3124 ncrypt/pgp.c:1285
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- PGP/MIME titkosított adat vége --]\n"
 
-#: ncrypt/crypt_gpgme.c:3153 ncrypt/pgp.c:677 ncrypt/pgp.c:730
-#: ncrypt/pgp.c:1307 postpone.c:555
+#: ncrypt/crypt_gpgme.c:3136 ncrypt/pgp.c:669 ncrypt/pgp.c:722
+#: ncrypt/pgp.c:1294 postpone.c:554
 msgid "Could not decrypt PGP message"
 msgstr "A PGP üzenetet nem tudtam dekódolni"
 
-#: ncrypt/crypt_gpgme.c:3198
+#: ncrypt/crypt_gpgme.c:3179
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
@@ -4470,64 +4466,64 @@ msgstr ""
 "[-- A következő adat S/MIME-mal aláírva --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:3199
+#: ncrypt/crypt_gpgme.c:3180
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
 msgstr "[-- A következő adat S/MIME-el titkosítva --]\n"
 
-#: ncrypt/crypt_gpgme.c:3246
+#: ncrypt/crypt_gpgme.c:3226
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr "[-- S/MIME-al aláírt adat vége --]\n"
 
-#: ncrypt/crypt_gpgme.c:3247
+#: ncrypt/crypt_gpgme.c:3227
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- S/MIME-al titkosított adat vége. --]\n"
 
-#: ncrypt/crypt_gpgme.c:3430 ncrypt/crypt_gpgme.c:3481
+#: ncrypt/crypt_gpgme.c:3410 ncrypt/crypt_gpgme.c:3461
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr "gpgme_op_keylist_start nem sikerült: %s"
 
-#: ncrypt/crypt_gpgme.c:3469 ncrypt/crypt_gpgme.c:3520
-#: ncrypt/crypt_gpgme.c:4040
+#: ncrypt/crypt_gpgme.c:3449 ncrypt/crypt_gpgme.c:3500
+#: ncrypt/crypt_gpgme.c:4018
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next sikertelen: %s"
 
-#: ncrypt/crypt_gpgme.c:3587 ncrypt/crypt_gpgme.c:3703 ncrypt/pgpkey.c:379
-#: ncrypt/pgpkey.c:508
+#: ncrypt/crypt_gpgme.c:3566 ncrypt/crypt_gpgme.c:3682 ncrypt/pgpkey.c:378
+#: ncrypt/pgpkey.c:507
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Egyező \"%s\" kulcsok keresése..."
 
-#: ncrypt/crypt_gpgme.c:3819 ncrypt/pgpkey.c:227 ncrypt/smime.c:742
+#: ncrypt/crypt_gpgme.c:3798 ncrypt/pgpkey.c:227 ncrypt/smime.c:739
 #, c-format
 msgid "No matching keys found for \"%s\""
 msgstr "Nincs a \"%s\"-hez kapcsolódó kulcs"
 
-#: ncrypt/crypt_gpgme.c:3874 ncrypt/pgp.c:1490
+#: ncrypt/crypt_gpgme.c:3852 ncrypt/pgp.c:1476
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Használjam a kulcsID = \"%s\" ehhez: %s?"
 
-#: ncrypt/crypt_gpgme.c:3922 ncrypt/pgp.c:1539 ncrypt/smime.c:766
-#: ncrypt/smime.c:852
+#: ncrypt/crypt_gpgme.c:3900 ncrypt/pgp.c:1525 ncrypt/smime.c:763
+#: ncrypt/smime.c:844
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Add meg a kulcsID-t %s-hoz: "
 
 #. L10N: mutt_gpgme_select_secret_key() tries to list all secret keys to choose
 #. from.  This error is displayed if no results were found.
-#: ncrypt/crypt_gpgme.c:4047
+#: ncrypt/crypt_gpgme.c:4025
 msgid "No secret keys found"
 msgstr "Nem találtam titkos kulcsot"
 
-#: ncrypt/crypt_gpgme.c:4081 ncrypt/pgpkey.c:248
+#: ncrypt/crypt_gpgme.c:4059 ncrypt/pgpkey.c:248
 msgid "Please enter the key ID: "
 msgstr "Kérlek írd be a kulcs ID-t: "
 
-#: ncrypt/crypt_gpgme.c:4094
+#: ncrypt/crypt_gpgme.c:4072
 #, c-format
 msgid "Error exporting key: %s"
 msgstr "Hiba a kulcs exportálásakor: %s"
@@ -4535,84 +4531,88 @@ msgstr "Hiba a kulcs exportálásakor: %s"
 #. L10N: MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: ncrypt/crypt_gpgme.c:4112
+#: ncrypt/crypt_gpgme.c:4090
 #, c-format
 msgid "PGP Key 0x%s"
 msgstr "PGP Kulcs 0x%s"
 
-#: ncrypt/crypt_gpgme.c:4156
+#: ncrypt/crypt_gpgme.c:4134
 msgid "GPGME: OpenPGP protocol not available"
 msgstr "GPGME: OpenPGP protokoll nem elérhető"
 
-#: ncrypt/crypt_gpgme.c:4167
+#: ncrypt/crypt_gpgme.c:4145
 msgid "GPGME: CMS protocol not available"
 msgstr "GPGME: CMS protokoll nem elérhető"
 
-#: ncrypt/crypt_gpgme.c:4220
+#. L10N: S/MIME options (opportunistic encryption is on)
+#: ncrypt/crypt_gpgme.c:4196
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME (a)láír, aláír (m)int, (p)gp, mé(g)se, vagy (o)ppenc mód kikapcsolása?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4222
+#: ncrypt/crypt_gpgme.c:4198
 msgid "sapco"
 msgstr "ampgo"
 
-#: ncrypt/crypt_gpgme.c:4229
+#. L10N: PGP options (opportunistic encryption is on)
+#: ncrypt/crypt_gpgme.c:4204
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP (a)láír, aláír (m)int, (s)/mime, mé(g)se, vagy (o)ppenc mód kikapcsolása?"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4231
+#: ncrypt/crypt_gpgme.c:4206
 msgid "samco"
 msgstr "amsgo"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4241
+#: ncrypt/crypt_gpgme.c:4216
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (p)gp, mé(g)se, vagy (o)ppenc mód?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4244
+#: ncrypt/crypt_gpgme.c:4218
 msgid "esabpco"
 msgstr "tamspgo"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4250
+#: ncrypt/crypt_gpgme.c:4224
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
 msgstr "PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, s/m(i)me, mé(g)se, vagy (o)ppenc mód?"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4253
+#: ncrypt/crypt_gpgme.c:4226
 msgid "esabmco"
 msgstr "tamsigo"
 
-#: ncrypt/crypt_gpgme.c:4264
+#. L10N: S/MIME options
+#: ncrypt/crypt_gpgme.c:4236
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr "S/MIME (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (p)gp, mé(g)se?"
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:4266
+#: ncrypt/crypt_gpgme.c:4238
 msgid "esabpc"
 msgstr "tamspg"
 
-#: ncrypt/crypt_gpgme.c:4273
+#. L10N: PGP options
+#: ncrypt/crypt_gpgme.c:4244
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
 msgstr "PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, s/m(i)me, mé(g)se?"
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:4275
+#: ncrypt/crypt_gpgme.c:4246
 msgid "esabmc"
 msgstr "tamsig"
 
-#: ncrypt/crypt_gpgme.c:4440
+#: ncrypt/crypt_gpgme.c:4410
 msgid "Failed to verify sender"
 msgstr "Nem sikerült a küldőt igazolni"
 
-#: ncrypt/crypt_gpgme.c:4443
+#: ncrypt/crypt_gpgme.c:4413
 msgid "Failed to figure out sender"
 msgstr "Nem sikerült a küldőt azonosítani"
 
-#: ncrypt/cryptglue.c:163
+#: ncrypt/cryptglue.c:162
 msgid "Invoking S/MIME..."
 msgstr "S/MIME betöltés..."
 
@@ -4729,80 +4729,80 @@ msgstr "Hiba a kiállító kulcsának keresésekor: %s\n"
 msgid "Error: certification chain too long - stopping here\n"
 msgstr "Hiba: tanúsítási lánc túl hosszú - itt megállunk\n"
 
-#: ncrypt/dlg_gpgme.c:928 ncrypt/dlg_pgp.c:747
+#: ncrypt/dlg_gpgme.c:928 ncrypt/dlg_pgp.c:745
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "Kulcs ID: 0x%s"
 
-#: ncrypt/dlg_gpgme.c:1356
+#: ncrypt/dlg_gpgme.c:1354
 msgid "All matching keys are marked expired/revoked"
 msgstr "Minden illeszkedő kulcs megjelölve mint lejárt/visszavont"
 
-#: ncrypt/dlg_gpgme.c:1402
+#: ncrypt/dlg_gpgme.c:1400
 msgid "PGP and S/MIME keys matching"
 msgstr "Illeszkedő PGP és S/MIME kulcsok"
 
-#: ncrypt/dlg_gpgme.c:1404
+#: ncrypt/dlg_gpgme.c:1402
 msgid "PGP keys matching"
 msgstr "Illeszkedő PGP kulcsok"
 
-#: ncrypt/dlg_gpgme.c:1406
+#: ncrypt/dlg_gpgme.c:1404
 msgid "S/MIME keys matching"
 msgstr "Illeszkedő S/MIME kulcsok"
 
-#: ncrypt/dlg_gpgme.c:1408
+#: ncrypt/dlg_gpgme.c:1406
 msgid "keys matching"
 msgstr "Illeszkedő kulcsok"
 
 #. L10N: 1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>"
-#: ncrypt/dlg_gpgme.c:1416
+#: ncrypt/dlg_gpgme.c:1414
 #, c-format
 msgid "%s <%s>"
 msgstr "%s <%s>"
 
 #. L10N: e.g. 'S/MIME keys matching "Michael Elkins".'
-#: ncrypt/dlg_gpgme.c:1421
+#: ncrypt/dlg_gpgme.c:1419
 #, c-format
 msgid "%s \"%s\""
 msgstr "%s \"%s\""
 
-#: ncrypt/dlg_gpgme.c:1482 ncrypt/dlg_pgp.c:783
+#: ncrypt/dlg_gpgme.c:1480 ncrypt/dlg_pgp.c:781
 msgid "This key can't be used: expired/disabled/revoked"
 msgstr "Ez a kulcs nem használható: lejárt/letiltott/visszavont"
 
-#: ncrypt/dlg_gpgme.c:1495 ncrypt/dlg_pgp.c:795 ncrypt/dlg_smime.c:265
+#: ncrypt/dlg_gpgme.c:1492 ncrypt/dlg_pgp.c:793 ncrypt/dlg_smime.c:265
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
 msgstr "ID lejárt/letiltott/visszavont. Valóban szeretnéd használni ezt a kulcsot?"
 
-#: ncrypt/dlg_gpgme.c:1505 ncrypt/dlg_pgp.c:807
+#: ncrypt/dlg_gpgme.c:1500 ncrypt/dlg_pgp.c:803
 msgid "ID is not valid. Do you really want to use the key?"
 msgstr "Az ID nem érvényes. Valóban szeretnéd használni ezt a kulcsot?"
 
-#: ncrypt/dlg_gpgme.c:1508 ncrypt/dlg_pgp.c:810
+#: ncrypt/dlg_gpgme.c:1503 ncrypt/dlg_pgp.c:806
 msgid "ID is only marginally valid. Do you really want to use the key?"
 msgstr "Az ID csak részlegesen érvényes. Valóban szeretnéd használni ezt a kulcsot?"
 
-#: ncrypt/dlg_gpgme.c:1516 ncrypt/dlg_pgp.c:803 ncrypt/dlg_smime.c:269
+#: ncrypt/dlg_gpgme.c:1510 ncrypt/dlg_pgp.c:800 ncrypt/dlg_smime.c:268
 msgid "ID has undefined validity. Do you really want to use the key?"
 msgstr "ID-nek meghatározatlan az érvényessége. Valóban szeretnéd használni ezt a kulcsot?"
 
-#: ncrypt/dlg_pgp.c:633
+#: ncrypt/dlg_pgp.c:631
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "Minden illeszkedő kulcs lejárt/letiltott/visszavont"
 
-#: ncrypt/dlg_pgp.c:672
+#: ncrypt/dlg_pgp.c:670
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "PGP kulcsok egyeznek <%s>"
 
-#: ncrypt/dlg_pgp.c:674
+#: ncrypt/dlg_pgp.c:672
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "PGP kulcsok egyeznek \"%s\""
 
-#: ncrypt/dlg_pgp.c:711 ncrypt/pgpkey.c:269
+#: ncrypt/dlg_pgp.c:709 ncrypt/pgpkey.c:269
 msgid "Can't open /dev/null"
 msgstr "Nem lehet a /dev/null-t megnyitni"
 
@@ -4874,19 +4874,19 @@ msgstr "Ismeretlen    "
 msgid "S/MIME certificates matching \"%s\""
 msgstr "S/MIME kulcsok egyeznek \"%s\""
 
-#: ncrypt/dlg_smime.c:273
+#: ncrypt/dlg_smime.c:271
 msgid "ID is not trusted. Do you really want to use the key?"
 msgstr "Az ID nem megbízható. Valóban szeretnéd használni ezt a kulcsot?"
 
-#: ncrypt/pgp.c:99
+#: ncrypt/pgp.c:100
 msgid "Enter PGP passphrase:"
 msgstr "Kérlek írd be a PGP jelszavadat: "
 
-#: ncrypt/pgp.c:606
+#: ncrypt/pgp.c:598
 msgid "[-- Error: unable to create PGP subprocess --]\n"
 msgstr "[-- Hiba: nem lehet létrehozni a PGP alfolyamatot --]\n"
 
-#: ncrypt/pgp.c:653 ncrypt/pgp.c:943 ncrypt/pgp.c:1113
+#: ncrypt/pgp.c:645 ncrypt/pgp.c:934 ncrypt/pgp.c:1102
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -4897,15 +4897,15 @@ msgstr ""
 #. L10N: You will see this error message if (1) you are decrypting
 #. (not encrypting) something and (2) it is a plaintext. So the
 #. message does not mean "You failed to encrypt the message."
-#: ncrypt/pgp.c:736
+#: ncrypt/pgp.c:728
 msgid "PGP message is not encrypted"
 msgstr "A PGP üzenet nem titkosított"
 
-#: ncrypt/pgp.c:995
+#: ncrypt/pgp.c:986
 msgid "Internal error.  Please submit a bug report."
 msgstr "Belső hiba. Kérem küldjön hiba jelentést!"
 
-#: ncrypt/pgp.c:1064
+#: ncrypt/pgp.c:1054
 msgid ""
 "[-- Error: could not create a PGP subprocess --]\n"
 "\n"
@@ -4913,98 +4913,98 @@ msgstr ""
 "[-- Hiba: nem lehet a PGP alfolyamatot létrehozni --]\n"
 "\n"
 
-#: ncrypt/pgp.c:1100 ncrypt/pgp.c:1122 ncrypt/smime.c:1980 postpone.c:433
-#: postpone.c:461
+#: ncrypt/pgp.c:1089 ncrypt/pgp.c:1111 ncrypt/smime.c:1951 postpone.c:432
+#: postpone.c:460
 msgid "Decryption failed"
 msgstr "Visszafejtés sikertelen"
 
-#: ncrypt/pgp.c:1364
+#: ncrypt/pgp.c:1351
 msgid "Can't open PGP subprocess"
 msgstr "PGP alfolyamatot nem lehet megnyitni"
 
-#: ncrypt/pgp.c:1806
+#: ncrypt/pgp.c:1792
 msgid "Can't invoke PGP"
 msgstr "PGP-t nem tudom meghívni"
 
 #. L10N: The next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
-#: ncrypt/pgp.c:1916
+#: ncrypt/pgp.c:1901
 msgid "PGP/M(i)ME"
 msgstr "PGP/MIM(e)"
 
 #. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
-#: ncrypt/pgp.c:1922
+#: ncrypt/pgp.c:1907
 msgid "(i)nline"
 msgstr "b(e)eágyazott"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
-#: ncrypt/pgp.c:1936
+#: ncrypt/pgp.c:1920
 #, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP (a)láír, aláír (m)int, %s fromátum, mé(g)se, (o)ppenc mód kikapcsolva?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1942
+#: ncrypt/pgp.c:1925
 msgid "saico"
 msgstr "amego"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/pgp.c:1948
+#: ncrypt/pgp.c:1931
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP (a)láír, aláír (m)int, mé(g)se?, vagy (o)ppenc mód kikapcsolva?"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/pgp.c:1950
+#: ncrypt/pgp.c:1933
 msgid "saco"
 msgstr "amgo"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
-#: ncrypt/pgp.c:1964
+#: ncrypt/pgp.c:1947
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
 msgstr "PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, %s formátum, mé(g)se, vagy (o)ppenc mód?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1970
+#: ncrypt/pgp.c:1952
 msgid "esabico"
 msgstr "tamsego"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/pgp.c:1976
+#: ncrypt/pgp.c:1958
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, mé(g)se, vagy (o)ppenc mód?"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/pgp.c:1979
+#: ncrypt/pgp.c:1960
 msgid "esabco"
 msgstr "tamsgo"
 
 #. L10N: PGP options (inline)
-#: ncrypt/pgp.c:1990
+#: ncrypt/pgp.c:1971
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
 msgstr "PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, %s formátum, vagy mé(g)se?"
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1996
+#: ncrypt/pgp.c:1976
 msgid "esabic"
 msgstr "tamseg"
 
 #. L10N: PGP options
-#: ncrypt/pgp.c:2002
+#: ncrypt/pgp.c:1982
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
 msgstr "PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, mé(g)se?"
 
 #. L10N: PGP options
-#: ncrypt/pgp.c:2004
+#: ncrypt/pgp.c:1984
 msgid "esabc"
 msgstr "tamsg"
 
-#: ncrypt/pgpinvoke.c:481
+#: ncrypt/pgpinvoke.c:466
 msgid "Fetching PGP key..."
 msgstr "PGP kulcs leszedése..."
 
@@ -5017,45 +5017,45 @@ msgstr "PGP Kulcs %s"
 msgid "Enter S/MIME passphrase:"
 msgstr "Kérlek írd be az S/MIME jelszavadat: "
 
-#: ncrypt/smime.c:726
+#: ncrypt/smime.c:723
 msgid "Enter keyID: "
 msgstr "Add meg a kulcsID-t: "
 
-#: ncrypt/smime.c:858
+#: ncrypt/smime.c:850
 #, c-format
 msgid "No (valid) certificate found for %s"
 msgstr "Nem található (érvényes) tanúsítvány ehhez: %s"
 
-#: ncrypt/smime.c:913 ncrypt/smime.c:942 ncrypt/smime.c:1016
-#: ncrypt/smime.c:1052 ncrypt/smime.c:1131 ncrypt/smime.c:1213
+#: ncrypt/smime.c:904 ncrypt/smime.c:933 ncrypt/smime.c:1006
+#: ncrypt/smime.c:1041 ncrypt/smime.c:1119 ncrypt/smime.c:1199
 msgid "Error: unable to create OpenSSL subprocess"
 msgstr "Hiba: nem lehet létrehozni az OpenSSL alfolyamatot"
 
-#: ncrypt/smime.c:1191
+#: ncrypt/smime.c:1178
 msgid "Label for certificate: "
 msgstr "Tanúsítvány cimkéje: "
 
-#: ncrypt/smime.c:1293
+#: ncrypt/smime.c:1279
 msgid "no certfile"
 msgstr "nincs tanúsítványfájl"
 
-#: ncrypt/smime.c:1296
+#: ncrypt/smime.c:1282
 msgid "no mbox"
 msgstr "nincs postafiók"
 
-#: ncrypt/smime.c:1463 ncrypt/smime.c:1638
+#: ncrypt/smime.c:1444 ncrypt/smime.c:1616
 msgid "No output from OpenSSL..."
 msgstr "Nincs kimenet az OpenSSLtől..."
 
-#: ncrypt/smime.c:1554
+#: ncrypt/smime.c:1533
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Nem tudom aláírni: Nincs kulcs megadva. Használja az 'aláír mint'-et!"
 
-#: ncrypt/smime.c:1605
+#: ncrypt/smime.c:1583
 msgid "Can't open OpenSSL subprocess"
 msgstr "OpenSSL alfolyamatot nem lehet megnyitni"
 
-#: ncrypt/smime.c:1838 ncrypt/smime.c:1960
+#: ncrypt/smime.c:1812 ncrypt/smime.c:1932
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -5063,19 +5063,19 @@ msgstr ""
 "[-- OpenSSL kimenet vége --]\n"
 "\n"
 
-#: ncrypt/smime.c:1917 ncrypt/smime.c:1930
+#: ncrypt/smime.c:1890 ncrypt/smime.c:1902
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
 msgstr "[-- Hiba: nem lehet létrehozni az OpenSSL alfolyamatot --]\n"
 
-#: ncrypt/smime.c:1966
+#: ncrypt/smime.c:1937
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr "[-- A következő adat S/MIME-vel titkosított --]\n"
 
-#: ncrypt/smime.c:1969
+#: ncrypt/smime.c:1940
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- A következő adatok S/MIME-vel alá vannak írva --]\n"
 
-#: ncrypt/smime.c:2066
+#: ncrypt/smime.c:2037
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
@@ -5083,7 +5083,7 @@ msgstr ""
 "\n"
 "[-- S/MIME titkosított adat vége. --]\n"
 
-#: ncrypt/smime.c:2068
+#: ncrypt/smime.c:2039
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
@@ -5092,81 +5092,81 @@ msgstr ""
 "[-- S/MIME aláírt adat vége --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2204
+#: ncrypt/smime.c:2174
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME (a)láír, titkosít (p)rg, aláír (m)int, mé(g)se, vagy (o)ppenc mód kikapcsolva?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2207
+#: ncrypt/smime.c:2176
 msgid "swaco"
 msgstr "apmgo"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2215
+#: ncrypt/smime.c:2184
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME (t)itkosít, (a)láír, titkosít (p)rg, aláír (m)int, titkosít é(s) aláír, (o)ppenc mód?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2218
+#: ncrypt/smime.c:2186
 msgid "eswabco"
 msgstr "tapmso"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2225
+#: ncrypt/smime.c:2193
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
 msgstr "S/MIME (t)itkosít, (a)láír, titkosít (p)rg, aláír (m)int, titkosít é(s) aláír, mé(g)se?"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2228
+#: ncrypt/smime.c:2195
 msgid "eswabc"
 msgstr "tapmsg"
 
-#: ncrypt/smime.c:2294
+#: ncrypt/smime.c:2261
 msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
 msgstr "Válasszon algoritmus családot: (1) DES, (2) RC2, (3) AES, vagy mé(g)se?"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
-#: ncrypt/smime.c:2297
+#: ncrypt/smime.c:2263
 msgid "123c"
 msgstr "123g"
 
-#: ncrypt/smime.c:2300
+#: ncrypt/smime.c:2266
 msgid "(1) DES, (2) Triple-DES?"
 msgstr "(1) DES, (2) Triple-DES?"
 
 #. L10N: Options for: (1) DES, (2) Triple-DES
-#: ncrypt/smime.c:2302
+#: ncrypt/smime.c:2268
 msgid "12"
 msgstr "12"
 
-#: ncrypt/smime.c:2317
+#: ncrypt/smime.c:2282
 msgid "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 msgstr "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 
 #. L10N: Options for: (1) RC2-40, (2) RC2-64, (3) RC2-128
 #. L10N: Options for: (1) AES128, (2) AES192, (3) AES256
-#: ncrypt/smime.c:2319 ncrypt/smime.c:2340
+#: ncrypt/smime.c:2284 ncrypt/smime.c:2304
 msgid "123"
 msgstr "123"
 
-#: ncrypt/smime.c:2338
+#: ncrypt/smime.c:2302
 msgid "(1) AES128, (2) AES192, (3) AES256?"
 msgstr "(1) AES128, (2) AES192, (3) AES256?"
 
-#: nntp/newsrc.c:635
+#: nntp/newsrc.c:634
 msgid "Loading list of groups from cache..."
 msgstr "Csoportlista betöltése a gyorsítótárból folyamatban..."
 
-#: nntp/newsrc.c:1029
+#: nntp/newsrc.c:1025
 msgid "No news server defined"
 msgstr "Nins hír szerver megadva"
 
-#: nntp/newsrc.c:1047
+#: nntp/newsrc.c:1043
 #, c-format
 msgid "%s is an invalid news server specification"
 msgstr "%s érvénytelen hír szerver megadva"
 
-#: nntp/nntp.c:130 nntp/nntp.c:674 pop/lib.c:412 pop/pop.c:691
+#: nntp/nntp.c:130 nntp/nntp.c:672 pop/lib.c:409 pop/pop.c:685
 msgid "Server closed connection"
 msgstr "A szerver lezárta a kapcsolatot"
 
@@ -5174,133 +5174,133 @@ msgstr "A szerver lezárta a kapcsolatot"
 msgid "Server doesn't support reader mode"
 msgstr "Szerver nem támogatja az olvasó üzemmódot"
 
-#: nntp/nntp.c:473 pop/auth.c:527 send/smtp.c:808
+#: nntp/nntp.c:472 pop/auth.c:522 send/smtp.c:806
 msgid "No authenticators available"
 msgstr "Egyetlen azonosító sem érhető el"
 
-#: nntp/nntp.c:723
+#: nntp/nntp.c:721
 #, c-format
 msgid "Connection to %s lost. Reconnect?"
 msgstr "%s kapcsolat megszakadt. Újrakapcsólódás?"
 
-#: nntp/nntp.c:1184
+#: nntp/nntp.c:1182
 msgid "Fetching list of articles..."
 msgstr "Cikkek listájának letöltése folyamatban..."
 
-#: nntp/nntp.c:1446 nntp/nntp.c:2046 pop/pop.c:560 pop/pop.c:843
+#: nntp/nntp.c:1444 nntp/nntp.c:2039 pop/pop.c:556 pop/pop.c:836
 msgid "Checking for new messages..."
 msgstr "Új levelek letöltése..."
 
-#: nntp/nntp.c:1761 nntp/nntp.c:1857
+#: nntp/nntp.c:1758 nntp/nntp.c:1852
 msgid "Could not switch to reader mode"
 msgstr "Nem lehet olvasási módba kapcsolni"
 
-#: nntp/nntp.c:1774
+#: nntp/nntp.c:1771
 #, c-format
 msgid "Connected to %s. %s"
 msgstr "Kapcsolódva %s-hez. %s"
 
-#: nntp/nntp.c:1775
+#: nntp/nntp.c:1772
 msgid "Posting is NOT ok"
 msgstr "Közzététel nincs rendben"
 
-#: nntp/nntp.c:1775
+#: nntp/nntp.c:1772
 msgid "Posting is ok"
 msgstr "Közzététel rendben"
 
-#: nntp/nntp.c:1913 nntp/nntp.c:1948
+#: nntp/nntp.c:1907 nntp/nntp.c:1942
 #, c-format
 msgid "Can't post article: %s"
 msgstr "Nem tudom közzétenni a következő cikket: %s"
 
-#: nntp/nntp.c:1969
+#: nntp/nntp.c:1963
 #, c-format
 msgid "Loading list of groups from server %s..."
 msgstr "A csoportlista letöltése a(z) %s szerverről folyamatban..."
 
-#: nntp/nntp.c:2013 nntp/nntp.c:2107
+#: nntp/nntp.c:2006 nntp/nntp.c:2098
 msgid "Loading descriptions..."
 msgstr "Leírások betöltése folyamatban..."
 
-#: nntp/nntp.c:2035
+#: nntp/nntp.c:2028
 msgid "Checking for new newsgroups..."
 msgstr "Új hírcsoportok keresése folyamatban..."
 
-#: nntp/nntp.c:2244
+#: nntp/nntp.c:2236
 msgid "Unable to find child articles because server does not support XPAT command"
 msgstr "Nem tudok gyermek cikkeket találni, mert a szerver nem támogatja XPAT parancsot"
 
-#: nntp/nntp.c:2322
+#: nntp/nntp.c:2313
 #, c-format
 msgid "%s is an invalid newsgroup specification"
 msgstr "%s érvénytelen hírcsoport meghatározás"
 
-#: nntp/nntp.c:2361
+#: nntp/nntp.c:2352
 #, c-format
 msgid "Newsgroup %s not found on the server"
 msgstr "A %s hírcsoport nem található a szerveren"
 
-#: nntp/nntp.c:2385
+#: nntp/nntp.c:2375
 #, c-format
 msgid "Newsgroup %s has been removed from the server"
 msgstr "A %s hírcsoportot eltávolították a szerverről"
 
-#: notmuch/config.c:61
+#: notmuch/config.c:60
 #, c-format
 msgid "nm_default_url must be: notmuch://<absolute path> . Current: %s"
 msgstr "nm_default_url ez kell legyen: notmuch://<teljes elérési út> . Jelenlegi: %s"
 
 #. L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
 #. They should not be translated.
-#: notmuch/config.c:89 notmuch/notmuch.c:317
+#: notmuch/config.c:89 notmuch/notmuch.c:309
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
 msgstr "Érvénytelen nm_query_window_timebase érték (érvényes értékek: hour, day, week, month, year)"
 
-#: notmuch/db.c:131
+#: notmuch/db.c:128
 #, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
 msgstr "Várakozás a notmuch adatbázisra... (%d mp)"
 
-#: notmuch/db.c:154
+#: notmuch/db.c:151
 #, c-format
 msgid "Can't open notmuch database: %s: %s"
 msgstr "Nem tudom megnyitni a notmuch adatbázist: %s: %s"
 
-#: notmuch/db.c:155
+#: notmuch/db.c:152
 msgid "unknown reason"
 msgstr "ismeretlen ok"
 
-#: notmuch/mdata.c:85 notmuch/notmuch.c:1794
+#: notmuch/mdata.c:84 notmuch/notmuch.c:1776
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "nem sikerült a notmuch url-t feldolgozni: %s"
 
-#: notmuch/notmuch.c:366
+#: notmuch/notmuch.c:356
 #, c-format
 msgid "failed to parse notmuch limit: %s"
 msgstr "nem sikerült a notmuch felső határát (limit) feldolgozni: %s"
 
-#: notmuch/notmuch.c:686
+#: notmuch/notmuch.c:674
 msgid "Reading messages..."
 msgstr "Üzenetek feldolgozása folyamatban..."
 
-#: notmuch/notmuch.c:1552
+#: notmuch/notmuch.c:1538
 msgid "No more messages in the thread"
 msgstr "Nincs több üzenet a témában"
 
-#: notmuch/notmuch.c:1807
+#: notmuch/notmuch.c:1789
 #, c-format
 msgid "failed to parse limit: %s"
 msgstr "nem sikerült a határértéket (limit) feldolgozni: %s"
 
-#: notmuch/notmuch.c:2322
+#: notmuch/notmuch.c:2299
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] "Nem tudom a %d üzenetet szinkronizálni a külső postafiók módosulása miatt"
 msgstr[1] "Nem tudom a %d üzeneteket szinkronizálni a külső postafiók módosulása miatt"
 
-#: notmuch/notmuch.c:2385
+#: notmuch/notmuch.c:2363
 msgid "Can't write to virtual folder"
 msgstr "Nem tudok írni a virtuális könyvtárba"
 
@@ -6420,13 +6420,13 @@ msgstr "Melléklet"
 msgid "Next"
 msgstr "Köv."
 
-#: pager/functions.c:154 pager/functions.c:175 pager/functions.c:246
-#: pager/functions.c:269
+#: pager/functions.c:136 pager/functions.c:157 pager/functions.c:228
+#: pager/functions.c:249
 msgid "Bottom of message is shown"
 msgstr "Ez az üzenet vége"
 
-#: pager/functions.c:199 pager/functions.c:292 pager/functions.c:305
-#: pager/functions.c:708
+#: pager/functions.c:181 pager/functions.c:272 pager/functions.c:285
+#: pager/functions.c:687
 msgid "Top of message is shown"
 msgstr "Ez az üzenet eleje"
 
@@ -6434,19 +6434,19 @@ msgstr "Ez az üzenet eleje"
 #. there is no text past the headers.
 #. (I don't think this is actually possible in Mutt's code, but
 #. display some kind of message in case it somehow occurs.)
-#: pager/functions.c:591
+#: pager/functions.c:571
 msgid "No text past headers"
 msgstr "Nincs szöveg a fejlécen túl"
 
-#: pager/functions.c:651 pager/functions.c:691
+#: pager/functions.c:630 pager/functions.c:670
 msgid "No more unquoted text after quoted text"
 msgstr "Nincs nem idézett szöveg az idézett szöveg után"
 
-#: pager/functions.c:673
+#: pager/functions.c:652
 msgid "No more quoted text"
 msgstr "Nincs több idézett szöveg"
 
-#: pager/functions.c:732
+#: pager/functions.c:711
 msgid "Help is currently being shown"
 msgstr "A súgó már meg van jelenítve"
 
@@ -6456,43 +6456,43 @@ msgstr "A súgó már meg van jelenítve"
 msgid "all"
 msgstr "mind"
 
-#: pager/message.c:210
+#: pager/message.c:206
 msgid "Verify signature?"
 msgstr "Ellenőrizzük a aláírást?"
 
-#: pager/message.c:250
+#: pager/message.c:245
 msgid "Can't create display filter"
 msgstr "Nem lehet megjelenítő szűrőt létrehozni."
 
-#: pager/message.c:274
+#: pager/message.c:269
 msgid "Could not copy message"
 msgstr "A levelet nem tudtam másolni"
 
-#: pager/message.c:353
+#: pager/message.c:347
 msgid "Command: "
 msgstr "Parancs: "
 
-#: pager/message.c:378
+#: pager/message.c:372
 msgid "S/MIME signature successfully verified"
 msgstr "S/MIME aláírás sikeresen ellenőrizve"
 
-#: pager/message.c:380
+#: pager/message.c:374
 msgid "S/MIME certificate owner does not match sender"
 msgstr "Az S/MIME tanúsítvány tulajdonosa nem egyezik a küldővel. "
 
-#: pager/message.c:383 pager/message.c:393
+#: pager/message.c:377 pager/message.c:387
 msgid "Warning: Part of this message has not been signed"
 msgstr "Figyelem: Az üzenet egy részét nem írták alá"
 
-#: pager/message.c:385
+#: pager/message.c:379
 msgid "S/MIME signature could NOT be verified"
 msgstr "Az S/MIME aláírást NEM tudtam ellenőrizni"
 
-#: pager/message.c:391
+#: pager/message.c:385
 msgid "PGP signature successfully verified"
 msgstr "A PGP aláírás sikeresen ellenőrizve"
 
-#: pager/message.c:395
+#: pager/message.c:389
 msgid "PGP signature could NOT be verified"
 msgstr "A PGP aláírást NEM tudtam ellenőrizni"
 
@@ -6502,89 +6502,89 @@ msgstr "A PGP aláírást NEM tudtam ellenőrizni"
 msgid "end"
 msgstr "vége"
 
-#: pattern/compile.c:88 pattern/compile.c:176 pattern/compile.c:987
+#: pattern/compile.c:88 pattern/compile.c:175 pattern/compile.c:986
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Hiba a kifejezésben: %s"
 
-#: pattern/compile.c:93 pattern/compile.c:181 pattern/compile.c:993
+#: pattern/compile.c:93 pattern/compile.c:180 pattern/compile.c:992
 msgid "Empty expression"
 msgstr "Üres kifejezés"
 
-#: pattern/compile.c:168
+#: pattern/compile.c:167
 msgid "No search command defined"
 msgstr "Nincs kereső parancs megadva"
 
-#: pattern/compile.c:203
+#: pattern/compile.c:202
 #, c-format
 msgid "Running search command: %s ..."
 msgstr "Következő kereső parancs futtatása: %s ..."
 
-#: pattern/compile.c:321 pattern/compile.c:336
+#: pattern/compile.c:320 pattern/compile.c:335
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Érvénytelen a hónap napja: %s"
 
-#: pattern/compile.c:326 pattern/compile.c:350
+#: pattern/compile.c:325 pattern/compile.c:349
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Érvénytelen hónap: %s"
 
-#: pattern/compile.c:453
+#: pattern/compile.c:452
 #, c-format
 msgid "Invalid relative date: %s"
 msgstr "Érvénytelen viszonylagos hónap: %s"
 
-#: pattern/compile.c:763 pattern/compile.c:904
+#: pattern/compile.c:762 pattern/compile.c:903
 msgid "No current message"
 msgstr "Nincs aktuális levél"
 
-#: pattern/compile.c:940
+#: pattern/compile.c:939
 msgid "No Context"
 msgstr "Nincs kontextus"
 
-#: pattern/compile.c:1179 pattern/compile.c:1392
+#: pattern/compile.c:1178 pattern/compile.c:1391
 msgid "empty pattern"
 msgstr "üres minta"
 
-#: pattern/compile.c:1209 pattern/compile.c:1385
+#: pattern/compile.c:1208 pattern/compile.c:1384
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "hiba a mintában: %s"
 
-#: pattern/compile.c:1235
+#: pattern/compile.c:1234
 #, c-format
 msgid "missing pattern: %s"
 msgstr "hiányzó minta: %s"
 
-#: pattern/compile.c:1253 pattern/compile.c:1354
+#: pattern/compile.c:1252 pattern/compile.c:1353
 #, c-format
 msgid "mismatched parentheses: %s"
 msgstr "nem megegyező zárójelek: %s"
 
-#: pattern/compile.c:1288
+#: pattern/compile.c:1287
 #, c-format
 msgid "%c: invalid pattern modifier"
 msgstr "%c: érvénytelen minta módosító"
 
-#: pattern/compile.c:1293
+#: pattern/compile.c:1292
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: nincs támogatva ebben a módban"
 
-#: pattern/compile.c:1316
+#: pattern/compile.c:1315
 msgid "missing parameter"
 msgstr "hiányzó paraméter"
 
 #. L10N: Pattern completion menu title
-#: pattern/dlg_pattern.c:201
+#: pattern/dlg_pattern.c:199
 msgid "Patterns"
 msgstr "Minták"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a regular expression
 #.
-#: pattern/dlg_pattern.c:217
+#: pattern/dlg_pattern.c:215
 msgid "EXPR"
 msgstr "KIFEJEZÉS"
 
@@ -6592,7 +6592,7 @@ msgstr "KIFEJEZÉS"
 #. Pattern Completion Menu argument type: a numeric range.
 #. Used by ~m, ~n, ~X, ~z.
 #.
-#: pattern/dlg_pattern.c:225
+#: pattern/dlg_pattern.c:223
 msgid "RANGE"
 msgstr "TARTOMÁNY"
 
@@ -6600,7 +6600,7 @@ msgstr "TARTOMÁNY"
 #. Pattern Completion Menu argument type: a date range
 #. Used by ~d, ~r.
 #.
-#: pattern/dlg_pattern.c:232
+#: pattern/dlg_pattern.c:230
 msgid "DATERANGE"
 msgstr "DÁTUMTARTOMÁNY"
 
@@ -6608,7 +6608,7 @@ msgstr "DÁTUMTARTOMÁNY"
 #. Pattern Completion Menu argument type: a query
 #. Used by ~I.
 #.
-#: pattern/dlg_pattern.c:239
+#: pattern/dlg_pattern.c:237
 msgid "QUERY"
 msgstr "LEKÉRDEZÉS"
 
@@ -6616,19 +6616,22 @@ msgstr "LEKÉRDEZÉS"
 #. Pattern Completion Menu argument type: a nested pattern.
 #. Used by ~(), ~<(), ~>().
 #.
-#: pattern/dlg_pattern.c:257
+#: pattern/dlg_pattern.c:255
 msgid "PATTERN"
 msgstr "MINTA"
 
-#: pattern/dlg_pattern.c:265
+#. L10N: Pattern Completion Menu description for ~()
+#: pattern/dlg_pattern.c:262
 msgid "messages in threads containing messages matching PATTERN"
 msgstr "üzenetek MINTÁ-ra illeszkedő üzenetfolyamokban"
 
-#: pattern/dlg_pattern.c:274
+#. L10N: Pattern Completion Menu description for ~<()
+#: pattern/dlg_pattern.c:270
 msgid "messages whose immediate parent matches PATTERN"
 msgstr "üzenetek, melyek közvetlen szülei illeszkednek az alábbi MINTÁ-ra"
 
-#: pattern/dlg_pattern.c:283
+#. L10N: Pattern Completion Menu description for ~>()
+#: pattern/dlg_pattern.c:278
 msgid "messages having an immediate child matching PATTERN"
 msgstr "üzenetek, melyek közvetlen gyerekekkel rendelkeznek, melyek illeszkednek MINTÁ-ra"
 
@@ -6642,28 +6645,28 @@ msgstr "'~%c' minta operátor letiltva"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:100 pattern/exec.c:1090
+#: pattern/exec.c:100 pattern/exec.c:1089
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "hiba: ismeretlen operandus %d (jelentsd ezt a hibát)"
 
-#: pattern/exec.c:141
+#: pattern/exec.c:140
 msgid "Error opening 'memory stream'"
 msgstr "'memória stream' megnyitási hiba"
 
-#: pattern/exec.c:191
+#: pattern/exec.c:190
 msgid "Error re-opening 'memory stream'"
 msgstr "Hiba a 'memória stream' újranyitása közben"
 
-#: pattern/exec.c:201
+#: pattern/exec.c:200
 msgid "Error opening /dev/null"
 msgstr "Nem lehet a /dev/null-t megnyitni"
 
-#: pattern/exec.c:210
+#: pattern/exec.c:209
 msgid "Error checking length of temporary file"
 msgstr "Hiba az ideiglenes fájl hosszának ellenőrzésekor"
 
-#: pattern/exec.c:887
+#: pattern/exec.c:886
 msgid "error: server custom search only supported with IMAP"
 msgstr "hiba: szerver egyedi keresés csak IMAP-pal támogatott"
 
@@ -6907,44 +6910,44 @@ msgstr "megszakadt témasorok (threads)"
 msgid "IMAP custom server-side search for STRING"
 msgstr "IMAP egyedi szerver-oldali keresés STRING-re"
 
-#: pattern/pattern.c:261 pattern/pattern.c:367 pattern/pattern.c:535
-#: pattern/pattern.c:693
+#: pattern/pattern.c:261 pattern/pattern.c:367 pattern/pattern.c:534
+#: pattern/pattern.c:694
 msgid "Compiling search pattern..."
 msgstr "Keresési minta fordítása..."
 
-#: pattern/pattern.c:288 pattern/pattern.c:394
+#: pattern/pattern.c:288 pattern/pattern.c:393
 msgid "Executing command on matching messages..."
 msgstr "Parancs végrehajtása az egyező leveleken..."
 
-#: pattern/pattern.c:465
+#: pattern/pattern.c:464
 msgid "No messages matched criteria"
 msgstr "Nincs a kritériumnak megfelelő levél"
 
-#: pattern/pattern.c:571 pattern/pattern.c:729
+#: pattern/pattern.c:570 pattern/pattern.c:730
 msgid "Searching..."
 msgstr "Keresés..."
 
-#: pattern/pattern.c:585 pattern/pattern.c:743
+#: pattern/pattern.c:584 pattern/pattern.c:744
 msgid "Search hit bottom without finding match"
 msgstr "A kereső elérte a végét, és nem talált egyezést"
 
-#: pattern/pattern.c:596 pattern/pattern.c:754
+#: pattern/pattern.c:595 pattern/pattern.c:755
 msgid "Search hit top without finding match"
 msgstr "A kereső elérte az elejét, és nem talált egyezést"
 
-#: pattern/pattern.c:632 pattern/pattern.c:790
+#: pattern/pattern.c:631 pattern/pattern.c:791
 msgid "Search interrupted"
 msgstr "Keresés megszakítva"
 
-#: pop/auth.c:238
+#: pop/auth.c:236
 msgid "POP timestamp is invalid"
 msgstr "POP időbélyeg érvénytelen"
 
-#: pop/auth.c:301
+#: pop/auth.c:299
 msgid "Command USER is not supported by server"
 msgstr "A USER parancsot nem ismeri ez a szerver"
 
-#: pop/auth.c:379
+#: pop/auth.c:376
 msgid "Authentication failed"
 msgstr "Hitelesítés sikertelen"
 
@@ -6953,32 +6956,32 @@ msgstr "Hitelesítés sikertelen"
 msgid "Invalid POP URL: %s"
 msgstr "Érvénytelen POP URL: %s"
 
-#: pop/lib.c:252
+#: pop/lib.c:251
 msgid "Unable to leave messages on server"
 msgstr "Nem lehet a leveleket a szerveren hagyni"
 
-#: pop/lib.c:254 pop/pop.c:157
+#: pop/lib.c:253 pop/pop.c:157
 msgid "Command TOP is not supported by server"
 msgstr "A TOP parancsot nem támogatja a szerver"
 
-#: pop/lib.c:256 pop/pop.c:363
+#: pop/lib.c:255 pop/pop.c:362
 msgid "Command UIDL is not supported by server"
 msgstr "Az UIDL parancsot nem támogatja a szerver"
 
-#: pop/lib.c:283
+#: pop/lib.c:282
 #, c-format
 msgid "Error connecting to server: %s"
 msgstr "Hiba a szerverre való csatlakozás közben: %s"
 
-#: pop/lib.c:428
+#: pop/lib.c:425
 msgid "Closing connection to POP server..."
 msgstr "POP kapcsolat lezárása..."
 
-#: pop/lib.c:619
+#: pop/lib.c:614
 msgid "Verifying message indexes..."
 msgstr "Levelek tartalomjegyzékének ellenőrzése..."
 
-#: pop/lib.c:646
+#: pop/lib.c:640
 msgid "Connection lost. Reconnect to POP server?"
 msgstr "A kapcsolatot elveszett. Újracsatlakozik a POP szerverhez?"
 
@@ -6986,59 +6989,59 @@ msgstr "A kapcsolatot elveszett. Újracsatlakozik a POP szerverhez?"
 msgid "Can't write header to temporary file"
 msgstr "Nem lehet írni az ideiglenes fájlba"
 
-#: pop/pop.c:388
+#: pop/pop.c:386
 #, c-format
 msgid "%d message has been lost. Try reopening the mailbox."
 msgid_plural "%d messages have been lost. Try reopening the mailbox."
 msgstr[0] "%d üzenet elveszett. Próbálja újranyitni a postafiókot."
 msgstr[1] "%d üzenetek elvesztek. Próbálja újranyitni a postafiókot."
 
-#: pop/pop.c:520
+#: pop/pop.c:516
 msgid "POP host is not defined"
 msgstr "POP szerver nincs megadva"
 
-#: pop/pop.c:542 pop/pop.c:729 pop/pop.c:759
+#: pop/pop.c:538 pop/pop.c:723 pop/pop.c:753
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s érvénytelen POP útvonal"
 
-#: pop/pop.c:589
+#: pop/pop.c:585
 msgid "No new mail in POP mailbox"
 msgstr "Nincs új levél a POP postafiókban"
 
-#: pop/pop.c:607
+#: pop/pop.c:601
 msgid "Delete messages from server?"
 msgstr "Levelek törlése a szerverről?"
 
-#: pop/pop.c:610
+#: pop/pop.c:604
 #, c-format
 msgid "Reading new messages (%d byte)..."
 msgid_plural "Reading new messages (%d bytes)..."
 msgstr[0] "Új levél olvasása (%d bytes)..."
 msgstr[1] "Új levelek olvasása (%d bytes)..."
 
-#: pop/pop.c:658
+#: pop/pop.c:652
 msgid "Error while writing mailbox"
 msgstr "Hiba a postafiók írásakor"
 
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. the %d right before 'messages', i.e. the total number of messages.
-#: pop/pop.c:664
+#: pop/pop.c:658
 #, c-format
 msgid "%s [%d of %d message read]"
 msgid_plural "%s [%d of %d messages read]"
 msgstr[0] "%s [%d/%d levél beolvasva]"
 msgstr[1] "%s [%d/%d levél beolvasva]"
 
-#: pop/pop.c:810
+#: pop/pop.c:804
 msgid "Fetching list of messages..."
 msgstr "Üzenetek listájának letöltése..."
 
-#: pop/pop.c:895
+#: pop/pop.c:888
 msgid "Marking messages deleted..."
 msgstr "Levelek megjelölése töröltnek..."
 
-#: pop/pop.c:1078
+#: pop/pop.c:1070
 msgid "Can't write message to temporary file"
 msgstr "Nem lehet a levelet beleírni az ideiglenes fájlba"
 
@@ -7050,11 +7053,11 @@ msgstr "Érvénytelen S/MIME fejléc"
 msgid "Illegal crypto header"
 msgstr "Érvénytelen titkosítási fejléc"
 
-#: postpone.c:428 postpone.c:456 postpone.c:552
+#: postpone.c:427 postpone.c:455 postpone.c:551
 msgid "Decrypting message..."
 msgstr "Üzenet dekódolása folyamatban..."
 
-#: postpone.c:687 postpone.c:698
+#: postpone.c:683 postpone.c:694
 msgid "No postponed messages"
 msgstr "Nincsenek elhalasztott levelek"
 
@@ -7076,43 +7079,43 @@ msgid_plural "Error bouncing messages"
 msgstr[0] "Hiba visszapattanó levél"
 msgstr[1] "Hiba visszapattanó levelek"
 
-#: recvcmd.c:515
+#: recvcmd.c:514
 #, c-format
 msgid "Can't open temporary file %s"
 msgstr "Nem tudtam megnyitni a(z) %s ideiglenes fájlt"
 
-#: recvcmd.c:549
+#: recvcmd.c:546
 msgid "Forward as attachments?"
 msgstr "Továbbítás mellékletként?"
 
-#: recvcmd.c:566
+#: recvcmd.c:561
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr "Nem lehet kibontani minden kijelölt mellékletet. A többit MIME kódolva küldöd?"
 
-#: recvcmd.c:697
+#: recvcmd.c:691
 msgid "Forward MIME encapsulated?"
 msgstr "Továbbküldés MIME kódolással?"
 
-#: recvcmd.c:706 recvcmd.c:1015
+#: recvcmd.c:700 recvcmd.c:1008
 #, c-format
 msgid "Can't create %s"
 msgstr "Nem tudtam létrehozni: %s"
 
-#: recvcmd.c:850
+#: recvcmd.c:843
 msgid "Can't find any tagged messages"
 msgstr "Nem található egyetlen kijelölt levél sem"
 
-#: recvcmd.c:886 send/send.c:1195
+#: recvcmd.c:879 send/send.c:1184
 msgid "No mailing lists found"
 msgstr "Nincs levelezőlista"
 
-#: recvcmd.c:991
+#: recvcmd.c:984
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr "Nem tudom az összes kijelölt mellékletet visszaalakítani.  A többit MIME-kódolod?"
 
 #. L10N: You will see this error message if you invoke <compose-to-sender>
 #. when you are on a normal attachment.
-#: recvcmd.c:1128
+#: recvcmd.c:1120
 msgid "You may only compose to sender with message/rfc822 parts"
 msgstr "A feladónak csak message/rfc822 részekkel lehet szerkeszteni"
 
@@ -7132,55 +7135,55 @@ msgstr "OK"
 msgid "<random>"
 msgstr "<véletlen>"
 
-#: remailer.c:660
+#: remailer.c:659
 msgid "Can't get mixmaster's type2.list"
 msgstr "Nem lehet beolvasni a mixmaster type2.list-jét"
 
-#: remailer.c:711
+#: remailer.c:710
 msgid "Select a remailer chain"
 msgstr "Válaszd ki az újraküldő láncot"
 
-#: remailer.c:792
+#: remailer.c:790
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain"
 msgstr "Hiba: %s-t nem lehet használni a lánc utolsó újraküldőjeként"
 
 #. L10N The '%d' here hard-coded to 19
-#: remailer.c:823
+#: remailer.c:821
 #, c-format
 msgid "Mixmaster chains are limited to %d elements"
 msgstr "A Mixmaster lánc maximálisan %d elemből állhat"
 
-#: remailer.c:846
+#: remailer.c:844
 msgid "The remailer chain is already empty"
 msgstr "Az újraküldő lánc már üres"
 
-#: remailer.c:856
+#: remailer.c:854
 msgid "You already have the first chain element selected"
 msgstr "Már ki van választva a lánc első eleme"
 
-#: remailer.c:866
+#: remailer.c:864
 msgid "You already have the last chain element selected"
 msgstr "Már ki van választva a lánc utolsó eleme"
 
-#: remailer.c:915
+#: remailer.c:913
 msgid "Mixmaster doesn't accept Cc or Bcc headers"
 msgstr "A Mixmaster nem fogadja el a Cc vagy a Bcc fejléceket"
 
-#: remailer.c:940
+#: remailer.c:938
 msgid "Please set the hostname variable to a proper value when using mixmaster"
 msgstr "Kérlek állítsd be a hostname változót a megfelelő értékre, ha mixmastert használsz"
 
-#: remailer.c:984
+#: remailer.c:981
 #, c-format
 msgid "Error sending message, child exited %d\n"
 msgstr "Hiba a levél elküldésekor, a gyermek folyamat kilépett: %d.\n"
 
-#: remailer.c:988
+#: remailer.c:985
 msgid "Error sending message"
 msgstr "Hiba a levél elküldésekor"
 
-#: score.c:147
+#: score.c:146
 msgid "Error: score: invalid number"
 msgstr "Hiba: pontszám: érvénytelen szám"
 
@@ -7193,11 +7196,11 @@ msgstr "Nem található határoló paraméter [jelentsd ezt a hibát]"
 msgid "%s no longer exists"
 msgstr "%s többé nem létezik"
 
-#: send/send.c:337
+#: send/send.c:336
 msgid "No subject, abort?"
 msgstr "Nincs tárgy megadva, megszakítod?"
 
-#: send/send.c:339
+#: send/send.c:338
 msgid "No subject, aborting"
 msgstr "Nincs tárgy megadva, megszakítom"
 
@@ -7207,43 +7210,43 @@ msgstr "Nincs tárgy megadva, megszakítom"
 #. Text/plain parts and the like will already be included in the
 #. message contents, but other attachment, such as PDF files, will also
 #. be added as attachments to the new mail, if this is answered yes.
-#: send/send.c:606
+#: send/send.c:600
 msgid "Forward attachments?"
 msgstr "Mellékletek továbbítása?"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
-#: send/send.c:894
+#: send/send.c:884
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Válasz a %s%s címre?"
 
-#: send/send.c:941
+#: send/send.c:931
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Válasz a %s%s címre?"
 
-#: send/send.c:1239
+#: send/send.c:1227
 msgid "Include message in reply?"
 msgstr "Levél beillesztése a válaszba?"
 
-#: send/send.c:1245
+#: send/send.c:1233
 msgid "Including quoted message..."
 msgstr "Idézett levél beillesztése..."
 
-#: send/send.c:1251
+#: send/send.c:1239
 msgid "Could not include all requested messages"
 msgstr "Nem tudtam az összes kért levelet beilleszteni"
 
-#: send/send.c:1265
+#: send/send.c:1252
 msgid "Forward as attachment?"
 msgstr "Továbbítás mellékletként?"
 
-#: send/send.c:1270
+#: send/send.c:1257
 msgid "Preparing forwarded message..."
 msgstr "Továbbított levél előkészítése..."
 
-#: send/send.c:1787
+#: send/send.c:1770
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
 msgstr "Figyelem: IMAP postafiók számára Fcc nem támogatott kötegelt módban"
 
@@ -7252,12 +7255,12 @@ msgstr "Figyelem: IMAP postafiók számára Fcc nem támogatott kötegelt módba
 #. sending the mail too.
 #. %s is the full mailbox URL, including imap(s)://
 #.
-#: send/send.c:1793
+#: send/send.c:1776
 #, c-format
 msgid "Skipping Fcc to %s"
 msgstr "Fcc kihagyása erre %s"
 
-#: send/send.c:1834 send/send.c:1844 send/send.c:1870
+#: send/send.c:1817 send/send.c:1827 send/send.c:1853
 msgid "Save attachments in Fcc?"
 msgstr "Mellékletek mentése Fcc-be?"
 
@@ -7265,116 +7268,116 @@ msgstr "Mellékletek mentése Fcc-be?"
 #. (r)etry tries the same mailbox again.
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
-#: send/send.c:1893
+#: send/send.c:1876
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr "Fcc nem sikerült. ú(j)rapróbál, (a)lternatív postafiók, vagy (k)ihagyás"
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
-#: send/send.c:1897
+#: send/send.c:1880
 msgid "rms"
 msgstr "jak"
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
-#: send/send.c:1903
+#: send/send.c:1886
 msgid "Fcc mailbox"
 msgstr "Fcc postafiók"
 
-#: send/send.c:1973
+#: send/send.c:1956
 msgid "Can't postpone.  $postponed is unset"
 msgstr "Nem lehet elhalasztani. $postponed kikapcsolva"
 
-#: send/send.c:2013 send/send.c:2030
+#: send/send.c:1993 send/send.c:2010
 msgid "Error encrypting message. Check your crypt settings."
 msgstr "Hiba üzenet titkosítás közben. Ellenőrizd a titkosítási beállításokat."
 
-#: send/send.c:2125
+#: send/send.c:2104
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr "Üzenet tartalmaz \"$abort_noattach_regex\"-t. Nincs elküldve."
 
-#: send/send.c:2131
+#: send/send.c:2108
 msgid "No attachments, cancel sending?"
 msgstr "Nincs melléklet, mégsem küldi el?"
 
-#: send/send.c:2188
+#: send/send.c:2164
 msgid "Recall postponed message?"
 msgstr "Elhalasztott levél újrahívása?"
 
-#: send/send.c:2449
+#: send/send.c:2424
 msgid "Refusing to send an empty email"
 msgstr "Nem küldünk el üres levelet"
 
-#: send/send.c:2450
+#: send/send.c:2425
 msgid "Try: echo | neomutt -s 'subject' user@example.com"
 msgstr "Próbáld ezt: echo | neomutt -s 'tárgy' user@example.com"
 
-#: send/send.c:2539
+#: send/send.c:2514
 msgid "Edit forwarded message?"
 msgstr "Továbbított levél szerkesztése?"
 
-#: send/send.c:2584
+#: send/send.c:2557
 msgid "Abort unmodified message?"
 msgstr "Megszakítod a nem módosított levelet?"
 
-#: send/send.c:2586
+#: send/send.c:2559
 msgid "Aborted unmodified message"
 msgstr "Nem módosított levelet megszakítottam"
 
-#: send/send.c:2731
+#: send/send.c:2698
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "Nem állított be titkosító motort. Üzenet biztonsági beállítások letiltása."
 
-#: send/send.c:2773
+#: send/send.c:2740
 msgid "Article not posted"
 msgstr "Cikk nem került közzétételre"
 
-#: send/send.c:2783
+#: send/send.c:2750
 msgid "Message postponed"
 msgstr "A levél el lett halasztva"
 
-#: send/send.c:2819
+#: send/send.c:2785
 msgid "No subject, abort sending?"
 msgstr "Nincs tárgy, megszakítsam a küldést?"
 
-#: send/send.c:2823 send/send.c:2829
+#: send/send.c:2789 send/send.c:2795
 msgid "No subject specified"
 msgstr "Nincs tárgy megadva"
 
-#: send/send.c:2835
+#: send/send.c:2801
 msgid "No newsgroup specified"
 msgstr "Nincs hírcsoport megadva"
 
-#: send/send.c:2897 send/smtp.c:244
+#: send/send.c:2863 send/smtp.c:244
 msgid "Sending message..."
 msgstr "Levél elküldése..."
 
-#: send/send.c:2940
+#: send/send.c:2906
 msgid "Could not send the message"
 msgstr "Nem tudtam a levelet elküldeni"
 
-#: send/send.c:2950
+#: send/send.c:2916
 msgid "Sending in background"
 msgstr "Küldés a háttérben"
 
-#: send/send.c:2951
+#: send/send.c:2917
 msgid "Article posted"
 msgstr "Cikk közzétéve"
 
-#: send/send.c:2952
+#: send/send.c:2918
 msgid "Mail sent"
 msgstr "Levél elküldve"
 
-#: send/send.c:3031
+#: send/send.c:2997
 msgid "No recipient specified"
 msgstr "Nincs címzett megadva"
 
-#: send/send.c:3076
+#: send/send.c:3042
 msgid "No List-Subscribe header found"
 msgstr "Nem található List-Subscribe fejléc"
 
-#: send/send.c:3100
+#: send/send.c:3066
 msgid "No List-Unsubscribe header found"
 msgstr "Nem található List-Unsubscribe fejléc"
 
@@ -7383,16 +7386,16 @@ msgstr "Nem található List-Unsubscribe fejléc"
 msgid "%s isn't a regular file"
 msgstr "%s nem egy hagyományos fájl"
 
-#: send/sendlib.c:665
+#: send/sendlib.c:662
 msgid "Could not find any mime.types file"
 msgstr "Nem találtam egy mime.types file-t sem"
 
-#: send/sendlib.c:758
+#: send/sendlib.c:755
 #, c-format
 msgid "Could not open %s"
 msgstr "%s nem nyitható meg"
 
-#: send/sendlib.c:1422
+#: send/sendlib.c:1415
 #, c-format
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "Hibás IDN %s a resent-from mező előkészítésekor"
@@ -7401,12 +7404,12 @@ msgstr "Hibás IDN %s a resent-from mező előkészítésekor"
 msgid "$sendmail must be set in order to send mail"
 msgstr "$sendmail bekapcsolva kell legyen, hogy postát lehessen küldeni"
 
-#: send/sendmail.c:438
+#: send/sendmail.c:437
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "Hiba a levél elküldése közben, a gyermek folyamat kilépett: %d (%s)"
 
-#: send/sendmail.c:450
+#: send/sendmail.c:449
 msgid "Output of the delivery process"
 msgstr "A kézbesítő folyamat kimenete"
 
@@ -7420,32 +7423,32 @@ msgstr "SMTP kapcsolat sikertelen: %s"
 msgid "SMTP session failed: unable to open %s"
 msgstr "SMTP kapcsolat sikertelen: nem megnyitható %s"
 
-#: send/smtp.c:357
+#: send/smtp.c:356
 #, c-format
 msgid "Invalid SMTP URL: %s"
 msgstr "Érvénytelen SMTP URL: %s"
 
-#: send/smtp.c:793
+#: send/smtp.c:791
 msgid "SMTP authentication requires SASL"
 msgstr "SMTP azonosítás SASL-t igényel"
 
-#: send/smtp.c:883
+#: send/smtp.c:879
 msgid "SMTP server does not support authentication"
 msgstr "SMTP szerver nem támogatja a azonosítást"
 
-#: send/smtp.c:931
+#: send/smtp.c:926
 msgid "No from address given"
 msgstr "Nincs küldő cím megadva"
 
-#: send/smtp.c:998
+#: send/smtp.c:993
 msgid "SMTP session failed: read error"
 msgstr "SMTP folyamat sikertelen: olvasási hiba"
 
-#: send/smtp.c:1000
+#: send/smtp.c:995
 msgid "SMTP session failed: write error"
 msgstr "SMTP folyamat sikertelen: írási hiba"
 
-#: send/smtp.c:1002
+#: send/smtp.c:997
 msgid "Invalid server response"
 msgstr "Érvénytelen szerver válasz"
 
@@ -7461,13 +7464,13 @@ msgstr "Postafiók rendezése..."
 msgid "(no mailbox)"
 msgstr "(nincs postafiók)"
 
-#: version.c:85
+#: version.c:84
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr "Még sokan mások, akiket itt nem említettünk hozzájárultak kódokkal, javításokkal, és javaslatokkal.\n"
 
-#: version.c:89
+#: version.c:88
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
@@ -7488,7 +7491,7 @@ msgstr ""
 "    de SEMILYEN GARANCIA NINCS hozzá; akár még olyan beleértett garancia sem, hogy ÁRUSÍTHATÓ- vagy BÁRMELY CÉLRA ALKALMAS LENNE. Tekintse meg a GNU Általános Nyilvános Licenszét további részletekért.\n"
 "    Kapnia kellett a GNU Általános Nyilvános Licenszéből egy másolatot    együtt ezzel a programmal; ha nem, írjon az Ingyenes Szoftver Alapítványnak  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 
-#: version.c:105
+#: version.c:102
 msgid ""
 "To learn more about NeoMutt, visit: https://neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -7500,7 +7503,7 @@ msgstr ""
 "    https://github.com/neomutt/neomutt/issues\n"
 "vagy küldjön e-mailt ide: <neomutt-devel@neomutt.org>\n"
 
-#: version.c:112
+#: version.c:109
 msgid ""
 "Copyright (C) 1996-2022 Michael R. Elkins and others.\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
@@ -7512,14 +7515,14 @@ msgstr ""
 "A NeoMutt szabad szoftver, és terjesztheted az alábbi feltételek\n"
 "szerint; írd be a 'neomutt -vv'-t a részletekért.\n"
 
-#: version.c:494
+#: version.c:491
 msgid "Default options:"
 msgstr "Alapbeállítási opciók:"
 
-#: version.c:497
+#: version.c:494
 msgid "Compile options:"
 msgstr "Fordítási opciók:"
 
-#: version.c:502
+#: version.c:499
 msgid "Devel options:"
 msgstr "Fejlesztői opciók:"
