@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2022-04-23 12:03+0100\n"
-"PO-Revision-Date: 2022-04-23 11:47+0000\n"
+"PO-Revision-Date: 2022-04-23 12:04+0000\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -1330,9 +1330,8 @@ msgid "You may not delete the only attachment"
 msgstr "您不可以删除唯一的附件"
 
 #: compose/functions.c:231 compose/functions.c:423
-#, fuzzy
 msgid "Can't leave group with only one attachment"
-msgstr "您不可以删除唯一的附件"
+msgstr "组合内的附件不能少于两个"
 
 #: compose/functions.c:391 compose/functions.c:405
 msgid "Attachments to be grouped must have the same parent"
