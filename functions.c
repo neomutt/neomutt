@@ -54,6 +54,7 @@
  */
 const struct MenuFuncOp OpAlias[] = { /* map: alias */
   { "delete-entry",                  OP_DELETE },
+  { "exit",                          OP_EXIT },
   { "limit",                         OP_MAIN_LIMIT },
   { "mail",                          OP_MAIL },
   { "sort-alias",                    OP_SORT },
@@ -73,6 +74,7 @@ const struct MenuFuncOp OpAttach[] = { /* map: attachment */
   { "delete-entry",                  OP_ATTACHMENT_DELETE },
   { "display-toggle-weed",           OP_DISPLAY_HEADERS },
   { "edit-type",                     OP_ATTACHMENT_EDIT_TYPE },
+  { "exit",                          OP_EXIT },
   { "extract-keys",                  OP_EXTRACT_KEYS },
 #ifdef USE_NNTP
   { "followup-message",              OP_FOLLOWUP },
@@ -108,6 +110,7 @@ const struct MenuFuncOp OpAttach[] = { /* map: attachment */
 const struct MenuFuncOp OpAutocrypt[] = { /* map: autocrypt account */
   { "create-account",                OP_AUTOCRYPT_CREATE_ACCT },
   { "delete-account",                OP_AUTOCRYPT_DELETE_ACCT },
+  { "exit",                          OP_EXIT },
   { "toggle-active",                 OP_AUTOCRYPT_TOGGLE_ACTIVE },
   { "toggle-prefer-encrypt",         OP_AUTOCRYPT_TOGGLE_PREFER },
   { NULL, 0 }
@@ -130,6 +133,7 @@ const struct MenuFuncOp OpBrowser[] = { /* map: browser */
   { "descend-directory",             OP_DESCEND_DIRECTORY },
   { "display-filename",              OP_BROWSER_TELL },
   { "enter-mask",                    OP_ENTER_MASK },
+  { "exit",                          OP_EXIT },
   { "goto-folder",                   OP_BROWSER_GOTO_FOLDER },
   { "goto-parent",                   OP_GOTO_PARENT },
   { "mailbox-list",                  OP_MAILBOX_LIST },
@@ -208,6 +212,7 @@ const struct MenuFuncOp OpCompose[] = { /* map: compose */
 #ifdef USE_NNTP
   { "edit-x-comment-to",             OP_ENVELOPE_EDIT_X_COMMENT_TO },
 #endif
+  { "exit",                          OP_EXIT },
   { "filter-entry",                  OP_ATTACHMENT_FILTER },
   { "forget-passphrase",             OP_FORGET_PASSPHRASE },
   { "get-attachment",                OP_ATTACHMENT_GET_ATTACHMENT },
@@ -257,6 +262,7 @@ const struct MenuFuncOp OpEditor[] = { /* map: editor */
   { "delete-char",                   OP_EDITOR_DELETE_CHAR },
   { "downcase-word",                 OP_EDITOR_DOWNCASE_WORD },
   { "eol",                           OP_EDITOR_EOL },
+  { "exit",                          OP_EXIT },
   { "forward-char",                  OP_EDITOR_FORWARD_CHAR },
   { "forward-word",                  OP_EDITOR_FORWARD_WORD },
   { "history-down",                  OP_EDITOR_HISTORY_DOWN },
@@ -383,6 +389,7 @@ const struct MenuFuncOp OpIndex[] = { /* map: index */
 #ifdef USE_NOTMUCH
   { "entire-thread",                 OP_MAIN_ENTIRE_THREAD },
 #endif
+  { "exit",                          OP_EXIT },
   { "extract-keys",                  OP_EXTRACT_KEYS },
 #ifdef USE_POP
   { "fetch-mail",                    OP_MAIN_FETCH_MAIL },
@@ -508,6 +515,7 @@ const struct MenuFuncOp OpMix[] = { /* map: mixmaster */
   { "chain-next",                    OP_MIX_CHAIN_NEXT },
   { "chain-prev",                    OP_MIX_CHAIN_PREV },
   { "delete",                        OP_MIX_DELETE },
+  { "exit",                          OP_EXIT },
   { "insert",                        OP_MIX_INSERT },
   { NULL, 0 },
 };
@@ -689,6 +697,7 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
  * OpPgp - Functions for the Pgp Menu
  */
 const struct MenuFuncOp OpPgp[] = { /* map: pgp */
+  { "exit",                          OP_EXIT },
   { "verify-key",                    OP_VERIFY_KEY },
   { "view-name",                     OP_VIEW_ID },
   { NULL, 0 },
@@ -698,6 +707,7 @@ const struct MenuFuncOp OpPgp[] = { /* map: pgp */
  * OpPostpone - Functions for the Postpone Menu
  */
 const struct MenuFuncOp OpPostpone[] = { /* map: postpone */
+  { "exit",                          OP_EXIT },
   { "delete-entry",                  OP_DELETE },
   { "undelete-entry",                OP_UNDELETE },
   { NULL, 0 },
@@ -708,6 +718,7 @@ const struct MenuFuncOp OpPostpone[] = { /* map: postpone */
  */
 const struct MenuFuncOp OpQuery[] = { /* map: query */
   { "create-alias",                  OP_CREATE_ALIAS },
+  { "exit",                          OP_EXIT },
   { "limit",                         OP_MAIN_LIMIT },
   { "mail",                          OP_MAIL },
   { "query",                         OP_QUERY },
@@ -721,6 +732,7 @@ const struct MenuFuncOp OpQuery[] = { /* map: query */
  * OpSmime - Functions for the Smime Menu
  */
 const struct MenuFuncOp OpSmime[] = { /* map: smime */
+  { "exit",                          OP_EXIT },
 #ifdef CRYPT_BACKEND_GPGME
   { "verify-key",                    OP_VERIFY_KEY },
   { "view-name",                     OP_VIEW_ID },
@@ -733,6 +745,7 @@ const struct MenuFuncOp OpSmime[] = { /* map: smime */
  */
 const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
   { OP_DELETE,                             "d" },
+  { OP_EXIT,                               "q" },
   { OP_MAIL,                               "m" },
   { OP_MAIN_LIMIT,                         "l" },
   { OP_SORT,                               "o" },
@@ -749,6 +762,7 @@ const struct MenuOpSeq AttachDefaultBindings[] = { /* map: attachment */
   { OP_ATTACHMENT_COLLAPSE,                "v" },
   { OP_ATTACHMENT_DELETE,                  "d" },
   { OP_ATTACHMENT_EDIT_TYPE,               "\005" },           // <Ctrl-E>
+  { OP_EXIT,                               "q" },
   { OP_PIPE,                               "|" },
   { OP_ATTACHMENT_PRINT,                   "p" },
   { OP_ATTACHMENT_SAVE,                    "s" },
@@ -780,6 +794,7 @@ const struct MenuOpSeq AutocryptAcctDefaultBindings[] = { /* map: autocrypt acco
   { OP_AUTOCRYPT_DELETE_ACCT,              "D" },
   { OP_AUTOCRYPT_TOGGLE_ACTIVE,            "a" },
   { OP_AUTOCRYPT_TOGGLE_PREFER,            "p" },
+  { OP_EXIT,                               "q" },
   { 0, NULL }
 };
 #endif
@@ -807,6 +822,7 @@ const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
   { OP_DELETE_MAILBOX,                     "d" },
 #endif
   { OP_ENTER_MASK,                         "m" },
+  { OP_EXIT,                               "q" },
   { OP_GOTO_PARENT,                        "p" },
 #ifdef USE_NNTP
 #endif
@@ -842,6 +858,7 @@ const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ATTACHMENT_MOVE_DOWN,               "+" },
   { OP_ATTACHMENT_MOVE_UP,                 "-" },
   { OP_ATTACHMENT_NEW_MIME,                "n" },
+  { OP_EXIT,                               "q" },
   { OP_PIPE,                               "|" },
   { OP_ATTACHMENT_PRINT,                   "l" },
   { OP_ATTACHMENT_RENAME_ATTACHMENT,       "\017" },           // <Ctrl-O>
@@ -926,7 +943,6 @@ const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
 const struct MenuOpSeq GenericDefaultBindings[] = { /* map: generic */
   { OP_BOTTOM_PAGE,                        "L" },
   { OP_ENTER_COMMAND,                      ":" },
-  { OP_EXIT,                               "q" },
   { OP_FIRST_ENTRY,                        "<home>" },
   { OP_FIRST_ENTRY,                        "=" },
   { OP_GENERIC_SELECT_ENTRY,               "<keypadenter>" },
@@ -1070,6 +1086,7 @@ const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
  * MixDefaultBindings - Key bindings for the Mixmaster Menu
  */
 const struct MenuOpSeq MixDefaultBindings[] = { /* map: mixmaster */
+  { OP_EXIT,                               "q" },
   { OP_GENERIC_SELECT_ENTRY,               "<space>" },
   { OP_MIX_APPEND,                         "a" },
   { OP_MIX_CHAIN_NEXT,                     "<right>" },
@@ -1193,6 +1210,7 @@ const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
  * PgpDefaultBindings - Key bindings for the Pgp Menu
  */
 const struct MenuOpSeq PgpDefaultBindings[] = { /* map: pgp */
+  { OP_EXIT,                               "q" },
   { OP_VERIFY_KEY,                         "c" },
   { OP_VIEW_ID,                            "%" },
   { 0, NULL },
@@ -1203,6 +1221,7 @@ const struct MenuOpSeq PgpDefaultBindings[] = { /* map: pgp */
  */
 const struct MenuOpSeq PostDefaultBindings[] = { /* map: postpone */
   { OP_DELETE,                             "d" },
+  { OP_EXIT,                               "q" },
   { OP_UNDELETE,                           "u" },
   { 0, NULL },
 };
@@ -1212,6 +1231,7 @@ const struct MenuOpSeq PostDefaultBindings[] = { /* map: postpone */
  */
 const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
   { OP_CREATE_ALIAS,                       "a" },
+  { OP_EXIT,                               "q" },
   { OP_MAIL,                               "m" },
   { OP_MAIN_LIMIT,                         "l" },
   { OP_QUERY,                              "Q" },
@@ -1225,6 +1245,7 @@ const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
  * SmimeDefaultBindings - Key bindings for the Smime Menu
  */
 const struct MenuOpSeq SmimeDefaultBindings[] = { /* map: smime */
+  { OP_EXIT,                               "q" },
 #ifdef CRYPT_BACKEND_GPGME
   { OP_VERIFY_KEY,                         "c" },
   { OP_VIEW_ID,                            "%" },
