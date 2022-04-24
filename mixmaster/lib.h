@@ -27,10 +27,12 @@
  *
  * | File                      | Description                      |
  * | :------------------------ | :------------------------------- |
+ * | mixmaster/chain_data.c    | @subpage mixmaster_chain_data    |
  * | mixmaster/dlg_mixmaster.c | @subpage mixmaster_dlg_mixmaster |
  * | mixmaster/functions.c     | @subpage mixmaster_functions     |
  * | mixmaster/mixmaster.c     | @subpage mixmaster_mixmaster     |
  * | mixmaster/remailer.c      | @subpage mixmaster_remailer      |
+ * | mixmaster/win_chain.c     | @subpage mixmaster_win_chain     |
  * | mixmaster/win_hosts.c     | @subpage mixmaster_win_hosts     |
  */
 

@@ -1,6 +1,6 @@
 /**
  * @file
- * Private state data for the Mixmaster
+ * Mixmaster Chain Data
  *
  * @authors
  * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
@@ -20,22 +20,29 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MIXMASTER_PRIVATE_DATA_H
-#define MUTT_MIXMASTER_PRIVATE_DATA_H
+/**
+ * @page mixmaster_chain_data Mixmaster Chain Data
+ *
+ * Mixmaster Chain Data
+ */
 
 #include "config.h"
-#include <stdbool.h>
+#include "mutt/lib.h"
+#include "chain_data.h"
 
 /**
- * struct MixmasterPrivateData - Private state data for the Mixmaster
+ * chain_data_new - Create new Chain data
+ * @retval ptr New Chain data
  */
-struct MixmasterPrivateData
+struct ChainData *chain_data_new(void)
 {
-  struct MuttWindow *win_hosts;    ///< Hosts Window
-  struct Menu *menu;               ///< XXX
-  struct Remailer **type2_list;    ///< XXX
-  struct MuttWindow *win_chain;    ///< Chain Window
-  struct MuttWindow *win_cbar;     ///< XXX
-};
+  return mutt_mem_calloc(1, sizeof(struct ChainData));
+}
 
-#endif /* MUTT_MIXMASTER_PRIVATE_DATA_H */
+/**
+ * chain_data_free - Free the Chain data attached to the Window - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
+ */
+void chain_data_free(struct MuttWindow *win, void **ptr)
+{
+  FREE(ptr);
+}

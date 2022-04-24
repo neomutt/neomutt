@@ -218,3 +218,33 @@ struct MuttWindow *win_hosts_new(struct Remailer **type2_list, size_t ttll)
 
   return win_hosts;
 }
+
+/**
+ * win_hosts_get_selection - Get the current selection
+ * @param win Hosts Window
+ * @retval ptr Currently selected Remailer
+ */
+struct Remailer *win_hosts_get_selection(struct MuttWindow *win)
+{
+  if (!win)
+    return NULL;
+
+  if (!win || !win->wdata)
+    return NULL;
+
+  struct Menu *menu = win->wdata;
+  if (!menu->mdata)
+    return NULL;
+
+  struct Remailer **type2_list = menu->mdata;
+
+  const int sel = menu_get_index(menu);
+  if (sel < 0)
+    return NULL;
+
+  struct Remailer *r = type2_list[sel];
+  if (!r)
+    return NULL;
+
+  return r;
+}

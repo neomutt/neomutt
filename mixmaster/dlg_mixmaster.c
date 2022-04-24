@@ -63,7 +63,6 @@
 #include <fcntl.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
@@ -76,6 +75,7 @@
 #include "opcodes.h"
 #include "private_data.h"
 #include "remailer.h"
+#include "win_chain.h"
 #include "win_hosts.h"
 
 /// Help Bar for the Mixmaster dialog
@@ -132,157 +132,6 @@ static int remailer_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * mix_screen_coordinates - Get the screen coordinates to place a chain
- * @param[in]  win        Window
- * @param[out] type2_list Remailer List
- * @param[out] coordsp    On screen coordinates
- * @param[in]  chain      Chain
- * @param[in]  i          Index in chain
- */
-void mix_screen_coordinates(struct MuttWindow *win, struct Remailer **type2_list,
-                            struct Coord **coordsp, struct MixChain *chain, int i)
-{
-  const int wrap_indent = 2;
-
-  if (!chain->cl)
-    return;
-
-  short c, r;
-
-  mutt_mem_realloc(coordsp, sizeof(struct Coord) * chain->cl);
-
-  struct Coord *coords = *coordsp;
-
-  if (i == 0)
-  {
-    r = 0;
-    c = 0;
-  }
-  else
-  {
-    c = coords[i - 1].c + strlen(type2_list[chain->ch[i - 1]]->shortname) + 2;
-    r = coords[i - 1].r;
-  }
-
-  for (; i < chain->cl; i++)
-  {
-    short oc = c;
-    c += strlen(type2_list[chain->ch[i]]->shortname) + 2;
-
-    if (c >= win->state.cols)
-    {
-      oc = wrap_indent;
-      c = wrap_indent;
-      r++;
-    }
-
-    coords[i].c = oc;
-    coords[i].r = r;
-  }
-}
-
-/**
- * mix_redraw_ce - Redraw the Remailer chain
- * @param[in]  win        Window
- * @param[out] type2_list Remailer List
- * @param[in]  coords     Screen Coordinates
- * @param[in]  chain      Chain
- * @param[in]  i          Index in chain
- * @param[in]  selected   true, if this item is selected
- */
-static void mix_redraw_ce(struct MuttWindow *win, struct Remailer **type2_list,
-                          struct Coord *coords, struct MixChain *chain, int i, bool selected)
-{
-  if (!coords || !chain)
-    return;
-
-  if (coords[i].r < win->state.rows)
-  {
-    if (selected)
-      mutt_curses_set_color_by_id(MT_COLOR_INDICATOR);
-    else
-      mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
-
-    mutt_window_mvaddstr(win, coords[i].c, coords[i].r, type2_list[chain->ch[i]]->shortname);
-    mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
-
-    if (i + 1 < chain->cl)
-      mutt_window_addstr(win, ", ");
-  }
-}
-
-/**
- * mix_redraw_chain - Redraw the chain on screen
- * @param[in]  win        Window
- * @param[out] type2_list Remailer List
- * @param[in]  coords     Where to draw the list on screen
- * @param[in]  chain      Chain to display
- * @param[in]  cur        Chain index of current selection
- */
-void mix_redraw_chain(struct MuttWindow *win, struct Remailer **type2_list,
-                      struct Coord *coords, struct MixChain *chain, int cur)
-{
-  for (int i = 0; i < win->state.rows; i++)
-  {
-    mutt_window_move(win, 0, i);
-    mutt_window_clrtoeol(win);
-  }
-
-  for (int i = 0; i < chain->cl; i++)
-    mix_redraw_ce(win, type2_list, coords, chain, i, i == cur);
-}
-
-/**
- * mix_redraw_head - Redraw the Chain info
- * @param win   Window
- * @param chain Chain
- */
-void mix_redraw_head(struct MuttWindow *win, struct MixChain *chain)
-{
-  char buf[1024];
-  snprintf(buf, sizeof(buf), "-- Remailer chain [Length: %zu]", chain ? chain->cl : 0);
-  sbar_set_title(win, buf);
-}
-
-/**
- * mix_chain_add - Add a host to the chain
- * @param[in]  chain      Chain to add to
- * @param[in]  s          Hostname
- * @param[out] type2_list Remailer List
- * @retval  0 Success
- * @retval -1 Error
- */
-static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer **type2_list)
-{
-  int i;
-
-  if (chain->cl >= MAX_MIXES)
-    return -1;
-
-  if (mutt_str_equal(s, "0") || mutt_istr_equal(s, "<random>"))
-  {
-    chain->ch[chain->cl++] = 0;
-    return 0;
-  }
-
-  for (i = 0; type2_list[i]; i++)
-  {
-    if (mutt_istr_equal(s, type2_list[i]->shortname))
-    {
-      chain->ch[chain->cl++] = i;
-      return 0;
-    }
-  }
-
-  /* replace unknown remailers by <random> */
-
-  if (!type2_list[i])
-    chain->ch[chain->cl++] = 0;
-
-  return 0;
-}
-
-/**
  * dlg_mixmaster - Create a Mixmaster chain
  * @param chainhead List of chain links
  *
@@ -293,29 +142,11 @@ void dlg_mixmaster(struct ListHead *chainhead)
   struct MixmasterPrivateData priv = { 0 };
   size_t ttll = 0;
 
-  priv.c_redraw = true;
-
   priv.type2_list = remailer_get_hosts(&ttll);
   if (!priv.type2_list)
   {
     mutt_error(_("Can't get mixmaster's type2.list"));
     return;
-  }
-
-  priv.chain = mutt_mem_calloc(1, sizeof(struct MixChain));
-
-  struct ListNode *p = NULL;
-  STAILQ_FOREACH(p, chainhead, entries)
-  {
-    mix_chain_add(priv.chain, p->data, priv.type2_list);
-  }
-  mutt_list_free(chainhead);
-
-  /* safety check */
-  for (int i = 0; i < priv.chain->cl; i++)
-  {
-    if (priv.chain->ch[i] >= ttll)
-      priv.chain->ch[i] = 0;
   }
 
   struct MuttWindow *dlg = mutt_window_new(WT_DLG_REMAILER, MUTT_WIN_ORIENT_VERTICAL,
@@ -325,36 +156,37 @@ void dlg_mixmaster(struct ListHead *chainhead)
   dlg->help_data = RemailerHelp;
   dlg->wdata = &priv;
 
-  struct MuttWindow *win_hosts = win_hosts_new(priv.type2_list, ttll);
-  priv.menu = win_hosts->wdata;
-
-  priv.win_chain = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL,
-                                   MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 4);
+  priv.win_hosts = win_hosts_new(priv.type2_list, ttll);
+  priv.menu = priv.win_hosts->wdata;
 
   priv.win_cbar = sbar_new();
+  priv.win_chain = win_chain_new(priv.win_cbar);
+
   struct MuttWindow *win_rbar = sbar_new();
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if (c_status_on_top)
   {
     mutt_window_add_child(dlg, win_rbar);
-    mutt_window_add_child(dlg, win_hosts);
+    mutt_window_add_child(dlg, priv.win_hosts);
     mutt_window_add_child(dlg, priv.win_cbar);
     mutt_window_add_child(dlg, priv.win_chain);
   }
   else
   {
-    mutt_window_add_child(dlg, win_hosts);
+    mutt_window_add_child(dlg, priv.win_hosts);
     mutt_window_add_child(dlg, priv.win_cbar);
     mutt_window_add_child(dlg, priv.win_chain);
     mutt_window_add_child(dlg, win_rbar);
   }
   sbar_set_title(win_rbar, _("Select a remailer chain"));
 
-  mix_screen_coordinates(dlg, priv.type2_list, &priv.coords, priv.chain, 0);
-
   notify_observer_add(NeoMutt->notify, NT_CONFIG, remailer_config_observer, dlg);
   notify_observer_add(dlg->notify, NT_WINDOW, remailer_window_observer, dlg);
+
+  win_chain_init(priv.win_chain, chainhead, priv.type2_list);
+  mutt_list_free(chainhead);
+
   dialog_push(dlg);
 
   // ---------------------------------------------------------------------------
@@ -363,22 +195,6 @@ void dlg_mixmaster(struct ListHead *chainhead)
   int rc;
   do
   {
-    if (priv.c_redraw)
-    {
-      mix_redraw_head(priv.win_cbar, priv.chain);
-      mix_redraw_chain(priv.win_chain, priv.type2_list, priv.coords, priv.chain, priv.c_cur);
-      priv.c_redraw = false;
-    }
-    else if (priv.c_cur != priv.c_old)
-    {
-      mix_redraw_ce(priv.win_chain, priv.type2_list, priv.coords, priv.chain,
-                    priv.c_old, false);
-      mix_redraw_ce(priv.win_chain, priv.type2_list, priv.coords, priv.chain,
-                    priv.c_cur, true);
-    }
-
-    priv.c_old = priv.c_cur;
-
     rc = FR_UNKNOWN;
     menu_tagging_dispatcher(priv.menu->win, op);
     window_redraw(NULL);
@@ -400,30 +216,15 @@ void dlg_mixmaster(struct ListHead *chainhead)
       rc = menu_function_dispatcher(priv.menu->win, op);
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(priv.menu->win, op);
-  } while (rc != FR_DONE);
+  } while ((rc != FR_DONE) && (rc != FR_NO_ACTION));
   // ---------------------------------------------------------------------------
+
+  /* construct the remailer list */
+  if (rc == FR_DONE)
+    win_chain_extract(priv.win_chain, chainhead);
 
   dialog_pop();
   mutt_window_free(&dlg);
 
-  /* construct the remailer list */
-
-  if (priv.chain->cl)
-  {
-    char *t = NULL;
-    for (int i = 0; i < priv.chain->cl; i++)
-    {
-      const int j = priv.chain->ch[i];
-      if (j != 0)
-        t = priv.type2_list[j]->shortname;
-      else
-        t = "*";
-
-      mutt_list_insert_tail(chainhead, mutt_str_dup(t));
-    }
-  }
-
   remailer_clear_hosts(&priv.type2_list);
-  FREE(&priv.coords);
-  FREE(&priv.chain);
 }
