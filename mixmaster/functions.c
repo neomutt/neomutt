@@ -28,13 +28,12 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <stdbool.h>
+#include "mutt/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "functions.h"
 #include "opcodes.h"
 #include "private_data.h"
-#include "remailer.h"
 #include "win_chain.h"
 #include "win_hosts.h"
 

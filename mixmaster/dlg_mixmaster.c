@@ -60,7 +60,6 @@
  */
 
 #include "config.h"
-#include <fcntl.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
@@ -71,7 +70,6 @@
 #include "functions.h"
 #include "keymap.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
 #include "opcodes.h"
 #include "private_data.h"
 #include "remailer.h"
@@ -138,7 +136,7 @@ static int remailer_window_observer(struct NotifyCallback *nc)
  * @retval ptr New Mixmaster Remailer Dialog
  */
 static struct MuttWindow *mix_dlg_new(struct MixmasterPrivateData *priv,
-                                      struct Remailer **type2_list, size_t ttll)
+                                      struct RemailerArray *ra)
 {
   struct MuttWindow *dlg = mutt_window_new(WT_DLG_REMAILER, MUTT_WIN_ORIENT_VERTICAL,
                                            MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
@@ -147,7 +145,7 @@ static struct MuttWindow *mix_dlg_new(struct MixmasterPrivateData *priv,
   dlg->help_data = RemailerHelp;
   dlg->wdata = priv;
 
-  priv->win_hosts = win_hosts_new(type2_list, ttll);
+  priv->win_hosts = win_hosts_new(ra);
   struct MuttWindow *win_cbar = sbar_new();
   priv->win_chain = win_chain_new(win_cbar);
 
@@ -185,18 +183,17 @@ static struct MuttWindow *mix_dlg_new(struct MixmasterPrivateData *priv,
 void dlg_mixmaster(struct ListHead *chainhead)
 {
   struct MixmasterPrivateData priv = { 0 };
-  size_t ttll = 0;
 
-  struct Remailer **type2_list = remailer_get_hosts(&ttll);
-  if (!type2_list)
+  struct RemailerArray ra = remailer_get_hosts();
+  if (ARRAY_EMPTY(&ra))
   {
     mutt_error(_("Can't get mixmaster's type2.list"));
     return;
   }
 
-  struct MuttWindow *dlg = mix_dlg_new(&priv, type2_list, ttll);
+  struct MuttWindow *dlg = mix_dlg_new(&priv, &ra);
 
-  win_chain_init(priv.win_chain, chainhead, type2_list);
+  win_chain_init(priv.win_chain, chainhead, &ra);
   mutt_list_free(chainhead);
 
   dialog_push(dlg);
@@ -237,5 +234,5 @@ void dlg_mixmaster(struct ListHead *chainhead)
   dialog_pop();
   mutt_window_free(&dlg);
 
-  remailer_clear_hosts(&type2_list);
+  remailer_clear_hosts(&ra);
 }

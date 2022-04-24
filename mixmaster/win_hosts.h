@@ -23,10 +23,10 @@
 #ifndef MUTT_MIXMASTER_WIN_HOSTS_H
 #define MUTT_MIXMASTER_WIN_HOSTS_H
 
-struct Remailer;
+struct RemailerArray;
 struct MuttWindow;
 
 struct Remailer *  win_hosts_get_selection(struct MuttWindow *win);
-struct MuttWindow *win_hosts_new(struct Remailer **type2_list, size_t ttll);
+struct MuttWindow *win_hosts_new(struct RemailerArray *ra);
 
 #endif /* MUTT_MIXMASTER_WIN_HOSTS_H */

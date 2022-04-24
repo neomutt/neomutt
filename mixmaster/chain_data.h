@@ -48,7 +48,7 @@ struct ChainData
   int chain_len;                  ///< Length of chain
   int chain[MAX_MIXES];           ///< Indexes of chain hosts
   struct Coord coords[MAX_MIXES]; ///< Screen coordinates of each entry
-  struct Remailer **type2_list;   ///< XXX
+  struct RemailerArray *ra;       ///< Array of all Remailer hosts
   struct MuttWindow *win_cbar;    ///< Chain Bar (status window)
 };
 

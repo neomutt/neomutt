@@ -189,31 +189,32 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
  */
 static void mix_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
 {
-  struct Remailer **type2_list = menu->mdata;
+  struct RemailerArray *ra = menu->mdata;
+  struct Remailer **r = ARRAY_GET(ra, num);
+  if (!r)
+    return;
+
   const char *const c_mix_entry_format = cs_subset_string(NeoMutt->sub, "mix_entry_format");
-  mutt_expando_format(buf, buflen, 0, menu->win->state.cols,
-                      NONULL(c_mix_entry_format), mix_format_str,
-                      (intptr_t) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
+  mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_mix_entry_format),
+                      mix_format_str, (intptr_t) *r, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
  * win_hosts_new - Create a new Hosts Window
- * @param type2_list Array of Remailer hosts
- * @param ttll        Length of array
+ * @param ra Array of Remailer hosts
  * @retval ptr New Hosts Window
  */
-struct MuttWindow *win_hosts_new(struct Remailer **type2_list, size_t ttll)
+struct MuttWindow *win_hosts_new(struct RemailerArray *ra)
 {
   struct MuttWindow *win_hosts = menu_new_window(MENU_MIX, NeoMutt->sub);
   win_hosts->focus = win_hosts;
 
   struct Menu *menu = win_hosts->wdata;
 
-  menu = win_hosts->wdata;
-  menu->max = ttll;
+  menu->max = ARRAY_SIZE(ra);
   menu->make_entry = mix_make_entry;
   menu->tag = NULL;
-  menu->mdata = type2_list;
+  menu->mdata = ra;
   menu->mdata_free = NULL; // Menu doesn't own the data
 
   return win_hosts;
@@ -236,15 +237,15 @@ struct Remailer *win_hosts_get_selection(struct MuttWindow *win)
   if (!menu->mdata)
     return NULL;
 
-  struct Remailer **type2_list = menu->mdata;
+  struct RemailerArray *ra = menu->mdata;
 
   const int sel = menu_get_index(menu);
   if (sel < 0)
     return NULL;
 
-  struct Remailer *r = type2_list[sel];
+  struct Remailer **r = ARRAY_GET(ra, sel);
   if (!r)
     return NULL;
 
-  return r;
+  return *r;
 }

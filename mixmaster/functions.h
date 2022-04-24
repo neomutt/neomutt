@@ -24,6 +24,7 @@
 #define MUTT_MIXMASTER_FUNCTIONS_H
 
 struct MixmasterPrivateData;
+struct MuttWindow;
 
 /**
  * @defgroup mixmaster_function_api Mixmaster Function API

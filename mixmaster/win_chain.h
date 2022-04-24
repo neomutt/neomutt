@@ -28,10 +28,11 @@
 struct ListHead;
 struct MuttWindow;
 struct Remailer;
+struct RemailerArray;
 
 struct MuttWindow *win_chain_new(struct MuttWindow *win_cbar);
 
-void win_chain_init      (struct MuttWindow *win, struct ListHead *chain, struct Remailer **type2_list);
+void win_chain_init      (struct MuttWindow *win, struct ListHead *chain, struct RemailerArray *ra);
 int  win_chain_extract   (struct MuttWindow *win, struct ListHead *chain);
 int  win_chain_get_length(struct MuttWindow *win);
 

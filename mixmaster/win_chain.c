@@ -68,16 +68,14 @@ static void cbar_update(struct ChainData *cd)
 
 /**
  * chain_add - Add a host to the chain
- * @param[in]  chain      Chain to add to
- * @param[in]  s          Hostname
- * @param[out] type2_list Remailer List
+ * @param cd Chain data
+ * @param s  Hostname
+ * @param ra Remailer List
  * @retval  0 Success
  * @retval -1 Error
  */
-static int chain_add(struct ChainData *cd, const char *s, struct Remailer **type2_list)
+static int chain_add(struct ChainData *cd, const char *s, struct RemailerArray *ra)
 {
-  int i;
-
   if (cd->chain_len >= MAX_MIXES)
     return -1;
 
@@ -87,20 +85,18 @@ static int chain_add(struct ChainData *cd, const char *s, struct Remailer **type
     return 0;
   }
 
-  for (i = 0; type2_list[i]; i++)
+  struct Remailer **r = NULL;
+  ARRAY_FOREACH(r, ra)
   {
-    if (mutt_istr_equal(s, type2_list[i]->shortname))
+    if (mutt_istr_equal(s, (*r)->shortname))
     {
-      cd->chain[cd->chain_len++] = i;
+      cd->chain[cd->chain_len++] = ARRAY_FOREACH_IDX;
       return 0;
     }
   }
 
   /* replace unknown remailers by <random> */
-
-  if (!type2_list[i])
-    cd->chain[cd->chain_len++] = 0;
-
+  cd->chain[cd->chain_len++] = 0;
   return 0;
 }
 
@@ -126,8 +122,8 @@ static int win_chain_recalc(struct MuttWindow *win)
   {
     short old_col = col;
     int index = cd->chain[i];
-    struct Remailer *r = cd->type2_list[index];
-    col += strlen(r->shortname) + 2;
+    struct Remailer **rp = ARRAY_GET(cd->ra, index);
+    col += strlen((*rp)->shortname) + 2;
 
     if (col >= win->state.cols)
     {
@@ -169,8 +165,8 @@ static int win_chain_repaint(struct MuttWindow *win)
         mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 
       int index = cd->chain[i];
-      struct Remailer *r = cd->type2_list[index];
-      mutt_window_mvaddstr(win, cd->coords[i].col, cd->coords[i].row, r->shortname);
+      struct Remailer **rp = ARRAY_GET(cd->ra, index);
+      mutt_window_mvaddstr(win, cd->coords[i].col, cd->coords[i].row, (*rp)->shortname);
       mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 
       if ((i + 1) < cd->chain_len)
@@ -208,21 +204,20 @@ struct MuttWindow *win_chain_new(struct MuttWindow *win_cbar)
  * @param chain Chain data
  * @param ra    Array of all Remailer hosts
  */
-void win_chain_init(struct MuttWindow *win, struct ListHead *chain, struct Remailer **type2_list)
+void win_chain_init(struct MuttWindow *win, struct ListHead *chain, struct RemailerArray *ra)
 {
   if (!win || !win->wdata)
     return;
 
   struct ChainData *cd = win->wdata;
-  cd->type2_list = type2_list;
+  cd->ra = ra;
   cd->sel = 0;
 
   struct ListNode *p = NULL;
   STAILQ_FOREACH(p, chain, entries)
   {
-    chain_add(cd, p->data, type2_list);
+    chain_add(cd, p->data, cd->ra);
   }
-
   if (cd->chain_len > 1)
     cd->sel = cd->chain_len - 1;
   win->actions |= WA_RECALC;
@@ -250,8 +245,8 @@ int win_chain_extract(struct MuttWindow *win, struct ListHead *chain)
       const int j = cd->chain[i];
       if (j != 0)
       {
-        struct Remailer *r = cd->type2_list[j];
-        t = r->shortname;
+        struct Remailer **rp = ARRAY_GET(cd->ra, j);
+        t = (*rp)->shortname;
       }
       else
       {
@@ -433,10 +428,11 @@ bool win_chain_validate(struct MuttWindow *win)
     int last_index = cd->chain[cd->chain_len - 1];
     if (last_index != 0)
     {
-      struct Remailer *r = cd->type2_list[last_index];
-      if (r->caps & MIX_CAP_MIDDLEMAN)
+      struct Remailer **rp = ARRAY_GET(cd->ra, last_index);
+      if ((*rp)->caps & MIX_CAP_MIDDLEMAN)
       {
-        mutt_error(_("Error: %s can't be used as the final remailer of a chain"), r->shortname);
+        mutt_error(_("Error: %s can't be used as the final remailer of a chain"),
+                   (*rp)->shortname);
         return false;
       }
     }

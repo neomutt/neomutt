@@ -44,11 +44,12 @@ struct Remailer
   char *ver;        ///< Version of host
   MixCapFlags caps; ///< Capabilities of host
 };
+ARRAY_HEAD(RemailerArray, struct Remailer *);
 
 void             remailer_free(struct Remailer **ptr);
 struct Remailer *remailer_new (void);
 
-void                 remailer_clear_hosts(struct Remailer ***ttlp);
-struct Remailer **   remailer_get_hosts(size_t *l);
+void                 remailer_clear_hosts(struct RemailerArray *ra);
+struct RemailerArray remailer_get_hosts(void);
 
 #endif /* MUTT_MIXMASTER_REMAILER_H */

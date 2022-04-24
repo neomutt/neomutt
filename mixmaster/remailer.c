@@ -40,7 +40,7 @@
 
 /**
  * remailer_free - Free a Remailer
- * @param[out] ptr Remailer to free
+ * @param ptr Remailer to free
  */
 void remailer_free(struct Remailer **ptr)
 {
@@ -108,51 +108,24 @@ static MixCapFlags mix_get_caps(const char *capstr)
 }
 
 /**
- * mix_add_entry - Add an entry to the Remailer list
- * @param[out] type2_list Remailer list to add to
- * @param[in]  entry      Remailer to add
- * @param[out] slots      Total number of slots
- * @param[out] used       Number of slots used
- */
-static void mix_add_entry(struct Remailer ***type2_list, struct Remailer *entry,
-                          size_t *slots, size_t *used)
-{
-  if (*used == *slots)
-  {
-    *slots += 5;
-    mutt_mem_realloc(type2_list, sizeof(struct Remailer *) * (*slots));
-  }
-
-  (*type2_list)[(*used)++] = entry;
-  if (entry)
-    entry->num = *used;
-}
-
-/**
  * remailer_get_hosts - Parse the type2.list as given by mixmaster -T
- * @param[out] l Length of list
- * @retval ptr type2.list
+ * @retval obj Array of Remailer Hosts
  */
-struct Remailer **remailer_get_hosts(size_t *l)
+struct RemailerArray remailer_get_hosts(void)
 {
-  if (!l)
-    return NULL;
-
+  struct RemailerArray ra = ARRAY_HEAD_INITIALIZER;
   FILE *fp = NULL;
   char line[8192];
   char *t = NULL;
-
-  struct Remailer **type2_list = NULL;
   struct Remailer *p = NULL;
-  size_t slots = 0, used = 0;
-
-  int fd_null = open("/dev/null", O_RDWR);
-  if (fd_null == -1)
-    return NULL;
 
   const char *const c_mixmaster = cs_subset_string(NeoMutt->sub, "mixmaster");
   if (!c_mixmaster)
-    return NULL;
+    return ra;
+
+  int fd_null = open("/dev/null", O_RDWR);
+  if (fd_null == -1)
+    return ra;
 
   struct Buffer *cmd = mutt_buffer_pool_get();
   mutt_buffer_printf(cmd, "%s -T", c_mixmaster);
@@ -164,7 +137,7 @@ struct Remailer **remailer_get_hosts(size_t *l)
   {
     mutt_buffer_pool_release(&cmd);
     close(fd_null);
-    return NULL;
+    return ra;
   }
 
   mutt_buffer_pool_release(&cmd);
@@ -173,7 +146,8 @@ struct Remailer **remailer_get_hosts(size_t *l)
 
   p = remailer_new();
   p->shortname = mutt_str_dup(_("<random>"));
-  mix_add_entry(&type2_list, p, &slots, &used);
+  p->num = 0;
+  ARRAY_ADD(&ra, p);
 
   while (fgets(line, sizeof(line), fp))
   {
@@ -207,33 +181,34 @@ struct Remailer **remailer_get_hosts(size_t *l)
 
     p->caps = mix_get_caps(t);
 
-    mix_add_entry(&type2_list, p, &slots, &used);
+    p->num = ARRAY_SIZE(&ra);
+    ARRAY_ADD(&ra, p);
     continue;
 
   problem:
     remailer_free(&p);
   }
 
-  *l = used;
-
-  mix_add_entry(&type2_list, NULL, &slots, &used);
   filter_wait(mm_pid);
 
   close(fd_null);
 
-  return type2_list;
+  return ra;
 }
 
 /**
- * remailer_clear_hosts - Free a Remailer List
- * @param[out] ttlp Remailer List to free
+ * remailer_clear_hosts - Clear a Remailer List
+ * @param ra Array of Remailer hosts to clear
+ *
+ * @note The empty array is not freed
  */
-void remailer_clear_hosts(struct Remailer ***ttlp)
+void remailer_clear_hosts(struct RemailerArray *ra)
 {
-  struct Remailer **type2_list = *ttlp;
+  struct Remailer **r = NULL;
+  ARRAY_FOREACH(r, ra)
+  {
+    remailer_free(r);
+  }
 
-  for (int i = 0; type2_list[i]; i++)
-    remailer_free(&type2_list[i]);
-
-  FREE(ttlp);
+  ARRAY_FREE(ra);
 }
