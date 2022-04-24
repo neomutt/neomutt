@@ -42,10 +42,12 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt_attach.h"
+#include "lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
+#include "cid.h"
 #include "copy.h"
 #include "handler.h"
 #include "mailcap.h"
@@ -486,6 +488,27 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     has_tempfile = true;
 
     mutt_rfc3676_space_unstuff_attachment(a, mutt_buffer_string(tmpfile));
+
+    /* check for multipart/related and save attachments with a Content-ID */
+    if (mutt_str_equal(type, "text/html"))
+    {
+      struct Body *related_ancestor = NULL;
+      if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))
+        related_ancestor = attach_body_ancestor(actx->body_idx[0], a, "related");
+      else
+        related_ancestor = attach_body_ancestor(e->body, a, "related");
+      if (related_ancestor)
+      {
+        struct CidMapList cid_map_list = STAILQ_HEAD_INITIALIZER(cid_map_list);
+        mutt_debug(LL_DEBUG2, "viewing text/html attachment in multipart/related group\n");
+        /* save attachments and build cid_map_list Content-ID to filename mapping list */
+        cid_save_attachments(related_ancestor->parts, &cid_map_list);
+        /* replace Content-IDs with filenames */
+        cid_to_filename(tmpfile, &cid_map_list);
+        /* empty Content-ID to filename mapping list */
+        cid_map_list_clear(&cid_map_list);
+      }
+    }
 
     use_pipe = mailcap_expand_command(a, mutt_buffer_string(tmpfile), type, cmd);
     use_pager = entry->copiousoutput;
