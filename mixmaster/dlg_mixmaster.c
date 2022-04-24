@@ -132,6 +132,51 @@ static int remailer_window_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * mix_dlg_new - Create a new Mixmaster Remailer Dialog
+ * @param priv Mixmaster private data
+ * @param ra   Array of all Remailer hosts
+ * @retval ptr New Mixmaster Remailer Dialog
+ */
+static struct MuttWindow *mix_dlg_new(struct MixmasterPrivateData *priv,
+                                      struct Remailer **type2_list, size_t ttll)
+{
+  struct MuttWindow *dlg = mutt_window_new(WT_DLG_REMAILER, MUTT_WIN_ORIENT_VERTICAL,
+                                           MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
+                                           MUTT_WIN_SIZE_UNLIMITED);
+  dlg->help_menu = MENU_MIX;
+  dlg->help_data = RemailerHelp;
+  dlg->wdata = priv;
+
+  priv->win_hosts = win_hosts_new(type2_list, ttll);
+  struct MuttWindow *win_cbar = sbar_new();
+  priv->win_chain = win_chain_new(win_cbar);
+
+  struct MuttWindow *win_rbar = sbar_new();
+  sbar_set_title(win_rbar, _("Select a remailer chain"));
+
+  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
+  if (c_status_on_top)
+  {
+    mutt_window_add_child(dlg, win_rbar);
+    mutt_window_add_child(dlg, priv->win_hosts);
+    mutt_window_add_child(dlg, win_cbar);
+    mutt_window_add_child(dlg, priv->win_chain);
+  }
+  else
+  {
+    mutt_window_add_child(dlg, priv->win_hosts);
+    mutt_window_add_child(dlg, win_cbar);
+    mutt_window_add_child(dlg, priv->win_chain);
+    mutt_window_add_child(dlg, win_rbar);
+  }
+
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, remailer_config_observer, dlg);
+  notify_observer_add(dlg->notify, NT_WINDOW, remailer_window_observer, dlg);
+
+  return dlg;
+}
+
+/**
  * dlg_mixmaster - Create a Mixmaster chain
  * @param chainhead List of chain links
  *
@@ -142,49 +187,16 @@ void dlg_mixmaster(struct ListHead *chainhead)
   struct MixmasterPrivateData priv = { 0 };
   size_t ttll = 0;
 
-  priv.type2_list = remailer_get_hosts(&ttll);
-  if (!priv.type2_list)
+  struct Remailer **type2_list = remailer_get_hosts(&ttll);
+  if (!type2_list)
   {
     mutt_error(_("Can't get mixmaster's type2.list"));
     return;
   }
 
-  struct MuttWindow *dlg = mutt_window_new(WT_DLG_REMAILER, MUTT_WIN_ORIENT_VERTICAL,
-                                           MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
-                                           MUTT_WIN_SIZE_UNLIMITED);
-  dlg->help_menu = MENU_MIX;
-  dlg->help_data = RemailerHelp;
-  dlg->wdata = &priv;
+  struct MuttWindow *dlg = mix_dlg_new(&priv, type2_list, ttll);
 
-  priv.win_hosts = win_hosts_new(priv.type2_list, ttll);
-  priv.menu = priv.win_hosts->wdata;
-
-  priv.win_cbar = sbar_new();
-  priv.win_chain = win_chain_new(priv.win_cbar);
-
-  struct MuttWindow *win_rbar = sbar_new();
-
-  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
-  if (c_status_on_top)
-  {
-    mutt_window_add_child(dlg, win_rbar);
-    mutt_window_add_child(dlg, priv.win_hosts);
-    mutt_window_add_child(dlg, priv.win_cbar);
-    mutt_window_add_child(dlg, priv.win_chain);
-  }
-  else
-  {
-    mutt_window_add_child(dlg, priv.win_hosts);
-    mutt_window_add_child(dlg, priv.win_cbar);
-    mutt_window_add_child(dlg, priv.win_chain);
-    mutt_window_add_child(dlg, win_rbar);
-  }
-  sbar_set_title(win_rbar, _("Select a remailer chain"));
-
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, remailer_config_observer, dlg);
-  notify_observer_add(dlg->notify, NT_WINDOW, remailer_window_observer, dlg);
-
-  win_chain_init(priv.win_chain, chainhead, priv.type2_list);
+  win_chain_init(priv.win_chain, chainhead, type2_list);
   mutt_list_free(chainhead);
 
   dialog_push(dlg);
@@ -192,20 +204,19 @@ void dlg_mixmaster(struct ListHead *chainhead)
   // ---------------------------------------------------------------------------
   // Event Loop
   int op = OP_NULL;
-  int rc;
+  int rc = FR_UNKNOWN;
   do
   {
-    rc = FR_UNKNOWN;
-    menu_tagging_dispatcher(priv.menu->win, op);
+    menu_tagging_dispatcher(priv.win_hosts, op);
     window_redraw(NULL);
 
-    op = km_dokey(priv.menu->type);
+    op = km_dokey(MENU_MIX);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(priv.menu->type);
+      km_error_key(MENU_MIX);
       continue;
     }
     mutt_clear_error();
@@ -213,9 +224,9 @@ void dlg_mixmaster(struct ListHead *chainhead)
     rc = mix_function_dispatcher(dlg, op);
 
     if (rc == FR_UNKNOWN)
-      rc = menu_function_dispatcher(priv.menu->win, op);
+      rc = menu_function_dispatcher(priv.win_hosts, op);
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(priv.menu->win, op);
+      rc = global_function_dispatcher(NULL, op);
   } while ((rc != FR_DONE) && (rc != FR_NO_ACTION));
   // ---------------------------------------------------------------------------
 
@@ -226,5 +237,5 @@ void dlg_mixmaster(struct ListHead *chainhead)
   dialog_pop();
   mutt_window_free(&dlg);
 
-  remailer_clear_hosts(&priv.type2_list);
+  remailer_clear_hosts(&type2_list);
 }

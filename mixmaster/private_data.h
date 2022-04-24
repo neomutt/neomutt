@@ -32,10 +32,7 @@
 struct MixmasterPrivateData
 {
   struct MuttWindow *win_hosts;    ///< Hosts Window
-  struct Menu *menu;               ///< XXX
-  struct Remailer **type2_list;    ///< XXX
   struct MuttWindow *win_chain;    ///< Chain Window
-  struct MuttWindow *win_cbar;     ///< XXX
 };
 
 #endif /* MUTT_MIXMASTER_PRIVATE_DATA_H */
