@@ -31,6 +31,7 @@
  * | mixmaster/functions.c     | @subpage mixmaster_functions     |
  * | mixmaster/mixmaster.c     | @subpage mixmaster_mixmaster     |
  * | mixmaster/remailer.c      | @subpage mixmaster_remailer      |
+ * | mixmaster/win_hosts.c     | @subpage mixmaster_win_hosts     |
  */
 
 #ifndef MUTT_MIXMASTER_LIB_H

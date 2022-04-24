@@ -76,6 +76,7 @@
 #include "opcodes.h"
 #include "private_data.h"
 #include "remailer.h"
+#include "win_hosts.h"
 
 /// Help Bar for the Mixmaster dialog
 static const struct Mapping RemailerHelp[] = {
@@ -244,145 +245,6 @@ void mix_redraw_head(struct MuttWindow *win, struct MixChain *chain)
 }
 
 /**
- * mix_format_caps - Turn flags into a MixMaster capability string
- * @param r Remailer to use
- * @retval ptr Capability string
- *
- * @note The string is a static buffer
- */
-static const char *mix_format_caps(struct Remailer *r)
-{
-  static char capbuf[10];
-  char *t = capbuf;
-
-  if (r->caps & MIX_CAP_COMPRESS)
-    *t++ = 'C';
-  else
-    *t++ = ' ';
-
-  if (r->caps & MIX_CAP_MIDDLEMAN)
-    *t++ = 'M';
-  else
-    *t++ = ' ';
-
-  if (r->caps & MIX_CAP_NEWSPOST)
-  {
-    *t++ = 'N';
-    *t++ = 'p';
-  }
-  else
-  {
-    *t++ = ' ';
-    *t++ = ' ';
-  }
-
-  if (r->caps & MIX_CAP_NEWSMAIL)
-  {
-    *t++ = 'N';
-    *t++ = 'm';
-  }
-  else
-  {
-    *t++ = ' ';
-    *t++ = ' ';
-  }
-
-  *t = '\0';
-
-  return capbuf;
-}
-
-/**
- * mix_format_str - Format a string for the remailer menu - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :-------------------------------------------------------
- * | \%a     | The remailer's e-mail address
- * | \%c     | Remailer capabilities
- * | \%n     | The running number on the menu
- * | \%s     | The remailer's short name
- */
-static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                  char op, const char *src, const char *prec,
-                                  const char *if_str, const char *else_str,
-                                  intptr_t data, MuttFormatFlags flags)
-{
-  char fmt[128];
-  struct Remailer *remailer = (struct Remailer *) data;
-  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
-
-  switch (op)
-  {
-    case 'a':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(remailer->addr));
-      }
-      else if (!remailer->addr)
-        optional = false;
-      break;
-
-    case 'c':
-      if (optional)
-        break;
-
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, mix_format_caps(remailer));
-      break;
-
-    case 'n':
-      if (optional)
-        break;
-
-      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-      snprintf(buf, buflen, fmt, remailer->num);
-      break;
-
-    case 's':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(remailer->shortname));
-      }
-      else if (!remailer->shortname)
-        optional = false;
-      break;
-
-    default:
-      *buf = '\0';
-  }
-
-  if (optional)
-  {
-    mutt_expando_format(buf, buflen, col, cols, if_str, mix_format_str, data,
-                        MUTT_FORMAT_NO_FLAGS);
-  }
-  else if (flags & MUTT_FORMAT_OPTIONAL)
-  {
-    mutt_expando_format(buf, buflen, col, cols, else_str, mix_format_str, data,
-                        MUTT_FORMAT_NO_FLAGS);
-  }
-
-  /* We return the format string, unchanged */
-  return src;
-}
-
-/**
- * mix_make_entry - Format a menu item for the mixmaster chain list - Implements Menu::make_entry() - @ingroup menu_make_entry
- *
- * @sa $mix_entry_format, mix_format_str()
- */
-static void mix_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
-{
-  struct Remailer **type2_list = menu->mdata;
-  const char *const c_mix_entry_format = cs_subset_string(NeoMutt->sub, "mix_entry_format");
-  mutt_expando_format(buf, buflen, 0, menu->win->state.cols,
-                      NONULL(c_mix_entry_format), mix_format_str,
-                      (intptr_t) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
-}
-
-/**
  * mix_chain_add - Add a host to the chain
  * @param[in]  chain      Chain to add to
  * @param[in]  s          Hostname
@@ -463,8 +325,8 @@ void dlg_mixmaster(struct ListHead *chainhead)
   dlg->help_data = RemailerHelp;
   dlg->wdata = &priv;
 
-  struct MuttWindow *win_hosts = menu_new_window(MENU_MIX, NeoMutt->sub);
-  win_hosts->focus = win_hosts;
+  struct MuttWindow *win_hosts = win_hosts_new(priv.type2_list, ttll);
+  priv.menu = win_hosts->wdata;
 
   priv.win_chain = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL,
                                    MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 4);
@@ -490,13 +352,6 @@ void dlg_mixmaster(struct ListHead *chainhead)
   sbar_set_title(win_rbar, _("Select a remailer chain"));
 
   mix_screen_coordinates(dlg, priv.type2_list, &priv.coords, priv.chain, 0);
-
-  priv.menu = win_hosts->wdata;
-  priv.menu->max = ttll;
-  priv.menu->make_entry = mix_make_entry;
-  priv.menu->tag = NULL;
-  priv.menu->mdata = priv.type2_list;
-  priv.menu->mdata_free = NULL; // Menu doesn't own the data
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, remailer_config_observer, dlg);
   notify_observer_add(dlg->notify, NT_WINDOW, remailer_window_observer, dlg);
