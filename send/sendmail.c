@@ -366,6 +366,7 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
       while ((ps = strtok(ps, " ")))
       {
         ARRAY_ADD(&extra_args, ps);
+        ps = NULL;
       }
     }
 
