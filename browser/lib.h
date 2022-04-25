@@ -28,6 +28,7 @@
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | browser/browser.c   | @subpage browser_browser   |
+ * | browser/config.c    | @subpage browser_config    |
  * | browser/sort.c      | @subpage browser_sorting   |
  */
 

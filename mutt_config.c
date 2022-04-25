@@ -209,9 +209,6 @@ static struct ConfigDef MainVars[] = {
   { "braille_friendly", DT_BOOL, false, 0, NULL,
     "Move the cursor to the beginning of the line"
   },
-  { "browser_abbreviate_mailboxes", DT_BOOL, true, 0, NULL,
-    "Abbreviate mailboxes using '~' and '=' in the browser"
-  },
   { "charset", DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, 0, 0, charset_validator,
     "Default character set for displaying text on screen"
   },
@@ -277,9 +274,6 @@ static struct ConfigDef MainVars[] = {
   },
   { "folder", DT_STRING|DT_MAILBOX, IP "~/Mail", 0, NULL,
     "Base folder for a set of mailboxes"
-  },
-  { "folder_format", DT_STRING|DT_NOT_EMPTY|R_MENU, IP "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %i", 0, NULL,
-    "printf-like format string for the browser's display of folders"
   },
   { "force_name", DT_BOOL, false, 0, NULL,
     "Save outgoing mail in a folder of their name"
@@ -376,9 +370,6 @@ static struct ConfigDef MainVars[] = {
   },
   { "markers", DT_BOOL|R_PAGER_FLOW, true, 0, NULL,
     "Display a '+' at the beginning of wrapped lines in the pager"
-  },
-  { "mask", DT_REGEX|DT_REGEX_MATCH_CASE|DT_REGEX_ALLOW_NOT|DT_REGEX_NOSUB, IP "!^\\.[^.]", 0, NULL,
-    "Only display files/dirs matching this regex in the browser"
   },
   { "mbox", DT_STRING|DT_MAILBOX|R_INDEX|R_PAGER, IP "~/mbox", 0, NULL,
     "Folder that receives read emails (see Move)"
@@ -556,9 +547,6 @@ static struct ConfigDef MainVars[] = {
   },
   { "sort_aux", DT_SORT|DT_SORT_REVERSE|DT_SORT_LAST|R_INDEX|R_RESORT|R_RESORT_SUB, SORT_DATE, IP SortAuxMethods, NULL,
     "Secondary sort method for the index"
-  },
-  { "sort_browser", DT_SORT|DT_SORT_REVERSE, SORT_ALPHA, IP SortBrowserMethods, NULL,
-    "Sort method for the browser"
   },
   { "sort_re", DT_BOOL|R_INDEX|R_RESORT|R_RESORT_INIT, true, 0, NULL,
     "Whether $reply_regex must be matched when not $strict_threads"
@@ -757,6 +745,7 @@ static void init_variables(struct ConfigSet *cs)
 #if defined(USE_AUTOCRYPT)
   CONFIG_INIT_VARS(cs, autocrypt);
 #endif
+  CONFIG_INIT_VARS(cs, browser);
   CONFIG_INIT_VARS(cs, compose);
   CONFIG_INIT_VARS(cs, conn);
 #if defined(USE_HCACHE)

@@ -166,7 +166,7 @@ $(PWD)/bcache:
 ###############################################################################
 # libbrowser
 LIBBROWSER=	libbrowser.a
-LIBBROWSEROBJS=	browser/browser.o browser/sort.o
+LIBBROWSEROBJS=	browser/browser.o browser/config.o browser/sort.o
 CLEANFILES+=	$(LIBBROWSER) $(LIBBROWSEROBJS)
 ALLOBJS+=	$(LIBBROWSEROBJS)
 

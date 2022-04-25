@@ -39,9 +39,6 @@ static struct ConfigDef NntpVars[] = {
   { "followup_to_poster", DT_QUAD, MUTT_ASKYES, 0, NULL,
     "(nntp) Reply to the poster if 'poster' is in the 'Followup-To' header"
   },
-  { "group_index_format", DT_STRING|DT_NOT_EMPTY|R_INDEX|R_PAGER, IP "%4C %M%N %5s  %-45.45f %d", 0, NULL,
-    "(nntp) printf-like format string for the browser's display of newsgroups"
-  },
   { "newsgroups_charset", DT_STRING, IP "utf-8", 0, charset_validator,
     "(nntp) Character set of newsgroups' descriptions"
   },
@@ -83,9 +80,6 @@ static struct ConfigDef NntpVars[] = {
   },
   { "show_new_news", DT_BOOL, true, 0, NULL,
     "(nntp) Check for new newsgroups when entering the browser"
-  },
-  { "show_only_unread", DT_BOOL, false, 0, NULL,
-    "(nntp) Only show subscribed newsgroups with unread articles"
   },
   { "x_comment_to", DT_BOOL, false, 0, NULL,
     "(nntp) Add 'X-Comment-To' header that contains article author"
