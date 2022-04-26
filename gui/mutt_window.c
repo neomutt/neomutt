@@ -760,18 +760,27 @@ bool window_status_on_top(struct MuttWindow *panel, struct ConfigSubset *sub)
 {
   const bool c_status_on_top = cs_subset_bool(sub, "status_on_top");
 
-  struct MuttWindow *win_first = TAILQ_FIRST(&panel->children);
+  struct MuttWindow *win = TAILQ_FIRST(&panel->children);
 
-  if ((c_status_on_top && (win_first->type == WT_STATUS_BAR)) ||
-      (!c_status_on_top && (win_first->type != WT_STATUS_BAR)))
+  if ((c_status_on_top && (win->type == WT_STATUS_BAR)) ||
+      (!c_status_on_top && (win->type != WT_STATUS_BAR)))
   {
     return false;
   }
 
-  TAILQ_REMOVE(&panel->children, win_first, entries);
-  TAILQ_INSERT_TAIL(&panel->children, win_first, entries);
+  if (c_status_on_top)
+  {
+    win = TAILQ_LAST(&panel->children, MuttWindowList);
+    TAILQ_REMOVE(&panel->children, win, entries);
+    TAILQ_INSERT_HEAD(&panel->children, win, entries);
+  }
+  else
+  {
+    TAILQ_REMOVE(&panel->children, win, entries);
+    TAILQ_INSERT_TAIL(&panel->children, win, entries);
+  }
 
   mutt_window_reflow(panel);
-  mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
+  window_invalidate_all();
   return true;
 }
