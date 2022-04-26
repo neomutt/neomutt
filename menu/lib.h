@@ -181,7 +181,7 @@ void         menu_cleanup(void);
 enum MenuType menu_get_current_type(void);
 void         menu_init(void);
 
-struct MuttWindow *menu_new_window(enum MenuType type, struct ConfigSubset *sub);
+struct MuttWindow *menu_window_new(enum MenuType type, struct ConfigSubset *sub);
 
 int  menu_get_index(struct Menu *menu);
 MenuRedrawFlags menu_set_index(struct Menu *menu, int index);

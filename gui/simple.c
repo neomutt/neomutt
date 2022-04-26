@@ -132,7 +132,7 @@ struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype,
   dlg->help_menu = mtype;
   dlg->help_data = help_data;
 
-  struct MuttWindow *win_menu = menu_new_window(mtype, NeoMutt->sub);
+  struct MuttWindow *win_menu = menu_window_new(mtype, NeoMutt->sub);
   dlg->focus = win_menu;
   dlg->wdata = win_menu->wdata;
 

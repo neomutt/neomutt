@@ -128,12 +128,12 @@ static void menu_wdata_free(struct MuttWindow *win, void **ptr)
 }
 
 /**
- * menu_new_window - Create a new Menu Window
+ * menu_window_new - Create a new Menu Window
  * @param type Menu type, e.g. #MENU_PAGER
  * @param sub  Config items
  * @retval ptr New MuttWindow wrapping a Menu
  */
-struct MuttWindow *menu_new_window(enum MenuType type, struct ConfigSubset *sub)
+struct MuttWindow *menu_window_new(enum MenuType type, struct ConfigSubset *sub)
 {
   struct MuttWindow *win = mutt_window_new(WT_MENU, MUTT_WIN_ORIENT_VERTICAL,
                                            MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,

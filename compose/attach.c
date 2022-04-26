@@ -230,7 +230,7 @@ static void compose_make_entry(struct Menu *menu, char *buf, size_t buflen, int 
  */
 struct MuttWindow *attach_new(struct MuttWindow *parent, struct ComposeSharedData *shared)
 {
-  struct MuttWindow *win_attach = menu_new_window(MENU_COMPOSE, NeoMutt->sub);
+  struct MuttWindow *win_attach = menu_window_new(MENU_COMPOSE, NeoMutt->sub);
 
   struct ComposeAttachData *adata = attach_data_new(shared->email);
 
