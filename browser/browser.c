@@ -1353,13 +1353,13 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(menu->type);
+    op = km_dokey(MENU_FOLDER);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(menu->type);
+      km_error_key(MENU_FOLDER);
       continue;
     }
     mutt_clear_error();

@@ -688,13 +688,13 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(menu->type);
+    op = km_dokey(MENU_PGP);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(menu->type);
+      km_error_key(MENU_PGP);
       continue;
     }
     mutt_clear_error();

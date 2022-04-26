@@ -406,13 +406,13 @@ static bool dlg_select_query(struct Buffer *buf, struct AliasMenuData *mdata)
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(menu->type);
+    op = km_dokey(MENU_QUERY);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(menu->type);
+      km_error_key(MENU_QUERY);
       continue;
     }
     mutt_clear_error();
