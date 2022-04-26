@@ -54,10 +54,10 @@
  * @ref lib_core, @ref lib_email, @ref lib_enter, @ref lib_envelope,
  * @ref lib_gui, @ref lib_hcache, @ref lib_helpbar, @ref lib_history,
  * @ref lib_imap, @ref lib_index, @ref lib_maildir, @ref lib_mbox,
- * @ref lib_menu, @ref lib_mutt, @ref lib_ncrypt, @ref lib_nntp,
- * @ref lib_notmuch, @ref lib_pager, @ref lib_pattern, @ref lib_pop,
- * @ref lib_progress, @ref lib_question, @ref lib_send, @ref lib_sidebar,
- * @ref lib_store.
+ * @ref lib_menu, @ref lib_mixmaster, @ref lib_mutt, @ref lib_ncrypt,
+ * @ref lib_nntp, @ref lib_notmuch, @ref lib_pager, @ref lib_pattern,
+ * @ref lib_pop, @ref lib_progress, @ref lib_question, @ref lib_send,
+ * @ref lib_sidebar, @ref lib_store.
  *
  * ## Miscellaneous files
  *
@@ -107,7 +107,6 @@
  * | options.h       | @subpage neo_options       |
  * | postpone.c      | @subpage neo_postpone      |
  * | recvcmd.c       | @subpage neo_recvcmd       |
- * | remailer.c      | @subpage neo_remailer      |
  * | resize.c        | @subpage neo_resize        |
  * | rfc3676.c       | @subpage neo_rfc3676       |
  * | score.c         | @subpage neo_score         |

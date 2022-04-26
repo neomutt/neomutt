@@ -1,9 +1,9 @@
 /**
  * @file
- * Support of Mixmaster anonymous remailer
+ * Mixmaster Remailer
  *
  * @authors
- * Copyright (C) 1999-2000 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,24 +20,18 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_REMAILER_H
-#define MUTT_REMAILER_H
+#ifndef MUTT_MIXMASTER_REMAILER_H
+#define MUTT_MIXMASTER_REMAILER_H
 
-#include <stddef.h>
 #include <stdint.h>
-
-struct Email;
-struct ListHead;
-
-/* Mixmaster's maximum chain length.  Don't change this. */
-#define MAX_MIXES 19
+#include "mutt/lib.h"
 
 typedef uint8_t MixCapFlags;       ///< Flags, e.g. #MIX_CAP_NO_FLAGS
 #define MIX_CAP_NO_FLAGS        0  ///< No flags are set
-#define MIX_CAP_COMPRESS  (1 << 0)
-#define MIX_CAP_MIDDLEMAN (1 << 1)
-#define MIX_CAP_NEWSPOST  (1 << 2)
-#define MIX_CAP_NEWSMAIL  (1 << 3)
+#define MIX_CAP_COMPRESS  (1 << 0) ///< Accepts compressed messages
+#define MIX_CAP_MIDDLEMAN (1 << 1) ///< Must be a middle-man (not at the end of a chain)
+#define MIX_CAP_NEWSPOST  (1 << 2) ///< Supports direct posting to Usenet
+#define MIX_CAP_NEWSMAIL  (1 << 3) ///< Supports posting to Usenet through a mail-to-news gateway
 
 /**
  * struct Remailer - A Mixmaster remailer
@@ -50,18 +44,12 @@ struct Remailer
   char *ver;        ///< Version of host
   MixCapFlags caps; ///< Capabilities of host
 };
+ARRAY_HEAD(RemailerArray, struct Remailer *);
 
-/**
- * struct MixChain - A Mixmaster chain
- */
-struct MixChain
-{
-  size_t cl;         ///< Length of chain
-  int ch[MAX_MIXES]; ///< Indexes of chain hosts
-};
+void             remailer_free(struct Remailer **ptr);
+struct Remailer *remailer_new (void);
 
-int mix_send_message(struct ListHead *chain, const char *tempfile);
-int mix_check_message(struct Email *e);
-void dlg_select_mixmaster_chain(struct ListHead *chainhead);
+void                 remailer_clear_hosts(struct RemailerArray *ra);
+struct RemailerArray remailer_get_hosts(void);
 
-#endif /* MUTT_REMAILER_H */
+#endif /* MUTT_MIXMASTER_REMAILER_H */

@@ -68,7 +68,7 @@
 #include <libintl.h>
 #endif
 #ifdef MIXMASTER
-#include "remailer.h"
+#include "mixmaster/lib.h"
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"

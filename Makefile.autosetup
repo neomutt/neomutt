@@ -80,9 +80,6 @@ NEOMUTTOBJS+=	timegm.o
 @if !HAVE_WCSCASECMP
 NEOMUTTOBJS+=	wcscasecmp.o
 @endif
-@if MIXMASTER
-NEOMUTTOBJS+=	remailer.o
-@endif
 @if USE_LUA
 NEOMUTTOBJS+=	mutt_lua.o
 @endif
@@ -526,6 +523,24 @@ $(PWD)/menu:
 	$(MKDIR_P) $(PWD)/menu
 
 ###############################################################################
+# libmixmaster
+@if MIXMASTER
+LIBMIXMASTER=	libmixmaster.a
+LIBMIXMASTEROBJS=	mixmaster/chain_data.o mixmaster/dlg_mixmaster.o \
+		mixmaster/functions.o mixmaster/mixmaster.o \
+		mixmaster/remailer.o mixmaster/win_chain.o \
+		mixmaster/win_hosts.o
+CLEANFILES+=	$(LIBMIXMASTER) $(LIBMIXMASTEROBJS)
+ALLOBJS+=	$(LIBMIXMASTEROBJS)
+
+$(LIBMIXMASTER): $(PWD)/mixmaster $(LIBMIXMASTEROBJS)
+	$(AR) cr $@ $(LIBMIXMASTEROBJS)
+	$(RANLIB) $@
+$(PWD)/mixmaster:
+	$(MKDIR_P) $(PWD)/mixmaster
+@endif
+
+###############################################################################
 # libmutt
 LIBMUTT=	libmutt.a
 LIBMUTTOBJS=	mutt/atoi.o mutt/base64.o mutt/buffer.o mutt/charset.o \
@@ -769,7 +784,7 @@ MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) \
 		$(LIBBROWSER) $(LIBNNTP) $(LIBCOMPMBOX) $(LIBSTORE) \
 		$(LIBPROGRESS) $(LIBQUESTION) $(LIBALIAS) $(LIBSEND) \
 		$(LIBCOMPOSE) $(LIBATTACH) $(LIBGUI) $(LIBENTER) \
-		$(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) $(LIBENVELOPE) \
+		$(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) $(LIBENVELOPE) $(LIBMIXMASTER) \
 		$(LIBHELPBAR) $(LIBMBOX) $(LIBNOTMUCH) $(LIBMAILDIR) \
 		$(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
 		$(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) \
