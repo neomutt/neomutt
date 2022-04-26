@@ -138,19 +138,7 @@ static int compose_config_observer(struct NotifyCallback *nc)
   if (!mutt_str_equal(ev_c->name, "status_on_top"))
     return 0;
 
-  struct MuttWindow *win_cbar = window_find_child(dlg, WT_STATUS_BAR);
-  if (!win_cbar)
-    return 0;
-
-  TAILQ_REMOVE(&dlg->children, win_cbar, entries);
-
-  const bool c_status_on_top = cs_subset_bool(ev_c->sub, "status_on_top");
-  if (c_status_on_top)
-    TAILQ_INSERT_HEAD(&dlg->children, win_cbar, entries);
-  else
-    TAILQ_INSERT_TAIL(&dlg->children, win_cbar, entries);
-
-  mutt_window_reflow(dlg);
+  window_status_on_top(dlg, NeoMutt->sub);
   mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
   return 0;
 }
