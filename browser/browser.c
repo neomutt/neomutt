@@ -2256,7 +2256,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(menu->win, op);
+      rc = global_function_dispatcher(NULL, op);
   } while (rc != FR_DONE);
   // ---------------------------------------------------------------------------
 

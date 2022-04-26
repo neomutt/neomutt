@@ -1548,7 +1548,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(menu->win, op);
+      rc = global_function_dispatcher(NULL, op);
   } while (rc != FR_DONE);
   // ---------------------------------------------------------------------------
 

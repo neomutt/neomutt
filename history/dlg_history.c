@@ -178,7 +178,7 @@ void dlg_select_history(char *buf, size_t buflen, char **matches, int match_coun
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(menu->win, op);
+      rc = global_function_dispatcher(NULL, op);
   } while (rc != FR_DONE);
   // ---------------------------------------------------------------------------
 

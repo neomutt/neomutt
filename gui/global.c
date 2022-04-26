@@ -157,6 +157,8 @@ struct GlobalFunction GlobalFunctions[] = {
 
 /**
  * global_function_dispatcher - Perform a Global function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
+ *
+ * @note @a win is not used
  */
 int global_function_dispatcher(struct MuttWindow *win, int op)
 {

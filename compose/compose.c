@@ -374,7 +374,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(menu->win, op);
+      rc = global_function_dispatcher(NULL, op);
   } while (rc != FR_DONE);
   // ---------------------------------------------------------------------------
 

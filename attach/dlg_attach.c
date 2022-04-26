@@ -502,7 +502,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(menu->win, op);
+      rc = global_function_dispatcher(NULL, op);
 
     if (rc == FR_CONTINUE)
     {

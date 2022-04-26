@@ -421,7 +421,7 @@ static bool dlg_select_query(struct Buffer *buf, struct AliasMenuData *mdata)
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(win_menu, op);
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(win_menu, op);
+      rc = global_function_dispatcher(NULL, op);
   } while ((rc != FR_DONE) && (rc != FR_CONTINUE));
   // ---------------------------------------------------------------------------
 

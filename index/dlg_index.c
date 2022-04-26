@@ -1307,7 +1307,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     }
 #endif
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(dlg, op);
+      rc = global_function_dispatcher(NULL, op);
 
     if (rc == FR_UNKNOWN)
       km_error_key(MENU_INDEX);
