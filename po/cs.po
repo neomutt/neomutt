@@ -1041,12 +1041,12 @@ msgstr "Složka nebyla zadána"
 #: command_parse.c:1389
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
-msgstr ""
+msgstr "formát tagu '%s' je již zapsaný jako '%s'"
 
 #: command_parse.c:1431
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
-msgstr ""
+msgstr "překlad tagu '%s' je již zapsaný jako '%s'"
 
 #: command_parse.c:1678 imap/imap.c:1329
 #, c-format
@@ -1371,9 +1371,8 @@ msgid "You may not delete the only attachment"
 msgstr "Nemůžete smazat jedinou přílohu"
 
 #: compose/functions.c:231 compose/functions.c:423
-#, fuzzy
 msgid "Can't leave group with only one attachment"
-msgstr "Nelze opustit skupinu s pouse jednou přílohou"
+msgstr "Nelze nechat skupinu příloh s pouse jednou přílohou"
 
 #: compose/functions.c:391 compose/functions.c:405
 msgid "Attachments to be grouped must have the same parent"
