@@ -32,13 +32,22 @@
 
 #include "config.h"
 #include <stddef.h>
+#include <stdint.h>
 #include <lmdb.h>
 #include "mutt/lib.h"
 #include "lib.h"
 
 /** The maximum size of the database file (2GiB).
  * The file is mmap(2)'d into memory. */
+#if (UINTPTR_MAX == 0xffffffff)
+// 32-bit, limit to 2GiB
 const size_t LMDB_DB_SIZE = 2147483648;
+#elif (UINTPTR_MAX == 0xffffffffffffffff)
+// 64 bit, limit to 100GiB
+const size_t LMDB_DB_SIZE = 107374182400;
+#else
+#error
+#endif
 
 /**
  * enum MdbTxnMode - LMDB transaction state
