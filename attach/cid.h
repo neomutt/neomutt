@@ -26,6 +26,8 @@
 #include "config.h"
 #include "mutt/lib.h"
 
+struct Body;
+
 /**
  * struct CidMap - List of Content-ID to filename mappings
  */
@@ -40,5 +42,7 @@ STAILQ_HEAD(CidMapList, CidMap);
 void           cid_map_free        (struct CidMap **ptr);
 struct CidMap *cid_map_new         (const char *cid, const char *filename);
 void           cid_map_list_clear  (struct CidMapList *cid_map_list);
+void           cid_save_attachments(struct Body *body,
+                                    struct CidMapList *cid_map_list);
 
 #endif /* MUTT_ATTACH_CID_H */
