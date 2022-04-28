@@ -61,5 +61,4 @@ int alias_function_dispatcher(struct MuttWindow *win, int op);
 bool alias_to_addrlist(struct AddressList *al, struct Alias *alias);
 int query_run(const char *s, bool verbose, struct AliasList *al, const struct ConfigSubset *sub);
 
-
 #endif /* MUTT_ALIAS_FUNCTIONS_H */
