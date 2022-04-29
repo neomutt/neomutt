@@ -1,3 +1,33 @@
+2022-04-29  Richard Russon  <rich@flatcap.org>
+* Bug Fixes
+  - Do not crash on an invalid use_threads/sort combination
+  - Fix: stuck browser cursor
+  - Resolve (move) the cursor after <edit-label>
+  - Index: fix menu size on new mail
+  - Don't overlimit LMDB mmap size
+  - OpenBSD y/n translation fix
+  - Generic: split out OP_EXIT binding
+  - Fix parsing of sendmail cmd
+  - Fix: crash with menu_move_off=no
+  - Newsrc: bugfix; nntp_user and nntp_pass ignored
+  - Menu: ensure config changes cause a repaint
+  - Mbox: fix sync duplicates
+  - Make sure the index redraws all that's needed
+* Translations
+  - 100% Chinese (Simplified)
+  - 100% Czech
+  - 100% German
+  - 100% Hungarian
+  - 100% Lithuanian
+  - 100% Serbian
+  - 100% Turkish
+* Docs
+  - add missing pattern modifier ~I for external_search_command
+* Code
+  - menu: eliminate custom_redraw()
+  - modernise mixmaster
+  - Kill global and Propagate display attach status through State
+
 2022-04-15  Richard Russon  <rich@flatcap.org>
 * Security
   - Fix uudecode buffer overflow (CVE-2022-1328)
