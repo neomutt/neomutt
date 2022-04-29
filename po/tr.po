@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2022-04-23 12:03+0100\n"
+"POT-Creation-Date: 2022-04-29 12:31+0100\n"
 "PO-Revision-Date: 2022-04-21 23:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
@@ -415,14 +415,14 @@ msgstr "Şifrelenmiş ileti çözülemiyor"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:75 main.c:931
+#: autocrypt/autocrypt.c:75 main.c:930
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s yok. Oluşturulsun mu?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:935
+#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:934
 #: nntp/newsrc.c:1101
 #, c-format
 msgid "Can't create %s: %s"
@@ -540,7 +540,7 @@ msgstr "Oluştur"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
-#: autocrypt/dlg_autocrypt.c:105 remailer.c:103
+#: autocrypt/dlg_autocrypt.c:105 mixmaster/dlg_mixmaster.c:84
 msgid "Delete"
 msgstr "Sil"
 
@@ -696,7 +696,7 @@ msgstr "Aboneliği iptal et"
 msgid "Catchup"
 msgstr "Yakala"
 
-#: browser/browser.c:633 browser/browser.c:1525 browser/browser.c:1798
+#: browser/browser.c:633 browser/browser.c:1519 browser/browser.c:1792
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s bir dizin değil"
@@ -730,93 +730,93 @@ msgstr "Dizin [%s], Dosya maskesi: %s"
 msgid "Can't attach a directory"
 msgstr "Bir dizin eklenemez"
 
-#: browser/browser.c:1380 browser/browser.c:1871 browser/browser.c:2036
+#: browser/browser.c:1374 browser/browser.c:1865 browser/browser.c:2031
 msgid "No files match the file mask"
 msgstr "Dosya maskesine uyan dosya yok"
 
-#: browser/browser.c:1605
+#: browser/browser.c:1599
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "Oluşturma yalnızca IMAP posta kutuları için destekleniyor"
 
-#: browser/browser.c:1633
+#: browser/browser.c:1627
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Yeniden adlandırma yalnızca IMAP posta kutuları için destekleniyor"
 
-#: browser/browser.c:1659
+#: browser/browser.c:1653
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Silme yalnızca IMAP posta kutuları için destekleniyor"
 
-#: browser/browser.c:1670
+#: browser/browser.c:1664
 msgid "Can't delete currently selected mailbox"
 msgstr "Seçili posta kutusu silinemez"
 
-#: browser/browser.c:1674
+#: browser/browser.c:1668
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "\"%s\" posta kutusu gerçekten silinsin mi?"
 
-#: browser/browser.c:1684
+#: browser/browser.c:1678
 msgid "Mailbox deleted"
 msgstr "Posta kutusu silindi"
 
-#: browser/browser.c:1689
+#: browser/browser.c:1683
 msgid "Mailbox deletion failed"
 msgstr "Posta kutusu silinemedi"
 
-#: browser/browser.c:1694
+#: browser/browser.c:1688
 msgid "Mailbox not deleted"
 msgstr "Posta kutusu silinmedi"
 
-#: browser/browser.c:1722
+#: browser/browser.c:1716
 msgid "Chdir to: "
 msgstr "Dizine geç: "
 
-#: browser/browser.c:1786 browser/browser.c:1865
+#: browser/browser.c:1780 browser/browser.c:1859
 msgid "Error scanning directory"
 msgstr "Dizin taranırken hata"
 
-#: browser/browser.c:1816
+#: browser/browser.c:1810
 msgid "File Mask: "
 msgstr "Dosya Maskesi: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser/browser.c:1887
+#: browser/browser.c:1881
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Tersine sırala: (t)arih, (a)bc, (b)oyut, açıkla(m)a, (s)ayım, y(e)ni veya (y)ok?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser/browser.c:1889
+#: browser/browser.c:1883
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Sırala: (t)arih, (a)bc, (b)oyut, açıkla(m)a, (s)ayım, y(e)ni veya (y)ok?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser/browser.c:1891
+#: browser/browser.c:1885
 msgid "dazecwn"
 msgstr "tabmsey"
 
-#: browser/browser.c:2020
+#: browser/browser.c:2015
 msgid "New file name: "
 msgstr "Yeni dosya adı: "
 
-#: browser/browser.c:2054
+#: browser/browser.c:2049
 msgid "Can't view a directory"
 msgstr "Bir dizin görüntülenemez"
 
-#: browser/browser.c:2071
+#: browser/browser.c:2066
 msgid "Error trying to view file"
 msgstr "Dosyayı görüntülemeye çalışırken hata"
 
-#: browser/browser.c:2165
+#: browser/browser.c:2160
 #, c-format
 msgid "Subscribe pattern: "
 msgstr "Abone olma dizgisi: "
 
-#: browser/browser.c:2167
+#: browser/browser.c:2162
 #, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Aboneliği iptal dizgisi: "
 
-#: browser/browser.c:2192
+#: browser/browser.c:2187
 msgid "No newsgroups match the mask"
 msgstr "Hiçbir haber grubu maske ile eşleşmiyor"
 
@@ -1289,7 +1289,7 @@ msgstr "Hata. Geçici dosya korunuyor: %s"
 msgid "Send"
 msgstr "Gönder"
 
-#: compose/compose.c:97 compose/compose.c:116 remailer.c:104
+#: compose/compose.c:97 compose/compose.c:116 mixmaster/dlg_mixmaster.c:85
 msgid "Abort"
 msgstr "İptal"
 
@@ -1377,7 +1377,7 @@ msgstr "Eklenecek iletileri içeren posta kutusunu açın"
 msgid "Open newsgroup to attach message from"
 msgstr "Eklenecek iletileri içeren haber grubunu açın"
 
-#: compose/functions.c:752 main.c:1366
+#: compose/functions.c:752 main.c:1365
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "%s posta kutusu açılamıyor"
@@ -3412,11 +3412,11 @@ msgid "Writing %s..."
 msgstr "%s yazılıyor..."
 
 #. L10N: Try to limit to 80 columns
-#: main.c:270
+#: main.c:269
 msgid "usage:"
 msgstr "kullanım:"
 
-#: main.c:271
+#: main.c:270
 msgid ""
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
@@ -3426,7 +3426,7 @@ msgstr ""
 "          [-b <adres>] [-c <adres>] [-s <konu>] [-a <dosya> [...] --]\n"
 "          <adres> [...]"
 
-#: main.c:274
+#: main.c:273
 msgid ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
@@ -3434,60 +3434,60 @@ msgstr ""
 "  neomutt [-nx] [-e <komut>] [-F <yapılandırma>] [-b <adres>] [-c <adres>]\n"
 "          [-s <konu>] [-a <dosya> [...] --] <adres> [...] < message"
 
-#: main.c:276
+#: main.c:275
 msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
 msgstr "  neomutt [-nRy] [-e <komut>] [-F <yapılandırma>] [-f <postakutusu>] [-m <tür>]"
 
-#: main.c:277
+#: main.c:276
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
 msgstr "  neomutt [-n] [-e <komut>] [-F <yapılandırma>] -A <arma>"
 
-#: main.c:278
+#: main.c:277
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
 msgstr "  neomutt [-n] [-e <komut>] [-F <yapılandırma>] -B"
 
-#: main.c:279
+#: main.c:278
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
 msgstr "  neomutt [-n] [-e <komut>] [-F <yapılandırma>] -D [-S] [-O]"
 
-#: main.c:280
+#: main.c:279
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
 msgstr "  neomutt [-n] [-e <komut>] [-F <yapılandırma>] -d <düzey> -l <dosya>"
 
-#: main.c:281
+#: main.c:280
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
 msgstr "  neomutt [-n] [-e <komut>] [-F <yapılandırma>] -G"
 
-#: main.c:282
+#: main.c:281
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
 msgstr "  neomutt [-n] [-e <komut>] [-F <yapılandırma>] -g <sunucu>"
 
-#: main.c:283
+#: main.c:282
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
 msgstr "  neomutt [-n] [-e <komut>] [-F <yapılandırma>] -p"
 
-#: main.c:284
+#: main.c:283
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
 msgstr "  neomutt [-n] [-e <komut>] [-F <yapılandırma>] -Q <değişken> [-O]"
 
-#: main.c:285
+#: main.c:284
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
 msgstr "  neomutt [-n] [-e <komut>] [-F <yapılandırma>] -Z"
 
-#: main.c:286
+#: main.c:285
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
 msgstr "  neomutt [-n] [-e <komut>] [-F <yapılandırma>] -z [-f <postakutusu>]"
 
-#: main.c:287
+#: main.c:286
 msgid "  neomutt -v[v]\n"
 msgstr "  neomutt -v[v]\n"
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
-#: main.c:290
+#: main.c:289
 msgid "options:"
 msgstr "seçenekler:"
 
-#: main.c:291
+#: main.c:290
 msgid ""
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 "                remaining arguments as addresses even if they start with a dash"
@@ -3496,11 +3496,11 @@ msgstr ""
 "                  kalan argümanları tireyle başlasa bile adres gibi görmesini\n"
 "                  sağlar"
 
-#: main.c:293
+#: main.c:292
 msgid "  -A <alias>    Print an expanded version of the given alias to stdout and exit"
 msgstr "  -A <arma>     Verilen armanın uzun sürümünü stdout'a yazdır ve çık"
 
-#: main.c:294
+#: main.c:293
 msgid ""
 "  -a <file>     Attach one or more files to a message (must be the last option)\n"
 "                Add any addresses after the '--' argument"
@@ -3508,33 +3508,33 @@ msgstr ""
 "  -a <dosya>    İletiye bir/birden çok dosya iliştir (son seçenek olmalıdır)\n"
 "                '--' argümanından sonra herhangi bir adresi ekle"
 
-#: main.c:296
+#: main.c:295
 msgid "  -B            Run in batch mode (do not start the ncurses UI)"
 msgstr "  -B            Toplu iş kipinde çalıştır (ncurses arabirimini çalıştırma)"
 
-#: main.c:297
+#: main.c:296
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <adres>    Bir gizli karbon kopya (Bcc) alıcısı belirt"
 
-#: main.c:298
+#: main.c:297
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
 msgstr "  -c <adres>    Bir karbon kopya (Cc) alıcısı belirt"
 
-#: main.c:299
+#: main.c:298
 msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
 msgstr ""
 "  -D            Tüm yapılandırma değişkenlerini 'ad=değer' ikilisi olarak\n"
 "                  stdout'a boşalt"
 
-#: main.c:300
+#: main.c:299
 msgid "  -D -O         Like -D, but show one-liner documentation"
 msgstr "  -D -O         -D gibi; ancak tek satırlık belgelendirme göster"
 
-#: main.c:301
+#: main.c:300
 msgid "  -D -S         Like -D, but hide the value of sensitive variables"
 msgstr "  -D -S         -D gibi; ancak hassas değişkenlerin değerini gizle"
 
-#: main.c:302
+#: main.c:301
 msgid ""
 "  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
 "                The level can range from 1-5 and affects verbosity"
@@ -3543,49 +3543,49 @@ msgstr ""
 "                  (öntanımlı: \"~/.neomuttdebug0\")\n"
 "                  Düzey: 1-5 arası, buna göre açıklama derecesi ayarlanır"
 
-#: main.c:304
+#: main.c:303
 msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
 msgstr "  -E            Taslağı düzenle (-H) veya ileti oluşturma sırasında içer (-i)"
 
-#: main.c:305
+#: main.c:304
 msgid "  -e <command>  Specify a command to be run after reading the config files"
 msgstr "  -e <komut>    Yapılandırma dosyasını okuyup çalıştırılacak bir komut belirt"
 
-#: main.c:306
+#: main.c:305
 msgid "  -F <config>   Specify an alternative initialization file to read"
 msgstr "  -F <yapıl.>   Okunacak alternatif bir ilklendirme dosyası belirt"
 
-#: main.c:307
+#: main.c:306
 msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
 msgstr "  -f <postak.>  Yüklenecek posta kutusu belirt ('mailboxes' komutuna göre)"
 
-#: main.c:308
+#: main.c:307
 msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
 msgstr "  -G            NeoMutt'ı abone haber gruplarının bir listesiyle başlat"
 
-#: main.c:309
+#: main.c:308
 msgid "  -g <server>   Like -G, but start at specified news server"
 msgstr "  -g <sunucu>   -G gibi; ancak belirtilen haber sunucusunda başlat"
 
-#: main.c:310
+#: main.c:309
 msgid "  -H <draft>    Specify a draft file with header and body for message composing"
 msgstr "  -H <taslak>   İleti oluşturma için üstbilgi ve gövdeden oluşan bir taslak belirt"
 
-#: main.c:311
+#: main.c:310
 msgid "  -h            Print this help message and exit"
 msgstr "  -h            Bu yardım iletisini yazdır ve çık"
 
-#: main.c:312
+#: main.c:311
 msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
 msgstr "  -i <içer>     İletinin gövdesine gömülecek bir içerme dosyası belirt"
 
-#: main.c:313
+#: main.c:312
 msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
 msgstr ""
 "  -l <dosya>    Hata ayıklama çıktısı için bir dosya belirt\n"
 "                  (öntanımlı: \"~/.neomuttdebug0\")"
 
-#: main.c:314
+#: main.c:313
 msgid ""
 "  -m <type>     Specify a default mailbox format type for newly created folders\n"
 "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
@@ -3594,15 +3594,15 @@ msgstr ""
 "                  belirt. Tür NH, MMDF, Maildir veya mbox (BÜYÜK/küçük harf\n"
 "                  duyarsız) olabilir"
 
-#: main.c:316
+#: main.c:315
 msgid "  -n            Do not read the system-wide configuration file"
 msgstr "  -n            Sistem geneli yapılandırma dosyasını okuma"
 
-#: main.c:317
+#: main.c:316
 msgid "  -p            Resume a prior postponed message, if any"
 msgstr "  -p            Daha önceden ertelenen bir ileti varsa sürdür"
 
-#: main.c:318
+#: main.c:317
 msgid ""
 "  -Q <variable> Query a configuration variable and print its value to stdout\n"
 "                (after the config has been read and any commands executed)\n"
@@ -3612,27 +3612,27 @@ msgstr ""
 "                  (yapılandırma dosyası okunduktan ve komutların çalışmasından\n"
 "                  sonra); tek satırlık belgelendirme için -O ekle"
 
-#: main.c:321
+#: main.c:320
 msgid "  -R            Open mailbox in read-only mode"
 msgstr "  -R            Posta kutusunu saltokunur kipte aç"
 
-#: main.c:322
+#: main.c:321
 msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
 msgstr "  -s <konu>     Bir konu belirt (boşluk varsa tırnak içinde olmalıdır)"
 
-#: main.c:323
+#: main.c:322
 msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
 msgstr "  -v            NeoMutt sürümünü ve derleme tanımlarını yazdırıp çık"
 
-#: main.c:324
+#: main.c:323
 msgid "  -vv           Print the NeoMutt license and copyright information and exit"
 msgstr "  -vv           NeoMutt lisansını ve telif hakkı bilgisini yazdırıp çık"
 
-#: main.c:325
+#: main.c:324
 msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
 msgstr "  -y            NeoMutt'ı tüm tanımlı posta kutularının bir listesiyle başlat"
 
-#: main.c:326
+#: main.c:325
 msgid ""
 "  -Z            Open the first mailbox with new message or exit immediately with\n"
 "                exit code 1 if none is found in all defined mailboxes"
@@ -3640,7 +3640,7 @@ msgstr ""
 "  -Z            Yeni ileti içeren ilk posta kutusunu aç veya tanımlı posta\n"
 "                  kutularında yeni ileti yoksa 1 çıkış koduyla çık"
 
-#: main.c:328
+#: main.c:327
 msgid ""
 "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
 "                or exit immediately with exit code 1 otherwise"
@@ -3648,54 +3648,54 @@ msgstr ""
 "  -z            İleti varsa ilk veya tanımlanan (-f) posta kutusunu aç veya bir\n"
 "                  ileti yoksa 1 çıkış koduyla çık"
 
-#: main.c:351
+#: main.c:350
 msgid "Error initializing terminal"
 msgstr "Uçbirim ilklendirilirken hata"
 
-#: main.c:421
+#: main.c:420
 msgid "unable to determine username"
 msgstr "kullanıcı adı belirlenemiyor"
 
-#: main.c:427
+#: main.c:426
 msgid "unable to determine home directory"
 msgstr "ev dizini belirlenemiyor"
 
-#: main.c:727
+#: main.c:726
 #, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Hata: '%s' değeri -d için geçersiz"
 
-#: main.c:986
+#: main.c:985
 msgid "Failed to parse mailto: link"
 msgstr "mailto: ayrıştırılamadı: link"
 
-#: main.c:999 main.c:1256 send/send.c:293 send/send.c:2765 send/send.c:2769
+#: main.c:998 main.c:1255 send/send.c:293 send/send.c:2765 send/send.c:2769
 msgid "No recipients specified"
 msgstr "Herhangi bir alıcı belirtilmemiş"
 
-#: main.c:1028
+#: main.c:1027
 msgid "Can't use -E flag with stdin"
 msgstr "-E bayrağı stdin ile kullanılamaz"
 
-#: main.c:1112
+#: main.c:1111
 #, c-format
 msgid "Can't parse message template: %s"
 msgstr "İleti şablonu ayrıştırılamıyor: %s"
 
-#: main.c:1178 mutt_header.c:335
+#: main.c:1177 mutt_header.c:335
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: Dosya eklenemiyor"
 
-#: main.c:1270
+#: main.c:1269
 msgid "No mailbox with new mail"
 msgstr "Yeni posta içeren bir posta kutusu yok"
 
-#: main.c:1295
+#: main.c:1294
 msgid "No incoming mailboxes defined"
 msgstr "Gelen iletileri alacak posta kutuları tanımlanmamış"
 
-#: main.c:1347
+#: main.c:1346
 msgid "Mailbox is empty"
 msgstr "Posta kutusu boş"
 
@@ -3793,6 +3793,70 @@ msgstr "İmleme desteklenmiyor"
 #: menu/tagging.c:148
 msgid "No tagged entries"
 msgstr "İmli öge yok"
+
+#: mixmaster/dlg_mixmaster.c:82
+msgid "Append"
+msgstr "İliştir"
+
+#: mixmaster/dlg_mixmaster.c:83
+msgid "Insert"
+msgstr "Ekle"
+
+#: mixmaster/dlg_mixmaster.c:86
+msgid "OK"
+msgstr "TAMAM"
+
+#: mixmaster/dlg_mixmaster.c:153
+msgid "Select a remailer chain"
+msgstr "Bir postacı (remailer) zinciri seçin"
+
+#: mixmaster/dlg_mixmaster.c:190
+msgid "Can't get mixmaster's type2.list"
+msgstr "\"mixmaster\" type2.list alınamıyor"
+
+#: mixmaster/mixmaster.c:57
+msgid "Mixmaster doesn't accept Cc or Bcc headers"
+msgstr "Mixmaster Cc veya Bcc başlıklarını kabul etmez"
+
+#: mixmaster/mixmaster.c:82
+msgid "Please set the hostname variable to a proper value when using mixmaster"
+msgstr "Lütfen mixmaster kullanırken yerel makina adını uygun şekilde ayarlayın"
+
+#: mixmaster/mixmaster.c:125
+#, c-format
+msgid "Error sending message, child exited %d\n"
+msgstr "İleti gönderilirken hata oluştu, alt süreç %d ile sonlandı.\n"
+
+#: mixmaster/mixmaster.c:129
+msgid "Error sending message"
+msgstr "İleti gönderilirken hata oluştu"
+
+#: mixmaster/remailer.c:148
+msgid "<random>"
+msgstr "<rastgele>"
+
+#: mixmaster/win_chain.c:295
+msgid "You already have the last chain element selected"
+msgstr "Zincirin zaten son elemanını seçmiş durumdasınız"
+
+#: mixmaster/win_chain.c:321
+msgid "You already have the first chain element selected"
+msgstr "Zincirin zaten ilk elemanını seçmiş durumdasınız"
+
+#. L10N The '%d' here hard-coded to 19
+#: mixmaster/win_chain.c:372
+#, c-format
+msgid "Mixmaster chains are limited to %d elements"
+msgstr "Mixmaster zincirleri %d sayıda ögeyle sınırlandırılmıştır"
+
+#: mixmaster/win_chain.c:404
+msgid "The remailer chain is already empty"
+msgstr "Postacı zinciri zaten boş"
+
+#: mixmaster/win_chain.c:434
+#, c-format
+msgid "Error: %s can't be used as the final remailer of a chain"
+msgstr "Hata: %s, zincirdeki son postacı olarak kullanılamaz"
 
 #: mutt/file.c:662
 #, c-format
@@ -7131,70 +7195,6 @@ msgstr "İmli eklerin tümü çözülemiyor. Kalanlar MIME ile sarmalanmış ola
 msgid "You may only compose to sender with message/rfc822 parts"
 msgstr "Yalnızca message/rfc822 bölümleriyle göndericiye yazabilirsiniz"
 
-#: remailer.c:101
-msgid "Append"
-msgstr "İliştir"
-
-#: remailer.c:102
-msgid "Insert"
-msgstr "Ekle"
-
-#: remailer.c:105
-msgid "OK"
-msgstr "TAMAM"
-
-#: remailer.c:244
-msgid "<random>"
-msgstr "<rastgele>"
-
-#: remailer.c:659
-msgid "Can't get mixmaster's type2.list"
-msgstr "\"mixmaster\" type2.list alınamıyor"
-
-#: remailer.c:710
-msgid "Select a remailer chain"
-msgstr "Bir postacı (remailer) zinciri seçin"
-
-#: remailer.c:790
-#, c-format
-msgid "Error: %s can't be used as the final remailer of a chain"
-msgstr "Hata: %s, zincirdeki son postacı olarak kullanılamaz"
-
-#. L10N The '%d' here hard-coded to 19
-#: remailer.c:821
-#, c-format
-msgid "Mixmaster chains are limited to %d elements"
-msgstr "Mixmaster zincirleri %d sayıda ögeyle sınırlandırılmıştır"
-
-#: remailer.c:844
-msgid "The remailer chain is already empty"
-msgstr "Postacı zinciri zaten boş"
-
-#: remailer.c:854
-msgid "You already have the first chain element selected"
-msgstr "Zincirin zaten ilk elemanını seçmiş durumdasınız"
-
-#: remailer.c:864
-msgid "You already have the last chain element selected"
-msgstr "Zincirin zaten son elemanını seçmiş durumdasınız"
-
-#: remailer.c:913
-msgid "Mixmaster doesn't accept Cc or Bcc headers"
-msgstr "Mixmaster Cc veya Bcc başlıklarını kabul etmez"
-
-#: remailer.c:938
-msgid "Please set the hostname variable to a proper value when using mixmaster"
-msgstr "Lütfen mixmaster kullanırken yerel makina adını uygun şekilde ayarlayın"
-
-#: remailer.c:981
-#, c-format
-msgid "Error sending message, child exited %d\n"
-msgstr "İleti gönderilirken hata oluştu, alt süreç %d ile sonlandı.\n"
-
-#: remailer.c:985
-msgid "Error sending message"
-msgstr "İleti gönderilirken hata oluştu"
-
 #: score.c:146
 msgid "Error: score: invalid number"
 msgstr "Hata: Puan: Geçersiz sayı"
@@ -7416,12 +7416,12 @@ msgstr "\"resent-from\" hazırlanırken hatalı IDN %s"
 msgid "$sendmail must be set in order to send mail"
 msgstr "E-posta gönderebilmek için $sendmail ayarlı olmalıdır"
 
-#: send/sendmail.c:437
+#: send/sendmail.c:438
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "İleti gönderilirken hata oluştu, alt süreç %d ile sonlandı (%s)"
 
-#: send/sendmail.c:449
+#: send/sendmail.c:450
 msgid "Output of the delivery process"
 msgstr "Teslim sürecinin ürettiği çıktı"
 
