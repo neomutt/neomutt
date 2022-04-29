@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2022-04-23 12:03+0100\n"
-"PO-Revision-Date: 2021-12-12 06:27+0000\n"
+"POT-Creation-Date: 2022-04-29 12:31+0100\n"
+"PO-Revision-Date: 2022-04-23 12:04+0000\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -269,7 +269,7 @@ msgstr "从已签名的信件中删除附件可能导致签名失效"
 
 #: attach/functions.c:243 attach/functions.c:259
 msgid "Only deletion of multipart attachments is supported"
-msgstr "只支持删除多段附件"
+msgstr "只支持删除多部分附件"
 
 #: attach/functions.c:569 index/functions.c:2575
 msgid "Reply by mail as poster prefers?"
@@ -417,14 +417,14 @@ msgstr "无法解密加密信件"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:75 main.c:931
+#: autocrypt/autocrypt.c:75 main.c:930
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s 不存在。创建它吗？"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:935
+#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:934
 #: nntp/newsrc.c:1101
 #, c-format
 msgid "Can't create %s: %s"
@@ -542,7 +542,7 @@ msgstr "创建"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
-#: autocrypt/dlg_autocrypt.c:105 remailer.c:103
+#: autocrypt/dlg_autocrypt.c:105 mixmaster/dlg_mixmaster.c:84
 msgid "Delete"
 msgstr "删除"
 
@@ -698,7 +698,7 @@ msgstr "退订"
 msgid "Catchup"
 msgstr "跟上"
 
-#: browser/browser.c:633 browser/browser.c:1525 browser/browser.c:1798
+#: browser/browser.c:633 browser/browser.c:1519 browser/browser.c:1792
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s 不是目录"
@@ -732,93 +732,93 @@ msgstr "目录 [%s], 文件掩码：%s"
 msgid "Can't attach a directory"
 msgstr "无法附加目录"
 
-#: browser/browser.c:1380 browser/browser.c:1871 browser/browser.c:2036
+#: browser/browser.c:1374 browser/browser.c:1865 browser/browser.c:2031
 msgid "No files match the file mask"
 msgstr "没有文件与文件掩码相符"
 
-#: browser/browser.c:1605
+#: browser/browser.c:1599
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "只有 IMAP 信箱才支持创建"
 
-#: browser/browser.c:1633
+#: browser/browser.c:1627
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "只有 IMAP 信箱才支持重命名"
 
-#: browser/browser.c:1659
+#: browser/browser.c:1653
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "只有 IMAP 信箱才支持删除"
 
-#: browser/browser.c:1670
+#: browser/browser.c:1664
 msgid "Can't delete currently selected mailbox"
 msgstr "无法删除当前选中的信箱"
 
-#: browser/browser.c:1674
+#: browser/browser.c:1668
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "真的要删除 \"%s\" 信箱吗？"
 
-#: browser/browser.c:1684
+#: browser/browser.c:1678
 msgid "Mailbox deleted"
 msgstr "信箱已删除"
 
-#: browser/browser.c:1689
+#: browser/browser.c:1683
 msgid "Mailbox deletion failed"
 msgstr "信箱删除失败"
 
-#: browser/browser.c:1694
+#: browser/browser.c:1688
 msgid "Mailbox not deleted"
 msgstr "信箱未删除"
 
-#: browser/browser.c:1722
+#: browser/browser.c:1716
 msgid "Chdir to: "
 msgstr "改变目录到："
 
-#: browser/browser.c:1786 browser/browser.c:1865
+#: browser/browser.c:1780 browser/browser.c:1859
 msgid "Error scanning directory"
 msgstr "扫描目录出错"
 
-#: browser/browser.c:1816
+#: browser/browser.c:1810
 msgid "File Mask: "
 msgstr "文件掩码："
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser/browser.c:1887
+#: browser/browser.c:1881
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "按日期(d)，字母表(a)，大小(z),描述(e),计数(c),新件(w)反向排序或不反向排序(n)?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser/browser.c:1889
+#: browser/browser.c:1883
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "按日期(d)，字母表(a)，大小(z),描述(e),计数(c),新件(w)排序或不排序(n)?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser/browser.c:1891
+#: browser/browser.c:1885
 msgid "dazecwn"
 msgstr "dazecwn"
 
-#: browser/browser.c:2020
+#: browser/browser.c:2015
 msgid "New file name: "
 msgstr "新文件名："
 
-#: browser/browser.c:2054
+#: browser/browser.c:2049
 msgid "Can't view a directory"
 msgstr "无法显示目录"
 
-#: browser/browser.c:2071
+#: browser/browser.c:2066
 msgid "Error trying to view file"
 msgstr "尝试显示文件出错"
 
-#: browser/browser.c:2165
+#: browser/browser.c:2160
 #, c-format
 msgid "Subscribe pattern: "
 msgstr "订阅模式："
 
-#: browser/browser.c:2167
+#: browser/browser.c:2162
 #, c-format
 msgid "Unsubscribe pattern: "
 msgstr "退订模式："
 
-#: browser/browser.c:2192
+#: browser/browser.c:2187
 msgid "No newsgroups match the mask"
 msgstr "没有新闻组与掩码相符"
 
@@ -873,7 +873,7 @@ msgstr "%s：无效数字：%s"
 #: color/curses.c:93
 #, c-format
 msgid "Too many colors: %d / %d"
-msgstr ""
+msgstr "颜色过多：%d / %d"
 
 #: color/quoted.c:108
 #, c-format
@@ -1028,12 +1028,12 @@ msgstr "没有指定文件夹"
 #: command_parse.c:1389
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
-msgstr ""
+msgstr "标签格式 '%s' 已被注册为 '%s'"
 
 #: command_parse.c:1431
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
-msgstr ""
+msgstr "标签变换 '%s' 已被注册为 '%s'"
 
 #: command_parse.c:1678 imap/imap.c:1329
 #, c-format
@@ -1285,7 +1285,7 @@ msgstr "错误。保留临时文件：%s"
 msgid "Send"
 msgstr "寄出"
 
-#: compose/compose.c:97 compose/compose.c:116 remailer.c:104
+#: compose/compose.c:97 compose/compose.c:116 mixmaster/dlg_mixmaster.c:85
 msgid "Abort"
 msgstr "中止"
 
@@ -1347,13 +1347,12 @@ msgid "You may not delete the only attachment"
 msgstr "您不可以删除唯一的附件"
 
 #: compose/functions.c:231 compose/functions.c:423
-#, fuzzy
 msgid "Can't leave group with only one attachment"
-msgstr "您不可以删除唯一的附件"
+msgstr "组合内的附件不能少于两个"
 
 #: compose/functions.c:391 compose/functions.c:405
 msgid "Attachments to be grouped must have the same parent"
-msgstr ""
+msgstr "要组合的附件必须在同一级"
 
 #: compose/functions.c:612
 msgid "Attaching selected file..."
@@ -1373,7 +1372,7 @@ msgstr "打开信箱并从中附加信件"
 msgid "Open newsgroup to attach message from"
 msgstr "打开新闻组并从中附加信件"
 
-#: compose/functions.c:752 main.c:1366
+#: compose/functions.c:752 main.c:1365
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "无法打开信箱 %s"
@@ -1392,7 +1391,7 @@ msgstr "无法附加"
 
 #: compose/functions.c:907
 msgid "Content-ID can only contain the characters: -.0-9@A-Z_a-z"
-msgstr ""
+msgstr "Content-ID 只能包含这些字符：-.0-9@A-Z_a-z"
 
 #: compose/functions.c:987
 msgid "Invalid encoding"
@@ -1403,14 +1402,12 @@ msgid "Empty 'Content-Language'"
 msgstr "空的 'Content-Language'"
 
 #: compose/functions.c:1088
-#, fuzzy
 msgid "Can't filter multipart attachments"
-msgstr "只支持删除多段附件"
+msgstr "无法过滤多部分附件"
 
 #: compose/functions.c:1123
-#, fuzzy
 msgid "Can't get multipart attachments"
-msgstr "只支持删除多段附件"
+msgstr "无法获取多部分附件"
 
 #: compose/functions.c:1145
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
@@ -1429,9 +1426,8 @@ msgid "Not sending this message"
 msgstr "未发送此信件"
 
 #: compose/functions.c:1188
-#, fuzzy
 msgid "Grouping 'related' requires at least 2 tagged messages"
-msgstr "组合备选部分需要至少标记两个信件"
+msgstr "组合关联部分需要至少标记两个信件"
 
 #: compose/functions.c:1227 compose/functions.c:1246
 msgid "Attachment is already at bottom"
@@ -1439,7 +1435,7 @@ msgstr "附件已在底部"
 
 #: compose/functions.c:1233 compose/functions.c:1286
 msgid "Attachment can't be moved out of group"
-msgstr ""
+msgstr "附件无法从组中移除"
 
 #: compose/functions.c:1281
 msgid "Attachment is already at top"
@@ -1468,18 +1464,16 @@ msgid "What we have here is a failure to make an attachment"
 msgstr "目前情况是我们无法加上附件"
 
 #: compose/functions.c:1399
-#, fuzzy
 msgid "Can't print multipart attachments"
-msgstr "打印已标记的 %d 个附件？"
+msgstr "无法打印多部分附件"
 
 #: compose/functions.c:1424
 msgid "Send attachment with name: "
 msgstr "使用什么名字发送附件："
 
 #: compose/functions.c:1449
-#, fuzzy
 msgid "Can't save multipart attachments"
-msgstr "只支持删除多段附件"
+msgstr "无法保存多部分附件"
 
 #: compose/functions.c:1484
 msgid "Recoding only affects text attachments"
@@ -1494,9 +1488,8 @@ msgid "The current attachment will be converted"
 msgstr "当前附件将被转换"
 
 #: compose/functions.c:1520
-#, fuzzy
 msgid "Attachment is not 'multipart'"
-msgstr "附件已在顶部"
+msgstr "附件不是多部分的"
 
 #: compose/functions.c:1636 send/send.c:2775
 #, c-format
@@ -1504,14 +1497,12 @@ msgid "Bad IDN in '%s': '%s'"
 msgstr "在 '%s' 中有错误的 IDN：'%s'"
 
 #: compose/functions.c:1669
-#, fuzzy
 msgid "Can't edit multipart attachments"
-msgstr "只支持删除多段附件"
+msgstr "无法编辑多部分附件"
 
 #: compose/functions.c:1750
-#, fuzzy
 msgid "Can't rename multipart attachments"
-msgstr "只支持删除多段附件"
+msgstr "无法重命名多部分附件"
 
 #: compose/functions.c:1756
 msgid "Rename to: "
@@ -3407,11 +3398,11 @@ msgid "Writing %s..."
 msgstr "正在写入 %s..."
 
 #. L10N: Try to limit to 80 columns
-#: main.c:270
+#: main.c:269
 msgid "usage:"
 msgstr "用法："
 
-#: main.c:271
+#: main.c:270
 msgid ""
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
@@ -3421,7 +3412,7 @@ msgstr ""
 "          [-b <地址>] [-c <地址>] [-s <主题>] [-a <文件> [...] --]\n"
 "          <地址> [...]"
 
-#: main.c:274
+#: main.c:273
 msgid ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
@@ -3429,60 +3420,60 @@ msgstr ""
 "  neomutt [-nx] [-e <命令>] [-F <配置>] [-b <地址>] [-c <地址>]\n"
 "          [-s <主题>] [-a <文件> [...] --] <地址> [...] < 信件"
 
-#: main.c:276
+#: main.c:275
 msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
 msgstr "  neomutt [-nRy] [-e <命令>] [-F <配置>] [-f <信箱>] [-m <类型>]"
 
-#: main.c:277
+#: main.c:276
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -A <别名>"
 
-#: main.c:278
+#: main.c:277
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -B"
 
-#: main.c:279
+#: main.c:278
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -D [-S] [-O]"
 
-#: main.c:280
+#: main.c:279
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -d <级别> -l <文件>"
 
-#: main.c:281
+#: main.c:280
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -G"
 
-#: main.c:282
+#: main.c:281
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -g <服务器>"
 
-#: main.c:283
+#: main.c:282
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -p"
 
-#: main.c:284
+#: main.c:283
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -Q <变量> [-O]"
 
-#: main.c:285
+#: main.c:284
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -Z"
 
-#: main.c:286
+#: main.c:285
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -z [-f <信箱>]"
 
-#: main.c:287
+#: main.c:286
 msgid "  neomutt -v[v]\n"
 msgstr "  neomutt -v[v]\n"
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
-#: main.c:290
+#: main.c:289
 msgid "options:"
 msgstr "选项："
 
-#: main.c:291
+#: main.c:290
 msgid ""
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 "                remaining arguments as addresses even if they start with a dash"
@@ -3490,11 +3481,11 @@ msgstr ""
 "  --            特殊参数使 NeoMutt 停止选项解析并将剩余参数当作地址，\n"
 "                即使它们以短划线开头"
 
-#: main.c:293
+#: main.c:292
 msgid "  -A <alias>    Print an expanded version of the given alias to stdout and exit"
 msgstr "  -A <别名>     扩展给出的别名并退出"
 
-#: main.c:294
+#: main.c:293
 msgid ""
 "  -a <file>     Attach one or more files to a message (must be the last option)\n"
 "                Add any addresses after the '--' argument"
@@ -3502,31 +3493,31 @@ msgstr ""
 "  -a <文件>     给信件添加一个或多个附件（必须是最后一个参数）\n"
 "                在 '--' 参数后添加地址"
 
-#: main.c:296
+#: main.c:295
 msgid "  -B            Run in batch mode (do not start the ncurses UI)"
 msgstr "  -B            以批处理模式运行（不启动 ncurses 用户界面）"
 
-#: main.c:297
+#: main.c:296
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <地址>     指定一个密送(BCC)收件人"
 
-#: main.c:298
+#: main.c:297
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
 msgstr "  -c <地址>     指定一个抄送(CC)收件人"
 
-#: main.c:299
+#: main.c:298
 msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
 msgstr "  -D            以 '键=值' 对的格式显示所有配置变量"
 
-#: main.c:300
+#: main.c:299
 msgid "  -D -O         Like -D, but show one-liner documentation"
 msgstr "  -D -O         类似 -D，但显示单行文档"
 
-#: main.c:301
+#: main.c:300
 msgid "  -D -S         Like -D, but hide the value of sensitive variables"
 msgstr "  -D -S         类似 -D，但隐藏敏感变量的值"
 
-#: main.c:302
+#: main.c:301
 msgid ""
 "  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
 "                The level can range from 1-5 and affects verbosity"
@@ -3534,47 +3525,47 @@ msgstr ""
 "  -d <级别>     将调试输出记录到一个文件（默认 \"~/.neomuttdebug0\"）\n"
 "                级别的范围为1-5并影响复杂度"
 
-#: main.c:304
+#: main.c:303
 msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
 msgstr "  -E            撰写信件时编辑草稿 (-H) 或包含文件 (-i)"
 
-#: main.c:305
+#: main.c:304
 msgid "  -e <command>  Specify a command to be run after reading the config files"
 msgstr "  -e <命令>     指定初始化后要执行的命令"
 
-#: main.c:306
+#: main.c:305
 msgid "  -F <config>   Specify an alternative initialization file to read"
 msgstr "  -F <配置>     指定替代的初始化文件"
 
-#: main.c:307
+#: main.c:306
 msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
 msgstr "  -f <信箱>     指定要读取的信箱"
 
-#: main.c:308
+#: main.c:307
 msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
 msgstr "  -G            以已订阅新闻组列表开始 NeoMutt"
 
-#: main.c:309
+#: main.c:308
 msgid "  -g <server>   Like -G, but start at specified news server"
 msgstr "  -g <服务器>   类似 -G，但从指定的新闻服务器开始"
 
-#: main.c:310
+#: main.c:309
 msgid "  -H <draft>    Specify a draft file with header and body for message composing"
 msgstr "  -H <草稿>     指定草稿文件以读取信件头和正文"
 
-#: main.c:311
+#: main.c:310
 msgid "  -h            Print this help message and exit"
 msgstr "  -h            显示此帮助消息并退出"
 
-#: main.c:312
+#: main.c:311
 msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
 msgstr "  -i <文件>     指定要嵌入正文的文件"
 
-#: main.c:313
+#: main.c:312
 msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
 msgstr "  -l <文件>     指定调试输出的文件（默认 \"~/.neomuttdebug0\"）"
 
-#: main.c:314
+#: main.c:313
 msgid ""
 "  -m <type>     Specify a default mailbox format type for newly created folders\n"
 "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
@@ -3582,15 +3573,15 @@ msgstr ""
 "  -m <类型>     指定新创建信箱默认使用的信箱类型\n"
 "                类型可以是 MH, MMDF, Maildir 或 mbox（大小写不敏感）"
 
-#: main.c:316
+#: main.c:315
 msgid "  -n            Do not read the system-wide configuration file"
 msgstr "  -n            不读取系统范围的配置文件"
 
-#: main.c:317
+#: main.c:316
 msgid "  -p            Resume a prior postponed message, if any"
 msgstr "  -p            继续一个之前延迟寄送的信件，如果有"
 
-#: main.c:318
+#: main.c:317
 msgid ""
 "  -Q <variable> Query a configuration variable and print its value to stdout\n"
 "                (after the config has been read and any commands executed)\n"
@@ -3599,86 +3590,86 @@ msgstr ""
 "  -Q <变量>     查询一个配置变量（在读取配置和执行命令后）\n"
 "                加 -O 以显示单行文档"
 
-#: main.c:321
+#: main.c:320
 msgid "  -R            Open mailbox in read-only mode"
 msgstr "  -R            以只读模式打开信箱"
 
-#: main.c:322
+#: main.c:321
 msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
 msgstr "  -s <主题>     指定一个主题（如果有空格的话必须使用引号引起来）"
 
-#: main.c:323
+#: main.c:322
 msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
 msgstr "  -v            显示 NeoMutt 版本和编译时定义并退出"
 
-#: main.c:324
+#: main.c:323
 msgid "  -vv           Print the NeoMutt license and copyright information and exit"
 msgstr "  -vv           显示 NeoMutt 协议和版权信息并退出"
 
-#: main.c:325
+#: main.c:324
 msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
 msgstr "  -y            以已定义信箱列表开始 NeoMutt"
 
-#: main.c:326
+#: main.c:325
 msgid ""
 "  -Z            Open the first mailbox with new message or exit immediately with\n"
 "                exit code 1 if none is found in all defined mailboxes"
 msgstr "  -Z            打开第一个有新信件的信箱，如果一个也没有的话立即退出并返回 1"
 
-#: main.c:328
+#: main.c:327
 msgid ""
 "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
 "                or exit immediately with exit code 1 otherwise"
 msgstr "  -z            打开非空的第一个或 (-f) 指定的信箱否则立即退出并返回 1"
 
-#: main.c:351
+#: main.c:350
 msgid "Error initializing terminal"
 msgstr "初始化终端时出错"
 
-#: main.c:421
+#: main.c:420
 msgid "unable to determine username"
 msgstr "无法确定用户名"
 
-#: main.c:427
+#: main.c:426
 msgid "unable to determine home directory"
 msgstr "无法确定用户主目录"
 
-#: main.c:727
+#: main.c:726
 #, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "错误：变量'%s'对于 -d 来说无效"
 
-#: main.c:986
+#: main.c:985
 msgid "Failed to parse mailto: link"
 msgstr "解析 mailto: 链接失败"
 
-#: main.c:999 main.c:1256 send/send.c:293 send/send.c:2765 send/send.c:2769
+#: main.c:998 main.c:1255 send/send.c:293 send/send.c:2765 send/send.c:2769
 msgid "No recipients specified"
 msgstr "没有指定接收者"
 
-#: main.c:1028
+#: main.c:1027
 msgid "Can't use -E flag with stdin"
 msgstr "无法使用 -E 选项在stdin情况下"
 
-#: main.c:1112
+#: main.c:1111
 #, c-format
 msgid "Can't parse message template: %s"
 msgstr "无法解析信件模板：%s"
 
-#: main.c:1178 mutt_header.c:335
+#: main.c:1177 mutt_header.c:335
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s：无法附加文件"
 
-#: main.c:1270
+#: main.c:1269
 msgid "No mailbox with new mail"
 msgstr "没有信箱有新信件"
 
-#: main.c:1295
+#: main.c:1294
 msgid "No incoming mailboxes defined"
 msgstr "未定义收信信箱"
 
-#: main.c:1347
+#: main.c:1346
 msgid "Mailbox is empty"
 msgstr "信箱是空的"
 
@@ -3776,6 +3767,70 @@ msgstr "不支持标记"
 #: menu/tagging.c:148
 msgid "No tagged entries"
 msgstr "没有已标记的条目"
+
+#: mixmaster/dlg_mixmaster.c:82
+msgid "Append"
+msgstr "附加到末尾"
+
+#: mixmaster/dlg_mixmaster.c:83
+msgid "Insert"
+msgstr "插入"
+
+#: mixmaster/dlg_mixmaster.c:86
+msgid "OK"
+msgstr "OK"
+
+#: mixmaster/dlg_mixmaster.c:153
+msgid "Select a remailer chain"
+msgstr "选择一个转发者链"
+
+#: mixmaster/dlg_mixmaster.c:190
+msgid "Can't get mixmaster's type2.list"
+msgstr "无法获得 mixmaster 的 type2.list"
+
+#: mixmaster/mixmaster.c:57
+msgid "Mixmaster doesn't accept Cc or Bcc headers"
+msgstr "Mixmaster 不接受转发(Cc)或密件转发(Bcc)信件头"
+
+#: mixmaster/mixmaster.c:82
+msgid "Please set the hostname variable to a proper value when using mixmaster"
+msgstr "使用 mixmaster 时请给 hostname(主机名) 变量设置合适的值"
+
+#: mixmaster/mixmaster.c:125
+#, c-format
+msgid "Error sending message, child exited %d\n"
+msgstr "发送信件出错，子进程已退出 %d。\n"
+
+#: mixmaster/mixmaster.c:129
+msgid "Error sending message"
+msgstr "发送信件出错"
+
+#: mixmaster/remailer.c:148
+msgid "<random>"
+msgstr "<随机>"
+
+#: mixmaster/win_chain.c:295
+msgid "You already have the last chain element selected"
+msgstr "您已经选择了最后的链元素"
+
+#: mixmaster/win_chain.c:321
+msgid "You already have the first chain element selected"
+msgstr "您已经选择了第一个链元素"
+
+#. L10N The '%d' here hard-coded to 19
+#: mixmaster/win_chain.c:372
+#, c-format
+msgid "Mixmaster chains are limited to %d elements"
+msgstr "Mixmaster 链有 %d 个元素的限制"
+
+#: mixmaster/win_chain.c:404
+msgid "The remailer chain is already empty"
+msgstr "转发者链已经为空"
+
+#: mixmaster/win_chain.c:434
+#, c-format
+msgid "Error: %s can't be used as the final remailer of a chain"
+msgstr "错误：%s 不能用作链的最终转发者"
 
 #: mutt/file.c:662
 #, c-format
@@ -5320,9 +5375,8 @@ msgid "delete the current entry"
 msgstr "删除当前条目"
 
 #: opcodes.h:43
-#, fuzzy
 msgid "edit the 'Content-ID' of the attachment"
-msgstr "编辑附件的 'Content-Language'"
+msgstr "编辑附件的 'Content-ID'"
 
 #: opcodes.h:44
 msgid "edit attachment description"
@@ -5354,16 +5408,15 @@ msgstr "取得附件的临时副本"
 
 #: opcodes.h:51
 msgid "group tagged attachments as 'multipart/alternative'"
-msgstr "将已标记的附件组为 'multipart/alternative'"
+msgstr "将已标记的附件组合为 'multipart/alternative'"
 
 #: opcodes.h:52
 msgid "group tagged attachments as 'multipart/multilingual'"
-msgstr "将已标记的附件组为 'multipart/multilingual'"
+msgstr "将已标记的附件组合为 'multipart/multilingual'"
 
 #: opcodes.h:53
-#, fuzzy
 msgid "group tagged attachments as 'multipart/related'"
-msgstr "将已标记的附件组为 'multipart/alternative'"
+msgstr "将已标记的附件组合为 'multipart/related'"
 
 #: opcodes.h:54
 msgid "move an attachment down in the attachment list"
@@ -5411,7 +5464,7 @@ msgstr "反删除当前条目"
 
 #: opcodes.h:65
 msgid "ungroup 'multipart' attachment"
-msgstr ""
+msgstr "解除多部分附件分组"
 
 #: opcodes.h:66
 msgid "update an attachment's encoding info"
@@ -5458,9 +5511,8 @@ msgid "show autocrypt compose menu options"
 msgstr "显示 autocrypt 撰写菜单选项"
 
 #: opcodes.h:85
-#, fuzzy
 msgid "open the aliases dialog"
-msgstr "您已经在最后一封信了"
+msgstr "打开别名对话框"
 
 #: opcodes.h:86
 msgid "move to the bottom of the page"
@@ -7110,70 +7162,6 @@ msgstr "无法解码所有已标记的附件。通过 MIME 封装其它的吗？
 msgid "You may only compose to sender with message/rfc822 parts"
 msgstr "您只能撰写 message/rfc822 部分给发件人"
 
-#: remailer.c:101
-msgid "Append"
-msgstr "附加到末尾"
-
-#: remailer.c:102
-msgid "Insert"
-msgstr "插入"
-
-#: remailer.c:105
-msgid "OK"
-msgstr "OK"
-
-#: remailer.c:244
-msgid "<random>"
-msgstr "<随机>"
-
-#: remailer.c:659
-msgid "Can't get mixmaster's type2.list"
-msgstr "无法获得 mixmaster 的 type2.list"
-
-#: remailer.c:710
-msgid "Select a remailer chain"
-msgstr "选择一个转发者链"
-
-#: remailer.c:790
-#, c-format
-msgid "Error: %s can't be used as the final remailer of a chain"
-msgstr "错误：%s 不能用作链的最终转发者"
-
-#. L10N The '%d' here hard-coded to 19
-#: remailer.c:821
-#, c-format
-msgid "Mixmaster chains are limited to %d elements"
-msgstr "Mixmaster 链有 %d 个元素的限制"
-
-#: remailer.c:844
-msgid "The remailer chain is already empty"
-msgstr "转发者链已经为空"
-
-#: remailer.c:854
-msgid "You already have the first chain element selected"
-msgstr "您已经选择了第一个链元素"
-
-#: remailer.c:864
-msgid "You already have the last chain element selected"
-msgstr "您已经选择了最后的链元素"
-
-#: remailer.c:913
-msgid "Mixmaster doesn't accept Cc or Bcc headers"
-msgstr "Mixmaster 不接受转发(Cc)或密件转发(Bcc)信件头"
-
-#: remailer.c:938
-msgid "Please set the hostname variable to a proper value when using mixmaster"
-msgstr "使用 mixmaster 时请给 hostname(主机名) 变量设置合适的值"
-
-#: remailer.c:981
-#, c-format
-msgid "Error sending message, child exited %d\n"
-msgstr "发送信件出错，子进程已退出 %d。\n"
-
-#: remailer.c:985
-msgid "Error sending message"
-msgstr "发送信件出错"
-
 #: score.c:146
 msgid "Error: score: invalid number"
 msgstr "错误：分数：无效数字"
@@ -7395,12 +7383,12 @@ msgstr "准备 resent-from 时发生错误的 IDN %s"
 msgid "$sendmail must be set in order to send mail"
 msgstr "为了发送邮件必须配置 $sendmail"
 
-#: send/sendmail.c:437
+#: send/sendmail.c:438
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "发送信件出错，子进程已退出 %d (%s)"
 
-#: send/sendmail.c:449
+#: send/sendmail.c:450
 msgid "Output of the delivery process"
 msgstr "投递进程的输出"
 
@@ -7500,14 +7488,13 @@ msgstr ""
 "或者发送邮件至：<neomutt-devel@neomutt.org>\n"
 
 #: version.c:109
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2022 Michael R. Elkins and others.\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2020 Michael R. Elkins 与其他人。\n"
+"Copyright (C) 1996-2022 Michael R. Elkins 与其他人。\n"
 "NeoMutt 不提供任何保证；请键入 'neomutt -vv' 以获取详细信息。\n"
 "NeoMutt 是自由软件，欢迎您在某些条件下\n"
 "重新发行它；请键入 'neomutt -vv' 以获取详细信息。\n"
@@ -7521,9 +7508,8 @@ msgid "Compile options:"
 msgstr "编译选项："
 
 #: version.c:499
-#, fuzzy
 msgid "Devel options:"
-msgstr "默认选项："
+msgstr "开发选项："
 
 #, c-format
 #~ msgid "%s authentication failed, trying next method"

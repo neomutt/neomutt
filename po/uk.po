@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2022-04-23 12:03+0100\n"
+"POT-Creation-Date: 2022-04-29 12:31+0100\n"
 "PO-Revision-Date: 2019-05-10 19:47+0300\n"
 "Last-Translator: Vsevolod Volkov <vvv@mutt.org.ua>\n"
 "Language-Team: \n"
@@ -422,14 +422,14 @@ msgstr "Не можу розшифрувати листа"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:75 main.c:931
+#: autocrypt/autocrypt.c:75 main.c:930
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s не існує. Створити його?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:935
+#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:934
 #: nntp/newsrc.c:1101
 #, c-format
 msgid "Can't create %s: %s"
@@ -548,7 +548,7 @@ msgstr "Створити"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
-#: autocrypt/dlg_autocrypt.c:105 remailer.c:103
+#: autocrypt/dlg_autocrypt.c:105 mixmaster/dlg_mixmaster.c:84
 msgid "Delete"
 msgstr "Видал."
 
@@ -706,7 +706,7 @@ msgstr "Відписано від %s..."
 msgid "Catchup"
 msgstr ""
 
-#: browser/browser.c:633 browser/browser.c:1525 browser/browser.c:1798
+#: browser/browser.c:633 browser/browser.c:1519 browser/browser.c:1792
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s не є каталогом"
@@ -740,96 +740,96 @@ msgstr "Каталог [%s] з маскою: %s"
 msgid "Can't attach a directory"
 msgstr "Неможливо додати каталог"
 
-#: browser/browser.c:1380 browser/browser.c:1871 browser/browser.c:2036
+#: browser/browser.c:1374 browser/browser.c:1865 browser/browser.c:2031
 msgid "No files match the file mask"
 msgstr "Немає файлів, що відповідають масці"
 
-#: browser/browser.c:1605
+#: browser/browser.c:1599
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "Створення підтримується лише для скриньок IMAP"
 
-#: browser/browser.c:1633
+#: browser/browser.c:1627
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Перейменування підтримується лише для скриньок IMAP"
 
-#: browser/browser.c:1659
+#: browser/browser.c:1653
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Видалення підтримується лише для скриньок IMAP"
 
-#: browser/browser.c:1670
+#: browser/browser.c:1664
 #, fuzzy
 msgid "Can't delete currently selected mailbox"
 msgstr "показати ім’я вибраного файлу"
 
-#: browser/browser.c:1674
+#: browser/browser.c:1668
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Впевнені у видаленні скриньки \"%s\"?"
 
-#: browser/browser.c:1684
+#: browser/browser.c:1678
 msgid "Mailbox deleted"
 msgstr "Поштову скриньку видалено"
 
-#: browser/browser.c:1689
+#: browser/browser.c:1683
 msgid "Mailbox deletion failed"
 msgstr "Помилка видалення поштової скриньки"
 
-#: browser/browser.c:1694
+#: browser/browser.c:1688
 msgid "Mailbox not deleted"
 msgstr "Поштову скриньку не видалено"
 
-#: browser/browser.c:1722
+#: browser/browser.c:1716
 msgid "Chdir to: "
 msgstr "Перейти до: "
 
-#: browser/browser.c:1786 browser/browser.c:1865
+#: browser/browser.c:1780 browser/browser.c:1859
 msgid "Error scanning directory"
 msgstr "Помилка перегляду каталогу"
 
-#: browser/browser.c:1816
+#: browser/browser.c:1810
 msgid "File Mask: "
 msgstr "Маска: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser/browser.c:1887
+#: browser/browser.c:1881
 #, fuzzy
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Зворотньо сортувати за датою(d), літерою(a), розміром(z), чи не сортувати(n)?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser/browser.c:1889
+#: browser/browser.c:1883
 #, fuzzy
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Сортувати за датою(d), літерою(a), розміром(z), чи не сортувати(n)?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser/browser.c:1891
+#: browser/browser.c:1885
 msgid "dazecwn"
 msgstr ""
 
-#: browser/browser.c:2020
+#: browser/browser.c:2015
 msgid "New file name: "
 msgstr "Нове ім’я файлу: "
 
-#: browser/browser.c:2054
+#: browser/browser.c:2049
 msgid "Can't view a directory"
 msgstr "Неможливо переглянути каталог"
 
-#: browser/browser.c:2071
+#: browser/browser.c:2066
 msgid "Error trying to view file"
 msgstr "Помилка при спробі перегляду файлу"
 
-#: browser/browser.c:2165
+#: browser/browser.c:2160
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "Підписано на %s..."
 
-#: browser/browser.c:2167
+#: browser/browser.c:2162
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Відписано від %s..."
 
-#: browser/browser.c:2192
+#: browser/browser.c:2187
 #, fuzzy
 msgid "No newsgroups match the mask"
 msgstr "Немає файлів, що відповідають масці"
@@ -1336,7 +1336,7 @@ msgstr "Помилка. Збереження тимчасового файлу: 
 msgid "Send"
 msgstr "Відправити"
 
-#: compose/compose.c:97 compose/compose.c:116 remailer.c:104
+#: compose/compose.c:97 compose/compose.c:116 mixmaster/dlg_mixmaster.c:85
 msgid "Abort"
 msgstr "Відміна"
 
@@ -1429,7 +1429,7 @@ msgstr "Скринька, з якої додати повідомлення"
 msgid "Open newsgroup to attach message from"
 msgstr "Скринька, з якої додати повідомлення"
 
-#: compose/functions.c:752 main.c:1366
+#: compose/functions.c:752 main.c:1365
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Неможливо відкрити скриньку %s"
@@ -3517,265 +3517,265 @@ msgid "Writing %s..."
 msgstr "Запис %s..."
 
 #. L10N: Try to limit to 80 columns
-#: main.c:270
+#: main.c:269
 msgid "usage:"
 msgstr ""
 
-#: main.c:271
+#: main.c:270
 msgid ""
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 msgstr ""
 
-#: main.c:274
+#: main.c:273
 msgid ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 msgstr ""
 
-#: main.c:276
+#: main.c:275
 msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
 msgstr ""
 
-#: main.c:277
+#: main.c:276
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
 msgstr ""
 
-#: main.c:278
+#: main.c:277
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
 msgstr ""
 
-#: main.c:279
+#: main.c:278
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
 msgstr ""
 
-#: main.c:280
+#: main.c:279
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
 msgstr ""
 
-#: main.c:281
+#: main.c:280
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
 msgstr ""
 
-#: main.c:282
+#: main.c:281
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
 msgstr ""
 
-#: main.c:283
+#: main.c:282
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
 msgstr ""
 
-#: main.c:284
+#: main.c:283
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
 msgstr ""
 
-#: main.c:285
+#: main.c:284
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
 msgstr ""
 
-#: main.c:286
+#: main.c:285
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
 msgstr ""
 
-#: main.c:287
+#: main.c:286
 msgid "  neomutt -v[v]\n"
 msgstr ""
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
-#: main.c:290
+#: main.c:289
 #, fuzzy
 msgid "options:"
 msgstr "Параметри компіляції:"
 
-#: main.c:291
+#: main.c:290
 msgid ""
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 "                remaining arguments as addresses even if they start with a dash"
 msgstr ""
 
-#: main.c:293
+#: main.c:292
 msgid "  -A <alias>    Print an expanded version of the given alias to stdout and exit"
 msgstr ""
 
-#: main.c:294
+#: main.c:293
 msgid ""
 "  -a <file>     Attach one or more files to a message (must be the last option)\n"
 "                Add any addresses after the '--' argument"
 msgstr ""
 
-#: main.c:296
+#: main.c:295
 msgid "  -B            Run in batch mode (do not start the ncurses UI)"
 msgstr ""
 
-#: main.c:297
+#: main.c:296
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr ""
 
-#: main.c:298
+#: main.c:297
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
 msgstr ""
 
-#: main.c:299
+#: main.c:298
 msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
 msgstr ""
 
-#: main.c:300
+#: main.c:299
 msgid "  -D -O         Like -D, but show one-liner documentation"
 msgstr ""
 
-#: main.c:301
+#: main.c:300
 msgid "  -D -S         Like -D, but hide the value of sensitive variables"
 msgstr ""
 
-#: main.c:302
+#: main.c:301
 msgid ""
 "  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
 "                The level can range from 1-5 and affects verbosity"
 msgstr ""
 
-#: main.c:304
+#: main.c:303
 msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
 msgstr ""
 
-#: main.c:305
+#: main.c:304
 msgid "  -e <command>  Specify a command to be run after reading the config files"
 msgstr ""
 
-#: main.c:306
+#: main.c:305
 msgid "  -F <config>   Specify an alternative initialization file to read"
 msgstr ""
 
-#: main.c:307
+#: main.c:306
 msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
 msgstr ""
 
-#: main.c:308
+#: main.c:307
 msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
 msgstr ""
 
-#: main.c:309
+#: main.c:308
 msgid "  -g <server>   Like -G, but start at specified news server"
 msgstr ""
 
-#: main.c:310
+#: main.c:309
 msgid "  -H <draft>    Specify a draft file with header and body for message composing"
 msgstr ""
 
-#: main.c:311
+#: main.c:310
 msgid "  -h            Print this help message and exit"
 msgstr ""
 
-#: main.c:312
+#: main.c:311
 msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
 msgstr ""
 
-#: main.c:313
+#: main.c:312
 msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
 msgstr ""
 
-#: main.c:314
+#: main.c:313
 msgid ""
 "  -m <type>     Specify a default mailbox format type for newly created folders\n"
 "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
 msgstr ""
 
-#: main.c:316
+#: main.c:315
 msgid "  -n            Do not read the system-wide configuration file"
 msgstr ""
 
-#: main.c:317
+#: main.c:316
 msgid "  -p            Resume a prior postponed message, if any"
 msgstr ""
 
-#: main.c:318
+#: main.c:317
 msgid ""
 "  -Q <variable> Query a configuration variable and print its value to stdout\n"
 "                (after the config has been read and any commands executed)\n"
 "                Add -O for one-liner documentation"
 msgstr ""
 
-#: main.c:321
+#: main.c:320
 #, fuzzy
 msgid "  -R            Open mailbox in read-only mode"
 msgstr "Відкрити скриньку лише для читання"
 
-#: main.c:322
+#: main.c:321
 msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
 msgstr ""
 
-#: main.c:323
+#: main.c:322
 msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
 msgstr ""
 
-#: main.c:324
+#: main.c:323
 msgid "  -vv           Print the NeoMutt license and copyright information and exit"
 msgstr ""
 
-#: main.c:325
+#: main.c:324
 msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
 msgstr ""
 
-#: main.c:326
+#: main.c:325
 msgid ""
 "  -Z            Open the first mailbox with new message or exit immediately with\n"
 "                exit code 1 if none is found in all defined mailboxes"
 msgstr ""
 
-#: main.c:328
+#: main.c:327
 msgid ""
 "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
 "                or exit immediately with exit code 1 otherwise"
 msgstr ""
 
-#: main.c:351
+#: main.c:350
 msgid "Error initializing terminal"
 msgstr "Помилка ініціалізації терміналу"
 
-#: main.c:421
+#: main.c:420
 msgid "unable to determine username"
 msgstr "неможливо визначити ім’я користувача"
 
-#: main.c:427
+#: main.c:426
 msgid "unable to determine home directory"
 msgstr "неможливо визначити домашній каталог"
 
-#: main.c:727
+#: main.c:726
 #, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Помилка: значення \"%s\" некорректне для -d"
 
-#: main.c:986
+#: main.c:985
 msgid "Failed to parse mailto: link"
 msgstr "Неможливо розібрати почилання mailto:"
 
-#: main.c:999 main.c:1256 send/send.c:293 send/send.c:2765 send/send.c:2769
+#: main.c:998 main.c:1255 send/send.c:293 send/send.c:2765 send/send.c:2769
 msgid "No recipients specified"
 msgstr "Отримувачів не вказано"
 
-#: main.c:1028
+#: main.c:1027
 msgid "Can't use -E flag with stdin"
 msgstr "Неможливо використовувати -E з stdin"
 
-#: main.c:1112
+#: main.c:1111
 #, fuzzy, c-format
 msgid "Can't parse message template: %s"
 msgstr "Неможливо відкрити файл повідомлення: %s"
 
-#: main.c:1178 mutt_header.c:335
+#: main.c:1177 mutt_header.c:335
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: неможливо додати файл"
 
-#: main.c:1270
+#: main.c:1269
 msgid "No mailbox with new mail"
 msgstr "Немає поштової скриньки з новою поштою"
 
-#: main.c:1295
+#: main.c:1294
 msgid "No incoming mailboxes defined"
 msgstr "Вхідних поштових скриньок не вказано"
 
-#: main.c:1347
+#: main.c:1346
 msgid "Mailbox is empty"
 msgstr "Поштова скринька порожня"
 
@@ -3873,6 +3873,70 @@ msgstr "Виділення не підтримується"
 #: menu/tagging.c:148
 msgid "No tagged entries"
 msgstr "Жодної позиції не вибрано"
+
+#: mixmaster/dlg_mixmaster.c:82
+msgid "Append"
+msgstr "Додати"
+
+#: mixmaster/dlg_mixmaster.c:83
+msgid "Insert"
+msgstr "Встав."
+
+#: mixmaster/dlg_mixmaster.c:86
+msgid "OK"
+msgstr "Ok"
+
+#: mixmaster/dlg_mixmaster.c:153
+msgid "Select a remailer chain"
+msgstr "Веберіть ланцюжок remailer"
+
+#: mixmaster/dlg_mixmaster.c:190
+msgid "Can't get mixmaster's type2.list"
+msgstr "Неможливо отримати type2.list mixmaster’а"
+
+#: mixmaster/mixmaster.c:57
+msgid "Mixmaster doesn't accept Cc or Bcc headers"
+msgstr "Mixmaster не приймає заголовки Cc та Bcc"
+
+#: mixmaster/mixmaster.c:82
+msgid "Please set the hostname variable to a proper value when using mixmaster"
+msgstr "Треба встановити відповідне значення hostname для використання mixmaster"
+
+#: mixmaster/mixmaster.c:125
+#, c-format
+msgid "Error sending message, child exited %d\n"
+msgstr "Помилка відправки, код повернення %d.\n"
+
+#: mixmaster/mixmaster.c:129
+msgid "Error sending message"
+msgstr "Помилка при відправці"
+
+#: mixmaster/remailer.c:148
+msgid "<random>"
+msgstr ""
+
+#: mixmaster/win_chain.c:295
+msgid "You already have the last chain element selected"
+msgstr "Останній елемент ланцюжку вже вибрано"
+
+#: mixmaster/win_chain.c:321
+msgid "You already have the first chain element selected"
+msgstr "Перший елемент ланцюжку вже вибрано"
+
+#. L10N The '%d' here hard-coded to 19
+#: mixmaster/win_chain.c:372
+#, c-format
+msgid "Mixmaster chains are limited to %d elements"
+msgstr "Ланцюжок не може бути більшим за %d елементів"
+
+#: mixmaster/win_chain.c:404
+msgid "The remailer chain is already empty"
+msgstr "Ланцюжок remailer’а вже порожній"
+
+#: mixmaster/win_chain.c:434
+#, c-format
+msgid "Error: %s can't be used as the final remailer of a chain"
+msgstr "Помилка: %s неможливо використати як останній remailer ланцюжку"
 
 #: mutt/file.c:662
 #, fuzzy, c-format
@@ -7336,70 +7400,6 @@ msgstr "Неможливо декодувати всі виділені дода
 msgid "You may only compose to sender with message/rfc822 parts"
 msgstr "Ви можете надсилати тільки копії частин в форматі message/rfc822"
 
-#: remailer.c:101
-msgid "Append"
-msgstr "Додати"
-
-#: remailer.c:102
-msgid "Insert"
-msgstr "Встав."
-
-#: remailer.c:105
-msgid "OK"
-msgstr "Ok"
-
-#: remailer.c:244
-msgid "<random>"
-msgstr ""
-
-#: remailer.c:659
-msgid "Can't get mixmaster's type2.list"
-msgstr "Неможливо отримати type2.list mixmaster’а"
-
-#: remailer.c:710
-msgid "Select a remailer chain"
-msgstr "Веберіть ланцюжок remailer"
-
-#: remailer.c:790
-#, c-format
-msgid "Error: %s can't be used as the final remailer of a chain"
-msgstr "Помилка: %s неможливо використати як останній remailer ланцюжку"
-
-#. L10N The '%d' here hard-coded to 19
-#: remailer.c:821
-#, c-format
-msgid "Mixmaster chains are limited to %d elements"
-msgstr "Ланцюжок не може бути більшим за %d елементів"
-
-#: remailer.c:844
-msgid "The remailer chain is already empty"
-msgstr "Ланцюжок remailer’а вже порожній"
-
-#: remailer.c:854
-msgid "You already have the first chain element selected"
-msgstr "Перший елемент ланцюжку вже вибрано"
-
-#: remailer.c:864
-msgid "You already have the last chain element selected"
-msgstr "Останній елемент ланцюжку вже вибрано"
-
-#: remailer.c:913
-msgid "Mixmaster doesn't accept Cc or Bcc headers"
-msgstr "Mixmaster не приймає заголовки Cc та Bcc"
-
-#: remailer.c:938
-msgid "Please set the hostname variable to a proper value when using mixmaster"
-msgstr "Треба встановити відповідне значення hostname для використання mixmaster"
-
-#: remailer.c:981
-#, c-format
-msgid "Error sending message, child exited %d\n"
-msgstr "Помилка відправки, код повернення %d.\n"
-
-#: remailer.c:985
-msgid "Error sending message"
-msgstr "Помилка при відправці"
-
 #: score.c:146
 msgid "Error: score: invalid number"
 msgstr "Помилка: score: неправильне число"
@@ -7629,12 +7629,12 @@ msgstr "Погане IDN %s при підготовці resent-from"
 msgid "$sendmail must be set in order to send mail"
 msgstr "$sendmail має бути встановленим для відправки пошти"
 
-#: send/sendmail.c:437
+#: send/sendmail.c:438
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "Помилка відправки, код повернення %d (%s)"
 
-#: send/sendmail.c:449
+#: send/sendmail.c:450
 msgid "Output of the delivery process"
 msgstr "Вивід процесу доставки"
 
