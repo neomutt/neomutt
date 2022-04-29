@@ -1432,7 +1432,6 @@ msgid "Can't filter multipart attachments"
 msgstr "Nelze filtrovat přílohy o více částech"
 
 #: compose/functions.c:1123
-#, fuzzy
 msgid "Can't get multipart attachments"
 msgstr "Nelze získat kopii příloh o více částech"
 
