@@ -50,6 +50,7 @@
 #include "browser/lib.h"
 #include "compose/lib.h"
 #include "ncrypt/lib.h"
+#include "pager/lib.h"
 #include "pattern/lib.h"
 #include "question/lib.h"
 #include "copy.h"

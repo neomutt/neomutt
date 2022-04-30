@@ -47,7 +47,6 @@
 #include "edata.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
-#include "mutt_socket.h"
 
 struct Progress;
 

@@ -38,7 +38,6 @@
 #include "conn/lib.h"
 #include "adata.h"
 #include "auth.h"
-#include "mutt_socket.h"
 
 /**
  * imap_auth_sasl - Default authenticator if available - Implements ImapAuth::authenticate()

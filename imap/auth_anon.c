@@ -32,7 +32,6 @@
 #include "conn/lib.h"
 #include "adata.h"
 #include "auth.h"
-#include "mutt_socket.h"
 
 /**
  * imap_auth_anon - Authenticate anonymously - Implements ImapAuth::authenticate()

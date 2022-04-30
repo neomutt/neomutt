@@ -34,7 +34,6 @@
 #include "adata.h"
 #include "auth.h"
 #include "mutt_logging.h"
-#include "mutt_socket.h"
 
 /**
  * imap_auth_plain - SASL PLAIN support - Implements ImapAuth::authenticate()

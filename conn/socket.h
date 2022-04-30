@@ -49,4 +49,14 @@ int                mutt_socket_readln_d(char *buf, size_t buflen, struct Connect
 int                mutt_socket_write   (struct Connection *conn, const char *buf, size_t len);
 int                mutt_socket_write_d (struct Connection *conn, const char *buf, int len, int dbg);
 
+/* logging levels */
+#define MUTT_SOCK_LOG_CMD  2
+#define MUTT_SOCK_LOG_HDR  3
+#define MUTT_SOCK_LOG_FULL 5
+
+#define mutt_socket_readln(buf, buflen, conn) mutt_socket_readln_d(buf, buflen, conn, MUTT_SOCK_LOG_CMD)
+#define mutt_socket_send(conn, buf)           mutt_socket_send_d(conn, buf, MUTT_SOCK_LOG_CMD)
+#define mutt_socket_send_d(conn, buf, dbg)    mutt_socket_write_d(conn, buf, mutt_str_len(buf), dbg)
+#define mutt_socket_write_n(conn, buf, len)   mutt_socket_write_d(conn, buf, len, MUTT_SOCK_LOG_CMD)
+
 #endif /* MUTT_CONN_SOCKET_H */

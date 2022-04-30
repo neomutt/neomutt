@@ -38,7 +38,6 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "adata.h"
-#include "mutt_socket.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>

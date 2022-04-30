@@ -34,8 +34,17 @@
 #ifndef MUTT_ENTER_LIB_H
 #define MUTT_ENTER_LIB_H
 
+#include <stddef.h>
+#include <stdbool.h>
+#include "mutt.h"
 // IWYU pragma: begin_exports
 #include "state.h"
 // IWYU pragma: end_exports
+
+struct Mailbox;
+
+int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags flags,
+                           bool multiple, struct Mailbox *m, char ***files,
+                           int *numfiles, struct EnterState *state);
 
 #endif /* MUTT_ENTER_LIB_H */

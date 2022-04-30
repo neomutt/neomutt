@@ -37,6 +37,7 @@
 #include "alias/lib.h"
 #include "mutt.h"
 #include "mutt_commands.h"
+#include "attach/lib.h"
 #include "color/lib.h"
 #include "command_parse.h"
 #include "hook.h"

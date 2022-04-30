@@ -38,7 +38,6 @@
 #include "auth.h"
 #include "adata.h"
 #include "mutt_logging.h"
-#include "mutt_socket.h"
 
 /**
  * imap_auth_oauth_xoauth2 - Authenticate an IMAP connection using OAUTHBEARER or XOAUTH2

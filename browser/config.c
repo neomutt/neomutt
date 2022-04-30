@@ -31,6 +31,7 @@
 #include <stddef.h>
 #include <config/lib.h>
 #include <stdbool.h>
+#include "mutt/lib.h"
 
 static struct ConfigDef BrowserVars[] = {
   // clang-format off

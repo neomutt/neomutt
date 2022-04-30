@@ -42,7 +42,6 @@
 #include "display.h"
 #include "lib.h"
 #include "color/lib.h"
-#include "protos.h"
 
 /**
  * check_sig - Check for an email signature

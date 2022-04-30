@@ -51,7 +51,6 @@
 #include "msn.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
-#include "mutt_socket.h"
 #include "mx.h"
 
 #define IMAP_CMD_BUFSIZE 512
