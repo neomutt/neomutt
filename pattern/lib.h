@@ -33,6 +33,7 @@
  * | pattern/dlgpattern.c | @subpage pattern_dlg_pattern |
  * | pattern/exec.c       | @subpage pattern_exec        |
  * | pattern/flags.c      | @subpage pattern_flags       |
+ * | pattern/functions.c  | @subpage pattern_functions   |
  * | pattern/pattern.c    | @subpage pattern_pattern     |
  */
 

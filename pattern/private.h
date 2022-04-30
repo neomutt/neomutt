@@ -28,6 +28,17 @@
 #include "lib.h"
 
 /**
+ * struct PatternEntry - A line in the Pattern Completion menu
+ */
+struct PatternEntry
+{
+  int num;          ///< Index number
+  const char *tag;  ///< Copied to buffer if selected
+  const char *expr; ///< Displayed in the menu
+  const char *desc; ///< Description of pattern
+};
+
+/**
  * enum PatternEat - Function to process pattern arguments
  *
  * Values for PatternFlags.eat_arg

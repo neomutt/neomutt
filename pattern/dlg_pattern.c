@@ -79,21 +79,11 @@
 #include "lib.h"
 #include "menu/lib.h"
 #include "format_flags.h"
+#include "functions.h"
 #include "keymap.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "opcodes.h"
-
-/**
- * struct PatternEntry - A line in the Pattern Completion menu
- */
-struct PatternEntry
-{
-  int num;          ///< Index number
-  const char *tag;  ///< Copied to buffer if selected
-  const char *expr; ///< Displayed in the menu
-  const char *desc; ///< Description of pattern
-};
 
 /// Help Bar for the Pattern selection dialog
 static const struct Mapping PatternHelp[] = {
@@ -344,20 +334,18 @@ bool dlg_select_pattern(char *buf, size_t buflen)
   struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_PATTERN, PatternHelp);
   struct Menu *menu = create_pattern_menu(dlg);
 
-  struct MuttWindow *win_menu = menu->win;
+  struct PatternData pd = { false, false, buf, buflen, menu };
+  dlg->wdata = &pd;
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->notify, NT_CONFIG, pattern_config_observer, menu);
-  notify_observer_add(win_menu->notify, NT_WINDOW, pattern_window_observer, win_menu);
+  notify_observer_add(menu->win->notify, NT_WINDOW, pattern_window_observer, menu->win);
 
   // ---------------------------------------------------------------------------
   // Event Loop
   int op = OP_NULL;
-  bool result = false;
-  int rc;
   do
   {
-    rc = FR_UNKNOWN;
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
@@ -372,30 +360,15 @@ bool dlg_select_pattern(char *buf, size_t buflen)
     }
     mutt_clear_error();
 
-    switch (op)
-    {
-      case OP_GENERIC_SELECT_ENTRY:
-      {
-        const int index = menu_get_index(menu);
-        struct PatternEntry *entry = ((struct PatternEntry *) menu->mdata) + index;
-        mutt_str_copy(buf, entry->tag, buflen);
-        result = true;
-        rc = FR_DONE;
-        break;
-      }
-
-      case OP_EXIT:
-        rc = FR_DONE;
-        break;
-    }
+    int rc = pattern_function_dispatcher(dlg, op);
 
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(NULL, op);
-  } while (rc != FR_DONE);
+  } while (!pd.done);
   // ---------------------------------------------------------------------------
 
   simple_dialog_free(&dlg);
-  return result;
+  return pd.selection;
 }
