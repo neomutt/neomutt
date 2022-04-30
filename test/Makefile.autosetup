@@ -134,6 +134,11 @@ CONFIG_OBJS	= test/config/account.o \
 		  test/config/synonym.o \
 		  test/config/variable.o
 
+CONVERT_OBJS	= test/convert/mutt_update_content_info.o \
+		  test/convert/mutt_get_content_info.o \
+		  test/convert/mutt_convert_file_to.o \
+		  test/convert/mutt_convert_file_from_to.o
+
 DATE_OBJS	= test/date/mutt_date_add_timeout.o \
 		  test/date/mutt_date_check_month.o \
 		  test/date/mutt_date_epoch.o \
@@ -557,20 +562,20 @@ URL_OBJS	= test/url/url_check_scheme.o \
 BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/atoi $(PWD)/test/attach $(PWD)/test/base64 \
 		  $(PWD)/test/body $(PWD)/test/buffer $(PWD)/test/charset \
-		  $(PWD)/test/compress $(PWD)/test/config $(PWD)/test/date \
-		  $(PWD)/test/email $(PWD)/test/envelope $(PWD)/test/envlist \
-		  $(PWD)/test/file $(PWD)/test/filter $(PWD)/test/from \
-		  $(PWD)/test/group $(PWD)/test/gui $(PWD)/test/hash \
-		  $(PWD)/test/history $(PWD)/test/idna $(PWD)/test/list \
-		  $(PWD)/test/logging $(PWD)/test/mailbox $(PWD)/test/mapping \
-		  $(PWD)/test/mbyte $(PWD)/test/md5 $(PWD)/test/memory \
-		  $(PWD)/test/neo $(PWD)/test/notify $(PWD)/test/notmuch \
-		  $(PWD)/test/parameter $(PWD)/test/parse $(PWD)/test/path \
-		  $(PWD)/test/pattern $(PWD)/test/pool $(PWD)/test/prex \
-		  $(PWD)/test/regex $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 \
-		  $(PWD)/test/signal $(PWD)/test/slist $(PWD)/test/sort \
-		  $(PWD)/test/store $(PWD)/test/string $(PWD)/test/tags \
-		  $(PWD)/test/thread $(PWD)/test/url
+		  $(PWD)/test/compress $(PWD)/test/config $(PWD)/test/convert \
+		  $(PWD)/test/date $(PWD)/test/email $(PWD)/test/envelope \
+		  $(PWD)/test/envlist $(PWD)/test/file $(PWD)/test/filter \
+		  $(PWD)/test/from $(PWD)/test/group $(PWD)/test/gui \
+		  $(PWD)/test/hash $(PWD)/test/history $(PWD)/test/idna \
+		  $(PWD)/test/list $(PWD)/test/logging $(PWD)/test/mailbox \
+		  $(PWD)/test/mapping $(PWD)/test/mbyte $(PWD)/test/md5 \
+		  $(PWD)/test/memory $(PWD)/test/neo $(PWD)/test/notify \
+		  $(PWD)/test/notmuch $(PWD)/test/parameter $(PWD)/test/parse \
+		  $(PWD)/test/path $(PWD)/test/pattern $(PWD)/test/pool \
+		  $(PWD)/test/prex $(PWD)/test/regex $(PWD)/test/rfc2047 \
+		  $(PWD)/test/rfc2231 $(PWD)/test/signal $(PWD)/test/slist \
+		  $(PWD)/test/sort $(PWD)/test/store $(PWD)/test/string \
+		  $(PWD)/test/tags $(PWD)/test/thread $(PWD)/test/url
 
 TEST_OBJS	= test/main.o test/common.o \
 		  $(ACCOUNT_OBJS) \
@@ -584,6 +589,7 @@ TEST_OBJS	= test/main.o test/common.o \
 		  $(CHARSET_OBJS) \
 		  $(COMPRESS_OBJS) \
 		  $(CONFIG_OBJS) \
+		  $(CONVERT_OBJS) \
 		  $(DATE_OBJS) \
 		  $(EMAIL_OBJS) \
 		  $(ENVELOPE_OBJS) \

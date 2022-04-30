@@ -97,7 +97,7 @@ static struct ConfigDef SendVars[] = {
   { "allow_8bit", DT_BOOL, true, 0, NULL,
     "Allow 8-bit messages, don't use quoted-printable or base64"
   },
-  { "attach_charset", DT_STRING, 0, 0, charset_validator,
+  { "attach_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
     "When attaching files, use one of these character sets"
   },
   { "bounce_delivered", DT_BOOL, true, 0, NULL,

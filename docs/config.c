@@ -209,7 +209,7 @@
 ** However, only the first content is valid for the message body.
 */
 
-{ "attach_charset", DT_STRING, 0 },
+{ "attach_charset", DT_SLIST, 0 },
 /*
 ** .pp
 ** This variable is a colon-separated list of character encoding
@@ -574,7 +574,7 @@
 ** or from editing with edit-headers).
 */
 
-{ "config_charset", DT_STRING, 0 },
+{ "config_charset", DT_SLIST, 0 },
 /*
 ** .pp
 ** When defined, NeoMutt will recode commands in rc files from this
@@ -3999,7 +3999,7 @@
 ** before search results. By default, search results will be top-aligned.
 */
 
-{ "send_charset", DT_STRING, "us-ascii:iso-8859-1:utf-8" },
+{ "send_charset", DT_SLIST, "us-ascii:iso-8859-1:utf-8" },
 /*
 ** .pp
 ** A colon-delimited list of character sets for outgoing messages. NeoMutt will use the

@@ -38,7 +38,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "charset.h"
-#include "buffer.h"
+#include "lib.h"
 #include "memory.h"
 #include "queue.h"
 #include "regex3.h"

@@ -158,6 +158,12 @@
   NEOMUTT_TEST_ITEM(test_config_synonym)                                       \
   NEOMUTT_TEST_ITEM(test_config_variable)                                      \
                                                                                \
+  /* convert */                                                                \
+  NEOMUTT_TEST_ITEM(test_mutt_convert_file_to)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_convert_file_from_to)                            \
+  NEOMUTT_TEST_ITEM(test_mutt_update_content_info)                             \
+  NEOMUTT_TEST_ITEM(test_mutt_get_content_info)                                \
+                                                                               \
   /* date */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_date_add_timeout)                                \
   NEOMUTT_TEST_ITEM(test_mutt_date_check_month)                                \

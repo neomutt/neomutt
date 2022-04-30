@@ -515,7 +515,7 @@ static struct ConfigDef MainVars[] = {
   { "score_threshold_read", DT_NUMBER, -1, 0, NULL,
     "Messages with a lower score will be automatically marked read"
   },
-  { "send_charset", DT_STRING|DT_CHARSET_STRICT, IP "us-ascii:iso-8859-1:utf-8", 0, charset_validator,
+  { "send_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY|DT_CHARSET_STRICT, IP "us-ascii:iso-8859-1:utf-8", 0, charset_slist_validator,
     "Character sets for outgoing mail"
   },
   { "shell", DT_STRING|DT_COMMAND, IP "/bin/sh", 0, NULL,
