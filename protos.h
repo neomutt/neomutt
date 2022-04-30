@@ -29,7 +29,6 @@
 #include <stdio.h>
 #include "mutt.h"
 #include "menu/lib.h"
-#include "ncrypt/lib.h"
 
 struct Buffer;
 struct Email;
@@ -68,13 +67,7 @@ void mutt_emails_set_flag(struct Mailbox *m, struct EmailList *el, enum MessageT
 int mutt_change_flag(struct Mailbox *m, struct EmailList *el, bool bf);
 
 int mutt_complete(char *buf, size_t buflen);
-int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new, struct Email *e, bool resend);
-int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr, struct Email **cur, struct Buffer *fcc);
-SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, SecurityFlags crypt_app);
-int mutt_num_postponed(struct Mailbox *m, bool force);
 int mutt_thread_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag, bool bf, bool subthread);
-void mutt_update_num_postponed(void);
-struct Email *dlg_select_postponed_email(struct Mailbox *m);
 extern short PostCount;
 
 #ifndef HAVE_WCSCASECMP

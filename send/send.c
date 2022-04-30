@@ -52,6 +52,7 @@
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "pattern/lib.h"
+#include "postpone/lib.h"
 #include "question/lib.h"
 #include "copy.h"
 #include "format_flags.h"

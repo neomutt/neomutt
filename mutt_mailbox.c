@@ -35,9 +35,9 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt_mailbox.h"
+#include "postpone/lib.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "protos.h"
 
 static time_t MailboxTime = 0; ///< last time we started checking for mail
 static time_t MailboxStatsTime = 0; ///< last time we check performed mail_check_stats

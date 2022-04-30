@@ -56,8 +56,8 @@
  * @ref lib_imap, @ref lib_index, @ref lib_maildir, @ref lib_mbox,
  * @ref lib_menu, @ref lib_mixmaster, @ref lib_mutt, @ref lib_ncrypt,
  * @ref lib_nntp, @ref lib_notmuch, @ref lib_pager, @ref lib_pattern,
- * @ref lib_pop, @ref lib_progress, @ref lib_question, @ref lib_send,
- * @ref lib_sidebar, @ref lib_store.
+ * @ref lib_pop, @ref lib_postpone, @ref lib_progress, @ref lib_question,
+ * @ref lib_send, @ref lib_sidebar, @ref lib_store.
  *
  * ## Miscellaneous files
  *
@@ -70,7 +70,6 @@
  * | command_parse.c | @subpage neo_command_parse |
  * | complete.c      | @subpage neo_complete      |
  * | copy.c          | @subpage neo_copy          |
- * | dlg_postpone.c  | @subpage neo_dlg_postpone  |
  * | editmsg.c       | @subpage neo_editmsg       |
  * | enriched.c      | @subpage neo_enriched      |
  * | flags.c         | @subpage neo_flags         |
@@ -105,7 +104,6 @@
  * | myvar.c         | @subpage neo_myvar         |
  * | opcodes.c       | @subpage neo_opcode        |
  * | options.h       | @subpage neo_options       |
- * | postpone.c      | @subpage neo_postpone      |
  * | recvcmd.c       | @subpage neo_recvcmd       |
  * | resize.c        | @subpage neo_resize        |
  * | rfc3676.c       | @subpage neo_rfc3676       |
@@ -167,6 +165,7 @@
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
+#include "postpone/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "alternates.h"

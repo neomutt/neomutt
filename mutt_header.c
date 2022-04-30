@@ -41,10 +41,10 @@
 #include "mutt_header.h"
 #include "index/lib.h"
 #include "ncrypt/lib.h"
+#include "postpone/lib.h"
 #include "send/lib.h"
 #include "muttlib.h"
 #include "options.h"
-#include "protos.h"
 
 /**
  * label_ref_dec - Decrease the refcount of a label

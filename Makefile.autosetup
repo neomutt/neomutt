@@ -64,13 +64,13 @@ default:	all
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	alternates.o commands.o command_parse.o complete.o \
-		conststrings.o copy.o dlg_postpone.o editmsg.o \
+		conststrings.o copy.o editmsg.o \
 		enriched.o flags.o functions.o git_ver.o handler.o \
 		hdrline.o help.o hook.o icommands.o init.o keymap.o mailcap.o \
 		maillist.o main.o muttlib.o mutt_account.o mutt_body.o \
 		mutt_commands.o mutt_config.o mutt_header.o mutt_history.o \
 		mutt_logging.o mutt_mailbox.o mutt_signal.o mutt_socket.o \
-		mutt_thread.o mx.o mview.o myvar.o opcodes.o postpone.o recvcmd.o \
+		mutt_thread.o mx.o mview.o myvar.o opcodes.o recvcmd.o \
 		resize.o rfc3676.o score.o sort.o status.o subjectrx.o \
 		system.o version.o
 
@@ -664,6 +664,19 @@ $(PWD)/pop:
 	$(MKDIR_P) $(PWD)/pop
 
 ###############################################################################
+# libpostpone
+LIBPOSTPONE=		libpostpone.a
+LIBPOSTPONEOBJS=	postpone/dlg_postpone.o postpone/postpone.o
+CLEANFILES+=	$(LIBPOSTPONE) $(LIBPOSTPONEOBJS)
+ALLOBJS+=	$(LIBPOSTPONEOBJS)
+
+$(LIBPOSTPONE): $(PWD)/postpone $(LIBPOSTPONEOBJS)
+	$(AR) cr $@ $(LIBPOSTPONEOBJS)
+	$(RANLIB) $@
+$(PWD)/postpone:
+	$(MKDIR_P) $(PWD)/postpone
+
+###############################################################################
 # libprogress
 LIBPROGRESS=	libprogress.a
 LIBPROGRESSOBJS=progress/progress.o
@@ -784,7 +797,7 @@ $(ALLOBJS):
 # The libraries with the most dependencies will come first.
 MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) \
 		$(LIBBROWSER) $(LIBNNTP) $(LIBCOMPMBOX) $(LIBSTORE) \
-		$(LIBPROGRESS) $(LIBQUESTION) $(LIBALIAS) $(LIBSEND) \
+		$(LIBPROGRESS) $(LIBQUESTION) $(LIBPOSTPONE) $(LIBALIAS) $(LIBSEND) \
 		$(LIBCOMPOSE) $(LIBATTACH) $(LIBGUI) $(LIBENTER) \
 		$(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) $(LIBENVELOPE) $(LIBMIXMASTER) \
 		$(LIBHELPBAR) $(LIBMBOX) $(LIBNOTMUCH) $(LIBMAILDIR) \

@@ -39,6 +39,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
+#include "lib.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"
 #include "handler.h"
