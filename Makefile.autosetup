@@ -430,7 +430,8 @@ $(PWD)/helpbar:
 ###############################################################################
 # libhistory
 LIBHISTORY=	libhistory.a
-LIBHISTORYOBJS=	history/config.o history/dlg_history.o history/history.o
+LIBHISTORYOBJS=	history/config.o history/dlg_history.o history/functions.o \
+		history/history.o
 CLEANFILES+=	$(LIBHISTORY) $(LIBHISTORYOBJS)
 ALLOBJS+=	$(LIBHISTORYOBJS)
 
