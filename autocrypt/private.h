@@ -33,8 +33,19 @@ struct AutocryptGossipHistory;
 struct AutocryptPeer;
 struct AutocryptPeerHistory;
 struct Buffer;
+struct Menu;
 
 extern sqlite3 *AutocryptDB;
+
+/**
+ * struct AccountEntry - An entry in the Autocrypt account Menu
+ */
+struct AccountEntry
+{
+  int num;                          ///< Number in the index
+  struct AutocryptAccount *account; ///< Account details
+  struct Address *addr; ///< Email address associated with the account
+};
 
 int                            mutt_autocrypt_account_init(bool prompt);
 void                           mutt_autocrypt_scan_mailboxes(void);
@@ -71,5 +82,7 @@ int                            mutt_autocrypt_gpgme_init(void);
 bool                           mutt_autocrypt_gpgme_is_valid_key(const char *keyid);
 int                            mutt_autocrypt_gpgme_select_key(struct Buffer *keyid, struct Buffer *keydata);
 int                            mutt_autocrypt_gpgme_select_or_create_key(struct Address *addr, struct Buffer *keyid, struct Buffer *keydata);
+
+bool populate_menu(struct Menu *menu);
 
 #endif /* MUTT_AUTOCRYPT_PRIVATE_H */

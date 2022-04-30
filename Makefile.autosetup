@@ -138,8 +138,8 @@ $(PWD)/attach:
 @if USE_AUTOCRYPT
 LIBAUTOCRYPT=	libautocrypt.a
 LIBAUTOCRYPTOBJS=autocrypt/autocrypt.o autocrypt/dlg_autocrypt.o \
-		 autocrypt/config.o autocrypt/db.o autocrypt/gpgme.o \
-		 autocrypt/schema.o
+		 autocrypt/config.o autocrypt/db.o autocrypt/functions.o \
+		 autocrypt/gpgme.o autocrypt/schema.o
 CLEANFILES+=	$(LIBAUTOCRYPT) $(LIBAUTOCRYPTOBJS)
 ALLOBJS+=	$(LIBAUTOCRYPTOBJS)
 
