@@ -72,7 +72,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
@@ -81,16 +80,13 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "menu/lib.h"
-#include "pager/lib.h"
-#include "question/lib.h"
 #include "format_flags.h"
 #include "keymap.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "options.h"
 #include "pgp.h"
-#include "pgpinvoke.h"
+#include "pgp_functions.h"
 #include "pgpkey.h"
 #include "pgplib.h"
 
@@ -589,18 +585,14 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
 {
   struct PgpUid **key_table = NULL;
   struct Menu *menu = NULL;
-  int i;
-  char buf[1024], tmpbuf[256];
-  struct PgpKeyInfo *kp = NULL;
+  char buf[1024];
   struct PgpUid *a = NULL;
-  struct Buffer *tempfile = NULL;
-
   bool unusable = false;
-
   int keymax = 0;
 
   const bool c_pgp_show_unusable = cs_subset_bool(NeoMutt->sub, "pgp_show_unusable");
-  for (i = 0, kp = keys; kp; kp = kp->next)
+  int i = 0;
+  for (struct PgpKeyInfo *kp = keys; kp; kp = kp->next)
   {
     if (!c_pgp_show_unusable && (kp->flags & KEYFLAG_CANTUSE))
     {
@@ -660,11 +652,12 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
   menu->mdata = key_table;
   menu->mdata_free = pgp_key_table_free;
 
-  struct MuttWindow *win_menu = menu->win;
+  struct PgpData pd = { false, menu, key_table, NULL };
+  dlg->wdata = &pd;
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->notify, NT_CONFIG, pgp_key_config_observer, menu);
-  notify_observer_add(win_menu->notify, NT_WINDOW, pgp_key_window_observer, win_menu);
+  notify_observer_add(menu->win->notify, NT_WINDOW, pgp_key_window_observer, menu->win);
 
   if (p)
     snprintf(buf, sizeof(buf), _("PGP keys matching <%s>"), p->mailbox);
@@ -674,17 +667,13 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   sbar_set_title(sbar, buf);
 
-  kp = NULL;
-
   mutt_clear_error();
 
   // ---------------------------------------------------------------------------
   // Event Loop
   int op = OP_NULL;
-  int rc;
   do
   {
-    rc = FR_UNKNOWN;
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
@@ -699,142 +688,15 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
     }
     mutt_clear_error();
 
-    switch (op)
-    {
-      case OP_VERIFY_KEY:
-      {
-        FILE *fp_null = fopen("/dev/null", "w");
-        if (!fp_null)
-        {
-          mutt_perror(_("Can't open /dev/null"));
-          continue;
-        }
-        tempfile = mutt_buffer_pool_get();
-        mutt_buffer_mktemp(tempfile);
-        FILE *fp_tmp = mutt_file_fopen(mutt_buffer_string(tempfile), "w");
-        if (!fp_tmp)
-        {
-          mutt_perror(_("Can't create temporary file"));
-          mutt_file_fclose(&fp_null);
-          mutt_buffer_pool_release(&tempfile);
-          continue;
-        }
-
-        mutt_message(_("Invoking PGP..."));
-
-        const int index = menu_get_index(menu);
-        struct PgpUid *cur_key = key_table[index];
-        snprintf(tmpbuf, sizeof(tmpbuf), "0x%s",
-                 pgp_fpr_or_lkeyid(pgp_principal_key(cur_key->parent)));
-
-        pid_t pid = pgp_invoke_verify_key(NULL, NULL, NULL, -1, fileno(fp_tmp),
-                                          fileno(fp_null), tmpbuf);
-        if (pid == -1)
-        {
-          mutt_perror(_("Can't create filter"));
-          unlink(mutt_buffer_string(tempfile));
-          mutt_file_fclose(&fp_tmp);
-          mutt_file_fclose(&fp_null);
-        }
-
-        filter_wait(pid);
-        mutt_file_fclose(&fp_tmp);
-        mutt_file_fclose(&fp_null);
-        mutt_clear_error();
-        char title[1024];
-        snprintf(title, sizeof(title), _("Key ID: 0x%s"),
-                 pgp_keyid(pgp_principal_key(cur_key->parent)));
-
-        struct PagerData pdata = { 0 };
-        struct PagerView pview = { &pdata };
-
-        pdata.fname = mutt_buffer_string(tempfile);
-
-        pview.banner = title;
-        pview.flags = MUTT_PAGER_NO_FLAGS;
-        pview.mode = PAGER_MODE_OTHER;
-
-        mutt_do_pager(&pview, NULL);
-        mutt_buffer_pool_release(&tempfile);
-        menu_queue_redraw(menu, MENU_REDRAW_FULL);
-        continue;
-      }
-
-      case OP_VIEW_ID:
-      {
-        const int index = menu_get_index(menu);
-        struct PgpUid *cur_key = key_table[index];
-        mutt_message("%s", NONULL(cur_key->addr));
-        continue;
-      }
-
-      case OP_GENERIC_SELECT_ENTRY:
-      {
-        /* XXX make error reporting more verbose */
-
-        const int index = menu_get_index(menu);
-        struct PgpUid *cur_key = key_table[index];
-        if (OptPgpCheckTrust)
-        {
-          if (!pgp_key_is_valid(cur_key->parent))
-          {
-            mutt_error(_("This key can't be used: expired/disabled/revoked"));
-            continue;
-          }
-        }
-
-        if (OptPgpCheckTrust && (!pgp_id_is_valid(cur_key) || !pgp_id_is_strong(cur_key)))
-        {
-          const char *str = "";
-          char buf2[1024];
-
-          if (cur_key->flags & KEYFLAG_CANTUSE)
-          {
-            str = _("ID is expired/disabled/revoked. Do you really want to use the key?");
-          }
-          else
-          {
-            switch (cur_key->trust & 0x03)
-            {
-              case 0:
-                str = _("ID has undefined validity. Do you really want to use the key?");
-                break;
-              case 1:
-                str = _("ID is not valid. Do you really want to use the key?");
-                break;
-              case 2:
-                str = _("ID is only marginally valid. Do you really want to use the key?");
-                break;
-            }
-          }
-
-          snprintf(buf2, sizeof(buf2), "%s", str);
-
-          if (mutt_yesorno(buf2, MUTT_NO) != MUTT_YES)
-          {
-            mutt_clear_error();
-            continue;
-          }
-        }
-
-        kp = cur_key->parent;
-        rc = FR_DONE;
-        break;
-      }
-
-      case OP_EXIT:
-        kp = NULL;
-        rc = FR_DONE;
-        break;
-    }
+    int rc = pgp_function_dispatcher(dlg, op);
 
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(NULL, op);
-  } while (rc != FR_DONE);
+  } while (!pd.done);
   // ---------------------------------------------------------------------------
 
   simple_dialog_free(&dlg);
-  return kp;
+  return pd.key;
 }

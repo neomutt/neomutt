@@ -573,9 +573,9 @@ LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/dlg_gpgme.o \
 @endif
 @if HAVE_PGP
 LIBNCRYPTOBJS+=	ncrypt/crypt_mod_pgp_classic.o ncrypt/dlg_pgp.o \
-		ncrypt/gnupgparse.o ncrypt/pgp.o ncrypt/pgpinvoke.o \
-		ncrypt/pgpkey.o ncrypt/pgplib.o ncrypt/pgpmicalg.o \
-		ncrypt/pgppacket.o
+		ncrypt/gnupgparse.o ncrypt/pgp_functions.o ncrypt/pgp.o \
+		ncrypt/pgpinvoke.o ncrypt/pgpkey.o ncrypt/pgplib.o \
+		ncrypt/pgpmicalg.o ncrypt/pgppacket.o
 @endif
 @if HAVE_SMIME
 LIBNCRYPTOBJS+=	ncrypt/crypt_mod_smime_classic.o ncrypt/dlg_smime.o ncrypt/smime.o
