@@ -68,14 +68,11 @@
 #include "config.h"
 #include <ctype.h>
 #include <gpgme.h>
-#include <langinfo.h>
-#include <limits.h>
 #include <locale.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <time.h>
 #include "private.h"
 #include "mutt/lib.h"
@@ -85,15 +82,13 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "menu/lib.h"
-#include "pager/lib.h"
-#include "question/lib.h"
 #include "crypt_gpgme.h"
 #include "format_flags.h"
+#include "gpgme_functions.h"
 #include "keymap.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "options.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -117,60 +112,6 @@ struct CryptEntry
   size_t num;               ///< Index number
   struct CryptKeyInfo *key; ///< Key
 };
-
-/**
- * struct DnArray - An X500 Distinguished Name
- */
-struct DnArray
-{
-  char *key;   ///< Key
-  char *value; ///< Value
-};
-
-static const char *const KeyInfoPrompts[] = {
-  /* L10N: The following are the headers for the "verify key" output from the
-     GPGME key selection menu (bound to "c" in the key selection menu).
-     They will be automatically aligned. */
-  N_("Name: "),      N_("aka: "),       N_("Valid From: "),  N_("Valid To: "),
-  N_("Key Type: "),  N_("Key Usage: "), N_("Fingerprint: "), N_("Serial-No: "),
-  N_("Issued By: "), N_("Subkey: ")
-};
-
-int KeyInfoPadding[KIP_MAX] = { 0 };
-
-/**
- * print_utf8 - Write a UTF-8 string to a file
- * @param fp  File to write to
- * @param buf Buffer to read from
- * @param len Length to read
- *
- * Convert the character set.
- */
-static void print_utf8(FILE *fp, const char *buf, size_t len)
-{
-  char *tstr = mutt_mem_malloc(len + 1);
-  memcpy(tstr, buf, len);
-  tstr[len] = 0;
-
-  /* fromcode "utf-8" is sure, so we don't want
-   * charset-hook corrections: flags must be 0.  */
-  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-  mutt_ch_convert_string(&tstr, "utf-8", c_charset, MUTT_ICONV_NO_FLAGS);
-  fputs(tstr, fp);
-  FREE(&tstr);
-}
-
-/**
- * crypt_key_is_valid - Is the key valid
- * @param k Key to test
- * @retval true Key is valid
- */
-static bool crypt_key_is_valid(struct CryptKeyInfo *k)
-{
-  if (k->flags & KEYFLAG_CANTUSE)
-    return false;
-  return true;
-}
 
 /**
  * crypt_compare_key_address - Compare Key addresses and IDs for sorting
@@ -344,602 +285,6 @@ static int crypt_compare_trust_qsort(const void *a, const void *b)
   const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
   return (c_pgp_sort_keys & SORT_REVERSE) ? !crypt_compare_key_trust(a, b) :
                                             crypt_compare_key_trust(a, b);
-}
-
-/**
- * print_dn_part - Print the X.500 Distinguished Name
- * @param fp  File to write to
- * @param dn  Distinguished Name
- * @param key Key string
- * @retval true  Any DN keys match the given key string
- * @retval false Otherwise
- *
- * Print the X.500 Distinguished Name part KEY from the array of parts DN to FP.
- */
-static bool print_dn_part(FILE *fp, struct DnArray *dn, const char *key)
-{
-  bool any = false;
-
-  for (; dn->key; dn++)
-  {
-    if (strcmp(dn->key, key) == 0)
-    {
-      if (any)
-        fputs(" + ", fp);
-      print_utf8(fp, dn->value, strlen(dn->value));
-      any = true;
-    }
-  }
-  return any;
-}
-
-/**
- * print_dn_parts - Print all parts of a DN in a standard sequence
- * @param fp File to write to
- * @param dn Array of Distinguished Names
- */
-static void print_dn_parts(FILE *fp, struct DnArray *dn)
-{
-  static const char *const stdpart[] = {
-    "CN", "OU", "O", "STREET", "L", "ST", "C", NULL,
-  };
-  bool any = false;
-  bool any2 = false;
-
-  for (int i = 0; stdpart[i]; i++)
-  {
-    if (any)
-      fputs(", ", fp);
-    any = print_dn_part(fp, dn, stdpart[i]);
-  }
-  /* now print the rest without any specific ordering */
-  for (; dn->key; dn++)
-  {
-    int i;
-    for (i = 0; stdpart[i]; i++)
-    {
-      if (strcmp(dn->key, stdpart[i]) == 0)
-        break;
-    }
-    if (!stdpart[i])
-    {
-      if (any)
-        fputs(", ", fp);
-      if (!any2)
-        fputs("(", fp);
-      any = print_dn_part(fp, dn, dn->key);
-      any2 = true;
-    }
-  }
-  if (any2)
-    fputs(")", fp);
-}
-
-/**
- * parse_dn_part - Parse an RDN
- * @param array Array for results
- * @param str   String to parse
- * @retval ptr First character after Distinguished Name
- *
- * This is a helper to parse_dn()
- */
-static const char *parse_dn_part(struct DnArray *array, const char *str)
-{
-  const char *s = NULL, *s1 = NULL;
-  size_t n;
-  char *p = NULL;
-
-  /* parse attribute type */
-  for (s = str + 1; (s[0] != '\0') && (s[0] != '='); s++)
-    ; // do nothing
-
-  if (s[0] == '\0')
-    return NULL; /* error */
-  n = s - str;
-  if (n == 0)
-    return NULL; /* empty key */
-  array->key = mutt_mem_malloc(n + 1);
-  p = array->key;
-  memcpy(p, str, n); /* fixme: trim trailing spaces */
-  p[n] = 0;
-  str = s + 1;
-
-  if (*str == '#')
-  { /* hexstring */
-    str++;
-    for (s = str; isxdigit(*s); s++)
-      s++;
-    n = s - str;
-    if ((n == 0) || (n & 1))
-      return NULL; /* empty or odd number of digits */
-    n /= 2;
-    p = mutt_mem_malloc(n + 1);
-    array->value = (char *) p;
-    for (s1 = str; n; s1 += 2, n--)
-      sscanf(s1, "%2hhx", (unsigned char *) p++);
-    *p = '\0';
-  }
-  else
-  { /* regular v3 quoted string */
-    for (n = 0, s = str; *s; s++)
-    {
-      if (*s == '\\')
-      { /* pair */
-        s++;
-        if ((*s == ',') || (*s == '=') || (*s == '+') || (*s == '<') || (*s == '>') ||
-            (*s == '#') || (*s == ';') || (*s == '\\') || (*s == '\"') || (*s == ' '))
-        {
-          n++;
-        }
-        else if (isxdigit(s[0]) && isxdigit(s[1]))
-        {
-          s++;
-          n++;
-        }
-        else
-          return NULL; /* invalid escape sequence */
-      }
-      else if (*s == '\"')
-        return NULL; /* invalid encoding */
-      else if ((*s == ',') || (*s == '=') || (*s == '+') || (*s == '<') ||
-               (*s == '>') || (*s == '#') || (*s == ';'))
-      {
-        break;
-      }
-      else
-        n++;
-    }
-
-    p = mutt_mem_malloc(n + 1);
-    array->value = (char *) p;
-    for (s = str; n; s++, n--)
-    {
-      if (*s == '\\')
-      {
-        s++;
-        if (isxdigit(*s))
-        {
-          sscanf(s, "%2hhx", (unsigned char *) p++);
-          s++;
-        }
-        else
-          *p++ = *s;
-      }
-      else
-        *p++ = *s;
-    }
-    *p = '\0';
-  }
-  return s;
-}
-
-/**
- * parse_dn - Parse a DN and return an array-ized one
- * @param str String to parse
- * @retval ptr Array of Distinguished Names
- *
- * This is not a validating parser and it does not support any old-stylish
- * syntax; GPGME is expected to return only rfc2253 compatible strings.
- */
-static struct DnArray *parse_dn(const char *str)
-{
-  struct DnArray *array = NULL;
-  size_t arrayidx, arraysize;
-
-  arraysize = 7; /* C,ST,L,O,OU,CN,email */
-  array = mutt_mem_malloc((arraysize + 1) * sizeof(*array));
-  arrayidx = 0;
-  while (*str)
-  {
-    while (str[0] == ' ')
-      str++;
-    if (str[0] == '\0')
-      break; /* ready */
-    if (arrayidx >= arraysize)
-    {
-      /* neomutt lacks a real mutt_mem_realloc - so we need to copy */
-      arraysize += 5;
-      struct DnArray *a2 = mutt_mem_malloc((arraysize + 1) * sizeof(*array));
-      for (int i = 0; i < arrayidx; i++)
-      {
-        a2[i].key = array[i].key;
-        a2[i].value = array[i].value;
-      }
-      FREE(&array);
-      array = a2;
-    }
-    array[arrayidx].key = NULL;
-    array[arrayidx].value = NULL;
-    str = parse_dn_part(array + arrayidx, str);
-    arrayidx++;
-    if (!str)
-      goto failure;
-    while (str[0] == ' ')
-      str++;
-    if ((str[0] != '\0') && (str[0] != ',') && (str[0] != ';') && (str[0] != '+'))
-      goto failure; /* invalid delimiter */
-    if (str[0] != '\0')
-      str++;
-  }
-  array[arrayidx].key = NULL;
-  array[arrayidx].value = NULL;
-  return array;
-
-failure:
-  for (int i = 0; i < arrayidx; i++)
-  {
-    FREE(&array[i].key);
-    FREE(&array[i].value);
-  }
-  FREE(&array);
-  return NULL;
-}
-
-/**
- * parse_and_print_user_id - Print a nice representation of the userid
- * @param fp     File to write to
- * @param userid String returned by GPGME key functions (utf-8 encoded)
- *
- * Make sure it is displayed in a proper way, which does mean to reorder some
- * parts for S/MIME's DNs.
- */
-static void parse_and_print_user_id(FILE *fp, const char *userid)
-{
-  const char *s = NULL;
-
-  if (*userid == '<')
-  {
-    s = strchr(userid + 1, '>');
-    if (s)
-      print_utf8(fp, userid + 1, s - userid - 1);
-  }
-  else if (*userid == '(')
-    fputs(_("[Can't display this user ID (unknown encoding)]"), fp);
-  else if (!isalnum(userid[0]))
-    fputs(_("[Can't display this user ID (invalid encoding)]"), fp);
-  else
-  {
-    struct DnArray *dn = parse_dn(userid);
-    if (!dn)
-      fputs(_("[Can't display this user ID (invalid DN)]"), fp);
-    else
-    {
-      print_dn_parts(fp, dn);
-      for (int i = 0; dn[i].key; i++)
-      {
-        FREE(&dn[i].key);
-        FREE(&dn[i].value);
-      }
-      FREE(&dn);
-    }
-  }
-}
-
-/**
- * print_key_info - Verbose information about a key or certificate to a file
- * @param key Key to use
- * @param fp  File to write to
- */
-static void print_key_info(gpgme_key_t key, FILE *fp)
-{
-  int idx;
-  const char *s = NULL, *s2 = NULL;
-  time_t tt = 0;
-  char shortbuf[128];
-  unsigned long aval = 0;
-  const char *delim = NULL;
-  gpgme_user_id_t uid = NULL;
-  static int max_header_width = 0;
-
-  if (max_header_width == 0)
-  {
-    for (int i = 0; i < KIP_MAX; i++)
-    {
-      KeyInfoPadding[i] = mutt_str_len(_(KeyInfoPrompts[i]));
-      const int width = mutt_strwidth(_(KeyInfoPrompts[i]));
-      if (max_header_width < width)
-        max_header_width = width;
-      KeyInfoPadding[i] -= width;
-    }
-    for (int i = 0; i < KIP_MAX; i++)
-      KeyInfoPadding[i] += max_header_width;
-  }
-
-  bool is_pgp = (key->protocol == GPGME_PROTOCOL_OpenPGP);
-
-  for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
-  {
-    if (uid->revoked)
-      continue;
-
-    s = uid->uid;
-    /* L10N: DOTFILL */
-
-    if (idx == 0)
-      fprintf(fp, "%*s", KeyInfoPadding[KIP_NAME], _(KeyInfoPrompts[KIP_NAME]));
-    else
-      fprintf(fp, "%*s", KeyInfoPadding[KIP_AKA], _(KeyInfoPrompts[KIP_AKA]));
-    if (uid->invalid)
-    {
-      /* L10N: comes after the Name or aka if the key is invalid */
-      fputs(_("[Invalid]"), fp);
-      putc(' ', fp);
-    }
-    if (is_pgp)
-      print_utf8(fp, s, strlen(s));
-    else
-      parse_and_print_user_id(fp, s);
-    putc('\n', fp);
-  }
-
-  if (key->subkeys && (key->subkeys->timestamp > 0))
-  {
-    tt = key->subkeys->timestamp;
-
-    mutt_date_localtime_format(shortbuf, sizeof(shortbuf), nl_langinfo(D_T_FMT), tt);
-    fprintf(fp, "%*s%s\n", KeyInfoPadding[KIP_VALID_FROM],
-            _(KeyInfoPrompts[KIP_VALID_FROM]), shortbuf);
-  }
-
-  if (key->subkeys && (key->subkeys->expires > 0))
-  {
-    tt = key->subkeys->expires;
-
-    mutt_date_localtime_format(shortbuf, sizeof(shortbuf), nl_langinfo(D_T_FMT), tt);
-    fprintf(fp, "%*s%s\n", KeyInfoPadding[KIP_VALID_TO],
-            _(KeyInfoPrompts[KIP_VALID_TO]), shortbuf);
-  }
-
-  if (key->subkeys)
-    s = gpgme_pubkey_algo_name(key->subkeys->pubkey_algo);
-  else
-    s = "?";
-
-  s2 = is_pgp ? "PGP" : "X.509";
-
-  if (key->subkeys)
-    aval = key->subkeys->length;
-
-  fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_TYPE], _(KeyInfoPrompts[KIP_KEY_TYPE]));
-  /* L10N: This is printed after "Key Type: " and looks like this: PGP, 2048 bit RSA */
-  fprintf(fp, ngettext("%s, %lu bit %s\n", "%s, %lu bit %s\n", aval), s2, aval, s);
-
-  fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_USAGE], _(KeyInfoPrompts[KIP_KEY_USAGE]));
-  delim = "";
-
-  if (key_check_cap(key, KEY_CAP_CAN_ENCRYPT))
-  {
-    /* L10N: value in Key Usage: field */
-    fprintf(fp, "%s%s", delim, _("encryption"));
-    delim = _(", ");
-  }
-  if (key_check_cap(key, KEY_CAP_CAN_SIGN))
-  {
-    /* L10N: value in Key Usage: field */
-    fprintf(fp, "%s%s", delim, _("signing"));
-    delim = _(", ");
-  }
-  if (key_check_cap(key, KEY_CAP_CAN_CERTIFY))
-  {
-    /* L10N: value in Key Usage: field */
-    fprintf(fp, "%s%s", delim, _("certification"));
-  }
-  putc('\n', fp);
-
-  if (key->subkeys)
-  {
-    s = key->subkeys->fpr;
-    fprintf(fp, "%*s", KeyInfoPadding[KIP_FINGERPRINT], _(KeyInfoPrompts[KIP_FINGERPRINT]));
-    if (is_pgp && (strlen(s) == 40))
-    {
-      for (int i = 0; (s[0] != '\0') && (s[1] != '\0') && (s[2] != '\0') &&
-                      (s[3] != '\0') && (s[4] != '\0');
-           s += 4, i++)
-      {
-        putc(*s, fp);
-        putc(s[1], fp);
-        putc(s[2], fp);
-        putc(s[3], fp);
-        putc(' ', fp);
-        if (i == 4)
-          putc(' ', fp);
-      }
-    }
-    else
-    {
-      for (int i = 0; (s[0] != '\0') && (s[1] != '\0') && (s[2] != '\0'); s += 2, i++)
-      {
-        putc(*s, fp);
-        putc(s[1], fp);
-        putc(is_pgp ? ' ' : ':', fp);
-        if (is_pgp && (i == 7))
-          putc(' ', fp);
-      }
-    }
-    fprintf(fp, "%s\n", s);
-  }
-
-  if (key->issuer_serial)
-  {
-    s = key->issuer_serial;
-    if (s)
-    {
-      fprintf(fp, "%*s0x%s\n", KeyInfoPadding[KIP_SERIAL_NO],
-              _(KeyInfoPrompts[KIP_SERIAL_NO]), s);
-    }
-  }
-
-  if (key->issuer_name)
-  {
-    s = key->issuer_name;
-    if (s)
-    {
-      fprintf(fp, "%*s", KeyInfoPadding[KIP_ISSUED_BY], _(KeyInfoPrompts[KIP_ISSUED_BY]));
-      parse_and_print_user_id(fp, s);
-      putc('\n', fp);
-    }
-  }
-
-  /* For PGP we list all subkeys. */
-  if (is_pgp)
-  {
-    gpgme_subkey_t subkey = NULL;
-
-    for (idx = 1, subkey = key->subkeys; subkey; idx++, subkey = subkey->next)
-    {
-      s = subkey->keyid;
-
-      putc('\n', fp);
-      if (strlen(s) == 16)
-        s += 8; /* display only the short keyID */
-      fprintf(fp, "%*s0x%s", KeyInfoPadding[KIP_SUBKEY], _(KeyInfoPrompts[KIP_SUBKEY]), s);
-      if (subkey->revoked)
-      {
-        putc(' ', fp);
-        /* L10N: describes a subkey */
-        fputs(_("[Revoked]"), fp);
-      }
-      if (subkey->invalid)
-      {
-        putc(' ', fp);
-        /* L10N: describes a subkey */
-        fputs(_("[Invalid]"), fp);
-      }
-      if (subkey->expired)
-      {
-        putc(' ', fp);
-        /* L10N: describes a subkey */
-        fputs(_("[Expired]"), fp);
-      }
-      if (subkey->disabled)
-      {
-        putc(' ', fp);
-        /* L10N: describes a subkey */
-        fputs(_("[Disabled]"), fp);
-      }
-      putc('\n', fp);
-
-      if (subkey->timestamp > 0)
-      {
-        tt = subkey->timestamp;
-
-        mutt_date_localtime_format(shortbuf, sizeof(shortbuf), nl_langinfo(D_T_FMT), tt);
-        fprintf(fp, "%*s%s\n", KeyInfoPadding[KIP_VALID_FROM],
-                _(KeyInfoPrompts[KIP_VALID_FROM]), shortbuf);
-      }
-
-      if (subkey->expires > 0)
-      {
-        tt = subkey->expires;
-
-        mutt_date_localtime_format(shortbuf, sizeof(shortbuf), nl_langinfo(D_T_FMT), tt);
-        fprintf(fp, "%*s%s\n", KeyInfoPadding[KIP_VALID_TO],
-                _(KeyInfoPrompts[KIP_VALID_TO]), shortbuf);
-      }
-
-      s = gpgme_pubkey_algo_name(subkey->pubkey_algo);
-
-      aval = subkey->length;
-
-      fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_TYPE], _(KeyInfoPrompts[KIP_KEY_TYPE]));
-      /* L10N: This is printed after "Key Type: " and looks like this: PGP, 2048 bit RSA */
-      fprintf(fp, ngettext("%s, %lu bit %s\n", "%s, %lu bit %s\n", aval), "PGP", aval, s);
-
-      fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_USAGE], _(KeyInfoPrompts[KIP_KEY_USAGE]));
-      delim = "";
-
-      if (subkey->can_encrypt)
-      {
-        fprintf(fp, "%s%s", delim, _("encryption"));
-        delim = _(", ");
-      }
-      if (subkey->can_sign)
-      {
-        fprintf(fp, "%s%s", delim, _("signing"));
-        delim = _(", ");
-      }
-      if (subkey->can_certify)
-      {
-        fprintf(fp, "%s%s", delim, _("certification"));
-      }
-      putc('\n', fp);
-    }
-  }
-}
-
-/**
- * verify_key - Show detailed information about the selected key
- * @param key Key to show
- */
-static void verify_key(struct CryptKeyInfo *key)
-{
-  const char *s = NULL;
-  gpgme_ctx_t listctx = NULL;
-  gpgme_error_t err;
-  gpgme_key_t k = NULL;
-  int maxdepth = 100;
-
-  struct Buffer tempfile = mutt_buffer_make(PATH_MAX);
-  mutt_buffer_mktemp(&tempfile);
-  FILE *fp = mutt_file_fopen(mutt_buffer_string(&tempfile), "w");
-  if (!fp)
-  {
-    mutt_perror(_("Can't create temporary file"));
-    goto cleanup;
-  }
-  mutt_message(_("Collecting data..."));
-
-  print_key_info(key->kobj, fp);
-
-  listctx = create_gpgme_context(key->flags & KEYFLAG_ISX509);
-
-  k = key->kobj;
-  gpgme_key_ref(k);
-  while ((s = k->chain_id) && k->subkeys && (strcmp(s, k->subkeys->fpr) != 0))
-  {
-    putc('\n', fp);
-    err = gpgme_op_keylist_start(listctx, s, 0);
-    gpgme_key_unref(k);
-    k = NULL;
-    if (err == 0)
-      err = gpgme_op_keylist_next(listctx, &k);
-    if (err != 0)
-    {
-      fprintf(fp, _("Error finding issuer key: %s\n"), gpgme_strerror(err));
-      goto leave;
-    }
-    gpgme_op_keylist_end(listctx);
-
-    print_key_info(k, fp);
-    if (!--maxdepth)
-    {
-      putc('\n', fp);
-      fputs(_("Error: certification chain too long - stopping here\n"), fp);
-      break;
-    }
-  }
-
-leave:
-  gpgme_key_unref(k);
-  gpgme_release(listctx);
-  mutt_file_fclose(&fp);
-  mutt_clear_error();
-  char title[1024];
-  snprintf(title, sizeof(title), _("Key ID: 0x%s"), crypt_keyid(key));
-
-  struct PagerData pdata = { 0 };
-  struct PagerView pview = { &pdata };
-
-  pdata.fname = mutt_buffer_string(&tempfile);
-
-  pview.banner = title;
-  pview.flags = MUTT_PAGER_NO_FLAGS;
-  pview.mode = PAGER_MODE_OTHER;
-
-  mutt_do_pager(&pview, NULL);
-
-cleanup:
-  mutt_buffer_dealloc(&tempfile);
 }
 
 /**
@@ -1320,7 +665,6 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
 {
   int keymax;
   int i;
-  struct CryptKeyInfo *k = NULL;
   int (*f)(const void *, const void *);
   enum MenuType menu_to_use = MENU_GENERIC;
   bool unusable = false;
@@ -1329,7 +673,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   keymax = 0;
   i = 0;
   struct CryptKeyInfo **key_table = NULL;
-  for (k = keys; k; k = k->next)
+  for (struct CryptKeyInfo *k = keys; k; k = k->next)
   {
     const bool c_pgp_show_unusable = cs_subset_bool(NeoMutt->sub, "pgp_show_unusable");
     if (!c_pgp_show_unusable && (k->flags & KEYFLAG_CANTUSE))
@@ -1385,11 +729,12 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   menu->mdata = key_table;
   menu->mdata_free = gpgme_key_table_free;
 
-  struct MuttWindow *win_menu = menu->win;
+  struct GpgmeData gd = { false, menu, key_table, NULL };
+  dlg->wdata = &gd;
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->notify, NT_CONFIG, gpgme_key_config_observer, menu);
-  notify_observer_add(win_menu->notify, NT_WINDOW, gpgme_key_window_observer, win_menu);
+  notify_observer_add(menu->win->notify, NT_WINDOW, gpgme_key_window_observer, menu->win);
 
   {
     const char *ts = NULL;
@@ -1422,15 +767,12 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   }
 
   mutt_clear_error();
-  k = NULL;
 
   // ---------------------------------------------------------------------------
   // Event Loop
   int op = OP_NULL;
-  int rc;
   do
   {
-    rc = FR_UNKNOWN;
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
@@ -1445,111 +787,15 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
     }
     mutt_clear_error();
 
-    switch (op)
-    {
-      case OP_VERIFY_KEY:
-      {
-        const int index = menu_get_index(menu);
-        struct CryptKeyInfo *cur_key = key_table[index];
-        verify_key(cur_key);
-        menu_queue_redraw(menu, MENU_REDRAW_FULL);
-        continue;
-      }
-
-      case OP_VIEW_ID:
-      {
-        const int index = menu_get_index(menu);
-        struct CryptKeyInfo *cur_key = key_table[index];
-        mutt_message("%s", cur_key->uid);
-        continue;
-      }
-
-      case OP_GENERIC_SELECT_ENTRY:
-      {
-        const int index = menu_get_index(menu);
-        struct CryptKeyInfo *cur_key = key_table[index];
-        /* FIXME make error reporting more verbose - this should be
-         * easy because GPGME provides more information */
-        if (OptPgpCheckTrust)
-        {
-          if (!crypt_key_is_valid(cur_key))
-          {
-            mutt_error(_("This key can't be used: expired/disabled/revoked"));
-            continue;
-          }
-        }
-
-        if (OptPgpCheckTrust && (!crypt_id_is_valid(cur_key) || !crypt_id_is_strong(cur_key)))
-        {
-          const char *warn_s = NULL;
-          char buf2[1024];
-
-          if (cur_key->flags & KEYFLAG_CANTUSE)
-          {
-            warn_s = _("ID is expired/disabled/revoked. Do you really want to use the key?");
-          }
-          else
-          {
-            warn_s = "??";
-            switch (cur_key->validity)
-            {
-              case GPGME_VALIDITY_NEVER:
-                warn_s = _("ID is not valid. Do you really want to use the key?");
-                break;
-              case GPGME_VALIDITY_MARGINAL:
-                warn_s = _("ID is only marginally valid. Do you really want to use the key?");
-                break;
-              case GPGME_VALIDITY_FULL:
-              case GPGME_VALIDITY_ULTIMATE:
-                break;
-              case GPGME_VALIDITY_UNKNOWN:
-              case GPGME_VALIDITY_UNDEFINED:
-                warn_s = _("ID has undefined validity. Do you really want to use the key?");
-                break;
-            }
-          }
-
-          snprintf(buf2, sizeof(buf2), "%s", warn_s);
-
-          if (mutt_yesorno(buf2, MUTT_NO) != MUTT_YES)
-          {
-            mutt_clear_error();
-            continue;
-          }
-
-          /* A '!' is appended to a key in find_keys() when forced_valid is
-           * set.  Prior to GPGME 1.11.0, encrypt_gpgme_object() called
-           * create_recipient_set() which interpreted the '!' to mean set
-           * GPGME_VALIDITY_FULL for the key.
-           *
-           * Starting in GPGME 1.11.0, we now use a '\n' delimited recipient
-           * string, which is passed directly to the gpgme_op_encrypt_ext()
-           * function.  This allows to use the original meaning of '!' to
-           * force a subkey use. */
-#if (GPGME_VERSION_NUMBER < 0x010b00) // GPGME < 1.11.0
-          if (forced_valid)
-            *forced_valid = true;
-#endif
-        }
-
-        k = crypt_copy_key(cur_key);
-        rc = FR_DONE;
-        break;
-      }
-
-      case OP_EXIT:
-        k = NULL;
-        rc = FR_DONE;
-        break;
-    }
+    int rc = gpgme_function_dispatcher(dlg, op);
 
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(NULL, op);
-  } while (rc != FR_DONE);
+  } while (!gd.done);
   // ---------------------------------------------------------------------------
 
   simple_dialog_free(&dlg);
-  return k;
+  return gd.key;
 }

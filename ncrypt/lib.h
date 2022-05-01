@@ -41,6 +41,7 @@
  * | ncrypt/dlggpgme.c                | @subpage crypt_dlg_gpgme             |
  * | ncrypt/dlgpgp.c                  | @subpage crypt_dlg_pgp               |
  * | ncrypt/dlgsmime.c                | @subpage crypt_dlg_smime             |
+ * | ncrypt/gpgme_functions.c         | @subpage crypt_gpgme_functions       |
  * | ncrypt/gnupgparse.c              | @subpage crypt_gnupg                 |
  * | ncrypt/pgp.c                     | @subpage crypt_pgp                   |
  * | ncrypt/pgpinvoke.c               | @subpage crypt_pgpinvoke             |

@@ -28,11 +28,11 @@
 
 #include "config.h"
 #include <stddef.h>
-#include "mutt.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "mutt.h"
 #include "functions.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
