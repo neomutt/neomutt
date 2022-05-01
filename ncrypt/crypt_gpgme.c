@@ -30,6 +30,15 @@
  * @page crypt_crypt_gpgme Wrapper for PGP/SMIME calls to GPGME
  *
  * Wrapper for PGP/SMIME calls to GPGME
+ *
+ * Some code is build conditionally according to the version of the GPGME library.
+ * This table relates the hex GPGME_VERSION_NUMBER to its age:
+ *
+ * | Version | Hex      | Release Date |
+ * | :------ | :------- | :----------- |
+ * | 1.8.0   | 0x010800 | 2016-11-16   |
+ * | 1.9.0   | 0x010900 | 2017-03-28   |
+ * | 1.11.0  | 0x010b00 | 2018-04-18   |
  */
 
 #include "config.h"
@@ -119,9 +128,9 @@ static bool is_pka_notation(gpgme_sig_notation_t notation)
  */
 static void redraw_if_needed(gpgme_ctx_t ctx)
 {
-#if (GPGME_VERSION_NUMBER < 0x010800)
-  /* gpgme_get_ctx_flag is not available in GPGME < 1.8.0. In this case, stay
-   * on the safe side and always redraw. */
+#if (GPGME_VERSION_NUMBER < 0x010800) // GPGME < 1.8.0
+  /* gpgme_get_ctx_flag is not available.
+   * In this case, stay on the safe side and always redraw. */
   (void) ctx;
   mutt_need_hard_redraw();
 #else
@@ -133,7 +142,7 @@ static void redraw_if_needed(gpgme_ctx_t ctx)
 #endif
 }
 
-#if GPGRT_VERSION_NUMBER >= 0x012100 /* libgpg-error >= 1.33 */
+#if (GPGRT_VERSION_NUMBER >= 0x012100) // libgpg-error >= 1.33
 /**
  * cmp_version_strings - Compare version strings
  * @param a First version string
@@ -156,7 +165,7 @@ static int cmp_version_strings(const char *a, const char *b, int level)
 {
   return gpgrt_cmp_version(a, b, level);
 }
-#elif (GPGME_VERSION_NUMBER >= 0x010900) /* GPGME >= 1.9.0 */
+#elif (GPGME_VERSION_NUMBER >= 0x010900) // GPGME >= 1.9.0
 
 /**
  * parse_version_number - Parse a version string
@@ -335,7 +344,7 @@ static int cmp_version_strings(const char *a, const char *b, int level)
     return positive;
   return negative;
 }
-#endif                                   /* GPGME >= 1.9.0 */
+#endif
 
 /**
  * crypt_keyid - Find the ID for the key
@@ -621,7 +630,7 @@ static gpgme_data_t create_gpgme_data(void)
   return data;
 }
 
-#if GPGME_VERSION_NUMBER >= 0x010900 /* GPGME >= 1.9.0 */
+#if (GPGME_VERSION_NUMBER >= 0x010900) // GPGME >= 1.9.0
 /**
  * have_gpg_version - Do we have a sufficient GPG version
  * @param version Minimum version
@@ -855,7 +864,7 @@ cleanup:
   return rv;
 }
 
-#if (GPGME_VERSION_NUMBER >= 0x010b00) /* GPGME >= 1.11.0 */
+#if (GPGME_VERSION_NUMBER >= 0x010b00) // GPGME >= 1.11.0
 /**
  * create_recipient_string - Create a string of recipients
  * @param keylist    Keys, space-separated
@@ -975,7 +984,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, bool use_smime)
 
   return rset;
 }
-#endif /* GPGME_VERSION_NUMBER >= 0x010b00 */
+#endif
 
 /**
  * set_signer_from_address - Try to set the context's signer from the address
@@ -1115,7 +1124,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool us
   gpgme_data_t ciphertext = NULL;
   char *outfile = NULL;
 
-#if GPGME_VERSION_NUMBER >= 0x010b00 /* GPGME >= 1.11.0 */
+#if (GPGME_VERSION_NUMBER >= 0x010b00) // GPGME >= 1.11.0
   struct Buffer *recpstring = mutt_buffer_pool_get();
   create_recipient_string(keylist, recpstring, use_smime);
   if (mutt_buffer_is_empty(recpstring))
@@ -1127,7 +1136,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool us
   gpgme_key_t *rset = create_recipient_set(keylist, use_smime);
   if (!rset)
     return NULL;
-#endif /* GPGME_VERSION_NUMBER >= 0x010b00 */
+#endif
 
   ctx = create_gpgme_context(use_smime);
   if (!use_smime)
@@ -1148,7 +1157,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool us
         goto cleanup;
     }
 
-#if (GPGME_VERSION_NUMBER >= 0x010b00) /* GPGME >= 1.11.0 */
+#if (GPGME_VERSION_NUMBER >= 0x010b00) // GPGME >= 1.11.0
     err = gpgme_op_encrypt_sign_ext(ctx, NULL, mutt_buffer_string(recpstring),
                                     GPGME_ENCRYPT_ALWAYS_TRUST, plaintext, ciphertext);
 #else
@@ -1157,7 +1166,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool us
   }
   else
   {
-#if (GPGME_VERSION_NUMBER >= 0x010b00) /* GPGME >= 1.11.0 */
+#if (GPGME_VERSION_NUMBER >= 0x010b00) // GPGME >= 1.11.0
     err = gpgme_op_encrypt_ext(ctx, NULL, mutt_buffer_string(recpstring),
                                GPGME_ENCRYPT_ALWAYS_TRUST, plaintext, ciphertext);
 #else
@@ -1175,7 +1184,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool us
   outfile = data_object_to_tempfile(ciphertext, NULL);
 
 cleanup:
-#if (GPGME_VERSION_NUMBER >= 0x010b00) /* GPGME >= 1.11.0 */
+#if (GPGME_VERSION_NUMBER >= 0x010b00) // GPGME >= 1.11.0
   mutt_buffer_pool_release(&recpstring);
 #else
   recipient_set_free(&rset);
@@ -2432,9 +2441,9 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
   int rc = -1;
   time_t tt;
 
-#if (GPGME_VERSION_NUMBER >= 0x010900) /* GPGME >= 1.9.0 */
+#if (GPGME_VERSION_NUMBER >= 0x010900) // GPGME >= 1.9.0
   legacy_api = !have_gpg_version("2.1.14");
-#else /* GPGME < 1.9.0 */
+#else
   legacy_api = true;
 #endif
 
@@ -2476,11 +2485,11 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
     goto err_tmpdir;
   }
 
-#if GPGME_VERSION_NUMBER >= 0x010900 /* 1.9.0 */
+#if (GPGME_VERSION_NUMBER >= 0x010900) // GPGME >= 1.9.0
   if (!legacy_api)
     err = gpgme_op_keylist_from_data_start(tmpctx, keydata, 0);
   else
-#endif /* GPGME >= 1.9.0 */
+#endif
   {
     err = gpgme_op_keylist_start(tmpctx, NULL, 0);
   }

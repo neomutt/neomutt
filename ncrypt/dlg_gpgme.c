@@ -1529,7 +1529,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
            * string, which is passed directly to the gpgme_op_encrypt_ext()
            * function.  This allows to use the original meaning of '!' to
            * force a subkey use. */
-#if (GPGME_VERSION_NUMBER < 0x010b00) /* GPGME < 1.11.0 */
+#if (GPGME_VERSION_NUMBER < 0x010b00) // GPGME < 1.11.0
           *forced_valid = 1;
 #endif
         }
