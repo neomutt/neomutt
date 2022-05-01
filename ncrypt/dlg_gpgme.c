@@ -226,14 +226,14 @@ static int crypt_compare_keyid(const void *a, const void *b)
 }
 
 /**
- * crypt_crypt_compare_keyid_qsort - Compare the IDs of two keys
+ * crypt_compare_keyid_qsort - Compare the IDs of two keys
  * @param a First key ID
  * @param b Second key ID
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-static int crypt_crypt_compare_keyid_qsort(const void *a, const void *b)
+static int crypt_compare_keyid_qsort(const void *a, const void *b)
 {
   const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
   return (c_pgp_sort_keys & SORT_REVERSE) ? !crypt_compare_keyid(a, b) :
@@ -1365,7 +1365,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
       f = crypt_compare_date_qsort;
       break;
     case SORT_KEYID:
-      f = crypt_crypt_compare_keyid_qsort;
+      f = crypt_compare_keyid_qsort;
       break;
     case SORT_TRUST:
     default:
