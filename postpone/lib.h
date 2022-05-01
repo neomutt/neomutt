@@ -28,6 +28,7 @@
  * | File                     | Description                |
  * | :----------------------- | :------------------------- |
  * | postpone/dlg_postpone.c  | @subpage neo_dlg_postpone  |
+ * | postpone/functions.c     | @subpage neo_functions     |
  * | postpone/postpone.c      | @subpage neo_postpone      |
  */
 
@@ -37,6 +38,7 @@
 #include <stdbool.h>
 #include "ncrypt/lib.h"
 
+struct Buffer;
 struct Email;
 struct Mailbox;
 

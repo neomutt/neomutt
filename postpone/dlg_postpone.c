@@ -74,15 +74,13 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "menu/lib.h"
-#include "pattern/lib.h"
 #include "format_flags.h"
+#include "functions.h"
 #include "hdrline.h"
 #include "keymap.h"
 #include "mutt_logging.h"
 #include "opcodes.h"
-#include "protos.h"
 
 struct Email;
 
@@ -167,8 +165,6 @@ static int postponed_window_observer(struct NotifyCallback *nc)
  */
 struct Email *dlg_select_postponed_email(struct Mailbox *m)
 {
-  int r = -1;
-
   struct MuttWindow *dlg = simple_dialog_new(MENU_POSTPONE, WT_DLG_POSTPONE, PostponeHelp);
 
   struct Menu *menu = dlg->wdata;
@@ -178,11 +174,12 @@ struct Email *dlg_select_postponed_email(struct Mailbox *m)
   menu->mdata_free = NULL; // Menu doesn't own the data
   menu->custom_search = true;
 
-  struct MuttWindow *win_menu = menu->win;
+  struct PostponeData pd = { false, m, menu, NULL };
+  dlg->wdata = &pd;
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->notify, NT_CONFIG, postponed_config_observer, menu);
-  notify_observer_add(win_menu->notify, NT_WINDOW, postponed_window_observer, win_menu);
+  notify_observer_add(menu->win->notify, NT_WINDOW, postponed_window_observer, menu->win);
 
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   sbar_set_title(sbar, _("Postponed Messages"));
@@ -196,10 +193,8 @@ struct Email *dlg_select_postponed_email(struct Mailbox *m)
   // ---------------------------------------------------------------------------
   // Event Loop
   int op = OP_NULL;
-  int rc;
   do
   {
-    rc = FR_UNKNOWN;
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
@@ -214,62 +209,17 @@ struct Email *dlg_select_postponed_email(struct Mailbox *m)
     }
     mutt_clear_error();
 
-    switch (op)
-    {
-      case OP_DELETE:
-      case OP_UNDELETE:
-      {
-        const int index = menu_get_index(menu);
-        /* should deleted draft messages be saved in the trash folder? */
-        mutt_set_flag(m, m->emails[index], MUTT_DELETE, (op == OP_DELETE));
-        PostCount = m->msg_count - m->msg_deleted;
-        const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
-        if (c_resolve && (index < (menu->max - 1)))
-        {
-          menu_set_index(menu, index + 1);
-          if (index >= (menu->top + menu->page_len))
-          {
-            menu->top = index;
-            menu_queue_redraw(menu, MENU_REDRAW_INDEX);
-          }
-        }
-        else
-          menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
-        continue;
-      }
-
-      // All search operations must exist to show the menu
-      case OP_SEARCH_REVERSE:
-      case OP_SEARCH_NEXT:
-      case OP_SEARCH_OPPOSITE:
-      case OP_SEARCH:
-      {
-        int index = menu_get_index(menu);
-        index = mutt_search_command(m, menu, index, op);
-        if (index != -1)
-          menu_set_index(menu, index);
-        continue;
-      }
-
-      case OP_GENERIC_SELECT_ENTRY:
-        r = menu_get_index(menu);
-        rc = FR_DONE;
-        break;
-
-      case OP_EXIT:
-        rc = FR_DONE;
-        break;
-    }
+    int rc = postpone_function_dispatcher(dlg, op);
 
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(NULL, op);
-  } while (rc != FR_DONE);
+  } while (!pd.done);
   // ---------------------------------------------------------------------------
 
   cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
   simple_dialog_free(&dlg);
 
-  return (r > -1) ? m->emails[r] : NULL;
+  return pd.email;
 }

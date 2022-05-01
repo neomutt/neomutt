@@ -666,7 +666,8 @@ $(PWD)/pop:
 ###############################################################################
 # libpostpone
 LIBPOSTPONE=		libpostpone.a
-LIBPOSTPONEOBJS=	postpone/dlg_postpone.o postpone/postpone.o
+LIBPOSTPONEOBJS=	postpone/dlg_postpone.o postpone/functions.o \
+			postpone/postpone.o
 CLEANFILES+=	$(LIBPOSTPONE) $(LIBPOSTPONEOBJS)
 ALLOBJS+=	$(LIBPOSTPONEOBJS)
 
