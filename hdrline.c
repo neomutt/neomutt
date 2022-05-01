@@ -126,7 +126,7 @@ enum FieldType
  *
  * The colors are stored as "magic" strings embedded in the text.
  */
-static size_t add_index_color(char *buf, size_t buflen, MuttFormatFlags flags, char color)
+static size_t add_index_color(char *buf, size_t buflen, MuttFormatFlags flags, enum ColorId color)
 {
   /* only add color markers if we are operating on main index entries. */
   if (!(flags & MUTT_FORMAT_INDEX))
