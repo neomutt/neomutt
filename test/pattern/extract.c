@@ -38,6 +38,12 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
   char qc = '\0'; /* quote char */
   char *pc = NULL;
 
+  /* Some callers used to rely on the (bad) assumption that dest->data would be
+   * non-NULL after calling this function.  Perhaps I've missed a few cases, or
+   * a future caller might make the same mistake.  */
+  if (!dest->data)
+    mutt_buffer_alloc(dest, 256);
+
   mutt_buffer_reset(dest);
 
   SKIPWS(tok->dptr);
@@ -163,7 +169,6 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
         FREE(&cmd.data);
         return -1;
       }
-      FREE(&cmd.data);
 
       tok->dptr = pc + 1;
 
@@ -171,7 +176,11 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       struct Buffer expn = mutt_buffer_make(0);
       expn.data = mutt_file_read_line(NULL, &expn.dsize, fp, NULL, MUTT_RL_NO_FLAGS);
       mutt_file_fclose(&fp);
-      filter_wait(pid);
+      int rc = filter_wait(pid);
+      if (rc != 0)
+        mutt_debug(LL_DEBUG1, "backticks exited code %d for command: %s\n", rc,
+                   mutt_buffer_string(&cmd));
+      FREE(&cmd.data);
 
       /* if we got output, make a new string consisting of the shell output
        * plus whatever else was left on the original line */
