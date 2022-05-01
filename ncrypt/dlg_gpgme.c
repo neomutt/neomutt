@@ -1316,7 +1316,7 @@ static int gpgme_key_window_observer(struct NotifyCallback *nc)
  */
 struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
                                           struct Address *p, const char *s,
-                                          unsigned int app, int *forced_valid)
+                                          unsigned int app, bool *forced_valid)
 {
   int keymax;
   int i;
@@ -1324,8 +1324,6 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   int (*f)(const void *, const void *);
   enum MenuType menu_to_use = MENU_GENERIC;
   bool unusable = false;
-
-  *forced_valid = 0;
 
   /* build the key table */
   keymax = 0;
@@ -1447,7 +1445,6 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
     }
     mutt_clear_error();
 
-    *forced_valid = 0;
     switch (op)
     {
       case OP_VERIFY_KEY:
@@ -1530,7 +1527,8 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
            * function.  This allows to use the original meaning of '!' to
            * force a subkey use. */
 #if (GPGME_VERSION_NUMBER < 0x010b00) // GPGME < 1.11.0
-          *forced_valid = 1;
+          if (forced_valid)
+            *forced_valid = true;
 #endif
         }
 

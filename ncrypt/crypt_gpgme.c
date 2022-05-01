@@ -3549,7 +3549,7 @@ static void crypt_add_string_to_hints(const char *str, struct ListHead *hints)
  */
 static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
                                                KeyFlags abilities, unsigned int app,
-                                               int *forced_valid, bool oppenc_mode)
+                                               bool *forced_valid, bool oppenc_mode)
 {
   struct ListHead hints = STAILQ_HEAD_INITIALIZER(hints);
 
@@ -3563,8 +3563,6 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
   struct CryptKeyInfo *a_valid_addrmatch_key = NULL;
   struct CryptKeyInfo *matches = NULL;
   struct CryptKeyInfo **matches_endp = &matches;
-
-  *forced_valid = 0;
 
   if (a && a->mailbox)
     mutt_list_insert_tail(&hints, mutt_str_dup(a->mailbox));
@@ -3680,7 +3678,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
  * @retval ptr Matching key
  */
 static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
-                                              unsigned int app, int *forced_valid)
+                                              unsigned int app, bool *forced_valid)
 {
   struct ListHead hints = STAILQ_HEAD_INITIALIZER(hints);
   struct CryptKeyInfo *matches = NULL;
@@ -3689,8 +3687,6 @@ static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
   const char *ps = NULL, *pl = NULL, *phint = NULL;
 
   mutt_message(_("Looking for keys matching \"%s\"..."), p);
-
-  *forced_valid = 0;
 
   const char *pfcopy = crypt_get_fingerprint_or_id(p, &phint, &pl, &ps);
   crypt_add_string_to_hints(phint, &hints);
@@ -3753,19 +3749,14 @@ static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
  * the next default.
  */
 static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags abilities,
-                                              unsigned int app, int *forced_valid)
+                                              unsigned int app, bool *forced_valid)
 {
   struct CryptKeyInfo *key = NULL;
   struct CryptCache *l = NULL;
-  int dummy = 0;
   struct Buffer *resp = mutt_buffer_pool_get();
-
-  if (!forced_valid)
-    forced_valid = &dummy;
 
   mutt_clear_error();
 
-  *forced_valid = 0;
   if (whatfor)
   {
     for (l = id_defaults; l; l = l->next)
@@ -3835,7 +3826,7 @@ static char *find_keys(const struct AddressList *addrlist, unsigned int app, boo
   struct CryptKeyInfo *k_info = NULL;
   const char *fqdn = mutt_fqdn(true, NeoMutt->sub);
   char buf[1024];
-  int forced_valid;
+  bool forced_valid = false;
   bool key_selected;
   struct AddressList hookal = TAILQ_HEAD_INITIALIZER(hookal);
 
@@ -3848,7 +3839,7 @@ static char *find_keys(const struct AddressList *addrlist, unsigned int app, boo
     do
     {
       p = a;
-      forced_valid = 0;
+      forced_valid = false;
       k_info = NULL;
 
       if (crypt_hook)
@@ -3974,7 +3965,7 @@ char *smime_gpgme_find_keys(const struct AddressList *addrlist, bool oppenc_mode
  */
 int mutt_gpgme_select_secret_key(struct Buffer *keyid)
 {
-  int rc = -1, junk;
+  int rc = -1;
   gpgme_error_t err;
   gpgme_key_t key = NULL;
   gpgme_user_id_t uid = NULL;
@@ -4035,7 +4026,7 @@ int mutt_gpgme_select_secret_key(struct Buffer *keyid)
     goto cleanup;
   }
 
-  choice = dlg_select_gpgme_key(results, NULL, "*", APPLICATION_PGP, &junk);
+  choice = dlg_select_gpgme_key(results, NULL, "*", APPLICATION_PGP, NULL);
   if (!(choice && choice->kobj && choice->kobj->subkeys && choice->kobj->subkeys->fpr))
     goto cleanup;
   mutt_buffer_strcpy(keyid, choice->kobj->subkeys->fpr);

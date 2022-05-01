@@ -24,13 +24,14 @@
 #define MUTT_NCRYPT_PRIVATE_H
 
 #include "config.h"
+#include <stdbool.h>
 
 struct Address;
 struct CryptKeyInfo;
 struct PgpKeyInfo;
 struct SmimeKey;
 
-struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys, struct Address *p, const char *s, unsigned int app, int *forced_valid);
+struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys, struct Address *p, const char *s, unsigned int app, bool *forced_valid);
 struct PgpKeyInfo *  dlg_select_pgp_key  (struct PgpKeyInfo *keys, struct Address *p, const char *s);
 struct SmimeKey *    dlg_select_smime_key(struct SmimeKey *keys, const char *query);
 
