@@ -503,6 +503,42 @@ int mutt_file_rmtree(const char *path)
 }
 
 /**
+ * mutt_file_rotate - Rotate a set of numbered files
+ * @param path  Template filename
+ * @param count Maximum number of files
+ * @retval ptr Name of the 0'th file
+ *
+ * Given a template 'temp', rename files numbered 0 to (count-1).
+ *
+ * Rename:
+ * - ...
+ * - temp1 -> temp2
+ * - temp0 -> temp1
+ */
+const char *mutt_file_rotate(const char *path, int count)
+{
+  if (!path)
+    return NULL;
+
+  struct Buffer *old_file = mutt_buffer_pool_get();
+  struct Buffer *new_file = mutt_buffer_pool_get();
+
+  /* rotate the old debug logs */
+  for (count -= 2; count >= 0; count--)
+  {
+    mutt_buffer_printf(old_file, "%s%d", path, count);
+    mutt_buffer_printf(new_file, "%s%d", path, count + 1);
+    (void) rename(mutt_buffer_string(old_file), mutt_buffer_string(new_file));
+  }
+
+  path = mutt_buffer_strdup(old_file);
+  mutt_buffer_pool_release(&old_file);
+  mutt_buffer_pool_release(&new_file);
+
+  return path;
+}
+
+/**
  * mutt_file_open - Open a file
  * @param path  Pathname to open
  * @param flags Flags, e.g. O_EXCL
