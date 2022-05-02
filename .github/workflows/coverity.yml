@@ -54,6 +54,7 @@ jobs:
       run: |
         tar -czf neomutt.tgz $COV_RESULTS
         ls -lh neomutt.tgz
+        git config --global --add safe.directory "$GITHUB_WORKSPACE"
         GIT_HASH="$(git rev-parse --short HEAD)"
         echo "HASH: $GIT_HASH"
         GIT_DESC="$(git log -n1 --format="%s" $GIT_HASH)"
