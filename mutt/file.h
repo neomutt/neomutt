@@ -116,6 +116,7 @@ char *      mutt_file_read_keyword(const char *file, char *buf, size_t buflen);
 char *      mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, ReadLineFlags flags);
 int         mutt_file_rename(const char *oldfile, const char *newfile);
 int         mutt_file_rmtree(const char *path);
+const char *mutt_file_rotate(const char *path, int num);
 int         mutt_file_safe_rename(const char *src, const char *target);
 void        mutt_file_sanitize_filename(char *path, bool slash);
 int         mutt_file_sanitize_regex(struct Buffer *dest, const char *src);

@@ -69,45 +69,6 @@ static void error_pause(void)
 }
 
 /**
- * rotate_logs - Rotate a set of numbered files
- * @param file  Template filename
- * @param count Maximum number of files
- * @retval ptr Name of the 0'th file
- *
- * Given a template 'temp', rename files numbered 0 to (count-1).
- *
- * Rename:
- * - ...
- * - temp1 -> temp2
- * - temp0 -> temp1
- */
-static const char *rotate_logs(const char *file, int count)
-{
-  if (!file)
-    return NULL;
-
-  struct Buffer *old_file = mutt_buffer_pool_get();
-  struct Buffer *new_file = mutt_buffer_pool_get();
-
-  /* rotate the old debug logs */
-  for (count -= 2; count >= 0; count--)
-  {
-    mutt_buffer_printf(old_file, "%s%d", file, count);
-    mutt_buffer_printf(new_file, "%s%d", file, count + 1);
-
-    mutt_buffer_expand_path(old_file);
-    mutt_buffer_expand_path(new_file);
-    (void) rename(mutt_buffer_string(old_file), mutt_buffer_string(new_file));
-  }
-
-  file = mutt_buffer_strdup(old_file);
-  mutt_buffer_pool_release(&old_file);
-  mutt_buffer_pool_release(&new_file);
-
-  return file;
-}
-
-/**
  * mutt_clear_error - Clear the message line (bottom line of screen)
  */
 void mutt_clear_error(void)
@@ -239,7 +200,12 @@ int mutt_log_set_file(const char *file)
   const char *const c_debug_file = cs_subset_path(NeoMutt->sub, "debug_file");
   if (!mutt_str_equal(CurrentFile, c_debug_file))
   {
-    const char *name = rotate_logs(c_debug_file, NumOfLogs);
+    struct Buffer *expanded = mutt_buffer_pool_get();
+    mutt_buffer_addstr(expanded, c_debug_file);
+    mutt_buffer_expand_path(expanded);
+
+    const char *name = mutt_file_rotate(mutt_buffer_string(expanded), NumOfLogs);
+    mutt_buffer_pool_release(&expanded);
     if (!name)
       return -1;
 
