@@ -121,7 +121,6 @@ static struct Mapping KeyNames[] = {
   { NULL, 0 },
 };
 
-int LastKey;        ///< contains the last key the user pressed
 keycode_t AbortKey; ///< code of key to abort prompts, normally Ctrl-G
 
 struct KeymapList Keymaps[MENU_MAX];
@@ -609,16 +608,17 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
  * @param lastkey Last key pressed (to return to input queue)
  * @retval num Operation, e.g. OP_DELETE
  */
-static int retry_generic(enum MenuType mtype, keycode_t *keys, int keyslen, int lastkey)
+static struct KeyEvent retry_generic(enum MenuType mtype, keycode_t *keys,
+                                     int keyslen, int lastkey)
 {
   if (lastkey)
-    mutt_unget_event(lastkey, 0);
+    mutt_unget_ch(lastkey);
   for (; keyslen; keyslen--)
-    mutt_unget_event(keys[keyslen - 1], 0);
+    mutt_unget_ch(keys[keyslen - 1]);
 
   if ((mtype != MENU_EDITOR) && (mtype != MENU_GENERIC) && (mtype != MENU_PAGER))
   {
-    return km_dokey(MENU_GENERIC);
+    return km_dokey_event(MENU_GENERIC);
   }
   if (mtype != MENU_EDITOR)
   {
@@ -626,19 +626,15 @@ static int retry_generic(enum MenuType mtype, keycode_t *keys, int keyslen, int 
     mutt_flushinp();
   }
 
-  LastKey = mutt_getch().ch;
-  return OP_NULL;
+  return (struct KeyEvent){ .ch = mutt_getch().ch, .op = OP_NULL };
 }
 
 /**
- * km_dokey - Determine what a keypress should do
+ * km_dokey_event - Determine what a keypress should do
  * @param mtype Menu type, e.g. #MENU_EDITOR
- * @retval >0      Function to execute
- * @retval OP_NULL No function bound to key sequence
- * @retval -1      Error occurred while reading input
- * @retval -2      A timeout or sigwinch occurred
+ * @retval ptr Event
  */
-int km_dokey(enum MenuType mtype)
+struct KeyEvent km_dokey_event(enum MenuType mtype)
 {
   struct KeyEvent tmp = { OP_NULL, OP_NULL };
   struct Keymap *map = STAILQ_FIRST(&Keymaps[mtype]);
@@ -666,13 +662,11 @@ int km_dokey(enum MenuType mtype)
       {
         while (c_imap_keepalive && (c_imap_keepalive < i))
         {
-          mutt_getch_timeout(c_imap_keepalive * 1000);
-          tmp = mutt_getch();
-          mutt_getch_timeout(-1);
+          tmp = mutt_getch_timeout(c_imap_keepalive * 1000);
           /* If a timeout was not received, or the window was resized, exit the
            * loop now.  Otherwise, continue to loop until reaching a total of
            * $timeout seconds.  */
-          if ((tmp.ch != OP_TIMEOUT) || SigWinch)
+          if ((tmp.op != OP_TIMEOUT) || SigWinch)
             goto gotkey;
 #ifdef USE_INOTIFY
           if (MonitorFilesChanged)
@@ -685,20 +679,19 @@ int km_dokey(enum MenuType mtype)
     }
 #endif
 
-    mutt_getch_timeout(i * 1000);
-    tmp = mutt_getch();
-    mutt_getch_timeout(-1);
+    tmp = mutt_getch_timeout(i * 1000);
 
 #ifdef USE_IMAP
   gotkey:
 #endif
     /* hide timeouts, but not window resizes, from the line editor. */
-    if ((mtype == MENU_EDITOR) && (tmp.ch == OP_TIMEOUT) && !SigWinch)
+    if ((mtype == MENU_EDITOR) && (tmp.op == OP_TIMEOUT) && !SigWinch)
       continue;
 
-    LastKey = tmp.ch;
-    if (LastKey < 0)
-      return LastKey;
+    if ((tmp.op == OP_TIMEOUT) || (tmp.op == OP_ABORT))
+    {
+      return tmp;
+    }
 
     /* do we have an op already? */
     if (tmp.op != OP_NULL)
@@ -708,10 +701,10 @@ int km_dokey(enum MenuType mtype)
 
       /* is this a valid op for this menu type? */
       if ((funcs = km_get_table(mtype)) && (func = mutt_get_func(funcs, tmp.op)))
-        return tmp.op;
+        return tmp;
 
       if ((mtype == MENU_EDITOR) && mutt_get_func(OpEditor, tmp.op))
-        return tmp.op;
+        return tmp;
 
       if ((mtype != MENU_EDITOR) && (mtype != MENU_PAGER) && (mtype != MENU_GENERIC))
       {
@@ -719,7 +712,7 @@ int km_dokey(enum MenuType mtype)
         funcs = OpGeneric;
         func = mutt_get_func(funcs, tmp.op);
         if (func)
-          return tmp.op;
+          return tmp;
       }
 
       /* Sigh. Valid function but not in this context.
@@ -732,9 +725,9 @@ int km_dokey(enum MenuType mtype)
           func = mutt_get_func(funcs, tmp.op);
           if (func)
           {
-            mutt_unget_event('>', 0);
+            mutt_unget_ch('>');
             mutt_unget_string(func);
-            mutt_unget_event('<', 0);
+            mutt_unget_ch('<');
             break;
           }
         }
@@ -745,23 +738,23 @@ int km_dokey(enum MenuType mtype)
     }
 
     if (!map)
-      return tmp.op;
+      return tmp;
 
     /* Nope. Business as usual */
-    while (LastKey > map->keys[pos])
+    while (tmp.ch > map->keys[pos])
     {
       if ((pos > map->eq) || !STAILQ_NEXT(map, entries))
-        return retry_generic(mtype, map->keys, pos, LastKey);
+        return retry_generic(mtype, map->keys, pos, tmp.ch);
       map = STAILQ_NEXT(map, entries);
     }
 
-    if (LastKey != map->keys[pos])
-      return retry_generic(mtype, map->keys, pos, LastKey);
+    if (tmp.ch != map->keys[pos])
+      return retry_generic(mtype, map->keys, pos, tmp.ch);
 
     if (++pos == map->len)
     {
       if (map->op != OP_MACRO)
-        return map->op;
+        return (struct KeyEvent){ .ch = tmp.ch, .op = map->op };
 
       /* OptIgnoreMacroEvents turns off processing the MacroEvents buffer
        * in mutt_getch().  Generating new macro events during that time would
@@ -775,14 +768,14 @@ int km_dokey(enum MenuType mtype)
        * but less so than aborting the prompt.  */
       if (OptIgnoreMacroEvents)
       {
-        return OP_NULL;
+        return (struct KeyEvent){ .ch = tmp.ch, .op = OP_NULL };
       }
 
       if (n++ == 10)
       {
         mutt_flushinp();
         mutt_error(_("Macro loop detected"));
-        return -1;
+        return (struct KeyEvent){ .ch = '\0', .op = -1 };
       }
 
       generic_tokenize_push_string(map->macro, mutt_push_macro_event);
@@ -792,6 +785,19 @@ int km_dokey(enum MenuType mtype)
   }
 
   /* not reached */
+}
+
+/**
+ * km_dokey - Determine what a keypress should do
+ * @param mtype Menu type, e.g. #MENU_EDITOR
+ * @retval >0      Function to execute
+ * @retval OP_NULL No function bound to key sequence
+ * @retval -1      Error occurred while reading input
+ * @retval -2      A timeout or sigwinch occurred
+ */
+int km_dokey(enum MenuType mtype)
+{
+  return km_dokey_event(mtype).op;
 }
 
 /**
@@ -1073,10 +1079,10 @@ void km_error_key(enum MenuType mtype)
    * Note that km_expand_key() + tokenize_unget_string() should
    * not be used here: control sequences are expanded to a form
    * (e.g. "^H") not recognized by km_dokey(). */
-  mutt_unget_event(0, OP_END_COND);
+  mutt_unget_op(OP_END_COND);
   p = key->len;
   while (p--)
-    mutt_unget_event(key->keys[p], 0);
+    mutt_unget_ch(key->keys[p]);
 
   /* Note, e.g. for the index menu:
    *   bind generic ?   noop

@@ -663,7 +663,7 @@ static int op_jump(struct IndexSharedData *shared, struct IndexPrivateData *priv
   const int digit = op - OP_JUMP;
   if (digit > 0 && digit < 10)
   {
-    mutt_unget_event('0' + digit, 0);
+    mutt_unget_ch('0' + digit);
   }
 
   int msg_num = 0;

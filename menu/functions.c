@@ -248,7 +248,7 @@ static int op_jump(struct Menu *menu, int op)
   const int digit = op - OP_JUMP;
   if (digit > 0 && digit < 10)
   {
-    mutt_unget_event('0' + digit, 0);
+    mutt_unget_ch('0' + digit);
   }
 
   struct Buffer *buf = mutt_buffer_pool_get();

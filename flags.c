@@ -456,13 +456,13 @@ int mutt_change_flag(struct Mailbox *m, struct EmailList *el, bool bf)
   do
   {
     event = mutt_getch();
-  } while (event.ch == -2); // Timeout
+  } while (event.op == OP_TIMEOUT);
   mutt_curses_set_cursor(cursor);
 
   window_set_focus(old_focus);
   msgwin_clear_text();
 
-  if (event.ch < 0) // SIGINT, Abort key (Ctrl-G)
+  if (event.op == OP_ABORT)
     return -1;
 
   switch (event.ch)

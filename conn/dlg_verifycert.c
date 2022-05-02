@@ -84,14 +84,12 @@ static int menu_dialog_dokey(struct Menu *menu, int *id)
   struct KeyEvent ch = { OP_NULL, OP_NULL };
 
   // enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
-  mutt_getch_timeout(5000);
-  ch = mutt_getch();
-  mutt_getch_timeout(-1);
+  ch = mutt_getch_timeout(5000);
   // mutt_curses_set_cursor(cursor);
 
-  if (ch.ch < OP_NULL)
+  if ((ch.op == OP_TIMEOUT) || (ch.op == OP_ABORT))
   {
-    *id = ch.ch;
+    *id = ch.op;
     return 0;
   }
 
@@ -104,9 +102,9 @@ static int menu_dialog_dokey(struct Menu *menu, int *id)
   }
 
   if (ch.op == OP_NULL)
-    mutt_unget_event(ch.ch, OP_NULL);
+    mutt_unget_ch(ch.ch);
   else
-    mutt_unget_event(0, ch.op);
+    mutt_unget_op(ch.op);
   return -1;
 }
 

@@ -1588,7 +1588,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
       {
         bool_str_toggle(NeoMutt->sub, "imap_list_subscribed", NULL);
 
-        mutt_unget_event(0, OP_CHECK_NEW);
+        mutt_unget_op(OP_CHECK_NEW);
         continue;
       }
 
