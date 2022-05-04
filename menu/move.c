@@ -90,11 +90,14 @@ MenuRedrawFlags menu_set_and_notify(struct Menu *menu, int top, int index)
     }
   }
 
-  menu->redraw |= flags;
-  menu->win->actions |= WA_REPAINT;
+  if (flags != MENU_REDRAW_NO_FLAGS)
+  {
+    menu->redraw |= flags;
+    menu->win->actions |= WA_REPAINT;
 
-  mutt_debug(LL_NOTIFY, "NT_MENU\n");
-  notify_send(menu->notify, NT_MENU, flags, NULL);
+    mutt_debug(LL_NOTIFY, "NT_MENU\n");
+    notify_send(menu->notify, NT_MENU, flags, NULL);
+  }
   return flags;
 }
 

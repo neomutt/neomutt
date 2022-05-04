@@ -295,8 +295,7 @@ static int op_delete(struct IndexSharedData *shared, struct IndexPrivateData *pr
   }
   else
   {
-    if (!resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED))
-      menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+    resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED);
   }
 
   return FR_SUCCESS;
@@ -578,8 +577,7 @@ static int op_flag_message(struct IndexSharedData *shared,
       return FR_NO_ACTION;
     mutt_set_flag(m, shared->email, MUTT_FLAG, !shared->email->flagged);
 
-    if (!resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED))
-      menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+    resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED);
   }
 
   return FR_SUCCESS;
@@ -700,7 +698,6 @@ static int op_jump(struct IndexSharedData *shared, struct IndexPrivateData *priv
   }
 
   mutt_buffer_pool_release(&buf);
-  menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
   return rc;
 }
 
@@ -1182,8 +1179,7 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
       m->changed = true;
     }
 
-    if (!resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED))
-      menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+    resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED);
   }
   rc = FR_SUCCESS;
 
@@ -1315,7 +1311,6 @@ static int op_main_next_new(struct IndexSharedData *shared,
     mutt_message(_("Search wrapped to bottom"));
   }
 
-  menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
   return FR_SUCCESS;
 }
 
@@ -1363,8 +1358,6 @@ static int op_main_next_thread(struct IndexSharedData *shared,
 
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
   }
-  else
-    menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
 
   return FR_SUCCESS;
 }
@@ -1391,8 +1384,6 @@ static int op_main_next_undeleted(struct IndexSharedData *shared,
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
     mutt_error(_("No undeleted messages"));
   }
-  else
-    menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
 
   return FR_SUCCESS;
 }
@@ -1442,8 +1433,6 @@ static int op_main_prev_undeleted(struct IndexSharedData *shared,
     mutt_error(_("No undeleted messages"));
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
   }
-  else
-    menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
 
   return FR_SUCCESS;
 }
@@ -1524,7 +1513,6 @@ static int op_main_root_message(struct IndexSharedData *shared,
   if (index != -1)
     menu_set_index(priv->menu, index);
 
-  menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
   return FR_SUCCESS;
 }
 
@@ -1548,9 +1536,9 @@ static int op_main_set_flag(struct IndexSharedData *shared,
     {
       menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
     }
-    else if (!resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED))
+    else
     {
-      menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+      resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED);
     }
   }
   emaillist_clear(&el);
@@ -1763,8 +1751,6 @@ static int op_next_entry(struct IndexSharedData *shared, struct IndexPrivateData
     return FR_ERROR;
   }
   menu_set_index(priv->menu, index);
-
-  menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
   return FR_SUCCESS;
 }
 
@@ -1804,8 +1790,6 @@ static int op_prev_entry(struct IndexSharedData *shared, struct IndexPrivateData
     return FR_ERROR;
   }
   menu_set_index(priv->menu, index - 1);
-
-  menu_queue_redraw(priv->menu, MENU_REDRAW_MOTION);
   return FR_SUCCESS;
 }
 
@@ -1976,9 +1960,9 @@ static int op_save(struct IndexSharedData *shared, struct IndexPrivateData *priv
     {
       menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
     }
-    else if (!resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED))
+    else
     {
-      menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+      resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED);
     }
   }
   emaillist_clear(&el);
@@ -2055,9 +2039,7 @@ static int op_tag(struct IndexSharedData *shared, struct IndexPrivateData *priv,
 
   mutt_set_flag(shared->mailbox, shared->email, MUTT_TAG, !shared->email->tagged);
 
-  if (!resolve_email(priv->menu, shared, RESOLVE_NEXT_EMAIL))
-    menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
-
+  resolve_email(priv->menu, shared, RESOLVE_NEXT_EMAIL);
   return FR_SUCCESS;
 }
 
@@ -2122,8 +2104,7 @@ static int op_toggle_new(struct IndexSharedData *shared, struct IndexPrivateData
     else
       mutt_set_flag(m, shared->email, MUTT_READ, true);
 
-    if (!resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED))
-      menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+    resolve_email(priv->menu, shared, RESOLVE_NEXT_UNDELETED);
   }
 
   return FR_SUCCESS;
@@ -2161,8 +2142,7 @@ static int op_undelete(struct IndexSharedData *shared, struct IndexPrivateData *
   }
   else
   {
-    if (!resolve_email(priv->menu, shared, RESOLVE_NEXT_EMAIL))
-      menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+    resolve_email(priv->menu, shared, RESOLVE_NEXT_EMAIL);
   }
 
   return FR_SUCCESS;
