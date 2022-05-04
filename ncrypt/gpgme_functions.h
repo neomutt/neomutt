@@ -36,6 +36,7 @@ struct GpgmeData
   struct Menu *menu;                 ///< Gpgme Menu
   struct CryptKeyInfo **key_table;   ///< Array of Keys
   struct CryptKeyInfo *key;          ///< Selected Key
+  bool *forced_valid;                ///< User insists on out-of-date key
 };
 
 /**

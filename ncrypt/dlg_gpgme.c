@@ -729,7 +729,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   menu->mdata = key_table;
   menu->mdata_free = gpgme_key_table_free;
 
-  struct GpgmeData gd = { false, menu, key_table, NULL };
+  struct GpgmeData gd = { false, menu, key_table, NULL, forced_valid };
   dlg->wdata = &gd;
 
   // NT_COLOR is handled by the SimpleDialog

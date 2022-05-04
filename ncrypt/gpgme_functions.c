@@ -779,8 +779,8 @@ static int op_generic_select_entry(struct GpgmeData *gd, int op)
      * function.  This allows to use the original meaning of '!' to
      * force a subkey use. */
 #if (GPGME_VERSION_NUMBER < 0x010b00) // GPGME < 1.11.0
-    if (forced_valid)
-      *forced_valid = true;
+    if (gd->forced_valid)
+      *gd->forced_valid = true;
 #endif
   }
 
