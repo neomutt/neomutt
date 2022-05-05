@@ -1073,7 +1073,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
                                   unsigned int msn_end, bool evalhc,
                                   unsigned int *maxuid, bool initial_download)
 {
-  int rc, mfhrc = 0, retval = -1;
+  int retval = -1;
   unsigned int fetch_msn_end = 0;
   struct Progress *progress = NULL;
   char *hdrreq = NULL;
@@ -1164,117 +1164,123 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
     imap_cmd_start(adata, cmd);
     FREE(&cmd);
 
-    rc = IMAP_RES_CONTINUE;
     int msgno = msn_begin;
+
     while (true)
     {
-      if (initial_download && SigInt && query_abort_header_download(adata))
-        goto bail;
-
       rewind(fp);
       memset(&h, 0, sizeof(h));
-      h.edata = imap_edata_new();
 
-      /* this DO loop does two things:
-       * 1. handles untagged messages, so we can try again on the same msg
-       * 2. fetches the tagged response at the end of the last message.  */
-      do
-      {
-        rc = imap_cmd_step(adata);
-        if (rc != IMAP_RES_CONTINUE)
-          break;
-
-        mfhrc = msg_fetch_header(m, &h, adata->buf, fp);
-        if (mfhrc < 0)
-          continue;
-
-        if (!ftello(fp))
-        {
-          mutt_debug(LL_DEBUG2, "ignoring fetch response with no body\n");
-          continue;
-        }
-
-        /* make sure we don't get remnants from older larger message headers */
-        fputs("\n\n", fp);
-
-        if ((h.edata->msn < 1) || (h.edata->msn > fetch_msn_end))
-        {
-          mutt_debug(LL_DEBUG1, "skipping FETCH response for unknown message number %d\n",
-                     h.edata->msn);
-          continue;
-        }
-
-        /* May receive FLAGS updates in a separate untagged response */
-        if (imap_msn_get(&mdata->msn, h.edata->msn - 1))
-        {
-          mutt_debug(LL_DEBUG2, "skipping FETCH response for duplicate message %d\n",
-                     h.edata->msn);
-          continue;
-        }
-
-        if (m->verbose)
-        {
-          progress_update(progress, msgno++, -1);
-        }
-
-        struct Email *e = email_new();
-        if (m->msg_count >= m->email_max)
-          mx_alloc_memory(m);
-
-        m->emails[m->msg_count++] = e;
-
-        imap_msn_set(&mdata->msn, h.edata->msn - 1, e);
-        mutt_hash_int_insert(mdata->uid_hash, h.edata->uid, e);
-
-        e->index = h.edata->uid;
-        /* messages which have not been expunged are ACTIVE (borrowed from mh
-         * folders) */
-        e->active = true;
-        e->changed = false;
-        e->read = h.edata->read;
-        e->old = h.edata->old;
-        e->deleted = h.edata->deleted;
-        e->flagged = h.edata->flagged;
-        e->replied = h.edata->replied;
-        e->received = h.received;
-        e->edata = (void *) (h.edata);
-        e->edata_free = imap_edata_free;
-        STAILQ_INIT(&e->tags);
-
-        /* We take a copy of the tags so we can split the string */
-        char *tags_copy = mutt_str_dup(h.edata->flags_remote);
-        driver_tags_replace(&e->tags, tags_copy);
-        FREE(&tags_copy);
-
-        if (*maxuid < h.edata->uid)
-          *maxuid = h.edata->uid;
-
-        rewind(fp);
-        /* NOTE: if Date: header is missing, mutt_rfc822_read_header depends
-         *   on h.received being set */
-        e->env = mutt_rfc822_read_header(fp, e, false, false);
-        /* body built as a side-effect of mutt_rfc822_read_header */
-        e->body->length = h.content_length;
-        mailbox_size_add(m, e);
-
-#ifdef USE_HCACHE
-        imap_hcache_put(mdata, e);
-#endif /* USE_HCACHE */
-
-        h.edata = NULL;
-      } while (mfhrc == -1);
-
-      imap_edata_free((void **) &h.edata);
-
-      if ((mfhrc < -1) || ((rc != IMAP_RES_CONTINUE) && (rc != IMAP_RES_OK)))
+      if (initial_download && SigInt && query_abort_header_download(adata))
       {
         goto bail;
       }
 
+      const int rc = imap_cmd_step(adata);
       if (rc != IMAP_RES_CONTINUE)
       {
+        if (rc != IMAP_RES_OK)
+        {
+          goto bail;
+        }
         break;
       }
+
+      h.edata = imap_edata_new();
+
+      switch (msg_fetch_header(m, &h, adata->buf, fp))
+      {
+        case 0:
+          break;
+
+        case -1:
+          imap_edata_free((void **) &h.edata);
+          continue;
+
+        case -2:
+          imap_edata_free((void **) &h.edata);
+          goto bail;
+      }
+
+      if (!ftello(fp))
+      {
+        imap_edata_free((void **) &h.edata);
+        mutt_debug(LL_DEBUG2, "ignoring fetch response with no body\n");
+        continue;
+      }
+
+      /* make sure we don't get remnants from older larger message headers */
+      fputs("\n\n", fp);
+
+      if ((h.edata->msn < 1) || (h.edata->msn > fetch_msn_end))
+      {
+        imap_edata_free((void **) &h.edata);
+        mutt_debug(LL_DEBUG1, "skipping FETCH response for unknown message number %d\n",
+                   h.edata->msn);
+        continue;
+      }
+
+      /* May receive FLAGS updates in a separate untagged response */
+      if (imap_msn_get(&mdata->msn, h.edata->msn - 1))
+      {
+        imap_edata_free((void **) &h.edata);
+        mutt_debug(LL_DEBUG2, "skipping FETCH response for duplicate message %d\n",
+                   h.edata->msn);
+        continue;
+      }
+
+      if (m->verbose)
+      {
+        progress_update(progress, msgno++, -1);
+      }
+
+      struct Email *e = email_new();
+      if (m->msg_count >= m->email_max)
+      {
+        mx_alloc_memory(m);
+      }
+
+      m->emails[m->msg_count++] = e;
+
+      imap_msn_set(&mdata->msn, h.edata->msn - 1, e);
+      mutt_hash_int_insert(mdata->uid_hash, h.edata->uid, e);
+
+      e->index = h.edata->uid;
+      /* messages which have not been expunged are ACTIVE (borrowed from mh
+       * folders) */
+      e->active = true;
+      e->changed = false;
+      e->read = h.edata->read;
+      e->old = h.edata->old;
+      e->deleted = h.edata->deleted;
+      e->flagged = h.edata->flagged;
+      e->replied = h.edata->replied;
+      e->received = h.received;
+      e->edata = (void *) (h.edata);
+      e->edata_free = imap_edata_free;
+      STAILQ_INIT(&e->tags);
+
+      /* We take a copy of the tags so we can split the string */
+      char *tags_copy = mutt_str_dup(h.edata->flags_remote);
+      driver_tags_replace(&e->tags, tags_copy);
+      FREE(&tags_copy);
+
+      if (*maxuid < h.edata->uid)
+        *maxuid = h.edata->uid;
+
+      rewind(fp);
+      /* NOTE: if Date: header is missing, mutt_rfc822_read_header depends
+       *   on h.received being set */
+      e->env = mutt_rfc822_read_header(fp, e, false, false);
+      /* body built as a side-effect of mutt_rfc822_read_header */
+      e->body->length = h.content_length;
+      mailbox_size_add(m, e);
+
+#ifdef USE_HCACHE
+      imap_hcache_put(mdata, e);
+#endif /* USE_HCACHE */
+
+      h.edata = NULL;
     }
 
     /* In case we get new mail while fetching the headers. */
