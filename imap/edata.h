@@ -51,5 +51,6 @@ struct ImapEmailData
 void                  imap_edata_free(void **ptr);
 struct ImapEmailData *imap_edata_get (struct Email *e);
 struct ImapEmailData *imap_edata_new (void);
+struct ImapEmailData *imap_edata_clone(struct ImapEmailData *src);
 
 #endif /* MUTT_IMAP_EDATA_H */

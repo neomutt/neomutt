@@ -1155,6 +1155,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
    *   at the end of the loop makes the comparison unneeded, but to be
    *   cautious I'm keeping it.
    */
+  struct ImapEmailData *edata = imap_edata_new();
   while ((fetch_msn_end < msn_end) &&
          imap_fetch_msn_seqset(buf, adata, evalhc, msn_begin, msn_end, &fetch_msn_end))
   {
@@ -1170,6 +1171,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
     {
       rewind(fp);
       memset(&h, 0, sizeof(h));
+      h.edata = edata;
 
       if (initial_download && SigInt && query_abort_header_download(adata))
       {
@@ -1186,25 +1188,18 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         break;
       }
 
-      h.edata = imap_edata_new();
-
       switch (msg_fetch_header(m, &h, adata->buf, fp))
       {
         case 0:
           break;
-
         case -1:
-          imap_edata_free((void **) &h.edata);
           continue;
-
         case -2:
-          imap_edata_free((void **) &h.edata);
           goto bail;
       }
 
       if (!ftello(fp))
       {
-        imap_edata_free((void **) &h.edata);
         mutt_debug(LL_DEBUG2, "ignoring fetch response with no body\n");
         continue;
       }
@@ -1214,7 +1209,6 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
       if ((h.edata->msn < 1) || (h.edata->msn > fetch_msn_end))
       {
-        imap_edata_free((void **) &h.edata);
         mutt_debug(LL_DEBUG1, "skipping FETCH response for unknown message number %d\n",
                    h.edata->msn);
         continue;
@@ -1223,7 +1217,6 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
       /* May receive FLAGS updates in a separate untagged response */
       if (imap_msn_get(&mdata->msn, h.edata->msn - 1))
       {
-        imap_edata_free((void **) &h.edata);
         mutt_debug(LL_DEBUG2, "skipping FETCH response for duplicate message %d\n",
                    h.edata->msn);
         continue;
@@ -1256,7 +1249,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
       e->flagged = h.edata->flagged;
       e->replied = h.edata->replied;
       e->received = h.received;
-      e->edata = (void *) (h.edata);
+      e->edata = (void *) imap_edata_clone(h.edata);
       e->edata_free = imap_edata_free;
       STAILQ_INIT(&e->tags);
 
@@ -1279,8 +1272,6 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 #ifdef USE_HCACHE
       imap_hcache_put(mdata, e);
 #endif /* USE_HCACHE */
-
-      h.edata = NULL;
     }
 
     /* In case we get new mail while fetching the headers. */
@@ -1314,6 +1305,7 @@ bail:
   mutt_buffer_pool_release(&tempfile);
   mutt_file_fclose(&fp);
   FREE(&hdrreq);
+  imap_edata_free((void **) &edata);
   progress_free(&progress);
 
   return retval;

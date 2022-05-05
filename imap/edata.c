@@ -67,3 +67,17 @@ struct ImapEmailData *imap_edata_get(struct Email *e)
     return NULL;
   return e->edata;
 }
+
+/**
+ * imap_edata_clone - Clone an ImapEmailData
+ * @param src The source ImapEmailData to clone
+ * @retval ptr New ImapEmailData
+ */
+struct ImapEmailData *imap_edata_clone(struct ImapEmailData *src)
+{
+  struct ImapEmailData *dst = imap_edata_new();
+  memcpy(dst, src, sizeof(*src));
+  dst->flags_system = mutt_str_dup(src->flags_system);
+  dst->flags_remote = mutt_str_dup(src->flags_remote);
+  return dst;
+}
