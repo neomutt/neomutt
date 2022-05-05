@@ -1137,7 +1137,7 @@ struct BrowserFunction BrowserFunctions[] = {
  * browser_function_dispatcher - Perform a Browser function
  * @param win_browser Window for the Index
  * @param op          Operation to perform, e.g. OP_GOTO_PARENT
- * @retval num #IndexRetval, e.g. #FR_SUCCESS
+ * @retval num #FunctionRetval, e.g. #FR_SUCCESS
  */
 int browser_function_dispatcher(struct MuttWindow *win_browser, int op)
 {

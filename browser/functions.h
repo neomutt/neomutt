@@ -33,7 +33,7 @@ struct BrowserPrivateData;
  *
  * @param priv   Private Browser data
  * @param op     Operation to perform, e.g. OP_MAIN_LIMIT
- * @retval enum #IndexRetval
+ * @retval enum #FunctionRetval
  */
 typedef int (*browser_function_t)(struct BrowserPrivateData *priv, int op);
 
