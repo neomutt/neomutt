@@ -1165,13 +1165,11 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
     FREE(&cmd);
 
     rc = IMAP_RES_CONTINUE;
-    for (int msgno = msn_begin; rc == IMAP_RES_CONTINUE; msgno++)
+    int msgno = msn_begin;
+    while (true)
     {
       if (initial_download && SigInt && query_abort_header_download(adata))
         goto bail;
-
-      if (m->verbose)
-        progress_update(progress, msgno, -1);
 
       rewind(fp);
       memset(&h, 0, sizeof(h));
@@ -1212,6 +1210,11 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
           mutt_debug(LL_DEBUG2, "skipping FETCH response for duplicate message %d\n",
                      h.edata->msn);
           continue;
+        }
+
+        if (m->verbose)
+        {
+          progress_update(progress, msgno++, -1);
         }
 
         struct Email *e = email_new();
@@ -1264,7 +1267,14 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
       imap_edata_free((void **) &h.edata);
 
       if ((mfhrc < -1) || ((rc != IMAP_RES_CONTINUE) && (rc != IMAP_RES_OK)))
+      {
         goto bail;
+      }
+
+      if (rc != IMAP_RES_CONTINUE)
+      {
+        break;
+      }
     }
 
     /* In case we get new mail while fetching the headers. */
