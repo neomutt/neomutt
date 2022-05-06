@@ -475,9 +475,6 @@ void mutt_endwin(void)
   mutt_refresh();
   endwin();
 
-  ARRAY_FREE(&MacroEvents);
-  ARRAY_FREE(&UngetKeyEvents);
-
   errno = e;
 }
 
