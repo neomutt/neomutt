@@ -430,8 +430,12 @@ bool print_version(FILE *fp)
 
   fprintf(fp, " (%s)", uts.machine);
 
+#ifdef NCURSES_VERSION
   fprintf(fp, "\nncurses: %s (compiled with %s.%d)", curses_version(),
           NCURSES_VERSION, NCURSES_VERSION_PATCH);
+#else
+  fprintf(fp, "\nncurses: %s", curses_version());
+#endif
 
 #ifdef _LIBICONV_VERSION
   fprintf(fp, "\nlibiconv: %d.%d", _LIBICONV_VERSION >> 8, _LIBICONV_VERSION & 0xff);

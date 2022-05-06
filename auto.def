@@ -733,7 +733,7 @@ set ncurses_prefix [opt-val with-ncurses $prefix]
 
 cc-with [list -libs -L$ncurses_prefix/$::libdir_tail] {
 
-  set tinfo_libs   {tinfow tinfo}
+  set tinfo_libs   {tinfow tinfo terminfo}
   set ncurses_libs {ncursesw ncurses curses}
 
   # Locate the library defining tgetent()
@@ -756,7 +756,7 @@ cc-with [list -libs -L$ncurses_prefix/$::libdir_tail] {
     user-error "Unable to find ncursesw library"
   }
 
-  foreach f {bkgrndset setcchar} {
+  foreach f {bkgrndset setcchar use_extended_names} {
     cc-check-function-in-lib $f $ncurses_lib
   }
 }

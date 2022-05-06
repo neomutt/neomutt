@@ -996,6 +996,7 @@ static const char *find_ext_name(const char *key)
  */
 void init_extended_keys(void)
 {
+#ifdef HAVE_USE_EXTENDED_NAMES
   use_extended_names(true);
 
   for (int j = 0; KeyNames[j].name; j++)
@@ -1016,6 +1017,7 @@ void init_extended_keys(void)
       }
     }
   }
+#endif
 }
 
 /**

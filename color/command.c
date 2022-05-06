@@ -577,7 +577,6 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_SUCCESS;
   }
 
-#ifdef NCURSES_VERSION
   /* The case of the tree object is special, because a non-default fg color of
    * the tree element may be combined dynamically with the default bg color of
    * an index line, not necessarily defined in a rc file.  */
@@ -588,7 +587,6 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     mutt_buffer_strcpy(err, _("default colors not supported"));
     return MUTT_CMD_ERROR;
   }
-#endif
 
   if (regex_colors_parse_color_list(cid, buf->data, fg, bg, attrs, &rc, err))
   {

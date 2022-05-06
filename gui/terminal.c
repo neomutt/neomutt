@@ -57,6 +57,7 @@ bool mutt_ts_capability(void)
     "putty",       "rxvt",   "screen", "xterm", NULL,
   };
 
+#ifdef HAVE_USE_EXTENDED_NAMES
   /* If tsl is set, then terminfo says that status lines work. */
   char *tcaps = tigetstr("tsl");
   if (tcaps && (tcaps != (char *) -1) && *tcaps)
@@ -73,10 +74,10 @@ bool mutt_ts_capability(void)
 
   /* If XT (boolean) is set, then this terminal supports the standard escape. */
   /* Beware: tigetflag returns -1 if XT is invalid or not a boolean. */
-  use_extended_names(true);
   int tcapi = tigetflag("XT");
   if (tcapi == 1)
     return true;
+#endif
 
   /* Check term types that are known to support the standard escape without
    * necessarily asserting it in terminfo. */
