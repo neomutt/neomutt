@@ -311,6 +311,7 @@ if {1} {
     lappend extensions -D_ALL_SOURCE=1
     lappend extensions -D_GNU_SOURCE=1
     lappend extensions -D__EXTENSIONS__
+    lappend extensions -D_XOPEN_SOURCE_EXTENDED
     define-append CFLAGS_FOR_BUILD {*}$extensions
     define-append CFLAGS {*}$extensions
   }
