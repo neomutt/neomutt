@@ -29,6 +29,7 @@
  * | :-------------------- | :--------------------------- |
  * | attach/attach.c       | @subpage attach_attach       |
  * | attach/attachments.c  | @subpage attach_attachments  |
+ * | attach/cid.c          | @subpage attach_cid          |
  * | attach/dlg_attach.c   | @subpage attach_dlg_attach   |
  * | attach/functions.c    | @subpage attach_functions    |
  * | attach/lib.c          | @subpage attach_lib          |
