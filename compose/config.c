@@ -26,6 +26,7 @@
  * Config used by libcompose
  */
 
+#include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
 #include "config/lib.h"

@@ -26,6 +26,7 @@
  * Validate the "charset" config variables.
  */
 
+#include "config.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>

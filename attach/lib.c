@@ -26,6 +26,7 @@
  * Attachment helper functions
  */
 
+#include "config.h"
 #include <stdbool.h>
 #include "email/lib.h"
 

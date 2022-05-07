@@ -26,6 +26,7 @@
  * All user-callable functions
  */
 
+#include "config.h"
 #include <stddef.h>
 #include "opcodes.h"
 

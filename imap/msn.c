@@ -26,6 +26,7 @@
  * IMAP MSN helper functions
  */
 
+#include "config.h"
 #include <limits.h>
 #include <stdlib.h>
 #include "mutt/lib.h"

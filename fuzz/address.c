@@ -1,3 +1,4 @@
+#include "config.h"
 #include <signal.h>
 #include <stdbool.h>
 #include <stdint.h>
