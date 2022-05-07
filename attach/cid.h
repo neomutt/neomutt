@@ -44,5 +44,7 @@ struct CidMap *cid_map_new         (const char *cid, const char *filename);
 void           cid_map_list_clear  (struct CidMapList *cid_map_list);
 void           cid_save_attachments(struct Body *body,
                                     struct CidMapList *cid_map_list);
+void           cid_to_filename     (struct Buffer *filename,
+                                    const struct CidMapList *cid_map_list);
 
 #endif /* MUTT_ATTACH_CID_H */
