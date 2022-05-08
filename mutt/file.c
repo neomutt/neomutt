@@ -49,6 +49,7 @@
 #include "memory.h"
 #include "message.h"
 #include "path.h"
+#include "pool.h"
 #include "string2.h"
 #ifdef USE_FLOCK
 #include <sys/file.h>
