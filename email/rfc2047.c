@@ -685,7 +685,7 @@ void rfc2047_decode(char **pd)
 
       /* Add non-encoded part */
       {
-        const char *const c_assumed_charset = cs_subset_string(NeoMutt->sub, "assumed_charset");
+        const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
         if (c_assumed_charset)
         {
           char *conv = mutt_strn_dup(s, holelen);
@@ -770,7 +770,7 @@ void rfc2047_decode_addrlist(struct AddressList *al)
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    const char *const c_assumed_charset = cs_subset_string(NeoMutt->sub, "assumed_charset");
+    const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
     if (a->personal && ((strstr(a->personal, "=?")) || c_assumed_charset))
     {
       rfc2047_decode(&a->personal);

@@ -38,7 +38,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "charset.h"
-#include "buffer.h"
+#include "lib.h"
 #include "memory.h"
 #include "queue.h"
 #include "regex3.h"
@@ -314,16 +314,13 @@ int mutt_ch_convert_nonmime_string(char **ps)
   if (ulen == 0)
     return 0;
 
-  const char *c1 = NULL;
-
-  const char *const c_assumed_charset = cs_subset_string(NeoMutt->sub, "assumed_charset");
+  const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
   const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-  for (const char *c = c_assumed_charset; c; c = c1 ? c1 + 1 : 0)
+  const struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, &c_assumed_charset->head, entries)
   {
-    c1 = strchr(c, ':');
-    size_t n = c1 ? c1 - c : mutt_str_len(c);
-    if (n == 0)
-      return 0;
+    char const *c = np->data;
+    size_t n = mutt_str_len(c);
     char *fromcode = mutt_mem_malloc(n + 1);
     mutt_str_copy(fromcode, c, n + 1);
     char *s = mutt_strn_dup(u, ulen);
@@ -442,21 +439,11 @@ bool mutt_ch_chscmp(const char *cs1, const char *cs2)
 char *mutt_ch_get_default_charset(void)
 {
   static char fcharset[128];
-  const char *const c_assumed_charset = cs_subset_string(NeoMutt->sub, "assumed_charset");
-  const char *c = c_assumed_charset;
-  const char *c1 = NULL;
-
-  if (c)
+  const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
+  if (c_assumed_charset && (c_assumed_charset->count > 0))
   {
-    c1 = strchr(c, ':');
-
-    size_t copysize;
-    if (c1)
-      copysize = MIN((c1 - c + 1), sizeof(fcharset));
-    else
-      copysize = sizeof(fcharset);
-    mutt_str_copy(fcharset, c, copysize);
-    return fcharset;
+    const char *c = STAILQ_FIRST(&c_assumed_charset->head)->data;
+    return strcpy(fcharset, c);
   }
   return strcpy(fcharset, "us-ascii");
 }

@@ -295,6 +295,19 @@ $(PWD)/conn:
 	$(MKDIR_P) $(PWD)/conn
 
 ###############################################################################
+# libconvert
+LIBCONVERT=	libconvert.a
+LIBCONVERTOBJS=convert/convert.o convert/content_info.o
+CLEANFILES+=	$(LIBCONVERT) $(LIBCONVERTOBJS)
+ALLOBJS+=	$(LIBCONVERTOBJS)
+
+$(LIBCONVERT): $(PWD)/convert $(LIBCONVERTOBJS)
+	$(AR) cr $@ $(LIBCONVERTOBJS)
+	$(RANLIB) $@
+$(PWD)/convert:
+	$(MKDIR_P) $(PWD)/convert
+
+###############################################################################
 # libcore
 LIBCORE=	libcore.a
 LIBCOREOBJS=	core/account.o core/dispatcher.o core/mailbox.o core/neomutt.o
@@ -803,6 +816,7 @@ MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) \
 		$(LIBBROWSER) $(LIBNNTP) $(LIBCOMPMBOX) $(LIBSTORE) \
 		$(LIBPROGRESS) $(LIBQUESTION) $(LIBPOSTPONE) $(LIBALIAS) $(LIBSEND) \
 		$(LIBCOMPOSE) $(LIBATTACH) $(LIBGUI) $(LIBENTER) \
+		$(LIBCONVERT) $(LIBCOMPOSE) $(LIBATTACH) $(LIBGUI) $(LIBENTER) \
 		$(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) $(LIBENVELOPE) $(LIBMIXMASTER) \
 		$(LIBHELPBAR) $(LIBMBOX) $(LIBNOTMUCH) $(LIBMAILDIR) \
 		$(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \

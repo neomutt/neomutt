@@ -23,6 +23,7 @@
 #ifndef MUTT_EMAIL_CONTENT_H
 #define MUTT_EMAIL_CONTENT_H
 
+#include <stddef.h>
 #include <stdbool.h>
 
 /**
@@ -43,6 +44,21 @@ struct Content
   bool from   : 1; ///< Has a line beginning with "From "?
   bool dot    : 1; ///< Has a line consisting of a single dot?
   bool cr     : 1; ///< Has CR, even when in a CRLF pair
+};
+
+/**
+ * struct ContentState - Info about the body of an email
+ *
+ * Holds the state of content information detection after processing a certain
+ * number of characters.
+ */
+struct ContentState
+{
+  bool from;      ///< Is the current line a prefix of "From "?
+  int whitespace; ///< Number of trailing whitespaces
+  bool dot;       ///< Was the last character a dot?
+  int linelen;    ///< Length of the current line
+  bool was_cr;    ///< Was the last character CR?
 };
 
 #endif /* MUTT_EMAIL_CONTENT_H */

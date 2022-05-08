@@ -1,9 +1,9 @@
 /**
  * @file
- * Validator for the "charset" config variables
+ * Test code for mutt_ch_convert_string()
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,19 +20,23 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_CONFIG_CHARSET_H
-#define MUTT_CONFIG_CHARSET_H
+#ifndef TEST_CONVERT_COMMON_H
+#define TEST_CONVERT_COMMON_H
 
-#include <stdint.h>
+#include "email/lib.h"
 
-#define DT_CHARSET_SINGLE    0x0800 ///< Flag for charset_validator to allow only one charset
-#define DT_CHARSET_STRICT    0x1000 ///< Flag for charset_validator to use strict char check
+struct Content static const initial_info = {
+  .hibin = 0,
+  .lobin = 0,
+  .nulbin = 0,
+  .crlf = 0,
+  .ascii = 0,
+  .linemax = 0,
+  .space = false,
+  .binary = false,
+  .from = false,
+  .dot = false,
+  .cr = false,
+};
 
-struct Buffer;
-struct ConfigDef;
-struct ConfigSet;
-
-int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
-int charset_slist_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
-
-#endif /* MUTT_CONFIG_CHARSET_H */
+#endif /* TEST_CONVERT_COMMON_H */

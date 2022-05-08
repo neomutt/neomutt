@@ -265,7 +265,7 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
        * Internet Gateways.  So we actually decode it.  */
 
       const bool c_rfc2047_parameters = cs_subset_bool(NeoMutt->sub, "rfc2047_parameters");
-      const char *const c_assumed_charset = cs_subset_string(NeoMutt->sub, "assumed_charset");
+      const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
       if (c_rfc2047_parameters && np->value && strstr(np->value, "=?"))
         rfc2047_decode(&np->value);
       else if (c_assumed_charset)

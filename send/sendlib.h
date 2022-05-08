@@ -36,7 +36,6 @@ struct Mailbox;
 
 int              mutt_bounce_message(FILE *fp, struct Mailbox *m, struct Email *e, struct AddressList *to, struct ConfigSubset *sub);
 const char *     mutt_fqdn(bool may_hide_host, const struct ConfigSubset *sub);
-struct Content * mutt_get_content_info(const char *fname, struct Body *b, struct ConfigSubset *sub);
 enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path);
 struct Body *    mutt_make_file_attach(const char *path, struct ConfigSubset *sub);
 struct Body *    mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool attach_msg, struct ConfigSubset *sub);

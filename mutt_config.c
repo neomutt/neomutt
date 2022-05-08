@@ -164,7 +164,7 @@ static struct ConfigDef MainVars[] = {
   { "ask_cc", DT_BOOL, false, 0, NULL,
     "Ask the user for the carbon-copy recipients"
   },
-  { "assumed_charset", DT_STRING, 0, 0, charset_validator,
+  { "assumed_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
     "If a message is missing a character set, assume this character set"
   },
   { "attach_format", DT_STRING|DT_NOT_EMPTY, IP "%u%D%I %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] ", 0, NULL,
@@ -515,7 +515,7 @@ static struct ConfigDef MainVars[] = {
   { "score_threshold_read", DT_NUMBER, -1, 0, NULL,
     "Messages with a lower score will be automatically marked read"
   },
-  { "send_charset", DT_STRING|DT_CHARSET_STRICT, IP "us-ascii:iso-8859-1:utf-8", 0, charset_validator,
+  { "send_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY|DT_CHARSET_STRICT, IP "us-ascii:iso-8859-1:utf-8", 0, charset_slist_validator,
     "Character sets for outgoing mail"
   },
   { "shell", DT_STRING|DT_COMMAND, IP "/bin/sh", 0, NULL,
