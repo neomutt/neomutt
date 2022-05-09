@@ -372,7 +372,7 @@ size_t rfc2231_encode_string(struct ParameterList *head, const char *attribute, 
   if (encode)
   {
     const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-    const char *const c_send_charset = cs_subset_string(NeoMutt->sub, "send_charset");
+    const struct Slist *const c_send_charset = cs_subset_slist(NeoMutt->sub, "send_charset");
     if (c_charset && c_send_charset)
     {
       charset = mutt_ch_choose(c_charset, c_send_charset, value,

@@ -1021,7 +1021,7 @@ void mutt_ch_set_charset(const char *charset)
 /**
  * mutt_ch_choose - Figure the best charset to encode a string
  * @param[in] fromcode Original charset of the string
- * @param[in] charsets Colon-separated list of potential charsets to use
+ * @param[in] charsets List of potential charsets to use
  * @param[in] u        String to encode
  * @param[in] ulen     Length of the string to encode
  * @param[out] d       If not NULL, point it to the converted string
@@ -1029,7 +1029,7 @@ void mutt_ch_set_charset(const char *charset)
  * @retval ptr  Best performing charset
  * @retval NULL None could be found
  */
-char *mutt_ch_choose(const char *fromcode, const char *charsets, const char *u,
+char *mutt_ch_choose(const char *fromcode, const struct Slist *charsets, const char *u,
                      size_t ulen, char **d, size_t *dlen)
 {
   if (!fromcode)
@@ -1037,20 +1037,15 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets, const char *u,
 
   char *e = NULL, *tocode = NULL;
   size_t elen = 0, bestn = 0;
-  const char *q = NULL;
 
-  for (const char *p = charsets; p; p = q ? q + 1 : 0)
+  const struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, &charsets->head, entries)
   {
-    q = strchr(p, ':');
-
-    size_t n = q ? q - p : strlen(p);
-    if (n == 0)
+    char *t = mutt_str_dup(np->data);
+    if (!t)
       continue;
 
-    char *t = mutt_mem_malloc(n + 1);
-    memcpy(t, p, n);
-    t[n] = '\0';
-
+    size_t n = mutt_str_len(t);
     char *s = mutt_strn_dup(u, ulen);
     const int rc = d ? mutt_ch_convert_string(&s, fromcode, t, MUTT_ICONV_NO_FLAGS) :
                        mutt_ch_check(s, ulen, fromcode, t);

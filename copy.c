@@ -517,7 +517,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
   }
   FREE(&tags);
 
-  const char *const c_send_charset = cs_subset_string(NeoMutt->sub, "send_charset");
+  const struct Slist *const c_send_charset = cs_subset_slist(NeoMutt->sub, "send_charset");
   const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
   if ((chflags & CH_UPDATE_LABEL) && e->env->x_label)
   {

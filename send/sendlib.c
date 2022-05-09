@@ -661,7 +661,7 @@ static void encode_headers(struct ListHead *h, struct ConfigSubset *sub)
   char *p = NULL;
   int i;
 
-  const char *const c_send_charset = cs_subset_string(sub, "send_charset");
+  const struct Slist *const c_send_charset = cs_subset_slist(sub, "send_charset");
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)

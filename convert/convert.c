@@ -223,7 +223,7 @@ size_t mutt_convert_file_from_to(FILE *fp, const struct Slist *fromcodes,
   struct ListNode *np = NULL;
 
   /* Copy them */
-  tcode = mutt_mem_malloc(tocodes->count * sizeof(char *));
+  tcode = mutt_mem_calloc(tocodes->count,  sizeof(char *));
   np = NULL;
   cn = 0;
   STAILQ_FOREACH(np, &tocodes->head, entries)

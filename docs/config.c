@@ -574,7 +574,7 @@
 ** or from editing with edit-headers).
 */
 
-{ "config_charset", DT_SLIST, 0 },
+{ "config_charset", DT_STRING, 0 },
 /*
 ** .pp
 ** When defined, NeoMutt will recode commands in rc files from this

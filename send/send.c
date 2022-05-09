@@ -1580,7 +1580,7 @@ void mutt_encode_descriptions(struct Body *b, bool recurse, struct ConfigSubset 
   {
     if (t->description)
     {
-      const char *const c_send_charset = cs_subset_string(sub, "send_charset");
+      const struct Slist *const c_send_charset = cs_subset_slist(sub, "send_charset");
       rfc2047_encode(&t->description, NULL, sizeof("Content-Description:"), c_send_charset);
     }
     if (recurse && t->parts)

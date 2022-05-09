@@ -27,9 +27,10 @@
 
 struct AddressList;
 struct Envelope;
+struct Slist;
 
 void rfc2047_decode(char **pd);
-void rfc2047_encode(char **pd, const char *specials, int col, const char *charsets);
+void rfc2047_encode(char **pd, const char *specials, int col, const struct Slist *charsets);
 
 void rfc2047_decode_addrlist(struct AddressList *al);
 void rfc2047_encode_addrlist(struct AddressList *al, const char *tag);

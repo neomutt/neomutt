@@ -417,7 +417,7 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
  * @retval 0 Success
  */
 static int encode(const char *d, size_t dlen, int col, const char *fromcode,
-                  const char *charsets, char **e, size_t *elen, const char *specials)
+                  const struct Slist *charsets, char **e, size_t *elen, const char *specials)
 {
   int rc = 0;
   char *buf = NULL;
@@ -616,14 +616,14 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
  * @param[in]     col      Starting index in string
  * @param[in]     charsets List of charsets to choose from
  */
-void rfc2047_encode(char **pd, const char *specials, int col, const char *charsets)
+void rfc2047_encode(char **pd, const char *specials, int col, const struct Slist *charsets)
 {
   const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
   if (!c_charset || !pd || !*pd)
     return;
 
   if (!charsets)
-    charsets = "utf-8";
+    charsets = slist_parse("utf-8", SLIST_SEP_COLON);
 
   char *e = NULL;
   size_t elen = 0;
@@ -750,7 +750,7 @@ void rfc2047_encode_addrlist(struct AddressList *al, const char *tag)
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    const char *const c_send_charset = cs_subset_string(NeoMutt->sub, "send_charset");
+    const struct Slist *const c_send_charset = cs_subset_slist(NeoMutt->sub, "send_charset");
     if (a->personal)
       rfc2047_encode(&a->personal, AddressSpecials, col, c_send_charset);
     else if (a->group && a->mailbox)
@@ -815,7 +815,7 @@ void rfc2047_encode_envelope(struct Envelope *env)
   rfc2047_encode_addrlist(&env->reply_to, "Reply-To");
   rfc2047_encode_addrlist(&env->mail_followup_to, "Mail-Followup-To");
   rfc2047_encode_addrlist(&env->sender, "Sender");
-  const char *const c_send_charset = cs_subset_string(NeoMutt->sub, "send_charset");
+  const struct Slist *const c_send_charset = cs_subset_slist(NeoMutt->sub, "send_charset");
   rfc2047_encode(&env->x_label, NULL, sizeof("X-Label:"), c_send_charset);
   rfc2047_encode(&env->subject, NULL, sizeof("Subject:"), c_send_charset);
 }
