@@ -41,20 +41,24 @@ static struct ConfigDef Vars[] = {
 
 void test_rfc2047_encode(void)
 {
-  // void rfc2047_encode(char **pd, const char *specials, int col, const char *charsets);
+  // void rfc2047_encode(char **pd, const char *specials, int col, const struct Slist *charsets);
 
   NeoMutt = test_neomutt_create();
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
 
   {
-    rfc2047_encode(NULL, AddressSpecials, 0, "apple");
+    struct Slist *charsets = slist_parse("apple", SLIST_SEP_COLON);
+    rfc2047_encode(NULL, AddressSpecials, 0, charsets);
     TEST_CHECK_(1, "rfc2047_encode(NULL, AddressSpecials, 0, \"apple\")");
+    slist_free(&charsets);
   }
 
   {
     char *pd = NULL;
-    rfc2047_encode(&pd, NULL, 0, "apple");
+    struct Slist *charsets = slist_parse("apple", SLIST_SEP_COLON);
+    rfc2047_encode(&pd, NULL, 0, charsets);
     TEST_CHECK_(1, "rfc2047_encode(&pd, NULL, 0, \"apple\")");
+    slist_free(&charsets);
   }
 
   {
@@ -64,11 +68,12 @@ void test_rfc2047_encode(void)
   }
 
   {
+    struct Slist *charsets = slist_parse("utf-8", SLIST_SEP_COLON);
     for (size_t i = 0; rfc2047_test_data[i].decoded; i++)
     {
       /* encode the expected result */
       char *s = mutt_str_dup(rfc2047_test_data[i].decoded);
-      rfc2047_encode(&s, NULL, 0, "utf-8");
+      rfc2047_encode(&s, NULL, 0, charsets);
       if (!TEST_CHECK(strcmp(s, rfc2047_test_data[i].encoded) == 0))
       {
         TEST_MSG("Iteration: %zu", i);
@@ -77,6 +82,7 @@ void test_rfc2047_encode(void)
       }
       FREE(&s);
     }
+    slist_free(&charsets);
   }
 
   test_neomutt_destroy(&NeoMutt);

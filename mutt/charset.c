@@ -1032,7 +1032,7 @@ void mutt_ch_set_charset(const char *charset)
 char *mutt_ch_choose(const char *fromcode, const struct Slist *charsets, const char *u,
                      size_t ulen, char **d, size_t *dlen)
 {
-  if (!fromcode)
+  if (!fromcode || !charsets)
     return NULL;
 
   char *e = NULL, *tocode = NULL;
