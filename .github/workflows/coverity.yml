@@ -14,7 +14,7 @@ jobs:
 
     env:
       TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
-      OPTIONS: --autocrypt --bdb --disable-doc --disable-idn --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
+      OPTIONS: --autocrypt --bdb --disable-doc --disable-idn --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --mixmaster --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
       COV_TOOLS: cov-tools
       COV_RESULTS: cov-int
 

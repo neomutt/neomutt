@@ -976,7 +976,7 @@ static int op_subscribe_pattern(struct BrowserPrivateData *priv, int op)
 
   if (op == OP_SUBSCRIBE_PATTERN)
   {
-    for (size_t j = 0; adata && (j < adata->groups_num); j++)
+    for (size_t j = 0; j < adata->groups_num; j++)
     {
       struct NntpMboxData *mdata = adata->groups_list[j];
       if (mdata && mdata->group && !mdata->subscribed)

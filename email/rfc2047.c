@@ -622,13 +622,18 @@ void rfc2047_encode(char **pd, const char *specials, int col, const struct Slist
   if (!c_charset || !pd || !*pd)
     return;
 
+  struct Slist *fallback = NULL;
   if (!charsets)
-    charsets = slist_parse("utf-8", SLIST_SEP_COLON);
+  {
+    fallback = slist_parse("utf-8", SLIST_SEP_COLON);
+    charsets = fallback;
+  }
 
   char *e = NULL;
   size_t elen = 0;
   encode(*pd, strlen(*pd), col, c_charset, charsets, &e, &elen, specials);
 
+  slist_free(&fallback);
   FREE(pd);
   *pd = e;
 }

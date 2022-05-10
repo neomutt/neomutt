@@ -439,13 +439,16 @@ bool mutt_ch_chscmp(const char *cs1, const char *cs2)
 char *mutt_ch_get_default_charset(void)
 {
   static char fcharset[128];
+  const char *c = NULL;
   const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
+
   if (c_assumed_charset && (c_assumed_charset->count > 0))
-  {
-    const char *c = STAILQ_FIRST(&c_assumed_charset->head)->data;
-    return strcpy(fcharset, c);
-  }
-  return strcpy(fcharset, "us-ascii");
+    c = STAILQ_FIRST(&c_assumed_charset->head)->data;
+  else
+    c = "us-ascii";
+
+  mutt_str_copy(fcharset, c, sizeof(fcharset));
+  return fcharset;
 }
 
 /**
@@ -1029,8 +1032,8 @@ void mutt_ch_set_charset(const char *charset)
  * @retval ptr  Best performing charset
  * @retval NULL None could be found
  */
-char *mutt_ch_choose(const char *fromcode, const struct Slist *charsets, const char *u,
-                     size_t ulen, char **d, size_t *dlen)
+char *mutt_ch_choose(const char *fromcode, const struct Slist *charsets,
+                     const char *u, size_t ulen, char **d, size_t *dlen)
 {
   if (!fromcode || !charsets)
     return NULL;

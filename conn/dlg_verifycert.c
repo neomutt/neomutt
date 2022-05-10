@@ -304,7 +304,7 @@ int dlg_verify_certificate(const char *title, struct CertArray *carr,
         continue;
     }
 
-    menu_function_dispatcher(menu->win, op);
+    (void) menu_function_dispatcher(menu->win, op);
   } while (choice == 0);
   // ---------------------------------------------------------------------------
 

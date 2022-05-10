@@ -161,6 +161,9 @@ void nntp_group_unread_stat(struct NntpMboxData *mdata)
  */
 int nntp_newsrc_parse(struct NntpAccountData *adata)
 {
+  if (!adata)
+    return -1;
+
   char *line = NULL;
   struct stat st = { 0 };
 
