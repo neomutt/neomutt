@@ -27,7 +27,9 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include <stdbool.h>
+#include "mutt/lib.h"
 #include "email/lib.h"
 
 /**
@@ -101,6 +103,32 @@ bool attach_body_parent(struct Body *start, struct Body *start_parent,
   }
 
   return false;
+}
+
+/**
+ * attach_body_ancestor - Find the ancestor of a body with specified subtype
+ * @param[in] start         Body to start search from
+ * @param[in] body          Body to find ancestor of
+ * @param[in] subtype       Mime subtype of ancestor to find
+ * @retval    body_ancestor Body ancestor if found
+ * @retval    NULL          If ancestor body not found
+ */
+struct Body *attach_body_ancestor(struct Body *start, struct Body *body, const char *subtype)
+{
+  if (!start || !body)
+    return false;
+
+  struct Body *b = body;
+  struct Body *b_parent = NULL;
+
+  while (attach_body_parent(start, NULL, b, &b_parent))
+  {
+    if (mutt_str_equal(subtype, b_parent->subtype))
+      return b_parent;
+    b = b_parent;
+  }
+
+  return NULL;
 }
 
 /**
