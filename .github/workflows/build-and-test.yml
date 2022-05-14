@@ -24,7 +24,7 @@ jobs:
           - name: disabled
             options: --disable-idn --disable-nls --disable-pgp --disable-smime --ssl
           - name: everything
-            options: --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
+            options: --autocrypt --bdb --disable-idn --fmemopen --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --mixmaster --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
 
     steps:
     - name: Checkout Code
