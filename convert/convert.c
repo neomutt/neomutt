@@ -64,7 +64,7 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
                             int *tocode, struct Content *info)
 {
   char bufi[256], bufu[512], bufo[4 * sizeof(bufi)];
-  size_t ret;
+  size_t rc;
 
   const iconv_t cd1 = mutt_ch_iconv_open("utf-8", fromcode, MUTT_ICONV_NO_FLAGS);
   if (cd1 == (iconv_t) (-1))
@@ -108,7 +108,7 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
     if ((n == (size_t) (-1)) && (((errno != EINVAL) && (errno != E2BIG)) || (ib == bufi)))
     {
       /* assert(errno == EILSEQ || (errno == EINVAL && ib == bufi && ibl < sizeof(bufi))); */
-      ret = (size_t) (-1);
+      rc = (size_t) (-1);
       break;
     }
     const size_t ubl1 = ob - bufu;
@@ -148,35 +148,35 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
     }
     else if (!ubl1 && (ib < bufi + sizeof(bufi)))
     {
-      ret = 0;
+      rc = 0;
       break;
     }
   }
 
-  if (ret == 0)
+  if (rc == 0)
   {
     /* Find best score */
-    ret = (size_t) (-1);
+    rc = (size_t) (-1);
     for (int i = 0; i < ncodes; i++)
     {
       if ((cd[i] == (iconv_t) (-1)) && (score[i] == (size_t) (-1)))
       {
         /* Special case for conversion to UTF-8 */
         *tocode = i;
-        ret = 0;
+        rc = 0;
         break;
       }
       else if ((cd[i] == (iconv_t) (-1)) || (score[i] == (size_t) (-1)))
         continue;
-      else if ((ret == (size_t) (-1)) || (score[i] < ret))
+      else if ((rc == (size_t) (-1)) || (score[i] < rc))
       {
         *tocode = i;
-        ret = score[i];
-        if (ret == 0)
+        rc = score[i];
+        if (rc == 0)
           break;
       }
     }
-    if (ret != (size_t) (-1))
+    if (rc != (size_t) (-1))
     {
       memcpy(info, &infos[*tocode], sizeof(struct Content));
       mutt_update_content_info(info, &states[*tocode], 0, 0); /* EOF */
@@ -193,7 +193,7 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
   FREE(&score);
   FREE(&states);
 
-  return ret;
+  return rc;
 }
 
 /**
@@ -218,7 +218,7 @@ size_t mutt_convert_file_from_to(FILE *fp, const struct Slist *fromcodes,
                                  char **tocode, struct Content *info)
 {
   char **tcode = NULL;
-  size_t ret;
+  size_t rc;
   int cn;
   struct ListNode *np = NULL;
 
@@ -231,14 +231,14 @@ size_t mutt_convert_file_from_to(FILE *fp, const struct Slist *fromcodes,
     tcode[cn++] = mutt_str_dup(np->data);
   }
 
-  ret = (size_t) (-1);
+  rc = (size_t) (-1);
   np = NULL;
   cn = 0;
   STAILQ_FOREACH(np, &fromcodes->head, entries)
   {
     /* Try each fromcode in turn */
-    ret = mutt_convert_file_to(fp, np->data, tocodes, &cn, info);
-    if (ret != (size_t) (-1))
+    rc = mutt_convert_file_to(fp, np->data, tocodes, &cn, info);
+    if (rc != (size_t) (-1))
     {
       *fromcode = np->data;
       *tocode = tcode[cn];
@@ -253,5 +253,5 @@ size_t mutt_convert_file_from_to(FILE *fp, const struct Slist *fromcodes,
 
   FREE(&tcode);
 
-  return ret;
+  return rc;
 }

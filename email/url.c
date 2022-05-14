@@ -95,14 +95,14 @@ static bool parse_query_string(struct UrlQueryList *list, char *src)
  */
 static enum UrlScheme get_scheme(const char *src, const regmatch_t *match)
 {
-  enum UrlScheme ret = U_UNKNOWN;
+  enum UrlScheme rc = U_UNKNOWN;
   if (src && match)
   {
-    ret = mutt_map_get_value_n(src, mutt_regmatch_len(&match[PREX_URL_MATCH_SCHEME]), UrlMap);
-    if (ret == -1)
-      ret = U_UNKNOWN;
+    rc = mutt_map_get_value_n(src, mutt_regmatch_len(&match[PREX_URL_MATCH_SCHEME]), UrlMap);
+    if (rc == -1)
+      rc = U_UNKNOWN;
   }
-  return ret;
+  return rc;
 }
 
 /**

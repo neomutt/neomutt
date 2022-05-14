@@ -258,8 +258,8 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
 
   do
   {
-    const int ret = gnutls_pem_base64_decode_alloc(NULL, &b64_data, &cert);
-    if (ret != 0)
+    const int rc = gnutls_pem_base64_decode_alloc(NULL, &b64_data, &cert);
+    if (rc != 0)
     {
       FREE(&b64_data_data);
       return 0;
@@ -1080,19 +1080,19 @@ static int tls_socket_write(struct Connection *conn, const char *buf, size_t cou
 
   do
   {
-    int ret;
+    int rc;
     do
     {
-      ret = gnutls_record_send(data->state, buf + sent, count - sent);
-    } while ((ret == GNUTLS_E_AGAIN) || (ret == GNUTLS_E_INTERRUPTED));
+      rc = gnutls_record_send(data->state, buf + sent, count - sent);
+    } while ((rc == GNUTLS_E_AGAIN) || (rc == GNUTLS_E_INTERRUPTED));
 
-    if (ret < 0)
+    if (rc < 0)
     {
-      mutt_error("tls_socket_write (%s)", gnutls_strerror(ret));
+      mutt_error("tls_socket_write (%s)", gnutls_strerror(rc));
       return -1;
     }
 
-    sent += ret;
+    sent += rc;
   } while (sent < count);
 
   return sent;

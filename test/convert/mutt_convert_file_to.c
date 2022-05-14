@@ -41,9 +41,9 @@ void test_mutt_convert_file_to(void)
     int tocode = 0;
     struct Content info = initial_info;
 
-    size_t ret = mutt_convert_file_to(fp, "us-ascii", tocodes, &tocode, &info);
-    TEST_CHECK(ret == 0);
-    TEST_MSG("Check failed: %d == 0", ret);
+    size_t rc = mutt_convert_file_to(fp, "us-ascii", tocodes, &tocode, &info);
+    TEST_CHECK(rc == 0);
+    TEST_MSG("Check failed: %d == 0", rc);
 
     TEST_CHECK(tocode == 0);
     TEST_MSG("Check failed: %d == 0", tocode);
@@ -83,16 +83,16 @@ void test_mutt_convert_file_to(void)
     int tocode = 0;
     struct Content info = initial_info;
 
-    size_t ret = mutt_convert_file_to(fp, "iso-8859-2", tocodes, &tocode, &info);
-    TEST_CHECK(ret == -1);
-    TEST_MSG("Check failed: %d == -1", ret);
+    size_t rc = mutt_convert_file_to(fp, "iso-8859-2", tocodes, &tocode, &info);
+    TEST_CHECK(rc == -1);
+    TEST_MSG("Check failed: %d == -1", rc);
 
     slist_free(&tocodes);
   }
 
   {
     /* Conversion from ISO-8859-2 to us-ascii or ISO-8859-1.
-     * Neither is a valid conversion, so ret == -1. */
+     * Neither is a valid conversion, so rc == -1. */
     char data[] = "line 2\r\nline3\n\xf3\xbf\x77\xb3\x00";
     FILE *fp = fmemopen(data, sizeof(data) - 1, "r");
 
@@ -100,9 +100,9 @@ void test_mutt_convert_file_to(void)
     int tocode = 0;
     struct Content info = initial_info;
 
-    size_t ret = mutt_convert_file_to(fp, "iso-8859-2", tocodes, &tocode, &info);
-    TEST_CHECK(ret == -1);
-    TEST_MSG("Check failed: %d == -1", ret);
+    size_t rc = mutt_convert_file_to(fp, "iso-8859-2", tocodes, &tocode, &info);
+    TEST_CHECK(rc == -1);
+    TEST_MSG("Check failed: %d == -1", rc);
 
     slist_free(&tocodes);
   }
@@ -117,9 +117,9 @@ void test_mutt_convert_file_to(void)
     int tocode = 0;
     struct Content info = initial_info;
 
-    size_t ret = mutt_convert_file_to(fp, "iso-8859-2", tocodes, &tocode, &info);
-    TEST_CHECK(ret == 0);
-    TEST_MSG("Check failed: %d == 0", ret);
+    size_t rc = mutt_convert_file_to(fp, "iso-8859-2", tocodes, &tocode, &info);
+    TEST_CHECK(rc == 0);
+    TEST_MSG("Check failed: %d == 0", rc);
 
     TEST_CHECK(tocode == 0);
     TEST_MSG("Check failed: %d == 0", tocode);
@@ -138,14 +138,14 @@ void test_mutt_convert_file_to(void)
     int tocode = 0;
     struct Content info = initial_info;
 
-    size_t ret = mutt_convert_file_to(fp, "iso-8859-2", tocodes, &tocode, &info);
+    size_t rc = mutt_convert_file_to(fp, "iso-8859-2", tocodes, &tocode, &info);
 
     TEST_CHECK(tocode == 1);
     TEST_MSG("Check failed: %d == 1", tocode);
 
     /* Special case for converting to UTF-8. */
-    TEST_CHECK(ret == 0);
-    TEST_MSG("Check failed: %d == 0", ret);
+    TEST_CHECK(rc == 0);
+    TEST_MSG("Check failed: %d == 0", rc);
 
     TEST_CHECK(info.hibin == 6);
     TEST_MSG("Check failed: %d == 6", info.hibin);

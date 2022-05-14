@@ -400,7 +400,7 @@ int imap_mailbox_create(const char *path)
   }
 
   if (mutt_buffer_get_field(_("Create mailbox: "), name, MUTT_COMP_FILE, false,
-                            NULL, NULL, NULL) < 0)
+                            NULL, NULL, NULL) != 0)
   {
     goto done;
   }
@@ -460,8 +460,10 @@ int imap_mailbox_rename(const char *path)
   mutt_buffer_strcpy(newname, mdata->name);
 
   if (mutt_buffer_get_field(mutt_buffer_string(buf), newname, MUTT_COMP_FILE,
-                            false, NULL, NULL, NULL) < 0)
+                            false, NULL, NULL, NULL) != 0)
+  {
     goto done;
+  }
 
   if (mutt_buffer_is_empty(newname))
   {

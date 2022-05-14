@@ -341,7 +341,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
   if (!win)
     return -1;
 
-  int ret;
+  int rc;
   int col;
 
   struct EnterState *es = mutt_enter_state_new();
@@ -370,9 +370,9 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
     mutt_refresh();
     mutt_window_get_coords(win, &col, NULL);
-    ret = mutt_enter_string_full(buf->data, buf->dsize, col, complete, multiple,
-                                 m, files, numfiles, es);
-  } while (ret == 1);
+    rc = mutt_enter_string_full(buf->data, buf->dsize, col, complete, multiple,
+                                m, files, numfiles, es);
+  } while (rc == 1);
   mutt_curses_set_cursor(cursor);
 
   win->help_data = old_help;
@@ -381,14 +381,14 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
   mutt_window_clearline(win, 0);
   window_set_focus(old_focus);
 
-  if (ret == 0)
+  if (rc == 0)
     mutt_buffer_fix_dptr(buf);
   else
     mutt_buffer_reset(buf);
 
   mutt_enter_state_free(&es);
 
-  return ret;
+  return rc;
 }
 
 /**
@@ -396,7 +396,6 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
  * @param msg    Prompt
  * @param buf    Buffer for the result
  * @param flags  Flags, see #CompletionFlags
- * @retval 1  Redraw the screen and call the function again
  * @retval 0  Selection made
  * @retval -1 Aborted
  */

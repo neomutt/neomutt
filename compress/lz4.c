@@ -119,8 +119,8 @@ static void *compr_lz4_decompress(void *cctx, const char *cbuf, size_t clen)
   mutt_mem_realloc(&ctx->buf, ulen);
   void *ubuf = ctx->buf;
   const char *data = cbuf;
-  int ret = LZ4_decompress_safe(data + 4, ubuf, clen - 4, ulen);
-  if (ret < 0)
+  int rc = LZ4_decompress_safe(data + 4, ubuf, clen - 4, ulen);
+  if (rc < 0)
     return NULL;
 
   return ubuf;

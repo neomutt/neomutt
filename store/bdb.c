@@ -92,7 +92,7 @@ static void *store_bdb_open(const char *path)
     return NULL;
 
   struct stat st = { 0 };
-  int ret;
+  int rc;
   uint32_t createflags = DB_CREATE;
 
   struct StoreDbCtx *ctx = mutt_mem_malloc(sizeof(struct StoreDbCtx));
@@ -112,17 +112,17 @@ static void *store_bdb_open(const char *path)
   if (mutt_file_lock(ctx->fd, true, true))
     goto fail_close;
 
-  ret = db_env_create(&ctx->env, 0);
-  if (ret)
+  rc = db_env_create(&ctx->env, 0);
+  if (rc)
     goto fail_unlock;
 
-  ret = (*ctx->env->open)(ctx->env, NULL, DB_INIT_MPOOL | DB_CREATE | DB_PRIVATE, 0600);
-  if (ret)
+  rc = (*ctx->env->open)(ctx->env, NULL, DB_INIT_MPOOL | DB_CREATE | DB_PRIVATE, 0600);
+  if (rc)
     goto fail_env;
 
   ctx->db = NULL;
-  ret = db_create(&ctx->db, ctx->env, 0);
-  if (ret)
+  rc = db_create(&ctx->db, ctx->env, 0);
+  if (rc)
     goto fail_env;
 
   if ((stat(path, &st) != 0) && (errno == ENOENT))
@@ -131,8 +131,8 @@ static void *store_bdb_open(const char *path)
     ctx->db->set_pagesize(ctx->db, pagesize);
   }
 
-  ret = (*ctx->db->open)(ctx->db, NULL, path, NULL, DB_BTREE, createflags, 0600);
-  if (ret)
+  rc = (*ctx->db->open)(ctx->db, NULL, path, NULL, DB_BTREE, createflags, 0600);
+  if (rc)
     goto fail_db;
 
   return ctx;

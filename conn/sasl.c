@@ -142,14 +142,14 @@ bool sasl_auth_validator(const char *authenticator)
 
 /**
  * getnameinfo_err - Convert a getaddrinfo() error code into an SASL error code
- * @param ret getaddrinfo() error code, e.g. EAI_AGAIN
+ * @param rc getaddrinfo() error code, e.g. EAI_AGAIN
  * @retval num SASL error code, e.g. SASL_FAIL
  */
-static int getnameinfo_err(int ret)
+static int getnameinfo_err(int rc)
 {
   int err;
   mutt_debug(LL_DEBUG1, "getnameinfo: ");
-  switch (ret)
+  switch (rc)
   {
     case EAI_AGAIN:
       mutt_debug(LL_DEBUG1, "The name could not be resolved at this time.  Future attempts may succeed\n");
@@ -182,7 +182,7 @@ static int getnameinfo_err(int ret)
       err = SASL_FAIL; /* no real equivalent */
       break;
     default:
-      mutt_debug(LL_DEBUG1, "Unknown error %d\n", ret);
+      mutt_debug(LL_DEBUG1, "Unknown error %d\n", rc);
       err = SASL_FAIL; /* no real equivalent */
       break;
   }
@@ -203,19 +203,19 @@ static int iptostring(const struct sockaddr *addr, socklen_t addrlen, char *out,
                       unsigned int outlen)
 {
   char hbuf[NI_MAXHOST], pbuf[NI_MAXSERV];
-  int ret;
+  int rc;
 
   if (!addr || !out)
     return SASL_BADPARAM;
 
-  ret = getnameinfo(addr, addrlen, hbuf, sizeof(hbuf), pbuf, sizeof(pbuf),
-                    NI_NUMERICHOST |
+  rc = getnameinfo(addr, addrlen, hbuf, sizeof(hbuf), pbuf, sizeof(pbuf),
+                   NI_NUMERICHOST |
 #ifdef NI_WITHSCOPEID
-                        NI_WITHSCOPEID |
+                       NI_WITHSCOPEID |
 #endif
-                        NI_NUMERICSERV);
-  if (ret != 0)
-    return getnameinfo_err(ret);
+                       NI_NUMERICSERV);
+  if (rc != 0)
+    return getnameinfo_err(rc);
 
   if (outlen < strlen(hbuf) + strlen(pbuf) + 2)
     return SASL_BUFOVER;
@@ -704,8 +704,8 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
     snprintf(prompt, sizeof(prompt), "%s: ", interaction->prompt);
     mutt_buffer_reset(resp);
 
-    if (OptNoCurses || mutt_buffer_get_field(prompt, resp, MUTT_COMP_NO_FLAGS,
-                                             false, NULL, NULL, NULL))
+    if (OptNoCurses || (mutt_buffer_get_field(prompt, resp, MUTT_COMP_NO_FLAGS,
+                                              false, NULL, NULL, NULL) != 0))
     {
       rc = SASL_FAIL;
       break;

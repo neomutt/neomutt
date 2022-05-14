@@ -1354,7 +1354,7 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
  */
 int mutt_save_confirm(const char *s, struct stat *st)
 {
-  int ret = 0;
+  int rc = 0;
 
   enum MailboxType type = mx_path_probe(s);
 
@@ -1375,9 +1375,9 @@ int mutt_save_confirm(const char *s, struct stat *st)
       mutt_buffer_printf(tmp, _("Append messages to %s?"), s);
       enum QuadOption ans = mutt_yesorno(mutt_buffer_string(tmp), MUTT_YES);
       if (ans == MUTT_NO)
-        ret = 1;
+        rc = 1;
       else if (ans == MUTT_ABORT)
-        ret = -1;
+        rc = -1;
       mutt_buffer_pool_release(&tmp);
     }
   }
@@ -1413,14 +1413,14 @@ int mutt_save_confirm(const char *s, struct stat *st)
         mutt_buffer_printf(tmp, _("Create %s?"), s);
         enum QuadOption ans = mutt_yesorno(mutt_buffer_string(tmp), MUTT_YES);
         if (ans == MUTT_NO)
-          ret = 1;
+          rc = 1;
         else if (ans == MUTT_ABORT)
-          ret = -1;
+          rc = -1;
         mutt_buffer_pool_release(&tmp);
       }
 
       /* user confirmed with MUTT_YES or set `$confirm_create` */
-      if (ret == 0)
+      if (rc == 0)
       {
         /* create dir recursively */
         char *tmp_path = mutt_path_dirname(s);
@@ -1442,7 +1442,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
   }
 
   msgwin_clear_text();
-  return ret;
+  return rc;
 }
 
 /**

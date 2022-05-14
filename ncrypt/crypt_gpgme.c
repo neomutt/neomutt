@@ -3253,49 +3253,49 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
  */
 unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
 {
-  unsigned int ret = 0;
+  unsigned int rc = 0;
 
   switch (cap)
   {
     case KEY_CAP_CAN_ENCRYPT:
-      ret = key->can_encrypt;
-      if (ret == 0)
+      rc = key->can_encrypt;
+      if (rc == 0)
       {
         for (gpgme_subkey_t subkey = key->subkeys; subkey; subkey = subkey->next)
         {
-          ret = subkey->can_encrypt;
-          if (ret != 0)
+          rc = subkey->can_encrypt;
+          if (rc != 0)
             break;
         }
       }
       break;
     case KEY_CAP_CAN_SIGN:
-      ret = key->can_sign;
-      if (ret == 0)
+      rc = key->can_sign;
+      if (rc == 0)
       {
         for (gpgme_subkey_t subkey = key->subkeys; subkey; subkey = subkey->next)
         {
-          ret = subkey->can_sign;
-          if (ret != 0)
+          rc = subkey->can_sign;
+          if (rc != 0)
             break;
         }
       }
       break;
     case KEY_CAP_CAN_CERTIFY:
-      ret = key->can_certify;
-      if (ret == 0)
+      rc = key->can_certify;
+      if (rc == 0)
       {
         for (gpgme_subkey_t subkey = key->subkeys; subkey; subkey = subkey->next)
         {
-          ret = subkey->can_certify;
-          if (ret != 0)
+          rc = subkey->can_certify;
+          if (rc != 0)
             break;
         }
       }
       break;
   }
 
-  return ret;
+  return rc;
 }
 
 /**

@@ -96,11 +96,11 @@ static void *compr_zstd_compress(void *cctx, const char *data, size_t dlen, size
   size_t len = ZSTD_compressBound(dlen);
   mutt_mem_realloc(&ctx->buf, len);
 
-  size_t ret = ZSTD_compressCCtx(ctx->cctx, ctx->buf, len, data, dlen, ctx->level);
-  if (ZSTD_isError(ret))
+  size_t rc = ZSTD_compressCCtx(ctx->cctx, ctx->buf, len, data, dlen, ctx->level);
+  if (ZSTD_isError(rc))
     return NULL; // LCOV_EXCL_LINE
 
-  *clen = ret;
+  *clen = rc;
 
   return ctx->buf;
 }
@@ -124,8 +124,8 @@ static void *compr_zstd_decompress(void *cctx, const char *cbuf, size_t clen)
     return NULL; // LCOV_EXCL_LINE
   mutt_mem_realloc(&ctx->buf, len);
 
-  size_t ret = ZSTD_decompressDCtx(ctx->dctx, ctx->buf, len, cbuf, clen);
-  if (ZSTD_isError(ret))
+  size_t rc = ZSTD_decompressDCtx(ctx->dctx, ctx->buf, len, cbuf, clen);
+  if (ZSTD_isError(rc))
     return NULL; // LCOV_EXCL_LINE
 
   return ctx->buf;

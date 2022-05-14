@@ -313,7 +313,7 @@ static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s
   char *p = NULL;
   char *tmpminor = NULL;
   size_t len;
-  int ret;
+  int rc;
 
   do
   {
@@ -352,13 +352,13 @@ static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s
     tmpminor[len + 2] = '\0';
 
     a->major_int = mutt_check_mime_type(a->major);
-    ret = REG_COMP(&a->minor_regex, tmpminor, REG_ICASE);
+    rc = REG_COMP(&a->minor_regex, tmpminor, REG_ICASE);
 
     FREE(&tmpminor);
 
-    if (ret != 0)
+    if (rc != 0)
     {
-      regerror(ret, &a->minor_regex, err->data, err->dsize);
+      regerror(rc, &a->minor_regex, err->data, err->dsize);
       FREE(&a->major);
       FREE(&a);
       return MUTT_CMD_ERROR;

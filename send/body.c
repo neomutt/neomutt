@@ -71,7 +71,7 @@ static void b64_flush(struct B64Context *bctx, FILE *fp_out)
   /* for some reasons, mutt_b64_encode expects the
    * output buffer to be larger than 10B */
   char encoded[11];
-  size_t ret;
+  size_t rc;
 
   if (bctx->size == 0)
     return;
@@ -82,11 +82,11 @@ static void b64_flush(struct B64Context *bctx, FILE *fp_out)
     bctx->linelen = 0;
   }
 
-  /* ret should always be equal to 4 here, because bctx->size
+  /* rc should always be equal to 4 here, because bctx->size
    * is a value between 1 and 3 (included), but let's not hardcode it
    * and prefer the return value of the function */
-  ret = mutt_b64_encode(bctx->buffer, bctx->size, encoded, sizeof(encoded));
-  for (size_t i = 0; i < ret; i++)
+  rc = mutt_b64_encode(bctx->buffer, bctx->size, encoded, sizeof(encoded));
+  for (size_t i = 0; i < rc; i++)
   {
     fputc(encoded[i], fp_out);
     bctx->linelen++;

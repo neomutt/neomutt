@@ -278,18 +278,18 @@ static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *m
 
   char buf[1024];
   snprintf(buf, sizeof(buf), "USER %s\r\n", adata->conn->account.user);
-  int ret = pop_query(adata, buf, sizeof(buf));
+  int rc = pop_query(adata, buf, sizeof(buf));
 
   if (adata->cmd_user == 2)
   {
-    if (ret == 0)
+    if (rc == 0)
     {
       adata->cmd_user = 1;
 
       mutt_debug(LL_DEBUG1, "set USER capability\n");
     }
 
-    if (ret == -2)
+    if (rc == -2)
     {
       adata->cmd_user = 0;
 
@@ -299,16 +299,16 @@ static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *m
     }
   }
 
-  if (ret == 0)
+  if (rc == 0)
   {
     snprintf(buf, sizeof(buf), "PASS %s\r\n", adata->conn->account.pass);
     const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
-    ret = pop_query_d(adata, buf, sizeof(buf),
-                      /* don't print the password unless we're at the ungodly debugging level */
-                      (c_debug_level < MUTT_SOCK_LOG_FULL) ? "PASS *\r\n" : NULL);
+    rc = pop_query_d(adata, buf, sizeof(buf),
+                     /* don't print the password unless we're at the ungodly debugging level */
+                     (c_debug_level < MUTT_SOCK_LOG_FULL) ? "PASS *\r\n" : NULL);
   }
 
-  switch (ret)
+  switch (rc)
   {
     case 0:
       return POP_A_SUCCESS;
@@ -343,16 +343,16 @@ static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *
   snprintf(auth_cmd, auth_cmd_len, "AUTH OAUTHBEARER %s\r\n", oauthbearer);
   FREE(&oauthbearer);
 
-  int ret = pop_query_d(adata, auth_cmd, strlen(auth_cmd),
+  int rc = pop_query_d(adata, auth_cmd, strlen(auth_cmd),
 #ifdef DEBUG
-                        /* don't print the bearer token unless we're at the ungodly debugging level */
-                        (cs_subset_number(NeoMutt->sub, "debug_level") < MUTT_SOCK_LOG_FULL) ?
-                            "AUTH OAUTHBEARER *\r\n" :
+                       /* don't print the bearer token unless we're at the ungodly debugging level */
+                       (cs_subset_number(NeoMutt->sub, "debug_level") < MUTT_SOCK_LOG_FULL) ?
+                           "AUTH OAUTHBEARER *\r\n" :
 #endif
-                            NULL);
+                           NULL);
   FREE(&auth_cmd);
 
-  switch (ret)
+  switch (rc)
   {
     case 0:
       return POP_A_SUCCESS;
@@ -426,7 +426,7 @@ int pop_authenticate(struct PopAccountData *adata)
   struct ConnAccount *cac = &adata->conn->account;
   const struct PopAuth *authenticator = NULL;
   int attempts = 0;
-  int ret = POP_A_UNAVAIL;
+  int rc = POP_A_UNAVAIL;
 
   if ((mutt_account_getuser(cac) < 0) || (cac->user[0] == '\0'))
   {
@@ -448,25 +448,25 @@ int pop_authenticate(struct PopAccountData *adata)
       {
         if (!authenticator->method || mutt_istr_equal(authenticator->method, np->data))
         {
-          ret = authenticator->authenticate(adata, np->data);
-          if (ret == POP_A_SOCKET)
+          rc = authenticator->authenticate(adata, np->data);
+          if (rc == POP_A_SOCKET)
           {
             switch (pop_connect(adata))
             {
               case 0:
               {
-                ret = authenticator->authenticate(adata, np->data);
+                rc = authenticator->authenticate(adata, np->data);
                 break;
               }
               case -2:
-                ret = POP_A_FAILURE;
+                rc = POP_A_FAILURE;
             }
           }
 
-          if (ret != POP_A_UNAVAIL)
+          if (rc != POP_A_UNAVAIL)
             attempts++;
-          if ((ret == POP_A_SUCCESS) || (ret == POP_A_SOCKET) ||
-              ((ret == POP_A_FAILURE) && !c_pop_auth_try_all))
+          if ((rc == POP_A_SUCCESS) || (rc == POP_A_SOCKET) ||
+              ((rc == POP_A_FAILURE) && !c_pop_auth_try_all))
           {
             break;
           }
@@ -483,25 +483,25 @@ int pop_authenticate(struct PopAccountData *adata)
 
     while (authenticator->authenticate)
     {
-      ret = authenticator->authenticate(adata, NULL);
-      if (ret == POP_A_SOCKET)
+      rc = authenticator->authenticate(adata, NULL);
+      if (rc == POP_A_SOCKET)
       {
         switch (pop_connect(adata))
         {
           case 0:
           {
-            ret = authenticator->authenticate(adata, NULL);
+            rc = authenticator->authenticate(adata, NULL);
             break;
           }
           case -2:
-            ret = POP_A_FAILURE;
+            rc = POP_A_FAILURE;
         }
       }
 
-      if (ret != POP_A_UNAVAIL)
+      if (rc != POP_A_UNAVAIL)
         attempts++;
-      if ((ret == POP_A_SUCCESS) || (ret == POP_A_SOCKET) ||
-          ((ret == POP_A_FAILURE) && !c_pop_auth_try_all))
+      if ((rc == POP_A_SUCCESS) || (rc == POP_A_SOCKET) ||
+          ((rc == POP_A_FAILURE) && !c_pop_auth_try_all))
       {
         break;
       }
@@ -510,7 +510,7 @@ int pop_authenticate(struct PopAccountData *adata)
     }
   }
 
-  switch (ret)
+  switch (rc)
   {
     case POP_A_SUCCESS:
       return 0;

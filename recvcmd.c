@@ -204,8 +204,8 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   else
     mutt_buffer_strcpy(prompt, _("Bounce tagged messages to: "));
 
-  if (mutt_buffer_get_field(mutt_buffer_string(prompt), buf, MUTT_COMP_ALIAS,
-                            false, NULL, NULL, NULL) ||
+  if ((mutt_buffer_get_field(mutt_buffer_string(prompt), buf, MUTT_COMP_ALIAS,
+                             false, NULL, NULL, NULL) != 0) ||
       mutt_buffer_is_empty(buf))
   {
     goto done;

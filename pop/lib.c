@@ -419,23 +419,23 @@ void pop_logout(struct Mailbox *m)
 
   if (adata->status == POP_CONNECTED)
   {
-    int ret = 0;
+    int rc = 0;
     char buf[1024];
     mutt_message(_("Closing connection to POP server..."));
 
     if (m->readonly)
     {
       mutt_str_copy(buf, "RSET\r\n", sizeof(buf));
-      ret = pop_query(adata, buf, sizeof(buf));
+      rc = pop_query(adata, buf, sizeof(buf));
     }
 
-    if (ret != -1)
+    if (rc != -1)
     {
       mutt_str_copy(buf, "QUIT\r\n", sizeof(buf));
-      ret = pop_query(adata, buf, sizeof(buf));
+      rc = pop_query(adata, buf, sizeof(buf));
     }
 
-    if (ret < 0)
+    if (rc < 0)
       mutt_debug(LL_DEBUG1, "Error closing POP connection\n");
 
     mutt_clear_error();
@@ -607,8 +607,8 @@ int pop_reconnect(struct Mailbox *m)
   {
     mutt_socket_close(adata->conn);
 
-    int ret = pop_open_connection(adata);
-    if (ret == 0)
+    int rc = pop_open_connection(adata);
+    if (rc == 0)
     {
       struct Progress *progress = progress_new(_("Verifying message indexes..."),
                                                MUTT_PROGRESS_NET, 0);
@@ -619,20 +619,20 @@ int pop_reconnect(struct Mailbox *m)
         edata->refno = -1;
       }
 
-      ret = pop_fetch_data(adata, "UIDL\r\n", progress, check_uidl, m);
+      rc = pop_fetch_data(adata, "UIDL\r\n", progress, check_uidl, m);
       progress_free(&progress);
-      if (ret == -2)
+      if (rc == -2)
       {
         mutt_error("%s", adata->err_msg);
       }
     }
 
-    if (ret == 0)
+    if (rc == 0)
       return 0;
 
     pop_logout(m);
 
-    if (ret < -1)
+    if (rc < -1)
       return -1;
 
     const enum QuadOption c_pop_reconnect = cs_subset_quad(NeoMutt->sub, "pop_reconnect");

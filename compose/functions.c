@@ -1421,9 +1421,9 @@ static int op_attachment_rename_attachment(struct ComposeSharedData *shared, int
     src = cur_att->body->filename;
   struct Buffer *fname = mutt_buffer_pool_get();
   mutt_buffer_strcpy(fname, mutt_path_basename(NONULL(src)));
-  int ret = mutt_buffer_get_field(_("Send attachment with name: "), fname,
-                                  MUTT_COMP_FILE, false, NULL, NULL, NULL);
-  if (ret == 0)
+  int rc = mutt_buffer_get_field(_("Send attachment with name: "), fname,
+                                 MUTT_COMP_FILE, false, NULL, NULL, NULL);
+  if (rc == 0)
   {
     // It's valid to set an empty string here, to erase what was set
     mutt_str_replace(&cur_att->body->d_filename, mutt_buffer_string(fname));

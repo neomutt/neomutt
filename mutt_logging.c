@@ -97,18 +97,18 @@ int log_disp_curses(time_t stamp, const char *file, int line,
   va_list ap;
   va_start(ap, level);
   const char *fmt = va_arg(ap, const char *);
-  int ret = vsnprintf(buf, sizeof(buf), fmt, ap);
+  int rc = vsnprintf(buf, sizeof(buf), fmt, ap);
   va_end(ap);
 
-  if ((level == LL_PERROR) && (ret >= 0) && (ret < sizeof(buf)))
+  if ((level == LL_PERROR) && (rc >= 0) && (rc < sizeof(buf)))
   {
-    char *buf2 = buf + ret;
-    int len = sizeof(buf) - ret;
+    char *buf2 = buf + rc;
+    int len = sizeof(buf) - rc;
     const char *p = strerror(errno);
     if (!p)
       p = _("unknown error");
 
-    ret += snprintf(buf2, len, ": %s (errno = %d)", p, errno);
+    rc += snprintf(buf2, len, ": %s (errno = %d)", p, errno);
   }
 
   const bool dupe = (strcmp(buf, ErrorBuf) == 0);
@@ -165,7 +165,7 @@ int log_disp_curses(time_t stamp, const char *file, int line,
   }
 
   window_redraw(msgwin_get_window());
-  return ret;
+  return rc;
 }
 
 /**

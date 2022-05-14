@@ -248,19 +248,18 @@ int log_disp_file(time_t stamp, const char *file, int line,
   if (!LogFileFP || (level < LL_PERROR) || (level > LogFileLevel))
     return 0;
 
-  int ret = 0;
+  int rc = 0;
   int err = errno;
 
   if (!function)
     function = "UNKNOWN";
 
-  ret += fprintf(LogFileFP, "[%s]<%c> %s() ", timestamp(stamp),
-                 LevelAbbr[level + 3], function);
+  rc += fprintf(LogFileFP, "[%s]<%c> %s() ", timestamp(stamp), LevelAbbr[level + 3], function);
 
   va_list ap;
   va_start(ap, level);
   const char *fmt = va_arg(ap, const char *);
-  ret += vfprintf(LogFileFP, fmt, ap);
+  rc += vfprintf(LogFileFP, fmt, ap);
   va_end(ap);
 
   if (level == LL_PERROR)
@@ -270,10 +269,10 @@ int log_disp_file(time_t stamp, const char *file, int line,
   else if (level <= LL_MESSAGE)
   {
     fputs("\n", LogFileFP);
-    ret++;
+    rc++;
   }
 
-  return ret;
+  return rc;
 }
 
 /**
@@ -405,13 +404,13 @@ int log_disp_queue(time_t stamp, const char *file, int line,
   va_list ap;
   va_start(ap, level);
   const char *fmt = va_arg(ap, const char *);
-  int ret = vsnprintf(buf, sizeof(buf), fmt, ap);
+  int rc = vsnprintf(buf, sizeof(buf), fmt, ap);
   va_end(ap);
 
   if (level == LL_PERROR)
   {
-    if ((ret >= 0) && (ret < sizeof(buf)))
-      ret += snprintf(buf + ret, sizeof(buf) - ret, ": %s", strerror(err));
+    if ((rc >= 0) && (rc < sizeof(buf)))
+      rc += snprintf(buf + rc, sizeof(buf) - rc, ": %s", strerror(err));
     level = LL_ERROR;
   }
 
@@ -425,7 +424,7 @@ int log_disp_queue(time_t stamp, const char *file, int line,
 
   log_queue_add(ll);
 
-  return ret;
+  return rc;
 }
 
 /**
@@ -446,7 +445,7 @@ int log_disp_terminal(time_t stamp, const char *file, int line,
   va_list ap;
   va_start(ap, level);
   const char *fmt = va_arg(ap, const char *);
-  int ret = vsnprintf(buf, sizeof(buf), fmt, ap);
+  int rc = vsnprintf(buf, sizeof(buf), fmt, ap);
   va_end(ap);
 
   log_disp_file(stamp, file, line, function, level, "%s", buf);
@@ -479,19 +478,19 @@ int log_disp_terminal(time_t stamp, const char *file, int line,
   }
 
   if (colour > 0)
-    ret += fprintf(fp, "\033[1;%dm", colour); // Escape
+    rc += fprintf(fp, "\033[1;%dm", colour); // Escape
 
   fputs(buf, fp);
 
   if (level == LL_PERROR)
-    ret += fprintf(fp, ": %s", strerror(err));
+    rc += fprintf(fp, ": %s", strerror(err));
 
   if (colour > 0)
-    ret += fprintf(fp, "\033[0m"); // Escape
+    rc += fprintf(fp, "\033[0m"); // Escape
 
-  ret += fprintf(fp, "\n");
+  rc += fprintf(fp, "\n");
 
-  return ret;
+  return rc;
 }
 
 /**

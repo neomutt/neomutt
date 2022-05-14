@@ -1749,10 +1749,10 @@ static bool imap_ac_owns_path(struct Account *a, const char *path)
   struct ImapAccountData *adata = a->adata;
   struct ConnAccount *cac = &adata->conn->account;
 
-  const bool ret = mutt_istr_equal(url->host, cac->host) &&
-                   (!url->user || mutt_istr_equal(url->user, cac->user));
+  const bool rc = mutt_istr_equal(url->host, cac->host) &&
+                  (!url->user || mutt_istr_equal(url->user, cac->user));
   url_free(&url);
-  return ret;
+  return rc;
 }
 
 /**

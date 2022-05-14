@@ -60,16 +60,16 @@ static int mutt_randbuf(void *buf, size_t buflen)
   }
 
 #ifdef HAVE_GETRANDOM
-  ssize_t ret;
+  ssize_t rc;
   ssize_t count = 0;
   do
   {
     // getrandom() can return less than requested if there's insufficient
     // entropy or it's interrupted by a signal.
-    ret = getrandom((char *) buf + count, buflen - count, 0);
-    if (ret > 0)
-      count += ret;
-  } while (((ret >= 0) && (count < buflen)) || ((ret == -1) && (errno == EINTR)));
+    rc = getrandom((char *) buf + count, buflen - count, 0);
+    if (rc > 0)
+      count += rc;
+  } while (((rc >= 0) && (count < buflen)) || ((rc == -1) && (errno == EINTR)));
   if (count == buflen)
     return 0;
 #endif
