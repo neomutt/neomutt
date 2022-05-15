@@ -252,7 +252,11 @@ int dlg_verify_certificate(const char *title, struct CertArray *carr,
     // Try to catch dialog keys before ops
     if (menu_dialog_dokey(menu, &op) != 0)
     {
-      op = km_dokey(MENU_GENERIC);
+      struct KeyEvent event = km_dokey_event(MENU_GENERIC);
+      if (event.ch == 'q')
+        op = OP_EXIT;
+      else
+        op = event.op;
     }
 
     if (op == OP_TIMEOUT)
