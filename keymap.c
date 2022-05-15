@@ -620,7 +620,7 @@ static struct KeyEvent retry_generic(enum MenuType mtype, keycode_t *keys,
   {
     return km_dokey_event(MENU_GENERIC);
   }
-  if (mtype != MENU_EDITOR)
+  if ((mtype != MENU_EDITOR) && (mtype != MENU_GENERIC))
   {
     /* probably a good idea to flush input here so we can abort macros */
     mutt_flushinp();
