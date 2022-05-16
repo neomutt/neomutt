@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_postpone Postponed Email
+ * @page postpone_postpone Postponed Email
  *
  * Functions to deal with Postponed Emails.
  */

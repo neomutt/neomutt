@@ -26,15 +26,15 @@
  *
  * Match patterns to emails
  *
- * | File                 | Description                  |
- * | :------------------- | :--------------------------- |
- * | pattern/compile.c    | @subpage pattern_compile     |
- * | pattern/config.c     | @subpage pattern_config      |
- * | pattern/dlgpattern.c | @subpage pattern_dlg_pattern |
- * | pattern/exec.c       | @subpage pattern_exec        |
- * | pattern/flags.c      | @subpage pattern_flags       |
- * | pattern/functions.c  | @subpage pattern_functions   |
- * | pattern/pattern.c    | @subpage pattern_pattern     |
+ * | File                  | Description                  |
+ * | :-------------------- | :--------------------------- |
+ * | pattern/compile.c     | @subpage pattern_compile     |
+ * | pattern/config.c      | @subpage pattern_config      |
+ * | pattern/dlg_pattern.c | @subpage pattern_dlg_pattern |
+ * | pattern/exec.c        | @subpage pattern_exec        |
+ * | pattern/flags.c       | @subpage pattern_flags       |
+ * | pattern/functions.c   | @subpage pattern_functions   |
+ * | pattern/pattern.c     | @subpage pattern_pattern     |
  */
 
 #ifndef MUTT_PATTERN_LIB_H

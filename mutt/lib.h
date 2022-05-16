@@ -30,7 +30,7 @@
  * | File             | Description             |
  * | :--------------- | :---------------------- |
  * | mutt/array.h     | @subpage mutt_array     |
- * | mutt/atoi.h      | @subpage mutt_atoi      |
+ * | mutt/atoi.c      | @subpage mutt_atoi      |
  * | mutt/base64.c    | @subpage mutt_base64    |
  * | mutt/buffer.c    | @subpage mutt_buffer    |
  * | mutt/charset.c   | @subpage mutt_charset   |
@@ -53,8 +53,8 @@
  * | mutt/qsort_r.c   | @subpage mutt_qsort_r   |
  * | mutt/random.c    | @subpage mutt_random    |
  * | mutt/regex.c     | @subpage mutt_regex     |
- * | mutt/slist.c     | @subpage mutt_slist     |
  * | mutt/signal.c    | @subpage mutt_signal    |
+ * | mutt/slist.c     | @subpage mutt_slist     |
  * | mutt/state.c     | @subpage mutt_state     |
  * | mutt/string.c    | @subpage mutt_string    |
  *

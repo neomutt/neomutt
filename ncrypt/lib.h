@@ -31,25 +31,27 @@
  * | :------------------------------- | :----------------------------------- |
  * | ncrypt/config.c                  | @subpage crypt_config                |
  * | ncrypt/crypt.c                   | @subpage crypt_crypt                 |
- * | ncrypt/cryptglue.c               | @subpage crypt_cryptglue             |
  * | ncrypt/crypt_gpgme.c             | @subpage crypt_crypt_gpgme           |
  * | ncrypt/crypt_mod.c               | @subpage crypt_crypt_mod             |
  * | ncrypt/crypt_mod_pgp_classic.c   | @subpage crypt_crypt_mod_pgp         |
  * | ncrypt/crypt_mod_pgp_gpgme.c     | @subpage crypt_crypt_mod_pgp_gpgme   |
  * | ncrypt/crypt_mod_smime_classic.c | @subpage crypt_crypt_mod_smime       |
  * | ncrypt/crypt_mod_smime_gpgme.c   | @subpage crypt_crypt_mod_smime_gpgme |
- * | ncrypt/dlggpgme.c                | @subpage crypt_dlg_gpgme             |
- * | ncrypt/dlgpgp.c                  | @subpage crypt_dlg_pgp               |
- * | ncrypt/dlgsmime.c                | @subpage crypt_dlg_smime             |
- * | ncrypt/gpgme_functions.c         | @subpage crypt_gpgme_functions       |
+ * | ncrypt/cryptglue.c               | @subpage crypt_cryptglue             |
+ * | ncrypt/dlg_gpgme.c               | @subpage crypt_dlg_gpgme             |
+ * | ncrypt/dlg_pgp.c                 | @subpage crypt_dlg_pgp               |
+ * | ncrypt/dlg_smime.c               | @subpage crypt_dlg_smime             |
  * | ncrypt/gnupgparse.c              | @subpage crypt_gnupg                 |
+ * | ncrypt/gpgme_functions.c         | @subpage crypt_gpgme_functions       |
  * | ncrypt/pgp.c                     | @subpage crypt_pgp                   |
+ * | ncrypt/pgp_functions.c           | @subpage pgp_functions               |
  * | ncrypt/pgpinvoke.c               | @subpage crypt_pgpinvoke             |
  * | ncrypt/pgpkey.c                  | @subpage crypt_pgpkey                |
  * | ncrypt/pgplib.c                  | @subpage crypt_pgplib                |
  * | ncrypt/pgpmicalg.c               | @subpage crypt_pgpmicalg             |
  * | ncrypt/pgppacket.c               | @subpage crypt_pgppacket             |
  * | ncrypt/smime.c                   | @subpage crypt_smime                 |
+ * | ncrypt/smime_functions.c         | @subpage smime_functions             |
  */
 
 #ifndef MUTT_NCRYPT_LIB_H

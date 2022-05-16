@@ -31,8 +31,8 @@
  * | alias/array.c       | @subpage alias_array       |
  * | alias/commands.c    | @subpage alias_commands    |
  * | alias/config.c      | @subpage alias_config      |
- * | alias/dlgalias.c    | @subpage alias_dlg_alias   |
- * | alias/dlgquery.c    | @subpage alias_dlg_query   |
+ * | alias/dlg_alias.c   | @subpage alias_dlg_alias   |
+ * | alias/dlg_query.c   | @subpage alias_dlg_query   |
  * | alias/functions.c   | @subpage alias_functions   |
  * | alias/gui.c         | @subpage alias_gui         |
  * | alias/reverse.c     | @subpage alias_reverse     |

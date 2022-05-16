@@ -25,12 +25,13 @@
  *
  * Select a Mailbox from a list
  *
- * | File                | Description                |
- * | :------------------ | :------------------------- |
- * | browser/browser.c   | @subpage browser_browser   |
- * | browser/config.c    | @subpage browser_config    |
- * | browser/functions.c | @subpage browser_functions |
- * | browser/sort.c      | @subpage browser_sorting   |
+ * | File                   | Description                   |
+ * | :--------------------- | :---------------------------- |
+ * | browser/browser.c      | @subpage browser_browser      |
+ * | browser/config.c       | @subpage browser_config       |
+ * | browser/functions.c    | @subpage browser_functions    |
+ * | browser/private_data.c | @subpage browser_private_data |
+ * | browser/sort.c         | @subpage browser_sorting      |
  */
 
 #ifndef MUTT_BROWSER_LIB_H

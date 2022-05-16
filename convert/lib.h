@@ -27,8 +27,8 @@
  *
  * | File                      | Description                     |
  * | :------------------------ | :------------------------------ |
- * | convert/convert.c         | @subpage convert_convert        |
  * | convert/content_info.c    | @subpage convert_content_info   |
+ * | convert/convert.c         | @subpage convert_convert        |
  */
 
 #ifndef MUTT_CONVERT_LIB_H
