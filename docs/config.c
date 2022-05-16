@@ -80,6 +80,19 @@
 ** to \fIno\fP, composition will never be aborted.
 */
 
+{ "account_command", DT_COMMAND, 0 },
+/*
+** .pp
+** If set, this command is used to retrieve account credentials. The command
+** is invoked passing a number of \fI--key value\fP arguments with the
+** specifics of the account to lookup. The command writes to standard output a
+** number of \fIkey: value\fP lines. Currently supported arguments are
+** \fI--hostname\fP, \fI--username\fP, and \fI--type\fP, where type can be
+** any of \fIimap\fP, \fIimaps\fP, \fIpop\fP, \fIpops\fP, \fIsmtp\fP,
+** \fIsmtps\fP, \fInntp\fP, and \fInntps\fP. Currently supported output lines
+** are \fIlogin\fP, \fIusername\fP, and \fIpassword\fP.
+*/
+
 { "alias_file", DT_PATH, "~/.neomuttrc" },
 /*
 ** .pp

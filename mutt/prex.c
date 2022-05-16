@@ -259,7 +259,12 @@ static struct PrexStorage *prex(enum Prex which)
         "|"
         "([[:digit:]]{2})"      // Year (YY)
       ")"
-    }
+    },
+    {
+      PREX_ACCOUNT_CMD,
+      PREX_ACCOUNT_CMD_MATCH_MAX,
+      "^([[:alpha:]]+): (.*)$"
+    },
     // clang-format on
   };
 
