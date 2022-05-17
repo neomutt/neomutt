@@ -84,7 +84,8 @@
 #include "mutt_curses.h"
 #include "mutt_window.h"
 
-struct MuttWindow *MessageWindow = NULL; ///< Message Window, ":set", etc
+/// Message Window for messages, warnings, errors etc
+static struct MuttWindow *MessageWindow = NULL;
 
 /**
  * struct MsgWinPrivateData - Private data for the Message Window
@@ -193,18 +194,16 @@ static struct MsgWinPrivateData *msgwin_wdata_new(void)
  */
 struct MuttWindow *msgwin_new(void)
 {
-  struct MuttWindow *win = mutt_window_new(WT_MESSAGE, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                           MUTT_WIN_SIZE_UNLIMITED, 1);
+  MessageWindow = mutt_window_new(WT_MESSAGE, MUTT_WIN_ORIENT_VERTICAL,
+                                  MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
+  MessageWindow->wdata = msgwin_wdata_new();
+  MessageWindow->wdata_free = msgwin_wdata_free;
+  MessageWindow->recalc = msgwin_recalc;
+  MessageWindow->repaint = msgwin_repaint;
 
-  win->wdata = msgwin_wdata_new();
-  win->wdata_free = msgwin_wdata_free;
-  win->recalc = msgwin_recalc;
-  win->repaint = msgwin_repaint;
+  notify_observer_add(MessageWindow->notify, NT_WINDOW, msgwin_window_observer, MessageWindow);
 
-  notify_observer_add(win->notify, NT_WINDOW, msgwin_window_observer, win);
-
-  MessageWindow = win;
-  return win;
+  return MessageWindow;
 }
 
 /**
@@ -289,6 +288,8 @@ void msgwin_set_height(short height)
   else if (height > 3)
     height = 3;
 
-  MessageWindow->req_rows = height;
-  mutt_window_reflow(MessageWindow->parent);
+  struct MuttWindow *win_cont = MessageWindow->parent;
+
+  win_cont->req_rows = height;
+  mutt_window_reflow(win_cont->parent);
 }

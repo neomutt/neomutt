@@ -30,6 +30,7 @@
  * | gui/curs_lib.c      | @subpage gui_curs_lib      |
  * | gui/dialog.c        | @subpage gui_dialog        |
  * | gui/global.c        | @subpage gui_global        |
+ * | gui/msgcont.c       | @subpage gui_msgcont       |
  * | gui/msgwin.c        | @subpage gui_msgwin        |
  * | gui/mutt_curses.c   | @subpage gui_curses        |
  * | gui/mutt_window.c   | @subpage gui_window        |
@@ -47,6 +48,7 @@
 #include "curs_lib.h"
 #include "dialog.h"
 #include "global.h"
+#include "msgcont.h"
 #include "msgwin.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
