@@ -203,10 +203,6 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac, bool xoauth2)
   if (!OptNoCurses)
     mutt_need_hard_redraw();
 
-  /* The refresh cmd in some cases will invoke gpg to decrypt a token */
-  if (!OptNoCurses)
-    mutt_need_hard_redraw();
-
   if (!token || (*token == '\0'))
   {
     mutt_error(_("Command returned empty string"));
