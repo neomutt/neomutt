@@ -4153,6 +4153,13 @@
 ** flags, such as for $$use_8bit_mime, $$use_envelope_from,
 ** $$dsn_notify, or $$dsn_return will be added before the delimiter.
 ** .pp
+** \fBNote:\fP This command is invoked differently from most other
+** commands in NeoMutt.  It is tokenized by space, and invoked directly
+** via \fCexecvp(3)\fP with an array of arguments - so commands or
+** arguments with spaces in them are not supported.  The shell is
+** not used to run the command, so shell quoting is also not
+** supported.
+** .pp
 ** \fBSee also:\fP $$write_bcc.
 */
 
