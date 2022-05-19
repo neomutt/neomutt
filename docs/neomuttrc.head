@@ -24,6 +24,8 @@ macro index,pager,attach,compose \cb "\
 
 # Show documentation when pressing F1
 macro generic,pager <F1> "<shell-escape> less @docdir@/manual.txt<Enter>" "show NeoMutt documentation"
+# and also F2, as some terminals use F1
+macro generic,pager <F2> "<shell-escape> less @docdir@/manual.txt<Enter>" "show NeoMutt documentation"
 
 # show the incoming mailboxes list (just like "neomutt -y") and back when pressing "y"
 macro index y "<change-folder>?" "show incoming mailboxes list"
@@ -34,6 +36,8 @@ bind browser y exit
 # open-hook   '\.gz$' "gzip --stdout --decompress '%f' >  '%t'"
 # close-hook  '\.gz$' "gzip --stdout              '%t' >  '%f'"
 # append-hook '\.gz$' "gzip --stdout              '%t' >> '%f'"
+
+bind editor <delete> delete-char
 
 # If NeoMutt is unable to determine your site's domain name correctly, you can
 # set the default here.
