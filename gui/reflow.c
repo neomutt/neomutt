@@ -112,8 +112,7 @@ static void window_reflow_horiz(struct MuttWindow *win)
     np->state.row_offset = win->state.row_offset;
     col += np->state.cols;
 
-    if (np->size != MUTT_WIN_SIZE_MINIMISE)
-      window_reflow(np);
+    window_reflow(np);
   }
 
   if ((space > 0) && (win->size == MUTT_WIN_SIZE_MINIMISE))
@@ -202,8 +201,7 @@ static void window_reflow_vert(struct MuttWindow *win)
     np->state.col_offset = win->state.col_offset;
     row += np->state.rows;
 
-    if (np->size != MUTT_WIN_SIZE_MINIMISE)
-      window_reflow(np);
+    window_reflow(np);
   }
 
   if ((space > 0) && (win->size == MUTT_WIN_SIZE_MINIMISE))
