@@ -38,6 +38,7 @@ enum AccountType
   MUTT_ACCT_TYPE_POP,      ///< Pop Account
   MUTT_ACCT_TYPE_SMTP,     ///< Smtp Account
   MUTT_ACCT_TYPE_NNTP,     ///< Nntp (Usenet) Account
+  MUTT_ACCT_TYPE_MAX
 };
 
 int   mutt_account_fromurl(struct ConnAccount *account, const struct Url *url);

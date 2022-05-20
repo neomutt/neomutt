@@ -39,6 +39,7 @@ enum Prex
   PREX_IMAP_DATE,             ///< `[16-MAR-2020 15:09:35 -0700]`
   PREX_MBOX_FROM,             ///< `[From god@heaven.af.mil Sat Jan  3 01:05:34 1996]`
   PREX_MBOX_FROM_LAX,         ///< `[From god@heaven.af.mil Sat Jan  3 01:05:34 1996]`
+  PREX_ACCOUNT_CMD,           ///< `key: value`
   PREX_MAX
 };
 
@@ -233,6 +234,17 @@ enum PrexMboxFromLax
   PREX_MBOX_FROM_LAX_MATCH_YEAR_4DIG,       ///< `From god@heaven.af.mil Sat Jan 10 01:05:34 [1996]`
   PREX_MBOX_FROM_LAX_MATCH_YEAR_2DIG,       ///< `From god@heaven.af.mil Sat Jan 10 01:05:34 [96]`
   PREX_MBOX_FROM_LAX_MATCH_MAX
+};
+
+/**
+ * enum PrexAccountCmd - Regex matches for the output lines of account_command
+ */
+enum PrexAccountCmd
+{
+  PREX_ACCOUNT_CMD_MATCH_FULL,  ///< `[key: value]`
+  PREX_ACCOUNT_CMD_MATCH_KEY,   ///< `[key]: value`
+  PREX_ACCOUNT_CMD_MATCH_VALUE, ///< `key: [value]`
+  PREX_ACCOUNT_CMD_MATCH_MAX
 };
 
 regmatch_t *mutt_prex_capture(enum Prex which, const char *str);

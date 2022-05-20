@@ -268,8 +268,9 @@ $(PWD)/config:
 ###############################################################################
 # libconn
 LIBCONN=	libconn.a
-LIBCONNOBJS=	conn/config.o conn/connaccount.o conn/getdomain.o conn/raw.o \
-		conn/sasl_plain.o conn/socket.o conn/tunnel.o
+LIBCONNOBJS=	conn/accountcmd.o conn/config.o conn/connaccount.o \
+		conn/getdomain.o conn/raw.o conn/sasl_plain.o conn/socket.o \
+		conn/tunnel.o 
 @if HAVE_SASL
 LIBCONNOBJS+=	conn/sasl.o
 @endif

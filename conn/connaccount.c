@@ -36,6 +36,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "connaccount.h"
+#include "accountcmd.h"
 #include "mutt_globals.h"
 #include "options.h"
 
@@ -54,9 +55,20 @@ int mutt_account_getuser(struct ConnAccount *cac)
 
   const char *user = cac->get_field(MUTT_CA_USER, cac->gf_data);
   if (user)
+  {
     mutt_str_copy(cac->user, user, sizeof(cac->user));
+  }
+  else if (mutt_account_call_external_cmd(cac) != MUTT_ACCT_NO_FLAGS)
+  {
+    /* The external command might interact with the screen */
+    if (!OptNoCurses)
+      mutt_need_hard_redraw();
+    return 0;
+  }
   else if (OptNoCurses)
+  {
     return -1;
+  }
   else
   {
     /* prompt (defaults to unix username), copy into cac->user */
@@ -122,9 +134,20 @@ int mutt_account_getpass(struct ConnAccount *cac)
 
   const char *pass = cac->get_field(MUTT_CA_PASS, cac->gf_data);
   if (pass)
+  {
     mutt_str_copy(cac->pass, pass, sizeof(cac->pass));
+  }
+  else if (mutt_account_call_external_cmd(cac) != MUTT_ACCT_NO_FLAGS)
+  {
+    /* The external command might interact with the screen */
+    if (!OptNoCurses)
+      mutt_need_hard_redraw();
+    return 0;
+  }
   else if (OptNoCurses)
+  {
     return -1;
+  }
   else
   {
     char prompt[256];

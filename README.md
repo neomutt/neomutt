@@ -24,6 +24,7 @@ sorted through them, fixed them up and documented them.
 
 | Name                     | Description
 | ------------------------ | ------------------------------------------------------
+| Account Command          | Populate account credentials via an external command
 | Attach Headers Color     | Color attachment headers using regex, just like mail bodies
 | Compose to Sender        | Send new mail to the sender of the current mail
 | Compressed Folders       | Read from/write to compressed mailboxes
