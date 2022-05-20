@@ -70,6 +70,7 @@ static int op_redraw(int op)
 {
   clearok(stdscr, true);
   mutt_resize_screen();
+  window_invalidate_all();
   window_redraw(NULL);
   return FR_SUCCESS;
 }
