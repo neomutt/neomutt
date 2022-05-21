@@ -480,15 +480,18 @@ static int index_window_observer(struct NotifyCallback *nc)
   if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
     return -1;
 
-  if (nc->event_subtype != NT_WINDOW_DELETE)
-    return 0;
-
   struct MuttWindow *win = nc->global_data;
+  struct Menu *menu = win->wdata;
+  if (nc->event_subtype != NT_WINDOW_DELETE)
+  {
+    menu_queue_redraw(menu, MENU_REDRAW_FULL | MENU_REDRAW_INDEX);
+    return 0;
+  }
+
   struct EventWindow *ev_w = nc->event_data;
   if (ev_w->win != win)
     return 0;
 
-  struct Menu *menu = win->wdata;
   struct IndexPrivateData *priv = menu->mdata;
 
   notify_observer_remove(NeoMutt->notify, index_altern_observer, win);
@@ -539,9 +542,9 @@ static int index_repaint(struct MuttWindow *win)
       menu->top = menu->max - menu->page_len;
     else
       menu->top = index - indicator;
-    menu_adjust(menu);
-    menu->redraw = MENU_REDRAW_INDEX;
   }
+  menu_adjust(menu);
+  menu->redraw = MENU_REDRAW_INDEX;
 
   struct IndexPrivateData *priv = menu->mdata;
   struct IndexSharedData *shared = priv->shared;
