@@ -23,6 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stddef.h>
 #include "mutt/lib.h"
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>

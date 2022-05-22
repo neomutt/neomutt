@@ -23,8 +23,10 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <string.h>
 #include "mutt/lib.h"
-#include "notmuch/query.h"
+#include "notmuch/lib.h"
+#include "notmuch/query.h" // IWYU pragma: keep
 
 struct NmParseTypeTest
 {

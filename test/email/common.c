@@ -23,7 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stdbool.h>
+#include "email/lib.h"
 #include "common.h"
 
 int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *env)

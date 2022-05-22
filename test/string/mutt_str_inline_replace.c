@@ -23,6 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stdbool.h>
+#include <string.h>
 #include "mutt/lib.h"
 
 struct InlineReplaceTest

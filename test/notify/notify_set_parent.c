@@ -23,7 +23,6 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include "mutt/lib.h"
 
 void test_notify_set_parent(void)
 {

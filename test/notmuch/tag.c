@@ -24,7 +24,8 @@
 #include "config.h"
 #include "acutest.h"
 #include "mutt/lib.h"
-#include "notmuch/tag.h"
+#include "notmuch/tag.h" // IWYU pragma: keep
+#include "notmuch/lib.h"
 
 void test_nm_tag_string_to_tags(void)
 {

@@ -24,12 +24,15 @@
 #include "config.h"
 #include "acutest.h"
 #include <locale.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
 #include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+
+struct MuttWindow;
 
 #define TEST_DIR "NEOMUTT_TEST_DIR"
 

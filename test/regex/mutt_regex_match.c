@@ -23,9 +23,11 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include "mutt/buffer.h"
-#include "mutt/regex3.h"
-#include "config/common.h"
+#include <stddef.h>
+#include <stdbool.h>
+#include "mutt/lib.h"
+#include "config/common.h" // IWYU pragma: keep
+#include "config/lib.h"
 
 static bool test_simple_cases(void)
 {

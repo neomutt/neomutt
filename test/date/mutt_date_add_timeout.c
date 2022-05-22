@@ -23,6 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <time.h>
 #include "mutt/lib.h"
 
 void test_mutt_date_add_timeout(void)

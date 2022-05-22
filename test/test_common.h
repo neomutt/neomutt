@@ -23,8 +23,9 @@
 #ifndef TEST_TEST_COMMON_H
 #define TEST_TEST_COMMON_H
 
+#include <limits.h>
+#include <stdbool.h>
 #include <stdio.h>
-#include "mutt/lib.h"
 
 struct NeoMutt;
 
@@ -38,7 +39,7 @@ void            test_neomutt_destroy(struct NeoMutt **ptr);
 #define TEST_CHECK_STR_EQ(expected, actual)                                    \
   do                                                                           \
   {                                                                            \
-    if (!TEST_CHECK(mutt_str_equal(expected, actual)))             \
+    if (!TEST_CHECK(mutt_str_equal(expected, actual)))                         \
     {                                                                          \
       TEST_MSG("Expected: %s", expected);                                      \
       TEST_MSG("Actual  : %s", actual);                                        \

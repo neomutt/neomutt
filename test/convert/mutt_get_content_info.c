@@ -22,18 +22,15 @@
 
 #define TEST_NO_MAIN
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "config.h"
 #include "acutest.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include "mutt/lib.h"
-#include "config/charset.h"
-#include "config/set.h"
-#include "config/types.h"
-#include "core/neomutt.h"
+#include "config/lib.h"
+#include "email/lib.h"
+#include "core/lib.h"
 #include "convert/lib.h"
-#include "convert_common.h"
 #include "test_common.h"
 
 static struct ConfigDef CharsetVars[] = {

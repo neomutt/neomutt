@@ -23,6 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stdbool.h>
 #include "mutt/lib.h"
 
 void test_mutt_str_is_email_wsp(void)

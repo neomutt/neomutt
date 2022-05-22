@@ -23,6 +23,9 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "mutt/lib.h"
 
 void test_mutt_file_read_line(void)

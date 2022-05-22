@@ -24,6 +24,7 @@
 #define TEST_STORE_COMMON_H
 
 #include "acutest.h"
+#include <stddef.h>
 #include <stdbool.h>
 
 struct StoreOps;

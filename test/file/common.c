@@ -23,7 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include "mutt/lib.h"
+#include <stdio.h>
 
 const char *file_lines[] = {
   "This is the first line.",

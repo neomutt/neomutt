@@ -23,6 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stddef.h>
+#include <stdbool.h>
 #include "mutt/lib.h"
 
 void test_log_file_set_filename(void)

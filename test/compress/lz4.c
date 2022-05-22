@@ -23,9 +23,10 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "compress/lib.h"
-#include "common.h"
+#include "test/compress/common.h" // IWYU pragma: keep
 
 #define MIN_COMP_LEVEL 1  ///< Minimum compression level for lz4
 #define MAX_COMP_LEVEL 12 ///< Maximum compression level for lz4

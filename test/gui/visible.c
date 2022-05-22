@@ -23,10 +23,10 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stdint.h>
+#include <stddef.h>
+#include <stdbool.h>
 #include "mutt/lib.h"
-#include "gui/mutt_window.h"
-#include "gui/reflow.h"
+#include "gui/lib.h"
 
 enum TestEvent
 {

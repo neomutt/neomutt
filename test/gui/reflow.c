@@ -23,10 +23,11 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stdbool.h>
 #include <stdint.h>
+#include <string.h>
 #include "mutt/lib.h"
-#include "gui/mutt_window.h"
-#include "gui/reflow.h"
+#include "gui/lib.h"
 
 typedef uint16_t MuttRedrawFlags;
 

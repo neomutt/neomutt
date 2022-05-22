@@ -24,10 +24,11 @@
 #include "config.h"
 #include "acutest.h"
 #include <limits.h>
+#include <stdbool.h>
 #include <string.h>
 #include "mutt/lib.h"
 #include "store/lib.h"
-#include "common.h"
+#include "common.h" // IWYU pragma: keep
 
 #define DB_NAME "bdb"
 

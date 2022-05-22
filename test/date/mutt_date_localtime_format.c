@@ -23,7 +23,10 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
+#include <time.h>
 #include "mutt/lib.h"
 
 void test_mutt_date_localtime_format(void)

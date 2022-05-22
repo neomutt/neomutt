@@ -23,10 +23,10 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <limits.h>
+#include <stddef.h>
+#include <stdbool.h>
 #include "mutt/lib.h"
 #include "store/lib.h"
-#include "common.h"
 
 void test_store_store(void)
 {

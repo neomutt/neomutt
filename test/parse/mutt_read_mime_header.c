@@ -23,8 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include "mutt/lib.h"
-#include "address/lib.h"
+#include <stddef.h>
+#include <stdbool.h>
 #include "email/lib.h"
 
 void test_mutt_read_mime_header(void)

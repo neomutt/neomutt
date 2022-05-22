@@ -23,10 +23,12 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stddef.h>
 #include <limits.h>
+#include <stdbool.h>
 #include "mutt/lib.h"
 #include "store/lib.h"
-#include "common.h"
+#include "common.h" // IWYU pragma: keep
 
 #define DB_NAME "qdbm"
 

@@ -23,12 +23,6 @@
 #ifndef TEST_RFC2047_COMMON_H
 #define TEST_RFC2047_COMMON_H
 
-#define TEST_NO_MAIN
-#include "acutest.h"
-#include <locale.h>
-#include "mutt/lib.h"
-#include "email/lib.h"
-
 struct Rfc2047TestData
 {
   const char *original; // the string as received in the original email

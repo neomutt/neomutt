@@ -21,12 +21,14 @@
  */
 
 #include "config.h"
+#include <ctype.h>
+#include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
-#include "mutt_globals.h"
 #include "myvar.h"
 
 int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags)

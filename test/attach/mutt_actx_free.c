@@ -23,9 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include "mutt/lib.h"
-#include "address/lib.h"
-#include "email/lib.h"
+#include <stddef.h>
 #include "attach/lib.h"
 
 void test_mutt_actx_free(void)

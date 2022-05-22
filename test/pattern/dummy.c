@@ -23,26 +23,21 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
-#include <sys/types.h>
-#include <unistd.h>
+#include "mutt/lib.h"
 #include "core/lib.h"
 #include "menu/lib.h"
 #include "mview.h"
 
 struct Address;
 struct Body;
-struct Buffer;
 struct Email;
 struct EnterState;
 struct Envelope;
 struct Keymap;
-struct Mailbox;
-struct Message;
 struct Pager;
 struct Pattern;
-struct Progress;
-struct State;
 
 struct KeyEvent
 {

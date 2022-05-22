@@ -28,8 +28,6 @@
 #include "config/lib.h"
 
 struct Buffer;
-struct Hash;
-struct HashElem;
 struct NotifyCallback;
 
 extern const char *line;

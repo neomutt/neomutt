@@ -23,6 +23,7 @@
 #ifndef TEST_CONVERT_COMMON_H
 #define TEST_CONVERT_COMMON_H
 
+#include <stdbool.h>
 #include "email/lib.h"
 
 struct Content static const initial_info = {

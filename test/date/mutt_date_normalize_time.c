@@ -24,6 +24,7 @@
 #include "config.h"
 #include "acutest.h"
 #include <stdbool.h>
+#include <time.h>
 #include "mutt/lib.h"
 
 struct NormalizeTest

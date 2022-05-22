@@ -23,6 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <signal.h>
 #include "mutt/lib.h"
 
 void test_mutt_sig_empty_handler(void)

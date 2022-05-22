@@ -23,8 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stddef.h>
 #include "mutt/lib.h"
-#include "address/lib.h"
 #include "email/lib.h"
 
 void test_rfc2231_encode_string(void)

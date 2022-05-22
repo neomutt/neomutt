@@ -23,10 +23,11 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stdio.h>
 #include "mutt/lib.h"
+#include "email/lib.h"
 #include "convert/lib.h"
 #include "convert_common.h"
-#include "test_common.h"
 
 void test_mutt_convert_file_from_to(void)
 {

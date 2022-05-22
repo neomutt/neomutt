@@ -23,10 +23,6 @@
 #ifndef TEST_MD5_COMMON_H
 #define TEST_MD5_COMMON_H
 
-#define TEST_NO_MAIN
-#include "acutest.h"
-#include "mutt/lib.h"
-
 struct Md5TestData
 {
   const char *text; // clear text input string

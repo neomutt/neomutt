@@ -23,7 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include "mutt/lib.h"
+#include <stddef.h>
 #include "core/lib.h"
 
 void test_neomutt_mailboxlist_clear(void)

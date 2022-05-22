@@ -23,6 +23,9 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
 #include "mutt/lib.h"
 #include "common.h"
 

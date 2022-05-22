@@ -23,11 +23,9 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include "mutt/lib.h"
-#include "config/lib.h"
-#include "core/lib.h"
-#include "history/lib.h"
-#include "test_common.h"
+#include <stdbool.h>
+
+struct ConfigSet;
 
 bool config_init_history(struct ConfigSet *cs);
 

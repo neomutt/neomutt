@@ -24,8 +24,6 @@
 #include "config.h"
 #include "acutest.h"
 #include <locale.h>
-#include "mutt/lib.h"
-#include "email/lib.h"
 #include "common.h"
 
 // clang-format off

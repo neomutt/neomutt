@@ -24,11 +24,10 @@
 #define MAIN_C 1
 #include "config.h"
 #include "acutest.h"
-#include <assert.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
-#include "mutt/buffer.h"
-#include "mutt/memory.h"
-#include "alias/lib.h"
+#include "mutt/lib.h"
 #include "pattern/lib.h"
 #include "mutt_globals.h"
 

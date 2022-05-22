@@ -23,7 +23,9 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stdbool.h>
 #include <stdlib.h>
+#include <time.h>
 #include "mutt/lib.h"
 
 struct MakeTimeTest

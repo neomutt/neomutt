@@ -23,6 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stdbool.h>
 #include "mutt/lib.h"
 
 void test_mutt_mb_is_display_corrupting_utf8(void)

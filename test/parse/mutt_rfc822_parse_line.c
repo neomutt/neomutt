@@ -24,8 +24,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include "mutt/lib.h"
-#include "address/lib.h"
+#include <stdbool.h>
+#include <string.h>
 #include "email/lib.h"
 
 void test_mutt_rfc822_parse_line(void)

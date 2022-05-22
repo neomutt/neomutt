@@ -23,8 +23,9 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stdbool.h>
+#include <time.h>
 #include "mutt/lib.h"
-#include "address/lib.h"
 #include "email/lib.h"
 
 struct IsFromTest

@@ -23,7 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include "mutt/lib.h"
+#include <stddef.h>
 #include "common.h"
 
 // clang-format off

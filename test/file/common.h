@@ -25,7 +25,6 @@
 
 #include "acutest.h"
 #include <stdio.h>
-#include "mutt/lib.h"
 
 extern const char *file_lines[];
 

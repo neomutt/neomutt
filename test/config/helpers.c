@@ -23,10 +23,12 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stddef.h>
+#include <stdbool.h>
 #include "mutt/lib.h"
-#include "config/common.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "common.h" // IWYU pragma: keep
 
 // clang-format off
 static struct Mapping MboxTypeMap[] = {

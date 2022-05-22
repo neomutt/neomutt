@@ -25,6 +25,8 @@
 
 #include "config.h"
 #include "acutest.h"
+#include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "pattern/lib.h"
