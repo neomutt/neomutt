@@ -264,11 +264,11 @@ proc cc-check-tools {args} {
 	foreach tool $args {
 		set TOOL [string toupper $tool]
 		set exe [get-env $TOOL [get-define cross]$tool]
-		if {[find-executable {*}$exe]} {
+		if {[find-executable $exe]} {
 			define $TOOL $exe
 			continue
 		}
-		if {[find-executable {*}$tool]} {
+		if {[find-executable $tool]} {
 			msg-result "Warning: Failed to find $exe, falling back to $tool which may be incorrect"
 			define $TOOL $tool
 			continue

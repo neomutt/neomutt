@@ -52,6 +52,9 @@ options {
 	maintainer-mode=0
 	dependency-tracking=0
 	silent-rules=0
+	program-prefix:
+	program-suffix:
+	program-transform-name:
 }
 
 # @check-feature name { script }
