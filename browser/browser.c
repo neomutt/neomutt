@@ -805,7 +805,8 @@ static int select_file_search(struct Menu *menu, regex_t *rx, int line)
  */
 static void folder_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
-  struct BrowserStateEntry *entry = menu->mdata;
+  struct BrowserState *state = menu->mdata;
+  struct BrowserStateEntry *entry = &state->entry;
   struct Folder folder = {
     .ff = ARRAY_GET(entry, line),
     .num = line,
@@ -821,6 +822,14 @@ static void folder_make_entry(struct Menu *menu, char *buf, size_t buflen, int l
   }
   else
 #endif
+      if (state->is_mailbox_list)
+  {
+    const char *const c_mailbox_folder_format = cs_subset_string(NeoMutt->sub, "mailbox_folder_format");
+    mutt_expando_format(buf, buflen, 0, menu->win->state.cols,
+                        NONULL(c_mailbox_folder_format), folder_format_str,
+                        (intptr_t) &folder, MUTT_FORMAT_ARROWCURSOR);
+  }
+  else
   {
     const char *const c_folder_format = cs_subset_string(NeoMutt->sub, "folder_format");
     mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_folder_format),
@@ -1313,7 +1322,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
   init_menu(&priv->state, priv->menu, m, priv->sbar);
   // only now do we have a valid priv->state to attach
-  priv->menu->mdata = &priv->state.entry;
+  priv->menu->mdata = &priv->state;
 
   // ---------------------------------------------------------------------------
   // Event Loop
