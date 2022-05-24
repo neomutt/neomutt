@@ -29,11 +29,14 @@
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | progress/progress.c | @subpage progress_progress |
+ * | progress/wdata.c    | @subpage progress_wdata    |
+ * | progress/window.c   | @subpage progress_window   |
  */
 
 #ifndef MUTT_PROGRESS_LIB_H
 #define MUTT_PROGRESS_LIB_H
 
+#include <stdbool.h>
 #include <stdio.h>
 
 struct Progress;
@@ -50,6 +53,6 @@ enum ProgressType
 
 void             progress_free  (struct Progress **ptr);
 struct Progress *progress_new   (const char *msg, enum ProgressType type, size_t size);
-void             progress_update(struct Progress *progress, size_t pos, int percent);
+bool             progress_update(struct Progress *progress, size_t pos, int percent);
 
 #endif /* MUTT_PROGRESS_LIB_H */
