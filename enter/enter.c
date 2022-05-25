@@ -165,172 +165,6 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
 }
 
 /**
- * mutt_enter_string_full - Ask the user for a string
- * @param[in]  buf      Buffer to store the string
- * @param[in]  buflen   Buffer length
- * @param[in]  col      Initial cursor position
- * @param[in]  flags    Flags, see #CompletionFlags
- * @param[in]  multiple Allow multiple matches
- * @param[in]  m        Mailbox
- * @param[out] files    List of files selected
- * @param[out] numfiles Number of files selected
- * @param[out] state    Current state (if function is called repeatedly)
- * @retval 1  Redraw the screen and call the function again
- * @retval 0  Selection made
- * @retval -1 Aborted
- */
-int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags flags,
-                           bool multiple, struct Mailbox *m, char ***files,
-                           int *numfiles, struct EnterState *state)
-{
-  struct MuttWindow *win = msgwin_get_window();
-  if (!win)
-    return -1;
-
-  int width = win->state.cols - col - 1;
-  int rc = 0;
-  mbstate_t mbstate = { 0 };
-
-  struct EnterWindowData wdata = { buf,
-                                   buflen,
-                                   col,
-                                   flags,
-                                   multiple,
-                                   m,
-                                   files,
-                                   numfiles,
-                                   state,
-                                   ENTER_REDRAW_NONE,
-                                   (flags & MUTT_COMP_PASS),
-                                   true,
-                                   0,
-                                   NULL,
-                                   0,
-                                   &mbstate,
-                                   false };
-
-  if (wdata.state->wbuf)
-  {
-    /* Coming back after return 1 */
-    wdata.redraw = ENTER_REDRAW_LINE;
-    wdata.first = false;
-  }
-  else
-  {
-    /* Initialise wbuf from buf */
-    wdata.state->wbuflen = 0;
-    wdata.state->lastchar = mutt_mb_mbstowcs(&wdata.state->wbuf,
-                                             &wdata.state->wbuflen, 0, buf);
-    wdata.redraw = ENTER_REDRAW_INIT;
-  }
-
-  if (wdata.flags & MUTT_COMP_FILE)
-    wdata.hclass = HC_FILE;
-  else if (wdata.flags & MUTT_COMP_FILE_MBOX)
-    wdata.hclass = HC_MBOX;
-  else if (wdata.flags & MUTT_COMP_FILE_SIMPLE)
-    wdata.hclass = HC_CMD;
-  else if (wdata.flags & MUTT_COMP_ALIAS)
-    wdata.hclass = HC_ALIAS;
-  else if (wdata.flags & MUTT_COMP_COMMAND)
-    wdata.hclass = HC_COMMAND;
-  else if (wdata.flags & MUTT_COMP_PATTERN)
-    wdata.hclass = HC_PATTERN;
-  else
-    wdata.hclass = HC_OTHER;
-
-  do
-  {
-    window_set_focus(win);
-    if (!wdata.pass)
-    {
-      if (wdata.redraw == ENTER_REDRAW_INIT)
-      {
-        /* Go to end of line */
-        wdata.state->curpos = wdata.state->lastchar;
-        wdata.state->begin = mutt_mb_width_ceiling(
-            wdata.state->wbuf, wdata.state->lastchar,
-            mutt_mb_wcswidth(wdata.state->wbuf, wdata.state->lastchar) - width + 1);
-      }
-      if ((wdata.state->curpos < wdata.state->begin) ||
-          (mutt_mb_wcswidth(wdata.state->wbuf + wdata.state->begin,
-                            wdata.state->curpos - wdata.state->begin) >= width))
-      {
-        wdata.state->begin = mutt_mb_width_ceiling(
-            wdata.state->wbuf, wdata.state->lastchar,
-            mutt_mb_wcswidth(wdata.state->wbuf, wdata.state->curpos) - (width / 2));
-      }
-      mutt_window_move(win, wdata.col, 0);
-      int w = 0;
-      for (size_t i = wdata.state->begin; i < wdata.state->lastchar; i++)
-      {
-        w += mutt_mb_wcwidth(wdata.state->wbuf[i]);
-        if (w > width)
-          break;
-        my_addwch(win, wdata.state->wbuf[i]);
-      }
-      mutt_window_clrtoeol(win);
-      mutt_window_move(win,
-                       wdata.col +
-                           mutt_mb_wcswidth(wdata.state->wbuf + wdata.state->begin,
-                                            wdata.state->curpos - wdata.state->begin),
-                       0);
-    }
-
-    // Restore the cursor position after drawing the screen
-    int r = 0, c = 0;
-    mutt_window_get_coords(win, &c, &r);
-    window_redraw(NULL);
-    mutt_window_move(win, c, r);
-
-    struct KeyEvent event = km_dokey_event(MENU_EDITOR);
-    if (event.op < 0)
-    {
-      rc = (SigWinch && (event.op == OP_TIMEOUT)) ? 1 : -1;
-      goto bye;
-    }
-
-    if (event.op == OP_NULL)
-    {
-      if (self_insert(&wdata, event.ch))
-        goto bye;
-      continue;
-    }
-
-    wdata.first = false;
-    if ((event.op != OP_EDITOR_COMPLETE) && (event.op != OP_EDITOR_COMPLETE_QUERY))
-      wdata.state->tabs = 0;
-    wdata.redraw = ENTER_REDRAW_LINE;
-    int rc_disp = enter_function_dispatcher(&wdata, event.op);
-    switch (rc_disp)
-    {
-      case FR_NO_ACTION:
-      {
-        if (self_insert(&wdata, event.ch))
-          goto bye;
-        break;
-      }
-      case FR_CONTINUE: // repaint
-        rc = 1;
-        goto bye;
-
-      case FR_SUCCESS:
-        break;
-
-      case FR_UNKNOWN:
-      case FR_ERROR:
-      default:
-        mutt_beep(false);
-    }
-  } while (!wdata.done);
-
-bye:
-  mutt_hist_reset_state(wdata.hclass);
-  FREE(&wdata.tempbuf);
-  return rc;
-}
-
-/**
  * mutt_buffer_get_field - Ask the user for a string
  * @param[in]  field    Prompt
  * @param[in]  buf      Buffer for the result
@@ -350,10 +184,10 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
   if (!win)
     return -1;
 
-  int rc;
-  int col;
+  int rc = 0;
+  int col = 0;
 
-  struct EnterState *es = mutt_enter_state_new();
+  struct EnterState *state = mutt_enter_state_new();
 
   const struct Mapping *old_help = win->help_data;
   int old_menu = win->help_menu;
@@ -379,8 +213,152 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
     mutt_refresh();
     mutt_window_get_coords(win, &col, NULL);
-    rc = mutt_enter_string_full(buf->data, buf->dsize, col, complete, multiple,
-                                m, files, numfiles, es);
+
+    int width = win->state.cols - col - 1;
+    mbstate_t mbstate = { 0 };
+
+    struct EnterWindowData wdata = { buf->data,
+                                     buf->dsize,
+                                     col,
+                                     complete,
+                                     multiple,
+                                     m,
+                                     files,
+                                     numfiles,
+                                     state,
+                                     ENTER_REDRAW_NONE,
+                                     (complete & MUTT_COMP_PASS),
+                                     true,
+                                     0,
+                                     NULL,
+                                     0,
+                                     &mbstate,
+                                     false };
+
+    if (wdata.state->wbuf)
+    {
+      /* Coming back after return 1 */
+      wdata.redraw = ENTER_REDRAW_LINE;
+      wdata.first = false;
+    }
+    else
+    {
+      /* Initialise wbuf from buf */
+      wdata.state->wbuflen = 0;
+      wdata.state->lastchar = mutt_mb_mbstowcs(&wdata.state->wbuf,
+                                               &wdata.state->wbuflen, 0, wdata.buf);
+      wdata.redraw = ENTER_REDRAW_INIT;
+    }
+
+    if (wdata.flags & MUTT_COMP_FILE)
+      wdata.hclass = HC_FILE;
+    else if (wdata.flags & MUTT_COMP_FILE_MBOX)
+      wdata.hclass = HC_MBOX;
+    else if (wdata.flags & MUTT_COMP_FILE_SIMPLE)
+      wdata.hclass = HC_CMD;
+    else if (wdata.flags & MUTT_COMP_ALIAS)
+      wdata.hclass = HC_ALIAS;
+    else if (wdata.flags & MUTT_COMP_COMMAND)
+      wdata.hclass = HC_COMMAND;
+    else if (wdata.flags & MUTT_COMP_PATTERN)
+      wdata.hclass = HC_PATTERN;
+    else
+      wdata.hclass = HC_OTHER;
+
+    do
+    {
+      window_set_focus(win);
+      if (!wdata.pass)
+      {
+        if (wdata.redraw == ENTER_REDRAW_INIT)
+        {
+          /* Go to end of line */
+          wdata.state->curpos = wdata.state->lastchar;
+          wdata.state->begin = mutt_mb_width_ceiling(
+              wdata.state->wbuf, wdata.state->lastchar,
+              mutt_mb_wcswidth(wdata.state->wbuf, wdata.state->lastchar) - width + 1);
+        }
+        if ((wdata.state->curpos < wdata.state->begin) ||
+            (mutt_mb_wcswidth(wdata.state->wbuf + wdata.state->begin,
+                              wdata.state->curpos - wdata.state->begin) >= width))
+        {
+          wdata.state->begin = mutt_mb_width_ceiling(
+              wdata.state->wbuf, wdata.state->lastchar,
+              mutt_mb_wcswidth(wdata.state->wbuf, wdata.state->curpos) - (width / 2));
+        }
+        mutt_window_move(win, wdata.col, 0);
+        int w = 0;
+        for (size_t i = wdata.state->begin; i < wdata.state->lastchar; i++)
+        {
+          w += mutt_mb_wcwidth(wdata.state->wbuf[i]);
+          if (w > width)
+            break;
+          my_addwch(win, wdata.state->wbuf[i]);
+        }
+        mutt_window_clrtoeol(win);
+        mutt_window_move(win,
+                         wdata.col +
+                             mutt_mb_wcswidth(wdata.state->wbuf + wdata.state->begin,
+                                              wdata.state->curpos - wdata.state->begin),
+                         0);
+      }
+
+      // Restore the cursor position after drawing the screen
+      int r = 0, c = 0;
+      mutt_window_get_coords(win, &c, &r);
+      window_redraw(NULL);
+      mutt_window_move(win, c, r);
+
+      struct KeyEvent event = km_dokey_event(MENU_EDITOR);
+      if (event.op < 0)
+      {
+        rc = (SigWinch && (event.op == OP_TIMEOUT)) ? 1 : -1;
+        goto bye;
+      }
+
+      if (event.op == OP_NULL)
+      {
+        if (self_insert(&wdata, event.ch))
+        {
+          rc = 0;
+          goto bye;
+        }
+        continue;
+      }
+
+      wdata.first = false;
+      if ((event.op != OP_EDITOR_COMPLETE) && (event.op != OP_EDITOR_COMPLETE_QUERY))
+        wdata.state->tabs = 0;
+      wdata.redraw = ENTER_REDRAW_LINE;
+      int rc_disp = enter_function_dispatcher(&wdata, event.op);
+      switch (rc_disp)
+      {
+        case FR_NO_ACTION:
+        {
+          if (self_insert(&wdata, event.ch))
+          {
+            rc = 0;
+            goto bye;
+          }
+          break;
+        }
+        case FR_CONTINUE: // repaint
+          rc = 1;
+          goto bye;
+
+        case FR_SUCCESS:
+          break;
+
+        case FR_UNKNOWN:
+        case FR_ERROR:
+        default:
+          mutt_beep(false);
+      }
+    } while (!wdata.done);
+
+  bye:
+    mutt_hist_reset_state(wdata.hclass);
+    FREE(&wdata.tempbuf);
   } while (rc == 1);
   mutt_curses_set_cursor(cursor);
 
@@ -395,7 +373,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
   else
     mutt_buffer_reset(buf);
 
-  mutt_enter_state_free(&es);
+  mutt_enter_state_free(&state);
 
   return rc;
 }
