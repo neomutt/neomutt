@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: neomutt 20210205\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2022-05-24 21:21+0100\n"
-"PO-Revision-Date: 2022-04-16 12:57+0200\n"
+"PO-Revision-Date: 2022-05-25 06:52+0200\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: poe 1.5-2-g4db499b\n"
+"X-Generator: poe 1.5-3-g1f510e2\n"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:398
@@ -1657,17 +1657,16 @@ msgstr "Неисправна врста сортирања: %ld"
 #: conn/accountcmd.c:79
 #, c-format
 msgid "Line is malformed: expected <key: val>, got <%s>"
-msgstr ""
+msgstr "Ред је неисправан: очекује се <кључ: вред>, има <%s>"
 
 #: conn/accountcmd.c:119
 #, c-format
 msgid "Unhandled key in line <%s: %s>"
-msgstr ""
+msgstr "Необрађен кључ у реду <%s: %s>"
 
 #: conn/accountcmd.c:140
-#, fuzzy
 msgid "Unable to run account command"
-msgstr "Не може се покренути refresh наредба"
+msgstr "Не може се покренути наредба account"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:77
@@ -1690,7 +1689,7 @@ msgstr "Ниједна наредба за OAUTH refresh није дефинис
 
 #: conn/connaccount.c:216
 msgid "Unable to run refresh command"
-msgstr "Не може се покренути refresh наредба"
+msgstr "Не може се покренути наредба refresh"
 
 #: conn/connaccount.c:231
 msgid "Command returned empty string"
