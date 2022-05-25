@@ -403,6 +403,10 @@ bool mutt_mb_is_display_corrupting_utf8(wchar_t wc)
   if ((wc >= (wchar_t) 0x202a) && (wc <= (wchar_t) 0x202e))
     return true;
 
+  /* arabic letter mark */
+  if (wc == (wchar_t) 0x061c)
+    return true;
+
   return false;
 }
 
