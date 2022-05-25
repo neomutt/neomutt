@@ -1671,17 +1671,16 @@ msgstr "Neplatný typ řazení: %ld"
 #: conn/accountcmd.c:79
 #, c-format
 msgid "Line is malformed: expected <key: val>, got <%s>"
-msgstr ""
+msgstr "Řádka má nesprávný formát: očekávám <klíč: hodnota>, dostávám <%s>"
 
 #: conn/accountcmd.c:119
 #, c-format
 msgid "Unhandled key in line <%s: %s>"
-msgstr ""
+msgstr "Nezpracovaný klíč v řádce <%s: %s>"
 
 #: conn/accountcmd.c:140
-#, fuzzy
 msgid "Unable to run account command"
-msgstr "Nezdařilo se provést příkaz obnovení"
+msgstr "Nezdařilo se provést příkaz account"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:77
