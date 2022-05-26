@@ -184,6 +184,10 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
   if (!win)
     return -1;
 
+  const bool old_oime = OptIgnoreMacroEvents;
+  if (complete & MUTT_COMP_UNBUFFERED)
+    OptIgnoreMacroEvents = true;
+
   int rc = 0;
   int col = 0;
 
@@ -375,29 +379,6 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
 
   mutt_enter_state_free(&state);
 
-  return rc;
-}
-
-/**
- * mutt_get_field_unbuffered - Ask the user for a string (ignoring macro buffer)
- * @param msg    Prompt
- * @param buf    Buffer for the result
- * @param flags  Flags, see #CompletionFlags
- * @retval 0  Selection made
- * @retval -1 Aborted
- */
-int mutt_get_field_unbuffered(const char *msg, struct Buffer *buf, CompletionFlags flags)
-{
-  bool reset_ignoremacro = false;
-
-  if (!OptIgnoreMacroEvents)
-  {
-    OptIgnoreMacroEvents = true;
-    reset_ignoremacro = true;
-  }
-  int rc = mutt_buffer_get_field(msg, buf, flags, false, NULL, NULL, NULL);
-  if (reset_ignoremacro)
-    OptIgnoreMacroEvents = false;
-
+  OptIgnoreMacroEvents = old_oime;
   return rc;
 }
