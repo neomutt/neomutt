@@ -46,6 +46,7 @@
 #include "commands.h"
 #include "attach/lib.h"
 #include "browser/lib.h"
+#include "enter/lib.h"
 #include "ncrypt/lib.h"
 #include "progress/lib.h"
 #include "question/lib.h"

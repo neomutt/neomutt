@@ -38,6 +38,7 @@
 #include "mutt.h"
 #include "functions.h"
 #include "lib.h"
+#include "enter/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "question/lib.h"

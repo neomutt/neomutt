@@ -37,6 +37,7 @@
 #include "mutt.h"
 #include "functions.h"
 #include "lib.h"
+#include "enter/lib.h"
 #include "opcodes.h"
 #include "protos.h"
 #include "type.h"

@@ -42,6 +42,7 @@
 #include "lib.h"
 #include "attach/lib.h"
 #include "browser/lib.h"
+#include "enter/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"

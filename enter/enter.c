@@ -32,28 +32,37 @@
 #include <stdbool.h>
 #include <string.h>
 #include <wchar.h>
-#include <wctype.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
-#include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "browser/lib.h"
+#include "enter/lib.h"
 #include "history/lib.h"
 #include "menu/lib.h"
-#include "pattern/lib.h"
+#include "color/color.h"
 #include "functions.h"
-#include "init.h"
 #include "keymap.h"
 #include "mutt_globals.h"
-#include "mutt_history.h"
-#include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "protos.h"
+#include "options.h"
 #include "state.h" // IWYU pragma: keep
 #include "wdata.h"
+
+/// Help Bar for the Command Line Editor
+static const struct Mapping EditorHelp[] = {
+  // clang-format off
+  { N_("Complete"),    OP_EDITOR_COMPLETE },
+  { N_("Hist Up"),     OP_EDITOR_HISTORY_UP },
+  { N_("Hist Down"),   OP_EDITOR_HISTORY_DOWN },
+  { N_("Hist Search"), OP_EDITOR_HISTORY_SEARCH },
+  { N_("Begin Line"),  OP_EDITOR_BOL },
+  { N_("End Line"),    OP_EDITOR_EOL },
+  { N_("Kill Line"),   OP_EDITOR_KILL_LINE },
+  { N_("Kill Word"),   OP_EDITOR_KILL_WORD },
+  { NULL, 0 },
+  // clang-format on
+};
 
 /**
  * my_addwch - Display one wide character on screen
@@ -318,5 +327,99 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags fl
 bye:
   mutt_hist_reset_state(wdata.hclass);
   FREE(&wdata.tempbuf);
+  return rc;
+}
+
+/**
+ * mutt_buffer_get_field - Ask the user for a string
+ * @param[in]  field    Prompt
+ * @param[in]  buf      Buffer for the result
+ * @param[in]  complete Flags, see #CompletionFlags
+ * @param[in]  multiple Allow multiple selections
+ * @param[in]  m        Mailbox
+ * @param[out] files    List of files selected
+ * @param[out] numfiles Number of files selected
+ * @retval 1  Redraw the screen and call the function again
+ * @retval 0  Selection made
+ * @retval -1 Aborted
+ */
+int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags complete,
+                          bool multiple, struct Mailbox *m, char ***files, int *numfiles)
+{
+  struct MuttWindow *win = msgwin_get_window();
+  if (!win)
+    return -1;
+
+  int rc;
+  int col;
+
+  struct EnterState *es = mutt_enter_state_new();
+
+  const struct Mapping *old_help = win->help_data;
+  int old_menu = win->help_menu;
+
+  win->help_data = EditorHelp;
+  win->help_menu = MENU_EDITOR;
+  struct MuttWindow *old_focus = window_set_focus(win);
+
+  enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
+  window_redraw(win);
+  do
+  {
+    if (SigWinch)
+    {
+      SigWinch = false;
+      mutt_resize_screen();
+      clearok(stdscr, true);
+      window_redraw(NULL);
+    }
+    mutt_window_clearline(win, 0);
+    mutt_curses_set_normal_backed_color_by_id(MT_COLOR_PROMPT);
+    mutt_window_addstr(win, field);
+    mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
+    mutt_refresh();
+    mutt_window_get_coords(win, &col, NULL);
+    rc = mutt_enter_string_full(buf->data, buf->dsize, col, complete, multiple,
+                                m, files, numfiles, es);
+  } while (rc == 1);
+  mutt_curses_set_cursor(cursor);
+
+  win->help_data = old_help;
+  win->help_menu = old_menu;
+  mutt_window_move(win, 0, 0);
+  mutt_window_clearline(win, 0);
+  window_set_focus(old_focus);
+
+  if (rc == 0)
+    mutt_buffer_fix_dptr(buf);
+  else
+    mutt_buffer_reset(buf);
+
+  mutt_enter_state_free(&es);
+
+  return rc;
+}
+
+/**
+ * mutt_get_field_unbuffered - Ask the user for a string (ignoring macro buffer)
+ * @param msg    Prompt
+ * @param buf    Buffer for the result
+ * @param flags  Flags, see #CompletionFlags
+ * @retval 0  Selection made
+ * @retval -1 Aborted
+ */
+int mutt_get_field_unbuffered(const char *msg, struct Buffer *buf, CompletionFlags flags)
+{
+  bool reset_ignoremacro = false;
+
+  if (!OptIgnoreMacroEvents)
+  {
+    OptIgnoreMacroEvents = true;
+    reset_ignoremacro = true;
+  }
+  int rc = mutt_buffer_get_field(msg, buf, flags, false, NULL, NULL, NULL);
+  if (reset_ignoremacro)
+    OptIgnoreMacroEvents = false;
+
   return rc;
 }

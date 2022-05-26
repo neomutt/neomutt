@@ -49,6 +49,7 @@
 #include "mutt.h"
 #include "lib.h"
 #include "attach/lib.h"
+#include "enter/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "crypt.h"

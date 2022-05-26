@@ -47,6 +47,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "enter/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "copy.h"

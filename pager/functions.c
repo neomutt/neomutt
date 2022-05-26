@@ -41,6 +41,7 @@
 #include "lib.h"
 #include "attach/lib.h"
 #include "color/lib.h"
+#include "enter/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "display.h"

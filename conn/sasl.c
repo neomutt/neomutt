@@ -49,10 +49,10 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include "mutt/lib.h"
-#include "gui/lib.h"
 #include "mutt.h"
 #include "sasl.h"
 #include "lib.h"
+#include "enter/lib.h"
 #include "options.h"
 
 /**

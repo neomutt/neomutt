@@ -50,6 +50,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "muttlib.h"
+#include "enter/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
 #include "format_flags.h"

@@ -38,9 +38,9 @@
 #include "core/lib.h"
 #include "alias/gui.h" // IWYU pragma: keep
 #include "alias/lib.h"
-#include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "enter/lib.h"
 #include "menu/lib.h"
 #include "progress/lib.h"
 #include "mutt_globals.h"

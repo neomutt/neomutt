@@ -40,6 +40,7 @@
 #include "mutt.h"
 #include "functions.h"
 #include "lib.h"
+#include "enter/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
 #include "hook.h"

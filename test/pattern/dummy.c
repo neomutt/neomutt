@@ -27,13 +27,13 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "history/lib.h"
 #include "menu/lib.h"
 #include "mview.h"
 
 struct Address;
 struct Body;
 struct Email;
-struct EnterState;
 struct Envelope;
 struct Keymap;
 struct Pager;
@@ -44,6 +44,43 @@ struct KeyEvent
   int ch; ///< raw key pressed
   int op; ///< function op
 };
+
+enum WindowType
+{
+  // Structural Windows
+  WT_ROOT,            ///< Parent of All Windows
+  WT_CONTAINER,       ///< Invisible shaping container Window
+  WT_ALL_DIALOGS,     ///< Container for All Dialogs (nested Windows)
+
+  // Dialogs (nested Windows) displayed to the user
+  WT_DLG_ALIAS,       ///< Alias Dialog,       dlg_select_alias()
+  WT_DLG_ATTACH,      ///< Attach Dialog,      dlg_select_attachment()
+  WT_DLG_AUTOCRYPT,   ///< Autocrypt Dialog,   dlg_select_autocrypt_account()
+  WT_DLG_BROWSER,     ///< Browser Dialog,     mutt_buffer_select_file()
+  WT_DLG_CERTIFICATE, ///< Certificate Dialog, dlg_verify_certificate()
+  WT_DLG_COMPOSE,     ///< Compose Dialog,     mutt_compose_menu()
+  WT_DLG_CRYPT_GPGME, ///< Crypt-GPGME Dialog, dlg_select_gpgme_key()
+  WT_DLG_DO_PAGER,    ///< Pager Dialog,       mutt_do_pager()
+  WT_DLG_HISTORY,     ///< History Dialog,     dlg_select_history()
+  WT_DLG_INDEX,       ///< Index Dialog,       index_pager_init()
+  WT_DLG_PATTERN,     ///< Pattern Dialog,     create_pattern_menu()
+  WT_DLG_PGP,         ///< Pgp Dialog,         dlg_select_pgp_key()
+  WT_DLG_POSTPONE,    ///< Postpone Dialog,    dlg_select_postponed_email()
+  WT_DLG_QUERY,       ///< Query Dialog,       dlg_select_query()
+  WT_DLG_REMAILER,    ///< Remailer Dialog,    dlg_mixmaster()
+  WT_DLG_SMIME,       ///< Smime Dialog,       dlg_select_smime_key()
+
+  // Common Windows
+  WT_CUSTOM,          ///< Window with a custom drawing function
+  WT_HELP_BAR,        ///< Help Bar containing list of useful key bindings
+  WT_INDEX,           ///< A panel containing the Index Window
+  WT_MENU,            ///< An Window containing a Menu
+  WT_MESSAGE,         ///< Window for messages/errors and command entry
+  WT_PAGER,           ///< A panel containing the Pager Window
+  WT_SIDEBAR,         ///< Side panel containing Accounts or groups of data
+  WT_STATUS_BAR,      ///< Status Bar containing extra info about the Index/Pager/etc
+};
+
 
 bool g_addr_is_user = false;
 int g_body_parts = 1;
@@ -179,11 +216,6 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 {
 }
 
-struct Menu *menu_new(enum MenuType type)
-{
-  return mutt_mem_calloc(1, sizeof(struct Menu));
-}
-
 void menu_pop_current(struct Menu *menu)
 {
 }
@@ -195,13 +227,6 @@ int menu_loop(struct Menu *menu)
 
 void menu_current_redraw(void)
 {
-}
-
-int mutt_enter_string_full(char *buf, size_t buflen, int col,
-                           CompletionFlags flags, bool multiple, char ***files,
-                           int *numfiles, struct EnterState *state)
-{
-  return 0;
 }
 
 void mutt_resize_screen(void)
@@ -220,20 +245,6 @@ int km_expand_key(char *s, size_t len, struct Keymap *map)
 struct Keymap *km_find_func(enum MenuType menu, int func)
 {
   return NULL;
-}
-
-struct EnterState *mutt_enter_state_new(void)
-{
-  return NULL;
-}
-
-void mutt_enter_state_free(struct EnterState **ptr)
-{
-}
-
-void menu_free(struct Menu **ptr)
-{
-  FREE(ptr);
 }
 
 int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct Pager *extra)
@@ -261,12 +272,97 @@ struct Mailbox *mview_mailbox(struct MailboxView *mv)
   return mv ? mv->mailbox : NULL;
 }
 
-int menu_get_index(struct Menu *menu)
+int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
 {
-  return -1;
+  return 0;
 }
 
-MenuRedrawFlags menu_set_index(struct Menu *menu, int index)
+int global_function_dispatcher(struct MuttWindow *win, int op)
 {
-  return true;
+  return 0;
+}
+
+struct KeyEvent km_dokey_event(enum MenuType mtype)
+{
+  struct KeyEvent ke = { 0 };
+  return ke;
+}
+
+void km_error_key(enum MenuType mtype)
+{
+}
+
+int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
+{
+  return 0;
+}
+
+int mutt_complete(char *buf, size_t buflen)
+{
+  return 0;
+}
+
+char *mutt_expand_path(char *buf, size_t buflen)
+{
+  return NULL;
+}
+
+void mutt_help(enum MenuType menu)
+{
+}
+
+void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
+{
+}
+
+int mutt_label_complete(char *buf, size_t buflen, int numtabs)
+{
+  return 0;
+}
+
+struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
+{
+  return NULL;
+}
+
+bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs)
+{
+  return false;
+}
+
+bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs)
+{
+  return false;
+}
+
+void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags, struct Mailbox *m, char ***files, int *numfiles)
+{
+}
+
+int mutt_var_value_complete(char *buf, size_t buflen, int pos)
+{
+  return 0;
+}
+
+const char *opcodes_get_name(int op)
+{
+  return NULL;
+}
+
+int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
+{
+  return 0;
+}
+
+void sbar_set_title(struct MuttWindow *win, const char *title)
+{
+}
+
+void simple_dialog_free(struct MuttWindow **ptr)
+{
+}
+
+struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype, const struct Mapping *help_data)
+{
+  return NULL;
 }
