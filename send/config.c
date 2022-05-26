@@ -80,6 +80,27 @@ static int smtp_auth_validator(const struct ConfigSet *cs, const struct ConfigDe
   return CSR_SUCCESS;
 }
 
+/**
+ * simple_command_validator - Validate the "sendmail" and "inews" config variables - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ */
+static int simple_command_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                                    intptr_t value, struct Buffer *err)
+{
+  // Check for shell metacharacters that won't do what the user expects
+  const char *valstr = (const char *) value;
+  if (!valstr)
+    return CSR_SUCCESS;
+
+  const char c = valstr[strcspn(valstr, "|&;()<>[]{}$`'~\"\\*?")];
+  if (c == '\0')
+    return CSR_SUCCESS;
+
+  // L10N: This applies to the "$sendmail" and "$inews" config variables.
+  mutt_buffer_printf(err, _("Option %s must not contain shell metacharacters: %c"),
+                     cdef->name, c);
+  return CSR_ERR_INVALID;
+}
+
 static struct ConfigDef SendVars[] = {
   // clang-format off
   { "abort_noattach", DT_QUAD, MUTT_NO, 0, NULL,
@@ -232,7 +253,7 @@ static struct ConfigDef SendVars[] = {
   { "reverse_real_name", DT_BOOL|R_INDEX|R_PAGER, true, 0, NULL,
     "Set the 'From' from the full 'To' address the email was sent to"
   },
-  { "sendmail", DT_STRING|DT_COMMAND, IP SENDMAIL " -oem -oi", 0, NULL,
+  { "sendmail", DT_STRING|DT_COMMAND, IP SENDMAIL " -oem -oi", 0, simple_command_validator,
     "External command to send email"
   },
   { "sendmail_wait", DT_NUMBER, 0, 0, NULL,
@@ -300,7 +321,7 @@ static struct ConfigDef SendVarsNntp[] = {
   { "ask_x_comment_to", DT_BOOL, false, 0, NULL,
     "(nntp) Ask the user for the 'X-Comment-To' field before editing"
   },
-  { "inews", DT_STRING|DT_COMMAND, 0, 0, NULL,
+  { "inews", DT_STRING|DT_COMMAND, 0, 0, simple_command_validator,
     "(nntp) External command to post news articles"
   },
   { "mime_subject", DT_DEPRECATED|DT_BOOL, true, IP "2021-03-24" },
