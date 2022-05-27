@@ -22,7 +22,7 @@
  */
 
 /**
- * @page enter_enter GUI ask the user to enter a string
+ * @page enter_window GUI ask the user to enter a string
  *
  * GUI ask the user to enter a string
  */
