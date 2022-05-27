@@ -26,6 +26,7 @@
 #include <stdbool.h>
 
 struct EnterWindowData;
+struct MuttWindow;
 
 /**
  * @defgroup enter_function_api Enter Function API
@@ -49,7 +50,7 @@ struct EnterFunction
 
 extern struct EnterFunction EnterFunctions[];
 
-int enter_function_dispatcher(struct EnterWindowData *wdata, int op);
+int enter_function_dispatcher(struct MuttWindow *win, int op);
 bool self_insert(struct EnterWindowData *wdata, int ch);
 
 #endif /* MUTT_ENTER_FUNCTIONS_H */

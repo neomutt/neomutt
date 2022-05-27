@@ -690,13 +690,14 @@ struct EnterFunction EnterFunctions[] = {
 };
 
 /**
- * enter_function_dispatcher - Perform an Enter function
- * @param wdata Enter window data
- * @param op  Operation to perform, e.g. OP_ENTER_NEXT
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ * enter_function_dispatcher - Perform an Enter function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int enter_function_dispatcher(struct EnterWindowData *wdata, int op)
+int enter_function_dispatcher(struct MuttWindow *win, int op)
 {
+  if (!win || !win->wdata)
+    return FR_UNKNOWN;
+
+  struct EnterWindowData *wdata = win->wdata;
   if (!wdata)
     return FR_UNKNOWN;
 
