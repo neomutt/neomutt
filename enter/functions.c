@@ -100,6 +100,7 @@ static void replace_part(struct EnterState *state, size_t from, const char *buf)
  */
 static int complete_file_simple(struct EnterWindowData *wdata)
 {
+  int rc = FR_SUCCESS;
   size_t i;
   for (i = wdata->state->curpos;
        (i > 0) && !mutt_mb_is_shell_char(wdata->state->wbuf[i - 1]); i--)
@@ -124,10 +125,12 @@ static int complete_file_simple(struct EnterWindowData *wdata)
     memcpy(wdata->tempbuf, wdata->state->wbuf + i, wdata->templen * sizeof(wchar_t));
   }
   else
-    mutt_beep(false);
+  {
+    rc = FR_ERROR;
+  }
 
   replace_part(wdata->state, i, wdata->buf);
-  return FR_SUCCESS;
+  return rc;
 }
 
 /**
@@ -260,6 +263,7 @@ static int complete_alias_query(struct EnterWindowData *wdata)
  */
 static int complete_command(struct EnterWindowData *wdata)
 {
+  int rc = FR_SUCCESS;
   mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
   size_t i = strlen(wdata->buf);
   if ((i != 0) && (wdata->buf[i - 1] == '=') &&
@@ -268,9 +272,12 @@ static int complete_command(struct EnterWindowData *wdata)
     wdata->state->tabs = 0;
   }
   else if (mutt_command_complete(wdata->buf, wdata->buflen, i, wdata->state->tabs) == 0)
-    mutt_beep(false);
+  {
+    rc = FR_ERROR;
+  }
+
   replace_part(wdata->state, 0, wdata->buf);
-  return FR_SUCCESS;
+  return rc;
 }
 
 /**
@@ -280,6 +287,7 @@ static int complete_command(struct EnterWindowData *wdata)
  */
 static int complete_file_mbox(struct EnterWindowData *wdata)
 {
+  int rc = FR_SUCCESS;
   mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
 
   /* see if the path has changed from the last time */
@@ -312,9 +320,11 @@ static int complete_file_mbox(struct EnterWindowData *wdata)
     memcpy(wdata->tempbuf, wdata->state->wbuf, wdata->templen * sizeof(wchar_t));
   }
   else
-    mutt_beep(false); /* let the user know that nothing matched */
+  {
+    return FR_ERROR; // let the user know that nothing matched
+  }
   replace_part(wdata->state, 0, wdata->buf);
-  return FR_SUCCESS;
+  return rc;
 }
 
 #ifdef USE_NOTMUCH
@@ -325,13 +335,14 @@ static int complete_file_mbox(struct EnterWindowData *wdata)
  */
 static int complete_nm_query(struct EnterWindowData *wdata)
 {
+  int rc = FR_SUCCESS;
   mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
   size_t len = strlen(wdata->buf);
   if (!mutt_nm_query_complete(wdata->buf, wdata->buflen, len, wdata->state->tabs))
-    mutt_beep(false);
+    rc = FR_ERROR;
 
   replace_part(wdata->state, 0, wdata->buf);
-  return FR_SUCCESS;
+  return rc;
 }
 
 /**
@@ -341,12 +352,13 @@ static int complete_nm_query(struct EnterWindowData *wdata)
  */
 static int complete_nm_tag(struct EnterWindowData *wdata)
 {
+  int rc = FR_SUCCESS;
   mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
   if (!mutt_nm_tag_complete(wdata->buf, wdata->buflen, wdata->state->tabs))
-    mutt_beep(false);
+    rc = FR_ERROR;
 
   replace_part(wdata->state, 0, wdata->buf);
-  return FR_SUCCESS;
+  return rc;
 }
 #endif
 
