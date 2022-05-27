@@ -41,6 +41,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "recvattach.h"
+#include "enter/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"

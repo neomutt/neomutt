@@ -39,6 +39,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "mutt_header.h"
+#include "enter/lib.h"
 #include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "postpone/lib.h"

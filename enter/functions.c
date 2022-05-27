@@ -27,13 +27,21 @@
  */
 
 #include "config.h"
+#include <string.h>
+#include <wchar.h>
+#include <wctype.h>
+#include "mutt/lib.h"
+#include "config/helpers.h"
+#include "core/lib.h"
 #include "alias/lib.h"
 #include "gui/lib.h"
+#include "mutt.h"
 #include "functions.h"
-#include "index/lib.h"
-#include "menu/lib.h"
+#include "browser/lib.h"
+#include "history/lib.h"
 #include "pattern/lib.h"
 #include "init.h"
+#include "keymap.h"
 #include "mutt_history.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
@@ -41,8 +49,6 @@
 #include "protos.h"
 #include "state.h"
 #include "wdata.h"
-
-struct EnterWindowData;
 
 /* combining mark / non-spacing character */
 #define COMB_CHAR(wc) (IsWPrint(wc) && !wcwidth(wc))

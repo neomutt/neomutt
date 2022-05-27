@@ -61,6 +61,7 @@ typedef uint16_t CompletionFlags;       ///< Flags for mutt_enter_string_full(),
 #define MUTT_COMP_PATTERN     (1 << 8)  ///< Pattern mode (in pattern dialog)
 #define MUTT_COMP_CLEAR       (1 << 9)  ///< Clear input if printable character is pressed
 #define MUTT_COMP_PASS        (1 << 10) ///< Password mode (no echo)
+#define MUTT_COMP_UNBUFFERED  (1 << 11) ///< Ignore macro buffer
 
 typedef uint16_t TokenFlags;               ///< Flags for mutt_extract_token(), e.g. #MUTT_TOKEN_EQUAL
 #define MUTT_TOKEN_NO_FLAGS            0   ///< No flags are set

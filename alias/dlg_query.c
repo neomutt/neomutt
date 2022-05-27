@@ -82,6 +82,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "enter/lib.h"
 #include "menu/lib.h"
 #include "send/lib.h"
 #include "alias.h"

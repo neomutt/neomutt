@@ -23,6 +23,8 @@
 #ifndef MUTT_ENTER_FUNCTIONS_H
 #define MUTT_ENTER_FUNCTIONS_H
 
+#include <stdbool.h>
+
 struct EnterWindowData;
 
 /**

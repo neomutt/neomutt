@@ -41,6 +41,7 @@
 #include "mutt.h"
 #include "recvcmd.h"
 #include "attach/lib.h"
+#include "enter/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "copy.h"

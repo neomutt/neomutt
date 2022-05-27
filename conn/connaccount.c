@@ -36,6 +36,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "connaccount.h"
+#include "enter/lib.h"
 #include "accountcmd.h"
 #include "mutt_globals.h"
 #include "options.h"
@@ -78,7 +79,8 @@ int mutt_account_getuser(struct ConnAccount *cac)
     mutt_str_copy(cac->user, Username, sizeof(cac->user));
 
     struct Buffer *buf = mutt_buffer_pool_get();
-    const int rc = mutt_get_field_unbuffered(prompt, buf, MUTT_COMP_NO_FLAGS);
+    const int rc = mutt_buffer_get_field(prompt, buf, MUTT_COMP_UNBUFFERED,
+                                         false, NULL, NULL, NULL);
     mutt_str_copy(cac->user, mutt_buffer_string(buf), sizeof(cac->user));
     mutt_buffer_pool_release(&buf);
     if (rc != 0)
@@ -156,7 +158,8 @@ int mutt_account_getpass(struct ConnAccount *cac)
     cac->pass[0] = '\0';
 
     struct Buffer *buf = mutt_buffer_pool_get();
-    const int rc = mutt_get_field_unbuffered(prompt, buf, MUTT_COMP_PASS);
+    const int rc = mutt_buffer_get_field(prompt, buf, MUTT_COMP_PASS | MUTT_COMP_UNBUFFERED,
+                                         false, NULL, NULL, NULL);
     mutt_str_copy(cac->pass, mutt_buffer_string(buf), sizeof(cac->pass));
     mutt_buffer_pool_release(&buf);
     if (rc != 0)
