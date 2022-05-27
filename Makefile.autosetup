@@ -375,7 +375,7 @@ $(PWD)/email:
 ###############################################################################
 # libenter
 LIBENTER=	libenter.a
-LIBENTEROBJS=	enter/functions.o enter/state.o enter/window.o
+LIBENTEROBJS=	enter/enter.o enter/functions.o enter/state.o enter/window.o
 CLEANFILES+=	$(LIBENTER) $(LIBENTEROBJS)
 ALLOBJS+=	$(LIBENTEROBJS)
 
