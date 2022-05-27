@@ -361,18 +361,17 @@ bool mutt_mb_is_lower(const char *s)
   size_t l;
 
   memset(&mbstate, 0, sizeof(mbstate));
+  size_t n = mutt_str_len(s);
 
-  for (; (l = mbrtowc(&wc, s, MB_CUR_MAX, &mbstate)) != 0; s += l)
+  for (; (n > 0) && (*s != '\0') && (l = mbrtowc(&wc, s, n, &mbstate)) != 0; s += l, n -= l)
   {
-    if (l == ICONV_BUF_TOO_SMALL)
-      continue; /* shift sequences */
-    if (l == ICONV_ILLEGAL_SEQ)
-      return false;
+    if ((l == ICONV_BUF_TOO_SMALL) || (l == ICONV_ILLEGAL_SEQ))
+      return false; // error; assume upper-case
     if (iswalpha((wint_t) wc) && iswupper((wint_t) wc))
-      return false;
+      return false; // upper-case
   }
 
-  return true;
+  return true; // lower-case
 }
 
 /**
