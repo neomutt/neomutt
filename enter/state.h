@@ -36,7 +36,6 @@ struct EnterState
   size_t lastchar; ///< Position of the last character
   size_t curpos;   ///< Position of the cursor
   size_t begin;    ///< Position of the start
-  int tabs;        ///< Number of times the user has hit tab
 };
 
 void               mutt_enter_state_free(struct EnterState **ptr);

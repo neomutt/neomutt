@@ -30,6 +30,7 @@
  * | enter/enter.c       | @subpage enter_enter       |
  * | enter/functions.c   | @subpage enter_functions   |
  * | enter/state.c       | @subpage enter_state       |
+ * | enter/window.c      | @subpage enter_window      |
  */
 
 #ifndef MUTT_ENTER_LIB_H

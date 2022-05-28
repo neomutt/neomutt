@@ -29,7 +29,6 @@
 #include "config.h"
 #include <string.h>
 #include <wchar.h>
-#include <wctype.h>
 #include "mutt/lib.h"
 #include "config/helpers.h"
 #include "core/lib.h"
@@ -40,6 +39,7 @@
 #include "browser/lib.h"
 #include "history/lib.h"
 #include "pattern/lib.h"
+#include "enter.h"
 #include "init.h"
 #include "keymap.h"
 #include "mutt_history.h"
@@ -49,9 +49,6 @@
 #include "protos.h"
 #include "state.h"
 #include "wdata.h"
-
-/* combining mark / non-spacing character */
-#define COMB_CHAR(wc) (IsWPrint(wc) && !wcwidth(wc))
 
 /**
  * replace_part - Search and replace on a buffer
@@ -100,6 +97,7 @@ static void replace_part(struct EnterState *state, size_t from, const char *buf)
  */
 static int complete_file_simple(struct EnterWindowData *wdata)
 {
+  int rc = FR_SUCCESS;
   size_t i;
   for (i = wdata->state->curpos;
        (i > 0) && !mutt_mb_is_shell_char(wdata->state->wbuf[i - 1]); i--)
@@ -124,10 +122,12 @@ static int complete_file_simple(struct EnterWindowData *wdata)
     memcpy(wdata->tempbuf, wdata->state->wbuf + i, wdata->templen * sizeof(wchar_t));
   }
   else
-    mutt_beep(false);
+  {
+    rc = FR_ERROR;
+  }
 
   replace_part(wdata->state, i, wdata->buf);
-  return FR_SUCCESS;
+  return rc;
 }
 
 /**
@@ -177,7 +177,7 @@ static int complete_label(struct EnterWindowData *wdata)
 
   mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf + i,
                    wdata->state->curpos - i);
-  int rc = mutt_label_complete(wdata->buf, wdata->buflen, wdata->state->tabs);
+  int rc = mutt_label_complete(wdata->buf, wdata->buflen, wdata->tabs);
   replace_part(wdata->state, i, wdata->buf);
   if (rc != 1)
     return FR_CONTINUE;
@@ -209,7 +209,7 @@ static int complete_pattern(struct EnterWindowData *wdata)
     i++;
     mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf + i,
                      wdata->state->curpos - i);
-    int rc = mutt_label_complete(wdata->buf, wdata->buflen, wdata->state->tabs);
+    int rc = mutt_label_complete(wdata->buf, wdata->buflen, wdata->tabs);
     replace_part(wdata->state, i, wdata->buf);
     if (rc != 1)
     {
@@ -260,17 +260,21 @@ static int complete_alias_query(struct EnterWindowData *wdata)
  */
 static int complete_command(struct EnterWindowData *wdata)
 {
+  int rc = FR_SUCCESS;
   mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
   size_t i = strlen(wdata->buf);
   if ((i != 0) && (wdata->buf[i - 1] == '=') &&
       (mutt_var_value_complete(wdata->buf, wdata->buflen, i) != 0))
   {
-    wdata->state->tabs = 0;
+    wdata->tabs = 0;
   }
-  else if (mutt_command_complete(wdata->buf, wdata->buflen, i, wdata->state->tabs) == 0)
-    mutt_beep(false);
+  else if (mutt_command_complete(wdata->buf, wdata->buflen, i, wdata->tabs) == 0)
+  {
+    rc = FR_ERROR;
+  }
+
   replace_part(wdata->state, 0, wdata->buf);
-  return FR_SUCCESS;
+  return rc;
 }
 
 /**
@@ -280,6 +284,7 @@ static int complete_command(struct EnterWindowData *wdata)
  */
 static int complete_file_mbox(struct EnterWindowData *wdata)
 {
+  int rc = FR_SUCCESS;
   mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
 
   /* see if the path has changed from the last time */
@@ -312,9 +317,11 @@ static int complete_file_mbox(struct EnterWindowData *wdata)
     memcpy(wdata->tempbuf, wdata->state->wbuf, wdata->templen * sizeof(wchar_t));
   }
   else
-    mutt_beep(false); /* let the user know that nothing matched */
+  {
+    return FR_ERROR; // let the user know that nothing matched
+  }
   replace_part(wdata->state, 0, wdata->buf);
-  return FR_SUCCESS;
+  return rc;
 }
 
 #ifdef USE_NOTMUCH
@@ -325,13 +332,14 @@ static int complete_file_mbox(struct EnterWindowData *wdata)
  */
 static int complete_nm_query(struct EnterWindowData *wdata)
 {
+  int rc = FR_SUCCESS;
   mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
   size_t len = strlen(wdata->buf);
-  if (!mutt_nm_query_complete(wdata->buf, wdata->buflen, len, wdata->state->tabs))
-    mutt_beep(false);
+  if (!mutt_nm_query_complete(wdata->buf, wdata->buflen, len, wdata->tabs))
+    rc = FR_ERROR;
 
   replace_part(wdata->state, 0, wdata->buf);
-  return FR_SUCCESS;
+  return rc;
 }
 
 /**
@@ -341,12 +349,13 @@ static int complete_nm_query(struct EnterWindowData *wdata)
  */
 static int complete_nm_tag(struct EnterWindowData *wdata)
 {
+  int rc = FR_SUCCESS;
   mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
-  if (!mutt_nm_tag_complete(wdata->buf, wdata->buflen, wdata->state->tabs))
-    mutt_beep(false);
+  if (!mutt_nm_tag_complete(wdata->buf, wdata->buflen, wdata->tabs))
+    rc = FR_ERROR;
 
   replace_part(wdata->state, 0, wdata->buf);
-  return FR_SUCCESS;
+  return rc;
 }
 #endif
 
@@ -359,7 +368,7 @@ static int complete_nm_tag(struct EnterWindowData *wdata)
  */
 static int op_editor_complete(struct EnterWindowData *wdata, int op)
 {
-  wdata->state->tabs++;
+  wdata->tabs++;
   wdata->redraw = ENTER_REDRAW_LINE;
   if (wdata->flags & MUTT_COMP_FILE_SIMPLE)
     return complete_file_simple(wdata);
@@ -474,32 +483,20 @@ static int op_editor_mailbox_cycle(struct EnterWindowData *wdata, int op)
  */
 static int op_editor_backspace(struct EnterWindowData *wdata, int op)
 {
-  if (wdata->state->curpos == 0)
+  int rc = editor_backspace(wdata->state);
+
+  if ((rc == FR_ERROR) && editor_buffer_is_empty(wdata->state))
   {
-    // Pressing backspace when no text is in the command prompt should exit the prompt
     const bool c_abort_backspace = cs_subset_bool(NeoMutt->sub, "abort_backspace");
-    if (c_abort_backspace && (wdata->state->lastchar == 0))
+    if (c_abort_backspace)
     {
       wdata->buf[0] = '\0';
       wdata->done = true;
-      return FR_SUCCESS;
+      rc = FR_SUCCESS;
     }
-    // Pressing backspace with text in the command prompt should just beep
-    return FR_ERROR;
   }
-  else
-  {
-    size_t i = wdata->state->curpos;
-    while ((i > 0) && COMB_CHAR(wdata->state->wbuf[i - 1]))
-      i--;
-    if (i > 0)
-      i--;
-    memmove(wdata->state->wbuf + i, wdata->state->wbuf + wdata->state->curpos,
-            (wdata->state->lastchar - wdata->state->curpos) * sizeof(wchar_t));
-    wdata->state->lastchar -= wdata->state->curpos - i;
-    wdata->state->curpos = i;
-  }
-  return FR_SUCCESS;
+
+  return rc;
 }
 
 /**
@@ -507,15 +504,7 @@ static int op_editor_backspace(struct EnterWindowData *wdata, int op)
  */
 static int op_editor_backward_char(struct EnterWindowData *wdata, int op)
 {
-  if (wdata->state->curpos == 0)
-    return FR_ERROR;
-
-  while (wdata->state->curpos && COMB_CHAR(wdata->state->wbuf[wdata->state->curpos - 1]))
-    wdata->state->curpos--;
-  if (wdata->state->curpos)
-    wdata->state->curpos--;
-
-  return FR_SUCCESS;
+  return editor_backward_char(wdata->state);
 }
 
 /**
@@ -523,15 +512,7 @@ static int op_editor_backward_char(struct EnterWindowData *wdata, int op)
  */
 static int op_editor_backward_word(struct EnterWindowData *wdata, int op)
 {
-  if (wdata->state->curpos == 0)
-    return FR_ERROR;
-
-  while (wdata->state->curpos && iswspace(wdata->state->wbuf[wdata->state->curpos - 1]))
-    wdata->state->curpos--;
-  while (wdata->state->curpos && !iswspace(wdata->state->wbuf[wdata->state->curpos - 1]))
-    wdata->state->curpos--;
-
-  return FR_SUCCESS;
+  return editor_backward_word(wdata->state);
 }
 
 /**
@@ -539,8 +520,7 @@ static int op_editor_backward_word(struct EnterWindowData *wdata, int op)
  */
 static int op_editor_bol(struct EnterWindowData *wdata, int op)
 {
-  wdata->state->curpos = 0;
-  return FR_SUCCESS;
+  return editor_bol(wdata->state);
 }
 
 /**
@@ -552,36 +532,22 @@ static int op_editor_bol(struct EnterWindowData *wdata, int op)
  */
 static int op_editor_capitalize_word(struct EnterWindowData *wdata, int op)
 {
-  if (wdata->state->curpos == wdata->state->lastchar)
-    return FR_ERROR;
-
-  while (wdata->state->curpos && !iswspace(wdata->state->wbuf[wdata->state->curpos]))
+  enum EnterCase ec;
+  switch (op)
   {
-    wdata->state->curpos--;
+    case OP_EDITOR_CAPITALIZE_WORD:
+      ec = EC_CAPITALIZE;
+      break;
+    case OP_EDITOR_DOWNCASE_WORD:
+      ec = EC_DOWNCASE;
+      break;
+    case OP_EDITOR_UPCASE_WORD:
+      ec = EC_UPCASE;
+      break;
+    default:
+      return FR_ERROR;
   }
-  while ((wdata->state->curpos < wdata->state->lastchar) &&
-         iswspace(wdata->state->wbuf[wdata->state->curpos]))
-  {
-    wdata->state->curpos++;
-  }
-  while ((wdata->state->curpos < wdata->state->lastchar) &&
-         !iswspace(wdata->state->wbuf[wdata->state->curpos]))
-  {
-    if (op == OP_EDITOR_DOWNCASE_WORD)
-    {
-      wdata->state->wbuf[wdata->state->curpos] = towlower(
-          wdata->state->wbuf[wdata->state->curpos]);
-    }
-    else
-    {
-      wdata->state->wbuf[wdata->state->curpos] = towupper(
-          wdata->state->wbuf[wdata->state->curpos]);
-      if (op == OP_EDITOR_CAPITALIZE_WORD)
-        op = OP_EDITOR_DOWNCASE_WORD;
-    }
-    wdata->state->curpos++;
-  }
-  return FR_SUCCESS;
+  return editor_case_word(wdata->state, ec);
 }
 
 /**
@@ -589,21 +555,7 @@ static int op_editor_capitalize_word(struct EnterWindowData *wdata, int op)
  */
 static int op_editor_delete_char(struct EnterWindowData *wdata, int op)
 {
-  if (wdata->state->curpos == wdata->state->lastchar)
-    return FR_ERROR;
-
-  size_t i = wdata->state->curpos;
-  while ((i < wdata->state->lastchar) && COMB_CHAR(wdata->state->wbuf[i]))
-    i++;
-  if (i < wdata->state->lastchar)
-    i++;
-  while ((i < wdata->state->lastchar) && COMB_CHAR(wdata->state->wbuf[i]))
-    i++;
-  memmove(wdata->state->wbuf + wdata->state->curpos, wdata->state->wbuf + i,
-          (wdata->state->lastchar - i) * sizeof(wchar_t));
-  wdata->state->lastchar -= i - wdata->state->curpos;
-
-  return FR_SUCCESS;
+  return editor_delete_char(wdata->state);
 }
 
 /**
@@ -611,8 +563,9 @@ static int op_editor_delete_char(struct EnterWindowData *wdata, int op)
  */
 static int op_editor_eol(struct EnterWindowData *wdata, int op)
 {
+  int rc = editor_eol(wdata->state);
   wdata->redraw = ENTER_REDRAW_INIT;
-  return FR_SUCCESS;
+  return rc;
 }
 
 /**
@@ -620,17 +573,7 @@ static int op_editor_eol(struct EnterWindowData *wdata, int op)
  */
 static int op_editor_forward_char(struct EnterWindowData *wdata, int op)
 {
-  if (wdata->state->curpos == wdata->state->lastchar)
-    return FR_ERROR;
-
-  wdata->state->curpos++;
-  while ((wdata->state->curpos < wdata->state->lastchar) &&
-         COMB_CHAR(wdata->state->wbuf[wdata->state->curpos]))
-  {
-    wdata->state->curpos++;
-  }
-
-  return FR_SUCCESS;
+  return editor_forward_char(wdata->state);
 }
 
 /**
@@ -638,21 +581,7 @@ static int op_editor_forward_char(struct EnterWindowData *wdata, int op)
  */
 static int op_editor_forward_word(struct EnterWindowData *wdata, int op)
 {
-  if (wdata->state->curpos == wdata->state->lastchar)
-    return FR_ERROR;
-
-  while ((wdata->state->curpos < wdata->state->lastchar) &&
-         iswspace(wdata->state->wbuf[wdata->state->curpos]))
-  {
-    wdata->state->curpos++;
-  }
-  while ((wdata->state->curpos < wdata->state->lastchar) &&
-         !iswspace(wdata->state->wbuf[wdata->state->curpos]))
-  {
-    wdata->state->curpos++;
-  }
-
-  return FR_SUCCESS;
+  return editor_forward_word(wdata->state);
 }
 
 /**
@@ -660,8 +589,7 @@ static int op_editor_forward_word(struct EnterWindowData *wdata, int op)
  */
 static int op_editor_kill_eol(struct EnterWindowData *wdata, int op)
 {
-  wdata->state->lastchar = wdata->state->curpos;
-  return FR_SUCCESS;
+  return editor_kill_eol(wdata->state);
 }
 
 /**
@@ -669,34 +597,7 @@ static int op_editor_kill_eol(struct EnterWindowData *wdata, int op)
  */
 static int op_editor_kill_eow(struct EnterWindowData *wdata, int op)
 {
-  /* wdata->first skip over whitespace */
-  size_t i;
-  for (i = wdata->state->curpos;
-       (i < wdata->state->lastchar) && iswspace(wdata->state->wbuf[i]); i++)
-  {
-    // do nothing
-  }
-
-  /* if there are any characters left.. */
-  if (i < wdata->state->lastchar)
-  {
-    /* if the current character is alphanumeric.. */
-    if (iswalnum(wdata->state->wbuf[i]))
-    {
-      /* skip over the rest of the word consistent of only alphanumerics */
-      for (; (i < wdata->state->lastchar) && iswalnum(wdata->state->wbuf[i]); i++)
-        ; // do nothing
-    }
-    else
-    {
-      i++; // skip over one non-alphanumeric character
-    }
-  }
-
-  memmove(wdata->state->wbuf + wdata->state->curpos, wdata->state->wbuf + i,
-          (wdata->state->lastchar - i) * sizeof(wchar_t));
-  wdata->state->lastchar += wdata->state->curpos - i;
-  return FR_SUCCESS;
+  return editor_kill_eow(wdata->state);
 }
 
 /**
@@ -704,9 +605,7 @@ static int op_editor_kill_eow(struct EnterWindowData *wdata, int op)
  */
 static int op_editor_kill_line(struct EnterWindowData *wdata, int op)
 {
-  wdata->state->curpos = 0;
-  wdata->state->lastchar = 0;
-  return FR_SUCCESS;
+  return editor_kill_line(wdata->state);
 }
 
 /**
@@ -714,28 +613,7 @@ static int op_editor_kill_line(struct EnterWindowData *wdata, int op)
  */
 static int op_editor_kill_word(struct EnterWindowData *wdata, int op)
 {
-  if (wdata->state->curpos == 0)
-    return FR_ERROR;
-
-  size_t i = wdata->state->curpos;
-  while (i && iswspace(wdata->state->wbuf[i - 1]))
-    i--;
-  if (i > 0)
-  {
-    if (iswalnum(wdata->state->wbuf[i - 1]))
-    {
-      for (--i; (i > 0) && iswalnum(wdata->state->wbuf[i - 1]); i--)
-        ; // do nothing
-    }
-    else
-      i--;
-  }
-  memmove(wdata->state->wbuf + i, wdata->state->wbuf + wdata->state->curpos,
-          (wdata->state->lastchar - wdata->state->curpos) * sizeof(wchar_t));
-  wdata->state->lastchar += i - wdata->state->curpos;
-  wdata->state->curpos = i;
-
-  return FR_SUCCESS;
+  return editor_kill_word(wdata->state);
 }
 
 /**
@@ -765,19 +643,7 @@ static int op_editor_quote_char(struct EnterWindowData *wdata, int op)
  */
 static int op_editor_transpose_chars(struct EnterWindowData *wdata, int op)
 {
-  if (wdata->state->lastchar < 2)
-    return FR_ERROR;
-
-  if (wdata->state->curpos == 0)
-    wdata->state->curpos = 2;
-  else if (wdata->state->curpos < wdata->state->lastchar)
-    wdata->state->curpos++;
-
-  wchar_t wc = wdata->state->wbuf[wdata->state->curpos - 2];
-  wdata->state->wbuf[wdata->state->curpos - 2] = wdata->state->wbuf[wdata->state->curpos - 1];
-  wdata->state->wbuf[wdata->state->curpos - 1] = wc;
-
-  return FR_SUCCESS;
+  return editor_transpose_chars(wdata->state);
 }
 
 // -----------------------------------------------------------------------------
