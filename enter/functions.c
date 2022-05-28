@@ -180,7 +180,7 @@ static int complete_label(struct EnterWindowData *wdata)
 
   mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf + i,
                    wdata->state->curpos - i);
-  int rc = mutt_label_complete(wdata->buf, wdata->buflen, wdata->state->tabs);
+  int rc = mutt_label_complete(wdata->buf, wdata->buflen, wdata->tabs);
   replace_part(wdata->state, i, wdata->buf);
   if (rc != 1)
     return FR_CONTINUE;
@@ -212,7 +212,7 @@ static int complete_pattern(struct EnterWindowData *wdata)
     i++;
     mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf + i,
                      wdata->state->curpos - i);
-    int rc = mutt_label_complete(wdata->buf, wdata->buflen, wdata->state->tabs);
+    int rc = mutt_label_complete(wdata->buf, wdata->buflen, wdata->tabs);
     replace_part(wdata->state, i, wdata->buf);
     if (rc != 1)
     {
@@ -269,9 +269,9 @@ static int complete_command(struct EnterWindowData *wdata)
   if ((i != 0) && (wdata->buf[i - 1] == '=') &&
       (mutt_var_value_complete(wdata->buf, wdata->buflen, i) != 0))
   {
-    wdata->state->tabs = 0;
+    wdata->tabs = 0;
   }
-  else if (mutt_command_complete(wdata->buf, wdata->buflen, i, wdata->state->tabs) == 0)
+  else if (mutt_command_complete(wdata->buf, wdata->buflen, i, wdata->tabs) == 0)
   {
     rc = FR_ERROR;
   }
@@ -338,7 +338,7 @@ static int complete_nm_query(struct EnterWindowData *wdata)
   int rc = FR_SUCCESS;
   mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
   size_t len = strlen(wdata->buf);
-  if (!mutt_nm_query_complete(wdata->buf, wdata->buflen, len, wdata->state->tabs))
+  if (!mutt_nm_query_complete(wdata->buf, wdata->buflen, len, wdata->tabs))
     rc = FR_ERROR;
 
   replace_part(wdata->state, 0, wdata->buf);
@@ -354,7 +354,7 @@ static int complete_nm_tag(struct EnterWindowData *wdata)
 {
   int rc = FR_SUCCESS;
   mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
-  if (!mutt_nm_tag_complete(wdata->buf, wdata->buflen, wdata->state->tabs))
+  if (!mutt_nm_tag_complete(wdata->buf, wdata->buflen, wdata->tabs))
     rc = FR_ERROR;
 
   replace_part(wdata->state, 0, wdata->buf);
@@ -371,7 +371,7 @@ static int complete_nm_tag(struct EnterWindowData *wdata)
  */
 static int op_editor_complete(struct EnterWindowData *wdata, int op)
 {
-  wdata->state->tabs++;
+  wdata->tabs++;
   wdata->redraw = ENTER_REDRAW_LINE;
   if (wdata->flags & MUTT_COMP_FILE_SIMPLE)
     return complete_file_simple(wdata);

@@ -94,7 +94,7 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
   if (!wdata)
     return true;
 
-  wdata->state->tabs = 0;
+  wdata->tabs = 0;
   wchar_t wc = 0;
 
   /* quietly ignore all other function keys */
@@ -221,23 +221,11 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
     int width = win->state.cols - col - 1;
     mbstate_t mbstate = { 0 };
 
-    struct EnterWindowData wdata = { buf->data,
-                                     buf->dsize,
-                                     col,
-                                     complete,
-                                     multiple,
-                                     m,
-                                     files,
-                                     numfiles,
-                                     state,
-                                     ENTER_REDRAW_NONE,
-                                     (complete & MUTT_COMP_PASS),
-                                     true,
-                                     0,
-                                     NULL,
-                                     0,
-                                     &mbstate,
-                                     false };
+    // clang-format off
+    struct EnterWindowData wdata = { buf->data, buf->dsize, col, complete,
+      multiple, m, files, numfiles, state, ENTER_REDRAW_NONE,
+      (complete & MUTT_COMP_PASS), true, 0, NULL, 0, &mbstate, 0, false };
+    // clang-format on
 
     if (wdata.state->wbuf)
     {
@@ -332,7 +320,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
 
       wdata.first = false;
       if ((event.op != OP_EDITOR_COMPLETE) && (event.op != OP_EDITOR_COMPLETE_QUERY))
-        wdata.state->tabs = 0;
+        wdata.tabs = 0;
       wdata.redraw = ENTER_REDRAW_LINE;
       int rc_disp = enter_function_dispatcher(&wdata, event.op);
       switch (rc_disp)
