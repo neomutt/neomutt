@@ -182,9 +182,6 @@ static int cbar_recalc(struct MuttWindow *win)
  */
 static int cbar_repaint(struct MuttWindow *win)
 {
-  if (!mutt_window_is_visible(win))
-    return 0;
-
   struct ComposeBarData *cbar_data = win->wdata;
 
   mutt_window_move(win, 0, 0);

@@ -771,9 +771,6 @@ static int env_recalc(struct MuttWindow *win)
  */
 static int env_repaint(struct MuttWindow *win)
 {
-  if (!mutt_window_is_visible(win))
-    return 0;
-
   struct EnvelopeWindowData *wdata = win->wdata;
 
   draw_envelope(win, wdata);

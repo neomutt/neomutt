@@ -92,9 +92,6 @@ struct PBarPrivateData
  */
 static int pbar_recalc(struct MuttWindow *win)
 {
-  if (!mutt_window_is_visible(win))
-    return 0;
-
   char buf[1024] = { 0 };
 
   struct PBarPrivateData *pbar_data = win->wdata;
@@ -154,9 +151,6 @@ static int pbar_recalc(struct MuttWindow *win)
  */
 static int pbar_repaint(struct MuttWindow *win)
 {
-  if (!mutt_window_is_visible(win))
-    return 0;
-
   struct PBarPrivateData *pbar_data = win->wdata;
   // struct IndexSharedData *shared = pbar_data->shared;
 

@@ -113,7 +113,7 @@ static int msgwin_recalc(struct MuttWindow *win)
  */
 static int msgwin_repaint(struct MuttWindow *win)
 {
-  if (!mutt_window_is_visible(win) || window_is_focused(win)) // or someone else is using it
+  if (window_is_focused(win)) // someone else is using it
     return 0;
 
   struct MsgWinPrivateData *priv = win->wdata;

@@ -710,9 +710,6 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
  */
 int sb_recalc(struct MuttWindow *win)
 {
-  if (!mutt_window_is_visible(win))
-    return 0;
-
   struct SidebarWindowData *wdata = sb_wdata_get(win);
   struct IndexSharedData *shared = wdata->shared;
 
@@ -899,9 +896,6 @@ static void fill_empty_space(struct MuttWindow *win, int first_row,
  */
 int sb_repaint(struct MuttWindow *win)
 {
-  if (!mutt_window_is_visible(win))
-    return 0;
-
   struct SidebarWindowData *wdata = sb_wdata_get(win);
   const bool c_sidebar_on_right = cs_subset_bool(NeoMutt->sub, "sidebar_on_right");
 

@@ -137,9 +137,6 @@ static int ibar_recalc(struct MuttWindow *win)
  */
 static int ibar_repaint(struct MuttWindow *win)
 {
-  if (!mutt_window_is_visible(win))
-    return 0;
-
   struct IBarPrivateData *ibar_data = win->wdata;
   struct IndexSharedData *shared = ibar_data->shared;
 

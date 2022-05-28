@@ -122,9 +122,6 @@ static int config_pager_index_lines(struct MuttWindow *win)
  */
 static int pager_recalc(struct MuttWindow *win)
 {
-  if (!mutt_window_is_visible(win))
-    return 0;
-
   win->actions |= WA_REPAINT;
   mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
   return 0;

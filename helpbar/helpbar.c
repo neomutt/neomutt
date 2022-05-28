@@ -178,9 +178,6 @@ static int helpbar_recalc(struct MuttWindow *win)
  */
 static int helpbar_repaint(struct MuttWindow *win)
 {
-  if (!mutt_window_is_visible(win))
-    return 0;
-
   struct HelpbarWindowData *wdata = helpbar_wdata_get(win);
   if (!wdata)
     return 0;
