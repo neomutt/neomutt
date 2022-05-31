@@ -76,6 +76,18 @@ static int op_redraw(int op)
 }
 
 /**
+ * op_refresh_deprecated - Deprecated <refresh> function  - Implements ::global_function_t - @ingroup global_function_api
+ *
+ * This is a wrapper for the deperecated <refresh> function which issues
+ * a warning and then calls <redraw>.
+ */
+static int op_refresh_deprecated(int op)
+{
+  mutt_warning("Use of deprecated <refresh> detected, use <redraw-screen> instead.");
+  return op_redraw(op);
+}
+
+/**
  * op_shell_escape - Invoke a command in a subshell - Implements ::global_function_t - @ingroup global_function_api
  */
 static int op_shell_escape(int op)
@@ -148,6 +160,7 @@ struct GlobalFunction GlobalFunctions[] = {
   { OP_CHECK_STATS,           op_check_stats },
   { OP_ENTER_COMMAND,         op_enter_command },
   { OP_REDRAW,                op_redraw },
+  { OP_REFRESH_DEPRECATED,    op_refresh_deprecated },
   { OP_SHELL_ESCAPE,          op_shell_escape },
   { OP_SHOW_LOG_MESSAGES,     op_show_log_messages },
   { OP_VERSION,               op_version },

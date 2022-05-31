@@ -323,7 +323,8 @@ const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   { "previous-entry",                OP_PREV_ENTRY },
   { "previous-line",                 OP_PREV_LINE },
   { "previous-page",                 OP_PREV_PAGE },
-  { "refresh",                       OP_REDRAW },
+  { "redraw-screen",                 OP_REDRAW },
+  { "refresh",                       OP_REFRESH_DEPRECATED },
   { "search",                        OP_SEARCH },
   { "search-next",                   OP_SEARCH_NEXT },
   { "search-opposite",               OP_SEARCH_OPPOSITE },
@@ -640,7 +641,6 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
 #ifdef USE_NNTP
   { "reconstruct-thread",            OP_RECONSTRUCT_THREAD },
 #endif
-  { "redraw-screen",                 OP_REDRAW },
   { "reply",                         OP_REPLY },
   { "resend-message",                OP_RESEND },
   { "root-message",                  OP_MAIN_ROOT_MESSAGE },
@@ -1184,7 +1184,6 @@ const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_PRINT,                              "p" },
   { OP_QUIT,                               "Q" },
   { OP_RECALL_MESSAGE,                     "R" },
-  { OP_REDRAW,                             "\014" },           // <Ctrl-L>
   { OP_REPLY,                              "r" },
   { OP_RESEND,                             "\033e" },          // <Alt-e>
   { OP_SAVE,                               "s" },
