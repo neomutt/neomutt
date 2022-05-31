@@ -2210,7 +2210,7 @@
 ** how often (in seconds) NeoMutt will update message counts.
 */
 
-{ "mailbox_folder_format", DT_STRING, "%2C %t %N %n %m %i" },
+{ "mailbox_folder_format", DT_STRING, "%2C %?n?%6n&%6 ? %6m %i" },
 /*
 ** .pp
 ** This variable allows you to customize the file browser display to your
@@ -2231,7 +2231,6 @@
 ** .dt %n  .dd * .dd Number of unread messages in the mailbox
 ** .dt %N  .dd   .dd "N" if mailbox has new mail, blank otherwise
 ** .dt %s  .dd   .dd Size in bytes (see $formatstrings-size)
-** .dt %t  .dd   .dd "*" if the file is tagged, blank otherwise
 ** .dt %u  .dd   .dd Owner name (or numeric uid, if missing)
 ** .dt %>X .dd   .dd Right justify the rest of the string and pad with character "X"
 ** .dt %|X .dd   .dd Pad to the end of the line with character "X"
