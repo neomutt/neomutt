@@ -1658,17 +1658,16 @@ msgstr "Bloga rikiavimo rūšis: %ld"
 #: conn/accountcmd.c:79
 #, c-format
 msgid "Line is malformed: expected <key: val>, got <%s>"
-msgstr ""
+msgstr "Bloga eilutė: turėtų būti <raktas: reikšmė>, yra <%s>"
 
 #: conn/accountcmd.c:119
 #, c-format
 msgid "Unhandled key in line <%s: %s>"
-msgstr ""
+msgstr "Nežinomas raktas eilutėje <%s: %s>"
 
 #: conn/accountcmd.c:140
-#, fuzzy
 msgid "Unable to run account command"
-msgstr "Nepavyko įvykdyti atnaujinimo komandos"
+msgstr "Nepavyko įvykdyti paskyros komandos"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:77
