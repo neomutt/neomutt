@@ -137,7 +137,7 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_EDITOR_HISTORY_UP,                  N_("scroll up through the history list")) \
   _fmt(OP_EDITOR_KILL_EOL,                    N_("delete chars from cursor to end of line")) \
   _fmt(OP_EDITOR_KILL_EOW,                    N_("delete chars from the cursor to the end of the word")) \
-  _fmt(OP_EDITOR_KILL_LINE,                   N_("delete all chars on the line")) \
+  _fmt(OP_EDITOR_KILL_LINE,                   N_("delete chars from cursor to beginning the line")) \
   _fmt(OP_EDITOR_KILL_WHOLE_LINE,             N_("delete all chars on the line")) \
   _fmt(OP_EDITOR_KILL_WORD,                   N_("delete the word in front of the cursor")) \
   _fmt(OP_EDITOR_MAILBOX_CYCLE,               N_("cycle among incoming mailboxes")) \

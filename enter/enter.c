@@ -36,7 +36,7 @@
 #include "state.h"
 
 /// combining mark / non-spacing character
-#define COMB_CHAR(wc) (IsWPrint(wc) && !wcwidth(wc))
+#define COMB_CHAR(wc) (IsWPrint(wc) && (wcwidth(wc) == 0))
 
 /**
  * editor_backspace - Delete the char in front of the cursor
@@ -127,10 +127,6 @@ int editor_case_word(struct EnterState *es, enum EnterCase ec)
   if (!es || (es->curpos == es->lastchar))
     return FR_ERROR;
 
-  while (es->curpos && !iswspace(es->wbuf[es->curpos]))
-  {
-    es->curpos--;
-  }
   while ((es->curpos < es->lastchar) && iswspace(es->wbuf[es->curpos]))
   {
     es->curpos++;
@@ -164,8 +160,6 @@ int editor_delete_char(struct EnterState *es)
     return FR_ERROR;
 
   size_t i = es->curpos;
-  while ((i < es->lastchar) && COMB_CHAR(es->wbuf[i]))
-    i++;
   if (i < es->lastchar)
     i++;
   while ((i < es->lastchar) && COMB_CHAR(es->wbuf[i]))
@@ -299,8 +293,13 @@ int editor_kill_line(struct EnterState *es)
   if (!es)
     return FR_ERROR;
 
+  size_t len = es->lastchar - es->curpos;
+
+  memmove(es->wbuf, es->wbuf + es->curpos, len * sizeof(wchar_t));
+
+  es->lastchar = len;
   es->curpos = 0;
-  es->lastchar = 0;
+
   return FR_SUCCESS;
 }
 
