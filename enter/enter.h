@@ -49,6 +49,7 @@ int editor_forward_word   (struct EnterState *es);
 int editor_kill_eol       (struct EnterState *es);
 int editor_kill_eow       (struct EnterState *es);
 int editor_kill_line      (struct EnterState *es);
+int editor_kill_whole_line(struct EnterState *es);
 int editor_kill_word      (struct EnterState *es);
 int editor_transpose_chars(struct EnterState *es);
 

@@ -305,6 +305,23 @@ int editor_kill_line(struct EnterState *es)
 }
 
 /**
+ * editor_kill_whole_line - Delete all chars on the line
+ * @param es State of the Enter buffer
+ * @retval FR_SUCCESS Characters deleted
+ * @retval FR_ERROR   Error
+ */
+int editor_kill_whole_line(struct EnterState *es)
+{
+  if (!es)
+    return FR_ERROR;
+
+  es->lastchar = 0;
+  es->curpos = 0;
+
+  return FR_SUCCESS;
+}
+
+/**
  * editor_kill_word - Delete the word in front of the cursor
  * @param es State of the Enter buffer
  * @retval FR_SUCCESS Characters deleted

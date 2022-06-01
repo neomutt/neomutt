@@ -609,6 +609,14 @@ static int op_editor_kill_line(struct EnterWindowData *wdata, int op)
 }
 
 /**
+ * op_editor_kill_whole_line - Delete all chars on the line - Implements ::enter_function_t - @ingroup enter_function_api
+ */
+static int op_editor_kill_whole_line(struct EnterWindowData *wdata, int op)
+{
+  return editor_kill_whole_line(wdata->state);
+}
+
+/**
  * op_editor_kill_word - Delete the word in front of the cursor - Implements ::enter_function_t - @ingroup enter_function_api
  */
 static int op_editor_kill_word(struct EnterWindowData *wdata, int op)
@@ -671,6 +679,7 @@ struct EnterFunction EnterFunctions[] = {
   { OP_EDITOR_KILL_EOL,           op_editor_kill_eol },
   { OP_EDITOR_KILL_EOW,           op_editor_kill_eow },
   { OP_EDITOR_KILL_LINE,          op_editor_kill_line },
+  { OP_EDITOR_KILL_WHOLE_LINE,    op_editor_kill_whole_line },
   { OP_EDITOR_KILL_WORD,          op_editor_kill_word },
   { OP_EDITOR_MAILBOX_CYCLE,      op_editor_mailbox_cycle },
   { OP_EDITOR_QUOTE_CHAR,         op_editor_quote_char },

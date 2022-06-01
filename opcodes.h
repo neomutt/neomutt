@@ -138,6 +138,7 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_EDITOR_KILL_EOL,                    N_("delete chars from cursor to end of line")) \
   _fmt(OP_EDITOR_KILL_EOW,                    N_("delete chars from the cursor to the end of the word")) \
   _fmt(OP_EDITOR_KILL_LINE,                   N_("delete all chars on the line")) \
+  _fmt(OP_EDITOR_KILL_WHOLE_LINE,             N_("delete all chars on the line")) \
   _fmt(OP_EDITOR_KILL_WORD,                   N_("delete the word in front of the cursor")) \
   _fmt(OP_EDITOR_MAILBOX_CYCLE,               N_("cycle among incoming mailboxes")) \
   _fmt(OP_EDITOR_QUOTE_CHAR,                  N_("quote the next typed key")) \
