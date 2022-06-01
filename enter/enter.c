@@ -391,3 +391,60 @@ bool editor_buffer_is_empty(struct EnterState *es)
 
   return (es->lastchar == 0);
 }
+
+/**
+ * editor_buffer_get_lastchar - Get the position of the last character
+ * @param es State of the Enter buffer
+ * @retval num Position of last character
+ */
+size_t editor_buffer_get_lastchar(struct EnterState *es)
+{
+  if (!es)
+    return 0;
+
+  return es->lastchar;
+}
+
+/**
+ * editor_buffer_get_cursor - Get the position of the cursor
+ * @param es State of the Enter buffer
+ * @retval num Position of cursor
+ */
+size_t editor_buffer_get_cursor(struct EnterState *es)
+{
+  if (!es)
+    return 0;
+
+  return es->curpos;
+}
+
+/**
+ * editor_buffer_set_cursor - Set the position of the cursor
+ * @param es  State of the Enter buffer
+ * @param pos New postition for the cursor
+ */
+void editor_buffer_set_cursor(struct EnterState *es, size_t pos)
+{
+  if (!es)
+    return;
+
+  if (pos >= es->lastchar)
+    return;
+
+  es->curpos = pos;
+}
+
+/**
+ * editor_buffer_set - Set the string in the buffer
+ * @param es  State of the Enter buffer
+ * @param str String to set
+ * @retval num Length of string
+ */
+int editor_buffer_set(struct EnterState *es, const char *str)
+
+{
+  es->wbuflen = 0;
+  es->lastchar = mutt_mb_mbstowcs(&es->wbuf, &es->wbuflen, 0, str);
+  es->curpos = es->lastchar;
+  return es->lastchar;
+}

@@ -903,6 +903,7 @@ coverage: all test
 	  --directory config \
 	  --directory core \
 	  --directory email \
+	  --directory enter \
 	  --directory mutt \
 	  --directory notmuch \
 	  --directory pattern \

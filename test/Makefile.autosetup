@@ -171,6 +171,23 @@ EMAIL_OBJS	= test/email/common.o \
 		  test/email/mutt_autocrypthdr_free.o \
 		  test/email/mutt_autocrypthdr_new.o
 
+ENTER_OBJS	= test/enter/editor_backspace.o \
+		  test/enter/editor_backward_char.o \
+		  test/enter/editor_backward_word.o \
+		  test/enter/editor_bol.o \
+		  test/enter/editor_case_word.o \
+		  test/enter/editor_delete_char.o \
+		  test/enter/editor_eol.o \
+		  test/enter/editor_forward_char.o \
+		  test/enter/editor_forward_word.o \
+		  test/enter/editor_kill_eol.o \
+		  test/enter/editor_kill_eow.o \
+		  test/enter/editor_kill_line.o \
+		  test/enter/editor_kill_whole_line.o \
+		  test/enter/editor_kill_word.o \
+		  test/enter/editor_transpose_chars.o \
+		  test/enter/state.o
+
 ENVELOPE_OBJS	= test/envelope/mutt_env_cmp_strict.o \
 		  test/envelope/mutt_env_free.o \
 		  test/envelope/mutt_env_merge.o \
@@ -563,19 +580,20 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/atoi $(PWD)/test/attach $(PWD)/test/base64 \
 		  $(PWD)/test/body $(PWD)/test/buffer $(PWD)/test/charset \
 		  $(PWD)/test/compress $(PWD)/test/config $(PWD)/test/convert \
-		  $(PWD)/test/date $(PWD)/test/email $(PWD)/test/envelope \
-		  $(PWD)/test/envlist $(PWD)/test/file $(PWD)/test/filter \
-		  $(PWD)/test/from $(PWD)/test/group $(PWD)/test/gui \
-		  $(PWD)/test/hash $(PWD)/test/history $(PWD)/test/idna \
-		  $(PWD)/test/list $(PWD)/test/logging $(PWD)/test/mailbox \
-		  $(PWD)/test/mapping $(PWD)/test/mbyte $(PWD)/test/md5 \
-		  $(PWD)/test/memory $(PWD)/test/neo $(PWD)/test/notify \
-		  $(PWD)/test/notmuch $(PWD)/test/parameter $(PWD)/test/parse \
-		  $(PWD)/test/path $(PWD)/test/pattern $(PWD)/test/pool \
-		  $(PWD)/test/prex $(PWD)/test/regex $(PWD)/test/rfc2047 \
-		  $(PWD)/test/rfc2231 $(PWD)/test/signal $(PWD)/test/slist \
-		  $(PWD)/test/sort $(PWD)/test/store $(PWD)/test/string \
-		  $(PWD)/test/tags $(PWD)/test/thread $(PWD)/test/url
+		  $(PWD)/test/date $(PWD)/test/email $(PWD)/test/enter \
+		  $(PWD)/test/envelope $(PWD)/test/envlist $(PWD)/test/file \
+		  $(PWD)/test/filter $(PWD)/test/from $(PWD)/test/group \
+		  $(PWD)/test/gui $(PWD)/test/hash $(PWD)/test/history \
+		  $(PWD)/test/idna $(PWD)/test/list $(PWD)/test/logging \
+		  $(PWD)/test/mailbox $(PWD)/test/mapping $(PWD)/test/mbyte \
+		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/neo \
+		  $(PWD)/test/notify $(PWD)/test/notmuch \
+		  $(PWD)/test/parameter $(PWD)/test/parse $(PWD)/test/path \
+		  $(PWD)/test/pattern $(PWD)/test/pool $(PWD)/test/prex \
+		  $(PWD)/test/regex $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 \
+		  $(PWD)/test/signal $(PWD)/test/slist $(PWD)/test/sort \
+		  $(PWD)/test/store $(PWD)/test/string $(PWD)/test/tags \
+		  $(PWD)/test/thread $(PWD)/test/url
 
 TEST_OBJS	= test/main.o test/common.o \
 		  $(ACCOUNT_OBJS) \
@@ -592,6 +610,7 @@ TEST_OBJS	= test/main.o test/common.o \
 		  $(CONVERT_OBJS) \
 		  $(DATE_OBJS) \
 		  $(EMAIL_OBJS) \
+		  $(ENTER_OBJS) \
 		  $(ENVELOPE_OBJS) \
 		  $(ENVLIST_OBJS) \
 		  $(FILE_OBJS) \
