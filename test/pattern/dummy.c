@@ -48,9 +48,9 @@ struct KeyEvent
 enum WindowType
 {
   // Structural Windows
-  WT_ROOT,            ///< Parent of All Windows
-  WT_CONTAINER,       ///< Invisible shaping container Window
-  WT_ALL_DIALOGS,     ///< Container for All Dialogs (nested Windows)
+  WT_ROOT,        ///< Parent of All Windows
+  WT_CONTAINER,   ///< Invisible shaping container Window
+  WT_ALL_DIALOGS, ///< Container for All Dialogs (nested Windows)
 
   // Dialogs (nested Windows) displayed to the user
   WT_DLG_ALIAS,       ///< Alias Dialog,       dlg_select_alias()
@@ -71,16 +71,15 @@ enum WindowType
   WT_DLG_SMIME,       ///< Smime Dialog,       dlg_select_smime_key()
 
   // Common Windows
-  WT_CUSTOM,          ///< Window with a custom drawing function
-  WT_HELP_BAR,        ///< Help Bar containing list of useful key bindings
-  WT_INDEX,           ///< A panel containing the Index Window
-  WT_MENU,            ///< An Window containing a Menu
-  WT_MESSAGE,         ///< Window for messages/errors and command entry
-  WT_PAGER,           ///< A panel containing the Pager Window
-  WT_SIDEBAR,         ///< Side panel containing Accounts or groups of data
-  WT_STATUS_BAR,      ///< Status Bar containing extra info about the Index/Pager/etc
+  WT_CUSTOM,     ///< Window with a custom drawing function
+  WT_HELP_BAR,   ///< Help Bar containing list of useful key bindings
+  WT_INDEX,      ///< A panel containing the Index Window
+  WT_MENU,       ///< An Window containing a Menu
+  WT_MESSAGE,    ///< Window for messages/errors and command entry
+  WT_PAGER,      ///< A panel containing the Pager Window
+  WT_SIDEBAR,    ///< Side panel containing Accounts or groups of data
+  WT_STATUS_BAR, ///< Status Bar containing extra info about the Index/Pager/etc
 };
-
 
 bool g_addr_is_user = false;
 int g_body_parts = 1;
@@ -335,7 +334,8 @@ bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs)
   return false;
 }
 
-void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags, struct Mailbox *m, char ***files, int *numfiles)
+void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
+                      struct Mailbox *m, char ***files, int *numfiles)
 {
 }
 
@@ -362,7 +362,8 @@ void simple_dialog_free(struct MuttWindow **ptr)
 {
 }
 
-struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype, const struct Mapping *help_data)
+struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype,
+                                     const struct Mapping *help_data)
 {
   return NULL;
 }

@@ -289,7 +289,7 @@ int editor_kill_eow(struct EnterState *es)
 }
 
 /**
- * editor_kill_line - Delete all chars on the line
+ * editor_kill_line - Delete chars from cursor to beginning the line
  * @param es State of the Enter buffer
  * @retval FR_SUCCESS Characters deleted
  * @retval FR_ERROR   Error
