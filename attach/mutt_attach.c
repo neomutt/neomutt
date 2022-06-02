@@ -493,7 +493,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     if (mutt_str_equal(type, "text/html"))
     {
       struct Body *related_ancestor = NULL;
-      if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))
+      if (actx->body_idx && (WithCrypto != 0) && (e->security & SEC_ENCRYPT))
         related_ancestor = attach_body_ancestor(actx->body_idx[0], a, "related");
       else
         related_ancestor = attach_body_ancestor(e->body, a, "related");
