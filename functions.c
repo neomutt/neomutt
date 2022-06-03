@@ -271,6 +271,7 @@ const struct MenuFuncOp OpEditor[] = { /* map: editor */
   { "kill-eol",                      OP_EDITOR_KILL_EOL },
   { "kill-eow",                      OP_EDITOR_KILL_EOW },
   { "kill-line",                     OP_EDITOR_KILL_LINE },
+  { "kill-whole-line",               OP_EDITOR_KILL_WHOLE_LINE },
   { "kill-word",                     OP_EDITOR_KILL_WORD },
   { "mailbox-cycle",                 OP_EDITOR_MAILBOX_CYCLE },
   { "quote-char",                    OP_EDITOR_QUOTE_CHAR },

@@ -40,6 +40,7 @@
 #include <stdbool.h>
 #include "mutt.h"
 // IWYU pragma: begin_exports
+#include "enter.h"
 #include "state.h"
 // IWYU pragma: end_exports
 

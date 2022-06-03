@@ -36,7 +36,7 @@
 #include "state.h"
 
 /// combining mark / non-spacing character
-#define COMB_CHAR(wc) (IsWPrint(wc) && !wcwidth(wc))
+#define COMB_CHAR(wc) (IsWPrint(wc) && (wcwidth(wc) == 0))
 
 /**
  * editor_backspace - Delete the char in front of the cursor
@@ -127,10 +127,6 @@ int editor_case_word(struct EnterState *es, enum EnterCase ec)
   if (!es || (es->curpos == es->lastchar))
     return FR_ERROR;
 
-  while (es->curpos && !iswspace(es->wbuf[es->curpos]))
-  {
-    es->curpos--;
-  }
   while ((es->curpos < es->lastchar) && iswspace(es->wbuf[es->curpos]))
   {
     es->curpos++;
@@ -164,8 +160,6 @@ int editor_delete_char(struct EnterState *es)
     return FR_ERROR;
 
   size_t i = es->curpos;
-  while ((i < es->lastchar) && COMB_CHAR(es->wbuf[i]))
-    i++;
   if (i < es->lastchar)
     i++;
   while ((i < es->lastchar) && COMB_CHAR(es->wbuf[i]))
@@ -299,8 +293,30 @@ int editor_kill_line(struct EnterState *es)
   if (!es)
     return FR_ERROR;
 
+  size_t len = es->lastchar - es->curpos;
+
+  memmove(es->wbuf, es->wbuf + es->curpos, len * sizeof(wchar_t));
+
+  es->lastchar = len;
   es->curpos = 0;
+
+  return FR_SUCCESS;
+}
+
+/**
+ * editor_kill_whole_line - Delete all chars on the line
+ * @param es State of the Enter buffer
+ * @retval FR_SUCCESS Characters deleted
+ * @retval FR_ERROR   Error
+ */
+int editor_kill_whole_line(struct EnterState *es)
+{
+  if (!es)
+    return FR_ERROR;
+
   es->lastchar = 0;
+  es->curpos = 0;
+
   return FR_SUCCESS;
 }
 
@@ -374,4 +390,61 @@ bool editor_buffer_is_empty(struct EnterState *es)
     return true;
 
   return (es->lastchar == 0);
+}
+
+/**
+ * editor_buffer_get_lastchar - Get the position of the last character
+ * @param es State of the Enter buffer
+ * @retval num Position of last character
+ */
+size_t editor_buffer_get_lastchar(struct EnterState *es)
+{
+  if (!es)
+    return 0;
+
+  return es->lastchar;
+}
+
+/**
+ * editor_buffer_get_cursor - Get the position of the cursor
+ * @param es State of the Enter buffer
+ * @retval num Position of cursor
+ */
+size_t editor_buffer_get_cursor(struct EnterState *es)
+{
+  if (!es)
+    return 0;
+
+  return es->curpos;
+}
+
+/**
+ * editor_buffer_set_cursor - Set the position of the cursor
+ * @param es  State of the Enter buffer
+ * @param pos New postition for the cursor
+ */
+void editor_buffer_set_cursor(struct EnterState *es, size_t pos)
+{
+  if (!es)
+    return;
+
+  if (pos >= es->lastchar)
+    return;
+
+  es->curpos = pos;
+}
+
+/**
+ * editor_buffer_set - Set the string in the buffer
+ * @param es  State of the Enter buffer
+ * @param str String to set
+ * @retval num Length of string
+ */
+int editor_buffer_set(struct EnterState *es, const char *str)
+
+{
+  es->wbuflen = 0;
+  es->lastchar = mutt_mb_mbstowcs(&es->wbuf, &es->wbuflen, 0, str);
+  es->curpos = es->lastchar;
+  return es->lastchar;
 }

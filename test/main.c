@@ -197,6 +197,24 @@
   NEOMUTT_TEST_ITEM(test_email_header_set)                                     \
   NEOMUTT_TEST_ITEM(test_email_header_free)                                    \
                                                                                \
+  /* enter */                                                                  \
+  NEOMUTT_TEST_ITEM(test_editor_backspace)                                     \
+  NEOMUTT_TEST_ITEM(test_editor_backward_char)                                 \
+  NEOMUTT_TEST_ITEM(test_editor_backward_word)                                 \
+  NEOMUTT_TEST_ITEM(test_editor_bol)                                           \
+  NEOMUTT_TEST_ITEM(test_editor_case_word)                                     \
+  NEOMUTT_TEST_ITEM(test_editor_delete_char)                                   \
+  NEOMUTT_TEST_ITEM(test_editor_eol)                                           \
+  NEOMUTT_TEST_ITEM(test_editor_forward_char)                                  \
+  NEOMUTT_TEST_ITEM(test_editor_forward_word)                                  \
+  NEOMUTT_TEST_ITEM(test_editor_kill_eol)                                      \
+  NEOMUTT_TEST_ITEM(test_editor_kill_eow)                                      \
+  NEOMUTT_TEST_ITEM(test_editor_kill_line)                                     \
+  NEOMUTT_TEST_ITEM(test_editor_kill_whole_line)                               \
+  NEOMUTT_TEST_ITEM(test_editor_kill_word)                                     \
+  NEOMUTT_TEST_ITEM(test_editor_state)                                         \
+  NEOMUTT_TEST_ITEM(test_editor_transpose_chars)                               \
+                                                                               \
   /* envelope */                                                               \
   NEOMUTT_TEST_ITEM(test_mutt_env_cmp_strict)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_env_free)                                        \
