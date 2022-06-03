@@ -703,9 +703,6 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
       if ((funcs = km_get_table(mtype)) && (func = mutt_get_func(funcs, tmp.op)))
         return tmp;
 
-      if ((mtype == MENU_EDITOR) && mutt_get_func(OpEditor, tmp.op))
-        return tmp;
-
       if ((mtype != MENU_EDITOR) && (mtype != MENU_PAGER) && (mtype != MENU_GENERIC))
       {
         /* check generic menu type */
