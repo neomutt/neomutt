@@ -248,7 +248,6 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_RECALL_MESSAGE,                     N_("recall a postponed message")) \
   _fmt(OP_RECONSTRUCT_THREAD,                 N_("reconstruct thread containing current message")) \
   _fmt(OP_REDRAW,                             N_("clear and redraw the screen")) \
-  _fmt(OP_REFRESH_DEPRECATED,                 N_("clear and redraw the screen.  This function is deprecated, use <refresh-screen> instead.")) \
   _fmt(OP_REFORMAT_WINCH,                     N_("{internal}")) \
   _fmt(OP_RENAME_MAILBOX,                     N_("rename the current mailbox (IMAP only)")) \
   _fmt(OP_REPLY,                              N_("reply to a message")) \
