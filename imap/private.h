@@ -186,7 +186,7 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
                      enum MessageType flag, bool changed, bool invert);
 int imap_open_connection(struct ImapAccountData *adata);
 void imap_close_connection(struct ImapAccountData *adata);
-int imap_read_literal(FILE *fp, struct ImapAccountData *adata, unsigned long bytes, struct Progress *pbar);
+int imap_read_literal(FILE *fp, struct ImapAccountData *adata, unsigned long bytes, struct Progress *progress);
 void imap_expunge_mailbox(struct Mailbox *m, bool resort);
 int imap_login(struct ImapAccountData *adata);
 int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e, struct Buffer *cmd, enum QuadOption *err_continue);

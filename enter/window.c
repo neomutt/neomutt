@@ -180,9 +180,13 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
 int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags complete,
                           bool multiple, struct Mailbox *m, char ***files, int *numfiles)
 {
-  struct MuttWindow *win = msgwin_get_window();
-  if (!win)
-    return -1;
+  struct MuttWindow *win = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
+                                           MUTT_WIN_SIZE_UNLIMITED, 1);
+  // win->recalc = enter_window_recalc;
+  // win->repaint = enter_window_repaint;
+  win->actions |= WA_RECALC;
+
+  msgcont_push_window(win);
 
   const bool old_oime = OptIgnoreMacroEvents;
   if (complete & MUTT_COMP_UNBUFFERED)
@@ -226,6 +230,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
       multiple, m, files, numfiles, state, ENTER_REDRAW_NONE,
       (complete & MUTT_COMP_PASS), true, 0, NULL, 0, &mbstate, 0, false };
     // clang-format on
+    win->wdata = &wdata;
 
     if (wdata.state->wbuf)
     {
@@ -322,7 +327,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
       if ((event.op != OP_EDITOR_COMPLETE) && (event.op != OP_EDITOR_COMPLETE_QUERY))
         wdata.tabs = 0;
       wdata.redraw = ENTER_REDRAW_LINE;
-      int rc_disp = enter_function_dispatcher(&wdata, event.op);
+      int rc_disp = enter_function_dispatcher(win, event.op);
       switch (rc_disp)
       {
         case FR_NO_ACTION:
@@ -353,6 +358,8 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
     FREE(&wdata.tempbuf);
   } while (rc == 1);
   mutt_curses_set_cursor(cursor);
+
+  msgcont_pop_window();
 
   win->help_data = old_help;
   win->help_menu = old_menu;

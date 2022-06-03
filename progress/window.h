@@ -1,6 +1,6 @@
 /**
  * @file
- * Enter functions
+ * Progress Bar Window
  *
  * @authors
  * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
@@ -20,37 +20,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_ENTER_FUNCTIONS_H
-#define MUTT_ENTER_FUNCTIONS_H
+#ifndef MUTT_PROGRESS_WINDOW
+#define MUTT_PROGRESS_WINDOW
 
+#include <stddef.h>
 #include <stdbool.h>
 
-struct EnterWindowData;
 struct MuttWindow;
 
-/**
- * @defgroup enter_function_api Enter Function API
- *
- * Prototype for a Enter Function
- *
- * @param wdata  Enter Window data
- * @param op     Operation to perform, e.g. OP_ENTER_NEXT
- * @retval enum #FunctionRetval
- */
-typedef int (*enter_function_t)(struct EnterWindowData *wdata, int op);
+struct MuttWindow *progress_window_new(const char *msg, size_t size, size_t size_inc, size_t time_inc, bool is_bytes);
+bool               progress_window_update(struct MuttWindow *win, size_t pos, int percent);
 
-/**
- * struct EnterFunction - A NeoMutt function
- */
-struct EnterFunction
-{
-  int op;                    ///< Op code, e.g. OP_SEARCH
-  enter_function_t function; ///< Function to call
-};
-
-extern struct EnterFunction EnterFunctions[];
-
-int enter_function_dispatcher(struct MuttWindow *win, int op);
-bool self_insert(struct EnterWindowData *wdata, int ch);
-
-#endif /* MUTT_ENTER_FUNCTIONS_H */
+#endif /* MUTT_PROGRESS_WINDOW */
