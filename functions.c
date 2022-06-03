@@ -323,7 +323,7 @@ const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   { "previous-entry",                OP_PREV_ENTRY },
   { "previous-line",                 OP_PREV_LINE },
   { "previous-page",                 OP_PREV_PAGE },
-  { "refresh",                       OP_REDRAW },
+  { "redraw-screen",                 OP_REDRAW },
   { "search",                        OP_SEARCH },
   { "search-next",                   OP_SEARCH_NEXT },
   { "search-opposite",               OP_SEARCH_OPPOSITE },
@@ -338,6 +338,7 @@ const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   { "what-key",                      OP_WHAT_KEY },
   // Deprecated
   { "error-history",                 OP_SHOW_LOG_MESSAGES },
+  { "refresh",                       OP_REDRAW },
   { NULL, 0 },
 };
 
