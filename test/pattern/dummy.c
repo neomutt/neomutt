@@ -26,9 +26,11 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "mutt/string2.h"
 #include "core/lib.h"
 #include "history/lib.h"
 #include "menu/lib.h"
+#include "newmail/lib.h"
 #include "mview.h"
 
 struct Address;
@@ -93,15 +95,9 @@ bool OptNoCurses;
 bool OptSearchInvalid;
 bool OptSearchReverse;
 
-typedef uint8_t MuttFormatFlags;
 typedef uint16_t CompletionFlags;
 typedef uint16_t PagerFlags;
 typedef uint8_t SelectFileFlags;
-
-typedef const char *(format_t) (char *buf, size_t buflen, size_t col, int cols,
-                                char op, const char *src, const char *prec,
-                                const char *if_str, const char *else_str,
-                                intptr_t data, MuttFormatFlags flags);
 
 struct Address *alias_reverse_lookup(const struct Address *addr)
 {
@@ -213,6 +209,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
 void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src,
                          format_t *callback, intptr_t data, MuttFormatFlags flags)
 {
+  mutt_str_copy(buf, src, buflen);
 }
 
 void menu_pop_current(struct Menu *menu)

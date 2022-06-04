@@ -634,6 +634,10 @@ NEOMUTT_TEST_LIST
 #ifdef USE_ZSTD
   NEOMUTT_TEST_ITEM(test_compress_zstd)
 #endif
+#ifdef DEVEL_NEW_MAIL
+  NEOMUTT_TEST_ITEM(test_new_mail_observer)
+  NEOMUTT_TEST_ITEM(test_new_mail_format_str)
+#endif
 #if defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) || defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_ROCKSDB) || defined(HAVE_TC) || defined(HAVE_TDB)
   NEOMUTT_TEST_ITEM(test_store_store)
 #endif
@@ -685,6 +689,10 @@ NEOMUTT_TEST_ITEM(test_compress_common)
 #endif
 #ifdef USE_ZSTD
   NEOMUTT_TEST_ITEM(test_compress_zstd)
+#endif
+#ifdef DEVEL_NEW_MAIL
+  NEOMUTT_TEST_ITEM(test_new_mail_observer)
+  NEOMUTT_TEST_ITEM(test_new_mail_format_str)
 #endif
 #if defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) || defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_ROCKSDB) || defined(HAVE_TC) || defined(HAVE_TDB)
   NEOMUTT_TEST_ITEM(test_store_store)

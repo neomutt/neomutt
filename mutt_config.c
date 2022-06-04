@@ -371,6 +371,9 @@ static struct ConfigDef MainVars[] = {
   { "new_mail_command", DT_STRING|DT_COMMAND, 0, 0, NULL,
     "External command to run when new mail arrives"
   },
+  { "devel_new_mail_command", DT_STRING|DT_COMMAND, 0, 0, NULL,
+    "External command to run when new mail arrives (in development, clashes with new_mail_command)"
+  },
   { "pipe_decode", DT_BOOL, false, 0, NULL,
     "Decode the message when piping it"
   },

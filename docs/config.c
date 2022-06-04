@@ -1010,6 +1010,17 @@
 ** or when you save it to another folder.
 */
 
+{ "devel_new_mail_command", DT_COMMAND, 0 },
+/*
+** .pp
+** If \fIset\fP, NeoMutt will call this command after a new message is received.
+** The following \fCprintf(3)\fP-like sequences are supported: 
+** .dl 
+** .dt %n  .dd Mailbox name
+** .dt %f  .dd Mailbox folder path
+** .de
+*/
+
 { "digest_collapse", DT_BOOL, true },
 /*
 ** .pp

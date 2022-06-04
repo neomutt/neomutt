@@ -624,6 +624,21 @@ $(PWD)/ncrypt:
 	$(MKDIR_P) $(PWD)/ncrypt
 
 ###############################################################################
+# libnewmail
+@if DEVEL_NEW_MAIL
+LIBNEWMAIL=	libnewmail.a
+LIBNEWMAILOBJS=	newmail/new_mail.o
+CLEANFILES+=	$(LIBNEWMAIL) $(LIBNEWMAILOBJS)
+ALLOBJS+=	$(LIBNEWMAILOBJS)
+
+$(LIBNEWMAIL): $(PWD)/newmail $(LIBNEWMAILOBJS)
+	$(AR) cr $@ $(LIBNEWMAILOBJS)
+	$(RANLIB) $@
+$(PWD)/newmail:
+	$(MKDIR_P) $(PWD)/newmail
+@endif
+
+###############################################################################
 # libnntp
 LIBNNTP=	libnntp.a
 LIBNNTPOBJS=	nntp/browse.o nntp/config.o nntp/complete.o nntp/newsrc.o \
@@ -853,7 +868,7 @@ MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) \
 		$(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
 		$(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) \
 		$(LIBCORE) $(LIBPARSE) $(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) \
-		$(LIBDEBUG) $(LIBMUTT)
+		$(LIBDEBUG) $(LIBNEWMAIL) $(LIBMUTT)
 
 # neomutt
 $(NEOMUTT): $(GENERATED) $(NEOMUTTOBJS) $(MUTTLIBS)

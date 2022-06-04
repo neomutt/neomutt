@@ -125,6 +125,7 @@ set valid_options {
   debug-notify=0            => "DEBUG: Enable Notifications dump"
   debug-queue=0             => "DEBUG: Enable TAILQ debugging"
   debug-window=0            => "DEBUG: Enable windows dump"
+  devel-new-mail=0          => "Enable new work-in-progress system notifications"
 }
 
 set deprecated_options  {
@@ -168,7 +169,7 @@ if {1} {
   # Keep sorted, please.
   foreach opt {
     asan autocrypt bdb compile-commands coverage debug-backtrace debug-color debug-email
-    debug-graphviz debug-notify debug-queue debug-window doc
+    debug-graphviz devel-new-mail debug-notify debug-queue debug-window doc
     everything fmemopen full-doc fuzzing gdbm gnutls gpgme gsasl gss homespool
     idn2 include-path-in-cflags inotify kyotocabinet lmdb locales-fix lua lz4
     mixmaster nls notmuch pcre2 pgp qdbm rocksdb sasl smime sqlite ssl
@@ -1056,6 +1057,11 @@ if {[get-define want-debug-queue]} {
 # Windows dump
 if {[get-define want-debug-window]} {
   define USE_DEBUG_WINDOW 1
+}
+
+# WIP notifications implementation
+if {[get-define want-devel-new-mail]} {
+  define DEVEL_NEW_MAIL 1
 }
 
 ###############################################################################

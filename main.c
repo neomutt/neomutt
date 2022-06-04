@@ -159,6 +159,7 @@
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
+#include "newmail/lib.h"
 #include "postpone/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
@@ -920,6 +921,10 @@ main
   notify_observer_add(NeoMutt->notify, NT_CONFIG, main_hist_observer, NULL);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, main_log_observer, NULL);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, main_config_observer, NULL);
+
+#ifdef DEVEL_NEW_MAIL
+  notify_observer_add(NeoMutt->notify, NT_MAILBOX, new_mail_observer, NULL);
+#endif
 
   if (sendflags & SEND_POSTPONED)
   {

@@ -1811,6 +1811,12 @@ enum MxStatus mx_mbox_check_stats(struct Mailbox *m, uint8_t flags)
     struct EventMailbox ev_m = { m };
     notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
   }
+  if (rc == MX_STATUS_NEW_MAIL && !m->notified)
+  {
+    struct EventMailbox ev_m = { m };
+    notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_NEW_MAIL, &ev_m);
+    m->notified = true;
+  }
 
   return rc;
 }
