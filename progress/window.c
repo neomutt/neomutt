@@ -293,6 +293,7 @@ struct MuttWindow *progress_window_new(const char *msg, size_t size, size_t size
     mutt_str_pretty_size(wdata->pretty_size, sizeof(wdata->pretty_size), size);
 
   win->wdata = wdata;
+  win->wdata_free = progress_wdata_free;
 
   return win;
 }

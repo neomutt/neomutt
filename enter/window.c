@@ -232,20 +232,11 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
     // clang-format on
     win->wdata = &wdata;
 
-    if (wdata.state->wbuf)
-    {
-      /* Coming back after return 1 */
-      wdata.redraw = ENTER_REDRAW_LINE;
-      wdata.first = false;
-    }
-    else
-    {
-      /* Initialise wbuf from buf */
-      wdata.state->wbuflen = 0;
-      wdata.state->lastchar = mutt_mb_mbstowcs(&wdata.state->wbuf,
-                                               &wdata.state->wbuflen, 0, wdata.buf);
-      wdata.redraw = ENTER_REDRAW_INIT;
-    }
+    /* Initialise wbuf from buf */
+    wdata.state->wbuflen = 0;
+    wdata.state->lastchar = mutt_mb_mbstowcs(&wdata.state->wbuf,
+                                             &wdata.state->wbuflen, 0, wdata.buf);
+    wdata.redraw = ENTER_REDRAW_INIT;
 
     if (wdata.flags & MUTT_COMP_FILE)
       wdata.hclass = HC_FILE;
@@ -366,6 +357,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
   mutt_window_move(win, 0, 0);
   mutt_window_clearline(win, 0);
   window_set_focus(old_focus);
+  mutt_window_free(&win);
 
   if (rc == 0)
     mutt_buffer_fix_dptr(buf);
