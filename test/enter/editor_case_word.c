@@ -38,13 +38,13 @@ void test_editor_case_word(void)
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     TEST_CHECK(editor_case_word(es, EC_CAPITALIZE) == FR_ERROR);
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 11);
@@ -56,11 +56,11 @@ void test_editor_case_word(void)
     char buf[64];
     mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
     TEST_CHECK(mutt_str_equal(buf, "Test string"));
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "TEST string");
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 11);
@@ -72,11 +72,11 @@ void test_editor_case_word(void)
     char buf[64];
     mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
     TEST_CHECK(mutt_str_equal(buf, "Test string"));
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 11);
@@ -88,11 +88,11 @@ void test_editor_case_word(void)
     char buf[64];
     mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
     TEST_CHECK(mutt_str_equal(buf, "TEST string"));
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 11);
@@ -105,11 +105,11 @@ void test_editor_case_word(void)
     char buf[64];
     mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
     TEST_CHECK(mutt_str_equal(buf, "test stRING"));
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test     string    ");
     TEST_CHECK(editor_buffer_get_lastchar(es) == 19);
     TEST_CHECK(editor_buffer_get_cursor(es) == 19);
@@ -122,11 +122,11 @@ void test_editor_case_word(void)
     char buf[64];
     mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
     TEST_CHECK(mutt_str_equal(buf, "test     STRING    "));
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 11);
@@ -138,11 +138,11 @@ void test_editor_case_word(void)
     char buf[64];
     mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
     TEST_CHECK(mutt_str_equal(buf, "TEST string"));
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "TEST STRING");
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 11);
@@ -154,6 +154,6 @@ void test_editor_case_word(void)
     char buf[64];
     mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
     TEST_CHECK(mutt_str_equal(buf, "test STRING"));
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 }

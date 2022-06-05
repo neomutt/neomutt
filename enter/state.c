@@ -35,10 +35,10 @@ const int BufferStepSize = 128;
 #define ROUND_UP(NUM, STEP) ((((NUM) + (STEP) -1) / (STEP)) * (STEP))
 
 /**
- * mutt_enter_state_free - Free an EnterState
+ * enter_state_free - Free an EnterState
  * @param[out] ptr EnterState to free
  */
-void mutt_enter_state_free(struct EnterState **ptr)
+void enter_state_free(struct EnterState **ptr)
 {
   if (!ptr || !*ptr)
     return;
@@ -50,11 +50,11 @@ void mutt_enter_state_free(struct EnterState **ptr)
 }
 
 /**
- * mutt_enter_state_resize - Make the buffer bigger
+ * enter_state_resize - Make the buffer bigger
  * @param es  State of the Enter buffer
  * @param num Number of wide characters
  */
-void mutt_enter_state_resize(struct EnterState *es, size_t num)
+void enter_state_resize(struct EnterState *es, size_t num)
 {
   if (!es)
     return;
@@ -68,14 +68,14 @@ void mutt_enter_state_resize(struct EnterState *es, size_t num)
 }
 
 /**
- * mutt_enter_state_new - Create a new EnterState
+ * enter_state_new - Create a new EnterState
  * @retval ptr New EnterState
  */
-struct EnterState *mutt_enter_state_new(void)
+struct EnterState *enter_state_new(void)
 {
   struct EnterState *es = mutt_mem_calloc(1, sizeof(struct EnterState));
 
-  mutt_enter_state_resize(es, 1);
+  enter_state_resize(es, 1);
 
   return es;
 }

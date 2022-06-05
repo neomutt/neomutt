@@ -38,13 +38,13 @@ void test_editor_kill_eol(void)
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     TEST_CHECK(editor_kill_eol(es) == FR_SUCCESS);
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 11);
@@ -53,11 +53,11 @@ void test_editor_kill_eol(void)
     TEST_CHECK(editor_kill_eol(es) == FR_SUCCESS);
     TEST_CHECK(editor_buffer_get_lastchar(es) == 0);
     TEST_CHECK(editor_buffer_get_cursor(es) == 0);
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 11);
@@ -66,17 +66,17 @@ void test_editor_kill_eol(void)
     TEST_CHECK(editor_kill_eol(es) == FR_SUCCESS);
     TEST_CHECK(editor_buffer_get_lastchar(es) == 4);
     TEST_CHECK(editor_buffer_get_cursor(es) == 4);
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 11);
     TEST_CHECK(editor_kill_eol(es) == FR_SUCCESS);
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 11);
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 }

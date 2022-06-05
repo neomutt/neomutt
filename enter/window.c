@@ -195,7 +195,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
   int rc = 0;
   int col = 0;
 
-  struct EnterState *state = mutt_enter_state_new();
+  struct EnterState *state = enter_state_new();
 
   const struct Mapping *old_help = win->help_data;
   int old_menu = win->help_menu;
@@ -364,7 +364,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
   else
     mutt_buffer_reset(buf);
 
-  mutt_enter_state_free(&state);
+  enter_state_free(&state);
 
   OptIgnoreMacroEvents = old_oime;
   return rc;

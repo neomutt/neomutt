@@ -38,35 +38,35 @@ void test_editor_transpose_chars(void)
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     TEST_CHECK(editor_transpose_chars(es) == FR_ERROR);
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "t");
     TEST_CHECK(editor_buffer_get_lastchar(es) == 1);
     TEST_CHECK(editor_buffer_get_cursor(es) == 1);
     TEST_CHECK(editor_transpose_chars(es) == FR_ERROR);
     TEST_CHECK(editor_buffer_get_lastchar(es) == 1);
     TEST_CHECK(editor_buffer_get_cursor(es) == 1);
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 11);
     TEST_CHECK(editor_transpose_chars(es) == FR_SUCCESS);
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 11);
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     editor_buffer_set_cursor(es, 0);
@@ -74,11 +74,11 @@ void test_editor_transpose_chars(void)
     TEST_CHECK(editor_transpose_chars(es) == FR_SUCCESS);
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 2);
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "apple 义勇军 banana");
     TEST_CHECK(editor_buffer_get_lastchar(es) == 16);
     TEST_CHECK(editor_buffer_get_cursor(es) == 16);
@@ -87,6 +87,6 @@ void test_editor_transpose_chars(void)
     TEST_CHECK(editor_transpose_chars(es) == FR_SUCCESS);
     TEST_CHECK(editor_buffer_get_lastchar(es) == 16);
     TEST_CHECK(editor_buffer_get_cursor(es) == 8);
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 }

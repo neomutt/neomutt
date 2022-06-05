@@ -38,8 +38,8 @@ struct EnterState
   size_t begin;    ///< Position of the start
 };
 
-void               mutt_enter_state_free(struct EnterState **ptr);
-struct EnterState *mutt_enter_state_new(void);
-void               mutt_enter_state_resize(struct EnterState *es, size_t num);
+void               enter_state_free(struct EnterState **ptr);
+struct EnterState *enter_state_new(void);
+void               enter_state_resize(struct EnterState *es, size_t num);
 
 #endif /* MUTT_ENTER_STATE_H */

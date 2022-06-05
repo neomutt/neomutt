@@ -38,22 +38,22 @@ void test_editor_delete_char(void)
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     TEST_CHECK(editor_delete_char(es) == FR_ERROR);
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 11);
     TEST_CHECK(editor_delete_char(es) == FR_ERROR);
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
     TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
     TEST_CHECK(editor_buffer_get_cursor(es) == 11);
@@ -61,11 +61,11 @@ void test_editor_delete_char(void)
     TEST_CHECK(editor_delete_char(es) == FR_SUCCESS);
     TEST_CHECK(editor_buffer_get_lastchar(es) == 10);
     TEST_CHECK(editor_buffer_get_cursor(es) == 3);
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "义勇军");
     TEST_CHECK(editor_buffer_get_lastchar(es) == 3);
     TEST_CHECK(editor_buffer_get_cursor(es) == 3);
@@ -74,11 +74,11 @@ void test_editor_delete_char(void)
     TEST_CHECK(editor_delete_char(es) == FR_SUCCESS);
     TEST_CHECK(editor_buffer_get_lastchar(es) == 2);
     TEST_CHECK(editor_buffer_get_cursor(es) == 1);
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 
   {
-    struct EnterState *es = mutt_enter_state_new();
+    struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "I ❤️");
     TEST_CHECK(editor_buffer_get_lastchar(es) == 4);
     TEST_CHECK(editor_buffer_get_cursor(es) == 4);
@@ -87,6 +87,6 @@ void test_editor_delete_char(void)
     TEST_CHECK(editor_delete_char(es) == FR_SUCCESS);
     TEST_CHECK(editor_buffer_get_lastchar(es) == 2);
     TEST_CHECK(editor_buffer_get_cursor(es) == 2);
-    mutt_enter_state_free(&es);
+    enter_state_free(&es);
   }
 }

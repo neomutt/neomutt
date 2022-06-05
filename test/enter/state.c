@@ -31,13 +31,13 @@
 
 void test_editor_state(void)
 {
-  struct EnterState *es = mutt_enter_state_new();
+  struct EnterState *es = enter_state_new();
 
-  mutt_enter_state_resize(NULL, 16);
+  enter_state_resize(NULL, 16);
 
-  mutt_enter_state_resize(es, 16);
+  enter_state_resize(es, 16);
 
-  mutt_enter_state_free(&es);
+  enter_state_free(&es);
 
-  mutt_enter_state_free(NULL);
+  enter_state_free(NULL);
 }
