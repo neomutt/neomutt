@@ -241,7 +241,7 @@ void mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen)
   size_t k;
 
   /* First convert directly into the destination buffer */
-  for (; slen && dlen >= MB_LEN_MAX; dest += k, dlen -= k, src++, slen--)
+  for (; slen && (dlen >= MB_LEN_MAX); dest += k, dlen -= k, src++, slen--)
   {
     k = wcrtomb(dest, *src, &mbstate);
     if (k == (size_t) (-1))

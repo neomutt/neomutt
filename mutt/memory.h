@@ -30,6 +30,9 @@
 #define MAX(a, b) (((a) < (b)) ? (b) : (a))
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 
+#undef ROUND_UP
+#define ROUND_UP(NUM, STEP) ((((NUM) + (STEP) -1) / (STEP)) * (STEP))
+
 #define mutt_array_size(x) (sizeof(x) / sizeof((x)[0]))
 
 void *mutt_mem_calloc(size_t nmemb, size_t size);

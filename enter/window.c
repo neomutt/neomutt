@@ -173,7 +173,6 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
  * @param[in]  m        Mailbox
  * @param[out] files    List of files selected
  * @param[out] numfiles Number of files selected
- * @retval 1  Redraw the screen and call the function again
  * @retval 0  Selection made
  * @retval -1 Aborted
  */
@@ -306,12 +305,18 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
 
       if (event.op == OP_NULL)
       {
+        mutt_debug(LL_DEBUG1, "Got char %c (0x%02x)\n", event.ch, event.ch);
         if (self_insert(&wdata, event.ch))
         {
           rc = 0;
           goto bye;
         }
         continue;
+      }
+      else
+      {
+        mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(event.op),
+                   event.op);
       }
 
       wdata.first = false;

@@ -254,7 +254,7 @@ int editor_kill_eow(struct EnterState *es)
   if (!es)
     return FR_ERROR;
 
-  /* wdata->first skip over whitespace */
+  /* first skip over whitespace */
   size_t i;
   for (i = es->curpos; (i < es->lastchar) && iswspace(es->wbuf[i]); i++)
   {

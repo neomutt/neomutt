@@ -30,10 +30,6 @@
 #include "mutt/lib.h"
 #include "state.h"
 
-const int BufferStepSize = 128;
-
-#define ROUND_UP(NUM, STEP) ((((NUM) + (STEP) -1) / (STEP)) * (STEP))
-
 /**
  * enter_state_free - Free an EnterState
  * @param[out] ptr EnterState to free
