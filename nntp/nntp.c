@@ -2022,7 +2022,7 @@ int nntp_active_fetch(struct NntpAccountData *adata, bool mark_new)
 int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
 {
   struct NntpMboxData tmp_mdata = { 0 };
-  time_t now;
+  time_t now = 0;
   char buf[1024];
   char *msg = _("Checking for new newsgroups...");
   unsigned int i;

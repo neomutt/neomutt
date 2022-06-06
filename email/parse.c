@@ -922,7 +922,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, const char *na
       }
       else if (mutt_istr_equal(name + 1, "eceived"))
       {
-        if (e && !e->received)
+        if (e && (e->received == 0))
         {
           char *d = strrchr(body, ';');
           if (d)
@@ -1193,7 +1193,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
     if (!p || (*p != ':'))
     {
       char return_path[1024];
-      time_t t;
+      time_t t = 0;
 
       /* some bogus MTAs will quote the original "From " line */
       if (mutt_str_startswith(line, ">From "))
@@ -1201,7 +1201,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
       else if (is_from(line, return_path, sizeof(return_path), &t))
       {
         /* MH sometimes has the From_ line in the middle of the header! */
-        if (e && !e->received)
+        if (e && (e->received == 0))
           e->received = t - mutt_date_local_tz(t);
         continue;
       }

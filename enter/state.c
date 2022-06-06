@@ -62,7 +62,7 @@ void enter_state_resize(struct EnterState *es, size_t num)
   if (num <= es->wbuflen)
     return;
 
-  num = ROUND_UP(num, 128);
+  num = ROUND_UP(num + 4, 128);
   es->wbuflen = num;
   mutt_mem_realloc(&es->wbuf, num * sizeof(wchar_t));
 }

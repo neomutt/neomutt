@@ -619,7 +619,7 @@ static int active_get_cache(struct NntpAccountData *adata)
 {
   char buf[8192];
   char file[4096];
-  time_t t;
+  time_t t = 0;
 
   cache_expand(file, sizeof(file), &adata->conn->account, ".active");
   mutt_debug(LL_DEBUG1, "Parsing %s\n", file);

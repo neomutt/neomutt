@@ -849,11 +849,11 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_DATE:
       if (pat->dynamic)
         match_update_dynamic_date(pat);
-      return pat->pat_not ^ (e->date_sent >= pat->min && e->date_sent <= pat->max);
+      return pat->pat_not ^ ((e->date_sent >= pat->min) && (e->date_sent <= pat->max));
     case MUTT_PAT_DATE_RECEIVED:
       if (pat->dynamic)
         match_update_dynamic_date(pat);
-      return pat->pat_not ^ (e->received >= pat->min && e->received <= pat->max);
+      return pat->pat_not ^ ((e->received >= pat->min) && (e->received <= pat->max));
     case MUTT_PAT_BODY:
     case MUTT_PAT_HEADER:
     case MUTT_PAT_WHOLE_MSG:

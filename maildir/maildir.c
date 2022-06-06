@@ -275,7 +275,7 @@ int maildir_commit_message(struct Mailbox *m, struct Message *msg, struct Email 
        * message was received.  Currently this is only set when copying
        * messages between mailboxes, so we test to ensure that it is
        * actually set.  */
-      if (msg->received)
+      if (msg->received != 0)
       {
         struct utimbuf ut;
         int rc_utime;
@@ -895,7 +895,7 @@ struct Email *maildir_parse_stream(enum MailboxType type, FILE *fp,
   }
   e->env = mutt_rfc822_read_header(fp, e, false, false);
 
-  if (!e->received)
+  if (e->received == 0)
     e->received = e->date_sent;
 
   /* always update the length since we have fresh information available. */

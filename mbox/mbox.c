@@ -191,7 +191,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
   char return_path[1024];
   int count = 0;
   int lines;
-  time_t t;
+  time_t t = 0;
   LOFF_T loc, tmploc;
   struct Email *e = NULL;
   struct stat st = { 0 };
@@ -259,7 +259,9 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
         }
       }
       else
+      {
         e->received = t - mutt_date_local_tz(t);
+      }
 
       e->env = mutt_rfc822_read_header(adata->fp, e, false, false);
 
@@ -355,7 +357,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
   struct stat st = { 0 };
   char buf[8192], return_path[256];
   struct Email *e_cur = NULL;
-  time_t t;
+  time_t t = 0;
   int count = 0, lines = 0;
   LOFF_T loc;
   struct Progress *progress = NULL;
