@@ -378,8 +378,8 @@ NEOMUTT_OBJS	= test/neo/neomutt_account_add.o \
 		  test/neo/neomutt_new.o
 
 @if DEVEL_NEW_MAIL
-NEW_MAIL_OBJS	= test/new_mail/new_mail_observer.o \
-		  test/new_mail/new_mail_format_str.o
+NEW_MAIL_OBJS	= test/newmail/new_mail_observer.o \
+		  test/newmail/new_mail_format_str.o
 @endif
 
 NOTIFY_OBJS	= test/notify/notify_free.o \
@@ -601,7 +601,7 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/history $(PWD)/test/idna $(PWD)/test/list \
 		  $(PWD)/test/logging $(PWD)/test/mailbox $(PWD)/test/mapping \
 		  $(PWD)/test/mbyte $(PWD)/test/md5 $(PWD)/test/memory \
-		  $(PWD)/test/neo $(PWD)/test/new_mail $(PWD)/test/notify $(PWD)/test/notmuch \
+		  $(PWD)/test/neo $(PWD)/test/newmail $(PWD)/test/notify $(PWD)/test/notmuch \
 		  $(PWD)/test/parameter $(PWD)/test/parse $(PWD)/test/path \
 		  $(PWD)/test/pattern $(PWD)/test/pool $(PWD)/test/prex \
 		  $(PWD)/test/regex $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 \
