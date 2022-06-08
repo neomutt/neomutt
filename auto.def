@@ -1061,7 +1061,7 @@ if {[get-define want-debug-window]} {
 
 # WIP notifications implementation
 if {[get-define want-devel-new-mail]} {
-  define DEVEL_NEW_MAIL 1
+  define USE_DEVEL_NEW_MAIL 1
 }
 
 ###############################################################################

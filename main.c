@@ -922,7 +922,7 @@ main
   notify_observer_add(NeoMutt->notify, NT_CONFIG, main_log_observer, NULL);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, main_config_observer, NULL);
 
-#ifdef DEVEL_NEW_MAIL
+#ifdef USE_DEVEL_NEW_MAIL
   notify_observer_add(NeoMutt->notify, NT_MAILBOX, new_mail_observer, NULL);
 #endif
 

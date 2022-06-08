@@ -625,7 +625,7 @@ $(PWD)/ncrypt:
 
 ###############################################################################
 # libnewmail
-@if DEVEL_NEW_MAIL
+@if USE_DEVEL_NEW_MAIL
 LIBNEWMAIL=	libnewmail.a
 LIBNEWMAILOBJS=	newmail/new_mail.o
 CLEANFILES+=	$(LIBNEWMAIL) $(LIBNEWMAILOBJS)

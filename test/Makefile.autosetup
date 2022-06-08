@@ -377,7 +377,7 @@ NEOMUTT_OBJS	= test/neo/neomutt_account_add.o \
 		  test/neo/neomutt_mailboxlist_get_all.o \
 		  test/neo/neomutt_new.o
 
-@if DEVEL_NEW_MAIL
+@if USE_DEVEL_NEW_MAIL
 NEW_MAIL_OBJS	= test/newmail/new_mail_observer.o \
 		  test/newmail/new_mail_format_str.o
 @endif
@@ -664,7 +664,7 @@ TEST_OBJS	= test/main.o test/common.o \
 		  $(THREAD_OBJS) \
 		  $(URL_OBJS)
 
-@if DEVEL_NEW_MAIL
+@if USE_DEVEL_NEW_MAIL
 TEST_OBJS	+= $(NEW_MAIL_OBJS)
 @endif
 

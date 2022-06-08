@@ -634,7 +634,7 @@ NEOMUTT_TEST_LIST
 #ifdef USE_ZSTD
   NEOMUTT_TEST_ITEM(test_compress_zstd)
 #endif
-#ifdef DEVEL_NEW_MAIL
+#ifdef USE_DEVEL_NEW_MAIL
   NEOMUTT_TEST_ITEM(test_new_mail_observer)
   NEOMUTT_TEST_ITEM(test_new_mail_format_str)
 #endif
@@ -690,7 +690,7 @@ NEOMUTT_TEST_ITEM(test_compress_common)
 #ifdef USE_ZSTD
   NEOMUTT_TEST_ITEM(test_compress_zstd)
 #endif
-#ifdef DEVEL_NEW_MAIL
+#ifdef USE_DEVEL_NEW_MAIL
   NEOMUTT_TEST_ITEM(test_new_mail_observer)
   NEOMUTT_TEST_ITEM(test_new_mail_format_str)
 #endif
