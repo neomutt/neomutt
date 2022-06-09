@@ -13,7 +13,7 @@ install-contrib:
 			$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir)/$$d || exit 1; \
 		done \
 	done
-	chmod +x $(DESTDIR)$(docdir)/keybase/*.sh
+	find $(DESTDIR)$(docdir) \( -name "*.sh" -o -name "*.py" \) -exec chmod a+x {} \;
 
 uninstall-contrib:
 	for d in $(CONTRIB_DIRS); do \
