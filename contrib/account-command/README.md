@@ -7,6 +7,7 @@ than storing these sensitive data in the config files using `imap_pass`,
 # Supported password managers
 
 - Mac OSX Keychain (Python 3 required)
+- GPG-based JSON database
 
 ## Mac OSX Keychain
 
@@ -109,3 +110,61 @@ Keychain, any other program under your system's account will be able to run
 If you want to be asked for passwords again, lock the Keychain in Keychain
 Access. This is also useful if you once pressed "Deny" when `security` wanted
 to retrieve data from the Keychain.
+
+## GPG-based JSON database
+
+### Prerequisites
+
+- [gnupg](https://gnupg.org)
+- a private key, which we're assume belongs to me@example.com
+- [jq](https://stedolan.github.io/jq/)
+
+### Generate your credentials database
+
+Create a `credentials.json` JSON file containing your credentials.
+The structure is an array of objects.
+Each object represents an account.
+
+```json
+[
+  { "host": "imap.gmail.com",    "user": "me@gmail.com",    "pass": "s3cr3t" },
+  { "host": "imap.fastmail.com", "user": "me@fastmail.com", "pass": "foob4r" },
+  { "host": "smtp.fastmail.com", "user": "me@fastmail.com", "pass": "foob4r" }
+]
+```
+
+### Encrypt the credentials database
+
+Encrypt your credentials file using gpg and get rid of the original file.
+
+```sh
+$ gpg -r me@example.com -e credentials.json && rm credentials.json
+```
+
+This will generate a `credentials.json.gpg` encrypted file.
+
+### Account command
+
+Place this shell script, `credentials.sh`, alongside your `credentials.json.gpg` file.
+You can now point the NeoMutt `account_command` setting to this file.
+
+
+```sh
+#!/bin/sh
+
+host=""
+user=""
+
+while [ $# -ne 0 ]; do
+    case "$1" in
+        "--hostname") shift; host="$1";;
+        "--username") shift; user="$1";;
+    esac
+    shift
+done
+
+[ "$host" = "" ] || [ "$user" = "" ] && exit 1
+
+query=$(printf '.host == "%s" and .user == "%s"' "$host" "$user")
+gpg -qd credentials.json.gpg | jq -r ".[] | select($query) | .pass"
+```
