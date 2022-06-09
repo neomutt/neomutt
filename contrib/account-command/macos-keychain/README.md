@@ -85,7 +85,7 @@ and set your folder and smtp URLs accordingly, e.g.:
 ```
 set folder = "imaps://me@example.com@imap.example.com"
 set smtp_url = "smtps://me@example.com@smtp.example.com"
-set account_command = "/usr/share/doc/neomutt/account-command/keychain.py"
+set account_command = "/usr/share/doc/neomutt/account-command/keychain/keychain.py"
 ```
 
 From now on, your passwords will be queried through the OSX Keychain.
