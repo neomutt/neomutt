@@ -34,5 +34,8 @@ This will generate a `credentials.json.gpg` encrypted file.
 
 ### Setup your account command
 
-Place the `credentials.sh` shell script alongside your `credentials.json.gpg` file.
-You can now point the NeoMutt `account_command` setting to this file.
+In your NeoMUtt configuration file, be sure to remove any `*_pass` variables and setup your account command as follows:
+
+```
+set account_command = "/usr/share/doc/neomutt/account-command/gpg-json/credentials.sh --credfile /path/to/your/credentials.json.gpg"
+```
