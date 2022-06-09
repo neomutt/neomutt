@@ -5,7 +5,7 @@ all-contrib:
 clean-contrib:
 
 install-contrib:
-	for d in $(CONTRIB_DIRS) $(ACC_CMD_DIRS); do \
+	for d in $(CONTRIB_DIRS); do \
 		echo "Creating directory $(DESTDIR)$(docdir)/$$d"; \
 		$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/$$d || exit 1; \
 		for f in $$(find $(SRCDIR)/contrib/$$d -type f); do \
