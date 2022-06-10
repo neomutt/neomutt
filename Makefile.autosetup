@@ -922,6 +922,7 @@ coverage: all test
 # dedicated all-, clean-, install-, and uninstall- targets.
 @include @srcdir@/po/Makefile.autosetup
 @include @srcdir@/contrib/Makefile.autosetup
+@include @srcdir@/data/Makefile.autosetup
 @include @srcdir@/docs/Makefile.autosetup
 @if ENABLE_UNIT_TESTS
 @include @srcdir@/test/Makefile.autosetup

@@ -1,0 +1,21 @@
+DATA_DIRS=  colorschemes logo account-command \
+	    account-command/gpg-json account-command/macos-keychain
+all-data:
+
+clean-data:
+
+install-data:
+	for d in $(DATA_DIRS); do \
+		echo "Creating directory $(DESTDIR)$(datadir)/$$d"; \
+		$(INSTALL) -d -m 755 $(DESTDIR)$(datadir)/$$d || exit 1; \
+		for f in $$(find $(SRCDIR)/data/$$d -maxdepth 1 -type f); do \
+			echo "Installing $$f"; \
+			$(INSTALL) -m 644 $$f $(DESTDIR)$(datadir)/$$d || exit 1; \
+		done \
+	done
+	find $(DESTDIR)$(datadir) \( -name "*.sh" -o -name "*.py" \) -exec chmod a+x {} \;
+
+uninstall-data:
+	$(RM) $(DESTDIR)$(datadir)
+
+# vim: set ts=8 noexpandtab:
