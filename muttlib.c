@@ -785,7 +785,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
   FILE *fp_filter = NULL;
   char *recycler = NULL;
 
-  char src2[256];
+  char src2[1024];
   mutt_str_copy(src2, src, mutt_str_len(src) + 1);
   src = src2;
 
