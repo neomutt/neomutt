@@ -3003,10 +3003,6 @@
 **            of a \fCmultipart/signed\fP attachment when verifying it.
 ** .de
 ** .pp
-** For examples on how to configure these formats for the various versions
-** of PGP which are floating around, see the pgp and gpg sample configuration files in
-** the \fCsamples/\fP subdirectory which has been installed on your system
-** alongside the documentation.
 ** (PGP only)
 */
 
