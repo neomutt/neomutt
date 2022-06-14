@@ -12430,10 +12430,9 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
           tokyocabinet.
         </para>
          <para>
-          Take a look at the benchmark script provided in the following directory:
-          <ulink url="https://github.com/neomutt/neomutt/blob/main/contrib/hcache-bench">contrib/hcache-bench</ulink>
-          of the neomutt sources, there you can find a way of finding the
-          storage backend for your needs.
+          Take a look at the benchmark script provided in the following repository:
+           <ulink url="https://github.com/neomutt/contrib-hcache-benchmark">contrib-hcache-benchmark</ulink>.
+          There you can find a way of finding the storage backend for your needs.
         </para>
       </sect2>
 
