@@ -3419,15 +3419,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
       </para>
 
       <para>
-        To enable <quote>classic mode</quote>, ensure GPGME is disabled and use
-        the <literal>gpg.rc</literal> or <literal>smime.rc</literal> files that
-        come with NeoMutt.  These are typically installed under
-        <literal>/usr/local/share/doc/neomutt/samples/</literal>.  Source them, either
-        directly or by copying them to your .mutt directory and sourcing them.
-        Sourcing them directly from
-        <literal>/usr/local/share/doc/neomutt/samples/</literal> has the benefit of
-        automatically using fixes and security improvements to the command
-        invocations, and is recommended.
+        To enable <quote>classic mode</quote>, ensure GPGME is disabled.
       </para>
 
 <screen>
@@ -12430,10 +12422,9 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
           tokyocabinet.
         </para>
          <para>
-          Take a look at the benchmark script provided in the following directory:
-          <ulink url="https://github.com/neomutt/neomutt/blob/main/contrib/hcache-bench">contrib/hcache-bench</ulink>
-          of the neomutt sources, there you can find a way of finding the
-          storage backend for your needs.
+          Take a look at the benchmark script provided in the following repository:
+           <ulink url="https://github.com/neomutt/contrib-hcache-benchmark">contrib-hcache-benchmark</ulink>.
+          There you can find a way of finding the storage backend for your needs.
         </para>
       </sect2>
 
