@@ -24,7 +24,7 @@ jobs:
           - name: disabled
             options: --disable-idn --disable-nls --disable-pgp --disable-smime --ssl
           - name: everything
-            options: --autocrypt --bdb --disable-idn --fmemopen --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --mixmaster --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
+            options: --autocrypt --bdb --disable-idn --fmemopen --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --mixmaster --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
 
     steps:
     - name: Checkout Code
@@ -45,13 +45,16 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
 
     - name: Configure Neomutt
-      run: ./configure ${{ matrix.cfg.options }}
+      run: ./configure --full-doc ${{ matrix.cfg.options }}
 
     - name: Build Neomutt
       run: make -j 2
 
     - name: Neomutt Version
       run: ./neomutt -v
+
+    - name: Test Docs
+      run: make validate-docs
 
     - name: Build Tests
       run: make -j 2 test/neomutt-test
