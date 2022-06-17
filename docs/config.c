@@ -1273,7 +1273,7 @@
 ** .dt %l  .dd   .dd Number of hard links
 ** .dt %m  .dd * .dd Number of messages in the mailbox
 ** .dt %n  .dd * .dd Number of unread messages in the mailbox
-** .dt %N  .dd   .dd "N" if mailbox has new mail, blank otherwise
+** .dt %N  .dd   .dd "N" if mailbox has new mail, " " (space) otherwise
 ** .dt %s  .dd   .dd Size in bytes (see $formatstrings-size)
 ** .dt %t  .dd   .dd "*" if the file is tagged, blank otherwise
 ** .dt %u  .dd   .dd Owner name (or numeric uid, if missing)
@@ -2229,7 +2229,7 @@
 ** .dt %l  .dd   .dd Number of hard links
 ** .dt %m  .dd * .dd Number of messages in the mailbox
 ** .dt %n  .dd * .dd Number of unread messages in the mailbox
-** .dt %N  .dd   .dd "N" if mailbox has new mail, blank otherwise
+** .dt %N  .dd   .dd "N" if mailbox has new mail, " " (space) otherwise
 ** .dt %s  .dd   .dd Size in bytes (see $formatstrings-size)
 ** .dt %u  .dd   .dd Owner name (or numeric uid, if missing)
 ** .dt %>X .dd   .dd Right justify the rest of the string and pad with character "X"
@@ -4184,7 +4184,7 @@
 ** .dt %D .dd     .dd Descriptive name of the mailbox
 ** .dt %F .dd *   .dd Number of flagged messages in the mailbox
 ** .dt %L .dd * @ .dd Number of messages after limiting
-** .dt %n .dd     .dd 'N' if mailbox has new mail, ' ' (space) otherwise
+** .dt %n .dd     .dd "N" if mailbox has new mail, " " (space) otherwise
 ** .dt %N .dd *   .dd Number of unread messages in the mailbox (seen or unseen)
 ** .dt %o .dd *   .dd Number of old messages in the mailbox (unread, seen)
 ** .dt %r .dd *   .dd Number of read messages in the mailbox (read, seen)

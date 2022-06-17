@@ -335,7 +335,7 @@ static int calc_path_depth(const char *mbox, const char *delims, const char **la
  * | \%d     | Number of deleted messages
  * | \%F     | Number of Flagged messages in the mailbox
  * | \%L     | Number of messages after limiting
- * | \%n     | 'N' if mailbox has new mail, ' ' (space) otherwise
+ * | \%n     | "N" if mailbox has new mail, " " (space) otherwise
  * | \%N     | Number of unread messages in the mailbox
  * | \%o     | Number of old unread messages in the mailbox
  * | \%r     | Number of read messages in the mailbox

@@ -198,7 +198,7 @@ bool link_is_dir(const char *folder, const char *path)
  * | \%i     | Description of the folder
  * | \%l     | Number of hard links
  * | \%m     | Number of messages in the mailbox
- * | \%N     | N if mailbox has new mail, blank otherwise
+ * | \%N     | "N" if mailbox has new mail, " " (space) otherwise
  * | \%n     | Number of unread messages in the mailbox
  * | \%s     | Size in bytes
  * | \%t     | `*` if the file is tagged, blank otherwise

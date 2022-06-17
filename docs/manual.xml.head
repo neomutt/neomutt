@@ -16137,7 +16137,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 <row>
                   <entry>%N</entry>
                   <entry>
-                    N if mailbox has new mail, blank otherwise
+                    "N" if mailbox has new mail, " " (space) otherwise
                   </entry>
                 </row>
                 <row>
@@ -16490,7 +16490,7 @@ set nm_unread_tag = unread
 <emphasis role="comment"># %f   folder name (description)</emphasis>
 <emphasis role="comment"># %m   number of messages in the mailbox *</emphasis>
 <emphasis role="comment"># %n   number of unread messages in the mailbox *</emphasis>
-<emphasis role="comment"># %N   N if mailbox has new mail, blank otherwise</emphasis>
+<emphasis role="comment"># %N   "N" if mailbox has new mail, " " (space) otherwise</emphasis>
 <emphasis role="comment"># %>X  right justify the rest of the string and pad with character ``X''</emphasis>
 <emphasis role="comment"># %|X  pad to the end of the line with character ``X''</emphasis>
 <emphasis role="comment"># %*X  soft-fill with character ``X'' as pad</emphasis>
