@@ -730,11 +730,7 @@ main
   }
 
   mutt_log_prep();
-  if (dlevel)
-    mutt_log_start();
-
   MuttLogger = log_disp_queue;
-
   log_translation();
 
   if (!STAILQ_EMPTY(&cc_list) || !STAILQ_EMPTY(&bcc_list))
