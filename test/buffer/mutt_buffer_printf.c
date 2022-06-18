@@ -96,7 +96,11 @@ void test_mutt_buffer_printf(void)
     struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_addstr(&buf, "test");
     TEST_CHECK(mutt_buffer_printf(&buf, str) == 195);
-    TEST_CHECK(strcmp(mutt_buffer_string(&buf), str) == 0);
+    if (!TEST_CHECK(strcmp(mutt_buffer_string(&buf), str) == 0))
+    {
+      TEST_MSG("Expected: %s", str);
+      TEST_MSG("Actual  : %s", mutt_buffer_string(&buf));
+    }
     mutt_buffer_dealloc(&buf);
   }
 

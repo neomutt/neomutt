@@ -36,6 +36,8 @@
 #include "memory.h"
 #include "string2.h"
 
+static const int BufferStepSize = 128;
+
 /**
  * mutt_buffer_init - Initialise a new Buffer
  * @param buf Buffer to initialise
@@ -101,8 +103,7 @@ size_t mutt_buffer_addstr_n(struct Buffer *buf, const char *s, size_t len)
   if (!buf || !s)
     return 0;
 
-  if (!buf->data || !buf->dptr || ((buf->dptr + len + 1) > (buf->data + buf->dsize)))
-    mutt_buffer_alloc(buf, buf->dsize + MAX(128, len + 1));
+  mutt_buffer_alloc(buf, buf->dsize + len + 1);
 
   memcpy(buf->dptr, s, len);
   buf->dptr += len;
@@ -123,8 +124,7 @@ static int buffer_printf(struct Buffer *buf, const char *fmt, va_list ap)
   if (!buf || !fmt)
     return 0; /* LCOV_EXCL_LINE */
 
-  if (!buf->data || !buf->dptr || (buf->dsize < 128))
-    mutt_buffer_alloc(buf, 128);
+  mutt_buffer_alloc(buf, 128);
 
   int doff = buf->dptr - buf->data;
   int blen = buf->dsize - doff;
@@ -135,11 +135,8 @@ static int buffer_printf(struct Buffer *buf, const char *fmt, va_list ap)
   int len = vsnprintf(buf->dptr, blen, fmt, ap);
   if (len >= blen)
   {
-    blen = ++len - blen;
-    if (blen < 128)
-      blen = 128;
-    mutt_buffer_alloc(buf, buf->dsize + blen);
-    len = vsnprintf(buf->dptr, len, fmt, ap_retry);
+    mutt_buffer_alloc(buf, len + 1);
+    len = vsnprintf(buf->dptr, len + 1, fmt, ap_retry);
   }
   if (len > 0)
     buf->dptr += len;
@@ -261,29 +258,29 @@ bool mutt_buffer_is_empty(const struct Buffer *buf)
  * mutt_buffer_alloc - Make sure a buffer can store at least new_size bytes
  * @param buf      Buffer to change
  * @param new_size New size
+ *
+ * @note new_size will be rounded up to #BufferStepSize
  */
 void mutt_buffer_alloc(struct Buffer *buf, size_t new_size)
 {
   if (!buf)
-  {
     return;
-  }
 
-  if (!buf->dptr)
+  if (buf->data && (new_size > 0) && (new_size <= buf->dsize))
+    return;
+
+  const bool was_empty = (buf->dptr == NULL);
+  const size_t offset = (buf->dptr && buf->data) ? (buf->dptr - buf->data) : 0;
+
+  buf->dsize = ROUND_UP(new_size + 1, BufferStepSize);
+  mutt_mem_realloc(&buf->data, buf->dsize);
+  mutt_buffer_seek(buf, offset);
+
+  // Ensures that initially NULL buf->data is properly terminated
+  if (was_empty)
   {
-    mutt_buffer_seek(buf, 0);
-  }
-
-  if ((new_size > buf->dsize) || !buf->data)
-  {
-    size_t offset = (buf->dptr && buf->data) ? buf->dptr - buf->data : 0;
-
-    buf->dsize = new_size;
-    mutt_mem_realloc(&buf->data, buf->dsize);
-    mutt_buffer_seek(buf, offset);
-    /* This ensures an initially NULL buf->data is now properly terminated. */
-    if (buf->dptr)
-      *buf->dptr = '\0';
+    buf->dptr = buf->data;
+    *buf->dptr = '\0';
   }
 }
 

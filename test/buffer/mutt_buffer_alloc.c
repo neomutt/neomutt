@@ -44,15 +44,24 @@ void test_mutt_buffer_alloc(void)
 
   {
     const int orig_size = 64;
-    static int sizes[] = { 0, 32, 64, 128 };
+    static int sizes[][2] = {
+      { 0, 128 },
+      { 32, 128 },
+      { 128, 128 },
+      { 129, 256 },
+    };
 
     for (size_t i = 0; i < mutt_array_size(sizes); i++)
     {
       struct Buffer buf = mutt_buffer_make(0);
       mutt_buffer_alloc(&buf, orig_size);
-      TEST_CASE_("%d", sizes[i]);
-      mutt_buffer_alloc(&buf, sizes[i]);
-      TEST_CHECK(buf.dsize == MAX(orig_size, sizes[i]));
+      TEST_CASE_("%d", sizes[i][0]);
+      mutt_buffer_alloc(&buf, sizes[i][0]);
+      if (!TEST_CHECK(buf.dsize == sizes[i][1]))
+      {
+        TEST_MSG("Expected: %ld", sizes[i][1]);
+        TEST_MSG("Actual  : %ld", buf.dsize);
+      }
       mutt_buffer_dealloc(&buf);
     }
   }
