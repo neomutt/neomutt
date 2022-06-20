@@ -35,6 +35,7 @@ import hashlib
 import time
 from datetime import timedelta, datetime
 from pathlib import Path
+import shlex
 import socket
 import http.server
 import subprocess
@@ -81,10 +82,10 @@ registrations = {
 
 ap = argparse.ArgumentParser(epilog='''
 This script obtains and prints a valid OAuth2 access token.  State is maintained in an
-encrypted TOKENFILE.  Run with "--verbose --authorize" to get started or whenever all
-tokens have expired, optionally with "--authflow" to override the default authorization
-flow.  To truly start over from scratch, first delete TOKENFILE.  Use "--verbose --test"
-to test the IMAP/POP/SMTP endpoints.
+encrypted TOKENFILE.  Run with "--verbose --authorize --encryption-pipe 'foo@bar.org'"
+to get started or whenever all tokens have expired, optionally with "--authflow" to override
+the default authorization flow.  To truly start over from scratch, first delete TOKENFILE.
+Use "--verbose --test" to test the IMAP/POP/SMTP endpoints.
 ''')
 ap.add_argument('-v', '--verbose', action='store_true', help='increase verbosity')
 ap.add_argument('-d', '--debug', action='store_true', help='enable debug output')
@@ -92,7 +93,29 @@ ap.add_argument('tokenfile', help='persistent token storage')
 ap.add_argument('-a', '--authorize', action='store_true', help='manually authorize new tokens')
 ap.add_argument('--authflow', help='authcode | localhostauthcode | devicecode')
 ap.add_argument('-t', '--test', action='store_true', help='test IMAP/POP/SMTP endpoints')
+ap.add_argument('--decryption-pipe', type=shlex.split, default=DECRYPTION_PIPE,
+                help='decryption command (string), reads from stdin and writes '
+                'to stdout, default: "{}"'.format(
+                    " ".join(DECRYPTION_PIPE)))
+ap.add_argument('--encryption-pipe', type=shlex.split,
+                help='encryption command (string), reads from stdin and writes '
+                'to stdout, suggested: "{}"'.format(
+                    " ".join(ENCRYPTION_PIPE)))
+ap.add_argument('--client-id', type=str, default='',
+                help='Provider id from registration')
+ap.add_argument('--client-secret', type=str, default='',
+                help='(optional) Provider secret from registration')
+ap.add_argument('--provider', type=str, choices=registrations.keys(),
+                help='Specify provider to use.')
 args = ap.parse_args()
+
+ENCRYPTION_PIPE = args.encryption_pipe
+DECRYPTION_PIPE = args.decryption_pipe
+
+provider = registrations.get(args.provider)
+if provider:
+    provider['client_id'] = args.client_id
+    provider['client_secret'] = args.client_secret
 
 token = {}
 path = Path(args.tokenfile)

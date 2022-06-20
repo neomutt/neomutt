@@ -117,19 +117,18 @@ Configure script's token file encryption
 ----------------------------------------
 
 The script remembers tokens between invocations by keeping them in a
-token file. This file is encrypted. Inside the script are two lines
-  ENCRYPTION_PIPE
-  DECRYPTION_PIPE
-that must be edited to specify your choice of encryption system. A
-popular choice is gpg. To use this:
+token file. This file is encrypted.
+
+A popular choice is gpg. To use this:
 
  - Install gpg. For example, "sudo apt install gpg".
  - "gpg --gen-key". Answer the questions. Instead of your email
    address you could choose say "My mutt_oauth2 token store", then
    choose a passphrase. You will need to produce that same passphrase
    whenever mutt_oauth2 needs to unlock the token store.
- - Edit mutt_oauth2.py and put your GPG identity (your email address or
-   whatever you picked above) in the ENCRYPTION_PIPE line.
+ - Pass your GPG identity (your email address or whatever you picked above)
+   to mutt_oauth2.py via --encryption-pipe
+   example: --encryption-pipe "gpg --encrypt --recipient YOUR_GPG_IDENTITY"
  - For the gpg-agent to be able to ask you the unlock passphrase,
    the environment variable GPG_TTY must be set to the current tty.
    Typically you would put the following inside your .profile or equivalent:
@@ -153,8 +152,9 @@ which and blessing by the cloud provider might require payment and/or arduous
 review), or might perhaps be willing to roll their own "in-house" registration.
 
 What you ultimately need is the "client_id" (and "client_secret" if
-one was set) for this registration. Those values must be edited into
-the mutt_oauth2.py script.  If your work or school environment has a
+one was set) for this registration. Those values must be passed to
+the mutt_oauth2.py script (using the --provider, --client-id, and
+--client-secret arguments).  If your work or school environment has a
 knowledge base that provides the client_id, then someone already took
 care of the app registration, and you can skip the step of creating
 your own registration.
