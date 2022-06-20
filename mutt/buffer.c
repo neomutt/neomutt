@@ -135,7 +135,7 @@ static int buffer_printf(struct Buffer *buf, const char *fmt, va_list ap)
   int len = vsnprintf(buf->dptr, blen, fmt, ap);
   if (len >= blen)
   {
-    mutt_buffer_alloc(buf, buf->dsize + len + 1);
+    mutt_buffer_alloc(buf, buf->dsize + len - blen + 1);
     len = vsnprintf(buf->dptr, len + 1, fmt, ap_retry);
   }
   if (len > 0)
