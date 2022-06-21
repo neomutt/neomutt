@@ -37,6 +37,7 @@
 #include "mutt.h"
 #include "functions.h"
 #include "browser/lib.h"
+#include "complete/lib.h"
 #include "history/lib.h"
 #include "pattern/lib.h"
 #include "enter.h"

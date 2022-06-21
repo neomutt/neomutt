@@ -24,7 +24,6 @@
 #ifndef MUTT_INIT_H
 #define MUTT_INIT_H
 
-#include <stddef.h>
 #include <stdbool.h>
 #include "core/lib.h"
 #include "mutt.h"
@@ -35,17 +34,12 @@ struct ConfigSet;
 struct ListHead;
 
 void                  init_config            (struct ConfigSet *cs);
-int                   mutt_command_complete  (char *buf, size_t buflen, int pos, int numtabs);
 int                   mutt_extract_token     (struct Buffer *dest, struct Buffer *tok, TokenFlags flags);
 HookFlags             mutt_get_hook_type     (const char *name);
 int                   mutt_init              (struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands);
-int                   mutt_label_complete    (char *buf, size_t buflen, int numtabs);
-bool                  mutt_nm_query_complete (char *buf, size_t buflen, int pos, int numtabs);
-bool                  mutt_nm_tag_complete   (char *buf, size_t buflen, int numtabs);
 void                  mutt_opts_free         (void);
 enum CommandResult    mutt_parse_rc_buffer   (struct Buffer *line, struct Buffer *token, struct Buffer *err);
 enum CommandResult    mutt_parse_rc_line     (const char *line, struct Buffer *err);
 int                   mutt_query_variables   (struct ListHead *queries, bool show_docs);
-int                   mutt_var_value_complete(char *buf, size_t buflen, int pos);
 
 #endif /* MUTT_INIT_H */

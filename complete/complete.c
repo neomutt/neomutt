@@ -21,7 +21,7 @@
  */
 
 /**
- * @page neo_complete String auto-completion routines
+ * @page complete_complete String auto-completion routines
  *
  * String auto-completion routines
  */

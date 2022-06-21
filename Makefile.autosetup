@@ -63,7 +63,7 @@ default:	all
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
-NEOMUTTOBJS=	alternates.o commands.o command_parse.o complete.o \
+NEOMUTTOBJS=	alternates.o commands.o command_parse.o \
 		conststrings.o copy.o editmsg.o \
 		enriched.o flags.o functions.o git_ver.o handler.o \
 		hdrline.o help.o hook.o icommands.o init.o keymap.o mailcap.o \
@@ -194,6 +194,19 @@ $(LIBCOLOR):	$(PWD)/color $(LIBCOLOROBJS)
 	$(RANLIB) $@
 $(PWD)/color:
 	$(MKDIR_P) $(PWD)/color
+
+###############################################################################
+# libcomplete
+LIBCOMPLETE=	libcomplete.a
+LIBCOMPLETEOBJS=complete/complete.o complete/helpers.o
+CLEANFILES+=	$(LIBCOMPLETE) $(LIBCOMPLETEOBJS)
+ALLOBJS+=	$(LIBCOMPLETEOBJS)
+
+$(LIBCOMPLETE): $(PWD)/complete $(LIBCOMPLETEOBJS)
+	$(AR) cr $@ $(LIBCOMPLETEOBJS)
+	$(RANLIB) $@
+$(PWD)/complete:
+	$(MKDIR_P) $(PWD)/complete
 
 ###############################################################################
 # libcompmbox
@@ -814,9 +827,9 @@ $(ALLOBJS):
 # The order of these libraries depends on their dependencies.
 # The libraries with the most dependencies will come first.
 MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) \
-		$(LIBBROWSER) $(LIBNNTP) $(LIBCOMPMBOX) $(LIBSTORE) \
+		$(LIBBROWSER) $(LIBCOMPMBOX) $(LIBSTORE) \
 		$(LIBPROGRESS) $(LIBQUESTION) $(LIBPOSTPONE) $(LIBALIAS) $(LIBSEND) \
-		$(LIBCONVERT) $(LIBCOMPOSE) $(LIBATTACH) $(LIBGUI) $(LIBENTER) \
+		$(LIBCONVERT) $(LIBCOMPOSE) $(LIBATTACH) $(LIBGUI) $(LIBENTER) $(LIBCOMPLETE) $(LIBNNTP) \
 		$(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) $(LIBENVELOPE) $(LIBMIXMASTER) \
 		$(LIBHELPBAR) $(LIBMBOX) $(LIBNOTMUCH) $(LIBMAILDIR) \
 		$(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
