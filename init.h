@@ -27,7 +27,6 @@
 #include <stdbool.h>
 #include "core/lib.h"
 #include "mutt.h"
-#include "hook.h"
 
 struct Buffer;
 struct ConfigSet;
@@ -35,7 +34,6 @@ struct ListHead;
 
 void                  init_config            (struct ConfigSet *cs);
 int                   mutt_extract_token     (struct Buffer *dest, struct Buffer *tok, TokenFlags flags);
-HookFlags             mutt_get_hook_type     (const char *name);
 int                   mutt_init              (struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands);
 void                  mutt_opts_free         (void);
 enum CommandResult    mutt_parse_rc_buffer   (struct Buffer *line, struct Buffer *token, struct Buffer *err);

@@ -49,6 +49,7 @@
 #include "format_flags.h"
 #include "hdrline.h"
 #include "init.h"
+#include "mutt_commands.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -503,6 +504,26 @@ out:
   mutt_buffer_pool_release(&fmtstring);
 
   return rc;
+}
+
+/**
+ * mutt_get_hook_type - Find a hook by name
+ * @param name Name to find
+ * @retval num                 Hook ID, e.g. #MUTT_FOLDER_HOOK
+ * @retval #MUTT_HOOK_NO_FLAGS Error, no matching hook
+ */
+static HookFlags mutt_get_hook_type(const char *name)
+{
+  struct Command *c = NULL;
+  for (size_t i = 0, size = mutt_commands_array(&c); i < size; i++)
+  {
+    if (((c[i].parse == mutt_parse_hook) || (c[i].parse == mutt_parse_idxfmt_hook)) &&
+        mutt_istr_equal(c[i].name, name))
+    {
+      return c[i].data;
+    }
+  }
+  return MUTT_HOOK_NO_FLAGS;
 }
 
 /**
