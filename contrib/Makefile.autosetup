@@ -5,19 +5,18 @@ clean-contrib:
 
 install-contrib:
 	for d in $(CONTRIB_DIRS); do \
-		echo "Creating directory $(DESTDIR)$(docdir)/$$d"; \
-		$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/$$d || exit 1; \
+		echo "Creating directory $(DESTDIR)$(datadir)/$$d"; \
+		$(INSTALL) -d -m 755 $(DESTDIR)$(datadir)/$$d || exit 1; \
 		for f in $$(find $(SRCDIR)/contrib/$$d -type f); do \
 			echo "Installing $$f"; \
-			$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir)/$$d || exit 1; \
+			$(INSTALL) -m 644 $$f $(DESTDIR)$(datadir)/$$d || exit 1; \
 		done \
 	done
-	find $(DESTDIR)$(docdir) \( -name "*.sh" -o -name "*.py" \) -exec chmod a+x {} \;
+	find $(DESTDIR)$(datadir) \( -name "*.sh" -o -name "*.py" \) -exec chmod a+x {} \;
 
 uninstall-contrib:
 	for d in $(CONTRIB_DIRS); do \
-		$(RM) $(DESTDIR)$(docdir)/$$d; \
+		$(RM) $(DESTDIR)$(datadir)/$$d; \
 	done
-	-rmdir $(DESTDIR)$(docdir)
 
 # vim: set ts=8 noexpandtab:
