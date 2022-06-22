@@ -97,8 +97,6 @@ install-docs: all-docs
 		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir) || exit 1; \
 	done
 	$(INSTALL) -m 644 docs/neomuttrc $(DESTDIR)$(sysconfdir)/neomuttrc
-	# Install mime.types
-	$(INSTALL_DATA) $(SRCDIR)/docs/mime.types $(DESTDIR)$(docdir)/mime.types
 
 uninstall-docs:
 	for f in neomutt.1 smime_keys_$(PACKAGE).1 pgpewrap_$(PACKAGE).1; do \
@@ -112,8 +110,6 @@ uninstall-docs:
 	done
 	$(RM) $(DESTDIR)$(docdir)/manual.txt
 	$(RM) $(DESTDIR)$(sysconfdir)/neomuttrc
-	# Uninstall mime.types
-	$(RM) $(DESTDIR)$(docdir)/mime.types
 
 clean-docs:
 	$(RM) docs/*.html docs/neomuttrc.5 docs/neomutt.1 \
