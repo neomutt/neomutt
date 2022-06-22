@@ -48,7 +48,6 @@
 #include "mutt.h"
 #include "init.h"
 #include "color/lib.h"
-#include "complete/lib.h"
 #include "history/lib.h"
 #include "notmuch/lib.h"
 #include "command_parse.h"
@@ -664,8 +663,6 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   mutt_ch_set_charset(charset);
   FREE(&charset);
 
-  complete_init();
-
 #ifdef HAVE_GETSID
   /* Unset suspend by default if we're the session leader */
   if (getsid(0) == getpid())
@@ -971,4 +968,3 @@ int mutt_query_variables(struct ListHead *queries, bool show_docs)
 
   return rc; // TEST16: neomutt -Q charset
 }
-

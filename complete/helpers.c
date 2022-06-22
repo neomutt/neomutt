@@ -37,57 +37,37 @@
 #include "core/lib.h"
 #include "conn/lib.h" // IWYU pragma: keep
 #include "index/lib.h"
+#include "menu/lib.h"
 #include "notmuch/lib.h"
+#include "data.h"
 #include "functions.h"
 #include "keymap.h"
 #include "mutt_commands.h"
-#include "menu/lib.h"
 #include "myvar.h"
 #include "sort.h"
 
-// Initial string that starts completion. No telling how much the user has
-// typed so far. Allocate 1024 just to be sure!
-static char UserTyped[1024] = { 0 };
-
-static int NumMatched = 0;          /* Number of matches for completion */
-static char Completed[256] = { 0 }; /* completed string (command or variable) */
-static const char **Matches;
-/* this is a lie until mutt_init runs: */
-static int MatchesListsize = 512; // Enough space for all of the config items
-
-#ifdef USE_NOTMUCH
-/* List of tags found in last call to mutt_nm_query_complete(). */
-static char **nm_tags;
-#endif
-
-/**
- * complete_init - Setup auto-completion
- */
-void complete_init(void)
-{
-  Matches = mutt_mem_calloc(MatchesListsize, sizeof(char *));
-}
-
 /**
  * matches_ensure_morespace - Allocate more space for auto-completion
+ * @param cd      Completion Data
  * @param current Current allocation
  */
-static void matches_ensure_morespace(int current)
+static void matches_ensure_morespace(struct CompletionData *cd, int current)
 {
-  if (current <= (MatchesListsize - 2))
+  if (current <= (cd->MatchesListsize - 2))
     return;
 
   int base_space = 512; // Enough space for all of the config items
-  int extra_space = MatchesListsize - base_space;
+  int extra_space = cd->MatchesListsize - base_space;
   extra_space *= 2;
   const int space = base_space + extra_space;
-  mutt_mem_realloc(&Matches, space * sizeof(char *));
-  memset(&Matches[current + 1], 0, space - current);
-  MatchesListsize = space;
+  mutt_mem_realloc(&cd->Matches, space * sizeof(char *));
+  memset(&cd->Matches[current + 1], 0, space - current);
+  cd->MatchesListsize = space;
 }
 
 /**
  * candidate - Helper function for completion
+ * @param cd   Completion Data
  * @param user User entered data for completion
  * @param src  Candidate for completion
  * @param dest Completion result gets here
@@ -95,7 +75,8 @@ static void matches_ensure_morespace(int current)
  *
  * Changes the dest buffer if necessary/possible to aid completion.
  */
-static void candidate(char *user, const char *src, char *dest, size_t dlen)
+static void candidate(struct CompletionData *cd, char *user, const char *src,
+                      char *dest, size_t dlen)
 {
   if (!dest || !user || !src)
     return;
@@ -103,14 +84,14 @@ static void candidate(char *user, const char *src, char *dest, size_t dlen)
   if (strstr(src, user) != src)
     return;
 
-  matches_ensure_morespace(NumMatched);
-  Matches[NumMatched++] = src;
+  matches_ensure_morespace(cd, cd->NumMatched);
+  cd->Matches[cd->NumMatched++] = src;
   if (dest[0] == '\0')
     mutt_str_copy(dest, src, dlen);
   else
   {
     int l;
-    for (l = 0; src[l] && src[l] == dest[l]; l++)
+    for (l = 0; (src[l] != '\0') && (src[l] == dest[l]); l++)
       ; // do nothing
 
     dest[l] = '\0';
@@ -120,20 +101,21 @@ static void candidate(char *user, const char *src, char *dest, size_t dlen)
 #ifdef USE_NOTMUCH
 /**
  * complete_all_nm_tags - Pass a list of Notmuch tags to the completion code
+ * @param cd Completion Data
  * @param pt List of all Notmuch tags
  * @retval  0 Success
  * @retval -1 Error
  */
-static int complete_all_nm_tags(const char *pt)
+static int complete_all_nm_tags(struct CompletionData *cd, const char *pt)
 {
   struct Mailbox *m_cur = get_current_mailbox();
   int tag_count_1 = 0;
   int tag_count_2 = 0;
 
-  NumMatched = 0;
-  mutt_str_copy(UserTyped, pt, sizeof(UserTyped));
-  memset(Matches, 0, MatchesListsize);
-  memset(Completed, 0, sizeof(Completed));
+  cd->NumMatched = 0;
+  mutt_str_copy(cd->UserTyped, pt, sizeof(cd->UserTyped));
+  memset(cd->Matches, 0, cd->MatchesListsize);
+  memset(cd->Completed, 0, sizeof(cd->Completed));
 
   nm_db_longrun_init(m_cur, false);
 
@@ -141,22 +123,17 @@ static int complete_all_nm_tags(const char *pt)
   if (nm_get_all_tags(m_cur, NULL, &tag_count_1) || (tag_count_1 == 0))
     goto done;
 
-  /* Free the old list, if any. */
-  if (nm_tags)
-  {
-    for (int i = 0; nm_tags[i]; i++)
-      FREE(&nm_tags[i]);
-    FREE(&nm_tags);
-  }
+  completion_data_free_nm_list(cd);
+
   /* Allocate a new list, with sentinel. */
-  nm_tags = mutt_mem_malloc((tag_count_1 + 1) * sizeof(char *));
-  nm_tags[tag_count_1] = NULL;
+  cd->nm_tags = mutt_mem_malloc((tag_count_1 + 1) * sizeof(char *));
+  cd->nm_tags[tag_count_1] = NULL;
 
   /* Get all the tags. */
-  if (nm_get_all_tags(m_cur, nm_tags, &tag_count_2) || (tag_count_1 != tag_count_2))
+  if (nm_get_all_tags(m_cur, cd->nm_tags, &tag_count_2) || (tag_count_1 != tag_count_2))
   {
-    FREE(&nm_tags);
-    nm_tags = NULL;
+    FREE(&cd->nm_tags);
+    cd->nm_tags = NULL;
     nm_db_longrun_done(m_cur);
     return -1;
   }
@@ -164,11 +141,11 @@ static int complete_all_nm_tags(const char *pt)
   /* Put them into the completion machinery. */
   for (int num = 0; num < tag_count_1; num++)
   {
-    candidate(UserTyped, nm_tags[num], Completed, sizeof(Completed));
+    candidate(cd, cd->UserTyped, cd->nm_tags[num], cd->Completed, sizeof(cd->Completed));
   }
 
-  matches_ensure_morespace(NumMatched);
-  Matches[NumMatched++] = UserTyped;
+  matches_ensure_morespace(cd, cd->NumMatched);
+  cd->Matches[cd->NumMatched++] = cd->UserTyped;
 
 done:
   nm_db_longrun_done(m_cur);
@@ -178,6 +155,7 @@ done:
 
 /**
  * mutt_command_complete - Complete a command name
+ * @param cd      Completion Data
  * @param buf     Buffer for the result
  * @param buflen  Length of the buffer
  * @param pos     Cursor position in the buffer
@@ -185,7 +163,8 @@ done:
  * @retval 1 Success, a match
  * @retval 0 Error, no match
  */
-int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
+int mutt_command_complete(struct CompletionData *cd, char *buf, size_t buflen,
+                          int pos, int numtabs)
 {
   char *pt = buf;
   int spaces; /* keep track of the number of leading spaces on the line */
@@ -203,38 +182,39 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
     /* first TAB. Collect all the matches */
     if (numtabs == 1)
     {
-      NumMatched = 0;
-      mutt_str_copy(UserTyped, pt, sizeof(UserTyped));
-      memset(Matches, 0, MatchesListsize);
-      memset(Completed, 0, sizeof(Completed));
+      cd->NumMatched = 0;
+      mutt_str_copy(cd->UserTyped, pt, sizeof(cd->UserTyped));
+      memset(cd->Matches, 0, cd->MatchesListsize);
+      memset(cd->Completed, 0, sizeof(cd->Completed));
 
       struct Command *c = NULL;
       for (size_t num = 0, size = mutt_commands_array(&c); num < size; num++)
-        candidate(UserTyped, c[num].name, Completed, sizeof(Completed));
-      matches_ensure_morespace(NumMatched);
-      Matches[NumMatched++] = UserTyped;
+        candidate(cd, cd->UserTyped, c[num].name, cd->Completed, sizeof(cd->Completed));
+      matches_ensure_morespace(cd, cd->NumMatched);
+      cd->Matches[cd->NumMatched++] = cd->UserTyped;
 
       /* All matches are stored. Longest non-ambiguous string is ""
        * i.e. don't change 'buf'. Fake successful return this time */
-      if (UserTyped[0] == '\0')
+      if (cd->UserTyped[0] == '\0')
         return 1;
     }
 
-    if ((Completed[0] == '\0') && (UserTyped[0] != '\0'))
+    if ((cd->Completed[0] == '\0') && (cd->UserTyped[0] != '\0'))
       return 0;
 
-    /* NumMatched will _always_ be at least 1 since the initial
+    /* cd->NumMatched will _always_ be at least 1 since the initial
      * user-typed string is always stored */
-    if ((numtabs == 1) && (NumMatched == 2))
-      snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
-    else if ((numtabs > 1) && (NumMatched > 2))
+    if ((numtabs == 1) && (cd->NumMatched == 2))
+      snprintf(cd->Completed, sizeof(cd->Completed), "%s", cd->Matches[0]);
+    else if ((numtabs > 1) && (cd->NumMatched > 2))
     {
       /* cycle through all the matches */
-      snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
+      snprintf(cd->Completed, sizeof(cd->Completed), "%s",
+               cd->Matches[(numtabs - 2) % cd->NumMatched]);
     }
 
     /* return the completed command */
-    strncpy(buf, Completed, buflen - spaces);
+    strncpy(buf, cd->Completed, buflen - spaces);
   }
   else if (mutt_str_startswith(buf, "set") || mutt_str_startswith(buf, "unset") ||
            mutt_str_startswith(buf, "reset") || mutt_str_startswith(buf, "toggle"))
@@ -258,10 +238,10 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
     /* first TAB. Collect all the matches */
     if (numtabs == 1)
     {
-      NumMatched = 0;
-      mutt_str_copy(UserTyped, pt, sizeof(UserTyped));
-      memset(Matches, 0, MatchesListsize);
-      memset(Completed, 0, sizeof(Completed));
+      cd->NumMatched = 0;
+      mutt_str_copy(cd->UserTyped, pt, sizeof(cd->UserTyped));
+      memset(cd->Matches, 0, cd->MatchesListsize);
+      memset(cd->Completed, 0, sizeof(cd->Completed));
 
       struct HashElem *he = NULL;
       struct HashElem **list = get_elem_list(NeoMutt->sub->cs);
@@ -273,37 +253,38 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
         if ((type == DT_SYNONYM) || (type & DT_DEPRECATED))
           continue;
 
-        candidate(UserTyped, he->key.strkey, Completed, sizeof(Completed));
+        candidate(cd, cd->UserTyped, he->key.strkey, cd->Completed, sizeof(cd->Completed));
       }
       FREE(&list);
 
       TAILQ_FOREACH(myv, &MyVars, entries)
       {
-        candidate(UserTyped, myv->name, Completed, sizeof(Completed));
+        candidate(cd, cd->UserTyped, myv->name, cd->Completed, sizeof(cd->Completed));
       }
-      matches_ensure_morespace(NumMatched);
-      Matches[NumMatched++] = UserTyped;
+      matches_ensure_morespace(cd, cd->NumMatched);
+      cd->Matches[cd->NumMatched++] = cd->UserTyped;
 
       /* All matches are stored. Longest non-ambiguous string is ""
        * i.e. don't change 'buf'. Fake successful return this time */
-      if (UserTyped[0] == '\0')
+      if (cd->UserTyped[0] == '\0')
         return 1;
     }
 
-    if ((Completed[0] == 0) && UserTyped[0])
+    if ((cd->Completed[0] == 0) && cd->UserTyped[0])
       return 0;
 
-    /* NumMatched will _always_ be at least 1 since the initial
+    /* cd->NumMatched will _always_ be at least 1 since the initial
      * user-typed string is always stored */
-    if ((numtabs == 1) && (NumMatched == 2))
-      snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
-    else if ((numtabs > 1) && (NumMatched > 2))
+    if ((numtabs == 1) && (cd->NumMatched == 2))
+      snprintf(cd->Completed, sizeof(cd->Completed), "%s", cd->Matches[0]);
+    else if ((numtabs > 1) && (cd->NumMatched > 2))
     {
       /* cycle through all the matches */
-      snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
+      snprintf(cd->Completed, sizeof(cd->Completed), "%s",
+               cd->Matches[(numtabs - 2) % cd->NumMatched]);
     }
 
-    strncpy(pt, Completed, buf + buflen - pt - spaces);
+    strncpy(pt, cd->Completed, buf + buflen - pt - spaces);
   }
   else if (mutt_str_startswith(buf, "exec"))
   {
@@ -316,42 +297,43 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
     /* first TAB. Collect all the matches */
     if (numtabs == 1)
     {
-      NumMatched = 0;
-      mutt_str_copy(UserTyped, pt, sizeof(UserTyped));
-      memset(Matches, 0, MatchesListsize);
-      memset(Completed, 0, sizeof(Completed));
+      cd->NumMatched = 0;
+      mutt_str_copy(cd->UserTyped, pt, sizeof(cd->UserTyped));
+      memset(cd->Matches, 0, cd->MatchesListsize);
+      memset(cd->Completed, 0, sizeof(cd->Completed));
       for (int num = 0; funcs[num].name; num++)
-        candidate(UserTyped, funcs[num].name, Completed, sizeof(Completed));
+        candidate(cd, cd->UserTyped, funcs[num].name, cd->Completed, sizeof(cd->Completed));
       /* try the generic menu */
       if ((mtype != MENU_PAGER) && (mtype != MENU_GENERIC))
       {
         funcs = OpGeneric;
         for (int num = 0; funcs[num].name; num++)
-          candidate(UserTyped, funcs[num].name, Completed, sizeof(Completed));
+          candidate(cd, cd->UserTyped, funcs[num].name, cd->Completed, sizeof(cd->Completed));
       }
-      matches_ensure_morespace(NumMatched);
-      Matches[NumMatched++] = UserTyped;
+      matches_ensure_morespace(cd, cd->NumMatched);
+      cd->Matches[cd->NumMatched++] = cd->UserTyped;
 
       /* All matches are stored. Longest non-ambiguous string is ""
        * i.e. don't change 'buf'. Fake successful return this time */
-      if (UserTyped[0] == '\0')
+      if (cd->UserTyped[0] == '\0')
         return 1;
     }
 
-    if ((Completed[0] == '\0') && (UserTyped[0] != '\0'))
+    if ((cd->Completed[0] == '\0') && (cd->UserTyped[0] != '\0'))
       return 0;
 
-    /* NumMatched will _always_ be at least 1 since the initial
+    /* cd->NumMatched will _always_ be at least 1 since the initial
      * user-typed string is always stored */
-    if ((numtabs == 1) && (NumMatched == 2))
-      snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
-    else if ((numtabs > 1) && (NumMatched > 2))
+    if ((numtabs == 1) && (cd->NumMatched == 2))
+      snprintf(cd->Completed, sizeof(cd->Completed), "%s", cd->Matches[0]);
+    else if ((numtabs > 1) && (cd->NumMatched > 2))
     {
       /* cycle through all the matches */
-      snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
+      snprintf(cd->Completed, sizeof(cd->Completed), "%s",
+               cd->Matches[(numtabs - 2) % cd->NumMatched]);
     }
 
-    strncpy(pt, Completed, buf + buflen - pt - spaces);
+    strncpy(pt, cd->Completed, buf + buflen - pt - spaces);
   }
   else
     return 0;
@@ -361,13 +343,14 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
 
 /**
  * mutt_label_complete - Complete a label name
+ * @param cd      Completion Data
  * @param buf     Buffer for the result
  * @param buflen  Length of the buffer
  * @param numtabs Number of times the user has hit 'tab'
  * @retval 1 Success, a match
  * @retval 0 Error, no match
  */
-int mutt_label_complete(char *buf, size_t buflen, int numtabs)
+int mutt_label_complete(struct CompletionData *cd, char *buf, size_t buflen, int numtabs)
 {
   char *pt = buf;
   int spaces; /* keep track of the number of leading spaces on the line */
@@ -385,37 +368,38 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
     struct HashElem *entry = NULL;
     struct HashWalkState state = { 0 };
 
-    NumMatched = 0;
-    mutt_str_copy(UserTyped, buf, sizeof(UserTyped));
-    memset(Matches, 0, MatchesListsize);
-    memset(Completed, 0, sizeof(Completed));
+    cd->NumMatched = 0;
+    mutt_str_copy(cd->UserTyped, buf, sizeof(cd->UserTyped));
+    memset(cd->Matches, 0, cd->MatchesListsize);
+    memset(cd->Completed, 0, sizeof(cd->Completed));
     while ((entry = mutt_hash_walk(m_cur->label_hash, &state)))
-      candidate(UserTyped, entry->key.strkey, Completed, sizeof(Completed));
-    matches_ensure_morespace(NumMatched);
-    qsort(Matches, NumMatched, sizeof(char *), (sort_t) mutt_istr_cmp);
-    Matches[NumMatched++] = UserTyped;
+      candidate(cd, cd->UserTyped, entry->key.strkey, cd->Completed, sizeof(cd->Completed));
+    matches_ensure_morespace(cd, cd->NumMatched);
+    qsort(cd->Matches, cd->NumMatched, sizeof(char *), (sort_t) mutt_istr_cmp);
+    cd->Matches[cd->NumMatched++] = cd->UserTyped;
 
     /* All matches are stored. Longest non-ambiguous string is ""
      * i.e. don't change 'buf'. Fake successful return this time */
-    if (UserTyped[0] == '\0')
+    if (cd->UserTyped[0] == '\0')
       return 1;
   }
 
-  if ((Completed[0] == '\0') && (UserTyped[0] != '\0'))
+  if ((cd->Completed[0] == '\0') && (cd->UserTyped[0] != '\0'))
     return 0;
 
-  /* NumMatched will _always_ be at least 1 since the initial
+  /* cd->NumMatched will _always_ be at least 1 since the initial
    * user-typed string is always stored */
-  if ((numtabs == 1) && (NumMatched == 2))
-    snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
-  else if ((numtabs > 1) && (NumMatched > 2))
+  if ((numtabs == 1) && (cd->NumMatched == 2))
+    snprintf(cd->Completed, sizeof(cd->Completed), "%s", cd->Matches[0]);
+  else if ((numtabs > 1) && (cd->NumMatched > 2))
   {
     /* cycle through all the matches */
-    snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
+    snprintf(cd->Completed, sizeof(cd->Completed), "%s",
+             cd->Matches[(numtabs - 2) % cd->NumMatched]);
   }
 
   /* return the completed label */
-  strncpy(buf, Completed, buflen - spaces);
+  strncpy(buf, cd->Completed, buflen - spaces);
 
   return 1;
 }
@@ -423,6 +407,7 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
 #ifdef USE_NOTMUCH
 /**
  * mutt_nm_query_complete - Complete to the nearest notmuch tag
+ * @param cd      Completion Data
  * @param buf     Buffer for the result
  * @param buflen  Length of the buffer
  * @param pos     Cursor position in the buffer
@@ -432,7 +417,8 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
  *
  * Complete the nearest "tag:"-prefixed string previous to pos.
  */
-bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs)
+bool mutt_nm_query_complete(struct CompletionData *cd, char *buf, size_t buflen,
+                            int pos, int numtabs)
 {
   char *pt = buf;
   int spaces;
@@ -447,29 +433,30 @@ bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs)
     if (numtabs == 1)
     {
       /* First TAB. Collect all the matches */
-      complete_all_nm_tags(pt);
+      complete_all_nm_tags(cd, pt);
 
       /* All matches are stored. Longest non-ambiguous string is ""
        * i.e. don't change 'buf'. Fake successful return this time.  */
-      if (UserTyped[0] == '\0')
+      if (cd->UserTyped[0] == '\0')
         return true;
     }
 
-    if ((Completed[0] == '\0') && (UserTyped[0] != '\0'))
+    if ((cd->Completed[0] == '\0') && (cd->UserTyped[0] != '\0'))
       return false;
 
-    /* NumMatched will _always_ be at least 1 since the initial
+    /* cd->NumMatched will _always_ be at least 1 since the initial
      * user-typed string is always stored */
-    if ((numtabs == 1) && (NumMatched == 2))
-      snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
-    else if ((numtabs > 1) && (NumMatched > 2))
+    if ((numtabs == 1) && (cd->NumMatched == 2))
+      snprintf(cd->Completed, sizeof(cd->Completed), "%s", cd->Matches[0]);
+    else if ((numtabs > 1) && (cd->NumMatched > 2))
     {
       /* cycle through all the matches */
-      snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
+      snprintf(cd->Completed, sizeof(cd->Completed), "%s",
+               cd->Matches[(numtabs - 2) % cd->NumMatched]);
     }
 
     /* return the completed query */
-    strncpy(pt, Completed, buf + buflen - pt - spaces);
+    strncpy(pt, cd->Completed, buf + buflen - pt - spaces);
   }
   else
     return false;
@@ -481,6 +468,7 @@ bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs)
 #ifdef USE_NOTMUCH
 /**
  * mutt_nm_tag_complete - Complete to the nearest notmuch tag
+ * @param cd      Completion Data
  * @param buf     Buffer for the result
  * @param buflen  Length of the buffer
  * @param numtabs Number of times the user has hit 'tab'
@@ -489,7 +477,7 @@ bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs)
  *
  * Complete the nearest "+" or "-" -prefixed string previous to pos.
  */
-bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs)
+bool mutt_nm_tag_complete(struct CompletionData *cd, char *buf, size_t buflen, int numtabs)
 {
   if (!buf)
     return false;
@@ -508,29 +496,30 @@ bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs)
   if (numtabs == 1)
   {
     /* First TAB. Collect all the matches */
-    complete_all_nm_tags(pt);
+    complete_all_nm_tags(cd, pt);
 
     /* All matches are stored. Longest non-ambiguous string is ""
      * i.e. don't change 'buf'. Fake successful return this time.  */
-    if (UserTyped[0] == '\0')
+    if (cd->UserTyped[0] == '\0')
       return true;
   }
 
-  if ((Completed[0] == '\0') && (UserTyped[0] != '\0'))
+  if ((cd->Completed[0] == '\0') && (cd->UserTyped[0] != '\0'))
     return false;
 
-  /* NumMatched will _always_ be at least 1 since the initial
+  /* cd->NumMatched will _always_ be at least 1 since the initial
    * user-typed string is always stored */
-  if ((numtabs == 1) && (NumMatched == 2))
-    snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
-  else if ((numtabs > 1) && (NumMatched > 2))
+  if ((numtabs == 1) && (cd->NumMatched == 2))
+    snprintf(cd->Completed, sizeof(cd->Completed), "%s", cd->Matches[0]);
+  else if ((numtabs > 1) && (cd->NumMatched > 2))
   {
     /* cycle through all the matches */
-    snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
+    snprintf(cd->Completed, sizeof(cd->Completed), "%s",
+             cd->Matches[(numtabs - 2) % cd->NumMatched]);
   }
 
   /* return the completed query */
-  strncpy(pt, Completed, buf + buflen - pt);
+  strncpy(pt, cd->Completed, buf + buflen - pt);
 
   return true;
 }
@@ -538,13 +527,14 @@ bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs)
 
 /**
  * mutt_var_value_complete - Complete a variable/value
+ * @param cd     Completion Data
  * @param buf    Buffer for the result
  * @param buflen Length of the buffer
  * @param pos    Cursor position in the buffer
  * @retval 1 Success
  * @retval 0 Failure
  */
-int mutt_var_value_complete(char *buf, size_t buflen, int pos)
+int mutt_var_value_complete(struct CompletionData *cd, char *buf, size_t buflen, int pos)
 {
   char *pt = buf;
 

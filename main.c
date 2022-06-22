@@ -49,15 +49,16 @@
  *
  * Libraries:
  * @ref lib_address, @ref lib_alias, @ref lib_attach, @ref lib_autocrypt,
- * @ref lib_bcache, @ref lib_browser, @ref lib_color, @ref lib_compmbox,
- * @ref lib_compose, @ref lib_compress, @ref lib_config, @ref lib_conn,
- * @ref lib_convert, @ref lib_core, @ref lib_email, @ref lib_enter,
- * @ref lib_envelope, @ref lib_gui, @ref lib_hcache, @ref lib_helpbar,
- * @ref lib_history, @ref lib_imap, @ref lib_index, @ref lib_maildir,
- * @ref lib_mbox, @ref lib_menu, @ref lib_mixmaster, @ref lib_mutt,
- * @ref lib_ncrypt, @ref lib_nntp, @ref lib_notmuch, @ref lib_pager,
- * @ref lib_pattern, @ref lib_pop, @ref lib_postpone, @ref lib_progress,
- * @ref lib_question, @ref lib_send, @ref lib_sidebar, @ref lib_store.
+ * @ref lib_bcache, @ref lib_browser, @ref lib_color, @ref lib_complete,
+ * @ref lib_compmbox, @ref lib_compose, @ref lib_compress, @ref lib_config,
+ * @ref lib_conn, @ref lib_convert, @ref lib_core, @ref lib_email,
+ * @ref lib_enter, @ref lib_envelope, @ref lib_gui, @ref lib_hcache,
+ * @ref lib_helpbar, @ref lib_history, @ref lib_imap, @ref lib_index,
+ * @ref lib_maildir, @ref lib_mbox, @ref lib_menu, @ref lib_mixmaster,
+ * @ref lib_mutt, @ref lib_ncrypt, @ref lib_nntp, @ref lib_notmuch,
+ * @ref lib_pager, @ref lib_pattern, @ref lib_pop, @ref lib_postpone,
+ * @ref lib_progress, @ref lib_question, @ref lib_send, @ref lib_sidebar,
+ * @ref lib_store.
  *
  * ## Miscellaneous files
  *
@@ -68,7 +69,6 @@
  * | alternates.c    | @subpage neo_alternates    |
  * | commands.c      | @subpage neo_commands      |
  * | command_parse.c | @subpage neo_command_parse |
- * | complete.c      | @subpage neo_complete      |
  * | copy.c          | @subpage neo_copy          |
  * | editmsg.c       | @subpage neo_editmsg       |
  * | enriched.c      | @subpage neo_enriched      |

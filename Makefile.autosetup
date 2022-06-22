@@ -198,7 +198,7 @@ $(PWD)/color:
 ###############################################################################
 # libcomplete
 LIBCOMPLETE=	libcomplete.a
-LIBCOMPLETEOBJS=complete/complete.o complete/helpers.o
+LIBCOMPLETEOBJS=complete/complete.o complete/data.o complete/helpers.o
 CLEANFILES+=	$(LIBCOMPLETE) $(LIBCOMPLETEOBJS)
 ALLOBJS+=	$(LIBCOMPLETEOBJS)
 
