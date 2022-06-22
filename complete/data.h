@@ -30,13 +30,13 @@
  */
 struct CompletionData
 {
-  char UserTyped[1024];     ///< Initial string that starts completion
-  int NumMatched;           ///< Number of matches for completion
-  char Completed[256];      ///< Completed string (command or variable)
-  const char **Matches;     ///< Matching strings
-  int MatchesListsize;      ///< Enough space for all of the config items
+  char user_typed[1024];       ///< Initial string that starts completion
+  int num_matched;             ///< Number of matches for completion
+  char completed[256];         ///< Completed string (command or variable)
+  const char **match_list;     ///< Matching strings
+  int match_list_len;          ///< Enough space for all of the config items
 #ifdef USE_NOTMUCH
-  char **nm_tags;           ///< List of tags found by mutt_nm_query_complete()
+  char **nm_tags;              ///< List of tags found by mutt_nm_query_complete()
 #endif
 };
 

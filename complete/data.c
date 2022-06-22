@@ -57,7 +57,7 @@ void completion_data_free(struct CompletionData **ptr)
 
   struct CompletionData *cd = *ptr;
 
-  FREE(&cd->Matches);
+  FREE(&cd->match_list);
 #ifdef USE_NOTMUCH
   completion_data_free_nm_list(cd);
 #endif
@@ -73,8 +73,8 @@ struct CompletionData *completion_data_new(void)
 {
   struct CompletionData *cd = mutt_mem_calloc(1, sizeof(struct CompletionData));
 
-  cd->MatchesListsize = 512;
-  cd->Matches = mutt_mem_calloc(cd->MatchesListsize, sizeof(char *));
+  cd->match_list_len = 512;
+  cd->match_list = mutt_mem_calloc(cd->match_list_len, sizeof(char *));
 
   return cd;
 }
@@ -88,10 +88,10 @@ void completion_data_reset(struct CompletionData *cd)
   if (!cd)
     return;
 
-  memset(cd->UserTyped, 0, sizeof(cd->UserTyped));
-  memset(cd->Completed, 0, sizeof(cd->Completed));
-  memset(cd->Matches, 0, cd->MatchesListsize * sizeof(char *));
-  cd->NumMatched = 0;
+  memset(cd->user_typed, 0, sizeof(cd->user_typed));
+  memset(cd->completed, 0, sizeof(cd->completed));
+  memset(cd->match_list, 0, cd->match_list_len * sizeof(char *));
+  cd->num_matched = 0;
 #ifdef USE_NOTMUCH
   completion_data_free_nm_list(cd);
 #endif
