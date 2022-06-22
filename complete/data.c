@@ -30,21 +30,20 @@
 #include "mutt/lib.h"
 #include "data.h"
 
-#ifdef USE_NOTMUCH
 /**
- * completion_data_free_nm_list - Free the Notmuch Completion strings
+ * completion_data_free_match_strings - Free the Completion strings
  * @param cd Completion Data
  */
-void completion_data_free_nm_list(struct CompletionData *cd)
+void completion_data_free_match_strings(struct CompletionData *cd)
 {
-  if (!cd || !cd->nm_tags)
+  if (!cd || !cd->free_match_strings)
     return;
 
-  for (int i = 0; cd->nm_tags[i]; i++)
-    FREE(&cd->nm_tags[i]);
-  FREE(&cd->nm_tags);
+  for (int i = 0; i < cd->num_matched; i++)
+    FREE(&cd->match_list[i]);
+
+  cd->free_match_strings = false;
 }
-#endif
 
 /**
  * completion_data_free - Free the Completion Data
@@ -57,10 +56,9 @@ void completion_data_free(struct CompletionData **ptr)
 
   struct CompletionData *cd = *ptr;
 
+  completion_data_free_match_strings(cd);
+
   FREE(&cd->match_list);
-#ifdef USE_NOTMUCH
-  completion_data_free_nm_list(cd);
-#endif
 
   FREE(ptr);
 }
@@ -88,11 +86,11 @@ void completion_data_reset(struct CompletionData *cd)
   if (!cd)
     return;
 
+  completion_data_free_match_strings(cd);
+
   memset(cd->user_typed, 0, sizeof(cd->user_typed));
   memset(cd->completed, 0, sizeof(cd->completed));
   memset(cd->match_list, 0, cd->match_list_len * sizeof(char *));
   cd->num_matched = 0;
-#ifdef USE_NOTMUCH
-  completion_data_free_nm_list(cd);
-#endif
+  cd->free_match_strings = false;
 }

@@ -1947,7 +1947,7 @@ done:
  *
  * If tag_list is NULL, just count the tags.
  */
-int nm_get_all_tags(struct Mailbox *m, char **tag_list, int *tag_count)
+int nm_get_all_tags(struct Mailbox *m, const char **tag_list, int *tag_count)
 {
   struct NmMboxData *mdata = nm_mdata_get(m);
   if (!mdata)

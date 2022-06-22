@@ -35,13 +35,11 @@ struct CompletionData
   char completed[256];         ///< Completed string (command or variable)
   const char **match_list;     ///< Matching strings
   int match_list_len;          ///< Enough space for all of the config items
-#ifdef USE_NOTMUCH
-  char **nm_tags;              ///< List of tags found by mutt_nm_query_complete()
-#endif
+  bool free_match_strings;     ///< Should the strings in match_list be freed?
 };
 
 void                   completion_data_free(struct CompletionData **ptr);
-void                   completion_data_free_nm_list(struct CompletionData *cd);
+void                   completion_data_free_match_strings(struct CompletionData *cd);
 struct CompletionData *completion_data_new(void);
 void                   completion_data_reset(struct CompletionData *cd);
 

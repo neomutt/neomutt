@@ -72,17 +72,18 @@ static void matches_ensure_morespace(struct CompletionData *cd, int current)
  * @param src  Candidate for completion
  * @param dest Completion result gets here
  * @param dlen Length of dest buffer
+ * @retval true If candidate string matches
  *
  * Changes the dest buffer if necessary/possible to aid completion.
  */
-static void candidate(struct CompletionData *cd, char *user, const char *src,
+static bool candidate(struct CompletionData *cd, char *user, const char *src,
                       char *dest, size_t dlen)
 {
   if (!dest || !user || !src)
-    return;
+    return false;
 
   if (strstr(src, user) != src)
-    return;
+    return false;
 
   matches_ensure_morespace(cd, cd->num_matched);
   cd->match_list[cd->num_matched++] = src;
@@ -96,6 +97,7 @@ static void candidate(struct CompletionData *cd, char *user, const char *src,
 
     dest[l] = '\0';
   }
+  return true;
 }
 
 #ifdef USE_NOTMUCH
@@ -111,45 +113,42 @@ static int complete_all_nm_tags(struct CompletionData *cd, const char *pt)
   struct Mailbox *m_cur = get_current_mailbox();
   int tag_count_1 = 0;
   int tag_count_2 = 0;
+  int rc = -1;
 
-  cd->num_matched = 0;
   mutt_str_copy(cd->user_typed, pt, sizeof(cd->user_typed));
   memset(cd->match_list, 0, cd->match_list_len);
   memset(cd->completed, 0, sizeof(cd->completed));
+  cd->free_match_strings = true;
 
   nm_db_longrun_init(m_cur, false);
 
   /* Work out how many tags there are. */
-  if (nm_get_all_tags(m_cur, NULL, &tag_count_1) || (tag_count_1 == 0))
+  if ((nm_get_all_tags(m_cur, NULL, &tag_count_1) != 0) || (tag_count_1 == 0))
     goto done;
 
-  completion_data_free_nm_list(cd);
-
-  /* Allocate a new list, with sentinel. */
-  cd->nm_tags = mutt_mem_malloc((tag_count_1 + 1) * sizeof(char *));
-  cd->nm_tags[tag_count_1] = NULL;
-
   /* Get all the tags. */
-  if (nm_get_all_tags(m_cur, cd->nm_tags, &tag_count_2) || (tag_count_1 != tag_count_2))
+  const char **nm_tags = mutt_mem_calloc(tag_count_1, sizeof(char *));
+  if ((nm_get_all_tags(m_cur, nm_tags, &tag_count_2) != 0) || (tag_count_1 != tag_count_2))
   {
-    FREE(&cd->nm_tags);
-    cd->nm_tags = NULL;
-    nm_db_longrun_done(m_cur);
-    return -1;
+    completion_data_free_match_strings(cd);
+    goto done;
   }
 
   /* Put them into the completion machinery. */
-  for (int num = 0; num < tag_count_1; num++)
+  for (int i = 0; i < tag_count_1; i++)
   {
-    candidate(cd, cd->user_typed, cd->nm_tags[num], cd->completed, sizeof(cd->completed));
+    if (!candidate(cd, cd->user_typed, nm_tags[i], cd->completed, sizeof(cd->completed)))
+      FREE(&nm_tags[i]);
   }
 
   matches_ensure_morespace(cd, cd->num_matched);
-  cd->match_list[cd->num_matched++] = cd->user_typed;
+  cd->match_list[cd->num_matched++] = mutt_str_dup(cd->user_typed);
+  rc = 0;
 
 done:
+  FREE(&nm_tags);
   nm_db_longrun_done(m_cur);
-  return 0;
+  return rc;
 }
 #endif
 
