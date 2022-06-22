@@ -103,7 +103,8 @@ size_t mutt_buffer_addstr_n(struct Buffer *buf, const char *s, size_t len)
   if (!buf || !s)
     return 0;
 
-  mutt_buffer_alloc(buf, buf->dsize + len + 1);
+  if (!buf->data || !buf->dptr || ((buf->dptr + len + 1) > (buf->data + buf->dsize)))
+    mutt_buffer_alloc(buf, buf->dsize + MAX(BufferStepSize, len + 1));
 
   memcpy(buf->dptr, s, len);
   buf->dptr += len;
