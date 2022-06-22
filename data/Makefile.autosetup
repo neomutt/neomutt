@@ -13,6 +13,8 @@ install-data:
 			$(INSTALL) -m 644 $$f $(DESTDIR)$(datadir)/$$d || exit 1; \
 		done \
 	done
+	# Install mime.types
+	$(INSTALL_DATA) $(SRCDIR)/data/mime.types $(DESTDIR)$(datadir)/mime.types
 	find $(DESTDIR)$(datadir) \( -name "*.sh" -o -name "*.py" \) -exec chmod a+x {} \;
 
 uninstall-data:
