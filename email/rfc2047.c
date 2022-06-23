@@ -712,6 +712,7 @@ void rfc2047_decode(char **pd)
       char *decoded = decode_word(text, textlen, enc);
       if (!decoded)
       {
+        mutt_buffer_dealloc(&buf);
         return;
       }
       if (prev.data && ((prev_charsetlen != charsetlen) ||
