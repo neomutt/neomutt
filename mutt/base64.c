@@ -149,10 +149,10 @@ int mutt_b64_decode(const char *in, char *out, size_t olen)
     const unsigned char digit2 = in[1];
     if ((digit2 > 127) || (base64val(digit2) == BAD))
       return -1;
-    const unsigned char digit3 = in[2];
+    const unsigned char digit3 = in[2] ? in[2] : '=';
     if ((digit3 > 127) || ((digit3 != '=') && (base64val(digit3) == BAD)))
       return -1;
-    digit4 = in[3];
+    digit4 = (digit3 == '=') ? '=' : in[3];
     if ((digit4 > 127) || ((digit4 != '=') && (base64val(digit4) == BAD)))
       return -1;
     in += 4;
