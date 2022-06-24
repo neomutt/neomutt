@@ -135,13 +135,12 @@ size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen)
  */
 int mutt_b64_decode(const char *in, char *out, size_t olen)
 {
-  if (!in || !out)
+  if (!in || !*in || !out)
     return -1;
 
   int len = 0;
-  unsigned char digit4;
 
-  do
+  for (; *in; in += 4)
   {
     const unsigned char digit1 = in[0];
     if ((digit1 > 127) || (base64val(digit1) == BAD))
@@ -149,13 +148,16 @@ int mutt_b64_decode(const char *in, char *out, size_t olen)
     const unsigned char digit2 = in[1];
     if ((digit2 > 127) || (base64val(digit2) == BAD))
       return -1;
+
+    /* The 3rd and 4th bytes can be terminating padding chars ('='). Some
+     * mailers don't properly terminate base64-encoded strings, so we allow for
+     * the input string to terminate without padding. */
     const unsigned char digit3 = in[2] ? in[2] : '=';
     if ((digit3 > 127) || ((digit3 != '=') && (base64val(digit3) == BAD)))
       return -1;
-    digit4 = (digit3 == '=') ? '=' : in[3];
+    const unsigned char digit4 = (digit3 == '=') ? '=' : in[3];
     if ((digit4 > 127) || ((digit4 != '=') && (base64val(digit4) == BAD)))
       return -1;
-    in += 4;
 
     /* digits are already sanity-checked */
     if (len == olen)
@@ -176,7 +178,13 @@ int mutt_b64_decode(const char *in, char *out, size_t olen)
         len++;
       }
     }
-  } while (*in && digit4 != '=');
+
+    /* did we reach the end? */
+    if (digit4 == '=')
+    {
+      break;
+    }
+  }
 
   return len;
 }
