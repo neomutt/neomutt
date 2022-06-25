@@ -36,6 +36,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "complete/lib.h"
 #include "enter/lib.h"
 #include "history/lib.h"
 #include "menu/lib.h"
@@ -227,7 +228,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
     // clang-format off
     struct EnterWindowData wdata = { buf->data, buf->dsize, col, complete,
       multiple, m, files, numfiles, state, ENTER_REDRAW_NONE,
-      (complete & MUTT_COMP_PASS), true, 0, NULL, 0, &mbstate, 0, false };
+      (complete & MUTT_COMP_PASS), true, 0, NULL, 0, &mbstate, 0, false, NULL };
     // clang-format on
     win->wdata = &wdata;
 
@@ -352,6 +353,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
   bye:
     mutt_hist_reset_state(wdata.hclass);
     FREE(&wdata.tempbuf);
+    completion_data_free(&wdata.cd);
   } while (rc == 1);
   mutt_curses_set_cursor(cursor);
 

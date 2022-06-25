@@ -30,6 +30,7 @@
 #include "mutt.h"
 #include "history/lib.h"
 
+struct CompletionData;
 struct MuttWindow;
 
 /**
@@ -69,6 +70,8 @@ struct EnterWindowData
   int tabs;                       ///< Number of times the user has hit tab
 
   bool done;                      ///< Is text-entry done?
+
+  struct CompletionData *cd;      ///< Auto-completion state data
 };
 
 #endif /* MUTT_ENTER_WDATA_H */

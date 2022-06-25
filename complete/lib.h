@@ -28,6 +28,7 @@
  * | File                   | Description                  |
  * | :--------------------- | :--------------------------- |
  * | complete/complete.c    | @subpage complete_complete   |
+ * | complete/data.c        | @subpage complete_data       |
  * | complete/helpers.c     | @subpage complete_helpers    |
  */
 
@@ -36,14 +37,15 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+// IWYU pragma: begin_exports
+#include "data.h"
+// IWYU pragma: end_exports
 
-void complete_init(void);
-
-int  mutt_command_complete  (char *buf, size_t buflen, int pos, int numtabs);
-int  mutt_complete          (char *buf, size_t buflen);
-int  mutt_label_complete    (char *buf, size_t buflen, int numtabs);
-bool mutt_nm_query_complete (char *buf, size_t buflen, int pos, int numtabs);
-bool mutt_nm_tag_complete   (char *buf, size_t buflen, int numtabs);
-int  mutt_var_value_complete(char *buf, size_t buflen, int pos);
+int  mutt_command_complete  (struct CompletionData *cd, char *buf, size_t buflen, int pos, int numtabs);
+int  mutt_complete          (struct CompletionData *cd, char *buf, size_t buflen);
+int  mutt_label_complete    (struct CompletionData *cd, char *buf, size_t buflen, int numtabs);
+bool mutt_nm_query_complete (struct CompletionData *cd, char *buf, size_t buflen, int pos, int numtabs);
+bool mutt_nm_tag_complete   (struct CompletionData *cd, char *buf, size_t buflen, int numtabs);
+int  mutt_var_value_complete(struct CompletionData *cd, char *buf, size_t buflen, int pos);
 
 #endif /* MUTT_COMPLETE_LIB_H */

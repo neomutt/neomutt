@@ -34,6 +34,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "data.h"
 #include "muttlib.h"
 #include "options.h"
 #include "protos.h" // IWYU pragma: keep
@@ -46,6 +47,7 @@
 
 /**
  * mutt_complete - Attempt to complete a partial pathname
+ * @param cd     Completion Data
  * @param buf    Buffer containing pathname
  * @param buflen Length of buffer
  * @retval  0 Ok
@@ -54,7 +56,7 @@
  * Given a partial pathname, fill in as much of the rest of the path as is
  * unique.
  */
-int mutt_complete(char *buf, size_t buflen)
+int mutt_complete(struct CompletionData *cd, char *buf, size_t buflen)
 {
   const char *p = NULL;
   DIR *dirp = NULL;
