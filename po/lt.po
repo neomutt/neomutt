@@ -5796,9 +5796,8 @@ msgid "delete chars from the cursor to the end of the word"
 msgstr "ištrinti simbolius nuo žymeklio iki žodžio galo"
 
 #: opcodes.h:140
-#, fuzzy
 msgid "delete chars from cursor to beginning the line"
-msgstr "ištrinti simbolius nuo žymeklio iki eilutės galo"
+msgstr "ištrinti simbolius nuo žymeklio iki eilutės pradžios"
 
 #: opcodes.h:141
 msgid "delete all chars on the line"
@@ -7263,7 +7262,7 @@ msgstr "%s nebeegzistuoja"
 #: send/config.c:99
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
-msgstr ""
+msgstr "Parametras %s negali turėti savyje shell metasimbolių: %c"
 
 #: send/send.c:339
 msgid "No subject, abort?"
