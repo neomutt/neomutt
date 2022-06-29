@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2022-06-28 18:23+0100\n"
-"PO-Revision-Date: 2022-06-27 18:50+0300\n"
+"PO-Revision-Date: 2022-06-30 00:19+0300\n"
 "Last-Translator: Andrij Mizyk <andmizyk@gmail.com>\n"
 "Language-Team: Ukrainian\n"
 "Language: uk\n"
@@ -29,7 +29,7 @@ msgstr "Псевдонім як: "
 
 #: alias/alias.c:409
 msgid "You already have an alias defined with that name"
-msgstr "Ви вже маєте псевдонім із такою назвою"
+msgstr "У Вас вже є псевдонім із такою назвою"
 
 #: alias/alias.c:415
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -1381,11 +1381,11 @@ msgstr "Не можливо прикріпити %s"
 
 #: compose/functions.c:685
 msgid "Open mailbox to attach message from"
-msgstr "Скринька, з якої додати повідомлення"
+msgstr "Відкрити скриньку для прикріплення листа звідти"
 
 #: compose/functions.c:696
 msgid "Open newsgroup to attach message from"
-msgstr "Відкрити групу новин для прикріплення повідомлення звідти"
+msgstr "Відкрити групу новин для прикріплення листа звідти"
 
 #: compose/functions.c:753 main.c:1360
 #, c-format
@@ -1532,7 +1532,7 @@ msgstr "Неможливо отримати дані %s: %s"
 
 #: compose/functions.c:1809
 msgid "Save a copy of this message?"
-msgstr "Зберегти копію цього повідомлення?"
+msgstr "Зберегти копію цього листа?"
 
 #: compose/functions.c:1834
 msgid "Write message to mailbox"
@@ -2029,7 +2029,7 @@ msgstr[2] "Обчислення довжини хибне на %ld байт"
 
 #: copy.c:798
 msgid "No decryption engine available for message"
-msgstr "Немає механізму розшифровки для повідомлення"
+msgstr "Немає механізму розшифрування для листа"
 
 #: editmsg.c:74
 #, c-format
@@ -2048,11 +2048,11 @@ msgstr "не вийшло обрізати тимчасову скриньку: 
 
 #: editmsg.c:160
 msgid "Message file is empty"
-msgstr "Файл повідомлення порожній"
+msgstr "Файл листа порожній"
 
 #: editmsg.c:167
 msgid "Message not modified"
-msgstr "Повідомлення не змінено"
+msgstr "Лист не змінено"
 
 #: editmsg.c:174
 msgid "Message of read-only mailbox modified! Ignoring changes."
@@ -2061,7 +2061,7 @@ msgstr "Листа в скринці лише для читання змінен
 #: editmsg.c:190
 #, c-format
 msgid "Can't open message file: %s"
-msgstr "Неможливо відкрити файл повідомлення: %s"
+msgstr "Неможливо відкрити файл листа: %s"
 
 #. L10N: %s is from strerror(errno)
 #: editmsg.c:198 editmsg.c:226
@@ -2895,7 +2895,7 @@ msgstr "Отримання листа..."
 
 #: imap/message.c:2041 pop/pop.c:1025
 msgid "The message index is incorrect. Try reopening the mailbox."
-msgstr "Некоректний індекс повідомленнь. Спробуйте відкрити скриньку ще раз."
+msgstr "Некоректний індекс листа. Спробуйте відкрити скриньку ще раз."
 
 #: imap/msn.c:48 mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134
 #: mutt/string.c:992 mx.c:1226
@@ -2953,7 +2953,7 @@ msgstr "%s не є скринькою"
 
 #: index/dlg_index.c:1123
 msgid "Mailbox was externally modified.  Flags may be wrong."
-msgstr "Скриньку змінено ззовні. Прапорці можуть бути не коректними."
+msgstr "Скриньку змінено ззовні. Прапорці можуть бути некоректними."
 
 #: index/dlg_index.c:1132 pager/dlg_pager.c:443
 msgid "New mail in this mailbox"
@@ -3017,7 +3017,7 @@ msgstr "Вийти з NeoMutt без збереження?"
 #. L10N: CHECK_ACL
 #: index/functions.c:558
 msgid "Can't flag message"
-msgstr "Неможливо змінити атрибут листа"
+msgstr "Неможливо змінити прапорець листа"
 
 #: index/functions.c:669
 msgid "Jump to message: "
@@ -3066,11 +3066,11 @@ msgstr "Видалити листи за шаблоном: "
 
 #: index/functions.c:997
 msgid "Limit to messages matching: "
-msgstr "Обмежитись повідомленнями за шаблоном: "
+msgstr "Обмежити листами за шаблоном: "
 
 #: index/functions.c:1027
 msgid "To view all messages, limit to \"all\""
-msgstr "Щоб побачити всі повідомлення, встановіть шаблон \"all\""
+msgstr "Щоб переглянути всі листи, вкажіть обмеження \"усі\""
 
 #. L10N: CHECK_ACL
 #: index/functions.c:1039
@@ -3221,7 +3221,7 @@ msgstr "Вийти з NeoMutt?"
 #. L10N: CHECK_ACL
 #: index/functions.c:2078
 msgid "Can't toggle new"
-msgstr "Неможливо змінити атрибут \"Нове\""
+msgstr "Неможливо змінити атрибут новий"
 
 #. L10N: CHECK_ACL
 #: index/functions.c:2130
@@ -3423,7 +3423,7 @@ msgstr "запису для типу %s в mailcap не знайдено"
 
 #: maildir/maildir.c:245 maildir/mh.c:303
 msgid "Could not flush message to disk"
-msgstr "Не вийшло скинути повідомлення на диск."
+msgstr "Не вийшло скинути листа на диск"
 
 #: maildir/maildir.c:291
 msgid "maildir_commit_message(): unable to set time on file"
@@ -4506,9 +4506,7 @@ msgstr "[-- ПОЧАТОК БЛОКУ ВІДКРИТОГО КЛЮЧА PGP --]\n"
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
-msgstr ""
-"[-- ПОЧАТОК ПОВІДОМЛЕННЯ З PGP ПІДПИСОМ --]\n"
-"\n"
+msgstr "[-- ПОЧАТОК ПОВІДОМЛЕННЯ З ПІДПИСОМ PGP --]\n\n"
 
 #: ncrypt/crypt_gpgme.c:3030 ncrypt/pgp.c:723
 msgid "[-- END PGP MESSAGE --]\n"
@@ -4520,7 +4518,7 @@ msgstr "[-- КІНЕЦЬ БЛОКУ ВІДКРИТОГО КЛЮЧА PGP --]\n"
 
 #: ncrypt/crypt_gpgme.c:3034 ncrypt/pgp.c:739
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
-msgstr "[-- КІНЕЦЬ ПОВІДОМЛЕННЯ З PGP ПІДПИСОМ --]\n"
+msgstr "[-- КІНЕЦЬ ПОВІДОМЛЕННЯ З ПІДПИСОМ PGP --]\n"
 
 #: ncrypt/crypt_gpgme.c:3054 ncrypt/pgp.c:771
 msgid ""
@@ -5654,7 +5652,7 @@ msgstr "перейменувати приєднаний файл"
 
 #: opcodes.h:104
 msgid "send the message"
-msgstr "відіслати лист"
+msgstr "надіслати лист"
 
 #: opcodes.h:105
 msgid "compose new message to the current message sender"
@@ -5694,7 +5692,7 @@ msgstr "зробити декодовану (простий текст) копі
 
 #: opcodes.h:114
 msgid "make decoded copy (text/plain) and delete"
-msgstr "зробити декодовану (текст) копію та видалити"
+msgstr "зробити декодовану копію (текст) і видалити"
 
 #: opcodes.h:116
 msgid "delete the current mailbox (IMAP only)"
@@ -5718,7 +5716,7 @@ msgstr "показати повну адресу відправника"
 
 #: opcodes.h:121
 msgid "display message and toggle header weeding"
-msgstr "показати лист і вимкн./ввімкн. стискання заголовків"
+msgstr "показати лист і вимкн./увімкн. стискання заголовків"
 
 #: opcodes.h:122
 msgid "display a message"
@@ -5774,7 +5772,7 @@ msgstr "пересунути курсор до кінця слова"
 
 #: opcodes.h:135
 msgid "scroll down through the history list"
-msgstr "прогорнути історію вводу донизу"
+msgstr "прокрутити вниз список історії"
 
 #: opcodes.h:136
 msgid "search through the history list"
@@ -5782,7 +5780,7 @@ msgstr "шукати в списку історії"
 
 #: opcodes.h:137
 msgid "scroll up through the history list"
-msgstr "прогорнути історію вводу нагору"
+msgstr "прокрутити список історії вверх"
 
 #: opcodes.h:138
 msgid "delete chars from cursor to end of line"
@@ -5793,9 +5791,8 @@ msgid "delete chars from the cursor to the end of the word"
 msgstr "видалити знаки від курсора до кінця слова"
 
 #: opcodes.h:140
-#, fuzzy
 msgid "delete chars from cursor to beginning the line"
-msgstr "видалити знаки від курсора до кінця рядка"
+msgstr "видалити знаки від курсора до початку рядка"
 
 #: opcodes.h:141
 msgid "delete all chars on the line"
@@ -5827,11 +5824,11 @@ msgstr "додати, змінити або видалити помітку ли
 
 #: opcodes.h:148
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
-msgstr "змінити текст повідомлення, якщо скринька не лише для читання, в іншому випадку переглянути його"
+msgstr "змінити текст листа, якщо скринька не лише для читання, в іншому випадку переглянути його"
 
 #: opcodes.h:149
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
-msgstr "змінити текст повідомлення (edit і edit-raw-message є синонімами)"
+msgstr "змінити текст листа (edit та edit-raw-message є синонімами)"
 
 #: opcodes.h:150
 msgid "end of conditional execution (noop)"
@@ -5855,7 +5852,7 @@ msgstr "перейти до першої позиції"
 
 #: opcodes.h:155
 msgid "toggle a message's 'important' flag"
-msgstr "змінити атрибут важливості листа"
+msgstr "змінити прапорець листа 'важливий'"
 
 #: opcodes.h:156
 msgid "followup to newsgroup"
@@ -5899,11 +5896,11 @@ msgstr "відповісти всім адресатам"
 
 #: opcodes.h:166
 msgid "scroll down 1/2 page"
-msgstr "прогорнути на півсторінки донизу"
+msgstr "прогорнути на півсторінки вниз"
 
 #: opcodes.h:167
 msgid "scroll up 1/2 page"
-msgstr "прогорнути на півсторінки догори"
+msgstr "прогорнути на півсторінки вверх"
 
 #: opcodes.h:168
 msgid "this screen"
@@ -5912,7 +5909,7 @@ msgstr "цей екран"
 #: opcodes.h:169 opcodes.h:170 opcodes.h:171 opcodes.h:172 opcodes.h:173
 #: opcodes.h:174 opcodes.h:175 opcodes.h:176 opcodes.h:177 opcodes.h:178
 msgid "jump to an index number"
-msgstr "перейти до позиції з номером"
+msgstr "перейти до позиції під номером"
 
 #: opcodes.h:179
 msgid "move to the last entry"
@@ -5972,7 +5969,7 @@ msgstr "відкрити іншу групу новин у режимі лише
 
 #: opcodes.h:193
 msgid "clear a status flag from a message"
-msgstr "очистити прапорець стану з листа"
+msgstr "прибрати прапорець стану для листа"
 
 #: opcodes.h:194
 msgid "collapse/uncollapse all threads"
@@ -6012,7 +6009,7 @@ msgstr "змінити позначки (notmuch/imap)"
 
 #: opcodes.h:203
 msgid "modify (notmuch/imap) tags and then hide message"
-msgstr "змінити позначки (notmuch/imap) і потім сховати повідомлення"
+msgstr "змінити позначки (notmuch/imap) і потім сховати листа"
 
 #: opcodes.h:204
 msgid "jump to the next new message"
@@ -6088,7 +6085,7 @@ msgstr "перейти до кореневого листа в гілці"
 
 #: opcodes.h:222
 msgid "set a status flag on a message"
-msgstr "встановити атрибут статусу листа"
+msgstr "встановити прапорець стану листа"
 
 #: opcodes.h:223
 msgid "show currently active limit pattern"
@@ -6124,7 +6121,7 @@ msgstr "перейти до наступної позиції"
 
 #: opcodes.h:231
 msgid "scroll down one line"
-msgstr "прогорнути на рядок донизу"
+msgstr "прокрутити на рядок вниз"
 
 #: opcodes.h:232
 msgid "move to the next page"
@@ -6136,7 +6133,7 @@ msgstr "перейти до кінця листа"
 
 #: opcodes.h:234
 msgid "toggle display of quoted text"
-msgstr "вимк./ввімкн. відображення цитованого тексту"
+msgstr "вимк./увімкн. відображення цитованого тексту"
 
 #: opcodes.h:235
 msgid "jump to first line after headers"
@@ -6152,7 +6149,7 @@ msgstr "перейти на початок листа"
 
 #: opcodes.h:239
 msgid "post message to newsgroup"
-msgstr "опублікувати повідомлення до групи новин"
+msgstr "опублікувати листа до групи новин"
 
 #: opcodes.h:240
 msgid "move to the previous entry"
@@ -6160,7 +6157,7 @@ msgstr "перейти до попередньої позицїї"
 
 #: opcodes.h:241
 msgid "scroll up one line"
-msgstr "прогорнути на рядок догори"
+msgstr "прокрутити на рядок уверх"
 
 #: opcodes.h:242
 msgid "move to the previous page"
@@ -6168,7 +6165,7 @@ msgstr "перейти на попередню сторінку"
 
 #: opcodes.h:244
 msgid "delete the current entry, bypassing the trash folder"
-msgstr "дійсно видалити поточну позицію не використовуючи кошик"
+msgstr "видалити поточний запис в обхід теки смітника"
 
 #: opcodes.h:245
 msgid "delete the current thread, bypassing the trash folder"
@@ -6176,7 +6173,7 @@ msgstr "видалити поточну гілку в обхід теки смі
 
 #: opcodes.h:246
 msgid "query external program for addresses"
-msgstr "запит зовнішньої адреси у зовнішньої програми"
+msgstr "запит адрес у зовнішньої програми"
 
 #: opcodes.h:247
 msgid "append new query results to current results"
@@ -6184,7 +6181,7 @@ msgstr "додати результати нового запиту до пот�
 
 #: opcodes.h:248
 msgid "save changes to mailbox and quit"
-msgstr "зберегти зміни скриньки та вийти"
+msgstr "зберегти зміни до скриньки і вийти"
 
 #: opcodes.h:249
 msgid "recall a postponed message"
@@ -6192,7 +6189,7 @@ msgstr "викликати залишений лист"
 
 #: opcodes.h:250
 msgid "reconstruct thread containing current message"
-msgstr "перебудувати гілку з поточним повідомленням"
+msgstr "перебудувати гілку з поточним листом"
 
 #: opcodes.h:251
 msgid "clear and redraw the screen"
@@ -6212,11 +6209,11 @@ msgstr "відповісти на лист"
 
 #: opcodes.h:255
 msgid "use the current message as a template for a new one"
-msgstr "взяти цей лист в якості шаблону для нового"
+msgstr "взяти цей лист у якості шаблону для нового"
 
 #: opcodes.h:257
 msgid "search for a regular expression"
-msgstr "пошук виразу в напрямку уперед"
+msgstr "пошук регулярного виразу"
 
 #: opcodes.h:258
 msgid "search for next match"
@@ -6224,7 +6221,7 @@ msgstr "пошук наступної відповідності"
 
 #: opcodes.h:259
 msgid "search for next match in opposite direction"
-msgstr "пошук наступного в зворотньому напрямку"
+msgstr "пошук наступного у зворотньому напрямку"
 
 #: opcodes.h:260
 msgid "search backwards for a regular expression"
@@ -6232,7 +6229,7 @@ msgstr "пошук виразу в напрямку назад"
 
 #: opcodes.h:261
 msgid "toggle search pattern coloring"
-msgstr "вимк./ввімкнути виділення виразу пошуку"
+msgstr "вимк./увімкнути виділення виразу пошуку"
 
 #: opcodes.h:262
 msgid "invoke a command in a subshell"
@@ -6248,7 +6245,7 @@ msgstr "сортувати листи"
 
 #: opcodes.h:265
 msgid "sort messages in reverse order"
-msgstr "сортувати листи в зворотньому порядку"
+msgstr "сортувати листи у зворотньому порядку"
 
 #: opcodes.h:266
 msgid "subscribe to newsgroups matching a pattern"
@@ -6264,7 +6261,7 @@ msgstr "використати наступну функцію до виділе
 
 #: opcodes.h:269
 msgid "apply next function ONLY to tagged messages"
-msgstr "використати наступну функцію ТІЛЬКИ до виділеного"
+msgstr "застосувати наступну функцію лише для позначених листів"
 
 #: opcodes.h:270
 msgid "tag the current subthread"
@@ -6276,19 +6273,19 @@ msgstr "виділити поточну гілку"
 
 #: opcodes.h:272
 msgid "toggle whether to browse mailboxes or all files"
-msgstr "вибір проглядання скриньок/всіх файлів"
+msgstr "вибір між переглядом скриньок або всіх файлів"
 
 #: opcodes.h:273
 msgid "toggle a message's 'new' flag"
-msgstr "змінити атрибут \"новий\" листа"
+msgstr "змінити прапорець листа 'новий'"
 
 #: opcodes.h:274
 msgid "toggle view of read messages"
-msgstr "перемкнути вигляд прочитаних повідомлень"
+msgstr "перемкнути вигляд прочитаних листів"
 
 #: opcodes.h:275
 msgid "toggle whether the mailbox will be rewritten"
-msgstr "вимкнути/ввімкнути перезаписування скриньки"
+msgstr "вимкнути/увімкнути перезаписування скриньки"
 
 #: opcodes.h:276
 msgid "move to the top of the page"
@@ -6312,11 +6309,11 @@ msgstr "відписатися від групи новин, що відпові
 
 #: opcodes.h:282
 msgid "show the NeoMutt version number and date"
-msgstr "показати версію та дату NeoMutt"
+msgstr "показати версію і дату NeoMutt"
 
 #: opcodes.h:283
 msgid "show MIME attachments"
-msgstr "показати додатки MIME"
+msgstr "показати прикріплення MIME"
 
 #: opcodes.h:284
 msgid "show the raw message"
@@ -6332,7 +6329,7 @@ msgstr "зробити розшифровану копію"
 
 #: opcodes.h:289
 msgid "make decrypted copy and delete"
-msgstr "зробити розшифровану копію та видалити"
+msgstr "зробити розшифровану копію і видалити"
 
 #: opcodes.h:290
 msgid "extract supported public keys"
@@ -6352,7 +6349,7 @@ msgstr "змінити список CC"
 
 #: opcodes.h:296
 msgid "enter a file to save a copy of this message in"
-msgstr "ввести ім’я файлу, куди додати копію листа"
+msgstr "увести назву файлу для збереження копії цього листа"
 
 #: opcodes.h:297
 msgid "edit the Followup-To field"
@@ -6448,7 +6445,7 @@ msgstr "приєднати відкритий ключ PGP"
 
 #: opcodes.h:334
 msgid "check for classic PGP"
-msgstr "перевірка на класичне PGP"
+msgstr "перевірити на класичний PGP"
 
 #: opcodes.h:335
 msgid "show PGP options"
@@ -6582,7 +6579,7 @@ msgstr "Неможливо створити фільтр відображенн�
 
 #: pager/message.c:269
 msgid "Could not copy message"
-msgstr "Не вийшло скопіювати повідомлення"
+msgstr "Не вийшло скопіювати листа"
 
 #: pager/message.c:347
 msgid "Command: "
@@ -7029,7 +7026,7 @@ msgstr "Власний пошук на боці сервера IMAP для РЯ�
 #: pattern/pattern.c:261 pattern/pattern.c:367 pattern/pattern.c:534
 #: pattern/pattern.c:694
 msgid "Compiling search pattern..."
-msgstr "Компіляція виразу пошуку..."
+msgstr "Компілювання шаблону пошуку..."
 
 #: pattern/pattern.c:288 pattern/pattern.c:393
 msgid "Executing command on matching messages..."
@@ -7074,7 +7071,7 @@ msgstr "Неправильний POP URL: %s"
 
 #: pop/lib.c:250
 msgid "Unable to leave messages on server"
-msgstr "Неможливо залишити повідомлення на сервері"
+msgstr "Неможливо залишити листи на сервері"
 
 #: pop/lib.c:252 pop/pop.c:157
 msgid "Command TOP is not supported by server"
@@ -7095,11 +7092,11 @@ msgstr "Закриття з’єднання з сервером POP..."
 
 #: pop/lib.c:613
 msgid "Verifying message indexes..."
-msgstr "Перевірка індексів повідомлень..."
+msgstr "Перевірка індексів листів..."
 
 #: pop/lib.c:639
 msgid "Connection lost. Reconnect to POP server?"
-msgstr "З’єднання втрачено. Відновити зв’язок з сервером POP?"
+msgstr "З’єднання втрачено. Відновити зв’язок із сервером POP?"
 
 #: pop/pop.c:184
 msgid "Can't write header to temporary file"
@@ -7154,19 +7151,19 @@ msgstr[2] "%s [%d з %d листів прочитано]"
 
 #: pop/pop.c:804
 msgid "Fetching list of messages..."
-msgstr "Отримання переліку повідомлень..."
+msgstr "Отримання списку листів..."
 
 #: pop/pop.c:888
 msgid "Marking messages deleted..."
-msgstr "Маркування повідомлень видаленими..."
+msgstr "Позначення листів видаленими..."
 
 #: pop/pop.c:1070
 msgid "Can't write message to temporary file"
-msgstr "Неможливо записати повідомлення до тимчасового файлу"
+msgstr "Неможливо записати листа в тимчасовий файл"
 
 #: postpone/dlg_postpone.c:185
 msgid "Postponed Messages"
-msgstr "Залишені листи"
+msgstr "Відкладені листи"
 
 #: postpone/postpone.c:239
 msgid "Illegal S/MIME header"
@@ -7260,7 +7257,7 @@ msgstr "%s більше не існує"
 #: send/config.c:99
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
-msgstr ""
+msgstr "Параметр %s не повинен містити метазнаків оболонки: %c"
 
 #: send/send.c:339
 msgid "No subject, abort?"
@@ -7298,7 +7295,7 @@ msgstr "Додати лист до відповіді?"
 
 #: send/send.c:1236
 msgid "Including quoted message..."
-msgstr "Цитується повідомлення..."
+msgstr "Цитується лист..."
 
 #: send/send.c:1242
 msgid "Could not include all requested messages"
