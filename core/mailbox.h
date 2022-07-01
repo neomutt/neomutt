@@ -180,12 +180,15 @@ enum NotifyMailbox
   NT_MAILBOX_NEW_MAIL,   ///< New messages have been added
 };
 
+ARRAY_HEAD(EmailArray, struct Email *);
+
 /**
  * struct EventMailbox - An Event that happened to a Mailbox
  */
 struct EventMailbox
 {
-  struct Mailbox *mailbox; ///< The Mailbox this Event relates to
+  struct Mailbox *mailbox;  ///< The Mailbox this Event relates to
+  struct EmailArray emails; ///< List of emails associated with the event
 };
 
 void            mailbox_changed   (struct Mailbox *m, enum NotifyMailbox action);

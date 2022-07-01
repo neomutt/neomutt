@@ -84,6 +84,10 @@
 #include <xlocale.h>
 #endif
 
+#ifdef USE_DEVEL_NEW_MAIL
+static time_t LastNotified = 0; ///< Time of last new mail notification.
+#endif
+
 static const struct Mapping MboxTypeMap[] = {
   // clang-format off
   { "mbox",    MUTT_MBOX,    },
@@ -1795,10 +1799,21 @@ int mx_ac_remove(struct Mailbox *m, bool keep_account)
   return 0;
 }
 
+void find_new_emails(const struct Mailbox *mailbox, time_t last_notified,
+                     struct EmailArray *emails)
+{
+  int i = 0;
+  for (; i < mailbox->msg_count; i++)
+  {
+    if (last_notified < mailbox->emails[i]->received)
+      ARRAY_ADD(emails, mailbox->emails[i]);
+  }
+}
+
 /**
  * mx_mbox_check_stats - Check the statistics for a mailbox - Wrapper for MxOps::mbox_check_stats()
  *
- * @note Emits: #NT_MAILBOX_CHANGE
+ * @note Emits: #NT_MAILBOX_CHANGE and #NT_MAILBOX_NEW_MAIL
  */
 enum MxStatus mx_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
@@ -1811,12 +1826,19 @@ enum MxStatus mx_mbox_check_stats(struct Mailbox *m, uint8_t flags)
     struct EventMailbox ev_m = { m };
     notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
   }
-  if (rc == MX_STATUS_NEW_MAIL && !m->notified)
+#ifdef USE_DEVEL_NEW_MAIL
+  if (rc == MX_STATUS_NEW_MAIL)
   {
-    struct EventMailbox ev_m = { m };
-    notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_NEW_MAIL, &ev_m);
-    m->notified = true;
+    if (LastNotified > 0)
+    {
+      struct EventMailbox ev_m = { m, ARRAY_HEAD_INITIALIZER };
+      find_new_emails(m, LastNotified, &ev_m.emails);
+      if (!ARRAY_EMPTY(&ev_m.emails))
+        notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_NEW_MAIL, &ev_m);
+    }
+    LastNotified = mutt_date_epoch();
   }
+#endif
 
   return rc;
 }

@@ -26,7 +26,9 @@
  * Use an external command to send a system notification when new mail arrives.
  */
 
+#include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "newmail/lib.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
@@ -38,29 +40,44 @@
  * @param[in]  buflen   Buffer length
  * @param[in]  col      Starting column
  * @param[in]  cols     Number of screen columns
- * @param[in]  src      Printf-like format string
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
  * @param[in]  prec     Field precision, e.g. "-3.4"
- * ############# TODO #############
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Private data
+ * @param[in]  flags    Flags, see #MuttFormatFlags
+ * @retval ptr src (unchanged)
  *
  * | Expando | Description
  * | :------ | :-------------------------------------------------------
+ * | \%c     | New messages
  * | \%n     | Folder name
  * | \%f     | Folder path
+ * | \%u     | Unread messages
  */
 const char *new_mail_format_str(char *buf, size_t buflen, size_t col, int cols,
                                 char op, const char *src, const char *prec,
                                 const char *if_str, const char *else_str,
                                 intptr_t data, MuttFormatFlags flags)
 {
-  struct Mailbox *mailbox = (struct Mailbox *) data;
+  struct EventMailbox *ev_m = (struct EventMailbox *) data;
+  struct Mailbox *mailbox = ev_m->mailbox;
+  struct EmailArray *emails = &ev_m->emails;
 
   switch (op)
   {
-    case 'n':
-      snprintf(buf, buflen, "%s", NONULL(mailbox->name));
+    case 'c':
+      snprintf(buf, buflen, "%ld", ARRAY_SIZE(emails));
       break;
     case 'f':
       snprintf(buf, buflen, "%s", NONULL(mailbox_path(mailbox)));
+      break;
+    case 'n':
+      snprintf(buf, buflen, "%s", NONULL(mailbox->name));
+      break;
+    case 'u':
+      snprintf(buf, buflen, "%d", mailbox->msg_unread);
       break;
   }
   return src;
@@ -75,11 +92,11 @@ int handle_new_mail_event(const char *cmd, struct NotifyCallback *nc, Execute *e
   if (!ev_m || !ev_m->mailbox)
     return 0;
 
-  struct Mailbox *mailbox = ev_m->mailbox;
   char expanded_cmd[1024];
   mutt_expando_format(expanded_cmd, 1024, 0, 1024, cmd, new_mail_format_str,
-                      (intptr_t) mailbox, MUTT_FORMAT_NO_FLAGS);
+                      (intptr_t) ev_m, MUTT_FORMAT_NO_FLAGS);
   execute(expanded_cmd);
+  ARRAY_FREE(&ev_m->emails);
   return 0;
 }
 

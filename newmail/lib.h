@@ -25,8 +25,9 @@
 
 #include <stdint.h>
 #include <stdio.h>
-#include "mutt/notify.h"
 #include "format_flags.h"
+
+struct NotifyCallback;
 
 typedef int(Execute)(const char *cmd);
 
