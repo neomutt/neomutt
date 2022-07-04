@@ -317,12 +317,12 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
 
     if ((t->tm_mday < 1) || (t->tm_mday > 31))
     {
-      snprintf(err->data, err->dsize, _("Invalid day of month: %s"), s);
+      mutt_buffer_printf(err, _("Invalid day of month: %s"), s);
       return NULL;
     }
     if ((t->tm_mon < 0) || (t->tm_mon > 11))
     {
-      snprintf(err->data, err->dsize, _("Invalid month: %s"), s);
+      mutt_buffer_printf(err, _("Invalid month: %s"), s);
       return NULL;
     }
 
@@ -983,13 +983,13 @@ static bool eat_date(struct Pattern *pat, PatternCompFlags flags,
   char *pexpr = s->dptr;
   if (mutt_extract_token(tmp, s, MUTT_TOKEN_COMMENT | MUTT_TOKEN_PATTERN) != 0)
   {
-    snprintf(err->data, err->dsize, _("Error in expression: %s"), pexpr);
+    mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
     goto out;
   }
 
   if (mutt_buffer_is_empty(tmp))
   {
-    snprintf(err->data, err->dsize, "%s", _("Empty expression"));
+    mutt_buffer_printf(err, "%s", _("Empty expression"));
     goto out;
   }
 
