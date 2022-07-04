@@ -405,8 +405,8 @@ static enum CommandResult km_bind_err(const char *s, enum MenuType mtype, int op
         if (err)
         {
           /* err was passed, put the string there */
-          snprintf(err->data, err->dsize, err_msg, old_binding, new_binding,
-                   mutt_map_get_name(mtype, MenuNames), new_binding);
+          mutt_buffer_printf(err, err_msg, old_binding, new_binding,
+                             mutt_map_get_name(mtype, MenuNames), new_binding);
         }
         else
         {
