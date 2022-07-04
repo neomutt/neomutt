@@ -331,10 +331,8 @@ static int pager_global_observer(struct NotifyCallback *nc)
  */
 static int pager_index_observer(struct NotifyCallback *nc)
 {
-  if (nc->event_type != NT_INDEX)
+  if ((nc->event_type != NT_INDEX) || !nc->global_data)
     return 0;
-  if (!nc->global_data)
-    return -1;
 
   struct MuttWindow *win_pager = nc->global_data;
 
