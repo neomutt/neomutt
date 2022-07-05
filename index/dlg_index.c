@@ -217,16 +217,34 @@ void collapse_all(struct MailboxView *mv, struct Menu *menu, int toggle)
 }
 
 /**
- * ci_next_undeleted - Find the next undeleted email
+ * uncollapse_thread - Open a collapsed thread
  * @param m     Mailbox
- * @param msgno Message number to start at
+ * @param index Message number
+ */
+static void uncollapse_thread(struct Mailbox *m, int index)
+{
+  struct Email *e = mutt_get_virt_email(m, index);
+  if (e && e->collapsed)
+  {
+    index = mutt_uncollapse_thread(e);
+    mutt_set_vnum(m);
+  }
+}
+
+/**
+ * ci_next_undeleted - Find the next undeleted email
+ * @param m          Mailbox
+ * @param msgno      Message number to start at
+ * @param uncollapse Open collapsed threads
  * @retval >=0 Message number of next undeleted email
  * @retval  -1 No more undeleted messages
  */
-int ci_next_undeleted(struct Mailbox *m, int msgno)
+int ci_next_undeleted(struct Mailbox *m, int msgno, bool uncollapse)
 {
   if (!m)
     return -1;
+
+  int index = -1;
 
   for (int i = msgno + 1; i < m->vcount; i++)
   {
@@ -234,22 +252,32 @@ int ci_next_undeleted(struct Mailbox *m, int msgno)
     if (!e)
       continue;
     if (!e->deleted)
-      return i;
+    {
+      index = i;
+      break;
+    }
   }
-  return -1;
+
+  if (uncollapse)
+    uncollapse_thread(m, index);
+
+  return index;
 }
 
 /**
  * ci_previous_undeleted - Find the previous undeleted email
- * @param m     Mailbox
- * @param msgno Message number to start at
+ * @param m          Mailbox
+ * @param msgno      Message number to start at
+ * @param uncollapse Open collapsed threads
  * @retval >=0 Message number of next undeleted email
  * @retval  -1 No more undeleted messages
  */
-int ci_previous_undeleted(struct Mailbox *m, int msgno)
+int ci_previous_undeleted(struct Mailbox *m, int msgno, bool uncollapse)
 {
   if (!m)
     return -1;
+
+  int index = -1;
 
   for (int i = msgno - 1; i >= 0; i--)
   {
@@ -257,9 +285,16 @@ int ci_previous_undeleted(struct Mailbox *m, int msgno)
     if (!e)
       continue;
     if (!e->deleted)
-      return i;
+    {
+      index = i;
+      break;
+    }
   }
-  return -1;
+
+  if (uncollapse)
+    uncollapse_thread(m, index);
+
+  return index;
 }
 
 /**

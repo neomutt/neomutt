@@ -82,12 +82,12 @@ void mutt_update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus 
 struct MuttWindow *index_pager_init(void);
 int mutt_dlgindex_observer(struct NotifyCallback *nc);
 bool check_acl(struct Mailbox *m, AclFlags acl, const char *msg);
-int ci_next_undeleted(struct Mailbox *m, int msgno);
+int ci_next_undeleted(struct Mailbox *m, int msgno, bool uncollapse);
 void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check, int oldcount, const struct IndexSharedData *shared);
 void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount, struct IndexSharedData *shared, bool read_only);
 void collapse_all(struct MailboxView *mv, struct Menu *menu, int toggle);
 void change_folder_string(struct Menu *menu, char *buf, size_t buflen, int *oldcount, struct IndexSharedData *shared, bool read_only);
-int ci_previous_undeleted(struct Mailbox *m, int msgno);
+int ci_previous_undeleted(struct Mailbox *m, int msgno, bool uncollapse);
 int ci_first_message(struct Mailbox *m);
 void resort_index(struct MailboxView *mv, struct Menu *menu);
 int mx_toggle_write(struct Mailbox *m);
