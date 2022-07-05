@@ -115,7 +115,7 @@ static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
     {
       char errmsg[256];
       regerror(rc2, pat->p.regex, errmsg, sizeof(errmsg));
-      mutt_buffer_add_printf(err, "'%s': %s", buf->data, errmsg);
+      mutt_buffer_printf(err, "'%s': %s", buf->data, errmsg);
       FREE(&pat->p.regex);
       goto out;
     }
