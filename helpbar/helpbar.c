@@ -199,9 +199,10 @@ static int helpbar_repaint(struct MuttWindow *win)
  */
 static int helpbar_binding_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_BINDING) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_BINDING)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
-
   if (nc->event_subtype >= NT_MACRO_ADD)
     return 0;
 
@@ -227,7 +228,9 @@ static int helpbar_binding_observer(struct NotifyCallback *nc)
  */
 static int helpbar_color_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_COLOR) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_COLOR)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct EventColor *ev_c = nc->event_data;
@@ -254,7 +257,9 @@ static int helpbar_color_observer(struct NotifyCallback *nc)
  */
 static int helpbar_config_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct EventConfig *ev_c = nc->event_data;
@@ -280,7 +285,9 @@ static int helpbar_config_observer(struct NotifyCallback *nc)
  */
 static int helpbar_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_WINDOW)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct MuttWindow *win_helpbar = nc->global_data;

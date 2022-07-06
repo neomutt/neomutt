@@ -60,7 +60,9 @@ void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
  */
 int main_hist_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_CONFIG) || !nc->event_data)
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+  if (!nc->event_data)
     return -1;
 
   struct EventConfig *ev_c = nc->event_data;

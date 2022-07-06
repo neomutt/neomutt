@@ -109,7 +109,9 @@ static const struct Mapping AttachHelp[] = {
  */
 static int attach_config_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct EventConfig *ev_c = nc->event_data;
@@ -416,9 +418,10 @@ static int attach_tag(struct Menu *menu, int sel, int act)
  */
 static int attach_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_WINDOW)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
-
   if (nc->event_subtype != NT_WINDOW_DELETE)
     return 0;
 

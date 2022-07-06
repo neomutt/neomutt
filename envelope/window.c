@@ -783,7 +783,9 @@ static int env_repaint(struct MuttWindow *win)
  */
 static int env_color_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_COLOR) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_COLOR)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct EventColor *ev_c = nc->event_data;
@@ -817,7 +819,9 @@ static int env_color_observer(struct NotifyCallback *nc)
  */
 static int env_config_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct EventConfig *ev_c = nc->event_data;
@@ -863,7 +867,7 @@ static int env_config_observer(struct NotifyCallback *nc)
 static int env_email_observer(struct NotifyCallback *nc)
 {
   if ((nc->event_type != NT_EMAIL) && (nc->event_type != NT_ENVELOPE))
-    return -1;
+    return 0;
   if (!nc->global_data)
     return -1;
 
@@ -886,7 +890,9 @@ static int env_email_observer(struct NotifyCallback *nc)
  */
 static int env_header_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_HEADER) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_HEADER)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   const struct EventHeader *ev_h = nc->event_data;
@@ -923,7 +929,9 @@ static int env_header_observer(struct NotifyCallback *nc)
  */
 static int env_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_WINDOW)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct MuttWindow *win_env = nc->global_data;

@@ -178,7 +178,9 @@ static void sb_init_data(struct MuttWindow *win)
  */
 static int sb_account_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_ACCOUNT) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_ACCOUNT)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
   if (nc->event_subtype == NT_ACCOUNT_DELETE)
     return 0;
@@ -203,7 +205,9 @@ static int sb_account_observer(struct NotifyCallback *nc)
  */
 static int sb_color_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_COLOR) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_COLOR)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct EventColor *ev_c = nc->event_data;
@@ -239,7 +243,9 @@ static int sb_color_observer(struct NotifyCallback *nc)
  */
 static int sb_command_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_COMMAND) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_COMMAND)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct Command *cmd = nc->event_data;
@@ -258,7 +264,9 @@ static int sb_command_observer(struct NotifyCallback *nc)
  */
 static int sb_config_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct EventConfig *ev_c = nc->event_data;
@@ -343,9 +351,10 @@ static int sb_config_observer(struct NotifyCallback *nc)
  */
 static int sb_index_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_INDEX) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_INDEX)
     return 0;
-
+  if (!nc->global_data || !nc->event_data)
+    return 0;
   if (!(nc->event_subtype & NT_INDEX_MAILBOX))
     return 0;
 
@@ -366,7 +375,9 @@ static int sb_index_observer(struct NotifyCallback *nc)
  */
 static int sb_mailbox_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_MAILBOX) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_MAILBOX)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct MuttWindow *win = nc->global_data;
@@ -393,7 +404,9 @@ static int sb_mailbox_observer(struct NotifyCallback *nc)
  */
 static int sb_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_WINDOW)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct MuttWindow *win = nc->global_data;
@@ -459,9 +472,10 @@ void sb_win_remove_observers(struct MuttWindow *win)
  */
 int sb_insertion_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || !nc->event_data)
+  if (nc->event_type != NT_WINDOW)
+    return 0;
+  if (!nc->event_data)
     return -1;
-
   if (nc->event_subtype != NT_WINDOW_DIALOG)
     return 0;
 

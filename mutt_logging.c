@@ -287,7 +287,9 @@ int level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
  */
 int main_log_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_CONFIG) || !nc->event_data)
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+  if (!nc->event_data)
     return -1;
 
   struct EventConfig *ev_c = nc->event_data;

@@ -126,9 +126,10 @@ unsigned long cum_attachs_size(struct ConfigSubset *sub, struct ComposeAttachDat
  */
 static int attach_email_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_EMAIL) || !nc->global_data)
+  if (nc->event_type != NT_EMAIL)
+    return 0;
+  if (!nc->global_data)
     return -1;
-
   if (nc->event_subtype != NT_EMAIL_CHANGE_ATTACH)
     return 0;
 
@@ -145,7 +146,9 @@ static int attach_email_observer(struct NotifyCallback *nc)
  */
 int attach_config_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct EventConfig *ev_c = nc->event_data;
@@ -164,7 +167,9 @@ int attach_config_observer(struct NotifyCallback *nc)
  */
 static int attach_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_WINDOW)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct MuttWindow *win_attach = nc->global_data;

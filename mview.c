@@ -312,7 +312,9 @@ static void update_tables(struct MailboxView *mv)
  */
 int mview_mailbox_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_MAILBOX) || !nc->global_data)
+  if (nc->event_type != NT_MAILBOX)
+    return 0;
+  if (!nc->global_data)
     return -1;
 
   struct MailboxView *mv = nc->global_data;

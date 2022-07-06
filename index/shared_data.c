@@ -40,9 +40,10 @@
  */
 static int index_shared_context_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_MVIEW) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_MVIEW)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
-
   if (nc->event_subtype == NT_MVIEW_ADD)
     return 0;
 
@@ -64,9 +65,10 @@ static int index_shared_context_observer(struct NotifyCallback *nc)
  */
 static int index_shared_account_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_ACCOUNT) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_ACCOUNT)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
-
   if (nc->event_subtype == NT_ACCOUNT_ADD)
     return 0;
 
@@ -88,9 +90,10 @@ static int index_shared_account_observer(struct NotifyCallback *nc)
  */
 static int index_shared_mailbox_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_MAILBOX) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_MAILBOX)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
-
   if (nc->event_subtype == NT_MAILBOX_ADD)
     return 0;
 
@@ -112,9 +115,10 @@ static int index_shared_mailbox_observer(struct NotifyCallback *nc)
  */
 static int index_shared_email_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_EMAIL) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_EMAIL)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
-
   if (nc->event_subtype == NT_EMAIL_ADD)
     return 0;
 

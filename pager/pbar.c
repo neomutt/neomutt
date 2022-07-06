@@ -172,7 +172,9 @@ static int pbar_repaint(struct MuttWindow *win)
  */
 static int pbar_color_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_COLOR) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_COLOR)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct EventColor *ev_c = nc->event_data;
@@ -193,7 +195,9 @@ static int pbar_color_observer(struct NotifyCallback *nc)
  */
 static int pbar_config_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct EventConfig *ev_c = nc->event_data;
@@ -233,7 +237,9 @@ static int pbar_index_observer(struct NotifyCallback *nc)
  */
 static int pbar_pager_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_PAGER) || !nc->global_data)
+  if (nc->event_type != NT_PAGER)
+    return 0;
+  if (!nc->global_data)
     return -1;
 
   struct MuttWindow *win_pbar = nc->global_data;
@@ -254,7 +260,9 @@ static int pbar_pager_observer(struct NotifyCallback *nc)
  */
 static int pbar_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_WINDOW)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct MuttWindow *win_pbar = nc->global_data;

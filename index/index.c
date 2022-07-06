@@ -227,7 +227,9 @@ static int config_reply_regex(struct Mailbox *m)
  */
 static int index_altern_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_ALTERN) || !nc->global_data)
+  if (nc->event_type != NT_ALTERN)
+    return 0;
+  if (!nc->global_data)
     return -1;
 
   struct MuttWindow *win = nc->global_data;
@@ -244,7 +246,9 @@ static int index_altern_observer(struct NotifyCallback *nc)
  */
 static int index_attach_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_ATTACH) || !nc->global_data)
+  if (nc->event_type != NT_ATTACH)
+    return 0;
+  if (!nc->global_data)
     return -1;
 
   struct MuttWindow *win = nc->global_data;
@@ -261,7 +265,9 @@ static int index_attach_observer(struct NotifyCallback *nc)
  */
 static int index_color_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_COLOR) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_COLOR)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct EventColor *ev_c = nc->event_data;
@@ -319,7 +325,9 @@ static int index_color_observer(struct NotifyCallback *nc)
  */
 static int index_config_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct EventConfig *ev_c = nc->event_data;
@@ -364,7 +372,9 @@ static int index_config_observer(struct NotifyCallback *nc)
  */
 static int index_global_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_GLOBAL) || !nc->global_data)
+  if (nc->event_type != NT_GLOBAL)
+    return 0;
+  if (!nc->global_data)
     return -1;
   if (nc->event_subtype != NT_GLOBAL_COMMAND)
     return 0;
@@ -410,7 +420,9 @@ static int index_index_observer(struct NotifyCallback *nc)
  */
 static int index_menu_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_MENU) || !nc->global_data)
+  if (nc->event_type != NT_MENU)
+    return 0;
+  if (!nc->global_data)
     return -1;
 
   struct MuttWindow *win = nc->global_data;
@@ -430,7 +442,9 @@ static int index_menu_observer(struct NotifyCallback *nc)
  */
 static int index_score_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_SCORE) || !nc->global_data)
+  if (nc->event_type != NT_SCORE)
+    return 0;
+  if (!nc->global_data)
     return -1;
 
   struct MuttWindow *win = nc->global_data;
@@ -460,7 +474,9 @@ static int index_score_observer(struct NotifyCallback *nc)
  */
 static int index_subjrx_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_SUBJRX) || !nc->global_data)
+  if (nc->event_type != NT_SUBJRX)
+    return 0;
+  if (!nc->global_data)
     return -1;
 
   struct MuttWindow *win = nc->global_data;
@@ -477,7 +493,9 @@ static int index_subjrx_observer(struct NotifyCallback *nc)
  */
 static int index_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_WINDOW)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct MuttWindow *win = nc->global_data;

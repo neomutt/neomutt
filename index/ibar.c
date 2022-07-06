@@ -165,7 +165,9 @@ static int ibar_repaint(struct MuttWindow *win)
  */
 static int ibar_color_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_COLOR) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_COLOR)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct EventColor *ev_c = nc->event_data;
@@ -189,7 +191,9 @@ static int ibar_color_observer(struct NotifyCallback *nc)
  */
 static int ibar_config_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_CONFIG) || !nc->global_data || !nc->event_data)
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
     return -1;
 
   struct EventConfig *ev_c = nc->event_data;
@@ -237,7 +241,9 @@ static int ibar_index_observer(struct NotifyCallback *nc)
  */
 static int ibar_menu_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_MENU) || !nc->global_data)
+  if (nc->event_type != NT_MENU)
+    return 0;
+  if (!nc->global_data)
     return -1;
 
   struct MuttWindow *win_ibar = nc->global_data;
@@ -252,7 +258,9 @@ static int ibar_menu_observer(struct NotifyCallback *nc)
  */
 static int ibar_window_observer(struct NotifyCallback *nc)
 {
-  if ((nc->event_type != NT_WINDOW) || !nc->global_data)
+  if (nc->event_type != NT_WINDOW)
+    return 0;
+  if (!nc->global_data)
     return -1;
 
   struct MuttWindow *win_ibar = nc->global_data;
