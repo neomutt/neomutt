@@ -564,6 +564,10 @@ int mutt_pager(struct PagerView *pview)
       priv->rc = op;
       break;
     }
+
+    if ((pview->mode != PAGER_MODE_EMAIL) && (rc == FR_UNKNOWN))
+      mutt_flushinp();
+
   } while (priv->loop == PAGER_LOOP_CONTINUE);
 
   //-------------------------------------------------------------------------
