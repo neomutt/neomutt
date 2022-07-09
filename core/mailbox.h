@@ -92,6 +92,9 @@ struct Mailbox
   int msg_new;                        ///< Number of new messages
   int msg_deleted;                    ///< Number of deleted messages
   int msg_tagged;                     ///< How many messages are tagged?
+#ifdef USE_DEVEL_NEW_MAIL
+  int msg_unnotified;                 ///< Number of messages we have not notified about
+#endif
 
   struct Email **emails;              ///< Array of Emails
   int email_max;                      ///< Number of pointers in emails
@@ -103,6 +106,9 @@ struct Mailbox
   bool newly_created;                 ///< Mbox or mmdf just popped into existence
   struct timespec mtime;              ///< Time Mailbox was last changed
   struct timespec last_visited;       ///< Time of last exit from this mailbox
+#ifdef USE_DEVEL_NEW_MAIL
+  struct timespec last_notified;      ///< Time when the user was last notified about new messages.
+#endif
 
   const struct MxOps *mx_ops;         ///< MXAPI callback functions
 
@@ -180,15 +186,12 @@ enum NotifyMailbox
   NT_MAILBOX_NEW_MAIL,   ///< New messages have been added
 };
 
-ARRAY_HEAD(EmailArray, struct Email *);
-
 /**
  * struct EventMailbox - An Event that happened to a Mailbox
  */
 struct EventMailbox
 {
   struct Mailbox *mailbox;  ///< The Mailbox this Event relates to
-  struct EmailArray emails; ///< List of emails associated with the event
 };
 
 void            mailbox_changed   (struct Mailbox *m, enum NotifyMailbox action);

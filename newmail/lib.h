@@ -25,6 +25,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include "mutt/lib.h"
 #include "format_flags.h"
 
 struct NotifyCallback;

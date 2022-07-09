@@ -76,6 +76,10 @@ struct Mailbox *mailbox_new(void)
   m->emails = mutt_mem_calloc(m->email_max, sizeof(struct Email *));
   m->v2r = mutt_mem_calloc(m->email_max, sizeof(int));
   m->gen = mailbox_gen();
+#ifdef USE_DEVEL_NEW_MAIL
+  m->last_notified.tv_sec = 0;
+  m->last_notified.tv_nsec = 0;
+#endif
 
   return m;
 }

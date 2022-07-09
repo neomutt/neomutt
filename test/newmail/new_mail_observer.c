@@ -48,7 +48,7 @@ void test_new_mail_observer(void)
   notify_observer_add(notify, NT_MAILBOX, dummy_new_mail_observer, NULL);
   struct Mailbox *mailbox = mailbox_new();
   mailbox->name = mutt_str_dup("Mailbox");
-  struct EventMailbox event = { mailbox, ARRAY_HEAD_INITIALIZER };
+  struct EventMailbox event = { mailbox };
 
   notify_send(notify, NT_MAILBOX, NT_MAILBOX_NEW_MAIL, NULL);
   TEST_CHECK(message == NULL);

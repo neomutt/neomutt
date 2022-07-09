@@ -84,10 +84,6 @@
 #include <xlocale.h>
 #endif
 
-#ifdef USE_DEVEL_NEW_MAIL
-static time_t LastNotified = 0; ///< Time of last new mail notification.
-#endif
-
 static const struct Mapping MboxTypeMap[] = {
   // clang-format off
   { "mbox",    MUTT_MBOX,    },
@@ -1126,24 +1122,6 @@ struct Message *mx_msg_open_new(struct Mailbox *m, const struct Email *e, MsgOpe
 }
 
 /**
- * find_new_emails - XXX
- */
-void find_new_emails(const struct Mailbox *mailbox, time_t last_notified,
-                     struct EmailArray *emails)
-{
-  mutt_debug(LL_DEBUG1, "Mailbox: %s\n", mailbox_path(mailbox));
-  mutt_debug(LL_DEBUG1, "MSG COUNT: %d\n", mailbox->msg_count);
-  mutt_debug(LL_DEBUG1, "Unread: %d\n", mailbox->msg_unread);
-  for (int i = 0; i < mailbox->msg_count; i++)
-  {
-    struct Email *email = mailbox->emails[i];
-    mutt_debug(LL_DEBUG1, "msg(%d): %d\n", i, email);
-    // if (last_notified < mailbox->emails[i]->received)
-    //   ARRAY_ADD(emails, mailbox->emails[i]);
-  }
-}
-
-/**
  * mx_mbox_check - Check for new mail - Wrapper for MxOps::mbox_check()
  * @param m          Mailbox
  * @retval enum #MxStatus
@@ -1158,19 +1136,6 @@ enum MxStatus mx_mbox_check(struct Mailbox *m)
   {
     mailbox_changed(m, NT_MAILBOX_INVALID);
   }
-#ifdef USE_DEVEL_NEW_MAIL
-  if (rc == MX_STATUS_NEW_MAIL)
-  {
-    if (LastNotified > 0)
-    {
-      struct EventMailbox ev_m = { m, ARRAY_HEAD_INITIALIZER };
-      find_new_emails(m, LastNotified, &ev_m.emails);
-      if (!ARRAY_EMPTY(&ev_m.emails))
-        notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_NEW_MAIL, &ev_m);
-    }
-    LastNotified = mutt_date_epoch();
-  }
-#endif
 
   return rc;
 }

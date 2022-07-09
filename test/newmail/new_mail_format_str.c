@@ -42,15 +42,15 @@ void test_new_mail_format_str(void)
   mailbox->name = mutt_str_dup("MailBox");
   mailbox->pathbuf = buf_make(16);
   mailbox->msg_unread = 7;
+  mailbox->msg_unnotified = 2;
+  mailbox->msg_new = 3;
   buf_strcpy(&mailbox->pathbuf, "/path");
 
-  struct EventMailbox ev_m = { mailbox, ARRAY_HEAD_INITIALIZER };
-  ARRAY_ADD(&ev_m.emails, email_new());
-  ARRAY_ADD(&ev_m.emails, email_new());
+  struct EventMailbox ev_m = { mailbox };
 
   intptr_t data = (intptr_t) &ev_m;
 
-  new_mail_format_str((char *) buf, 64, col, cols, 'n', NULL, NULL, NULL, NULL, data, 0);
+  new_mail_format_str((char *) buf, 64, col, cols, 'F', NULL, NULL, NULL, NULL, data, 0);
   TEST_CHECK(mutt_str_equal(buf, "MailBox"));
   TEST_MSG("Check failed: %s != MailBox", buf);
 
@@ -62,15 +62,13 @@ void test_new_mail_format_str(void)
   TEST_CHECK(mutt_str_equal(buf, "7"));
   TEST_MSG("Check failed: %s != 7", buf);
 
-  new_mail_format_str((char *) buf, 64, col, cols, 'c', NULL, NULL, NULL, NULL, data, 0);
+  new_mail_format_str((char *) buf, 64, col, cols, 'n', NULL, NULL, NULL, NULL, data, 0);
   TEST_CHECK(mutt_str_equal(buf, "2"));
   TEST_MSG("Check failed: %s != 2", buf);
 
-  struct Email **email;
-  ARRAY_FOREACH(email, &ev_m.emails)
-  {
-    email_free(email);
-  }
-  ARRAY_FREE(&ev_m.emails);
+  new_mail_format_str((char *) buf, 64, col, cols, 'N', NULL, NULL, NULL, NULL, data, 0);
+  TEST_CHECK(mutt_str_equal(buf, "3"));
+  TEST_MSG("Check failed: %s != 3", buf);
+
   mailbox_free(&mailbox);
 }

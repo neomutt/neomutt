@@ -46,10 +46,12 @@
 #include <utime.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "mutt/notify.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "lib.h"
+#include "newmail/lib.h"
 #include "progress/lib.h"
 #include "copy.h"
 #include "edata.h"
@@ -95,6 +97,10 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
   struct Buffer *msgpath = buf_pool_get();
   buf_printf(path, "%s/%s", mailbox_path(m), dir_name);
 
+#ifdef USE_DEVEL_NEW_MAIL
+  bool check_unnotified = check_new;
+#endif
+
   /* when $mail_check_recent is set, if the new/ directory hasn't been modified since
    * the user last exited the m, then we know there is no recent mail.  */
   const bool c_mail_check_recent = cs_subset_bool(NeoMutt->sub, "mail_check_recent");
@@ -136,6 +142,22 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
     {
       if (check_stats)
         m->msg_unread++;
+
+#ifdef USE_DEVEL_NEW_MAIL
+      if (check_unnotified)
+      {
+        struct timespec created;
+        buf_printf(msgpath, "%s/%s", buf_string(path), de->d_name);
+        stat(buf_string(msgpath), &st);
+        mutt_file_get_stat_timespec(&created, &st, MUTT_STAT_CTIME);
+        if (mutt_file_timespec_compare(&m->last_notified, &created) < 0)
+        {
+          mutt_debug(LL_DEBUG1, "Unnotified %s/%s\n", buf_string(path), de->d_name);
+          m->msg_unnotified++;
+        }
+      }
+#endif
+
       if (check_new)
       {
         if (c_mail_check_recent)
@@ -1361,6 +1383,9 @@ static enum MxStatus maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
     m->msg_count = 0;
     m->msg_unread = 0;
     m->msg_flagged = 0;
+#ifdef USE_DEVEL_NEW_MAIL
+    m->msg_unnotified = 0;
+#endif
   }
 
   maildir_check_dir(m, "new", check_new, check_stats);
@@ -1369,6 +1394,17 @@ static enum MxStatus maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   check_new = !m->has_new && c_maildir_check_cur;
   if (check_new || check_stats)
     maildir_check_dir(m, "cur", check_new, check_stats);
+
+#ifdef USE_DEVEL_NEW_MAIL
+  if (check_stats && m->msg_unnotified > 0)
+  {
+    mutt_debug(LL_DEBUG1, "Unnotified = %d\n", m->msg_unnotified);
+    struct EventMailbox ev_m = { m };
+    notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_NEW_MAIL, &ev_m);
+    clock_gettime(CLOCK_REALTIME, &m->last_notified);
+    mutt_debug(LL_DEBUG2, "resetting time\n");
+  }
+#endif
 
   return m->msg_new ? MX_STATUS_NEW_MAIL : MX_STATUS_OK;
 }

@@ -63,17 +63,19 @@ const char *new_mail_format_str(char *buf, size_t buflen, size_t col, int cols,
 {
   struct EventMailbox *ev_m = (struct EventMailbox *) data;
   struct Mailbox *mailbox = ev_m->mailbox;
-  struct EmailArray *emails = &ev_m->emails;
 
   switch (op)
   {
-    case 'c':
-      snprintf(buf, buflen, "%ld", ARRAY_SIZE(emails));
+    case 'n':
+      snprintf(buf, buflen, "%d", mailbox->msg_unnotified);
+      break;
+    case 'N':
+      snprintf(buf, buflen, "%d", mailbox->msg_new);
       break;
     case 'f':
       snprintf(buf, buflen, "%s", NONULL(mailbox_path(mailbox)));
       break;
-    case 'n':
+    case 'F':
       snprintf(buf, buflen, "%s", NONULL(mailbox->name));
       break;
     case 'u':
@@ -96,7 +98,6 @@ int handle_new_mail_event(const char *cmd, struct NotifyCallback *nc, Execute *e
   mutt_expando_format(expanded_cmd, 1024, 0, 1024, cmd, new_mail_format_str,
                       (intptr_t) ev_m, MUTT_FORMAT_NO_FLAGS);
   execute(expanded_cmd);
-  ARRAY_FREE(&ev_m->emails);
   return 0;
 }
 
