@@ -874,12 +874,12 @@ msgstr "%s: błędna liczba: %s"
 #: color/curses.c:93
 #, c-format
 msgid "Too many colors: %d / %d"
-msgstr ""
+msgstr "Za dużo kolorów: %d / %d"
 
 #: color/quoted.c:108
 #, c-format
 msgid "Maximum quoting level is %d"
-msgstr ""
+msgstr "Maksymalny poziom cytowania to %d"
 
 #: command_parse.c:118
 msgid "-group: no group name"
@@ -1031,12 +1031,12 @@ msgstr "Nie wybrano żadnego folderu"
 #: command_parse.c:1389
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
-msgstr ""
+msgstr "format tagu '%s' jest już zarejestrowany jako '%s'"
 
 #: command_parse.c:1431
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
-msgstr ""
+msgstr "transformata tagu '%s' jest już zarejestrowana jako '%s'"
 
 #: command_parse.c:1678 imap/imap.c:1329
 #, c-format
@@ -1366,7 +1366,7 @@ msgstr "Nie możesz usunąć jedynego załącznika"
 
 #: compose/functions.c:392 compose/functions.c:406
 msgid "Attachments to be grouped must have the same parent"
-msgstr ""
+msgstr "Grupowane załączniki muszą mieć wspólnego rodzica"
 
 #: compose/functions.c:613
 msgid "Attaching selected file..."
@@ -1407,7 +1407,7 @@ msgstr "Nie można dołączyć"
 
 #: compose/functions.c:908
 msgid "Content-ID can only contain the characters: -.0-9@A-Z_a-z"
-msgstr ""
+msgstr "Content-ID może zawierać tylko te znaki: -.0-9@A-Z_a-z"
 
 #: compose/functions.c:988
 msgid "Invalid encoding"
@@ -1454,7 +1454,7 @@ msgstr "Załącznik jest już na samym dole"
 
 #: compose/functions.c:1234 compose/functions.c:1287
 msgid "Attachment can't be moved out of group"
-msgstr ""
+msgstr "Załącznik nie może być usunięty z grupy"
 
 #: compose/functions.c:1282
 msgid "Attachment is already at top"
@@ -1668,12 +1668,12 @@ msgstr "Błędny typ sortowania: %ld"
 #: conn/accountcmd.c:79
 #, c-format
 msgid "Line is malformed: expected <key: val>, got <%s>"
-msgstr ""
+msgstr "Linia jest zdeformowana: oczekiwano <klucz: wartość>, otrzymano <%s>"
 
 #: conn/accountcmd.c:119
 #, c-format
 msgid "Unhandled key in line <%s: %s>"
-msgstr ""
+msgstr "Nieobsłużony klucz w linii: <%s: %s>"
 
 #: conn/accountcmd.c:140
 #, fuzzy
@@ -2085,35 +2085,35 @@ msgstr "wieloczęściowy list nie posiada wpisu ograniczającego"
 
 #: enter/window.c:56
 msgid "Complete"
-msgstr ""
+msgstr "Uzupełnij"
 
 #: enter/window.c:57
 msgid "Hist Up"
-msgstr ""
+msgstr "Historia w Górę"
 
 #: enter/window.c:58
 msgid "Hist Down"
-msgstr ""
+msgstr "Historia w Dół"
 
 #: enter/window.c:59
 msgid "Hist Search"
-msgstr ""
+msgstr "Szukaj w Historii"
 
 #: enter/window.c:60
 msgid "Begin Line"
-msgstr ""
+msgstr "Początek Linii"
 
 #: enter/window.c:61
 msgid "End Line"
-msgstr ""
+msgstr "Koniec Linii"
 
 #: enter/window.c:62
 msgid "Kill Line"
-msgstr ""
+msgstr "Usuń Linię"
 
 #: enter/window.c:63
 msgid "Kill Word"
-msgstr ""
+msgstr "Usuń Słowo"
 
 #. L10N: The compose menu autocrypt prompt.
 #. (e)ncrypt enables encryption via autocrypt.
@@ -2121,13 +2121,13 @@ msgstr ""
 #. (a)utomatic defers to the recommendation.
 #: envelope/functions.c:70
 msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?"
-msgstr ""
+msgstr "Autocrypt: (s)zyfruj, (n)ie szyfruj, (a)utomatycznie"
 
 #. L10N: The letter corresponding to the compose menu autocrypt prompt
 #. (e)ncrypt, (c)lear, (a)utomatic
 #: envelope/functions.c:76
 msgid "eca"
-msgstr ""
+msgstr "sna"
 
 #: envelope/functions.c:327
 msgid "No PGP backend configured"
@@ -2228,7 +2228,7 @@ msgstr ""
 #. This is displayed when Autocrypt is turned off.
 #: envelope/window.c:135 envelope/window.c:480
 msgid "Off"
-msgstr ""
+msgstr "Wyłączony"
 
 #. L10N: Autocrypt recommendation flag: no.
 #. This is displayed when Autocrypt cannot encrypt to the recipients.
@@ -2242,7 +2242,7 @@ msgstr "Nie"
 #. used recently, or if the only key available is a Gossip Header key.
 #: envelope/window.c:143
 msgid "Discouraged"
-msgstr ""
+msgstr "Niezalecany"
 
 #. L10N: Autocrypt recommendation flag: available.
 #. This is displayed when Autocrypt believes encryption is possible, but
@@ -2250,7 +2250,7 @@ msgstr ""
 #. is not set in both the sender and recipient keys.
 #: envelope/window.c:148
 msgid "Available"
-msgstr ""
+msgstr "Dostępny"
 
 #. L10N: Autocrypt recommendation flag: yes.
 #. This is displayed when Autocrypt would normally enable encryption
@@ -2304,7 +2304,7 @@ msgstr "Zaszyfruj używając: "
 #. (Off, No, Discouraged, Available, Yes)
 #: envelope/window.c:486
 msgid "Recommendation: "
-msgstr ""
+msgstr "Zalecenie: "
 
 #: envelope/window.c:510
 msgid "<no chain defined>"
@@ -2616,7 +2616,7 @@ msgstr "skrót '^' nie został ustawiony dla tej skrzynki pocztowej"
 
 #: hook.c:209
 msgid "mailbox shortcut expanded to empty regex"
-msgstr ""
+msgstr "skrót skrzynki został rozwinięty do pustego wyrażenia regularnego"
 
 #: hook.c:229
 msgid "badly formatted command string"
@@ -2756,7 +2756,7 @@ msgstr "Połączenie z %s zostało zakończone"
 #: imap/config.c:57 pop/config.c:57 send/config.c:75
 #, c-format
 msgid "Option %s: %s is not a valid authenticator"
-msgstr ""
+msgstr "Opcja %s: %s nie jest poprawnym autentykatorem"
 
 #: imap/imap.c:105
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
@@ -3468,60 +3468,65 @@ msgid ""
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 msgstr ""
+"  neomutt [-Enx] [-e <polecenie>] [-F <config>] [-H <wersja robocza>]\n"
+"          [-i <plik>] [-b <adres>] [-c <adres>] [-s <temat>]\n"
+"          [-a <plik> [...] --] <adres> [...]"
 
 #: main.c:272
 msgid ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 msgstr ""
+"  neomutt [-nx] [-e <polecenie>] [-F <config>] [-b <adres>] [-c <adres>]\n"
+"          [-s <temat>] [-a <plik> [...] --] <adres> [...] < wiadomość"
 
 #: main.c:274
 msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
-msgstr ""
+msgstr "  neomutt [-nRy] [-e <polecenie>] [-F <config>] [-f <skrzynka>] [-m <typ>]"
 
 #: main.c:275
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
-msgstr ""
+msgstr "  neomutt [-n] [-e <polecenie>] [-F <config>] -A <alias>"
 
 #: main.c:276
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
-msgstr ""
+msgstr "  neomutt [-n] [-e <polecenie>] [-F <config>] -B"
 
 #: main.c:277
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
-msgstr ""
+msgstr "  neomutt [-n] [-e <polecenie>] [-F <config>] -D [-S] [-O]"
 
 #: main.c:278
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
-msgstr ""
+msgstr "  neomutt [-n] [-e <polecenie>] [-F <config>] -d <poziom> -l <plik>"
 
 #: main.c:279
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
-msgstr ""
+msgstr "  neomutt [-n] [-e <polecenie>] [-F <config>] -G"
 
 #: main.c:280
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
-msgstr ""
+msgstr "  neomutt [-n] [-e <polecenie>] [-F <config>] -g <serwer>"
 
 #: main.c:281
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
-msgstr ""
+msgstr "  neomutt [-n] [-e <polecenie>] [-F <config>] -p"
 
 #: main.c:282
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
-msgstr ""
+msgstr "  neomutt [-n] [-e <polecenie>] [-F <config>] -Q <zmienna> [-O]"
 
 #: main.c:283
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
-msgstr ""
+msgstr "  neomutt [-n] [-e <polecenie>] [-F <config>] -Z"
 
 #: main.c:284
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
-msgstr ""
+msgstr "  neomutt [-n] [-e <polecenie>] [-F <config>] -z [-f <skrzynka>]"
 
 #: main.c:285
 msgid "  neomutt -v[v]\n"
-msgstr ""
+msgstr "  neomutt -v[v]\n"
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
 #: main.c:288
