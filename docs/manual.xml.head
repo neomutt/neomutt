@@ -7188,6 +7188,9 @@ mailboxes $my_mx +mailbox3
         <arg choice="plain">
           <replaceable class="parameter">filename</replaceable>
         </arg>
+        <arg choice="opt" rep="repeat">
+          <replaceable class="parameter">filename</replaceable>
+        </arg>
       </cmdsynopsis>
       <para>
         This command allows the inclusion of initialization commands from other
@@ -7199,6 +7202,32 @@ mailboxes $my_mx +mailbox3
         If the filename begins with a tilde (<quote>~</quote>), it will be
         expanded to the path of your home directory.
       </para>
+      <para>
+        If the filename is relative and the command <command>source</command>
+        is executed from the context of a configuration file, then the filename
+        is interpreted relative to the directory of that configuration file.
+        If the command is executed outside of a configuration file, e.g. from
+        the prompt, then the filename is interpreted relative to the current
+        working directory (see <link linkend="cd"><command>cd</command></link>
+        on how to change the current working directory at runtime).
+      </para>
+      <note>
+        <para>
+          Commands of a hook like
+          <link linkend="folder-hook"><command>folder-hook</command></link>
+          are not executed when being read from the configuration file but
+          later at runtime when they are triggered. Thus, relative paths in
+          hooks are interpreted relative to the current working directory and
+          not relative to the configuration file the hook was defined in.
+        </para>
+        <para>
+          For example: the hook defined with
+          <screen>folder-hook foo "source foo.rc"</screen>
+          in the file <literal>~/.config/neomutt/neomuttrc</literal> sources
+          the file <literal>$CWD/foo.rc</literal> and not
+          <literal>~/.config/neomutt/foo.rc</literal>.
+        </para>
+      </note>
       <para>
         If the filename ends with a vertical bar (<quote>|</quote>), then
         <emphasis>filename</emphasis> is considered to be an executable program
