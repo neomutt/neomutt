@@ -469,6 +469,10 @@ struct HCacheEntry mutt_hcache_fetch(struct HeaderCache *hc, const char *key,
 
   /* restore uidvalidity and crc */
   size_t hlen = header_size();
+  if (hlen > dlen)
+  {
+    goto end;
+  }
   int off = 0;
   serial_restore_uint32_t(&entry.uidvalidity, data, &off);
   serial_restore_int(&entry.crc, data, &off);

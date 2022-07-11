@@ -95,8 +95,23 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
   {
     size_t dlen = 0;
     void *uidvalidity = mutt_hcache_fetch_raw(mdata->hcache, "/UIDVALIDITY", 12, &dlen);
+    if (uidvalidity && (dlen < sizeof(uint32_t)))
+    {
+      mutt_hcache_free_raw(mdata->hcache, &uidvalidity);
+      uidvalidity = NULL;
+    }
     void *uidnext = mutt_hcache_fetch_raw(mdata->hcache, "/UIDNEXT", 8, &dlen);
+    if (uidnext && (dlen < sizeof(unsigned int)))
+    {
+      mutt_hcache_free_raw(mdata->hcache, &uidnext);
+      uidnext = NULL;
+    }
     unsigned long long *modseq = mutt_hcache_fetch_raw(mdata->hcache, "/MODSEQ", 7, &dlen);
+    if (modseq && (dlen < sizeof(unsigned long long)))
+    {
+      mutt_hcache_free_raw(mdata->hcache, (void **) &modseq);
+      modseq = NULL;
+    }
     if (uidvalidity)
     {
       mdata->uidvalidity = *(uint32_t *) uidvalidity;

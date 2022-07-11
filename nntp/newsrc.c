@@ -743,11 +743,12 @@ void nntp_hcache_update(struct NntpMboxData *mdata, struct HeaderCache *hc)
 
   /* fetch previous values of first and last */
   size_t dlen = 0;
-  void *hdata = mutt_hcache_fetch_raw(hc, "index", 5, &dlen);
+  char *hdata = mutt_hcache_fetch_raw(hc, "index", 5, &dlen);
   if (hdata)
   {
     mutt_debug(LL_DEBUG2, "mutt_hcache_fetch index: %s\n", (char *) hdata);
-    if (sscanf(hdata, ANUM " " ANUM, &first, &last) == 2)
+    if ((dlen > 0) && (hdata[dlen - 1] == '\0') &&
+        sscanf(hdata, ANUM " " ANUM, &first, &last) == 2)
     {
       old = true;
       mdata->last_cached = last;
@@ -763,7 +764,7 @@ void nntp_hcache_update(struct NntpMboxData *mdata, struct HeaderCache *hc)
         mutt_hcache_delete_record(hc, buf, strlen(buf));
       }
     }
-    mutt_hcache_free_raw(hc, &hdata);
+    mutt_hcache_free_raw(hc, (void **) &hdata);
   }
 
   /* store current values of first and last */
@@ -1156,7 +1157,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
       while ((entry = readdir(dp)))
       {
         struct HeaderCache *hc = NULL;
-        void *hdata = NULL;
+        char *hdata = NULL;
         char *group = entry->d_name;
 
         char *p = group + strlen(group) - 7;
@@ -1178,7 +1179,8 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
         {
           anum_t first, last;
 
-          if (sscanf(hdata, ANUM " " ANUM, &first, &last) == 2)
+          if ((dlen > 0) && (hdata[dlen - 1] == '\0') &&
+              sscanf(hdata, ANUM " " ANUM, &first, &last) == 2)
           {
             if (mdata->deleted)
             {
@@ -1191,7 +1193,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
               mutt_debug(LL_DEBUG2, "%s last_cached=%u\n", mdata->group, last);
             }
           }
-          mutt_hcache_free_raw(hc, &hdata);
+          mutt_hcache_free_raw(hc, (void **) &hdata);
         }
         mutt_hcache_close(hc);
       }

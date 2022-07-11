@@ -33,6 +33,7 @@
 #include "config.h"
 #include <stddef.h>
 #include <gdbm.h>
+#include <limits.h>
 #include "mutt/lib.h"
 #include "lib.h"
 
@@ -59,7 +60,7 @@ static void *store_gdbm_open(const char *path)
  */
 static void *store_gdbm_fetch(void *store, const char *key, size_t klen, size_t *vlen)
 {
-  if (!store)
+  if (!store || (klen > INT_MAX))
     return NULL;
 
   datum dkey;
@@ -88,7 +89,7 @@ static void store_gdbm_free(void *store, void **ptr)
  */
 static int store_gdbm_store(void *store, const char *key, size_t klen, void *value, size_t vlen)
 {
-  if (!store)
+  if (!store || (klen > INT_MAX) || (vlen > INT_MAX))
     return -1;
 
   datum dkey;
@@ -110,7 +111,7 @@ static int store_gdbm_store(void *store, const char *key, size_t klen, void *val
  */
 static int store_gdbm_delete_record(void *store, const char *key, size_t klen)
 {
-  if (!store)
+  if (!store || (klen > INT_MAX))
     return -1;
 
   datum dkey;

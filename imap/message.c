@@ -1371,10 +1371,18 @@ retry:
   {
     size_t dlen = 0;
     uidvalidity = mutt_hcache_fetch_raw(mdata->hcache, "/UIDVALIDITY", 12, &dlen);
+    if (uidvalidity && (dlen < sizeof(uint32_t)))
+    {
+      mutt_hcache_free_raw(mdata->hcache, &uidvalidity);
+      uidvalidity = NULL;
+    }
     puid_next = mutt_hcache_fetch_raw(mdata->hcache, "/UIDNEXT", 8, &dlen);
     if (puid_next)
     {
-      uid_next = *(unsigned int *) puid_next;
+      if (dlen >= sizeof(unsigned int))
+      {
+        uid_next = *(unsigned int *) puid_next;
+      }
       mutt_hcache_free_raw(mdata->hcache, &puid_next);
     }
 
@@ -1398,7 +1406,10 @@ retry:
                                                                 "/MODSEQ", 7, &dlen2);
       if (pmodseq)
       {
-        hc_modseq = *pmodseq;
+        if (dlen2 >= sizeof(unsigned long long))
+        {
+          hc_modseq = *pmodseq;
+        }
         mutt_hcache_free_raw(mdata->hcache, (void **) &pmodseq);
       }
       if (hc_modseq)
