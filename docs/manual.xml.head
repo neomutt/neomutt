@@ -6986,10 +6986,10 @@ set spam_separator=", "
         <para>
           Using the <literal>&lt;enter-command&gt;</literal> function in the
           <emphasis>index</emphasis> menu, you can query the value of
-          a variable by prefixing the name of the variable with a question
+          a variable by suffixing the name of the variable with a question
           mark:
         </para>
-        <screen>set ?allow_8bit</screen>
+        <screen>set allow_8bit?</screen>
         <para>
           The question mark is actually only required for boolean and
           quadoption variables.
