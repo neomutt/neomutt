@@ -46,6 +46,7 @@
 #include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "pattern/lib.h"
+#include "command_parse.h"
 #include "format_flags.h"
 #include "hdrline.h"
 #include "init.h"
@@ -65,6 +66,7 @@ struct Hook
   HookFlags type;              ///< Hook type
   struct Regex regex;          ///< Regular expression
   char *command;               ///< Filename, command or pattern to execute
+  char *source_file;           ///< Used for relative-directory source
   struct PatternList *pattern; ///< Used for fcc,save,send-hook
   TAILQ_ENTRY(Hook) entries;   ///< Linked list
 };
@@ -282,6 +284,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
          * based upon some other information. */
         FREE(&hook->command);
         hook->command = mutt_buffer_strdup(cmd);
+        hook->source_file = mutt_get_sourced_cwd();
         rc = MUTT_CMD_SUCCESS;
         goto cleanup;
       }
@@ -323,6 +326,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   hook = mutt_mem_calloc(1, sizeof(struct Hook));
   hook->type = data;
   hook->command = mutt_buffer_strdup(cmd);
+  hook->source_file = mutt_get_sourced_cwd();
   hook->pattern = pat;
   hook->regex.pattern = mutt_buffer_strdup(pattern);
   hook->regex.regex = rx;
@@ -343,6 +347,7 @@ cleanup:
 static void delete_hook(struct Hook *h)
 {
   FREE(&h->command);
+  FREE(&h->source_file);
   FREE(&h->regex.pattern);
   if (h->regex.regex)
   {
@@ -483,6 +488,7 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
   hook = mutt_mem_calloc(1, sizeof(struct Hook));
   hook->type = MUTT_IDXFMTHOOK;
   hook->command = mutt_buffer_strdup(fmtstring);
+  hook->source_file = mutt_get_sourced_cwd();
   hook->pattern = pat;
   hook->regex.pattern = mutt_buffer_strdup(pattern);
   hook->regex.regex = NULL;
@@ -608,7 +614,7 @@ void mutt_folder_hook(const char *path, const char *desc)
     {
       mutt_debug(LL_DEBUG1, "folder-hook '%s' matches '%s'\n", hook->regex.pattern, match);
       mutt_debug(LL_DEBUG5, "    %s\n", hook->command);
-      if (mutt_parse_rc_line(hook->command, err) == MUTT_CMD_ERROR)
+      if (mutt_parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
       {
         mutt_error("%s", mutt_buffer_string(err));
         break;
@@ -667,7 +673,7 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
       if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
           hook->regex.pat_not)
       {
-        if (mutt_parse_rc_line(hook->command, err) == MUTT_CMD_ERROR)
+        if (mutt_parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
         {
           mutt_error("%s", mutt_buffer_string(err));
           current_hook_type = MUTT_HOOK_NO_FLAGS;
@@ -857,7 +863,7 @@ void mutt_account_hook(const char *url)
       mutt_debug(LL_DEBUG1, "account-hook '%s' matches '%s'\n", hook->regex.pattern, url);
       mutt_debug(LL_DEBUG5, "    %s\n", hook->command);
 
-      if (mutt_parse_rc_line(hook->command, err) == MUTT_CMD_ERROR)
+      if (mutt_parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
       {
         mutt_error("%s", mutt_buffer_string(err));
         mutt_buffer_pool_release(&err);
@@ -894,7 +900,7 @@ void mutt_timeout_hook(void)
     if (!(hook->command && (hook->type & MUTT_TIMEOUT_HOOK)))
       continue;
 
-    if (mutt_parse_rc_line(hook->command, &err) == MUTT_CMD_ERROR)
+    if (mutt_parse_rc_line_cwd(hook->command, hook->source_file, &err) == MUTT_CMD_ERROR)
     {
       mutt_error("%s", err.data);
       mutt_buffer_reset(&err);
@@ -929,7 +935,7 @@ void mutt_startup_shutdown_hook(HookFlags type)
     if (!(hook->command && (hook->type & type)))
       continue;
 
-    if (mutt_parse_rc_line(hook->command, &err) == MUTT_CMD_ERROR)
+    if (mutt_parse_rc_line_cwd(hook->command, hook->source_file, &err) == MUTT_CMD_ERROR)
     {
       mutt_error("%s", err.data);
       mutt_buffer_reset(&err);
