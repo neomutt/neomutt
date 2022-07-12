@@ -65,6 +65,9 @@ enum CommandResult parse_unsubscribe     (struct Buffer *buf, struct Buffer *s, 
 enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 #endif
 
+enum CommandResult mutt_parse_rc_line_cwd(const char *line, char *cwd, struct Buffer *err);
+char *mutt_get_sourced_cwd(void);
+
 int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s, struct Buffer *err);
 void clear_source_stack(void);
 int source_rc(const char *rcfile_path, struct Buffer *err);

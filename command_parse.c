@@ -136,6 +136,48 @@ int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s,
 }
 
 /**
+ * mutt_parse_rc_line_cwd - Parse and run a muttrc line in a relative directory
+ * @param line   Line to be parsed
+ * @param cwd    File relative where to run the line
+ * @param err    Where to write error messages
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
+ */
+enum CommandResult mutt_parse_rc_line_cwd(const char *line, char *cwd, struct Buffer *err)
+{
+  mutt_list_insert_head(&MuttrcStack, mutt_str_dup(NONULL(cwd)));
+
+  enum CommandResult ret = mutt_parse_rc_line(line, err);
+
+  struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
+  STAILQ_REMOVE_HEAD(&MuttrcStack, entries);
+  FREE(&np->data);
+  FREE(&np);
+
+  return ret;
+}
+
+/**
+ * mutt_get_sourced_cwd - Get the current file path that is being parsed
+ * @retval ptr File path that is being parsed or cwd at runtime
+ *
+ * @note Caller is responsible for freeing returned string
+ */
+char *mutt_get_sourced_cwd(void)
+{
+  struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
+  if (np && np->data)
+    return mutt_str_dup(np->data);
+
+  // stack is empty, return our own dummy file relative to cwd
+  struct Buffer *cwd = mutt_buffer_pool_get();
+  mutt_path_getcwd(cwd);
+  mutt_buffer_addstr(cwd, "/dummy.rc");
+  char *ret = mutt_buffer_strdup(cwd);
+  mutt_buffer_pool_release(&cwd);
+  return ret;
+}
+
+/**
  * source_rc - Read an initialization file
  * @param rcfile_path Path to initialization file
  * @param err         Buffer for error messages
