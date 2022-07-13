@@ -306,7 +306,10 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
 
       if (event.op == OP_NULL)
       {
-        mutt_debug(LL_DEBUG1, "Got char %c (0x%02x)\n", event.ch, event.ch);
+        if (complete & MUTT_COMP_PASS)
+          mutt_debug(LL_DEBUG1, "Got char *\n");
+        else
+          mutt_debug(LL_DEBUG1, "Got char %c (0x%02x)\n", event.ch, event.ch);
         if (self_insert(&wdata, event.ch))
         {
           rc = 0;
