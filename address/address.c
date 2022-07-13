@@ -283,7 +283,7 @@ static const char *parse_address(const char *s, char *token, size_t *tokenlen,
 static const char *parse_route_addr(const char *s, char *comment, size_t *commentlen,
                                     size_t commentmax, struct Address *addr)
 {
-  char token[1024];
+  char token[1024] = { 0 };
   size_t tokenlen = 0;
 
   s = mutt_str_skip_email_wsp(s);
@@ -339,7 +339,7 @@ static const char *parse_route_addr(const char *s, char *comment, size_t *commen
 static const char *parse_addr_spec(const char *s, char *comment, size_t *commentlen,
                                    size_t commentmax, struct Address *addr)
 {
-  char token[1024];
+  char token[1024] = { 0 };
   size_t tokenlen = 0;
 
   s = parse_address(s, token, &tokenlen, sizeof(token) - 1, comment, commentlen,
@@ -685,7 +685,7 @@ void mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *spec
 
   if (strpbrk(value, specials))
   {
-    char tmp[256];
+    char tmp[256] = { 0 };
     char *pc = tmp;
     size_t tmplen = sizeof(tmp) - 3;
 
@@ -1203,7 +1203,7 @@ size_t mutt_addrlist_write_list(const struct AddressList *al, struct ListHead *l
   if (!al || !list)
     return 0;
 
-  char addr[256];
+  char addr[256] = { 0 };
   size_t count = 0;
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
@@ -1230,7 +1230,7 @@ size_t mutt_addrlist_write_list(const struct AddressList *al, struct ListHead *l
  */
 void mutt_addrlist_write_file(const struct AddressList *al, FILE *fp, int start_col, bool display)
 {
-  char buf[1024];
+  char buf[1024] = { 0 };
   int count = 0;
   int linelen = start_col;
 

@@ -138,7 +138,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
   int trust = 0;
   KeyFlags flags = KEYFLAG_NO_FLAGS;
   struct PgpKeyInfo tmp;
-  char tstr[11];
+  char tstr[11] = { 0 };
 
   *is_subkey = false;
   if (*buf == '\0')
@@ -416,7 +416,7 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
 {
   FILE *fp = NULL;
   pid_t pid;
-  char buf[1024];
+  char buf[1024] = { 0 };
   struct PgpKeyInfo *db = NULL, **kend = NULL, *k = NULL, *kk = NULL, *mainkey = NULL;
   bool is_sub = false;
 

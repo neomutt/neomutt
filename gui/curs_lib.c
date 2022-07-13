@@ -418,7 +418,7 @@ int mutt_any_key_to_continue(const char *s)
   term.c_cc[VTIME] = 0; // Don't wait
   tcsetattr(fd, TCSANOW, &term);
 
-  char buf[64];
+  char buf[64] = { 0 };
   while (read(fd, buf, sizeof(buf)) > 0)
     ; // Mop up any remaining chars
 
@@ -644,7 +644,7 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
   wchar_t wc = 0;
   int w;
   size_t k, k2;
-  char scratch[MB_LEN_MAX];
+  char scratch[MB_LEN_MAX] = { 0 };
   mbstate_t mbstate1 = { 0 };
   mbstate_t mbstate2 = { 0 };
   bool escaped = false;

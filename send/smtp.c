@@ -136,7 +136,7 @@ static bool valid_smtp_code(char *buf, size_t buflen, int *n)
 static int smtp_get_resp(struct SmtpAccountData *adata)
 {
   int n;
-  char buf[1024];
+  char buf[1024] = { 0 };
 
   do
   {
@@ -198,7 +198,7 @@ static int smtp_rcpt_to(struct SmtpAccountData *adata, const struct AddressList 
     {
       continue;
     }
-    char buf[1024];
+    char buf[1024] = { 0 };
     if ((adata->capabilities & SMTP_CAP_DSN) && c_dsn_notify)
       snprintf(buf, sizeof(buf), "RCPT TO:<%s> NOTIFY=%s\r\n", a->mailbox, c_dsn_notify);
     else
@@ -222,7 +222,7 @@ static int smtp_rcpt_to(struct SmtpAccountData *adata, const struct AddressList 
  */
 static int smtp_data(struct SmtpAccountData *adata, const char *msgfile)
 {
-  char buf[1024];
+  char buf[1024] = { 0 };
   struct Progress *progress = NULL;
   int rc = SMTP_ERR_WRITE;
   int term = 0;
@@ -409,7 +409,7 @@ static int smtp_helo(struct SmtpAccountData *adata, bool esmtp)
 #endif
   }
 
-  char buf[1024];
+  char buf[1024] = { 0 };
   snprintf(buf, sizeof(buf), "%s %s\r\n", esmtp ? "EHLO" : "HELO", adata->fqdn);
   /* XXX there should probably be a wrapper in mutt_socket.c that
    * repeatedly calls adata->conn->write until all data is sent.  This
@@ -602,7 +602,7 @@ static int smtp_auth_plain(struct SmtpAccountData *adata, const char *method)
 {
   (void) method; // This is PLAIN
 
-  char buf[1024];
+  char buf[1024] = { 0 };
 
   /* Get username and password. Bail out of any can't be retrieved. */
   if ((mutt_account_getuser(&adata->conn->account) < 0) ||
@@ -905,7 +905,7 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
   struct SmtpAccountData adata = { 0 };
   struct ConnAccount cac = { { 0 } };
   const char *envfrom = NULL;
-  char buf[1024];
+  char buf[1024] = { 0 };
   int rc = -1;
 
   adata.sub = sub;

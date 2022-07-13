@@ -121,7 +121,7 @@ int getdnsdomainname(struct Buffer *result)
   int rc = -1;
 
 #if defined(HAVE_GETADDRINFO) || defined(HAVE_GETADDRINFO_A)
-  char node[256];
+  char node[256] = { 0 };
   if (gethostname(node, sizeof(node)) != 0)
     return rc;
 

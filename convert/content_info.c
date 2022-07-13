@@ -185,7 +185,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
   FILE *fp = NULL;
   char *fromcode = NULL;
   char *tocode = NULL;
-  char buf[100];
+  char buf[100] = { 0 };
   size_t r;
 
   struct stat st = { 0 };
@@ -236,7 +236,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
     {
       if (!chs)
       {
-        char chsbuf[256];
+        char chsbuf[256] = { 0 };
         mutt_ch_canonical_charset(chsbuf, sizeof(chsbuf), tocode);
         mutt_param_set(&b->parameter, "charset", chsbuf);
       }

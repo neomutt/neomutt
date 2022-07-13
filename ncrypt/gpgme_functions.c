@@ -373,7 +373,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   int idx;
   const char *s = NULL, *s2 = NULL;
   time_t tt = 0;
-  char shortbuf[128];
+  char shortbuf[128] = { 0 };
   unsigned long aval = 0;
   const char *delim = NULL;
   gpgme_user_id_t uid = NULL;
@@ -672,7 +672,7 @@ leave:
   gpgme_release(listctx);
   mutt_file_fclose(&fp);
   mutt_clear_error();
-  char title[1024];
+  char title[1024] = { 0 };
   snprintf(title, sizeof(title), _("Key ID: 0x%s"), crypt_keyid(key));
 
   struct PagerData pdata = { 0 };

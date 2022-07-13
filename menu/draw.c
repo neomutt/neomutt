@@ -328,7 +328,7 @@ void menu_redraw_full(struct Menu *menu)
  */
 void menu_redraw_index(struct Menu *menu)
 {
-  char buf[1024];
+  char buf[1024] = { 0 };
   struct AttrColor *ac = NULL;
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
@@ -385,7 +385,7 @@ void menu_redraw_index(struct Menu *menu)
  */
 void menu_redraw_motion(struct Menu *menu)
 {
-  char buf[1024];
+  char buf[1024] = { 0 };
 
   /* Note: menu->color() for the index can end up retrieving a message
    * over imap (if matching against ~h for instance).  This can
@@ -444,7 +444,7 @@ void menu_redraw_motion(struct Menu *menu)
  */
 void menu_redraw_current(struct Menu *menu)
 {
-  char buf[1024];
+  char buf[1024] = { 0 };
   struct AttrColor *ac = menu->color(menu, menu->current);
 
   mutt_window_move(menu->win, 0, menu->current - menu->top);

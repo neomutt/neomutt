@@ -242,7 +242,7 @@ bool mutt_mailbox_notify(struct Mailbox *m_cur)
  */
 bool mutt_mailbox_list(void)
 {
-  char mailboxlist[512];
+  char mailboxlist[512] = { 0 };
   size_t pos = 0;
   int first = 1;
 

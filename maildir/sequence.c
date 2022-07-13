@@ -111,11 +111,11 @@ void mh_seq_add_one(struct Mailbox *m, int n, bool unseen, bool flagged, bool re
   bool replied_done = false;
 
   char *tmpfname = NULL;
-  char sequences[PATH_MAX];
+  char sequences[PATH_MAX] = { 0 };
 
-  char seq_unseen[256];
-  char seq_replied[256];
-  char seq_flagged[256];
+  char seq_unseen[256] = { 0 };
+  char seq_replied[256] = { 0 };
+  char seq_flagged[256] = { 0 };
 
   char *buf = NULL;
   size_t sz;
@@ -230,7 +230,7 @@ static void mh_seq_write_one(FILE *fp, struct MhSequences *mhs, MhSeqFlags f, co
  */
 void mh_seq_update(struct Mailbox *m)
 {
-  char sequences[PATH_MAX];
+  char sequences[PATH_MAX] = { 0 };
   char *tmpfname = NULL;
   char *buf = NULL;
   char *p = NULL;
@@ -241,9 +241,9 @@ void mh_seq_update(struct Mailbox *m)
   int flagged = 0;
   int replied = 0;
 
-  char seq_unseen[256];
-  char seq_replied[256];
-  char seq_flagged[256];
+  char seq_unseen[256] = { 0 };
+  char seq_replied[256] = { 0 };
+  char seq_flagged[256] = { 0 };
 
   struct MhSequences mhs = { 0 };
 
@@ -380,7 +380,7 @@ int mh_seq_read(struct MhSequences *mhs, const char *path)
   MhSeqFlags flags;
   int first, last, rc = 0;
 
-  char pathname[PATH_MAX];
+  char pathname[PATH_MAX] = { 0 };
   snprintf(pathname, sizeof(pathname), "%s/.mh_sequences", path);
 
   FILE *fp = fopen(pathname, "r");
@@ -435,7 +435,7 @@ out:
  */
 int mh_seq_changed(struct Mailbox *m)
 {
-  char path[PATH_MAX];
+  char path[PATH_MAX] = { 0 };
   struct stat st = { 0 };
 
   if ((snprintf(path, sizeof(path), "%s/.mh_sequences", mailbox_path(m)) < sizeof(path)) &&

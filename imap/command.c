@@ -567,7 +567,7 @@ static void cmd_parse_list(struct ImapAccountData *adata, char *s)
 {
   struct ImapList *list = NULL;
   struct ImapList lb = { 0 };
-  char delimbuf[5]; /* worst case: "\\"\0 */
+  char delimbuf[5] = { 0 }; /* worst case: "\\"\0 */
   unsigned int litlen;
 
   if (adata->cmdresult)
@@ -660,8 +660,8 @@ static void cmd_parse_list(struct ImapAccountData *adata, char *s)
  */
 static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
 {
-  char buf[256];
-  char quoted_name[256];
+  char buf[256] = { 0 };
+  char quoted_name[256] = { 0 };
   struct Buffer err;
   struct Url url = { 0 };
   struct ImapList list = { 0 };

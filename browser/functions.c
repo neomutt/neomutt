@@ -442,7 +442,7 @@ static int op_delete_mailbox(struct BrowserPrivateData *priv, int op)
     return FR_ERROR;
   }
 
-  char msg[128];
+  char msg[128] = { 0 };
 
   // TODO(sileht): It could be better to select INBOX instead. But I
   // don't want to manipulate Mailboxes/mailbox->account here for now.

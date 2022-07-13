@@ -100,7 +100,7 @@ static int pbar_recalc(struct MuttWindow *win)
   if (!priv || !priv->pview)
     return 0;
 
-  char pager_progress_str[65]; /* Lots of space for translations */
+  char pager_progress_str[65] = { 0 }; /* Lots of space for translations */
 
   long offset;
   if (priv->lines && (priv->cur_line <= priv->lines_used))

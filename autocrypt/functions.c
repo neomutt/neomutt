@@ -93,7 +93,7 @@ static int op_autocrypt_delete_acct(struct AutocryptData *ad, int op)
 
   const int index = menu_get_index(ad->menu);
   struct AccountEntry *entry = ((struct AccountEntry *) ad->menu->mdata) + index;
-  char msg[128];
+  char msg[128] = { 0 };
   snprintf(msg, sizeof(msg),
            // L10N: Confirmation message when deleting an autocrypt account
            _("Really delete account \"%s\"?"), entry->addr->mailbox);

@@ -52,7 +52,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
   sasl_conn_t *saslconn = NULL;
   sasl_interact_t *interaction = NULL;
   int rc;
-  char inbuf[1024];
+  char inbuf[1024] = { 0 };
   const char *mech = NULL;
   const char *pc = NULL;
   unsigned int len = 0, olen = 0;
@@ -221,8 +221,8 @@ static enum PopAuthRes pop_auth_apop(struct PopAccountData *adata, const char *m
 {
   struct Md5Ctx md5ctx;
   unsigned char digest[16];
-  char hash[33];
-  char buf[1024];
+  char hash[33] = { 0 };
+  char buf[1024] = { 0 };
 
   if (mutt_account_getpass(&adata->conn->account) || !adata->conn->account.pass[0])
     return POP_A_FAILURE;
@@ -276,7 +276,7 @@ static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *m
 
   mutt_message(_("Logging in..."));
 
-  char buf[1024];
+  char buf[1024] = { 0 };
   snprintf(buf, sizeof(buf), "USER %s\r\n", adata->conn->account.user);
   int rc = pop_query(adata, buf, sizeof(buf));
 
@@ -365,7 +365,7 @@ static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *
   mutt_socket_send(adata->conn, "\001");
 
   char *err = adata->err_msg;
-  char decoded_err[1024];
+  char decoded_err[1024] = { 0 };
   int len = mutt_b64_decode(adata->err_msg, decoded_err, sizeof(decoded_err) - 1);
   if (len >= 0)
   {

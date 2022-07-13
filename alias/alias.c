@@ -159,7 +159,7 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
         struct passwd *pw = getpwnam(a->mailbox);
         if (pw)
         {
-          char namebuf[256];
+          char namebuf[256] = { 0 };
 
           mutt_gecos_name(namebuf, sizeof(namebuf), pw);
           mutt_str_replace(&a->personal, namebuf);
@@ -260,7 +260,7 @@ static int check_alias_name(const char *s, char *dest, size_t destlen)
  */
 static bool string_is_address(const char *str, const char *user, const char *domain)
 {
-  char buf[1024];
+  char buf[1024] = { 0 };
 
   snprintf(buf, sizeof(buf), "%s@%s", NONULL(user), NONULL(domain));
   if (mutt_istr_equal(str, buf))

@@ -172,7 +172,7 @@ static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *buf,
   {
     for (int i = 0; i < (int) n; i++)
     {
-      char ch[8];
+      char ch[8] = { 0 };
       snprintf(ch, 8, "%02X%s", md[i], ((i % 2) ? " " : ""));
       mutt_str_cat(buf, buflen, ch);
     }
@@ -198,7 +198,7 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
   if (!fp)
     return 0;
 
-  char buf[80];
+  char buf[80] = { 0 };
   buf[0] = '\0';
   tls_fingerprint(GNUTLS_DIG_MD5, buf, sizeof(buf), cert);
   while ((linestr = mutt_file_read_line(linestr, &linestrsize, fp, NULL, MUTT_RL_NO_FLAGS)))
@@ -434,7 +434,7 @@ static void add_cert(const char *title, gnutls_x509_crt_t cert, bool issuer,
     GNUTLS_OID_X520_COUNTRY_NAME,             // C
   };
 
-  char buf[128];
+  char buf[128] = { 0 };
   int rc;
 
   // Allocate formatted strings and let the array take ownership
@@ -473,10 +473,10 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   struct CertArray carr = ARRAY_HEAD_INITIALIZER;
   int certerr, savedcert;
   gnutls_x509_crt_t cert;
-  char fpbuf[128];
+  char fpbuf[128] = { 0 };
   time_t t;
-  char datestr[30];
-  char title[256];
+  char datestr[30] = { 0 };
+  char title[256] = { 0 };
   gnutls_datum_t pemdata = { 0 };
 
   if (tls_check_preauth(certdata, certstat, hostname, idx, &certerr, &savedcert) == 0)

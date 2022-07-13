@@ -811,7 +811,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'G':
     {
-      char format[3];
+      char format[3] = { 0 };
       char *tag = NULL;
 
       if (!optional)

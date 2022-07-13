@@ -130,7 +130,7 @@ finish:
  */
 static void dump_bind(struct Buffer *buf, struct Mapping *menu, struct Keymap *map)
 {
-  char key_binding[32];
+  char key_binding[32] = { 0 };
   const char *fn_name = NULL;
 
   km_expand_key(key_binding, sizeof(key_binding), map);
@@ -169,7 +169,7 @@ static void dump_bind(struct Buffer *buf, struct Mapping *menu, struct Keymap *m
  */
 static void dump_macro(struct Buffer *buf, struct Mapping *menu, struct Keymap *map)
 {
-  char key_binding[MAX_SEQ];
+  char key_binding[MAX_SEQ] = { 0 };
   km_expand_key(key_binding, MAX_SEQ, map);
 
   struct Buffer tmp = mutt_buffer_make(0);
@@ -245,7 +245,7 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
                                     intptr_t data, struct Buffer *err)
 {
   FILE *fp_out = NULL;
-  char tempfile[PATH_MAX];
+  char tempfile[PATH_MAX] = { 0 };
   bool dump_all = false, bind = (data == 0);
 
   if (!MoreArgs(s))
@@ -328,10 +328,10 @@ static enum CommandResult icmd_color(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
 
   FILE *fp_out = NULL;
-  char tempfile[PATH_MAX];
+  char tempfile[PATH_MAX] = { 0 };
   struct Buffer filebuf = mutt_buffer_make(4096);
-  char color_fg[32];
-  char color_bg[32];
+  char color_fg[32] = { 0 };
+  char color_bg[32] = { 0 };
 
   mutt_mktemp(tempfile, sizeof(tempfile));
   fp_out = mutt_file_fopen(tempfile, "w");
@@ -512,7 +512,7 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
   if (!set && !set_all)
     return MUTT_CMD_ERROR;
 
-  char tempfile[PATH_MAX];
+  char tempfile[PATH_MAX] = { 0 };
   mutt_mktemp(tempfile, sizeof(tempfile));
 
   FILE *fp_out = mutt_file_fopen(tempfile, "w");
@@ -550,7 +550,7 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
 static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s,
                                        intptr_t data, struct Buffer *err)
 {
-  char tempfile[PATH_MAX];
+  char tempfile[PATH_MAX] = { 0 };
   mutt_mktemp(tempfile, sizeof(tempfile));
 
   FILE *fp_out = mutt_file_fopen(tempfile, "w");

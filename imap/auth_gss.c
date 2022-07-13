@@ -66,8 +66,8 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
   OM_uint32 maj_stat, min_stat;
   OM_uint32 msg_ctx = 0;
   gss_buffer_desc status_string;
-  char buf_maj[512];
-  char buf_min[512];
+  char buf_maj[512] = { 0 };
+  char buf_min[512] = { 0 };
 
   do
   {

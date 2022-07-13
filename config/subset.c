@@ -110,7 +110,7 @@ void cs_subset_free(struct ConfigSubset **ptr)
 
   if (sub->cs && sub->name)
   {
-    char scope[256];
+    char scope[256] = { 0 };
     snprintf(scope, sizeof(scope), "%s:", sub->name);
 
     // We don't know if any config items have been set,
@@ -154,7 +154,7 @@ struct ConfigSubset *cs_subset_new(const char *name, struct ConfigSubset *sub_pa
 
   if (name)
   {
-    char scope[256];
+    char scope[256] = { 0 };
 
     if (sub_parent && sub_parent->name)
       snprintf(scope, sizeof(scope), "%s:%s", sub_parent->name, name);
@@ -181,7 +181,7 @@ struct HashElem *cs_subset_lookup(const struct ConfigSubset *sub, const char *na
   if (!sub || !name)
     return NULL;
 
-  char scope[256];
+  char scope[256] = { 0 };
   if (sub->name)
     snprintf(scope, sizeof(scope), "%s:%s", sub->name, name);
   else
@@ -215,7 +215,7 @@ struct HashElem *cs_subset_create_inheritance(const struct ConfigSubset *sub, co
   if (!he)
     return NULL;
 
-  char scope[256];
+  char scope[256] = { 0 };
   snprintf(scope, sizeof(scope), "%s:%s", sub->name, name);
   return cs_inherit_variable(sub->cs, he, scope);
 }

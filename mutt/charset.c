@@ -419,7 +419,7 @@ bool mutt_ch_chscmp(const char *cs1, const char *cs2)
   if (!cs1 || !cs2)
     return false;
 
-  char buf[256];
+  char buf[256] = { 0 };
 
   mutt_ch_canonical_charset(buf, sizeof(buf), cs1);
 
@@ -1001,7 +1001,7 @@ char *mutt_ch_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc)
  */
 void mutt_ch_set_charset(const char *charset)
 {
-  char buf[256];
+  char buf[256] = { 0 };
 
   mutt_ch_canonical_charset(buf, sizeof(buf), charset);
 
@@ -1087,7 +1087,7 @@ char *mutt_ch_choose(const char *fromcode, const struct Slist *charsets,
     if (dlen)
       *dlen = elen;
 
-    char canonical_buf[1024];
+    char canonical_buf[1024] = { 0 };
     mutt_ch_canonical_charset(canonical_buf, sizeof(canonical_buf), tocode);
     mutt_str_replace(&tocode, canonical_buf);
   }

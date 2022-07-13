@@ -201,7 +201,7 @@ void maildir_gen_flags(char *dest, size_t destlen, struct Email *e)
 
   if (e->flagged || e->replied || e->read || e->deleted || e->old || flags)
   {
-    char tmp[1024];
+    char tmp[1024] = { 0 };
     snprintf(tmp, sizeof(tmp), "%s%s%s%s%s", e->flagged ? "F" : "", e->replied ? "R" : "",
              e->read ? "S" : "", e->deleted ? "T" : "", NONULL(flags));
     if (flags)
@@ -236,8 +236,8 @@ void maildir_gen_flags(char *dest, size_t destlen, struct Email *e)
  */
 int maildir_commit_message(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
-  char subdir[4];
-  char suffix[16];
+  char subdir[4] = { 0 };
+  char suffix[16] = { 0 };
   int rc = 0;
 
   if (mutt_file_fsync_close(&msg->fp))
@@ -350,8 +350,8 @@ int maildir_rewrite_message(struct Mailbox *m, int msgno)
   int rc = mutt_copy_message(dest->fp, e, src, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN, 0);
   if (rc == 0)
   {
-    char oldpath[PATH_MAX];
-    char partpath[PATH_MAX];
+    char oldpath[PATH_MAX] = { 0 };
+    char partpath[PATH_MAX] = { 0 };
     snprintf(oldpath, sizeof(oldpath), "%s/%s", mailbox_path(m), e->path);
     mutt_str_copy(partpath, e->path, sizeof(partpath));
 
@@ -397,7 +397,7 @@ int maildir_sync_message(struct Mailbox *m, int msgno)
   struct Buffer *partpath = NULL;
   struct Buffer *fullpath = NULL;
   struct Buffer *oldpath = NULL;
-  char suffix[16];
+  char suffix[16] = { 0 };
   int rc = 0;
 
   /* TODO: why the e->env check? */
@@ -476,7 +476,7 @@ cleanup:
  */
 void maildir_update_mtime(struct Mailbox *m)
 {
-  char buf[PATH_MAX];
+  char buf[PATH_MAX] = { 0 };
   struct stat st = { 0 };
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
 
@@ -597,7 +597,7 @@ size_t maildir_hcache_keylen(const char *fn)
 void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
                              struct Progress *progress)
 {
-  char fn[PATH_MAX];
+  char fn[PATH_MAX] = { 0 };
 
 #ifdef USE_HCACHE
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
@@ -677,7 +677,7 @@ int maildir_read_dir(struct Mailbox *m, const char *subdir)
 
   if (m->verbose)
   {
-    char msg[PATH_MAX];
+    char msg[PATH_MAX] = { 0 };
     snprintf(msg, sizeof(msg), _("Scanning %s..."), mailbox_path(m));
     progress = progress_new(msg, MUTT_PROGRESS_READ, 0);
   }
@@ -698,7 +698,7 @@ int maildir_read_dir(struct Mailbox *m, const char *subdir)
 
   if (m->verbose)
   {
-    char msg[PATH_MAX];
+    char msg[PATH_MAX] = { 0 };
     snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
     progress = progress_new(msg, MUTT_PROGRESS_READ, ARRAY_SIZE(&mda));
   }
@@ -954,7 +954,7 @@ bool maildir_sync_mailbox_message(struct Mailbox *m, int msgno, struct HeaderCac
   const bool c_maildir_trash = cs_subset_bool(NeoMutt->sub, "maildir_trash");
   if (e->deleted && !c_maildir_trash)
   {
-    char path[PATH_MAX];
+    char path[PATH_MAX] = { 0 };
     snprintf(path, sizeof(path), "%s/%s", mailbox_path(m), e->path);
 #ifdef USE_HCACHE
     if (hc)
@@ -1044,7 +1044,7 @@ int maildir_check_empty(const char *path)
   DIR *dp = NULL;
   struct dirent *de = NULL;
   int rc = 1; /* assume empty until we find a message */
-  char realpath[PATH_MAX];
+  char realpath[PATH_MAX] = { 0 };
   int iter = 0;
 
   /* Strategy here is to look for any file not beginning with a period */
@@ -1118,7 +1118,7 @@ static bool maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
     return false;
   }
 
-  char tmp[PATH_MAX];
+  char tmp[PATH_MAX] = { 0 };
   snprintf(tmp, sizeof(tmp), "%s/cur", mailbox_path(m));
   errno = 0;
   if ((mkdir(tmp, S_IRWXU) != 0) && (errno != EEXIST))
@@ -1387,7 +1387,7 @@ enum MxStatus maildir_mbox_sync(struct Mailbox *m)
   struct Progress *progress = NULL;
   if (m->verbose)
   {
-    char msg[PATH_MAX];
+    char msg[PATH_MAX] = { 0 };
     snprintf(msg, sizeof(msg), _("Writing %s..."), mailbox_path(m));
     progress = progress_new(msg, MUTT_PROGRESS_WRITE, m->msg_count);
   }
@@ -1458,7 +1458,7 @@ static bool maildir_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   if (!e)
     return false;
 
-  char path[PATH_MAX];
+  char path[PATH_MAX] = { 0 };
 
   snprintf(path, sizeof(path), "%s/%s", mailbox_path(m), e->path);
 
@@ -1487,9 +1487,9 @@ static bool maildir_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 bool maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct Email *e)
 {
   int fd;
-  char path[PATH_MAX];
-  char suffix[16];
-  char subdir[16];
+  char path[PATH_MAX] = { 0 };
+  char suffix[16] = { 0 };
+  char subdir[16] = { 0 };
 
   if (e)
   {
@@ -1629,7 +1629,7 @@ static enum MailboxType maildir_path_probe(const char *path, const struct stat *
   if (!st || !S_ISDIR(st->st_mode))
     return MUTT_UNKNOWN;
 
-  char cur[PATH_MAX];
+  char cur[PATH_MAX] = { 0 };
   snprintf(cur, sizeof(cur), "%s/cur", path);
 
   struct stat st_cur = { 0 };

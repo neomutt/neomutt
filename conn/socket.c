@@ -315,7 +315,7 @@ void mutt_socket_empty(struct Connection *conn)
   if (!conn)
     return;
 
-  char buf[1024];
+  char buf[1024] = { 0 };
   int bytes;
 
   while ((bytes = mutt_socket_poll(conn, 0)) > 0)

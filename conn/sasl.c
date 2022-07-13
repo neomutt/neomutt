@@ -694,7 +694,7 @@ int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
 int mutt_sasl_interact(sasl_interact_t *interaction)
 {
   int rc = SASL_OK;
-  char prompt[128];
+  char prompt[128] = { 0 };
   struct Buffer *resp = mutt_buffer_pool_get();
 
   while (interaction->id != SASL_CB_LIST_END)

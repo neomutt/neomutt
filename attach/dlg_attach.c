@@ -153,8 +153,8 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
                               const char *src, const char *prec, const char *if_str,
                               const char *else_str, intptr_t data, MuttFormatFlags flags)
 {
-  char fmt[128];
-  char charset[128];
+  char fmt[128] = { 0 };
+  char charset[128] = { 0 };
   struct AttachPtr *aptr = (struct AttachPtr *) data;
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -201,7 +201,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
         if (mutt_is_message_type(aptr->body->type, aptr->body->subtype) &&
             c_message_format && aptr->body->email)
         {
-          char s[128];
+          char s[128] = { 0 };
           mutt_make_string(s, sizeof(s), cols, c_message_format, NULL, -1,
                            aptr->body->email,
                            MUTT_FORMAT_FORCESUBJ | MUTT_FORMAT_ARROWCURSOR, NULL);
@@ -323,7 +323,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
 
       if (!optional)
       {
-        char tmp[128];
+        char tmp[128] = { 0 };
         mutt_str_pretty_size(tmp, sizeof(tmp), l);
         mutt_format_s(buf, buflen, prec, tmp);
       }

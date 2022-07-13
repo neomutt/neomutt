@@ -81,7 +81,7 @@ static const char *pgp_command_format_str(char *buf, size_t buflen, size_t col, 
                                           const char *if_str, const char *else_str,
                                           intptr_t data, MuttFormatFlags flags)
 {
-  char fmt[128];
+  char fmt[128] = { 0 };
   struct PgpCommandContext *cctx = (struct PgpCommandContext *) data;
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -206,7 +206,7 @@ static pid_t pgp_invoke(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
                         const char *sig_fname, const char *ids, const char *format)
 {
   struct PgpCommandContext cctx = { 0 };
-  char cmd[STR_COMMAND];
+  char cmd[STR_COMMAND] = { 0 };
 
   if (!format || (*format == '\0'))
     return (pid_t) -1;
@@ -407,7 +407,7 @@ pid_t pgp_invoke_traditional(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_
  */
 void pgp_class_invoke_import(const char *fname)
 {
-  char cmd[STR_COMMAND];
+  char cmd[STR_COMMAND] = { 0 };
   struct PgpCommandContext cctx = { 0 };
 
   struct Buffer *buf_fname = mutt_buffer_pool_get();
@@ -434,8 +434,8 @@ void pgp_class_invoke_import(const char *fname)
  */
 void pgp_class_invoke_getkeys(struct Address *addr)
 {
-  char tmp[1024];
-  char cmd[STR_COMMAND];
+  char tmp[1024] = { 0 };
+  char cmd[STR_COMMAND] = { 0 };
 
   char *personal = NULL;
 

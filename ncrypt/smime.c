@@ -221,7 +221,7 @@ static const char *smime_command_format_str(char *buf, size_t buflen, size_t col
                                             const char *else_str, intptr_t data,
                                             MuttFormatFlags flags)
 {
-  char fmt[128];
+  char fmt[128] = { 0 };
   struct SmimeCommandContext *cctx = (struct SmimeCommandContext *) data;
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -408,7 +408,7 @@ static pid_t smime_invoke(FILE **fp_smime_in, FILE **fp_smime_out, FILE **fp_smi
                           const char *intermediates, const char *format)
 {
   struct SmimeCommandContext cctx = { 0 };
-  char cmd[STR_COMMAND];
+  char cmd[STR_COMMAND] = { 0 };
 
   if (!format || (*format == '\0'))
     return (pid_t) -1;
@@ -518,7 +518,7 @@ static struct SmimeKey *smime_parse_key(char *buf)
  */
 static struct SmimeKey *smime_get_candidates(const char *search, bool only_public_key)
 {
-  char buf[1024];
+  char buf[1024] = { 0 };
   struct SmimeKey *key = NULL, *results = NULL;
   struct SmimeKey **results_end = &results;
 
@@ -762,7 +762,7 @@ static void getkeys(char *mailbox)
 
   if (!key)
   {
-    char buf[256];
+    char buf[256] = { 0 };
     snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), mailbox);
     key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, false);
   }
@@ -843,7 +843,7 @@ char *smime_class_find_keys(const struct AddressList *al, bool oppenc_mode)
     key = smime_get_key_by_addr(a->mailbox, KEYFLAG_CANENCRYPT, true, oppenc_mode);
     if (!key && !oppenc_mode)
     {
-      char buf[1024];
+      char buf[1024] = { 0 };
       snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), a->mailbox);
       key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, true);
     }
@@ -880,7 +880,7 @@ char *smime_class_find_keys(const struct AddressList *al, bool oppenc_mode)
 static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
                                    char ***buffer, int *num)
 {
-  char email[256];
+  char email[256] = { 0 };
   int rc = -1, count = 0;
   pid_t pid;
 
@@ -1520,7 +1520,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
 {
   struct Body *t = NULL;
   struct Body *retval = NULL;
-  char buf[1024];
+  char buf[1024] = { 0 };
   struct Buffer *filetosign = NULL, *signedfile = NULL;
   FILE *fp_smime_in = NULL, *fp_smime_out = NULL, *fp_smime_err = NULL, *fp_sign = NULL;
   int err = 0;
@@ -1968,7 +1968,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
       goto cleanup;
     }
   }
-  char buf[8192];
+  char buf[8192] = { 0 };
   while (fgets(buf, sizeof(buf) - 1, fp_smime_out))
   {
     const size_t len = mutt_str_len(buf);

@@ -234,7 +234,7 @@ int mutt_file_copy_bytes(FILE *fp_in, FILE *fp_out, size_t size)
 
   while (size > 0)
   {
-    char buf[2048];
+    char buf[2048] = { 0 };
     size_t chunk = (size > sizeof(buf)) ? sizeof(buf) : size;
     chunk = fread(buf, 1, chunk, fp_in);
     if (chunk < 1)
@@ -264,7 +264,7 @@ int mutt_file_copy_stream(FILE *fp_in, FILE *fp_out)
 
   size_t total = 0;
   size_t l;
-  char buf[1024];
+  char buf[1024] = { 0 };
 
   while ((l = fread(buf, 1, sizeof(buf), fp_in)) > 0)
   {
@@ -936,7 +936,7 @@ int mutt_file_mkdir(const char *path, mode_t mode)
   }
 
   errno = 0;
-  char tmp_path[PATH_MAX];
+  char tmp_path[PATH_MAX] = { 0 };
   const size_t len = strlen(path);
 
   if (len >= sizeof(tmp_path))
@@ -984,7 +984,7 @@ int mutt_file_mkdir(const char *path, mode_t mode)
  */
 FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func)
 {
-  char name[PATH_MAX];
+  char name[PATH_MAX] = { 0 };
 
   const char *const c_tmpdir = cs_subset_path(NeoMutt->sub, "tmpdir");
   int n = snprintf(name, sizeof(name), "%s/neomutt-XXXXXX", NONULL(c_tmpdir));
@@ -1694,7 +1694,7 @@ void mutt_file_resolve_symlink(struct Buffer *buf)
   int rc = lstat(mutt_buffer_string(buf), &st);
   if ((rc != -1) && S_ISLNK(st.st_mode))
   {
-    char path[PATH_MAX];
+    char path[PATH_MAX] = { 0 };
     if (realpath(mutt_buffer_string(buf), path))
     {
       mutt_buffer_strcpy(buf, path);

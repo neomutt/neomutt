@@ -126,7 +126,7 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
 
   int index = 0;
   size_t length = 0;
-  char buf[1024];
+  char buf[1024] = { 0 };
 
   struct PopEmailData *edata = pop_edata_get(e);
 
@@ -301,7 +301,7 @@ static struct HeaderCache *pop_hcache_open(struct PopAccountData *adata, const c
     return mutt_hcache_open(c_header_cache, path, NULL);
 
   struct Url url = { 0 };
-  char p[1024];
+  char p[1024] = { 0 };
 
   mutt_account_tourl(&adata->conn->account, &url);
   url.path = HC_FNAME;
@@ -517,8 +517,8 @@ void pop_fetch_mail(void)
     return;
   }
 
-  char buf[1024];
-  char msgbuf[128];
+  char buf[1024] = { 0 };
+  char msgbuf[128] = { 0 };
   int last = 0, msgs, bytes, rset = 0, rc;
   struct ConnAccount cac = { { 0 } };
 
@@ -744,7 +744,7 @@ static enum MxOpenReturns pop_mbox_open(struct Mailbox *m)
   if (!m->account)
     return MX_OPEN_ERROR;
 
-  char buf[PATH_MAX];
+  char buf[PATH_MAX] = { 0 };
   struct ConnAccount cac = { { 0 } };
   struct Url url = { 0 };
 
@@ -858,7 +858,7 @@ static enum MxStatus pop_mbox_check(struct Mailbox *m)
 static enum MxStatus pop_mbox_sync(struct Mailbox *m)
 {
   int i, j, rc = 0;
-  char buf[1024];
+  char buf[1024] = { 0 };
   struct PopAccountData *adata = pop_adata_get(m);
 #ifdef USE_HCACHE
   struct HeaderCache *hc = NULL;
@@ -975,7 +975,7 @@ static enum MxStatus pop_mbox_close(struct Mailbox *m)
  */
 static bool pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  char buf[1024];
+  char buf[1024] = { 0 };
   struct PopAccountData *adata = pop_adata_get(m);
   struct Email *e = m->emails[msgno];
   struct PopEmailData *edata = pop_edata_get(e);

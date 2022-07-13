@@ -554,7 +554,7 @@ int mutt_var_value_complete(struct CompletionData *cd, char *buf, size_t buflen,
   if (mutt_str_startswith(buf, "set"))
   {
     const char *myvarval = NULL;
-    char var[256];
+    char var[256] = { 0 };
     mutt_str_copy(var, pt, sizeof(var));
     /* ignore the trailing '=' when comparing */
     int vlen = mutt_str_len(var);

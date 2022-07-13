@@ -115,7 +115,7 @@ struct RemailerArray remailer_get_hosts(void)
 {
   struct RemailerArray ra = ARRAY_HEAD_INITIALIZER;
   FILE *fp = NULL;
-  char line[8192];
+  char line[8192] = { 0 };
   char *t = NULL;
   struct Remailer *p = NULL;
 

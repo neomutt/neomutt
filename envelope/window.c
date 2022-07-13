@@ -551,7 +551,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
 
   int lines_used = 1;
   int width_left = win->state.cols - MaxHeaderWidth;
-  char more[32];
+  char more[32] = { 0 };
   int more_len = 0;
 
   char *sep = NULL;

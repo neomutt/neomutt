@@ -70,7 +70,7 @@ static void b64_flush(struct B64Context *bctx, FILE *fp_out)
 {
   /* for some reasons, mutt_b64_encode expects the
    * output buffer to be larger than 10B */
-  char encoded[11];
+  char encoded[11] = { 0 };
   size_t rc;
 
   if (bctx->size == 0)
@@ -326,7 +326,7 @@ int mutt_write_mime_body(struct Body *a, FILE *fp, struct ConfigSubset *sub)
       mutt_error(_("No boundary parameter found [report this error]"));
       return -1;
     }
-    char boundary[128];
+    char boundary[128] = { 0 };
     mutt_str_copy(boundary, p, sizeof(boundary));
 
     for (struct Body *t = a->parts; t; t = t->next)
@@ -360,7 +360,7 @@ int mutt_write_mime_body(struct Body *a, FILE *fp, struct ConfigSubset *sub)
 
   if ((a->type == TYPE_TEXT) && (!a->noconv))
   {
-    char send_charset[128];
+    char send_charset[128] = { 0 };
     fc = mutt_ch_fgetconv_open(fp_in, a->charset,
                                mutt_body_get_charset(a, send_charset, sizeof(send_charset)),
                                MUTT_ICONV_NO_FLAGS);

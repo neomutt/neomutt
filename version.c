@@ -469,7 +469,7 @@ bool print_version(FILE *fp)
 
 #ifdef HAVE_PCRE2
   {
-    char version[24];
+    char version[24] = { 0 };
     pcre2_config(PCRE2_CONFIG_VERSION, version);
     fprintf(fp, "\nPCRE2: %s", version);
   }

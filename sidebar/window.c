@@ -351,7 +351,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
   struct SidebarFormatData *sfdata = (struct SidebarFormatData *) data;
   struct SbEntry *sbe = sfdata->entry;
   struct IndexSharedData *shared = sfdata->shared;
-  char fmt[256];
+  char fmt[256] = { 0 };
 
   if (!sbe || !shared || !buf)
     return src;

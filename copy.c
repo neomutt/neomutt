@@ -107,7 +107,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
   bool from = false;
   bool this_is_from = false;
   bool ignore = false;
-  char buf[1024]; /* should be long enough to get most fields in one pass */
+  char buf[1024] = { 0 }; /* should be long enough to get most fields in one pass */
   char *nl = NULL;
   struct Headers headers = ARRAY_HEAD_INITIALIZER;
   int hdr_count;
@@ -429,8 +429,8 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
 
   if (chflags & CH_TXTPLAIN)
   {
-    char chsbuf[128];
-    char buf[128];
+    char chsbuf[128] = { 0 };
+    char buf[128] = { 0 };
     fputs("MIME-Version: 1.0\n", fp_out);
     fputs("Content-Transfer-Encoding: 8bit\n", fp_out);
     fputs("Content-Type: text/plain; charset=", fp_out);
@@ -498,7 +498,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     char *folder = nm_email_get_folder(e);
     if (folder && !(c_weed && mutt_matches_ignore("folder")))
     {
-      char buf[1024];
+      char buf[1024] = { 0 };
       mutt_str_copy(buf, folder, sizeof(buf));
       mutt_pretty_mailbox(buf, sizeof(buf));
 
@@ -641,7 +641,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
                          CopyMessageFlags cmflags, CopyHeaderFlags chflags, int wraplen)
 {
   struct Body *body = e->body;
-  char prefix[128];
+  char prefix[128] = { 0 };
   LOFF_T new_offset = -1;
   int rc = 0;
 
@@ -897,7 +897,7 @@ int mutt_copy_message(FILE *fp_out, struct Email *e, struct Message *msg,
 static int append_message(struct Mailbox *dest, FILE *fp_in, struct Mailbox *src,
                           struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags)
 {
-  char buf[256];
+  char buf[256] = { 0 };
   struct Message *msg = NULL;
   int rc;
 
@@ -1036,8 +1036,8 @@ static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, const c
  */
 static void format_address_header(char **h, struct AddressList *al)
 {
-  char buf[8192];
-  char cbuf[256];
+  char buf[8192] = { 0 };
+  char cbuf[256] = { 0 };
   char c2buf[256];
   char *p = NULL;
   size_t linelen, buflen, plen;

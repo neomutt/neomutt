@@ -55,7 +55,7 @@
  */
 static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
 {
-  char buf[256];
+  char buf[256] = { 0 };
   int rc;
   FILE *fp = NULL;
   struct stat st = { 0 };

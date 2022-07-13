@@ -490,7 +490,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
       ct->subtype = mutt_str_dup("rfc822");
     else if (ct->type == TYPE_OTHER)
     {
-      char buf[128];
+      char buf[128] = { 0 };
 
       ct->type = TYPE_APPLICATION;
       snprintf(buf, sizeof(buf), "x-%s", s);
@@ -1192,7 +1192,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
     p = strpbrk(line, ": \t");
     if (!p || (*p != ':'))
     {
-      char return_path[1024];
+      char return_path[1024] = { 0 };
       time_t t = 0;
 
       /* some bogus MTAs will quote the original "From " line */
@@ -1540,7 +1540,7 @@ static struct Body *parse_multipart(FILE *fp, const char *boundary,
     return NULL;
   }
 
-  char buf[1024];
+  char buf[1024] = { 0 };
   struct Body *head = NULL, *last = NULL, *new_body = NULL;
   bool final = false; /* did we see the ending boundary? */
 

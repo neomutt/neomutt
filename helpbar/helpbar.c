@@ -91,7 +91,7 @@
  */
 static bool make_help(char *buf, size_t buflen, const char *txt, enum MenuType menu, int op)
 {
-  char tmp[128];
+  char tmp[128] = { 0 };
 
   if (km_expand_key(tmp, sizeof(tmp), km_find_func(menu, op)) ||
       km_expand_key(tmp, sizeof(tmp), km_find_func(MENU_GENERIC, op)))

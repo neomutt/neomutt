@@ -341,7 +341,7 @@ static const char *pgp_entry_format_str(char *buf, size_t buflen, size_t col, in
                                         const char *if_str, const char *else_str,
                                         intptr_t data, MuttFormatFlags flags)
 {
-  char fmt[128];
+  char fmt[128] = { 0 };
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   struct PgpEntry *entry = (struct PgpEntry *) data;
@@ -588,7 +588,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
 {
   struct PgpUid **key_table = NULL;
   struct Menu *menu = NULL;
-  char buf[1024];
+  char buf[1024] = { 0 };
   struct PgpUid *a = NULL;
   bool unusable = false;
   int keymax = 0;

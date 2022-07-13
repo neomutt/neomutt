@@ -244,7 +244,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   }
 
   struct Envelope *env_new = NULL;
-  char buf[1024];
+  char buf[1024] = { 0 };
   env_new = mutt_rfc822_read_header(fp_in, NULL, true, false);
   int bytes_read;
   while ((bytes_read = fread(buf, 1, sizeof(buf), fp_in)) > 0)

@@ -601,7 +601,7 @@ static bool match_content_type(const struct Pattern *pat, struct Body *b)
   if (!b)
     return false;
 
-  char buf[256];
+  char buf[256] = { 0 };
   snprintf(buf, sizeof(buf), "%s/%s", TYPE(b), b->subtype);
 
   if (patmatch(pat, buf))

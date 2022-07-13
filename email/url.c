@@ -366,7 +366,7 @@ int url_tobuffer(struct Url *url, struct Buffer *buf, uint8_t flags)
 
     if (url->user && (url->user[0] || !(flags & U_PATH)))
     {
-      char str[256];
+      char str[256] = { 0 };
       url_pct_encode(str, sizeof(str), url->user);
       mutt_buffer_add_printf(buf, "%s@", str);
     }
@@ -389,7 +389,7 @@ int url_tobuffer(struct Url *url, struct Buffer *buf, uint8_t flags)
   {
     mutt_buffer_addstr(buf, "?");
 
-    char str[256];
+    char str[256] = { 0 };
     struct UrlQuery *np = NULL;
     STAILQ_FOREACH(np, &url->query_strings, entries)
     {

@@ -93,7 +93,7 @@ static int op_shell_escape(int op)
  */
 static int op_show_log_messages(int op)
 {
-  char tempfile[PATH_MAX];
+  char tempfile[PATH_MAX] = { 0 };
   mutt_mktemp(tempfile, sizeof(tempfile));
 
   FILE *fp = mutt_file_fopen(tempfile, "a+");

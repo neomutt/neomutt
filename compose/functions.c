@@ -1709,7 +1709,7 @@ static int op_compose_ispell(struct ComposeSharedData *shared, int op)
 {
   endwin();
   const char *const c_ispell = cs_subset_string(shared->sub, "ispell");
-  char buf[PATH_MAX];
+  char buf[PATH_MAX] = { 0 };
   snprintf(buf, sizeof(buf), "%s -x %s", NONULL(c_ispell), shared->email->body->filename);
   if (mutt_system(buf) == -1)
   {

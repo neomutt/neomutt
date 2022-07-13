@@ -696,7 +696,7 @@ done:
 void mutt_display_address(struct Envelope *env)
 {
   const char *pfx = NULL;
-  char buf[128];
+  char buf[128] = { 0 };
 
   struct AddressList *al = mutt_get_address(env, &pfx);
   if (!al)

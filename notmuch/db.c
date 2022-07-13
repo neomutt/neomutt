@@ -278,7 +278,7 @@ int nm_db_get_mtime(struct Mailbox *m, time_t *mtime)
     return -1;
 
   struct stat st = { 0 };
-  char path[PATH_MAX];
+  char path[PATH_MAX] = { 0 };
   const char *db_filename = nm_db_get_filename(m);
 
   mutt_debug(LL_DEBUG2, "nm: checking database mtime '%s'\n", db_filename);

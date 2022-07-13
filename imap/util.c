@@ -74,7 +74,7 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
 {
   struct ConnAccount cac = { { 0 } };
   struct ImapAccountData *tmp_adata = NULL;
-  char tmp[1024];
+  char tmp[1024] = { 0 };
 
   if (imap_parse_path(path, &cac, tmp, sizeof(tmp)) < 0)
     return -1;
@@ -162,7 +162,7 @@ void imap_get_parent_path(const char *path, char *buf, size_t buflen)
 {
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
-  char mbox[1024];
+  char mbox[1024] = { 0 };
 
   if (imap_adata_find(path, &adata, &mdata) < 0)
   {
@@ -357,7 +357,7 @@ struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)
   if (!mdata->hcache)
     return NULL;
 
-  char key[16];
+  char key[16] = { 0 };
 
   sprintf(key, "/%u", uid);
   struct HCacheEntry hce = mutt_hcache_fetch(mdata->hcache, key, mutt_str_len(key),
@@ -382,7 +382,7 @@ int imap_hcache_put(struct ImapMboxData *mdata, struct Email *e)
   if (!mdata->hcache)
     return -1;
 
-  char key[16];
+  char key[16] = { 0 };
 
   sprintf(key, "/%u", imap_edata_get(e)->uid);
   return mutt_hcache_store(mdata->hcache, key, mutt_str_len(key), e, mdata->uidvalidity);
@@ -400,7 +400,7 @@ int imap_hcache_del(struct ImapMboxData *mdata, unsigned int uid)
   if (!mdata->hcache)
     return -1;
 
-  char key[16];
+  char key[16] = { 0 };
 
   sprintf(key, "/%u", uid);
   return mutt_hcache_delete_record(mdata->hcache, key, mutt_str_len(key));
@@ -595,8 +595,8 @@ void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
   int tlen;
   int hlen = 0;
   bool home_match = false;
-  char target_mailbox[1024];
-  char home_mailbox[1024];
+  char target_mailbox[1024] = { 0 };
+  char home_mailbox[1024] = { 0 };
 
   if (imap_parse_path(path, &cac_target, target_mailbox, sizeof(target_mailbox)) < 0)
     return;

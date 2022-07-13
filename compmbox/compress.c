@@ -328,7 +328,7 @@ static int execute_command(struct Mailbox *m, const char *command, const char *p
     mutt_message(progress, m->realpath);
 
   int rc = 1;
-  char sys_cmd[STR_COMMAND];
+  char sys_cmd[STR_COMMAND] = { 0 };
 
   mutt_sig_block();
   endwin();

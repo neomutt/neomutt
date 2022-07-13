@@ -53,7 +53,7 @@ static struct AttrColor *default_color(struct Menu *menu, int line)
  */
 static int generic_search(struct Menu *menu, regex_t *rx, int line)
 {
-  char buf[1024];
+  char buf[1024] = { 0 };
 
   menu->make_entry(menu, buf, sizeof(buf), line);
   return regexec(rx, buf, 0, NULL, 0);

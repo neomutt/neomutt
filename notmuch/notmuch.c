@@ -367,7 +367,7 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
 
   if (window)
   {
-    char buf[1024];
+    char buf[1024] = { 0 };
     cs_subset_str_string_set(NeoMutt->sub, "nm_query_window_current_search",
                              mdata->db_query, NULL);
 
@@ -1072,7 +1072,7 @@ static bool nm_message_has_tag(notmuch_message_t *msg, char *tag)
 static void sync_email_path_with_nm(struct Email *e, notmuch_message_t *msg)
 {
   const char *new_file = get_message_last_filename(msg);
-  char old_file[PATH_MAX];
+  char old_file[PATH_MAX] = { 0 };
   email_get_fullpath(e, old_file, sizeof(old_file));
 
   if (!mutt_str_equal(old_file, new_file))
@@ -1194,9 +1194,9 @@ static int update_email_flags(struct Mailbox *m, struct Email *e, const char *ta
  */
 static int rename_maildir_filename(const char *old, char *buf, size_t buflen, struct Email *e)
 {
-  char filename[PATH_MAX];
-  char suffix[PATH_MAX];
-  char folder[PATH_MAX];
+  char filename[PATH_MAX] = { 0 };
+  char suffix[PATH_MAX] = { 0 };
+  char folder[PATH_MAX] = { 0 };
 
   mutt_str_copy(folder, old, sizeof(folder));
   char *p = strrchr(folder, '/');
@@ -1359,7 +1359,7 @@ static int rename_filename(struct Mailbox *m, const char *old_file,
            msg && ls && notmuch_filenames_valid(ls); notmuch_filenames_move_to_next(ls))
       {
         const char *path = notmuch_filenames_get(ls);
-        char newpath[PATH_MAX];
+        char newpath[PATH_MAX] = { 0 };
 
         if (strcmp(new_file, path) == 0)
           continue;
@@ -1736,7 +1736,7 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
 int nm_update_filename(struct Mailbox *m, const char *old_file,
                        const char *new_file, struct Email *e)
 {
-  char buf[PATH_MAX];
+  char buf[PATH_MAX] = { 0 };
   struct NmMboxData *mdata = nm_mdata_get(m);
   if (!mdata || !new_file)
     return -1;
@@ -2134,7 +2134,7 @@ static enum MxStatus nm_mbox_check(struct Mailbox *m)
     /* Check to see if the message has moved to a different subdirectory.
      * If so, update the associated filename.  */
     const char *new_file = get_message_last_filename(msg);
-    char old_file[PATH_MAX];
+    char old_file[PATH_MAX] = { 0 };
     email_get_fullpath(e, old_file, sizeof(old_file));
 
     if (!mutt_str_equal(old_file, new_file))
@@ -2215,7 +2215,7 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
   if (m->verbose)
   {
     /* all is in this function so we don't use data->progress here */
-    char msg[PATH_MAX];
+    char msg[PATH_MAX] = { 0 };
     snprintf(msg, sizeof(msg), _("Writing %s..."), mailbox_path(m));
     progress = progress_new(msg, MUTT_PROGRESS_WRITE, m->msg_count);
   }
@@ -2340,7 +2340,7 @@ static bool nm_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   if (!e)
     return false;
 
-  char path[PATH_MAX];
+  char path[PATH_MAX] = { 0 };
   char *folder = nm_email_get_folder(e);
 
   snprintf(path, sizeof(path), "%s/%s", folder, e->path);

@@ -73,7 +73,7 @@ int mutt_account_getuser(struct ConnAccount *cac)
   else
   {
     /* prompt (defaults to unix username), copy into cac->user */
-    char prompt[256];
+    char prompt[256] = { 0 };
     /* L10N: Example: Username at myhost.com */
     snprintf(prompt, sizeof(prompt), _("Username at %s: "), cac->host);
     mutt_str_copy(cac->user, Username, sizeof(cac->user));
@@ -152,7 +152,7 @@ int mutt_account_getpass(struct ConnAccount *cac)
   }
   else
   {
-    char prompt[256];
+    char prompt[256] = { 0 };
     snprintf(prompt, sizeof(prompt), _("Password for %s@%s: "),
              (cac->flags & MUTT_ACCT_LOGIN) ? cac->login : cac->user, cac->host);
     cac->pass[0] = '\0';
@@ -245,7 +245,7 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac, bool xoauth2)
 
   /* 4500 is chosen to allow for both a token that is 4096-long plus a
    * username that can be up to 320-long. */
-  char oauthbearer[4500];
+  char oauthbearer[4500] = { 0 };
   int oalen = 0;
   if (xoauth2)
   {

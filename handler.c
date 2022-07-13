@@ -87,7 +87,7 @@ typedef int (*handler_t)(struct Body *b, struct State *s);
  */
 static void print_part_line(struct State *s, struct Body *b, int n)
 {
-  char length[5];
+  char length[5] = { 0 };
   mutt_str_pretty_size(length, sizeof(length), b->length);
   state_mark_attach(s);
   char *charset = mutt_param_get(&b->parameter, "charset");
@@ -114,7 +114,7 @@ static void print_part_line(struct State *s, struct Body *b, int n)
  */
 static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
 {
-  char bufo[BUFO_SIZE];
+  char bufo[BUFO_SIZE] = { 0 };
   const char *ib = NULL;
   char *ob = NULL;
   size_t ibl, obl;
@@ -172,7 +172,7 @@ static void decode_xbit(struct State *s, long len, bool istext, iconv_t cd)
   state_set_prefix(s);
 
   int c;
-  char bufi[BUFI_SIZE];
+  char bufi[BUFI_SIZE] = { 0 };
   size_t l = 0;
   while (((c = fgetc(s->fp_in)) != EOF) && len--)
   {
@@ -300,8 +300,8 @@ static void qp_decode_line(char *dest, char *src, size_t *l, int last)
  */
 static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
 {
-  char line[256];
-  char decline[512];
+  char line[256] = { 0 };
+  char decline[512] = { 0 };
   size_t l = 0;
   size_t l3;
 
@@ -364,9 +364,9 @@ static unsigned char decode_byte(char ch)
  */
 static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
 {
-  char tmps[128];
+  char tmps[128] = { 0 };
   char *pt = NULL;
-  char bufi[BUFI_SIZE];
+  char bufi[BUFI_SIZE] = { 0 };
   size_t k = 0;
 
   if (istext)
@@ -431,7 +431,7 @@ static bool is_mmnoask(const char *buf)
     return false;
 
   char *p = NULL;
-  char tmp[1024];
+  char tmp[1024] = { 0 };
   char *q = NULL;
 
   if (mutt_str_equal(val, "1"))
@@ -477,7 +477,7 @@ static bool is_mmnoask(const char *buf)
  */
 static bool is_autoview(struct Body *b)
 {
-  char type[256];
+  char type[256] = { 0 };
   bool is_av = false;
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
@@ -524,8 +524,8 @@ static bool is_autoview(struct Body *b)
 static int autoview_handler(struct Body *a, struct State *s)
 {
   struct MailcapEntry *entry = mailcap_entry_new();
-  char buf[1024];
-  char type[256];
+  char buf[1024] = { 0 };
+  char type[256] = { 0 };
   struct Buffer *cmd = mutt_buffer_pool_get();
   struct Buffer *tempfile = mutt_buffer_pool_get();
   char *fname = NULL;
@@ -756,7 +756,7 @@ static int message_handler(struct Body *a, struct State *s)
 static int external_body_handler(struct Body *b, struct State *s)
 {
   const char *str = NULL;
-  char strbuf[1024];
+  char strbuf[1024] = { 0 };
 
   const char *access_type = mutt_param_get(&b->parameter, "access-type");
   if (!access_type)
@@ -783,7 +783,7 @@ static int external_body_handler(struct Body *b, struct State *s)
   {
     if (s->flags & (MUTT_DISPLAY | MUTT_PRINTING))
     {
-      char pretty_size[10];
+      char pretty_size[10] = { 0 };
       char *length = mutt_param_get(&b->parameter, "length");
       if (length)
       {
@@ -1497,10 +1497,10 @@ static int malformed_pgp_encrypted_handler(struct Body *b, struct State *s)
  */
 void mutt_decode_base64(struct State *s, size_t len, bool istext, iconv_t cd)
 {
-  char buf[5];
+  char buf[5] = { 0 };
   int ch, i;
   bool cr = false;
-  char bufi[BUFI_SIZE];
+  char bufi[BUFI_SIZE] = { 0 };
   size_t l = 0;
 
   buf[4] = '\0';

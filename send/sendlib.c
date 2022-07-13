@@ -72,7 +72,7 @@ enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
 {
   FILE *fp = NULL;
   char *p = NULL, *q = NULL, *ct = NULL;
-  char buf[PATH_MAX];
+  char buf[PATH_MAX] = { 0 };
   char subtype[256] = { 0 };
   char xtype[256] = { 0 };
   int sze, cur_sze = 0;
@@ -347,7 +347,7 @@ static void set_encoding(struct Body *b, struct Content *info, struct ConfigSubs
   if (b->type == TYPE_TEXT)
   {
     const bool c_encode_from = cs_subset_bool(sub, "encode_from");
-    char send_charset[128];
+    char send_charset[128] = { 0 };
     char *chsname = mutt_body_get_charset(b, send_charset, sizeof(send_charset));
     if ((info->lobin && !mutt_istr_startswith(chsname, "iso-2022")) ||
         (info->linemax > 990) || (info->from && c_encode_from))
@@ -413,7 +413,7 @@ void mutt_stamp_attachment(struct Body *a)
 void mutt_update_encoding(struct Body *a, struct ConfigSubset *sub)
 {
   struct Content *info = NULL;
-  char chsbuf[256];
+  char chsbuf[256] = { 0 };
 
   /* override noconv when it's us-ascii */
   if (mutt_ch_is_us_ascii(mutt_body_get_charset(a, chsbuf, sizeof(chsbuf))))
@@ -726,7 +726,7 @@ const char *mutt_fqdn(bool may_hide_host, const struct ConfigSubset *sub)
  */
 static char *gen_msgid(struct ConfigSubset *sub)
 {
-  char buf[128];
+  char buf[128] = { 0 };
   char rndid[MUTT_RANDTAG_LEN + 1];
 
   mutt_rand_base32(rndid, sizeof(rndid) - 1);
@@ -765,7 +765,7 @@ void mutt_prepare_envelope(struct Envelope *env, bool final, struct ConfigSubset
       mutt_addrlist_append(&env->to, to);
       mutt_addrlist_append(&env->to, mutt_addr_new());
 
-      char buf[1024];
+      char buf[1024] = { 0 };
       buf[0] = '\0';
       mutt_addr_cat(buf, sizeof(buf), "undisclosed-recipients", AddressSpecials);
 
@@ -898,7 +898,7 @@ int mutt_bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
     return -1;
 
   const char *fqdn = mutt_fqdn(true, sub);
-  char resent_from[256];
+  char resent_from[256] = { 0 };
   char *err = NULL;
 
   resent_from[0] = '\0';
@@ -982,8 +982,8 @@ static void set_noconv_flags(struct Body *b, bool flag)
 int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid, bool post,
                             char *fcc, char **finalpath, struct ConfigSubset *sub)
 {
-  char fcc_tok[PATH_MAX];
-  char fcc_expanded[PATH_MAX];
+  char fcc_tok[PATH_MAX] = { 0 };
+  char fcc_expanded[PATH_MAX] = { 0 };
 
   mutt_str_copy(fcc_tok, path, sizeof(fcc_tok));
 
@@ -1205,7 +1205,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
 
     /* count the number of lines */
     int lines = 0;
-    char line_buf[1024];
+    char line_buf[1024] = { 0 };
     rewind(fp_tmp);
     while (fgets(line_buf, sizeof(line_buf), fp_tmp))
       lines++;

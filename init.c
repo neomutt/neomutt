@@ -135,7 +135,7 @@ static char *find_cfg(const char *home, const char *xdg_cfg_home)
 
     for (int j = 0; names[j]; j++)
     {
-      char buf[256];
+      char buf[256] = { 0 };
 
       snprintf(buf, sizeof(buf), "%s/%s%s", locations[i][0], locations[i][1], names[j]);
       if (access(buf, F_OK) == 0)

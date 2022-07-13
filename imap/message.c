@@ -112,7 +112,7 @@ static FILE *msg_cache_get(struct Mailbox *m, struct Email *e)
     return NULL;
 
   mdata->bcache = msg_cache_open(m);
-  char id[64];
+  char id[64] = { 0 };
   snprintf(id, sizeof(id), "%u-%u", mdata->uidvalidity, imap_edata_get(e)->uid);
   return mutt_bcache_get(mdata->bcache, id);
 }
@@ -133,7 +133,7 @@ static FILE *msg_cache_put(struct Mailbox *m, struct Email *e)
     return NULL;
 
   mdata->bcache = msg_cache_open(m);
-  char id[64];
+  char id[64] = { 0 };
   snprintf(id, sizeof(id), "%u-%u", mdata->uidvalidity, imap_edata_get(e)->uid);
   return mutt_bcache_put(mdata->bcache, id);
 }
@@ -154,7 +154,7 @@ static int msg_cache_commit(struct Mailbox *m, struct Email *e)
     return -1;
 
   mdata->bcache = msg_cache_open(m);
-  char id[64];
+  char id[64] = { 0 };
   snprintf(id, sizeof(id), "%u-%u", mdata->uidvalidity, imap_edata_get(e)->uid);
 
   return mutt_bcache_commit(mdata->bcache, id);
@@ -297,7 +297,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
   if (!s)
     return -1;
 
-  char tmp[128];
+  char tmp[128] = { 0 };
   char *ptmp = NULL;
   size_t plen = 0;
 
@@ -666,7 +666,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
                                           bool store_flag_updates, bool eval_condstore)
 {
   struct Progress *progress = NULL;
-  char buf[1024];
+  char buf[1024] = { 0 };
   int rc = -1;
 
   struct Mailbox *m = adata->mailbox;
@@ -898,7 +898,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
                                                   unsigned long long hc_modseq, bool eval_qresync)
 {
   struct Progress *progress = NULL;
-  char buf[1024];
+  char buf[1024] = { 0 };
   unsigned int header_msn = 0;
 
   struct Mailbox *m = adata->mailbox;
@@ -1555,8 +1555,8 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
 
   FILE *fp = NULL;
   char buf[1024 * 2];
-  char internaldate[IMAP_DATELEN];
-  char imap_flags[128];
+  char internaldate[IMAP_DATELEN] = { 0 };
+  char imap_flags[128] = { 0 };
   size_t len;
   struct Progress *progress = NULL;
   size_t sent;
@@ -1687,9 +1687,9 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el,
     return -1;
 
   struct Buffer cmd, sync_cmd;
-  char buf[PATH_MAX];
-  char mbox[PATH_MAX];
-  char mmbox[PATH_MAX];
+  char buf[PATH_MAX] = { 0 };
+  char mbox[PATH_MAX] = { 0 };
+  char mmbox[PATH_MAX] = { 0 };
   char prompt[PATH_MAX + 64];
   int rc;
   struct ConnAccount cac = { { 0 } };
@@ -1863,7 +1863,7 @@ int imap_cache_del(struct Mailbox *m, struct Email *e)
     return -1;
 
   mdata->bcache = msg_cache_open(m);
-  char id[64];
+  char id[64] = { 0 };
   snprintf(id, sizeof(id), "%u-%u", mdata->uidvalidity, imap_edata_get(e)->uid);
   return mutt_bcache_del(mdata->bcache, id);
 }
@@ -1965,7 +1965,7 @@ char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_c
 bool imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
   struct Envelope *newenv = NULL;
-  char buf[1024];
+  char buf[1024] = { 0 };
   char *pc = NULL;
   unsigned int bytes;
   unsigned int uid;

@@ -317,7 +317,7 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2,
 static void dump_menu(FILE *fp, enum MenuType menu, int wraplen)
 {
   struct Keymap *map = NULL;
-  char buf[128];
+  char buf[128] = { 0 };
 
   STAILQ_FOREACH(map, &Keymaps[menu], entries)
   {
@@ -385,7 +385,7 @@ static void dump_unbound(FILE *fp, const struct MenuFuncOp *funcs,
  */
 void mutt_help(enum MenuType menu)
 {
-  char banner[128];
+  char banner[128] = { 0 };
   FILE *fp = NULL;
 
   /* We don't use the buffer pool because of the extended lifetime of t */

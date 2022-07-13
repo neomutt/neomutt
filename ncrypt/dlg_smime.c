@@ -221,7 +221,7 @@ struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, const char *query)
   struct SmimeData sd = { false, menu, table, NULL };
   dlg->wdata = &sd;
 
-  char title[256];
+  char title[256] = { 0 };
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   snprintf(title, sizeof(title), _("S/MIME certificates matching \"%s\""), query);
   sbar_set_title(sbar, title);

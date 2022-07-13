@@ -415,7 +415,7 @@ static int pgp_check_decryption_okay(FILE *fp_in)
  */
 static void pgp_copy_clearsigned(FILE *fp_in, struct State *s, char *charset)
 {
-  char buf[8192];
+  char buf[8192] = { 0 };
   bool complete, armor_header;
 
   rewind(fp_in);
@@ -473,7 +473,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
   int c = 1;
   long bytes;
   LOFF_T last_pos, offset;
-  char buf[8192];
+  char buf[8192] = { 0 };
   FILE *fp_pgp_out = NULL, *fp_pgp_in = NULL, *fp_pgp_err = NULL;
   FILE *fp_tmp = NULL;
   pid_t pid;
@@ -483,7 +483,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
   bool have_any_sigs = false;
 
   char *gpgcharset = NULL;
-  char body_charset[256];
+  char body_charset[256] = { 0 };
   mutt_body_get_charset(m, body_charset, sizeof(body_charset));
 
   if (!mutt_file_seek(s->fp_in, m->offset, SEEK_SET))
@@ -785,7 +785,7 @@ out:
 static bool pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
   struct Buffer *tempfile = NULL;
-  char buf[8192];
+  char buf[8192] = { 0 };
   bool rc = false;
 
   bool sgn = false;
@@ -1011,7 +1011,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   if (!a || !s || !fp_out || !p)
     return NULL;
 
-  char buf[1024];
+  char buf[1024] = { 0 };
   FILE *fp_pgp_in = NULL, *fp_pgp_out = NULL, *fp_pgp_tmp = NULL;
   struct Body *tattach = NULL;
   pid_t pid;
@@ -1315,7 +1315,7 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
 struct Body *pgp_class_sign_message(struct Body *a, const struct AddressList *from)
 {
   struct Body *t = NULL, *rv = NULL;
-  char buf[1024];
+  char buf[1024] = { 0 };
   FILE *fp_pgp_in = NULL, *fp_pgp_out = NULL, *fp_pgp_err = NULL, *fp_signed = NULL;
   bool err = false;
   bool empty = true;
@@ -1454,7 +1454,7 @@ char *pgp_class_find_keys(const struct AddressList *addrlist, bool oppenc_mode)
   struct Address *p = NULL;
   struct PgpKeyInfo *k_info = NULL;
   const char *fqdn = mutt_fqdn(true, NeoMutt->sub);
-  char buf[1024];
+  char buf[1024] = { 0 };
   bool key_selected;
   struct AddressList hookal = TAILQ_HEAD_INITIALIZER(hookal);
 
@@ -1569,7 +1569,7 @@ char *pgp_class_find_keys(const struct AddressList *addrlist, bool oppenc_mode)
 struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign,
                                        const struct AddressList *from)
 {
-  char buf[1024];
+  char buf[1024] = { 0 };
   FILE *fp_pgp_in = NULL, *fp_tmp = NULL;
   struct Body *t = NULL;
   int err = 0;
@@ -1703,12 +1703,12 @@ cleanup:
 struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags flags, char *keylist)
 {
   struct Body *b = NULL;
-  char body_charset[256];
+  char body_charset[256] = { 0 };
   const char *from_charset = NULL;
   const char *send_charset = NULL;
   bool empty = false;
   bool err;
-  char buf[256];
+  char buf[256] = { 0 };
   pid_t pid;
   struct Buffer *pgpinfile = mutt_buffer_pool_get();
   struct Buffer *pgpoutfile = mutt_buffer_pool_get();
@@ -1880,7 +1880,7 @@ SecurityFlags pgp_class_send_menu(struct Email *e)
   const char *prompt = NULL;
   const char *letters = NULL;
   const char *choices = NULL;
-  char promptbuf[1024];
+  char promptbuf[1024] = { 0 };
   int choice;
 
   if (!(WithCrypto & APPLICATION_PGP))
@@ -2000,7 +2000,7 @@ SecurityFlags pgp_class_send_menu(struct Email *e)
         p = pgp_ask_for_key(_("Sign as: "), NULL, KEYFLAG_NO_FLAGS, PGP_SECRING);
         if (p)
         {
-          char input_signas[128];
+          char input_signas[128] = { 0 };
           snprintf(input_signas, sizeof(input_signas), "0x%s", pgp_fpr_or_lkeyid(p));
           cs_subset_str_string_set(NeoMutt->sub, "pgp_sign_as", input_signas, NULL);
           pgp_key_free(&p);

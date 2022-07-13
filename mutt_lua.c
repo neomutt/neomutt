@@ -372,7 +372,7 @@ static int lua_mutt_error(lua_State *l)
 static void lua_expose_command(void *p, const struct Command *cmd)
 {
   lua_State *l = (lua_State *) p;
-  char buf[1024];
+  char buf[1024] = { 0 };
   snprintf(buf, sizeof(buf), "mutt.command.%s = function (...); mutt.call('%s', ...); end",
            cmd->name, cmd->name);
   (void) luaL_dostring(l, buf);
@@ -503,7 +503,7 @@ enum CommandResult mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
 
   lua_init(&LuaState);
 
-  char path[PATH_MAX];
+  char path[PATH_MAX] = { 0 };
 
   if (mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS) != 0)
   {

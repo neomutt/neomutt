@@ -62,10 +62,10 @@
 static void add_folder(char delim, char *folder, bool noselect, bool noinferiors,
                        struct BrowserState *state, bool isparent)
 {
-  char tmp[PATH_MAX];
-  char relpath[PATH_MAX];
+  char tmp[PATH_MAX] = { 0 };
+  char relpath[PATH_MAX] = { 0 };
   struct ConnAccount cac = { { 0 } };
-  char mailbox[1024];
+  char mailbox[1024] = { 0 };
   struct FolderFile ff = { 0 };
 
   if (imap_parse_path(state->folder, &cac, mailbox, sizeof(mailbox)))
@@ -185,8 +185,8 @@ int imap_browse(const char *path, struct BrowserState *state)
   struct ImapList list = { 0 };
   struct ConnAccount cac = { { 0 } };
   char buf[PATH_MAX + 16];
-  char mbox[PATH_MAX];
-  char munged_mbox[PATH_MAX];
+  char mbox[PATH_MAX] = { 0 };
+  char munged_mbox[PATH_MAX] = { 0 };
   const char *list_cmd = NULL;
   int len;
   int n;
@@ -322,7 +322,7 @@ int imap_browse(const char *path, struct BrowserState *state)
     /* "/bbbb/" -> add  "/", "aaaa/" -> add "" */
     else
     {
-      char relpath[2];
+      char relpath[2] = { 0 };
       /* folder may be "/" */
       snprintf(relpath, sizeof(relpath), "%c", (n < 0) ? '\0' : adata->delim);
       if (showparents)

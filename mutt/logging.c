@@ -369,7 +369,7 @@ int log_queue_save(FILE *fp)
   if (!fp)
     return 0;
 
-  char buf[32];
+  char buf[32] = { 0 };
   int count = 0;
   struct LogLine *ll = NULL;
   STAILQ_FOREACH(ll, &LogQueue, entries)
@@ -440,7 +440,7 @@ int log_disp_queue(time_t stamp, const char *file, int line,
 int log_disp_terminal(time_t stamp, const char *file, int line,
                       const char *function, enum LogLevel level, ...)
 {
-  char buf[1024];
+  char buf[1024] = { 0 };
 
   va_list ap;
   va_start(ap, level);

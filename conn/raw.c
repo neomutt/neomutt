@@ -124,7 +124,7 @@ int raw_socket_open(struct Connection *conn)
   /* --- IPv4/6 --- */
 
   /* "65536\0" */
-  char port[6];
+  char port[6] = { 0 };
   struct addrinfo hints;
   struct addrinfo *res = NULL;
   struct addrinfo *cur = NULL;

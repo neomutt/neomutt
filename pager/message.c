@@ -181,7 +181,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile,
   mutt_parse_mime_message(e, msg->fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
-  char columns[16];
+  char columns[16] = { 0 };
   // win_pager might not be visible and have a size yet, so use win_index
   snprintf(columns, sizeof(columns), "%d", wrap_len);
   mutt_envlist_set("COLUMNS", columns, true);

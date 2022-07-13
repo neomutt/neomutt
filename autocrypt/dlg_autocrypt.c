@@ -127,7 +127,7 @@ static const char *autocrypt_format_str(char *buf, size_t buflen, size_t col, in
                                         intptr_t data, MuttFormatFlags flags)
 {
   struct AccountEntry *entry = (struct AccountEntry *) data;
-  char tmp[128];
+  char tmp[128] = { 0 };
 
   switch (op)
   {

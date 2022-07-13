@@ -951,7 +951,7 @@ enum MxStatus mx_mbox_sync(struct Mailbox *m)
 
   if (m->msg_deleted != 0)
   {
-    char buf[128];
+    char buf[128] = { 0 };
 
     snprintf(buf, sizeof(buf),
              ngettext("Purge %d deleted message?", "Purge %d deleted messages?", m->msg_deleted),
@@ -1479,7 +1479,7 @@ int mx_path_canon2(struct Mailbox *m, const char *folder)
   if (!m)
     return -1;
 
-  char buf[PATH_MAX];
+  char buf[PATH_MAX] = { 0 };
 
   if (m->realpath)
     mutt_str_copy(buf, m->realpath, sizeof(buf));
@@ -1651,7 +1651,7 @@ struct Mailbox *mx_mbox_find2(const char *path)
   if (!path)
     return NULL;
 
-  char buf[PATH_MAX];
+  char buf[PATH_MAX] = { 0 };
   mutt_str_copy(buf, path, sizeof(buf));
   const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
   mx_path_canon(buf, sizeof(buf), c_folder, NULL);

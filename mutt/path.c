@@ -242,7 +242,7 @@ bool mutt_path_tilde(char *buf, size_t buflen, const char *homedir)
   }
   else
   {
-    char user[128];
+    char user[128] = { 0 };
     dir = strchr(buf + 1, '/');
     if (dir)
       mutt_str_copy(user, buf + 1, MIN(dir - buf, (unsigned) sizeof(user)));
@@ -399,7 +399,7 @@ bool mutt_path_to_absolute(char *path, const char *reference)
   if (!path || !reference)
     return false;
 
-  char abs_path[PATH_MAX];
+  char abs_path[PATH_MAX] = { 0 };
   int path_len;
 
   /* if path is already absolute, don't do anything */
@@ -442,7 +442,7 @@ size_t mutt_path_realpath(char *buf)
   if (!buf)
     return 0;
 
-  char s[PATH_MAX];
+  char s[PATH_MAX] = { 0 };
 
   if (!realpath(buf, s))
     return 0;

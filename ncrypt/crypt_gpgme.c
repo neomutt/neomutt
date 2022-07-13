@@ -769,7 +769,7 @@ static gpgme_data_t file_to_data_object(FILE *fp, long offset, size_t length)
  */
 static int data_object_to_stream(gpgme_data_t data, FILE *fp)
 {
-  char buf[4096];
+  char buf[4096] = { 0 };
   ssize_t nread;
 
   int err = ((gpgme_data_seek(data, 0, SEEK_SET) == -1) ? gpgme_error_from_errno(errno) : 0);
@@ -832,7 +832,7 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
   int err = ((gpgme_data_seek(data, 0, SEEK_SET) == -1) ? gpgme_error_from_errno(errno) : 0);
   if (err == 0)
   {
-    char buf[4096];
+    char buf[4096] = { 0 };
 
     while ((nread = gpgme_data_read(data, buf, sizeof(buf))) > 0)
     {
@@ -934,7 +934,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, bool use_smime)
 {
   int err;
   const char *s = NULL;
-  char buf[100];
+  char buf[100] = { 0 };
   gpgme_key_t *rset = NULL;
   unsigned int rset_n = 0;
   gpgme_key_t key = NULL;
@@ -1247,7 +1247,7 @@ static int get_micalg(gpgme_ctx_t ctx, int use_smime, char *buf, size_t buflen)
  */
 static void print_time(time_t t, struct State *s)
 {
-  char p[256];
+  char p[256] = { 0 };
   mutt_date_localtime_format(p, sizeof(p), nl_langinfo(D_T_FMT), t);
   state_puts(s, p);
 }
@@ -1265,7 +1265,7 @@ static struct Body *sign_message(struct Body *a, const struct AddressList *from,
   struct Body *t = NULL;
   char *sigfile = NULL;
   int err = 0;
-  char buf[100];
+  char buf[100] = { 0 };
   gpgme_ctx_t ctx = NULL;
   gpgme_data_t message = NULL, signature = NULL;
   gpgme_sign_result_t sigres = NULL;
@@ -1834,7 +1834,7 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
       ; /* No state information so no way to print anything. */
     else if (err != 0)
     {
-      char buf[1024];
+      char buf[1024] = { 0 };
       snprintf(buf, sizeof(buf), _("Error getting key information for KeyID %s: %s\n"),
                fpr, gpgme_strerror(err));
       state_puts(s, buf);
@@ -1935,7 +1935,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
   redraw_if_needed(ctx);
   if (err != 0)
   {
-    char buf[200];
+    char buf[200] = { 0 };
 
     snprintf(buf, sizeof(buf) - 1, _("Error: verification failed: %s\n"),
              gpgme_strerror(err));
@@ -1986,7 +1986,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
 
         if (non_pka_notations)
         {
-          char buf[128];
+          char buf[128] = { 0 };
           snprintf(buf, sizeof(buf),
                    _("*** Begin Notation (signature by: %s) ***\n"), sig->fpr);
           state_puts(s, buf);
@@ -2129,7 +2129,7 @@ restart:
     redraw_if_needed(ctx);
     if ((s->flags & MUTT_DISPLAY))
     {
-      char buf[200];
+      char buf[200] = { 0 };
 
       snprintf(buf, sizeof(buf) - 1,
                _("[-- Error: decryption failed: %s --]\n\n"), gpgme_strerror(err));
@@ -2437,7 +2437,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
   gpgme_subkey_t subkey = NULL;
   const char *shortid = NULL;
   size_t len;
-  char date[256];
+  char date[256] = { 0 };
   bool more;
   int rc = -1;
   time_t tt;
@@ -2579,7 +2579,7 @@ static int line_compare(const char *a, size_t n, const char *b)
  */
 static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
-  char buf[8192];
+  char buf[8192] = { 0 };
   bool rc = false;
 
   bool sgn = false;
@@ -2778,7 +2778,7 @@ leave:
  */
 static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
 {
-  char buf[8192];
+  char buf[8192] = { 0 };
   bool complete, armor_header;
   FILE *fp = NULL;
 
@@ -2840,7 +2840,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
   bool clearsign = false;
   long bytes;
   LOFF_T last_pos;
-  char buf[8192];
+  char buf[8192] = { 0 };
   FILE *fp_out = NULL;
 
   gpgme_error_t err = 0;
@@ -2849,7 +2849,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
   bool maybe_goodsig = true;
   bool have_any_sigs = false;
 
-  char body_charset[256]; /* Only used for clearsigned messages. */
+  char body_charset[256] = { 0 }; /* Only used for clearsigned messages. */
 
   mutt_debug(LL_DEBUG2, "Entering handler\n");
 
@@ -2932,7 +2932,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 
         if (err != 0)
         {
-          char errbuf[200];
+          char errbuf[200] = { 0 };
 
           snprintf(errbuf, sizeof(errbuf) - 1,
                    _("Error: decryption/verification failed: %s\n"), gpgme_strerror(err));
@@ -3826,7 +3826,7 @@ static char *find_keys(const struct AddressList *addrlist, unsigned int app, boo
   struct Address *p = NULL;
   struct CryptKeyInfo *k_info = NULL;
   const char *fqdn = mutt_fqdn(true, NeoMutt->sub);
-  char buf[1024];
+  char buf[1024] = { 0 };
   bool forced_valid = false;
   bool key_selected;
   struct AddressList hookal = TAILQ_HEAD_INITIALIZER(hookal);
@@ -4052,7 +4052,7 @@ struct Body *pgp_gpgme_make_key_attachment(void)
   gpgme_data_t keydata = NULL;
   gpgme_error_t err;
   struct Body *att = NULL;
-  char buf[1024];
+  char buf[1024] = { 0 };
 
   OptPgpCheckTrust = false;
 
@@ -4254,7 +4254,7 @@ static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
                               is_smime ? APPLICATION_SMIME : APPLICATION_PGP, NULL);
         if (p)
         {
-          char input_signas[128];
+          char input_signas[128] = { 0 };
           snprintf(input_signas, sizeof(input_signas), "0x%s", crypt_fpr_or_lkeyid(p));
 
           if (is_smime)

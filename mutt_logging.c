@@ -92,7 +92,7 @@ int log_disp_curses(time_t stamp, const char *file, int line,
   if (level > c_debug_level)
     return 0;
 
-  char buf[1024];
+  char buf[1024] = { 0 };
 
   va_list ap;
   va_start(ap, level);
@@ -173,7 +173,7 @@ int log_disp_curses(time_t stamp, const char *file, int line,
  */
 void mutt_log_prep(void)
 {
-  char ver[64];
+  char ver[64] = { 0 };
   snprintf(ver, sizeof(ver), "-%s%s", PACKAGE_VERSION, GitVer);
   log_file_set_version(ver);
 }

@@ -883,7 +883,7 @@ void mutt_timeout_hook(void)
 {
   struct Hook *hook = NULL;
   struct Buffer err;
-  char buf[256];
+  char buf[256] = { 0 };
 
   mutt_buffer_init(&err);
   err.data = buf;
@@ -919,7 +919,7 @@ void mutt_startup_shutdown_hook(HookFlags type)
 {
   struct Hook *hook = NULL;
   struct Buffer err = mutt_buffer_make(0);
-  char buf[256];
+  char buf[256] = { 0 };
 
   err.data = buf;
   err.dsize = sizeof(buf);

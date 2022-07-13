@@ -143,7 +143,7 @@ static bool compile_search_children(const struct ImapAccountData *adata,
 static bool compile_search_self(const struct ImapAccountData *adata,
                                 const struct Pattern *pat, struct Buffer *buf)
 {
-  char term[256];
+  char term[256] = { 0 };
   char *delim = NULL;
 
   switch (pat->op)

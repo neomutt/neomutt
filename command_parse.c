@@ -148,7 +148,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
   struct Buffer *token = NULL, *linebuf = NULL;
   char *line = NULL;
   char *currentline = NULL;
-  char rcfile[PATH_MAX];
+  char rcfile[PATH_MAX] = { 0 };
   size_t linelen = 0;
   pid_t pid;
 
@@ -1158,7 +1158,7 @@ enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
                                 intptr_t data, struct Buffer *err)
 {
-  char path[PATH_MAX];
+  char path[PATH_MAX] = { 0 };
 
   do
   {

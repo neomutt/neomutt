@@ -325,7 +325,7 @@ static int sync_helper(struct Mailbox *m, AclFlags right, enum MessageType flag,
 {
   int count = 0;
   int rc;
-  char buf[1024];
+  char buf[1024] = { 0 };
 
   if (!m)
     return -1;
@@ -411,7 +411,7 @@ static int complete_hosts(char *buf, size_t buflen)
   TAILQ_FOREACH(conn, mutt_socket_head(), entries)
   {
     struct Url url = { 0 };
-    char urlstr[1024];
+    char urlstr[1024] = { 0 };
 
     if (conn->account.type != MUTT_ACCT_TYPE_IMAP)
       continue;
@@ -487,8 +487,8 @@ int imap_access(const char *path)
  */
 int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char *newname)
 {
-  char oldmbox[1024];
-  char newmbox[1024];
+  char oldmbox[1024] = { 0 };
+  char newmbox[1024] = { 0 };
   int rc = 0;
 
   imap_munge_mbox_name(adata->unicode, oldmbox, sizeof(oldmbox), oldname);
@@ -515,7 +515,7 @@ int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char
 int imap_delete_mailbox(struct Mailbox *m, char *path)
 {
   char buf[PATH_MAX + 7];
-  char mbox[PATH_MAX];
+  char mbox[PATH_MAX] = { 0 };
   struct Url *url = url_parse(path);
 
   struct ImapAccountData *adata = imap_adata_get(m);
@@ -1011,9 +1011,9 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
   if (!adata || (adata->mailbox != m))
     return -1;
 
-  char flags[1024];
+  char flags[1024] = { 0 };
   char *tags = NULL;
-  char uid[11];
+  char uid[11] = { 0 };
 
   if (!compare_flags_for_copy(e))
   {
@@ -1178,7 +1178,7 @@ enum MxStatus imap_check_mailbox(struct Mailbox *m, bool force)
 static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool queue)
 {
   char *uidvalidity_flag = NULL;
-  char cmd[2048];
+  char cmd[2048] = { 0 };
 
   if (!adata || !mdata)
     return -1;
@@ -1290,7 +1290,7 @@ int imap_subscribe(char *path, bool subscribe)
 {
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
-  char buf[2048];
+  char buf[2048] = { 0 };
   struct Buffer err;
 
   if (imap_adata_find(path, &adata, &mdata) < 0)
@@ -1312,7 +1312,7 @@ int imap_subscribe(char *path, bool subscribe)
   const bool c_imap_check_subscribed = cs_subset_bool(NeoMutt->sub, "imap_check_subscribed");
   if (c_imap_check_subscribed)
   {
-    char mbox[1024];
+    char mbox[1024] = { 0 };
     mutt_buffer_init(&err);
     err.dsize = 256;
     err.data = mutt_mem_malloc(err.dsize);
@@ -1346,9 +1346,9 @@ int imap_complete(char *buf, size_t buflen, const char *path)
 {
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
-  char tmp[2048];
+  char tmp[2048] = { 0 };
   struct ImapList listresp = { 0 };
-  char completion[1024];
+  char completion[1024] = { 0 };
   size_t clen;
   size_t matchlen = 0;
   int completions = 0;
@@ -1423,7 +1423,7 @@ int imap_complete(char *buf, size_t buflen, const char *path)
  */
 int imap_fast_trash(struct Mailbox *m, const char *dest)
 {
-  char prompt[1024];
+  char prompt[1024] = { 0 };
   int rc = -1;
   bool triedcreate = false;
   enum QuadOption err_continue = MUTT_NO;
@@ -1765,7 +1765,7 @@ static bool imap_ac_add(struct Account *a, struct Mailbox *m)
   if (!adata)
   {
     struct ConnAccount cac = { { 0 } };
-    char mailbox[PATH_MAX];
+    char mailbox[PATH_MAX] = { 0 };
 
     if (imap_parse_path(mailbox_path(m), &cac, mailbox, sizeof(mailbox)) < 0)
       return false;
@@ -1796,7 +1796,7 @@ static bool imap_ac_add(struct Account *a, struct Mailbox *m)
     struct ImapMboxData *mdata = imap_mdata_new(adata, url->path);
 
     /* fixup path and realpath, mainly to replace / by /INBOX */
-    char buf[1024];
+    char buf[1024] = { 0 };
     imap_qualify_path(buf, sizeof(buf), &adata->conn->account, mdata->name);
     mutt_buffer_strcpy(&m->pathbuf, buf);
     mutt_str_replace(&m->realpath, mailbox_path(m));
@@ -1828,7 +1828,7 @@ static void imap_mbox_select(struct Mailbox *m)
 #endif
     condstore = "";
 
-  char buf[PATH_MAX];
+  char buf[PATH_MAX] = { 0 };
   snprintf(buf, sizeof(buf), "%s %s%s", m->readonly ? "EXAMINE" : "SELECT",
            mdata->munge_name, condstore);
 
@@ -1930,7 +1930,7 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
   if (!m->account || !m->mdata)
     return MX_OPEN_ERROR;
 
-  char buf[PATH_MAX];
+  char buf[PATH_MAX] = { 0 };
   int count = 0;
   int rc;
 
@@ -2334,7 +2334,7 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, struct Buffer *bu
  */
 static int imap_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
 {
-  char uid[11];
+  char uid[11] = { 0 };
 
   struct ImapAccountData *adata = imap_adata_get(m);
 
@@ -2417,7 +2417,7 @@ int imap_path_canon(char *buf, size_t buflen)
   if (!url)
     return 0;
 
-  char tmp[PATH_MAX];
+  char tmp[PATH_MAX] = { 0 };
   char tmp2[PATH_MAX];
 
   imap_fix_path('\0', url->path, tmp, sizeof(tmp));

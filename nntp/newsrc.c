@@ -392,7 +392,7 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
 static int update_file(char *filename, char *buf)
 {
   FILE *fp = NULL;
-  char tmpfile[PATH_MAX];
+  char tmpfile[PATH_MAX] = { 0 };
   int rc = -1;
 
   while (true)
@@ -521,7 +521,7 @@ int nntp_newsrc_update(struct NntpAccountData *adata)
 static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *cac, const char *src)
 {
   char *c = NULL;
-  char file[PATH_MAX];
+  char file[PATH_MAX] = { 0 };
 
   /* server subdirectory */
   if (cac)
@@ -617,8 +617,8 @@ int nntp_add_group(char *line, void *data)
  */
 static int active_get_cache(struct NntpAccountData *adata)
 {
-  char buf[8192];
-  char file[4096];
+  char buf[8192] = { 0 };
+  char file[4096] = { 0 };
   time_t t = 0;
 
   cache_expand(file, sizeof(file), &adata->conn->account, ".active");
@@ -677,7 +677,7 @@ int nntp_active_save_cache(struct NntpAccountData *adata)
     off += strlen(buf + off);
   }
 
-  char file[PATH_MAX];
+  char file[PATH_MAX] = { 0 };
   cache_expand(file, sizeof(file), &adata->conn->account, ".active");
   mutt_debug(LL_DEBUG1, "Updating %s\n", file);
   int rc = update_file(file, buf);
@@ -711,7 +711,7 @@ static void nntp_hcache_namer(const char *path, struct Buffer *dest)
 struct HeaderCache *nntp_hcache_open(struct NntpMboxData *mdata)
 {
   struct Url url = { 0 };
-  char file[PATH_MAX];
+  char file[PATH_MAX] = { 0 };
 
   const bool c_save_unsubscribed = cs_subset_bool(NeoMutt->sub, "save_unsubscribed");
   if (!mdata->adata || !mdata->adata->cacheable || !mdata->adata->conn || !mdata->group ||
@@ -737,7 +737,7 @@ void nntp_hcache_update(struct NntpMboxData *mdata, struct HeaderCache *hc)
   if (!hc)
     return;
 
-  char buf[32];
+  char buf[32] = { 0 };
   bool old = false;
   anum_t first = 0, last = 0;
 
@@ -846,7 +846,7 @@ void nntp_delete_group_cache(struct NntpMboxData *mdata)
  */
 void nntp_clear_cache(struct NntpAccountData *adata)
 {
-  char file[PATH_MAX];
+  char file[PATH_MAX] = { 0 };
   char *fp = NULL;
   struct dirent *entry = NULL;
   DIR *dp = NULL;
@@ -1018,7 +1018,7 @@ static const char *nntp_get_field(enum ConnAccountField field, void *gf_data)
  */
 struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server, bool leave_lock)
 {
-  char file[PATH_MAX];
+  char file[PATH_MAX] = { 0 };
   int rc;
   struct ConnAccount cac = { { 0 } };
   struct NntpAccountData *adata = NULL;

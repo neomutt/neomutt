@@ -275,7 +275,7 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
 {
   int n;
   size_t len = max;
-  char buf[128];
+  char buf[128] = { 0 };
   char c;
   char *t = NULL;
 
@@ -397,8 +397,8 @@ static enum CommandResult km_bind_err(const char *s, enum MenuType mtype, int op
       {
         /* Overwrite with the different lengths, warn */
         /* TODO: MAX_SEQ here is wrong */
-        char old_binding[MAX_SEQ];
-        char new_binding[MAX_SEQ];
+        char old_binding[MAX_SEQ] = { 0 };
+        char new_binding[MAX_SEQ] = { 0 };
         km_expand_key(old_binding, MAX_SEQ, map);
         km_expand_key(new_binding, MAX_SEQ, np);
         char *err_msg = _("Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings");
@@ -1060,7 +1060,7 @@ void km_init(void)
  */
 void km_error_key(enum MenuType mtype)
 {
-  char buf[128];
+  char buf[128] = { 0 };
   int p, op;
 
   struct Keymap *key = km_find_func(mtype, OP_HELP);

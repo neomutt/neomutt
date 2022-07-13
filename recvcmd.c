@@ -484,7 +484,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   bool mime_fwd_any = true;
   struct Email *e_parent = NULL;
   FILE *fp_parent = NULL;
-  char prefix[256];
+  char prefix[256] = { 0 };
   enum QuadOption ans = MUTT_NO;
   struct Buffer *tmpbody = NULL;
 
@@ -952,7 +952,7 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
   struct Buffer *tmpbody = NULL;
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
 
-  char prefix[128];
+  char prefix[128] = { 0 };
 
 #ifdef USE_NNTP
   if (flags & SEND_NEWS)

@@ -454,7 +454,7 @@ void mutt_forward_intro(struct Email *e, FILE *fp, struct ConfigSubset *sub)
 
   const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
 
-  char buf[1024];
+  char buf[1024] = { 0 };
   setlocale(LC_TIME, NONULL(c_attribution_locale));
   mutt_make_string(buf, sizeof(buf), 0, c_forward_attribution_intro, NULL, -1,
                    e, MUTT_FORMAT_NO_FLAGS, NULL);
@@ -477,7 +477,7 @@ void mutt_forward_trailer(struct Email *e, FILE *fp, struct ConfigSubset *sub)
 
   const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
 
-  char buf[1024];
+  char buf[1024] = { 0 };
   setlocale(LC_TIME, NONULL(c_attribution_locale));
   mutt_make_string(buf, sizeof(buf), 0, c_forward_attribution_trailer, NULL, -1,
                    e, MUTT_FORMAT_NO_FLAGS, NULL);
@@ -638,7 +638,7 @@ void mutt_make_attribution(struct Email *e, FILE *fp_out, struct ConfigSubset *s
 
   const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
 
-  char buf[1024];
+  char buf[1024] = { 0 };
   setlocale(LC_TIME, NONULL(c_attribution_locale));
   mutt_make_string(buf, sizeof(buf), 0, c_attribution, NULL, -1, e,
                    MUTT_FORMAT_NO_FLAGS, NULL);
@@ -724,7 +724,7 @@ static void mutt_make_greeting(struct Email *e, FILE *fp_out, struct ConfigSubse
   if (!c_greeting || !fp_out)
     return;
 
-  char buf[1024];
+  char buf[1024] = { 0 };
 
   mutt_expando_format(buf, sizeof(buf), 0, 0, c_greeting, greeting_format_str,
                       (intptr_t) e, MUTT_TOKEN_NO_FLAGS);
@@ -745,7 +745,7 @@ void mutt_make_post_indent(struct Email *e, FILE *fp_out, struct ConfigSubset *s
   if (!c_post_indent_string || !fp_out)
     return;
 
-  char buf[256];
+  char buf[256] = { 0 };
   mutt_make_string(buf, sizeof(buf), 0, c_post_indent_string, NULL, -1, e,
                    MUTT_FORMAT_NO_FLAGS, NULL);
   fputs(buf, fp_out);
@@ -877,7 +877,7 @@ static int default_to(struct AddressList *to, struct Envelope *env,
     }
     else if (!(from_is_reply_to && !multiple_reply_to) && (c_reply_to != MUTT_YES))
     {
-      char prompt[256];
+      char prompt[256] = { 0 };
       /* There are quite a few mailing lists which set the Reply-To:
        * header field to the list address, which makes it quite impossible
        * to send a message to only the sender of the message.  This
@@ -930,7 +930,7 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in,
 
   if ((flags & (SEND_LIST_REPLY | SEND_GROUP_REPLY | SEND_GROUP_CHAT_REPLY)) && followup_to)
   {
-    char prompt[256];
+    char prompt[256] = { 0 };
     snprintf(prompt, sizeof(prompt), _("Follow-up to %s%s?"), followup_to->mailbox,
              TAILQ_NEXT(TAILQ_FIRST(&in->mail_followup_to), entries) ? ",..." : "");
 
@@ -1047,7 +1047,7 @@ void mutt_make_forward_subject(struct Envelope *env, struct Email *e, struct Con
 
   const char *const c_forward_format = cs_subset_string(sub, "forward_format");
 
-  char buf[256];
+  char buf[256] = { 0 };
   /* set the default subject for the message. */
   mutt_make_string(buf, sizeof(buf), 0, NONULL(c_forward_format), NULL, -1, e,
                    MUTT_FORMAT_NO_FLAGS, NULL);
@@ -2277,7 +2277,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       }
       else
       {
-        char buf[1024];
+        char buf[1024] = { 0 };
         mutt_mktemp(buf, sizeof(buf));
         fp_tmp = mutt_file_fopen(buf, "w+");
         e_templ->body->filename = mutt_str_dup(buf);

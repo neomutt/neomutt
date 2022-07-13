@@ -48,7 +48,7 @@ int nntp_complete(char *buf, size_t buflen)
 {
   struct NntpAccountData *adata = CurrentNewsSrv;
   size_t n = 0;
-  char filepart[PATH_MAX];
+  char filepart[PATH_MAX] = { 0 };
   bool init = false;
 
   mutt_str_copy(filepart, buf, sizeof(filepart));

@@ -55,7 +55,7 @@
 size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
                            const char *authz, const char *user, const char *pass)
 {
-  char tmp[768];
+  char tmp[768] = { 0 };
   size_t len = 0;
   size_t tmplen;
 

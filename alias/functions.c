@@ -208,7 +208,7 @@ static int op_query(struct AliasMenuData *mdata, int op)
 
   query_run(mutt_buffer_string(buf), true, &al, mdata->sub);
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
-  char title[256];
+  char title[256] = { 0 };
   snprintf(title, sizeof(title), "%s%s", _("Query: "), mutt_buffer_string(buf));
   sbar_set_title(mdata->sbar, title);
 

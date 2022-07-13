@@ -73,7 +73,7 @@ static int op_generic_select_entry(struct SmimeData *sd, int op)
         break;
     }
 
-    char buf[1024];
+    char buf[1024] = { 0 };
     snprintf(buf, sizeof(buf), "%s", s);
 
     if (mutt_yesorno(buf, MUTT_NO) != MUTT_YES)

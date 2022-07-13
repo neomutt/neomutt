@@ -43,7 +43,7 @@
  */
 int color_debug(enum LogLevel level, const char *format, ...)
 {
-  char buf[1024];
+  char buf[1024] = { 0 };
 
   va_list ap;
   va_start(ap, format);

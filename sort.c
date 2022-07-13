@@ -156,7 +156,7 @@ const char *mutt_get_name(const struct Address *a)
  */
 static int compare_to(const struct Email *a, const struct Email *b, bool reverse)
 {
-  char fa[128];
+  char fa[128] = { 0 };
 
   mutt_str_copy(fa, mutt_get_name(TAILQ_FIRST(&a->env->to)), sizeof(fa));
   const char *fb = mutt_get_name(TAILQ_FIRST(&b->env->to));
@@ -169,7 +169,7 @@ static int compare_to(const struct Email *a, const struct Email *b, bool reverse
  */
 static int compare_from(const struct Email *a, const struct Email *b, bool reverse)
 {
-  char fa[128];
+  char fa[128] = { 0 };
 
   mutt_str_copy(fa, mutt_get_name(TAILQ_FIRST(&a->env->from)), sizeof(fa));
   const char *fb = mutt_get_name(TAILQ_FIRST(&b->env->from));

@@ -135,7 +135,7 @@ static int ssl_load_certificates(SSL_CTX *ctx)
     if ((X509_cmp_current_time(X509_get0_notBefore(cert)) >= 0) ||
         (X509_cmp_current_time(X509_get0_notAfter(cert)) <= 0))
     {
-      char buf[256];
+      char buf[256] = { 0 };
       mutt_debug(LL_DEBUG2, "filtering expired cert: %s\n",
                  X509_NAME_oneline(X509_get_subject_name(cert), buf, sizeof(buf)));
     }
@@ -393,7 +393,7 @@ static void x509_fingerprint(char *s, int l, X509 *cert, const EVP_MD *(*hashfun
   {
     for (unsigned int i = 0; i < n; i++)
     {
-      char ch[8];
+      char ch[8] = { 0 };
       snprintf(ch, sizeof(ch), "%02X%s", md[i], ((i % 2) ? " " : ""));
       mutt_str_cat(s, l, ch);
     }
@@ -890,7 +890,7 @@ static void add_cert(const char *title, X509 *cert, bool issuer, struct CertArra
  */
 static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bool allow_always)
 {
-  char buf[256];
+  char buf[256] = { 0 };
   struct CertArray carr = ARRAY_HEAD_INITIALIZER;
 
   add_cert(_("This certificate belongs to:"), cert, false, &carr);
@@ -928,7 +928,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
     allow_skip = true;
 #endif
 
-  char title[256];
+  char title[256] = { 0 };
   snprintf(title, sizeof(title),
            _("SSL Certificate check (certificate %zu of %zu in chain)"), len - idx, len);
 
@@ -994,7 +994,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
  */
 static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
 {
-  char buf[256];
+  char buf[256] = { 0 };
 
   SSL *ssl = X509_STORE_CTX_get_ex_data(ctx, SSL_get_ex_data_X509_STORE_CTX_idx());
   if (!ssl)

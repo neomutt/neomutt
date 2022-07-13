@@ -88,7 +88,7 @@ bool mutt_envlist_set(const char *name, const char *value, bool overwrite)
     return false;
 
   char **envp = EnvList;
-  char work[1024];
+  char work[1024] = { 0 };
 
   /* Look for current slot to overwrite */
   int count = 0;

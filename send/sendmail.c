@@ -302,7 +302,7 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
 #ifdef USE_NNTP
   if (OptNewsSend)
   {
-    char cmd[1024];
+    char cmd[1024] = { 0 };
 
     const char *const c_inews = cs_subset_string(sub, "inews");
     mutt_expando_format(cmd, sizeof(cmd), 0, sizeof(cmd), NONULL(c_inews),

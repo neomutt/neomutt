@@ -152,7 +152,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
 {
   struct AliasView *av = (struct AliasView *) data;
   struct Alias *alias = av->alias;
-  char fmt[128];
+  char fmt[128] = { 0 };
   char tmp[256] = { 0 };
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -363,7 +363,7 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
   // Override the Simple Dialog's recalc()
   win_menu->recalc = alias_recalc;
 
-  char title[256];
+  char title[256] = { 0 };
   snprintf(title, sizeof(title), "%s: %s", mdata->title, query);
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   sbar_set_title(sbar, title);

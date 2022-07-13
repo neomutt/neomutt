@@ -141,7 +141,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
 {
   struct Connection *conn = adata->conn;
   bool mode_reader = false;
-  char buf[1024];
+  char buf[1024] = { 0 };
   char authinfo[1024] = { 0 };
 
   adata->hasCAPABILITIES = false;
@@ -243,7 +243,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
 static int nntp_attempt_features(struct NntpAccountData *adata)
 {
   struct Connection *conn = adata->conn;
-  char buf[1024];
+  char buf[1024] = { 0 };
 
   /* no CAPABILITIES, trying DATE, LISTGROUP, LIST NEWSGROUPS */
   if (!adata->hasCAPABILITIES)
@@ -402,7 +402,7 @@ static bool nntp_memchr(char **haystack, char *sentinel, int needle)
  */
 static void nntp_log_binbuf(const char *buf, size_t len, const char *pfx, int dbg)
 {
-  char tmp[1024];
+  char tmp[1024] = { 0 };
   char *p = tmp;
   char *sentinel = tmp + len;
 
@@ -426,7 +426,7 @@ static void nntp_log_binbuf(const char *buf, size_t len, const char *pfx, int db
 static int nntp_auth(struct NntpAccountData *adata)
 {
   struct Connection *conn = adata->conn;
-  char buf[1024];
+  char buf[1024] = { 0 };
   char authenticators[1024] = "USER";
   char *method = NULL, *a = NULL, *p = NULL;
   unsigned char flags = conn->account.flags;
@@ -768,7 +768,7 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
 
   while (!done)
   {
-    char buf[1024];
+    char buf[1024] = { 0 };
     char *line = NULL;
     unsigned int lines = 0;
     size_t off = 0;
@@ -878,7 +878,7 @@ static int fetch_description(char *line, void *data)
  */
 static int get_description(struct NntpMboxData *mdata, const char *wildmat, const char *msg)
 {
-  char buf[256];
+  char buf[256] = { 0 };
   const char *cmd = NULL;
 
   /* get newsgroup description, if possible */
@@ -1071,7 +1071,7 @@ static int parse_overview_line(char *line, void *data)
 #ifdef USE_HCACHE
   if (fc->hc)
   {
-    char buf[16];
+    char buf[16] = { 0 };
 
     /* try to replace with header from cache */
     snprintf(buf, sizeof(buf), "%u", anum);
@@ -1154,7 +1154,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   struct NntpMboxData *mdata = m->mdata;
   struct FetchCtx fc = { 0 };
   struct Email *e = NULL;
-  char buf[8192];
+  char buf[8192] = { 0 };
   int rc = 0;
   anum_t current;
   anum_t first_over = first;
@@ -1477,7 +1477,7 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
   {
 #ifdef USE_HCACHE
     unsigned char *messages = NULL;
-    char buf[16];
+    char buf[16] = { 0 };
     struct Email *e = NULL;
     anum_t first = mdata->first_message;
 
@@ -1641,7 +1641,7 @@ static int nntp_date(struct NntpAccountData *adata, time_t *now)
   if (adata->hasDATE)
   {
     struct NntpMboxData mdata = { 0 };
-    char buf[1024];
+    char buf[1024] = { 0 };
     struct tm tm = { 0 };
 
     mdata.adata = adata;
@@ -1706,7 +1706,7 @@ static int fetch_children(char *line, void *data)
 int nntp_open_connection(struct NntpAccountData *adata)
 {
   struct Connection *conn = adata->conn;
-  char buf[256];
+  char buf[256] = { 0 };
   int cap;
   bool posting = false, auth = true;
 
@@ -1872,7 +1872,7 @@ int nntp_post(struct Mailbox *m, const char *msg)
 {
   struct NntpMboxData *mdata = NULL;
   struct NntpMboxData tmp_mdata = { 0 };
-  char buf[1024];
+  char buf[1024] = { 0 };
 
   if (m && (m->type == MUTT_NNTP))
     mdata = m->mdata;
@@ -1954,8 +1954,8 @@ int nntp_post(struct Mailbox *m, const char *msg)
 int nntp_active_fetch(struct NntpAccountData *adata, bool mark_new)
 {
   struct NntpMboxData tmp_mdata = { 0 };
-  char msg[256];
-  char buf[1024];
+  char msg[256] = { 0 };
+  char buf[1024] = { 0 };
   unsigned int i;
   int rc;
 
@@ -2023,7 +2023,7 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
 {
   struct NntpMboxData tmp_mdata = { 0 };
   time_t now = 0;
-  char buf[1024];
+  char buf[1024] = { 0 };
   char *msg = _("Checking for new newsgroups...");
   unsigned int i;
   int rc, update_active = false;
@@ -2133,7 +2133,7 @@ int nntp_check_msgid(struct Mailbox *m, const char *msgid)
     return -1;
 
   struct NntpMboxData *mdata = m->mdata;
-  char buf[1024];
+  char buf[1024] = { 0 };
 
   FILE *fp = mutt_file_mkstemp();
   if (!fp)
@@ -2204,7 +2204,7 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
 
   struct NntpMboxData *mdata = m->mdata;
   struct ChildCtx cc;
-  char buf[256];
+  char buf[256] = { 0 };
   int rc;
   void *hc = NULL;
 
@@ -2297,8 +2297,8 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
   if (!m->account)
     return MX_OPEN_ERROR;
 
-  char buf[8192];
-  char server[1024];
+  char buf[8192] = { 0 };
+  char server[1024] = { 0 };
   char *group = NULL;
   int rc;
   void *hc = NULL;
@@ -2493,7 +2493,7 @@ static enum MxStatus nntp_mbox_sync(struct Mailbox *m)
     if (!e)
       break;
 
-    char buf[16];
+    char buf[16] = { 0 };
 
     snprintf(buf, sizeof(buf), ANUM, nntp_edata_get(e)->article_num);
     if (mdata->bcache && e->deleted)
@@ -2561,7 +2561,7 @@ static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   if (!e)
     return false;
 
-  char article[16];
+  char article[16] = { 0 };
 
   /* try to get article from cache */
   struct NntpAcache *acache = &mdata->acache[e->index % NNTP_ACACHE_LEN];
@@ -2589,7 +2589,7 @@ static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   }
   else
   {
-    char buf[PATH_MAX];
+    char buf[PATH_MAX] = { 0 };
     /* don't try to fetch article from removed newsgroup */
     if (mdata->deleted)
       return false;

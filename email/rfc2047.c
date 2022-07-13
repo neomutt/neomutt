@@ -79,7 +79,7 @@ static size_t b_encoder(char *str, const char *buf, size_t buflen, const char *t
 
   while (buflen)
   {
-    char encoded[11];
+    char encoded[11] = { 0 };
     size_t rc;
     size_t in_len = MIN(3, buflen);
 

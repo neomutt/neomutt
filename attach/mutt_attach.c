@@ -68,7 +68,7 @@
  */
 int mutt_get_tmp_attachment(struct Body *a)
 {
-  char type[256];
+  char type[256] = { 0 };
 
   if (a->unlink)
     return 0;
@@ -114,7 +114,7 @@ int mutt_get_tmp_attachment(struct Body *a)
  */
 int mutt_compose_attachment(struct Body *a)
 {
-  char type[256];
+  char type[256] = { 0 };
   struct MailcapEntry *entry = mailcap_entry_new();
   bool unlink_newfile = false;
   int rc = 0;
@@ -259,7 +259,7 @@ bailout:
  */
 int mutt_edit_attachment(struct Body *a)
 {
-  char type[256];
+  char type[256] = { 0 };
   struct MailcapEntry *entry = mailcap_entry_new();
   bool unlink_newfile = false;
   int rc = 0;
@@ -420,8 +420,8 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
   bool use_mailcap = false;
   bool use_pipe = false;
   bool use_pager = true;
-  char type[256];
-  char desc[256];
+  char type[256] = { 0 };
+  char desc[256] = { 0 };
   char *fname = NULL;
   struct MailcapEntry *entry = NULL;
   int rc = -1;
@@ -444,7 +444,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
                  (mode == MUTT_VA_PAGER));
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
 
-  char columns[16];
+  char columns[16] = { 0 };
   snprintf(columns, sizeof(columns), "%d", win->state.cols);
   mutt_envlist_set("COLUMNS", columns, true);
 
@@ -909,7 +909,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, const char *path,
     {
       /* message type attachments are written to mail folders. */
 
-      char buf[8192];
+      char buf[8192] = { 0 };
       struct Message *msg = NULL;
       CopyHeaderFlags chflags = CH_NO_FLAGS;
       int rc = -1;
@@ -1130,7 +1130,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, const char *path,
  */
 int mutt_print_attachment(FILE *fp, struct Body *a)
 {
-  char type[256];
+  char type[256] = { 0 };
   pid_t pid;
   FILE *fp_in = NULL, *fp_out = NULL;
   bool unlink_newfile = false;

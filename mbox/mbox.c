@@ -187,8 +187,8 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
   if (!adata)
     return MX_OPEN_ERROR;
 
-  char buf[8192];
-  char return_path[1024];
+  char buf[8192] = { 0 };
+  char return_path[1024] = { 0 };
   int count = 0;
   int lines;
   time_t t = 0;
@@ -211,7 +211,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
 
   if (m->verbose)
   {
-    char msg[PATH_MAX];
+    char msg[PATH_MAX] = { 0 };
     snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
     progress = progress_new(msg, MUTT_PROGRESS_READ, 0);
   }
@@ -379,7 +379,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
 
   if (m->verbose)
   {
-    char msg[PATH_MAX];
+    char msg[PATH_MAX] = { 0 };
     snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
     progress = progress_new(msg, MUTT_PROGRESS_READ, 0);
   }
@@ -1083,7 +1083,7 @@ static enum MxStatus mbox_mbox_check(struct Mailbox *m)
        * message(s) were appended to this file.  My heuristic is that we should
        * see the message separator at *exactly* what used to be the end of the
        * folder.  */
-      char buf[1024];
+      char buf[1024] = { 0 };
       if (!mutt_file_seek(adata->fp, m->size, SEEK_SET))
       {
         goto error;
@@ -1165,7 +1165,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
     return MX_STATUS_ERROR;
 
   struct Buffer *tempfile = NULL;
-  char buf[32];
+  char buf[32] = { 0 };
   int j;
   bool unlink_tempfile = false;
   bool need_sort = false; /* flag to resort mailbox if new mail arrives */
@@ -1273,7 +1273,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
 
   if (m->verbose)
   {
-    char msg[PATH_MAX];
+    char msg[PATH_MAX] = { 0 };
     snprintf(msg, sizeof(msg), _("Writing %s..."), mailbox_path(m));
     progress = progress_new(msg, MUTT_PROGRESS_WRITE, m->msg_count);
   }
@@ -1674,7 +1674,7 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
   }
 
   enum MailboxType type = MUTT_UNKNOWN;
-  char tmp[256];
+  char tmp[256] = { 0 };
   if (fgets(tmp, sizeof(tmp), fp))
   {
     if (mutt_str_startswith(tmp, "From "))

@@ -89,7 +89,7 @@ struct Connection *mutt_conn_new(const struct ConnAccount *cac)
 struct Connection *mutt_conn_find(const struct ConnAccount *cac)
 {
   struct Url url = { 0 };
-  char hook[1024];
+  char hook[1024] = { 0 };
 
   /* cac isn't actually modified, since url isn't either */
   mutt_account_tourl((struct ConnAccount *) cac, &url);

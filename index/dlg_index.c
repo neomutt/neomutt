@@ -1172,7 +1172,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
               const char *const c_new_mail_command = cs_subset_string(shared->sub, "new_mail_command");
               if (c_new_mail_command)
               {
-                char cmd[1024];
+                char cmd[1024] = { 0 };
                 menu_status_line(cmd, sizeof(cmd), shared, NULL, sizeof(cmd),
                                  NONULL(c_new_mail_command));
                 if (mutt_system(cmd) != 0)
@@ -1218,7 +1218,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
           const char *const c_new_mail_command = cs_subset_string(shared->sub, "new_mail_command");
           if (c_new_mail_command)
           {
-            char cmd[1024];
+            char cmd[1024] = { 0 };
             menu_status_line(cmd, sizeof(cmd), shared, priv->menu, sizeof(cmd),
                              NONULL(c_new_mail_command));
             if (mutt_system(cmd) != 0)

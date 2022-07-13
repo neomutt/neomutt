@@ -140,7 +140,7 @@ static int op_verify_key(struct PgpData *pd, int op)
 
   const int index = menu_get_index(pd->menu);
   struct PgpUid *cur_key = pd->key_table[index];
-  char tmpbuf[256];
+  char tmpbuf[256] = { 0 };
   snprintf(tmpbuf, sizeof(tmpbuf), "0x%s",
            pgp_fpr_or_lkeyid(pgp_principal_key(cur_key->parent)));
 
@@ -158,7 +158,7 @@ static int op_verify_key(struct PgpData *pd, int op)
   mutt_file_fclose(&fp_tmp);
   mutt_file_fclose(&fp_null);
   mutt_clear_error();
-  char title[1024];
+  char title[1024] = { 0 };
   snprintf(title, sizeof(title), _("Key ID: 0x%s"),
            pgp_keyid(pgp_principal_key(cur_key->parent)));
 

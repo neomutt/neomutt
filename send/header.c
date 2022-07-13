@@ -573,7 +573,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
                              enum MuttWriteHeaderMode mode, bool privacy,
                              bool hide_protected_subject, struct ConfigSubset *sub)
 {
-  char buf[1024];
+  char buf[1024] = { 0 };
 
   if (((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_FCC) ||
        (mode == MUTT_WRITE_HEADER_POSTPONE)) &&

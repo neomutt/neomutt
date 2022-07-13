@@ -1727,12 +1727,12 @@ static int op_mark_msg(struct IndexSharedData *shared, struct IndexPrivateData *
         !mutt_buffer_is_empty(buf))
     {
       const char *const c_mark_macro_prefix = cs_subset_string(shared->sub, "mark_macro_prefix");
-      char str[256];
+      char str[256] = { 0 };
       snprintf(str, sizeof(str), "%s%s", c_mark_macro_prefix, mutt_buffer_string(buf));
 
       struct Buffer *msg_id = mutt_buffer_pool_get();
       mutt_file_sanitize_regex(msg_id, shared->email->env->message_id);
-      char macro[256];
+      char macro[256] = { 0 };
       snprintf(macro, sizeof(macro), "<search>~i '%s'\n", mutt_buffer_string(msg_id));
       mutt_buffer_pool_release(&msg_id);
 

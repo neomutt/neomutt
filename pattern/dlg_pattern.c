@@ -121,7 +121,7 @@ static const char *pattern_format_str(char *buf, size_t buflen, size_t col, int 
       break;
     case 'n':
     {
-      char tmp[32];
+      char tmp[32] = { 0 };
       snprintf(tmp, sizeof(tmp), "%%%sd", prec);
       snprintf(buf, buflen, tmp, entry->num);
       break;

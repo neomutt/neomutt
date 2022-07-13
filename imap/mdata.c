@@ -72,7 +72,7 @@ struct ImapMboxData *imap_mdata_get(struct Mailbox *m)
  */
 struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *name)
 {
-  char buf[1024];
+  char buf[1024] = { 0 };
   struct ImapMboxData *mdata = mutt_mem_calloc(1, sizeof(struct ImapMboxData));
 
   mdata->real_name = mutt_str_dup(name);

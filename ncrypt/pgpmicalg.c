@@ -75,7 +75,7 @@ static const char *pgp_hash_to_micalg(short id)
  */
 static void pgp_dearmor(FILE *fp_in, FILE *fp_out)
 {
-  char line[8192];
+  char line[8192] = { 0 };
   char *r = NULL;
 
   struct State state = { 0 };

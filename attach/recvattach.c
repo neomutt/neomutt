@@ -533,7 +533,7 @@ cleanup:
  */
 static void query_pipe_attachment(const char *command, FILE *fp, struct Body *body, bool filter)
 {
-  char tfile[PATH_MAX];
+  char tfile[PATH_MAX] = { 0 };
 
   if (filter)
   {
@@ -753,7 +753,7 @@ cleanup:
  */
 static bool can_print(struct AttachCtx *actx, struct Body *top, bool tag)
 {
-  char type[256];
+  char type[256] = { 0 };
 
   for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
@@ -794,7 +794,7 @@ static bool can_print(struct AttachCtx *actx, struct Body *top, bool tag)
 static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                   struct Body *top, struct State *state)
 {
-  char type[256];
+  char type[256] = { 0 };
 
   for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
@@ -862,7 +862,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
  */
 void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, struct Body *top)
 {
-  char prompt[128];
+  char prompt[128] = { 0 };
   struct State state = { 0 };
   int tagmsgcount = 0;
 

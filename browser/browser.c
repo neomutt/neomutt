@@ -245,7 +245,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
 
         if (!do_locales)
           setlocale(LC_TIME, "C");
-        char date[128];
+        char date[128] = { 0 };
         mutt_date_localtime_format(date, sizeof(date), t_fmt, folder->ff->mtime);
         if (!do_locales)
           setlocale(LC_TIME, "");
@@ -280,7 +280,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
     {
       if (folder->ff->local)
       {
-        char permission[11];
+        char permission[11] = { 0 };
         snprintf(permission, sizeof(permission), "%c%c%c%c%c%c%c%c%c%c",
                  S_ISDIR(folder->ff->mode) ? 'd' : (S_ISLNK(folder->ff->mode) ? 'l' : '-'),
                  ((folder->ff->mode & S_IRUSR) != 0) ? 'r' : '-',
@@ -303,7 +303,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
 #ifdef USE_IMAP
       else if (folder->ff->imap)
       {
-        char permission[11];
+        char permission[11] = { 0 };
         /* mark folders with subfolders AND mail */
         snprintf(permission, sizeof(permission), "IMAP %c",
                  (folder->ff->inferiors && folder->ff->selectable) ? '+' : ' ');
@@ -1072,7 +1072,7 @@ void mutt_browser_select_dir(const char *f)
   mutt_buffer_strcpy(&LastDirBackup, f);
 
   /* Method that will fetch the parent path depending on the type of the path. */
-  char buf[PATH_MAX];
+  char buf[PATH_MAX] = { 0 };
   mutt_get_parent_path(mutt_buffer_string(&LastDirBackup), buf, sizeof(buf));
   mutt_buffer_strcpy(&LastDir, buf);
 }

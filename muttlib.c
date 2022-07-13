@@ -527,7 +527,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
   char *p = buf, *q = buf;
   size_t len;
   enum UrlScheme scheme;
-  char tmp[PATH_MAX];
+  char tmp[PATH_MAX] = { 0 };
 
   scheme = url_check_scheme(buf);
 
@@ -817,7 +817,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
     /* n-off is the number of backslashes. */
     if ((off > 0) && (((n - off) % 2) == 0))
     {
-      char srccopy[1024];
+      char srccopy[1024] = { 0 };
       int i = 0;
 
       mutt_debug(LL_DEBUG3, "fmtpipe = %s\n", src);

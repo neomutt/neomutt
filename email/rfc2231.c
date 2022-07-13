@@ -180,8 +180,8 @@ static void parameter_free(struct Rfc2231Parameter **p)
  */
 static void join_continuations(struct ParameterList *pl, struct Rfc2231Parameter *par)
 {
-  char attribute[256];
-  char charset[256];
+  char attribute[256] = { 0 };
+  char charset[256] = { 0 };
 
   while (par)
   {
@@ -242,7 +242,7 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
   struct Rfc2231Parameter *conttmp = NULL;
 
   char *s = NULL, *t = NULL;
-  char charset[256];
+  char charset[256] = { 0 };
 
   bool encoded;
   int index;
