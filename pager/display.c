@@ -215,6 +215,13 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
     else
       color.attrs |= A_UNDERLINE;
   }
+  else if (special & A_ITALIC)
+  {
+    if (simple_color_is_set(MT_COLOR_ITALIC) && !search)
+      color = *simple_color_get(MT_COLOR_ITALIC);
+    else
+      color.attrs |= A_ITALIC;
+  }
   else if (ansi->attr_color)
   {
     color = *ansi->attr_color;

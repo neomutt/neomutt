@@ -1986,6 +1986,12 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
                 </entry>
               </row>
               <row>
+                <entry>3</entry>
+                <entry>
+                  Italics on
+                </entry>
+              </row>
+              <row>
                 <entry>4</entry>
                 <entry>
                   Underline on
@@ -5044,6 +5050,9 @@ folder-hook work "set sort=threads"
           </listitem>
           <listitem>
             <para>bold</para>
+          </listitem>
+          <listitem>
+            <para>italic</para>
           </listitem>
           <listitem>
             <para>reverse</para>

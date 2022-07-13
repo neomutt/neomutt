@@ -63,6 +63,7 @@ const struct Mapping ColorFields[] = {
   { "index_tag",         MT_COLOR_INDEX_TAG },
   { "index_tags",        MT_COLOR_INDEX_TAGS },
   { "indicator",         MT_COLOR_INDICATOR },
+  { "italic",            MT_COLOR_ITALIC },
   { "markers",           MT_COLOR_MARKERS },
   { "message",           MT_COLOR_MESSAGE },
   { "normal",            MT_COLOR_NORMAL },
@@ -225,6 +226,8 @@ static enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
 
   if (mutt_istr_equal("bold", buf->data))
     *attrs |= A_BOLD;
+  else if (mutt_istr_equal("italic", buf->data))
+    *attrs |= A_ITALIC;
   else if (mutt_istr_equal("none", buf->data))
     *attrs = A_NORMAL; // Use '=' to clear other bits
   else if (mutt_istr_equal("normal", buf->data))
@@ -267,6 +270,11 @@ static enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
     {
       *attrs |= A_BOLD;
       color_debug(LL_DEBUG5, "bold\n");
+    }
+    else if (mutt_istr_equal("italic", buf->data))
+    {
+      *attrs |= A_ITALIC;
+      color_debug(LL_DEBUG5, "italic\n");
     }
     else if (mutt_istr_equal("none", buf->data))
     {

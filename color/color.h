@@ -47,6 +47,7 @@ enum ColorId
   MT_COLOR_HDRDEFAULT,               ///< Header default colour
   MT_COLOR_HEADER,                   ///< Message headers (takes a pattern)
   MT_COLOR_INDICATOR,                ///< Selected item in list
+  MT_COLOR_ITALIC,                   ///< Italic text
   MT_COLOR_MARKERS,                  ///< Pager: markers, line continuation
   MT_COLOR_MESSAGE,                  ///< Informational message
   MT_COLOR_MESSAGE_LOG,              ///< Menu showing log messages
