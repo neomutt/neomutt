@@ -59,8 +59,6 @@ registrations = {
         'smtp_endpoint': 'smtp.gmail.com',
         'sasl_method': 'OAUTHBEARER',
         'scope': 'https://mail.google.com/',
-        'client_id': '',
-        'client_secret': '',
     },
     'microsoft': {
         'authorize_endpoint': 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
@@ -75,8 +73,6 @@ registrations = {
         'scope': ('offline_access https://outlook.office.com/IMAP.AccessAsUser.All '
                   'https://outlook.office.com/POP.AccessAsUser.All '
                   'https://outlook.office.com/SMTP.Send'),
-        'client_id': '',
-        'client_secret': '',
     },
 }
 
@@ -107,15 +103,11 @@ ap.add_argument('--client-secret', type=str, default='',
                 help='(optional) Provider secret from registration')
 ap.add_argument('--provider', type=str, choices=registrations.keys(),
                 help='Specify provider to use.')
+ap.add_argument('--email', type=str, help='Your email address.')
 args = ap.parse_args()
 
 ENCRYPTION_PIPE = args.encryption_pipe
 DECRYPTION_PIPE = args.decryption_pipe
-
-provider = registrations.get(args.provider)
-if provider:
-    provider['client_id'] = args.client_id
-    provider['client_secret'] = args.client_secret
 
 token = {}
 path = Path(args.tokenfile)
@@ -148,14 +140,19 @@ if args.debug:
 if not token:
     if not args.authorize:
         sys.exit('You must run script with "--authorize" at least once.')
-    print('Available app and endpoint registrations:', *registrations)
-    token['registration'] = input('OAuth2 registration: ')
-    token['authflow'] = input('Preferred OAuth2 flow ("authcode" or "localhostauthcode" '
-                              'or "devicecode"): ')
-    token['email'] = input('Account e-mail address: ')
+    print('', )
+    token['registration'] = args.provider or input(
+        'Available app and endpoint registrations: {regs}\nOAuth2 registration: '.format(
+            regs=', '.join(registrations.keys())))
+    token['authflow'] = args.authflow or input(
+        'Preferred OAuth2 flow ("authcode" or "localhostauthcode" or "devicecode"): '
+    )
+    token['email'] = args.email or input('Account e-mail address: ')
     token['access_token'] = ''
     token['access_token_expiration'] = ''
     token['refresh_token'] = ''
+    token['client_id'] = args.client_id or input('Client ID: ')
+    token['client_secret'] = args.client_secret or input('Client secret: ')
     writetokenfile()
 
 if token['registration'] not in registrations:
@@ -167,7 +164,7 @@ authflow = token['authflow']
 if args.authflow:
     authflow = args.authflow
 
-baseparams = {'client_id': registration['client_id']}
+baseparams = {'client_id': token['client_id']}
 # Microsoft uses 'tenant' but Google does not
 if 'tenant' in registration:
     baseparams['tenant'] = registration['tenant']
@@ -260,7 +257,7 @@ if args.authorize:
             del p[k]
         p.update({'grant_type': 'authorization_code',
                   'code': authcode,
-                  'client_secret': registration['client_secret'],
+                  'client_secret': token['client_secret'],
                   'code_verifier': verifier})
         try:
             response = urllib.request.urlopen(registration['token_endpoint'],
@@ -343,7 +340,8 @@ if not access_token_valid():
     if not token['refresh_token']:
         sys.exit('ERROR: No refresh token. Run script with "--authorize".')
     p = baseparams.copy()
-    p.update({'client_secret': registration['client_secret'],
+    p.update({'client_id': token['client_id'],
+              'client_secret': token['client_secret'],
               'refresh_token': token['refresh_token'],
               'grant_type': 'refresh_token'})
     try:
