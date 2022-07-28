@@ -54,7 +54,7 @@ static struct ConfigDef NntpVars[] = {
   { "nntp_authenticators", DT_STRING, 0, 0, NULL,
     "(nntp) Allowed authentication methods"
   },
-  { "nntp_context", DT_NUMBER|DT_NOT_NEGATIVE, 1000, 0, NULL,
+  { "nntp_context", DT_LONG|DT_NOT_NEGATIVE, 1000, 0, NULL,
     "(nntp) Maximum number of articles to list (0 for all articles)"
   },
   { "nntp_listgroup", DT_BOOL, true, 0, NULL,
