@@ -77,6 +77,29 @@ const char *nm_db_get_filename(struct Mailbox *m)
 }
 
 /**
+ * get_nm_config_file - Gets the configuration file 
+ * @retval ptr Config file path. Empty string if no config.
+ * @retval NULL Config file path set to `auto`.
+ */
+static const char *get_nm_config_file(void)
+{
+  const char *config_to_use = NULL;
+  const char *nm_config_file = cs_subset_path(NeoMutt->sub, "nm_config_file");
+
+  // Workaround the configuration system mapping "" to NULL.
+  if (nm_config_file == NULL)
+  {
+    config_to_use = "";
+  }
+  else if (!mutt_strn_equal(nm_config_file, "auto", 4))
+  {
+    config_to_use = nm_config_file;
+  }
+
+  return config_to_use;
+}
+
+/**
  * nm_db_do_open - Open a Notmuch database
  * @param filename Database filename
  * @param writable Read/write?
@@ -103,10 +126,16 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
   {
 #if LIBNOTMUCH_CHECK_VERSION(5, 4, 0)
     // notmuch 0.32-0.32.2 didn't bump libnotmuch version to 5.4.
-    st = notmuch_database_open_with_config(filename, mode, NULL, NULL, &db, &msg);
-    if (st == NOTMUCH_STATUS_NO_CONFIG)
+    const char *config_file = get_nm_config_file();
+
+    st = notmuch_database_open_with_config(filename, mode, config_file, NULL, &db, &msg);
+
+    // Attempt opening database without configuration file. Don't if the user specified no config.
+    if (st == NOTMUCH_STATUS_NO_CONFIG && !mutt_str_equal(config_file, ""))
     {
-      mutt_debug(LL_DEBUG1, "nm: Could not find a Notmuch configuration file\n");
+      mutt_debug(LL_DEBUG1, "nm: Could not find notmuch configuration file: %s\n", config_file);
+      mutt_debug(LL_DEBUG1, "nm: Attempting to open notmuch db without configuration file.\n");
+
       FREE(&msg);
 
       st = notmuch_database_open_with_config(filename, mode, "", NULL, &db, &msg);

@@ -96,6 +96,9 @@ static int nm_query_window_timebase_validator(const struct ConfigSet *cs,
 
 static struct ConfigDef NotmuchVars[] = {
   // clang-format off
+  { "nm_config_file", DT_PATH, IP "auto", 0, NULL,
+    "(notmuch) Configuration file for notmuch. Use 'auto' to detect configuration."
+  },
   { "nm_db_limit", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
     "(notmuch) Default limit for Notmuch queries"
   },
