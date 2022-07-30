@@ -16209,6 +16209,17 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
             </thead>
             <tbody>
               <row>
+                <entry><literal>nm_config_file</literal></entry>
+                <entry>path</entry>
+                <entry><literal>auto</literal></entry>
+                <entry>
+                  Configuration file for the notmuch database. Either a path,
+                  <literal>auto</literal> for detecting a config. file, or
+                  empty for no configuration file. Only useful for notmuch
+                  0.32+.
+                </entry>
+              </row>
+              <row>
                 <entry><literal>nm_db_limit</literal></entry>
                 <entry>number</entry>
                 <entry><literal>0</literal></entry>
