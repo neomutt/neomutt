@@ -249,7 +249,7 @@ static int count_body_parts(struct Body *body)
  * @param fp File to parse
  * @retval num Number of MIME Body parts
  */
-int mutt_count_body_parts(struct Mailbox *m, struct Email *e, FILE *fp)
+int mutt_count_body_parts(const struct Mailbox *m, struct Email *e, FILE *fp)
 {
   if (!m || !e)
     return 0;

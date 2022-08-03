@@ -476,7 +476,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
  * @param m     Mailbox
  * @param data  Data to associate with the folder
  */
-void browser_add_folder(struct Menu *menu, struct BrowserState *state,
+void browser_add_folder(const struct Menu *menu, struct BrowserState *state,
                         const char *name, const char *desc,
                         const struct stat *st, struct Mailbox *m, void *data)
 {

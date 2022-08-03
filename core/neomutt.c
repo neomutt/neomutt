@@ -103,7 +103,7 @@ bool neomutt_account_add(struct NeoMutt *n, struct Account *a)
  *
  * @note If a is NULL, all the Accounts will be removed
  */
-bool neomutt_account_remove(struct NeoMutt *n, struct Account *a)
+bool neomutt_account_remove(struct NeoMutt *n, const struct Account *a)
 {
   if (!n || TAILQ_EMPTY(&n->accounts))
     return false;

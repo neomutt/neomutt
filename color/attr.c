@@ -143,7 +143,7 @@ struct AttrColor *attr_color_list_find(struct AttrColorList *acl, uint32_t fg,
  * @param ac Colour to copy
  * @retval obj Copy of the colour
  */
-struct AttrColor attr_color_copy(struct AttrColor *ac)
+struct AttrColor attr_color_copy(const struct AttrColor *ac)
 {
   struct AttrColor copy = { 0 };
   if (ac)

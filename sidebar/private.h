@@ -79,7 +79,7 @@ struct SidebarWindowData
 
 // sidebar.c
 void sb_add_mailbox        (struct SidebarWindowData *wdata, struct Mailbox *m);
-void sb_remove_mailbox     (struct SidebarWindowData *wdata, struct Mailbox *m);
+void sb_remove_mailbox     (struct SidebarWindowData *wdata, const struct Mailbox *m);
 void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m);
 struct Mailbox *sb_get_highlight(struct MuttWindow *win);
 

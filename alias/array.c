@@ -70,7 +70,7 @@ int alias_array_alias_add(struct AliasViewArray *ava, struct Alias *alias)
  *
  * @note Call alias_array_sort() to sort and reindex the AliasViewArray
  */
-int alias_array_alias_delete(struct AliasViewArray *ava, struct Alias *alias)
+int alias_array_alias_delete(struct AliasViewArray *ava, const struct Alias *alias)
 {
   if (!ava || !alias)
     return -1;

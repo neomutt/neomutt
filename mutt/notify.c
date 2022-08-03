@@ -225,7 +225,8 @@ bool notify_observer_add(struct Notify *notify, enum NotifyType type,
  *       If `send()` is present higher up the call stack,
  *       removing multiple entries from the list will cause it to crash.
  */
-bool notify_observer_remove(struct Notify *notify, observer_t callback, void *global_data)
+bool notify_observer_remove(struct Notify *notify, const observer_t callback,
+                            const void *global_data)
 {
   if (!notify || !callback)
     return false;

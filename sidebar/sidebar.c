@@ -117,7 +117,7 @@ void sb_add_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
  * @param wdata Sidebar data
  * @param m     Mailbox to remove
  */
-void sb_remove_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
+void sb_remove_mailbox(struct SidebarWindowData *wdata, const struct Mailbox *m)
 {
   struct SbEntry **sbep = NULL;
   ARRAY_FOREACH(sbep, &wdata->entries)

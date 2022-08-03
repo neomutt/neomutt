@@ -47,7 +47,7 @@ enum MuttSetCommand
 #define COMMANDS_REGISTER(cmds) commands_register(cmds, mutt_array_size(cmds))
 
 void            mutt_commands_init     (void);
-void            commands_register      (const struct Command *cmdv, const size_t cmds);
+void            commands_register      (const struct Command *cmds, const size_t num_cmds);
 void            mutt_commands_free     (void);
 size_t          mutt_commands_array    (struct Command **first);
 struct Command *mutt_command_get       (const char *s);

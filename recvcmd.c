@@ -362,7 +362,7 @@ static struct AttachPtr *find_common_parent(struct AttachCtx *actx, short nattac
  * @note This and the calling procedure could be optimized quite a bit.
  *       For now, it's not worth the effort.
  */
-static int is_parent(short i, struct AttachCtx *actx, struct Body *cur)
+static int is_parent(short i, struct AttachCtx *actx, const struct Body *cur)
 {
   short level = actx->idx[i]->level;
 

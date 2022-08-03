@@ -2112,7 +2112,7 @@ restart:
        * header told us.  Retry then.  gpgsm returns the error information
        * "unsupported Algorithm '?'" but GPGME will not store this unknown
        * algorithm, thus we test that it has not been set. */
-      gpgme_decrypt_result_t result;
+      gpgme_decrypt_result_t result = NULL;
 
       result = gpgme_op_decrypt_result(ctx);
       if (!result->unsupported_algorithm)
@@ -2671,8 +2671,8 @@ void pgp_gpgme_invoke_import(const char *fname)
 {
   gpgme_ctx_t ctx = create_gpgme_context(false);
   gpgme_data_t keydata = NULL;
-  gpgme_import_result_t impres;
-  gpgme_import_status_t st;
+  gpgme_import_result_t impres = NULL;
+  gpgme_import_status_t st = NULL;
   bool any;
 
   FILE *fp_in = mutt_file_fopen(fname, "r");

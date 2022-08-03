@@ -41,7 +41,7 @@ struct AttrColor
 TAILQ_HEAD(AttrColorList, AttrColor);
 
 void              attr_color_clear (struct AttrColor *ac);
-struct AttrColor  attr_color_copy  (struct AttrColor *ac);
+struct AttrColor  attr_color_copy  (const struct AttrColor *ac);
 void              attr_color_free  (struct AttrColor **ptr);
 bool              attr_color_is_set(struct AttrColor *ac);
 bool              attr_color_match (struct AttrColor *ac1, struct AttrColor *ac2);

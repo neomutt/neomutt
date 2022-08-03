@@ -626,7 +626,7 @@ void window_redraw(struct MuttWindow *win)
  * @param win Window to check
  * @retval true Window has focus
  */
-bool window_is_focused(struct MuttWindow *win)
+bool window_is_focused(const struct MuttWindow *win)
 {
   if (!win)
     return false;

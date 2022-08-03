@@ -382,7 +382,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
  * @retval true found and updated haystack
  * @retval false not found
  */
-static bool nntp_memchr(char **haystack, char *sentinel, int needle)
+static bool nntp_memchr(char **haystack, const char *sentinel, int needle)
 {
   char *start = *haystack;
   size_t max_offset = sentinel - start;

@@ -737,7 +737,7 @@ static int report_regerror(int regerr, regex_t *preg, struct Buffer *err)
  * @retval true  Otherwise
  */
 static bool is_menu_available(struct Buffer *s, regmatch_t pmatch[], int kind,
-                              struct Buffer *err, struct Menu *menu)
+                              struct Buffer *err, const struct Menu *menu)
 {
   const char *context_req_chars[] = {
     [RANGE_K_REL] = ".0123456789",

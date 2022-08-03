@@ -56,7 +56,7 @@ enum NotifyGlobal
 };
 
 bool            neomutt_account_add   (struct NeoMutt *n, struct Account *a);
-bool            neomutt_account_remove(struct NeoMutt *n, struct Account *a);
+bool            neomutt_account_remove(struct NeoMutt *n, const struct Account *a);
 void            neomutt_free          (struct NeoMutt **ptr);
 struct NeoMutt *neomutt_new           (struct ConfigSet *cs);
 

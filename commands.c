@@ -506,7 +506,7 @@ bool mutt_select_sort(bool reverse)
       _("dfrsotuzcpl")))
   {
     case -1: /* abort - don't resort */
-      return -1;
+      return false;
 
     case 1: /* (d)ate */
       sort = SORT_DATE;
