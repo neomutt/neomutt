@@ -57,8 +57,8 @@ extern struct NntpAccountData *CurrentNewsSrv; ///< Current NNTP news server
 extern struct MxOps MxNntpOps;
 
 /* article number type and format */
-#define anum_t uint32_t
-#define ANUM "%u"
+#define anum_t long
+#define ANUM "%ld"
 
 /**
  * struct NntpAcache - NNTP article cache
