@@ -1100,7 +1100,7 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *buf)
       break;
     }
 
-    if (isspace(line[0]) && buf_is_empty(buf))
+    if (mutt_str_is_email_wsp(line[0]) && buf_is_empty(buf))
     {
       read = linelen;
       break;
@@ -1115,7 +1115,7 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *buf)
       do
       {
         line[off] = '\0';
-      } while (off && isspace(line[--off]));
+      } while (off && mutt_str_is_email_wsp(line[--off]));
 
       /* check to see if the next line is a continuation line */
       int ch = fgetc(fp);
