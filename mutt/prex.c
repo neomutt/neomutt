@@ -268,7 +268,7 @@ static struct PrexStorage *prex(enum Prex which)
     // clang-format on
   };
 
-  assert((which >= 0) && (which < PREX_MAX) && "Invalid 'which' argument");
+  assert((which < PREX_MAX) && "Invalid 'which' argument");
   struct PrexStorage *h = &storage[which];
   assert((which == h->which) && "Fix 'storage' array");
   if (!h->re)

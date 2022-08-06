@@ -81,10 +81,8 @@ static const struct Mapping VerifyHelp[] = {
  */
 static int menu_dialog_dokey(struct Menu *menu, int *id)
 {
-  struct KeyEvent ch = { OP_NULL, OP_NULL };
-
   // enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
-  ch = mutt_getch_timeout(5000);
+  struct KeyEvent ch = mutt_getch_timeout(5000);
   // mutt_curses_set_cursor(cursor);
 
   if ((ch.op == OP_TIMEOUT) || (ch.op == OP_ABORT))

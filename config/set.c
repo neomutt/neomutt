@@ -142,7 +142,7 @@ static struct HashElem *reg_one_var(const struct ConfigSet *cs,
   if (!he)
     return NULL; /* LCOV_EXCL_LINE */
 
-  if (cst && cst->reset)
+  if (cst->reset)
     cst->reset(cs, &cdef->var, cdef, err);
 
   return he;
@@ -230,7 +230,7 @@ const struct ConfigSetType *cs_get_type_def(const struct ConfigSet *cs, unsigned
     return NULL;
 
   type = DTYPE(type);
-  if ((type < 1) || (type >= mutt_array_size(cs->types)))
+  if (type >= mutt_array_size(cs->types))
     return NULL;
 
   if (!cs->types[type].name)

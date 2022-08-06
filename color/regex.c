@@ -227,7 +227,7 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
     struct CursesColor *cc = ac->curses_color;
 
     // different colours
-    if (!cc || (cc && ((cc->fg != fg) || (cc->bg != bg))))
+    if (!cc || (cc->fg != fg) || (cc->bg != bg))
     {
       cc = curses_color_new(fg, bg);
       if (cc)

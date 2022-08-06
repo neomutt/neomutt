@@ -57,7 +57,7 @@ int             mx_msg_padding_size(struct Mailbox *m);
 int             mx_save_hcache     (struct Mailbox *m, struct Email *e);
 int             mx_path_canon      (char *buf, size_t buflen, const char *folder, enum MailboxType *type);
 int             mx_path_canon2     (struct Mailbox *m, const char *folder);
-int             mx_path_parent     (char *buf, size_t buflen);
+int             mx_path_parent     (const char *buf, size_t buflen);
 int             mx_path_pretty     (char *buf, size_t buflen, const char *folder);
 enum MailboxType mx_path_probe     (const char *path);
 struct Mailbox *mx_path_resolve    (const char *path);

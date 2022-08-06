@@ -173,7 +173,7 @@ bool attr_color_is_set(struct AttrColor *ac)
  */
 bool attr_color_match(struct AttrColor *ac1, struct AttrColor *ac2)
 {
-  if (!ac1 ^ !ac2) // One is set, but not the other
+  if ((!ac1) ^ (!ac2)) // One is set, but not the other
     return false;
 
   if (!ac1) // Two empty colours match

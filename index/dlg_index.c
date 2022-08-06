@@ -226,7 +226,7 @@ static void uncollapse_thread(struct Mailbox *m, int index)
   struct Email *e = mutt_get_virt_email(m, index);
   if (e && e->collapsed)
   {
-    index = mutt_uncollapse_thread(e);
+    mutt_uncollapse_thread(e);
     mutt_set_vnum(m);
   }
 }

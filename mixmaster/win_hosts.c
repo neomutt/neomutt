@@ -227,9 +227,6 @@ struct MuttWindow *win_hosts_new(struct RemailerArray *ra)
  */
 struct Remailer *win_hosts_get_selection(struct MuttWindow *win)
 {
-  if (!win)
-    return NULL;
-
   if (!win || !win->wdata)
     return NULL;
 

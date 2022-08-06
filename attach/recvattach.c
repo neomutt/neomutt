@@ -1066,16 +1066,15 @@ void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e,
   struct Body *new_body = NULL;
   FILE *fp_new = NULL;
   SecurityFlags type;
-  int need_secured, secured;
 
   for (m = parts; m; m = m->next)
   {
-    need_secured = 0;
-    secured = 0;
+    bool need_secured = false;
+    bool secured = false;
 
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (type = mutt_is_application_smime(m)))
     {
-      need_secured = 1;
+      need_secured = true;
 
       if (type & SEC_ENCRYPT)
       {
@@ -1086,7 +1085,7 @@ void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e,
           crypt_smime_getkeys(e->env);
       }
 
-      secured = !crypt_smime_decrypt_mime(fp, &fp_new, m, &new_body);
+      secured = (crypt_smime_decrypt_mime(fp, &fp_new, m, &new_body) == 0);
       /* If the decrypt/verify-opaque doesn't generate mime output, an empty
        * text/plain type will still be returned by mutt_read_mime_header().
        * We can't distinguish an actual part from a failure, so only use a
@@ -1106,12 +1105,12 @@ void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e,
     if (((WithCrypto & APPLICATION_PGP) != 0) &&
         (mutt_is_multipart_encrypted(m) || mutt_is_malformed_multipart_pgp_encrypted(m)))
     {
-      need_secured = 1;
+      need_secured = true;
 
       if (!crypt_valid_passphrase(APPLICATION_PGP))
         goto decrypt_failed;
 
-      secured = !crypt_pgp_decrypt_mime(fp, &fp_new, m, &new_body);
+      secured = (crypt_pgp_decrypt_mime(fp, &fp_new, m, &new_body) == 0);
 
       if (secured)
         e->security |= PGP_ENCRYPT;

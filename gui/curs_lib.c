@@ -295,7 +295,6 @@ struct KeyEvent mutt_getch(void)
     /* send ALT-x as ESC-x */
     ch &= ~0x80;
     mutt_unget_ch(ch);
-    ch = '\033';
     return (struct KeyEvent){ .ch = '\033' /* Escape */, .op = OP_NULL };
   }
 

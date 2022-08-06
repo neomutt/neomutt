@@ -728,7 +728,7 @@ int mutt_ch_check(const char *s, size_t slen, const char *from, const char *to)
   char *saved_out = out;
 
   const size_t convlen = iconv(cd, (ICONV_CONST char **) &s, &slen, &out, &outlen);
-  if (convlen == -1)
+  if (convlen == (size_t) -1)
     rc = errno;
 
   FREE(&saved_out);
