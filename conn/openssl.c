@@ -112,9 +112,9 @@ struct SslSockData
  * Previously the code used this form:
  *     SSL_CTX_load_verify_locations (ssldata->ctx, `$certificate_file`, NULL);
  */
-static int ssl_load_certificates(SSL_CTX *ctx)
+static bool ssl_load_certificates(SSL_CTX *ctx)
 {
-  int rc = 1;
+  bool rc = true;
 
   mutt_debug(LL_DEBUG2, "loading trusted certificates\n");
   X509_STORE *store = SSL_CTX_get_cert_store(ctx);
@@ -146,7 +146,7 @@ static int ssl_load_certificates(SSL_CTX *ctx)
   }
   /* PEM_read_X509 sets the error NO_START_LINE on eof */
   if (ERR_GET_REASON(ERR_peek_last_error()) != PEM_R_NO_START_LINE)
-    rc = 0;
+    rc = false;
   ERR_clear_error();
 
   X509_free(cert);
