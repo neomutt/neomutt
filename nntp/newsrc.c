@@ -481,8 +481,8 @@ int nntp_newsrc_update(struct NntpAccountData *adata)
         snprintf(buf + off, buflen - off, ANUM, mdata->newsrc_ent[j].first);
       else if (mdata->newsrc_ent[j].first < mdata->newsrc_ent[j].last)
       {
-        snprintf(buf + off, buflen - off, ANUM "-" ANUM, mdata->newsrc_ent[j].first,
-                 mdata->newsrc_ent[j].last);
+        snprintf(buf + off, buflen - off, ANUM "-" ANUM,
+                 mdata->newsrc_ent[j].first, mdata->newsrc_ent[j].last);
       }
       off += strlen(buf + off);
     }

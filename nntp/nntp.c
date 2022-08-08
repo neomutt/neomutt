@@ -1180,9 +1180,14 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
     if (m->verbose)
       mutt_message(_("Fetching list of articles..."));
     if (mdata->adata->hasLISTGROUPrange)
-      snprintf(buf, sizeof(buf), "LISTGROUP %s " ANUM "-" ANUM "\r\n", mdata->group, first, last);
+    {
+      snprintf(buf, sizeof(buf), "LISTGROUP %s " ANUM "-" ANUM "\r\n",
+               mdata->group, first, last);
+    }
     else
+    {
       snprintf(buf, sizeof(buf), "LISTGROUP %s\r\n", mdata->group);
+    }
     rc = nntp_fetch_lines(mdata, buf, sizeof(buf), NULL, fetch_numbers, &fc);
     if (rc > 0)
     {
