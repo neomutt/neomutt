@@ -199,7 +199,7 @@ struct MuttWindow *pager_window_new(struct IndexSharedData *shared, struct Pager
 int mutt_display_message(struct MuttWindow *win_index, struct IndexSharedData *shared);
 int external_pager(struct Mailbox *m, struct Email *e, const char *command);
 void pager_queue_redraw(struct PagerPrivateData *priv, PagerRedrawFlags redraw);
-int mutt_is_quote_line(char *buf, regmatch_t *pmatch);
+bool mutt_is_quote_line(char *buf, regmatch_t *pmatch);
 
 void mutt_clear_pager_position(void);
 
