@@ -1074,7 +1074,7 @@ static int parse_overview_line(char *line, void *data)
     char buf[16] = { 0 };
 
     /* try to replace with header from cache */
-    snprintf(buf, sizeof(buf), "%u", anum);
+    snprintf(buf, sizeof(buf), ANUM, anum);
     struct HCacheEntry hce = mutt_hcache_fetch(fc->hc, buf, strlen(buf), 0);
     if (hce.email)
     {
@@ -1180,7 +1180,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
     if (m->verbose)
       mutt_message(_("Fetching list of articles..."));
     if (mdata->adata->hasLISTGROUPrange)
-      snprintf(buf, sizeof(buf), "LISTGROUP %s %u-%u\r\n", mdata->group, first, last);
+      snprintf(buf, sizeof(buf), "LISTGROUP %s " ANUM "-" ANUM "\r\n", mdata->group, first, last);
     else
       snprintf(buf, sizeof(buf), "LISTGROUP %s\r\n", mdata->group);
     rc = nntp_fetch_lines(mdata, buf, sizeof(buf), NULL, fetch_numbers, &fc);
@@ -1195,7 +1195,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
         if (fc.messages[current - first])
           continue;
 
-        snprintf(buf, sizeof(buf), "%u", current);
+        snprintf(buf, sizeof(buf), ANUM, current);
         if (mdata->bcache)
         {
           mutt_debug(LL_DEBUG2, "#1 mutt_bcache_del %s\n", buf);
@@ -1230,7 +1230,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
       progress_update(fc.progress, current - first + 1, -1);
 
 #ifdef USE_HCACHE
-    snprintf(buf, sizeof(buf), "%u", current);
+    snprintf(buf, sizeof(buf), ANUM, current);
 #endif
 
     /* delete header from cache that does not exist on server */
@@ -1294,7 +1294,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
         break;
       }
 
-      snprintf(buf, sizeof(buf), "HEAD %u\r\n", current);
+      snprintf(buf, sizeof(buf), "HEAD " ANUM "\r\n", current);
       rc = nntp_fetch_lines(mdata, buf, sizeof(buf), NULL, fetch_tempfile, fp);
       if (rc)
       {
@@ -1312,7 +1312,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
         /* no such article */
         if (mdata->bcache)
         {
-          snprintf(buf, sizeof(buf), "%u", current);
+          snprintf(buf, sizeof(buf), ANUM, current);
           mutt_debug(LL_DEBUG2, "#3 mutt_bcache_del %s\n", buf);
           mutt_bcache_del(mdata->bcache, buf);
         }
@@ -1356,7 +1356,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   if ((current <= last) && (rc == 0) && !mdata->deleted)
   {
     char *cmd = mdata->adata->hasOVER ? "OVER" : "XOVER";
-    snprintf(buf, sizeof(buf), "%s %u-%u\r\n", cmd, current, last);
+    snprintf(buf, sizeof(buf), "%s " ANUM "-" ANUM "\r\n", cmd, current, last);
     rc = nntp_fetch_lines(mdata, buf, sizeof(buf), NULL, parse_overview_line, &fc);
     if (rc > 0)
     {
@@ -1465,7 +1465,7 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
     if (mdata->last_message < mdata->last_loaded)
     {
       mdata->last_loaded = mdata->first_message - 1;
-      const short c_nntp_context = cs_subset_number(NeoMutt->sub, "nntp_context");
+      const long c_nntp_context = cs_subset_long(NeoMutt->sub, "nntp_context");
       if (c_nntp_context && (mdata->last_message - mdata->last_loaded > c_nntp_context))
         mdata->last_loaded = mdata->last_message - c_nntp_context;
     }
@@ -1481,7 +1481,7 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
     struct Email *e = NULL;
     anum_t first = mdata->first_message;
 
-    const short c_nntp_context = cs_subset_number(NeoMutt->sub, "nntp_context");
+    const long c_nntp_context = cs_subset_long(NeoMutt->sub, "nntp_context");
     if (c_nntp_context && (mdata->last_message - first + 1 > c_nntp_context))
       first = mdata->last_message - c_nntp_context + 1;
     messages = mutt_mem_calloc(mdata->last_loaded - first + 1, sizeof(unsigned char));
@@ -1505,7 +1505,7 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
         if ((anum >= first) && (anum <= mdata->last_loaded))
           messages[anum - first] = 1;
 
-        snprintf(buf, sizeof(buf), "%u", anum);
+        snprintf(buf, sizeof(buf), ANUM, anum);
         struct HCacheEntry hce = mutt_hcache_fetch(hc, buf, strlen(buf), 0);
         if (hce.email)
         {
@@ -1550,7 +1550,7 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
       if (messages[anum - first])
         continue;
 
-      snprintf(buf, sizeof(buf), "%u", anum);
+      snprintf(buf, sizeof(buf), ANUM, anum);
       struct HCacheEntry hce = mutt_hcache_fetch(hc, buf, strlen(buf), 0);
       if (hce.email)
       {
@@ -2220,7 +2220,7 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
   cc.child = mutt_mem_malloc(sizeof(anum_t) * cc.max);
 
   /* fetch numbers of child messages */
-  snprintf(buf, sizeof(buf), "XPAT References %u-%u *%s*\r\n",
+  snprintf(buf, sizeof(buf), "XPAT References " ANUM "-" ANUM " *%s*\r\n",
            mdata->first_message, mdata->last_loaded, msgid);
   rc = nntp_fetch_lines(mdata, buf, sizeof(buf), NULL, fetch_children, &cc);
   if (rc)
@@ -2423,7 +2423,7 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
 
   /* strip off extra articles if adding context is greater than $nntp_context */
   first = mdata->first_message;
-  const short c_nntp_context = cs_subset_number(NeoMutt->sub, "nntp_context");
+  const long c_nntp_context = cs_subset_long(NeoMutt->sub, "nntp_context");
   if (c_nntp_context && (mdata->last_message - first + 1 > c_nntp_context))
     first = mdata->last_message - c_nntp_context + 1;
   mdata->last_loaded = first ? first - 1 : 0;

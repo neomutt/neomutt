@@ -2771,7 +2771,7 @@
 ** authentication fails, NeoMutt will not connect to the IMAP server.
 */
 
-{ "nntp_context", DT_NUMBER, 1000 },
+{ "nntp_context", DT_LONG, 1000 },
 /*
 ** .pp
 ** This variable defines number of articles which will be in index when
