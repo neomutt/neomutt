@@ -247,8 +247,8 @@ bailout:
 /**
  * mutt_edit_attachment - Edit an attachment
  * @param a Email containing attachment
- * @retval 1 Editor found
- * @retval 0 Editor not found
+ * @retval true  Editor found
+ * @retval false Editor not found
  *
  * Currently, this only works for send mode, as it assumes that the
  * Body->filename actually contains the information.  I'm not sure
@@ -257,12 +257,12 @@ bailout:
  *
  * Returning 0 is useful to tell the calling menu to redraw
  */
-int mutt_edit_attachment(struct Body *a)
+bool mutt_edit_attachment(struct Body *a)
 {
   char type[256] = { 0 };
   struct MailcapEntry *entry = mailcap_entry_new();
   bool unlink_newfile = false;
-  int rc = 0;
+  bool rc = false;
   struct Buffer *cmd = mutt_buffer_pool_get();
   struct Buffer *newfile = mutt_buffer_pool_get();
 
@@ -310,11 +310,10 @@ int mutt_edit_attachment(struct Body *a)
   else
   {
     mutt_error(_("No mailcap edit entry for %s"), type);
-    rc = 0;
     goto bailout;
   }
 
-  rc = 1;
+  rc = true;
 
 bailout:
 
