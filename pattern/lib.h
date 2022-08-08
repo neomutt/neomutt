@@ -185,8 +185,8 @@ void mutt_pattern_free(struct PatternList **pat);
 bool dlg_select_pattern(char *buf, size_t buflen);
 
 int mutt_which_case(const char *s);
-int mutt_is_list_recipient(bool all_addr, struct Envelope *env);
-int mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *env);
+bool mutt_is_list_recipient(bool all_addr, struct Envelope *env);
+bool mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *env);
 int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt);
 int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Menu *menu);
 int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op);
