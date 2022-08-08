@@ -158,12 +158,12 @@ static bool ssl_load_certificates(SSL_CTX *ctx)
 /**
  * ssl_set_verify_partial - Allow verification using partial chains (with no root)
  * @param ctx SSL context
- * @retval  0 Success
- * @retval -1 Error
+ * @retval true  Success
+ * @retval false Error
  */
-static int ssl_set_verify_partial(SSL_CTX *ctx)
+static bool ssl_set_verify_partial(SSL_CTX *ctx)
 {
-  int rc = 0;
+  bool rc = true;
 #ifdef HAVE_SSL_PARTIAL_CHAIN
   X509_VERIFY_PARAM *param = NULL;
 
@@ -177,14 +177,14 @@ static int ssl_set_verify_partial(SSL_CTX *ctx)
       if (SSL_CTX_set1_param(ctx, param) == 0)
       {
         mutt_debug(LL_DEBUG2, "SSL_CTX_set1_param() failed\n");
-        rc = -1;
+        rc = false;
       }
       X509_VERIFY_PARAM_free(param);
     }
     else
     {
       mutt_debug(LL_DEBUG2, "X509_VERIFY_PARAM_new() failed\n");
-      rc = -1;
+      rc = false;
     }
   }
 #endif
@@ -1263,7 +1263,7 @@ static int ssl_setup(struct Connection *conn)
     SSL_CTX_set_cipher_list(sockdata(conn)->sctx, c_ssl_ciphers);
   }
 
-  if (ssl_set_verify_partial(sockdata(conn)->sctx))
+  if (!ssl_set_verify_partial(sockdata(conn)->sctx))
   {
     mutt_error(_("Warning: error enabling ssl_verify_partial_chains"));
   }
