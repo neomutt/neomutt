@@ -31,11 +31,14 @@
 
 void test_editor_state(void)
 {
-  struct EnterState *es = enter_state_new();
-
   enter_state_resize(NULL, 16);
 
-  enter_state_resize(es, 16);
+  struct EnterState *es = enter_state_new();
+
+  for (size_t i = 0; i < 1000; i++)
+  {
+    enter_state_resize(es, i);
+  }
 
   enter_state_free(&es);
 
