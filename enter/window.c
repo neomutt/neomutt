@@ -232,11 +232,19 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
     // clang-format on
     win->wdata = &wdata;
 
-    /* Initialise wbuf from buf */
-    wdata.state->wbuflen = 0;
-    wdata.state->lastchar = mutt_mb_mbstowcs(&wdata.state->wbuf,
-                                             &wdata.state->wbuflen, 0, wdata.buf);
-    wdata.redraw = ENTER_REDRAW_INIT;
+    if (state->wbuf[0] == L'\0')
+    {
+      /* Initialise wbuf from buf */
+      wdata.state->wbuflen = 0;
+      wdata.state->lastchar = mutt_mb_mbstowcs(&wdata.state->wbuf,
+                                               &wdata.state->wbuflen, 0, wdata.buf);
+      wdata.redraw = ENTER_REDRAW_INIT;
+    }
+    else
+    {
+      wdata.redraw = ENTER_REDRAW_LINE;
+      wdata.first = false;
+    }
 
     if (wdata.flags & MUTT_COMP_FILE)
       wdata.hclass = HC_FILE;
