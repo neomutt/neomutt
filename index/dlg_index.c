@@ -818,7 +818,7 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
   struct MuttThread *tmp = NULL;
 
   const enum UseThreads c_threads = mutt_thread_style();
-  if ((c_threads > UT_FLAT) && e->tree)
+  if ((c_threads > UT_FLAT) && e->tree && e->thread)
   {
     flags |= MUTT_FORMAT_TREE; /* display the thread tree */
     if (e->display_subject)
