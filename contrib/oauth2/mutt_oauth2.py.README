@@ -174,11 +174,12 @@ matter and could be "mutt registration project".
    - Under scopes, choose Add scope, scroll all the way down, enable the "https://mail.google.com/" scope
    - Fill out additional fields (application logo, etc) if you feel like it (will make the consent screen look nicer)
  - Back at console.developers.google.com, choose Credentials
- - At top, choose Create Credentials / OAuth2 client iD
+ - At top, choose Create Credentials / OAuth client iD
    - Application type is "Desktop app"
+ - On the OAuth consent screen add a test user, (email address)
 
-Edit the client_id (and client_secret if there is one) into the
-mutt_oauth2.py script.
+The client_id (and client_secret if there is one) will need to be passed as
+arguments into the mutt_oauth2.py script.
 
 
 -- How to create a Microsoft registration --
@@ -212,8 +213,8 @@ portal.azure.com for their work/school account can temporarily use an
 incognito browser window to create a free outlook.com account and use that
 to create the app registration.
 
-Edit the client_id (and client_secret if there is one) into the
-mutt_oauth2.py script.
+The client_id (and client_secret if there is one) will need to be passed as
+arguments into the mutt_oauth2.py script.
 
 
 Running the script manually to authorize tokens
@@ -224,7 +225,15 @@ initial set of tokens, run the script specifying a name for a
 disposable token storage file, as well as "--authorize", for example
 using this naming scheme:
 
- mutt_oauth2.py userid@myschool.edu.tokens --verbose --authorize
+ mutt_oauth2.py userid@myschool.edu.tokens \
+	--verbose \
+	--authorize \
+	--provider [google|microsoft] \
+	--encryption-pipe "gpg --encrypt --recipient <gpg-recipient@email.com>" \
+	--cloud-id <id> \
+	--cloud-secret <id> \
+	--authflow [authcode|localhostauthcode|devicecode]
+
 
 The script will ask questions and provide some instructions. For the
 flow question:
@@ -271,8 +280,8 @@ a mutt registration is the better way to go.
 Once you've succeeded authorizing mutt_oauth2.py to obtain tokens, try
 one of the following to see whether IMAP/POP/SMTP are working:
 
- mutt_oauth2.py userid@myschool.edu.tokens --verbose --test
- mutt_oauth2.py userid@myschool.edu.tokens --verbose --debug --test
+ mutt_oauth2.py userid@myschool.edu.tokens --provider <provider> --verbose --test
+ mutt_oauth2.py userid@myschool.edu.tokens --provider <provider> --verbose --debug --test
 
 Without optional parameters, the script simply returns an access token
 (possibly first conducting a behind-the-scenes URL retrieval using a
@@ -284,7 +293,12 @@ mutt. Your .muttrc would look something like:
  set folder="imap://outlook.office365.com/"
  set smtp_url="smtp://${imap_user}@smtp.office365.com:587/"
  set imap_authenticators="oauthbearer:xoauth2"
- set imap_oauth_refresh_command="/path/to/script/mutt_oauth2.py ${imap_user}.tokens"
+ set imap_oauth_refresh_command="/path/to/script/mutt_oauth2.py \
+	${imap_user}.tokens \
+	--provider ${provider} \
+	--client_id ${client_id} \
+	--client_secret ${client_id}"
+
  set smtp_authenticators=${imap_authenticators}
  set smtp_oauth_refresh_command=${imap_oauth_refresh_command}
 
