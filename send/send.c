@@ -2976,15 +2976,15 @@ cleanup:
 /**
  * send_simple_email - Compose an email given a few basic ingredients
  * @param m Mailbox
+ * @param el List of source Emails
  * @param mailto mailto address to parse (can include fields such as subject)
- * @param to Recipient address, if not overridden by mailto
  * @param subj Subject, if not overridden by mailto
  * @param body text/plain body
  * @retval true Success
  * @retval false Failure
  */
-static bool send_simple_email(struct Mailbox *m, const char *mailto,
-                              const char *to, const char *subj, const char *body)
+static bool send_simple_email(struct Mailbox *m, struct EmailList *el,
+                              const char *mailto, const char *subj, const char *body)
 {
   struct Email *e = email_new();
 
@@ -2995,7 +2995,7 @@ static bool send_simple_email(struct Mailbox *m, const char *mailto,
   {
     e->env->subject = mutt_str_dup(subj);
   }
-  if (TAILQ_EMPTY(&e->env->to) && !mutt_addrlist_parse(&e->env->to, to))
+  if (TAILQ_EMPTY(&e->env->to) && !mutt_addrlist_parse(&e->env->to, NULL))
   {
     mutt_warning(_("No recipient specified"));
   }
@@ -3021,7 +3021,7 @@ static bool send_simple_email(struct Mailbox *m, const char *mailto,
   e->body->filename = mutt_str_dup(tempfile);
   e->body->unlink = true;
 
-  const int rc = mutt_send_message(SEND_DRAFT_FILE, e, NULL, m, NULL, NeoMutt->sub);
+  const int rc = mutt_send_message(SEND_DRAFT_FILE, e, NULL, m, el, NeoMutt->sub);
   return rc >= 0;
 }
 
@@ -3032,7 +3032,7 @@ static bool send_simple_email(struct Mailbox *m, const char *mailto,
  * @retval true Success
  * @retval false Failure
  */
-bool mutt_send_list_subscribe(struct Mailbox *m, const struct Email *e)
+bool mutt_send_list_subscribe(struct Mailbox *m, struct Email *e)
 {
   if (!e || !e->env)
   {
@@ -3046,7 +3046,12 @@ bool mutt_send_list_subscribe(struct Mailbox *m, const struct Email *e)
     return false;
   }
 
-  return send_simple_email(m, mailto, NULL, "Subscribe", "subscribe");
+  struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+  emaillist_add_email(&el, e);
+  bool rc = send_simple_email(m, &el, mailto, "Subscribe", "subscribe");
+  emaillist_clear(&el);
+
+  return rc;
 }
 
 /**
@@ -3056,7 +3061,7 @@ bool mutt_send_list_subscribe(struct Mailbox *m, const struct Email *e)
  * @retval true Success
  * @retval false Failure
  */
-bool mutt_send_list_unsubscribe(struct Mailbox *m, const struct Email *e)
+bool mutt_send_list_unsubscribe(struct Mailbox *m, struct Email *e)
 {
   if (!e || !e->env)
   {
@@ -3070,5 +3075,10 @@ bool mutt_send_list_unsubscribe(struct Mailbox *m, const struct Email *e)
     return false;
   }
 
-  return send_simple_email(m, mailto, NULL, "Unsubscribe", "unsubscribe");
+  struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+  emaillist_add_email(&el, e);
+  bool rc = send_simple_email(m, &el, mailto, "Unsubscribe", "unsubscribe");
+  emaillist_clear(&el);
+
+  return rc;
 }
