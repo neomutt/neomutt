@@ -48,21 +48,20 @@
 
 /**
  * matches_ensure_morespace - Allocate more space for auto-completion
- * @param cd      Completion Data
- * @param current Current allocation
+ * @param cd       Completion Data
+ * @param new_size Space required
  */
-static void matches_ensure_morespace(struct CompletionData *cd, int current)
+static void matches_ensure_morespace(struct CompletionData *cd, int new_size)
 {
-  if (current <= (cd->match_list_len - 2))
+  if (new_size <= (cd->match_list_len - 2))
     return;
 
-  int base_space = 512; // Enough space for all of the config items
-  int extra_space = cd->match_list_len - base_space;
-  extra_space *= 2;
-  const int space = base_space + extra_space;
-  mutt_mem_realloc(&cd->match_list, space * sizeof(char *));
-  memset(&cd->match_list[current + 1], 0, space - current);
-  cd->match_list_len = space;
+  new_size = ROUND_UP(new_size + 2, 512);
+
+  mutt_mem_realloc(&cd->match_list, new_size * sizeof(char *));
+  memset(&cd->match_list[cd->match_list_len], 0, new_size - cd->match_list_len);
+
+  cd->match_list_len = new_size;
 }
 
 /**
