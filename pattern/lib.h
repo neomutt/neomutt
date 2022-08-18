@@ -78,8 +78,8 @@ struct Pattern
   bool dynamic      : 1;         ///< Evaluate date ranges at run time
   bool sendmode     : 1;         ///< Evaluate searches in send-mode
   bool is_multi     : 1;         ///< Multiple case (only for ~I pattern now)
-  int min;                       ///< Minimum for range checks
-  int max;                       ///< Maximum for range checks
+  long min;                      ///< Minimum for range checks
+  long max;                      ///< Maximum for range checks
   struct PatternList *child;     ///< Arguments to logical operation
   union {
     regex_t *regex;              ///< Compiled regex, for non-pattern matching

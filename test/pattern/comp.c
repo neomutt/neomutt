@@ -105,8 +105,8 @@ static int canonical_pattern(char *s, struct PatternList *pat, int indent)
     p += sprintf(p, "%d,", e->ign_case);
     p += sprintf(p, "%d,", e->is_alias);
     p += sprintf(p, "%d,", e->is_multi);
-    p += sprintf(p, "%d,", e->min);
-    p += sprintf(p, "%d,", e->max);
+    p += sprintf(p, "%ld,", e->min);
+    p += sprintf(p, "%ld,", e->max);
     p += sprintf(p, "\"%s\",", e->p.str ? e->p.str : "");
     p += sprintf(p, "%s,", !e->child ? "(null)" : "(list)");
     p += sprintf(p, "%s", SLIST_NEXT(e, entries) ? "(next)" : "(null)");
