@@ -58,7 +58,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2022-06-28 18:23+0100\n"
+"POT-Creation-Date: 2022-08-22 19:05+0100\n"
 "PO-Revision-Date: 2019-05-15 01:16-0400\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -428,7 +428,6 @@ msgstr "S’està desant…"
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
 msgstr[0] "S’ha desat l’adjunció"
-msgstr[1] "S’ha desat l’adjunció"
 
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
@@ -549,9 +548,8 @@ msgstr "S’ha avortat la creació del compte d’Autocrypt"
 #. email when the engine is not available.
 #: autocrypt/autocrypt.c:585 autocrypt/autocrypt.c:594
 #: autocrypt/autocrypt.c:601
-#, fuzzy
 msgid "Autocrypt is not available"
-msgstr "El missatge pare no es troba disponible"
+msgstr "Autocrypt no es troba disponible"
 
 #. L10N: Error displayed if the user tries to force sending an Autocrypt
 #. email when the account does not exist or is not enabled.
@@ -560,7 +558,7 @@ msgstr "El missatge pare no es troba disponible"
 #: autocrypt/autocrypt.c:613
 #, c-format
 msgid "Autocrypt is not enabled for %s"
-msgstr ""
+msgstr "No s’ha habilitat Autocrypt per a %s"
 
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
@@ -754,14 +752,12 @@ msgid "List"
 msgstr ""
 
 #: browser/browser.c:126
-#, fuzzy
 msgid "Subscribe"
-msgstr "S’ha subscrit a «%s»."
+msgstr "Subscriure"
 
 #: browser/browser.c:127
-#, fuzzy
 msgid "Unsubscribe"
-msgstr "S’ha dessubscrit de «%s»."
+msgstr "Dessubscriure"
 
 #: browser/browser.c:128 index/dlg_index.c:129
 msgid "Catchup"
@@ -1135,12 +1131,10 @@ msgid "Warning: message contains no From: header"
 msgstr "Avís: El missatge no té capçalera «From:»."
 
 #: commands.c:117 recvcmd.c:204
-#, fuzzy
 msgid "Bounce message to: "
 msgstr "Redirigeix el missatge a: "
 
 #: commands.c:119 recvcmd.c:206
-#, fuzzy
 msgid "Bounce tagged messages to: "
 msgstr "Redirigeix els missatges marcats a: "
 
@@ -1158,18 +1152,16 @@ msgstr[0] "Voleu redirigir el missatge a «%s»"
 msgstr[1] "Voleu redirigir els missatges a «%s»"
 
 #: commands.c:165 recvcmd.c:260
-#, fuzzy
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
 msgstr[0] "No s’ha redirigit el missatge"
-msgstr[1] "No s’han redirigit els missatges"
+msgstr[1] "No s’ha redirigit el missatge"
 
 #: commands.c:190 recvcmd.c:287
-#, fuzzy
 msgid "Message bounced"
 msgid_plural "Messages bounced"
 msgstr[0] "S’ha redirigit el missatge"
-msgstr[1] "S’han redirigit els missatges"
+msgstr[1] "S’ha redirigit el missatge"
 
 #: commands.c:329 commands.c:372 commands.c:392
 msgid "Can't create filter process"
@@ -1184,28 +1176,24 @@ msgid "No printing command has been defined"
 msgstr "No s’ha definit cap ordre d’impressió"
 
 #: commands.c:473
-#, fuzzy
 msgid "Print message?"
 msgstr "Voleu imprimir el missatge?"
 
 #: commands.c:474
-#, fuzzy
 msgid "Print tagged messages?"
-msgstr "Voleu imprimir els misatges marcats?"
+msgstr "Voleu imprimir els missatges marcats?"
 
 #: commands.c:482
-#, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
-msgstr[0] "S’ha imprès el missatge."
-msgstr[1] "S’han imprès els missatges."
+msgstr[0] "S’ha imprès el missatge"
+msgstr[1] "S’ha imprès el missatge"
 
 #: commands.c:485
-#, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
-msgstr[0] "No s’ha pogut imprimir el missatge."
-msgstr[1] "No s’han pogut imprimir els missatges."
+msgstr[0] "No s’ha pogut imprimir el missatge"
+msgstr[1] "No s’ha pogut imprimir el missatge"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:502
@@ -1228,9 +1216,8 @@ msgstr "Ordre per a l’intèrpret: "
 
 #. L10N: Progress meter message when copying tagged messages
 #: commands.c:845
-#, fuzzy
 msgid "Copying tagged messages..."
-msgstr "S’estan copiant %d missatges a «%s»…"
+msgstr "S’estan copiant els missatges marcats…"
 
 #: commands.c:849
 #, fuzzy
@@ -1267,9 +1254,8 @@ msgstr "Descodifica i copia a la bústia"
 
 #. L10N: Progress meter message when saving tagged messages
 #: commands.c:864
-#, fuzzy
 msgid "Saving tagged messages..."
-msgstr "Voleu imprimir els misatges marcats?"
+msgstr "S’estan desant els missatges marcats…"
 
 #: commands.c:868
 #, fuzzy
@@ -1311,27 +1297,23 @@ msgstr "S’està copiant a «%s»…"
 
 #. L10N: Message when an index tagged save operation fails for some reason
 #: commands.c:1066
-#, fuzzy
 msgid "Error saving tagged messages"
-msgstr "Voleu imprimir els misatges marcats?"
+msgstr "Error en desar els missatges marcats"
 
 #. L10N: Message when an index/pager save operation fails for some reason
 #: commands.c:1071
-#, fuzzy
 msgid "Error saving message"
-msgstr "Error en enviar el missatge"
+msgstr "Error en desar el missatge"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
 #: commands.c:1078
-#, fuzzy
 msgid "Error copying tagged messages"
-msgstr "S’estan copiant %d missatges a «%s»…"
+msgstr "Error en copiar els missatges marcats"
 
 #. L10N: Message when an index/pager copy operation fails for some reason
 #: commands.c:1083
-#, fuzzy
 msgid "Error copying message"
-msgstr "Error en redirigir el missatge."
+msgstr "Error en copiar el missatge"
 
 # «%s» és un codi de caràcters.  ivb
 #: commands.c:1154
@@ -1458,7 +1440,7 @@ msgstr "No hi ha cap adjunció"
 #. filename.  The filename is located last to avoid a long path hiding
 #. the error message.
 #: compose/functions.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment #%d no longer exists: %s"
 msgstr "L’adjunció #%d ja no existeix: %s"
 
@@ -2751,9 +2733,9 @@ msgid "Help for %s"
 msgstr "Ajuda de «%s»"
 
 #: history/dlg_history.c:135
-#, fuzzy, c-format
+#, c-format
 msgid "History '%s'"
-msgstr "Consulta de «%s»"
+msgstr "Historial de «%s»"
 
 #: history/history.c:227 history/history.c:269 history/history.c:613
 #, c-format
@@ -2845,9 +2827,9 @@ msgstr "S’està autenticant (%s)…"
 #: imap/auth_anon.c:88 imap/auth_cram.c:179 imap/auth_gss.c:346
 #: imap/auth_oauth.c:105 imap/auth_sasl.c:254 nntp/nntp.c:660 pop/auth.c:193
 #: pop/auth.c:261 send/smtp.c:637 send/smtp.c:711 send/smtp.c:802
-#, fuzzy, c-format
+#, c-format
 msgid "%s authentication failed"
-msgstr "L’autenticació SASL ha fallat"
+msgstr "L’autenticació %s ha fallat"
 
 #: imap/auth_login.c:51
 msgid "LOGIN disabled on this server"
@@ -2906,10 +2888,11 @@ msgstr "El reanomenament ha fallat: %s"
 msgid "Mailbox renamed"
 msgstr "S’ha reanomenat la bústia"
 
+# Missatge de diagnòstic.  ivb
 #: imap/command.c:176
-#, fuzzy, c-format
+#, c-format
 msgid "Mailbox %s@%s closed"
-msgstr "S’ha tancat la bústia."
+msgstr "S’ha tancat la bústia «%s@%s»"
 
 #: imap/command.c:1172
 #, fuzzy, c-format
@@ -3046,14 +3029,12 @@ msgstr "S’estan recollint els canvis als senyaladors…"
 #. sanity check.  If that fails, Mutt reopens the mailbox using a normal
 #. download.
 #: imap/message.c:1054
-#, fuzzy
 msgid "QRESYNC failed.  Reopening mailbox."
-msgstr "No s’ha pogut reobrir la bústia."
+msgstr "L’ordre «QRESYNC» ha fallat.  Es reobrirà la bústia."
 
 #: imap/message.c:1122
-#, fuzzy
 msgid "Unable to fetch headers from this IMAP server version"
-msgstr "No s’han pogut recollir les capçaleres d’aquesta versió de servidor IMAP"
+msgstr "No s’han pogut recollir les capçaleres d’aquesta versió de servidor IMAP."
 
 #: imap/message.c:1143 index/functions.c:2316 nntp/nntp.c:1224 pop/pop.c:368
 msgid "Fetching message headers..."
@@ -3112,7 +3093,7 @@ msgstr "Grup"
 
 #: index/dlg_index.c:127 pager/dlg_pager.c:128
 msgid "Post"
-msgstr ""
+msgstr "Enviar"
 
 # ivb (2001/12/07)
 # ivb  El primer «%s» és una adreça de correu i el segon potser «,...».
@@ -3627,9 +3608,8 @@ msgstr "Entrada de tipus «%s» a «%s», línia %d: format no vàlid."
 #. unset mailcap_path
 #.
 #: mailcap.c:497
-#, fuzzy
 msgid "Neither mailcap_path nor MAILCAPS specified"
-msgstr "No s’ha indicat cap camí per a «mailcap»."
+msgstr "No s’ha indicat ni «mailcap_path» ni MAILCAPS"
 
 #: mailcap.c:521
 #, c-format
@@ -4168,9 +4148,8 @@ msgstr "L’expressió regular no és vàlida: %s"
 # Una regla usa més referències cap enrere al «format» o «reemplaçament» que
 # es defineixen al «patró».  ivb
 #: mutt/regex.c:346
-#, fuzzy
 msgid "Not enough subexpressions for template"
-msgstr "spam: Hi ha més referències cap enrere que subexpressions definides."
+msgstr "Hi ha més referències cap enrere que subexpressions definides"
 
 #: mutt/signal.c:68 mutt/signal.c:70 mutt/signal.c:72
 #, fuzzy, c-format
@@ -4300,9 +4279,8 @@ msgstr "No s’ha pogut obrir la carpeta paperera."
 
 #. L10N: Displayed if appending to $trash fails when syncing or closing a mailbox
 #: mx.c:587
-#, fuzzy
 msgid "Unable to append to trash folder"
-msgstr "No s’ha pogut obrir el fitxer temporal."
+msgstr "No s’ha pogut afegir a la carpeta paperera"
 
 #: mx.c:646
 msgid "Mark all articles read?"
@@ -4320,11 +4298,11 @@ msgstr[1] "Voleu moure %d missatges llegits a «%s»?"
 # ivb (2001/12/08)
 # ivb  Ací «%d» sempre és 1.
 #: mx.c:713 mx.c:957
-#, fuzzy, c-format
+#, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Voleu eliminar %d missatge esborrat?"
-msgstr[1] "Voleu eliminar %d missatges esborrats?"
+msgstr[1] "Voleu eliminar %d missatge esborrat?"
 
 #: mx.c:738
 #, c-format
@@ -5178,7 +5156,7 @@ msgstr "[No és vàlid]"
 # Tipus de certificat, bits de l’algorisme, tipus d’algorisme.  ivb
 #. L10N: This is printed after "Key Type: " and looks like this: PGP, 2048 bit RSA
 #: ncrypt/gpgme_functions.c:453 ncrypt/gpgme_functions.c:594
-#, fuzzy, c-format
+#, c-format
 msgid "%s, %lu bit %s\n"
 msgid_plural "%s, %lu bit %s\n"
 msgstr[0] "%1$s, %3$s de %2$lu bits\n"
@@ -5329,17 +5307,17 @@ msgstr "No s’ha pogut obrir el subprocés PGP."
 msgid "Can't invoke PGP"
 msgstr "No s’ha pogut invocar PGP."
 
+# Ull!  La mateixa clau que «en línia».  ivb
 #. L10N: The next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1904
-#, fuzzy
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
+# Ull!  La mateixa clau que «PGP/MIME».  ivb
 #. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1910
-#, fuzzy
 msgid "(i)nline"
 msgstr "en lín(i)a"
 
@@ -6126,9 +6104,8 @@ msgid "scroll down through the history list"
 msgstr "Es desplaça cap avall a la llista d’historial."
 
 #: opcodes.h:136
-#, fuzzy
 msgid "search through the history list"
-msgstr "Es desplaça cap amunt a la llista d’historial."
+msgstr "Cerca a la llista d’historial"
 
 #: opcodes.h:137
 msgid "scroll up through the history list"
@@ -6855,14 +6832,12 @@ msgid "view the key's user id"
 msgstr "Mostra l’identificador d’usuari d’una clau."
 
 #: opcodes.h:341
-#, fuzzy
 msgid "move the highlight to the first mailbox"
-msgstr "Mou la selecció a la bústia següent."
+msgstr "Mou la selecció a la primera bústia"
 
 #: opcodes.h:342
-#, fuzzy
 msgid "move the highlight to the last mailbox"
-msgstr "Mou la selecció a la bústia següent."
+msgstr "Mou la selecció a la darrera bústia"
 
 #: opcodes.h:343
 msgid "move the highlight to next mailbox"
@@ -6957,7 +6932,7 @@ msgstr "L’inici del missatge ja és visible"
 #. display some kind of message in case it somehow occurs.)
 #: pager/functions.c:572
 msgid "No text past headers"
-msgstr ""
+msgstr "No hi ha cap text després de les capçaleres"
 
 #: pager/functions.c:631 pager/functions.c:671
 msgid "No more unquoted text after quoted text"
@@ -7105,14 +7080,14 @@ msgstr "Manca un paràmetre."
 #. L10N: Pattern completion menu title
 #: pattern/dlg_pattern.c:189
 msgid "Patterns"
-msgstr ""
+msgstr "Patrons"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a regular expression
 #.
 #: pattern/dlg_pattern.c:205
 msgid "EXPR"
-msgstr ""
+msgstr "EXPRESSIÓ"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a numeric range.
@@ -7120,7 +7095,7 @@ msgstr ""
 #.
 #: pattern/dlg_pattern.c:213
 msgid "RANGE"
-msgstr ""
+msgstr "RANG_NUM"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a date range
@@ -7128,7 +7103,7 @@ msgstr ""
 #.
 #: pattern/dlg_pattern.c:220
 msgid "DATERANGE"
-msgstr ""
+msgstr "RANG_DATA"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a query
@@ -7144,22 +7119,22 @@ msgstr ""
 #.
 #: pattern/dlg_pattern.c:245
 msgid "PATTERN"
-msgstr ""
+msgstr "PATRÓ"
 
 #. L10N: Pattern Completion Menu description for ~()
 #: pattern/dlg_pattern.c:252
 msgid "messages in threads containing messages matching PATTERN"
-msgstr ""
+msgstr "missatges en fils que contenen missatges que concorden amb el PATRÓ"
 
 #. L10N: Pattern Completion Menu description for ~<()
 #: pattern/dlg_pattern.c:260
 msgid "messages whose immediate parent matches PATTERN"
-msgstr ""
+msgstr "missatges amb pares immediats que concorden amb el PATRÓ"
 
 #. L10N: Pattern Completion Menu description for ~>()
 #: pattern/dlg_pattern.c:268
 msgid "messages having an immediate child matching PATTERN"
-msgstr ""
+msgstr "missatges amb fills immediats que concorden amb el PATRÓ"
 
 #. L10N: One of the crypt pattern operators: ~g, ~G, ~k, ~V
 #. was invoked when NeoMutt was compiled without crypto support.
@@ -7200,92 +7175,86 @@ msgstr "Error.  Es manté el fitxer temporal: %s"
 msgid "error: server custom search only supported with IMAP"
 msgstr ""
 
+# Cap d’aquests és una frase completa, els deixe en minúscules i sense punt.  ivb
 #. L10N: Pattern Completion Menu description for ~A
 #: pattern/flags.c:44
-#, fuzzy
 msgid "all messages"
-msgstr "Ordena els missatges."
+msgstr "tots els missatges"
 
 #. L10N: Pattern Completion Menu description for ~b
 #: pattern/flags.c:47
 msgid "messages whose body matches EXPR"
-msgstr ""
+msgstr "missatges amb cossos que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~B
 #: pattern/flags.c:50
 msgid "messages whose body or headers match EXPR"
-msgstr ""
+msgstr "missatges amb cossos o capçaleres que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~c
 #: pattern/flags.c:53
 msgid "messages whose CC header matches EXPR"
-msgstr ""
+msgstr "missatges amb capçaleres de còpia (Cc) que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~C
 #: pattern/flags.c:56
 msgid "messages whose recipient matches EXPR"
-msgstr ""
+msgstr "missatges amb destinataris que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~d
 #: pattern/flags.c:59
 msgid "messages sent in DATERANGE"
-msgstr ""
+msgstr "missatges enviats en el RANG_DATA"
 
 #. L10N: Pattern Completion Menu description for ~D
 #: pattern/flags.c:62
-#, fuzzy
 msgid "deleted messages"
-msgstr "No hi ha cap missatge no esborrat"
+msgstr "missatges esborrats"
 
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:65
 msgid "messages whose Sender header matches EXPR"
-msgstr ""
+msgstr "missatges amb capçaleres de remitent (Sender) que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:68
-#, fuzzy
 msgid "expired messages"
-msgstr "No hi ha cap missatge no llegit"
+msgstr "missatges expirats"
 
 #. L10N: Pattern Completion Menu description for ~f
 #: pattern/flags.c:71
 msgid "messages whose From header matches EXPR"
-msgstr ""
+msgstr "missatges amb capçaleres de remitent (From) que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:74
-#, fuzzy
 msgid "flagged messages"
-msgstr "No hi ha cap missatge marcat"
+msgstr "missatges amb senyaladors d’important"
 
 #. L10N: Pattern Completion Menu description for ~g
 #: pattern/flags.c:77
-#, fuzzy
 msgid "cryptographically signed messages"
-msgstr "Recupera un missatge posposat."
+msgstr "missatges signats criptogràficament"
 
 #. L10N: Pattern Completion Menu description for ~G
 #: pattern/flags.c:80
-#, fuzzy
 msgid "cryptographically encrypted messages"
-msgstr "No s’ha pogut desxifrar el missatge xifrat."
+msgstr "missatges xifrats criptogràficament"
 
 #. L10N: Pattern Completion Menu description for ~h
 #: pattern/flags.c:83
 msgid "messages whose header matches EXPR"
-msgstr ""
+msgstr "missatges amb capçaleres que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~H
 #: pattern/flags.c:86
 msgid "messages whose spam tag matches EXPR"
-msgstr ""
+msgstr "missatges amb etiquetes d’spam que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:89
-#, fuzzy
 msgid "messages whose Message-ID matches EXPR"
-msgstr "Edita el missatge amb capçaleres."
+msgstr "missatges amb identificadors (Message-ID) que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:92
@@ -7294,119 +7263,110 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~k
 #: pattern/flags.c:95
-#, fuzzy
 msgid "messages which contain PGP key"
-msgstr "Drecera de teclat per a un missatge."
+msgstr "missatges que contenen claus PGP"
 
 #. L10N: Pattern Completion Menu description for ~l
 #: pattern/flags.c:98
 msgid "messages addressed to known mailing lists"
-msgstr ""
+msgstr "missatges adreçats a llistes de correu conegudes"
 
 #. L10N: Pattern Completion Menu description for ~L
 #: pattern/flags.c:101
 msgid "messages whose From/Sender/To/CC matches EXPR"
-msgstr ""
+msgstr "missatges amb capçaleres From/Sender/To/Cc que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~m
 #: pattern/flags.c:104
 msgid "messages whose number is in RANGE"
-msgstr ""
+msgstr "missatges amb números dins del RANG_NUM"
 
 #. L10N: Pattern Completion Menu description for ~M
 #: pattern/flags.c:107
 msgid "messages with a Content-Type matching EXPR"
-msgstr ""
+msgstr "missatges amb tipus (Content-Type) que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~n
 #: pattern/flags.c:110
 msgid "messages whose score is in RANGE"
-msgstr ""
+msgstr "missatges amb una puntuació dins del RANG_NUM"
 
 #. L10N: Pattern Completion Menu description for ~N
 #: pattern/flags.c:113
-#, fuzzy
 msgid "new messages"
-msgstr "No hi ha cap missatge nou"
+msgstr "missatges nous"
 
 #. L10N: Pattern Completion Menu description for ~O
 #: pattern/flags.c:116
-#, fuzzy
 msgid "old messages"
-msgstr "Ordena els missatges."
+msgstr "missatges vells"
 
 #. L10N: Pattern Completion Menu description for ~p
 #: pattern/flags.c:119
 msgid "messages addressed to you"
-msgstr ""
+msgstr "missatges adreçats a vós"
 
 #. L10N: Pattern Completion Menu description for ~P
 #: pattern/flags.c:122
-#, fuzzy
 msgid "messages from you"
-msgstr "Drecera de teclat per a un missatge."
+msgstr "missatges enviats per vós"
 
 #. L10N: Pattern Completion Menu description for ~Q
 #: pattern/flags.c:125
 msgid "messages which have been replied to"
-msgstr ""
+msgstr "missatges que han estat resposts"
 
 #. L10N: Pattern Completion Menu description for ~r
 #: pattern/flags.c:128
 msgid "messages received in DATERANGE"
-msgstr ""
+msgstr "missatges rebuts durant el RANG_DATA"
 
 #. L10N: Pattern Completion Menu description for ~R
 #: pattern/flags.c:131
-#, fuzzy
 msgid "already read messages"
-msgstr "No hi ha cap missatge no llegit"
+msgstr "missatges ja llegits"
 
 #. L10N: Pattern Completion Menu description for ~s
 #: pattern/flags.c:134
 msgid "messages whose Subject header matches EXPR"
-msgstr ""
+msgstr "missatges amb capçaleres d’assumpte (Subject) que concorden amb l’EXPRESSIÓ"
 
+# Empre aquest terme ja que Replaces i Supersedes tenen usos similars.  ivb
+# https://people.dsv.su.se/~jpalme/ietf/message-threading.pdf
 #. L10N: Pattern Completion Menu description for ~S
 #: pattern/flags.c:137
-#, fuzzy
 msgid "superseded messages"
-msgstr "No hi ha cap missatge no llegit"
+msgstr "missatges reemplaçats"
 
 #. L10N: Pattern Completion Menu description for ~t
 #: pattern/flags.c:140
 msgid "messages whose To header matches EXPR"
-msgstr ""
+msgstr "missatges amb capçaleres de destinatari (To) que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~T
 #: pattern/flags.c:143
-#, fuzzy
 msgid "tagged messages"
-msgstr "No hi ha cap missatge marcat"
+msgstr "missatges marcats"
 
 #. L10N: Pattern Completion Menu description for ~u
 #: pattern/flags.c:146
-#, fuzzy
 msgid "messages addressed to subscribed mailing lists"
-msgstr "Respon a la llista de correu indicada."
+msgstr "missatges adreçats a llistes de correu subscrites"
 
 #. L10N: Pattern Completion Menu description for ~U
 #: pattern/flags.c:149
-#, fuzzy
 msgid "unread messages"
-msgstr "No hi ha cap missatge no llegit"
+msgstr "missatges no llegits"
 
 #. L10N: Pattern Completion Menu description for ~v
 #: pattern/flags.c:152
-#, fuzzy
 msgid "messages in collapsed threads"
-msgstr "No hi ha cap missatge nou en aquesta vista limitada"
+msgstr "missatges en fils plegats"
 
 #. L10N: Pattern Completion Menu description for ~V
 #: pattern/flags.c:155
-#, fuzzy
 msgid "cryptographically verified messages"
-msgstr "Salta a l’anterior missatge nou o no llegit."
+msgstr "missatges verificats criptogràficament"
 
 #. L10N: Pattern Completion Menu description for ~w
 #: pattern/flags.c:159
@@ -7417,18 +7377,17 @@ msgstr "No hi ha cap fitxer que concorde amb la màscara de fitxers."
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:163
 msgid "messages whose References header matches EXPR"
-msgstr ""
+msgstr "missatges amb capçaleres de referències (References) que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~X
 #: pattern/flags.c:166
-#, fuzzy
 msgid "messages with RANGE attachments"
-msgstr "Mostra les adjuncions MIME."
+msgstr "missatges amb un nombre d’adjuncions dins del RANG_NUM"
 
 #. L10N: Pattern Completion Menu description for ~y
 #: pattern/flags.c:169
 msgid "messages whose X-Label header matches EXPR"
-msgstr ""
+msgstr "missatges amb capçaleres d’etiquetes (X-Label) que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~Y
 #: pattern/flags.c:172
@@ -7438,19 +7397,17 @@ msgstr ""
 #. L10N: Pattern Completion Menu description for ~z
 #: pattern/flags.c:175
 msgid "messages whose size is in RANGE"
-msgstr ""
+msgstr "missatges amb una mida dins del RANG_NUM"
 
 #. L10N: Pattern Completion Menu description for ~=
 #: pattern/flags.c:178
-#, fuzzy
 msgid "duplicated messages"
-msgstr "No hi ha cap missatge no esborrat"
+msgstr "missatges duplicats"
 
 #. L10N: Pattern Completion Menu description for ~$
 #: pattern/flags.c:181
-#, fuzzy
 msgid "unreferenced messages"
-msgstr "No hi ha cap missatge no llegit"
+msgstr "missatges no referits per d’altres"
 
 #. L10N: Pattern Completion Menu description for ~#
 #: pattern/flags.c:184
@@ -7765,9 +7722,8 @@ msgid "Preparing forwarded message..."
 msgstr "S’està preparant el missatge a reenviar…"
 
 #: send/send.c:1773
-#, fuzzy
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
-msgstr "No es permet la còpia a una bústia IMAP en el mode per lots."
+msgstr "Avís: No es permet la còpia a una bústia IMAP en el mode per lots"
 
 #. L10N: Printed after the "Fcc to an IMAP mailbox is not supported" message.
 #. To make it clearer that the message doesn't mean NeoMutt is aborting
@@ -7777,7 +7733,7 @@ msgstr "No es permet la còpia a una bústia IMAP en el mode per lots."
 #: send/send.c:1779
 #, c-format
 msgid "Skipping Fcc to %s"
-msgstr ""
+msgstr "No es desa còpia a la bústia «%s»"
 
 #: send/send.c:1820 send/send.c:1830 send/send.c:1856
 msgid "Save attachments in Fcc?"
@@ -7796,7 +7752,6 @@ msgstr "La còpia a bústia ha fallat; (r)eintentar, (c)anviar de bústia, (s)al
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
 #: send/send.c:1883
-#, fuzzy
 msgid "rms"
 msgstr "rcs"
 
@@ -7847,9 +7802,11 @@ msgstr "Voleu avortar el missatge no modificat?"
 msgid "Aborted unmodified message"
 msgstr "S’avorta el missatge no modificat"
 
+# ABREUJAT!  ivb
+# No heu configurat cap implementació criptogràfica.  S’inhabilita l’opció de seguretat del missatge.
 #: send/send.c:2701
 msgid "No crypto backend configured.  Disabling message security setting."
-msgstr ""
+msgstr "Cal configurar implementació criptogràfica.  Es retira seguretat del missatge."
 
 #: send/send.c:2743
 #, fuzzy
@@ -7955,9 +7912,8 @@ msgid "Invalid SMTP URL: %s"
 msgstr "L’URL d’SMTP no és vàlid: %s"
 
 #: send/smtp.c:791
-#, fuzzy
 msgid "SMTP authentication requires SASL"
-msgstr "L’autenticació GSSAPI ha fallat"
+msgstr "L’autenticació SMTP necessita SASL"
 
 #: send/smtp.c:879
 msgid "SMTP server does not support authentication"
@@ -7992,7 +7948,6 @@ msgid "(no mailbox)"
 msgstr "(cap bústia)"
 
 #: version.c:84
-#, fuzzy
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
@@ -8067,46 +8022,3 @@ msgstr "Opcions de compilació:"
 msgid "Devel options:"
 msgstr "Opcions de compilació:"
 
-#, c-format
-#~ msgid "%s authentication failed, trying next method"
-#~ msgstr "L’autenticació %s ha fallat, es provarà amb el mètode següent."
-
-#, fuzzy
-#~ msgid "Content type is too long"
-#~ msgstr "S’ha canviat «Content-Type» a «%s»"
-
-#, fuzzy
-#~ msgid "Debug options:"
-#~ msgstr "Opcions de compilació:"
-
-#~ msgid "Error seeking in alias file"
-#~ msgstr "Error en desplaçar-se dins del fitxer d’àlies."
-
-#~ msgid "Exit  "
-#~ msgstr "Ix  "
-
-#, c-format
-#~ msgid "Query '%s'"
-#~ msgstr "Consulta de «%s»"
-
-#, c-format
-#~ msgid "SMTP authentication method %s requires SASL"
-#~ msgstr "El mètode d’autenticació %s per a SMTP necessita SASL."
-
-# Aquest menú no està massa poblat.  -- ivb
-#~ msgid "Select  "
-#~ msgstr "Selecciona  "
-
-#, fuzzy
-#~ msgid "The fundamental part can't be moved"
-#~ msgstr "No es convertirà l’adjunció actual"
-
-#~ msgid "You are on the first page"
-#~ msgstr "Vos trobeu a la primera pàgina"
-
-#~ msgid "You are on the last page"
-#~ msgstr "Vos trobeu a la darrera pàgina"
-
-#, fuzzy
-#~ msgid "skip beyond headers"
-#~ msgstr "Avança fins al final del text citat."
