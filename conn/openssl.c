@@ -894,6 +894,13 @@ static void add_cert(const char *title, X509 *cert, bool issuer, struct CertArra
  */
 static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bool allow_always)
 {
+  if (OptNoCurses)
+  {
+    mutt_debug(LL_DEBUG1, "unable to prompt for certificate in batch mode\n");
+    mutt_error(_("Untrusted server certificate"));
+    return 0;
+  }
+
   char buf[256] = { 0 };
   struct CertArray carr = ARRAY_HEAD_INITIALIZER;
 

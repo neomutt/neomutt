@@ -483,6 +483,13 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   if (tls_check_preauth(certdata, certstat, hostname, idx, &certerr, &savedcert) == 0)
     return 1;
 
+  if (OptNoCurses)
+  {
+    mutt_debug(LL_DEBUG1, "unable to prompt for certificate in batch mode\n");
+    mutt_error(_("Untrusted server certificate"));
+    return 0;
+  }
+
   /* interactive check from user */
   if (gnutls_x509_crt_init(&cert) < 0)
   {
