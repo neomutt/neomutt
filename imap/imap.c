@@ -606,13 +606,13 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
   if (c_debug_level >= IMAP_LOG_LTRL)
     mutt_buffer_alloc(&buf, bytes + 10);
 
-  mutt_debug(LL_DEBUG2, "reading %ld bytes\n", bytes);
+  mutt_debug(LL_DEBUG2, "reading %lu bytes\n", bytes);
 
   for (unsigned long pos = 0; pos < bytes; pos++)
   {
     if (mutt_socket_readchar(adata->conn, &c) != 1)
     {
-      mutt_debug(LL_DEBUG1, "error during read, %ld bytes read\n", pos);
+      mutt_debug(LL_DEBUG1, "error during read, %lu bytes read\n", pos);
       adata->status = IMAP_FATAL;
 
       mutt_buffer_dealloc(&buf);
