@@ -30,6 +30,7 @@
 #include "config.h"
 #include <stdarg.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include "buffer.h"
@@ -273,7 +274,10 @@ void mutt_buffer_alloc(struct Buffer *buf, size_t new_size)
   const bool was_empty = (buf->dptr == NULL);
   const size_t offset = (buf->dptr && buf->data) ? (buf->dptr - buf->data) : 0;
 
-  buf->dsize = ROUND_UP(new_size + 1, BufferStepSize);
+  if (new_size > SIZE_MAX - BufferStepSize)
+    buf->dsize = SIZE_MAX;
+  else
+    buf->dsize = ROUND_UP(new_size + 1, BufferStepSize);
   mutt_mem_realloc(&buf->data, buf->dsize);
   mutt_buffer_seek(buf, offset);
 

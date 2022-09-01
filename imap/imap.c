@@ -604,7 +604,7 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
 
   const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
   if (c_debug_level >= IMAP_LOG_LTRL)
-    mutt_buffer_alloc(&buf, bytes + 10);
+    mutt_buffer_alloc(&buf, bytes + 1);
 
   mutt_debug(LL_DEBUG2, "reading %lu bytes\n", bytes);
 
