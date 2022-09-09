@@ -47,6 +47,7 @@
 #include "commands.h"
 #include "attach/lib.h"
 #include "color/lib.h"
+#include "enter/lib.h"
 #include "imap/lib.h"
 #include "menu/lib.h"
 #include "pager/lib.h"
@@ -57,6 +58,7 @@
 #include "keymap.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "opcodes.h"
 #include "score.h"
 #include "version.h"
 #ifdef USE_INOTIFY
@@ -714,6 +716,140 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
     header_add(&UserHeader, buf->data);
     mutt_debug(LL_NOTIFY, "NT_HEADER_ADD: %s\n", buf->data);
     notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_ADD, &ev_h);
+  }
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_prompt_user - Parse the 'prompt_user' command - Implements Command::parse() - @ingroup command_parse
+ */
+enum CommandResult parse_prompt_user(struct Buffer *buf, struct Buffer *s,
+                                     intptr_t data, struct Buffer *err)
+{
+  char *my_var = NULL;
+  struct HashElem *he_var = NULL;
+  char *prompt = NULL;
+
+  CompletionFlags flags = MUTT_COMP_NO_FLAGS;
+  bool anykey = false;
+
+  while (MoreArgs(s))
+  {
+    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
+
+    if (*buf->data == '-')
+    {
+      // assume all args beginning with - are flags
+      if (strcmp(buf->data, "-hidden") == 0)
+        flags = MUTT_COMP_PASS;
+      else if (strcmp(buf->data, "-file") == 0)
+        flags = MUTT_COMP_FILE_SIMPLE;
+      else if (strcmp(buf->data, "-anykey") == 0)
+        anykey = true;
+      else
+      {
+        FREE(&prompt);
+        FREE(&my_var);
+        buf_printf(err, _("Unknown option: %s"), buf->data);
+        return MUTT_CMD_ERROR;
+      }
+    }
+    else if (!my_var && !he_var)
+    {
+      // first non-flag token is the variable
+      if (mutt_str_startswith(buf->data, "my_"))
+      {
+        my_var = buf_strdup(buf);
+      }
+      else
+      {
+        he_var = cs_subset_lookup(NeoMutt->sub, buf->data);
+        if (!he_var)
+        {
+          buf_printf(err, _("Unknown variable: %s"), buf->data);
+          return MUTT_CMD_ERROR;
+        }
+      }
+    }
+    else if (!prompt)
+    {
+      // second non-flag token is the prompt
+      prompt = buf_strdup(buf);
+    }
+    else
+    {
+      FREE(&prompt);
+      FREE(&my_var);
+      buf_printf(err, _("Unneeded extra argument: %s"), buf->data);
+      return MUTT_CMD_ERROR;
+    }
+  }
+
+  if (!my_var && !he_var)
+  {
+    buf_strcpy(err, _("No variable given"));
+    return MUTT_CMD_ERROR;
+  }
+
+  // clear the token processed last
+  // if we don't buf_get_field will output the last token, or if anykey
+  // is set, we'll set the variable to the prompt appended with the char typed
+  buf_reset(buf);
+
+  // get user response in buf
+  if (anykey)
+  {
+    // manually set msg window text
+    msgwin_set_text(MT_COLOR_MESSAGE, prompt);
+    window_redraw(msgwin_get_window());
+
+    // wait for next keypress
+    enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
+    struct KeyEvent ch = { OP_NULL, OP_NULL };
+    do
+    {
+      ch = mutt_getch();
+    } while (ch.op == OP_TIMEOUT);
+
+    mutt_curses_set_cursor(cursor);
+    msgwin_clear_text();
+
+    // check whether user aborted - don't set var if they did
+    if (ch.op == OP_ABORT)
+    {
+      FREE(&my_var);
+      FREE(&prompt);
+      return MUTT_CMD_SUCCESS;
+    }
+    buf_addch(buf, ch.ch);
+  }
+  else
+  {
+    const int rc = buf_get_field(prompt, buf, flags, false, NULL, NULL, NULL);
+
+    // check whether user aborted - don't set var if they did
+    if (rc == -1)
+    {
+      FREE(&my_var);
+      FREE(&prompt);
+      return MUTT_CMD_SUCCESS;
+    }
+  }
+
+  FREE(&prompt);
+
+  // attempt to set variable
+  if (my_var)
+  {
+    //myvar_set(my_var, buf->data);
+    FREE(&my_var);
+  }
+  else
+  {
+    const int rc = cs_subset_he_string_set(NeoMutt->sub, he_var, buf->data, err);
+    if (CSR_RESULT(rc) != CSR_SUCCESS)
+      return MUTT_CMD_ERROR;
   }
 
   return MUTT_CMD_SUCCESS;
@@ -1488,6 +1624,7 @@ static const struct Command MuttCommands[] = {
   { "my_hdr",              parse_my_hdr,           0 },
   { "named-mailboxes",     parse_mailboxes,        MUTT_NAMED },
   { "nospam",              parse_spam_list,        MUTT_NOSPAM },
+  { "prompt_user",         parse_prompt_user,      0 },
   { "push",                mutt_parse_push,        0 },
   { "reset",               parse_set,              MUTT_SET_RESET },
   { "score",               mutt_parse_score,       0 },

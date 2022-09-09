@@ -10470,6 +10470,31 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
 
     </sect1>
 
+    <sect1 id="prompt-user">
+      <title>User-Defined Prompts</title>
+      <para>
+        Usage:
+      </para>
+      <cmdsynopsis>
+        <command>prompt_user</command>
+        <arg choice="opt">
+          <option>-hidden</option>
+        </arg>
+        <arg choice="opt">
+          <option>-file</option>
+        </arg>
+        <arg choice="opt">
+          <option>-anykey</option>
+        </arg>
+        <arg choice="plain">
+          <replaceable class="parameter">&quot;prompt&quot;</replaceable>
+        </arg>
+      </cmdsynopsis>
+      <para>
+        description
+      </para>
+    </sect1>
+
     <sect1 id="compose-flow">
       <title>Message Composition Flow</title>
         <para>
