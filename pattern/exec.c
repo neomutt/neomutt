@@ -432,7 +432,7 @@ static bool match_reference(struct Pattern *pat, struct ListHead *refs)
  *
  * Test the 'To' and 'Cc' fields of an Address using a test function (the predicate).
  */
-static int mutt_is_predicate_recipient(bool all_addr, struct Envelope *env, addr_predicate_t p)
+static bool mutt_is_predicate_recipient(bool all_addr, struct Envelope *env, addr_predicate_t p)
 {
   struct AddressList *als[] = { &env->to, &env->cc };
   for (size_t i = 0; i < mutt_array_size(als); ++i)
@@ -456,7 +456,7 @@ static int mutt_is_predicate_recipient(bool all_addr, struct Envelope *env, addr
  * - One Address is subscribed (all_addr is false)
  * - All the Addresses are subscribed (all_addr is true)
  */
-int mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *env)
+bool mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *env)
 {
   return mutt_is_predicate_recipient(all_addr, env, &mutt_is_subscribed_list);
 }
@@ -469,7 +469,7 @@ int mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *env)
  * - One Address is a mailing list (all_addr is false)
  * - All the Addresses are mailing lists (all_addr is true)
  */
-int mutt_is_list_recipient(bool all_addr, struct Envelope *env)
+bool mutt_is_list_recipient(bool all_addr, struct Envelope *env)
 {
   return mutt_is_predicate_recipient(all_addr, env, &mutt_is_mail_list);
 }
@@ -661,7 +661,7 @@ static void set_pattern_cache_value(int *cache_entry, int value)
  * @retval 1 The cache value is set and has a true value
  * @retval 0 otherwise (even if unset!)
  */
-static int get_pattern_cache_value(int cache_entry)
+static bool get_pattern_cache_value(int cache_entry)
 {
   return cache_entry == 2;
 }
@@ -941,7 +941,7 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       if (!e->env)
         return false;
 
-      int result;
+      bool result;
       if (cache)
       {
         int *cache_entry = pat->all_addr ? &cache->list_all : &cache->list_one;
@@ -961,7 +961,7 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       if (!e->env)
         return false;
 
-      int result;
+      bool result;
       if (cache)
       {
         int *cache_entry = pat->all_addr ? &cache->sub_all : &cache->sub_one;
@@ -981,7 +981,7 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       if (!e->env)
         return false;
 
-      int result;
+      bool result;
       if (cache)
       {
         int *cache_entry = pat->all_addr ? &cache->pers_recip_all : &cache->pers_recip_one;
@@ -1001,7 +1001,7 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       if (!e->env)
         return false;
 
-      int result;
+      bool result;
       if (cache)
       {
         int *cache_entry = pat->all_addr ? &cache->pers_from_all : &cache->pers_from_one;

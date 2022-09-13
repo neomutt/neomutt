@@ -707,8 +707,6 @@ int enter_function_dispatcher(struct MuttWindow *win, int op)
     return FR_UNKNOWN;
 
   struct EnterWindowData *wdata = win->wdata;
-  if (!wdata)
-    return FR_UNKNOWN;
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; EnterFunctions[i].op != OP_NULL; i++)

@@ -184,7 +184,7 @@ static int string_string_plus_equals(const struct ConfigSet *cs, void *var,
                                      const char *value, struct Buffer *err)
 {
   /* Skip if the value is missing or empty string*/
-  if (!value || (value && (value[0] == '\0')))
+  if (!value || (value[0] == '\0'))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   int rc = CSR_SUCCESS;

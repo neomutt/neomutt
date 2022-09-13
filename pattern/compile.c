@@ -850,7 +850,7 @@ static void order_range(struct Pattern *pat)
 {
   if (pat->min <= pat->max)
     return;
-  int num = pat->min;
+  long num = pat->min;
   pat->min = pat->max;
   pat->max = num;
 }
@@ -893,7 +893,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
   /* Snarf the contents of the two sides of the range. */
   pat->min = scan_range_slot(s, pmatch, pspec->lgrp, RANGE_S_LEFT, kind, m, menu);
   pat->max = scan_range_slot(s, pmatch, pspec->rgrp, RANGE_S_RIGHT, kind, m, menu);
-  mutt_debug(LL_DEBUG1, "pat->min=%d pat->max=%d\n", pat->min, pat->max);
+  mutt_debug(LL_DEBUG1, "pat->min=%ld pat->max=%ld\n", pat->min, pat->max);
 
   /* Special case for a bare 0. */
   if ((kind == RANGE_K_BARE) && (pat->min == 0) && (pat->max == 0))

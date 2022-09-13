@@ -307,7 +307,7 @@ static int check_protected_header_marker(const char *p)
  * Checks if line matches the `$quote_regex` and doesn't match `$smileys`.
  * This is used by the pager for calling qstyle_classify.
  */
-int mutt_is_quote_line(char *line, regmatch_t *pmatch)
+bool mutt_is_quote_line(char *line, regmatch_t *pmatch)
 {
   bool is_quote = false;
   const struct Regex *c_smileys = cs_subset_regex(NeoMutt->sub, "smileys");

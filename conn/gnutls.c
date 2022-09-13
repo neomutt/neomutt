@@ -184,10 +184,10 @@ static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *buf,
  * tls_check_stored_hostname - Does the hostname match a stored certificate?
  * @param cert     Certificate
  * @param hostname Hostname
- * @retval 1 Hostname match found
- * @retval 0 Error, or no match
+ * @retval true  Hostname match found
+ * @retval false Error, or no match
  */
-static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hostname)
+static bool tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hostname)
 {
   char *linestr = NULL;
   size_t linestrsize = 0;
@@ -196,7 +196,7 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
   const char *const c_certificate_file = cs_subset_path(NeoMutt->sub, "certificate_file");
   FILE *fp = mutt_file_fopen(c_certificate_file, "r");
   if (!fp)
-    return 0;
+    return false;
 
   char buf[80] = { 0 };
   buf[0] = '\0';
@@ -215,7 +215,7 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
       {
         FREE(&linestr);
         mutt_file_fclose(&fp);
-        return 1;
+        return true;
       }
     }
   }
@@ -223,7 +223,7 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
   mutt_file_fclose(&fp);
 
   /* not found a matching name */
-  return 0;
+  return false;
 }
 
 /**

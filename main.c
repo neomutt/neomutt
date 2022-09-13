@@ -812,9 +812,11 @@ main
     if (!cli_nntp)
       cli_nntp = mutt_str_getenv("NNTPSERVER");
 
-    char buf[1024] = { 0 };
     if (!cli_nntp)
+    {
+      char buf[1024] = { 0 };
       cli_nntp = mutt_file_read_keyword(SYSCONFDIR "/nntpserver", buf, sizeof(buf));
+    }
 
     if (cli_nntp)
     {

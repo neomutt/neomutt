@@ -295,7 +295,6 @@ struct KeyEvent mutt_getch(void)
     /* send ALT-x as ESC-x */
     ch &= ~0x80;
     mutt_unget_ch(ch);
-    ch = '\033';
     return (struct KeyEvent){ .ch = '\033' /* Escape */, .op = OP_NULL };
   }
 
@@ -643,7 +642,7 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
 {
   wchar_t wc = 0;
   int w;
-  size_t k, k2;
+  size_t k;
   char scratch[MB_LEN_MAX] = { 0 };
   mbstate_t mbstate1 = { 0 };
   mbstate_t mbstate2 = { 0 };
@@ -688,8 +687,12 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
     }
     if (w >= 0)
     {
-      if ((w > max_width) || ((k2 = wcrtomb(scratch, wc, &mbstate2)) > buflen))
+      if (w > max_width)
         continue;
+      size_t k2 = wcrtomb(scratch, wc, &mbstate2);
+      if ((k2 == (size_t) -1) || (k2 > buflen))
+        continue;
+
       min_width -= w;
       max_width -= w;
       strncpy(p, scratch, k2);

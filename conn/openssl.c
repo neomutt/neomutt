@@ -112,9 +112,9 @@ struct SslSockData
  * Previously the code used this form:
  *     SSL_CTX_load_verify_locations (ssldata->ctx, `$certificate_file`, NULL);
  */
-static int ssl_load_certificates(SSL_CTX *ctx)
+static bool ssl_load_certificates(SSL_CTX *ctx)
 {
-  int rc = 1;
+  bool rc = true;
 
   mutt_debug(LL_DEBUG2, "loading trusted certificates\n");
   X509_STORE *store = SSL_CTX_get_cert_store(ctx);
@@ -146,7 +146,7 @@ static int ssl_load_certificates(SSL_CTX *ctx)
   }
   /* PEM_read_X509 sets the error NO_START_LINE on eof */
   if (ERR_GET_REASON(ERR_peek_last_error()) != PEM_R_NO_START_LINE)
-    rc = 0;
+    rc = false;
   ERR_clear_error();
 
   X509_free(cert);
@@ -158,12 +158,12 @@ static int ssl_load_certificates(SSL_CTX *ctx)
 /**
  * ssl_set_verify_partial - Allow verification using partial chains (with no root)
  * @param ctx SSL context
- * @retval  0 Success
- * @retval -1 Error
+ * @retval true  Success
+ * @retval false Error
  */
-static int ssl_set_verify_partial(SSL_CTX *ctx)
+static bool ssl_set_verify_partial(SSL_CTX *ctx)
 {
-  int rc = 0;
+  bool rc = true;
 #ifdef HAVE_SSL_PARTIAL_CHAIN
   X509_VERIFY_PARAM *param = NULL;
 
@@ -177,14 +177,14 @@ static int ssl_set_verify_partial(SSL_CTX *ctx)
       if (SSL_CTX_set1_param(ctx, param) == 0)
       {
         mutt_debug(LL_DEBUG2, "SSL_CTX_set1_param() failed\n");
-        rc = -1;
+        rc = false;
       }
       X509_VERIFY_PARAM_free(param);
     }
     else
     {
       mutt_debug(LL_DEBUG2, "X509_VERIFY_PARAM_new() failed\n");
-      rc = -1;
+      rc = false;
     }
   }
 #endif
@@ -1263,7 +1263,7 @@ static int ssl_setup(struct Connection *conn)
     SSL_CTX_set_cipher_list(sockdata(conn)->sctx, c_ssl_ciphers);
   }
 
-  if (ssl_set_verify_partial(sockdata(conn)->sctx))
+  if (!ssl_set_verify_partial(sockdata(conn)->sctx))
   {
     mutt_error(_("Warning: error enabling ssl_verify_partial_chains"));
   }

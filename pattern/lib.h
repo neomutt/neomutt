@@ -78,8 +78,8 @@ struct Pattern
   bool dynamic      : 1;         ///< Evaluate date ranges at run time
   bool sendmode     : 1;         ///< Evaluate searches in send-mode
   bool is_multi     : 1;         ///< Multiple case (only for ~I pattern now)
-  int min;                       ///< Minimum for range checks
-  int max;                       ///< Maximum for range checks
+  long min;                      ///< Minimum for range checks
+  long max;                      ///< Maximum for range checks
   struct PatternList *child;     ///< Arguments to logical operation
   union {
     regex_t *regex;              ///< Compiled regex, for non-pattern matching
@@ -185,8 +185,8 @@ void mutt_pattern_free(struct PatternList **pat);
 bool dlg_select_pattern(char *buf, size_t buflen);
 
 int mutt_which_case(const char *s);
-int mutt_is_list_recipient(bool all_addr, struct Envelope *env);
-int mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *env);
+bool mutt_is_list_recipient(bool all_addr, struct Envelope *env);
+bool mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *env);
 int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt);
 int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Menu *menu);
 int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op);

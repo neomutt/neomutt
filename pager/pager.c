@@ -315,8 +315,6 @@ static int pager_global_observer(struct NotifyCallback *nc)
     return 0;
 
   struct MuttWindow *win_pager = nc->global_data;
-  if (!win_pager)
-    return 0;
 
   struct PagerPrivateData *priv = win_pager->wdata;
   if (!priv)

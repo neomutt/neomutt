@@ -423,18 +423,15 @@ bool win_chain_validate(struct MuttWindow *win)
   if (cd->chain_len == 0)
     return false;
 
-  if (cd->chain_len != 0)
+  int last_index = cd->chain[cd->chain_len - 1];
+  if (last_index != 0)
   {
-    int last_index = cd->chain[cd->chain_len - 1];
-    if (last_index != 0)
+    struct Remailer **rp = ARRAY_GET(cd->ra, last_index);
+    if ((*rp)->caps & MIX_CAP_MIDDLEMAN)
     {
-      struct Remailer **rp = ARRAY_GET(cd->ra, last_index);
-      if ((*rp)->caps & MIX_CAP_MIDDLEMAN)
-      {
-        mutt_error(_("Error: %s can't be used as the final remailer of a chain"),
-                   (*rp)->shortname);
-        return false;
-      }
+      mutt_error(_("Error: %s can't be used as the final remailer of a chain"),
+                 (*rp)->shortname);
+      return false;
     }
   }
 

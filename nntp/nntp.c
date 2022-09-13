@@ -1195,7 +1195,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
     }
     if (rc == 0)
     {
-      for (current = first; (current <= last) && (rc == 0); current++)
+      for (current = first; (current <= last); current++)
       {
         if (fc.messages[current - first])
           continue;
@@ -1467,13 +1467,11 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
     m->msg_count = 0;
     m->msg_tagged = 0;
 
-    if (mdata->last_message < mdata->last_loaded)
-    {
-      mdata->last_loaded = mdata->first_message - 1;
-      const long c_nntp_context = cs_subset_long(NeoMutt->sub, "nntp_context");
-      if (c_nntp_context && (mdata->last_message - mdata->last_loaded > c_nntp_context))
-        mdata->last_loaded = mdata->last_message - c_nntp_context;
-    }
+    mdata->last_loaded = mdata->first_message - 1;
+    const long c_nntp_context = cs_subset_long(NeoMutt->sub, "nntp_context");
+    if (c_nntp_context && (mdata->last_message - mdata->last_loaded > c_nntp_context))
+      mdata->last_loaded = mdata->last_message - c_nntp_context;
+
     rc = MX_STATUS_REOPENED;
   }
 

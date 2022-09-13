@@ -510,22 +510,16 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   if (key->issuer_serial)
   {
     s = key->issuer_serial;
-    if (s)
-    {
-      fprintf(fp, "%*s0x%s\n", KeyInfoPadding[KIP_SERIAL_NO],
-              _(KeyInfoPrompts[KIP_SERIAL_NO]), s);
-    }
+    fprintf(fp, "%*s0x%s\n", KeyInfoPadding[KIP_SERIAL_NO],
+            _(KeyInfoPrompts[KIP_SERIAL_NO]), s);
   }
 
   if (key->issuer_name)
   {
     s = key->issuer_name;
-    if (s)
-    {
-      fprintf(fp, "%*s", KeyInfoPadding[KIP_ISSUED_BY], _(KeyInfoPrompts[KIP_ISSUED_BY]));
-      parse_and_print_user_id(fp, s);
-      putc('\n', fp);
-    }
+    fprintf(fp, "%*s", KeyInfoPadding[KIP_ISSUED_BY], _(KeyInfoPrompts[KIP_ISSUED_BY]));
+    parse_and_print_user_id(fp, s);
+    putc('\n', fp);
   }
 
   /* For PGP we list all subkeys. */

@@ -1530,7 +1530,7 @@ int mx_path_pretty(char *buf, size_t buflen, const char *folder)
 /**
  * mx_path_parent - Find the parent of a mailbox path - Wrapper for MxOps::path_parent()
  */
-int mx_path_parent(char *buf, size_t buflen)
+int mx_path_parent(const char *buf, size_t buflen)
 {
   if (!buf)
     return -1;

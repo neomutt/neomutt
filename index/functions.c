@@ -2609,7 +2609,6 @@ static int op_post(struct IndexSharedData *shared, struct IndexPrivateData *priv
 static int op_main_entire_thread(struct IndexSharedData *shared,
                                  struct IndexPrivateData *priv, int op)
 {
-  char buf[PATH_MAX] = { 0 };
   if (shared->mailbox->type != MUTT_NOTMUCH)
   {
     if (((shared->mailbox->type != MUTT_MH) && (shared->mailbox->type != MUTT_MAILDIR)) ||
@@ -2618,6 +2617,7 @@ static int op_main_entire_thread(struct IndexSharedData *shared,
       mutt_message(_("No virtual folder and no Message-Id, aborting"));
       return FR_ERROR;
     } // no virtual folder, but we have message-id, reconstruct thread on-the-fly
+    char buf[PATH_MAX] = { 0 };
     strncpy(buf, "id:", sizeof(buf));
     int msg_id_offset = 0;
     if ((shared->email->env->message_id)[0] == '<')
