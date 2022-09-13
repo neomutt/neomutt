@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2022-09-13 09:49+0100\n"
-"PO-Revision-Date: 2022-04-21 23:00+0300\n"
+"PO-Revision-Date: 2022-09-13 23:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
 "Language: tr\n"
@@ -1650,17 +1650,16 @@ msgstr "Geçersiz sıralama türü: %ld"
 #: conn/accountcmd.c:79
 #, c-format
 msgid "Line is malformed: expected <key: val>, got <%s>"
-msgstr ""
+msgstr "Satır hatalı oluşturulmuş: <ana: değ> bekleniyordu, <%s> alındı"
 
 #: conn/accountcmd.c:119
 #, c-format
 msgid "Unhandled key in line <%s: %s>"
-msgstr ""
+msgstr "<%s: %s> satırında işlenmemiş anahtar"
 
 #: conn/accountcmd.c:140
-#, fuzzy
 msgid "Unable to run account command"
-msgstr "Yenile komutu çalıştırılamıyor"
+msgstr "Hesap komutu çalıştırılamıyor"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:78
@@ -5779,9 +5778,8 @@ msgid "delete chars from the cursor to the end of the word"
 msgstr "imleçten sözcük sonuna kadar olan karakterleri sil"
 
 #: opcodes.h:140
-#, fuzzy
 msgid "delete chars from cursor to beginning the line"
-msgstr "imleçten satır sonuna kadar olan karakterleri sil"
+msgstr "imleçten satır başına kadar olan karakterleri sil"
 
 #: opcodes.h:141
 msgid "delete all chars on the line"
@@ -7242,7 +7240,7 @@ msgstr "%s artık mevcut değil"
 #: send/config.c:99
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
-msgstr ""
+msgstr "%s seçeneği, kabuk üst karakterleri içermemeli: %c"
 
 #: send/send.c:339
 msgid "No subject, abort?"
