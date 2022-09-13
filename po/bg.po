@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2022-06-28 18:23+0100\n"
+"POT-Creation-Date: 2022-09-13 09:49+0100\n"
 "PO-Revision-Date: 2016-11-09 22:45+0000\n"
 "Last-Translator: Velko Hristov <hristov@informatik.hu-berlin.de>\n"
 "Language-Team: none\n"
@@ -134,11 +134,11 @@ msgstr "Избор"
 msgid "Help"
 msgstr "Помощ"
 
-#: alias/dlg_alias.c:311
+#: alias/dlg_alias.c:314
 msgid "You have no aliases"
 msgstr "В адресната книга няма записи"
 
-#: alias/dlg_alias.c:316
+#: alias/dlg_alias.c:319
 msgid "Aliases"
 msgstr "Псевдоними"
 
@@ -162,16 +162,16 @@ msgstr "Търсене"
 msgid "Waiting for response..."
 msgstr "Чакане на отговор..."
 
-#: alias/dlg_query.c:356
+#: alias/dlg_query.c:357
 #, fuzzy
 msgid "Query"
 msgstr "Запитване: "
 
-#: alias/dlg_query.c:448 alias/dlg_query.c:536
+#: alias/dlg_query.c:449 alias/dlg_query.c:537
 msgid "Query command not defined"
 msgstr "Команда за запитване не е дефинирана"
 
-#: alias/dlg_query.c:545 alias/functions.c:193 alias/functions.c:212
+#: alias/dlg_query.c:546 alias/functions.c:193 alias/functions.c:212
 msgid "Query: "
 msgstr "Запитване: "
 
@@ -196,7 +196,7 @@ msgid "adu"
 msgstr ""
 
 #. L10N: ask for a limit to apply
-#: alias/gui.c:79 index/functions.c:1562
+#: alias/gui.c:81 index/functions.c:1583
 #, c-format
 msgid "Limit: %s"
 msgstr "Ограничаване: %s"
@@ -237,7 +237,7 @@ msgstr "Pipe"
 msgid "Print"
 msgstr "Отпечатване"
 
-#: attach/dlg_attach.c:479
+#: attach/dlg_attach.c:482
 msgid "Attachments"
 msgstr "Приложения"
 
@@ -246,11 +246,11 @@ msgstr "Приложения"
 msgid "Not available in this menu"
 msgstr "Функцията не е достъпна от това меню"
 
-#: attach/functions.c:52 index/functions.c:2797
+#: attach/functions.c:52 index/functions.c:2818
 msgid "Function not permitted in attach-message mode"
 msgstr "Тази функция не може да се изпълни при прилагане на писма"
 
-#: attach/functions.c:115 index/functions.c:2791 mx.c:941
+#: attach/functions.c:115 index/functions.c:2812 mx.c:941
 msgid "Mailbox is read-only"
 msgstr "Тази пощенска кутия е само за четене"
 
@@ -281,7 +281,7 @@ msgstr "Изтриването на приложения от шифровани
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Поддържа се само изтриване на приложения от съставни писма"
 
-#: attach/functions.c:569 index/functions.c:2556
+#: attach/functions.c:569 index/functions.c:2577
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
@@ -295,8 +295,8 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Записът \"compose\" в mailcap изисква %%s"
 
 #: attach/mutt_attach.c:159 attach/mutt_attach.c:298 compmbox/compress.c:343
-#: compose/functions.c:1716 gui/curs_lib.c:321 index/dlg_index.c:1143
-#: index/dlg_index.c:1189 pager/dlg_pager.c:469 pager/do_pager.c:168
+#: compose/functions.c:1716 gui/curs_lib.c:321 index/dlg_index.c:1179
+#: index/dlg_index.c:1225 pager/dlg_pager.c:469 pager/do_pager.c:171
 #: pager/message.c:336 send/sendlib.c:572
 #, c-format
 msgid "Error running \"%s\""
@@ -438,7 +438,7 @@ msgstr "%s не съществува. Да бъде ли създаден?"
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
 #: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:929
-#: nntp/newsrc.c:1118
+#: nntp/newsrc.c:1119
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "Грешка при създаване на %s: %s"
@@ -607,7 +607,7 @@ msgid "inactive"
 msgstr ""
 
 #. L10N: Autocrypt Account Management Menu title
-#: autocrypt/dlg_autocrypt.c:325
+#: autocrypt/dlg_autocrypt.c:328
 msgid "Autocrypt Accounts"
 msgstr ""
 
@@ -848,50 +848,50 @@ msgstr "Абониране за %s..."
 msgid "Unsubscribe pattern: "
 msgstr "Отписване от %s..."
 
-#: color/command.c:154
+#: color/command.c:155
 #, c-format
 msgid "%s: color not supported by term"
 msgstr "%s: терминалът не поддържа цветове"
 
-#: color/command.c:161
+#: color/command.c:162
 #, c-format
 msgid "%s: no such color"
 msgstr "%s: няма такъв цвят"
 
-#: color/command.c:220 color/command.c:260 color/command.c:307
-#: color/command.c:379 color/command.c:472 color/command.c:535
-#: color/command.c:560 command_parse.c:304 command_parse.c:326
-#: command_parse.c:471 command_parse.c:1056 command_parse.c:1143 hook.c:99
-#: hook.c:155 hook.c:164 hook.c:178 hook.c:424 hook.c:440 keymap.c:1189
+#: color/command.c:221 color/command.c:263 color/command.c:315
+#: color/command.c:387 color/command.c:480 color/command.c:543
+#: color/command.c:568 command_parse.c:346 command_parse.c:368
+#: command_parse.c:513 command_parse.c:1098 command_parse.c:1185 hook.c:101
+#: hook.c:157 hook.c:166 hook.c:180 hook.c:429 hook.c:445 keymap.c:1191
 #: score.c:95 subjectrx.c:72 subjectrx.c:100 subjectrx.c:108
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: недостатъчно аргументи"
 
-#: color/command.c:240
+#: color/command.c:243
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: няма такъв атрибут"
 
-#: color/command.c:365 color/command.c:388 color/command.c:399
-#: color/command.c:443
+#: color/command.c:373 color/command.c:396 color/command.c:407
+#: color/command.c:451
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: няма такъв обект"
 
-#: color/command.c:569 color/command.c:628 command_parse.c:350
-#: command_parse.c:1333 command_parse.c:1669 hook.c:104 hook.c:185 hook.c:447
-#: keymap.c:1121 keymap.c:1294 keymap.c:1456 keymap.c:1537 mutt_lua.c:515
+#: color/command.c:577 color/command.c:636 command_parse.c:392
+#: command_parse.c:1375 command_parse.c:1711 hook.c:106 hook.c:187 hook.c:452
+#: keymap.c:1123 keymap.c:1296 keymap.c:1458 keymap.c:1539 mutt_lua.c:515
 #: score.c:103
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: твърде много аргументи"
 
-#: color/command.c:587
+#: color/command.c:595
 msgid "default colors not supported"
 msgstr "стандартните цветове не се поддържат"
 
-#: color/command.c:618
+#: color/command.c:626
 #, fuzzy, c-format
 msgid "%s: invalid number: %s"
 msgstr "%d: невалиден номер на писмо.\n"
@@ -915,163 +915,163 @@ msgstr ""
 msgid "out of arguments"
 msgstr "недостатъчно аргументи"
 
-#: command_parse.c:168
+#: command_parse.c:210
 #, c-format
 msgid "Error: Can't build path of '%s'"
 msgstr ""
 
-#: command_parse.c:181
+#: command_parse.c:223
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
 msgstr ""
 
-#: command_parse.c:221
+#: command_parse.c:263
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Грешка в %s, ред %d: %s"
 
-#: command_parse.c:232
+#: command_parse.c:274
 #, fuzzy, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Грешка в %s, ред %d: %s"
 
-#: command_parse.c:261
+#: command_parse.c:303
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: грешки в %s"
 
-#: command_parse.c:262
+#: command_parse.c:304
 #, fuzzy, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: вмъкването е прекъснато поради твърде много грешки в %s"
 
-#: command_parse.c:271
+#: command_parse.c:313
 #, fuzzy, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "source: грешки в %s"
 msgstr[1] "source: грешки в %s"
 
-#: command_parse.c:387
+#: command_parse.c:429
 #, c-format
 msgid "%sgroup: missing -rx or -addr"
 msgstr ""
 
-#: command_parse.c:413
+#: command_parse.c:455
 #, fuzzy, c-format
 msgid "%sgroup: warning: bad IDN '%s'"
 msgstr "Предупреждение: Лош IDN '%s' в псевдонима '%s'"
 
-#: command_parse.c:482
+#: command_parse.c:524
 #, c-format
 msgid "Error: %s"
 msgstr ""
 
-#: command_parse.c:644
+#: command_parse.c:686
 msgid "invalid header field"
 msgstr "невалидно заглавно поле"
 
-#: command_parse.c:715
+#: command_parse.c:757
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
 msgstr ""
 
-#: command_parse.c:749 command_parse.c:889 command_parse.c:999
+#: command_parse.c:791 command_parse.c:931 command_parse.c:1041
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: непозната променлива"
 
-#: command_parse.c:764 command_parse.c:1087
+#: command_parse.c:806 command_parse.c:1129
 msgid "Can't use a prefix when querying a variable"
 msgstr ""
 
-#: command_parse.c:770 command_parse.c:1067 command_parse.c:1081
+#: command_parse.c:812 command_parse.c:1109 command_parse.c:1123
 #, c-format
 msgid "Can't query a variable with the '%s' command"
 msgstr ""
 
-#: command_parse.c:782
+#: command_parse.c:824
 msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr ""
 
-#: command_parse.c:788 command_parse.c:819
+#: command_parse.c:830 command_parse.c:861
 #, c-format
 msgid "Can't set a variable with the '%s' command"
 msgstr ""
 
-#: command_parse.c:799
+#: command_parse.c:841
 msgid "Can't decrement a my_ variable"
 msgstr ""
 
-#: command_parse.c:813
+#: command_parse.c:855
 msgid "Can't use prefix when setting a variable"
 msgstr ""
 
-#: command_parse.c:832
+#: command_parse.c:874
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
 msgstr ""
 
-#: command_parse.c:836
+#: command_parse.c:878
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
 msgstr ""
 
-#: command_parse.c:1119 command_parse.c:1127
+#: command_parse.c:1161 command_parse.c:1169
 #, c-format
 msgid "%s is unset"
 msgstr "%s е изключен"
 
-#: command_parse.c:1167 mutt_lua.c:510
+#: command_parse.c:1209 mutt_lua.c:510
 #, c-format
 msgid "source: error at %s"
 msgstr "source: грешка при %s"
 
-#: command_parse.c:1175
+#: command_parse.c:1217
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced"
 msgstr "Писмата не са отпечатани"
 
-#: command_parse.c:1198
+#: command_parse.c:1240
 #, fuzzy
 msgid "spam: no matching pattern"
 msgstr "маркира писма, отговарящи на шаблон"
 
-#: command_parse.c:1200
+#: command_parse.c:1242
 #, fuzzy
 msgid "nospam: no matching pattern"
 msgstr "премахва маркировката от писма, отговарящи на шаблон"
 
-#: command_parse.c:1342 imap/imap.c:1327
+#: command_parse.c:1384 imap/imap.c:1327
 #, fuzzy, c-format
 msgid "Subscribed to %s"
 msgstr "Абониране за %s..."
 
-#: command_parse.c:1346
+#: command_parse.c:1388
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Абониране за %s..."
 
-#: command_parse.c:1354 command_parse.c:1690
+#: command_parse.c:1396 command_parse.c:1732
 #, fuzzy
 msgid "No folder specified"
 msgstr "Липсва тема."
 
-#: command_parse.c:1389
+#: command_parse.c:1431
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
 msgstr ""
 
-#: command_parse.c:1431
+#: command_parse.c:1473
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
 msgstr ""
 
-#: command_parse.c:1678 imap/imap.c:1329
+#: command_parse.c:1720 imap/imap.c:1329
 #, fuzzy, c-format
 msgid "Unsubscribed from %s"
 msgstr "Отписване от %s..."
 
-#: command_parse.c:1682
+#: command_parse.c:1724
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Отписване от %s..."
@@ -1382,7 +1382,7 @@ msgstr "Описание"
 msgid "Newsgroups"
 msgstr "Липсва тема."
 
-#: compose/compose.c:269
+#: compose/compose.c:272
 msgid "-- Attachments"
 msgstr "-- Приложения"
 
@@ -2398,8 +2398,8 @@ msgid_plural "(+%d more)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: flags.c:386 index/functions.c:793 index/functions.c:896
-#: index/functions.c:912 index/functions.c:1047 mutt_thread.c:1257
+#: flags.c:386 index/functions.c:800 index/functions.c:903
+#: index/functions.c:919 index/functions.c:1054 mutt_thread.c:1257
 #: mutt_thread.c:1323 mutt_thread.c:1409
 msgid "Threading is not enabled"
 msgstr "Показването на нишки не е включено"
@@ -2685,39 +2685,39 @@ msgstr ""
 #: ncrypt/smime.c:898 ncrypt/smime.c:990 ncrypt/smime.c:1100
 #: ncrypt/smime.c:1166 ncrypt/smime.c:1173 ncrypt/smime.c:1376
 #: ncrypt/smime.c:1779 ncrypt/smime.c:1856 ncrypt/smime.c:1863
-#: ncrypt/smime.c:1967 ncrypt/smime.c:2097 ncrypt/smime.c:2113 nntp/nntp.c:1292
-#: nntp/nntp.c:2141 pattern/exec.c:147 pop/pop.c:123
+#: ncrypt/smime.c:1967 ncrypt/smime.c:2097 ncrypt/smime.c:2113 nntp/nntp.c:1297
+#: nntp/nntp.c:2146 pattern/exec.c:147 pop/pop.c:123
 msgid "Can't create temporary file"
 msgstr "Грешка при създаване на временен файл"
 
-#: hook.c:197
+#: hook.c:199
 msgid "current mailbox shortcut '^' is unset"
 msgstr ""
 
-#: hook.c:209
+#: hook.c:211
 msgid "mailbox shortcut expanded to empty regex"
 msgstr ""
 
-#: hook.c:229
+#: hook.c:231
 msgid "badly formatted command string"
 msgstr ""
 
-#: hook.c:542
+#: hook.c:548
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: Не може да извършите unhook * от hook"
 
-#: hook.c:555
+#: hook.c:561
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: непознат hook тип: %s"
 
-#: hook.c:565
+#: hook.c:571
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s"
 msgstr "unhook: Не може да изтриете %s от %s"
 
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
-#: icommands.c:274 keymap.c:1166 keymap.c:1386
+#: icommands.c:274 keymap.c:1168 keymap.c:1388
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s:  няма такова меню"
@@ -2856,11 +2856,11 @@ msgstr "Неуспешен SSL: %s"
 msgid "Closing connection to %s..."
 msgstr "Затваряне на връзката към %s..."
 
-#: imap/imap.c:777 nntp/nntp.c:1784 pop/lib.c:332 send/smtp.c:847
+#: imap/imap.c:777 nntp/nntp.c:1789 pop/lib.c:332 send/smtp.c:847
 msgid "Secure connection with TLS?"
 msgstr "Желаете ли да установите сигурна връзка с TLS?"
 
-#: imap/imap.c:793 nntp/nntp.c:1807 pop/lib.c:353 send/smtp.c:864
+#: imap/imap.c:793 nntp/nntp.c:1812 pop/lib.c:353 send/smtp.c:864
 msgid "Could not negotiate TLS connection"
 msgstr "Не може да бъде установена TLS връзка"
 
@@ -2878,14 +2878,14 @@ msgstr "Абониране за %s..."
 msgid "Unsubscribing from %s..."
 msgstr "Отписване от %s..."
 
-#: imap/imap.c:1480 imap/message.c:1759
+#: imap/imap.c:1480 imap/message.c:1770
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Копиране на %d съобщения в %s..."
 msgstr[1] "Копиране на %d съобщения в %s..."
 
-#: imap/imap.c:1497 imap/imap.c:2150 imap/message.c:1798 muttlib.c:1414
+#: imap/imap.c:1497 imap/imap.c:2150 imap/message.c:1809 muttlib.c:1414
 #, c-format
 msgid "Create %s?"
 msgstr "Желаете ли да създадете %s?"
@@ -2925,7 +2925,7 @@ msgstr "Премахване на съобщенията от сървъра..."
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbo: неуспешен EXPUNGE"
 
-#: imap/imap.c:1951 nntp/nntp.c:2362
+#: imap/imap.c:1951 nntp/nntp.c:2367
 #, c-format
 msgid "Selecting %s..."
 msgstr "Избиране на %s..."
@@ -2973,26 +2973,26 @@ msgstr "Грешка при повторното отваряне на поще�
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Грешка при получаване на заглавните части от тази версия на IMAP-сървъра"
 
-#: imap/message.c:1143 index/functions.c:2316 nntp/nntp.c:1224 pop/pop.c:368
+#: imap/message.c:1143 index/functions.c:2337 nntp/nntp.c:1229 pop/pop.c:368
 #, fuzzy
 msgid "Fetching message headers..."
 msgstr "Изтегляне на заглавните части... [%d/%d]"
 
-#: imap/message.c:1581
+#: imap/message.c:1592
 #, fuzzy
 msgid "Uploading message..."
 msgstr "Зареждане на писмо на сървъра ..."
 
-#: imap/message.c:1765
+#: imap/message.c:1776
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Копиране на %d-то съобщение в %s..."
 
-#: imap/message.c:1990 imap/message.c:2053 nntp/nntp.c:2598 pop/pop.c:1046
+#: imap/message.c:2001 nntp/nntp.c:2603 pop/pop.c:1046
 msgid "Fetching message..."
 msgstr "Изтегляне на писмо..."
 
-#: imap/message.c:2041 pop/pop.c:1025
+#: imap/message.c:2052 pop/pop.c:1025
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Невалиден индекс на писмо. Опитайте да отворите отново пощенската кутия."
 
@@ -3042,41 +3042,41 @@ msgstr "Желаете ли да проследите до %s%s?"
 msgid "%s: Operation not permitted by ACL"
 msgstr ""
 
-#: index/dlg_index.c:705
+#: index/dlg_index.c:741
 msgid "Failed to create query, aborting"
 msgstr ""
 
-#: index/dlg_index.c:750 muttlib.c:1398 mx.c:221 mx.c:359
+#: index/dlg_index.c:786 muttlib.c:1398 mx.c:221 mx.c:359
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s не е пощенска кутия"
 
-#: index/dlg_index.c:1123
+#: index/dlg_index.c:1159
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Пощенската кутия е променена от друга програма. Маркировките може да са остарели."
 
-#: index/dlg_index.c:1132 pager/dlg_pager.c:443
+#: index/dlg_index.c:1168 pager/dlg_pager.c:443
 msgid "New mail in this mailbox"
 msgstr "Нови писма в тази пощенска кутия"
 
-#: index/dlg_index.c:1151
+#: index/dlg_index.c:1187
 msgid "Mailbox was externally modified"
 msgstr "Пощенската кутия е променена от друга програма"
 
-#: index/dlg_index.c:1262 index/functions.c:2772
+#: index/dlg_index.c:1298 index/functions.c:2793
 msgid "No mailbox is open"
 msgstr "Няма отворена пощенска кутия"
 
-#: index/dlg_index.c:1269
+#: index/dlg_index.c:1305
 msgid "No tagged messages"
 msgstr "Няма маркирани писма"
 
-#: index/dlg_index.c:1273 index/functions.c:673
+#: index/dlg_index.c:1309 index/functions.c:680
 msgid "Nothing to do"
 msgstr "Няма какво да се прави"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:280
+#: index/functions.c:287
 #, fuzzy
 msgid "Can't delete message"
 msgstr "Няма възстановени писма."
@@ -3085,14 +3085,14 @@ msgstr "Няма възстановени писма."
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:320 index/functions.c:954
+#: index/functions.c:327 index/functions.c:961
 #, fuzzy
 msgid "Can't delete messages"
 msgstr "Няма възстановени писма."
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index/functions.c:445
+#: index/functions.c:452
 #, fuzzy, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -3102,169 +3102,169 @@ msgstr[1] "Пощенската кутия е непроменена"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index/functions.c:455
+#: index/functions.c:462
 #, fuzzy
 msgid "No labels changed"
 msgstr "Пощенската кутия е непроменена"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:475
+#: index/functions.c:482
 #, fuzzy
 msgid "Can't edit message"
 msgstr "Невъзможен запис на писмо"
 
-#: index/functions.c:521
+#: index/functions.c:528
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Желаете ли да напуснете NeoMutt без да запишете промените?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:558
+#: index/functions.c:565
 #, fuzzy
 msgid "Can't flag message"
 msgstr "показва писмо"
 
-#: index/functions.c:669
+#: index/functions.c:676
 msgid "Jump to message: "
 msgstr "Скок към писмо номер: "
 
-#: index/functions.c:678
+#: index/functions.c:685
 msgid "Argument must be a message number"
 msgstr "Аргументът трябва да бъде номер на писмо"
 
-#: index/functions.c:682
+#: index/functions.c:689
 msgid "Invalid message number"
 msgstr "Грешен номер на писмо"
 
-#: index/functions.c:686
+#: index/functions.c:693
 msgid "That message is not visible"
 msgstr "Това писмо не е видимо"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:787
+#: index/functions.c:794
 #, fuzzy
 msgid "Can't break thread"
 msgstr "Филтърът не може да бъде създаден"
 
-#: index/functions.c:805
+#: index/functions.c:812
 msgid "Thread broken"
 msgstr ""
 
-#: index/functions.c:811
+#: index/functions.c:818
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr ""
 
-#: index/functions.c:836
+#: index/functions.c:843
 msgid "Open mailbox in read-only mode"
 msgstr "Отваряне на пощенската кутия само за четене"
 
-#: index/functions.c:841
+#: index/functions.c:848
 msgid "Open mailbox"
 msgstr "Отваряне на пощенска кутия"
 
-#: index/functions.c:935
+#: index/functions.c:942
 #, fuzzy
 msgid "Thread contains unread or flagged messages"
 msgstr "Нишката съдържа непрочетени писма"
 
-#: index/functions.c:957
+#: index/functions.c:964
 msgid "Delete messages matching: "
 msgstr "Изтриване на писма по шаблон: "
 
-#: index/functions.c:997
+#: index/functions.c:1004
 msgid "Limit to messages matching: "
 msgstr "Ограничаване до писмата, отговарящи на: "
 
-#: index/functions.c:1027
+#: index/functions.c:1034
 msgid "To view all messages, limit to \"all\""
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: index/functions.c:1039
+#: index/functions.c:1046
 msgid "Can't link threads"
 msgstr ""
 
-#: index/functions.c:1049
+#: index/functions.c:1056
 msgid "No Message-ID: header available to link thread"
 msgstr ""
 
-#: index/functions.c:1062
+#: index/functions.c:1069
 msgid "Threads linked"
 msgstr ""
 
-#: index/functions.c:1067
+#: index/functions.c:1074
 msgid "No thread linked"
 msgstr ""
 
-#: index/functions.c:1096 mx.c:1288 mx.c:1308
+#: index/functions.c:1103 mx.c:1288 mx.c:1308
 msgid "Folder doesn't support tagging, aborting"
 msgstr ""
 
-#: index/functions.c:1117
+#: index/functions.c:1124
 #, fuzzy
 msgid "No tag specified, aborting"
 msgstr "Прекъсване поради липса на тема"
 
-#: index/functions.c:1127
+#: index/functions.c:1134
 msgid "Update tags..."
 msgstr ""
 
-#: index/functions.c:1168
+#: index/functions.c:1175
 msgid "Failed to modify tags, aborting"
 msgstr ""
 
-#: index/functions.c:1282
+#: index/functions.c:1289
 #, fuzzy
 msgid "No new messages in this limited view"
 msgstr "Родителското писмо не е видимо в този ограничен изглед"
 
-#: index/functions.c:1284
+#: index/functions.c:1291
 #, fuzzy
 msgid "No new messages"
 msgstr "Няма нови писма"
 
-#: index/functions.c:1289
+#: index/functions.c:1296
 #, fuzzy
 msgid "No unread messages in this limited view"
 msgstr "Родителското писмо не е видимо в този ограничен изглед"
 
-#: index/functions.c:1291
+#: index/functions.c:1298
 #, fuzzy
 msgid "No unread messages"
 msgstr "Няма непрочетени писма"
 
-#: index/functions.c:1307 menu/functions.c:109 pager/functions.c:492
-#: pattern/pattern.c:581 pattern/pattern.c:741
+#: index/functions.c:1314 menu/functions.c:109 pager/functions.c:492
+#: pattern/pattern.c:579 pattern/pattern.c:739
 msgid "Search wrapped to top"
 msgstr "Търсенето е започнато отгоре"
 
-#: index/functions.c:1312 pager/functions.c:518 pattern/pattern.c:592
-#: pattern/pattern.c:752
+#: index/functions.c:1319 pager/functions.c:518 pattern/pattern.c:590
+#: pattern/pattern.c:750
 msgid "Search wrapped to bottom"
 msgstr "Търсенето е започнато отдолу"
 
-#: index/functions.c:1356
+#: index/functions.c:1363
 msgid "No more threads"
 msgstr "Няма повече нишки"
 
-#: index/functions.c:1358
+#: index/functions.c:1365
 msgid "You are on the first thread"
 msgstr "Това е първата нишка"
 
-#: index/functions.c:1376 index/functions.c:1750
+#: index/functions.c:1383 index/functions.c:1771
 msgid "You are on the last message"
 msgstr "Това е последното писмо"
 
-#: index/functions.c:1386 index/functions.c:1434
+#: index/functions.c:1400 index/functions.c:1455
 msgid "No undeleted messages"
 msgstr "Няма възстановени писма"
 
-#: index/functions.c:1407
+#: index/functions.c:1421
 #, fuzzy
 msgid "No mailboxes have new mail"
 msgstr "Няма пощенска кутия с нови писма."
 
-#: index/functions.c:1425 index/functions.c:1790
+#: index/functions.c:1439 index/functions.c:1811
 msgid "You are on the first message"
 msgstr "Това е първото писмо"
 
@@ -3272,16 +3272,16 @@ msgstr "Това е първото писмо"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1487
+#: index/functions.c:1508
 #, fuzzy
 msgid "Can't mark messages as read"
 msgstr "скок към родителското писмо в нишката"
 
-#: index/functions.c:1557
+#: index/functions.c:1578
 msgid "No limit pattern is in effect"
 msgstr "Няма активен ограничителен шаблон"
 
-#: index/functions.c:1647
+#: index/functions.c:1668
 msgid "Tag messages matching: "
 msgstr "Маркиране на писмата, отговарящи на: "
 
@@ -3289,30 +3289,30 @@ msgstr "Маркиране на писмата, отговарящи на: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1663 index/functions.c:2166
+#: index/functions.c:1684 index/functions.c:2187
 #, fuzzy
 msgid "Can't undelete messages"
 msgstr "Няма възстановени писма."
 
-#: index/functions.c:1667
+#: index/functions.c:1688
 msgid "Undelete messages matching: "
 msgstr "Възстановяване на писмата, отговарящи на: "
 
-#: index/functions.c:1681
+#: index/functions.c:1702
 msgid "Untag messages matching: "
 msgstr "Премахване на маркировката от писмата, отговарящи на: "
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index/functions.c:1704
+#: index/functions.c:1725
 #, fuzzy
 msgid "Enter macro stroke: "
 msgstr "Въведете ключов идентификатор: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index/functions.c:1720
+#: index/functions.c:1741
 #, fuzzy
 msgid "message hotkey"
 msgstr "Писмото е записано като чернова."
@@ -3320,115 +3320,115 @@ msgstr "Писмото е записано като чернова."
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index/functions.c:1725
+#: index/functions.c:1746
 #, fuzzy, c-format
 msgid "Message bound to %s"
 msgstr "Писмото е препратено"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index/functions.c:1735
+#: index/functions.c:1756
 #, fuzzy
 msgid "No message ID to macro"
 msgstr "В тази кутия няма писма"
 
-#: index/functions.c:1838
+#: index/functions.c:1859
 msgid "Quit NeoMutt?"
 msgstr "Желаете ли да напуснете neomutt?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2078
+#: index/functions.c:2099
 msgid "Can't toggle new"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2130
+#: index/functions.c:2151
 #, fuzzy
 msgid "Can't undelete message"
 msgstr "Няма възстановени писма."
 
-#: index/functions.c:2265
+#: index/functions.c:2286
 #, fuzzy
 msgid "Logged out of IMAP servers"
 msgstr "Затваряне на връзката към IMAP сървър.."
 
-#: index/functions.c:2312
+#: index/functions.c:2333
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: index/functions.c:2379
+#: index/functions.c:2400
 #, fuzzy
 msgid "No deleted messages found in the thread"
 msgstr "изтрива всички писма в нишката"
 
-#: index/functions.c:2403
+#: index/functions.c:2424
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Въведете ключов идентификатор: "
 
-#: index/functions.c:2414
+#: index/functions.c:2435
 msgid "Article has no parent reference"
 msgstr ""
 
-#: index/functions.c:2437
+#: index/functions.c:2458
 #, fuzzy
 msgid "Message is not visible in limited view"
 msgstr "Родителското писмо не е видимо в този ограничен изглед"
 
-#: index/functions.c:2442
+#: index/functions.c:2463
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "Премахване на съобщенията от сървъра..."
 
-#: index/functions.c:2455 nntp/nntp.c:2633
+#: index/functions.c:2476 nntp/nntp.c:2638
 #, c-format
 msgid "Article %s not found on the server"
 msgstr ""
 
-#: index/functions.c:2483
+#: index/functions.c:2504
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Отваряне на пощенската кутия само за четене"
 
-#: index/functions.c:2488
+#: index/functions.c:2509
 msgid "Open newsgroup"
 msgstr ""
 
-#: index/functions.c:2561
+#: index/functions.c:2582
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
-#: index/functions.c:2597
+#: index/functions.c:2618
 #, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Прекъсване поради липса на тема"
 
-#: index/functions.c:2617
+#: index/functions.c:2638
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr ""
 
-#: index/functions.c:2626
+#: index/functions.c:2647
 msgid "Failed to read thread, aborting"
 msgstr ""
 
-#: index/functions.c:2665
+#: index/functions.c:2686
 #, fuzzy
 msgid "No query, aborting"
 msgstr "Прекъсване поради липса на тема"
 
-#: index/functions.c:2708
+#: index/functions.c:2729
 msgid "Windowed queries disabled"
 msgstr ""
 
-#: index/functions.c:2714
+#: index/functions.c:2735
 msgid "No notmuch vfolder currently loaded"
 msgstr ""
 
-#: index/functions.c:2778
+#: index/functions.c:2799
 msgid "There are no messages"
 msgstr "Няма писма"
 
-#: index/functions.c:2785
+#: index/functions.c:2806
 msgid "No visible messages"
 msgstr "Няма видими писма"
 
@@ -3479,44 +3479,44 @@ msgstr ""
 msgid "Specified abort key sequence (%s) will be truncated to first key"
 msgstr ""
 
-#: keymap.c:1069 keymap.c:1104
+#: keymap.c:1071 keymap.c:1106
 msgid "Key is not bound"
 msgstr "Недефинирана клавишна комбинация"
 
-#: keymap.c:1109
+#: keymap.c:1111
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Недефинирана клавишна комбинация. Използвайте '%s' за помощ."
 
-#: keymap.c:1182
+#: keymap.c:1184
 #, c-format
 msgid "%s: null key sequence"
 msgstr "%s: празна последователност от клавиши"
 
-#: keymap.c:1217
+#: keymap.c:1219
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
 msgstr ""
 
-#: keymap.c:1526
+#: keymap.c:1528
 msgid "macro: empty key sequence"
 msgstr "macro: празна последователност от клавиши"
 
-#: keymap.c:1596
+#: keymap.c:1598
 msgid "exec: no arguments"
 msgstr "exec: липсват аргументи"
 
-#: keymap.c:1619
+#: keymap.c:1621
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: няма такава функция"
 
-#: keymap.c:1645
+#: keymap.c:1647
 #, fuzzy, c-format
 msgid "Enter keys (%s to abort): "
 msgstr "Въведете ключове (^G за прекъсване): "
 
-#: keymap.c:1653
+#: keymap.c:1655
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Символ = %s, Осмично = %o, Десетично = %d"
@@ -3882,18 +3882,18 @@ msgstr "Грешка при повторното отваряне на поще�
 msgid "Can't write message"
 msgstr "Невъзможен запис на писмо"
 
-#: menu/functions.c:71 pager/functions.c:315 pattern/pattern.c:506
-#: pattern/pattern.c:667
+#: menu/functions.c:71 pager/functions.c:315 pattern/pattern.c:503
+#: pattern/pattern.c:665
 msgid "Search for: "
 msgstr "Търсене: "
 
-#: menu/functions.c:72 pager/functions.c:316 pattern/pattern.c:507
-#: pattern/pattern.c:668
+#: menu/functions.c:72 pager/functions.c:316 pattern/pattern.c:504
+#: pattern/pattern.c:666
 msgid "Reverse search for: "
 msgstr "Обратно търсене: "
 
 #: menu/functions.c:128 pager/functions.c:425 pager/functions.c:489
-#: pager/functions.c:515 pattern/pattern.c:639 pattern/pattern.c:799
+#: pager/functions.c:515 pattern/pattern.c:637 pattern/pattern.c:797
 msgid "Not found"
 msgstr "Няма резултати от търсенето"
 
@@ -3947,11 +3947,11 @@ msgstr "Вмъкване"
 msgid "OK"
 msgstr "ОК"
 
-#: mixmaster/dlg_mixmaster.c:153
+#: mixmaster/dlg_mixmaster.c:156
 msgid "Select a remailer chain"
 msgstr "Избор на remailer верига"
 
-#: mixmaster/dlg_mixmaster.c:190
+#: mixmaster/dlg_mixmaster.c:193
 msgid "Can't get mixmaster's type2.list"
 msgstr "Невъзможно получаването на mixmaster \"type2.list\""
 
@@ -4868,27 +4868,27 @@ msgstr "Стартиране на PGP..."
 msgid "Check key"
 msgstr "Проверка на ключ"
 
-#: ncrypt/dlg_gpgme.c:696
+#: ncrypt/dlg_gpgme.c:699
 #, fuzzy
 msgid "All matching keys are marked expired/revoked"
 msgstr "Всички подходящи ключове са остарели, анулирани или деактивирани"
 
-#: ncrypt/dlg_gpgme.c:743
+#: ncrypt/dlg_gpgme.c:746
 #, fuzzy
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP ключове, съвпадащи с \"%s\"."
 
-#: ncrypt/dlg_gpgme.c:745
+#: ncrypt/dlg_gpgme.c:748
 #, fuzzy
 msgid "PGP keys matching"
 msgstr "PGP ключове, съвпадащи с \"%s\"."
 
-#: ncrypt/dlg_gpgme.c:747
+#: ncrypt/dlg_gpgme.c:750
 #, fuzzy
 msgid "S/MIME keys matching"
 msgstr "S/MIME сертификати, съвпадащи с \"%s\"."
 
-#: ncrypt/dlg_gpgme.c:749
+#: ncrypt/dlg_gpgme.c:752
 #, fuzzy
 msgid "keys matching"
 msgstr "PGP ключове, съвпадащи с \"%s\"."
@@ -4896,27 +4896,27 @@ msgstr "PGP ключове, съвпадащи с \"%s\"."
 #. L10N: 1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>"
-#: ncrypt/dlg_gpgme.c:757
+#: ncrypt/dlg_gpgme.c:760
 #, c-format
 msgid "%s <%s>"
 msgstr ""
 
 #. L10N: e.g. 'S/MIME keys matching "Michael Elkins".'
-#: ncrypt/dlg_gpgme.c:762
+#: ncrypt/dlg_gpgme.c:765
 #, c-format
 msgid "%s \"%s\""
 msgstr ""
 
-#: ncrypt/dlg_pgp.c:623
+#: ncrypt/dlg_pgp.c:626
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "Всички подходящи ключове са остарели, анулирани или деактивирани"
 
-#: ncrypt/dlg_pgp.c:663
+#: ncrypt/dlg_pgp.c:666
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "PGP ключове, съвпадащи с <%s>"
 
-#: ncrypt/dlg_pgp.c:665
+#: ncrypt/dlg_pgp.c:668
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "PGP ключове, съвпадащи с \"%s\""
@@ -5446,11 +5446,11 @@ msgstr "Този идентификатор не не е валиден. Дей�
 msgid "Loading list of groups from cache..."
 msgstr ""
 
-#: nntp/newsrc.c:1028
+#: nntp/newsrc.c:1029
 msgid "No news server defined"
 msgstr ""
 
-#: nntp/newsrc.c:1046
+#: nntp/newsrc.c:1047
 #, fuzzy, c-format
 msgid "%s is an invalid news server specification"
 msgstr "%s не е валидна POP пътека"
@@ -5477,64 +5477,64 @@ msgstr "Връзката с %s е затворена"
 msgid "Fetching list of articles..."
 msgstr "Изтегляне на списък с писмата..."
 
-#: nntp/nntp.c:1443 nntp/nntp.c:2038 pop/pop.c:556 pop/pop.c:836
+#: nntp/nntp.c:1448 nntp/nntp.c:2043 pop/pop.c:556 pop/pop.c:836
 msgid "Checking for new messages..."
 msgstr "Проверка за нови писма..."
 
-#: nntp/nntp.c:1757 nntp/nntp.c:1851
+#: nntp/nntp.c:1762 nntp/nntp.c:1856
 #, fuzzy
 msgid "Could not switch to reader mode"
 msgstr "грешка при запис във временната пощенска кутия: %s"
 
-#: nntp/nntp.c:1770
+#: nntp/nntp.c:1775
 #, fuzzy, c-format
 msgid "Connected to %s. %s"
 msgstr "Свързване с %s..."
 
-#: nntp/nntp.c:1771
+#: nntp/nntp.c:1776
 msgid "Posting is NOT ok"
 msgstr ""
 
-#: nntp/nntp.c:1771
+#: nntp/nntp.c:1776
 #, fuzzy
 msgid "Posting is ok"
 msgstr "Няма какво да се прави"
 
-#: nntp/nntp.c:1906 nntp/nntp.c:1941
+#: nntp/nntp.c:1911 nntp/nntp.c:1946
 #, fuzzy, c-format
 msgid "Can't post article: %s"
 msgstr "Грешка при отваряне на %s: %s"
 
-#: nntp/nntp.c:1962
+#: nntp/nntp.c:1967
 #, fuzzy, c-format
 msgid "Loading list of groups from server %s..."
 msgstr "Премахване на съобщенията от сървъра..."
 
-#: nntp/nntp.c:2005 nntp/nntp.c:2097
+#: nntp/nntp.c:2010 nntp/nntp.c:2102
 #, fuzzy
 msgid "Loading descriptions..."
 msgstr "Включване..."
 
-#: nntp/nntp.c:2027
+#: nntp/nntp.c:2032
 #, fuzzy
 msgid "Checking for new newsgroups..."
 msgstr "Проверка за нови писма..."
 
-#: nntp/nntp.c:2235
+#: nntp/nntp.c:2240
 msgid "Unable to find child articles because server does not support XPAT command"
 msgstr ""
 
-#: nntp/nntp.c:2312
+#: nntp/nntp.c:2317
 #, fuzzy, c-format
 msgid "%s is an invalid newsgroup specification"
 msgstr "%s не е валидна POP пътека"
 
-#: nntp/nntp.c:2351
+#: nntp/nntp.c:2356
 #, c-format
 msgid "Newsgroup %s not found on the server"
 msgstr ""
 
-#: nntp/nntp.c:2374
+#: nntp/nntp.c:2379
 #, c-format
 msgid "Newsgroup %s has been removed from the server"
 msgstr ""
@@ -7310,33 +7310,33 @@ msgstr "Няма повече нишки"
 msgid "IMAP custom server-side search for STRING"
 msgstr ""
 
-#: pattern/pattern.c:261 pattern/pattern.c:367 pattern/pattern.c:534
-#: pattern/pattern.c:694
+#: pattern/pattern.c:261 pattern/pattern.c:367 pattern/pattern.c:531
+#: pattern/pattern.c:692
 msgid "Compiling search pattern..."
 msgstr "Компилиране на шаблона за търсене..."
 
-#: pattern/pattern.c:288 pattern/pattern.c:393
+#: pattern/pattern.c:288 pattern/pattern.c:390
 msgid "Executing command on matching messages..."
 msgstr "Изпълняване на команда върху писмата..."
 
-#: pattern/pattern.c:464
+#: pattern/pattern.c:461
 msgid "No messages matched criteria"
 msgstr "Няма писма, отговарящи на този критерий"
 
-#: pattern/pattern.c:570 pattern/pattern.c:730
+#: pattern/pattern.c:568 pattern/pattern.c:728
 #, fuzzy
 msgid "Searching..."
 msgstr "Записване..."
 
-#: pattern/pattern.c:584 pattern/pattern.c:744
+#: pattern/pattern.c:582 pattern/pattern.c:742
 msgid "Search hit bottom without finding match"
 msgstr "Търсенето достигна до края, без да бъде намерено съвпадение"
 
-#: pattern/pattern.c:595 pattern/pattern.c:755
+#: pattern/pattern.c:593 pattern/pattern.c:753
 msgid "Search hit top without finding match"
 msgstr "Търсенето достигна до началото, без да бъде намерено съвпадение"
 
-#: pattern/pattern.c:631 pattern/pattern.c:791
+#: pattern/pattern.c:629 pattern/pattern.c:789
 msgid "Search interrupted"
 msgstr "Търсенето е прекъснато"
 
@@ -7448,7 +7448,7 @@ msgstr "Маркиране на %d съобщения за изтриване...
 msgid "Can't write message to temporary file"
 msgstr "Грешка при запис на писмото във временен файл"
 
-#: postpone/dlg_postpone.c:185
+#: postpone/dlg_postpone.c:188
 msgid "Postponed Messages"
 msgstr "Чернови"
 
@@ -7739,7 +7739,7 @@ msgstr "Не са указани получатели"
 msgid "No List-Subscribe header found"
 msgstr "Няма резултати от търсенето"
 
-#: send/send.c:3069
+#: send/send.c:3074
 #, fuzzy
 msgid "No List-Unsubscribe header found"
 msgstr "Отписване от %s..."

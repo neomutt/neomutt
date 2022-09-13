@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt 20210205\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2022-06-28 18:23+0100\n"
+"POT-Creation-Date: 2022-09-13 09:49+0100\n"
 "PO-Revision-Date: 2022-06-29 19:40+0200\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
@@ -128,11 +128,11 @@ msgstr "Избор"
 msgid "Help"
 msgstr "Помоћ"
 
-#: alias/dlg_alias.c:311
+#: alias/dlg_alias.c:314
 msgid "You have no aliases"
 msgstr "Нема алијаса"
 
-#: alias/dlg_alias.c:316
+#: alias/dlg_alias.c:319
 msgid "Aliases"
 msgstr "Алијаси"
 
@@ -156,15 +156,15 @@ msgstr "Search"
 msgid "Waiting for response..."
 msgstr "Чекање на одговор..."
 
-#: alias/dlg_query.c:356
+#: alias/dlg_query.c:357
 msgid "Query"
 msgstr "Упит"
 
-#: alias/dlg_query.c:448 alias/dlg_query.c:536
+#: alias/dlg_query.c:449 alias/dlg_query.c:537
 msgid "Query command not defined"
 msgstr "Наредба упита није дефинисана"
 
-#: alias/dlg_query.c:545 alias/functions.c:193 alias/functions.c:212
+#: alias/dlg_query.c:546 alias/functions.c:193 alias/functions.c:212
 msgid "Query: "
 msgstr "Упит: "
 
@@ -188,7 +188,7 @@ msgid "adu"
 msgstr "adn"
 
 #. L10N: ask for a limit to apply
-#: alias/gui.c:79 index/functions.c:1562
+#: alias/gui.c:81 index/functions.c:1583
 #, c-format
 msgid "Limit: %s"
 msgstr "Лимит: %s"
@@ -225,7 +225,7 @@ msgstr "Проследи"
 msgid "Print"
 msgstr "Штампај"
 
-#: attach/dlg_attach.c:479
+#: attach/dlg_attach.c:482
 msgid "Attachments"
 msgstr "Прилози"
 
@@ -234,11 +234,11 @@ msgstr "Прилози"
 msgid "Not available in this menu"
 msgstr "Није доступно у овом менију"
 
-#: attach/functions.c:52 index/functions.c:2797
+#: attach/functions.c:52 index/functions.c:2818
 msgid "Function not permitted in attach-message mode"
 msgstr "Функција није дозвољена у режиму додавања поруке"
 
-#: attach/functions.c:115 index/functions.c:2791 mx.c:941
+#: attach/functions.c:115 index/functions.c:2812 mx.c:941
 msgid "Mailbox is read-only"
 msgstr "Сандуче је само за читање"
 
@@ -266,7 +266,7 @@ msgstr "Брисање прилога из потписаних порука м�
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Само је подржано брисање multipart прилога"
 
-#: attach/functions.c:569 index/functions.c:2556
+#: attach/functions.c:569 index/functions.c:2577
 msgid "Reply by mail as poster prefers?"
 msgstr "Одговорити мејлом, као што постављач преферира?"
 
@@ -280,8 +280,8 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Compose ставка mailcap-а захтева %%s"
 
 #: attach/mutt_attach.c:159 attach/mutt_attach.c:298 compmbox/compress.c:343
-#: compose/functions.c:1716 gui/curs_lib.c:321 index/dlg_index.c:1143
-#: index/dlg_index.c:1189 pager/dlg_pager.c:469 pager/do_pager.c:168
+#: compose/functions.c:1716 gui/curs_lib.c:321 index/dlg_index.c:1179
+#: index/dlg_index.c:1225 pager/dlg_pager.c:469 pager/do_pager.c:171
 #: pager/message.c:336 send/sendlib.c:572
 #, c-format
 msgid "Error running \"%s\""
@@ -424,7 +424,7 @@ msgstr "%s не постоји. Да га креирам?"
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
 #: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:929
-#: nntp/newsrc.c:1118
+#: nntp/newsrc.c:1119
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "Не могу да креирам %s: %s"
@@ -589,7 +589,7 @@ msgid "inactive"
 msgstr "неактиван"
 
 #. L10N: Autocrypt Account Management Menu title
-#: autocrypt/dlg_autocrypt.c:325
+#: autocrypt/dlg_autocrypt.c:328
 msgid "Autocrypt Accounts"
 msgstr "Налози за аутошифровање"
 
@@ -821,50 +821,50 @@ msgstr "Шаблон претплате: "
 msgid "Unsubscribe pattern: "
 msgstr "Шаблон отпретплате: "
 
-#: color/command.c:154
+#: color/command.c:155
 #, c-format
 msgid "%s: color not supported by term"
 msgstr "%s: терминал не подржава ову боју"
 
-#: color/command.c:161
+#: color/command.c:162
 #, c-format
 msgid "%s: no such color"
 msgstr "%s: нема такве боје"
 
-#: color/command.c:220 color/command.c:260 color/command.c:307
-#: color/command.c:379 color/command.c:472 color/command.c:535
-#: color/command.c:560 command_parse.c:304 command_parse.c:326
-#: command_parse.c:471 command_parse.c:1056 command_parse.c:1143 hook.c:99
-#: hook.c:155 hook.c:164 hook.c:178 hook.c:424 hook.c:440 keymap.c:1189
+#: color/command.c:221 color/command.c:263 color/command.c:315
+#: color/command.c:387 color/command.c:480 color/command.c:543
+#: color/command.c:568 command_parse.c:346 command_parse.c:368
+#: command_parse.c:513 command_parse.c:1098 command_parse.c:1185 hook.c:101
+#: hook.c:157 hook.c:166 hook.c:180 hook.c:429 hook.c:445 keymap.c:1191
 #: score.c:95 subjectrx.c:72 subjectrx.c:100 subjectrx.c:108
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: премало аргумената"
 
-#: color/command.c:240
+#: color/command.c:243
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: нема таквог атрибута"
 
-#: color/command.c:365 color/command.c:388 color/command.c:399
-#: color/command.c:443
+#: color/command.c:373 color/command.c:396 color/command.c:407
+#: color/command.c:451
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: нема таквог објекта"
 
-#: color/command.c:569 color/command.c:628 command_parse.c:350
-#: command_parse.c:1333 command_parse.c:1669 hook.c:104 hook.c:185 hook.c:447
-#: keymap.c:1121 keymap.c:1294 keymap.c:1456 keymap.c:1537 mutt_lua.c:515
+#: color/command.c:577 color/command.c:636 command_parse.c:392
+#: command_parse.c:1375 command_parse.c:1711 hook.c:106 hook.c:187 hook.c:452
+#: keymap.c:1123 keymap.c:1296 keymap.c:1458 keymap.c:1539 mutt_lua.c:515
 #: score.c:103
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: превише аргумената"
 
-#: color/command.c:587
+#: color/command.c:595
 msgid "default colors not supported"
 msgstr "подразумеване боје нису подржане"
 
-#: color/command.c:618
+#: color/command.c:626
 #, c-format
 msgid "%s: invalid number: %s"
 msgstr "%s: неисправан број: %s"
@@ -887,37 +887,37 @@ msgstr "-group: нема назива групе"
 msgid "out of arguments"
 msgstr "нема аргумената"
 
-#: command_parse.c:168
+#: command_parse.c:210
 #, c-format
 msgid "Error: Can't build path of '%s'"
 msgstr "Грешка: Не може се изградити путања ‘%s’"
 
-#: command_parse.c:181
+#: command_parse.c:223
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
 msgstr "Грешка: Циркуларно читање конфигурационе датотеке ‘%s’"
 
-#: command_parse.c:221
+#: command_parse.c:263
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Грешка у %s, ред %d: %s"
 
-#: command_parse.c:232
+#: command_parse.c:274
 #, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Упозорење у %s, ред %d: %s"
 
-#: command_parse.c:261
+#: command_parse.c:303
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: грешке у %s"
 
-#: command_parse.c:262
+#: command_parse.c:304
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: читање прекинуто због превише грешака у %s"
 
-#: command_parse.c:271
+#: command_parse.c:313
 #, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
@@ -925,123 +925,123 @@ msgstr[0] "source: %d упозорење у %s"
 msgstr[1] "source: %d упозорења у %s"
 msgstr[2] "source: %d упозорења у %s"
 
-#: command_parse.c:387
+#: command_parse.c:429
 #, c-format
 msgid "%sgroup: missing -rx or -addr"
 msgstr "%sgroup: нема -rx или -addr"
 
-#: command_parse.c:413
+#: command_parse.c:455
 #, c-format
 msgid "%sgroup: warning: bad IDN '%s'"
 msgstr "%sgroup: упозорење: лош IDN „%s“"
 
-#: command_parse.c:482
+#: command_parse.c:524
 #, c-format
 msgid "Error: %s"
 msgstr "Грешка: %s"
 
-#: command_parse.c:644
+#: command_parse.c:686
 msgid "invalid header field"
 msgstr "неисправно поље у заглављу"
 
-#: command_parse.c:715
+#: command_parse.c:757
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
 msgstr "Не може се користити „inv“, „no“, „&“ или „?“ са наредбом „%s“"
 
-#: command_parse.c:749 command_parse.c:889 command_parse.c:999
+#: command_parse.c:791 command_parse.c:931 command_parse.c:1041
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: непозната променљива"
 
-#: command_parse.c:764 command_parse.c:1087
+#: command_parse.c:806 command_parse.c:1129
 msgid "Can't use a prefix when querying a variable"
 msgstr "Не може се користити префикс када се испитује променљива"
 
-#: command_parse.c:770 command_parse.c:1067 command_parse.c:1081
+#: command_parse.c:812 command_parse.c:1109 command_parse.c:1123
 #, c-format
 msgid "Can't query a variable with the '%s' command"
 msgstr "Не може се испитивати променљива наредбом „%s“"
 
-#: command_parse.c:782
+#: command_parse.c:824
 msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "Не може се користити префикс када се увећава или смањује променљива"
 
-#: command_parse.c:788 command_parse.c:819
+#: command_parse.c:830 command_parse.c:861
 #, c-format
 msgid "Can't set a variable with the '%s' command"
 msgstr "Не може се поставити променљива наредбом „%s“"
 
-#: command_parse.c:799
+#: command_parse.c:841
 msgid "Can't decrement a my_ variable"
 msgstr "Не може се умањити my_ променљива"
 
-#: command_parse.c:813
+#: command_parse.c:855
 msgid "Can't use prefix when setting a variable"
 msgstr "Не може се користити префикс при постављању променљиве"
 
-#: command_parse.c:832
+#: command_parse.c:874
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
 msgstr "Префикси „no“ и „inv“ се могу користити само са bool/quad променљивим"
 
-#: command_parse.c:836
+#: command_parse.c:878
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
 msgstr "Наредба „%s“ се може користити само са bool/quad променљивим"
 
-#: command_parse.c:1119 command_parse.c:1127
+#: command_parse.c:1161 command_parse.c:1169
 #, c-format
 msgid "%s is unset"
 msgstr "%s није постављено"
 
-#: command_parse.c:1167 mutt_lua.c:510
+#: command_parse.c:1209 mutt_lua.c:510
 #, c-format
 msgid "source: error at %s"
 msgstr "source: грешка на %s"
 
-#: command_parse.c:1175
+#: command_parse.c:1217
 #, c-format
 msgid "source: file %s could not be sourced"
 msgstr "source: датотека %s се не може учитати"
 
-#: command_parse.c:1198
+#: command_parse.c:1240
 msgid "spam: no matching pattern"
 msgstr "spam: ниједна шема није задовољена"
 
-#: command_parse.c:1200
+#: command_parse.c:1242
 msgid "nospam: no matching pattern"
 msgstr "nospam: ниједна шема није задовољена"
 
-#: command_parse.c:1342 imap/imap.c:1327
+#: command_parse.c:1384 imap/imap.c:1327
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Претплаћен на %s"
 
-#: command_parse.c:1346
+#: command_parse.c:1388
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "Неуспешна претплата на %s"
 
-#: command_parse.c:1354 command_parse.c:1690
+#: command_parse.c:1396 command_parse.c:1732
 msgid "No folder specified"
 msgstr "Ниједна фасцикла није задата"
 
-#: command_parse.c:1389
+#: command_parse.c:1431
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
 msgstr "формат ознака „%s“ је већ регистрован као „%s“"
 
-#: command_parse.c:1431
+#: command_parse.c:1473
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
 msgstr "трансформација ознака „%s“ је већ регистрована као „%s“"
 
-#: command_parse.c:1678 imap/imap.c:1329
+#: command_parse.c:1720 imap/imap.c:1329
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Отпретплаћен са %s"
 
-#: command_parse.c:1682
+#: command_parse.c:1724
 #, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Неуспешна отпретплата са %s"
@@ -1327,7 +1327,7 @@ msgstr "Опис"
 msgid "Newsgroups"
 msgstr "Њузгрупе"
 
-#: compose/compose.c:269
+#: compose/compose.c:272
 msgid "-- Attachments"
 msgstr "-- Прилози"
 
@@ -2306,8 +2306,8 @@ msgstr[0] "(+још %d)"
 msgstr[1] "(+још %d)"
 msgstr[2] "(+још %d)"
 
-#: flags.c:386 index/functions.c:793 index/functions.c:896
-#: index/functions.c:912 index/functions.c:1047 mutt_thread.c:1257
+#: flags.c:386 index/functions.c:800 index/functions.c:903
+#: index/functions.c:919 index/functions.c:1054 mutt_thread.c:1257
 #: mutt_thread.c:1323 mutt_thread.c:1409
 msgid "Threading is not enabled"
 msgstr "Нити нису омогућене"
@@ -2340,8 +2340,7 @@ msgstr "[-- Врста: %s/%s%s%s, Кодирање: %s, Величина: %s --
 #: handler.c:102
 #, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr ""
-"[-- Алтернативна врста #%d: %s/%s%s%s, Кодирање: %s, Величина: %s --]\n"
+msgstr "[-- Алтернативна врста #%d: %s/%s%s%s, Кодирање: %s, Величина: %s --]\n"
 
 #: handler.c:556
 #, c-format
@@ -2390,8 +2389,12 @@ msgid ""
 msgid_plural ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
-msgstr[0] "[-- Овај %s/%s прилог (величине %s бајт) је обрисан --]\n[-- %s --]\n"
-msgstr[1] "[-- Овај %s/%s прилог (величине %s бајта) је обрисан --]\n[-- %s --]\n"
+msgstr[0] ""
+"[-- Овај %s/%s прилог (величине %s бајт) је обрисан --]\n"
+"[-- %s --]\n"
+msgstr[1] ""
+"[-- Овај %s/%s прилог (величине %s бајта) је обрисан --]\n"
+"[-- %s --]\n"
 msgstr[2] ""
 "[-- Овај %s/%s прилог (величине %s бајтова) је обрисан --]\n"
 "[-- %s --]\n"
@@ -2426,8 +2429,12 @@ msgstr[2] "[-- Овај %s/%s прилог (величине %s бајтова) 
 #. Caution: Argument three %3$ is also defined but should not be used
 #. in this translation!
 #: handler.c:849
-msgid "[-- This %s/%s attachment has been deleted --]\n[-- on %4$s --]\n"
-msgstr "[-- Овај %s/%s прилог је обрисан --]\n[-- %4$s --]\n"
+msgid ""
+"[-- This %s/%s attachment has been deleted --]\n"
+"[-- on %4$s --]\n"
+msgstr ""
+"[-- Овај %s/%s прилог је обрисан --]\n"
+"[-- %4$s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2464,8 +2471,7 @@ msgstr ""
 
 #: handler.c:1096
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
-msgstr ""
-"[-- Грешка:  Не може се приказати ниједан од делова Multipart/Alternative --]\n"
+msgstr "[-- Грешка:  Не може се приказати ниједан од делова Multipart/Alternative --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1237
@@ -2513,15 +2519,13 @@ msgstr "[-- %s/%s није подржан (користите „%s“ да пр
 
 #: handler.c:1767
 msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
-msgstr ""
-"[-- Ово је прилог (потребно је „view-attachments“ доделити тастеру) --]\n"
+msgstr "[-- Ово је прилог (потребно је „view-attachments“ доделити тастеру) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1772
 #, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
-msgstr ""
-"[-- %s/%s није подржан (потребно је „view-attachments“ доделити тастеру) --]\n"
+msgstr "[-- %s/%s није подржан (потребно је „view-attachments“ доделити тастеру) --]\n"
 
 #: handler.c:1781
 msgid "[-- This is an attachment --]\n"
@@ -2589,39 +2593,39 @@ msgstr "Лош формат датотеке историје (ред %d)"
 #: ncrypt/smime.c:898 ncrypt/smime.c:990 ncrypt/smime.c:1100
 #: ncrypt/smime.c:1166 ncrypt/smime.c:1173 ncrypt/smime.c:1376
 #: ncrypt/smime.c:1779 ncrypt/smime.c:1856 ncrypt/smime.c:1863
-#: ncrypt/smime.c:1967 ncrypt/smime.c:2097 ncrypt/smime.c:2113 nntp/nntp.c:1292
-#: nntp/nntp.c:2141 pattern/exec.c:147 pop/pop.c:123
+#: ncrypt/smime.c:1967 ncrypt/smime.c:2097 ncrypt/smime.c:2113 nntp/nntp.c:1297
+#: nntp/nntp.c:2146 pattern/exec.c:147 pop/pop.c:123
 msgid "Can't create temporary file"
 msgstr "Не може се креирати привремена датотека"
 
-#: hook.c:197
+#: hook.c:199
 msgid "current mailbox shortcut '^' is unset"
 msgstr "текућа пречица сандучета „^“ није постављена"
 
-#: hook.c:209
+#: hook.c:211
 msgid "mailbox shortcut expanded to empty regex"
 msgstr "пречица сандучета се развија у празан regex"
 
-#: hook.c:229
+#: hook.c:231
 msgid "badly formatted command string"
 msgstr "ниска наредбе је лоше форматирана"
 
-#: hook.c:542
+#: hook.c:548
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: Не може се извршити unhook * из hook-а"
 
-#: hook.c:555
+#: hook.c:561
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: непозната врста hook-а: %s"
 
-#: hook.c:565
+#: hook.c:571
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s"
 msgstr "unhook: Не може се обрисати %s из %s"
 
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
-#: icommands.c:274 keymap.c:1166 keymap.c:1386
+#: icommands.c:274 keymap.c:1168 keymap.c:1388
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: непостојећи мени"
@@ -2756,11 +2760,11 @@ msgstr "CREATE није успео: %s"
 msgid "Closing connection to %s..."
 msgstr "Затварање повезивања са %s..."
 
-#: imap/imap.c:777 nntp/nntp.c:1784 pop/lib.c:332 send/smtp.c:847
+#: imap/imap.c:777 nntp/nntp.c:1789 pop/lib.c:332 send/smtp.c:847
 msgid "Secure connection with TLS?"
 msgstr "Безбедно повезивање преко TLS-а?"
 
-#: imap/imap.c:793 nntp/nntp.c:1807 pop/lib.c:353 send/smtp.c:864
+#: imap/imap.c:793 nntp/nntp.c:1812 pop/lib.c:353 send/smtp.c:864
 msgid "Could not negotiate TLS connection"
 msgstr "Не може се успоставити TLS повезивање"
 
@@ -2778,7 +2782,7 @@ msgstr "Претплаћивање на %s..."
 msgid "Unsubscribing from %s..."
 msgstr "Отпретплаћивање са %s..."
 
-#: imap/imap.c:1480 imap/message.c:1759
+#: imap/imap.c:1480 imap/message.c:1770
 #, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
@@ -2786,7 +2790,7 @@ msgstr[0] "Копирање %d поруке у %s..."
 msgstr[1] "Копирање %d поруке у %s..."
 msgstr[2] "Копирање %d порука у %s..."
 
-#: imap/imap.c:1497 imap/imap.c:2150 imap/message.c:1798 muttlib.c:1414
+#: imap/imap.c:1497 imap/imap.c:2150 imap/message.c:1809 muttlib.c:1414
 #, c-format
 msgid "Create %s?"
 msgstr "Креирати %s?"
@@ -2827,7 +2831,7 @@ msgstr "Брисање порука са сервера..."
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE је неуспешан"
 
-#: imap/imap.c:1951 nntp/nntp.c:2362
+#: imap/imap.c:1951 nntp/nntp.c:2367
 #, c-format
 msgid "Selecting %s..."
 msgstr "Бирам %s..."
@@ -2870,24 +2874,24 @@ msgstr "QRESYNC је неуспешан.  Поново се отвара сан�
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Не могу се доставити заглавља са ове верзије IMAP сервера"
 
-#: imap/message.c:1143 index/functions.c:2316 nntp/nntp.c:1224 pop/pop.c:368
+#: imap/message.c:1143 index/functions.c:2337 nntp/nntp.c:1229 pop/pop.c:368
 msgid "Fetching message headers..."
 msgstr "Достављање заглавља порука..."
 
-#: imap/message.c:1581
+#: imap/message.c:1592
 msgid "Uploading message..."
 msgstr "Слање поруке..."
 
-#: imap/message.c:1765
+#: imap/message.c:1776
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Копирање поруке %d у %s..."
 
-#: imap/message.c:1990 imap/message.c:2053 nntp/nntp.c:2598 pop/pop.c:1046
+#: imap/message.c:2001 nntp/nntp.c:2603 pop/pop.c:1046
 msgid "Fetching message..."
 msgstr "Добављање поруке..."
 
-#: imap/message.c:2041 pop/pop.c:1025
+#: imap/message.c:2052 pop/pop.c:1025
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Индекс порука није исправан. Покушајте да поново отворите сандуче."
 
@@ -2936,41 +2940,41 @@ msgstr "Наставак на"
 msgid "%s: Operation not permitted by ACL"
 msgstr "%s: Операција није дозвољена ACL-ом"
 
-#: index/dlg_index.c:705
+#: index/dlg_index.c:741
 msgid "Failed to create query, aborting"
 msgstr "Неуспешно креирање упита, прекида се"
 
-#: index/dlg_index.c:750 muttlib.c:1398 mx.c:221 mx.c:359
+#: index/dlg_index.c:786 muttlib.c:1398 mx.c:221 mx.c:359
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s није сандуче"
 
-#: index/dlg_index.c:1123
+#: index/dlg_index.c:1159
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Сандуче је измењено споља.  Заставице могу бити погрешне."
 
-#: index/dlg_index.c:1132 pager/dlg_pager.c:443
+#: index/dlg_index.c:1168 pager/dlg_pager.c:443
 msgid "New mail in this mailbox"
 msgstr "Нови мејлови у овом сандучету"
 
-#: index/dlg_index.c:1151
+#: index/dlg_index.c:1187
 msgid "Mailbox was externally modified"
 msgstr "Сандуче је измењено споља"
 
-#: index/dlg_index.c:1262 index/functions.c:2772
+#: index/dlg_index.c:1298 index/functions.c:2793
 msgid "No mailbox is open"
 msgstr "Ниједно сандуче није отворено"
 
-#: index/dlg_index.c:1269
+#: index/dlg_index.c:1305
 msgid "No tagged messages"
 msgstr "Нема означених порука"
 
-#: index/dlg_index.c:1273 index/functions.c:673
+#: index/dlg_index.c:1309 index/functions.c:680
 msgid "Nothing to do"
 msgstr "Нема се шта радити"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:280
+#: index/functions.c:287
 msgid "Can't delete message"
 msgstr "Не може се обрисати порука"
 
@@ -2978,13 +2982,13 @@ msgstr "Не може се обрисати порука"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:320 index/functions.c:954
+#: index/functions.c:327 index/functions.c:961
 msgid "Can't delete messages"
 msgstr "Не могу се обрисати поруке"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index/functions.c:445
+#: index/functions.c:452
 #, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -2995,157 +2999,157 @@ msgstr[2] "%d ознака је промењено"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index/functions.c:455
+#: index/functions.c:462
 msgid "No labels changed"
 msgstr "Ниједна ознака није промењена"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:475
+#: index/functions.c:482
 msgid "Can't edit message"
 msgstr "Не може се уредити порука"
 
-#: index/functions.c:521
+#: index/functions.c:528
 msgid "Exit NeoMutt without saving?"
 msgstr "Изаћи из NeoMutt-а без чувања?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:558
+#: index/functions.c:565
 msgid "Can't flag message"
 msgstr "Не може се поставити заставица на поруци"
 
-#: index/functions.c:669
+#: index/functions.c:676
 msgid "Jump to message: "
 msgstr "Скок на поруку: "
 
-#: index/functions.c:678
+#: index/functions.c:685
 msgid "Argument must be a message number"
 msgstr "Аргумент мора бити број поруке"
 
-#: index/functions.c:682
+#: index/functions.c:689
 msgid "Invalid message number"
 msgstr "Погрешан број поруке"
 
-#: index/functions.c:686
+#: index/functions.c:693
 msgid "That message is not visible"
 msgstr "Та порука није видљива"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:787
+#: index/functions.c:794
 msgid "Can't break thread"
 msgstr "Не може се прекинути нит"
 
-#: index/functions.c:805
+#: index/functions.c:812
 msgid "Thread broken"
 msgstr "Нит је прекинута"
 
-#: index/functions.c:811
+#: index/functions.c:818
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr "Нит се не може прекинути, порука није део нити"
 
-#: index/functions.c:836
+#: index/functions.c:843
 msgid "Open mailbox in read-only mode"
 msgstr "Отвори сандуче у режиму само за читање"
 
-#: index/functions.c:841
+#: index/functions.c:848
 msgid "Open mailbox"
 msgstr "Отвори сандуче"
 
-#: index/functions.c:935
+#: index/functions.c:942
 msgid "Thread contains unread or flagged messages"
 msgstr "Нит садржи непрочитане или поруке са заставицом"
 
-#: index/functions.c:957
+#: index/functions.c:964
 msgid "Delete messages matching: "
 msgstr "Обриши поруке које одговарају: "
 
-#: index/functions.c:997
+#: index/functions.c:1004
 msgid "Limit to messages matching: "
 msgstr "Ограничи на поруке које одговарају: "
 
-#: index/functions.c:1027
+#: index/functions.c:1034
 msgid "To view all messages, limit to \"all\""
 msgstr "Да бисте приказали све поруке, ограничите на „све“"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:1039
+#: index/functions.c:1046
 msgid "Can't link threads"
 msgstr "Не могу се повезати нити"
 
-#: index/functions.c:1049
+#: index/functions.c:1056
 msgid "No Message-ID: header available to link thread"
 msgstr "Ниједно Message-ID: заглавље није доступно за повезивање нити"
 
-#: index/functions.c:1062
+#: index/functions.c:1069
 msgid "Threads linked"
 msgstr "Нити су повезане"
 
-#: index/functions.c:1067
+#: index/functions.c:1074
 msgid "No thread linked"
 msgstr "Ниједна нит није повезана"
 
-#: index/functions.c:1096 mx.c:1288 mx.c:1308
+#: index/functions.c:1103 mx.c:1288 mx.c:1308
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Фасцикла не подржава означавање, прекида се"
 
-#: index/functions.c:1117
+#: index/functions.c:1124
 msgid "No tag specified, aborting"
 msgstr "Ниједна ознака није задата, прекида се"
 
-#: index/functions.c:1127
+#: index/functions.c:1134
 msgid "Update tags..."
 msgstr "Ажурирање ознака..."
 
-#: index/functions.c:1168
+#: index/functions.c:1175
 msgid "Failed to modify tags, aborting"
 msgstr "Неуспешна измена ознака, прекида се"
 
-#: index/functions.c:1282
+#: index/functions.c:1289
 msgid "No new messages in this limited view"
 msgstr "Нема нових порука у овом ограниченом погледу"
 
-#: index/functions.c:1284
+#: index/functions.c:1291
 msgid "No new messages"
 msgstr "Нема нових порука"
 
-#: index/functions.c:1289
+#: index/functions.c:1296
 msgid "No unread messages in this limited view"
 msgstr "Нема непрочитаних порука у овом ограниченом погледу"
 
-#: index/functions.c:1291
+#: index/functions.c:1298
 msgid "No unread messages"
 msgstr "Нема непрочитаних порука"
 
-#: index/functions.c:1307 menu/functions.c:109 pager/functions.c:492
-#: pattern/pattern.c:581 pattern/pattern.c:741
+#: index/functions.c:1314 menu/functions.c:109 pager/functions.c:492
+#: pattern/pattern.c:579 pattern/pattern.c:739
 msgid "Search wrapped to top"
 msgstr "Претрага се вратила на почетак"
 
-#: index/functions.c:1312 pager/functions.c:518 pattern/pattern.c:592
-#: pattern/pattern.c:752
+#: index/functions.c:1319 pager/functions.c:518 pattern/pattern.c:590
+#: pattern/pattern.c:750
 msgid "Search wrapped to bottom"
 msgstr "Претрага се вратила на дно"
 
-#: index/functions.c:1356
+#: index/functions.c:1363
 msgid "No more threads"
 msgstr "Нема више нити"
 
-#: index/functions.c:1358
+#: index/functions.c:1365
 msgid "You are on the first thread"
 msgstr "Налазите се на првој нити"
 
-#: index/functions.c:1376 index/functions.c:1750
+#: index/functions.c:1383 index/functions.c:1771
 msgid "You are on the last message"
 msgstr "Налазите се на последњој поруци"
 
-#: index/functions.c:1386 index/functions.c:1434
+#: index/functions.c:1400 index/functions.c:1455
 msgid "No undeleted messages"
 msgstr "Нема од-обрисаних порука"
 
-#: index/functions.c:1407
+#: index/functions.c:1421
 msgid "No mailboxes have new mail"
 msgstr "Ниједно сандуче нема нове поште"
 
-#: index/functions.c:1425 index/functions.c:1790
+#: index/functions.c:1439 index/functions.c:1811
 msgid "You are on the first message"
 msgstr "Налазите се на првој поруци"
 
@@ -3153,15 +3157,15 @@ msgstr "Налазите се на првој поруци"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1487
+#: index/functions.c:1508
 msgid "Can't mark messages as read"
 msgstr "Поруке се не могу означити прочитаним"
 
-#: index/functions.c:1557
+#: index/functions.c:1578
 msgid "No limit pattern is in effect"
 msgstr "Нема активне шеме за ограничавање"
 
-#: index/functions.c:1647
+#: index/functions.c:1668
 msgid "Tag messages matching: "
 msgstr "Означи поруке: "
 
@@ -3169,134 +3173,134 @@ msgstr "Означи поруке: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1663 index/functions.c:2166
+#: index/functions.c:1684 index/functions.c:2187
 msgid "Can't undelete messages"
 msgstr "Не могу се од-обрисати поруке"
 
-#: index/functions.c:1667
+#: index/functions.c:1688
 msgid "Undelete messages matching: "
 msgstr "Од-обриши поруке: "
 
-#: index/functions.c:1681
+#: index/functions.c:1702
 msgid "Untag messages matching: "
 msgstr "Одозначи поруке: "
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index/functions.c:1704
+#: index/functions.c:1725
 msgid "Enter macro stroke: "
 msgstr "Унесите тастер за макро: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index/functions.c:1720
+#: index/functions.c:1741
 msgid "message hotkey"
 msgstr "тастер за макро"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index/functions.c:1725
+#: index/functions.c:1746
 #, c-format
 msgid "Message bound to %s"
 msgstr "Порука је додељена тастеру %s"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index/functions.c:1735
+#: index/functions.c:1756
 msgid "No message ID to macro"
 msgstr "Нема Message-ID-а за макро"
 
-#: index/functions.c:1838
+#: index/functions.c:1859
 msgid "Quit NeoMutt?"
 msgstr "Излаз из NeoMutt-а?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2078
+#: index/functions.c:2099
 msgid "Can't toggle new"
 msgstr "Не може се сменити статус нове"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2130
+#: index/functions.c:2151
 msgid "Can't undelete message"
 msgstr "Не може се од-обрисати порука"
 
-#: index/functions.c:2265
+#: index/functions.c:2286
 msgid "Logged out of IMAP servers"
 msgstr "Одјављен са IMAP сервера"
 
-#: index/functions.c:2312
+#: index/functions.c:2333
 msgid "No Message-Id. Unable to perform operation."
 msgstr "Нема Message-Id-а: Не може се обавити операција."
 
-#: index/functions.c:2379
+#: index/functions.c:2400
 msgid "No deleted messages found in the thread"
 msgstr "Нема обрисаних порука у овој нити"
 
-#: index/functions.c:2403
+#: index/functions.c:2424
 msgid "Enter Message-Id: "
 msgstr "Унесите Message-Id: "
 
-#: index/functions.c:2414
+#: index/functions.c:2435
 msgid "Article has no parent reference"
 msgstr "Чланак нема надређену референцу"
 
-#: index/functions.c:2437
+#: index/functions.c:2458
 msgid "Message is not visible in limited view"
 msgstr "Порука није видљива у ограниченом погледу"
 
-#: index/functions.c:2442
+#: index/functions.c:2463
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "Добављање %s са сервера..."
 
-#: index/functions.c:2455 nntp/nntp.c:2633
+#: index/functions.c:2476 nntp/nntp.c:2638
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "Чланак %s није пронађен на серверу"
 
-#: index/functions.c:2483
+#: index/functions.c:2504
 msgid "Open newsgroup in read-only mode"
 msgstr "Отвори њузгрупу у режиму само за читање"
 
-#: index/functions.c:2488
+#: index/functions.c:2509
 msgid "Open newsgroup"
 msgstr "Отвори њузгрупу"
 
-#: index/functions.c:2561
+#: index/functions.c:2582
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Постављање у ову групу није дозвољено, можда је модерисана. Наставити?"
 
-#: index/functions.c:2597
+#: index/functions.c:2618
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Нема виртуалног фолдера и Message-Id-а, прекида се"
 
-#: index/functions.c:2617
+#: index/functions.c:2638
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr "неуспешна претрага порука у notmuch-овој бази. покушајте да покренете „notmuch new“."
 
-#: index/functions.c:2626
+#: index/functions.c:2647
 msgid "Failed to read thread, aborting"
 msgstr "Неуспешно читање нити, прекида се"
 
-#: index/functions.c:2665
+#: index/functions.c:2686
 msgid "No query, aborting"
 msgstr "Нема упита, прекида се"
 
-#: index/functions.c:2708
+#: index/functions.c:2729
 msgid "Windowed queries disabled"
 msgstr "Прозорски упити нису подржани"
 
-#: index/functions.c:2714
+#: index/functions.c:2735
 msgid "No notmuch vfolder currently loaded"
 msgstr "Тренутно ниједан notmuch-ов vfolder није учитан"
 
-#: index/functions.c:2778
+#: index/functions.c:2799
 msgid "There are no messages"
 msgstr "Нема порука"
 
-#: index/functions.c:2785
+#: index/functions.c:2806
 msgid "No visible messages"
 msgstr "Нема видљивих порука"
 
@@ -3346,44 +3350,44 @@ msgstr "Тастер за прекид није постављен, корист
 msgid "Specified abort key sequence (%s) will be truncated to first key"
 msgstr "Задата секвенца тастера за прекид (%s) ће бити скраћена на први тастер"
 
-#: keymap.c:1069 keymap.c:1104
+#: keymap.c:1071 keymap.c:1106
 msgid "Key is not bound"
 msgstr "Тастер није додељен"
 
-#: keymap.c:1109
+#: keymap.c:1111
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Тастер није додељен.  Притисните „%s“ за помоћ."
 
-#: keymap.c:1182
+#: keymap.c:1184
 #, c-format
 msgid "%s: null key sequence"
 msgstr "%s: празна секвенца тастера"
 
-#: keymap.c:1217
+#: keymap.c:1219
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
 msgstr "Функција „%s“ није доступна за мени „%s“"
 
-#: keymap.c:1526
+#: keymap.c:1528
 msgid "macro: empty key sequence"
 msgstr "macro: празна секвенца тастера"
 
-#: keymap.c:1596
+#: keymap.c:1598
 msgid "exec: no arguments"
 msgstr "exec: нема аргумената"
 
-#: keymap.c:1619
+#: keymap.c:1621
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: непостојећа функција"
 
-#: keymap.c:1645
+#: keymap.c:1647
 #, c-format
 msgid "Enter keys (%s to abort): "
 msgstr "Притисните тастер (%s за прекид): "
 
-#: keymap.c:1653
+#: keymap.c:1655
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Знак = %s, октално = %o, децимално = %d"
@@ -3772,18 +3776,18 @@ msgstr "Не може се поново отворити сандуче"
 msgid "Can't write message"
 msgstr "Не може се исписати порука"
 
-#: menu/functions.c:71 pager/functions.c:315 pattern/pattern.c:506
-#: pattern/pattern.c:667
+#: menu/functions.c:71 pager/functions.c:315 pattern/pattern.c:503
+#: pattern/pattern.c:665
 msgid "Search for: "
 msgstr "Тражи: "
 
-#: menu/functions.c:72 pager/functions.c:316 pattern/pattern.c:507
-#: pattern/pattern.c:668
+#: menu/functions.c:72 pager/functions.c:316 pattern/pattern.c:504
+#: pattern/pattern.c:666
 msgid "Reverse search for: "
 msgstr "Тражи уназад: "
 
 #: menu/functions.c:128 pager/functions.c:425 pager/functions.c:489
-#: pager/functions.c:515 pattern/pattern.c:639 pattern/pattern.c:799
+#: pager/functions.c:515 pattern/pattern.c:637 pattern/pattern.c:797
 msgid "Not found"
 msgstr "Није пронађено"
 
@@ -3837,11 +3841,11 @@ msgstr "Убаци"
 msgid "OK"
 msgstr "У реду"
 
-#: mixmaster/dlg_mixmaster.c:153
+#: mixmaster/dlg_mixmaster.c:156
 msgid "Select a remailer chain"
 msgstr "Изаберите ланац прослеђивача"
 
-#: mixmaster/dlg_mixmaster.c:190
+#: mixmaster/dlg_mixmaster.c:193
 msgid "Can't get mixmaster's type2.list"
 msgstr "Не може се допремити mixmaster-ова type2.list"
 
@@ -4219,31 +4223,53 @@ msgstr "Покушај извлачења S/MIME сертификата..."
 
 #: ncrypt/crypt.c:1141
 #, c-format
-msgid "[-- Error: Unknown multipart/signed protocol %s --]\n\n"
-msgstr "[-- Грешка: Непознати multipart/signed протокол %s --]\n\n"
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s --]\n"
+"\n"
+msgstr ""
+"[-- Грешка: Непознати multipart/signed протокол %s --]\n"
+"\n"
 
 #: ncrypt/crypt.c:1179
-msgid "[-- Error: Missing or bad-format multipart/signed signature --]\n\n"
+msgid ""
+"[-- Error: Missing or bad-format multipart/signed signature --]\n"
+"\n"
 msgstr ""
 "[-- Грешка: multipart/signed потпис је непостојећи или лошег формата --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1217
 #, c-format
-msgid "[-- Warning: We can't verify %s/%s signatures. --]\n\n"
-msgstr "[-- Упозорење: Потписи %s/%s се не могу верификовати. --]\n\n"
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Упозорење: Потписи %s/%s се не могу верификовати. --]\n"
+"\n"
 
 #: ncrypt/crypt.c:1229
-msgid "[-- The following data is signed --]\n\n"
-msgstr "[-- Следећи подаци су потписани --]\n\n"
+msgid ""
+"[-- The following data is signed --]\n"
+"\n"
+msgstr ""
+"[-- Следећи подаци су потписани --]\n"
+"\n"
 
 #: ncrypt/crypt.c:1237
-msgid "[-- Warning: Can't find any signatures. --]\n\n"
-msgstr "[-- Упозорење: Није пронађен ниједан потпис. --]\n\n"
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Упозорење: Није пронађен ниједан потпис. --]\n"
+"\n"
 
 #: ncrypt/crypt.c:1244
-msgid "\n[-- End of signed data --]\n"
-msgstr "\n[-- Крај потписаних података --]\n"
+msgid ""
+"\n"
+"[-- End of signed data --]\n"
+msgstr ""
+"\n"
+"[-- Крај потписаних података --]\n"
 
 #: ncrypt/crypt_gpgme.c:605
 #, c-format
@@ -4363,8 +4389,7 @@ msgid "Fingerprint: "
 msgstr "Отисак: "
 
 #: ncrypt/crypt_gpgme.c:1682
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
 msgstr "УПОЗОРЕЊЕ: НЕ постоје индиције да кључ припада наведеној особи\n"
 
 #: ncrypt/crypt_gpgme.c:1687
@@ -4372,8 +4397,7 @@ msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "УПОЗОРЕЊЕ: Кључ НЕ ПРИПАДА наведеној особи\n"
 
 #: ncrypt/crypt_gpgme.c:1690
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr "УПОЗОРЕЊЕ: НИЈЕ извесно да кључ припада наведеној особи\n"
 
 #: ncrypt/crypt_gpgme.c:1725 ncrypt/crypt_gpgme.c:1730
@@ -4439,13 +4463,21 @@ msgstr "*** Крај нотације ***\n"
 
 #: ncrypt/crypt_gpgme.c:2018 ncrypt/crypt_gpgme.c:2175
 #: ncrypt/crypt_gpgme.c:2974
-msgid "[-- End signature information --]\n\n"
-msgstr "[-- Крај информација о потпису --]\n\n"
+msgid ""
+"[-- End signature information --]\n"
+"\n"
+msgstr ""
+"[-- Крај информација о потпису --]\n"
+"\n"
 
 #: ncrypt/crypt_gpgme.c:2135
 #, c-format
-msgid "[-- Error: decryption failed: %s --]\n\n"
-msgstr "[-- Грешка: дешифровање неуспешно: %s --]\n\n"
+msgid ""
+"[-- Error: decryption failed: %s --]\n"
+"\n"
+msgstr ""
+"[-- Грешка: дешифровање неуспешно: %s --]\n"
+"\n"
 
 #: ncrypt/crypt_gpgme.c:2696
 #, c-format
@@ -4467,16 +4499,24 @@ msgid "Error: copy data failed\n"
 msgstr "Грешка: неуспешно копирање података\n"
 
 #: ncrypt/crypt_gpgme.c:2999 ncrypt/pgp.c:681
-msgid "[-- BEGIN PGP MESSAGE --]\n\n"
-msgstr "[-- ПОЧЕТАК PGP ПОРУКЕ --]\n\n"
+msgid ""
+"[-- BEGIN PGP MESSAGE --]\n"
+"\n"
+msgstr ""
+"[-- ПОЧЕТАК PGP ПОРУКЕ --]\n"
+"\n"
 
 #: ncrypt/crypt_gpgme.c:3001 ncrypt/pgp.c:683
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- ПОЧЕТАК PGP БЛОКА ЈАВНОГ КЉУЧА --]\n"
 
 #: ncrypt/crypt_gpgme.c:3003 ncrypt/pgp.c:685
-msgid "[-- BEGIN PGP SIGNED MESSAGE --]\n\n"
-msgstr "[-- ПОЧЕТАК PGP ПОТПИСАНЕ ПОРУКЕ --]\n\n"
+msgid ""
+"[-- BEGIN PGP SIGNED MESSAGE --]\n"
+"\n"
+msgstr ""
+"[-- ПОЧЕТАК PGP ПОТПИСАНЕ ПОРУКЕ --]\n"
+"\n"
 
 #: ncrypt/crypt_gpgme.c:3030 ncrypt/pgp.c:723
 msgid "[-- END PGP MESSAGE --]\n"
@@ -4491,20 +4531,32 @@ msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- КРАЈ PGP ПОТПИСАНЕ ПОРУКЕ --]\n"
 
 #: ncrypt/crypt_gpgme.c:3054 ncrypt/pgp.c:771
-msgid "[-- Error: could not find beginning of PGP message --]\n\n"
-msgstr "[-- Грешка: не може се одредити почетак PGP поруке --]\n\n"
+msgid ""
+"[-- Error: could not find beginning of PGP message --]\n"
+"\n"
+msgstr ""
+"[-- Грешка: не може се одредити почетак PGP поруке --]\n"
+"\n"
 
 #: ncrypt/crypt_gpgme.c:3081 ncrypt/crypt_gpgme.c:3176 ncrypt/pgp.c:1239
 msgid "[-- Error: could not create temporary file --]\n"
 msgstr "[-- Грешка: не може се креирати привремена датотека --]\n"
 
 #: ncrypt/crypt_gpgme.c:3094
-msgid "[-- The following data is PGP/MIME signed and encrypted --]\n\n"
-msgstr "[-- Следећи подаци су потписани и шифровани преко PGP/MIME-а --]\n\n"
+msgid ""
+"[-- The following data is PGP/MIME signed and encrypted --]\n"
+"\n"
+msgstr ""
+"[-- Следећи подаци су потписани и шифровани преко PGP/MIME-а --]\n"
+"\n"
 
 #: ncrypt/crypt_gpgme.c:3095 ncrypt/pgp.c:1252
-msgid "[-- The following data is PGP/MIME encrypted --]\n\n"
-msgstr "[-- Следећи подаци су шифровани преко PGP/MIME-а --]\n\n"
+msgid ""
+"[-- The following data is PGP/MIME encrypted --]\n"
+"\n"
+msgstr ""
+"[-- Следећи подаци су шифровани преко PGP/MIME-а --]\n"
+"\n"
 
 #: ncrypt/crypt_gpgme.c:3133
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
@@ -4520,12 +4572,20 @@ msgid "Could not decrypt PGP message"
 msgstr "Дешифровање PGP поруке није могуће"
 
 #: ncrypt/crypt_gpgme.c:3189
-msgid "[-- The following data is S/MIME signed --]\n\n"
-msgstr "[-- Следећи подаци су потписани преко S/MIME-а--]\n\n"
+msgid ""
+"[-- The following data is S/MIME signed --]\n"
+"\n"
+msgstr ""
+"[-- Следећи подаци су потписани преко S/MIME-а--]\n"
+"\n"
 
 #: ncrypt/crypt_gpgme.c:3190
-msgid "[-- The following data is S/MIME encrypted --]\n\n"
-msgstr "[-- Следећи подаци су шифровани преко S/MIME-а --]\n\n"
+msgid ""
+"[-- The following data is S/MIME encrypted --]\n"
+"\n"
+msgstr ""
+"[-- Следећи подаци су шифровани преко S/MIME-а --]\n"
+"\n"
 
 #: ncrypt/crypt_gpgme.c:3236
 msgid "[-- End of S/MIME signed data --]\n"
@@ -4675,50 +4735,50 @@ msgstr "Покрећем S/MIME..."
 msgid "Check key"
 msgstr "Провера кључа"
 
-#: ncrypt/dlg_gpgme.c:696
+#: ncrypt/dlg_gpgme.c:699
 msgid "All matching keys are marked expired/revoked"
 msgstr "Сви одговарајући кључеви су означени као истекли/повучени"
 
-#: ncrypt/dlg_gpgme.c:743
+#: ncrypt/dlg_gpgme.c:746
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP и S/MIME кључеви који одговарају"
 
-#: ncrypt/dlg_gpgme.c:745
+#: ncrypt/dlg_gpgme.c:748
 msgid "PGP keys matching"
 msgstr "PGP кључеви који одговарају"
 
-#: ncrypt/dlg_gpgme.c:747
+#: ncrypt/dlg_gpgme.c:750
 msgid "S/MIME keys matching"
 msgstr "S/MIME кључеви који одговарају"
 
-#: ncrypt/dlg_gpgme.c:749
+#: ncrypt/dlg_gpgme.c:752
 msgid "keys matching"
 msgstr "кључеви који одговарају"
 
 #. L10N: 1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>"
-#: ncrypt/dlg_gpgme.c:757
+#: ncrypt/dlg_gpgme.c:760
 #, c-format
 msgid "%s <%s>"
 msgstr "%s <%s>"
 
 #. L10N: e.g. 'S/MIME keys matching "Michael Elkins".'
-#: ncrypt/dlg_gpgme.c:762
+#: ncrypt/dlg_gpgme.c:765
 #, c-format
 msgid "%s \"%s\""
 msgstr "%s „%s“"
 
-#: ncrypt/dlg_pgp.c:623
+#: ncrypt/dlg_pgp.c:626
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "Сви одговарајући кључеви су истекли, повучени су или онемогућени"
 
-#: ncrypt/dlg_pgp.c:663
+#: ncrypt/dlg_pgp.c:666
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "PGP кључеви који одговарају <%s>"
 
-#: ncrypt/dlg_pgp.c:665
+#: ncrypt/dlg_pgp.c:668
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "PGP кључеви који одговарају „%s“"
@@ -4937,8 +4997,12 @@ msgid "[-- Error: unable to create PGP subprocess --]\n"
 msgstr "[-- Грешка: не може се креирати PGP потпроцес --]\n"
 
 #: ncrypt/pgp.c:648 ncrypt/pgp.c:937 ncrypt/pgp.c:1105
-msgid "[-- End of PGP output --]\n\n"
-msgstr "[-- Крај PGP излаза --]\n\n"
+msgid ""
+"[-- End of PGP output --]\n"
+"\n"
+msgstr ""
+"[-- Крај PGP излаза --]\n"
+"\n"
 
 #. L10N: You will see this error message if (1) you are decrypting
 #. (not encrypting) something and (2) it is a plaintext. So the
@@ -4952,8 +5016,12 @@ msgid "Internal error.  Please submit a bug report."
 msgstr "Интерна грешка:  Пошаљите пријаву грешке."
 
 #: ncrypt/pgp.c:1057
-msgid "[-- Error: could not create a PGP subprocess --]\n\n"
-msgstr "[-- Грешка: не може се креирати PGP потпроцес --]\n\n"
+msgid ""
+"[-- Error: could not create a PGP subprocess --]\n"
+"\n"
+msgstr ""
+"[-- Грешка: не може се креирати PGP потпроцес --]\n"
+"\n"
 
 #: ncrypt/pgp.c:1092 ncrypt/pgp.c:1114 ncrypt/smime.c:1954
 #: postpone/postpone.c:433 postpone/postpone.c:461
@@ -5102,8 +5170,12 @@ msgid "Can't open OpenSSL subprocess"
 msgstr "Не може се отворити OpenSSL потпроцес"
 
 #: ncrypt/smime.c:1815 ncrypt/smime.c:1935
-msgid "[-- End of OpenSSL output --]\n\n"
-msgstr "[-- Крај OpenSSL излаза --]\n\n"
+msgid ""
+"[-- End of OpenSSL output --]\n"
+"\n"
+msgstr ""
+"[-- Крај OpenSSL излаза --]\n"
+"\n"
 
 #: ncrypt/smime.c:1893 ncrypt/smime.c:1905
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
@@ -5118,12 +5190,20 @@ msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- Следећи подаци су потписани преко S/MIME-а --]\n"
 
 #: ncrypt/smime.c:2040
-msgid "\n[-- End of S/MIME encrypted data. --]\n"
-msgstr "\n[-- Крај података шифрованих преко S/MIME-а. --]\n"
+msgid ""
+"\n"
+"[-- End of S/MIME encrypted data. --]\n"
+msgstr ""
+"\n"
+"[-- Крај података шифрованих преко S/MIME-а. --]\n"
 
 #: ncrypt/smime.c:2042
-msgid "\n[-- End of S/MIME signed data. --]\n"
-msgstr "\n[-- Крај података потписаних преко S/MIME-а. --]\n"
+msgid ""
+"\n"
+"[-- End of S/MIME signed data. --]\n"
+msgstr ""
+"\n"
+"[-- Крај података потписаних преко S/MIME-а. --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2177
@@ -5195,11 +5275,11 @@ msgstr "ИБ-у није указано поверење. Заиста жели�
 msgid "Loading list of groups from cache..."
 msgstr "Учитавање листе група из кеша..."
 
-#: nntp/newsrc.c:1028
+#: nntp/newsrc.c:1029
 msgid "No news server defined"
 msgstr "Ниједан њуз сервер није задат"
 
-#: nntp/newsrc.c:1046
+#: nntp/newsrc.c:1047
 #, c-format
 msgid "%s is an invalid news server specification"
 msgstr "%s је неисправно задавање њуз сервера"
@@ -5225,60 +5305,60 @@ msgstr "Повезивање са %s је изгубљено. Поновно п�
 msgid "Fetching list of articles..."
 msgstr "Добављање листе чланака..."
 
-#: nntp/nntp.c:1443 nntp/nntp.c:2038 pop/pop.c:556 pop/pop.c:836
+#: nntp/nntp.c:1448 nntp/nntp.c:2043 pop/pop.c:556 pop/pop.c:836
 msgid "Checking for new messages..."
 msgstr "Провера нових порука..."
 
-#: nntp/nntp.c:1757 nntp/nntp.c:1851
+#: nntp/nntp.c:1762 nntp/nntp.c:1856
 msgid "Could not switch to reader mode"
 msgstr "Неуспешно пребацивање у режим читача"
 
-#: nntp/nntp.c:1770
+#: nntp/nntp.c:1775
 #, c-format
 msgid "Connected to %s. %s"
 msgstr "Повезан са %s. %s"
 
-#: nntp/nntp.c:1771
+#: nntp/nntp.c:1776
 msgid "Posting is NOT ok"
 msgstr "Слање НИЈЕ дозвољено"
 
-#: nntp/nntp.c:1771
+#: nntp/nntp.c:1776
 msgid "Posting is ok"
 msgstr "Слање је дозвољено"
 
-#: nntp/nntp.c:1906 nntp/nntp.c:1941
+#: nntp/nntp.c:1911 nntp/nntp.c:1946
 #, c-format
 msgid "Can't post article: %s"
 msgstr "Не може се послати чланак: %s"
 
-#: nntp/nntp.c:1962
+#: nntp/nntp.c:1967
 #, c-format
 msgid "Loading list of groups from server %s..."
 msgstr "Учитавање листе група са сервера %s..."
 
-#: nntp/nntp.c:2005 nntp/nntp.c:2097
+#: nntp/nntp.c:2010 nntp/nntp.c:2102
 msgid "Loading descriptions..."
 msgstr "Учитавање описа..."
 
-#: nntp/nntp.c:2027
+#: nntp/nntp.c:2032
 msgid "Checking for new newsgroups..."
 msgstr "Провера нових њузгрупа..."
 
-#: nntp/nntp.c:2235
+#: nntp/nntp.c:2240
 msgid "Unable to find child articles because server does not support XPAT command"
 msgstr "Не могу се пронаћи подређени чланци зато што сервер не подржава наредбу XPAT"
 
-#: nntp/nntp.c:2312
+#: nntp/nntp.c:2317
 #, c-format
 msgid "%s is an invalid newsgroup specification"
 msgstr "%s је неисправно задавање њузгрупе"
 
-#: nntp/nntp.c:2351
+#: nntp/nntp.c:2356
 #, c-format
 msgid "Newsgroup %s not found on the server"
 msgstr "Њузгрупа %s није пронађена на серверу"
 
-#: nntp/nntp.c:2374
+#: nntp/nntp.c:2379
 #, c-format
 msgid "Newsgroup %s has been removed from the server"
 msgstr "Њузгрупа %s је уклоњена са сервера"
@@ -6953,32 +7033,32 @@ msgstr "прекинуте нити"
 msgid "IMAP custom server-side search for STRING"
 msgstr "Прилагођена IMAP претрага сервера за ниском НИСКА"
 
-#: pattern/pattern.c:261 pattern/pattern.c:367 pattern/pattern.c:534
-#: pattern/pattern.c:694
+#: pattern/pattern.c:261 pattern/pattern.c:367 pattern/pattern.c:531
+#: pattern/pattern.c:692
 msgid "Compiling search pattern..."
 msgstr "Компајлирање шеме за претрагу..."
 
-#: pattern/pattern.c:288 pattern/pattern.c:393
+#: pattern/pattern.c:288 pattern/pattern.c:390
 msgid "Executing command on matching messages..."
 msgstr "Извршавање наредбе на порукама које одговарају..."
 
-#: pattern/pattern.c:464
+#: pattern/pattern.c:461
 msgid "No messages matched criteria"
 msgstr "Ниједна порука не одговара критеријумима"
 
-#: pattern/pattern.c:570 pattern/pattern.c:730
+#: pattern/pattern.c:568 pattern/pattern.c:728
 msgid "Searching..."
 msgstr "Претрага..."
 
-#: pattern/pattern.c:584 pattern/pattern.c:744
+#: pattern/pattern.c:582 pattern/pattern.c:742
 msgid "Search hit bottom without finding match"
 msgstr "Претрага је досегла дно без пронађеног подударања"
 
-#: pattern/pattern.c:595 pattern/pattern.c:755
+#: pattern/pattern.c:593 pattern/pattern.c:753
 msgid "Search hit top without finding match"
 msgstr "Претрага је досегла врх без пронађеног подударања"
 
-#: pattern/pattern.c:631 pattern/pattern.c:791
+#: pattern/pattern.c:629 pattern/pattern.c:789
 msgid "Search interrupted"
 msgstr "Претрага је прекинута"
 
@@ -7091,7 +7171,7 @@ msgstr "Означавање порука обрисаним..."
 msgid "Can't write message to temporary file"
 msgstr "Порука се не може уписати у привремену датотеку"
 
-#: postpone/dlg_postpone.c:185
+#: postpone/dlg_postpone.c:188
 msgid "Postponed Messages"
 msgstr "Одложене поруке"
 
@@ -7370,7 +7450,7 @@ msgstr "Није задат ниједан прималац"
 msgid "No List-Subscribe header found"
 msgstr "Није пронађено заглавље List-Subscribe"
 
-#: send/send.c:3069
+#: send/send.c:3074
 msgid "No List-Unsubscribe header found"
 msgstr "Није пронађено заглавље List-Unubscribe"
 
