@@ -124,11 +124,11 @@ static const struct Tz TimeZones[] = {
  * returns the seconds east of UTC given 'g' and its corresponding gmtime()
  * representation
  */
-static time_t compute_tz(time_t g, struct tm *utc)
+static int compute_tz(time_t g, struct tm *utc)
 {
   struct tm lt = mutt_date_localtime(g);
 
-  time_t t = (((lt.tm_hour - utc->tm_hour) * 60) + (lt.tm_min - utc->tm_min)) * 60;
+  int tz = (((lt.tm_hour - utc->tm_hour) * 60) + (lt.tm_min - utc->tm_min)) * 60;
 
   int yday = (lt.tm_yday - utc->tm_yday);
   if (yday != 0)
@@ -137,15 +137,15 @@ static time_t compute_tz(time_t g, struct tm *utc)
     if ((yday == -1) || /* UTC passed midnight before localtime */
         (yday > 1))     /* UTC passed new year before localtime */
     {
-      t -= (24 * 60 * 60);
+      tz -= (24 * 60 * 60);
     }
     else
     {
-      t += (24 * 60 * 60);
+      tz += (24 * 60 * 60);
     }
   }
 
-  return t;
+  return tz;
 }
 
 /**
@@ -203,7 +203,7 @@ static int is_leap_year_feb(struct tm *tm)
  * Returns the local timezone in seconds east of UTC for the time t,
  * or for the current time if t is zero.
  */
-time_t mutt_date_local_tz(time_t t)
+int mutt_date_local_tz(time_t t)
 {
   /* Check we haven't overflowed the time (on 32-bit arches) */
   if ((t == TIME_T_MAX) || (t == TIME_T_MIN))
@@ -252,14 +252,16 @@ time_t mutt_date_make_time(struct tm *t, bool local)
     return TIME_T_MAX;
 
   /* Compute the number of days since January 1 in the same year */
-  time_t g = AccumDaysPerMonth[t->tm_mon % mutt_array_size(Months)];
+  int yday = AccumDaysPerMonth[t->tm_mon % mutt_array_size(Months)];
 
   /* The leap years are 1972 and every 4. year until 2096,
    * but this algorithm will fail after year 2099 */
-  g += t->tm_mday;
+  yday += t->tm_mday;
   if ((t->tm_year % 4) || (t->tm_mon < 2))
-    g--;
-  t->tm_yday = g;
+    yday--;
+  t->tm_yday = yday;
+
+  time_t g = yday;
 
   /* Compute the number of days since January 1, 1970 */
   g += (t->tm_year - 70) * (time_t) 365;
@@ -381,7 +383,7 @@ void mutt_date_make_date(struct Buffer *buf, bool local)
     return;
 
   struct tm tm;
-  time_t tz = 0;
+  int tz = 0;
 
   time_t t = mutt_date_epoch();
   if (local)
@@ -396,10 +398,9 @@ void mutt_date_make_date(struct Buffer *buf, bool local)
 
   tz /= 60;
 
-  mutt_buffer_add_printf(buf, "%s, %d %s %d %02d:%02d:%02d %+03d%02d",
-                         Weekdays[tm.tm_wday], tm.tm_mday, Months[tm.tm_mon],
-                         tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec,
-                         (int) tz / 60, (int) abs((int) tz) % 60);
+  mutt_buffer_add_printf(buf, "%s, %d %s %d %02d:%02d:%02d %+03d%02d", Weekdays[tm.tm_wday],
+                         tm.tm_mday, Months[tm.tm_mon], tm.tm_year + 1900,
+                         tm.tm_hour, tm.tm_min, tm.tm_sec, tz / 60, abs(tz) % 60);
 }
 
 /**
@@ -560,13 +561,13 @@ int mutt_date_make_imap(char *buf, size_t buflen, time_t timestamp)
     return -1;
 
   struct tm tm = mutt_date_localtime(timestamp);
-  time_t tz = mutt_date_local_tz(timestamp);
+  int tz = mutt_date_local_tz(timestamp);
 
   tz /= 60;
 
   return snprintf(buf, buflen, "%02d-%s-%d %02d:%02d:%02d %+03d%02d",
                   tm.tm_mday, Months[tm.tm_mon], tm.tm_year + 1900, tm.tm_hour,
-                  tm.tm_min, tm.tm_sec, (int) tz / 60, (int) abs((int) tz) % 60);
+                  tm.tm_min, tm.tm_sec, tz / 60, abs(tz) % 60);
 }
 
 /**
