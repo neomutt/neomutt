@@ -1829,6 +1829,7 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
     mx_mbox_open(m, MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
     mx_mbox_close(m);
     m->peekonly = old_peek;
+    m->stats_last_checked.tv_sec = mutt_date_epoch();
   }
 
   if (m->has_new || m->msg_new)
