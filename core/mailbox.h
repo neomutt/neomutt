@@ -103,7 +103,6 @@ struct Mailbox
   bool newly_created;                 ///< Mbox or mmdf just popped into existence
   struct timespec mtime;              ///< Time Mailbox was last changed
   struct timespec last_visited;       ///< Time of last exit from this mailbox
-  struct timespec stats_last_checked; ///< Mtime of mailbox the last time stats where checked.
 
   const struct MxOps *mx_ops;         ///< MXAPI callback functions
 
