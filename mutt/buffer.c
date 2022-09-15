@@ -268,7 +268,7 @@ void mutt_buffer_alloc(struct Buffer *buf, size_t new_size)
   if (!buf)
     return;
 
-  if (buf->data && (new_size > 0) && (new_size <= buf->dsize))
+  if (buf->data && (new_size <= buf->dsize))
     return;
 
   const bool was_empty = (buf->dptr == NULL);
