@@ -47,8 +47,9 @@ struct stat;
  */
 struct MboxAccountData
 {
-  FILE *fp;              ///< Mailbox file
-  struct timespec atime; ///< File's last-access time
+  FILE *fp;                           ///< Mailbox file
+  struct timespec atime;              ///< File's last-access time
+  struct timespec stats_last_checked; ///< Mtime of mailbox the last time stats where checked
 
   bool locked : 1; ///< is the mailbox locked?
   bool append : 1; ///< mailbox is opened in append mode

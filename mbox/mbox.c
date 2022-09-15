@@ -92,23 +92,6 @@ static struct MboxAccountData *mbox_adata_new(void)
 }
 
 /**
- * mbox_adata_get - Get the private data associated with a Mailbox
- * @param m Mailbox
- * @retval ptr Private data
- */
-static struct MboxAccountData *mbox_adata_get(struct Mailbox *m)
-{
-  if (!m)
-    return NULL;
-  if ((m->type != MUTT_MBOX) && (m->type != MUTT_MMDF))
-    return NULL;
-  struct Account *a = m->account;
-  if (!a)
-    return NULL;
-  return a->adata;
-}
-
-/**
  * init_mailbox - Add Mbox data to the Mailbox
  * @param m Mailbox
  * @retval  0 Success
@@ -126,6 +109,18 @@ static int init_mailbox(struct Mailbox *m)
   m->account->adata = mbox_adata_new();
   m->account->adata_free = mbox_adata_free;
   return 0;
+}
+
+/**
+ * mbox_adata_get - Get the private data associated with a Mailbox
+ * @param m Mailbox
+ * @retval ptr Private data
+ */
+static struct MboxAccountData *mbox_adata_get(struct Mailbox *m)
+{
+  if (init_mailbox(m) == -1)
+    return NULL;
+  return m->account->adata;
 }
 
 /**
@@ -1822,13 +1817,17 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   if (m->newly_created && ((st.st_ctime != st.st_mtime) || (st.st_ctime != st.st_atime)))
     m->newly_created = false;
 
-  const bool force = flags & (MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS);
-  if (force && mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->stats_last_checked) > 0)
+  if (flags & (MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS))
   {
-    bool old_peek = m->peekonly;
-    mx_mbox_open(m, MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
-    mx_mbox_close(m);
-    m->peekonly = old_peek;
+    struct MboxAccountData *adata = mbox_adata_get(m);
+    if (adata && mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &adata->stats_last_checked) > 0)
+    {
+      bool old_peek = m->peekonly;
+      mx_mbox_open(m, MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
+      mx_mbox_close(m);
+      m->peekonly = old_peek;
+      adata->stats_last_checked.tv_sec = mutt_date_epoch();
+    }
   }
 
   if (m->has_new || m->msg_new)
