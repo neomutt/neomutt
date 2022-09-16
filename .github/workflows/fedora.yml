@@ -20,7 +20,7 @@ jobs:
           - name: Default
             options:
           - name: Minimal
-            options: --disable-idn --disable-nls --disable-pgp --disable-smime --ssl --with-lock=flock
+            options: --disable-idn --disable-nls --disable-pgp --disable-smime --ssl --gsasl --with-lock=flock
           - name: Everything
             options: --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --lmdb --lua --lz4 --notmuch --pcre2 --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
 

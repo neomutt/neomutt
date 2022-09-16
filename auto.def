@@ -57,6 +57,8 @@ options {
   gss=0                     => "Use GSSAPI authentication for IMAP"
   with-gss:path             => "Location of GSSAPI library"
   # SASL (IMAP and POP auth)
+  gsasl=0                   => "Use the GNU SASL network security library"
+  with-gsasl:path           => "Location of the GNU SASL network security library"
   sasl=0                    => "Use the SASL network security library"
   with-sasl:path            => "Location of the SASL network security library"
   # AutoCrypt
@@ -154,7 +156,7 @@ if {1} {
   foreach opt {
     asan autocrypt bdb coverage debug-backtrace debug-color debug-email
     debug-graphviz debug-notify debug-parse-test debug-queue debug-window doc
-    everything fmemopen full-doc fuzzing gdbm gnutls gpgme gss homespool idn
+    everything fmemopen full-doc fuzzing gdbm gnutls gpgme gsasl gss homespool idn
     idn2 include-path-in-cflags inotify kyotocabinet lmdb locales-fix lua lz4
     mixmaster nls notmuch pcre2 pgp pkgconf qdbm rocksdb sasl smime sqlite ssl
     testing tdb tokyocabinet zlib zstd
@@ -166,7 +168,7 @@ if {1} {
   # relative --enable-opt to true. This allows "--with-opt=/usr" to be used as
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
-    bdb gdbm gnutls gpgme gss homespool idn idn2 kyotocabinet lmdb lua lz4
+    bdb gdbm gnutls gpgme gsasl gss homespool idn idn2 kyotocabinet lmdb lua lz4
     mixmaster nls notmuch pcre2 qdbm rocksdb sasl sqlite ssl tdb tokyocabinet
     zlib zstd
   } {
@@ -585,6 +587,26 @@ if {[get-define want-pgp]} {
 if {[get-define want-smime]} {
   define-feature SMIME
   define CRYPT_BACKEND_CLASSIC_SMIME
+}
+
+###############################################################################
+# GNU SASL
+if {[get-define want-gsasl] && [get-define want-sasl]} {
+  user-error "Cannot specify both --gsasl and --sasl"
+}
+if {[get-define want-gsasl]} {
+  if {[get-define want-pkgconf]} {
+    pkgconf true libgsasl
+    define USE_SASL_GNU
+    define-feature SASL
+  } else {
+    if {[check-inc-and-lib gsasl [opt-val with-gsasl $prefix] \
+                           gsasl.h gsasl_init gsasl]} {
+      define USE_SASL_GNU
+    } else {
+      user-error "Unable to find GNU SASL"
+    }
+  }
 }
 
 ###############################################################################

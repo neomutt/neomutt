@@ -1,9 +1,9 @@
 /**
  * @file
- * SASL authentication support
+ * GNU SASL authentication support
  *
  * @authors
- * Copyright (C) 2000-2005,2008 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,19 +20,16 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_CONN_SASL_H
-#define MUTT_CONN_SASL_H
+#ifndef MUTT_CONN_GSASL_H
+#define MUTT_CONN_GSASL_H
 
-#include <sasl/sasl.h>
-#include <stdbool.h>
+#include <gsasl.h>
 
 struct Connection;
 
-bool sasl_auth_validator(const char *authenticator);
+void        mutt_gsasl_client_finish(Gsasl_session **sctx);
+int         mutt_gsasl_client_new   (struct Connection *conn, const char *mech, Gsasl_session **sctx);
+void        mutt_gsasl_done         (void);
+const char *mutt_gsasl_get_mech     (const char *requested_mech, const char *server_mechlist);
 
-int  mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn);
-void mutt_sasl_done      (void);
-int  mutt_sasl_interact  (sasl_interact_t *interaction);
-void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn);
-
-#endif /* MUTT_CONN_SASL_H */
+#endif /* MUTT_CONN_GSASL_H */

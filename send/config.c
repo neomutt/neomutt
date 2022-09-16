@@ -33,8 +33,10 @@
 #include <stdint.h>
 #include <string.h>
 #include "mutt/lib.h"
-#include "conn/lib.h"
 #include "lib.h"
+#ifdef USE_SASL_CYRUS
+#include "conn/lib.h"
+#endif
 
 /**
  * wrapheaders_validator - Validate the "wrap_headers" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator

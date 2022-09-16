@@ -1383,6 +1383,9 @@ main
 #ifdef USE_SASL_CYRUS
     mutt_sasl_done();
 #endif
+#ifdef USE_SASL_GNU
+    mutt_gsasl_done();
+#endif
 #ifdef USE_AUTOCRYPT
     mutt_autocrypt_cleanup();
 #endif

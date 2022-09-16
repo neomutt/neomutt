@@ -40,7 +40,7 @@
 #include "auth.h"
 
 /**
- * imap_auth_sasl - Default authenticator if available - Implements ImapAuth::authenticate()
+ * imap_auth_sasl - SASL authenticator - Implements ImapAuth::authenticate()
  */
 enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *method)
 {

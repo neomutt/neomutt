@@ -198,6 +198,11 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "gpgme", 0 },
 #endif
+#ifdef USE_SASL_GNU
+  { "gsasl", 1 },
+#else
+  { "gsasl", 0 },
+#endif
 #ifdef USE_GSS
   { "gss", 1 },
 #else

@@ -33,6 +33,7 @@
  * | conn/dlg_verifycert.c | @subpage conn_dlg_verifycert  |
  * | conn/getdomain.c      | @subpage conn_getdomain       |
  * | conn/gnutls.c         | @subpage conn_gnutls          |
+ * | conn/gsasl.c          | @subpage conn_gsasl           |
  * | conn/openssl.c        | @subpage conn_openssl         |
  * | conn/raw.c            | @subpage conn_raw             |
  * | conn/sasl.c           | @subpage conn_sasl            |
@@ -51,6 +52,9 @@
 #include "connection.h"
 #include "sasl_plain.h"
 #include "socket.h"
+#ifdef USE_SASL_GNU
+#include "gsasl2.h"
+#endif
 #ifdef USE_SASL_CYRUS
 #include "sasl.h"
 #endif
