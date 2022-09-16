@@ -56,6 +56,9 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
 #ifdef USE_SASL_CYRUS
 enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *method);
 #endif
+#ifdef USE_SASL_GNU
+enum ImapAuthRes imap_auth_gsasl(struct ImapAccountData *adata, const char *method);
+#endif
 enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *method);
 enum ImapAuthRes imap_auth_xoauth2(struct ImapAccountData *adata, const char *method);
 

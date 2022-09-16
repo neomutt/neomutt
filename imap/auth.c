@@ -61,8 +61,10 @@ static const struct ImapAuth ImapAuthenticators[] = {
   { imap_auth_oauth, "oauthbearer" },
   { imap_auth_xoauth2, "xoauth2" },
   { imap_auth_plain, "plain" },
-#ifdef USE_SASL_CYRUS
+#if defined(USE_SASL_CYRUS)
   { imap_auth_sasl, NULL },
+#elif defined(USE_SASL_GNU)
+  { imap_auth_gsasl, NULL },
 #else
   { imap_auth_anon, "anonymous" },
 #endif

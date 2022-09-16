@@ -32,8 +32,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
-#include "conn/lib.h"
 #include "auth.h"
+#ifdef USE_SASL_CYRUS
+#include "conn/lib.h"
+#endif
 
 /**
  * imap_auth_validator - Validate the "imap_authenticators" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator

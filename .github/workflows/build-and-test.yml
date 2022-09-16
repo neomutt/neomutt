@@ -22,7 +22,7 @@ jobs:
           - name: default
             options:
           - name: disabled
-            options: --disable-idn --disable-nls --disable-pgp --disable-smime --ssl
+            options: --disable-idn --disable-nls --disable-pgp --disable-smime --ssl --gsasl
           - name: everything
             options: --autocrypt --bdb --disable-idn --fmemopen --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --mixmaster --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
 

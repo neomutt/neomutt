@@ -284,7 +284,10 @@ LIBCONN=	libconn.a
 LIBCONNOBJS=	conn/accountcmd.o conn/config.o conn/connaccount.o \
 		conn/getdomain.o conn/raw.o conn/sasl_plain.o conn/socket.o \
 		conn/tunnel.o 
-@if HAVE_SASL
+@if USE_SASL_GNU
+LIBCONNOBJS+=	conn/gsasl.o
+@endif
+@if USE_SASL_CYRUS
 LIBCONNOBJS+=	conn/sasl.o
 @endif
 @if USE_SSL
@@ -479,9 +482,13 @@ LIBIMAPOBJS=	imap/auth.o imap/auth_login.o imap/auth_oauth.o \
 @if USE_GSS
 LIBIMAPOBJS+=	imap/auth_gss.o
 @endif
-@if HAVE_SASL
+@if USE_SASL_CYRUS
 LIBIMAPOBJS+=	imap/auth_sasl.o
-@else
+@endif
+@if USE_SASL_GNU
+LIBIMAPOBJS+=	imap/auth_gsasl.o
+@endif
+@if !HAVE_SASL
 LIBIMAPOBJS+=	imap/auth_anon.o imap/auth_cram.o
 @endif
 CLEANFILES+=	$(LIBIMAP) $(LIBIMAPOBJS)

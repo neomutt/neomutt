@@ -33,7 +33,6 @@
 #include <stdint.h>
 #include "private.h"
 #include "mutt/lib.h"
-#include "conn/lib.h"
 
 /**
  * pop_auth_validator - Validate the "pop_authenticators" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator

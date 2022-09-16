@@ -42,6 +42,102 @@
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
 #endif
+#ifdef USE_SASL_GNU
+#include <gsasl.h>
+#endif
+
+#ifdef USE_SASL_GNU
+/**
+ * pop_auth_gsasl - POP GNU SASL authenticator - Implements PopAuth::authenticate()
+ */
+static enum PopAuthRes pop_auth_gsasl(struct PopAccountData *adata, const char *method)
+{
+  Gsasl_session *gsasl_session = NULL;
+  struct Buffer *output_buf = NULL;
+  struct Buffer *input_buf = NULL;
+  int rc = POP_A_FAILURE;
+  int gsasl_rc = GSASL_OK;
+
+  const char *chosen_mech = mutt_gsasl_get_mech(method,
+                                                mutt_buffer_string(&adata->auth_list));
+  if (!chosen_mech)
+  {
+    mutt_debug(LL_DEBUG2, "returned no usable mech\n");
+    return POP_A_UNAVAIL;
+  }
+
+  mutt_debug(LL_DEBUG2, "using mech %s\n", chosen_mech);
+
+  if (mutt_gsasl_client_new(adata->conn, chosen_mech, &gsasl_session) < 0)
+  {
+    mutt_debug(LL_DEBUG1, "Error allocating GSASL connection.\n");
+    return POP_A_UNAVAIL;
+  }
+
+  mutt_message(_("Authenticating (%s)..."), chosen_mech);
+
+  output_buf = mutt_buffer_pool_get();
+  input_buf = mutt_buffer_pool_get();
+  mutt_buffer_printf(output_buf, "AUTH %s\r\n", chosen_mech);
+
+  do
+  {
+    if (mutt_socket_send(adata->conn, mutt_buffer_string(output_buf)) < 0)
+    {
+      adata->status = POP_DISCONNECTED;
+      rc = POP_A_SOCKET;
+      goto fail;
+    }
+
+    if (mutt_socket_buffer_readln(input_buf, adata->conn) < 0)
+    {
+      adata->status = POP_DISCONNECTED;
+      rc = POP_A_SOCKET;
+      goto fail;
+    }
+
+    if (!mutt_strn_equal(mutt_buffer_string(input_buf), "+ ", 2))
+      break;
+
+    const char *pop_auth_data = mutt_buffer_string(input_buf) + 2;
+    char *gsasl_step_output = NULL;
+    gsasl_rc = gsasl_step64(gsasl_session, pop_auth_data, &gsasl_step_output);
+    if ((gsasl_rc == GSASL_NEEDS_MORE) || (gsasl_rc == GSASL_OK))
+    {
+      mutt_buffer_strcpy(output_buf, gsasl_step_output);
+      mutt_buffer_addstr(output_buf, "\r\n");
+      gsasl_free(gsasl_step_output);
+    }
+    else
+    {
+      mutt_debug(LL_DEBUG1, "gsasl_step64() failed (%d): %s\n", gsasl_rc,
+                 gsasl_strerror(gsasl_rc));
+    }
+  } while ((gsasl_rc == GSASL_NEEDS_MORE) || (gsasl_rc == GSASL_OK));
+
+  if (mutt_strn_equal(mutt_buffer_string(input_buf), "+ ", 2))
+  {
+    mutt_socket_send(adata->conn, "*\r\n");
+    goto fail;
+  }
+
+  if (mutt_strn_equal(mutt_buffer_string(input_buf), "+OK", 3) && (gsasl_rc == GSASL_OK))
+    rc = POP_A_SUCCESS;
+
+fail:
+  mutt_buffer_pool_release(&input_buf);
+  mutt_buffer_pool_release(&output_buf);
+  mutt_gsasl_client_finish(&gsasl_session);
+
+  if (rc == POP_A_FAILURE)
+  {
+    mutt_debug(LL_DEBUG2, "%s failed\n", chosen_mech);
+    mutt_error(_("SASL authentication failed."));
+  }
+
+  return rc;
+}
+#endif
 
 #ifdef USE_SASL_CYRUS
 /**
@@ -385,6 +481,9 @@ static const struct PopAuth PopAuthenticators[] = {
   { pop_auth_oauth, "oauthbearer" },
 #ifdef USE_SASL_CYRUS
   { pop_auth_sasl, NULL },
+#endif
+#ifdef USE_SASL_GNU
+  { pop_auth_gsasl, NULL },
 #endif
   { pop_auth_apop, "apop" },
   { pop_auth_user, "user" },
