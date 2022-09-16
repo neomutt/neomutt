@@ -38,12 +38,12 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "adata.h"
-#ifdef USE_SASL
+#ifdef USE_SASL_CYRUS
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
 #endif
 
-#ifdef USE_SASL
+#ifdef USE_SASL_CYRUS
 /**
  * pop_auth_sasl - POP SASL authenticator - Implements PopAuth::authenticate()
  */
@@ -383,7 +383,7 @@ static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *
 static const struct PopAuth PopAuthenticators[] = {
   // clang-format off
   { pop_auth_oauth, "oauthbearer" },
-#ifdef USE_SASL
+#ifdef USE_SASL_CYRUS
   { pop_auth_sasl, NULL },
 #endif
   { pop_auth_apop, "apop" },

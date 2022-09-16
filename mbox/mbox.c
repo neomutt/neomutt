@@ -1820,7 +1820,8 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   if (flags & (MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS))
   {
     struct MboxAccountData *adata = mbox_adata_get(m);
-    if (adata && mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &adata->stats_last_checked) > 0)
+    if (adata && mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME,
+                                                 &adata->stats_last_checked) > 0)
     {
       bool old_peek = m->peekonly;
       mx_mbox_open(m, MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);

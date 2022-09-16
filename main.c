@@ -1380,7 +1380,7 @@ main
 #ifdef USE_IMAP
     imap_logout_all();
 #endif
-#ifdef USE_SASL
+#ifdef USE_SASL_CYRUS
     mutt_sasl_done();
 #endif
 #ifdef USE_AUTOCRYPT

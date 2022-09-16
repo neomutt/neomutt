@@ -50,7 +50,7 @@ static int pop_auth_validator(const struct ConfigSet *cs, const struct ConfigDef
   {
     if (pop_auth_is_valid(np->data))
       continue;
-#ifdef USE_SASL
+#ifdef USE_SASL_CYRUS
     if (sasl_auth_validator(np->data))
       continue;
 #endif

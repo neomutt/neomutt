@@ -64,7 +64,7 @@
 #ifdef USE_HCACHE
 #include "protos.h"
 #endif
-#ifdef USE_SASL
+#ifdef USE_SASL_CYRUS
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
 #endif
@@ -185,7 +185,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
       mutt_str_cat(buf, sizeof(buf), " ");
       mutt_str_copy(authinfo, buf + plen - 1, sizeof(authinfo));
     }
-#ifdef USE_SASL
+#ifdef USE_SASL_CYRUS
     else if ((plen = mutt_str_startswith(buf, "SASL ")))
     {
       char *p = buf + plen;
@@ -208,7 +208,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
     }
   } while (!mutt_str_equal(".", buf));
   *buf = '\0';
-#ifdef USE_SASL
+#ifdef USE_SASL_CYRUS
   if (adata->authenticators && mutt_istr_find(authinfo, " SASL "))
     mutt_str_copy(buf, adata->authenticators, sizeof(buf));
 #endif
@@ -373,7 +373,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
   return 0;
 }
 
-#ifdef USE_SASL
+#ifdef USE_SASL_CYRUS
 /**
  * nntp_memchr - Look for a char in a binary buf, conveniently
  * @param haystack [in/out] input: start here, output: store address of hit
@@ -531,7 +531,7 @@ static int nntp_auth(struct NntpAccountData *adata)
       }
       else
       {
-#ifdef USE_SASL
+#ifdef USE_SASL_CYRUS
         sasl_conn_t *saslconn = NULL;
         sasl_interact_t *interaction = NULL;
         int rc;
@@ -653,7 +653,7 @@ static int nntp_auth(struct NntpAccountData *adata)
           continue;
 #else
         continue;
-#endif /* USE_SASL */
+#endif /* USE_SASL_CYRUS */
       }
 
       // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL

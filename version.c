@@ -264,7 +264,7 @@ static struct CompileOptions comp_opts[] = {
 #ifndef HAVE_PCRE2
   { "regex", 1 },
 #endif
-#ifdef USE_SASL
+#ifdef USE_SASL_CYRUS
   { "sasl", 1 },
 #else
   { "sasl", 0 },

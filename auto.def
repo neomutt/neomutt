@@ -592,17 +592,17 @@ if {[get-define want-smime]} {
 if {[get-define want-sasl]} {
   if {[get-define want-pkgconf]} {
     pkgconf true libsasl2
-    define USE_SASL
+    define USE_SASL_CYRUS
     define-feature SASL
   } else {
     foreach sasl_lib {sasl2 sasl} {
       if {[check-inc-and-lib sasl [opt-val with-sasl $prefix] \
                              sasl/sasl.h sasl_encode64 $sasl_lib]} {
-        define USE_SASL
+        define USE_SASL_CYRUS
         break
       }
     }
-    if {![get-define USE_SASL]} {
+    if {![get-define USE_SASL_CYRUS]} {
       user-error "Unable to find SASL"
     }
   }

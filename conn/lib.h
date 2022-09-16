@@ -51,7 +51,7 @@
 #include "connection.h"
 #include "sasl_plain.h"
 #include "socket.h"
-#ifdef USE_SASL
+#ifdef USE_SASL_CYRUS
 #include "sasl.h"
 #endif
 #ifdef USE_ZLIB

@@ -45,7 +45,7 @@ bool imap_auth_is_valid(const char *authenticator);
 
 /* external authenticator prototypes */
 enum ImapAuthRes imap_auth_plain(struct ImapAccountData *adata, const char *method);
-#ifndef USE_SASL
+#ifndef USE_SASL_CYRUS
 enum ImapAuthRes imap_auth_anon(struct ImapAccountData *adata, const char *method);
 enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *method);
 #endif
@@ -53,7 +53,7 @@ enum ImapAuthRes imap_auth_login(struct ImapAccountData *adata, const char *meth
 #ifdef USE_GSS
 enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method);
 #endif
-#ifdef USE_SASL
+#ifdef USE_SASL_CYRUS
 enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *method);
 #endif
 enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *method);

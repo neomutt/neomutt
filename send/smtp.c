@@ -50,7 +50,7 @@
 #include "mutt_account.h"
 #include "mutt_globals.h"
 #include "mutt_socket.h"
-#ifdef USE_SASL
+#ifdef USE_SASL_CYRUS
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
 #include "options.h"
@@ -419,7 +419,7 @@ static int smtp_helo(struct SmtpAccountData *adata, bool esmtp)
   return smtp_get_resp(adata);
 }
 
-#ifdef USE_SASL
+#ifdef USE_SASL_CYRUS
 /**
  * smtp_auth_sasl - Authenticate using SASL
  * @param adata    SMTP Account data
@@ -721,7 +721,7 @@ static const struct SmtpAuth SmtpAuthenticators[] = {
   { smtp_auth_xoauth2, "xoauth2" },
   { smtp_auth_plain, "plain" },
   { smtp_auth_login, "login" },
-#ifdef USE_SASL
+#ifdef USE_SASL_CYRUS
   { smtp_auth_sasl, NULL },
 #endif
   // clang-format on
@@ -785,7 +785,7 @@ static int smtp_authenticate(struct SmtpAccountData *adata)
     /* Fall back to default: any authenticator */
     mutt_debug(LL_DEBUG2, "Falling back to smtp_auth_sasl, if using sasl.\n");
 
-#ifdef USE_SASL
+#ifdef USE_SASL_CYRUS
     r = smtp_auth_sasl(adata, adata->auth_mechs);
 #else
     mutt_error(_("SMTP authentication requires SASL"));
