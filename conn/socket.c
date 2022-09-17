@@ -30,6 +30,7 @@
 
 #include "config.h"
 #include <errno.h>
+#include <stdbool.h>
 #include <string.h>
 #include <time.h>
 #include "private.h"
@@ -322,4 +323,43 @@ void mutt_socket_empty(struct Connection *conn)
   {
     mutt_socket_read(conn, buf, MIN(bytes, sizeof(buf)));
   }
+}
+
+/**
+ * mutt_socket_buffer_readln_d - Read a line from a socket into a Buffer
+ * @param buf  Buffer to store the line
+ * @param conn Connection to a server
+ * @param dbg  Debug level for logging
+ * @retval >0 Success, number of bytes read
+ * @retval -1 Error
+ */
+int mutt_socket_buffer_readln_d(struct Buffer *buf, struct Connection *conn, int dbg)
+{
+  char ch;
+  bool has_cr = false;
+
+  mutt_buffer_reset(buf);
+
+  while (true)
+  {
+    if (mutt_socket_readchar(conn, &ch) != 1)
+      return -1;
+
+    if (ch == '\n')
+      break;
+
+    if (has_cr)
+    {
+      mutt_buffer_addch(buf, '\r');
+      has_cr = false;
+    }
+
+    if (ch == '\r')
+      has_cr = true;
+    else
+      mutt_buffer_addch(buf, ch);
+  }
+
+  mutt_debug(dbg, "%d< %s\n", conn->fd, mutt_buffer_string(buf));
+  return 0;
 }

@@ -26,6 +26,7 @@
 
 #include <time.h>
 
+struct Buffer;
 struct Connection;
 
 /**
@@ -58,5 +59,8 @@ int                mutt_socket_write_d (struct Connection *conn, const char *buf
 #define mutt_socket_send(conn, buf)           mutt_socket_send_d(conn, buf, MUTT_SOCK_LOG_CMD)
 #define mutt_socket_send_d(conn, buf, dbg)    mutt_socket_write_d(conn, buf, mutt_str_len(buf), dbg)
 #define mutt_socket_write_n(conn, buf, len)   mutt_socket_write_d(conn, buf, len, MUTT_SOCK_LOG_CMD)
+
+#define mutt_socket_buffer_readln(buf, conn)  mutt_socket_buffer_readln_d(buf, conn, MUTT_SOCK_LOG_CMD)
+int mutt_socket_buffer_readln_d(struct Buffer *buf, struct Connection *conn, int dbg);
 
 #endif /* MUTT_CONN_SOCKET_H */
