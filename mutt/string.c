@@ -398,6 +398,29 @@ char *mutt_str_lower(char *str)
 }
 
 /**
+ * mutt_str_upper - Convert all characters in the string to uppercase
+ * @param str String to uppercase
+ * @retval ptr Uppercase string
+ *
+ * The string is transformed in place.
+ */
+char *mutt_str_upper(char *str)
+{
+  if (!str)
+    return NULL;
+
+  char *p = str;
+
+  while (*p)
+  {
+    *p = toupper((unsigned char) *p);
+    p++;
+  }
+
+  return str;
+}
+
+/**
  * mutt_strn_copy - Copy a sub-string into a buffer
  * @param dest   Buffer for the result
  * @param src    Start of the string to copy

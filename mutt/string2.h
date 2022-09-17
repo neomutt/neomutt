@@ -74,6 +74,7 @@ char *      mutt_str_sep(char **stringp, const char *delim);
 char *      mutt_str_skip_email_wsp(const char *s);
 char *      mutt_str_skip_whitespace(const char *p);
 const char *mutt_str_sysexit(int e);
+char *      mutt_str_upper(char *str);
 
 /* case-sensitive flavours */
 char *      mutt_str_cat(char *buf, size_t buflen, const char *s);
