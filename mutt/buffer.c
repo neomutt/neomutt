@@ -34,7 +34,10 @@
 #include <stdio.h>
 #include <string.h>
 #include "buffer.h"
+#include "exit.h"
+#include "logging.h"
 #include "memory.h"
+#include "message.h"
 #include "string2.h"
 
 static const int BufferStepSize = 128;
@@ -103,6 +106,12 @@ size_t mutt_buffer_addstr_n(struct Buffer *buf, const char *s, size_t len)
 {
   if (!buf || !s)
     return 0;
+
+  if (len > (SIZE_MAX - BufferStepSize))
+  {
+    mutt_error(_("Out of memory"));
+    mutt_exit(1);
+  }
 
   if (!buf->data || !buf->dptr || ((buf->dptr + len + 1) > (buf->data + buf->dsize)))
     mutt_buffer_alloc(buf, buf->dsize + MAX(BufferStepSize, len + 1));
@@ -271,13 +280,17 @@ void mutt_buffer_alloc(struct Buffer *buf, size_t new_size)
   if (buf->data && (new_size <= buf->dsize))
     return;
 
+  if (new_size > (SIZE_MAX - BufferStepSize))
+  {
+    mutt_error(_("Out of memory"));
+    mutt_exit(1);
+  }
+
   const bool was_empty = (buf->dptr == NULL);
   const size_t offset = (buf->dptr && buf->data) ? (buf->dptr - buf->data) : 0;
 
-  if (new_size > SIZE_MAX - BufferStepSize)
-    buf->dsize = SIZE_MAX;
-  else
-    buf->dsize = ROUND_UP(new_size + 1, BufferStepSize);
+  buf->dsize = ROUND_UP(new_size + 1, BufferStepSize);
+
   mutt_mem_realloc(&buf->data, buf->dsize);
   mutt_buffer_seek(buf, offset);
 
