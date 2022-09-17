@@ -31,6 +31,7 @@
 #include <config/lib.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <string.h>
 #include "mutt/lib.h"
 #include "conn/lib.h"
 #include "lib.h"

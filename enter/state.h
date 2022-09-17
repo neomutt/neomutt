@@ -23,7 +23,6 @@
 #ifndef MUTT_ENTER_STATE_H
 #define MUTT_ENTER_STATE_H
 
-#include <stddef.h>
 #include <wchar.h> // IWYU pragma: keep
 
 /**

@@ -33,7 +33,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "enter.h"
-#include "state.h"
+#include "state.h" // IWYU pragma: keep
 
 /// combining mark / non-spacing character
 #define COMB_CHAR(wc) (IsWPrint(wc) && (wcwidth(wc) == 0))

@@ -26,12 +26,8 @@
 #include "config.h"
 #include <stdbool.h>
 #include <wchar.h>
-#include <wctype.h>
 #include "mutt.h"
 #include "history/lib.h"
-
-struct CompletionData;
-struct MuttWindow;
 
 /**
  * enum EnterRedrawFlags - Redraw flags for mutt_enter_string_full()

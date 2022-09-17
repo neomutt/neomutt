@@ -41,14 +41,12 @@
 #include "history/lib.h"
 #include "pattern/lib.h"
 #include "enter.h"
-#include "init.h"
 #include "keymap.h"
 #include "mutt_history.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "protos.h"
-#include "state.h"
+#include "state.h" // IWYU pragma: keep
 #include "wdata.h"
 
 /**

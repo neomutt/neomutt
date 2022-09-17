@@ -23,6 +23,7 @@
 #ifndef MUTT_ENTER_ENTER_H
 #define MUTT_ENTER_ENTER_H
 
+#include <stddef.h>
 #include <stdbool.h>
 
 struct EnterState;
