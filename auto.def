@@ -941,28 +941,16 @@ if {[get-define want-pcre2]} {
 ###############################################################################
 # Header cache - bdb
 if {[get-define want-bdb]} {
-  set bdb_versions [opt-val with-bdb-version { 5.3 6.2 4.8 }] ;# Will be checked in order
-  set bdb_prefix [opt-val with-bdb $prefix]
-
-  foreach ver $bdb_versions {
-    lassign [split $ver .] maj min
-    # This is ugly, but it allows us to not have an inner loop
-    lappend bdb_majors   $maj $maj         $maj           $maj        $maj    $maj
-    lappend bdb_minors   $min $min         $min           $min        $min    $min
-    lappend bdb_exploded ""   db-$maj-$min db${maj}${min} db$maj.$min db-$maj db$maj
-  }
-
-  foreach maj $bdb_majors min $bdb_minors ver $bdb_exploded {
-    set ver_inc_dir $bdb_prefix/include/$ver
-    set ver_lib_dir $bdb_prefix/$::libdir_tail/$ver
+  proc find_bdb {bdb_prefix maj min path_tail lib_names} {
+    set ver_inc_dir $bdb_prefix/include/$path_tail
+    set ver_lib_dir $bdb_prefix/$::libdir_tail/$path_tail
     set ver_inc_file $ver_inc_dir/db.h
-    set ver_lib_file  db-$maj.$min
 
     # File exists?
     msg-checking "Checking for BerkeleyDB in $ver_inc_dir..."
     if {![file exists $ver_inc_file]} {
       msg-result "no"
-      continue
+      return 0
     }
 
     # Version is coherent?
@@ -971,23 +959,41 @@ if {[get-define want-bdb]} {
     if {$inc_maj eq {}   || $inc_min eq {} ||
         $inc_maj != $maj || $inc_min != $min} {
       msg-result "no (expecting $maj.$min, got $inc_maj.$inc_min)"
-      continue
+      return 0
     }
     msg-result "yes"
 
     # Can link?
-    cc-with [list -libs -L$ver_lib_dir -cflags -I$ver_inc_dir] {
-      if {![check-inc-and-lib bdb {} db.h db_env_create db-$maj.$min]} {
-        msg-result "no"
-        continue
+    foreach lib_name $lib_names {
+      cc-with [list -libs -L$ver_lib_dir -cflags -I$ver_inc_dir] {
+        check-inc-and-lib bdb {} db.h db_env_create $lib_name
+      }
+      if {[have-feature bdb]} {
+        define-append CFLAGS  -I$ver_inc_dir
+        define-append LDFLAGS -L$ver_lib_dir
+        define-append LIBS    -l$lib_name
+        define-append HCACHE_BACKENDS "bdb"
+        define USE_HCACHE
+        return 1
       }
     }
-    define-append CFLAGS  -I$ver_inc_dir
-    define-append LDFLAGS -L$ver_lib_dir
-    define-append LIBS    -ldb-$maj.$min
-    define-append HCACHE_BACKENDS "bdb"
-    define USE_HCACHE
-    break
+    return 0
+  }
+
+  set bdb_versions [opt-val with-bdb-version { 5.3 6.2 4.8 }] ;# Will be checked in order
+  set bdb_prefix [opt-val with-bdb $prefix]
+
+  foreach ver $bdb_versions {
+    lassign [split $ver .] maj min
+    foreach path_tail [list "" db-$maj-$min db${maj}${min} db$maj.$min db-$maj db$maj] {
+      set lib_names [list db$maj-$maj.$min db$maj-$maj db-$maj.$min db-$maj]
+      if {[find_bdb $bdb_prefix $maj $min $path_tail $lib_names]} {
+        break
+      }
+    }
+    if {[have-feature bdb]} {
+      break
+    }
   }
 
   if {![have-feature bdb]} {
