@@ -333,7 +333,7 @@ static bool execute_command(struct Mailbox *m, const struct Expando *exp, const 
   buf_alloc(sys_cmd, STR_COMMAND);
 
   mutt_sig_block();
-  endwin();
+  mutt_endwin();
   fflush(stdout);
 
   expando_render(exp, CompressRenderData, m, MUTT_FORMAT_NO_FLAGS, sys_cmd->dsize, sys_cmd);

@@ -236,7 +236,7 @@ static void pipe_msg(struct Mailbox *m, struct Email *e, struct Message *msg,
   {
     if (!crypt_valid_passphrase(e->security))
       return;
-    endwin();
+    mutt_endwin();
   }
 
   const bool own_msg = !msg;
