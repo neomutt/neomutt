@@ -599,13 +599,13 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
   if (regex_colors_parse_color_list(cid, buf->data, fg, bg, attrs, &rc, err))
   {
     color_debug(LL_DEBUG5, "regex_colors_parse_color_list done\n");
-    return MUTT_CMD_SUCCESS;
+    return rc;
     // do nothing
   }
   else if (quoted_colors_parse_color(cid, fg, bg, attrs, q_level, &rc, err))
   {
     color_debug(LL_DEBUG5, "quoted_colors_parse_color done\n");
-    return MUTT_CMD_SUCCESS;
+    return rc;
     // do nothing
   }
   else if ((cid == MT_COLOR_STATUS) && MoreArgs(s))
