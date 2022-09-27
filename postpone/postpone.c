@@ -738,13 +738,16 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
     {
       /* if a mailbox is currently open, look to see if the original message
        * the user attempted to reply to is in this mailbox */
-      p = mutt_str_skip_email_wsp(np->data + plen);
-      if (!m_cur->id_hash)
-        m_cur->id_hash = mutt_make_id_hash(m_cur);
-      *cur = mutt_hash_find(m_cur->id_hash, p);
+      if (m_cur)
+      {
+        p = mutt_str_skip_email_wsp(np->data + plen);
+        if (!m_cur->id_hash)
+          m_cur->id_hash = mutt_make_id_hash(m_cur);
+        *cur = mutt_hash_find(m_cur->id_hash, p);
 
-      if (*cur)
-        rc |= SEND_REPLY;
+        if (*cur)
+          rc |= SEND_REPLY;
+      }
     }
     else if ((plen = mutt_istr_startswith(np->data, "X-Mutt-Fcc:")))
     {
