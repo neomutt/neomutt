@@ -3593,6 +3593,13 @@
 ** .te
 */
 
+{ "preserve_new", DT_BOOL, false },
+/*
+** .pp
+** Controls whether or not NeoMutt marks should distinguish between old and new messages
+** when \fImark_old\fP is unset.
+*/
+
 { "print", DT_QUAD, MUTT_ASKNO },
 /*
 ** .pp

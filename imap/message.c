@@ -246,7 +246,8 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
     else if ((plen = mutt_istr_startswith(s, "old")))
     {
       s += plen;
-      edata->old = cs_subset_bool(NeoMutt->sub, "mark_old");
+      edata->old = cs_subset_bool(NeoMutt->sub, "mark_old") ||
+                   cs_subset_bool(NeoMutt->sub, "preserve_new");
     }
     else
     {

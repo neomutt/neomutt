@@ -431,6 +431,9 @@ static struct ConfigDef MainVars[] = {
   { "preferred_languages", DT_SLIST|SLIST_SEP_COMMA, 0, 0, NULL,
     "List of Preferred Languages for multilingual MIME (comma-separated)"
   },
+  { "preserve_new", DT_BOOL|R_INDEX|R_PAGER, false, 0, NULL,
+    "Distinguish between new/old messages when mark_old is unset"
+  },
   { "print", DT_QUAD, MUTT_ASKNO, 0, NULL,
     "Confirm before printing a message"
   },
