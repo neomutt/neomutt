@@ -956,8 +956,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, const char *na
             {
               case 'O':
               {
-                const bool c_mark_old = cs_subset_bool(NeoMutt->sub, "mark_old");
-                e->old = c_mark_old;
+                e->old = true;
                 break;
               }
               case 'R':
