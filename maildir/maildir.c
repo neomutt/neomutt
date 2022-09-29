@@ -522,8 +522,7 @@ int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
   struct Buffer *buf = mutt_buffer_pool_get();
 
   mutt_buffer_printf(buf, "%s/%s", mailbox_path(m), subdir);
-  const bool c_mark_old = cs_subset_bool(NeoMutt->sub, "mark_old");
-  is_old = c_mark_old ? mutt_str_equal("cur", subdir) : false;
+  is_old = mutt_str_equal("cur", subdir);
 
   DIR *dirp = opendir(mutt_buffer_string(buf));
   if (!dirp)
