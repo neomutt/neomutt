@@ -1052,7 +1052,7 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       return pat->pat_not ^ (e->env->x_label && patmatch(pat, e->env->x_label));
     case MUTT_PAT_DRIVER_TAGS:
     {
-      char *tags = driver_tags_get(&e->tags);
+      char *tags = driver_tags_get_with_hidden(&e->tags);
       const bool rc = (pat->pat_not ^ (tags && patmatch(pat, tags)));
       FREE(&tags);
       return rc;
