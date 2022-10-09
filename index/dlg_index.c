@@ -1273,7 +1273,6 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
     if (op == OP_REPAINT)
     {
-      priv->menu->top = 0; /* so we scroll the right amount */
       /* force a real complete redraw.  clrtobot() doesn't seem to be able
        * to handle every case without this.  */
       msgwin_clear_text(NULL);
