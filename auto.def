@@ -530,9 +530,9 @@ if {[get-define want-gpgme]} {
   }
   define-feature gpgme
 
-  msg-checking "Checking for gpg-error..."
-  if {1} {
+  if {![get-define want-pkgconf] || ![pkgconf false gpg-error]} {
     # Locate gpg-error-config
+    msg-checking "Checking for gpg-error..."
     set gpg_error_config_guess [file join $gpgme_prefix bin gpg-error-config]
     if {[file-isexec $gpg_error_config_guess]} {
       define GPG-ERROR-CONFIG $gpg_error_config_guess
@@ -559,8 +559,8 @@ if {[get-define want-gpgme]} {
       user-error "Could not derive --libs from $gpg_error_config"
     }
     define-append LIBS $res
+    msg-result $gpg_error_version
   }
-  msg-result $gpg_error_version
 
   define CRYPT_BACKEND_GPGME
 }
