@@ -118,8 +118,6 @@ options {
   coverage=0                => "Enable Coverage Testing"
   testing=0                 => "Enable Unit Testing"
   fuzzing                   => "Enable Fuzz Testing"
-# Configure with pkg-config
-  pkgconf:=deprecated       => "Use pkg-config during configure"
 # Enable all options
   everything=0              => "Enable all options"
 # Debug options
@@ -133,8 +131,9 @@ options {
   debug-queue=0             => "DEBUG: Enable TAILQ debugging"
   debug-window=0            => "DEBUG: Enable windows dump"
 # Deprecated stuff
-  with-ui:=deprecated       => "Deprecated"
+  pkgconf:=deprecated       => "Deprecated"
   with-slang:deprecated     => "Deprecated"
+  with-ui:=deprecated       => "Deprecated"
 }
 ###############################################################################
 
