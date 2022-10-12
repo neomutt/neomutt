@@ -11,7 +11,7 @@ task:
     PKG_COMMON:
       cyrus-sasl db5 docbook-xsl gdbm gettext-tools git gpgme iconv jimtcl
       kyotocabinet libgpg-error libidn2 liblz4 libxslt lmdb lua53 lynx notmuch
-      pcre2 qdbm tdb tokyocabinet urlview zstd
+      pcre2 pkgconf qdbm tdb tokyocabinet urlview zstd
     CONFIGURE_COMMON:
       --autocrypt --bdb --disable-idn --disable-inotify --fmemopen --full-doc
       --gdbm --gpgme --gss --homespool --idn2 --kyotocabinet --lmdb --locales-fix
@@ -54,9 +54,3 @@ task:
       configure_script: ./configure ${CONFIGURE_COMMON} --gnutls
       build_script: make
       version_script: ./neomutt -v
-
-    - name: FreeBSD / pkgconf
-      install_script:
-        - ${PKG_UPDATE}
-        - ${PKG_INSTALL} ${PKG_COMMON} pkgconf
-      configure_script: ./configure ${CONFIGURE_COMMON} --pkgconf
