@@ -119,7 +119,7 @@ options {
   testing=0                 => "Enable Unit Testing"
   fuzzing                   => "Enable Fuzz Testing"
 # Configure with pkg-config
-  pkgconf=0                 => "Use pkg-config during configure"
+  pkgconf:=deprecated       => "Use pkg-config during configure"
 # Enable all options
   everything=0              => "Enable all options"
 # Debug options
@@ -140,7 +140,7 @@ options {
 
 ###############################################################################
 # Deprecated config options
-foreach dep {with-ui with-slang} {
+foreach dep {with-ui with-slang pkgconf} {
   if {[opt-bool -nodefault $dep] != -1} {
     user-notice "\nThe configure option \"--$dep\" is not used anymore\n"
   }
@@ -158,7 +158,7 @@ if {1} {
     debug-graphviz debug-notify debug-parse-test debug-queue debug-window doc
     everything fmemopen full-doc fuzzing gdbm gnutls gpgme gsasl gss homespool idn
     idn2 include-path-in-cflags inotify kyotocabinet lmdb locales-fix lua lz4
-    mixmaster nls notmuch pcre2 pgp pkgconf qdbm rocksdb sasl smime sqlite ssl
+    mixmaster nls notmuch pcre2 pgp qdbm rocksdb sasl smime sqlite ssl
     testing tdb tokyocabinet zlib zstd
   } {
     define want-$opt [opt-bool $opt]
@@ -530,38 +530,7 @@ if {[get-define want-gpgme]} {
   }
   define-feature gpgme
 
-  if {![get-define want-pkgconf] || ![pkgconf false gpg-error]} {
-    # Locate gpg-error-config
-    msg-checking "Checking for gpg-error..."
-    set gpg_error_config_guess [file join $gpgme_prefix bin gpg-error-config]
-    if {[file-isexec $gpg_error_config_guess]} {
-      define GPG-ERROR-CONFIG $gpg_error_config_guess
-    } else {
-      if {![cc-check-progs gpg-error-config]} {
-        user-error "Unable to find gpg-error-config"
-      }
-    }
-    set gpg_error_config [get-define GPG-ERROR-CONFIG]
-
-    # Version
-    if {[catch {exec-with-stderr $gpg_error_config --version} gpg_error_version err]} {
-      user-error "Could not derive --version from $gpg_error_config"
-    }
-
-    # CFLAGS
-    if {[catch {exec-with-stderr $gpg_error_config --cflags} res err]} {
-      user-error "Could not derive --cflags from $gpg_error_config"
-    }
-    define-append CFLAGS $res
-
-    # LIBS
-    if {[catch {exec-with-stderr $gpg_error_config --libs} res err]} {
-      user-error "Could not derive --libs from $gpg_error_config"
-    }
-    define-append LIBS $res
-    msg-result $gpg_error_version
-  }
-
+  pkgconf true gpg-error
   define CRYPT_BACKEND_GPGME
 }
 
@@ -595,39 +564,17 @@ if {[get-define want-gsasl] && [get-define want-sasl]} {
   user-error "Cannot specify both --gsasl and --sasl"
 }
 if {[get-define want-gsasl]} {
-  if {[get-define want-pkgconf]} {
-    pkgconf true libgsasl
-    define USE_SASL_GNU
-    define-feature SASL
-  } else {
-    if {[check-inc-and-lib gsasl [opt-val with-gsasl $prefix] \
-                           gsasl.h gsasl_init gsasl]} {
-      define USE_SASL_GNU
-    } else {
-      user-error "Unable to find GNU SASL"
-    }
-  }
+  pkgconf true libgsasl
+  define USE_SASL_GNU
+  define-feature SASL
 }
 
 ###############################################################################
 # SASL
 if {[get-define want-sasl]} {
-  if {[get-define want-pkgconf]} {
-    pkgconf true libsasl2
-    define USE_SASL_CYRUS
-    define-feature SASL
-  } else {
-    foreach sasl_lib {sasl2 sasl} {
-      if {[check-inc-and-lib sasl [opt-val with-sasl $prefix] \
-                             sasl/sasl.h sasl_encode64 $sasl_lib]} {
-        define USE_SASL_CYRUS
-        break
-      }
-    }
-    if {![get-define USE_SASL_CYRUS]} {
-      user-error "Unable to find SASL"
-    }
-  }
+  pkgconf true libsasl2
+  define USE_SASL_CYRUS
+  define-feature SASL
 }
 
 ###############################################################################
@@ -641,39 +588,10 @@ if {[get-define want-testing]} {
 # Lua
 if {[get-define want-lua]} {
 
-  if {[get-define want-pkgconf]} {
-    if {![pkgconf false lua] && ![pkgconf false lua-5.4] && ![pkgconf false lua-5.3] && ![pkgconf false lua-5.2]} {
-      user-error "Unable to find LUA"
-    }
-    define USE_LUA
-  } else {
-    set lua_versions { 5.4 5.3 5.2 } ;# Will be checked in order
-
-    apply {{lua_prefix lua_versions} {
-      foreach ver $lua_versions {
-        lassign [split $ver .] maj min
-
-        foreach lua_suffix [list /lua${maj}${min} /lua${maj}.${min} /lua-${maj}${min} /lua-${maj}.${min} /lua {}] {
-          msg-checking "Checking for include$lua_suffix/lua.h..."
-          if {[file exists $lua_prefix/include$lua_suffix/lua.h]} {
-            msg-result "yes"
-            set libs [list lua-${maj}.${min} lua${maj}.${min} lua]
-            cc-with [list -libs "-L$lua_prefix/$::libdir_tail"] {
-              if {![cc-check-function-in-lib luaL_openlibs $libs]} {
-                continue
-              }
-            }
-            define-append CFLAGS -I$lua_prefix/include$lua_suffix
-            define-append LDFLAGS -L$lua_prefix/$::libdir_tail
-            define USE_LUA
-            return
-          }
-          msg-result "no"
-        }
-      }
-      user-error "Unable to find Lua"
-    }} [opt-val with-lua $prefix] $lua_versions
+  if {![pkgconf false lua] && ![pkgconf false lua-5.4] && ![pkgconf false lua-5.3] && ![pkgconf false lua-5.2]} {
+    user-error "Unable to find LUA"
   }
+  define USE_LUA
 }
 
 ###############################################################################
@@ -822,7 +740,7 @@ if {[opt-val with-domain] ne {}} {
 # TLS support
 if {[get-define want-ssl] && ![get-define want-gnutls]} {
   # OpenSSL
-  if {[get-define want-pkgconf] && [pkgconf false openssl]} {
+  if {[pkgconf false openssl]} {
     # cool - we do not make pkg-config mandatory for OpenSSL because BSDs still
     # ship OpenSSL in the base system. Those aren't available through
     # pkg-config.
@@ -852,19 +770,7 @@ if {[get-define want-ssl] && ![get-define want-gnutls]} {
   }
 } elseif {[get-define want-gnutls]} {
   # GnuTLS
-  if {[get-define want-pkgconf]} {
-    pkgconf true gnutls
-  } else {
-    set gnutls_prefix [opt-val with-gnutls $prefix]
-    cc-with [list -cflags -I$gnutls_prefix/include \
-                   -libs -L$gnutls_prefix/$::libdir_tail] {
-      if {![cc-check-function-in-lib gnutls_check_version gnutls]} {
-        user-error "Unable to find GnuTLS"
-      }
-      define-append CFLAGS -I$gnutls_prefix/include
-      define-append LDFLAGS -L$gnutls_prefix/$::libdir_tail
-    }
-  }
+  pkgconf true gnutls
   cc-check-function-in-lib gnutls_priority_set_direct gnutls
   cc-with {-includes {gnutls/x509.h gnutls/gnutls.h}} {
     cc-check-decls GNUTLS_VERIFY_DISABLE_TIME_CHECKS
@@ -893,18 +799,8 @@ if {[get-define want-idn]} {
       user-error "Unable to find GNU libidn"
     }
   }
-  if {[get-define want-pkgconf]} {
-    pkgconf true libidn
-    find-idn1-includes
-  } else {
-    set idn_prefix [opt-val with-idn $prefix]
-    cc-with [list -cflags -I$idn_prefix/include \
-                   -libs -L$idn_prefix/$::libdir_tail] {
-      find-idn1-includes
-      define-append CFLAGS -I$idn_prefix/include
-      define-append LDFLAGS -L$idn_prefix/$::libdir_tail
-    }
-  }
+  pkgconf true libidn
+  find-idn1-includes
   if {![cc-check-function-in-lib stringprep_check_version idn]} {
     user-error "Unable to find stringprep_check_version in libidn"
   }
@@ -919,18 +815,8 @@ if {[get-define want-idn]} {
       user-error "Unable to find GNU libidn2"
     }
   }
-  if {[get-define want-pkgconf]} {
-    pkgconf true libidn2
-    find-idn2-includes
-  } else {
-    set idn_prefix [opt-val with-idn2 $prefix]
-    cc-with [list -cflags -I$idn_prefix/include \
-                  -libs -L$idn_prefix/$::libdir_tail] {
-      find-idn2-includes
-      define-append CFLAGS -I$idn_prefix/include
-      define-append LDFLAGS -L$idn_prefix/$::libdir_tail
-    }
-  }
+  pkgconf true libidn2
+  find-idn2-includes
   if {![cc-check-function-in-lib idn2_to_ascii_8z     idn2] ||
       ![cc-check-function-in-lib idn2_to_unicode_8z8z idn2] ||
       ![cc-check-function-in-lib idn2_check_version   idn2]} {
@@ -943,16 +829,7 @@ if {[get-define want-idn]} {
 ###############################################################################
 # PCRE2
 if {[get-define want-pcre2]} {
-  if {[get-define want-pkgconf]} {
-    pkgconf true libpcre2-8
-  } else {
-    cc-with {-cflags -DPCRE2_CODE_UNIT_WIDTH=8} {
-      if {![check-inc-and-lib pcre2 [opt-val with-pcre2 $prefix] \
-                              pcre2.h pcre2_compile_8 pcre2-8]} {
-        user-error "Unable to find PCRE2"
-      }
-    }
-  }
+  pkgconf true libpcre2-8
   define-feature pcre2
 } elseif {[check-inc-and-lib pcre2_unwarranted {} {} pcre2_regcomp {}]} {
   # See https://bugs.exim.org/show_bug.cgi?id=2707 and
@@ -1027,24 +904,8 @@ if {[get-define want-bdb]} {
 # Header cache - QDBM
 # Note: qdbm must come before gdbm because they share library symbols.
 if {[get-define want-qdbm]} {
-  if {[get-define want-pkgconf]} {
-    pkgconf true qdbm
-    define-feature qdbm
-  } else {
-    # On Linux, headers are in a dedicated subdirectory
-    set qdbm_prefix [opt-val with-qdbm $prefix]
-    if {[file isdirectory $qdbm_prefix/include/qdbm]} {
-      set qdbm_inc_subdir qdbm/
-    } else {
-      set qdbm_inc_subdir ""
-    }
-    if {[check-inc-and-lib qdbm [opt-val with-qdbm $qdbm_prefix] \
-                            ${qdbm_inc_subdir}villa.h vlopen qdbm]} {
-      define-append CFLAGS -I$qdbm_prefix/include/$qdbm_inc_subdir
-    } else {
-      user-error "Unable to find QDBM"
-    }
-  }
+  pkgconf true qdbm
+  define-feature qdbm
   define-append HCACHE_BACKENDS "qdbm"
   define USE_HCACHE
 }
@@ -1075,15 +936,8 @@ if {[get-define want-lmdb]} {
 ###############################################################################
 # Header cache - KyotoCabinet
 if {[get-define want-kyotocabinet]} {
-  if {[get-define want-pkgconf]} {
-    pkgconf true kyotocabinet
-    define-feature kc
-  } else {
-    if {![check-inc-and-lib kc [opt-val with-kyotocabinet $prefix] \
-                            kclangc.h kcdbopen kyotocabinet]} {
-      user-error "Unable to find KyotoCabinet"
-    }
-  }
+  pkgconf true kyotocabinet
+  define-feature kc
   define-append HCACHE_BACKENDS "kyotocabinet"
   define USE_HCACHE
 }
@@ -1102,17 +956,8 @@ if {[get-define want-rocksdb]} {
 ###############################################################################
 # Header Cache - TDB
 if {[get-define want-tdb]} {
-  if {[get-define want-pkgconf]} {
-    pkgconf true tdb
-    define-feature tdb
-  } else {
-    cc-with {-includes {sys/stat.h stddef.h} } {
-      if {![check-inc-and-lib tdb [opt-val with-tdb $prefix] \
-                              tdb.h tdb_close tdb]} {
-        user-error "Unable to find TDB"
-      }
-    }
-  }
+  pkgconf true tdb
+  define-feature tdb
   define-append HCACHE_BACKENDS "tdb"
   define USE_HCACHE
 }
@@ -1120,15 +965,8 @@ if {[get-define want-tdb]} {
 ###############################################################################
 # Header Cache - TokyoCabinet
 if {[get-define want-tokyocabinet]} {
-  if {[get-define want-pkgconf]} {
-    pkgconf true tokyocabinet
-    define-feature tc
-  } else {
-    if {![check-inc-and-lib tc [opt-val with-tokyocabinet $prefix] \
-                            tcbdb.h tcbdbopen tokyocabinet]} {
-      user-error "Unable to find TokyoCabinet"
-    }
-  }
+  pkgconf true tokyocabinet
+  define-feature tc
   define-append HCACHE_BACKENDS "tokyocabinet"
   define USE_HCACHE
 }
