@@ -115,6 +115,7 @@ options {
   include-path-in-cflags=1  => "Remove include paths from CFLAGS in the output of neomutt -v"
 # Testing
   asan=0                    => "Enable the Address Sanitizer"
+  ubsan=0                   => "Enable the Undefined Behaviour Sanitizer"
   coverage=0                => "Enable Coverage Testing"
   testing=0                 => "Enable Unit Testing"
   fuzzing                   => "Enable Fuzz Testing"
@@ -158,7 +159,7 @@ if {1} {
     everything fmemopen full-doc fuzzing gdbm gnutls gpgme gsasl gss homespool idn
     idn2 include-path-in-cflags inotify kyotocabinet lmdb locales-fix lua lz4
     mixmaster nls notmuch pcre2 pgp qdbm rocksdb sasl smime sqlite ssl
-    testing tdb tokyocabinet zlib zstd
+    testing tdb tokyocabinet ubsan zlib zstd
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -909,7 +910,6 @@ if {[get-define want-qdbm]} {
   define USE_HCACHE
 }
 
-
 ###############################################################################
 # Header Cache - GNU dbm
 if {[get-define want-gdbm]} {
@@ -1120,6 +1120,19 @@ if {[get-define want-asan]} {
   define-append CFLAGS -fsanitize=address -O0 -fno-omit-frame-pointer -fno-common
   define-append LDFLAGS -fsanitize=address
   define USE_ASAN
+}
+
+###############################################################################
+# Undefined Behaviour Sanitizer
+if {[get-define want-ubsan]} {
+  msg-checking "Checking for UBSAN..."
+  if {![cctest -link 1 -cflags -fsanitize=undefined]} {
+    user-error "Unable to compile with -fsanitize=undefined"
+  }
+  msg-result "yes"
+  define-append CFLAGS -fsanitize=undefined -O0 -fno-omit-frame-pointer -fno-common
+  define-append LDFLAGS -fsanitize=undefined
+  define USE_UBSAN
 }
 
 ###############################################################################
