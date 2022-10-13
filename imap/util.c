@@ -630,10 +630,10 @@ void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
   {
     *path++ = '+';
     /* copy remaining path, skipping delimiter */
-    if (hlen == 0)
-      hlen = -1;
-    memcpy(path, target_mailbox + hlen + 1, tlen - hlen - 1);
-    path[tlen - hlen - 1] = '\0';
+    if (hlen != 0)
+      ++hlen;
+    memcpy(path, target_mailbox + hlen, tlen - hlen);
+    path[tlen - hlen] = '\0';
     return;
   }
 
