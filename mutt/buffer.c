@@ -483,5 +483,7 @@ size_t mutt_buffer_copy(struct Buffer *dst, const struct Buffer *src)
 void mutt_buffer_seek(struct Buffer *buf, size_t offset)
 {
   if (buf)
-    buf->dptr = buf->data + offset;
+  {
+    buf->dptr = buf->data ? buf->data + offset : NULL;
+  }
 }
