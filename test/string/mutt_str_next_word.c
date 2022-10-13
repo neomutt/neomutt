@@ -54,7 +54,7 @@ void test_mutt_str_next_word(void)
       struct NextWordTest *t = &word_tests[i];
       TEST_CASE_("%ld, '%s'", i, NONULL(t->str));
       const char *result = mutt_str_next_word(t->str);
-      TEST_CHECK(result == (t->str + t->result));
+      TEST_CHECK(result == (t->str ? t->str + t->result : NULL));
     }
   }
 }
