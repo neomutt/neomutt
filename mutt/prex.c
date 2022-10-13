@@ -253,7 +253,10 @@ static struct PrexStorage *prex(enum Prex which)
         ":[[:digit:]]{2})"
       ")"
       " +"
-      "([[:alpha:] ]*)"         // Timezone (which we skip)
+      "("
+        "([[:alpha:] ]+)|"      // Timezone name (which we skip)
+        "([+][[:digit:]]{4} )"  // Timezone offset (which we skip)
+      ")?"
       "("
         PREX_YEAR               // Year (YYYY)
         "|"

@@ -230,6 +230,8 @@ enum PrexMboxFromLax
   PREX_MBOX_FROM_LAX_MATCH_TIME_SEC,        ///< `From god@heaven.af.mil Sat Jan 10 [01:05:34] 1996`
   PREX_MBOX_FROM_LAX_MATCH_TIME_NOSEC,      ///< `From god@heaven.af.mil Sat Jan 10 [01:05] 1996`
   PREX_MBOX_FROM_LAX_MATCH_TZ,              ///< `From god@heaven.af.mil Sat Jan 10 01:05:34 [MET DST] 1996`
+  PREX_MBOX_FROM_LAX_MATCH_TZ1,             ///< `From god@heaven.af.mil Sat Jan 10 01:05:34 [MET DST] 1996`
+  PREX_MBOX_FROM_LAX_MATCH_TZ2,             ///< `From god@heaven.af.mil Sat Jan 10 01:05:34 [+0000] 1996`
   PREX_MBOX_FROM_LAX_MATCH_YEAR,            ///< `From god@heaven.af.mil Sat Jan 10 01:05:34 [1996]`
   PREX_MBOX_FROM_LAX_MATCH_YEAR_4DIG,       ///< `From god@heaven.af.mil Sat Jan 10 01:05:34 [1996]`
   PREX_MBOX_FROM_LAX_MATCH_YEAR_2DIG,       ///< `From god@heaven.af.mil Sat Jan 10 01:05:34 [96]`
