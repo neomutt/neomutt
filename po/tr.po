@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2022-09-13 09:49+0100\n"
-"PO-Revision-Date: 2022-09-13 23:00+0300\n"
+"PO-Revision-Date: 2022-10-21 23:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
 "Language: tr\n"
@@ -671,7 +671,7 @@ msgstr "İleti önbelleği bir dizin değil: %s"
 
 #: browser/browser.c:112
 msgid "Chdir"
-msgstr "Dizine geç"
+msgstr "Dizine Geç"
 
 #: browser/browser.c:113
 msgid "Goto"
@@ -1311,7 +1311,7 @@ msgstr "Konu"
 
 #: compose/compose.c:104 compose/compose.c:119 compose/functions.c:592
 msgid "Attach file"
-msgstr "Dosya ekle"
+msgstr "Dosya Ekle"
 
 #: compose/compose.c:105 compose/compose.c:120
 msgid "Descrip"
@@ -2143,7 +2143,7 @@ msgstr "Kopya: "
 #. L10N: Compose menu field.  May not want to translate.
 #: envelope/window.c:97 send/send.c:290
 msgid "Bcc: "
-msgstr "Gizli kopya: "
+msgstr "Gizli Kopya: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: envelope/window.c:99 send/send.c:336
@@ -6505,12 +6505,12 @@ msgstr "belirtilmemiş işlem"
 #: pager/dlg_pager.c:89 pager/dlg_pager.c:100 pager/dlg_pager.c:110
 #: pager/dlg_pager.c:126
 msgid "PrevPg"
-msgstr "ÖnckSyf"
+msgstr "ÖncSyf"
 
 #: pager/dlg_pager.c:90 pager/dlg_pager.c:101 pager/dlg_pager.c:111
 #: pager/dlg_pager.c:127
 msgid "NextPg"
-msgstr "SonrSyf"
+msgstr "SnrSyf"
 
 #: pager/dlg_pager.c:112
 msgid "View Attachm."
