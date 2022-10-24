@@ -99,6 +99,9 @@ static struct ConfigDef NotmuchVars[] = {
   { "nm_config_file", DT_PATH, IP "auto", 0, NULL,
     "(notmuch) Configuration file for notmuch. Use 'auto' to detect configuration."
   },
+  { "nm_config_profile", DT_STRING, 0, 0, NULL,
+    "(notmuch) Configuration profile for notmuch."
+  },
   { "nm_db_limit", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
     "(notmuch) Default limit for Notmuch queries"
   },
