@@ -16249,6 +16249,15 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 </entry>
               </row>
               <row>
+                <entry><literal>nm_config_profile</literal></entry>
+                <entry>string</entry>
+                <entry>(empty)</entry>
+                <entry>
+                  Configuration profile for the notmuch database. Only useful
+                  for notmuch 0.32+.
+                </entry>
+              </row>
+              <row>
                 <entry><literal>nm_db_limit</literal></entry>
                 <entry>number</entry>
                 <entry><literal>0</literal></entry>

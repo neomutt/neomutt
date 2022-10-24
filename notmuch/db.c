@@ -127,8 +127,10 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
 #if LIBNOTMUCH_CHECK_VERSION(5, 4, 0)
     // notmuch 0.32-0.32.2 didn't bump libnotmuch version to 5.4.
     const char *config_file = get_nm_config_file();
+    const char *const config_profile = cs_subset_string(NeoMutt->sub, "nm_config_profile");
 
-    st = notmuch_database_open_with_config(filename, mode, config_file, NULL, &db, &msg);
+    st = notmuch_database_open_with_config(filename, mode, config_file,
+                                           config_profile, &db, &msg);
 
     // Attempt opening database without configuration file. Don't if the user specified no config.
     if (st == NOTMUCH_STATUS_NO_CONFIG && !mutt_str_equal(config_file, ""))
@@ -186,6 +188,7 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
       mutt_clear_error();
     }
   }
+
   return db;
 }
 
