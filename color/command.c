@@ -417,6 +417,24 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
+ * is_simple - Check if a color is simple, i.e., doesn't accept a regex pattern
+ *
+ * @param cid   Object type, e.g. #MT_COLOR_TILDE
+ * @retval true The color object is simple
+ */
+static bool is_simple(enum ColorId cid)
+{
+  return (cid != MT_COLOR_ATTACH_HEADERS) && (cid != MT_COLOR_BODY) &&
+         (cid != MT_COLOR_HEADER) && (cid != MT_COLOR_INDEX) &&
+         (cid != MT_COLOR_INDEX_AUTHOR) && (cid != MT_COLOR_INDEX_FLAGS) &&
+         (cid != MT_COLOR_INDEX_SUBJECT) && (cid != MT_COLOR_INDEX_TAG) &&
+         (cid != MT_COLOR_INDEX_COLLAPSED) && (cid != MT_COLOR_INDEX_DATE) &&
+         (cid != MT_COLOR_INDEX_LABEL) && (cid != MT_COLOR_INDEX_NUMBER) &&
+         (cid != MT_COLOR_INDEX_SIZE) && (cid != MT_COLOR_INDEX_TAGS) &&
+         (cid != MT_COLOR_STATUS);
+}
+
+/**
  * parse_uncolor - Parse an 'uncolor' command
  * @param buf     Temporary Buffer space
  * @param s       Buffer containing string to be parsed
@@ -465,20 +483,11 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_SUCCESS;
   }
 
-  if ((cid != MT_COLOR_ATTACH_HEADERS) && (cid != MT_COLOR_BODY) &&
-      (cid != MT_COLOR_HEADER) && (cid != MT_COLOR_INDEX) && (cid != MT_COLOR_INDEX_AUTHOR) &&
-      (cid != MT_COLOR_INDEX_FLAGS) && (cid != MT_COLOR_INDEX_SUBJECT) &&
-      (cid != MT_COLOR_INDEX_TAG) && (cid != MT_COLOR_STATUS))
+  if (is_simple(cid))
   {
     color_debug(LL_DEBUG5, "simple\n");
     simple_color_reset(cid);
     return MUTT_CMD_SUCCESS;
-  }
-
-  if (!MoreArgs(s))
-  {
-    mutt_buffer_printf(err, _("%s: too few arguments"), uncolor ? "uncolor" : "unmono");
-    return MUTT_CMD_WARNING;
   }
 
   if (OptNoCurses)
@@ -494,6 +503,14 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
   }
 
   bool changes = false;
+  if (!MoreArgs(s))
+  {
+    if (regex_colors_parse_uncolor(cid, NULL, uncolor))
+      return MUTT_CMD_SUCCESS;
+    else
+      return MUTT_CMD_ERROR;
+  }
+
   do
   {
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
@@ -557,19 +574,17 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
 
   /* extract a regular expression if needed */
 
-  if ((cid == MT_COLOR_ATTACH_HEADERS) || (cid == MT_COLOR_BODY) ||
-      (cid == MT_COLOR_HEADER) || (cid == MT_COLOR_INDEX) ||
-      (cid == MT_COLOR_INDEX_AUTHOR) || (cid == MT_COLOR_INDEX_FLAGS) ||
-      (cid == MT_COLOR_INDEX_SUBJECT) || (cid == MT_COLOR_INDEX_TAG))
+  if (!is_simple(cid))
   {
     color_debug(LL_DEBUG5, "regex needed\n");
-    if (!MoreArgs(s))
+    if (MoreArgs(s))
     {
-      mutt_buffer_printf(err, _("%s: too few arguments"), color ? "color" : "mono");
-      return MUTT_CMD_WARNING;
+      mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     }
-
-    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+    else
+    {
+      mutt_buffer_strcpy(buf, ".*");
+    }
   }
 
   if (MoreArgs(s) && (cid != MT_COLOR_STATUS))

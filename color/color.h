@@ -79,7 +79,6 @@ enum ColorId
   MT_COLOR_INDEX_FLAGS,              ///< Index: flags field (takes a pattern)
   MT_COLOR_INDEX_SUBJECT,            ///< Index: subject field (takes a pattern)
   MT_COLOR_INDEX_TAG,                ///< Index: tag field (%g, takes a pattern)
-  /* below here - only index coloring stuff that doesn't have a pattern */
   MT_COLOR_INDEX_COLLAPSED,          ///< Index: number of messages in collapsed thread
   MT_COLOR_INDEX_DATE,               ///< Index: date field
   MT_COLOR_INDEX_LABEL,              ///< Index: label field

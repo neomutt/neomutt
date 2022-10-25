@@ -275,19 +275,17 @@ static int index_color_observer(struct NotifyCallback *nc)
   const int cid = ev_c->cid;
 
   // MT_COLOR_MAX is sent on `uncolor *`
-  bool simple = (cid == MT_COLOR_INDEX_COLLAPSED) ||
-                (cid == MT_COLOR_INDEX_DATE) || (cid == MT_COLOR_INDEX_LABEL) ||
-                (cid == MT_COLOR_INDEX_NUMBER) || (cid == MT_COLOR_INDEX_SIZE) ||
-                (cid == MT_COLOR_INDEX_TAGS) || (cid == MT_COLOR_MAX);
-
-  bool lists = (cid == MT_COLOR_INDEX) || (cid == MT_COLOR_INDEX_AUTHOR) ||
-               (cid == MT_COLOR_INDEX_FLAGS) || (cid == MT_COLOR_INDEX_SUBJECT) ||
-               (cid == MT_COLOR_INDEX_TAG) || (cid == MT_COLOR_TREE) ||
-               (cid == MT_COLOR_NORMAL) || (cid == MT_COLOR_MAX);
-
-  // The changes aren't relevant to the index menu
-  if (!simple && !lists)
+  if (!((cid == MT_COLOR_INDEX) || (cid == MT_COLOR_INDEX_AUTHOR) ||
+        (cid == MT_COLOR_INDEX_FLAGS) || (cid == MT_COLOR_INDEX_SUBJECT) ||
+        (cid == MT_COLOR_INDEX_TAG) || (cid == MT_COLOR_INDEX_COLLAPSED) ||
+        (cid == MT_COLOR_INDEX_DATE) || (cid == MT_COLOR_INDEX_LABEL) ||
+        (cid == MT_COLOR_INDEX_NUMBER) || (cid == MT_COLOR_INDEX_SIZE) ||
+        (cid == MT_COLOR_INDEX_TAGS) || (cid == MT_COLOR_TREE) ||
+        (cid == MT_COLOR_NORMAL) || (cid == MT_COLOR_MAX)))
+  {
+    // The changes aren't relevant to the index menu
     return 0;
+  }
 
   struct MuttWindow *win = nc->global_data;
   struct MuttWindow *dlg = dialog_find(win);
@@ -297,17 +295,13 @@ static int index_color_observer(struct NotifyCallback *nc)
   if (!m)
     return 0;
 
-  // Colour added/deleted from a list
-  if (lists)
+  // Force re-caching of index colours
+  for (int i = 0; i < m->msg_count; i++)
   {
-    // Force re-caching of index colours
-    for (int i = 0; i < m->msg_count; i++)
-    {
-      struct Email *e = m->emails[i];
-      if (!e)
-        break;
-      e->attr_color = NULL;
-    }
+    struct Email *e = m->emails[i];
+    if (!e)
+      break;
+    e->attr_color = NULL;
   }
 
   struct MuttWindow *panel_index = window_find_child(dlg, WT_INDEX);

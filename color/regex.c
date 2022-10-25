@@ -45,15 +45,21 @@
 #include "regex4.h"
 
 // clang-format off
-struct RegexColorList AttachList;       ///< List of colours applied to the attachment headers
-struct RegexColorList BodyList;         ///< List of colours applied to the email body
-struct RegexColorList HeaderList;       ///< List of colours applied to the email headers
-struct RegexColorList IndexAuthorList;  ///< List of colours applied to the author in the index
-struct RegexColorList IndexFlagsList;   ///< List of colours applied to the flags in the index
-struct RegexColorList IndexList;        ///< List of default colours applied to the index
-struct RegexColorList IndexSubjectList; ///< List of colours applied to the subject in the index
-struct RegexColorList IndexTagList;     ///< List of colours applied to tags in the index
-struct RegexColorList StatusList;       ///< List of colours applied to the status bar
+struct RegexColorList AttachList;         ///< List of colours applied to the attachment headers
+struct RegexColorList BodyList;           ///< List of colours applied to the email body
+struct RegexColorList HeaderList;         ///< List of colours applied to the email headers
+struct RegexColorList IndexAuthorList;    ///< List of colours applied to the author in the index
+struct RegexColorList IndexCollapsedList; ///< List of colours applied to a collapsed thread in the index
+struct RegexColorList IndexDateList;      ///< List of colours applied to the date in the index
+struct RegexColorList IndexLabelList;     ///< List of colours applied to the label in the index
+struct RegexColorList IndexNumberList;    ///< List of colours applied to the message number in the index
+struct RegexColorList IndexSizeList;      ///< List of colours applied to the size in the index
+struct RegexColorList IndexTagsList;      ///< List of colours applied to the tags in the index
+struct RegexColorList IndexFlagsList;     ///< List of colours applied to the flags in the index
+struct RegexColorList IndexList;          ///< List of default colours applied to the index
+struct RegexColorList IndexSubjectList;   ///< List of colours applied to the subject in the index
+struct RegexColorList IndexTagList;       ///< List of colours applied to tags in the index
+struct RegexColorList StatusList;         ///< List of colours applied to the status bar
 // clang-format on
 
 /**
@@ -66,6 +72,12 @@ void regex_colors_init(void)
   STAILQ_INIT(&BodyList);
   STAILQ_INIT(&HeaderList);
   STAILQ_INIT(&IndexAuthorList);
+  STAILQ_INIT(&IndexCollapsedList);
+  STAILQ_INIT(&IndexDateList);
+  STAILQ_INIT(&IndexLabelList);
+  STAILQ_INIT(&IndexNumberList);
+  STAILQ_INIT(&IndexSizeList);
+  STAILQ_INIT(&IndexTagsList);
   STAILQ_INIT(&IndexFlagsList);
   STAILQ_INIT(&IndexList);
   STAILQ_INIT(&IndexSubjectList);
@@ -84,6 +96,12 @@ void regex_colors_clear(void)
   regex_color_list_clear(&HeaderList);
   regex_color_list_clear(&IndexList);
   regex_color_list_clear(&IndexAuthorList);
+  regex_color_list_clear(&IndexCollapsedList);
+  regex_color_list_clear(&IndexDateList);
+  regex_color_list_clear(&IndexLabelList);
+  regex_color_list_clear(&IndexNumberList);
+  regex_color_list_clear(&IndexSizeList);
+  regex_color_list_clear(&IndexTagsList);
   regex_color_list_clear(&IndexFlagsList);
   regex_color_list_clear(&IndexSubjectList);
   regex_color_list_clear(&IndexTagList);
@@ -183,6 +201,18 @@ struct RegexColorList *regex_colors_get_list(enum ColorId cid)
       return &IndexSubjectList;
     case MT_COLOR_INDEX_TAG:
       return &IndexTagList;
+    case MT_COLOR_INDEX_COLLAPSED:
+      return &IndexCollapsedList;
+    case MT_COLOR_INDEX_DATE:
+      return &IndexDateList;
+    case MT_COLOR_INDEX_LABEL:
+      return &IndexLabelList;
+    case MT_COLOR_INDEX_NUMBER:
+      return &IndexNumberList;
+    case MT_COLOR_INDEX_SIZE:
+      return &IndexSizeList;
+    case MT_COLOR_INDEX_TAGS:
+      return &IndexTagsList;
     case MT_COLOR_STATUS:
       return &StatusList;
     default:
@@ -336,6 +366,12 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat, uint32_t f
     case MT_COLOR_INDEX_FLAGS:
     case MT_COLOR_INDEX_SUBJECT:
     case MT_COLOR_INDEX_TAG:
+    case MT_COLOR_INDEX_COLLAPSED:
+    case MT_COLOR_INDEX_DATE:
+    case MT_COLOR_INDEX_LABEL:
+    case MT_COLOR_INDEX_NUMBER:
+    case MT_COLOR_INDEX_SIZE:
+    case MT_COLOR_INDEX_TAGS:
       sensitive = true;
       is_index = true;
       break;

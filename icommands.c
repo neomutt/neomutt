@@ -389,15 +389,15 @@ static enum CommandResult icmd_color(struct Buffer *buf, struct Buffer *s,
   }
 
   static const int regex_lists[] = {
-    MT_COLOR_ATTACH_HEADERS, MT_COLOR_BODY,
-    MT_COLOR_HEADER,         MT_COLOR_INDEX,
-    MT_COLOR_INDEX_AUTHOR,   MT_COLOR_INDEX_FLAGS,
-    MT_COLOR_INDEX_SUBJECT,  MT_COLOR_INDEX_TAG,
-    MT_COLOR_STATUS,         0,
+    MT_COLOR_ATTACH_HEADERS, MT_COLOR_BODY,         MT_COLOR_HEADER,
+    MT_COLOR_INDEX,          MT_COLOR_INDEX_AUTHOR, MT_COLOR_INDEX_FLAGS,
+    MT_COLOR_INDEX_SUBJECT,  MT_COLOR_INDEX_TAG,    MT_COLOR_INDEX_COLLAPSED,
+    MT_COLOR_INDEX_DATE,     MT_COLOR_INDEX_LABEL,  MT_COLOR_INDEX_NUMBER,
+    MT_COLOR_INDEX_SIZE,     MT_COLOR_INDEX_TAGS,   MT_COLOR_STATUS
   };
 
   int rl_count = 0;
-  for (int i = 0; regex_lists[i]; i++)
+  for (int i = 0; i < mutt_array_size(regex_lists); i++)
   {
     struct RegexColorList *rcl = regex_colors_get_list(regex_lists[i]);
     if (!STAILQ_EMPTY(rcl))
@@ -406,7 +406,7 @@ static enum CommandResult icmd_color(struct Buffer *buf, struct Buffer *s,
 
   if (rl_count > 0)
   {
-    for (int i = 0; regex_lists[i]; i++)
+    for (int i = 0; i < mutt_array_size(regex_lists); i++)
     {
       struct RegexColorList *rcl = regex_colors_get_list(regex_lists[i]);
       if (STAILQ_EMPTY(rcl))
