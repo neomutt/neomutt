@@ -171,7 +171,6 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
       if (msg)
       {
         mutt_error(msg);
-        FREE(&msg);
       }
       else
       {
@@ -184,6 +183,8 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
       mutt_clear_error();
     }
   }
+
+  FREE(&msg);
 
   return db;
 }
