@@ -1027,6 +1027,7 @@ static bool read_threads_query(struct Mailbox *m, notmuch_query_t *q, bool dedup
  * @param db  Notmuch database
  * @param e Email
  * @retval ptr Handle to the Notmuch message
+ * @retval NULL Error occurred
  */
 static notmuch_message_t *get_nm_message(notmuch_database_t *db, struct Email *e)
 {
