@@ -388,31 +388,33 @@ static enum CommandResult icmd_color(struct Buffer *buf, struct Buffer *s,
     }
   }
 
-  static const int regex_lists[] = {
-    MT_COLOR_ATTACH_HEADERS, MT_COLOR_BODY,         MT_COLOR_HEADER,
-    MT_COLOR_INDEX,          MT_COLOR_INDEX_AUTHOR, MT_COLOR_INDEX_FLAGS,
-    MT_COLOR_INDEX_SUBJECT,  MT_COLOR_INDEX_TAG,    MT_COLOR_INDEX_COLLAPSED,
-    MT_COLOR_INDEX_DATE,     MT_COLOR_INDEX_LABEL,  MT_COLOR_INDEX_NUMBER,
-    MT_COLOR_INDEX_SIZE,     MT_COLOR_INDEX_TAGS,   MT_COLOR_STATUS
-  };
-
   int rl_count = 0;
-  for (int i = 0; i < mutt_array_size(regex_lists); i++)
+  for (enum ColorId id = MT_COLOR_NONE; id != MT_COLOR_MAX; ++id)
   {
-    struct RegexColorList *rcl = regex_colors_get_list(regex_lists[i]);
+    if (!mutt_color_has_pattern(id))
+    {
+      continue;
+    }
+
+    struct RegexColorList *rcl = regex_colors_get_list(id);
     if (!STAILQ_EMPTY(rcl))
       rl_count++;
   }
 
   if (rl_count > 0)
   {
-    for (int i = 0; i < mutt_array_size(regex_lists); i++)
+    for (enum ColorId id = MT_COLOR_NONE; id != MT_COLOR_MAX; ++id)
     {
-      struct RegexColorList *rcl = regex_colors_get_list(regex_lists[i]);
+      if (!mutt_color_has_pattern(id))
+      {
+        continue;
+      }
+
+      struct RegexColorList *rcl = regex_colors_get_list(id);
       if (STAILQ_EMPTY(rcl))
         continue;
 
-      const char *name = mutt_map_get_name(regex_lists[i], ColorFields);
+      const char *name = mutt_map_get_name(id, ColorFields);
       if (!name)
         continue;
 

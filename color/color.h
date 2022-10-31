@@ -101,6 +101,7 @@ extern const struct Mapping ComposeColorFields[];
 
 void mutt_colors_init(void);
 void mutt_colors_cleanup(void);
+bool mutt_color_has_pattern(enum ColorId cid);
 
 void colors_clear(void);
 

@@ -92,3 +92,21 @@ void mutt_colors_init(void)
 
   notify_set_parent(ColorsNotify, NeoMutt->notify);
 }
+
+/**
+ * mutt_color_has_pattern - Check if a color object supports a regex pattern
+ *
+ * @param cid   Object type, e.g. #MT_COLOR_TILDE
+ * @retval true The color object supports patterns
+ */
+bool mutt_color_has_pattern(enum ColorId cid)
+{
+  return (cid == MT_COLOR_ATTACH_HEADERS) || (cid == MT_COLOR_BODY) ||
+         (cid == MT_COLOR_HEADER) || (cid == MT_COLOR_INDEX) ||
+         (cid == MT_COLOR_INDEX_AUTHOR) || (cid == MT_COLOR_INDEX_FLAGS) ||
+         (cid == MT_COLOR_INDEX_SUBJECT) || (cid == MT_COLOR_INDEX_TAG) ||
+         (cid == MT_COLOR_INDEX_COLLAPSED) || (cid == MT_COLOR_INDEX_DATE) ||
+         (cid == MT_COLOR_INDEX_LABEL) || (cid == MT_COLOR_INDEX_NUMBER) ||
+         (cid == MT_COLOR_INDEX_SIZE) || (cid == MT_COLOR_INDEX_TAGS) ||
+         (cid == MT_COLOR_STATUS);
+}
