@@ -276,12 +276,12 @@ static int index_color_observer(struct NotifyCallback *nc)
 
   // MT_COLOR_MAX is sent on `uncolor *`
   if (!((cid == MT_COLOR_INDEX) || (cid == MT_COLOR_INDEX_AUTHOR) ||
-        (cid == MT_COLOR_INDEX_FLAGS) || (cid == MT_COLOR_INDEX_SUBJECT) ||
-        (cid == MT_COLOR_INDEX_TAG) || (cid == MT_COLOR_INDEX_COLLAPSED) ||
-        (cid == MT_COLOR_INDEX_DATE) || (cid == MT_COLOR_INDEX_LABEL) ||
+        (cid == MT_COLOR_INDEX_COLLAPSED) || (cid == MT_COLOR_INDEX_DATE) ||
+        (cid == MT_COLOR_INDEX_FLAGS) || (cid == MT_COLOR_INDEX_LABEL) ||
         (cid == MT_COLOR_INDEX_NUMBER) || (cid == MT_COLOR_INDEX_SIZE) ||
-        (cid == MT_COLOR_INDEX_TAGS) || (cid == MT_COLOR_TREE) ||
-        (cid == MT_COLOR_NORMAL) || (cid == MT_COLOR_MAX)))
+        (cid == MT_COLOR_INDEX_SUBJECT) || (cid == MT_COLOR_INDEX_TAG) ||
+        (cid == MT_COLOR_INDEX_TAGS) || (cid == MT_COLOR_MAX) ||
+        (cid == MT_COLOR_NORMAL) || (cid == MT_COLOR_TREE)))
   {
     // The changes aren't relevant to the index menu
     return 0;

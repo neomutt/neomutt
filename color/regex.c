@@ -51,14 +51,14 @@ struct RegexColorList HeaderList;         ///< List of colours applied to the em
 struct RegexColorList IndexAuthorList;    ///< List of colours applied to the author in the index
 struct RegexColorList IndexCollapsedList; ///< List of colours applied to a collapsed thread in the index
 struct RegexColorList IndexDateList;      ///< List of colours applied to the date in the index
+struct RegexColorList IndexFlagsList;     ///< List of colours applied to the flags in the index
 struct RegexColorList IndexLabelList;     ///< List of colours applied to the label in the index
+struct RegexColorList IndexList;          ///< List of default colours applied to the index
 struct RegexColorList IndexNumberList;    ///< List of colours applied to the message number in the index
 struct RegexColorList IndexSizeList;      ///< List of colours applied to the size in the index
-struct RegexColorList IndexTagsList;      ///< List of colours applied to the tags in the index
-struct RegexColorList IndexFlagsList;     ///< List of colours applied to the flags in the index
-struct RegexColorList IndexList;          ///< List of default colours applied to the index
 struct RegexColorList IndexSubjectList;   ///< List of colours applied to the subject in the index
 struct RegexColorList IndexTagList;       ///< List of colours applied to tags in the index
+struct RegexColorList IndexTagsList;      ///< List of colours applied to the tags in the index
 struct RegexColorList StatusList;         ///< List of colours applied to the status bar
 // clang-format on
 
@@ -195,22 +195,22 @@ struct RegexColorList *regex_colors_get_list(enum ColorId cid)
       return &IndexList;
     case MT_COLOR_INDEX_AUTHOR:
       return &IndexAuthorList;
-    case MT_COLOR_INDEX_FLAGS:
-      return &IndexFlagsList;
-    case MT_COLOR_INDEX_SUBJECT:
-      return &IndexSubjectList;
-    case MT_COLOR_INDEX_TAG:
-      return &IndexTagList;
     case MT_COLOR_INDEX_COLLAPSED:
       return &IndexCollapsedList;
     case MT_COLOR_INDEX_DATE:
       return &IndexDateList;
+    case MT_COLOR_INDEX_FLAGS:
+      return &IndexFlagsList;
     case MT_COLOR_INDEX_LABEL:
       return &IndexLabelList;
     case MT_COLOR_INDEX_NUMBER:
       return &IndexNumberList;
     case MT_COLOR_INDEX_SIZE:
       return &IndexSizeList;
+    case MT_COLOR_INDEX_SUBJECT:
+      return &IndexSubjectList;
+    case MT_COLOR_INDEX_TAG:
+      return &IndexTagList;
     case MT_COLOR_INDEX_TAGS:
       return &IndexTagsList;
     case MT_COLOR_STATUS:
@@ -363,14 +363,14 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat, uint32_t f
       break;
     case MT_COLOR_INDEX:
     case MT_COLOR_INDEX_AUTHOR:
-    case MT_COLOR_INDEX_FLAGS:
-    case MT_COLOR_INDEX_SUBJECT:
-    case MT_COLOR_INDEX_TAG:
     case MT_COLOR_INDEX_COLLAPSED:
     case MT_COLOR_INDEX_DATE:
+    case MT_COLOR_INDEX_FLAGS:
     case MT_COLOR_INDEX_LABEL:
     case MT_COLOR_INDEX_NUMBER:
     case MT_COLOR_INDEX_SIZE:
+    case MT_COLOR_INDEX_SUBJECT:
+    case MT_COLOR_INDEX_TAG:
     case MT_COLOR_INDEX_TAGS:
       sensitive = true;
       is_index = true;
