@@ -111,9 +111,7 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
   notmuch_database_t *db = NULL;
   int ct = 0;
   notmuch_status_t st = NOTMUCH_STATUS_SUCCESS;
-#if LIBNOTMUCH_CHECK_VERSION(4, 2, 0)
   char *msg = NULL;
-#endif
 
   const short c_nm_open_timeout = cs_subset_number(NeoMutt->sub, "nm_open_timeout");
   mutt_debug(LL_DEBUG1, "nm: db open '%s' %s (timeout %d)\n", filename,
@@ -170,14 +168,11 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
   {
     if (!db)
     {
-#if LIBNOTMUCH_CHECK_VERSION(4, 2, 0)
       if (msg)
       {
         mutt_error(msg);
-        FREE(&msg);
       }
       else
-#endif
       {
         mutt_error(_("Can't open notmuch database: %s: %s"), filename,
                    st ? notmuch_status_to_string(st) : _("unknown reason"));
@@ -188,6 +183,8 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
       mutt_clear_error();
     }
   }
+
+  FREE(&msg);
 
   return db;
 }
