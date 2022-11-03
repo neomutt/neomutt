@@ -5467,10 +5467,11 @@
 { "uncollapse_new", DT_BOOL, true },
 /*
 ** .pp
-** When \fIset\fP, NeoMutt will automatically uncollapse any collapsed thread
-** that receives a new message. When \fIunset\fP, collapsed threads will
-** remain collapsed. the presence of the new message will still affect
-** index sorting, though.
+** When \fIset\fP, NeoMutt will automatically uncollapse any collapsed
+** thread that receives a newly delivered message.  When
+** \fIunset\fP, collapsed threads will remain collapsed. The
+** presence of the newly delivered message will still affect index
+** sorting, though.
 */
 
 { "use_8bit_mime", DT_BOOL, false },
