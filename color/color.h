@@ -83,7 +83,7 @@ enum ColorId
   MT_COLOR_INDEX_NUMBER,             ///< Index: index number
   MT_COLOR_INDEX_SIZE,               ///< Index: size field
   MT_COLOR_INDEX_SUBJECT,            ///< Index: subject field
-  MT_COLOR_INDEX_TAG,                ///< Index: tag field (%g)
+  MT_COLOR_INDEX_TAG,                ///< Index: tag field (%G)
   MT_COLOR_INDEX_TAGS,               ///< Index: tags field (%g, %J)
   MT_COLOR_MAX,
 };
