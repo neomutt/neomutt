@@ -5194,53 +5194,6 @@ uncolor error
 uncolor prompt
 </screen>
         <para>
-          Each of these objects will colour a certain expando in the index.
-          See <link linkend="index-format">$index_format</link> for more details.
-        </para>
-        <table id="color-simple-index">
-          <title>Simple Index Colours</title>
-          <tgroup cols="2">
-            <thead>
-              <row>
-                <entry>Colour Name</entry>
-                <entry>Description</entry>
-              </row>
-            </thead>
-            <tbody>
-              <row>
-                <entry>index_collapsed</entry>
-                <entry>Number of messages in a collapsed thread, <literal>%M</literal></entry>
-              </row>
-              <row>
-                <entry>index_date</entry>
-                <entry>Date field, <literal>%d</literal> <literal>%D</literal> <literal>%{fmt}</literal> <literal>%[fmt]</literal> <literal>%(fmt)</literal></entry>
-              </row>
-              <row>
-                <entry>index_label</entry>
-                <entry>Message label, <literal>%y</literal> <literal>%Y</literal></entry>
-              </row>
-              <row>
-                <entry>index_number</entry>
-                <entry>Message number, <literal>%C</literal></entry>
-              </row>
-              <row>
-                <entry>index_size</entry>
-                <entry>Message size, <literal>%c</literal> <literal>%cr</literal> <literal>%l</literal></entry>
-              </row>
-              <row>
-                <entry>index_tags</entry>
-                <entry>Transformed message tags, <literal>%g</literal> <literal>%J</literal></entry>
-              </row>
-            </tbody>
-          </tgroup>
-        </table>
-<screen>
-color index_date green default
-</screen>
-<screen>
-uncolor index_date
-</screen>
-        <para>
           These are sidebar objects.
           See <link linkend="sidebar-intro">Sidebar Intro</link> for more details.
         </para>
@@ -5485,9 +5438,34 @@ uncolor quoted2
                 <entry>Author in the index, %A %a %F %L %n</entry>
               </row>
               <row>
+                <entry>index_collapsed</entry>
+                <entry>pattern</entry>
+                <entry>Number of messages in a collapsed thread, <literal>%M</literal></entry>
+              </row>
+              <row>
+                <entry>index_date</entry>
+                <entry>pattern</entry>
+                <entry>Date field, <literal>%d</literal> <literal>%D</literal> <literal>%{fmt}</literal> <literal>%[fmt]</literal> <literal>%(fmt)</literal></entry>
+              </row>
+              <row>
                 <entry>index_flags</entry>
                 <entry>pattern</entry>
                 <entry>Flags in the index, %S %Z</entry>
+              </row>
+              <row>
+                <entry>index_label</entry>
+                <entry>pattern</entry>
+                <entry>Message label, <literal>%y</literal> <literal>%Y</literal></entry>
+              </row>
+              <row>
+                <entry>index_number</entry>
+                <entry>pattern</entry>
+                <entry>Message number, <literal>%C</literal></entry>
+              </row>
+              <row>
+                <entry>index_size</entry>
+                <entry>pattern</entry>
+                <entry>Message size, <literal>%c</literal> <literal>%cr</literal> <literal>%l</literal></entry>
               </row>
               <row>
                 <entry>index_subject</entry>
@@ -5498,6 +5476,11 @@ uncolor quoted2
                 <entry>index_tag</entry>
                 <entry>pattern</entry>
                 <entry>Tags in the index, %G</entry>
+              </row>
+              <row>
+                <entry>index_tags</entry>
+                <entry>pattern</entry>
+                <entry>Transformed message tags, <literal>%g</literal> <literal>%J</literal></entry>
               </row>
               <row>
                 <entry>status</entry>
@@ -14506,12 +14489,12 @@ ifndef sidebar finish
         </para>
         <para>
           The index objects can be themed using the <literal>color</literal>
-          command. Some objects require a pattern.
+          command and an optional pattern. A missing pattern is equivalent to
+          a match-all <literal>.*</literal> pattern.
         </para>
 
 <screen>
-color index-object foreground background
-color index-object foreground background pattern
+color index-object foreground background [pattern]
 </screen>
 
         <table id="table-index-color-colors">
@@ -14520,55 +14503,49 @@ color index-object foreground background pattern
             <thead>
               <row>
                 <entry>Object</entry>
-                <entry>Pattern</entry>
                 <entry>Highlights</entry>
               </row>
             </thead>
             <tbody>
               <row>
                 <entry><literal>index</literal></entry>
-                <entry>yes</entry>
                 <entry>Entire index line</entry>
               </row>
               <row>
                 <entry><literal>index_author</literal></entry>
-                <entry>yes</entry>
                 <entry>Author name, %A %a %F %L %n</entry>
               </row>
               <row>
                 <entry><literal>index_collapsed</literal></entry>
-                <entry>no</entry>
                 <entry>Number of messages in a collapsed thread, %M</entry>
               </row>
               <row>
                 <entry><literal>index_date</literal></entry>
-                <entry>no</entry>
                 <entry>Date field</entry>
               </row>
               <row>
                 <entry><literal>index_flags</literal></entry>
-                <entry>yes</entry>
                 <entry>Message flags, %S %Z</entry>
               </row>
               <row>
                 <entry><literal>index_label</literal></entry>
-                <entry>no</entry>
                 <entry>Message label, %y %Y</entry>
               </row>
               <row>
                 <entry><literal>index_number</literal></entry>
-                <entry>no</entry>
                 <entry>Message number, %C</entry>
               </row>
               <row>
                 <entry><literal>index_size</literal></entry>
-                <entry>no</entry>
                 <entry>Message size, %c %cr %l</entry>
               </row>
               <row>
                 <entry><literal>index_subject</literal></entry>
-                <entry>yes</entry>
                 <entry>Subject, %s</entry>
+              </row>
+              <row>
+                <entry><literal>index_tags</literal></entry>
+                <entry>Transformed message tags, <literal>%g</literal> <literal>%J</literal></entry>
               </row>
             </tbody>
           </tgroup>
