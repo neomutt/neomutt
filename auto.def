@@ -25,7 +25,7 @@ set subdirs {po data docs contrib}
 
 ###############################################################################
 # Add any user options here
-options {
+set valid_options {
 # Curses
   with-ncurses:path         => "Location of ncurses"
 # Features w/o 3rd party dependencies
@@ -130,20 +130,33 @@ options {
   debug-parse-test=0        => "DEBUG: Enable 'neomutt -T' for config testing"
   debug-queue=0             => "DEBUG: Enable TAILQ debugging"
   debug-window=0            => "DEBUG: Enable windows dump"
-# Deprecated stuff
-  pkgconf:=deprecated       => "Deprecated"
-  with-slang:deprecated     => "Deprecated"
-  with-ui:=deprecated       => "Deprecated"
-  with-gpgme:deprecated     => "Deprecated"
 }
+
+set deprecated_options  {
+  pkgconf:=
+  with-slang:
+  with-ui:=
+  with-gpgme:
+}
+
+foreach dep $deprecated_options {
+  append valid_options "${dep}deprecated => Deprecated\n"
+}
+
+options $valid_options
 ###############################################################################
 
 ###############################################################################
-# Deprecated config options
-foreach dep {with-ui with-slang pkgconf with-gpgme} {
-  if {[opt-bool -nodefault $dep] != -1} {
-    user-notice "\nThe configure option \"--$dep\" is not used anymore\n"
+# Issue a warning for deprecated options on the command line
+set notices {}
+foreach dep $deprecated_options {
+  lassign [split $dep :] name
+  if {[opt-bool -nodefault $name] != -1} {
+    lappend notices --$name
   }
+}
+if {[llength $notices]} {
+  user-notice "\nThe following options are deprecated: [join $notices {, }]\n"
 }
 ###############################################################################
 
