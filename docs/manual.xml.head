@@ -14544,6 +14544,10 @@ color index-object foreground background [pattern]
                 <entry>Subject, %s</entry>
               </row>
               <row>
+                <entry><literal>index_tag</literal></entry>
+                <entry>Nessage tags, <literal>%G</literal></entry>
+              </row>
+              <row>
                 <entry><literal>index_tags</literal></entry>
                 <entry>Transformed message tags, <literal>%g</literal> <literal>%J</literal></entry>
               </row>
