@@ -762,20 +762,6 @@ static int op_generic_select_entry(struct GpgmeData *gd, int op)
       mutt_clear_error();
       return FR_NO_ACTION;
     }
-
-    /* A '!' is appended to a key in find_keys() when forced_valid is
-     * set.  Prior to GPGME 1.11.0, encrypt_gpgme_object() called
-     * create_recipient_set() which interpreted the '!' to mean set
-     * GPGME_VALIDITY_FULL for the key.
-     *
-     * Starting in GPGME 1.11.0, we now use a '\n' delimited recipient
-     * string, which is passed directly to the gpgme_op_encrypt_ext()
-     * function.  This allows to use the original meaning of '!' to
-     * force a subkey use. */
-#if (GPGME_VERSION_NUMBER < 0x010b00) // GPGME < 1.11.0
-    if (gd->forced_valid)
-      *gd->forced_valid = true;
-#endif
   }
 
   gd->key = crypt_copy_key(cur_key);

@@ -30,15 +30,6 @@
  * @page crypt_crypt_gpgme Wrapper for PGP/SMIME calls to GPGME
  *
  * Wrapper for PGP/SMIME calls to GPGME
- *
- * Some code is build conditionally according to the version of the GPGME library.
- * This table relates the hex GPGME_VERSION_NUMBER to its age:
- *
- * | Version | Hex      | Release Date |
- * | :------ | :------- | :----------- |
- * | 1.8.0   | 0x010800 | 2016-11-16   |
- * | 1.9.0   | 0x010900 | 2017-03-28   |
- * | 1.11.0  | 0x010b00 | 2018-04-18   |
  */
 
 #include "config.h"
@@ -129,223 +120,12 @@ static bool is_pka_notation(gpgme_sig_notation_t notation)
  */
 static void redraw_if_needed(gpgme_ctx_t ctx)
 {
-#if (GPGME_VERSION_NUMBER < 0x010800) // GPGME < 1.8.0
-  /* gpgme_get_ctx_flag is not available.
-   * In this case, stay on the safe side and always redraw. */
-  (void) ctx;
-  mutt_need_hard_redraw();
-#else
   const char *s = gpgme_get_ctx_flag(ctx, "redraw");
   if (!s /* flag not known */ || *s /* flag true */)
   {
     mutt_need_hard_redraw();
   }
-#endif
 }
-
-#if (GPGRT_VERSION_NUMBER >= 0x012100) // libgpg-error >= 1.33
-/**
- * cmp_version_strings - Compare version strings
- * @param a First version string
- * @param b Second version string
- * @param level Level to compare (see below)
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
- *
- * `level` may be
- * - 0 reserved
- * - 1 format is "<major><patchlevel>"
- * - 2 format is "<major>.<minor><patchlevel>"
- * - 3 format is "<major>.<minor>.<micro><patchlevel>"
- *
- * To ignore the patchlevel in the comparison add 10 to LEVEL.
- * To get a reverse sorting order use a negative number.
- */
-static int cmp_version_strings(const char *a, const char *b, int level)
-{
-  return gpgrt_cmp_version(a, b, level);
-}
-#elif (GPGME_VERSION_NUMBER >= 0x010900) // GPGME >= 1.9.0
-
-/**
- * parse_version_number - Parse a version string
- * @param[in]  s String to parse
- * @param[out] number
- * @retval ptr  Remainder of the string
- * @retval NULL Error
- *
- * This function parses the first portion of the version number S and
- * stores it at NUMBER.  On success, this function returns a pointer
- * into S starting with the first character, which is not part of the
- * initial number portion; on failure, NULL is returned.
- */
-static const char *parse_version_number(const char *s, int *number)
-{
-  int val = 0;
-
-  if ((*s == '0') && isdigit(s[1]))
-    return NULL; /* Leading zeros are not allowed.  */
-  for (; isdigit(s[0]); s++)
-  {
-    val *= 10;
-    val += *s - '0';
-  }
-  *number = val;
-  return (val < 0) ? NULL : s;
-}
-
-/**
- * parse_version_string - Parse a version string
- * @param s String to parse
- * @param major Version MAJOR.x.x
- * @param minor Version x.MINOR.x
- * @param micro Version x.x.MICRO
- * @retval ptr  Patch level string
- * @retval NULL There are fewer parts
- *
- * Break up the complete string-representation of the version number S, which
- * is of the following structure: <major number>.<minor number>.<micro
- * number><patch level>.  The major, minor and micro number components will be
- * stored in *MAJOR, *MINOR and *MICRO.  If MINOR or MICRO is NULL the version
- * number is assumed to have just 1 or 2 parts respectively.
- *
- * On success, the last component, the patch level, will be returned;
- * in failure, NULL will be returned.
- */
-static const char *parse_version_string(const char *s, int *major, int *minor, int *micro)
-{
-  s = parse_version_number(s, major);
-  if (!s)
-    return NULL;
-  if (minor)
-  {
-    if (*s != '.')
-      return NULL;
-    s++;
-    s = parse_version_number(s, minor);
-    if (!s)
-      return NULL;
-    if (micro)
-    {
-      if (*s != '.')
-        return NULL;
-      s++;
-      s = parse_version_number(s, micro);
-      if (!s)
-        return NULL;
-    }
-    else
-    {
-      if (*s == '.')
-        s++;
-    }
-  }
-  else
-  {
-    if (*s == '.')
-      s++;
-  }
-  return s; /* patchlevel */
-}
-
-/**
- * cmp_version_strings - Compare two version strings
- * @param a First version string
- * @param b Second version string
- * @param level Level to compare
- *
- * Substitute for the gpgrt based implementation.
- * See above for a description.
- */
-static int cmp_version_strings(const char *a, const char *b, int level)
-{
-  int a_major, a_minor, a_micro;
-  int b_major, b_minor, b_micro;
-  const char *a_plvl = NULL, *b_plvl = NULL;
-  int r;
-  int ignore_plvl;
-  int positive, negative;
-
-  if (level < 0)
-  {
-    positive = -1;
-    negative = 1;
-    level = 0 - level;
-  }
-  else
-  {
-    positive = 1;
-    negative = -1;
-  }
-  if ((ignore_plvl = (level > 9)))
-    level %= 10;
-
-  a_major = a_minor = a_micro = 0;
-  a_plvl = parse_version_string(a, &a_major, (level > 1) ? &a_minor : NULL,
-                                (level > 2) ? &a_micro : NULL);
-  if (!a_plvl)
-    a_major = a_minor = a_micro = 0; /* Error.  */
-
-  b_major = b_minor = b_micro = 0;
-  b_plvl = parse_version_string(b, &b_major, (level > 1) ? &b_minor : NULL,
-                                (level > 2) ? &b_micro : NULL);
-  if (!b_plvl)
-    b_major = b_minor = b_micro = 0;
-
-  if (!ignore_plvl)
-  {
-    if (!a_plvl && !b_plvl)
-      return negative; /* Put invalid strings at the end.  */
-    if (a_plvl && !b_plvl)
-      return positive;
-    if (!a_plvl && b_plvl)
-      return negative;
-  }
-
-  if (a_major > b_major)
-    return positive;
-  if (a_major < b_major)
-    return negative;
-
-  if (a_minor > b_minor)
-    return positive;
-  if (a_minor < b_minor)
-    return negative;
-
-  if (a_micro > b_micro)
-    return positive;
-  if (a_micro < b_micro)
-    return negative;
-
-  if (ignore_plvl)
-    return 0;
-
-  for (; *a_plvl && *b_plvl; a_plvl++, b_plvl++)
-  {
-    if ((*a_plvl == '.') && (*b_plvl == '.'))
-    {
-      r = strcmp(a_plvl, b_plvl);
-      if (!r)
-        return 0;
-      if (r > 0)
-        return positive;
-      return negative;
-    }
-    if (*a_plvl == '.')
-      return negative; /* B is larger. */
-    if (*b_plvl == '.')
-      return positive; /* A is larger. */
-    if (*a_plvl != *b_plvl)
-      break;
-  }
-  if (*a_plvl == *b_plvl)
-    return 0;
-  if ((*(signed char *) a_plvl - *(signed char *) b_plvl) > 0)
-    return positive;
-  return negative;
-}
-#endif
 
 /**
  * crypt_keyid - Find the ID for the key
@@ -631,43 +411,6 @@ static gpgme_data_t create_gpgme_data(void)
   return data;
 }
 
-#if (GPGME_VERSION_NUMBER >= 0x010900) // GPGME >= 1.9.0
-/**
- * have_gpg_version - Do we have a sufficient GPG version
- * @param version Minimum version
- * @retval true Minimum version is available
- *
- * Return true if the OpenPGP engine's version is at least VERSION.
- */
-static bool have_gpg_version(const char *version)
-{
-  static char *engine_version = NULL;
-
-  if (!engine_version)
-  {
-    gpgme_ctx_t ctx = NULL;
-    gpgme_engine_info_t engineinfo = NULL;
-
-    ctx = create_gpgme_context(false);
-    engineinfo = gpgme_ctx_get_engine_info(ctx);
-    while (engineinfo && (engineinfo->protocol != GPGME_PROTOCOL_OpenPGP))
-      engineinfo = engineinfo->next;
-    if (engineinfo)
-    {
-      engine_version = mutt_str_dup(engineinfo->version);
-    }
-    else
-    {
-      mutt_debug(LL_DEBUG1, "Error finding GPGME PGP engine\n");
-      engine_version = mutt_str_dup("0.0.0");
-    }
-    gpgme_release(ctx);
-  }
-
-  return cmp_version_strings(engine_version, version, 3) >= 0;
-}
-#endif
-
 /**
  * body_to_data_object - Create GPGME object from the mail body
  * @param a       Body to use
@@ -865,7 +608,6 @@ cleanup:
   return rv;
 }
 
-#if (GPGME_VERSION_NUMBER >= 0x010b00) // GPGME >= 1.11.0
 /**
  * create_recipient_string - Create a string of recipients
  * @param keylist    Keys, space-separated
@@ -897,95 +639,6 @@ static void create_recipient_string(const char *keylist, struct Buffer *recpstri
     }
   } while (*s != '\0');
 }
-
-#else
-/**
- * recipient_set_free - Free a set of recipients
- * @param p_rset Set of GPGME keys
- */
-static void recipient_set_free(gpgme_key_t **p_rset)
-{
-  gpgme_key_t *rset = NULL;
-
-  if (!p_rset)
-    return;
-
-  rset = *p_rset;
-  if (!rset)
-    return;
-
-  while (*rset)
-  {
-    gpgme_key_t k = *rset;
-    gpgme_key_unref(k);
-    rset++;
-  }
-
-  FREE(p_rset);
-}
-
-/**
- * create_recipient_set - Create a GpgmeRecipientSet from a string of keys
- * @param keylist   Keys, space-separated
- * @param use_smime Use SMIME
- * @retval ptr GPGME key set
- */
-static gpgme_key_t *create_recipient_set(const char *keylist, bool use_smime)
-{
-  int err;
-  const char *s = NULL;
-  char buf[100] = { 0 };
-  gpgme_key_t *rset = NULL;
-  unsigned int rset_n = 0;
-  gpgme_key_t key = NULL;
-
-  gpgme_ctx_t context = create_gpgme_context(use_smime);
-  s = keylist;
-  do
-  {
-    while (*s == ' ')
-      s++;
-    int i;
-    for (i = 0; *s && *s != ' ' && i < sizeof(buf) - 1;)
-      buf[i++] = *s++;
-    buf[i] = '\0';
-    if (*buf != '\0')
-    {
-      if ((i > 1) && (buf[i - 1] == '!'))
-      {
-        /* The user selected to override the validity of that key. */
-        buf[i - 1] = '\0';
-
-        err = gpgme_get_key(context, buf, &key, 0);
-        if (err == 0)
-          key->uids->validity = GPGME_VALIDITY_FULL;
-        buf[i - 1] = '!';
-      }
-      else
-        err = gpgme_get_key(context, buf, &key, 0);
-      mutt_mem_realloc(&rset, sizeof(*rset) * (rset_n + 1));
-      if (err == 0)
-        rset[rset_n++] = key;
-      else
-      {
-        mutt_error(_("error adding recipient '%s': %s"), buf, gpgme_strerror(err));
-        rset[rset_n] = NULL;
-        recipient_set_free(&rset);
-        gpgme_release(context);
-        return NULL;
-      }
-    }
-  } while (*s);
-
-  /* NULL terminate.  */
-  mutt_mem_realloc(&rset, sizeof(*rset) * (rset_n + 1));
-  rset[rset_n++] = NULL;
-
-  gpgme_release(context);
-
-  return rset;
-}
-#endif
 
 /**
  * set_signer_from_address - Try to set the context's signer from the address
@@ -1125,7 +778,6 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool us
   gpgme_data_t ciphertext = NULL;
   char *outfile = NULL;
 
-#if (GPGME_VERSION_NUMBER >= 0x010b00) // GPGME >= 1.11.0
   struct Buffer *recpstring = mutt_buffer_pool_get();
   create_recipient_string(keylist, recpstring, use_smime);
   if (mutt_buffer_is_empty(recpstring))
@@ -1133,11 +785,6 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool us
     mutt_buffer_pool_release(&recpstring);
     return NULL;
   }
-#else
-  gpgme_key_t *rset = create_recipient_set(keylist, use_smime);
-  if (!rset)
-    return NULL;
-#endif
 
   ctx = create_gpgme_context(use_smime);
   if (!use_smime)
@@ -1158,21 +805,13 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool us
         goto cleanup;
     }
 
-#if (GPGME_VERSION_NUMBER >= 0x010b00) // GPGME >= 1.11.0
     err = gpgme_op_encrypt_sign_ext(ctx, NULL, mutt_buffer_string(recpstring),
                                     GPGME_ENCRYPT_ALWAYS_TRUST, plaintext, ciphertext);
-#else
-    err = gpgme_op_encrypt_sign(ctx, rset, GPGME_ENCRYPT_ALWAYS_TRUST, plaintext, ciphertext);
-#endif
   }
   else
   {
-#if (GPGME_VERSION_NUMBER >= 0x010b00) // GPGME >= 1.11.0
     err = gpgme_op_encrypt_ext(ctx, NULL, mutt_buffer_string(recpstring),
                                GPGME_ENCRYPT_ALWAYS_TRUST, plaintext, ciphertext);
-#else
-    err = gpgme_op_encrypt(ctx, rset, GPGME_ENCRYPT_ALWAYS_TRUST, plaintext, ciphertext);
-#endif
   }
 
   redraw_if_needed(ctx);
@@ -1185,11 +824,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool us
   outfile = data_object_to_tempfile(ciphertext, NULL);
 
 cleanup:
-#if (GPGME_VERSION_NUMBER >= 0x010b00) // GPGME >= 1.11.0
   mutt_buffer_pool_release(&recpstring);
-#else
-  recipient_set_free(&rset);
-#endif
   gpgme_release(ctx);
   gpgme_data_release(ciphertext);
   return outfile;
@@ -2424,14 +2059,8 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
  */
 static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
 {
-  /* Before GPGME 1.9.0 and gpg 2.1.14 there was no side-effect free
-   * way to view key data in GPGME, so we import the key into a
-   * temporary keyring if we detect an older system.  */
-  bool legacy_api;
-  struct Buffer *tmpdir = NULL;
   gpgme_ctx_t tmpctx = NULL;
   gpgme_error_t err;
-  gpgme_engine_info_t engineinfo = NULL;
   gpgme_key_t key = NULL;
   gpgme_user_id_t uid = NULL;
   gpgme_subkey_t subkey = NULL;
@@ -2442,58 +2071,16 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
   int rc = -1;
   time_t tt;
 
-#if (GPGME_VERSION_NUMBER >= 0x010900) // GPGME >= 1.9.0
-  legacy_api = !have_gpg_version("2.1.14");
-#else
-  legacy_api = true;
-#endif
-
-  tmpctx = create_gpgme_context(false);
-
-  if (legacy_api)
-  {
-    tmpdir = mutt_buffer_pool_get();
-    const char *const c_tmpdir = cs_subset_path(NeoMutt->sub, "tmpdir");
-    mutt_buffer_printf(tmpdir, "%s/neomutt-gpgme-XXXXXX", NONULL(c_tmpdir));
-    if (!mkdtemp(tmpdir->data))
-    {
-      mutt_debug(LL_DEBUG1, "Error creating temporary GPGME home\n");
-      goto err_ctx;
-    }
-
-    engineinfo = gpgme_ctx_get_engine_info(tmpctx);
-    while (engineinfo && (engineinfo->protocol != GPGME_PROTOCOL_OpenPGP))
-      engineinfo = engineinfo->next;
-    if (!engineinfo)
-    {
-      mutt_debug(LL_DEBUG1, "Error finding GPGME PGP engine\n");
-      goto err_tmpdir;
-    }
-
-    err = gpgme_ctx_set_engine_info(tmpctx, GPGME_PROTOCOL_OpenPGP, engineinfo->file_name,
-                                    mutt_buffer_string(tmpdir));
-    if (err != GPG_ERR_NO_ERROR)
-    {
-      mutt_debug(LL_DEBUG1, "Error setting GPGME context home\n");
-      goto err_tmpdir;
-    }
-  }
-
   *fp = mutt_file_mkstemp();
   if (!*fp)
   {
     mutt_perror(_("Can't create temporary file"));
-    goto err_tmpdir;
+    return -1;
   }
 
-#if (GPGME_VERSION_NUMBER >= 0x010900) // GPGME >= 1.9.0
-  if (!legacy_api)
-    err = gpgme_op_keylist_from_data_start(tmpctx, keydata, 0);
-  else
-#endif
-  {
-    err = gpgme_op_keylist_start(tmpctx, NULL, 0);
-  }
+  tmpctx = create_gpgme_context(false);
+
+  err = gpgme_op_keylist_from_data_start(tmpctx, keydata, 0);
   while (err == 0)
   {
     err = gpgme_op_keylist_next(tmpctx, &key);
@@ -2537,13 +2124,8 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
 err_fp:
   if (rc)
     mutt_file_fclose(fp);
-err_tmpdir:
-  if (legacy_api)
-    mutt_file_rmtree(mutt_buffer_string(tmpdir));
-err_ctx:
-  gpgme_release(tmpctx);
 
-  mutt_buffer_pool_release(&tmpdir);
+  gpgme_release(tmpctx);
 
   return rc;
 }

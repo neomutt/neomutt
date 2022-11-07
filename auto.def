@@ -480,14 +480,8 @@ if {[get-define want-gpgme]} {
   if {[is-defined _FILE_OFFSET_BITS]} {
     define-append CFLAGS -D_FILE_OFFSET_BITS=[get-define _FILE_OFFSET_BITS]
   }
-
   pkgconf true gpgme
   pkgconf true gpg-error
-
-  # Version might look like this: 1.13.1-unknown, so split on both '.' and '-'
-  lassign [split [get-define PKG_GPGME_VERSION] .-] gpgme_maj gpgme_min gpgme_patch
-
-  define GPGME_VERSION_NUMBER [format "0x%02x%02x%02x" $gpgme_maj $gpgme_min $gpgme_patch]
   define CRYPT_BACKEND_GPGME
 }
 
