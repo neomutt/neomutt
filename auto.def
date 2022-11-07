@@ -52,7 +52,6 @@ options {
   with-gnutls:path          => "Location of GnuTLS"
   # GPGME
   gpgme=0                   => "Enable GPGME support"
-  with-gpgme:path           => "Location of GPGME"
   # GSS (IMAP auth)
   gss=0                     => "Use GSSAPI authentication for IMAP"
   with-gss:path             => "Location of GSSAPI library"
@@ -135,12 +134,13 @@ options {
   pkgconf:=deprecated       => "Deprecated"
   with-slang:deprecated     => "Deprecated"
   with-ui:=deprecated       => "Deprecated"
+  with-gpgme:deprecated     => "Deprecated"
 }
 ###############################################################################
 
 ###############################################################################
 # Deprecated config options
-foreach dep {with-ui with-slang pkgconf} {
+foreach dep {with-ui with-slang pkgconf with-gpgme} {
   if {[opt-bool -nodefault $dep] != -1} {
     user-notice "\nThe configure option \"--$dep\" is not used anymore\n"
   }
