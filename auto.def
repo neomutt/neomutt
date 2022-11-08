@@ -25,7 +25,7 @@ set subdirs {po data docs contrib}
 
 ###############################################################################
 # Add any user options here
-options {
+set valid_options {
 # Curses
   with-ncurses:path         => "Location of ncurses"
 # Features w/o 3rd party dependencies
@@ -52,7 +52,6 @@ options {
   with-gnutls:path          => "Location of GnuTLS"
   # GPGME
   gpgme=0                   => "Enable GPGME support"
-  with-gpgme:path           => "Location of GPGME"
   # GSS (IMAP auth)
   gss=0                     => "Use GSSAPI authentication for IMAP"
   with-gss:path             => "Location of GSSAPI library"
@@ -131,19 +130,33 @@ options {
   debug-parse-test=0        => "DEBUG: Enable 'neomutt -T' for config testing"
   debug-queue=0             => "DEBUG: Enable TAILQ debugging"
   debug-window=0            => "DEBUG: Enable windows dump"
-# Deprecated stuff
-  pkgconf:=deprecated       => "Deprecated"
-  with-slang:deprecated     => "Deprecated"
-  with-ui:=deprecated       => "Deprecated"
 }
+
+set deprecated_options  {
+  pkgconf:=
+  with-slang:
+  with-ui:=
+  with-gpgme:
+}
+
+foreach dep $deprecated_options {
+  append valid_options "${dep}deprecated => Deprecated\n"
+}
+
+options $valid_options
 ###############################################################################
 
 ###############################################################################
-# Deprecated config options
-foreach dep {with-ui with-slang pkgconf} {
-  if {[opt-bool -nodefault $dep] != -1} {
-    user-notice "\nThe configure option \"--$dep\" is not used anymore\n"
+# Issue a warning for deprecated options on the command line
+set notices {}
+foreach dep $deprecated_options {
+  lassign [split $dep :] name
+  if {[opt-bool -nodefault $name] != -1} {
+    lappend notices --$name
   }
+}
+if {[llength $notices]} {
+  user-notice "\nThe following options are deprecated: [join $notices {, }]\n"
 }
 ###############################################################################
 
@@ -480,56 +493,7 @@ if {[get-define want-gpgme]} {
   if {[is-defined _FILE_OFFSET_BITS]} {
     define-append CFLAGS -D_FILE_OFFSET_BITS=[get-define _FILE_OFFSET_BITS]
   }
-
-  msg-checking "Checking for GPGME..."
-  if {1} {
-    # Locate gpgme-config
-    set gpgme_prefix [opt-val with-gpgme $prefix]
-    set gpgme_config_guess [file join $gpgme_prefix bin gpgme-config]
-    if {[file-isexec $gpgme_config_guess]} {
-      define GPGME-CONFIG $gpgme_config_guess
-    } else {
-      if {![cc-check-progs gpgme-config]} {
-        user-error "Unable to find gpgme-config"
-      }
-    }
-    set gpgme_config [get-define GPGME-CONFIG]
-
-    # Version
-    if {[catch {exec-with-stderr $gpgme_config --version} gpgme_version err]} {
-      user-error "Could not derive --version from $gpgme_config"
-    }
-    if {[scan $gpgme_version "%d.%d.%d" gpgme_maj gpgme_min gpgme_patch] != 3} {
-      user-error "Could not parse GPGME version $gpgme_version"
-    }
-    msg-result $gpgme_version
-    if {[get-define want-autocrypt]} {
-      if {$gpgme_maj < 1 || $gpgme_min < 8} {
-        # GPGME v1.8.0 was released on 2016-11-16
-        user-error "Found GPGME version $gpgme_version, need 1.8.0 for AutoCrypt"
-      }
-    } else {
-      if {$gpgme_maj < 1 || $gpgme_min < 4} {
-        # GPGME v1.4.0 was released on 2013-02-26
-        user-error "Found GPGME version $gpgme_version, need 1.4.0"
-      }
-    }
-    define GPGME_VERSION_NUMBER [format "0x%02x%02x%02x" $gpgme_maj $gpgme_min $gpgme_patch]
-
-    # CFLAGS
-    if {[catch {exec-with-stderr $gpgme_config --cflags} res err]} {
-      user-error "Could not derive --cflags from $gpgme_config"
-    }
-    define-append CFLAGS $res
-
-    # LIBS
-    if {[catch {exec-with-stderr $gpgme_config --libs} res err]} {
-      user-error "Could not derive --libs from $gpgme_config"
-    }
-    define-append LIBS $res
-  }
-  define-feature gpgme
-
+  pkgconf true gpgme
   pkgconf true gpg-error
   define CRYPT_BACKEND_GPGME
 }
