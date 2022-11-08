@@ -88,7 +88,6 @@ set valid_options {
   kyotocabinet=0            => "Use KyotoCabinet for the header cache"
   with-kyotocabinet:path    => "Location of KyotoCabinet"
   lmdb=0                    => "Use LMDB for the header cache"
-  with-lmdb:path            => "Location of LMDB"
   qdbm=0                    => "Use QDBM for the header cache"
   with-qdbm:path            => "Location of QDBM"
   rocksdb=0                 => "Use RocksDB for the header cache"
@@ -102,11 +101,9 @@ set valid_options {
   with-sqlite:path          => "Location of SQLite"
 # compression
   lz4=0                     => "Enable LZ4 header cache compression support"
-  with-lz4:path             => "Location of LZ4"
   zlib=0                    => "Enable zlib support"
   with-zlib:path            => "Location of zlib"
   zstd=0                    => "Enable Zstandard header cache compression support"
-  with-zstd:path            => "Location of Zstandard"
 # System
   with-sysroot:path         => "Target system root"
   with-tmpdir:=/tmp         => "location of the tmp directory"
@@ -137,6 +134,9 @@ set deprecated_options  {
   with-slang:
   with-ui:=
   with-gpgme:
+  with-lmdb:
+  with-lz4:
+  with-zstd:
 }
 
 foreach dep $deprecated_options {
@@ -795,7 +795,7 @@ if {[get-define want-idn]} {
 if {[get-define want-pcre2]} {
   pkgconf true libpcre2-8
   define-feature pcre2
-} elseif {[check-inc-and-lib pcre2_unwarranted {} {} pcre2_regcomp {}]} {
+} elseif {[cc-check-functions pcre2_regcomp]} {
   # See https://bugs.exim.org/show_bug.cgi?id=2707 and
   # https://github.com/neomutt/neomutt/issues/2865
   user-error "Found libpcre2-posix: please reconfigure with --pcre2"
@@ -888,10 +888,8 @@ if {[get-define want-gdbm]} {
 ###############################################################################
 # Header cache - LMDB
 if {[get-define want-lmdb]} {
-  if {![check-inc-and-lib lmdb [opt-val with-lmdb $prefix] \
-                          lmdb.h mdb_env_create lmdb]} {
-    user-error "Unable to find LMDB"
-  }
+  pkgconf true lmdb
+  define-feature lmdb
   define-append HCACHE_BACKENDS "lmdb"
   define USE_HCACHE
 }
@@ -937,12 +935,9 @@ if {[get-define want-tokyocabinet]} {
 ###############################################################################
 # Header Cache Compression with LZ4
 if {[get-define want-lz4]} {
-  if {![check-inc-and-lib lz4 [opt-val with-lz4 $prefix] \
-                          lz4.h LZ4_compress_default lz4]} {
-    user-error "Unable to find LZ4"
-  }
-  define-append LIBS -llz4
+  pkgconf true liblz4
   define USE_LZ4
+  define-feature lz4
   define USE_HCACHE_COMPRESSION
   define-append COMPRESS_BACKENDS "lz4"
 }
@@ -963,12 +958,9 @@ if {[get-define want-zlib]} {
 ###############################################################################
 # Header Cache Compression with Zstandard
 if {[get-define want-zstd]} {
-  if {![check-inc-and-lib zstd [opt-val with-zstd $prefix] \
-                          zstd.h ZSTD_compress zstd]} {
-    user-error "Unable to find Zstandard"
-  }
-  define-append LIBS -lzstd
+  pkgconf true libzstd
   define USE_ZSTD
+  define-feature zstd
   define USE_HCACHE_COMPRESSION
   define-append COMPRESS_BACKENDS "zstd"
 }
