@@ -54,43 +54,34 @@
  */
 static struct AttrColor *get_color(int index, unsigned char *s)
 {
-  struct RegexColorList *rcl = NULL;
+  const int type = *s;
+  struct RegexColorList *rcl = regex_colors_get_list(type);
+  if (rcl == NULL)
+  {
+    return simple_color_get(type);
+  }
+
   struct RegexColor *np = NULL;
   struct Mailbox *m_cur = get_current_mailbox();
   struct Email *e = mutt_get_virt_email(m_cur, index);
-  int type = *s;
 
-  switch (type)
+  if (type == MT_COLOR_INDEX_TAG)
   {
-    case MT_COLOR_INDEX_AUTHOR:
-      rcl = regex_colors_get_list(MT_COLOR_INDEX_AUTHOR);
-      break;
-    case MT_COLOR_INDEX_FLAGS:
-      rcl = regex_colors_get_list(MT_COLOR_INDEX_FLAGS);
-      break;
-    case MT_COLOR_INDEX_SUBJECT:
-      rcl = regex_colors_get_list(MT_COLOR_INDEX_SUBJECT);
-      break;
-    case MT_COLOR_INDEX_TAG:
+    struct AttrColor *ac_merge = NULL;
+    STAILQ_FOREACH(np, rcl, entries)
     {
-      struct AttrColor *ac_merge = NULL;
-      STAILQ_FOREACH(np, regex_colors_get_list(MT_COLOR_INDEX_TAG), entries)
+      if (mutt_strn_equal((const char *) (s + 1), np->pattern, strlen(np->pattern)))
       {
-        if (mutt_strn_equal((const char *) (s + 1), np->pattern, strlen(np->pattern)))
-        {
-          ac_merge = merged_color_overlay(ac_merge, &np->attr_color);
-          continue;
-        }
-        const char *transform = mutt_hash_find(TagTransforms, np->pattern);
-        if (transform && mutt_strn_equal((const char *) (s + 1), transform, strlen(transform)))
-        {
-          ac_merge = merged_color_overlay(ac_merge, &np->attr_color);
-        }
+        ac_merge = merged_color_overlay(ac_merge, &np->attr_color);
+        continue;
       }
-      return ac_merge;
+      const char *transform = mutt_hash_find(TagTransforms, np->pattern);
+      if (transform && mutt_strn_equal((const char *) (s + 1), transform, strlen(transform)))
+      {
+        ac_merge = merged_color_overlay(ac_merge, &np->attr_color);
+      }
     }
-    default:
-      return simple_color_get(type);
+    return ac_merge;
   }
 
   struct AttrColor *ac_merge = NULL;

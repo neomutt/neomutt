@@ -73,18 +73,17 @@ enum ColorId
   MT_COLOR_TREE,                     ///< Index: tree-drawing characters
   MT_COLOR_UNDERLINE,                ///< Underlined text
   MT_COLOR_WARNING,                  ///< Warning messages
-  /* please no non-MT_COLOR_INDEX objects after this point */
-  MT_COLOR_INDEX,                    ///< Index: default colour (takes a pattern)
-  MT_COLOR_INDEX_AUTHOR,             ///< Index: author field (takes a pattern)
-  MT_COLOR_INDEX_FLAGS,              ///< Index: flags field (takes a pattern)
-  MT_COLOR_INDEX_SUBJECT,            ///< Index: subject field (takes a pattern)
-  MT_COLOR_INDEX_TAG,                ///< Index: tag field (%g, takes a pattern)
-  /* below here - only index coloring stuff that doesn't have a pattern */
+  // Index colours which all take a pattern
+  MT_COLOR_INDEX,                    ///< Index: default colour
+  MT_COLOR_INDEX_AUTHOR,             ///< Index: author field
   MT_COLOR_INDEX_COLLAPSED,          ///< Index: number of messages in collapsed thread
   MT_COLOR_INDEX_DATE,               ///< Index: date field
+  MT_COLOR_INDEX_FLAGS,              ///< Index: flags field
   MT_COLOR_INDEX_LABEL,              ///< Index: label field
   MT_COLOR_INDEX_NUMBER,             ///< Index: index number
   MT_COLOR_INDEX_SIZE,               ///< Index: size field
+  MT_COLOR_INDEX_SUBJECT,            ///< Index: subject field
+  MT_COLOR_INDEX_TAG,                ///< Index: tag field (%G)
   MT_COLOR_INDEX_TAGS,               ///< Index: tags field (%g, %J)
   MT_COLOR_MAX,
 };
@@ -102,6 +101,7 @@ extern const struct Mapping ComposeColorFields[];
 
 void mutt_colors_init(void);
 void mutt_colors_cleanup(void);
+bool mutt_color_has_pattern(enum ColorId cid);
 
 void colors_clear(void);
 
