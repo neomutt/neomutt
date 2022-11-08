@@ -14499,7 +14499,7 @@ color index-object foreground background [pattern]
 
         <table id="table-index-color-colors">
           <title>Index Colors</title>
-          <tgroup cols="3">
+          <tgroup cols="2">
             <thead>
               <row>
                 <entry>Object</entry>
@@ -15887,28 +15887,26 @@ bind index \CG get-message
       <sect2 id="custom-tags-colors">
         <title>Colors</title>
         <para>
-          Adds these to index-color feature:
+          Adds the objects, below, to index-color feature.
+          The objects can take an optional pattern.
         </para>
 
         <table id="table-custom-tags-colors">
           <title>Index Colors</title>
-          <tgroup cols="3">
+          <tgroup cols="2">
             <thead>
               <row>
                 <entry>Object</entry>
-                <entry>Pattern</entry>
                 <entry>Highlights</entry>
               </row>
             </thead>
             <tbody>
               <row>
                 <entry><literal>index_tag</literal></entry>
-                <entry>yes</entry>
                 <entry>an individual message tag, %G, uses tag name</entry>
               </row>
               <row>
                 <entry><literal>index_tags</literal></entry>
-                <entry>no</entry>
                 <entry>the transformed message tags, %g or %J</entry>
               </row>
             </tbody>
@@ -15972,10 +15970,8 @@ macro index,pager tt "&lt;modify-labels&gt;!todo\n" "Toggle the 'todo' tag"
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 <emphasis role="comment"># These symbols are added to the index-color feature:</emphasis>
 <emphasis role="comment"># an individual message tag, %G, uses tag name</emphasis>
-<emphasis role="comment"># this symbol uses a pattern</emphasis>
 color index_tag red white "inbox"
 <emphasis role="comment"># the transformed message tags, %g</emphasis>
-<emphasis role="comment"># this symbol does not use a pattern</emphasis>
 color index_tags green default
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 
@@ -19600,7 +19596,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <arg choice="plain">
               <replaceable class="parameter">background</replaceable>
             </arg>
-            <arg choice="plain">
+            <arg choice="opt">
               <replaceable class="parameter">pattern</replaceable>
             </arg>
             <command>
