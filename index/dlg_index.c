@@ -429,15 +429,13 @@ static void update_index_threaded(struct MailboxView *mv, enum MxStatus check, i
 
   if (lmt)
   {
-    /* Because threading changes the order in m->emails, we don't
-     * know which emails are new. Hence, we need to re-apply the limit to the
-     * whole set.
-     */
     for (int i = 0; i < m->msg_count; i++)
     {
       struct Email *e = m->emails[i];
-      if ((e->vnum != -1) || mutt_pattern_exec(SLIST_FIRST(mv->limit_pattern),
-                                               MUTT_MATCH_FULL_ADDRESS, m, e, NULL))
+
+      if ((e->limit_visited && e->visible) ||
+          mutt_pattern_exec(SLIST_FIRST(mv->limit_pattern),
+                            MUTT_MATCH_FULL_ADDRESS, m, e, NULL))
       {
         /* vnum will get properly set by mutt_set_vnum(), which
          * is called by mutt_sort_headers() just below. */
@@ -449,6 +447,9 @@ static void update_index_threaded(struct MailboxView *mv, enum MxStatus check, i
         e->vnum = -1;
         e->visible = false;
       }
+
+      // mark email as visited so we don't re-apply the pattern next time
+      e->limit_visited = true;
     }
     /* Need a second sort to set virtual numbers and redraw the tree */
     mutt_sort_headers(m, mv->threads, false, &mv->vsize);
@@ -498,7 +499,9 @@ static void update_index_unthreaded(struct MailboxView *mv, enum MxStatus check)
       struct Email *e = mv->mailbox->emails[i];
       if (!e)
         break;
-      if (mutt_pattern_exec(SLIST_FIRST(mv->limit_pattern),
+
+      if ((e->limit_visited && e->visible) ||
+          mutt_pattern_exec(SLIST_FIRST(mv->limit_pattern),
                             MUTT_MATCH_FULL_ADDRESS, mv->mailbox, e, NULL))
       {
         assert(mv->mailbox->vcount < mv->mailbox->msg_count);
@@ -513,6 +516,9 @@ static void update_index_unthreaded(struct MailboxView *mv, enum MxStatus check)
       {
         e->visible = false;
       }
+
+      // mark email as visited so we don't re-apply the pattern next time
+      e->limit_visited = true;
     }
   }
 

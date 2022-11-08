@@ -407,8 +407,10 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
       /* new limit pattern implicitly uncollapses all threads */
       e->vnum = -1;
       e->visible = false;
+      e->limit_visited = true;
       e->collapsed = false;
       e->num_hidden = 0;
+
       if (match_all ||
           mutt_pattern_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, m, e, NULL))
       {
