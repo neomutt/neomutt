@@ -556,7 +556,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
 
   /* extract a regular expression if needed */
 
-  if (mutt_color_has_pattern(cid))
+  if (mutt_color_has_pattern(cid) && cid != MT_COLOR_STATUS)
   {
     color_debug(LL_DEBUG5, "regex needed\n");
     if (MoreArgs(s))
