@@ -547,7 +547,7 @@ void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check
 
   const int old_index = menu_get_index(menu);
   int index = -1;
-  if (oldcount)
+  if (oldcount != 0)
   {
     /* restore the current message to the message it was pointing to */
     for (int i = 0; i < m->vcount; i++)
@@ -567,6 +567,7 @@ void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check
   {
     index = (old_index < m->vcount) ? old_index : ci_first_message(m);
   }
+  menu->max = m->vcount;
   menu_set_index(menu, index);
 }
 
