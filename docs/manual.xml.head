@@ -4448,8 +4448,11 @@ set alias_file=~/.mail_aliases
           equivalent. An alternative form is to specify the key as a three digit
           octal number prefixed with a <quote>\</quote> (for example
           <emphasis>\177</emphasis> is equivalent to <emphasis>\c?</emphasis>).
-          In addition, <emphasis>key</emphasis> may be a symbolic name as shown
-          in <xref linkend="tab-key-names" />.
+          You can also use the form <emphasis>&lt;177&gt;</emphasis>, which
+          allows octal numbers with an arbitrary number of digits.  In addition,
+          <emphasis>key</emphasis> may be a symbolic name as shown in <xref
+          linkend="tab-key-names"/>.
+
         </para>
 
         <table id="tab-key-names">
