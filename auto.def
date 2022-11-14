@@ -88,6 +88,7 @@ set valid_options {
   kyotocabinet=0            => "Use KyotoCabinet for the header cache"
   with-kyotocabinet:path    => "Location of KyotoCabinet"
   lmdb=0                    => "Use LMDB for the header cache"
+  with-lmdb:path            => "Location of LMDB"
   qdbm=0                    => "Use QDBM for the header cache"
   with-qdbm:path            => "Location of QDBM"
   rocksdb=0                 => "Use RocksDB for the header cache"
@@ -134,7 +135,6 @@ set deprecated_options  {
   with-slang:
   with-ui:=
   with-gpgme:
-  with-lmdb:
   with-lz4:
   with-zstd:
 }
@@ -888,8 +888,12 @@ if {[get-define want-gdbm]} {
 ###############################################################################
 # Header cache - LMDB
 if {[get-define want-lmdb]} {
-  pkgconf true lmdb
-  define-feature lmdb
+  if {[pkgconf false lmdb]} {
+    define-feature lmdb
+  } elseif {![check-inc-and-lib lmdb [opt-val with-lmdb $prefix] \
+                                lmdb.h mdb_env_create lmdb]} {
+    user-error "Unable to find LMDB"
+  }
   define-append HCACHE_BACKENDS "lmdb"
   define USE_HCACHE
 }
