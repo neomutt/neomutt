@@ -375,11 +375,12 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
     hcachever = digest.intval;
   }
 
+  const struct ComprOps *cops = NULL;
 #ifdef USE_HCACHE_COMPRESSION
   const char *const c_header_cache_compress_method = cs_subset_string(NeoMutt->sub, "header_cache_compress_method");
   if (c_header_cache_compress_method)
   {
-    const struct ComprOps *cops = compress_get_ops(c_header_cache_compress_method);
+    cops = compress_get_ops(c_header_cache_compress_method);
 
     const short c_header_cache_compress_level = cs_subset_number(NeoMutt->sub, "header_cache_compress_level");
     hc->cctx = cops->open(c_header_cache_compress_level);
@@ -399,6 +400,11 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
 
   if (!path || (path[0] == '\0'))
   {
+    if (cops)
+    {
+      cops->close(&hc->cctx);
+    }
+
     FREE(&hc->folder);
     FREE(&hc);
     return NULL;
@@ -416,6 +422,10 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
       hc->ctx = ops->open(mutt_buffer_string(hcpath));
       if (!hc->ctx)
       {
+        if (cops)
+        {
+          cops->close(&hc->cctx);
+        }
         FREE(&hc->folder);
         FREE(&hc);
       }
