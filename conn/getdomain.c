@@ -139,14 +139,14 @@ int getdnsdomainname(struct Buffer *result)
   lookup_result = mutt_getaddrinfo(node, &hints);
 #endif
 
-  char *hostname = NULL;
   if (lookup_result && lookup_result->ai_canonname)
-    hostname = strchr(lookup_result->ai_canonname, '.');
-
-  if (hostname)
   {
-    mutt_buffer_strcpy(result, ++hostname);
-    rc = 0;
+    const char *hostname = strchr(lookup_result->ai_canonname, '.');
+    if (hostname && hostname[1] != '\0')
+    {
+      mutt_buffer_strcpy(result, ++hostname);
+      rc = 0;
+    }
   }
 
   if (lookup_result)
