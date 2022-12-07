@@ -13,9 +13,9 @@ jobs:
       fail-fast: false
       matrix:
         distro:
-          - version: 34
-          - version: 35
           - version: 36
+          - version: 37
+          - version: 38
         config:
           - name: Default
             options:
