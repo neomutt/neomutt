@@ -56,16 +56,18 @@ static struct addrinfo *mutt_getaddrinfo_a(const char *node, const struct addrin
    * If it takes longer, the system is mis-configured and the network is not
    * working properly, so...  */
   struct timespec timeout = { 0, 100000000 };
-  struct gaicb *reqs[1];
-  reqs[0] = mutt_mem_calloc(1, sizeof(*reqs[0]));
-  reqs[0]->ar_name = node;
-  reqs[0]->ar_request = hints;
+  struct gaicb req = { 0 };
+  req.ar_name = node;
+  req.ar_request = hints;
+  struct gaicb *reqs[1] = { &req };
   if (getaddrinfo_a(GAI_NOWAIT, reqs, 1, NULL) == 0)
   {
     gai_suspend((const struct gaicb *const *) reqs, 1, &timeout);
     const int status = gai_error(reqs[0]);
     if (status == 0)
+    {
       result = reqs[0]->ar_result;
+    }
     else if (status == EAI_INPROGRESS)
     {
       mutt_debug(LL_DEBUG1, "timeout\n");
@@ -77,9 +79,10 @@ static struct addrinfo *mutt_getaddrinfo_a(const char *node, const struct addrin
       }
     }
     else
+    {
       mutt_debug(LL_DEBUG1, "fail: (%d) %s\n", status, gai_strerror(status));
+    }
   }
-  FREE(&reqs[0]);
   return result;
 }
 
