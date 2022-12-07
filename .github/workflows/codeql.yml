@@ -1,4 +1,4 @@
-name: "CodeQL"
+name: CodeQL
 
 on:
   push:
@@ -7,30 +7,27 @@ on:
     branches: [ "main" ]
   schedule:
     - cron: "46 1 * * 1"
+  workflow_dispatch:
 
 jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
+    container: ghcr.io/neomutt/docker-build
     permissions:
       actions: read
       contents: read
       security-events: write
 
-    strategy:
-      fail-fast: false
+    env:
+      CONFIGURE_OPTIONS: --bdb --gdbm --gnutls --gpgme --homespool --kyotocabinet --lmdb --lua --mixmaster --notmuch --qdbm --sasl --tokyocabinet --with-domain=example.com --with-lock=flock
 
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Install Packages (cpp)
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes autopoint docbook-simple docbook-xsl gettext jimsh libdb-dev libgdbm-dev libgpgme-dev libgss-dev libkyotocabinet-dev liblmdb-dev liblua5.2-dev libncursesw5 libncursesw5-dev libnotmuch-dev libqdbm-dev libsasl2-dev libssl-dev libtokyocabinet-dev libxml2-utils lua5.2 lynx w3m xsltproc
-
-      - name: Configure (cpp)
-        run: ./configure --bdb --gdbm --gnutls --gpgme --homespool --kyotocabinet --lmdb --lua --mixmaster --notmuch --qdbm --sasl --tokyocabinet --with-domain=example.com --with-lock=flock
+      - name: Configure Neomutt
+        run: ./configure --disable-doc $CONFIGURE_OPTIONS
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
@@ -39,8 +36,8 @@ jobs:
           config-file: ./.github/codeql.yml
           queries: +security-and-quality
 
-      - name: Build cpp
-        run: make -j2 -s
+      - name: Build Neomutt
+        run: make -j 2 -s
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
