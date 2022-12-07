@@ -74,8 +74,9 @@ static struct addrinfo *mutt_getaddrinfo_a(const char *node, const struct addrin
       /* request is not finished, cancel it to free it safely */
       if (gai_cancel(reqs[0]) == EAI_NOTCANCELED)
       {
-        while (gai_suspend((const struct gaicb *const *) reqs, 1, NULL) != 0)
-          continue;
+        // try once more for half-a-second, then bail out
+        timeout.tv_nsec = 50000000;
+        gai_suspend((const struct gaicb *const *) reqs, 1, &timeout);
       }
     }
     else
