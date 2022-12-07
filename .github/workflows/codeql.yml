@@ -1,0 +1,57 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: "46 1 * * 1"
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ python, cpp ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Packages (cpp)
+        if: ${{ matrix.language == 'cpp' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes autopoint docbook-simple docbook-xsl gettext jimsh libdb-dev libgdbm-dev libgpgme-dev libgss-dev libkyotocabinet-dev liblmdb-dev liblua5.2-dev libncursesw5 libncursesw5-dev libnotmuch-dev libqdbm-dev libsasl2-dev libssl-dev libtokyocabinet-dev libxml2-utils lua5.2 lynx w3m xsltproc
+
+      - name: Configure (cpp)
+        if: ${{ matrix.language == 'cpp' }}
+        run: ./configure --bdb --gdbm --gnutls --gpgme --homespool --kyotocabinet --lmdb --lua --mixmaster --notmuch --qdbm --sasl --tokyocabinet --with-domain=example.com --with-lock=flock
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+          config-file: ./.github/codeql.yml
+          queries: +security-and-quality
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+        if: ${{ matrix.language == 'python' }}
+
+      - name: Build cpp
+        if: ${{ matrix.language == 'cpp' }}
+        run: make -j2 -s
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:${{ matrix.language }}"
