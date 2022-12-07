@@ -78,7 +78,7 @@ proc cc-check-endian {} {
 #
 # Checks whether the given C/C++ compiler flags can be used. Defines feature
 # names prefixed with 'HAVE_CFLAG' and 'HAVE_CXXFLAG' respectively, and
-# appends working flags to '-cflags' and 'CFLAGS' or 'CXXFLAGS'.
+# appends working flags to '-cflags' and 'AS_CFLAGS' or 'AS_CXXFLAGS'.
 proc cc-check-flags {args} {
 	set result 1
 	array set opts [cc-get-settings]
@@ -101,7 +101,7 @@ proc cc-check-flags {args} {
 			msg-result yes
 			define-feature $prefix$flag
 			cc-with [list -cflags [list $flag]]
-			define-append ${prefix}S $flag
+			define-append AS_${prefix}S $flag
 		} else {
 			msg-result no
 			set result 0
@@ -113,8 +113,8 @@ proc cc-check-flags {args} {
 # @cc-check-standards ver ?...?
 #
 # Checks whether the C/C++ compiler accepts one of the specified '-std=$ver'
-# options, and appends the first working one to '-cflags' and 'CFLAGS' or
-# 'CXXFLAGS'.
+# options, and appends the first working one to '-cflags' and 'AS_CFLAGS' or
+# 'AS_CXXFLAGS'.
 proc cc-check-standards {args} {
 	array set opts [cc-get-settings]
 	foreach std $args {

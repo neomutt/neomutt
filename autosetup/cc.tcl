@@ -13,17 +13,17 @@
 ## CXX      - C++ compiler
 ## CPP      - C preprocessor
 ## CCACHE   - Set to "none" to disable automatic use of ccache
+## CPPFLAGS  - Additional C preprocessor compiler flags (C and C++), before CFLAGS, CXXFLAGS
 ## CFLAGS   - Additional C compiler flags
 ## CXXFLAGS - Additional C++ compiler flags
 ## LDFLAGS  - Additional compiler flags during linking
+## LINKFLAGS - ?How is this different from LDFLAGS?
 ## LIBS     - Additional libraries to use (for all tests)
 ## CROSS    - Tool prefix for cross compilation
 #
 # The following variables are defined from the corresponding
 # environment variables if set.
 #
-## CPPFLAGS
-## LINKFLAGS
 ## CC_FOR_BUILD
 ## LD
 
@@ -418,6 +418,13 @@ proc cc-update-settings {args} {
 ##     # libs will be in this order: -lsocket -ldl -lc -lm
 ##   }
 ## }
+#
+# If you wish to invoke something like cc-check-flags but not have -cflags updated,
+# use the following idiom:
+#
+## cc-with {} {
+##   cc-check-flags ...
+## }
 proc cc-with {settings args} {
 	if {[llength $args] == 0} {
 		cc-add-settings $settings
@@ -455,13 +462,21 @@ proc cc-with {settings args} {
 # Unless '-source' or '-sourcefile' is specified, the C program looks like:
 #
 ## #include <firstinclude>   /* same for remaining includes in the list */
-##
 ## declare-code              /* any code in -declare, verbatim */
-##
 ## int main(void) {
 ##   code                    /* any code in -code, verbatim */
 ##   return 0;
 ## }
+#
+# And the command line looks like:
+#
+## CC -cflags CFLAGS CPPFLAGS conftest.c -o conftest.o
+## CXX -cflags CXXFLAGS CPPFLAGS conftest.cpp -o conftest.o
+#
+# And if linking:
+#
+## CC LDFLAGS -cflags CFLAGS conftest.c -o conftest -libs LIBS
+## CXX LDFLAGS -cflags CXXFLAGS conftest.c -o conftest -libs LIBS
 #
 # Any failures are recorded in 'config.log'
 #
@@ -508,11 +523,13 @@ proc cctest {args} {
 	switch -exact -- $opts(-lang) {
 		c++ {
 			set src conftest__.cpp
-			lappend cmdline {*}[get-define CXX] {*}[get-define CXXFLAGS]
+			lappend cmdline {*}[get-define CXX]
+			set cflags [get-define CXXFLAGS]
 		}
 		c {
 			set src conftest__.c
-			lappend cmdline {*}[get-define CC] {*}[get-define CFLAGS]
+			lappend cmdline {*}[get-define CC]
+			set cflags [get-define CFLAGS]
 		}
 		default {
 			autosetup-error "cctest called with unknown language: $opts(-lang)"
@@ -522,13 +539,14 @@ proc cctest {args} {
 	if {$opts(-link)} {
 		lappend cmdline {*}[get-define LDFLAGS]
 	} else {
+		lappend cflags {*}[get-define CPPFLAGS]
 		set tmp conftest__.o
 		lappend cmdline -c
 	}
-	lappend cmdline {*}$opts(-cflags) {*}[get-define cc-default-debug ""]
-	lappend cmdline $src -o $tmp {*}$opts(-libs)
+	lappend cmdline {*}$opts(-cflags) {*}[get-define cc-default-debug ""] {*}$cflags
+	lappend cmdline $src -o $tmp
 	if {$opts(-link)} {
-		lappend cmdline {*}[get-define LIBS]
+		lappend cmdline {*}$opts(-libs) {*}[get-define LIBS]
 	}
 
 	# At this point we have the complete command line and the
@@ -660,7 +678,7 @@ proc calc-define-output-type {name spec} {
 }
 
 # Initialise some values from the environment or commandline or default settings
-foreach i {LDFLAGS LIBS CPPFLAGS LINKFLAGS {CFLAGS "-g -O2"}} {
+foreach i {LDFLAGS LIBS CPPFLAGS LINKFLAGS CFLAGS} {
 	lassign $i var default
 	define $var [get-env $var $default]
 }
@@ -697,6 +715,11 @@ if {[get-define CC] eq ""} {
 	user-error "Could not find a C compiler. Tried: [join $try ", "]"
 }
 
+# These start empty and never come from the user or environment
+define AS_CFLAGS ""
+define AS_CPPFLAGS ""
+define AS_CXXFLAGS ""
+
 define CCACHE [find-an-executable [get-env CCACHE ccache]]
 
 # If any of these are set in the environment, propagate them to the AUTOREMAKE commandline
@@ -704,7 +727,7 @@ foreach i {CC CXX CCACHE CPP CFLAGS CXXFLAGS CXXFLAGS LDFLAGS LIBS CROSS CPPFLAG
 	if {[env-is-set $i]} {
 		# Note: If the variable is set on the command line, get-env will return that value
 		# so the command line will continue to override the environment
-		define-append AUTOREMAKE [quote-if-needed $i=[get-env $i ""]]
+		define-append-argv AUTOREMAKE $i=[get-env $i ""]
 	}
 }
 
@@ -712,9 +735,9 @@ foreach i {CC CXX CCACHE CPP CFLAGS CXXFLAGS CXXFLAGS LDFLAGS LIBS CROSS CPPFLAG
 cc-store-settings {-cflags {} -includes {} -declare {} -link 0 -lang c -libs {} -code {} -nooutput 0}
 set autosetup(cc-include-deps) {}
 
-msg-result "C compiler...[get-define CCACHE] [get-define CC] [get-define CFLAGS]"
+msg-result "C compiler...[get-define CCACHE] [get-define CC] [get-define CFLAGS] [get-define CPPFLAGS]"
 if {[get-define CXX] ne "false"} {
-	msg-result "C++ compiler...[get-define CCACHE] [get-define CXX] [get-define CXXFLAGS]"
+	msg-result "C++ compiler...[get-define CCACHE] [get-define CXX] [get-define CXXFLAGS] [get-define CPPFLAGS]"
 }
 msg-result "Build C compiler...[get-define CC_FOR_BUILD]"
 

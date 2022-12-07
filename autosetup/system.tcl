@@ -19,7 +19,7 @@
 ## mandir
 ## includedir
 #
-# If '--prefix' is not supplied, it defaults to '/usr/local' unless 'defaultprefix' is defined *before*
+# If '--prefix' is not supplied, it defaults to '/usr/local' unless 'options-defaults { prefix ... }' is used *before*
 # including the 'system' module.
 
 if {[is-defined defaultprefix]} {

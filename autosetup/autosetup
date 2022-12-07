@@ -6,7 +6,7 @@
 dir=`dirname "$0"`; exec "`$dir/autosetup-find-tclsh`" "$0" "$@"
 
 # Note that the version has a trailing + on unreleased versions
-set autosetup(version) 0.7.0+
+set autosetup(version) 0.7.1+
 
 # Can be set to 1 to debug early-init problems
 set autosetup(debug) [expr {"--debug" in $argv}]
@@ -204,19 +204,10 @@ proc main {argv} {
 
 	autosetup_add_dep $autosetup(autodef)
 
-	# Add $argv to CONFIGURE_OPTS, but ignore duplicates and quote if needed
-	set configure_opts {}
-	foreach arg $autosetup(argv) {
-		set quoted [quote-if-needed $arg]
-		# O(n^2), but n will be small
-		if {$quoted ni $configure_opts} {
-			lappend configure_opts $quoted
-		}
-	}
-	define CONFIGURE_OPTS [join $configure_opts]
-	define AUTOREMAKE [quote-if-needed $autosetup(exe)]
-	define-append AUTOREMAKE [get-define CONFIGURE_OPTS]
-
+	# Add $argv to CONFIGURE_OPTS
+	define-append-argv CONFIGURE_OPTS {*}$autosetup(argv)
+	# Set up AUTOREMAKE to reconfigure with the same args
+	define-append-argv AUTOREMAKE {*}$autosetup(exe) {*}$autosetup(argv)
 
 	# Log how we were invoked
 	configlog "Invoked as: [getenv WRAPPER $::argv0] [quote-argv $autosetup(argv)]"
@@ -239,6 +230,8 @@ proc main {argv} {
 
 	exit 0
 }
+
+# @section Option Handling
 
 # @opt-bool ?-nodefault? option ...
 #
@@ -691,6 +684,8 @@ proc config_sub {alias} {
 	return $alias
 }
 
+# @section Variable Definitions (defines)
+
 # @define name ?value=1?
 #
 # Defines the named variable to the given value.
@@ -700,6 +695,29 @@ proc config_sub {alias} {
 proc define {name {value 1}} {
 	set ::define($name) $value
 	#dputs "$name <= $value"
+}
+
+# @define-push {name ...} script
+#
+# Save the values of the given defines, evaluation the script, then restore.
+# For example, to avoid updating AS_FLAGS and AS_CXXFLAGS:
+## define-push {AS_CFLAGS AS_CXXFLAGS} {
+##   cc-check-flags -Wno-error
+## }
+proc define-push {names script} {
+	array set unset {}
+	foreach name $names {
+		if {[is-defined $name]} {
+			set save($name) [get-define $name]
+		} else {
+			set unset($name) 1
+		}
+	}
+	uplevel 1 $script
+	array set ::define [array get save]
+	foreach name [array names unset] {
+		unset -nocomplain ::define($name)
+	}
 }
 
 # @undefine name
@@ -717,28 +735,42 @@ proc undefine {name} {
 # If the variable is not defined or empty, it is set to '$value'.
 # Otherwise the value is appended, separated by a space.
 # Any extra values are similarly appended.
-# If any value is already contained in the variable (as a substring) it is omitted.
+#
+# Note that define-append is not designed to add values containing spaces.
+# If values may contain spaces, consider define-append-argv instead.
 #
 proc define-append {name args} {
 	if {[get-define $name ""] ne ""} {
-		# Avoid duplicates
 		foreach arg $args {
 			if {$arg eq ""} {
 				continue
 			}
-			set found 0
-			foreach str [split $::define($name) " "] {
-				if {$str eq $arg} {
-					incr found
-				}
-			}
-			if {!$found} {
-				append ::define($name) " " $arg
-			}
+			append ::define($name) " " $arg
 		}
 	} else {
 		set ::define($name) [join $args]
 	}
+	#dputs "$name += [join $args] => $::define($name)"
+}
+
+# @define-append-argv name value ...
+#
+# Similar to define-append except designed to construct shell command
+# lines, including correct handling of parameters with spaces.
+#
+# Each non-empty value is quoted if necessary and then appended to the given variable
+# if it does not already exist.
+#
+proc define-append-argv {name args} {
+	set seen {}
+	set new {}
+	foreach val [list {*}[get-define $name ""] {*}$args] {
+		if {$val ne {} && ![dict exists $seen $val]} {
+			lappend new [quote-if-needed $val]
+			dict set seen $val 1
+		}
+	}
+	set ::define($name) [join $new " "]
 	#dputs "$name += [join $args] => $::define($name)"
 }
 
@@ -787,6 +819,7 @@ proc all-defines {} {
 	array get ::define
 }
 
+# @section Environment/Helpers
 
 # @get-env name default
 #
@@ -870,6 +903,8 @@ proc list-non-empty {list} {
 	return $result
 }
 
+# @section Paths, Searching
+
 # @find-executable-path name
 #
 # Searches the path for an executable with the given name.
@@ -938,6 +973,8 @@ proc find-an-executable {args} {
 	}
 	return ""
 }
+
+# @section Logging, Messages and Errors
 
 # @configlog msg
 #
@@ -1155,6 +1192,8 @@ proc relative-path {path {pwd {}}} {
 proc autosetup_add_dep {filename} {
 	lappend ::autosetup(deps) [file-normalize $filename]
 }
+
+# @section Modules Support
 
 ##################################################################
 #
@@ -1526,7 +1565,8 @@ proc autosetup_reference {{type text}} {
     section {Introduction}
 
     p {
-        See http://msteveb.github.com/autosetup/ for the online documentation for 'autosetup'
+        See http://msteveb.github.com/autosetup/ for the online documentation for 'autosetup'.
+		This documentation can also be accessed locally with `autosetup --ref`.
     }
 
     p {
@@ -1590,6 +1630,11 @@ proc automf_command_reference {} {
         while {![eof $f]} {
             set line [gets $f]
 
+            if {[regexp {^#.*@section (.*)$} $line -> section]} {
+                lappend doc($current) [list section $section]
+				continue
+			}
+
             # Find embedded module names
             if {[regexp {^#.*@module ([^ ]*)} $line -> modulename]} {
                 continue
@@ -1604,7 +1649,7 @@ proc automf_command_reference {} {
             if {$cmd eq "synopsis:"} {
                 set current $modulename
                 lappend doc($current) [list section "Module: $modulename"]
-            } else {
+			} else {
                 lappend doc($current) [list subsection $cmd]
             }
 
@@ -1884,6 +1929,7 @@ WRAPPER="$0"; export WRAPPER; "autosetup" "$@"
 		writefile configure \
 {#!/bin/sh
 dir="`dirname "$0"`/autosetup"
+#@@INITCHECK@@#
 WRAPPER="$0"; export WRAPPER; exec "`"$dir/autosetup-find-tclsh"`" "$dir/autosetup" "$@"
 }
 	}
@@ -2319,6 +2365,8 @@ set modsource(util.tcl) {
 # All rights reserved
 
 # Module which contains miscellaneous utility functions
+
+# @section Utilities
 
 # @compare-versions version1 version2
 #

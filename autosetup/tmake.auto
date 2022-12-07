@@ -49,6 +49,24 @@ ifconfig !CONFIGURED {
 }
 }
 
+	set configure [readfile configure]
+	# XXX Do we need also need to support a system install of tmake?
+	if {[string first {#@TMAKEUPDATED@} $configure] < 0} {
+		if {[regsub {#@@INITCHECK@@#} $configure \
+			{test -z "$TMAKE" -a -x "$dir/tmake" \&\& exec "$dir/tmake" --force --configure "$@"; #@TMAKEUPDATED@} configure]} {
+			writefile configure $configure\n
+			exec chmod +x configure
+			puts "Updated configure to invoke local tmake."
+			if {![file exec autosetup/tmake]} {
+				puts "Warning: autosetup/tmake is missing."
+				puts "   Install it with: tmake --install=autosetup"
+			}
+		} else {
+			puts "Warning: configure isn't created by a recent autosetup, not updating."
+		}
+	} else {
+		puts "I see configure for tmake already exists."
+	}
 	if {![file exists build.spec]} {
 		puts "Note: I don't see build.spec. Try running: tmake --genie"
 	}
