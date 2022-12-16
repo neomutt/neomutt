@@ -1620,17 +1620,16 @@ msgstr "Érvénytelen rendezés típus: %ld"
 #: conn/accountcmd.c:79
 #, c-format
 msgid "Line is malformed: expected <key: val>, got <%s>"
-msgstr ""
+msgstr "A sor hibás: elvárt <key: val>, ehelyett <%s> lett megadva"
 
 #: conn/accountcmd.c:119
 #, c-format
 msgid "Unhandled key in line <%s: %s>"
-msgstr ""
+msgstr "Nem kezelt kulcs a sorban <%s: %s>"
 
 #: conn/accountcmd.c:140
-#, fuzzy
 msgid "Unable to run account command"
-msgstr "Nem tudom a frissítés parancsot futtatni"
+msgstr "Nem tudom a fiók parancsot futtatni"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:78
@@ -5702,9 +5701,8 @@ msgid "delete chars from the cursor to the end of the word"
 msgstr "karakterek törlése a szó végéig"
 
 #: opcodes.h:140
-#, fuzzy
 msgid "delete chars from cursor to beginning the line"
-msgstr "karakterek törlése a sor végéig"
+msgstr "karakterek törlése a kurzortól a sor elejéig"
 
 #: opcodes.h:141
 msgid "delete all chars on the line"
@@ -7159,7 +7157,7 @@ msgstr "%s többé nem létezik"
 #: send/config.c:99
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
-msgstr ""
+msgstr "A(z) %s opció nem tartalmazhat shell meta-karaktereket: %c"
 
 #: send/send.c:339
 msgid "No subject, abort?"
