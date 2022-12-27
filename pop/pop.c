@@ -715,9 +715,6 @@ static bool pop_ac_add(struct Account *a, struct Mailbox *m)
 
   struct ConnAccount cac = { { 0 } };
   struct PopAccountData *adata = pop_adata_new();
-  a->adata = adata;
-  a->adata_free = pop_adata_free;
-
   if (pop_parse_path(mailbox_path(m), &cac))
   {
     mutt_error(_("%s is an invalid POP path"), mailbox_path(m));
@@ -730,6 +727,8 @@ static bool pop_ac_add(struct Account *a, struct Mailbox *m)
     pop_adata_free((void **) &adata);
     return false;
   }
+  a->adata = adata;
+  a->adata_free = pop_adata_free;
 
   return true;
 }
