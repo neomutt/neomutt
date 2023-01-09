@@ -714,13 +714,13 @@ static bool pop_ac_add(struct Account *a, struct Mailbox *m)
     return true;
 
   struct ConnAccount cac = { { 0 } };
-  struct PopAccountData *adata = pop_adata_new();
   if (pop_parse_path(mailbox_path(m), &cac))
   {
     mutt_error(_("%s is an invalid POP path"), mailbox_path(m));
     return false;
   }
 
+  struct PopAccountData *adata = pop_adata_new();
   adata->conn = mutt_conn_new(&cac);
   if (!adata->conn)
   {
