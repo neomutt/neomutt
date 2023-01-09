@@ -134,10 +134,6 @@ static void group_remove(struct Group *g)
   if (!g)
     return;
   mutt_hash_delete(Groups, g->name, g);
-  mutt_addrlist_clear(&g->al);
-  mutt_regexlist_free(&g->rs);
-  FREE(&g->name);
-  FREE(&g);
 }
 
 /**
