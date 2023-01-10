@@ -182,7 +182,7 @@ vim: ts=2 sw=2 sts=2 expandtab:
       <title>Copyright</title>
       <para>
         NeoMutt is Copyright © 1996-2021 Michael R. Elkins
-        <email>me@neomutt.org</email> and others.
+        <email>me@mutt.org</email> and others.
       </para>
       <para>
         This program is free software; you can redistribute it and/or modify it
