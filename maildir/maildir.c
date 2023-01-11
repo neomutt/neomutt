@@ -1643,12 +1643,15 @@ static enum MailboxType maildir_path_probe(const char *path, const struct stat *
   if (!st || !S_ISDIR(st->st_mode))
     return MUTT_UNKNOWN;
 
-  char cur[PATH_MAX] = { 0 };
-  snprintf(cur, sizeof(cur), "%s/cur", path);
-
-  struct stat st_cur = { 0 };
-  if ((stat(cur, &st_cur) == 0) && S_ISDIR(st_cur.st_mode))
-    return MUTT_MAILDIR;
+  char sub[PATH_MAX] = { 0 };
+  struct stat stsub = { 0 };
+  char *subs[] = { "cur", "new" };
+  for (size_t i = 0; i < mutt_array_size(subs); ++i)
+  {
+    snprintf(sub, sizeof(sub), "%s/%s", path, subs[i]);
+    if ((stat(sub, &stsub) == 0) && S_ISDIR(stsub.st_mode))
+      return MUTT_MAILDIR;
+  }
 
   return MUTT_UNKNOWN;
 }
