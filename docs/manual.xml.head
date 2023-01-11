@@ -3757,11 +3757,8 @@ set crypt_use_gpgme
         NeoMutt is highly configurable because it's <emphasis>meant</emphasis>
         to be customized to your needs and preferences.  However, this
         configurability can make it difficult when just getting started.  A few
-        sample neomuttrc files come with NeoMutt, under
-        <literal>doc/neomutt/samples/</literal>.  Among them,
-        <ulink url="https://github.com/neomutt/neomutt/blob/main/contrib/samples/sample.neomuttrc-starter">sample.neomuttrc-starter</ulink>
-        is a basic example config with a few suggested settings and pointers to
-        useful programs.
+        sample neomuttrc files are available in the
+        <ulink url="https://github.com/neomutt/neomutt-contrib">Contrib Repo</ulink>.
       </para>
     </sect1>
 
