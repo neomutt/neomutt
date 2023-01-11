@@ -5064,24 +5064,8 @@ folder-hook work "set sort=threads"
         <para>
           If your terminal supports it, the special keyword
           <emphasis>default</emphasis> can be used as a transparent color. The
-          value <emphasis>brightdefault</emphasis> is also valid. If NeoMutt is
-          linked against the <emphasis>S-Lang</emphasis> library, you also need
-          to set the <literal>$COLORFGBG</literal> environment variable to the
-          default colors of your terminal for this to work; for example (for
-          Bourne-like shells):
+          value <emphasis>brightdefault</emphasis> is also valid.
         </para>
-<screen>
-set COLORFGBG="green;black"
-export COLORFGBG
-</screen>
-        <note>
-          <para>
-            The <emphasis>S-Lang</emphasis> library requires you to use the
-            <emphasis>lightgray</emphasis> and <emphasis>brown</emphasis>
-            keywords instead of <emphasis>white</emphasis> and
-            <emphasis>yellow</emphasis> when setting this variable.
-          </para>
-        </note>
       </sect2>
 
       <sect2 id="color-simple">
