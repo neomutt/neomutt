@@ -32,7 +32,6 @@
  */
 
 #include "config.h"
-#include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <inttypes.h>
@@ -75,21 +74,6 @@ struct Progress;
 #define MMC_CUR_DIR (1 << 1) ///< 'cur' directory changed
 
 /**
- * open_new_or_cur - open the 'new' / 'cur' subdir, try to create it if missing
- * @param path Path to the directory
- * @retval DIR* Success
- * @retval NULL Failure
- */
-static DIR *open_new_or_cur(const char *path)
-{
-  if (mutt_file_mkdir(path, S_IRWXU) == -1)
-  {
-    return NULL;
-  }
-  return opendir(path);
-}
-
-/**
  * maildir_check_dir - Check for new mail / mail counts
  * @param m           Mailbox to check
  * @param dir_name    Path to Mailbox
@@ -125,7 +109,7 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
   if (!(check_new || check_stats))
     goto cleanup;
 
-  dirp = open_new_or_cur(mutt_buffer_string(path));
+  dirp = mutt_file_opendir(mutt_buffer_string(path), MUTT_OPENDIR_CREATE);
   if (!dirp)
   {
     m->type = MUTT_UNKNOWN;
@@ -539,7 +523,7 @@ static int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
   mutt_buffer_printf(buf, "%s/%s", mailbox_path(m), subdir);
   is_old = mutt_str_equal("cur", subdir);
 
-  DIR *dirp = open_new_or_cur(mutt_buffer_string(buf));
+  DIR *dirp = mutt_file_opendir(mutt_buffer_string(buf), MUTT_OPENDIR_CREATE);
   if (!dirp)
   {
     rc = -1;
@@ -780,7 +764,7 @@ static FILE *maildir_open_find_message_dir(const char *folder, const char *uniqu
 
   mutt_buffer_printf(dir, "%s/%s", folder, subfolder);
 
-  DIR *dp = open_new_or_cur(mutt_buffer_string(dir));
+  DIR *dp = mutt_file_opendir(mutt_buffer_string(dir), MUTT_OPENDIR_CREATE);
   if (!dp)
   {
     errno = ENOENT;
@@ -1068,7 +1052,7 @@ int maildir_check_empty(const char *path)
     /* we do "cur" on the first iteration since it's more likely that we'll
      * find old messages without having to scan both subdirs */
     snprintf(realpath, sizeof(realpath), "%s/%s", path, (iter == 0) ? "cur" : "new");
-    dp = open_new_or_cur(realpath);
+    dp = mutt_file_opendir(realpath, MUTT_OPENDIR_CREATE);
     if (!dp)
       return -1;
     while ((de = readdir(dp)))

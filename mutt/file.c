@@ -606,6 +606,23 @@ cleanup:
 }
 
 /**
+ * mutt_file_opendir - Open a directory
+ * @param path Directory path
+ * @param mode See MuttOpenDirMode
+ * @retval ptr DIR handle
+ * @retval NULL Error, see errno
+ */
+DIR *mutt_file_opendir(const char *path, enum MuttOpenDirMode mode)
+{
+  if ((mode == MUTT_OPENDIR_CREATE) && (mutt_file_mkdir(path, S_IRWXU) == -1))
+  {
+    return NULL;
+  }
+  errno = 0;
+  return opendir(path);
+}
+
+/**
  * mutt_file_fopen - Call fopen() safely
  * @param path Filename
  * @param mode Mode e.g. "r" readonly; "w" read-write

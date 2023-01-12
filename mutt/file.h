@@ -24,6 +24,7 @@
 #define MUTT_LIB_FILE_H
 
 #include "config.h"
+#include <dirent.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -62,6 +63,15 @@ enum MuttStatType
   MUTT_STAT_ATIME, ///< File/dir's atime - last accessed time
   MUTT_STAT_MTIME, ///< File/dir's mtime - last modified time
   MUTT_STAT_CTIME, ///< File/dir's ctime - creation time
+};
+
+/**
+ * enum MuttOpenDirMode - Mode flag for mutt_file_opendir()
+ */
+enum MuttOpenDirMode
+{
+  MUTT_OPENDIR_NONE,   ///< Plain opendir()
+  MUTT_OPENDIR_CREATE, ///< Create the directory if it doesn't exist
 };
 
 /**
@@ -111,6 +121,7 @@ int         mutt_file_mkdir(const char *path, mode_t mode);
 FILE *      mutt_file_mkstemp_full(const char *file, int line, const char *func);
 #define     mutt_file_mkstemp() mutt_file_mkstemp_full(__FILE__, __LINE__, __func__)
 int         mutt_file_open(const char *path, uint32_t flags);
+DIR *       mutt_file_opendir(const char *path, enum MuttOpenDirMode mode);
 size_t      mutt_file_quote_filename(const char *filename, char *buf, size_t buflen);
 char *      mutt_file_read_keyword(const char *file, char *buf, size_t buflen);
 char *      mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, ReadLineFlags flags);
