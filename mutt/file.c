@@ -28,7 +28,6 @@
 
 #include "config.h"
 #include <ctype.h>
-#include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <libgen.h>
@@ -465,7 +464,7 @@ int mutt_file_rmtree(const char *path)
   struct stat st = { 0 };
   int rc = 0;
 
-  DIR *dirp = opendir(path);
+  DIR *dirp = mutt_file_opendir(path, MUTT_OPENDIR_NONE);
   if (!dirp)
   {
     mutt_debug(LL_DEBUG1, "error opening directory %s\n", path);
