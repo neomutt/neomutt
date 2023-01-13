@@ -36,7 +36,6 @@
 #include <fcntl.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/lib.h"

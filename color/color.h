@@ -24,6 +24,9 @@
 #ifndef MUTT_COLOR_COLOR_H
 #define MUTT_COLOR_COLOR_H
 
+#include "config.h"
+#include <stdbool.h>
+
 /**
  * enum ColorId - List of all colored objects
  *
@@ -88,7 +91,6 @@ enum ColorId
   MT_COLOR_MAX,
 };
 
-#include "config.h"
 #include <stdint.h>
 #include "mutt/lib.h"
 

@@ -31,8 +31,8 @@
 /* This file contains code for direct SMTP delivery of email messages. */
 
 #include "config.h"
+#include <arpa/inet.h>
 #include <netdb.h>
-#include <netinet/in.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>

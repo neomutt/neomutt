@@ -89,9 +89,6 @@
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 
 /// Help Bar for the GPGME key selection dialog
 static const struct Mapping GpgmeHelp[] = {

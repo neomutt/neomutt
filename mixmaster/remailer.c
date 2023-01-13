@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>

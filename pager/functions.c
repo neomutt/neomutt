@@ -48,9 +48,6 @@
 #include "opcodes.h"
 #include "private_data.h"
 #include "protos.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 
 static const char *Not_available_in_this_menu = N_("Not available in this menu");
 

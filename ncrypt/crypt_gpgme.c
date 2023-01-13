@@ -40,7 +40,6 @@
 #include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
@@ -67,9 +66,6 @@
 #include "options.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
-#endif
-#ifdef ENABLE_NLS
-#include <libintl.h>
 #endif
 
 // clang-format off

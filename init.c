@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <ctype.h>
 #include <pwd.h>
 #include <stdbool.h>
