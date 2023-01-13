@@ -613,7 +613,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu,
     if (m)
       mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_NO_FLAGS);
 
-    dp = opendir(d);
+    dp = mutt_file_opendir(d, MUTT_OPENDIR_NONE);
     if (!dp)
     {
       mutt_perror(d);

@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <dirent.h>
 #include <errno.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -130,7 +129,7 @@ int mutt_complete(struct CompletionData *cd, char *buf, size_t buflen)
     }
     else
       mutt_buffer_strcpy(filepart, buf + 1);
-    dirp = opendir(mutt_buffer_string(exp_dirpart));
+    dirp = mutt_file_opendir(mutt_buffer_string(exp_dirpart), MUTT_OPENDIR_NONE);
   }
   else
   {
@@ -142,7 +141,7 @@ int mutt_complete(struct CompletionData *cd, char *buf, size_t buflen)
         p = buf + 1;
         mutt_buffer_strcpy(dirpart, "/");
         mutt_buffer_strcpy(filepart, p);
-        dirp = opendir(mutt_buffer_string(dirpart));
+        dirp = mutt_file_opendir(mutt_buffer_string(dirpart), MUTT_OPENDIR_NONE);
       }
       else
       {
@@ -150,14 +149,14 @@ int mutt_complete(struct CompletionData *cd, char *buf, size_t buflen)
         mutt_buffer_strcpy(filepart, p + 1);
         mutt_buffer_copy(exp_dirpart, dirpart);
         mutt_buffer_expand_path(exp_dirpart);
-        dirp = opendir(mutt_buffer_string(exp_dirpart));
+        dirp = mutt_file_opendir(mutt_buffer_string(exp_dirpart), MUTT_OPENDIR_NONE);
       }
     }
     else
     {
       /* no directory name, so assume current directory. */
       mutt_buffer_strcpy(filepart, buf);
-      dirp = opendir(".");
+      dirp = mutt_file_opendir(".", MUTT_OPENDIR_NONE);
     }
   }
 

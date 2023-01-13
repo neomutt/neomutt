@@ -333,7 +333,7 @@ int mutt_bcache_list(struct BodyCache *bcache, bcache_list_t want_id, void *data
   struct dirent *de = NULL;
   int rc = -1;
 
-  if (!bcache || !(d = opendir(bcache->path)))
+  if (!bcache || !(d = mutt_file_opendir(bcache->path, MUTT_OPENDIR_NONE)))
     goto out;
 
   rc = 0;

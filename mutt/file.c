@@ -28,7 +28,6 @@
 
 #include "config.h"
 #include <ctype.h>
-#include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <libgen.h>
@@ -465,7 +464,7 @@ int mutt_file_rmtree(const char *path)
   struct stat st = { 0 };
   int rc = 0;
 
-  DIR *dirp = opendir(path);
+  DIR *dirp = mutt_file_opendir(path, MUTT_OPENDIR_NONE);
   if (!dirp)
   {
     mutt_debug(LL_DEBUG1, "error opening directory %s\n", path);
@@ -603,6 +602,23 @@ cleanup:
   mutt_buffer_dealloc(&safe_dir);
 
   return fd;
+}
+
+/**
+ * mutt_file_opendir - Open a directory
+ * @param path Directory path
+ * @param mode See MuttOpenDirMode
+ * @retval ptr DIR handle
+ * @retval NULL Error, see errno
+ */
+DIR *mutt_file_opendir(const char *path, enum MuttOpenDirMode mode)
+{
+  if ((mode == MUTT_OPENDIR_CREATE) && (mutt_file_mkdir(path, S_IRWXU) == -1))
+  {
+    return NULL;
+  }
+  errno = 0;
+  return opendir(path);
 }
 
 /**

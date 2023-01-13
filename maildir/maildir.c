@@ -110,7 +110,7 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
   if (!(check_new || check_stats))
     goto cleanup;
 
-  dirp = opendir(mutt_buffer_string(path));
+  dirp = mutt_file_opendir(mutt_buffer_string(path), MUTT_OPENDIR_CREATE);
   if (!dirp)
   {
     m->type = MUTT_UNKNOWN;
@@ -483,8 +483,8 @@ void maildir_update_mtime(struct Mailbox *m)
   snprintf(buf, sizeof(buf), "%s/%s", mailbox_path(m), "cur");
   if (stat(buf, &st) == 0)
     mutt_file_get_stat_timespec(&mdata->mtime_cur, &st, MUTT_STAT_MTIME);
-  snprintf(buf, sizeof(buf), "%s/%s", mailbox_path(m), "new");
 
+  snprintf(buf, sizeof(buf), "%s/%s", mailbox_path(m), "new");
   if (stat(buf, &st) == 0)
     mutt_file_get_stat_timespec(&m->mtime, &st, MUTT_STAT_MTIME);
 }
@@ -510,8 +510,8 @@ static int maildir_cmp_inode(const void *a, const void *b)
  * @retval -1 Error
  * @retval -2 Aborted
  */
-int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
-                      const char *subdir, struct Progress *progress)
+static int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
+                             const char *subdir, struct Progress *progress)
 {
   struct dirent *de = NULL;
   int rc = 0;
@@ -524,7 +524,7 @@ int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
   mutt_buffer_printf(buf, "%s/%s", mailbox_path(m), subdir);
   is_old = mutt_str_equal("cur", subdir);
 
-  DIR *dirp = opendir(mutt_buffer_string(buf));
+  DIR *dirp = mutt_file_opendir(mutt_buffer_string(buf), MUTT_OPENDIR_CREATE);
   if (!dirp)
   {
     rc = -1;
@@ -667,7 +667,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
  * @retval  0 Success
  * @retval -1 Failure
  */
-int maildir_read_dir(struct Mailbox *m, const char *subdir)
+static int maildir_read_dir(struct Mailbox *m, const char *subdir)
 {
   if (!m)
     return -1;
@@ -765,7 +765,7 @@ static FILE *maildir_open_find_message_dir(const char *folder, const char *uniqu
 
   mutt_buffer_printf(dir, "%s/%s", folder, subfolder);
 
-  DIR *dp = opendir(mutt_buffer_string(dir));
+  DIR *dp = mutt_file_opendir(mutt_buffer_string(dir), MUTT_OPENDIR_CREATE);
   if (!dp)
   {
     errno = ENOENT;
@@ -1053,7 +1053,7 @@ int maildir_check_empty(const char *path)
     /* we do "cur" on the first iteration since it's more likely that we'll
      * find old messages without having to scan both subdirs */
     snprintf(realpath, sizeof(realpath), "%s/%s", path, (iter == 0) ? "cur" : "new");
-    dp = opendir(realpath);
+    dp = mutt_file_opendir(realpath, MUTT_OPENDIR_CREATE);
     if (!dp)
       return -1;
     while ((de = readdir(dp)))
@@ -1628,12 +1628,15 @@ static enum MailboxType maildir_path_probe(const char *path, const struct stat *
   if (!st || !S_ISDIR(st->st_mode))
     return MUTT_UNKNOWN;
 
-  char cur[PATH_MAX] = { 0 };
-  snprintf(cur, sizeof(cur), "%s/cur", path);
-
-  struct stat st_cur = { 0 };
-  if ((stat(cur, &st_cur) == 0) && S_ISDIR(st_cur.st_mode))
-    return MUTT_MAILDIR;
+  char sub[PATH_MAX] = { 0 };
+  struct stat stsub = { 0 };
+  char *subs[] = { "cur", "new" };
+  for (size_t i = 0; i < mutt_array_size(subs); ++i)
+  {
+    snprintf(sub, sizeof(sub), "%s/%s", path, subs[i]);
+    if ((stat(sub, &stsub) == 0) && S_ISDIR(stsub.st_mode))
+      return MUTT_MAILDIR;
+  }
 
   return MUTT_UNKNOWN;
 }

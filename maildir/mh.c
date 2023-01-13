@@ -168,7 +168,7 @@ int mh_check_empty(const char *path)
   struct dirent *de = NULL;
   int rc = 1; /* assume empty until we find a message */
 
-  DIR *dp = opendir(path);
+  DIR *dp = mutt_file_opendir(path, MUTT_OPENDIR_NONE);
   if (!dp)
     return -1;
   while ((de = readdir(dp)))
@@ -236,7 +236,7 @@ static enum MxStatus mh_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 
   mh_seq_free(&mhs);
 
-  dirp = opendir(mailbox_path(m));
+  dirp = mutt_file_opendir(mailbox_path(m), MUTT_OPENDIR_NONE);
   if (dirp)
   {
     while ((de = readdir(dirp)))
@@ -304,7 +304,7 @@ int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e, bool 
     return -1;
   }
 
-  DIR *dirp = opendir(mailbox_path(m));
+  DIR *dirp = mutt_file_opendir(mailbox_path(m), MUTT_OPENDIR_NONE);
   if (!dirp)
   {
     mutt_perror(mailbox_path(m));
@@ -509,7 +509,7 @@ int mh_parse_dir(struct Mailbox *m, struct MdEmailArray *mda, struct Progress *p
   struct Buffer *buf = mutt_buffer_pool_get();
   mutt_buffer_strcpy(buf, mailbox_path(m));
 
-  DIR *dirp = opendir(mutt_buffer_string(buf));
+  DIR *dirp = mutt_file_opendir(mutt_buffer_string(buf), MUTT_OPENDIR_NONE);
   if (!dirp)
   {
     rc = -1;

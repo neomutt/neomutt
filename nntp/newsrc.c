@@ -855,7 +855,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
     return;
 
   cache_expand(file, sizeof(file), &adata->conn->account, NULL);
-  dp = opendir(file);
+  dp = mutt_file_opendir(file, MUTT_OPENDIR_NONE);
   if (dp)
   {
     mutt_strn_cat(file, sizeof(file), "/", 1);
@@ -1150,7 +1150,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
   if ((rc >= 0) && adata->cacheable)
   {
     struct dirent *entry = NULL;
-    DIR *dp = opendir(file);
+    DIR *dp = mutt_file_opendir(file, MUTT_OPENDIR_NONE);
 
     if (dp)
     {
