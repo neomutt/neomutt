@@ -817,6 +817,9 @@ static enum MxOpenReturns pop_mbox_open(struct Mailbox *m)
  */
 static enum MxStatus pop_mbox_check(struct Mailbox *m)
 {
+  if (!m || !m->account)
+    return MX_STATUS_ERROR;
+
   struct PopAccountData *adata = pop_adata_get(m);
 
   const short c_pop_check_interval = cs_subset_number(NeoMutt->sub, "pop_check_interval");
