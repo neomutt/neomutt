@@ -83,8 +83,11 @@ int mutt_socket_open(struct Connection *conn)
 
   rc = conn->open(conn);
 
-  mutt_debug(LL_DEBUG2, "Connected to %s:%d on fd=%d\n", conn->account.host,
-             conn->account.port, conn->fd);
+  if (rc >= 0)
+  {
+    mutt_debug(LL_DEBUG2, "Connected to %s:%d on fd=%d\n", conn->account.host,
+               conn->account.port, conn->fd);
+  }
 
   return rc;
 }
