@@ -96,7 +96,7 @@ static int nm_query_window_timebase_validator(const struct ConfigSet *cs,
 
 static struct ConfigDef NotmuchVars[] = {
   // clang-format off
-  { "nm_config_file", DT_PATH, IP "auto", 0, NULL,
+  { "nm_config_file", DT_PATH|DT_PATH_FILE, IP "auto", 0, NULL,
     "(notmuch) Configuration file for notmuch. Use 'auto' to detect configuration."
   },
   { "nm_config_profile", DT_STRING, 0, 0, NULL,

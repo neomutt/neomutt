@@ -2627,6 +2627,18 @@
 #endif
 
 #ifdef USE_NOTMUCH
+{ "nm_config_file", DT_PATH, "auto" },
+/*
+** .pp
+** Configuration file for notmuch. Use 'auto' to detect configuration.
+*/
+
+{ "nm_config_profile", DT_STRING, 0 },
+/*
+** .pp
+** Configuration profile for notmuch.
+*/
+
 { "nm_db_limit", DT_NUMBER, 0 },
 /*
 ** .pp
@@ -3932,7 +3944,7 @@
 ** using the value of $$real_name.
 */
 
-{ "rfc2047_parameters", DT_BOOL, false },
+{ "rfc2047_parameters", DT_BOOL, true },
 /*
 ** .pp
 ** When this variable is \fIset\fP, NeoMutt will decode RFC2047-encoded MIME
