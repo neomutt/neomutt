@@ -830,7 +830,7 @@ static int smtp_auth_login(struct SmtpAccountData *adata, const char *method)
   (void) method; // This is LOGIN
 
   char b64[1024] = { 0 };
-  char buf[1024] = { 0 };
+  char buf[1026] = { 0 };
 
   /* Get username and password. Bail out of any can't be retrieved. */
   if ((mutt_account_getuser(&adata->conn->account) < 0) ||
