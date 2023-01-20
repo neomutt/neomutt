@@ -189,7 +189,7 @@
 */
 
 #ifdef USE_NNTP
-{ "ask_follow_up", DT_BOOL, false },
+{ "ask_followup_to", DT_BOOL, false },
 /*
 ** .pp
 ** If set, NeoMutt will prompt you for follow-up groups before editing

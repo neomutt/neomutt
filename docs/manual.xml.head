@@ -15395,7 +15395,7 @@ set new_mail_command = ""
             </thead>
             <tbody>
               <row>
-                <entry><literal>ask_follow_up</literal></entry>
+                <entry><literal>ask_followup_to</literal></entry>
                 <entry>boolean</entry>
                 <entry><literal>no</literal></entry>
               </row>
@@ -15636,7 +15636,7 @@ set new_mail_command = ""
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 <emphasis role="comment"># VARIABLES – shown with their default values</emphasis>
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
-set ask_follow_up = no
+set ask_followup_to = no
 set ask_x_comment_to = no
 set catchup_newsgroup = ask-yes
 set followup_to_poster = ask-yes
