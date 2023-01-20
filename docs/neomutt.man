@@ -242,6 +242,7 @@ Start NeoMutt with a listing of subscribed newsgroups
 .BI \-g " server"
 Like \fB\-G\fP, but start at specified news \fIserver\fP
 .
+.TP
 .BI \-H " draft"
 Specify a \fIdraft\fP file which contains header and body to use to send a
 message.
