@@ -452,7 +452,7 @@ static int draw_crypt_lines(struct MuttWindow *win, struct EnvelopeWindowData *w
       (e->security & APPLICATION_SMIME) && (e->security & SEC_SIGN))
   {
     draw_header(win, row++, HDR_CRYPTINFO);
-    const char *const c_smime_sign_as = cs_subset_string(wdata->sub, "pgp_sign_as");
+    const char *const c_smime_sign_as = cs_subset_string(wdata->sub, "smime_sign_as");
     mutt_window_printf(win, "%s", c_smime_sign_as ? c_smime_sign_as : _("<default>"));
   }
 
