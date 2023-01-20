@@ -244,9 +244,9 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     else
       mutt_buffer_reset(buf);
 
-    const bool c_ask_follow_up = cs_subset_bool(sub, "ask_follow_up");
-    if (c_ask_follow_up && (mutt_buffer_get_field("Followup-To: ", buf, MUTT_COMP_NO_FLAGS,
-                                                  false, NULL, NULL, NULL) != 0))
+    const bool c_ask_followup_to = cs_subset_bool(sub, "ask_followup_to");
+    if (c_ask_followup_to && (mutt_buffer_get_field("Followup-To: ", buf, MUTT_COMP_NO_FLAGS,
+                                                    false, NULL, NULL, NULL) != 0))
     {
       goto done;
     }

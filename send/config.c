@@ -318,7 +318,7 @@ static struct ConfigDef SendVars[] = {
 #if defined(USE_NNTP)
 static struct ConfigDef SendVarsNntp[] = {
   // clang-format off
-  { "ask_follow_up", DT_BOOL, false, 0, NULL,
+  { "ask_followup_to", DT_BOOL, false, 0, NULL,
     "(nntp) Ask the user for follow-up groups before editing"
   },
   { "ask_x_comment_to", DT_BOOL, false, 0, NULL,
@@ -328,6 +328,8 @@ static struct ConfigDef SendVarsNntp[] = {
     "(nntp) External command to post news articles"
   },
   { "mime_subject", DT_DEPRECATED|DT_BOOL, true, IP "2021-03-24" },
+
+  { "ask_follow_up", DT_SYNONYM, IP "ask_followup_to", IP "2023-01-20" },
   { NULL },
   // clang-format on
 };
