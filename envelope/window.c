@@ -845,8 +845,11 @@ static int env_config_observer(struct NotifyCallback *nc)
         break;
       return 0;
     case 's':
-      if (mutt_str_equal(ev_c->name, "smime_encrypt_with"))
+      if (mutt_str_equal(ev_c->name, "smime_encrypt_with") ||
+          mutt_str_equal(ev_c->name, "smime_sign_as"))
+      {
         break;
+      }
       return 0;
     case 'x':
       if (mutt_str_equal(ev_c->name, "x_comment_to"))
