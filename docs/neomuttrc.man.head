@@ -156,6 +156,8 @@ entire list when \(lq\fB*\fP\(rq is used as an argument.
 .nf
 \fBattachments\fP { \fB+\fP | \fB\-\fP }\fIdisposition\fP \fImime-type\fP
 \fBunattachments\fP { \fB+\fP | \fB\-\fP }\fIdisposition\fP \fImime-type\fP
+\fBattachments\fP \fB?\fP
+\fBunattachments\fP \fB*\fP
 .fi
 .IP
 You can make your message index display the number of qualifying attachments in
@@ -164,13 +166,25 @@ configure what kinds of attachments qualify for this feature with the
 \fBattachments\fP and \fBunattachments\fP commands.
 .IP
 \fIdisposition\fP is the attachment's Content-Disposition type \(em either
-inline or attachment. You can abbreviate this to \fBI\fP or \fBA\fP.
+\fBinline\fP or \fBattachment\fP. You can abbreviate this to \fBI\fP or
+\fBA\fP.
+.IP
+Disposition is prefixed by either a \fB+\fP symbol or a \fB-\fP symbol. If it's
+a \fB+\fP, you're saying that you want to allow this disposition and MIME type
+to qualify. If it's a \fB-\fP, you're saying that this disposition and MIME
+type is an exception to previous \fB+\fP rules.
 .IP
 \fImime-type\fP is the MIME type of the attachment you want the command to
 affect. A MIME type is always of the format \fBmajor/minor\fP. The major part
 of \fImime-type\fP must be literal text (or the special token \(lq\fB*\fP\(rq,
 but the minor part may be a regular expression. Therefore, \(lq\fB*/.*\fP\(rq
 matches any MIME type.
+.IP
+Entering the command \(lq\fBattachments ?\fP\(rq as a command will list your
+current settings in neomuttrc format, so that it can be pasted elsewhere.
+.IP
+Entering the command \(lq\fBunattachments *\fP\(rq as a command will Clear all
+attachment settings.
 .
 .PP
 .nf
