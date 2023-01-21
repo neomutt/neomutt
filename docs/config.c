@@ -3814,6 +3814,12 @@
 ** paragraph width relative to the left margin.  A negative value set the
 ** paragraph width relative to the right margin.
 ** .pp
+** Be aware that the reformatted lines of a paragraph are still subject to $$wrap.
+** This means if $$reflow_wrap is 40 and $$wrap is 30, then the paragraph gets
+** reformatted to 40 characters a line (due to $$reflow_wrap) and afterwards
+** each 40-character-line is split at 30 characters (due to $$wrap), resulting in
+** alternating line lengths of 30 and 10 characters.
+** .pp
 ** Also see $$wrap.
 */
 
