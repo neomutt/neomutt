@@ -5228,8 +5228,18 @@
 { "thread_received", DT_BOOL, false },
 /*
 ** .pp
-** When \fIset\fP, NeoMutt uses the date received rather than the date sent
-** to thread messages by subject.
+** If $$strict_threads is \fIunset\fP, then messages may also be grouped by
+** subject.  Unlike threading by "In-Reply-To:" and "References:" header,
+** grouping by subject does not imply a parent-child relation between two
+** messages.
+** .pp
+** To determine the ancestry between messages grouped by subject, Neomutt uses
+** their date: only newer messages can be descendants of older ones.
+** .pp
+** When $$thread_received is \fIset\fP, NeoMutt uses the date received rather
+** than the date sent when comparing messages for the date.
+** .pp
+** See also $$strict_threads, and $$sort_re.
 */
 
 { "tilde", DT_BOOL, false },
