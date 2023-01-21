@@ -316,7 +316,7 @@ Valid colors include:
 Valid attributes include:
 .BR none ", " bold ", " underline ", "
 .BR reverse ", and " standout .
-IP
+.IP
 The \fBuncolor\fP command can be applied to the index, header and body objects
 only. It removes entries from the list. You must specify the same \fIpattern\fP
 specified in the \fBcolor\fP command for it to be removed. The pattern
