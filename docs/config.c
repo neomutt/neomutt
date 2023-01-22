@@ -4286,18 +4286,17 @@
 ** Specifies how to sort mailbox entries in the sidebar.  By default, the
 ** entries are \fBunsorted\fP.  Valid values:
 ** .il
-** .dd path (alphabetically)
-** .dd count (all message count)
-** .dd flagged (flagged message count)
-** .dd new (unread message count)
-** .dd unread (unread message count)
-** .dd unsorted
+** .dd \fBpath\fP (alphabetically)
+** .dd \fBcount\fP (all message count)
+** .dd \fBflagged\fP (flagged message count)
+** .dd \fBunread\fP (unread message count)
+** .dd \fBunsorted\fP
 ** .ie
 ** .pp
 ** You may optionally use the "reverse-" prefix to specify reverse sorting
 ** order (example: "\fCset sidebar_sort_method=reverse-alpha\fP").
 ** .pp
-** The "alpha" and "name" values are synonyms for "path".
+** The \fBalpha\fP and \fBname\fP values are synonyms for \fBpath\fP.
 */
 
 { "sidebar_visible", DT_BOOL, false },
