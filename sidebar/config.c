@@ -45,8 +45,8 @@ const struct Mapping SortSidebarMethods[] = {
   { "flagged",       SORT_FLAGGED },
   { "unsorted",      SORT_ORDER },
   { "mailbox-order", SORT_ORDER },
-  { "new",           SORT_UNREAD },
   { "unread",        SORT_UNREAD },
+  { "new",           SORT_UNREAD },
   { NULL, 0 },
   // clang-format on
 };
