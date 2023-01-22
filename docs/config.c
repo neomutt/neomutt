@@ -4294,7 +4294,7 @@
 /*
 ** .pp
 ** Specifies how to sort mailbox entries in the sidebar.  By default, the
-** entries are sorted alphabetically.  Valid values:
+** entries are \fBunsorted\fP.  Valid values:
 ** .il
 ** .dd path (alphabetically)
 ** .dd count (all message count)
