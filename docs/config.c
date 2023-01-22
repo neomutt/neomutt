@@ -1531,7 +1531,7 @@
 ** By default it is \fIunset\fP so no header caching will be used.
 ** .pp
 ** Header caching can greatly improve speed when opening POP, IMAP
-** MH or Maildir folders, see "$caching" for details.
+** MH or Maildir folders, see "$caching" in the NeoMutt Guide for details.
 */
 
 { "header_cache_backend", DT_STRING, 0 },
