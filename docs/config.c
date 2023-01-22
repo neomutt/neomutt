@@ -4294,9 +4294,10 @@
 ** .ie
 ** .pp
 ** You may optionally use the "reverse-" prefix to specify reverse sorting
-** order (example: "\fCset sidebar_sort_method=reverse-alpha\fP").
+** order (example: "\fCset sidebar_sort_method=reverse-path\fP").
 ** .pp
-** The \fBalpha\fP and \fBname\fP values are synonyms for \fBpath\fP.
+** The \fBalpha\fP and \fBname\fP values are synonyms for \fBpath\fP. The
+** \fBnew\fP value is a synonym for \fBunread\fP.
 */
 
 { "sidebar_visible", DT_BOOL, false },
