@@ -3705,6 +3705,10 @@
 ** from NeoMutt.  If this option is \fIset\fP, they do quit, if it is \fIunset\fP, they
 ** have no effect, and if it is set to \fIask-yes\fP or \fIask-no\fP, you are
 ** prompted for confirmation when you try to quit.
+** .pp
+** In order to quit from NeoMutt if this variable is \fIunset\fP, you must send
+** the signal SIGINT to NeoMutt.  This can usually be achieved by pressing
+** CTRL-C in the terminal.
 */
 
 { "quote_regex", DT_REGEX, "^([ \t]*[|>:}#])+" },
