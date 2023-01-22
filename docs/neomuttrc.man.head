@@ -251,6 +251,7 @@ configuration file.
 .nf
 \fBcolor\fP \fIobject\fP [ \fIattribute\fP ... ] \fIforeground\fP \fIbackground\fP
 \fBcolor\fP { header | body } [ \fIattribute\fP ... ] \fIforeground\fP \fIbackground\fP \fIregex\fP
+\fBcolor\fP status \fIforeground\fP \fIbackground\fP [\fIregex\fP [ \fInum\fP ]]
 \fBcolor\fP index-object [ \fIattribute\fP ... ] \fIforeground\fP \fIbackground\fP \fIpattern\fP
 \fBcolor\fP compose \fIcomposeobject\fP \fIforeground\fP \fIbackground\fP
 \fBcolor\fP compose \fIcomposeobject\fP [ \fIattribute\fP ... ] \fIforeground\fP \fIbackground\fP
@@ -310,6 +311,10 @@ The \fBheader\fP and \fBbody\fP match \fIregex\fP in the header/body of
 a message, \fBindex-object\fP can match \fIpattern\fP in the message index.
 Note that IMAP server-side searches (=b, =B, =h) are not supported for color
 index patterns.
+.IP
+The \fBstatus\fP object optionally takes an regex and a match number.  If the
+regex is given, only the matching parts are colored.  If additionally the match
+number is given, only that sub-match of the regex is colored.
 .IP
 Valid composeobjects include
 .BR header ", " security_encrypt ", " security_sign ", "
