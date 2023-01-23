@@ -1645,6 +1645,15 @@
 ** This variable controls the size (in number of strings remembered) of
 ** the string history buffer per category. The buffer is cleared each time the
 ** variable is set.
+** .pp
+** Note that strings (e.g. commands) starting with a space are never recorded
+** in the history.  This is for example useful to prevent leaking sensitive
+** information into the history file or for one off tests.
+** .pp
+** Also note that a string is not added to the history if it exactly matches
+** its immediate predecessor, e.g. executing the same command twice in a row
+** results in only one copy being added to the history.  To prevent duplicates
+** over all entries use $$history_remove_dups.
 */
 
 { "history_file", DT_PATH, "~/.mutthistory" },
