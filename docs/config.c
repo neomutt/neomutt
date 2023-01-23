@@ -4010,6 +4010,10 @@
 ** .pp
 ** This variable controls the size of the history (per category) saved in the
 ** $$history_file file.
+** .pp
+** Setting this to a value greater than $$history is possible.  However, there
+** will never be more than $$history entries to select from even if more are
+** recorded in the history file.
 */
 
 { "save_name", DT_BOOL, false },
