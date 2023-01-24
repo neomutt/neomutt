@@ -51,9 +51,6 @@
 #
 # Empre «PGP» quan en la cadena original diu «GPG» per coherència.
 #
-# He aplicat algunes de les recomanacions de
-# <https://www.softcatala.org/recursos/quality/gnutools.html>.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"

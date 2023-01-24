@@ -1,6 +1,7 @@
 # Neonwolf Color Scheme for NeoMutt
-# Source: https://github.com/h3xx/mutt-colors-neonwolf/blob/master/mutt-colors-neonwolf-256.muttrc
-# Based mostly on the colors from the badwolf airline theme
+# Source: https://codeberg.org/h3xx/mutt-colors-neonwolf/raw/branch/main/mutt-colors-neonwolf-256.muttrc
+# Based mostly on the colors from the badwolf lightline theme
+# Project: https://codeberg.org/h3xx/mutt-colors-neonwolf
 
 # custom body highlights -----------------------------------------------
 

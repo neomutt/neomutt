@@ -6,9 +6,6 @@
 # Marc Baudoin <babafou@babafou.eu.org>, 1998-2019
 # Vincent Lefevre <vincent@vinc17.net>, 1998-2019
 #
-# Note [VL]. In case you need it, you may find the latest temporary version
-#            at this URL:   https://www.vinc17.net/neomutt/fr.po
-#
 # Traductions possibles de "timestamp":
 # _ horodatage
 #   * http://drupalfr.org/forum/traduction/16-coherence_de_traduction

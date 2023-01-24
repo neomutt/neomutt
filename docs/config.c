@@ -4810,7 +4810,7 @@
 ** will sort to.
 ** .pp
 ** See the "Use Threads Feature" section for further explanation and
-** examples, https://neomutt.org/feature/use-threads.
+** examples, https://neomutt.org/feature/use-threads
 */
 
 { "sort_alias", DT_SORT, SORT_ALIAS },
@@ -4850,7 +4850,7 @@
 ** more common to use "last-" with $$sort and not with $$sort_aux.
 ** .pp
 ** See the "Use Threads Feature" section for further explanation and
-** examples, https://neomutt.org/feature/use-threads.
+** examples, https://neomutt.org/feature/use-threads
 */
 
 { "sort_browser", DT_SORT, SORT_ALPHA },

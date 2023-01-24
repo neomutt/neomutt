@@ -1565,7 +1565,7 @@ proc autosetup_reference {{type text}} {
     section {Introduction}
 
     p {
-        See http://msteveb.github.com/autosetup/ for the online documentation for 'autosetup'.
+        See http://msteveb.github.io/autosetup/ for the online documentation for 'autosetup'.
 		This documentation can also be accessed locally with `autosetup --ref`.
     }
 

@@ -13,9 +13,9 @@ How to use neomutt's S/MIME capabilities
   browser.
 
 - Assuming you are using Firefox, follow the instructions at
-  https://www.sslsupportdesk.com/export-certificate-firefox/ to export the
-  certificate into a file called cert.p12. If you don't use Firefox, you're
-  on your own.
+  https://www.sslsupportdesk.com/2016/04/15/export-certificate-firefox/
+  to export the certificate into a file called cert.p12. If you don't use
+  Firefox, you're on your own.
 
 - Run "smime_keys add_p12 cert.p12"
 
