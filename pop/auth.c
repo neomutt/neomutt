@@ -132,7 +132,7 @@ fail:
   if (rc == POP_A_FAILURE)
   {
     mutt_debug(LL_DEBUG2, "%s failed\n", chosen_mech);
-    mutt_error(_("SASL authentication failed."));
+    mutt_error(_("SASL authentication failed"));
   }
 
   return rc;
