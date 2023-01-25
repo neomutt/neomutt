@@ -75,13 +75,9 @@ mime_lookup application/octet-stream
 ## It does not trigger any matching on actual messages.
 
 ## Qualify any MIME part with an "attachment" disposition, EXCEPT for
-## text/x-vcard and application/pgp parts. (PGP parts are already known
-## to neomutt, and can be searched for with ~g, ~G, and ~k.)
-##
-## I've added pkcs7/x-pkcs7 to this, since it functions (for S/MIME)
-## analogously to PGP signature attachments. S/MIME isn't supported
-## in a stock neomutt build, but we can still treat it specially here.
-##
+## text/x-vcard, application/pgp.*, application/pkcs7-.* and
+## application/x-pkcs7-.* parts. (PGP and S/MIME parts are already known
+## to NeoMutt, and can be searched for with ~g, ~G, and ~k.)
 attachments   +A */.*
 attachments   -A text/x-vcard
 attachments   -A application/pgp.*
