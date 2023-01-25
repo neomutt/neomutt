@@ -78,13 +78,14 @@ mime_lookup application/octet-stream
 ## text/x-vcard and application/pgp parts. (PGP parts are already known
 ## to neomutt, and can be searched for with ~g, ~G, and ~k.)
 ##
-## I've added x-pkcs7 to this, since it functions (for S/MIME)
+## I've added pkcs7/x-pkcs7 to this, since it functions (for S/MIME)
 ## analogously to PGP signature attachments. S/MIME isn't supported
 ## in a stock neomutt build, but we can still treat it specially here.
 ##
 attachments   +A */.*
-attachments   -A text/x-vcard application/pgp.*
-attachments   -A application/x-pkcs7-.*
+attachments   -A text/x-vcard
+attachments   -A application/pgp.*
+attachments   -A application/pkcs7-.* application/x-pkcs7-.*
 
 ## Discount all MIME parts with an "inline" disposition, unless they're
 ## text/plain. (Why inline a text/plain part unless it's external to the

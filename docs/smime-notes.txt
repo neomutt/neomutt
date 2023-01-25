@@ -90,5 +90,7 @@ to get a valid certificate outside of neomutt. (See above)
 
 A certificate can be viewed by adding the following to your ~/.mailcap:
 
+application/pkcs7-signature;openssl pkcs7 -in %s -inform der -noout \
+-print_certs -text | less; needsterminal
 application/x-pkcs7-signature;openssl pkcs7 -in %s -inform der -noout \
 -print_certs -text | less; needsterminal

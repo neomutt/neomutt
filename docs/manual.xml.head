@@ -11780,13 +11780,14 @@ set preferred_languages="fr,en,de"
 <emphasis role="comment"># text/x-vcard and application/pgp parts. (PGP parts are already known</emphasis>
 <emphasis role="comment"># to NeoMutt, and can be searched for with ~g, ~G, and ~k.)</emphasis>
 <emphasis role="comment">#</emphasis>
-<emphasis role="comment"># I've added x-pkcs7 to this, since it functions (for S/MIME)</emphasis>
+<emphasis role="comment"># I've added pkcs7/x-pkcs7 to this, since it functions (for S/MIME)</emphasis>
 <emphasis role="comment"># analogously to PGP signature attachments. S/MIME isn't supported</emphasis>
 <emphasis role="comment"># in a stock NeoMutt build, but we can still treat it specially here.</emphasis>
 <emphasis role="comment">#</emphasis>
 attachments  +A */.*
-attachments  -A text/x-vcard application/pgp.*
-attachments  -A application/x-pkcs7-.*
+attachments  -A text/x-vcard
+attachments  -A application/pgp.*
+attachments  -A application/pkcs7-.* application/x-pkcs7-.*
 <emphasis role="comment"># Discount all MIME parts with an "inline" disposition, unless they're</emphasis>
 <emphasis role="comment"># text/plain. (Why inline a text/plain part unless it's external to the</emphasis>
 <emphasis role="comment"># message flow?)</emphasis>
