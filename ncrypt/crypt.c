@@ -418,11 +418,9 @@ SecurityFlags mutt_is_multipart_signed(struct Body *b)
     return PGP_SIGN;
   }
 
-  if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_istr_equal(p, "application/x-pkcs7-signature"))
-  {
-    return SMIME_SIGN;
-  }
-  if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_istr_equal(p, "application/pkcs7-signature"))
+  if (((WithCrypto & APPLICATION_SMIME) != 0) &&
+      (mutt_istr_equal(p, "application/x-pkcs7-signature") ||
+       mutt_istr_equal(p, "application/pkcs7-signature")))
   {
     return SMIME_SIGN;
   }

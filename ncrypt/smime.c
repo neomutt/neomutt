@@ -1451,7 +1451,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
 
   t = mutt_body_new();
   t->type = TYPE_APPLICATION;
-  t->subtype = mutt_str_dup("x-pkcs7-mime");
+  t->subtype = mutt_str_dup("pkcs7-mime");
   mutt_param_set(&t->parameter, "name", "smime.p7m");
   mutt_param_set(&t->parameter, "smime-type", "enveloped-data");
   t->encoding = ENC_BASE64; /* The output of OpenSSL SHOULD be binary */
@@ -1635,7 +1635,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   mutt_param_set(&t->parameter, "micalg", micalg);
   FREE(&micalg);
 
-  mutt_param_set(&t->parameter, "protocol", "application/x-pkcs7-signature");
+  mutt_param_set(&t->parameter, "protocol", "application/pkcs7-signature");
 
   t->parts = a;
   retval = t;
@@ -1643,7 +1643,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   t->parts->next = mutt_body_new();
   t = t->parts->next;
   t->type = TYPE_APPLICATION;
-  t->subtype = mutt_str_dup("x-pkcs7-signature");
+  t->subtype = mutt_str_dup("pkcs7-signature");
   t->filename = mutt_buffer_strdup(signedfile);
   t->d_filename = mutt_str_dup("smime.p7s");
   t->use_disp = true;
