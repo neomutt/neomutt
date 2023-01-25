@@ -326,7 +326,7 @@ static struct ConfigDef MainVars[] = {
   { "hostname", DT_STRING, 0, 0, NULL,
     "Fully-qualified domain name of this machine"
   },
-  { "implicit_autoview", DT_BOOL, false, 0, NULL,
+  { "implicit_auto_view", DT_BOOL, false, 0, NULL,
     "Display MIME attachments inline if a 'copiousoutput' mailcap entry exists"
   },
   { "include_encrypted", DT_BOOL, false, 0, NULL,
@@ -643,6 +643,7 @@ static struct ConfigDef MainVars[] = {
   { "forw_decode",               DT_SYNONYM, IP "forward_decode",             IP "2021-03-21" },
   { "forw_quote",                DT_SYNONYM, IP "forward_quote",              IP "2021-03-21" },
   { "hdr_format",                DT_SYNONYM, IP "index_format",               IP "2021-03-21" },
+  { "implicit_autoview",         DT_SYNONYM, IP "implicit_auto_view",         IP "2023-01-25" },
   { "include_onlyfirst",         DT_SYNONYM, IP "include_only_first",         IP "2021-03-21" },
   { "indent_str",                DT_SYNONYM, IP "indent_string",              IP "2021-03-21" },
   { "mime_fwd",                  DT_SYNONYM, IP "mime_forward",               IP "2021-03-21" },
