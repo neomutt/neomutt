@@ -370,7 +370,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
     {
       if (!mutt_str_atoi_full(buf->data + 6, &val) || (val > COLOR_QUOTES_MAX))
       {
-        mutt_buffer_printf(err, _("%s: no such object"), buf->data);
+        mutt_buffer_printf(err, _("%s: no such color"), buf->data);
         return MUTT_CMD_WARNING;
       }
     }
@@ -393,7 +393,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
     rc = mutt_map_get_value(buf->data, ComposeColorFields);
     if (rc == -1)
     {
-      mutt_buffer_printf(err, _("%s: no such object"), buf->data);
+      mutt_buffer_printf(err, _("%s: no such color"), buf->data);
       return MUTT_CMD_WARNING;
     }
 
@@ -404,7 +404,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
   rc = mutt_map_get_value(buf->data, ColorFields);
   if (rc == -1)
   {
-    mutt_buffer_printf(err, _("%s: no such object"), buf->data);
+    mutt_buffer_printf(err, _("%s: no such color"), buf->data);
     return MUTT_CMD_WARNING;
   }
   else
@@ -448,7 +448,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
   if (cid == -1)
   {
-    mutt_buffer_printf(err, _("%s: no such object"), buf->data);
+    mutt_buffer_printf(err, _("%s: no such color"), buf->data);
     return MUTT_CMD_ERROR;
   }
 
