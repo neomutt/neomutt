@@ -5294,7 +5294,7 @@
 ** A value of zero or less will cause NeoMutt to never time out.
 */
 
-{ "tmpdir", DT_PATH, TMPDIR },
+{ "tmp_dir", DT_PATH, TMPDIR },
 /*
 ** .pp
 ** This variable allows you to specify where NeoMutt will place its

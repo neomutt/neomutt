@@ -414,7 +414,7 @@ and used for Native Language Support (NLS) if enabled.
 .SM
 .B TMPDIR
 Directory in which temporary files are created. Defaults to \fI/tmp\fP if
-unset. Configuration variable $tmpdir takes precedence over this one.
+unset. Configuration variable $tmp_dir takes precedence over this one.
 .
 .TP
 .SM

@@ -3721,7 +3721,7 @@ set crypt_use_gpgme
           <link linkend="news-server">$news_server</link>,
           <link linkend="shell">shell</link>,
           <link linkend="spool-file">$spool_file</link>,
-          <link linkend="tmpdir">$tmpdir</link>,
+          <link linkend="tmp-dir">$tmp_dir</link>,
         </para>
         <para>
           Finally, it's possible to
@@ -13231,7 +13231,7 @@ append-hook '\.gz$' "gzip --stdout '%t' &gt;&gt; '%f'"
           <title>Security</title>
           <para>
             Encrypted files are decrypted into temporary files which are stored
-            in the <link linkend="tmpdir">$tmpdir</link> directory. This could
+            in the <link linkend="tmp-dir">$tmp_dir</link> directory. This could
             be a security risk.
           </para>
         </sect3>
@@ -13288,7 +13288,7 @@ close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &
           </listitem>
           <listitem>
             <para>
-              <link linkend="tmpdir">$tmpdir</link>
+              <link linkend="tmp-dir">$tmp_dir</link>
             </para>
           </listitem>
           <listitem>
@@ -18735,7 +18735,7 @@ set use_threads=threads sort=last-date sort_aux=date
         digital signatures, etc. As long as being used, these files are visible
         by other users and maybe even readable in case of misconfiguration.
         Also, a different location for these files may be desired which can be
-        changed via the <link linkend="tmpdir">$tmpdir</link> variable.
+        changed via the <link linkend="tmp-dir">$tmp_dir</link> variable.
       </para>
     </sect1>
 

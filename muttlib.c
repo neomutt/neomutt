@@ -92,8 +92,8 @@ void mutt_adv_mktemp(struct Buffer *buf)
     struct Buffer *prefix = mutt_buffer_pool_get();
     mutt_buffer_strcpy(prefix, buf->data);
     mutt_file_sanitize_filename(prefix->data, true);
-    const char *const c_tmpdir = cs_subset_path(NeoMutt->sub, "tmpdir");
-    mutt_buffer_printf(buf, "%s/%s", NONULL(c_tmpdir), mutt_buffer_string(prefix));
+    const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, "tmp_dir");
+    mutt_buffer_printf(buf, "%s/%s", NONULL(c_tmp_dir), mutt_buffer_string(prefix));
 
     struct stat st = { 0 };
     if ((lstat(mutt_buffer_string(buf), &st) == -1) && (errno == ENOENT))
@@ -467,8 +467,8 @@ bool mutt_is_text_part(struct Body *b)
 void mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix,
                              const char *suffix, const char *src, int line)
 {
-  const char *const c_tmpdir = cs_subset_path(NeoMutt->sub, "tmpdir");
-  mutt_buffer_printf(buf, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(c_tmpdir),
+  const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, "tmp_dir");
+  mutt_buffer_printf(buf, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(c_tmp_dir),
                      NONULL(prefix), NONULL(ShortHostname), (int) getuid(),
                      (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));
 
@@ -495,8 +495,8 @@ void mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix,
 void mutt_mktemp_full(char *buf, size_t buflen, const char *prefix,
                       const char *suffix, const char *src, int line)
 {
-  const char *const c_tmpdir = cs_subset_path(NeoMutt->sub, "tmpdir");
-  size_t n = snprintf(buf, buflen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(c_tmpdir),
+  const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, "tmp_dir");
+  size_t n = snprintf(buf, buflen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(c_tmp_dir),
                       NONULL(prefix), NONULL(ShortHostname), (int) getuid(),
                       (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));
   if (n >= buflen)
