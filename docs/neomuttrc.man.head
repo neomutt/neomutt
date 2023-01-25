@@ -180,6 +180,11 @@ of \fImime-type\fP must be literal text (or the special token \(lq\fB*\fP\(rq,
 but the minor part may be a regular expression. Therefore, \(lq\fB*/.*\fP\(rq
 matches any MIME type.
 .IP
+Note that the first MIME part is treated slightly differently: It is almost
+always the message text.  Thus, it is not counted as an attachment if its
+disposition is \fBinline\fP and it is not a \fBmultipart/*\fP or
+\fBmessage/*\fP MIME-type.
+.IP
 Entering the command \(lq\fBattachments ?\fP\(rq as a command will list your
 current settings in neomuttrc format, so that it can be pasted elsewhere.
 .IP

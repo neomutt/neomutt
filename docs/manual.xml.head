@@ -11762,6 +11762,13 @@ set preferred_languages="fr,en,de"
         actually evaluating a message.
       </para>
       <para>
+        Note that the first MIME part is treated slightly differently: It is
+        almost always the message text.  Thus, it is not counted as an
+        attachment if its disposition is <literal>inline</literal> and it is
+        not a <literal>multipart/*</literal> or <literal>message/*</literal>
+        MIME-type.
+      </para>
+      <para>
         Some examples might help to illustrate. The examples that are not
         commented out define the default configuration of the lists.
       </para>
