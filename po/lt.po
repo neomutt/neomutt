@@ -662,8 +662,8 @@ msgstr "Autocrypt duomenų bazės versija per nauja"
 
 #: bcache/bcache.c:75
 #, c-format
-msgid "Cache disabled, $message_cachedir isn't a directory: %s"
-msgstr "Podėlis išjungtas, $message_cachedir nėra katalogas: %s"
+msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
+msgstr "Podėlis išjungtas, $message_cache_dir nėra katalogas: %s"
 
 #: bcache/bcache.c:221
 #, c-format

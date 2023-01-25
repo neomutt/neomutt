@@ -663,7 +663,7 @@ msgstr "Versão do banco de dados de auto-criptografia recente demais"
 
 #: bcache/bcache.c:75
 #, fuzzy, c-format
-msgid "Cache disabled, $message_cachedir isn't a directory: %s"
+msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
 msgstr "Cachê de mensagens não é um diretório: %s"
 
 #: bcache/bcache.c:221

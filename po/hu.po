@@ -661,8 +661,8 @@ msgstr "Autocrypt adatbázis verzió túl új"
 
 #: bcache/bcache.c:75
 #, c-format
-msgid "Cache disabled, $message_cachedir isn't a directory: %s"
-msgstr "A gyorsítótár tiltva, $message_cachedir nem könyvtár: %s"
+msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
+msgstr "A gyorsítótár tiltva, $message_cache_dir nem könyvtár: %s"
 
 #: bcache/bcache.c:221
 #, c-format

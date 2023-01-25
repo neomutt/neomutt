@@ -661,8 +661,8 @@ msgstr "Autocrypt veritabanı sürümü pek yeni"
 
 #: bcache/bcache.c:75
 #, c-format
-msgid "Cache disabled, $message_cachedir isn't a directory: %s"
-msgstr "Önbellek devre dışı, $message_cachedir bir dizin değil: %s"
+msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
+msgstr "Önbellek devre dışı, $message_cache_dir bir dizin değil: %s"
 
 #: bcache/bcache.c:221
 #, c-format

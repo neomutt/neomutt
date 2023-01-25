@@ -724,7 +724,7 @@ msgstr "La versió de la base de dades d’Autocrypt és massa nova"
 
 #: bcache/bcache.c:75
 #, fuzzy, c-format
-msgid "Cache disabled, $message_cachedir isn't a directory: %s"
+msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
 msgstr "«%s» no és un directori"
 
 #: bcache/bcache.c:221

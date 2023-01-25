@@ -670,8 +670,8 @@ msgstr "Η βάση δεδομένων autocrypt είναι πολύ νέα"
 
 #: bcache/bcache.c:75
 #, c-format
-msgid "Cache disabled, $message_cachedir isn't a directory: %s"
-msgstr "Η cache είναι απενεργοποιημένη, το $message_cachedir δεν είναι κατάλογος: %s"
+msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
+msgstr "Η cache είναι απενεργοποιημένη, το $message_cache_dir δεν είναι κατάλογος: %s"
 
 #: bcache/bcache.c:221
 #, c-format

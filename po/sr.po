@@ -661,8 +661,8 @@ msgstr "Верзија базе аутошифровања је превише �
 
 #: bcache/bcache.c:75
 #, c-format
-msgid "Cache disabled, $message_cachedir isn't a directory: %s"
-msgstr "Кеш онемогућен, $message_cachedir није директоријум: %s"
+msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
+msgstr "Кеш онемогућен, $message_cache_dir није директоријум: %s"
 
 #: bcache/bcache.c:221
 #, c-format

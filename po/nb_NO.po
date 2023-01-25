@@ -666,8 +666,8 @@ msgstr "Versjonen av Autocrypt-databasen er for ny"
 
 #: bcache/bcache.c:75
 #, fuzzy, c-format
-msgid "Cache disabled, $message_cachedir isn't a directory: %s"
-msgstr "Hurtiglager avskrudd, $message_cachedir er ikke en mappe, %s"
+msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
+msgstr "Hurtiglager avskrudd, $message_cache_dir er ikke en mappe, %s"
 
 #: bcache/bcache.c:221
 #, fuzzy, c-format

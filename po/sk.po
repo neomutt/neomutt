@@ -672,8 +672,8 @@ msgstr "Verzia databáze autocrypt je príliš nová"
 
 #: bcache/bcache.c:75
 #, c-format
-msgid "Cache disabled, $message_cachedir isn't a directory: %s"
-msgstr "Cache vypnutá, $message_cachedir nie je adresár: %s"
+msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
+msgstr "Cache vypnutá, $message_cache_dir nie je adresár: %s"
 
 #: bcache/bcache.c:221
 #, c-format
