@@ -1969,7 +1969,7 @@
 */
 #endif
 
-{ "implicit_autoview", DT_BOOL, false },
+{ "implicit_auto_view", DT_BOOL, false },
 /*
 ** .pp
 ** If set to "yes", NeoMutt will look for a mailcap entry with the

@@ -481,10 +481,10 @@ static bool is_autoview(struct Body *b)
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
 
-  const bool c_implicit_autoview = cs_subset_bool(NeoMutt->sub, "implicit_autoview");
-  if (c_implicit_autoview)
+  const bool c_implicit_auto_view = cs_subset_bool(NeoMutt->sub, "implicit_auto_view");
+  if (c_implicit_auto_view)
   {
-    /* $implicit_autoview is essentially the same as "auto_view *" */
+    /* $implicit_auto_view is essentially the same as "auto_view *" */
     is_av = true;
   }
   else
