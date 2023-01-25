@@ -11701,6 +11701,9 @@ set preferred_languages="fr,en,de"
         <arg choice="plain">
           <replaceable>mime-type</replaceable>
         </arg>
+        <arg choice="opt" rep="repeat">
+          <replaceable>mime-type</replaceable>
+        </arg>
         <command>unattachments</command>
         <group choice="req">
           <arg choice="plain">+</arg>
@@ -11710,6 +11713,9 @@ set preferred_languages="fr,en,de"
           <replaceable>disposition</replaceable>
         </arg>
         <arg choice="plain">
+          <replaceable>mime-type</replaceable>
+        </arg>
+        <arg choice="opt" rep="repeat">
           <replaceable>mime-type</replaceable>
         </arg>
         <command>attachments</command>
@@ -19412,6 +19418,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <arg choice="plain">
               <replaceable>mime-type</replaceable>
             </arg>
+            <arg choice="opt" rep="repeat">
+              <replaceable>mime-type</replaceable>
+            </arg>
             <command>
               <link linkend="attachments">unattachments</link>
             </command>
@@ -19423,6 +19432,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable>disposition</replaceable>
             </arg>
             <arg choice="plain">
+              <replaceable>mime-type</replaceable>
+            </arg>
+            <arg choice="opt" rep="repeat">
               <replaceable>mime-type</replaceable>
             </arg>
             <command>
