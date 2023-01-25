@@ -639,10 +639,10 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   if (env_mc)
     cs_str_string_set(cs, "mailcap_path", env_mc, NULL);
 
-  /* "$tmpdir" precedence: config file, environment, code */
+  /* "$tmp_dir" precedence: config file, environment, code */
   const char *env_tmp = mutt_str_getenv("TMPDIR");
   if (env_tmp)
-    cs_str_string_set(cs, "tmpdir", env_tmp, NULL);
+    cs_str_string_set(cs, "tmp_dir", env_tmp, NULL);
 
   /* "$visual", "$editor" precedence: config file, environment, code */
   const char *env_ed = mutt_str_getenv("VISUAL");
@@ -794,8 +794,8 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
       goto done; // TEST14: neomutt -e broken (press 'q')
   }
 
-  const char *const c_tmpdir = cs_subset_path(NeoMutt->sub, "tmpdir");
-  mutt_file_mkdir(c_tmpdir, S_IRWXU);
+  const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, "tmp_dir");
+  mutt_file_mkdir(c_tmp_dir, S_IRWXU);
 
   mutt_hist_init();
   mutt_hist_read_file();

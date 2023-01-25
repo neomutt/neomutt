@@ -584,7 +584,7 @@ static struct ConfigDef MainVars[] = {
   { "timeout", DT_NUMBER|DT_NOT_NEGATIVE, 600, 0, NULL,
     "Time to wait for user input in menus"
   },
-  { "tmpdir", DT_PATH|DT_PATH_DIR|DT_NOT_EMPTY, IP TMPDIR, 0, NULL,
+  { "tmp_dir", DT_PATH|DT_PATH_DIR|DT_NOT_EMPTY, IP TMPDIR, 0, NULL,
     "Directory for temporary files"
   },
   { "to_chars", DT_MBTABLE|R_INDEX|R_PAGER, IP " +TCFLR", 0, NULL,
@@ -652,6 +652,7 @@ static struct ConfigDef MainVars[] = {
   { "realname",                  DT_SYNONYM, IP "real_name",                  IP "2021-03-21" },
   { "reply_regexp",              DT_SYNONYM, IP "reply_regex",                IP "2021-03-21" },
   { "spoolfile",                 DT_SYNONYM, IP "spool_file",                 IP "2021-03-21" },
+  { "tmpdir",                    DT_SYNONYM, IP "tmp_dir",                    IP "2023-01-25" },
   { "xterm_icon",                DT_SYNONYM, IP "ts_icon_format",             IP "2021-03-21" },
   { "xterm_set_titles",          DT_SYNONYM, IP "ts_enabled",                 IP "2021-03-21" },
   { "xterm_title",               DT_SYNONYM, IP "ts_status_format",           IP "2021-03-21" },

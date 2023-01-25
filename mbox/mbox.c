@@ -1417,8 +1417,8 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
 
     struct Buffer *savefile = mutt_buffer_pool_get();
 
-    const char *const c_tmpdir = cs_subset_path(NeoMutt->sub, "tmpdir");
-    mutt_buffer_printf(savefile, "%s/neomutt.%s-%s-%u", NONULL(c_tmpdir), NONULL(Username),
+    const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, "tmp_dir");
+    mutt_buffer_printf(savefile, "%s/neomutt.%s-%s-%u", NONULL(c_tmp_dir), NONULL(Username),
                        NONULL(ShortHostname), (unsigned int) getpid());
     rename(mutt_buffer_string(tempfile), mutt_buffer_string(savefile));
     mutt_sig_unblock();
