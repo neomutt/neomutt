@@ -2404,7 +2404,7 @@
 ** (especially for large folders).
 */
 
-{ "message_cachedir", DT_PATH, 0 },
+{ "message_cache_dir", DT_PATH, 0 },
 /*
 ** .pp
 ** Set this to a directory and NeoMutt will cache copies of messages from
