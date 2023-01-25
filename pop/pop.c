@@ -991,7 +991,7 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     return true;
 
   /* see if we already have the message in our cache in
-   * case $message_cachedir is unset */
+   * case $message_cache_dir is unset */
   struct PopCache *cache = &adata->cache[e->index % POP_CACHE_LEN];
 
   if (cache->path)

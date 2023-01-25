@@ -12457,7 +12457,7 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
         </para>
         <para>
           For configuration, the variable
-          <link linkend="message-cachedir">$message_cachedir</link> must point
+          <link linkend="message-cache-dir">$message_cache_dir</link> must point
           to a directory. There, NeoMutt will create a hierarchy of
           subdirectories named like the account and mailbox path the cache is
           for.
@@ -12469,7 +12469,7 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
         <para>
           For using both, header and body caching,
           <link linkend="header-cache">$header_cache</link> and
-          <link linkend="message-cachedir">$message_cachedir</link> can be
+          <link linkend="message-cache-dir">$message_cache_dir</link> can be
           safely set to the same value.
         </para>
         <para>

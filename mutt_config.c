@@ -380,7 +380,7 @@ static struct ConfigDef MainVars[] = {
   { "message_cache_clean", DT_BOOL, false, 0, NULL,
     "(imap/pop) Clean out obsolete entries from the message cache"
   },
-  { "message_cachedir", DT_PATH|DT_PATH_DIR, 0, 0, NULL,
+  { "message_cache_dir", DT_PATH|DT_PATH_DIR, 0, 0, NULL,
     "(imap/pop) Directory for the message cache"
   },
   { "message_format", DT_STRING|DT_NOT_EMPTY, IP "%s", 0, NULL,
@@ -646,6 +646,7 @@ static struct ConfigDef MainVars[] = {
   { "implicit_autoview",         DT_SYNONYM, IP "implicit_auto_view",         IP "2023-01-25" },
   { "include_onlyfirst",         DT_SYNONYM, IP "include_only_first",         IP "2021-03-21" },
   { "indent_str",                DT_SYNONYM, IP "indent_string",              IP "2021-03-21" },
+  { "message_cachedir",          DT_SYNONYM, IP "message_cache_dir",          IP "2023-01-25" },
   { "mime_fwd",                  DT_SYNONYM, IP "mime_forward",               IP "2021-03-21" },
   { "msg_format",                DT_SYNONYM, IP "message_format",             IP "2021-03-21" },
   { "print_cmd",                 DT_SYNONYM, IP "print_command",              IP "2021-03-21" },

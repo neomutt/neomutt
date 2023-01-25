@@ -65,14 +65,14 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, struct 
   char host[256] = { 0 };
   struct Url url = { 0 };
 
-  const char *const c_message_cachedir = cs_subset_path(NeoMutt->sub, "message_cachedir");
-  if (!account || !c_message_cachedir || !bcache)
+  const char *const c_message_cache_dir = cs_subset_path(NeoMutt->sub, "message_cache_dir");
+  if (!account || !c_message_cache_dir || !bcache)
     return -1;
 
   struct stat st = { 0 };
-  if (!((stat(c_message_cachedir, &st) == 0) && S_ISDIR(st.st_mode)))
+  if (!((stat(c_message_cache_dir, &st) == 0) && S_ISDIR(st.st_mode)))
   {
-    mutt_error(_("Cache disabled, $message_cachedir isn't a directory: %s"), c_message_cachedir);
+    mutt_error(_("Cache disabled, $message_cache_dir isn't a directory: %s"), c_message_cache_dir);
     return -1;
   }
 
@@ -91,7 +91,7 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, struct 
   struct Buffer *dst = mutt_buffer_pool_get();
   mutt_encode_path(path, NONULL(mailbox));
 
-  mutt_buffer_printf(dst, "%s/%s%s", c_message_cachedir, host, mutt_buffer_string(path));
+  mutt_buffer_printf(dst, "%s/%s%s", c_message_cache_dir, host, mutt_buffer_string(path));
   if (*(dst->dptr - 1) != '/')
     mutt_buffer_addch(dst, '/');
 
