@@ -332,11 +332,9 @@ static int sb_config_observer(struct NotifyCallback *nc)
       mutt_str_equal(ev_c->name, "sidebar_divider_char"))
   {
     struct SidebarWindowData *wdata = sb_wdata_get(win);
-    if (calc_divider(wdata))
-    {
-      window_reflow(win->parent);
-      mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
-    }
+    calc_divider(wdata);
+    win->actions |= WA_REPAINT;
+    mutt_debug(LL_DEBUG5, "config done, request WA_REPAINT\n");
     return 0;
   }
 
