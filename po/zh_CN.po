@@ -663,8 +663,8 @@ msgstr "Autocrypt 数据库版本太新"
 
 #: bcache/bcache.c:75
 #, c-format
-msgid "Cache disabled, $message_cachedir isn't a directory: %s"
-msgstr "已禁用缓存，$message_cachedir 不是一个目录：%s"
+msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
+msgstr "已禁用缓存，$message_cache_dir 不是一个目录：%s"
 
 #: bcache/bcache.c:221
 #, c-format

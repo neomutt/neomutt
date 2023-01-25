@@ -664,8 +664,8 @@ msgstr "Die Version der Autocrypt-Datenbank zu hoch"
 
 #: bcache/bcache.c:75
 #, c-format
-msgid "Cache disabled, $message_cachedir isn't a directory: %s"
-msgstr "Cache deaktiviert, $message_cachedir ist kein Verzeichnis: %s"
+msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
+msgstr "Cache deaktiviert, $message_cache_dir ist kein Verzeichnis: %s"
 
 #: bcache/bcache.c:221
 #, c-format

@@ -677,7 +677,7 @@ msgstr ""
 
 #: bcache/bcache.c:75
 #, fuzzy, c-format
-msgid "Cache disabled, $message_cachedir isn't a directory: %s"
+msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
 msgstr "%s 不是一個目錄"
 
 #: bcache/bcache.c:221

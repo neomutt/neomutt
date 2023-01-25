@@ -663,8 +663,8 @@ msgstr "Версія бази даних autocrypt занадто нова"
 
 #: bcache/bcache.c:75
 #, c-format
-msgid "Cache disabled, $message_cachedir isn't a directory: %s"
-msgstr "Кеш вимкнено, $message_cachedir не є каталогом: %s"
+msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
+msgstr "Кеш вимкнено, $message_cache_dir не є каталогом: %s"
 
 #: bcache/bcache.c:221
 #, c-format

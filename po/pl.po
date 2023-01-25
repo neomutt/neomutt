@@ -663,8 +663,8 @@ msgstr "Zbyt nowa wersja bazy danych autocrypt"
 
 #: bcache/bcache.c:75
 #, c-format
-msgid "Cache disabled, $message_cachedir isn't a directory: %s"
-msgstr "Pamięć podręczna (cache) wiadomości $message_cachedir nie jest katalogiem: %s"
+msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
+msgstr "Pamięć podręczna (cache) wiadomości $message_cache_dir nie jest katalogiem: %s"
 
 #: bcache/bcache.c:221
 #, c-format

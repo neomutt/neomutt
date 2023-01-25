@@ -667,7 +667,7 @@ msgstr "Version af autocrypt-database er for ny"
 
 #: bcache/bcache.c:75
 #, fuzzy, c-format
-msgid "Cache disabled, $message_cachedir isn't a directory: %s"
+msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
 msgstr "%s er ikke et filkatalog"
 
 #: bcache/bcache.c:221

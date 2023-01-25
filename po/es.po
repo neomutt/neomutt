@@ -663,7 +663,7 @@ msgstr "La base de datos de autocrypt es demasiado nueva"
 
 #: bcache/bcache.c:75
 #, fuzzy, c-format
-msgid "Cache disabled, $message_cachedir isn't a directory: %s"
+msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
 msgstr "El caché de mensajes %s no es un directorio"
 
 #: bcache/bcache.c:221
