@@ -7581,11 +7581,3 @@ msgstr "Derleme seçenekleri:"
 #: version.c:511
 msgid "Devel options:"
 msgstr "Geliştirici seçenekleri:"
-
-#, fuzzy
-#~ msgid "SASL authentication failed."
-#~ msgstr "Kimlik doğrulaması başarısız"
-
-#, c-format
-#~ msgid "error adding recipient '%s': %s"
-#~ msgstr "'%s' alıcısı eklenirken hata: %s"

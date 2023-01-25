@@ -7607,39 +7607,3 @@ msgstr "Опције за компајлирање:"
 #: version.c:511
 msgid "Devel options:"
 msgstr "Опције при изградњи:"
-
-#~ msgid "Already skipped past headers"
-#~ msgstr "Заглавља су већ прескочена"
-
-#~ msgid "Content type is too long"
-#~ msgstr "Врста садржаја је предугачка"
-
-#~ msgid "Debug options:"
-#~ msgstr "Опције за дебаговање:"
-
-#~ msgid "Error seeking in alias file"
-#~ msgstr "Грешка при читању фајла са алијасом"
-
-#~ msgid "Option %s may not be set or reset from the pager"
-#~ msgstr "Опција %s се не може поставити или вратити из страничника"
-
-#, fuzzy
-#~ msgid "SASL authentication failed."
-#~ msgstr "Аутентификација је неуспешна"
-
-#~ msgid "The fundamental part can't be moved"
-#~ msgstr "Кључни део се не може преместити"
-
-#~ msgid "You are on the first page"
-#~ msgstr "Налазите се на првој страни"
-
-#, c-format
-#~ msgid "You are on the last page"
-#~ msgstr "Налазите се на последњој страни"
-
-#, c-format
-#~ msgid "error adding recipient '%s': %s"
-#~ msgstr "грешка приликом додавања примаоца ‘%s’: %s"
-
-#~ msgid "skip beyond headers"
-#~ msgstr "прескакање заглавља"

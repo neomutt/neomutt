@@ -8019,11 +8019,3 @@ msgstr "Opcions de compilació:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Opcions de compilació:"
-
-#, fuzzy
-#~ msgid "SASL authentication failed."
-#~ msgstr "L’autenticació ha fallat."
-
-#, fuzzy, c-format
-#~ msgid "error adding recipient '%s': %s"
-#~ msgstr "Error en afegir el destinatari «%s»: %s"

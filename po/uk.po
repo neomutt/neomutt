@@ -7596,34 +7596,3 @@ msgstr "Параметри компілювання:"
 #: version.c:511
 msgid "Devel options:"
 msgstr "Параметри розробки:"
-
-#, c-format
-#~ msgid "%s authentication failed, trying next method"
-#~ msgstr "Помилка аутентифікації %s, пробуємо наступний метод"
-
-#~ msgid "Error seeking in alias file"
-#~ msgstr "Помилка позиціонування в файлі псевдонімів"
-
-#~ msgid "Exit  "
-#~ msgstr "Вихід  "
-
-#, c-format
-#~ msgid "Query '%s'"
-#~ msgstr "Запит \"%s\""
-
-#, fuzzy
-#~ msgid "SASL authentication failed."
-#~ msgstr "Невдала автентифікація"
-
-#~ msgid "Select  "
-#~ msgstr "Вибір  "
-
-#~ msgid "You are on the first page"
-#~ msgstr "Це перша сторінка"
-
-#~ msgid "You are on the last page"
-#~ msgstr "Це остання сторінка"
-
-#, c-format
-#~ msgid "error adding recipient '%s': %s"
-#~ msgstr "помилка додавання отримувача '%s': %s"

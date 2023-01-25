@@ -7557,11 +7557,3 @@ msgstr "Fordítási opciók:"
 #: version.c:511
 msgid "Devel options:"
 msgstr "Fejlesztői opciók:"
-
-#, fuzzy
-#~ msgid "SASL authentication failed."
-#~ msgstr "Hitelesítés sikertelen"
-
-#, c-format
-#~ msgid "error adding recipient '%s': %s"
-#~ msgstr "hiba a '%s' címzett hozzáadásakor: %s"

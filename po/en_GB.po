@@ -7568,7 +7568,3 @@ msgstr "Compile options:"
 #: version.c:511
 msgid "Devel options:"
 msgstr "Devel options:"
-
-#, c-format
-#~ msgid "error adding recipient '%s': %s"
-#~ msgstr "error adding recipient '%s': %s"

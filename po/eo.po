@@ -7694,26 +7694,3 @@ msgstr "Parametroj de la tradukaĵo:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Parametroj de la tradukaĵo:"
-
-#, fuzzy
-#~ msgid "Content type is too long"
-#~ msgstr "Content-Type ŝanĝita al %s"
-
-#, fuzzy
-#~ msgid "Debug options:"
-#~ msgstr "Parametroj de la tradukaĵo:"
-
-#~ msgid "Error seeking in alias file"
-#~ msgstr "Eraro dum alsalto en adresaro-dosiero"
-
-#, fuzzy
-#~ msgid "SASL authentication failed."
-#~ msgstr "Rajtiĝo malsukcesis"
-
-#, fuzzy
-#~ msgid "The fundamental part can't be moved"
-#~ msgstr "Ĉi tiu parto ne estos konvertita"
-
-#, fuzzy, c-format
-#~ msgid "error adding recipient '%s': %s"
-#~ msgstr "eraro en aldonado de ricevonto '%s': %s"
