@@ -154,8 +154,8 @@ entire list when \(lq\fB*\fP\(rq is used as an argument.
 .
 .PP
 .nf
-\fBattachments\fP { \fB+\fP | \fB\-\fP }\fIdisposition\fP \fImime-type\fP
-\fBunattachments\fP { \fB+\fP | \fB\-\fP }\fIdisposition\fP \fImime-type\fP
+\fBattachments\fP { \fB+\fP | \fB\-\fP }\fIdisposition\fP \fImime-type\fP [ \fImime-type\fP ... ]
+\fBunattachments\fP { \fB+\fP | \fB\-\fP }\fIdisposition\fP \fImime-type\fP [ \fImime-type\fP ... ]
 \fBattachments\fP \fB?\fP
 \fBunattachments\fP \fB*\fP
 .fi
