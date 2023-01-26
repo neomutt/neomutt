@@ -7177,19 +7177,12 @@ mailboxes $my_mx +mailbox3
       </para>
       <note>
         <para>
-          Commands of a hook like
-          <link linkend="folder-hook"><command>folder-hook</command></link>
-          are not executed when being read from the configuration file but
-          later at runtime when they are triggered. Thus, relative paths in
-          hooks are interpreted relative to the current working directory and
-          not relative to the configuration file the hook was defined in.
-        </para>
-        <para>
-          For example: the hook defined with
-          <screen>folder-hook foo "source foo.rc"</screen>
-          in the file <literal>~/.config/neomutt/neomuttrc</literal> sources
-          the file <literal>$CWD/foo.rc</literal> and not
-          <literal>~/.config/neomutt/foo.rc</literal>.
+          A hook remembers the configuration file it was defined in and sets the
+          context to that file when executing its commands.  As a result
+          a <command>source</command> command inside a hook is executed in the
+          context of the configuration file the hook was defined in.  Thus
+          relative filenames are interpreted relative to the configuration file
+          the hook is defined in.
         </para>
       </note>
       <para>

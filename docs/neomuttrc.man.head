@@ -805,6 +805,19 @@ the path of your home directory.
 If the \fIfilename\fP ends with a vertical bar (\(lq|\(rq), then \fIfilename\fP
 is considered to be an executable program from which to read input, (e.g.
 \(lq\fBsource\fP\~\fI~/\:bin/\:myscript\fP|\(rq).
+.IP
+If the filename is relative and the command \fBsource\fP is executed from the
+context of a configuration file, then the filename is interpreted relative to
+the directory of that configuration file.  If the command is executed outside
+of a configuration file, e.g. from the prompt, then the filename is interpreted
+relative to the current working directory (see \fBcd\fP on how to change the
+current working directory at runtime).
+.IP
+Note: A hook remembers the configuration file it was defined in and sets the
+context to that file when executing its commands.  As a result a \fBsource\fP command
+inside a hook is executed in the context of the configuration file the hook was
+defined in.  Thus relative filenames are interpreted relative to the
+configuration file the hook is defined in.
 .
 .PP
 .nf
