@@ -311,6 +311,9 @@ static struct ConfigDef MainVars[] = {
   { "keep_flagged", DT_BOOL, false, 0, NULL,
     "Don't move flagged messages from `$spool_file` to `$mbox`"
   },
+  { "keep_mailbox", DT_BOOL, false, 0, NULL,
+    "If set, mailbox contents are kept in memory"
+  },
   { "local_date_header", DT_BOOL, true, 0, NULL,
     "Convert the date in the Date header of sent emails into local timezone, UTC otherwise"
   },
