@@ -281,7 +281,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   mutt_expand_aliases_env(e->env);
 
   /* search through the user defined headers added to see if
-   * fcc: or attach: or pgp: was specified */
+   * fcc: or attach: or pgp: or smime: was specified */
 
   struct ListNode *np = NULL, *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &e->env->userhdrs, entries, tmp)
@@ -344,6 +344,19 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
       SecurityFlags sec = mutt_parse_crypt_hdr(np->data + plen, false, APPLICATION_PGP);
       if (sec != SEC_NO_FLAGS)
         sec |= APPLICATION_PGP;
+      if (sec != e->security)
+      {
+        e->security = sec;
+        notify_send(e->notify, NT_EMAIL, NT_EMAIL_CHANGE, NULL);
+      }
+      keep = false;
+    }
+    else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
+             (plen = mutt_istr_startswith(np->data, "smime:")))
+    {
+      SecurityFlags sec = mutt_parse_crypt_hdr(np->data + plen, false, APPLICATION_SMIME);
+      if (sec != SEC_NO_FLAGS)
+        sec |= APPLICATION_SMIME;
       if (sec != e->security)
       {
         e->security = sec;
