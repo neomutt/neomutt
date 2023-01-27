@@ -31,6 +31,7 @@ struct EmailArray;
 struct Mailbox;
 struct Notify;
 struct NotifyCallback;
+extern struct MailboxViewList mvl;
 
 /**
  * struct MailboxView - View of a Mailbox
@@ -49,7 +50,9 @@ struct MailboxView
 
   struct Mailbox *mailbox;           ///< Current Mailbox
   struct Notify *notify;             ///< Notifications: #NotifyMview, #EventMview
+  STAILQ_ENTRY(MailboxView) entries;     ///< Linked list
 };
+STAILQ_HEAD(MailboxViewList, MailboxView);
 
 /**
  * enum NotifyMview - Types of MailboxView Event

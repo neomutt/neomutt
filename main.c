@@ -1342,6 +1342,7 @@ main
     repeat_error = true;
     struct Mailbox *m = mx_resolve(buf_string(&folder));
     const bool c_read_only = cs_subset_bool(NeoMutt->sub, "read_only");
+
     if (!mx_mbox_open(m, ((flags & MUTT_CLI_RO) || c_read_only) ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS))
     {
       if (m->account)

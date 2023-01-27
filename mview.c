@@ -42,6 +42,8 @@
 #include "score.h"
 #include "sort.h"
 
+struct MailboxViewList mvl = STAILQ_HEAD_INITIALIZER(mvl); ///< List of Contexts
+
 /**
  * mview_free - Free a MailboxView
  * @param[out] ptr MailboxView to free
@@ -51,7 +53,7 @@ void mview_free(struct MailboxView **ptr)
   if (!ptr || !*ptr)
     return;
 
-  struct MailboxView *mv = *ptr;
+  struct MailboxView *mv = *ptr, *np, *tmp;
 
   struct EventMview ev_m = { mv };
   mutt_debug(LL_NOTIFY, "NT_MVIEW_DELETE: %p\n", (void *) mv);
@@ -65,6 +67,11 @@ void mview_free(struct MailboxView **ptr)
   FREE(&mv->pattern);
   mutt_pattern_free(&mv->limit_pattern);
 
+  STAILQ_FOREACH_SAFE(np, &mvl, entries, tmp)
+  {
+    if (np->mailbox == mv->mailbox)
+      STAILQ_REMOVE(&mvl, np, MailboxView, entries);
+  }
   *ptr = NULL;
   FREE(&mv);
 }

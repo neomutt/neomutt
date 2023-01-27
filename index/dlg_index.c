@@ -695,7 +695,20 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
   const OpenMailboxFlags flags = read_only ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS;
   if (mx_mbox_open(m, flags))
   {
-    struct MailboxView *mv = mview_new(m, NeoMutt->notify);
+    struct MailboxView *mv = NULL, *np = NULL;
+    STAILQ_FOREACH(np, &mvl, entries)
+    {
+      if (np->mailbox == m)
+      {
+        mv = np;
+        break;
+      }
+    }
+    if (!mv)
+    {
+      mv = mview_new(m, NeoMutt->notify);
+      STAILQ_INSERT_TAIL(&mvl, mv, entries);
+    }
     index_shared_data_set_mview(shared, mv);
 
     menu->max = m->msg_count;
@@ -1068,7 +1081,9 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
   index_adjust_sort_threads(NeoMutt->sub);
 
   struct IndexSharedData *shared = dlg->wdata;
-  index_shared_data_set_mview(shared, mview_new(m_init, NeoMutt->notify));
+  struct MailboxView *mv = mview_new(m_init, NeoMutt->notify);
+  STAILQ_INSERT_TAIL(&mvl, mv, entries);
+  index_shared_data_set_mview(shared, mv);
 
   struct MuttWindow *panel_index = window_find_child(dlg, WT_INDEX);
 
