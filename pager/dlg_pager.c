@@ -574,10 +574,6 @@ int mutt_pager(struct PagerView *pview)
   // END OF ACT 3: Read user input loop - while (op != OP_ABORT)
   //-------------------------------------------------------------------------
 
-  if (check_read_delay(&priv->delay_read_timestamp))
-  {
-    mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true);
-  }
   mutt_file_fclose(&priv->fp);
   if (pview->mode == PAGER_MODE_EMAIL)
   {
