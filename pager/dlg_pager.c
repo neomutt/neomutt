@@ -384,11 +384,6 @@ int mutt_pager(struct PagerView *pview)
   priv->loop = PAGER_LOOP_CONTINUE;
   do
   {
-    if (check_read_delay(&priv->delay_read_timestamp))
-    {
-      mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true);
-    }
-
     pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
     window_redraw(NULL);
@@ -522,6 +517,16 @@ int mutt_pager(struct PagerView *pview)
     // Some OP codes are not handled by pager, they cause pager to quit returning
     // OP code to index. Index handles the operation and then restarts pager
     op = km_dokey(MENU_PAGER);
+
+    // km_dokey() can block, so recheck the timer.
+    // Note: This check must occur before handling the operations of the index
+    // as those can change the currently selected message/entry yielding to
+    // marking the wrong message as read.
+    if (check_read_delay(&priv->delay_read_timestamp))
+    {
+      mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true);
+    }
+
     if (SigWinch)
       priv->pager_redraw = true;
 
