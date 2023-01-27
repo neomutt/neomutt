@@ -324,6 +324,16 @@ bool mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     }
   }
 
+  const bool c_keep_mailbox = cs_subset_bool(NeoMutt->sub, "keep_mailbox");
+  if (c_keep_mailbox && m->opened && ((flags & (MUTT_APPEND | MUTT_NEWFOLDER)) == 0))
+  {
+    /* update tables, they may have changed in the background */
+    mailbox_changed(m, NT_MAILBOX_UPDATE);
+    mailbox_changed(m, NT_MAILBOX_INVALID);
+
+    return true;
+  }
+
   m->verbose = !(flags & MUTT_QUIET);
   m->readonly = (flags & MUTT_READONLY);
   m->peekonly = (flags & MUTT_PEEK);
@@ -435,7 +445,12 @@ void mx_fastclose_mailbox(struct Mailbox *m, bool keep_account)
   if (!m)
     return;
 
-  m->opened--;
+  const bool c_keep_mailbox = cs_subset_bool(NeoMutt->sub, "keep_mailbox");
+  if (!c_keep_mailbox || (c_keep_mailbox && m->append))
+  {
+    m->opened--;
+  }
+
   if (m->opened != 0)
     return;
 

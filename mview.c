@@ -54,10 +54,14 @@ void mview_free(struct MailboxView **ptr)
     return;
 
   struct MailboxView *mv = *ptr, *np, *tmp;
+  const bool c_keep_mailbox = cs_subset_bool(NeoMutt->sub, "keep_mailbox");
 
   struct EventMview ev_m = { mv };
   mutt_debug(LL_NOTIFY, "NT_MVIEW_DELETE: %p\n", (void *) mv);
   notify_send(mv->notify, NT_MVIEW, NT_MVIEW_DELETE, &ev_m);
+
+  if (c_keep_mailbox && mv->mailbox->opened)
+    return;
 
   if (mv->mailbox)
     notify_observer_remove(mv->mailbox->notify, mview_mailbox_observer, mv);
