@@ -10352,11 +10352,12 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
           When you select a message from the index and view it in the pager,
           NeoMutt decodes as much of a message as possible to a text
           representation. NeoMutt internally supports a number of MIME types,
-          including the <literal>text</literal> major type (with all minor
-          types), the <literal>message/rfc822</literal> (mail messages) type
-          and some <literal>multipart</literal> types. In addition, it
-          recognizes a variety of PGP MIME types, including PGP/MIME and
-          <literal>application/pgp</literal>.
+          including the <literal>text/plain</literal> type, the
+          <literal>message/rfc822</literal> (mail messages) type and some
+          <literal>multipart</literal> types. In addition, it recognizes
+          a variety of PGP MIME and S/MIME types, including PGP/MIME and
+          <literal>application/pgp</literal>, and
+          <literal>application/pkcs7-mime</literal>.
         </para>
         <para>
           NeoMutt will denote attachments with a couple lines describing them.
