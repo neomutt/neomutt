@@ -726,6 +726,7 @@ the list of all score entries.
 \fBunset\fP \fIvariable\fP  [ \fIvariable\fP ... ]
 \fBreset\fP \fIvariable\fP  [ \fIvariable\fP ... ]
 \fBtoggle\fP \fIvariable\fP [ \fIvariable\fP ... ]
+\fBset\fP \fIvariable\fP \fB?\fP
 .fi
 .IP
 These commands are used to set and manipulate configuration \fIvariable\fPs.
@@ -764,8 +765,10 @@ defaults. With the \fBreset\fP command there exists the special \fIvariable\fP
 defaults.
 .IP
 Using the <\fBenter-command\fP> function, you can query the \fIvalue\fP of
-a \fIvariable\fP by prefixing the name of the \fIvariable\fP with a question
-mark: \(dq:\fBset\~?\fPallow_8bit\(dq.
+a \fIvariable\fP by suffixing the name of the \fIvariable\fP with a question
+mark: \(dq:\fBset\fP\~allow_8bit\fB?\fP\(dq.
+The old prefix query syntax (\(dq:\fBset\fP\~\fB?\fPallow_8bit\(dq) is also
+still supported.
 .
 .PP
 .nf
