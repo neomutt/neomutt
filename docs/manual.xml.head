@@ -6921,6 +6921,13 @@ set spam_separator=", "
           <arg choice="opt" rep="repeat">
             <replaceable class="parameter">variable</replaceable>
           </arg>
+          <command>set</command>
+          <arg choice="plain">
+            <replaceable class="parameter">variable</replaceable>
+          </arg>
+          <arg choice="plain">
+            <option>?</option>
+          </arg>
         </cmdsynopsis>
         <para>
           This command is used to set (and unset)
@@ -6975,6 +6982,10 @@ set spam_separator=", "
           mark:
         </para>
         <screen>set allow_8bit?</screen>
+        <para>
+          The old prefix query syntax (<literal><command>set</command>
+          ?allow_8bit</literal>) is also still supported.
+        </para>
         <para>
           The question mark is actually only required for boolean and
           quadoption variables.
