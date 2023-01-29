@@ -2960,7 +2960,10 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
         <sect3 id="fcc-header">
           <title>Fcc: Pseudo Header</title>
           <para>
-            If you specify
+            If you specify either of
+          </para>
+          <para>
+            <literal>Mutt-Fcc:</literal> <emphasis>filename</emphasis>
           </para>
           <para>
             <literal>Fcc:</literal> <emphasis>filename</emphasis>
@@ -2976,7 +2979,11 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
         <sect3 id="attach-header">
           <title>Attach: Pseudo Header</title>
           <para>
-            You can also attach files to your message by specifying
+            You can also attach files to your message by specifying either of
+          </para>
+          <para>
+            <literal>Mutt-Attach:</literal>
+            <emphasis>filename</emphasis> [<emphasis>description</emphasis>]
           </para>
           <para>
             <literal>Attach:</literal>
@@ -2994,7 +3001,14 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
         <sect3 id="pgp-header">
           <title>Pgp: Pseudo Header</title>
           <para>
-            If you want to use PGP, you can specify
+            If you want to use PGP, you can specify either of
+          </para>
+          <para>
+            <literal>Mutt-PGP:</literal> [
+            <literal>E</literal> |
+            <literal>S</literal> |
+            <literal>S</literal>
+            <emphasis>&lt;id&gt;</emphasis> ]
           </para>
           <para>
             <literal>Pgp:</literal> [
@@ -3015,7 +3029,14 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
         <sect3 id="smime-header">
           <title>Smime: Pseudo Header</title>
           <para>
-            If you want to use S/MIME, you can specify
+            If you want to use S/MIME, you can specify either of
+          </para>
+          <para>
+            <literal>Mutt-SMIME:</literal> [
+            <literal>E</literal> |
+            <literal>S</literal> |
+            <literal>S</literal>
+            <emphasis>&lt;id&gt;</emphasis> ]
           </para>
           <para>
             <literal>Smime:</literal> [
