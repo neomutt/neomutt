@@ -376,6 +376,22 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
       }
       keep = false;
     }
+#ifdef MIXMASTER
+    // Check for header names: most specific first
+    else if ((plen = mutt_istr_startswith(np->data, "X-Mutt-Mix:")) ||
+             (plen = mutt_istr_startswith(np->data, "Mutt-Mix:")))
+    {
+      mutt_list_free(&e->chain);
+
+      char *t = strtok(np->data + plen, ", \t\n");
+      while (t)
+      {
+        mutt_list_insert_tail(&e->chain, mutt_str_dup(t));
+        t = strtok(NULL, ", \t\n");
+      }
+      keep = false;
+    }
+#endif
 
     if (!keep)
     {
