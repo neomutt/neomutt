@@ -43,11 +43,11 @@
  * | :--------------------- | :-------------- | :---------------------------------------- |
  * | @subpage store_bdb     | store/bdb.c     | https://en.wikipedia.org/wiki/Berkeley_DB |
  * | @subpage store_gdbm    | store/gdbm.c    | https://www.gnu.org.ua/software/gdbm/     |
- * | @subpage store_kc      | store/kc.c      | https://fallabs.com/kyotocabinet/         |
+ * | @subpage store_kc      | store/kc.c      | https://dbmx.net/kyotocabinet/            |
  * | @subpage store_lmdb    | store/lmdb.c    | https://symas.com/lmdb/                   |
- * | @subpage store_qdbm    | store/qdbm.c    | https://fallabs.com/qdbm/                 |
+ * | @subpage store_qdbm    | store/qdbm.c    | https://dbmx.net/qdbm/                    |
  * | @subpage store_rocksdb | store/rocksdb.c | https://rocksdb.org/                      |
- * | @subpage store_tc      | store/tc.c      | https://fallabs.com/tokyocabinet/         |
+ * | @subpage store_tc      | store/tc.c      | https://dbmx.net/tokyocabinet/            |
  * | @subpage store_tdb     | store/tdb.c     | https://tdb.samba.org/                    |
  */
 

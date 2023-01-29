@@ -27,7 +27,7 @@
  * @page store_kc Kyoto Cabinet
  *
  * Kyoto Cabinet backend for the key/value Store.
- * https://fallabs.com/kyotocabinet/
+ * https://dbmx.net/kyotocabinet/
  */
 
 #include "config.h"
