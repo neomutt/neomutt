@@ -47,8 +47,8 @@
  * | @subpage store_lmdb    | store/lmdb.c    | https://symas.com/lmdb/                   |
  * | @subpage store_qdbm    | store/qdbm.c    | https://fallabs.com/qdbm/                 |
  * | @subpage store_rocksdb | store/rocksdb.c | https://rocksdb.org/                      |
- * | @subpage store_tc      | store/tc.c      | https://tdb.samba.org/                    |
- * | @subpage store_tdb     | store/tdb.c     | https://fallabs.com/tokyocabinet/         |
+ * | @subpage store_tc      | store/tc.c      | https://fallabs.com/tokyocabinet/         |
+ * | @subpage store_tdb     | store/tdb.c     | https://tdb.samba.org/                    |
  */
 
 #ifndef MUTT_STORE_LIB_H
