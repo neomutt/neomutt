@@ -3496,7 +3496,7 @@ msgstr ""
 #: main.c:277
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
 msgstr ""
-"  neomutt [-n] [-e <comando>] [-F <config>] -d <nivel> -l <archivo>"</p>
+"  neomutt [-n] [-e <comando>] [-F <config>] -d <nivel> -l <archivo>"
 
 #: main.c:278
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
