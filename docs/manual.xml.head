@@ -14768,7 +14768,7 @@ set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
             </term>
             <listitem>
               <para>
-                <ulink url="http://fallabs.com/kyotocabinet/">Kyoto Cabinet libraries</ulink>
+                <ulink url="https://dbmx.net/kyotocabinet/">Kyoto Cabinet libraries</ulink>
               </para>
             </listitem>
           </varlistentry>
@@ -14816,7 +14816,7 @@ set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
           </listitem>
           <listitem>
             <para>
-              <ulink url="http://fallabs.com/kyotocabinet/">Kyoto Cabinet</ulink>
+              <ulink url="https://dbmx.net/kyotocabinet/">Kyoto Cabinet</ulink>
             </para>
           </listitem>
         </itemizedlist>

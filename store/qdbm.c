@@ -27,7 +27,7 @@
  * @page store_qdbm Quick Database Manager (QDBM)
  *
  * Quick Database Manager (QDBM) backend for the key/value Store.
- * https://fallabs.com/qdbm/
+ * https://dbmx.net/qdbm/
  */
 
 #include "config.h"

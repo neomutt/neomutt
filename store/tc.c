@@ -27,7 +27,7 @@
  * @page store_tc Tokyo Cabinet
  *
  * Tokyo Cabinet backend for the key/value Store.
- * https://fallabs.com/tokyocabinet/
+ * https://dbmx.net/tokyocabinet/
  */
 
 #include "config.h"
