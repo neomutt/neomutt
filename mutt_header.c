@@ -287,7 +287,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   STAILQ_FOREACH_SAFE(np, &e->env->userhdrs, entries, tmp)
   {
     bool keep = true;
-    size_t plen;
+    size_t plen = 0;
 
     // Check for header names: most specific first
     if (fcc && ((plen = mutt_istr_startswith(np->data, "X-Mutt-Fcc:")) ||
