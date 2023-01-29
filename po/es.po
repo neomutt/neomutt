@@ -109,11 +109,11 @@ msgstr "Recuperar"
 
 #: alias/dlg_alias.c:104 alias/dlg_query.c:104
 msgid "Sort"
-msgstr ""
+msgstr "Ordenar"
 
 #: alias/dlg_alias.c:105 alias/dlg_query.c:105
 msgid "Rev-Sort"
-msgstr ""
+msgstr "Ordenar al revés"
 
 #: alias/dlg_alias.c:106 history/dlg_history.c:78 ncrypt/dlg_gpgme.c:97
 #: ncrypt/dlg_pgp.c:97 ncrypt/dlg_smime.c:76 pattern/dlg_pattern.c:92
@@ -179,17 +179,17 @@ msgstr "Limitar a mensajes que coincidan con: "
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:270
 msgid "Rev-Sort (a)lias, a(d)dress or (u)nsorted?"
-msgstr ""
+msgstr "Ordenar al revés (a)lias (d)irección o (u)desordenado"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: alias/functions.c:272
 msgid "Sort (a)lias, a(d)dress or (u)nsorted?"
-msgstr ""
+msgstr "Ordenar según (a)lias (d)irección o (u)desordenado"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/functions.c:274
 msgid "adu"
-msgstr ""
+msgstr "adu"
 
 #. L10N: ask for a limit to apply
 #: alias/gui.c:81 index/functions.c:1583
@@ -874,7 +874,7 @@ msgstr "%s: número incorrecto: %s"
 #: color/curses.c:93
 #, c-format
 msgid "Too many colors: %d / %d"
-msgstr ""
+msgstr "Muchos colores: %d / %d"
 
 #: color/quoted.c:108
 #, c-format
@@ -948,7 +948,7 @@ msgstr "encabezado erróneo"
 #: command_parse.c:757
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
-msgstr ""
+msgstr "No puede utilizar 'inv', '&' o '?' con el comando '%s'"
 
 #: command_parse.c:791 command_parse.c:931 command_parse.c:1041
 #, c-format
@@ -957,38 +957,38 @@ msgstr "%s: variable desconocida"
 
 #: command_parse.c:806 command_parse.c:1129
 msgid "Can't use a prefix when querying a variable"
-msgstr ""
+msgstr "No puede utilizar el prefijo cuando consultas una variable"
 
 #: command_parse.c:812 command_parse.c:1109 command_parse.c:1123
 #, c-format
 msgid "Can't query a variable with the '%s' command"
-msgstr ""
+msgstr "No puedes consultar una variable con el comando '%s'"
 
 #: command_parse.c:824
 msgid "Can't use prefix when incrementing or decrementing a variable"
-msgstr ""
+msgstr "No puedes utilizar el prefijo cuando aumentas o disminuyes una variable"
 
 #: command_parse.c:830 command_parse.c:861
 #, c-format
 msgid "Can't set a variable with the '%s' command"
-msgstr ""
+msgstr "No puedes fijar una variable con el comando '%s'"
 
 #: command_parse.c:841
 msgid "Can't decrement a my_ variable"
-msgstr ""
+msgstr "No puedes disminuir un my_v ariable"
 
 #: command_parse.c:855
 msgid "Can't use prefix when setting a variable"
-msgstr ""
+msgstr "No puedes usar el prefijo cuando estas fijando una variable"
 
 #: command_parse.c:874
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
-msgstr ""
+msgstr "Prefijos 'no' y 'inv' solo puede utilizarse con variables de tipo bool/quad"
 
 #: command_parse.c:878
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
-msgstr ""
+msgstr "Comando '%s' solo puede ser utilizado con varibles de tipo bool/quad"
 
 #: command_parse.c:1161 command_parse.c:1169
 #, c-format
@@ -1030,12 +1030,12 @@ msgstr "No se especificó directorio"
 #: command_parse.c:1431
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
-msgstr ""
+msgstr "formato de etiqueta '%s' ya esta registrado como '%s'"
 
 #: command_parse.c:1473
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
-msgstr ""
+msgstr "transfomación de etiqueta '%s' ya esta registrado como '%s'"
 
 #: command_parse.c:1720 imap/imap.c:1329
 #, c-format
@@ -1364,7 +1364,7 @@ msgstr "No se puede borrar el único adjunto"
 
 #: compose/functions.c:392 compose/functions.c:406
 msgid "Attachments to be grouped must have the same parent"
-msgstr ""
+msgstr "Para agrupar adjuntos es necesario que tengan el mismo padre"
 
 #: compose/functions.c:613
 msgid "Attaching selected file..."
@@ -1404,7 +1404,7 @@ msgstr "Imposible adjuntar"
 
 #: compose/functions.c:908
 msgid "Content-ID can only contain the characters: -.0-9@A-Z_a-z"
-msgstr ""
+msgstr "Content-ID solo puede caracteres: -.0-9@A-Z_a-z"
 
 #: compose/functions.c:988
 msgid "Invalid encoding"
@@ -1451,7 +1451,7 @@ msgstr "El adjunto ya está al final"
 
 #: compose/functions.c:1234 compose/functions.c:1287
 msgid "Attachment can't be moved out of group"
-msgstr ""
+msgstr "Adjuntos no pueden ser mudados fuera del grupo"
 
 #: compose/functions.c:1282
 msgid "Attachment is already at top"
@@ -1665,12 +1665,12 @@ msgstr "Tipo de orden incorrecto: %ld"
 #: conn/accountcmd.c:79
 #, c-format
 msgid "Line is malformed: expected <key: val>, got <%s>"
-msgstr ""
+msgstr "La linea es malformada: se esperaba <key: val>, se obtuvo <%s>"
 
 #: conn/accountcmd.c:119
 #, c-format
 msgid "Unhandled key in line <%s: %s>"
-msgstr ""
+msgstr "Llave sin manejar en la linea <%s: %s>"
 
 #: conn/accountcmd.c:140
 #, fuzzy
@@ -2218,7 +2218,7 @@ msgstr "X-Comment-To: "
 
 #: envelope/window.c:128
 msgid "Headers: "
-msgstr ""
+msgstr "Encabezados: "
 
 #. L10N: Autocrypt recommendation flag: off.
 #. This is displayed when Autocrypt is turned off.
@@ -2752,7 +2752,7 @@ msgstr "Venció la conexión a %s"
 #: imap/config.c:59 pop/config.c:57 send/config.c:78
 #, c-format
 msgid "Option %s: %s is not a valid authenticator"
-msgstr ""
+msgstr "Opción %s: %s no es un autenticador válido"
 
 #: imap/imap.c:105
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
@@ -3311,7 +3311,7 @@ msgstr "No hay mensajes visibles"
 
 #: index/index.c:97
 msgid "Changing threaded display should prefer $use_threads over $sort"
-msgstr ""
+msgstr "Cambiando visualización hilada debería preferir $use_threads sobre $sort"
 
 #: init.c:91
 #, c-format
@@ -3335,7 +3335,7 @@ msgstr "%s: comando desconocido"
 #: init.c:938
 #, c-format
 msgid "Config variable '%s' is deprecated"
-msgstr ""
+msgstr "Config varible '%s' esta obsoleta"
 
 #: keymap.c:404
 #, c-format
@@ -3453,7 +3453,7 @@ msgstr "Escribiendo %s..."
 #. L10N: Try to limit to 80 columns
 #: main.c:267
 msgid "usage:"
-msgstr ""
+msgstr "uso:"
 
 #: main.c:268
 msgid ""
@@ -3461,60 +3461,76 @@ msgid ""
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 msgstr ""
+"  neomutt [-Enx] [-e <comando>] [-F <config>] [-H <borrador>] [-i <incluir>]\n"
+"          [-b <dirección>] [-c <dirección>] [-s <asunto>] [-a <archivo> [...] --]\n"
+"          <address> [...]"
 
 #: main.c:271
 msgid ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 msgstr ""
+"  neomutt [-nx] [-e <comando>] [-F <config>] [-b <dirección>] [-c <dirección>]\n"
+"          [-s <asunto>] [-a <archivo> [...] --] <dirección> [...] < mensaje"
 
 #: main.c:273
 msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
 msgstr ""
+"  neomutt [-nRy] [-e <comando>] [-F <config>] [-f <buzón>] [-m <tipo>]"
 
 #: main.c:274
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
 msgstr ""
+"  neomutt [-n] [-e <comando>] [-F <config>] -A <alias>"
 
 #: main.c:275
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
 msgstr ""
+"  neomutt [-n] [-e <comando>] [-F <config>] -B"
 
 #: main.c:276
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
 msgstr ""
+"  neomutt [-n] [-e <comando>] [-F <config>] -D [-S] [-O]"
 
 #: main.c:277
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
 msgstr ""
+"  neomutt [-n] [-e <comando>] [-F <config>] -d <nivel> -l <archivo>"</p>
 
 #: main.c:278
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
 msgstr ""
+"  neomutt [-n] [-e <comando>] [-F <config>] -G"
 
 #: main.c:279
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
 msgstr ""
+"  neomutt [-n] [-e <comando>] [-F <config>] -g <servidor>"
 
 #: main.c:280
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
 msgstr ""
+"  neomutt [-n] [-e <comando>] [-F <config>] -p"
 
 #: main.c:281
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
 msgstr ""
+"  neomutt [-n] [-e <comando>] [-F <config>] -Q <variable> [-O]"
 
 #: main.c:282
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
 msgstr ""
+"  neomutt [-n] [-e <comando>] [-F <config>] -Z"
 
 #: main.c:283
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
 msgstr ""
+"  neomutt [-n] [-e <comando>] [-F <config>] -z [-f <buzón>]"
 
 #: main.c:284
 msgid "  neomutt -v[v]\n"
-msgstr ""
+msgstr "  neomutt -v[v]\n"
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
 #: main.c:287
@@ -3563,7 +3579,7 @@ msgstr ""
 
 #: main.c:297
 msgid "  -D -O         Like -D, but show one-liner documentation"
-msgstr ""
+msgstr "  -D -O         Como -D, pero mostrar la documentación en una linea"
 
 #: main.c:298
 msgid "  -D -S         Like -D, but hide the value of sensitive variables"
@@ -4019,7 +4035,7 @@ msgstr "SSL no está disponible, imposible conectar a %s"
 #: mutt_thread.c:120
 #, c-format
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
-msgstr ""
+msgstr "No puedes utilizar el prefijo 'last-' con 'threads' para %s"
 
 #: mutt_thread.c:1344
 msgid "Parent message is not available"
@@ -5378,7 +5394,7 @@ msgstr "El grupo de noticias %s se ha eliminado del servidor"
 #: notmuch/config.c:60
 #, c-format
 msgid "nm_default_url must be: notmuch://<absolute path> . Current: %s"
-msgstr ""
+msgstr "nm_default_url debe ser: notmuch://<absolute path> . Actualmente: %s"
 
 #. L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
 #. They should not be translated.
@@ -5552,7 +5568,7 @@ msgstr "restaurar la entrada actual"
 
 #: opcodes.h:65
 msgid "ungroup 'multipart' attachment"
-msgstr ""
+msgstr "desagrupar 'multipart' adjunto"
 
 #: opcodes.h:66
 msgid "update an attachment's encoding info"
@@ -6581,7 +6597,7 @@ msgstr "Mostrando el comienzo del mensaje"
 #. display some kind of message in case it somehow occurs.)
 #: pager/functions.c:569
 msgid "No text past headers"
-msgstr ""
+msgstr "No texto después de encabezados"
 
 #: pager/functions.c:628 pager/functions.c:668
 msgid "No more unquoted text after quoted text"
@@ -7286,7 +7302,7 @@ msgstr "%s ya no existe"
 #: send/config.c:102
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
-msgstr ""
+msgstr "Opción %s no puede contener metacaracteres de terminal: %c"
 
 #: send/send.c:339
 msgid "No subject, abort?"
