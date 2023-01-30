@@ -659,7 +659,15 @@ struct tm mutt_date_localtime(time_t t)
   if (t == MUTT_DATE_NOW)
     t = mutt_date_epoch();
 
-  localtime_r(&t, &tm);
+  struct tm *ret = localtime_r(&t, &tm);
+  if (!ret)
+  {
+    mutt_debug(LL_DEBUG1, "Could not convert time_t via localtime_r() to struct tm: time_t = %jd\n",
+               (intmax_t) t);
+    struct tm default_tm = { 0 }; // 1970-01-01 00:00:00
+    mktime(&default_tm); // update derived fields making tm into a valid tm.
+    tm = default_tm;
+  }
   return tm;
 }
 
@@ -677,7 +685,15 @@ struct tm mutt_date_gmtime(time_t t)
   if (t == MUTT_DATE_NOW)
     t = mutt_date_epoch();
 
-  gmtime_r(&t, &tm);
+  struct tm *ret = gmtime_r(&t, &tm);
+  if (!ret)
+  {
+    mutt_debug(LL_DEBUG1, "Could not convert time_t via gmtime_r() to struct tm: time_t = %jd\n",
+               (intmax_t) t);
+    struct tm default_tm = { 0 }; // 1970-01-01 00:00:00
+    mktime(&default_tm); // update derived fields making tm into a valid tm.
+    tm = default_tm;
+  }
   return tm;
 }
 

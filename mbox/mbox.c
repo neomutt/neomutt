@@ -1418,8 +1418,8 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
     struct Buffer *savefile = mutt_buffer_pool_get();
 
     const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, "tmp_dir");
-    mutt_buffer_printf(savefile, "%s/neomutt.%s-%s-%u", NONULL(c_tmp_dir), NONULL(Username),
-                       NONULL(ShortHostname), (unsigned int) getpid());
+    mutt_buffer_printf(savefile, "%s/neomutt.%s-%s-%u", NONULL(c_tmp_dir),
+                       NONULL(Username), NONULL(ShortHostname), (unsigned int) getpid());
     rename(mutt_buffer_string(tempfile), mutt_buffer_string(savefile));
     mutt_sig_unblock();
     mx_fastclose_mailbox(m, false);
