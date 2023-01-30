@@ -496,9 +496,10 @@ void mutt_mktemp_full(char *buf, size_t buflen, const char *prefix,
                       const char *suffix, const char *src, int line)
 {
   const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, "tmp_dir");
-  size_t n = snprintf(buf, buflen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(c_tmp_dir),
-                      NONULL(prefix), NONULL(ShortHostname), (int) getuid(),
-                      (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));
+  size_t n = snprintf(buf, buflen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s",
+                      NONULL(c_tmp_dir), NONULL(prefix), NONULL(ShortHostname),
+                      (int) getuid(), (int) getpid(), mutt_rand64(),
+                      suffix ? "." : "", NONULL(suffix));
   if (n >= buflen)
   {
     mutt_debug(LL_DEBUG1, "%s:%d: ERROR: insufficient buffer space to hold temporary filename! buflen=%zu but need %zu\n",

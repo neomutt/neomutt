@@ -59,7 +59,7 @@ const char *state_protected_header_marker(void)
   static char marker[256] = { 0 };
   if (!marker[0])
   {
-    snprintf(marker, sizeof(marker), "\033]8;%lld\a", (long long) mutt_date_epoch());
+    snprintf(marker, sizeof(marker), "\033]8;%lld\a", (long long) mutt_date_now());
   }
   return marker;
 }

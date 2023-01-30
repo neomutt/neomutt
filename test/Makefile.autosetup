@@ -141,8 +141,8 @@ CONVERT_OBJS	= test/convert/mutt_update_content_info.o \
 
 DATE_OBJS	= test/date/mutt_date_add_timeout.o \
 		  test/date/mutt_date_check_month.o \
-		  test/date/mutt_date_epoch.o \
-		  test/date/mutt_date_epoch_ms.o \
+		  test/date/mutt_date_now.o \
+		  test/date/mutt_date_now_ms.o \
 		  test/date/mutt_date_gmtime.o \
 		  test/date/mutt_date_local_tz.o \
 		  test/date/mutt_date_localtime.o \

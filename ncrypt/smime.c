@@ -167,7 +167,7 @@ void smime_class_void_passphrase(void)
  */
 bool smime_class_valid_passphrase(void)
 {
-  const time_t now = mutt_date_epoch();
+  const time_t now = mutt_date_now();
   if (now < SmimeExpTime)
   {
     /* Use cached copy.  */

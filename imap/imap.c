@@ -1119,7 +1119,7 @@ enum MxStatus imap_check_mailbox(struct Mailbox *m, bool force)
   const bool c_imap_idle = cs_subset_bool(NeoMutt->sub, "imap_idle");
   const short c_imap_keepalive = cs_subset_number(NeoMutt->sub, "imap_keepalive");
   if (!force && c_imap_idle && (adata->capabilities & IMAP_CAP_IDLE) &&
-      ((adata->state != IMAP_IDLE) || (mutt_date_epoch() >= adata->lastread + c_imap_keepalive)))
+      ((adata->state != IMAP_IDLE) || (mutt_date_now() >= adata->lastread + c_imap_keepalive)))
   {
     if (imap_cmd_idle(adata) < 0)
       return MX_STATUS_ERROR;
@@ -1142,8 +1142,7 @@ enum MxStatus imap_check_mailbox(struct Mailbox *m, bool force)
   }
 
   const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
-  if ((force || ((adata->state != IMAP_IDLE) &&
-                 (mutt_date_epoch() >= adata->lastread + c_timeout))) &&
+  if ((force || ((adata->state != IMAP_IDLE) && (mutt_date_now() >= adata->lastread + c_timeout))) &&
       (imap_exec(adata, "NOOP", IMAP_CMD_POLL) != IMAP_EXEC_SUCCESS))
   {
     return MX_STATUS_ERROR;

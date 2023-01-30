@@ -167,8 +167,8 @@
   /* date */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_date_add_timeout)                                \
   NEOMUTT_TEST_ITEM(test_mutt_date_check_month)                                \
-  NEOMUTT_TEST_ITEM(test_mutt_date_epoch)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_date_epoch_ms)                                   \
+  NEOMUTT_TEST_ITEM(test_mutt_date_now)                                        \
+  NEOMUTT_TEST_ITEM(test_mutt_date_now_ms)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_date_gmtime)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_date_local_tz)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_date_localtime)                                  \

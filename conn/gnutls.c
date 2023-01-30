@@ -338,9 +338,9 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
   const bool c_ssl_verify_dates = cs_subset_bool(NeoMutt->sub, "ssl_verify_dates");
   if (c_ssl_verify_dates != MUTT_NO)
   {
-    if (gnutls_x509_crt_get_expiration_time(cert) < mutt_date_epoch())
+    if (gnutls_x509_crt_get_expiration_time(cert) < mutt_date_now())
       *certerr |= CERTERR_EXPIRED;
-    if (gnutls_x509_crt_get_activation_time(cert) > mutt_date_epoch())
+    if (gnutls_x509_crt_get_activation_time(cert) > mutt_date_now())
       *certerr |= CERTERR_NOTYETVALID;
   }
 

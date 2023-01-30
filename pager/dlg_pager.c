@@ -191,7 +191,7 @@ static const struct Mapping *pager_resolve_help_mapping(enum PagerMode mode, enu
  */
 static bool check_read_delay(uint64_t *timestamp)
 {
-  if ((*timestamp != 0) && (mutt_date_epoch_ms() > *timestamp))
+  if ((*timestamp != 0) && (mutt_date_now_ms() > *timestamp))
   {
     *timestamp = 0;
     return true;
@@ -318,7 +318,7 @@ int mutt_pager(struct PagerView *pview)
     }
     else
     {
-      priv->delay_read_timestamp = mutt_date_epoch_ms() + (1000 * c_pager_read_delay);
+      priv->delay_read_timestamp = mutt_date_now_ms() + (1000 * c_pager_read_delay);
     }
   }
   //---------- setup help menu ------------------------------------------------

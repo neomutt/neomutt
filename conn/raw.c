@@ -339,9 +339,9 @@ int raw_socket_poll(struct Connection *conn, time_t wait_secs)
     FD_ZERO(&rfds);
     FD_SET(conn->fd, &rfds);
 
-    uint64_t pre_t = mutt_date_epoch_ms();
+    uint64_t pre_t = mutt_date_now_ms();
     const int rc = select(conn->fd + 1, &rfds, NULL, NULL, &tv);
-    uint64_t post_t = mutt_date_epoch_ms();
+    uint64_t post_t = mutt_date_now_ms();
 
     if ((rc > 0) || ((rc < 0) && (errno != EINTR)))
       return rc;

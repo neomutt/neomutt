@@ -1865,7 +1865,7 @@ full_fcc:
     /* update received time so that when storing to a mbox-style folder
      * the From_ line contains the current time instead of when the
      * message was first postponed.  */
-    e->received = mutt_date_epoch();
+    e->received = mutt_date_now();
     rc = mutt_write_multiple_fcc(mutt_buffer_string(fcc), e, NULL, false, NULL,
                                  finalpath, sub);
     while (rc && !(flags & SEND_BATCH))
