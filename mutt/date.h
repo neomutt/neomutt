@@ -51,8 +51,8 @@ struct Tz
 
 time_t    mutt_date_add_timeout(time_t now, time_t timeout);
 int       mutt_date_check_month(const char *s);
-time_t    mutt_date_epoch(void);
-uint64_t  mutt_date_epoch_ms(void);
+time_t    mutt_date_now(void);
+uint64_t  mutt_date_now_ms(void);
 struct tm mutt_date_gmtime(time_t t);
 size_t    mutt_date_localtime_format(char *buf, size_t buflen, const char *format, time_t t);
 struct tm mutt_date_localtime(time_t t);

@@ -330,7 +330,7 @@ static int pop_fetch_headers(struct Mailbox *m)
   struct HeaderCache *hc = pop_hcache_open(adata, mailbox_path(m));
 #endif
 
-  adata->check_time = mutt_date_epoch();
+  adata->check_time = mutt_date_now();
   adata->clear_cache = false;
 
   for (int i = 0; i < m->msg_count; i++)
@@ -823,7 +823,7 @@ static enum MxStatus pop_mbox_check(struct Mailbox *m)
   struct PopAccountData *adata = pop_adata_get(m);
 
   const short c_pop_check_interval = cs_subset_number(NeoMutt->sub, "pop_check_interval");
-  if ((adata->check_time + c_pop_check_interval) > mutt_date_epoch())
+  if ((adata->check_time + c_pop_check_interval) > mutt_date_now())
     return MX_STATUS_OK;
 
   pop_logout(m);

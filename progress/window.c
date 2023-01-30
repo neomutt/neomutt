@@ -248,7 +248,7 @@ bool progress_window_update(struct MuttWindow *win, size_t pos, int percent)
       return false;
   }
 
-  const uint64_t now = mutt_date_epoch_ms();
+  const uint64_t now = mutt_date_now_ms();
   if (!time_needs_update(wdata, now))
     return false;
 

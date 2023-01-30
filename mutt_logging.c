@@ -59,7 +59,7 @@ const int NumOfLogs = 5;  ///< How many log files to rotate
 static void error_pause(void)
 {
   const short c_sleep_time = cs_subset_number(NeoMutt->sub, "sleep_time");
-  const uint64_t elapsed = mutt_date_epoch_ms() - LastError;
+  const uint64_t elapsed = mutt_date_now_ms() - LastError;
   const uint64_t sleep = c_sleep_time * S_TO_MS;
   if ((LastError == 0) || (elapsed >= sleep))
     return;
@@ -156,7 +156,7 @@ int log_disp_curses(time_t stamp, const char *file, int line,
   if ((level <= LL_ERROR) && !dupe)
   {
     OptMsgErr = true;
-    LastError = mutt_date_epoch_ms();
+    LastError = mutt_date_now_ms();
   }
   else
   {

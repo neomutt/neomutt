@@ -263,7 +263,7 @@ int maildir_commit_message(struct Mailbox *m, struct Message *msg, struct Email 
   while (true)
   {
     mutt_buffer_printf(path, "%s/%lld.R%" PRIu64 ".%s%s", subdir,
-                       (long long) mutt_date_epoch(), mutt_rand64(),
+                       (long long) mutt_date_now(), mutt_rand64(),
                        NONULL(ShortHostname), suffix);
     mutt_buffer_printf(full, "%s/%s", mailbox_path(m), mutt_buffer_string(path));
 
@@ -1509,7 +1509,7 @@ bool maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct E
   while (true)
   {
     snprintf(path, sizeof(path), "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s",
-             mailbox_path(m), subdir, (long long) mutt_date_epoch(),
+             mailbox_path(m), subdir, (long long) mutt_date_now(),
              mutt_rand64(), NONULL(ShortHostname), suffix);
 
     mutt_debug(LL_DEBUG2, "Trying %s\n", path);

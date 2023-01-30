@@ -400,7 +400,7 @@ static void set_encoding(struct Body *b, struct Content *info, struct ConfigSubs
  */
 void mutt_stamp_attachment(struct Body *a)
 {
-  a->stamp = mutt_date_epoch();
+  a->stamp = mutt_date_now();
 }
 
 /**

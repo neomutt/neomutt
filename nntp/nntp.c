@@ -1437,7 +1437,7 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
 
   struct NntpMboxData *mdata = m->mdata;
   struct NntpAccountData *adata = mdata->adata;
-  time_t now = mutt_date_epoch();
+  time_t now = mutt_date_now();
   enum MxStatus rc = MX_STATUS_OK;
   void *hc = NULL;
 
@@ -1666,7 +1666,7 @@ static int nntp_date(struct NntpAccountData *adata, time_t *now)
       }
     }
   }
-  *now = mutt_date_epoch();
+  *now = mutt_date_now();
   return 0;
 }
 
@@ -2416,7 +2416,7 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
     }
   }
 
-  adata->check_time = mutt_date_epoch();
+  adata->check_time = mutt_date_now();
   m->mdata = mdata;
   // Every known newsgroup has an mdata which is stored in adata->groups_list.
   // Currently we don't let the Mailbox free the mdata.

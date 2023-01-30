@@ -89,7 +89,7 @@ bool pgp_class_valid_passphrase(void)
     return true; /* handled by gpg-agent */
   }
 
-  if (mutt_date_epoch() < PgpExptime)
+  if (mutt_date_now() < PgpExptime)
   {
     /* Use cached copy.  */
     return true;
@@ -107,7 +107,7 @@ bool pgp_class_valid_passphrase(void)
   if (rc == 0)
   {
     const long c_pgp_timeout = cs_subset_long(NeoMutt->sub, "pgp_timeout");
-    PgpExptime = mutt_date_add_timeout(mutt_date_epoch(), c_pgp_timeout);
+    PgpExptime = mutt_date_add_timeout(mutt_date_now(), c_pgp_timeout);
     return true;
   }
   else

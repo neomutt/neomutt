@@ -873,7 +873,7 @@ static int external_body_handler(struct Body *b, struct State *s)
                     chflags, NULL, 0);
     }
   }
-  else if (expiration && (expire < mutt_date_epoch()))
+  else if (expiration && (expire < mutt_date_now()))
   {
     if (s->flags & MUTT_DISPLAY)
     {

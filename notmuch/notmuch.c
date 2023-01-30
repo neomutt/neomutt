@@ -1523,7 +1523,7 @@ int nm_read_entire_thread(struct Mailbox *m, struct Email *e)
   notmuch_query_set_sort(q, NOTMUCH_SORT_NEWEST_FIRST);
 
   read_threads_query(m, q, true, 0);
-  m->mtime.tv_sec = mutt_date_epoch();
+  m->mtime.tv_sec = mutt_date_now();
   m->mtime.tv_nsec = 0;
   rc = 0;
 
@@ -1751,7 +1751,7 @@ int nm_update_filename(struct Mailbox *m, const char *old_file,
   int rc = rename_filename(m, old_file, new_file, e);
 
   nm_db_release(m);
-  m->mtime.tv_sec = mutt_date_epoch();
+  m->mtime.tv_sec = mutt_date_now();
   m->mtime.tv_nsec = 0;
   return rc;
 }
@@ -2050,7 +2050,7 @@ static enum MxOpenReturns nm_mbox_open(struct Mailbox *m)
 
   nm_db_release(m);
 
-  m->mtime.tv_sec = mutt_date_epoch();
+  m->mtime.tv_sec = mutt_date_now();
   m->mtime.tv_nsec = 0;
 
   mdata->oldmsgcount = 0;
@@ -2182,7 +2182,7 @@ done:
 
   nm_db_release(m);
 
-  m->mtime.tv_sec = mutt_date_epoch();
+  m->mtime.tv_sec = mutt_date_now();
   m->mtime.tv_nsec = 0;
 
   mutt_debug(LL_DEBUG1, "nm: ... check done [count=%d, new_flags=%d, occult=%d]\n",
@@ -2310,7 +2310,7 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
 
   if (changed)
   {
-    m->mtime.tv_sec = mutt_date_epoch();
+    m->mtime.tv_sec = mutt_date_now();
     m->mtime.tv_nsec = 0;
   }
 
@@ -2420,7 +2420,7 @@ done:
   nm_db_release(m);
   if (e->changed)
   {
-    m->mtime.tv_sec = mutt_date_epoch();
+    m->mtime.tv_sec = mutt_date_now();
     m->mtime.tv_nsec = 0;
   }
   mutt_debug(LL_DEBUG1, "nm: tags modify done [rc=%d]\n", rc);

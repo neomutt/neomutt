@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_date_epoch_ms()
+ * Test code for mutt_date_now_ms()
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -24,7 +24,7 @@
 #include "config.h"
 #include "acutest.h"
 
-void test_mutt_date_epoch_ms(void)
+void test_mutt_date_now_ms(void)
 {
-  // uint64_t mutt_date_epoch_ms(void);
+  // uint64_t mutt_date_now_ms(void);
 }

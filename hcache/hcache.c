@@ -90,7 +90,7 @@ static void *dump(struct HeaderCache *hc, const struct Email *e, int *off, uint3
   *off = 0;
   unsigned char *d = mutt_mem_malloc(4096);
 
-  d = serial_dump_uint32_t((uidvalidity != 0) ? uidvalidity : mutt_date_epoch(), d, off);
+  d = serial_dump_uint32_t((uidvalidity != 0) ? uidvalidity : mutt_date_now(), d, off);
   d = serial_dump_int(hc->crc, d, off);
 
   assert((size_t) *off == header_size());

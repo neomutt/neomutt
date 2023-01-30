@@ -240,7 +240,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         else
         {
           static const time_t one_year = 31536000;
-          t_fmt = ((mutt_date_epoch() - folder->ff->mtime) < one_year) ? "%b %d %H:%M" : "%b %d  %Y";
+          t_fmt = ((mutt_date_now() - folder->ff->mtime) < one_year) ? "%b %d %H:%M" : "%b %d  %Y";
         }
 
         if (!do_locales)

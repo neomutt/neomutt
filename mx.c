@@ -1081,7 +1081,7 @@ struct Message *mx_msg_open_new(struct Mailbox *m, const struct Email *e, MsgOpe
   }
 
   if (msg->received == 0)
-    msg->received = mutt_date_epoch();
+    msg->received = mutt_date_now();
 
   if (m->mx_ops->msg_open_new(m, msg, e))
   {
