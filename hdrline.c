@@ -728,7 +728,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           tm = mutt_date_localtime(e->received);
         else if (op == '<')
         {
-          tm = mutt_date_localtime(MUTT_DATE_NOW);
+          tm = mutt_date_localtime(mutt_date_now());
         }
         else
         {

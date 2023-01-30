@@ -77,7 +77,7 @@ void crypt_current_time(struct State *s, const char *app_name)
   const bool c_crypt_timestamp = cs_subset_bool(NeoMutt->sub, "crypt_timestamp");
   if (c_crypt_timestamp)
   {
-    mutt_date_localtime_format(p, sizeof(p), _(" (current time: %c)"), MUTT_DATE_NOW);
+    mutt_date_localtime_format(p, sizeof(p), _(" (current time: %c)"), mutt_date_now());
   }
   else
     *p = '\0';

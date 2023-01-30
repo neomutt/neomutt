@@ -290,7 +290,7 @@ static const char *get_offset(struct tm *tm, const char *s, int sign)
 static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
 {
   char *p = NULL;
-  struct tm tm = mutt_date_localtime(MUTT_DATE_NOW);
+  struct tm tm = mutt_date_localtime(mutt_date_now());
   bool iso8601 = true;
 
   for (int v = 0; v < 8; v++)
@@ -527,12 +527,12 @@ bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *err)
 
     if (s[0] == '<')
     {
-      min = mutt_date_localtime(MUTT_DATE_NOW);
+      min = mutt_date_localtime(mutt_date_now());
       tm = &min;
     }
     else
     {
-      max = mutt_date_localtime(MUTT_DATE_NOW);
+      max = mutt_date_localtime(mutt_date_now());
       tm = &max;
 
       if (s[0] == '=')
@@ -594,7 +594,7 @@ bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *err)
       if (!have_min)
       { /* save base minimum and set current date, e.g. for "-3d+1d" */
         memcpy(&base_min, &min, sizeof(base_min));
-        min = mutt_date_localtime(MUTT_DATE_NOW);
+        min = mutt_date_localtime(mutt_date_now());
         min.tm_hour = 0;
         min.tm_sec = 0;
         min.tm_min = 0;

@@ -36,8 +36,6 @@ struct Buffer;
   (1970 + (((((TIME_T_MAX - 59) / 60) - 59) / 60) - 23) / 24 / 366)
 #define TM_YEAR_MIN (1970 - (TM_YEAR_MAX - 1970) - 1)
 
-#define MUTT_DATE_NOW -9999 ///< Constant representing the 'current time', see: mutt_date_gmtime(), mutt_date_localtime()
-
 /**
  * struct Tz - List of recognised Timezones
  */

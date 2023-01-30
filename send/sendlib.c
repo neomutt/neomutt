@@ -735,7 +735,7 @@ static char *gen_msgid(struct ConfigSubset *sub)
   if (!fqdn)
     fqdn = NONULL(ShortHostname);
 
-  struct tm tm = mutt_date_gmtime(MUTT_DATE_NOW);
+  struct tm tm = mutt_date_gmtime(mutt_date_now());
   snprintf(buf, sizeof(buf), "<%d%02d%02d%02d%02d%02d.%s@%s>", tm.tm_year + 1900,
            tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, rndid, fqdn);
   return mutt_str_dup(buf);
