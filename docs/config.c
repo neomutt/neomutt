@@ -2167,8 +2167,10 @@
 /*
 ** .pp
 ** If \fIset\fP, read messages marked as flagged will not be moved
-** from your spool mailbox to your $$mbox mailbox, or as a result of
-** a "$mbox-hook" command.
+** from your spool mailbox to your $$mbox mailbox or to the "mbox"
+** specified by a $mbox-hook command.
+** .pp
+** Note that $$keep_flagged only has an effect if $$move is set.
 */
 
 { "local_date_header", DT_BOOL, true },
@@ -2557,9 +2559,11 @@
 { "move", DT_QUAD, MUTT_NO },
 /*
 ** .pp
-** Controls whether or not NeoMutt will move read messages
-** from your spool mailbox to your $$mbox mailbox, or as a result of
-** a "$mbox-hook" command.
+** If this variable is \fIset\fP, then NeoMutt will move read messages
+** from your spool mailbox to your $$mbox mailbox or to the "mbox"
+** specified by a $mbox-hook command.
+** .pp
+** See also $$keep_flagged.
 */
 
 { "narrow_tree", DT_BOOL, false },
