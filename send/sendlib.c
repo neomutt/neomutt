@@ -1098,12 +1098,12 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
    * point in time.  This will allow the message to be marked as replied if
    * the same mailbox is still open.  */
   if (post && msgid)
-    fprintf(msg->fp, "X-Mutt-References: %s\n", msgid);
+    fprintf(msg->fp, "Mutt-References: %s\n", msgid);
 
   /* (postponement) save the Fcc: using a special X-Mutt- header so that
    * it can be picked up when the message is recalled */
   if (post && fcc)
-    fprintf(msg->fp, "X-Mutt-Fcc: %s\n", fcc);
+    fprintf(msg->fp, "Mutt-Fcc: %s\n", fcc);
 
   if ((m_fcc->type == MUTT_MMDF) || (m_fcc->type == MUTT_MBOX))
     fprintf(msg->fp, "Status: RO\n");
@@ -1111,7 +1111,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
   /* (postponement) if the mail is to be signed or encrypted, save this info */
   if (((WithCrypto & APPLICATION_PGP) != 0) && post && (e->security & APPLICATION_PGP))
   {
-    fputs("X-Mutt-PGP: ", msg->fp);
+    fputs("Mutt-PGP: ", msg->fp);
     if (e->security & SEC_ENCRYPT)
       fputc('E', msg->fp);
     if (e->security & SEC_OPPENCRYPT)
@@ -1138,7 +1138,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
   /* (postponement) if the mail is to be signed or encrypted, save this info */
   if (((WithCrypto & APPLICATION_SMIME) != 0) && post && (e->security & APPLICATION_SMIME))
   {
-    fputs("X-Mutt-SMIME: ", msg->fp);
+    fputs("Mutt-SMIME: ", msg->fp);
     if (e->security & SEC_ENCRYPT)
     {
       fputc('E', msg->fp);
@@ -1168,7 +1168,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
 
   if (post && !STAILQ_EMPTY(&e->chain))
   {
-    fputs("X-Mutt-Mix:", msg->fp);
+    fputs("Mutt-Mix:", msg->fp);
     struct ListNode *p = NULL;
     STAILQ_FOREACH(p, &e->chain, entries)
     {

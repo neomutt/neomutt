@@ -287,9 +287,12 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   STAILQ_FOREACH_SAFE(np, &e->env->userhdrs, entries, tmp)
   {
     bool keep = true;
-    size_t plen;
+    size_t plen = 0;
 
-    if (fcc && (plen = mutt_istr_startswith(np->data, "fcc:")))
+    // Check for header names: most specific first
+    if (fcc && ((plen = mutt_istr_startswith(np->data, "X-Mutt-Fcc:")) ||
+                (plen = mutt_istr_startswith(np->data, "Mutt-Fcc:")) ||
+                (plen = mutt_istr_startswith(np->data, "fcc:"))))
     {
       const char *p = mutt_str_skip_email_wsp(np->data + plen);
       if (*p)
@@ -299,7 +302,10 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
       }
       keep = false;
     }
-    else if ((plen = mutt_istr_startswith(np->data, "attach:")))
+    // Check for header names: most specific first
+    else if ((plen = mutt_istr_startswith(np->data, "X-Mutt-Attach:")) ||
+             (plen = mutt_istr_startswith(np->data, "Mutt-Attach:")) ||
+             (plen = mutt_istr_startswith(np->data, "attach:")))
     {
       struct Body *body2 = NULL;
       struct Body *parts = NULL;
@@ -338,8 +344,11 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
       }
       keep = false;
     }
+    // Check for header names: most specific first
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
-             (plen = mutt_istr_startswith(np->data, "pgp:")))
+             ((plen = mutt_istr_startswith(np->data, "X-Mutt-PGP:")) ||
+              (plen = mutt_istr_startswith(np->data, "Mutt-PGP:")) ||
+              (plen = mutt_istr_startswith(np->data, "pgp:"))))
     {
       SecurityFlags sec = mutt_parse_crypt_hdr(np->data + plen, false, APPLICATION_PGP);
       if (sec != SEC_NO_FLAGS)
@@ -351,8 +360,11 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
       }
       keep = false;
     }
+    // Check for header names: most specific first
     else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
-             (plen = mutt_istr_startswith(np->data, "smime:")))
+             ((plen = mutt_istr_startswith(np->data, "X-Mutt-SMIME:")) ||
+              (plen = mutt_istr_startswith(np->data, "Mutt-SMIME:")) ||
+              (plen = mutt_istr_startswith(np->data, "smime:"))))
     {
       SecurityFlags sec = mutt_parse_crypt_hdr(np->data + plen, false, APPLICATION_SMIME);
       if (sec != SEC_NO_FLAGS)
@@ -364,6 +376,22 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
       }
       keep = false;
     }
+#ifdef MIXMASTER
+    // Check for header names: most specific first
+    else if ((plen = mutt_istr_startswith(np->data, "X-Mutt-Mix:")) ||
+             (plen = mutt_istr_startswith(np->data, "Mutt-Mix:")))
+    {
+      mutt_list_free(&e->chain);
+
+      char *t = strtok(np->data + plen, ", \t\n");
+      while (t)
+      {
+        mutt_list_insert_tail(&e->chain, mutt_str_dup(t));
+        t = strtok(NULL, ", \t\n");
+      }
+      keep = false;
+    }
+#endif
 
     if (!keep)
     {
