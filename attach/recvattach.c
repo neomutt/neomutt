@@ -435,7 +435,30 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
     }
     if (!tag || top->tagged)
     {
-      if (!c_attach_split)
+      if (c_attach_split)
+      {
+        if (tag && menu && top->aptr)
+        {
+          menu_set_index(menu, top->aptr->num);
+          menu_queue_redraw(menu, MENU_REDRAW_MOTION);
+
+          menu_redraw(menu);
+        }
+        if (c_attach_save_without_prompting)
+        {
+          // Save each file, with no prompting, using the configured 'AttachSaveDir'
+          rc = save_without_prompting(fp, top, e);
+          if (rc == 0)
+            saved_attachments++;
+        }
+        else
+        {
+          // Save each file, prompting the user for the location each time.
+          if (query_save_attachment(fp, top, e, &directory) == -1)
+            break;
+        }
+      }
+      else
       {
         if (mutt_buffer_is_empty(buf))
         {
@@ -469,29 +492,6 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
             fprintf(fp_out, "%s", c_attach_sep);
             mutt_file_fclose(&fp_out);
           }
-        }
-      }
-      else
-      {
-        if (tag && menu && top->aptr)
-        {
-          menu_set_index(menu, top->aptr->num);
-          menu_queue_redraw(menu, MENU_REDRAW_MOTION);
-
-          menu_redraw(menu);
-        }
-        if (c_attach_save_without_prompting)
-        {
-          // Save each file, with no prompting, using the configured 'AttachSaveDir'
-          rc = save_without_prompting(fp, top, e);
-          if (rc == 0)
-            saved_attachments++;
-        }
-        else
-        {
-          // Save each file, prompting the user for the location each time.
-          if (query_save_attachment(fp, top, e, &directory) == -1)
-            break;
         }
       }
     }
