@@ -848,21 +848,21 @@ void nntp_clear_cache(struct NntpAccountData *adata)
 {
   char file[PATH_MAX] = { 0 };
   char *fp = NULL;
-  struct dirent *entry = NULL;
-  DIR *dp = NULL;
+  struct dirent *de = NULL;
+  DIR *dir = NULL;
 
   if (!adata || !adata->cacheable)
     return;
 
   cache_expand(file, sizeof(file), &adata->conn->account, NULL);
-  dp = mutt_file_opendir(file, MUTT_OPENDIR_NONE);
-  if (dp)
+  dir = mutt_file_opendir(file, MUTT_OPENDIR_NONE);
+  if (dir)
   {
     mutt_strn_cat(file, sizeof(file), "/", 1);
     fp = file + strlen(file);
-    while ((entry = readdir(dp)))
+    while ((de = readdir(dir)))
     {
-      char *group = entry->d_name;
+      char *group = de->d_name;
       struct stat st = { 0 };
       struct NntpMboxData *mdata = NULL;
       struct NntpMboxData tmp_mdata;
@@ -906,7 +906,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
         mutt_debug(LL_DEBUG2, "%s\n", file);
       }
     }
-    closedir(dp);
+    closedir(dir);
   }
 }
 
@@ -1149,16 +1149,16 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
   /* check cache files */
   if ((rc >= 0) && adata->cacheable)
   {
-    struct dirent *entry = NULL;
-    DIR *dp = mutt_file_opendir(file, MUTT_OPENDIR_NONE);
+    struct dirent *de = NULL;
+    DIR *dir = mutt_file_opendir(file, MUTT_OPENDIR_NONE);
 
-    if (dp)
+    if (dir)
     {
-      while ((entry = readdir(dp)))
+      while ((de = readdir(dir)))
       {
         struct HeaderCache *hc = NULL;
         char *hdata = NULL;
-        char *group = entry->d_name;
+        char *group = de->d_name;
 
         char *p = group + strlen(group) - 7;
         if ((strlen(group) < 8) || (strcmp(p, ".hcache") != 0))
@@ -1197,7 +1197,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
         }
         mutt_hcache_close(hc);
       }
-      closedir(dp);
+      closedir(dir);
     }
   }
 #endif

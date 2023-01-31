@@ -168,10 +168,10 @@ int mh_check_empty(const char *path)
   struct dirent *de = NULL;
   int rc = 1; /* assume empty until we find a message */
 
-  DIR *dp = mutt_file_opendir(path, MUTT_OPENDIR_NONE);
-  if (!dp)
+  DIR *dir = mutt_file_opendir(path, MUTT_OPENDIR_NONE);
+  if (!dir)
     return -1;
-  while ((de = readdir(dp)))
+  while ((de = readdir(dir)))
   {
     if (mh_valid_message(de->d_name))
     {
@@ -179,7 +179,7 @@ int mh_check_empty(const char *path)
       break;
     }
   }
-  closedir(dp);
+  closedir(dir);
 
   return rc;
 }
@@ -190,7 +190,7 @@ int mh_check_empty(const char *path)
 static enum MxStatus mh_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   struct MhSequences mhs = { 0 };
-  DIR *dirp = NULL;
+  DIR *dir = NULL;
   struct dirent *de = NULL;
 
   /* when $mail_check_recent is set and the .mh_sequences file hasn't changed
@@ -236,17 +236,17 @@ static enum MxStatus mh_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 
   mh_seq_free(&mhs);
 
-  dirp = mutt_file_opendir(mailbox_path(m), MUTT_OPENDIR_NONE);
-  if (dirp)
+  dir = mutt_file_opendir(mailbox_path(m), MUTT_OPENDIR_NONE);
+  if (dir)
   {
-    while ((de = readdir(dirp)))
+    while ((de = readdir(dir)))
     {
       if (*de->d_name == '.')
         continue;
       if (mh_valid_message(de->d_name))
         m->msg_count++;
     }
-    closedir(dirp);
+    closedir(dir);
   }
 
   return rc;
@@ -304,15 +304,15 @@ int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e, bool 
     return -1;
   }
 
-  DIR *dirp = mutt_file_opendir(mailbox_path(m), MUTT_OPENDIR_NONE);
-  if (!dirp)
+  DIR *dir = mutt_file_opendir(mailbox_path(m), MUTT_OPENDIR_NONE);
+  if (!dir)
   {
     mutt_perror(mailbox_path(m));
     return -1;
   }
 
   /* figure out what the next message number is */
-  while ((de = readdir(dirp)))
+  while ((de = readdir(dir)))
   {
     dep = de->d_name;
     if (*dep == ',')
@@ -332,7 +332,7 @@ int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e, bool 
         hi = n;
     }
   }
-  closedir(dirp);
+  closedir(dir);
 
   /* Now try to rename the file to the proper name.
    * Note: We may have to try multiple times, until we find a free slot.  */
@@ -509,14 +509,14 @@ int mh_parse_dir(struct Mailbox *m, struct MdEmailArray *mda, struct Progress *p
   struct Buffer *buf = mutt_buffer_pool_get();
   mutt_buffer_strcpy(buf, mailbox_path(m));
 
-  DIR *dirp = mutt_file_opendir(mutt_buffer_string(buf), MUTT_OPENDIR_NONE);
-  if (!dirp)
+  DIR *dir = mutt_file_opendir(mutt_buffer_string(buf), MUTT_OPENDIR_NONE);
+  if (!dir)
   {
     rc = -1;
     goto cleanup;
   }
 
-  while (((de = readdir(dirp))) && !SigInt)
+  while (((de = readdir(dir))) && !SigInt)
   {
     if (!mh_valid_message(de->d_name))
       continue;
@@ -538,7 +538,7 @@ int mh_parse_dir(struct Mailbox *m, struct MdEmailArray *mda, struct Progress *p
     ARRAY_ADD(mda, entry);
   }
 
-  closedir(dirp);
+  closedir(dir);
 
   if (SigInt)
   {

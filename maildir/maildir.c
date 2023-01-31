@@ -86,7 +86,7 @@ struct Progress;
 static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
                               bool check_new, bool check_stats)
 {
-  DIR *dirp = NULL;
+  DIR *dir = NULL;
   struct dirent *de = NULL;
   char *p = NULL;
   struct stat st = { 0 };
@@ -110,14 +110,14 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
   if (!(check_new || check_stats))
     goto cleanup;
 
-  dirp = mutt_file_opendir(mutt_buffer_string(path), MUTT_OPENDIR_CREATE);
-  if (!dirp)
+  dir = mutt_file_opendir(mutt_buffer_string(path), MUTT_OPENDIR_CREATE);
+  if (!dir)
   {
     m->type = MUTT_UNKNOWN;
     goto cleanup;
   }
 
-  while ((de = readdir(dirp)))
+  while ((de = readdir(dir)))
   {
     if (*de->d_name == '.')
       continue;
@@ -157,7 +157,7 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
     }
   }
 
-  closedir(dirp);
+  closedir(dir);
 
 cleanup:
   mutt_buffer_pool_release(&path);
@@ -524,14 +524,14 @@ static int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
   mutt_buffer_printf(buf, "%s/%s", mailbox_path(m), subdir);
   is_old = mutt_str_equal("cur", subdir);
 
-  DIR *dirp = mutt_file_opendir(mutt_buffer_string(buf), MUTT_OPENDIR_CREATE);
-  if (!dirp)
+  DIR *dir = mutt_file_opendir(mutt_buffer_string(buf), MUTT_OPENDIR_CREATE);
+  if (!dir)
   {
     rc = -1;
     goto cleanup;
   }
 
-  while (((de = readdir(dirp))) && !SigInt)
+  while (((de = readdir(dir))) && !SigInt)
   {
     if (*de->d_name == '.')
       continue;
@@ -558,7 +558,7 @@ static int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
     ARRAY_ADD(mda, entry);
   }
 
-  closedir(dirp);
+  closedir(dir);
 
   if (SigInt)
   {
@@ -754,7 +754,7 @@ void maildir_canon_filename(struct Buffer *dest, const char *src)
 static FILE *maildir_open_find_message_dir(const char *folder, const char *unique,
                                            const char *subfolder, char **newname)
 {
-  struct Buffer *dir = mutt_buffer_pool_get();
+  struct Buffer *dirname = mutt_buffer_pool_get();
   struct Buffer *tunique = mutt_buffer_pool_get();
   struct Buffer *fname = mutt_buffer_pool_get();
 
@@ -763,16 +763,16 @@ static FILE *maildir_open_find_message_dir(const char *folder, const char *uniqu
   FILE *fp = NULL;
   int oe = ENOENT;
 
-  mutt_buffer_printf(dir, "%s/%s", folder, subfolder);
+  mutt_buffer_printf(dirname, "%s/%s", folder, subfolder);
 
-  DIR *dp = mutt_file_opendir(mutt_buffer_string(dir), MUTT_OPENDIR_CREATE);
-  if (!dp)
+  DIR *dir = mutt_file_opendir(mutt_buffer_string(dirname), MUTT_OPENDIR_CREATE);
+  if (!dir)
   {
     errno = ENOENT;
     goto cleanup;
   }
 
-  while ((de = readdir(dp)))
+  while ((de = readdir(dir)))
   {
     maildir_canon_filename(tunique, de->d_name);
 
@@ -785,7 +785,7 @@ static FILE *maildir_open_find_message_dir(const char *folder, const char *uniqu
     }
   }
 
-  closedir(dp);
+  closedir(dir);
 
   if (newname && fp)
     *newname = mutt_buffer_strdup(fname);
@@ -793,7 +793,7 @@ static FILE *maildir_open_find_message_dir(const char *folder, const char *uniqu
   errno = oe;
 
 cleanup:
-  mutt_buffer_pool_release(&dir);
+  mutt_buffer_pool_release(&dirname);
   mutt_buffer_pool_release(&tunique);
   mutt_buffer_pool_release(&fname);
 
@@ -1040,7 +1040,7 @@ cleanup:
  */
 int maildir_check_empty(const char *path)
 {
-  DIR *dp = NULL;
+  DIR *dir = NULL;
   struct dirent *de = NULL;
   int rc = 1; /* assume empty until we find a message */
   char realpath[PATH_MAX] = { 0 };
@@ -1053,10 +1053,10 @@ int maildir_check_empty(const char *path)
     /* we do "cur" on the first iteration since it's more likely that we'll
      * find old messages without having to scan both subdirs */
     snprintf(realpath, sizeof(realpath), "%s/%s", path, (iter == 0) ? "cur" : "new");
-    dp = mutt_file_opendir(realpath, MUTT_OPENDIR_CREATE);
-    if (!dp)
+    dir = mutt_file_opendir(realpath, MUTT_OPENDIR_CREATE);
+    if (!dir)
       return -1;
-    while ((de = readdir(dp)))
+    while ((de = readdir(dir)))
     {
       if (*de->d_name != '.')
       {
@@ -1064,7 +1064,7 @@ int maildir_check_empty(const char *path)
         break;
       }
     }
-    closedir(dp);
+    closedir(dir);
     iter++;
   } while (rc && iter < 2);
 
