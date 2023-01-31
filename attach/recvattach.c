@@ -460,10 +460,10 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
       }
       else
       {
+        enum SaveAttach opt = MUTT_SAVE_NO_FLAGS;
+
         if (mutt_buffer_is_empty(buf))
         {
-          enum SaveAttach opt = MUTT_SAVE_NO_FLAGS;
-
           mutt_buffer_strcpy(buf, mutt_path_basename(NONULL(top->filename)));
           prepend_savedir(buf);
 
@@ -476,22 +476,17 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           mutt_buffer_expand_path(buf);
           if (mutt_check_overwrite(top->filename, mutt_buffer_string(buf), tfile, &opt, NULL))
             goto cleanup;
-          rc = save_attachment_flowed_helper(fp, top, mutt_buffer_string(tfile), opt, e);
-          if ((rc == 0) && c_attach_sep && (fp_out = fopen(mutt_buffer_string(tfile), "a")))
-          {
-            fprintf(fp_out, "%s", c_attach_sep);
-            mutt_file_fclose(&fp_out);
-          }
         }
         else
         {
-          rc = save_attachment_flowed_helper(fp, top, mutt_buffer_string(tfile),
-                                             MUTT_SAVE_APPEND, e);
-          if ((rc == 0) && c_attach_sep && (fp_out = fopen(mutt_buffer_string(tfile), "a")))
-          {
-            fprintf(fp_out, "%s", c_attach_sep);
-            mutt_file_fclose(&fp_out);
-          }
+          opt = MUTT_SAVE_APPEND;
+        }
+
+        rc = save_attachment_flowed_helper(fp, top, mutt_buffer_string(tfile), opt, e);
+        if ((rc == 0) && c_attach_sep && (fp_out = fopen(mutt_buffer_string(tfile), "a")))
+        {
+          fprintf(fp_out, "%s", c_attach_sep);
+          mutt_file_fclose(&fp_out);
         }
       }
     }
