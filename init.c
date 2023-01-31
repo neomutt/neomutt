@@ -42,7 +42,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
-#include "conn/lib.h" // IWYU pragma: keep
+#include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "init.h"

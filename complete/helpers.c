@@ -35,7 +35,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "conn/lib.h" // IWYU pragma: keep
+#include "conn/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "notmuch/lib.h"

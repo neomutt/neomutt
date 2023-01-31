@@ -25,7 +25,7 @@
 
 #include <stdbool.h>
 #include <time.h>
-#include "private.h" // IWYU pragma: keep
+#include "private.h"
 #include "mutt/lib.h"
 
 struct Account;

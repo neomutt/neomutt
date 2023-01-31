@@ -28,7 +28,7 @@
 #include "color/lib.h"
 
 #ifdef HAVE_NCURSESW_NCURSES_H
-#include <ncursesw/ncurses.h> // IWYU pragma: keep
+#include <ncursesw/ncurses.h>
 #elif defined(HAVE_NCURSES_NCURSES_H)
 #include <ncurses/ncurses.h>
 #elif defined(HAVE_NCURSES_H)

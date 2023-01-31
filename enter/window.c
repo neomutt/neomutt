@@ -47,7 +47,6 @@
 #include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
-#include "state.h" // IWYU pragma: keep
 #include "wdata.h"
 
 /// Help Bar for the Command Line Editor

@@ -28,7 +28,7 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <inttypes.h> // IWYU pragma: keep
+#include <inttypes.h>
 #include <stdbool.h>
 #include <sys/stat.h>
 #include "mutt/lib.h"

@@ -24,7 +24,7 @@
 #define MUTT_IMAP_MDATA_H
 
 #include <stdint.h>
-#include "private.h" // IWYU pragma: keep
+#include "private.h"
 #include "mutt/lib.h"
 
 struct Mailbox;

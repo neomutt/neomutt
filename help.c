@@ -43,7 +43,7 @@
 #include "keymap.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "protos.h" // IWYU pragma: keep
+#include "protos.h"
 
 /**
  * help_lookup_function - Find a keybinding for an operation
