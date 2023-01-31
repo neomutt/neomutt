@@ -362,7 +362,7 @@ static void delete_hook(struct Hook *h)
  * mutt_delete_hooks - Delete matching hooks
  * @param type Hook type to delete, see #HookFlags
  *
- * If 0 is passed, all the hooks will be deleted.
+ * If MUTT_HOOK_NO_FLAGS is passed, all the hooks will be deleted.
  */
 void mutt_delete_hooks(HookFlags type)
 {
@@ -809,15 +809,15 @@ void mutt_select_fcc(struct Buffer *path, struct Email *e)
  * list_hook - Find hook strings matching
  * @param[out] matches List of hook strings
  * @param[in]  match   String to match
- * @param[in]  hook    Hook type, see #HookFlags
+ * @param[in]  type    Hook type, see #HookFlags
  */
-static void list_hook(struct ListHead *matches, const char *match, HookFlags hook)
+static void list_hook(struct ListHead *matches, const char *match, HookFlags type)
 {
   struct Hook *tmp = NULL;
 
   TAILQ_FOREACH(tmp, &Hooks, entries)
   {
-    if ((tmp->type & hook) && mutt_regex_match(&tmp->regex, match))
+    if ((tmp->type & type) && mutt_regex_match(&tmp->regex, match))
     {
       mutt_list_insert_tail(matches, mutt_str_dup(tmp->command));
     }

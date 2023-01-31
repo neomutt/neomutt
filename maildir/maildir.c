@@ -985,7 +985,7 @@ bool maildir_sync_mailbox_message(struct Mailbox *m, int msgno, struct HeaderCac
 }
 
 /**
- * maildir_open_find_message - Find a new
+ * maildir_open_find_message - Find a message by name
  * @param[in]  folder  Maildir path
  * @param[in]  msg     Email path
  * @param[out] newname New name, if it has moved
