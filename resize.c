@@ -33,6 +33,7 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #ifdef HAVE_TERMIOS_H
+#include <termios.h>
 #endif
 #ifndef HAVE_TCGETWINSIZE
 #ifdef HAVE_SYS_IOCTL_H

@@ -30,6 +30,7 @@
 #include <signal.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <sys/wait.h> // IWYU pragma: keep
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "protos.h"
