@@ -25,7 +25,7 @@
 
 struct Address;
 
-void            address_free(struct Address **addr);
+void            address_free(struct Address **ptr);
 struct Address *address_new (const char *addr);
 
 #endif /* MUTT_CONFIG_ADDRESS_H */

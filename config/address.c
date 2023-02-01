@@ -244,16 +244,18 @@ struct Address *address_new(const char *addr)
 
 /**
  * address_free - Free an Address object
- * @param[out] addr Address to free
+ * @param[out] ptr Address to free
  */
-void address_free(struct Address **addr)
+void address_free(struct Address **ptr)
 {
-  if (!addr || !*addr)
+  if (!ptr || !*ptr)
     return;
 
-  FREE(&(*addr)->personal);
-  FREE(&(*addr)->mailbox);
-  FREE(addr);
+  struct Address *addr = *ptr;
+  FREE(&addr->personal);
+  FREE(&addr->mailbox);
+
+  FREE(ptr);
 }
 
 /**
