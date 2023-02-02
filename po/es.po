@@ -79,9 +79,9 @@ msgid "alias: no address"
 msgstr "alias: sin dirección"
 
 #: alias/commands.c:77
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: Bad address '%s' in alias '%s'"
-msgstr "Aviso: IDN '%s' inválido en alias '%s'"
+msgstr "Aviso: Mala dirección '%s' en alias '%s'"
 
 #: alias/commands.c:86
 #, c-format
@@ -159,9 +159,8 @@ msgid "Waiting for response..."
 msgstr "Esperando respuesta..."
 
 #: alias/dlg_query.c:357
-#, fuzzy
 msgid "Query"
-msgstr "Buscar: "
+msgstr "Consulta"
 
 #: alias/dlg_query.c:449 alias/dlg_query.c:537
 msgid "Query command not defined"
@@ -172,9 +171,8 @@ msgid "Query: "
 msgstr "Buscar: "
 
 #: alias/functions.c:171
-#, fuzzy
 msgid "Limit to addresses matching: "
-msgstr "Limitar a mensajes que coincidan con: "
+msgstr "Limitar a direcciones que coincidan con: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:270
@@ -662,9 +660,9 @@ msgid "Autocrypt database version is too new"
 msgstr "La base de datos de autocrypt es demasiado nueva"
 
 #: bcache/bcache.c:75
-#, fuzzy, c-format
+#, c-format
 msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
-msgstr "El caché de mensajes %s no es un directorio"
+msgstr "Caché deshabilitados, $message_cache_dir no es un directorio: %s"
 
 #: bcache/bcache.c:221
 #, c-format
@@ -1198,27 +1196,23 @@ msgstr "Copiando a %s..."
 
 #. L10N: Message when an index tagged save operation fails for some reason
 #: commands.c:1066
-#, fuzzy
 msgid "Error saving tagged messages"
-msgstr "Guardando mensajes marcados..."
+msgstr "Error al guardar mensajes marcados"
 
 #. L10N: Message when an index/pager save operation fails for some reason
 #: commands.c:1071
-#, fuzzy
 msgid "Error saving message"
-msgstr "Error al enviar el mensaje"
+msgstr "Error al guardar el mensaje"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
 #: commands.c:1078
-#, fuzzy
 msgid "Error copying tagged messages"
-msgstr "Copiando mensajes marcados..."
+msgstr "Error copiando mensajes marcados..."
 
 #. L10N: Message when an index/pager copy operation fails for some reason
 #: commands.c:1083
-#, fuzzy
 msgid "Error copying message"
-msgstr "Error al rebotar el mensaje"
+msgstr "Error al copiar el mensaje"
 
 #: commands.c:1154
 #, c-format
@@ -1358,9 +1352,8 @@ msgid "You may not delete the only attachment"
 msgstr "No se puede borrar el único adjunto"
 
 #: compose/functions.c:232 compose/functions.c:424
-#, fuzzy
 msgid "Can't leave group with only one attachment"
-msgstr "No se puede borrar el único adjunto"
+msgstr "No se puede dejar el grupo con un solo adjunto"
 
 #: compose/functions.c:392 compose/functions.c:406
 msgid "Attachments to be grouped must have the same parent"
@@ -1415,14 +1408,12 @@ msgid "Empty 'Content-Language'"
 msgstr "'Content-Language' vacío"
 
 #: compose/functions.c:1089
-#, fuzzy
 msgid "Can't filter multipart attachments"
-msgstr "Suprimir sólo es soportado con archivos adjuntos tipo múltiple"
+msgstr "No se puede filtrar archivos adjuntos de varias partes"
 
 #: compose/functions.c:1124
-#, fuzzy
 msgid "Can't get multipart attachments"
-msgstr "Suprimir sólo es soportado con archivos adjuntos tipo múltiple"
+msgstr "No se puede obtener archivos adjuntos de varias partes"
 
 #: compose/functions.c:1146
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
@@ -1441,9 +1432,8 @@ msgid "Not sending this message"
 msgstr "No se envió este mensaje"
 
 #: compose/functions.c:1189
-#, fuzzy
 msgid "Grouping 'related' requires at least 2 tagged messages"
-msgstr "Agrupar como alternativo requiere al menos 2 mensajes marcados"
+msgstr "Agrupar 'related' requiere al menos 2 mensajes marcados"
 
 #: compose/functions.c:1228 compose/functions.c:1247
 msgid "Attachment is already at bottom"
@@ -1480,18 +1470,16 @@ msgid "What we have here is a failure to make an attachment"
 msgstr "Lo que tenemos aquí es un fallo al adjuntar"
 
 #: compose/functions.c:1400
-#, fuzzy
 msgid "Can't print multipart attachments"
-msgstr "¿Imprimir archivo adjunto marcado?"
+msgstr "No se puede imprimir archivos adjuntos de varias partes"
 
 #: compose/functions.c:1425
 msgid "Send attachment with name: "
 msgstr "Enviar adjuntos con nombre: "
 
 #: compose/functions.c:1450
-#, fuzzy
 msgid "Can't save multipart attachments"
-msgstr "Suprimir sólo es soportado con archivos adjuntos tipo múltiple"
+msgstr "No se puede guardar archivos adjuntos de varias partes"
 
 #: compose/functions.c:1485
 msgid "Recoding only affects text attachments"
@@ -1506,9 +1494,8 @@ msgid "The current attachment will be converted"
 msgstr "El archivo adjunto actual será convertido"
 
 #: compose/functions.c:1521
-#, fuzzy
 msgid "Attachment is not 'multipart'"
-msgstr "El adjunto ya está al principio"
+msgstr "Archivo adjunto no es 'multipart'"
 
 #: compose/functions.c:1637 send/send.c:2778
 #, c-format
@@ -1516,14 +1503,12 @@ msgid "Bad IDN in '%s': '%s'"
 msgstr "IDN inválido en '%s': '%s'"
 
 #: compose/functions.c:1670
-#, fuzzy
 msgid "Can't edit multipart attachments"
-msgstr "Suprimir sólo es soportado con archivos adjuntos tipo múltiple"
+msgstr "No se puede editar archivos adjuntos multiparte"
 
 #: compose/functions.c:1751
-#, fuzzy
 msgid "Can't rename multipart attachments"
-msgstr "Suprimir sólo es soportado con archivos adjuntos tipo múltiple"
+msgstr "No se puede renombrar archivos adjuntos multiparte"
 
 #: compose/functions.c:1757
 msgid "Rename to: "
@@ -1594,9 +1579,9 @@ msgid "Option %s may not be empty"
 msgstr "La opción %s podrá no estar vacía"
 
 #: config/long.c:55 config/long.c:151 config/long.c:187
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid long: %s"
-msgstr "Largo incorrecto: %s"
+msgstr "Número incorrecto: %s"
 
 #: config/long.c:61 config/long.c:113 config/long.c:158 config/long.c:194
 #: config/number.c:68 config/number.c:127 config/number.c:178
@@ -1673,9 +1658,8 @@ msgid "Unhandled key in line <%s: %s>"
 msgstr "Llave sin manejar en la linea <%s: %s>"
 
 #: conn/accountcmd.c:140
-#, fuzzy
 msgid "Unable to run account command"
-msgstr "Fallo al ejecutar el comando de refresco"
+msgstr "No es posible correr el comando de cuenta"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:78
@@ -2673,9 +2657,8 @@ msgid "%s authentication failed"
 msgstr "La autenticación %s falló"
 
 #: imap/auth_gsasl.c:147 pop/auth.c:135
-#, fuzzy
 msgid "SASL authentication failed"
-msgstr "Verificación de autenticidad falló"
+msgstr "Verificación de SASL falló"
 
 #: imap/auth_login.c:51
 msgid "LOGIN disabled on this server"
@@ -2872,7 +2855,6 @@ msgstr "Actualizando marcas..."
 #. sanity check.  If that fails, Mutt reopens the mailbox using a normal
 #. download.
 #: imap/message.c:1054
-#, fuzzy
 msgid "QRESYNC failed.  Reopening mailbox."
 msgstr "Imposible reabrir buzón"
 
@@ -3665,15 +3647,14 @@ msgid "  -p            Resume a prior postponed message, if any"
 msgstr "  -p            Continuar con un mensaje anterior pospuesto, si existe"
 
 #: main.c:315
-#, fuzzy
 msgid ""
 "  -Q <variable> Query a configuration variable and print its value to stdout\n"
 "                (after the config has been read and any commands executed)\n"
 "                Add -O for one-liner documentation"
 msgstr ""
-"  -Q <variable> Encontrar una variable de configuración y mandar su valor a\n"
-"                stdout (después de haber leído la configuración y ejecutado\n"
-"                los comandos)"
+"  -Q <variable> Consultar una variable de configuración e imprimir su valor a\n"
+"                stdout (después de haber leído la configuración y que cualquier\n"
+"                comando sea ejecutado) Agregar -O para documentación de una linea"
 
 #: main.c:318
 msgid "  -R            Open mailbox in read-only mode"
@@ -3929,9 +3910,9 @@ msgid "Error: %s can't be used as the final remailer of a chain"
 msgstr "Error: %s no puede ser usado como remailer final de una cadena"
 
 #: mutt/file.c:715
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to seek file: %s"
-msgstr "Fallo al renombrar archivo"
+msgstr "Fallo al buscar archivo: %s"
 
 #: mutt/file.c:1277
 msgid "Timeout exceeded while attempting fcntl lock"
@@ -4117,9 +4098,8 @@ msgstr "Imposible abrir carpeta de basura"
 
 #. L10N: Displayed if appending to $trash fails when syncing or closing a mailbox
 #: mx.c:587
-#, fuzzy
 msgid "Unable to append to trash folder"
-msgstr "Imposible abrir archivo temporal"
+msgstr "No es posible adjuntar a la carpeta de reciclaje"
 
 #: mx.c:646
 msgid "Mark all articles read?"
@@ -4201,9 +4181,9 @@ msgid " (current time: %c)"
 msgstr " (fecha actual: %c)"
 
 #: ncrypt/crypt.c:85
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s output follows%s --]\n"
-msgstr "[-- salida %s sigue%s --]\n"
+msgstr "[-- salida %s resulta%s --]\n"
 
 #. L10N: Due to the implementation details (e.g. some passwords are managed
 #. by gpg-agent) we can't know whether we forgot zero, 1, 12, ...
@@ -4264,12 +4244,11 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt.c:1179
-#, fuzzy
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- Error: Firma multipart/firmada faltante o de formato erróneo --]\n"
+"[-- Error: Falta o formato erróneo de Firma multiparte/firma --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1217
@@ -4322,9 +4301,9 @@ msgid "error allocating data object: %s"
 msgstr "Error al localizar objeto de datos: %s"
 
 #: ncrypt/crypt_gpgme.c:517
-#, fuzzy, c-format
+#, c-format
 msgid "error rewinding data object: %s"
-msgstr "Error en rewinding del objeto de datos: %s"
+msgstr "Error al rebobinar  los datos del objeto: %s"
 
 #: ncrypt/crypt_gpgme.c:533
 msgid "[tempfile]"
@@ -5399,9 +5378,8 @@ msgstr "nm_default_url debe ser: notmuch://<absolute path> . Actualmente: %s"
 #. L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
 #. They should not be translated.
 #: notmuch/config.c:89 notmuch/notmuch.c:309
-#, fuzzy
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
-msgstr "Valor nm_query_window_timebase erróneo (los valores válidos son: hora, día, semana, mes, o año)"
+msgstr "Valor nm_query_window_timebase no válido (los valores válidos son: hora, día, semana, mes, o año)"
 
 #: notmuch/db.c:157
 #, c-format
@@ -5444,8 +5422,8 @@ msgstr "fallo al interpretar límite: %s"
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "No es posible sincronizar %d el mensaje debido a una modificación externa en el buzón"
+msgstr[1] "No es posible sincronizar %d los mensajes debido a una modificación externa en el buzón"
 
 #: notmuch/notmuch.c:2364
 msgid "Can't write to virtual folder"
@@ -5477,9 +5455,8 @@ msgid "delete the current entry"
 msgstr "borrar la entrada actual"
 
 #: opcodes.h:43
-#, fuzzy
 msgid "edit the 'Content-ID' of the attachment"
-msgstr "Editar el campo 'Content-Language' del adjunto"
+msgstr "editar el campo 'Content-ID' del adjunto"
 
 #: opcodes.h:44
 msgid "edit attachment description"
@@ -5518,9 +5495,8 @@ msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr "Agrupar los adjuntos marcados como 'múltiples/multilingües'"
 
 #: opcodes.h:53
-#, fuzzy
 msgid "group tagged attachments as 'multipart/related'"
-msgstr "Agrupar los adjuntos marcados como 'múltiples/alternativos'"
+msgstr "agrupar los adjuntos marcados como 'multiparte/relacionados'"
 
 #: opcodes.h:54
 msgid "move an attachment down in the attachment list"
@@ -5583,9 +5559,8 @@ msgid "force viewing of attachment using mailcap"
 msgstr "forzar la muestra de archivos adjuntos usando mailcap"
 
 #: opcodes.h:69
-#, fuzzy
 msgid "view attachment in pager using copiousoutput mailcap"
-msgstr "forzar la muestra de archivos adjuntos usando mailcap"
+msgstr "Ver archivo adjunto en una página usando copiousoutput mailcap"
 
 #: opcodes.h:70
 msgid "view attachment as text"
@@ -5616,7 +5591,6 @@ msgid "show autocrypt compose menu options"
 msgstr "Mostrar opciones del menú compuesto de autocrypt"
 
 #: opcodes.h:85
-#, fuzzy
 msgid "open the aliases dialog"
 msgstr "Está en el último mensaje"
 
@@ -5833,9 +5807,8 @@ msgid "delete chars from the cursor to the end of the word"
 msgstr "suprimir caracteres desde el cursor hasta el final de la palabra"
 
 #: opcodes.h:140
-#, fuzzy
 msgid "delete chars from cursor to beginning the line"
-msgstr "suprimir caracteres desde el cursor hasta el final de la línea"
+msgstr "eliminar caracteres desde el cursor hasta el inicio de la línea"
 
 #: opcodes.h:141
 msgid "delete all chars on the line"
@@ -5967,14 +5940,12 @@ msgid "reply to specified mailing list"
 msgstr "responder a la lista de correo"
 
 #: opcodes.h:182
-#, fuzzy
 msgid "subscribe to a mailing list"
-msgstr "responder a la lista de correo"
+msgstr "subscribirse a la lista de correo"
 
 #: opcodes.h:183
-#, fuzzy
 msgid "unsubscribe from a mailing list"
-msgstr "Inscripción a %s cancelada"
+msgstr "desuscribirse de la lista de correo"
 
 #: opcodes.h:184
 msgid "load list of all newsgroups from NNTP server"
@@ -6181,9 +6152,8 @@ msgid "toggle display of quoted text"
 msgstr "cambiar a visualización del texto citado"
 
 #: opcodes.h:235
-#, fuzzy
 msgid "jump to first line after headers"
-msgstr "Saltar al próximo hilo"
+msgstr "saltar a la primera linea después del encabezado"
 
 #: opcodes.h:236
 msgid "skip beyond quoted text"
@@ -6446,9 +6416,8 @@ msgid "select the previous element of the chain"
 msgstr "Seleccionar el elemento anterior en la cadena"
 
 #: opcodes.h:312
-#, fuzzy
 msgid "delete a remailer from the chain"
-msgstr "Suprimir un remailer de la cadena"
+msgstr "eliminar un reenvio de la cadena"
 
 #: opcodes.h:313
 msgid "insert a remailer into the chain"
@@ -6483,9 +6452,8 @@ msgid "shifts virtual folder time window forwards"
 msgstr "Mueve el tiempo de la ventana de la carpeta virtual hacia delante"
 
 #: opcodes.h:327
-#, fuzzy
 msgid "resets virtual folder time window to the present"
-msgstr "Mueve el tiempo de la ventana de la carpeta virtual hacia delante"
+msgstr "resetea la ventana de tiempo de la carpeta virtual al presente"
 
 #: opcodes.h:333
 msgid "attach a PGP public key"
@@ -6824,9 +6792,8 @@ msgid "Error opening /dev/null"
 msgstr "No se pudo abrir /dev/null"
 
 #: pattern/exec.c:209
-#, fuzzy
 msgid "Error checking length of temporary file"
-msgstr "Error. Preservando el archivo temporal: %s"
+msgstr "Error verificando la longitud del archivo temporal"
 
 #: pattern/exec.c:886
 msgid "error: server custom search only supported with IMAP"
@@ -7478,17 +7445,14 @@ msgid "Mail sent"
 msgstr "Mensaje enviado"
 
 #: send/send.c:3000
-#, fuzzy
 msgid "No recipient specified"
-msgstr "No hay destinatarios"
+msgstr "No se ha especificado destinatarios"
 
 #: send/send.c:3045
-#, fuzzy
 msgid "No List-Subscribe header found"
-msgstr "No se encontraron claves secretas"
+msgstr "No se encontro encabezado Lista-Suscribir"
 
 #: send/send.c:3074
-#, fuzzy
 msgid "No List-Unsubscribe header found"
 msgstr "Patrón de anular inscripción: "
 
@@ -7621,7 +7585,6 @@ msgstr ""
 "o mande un email a: <neomutt-devel@neomutt.org>\n"
 
 #: version.c:109
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2022 Michael R. Elkins and others.\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
@@ -7630,8 +7593,8 @@ msgid ""
 msgstr ""
 "Copyright (C) 1996-2020 Michael R. Elkins y otros.\n"
 "NeoMutt viene con ABSOLUTAMENTE NINGUNA GARANTÍA; para obtener detalles\n"
-"teclee 'neomutt -vv'. NeoMutt es software libre, puede redistribuirlo\n"
-"bajo ciertas condiciones; teclee 'neomutt -vv' para más detalles.\n"
+"ingrese 'neomutt -vv'. NeoMutt es software libre, y puede ser redistribuido\n"
+"bajo ciertas condiciones; ingrese 'neomutt -vv' para más detalles.\n"
 
 #: version.c:503
 msgid "Default options:"
@@ -7642,6 +7605,5 @@ msgid "Compile options:"
 msgstr "Opciones especificadas al compilar:"
 
 #: version.c:511
-#, fuzzy
 msgid "Devel options:"
-msgstr "Opciones predeterminadas:"
+msgstr "Opciones de Desarrollo:"
