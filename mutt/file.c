@@ -464,8 +464,8 @@ int mutt_file_rmtree(const char *path)
   struct stat st = { 0 };
   int rc = 0;
 
-  DIR *dirp = mutt_file_opendir(path, MUTT_OPENDIR_NONE);
-  if (!dirp)
+  DIR *dir = mutt_file_opendir(path, MUTT_OPENDIR_NONE);
+  if (!dir)
   {
     mutt_debug(LL_DEBUG1, "error opening directory %s\n", path);
     return -1;
@@ -475,7 +475,7 @@ int mutt_file_rmtree(const char *path)
    * invokes recursively to an unknown depth. */
   struct Buffer cur = mutt_buffer_make(PATH_MAX);
 
-  while ((de = readdir(dirp)))
+  while ((de = readdir(dir)))
   {
     if ((strcmp(".", de->d_name) == 0) || (strcmp("..", de->d_name) == 0))
       continue;
@@ -494,7 +494,7 @@ int mutt_file_rmtree(const char *path)
     else
       rc |= unlink(mutt_buffer_string(&cur));
   }
-  closedir(dirp);
+  closedir(dir);
 
   rc |= rmdir(path);
 

@@ -33,7 +33,7 @@
 
 #include "config.h"
 #include <assert.h>
-#include <inttypes.h> // IWYU pragma: keep
+#include <inttypes.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>

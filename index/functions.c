@@ -76,7 +76,7 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
-#include "nntp/mdata.h" // IWYU pragma: keep
+#include "nntp/mdata.h"
 #endif
 #ifdef USE_POP
 #include "pop/lib.h"

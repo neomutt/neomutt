@@ -30,7 +30,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "mutt/lib.h"
-#include "gui/lib.h" // IWYU pragma: keep
+#include "gui/lib.h"
 #include "lib.h"
 
 struct CursesColorList CursesColors; ///< List of all Curses colours

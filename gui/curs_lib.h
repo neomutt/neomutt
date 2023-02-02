@@ -24,7 +24,7 @@
 #define MUTT_GUI_CURS_LIB_H
 
 #include <stdbool.h>
-#include <wchar.h> // IWYU pragma: keep
+#include <wchar.h>
 #include "browser/lib.h"
 #include "keymap.h"
 

@@ -91,8 +91,7 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
-#include "nntp/adata.h" // IWYU pragma: keep
-#include "nntp/mdata.h" // IWYU pragma: keep
+#include "nntp/adata.h"
 #endif
 #ifdef USE_INOTIFY
 #include "monitor.h"

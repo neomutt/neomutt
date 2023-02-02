@@ -329,18 +329,18 @@ int mutt_bcache_exists(struct BodyCache *bcache, const char *id)
  */
 int mutt_bcache_list(struct BodyCache *bcache, bcache_list_t want_id, void *data)
 {
-  DIR *d = NULL;
+  DIR *dir = NULL;
   struct dirent *de = NULL;
   int rc = -1;
 
-  if (!bcache || !(d = mutt_file_opendir(bcache->path, MUTT_OPENDIR_NONE)))
+  if (!bcache || !(dir = mutt_file_opendir(bcache->path, MUTT_OPENDIR_NONE)))
     goto out;
 
   rc = 0;
 
   mutt_debug(LL_DEBUG3, "bcache: list: dir: '%s'\n", bcache->path);
 
-  while ((de = readdir(d)))
+  while ((de = readdir(dir)))
   {
     if (mutt_str_startswith(de->d_name, ".") || mutt_str_startswith(de->d_name, ".."))
     {
@@ -356,9 +356,9 @@ int mutt_bcache_list(struct BodyCache *bcache, bcache_list_t want_id, void *data
   }
 
 out:
-  if (d)
+  if (dir)
   {
-    if (closedir(d) < 0)
+    if (closedir(dir) < 0)
       rc = -1;
   }
   mutt_debug(LL_DEBUG3, "bcache: list: did %d entries\n", rc);

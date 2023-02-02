@@ -84,7 +84,7 @@ struct Mailbox
   off_t size;                         ///< Size of the Mailbox
   bool has_new;                       ///< Mailbox has new mail
 
-  // These next three are only set when MailCheckStats is set
+  // These next three are only set when $mail_check_stats is set
   int msg_count;                      ///< Total number of messages
   int msg_unread;                     ///< Number of unread messages
   int msg_flagged;                    ///< Number of flagged messages

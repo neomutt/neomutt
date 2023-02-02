@@ -31,6 +31,7 @@
 #include "config.h"
 #include <assert.h>
 #include <errno.h>
+#include <inttypes.h> // IWYU pragma: keep
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>

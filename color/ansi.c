@@ -32,7 +32,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "mutt/lib.h"
-#include "gui/lib.h" // IWYU pragma: keep
+#include "gui/lib.h"
 #include "ansi.h"
 #include "lib.h"
 

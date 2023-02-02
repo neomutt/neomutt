@@ -33,7 +33,7 @@
 #include <sys/wait.h> // IWYU pragma: keep
 #include <unistd.h>
 #include "mutt/lib.h"
-#include "protos.h" // IWYU pragma: keep
+#include "protos.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"
 #endif

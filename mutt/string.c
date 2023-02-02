@@ -690,7 +690,7 @@ char *mutt_str_skip_email_wsp(const char *s)
 /**
  * mutt_str_is_email_wsp - Is this a whitespace character (for an email header)
  * @param c Character to test
- * @retval true It is whitespcae
+ * @retval true It is whitespace
  */
 bool mutt_str_is_email_wsp(char c)
 {

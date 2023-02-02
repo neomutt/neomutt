@@ -28,6 +28,7 @@
 
 #include "config.h"
 #include "core/lib.h"
+#include "conn/lib.h"
 #include "adata.h"
 
 /**

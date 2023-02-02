@@ -87,6 +87,12 @@ bool g_is_mail_list = false;
 bool g_is_subscribed_list = false;
 const char *g_myvar = "hello";
 short AbortKey;
+bool OptForceRefresh;
+bool OptIgnoreMacroEvents;
+bool OptKeepQuiet;
+bool OptNoCurses;
+bool OptSearchInvalid;
+bool OptSearchReverse;
 
 typedef uint8_t MuttFormatFlags;
 typedef uint16_t CompletionFlags;

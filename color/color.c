@@ -32,7 +32,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
-#include "gui/lib.h" // IWYU pragma: keep
+#include "gui/lib.h"
 #include "lib.h"
 
 const struct Mapping ColorNames[] = {

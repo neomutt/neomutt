@@ -57,8 +57,8 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
-#include "nntp/adata.h" // IWYU pragma: keep
-#include "nntp/mdata.h" // IWYU pragma: keep
+#include "nntp/adata.h"
+#include "nntp/mdata.h"
 #endif
 
 static const char *Not_available_in_this_menu = N_("Not available in this menu");

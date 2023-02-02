@@ -101,8 +101,8 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
-#include "nntp/adata.h" // IWYU pragma: keep
-#include "nntp/mdata.h" // IWYU pragma: keep
+#include "nntp/adata.h"
+#include "nntp/mdata.h"
 #endif
 
 /// Help Bar for the File/Dir/Mailbox browser dialog
@@ -545,16 +545,16 @@ void init_state(struct BrowserState *state, struct Menu *menu)
 
 /**
  * examine_directory - Get list of all files/newsgroups with mask
- * @param m      Mailbox
- * @param menu   Current Menu
- * @param state  State of browser
- * @param d      Directory
- * @param prefix Files/newsgroups must match this prefix
+ * @param m       Mailbox
+ * @param menu    Current Menu
+ * @param state   State of browser
+ * @param dirname Directory
+ * @param prefix  Files/newsgroups must match this prefix
  * @retval  0 Success
  * @retval -1 Error
  */
-int examine_directory(struct Mailbox *m, struct Menu *menu,
-                      struct BrowserState *state, const char *d, const char *prefix)
+int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState *state,
+                      const char *dirname, const char *prefix)
 {
   int rc = -1;
   struct Buffer *buf = mutt_buffer_pool_get();
@@ -584,39 +584,39 @@ int examine_directory(struct Mailbox *m, struct Menu *menu,
 #endif /* USE_NNTP */
   {
     struct stat st = { 0 };
-    DIR *dp = NULL;
+    DIR *dir = NULL;
     struct dirent *de = NULL;
 
-    while (stat(d, &st) == -1)
+    while (stat(dirname, &st) == -1)
     {
       if (errno == ENOENT)
       {
         /* The last used directory is deleted, try to use the parent dir. */
-        char *c = strrchr(d, '/');
+        char *c = strrchr(dirname, '/');
 
-        if (c && (c > d))
+        if (c && (c > dirname))
         {
           *c = '\0';
           continue;
         }
       }
-      mutt_perror(d);
+      mutt_perror(dirname);
       goto ed_out;
     }
 
     if (!S_ISDIR(st.st_mode))
     {
-      mutt_error(_("%s is not a directory"), d);
+      mutt_error(_("%s is not a directory"), dirname);
       goto ed_out;
     }
 
     if (m)
       mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_NO_FLAGS);
 
-    dp = mutt_file_opendir(d, MUTT_OPENDIR_NONE);
-    if (!dp)
+    dir = mutt_file_opendir(dirname, MUTT_OPENDIR_NONE);
+    if (!dir)
     {
-      mutt_perror(d);
+      mutt_perror(dirname);
       goto ed_out;
     }
 
@@ -624,7 +624,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu,
 
     struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
     neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
-    while ((de = readdir(dp)))
+    while ((de = readdir(dir)))
     {
       if (mutt_str_equal(de->d_name, "."))
         continue; /* we don't need . */
@@ -639,7 +639,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu,
         continue;
       }
 
-      mutt_buffer_concat_path(buf, d, de->d_name);
+      mutt_buffer_concat_path(buf, dirname, de->d_name);
       if (lstat(mutt_buffer_string(buf), &st) == -1)
         continue;
 
@@ -664,7 +664,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu,
       browser_add_folder(menu, state, de->d_name, NULL, &st, np ? np->mailbox : NULL, NULL);
     }
     neomutt_mailboxlist_clear(&ml);
-    closedir(dp);
+    closedir(dir);
   }
   browser_sort(state);
   rc = 0;

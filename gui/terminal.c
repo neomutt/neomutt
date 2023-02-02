@@ -33,9 +33,9 @@
 #include "terminal.h"
 #include "mutt_curses.h"
 #ifdef HAVE_NCURSESW_NCURSES_H
-#include <ncursesw/term.h> // IWYU pragma: keep
+#include <ncursesw/term.h>
 #elif defined(HAVE_NCURSES_NCURSES_H)
-#include <ncurses/term.h> // IWYU pragma: keep
+#include <ncurses/term.h>
 #endif
 
 bool TsSupported; ///< Terminal Setting is supported

@@ -37,7 +37,7 @@
 #include "gui/lib.h"
 #include "attach/lib.h"
 #include "mutt_globals.h"
-#include "protos.h" // IWYU pragma: keep
+#include "protos.h"
 #ifdef USE_DEBUG_GRAPHVIZ
 #include "debug/lib.h"
 #endif

@@ -36,7 +36,7 @@
 #include "data.h"
 #include "muttlib.h"
 #include "options.h"
-#include "protos.h" // IWYU pragma: keep
+#include "protos.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"
 #endif
@@ -58,7 +58,7 @@
 int mutt_complete(struct CompletionData *cd, char *buf, size_t buflen)
 {
   const char *p = NULL;
-  DIR *dirp = NULL;
+  DIR *dir = NULL;
   struct dirent *de = NULL;
   int init = 0;
   size_t len;
@@ -129,7 +129,7 @@ int mutt_complete(struct CompletionData *cd, char *buf, size_t buflen)
     }
     else
       mutt_buffer_strcpy(filepart, buf + 1);
-    dirp = mutt_file_opendir(mutt_buffer_string(exp_dirpart), MUTT_OPENDIR_NONE);
+    dir = mutt_file_opendir(mutt_buffer_string(exp_dirpart), MUTT_OPENDIR_NONE);
   }
   else
   {
@@ -141,7 +141,7 @@ int mutt_complete(struct CompletionData *cd, char *buf, size_t buflen)
         p = buf + 1;
         mutt_buffer_strcpy(dirpart, "/");
         mutt_buffer_strcpy(filepart, p);
-        dirp = mutt_file_opendir(mutt_buffer_string(dirpart), MUTT_OPENDIR_NONE);
+        dir = mutt_file_opendir(mutt_buffer_string(dirpart), MUTT_OPENDIR_NONE);
       }
       else
       {
@@ -149,18 +149,18 @@ int mutt_complete(struct CompletionData *cd, char *buf, size_t buflen)
         mutt_buffer_strcpy(filepart, p + 1);
         mutt_buffer_copy(exp_dirpart, dirpart);
         mutt_buffer_expand_path(exp_dirpart);
-        dirp = mutt_file_opendir(mutt_buffer_string(exp_dirpart), MUTT_OPENDIR_NONE);
+        dir = mutt_file_opendir(mutt_buffer_string(exp_dirpart), MUTT_OPENDIR_NONE);
       }
     }
     else
     {
       /* no directory name, so assume current directory. */
       mutt_buffer_strcpy(filepart, buf);
-      dirp = mutt_file_opendir(".", MUTT_OPENDIR_NONE);
+      dir = mutt_file_opendir(".", MUTT_OPENDIR_NONE);
     }
   }
 
-  if (!dirp)
+  if (!dir)
   {
     mutt_debug(LL_DEBUG1, "%s: %s (errno %d)\n",
                mutt_buffer_string(exp_dirpart), strerror(errno), errno);
@@ -172,7 +172,7 @@ int mutt_complete(struct CompletionData *cd, char *buf, size_t buflen)
   len = mutt_buffer_len(filepart);
   if (len == 0)
   {
-    while ((de = readdir(dirp)))
+    while ((de = readdir(dir)))
     {
       if (!mutt_str_equal(".", de->d_name) && !mutt_str_equal("..", de->d_name))
       {
@@ -183,7 +183,7 @@ int mutt_complete(struct CompletionData *cd, char *buf, size_t buflen)
     }
   }
 
-  while ((de = readdir(dirp)))
+  while ((de = readdir(dir)))
   {
     if (mutt_strn_equal(de->d_name, mutt_buffer_string(filepart), len))
     {
@@ -222,7 +222,7 @@ int mutt_complete(struct CompletionData *cd, char *buf, size_t buflen)
       }
     }
   }
-  closedir(dirp);
+  closedir(dir);
 
   if (!mutt_buffer_is_empty(dirpart))
   {
