@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-01-25 18:12+0000\n"
+"POT-Creation-Date: 2023-02-02 18:55+0000\n"
 "PO-Revision-Date: 2021-05-09 00:47GMT+3\n"
 "Last-Translator: Christos Margiolis <christos@margiolis.net>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -61,7 +61,7 @@ msgid "Accept?"
 msgstr "Αποδοχή;"
 
 #: alias/alias.c:504 attach/recvattach.c:290 attach/recvattach.c:313
-#: attach/recvattach.c:328 attach/recvattach.c:344 attach/recvattach.c:447
+#: attach/recvattach.c:328 attach/recvattach.c:344 attach/recvattach.c:470
 msgid "Save to file: "
 msgstr "Αποθήκευση στο αρχείο: "
 
@@ -100,12 +100,12 @@ msgstr "Προειδοποίηση: Λανθασμένη διεθνής διεύ
 msgid "Exit"
 msgstr "Έξοδος"
 
-#: alias/dlg_alias.c:102 index/dlg_index.c:108 index/dlg_index.c:124
+#: alias/dlg_alias.c:102 index/dlg_index.c:107 index/dlg_index.c:123
 #: pager/dlg_pager.c:113 pager/dlg_pager.c:130 postpone/dlg_postpone.c:91
 msgid "Del"
 msgstr "Διαγραφή"
 
-#: alias/dlg_alias.c:103 index/dlg_index.c:109 index/dlg_index.c:125
+#: alias/dlg_alias.c:103 index/dlg_index.c:108 index/dlg_index.c:124
 #: postpone/dlg_postpone.c:92
 msgid "Undel"
 msgstr "Επαναφορά"
@@ -126,7 +126,7 @@ msgstr "Επιλέξτε"
 #: alias/dlg_alias.c:107 alias/dlg_query.c:107 attach/dlg_attach.c:100
 #: autocrypt/dlg_autocrypt.c:108 browser/browser.c:115 browser/browser.c:130
 #: compose/compose.c:106 compose/compose.c:121 conn/dlg_verifycert.c:70
-#: history/dlg_history.c:80 index/dlg_index.c:114 index/dlg_index.c:130
+#: history/dlg_history.c:80 index/dlg_index.c:113 index/dlg_index.c:129
 #: ncrypt/dlg_gpgme.c:99 ncrypt/dlg_pgp.c:99 ncrypt/dlg_smime.c:77
 #: pager/dlg_pager.c:91 pager/dlg_pager.c:116 pager/dlg_pager.c:132
 #: pattern/dlg_pattern.c:93 postpone/dlg_postpone.c:93
@@ -141,7 +141,7 @@ msgstr "Δεν έχετε κανένα ψευδώνυμο"
 msgid "Aliases"
 msgstr "Ψευδώνυμα"
 
-#: alias/dlg_query.c:101 index/dlg_index.c:111
+#: alias/dlg_query.c:101 index/dlg_index.c:110
 msgid "Mail"
 msgstr "Ταχυδρομείο"
 
@@ -222,7 +222,7 @@ msgstr "επεξεργασία της περιγραφής της προσάρτ
 msgid "unattachments: invalid disposition"
 msgstr ""
 
-#: attach/dlg_attach.c:97 index/dlg_index.c:110 index/dlg_index.c:126
+#: attach/dlg_attach.c:97 index/dlg_index.c:109 index/dlg_index.c:125
 msgid "Save"
 msgstr "Αποθήκ"
 
@@ -291,8 +291,8 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Η καταχώρηση στοιχείων του mailcap χρειάζεται το %%s"
 
 #: attach/mutt_attach.c:159 attach/mutt_attach.c:298 compmbox/compress.c:343
-#: compose/functions.c:1716 gui/curs_lib.c:320 index/dlg_index.c:1185
-#: index/dlg_index.c:1231 pager/dlg_pager.c:469 pager/do_pager.c:171
+#: compose/functions.c:1716 gui/curs_lib.c:320 index/dlg_index.c:1184
+#: index/dlg_index.c:1230 pager/dlg_pager.c:464 pager/do_pager.c:171
 #: pager/message.c:336 send/sendlib.c:572
 #, c-format
 msgid "Error running \"%s\""
@@ -371,68 +371,68 @@ msgstr "Δεν γνωρίζω πώς να το τυπώσω αυτό"
 msgid "Saving..."
 msgstr "Αποθήκευση..."
 
-#: attach/recvattach.c:338 attach/recvattach.c:517
+#: attach/recvattach.c:338 attach/recvattach.c:512
 #, fuzzy, c-format
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
 msgstr[0] "Η προσάρτηση αποθηκεύθηκε"
 msgstr[1] "Η προσάρτηση αποθηκεύθηκε"
 
-#: attach/recvattach.c:542
+#: attach/recvattach.c:537
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ! Πρόκειται να γράψεις πάνω από το %s, συνέχεια;"
 
-#: attach/recvattach.c:560
+#: attach/recvattach.c:555
 msgid "Attachment filtered"
 msgstr "Η προσάρτηση έχει φιλτραριστεί"
 
-#: attach/recvattach.c:718
+#: attach/recvattach.c:713
 msgid "Filter through: "
 msgstr "Φιλτράρισμα μέσω: "
 
-#: attach/recvattach.c:718
+#: attach/recvattach.c:713
 msgid "Pipe to: "
 msgstr "Διοχέτευση στο: "
 
 #. L10N: s gets replaced by a MIME type, e.g. "text/plain" or
 #. application/octet-stream.
-#: attach/recvattach.c:774
+#: attach/recvattach.c:769
 #, fuzzy, c-format
 msgid "I don't know how to print %s attachments"
 msgstr "Δεν ξέρω πως να τυπώσω τις %s προσαρτήσεις"
 
-#: attach/recvattach.c:875
+#: attach/recvattach.c:870
 #, fuzzy, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
 msgstr[0] "Εκτύπωση σημειωμένου/ων προσάρτησης/σεων;"
 msgstr[1] "Εκτύπωση σημειωμένου/ων προσάρτησης/σεων;"
 
-#: attach/recvattach.c:876
+#: attach/recvattach.c:871
 #, c-format
 msgid "Print attachment?"
 msgstr "Εκτύπωση προσαρτήσεων;"
 
-#: attach/recvattach.c:918
+#: attach/recvattach.c:913
 msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
-#: attach/recvattach.c:1130
+#: attach/recvattach.c:1125
 msgid "Can't decrypt encrypted message"
 msgstr "Αδυναμία αποκρυπτογράφησης του κρυπτογραφημένου μηνύματος"
 
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:75 main.c:926
+#: autocrypt/autocrypt.c:75 main.c:925
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "Το %s δεν υπάρχει. Δημιουργία;"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:930
+#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:929
 #: nntp/newsrc.c:1119
 #, c-format
 msgid "Can't create %s: %s"
@@ -702,7 +702,7 @@ msgstr "Εγγραφή"
 msgid "Unsubscribe"
 msgstr "Απεγγραφή"
 
-#: browser/browser.c:128 index/dlg_index.c:129
+#: browser/browser.c:128 index/dlg_index.c:128
 msgid "Catchup"
 msgstr ""
 
@@ -841,9 +841,9 @@ msgid "%s: no such color"
 msgstr "%s: δεν υπάρχει τέτοιο χρώμα"
 
 #: color/command.c:221 color/command.c:263 color/command.c:315
-#: color/command.c:387 color/command.c:542 command_parse.c:346
-#: command_parse.c:368 command_parse.c:513 command_parse.c:1098
-#: command_parse.c:1185 hook.c:101 hook.c:157 hook.c:166 hook.c:180 hook.c:429
+#: color/command.c:387 color/command.c:542 command_parse.c:347
+#: command_parse.c:369 command_parse.c:514 command_parse.c:1099
+#: command_parse.c:1186 hook.c:101 hook.c:157 hook.c:166 hook.c:180 hook.c:429
 #: hook.c:445 keymap.c:1191 score.c:95 subjectrx.c:72 subjectrx.c:100
 #: subjectrx.c:108
 #, c-format
@@ -861,8 +861,8 @@ msgstr "%s: δεν υπάρχει τέτοια ιδιότητα"
 msgid "%s: no such object"
 msgstr "%s: δεν υπάρχει τέτοιο αντικείμενο"
 
-#: color/command.c:574 color/command.c:633 command_parse.c:392
-#: command_parse.c:1375 command_parse.c:1711 hook.c:106 hook.c:187 hook.c:452
+#: color/command.c:574 color/command.c:633 command_parse.c:393
+#: command_parse.c:1376 command_parse.c:1712 hook.c:106 hook.c:187 hook.c:452
 #: keymap.c:1123 keymap.c:1296 keymap.c:1458 keymap.c:1539 mutt_lua.c:515
 #: score.c:103
 #, c-format
@@ -888,169 +888,169 @@ msgstr ""
 msgid "Maximum quoting level is %d"
 msgstr "Το μέγιστο επίπεδο παράθεσης είναι %d"
 
-#: command_parse.c:118
+#: command_parse.c:119
 msgid "-group: no group name"
 msgstr "-ομάδα: δεν υπάρχει όνομα ομάδας"
 
-#: command_parse.c:128
+#: command_parse.c:129
 msgid "out of arguments"
 msgstr "εκτός ορισμάτων"
 
-#: command_parse.c:210
+#: command_parse.c:211
 #, c-format
 msgid "Error: Can't build path of '%s'"
 msgstr "Σφάλμα: Δεν είναι δυνατή η δημιουργία διαδρομής στο '%s'"
 
-#: command_parse.c:223
+#: command_parse.c:224
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
 msgstr "Σφάλμα: Κυκλική αναφορά του αρχείου ρυθμίσεων '%s'"
 
-#: command_parse.c:263
+#: command_parse.c:264
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Σφάλμα στο %s, γραμμή %d: %s"
 
-#: command_parse.c:274
+#: command_parse.c:275
 #, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Σφάλμα στο %s, γραμμή %d: %s"
 
-#: command_parse.c:303
+#: command_parse.c:304
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: λάθη στο %s"
 
-#: command_parse.c:304
+#: command_parse.c:305
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: αναστολή ανάγνωσης λόγω πολλών σφαλμάτων στο %s"
 
-#: command_parse.c:313
+#: command_parse.c:314
 #, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "source: %d προειδοποίηση στο %s"
 msgstr[1] "source: %d προειδοποιήσεις στο %s"
 
-#: command_parse.c:429
+#: command_parse.c:430
 #, c-format
 msgid "%sgroup: missing -rx or -addr"
 msgstr "%sgroup: λείπουν -rx ή -addr"
 
-#: command_parse.c:455
+#: command_parse.c:456
 #, c-format
 msgid "%sgroup: warning: bad IDN '%s'"
 msgstr "%sgroup: λανθασμένη διεθνής διεύθυνση IDN '%s'"
 
-#: command_parse.c:524
+#: command_parse.c:525
 #, c-format
 msgid "Error: %s"
 msgstr "Σφάλμα: %s"
 
-#: command_parse.c:686
+#: command_parse.c:687
 msgid "invalid header field"
 msgstr "μη έγκυρο πεδίο κεφαλίδας"
 
-#: command_parse.c:757
+#: command_parse.c:758
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
 msgstr "Δεν επιτρέπεται η χρήση 'inv', 'no', '&' ή '?' με την εντολή '%s'"
 
-#: command_parse.c:791 command_parse.c:931 command_parse.c:1041
+#: command_parse.c:792 command_parse.c:932 command_parse.c:1042
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: άγνωστη μεταβλητή"
 
-#: command_parse.c:806 command_parse.c:1129
+#: command_parse.c:807 command_parse.c:1130
 msgid "Can't use a prefix when querying a variable"
 msgstr "Δεν γίνεται να χρησιμοποιηθεί πρόθεμα κατά την εξέταση μίας μεταβλητής"
 
-#: command_parse.c:812 command_parse.c:1109 command_parse.c:1123
+#: command_parse.c:813 command_parse.c:1110 command_parse.c:1124
 #, c-format
 msgid "Can't query a variable with the '%s' command"
 msgstr "Δεν μπορεί να γίνει εξέταση μίας μεταβλητής με την εντολή '%s'"
 
-#: command_parse.c:824
+#: command_parse.c:825
 msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "Δεν γίνεται να χρησιμοποιηθεί πρόθεμα κατά την αύξηση ή μείωση μίας μεταβλητής"
 
-#: command_parse.c:830 command_parse.c:861
+#: command_parse.c:831 command_parse.c:862
 #, c-format
 msgid "Can't set a variable with the '%s' command"
 msgstr "Δεν γίνεται να οριστεί μεταβλητή με την εντολή '%s'"
 
-#: command_parse.c:841
+#: command_parse.c:842
 #, fuzzy
 msgid "Can't decrement a my_ variable"
 msgstr "Δεν μπορεί να γίνει χρήση προθέματος κατά την δημιουργία μίας μεταβλητής"
 
-#: command_parse.c:855
+#: command_parse.c:856
 msgid "Can't use prefix when setting a variable"
 msgstr "Δεν μπορεί να γίνει χρήση προθέματος κατά την δημιουργία μίας μεταβλητής"
 
-#: command_parse.c:874
+#: command_parse.c:875
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
 msgstr "Τα προθέματα 'no' και 'inv' μπορούν να χρησιμοποιηθούν μόνο με μεταβλητές bool/quad"
 
-#: command_parse.c:878
+#: command_parse.c:879
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
 msgstr "Η εντολή '%s' μπορεί να χρησιμοποιηθεί μόνο με μεταβλητές bool/quad"
 
-#: command_parse.c:1161 command_parse.c:1169
+#: command_parse.c:1162 command_parse.c:1170
 #, c-format
 msgid "%s is unset"
 msgstr "Το %s δεν έχει οριστεί"
 
-#: command_parse.c:1209 mutt_lua.c:510
+#: command_parse.c:1210 mutt_lua.c:510
 #, c-format
 msgid "source: error at %s"
 msgstr "source: σφάλμα στο %s"
 
-#: command_parse.c:1217
+#: command_parse.c:1218
 #, c-format
 msgid "source: file %s could not be sourced"
 msgstr "source: το αρχείο %s δεν μπόρεσε να συμπεριληθφει"
 
-#: command_parse.c:1240
+#: command_parse.c:1241
 msgid "spam: no matching pattern"
 msgstr "spam: κανένα μοτίβο που να ταιριάζει"
 
-#: command_parse.c:1242
+#: command_parse.c:1243
 msgid "nospam: no matching pattern"
 msgstr "nospam: κανένα μοτίβο που να ταιριάζει"
 
-#: command_parse.c:1384 imap/imap.c:1327
+#: command_parse.c:1385 imap/imap.c:1326
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Έγινε εγγραφή στο %s"
 
-#: command_parse.c:1388
+#: command_parse.c:1389
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "Δεν μπόρεσε να γίνει εγγραφή στο %s"
 
-#: command_parse.c:1396 command_parse.c:1732
+#: command_parse.c:1397 command_parse.c:1733
 msgid "No folder specified"
 msgstr "Δεν ορίστηκε φάκελος"
 
-#: command_parse.c:1431
+#: command_parse.c:1432
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
 msgstr ""
 
-#: command_parse.c:1473
+#: command_parse.c:1474
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
 msgstr ""
 
-#: command_parse.c:1720 imap/imap.c:1329
+#: command_parse.c:1721 imap/imap.c:1328
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Απεγγραφή από %s"
 
-#: command_parse.c:1724
+#: command_parse.c:1725
 #, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Δεν μπόρεσε να γίνει απεγγραφή από %s"
@@ -1393,7 +1393,7 @@ msgstr "Άνοιγμα γραμματοκιβωτίου για σύναψη μη
 msgid "Open newsgroup to attach message from"
 msgstr "Άνοιγμα ομάδας νέων για σύναψη μηνύματος από"
 
-#: compose/functions.c:753 main.c:1361
+#: compose/functions.c:753 main.c:1360
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Αδυναμία ανοίγματος του γραμματοκιβωτίου %s"
@@ -2087,35 +2087,35 @@ msgstr "Αδυναμία προσάρτησης στο φάκελο: %s"
 msgid "multipart message has no boundary parameter"
 msgstr "το πολυμερές μήνυμα δεν έχει παράμετρο ορίων"
 
-#: enter/window.c:56
+#: enter/window.c:55
 msgid "Complete"
 msgstr "Έτοιμο"
 
-#: enter/window.c:57
+#: enter/window.c:56
 msgid "Hist Up"
 msgstr "Ιστ. Πάνω"
 
-#: enter/window.c:58
+#: enter/window.c:57
 msgid "Hist Down"
 msgstr "Ιστ. Κάτω"
 
-#: enter/window.c:59
+#: enter/window.c:58
 msgid "Hist Search"
 msgstr "Αναζήτηση Ιστ."
 
-#: enter/window.c:60
+#: enter/window.c:59
 msgid "Begin Line"
 msgstr "Ξεκινήστε γραμμή"
 
-#: enter/window.c:61
+#: enter/window.c:60
 msgid "End Line"
 msgstr "Τελειώστε γραμμή"
 
-#: enter/window.c:62
+#: enter/window.c:61
 msgid "Kill Line"
 msgstr "Σκοτώστε γραμμή"
 
-#: enter/window.c:63
+#: enter/window.c:62
 msgid "Kill Word"
 msgstr "Σκοτώστε λέξη"
 
@@ -2796,76 +2796,76 @@ msgstr "Αδυναμία διαπραγμάτευσης σύνδεσης TLS"
 msgid "Encrypted connection unavailable"
 msgstr "Δεν είναι διαθέσιμη η κρυπτογραφημένη σύνδεση"
 
-#: imap/imap.c:1300
+#: imap/imap.c:1299
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Εγγραφή στο %s..."
 
-#: imap/imap.c:1302
+#: imap/imap.c:1301
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Γίνεται απεγγραφή από %s..."
 
-#: imap/imap.c:1480 imap/message.c:1770
+#: imap/imap.c:1479 imap/message.c:1770
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Αντιγραφή %d μηνύματος στο %s..."
 msgstr[1] "Αντιγραφή %d μηνυμάτων στο %s..."
 
-#: imap/imap.c:1497 imap/imap.c:2150 imap/message.c:1809 muttlib.c:1414
+#: imap/imap.c:1496 imap/imap.c:2149 imap/message.c:1809 muttlib.c:1415
 #, c-format
 msgid "Create %s?"
 msgstr "Δημιουργία του %s;"
 
-#: imap/imap.c:1566
+#: imap/imap.c:1565
 msgid "Expunge failed"
 msgstr "Διαγραφή απέτυχε"
 
-#: imap/imap.c:1584
+#: imap/imap.c:1583
 #, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "Σημείωση %d μηνύματος ως διαγραμμένο..."
 msgstr[1] "Σημείωση %d μηνυμάτων ως διαγραμμένα..."
 
-#: imap/imap.c:1624
+#: imap/imap.c:1623
 #, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "Αποθήκευση τροποποιημένου μηνύματος... [%d/%d]"
 msgstr[1] "Αποθήκευση τροποποιημένων μηνυμάτων... [%d/%d]"
 
-#: imap/imap.c:1681
+#: imap/imap.c:1680
 msgid "Error saving flags. Close anyway?"
 msgstr "Σφάλμα κατά την αποθήκευση σημαιών. Έξοδος;"
 
-#: imap/imap.c:1688
+#: imap/imap.c:1687
 msgid "Error saving flags"
 msgstr "Σφάλμα κατά την αποθήκευση σημαιών!"
 
-#: imap/imap.c:1714
+#: imap/imap.c:1713
 msgid "Expunging messages from server..."
 msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή..."
 
-#: imap/imap.c:1720
+#: imap/imap.c:1719
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE απέτυχε"
 
-#: imap/imap.c:1951 nntp/nntp.c:2365
+#: imap/imap.c:1950 nntp/nntp.c:2365
 #, c-format
 msgid "Selecting %s..."
 msgstr "Επιλογή %s..."
 
-#: imap/imap.c:2117
+#: imap/imap.c:2116
 msgid "Error opening mailbox"
 msgstr "Σφάλμα κατά  το άνοιγμα του γραμματοκιβωτίου"
 
-#: imap/imap.c:2260
+#: imap/imap.c:2259
 msgid "IMAP server doesn't support custom flags"
 msgstr "Ο διακομιστής IMAP δεν υποστηρίζει προσαρμοσμένες σημαίες"
 
-#: imap/imap.c:2304
+#: imap/imap.c:2303
 msgid "Invalid IMAP flags"
 msgstr "Μη έγκυρες σημαίες IMAP"
 
@@ -2941,62 +2941,62 @@ msgstr "H πλευρά του διακομιστή δεν υποστηρίζει
 msgid "Continue?"
 msgstr "Συνέχεια;"
 
-#: index/dlg_index.c:107 index/dlg_index.c:123
+#: index/dlg_index.c:106 index/dlg_index.c:122
 msgid "Quit"
 msgstr "Έξοδος"
 
-#: index/dlg_index.c:112 pager/dlg_pager.c:114
+#: index/dlg_index.c:111 pager/dlg_pager.c:114
 msgid "Reply"
 msgstr "Απάντ"
 
-#: index/dlg_index.c:113
+#: index/dlg_index.c:112
 msgid "Group"
 msgstr "Ομάδα"
 
-#: index/dlg_index.c:127 pager/dlg_pager.c:128
+#: index/dlg_index.c:126 pager/dlg_pager.c:128
 msgid "Post"
 msgstr "Δημοσίευση"
 
-#: index/dlg_index.c:128 pager/dlg_pager.c:129
+#: index/dlg_index.c:127 pager/dlg_pager.c:129
 msgid "Followup"
 msgstr "Συνέχεια"
 
 #. L10N: %s is one of the CHECK_ACL entries below.
-#: index/dlg_index.c:151
+#: index/dlg_index.c:150
 #, c-format
 msgid "%s: Operation not permitted by ACL"
 msgstr "%s: Η λειτουργία δεν επιτρέπεται από το ACL"
 
-#: index/dlg_index.c:747
+#: index/dlg_index.c:746
 msgid "Failed to create query, aborting"
 msgstr "Σφάλμα κατά την δημιουργία ερωτήματος. Ματαίωση"
 
-#: index/dlg_index.c:792 muttlib.c:1398 mx.c:221 mx.c:359
+#: index/dlg_index.c:791 muttlib.c:1399 mx.c:221 mx.c:359
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "Το %s δεν είναι γραμματοκιβώτιο"
 
-#: index/dlg_index.c:1165
+#: index/dlg_index.c:1164
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Το γραμματοκιβώτιο τροποποιήθηκε εξωτερικά. Οι σημαίες μπορεί να είναι λάθος"
 
-#: index/dlg_index.c:1174 pager/dlg_pager.c:443
+#: index/dlg_index.c:1173 pager/dlg_pager.c:438
 msgid "New mail in this mailbox"
 msgstr "Νέα αλληλογραφία σε αυτό το γραμματοκιβώτιο"
 
-#: index/dlg_index.c:1193
+#: index/dlg_index.c:1192
 msgid "Mailbox was externally modified"
 msgstr "Το γραμματοκιβώτιο τροποποιήθηκε εξωτερικά"
 
-#: index/dlg_index.c:1304 index/functions.c:2793
+#: index/dlg_index.c:1303 index/functions.c:2793
 msgid "No mailbox is open"
 msgstr "Δεν υπάρχουν ανοιχτά γραμματοκιβώτια"
 
-#: index/dlg_index.c:1311
+#: index/dlg_index.c:1310
 msgid "No tagged messages"
 msgstr "Δεν υπάρχουν σημειωμένα μηνύματα"
 
-#: index/dlg_index.c:1315 index/functions.c:680
+#: index/dlg_index.c:1314 index/functions.c:680
 msgid "Nothing to do"
 msgstr "Καμμία ενέργεια"
 
@@ -3492,265 +3492,265 @@ msgid "Writing %s..."
 msgstr "Εγγραφή %s..."
 
 #. L10N: Try to limit to 80 columns
-#: main.c:267
+#: main.c:266
 msgid "usage:"
 msgstr ""
 
-#: main.c:268
+#: main.c:267
 msgid ""
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 msgstr ""
 
-#: main.c:271
+#: main.c:270
 msgid ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 msgstr ""
 
-#: main.c:273
+#: main.c:272
 msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
 msgstr ""
 
-#: main.c:274
+#: main.c:273
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
 msgstr ""
 
-#: main.c:275
+#: main.c:274
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
 msgstr ""
 
-#: main.c:276
+#: main.c:275
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
 msgstr ""
 
-#: main.c:277
+#: main.c:276
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
 msgstr ""
 
-#: main.c:278
+#: main.c:277
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
 msgstr ""
 
-#: main.c:279
+#: main.c:278
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
 msgstr ""
 
-#: main.c:280
+#: main.c:279
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
 msgstr ""
 
-#: main.c:281
+#: main.c:280
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
 msgstr ""
 
-#: main.c:282
+#: main.c:281
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
 msgstr ""
 
-#: main.c:283
+#: main.c:282
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
 msgstr ""
 
-#: main.c:284
+#: main.c:283
 msgid "  neomutt -v[v]\n"
 msgstr ""
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
-#: main.c:287
+#: main.c:286
 #, fuzzy
 msgid "options:"
 msgstr "Παράμετροι μεταγλώττισης:"
 
-#: main.c:288
+#: main.c:287
 msgid ""
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 "                remaining arguments as addresses even if they start with a dash"
 msgstr ""
 
-#: main.c:290
+#: main.c:289
 msgid "  -A <alias>    Print an expanded version of the given alias to stdout and exit"
 msgstr ""
 
-#: main.c:291
+#: main.c:290
 msgid ""
 "  -a <file>     Attach one or more files to a message (must be the last option)\n"
 "                Add any addresses after the '--' argument"
 msgstr ""
 
-#: main.c:293
+#: main.c:292
 msgid "  -B            Run in batch mode (do not start the ncurses UI)"
 msgstr ""
 
-#: main.c:294
+#: main.c:293
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr ""
 
-#: main.c:295
+#: main.c:294
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
 msgstr ""
 
-#: main.c:296
+#: main.c:295
 msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
 msgstr ""
 
-#: main.c:297
+#: main.c:296
 msgid "  -D -O         Like -D, but show one-liner documentation"
 msgstr ""
 
-#: main.c:298
+#: main.c:297
 msgid "  -D -S         Like -D, but hide the value of sensitive variables"
 msgstr ""
 
-#: main.c:299
+#: main.c:298
 msgid ""
 "  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
 "                The level can range from 1-5 and affects verbosity"
 msgstr ""
 
-#: main.c:301
+#: main.c:300
 msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
 msgstr ""
 
-#: main.c:302
+#: main.c:301
 msgid "  -e <command>  Specify a command to be run after reading the config files"
 msgstr ""
 
-#: main.c:303
+#: main.c:302
 msgid "  -F <config>   Specify an alternative initialization file to read"
 msgstr ""
 
-#: main.c:304
+#: main.c:303
 msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
 msgstr ""
 
-#: main.c:305
+#: main.c:304
 msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
 msgstr ""
 
-#: main.c:306
+#: main.c:305
 msgid "  -g <server>   Like -G, but start at specified news server"
 msgstr ""
 
-#: main.c:307
+#: main.c:306
 msgid "  -H <draft>    Specify a draft file with header and body for message composing"
 msgstr ""
 
-#: main.c:308
+#: main.c:307
 msgid "  -h            Print this help message and exit"
 msgstr ""
 
-#: main.c:309
+#: main.c:308
 msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
 msgstr ""
 
-#: main.c:310
+#: main.c:309
 msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
 msgstr ""
 
-#: main.c:311
+#: main.c:310
 msgid ""
 "  -m <type>     Specify a default mailbox format type for newly created folders\n"
 "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
 msgstr ""
 
-#: main.c:313
+#: main.c:312
 msgid "  -n            Do not read the system-wide configuration file"
 msgstr ""
 
-#: main.c:314
+#: main.c:313
 msgid "  -p            Resume a prior postponed message, if any"
 msgstr ""
 
-#: main.c:315
+#: main.c:314
 msgid ""
 "  -Q <variable> Query a configuration variable and print its value to stdout\n"
 "                (after the config has been read and any commands executed)\n"
 "                Add -O for one-liner documentation"
 msgstr ""
 
-#: main.c:318
+#: main.c:317
 #, fuzzy
 msgid "  -R            Open mailbox in read-only mode"
 msgstr "Ανοίξτε το γραμματοκιβώτιο σε κατάσταση μόνο για εγγραφή"
 
-#: main.c:319
+#: main.c:318
 msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
 msgstr ""
 
-#: main.c:320
+#: main.c:319
 msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
 msgstr ""
 
-#: main.c:321
+#: main.c:320
 msgid "  -vv           Print the NeoMutt license and copyright information and exit"
 msgstr ""
 
-#: main.c:322
+#: main.c:321
 msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
 msgstr ""
 
-#: main.c:323
+#: main.c:322
 msgid ""
 "  -Z            Open the first mailbox with new message or exit immediately with\n"
 "                exit code 1 if none is found in all defined mailboxes"
 msgstr ""
 
-#: main.c:325
+#: main.c:324
 msgid ""
 "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
 "                or exit immediately with exit code 1 otherwise"
 msgstr ""
 
-#: main.c:348
+#: main.c:347
 msgid "Error initializing terminal"
 msgstr "Λάθος κατά την αρχικοποίηση του τερματικού"
 
-#: main.c:418
+#: main.c:417
 msgid "unable to determine username"
 msgstr "αδυναμία στον εντοπισμό του ονόματος χρήστη"
 
-#: main.c:424
+#: main.c:423
 msgid "unable to determine home directory"
 msgstr "αδυναμία στον εντοπισμό του καταλόγου χρήστη (home directory)"
 
-#: main.c:724
+#: main.c:723
 #, fuzzy, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Σφάλμα: '%s' είναι λανθασμένη διεθνής διεύθυνση IDN"
 
-#: main.c:981
+#: main.c:980
 msgid "Failed to parse mailto: link"
 msgstr ""
 
-#: main.c:994 main.c:1251 send/send.c:296 send/send.c:2768 send/send.c:2772
+#: main.c:993 main.c:1250 send/send.c:296 send/send.c:2768 send/send.c:2772
 msgid "No recipients specified"
 msgstr "Δεν έχουν οριστεί παραλήπτες"
 
-#: main.c:1023
+#: main.c:1022
 msgid "Can't use -E flag with stdin"
 msgstr ""
 
-#: main.c:1107
+#: main.c:1106
 #, fuzzy, c-format
 msgid "Can't parse message template: %s"
 msgstr "Αδυναμία πρόσβασης στο αρχείο μηνυμάτων: %s"
 
-#: main.c:1173 mutt_header.c:336
+#: main.c:1172 mutt_header.c:343
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: αδυναμία στην προσάρτηση του αρχείου"
 
-#: main.c:1265
+#: main.c:1264
 msgid "No mailbox with new mail"
 msgstr "Δεν υπάρχει νέα αλληλογραφία σε κανένα γραμματοκιβώτιο"
 
-#: main.c:1290
+#: main.c:1289
 msgid "No incoming mailboxes defined"
 msgstr "Δεν έχει οριστεί γραμματοκιβώτιο εισερχομένων"
 
-#: main.c:1342
+#: main.c:1341
 msgid "Mailbox is empty"
 msgstr "Το γραμματοκιβώτιο είναι άδειο"
 
@@ -4041,43 +4041,43 @@ msgstr "Το τρέχον μήνυμα δεν είναι ορατό σε αυτ�
 #. L10N: Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #. These three letters correspond to the choices in the string.
-#: muttlib.c:640
+#: muttlib.c:641
 msgid "File is a directory, save under it: (y)es, (n)o, (a)ll?"
 msgstr "Το αρχείο είναι φάκελος, αποθήκευση υπό αυτού; (y)ναι, (n)όχι, (a)όλα"
 
-#: muttlib.c:640
+#: muttlib.c:641
 msgid "yna"
 msgstr "yna"
 
 #. L10N: Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:658
+#: muttlib.c:659
 msgid "File is a directory, save under it?"
 msgstr "Το αρχείο είναι φάκελος, αποθήκευση υπό αυτού;"
 
-#: muttlib.c:663
+#: muttlib.c:664
 msgid "File under directory: "
 msgstr "Αρχείο υπό φάκελο:"
 
 #. L10N: Options for: File %s exists, (o)verwrite, (a)ppend, or (c)ancel?
-#: muttlib.c:679
+#: muttlib.c:680
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Το αρχείο υπάρχει, (o)διαγραφή του υπάρχοντος, (a)πρόσθεση, (c)άκυρο;"
 
-#: muttlib.c:680
+#: muttlib.c:681
 msgid "oac"
 msgstr "oac"
 
-#: muttlib.c:1365
+#: muttlib.c:1366
 msgid "Can't save message to POP mailbox"
 msgstr "Αδυναμία εγγραφής του μηνύματος στο POP γραμματοκιβώτιο"
 
-#: muttlib.c:1376
+#: muttlib.c:1377
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Πρόσθεση μηνυμάτων στο %s;"
 
-#: muttlib.c:1389
+#: muttlib.c:1390
 #, fuzzy
 msgid "Can't save message to news server"
 msgstr "Αδυναμία επεξεργασίας μηνύματος στο διακομιστή POP"
@@ -4237,19 +4237,19 @@ msgstr "Το μήνυμα δεν μπορεί να σταλεί ως εσωτε�
 msgid "Mail not sent"
 msgstr "Το γράμμα δεν εστάλη"
 
-#: ncrypt/crypt.c:643
+#: ncrypt/crypt.c:641
 msgid "S/MIME messages with no hints on content are unsupported"
 msgstr "Δεν υποστηρίζονται μηνύματα S/MIME χωρίς πληροφορίες στην επικεφαλίδα"
 
-#: ncrypt/crypt.c:878
+#: ncrypt/crypt.c:876
 msgid "Trying to extract PGP keys...\n"
 msgstr "Προσπάθεια εξαγωγής κλειδιών PGP...\n"
 
-#: ncrypt/crypt.c:905
+#: ncrypt/crypt.c:903
 msgid "Trying to extract S/MIME certificates..."
 msgstr "Προσπάθεια εξαγωγής πιστοποιητικών S/MIME..."
 
-#: ncrypt/crypt.c:1141
+#: ncrypt/crypt.c:1139
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s --]\n"
@@ -4258,7 +4258,7 @@ msgstr ""
 "[-- Σφάλμα: Άγνωστο πολυμερές/υπογεγραμμένο πρωτόκολλο %s --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1179
+#: ncrypt/crypt.c:1177
 #, fuzzy
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature --]\n"
@@ -4267,7 +4267,7 @@ msgstr ""
 "[-- Σφάλμα: Ασυνεπής πολυμερής/υπογεγραμμένη δομή --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1217
+#: ncrypt/crypt.c:1215
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -4276,7 +4276,7 @@ msgstr ""
 "[-- Προειδοποίηση: αδυναμία επιβεβαίωσης %s%s υπογραφών --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1229
+#: ncrypt/crypt.c:1227
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -4284,7 +4284,7 @@ msgstr ""
 "[-- Τα επόμενα δεδομένα είναι υπογεγραμμένα --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1237
+#: ncrypt/crypt.c:1235
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -4292,7 +4292,7 @@ msgstr ""
 "[-- Προειδοποίηση: Αδυναμία εύρεσης υπογραφών. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1244
+#: ncrypt/crypt.c:1242
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
