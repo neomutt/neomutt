@@ -861,6 +861,22 @@ If \(lq\fB*\fP\(rq is used as the pattern, all substitutions will be removed.
 .
 .PP
 .nf
+\fBsubscribe-to\fP \fIimap-folder-uri\fP
+\fBunsubscribe-from\fP \fIimap-folder-uri\fP
+.fi
+.IP
+Tell the IMAP server to subscribe to or unsubscribe from the folder
+\fIimap-folder-uri\fP.  The argument must be an IMAP URI,
+e.g. \(lq\fBsubscribe-to\fP imaps://mail.example.org/inbox\(rq.
+.IP
+Subscription is an IMAP protocol feature where the server manages a list of
+subscribed folders.  This list can be queried by clients like NeoMutt.
+.IP
+NeoMutt uses that list in various situations, see $imap_list_subscribed and
+$imap_check_subscribed.
+.
+.PP
+.nf
 \fBtimeout-hook\fP \fIcommand\fP
 \fBstartup-hook\fP \fIcommand\fP
 \fBshutdown-hook\fP \fIcommand\fP

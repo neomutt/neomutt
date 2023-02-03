@@ -12175,11 +12175,47 @@ smtp://user@host:587/
         used by the server and convert paths accordingly.
       </para>
       <para>
-        When browsing folders on an IMAP server, you can toggle whether to look
-        at only the folders you are subscribed to, or all folders with the
-        <emphasis>toggle-subscribed</emphasis> command. See also the
+        The IMAP protocol has a subscription feature where the server manages
+        a list of of subscribed folders.  To add or remove a folder to the list
+        of subscribed folders use the commands:
+      </para>
+      <cmdsynopsis>
+        <command>subscribe-to</command>
+        <arg choice="plain">
+          <replaceable class="parameter">imap-folder-uri</replaceable>
+        </arg>
+        <command>unsubscribe-from</command>
+        <arg choice="plain">
+          <replaceable class="parameter">imap-folder-uri</replaceable>
+        </arg>
+      </cmdsynopsis>
+      <para>
+        <emphasis>imap-folder-uri</emphasis> must be an IMAP URI,
+        from which the server and the folder is derived, e.g.
+      </para>
+<screen>
+subscribe-to imaps://mail.example.org/inbox
+</screen>
+      <para>
+        Instead of the above commands you can also use the
+        <literal>&lt;subscribe&gt;</literal> and
+        <literal>&lt;unsubscribe&gt;</literal> functions of the browser
+        (default keys <literal>s</literal> and <literal>u</literal>) to
+        subscribe to or unsubscribe from a folder while browsing the folders on
+        the IMAP server.  The browser can be instructed to only display the
+        folders you are subscribed to with the
+        <literal>&lt;toggle-subscribed&gt;</literal> functions.  See also the
         <link linkend="imap-list-subscribed">$imap_list_subscribed</link>
         variable.
+      </para>
+      <para>
+        Because the list of subscribed folders is managed by the IMAP server,
+        NeoMutt can also ask the server for that list.  If
+        <link linkend="imap-check-subscribed">$imap_check_subscribed</link> is
+        set, NeoMutt will do that and add those folders to its mailboxes list
+        just as if you had used the <link linkend="mailboxes">mailboxes</link>
+        command on each of them, so that these folders get checked periodically
+        for new mail.
       </para>
       <para>
         Polling for new mail on an IMAP server can cause noticeable delays.
@@ -20435,6 +20471,22 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable class="parameter">pattern</replaceable>
               </arg>
             </group>
+          </cmdsynopsis>
+        </listitem>
+        <listitem>
+          <cmdsynopsis>
+            <command>
+              <link linkend="imap">subscribe-to</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">imap-folder-uri</replaceable>
+            </arg>
+            <command>
+              <link linkend="imap">unsubscribe-from</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">imap-folder-uri</replaceable>
+            </arg>
           </cmdsynopsis>
         </listitem>
         <listitem>
