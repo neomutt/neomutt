@@ -41,12 +41,15 @@
 #include "index/lib.h"
 #include "mutt_commands.h"
 
-struct ListHead SidebarWhitelist = STAILQ_HEAD_INITIALIZER(SidebarWhitelist); ///< List of mailboxes to always display in the sidebar
+struct ListHead SidebarPinned = STAILQ_HEAD_INITIALIZER(SidebarPinned); ///< List of mailboxes to always display in the sidebar
 
 static const struct Command sb_commands[] = {
   // clang-format off
-  { "sidebar_whitelist",   sb_parse_whitelist,     0 },
-  { "unsidebar_whitelist", sb_parse_unwhitelist,   0 },
+  { "sidebar_pin",   sb_parse_sidebar_pin,     0 },
+  { "sidebar_unpin", sb_parse_sidebar_unpin,   0 },
+
+  { "sidebar_whitelist",   sb_parse_sidebar_pin,     0 },
+  { "unsidebar_whitelist", sb_parse_sidebar_unpin,   0 },
   // clang-format on
 };
 
@@ -209,5 +212,5 @@ void sb_shutdown(void)
 {
   if (AllDialogsWindow)
     notify_observer_remove(AllDialogsWindow->notify, sb_insertion_window_observer, NULL);
-  mutt_list_free(&SidebarWhitelist);
+  mutt_list_free(&SidebarPinned);
 }

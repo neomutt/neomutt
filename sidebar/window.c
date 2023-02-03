@@ -559,7 +559,7 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width,
  * * is the currently highlighted mailbox
  * * has unread messages
  * * has flagged messages
- * * is whitelisted
+ * * is pinned
  */
 static void update_entries_visibility(struct SidebarWindowData *wdata)
 {
@@ -590,8 +590,8 @@ static void update_entries_visibility(struct SidebarWindowData *wdata)
       continue;
     }
 
-    if (mutt_list_find(&SidebarWhitelist, mailbox_path(sbe->mailbox)) ||
-        mutt_list_find(&SidebarWhitelist, sbe->mailbox->name))
+    if (mutt_list_find(&SidebarPinned, mailbox_path(sbe->mailbox)) ||
+        mutt_list_find(&SidebarPinned, sbe->mailbox->name))
     {
       /* Explicitly asked to be visible */
       continue;

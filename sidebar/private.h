@@ -32,7 +32,7 @@
 struct IndexSharedData;
 struct MuttWindow;
 
-extern struct ListHead SidebarWhitelist;
+extern struct ListHead SidebarPinned;
 
 /**
  * struct SbEntry - Info about folders in the sidebar
@@ -84,8 +84,8 @@ void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m);
 struct Mailbox *sb_get_highlight(struct MuttWindow *win);
 
 // commands.c
-enum CommandResult sb_parse_unwhitelist(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-enum CommandResult sb_parse_whitelist  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult sb_parse_sidebar_unpin(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult sb_parse_sidebar_pin  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
 // functions.c
 bool sb_next(struct SidebarWindowData *wdata);

@@ -4262,7 +4262,7 @@
 ** When set, the sidebar will only display mailboxes containing new, or
 ** flagged, mail.
 ** .pp
-** \fBSee also:\fP $sidebar_whitelist, $$sidebar_non_empty_mailbox_only.
+** \fBSee also:\fP $sidebar_pin, $$sidebar_non_empty_mailbox_only.
 */
 
 { "sidebar_next_new_wrap", DT_BOOL, false },
@@ -4279,7 +4279,7 @@
 ** .pp
 ** When set, the sidebar will only display mailboxes that contain one or more mails.
 ** .pp
-** \fBSee also:\fP $$sidebar_new_mail_only, $sidebar_whitelist.
+** \fBSee also:\fP $$sidebar_new_mail_only, $sidebar_pin.
 */
 
 { "sidebar_on_right", DT_BOOL, false },

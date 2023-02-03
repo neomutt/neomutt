@@ -784,17 +784,17 @@ You can also query current environment \fIvalue\fPs by prefixing a
 .
 .PP
 .nf
-\fBsidebar_whitelist\fP \fImailbox\fP [ \fImailbox\fP ...]
-\fBunsidebar_whitelist\fP { \fB*\fP | \fImailbox\fP ... }
+\fBsidebar_pin\fP \fImailbox\fP [ \fImailbox\fP ...]
+\fBsidebar_unpin\fP { \fB*\fP | \fImailbox\fP ... }
 .fi
 .IP
-The \fBsidebar_whitelist\fP command specifies \fImailbox\fPes that will always
+The \fBsidebar_pin\fP command specifies \fImailbox\fPes that will always
 be displayed in the sidebar, even if $sidebar_new_mail_only is set and the
 \fImailbox\fP does not contain new mail.
 .IP
-The \fBunsidebar_whitelist\fP command is used to remove a \fImailbox\fP from
-the list of whitelisted \fImailbox\fPes. Use
-\(lq\fBunsidebar_whitelist\~*\fP\(rq to remove all \fImailbox\fPes.
+The \fBsidebar_unpin\fP command is used to remove a \fImailbox\fP from
+the list of always displayed \fImailbox\fPes. Use
+\(lq\fBsidebar_unpin\~*\fP\(rq to remove all \fImailbox\fPes.
 .
 .PP
 .nf
