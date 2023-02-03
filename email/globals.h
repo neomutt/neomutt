@@ -28,7 +28,7 @@
 
 /* Global variables */
 extern struct ListHead Ignore;              ///< List of header patterns to ignore
-extern struct RegexList NoSpamList;         ///< List of regexes to whitelist non-spam emails
+extern struct RegexList NoSpamList;         ///< List of regexes to identify non-spam emails
 extern struct ReplaceList SpamList;         ///< List of regexes and patterns to match spam emails
 extern struct ListHead UnIgnore;            ///< List of header patterns to unignore (see)
 extern struct ListHead MailToAllow;         ///< List of permitted fields in a mailto: url
