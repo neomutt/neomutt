@@ -40,7 +40,7 @@
 #include "init.h"
 
 struct RegexList Alternates = STAILQ_HEAD_INITIALIZER(Alternates); ///< List of regexes to match the user's alternate email addresses
-struct RegexList UnAlternates = STAILQ_HEAD_INITIALIZER(UnAlternates); ///< List of regexes to blacklist false matches in Alternates
+struct RegexList UnAlternates = STAILQ_HEAD_INITIALIZER(UnAlternates); ///< List of regexes to exclude false matches in Alternates
 static struct Notify *AlternatesNotify = NULL;
 
 /**

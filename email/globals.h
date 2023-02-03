@@ -33,9 +33,9 @@ extern struct ReplaceList SpamList;         ///< List of regexes and patterns to
 extern struct ListHead UnIgnore;            ///< List of header patterns to unignore (see)
 extern struct ListHead MailToAllow;         ///< List of permitted fields in a mailto: url
 extern struct HashTable *AutoSubscribeCache;///< Hash Table of auto-subscribed mailing lists
-extern struct RegexList UnSubscribedLists;  ///< List of regexes to blacklist false matches in SubscribedLists
+extern struct RegexList UnSubscribedLists;  ///< List of regexes to exclude false matches in SubscribedLists
 extern struct RegexList MailLists;          ///< List of regexes to match mailing lists
-extern struct RegexList UnMailLists;        ///< List of regexes to blacklist false matches in MailLists
+extern struct RegexList UnMailLists;        ///< List of regexes to exclude false matches in MailLists
 extern struct RegexList SubscribedLists;    ///< List of regexes to match subscribed mailing lists
 
 #endif /* MUTT_EMAIL_GLOBALS_H */
