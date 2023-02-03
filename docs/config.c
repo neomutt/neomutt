@@ -1378,7 +1378,6 @@
 ** When \fIset\fP, the outer layer of encryption is stripped off.  This
 ** variable is only used if $$mime_forward is \fIset\fP and
 ** $$mime_forward_decode is \fIunset\fP.
-** (PGP only)
 */
 
 { "forward_edit", DT_QUAD, MUTT_YES },
