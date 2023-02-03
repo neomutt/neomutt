@@ -532,7 +532,7 @@ Cars            4|  3    + Feb 28  Imogen Baker     (193)  Pechora Sea
             </listitem>
             <listitem>
               <para>
-                Whitelist mailboxes to display always
+                Pin mailboxes to display always
               </para>
             </listitem>
           </itemizedlist>
@@ -1056,13 +1056,13 @@ set sidebar_indent_string="  "          <emphasis role="comment"># Indent with t
             </para>
             <para>
               If you want some mailboxes to be always visible, then use the
-              <literal>sidebar_whitelist</literal> command. It takes a list of
+              <literal>sidebar_pin</literal> command. It takes a list of
               mailboxes as parameters.
             </para>
 
 <screen>
-set sidebar_new_mail_only               <emphasis role="comment"># Only mailboxes with new/flagged email</emphasis>
-sidebar_whitelist +fruit +fruit/apple   <emphasis role="comment"># Always display these two mailboxes</emphasis>
+set sidebar_new_mail_only         <emphasis role="comment"># Only mailboxes with new/flagged email</emphasis>
+sidebar_pin +fruit +fruit/apple   <emphasis role="comment"># Always display these two mailboxes</emphasis>
 </screen>
 
           </sect4>
@@ -17312,17 +17312,17 @@ set sort_browser="reverse-size"
 
       <sect2 id="sidebar-commands">
         <title>Commands</title>
-        <anchor id="sidebar-whitelist" />
-        <anchor id="unsidebar-whitelist" />
+        <anchor id="sidebar-pin" />
+        <anchor id="sidebar-unpin" />
         <cmdsynopsis>
-          <command>sidebar_whitelist</command>
+          <command>sidebar_pin</command>
           <arg choice="plain">
             <replaceable class="parameter">mailbox</replaceable>
           </arg>
           <arg choice="opt" rep="repeat">
             <replaceable class="parameter">mailbox</replaceable>
           </arg>
-          <command>unsidebar_whitelist</command>
+          <command>sidebar_unpin</command>
           <group choice="req">
             <arg choice="plain">
               <replaceable class="parameter">*</replaceable>
@@ -17339,9 +17339,9 @@ set sort_browser="reverse-size"
           is set and the mailbox does not contain new mail.
         </para>
         <para>
-          The <quote>unsidebar_whitelist</quote> command is used to remove
-          a mailbox from the list of whitelisted mailboxes. Use
-          <quote>unsidebar_whitelist&#160;*</quote> to remove all mailboxes.
+          The <quote>sidebar_unpin</quote> command is used to remove
+          a mailbox from the list of always displayed mailboxes. Use
+          <quote>sidebar_unpin&#160;*</quote> to remove all mailboxes.
         </para>
       </sect2>
 
@@ -17510,12 +17510,12 @@ set sidebar_indent_string = '  '
 <emphasis role="comment"># Make the Sidebar only display mailboxes that contain new, or flagged,</emphasis>
 <emphasis role="comment"># mail.</emphasis>
 set sidebar_new_mail_only = no
-<emphasis role="comment"># Any mailboxes that are whitelisted will always be visible, even if the</emphasis>
+<emphasis role="comment"># Any mailboxes that are pinned will always be visible, even if the</emphasis>
 <emphasis role="comment"># sidebar_new_mail_only option is enabled.</emphasis>
 set sidebar_non_empty_mailbox_only = no
 <emphasis role="comment"># Only show mailboxes that contain some mail</emphasis>
-sidebar_whitelist '/home/user/mailbox1'
-sidebar_whitelist '/home/user/mailbox2'
+sidebar_pin '/home/user/mailbox1'
+sidebar_pin '/home/user/mailbox2'
 <emphasis role="comment"># When searching for mailboxes containing new mail, should the search wrap</emphasis>
 <emphasis role="comment"># around when it reaches the end of the list?</emphasis>
 set sidebar_next_new_wrap = no
@@ -20358,7 +20358,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="sidebar-whitelist">sidebar_whitelist</link>
+              <link linkend="sidebar-pin">sidebar_pin</link>
             </command>
             <arg choice="plain">
               <replaceable class="parameter">mailbox</replaceable>
@@ -20367,7 +20367,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">mailbox</replaceable>
             </arg>
             <command>
-              <link linkend="sidebar-whitelist">unsidebar_whitelist</link>
+              <link linkend="sidebar-pin">sidebar_unpin</link>
             </command>
             <group choice="req">
               <arg choice="plain">

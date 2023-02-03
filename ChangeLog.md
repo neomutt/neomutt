@@ -541,7 +541,7 @@
   - fix resize bugs
   - notmuch: fix entire-thread: update current email pointer
   - sidebar: support indenting and shortening of names
-  - Handle variables inside backticks in sidebar_whitelist
+  - Handle variables inside backticks in sidebar_pin
   - browser: fix mask regex error reporting
 * Translations
   - 100.00% Lithuanian
@@ -1635,7 +1635,7 @@
   - Pass envlist to filter children too
   - Fix mutt_envlist_set() for the case that envlist is null
   - Fix setenv overwriting to not truncate the envlist
-  - Fix (un)sidebar_whitelist to expand paths
+  - Fix (un)sidebar_pin to expand paths
   - Fix mutt_refresh() pausing during macro events
   - Add a menu stack to track current and past menus
   - Change CurrentMenu to be controlled by the menu stack
@@ -1678,7 +1678,7 @@
   - Set refresh when popping the menu stack
   - Remove redraw parameter from crypt send_menus
   - Don't full redraw the index when handling a command from the pager
-  - Fix (un)sidebar_whitelist to expand paths
+  - Fix (un)sidebar_pin to expand paths
   - Filter other directional markers that corrupt the screen
   - Remove the OPTFORCEREDRAW options
   - Remove SidebarNeedsRedraw
@@ -2006,7 +2006,7 @@
   - forgotten-attachment: Fix checking logic.
   - forgotten-attachment: Update docs regarding $quote_regex.
   - notmuch: Add a fake "Folder" header to viewed emails
-  - sidebar: consider description when using whitelist
+  - sidebar: consider description when using pinning
   - skip-quoted: skip to body
 * Bug Fixes
   - sensible-browser/notmuch changing mailbox
@@ -2123,7 +2123,7 @@
   - docs: mass tidy up
 * Upstream
   - Fix sidebar documentation a bit
-  - Add unsidebar_whitelist command
+  - Add sidebar_pin command
   - Remove the $locale configuration variable
   - Add $attribution_locale configuration variable
   - Add missing include \<locale.h\> to send.c and edit.c
