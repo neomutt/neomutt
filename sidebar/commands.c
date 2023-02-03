@@ -47,7 +47,7 @@ enum CommandResult sb_parse_sidebar_pin(struct Buffer *buf, struct Buffer *s,
   {
     mutt_extract_token(path, s, MUTT_TOKEN_BACKTICK_VARS);
     mutt_buffer_expand_path(path);
-    add_to_stailq(&SidebarWhitelist, mutt_buffer_string(path));
+    add_to_stailq(&SidebarPinned, mutt_buffer_string(path));
   } while (MoreArgs(s));
   mutt_buffer_pool_release(&path);
 
@@ -68,11 +68,11 @@ enum CommandResult sb_parse_sidebar_unpin(struct Buffer *buf, struct Buffer *s,
     /* Check for deletion of entire list */
     if (mutt_str_equal(mutt_buffer_string(path), "*"))
     {
-      mutt_list_free(&SidebarWhitelist);
+      mutt_list_free(&SidebarPinned);
       break;
     }
     mutt_buffer_expand_path(path);
-    remove_from_stailq(&SidebarWhitelist, mutt_buffer_string(path));
+    remove_from_stailq(&SidebarPinned, mutt_buffer_string(path));
   } while (MoreArgs(s));
   mutt_buffer_pool_release(&path);
 

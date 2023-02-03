@@ -32,7 +32,7 @@
 struct IndexSharedData;
 struct MuttWindow;
 
-extern struct ListHead SidebarWhitelist;
+extern struct ListHead SidebarPinned;
 
 /**
  * struct SbEntry - Info about folders in the sidebar
