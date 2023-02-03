@@ -840,8 +840,8 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
 
     if (CharsetIsUtf8)
     {
-      /* zero width space, zero width no-break space */
-      if ((wc == 0x200B) || (wc == 0xFEFF))
+      /* zero width space, zero with non-joiner, zero width no-break space */
+      if ((wc == 0x200B) || (wc == 0x200C) || (wc == 0xFEFF))
       {
         mutt_debug(LL_DEBUG3, "skip zero-width character U+%04X\n", (unsigned short) wc);
         continue;
