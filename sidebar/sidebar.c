@@ -45,11 +45,11 @@ struct ListHead SidebarWhitelist = STAILQ_HEAD_INITIALIZER(SidebarWhitelist); //
 
 static const struct Command sb_commands[] = {
   // clang-format off
-  { "sidebar_pin",   sb_parse_whitelist,     0 },
-  { "sidebar_unpin", sb_parse_unwhitelist,   0 },
+  { "sidebar_pin",   sb_parse_sidebar_pin,     0 },
+  { "sidebar_unpin", sb_parse_sidebar_unpin,   0 },
 
-  { "sidebar_whitelist",   sb_parse_whitelist,     0 },
-  { "unsidebar_whitelist", sb_parse_unwhitelist,   0 },
+  { "sidebar_whitelist",   sb_parse_sidebar_pin,     0 },
+  { "unsidebar_whitelist", sb_parse_sidebar_unpin,   0 },
   // clang-format on
 };
 

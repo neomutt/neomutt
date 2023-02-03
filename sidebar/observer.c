@@ -250,7 +250,7 @@ static int sb_command_observer(struct NotifyCallback *nc)
 
   struct Command *cmd = nc->event_data;
 
-  if ((cmd->parse != sb_parse_whitelist) && (cmd->parse != sb_parse_unwhitelist))
+  if ((cmd->parse != sb_parse_sidebar_pin) && (cmd->parse != sb_parse_sidebar_unpin))
     return 0;
 
   struct MuttWindow *win = nc->global_data;
