@@ -559,7 +559,7 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width,
  * * is the currently highlighted mailbox
  * * has unread messages
  * * has flagged messages
- * * is whitelisted
+ * * is pinned
  */
 static void update_entries_visibility(struct SidebarWindowData *wdata)
 {
