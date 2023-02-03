@@ -12672,6 +12672,30 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
       </para>
     </sect1>
 
+    <sect1 id="newsgroups">
+      <title>Newsgroups / NNTP Support</title>
+      <para>
+        NeoMutt has support for interacting with newsgroups over the NNTP
+        protocol.
+      </para>
+      <para>
+        When browsing the list of newsgroups on the server the function
+        <literal>&lt;subscribe&gt;</literal> can be used to tell NeoMutt the
+        groups of interest to you.  This list is stored in the
+        <link linkend="newsrc">$newsrc</link> file, so NeoMutt remembers it
+        across invocations (see also
+        <link linkend="save-unsubscribed">$save_unsubscribed</link>).  With the
+        <literal>&lt;unsubscribe&gt;</literal> function a group can be deleted
+        from that list.  You can also specify the list of interesting groups
+        with the <link linkend="mailboxes">mailboxes</link> command in your
+        config file.
+      </para>
+      <para>
+        When checking for new messages, NeoMutt only polls the subscribed
+        newsgroups.
+      </para>
+    </sect1>
+
     <sect1 id="account-cmd">
       <title>Account Command Feature</title>
       <subtitle>Populate account credentials via an external command</subtitle>
