@@ -11854,8 +11854,10 @@ set preferred_languages="fr,en,de"
 <emphasis role="comment">#</emphasis>
 <emphasis role="comment"># Remember: "unattachments" only undoes what "attachments" has done!</emphasis>
 <emphasis role="comment"># It does not trigger any matching on actual messages.</emphasis>
+<emphasis role="comment">#</emphasis>
 <emphasis role="comment"># Qualify any MIME part with an "attachment" disposition, EXCEPT for</emphasis>
-<emphasis role="comment"># text/x-vcard and application/pgp parts. (PGP parts are already known</emphasis>
+<emphasis role="comment"># text/vcard, text/x-vcard, application/pgp.*, application/pkcs7-.* and</emphasis>
+<emphasis role="comment"># application/x-pkcs7-.* parts. (PGP and S/MIME parts are already known</emphasis>
 <emphasis role="comment"># to NeoMutt, and can be searched for with ~g, ~G, and ~k.)</emphasis>
 <emphasis role="comment">#</emphasis>
 <emphasis role="comment"># I've added pkcs7/x-pkcs7 to this, since it functions (for S/MIME)</emphasis>
@@ -11863,7 +11865,7 @@ set preferred_languages="fr,en,de"
 <emphasis role="comment"># in a stock NeoMutt build, but we can still treat it specially here.</emphasis>
 <emphasis role="comment">#</emphasis>
 attachments  +A */.*
-attachments  -A text/x-vcard
+attachments  -A text/vcard text/x-vcard
 attachments  -A application/pgp.*
 attachments  -A application/pkcs7-.* application/x-pkcs7-.*
 <emphasis role="comment"># Discount all MIME parts with an "inline" disposition, unless they're</emphasis>

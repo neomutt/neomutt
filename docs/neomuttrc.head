@@ -70,11 +70,11 @@ mime_lookup application/octet-stream
 # It does not trigger any matching on actual messages.
 
 # Qualify any MIME part with an "attachment" disposition, EXCEPT for
-# text/x-vcard, application/pgp.*, application/pkcs7-.* and
+# text/vcard, text/x-vcard, application/pgp.*, application/pkcs7-.* and
 # application/x-pkcs7-.* parts. (PGP and S/MIME parts are already known
 # to NeoMutt, and can be searched for with ~g, ~G, and ~k.)
 attachments   +A */.*
-attachments   -A text/x-vcard
+attachments   -A text/vcard text/x-vcard
 attachments   -A application/pgp.*
 attachments   -A application/pkcs7-.* application/x-pkcs7-.*
 
