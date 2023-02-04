@@ -310,7 +310,6 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
 
         STAILQ_FOREACH(np, &HeaderOrderList, entries)
         {
-          x++;
           size_t hdr_order_len = mutt_str_len(np->data);
           if (mutt_istrn_equal(buf, np->data, hdr_order_len))
           {
@@ -321,6 +320,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
             }
             mutt_debug(LL_DEBUG2, "Reorder: %s matches %s", np->data, buf);
           }
+          x++;
         }
         if (match != -1)
           x = match;
