@@ -16405,12 +16405,6 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 <entry></entry>
               </row>
               <row>
-                <entry><literal>vfolder_format</literal></entry>
-                <entry>string</entry>
-                <entry><literal>%6n(%6N) %f</literal></entry>
-                <entry></entry>
-              </row>
-              <row>
                 <entry><literal>virtual_spool_file</literal></entry>
                 <entry>boolean</entry>
                 <entry><literal>no</literal></entry>
@@ -16651,17 +16645,6 @@ set nm_record = no
 set nm_record_tags = ""
 <emphasis role="comment"># This variable specifies the notmuch tag used for unread messages.</emphasis>
 set nm_unread_tag = unread
-<emphasis role="comment"># This variable allows you to customize the file browser display for virtual</emphasis>
-<emphasis role="comment"># folders to your personal taste.</emphasis>
-<emphasis role="comment"># %C   current folder number</emphasis>
-<emphasis role="comment"># %f   folder name (description)</emphasis>
-<emphasis role="comment"># %m   number of messages in the mailbox *</emphasis>
-<emphasis role="comment"># %n   number of unread messages in the mailbox *</emphasis>
-<emphasis role="comment"># %N   "N" if mailbox has new mail, " " (space) otherwise</emphasis>
-<emphasis role="comment"># %>X  right justify the rest of the string and pad with character ``X''</emphasis>
-<emphasis role="comment"># %|X  pad to the end of the line with character ``X''</emphasis>
-<emphasis role="comment"># %*X  soft-fill with character ``X'' as pad</emphasis>
-set vfolder_format = "%6n(%6N) %f"
 <emphasis role="comment"># When set, NeoMutt will use the first virtual mailbox (see virtual-mailboxes)</emphasis>
 <emphasis role="comment"># as a spool_file.</emphasis>
 set virtual_spool_file = no

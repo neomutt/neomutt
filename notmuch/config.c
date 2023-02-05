@@ -147,12 +147,11 @@ static struct ConfigDef NotmuchVars[] = {
   { "nm_unread_tag", DT_STRING, IP "unread", 0, NULL,
     "(notmuch) Tag to use for unread messages"
   },
-  { "vfolder_format", DT_STRING|DT_NOT_EMPTY|R_INDEX, IP "%2C %?n?%4n/&     ?%4m %f", 0, NULL,
-    "(notmuch) printf-like format string for the browser's display of virtual folders"
-  },
   { "virtual_spool_file", DT_BOOL, false, 0, NULL,
     "(notmuch) Use the first virtual mailbox as a spool file"
   },
+
+  { "vfolder_format",    DT_DEPRECATED|DT_STRING|DT_NOT_EMPTY|R_INDEX, IP "%2C %?n?%4n/&     ?%4m %f", IP "2018-11-01" },
 
   { "nm_default_uri",    DT_SYNONYM, IP "nm_default_url",     IP "2021-02-11" },
   { "virtual_spoolfile", DT_SYNONYM, IP "virtual_spool_file", IP "2021-02-11" },
