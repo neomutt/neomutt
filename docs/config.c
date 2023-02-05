@@ -5208,6 +5208,10 @@
 ** When \fIunset\fP, NeoMutt won't stop when the user presses the terminal's
 ** \fIsusp\fP key, usually "^Z". This is useful if you run NeoMutt
 ** inside an xterm using a command like "\fCxterm -e neomutt\fP".
+** .pp
+** On startup NeoMutt tries to detect if it is the process session leader.
+** If so, the default of $suspend is "no" otherwise "yes".  This default covers
+** the above mentioned use case of "\fCxterm -e neomutt\fP".
 */
 
 { "text_flowed", DT_BOOL, false },
