@@ -5503,11 +5503,11 @@
 { "virtual_spool_file", DT_BOOL, false },
 /*
 ** .pp
-** When \fIset\fP, NeoMutt will use the first defined virtual mailbox (see
-** virtual-mailboxes) as a spool file.
-** .pp
 ** This command is now unnecessary. $$spool_file has been extended to support
 ** mailbox descriptions as a value.
+** .pp
+** When \fIset\fP, NeoMutt will use the first defined virtual mailbox (see
+** virtual-mailboxes) as a spool file.
 */
 #endif
 
