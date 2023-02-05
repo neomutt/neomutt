@@ -5504,14 +5504,6 @@
 */
 
 #ifdef USE_NOTMUCH
-{ "vfolder_format", DT_STRING, "%2C %?n?%4n/&     ?%4m %f" },
-/*
-** .pp
-** This variable allows you to customize the file browser display for virtual
-** folders to your personal taste.  This string uses many of the same
-** expandos as $$folder_format.
-*/
-
 { "virtual_spool_file", DT_BOOL, false },
 /*
 ** .pp
