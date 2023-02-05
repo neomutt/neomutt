@@ -677,7 +677,6 @@ finish:
   if (pop_query(adata, buf, sizeof(buf)) == -1)
     goto fail;
   mutt_socket_close(conn);
-  FREE(&conn);
   pop_adata_free((void **) &adata);
   return;
 
