@@ -33,6 +33,7 @@
  * | imap/auth.c       | @subpage imap_auth       |
  * | imap/auth_anon.c  | @subpage imap_auth_anon  |
  * | imap/auth_cram.c  | @subpage imap_auth_cram  |
+ * | imap_auth_gsasl   | @subpage imap_auth_gsasl |
  * | imap/auth_gss.c   | @subpage imap_auth_gss   |
  * | imap/auth_login.c | @subpage imap_auth_login |
  * | imap/auth_oauth.c | @subpage imap_auth_oauth |

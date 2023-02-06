@@ -73,7 +73,7 @@ struct RangeRegex RangeRegexes[] = {
 };
 
 /**
- * @defgroup eat_arg_api Parse a pattern
+ * @defgroup eat_arg_api Parse a pattern API
  *
  * Prototype for a function to parse a pattern
  *
