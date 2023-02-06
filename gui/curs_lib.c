@@ -341,7 +341,7 @@ void mutt_query_exit(void)
     set_timeout(-1); /* restore blocking operation */
   if (mutt_yesorno(_("Exit NeoMutt without saving?"), MUTT_YES) == MUTT_YES)
   {
-    mutt_exit(1);
+    mutt_exit(0); /* This call never returns */
   }
   mutt_clear_error();
   mutt_curses_set_cursor(cursor);
