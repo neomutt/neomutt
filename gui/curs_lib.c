@@ -339,7 +339,7 @@ void mutt_query_exit(void)
   const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
   if (c_timeout)
     set_timeout(-1); /* restore blocking operation */
-  if (mutt_yesorno(_("Exit NeoMutt?"), MUTT_YES) == MUTT_YES)
+  if (mutt_yesorno(_("Exit NeoMutt without saving?"), MUTT_YES) == MUTT_YES)
   {
     mutt_exit(1);
   }
