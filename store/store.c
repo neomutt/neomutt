@@ -76,25 +76,6 @@ static const struct StoreOps *StoreOps[] = {
 };
 
 /**
- * is_store - Is the argument a NeoMutt store (database)
- * @param name  Command name to be searched for
- * @retval true  Function found
- * @retval false Function not found
- */
-bool is_store(const char *name)
-{
-  const struct StoreOps **ops = StoreOps;
-
-  for (; *ops; ops++)
-  {
-    if (mutt_str_equal(name, (*ops)->name))
-      return true;
-  }
-
-  return false;
-}
-
-/**
  * store_backend_list - Get a list of backend names
  * @retval ptr Comma-space-separated list of names
  *
