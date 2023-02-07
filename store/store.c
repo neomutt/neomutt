@@ -87,7 +87,7 @@ bool is_store(const char *name)
 
   for (; *ops; ops++)
   {
-    if (mutt_istr_equal(name, (*ops)->name))
+    if (mutt_str_equal(name, (*ops)->name))
       return true;
   }
 
