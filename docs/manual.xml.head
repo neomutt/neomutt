@@ -14437,13 +14437,63 @@ ifndef symbol "config-command [args...]"  <emphasis role="comment"># If a symbol
 finish                                    <emphasis role="comment"># Finish reading the current file</emphasis>
 </screen>
 
-        <para>
-          Here a symbol can be a <link linkend="variables">$variable</link>,
-          environment variable,
-          <link linkend="functions">&lt;function&gt;</link>,
-          <link linkend="commands">command</link> or compile-time symbol, such
-          as <quote>imap</quote>.
-        </para>
+        <table id="ifdef-symbols">
+          <title>ifdef Symbols</title>
+          <tgroup cols="2">
+            <thead>
+              <row>
+                <entry>Example Symbol</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>
+                  <literal>sidebar_format</literal>
+                </entry>
+                <entry>Config variable</entry>
+              </row>
+              <row>
+                <entry>
+                  <literal>status-color</literal>, 
+                  <literal>imap</literal>
+                </entry>
+                <entry>Compiled-in feature</entry>
+              </row>
+              <row>
+                <entry>
+                <literal>pgp-menu</literal>, 
+                <literal>group-related</literal></entry>
+                <entry>Function</entry>
+              </row>
+              <row>
+                <entry>
+                <literal>index-format-hook</literal>, 
+                <literal>tag-transforms</literal></entry>
+                <entry>Command</entry>
+              </row>
+              <row>
+                <entry>
+                  <literal>my_var</literal>
+                </entry>
+                <entry>My variable</entry>
+              </row>
+              <row>
+                <entry>
+                <literal>lmdb</literal>, 
+                <literal>tokyocabinet</literal></entry>
+                <entry>Store (database)</entry>
+              </row>
+              <row>
+                <entry>
+                <literal>HOME</literal>, 
+                <literal>COLUMNS</literal></entry>
+                <entry>Environment variable</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+
         <para>
           A list of compile-time symbols can be seen in the output of the
           command <screen>neomutt -v</screen> (in the

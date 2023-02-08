@@ -466,9 +466,24 @@ The \fBifdef\fP feature introduces three new commands to NeoMutt and allow you
 to share one config file between versions of NeoMutt that may have different
 features compiled in.
 .IP
-Here a \fIsymbol\fP can be a
-.BR $variable ", <" function ">, " command " or " "compile-time symbol" ", "
-such as \(lq\fBimap\fP\(rq. A list of compile-time \fIsymbol\fPs can be seen in
+.
+.TS
+box;
+lb|lb
+l|l .
+Example Symbol	Description
+_
+\fCsidebar_format\fP	Config variable
+\fCstatus-color\fP, \fCimap\fP	Compiled-in feature
+\fCpgp-menu\fP, \fCgroup-related\fP	Function
+\fCindex-format-hook\fP, \fCtag-transforms\fP	Command
+\fCmy_var\fP	My variable
+\fClmdb\fP, \fCtokyocabinet\fP	Store (database)
+\fCHOME\fP, \fCCOLUMNS\fP	Environment variable
+.TE
+.
+.IP
+A list of compile-time \fIsymbol\fPs can be seen in
 the output of the command \(lq\fBneomutt\~\-v\fP\(rq (in the
 \(lq\fBCompile options\fP\(rq section).
 .IP

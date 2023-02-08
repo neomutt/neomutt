@@ -47,6 +47,7 @@
 #include "command_parse.h"
 #include "imap/lib.h"
 #include "menu/lib.h"
+#include "store/lib.h"
 #include "init.h"
 #include "keymap.h"
 #include "mutt_commands.h"
@@ -501,12 +502,21 @@ enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
 {
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
+  if (mutt_buffer_is_empty(buf))
+  {
+    mutt_buffer_printf(err, _("%s: too few arguments"), (data ? "ifndef" : "ifdef"));
+    return MUTT_CMD_WARNING;
+  }
+
   // is the item defined as:
   bool res = cs_subset_lookup(NeoMutt->sub, buf->data) // a variable?
              || feature_enabled(buf->data)             // a compiled-in feature?
              || is_function(buf->data)                 // a function?
              || mutt_command_get(buf->data)            // a command?
              || myvar_get(buf->data)                   // a my_ variable?
+#ifdef USE_HCACHE
+             || store_is_valid_backend(buf->data)      // a store? (database)
+#endif
              || mutt_str_getenv(buf->data); // an environment variable?
 
   if (!MoreArgs(s))
