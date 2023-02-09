@@ -250,7 +250,7 @@ static void update_tables(struct MailboxView *mv)
   m->msg_flagged = 0;
   padding = mx_msg_padding_size(m);
   const bool c_maildir_trash = cs_subset_bool(NeoMutt->sub, "maildir_trash");
-  for (i = 0, j = 0; i < m->msg_count; i++)
+  for (i = 0, j = 0; i < m->email_max; i++)
   {
     if (!m->emails[i])
       break;
