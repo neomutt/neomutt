@@ -336,7 +336,7 @@ static char *get_foldername(const char *folder)
  * @retval NULL Otherwise
  *
  * @note This function does not perform any check on the validity of the data found.
- * @note The returned data must be free with mutt_hcache_free_raw().
+ * @note The returned data must be free with free_raw().
  */
 static void *fetch_raw(struct HeaderCache *hc, const char *key, size_t keylen, size_t *dlen)
 {
@@ -366,7 +366,6 @@ static void free_raw(struct HeaderCache *hc, void **data)
 
   ops->free(hc->ctx, data);
 }
-
 
 /**
  * mutt_hcache_open - Multiplexor for StoreOps::open
@@ -557,7 +556,7 @@ end:
 }
 
 /**
- * mutt_hcache_fetch_obj - Fetch a message's header from the cache into a destination object
+ * mutt_hcache_fetch_obj_ - Fetch a message's header from the cache into a destination object
  * @param[in]  hc     Pointer to the struct HeaderCache structure got by mutt_hcache_open()
  * @param[in]  key    Message identification string
  * @param[in]  keylen Length of the string pointed to by key
@@ -566,14 +565,15 @@ end:
  * @retval true Success, the data was found and the length matches
  * @retval false Otherwise
  */
-bool mutt_hcache_fetch_obj_(struct HeaderCache *hc, const char *key, size_t keylen, void *dst, size_t dstlen)
+bool mutt_hcache_fetch_obj_(struct HeaderCache *hc, const char *key,
+                            size_t keylen, void *dst, size_t dstlen)
 {
   bool rc = true;
   size_t srclen = 0;
   void *src = fetch_raw(hc, key, keylen, &srclen);
   if (src && srclen == dstlen)
   {
-    memcpy(dst, src , dstlen);
+    memcpy(dst, src, dstlen);
   }
   else
   {

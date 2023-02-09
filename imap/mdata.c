@@ -28,7 +28,6 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <assert.h>
 #include "private.h"
 #include "core/lib.h"
 #include "mdata.h"
