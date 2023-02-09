@@ -139,8 +139,8 @@ static struct ConfigDef NcryptVars[] = {
   { "pgp_verify_sig",         DT_SYNONYM, IP "crypt_verify_sig",   IP "2002-01-24" },
   { "smime_self_encrypt_as",  DT_SYNONYM, IP "smime_default_key",  IP "2018-01-11" },
 
-  { "pgp_encrypt_self",   DT_DEPRECATED|DT_QUAD, MUTT_NO, IP "2019-09-09" },
-  { "smime_encrypt_self", DT_DEPRECATED|DT_QUAD, MUTT_NO, IP "2019-09-09" },
+  { "pgp_encrypt_self",   DT_DEPRECATED|DT_QUAD, 0, IP "2019-09-09" },
+  { "smime_encrypt_self", DT_DEPRECATED|DT_QUAD, 0, IP "2019-09-09" },
 
   { NULL },
   // clang-format on

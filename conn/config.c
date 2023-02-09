@@ -33,7 +33,7 @@
 
 static struct ConfigDef ConnVars[] = {
   // clang-format off
-  { "account_command", DT_STRING | DT_COMMAND, 0, 0, NULL,
+  { "account_command", DT_STRING|DT_COMMAND, 0, 0, NULL,
     "Shell command to retrieve account credentials"
   },
   { "connect_timeout", DT_NUMBER, 30, 0, NULL,

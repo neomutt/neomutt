@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1999-2000 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -21,13 +22,41 @@
  */
 
 /*
- * This program parses neomutt's init.h and generates documentation in
+ * This program parses neomutt's config.c and generates documentation in
  * three different formats:
  *
  * -> a commented neomuttrc configuration file
  * -> nroff, suitable for inclusion in a manual page
- * -> docbook-xml, suitable for inclusion in the
- *    SGML-based manual
+ * -> docbook-xml, suitable for inclusion in the SGML-based manual
+ */
+
+/*
+ * Documentation line parser
+ *
+ * The following code parses specially formatted documentation
+ * comments in config.c
+ *
+ * The format is very remotely inspired by nroff. Most important, it's
+ * easy to parse and convert, and it was easy to generate from the SGML
+ * source of neomutt's original manual.
+ *
+ * - \fI switches to italics
+ * - \fB switches to boldface
+ * - \fP switches to normal display
+ * - .dl on a line starts a definition list (name taken taken from HTML).
+ * - .dt starts a term in a definition list.
+ * - .dd starts a definition in a definition list.
+ * - .de on a line finishes a definition list.
+ * - .il on a line starts an itemized list
+ * - .dd starts an item in an itemized list
+ * - .ie on a line finishes an itemized list
+ * - .ts on a line starts a "tscreen" environment (name taken from SGML).
+ * - .te on a line finishes this environment.
+ * - .pp on a line starts a paragraph.
+ * - \$word will be converted to a reference to word, where appropriate.
+ *   Note that \$$word is possible as well.
+ * - '. ' in the beginning of a line expands to two space characters.
+ *   This is used to protect indentations in tables.
  */
 
 #include "config.h"
@@ -37,8 +66,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
 #include "makedoc_defs.h"
+
+char *Progname = NULL;
+short Debug = 0;
+int fd_recurse = 0;
+
+#define BUFSIZE 2048
 
 // clang-format off
 #define D_NL    (1 <<  0)
@@ -60,10 +96,10 @@
  */
 enum OutputFormats
 {
-  F_CONF,
-  F_MAN,
-  F_SGML,
-  F_NONE
+  F_NONE, ///< Error, none selected
+  F_CONF, ///< NeoMutt config file
+  F_MAN,  ///< Manual page
+  F_SGML, ///< DocBook XML
 };
 
 /**
@@ -92,12 +128,6 @@ enum SpecialChars
   SP_REFER
 };
 
-struct VariableTypes
-{
-  char *machine;
-  char *human;
-};
-
 /**
  * enum DataType - User-variable types
  */
@@ -121,11 +151,11 @@ enum DataType
   DT_SYNONYM,
 };
 
-char *Progname = NULL;
-short Debug = 0;
-int fd_recurse = 0;
-
-#define BUFSIZE 2048
+struct VariableTypes
+{
+  char *machine;
+  char *human;
+};
 
 struct VariableTypes types[] = {
   // clang-format off
@@ -228,17 +258,23 @@ static char *get_token(char *d, size_t l, char *s)
       continue;
     }
 
-    if (is_quoted && *t == '"')
+    if (is_quoted && (*t == '"'))
     {
       t++;
       break;
     }
     else if (!is_quoted && strchr(single_char_tokens, *t))
+    {
       break;
+    }
     else if (!is_quoted && isspace((unsigned char) *t))
+    {
       break;
+    }
     else
+    {
       *d++ = *t;
+    }
   }
 
   *d = '\0';
@@ -309,7 +345,9 @@ static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_
         case SP_NEWLINE:
         {
           if (onl)
+          {
             docstat |= onl;
+          }
           else
           {
             fputs("\n# ", fp_out);
@@ -517,11 +555,17 @@ static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_
             for (; *str; str++)
             {
               if (*str == '"')
+              {
                 fputs("\"", fp_out);
+              }
               else if (*str == '\\')
+              {
                 fputs("\\\\", fp_out);
+              }
               else if (*str == '-')
+              {
                 fputs("\\-", fp_out);
+              }
               else if (strncmp(str, "``", 2) == 0)
               {
                 fputs("\\(lq", fp_out);
@@ -533,7 +577,9 @@ static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_
                 str++;
               }
               else
+              {
                 fputc(*str, fp_out);
+              }
             }
           }
           break;
@@ -582,7 +628,9 @@ static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_
         case SP_NEWLINE:
         {
           if (onl)
+          {
             docstat |= onl;
+          }
           else
           {
             fputc('\n', fp_out);
@@ -698,7 +746,9 @@ static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_
         case SP_STR:
         {
           if (docstat & D_TAB)
+          {
             sgml_fputs(str, fp_out);
+          }
           else
           {
             while (*str)
@@ -716,7 +766,9 @@ static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_
                   str++;
                 }
                 else
+                {
                   sgml_fputc(*str, fp_out);
+                }
               }
             }
           }
@@ -746,13 +798,13 @@ static int flush_doc(enum OutputFormats format, int docstat, FILE *fp_out)
     exit(1);
   }
 
-  if (docstat & (D_PA))
+  if (docstat & D_PA)
     docstat = print_it(format, SP_END_PAR, NULL, fp_out, docstat);
 
-  if (docstat & (D_TAB))
+  if (docstat & D_TAB)
     docstat = print_it(format, SP_END_TAB, NULL, fp_out, docstat);
 
-  if (docstat & (D_DL))
+  if (docstat & D_DL)
     docstat = print_it(format, SP_END_DL, NULL, fp_out, docstat);
 
   if (docstat & (D_EM | D_BF | D_TT))
@@ -777,35 +829,6 @@ static int commit_buf(enum OutputFormats format, char *buf, char **d, FILE *fp_o
   return docstat;
 }
 
-/*
- * Documentation line parser
- *
- * The following code parses specially formatted documentation
- * comments in init.h.
- *
- * The format is very remotely inspired by nroff. Most important, it's
- * easy to parse and convert, and it was easy to generate from the SGML
- * source of neomutt's original manual.
- *
- * - \fI switches to italics
- * - \fB switches to boldface
- * - \fP switches to normal display
- * - .dl on a line starts a definition list (name taken taken from HTML).
- * - .dt starts a term in a definition list.
- * - .dd starts a definition in a definition list.
- * - .de on a line finishes a definition list.
- * - .il on a line starts an itemized list
- * - .dd starts an item in an itemized list
- * - .ie on a line finishes an itemized list
- * - .ts on a line starts a "tscreen" environment (name taken from SGML).
- * - .te on a line finishes this environment.
- * - .pp on a line starts a paragraph.
- * - \$word will be converted to a reference to word, where appropriate.
- *   Note that \$$word is possible as well.
- * - '. ' in the beginning of a line expands to two space characters.
- *   This is used to protect indentations in tables.
- */
-
 /**
  * sgml_id_fputs - reduce CDATA to ID
  */
@@ -822,7 +845,8 @@ static int sgml_id_fputs(const char *s, FILE *fp_out)
       id = '-';
     else
       id = *s;
-    if (*s == '>' && !*(s + 1))
+
+    if ((s[0] == '>') && (s[1] == '\0'))
       break;
 
     if (fputc((unsigned int) id, fp_out) == EOF)
@@ -973,7 +997,9 @@ static int handle_docline(enum OutputFormats format, char *l, FILE *fp_out, int 
       }
     }
     else
+    {
       *d++ = *s;
+    }
   }
 
   docstat = commit_buf(format, buf, &d, fp_out, docstat);
@@ -1025,11 +1051,11 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
       if (strcasecmp(s, "MUTT_MBOX") == 0)
         strncpy(t, "mbox", l);
       else if (strcasecmp(s, "MUTT_MMDF") == 0)
-        strncpy(t, "MMDF", l);
+        strncpy(t, "mmdf", l);
       else if (strcasecmp(s, "MUTT_MH") == 0)
-        strncpy(t, "MH", l);
+        strncpy(t, "mh", l);
       else if (strcasecmp(s, "MUTT_MAILDIR") == 0)
-        strncpy(t, "Maildir", l);
+        strncpy(t, "maildir", l);
       else if (strcasecmp(s, "UT_UNSET") == 0)
         strncpy(t, "unset", l);
       break;
@@ -1038,10 +1064,7 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
     {
       /* heuristic! */
       if (strncmp(s, "SORT_", 5) != 0)
-        fprintf(stderr,
-                "WARNING: expected prefix of SORT_ for type DT_SORT "
-                "instead of %s\n",
-                s);
+        fprintf(stderr, "WARNING: expected prefix of SORT_ for type DT_SORT instead of %s\n", s);
       strncpy(t, s + 5, l);
       for (; *t; t++)
         *t = tolower((unsigned char) *t);
@@ -1058,8 +1081,8 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
     {
       if (strcmp(s, "0") == 0)
         break;
-      /* fallthrough */
     }
+    /* fallthrough */
     default:
     {
       strncpy(t, s, l);
@@ -1101,13 +1124,13 @@ static void conf_print_strval(const char *v, FILE *fp_out)
 {
   for (; *v; v++)
   {
-    if (*v < ' ' || *v & 0x80)
+    if ((*v < ' ') || (*v & 0x80))
     {
       conf_char_to_escape((unsigned int) *v, fp_out);
       continue;
     }
 
-    if (*v == '"' || *v == '\\')
+    if ((*v == '"') || (*v == '\\'))
       fputc('\\', fp_out);
     fputc(*v, fp_out);
   }
@@ -1121,7 +1144,7 @@ static const char *type2human(int type)
 /*
  * Configuration line parser
  *
- * The following code parses a line from init.h which declares
+ * The following code parses a line from config.c which declares
  * a configuration variable.
  */
 
@@ -1129,7 +1152,7 @@ static void man_print_strval(const char *v, FILE *fp_out)
 {
   for (; *v; v++)
   {
-    if (*v < ' ' || *v & 0x80)
+    if ((*v < ' ') || (*v & 0x80))
     {
       fputc('\\', fp_out);
       conf_char_to_escape((unsigned int) *v, fp_out);
@@ -1152,7 +1175,7 @@ static void sgml_print_strval(const char *v, FILE *fp_out)
   char buf[16];
   for (; *v; v++)
   {
-    if (*v < ' ' || *v & 0x80)
+    if ((*v < ' ') || (*v & 0x80))
     {
       char_to_escape(buf, (unsigned int) *v);
       sgml_fputs(buf, fp_out);
@@ -1182,7 +1205,9 @@ static void print_confline(enum OutputFormats format, const char *varname,
         fputs("\"", fp_out);
       }
       else
+      {
         fprintf(fp_out, "\n# set %s=%s", varname, val);
+      }
 
       fprintf(fp_out, "\n#\n# Name: %s", varname);
       fprintf(fp_out, "\n# Type: %s", type2human(type));
@@ -1195,7 +1220,9 @@ static void print_confline(enum OutputFormats format, const char *varname,
         fputs("\"", fp_out);
       }
       else
+      {
         fprintf(fp_out, "\n# Default: %s", val);
+      }
 
       fputs("\n# ", fp_out);
       break;
@@ -1240,7 +1267,7 @@ static void print_confline(enum OutputFormats format, const char *varname,
           (type == DT_MAILBOX) || (type == DT_MBTABLE) || (type == DT_SLIST) ||
           (type == DT_PATH) || (type == DT_COMMAND))
       {
-        if (val && *val)
+        if (val && (*val != '\0'))
         {
           fputs("\nDefault: <quote><literal>", fp_out);
           sgml_print_strval(val, fp_out);
@@ -1253,7 +1280,9 @@ static void print_confline(enum OutputFormats format, const char *varname,
         fputs("</literallayout>\n", fp_out);
       }
       else
+      {
         fprintf(fp_out, "\nDefault: %s</literallayout>\n", val);
+      }
       break;
     }
     /* make gcc happy */
@@ -1267,9 +1296,8 @@ static void handle_confline(enum OutputFormats format, char *s, FILE *fp_out)
   char varname[BUFSIZE];
   char buf[BUFSIZE];
   char tmp[BUFSIZE];
-  int type;
-
   char val[BUFSIZE];
+  int type;
 
   /* xxx - put this into an actual state machine? */
 
@@ -1330,7 +1358,9 @@ static void makedoc(enum OutputFormats format, FILE *fp_in, FILE *fp_out)
       exit(1);
     }
     else
+    {
       *p = '\0';
+    }
 
     p = get_token(token, sizeof(token), buffer);
     if (!p)
@@ -1340,14 +1370,18 @@ static void makedoc(enum OutputFormats format, FILE *fp_in, FILE *fp_out)
       fprintf(stderr, "%s: line %d.  first token: \"%s\".\n", Progname, line, token);
 
     if (strcmp(token, "/*++*/") == 0)
+    {
       active = true;
+    }
     else if (strcmp(token, "/*--*/") == 0)
     {
       docstat = flush_doc(format, docstat, fp_out);
       active = false;
     }
     else if (active && ((strcmp(token, "/**") == 0) || (strcmp(token, "**") == 0)))
+    {
       docstat = handle_docline(format, p, fp_out, docstat);
+    }
     else if (active && (strcmp(token, "{") == 0))
     {
       docstat = flush_doc(format, docstat, fp_out);
@@ -1404,21 +1438,17 @@ int main(int argc, char *argv[])
     }
   }
   else
-    fp = stdin;
-
-  switch (format)
   {
-    case F_CONF:
-    case F_MAN:
-    case F_SGML:
-      makedoc(format, fp, stdout);
-      break;
-    default:
-    {
-      fprintf(stderr, "%s: No output format specified.\n", Progname);
-      exit(1);
-    }
+    fp = stdin;
   }
+
+  if (format == F_NONE)
+  {
+    fprintf(stderr, "%s: No output format specified.\n", Progname);
+    exit(1);
+  }
+
+  makedoc(format, fp, stdout);
 
   if (fp != stdin)
     fclose(fp);
