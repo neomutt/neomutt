@@ -742,13 +742,11 @@ void nntp_hcache_update(struct NntpMboxData *mdata, struct HeaderCache *hc)
   anum_t first = 0, last = 0;
 
   /* fetch previous values of first and last */
-  size_t dlen = 0;
-  char *hdata = mutt_hcache_fetch_raw(hc, "index", 5, &dlen);
+  char *hdata = mutt_hcache_fetch_str(hc, "index", 5);
   if (hdata)
   {
-    mutt_debug(LL_DEBUG2, "mutt_hcache_fetch index: %s\n", (char *) hdata);
-    if ((dlen > 0) && (hdata[dlen - 1] == '\0') &&
-        sscanf(hdata, ANUM " " ANUM, &first, &last) == 2)
+    mutt_debug(LL_DEBUG2, "mutt_hcache_fetch index: %s\n", hdata);
+    if (sscanf(hdata, ANUM " " ANUM, &first, &last) == 2)
     {
       old = true;
       mdata->last_cached = last;
@@ -764,7 +762,7 @@ void nntp_hcache_update(struct NntpMboxData *mdata, struct HeaderCache *hc)
         mutt_hcache_delete_record(hc, buf, strlen(buf));
       }
     }
-    mutt_hcache_free_raw(hc, (void **) &hdata);
+    FREE(&hdata);
   }
 
   /* store current values of first and last */
@@ -1157,7 +1155,6 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
       while ((de = readdir(dir)))
       {
         struct HeaderCache *hc = NULL;
-        char *hdata = NULL;
         char *group = de->d_name;
 
         char *p = group + strlen(group) - 7;
@@ -1173,14 +1170,12 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
           continue;
 
         /* fetch previous values of first and last */
-        size_t dlen = 0;
-        hdata = mutt_hcache_fetch_raw(hc, "index", 5, &dlen);
+        char *hdata = mutt_hcache_fetch_str(hc, "index", 5);
         if (hdata)
         {
           anum_t first, last;
 
-          if ((dlen > 0) && (hdata[dlen - 1] == '\0') &&
-              sscanf(hdata, ANUM " " ANUM, &first, &last) == 2)
+          if (sscanf(hdata, ANUM " " ANUM, &first, &last) == 2)
           {
             if (mdata->deleted)
             {
@@ -1193,7 +1188,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
               mutt_debug(LL_DEBUG2, "%s last_cached=" ANUM "\n", mdata->group, last);
             }
           }
-          mutt_hcache_free_raw(hc, (void **) &hdata);
+          FREE(&hdata);
         }
         mutt_hcache_close(hc);
       }

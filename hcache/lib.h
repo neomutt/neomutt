@@ -154,17 +154,12 @@ int mutt_hcache_store(struct HeaderCache *hc, const char *key, size_t keylen,
  */
 struct HCacheEntry mutt_hcache_fetch(struct HeaderCache *hc, const char *key, size_t keylen, uint32_t uidvalidity);
 
+char *mutt_hcache_fetch_str(struct HeaderCache *hc, const char *key, size_t keylen);
+bool  mutt_hcache_fetch_obj_(struct HeaderCache *hc, const char *key, size_t keylen, void *dst, size_t dstlen);
+#define mutt_hcache_fetch_obj(hc, key, keylen, dst) mutt_hcache_fetch_obj_(hc, key, keylen, &dst, sizeof(dst))
+
 int mutt_hcache_store_raw(struct HeaderCache *hc, const char *key, size_t keylen,
                           void *data, size_t dlen);
-
-void *mutt_hcache_fetch_raw(struct HeaderCache *hc, const char *key, size_t keylen, size_t *dlen);
-
-/**
- * mutt_hcache_free_raw - Free data fetched with mutt_hcache_fetch_raw()
- * @param hc   Pointer to the struct HeaderCache structure got by mutt_hcache_open()
- * @param data Pointer to the data got using mutt_hcache_fetch_raw
- */
-void mutt_hcache_free_raw(struct HeaderCache *hc, void **data);
 
 /**
  * mutt_hcache_delete_record - Delete a key / data pair
