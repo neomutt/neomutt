@@ -93,10 +93,10 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
   imap_hcache_open(adata, mdata);
   if (mdata->hcache)
   {
-    if (mutt_hcache_fetch_obj(mdata->hcache, "/UIDVALIDITY", 12, mdata->uidvalidity))
+    if (mutt_hcache_fetch_obj(mdata->hcache, "/UIDVALIDITY", 12, &mdata->uidvalidity))
     {
-      mutt_hcache_fetch_obj(mdata->hcache, "/UIDNEXT", 8, mdata->uid_next);
-      mutt_hcache_fetch_obj(mdata->hcache, "/MODSEQ", 7, mdata->modseq);
+      mutt_hcache_fetch_obj(mdata->hcache, "/UIDNEXT", 8, &mdata->uid_next);
+      mutt_hcache_fetch_obj(mdata->hcache, "/MODSEQ", 7, &mdata->modseq);
       mutt_debug(LL_DEBUG3, "hcache uidvalidity %u, uidnext %u, modseq %llu\n",
                  mdata->uidvalidity, mdata->uid_next, mdata->modseq);
     }

@@ -156,7 +156,7 @@ struct HCacheEntry mutt_hcache_fetch(struct HeaderCache *hc, const char *key, si
 
 char *mutt_hcache_fetch_str(struct HeaderCache *hc, const char *key, size_t keylen);
 bool  mutt_hcache_fetch_obj_(struct HeaderCache *hc, const char *key, size_t keylen, void *dst, size_t dstlen);
-#define mutt_hcache_fetch_obj(hc, key, keylen, dst) mutt_hcache_fetch_obj_(hc, key, keylen, &dst, sizeof(dst))
+#define mutt_hcache_fetch_obj(hc, key, keylen, dst) mutt_hcache_fetch_obj_(hc, key, keylen, dst, sizeof(*dst))
 
 int mutt_hcache_store_raw(struct HeaderCache *hc, const char *key, size_t keylen,
                           void *data, size_t dlen);

@@ -1368,8 +1368,8 @@ retry:
 
   if (mdata->hcache && initial_download)
   {
-    mutt_hcache_fetch_obj(mdata->hcache, "/UIDVALIDITY", 12, uidvalidity);
-    mutt_hcache_fetch_obj(mdata->hcache, "/UIDNEXT", 8, uid_next);
+    mutt_hcache_fetch_obj(mdata->hcache, "/UIDVALIDITY", 12, &uidvalidity);
+    mutt_hcache_fetch_obj(mdata->hcache, "/UIDNEXT", 8, &uid_next);
     if (mdata->modseq)
     {
       const bool c_imap_condstore = cs_subset_bool(NeoMutt->sub, "imap_condstore");
@@ -1385,7 +1385,7 @@ retry:
     if (uidvalidity && uid_next && uidvalidity == mdata->uidvalidity)
     {
       evalhc = true;
-      if (mutt_hcache_fetch_obj(mdata->hcache, "/MODSEQ", 7, modseq))
+      if (mutt_hcache_fetch_obj(mdata->hcache, "/MODSEQ", 7, &modseq))
       {
         if (has_qresync)
         {
