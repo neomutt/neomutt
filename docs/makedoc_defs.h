@@ -24,47 +24,14 @@
 #define _MUTT_MAKEDOC_DEFS_H
 
 #ifdef MAKEDOC_FULL
-#ifndef CRYPT_BACKEND_GPGME
-#define CRYPT_BACKEND_GPGME
-#endif
 #ifndef CRYPT_BACKEND_CLASSIC_PGP
 #define CRYPT_BACKEND_CLASSIC_PGP
 #endif
 #ifndef CRYPT_BACKEND_CLASSIC_SMIME
 #define CRYPT_BACKEND_CLASSIC_SMIME
 #endif
-#ifndef USE_IMAP
-#define USE_IMAP
-#endif
-#ifndef MIXMASTER
-#define MIXMASTER "mixmaster"
-#endif
-#ifndef USE_POP
-#define USE_POP
-#endif
-#ifndef USE_SMTP
-#define USE_SMTP
-#endif
-#ifndef USE_SSL_OPENSSL
-#define USE_SSL_OPENSSL
-#endif
-#ifndef HAVE_SSL_PARTIAL_CHAIN
-#define HAVE_SSL_PARTIAL_CHAIN
-#endif
-#ifndef USE_SSL_GNUTLS
-#define USE_SSL_GNUTLS
-#endif
-#ifndef USE_SSL
-#define USE_SSL
-#endif
-#ifndef USE_SOCKET
-#define USE_SOCKET
-#endif
-#ifndef USE_HCACHE
-#define USE_HCACHE
-#endif
-#ifndef USE_HCACHE_COMPRESSION
-#define USE_HCACHE_COMPRESSION
+#ifndef CRYPT_BACKEND_GPGME
+#define CRYPT_BACKEND_GPGME
 #endif
 #ifndef HAVE_BDB
 #define HAVE_BDB
@@ -72,23 +39,44 @@
 #ifndef HAVE_GDBM
 #define HAVE_GDBM
 #endif
-#ifndef HAVE_QDBM
-#define HAVE_QDBM
+#ifndef HAVE_GETADDRINFO
+#define HAVE_GETADDRINFO
 #endif
 #ifndef HAVE_LIBIDN
 #define HAVE_LIBIDN
 #endif
-#ifndef HAVE_GETADDRINFO
-#define HAVE_GETADDRINFO
+#ifndef HAVE_LZ4
+#define HAVE_LZ4
 #endif
-#ifndef USE_SASL
-#define USE_SASL
+#ifndef HAVE_QDBM
+#define HAVE_QDBM
 #endif
-#ifndef USE_SIDEBAR
-#define USE_SIDEBAR
+#ifndef HAVE_SSL_PARTIAL_CHAIN
+#define HAVE_SSL_PARTIAL_CHAIN
+#endif
+#ifndef HAVE_ZLIB
+#define HAVE_ZLIB
+#endif
+#ifndef HAVE_ZSTD
+#define HAVE_ZSTD
+#endif
+#ifndef MIXMASTER
+#define MIXMASTER "mixmaster"
+#endif
+#ifndef USE_AUTOCRYPT
+#define USE_AUTOCRYPT
 #endif
 #ifndef USE_COMP_MBOX
 #define USE_COMP_MBOX
+#endif
+#ifndef USE_HCACHE
+#define USE_HCACHE
+#endif
+#ifndef USE_HCACHE_COMPRESSION
+#define USE_HCACHE_COMPRESSION
+#endif
+#ifndef USE_IMAP
+#define USE_IMAP
 #endif
 #ifndef USE_LUA
 #define USE_LUA
@@ -96,20 +84,32 @@
 #ifndef USE_NOTMUCH
 #define USE_NOTMUCH
 #endif
-#ifndef USE_AUTOCRYPT
-#define USE_AUTOCRYPT
+#ifndef USE_POP
+#define USE_POP
+#endif
+#ifndef USE_SASL
+#define USE_SASL
+#endif
+#ifndef USE_SIDEBAR
+#define USE_SIDEBAR
+#endif
+#ifndef USE_SMTP
+#define USE_SMTP
+#endif
+#ifndef USE_SOCKET
+#define USE_SOCKET
+#endif
+#ifndef USE_SSL
+#define USE_SSL
+#endif
+#ifndef USE_SSL_GNUTLS
+#define USE_SSL_GNUTLS
+#endif
+#ifndef USE_SSL_OPENSSL
+#define USE_SSL_OPENSSL
 #endif
 #ifndef USE_ZLIB
 #define USE_ZLIB
-#endif
-#ifndef HAVE_LZ4
-#define HAVE_LZ4
-#endif
-#ifndef HAVE_ZLIB
-#define HAVE_ZLIB
-#endif
-#ifndef HAVE_ZSTD
-#define HAVE_ZSTD
 #endif
 #endif
 
