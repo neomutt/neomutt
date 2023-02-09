@@ -327,7 +327,7 @@ static struct ConfigDef SendVarsNntp[] = {
   { "inews", DT_STRING|DT_COMMAND, 0, 0, simple_command_validator,
     "(nntp) External command to post news articles"
   },
-  { "mime_subject", DT_DEPRECATED|DT_BOOL, true, IP "2021-03-24" },
+  { "mime_subject", DT_DEPRECATED|DT_BOOL, 0, IP "2021-03-24" },
 
   { "ask_follow_up", DT_SYNONYM, IP "ask_followup_to", IP "2023-01-20" },
   { NULL },

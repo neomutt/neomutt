@@ -148,7 +148,7 @@ static struct ConfigDef HcacheVarsComp[] = {
 #if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
 static struct ConfigDef HcacheVarsComp2[] = {
   // clang-format off
-  { "header_cache_compress", DT_DEPRECATED|DT_BOOL, false, IP "2020-03-25" },
+  { "header_cache_compress", DT_DEPRECATED|DT_BOOL, 0, IP "2020-03-25" },
   { NULL },
   // clang-format on
 };

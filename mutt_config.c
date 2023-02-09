@@ -441,7 +441,7 @@ static struct ConfigDef MainVars[] = {
     "Decode message before printing it"
   },
   { "print_decode_weed", DT_BOOL, true, 0, NULL,
-    "Control whether to weed headers when printing an email "
+    "Control whether to weed headers when printing an email"
   },
   { "print_split", DT_BOOL, false, 0, NULL,
     "Print multiple messages separately"
@@ -630,9 +630,9 @@ static struct ConfigDef MainVars[] = {
     "Update the progress bar after this many records written (0 to disable)"
   },
 
-  { "escape",                    DT_DEPRECATED|DT_STRING,            IP "~", IP "2021-03-18" },
-  { "ignore_linear_white_space", DT_DEPRECATED|DT_BOOL,              false,  IP "2021-03-18" },
-  { "visual",                    DT_DEPRECATED|DT_STRING|DT_COMMAND, 0,      IP "2021-03-18" },
+  { "escape",                    DT_DEPRECATED|DT_STRING, 0, IP "2021-03-18" },
+  { "ignore_linear_white_space", DT_DEPRECATED|DT_BOOL,   0, IP "2021-03-18" },
+  { "visual",                    DT_DEPRECATED|DT_STRING, 0, IP "2021-03-18" },
 
   { "askbcc",                    DT_SYNONYM, IP "ask_bcc",                    IP "2021-03-21" },
   { "askcc",                     DT_SYNONYM, IP "ask_cc",                     IP "2021-03-21" },

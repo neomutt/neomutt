@@ -4988,7 +4988,7 @@
 ** .pp
 ** If \fIset\fP , NeoMutt will use SSLv2 when communicating with servers that
 ** request it. \fBN.B. As of 2011, SSLv2 is considered insecure, and using
-** is inadvisable. See https://tools.ietf.org/html/rfc6176 .\fP
+** is inadvisable\fP. See https://tools.ietf.org/html/rfc6176
 ** (OpenSSL only)
 */
 #endif
@@ -4999,7 +4999,7 @@
 ** .pp
 ** If \fIset\fP , NeoMutt will use SSLv3 when communicating with servers that
 ** request it. \fBN.B. As of 2015, SSLv3 is considered insecure, and using
-** it is inadvisable. See https://tools.ietf.org/html/rfc7525 .\fP
+** it is inadvisable\fP. See https://tools.ietf.org/html/rfc7525
 */
 #endif
 
@@ -5019,7 +5019,7 @@
 ** .pp
 ** If \fIset\fP , NeoMutt will use TLSv1.0 when communicating with servers that
 ** request it. \fBN.B. As of 2015, TLSv1.0 is considered insecure, and using
-** it is inadvisable. See https://tools.ietf.org/html/rfc7525 .\fP
+** it is inadvisable\fP. See https://tools.ietf.org/html/rfc7525
 */
 
 { "ssl_use_tlsv1_1", DT_BOOL, false },
@@ -5027,7 +5027,7 @@
 ** .pp
 ** If \fIset\fP , NeoMutt will use TLSv1.1 when communicating with servers that
 ** request it. \fBN.B. As of 2015, TLSv1.1 is considered insecure, and using
-** it is inadvisable. See https://tools.ietf.org/html/rfc7525 .\fP
+** it is inadvisable\fP. See https://tools.ietf.org/html/rfc7525
 */
 
 { "ssl_use_tlsv1_2", DT_BOOL, true },
