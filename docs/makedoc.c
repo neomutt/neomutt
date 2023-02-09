@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1999-2000 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -21,13 +22,41 @@
  */
 
 /*
- * This program parses neomutt's init.h and generates documentation in
+ * This program parses neomutt's config.c and generates documentation in
  * three different formats:
  *
  * -> a commented neomuttrc configuration file
  * -> nroff, suitable for inclusion in a manual page
- * -> docbook-xml, suitable for inclusion in the
- *    SGML-based manual
+ * -> docbook-xml, suitable for inclusion in the SGML-based manual
+ */
+
+/*
+ * Documentation line parser
+ *
+ * The following code parses specially formatted documentation
+ * comments in config.c
+ *
+ * The format is very remotely inspired by nroff. Most important, it's
+ * easy to parse and convert, and it was easy to generate from the SGML
+ * source of neomutt's original manual.
+ *
+ * - \fI switches to italics
+ * - \fB switches to boldface
+ * - \fP switches to normal display
+ * - .dl on a line starts a definition list (name taken taken from HTML).
+ * - .dt starts a term in a definition list.
+ * - .dd starts a definition in a definition list.
+ * - .de on a line finishes a definition list.
+ * - .il on a line starts an itemized list
+ * - .dd starts an item in an itemized list
+ * - .ie on a line finishes an itemized list
+ * - .ts on a line starts a "tscreen" environment (name taken from SGML).
+ * - .te on a line finishes this environment.
+ * - .pp on a line starts a paragraph.
+ * - \$word will be converted to a reference to word, where appropriate.
+ *   Note that \$$word is possible as well.
+ * - '. ' in the beginning of a line expands to two space characters.
+ *   This is used to protect indentations in tables.
  */
 
 #include "config.h"
@@ -39,6 +68,12 @@
 #include <string.h>
 #include <unistd.h>
 #include "makedoc_defs.h"
+
+char *Progname = NULL;
+short Debug = 0;
+int fd_recurse = 0;
+
+#define BUFSIZE 2048
 
 // clang-format off
 #define D_NL    (1 <<  0)
@@ -60,10 +95,10 @@
  */
 enum OutputFormats
 {
-  F_CONF,
-  F_MAN,
-  F_SGML,
-  F_NONE
+  F_NONE, ///< Error, none selected
+  F_CONF, ///< NeoMutt config file
+  F_MAN,  ///< Manual page
+  F_SGML, ///< DocBook XML
 };
 
 /**
@@ -92,12 +127,6 @@ enum SpecialChars
   SP_REFER
 };
 
-struct VariableTypes
-{
-  char *machine;
-  char *human;
-};
-
 /**
  * enum DataType - User-variable types
  */
@@ -121,11 +150,11 @@ enum DataType
   DT_SYNONYM,
 };
 
-char *Progname = NULL;
-short Debug = 0;
-int fd_recurse = 0;
-
-#define BUFSIZE 2048
+struct VariableTypes
+{
+  char *machine;
+  char *human;
+};
 
 struct VariableTypes types[] = {
   // clang-format off
@@ -777,35 +806,6 @@ static int commit_buf(enum OutputFormats format, char *buf, char **d, FILE *fp_o
   return docstat;
 }
 
-/*
- * Documentation line parser
- *
- * The following code parses specially formatted documentation
- * comments in init.h.
- *
- * The format is very remotely inspired by nroff. Most important, it's
- * easy to parse and convert, and it was easy to generate from the SGML
- * source of neomutt's original manual.
- *
- * - \fI switches to italics
- * - \fB switches to boldface
- * - \fP switches to normal display
- * - .dl on a line starts a definition list (name taken taken from HTML).
- * - .dt starts a term in a definition list.
- * - .dd starts a definition in a definition list.
- * - .de on a line finishes a definition list.
- * - .il on a line starts an itemized list
- * - .dd starts an item in an itemized list
- * - .ie on a line finishes an itemized list
- * - .ts on a line starts a "tscreen" environment (name taken from SGML).
- * - .te on a line finishes this environment.
- * - .pp on a line starts a paragraph.
- * - \$word will be converted to a reference to word, where appropriate.
- *   Note that \$$word is possible as well.
- * - '. ' in the beginning of a line expands to two space characters.
- *   This is used to protect indentations in tables.
- */
-
 /**
  * sgml_id_fputs - reduce CDATA to ID
  */
@@ -1038,10 +1038,7 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
     {
       /* heuristic! */
       if (strncmp(s, "SORT_", 5) != 0)
-        fprintf(stderr,
-                "WARNING: expected prefix of SORT_ for type DT_SORT "
-                "instead of %s\n",
-                s);
+        fprintf(stderr, "WARNING: expected prefix of SORT_ for type DT_SORT instead of %s\n", s);
       strncpy(t, s + 5, l);
       for (; *t; t++)
         *t = tolower((unsigned char) *t);
@@ -1058,8 +1055,8 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
     {
       if (strcmp(s, "0") == 0)
         break;
-      /* fallthrough */
     }
+    /* fallthrough */
     default:
     {
       strncpy(t, s, l);
@@ -1121,7 +1118,7 @@ static const char *type2human(int type)
 /*
  * Configuration line parser
  *
- * The following code parses a line from init.h which declares
+ * The following code parses a line from config.c which declares
  * a configuration variable.
  */
 
@@ -1267,9 +1264,8 @@ static void handle_confline(enum OutputFormats format, char *s, FILE *fp_out)
   char varname[BUFSIZE];
   char buf[BUFSIZE];
   char tmp[BUFSIZE];
-  int type;
-
   char val[BUFSIZE];
+  int type;
 
   /* xxx - put this into an actual state machine? */
 
