@@ -66,6 +66,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
 #include "makedoc_defs.h"
 
@@ -257,7 +258,7 @@ static char *get_token(char *d, size_t l, char *s)
       continue;
     }
 
-    if (is_quoted && *t == '"')
+    if (is_quoted && (*t == '"'))
     {
       t++;
       break;
@@ -797,13 +798,13 @@ static int flush_doc(enum OutputFormats format, int docstat, FILE *fp_out)
     exit(1);
   }
 
-  if (docstat & (D_PA))
+  if (docstat & D_PA)
     docstat = print_it(format, SP_END_PAR, NULL, fp_out, docstat);
 
-  if (docstat & (D_TAB))
+  if (docstat & D_TAB)
     docstat = print_it(format, SP_END_TAB, NULL, fp_out, docstat);
 
-  if (docstat & (D_DL))
+  if (docstat & D_DL)
     docstat = print_it(format, SP_END_DL, NULL, fp_out, docstat);
 
   if (docstat & (D_EM | D_BF | D_TT))
@@ -845,7 +846,7 @@ static int sgml_id_fputs(const char *s, FILE *fp_out)
     else
       id = *s;
 
-    if (*s == '>' && !*(s + 1))
+    if ((s[0] == '>') && (s[1] == '\0'))
       break;
 
     if (fputc((unsigned int) id, fp_out) == EOF)
@@ -1050,11 +1051,11 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
       if (strcasecmp(s, "MUTT_MBOX") == 0)
         strncpy(t, "mbox", l);
       else if (strcasecmp(s, "MUTT_MMDF") == 0)
-        strncpy(t, "MMDF", l);
+        strncpy(t, "mmdf", l);
       else if (strcasecmp(s, "MUTT_MH") == 0)
-        strncpy(t, "MH", l);
+        strncpy(t, "mh", l);
       else if (strcasecmp(s, "MUTT_MAILDIR") == 0)
-        strncpy(t, "Maildir", l);
+        strncpy(t, "maildir", l);
       else if (strcasecmp(s, "UT_UNSET") == 0)
         strncpy(t, "unset", l);
       break;
@@ -1123,13 +1124,13 @@ static void conf_print_strval(const char *v, FILE *fp_out)
 {
   for (; *v; v++)
   {
-    if (*v < ' ' || *v & 0x80)
+    if ((*v < ' ') || (*v & 0x80))
     {
       conf_char_to_escape((unsigned int) *v, fp_out);
       continue;
     }
 
-    if (*v == '"' || *v == '\\')
+    if ((*v == '"') || (*v == '\\'))
       fputc('\\', fp_out);
     fputc(*v, fp_out);
   }
@@ -1151,7 +1152,7 @@ static void man_print_strval(const char *v, FILE *fp_out)
 {
   for (; *v; v++)
   {
-    if (*v < ' ' || *v & 0x80)
+    if ((*v < ' ') || (*v & 0x80))
     {
       fputc('\\', fp_out);
       conf_char_to_escape((unsigned int) *v, fp_out);
@@ -1174,7 +1175,7 @@ static void sgml_print_strval(const char *v, FILE *fp_out)
   char buf[16];
   for (; *v; v++)
   {
-    if (*v < ' ' || *v & 0x80)
+    if ((*v < ' ') || (*v & 0x80))
     {
       char_to_escape(buf, (unsigned int) *v);
       sgml_fputs(buf, fp_out);
@@ -1266,7 +1267,7 @@ static void print_confline(enum OutputFormats format, const char *varname,
           (type == DT_MAILBOX) || (type == DT_MBTABLE) || (type == DT_SLIST) ||
           (type == DT_PATH) || (type == DT_COMMAND))
       {
-        if (val && *val)
+        if (val && (*val != '\0'))
         {
           fputs("\nDefault: <quote><literal>", fp_out);
           sgml_print_strval(val, fp_out);
@@ -1441,19 +1442,13 @@ int main(int argc, char *argv[])
     fp = stdin;
   }
 
-  switch (format)
+  if (format == F_NONE)
   {
-    case F_CONF:
-    case F_MAN:
-    case F_SGML:
-      makedoc(format, fp, stdout);
-      break;
-    default:
-    {
-      fprintf(stderr, "%s: No output format specified.\n", Progname);
-      exit(1);
-    }
+    fprintf(stderr, "%s: No output format specified.\n", Progname);
+    exit(1);
   }
+
+  makedoc(format, fp, stdout);
 
   if (fp != stdin)
     fclose(fp);
