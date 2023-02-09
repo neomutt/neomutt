@@ -1333,14 +1333,13 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
   bool evalhc = false;
 
 #ifdef USE_HCACHE
-  void *uidvalidity = NULL;
-  void *puid_next = NULL;
+  uint32_t uidvalidity = 0;
   unsigned int uid_next = 0;
+  unsigned long long modseq = 0;
   bool has_condstore = false;
   bool has_qresync = false;
   bool eval_condstore = false;
   bool eval_qresync = false;
-  unsigned long long hc_modseq = 0;
   char *uid_seqset = NULL;
   const unsigned int msn_begin_save = msn_begin;
 #endif /* USE_HCACHE */
@@ -1369,23 +1368,8 @@ retry:
 
   if (mdata->hcache && initial_download)
   {
-    size_t dlen = 0;
-    uidvalidity = mutt_hcache_fetch_raw(mdata->hcache, "/UIDVALIDITY", 12, &dlen);
-    if (uidvalidity && (dlen < sizeof(uint32_t)))
-    {
-      mutt_hcache_free_raw(mdata->hcache, &uidvalidity);
-      uidvalidity = NULL;
-    }
-    puid_next = mutt_hcache_fetch_raw(mdata->hcache, "/UIDNEXT", 8, &dlen);
-    if (puid_next)
-    {
-      if (dlen >= sizeof(unsigned int))
-      {
-        uid_next = *(unsigned int *) puid_next;
-      }
-      mutt_hcache_free_raw(mdata->hcache, &puid_next);
-    }
-
+    mutt_hcache_fetch_obj(mdata->hcache, "/UIDVALIDITY", 12, &uidvalidity);
+    mutt_hcache_fetch_obj(mdata->hcache, "/UIDNEXT", 8, &uid_next);
     if (mdata->modseq)
     {
       const bool c_imap_condstore = cs_subset_bool(NeoMutt->sub, "imap_condstore");
@@ -1398,21 +1382,10 @@ retry:
         has_qresync = true;
     }
 
-    if (uidvalidity && uid_next && (*(uint32_t *) uidvalidity == mdata->uidvalidity))
+    if (uidvalidity && uid_next && uidvalidity == mdata->uidvalidity)
     {
-      size_t dlen2 = 0;
       evalhc = true;
-      const unsigned long long *pmodseq = mutt_hcache_fetch_raw(mdata->hcache,
-                                                                "/MODSEQ", 7, &dlen2);
-      if (pmodseq)
-      {
-        if (dlen2 >= sizeof(unsigned long long))
-        {
-          hc_modseq = *pmodseq;
-        }
-        mutt_hcache_free_raw(mdata->hcache, (void **) &pmodseq);
-      }
-      if (hc_modseq)
+      if (mutt_hcache_fetch_obj(mdata->hcache, "/MODSEQ", 7, &modseq))
       {
         if (has_qresync)
         {
@@ -1425,7 +1398,6 @@ retry:
           eval_condstore = true;
       }
     }
-    mutt_hcache_free_raw(mdata->hcache, &uidvalidity);
   }
   if (evalhc)
   {
@@ -1441,10 +1413,10 @@ retry:
         goto bail;
     }
 
-    if ((eval_condstore || eval_qresync) && (hc_modseq != mdata->modseq))
+    if ((eval_condstore || eval_qresync) && (modseq != mdata->modseq))
     {
       if (read_headers_condstore_qresync_updates(adata, msn_end, uid_next,
-                                                 hc_modseq, eval_qresync) < 0)
+                                                 modseq, eval_qresync) < 0)
       {
         goto bail;
       }
@@ -1471,10 +1443,10 @@ retry:
       eval_qresync = false;
       eval_condstore = false;
       evalhc = false;
-      hc_modseq = 0;
+      modseq = 0;
       maxuid = 0;
       FREE(&uid_seqset);
-      uidvalidity = NULL;
+      uidvalidity = 0;
       uid_next = 0;
       msn_begin = msn_begin_save;
 
