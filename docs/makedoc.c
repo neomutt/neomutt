@@ -263,11 +263,17 @@ static char *get_token(char *d, size_t l, char *s)
       break;
     }
     else if (!is_quoted && strchr(single_char_tokens, *t))
+    {
       break;
+    }
     else if (!is_quoted && isspace((unsigned char) *t))
+    {
       break;
+    }
     else
+    {
       *d++ = *t;
+    }
   }
 
   *d = '\0';
@@ -338,7 +344,9 @@ static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_
         case SP_NEWLINE:
         {
           if (onl)
+          {
             docstat |= onl;
+          }
           else
           {
             fputs("\n# ", fp_out);
@@ -546,11 +554,17 @@ static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_
             for (; *str; str++)
             {
               if (*str == '"')
+              {
                 fputs("\"", fp_out);
+              }
               else if (*str == '\\')
+              {
                 fputs("\\\\", fp_out);
+              }
               else if (*str == '-')
+              {
                 fputs("\\-", fp_out);
+              }
               else if (strncmp(str, "``", 2) == 0)
               {
                 fputs("\\(lq", fp_out);
@@ -562,7 +576,9 @@ static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_
                 str++;
               }
               else
+              {
                 fputc(*str, fp_out);
+              }
             }
           }
           break;
@@ -611,7 +627,9 @@ static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_
         case SP_NEWLINE:
         {
           if (onl)
+          {
             docstat |= onl;
+          }
           else
           {
             fputc('\n', fp_out);
@@ -727,7 +745,9 @@ static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_
         case SP_STR:
         {
           if (docstat & D_TAB)
+          {
             sgml_fputs(str, fp_out);
+          }
           else
           {
             while (*str)
@@ -745,7 +765,9 @@ static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_
                   str++;
                 }
                 else
+                {
                   sgml_fputc(*str, fp_out);
+                }
               }
             }
           }
@@ -822,6 +844,7 @@ static int sgml_id_fputs(const char *s, FILE *fp_out)
       id = '-';
     else
       id = *s;
+
     if (*s == '>' && !*(s + 1))
       break;
 
@@ -973,7 +996,9 @@ static int handle_docline(enum OutputFormats format, char *l, FILE *fp_out, int 
       }
     }
     else
+    {
       *d++ = *s;
+    }
   }
 
   docstat = commit_buf(format, buf, &d, fp_out, docstat);
@@ -1179,7 +1204,9 @@ static void print_confline(enum OutputFormats format, const char *varname,
         fputs("\"", fp_out);
       }
       else
+      {
         fprintf(fp_out, "\n# set %s=%s", varname, val);
+      }
 
       fprintf(fp_out, "\n#\n# Name: %s", varname);
       fprintf(fp_out, "\n# Type: %s", type2human(type));
@@ -1192,7 +1219,9 @@ static void print_confline(enum OutputFormats format, const char *varname,
         fputs("\"", fp_out);
       }
       else
+      {
         fprintf(fp_out, "\n# Default: %s", val);
+      }
 
       fputs("\n# ", fp_out);
       break;
@@ -1250,7 +1279,9 @@ static void print_confline(enum OutputFormats format, const char *varname,
         fputs("</literallayout>\n", fp_out);
       }
       else
+      {
         fprintf(fp_out, "\nDefault: %s</literallayout>\n", val);
+      }
       break;
     }
     /* make gcc happy */
@@ -1326,7 +1357,9 @@ static void makedoc(enum OutputFormats format, FILE *fp_in, FILE *fp_out)
       exit(1);
     }
     else
+    {
       *p = '\0';
+    }
 
     p = get_token(token, sizeof(token), buffer);
     if (!p)
@@ -1336,14 +1369,18 @@ static void makedoc(enum OutputFormats format, FILE *fp_in, FILE *fp_out)
       fprintf(stderr, "%s: line %d.  first token: \"%s\".\n", Progname, line, token);
 
     if (strcmp(token, "/*++*/") == 0)
+    {
       active = true;
+    }
     else if (strcmp(token, "/*--*/") == 0)
     {
       docstat = flush_doc(format, docstat, fp_out);
       active = false;
     }
     else if (active && ((strcmp(token, "/**") == 0) || (strcmp(token, "**") == 0)))
+    {
       docstat = handle_docline(format, p, fp_out, docstat);
+    }
     else if (active && (strcmp(token, "{") == 0))
     {
       docstat = flush_doc(format, docstat, fp_out);
@@ -1400,7 +1437,9 @@ int main(int argc, char *argv[])
     }
   }
   else
+  {
     fp = stdin;
+  }
 
   switch (format)
   {
