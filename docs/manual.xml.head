@@ -5476,52 +5476,52 @@ uncolor quoted2
               <row>
                 <entry>index_author</entry>
                 <entry>pattern</entry>
-                <entry>Author in the index, %A %a %F %L %n</entry>
+                <entry>Author in the index: <literal>%A</literal>, <literal>%a</literal>, <literal>%F</literal>, <literal>%L</literal>, <literal>%n</literal></entry>
               </row>
               <row>
                 <entry>index_collapsed</entry>
                 <entry>pattern</entry>
-                <entry>Number of messages in a collapsed thread, <literal>%M</literal></entry>
+                <entry>Number of messages in a collapsed thread: <literal>%M</literal></entry>
               </row>
               <row>
                 <entry>index_date</entry>
                 <entry>pattern</entry>
-                <entry>Date field, <literal>%d</literal> <literal>%D</literal> <literal>%{fmt}</literal> <literal>%[fmt]</literal> <literal>%(fmt)</literal></entry>
+                <entry>Date field: <literal>%d</literal>, <literal>%D</literal>, <literal>%{fmt}</literal>, <literal>%[fmt]</literal>, <literal>%(fmt)</literal></entry>
               </row>
               <row>
                 <entry>index_flags</entry>
                 <entry>pattern</entry>
-                <entry>Flags in the index, %S %Z</entry>
+                <entry>Flags in the index: <literal>%S</literal>, <literal>%Z</literal></entry>
               </row>
               <row>
                 <entry>index_label</entry>
                 <entry>pattern</entry>
-                <entry>Message label, <literal>%y</literal> <literal>%Y</literal></entry>
+                <entry>Message label: <literal>%y</literal>, <literal>%Y</literal></entry>
               </row>
               <row>
                 <entry>index_number</entry>
                 <entry>pattern</entry>
-                <entry>Message number, <literal>%C</literal></entry>
+                <entry>Message number: <literal>%C</literal></entry>
               </row>
               <row>
                 <entry>index_size</entry>
                 <entry>pattern</entry>
-                <entry>Message size, <literal>%c</literal> <literal>%cr</literal> <literal>%l</literal></entry>
+                <entry>Message size: <literal>%c</literal>, <literal>%cr</literal>, <literal>%l</literal></entry>
               </row>
               <row>
                 <entry>index_subject</entry>
                 <entry>pattern</entry>
-                <entry>Subject in the index, %s</entry>
+                <entry>Subject in the index: <literal>%s</literal></entry>
               </row>
               <row>
                 <entry>index_tag</entry>
                 <entry>pattern</entry>
-                <entry>Tags in the index, %G</entry>
+                <entry>Tags in the index: <literal>%G</literal></entry>
               </row>
               <row>
                 <entry>index_tags</entry>
                 <entry>pattern</entry>
-                <entry>Transformed message tags, <literal>%g</literal> <literal>%J</literal></entry>
+                <entry>Transformed message tags: <literal>%g</literal>, <literal>%J</literal></entry>
               </row>
               <row>
                 <entry>status</entry>
