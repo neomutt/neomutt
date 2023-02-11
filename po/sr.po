@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: neomutt 20210205\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2023-02-02 18:55+0000\n"
-"PO-Revision-Date: 2023-02-02 20:23+0100\n"
+"PO-Revision-Date: 2023-02-11 08:57+0100\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -84,7 +84,7 @@ msgstr "Упозорење: Лоша адреса „%s“ у алијасу „
 #: alias/commands.c:86
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'"
-msgstr "Упозорење: Лош IDN ‘%s’ у алијасу ‘%s’"
+msgstr "Упозорење: Лош IDN „%s“ у алијасу „%s“"
 
 #: alias/dlg_alias.c:101 alias/dlg_query.c:100 attach/dlg_attach.c:96
 #: autocrypt/dlg_autocrypt.c:89 browser/browser.c:111 browser/browser.c:124
@@ -890,12 +890,12 @@ msgstr "нема аргумената"
 #: command_parse.c:211
 #, c-format
 msgid "Error: Can't build path of '%s'"
-msgstr "Грешка: Не може се изградити путања ‘%s’"
+msgstr "Грешка: Не може се изградити путања „%s“"
 
 #: command_parse.c:224
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
-msgstr "Грешка: Циркуларно читање конфигурационе датотеке ‘%s’"
+msgstr "Грешка: Циркуларно читање конфигурационе датотеке „%s“"
 
 #: command_parse.c:264
 #, c-format
@@ -2502,7 +2502,7 @@ msgstr "Грешка: multipart/signed нема протокол"
 #: handler.c:1751
 #, c-format
 msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
-msgstr "[-- Ово је прилог (користите ‘%s’ да прегледате овај део) --]\n"
+msgstr "[-- Ово је прилог (користите „%s“ да прегледате овај део) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #. The last %s expands to a keystroke/key binding, e.g. 'v'.
@@ -4283,7 +4283,7 @@ msgstr "грешка приликом читања објекта са пода�
 #: ncrypt/crypt_gpgme.c:658
 #, c-format
 msgid "secret key '%s' not found: %s"
-msgstr "тајни кључ ‘%s’ није пронађен: %s"
+msgstr "тајни кључ „%s“ није пронађен: %s"
 
 #: ncrypt/crypt_gpgme.c:675
 #, c-format
