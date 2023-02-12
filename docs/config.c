@@ -3122,6 +3122,10 @@
 ** .dt %[<s>] .dd Date of the key where <s> is an \fCstrftime(3)\fP expression
 ** .de
 ** .pp
+** See the section "Sending Cryptographically Signed/Encrypted Messages" of the
+** user manual for the meaning of the letters some of these sequences expand
+** to.
+** .pp
 ** (Crypto only) or (PGP only when GPGME disabled)
 */
 
