@@ -3105,6 +3105,7 @@
 ** .dt %a     .dd Algorithm
 ** .dt %c     .dd Capabilities
 ** .dt %f     .dd Flags
+** .dt %i     .dd Key fingerprint (or long key id if non-existent)
 ** .dt %k     .dd Key id
 ** .dt %l     .dd Key length
 ** .dt %n     .dd Number
