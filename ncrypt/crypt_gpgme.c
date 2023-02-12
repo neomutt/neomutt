@@ -3836,7 +3836,7 @@ static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
           snprintf(input_signas, sizeof(input_signas), "0x%s", crypt_fpr_or_lkeyid(p));
 
           if (is_smime)
-            cs_subset_str_string_set(NeoMutt->sub, "smime_default_key", input_signas, NULL);
+            cs_subset_str_string_set(NeoMutt->sub, "smime_sign_as", input_signas, NULL);
           else
             cs_subset_str_string_set(NeoMutt->sub, "pgp_sign_as", input_signas, NULL);
 
