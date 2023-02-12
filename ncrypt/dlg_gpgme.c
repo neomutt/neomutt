@@ -349,12 +349,14 @@ static char crypt_flags(KeyFlags flags)
  * | \%a     | Algorithm
  * | \%c     | Capabilities
  * | \%f     | Flags
+ * | \%i     | Key fingerprint (or long key id if non-existent)
  * | \%k     | Key id
  * | \%l     | Length
  * |         |
  * | \%A     | Algorithm of the principal key
  * | \%C     | Capabilities of the principal key
  * | \%F     | Flags of the principal key
+ * | \%I     | Key fingerprint of the principal key (or long key id if non-existent)
  * | \%K     | Key id of the principal key
  * | \%L     | Length of the principal key
  */
@@ -408,6 +410,16 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
       }
       else if (!(kflags & KEYFLAG_RESTRICTIONS))
         optional = false;
+      break;
+
+    case 'i':
+      if (!optional)
+      {
+        /* fixme: we need a way to distinguish between main and subkeys.
+         * Store the idx in entry? */
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, crypt_fpr_or_lkeyid(key));
+      }
       break;
 
     case 'k':
