@@ -3181,12 +3181,60 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
         </para>
         <para>
           Finally, the validity field (<quote>%t</quote>) indicates how
-          well-certified a user-id is. A question mark (<quote>?</quote>)
-          indicates undefined validity, a minus character (<quote>-</quote>)
-          marks an untrusted association, a space character means a partially
-          trusted association, and a plus character (<quote>+</quote>)
-          indicates complete validity.
+          well-certified a user-id is.  It's values depend on the backend used.
+          Note that S/MIME (which uses X509 certificates) has no concept of
+          validity, so this field simply shows <literal>x</literal>.
+          The possible values listed in <xref linkend="tab-pgp-menuvalidity" />.
         </para>
+        <table id="tab-pgp-menuvalidity">
+          <title>PGP key menu validity</title>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Flag (classic PGP)</entry>
+                <entry>Flag (GPGME)</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>N/A</entry>
+                <entry>?</entry>
+                <entry>indicates unknown validity</entry>
+              </row>
+              <row>
+                <entry>?</entry>
+                <entry>q</entry>
+                <entry>indicates undefined validity</entry>
+              </row>
+              <row>
+                <entry>-</entry>
+                <entry>n</entry>
+                <entry>indicates a never valid key (untrusted association)</entry>
+              </row>
+              <row>
+                <entry>space</entry>
+                <entry>m</entry>
+                <entry>indicates marginal validity (partially trusted)</entry>
+              </row>
+              <row>
+                <entry>+</entry>
+                <entry>f</entry>
+                <entry>indicates fully validity (fully trusted)</entry>
+              </row>
+              <row>
+                <entry>N/A</entry>
+                <entry>u</entry>
+                <entry>indicates ultimate validity</entry>
+              </row>
+              <row>
+                <entry>N/A</entry>
+                <entry>x</entry>
+                <entry>the entry is an X509 certificate (S/MIME)</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
       </sect2>
 
       <sect2 id="ff">
