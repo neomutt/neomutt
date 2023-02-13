@@ -2687,9 +2687,8 @@ msgid "%s authentication failed"
 msgstr "%s ověření se nezdařilo"
 
 #: imap/auth_gsasl.c:147 pop/auth.c:135
-#, fuzzy
 msgid "SASL authentication failed"
-msgstr "Autentizace se nezdařila"
+msgstr "SASL autentizace selhala"
 
 #: imap/auth_login.c:51
 msgid "LOGIN disabled on this server"
