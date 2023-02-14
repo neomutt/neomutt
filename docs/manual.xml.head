@@ -10930,7 +10930,7 @@ text/*; more
           Don't quote them with single or double quotes. NeoMutt does this for
           you, the right way, as should any other program which interprets
           mailcap. Don't put them into backtick expansions. Be highly careful
-          with evil statements, and avoid them if possible at all. Trying to
+          with eval statements, and avoid them if possible at all. Trying to
           fix broken behavior with quotes introduces new leaks – there is no
           alternative to correct quoting in the first place.
         </para>
