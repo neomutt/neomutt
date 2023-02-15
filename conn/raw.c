@@ -82,9 +82,9 @@ static int socket_connect(int fd, struct sockaddr *sa)
     return -1;
   }
 
-  const short c_connect_timeout = cs_subset_number(NeoMutt->sub, "connect_timeout");
-  if (c_connect_timeout > 0)
-    alarm(c_connect_timeout);
+  const short c_socket_timeout = cs_subset_number(NeoMutt->sub, "socket_timeout");
+  if (c_socket_timeout > 0)
+    alarm(c_socket_timeout);
 
   mutt_sig_allow_interrupt(true);
 
@@ -96,6 +96,19 @@ static int socket_connect(int fd, struct sockaddr *sa)
 
   save_errno = 0;
 
+  if (c_socket_timeout > 0)
+  {
+    const struct timeval tv = { c_socket_timeout, 0 };
+    if (setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv)) < -1)
+    {
+      mutt_debug(LL_DEBUG2, "Cannot set socket receive timeout. errno: %d\n", errno);
+    }
+    if (setsockopt(fd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv)) < 0)
+    {
+      mutt_debug(LL_DEBUG2, "Cannot set socket send timeout. errno: %d\n", errno);
+    }
+  }
+
   if (connect(fd, sa, sa_size) < 0)
   {
     save_errno = errno;
@@ -103,7 +116,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
     SigInt = false; /* reset in case we caught SIGINTR while in connect() */
   }
 
-  if (c_connect_timeout > 0)
+  if (c_socket_timeout > 0)
     alarm(0);
   mutt_sig_allow_interrupt(false);
   sigprocmask(SIG_UNBLOCK, &set, NULL);

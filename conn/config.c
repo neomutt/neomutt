@@ -36,9 +36,10 @@ static struct ConfigDef ConnVars[] = {
   { "account_command", DT_STRING|DT_COMMAND, 0, 0, NULL,
     "Shell command to retrieve account credentials"
   },
-  { "connect_timeout", DT_NUMBER, 30, 0, NULL,
-    "Timeout for making network connections (-1 to wait indefinitely)"
+  { "socket_timeout", DT_NUMBER, 30, 0, NULL,
+    "Timeout for socket connect/read/write operations (-1 to wait indefinitely)"
   },
+  { "connect_timeout", DT_SYNONYM, IP "socket_timeout", IP "2023-02-15" },
   { "preconnect", DT_STRING, 0, 0, NULL,
     "(socket) External command to run prior to opening a socket"
   },
