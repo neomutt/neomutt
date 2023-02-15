@@ -99,7 +99,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
   if (c_socket_timeout > 0)
   {
     const struct timeval tv = { c_socket_timeout, 0 };
-    if (setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv)) < -1)
+    if (setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv)) < 0)
     {
       mutt_debug(LL_DEBUG2, "Cannot set socket receive timeout. errno: %d\n", errno);
     }
