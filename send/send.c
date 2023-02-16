@@ -2892,7 +2892,9 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
         mutt_body_free(&e_templ->body->parts->next); /* destroy sig */
         if (mutt_istr_equal(e_templ->body->subtype, "mixed") ||
             mutt_istr_equal(e_templ->body->subtype, "signed"))
+        {
           e_templ->body = mutt_remove_multipart(e_templ->body);
+        }
       }
 
       FREE(&pgpkeylist);
