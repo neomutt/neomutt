@@ -317,10 +317,8 @@ static int pager_global_observer(struct NotifyCallback *nc)
   struct MuttWindow *win_pager = nc->global_data;
 
   struct PagerPrivateData *priv = win_pager->wdata;
-  if (!priv)
-    return 0;
-
-  if ((priv->redraw & PAGER_REDRAW_FLOW) && (priv->pview->flags & MUTT_PAGER_RETWINCH))
+  const struct PagerView *pview = priv ? priv->pview : NULL;
+  if (priv && pview && (priv->redraw & PAGER_REDRAW_FLOW) && (pview->flags & MUTT_PAGER_RETWINCH))
   {
     priv->rc = OP_REFORMAT_WINCH;
   }
