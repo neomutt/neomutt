@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-02-02 18:55+0000\n"
+"POT-Creation-Date: 2023-02-16 13:32+0000\n"
 "PO-Revision-Date: 2022-04-23 12:04+0000\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
@@ -43,7 +43,7 @@ msgstr "警告：此别名可能无法工作。要修正它吗？"
 msgid "Address: "
 msgstr "地址："
 
-#: alias/alias.c:453 commands.c:137 conn/raw.c:148 conn/raw.c:205
+#: alias/alias.c:453 commands.c:137 conn/raw.c:161 conn/raw.c:218
 #: envelope/functions.c:131 recvcmd.c:227 send/send.c:203
 #, c-format
 msgid "Bad IDN: '%s'"
@@ -426,7 +426,7 @@ msgstr "%s 不存在。创建它吗？"
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
 #: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:929
-#: nntp/newsrc.c:1119
+#: nntp/newsrc.c:1117
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "无法创建 %s：%s"
@@ -834,11 +834,11 @@ msgid "%s: no such color"
 msgstr "%s：没有这种颜色"
 
 #: color/command.c:221 color/command.c:263 color/command.c:315
-#: color/command.c:387 color/command.c:542 command_parse.c:347
-#: command_parse.c:369 command_parse.c:514 command_parse.c:1099
-#: command_parse.c:1186 hook.c:101 hook.c:157 hook.c:166 hook.c:180 hook.c:429
-#: hook.c:445 keymap.c:1191 score.c:95 subjectrx.c:72 subjectrx.c:100
-#: subjectrx.c:108
+#: color/command.c:387 color/command.c:542 command_parse.c:348
+#: command_parse.c:370 command_parse.c:507 command_parse.c:524
+#: command_parse.c:1109 command_parse.c:1196 hook.c:101 hook.c:157 hook.c:166
+#: hook.c:180 hook.c:429 hook.c:445 keymap.c:1191 score.c:95 subjectrx.c:72
+#: subjectrx.c:100 subjectrx.c:108
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s：参数太少"
@@ -854,8 +854,8 @@ msgstr "%s：没有这个属性"
 msgid "%s: no such object"
 msgstr "%s：没有这个对象"
 
-#: color/command.c:574 color/command.c:633 command_parse.c:393
-#: command_parse.c:1376 command_parse.c:1712 hook.c:106 hook.c:187 hook.c:452
+#: color/command.c:574 color/command.c:633 command_parse.c:394
+#: command_parse.c:1386 command_parse.c:1722 hook.c:106 hook.c:187 hook.c:452
 #: keymap.c:1123 keymap.c:1296 keymap.c:1458 keymap.c:1539 mutt_lua.c:515
 #: score.c:103
 #, c-format
@@ -881,167 +881,167 @@ msgstr "颜色过多：%d / %d"
 msgid "Maximum quoting level is %d"
 msgstr "最高支持 %d 层引用"
 
-#: command_parse.c:119
+#: command_parse.c:120
 msgid "-group: no group name"
 msgstr "-group：无组名称"
 
-#: command_parse.c:129
+#: command_parse.c:130
 msgid "out of arguments"
 msgstr "参数不够"
 
-#: command_parse.c:211
+#: command_parse.c:212
 #, c-format
 msgid "Error: Can't build path of '%s'"
 msgstr "错误：无法构建“%s”的路径"
 
-#: command_parse.c:224
+#: command_parse.c:225
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
 msgstr "错误：循环读取配置文件“%s”"
 
-#: command_parse.c:264
+#: command_parse.c:265
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "%s 发生错误，第 %d 行：%s"
 
-#: command_parse.c:275
+#: command_parse.c:276
 #, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "%s 出现警告，第 %d 行：%s"
 
-#: command_parse.c:304
+#: command_parse.c:305
 #, c-format
 msgid "source: errors in %s"
 msgstr "source：%s 中有错误"
 
-#: command_parse.c:305
+#: command_parse.c:306
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source：读取因 %s 中错误过多而中止"
 
-#: command_parse.c:314
+#: command_parse.c:315
 #, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "source：%2$s 中出现 %1$d 个警告"
 
-#: command_parse.c:430
+#: command_parse.c:431
 #, c-format
 msgid "%sgroup: missing -rx or -addr"
 msgstr "%sgroup：缺少 -rx 或 -addr"
 
-#: command_parse.c:456
+#: command_parse.c:457
 #, c-format
 msgid "%sgroup: warning: bad IDN '%s'"
 msgstr "%sgroup：警告：错误的 IDN '%s'"
 
-#: command_parse.c:525
+#: command_parse.c:535
 #, c-format
 msgid "Error: %s"
 msgstr "错误：%s"
 
-#: command_parse.c:687
+#: command_parse.c:697
 msgid "invalid header field"
 msgstr "无效的信件头域"
 
-#: command_parse.c:758
+#: command_parse.c:768
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
 msgstr "'%s' 命令不能使用 'inv', 'no', '&' 或 '?'"
 
-#: command_parse.c:792 command_parse.c:932 command_parse.c:1042
+#: command_parse.c:802 command_parse.c:942 command_parse.c:1052
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s：未知的变量"
 
-#: command_parse.c:807 command_parse.c:1130
+#: command_parse.c:817 command_parse.c:1140
 msgid "Can't use a prefix when querying a variable"
 msgstr "查询变量时无法使用前缀"
 
-#: command_parse.c:813 command_parse.c:1110 command_parse.c:1124
+#: command_parse.c:823 command_parse.c:1120 command_parse.c:1134
 #, c-format
 msgid "Can't query a variable with the '%s' command"
 msgstr "无法使用 '%s' 命令查询变量"
 
-#: command_parse.c:825
+#: command_parse.c:835
 msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "变量自增或自减时无法使用前缀"
 
-#: command_parse.c:831 command_parse.c:862
+#: command_parse.c:841 command_parse.c:872
 #, c-format
 msgid "Can't set a variable with the '%s' command"
 msgstr "无法使用 '%s' 命令设置变量"
 
-#: command_parse.c:842
+#: command_parse.c:852
 msgid "Can't decrement a my_ variable"
 msgstr "无法自减一个 my_ 变量"
 
-#: command_parse.c:856
+#: command_parse.c:866
 msgid "Can't use prefix when setting a variable"
 msgstr "设置变量时无法使用前缀"
 
-#: command_parse.c:875
+#: command_parse.c:885
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
 msgstr "前缀 'no' 和 'inv' 只能用于布尔值和四项值变量"
 
-#: command_parse.c:879
+#: command_parse.c:889
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
 msgstr "命令 '%s' 只能用于布尔值和四项值变量"
 
-#: command_parse.c:1162 command_parse.c:1170
+#: command_parse.c:1172 command_parse.c:1180
 #, c-format
 msgid "%s is unset"
 msgstr "%s 没有被设定"
 
-#: command_parse.c:1210 mutt_lua.c:510
+#: command_parse.c:1220 mutt_lua.c:510
 #, c-format
 msgid "source: error at %s"
 msgstr "source：%s 有错误"
 
-#: command_parse.c:1218
+#: command_parse.c:1228
 #, c-format
 msgid "source: file %s could not be sourced"
 msgstr "source：文件 %s 无法被加载"
 
-#: command_parse.c:1241
+#: command_parse.c:1251
 msgid "spam: no matching pattern"
 msgstr "垃圾邮件：无匹配的模式"
 
-#: command_parse.c:1243
+#: command_parse.c:1253
 msgid "nospam: no matching pattern"
 msgstr "去掉垃圾邮件：无匹配的模式"
 
-#: command_parse.c:1385 imap/imap.c:1326
+#: command_parse.c:1395 imap/imap.c:1326
 #, c-format
 msgid "Subscribed to %s"
 msgstr "已订阅 %s"
 
-#: command_parse.c:1389
+#: command_parse.c:1399
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "无法订阅 %s"
 
-#: command_parse.c:1397 command_parse.c:1733
+#: command_parse.c:1407 command_parse.c:1743
 msgid "No folder specified"
 msgstr "没有指定文件夹"
 
-#: command_parse.c:1432
+#: command_parse.c:1442
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
 msgstr "标签格式 '%s' 已被注册为 '%s'"
 
-#: command_parse.c:1474
+#: command_parse.c:1484
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
 msgstr "标签变换 '%s' 已被注册为 '%s'"
 
-#: command_parse.c:1721 imap/imap.c:1328
+#: command_parse.c:1731 imap/imap.c:1328
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "已退订 %s"
 
-#: command_parse.c:1725
+#: command_parse.c:1735
 #, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "无法退订 %s"
@@ -1907,7 +1907,7 @@ msgstr "证书主机检查失败：%s"
 msgid "I/O error"
 msgstr "输入输出(I/O)出错"
 
-#: conn/openssl.c:1167 conn/raw.c:254 gui/curs_lib.c:378 mutt_logging.c:109
+#: conn/openssl.c:1167 conn/raw.c:267 gui/curs_lib.c:378 mutt_logging.c:109
 msgid "unknown error"
 msgstr "未知错误"
 
@@ -1927,32 +1927,32 @@ msgstr "无法创建 SSL 上下文"
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr "警告：启用 ssl_verify_partial_chains 出错"
 
-#: conn/raw.c:156 conn/raw.c:213
+#: conn/raw.c:169 conn/raw.c:226
 #, c-format
 msgid "Looking up %s..."
 msgstr "正在查找 %s..."
 
-#: conn/raw.c:166 conn/raw.c:223
+#: conn/raw.c:179 conn/raw.c:236
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "无法找到主机 \"%s\""
 
-#: conn/raw.c:171 conn/raw.c:229
+#: conn/raw.c:184 conn/raw.c:242
 #, c-format
 msgid "Connecting to %s..."
 msgstr "正在连接到 %s..."
 
-#: conn/raw.c:253
+#: conn/raw.c:266
 #, c-format
 msgid "Could not connect to %s (%s)"
 msgstr "无法连接到 %s (%s)"
 
-#: conn/raw.c:276 conn/raw.c:309
+#: conn/raw.c:289 conn/raw.c:322
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "与 %s 通话出错(%s)"
 
-#: conn/raw.c:283
+#: conn/raw.c:296
 #, c-format
 msgid "Connection to %s has been aborted"
 msgstr "到 %s 的连接已关闭"
@@ -2306,9 +2306,9 @@ msgstr "清除标记"
 msgid "Set flag"
 msgstr "设定标记"
 
-#: gui/curs_lib.c:342
-msgid "Exit NeoMutt?"
-msgstr "退出 NeoMutt？"
+#: gui/curs_lib.c:342 index/functions.c:528
+msgid "Exit NeoMutt without saving?"
+msgstr "不保存便退出 NeoMutt 吗？"
 
 #: gui/curs_lib.c:407
 msgid "Press any key to continue..."
@@ -2766,13 +2766,13 @@ msgstr "正在订阅 %s..."
 msgid "Unsubscribing from %s..."
 msgstr "正在退订 %s..."
 
-#: imap/imap.c:1479 imap/message.c:1770
+#: imap/imap.c:1479 imap/message.c:1742
 #, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "正在复制 %d 封信件到 %s ..."
 
-#: imap/imap.c:1496 imap/imap.c:2149 imap/message.c:1809 muttlib.c:1415
+#: imap/imap.c:1496 imap/imap.c:2149 imap/message.c:1781 muttlib.c:1415
 #, c-format
 msgid "Create %s?"
 msgstr "创建 %s 吗？"
@@ -2856,20 +2856,20 @@ msgstr "无法取回此版本的 IMAP 服务器的信件头"
 msgid "Fetching message headers..."
 msgstr "正在取回信件信件头..."
 
-#: imap/message.c:1592
+#: imap/message.c:1564
 msgid "Uploading message..."
 msgstr "正在上传信件..."
 
-#: imap/message.c:1776
+#: imap/message.c:1748
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "正在复制信件 %d 到 %s ..."
 
-#: imap/message.c:2001 nntp/nntp.c:2601 pop/pop.c:1048
+#: imap/message.c:1973 nntp/nntp.c:2601 pop/pop.c:1047
 msgid "Fetching message..."
 msgstr "正在取回信件..."
 
-#: imap/message.c:2052 pop/pop.c:1027
+#: imap/message.c:2024 pop/pop.c:1026
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "信件索引不正确。请尝试重新打开信箱"
 
@@ -2888,7 +2888,7 @@ msgstr "无信件头名的信件头搜索：%s"
 msgid "Server-side custom search not supported: %s"
 msgstr "服务器端的自定义搜索不被支持：%s"
 
-#: imap/util.c:655
+#: imap/util.c:648
 msgid "Continue?"
 msgstr "继续？"
 
@@ -2983,10 +2983,6 @@ msgstr "没有标签改变"
 #: index/functions.c:482
 msgid "Can't edit message"
 msgstr "无法编辑信件"
-
-#: index/functions.c:528
-msgid "Exit NeoMutt without saving?"
-msgstr "不保存便退出 NeoMutt 吗？"
 
 #. L10N: CHECK_ACL
 #: index/functions.c:565
@@ -5225,16 +5221,16 @@ msgstr "ID 不可信。您真的要使用此密钥吗？"
 msgid "Loading list of groups from cache..."
 msgstr "正在从缓存中加载新闻组列表..."
 
-#: nntp/newsrc.c:1029
+#: nntp/newsrc.c:1027
 msgid "No news server defined"
 msgstr "未定义新闻服务器"
 
-#: nntp/newsrc.c:1047
+#: nntp/newsrc.c:1045
 #, c-format
 msgid "%s is an invalid news server specification"
 msgstr "%s 是无效的新闻服务器 URL"
 
-#: nntp/nntp.c:129 nntp/nntp.c:671 pop/lib.c:408 pop/pop.c:685
+#: nntp/nntp.c:129 nntp/nntp.c:671 pop/lib.c:408 pop/pop.c:684
 msgid "Server closed connection"
 msgstr "服务器关闭了连接"
 
@@ -5255,7 +5251,7 @@ msgstr "到 %s 的连接已关闭。重新连接吗？"
 msgid "Fetching list of articles..."
 msgstr "正在取回帖子列表..."
 
-#: nntp/nntp.c:1448 nntp/nntp.c:2041 pop/pop.c:556 pop/pop.c:838
+#: nntp/nntp.c:1448 nntp/nntp.c:2041 pop/pop.c:556 pop/pop.c:837
 msgid "Checking for new messages..."
 msgstr "正在检查新信件..."
 
@@ -5939,7 +5935,8 @@ msgid "collapse/uncollapse current thread"
 msgstr "折叠/展开 当前线索"
 
 #: opcodes.h:196
-msgid "delete messages matching a pattern"
+#, fuzzy
+msgid "delete non-hidden messages matching a pattern"
 msgstr "删除符合某个模式的信件"
 
 #: opcodes.h:197
@@ -6055,15 +6052,18 @@ msgid "save changes to mailbox"
 msgstr "保存修改到信箱"
 
 #: opcodes.h:225
-msgid "tag messages matching a pattern"
+#, fuzzy
+msgid "tag non-hidden messages matching a pattern"
 msgstr "标记符合某个模式的信件"
 
 #: opcodes.h:226
-msgid "undelete messages matching a pattern"
+#, fuzzy
+msgid "undelete non-hidden messages matching a pattern"
 msgstr "反删除符合某个模式的信件"
 
 #: opcodes.h:227
-msgid "untag messages matching a pattern"
+#, fuzzy
+msgid "untag non-hidden messages matching a pattern"
 msgstr "反标记符合某个模式的信件"
 
 #: opcodes.h:228
@@ -7071,7 +7071,7 @@ msgstr[0] "%d 封信件已丢失。请尝试重新打开信箱"
 msgid "POP host is not defined"
 msgstr "未定义 POP 主机"
 
-#: pop/pop.c:538 pop/pop.c:719 pop/pop.c:752
+#: pop/pop.c:538 pop/pop.c:718 pop/pop.c:751
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s 是无效的 POP 路径"
@@ -7102,15 +7102,15 @@ msgid "%s [%d of %d message read]"
 msgid_plural "%s [%d of %d messages read]"
 msgstr[0] "%s [已读取 %d 封信件，共 %d 封]"
 
-#: pop/pop.c:803
+#: pop/pop.c:802
 msgid "Fetching list of messages..."
 msgstr "正在取回信件列表..."
 
-#: pop/pop.c:890
+#: pop/pop.c:889
 msgid "Marking messages deleted..."
 msgstr "正在标记信件为已删除..."
 
-#: pop/pop.c:1072
+#: pop/pop.c:1071
 msgid "Can't write message to temporary file"
 msgstr "无法将新建写入临时文件"
 
@@ -7542,3 +7542,6 @@ msgstr "编译选项："
 #: version.c:511
 msgid "Devel options:"
 msgstr "开发选项："
+
+#~ msgid "Exit NeoMutt?"
+#~ msgstr "退出 NeoMutt？"

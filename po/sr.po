@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt 20210205\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-02-02 18:55+0000\n"
-"PO-Revision-Date: 2022-06-29 19:40+0200\n"
+"POT-Creation-Date: 2023-02-16 13:32+0000\n"
+"PO-Revision-Date: 2023-02-11 08:57+0100\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: poe 1.5.1-1-gd09df48\n"
+"X-Generator: poe 1.5.1-3-g67e858e\n"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:399
@@ -37,7 +37,7 @@ msgstr "Упозорење: Овај назив алијаса можда нећ
 msgid "Address: "
 msgstr "Адреса: "
 
-#: alias/alias.c:453 commands.c:137 conn/raw.c:148 conn/raw.c:205
+#: alias/alias.c:453 commands.c:137 conn/raw.c:161 conn/raw.c:218
 #: envelope/functions.c:131 recvcmd.c:227 send/send.c:203
 #, c-format
 msgid "Bad IDN: '%s'"
@@ -84,7 +84,7 @@ msgstr "Упозорење: Лоша адреса „%s“ у алијасу „
 #: alias/commands.c:86
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'"
-msgstr "Упозорење: Лош IDN ‘%s’ у алијасу ‘%s’"
+msgstr "Упозорење: Лош IDN „%s“ у алијасу „%s“"
 
 #: alias/dlg_alias.c:101 alias/dlg_query.c:100 attach/dlg_attach.c:96
 #: autocrypt/dlg_autocrypt.c:89 browser/browser.c:111 browser/browser.c:124
@@ -424,7 +424,7 @@ msgstr "%s не постоји. Да га креирам?"
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
 #: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:929
-#: nntp/newsrc.c:1119
+#: nntp/newsrc.c:1117
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "Не могу да креирам %s: %s"
@@ -832,11 +832,11 @@ msgid "%s: no such color"
 msgstr "%s: нема такве боје"
 
 #: color/command.c:221 color/command.c:263 color/command.c:315
-#: color/command.c:387 color/command.c:542 command_parse.c:347
-#: command_parse.c:369 command_parse.c:514 command_parse.c:1099
-#: command_parse.c:1186 hook.c:101 hook.c:157 hook.c:166 hook.c:180 hook.c:429
-#: hook.c:445 keymap.c:1191 score.c:95 subjectrx.c:72 subjectrx.c:100
-#: subjectrx.c:108
+#: color/command.c:387 color/command.c:542 command_parse.c:348
+#: command_parse.c:370 command_parse.c:507 command_parse.c:524
+#: command_parse.c:1109 command_parse.c:1196 hook.c:101 hook.c:157 hook.c:166
+#: hook.c:180 hook.c:429 hook.c:445 keymap.c:1191 score.c:95 subjectrx.c:72
+#: subjectrx.c:100 subjectrx.c:108
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: премало аргумената"
@@ -852,8 +852,8 @@ msgstr "%s: нема таквог атрибута"
 msgid "%s: no such object"
 msgstr "%s: нема таквог објекта"
 
-#: color/command.c:574 color/command.c:633 command_parse.c:393
-#: command_parse.c:1376 command_parse.c:1712 hook.c:106 hook.c:187 hook.c:452
+#: color/command.c:574 color/command.c:633 command_parse.c:394
+#: command_parse.c:1386 command_parse.c:1722 hook.c:106 hook.c:187 hook.c:452
 #: keymap.c:1123 keymap.c:1296 keymap.c:1458 keymap.c:1539 mutt_lua.c:515
 #: score.c:103
 #, c-format
@@ -879,45 +879,45 @@ msgstr "Превише боја: %d / %d"
 msgid "Maximum quoting level is %d"
 msgstr "Максимални ниво цитирања је %d"
 
-#: command_parse.c:119
+#: command_parse.c:120
 msgid "-group: no group name"
 msgstr "-group: нема назива групе"
 
-#: command_parse.c:129
+#: command_parse.c:130
 msgid "out of arguments"
 msgstr "нема аргумената"
 
-#: command_parse.c:211
+#: command_parse.c:212
 #, c-format
 msgid "Error: Can't build path of '%s'"
-msgstr "Грешка: Не може се изградити путања ‘%s’"
+msgstr "Грешка: Не може се изградити путања „%s“"
 
-#: command_parse.c:224
+#: command_parse.c:225
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
-msgstr "Грешка: Циркуларно читање конфигурационе датотеке ‘%s’"
+msgstr "Грешка: Циркуларно читање конфигурационе датотеке „%s“"
 
-#: command_parse.c:264
+#: command_parse.c:265
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Грешка у %s, ред %d: %s"
 
-#: command_parse.c:275
+#: command_parse.c:276
 #, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Упозорење у %s, ред %d: %s"
 
-#: command_parse.c:304
+#: command_parse.c:305
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: грешке у %s"
 
-#: command_parse.c:305
+#: command_parse.c:306
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: читање прекинуто због превише грешака у %s"
 
-#: command_parse.c:314
+#: command_parse.c:315
 #, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
@@ -925,123 +925,123 @@ msgstr[0] "source: %d упозорење у %s"
 msgstr[1] "source: %d упозорења у %s"
 msgstr[2] "source: %d упозорења у %s"
 
-#: command_parse.c:430
+#: command_parse.c:431
 #, c-format
 msgid "%sgroup: missing -rx or -addr"
 msgstr "%sgroup: нема -rx или -addr"
 
-#: command_parse.c:456
+#: command_parse.c:457
 #, c-format
 msgid "%sgroup: warning: bad IDN '%s'"
 msgstr "%sgroup: упозорење: лош IDN „%s“"
 
-#: command_parse.c:525
+#: command_parse.c:535
 #, c-format
 msgid "Error: %s"
 msgstr "Грешка: %s"
 
-#: command_parse.c:687
+#: command_parse.c:697
 msgid "invalid header field"
 msgstr "неисправно поље у заглављу"
 
-#: command_parse.c:758
+#: command_parse.c:768
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
 msgstr "Не може се користити „inv“, „no“, „&“ или „?“ са наредбом „%s“"
 
-#: command_parse.c:792 command_parse.c:932 command_parse.c:1042
+#: command_parse.c:802 command_parse.c:942 command_parse.c:1052
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: непозната променљива"
 
-#: command_parse.c:807 command_parse.c:1130
+#: command_parse.c:817 command_parse.c:1140
 msgid "Can't use a prefix when querying a variable"
 msgstr "Не може се користити префикс када се испитује променљива"
 
-#: command_parse.c:813 command_parse.c:1110 command_parse.c:1124
+#: command_parse.c:823 command_parse.c:1120 command_parse.c:1134
 #, c-format
 msgid "Can't query a variable with the '%s' command"
 msgstr "Не може се испитивати променљива наредбом „%s“"
 
-#: command_parse.c:825
+#: command_parse.c:835
 msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "Не може се користити префикс када се увећава или смањује променљива"
 
-#: command_parse.c:831 command_parse.c:862
+#: command_parse.c:841 command_parse.c:872
 #, c-format
 msgid "Can't set a variable with the '%s' command"
 msgstr "Не може се поставити променљива наредбом „%s“"
 
-#: command_parse.c:842
+#: command_parse.c:852
 msgid "Can't decrement a my_ variable"
 msgstr "Не може се умањити my_ променљива"
 
-#: command_parse.c:856
+#: command_parse.c:866
 msgid "Can't use prefix when setting a variable"
 msgstr "Не може се користити префикс при постављању променљиве"
 
-#: command_parse.c:875
+#: command_parse.c:885
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
 msgstr "Префикси „no“ и „inv“ се могу користити само са bool/quad променљивим"
 
-#: command_parse.c:879
+#: command_parse.c:889
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
 msgstr "Наредба „%s“ се може користити само са bool/quad променљивим"
 
-#: command_parse.c:1162 command_parse.c:1170
+#: command_parse.c:1172 command_parse.c:1180
 #, c-format
 msgid "%s is unset"
 msgstr "%s није постављено"
 
-#: command_parse.c:1210 mutt_lua.c:510
+#: command_parse.c:1220 mutt_lua.c:510
 #, c-format
 msgid "source: error at %s"
 msgstr "source: грешка на %s"
 
-#: command_parse.c:1218
+#: command_parse.c:1228
 #, c-format
 msgid "source: file %s could not be sourced"
 msgstr "source: датотека %s се не може учитати"
 
-#: command_parse.c:1241
+#: command_parse.c:1251
 msgid "spam: no matching pattern"
 msgstr "spam: ниједна шема није задовољена"
 
-#: command_parse.c:1243
+#: command_parse.c:1253
 msgid "nospam: no matching pattern"
 msgstr "nospam: ниједна шема није задовољена"
 
-#: command_parse.c:1385 imap/imap.c:1326
+#: command_parse.c:1395 imap/imap.c:1326
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Претплаћен на %s"
 
-#: command_parse.c:1389
+#: command_parse.c:1399
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "Неуспешна претплата на %s"
 
-#: command_parse.c:1397 command_parse.c:1733
+#: command_parse.c:1407 command_parse.c:1743
 msgid "No folder specified"
 msgstr "Ниједна фасцикла није задата"
 
-#: command_parse.c:1432
+#: command_parse.c:1442
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
 msgstr "формат ознака „%s“ је већ регистрован као „%s“"
 
-#: command_parse.c:1474
+#: command_parse.c:1484
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
 msgstr "трансформација ознака „%s“ је већ регистрована као „%s“"
 
-#: command_parse.c:1721 imap/imap.c:1328
+#: command_parse.c:1731 imap/imap.c:1328
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Отпретплаћен са %s"
 
-#: command_parse.c:1725
+#: command_parse.c:1735
 #, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Неуспешна отпретплата са %s"
@@ -1918,7 +1918,7 @@ msgstr "Неуспешна провера хоста сертификата: %s"
 msgid "I/O error"
 msgstr "У/И грешка"
 
-#: conn/openssl.c:1167 conn/raw.c:254 gui/curs_lib.c:378 mutt_logging.c:109
+#: conn/openssl.c:1167 conn/raw.c:267 gui/curs_lib.c:378 mutt_logging.c:109
 msgid "unknown error"
 msgstr "непозната грешка"
 
@@ -1938,32 +1938,32 @@ msgstr "Не може се креирати SSL контекст"
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr "Упозорење: грешка при омогућивању ssl_verify_partial_chains"
 
-#: conn/raw.c:156 conn/raw.c:213
+#: conn/raw.c:169 conn/raw.c:226
 #, c-format
 msgid "Looking up %s..."
 msgstr "Тражење %s..."
 
-#: conn/raw.c:166 conn/raw.c:223
+#: conn/raw.c:179 conn/raw.c:236
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Не може се наћи хост „%s“"
 
-#: conn/raw.c:171 conn/raw.c:229
+#: conn/raw.c:184 conn/raw.c:242
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Повезивање са %s..."
 
-#: conn/raw.c:253
+#: conn/raw.c:266
 #, c-format
 msgid "Could not connect to %s (%s)"
 msgstr "Не може се повезати са %s (%s)"
 
-#: conn/raw.c:276 conn/raw.c:309
+#: conn/raw.c:289 conn/raw.c:322
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "Грешка при комуникацији са %s (%s)"
 
-#: conn/raw.c:283
+#: conn/raw.c:296
 #, c-format
 msgid "Connection to %s has been aborted"
 msgstr "Повезивање са %s је прекинуто"
@@ -2320,9 +2320,9 @@ msgstr "Очисти заставицу"
 msgid "Set flag"
 msgstr "Постави заставицу"
 
-#: gui/curs_lib.c:342
-msgid "Exit NeoMutt?"
-msgstr "Изаћи из NeoMutt-а?"
+#: gui/curs_lib.c:342 index/functions.c:528
+msgid "Exit NeoMutt without saving?"
+msgstr "Изаћи из NeoMutt-а без чувања?"
 
 #: gui/curs_lib.c:407
 msgid "Press any key to continue..."
@@ -2508,7 +2508,7 @@ msgstr "Грешка: multipart/signed нема протокол"
 #: handler.c:1751
 #, c-format
 msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
-msgstr "[-- Ово је прилог (користите ‘%s’ да прегледате овај део) --]\n"
+msgstr "[-- Ово је прилог (користите „%s“ да прегледате овај део) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #. The last %s expands to a keystroke/key binding, e.g. 'v'.
@@ -2671,9 +2671,8 @@ msgid "%s authentication failed"
 msgstr "%s аутентификација је неуспешна"
 
 #: imap/auth_gsasl.c:147 pop/auth.c:135
-#, fuzzy
 msgid "SASL authentication failed"
-msgstr "Аутентификација је неуспешна"
+msgstr "SASL аутентификација је неуспешна"
 
 #: imap/auth_login.c:51
 msgid "LOGIN disabled on this server"
@@ -2788,7 +2787,7 @@ msgstr "Претплаћивање на %s..."
 msgid "Unsubscribing from %s..."
 msgstr "Отпретплаћивање са %s..."
 
-#: imap/imap.c:1479 imap/message.c:1770
+#: imap/imap.c:1479 imap/message.c:1742
 #, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
@@ -2796,7 +2795,7 @@ msgstr[0] "Копирање %d поруке у %s..."
 msgstr[1] "Копирање %d поруке у %s..."
 msgstr[2] "Копирање %d порука у %s..."
 
-#: imap/imap.c:1496 imap/imap.c:2149 imap/message.c:1809 muttlib.c:1415
+#: imap/imap.c:1496 imap/imap.c:2149 imap/message.c:1781 muttlib.c:1415
 #, c-format
 msgid "Create %s?"
 msgstr "Креирати %s?"
@@ -2884,20 +2883,20 @@ msgstr "Не могу се доставити заглавља са ове ве�
 msgid "Fetching message headers..."
 msgstr "Достављање заглавља порука..."
 
-#: imap/message.c:1592
+#: imap/message.c:1564
 msgid "Uploading message..."
 msgstr "Слање поруке..."
 
-#: imap/message.c:1776
+#: imap/message.c:1748
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Копирање поруке %d у %s..."
 
-#: imap/message.c:2001 nntp/nntp.c:2601 pop/pop.c:1048
+#: imap/message.c:1973 nntp/nntp.c:2601 pop/pop.c:1047
 msgid "Fetching message..."
 msgstr "Добављање поруке..."
 
-#: imap/message.c:2052 pop/pop.c:1027
+#: imap/message.c:2024 pop/pop.c:1026
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Индекс порука није исправан. Покушајте да поново отворите сандуче."
 
@@ -2916,7 +2915,7 @@ msgstr "Претрага заглавља без назива: %s"
 msgid "Server-side custom search not supported: %s"
 msgstr "Серверска прилагођена претрага није подржана: %s"
 
-#: imap/util.c:655
+#: imap/util.c:648
 msgid "Continue?"
 msgstr "Наставити?"
 
@@ -3013,10 +3012,6 @@ msgstr "Ниједна ознака није промењена"
 #: index/functions.c:482
 msgid "Can't edit message"
 msgstr "Не може се уредити порука"
-
-#: index/functions.c:528
-msgid "Exit NeoMutt without saving?"
-msgstr "Изаћи из NeoMutt-а без чувања?"
 
 #. L10N: CHECK_ACL
 #: index/functions.c:565
@@ -4310,7 +4305,7 @@ msgstr "грешка приликом читања објекта са пода�
 #: ncrypt/crypt_gpgme.c:658
 #, c-format
 msgid "secret key '%s' not found: %s"
-msgstr "тајни кључ ‘%s’ није пронађен: %s"
+msgstr "тајни кључ „%s“ није пронађен: %s"
 
 #: ncrypt/crypt_gpgme.c:675
 #, c-format
@@ -5276,16 +5271,16 @@ msgstr "ИБ-у није указано поверење. Заиста жели�
 msgid "Loading list of groups from cache..."
 msgstr "Учитавање листе група из кеша..."
 
-#: nntp/newsrc.c:1029
+#: nntp/newsrc.c:1027
 msgid "No news server defined"
 msgstr "Ниједан њуз сервер није задат"
 
-#: nntp/newsrc.c:1047
+#: nntp/newsrc.c:1045
 #, c-format
 msgid "%s is an invalid news server specification"
 msgstr "%s је неисправно задавање њуз сервера"
 
-#: nntp/nntp.c:129 nntp/nntp.c:671 pop/lib.c:408 pop/pop.c:685
+#: nntp/nntp.c:129 nntp/nntp.c:671 pop/lib.c:408 pop/pop.c:684
 msgid "Server closed connection"
 msgstr "Сервер је затворио повезивање"
 
@@ -5306,7 +5301,7 @@ msgstr "Повезивање са %s је изгубљено. Поновно п�
 msgid "Fetching list of articles..."
 msgstr "Добављање листе чланака..."
 
-#: nntp/nntp.c:1448 nntp/nntp.c:2041 pop/pop.c:556 pop/pop.c:838
+#: nntp/nntp.c:1448 nntp/nntp.c:2041 pop/pop.c:556 pop/pop.c:837
 msgid "Checking for new messages..."
 msgstr "Провера нових порука..."
 
@@ -5991,7 +5986,8 @@ msgid "collapse/uncollapse current thread"
 msgstr "сажимање/ширење текуће нити"
 
 #: opcodes.h:196
-msgid "delete messages matching a pattern"
+#, fuzzy
+msgid "delete non-hidden messages matching a pattern"
 msgstr "брисање порука које одговарају шеми"
 
 #: opcodes.h:197
@@ -6107,15 +6103,18 @@ msgid "save changes to mailbox"
 msgstr "чување измена у сандуче"
 
 #: opcodes.h:225
-msgid "tag messages matching a pattern"
+#, fuzzy
+msgid "tag non-hidden messages matching a pattern"
 msgstr "означавање порука које одговарају шеми"
 
 #: opcodes.h:226
-msgid "undelete messages matching a pattern"
+#, fuzzy
+msgid "undelete non-hidden messages matching a pattern"
 msgstr "од-брисање порука које одговарају шеми"
 
 #: opcodes.h:227
-msgid "untag messages matching a pattern"
+#, fuzzy
+msgid "untag non-hidden messages matching a pattern"
 msgstr "одозначавање порука које одговарају шеми"
 
 #: opcodes.h:228
@@ -7125,7 +7124,7 @@ msgstr[2] "%d порука је изгубљено. Покушајте да по
 msgid "POP host is not defined"
 msgstr "POP сервер није дефинисан"
 
-#: pop/pop.c:538 pop/pop.c:719 pop/pop.c:752
+#: pop/pop.c:538 pop/pop.c:718 pop/pop.c:751
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s је неисправна POP путања"
@@ -7160,15 +7159,15 @@ msgstr[0] "%s [прочитано %d од %d поруке]"
 msgstr[1] "%s [прочитано %d од %d поруке]"
 msgstr[2] "%s [прочитано %d од %d порука]"
 
-#: pop/pop.c:803
+#: pop/pop.c:802
 msgid "Fetching list of messages..."
 msgstr "Добављање листе порука..."
 
-#: pop/pop.c:890
+#: pop/pop.c:889
 msgid "Marking messages deleted..."
 msgstr "Означавање порука обрисаним..."
 
-#: pop/pop.c:1072
+#: pop/pop.c:1071
 msgid "Can't write message to temporary file"
 msgstr "Порука се не може уписати у привремену датотеку"
 
@@ -7607,3 +7606,6 @@ msgstr "Опције за компајлирање:"
 #: version.c:511
 msgid "Devel options:"
 msgstr "Опције при изградњи:"
+
+#~ msgid "Exit NeoMutt?"
+#~ msgstr "Изаћи из NeoMutt-а?"

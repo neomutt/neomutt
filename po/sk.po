@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-02-02 18:55+0000\n"
+"POT-Creation-Date: 2023-02-16 13:32+0000\n"
 "PO-Revision-Date: 2016-11-23 21:20+0100\n"
 "Last-Translator: František Hájik <ferko.hajik@gmail.com>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -41,7 +41,7 @@ msgstr "Pozor: Tento názov aliasu nemusí fungovať. Opraviť?"
 msgid "Address: "
 msgstr "Adresa: "
 
-#: alias/alias.c:453 commands.c:137 conn/raw.c:148 conn/raw.c:205
+#: alias/alias.c:453 commands.c:137 conn/raw.c:161 conn/raw.c:218
 #: envelope/functions.c:131 recvcmd.c:227 send/send.c:203
 #, c-format
 msgid "Bad IDN: '%s'"
@@ -433,7 +433,7 @@ msgstr "%s neexistuje. Vytvoriť?"
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
 #: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:929
-#: nntp/newsrc.c:1119
+#: nntp/newsrc.c:1117
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "Nemožno vytvoriť %s: %s"
@@ -843,11 +843,11 @@ msgid "%s: no such color"
 msgstr "%s: nenájdená farba"
 
 #: color/command.c:221 color/command.c:263 color/command.c:315
-#: color/command.c:387 color/command.c:542 command_parse.c:347
-#: command_parse.c:369 command_parse.c:514 command_parse.c:1099
-#: command_parse.c:1186 hook.c:101 hook.c:157 hook.c:166 hook.c:180 hook.c:429
-#: hook.c:445 keymap.c:1191 score.c:95 subjectrx.c:72 subjectrx.c:100
-#: subjectrx.c:108
+#: color/command.c:387 color/command.c:542 command_parse.c:348
+#: command_parse.c:370 command_parse.c:507 command_parse.c:524
+#: command_parse.c:1109 command_parse.c:1196 hook.c:101 hook.c:157 hook.c:166
+#: hook.c:180 hook.c:429 hook.c:445 keymap.c:1191 score.c:95 subjectrx.c:72
+#: subjectrx.c:100 subjectrx.c:108
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: príliš málo argumentov"
@@ -863,8 +863,8 @@ msgstr "%s: vlastnosť nenájdená"
 msgid "%s: no such object"
 msgstr "%s: nenájdený objekt"
 
-#: color/command.c:574 color/command.c:633 command_parse.c:393
-#: command_parse.c:1376 command_parse.c:1712 hook.c:106 hook.c:187 hook.c:452
+#: color/command.c:574 color/command.c:633 command_parse.c:394
+#: command_parse.c:1386 command_parse.c:1722 hook.c:106 hook.c:187 hook.c:452
 #: keymap.c:1123 keymap.c:1296 keymap.c:1458 keymap.c:1539 mutt_lua.c:515
 #: score.c:103
 #, c-format
@@ -883,53 +883,53 @@ msgstr "%s: neplatné číslo: %s"
 #: color/curses.c:93
 #, c-format
 msgid "Too many colors: %d / %d"
-msgstr ""
+msgstr "príliš veľa farieb %d / %d"
 
 #: color/quoted.c:108
 #, c-format
 msgid "Maximum quoting level is %d"
 msgstr "Maximálna úroveň citacií je %d"
 
-#: command_parse.c:119
+#: command_parse.c:120
 msgid "-group: no group name"
 msgstr "-group: chybajúce meno skupiny"
 
-#: command_parse.c:129
+#: command_parse.c:130
 #, fuzzy
 msgid "out of arguments"
 msgstr "príliš málo argumentov"
 
-#: command_parse.c:211
+#: command_parse.c:212
 #, c-format
 msgid "Error: Can't build path of '%s'"
 msgstr "Chyba: Nemožno sestaviť cestu k „%s“"
 
-#: command_parse.c:224
+#: command_parse.c:225
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
 msgstr "Chyba: zacyklenie pri vloženie konfiguračného súboru „%s“"
 
-#: command_parse.c:264
+#: command_parse.c:265
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Chyba v %s, riadok %d: %s"
 
-#: command_parse.c:275
+#: command_parse.c:276
 #, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Varovánie v %s, riadok %d: %s"
 
-#: command_parse.c:304
+#: command_parse.c:305
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: chyby v %s"
 
-#: command_parse.c:305
+#: command_parse.c:306
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: čitanie prerušené kvôli veľkému množstvu chýb v %s"
 
-#: command_parse.c:314
+#: command_parse.c:315
 #, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
@@ -937,124 +937,124 @@ msgstr[0] "source: %d varovanie v %s"
 msgstr[1] "source: %d varovania v %s"
 msgstr[2] "source: %d varování v %s"
 
-#: command_parse.c:430
+#: command_parse.c:431
 #, c-format
 msgid "%sgroup: missing -rx or -addr"
 msgstr "%sgroup: chýba -rx lebo -addr"
 
-#: command_parse.c:456
+#: command_parse.c:457
 #, c-format
 msgid "%sgroup: warning: bad IDN '%s'"
 msgstr "%sgroup: pozor: chybné IDN „%s“"
 
-#: command_parse.c:525
+#: command_parse.c:535
 #, c-format
 msgid "Error: %s"
 msgstr "Chyba: %s"
 
-#: command_parse.c:687
+#: command_parse.c:697
 msgid "invalid header field"
 msgstr "neplatná položka hlavičky"
 
-#: command_parse.c:758
+#: command_parse.c:768
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
 msgstr "Nelze použiť „inv“, „no“, „&“ alebo „?“ s príkazom „%s“"
 
-#: command_parse.c:792 command_parse.c:932 command_parse.c:1042
+#: command_parse.c:802 command_parse.c:942 command_parse.c:1052
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: neznáma premenná"
 
-#: command_parse.c:807 command_parse.c:1130
+#: command_parse.c:817 command_parse.c:1140
 msgid "Can't use a prefix when querying a variable"
 msgstr "Nelze použiť prefix pri dotazovanie premenné"
 
-#: command_parse.c:813 command_parse.c:1110 command_parse.c:1124
+#: command_parse.c:823 command_parse.c:1120 command_parse.c:1134
 #, c-format
 msgid "Can't query a variable with the '%s' command"
 msgstr "Nedá sa pýtať na premennů príkazom „%s“"
 
-#: command_parse.c:825
+#: command_parse.c:835
 msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "Nelze použiť prefix pri zvyšovanie alebo znižovanie premenné"
 
-#: command_parse.c:831 command_parse.c:862
+#: command_parse.c:841 command_parse.c:872
 #, c-format
 msgid "Can't set a variable with the '%s' command"
 msgstr "Nelze nastaviť premennú príkazom „%s“"
 
-#: command_parse.c:842
+#: command_parse.c:852
 #, fuzzy
 msgid "Can't decrement a my_ variable"
 msgstr "Nelze použiť prefix pri nastavovanie premenné"
 
-#: command_parse.c:856
+#: command_parse.c:866
 msgid "Can't use prefix when setting a variable"
 msgstr "Nelze použiť prefix pri nastavovanie premenné"
 
-#: command_parse.c:875
+#: command_parse.c:885
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
 msgstr "Prefixy „no“ a „inv“ môžu byt použité iba s premennými typu boolean/prepínač"
 
-#: command_parse.c:879
+#: command_parse.c:889
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
 msgstr "Príkaz „%s“ možno použiť iba s premennými typu boolean/prepínač"
 
-#: command_parse.c:1162 command_parse.c:1170
+#: command_parse.c:1172 command_parse.c:1180
 #, c-format
 msgid "%s is unset"
 msgstr "%s je nenastavené"
 
-#: command_parse.c:1210 mutt_lua.c:510
+#: command_parse.c:1220 mutt_lua.c:510
 #, c-format
 msgid "source: error at %s"
 msgstr "source: chyba na %s"
 
-#: command_parse.c:1218
+#: command_parse.c:1228
 #, c-format
 msgid "source: file %s could not be sourced"
 msgstr "source: súbor %s nie je možné začleniť"
 
-#: command_parse.c:1241
+#: command_parse.c:1251
 msgid "spam: no matching pattern"
 msgstr "spam: vzoru nič nevyhovuje"
 
-#: command_parse.c:1243
+#: command_parse.c:1253
 msgid "nospam: no matching pattern"
 msgstr "nospam: vzoru nič nevyhovuje"
 
-#: command_parse.c:1385 imap/imap.c:1326
+#: command_parse.c:1395 imap/imap.c:1326
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Prihlásené k odberu %s"
 
-#: command_parse.c:1389
+#: command_parse.c:1399
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "Nemožno prihlásiť k odberu %s"
 
-#: command_parse.c:1397 command_parse.c:1733
+#: command_parse.c:1407 command_parse.c:1743
 msgid "No folder specified"
 msgstr "Nezadán žiadny adresár"
 
-#: command_parse.c:1432
+#: command_parse.c:1442
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
-msgstr ""
+msgstr "formát tagu '%s' je už zapísaný ako '%s'"
 
-#: command_parse.c:1474
+#: command_parse.c:1484
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
-msgstr ""
+msgstr "preklad tagu '%s' je už zapísaný ako '%s'"
 
-#: command_parse.c:1721 imap/imap.c:1328
+#: command_parse.c:1731 imap/imap.c:1328
 #, fuzzy, c-format
 msgid "Unsubscribed from %s"
 msgstr "Odhlásený odber z %s"
 
-#: command_parse.c:1725
+#: command_parse.c:1735
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Nemožno odhlásiť odber z %s"
@@ -1383,7 +1383,7 @@ msgstr "Nemôžete zmazať jediné pridané dáta"
 
 #: compose/functions.c:392 compose/functions.c:406
 msgid "Attachments to be grouped must have the same parent"
-msgstr ""
+msgstr "Prílohy určené na zoskupenie musia mať rovnakého rodiča"
 
 #: compose/functions.c:613
 msgid "Attaching selected file..."
@@ -1425,7 +1425,7 @@ msgstr "Nemožno pripojiť"
 
 #: compose/functions.c:908
 msgid "Content-ID can only contain the characters: -.0-9@A-Z_a-z"
-msgstr ""
+msgstr "Content-ID smie obsahovať iba znaky: -.0-9@A-Z_a-z"
 
 #: compose/functions.c:988
 msgid "Invalid encoding"
@@ -1472,7 +1472,7 @@ msgstr "Príloha je už na konci"
 
 #: compose/functions.c:1234 compose/functions.c:1287
 msgid "Attachment can't be moved out of group"
-msgstr ""
+msgstr "Príloha sa nedá presunúť zo skupiny"
 
 #: compose/functions.c:1282
 msgid "Attachment is already at top"
@@ -1688,12 +1688,12 @@ msgstr "Neplatný typ radenie: %ld"
 #: conn/accountcmd.c:79
 #, c-format
 msgid "Line is malformed: expected <key: val>, got <%s>"
-msgstr ""
+msgstr "Riadok má nesprávny tvar: očakávaný <key: val>, dostávam <%s>"
 
 #: conn/accountcmd.c:119
 #, c-format
 msgid "Unhandled key in line <%s: %s>"
-msgstr ""
+msgstr "Nespracovaný kľúč v riadku <%s: %s>"
 
 #: conn/accountcmd.c:140
 #, fuzzy
@@ -1955,7 +1955,7 @@ msgstr "Kontrola certifikátu stroja zlyhala: %s"
 msgid "I/O error"
 msgstr "I/O chyba"
 
-#: conn/openssl.c:1167 conn/raw.c:254 gui/curs_lib.c:378 mutt_logging.c:109
+#: conn/openssl.c:1167 conn/raw.c:267 gui/curs_lib.c:378 mutt_logging.c:109
 msgid "unknown error"
 msgstr "neznáma chyba"
 
@@ -1975,32 +1975,32 @@ msgstr "Nepodarilo sa vytvoriť SSL kontext"
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr "Pozor: chyba pri zapínanie ssl_verify_partial_chains"
 
-#: conn/raw.c:156 conn/raw.c:213
+#: conn/raw.c:169 conn/raw.c:226
 #, c-format
 msgid "Looking up %s..."
 msgstr "Vyhľadávam %s…"
 
-#: conn/raw.c:166 conn/raw.c:223
+#: conn/raw.c:179 conn/raw.c:236
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Nemožno nájsť hostiteľa „%s“"
 
-#: conn/raw.c:171 conn/raw.c:229
+#: conn/raw.c:184 conn/raw.c:242
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Pripájam sa k %s…"
 
-#: conn/raw.c:253
+#: conn/raw.c:266
 #, c-format
 msgid "Could not connect to %s (%s)"
 msgstr "Nemožno sa spojiť s %s (%s)"
 
-#: conn/raw.c:276 conn/raw.c:309
+#: conn/raw.c:289 conn/raw.c:322
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "Chyba pri komunikácii s %s (%s)"
 
-#: conn/raw.c:283
+#: conn/raw.c:296
 #, c-format
 msgid "Connection to %s has been aborted"
 msgstr "Spojenie s %s bolo přerušené"
@@ -2361,9 +2361,9 @@ msgstr "Vymazať príznak"
 msgid "Set flag"
 msgstr "Nastaviť príznak"
 
-#: gui/curs_lib.c:342
-msgid "Exit NeoMutt?"
-msgstr "Opustiť NeoMutt?"
+#: gui/curs_lib.c:342 index/functions.c:528
+msgid "Exit NeoMutt without saving?"
+msgstr "Ukončiť NeoMutt bez uloženia?"
 
 #: gui/curs_lib.c:407
 msgid "Press any key to continue..."
@@ -2830,7 +2830,7 @@ msgstr "Přihlašuji %s…"
 msgid "Unsubscribing from %s..."
 msgstr "Odhlašuji %s…"
 
-#: imap/imap.c:1479 imap/message.c:1770
+#: imap/imap.c:1479 imap/message.c:1742
 #, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
@@ -2838,7 +2838,7 @@ msgstr[0] "Kopírujem %d správu do %s…"
 msgstr[1] "Kopírujem %d správy do %s…"
 msgstr[2] "Kopírujem %d správ do %s…"
 
-#: imap/imap.c:1496 imap/imap.c:2149 imap/message.c:1809 muttlib.c:1415
+#: imap/imap.c:1496 imap/imap.c:2149 imap/message.c:1781 muttlib.c:1415
 #, c-format
 msgid "Create %s?"
 msgstr "Vytvoriť %s?"
@@ -2927,20 +2927,20 @@ msgstr "Nemožno získať hlavičky z tejto verzie IMAP serveru"
 msgid "Fetching message headers..."
 msgstr "Sťahujem hlavičky správ…"
 
-#: imap/message.c:1592
+#: imap/message.c:1564
 msgid "Uploading message..."
 msgstr "Nahrávam správu na server…"
 
-#: imap/message.c:1776
+#: imap/message.c:1748
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopírujem správu %d do %s…"
 
-#: imap/message.c:2001 nntp/nntp.c:2601 pop/pop.c:1048
+#: imap/message.c:1973 nntp/nntp.c:2601 pop/pop.c:1047
 msgid "Fetching message..."
 msgstr "Stahujem správu…"
 
-#: imap/message.c:2052 pop/pop.c:1027
+#: imap/message.c:2024 pop/pop.c:1026
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Index správ je chybný. Skúste schránku otvoriť znova."
 
@@ -2959,7 +2959,7 @@ msgstr "Hľadám v hlavičkách bez udania mena: %s"
 msgid "Server-side custom search not supported: %s"
 msgstr "Vyhľadávanie na strane serveru nie je podporované: %s"
 
-#: imap/util.c:655
+#: imap/util.c:648
 msgid "Continue?"
 msgstr "Pokračovať?"
 
@@ -3056,10 +3056,6 @@ msgstr "Žiadne štítky neboli zmenené"
 #: index/functions.c:482
 msgid "Can't edit message"
 msgstr "Správu nemožno upravovať"
-
-#: index/functions.c:528
-msgid "Exit NeoMutt without saving?"
-msgstr "Ukončiť NeoMutt bez uloženia?"
 
 #. L10N: CHECK_ACL
 #: index/functions.c:565
@@ -3365,7 +3361,7 @@ msgstr "Žiadne viditeľné správy"
 
 #: index/index.c:97
 msgid "Changing threaded display should prefer $use_threads over $sort"
-msgstr ""
+msgstr "Zmena nastavenia zobrazenia vláken by mala uprednostniť $use_threads pred $sort"
 
 #: init.c:91
 #, c-format
@@ -3579,7 +3575,7 @@ msgstr "  neomutt [-n] [-e <príkaz>] [-F <configurácia>] -z [-f <schránka>]"
 
 #: main.c:283
 msgid "  neomutt -v[v]\n"
-msgstr ""
+msgstr "  neomutt -v[v]\n"
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
 #: main.c:286
@@ -4069,7 +4065,7 @@ msgstr "SSL nie je dostupné, nedá sa připojiť k %s"
 #: mutt_thread.c:120
 #, c-format
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
-msgstr ""
+msgstr "Nie je možné použiť 'last-' prefix s 'threads' pre %s"
 
 #: mutt_thread.c:1344
 #, fuzzy
@@ -5363,16 +5359,16 @@ msgstr "ID nie je dôveryhodné. Chcete naozaj použiť tento kľúč?"
 msgid "Loading list of groups from cache..."
 msgstr "Načítavam zoznam skupín z cache…"
 
-#: nntp/newsrc.c:1029
+#: nntp/newsrc.c:1027
 msgid "No news server defined"
 msgstr "Nie je definovaný žiadny server diskusných skupín"
 
-#: nntp/newsrc.c:1047
+#: nntp/newsrc.c:1045
 #, c-format
 msgid "%s is an invalid news server specification"
 msgstr "%s je neplatné zadadnie serveru diskusných skupín"
 
-#: nntp/nntp.c:129 nntp/nntp.c:671 pop/lib.c:408 pop/pop.c:685
+#: nntp/nntp.c:129 nntp/nntp.c:671 pop/lib.c:408 pop/pop.c:684
 msgid "Server closed connection"
 msgstr "Server uzavrel spojenie"
 
@@ -5394,7 +5390,7 @@ msgstr "Spojenie s %s ztraceno. Pripojiť znovu?"
 msgid "Fetching list of articles..."
 msgstr "Získávám zoznam článkov…"
 
-#: nntp/nntp.c:1448 nntp/nntp.c:2041 pop/pop.c:556 pop/pop.c:838
+#: nntp/nntp.c:1448 nntp/nntp.c:2041 pop/pop.c:556 pop/pop.c:837
 msgid "Checking for new messages..."
 msgstr "Hľadám nové správy…"
 
@@ -5459,7 +5455,7 @@ msgstr "Diskusná skupina %s bola odstránená zo servera"
 #: notmuch/config.c:60
 #, c-format
 msgid "nm_default_url must be: notmuch://<absolute path> . Current: %s"
-msgstr ""
+msgstr "nm_default_url musí byť v tvare: notmuch://<absolútna cesta> . Súčasné nastavenie: %s"
 
 #. L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
 #. They should not be translated.
@@ -5637,7 +5633,7 @@ msgstr "obnoviť aktuálnu položku"
 
 #: opcodes.h:65
 msgid "ungroup 'multipart' attachment"
-msgstr ""
+msgstr "rozdeliť skupinu „príloh viacerých častí“"
 
 #: opcodes.h:66
 msgid "update an attachment's encoding info"
@@ -6105,7 +6101,8 @@ msgid "collapse/uncollapse current thread"
 msgstr "zabaľ/rozbaľ aktuálne vlákno"
 
 #: opcodes.h:196
-msgid "delete messages matching a pattern"
+#, fuzzy
+msgid "delete non-hidden messages matching a pattern"
 msgstr "zmazať správy zodpovedajúce vzoru"
 
 #: opcodes.h:197
@@ -6223,15 +6220,18 @@ msgid "save changes to mailbox"
 msgstr "uložiť zmeny do schránky"
 
 #: opcodes.h:225
-msgid "tag messages matching a pattern"
+#, fuzzy
+msgid "tag non-hidden messages matching a pattern"
 msgstr "označiť správy zodpovedajúce vzoru"
 
 #: opcodes.h:226
-msgid "undelete messages matching a pattern"
+#, fuzzy
+msgid "undelete non-hidden messages matching a pattern"
 msgstr "obnoviť správy zodpovedajúce vzoru"
 
 #: opcodes.h:227
-msgid "untag messages matching a pattern"
+#, fuzzy
+msgid "untag non-hidden messages matching a pattern"
 msgstr "odznačiť správy zodpovedajúce vzoru"
 
 #: opcodes.h:228
@@ -6690,7 +6690,7 @@ msgstr "Vrch správy je zobrazený"
 #. display some kind of message in case it somehow occurs.)
 #: pager/functions.c:569
 msgid "No text past headers"
-msgstr ""
+msgstr "Pod hlavičkami nie je žiadny text"
 
 #: pager/functions.c:628 pager/functions.c:668
 msgid "No more unquoted text after quoted text"
@@ -7265,7 +7265,7 @@ msgstr[2] "%d správ bolo stratené. Skúste znovu otevrít schránku."
 msgid "POP host is not defined"
 msgstr "Hostiteľ POP nie je definovaný"
 
-#: pop/pop.c:538 pop/pop.c:719 pop/pop.c:752
+#: pop/pop.c:538 pop/pop.c:718 pop/pop.c:751
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s je neplatná POP cesta"
@@ -7300,16 +7300,16 @@ msgstr[0] "%s [%d z %d prečítané správy]"
 msgstr[1] "%s [%d z %d prečítaných správ]"
 msgstr[2] "%s [%d z %d prečítaných správ]"
 
-#: pop/pop.c:803
+#: pop/pop.c:802
 msgid "Fetching list of messages..."
 msgstr "Stahuji zoznam správ…"
 
-#: pop/pop.c:890
+#: pop/pop.c:889
 #, fuzzy
 msgid "Marking messages deleted..."
 msgstr "Označujem správy ku smaznání…"
 
-#: pop/pop.c:1072
+#: pop/pop.c:1071
 #, fuzzy
 msgid "Can't write message to temporary file"
 msgstr "Nemožno zapsať správy do dočasnýho súboru"
@@ -7413,7 +7413,7 @@ msgstr "%s už viac neexistuje"
 #: send/config.c:102
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
-msgstr ""
+msgstr "Voľba %s nesmie obsahovať metaznaky shellu: %c"
 
 #: send/send.c:339
 msgid "No subject, abort?"
@@ -7754,3 +7754,6 @@ msgstr "Nastavenia kompilácie:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Predvolené voľby:"
+
+#~ msgid "Exit NeoMutt?"
+#~ msgstr "Opustiť NeoMutt?"
