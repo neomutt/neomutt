@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-02-02 18:55+0000\n"
+"POT-Creation-Date: 2023-02-16 13:32+0000\n"
 "PO-Revision-Date: 2004-03-03 10:25+900\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
@@ -38,7 +38,7 @@ msgstr "경고: 이 알리아스는 작동하지 않습니다. 고칠까요?"
 msgid "Address: "
 msgstr "주소: "
 
-#: alias/alias.c:453 commands.c:137 conn/raw.c:148 conn/raw.c:205
+#: alias/alias.c:453 commands.c:137 conn/raw.c:161 conn/raw.c:218
 #: envelope/functions.c:131 recvcmd.c:227 send/send.c:203
 #, c-format
 msgid "Bad IDN: '%s'"
@@ -433,7 +433,7 @@ msgstr "%s가 없음. 만들까요?"
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
 #: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:929
-#: nntp/newsrc.c:1119
+#: nntp/newsrc.c:1117
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "%s를 만들 수 없음: %s"
@@ -854,11 +854,11 @@ msgid "%s: no such color"
 msgstr "%s: 색상 없음."
 
 #: color/command.c:221 color/command.c:263 color/command.c:315
-#: color/command.c:387 color/command.c:542 command_parse.c:347
-#: command_parse.c:369 command_parse.c:514 command_parse.c:1099
-#: command_parse.c:1186 hook.c:101 hook.c:157 hook.c:166 hook.c:180 hook.c:429
-#: hook.c:445 keymap.c:1191 score.c:95 subjectrx.c:72 subjectrx.c:100
-#: subjectrx.c:108
+#: color/command.c:387 color/command.c:542 command_parse.c:348
+#: command_parse.c:370 command_parse.c:507 command_parse.c:524
+#: command_parse.c:1109 command_parse.c:1196 hook.c:101 hook.c:157 hook.c:166
+#: hook.c:180 hook.c:429 hook.c:445 keymap.c:1191 score.c:95 subjectrx.c:72
+#: subjectrx.c:100 subjectrx.c:108
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: 인수가 부족함"
@@ -874,8 +874,8 @@ msgstr "%s: 속성 없음."
 msgid "%s: no such object"
 msgstr "%s: 항목 없음"
 
-#: color/command.c:574 color/command.c:633 command_parse.c:393
-#: command_parse.c:1376 command_parse.c:1712 hook.c:106 hook.c:187 hook.c:452
+#: color/command.c:574 color/command.c:633 command_parse.c:394
+#: command_parse.c:1386 command_parse.c:1722 hook.c:106 hook.c:187 hook.c:452
 #: keymap.c:1123 keymap.c:1296 keymap.c:1458 keymap.c:1539 mutt_lua.c:515
 #: score.c:103
 #, c-format
@@ -901,171 +901,171 @@ msgstr ""
 msgid "Maximum quoting level is %d"
 msgstr ""
 
-#: command_parse.c:119
+#: command_parse.c:120
 msgid "-group: no group name"
 msgstr ""
 
-#: command_parse.c:129
+#: command_parse.c:130
 #, fuzzy
 msgid "out of arguments"
 msgstr "인수가 부족함"
 
-#: command_parse.c:211
+#: command_parse.c:212
 #, c-format
 msgid "Error: Can't build path of '%s'"
 msgstr ""
 
-#: command_parse.c:224
+#: command_parse.c:225
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
 msgstr ""
 
-#: command_parse.c:264
+#: command_parse.c:265
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "%s의 %d번 줄에 오류: %s"
 
-#: command_parse.c:275
+#: command_parse.c:276
 #, fuzzy, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "%s의 %d번 줄에 오류: %s"
 
-#: command_parse.c:304
+#: command_parse.c:305
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: %s에 오류"
 
-#: command_parse.c:305
+#: command_parse.c:306
 #, fuzzy, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: %s에 오류가 많으므로 읽기 취소"
 
-#: command_parse.c:314
+#: command_parse.c:315
 #, fuzzy, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "source: %s에 오류"
 
-#: command_parse.c:430
+#: command_parse.c:431
 #, c-format
 msgid "%sgroup: missing -rx or -addr"
 msgstr ""
 
-#: command_parse.c:456
+#: command_parse.c:457
 #, fuzzy, c-format
 msgid "%sgroup: warning: bad IDN '%s'"
 msgstr "경고: 잘못된 IDN '%s' 알리아스 '%s'"
 
-#: command_parse.c:525
+#: command_parse.c:535
 #, c-format
 msgid "Error: %s"
 msgstr ""
 
-#: command_parse.c:687
+#: command_parse.c:697
 msgid "invalid header field"
 msgstr "잘못된 헤더 필드"
 
-#: command_parse.c:758
+#: command_parse.c:768
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
 msgstr ""
 
-#: command_parse.c:792 command_parse.c:932 command_parse.c:1042
+#: command_parse.c:802 command_parse.c:942 command_parse.c:1052
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: 알 수 없는 변수"
 
-#: command_parse.c:807 command_parse.c:1130
+#: command_parse.c:817 command_parse.c:1140
 msgid "Can't use a prefix when querying a variable"
 msgstr ""
 
-#: command_parse.c:813 command_parse.c:1110 command_parse.c:1124
+#: command_parse.c:823 command_parse.c:1120 command_parse.c:1134
 #, c-format
 msgid "Can't query a variable with the '%s' command"
 msgstr ""
 
-#: command_parse.c:825
+#: command_parse.c:835
 msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr ""
 
-#: command_parse.c:831 command_parse.c:862
+#: command_parse.c:841 command_parse.c:872
 #, c-format
 msgid "Can't set a variable with the '%s' command"
 msgstr ""
 
-#: command_parse.c:842
+#: command_parse.c:852
 msgid "Can't decrement a my_ variable"
 msgstr ""
 
-#: command_parse.c:856
+#: command_parse.c:866
 msgid "Can't use prefix when setting a variable"
 msgstr ""
 
-#: command_parse.c:875
+#: command_parse.c:885
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
 msgstr ""
 
-#: command_parse.c:879
+#: command_parse.c:889
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
 msgstr ""
 
-#: command_parse.c:1162 command_parse.c:1170
+#: command_parse.c:1172 command_parse.c:1180
 #, c-format
 msgid "%s is unset"
 msgstr "%s 설정 해제"
 
-#: command_parse.c:1210 mutt_lua.c:510
+#: command_parse.c:1220 mutt_lua.c:510
 #, c-format
 msgid "source: error at %s"
 msgstr "source: %s에 오류"
 
-#: command_parse.c:1218
+#: command_parse.c:1228
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced"
 msgstr "메일들을 프린트 할 수 없음"
 
-#: command_parse.c:1241
+#: command_parse.c:1251
 #, fuzzy
 msgid "spam: no matching pattern"
 msgstr "패턴과 일치하는 메일에 태그 붙임"
 
-#: command_parse.c:1243
+#: command_parse.c:1253
 #, fuzzy
 msgid "nospam: no matching pattern"
 msgstr "패턴과 일치하는 메일의 태그 해제"
 
-#: command_parse.c:1385 imap/imap.c:1326
+#: command_parse.c:1395 imap/imap.c:1326
 #, fuzzy, c-format
 msgid "Subscribed to %s"
 msgstr "%s에 가입 중..."
 
-#: command_parse.c:1389
+#: command_parse.c:1399
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "%s에 가입 중..."
 
-#: command_parse.c:1397 command_parse.c:1733
+#: command_parse.c:1407 command_parse.c:1743
 #, fuzzy
 msgid "No folder specified"
 msgstr "제목이 지정되지 않음."
 
-#: command_parse.c:1432
+#: command_parse.c:1442
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
 msgstr ""
 
-#: command_parse.c:1474
+#: command_parse.c:1484
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
 msgstr ""
 
-#: command_parse.c:1721 imap/imap.c:1328
+#: command_parse.c:1731 imap/imap.c:1328
 #, fuzzy, c-format
 msgid "Unsubscribed from %s"
 msgstr "%s에서 가입 탈퇴 중..."
 
-#: command_parse.c:1725
+#: command_parse.c:1735
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "%s에서 가입 탈퇴 중..."
@@ -1989,7 +1989,7 @@ msgstr "인증서 저장됨"
 msgid "I/O error"
 msgstr "입/출력 오류"
 
-#: conn/openssl.c:1167 conn/raw.c:254 gui/curs_lib.c:378 mutt_logging.c:109
+#: conn/openssl.c:1167 conn/raw.c:267 gui/curs_lib.c:378 mutt_logging.c:109
 msgid "unknown error"
 msgstr "알 수 없는 오류"
 
@@ -2010,32 +2010,32 @@ msgstr "오류: OpenSSL 하부 프로세스를 생성할 수 없음!"
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr ""
 
-#: conn/raw.c:156 conn/raw.c:213
+#: conn/raw.c:169 conn/raw.c:226
 #, c-format
 msgid "Looking up %s..."
 msgstr "%s를 찾는 중..."
 
-#: conn/raw.c:166 conn/raw.c:223
+#: conn/raw.c:179 conn/raw.c:236
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "%s 호스트를 찾을 수 없음."
 
-#: conn/raw.c:171 conn/raw.c:229
+#: conn/raw.c:184 conn/raw.c:242
 #, c-format
 msgid "Connecting to %s..."
 msgstr "%s로 연결 중..."
 
-#: conn/raw.c:253
+#: conn/raw.c:266
 #, c-format
 msgid "Could not connect to %s (%s)"
 msgstr "%s (%s)로 연결할 수 없음"
 
-#: conn/raw.c:276 conn/raw.c:309
+#: conn/raw.c:289 conn/raw.c:322
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "%s (%s) 오류"
 
-#: conn/raw.c:283
+#: conn/raw.c:296
 #, fuzzy, c-format
 msgid "Connection to %s has been aborted"
 msgstr "%s의 접속이 끊어짐"
@@ -2396,9 +2396,10 @@ msgstr "플래그 지움"
 msgid "Set flag"
 msgstr "플래그 설정"
 
-#: gui/curs_lib.c:342
-msgid "Exit NeoMutt?"
-msgstr "NeoMutt을 종료할까요?"
+#: gui/curs_lib.c:342 index/functions.c:528
+#, fuzzy
+msgid "Exit NeoMutt without saving?"
+msgstr "저장하지 않고 NeoMutt을 끝낼까요?"
 
 #: gui/curs_lib.c:407
 msgid "Press any key to continue..."
@@ -2864,13 +2865,13 @@ msgstr "%s에 가입 중..."
 msgid "Unsubscribing from %s..."
 msgstr "%s에서 가입 탈퇴 중..."
 
-#: imap/imap.c:1479 imap/message.c:1770
+#: imap/imap.c:1479 imap/message.c:1742
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "%d개의 메세지를 %s로 복사 중..."
 
-#: imap/imap.c:1496 imap/imap.c:2149 imap/message.c:1809 muttlib.c:1415
+#: imap/imap.c:1496 imap/imap.c:2149 imap/message.c:1781 muttlib.c:1415
 #, c-format
 msgid "Create %s?"
 msgstr "%s를 만들까요?"
@@ -2961,21 +2962,21 @@ msgstr "이 버젼의 IAMP 서버에서 헤더를 가져올 수 없습니다"
 msgid "Fetching message headers..."
 msgstr "메세지 헤더 가져오는 중... [%d/%d]"
 
-#: imap/message.c:1592
+#: imap/message.c:1564
 #, fuzzy
 msgid "Uploading message..."
 msgstr "메일을 업로드 하는 중..."
 
-#: imap/message.c:1776
+#: imap/message.c:1748
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "메세지 %d를 %s로 복사 중..."
 
-#: imap/message.c:2001 nntp/nntp.c:2601 pop/pop.c:1048
+#: imap/message.c:1973 nntp/nntp.c:2601 pop/pop.c:1047
 msgid "Fetching message..."
 msgstr "메세지 가져오는 중..."
 
-#: imap/message.c:2052 pop/pop.c:1027
+#: imap/message.c:2024 pop/pop.c:1026
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "잘못된 메일 인덱스. 메일함 열기 재시도."
 
@@ -2994,7 +2995,7 @@ msgstr ""
 msgid "Server-side custom search not supported: %s"
 msgstr ""
 
-#: imap/util.c:655
+#: imap/util.c:648
 msgid "Continue?"
 msgstr "계속할까요?"
 
@@ -3094,11 +3095,6 @@ msgstr "메일함이 변경되지 않음"
 #, fuzzy
 msgid "Can't edit message"
 msgstr "메일을 쓰지 못함"
-
-#: index/functions.c:528
-#, fuzzy
-msgid "Exit NeoMutt without saving?"
-msgstr "저장하지 않고 NeoMutt을 끝낼까요?"
 
 #. L10N: CHECK_ACL
 #: index/functions.c:565
@@ -5430,16 +5426,16 @@ msgstr "이 ID는 확실하지 않음. 이 키를 정말로 사용을 하겠습�
 msgid "Loading list of groups from cache..."
 msgstr ""
 
-#: nntp/newsrc.c:1029
+#: nntp/newsrc.c:1027
 msgid "No news server defined"
 msgstr ""
 
-#: nntp/newsrc.c:1047
+#: nntp/newsrc.c:1045
 #, fuzzy, c-format
 msgid "%s is an invalid news server specification"
 msgstr "%s는 잘못된 POP 패스"
 
-#: nntp/nntp.c:129 nntp/nntp.c:671 pop/lib.c:408 pop/pop.c:685
+#: nntp/nntp.c:129 nntp/nntp.c:671 pop/lib.c:408 pop/pop.c:684
 msgid "Server closed connection"
 msgstr "서버와 연결이 끊어짐"
 
@@ -5461,7 +5457,7 @@ msgstr "%s의 접속이 끊어짐"
 msgid "Fetching list of articles..."
 msgstr "메일의 목록을 가져오는 중..."
 
-#: nntp/nntp.c:1448 nntp/nntp.c:2041 pop/pop.c:556 pop/pop.c:838
+#: nntp/nntp.c:1448 nntp/nntp.c:2041 pop/pop.c:556 pop/pop.c:837
 msgid "Checking for new messages..."
 msgstr "새 메일을 확인중..."
 
@@ -6183,7 +6179,8 @@ msgid "collapse/uncollapse current thread"
 msgstr "현재 글타래 펴기/접기"
 
 #: opcodes.h:196
-msgid "delete messages matching a pattern"
+#, fuzzy
+msgid "delete non-hidden messages matching a pattern"
 msgstr "패턴과 일치하는 메일 삭제"
 
 #: opcodes.h:197
@@ -6303,15 +6300,18 @@ msgid "save changes to mailbox"
 msgstr "메일함 변경 사항 저장"
 
 #: opcodes.h:225
-msgid "tag messages matching a pattern"
+#, fuzzy
+msgid "tag non-hidden messages matching a pattern"
 msgstr "패턴과 일치하는 메일에 태그 붙임"
 
 #: opcodes.h:226
-msgid "undelete messages matching a pattern"
+#, fuzzy
+msgid "undelete non-hidden messages matching a pattern"
 msgstr "패턴과 일치하는 메일 복구"
 
 #: opcodes.h:227
-msgid "untag messages matching a pattern"
+#, fuzzy
+msgid "untag non-hidden messages matching a pattern"
 msgstr "패턴과 일치하는 메일의 태그 해제"
 
 #: opcodes.h:228
@@ -7382,7 +7382,7 @@ msgstr[0] "잘못된 메일 인덱스. 메일함 열기 재시도."
 msgid "POP host is not defined"
 msgstr "POP 서버가 지정되지 않음"
 
-#: pop/pop.c:538 pop/pop.c:719 pop/pop.c:752
+#: pop/pop.c:538 pop/pop.c:718 pop/pop.c:751
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s는 잘못된 POP 패스"
@@ -7413,16 +7413,16 @@ msgid "%s [%d of %d message read]"
 msgid_plural "%s [%d of %d messages read]"
 msgstr[0] "%s [%d - %d 메일 읽음]"
 
-#: pop/pop.c:803
+#: pop/pop.c:802
 msgid "Fetching list of messages..."
 msgstr "메일의 목록을 가져오는 중..."
 
-#: pop/pop.c:890
+#: pop/pop.c:889
 #, fuzzy
 msgid "Marking messages deleted..."
 msgstr "%d개의 메일을 삭제 표시함..."
 
-#: pop/pop.c:1072
+#: pop/pop.c:1071
 msgid "Can't write message to temporary file"
 msgstr "메일을 임시 파일에 쓸수 없음"
 
@@ -7858,3 +7858,6 @@ msgstr "컴파일 선택사항:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "컴파일 선택사항:"
+
+#~ msgid "Exit NeoMutt?"
+#~ msgstr "NeoMutt을 종료할까요?"
