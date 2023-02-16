@@ -2658,9 +2658,8 @@ msgid "%s authentication failed"
 msgstr "%s azonosítás nem sikerült"
 
 #: imap/auth_gsasl.c:147 pop/auth.c:135
-#, fuzzy
 msgid "SASL authentication failed"
-msgstr "Hitelesítés sikertelen"
+msgstr "SASL hitelesítés sikertelen"
 
 #: imap/auth_login.c:51
 msgid "LOGIN disabled on this server"
@@ -5953,9 +5952,8 @@ msgid "collapse/uncollapse current thread"
 msgstr "téma kinyitása/bezárása"
 
 #: opcodes.h:196
-#, fuzzy
 msgid "delete non-hidden messages matching a pattern"
-msgstr "mintára illeszkedő levelek törlése"
+msgstr "adott mintára illeszkedő, nem rejtett levelek törlése"
 
 #: opcodes.h:197
 msgid "retrieve mail from POP server"
@@ -6070,19 +6068,16 @@ msgid "save changes to mailbox"
 msgstr "mentés postafiókba"
 
 #: opcodes.h:225
-#, fuzzy
 msgid "tag non-hidden messages matching a pattern"
-msgstr "levelek kijelölése mintára illesztéssel"
+msgstr "adott mintára illeszkedő, nem rejtett levelek megjelölése"
 
 #: opcodes.h:226
-#, fuzzy
 msgid "undelete non-hidden messages matching a pattern"
-msgstr "levelek visszaállítása mintára illesztéssel"
+msgstr "adott mintára illeszkedő, nem rejtett levelek visszaállítása"
 
 #: opcodes.h:227
-#, fuzzy
 msgid "untag non-hidden messages matching a pattern"
-msgstr "kijelölés megszüntetése mintára illesztéssel"
+msgstr "adott mintára illeszkedő, nem rejtett levelek megjelölésének visszavonása"
 
 #: opcodes.h:228
 msgid "create a hotkey macro for the current message"
