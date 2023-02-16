@@ -616,14 +616,6 @@
 ** mailbox which does not yet exist before creating it.
 */
 
-{ "connect_timeout", DT_NUMBER, 30 },
-/*
-** .pp
-** Causes NeoMutt to timeout a network connection (for IMAP, POP or SMTP) after this
-** many seconds if the connection is not able to be established.  A negative
-** value causes NeoMutt to wait indefinitely for the connection attempt to succeed.
-*/
-
 { "content_type", DT_STRING, "text/plain" },
 /*
 ** .pp
@@ -4771,6 +4763,14 @@
 ** This variable defaults to your user name on the local machine.
 */
 #endif
+
+{ "socket_timeout", DT_NUMBER, 30 },
+/*
+** .pp
+** Causes NeoMutt to timeout any socket connect/read/write operation (for IMAP,
+** POP or SMTP) after this many seconds.  A negative value causes NeoMutt to
+** wait indefinitely.
+*/
 
 { "sort", DT_SORT, SORT_DATE },
 /*

@@ -36,11 +36,11 @@ static struct ConfigDef ConnVars[] = {
   { "account_command", DT_STRING|DT_COMMAND, 0, 0, NULL,
     "Shell command to retrieve account credentials"
   },
-  { "connect_timeout", DT_NUMBER, 30, 0, NULL,
-    "Timeout for making network connections (-1 to wait indefinitely)"
-  },
   { "preconnect", DT_STRING, 0, 0, NULL,
     "(socket) External command to run prior to opening a socket"
+  },
+  { "socket_timeout", DT_NUMBER, 30, 0, NULL,
+    "Timeout for socket connect/read/write operations (-1 to wait indefinitely)"
   },
   { "tunnel", DT_STRING|DT_COMMAND, 0, 0, NULL,
     "Shell command to establish a tunnel"
@@ -48,6 +48,8 @@ static struct ConfigDef ConnVars[] = {
   { "tunnel_is_secure", DT_BOOL, true, 0, NULL,
     "Assume a tunneled connection is secure"
   },
+
+  { "connect_timeout", DT_SYNONYM, IP "socket_timeout", IP "2023-02-15" },
   { NULL },
   // clang-format on
 };
