@@ -5981,9 +5981,8 @@ msgid "collapse/uncollapse current thread"
 msgstr "sutraukti/išskleisti esamą giją"
 
 #: opcodes.h:196
-#, fuzzy
 msgid "delete non-hidden messages matching a pattern"
-msgstr "ištrinti laiškus, tenkinančius šabloną"
+msgstr "ištrinti nepaslėptus laiškus, tenkinančius šabloną"
 
 #: opcodes.h:197
 msgid "retrieve mail from POP server"
@@ -6098,19 +6097,16 @@ msgid "save changes to mailbox"
 msgstr "išsaugoti dėžutės pakeitimus"
 
 #: opcodes.h:225
-#, fuzzy
 msgid "tag non-hidden messages matching a pattern"
-msgstr "pažymėti laiškus, tenkinančius šabloną"
+msgstr "pažymėti nepaslėptus laiškus, tenkinančius šabloną"
 
 #: opcodes.h:226
-#, fuzzy
 msgid "undelete non-hidden messages matching a pattern"
-msgstr "sugrąžinti laiškus, tenkinančius šabloną"
+msgstr "sugrąžinti nepaslėptus laiškus, tenkinančius šabloną"
 
 #: opcodes.h:227
-#, fuzzy
 msgid "untag non-hidden messages matching a pattern"
-msgstr "atžymėti laiškus, tenkinančius šabloną"
+msgstr "atžymėti nepaslėptus laiškus, tenkinančius šabloną"
 
 #: opcodes.h:228
 msgid "create a hotkey macro for the current message"
