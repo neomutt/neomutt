@@ -5995,9 +5995,8 @@ msgid "collapse/uncollapse current thread"
 msgstr "zavinout/rozvinout toto vlákno"
 
 #: opcodes.h:196
-#, fuzzy
 msgid "delete non-hidden messages matching a pattern"
-msgstr "smazat zprávy shodující se se vzorem"
+msgstr "smazat neskryté zprávy odpovídající vzoru"
 
 #: opcodes.h:197
 msgid "retrieve mail from POP server"
@@ -6112,19 +6111,16 @@ msgid "save changes to mailbox"
 msgstr "uložit změny do schránky"
 
 #: opcodes.h:225
-#, fuzzy
 msgid "tag non-hidden messages matching a pattern"
-msgstr "označit zprávy shodující se se vzorem"
+msgstr "označit neskryté zprávy odpovídající vzoru"
 
 #: opcodes.h:226
-#, fuzzy
 msgid "undelete non-hidden messages matching a pattern"
-msgstr "obnovit zprávy shodující se se vzorem"
+msgstr "obnovit neskryté zprávy odpovídající vzoru"
 
 #: opcodes.h:227
-#, fuzzy
 msgid "untag non-hidden messages matching a pattern"
-msgstr "odznačit zprávy shodující se se vzorem"
+msgstr "odznačit neskryté zprávy odpovídající vzoru"
 
 #: opcodes.h:228
 msgid "create a hotkey macro for the current message"

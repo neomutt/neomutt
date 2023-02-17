@@ -207,9 +207,8 @@ msgid "Current attachments settings:"
 msgstr "Súčasné nastavení príloh:"
 
 #: attach/attachments.c:519
-#, fuzzy
 msgid "attachments: invalid disposition"
-msgstr "prílohy: neplatná dispozícia"
+msgstr "attachments: neplatná dispozícia"
 
 #: attach/attachments.c:539
 msgid "unattachments: no disposition"
@@ -347,12 +346,12 @@ msgid "---Command: %-30.30s Attachment: %s"
 msgstr "---Príkaz: %-30.30s Prílohy: %s"
 
 #: attach/mutt_attach.c:664
-#, fuzzy, c-format
+#, c-format
 msgid "---Attachment: %s: %s"
 msgstr "---Príloha: %s: %s"
 
 #: attach/mutt_attach.c:666
-#, fuzzy, c-format
+#, c-format
 msgid "---Attachment: %s"
 msgstr "---Príloha: %s"
 
@@ -361,9 +360,8 @@ msgid "Write fault"
 msgstr "Chyba zápisu"
 
 #: attach/mutt_attach.c:1277
-#, fuzzy
 msgid "I don't know how to print that"
-msgstr "Neviem, ako to vytlačiť"
+msgstr "Neviem ako to vytlačiť"
 
 #: attach/recvattach.c:333
 msgid "Saving..."
@@ -374,8 +372,8 @@ msgstr "Ukladám…"
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
 msgstr[0] "Príloha uložená"
-msgstr[1] "%d príloh príloh uložených"
-msgstr[2] "%d príloh príloh uložených"
+msgstr[1] "%d prílohy uložené"
+msgstr[2] "%d príloh uložených"
 
 #: attach/recvattach.c:537
 #, c-format
@@ -895,7 +893,6 @@ msgid "-group: no group name"
 msgstr "-group: chybajúce meno skupiny"
 
 #: command_parse.c:130
-#, fuzzy
 msgid "out of arguments"
 msgstr "príliš málo argumentov"
 
@@ -985,9 +982,8 @@ msgid "Can't set a variable with the '%s' command"
 msgstr "Nelze nastaviť premennú príkazom „%s“"
 
 #: command_parse.c:852
-#, fuzzy
 msgid "Can't decrement a my_ variable"
-msgstr "Nelze použiť prefix pri nastavovanie premenné"
+msgstr "Nie je možné znížiť hodnotu vlastnej premennej my_"
 
 #: command_parse.c:866
 msgid "Can't use prefix when setting a variable"
@@ -1050,12 +1046,12 @@ msgid "tag transform '%s' already registered as '%s'"
 msgstr "preklad tagu '%s' je už zapísaný ako '%s'"
 
 #: command_parse.c:1731 imap/imap.c:1328
-#, fuzzy, c-format
+#, c-format
 msgid "Unsubscribed from %s"
 msgstr "Odhlásený odber z %s"
 
 #: command_parse.c:1735
-#, fuzzy, c-format
+#, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Nemožno odhlásiť odber z %s"
 
@@ -1064,14 +1060,12 @@ msgid "Warning: message contains no From: header"
 msgstr "Upozornenie: Správa neobsahuje žiadnu From: hlavičku"
 
 #: commands.c:117 recvcmd.c:204
-#, fuzzy
 msgid "Bounce message to: "
-msgstr "Presmerovať správu do: "
+msgstr "Presmerovať správu na: "
 
 #: commands.c:119 recvcmd.c:206
-#, fuzzy
 msgid "Bounce tagged messages to: "
-msgstr "Presmerovať označené správy do: "
+msgstr "Presmerovať označené správy na: "
 
 #: commands.c:129 recvcmd.c:218
 msgid "Error parsing address"
@@ -1081,9 +1075,9 @@ msgstr "Chyba pri analýze adresy"
 #, c-format
 msgid "Bounce message to %s?"
 msgid_plural "Bounce messages to %s?"
-msgstr[0] "Presmerovať správu do %s?"
-msgstr[1] "Presmerovať správy do %s?"
-msgstr[2] "Presmerovať správy do %s?"
+msgstr[0] "Presmerovať správu na %s?"
+msgstr[1] "Presmerovať správy na %s?"
+msgstr[2] "Presmerovať správy na %s?"
 
 #: commands.c:165 recvcmd.c:260
 msgid "Message not bounced"
@@ -6101,9 +6095,8 @@ msgid "collapse/uncollapse current thread"
 msgstr "zabaľ/rozbaľ aktuálne vlákno"
 
 #: opcodes.h:196
-#, fuzzy
 msgid "delete non-hidden messages matching a pattern"
-msgstr "zmazať správy zodpovedajúce vzoru"
+msgstr "zmazať neskryté správy zodpovedajúce vzoru"
 
 #: opcodes.h:197
 msgid "retrieve mail from POP server"
@@ -6220,19 +6213,16 @@ msgid "save changes to mailbox"
 msgstr "uložiť zmeny do schránky"
 
 #: opcodes.h:225
-#, fuzzy
 msgid "tag non-hidden messages matching a pattern"
-msgstr "označiť správy zodpovedajúce vzoru"
+msgstr "označiť neskryté správy zodpovedajúce vzoru"
 
 #: opcodes.h:226
-#, fuzzy
 msgid "undelete non-hidden messages matching a pattern"
-msgstr "obnoviť správy zodpovedajúce vzoru"
+msgstr "obnoviť neskryté správy zodpovedajúce vzoru"
 
 #: opcodes.h:227
-#, fuzzy
 msgid "untag non-hidden messages matching a pattern"
-msgstr "odznačiť správy zodpovedajúce vzoru"
+msgstr "odznačiť neskryté správy zodpovedajúce vzoru"
 
 #: opcodes.h:228
 #, fuzzy
