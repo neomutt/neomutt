@@ -43,6 +43,40 @@
 bool OptLocales; ///< (pseudo) set if user has valid locale definition
 
 /**
+ * utf_length_table - Table of UTF multibyte sequence lengths indexed by the first byte
+ */
+static const unsigned char utf_length_table[256] = {
+  // clang-format off
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,		/* 32 */
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,		/* 64 */ 
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,		/* 96 */
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,		/* 128 */ 
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,		/* 160 */
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,		/* 192 */ 
+	2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 
+	2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,		/* 224 */
+	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 
+	4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 1, 1,		/* 256 */
+  // clang-format on
+};
+
+/**
+ * mutt_mb_charlen_first - Count the bytes in a multibyte character given only the first byte
+ * @param[in]  first       First character of the multibyte sequence
+ * @retval num Bytes in the first multibyte character having the given first byte
+ */
+unsigned char mutt_mb_charlen_first(const unsigned char first)
+{
+  return utf_length_table[first];
+}
+
+/**
  * mutt_mb_charlen - Count the bytes in a (multibyte) character
  * @param[in]  s     String to be examined
  * @param[out] width Number of screen columns the character would use

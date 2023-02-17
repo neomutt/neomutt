@@ -39,6 +39,7 @@ extern bool OptLocales;
 #define IsWPrint(wc) (iswprint(wc) || (OptLocales ? 0 : (wc >= 0xa0)))
 #endif
 
+unsigned char mutt_mb_charlen_first(const unsigned char first);
 int    mutt_mb_charlen(const char *s, int *width);
 int    mutt_mb_filter_unprintable(char **s);
 bool   mutt_mb_get_initials(const char *name, char *buf, size_t buflen);
