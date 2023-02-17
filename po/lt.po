@@ -5853,7 +5853,7 @@ msgstr "eiti į pirmą įrašą"
 
 #: opcodes.h:155
 msgid "toggle a message's 'important' flag"
-msgstr "perjungti laiško 'svarbumo' flagą"
+msgstr "perjungti laiško 'svarbumo' vėliavėlę"
 
 #: opcodes.h:156
 msgid "followup to newsgroup"
@@ -5970,7 +5970,7 @@ msgstr "atidaryti kitą naujienų grupę tik skaitymo režimu"
 
 #: opcodes.h:193
 msgid "clear a status flag from a message"
-msgstr "išvalyti laiško būsenos flagą"
+msgstr "išvalyti laiško būsenos vėliavėlę"
 
 #: opcodes.h:194
 msgid "collapse/uncollapse all threads"
@@ -6087,7 +6087,7 @@ msgstr "šokti į pradinį laišką gijoje"
 
 #: opcodes.h:222
 msgid "set a status flag on a message"
-msgstr "uždėti būsenos flagą laiškui"
+msgstr "uždėti būsenos vėliavėlę laiškui"
 
 #: opcodes.h:223
 msgid "show currently active limit pattern"
@@ -6282,7 +6282,7 @@ msgstr "perjungti, ar naršyti pašto dėžutes, ar visas bylas"
 
 #: opcodes.h:273
 msgid "toggle a message's 'new' flag"
-msgstr "perjungti laiško 'naujumo' flagą"
+msgstr "perjungti laiško 'naujumo' vėliavėlę"
 
 #: opcodes.h:274
 msgid "toggle view of read messages"
