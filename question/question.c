@@ -203,7 +203,12 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
   size_t trunc_msg_len;
   bool redraw = true;
   int prompt_lines = 1;
-  char answer[2] = { 0 };
+  char answer[7] = { 0 };
+  char *panswer = NULL;
+  const char *lc_var = NULL;
+  int ilc_var = 0;
+  static const char *lc_var_names[] = { "LC_ALL", "LC_MESSAGES", "LANG" };
+  bool input_is_utf = false;
 
   char *yes = N_("yes");
   char *no = N_("no");
@@ -327,7 +332,40 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
       break;
     }
 
-    answer[0] = ch.ch;
+    input_is_utf = false;
+    ilc_var = 0;
+    while (!input_is_utf && (ilc_var < sizeof(lc_var_names) / sizeof(char *)))
+    {
+      lc_var = mutt_str_getenv(lc_var_names[ilc_var]);
+      if (lc_var)
+      {
+        if (strstr(lc_var, ".UTF-8"))
+          input_is_utf = true;
+        else
+          break;
+      }
+      ilc_var++;
+    }
+
+    if (input_is_utf)
+    {
+      panswer = answer;
+      *panswer = ch.ch;
+      int times_to_read = mutt_mb_charlen_first((unsigned char) *panswer);
+      panswer++;
+      for (int i = 1; i < times_to_read; i++)
+      {
+        ch = mutt_getch_timeout(0);
+        *panswer++ = ch.ch;
+      }
+      *panswer = 0;
+    }
+    else
+    {
+      answer[0] = ch.ch;
+      answer[1] = 0;
+    }
+
     if (reyes_ok ? (regexec(&reyes, answer, 0, 0, 0) == 0) : (tolower(ch.ch) == 'y'))
     {
       def = MUTT_YES;
