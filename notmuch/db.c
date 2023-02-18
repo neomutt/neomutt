@@ -84,16 +84,16 @@ const char *nm_db_get_filename(struct Mailbox *m)
 static const char *get_nm_config_file(void)
 {
   const char *config_to_use = NULL;
-  const char *nm_config_file = cs_subset_path(NeoMutt->sub, "nm_config_file");
+  const char *c_nm_config_file = cs_subset_path(NeoMutt->sub, "nm_config_file");
 
   // Workaround the configuration system mapping "" to NULL.
-  if (nm_config_file == NULL)
+  if (c_nm_config_file == NULL)
   {
     config_to_use = "";
   }
-  else if (!mutt_strn_equal(nm_config_file, "auto", 4))
+  else if (!mutt_strn_equal(c_nm_config_file, "auto", 4))
   {
-    config_to_use = nm_config_file;
+    config_to_use = c_nm_config_file;
   }
 
   return config_to_use;
@@ -125,10 +125,10 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
 #if LIBNOTMUCH_CHECK_VERSION(5, 4, 0)
     // notmuch 0.32-0.32.2 didn't bump libnotmuch version to 5.4.
     const char *config_file = get_nm_config_file();
-    const char *const config_profile = cs_subset_string(NeoMutt->sub, "nm_config_profile");
+    const char *const c_nm_config_profile = cs_subset_string(NeoMutt->sub, "nm_config_profile");
 
     st = notmuch_database_open_with_config(filename, mode, config_file,
-                                           config_profile, &db, &msg);
+                                           c_nm_config_profile, &db, &msg);
 
     // Attempt opening database without configuration file. Don't if the user specified no config.
     if (st == NOTMUCH_STATUS_NO_CONFIG && !mutt_str_equal(config_file, ""))

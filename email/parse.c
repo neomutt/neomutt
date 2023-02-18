@@ -164,8 +164,7 @@ static void parse_parameters(struct ParameterList *pl, const char *s, bool allow
           s++;
           for (; *s; s++)
           {
-            const struct Slist *const c_assumed_charset =
-                cs_subset_slist(NeoMutt->sub, "assumed_charset");
+            const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
             if (c_assumed_charset)
             {
               // As iso-2022-* has a character of '"' with non-ascii state, ignore it

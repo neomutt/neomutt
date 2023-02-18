@@ -115,18 +115,18 @@ static int menu_drag_view(struct Menu *menu, int top, int index)
 
   const int page = menu->page_len;
 
-  short context = cs_subset_number(menu->sub, "menu_context");
-  context = MIN(context, (page / 2));
+  short c_menu_context = cs_subset_number(menu->sub, "menu_context");
+  c_menu_context = MIN(c_menu_context, (page / 2));
 
   const bool c_menu_scroll = cs_subset_bool(menu->sub, "menu_scroll");
   if (c_menu_scroll)
   {
     int bottom = top + page;
     // Scroll the view to make the selection visible
-    if (index < top + context) // scroll=YES, moving UP
-      top = index - context;
-    else if (index >= (bottom - context)) // scroll=YES, moving DOWN
-      top = index - page + context + 1;
+    if (index < top + c_menu_context) // scroll=YES, moving UP
+      top = index - c_menu_context;
+    else if (index >= (bottom - c_menu_context)) // scroll=YES, moving DOWN
+      top = index - page + c_menu_context + 1;
   }
   else
   {
@@ -135,10 +135,10 @@ static int menu_drag_view(struct Menu *menu, int top, int index)
     int bottom = top + page;
 
     // Page up/down to make the selection visible
-    if (index < (top + context)) // scroll=NO, moving UP
-      top = index - page + context + 1;
-    else if (index >= (bottom - context)) // scroll=NO, moving DOWN
-      top = index - context;
+    if (index < (top + c_menu_context)) // scroll=NO, moving UP
+      top = index - page + c_menu_context + 1;
+    else if (index >= (bottom - c_menu_context)) // scroll=NO, moving DOWN
+      top = index - c_menu_context;
   }
 
   if (top < 0)
@@ -163,16 +163,16 @@ static int menu_drag_view(struct Menu *menu, int top, int index)
  */
 static int calc_fit_selection_to_view(struct Menu *menu, int top, int index)
 {
-  short context = cs_subset_number(menu->sub, "menu_context");
-  context = MIN(context, (menu->page_len / 2));
+  short c_menu_context = cs_subset_number(menu->sub, "menu_context");
+  c_menu_context = MIN(c_menu_context, (menu->page_len / 2));
 
   int min = top;
   if (top != 0)
-    min += context;
+    min += c_menu_context;
 
   int max = top + menu->page_len - 1;
   if (max < (menu->max - 1))
-    max -= context;
+    max -= c_menu_context;
   else
     max = menu->max - 1;
 
@@ -196,11 +196,11 @@ static int calc_move_view(struct Menu *menu, int relative)
   if (menu->max <= menu->page_len) // fewer entries than lines
     return 0;
 
-  short context = cs_subset_number(menu->sub, "menu_context");
-  context = MIN(context, (menu->page_len / 2));
+  short c_menu_context = cs_subset_number(menu->sub, "menu_context");
+  c_menu_context = MIN(c_menu_context, (menu->page_len / 2));
 
   int index = menu->current;
-  if (index < context)
+  if (index < c_menu_context)
     return 0;
 
   int top = menu->top + relative;
@@ -214,7 +214,7 @@ static int calc_move_view(struct Menu *menu, int relative)
   const bool c_menu_move_off = cs_subset_bool(menu->sub, "menu_move_off");
   if (c_menu_move_off)
   {
-    max -= context;
+    max -= c_menu_context;
   }
   else
   {
@@ -255,8 +255,8 @@ MenuRedrawFlags menu_move_view_relative(struct Menu *menu, int relative)
 {
   const bool c_menu_move_off = cs_subset_bool(menu->sub, "menu_move_off");
 
-  short context = cs_subset_number(menu->sub, "menu_context");
-  context = MIN(context, (menu->page_len / 2));
+  short c_menu_context = cs_subset_number(menu->sub, "menu_context");
+  c_menu_context = MIN(c_menu_context, (menu->page_len / 2));
 
   // Move and range-check the view
   int top = menu->top + relative;
@@ -264,9 +264,9 @@ MenuRedrawFlags menu_move_view_relative(struct Menu *menu, int relative)
   {
     top = 0;
   }
-  else if (c_menu_move_off && (top >= (menu->max - context)))
+  else if (c_menu_move_off && (top >= (menu->max - c_menu_context)))
   {
-    top = menu->max - context - 1;
+    top = menu->max - c_menu_context - 1;
   }
   else if (!c_menu_move_off && ((top + menu->page_len) >= menu->max))
   {
@@ -283,12 +283,12 @@ MenuRedrawFlags menu_move_view_relative(struct Menu *menu, int relative)
     index = top + menu->page_len - 1;
 
   // Check for top/bottom limits
-  if (index < context)
+  if (index < c_menu_context)
   {
     top = 0;
     index = menu->current;
   }
-  else if (!c_menu_move_off && (index > (menu->max - context)))
+  else if (!c_menu_move_off && (index > (menu->max - c_menu_context)))
   {
     top = menu->max - menu->page_len;
     index = menu->current;
@@ -299,7 +299,7 @@ MenuRedrawFlags menu_move_view_relative(struct Menu *menu, int relative)
     // Can't move the view; move the selection
     index = calc_fit_selection_to_view(menu, top, index + relative);
   }
-  else if (index > (top + menu->page_len - context - 1))
+  else if (index > (top + menu->page_len - c_menu_context - 1))
   {
     index = calc_fit_selection_to_view(menu, top, index + relative);
   }
@@ -448,12 +448,12 @@ MenuRedrawFlags menu_current_top(struct Menu *menu)
     return MENU_REDRAW_NO_FLAGS;
   }
 
-  short context = cs_subset_number(menu->sub, "menu_context");
-  if (context > (menu->page_len / 2))
+  short c_menu_context = cs_subset_number(menu->sub, "menu_context");
+  if (c_menu_context > (menu->page_len / 2))
     return MENU_REDRAW_NO_FLAGS;
 
-  context = MIN(context, (menu->page_len / 2));
-  return menu_move_view_relative(menu, menu->current - menu->top - context);
+  c_menu_context = MIN(c_menu_context, (menu->page_len / 2));
+  return menu_move_view_relative(menu, menu->current - menu->top - c_menu_context);
 }
 
 /**
@@ -469,8 +469,8 @@ MenuRedrawFlags menu_current_middle(struct Menu *menu)
     return MENU_REDRAW_NO_FLAGS;
   }
 
-  short context = cs_subset_number(menu->sub, "menu_context");
-  if (context > (menu->page_len / 2))
+  short c_menu_context = cs_subset_number(menu->sub, "menu_context");
+  if (c_menu_context > (menu->page_len / 2))
     return MENU_REDRAW_NO_FLAGS;
 
   return menu_move_view_relative(menu, menu->current - (menu->top + (menu->page_len / 2)));
@@ -489,13 +489,13 @@ MenuRedrawFlags menu_current_bottom(struct Menu *menu)
     return MENU_REDRAW_NO_FLAGS;
   }
 
-  short context = cs_subset_number(menu->sub, "menu_context");
-  if (context > (menu->page_len / 2))
+  short c_menu_context = cs_subset_number(menu->sub, "menu_context");
+  if (c_menu_context > (menu->page_len / 2))
     return MENU_REDRAW_NO_FLAGS;
 
-  context = MIN(context, (menu->page_len / 2));
+  c_menu_context = MIN(c_menu_context, (menu->page_len / 2));
   return menu_move_view_relative(menu, 0 - (menu->top + menu->page_len - 1 -
-                                            menu->current - context));
+                                            menu->current - c_menu_context));
 }
 
 /**

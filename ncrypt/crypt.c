@@ -1076,8 +1076,7 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
 bool mutt_should_hide_protected_subject(struct Email *e)
 {
   const bool c_crypt_protected_headers_write = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_write");
-  const char *const c_crypt_protected_headers_subject =
-      cs_subset_string(NeoMutt->sub, "crypt_protected_headers_subject");
+  const char *const c_crypt_protected_headers_subject = cs_subset_string(NeoMutt->sub, "crypt_protected_headers_subject");
   if (c_crypt_protected_headers_write && (e->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)) &&
       !(e->security & SEC_INLINE) && c_crypt_protected_headers_subject)
   {

@@ -218,9 +218,9 @@ static void query_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
   const struct AliasViewArray *ava = &mdata->ava;
   struct AliasView *av = ARRAY_GET(ava, line);
 
-  const char *const query_format = cs_subset_string(mdata->sub, "query_format");
+  const char *const c_query_format = cs_subset_string(mdata->sub, "query_format");
 
-  mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(query_format),
+  mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_query_format),
                       query_format_str, (intptr_t) av, MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -258,8 +258,8 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
   char *p = NULL;
   struct Buffer *cmd = mutt_buffer_pool_get();
 
-  const char *const query_command = cs_subset_string(sub, "query_command");
-  mutt_buffer_file_expand_fmt_quote(cmd, query_command, s);
+  const char *const c_query_command = cs_subset_string(sub, "query_command");
+  mutt_buffer_file_expand_fmt_quote(cmd, c_query_command, s);
 
   pid_t pid = filter_create(mutt_buffer_string(cmd), NULL, &fp, NULL);
   if (pid < 0)
@@ -443,8 +443,8 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
   struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
 
   struct AliasList al = TAILQ_HEAD_INITIALIZER(al);
-  const char *const query_command = cs_subset_string(sub, "query_command");
-  if (!query_command)
+  const char *const c_query_command = cs_subset_string(sub, "query_command");
+  if (!c_query_command)
   {
     mutt_warning(_("Query command not defined"));
     goto done;
@@ -531,8 +531,8 @@ done:
  */
 void query_index(struct Mailbox *m, struct ConfigSubset *sub)
 {
-  const char *const query_command = cs_subset_string(sub, "query_command");
-  if (!query_command)
+  const char *const c_query_command = cs_subset_string(sub, "query_command");
+  if (!c_query_command)
   {
     mutt_warning(_("Query command not defined"));
     return;

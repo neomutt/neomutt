@@ -442,8 +442,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
   {
     if (oppenc_mode)
     {
-      const bool c_crypt_opportunistic_encrypt_strong_keys =
-          cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
+      const bool c_crypt_opportunistic_encrypt_strong_keys = cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
       if (the_strong_valid_key)
       {
         pgp_remove_key(&matches, the_strong_valid_key);

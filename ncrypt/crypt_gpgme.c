@@ -3219,8 +3219,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
   {
     if (oppenc_mode)
     {
-      const bool c_crypt_opportunistic_encrypt_strong_keys =
-          cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
+      const bool c_crypt_opportunistic_encrypt_strong_keys = cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
       if (the_strong_valid_key)
         k = crypt_copy_key(the_strong_valid_key);
       else if (a_valid_addrmatch_key && !c_crypt_opportunistic_encrypt_strong_keys)
