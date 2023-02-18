@@ -209,7 +209,8 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
                                      const char *if_str, const char *else_str,
                                      intptr_t data, MuttFormatFlags flags)
 {
-  char fn[128], fmt[128];
+  char fn[128] = { 0 };
+  char fmt[128] = { 0 };
   struct Folder *folder = (struct Folder *) data;
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
