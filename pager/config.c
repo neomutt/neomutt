@@ -36,11 +36,17 @@ static struct ConfigDef PagerVars[] = {
   { "allow_ansi", DT_BOOL, false, 0, NULL,
     "Allow ANSI colour codes in rich text messages"
   },
+  { "display_filter", DT_STRING|DT_COMMAND|R_PAGER, 0, 0, NULL,
+    "External command to pre-process an email before display"
+  },
   { "header_color_partial", DT_BOOL|R_PAGER_FLOW, false, 0, NULL,
     "Only colour the part of the header matching the regex"
   },
   { "pager_context", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
     "Number of lines of overlap when changing pages in the pager"
+  },
+  { "pager_format", DT_STRING|R_PAGER, IP "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)", 0, NULL,
+    "printf-like format string for the pager's status bar"
   },
   { "pager_index_lines", DT_NUMBER|DT_NOT_NEGATIVE|R_PAGER, 0, 0, NULL,
     "Number of index lines to display above the pager"
@@ -54,6 +60,9 @@ static struct ConfigDef PagerVars[] = {
   { "pager_stop", DT_BOOL, false, 0, NULL,
     "Don't automatically open the next message when at the end of a message"
   },
+  { "prompt_after", DT_BOOL, true, 0, NULL,
+    "Pause after running an external pager"
+  },
   { "search_context", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
     "Context to display around search matches"
   },
@@ -65,6 +74,9 @@ static struct ConfigDef PagerVars[] = {
   },
   { "tilde", DT_BOOL|R_PAGER, false, 0, NULL,
     "Display '~' in the pager after the end of the email"
+  },
+  { "toggle_quoted_show_levels", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+    "Number of quote levels to show with toggle-quoted"
   },
 
   { "skip_quoted_offset", DT_SYNONYM, IP "pager_skip_quoted_context", IP "2021-06-18" },

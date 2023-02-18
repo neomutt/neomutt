@@ -121,8 +121,20 @@ static struct ConfigDef SendVars[] = {
   { "allow_8bit", DT_BOOL, true, 0, NULL,
     "Allow 8-bit messages, don't use quoted-printable or base64"
   },
+  { "ask_bcc", DT_BOOL, false, 0, NULL,
+    "Ask the user for the blind-carbon-copy recipients"
+  },
+  { "ask_cc", DT_BOOL, false, 0, NULL,
+    "Ask the user for the carbon-copy recipients"
+  },
   { "attach_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
     "When attaching files, use one of these character sets"
+  },
+  { "attribution", DT_STRING, IP "On %d, %n wrote:", 0, NULL,
+    "Message to start a reply, 'On DATE, PERSON wrote:'"
+  },
+  { "attribution_locale", DT_STRING, 0, 0, NULL,
+    "Locale for dates in the attribution message"
   },
   { "bounce_delivered", DT_BOOL, true, 0, NULL,
     "Add 'Delivered-To' to bounced messages"
@@ -178,6 +190,9 @@ static struct ConfigDef SendVars[] = {
   { "followup_to", DT_BOOL, true, 0, NULL,
     "Add the 'Mail-Followup-To' header is generated when sending mail"
   },
+  { "forward_attachments", DT_QUAD, MUTT_ASKYES, 0, NULL,
+    "Forward attachments when forwarding a message"
+  },
   { "forward_attribution_intro", DT_STRING, IP "----- Forwarded message from %f -----", 0, NULL,
     "Prefix message for forwarded messages"
   },
@@ -195,6 +210,9 @@ static struct ConfigDef SendVars[] = {
   },
   { "forward_references", DT_BOOL, false, 0, NULL,
     "Set the 'In-Reply-To' and 'References' headers when forwarding a message"
+  },
+  { "greeting", DT_STRING, 0, 0, NULL,
+    "Greeting string added to the top of all messages"
   },
   { "hdrs", DT_BOOL, true, 0, NULL,
     "Add custom headers to outgoing mail"
@@ -250,6 +268,9 @@ static struct ConfigDef SendVars[] = {
   { "reply_with_xorig", DT_BOOL, false, 0, NULL,
     "Create 'From' header from 'X-Original-To' header"
   },
+  { "resume_draft_files", DT_BOOL, false, 0, NULL,
+    "Process draft files like postponed messages"
+  },
   { "reverse_name", DT_BOOL|R_INDEX|R_PAGER, false, 0, NULL,
     "Set the 'From' from the address the email was sent to"
   },
@@ -286,8 +307,13 @@ static struct ConfigDef SendVars[] = {
   { "wrap_headers", DT_NUMBER|DT_NOT_NEGATIVE|R_PAGER, 78, 0, wrapheaders_validator,
     "Width to wrap headers in outgoing messages"
   },
+  { "write_bcc", DT_BOOL, false, 0, NULL,
+    "Write out the 'Bcc' field when preparing to send a mail"
+  },
 
   { "abort_noattach_regexp",    DT_SYNONYM, IP "abort_noattach_regex",       IP "2021-03-21" },
+  { "askbcc",                   DT_SYNONYM, IP "ask_bcc",                    IP "2021-03-21" },
+  { "askcc",                    DT_SYNONYM, IP "ask_cc",                     IP "2021-03-21" },
   { "attach_keyword",           DT_SYNONYM, IP "abort_noattach_regex",       IP "2021-03-21" },
   { "crypt_autoencrypt",        DT_SYNONYM, IP "crypt_auto_encrypt",         IP "2021-03-21" },
   { "crypt_autopgp",            DT_SYNONYM, IP "crypt_auto_pgp",             IP "2021-03-21" },

@@ -158,12 +158,6 @@ static struct ConfigDef MainVars[] = {
   { "ascii_chars", DT_BOOL|R_INDEX|R_PAGER, false, 0, NULL,
     "Use plain ASCII characters, when drawing email threads"
   },
-  { "ask_bcc", DT_BOOL, false, 0, NULL,
-    "Ask the user for the blind-carbon-copy recipients"
-  },
-  { "ask_cc", DT_BOOL, false, 0, NULL,
-    "Ask the user for the carbon-copy recipients"
-  },
   { "assumed_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
     "If a message is missing a character set, assume this character set"
   },
@@ -181,12 +175,6 @@ static struct ConfigDef MainVars[] = {
   },
   { "attach_split", DT_BOOL, true, 0, NULL,
     "Save/print/pipe tagged messages individually"
-  },
-  { "attribution", DT_STRING, IP "On %d, %n wrote:", 0, NULL,
-    "Message to start a reply, 'On DATE, PERSON wrote:'"
-  },
-  { "attribution_locale", DT_STRING, 0, 0, NULL,
-    "Locale for dates in the attribution message"
   },
   { "auto_edit", DT_BOOL, false, 0, NULL,
     "Skip the initial compose menu and edit the email"
@@ -257,9 +245,6 @@ static struct ConfigDef MainVars[] = {
   { "digest_collapse", DT_BOOL, true, 0, NULL,
     "Hide the subparts of a multipart/digest"
   },
-  { "display_filter", DT_STRING|DT_COMMAND|R_PAGER, 0, 0, NULL,
-    "External command to pre-process an email before display"
-  },
   { "duplicate_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, true, 0, NULL,
     "Highlight messages with duplicated message IDs"
   },
@@ -278,9 +263,6 @@ static struct ConfigDef MainVars[] = {
   { "force_name", DT_BOOL, false, 0, NULL,
     "Save outgoing mail in a folder of their name"
   },
-  { "forward_attachments", DT_QUAD, MUTT_ASKYES, 0, NULL,
-    "Forward attachments when forwarding a message"
-  },
   { "forward_decode", DT_BOOL, true, 0, NULL,
     "Decode the message when forwarding it"
   },
@@ -295,9 +277,6 @@ static struct ConfigDef MainVars[] = {
   },
   { "gecos_mask", DT_REGEX, IP "^[^,]*", 0, NULL,
     "Regex for parsing GECOS field of /etc/passwd"
-  },
-  { "greeting", DT_STRING, 0, 0, NULL,
-    "Greeting string added to the top of all messages"
   },
   { "header", DT_BOOL, false, 0, NULL,
     "Include the message headers in the reply email (Weed applies)"
@@ -410,9 +389,6 @@ static struct ConfigDef MainVars[] = {
   { "pager", DT_STRING|DT_COMMAND, IP "builtin", 0, NULL,
     "External command for viewing messages, or 'builtin' to use NeoMutt's"
   },
-  { "pager_format", DT_STRING|R_PAGER, IP "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)", 0, NULL,
-    "printf-like format string for the pager's status bar"
-  },
   { "pipe_decode", DT_BOOL, false, 0, NULL,
     "Decode the message when piping it"
   },
@@ -446,9 +422,6 @@ static struct ConfigDef MainVars[] = {
   { "print_split", DT_BOOL, false, 0, NULL,
     "Print multiple messages separately"
   },
-  { "prompt_after", DT_BOOL, true, 0, NULL,
-    "Pause after running an external pager"
-  },
   { "quit", DT_QUAD, MUTT_YES, 0, NULL,
     "Prompt before exiting NeoMutt"
   },
@@ -481,9 +454,6 @@ static struct ConfigDef MainVars[] = {
   },
   { "resolve", DT_BOOL, true, 0, NULL,
     "Move to the next email whenever a command modifies an email"
-  },
-  { "resume_draft_files", DT_BOOL, false, 0, NULL,
-    "Process draft files like postponed messages"
   },
   { "resume_edited_draft_files", DT_BOOL, true, 0, NULL,
     "Resume editing previously saved draft files"
@@ -590,9 +560,6 @@ static struct ConfigDef MainVars[] = {
   { "to_chars", DT_MBTABLE|R_INDEX|R_PAGER, IP " +TCFLR", 0, NULL,
     "Indicator characters for the 'To' field in the index"
   },
-  { "toggle_quoted_show_levels", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
-    "Number of quote levels to show with toggle-quoted"
-  },
   { "trash", DT_STRING|DT_MAILBOX, 0, 0, NULL,
     "Folder to put deleted emails"
   },
@@ -623,9 +590,6 @@ static struct ConfigDef MainVars[] = {
   { "wrap_search", DT_BOOL, true, 0, NULL,
     "Wrap around when the search hits the end"
   },
-  { "write_bcc", DT_BOOL, false, 0, NULL,
-    "Write out the 'Bcc' field when preparing to send a mail"
-  },
   { "write_inc", DT_NUMBER|DT_NOT_NEGATIVE, 10, 0, NULL,
     "Update the progress bar after this many records written (0 to disable)"
   },
@@ -634,8 +598,6 @@ static struct ConfigDef MainVars[] = {
   { "ignore_linear_white_space", DT_DEPRECATED|DT_BOOL,   0, IP "2021-03-18" },
   { "visual",                    DT_DEPRECATED|DT_STRING, 0, IP "2021-03-18" },
 
-  { "askbcc",                    DT_SYNONYM, IP "ask_bcc",                    IP "2021-03-21" },
-  { "askcc",                     DT_SYNONYM, IP "ask_cc",                     IP "2021-03-21" },
   { "autoedit",                  DT_SYNONYM, IP "auto_edit",                  IP "2021-03-21" },
   { "confirmappend",             DT_SYNONYM, IP "confirm_append",             IP "2021-03-21" },
   { "confirmcreate",             DT_SYNONYM, IP "confirm_create",             IP "2021-03-21" },
