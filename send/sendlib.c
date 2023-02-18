@@ -719,25 +719,42 @@ const char *mutt_fqdn(bool may_hide_host, const struct ConfigSubset *sub)
 }
 
 /**
- * gen_msgid - Generate a unique Message ID
+ * gen_msgid - Generate a random Message ID
  * @retval ptr Message ID
+ *
+ * The length of the message id is chosen such that it is maximal and fits in
+ * the recommended 78 character line length for the headers Message-ID:,
+ * References:, and In-Reply-To:, this leads to 62 available characters
+ * (excluding `@` and `>`).  Since we choose from 32 letters, we have 32^62
+ * = 2^310 different message ids.
+ *
+ * Examples:
+ * ```
+ * Message-ID: <12345678901111111111222222222233333333334444444444@123456789011>
+ * In-Reply-To: <12345678901111111111222222222233333333334444444444@123456789011>
+ * References: <12345678901111111111222222222233333333334444444444@123456789011>
+ * ```
+ *
+ * The distribution of the characters to left-of-@ and right-of-@ was arbitrary.
+ * The choice was made to put more into the left-id and shorten the right-id to
+ * slightly mimic a common length domain name.
  *
  * @note The caller should free the string
  */
-static char *gen_msgid(struct ConfigSubset *sub)
+static char *gen_msgid()
 {
+  const int ID_LEFT_LEN = 50;
+  const int ID_RIGHT_LEN = 12;
+  char rnd_id_left[ID_LEFT_LEN + 1];
+  char rnd_id_right[ID_RIGHT_LEN + 1];
   char buf[128] = { 0 };
-  char rndid[MUTT_RANDTAG_LEN + 1];
 
-  mutt_rand_base32(rndid, sizeof(rndid) - 1);
-  rndid[MUTT_RANDTAG_LEN] = 0;
-  const char *fqdn = mutt_fqdn(false, sub);
-  if (!fqdn)
-    fqdn = NONULL(ShortHostname);
+  mutt_rand_base32(rnd_id_left, sizeof(rnd_id_left) - 1);
+  mutt_rand_base32(rnd_id_right, sizeof(rnd_id_right) - 1);
+  rnd_id_left[ID_LEFT_LEN] = 0;
+  rnd_id_right[ID_RIGHT_LEN] = 0;
 
-  struct tm tm = mutt_date_gmtime(mutt_date_now());
-  snprintf(buf, sizeof(buf), "<%d%02d%02d%02d%02d%02d.%s@%s>", tm.tm_year + 1900,
-           tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, rndid, fqdn);
+  snprintf(buf, sizeof(buf), "<%s@%s>", rnd_id_left, rnd_id_right);
   return mutt_str_dup(buf);
 }
 
@@ -775,7 +792,7 @@ void mutt_prepare_envelope(struct Envelope *env, bool final, struct ConfigSubset
     mutt_set_followup_to(env, sub);
 
     if (!env->message_id)
-      env->message_id = gen_msgid(sub);
+      env->message_id = gen_msgid();
   }
 
   /* Take care of 8-bit => 7-bit conversion. */
@@ -848,7 +865,7 @@ static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
     fprintf(fp_tmp, "Resent-Date: %s\n", mutt_buffer_string(date));
     mutt_buffer_pool_release(&date);
 
-    char *msgid_str = gen_msgid(sub);
+    char *msgid_str = gen_msgid();
     fprintf(fp_tmp, "Resent-Message-ID: %s\n", msgid_str);
     FREE(&msgid_str);
     fputs("Resent-To: ", fp_tmp);
