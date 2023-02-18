@@ -1573,7 +1573,8 @@ char *nm_url_from_query(struct Mailbox *m, char *buf, size_t buflen)
     using_default_data = true;
   }
 
-  enum NmQueryType query_type = nm_string_to_query_type(cs_subset_string(NeoMutt->sub, "nm_query_type"));
+  enum NmQueryType query_type = nm_string_to_query_type(
+      cs_subset_string(NeoMutt->sub, "nm_query_type"));
   mdata->query_type = nm_parse_type_from_query(buf, query_type);
 
   const short c_nm_db_limit = cs_subset_number(NeoMutt->sub, "nm_db_limit");

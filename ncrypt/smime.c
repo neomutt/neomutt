@@ -640,7 +640,8 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
   {
     if (oppenc_mode)
     {
-      const bool c_crypt_opportunistic_encrypt_strong_keys = cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
+      const bool c_crypt_opportunistic_encrypt_strong_keys =
+          cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
       if (trusted_match)
         return_key = smime_copy_key(trusted_match);
       else if (valid_match && !c_crypt_opportunistic_encrypt_strong_keys)
