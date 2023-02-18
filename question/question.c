@@ -205,9 +205,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
   int prompt_lines = 1;
   char answer[7] = { 0 };
   char *panswer = NULL;
-  const char *lc_var = NULL;
-  int ilc_var = 0;
-  static const char *lc_var_names[] = { "LC_ALL", "LC_MESSAGES", "LANG" };
+  char *codeset = NULL;
   bool input_is_utf = false;
 
   char *yes = N_("yes");
@@ -332,20 +330,8 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
       break;
     }
 
-    input_is_utf = false;
-    ilc_var = 0;
-    while (!input_is_utf && (ilc_var < sizeof(lc_var_names) / sizeof(char *)))
-    {
-      lc_var = mutt_str_getenv(lc_var_names[ilc_var]);
-      if (lc_var)
-      {
-        if (strstr(lc_var, ".UTF-8"))
-          input_is_utf = true;
-        else
-          break;
-      }
-      ilc_var++;
-    }
+    codeset = nl_langinfo(CODESET);
+    input_is_utf = codeset && !strcmp(codeset, "UTF-8");
 
     if (input_is_utf)
     {
