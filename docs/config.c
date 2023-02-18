@@ -1269,6 +1269,7 @@
 ** .dt %s  .dd   .dd Size in bytes (see $formatstrings-size)
 ** .dt %t  .dd   .dd "*" if the file is tagged, blank otherwise
 ** .dt %u  .dd   .dd Owner name (or numeric uid, if missing)
+** .dt %[fmt] .dd   .dd Date/time folder was last modified using an \fCstrftime(3)\fP expression
 ** .dt %>X .dd   .dd Right justify the rest of the string and pad with character "X"
 ** .dt %|X .dd   .dd Pad to the end of the line with character "X"
 ** .dt %*X .dd   .dd Soft-fill with character "X" as pad
@@ -2234,6 +2235,7 @@
 ** .dt %N  .dd   .dd "N" if mailbox has new mail, " " (space) otherwise
 ** .dt %s  .dd   .dd Size in bytes (see $formatstrings-size)
 ** .dt %u  .dd   .dd Owner name (or numeric uid, if missing)
+** .dt %[fmt] .dd   .dd Date/time folder was last modified using an \fCstrftime(3)\fP expression
 ** .dt %>X .dd   .dd Right justify the rest of the string and pad with character "X"
 ** .dt %|X .dd   .dd Pad to the end of the line with character "X"
 ** .dt %*X .dd   .dd Soft-fill with character "X" as pad
