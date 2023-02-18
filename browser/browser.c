@@ -1076,6 +1076,7 @@ static int browser_config_observer(struct NotifyCallback *nc)
       !mutt_str_equal(ev_c->name, "date_format") && !mutt_str_equal(ev_c->name, "folder") &&
       !mutt_str_equal(ev_c->name, "folder_format") &&
       !mutt_str_equal(ev_c->name, "group_index_format") &&
+      !mutt_str_equal(ev_c->name, "mailbox_folder_format") &&
       !mutt_str_equal(ev_c->name, "sort_browser"))
   {
     return 0;
