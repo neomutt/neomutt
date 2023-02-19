@@ -430,9 +430,12 @@ static void include_header(bool quote, FILE *fp_in, struct Email *e, FILE *fp_ou
       mutt_str_copy(prefix2, prefix, sizeof(prefix2));
     else if (!c_text_flowed)
     {
+      const char *const c_attribution_locale = cs_subset_string(NeoMutt->sub, "attribution_locale");
       const char *const c_indent_string = cs_subset_string(NeoMutt->sub, "indent_string");
+      setlocale(LC_TIME, NONULL(c_attribution_locale));
       mutt_make_string(prefix2, sizeof(prefix2), 0, NONULL(c_indent_string),
                        NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
+      setlocale(LC_TIME, "");
     }
     else
       mutt_str_copy(prefix2, ">", sizeof(prefix2));
@@ -529,9 +532,12 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
       mutt_str_copy(prefix, ">", sizeof(prefix));
     else
     {
+      const char *const c_attribution_locale = cs_subset_string(NeoMutt->sub, "attribution_locale");
       const char *const c_indent_string = cs_subset_string(NeoMutt->sub, "indent_string");
+      setlocale(LC_TIME, NONULL(c_attribution_locale));
       mutt_make_string(prefix, sizeof(prefix), 0, NONULL(c_indent_string), NULL,
                        -1, e_parent, MUTT_FORMAT_NO_FLAGS, NULL);
+      setlocale(LC_TIME, "");
     }
   }
 
@@ -1038,9 +1044,12 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
     }
     else
     {
+      const char *const c_attribution_locale = cs_subset_string(NeoMutt->sub, "attribution_locale");
       const char *const c_indent_string = cs_subset_string(NeoMutt->sub, "indent_string");
+      setlocale(LC_TIME, NONULL(c_attribution_locale));
       mutt_make_string(prefix, sizeof(prefix), 0, NONULL(c_indent_string), m,
                        -1, e_parent, MUTT_FORMAT_NO_FLAGS, NULL);
+      setlocale(LC_TIME, "");
     }
 
     st.prefix = prefix;
