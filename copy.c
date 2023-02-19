@@ -30,6 +30,7 @@
 #include "config.h"
 #include <ctype.h>
 #include <inttypes.h> // IWYU pragma: keep
+#include <locale.h>
 #include <stdbool.h>
 #include <string.h>
 #include "mutt/lib.h"
