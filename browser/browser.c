@@ -203,13 +203,15 @@ bool link_is_dir(const char *folder, const char *path)
  * | \%s     | Size in bytes
  * | \%t     | `*` if the file is tagged, blank otherwise
  * | \%u     | Owner name (or numeric uid, if missing)
+ * | \%[fmt] | Date folder was last modified using strftime(3)
  */
 static const char *folder_format_str(char *buf, size_t buflen, size_t col, int cols,
                                      char op, const char *src, const char *prec,
                                      const char *if_str, const char *else_str,
                                      intptr_t data, MuttFormatFlags flags)
 {
-  char fn[128], fmt[128];
+  char fn[128] = { 0 };
+  char fmt[128] = { 0 };
   struct Folder *folder = (struct Folder *) data;
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -251,6 +253,67 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
           setlocale(LC_TIME, "");
 
         mutt_format_s(buf, buflen, prec, date);
+      }
+      else
+      {
+        mutt_format_s(buf, buflen, prec, "");
+      }
+      break;
+
+    case '[':
+      if (folder->ff->local)
+      {
+        char buf2[128] = { 0 };
+        bool do_locales = true;
+        struct tm tm = { 0 };
+
+        char *p = buf;
+
+        const char *cp = src;
+        if (*cp == '!')
+        {
+          do_locales = false;
+          cp++;
+        }
+
+        size_t len = buflen - 1;
+        while ((len > 0) && (*cp != ']'))
+        {
+          if (*cp == '%')
+          {
+            cp++;
+            if (len >= 2)
+            {
+              *p++ = '%';
+              *p++ = *cp;
+              len -= 2;
+            }
+            else
+            {
+              break; /* not enough space */
+            }
+            cp++;
+          }
+          else
+          {
+            *p++ = *cp++;
+            len--;
+          }
+        }
+        *p = '\0';
+
+        tm = mutt_date_localtime(folder->ff->mtime);
+
+        if (!do_locales)
+          setlocale(LC_TIME, "C");
+        strftime(buf2, sizeof(buf2), buf, &tm);
+        if (!do_locales)
+          setlocale(LC_TIME, "");
+
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, buf2);
+        if (len > 0)
+          src = cp + 1;
       }
       else
       {
@@ -1013,6 +1076,7 @@ static int browser_config_observer(struct NotifyCallback *nc)
       !mutt_str_equal(ev_c->name, "date_format") && !mutt_str_equal(ev_c->name, "folder") &&
       !mutt_str_equal(ev_c->name, "folder_format") &&
       !mutt_str_equal(ev_c->name, "group_index_format") &&
+      !mutt_str_equal(ev_c->name, "mailbox_folder_format") &&
       !mutt_str_equal(ev_c->name, "sort_browser"))
   {
     return 0;
