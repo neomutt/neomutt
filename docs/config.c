@@ -902,6 +902,11 @@
 { "date_format", DT_STRING, "!%a, %b %d, %Y at %I:%M:%S%p %Z" },
 /*
 ** .pp
+** Instead of using $$date_format it is encouraged to use "%[fmt]"
+** directly in the corresponding format strings, where "fmt" is the
+** value of $$date_format.  This allows for a more fine grained control
+** of the different menu needs.
+** .pp
 ** This variable controls the format of the date printed by the "%d"
 ** sequence in $$index_format.  This is passed to the \fCstrftime(3)\fP
 ** function to process the date, see the man page for the proper syntax.
@@ -912,6 +917,15 @@
 ** bang, the bang is discarded, and the month and week day names in the
 ** rest of the string are expanded in the \fIC\fP locale (that is in US
 ** English).
+** .pp
+** Format strings using this variable are:
+** .pp
+** UI: $$folder_format, $$index_format, $$mailbox_folder_format,
+** $$message_format
+** .pp
+** Composing: $$attribution, $$forward_attribution_intro,
+** $$forward_attribution_trailer, $$forward_format, $$indent_string.
+** .pp
 */
 
 { "debug_file", DT_PATH, "~/.neomuttdebug" },
