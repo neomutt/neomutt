@@ -929,8 +929,8 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       if (!e->env)
         return false;
       return pat->pat_not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
-                                           4, &e->env->from, &e->env->sender,
-                                           &e->env->to, &e->env->cc);
+                                           5, &e->env->from, &e->env->sender,
+                                           &e->env->to, &e->env->cc, &e->env->bcc);
     case MUTT_PAT_RECIPIENT:
       if (!e->env)
         return false;
