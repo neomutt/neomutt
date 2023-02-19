@@ -934,8 +934,8 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_RECIPIENT:
       if (!e->env)
         return false;
-      return pat->pat_not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
-                                           2, &e->env->to, &e->env->cc);
+      return pat->pat_not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 3,
+                                           &e->env->to, &e->env->cc, &e->env->bcc);
     case MUTT_PAT_LIST: /* known list, subscribed or not */
     {
       if (!e->env)

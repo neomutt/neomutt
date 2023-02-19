@@ -965,7 +965,7 @@ messages which contain \fIEXPR\fP in the message body
 T}
 _
 \0%C \fIGROUP\fP|T{
-messages either \(lqTo:\(rq or \(lqCc:\(rq to any member of \fIGROUP\fP
+messages either \(lqTo:\(rq, \(lqCc:\(rq or \(lqBcc:\(rq to any member of \fIGROUP\fP
 T}
 _
 \0%c \fIGROUP\fP|T{
@@ -973,7 +973,7 @@ messages carbon-copied to any member of \fIGROUP\fP
 T}
 _
 \0~C \fIEXPR\fP|T{
-messages either \(lqTo:\(rq or \(lqCc:\(rq \fIEXPR\fP
+messages either \(lqTo:\(rq, \(lqCc:\(rq or \(lqBcc:\(rq \fIEXPR\fP
 T}
 _
 \0~c \fIEXPR\fP|T{
