@@ -3871,9 +3871,12 @@
 { "resolve", DT_BOOL, true },
 /*
 ** .pp
-** When \fIset\fP, the cursor will be automatically advanced to the next
-** (possibly undeleted) message whenever a command that modifies the
-** current message is executed.
+** When \fIset\fP, the cursor in a list will be automatically advanced to the
+** next (possibly undeleted) message/attachment/entry whenever a command that
+** modifies the current message/attachment/entry is executed.
+** .pp
+** Examples of such commands are tagging a message, deleting an entry, or
+** saving an attachment.
 */
 
 { "resume_draft_files", DT_BOOL, false },
