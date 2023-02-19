@@ -1271,6 +1271,8 @@
 ** .dt %C  .dd   .dd Current file number
 ** .dt %d  .dd   .dd Date/time folder was last modified
 ** .dt %D  .dd   .dd Date/time folder was last modified using $$date_format.
+**                   It is encouraged to use "%[fmt]" instead, where "fmt" is
+**                   the value of $$date_format.
 ** .dt %f  .dd   .dd Filename ("/" is appended to directory names,
 **                   "@" to symbolic links and "*" to executable files)
 ** .dt %F  .dd   .dd File permissions
@@ -2044,7 +2046,9 @@
 ** .dt %c .dd Number of characters (bytes) in the body of the message (see $formatstrings-size)
 ** .dt %cr .dd Number of characters (bytes) in the raw message, including the header (see $formatstrings-size)
 ** .dt %D .dd Date and time of message using $date_format and local timezone
+**            It is encouraged to use "%[fmt]" instead, where "fmt" is the value of $$date_format.
 ** .dt %d .dd Date and time of message using $date_format and sender's timezone
+**            It is encouraged to use "%{fmt}" instead, where "fmt" is the value of $$date_format.
 ** .dt %e .dd Current message number in thread
 ** .dt %E .dd Number of messages in current thread
 ** .dt %F .dd Author name, or recipient name if the message is from you
