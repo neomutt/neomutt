@@ -1065,6 +1065,10 @@ _
 messages addressed to a known mailing list
 T}
 _
+\0~M \fIEXPR\fP|T{
+messages which contain a mime Content-Type matching \fIEXPR\fP
+T}
+_
 \0~m <\fIMAX\fP|T{
 messages with numbers less than \fIMAX\fP \fB*\fP)
 T}
@@ -1148,6 +1152,10 @@ T}
 _
 \0~v|T{
 message is part of a collapsed thread.
+T}
+_
+\0~w \fIEXPR\fP|T{
+newsgroups matching \fIEXPR\fP
 T}
 _
 \0~X \fIMIN\fP-\fIMAX\fP|T{
