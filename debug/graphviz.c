@@ -1694,6 +1694,7 @@ const char *pattern_type_name(int type)
     // clang-format off
     { "address",         MUTT_PAT_ADDRESS },
     { "AND",             MUTT_PAT_AND },
+    { "bcc",             MUTT_PAT_BCC },
     { "body",            MUTT_PAT_BODY },
     { "broken",          MUTT_PAT_BROKEN },
     { "cc",              MUTT_PAT_CC },

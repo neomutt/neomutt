@@ -1049,6 +1049,10 @@ _
 messages containing PGP key material
 T}
 _
+\0~K \fIEXPR\fP|T{
+messages blind carbon-copied to \fIEXPR\fP
+T}
+_
 \0%L \fIGROUP\fP|T{
 messages either originated or received by any member of \fIGROUP\fP
 T}

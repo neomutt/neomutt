@@ -93,6 +93,9 @@ const struct PatternFlags Flags[] = {
   { 'k', MUTT_PAT_PGP_KEY, 0, EAT_NONE,
     // L10N: Pattern Completion Menu description for ~k
     N_("messages which contain PGP key") },
+  { 'K', MUTT_PAT_BCC, 0, EAT_REGEX,
+    // L10N: Pattern Completion Menu description for ~K
+    N_("messages whose BCC header matches EXPR") },
   { 'l', MUTT_PAT_LIST, 0, EAT_NONE,
     // L10N: Pattern Completion Menu description for ~l
     N_("messages addressed to known mailing lists") },

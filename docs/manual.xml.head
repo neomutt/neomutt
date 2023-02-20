@@ -8340,6 +8340,13 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
                 </entry>
               </row>
               <row>
+                <entry>~K <emphasis>EXPR</emphasis></entry>
+                <entry></entry>
+                <entry>
+                  messages blind carbon-copied to <emphasis>EXPR</emphasis>
+                </entry>
+              </row>
+              <row>
                 <entry>~L <emphasis>EXPR</emphasis></entry>
                 <entry></entry>
                 <entry>

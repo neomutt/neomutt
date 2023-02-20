@@ -904,6 +904,11 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
         return false;
       return pat->pat_not ^
              match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1, &e->env->cc);
+    case MUTT_PAT_BCC:
+      if (!e->env)
+        return false;
+      return pat->pat_not ^
+             match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1, &e->env->bcc);
     case MUTT_PAT_SUBJECT:
       if (!e->env)
         return false;
