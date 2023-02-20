@@ -986,13 +986,14 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
         int *cache_entry = pat->all_addr ? &cache->pers_recip_all : &cache->pers_recip_one;
         if (!is_pattern_cache_set(*cache_entry))
         {
-          set_pattern_cache_value(cache_entry, match_user(pat->all_addr, 2,
-                                                          &e->env->to, &e->env->cc));
+          set_pattern_cache_value(cache_entry,
+                                  match_user(pat->all_addr, 3, &e->env->to,
+                                             &e->env->cc, &e->env->bcc));
         }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
-        result = match_user(pat->all_addr, 2, &e->env->to, &e->env->cc);
+        result = match_user(pat->all_addr, 3, &e->env->to, &e->env->cc, &e->env->bcc);
       return pat->pat_not ^ result;
     }
     case MUTT_PAT_PERSONAL_FROM:
