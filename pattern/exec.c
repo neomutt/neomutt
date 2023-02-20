@@ -385,7 +385,7 @@ static int match_addrlist(struct Pattern *pat, bool match_personal, int n, ...)
   va_list ap;
 
   va_start(ap, n);
-  for (; n; n--)
+  while (n-- > 0)
   {
     struct AddressList *al = va_arg(ap, struct AddressList *);
     struct Address *a = NULL;
@@ -477,32 +477,31 @@ bool mutt_is_list_recipient(bool all_addr, struct Envelope *env)
 /**
  * match_user - Matches the user's email Address
  * @param all_addr If true, ALL Addresses must refer to the user
- * @param al1     First AddressList
- * @param al2     Second AddressList
+ * @param n       number of AddressLists supplied
+ * @param ...     Variable number of AddressLists
  * @retval true
  * - One Address refers to the user (all_addr is false)
  * - All the Addresses refer to the user (all_addr is true)
  */
-static int match_user(int all_addr, struct AddressList *al1, struct AddressList *al2)
+static int match_user(bool all_addr, int n, ...)
 {
-  struct Address *a = NULL;
-  if (al1)
-  {
-    TAILQ_FOREACH(a, al1, entries)
-    {
-      if (all_addr ^ mutt_addr_is_user(a))
-        return !all_addr;
-    }
-  }
+  va_list ap;
 
-  if (al2)
+  va_start(ap, n);
+  while (n-- > 0)
   {
-    TAILQ_FOREACH(a, al2, entries)
+    struct AddressList *al = va_arg(ap, struct AddressList *);
+    struct Address *a = NULL;
+    TAILQ_FOREACH(a, al, entries)
     {
       if (all_addr ^ mutt_addr_is_user(a))
+      {
+        va_end(ap);
         return !all_addr;
+      }
     }
   }
+  va_end(ap);
   return all_addr;
 }
 
@@ -905,6 +904,11 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
         return false;
       return pat->pat_not ^
              match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1, &e->env->cc);
+    case MUTT_PAT_BCC:
+      if (!e->env)
+        return false;
+      return pat->pat_not ^
+             match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1, &e->env->bcc);
     case MUTT_PAT_SUBJECT:
       if (!e->env)
         return false;
@@ -929,13 +933,13 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       if (!e->env)
         return false;
       return pat->pat_not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
-                                           4, &e->env->from, &e->env->sender,
-                                           &e->env->to, &e->env->cc);
+                                           5, &e->env->from, &e->env->sender,
+                                           &e->env->to, &e->env->cc, &e->env->bcc);
     case MUTT_PAT_RECIPIENT:
       if (!e->env)
         return false;
-      return pat->pat_not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
-                                           2, &e->env->to, &e->env->cc);
+      return pat->pat_not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 3,
+                                           &e->env->to, &e->env->cc, &e->env->bcc);
     case MUTT_PAT_LIST: /* known list, subscribed or not */
     {
       if (!e->env)
@@ -988,12 +992,15 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
         if (!is_pattern_cache_set(*cache_entry))
         {
           set_pattern_cache_value(cache_entry,
-                                  match_user(pat->all_addr, &e->env->to, &e->env->cc));
+                                  match_user(pat->all_addr, 3, &e->env->to,
+                                             &e->env->cc, &e->env->bcc));
         }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
-        result = match_user(pat->all_addr, &e->env->to, &e->env->cc);
+      {
+        result = match_user(pat->all_addr, 3, &e->env->to, &e->env->cc, &e->env->bcc);
+      }
       return pat->pat_not ^ result;
     }
     case MUTT_PAT_PERSONAL_FROM:
@@ -1008,12 +1015,14 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
         if (!is_pattern_cache_set(*cache_entry))
         {
           set_pattern_cache_value(cache_entry,
-                                  match_user(pat->all_addr, &e->env->from, NULL));
+                                  match_user(pat->all_addr, 1, &e->env->from));
         }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
-        result = match_user(pat->all_addr, &e->env->from, NULL);
+      {
+        result = match_user(pat->all_addr, 1, &e->env->from);
+      }
       return pat->pat_not ^ result;
     }
     case MUTT_PAT_COLLAPSED:

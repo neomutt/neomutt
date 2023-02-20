@@ -134,6 +134,7 @@ enum PatternType
   MUTT_PAT_CHILDREN,          ///< Pattern matches a child email
   MUTT_PAT_TO,                ///< Pattern matches 'To:' field
   MUTT_PAT_CC,                ///< Pattern matches 'Cc:' field
+  MUTT_PAT_BCC,               ///< Pattern matches 'Bcc:' field
   MUTT_PAT_COLLAPSED,         ///< Thread is collapsed
   MUTT_PAT_SUBJECT,           ///< Pattern matches 'Subject:' field
   MUTT_PAT_FROM,              ///< Pattern matches 'From:' field

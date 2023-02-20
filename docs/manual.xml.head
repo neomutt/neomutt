@@ -8202,14 +8202,14 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
                 <entry>~C <emphasis>EXPR</emphasis></entry>
                 <entry></entry>
                 <entry>
-                  messages either to: or cc: <emphasis>EXPR</emphasis>
+                  messages either to:, cc: or bcc: <emphasis>EXPR</emphasis>
                 </entry>
               </row>
               <row>
                 <entry>%C <emphasis>GROUP</emphasis></entry>
                 <entry></entry>
                 <entry>
-                  messages either to: or cc: to any member of
+                  messages either to:, cc: or bcc: to any member of
                   <emphasis>GROUP</emphasis>
                 </entry>
               </row>
@@ -8337,6 +8337,13 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
                 <entry></entry>
                 <entry>
                   messages which contain PGP key material
+                </entry>
+              </row>
+              <row>
+                <entry>~K <emphasis>EXPR</emphasis></entry>
+                <entry></entry>
+                <entry>
+                  messages blind carbon-copied to <emphasis>EXPR</emphasis>
                 </entry>
               </row>
               <row>
