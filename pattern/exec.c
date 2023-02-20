@@ -477,13 +477,13 @@ bool mutt_is_list_recipient(bool all_addr, struct Envelope *env)
 /**
  * match_user - Matches the user's email Address
  * @param all_addr If true, ALL Addresses must refer to the user
- * @param n       number of AddressesLists supplied
- * @param ...     Variable number of AddressesLists
+ * @param n       number of AddressLists supplied
+ * @param ...     Variable number of AddressLists
  * @retval true
  * - One Address refers to the user (all_addr is false)
  * - All the Addresses refer to the user (all_addr is true)
  */
-static int match_user(int all_addr, int n, ...)
+static int match_user(bool all_addr, int n, ...)
 {
   va_list ap;
 
@@ -998,7 +998,9 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
         result = get_pattern_cache_value(*cache_entry);
       }
       else
+      {
         result = match_user(pat->all_addr, 3, &e->env->to, &e->env->cc, &e->env->bcc);
+      }
       return pat->pat_not ^ result;
     }
     case MUTT_PAT_PERSONAL_FROM:
@@ -1018,7 +1020,9 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
         result = get_pattern_cache_value(*cache_entry);
       }
       else
+      {
         result = match_user(pat->all_addr, 1, &e->env->from);
+      }
       return pat->pat_not ^ result;
     }
     case MUTT_PAT_COLLAPSED:
