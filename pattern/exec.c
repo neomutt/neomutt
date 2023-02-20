@@ -385,7 +385,7 @@ static int match_addrlist(struct Pattern *pat, bool match_personal, int n, ...)
   va_list ap;
 
   va_start(ap, n);
-  for (; n; n--)
+  while (n-- > 0)
   {
     struct AddressList *al = va_arg(ap, struct AddressList *);
     struct Address *a = NULL;
