@@ -72,17 +72,18 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "index/lib.h"
 #include "menu/lib.h"
 #include "format_flags.h"
 #include "functions.h"
 #include "hdrline.h"
 #include "keymap.h"
 #include "mutt_logging.h"
+#include "mview.h"
 #include "opcodes.h"
-
-struct Email;
 
 /// Help Bar for the Postponed email selection dialog
 static const struct Mapping PostponeHelp[] = {
@@ -104,7 +105,7 @@ static void post_make_entry(struct Menu *menu, char *buf, size_t buflen, int lin
 
   const char *const c_index_format = cs_subset_string(NeoMutt->sub, "index_format");
   mutt_make_string(buf, buflen, menu->win->state.cols, NONULL(c_index_format),
-                   m, -1, m->emails[line], MUTT_FORMAT_ARROWCURSOR, NULL);
+                   m, -1, m->emails[line], MUTT_FORMAT_INDEX | MUTT_FORMAT_ARROWCURSOR, NULL);
 }
 
 /**
@@ -162,6 +163,26 @@ static int postponed_window_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * post_color - Calculate the colour for a line of the postpone index - Implements Menu::color() - @ingroup menu_color
+ */
+struct AttrColor *post_color(struct Menu *menu, int line)
+{
+  struct Mailbox *m = menu->mdata;
+  if (!m || (line < 0))
+    return NULL;
+
+  struct Email *e = mutt_get_virt_email(m, line);
+  if (!e)
+    return NULL;
+
+  if (e->attr_color)
+    return e->attr_color;
+
+  mutt_set_header_color(m, e);
+  return e->attr_color;
+}
+
+/**
  * dlg_select_postponed_email - Create a Menu to select a postponed message
  * @param m Mailbox
  * @retval ptr Email
@@ -172,6 +193,7 @@ struct Email *dlg_select_postponed_email(struct Mailbox *m)
 
   struct Menu *menu = dlg->wdata;
   menu->make_entry = post_make_entry;
+  menu->color = post_color;
   menu->max = m->msg_count;
   menu->mdata = m;
   menu->mdata_free = NULL; // Menu doesn't own the data
