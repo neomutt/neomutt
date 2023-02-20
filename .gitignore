@@ -15,6 +15,7 @@ fuzz/address-fuzz
 
 # Build products
 *.o
+*.o.json
 *.gc??
 *.Po
 *.Tpo

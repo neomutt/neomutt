@@ -850,7 +850,7 @@ $(NEOMUTT): $(GENERATED) $(NEOMUTTOBJS) $(MUTTLIBS)
 
 # clean
 clean: $(CLEAN_TARGETS)
-	rm -f $(CLEANFILES)
+	$(RM) $(CLEANFILES)
 
 # install
 install: all $(INSTALL_TARGETS)
@@ -881,7 +881,6 @@ distclean: clean
 		test/Makefile .clang_complete
 	$(RM) *.gc?? */*.gc?? test/*/*.gc??
 	$(RM) *.expand */*.expand test/*/*.expand
-	$(RM) compile_commands.*
 	$(RM) coverage.info coverage
 
 ###############################################################################
@@ -894,7 +893,7 @@ git_ver.c: $(ALL_FILES)
 		sed -e 's/^[0-9]\{8\}//; s/-g\([a-z0-9]\{6\}\)/-\1/'`; \
 	echo 'const char *GitVer = "'$$version'";' > $@.tmp; \
 	cmp -s $@.tmp $@ || mv $@.tmp $@; \
-	rm -f $@.tmp
+	$(RM) $@.tmp
 
 hcache/hcversion.h:	$(SRCDIR)/address/address.h $(SRCDIR)/email/body.h \
 			$(SRCDIR)/email/email.h $(SRCDIR)/email/envelope.h \
@@ -949,6 +948,17 @@ coverage: all test
 @endif
 @if ENABLE_FUZZ_TESTS
 @include @srcdir@/fuzz/Makefile.autosetup
+@endif
+
+@if COMPILE_COMMANDS
+compile_commands.json: $(ALLOBJS)
+	echo '[' > compile_commands.json
+	cat $(ALLOBJS:.o=.o.json) >> compile_commands.json
+	echo ']' >> compile_commands.json
+
+clean-compile_commands.json:
+	$(RM) $(ALLOBJS:.o=.o.json)
+	$(RM) compile_commands.json
 @endif
 
 # vim: set ts=8 noexpandtab:
