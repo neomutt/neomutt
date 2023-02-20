@@ -116,6 +116,7 @@ set valid_options {
   coverage=0                => "Enable Coverage Testing"
   testing=0                 => "Enable Unit Testing"
   fuzzing                   => "Enable Fuzz Testing"
+  compile-commands          => "Generate compile_commands.json (requires clang)"
 # Enable all options
   everything=0              => "Enable all options"
 # Debug options
@@ -167,7 +168,7 @@ if {[llength $notices]} {
 if {1} {
   # Keep sorted, please.
   foreach opt {
-    asan autocrypt bdb coverage debug-backtrace debug-color debug-email
+    asan autocrypt bdb compile-commands coverage debug-backtrace debug-color debug-email
     debug-graphviz debug-notify debug-parse-test debug-queue debug-window doc
     everything fmemopen full-doc fuzzing gdbm gnutls gpgme gsasl gss homespool idn
     idn2 include-path-in-cflags inotify kyotocabinet lmdb locales-fix lua lz4
@@ -1105,6 +1106,18 @@ if {[get-define want-fuzzing]} {
 }
 
 ###############################################################################
+# Generate compile_commands.json
+if {[get-define want-compile-commands]} {
+  if {![has-define {} __clang__]} {
+    user-error "The clang compiler is required to generate compile_commands.json"
+  }
+  define COMPILE_COMMANDS
+  define-append ALL_TARGETS compile_commands.json
+  define-append CLEAN_TARGETS clean-compile_commands.json
+  define-append CFLAGS {-MJ $(@:.o=.o.json)}
+}
+
+###############################################################################
 # Coverage Testing
 if {[get-define want-coverage]} {
   define ENABLE_COVERAGE
@@ -1136,6 +1149,7 @@ set auto_rep {
   *_TARGETS
   BINDIR
   BUILD_DOC
+  COMPILE_COMMANDS
   CRYPT_*
   DOMAIN
   ENABLE_*
