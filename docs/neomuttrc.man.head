@@ -857,11 +857,11 @@ section \(lq\fBSpam Detection\fP\(rq in the NeoMutt manual.
 .
 .PP
 .nf
-\fBsubjectrx\fP \fIpattern\fP \fIreplacement\fP
-\fBunsubjectrx\fP { \fB*\fP | \fIpattern\fP }
+\fBsubjectrx\fP \fIregex\fP \fIreplacement\fP
+\fBunsubjectrx\fP { \fB*\fP | \fIregex\fP }
 .fi
 .IP
-The \fBsubjectrx\fP command specifies a regular expression \fIpattern\fP which,
+The \fBsubjectrx\fP command specifies a regular expression which,
 if detected in a message subject, causes the subject to be replaced with the
 \fIreplacement\fP value. The \fIreplacement\fP is subject to substitutions in
 the same way as for the \fBspam\fP command: %L for the text to the left of the
@@ -873,7 +873,7 @@ Note this well: the \fIreplacement\fP value replaces the entire subject, not
 just the match!
 .IP
 \fBunsubjectrx\fP removes a given \fBsubjectrx\fP from the substitution list.
-If \(lq\fB*\fP\(rq is used as the pattern, all substitutions will be removed.
+If \(lq\fB*\fP\(rq is used as the argument, all substitutions will be removed.
 .
 .PP
 .nf

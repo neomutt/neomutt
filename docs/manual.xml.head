@@ -9845,7 +9845,7 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
       <cmdsynopsis>
         <command>subjectrx</command>
         <arg choice="plain">
-          <replaceable class="parameter">pattern</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">replacement</replaceable>
@@ -9856,13 +9856,13 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
             <replaceable class="parameter">*</replaceable>
           </arg>
           <arg choice="plain">
-            <replaceable class="parameter">pattern</replaceable>
+            <replaceable class="parameter">regex</replaceable>
           </arg>
         </group>
       </cmdsynopsis>
       <para>
         <literal>subjectrx</literal> specifies a regular expression
-        <quote>pattern</quote> which, if detected in a message subject, causes
+        which, if detected in a message subject, causes
         the subject to be replaced with the <quote>replacement</quote> value.
         The replacement is subject to substitutions in the same way as for the
         <link linkend="spam">spam</link> command: <literal>%L</literal> for the
@@ -9878,7 +9878,7 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
       </para>
       <para>
         <literal>unsubjectrx</literal> removes a given subjectrx from the
-        substitution list. If <literal>*</literal> is used as the pattern, all
+        substitution list. If <literal>*</literal> is used as the argument, all
         substitutions will be removed.
       </para>
       <example id="ex-subjectrx">
@@ -20510,7 +20510,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="display-munging">subjectrx</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">pattern</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">replacement</replaceable>
@@ -20523,7 +20523,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable class="parameter">*</replaceable>
               </arg>
               <arg choice="plain">
-                <replaceable class="parameter">pattern</replaceable>
+                <replaceable class="parameter">regex</replaceable>
               </arg>
             </group>
           </cmdsynopsis>
