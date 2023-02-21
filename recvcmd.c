@@ -920,7 +920,7 @@ static void attach_include_reply(FILE *fp, FILE *fp_tmp, struct Email *e)
   CopyMessageFlags cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV;
   CopyHeaderFlags chflags = CH_DECODE;
 
-  mutt_make_attribution(e, fp_tmp, NeoMutt->sub);
+  mutt_make_attribution_intro(e, fp_tmp, NeoMutt->sub);
 
   const bool c_header = cs_subset_bool(NeoMutt->sub, "header");
   if (!c_header)
@@ -933,7 +933,7 @@ static void attach_include_reply(FILE *fp, FILE *fp_tmp, struct Email *e)
   }
 
   mutt_copy_message_fp(fp_tmp, fp, e, cmflags, chflags, 0);
-  mutt_make_post_indent(e, fp_tmp, NeoMutt->sub);
+  mutt_make_attribution_trailer(e, fp_tmp, NeoMutt->sub);
 }
 
 /**
@@ -1032,7 +1032,7 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
   }
   else
   {
-    mutt_make_attribution(e_parent, fp_tmp, NeoMutt->sub);
+    mutt_make_attribution_intro(e_parent, fp_tmp, NeoMutt->sub);
 
     struct State st;
     memset(&st, 0, sizeof(struct State));
@@ -1088,7 +1088,7 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
       }
     }
 
-    mutt_make_post_indent(e_parent, fp_tmp, NeoMutt->sub);
+    mutt_make_attribution_trailer(e_parent, fp_tmp, NeoMutt->sub);
 
     if (mime_reply_any && !e_cur && !copy_problematic_attachments(&e_tmp->body, actx, false))
     {

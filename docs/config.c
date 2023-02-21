@@ -304,25 +304,42 @@
 ** NeoMutt will operate on the attachments one by one.
 */
 
-{ "attribution", DT_STRING, "On %d, %n wrote:" },
+{ "attribution_intro", DT_STRING, "On %d, %n wrote:" },
 /*
 ** .pp
-** This is the string that will precede a message which has been included
-** in a reply.  For a full listing of defined \fCprintf(3)\fP-like sequences see
-** the section on $$index_format.
+** This is the string that will precede a replied-to message which is
+** quoted in the main body of the reply (this is the case when $$include is
+** set).
+** .pp
+** For a full listing of defined \fCprintf(3)\fP-like sequences see the section
+** on $$index_format.  See also $$attribution_locale.
 */
 
 { "attribution_locale", DT_STRING, 0 },
 /*
 ** .pp
 ** The locale used by \fCstrftime(3)\fP to format dates in the
-** $attribution string.  Legal values are the strings your system
+** attribution strings.  Legal values are the strings your system
 ** accepts for the locale environment variable \fC$$$LC_TIME\fP.
 ** .pp
 ** This variable is to allow the attribution date format to be
 ** customized by recipient or folder using hooks.  By default, NeoMutt
 ** will use your locale environment, so there is no need to set
 ** this except to override that default.
+** .pp
+** Affected variables are: $$attribution_intro, $$attribution_trailer,
+** $$forward_attribution_intro, $$forward_attribution_trailer, $$indent_string.
+*/
+
+{ "attribution_trailer", DT_STRING, 0 },
+/*
+** .pp
+** Similar to the $$attribution_intro variable, this is the string that will
+** come after a replied-to message which is quoted in the main body of the reply
+** (this is the case when $$include is set).
+** .pp
+** For a full listing of defined \fCprintf(3)\fP-like sequences see the section
+** on $$index_format.  See also $$attribution_locale.
 */
 
 { "auto_edit", DT_BOOL, false },
@@ -923,7 +940,7 @@
 ** UI: $$folder_format, $$index_format, $$mailbox_folder_format,
 ** $$message_format
 ** .pp
-** Composing: $$attribution, $$forward_attribution_intro,
+** Composing: $$attribution_intro, $$forward_attribution_intro,
 ** $$forward_attribution_trailer, $$forward_format, $$indent_string.
 ** .pp
 */
@@ -3515,13 +3532,6 @@
 ** This variable defaults to your user name on the local machine.
 */
 #endif
-
-{ "post_indent_string", DT_STRING, 0 },
-/*
-** .pp
-** Similar to the $$attribution variable, NeoMutt will append this
-** string after the inclusion of a message which is being replied to.
-*/
 
 #ifdef USE_NNTP
 { "post_moderated", DT_QUAD, MUTT_ASKYES },

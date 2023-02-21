@@ -625,26 +625,48 @@ cleanup:
 }
 
 /**
- * mutt_make_attribution - Add "on DATE, PERSON wrote" header
+ * format_attribution - Format an attribution prefix/suffix
+ * @param s      String to format
  * @param e      Email
  * @param fp_out File to write to
  * @param sub    Config Subset
  */
-void mutt_make_attribution(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
+static void format_attribution(const char *s, struct Email *e, FILE *fp_out,
+                               struct ConfigSubset *sub)
 {
-  const char *const c_attribution = cs_subset_string(sub, "attribution");
-  if (!c_attribution || !fp_out)
+  if (!s || !fp_out)
     return;
 
   const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
 
   char buf[1024] = { 0 };
   setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, sizeof(buf), 0, c_attribution, NULL, -1, e,
-                   MUTT_FORMAT_NO_FLAGS, NULL);
+  mutt_make_string(buf, sizeof(buf), 0, s, NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
   setlocale(LC_TIME, "");
   fputs(buf, fp_out);
   fputc('\n', fp_out);
+}
+
+/**
+ * mutt_make_attribution_intro - Add "on DATE, PERSON wrote" header
+ * @param e      Email
+ * @param fp_out File to write to
+ * @param sub    Config Subset
+ */
+void mutt_make_attribution_intro(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
+{
+  format_attribution(cs_subset_string(sub, "attribution_intro"), e, fp_out, sub);
+}
+
+/**
+ * mutt_make_attribution_trailer - Add suffix to replied email text
+ * @param e      Email
+ * @param fp_out File to write to
+ * @param sub    Config Subset
+ */
+void mutt_make_attribution_trailer(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
+{
+  format_attribution(cs_subset_string(sub, "attribution_trailer"), e, fp_out, sub);
 }
 
 /**
@@ -734,29 +756,6 @@ static void mutt_make_greeting(struct Email *e, FILE *fp_out, struct ConfigSubse
 }
 
 /**
- * mutt_make_post_indent - Add suffix to replied email text
- * @param e      Email
- * @param fp_out File to write to
- * @param sub    Config Subset
- */
-void mutt_make_post_indent(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
-{
-  const char *const c_post_indent_string = cs_subset_string(sub, "post_indent_string");
-  if (!c_post_indent_string || !fp_out)
-    return;
-
-  const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
-
-  char buf[256] = { 0 };
-  setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, sizeof(buf), 0, c_post_indent_string, NULL, -1, e,
-                   MUTT_FORMAT_NO_FLAGS, NULL);
-  setlocale(LC_TIME, "");
-  fputs(buf, fp_out);
-  fputc('\n', fp_out);
-}
-
-/**
  * include_reply - Generate the reply text for an email
  * @param m      Mailbox
  * @param e      Email
@@ -786,7 +785,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out,
   mutt_parse_mime_message(e, msg->fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
-  mutt_make_attribution(e, fp_out, sub);
+  mutt_make_attribution_intro(e, fp_out, sub);
 
   const bool c_header = cs_subset_bool(sub, "header");
   if (!c_header)
@@ -802,7 +801,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out,
   mutt_copy_message(fp_out, e, msg, cmflags, chflags, 0);
   mx_msg_close(m, &msg);
 
-  mutt_make_post_indent(e, fp_out, sub);
+  mutt_make_attribution_trailer(e, fp_out, sub);
 
   return 0;
 }
