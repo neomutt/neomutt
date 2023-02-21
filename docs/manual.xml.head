@@ -5662,10 +5662,10 @@ uncolor status *
         <cmdsynopsis>
           <command>ignore</command>
           <arg choice="plain">
-            <replaceable class="parameter">pattern</replaceable>
+            <replaceable class="parameter">string</replaceable>
           </arg>
           <arg choice="opt" rep="repeat">
-            <replaceable class="parameter">pattern</replaceable>
+            <replaceable class="parameter">string</replaceable>
           </arg>
           <command>unignore</command>
           <group choice="req">
@@ -5673,7 +5673,7 @@ uncolor status *
               <replaceable>*</replaceable>
             </arg>
             <arg choice="plain" rep="repeat">
-              <replaceable>pattern</replaceable>
+              <replaceable>string</replaceable>
             </arg>
           </group>
         </cmdsynopsis>
@@ -5686,13 +5686,13 @@ uncolor status *
         <para>
           You do not need to specify the full header field name. For example,
           <quote>ignore content-</quote> will ignore all header fields that
-          begin with the pattern <quote>content-</quote>.
+          begin with the string <quote>content-</quote>.
           <quote>ignore&#160;*</quote> will ignore all headers.
         </para>
         <para>
           To remove a previously added token from the list, use the
           <quote>unignore</quote> command. The <quote>unignore</quote> command
-          will make NeoMutt display headers with the given pattern. For
+          will make NeoMutt display headers matching the given string. For
           example, if you do <quote>ignore x-</quote> it is possible to
           <quote>unignore x-mailer</quote>.
         </para>
@@ -19942,10 +19942,10 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="ignore">ignore</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">pattern</replaceable>
+              <replaceable class="parameter">string</replaceable>
             </arg>
             <arg choice="opt" rep="repeat">
-              <replaceable class="parameter">pattern</replaceable>
+              <replaceable class="parameter">string</replaceable>
             </arg>
             <command>
               <link linkend="ignore">unignore</link>
@@ -19955,7 +19955,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable>*</replaceable>
               </arg>
               <arg choice="plain" rep="repeat">
-                <replaceable>pattern</replaceable>
+                <replaceable>string</replaceable>
               </arg>
             </group>
           </cmdsynopsis>

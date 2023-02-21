@@ -492,14 +492,14 @@ the output of the command \(lq\fBneomutt\~\-v\fP\(rq (in the
 .
 .PP
 .nf
-\fBignore\fP \fIpattern\fP [ \fIpattern\fP ... ]
-\fBunignore\fP { \fB*\fP | \fIpattern\fP ... }
+\fBignore\fP \fIstring\fP [ \fIstring\fP ... ]
+\fBunignore\fP { \fB*\fP | \fIstring\fP ... }
 .fi
 .IP
 The \fBignore\fP command allows you to specify header fields which you don't
 normally want to see in the pager. You do not need to specify the full header
 field name. For example, \(lq\fBignore\fP content-\(rq will ignore all header
-fields that begin with the pattern \(lqcontent-\(rq, \(lq\fBignore\fP\~*\(rq
+fields that begin with the string \(lqcontent-\(rq, \(lq\fBignore\fP\~*\(rq
 will ignore all headers.
 .IP
 To remove a previously added token from the list, use the \fBunignore\fP
