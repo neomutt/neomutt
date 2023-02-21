@@ -307,9 +307,12 @@
 { "attribution_intro", DT_STRING, "On %d, %n wrote:" },
 /*
 ** .pp
-** This is the string that will precede a message which has been included
-** in a reply.  For a full listing of defined \fCprintf(3)\fP-like sequences see
-** the section on $$index_format.
+** This is the string that will precede a replied-to message which is
+** quoted in the main body of the reply (this is the case when $$include is
+** set).
+** .pp
+** For a full listing of defined \fCprintf(3)\fP-like sequences see the section
+** on $$index_format.  See also $$attribution_locale.
 */
 
 { "attribution_locale", DT_STRING, 0 },
@@ -331,8 +334,12 @@
 { "attribution_trailer", DT_STRING, 0 },
 /*
 ** .pp
-** Similar to the $$attribution_intro variable, NeoMutt will append this
-** string after the inclusion of a message which is being replied to.
+** Similar to the $$attribution_intro variable, this is the string that will
+** come after a replied-to message which is quoted in the main body of the reply
+** (this is the case when $$include is set).
+** .pp
+** For a full listing of defined \fCprintf(3)\fP-like sequences see the section
+** on $$index_format.  See also $$attribution_locale.
 */
 
 { "auto_edit", DT_BOOL, false },
