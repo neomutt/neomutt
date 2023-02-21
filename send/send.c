@@ -648,6 +648,29 @@ void mutt_make_attribution_intro(struct Email *e, FILE *fp_out, struct ConfigSub
 }
 
 /**
+ * mutt_make_attribution_trailer - Add suffix to replied email text
+ * @param e      Email
+ * @param fp_out File to write to
+ * @param sub    Config Subset
+ */
+void mutt_make_attribution_trailer(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
+{
+  const char *const c_attribution_trailer = cs_subset_string(sub, "attribution_trailer");
+  if (!c_attribution_trailer || !fp_out)
+    return;
+
+  const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
+
+  char buf[256] = { 0 };
+  setlocale(LC_TIME, NONULL(c_attribution_locale));
+  mutt_make_string(buf, sizeof(buf), 0, c_attribution_trailer, NULL, -1, e,
+                   MUTT_FORMAT_NO_FLAGS, NULL);
+  setlocale(LC_TIME, "");
+  fputs(buf, fp_out);
+  fputc('\n', fp_out);
+}
+
+/**
  * greeting_format_str - Format a greetings string - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description
@@ -734,29 +757,6 @@ static void mutt_make_greeting(struct Email *e, FILE *fp_out, struct ConfigSubse
 }
 
 /**
- * mutt_make_post_indent - Add suffix to replied email text
- * @param e      Email
- * @param fp_out File to write to
- * @param sub    Config Subset
- */
-void mutt_make_post_indent(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
-{
-  const char *const c_attribution_trailer = cs_subset_string(sub, "attribution_trailer");
-  if (!c_attribution_trailer || !fp_out)
-    return;
-
-  const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
-
-  char buf[256] = { 0 };
-  setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, sizeof(buf), 0, c_attribution_trailer, NULL, -1, e,
-                   MUTT_FORMAT_NO_FLAGS, NULL);
-  setlocale(LC_TIME, "");
-  fputs(buf, fp_out);
-  fputc('\n', fp_out);
-}
-
-/**
  * include_reply - Generate the reply text for an email
  * @param m      Mailbox
  * @param e      Email
@@ -802,7 +802,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out,
   mutt_copy_message(fp_out, e, msg, cmflags, chflags, 0);
   mx_msg_close(m, &msg);
 
-  mutt_make_post_indent(e, fp_out, sub);
+  mutt_make_attribution_trailer(e, fp_out, sub);
 
   return 0;
 }
