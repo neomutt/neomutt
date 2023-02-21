@@ -421,8 +421,8 @@ the order given in the configuration file.
 .
 .PP
 .nf
-\fBgroup\fP [ \fB\-group\fP \fIname\fP ... ] { \fB\-rx\fP \fIexpr\fP ... | \fB\-addr\fP \fIaddress\fP ... }
-\fBungroup\fP [ \fB\-group\fP \fIname\fP ... ] { \fB*\fP | \fB\-rx\fP \fIexpr\fP ... | \fB\-addr\fP \fIaddress\fP ... }
+\fBgroup\fP [ \fB\-group\fP \fIname\fP ... ] { \fB\-rx\fP \fIregex\fP ... | \fB\-addr\fP \fIaddress\fP ... }
+\fBungroup\fP [ \fB\-group\fP \fIname\fP ... ] { \fB*\fP | \fB\-rx\fP \fIregex\fP ... | \fB\-addr\fP \fIaddress\fP ... }
 .fi
 .IP
 \fBgroup\fP is used to directly add either addresses or regular expressions to

@@ -3997,11 +3997,11 @@ set imap_pass="`gpg --batch -q --decrypt ~/.neomutt/account.gpg`"
         <group choice="req">
           <arg choice="plain" rep="repeat">
             <option>-rx</option>
-            <replaceable class="parameter">expr</replaceable>
+            <replaceable class="parameter">regex</replaceable>
           </arg>
           <arg choice="plain" rep="repeat">
             <option>-addr</option>
-            <replaceable class="parameter">expr</replaceable>
+            <replaceable class="parameter">address</replaceable>
           </arg>
         </group>
         <command>ungroup</command>
@@ -4015,17 +4015,17 @@ set imap_pass="`gpg --batch -q --decrypt ~/.neomutt/account.gpg`"
           </arg>
           <arg choice="plain" rep="repeat">
             <option>-rx</option>
-            <replaceable class="parameter">expr</replaceable>
+            <replaceable class="parameter">regex</replaceable>
           </arg>
           <arg choice="plain" rep="repeat">
             <option>-addr</option>
-            <replaceable class="parameter">expr</replaceable>
+            <replaceable class="parameter">address</replaceable>
           </arg>
         </group>
       </cmdsynopsis>
       <para>
         NeoMutt supports grouping addresses logically into named groups. An
-        address or address pattern can appear in several groups at the same
+        address or regular expression can appear in several groups at the same
         time. These groups can be used in
         <link linkend="patterns">patterns</link> (for searching, limiting and
         tagging) and in hooks by using group patterns. This can be useful to
@@ -4081,8 +4081,8 @@ alternates -group me -group work address3
         its contents. As soon as a group gets empty because all addresses and
         regular expressions have been removed, it'll internally be removed, too
         (i.e. there cannot be an empty group). When removing regular
-        expressions from a group, the pattern must be specified exactly as
-        given to the <command>group</command> command or
+        expressions from a group, the <emphasis>regex</emphasis> must be
+        specified exactly as given to the <command>group</command> command or
         <literal>-group</literal> argument.
       </para>
     </sect1>
@@ -19858,11 +19858,11 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <group choice="req">
               <arg choice="plain" rep="repeat">
                 <option>-rx</option>
-                <replaceable class="parameter">expr</replaceable>
+                <replaceable class="parameter">regex</replaceable>
               </arg>
               <arg choice="plain" rep="repeat">
                 <option>-addr</option>
-                <replaceable class="parameter">expr</replaceable>
+                <replaceable class="parameter">address</replaceable>
               </arg>
             </group>
             <command>
@@ -19878,11 +19878,11 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               </arg>
               <arg choice="plain" rep="repeat">
                 <option>-rx</option>
-                <replaceable class="parameter">expr</replaceable>
+                <replaceable class="parameter">regex</replaceable>
               </arg>
               <arg choice="plain" rep="repeat">
                 <option>-addr</option>
-                <replaceable class="parameter">expr</replaceable>
+                <replaceable class="parameter">address</replaceable>
               </arg>
             </group>
           </cmdsynopsis>
