@@ -5984,7 +5984,7 @@ unignore posted-to:
           <replaceable class="parameter">-noregex</replaceable>
         </arg>
         <arg choice="plain">
-          <replaceable class="parameter">pattern</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">mailbox</replaceable>
@@ -5993,11 +5993,11 @@ unignore posted-to:
       <para>
         This command is used to move read messages from a specified mailbox to
         a different mailbox automatically when you quit or change folders.
-        <emphasis>pattern</emphasis> is used to specifying the mailbox to
+        <emphasis>regex</emphasis> is used to specifying the mailbox to
         treat as a <quote>spool</quote> mailbox and <emphasis>mailbox</emphasis>
         specifies where mail should be saved when read.
         The <emphasis>-noregex</emphasis> switch controls whether
-        <emphasis>pattern</emphasis> is matched using a simple string
+        <emphasis>regex</emphasis> is matched using a simple string
         comparison or a full regex match.
       </para>
       <para>
@@ -20128,6 +20128,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <command>
               <link linkend="mbox-hook">mbox-hook</link>
             </command>
+            <arg choice="opt">
+              <replaceable class="parameter">-noregex</replaceable>
+            </arg>
             <arg choice="plain">
               <replaceable class="parameter">regex</replaceable>
             </arg>

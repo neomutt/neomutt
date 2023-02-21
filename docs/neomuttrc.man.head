@@ -590,13 +590,13 @@ Changes the current working directory.
 .
 .PP
 .nf
-\fBmbox-hook\fP [\fI-noregex\fP] \fIpattern\fP \fImailbox\fP
+\fBmbox-hook\fP [\fI-noregex\fP] \fIregex\fP \fImailbox\fP
 .fi
 .IP
-When NeoMutt changes to a mail folder which matches \fIpattern\fP, \fImailbox\fP
+When NeoMutt changes to a mail folder which matches \fIregex\fP, \fImailbox\fP
 will be used as the \(lqmbox\(rq folder, i.e. read messages will be moved to
 that folder when the mail folder is left. The \fI-noregex\fP switch controls
-whether \fIpattern\fP is matches as simple string equality or full regex match.
+whether \fIregex\fP is matches as simple string equality or full regex match.
 
 .IP
 Note that execution of \fBmbox-hook\fPs is dependent on the $move configuration
