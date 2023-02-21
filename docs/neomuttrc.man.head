@@ -514,9 +514,9 @@ ignore list.
 \fBunsubscribe\fP [ \fB\-group\fP \fIname\fP ... ] { \fB*\fP | \fIregex\fP ... }
 .fi
 .IP
-NeoMutt maintains two lists of mailing list address patterns, a list of
-subscribed mailing lists, and a list of known mailing lists. All subscribed
-mailing lists are known. Patterns use regular expressions.
+NeoMutt maintains two lists of mailing list address regular expressions, a list
+of subscribed mailing lists, and a list of known mailing lists. All subscribed
+mailing lists are known.
 .IP
 The \fBlists\fP command adds a mailing list address to the list of known
 mailing lists. The \fBunlists\fP command removes a mailing list from the lists

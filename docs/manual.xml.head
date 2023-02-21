@@ -5924,10 +5924,11 @@ unignore posted-to:
         </para>
       </note>
       <para>
-        More precisely, NeoMutt maintains lists of patterns for the addresses
-        of known and subscribed mailing lists. Every subscribed mailing list is
-        known. To mark a mailing list as known, use the <command>list</command>
-        command. To mark it as subscribed, use <command>subscribe</command>.
+        More precisely, NeoMutt maintains lists of regular expressions for the
+        addresses of known and subscribed mailing lists. Every subscribed
+        mailing list is known. To mark a mailing list as known, use the
+        <command>list</command> command. To mark it as subscribed, use
+        <command>subscribe</command>.
       </para>
       <para>
         You can use regular expressions with both commands. To mark all
