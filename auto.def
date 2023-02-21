@@ -1114,7 +1114,7 @@ if {[get-define want-compile-commands]} {
   define COMPILE_COMMANDS
   define-append ALL_TARGETS compile_commands.json
   define-append CLEAN_TARGETS clean-compile_commands.json
-  define-append CFLAGS {-MJ $(@:.o=.o.json)}
+  define-append CFLAGS {-MJ$(@:.o=.o.json)}
 }
 
 ###############################################################################
@@ -1218,7 +1218,16 @@ make-config-header config.h -auto $auto_rep -bare $bare_rep -str $str_rep
 
 ###############################################################################
 # Generate .clang_complete
-define cflags-one-per-line [string map {" " "\n"} [get-define CFLAGS]]
+proc cflags-for-clang-complete {} {
+  lmap x [get-define CFLAGS] {
+    if {[string match "-MJ*" $x]} {
+      continue
+    } else {
+      set x
+    }
+  }
+}
+define cflags-one-per-line [string map {" " "\n"} [cflags-for-clang-complete]]
 make-template .clang_complete.in
 
 ###############################################################################
