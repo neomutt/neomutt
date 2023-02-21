@@ -7744,6 +7744,22 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
         special meaning may be quoted by preceding it with a backslash.
       </para>
       <para>
+        The following matches a literal dot <quote>.</quote> in an address:
+      </para>
+      <example id="ex-literal-dot-in-regex">
+        <title>Matching a literal dot</title>
+<screen>
+<emphasis role="comment"># no quotes</emphasis>
+alternates only\\.dot@example\\.org
+
+<emphasis role="comment"># single quotes</emphasis>
+lists 'only\.dot@example\.org'
+
+<emphasis role="comment"># Double quotes</emphasis>
+subscribe "only\\.dot@example\\.org"
+</screen>
+      </example>
+      <para>
         The period <quote>.</quote> matches any single character. The caret
         <quote>^</quote> and the dollar sign <quote>$</quote> are
         metacharacters that respectively match the empty string at the
@@ -8661,6 +8677,22 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
           in the regular expression, you will need to use two backslashes
           instead (<quote>\\</quote>).
         </para>
+      <example id="ex-literal-dot-in-pattern">
+        <title>Using <literal>\s</literal> and matching a literal dot in patterns</title>
+<screen>
+<emphasis role="comment"># no quotes</emphasis>
+save-hook ~h\ list-id:\\\\s*&lt;only\\\\.dot&gt;    '=archive'
+save-hook ~hlist-id:\\\\s*&lt;only\\\\.dot-here&gt; '=archive'
+
+<emphasis role="comment"># single quotes</emphasis>
+save-hook '~h list-id:\\s&lt;only\\.dot&gt;'        '=archive'
+save-hook ~h'list-id:\\s*&lt;only\\.dot-here&gt;'   '=archive'
+
+<emphasis role="comment"># Double quotes</emphasis>
+save-hook "~h list-id:\\\\s&lt;only\\\\.dot&gt;"    '=archive'
+save-hook ~h"list-id:\\\\s*&lt;only\\\\.dot&gt;"    '=archive'
+</screen>
+      </example>
         <para>
           You can force NeoMutt to treat
           <emphasis>EXPR</emphasis> as a simple substring instead of a regular
@@ -9390,7 +9422,7 @@ Limit to messages matching: ~d 19950120-19951031
 
 <screen>
 send-hook . 'unmy_hdr From:'
-send-hook ~C'^b@b\.b$' my_hdr from: c@c.c
+send-hook ~C'^b@b\\.b$' my_hdr from: c@c.c
 </screen>
 
       </example>
@@ -9431,7 +9463,7 @@ send-hook ~C'^b@b\.b$' my_hdr from: c@c.c
         </para>
 
 <screen>
-send-hook '~t ^user@work\.com$' 'my_hdr From: John Smith &lt;user@host&gt;'
+send-hook '~t ^user@work\\.com$' 'my_hdr From: John Smith &lt;user@host&gt;'
 </screen>
 
         <para>
@@ -9470,10 +9502,10 @@ folder-hook ^/home/user/Mail/bar "set sort=threads"
 folder-hook (^/home/user/Mail/bar) "set sort=threads"
 <emphasis role="comment"># This will expand to the default save folder for the alias "imap.example.com", which</emphasis>
 <emphasis role="comment"># is probably not what you want:</emphasis>
-folder-hook @imap.example.com "set sort=threads"
+folder-hook @imap\\.example\\.com "set sort=threads"
 <emphasis role="comment"># A workaround is to use parenthesis or a backslash:</emphasis>
-folder-hook (@imap.example.com) "set sort=threads"
-folder-hook '\@imap.example.com' "set sort=threads"
+folder-hook (@imap\\.example\\.com) "set sort=threads"
+folder-hook '\@imap\.example\.com' "set sort=threads"
 </screen>
 
         <para>
