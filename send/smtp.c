@@ -966,15 +966,23 @@ static int smtp_authenticate(struct SmtpAccountData *adata)
   else
   {
     /* Fall back to default: any authenticator */
-    mutt_debug(LL_DEBUG2, "Falling back to smtp_auth_sasl, if using sasl.\n");
-
 #if defined(USE_SASL_CYRUS)
+    mutt_debug(LL_DEBUG2, "Falling back to smtp_auth_sasl, if using sasl.\n");
     r = smtp_auth_sasl(adata, adata->auth_mechs);
 #elif defined(USE_SASL_GNU)
+    mutt_debug(LL_DEBUG2, "Falling back to smtp_auth_gsasl, if using gsasl.\n");
     r = smtp_auth_gsasl(adata, adata->auth_mechs);
 #else
-    mutt_error(_("SMTP authentication requires SASL"));
-    r = SMTP_AUTH_UNAVAIL;
+    mutt_debug(LL_DEBUG2, "Falling back to using any authenticator available.\n");
+    /* Try all available authentication methods */
+    for (size_t i = 0; i < mutt_array_size(SmtpAuthenticators); i++)
+    {
+      const struct SmtpAuth *auth = &SmtpAuthenticators[i];
+      mutt_debug(LL_DEBUG2, "Trying method %s\n", auth->method ? auth->method : "<variable>");
+      r = auth->authenticate(adata, auth->method);
+      if (r == SMTP_AUTH_SUCCESS)
+        return r;
+    }
 #endif
   }
 
