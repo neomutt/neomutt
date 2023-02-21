@@ -5827,10 +5827,10 @@ unignore posted-to:
       </para>
       <para>
         The <command>unalternates</command> command can be used to write
-        exceptions to <command>alternates</command> patterns. If an address
+        exceptions to <command>alternates</command> regex. If an address
         matches something in an <command>alternates</command> command, but you
         nonetheless do not think it is from you, you can list a more precise
-        pattern under an <command>unalternates</command> command.
+        regex under an <command>unalternates</command> command.
       </para>
       <para>
         To remove a regular expression from the <command>alternates</command>

@@ -129,10 +129,10 @@ receive mail; you can use regular expressions (\fIregex\fP) to specify
 alternate addresses. This affects NeoMutt's idea about messages from you, and
 messages addressed to you.
 .IP
-\fBunalternates\fP can be used to write exceptions to alternates patterns. To
-remove a regular expression from the alternates list, use the unalternates
-command with exactly the same \fIregex\fP or use \(lq\fB*\fP\(rq to remove all
-entries.
+\fBunalternates\fP can be used to write exceptions to alternates regular
+expression. To remove a regular expression from the alternates list, use the
+unalternates command with exactly the same \fIregex\fP or use \(lq\fB*\fP\(rq
+to remove all entries.
 .IP
 The optional \fB\-group\fP flag causes all of the subsequent regular expressions
 to be added to or removed from the \fIname\fPd group.
