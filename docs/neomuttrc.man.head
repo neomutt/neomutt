@@ -408,12 +408,12 @@ NeoMutt manual for information on the exact format of \fIpattern\fP.
 .
 .PP
 .nf
-\fBfolder-hook\fP [\fI-noregex\fP] \fIpattern\fP \fIcommand\fP
+\fBfolder-hook\fP [\fI-noregex\fP] \fIregex\fP \fIcommand\fP
 .fi
 .IP
-When NeoMutt enters a folder which matches \fIpattern\fP (or, when \fIpattern\fP is
-preceded by an exclamation mark, does not match \fIpattern\fP), the given
-\fIcommand\fP is executed. The \fI-noregex\fP switch controls whether \fIpattern\fP
+When NeoMutt enters a folder which matches \fIregex\fP (or, when \fIregex\fP is
+preceded by an exclamation mark, does not match \fIregex\fP), the given
+\fIcommand\fP is executed. The \fI-noregex\fP switch controls whether \fIregex\fP
 is matches as simple string equality or full regex match.
 .IP
 When several \fBfolder-hook\fPs match a given mail folder, they are executed in

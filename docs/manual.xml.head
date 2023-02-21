@@ -4703,7 +4703,7 @@ bind index gg first-entry
           <replaceable class="parameter">-noregex</replaceable>
         </arg>
         <arg choice="plain">
-          <replaceable class="parameter">pattern</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">command</replaceable>
@@ -4714,8 +4714,8 @@ bind index gg first-entry
         reading. The <command>folder-hook</command> command provides a method
         by which you can execute any configuration command.
         The <emphasis>command</emphasis> is executed before loading any mailboxes
-        matching <emphasis>pattern</emphasis>. The <emphasis>-noregex</emphasis>
-        switch controls whether <emphasis>pattern</emphasis> is matched using
+        matching <emphasis>regex</emphasis>. The <emphasis>-noregex</emphasis>
+        switch controls whether <emphasis>regex</emphasis> is matched using
         a simple string comparison or a full regex match.
         If a mailbox matches multiple <command>folder-hook</command>s, they are
         executed in the order given in the <literal>.neomuttrc</literal>.
@@ -4729,10 +4729,10 @@ bind index gg first-entry
       <note>
         <para>
           If you use the <quote>!</quote> shortcut for
-          <link linkend="spool-file">$spool_file</link> at the beginning of the
-          pattern, you must place it inside of double or single quotes in order
-          to distinguish it from the logical <emphasis>not</emphasis> operator
-          for the expression.
+          <link linkend="spool-file">$spool_file</link> at the beginning of
+          <emphasis>regex</emphasis>, you must place it inside of double or
+          single quotes in order to distinguish it from the logical
+          <emphasis>not</emphasis> operator for the expression.
         </para>
       </note>
       <note>
@@ -4745,7 +4745,7 @@ bind index gg first-entry
         <para>
           However, the sorting method is not restored to its previous value
           when reading a different mailbox. To specify
-          a <emphasis>default</emphasis> command, use the pattern
+          a <emphasis>default</emphasis> command, use the regex
           <quote>.</quote> before other <command>folder-hook</command>s
           adjusting a value on a per-folder basis because
           <command>folder-hook</command>s are evaluated in the order given in
