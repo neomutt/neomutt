@@ -316,13 +316,16 @@
 /*
 ** .pp
 ** The locale used by \fCstrftime(3)\fP to format dates in the
-** $attribution string.  Legal values are the strings your system
+** attribution strings.  Legal values are the strings your system
 ** accepts for the locale environment variable \fC$$$LC_TIME\fP.
 ** .pp
 ** This variable is to allow the attribution date format to be
 ** customized by recipient or folder using hooks.  By default, NeoMutt
 ** will use your locale environment, so there is no need to set
 ** this except to override that default.
+** .pp
+** Affected variables are: $$attribution_intro, $$attribution_trailer,
+** $$forward_attribution_intro, $$forward_attribution_trailer, $$indent_string.
 */
 
 { "attribution_trailer", DT_STRING, 0 },
