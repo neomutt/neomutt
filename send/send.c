@@ -625,6 +625,29 @@ cleanup:
 }
 
 /**
+ * format_attribution - Format an attribution prefix/suffix
+ * @param s      String to format
+ * @param e      Email
+ * @param fp_out File to write to
+ * @param sub    Config Subset
+ */
+static void format_attribution(const char *s, struct Email *e, FILE *fp_out,
+                               struct ConfigSubset *sub)
+{
+  if (!s || !fp_out)
+    return;
+
+  const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
+
+  char buf[1024] = { 0 };
+  setlocale(LC_TIME, NONULL(c_attribution_locale));
+  mutt_make_string(buf, sizeof(buf), 0, s, NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
+  setlocale(LC_TIME, "");
+  fputs(buf, fp_out);
+  fputc('\n', fp_out);
+}
+
+/**
  * mutt_make_attribution_intro - Add "on DATE, PERSON wrote" header
  * @param e      Email
  * @param fp_out File to write to
@@ -632,19 +655,7 @@ cleanup:
  */
 void mutt_make_attribution_intro(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
 {
-  const char *const c_attribution_intro = cs_subset_string(sub, "attribution_intro");
-  if (!c_attribution_intro || !fp_out)
-    return;
-
-  const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
-
-  char buf[1024] = { 0 };
-  setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, sizeof(buf), 0, c_attribution_intro, NULL, -1, e,
-                   MUTT_FORMAT_NO_FLAGS, NULL);
-  setlocale(LC_TIME, "");
-  fputs(buf, fp_out);
-  fputc('\n', fp_out);
+  format_attribution(cs_subset_string(sub, "attribution_intro"), e, fp_out, sub);
 }
 
 /**
@@ -655,19 +666,7 @@ void mutt_make_attribution_intro(struct Email *e, FILE *fp_out, struct ConfigSub
  */
 void mutt_make_attribution_trailer(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
 {
-  const char *const c_attribution_trailer = cs_subset_string(sub, "attribution_trailer");
-  if (!c_attribution_trailer || !fp_out)
-    return;
-
-  const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
-
-  char buf[256] = { 0 };
-  setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, sizeof(buf), 0, c_attribution_trailer, NULL, -1, e,
-                   MUTT_FORMAT_NO_FLAGS, NULL);
-  setlocale(LC_TIME, "");
-  fputs(buf, fp_out);
-  fputc('\n', fp_out);
+  format_attribution(cs_subset_string(sub, "attribution_trailer"), e, fp_out, sub);
 }
 
 /**
