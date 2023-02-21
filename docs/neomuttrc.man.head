@@ -840,12 +840,12 @@ configuration file the hook is defined in.
 .
 .PP
 .nf
-\fBspam\fP \fIpattern\fP \fIformat\fP
-\fBnospam\fP { \fB*\fP | \fIpattern\fP }
+\fBspam\fP \fIregex\fP \fIformat\fP
+\fBnospam\fP { \fB*\fP | \fIregex\fP }
 .fi
 .IP
 NeoMutt has generalized support for external spam-scoring filters. By defining
-your spam \fIpattern\fPs with the \fBspam\fP and \fBnospam\fP commands, you can
+your spam \fIregex\fPs with the \fBspam\fP and \fBnospam\fP commands, you can
 limit, search, and sort your mail based on its spam attributes, as determined
 by the external filter. You also can display the spam attributes in your index
 display using the %H selector in the $index_format variable. (Tip: try

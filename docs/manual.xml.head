@@ -6617,7 +6617,7 @@ folder-hook . 'push "&lt;enter-command&gt;score ~= 10&lt;enter&gt;"'
       <cmdsynopsis>
         <command>spam</command>
         <arg choice="plain">
-          <replaceable class="parameter">pattern</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">format</replaceable>
@@ -6628,13 +6628,13 @@ folder-hook . 'push "&lt;enter-command&gt;score ~= 10&lt;enter&gt;"'
             <replaceable class="parameter">*</replaceable>
           </arg>
           <arg choice="plain">
-            <replaceable class="parameter">pattern</replaceable>
+            <replaceable class="parameter">regex</replaceable>
           </arg>
         </group>
       </cmdsynopsis>
       <para>
         NeoMutt has generalized support for external spam-scoring filters. By
-        defining your spam patterns with the <command>spam</command> and
+        defining your spam regular expressions with the <command>spam</command> and
         <literal>nospam</literal> commands, you can <emphasis>limit</emphasis>,
         <emphasis>search</emphasis>, and <emphasis>sort</emphasis> your mail
         based on its spam attributes, as determined by the external filter. You
@@ -6655,16 +6655,16 @@ folder-hook . 'push "&lt;enter-command&gt;score ~= 10&lt;enter&gt;"'
         header cache files and turn the header cache back on.
       </para>
       <para>
-        Your first step is to define your external filter's spam patterns using
-        the <command>spam</command> command. <emphasis>pattern</emphasis>
+        Your first step is to define your external filter's spam headers using
+        the <command>spam</command> command. <emphasis>regex</emphasis>
         should be a regular expression that matches a header in a mail message.
         If any message in the mailbox matches this regular expression, it will
         receive a <quote>spam tag</quote> or <quote>spam attribute</quote>
-        (unless it also matches a <command>nospam</command> pattern – see
-        below.) The appearance of this attribute is entirely up to you, and is
-        governed by the <emphasis>format</emphasis> parameter.
+        (unless it also matches a <command>nospam</command> regular expression
+        – see below.) The appearance of this attribute is entirely up to you,
+        and is governed by the <emphasis>format</emphasis> parameter.
         <emphasis>format</emphasis> can be any static text, but it also can
-        include back-references from the <emphasis>pattern</emphasis>
+        include back-references from the <emphasis>regex</emphasis>
         expression. (A regular expression <quote>back-reference</quote> refers
         to a sub-expression contained within parentheses.)
         <literal>%1</literal> is replaced with the first back-reference in the
@@ -6679,9 +6679,9 @@ folder-hook . 'push "&lt;enter-command&gt;score ~= 10&lt;enter&gt;"'
       </para>
       <para>
         If you're using multiple spam filters, a message can have more than one
-        spam-related header. You can define <command>spam</command> patterns
+        spam-related header. You can define <command>spam</command> rules
         for each filter you use. If a message matches two or more of these
-        patterns, and the <link linkend="spam-separator">$spam_separator</link>
+        regular expressions, and the <link linkend="spam-separator">$spam_separator</link>
         variable is set to a string, then the message's spam tag will consist
         of all the <emphasis>format</emphasis> strings joined together, with
         the value of <link linkend="spam-separator">$spam_separator</link>
@@ -6712,7 +6712,7 @@ set spam_separator=", "
       </para>
       <para>
         If the <link linkend="spam-separator">$spam_separator</link> variable
-        is unset, then each spam pattern match supersedes the previous one.
+        is unset, then each spam rule match supersedes the previous one.
         Instead of getting joined <emphasis>format</emphasis> strings, you'll
         get only the last one to match.
       </para>
@@ -6738,7 +6738,7 @@ set spam_separator=", "
         will sort numerically first, and lexically only when two numbers are
         equal in value. (This is like UNIX's <literal>sort -n</literal>.)
         A message with no spam attributes at all – that is, one that didn't
-        match <emphasis>any</emphasis> of your <command>spam</command> patterns
+        match <emphasis>any</emphasis> of your <command>spam</command> rules
         – is sorted at lowest priority. Numbers are sorted next, beginning with
         0 and ranging upward. Finally, non-numeric strings are sorted, with
         <quote>a</quote> taking lower priority than <quote>z</quote>. Clearly,
@@ -6748,19 +6748,19 @@ set spam_separator=", "
       </para>
       <para>
         The <command>nospam</command> command can be used to write exceptions
-        to <command>spam</command> patterns. If a header pattern matches
+        to <command>spam</command> rules. If a header field matches
         something in a <command>spam</command> command, but you nonetheless do
-        not want it to receive a spam tag, you can list a more precise pattern
-        under a <command>nospam</command> command.
+        not want it to receive a spam tag, you can list a more precise regular
+        expression under a <command>nospam</command> command.
       </para>
       <para>
-        If the <emphasis>pattern</emphasis> given to <command>nospam</command>
-        is exactly the same as the <emphasis>pattern</emphasis> on an existing
-        <command>spam</command> list entry, the effect will be to remove the
-        entry from the spam list, instead of adding an exception. Likewise, if
-        the <emphasis>pattern</emphasis> for a <command>spam</command> command
-        matches an entry on the <command>nospam</command> list, that nospam
-        entry will be removed. If the <emphasis>pattern</emphasis> for
+        If the <emphasis>regex</emphasis> given to <command>nospam</command>
+        is exactly the same as the <emphasis>regex</emphasis> on an existing
+        <command>spam</command> rule entry, the effect will be to remove the
+        entry from the spam rules list, instead of adding an exception. Likewise, if
+        the <emphasis>regex</emphasis> for a <command>spam</command> command
+        matches an entry on the <command>nospam</command> rule list, that
+        nospam entry will be removed. If the <emphasis>regex</emphasis> for
         <command>nospam</command> is <quote>*</quote>,
         <emphasis>all entries on both lists</emphasis> will be removed. This
         might be the default action if you use <command>spam</command> and
@@ -20486,7 +20486,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="spam">spam</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">pattern</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">format</replaceable>
@@ -20499,7 +20499,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable class="parameter">*</replaceable>
               </arg>
               <arg choice="plain">
-                <replaceable class="parameter">pattern</replaceable>
+                <replaceable class="parameter">regex</replaceable>
               </arg>
             </group>
           </cmdsynopsis>
