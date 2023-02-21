@@ -104,8 +104,8 @@ static void post_make_entry(struct Menu *menu, char *buf, size_t buflen, int lin
   struct Mailbox *m = menu->mdata;
 
   const char *const c_index_format = cs_subset_string(NeoMutt->sub, "index_format");
-  mutt_make_string(buf, buflen, menu->win->state.cols, NONULL(c_index_format),
-                   m, -1, m->emails[line], MUTT_FORMAT_INDEX | MUTT_FORMAT_ARROWCURSOR, NULL);
+  mutt_make_string(buf, buflen, menu->win->state.cols, NONULL(c_index_format), m, -1,
+                   m->emails[line], MUTT_FORMAT_INDEX | MUTT_FORMAT_ARROWCURSOR, NULL);
 }
 
 /**

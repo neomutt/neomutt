@@ -23,9 +23,9 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include "test_common.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 static const char clear[] = "Hello";
 static const char encoded[] = "SGVsbG8=";
