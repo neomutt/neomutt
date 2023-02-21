@@ -304,7 +304,7 @@
 ** NeoMutt will operate on the attachments one by one.
 */
 
-{ "attribution", DT_STRING, "On %d, %n wrote:" },
+{ "attribution_intro", DT_STRING, "On %d, %n wrote:" },
 /*
 ** .pp
 ** This is the string that will precede a message which has been included
@@ -923,7 +923,7 @@
 ** UI: $$folder_format, $$index_format, $$mailbox_folder_format,
 ** $$message_format
 ** .pp
-** Composing: $$attribution, $$forward_attribution_intro,
+** Composing: $$attribution_intro, $$forward_attribution_intro,
 ** $$forward_attribution_trailer, $$forward_format, $$indent_string.
 ** .pp
 */
@@ -3519,7 +3519,7 @@
 { "post_indent_string", DT_STRING, 0 },
 /*
 ** .pp
-** Similar to the $$attribution variable, NeoMutt will append this
+** Similar to the $$attribution_intro variable, NeoMutt will append this
 ** string after the inclusion of a message which is being replied to.
 */
 

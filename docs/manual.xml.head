@@ -2788,7 +2788,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           message body should start on a new line after the existing blank line
           at the end of headers. Any messages you are replying to will be added
           in sort order to the message, with appropriate
-          <link linkend="attribution">$attribution</link>,
+          <link linkend="attribution-intro">$attribution_intro</link>,
           <link linkend="indent-string">$indent_string</link> and
           <link linkend="post-indent-string">$post_indent_string</link>. When
           forwarding a message, if the
@@ -6378,7 +6378,7 @@ save-hook aol\\.com$ +spam
       </para>
       <para>
         Another typical use for this command is to change the values of the
-        <link linkend="attribution">$attribution</link>,
+        <link linkend="attribution-intro">$attribution_intro</link>,
         <link linkend="attribution-locale">$attribution_locale</link>, and
         <link linkend="signature">$signature</link> variables in order to
         change the language of the attributions and signatures based upon the

@@ -130,7 +130,7 @@ static struct ConfigDef SendVars[] = {
   { "attach_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
     "When attaching files, use one of these character sets"
   },
-  { "attribution", DT_STRING, IP "On %d, %n wrote:", 0, NULL,
+  { "attribution_intro", DT_STRING, IP "On %d, %n wrote:", 0, NULL,
     "Message to start a reply, 'On DATE, PERSON wrote:'"
   },
   { "attribution_locale", DT_STRING, 0, 0, NULL,
@@ -315,6 +315,7 @@ static struct ConfigDef SendVars[] = {
   { "askbcc",                   DT_SYNONYM, IP "ask_bcc",                    IP "2021-03-21" },
   { "askcc",                    DT_SYNONYM, IP "ask_cc",                     IP "2021-03-21" },
   { "attach_keyword",           DT_SYNONYM, IP "abort_noattach_regex",       IP "2021-03-21" },
+  { "attribution",              DT_SYNONYM, IP "attribution_intro",          IP "2023-02-20" },
   { "crypt_autoencrypt",        DT_SYNONYM, IP "crypt_auto_encrypt",         IP "2021-03-21" },
   { "crypt_autopgp",            DT_SYNONYM, IP "crypt_auto_pgp",             IP "2021-03-21" },
   { "crypt_autosign",           DT_SYNONYM, IP "crypt_auto_sign",            IP "2021-03-21" },

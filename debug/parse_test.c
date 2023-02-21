@@ -39,19 +39,19 @@
 void test_parse_set(void)
 {
   const char *vars[] = {
-    "from",        // ADDRESS
-    "beep",        // BOOL
-    "ispell",      // COMMAND
-    "mbox_type",   // ENUM
-    "to_chars",    // MBTABLE
-    "net_inc",     // NUMBER
-    "signature",   // PATH
-    "print",       // QUAD
-    "mask",        // REGEX
-    "sort",        // SORT
-    "attribution", // STRING
-    "zzz",         // UNKNOWN
-    "my_var",      // MY_VAR
+    "from",              // ADDRESS
+    "beep",              // BOOL
+    "ispell",            // COMMAND
+    "mbox_type",         // ENUM
+    "to_chars",          // MBTABLE
+    "net_inc",           // NUMBER
+    "signature",         // PATH
+    "print",             // QUAD
+    "mask",              // REGEX
+    "sort",              // SORT
+    "attribution_intro", // STRING
+    "zzz",               // UNKNOWN
+    "my_var",            // MY_VAR
   };
 
   const char *commands[] = {
