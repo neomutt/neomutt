@@ -61,7 +61,7 @@ int             mutt_fetch_recips(struct Envelope *out, struct Envelope *in, Sen
 void            mutt_fix_reply_recipients(struct Envelope *env, struct ConfigSubset *sub);
 void            mutt_forward_intro(struct Email *e, FILE *fp, struct ConfigSubset *sub);
 void            mutt_forward_trailer(struct Email *e, FILE *fp, struct ConfigSubset *sub);
-void            mutt_make_attribution(struct Email *e, FILE *fp_out, struct ConfigSubset *sub);
+void            mutt_make_attribution_intro(struct Email *e, FILE *fp_out, struct ConfigSubset *sub);
 void            mutt_make_forward_subject(struct Envelope *env, struct Email *e, struct ConfigSubset *sub);
 void            mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv, struct ConfigSubset *sub);
 void            mutt_make_post_indent(struct Email *e, FILE *fp_out, struct ConfigSubset *sub);

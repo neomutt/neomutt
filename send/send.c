@@ -625,12 +625,12 @@ cleanup:
 }
 
 /**
- * mutt_make_attribution - Add "on DATE, PERSON wrote" header
+ * mutt_make_attribution_intro - Add "on DATE, PERSON wrote" header
  * @param e      Email
  * @param fp_out File to write to
  * @param sub    Config Subset
  */
-void mutt_make_attribution(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
+void mutt_make_attribution_intro(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
 {
   const char *const c_attribution_intro = cs_subset_string(sub, "attribution_intro");
   if (!c_attribution_intro || !fp_out)
@@ -786,7 +786,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out,
   mutt_parse_mime_message(e, msg->fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
-  mutt_make_attribution(e, fp_out, sub);
+  mutt_make_attribution_intro(e, fp_out, sub);
 
   const bool c_header = cs_subset_bool(sub, "header");
   if (!c_header)
