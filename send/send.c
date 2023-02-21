@@ -741,15 +741,15 @@ static void mutt_make_greeting(struct Email *e, FILE *fp_out, struct ConfigSubse
  */
 void mutt_make_post_indent(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
 {
-  const char *const c_post_indent_string = cs_subset_string(sub, "post_indent_string");
-  if (!c_post_indent_string || !fp_out)
+  const char *const c_attribution_trailer = cs_subset_string(sub, "attribution_trailer");
+  if (!c_attribution_trailer || !fp_out)
     return;
 
   const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
 
   char buf[256] = { 0 };
   setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, sizeof(buf), 0, c_post_indent_string, NULL, -1, e,
+  mutt_make_string(buf, sizeof(buf), 0, c_attribution_trailer, NULL, -1, e,
                    MUTT_FORMAT_NO_FLAGS, NULL);
   setlocale(LC_TIME, "");
   fputs(buf, fp_out);

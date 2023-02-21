@@ -2790,7 +2790,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           in sort order to the message, with appropriate
           <link linkend="attribution-intro">$attribution_intro</link>,
           <link linkend="indent-string">$indent_string</link> and
-          <link linkend="post-indent-string">$post_indent_string</link>. When
+          <link linkend="attribution-trailer">$attribution_trailer</link>. When
           forwarding a message, if the
           <link linkend="mime-forward">$mime_forward</link> variable is unset,
           a copy of the forwarded message will be included. If you have

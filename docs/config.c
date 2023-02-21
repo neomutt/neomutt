@@ -325,6 +325,13 @@
 ** this except to override that default.
 */
 
+{ "attribution_trailer", DT_STRING, 0 },
+/*
+** .pp
+** Similar to the $$attribution_intro variable, NeoMutt will append this
+** string after the inclusion of a message which is being replied to.
+*/
+
 { "auto_edit", DT_BOOL, false },
 /*
 ** .pp
@@ -3515,13 +3522,6 @@
 ** This variable defaults to your user name on the local machine.
 */
 #endif
-
-{ "post_indent_string", DT_STRING, 0 },
-/*
-** .pp
-** Similar to the $$attribution_intro variable, NeoMutt will append this
-** string after the inclusion of a message which is being replied to.
-*/
 
 #ifdef USE_NNTP
 { "post_moderated", DT_QUAD, MUTT_ASKYES },

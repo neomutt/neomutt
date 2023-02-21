@@ -136,6 +136,9 @@ static struct ConfigDef SendVars[] = {
   { "attribution_locale", DT_STRING, 0, 0, NULL,
     "Locale for dates in the attribution message"
   },
+  { "attribution_trailer", DT_STRING, 0, 0, NULL,
+    "Suffix message to add after reply text"
+  },
   { "bounce_delivered", DT_BOOL, true, 0, NULL,
     "Add 'Delivered-To' to bounced messages"
   },
@@ -247,9 +250,6 @@ static struct ConfigDef SendVars[] = {
   { "pgp_reply_inline", DT_BOOL, false, 0, NULL,
     "Reply using old-style inline PGP messages (not recommended)"
   },
-  { "post_indent_string", DT_STRING, 0, 0, NULL,
-    "Suffix message to add after reply text"
-  },
   { "postpone_encrypt", DT_BOOL, false, 0, NULL,
     "Self-encrypt postponed messages"
   },
@@ -335,6 +335,7 @@ static struct ConfigDef SendVars[] = {
   { "pgp_replysign",            DT_SYNONYM, IP "crypt_reply_sign",           IP "2021-03-21" },
   { "pgp_replysignencrypted",   DT_SYNONYM, IP "crypt_reply_sign_encrypted", IP "2021-03-21" },
   { "post_indent_str",          DT_SYNONYM, IP "post_indent_string",         IP "2021-03-21" },
+  { "post_indent_string",       DT_SYNONYM, IP "attribution_trailer",        IP "2023-02-20" },
   { "reverse_realname",         DT_SYNONYM, IP "reverse_real_name",          IP "2021-03-21" },
   { "use_8bitmime",             DT_SYNONYM, IP "use_8bit_mime",              IP "2021-03-21" },
 
