@@ -16,7 +16,7 @@ jobs:
 
     env:
       ASAN_OPTIONS: detect_leaks=1:color=never:log_path=asan:print_legend=false:print_summary=false
-      CONFIGURE_OPTIONS: --asan --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
+      CONFIGURE_OPTIONS: --asan --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --testing --tokyocabinet --with-lock=fcntl --zlib --zstd
 
     steps:
     - name: Checkout Code

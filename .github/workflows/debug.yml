@@ -14,7 +14,7 @@ jobs:
     continue-on-error: true
 
     env:
-      CONFIGURE_OPTIONS: --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
+      CONFIGURE_OPTIONS: --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --testing --tokyocabinet --with-lock=fcntl --zlib --zstd
 
     strategy:
       # Limit jobs to one at a time so that ccache really helps later builds
@@ -71,7 +71,7 @@ jobs:
     - name: Build Neomutt
       run: |
         export PATH="$PATH:/usr/lib/llvm-10/bin"
-        make -j 2 ${{ matrix.cfg.extras }}
+        make -j 2 ${{ matrix.cfg.extras }} neomutt
 
     - name: Neomutt Version
       run: |

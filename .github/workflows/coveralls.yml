@@ -13,7 +13,7 @@ jobs:
     container: ghcr.io/neomutt/docker-build
 
     env:
-      OPTIONS: --coverage --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
+      OPTIONS: --coverage --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --testing --tokyocabinet --with-lock=fcntl --zlib --zstd
 
     steps:
     - name: Checkout Code
@@ -38,7 +38,7 @@ jobs:
         ./configure $OPTIONS
 
     - name: Build Neomutt
-      run: make -j 2
+      run: make -j 2 neomutt
 
     - name: Neomutt Version
       run: ./neomutt -v
