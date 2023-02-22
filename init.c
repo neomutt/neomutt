@@ -926,40 +926,53 @@ int mutt_query_variables(struct ListHead *queries, bool show_docs)
     mutt_buffer_reset(&value);
 
     struct HashElem *he = cs_subset_lookup(NeoMutt->sub, np->data);
-    if (!he)
+    if (he)
     {
-      mutt_warning(_("No such variable: %s"), np->data);
-      rc = 1;
+      if (he->type & DT_DEPRECATED)
+      {
+        mutt_warning(_("Config variable '%s' is deprecated"), np->data);
+        rc = 1;
+        continue;
+      }
+
+      int rv = cs_subset_he_string_get(NeoMutt->sub, he, &value);
+      if (CSR_RESULT(rv) != CSR_SUCCESS)
+      {
+        rc = 1;
+        continue;
+      }
+
+      int type = DTYPE(he->type);
+      if (type == DT_PATH)
+        mutt_pretty_mailbox(value.data, value.dsize);
+
+      if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) && (type != DT_QUAD))
+      {
+        mutt_buffer_reset(&tmp);
+        pretty_var(value.data, &tmp);
+        mutt_buffer_strcpy(&value, tmp.data);
+      }
+
+      dump_config_neo(NeoMutt->sub->cs, he, &value, NULL,
+                      show_docs ? CS_DUMP_SHOW_DOCS : CS_DUMP_NO_FLAGS, stdout);
       continue;
     }
 
-    if (he->type & DT_DEPRECATED)
+    const char *myvar_value = myvar_get(np->data);
+    if (myvar_value)
     {
-      mutt_warning(_("Config variable '%s' is deprecated"), np->data);
-      rc = 1;
+      pretty_var(myvar_value, &value);
+      /* style should match style of dump_config_neo() */
+      if (show_docs)
+        printf("# user-defined variable\n");
+      printf("set %s = %s\n", np->data, value.data);
+      if (show_docs)
+        printf("\n");
       continue;
     }
 
-    int rv = cs_subset_he_string_get(NeoMutt->sub, he, &value);
-    if (CSR_RESULT(rv) != CSR_SUCCESS)
-    {
-      rc = 1;
-      continue;
-    }
-
-    int type = DTYPE(he->type);
-    if (type == DT_PATH)
-      mutt_pretty_mailbox(value.data, value.dsize);
-
-    if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) && (type != DT_QUAD))
-    {
-      mutt_buffer_reset(&tmp);
-      pretty_var(value.data, &tmp);
-      mutt_buffer_strcpy(&value, tmp.data);
-    }
-
-    dump_config_neo(NeoMutt->sub->cs, he, &value, NULL,
-                    show_docs ? CS_DUMP_SHOW_DOCS : CS_DUMP_NO_FLAGS, stdout);
+    mutt_warning(_("No such variable: %s"), np->data);
+    rc = 1;
   }
 
   mutt_buffer_dealloc(&value);
