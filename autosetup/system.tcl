@@ -209,7 +209,12 @@ proc include-file {infile mapping} {
 				}
 			}
 			continue
-		} elseif {[regexp {^@include\s+(.*)} $line -> filearg]} {
+		}
+		# Only continue if the stack contains all "true"
+		if {"0" in $condstack} {
+			continue
+		}
+		if {[regexp {^@include\s+(.*)} $line -> filearg]} {
 			set incfile [string map $mapping $filearg]
 			if {[file exists $incfile]} {
 				lappend ::autosetup(deps) [file-normalize $incfile]
@@ -218,12 +223,9 @@ proc include-file {infile mapping} {
 				user-error "$infile:$linenum: Include file $incfile is missing"
 			}
 			continue
-		} elseif {[regexp {^@define\s+(\w+)\s+(.*)} $line -> var val]} {
-			define $var $val
-			continue
 		}
-		# Only output this line if the stack contains all "true"
-		if {"0" in $condstack} {
+		if {[regexp {^@define\s+(\w+)\s+(.*)} $line -> var val]} {
+			define $var $val
 			continue
 		}
 		lappend result $line
