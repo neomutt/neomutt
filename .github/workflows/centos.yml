@@ -19,10 +19,10 @@ jobs:
           - name: Default
             options:
           - name: Minimal
-            options: --disable-idn --disable-nls --disable-pgp --disable-smime --ssl --gsasl --with-lock=flock
+            options: --disable-idn --disable-nls --disable-pgp --disable-smime --ssl --gsasl --testing --with-lock=flock
           - name: Everything
-            options: --bdb --full-doc --gnutls --gpgme --gss --lz4 --pcre2 --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib
-            options8: --autocrypt --disable-idn --gdbm --idn2 --lua --notmuch --zstd
+            options: --bdb --full-doc --gnutls --gpgme --gss --lz4 --pcre2 --sasl --tdb --testing --tokyocabinet --with-lock=fcntl --zlib
+            options8: --autocrypt --disable-idn --gdbm --idn2 --lua --notmuch --testing --zstd
 
     name: Centos ${{ matrix.distro.version }} - ${{ matrix.config.name }}
     runs-on: ubuntu-latest
@@ -59,7 +59,7 @@ jobs:
         ./configure $OPTIONS
 
     - name: Build Neomutt
-      run: make -j 2
+      run: make -j 2 neomutt
 
     - name: Neomutt Version
       run: ./neomutt -v

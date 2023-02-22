@@ -20,11 +20,11 @@ jobs:
       matrix:
         cfg:
           - name: default
-            options:
+            options: --testing
           - name: disabled
-            options: --disable-idn --disable-nls --disable-pgp --disable-smime --ssl --gsasl
+            options: --disable-idn --disable-nls --disable-pgp --disable-smime --ssl --gsasl --testing 
           - name: everything
-            options: --autocrypt --bdb --disable-idn --fmemopen --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --mixmaster --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
+            options: --autocrypt --bdb --disable-idn --fmemopen --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --mixmaster --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --testing --tokyocabinet --with-lock=fcntl --zlib --zstd
 
     steps:
     - name: Checkout Code
@@ -48,7 +48,7 @@ jobs:
       run: ./configure --full-doc ${{ matrix.cfg.options }}
 
     - name: Build Neomutt
-      run: make -j 2
+      run: make -j 2 neomutt
 
     - name: Neomutt Version
       run: ./neomutt -v
