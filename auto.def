@@ -310,11 +310,18 @@ if {1} {
     define SENDMAIL /usr/sbin/sendmail
   }
 
+  # Compiler vendor
+  if {[has-define {} __clang__]} {
+    define COMPILER_IS_CLANG
+  } elseif {[has-define {} __GNUC__]} {
+    define COMPILER_IS_GCC
+  } else {
+    define COMPILER_IS_UNKNOWN
+  }
+
   # GCC-specifc CFLAGS
-  if {![catch {exec {*}[get-define CC] --version} res]} {
-    if {[regexp -nocase gcc $res]} {
-      define-append CFLAGS "-fno-delete-null-pointer-checks"
-    }
+  if {[get-define COMPILER_IS_GCC]} {
+    define-append CFLAGS "-fno-delete-null-pointer-checks"
   }
 
   # Enable extensions (reverse-engineered from AC_SYSTEM_EXTENSIONS)
@@ -1108,7 +1115,7 @@ if {[get-define want-fuzzing]} {
 ###############################################################################
 # Generate compile_commands.json
 if {[get-define want-compile-commands]} {
-  if {![has-define {} __clang__]} {
+  if {![get-define COMPILER_IS_CLANG]} {
     user-error "The clang compiler is required to generate compile_commands.json"
   }
   define COMPILE_COMMANDS
@@ -1143,7 +1150,7 @@ if {[catch {set fd [open conststrings.c w]
 }
 
 ###############################################################################
-# Definitions that are going to be substituted in Makefiles and config.h
+# Definitions that are going to be substituted in config.h
 set auto_rep {
   _*
   *_TARGETS
