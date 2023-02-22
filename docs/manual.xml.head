@@ -12823,8 +12823,7 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
 
         <para>
           Because password can contain any characters, including spaces, we
-          expect lines to match the regex <literal>^([[:alpha:]]+): (.*)$</literal>
-          exactly.
+          expect lines to match the regex <literal>^([[:alpha:]]+): (.*)$</literal> exactly.
         </para>
       </sect2>
 
