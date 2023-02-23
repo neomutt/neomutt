@@ -507,7 +507,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   struct Body *b = NULL;
   FILE *fp_body = NULL;
   int rc = -1;
-  SecurityFlags sec_type;
+  SecurityFlags sec_type = SEC_NO_FLAGS;
   struct Envelope *protected_headers = NULL;
   struct Buffer *file = NULL;
 
@@ -540,47 +540,30 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
     mutt_addrlist_clear(&e_new->env->mail_followup_to);
   }
 
-  /* decrypt pgp/mime encoded messages */
-
-  if (((WithCrypto & APPLICATION_PGP) != 0) &&
-      (sec_type = mutt_is_multipart_encrypted(e_new->body)))
+  if (((WithCrypto & APPLICATION_PGP) != 0) && sec_type == SEC_NO_FLAGS)
+    sec_type = mutt_is_multipart_encrypted(e_new->body);
+  if (((WithCrypto & APPLICATION_SMIME) != 0) && sec_type == SEC_NO_FLAGS)
+    sec_type = mutt_is_application_smime(e_new->body);
+  if (sec_type != SEC_NO_FLAGS)
   {
     e_new->security |= sec_type;
     if (!crypt_valid_passphrase(sec_type))
       goto bail;
 
     mutt_message(_("Decrypting message..."));
-    if ((crypt_pgp_decrypt_mime(fp, &fp_body, e_new->body, &b) == -1) || !b)
+    int ret = -1;
+    if (sec_type & APPLICATION_PGP)
+      ret = crypt_pgp_decrypt_mime(fp, &fp_body, e_new->body, &b);
+    else if (sec_type & APPLICATION_SMIME)
+      ret = crypt_smime_decrypt_mime(fp, &fp_body, e_new->body, &b);
+    if ((ret == -1) || !b)
     {
-      mutt_error(_("Could not decrypt PGP message"));
+      mutt_error(_("Could not decrypt postponed message"));
       goto bail;
     }
 
-    mutt_body_free(&e_new->body);
-    e_new->body = b;
-
-    if (b->mime_headers)
-    {
-      protected_headers = b->mime_headers;
-      b->mime_headers = NULL;
-    }
-
-    mutt_clear_error();
-  }
-  else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
-      (sec_type = mutt_is_application_smime(e_new->body)))
-  {
-    e_new->security |= sec_type;
-    if (!crypt_valid_passphrase(sec_type))
-      goto bail;
-
-    mutt_message(_("Decrypting message..."));
-    if ((crypt_smime_decrypt_mime(fp, &fp_body, e_new->body, &b) == -1) || !b)
-    {
-      mutt_error(_("Could not decrypt S/MIME message"));
-      goto bail;
-    }
-
+    /* throw away the outer layer and keep only the (now decrypted) inner part
+     * with its headers. */
     mutt_body_free(&e_new->body);
     e_new->body = b;
 
