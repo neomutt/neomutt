@@ -663,7 +663,7 @@ $(BUILD_DIRS):
 	$(MKDIR_P) $@
 
 $(TEST_BINARY): $(BUILD_DIRS) $(MUTTLIBS) $(TEST_OBJS)
-	$(CC) -o $@ $(TEST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+	$(CXX) -o $@ $(TEST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 all-test: $(TEST_BINARY)
 
