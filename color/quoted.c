@@ -41,7 +41,7 @@ int NumQuotedColors; ///< Number of colours for quoted email text
  * find_highest_used - Find the highest-numbered quotedN in use
  * @retval num Highest number
  */
-int find_highest_used(void)
+static int find_highest_used(void)
 {
   for (int i = COLOR_QUOTES_MAX - 1; i >= 0; i--)
   {

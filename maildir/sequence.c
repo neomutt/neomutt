@@ -89,7 +89,7 @@ MhSeqFlags mh_seq_check(struct MhSequences *mhs, int i)
  * @param f   Flags, see #MhSeqFlags
  * @retval num Resulting flags, see #MhSeqFlags
  */
-MhSeqFlags mh_seq_set(struct MhSequences *mhs, int i, MhSeqFlags f)
+static MhSeqFlags mh_seq_set(struct MhSequences *mhs, int i, MhSeqFlags f)
 {
   mh_seq_alloc(mhs, i);
   mhs->flags[i] |= f;

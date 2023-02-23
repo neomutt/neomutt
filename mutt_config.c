@@ -112,8 +112,8 @@ const struct Mapping SortBrowserMethods[] = {
 /**
  * multipart_validator - Validate the "show_multipart_alternative" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
-int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                        intptr_t value, struct Buffer *err)
+static int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                               intptr_t value, struct Buffer *err)
 {
   if (value == 0)
     return CSR_SUCCESS;
@@ -130,8 +130,8 @@ int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef
 /**
  * reply_validator - Validate the "reply_regex" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
-int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                    intptr_t value, struct Buffer *err)
+static int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                           intptr_t value, struct Buffer *err)
 {
   if (!OptAttachMsg)
     return CSR_SUCCESS;

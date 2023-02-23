@@ -31,6 +31,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "atoi.h"
 
 /**
  * str_atol_clamp - Convert ASCII string to a long and clamp

@@ -41,7 +41,7 @@ static struct HashTable *Groups = NULL;
  * group_free - Free an Address Group
  * @param ptr Group to free
  */
-void group_free(struct Group **ptr)
+static void group_free(struct Group **ptr)
 {
   if (!ptr || !*ptr)
     return;
@@ -62,7 +62,7 @@ void group_free(struct Group **ptr)
  *
  * @note The pattern will be copied
  */
-struct Group *group_new(const char *pat)
+static struct Group *group_new(const char *pat)
 {
   struct Group *g = mutt_mem_calloc(1, sizeof(struct Group));
 
@@ -76,7 +76,7 @@ struct Group *group_new(const char *pat)
 /**
  * group_hash_free - Free our hash table data - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
  */
-void group_hash_free(int type, void *obj, intptr_t data)
+static void group_hash_free(int type, void *obj, intptr_t data)
 {
   struct Group *g = obj;
   group_free(&g);

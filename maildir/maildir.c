@@ -234,7 +234,7 @@ void maildir_gen_flags(char *dest, size_t destlen, struct Email *e)
  *
  * See also maildir_msg_open_new().
  */
-int maildir_commit_message(struct Mailbox *m, struct Message *msg, struct Email *e)
+static int maildir_commit_message(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
   char subdir[4] = { 0 };
   char suffix[16] = { 0 };
@@ -327,7 +327,7 @@ cleanup:
  * @retval  0 Success
  * @retval -1 Error
  */
-int maildir_rewrite_message(struct Mailbox *m, int msgno)
+static int maildir_rewrite_message(struct Mailbox *m, int msgno)
 {
   if (!m || !m->emails || (msgno >= m->msg_count))
     return -1;
@@ -384,7 +384,7 @@ int maildir_rewrite_message(struct Mailbox *m, int msgno)
  * @retval  0 Success
  * @retval -1 Error
  */
-int maildir_sync_message(struct Mailbox *m, int msgno)
+static int maildir_sync_message(struct Mailbox *m, int msgno)
 {
   if (!m || !m->emails || (msgno >= m->msg_count))
     return -1;
@@ -474,7 +474,7 @@ cleanup:
  * maildir_update_mtime - Update our record of the Maildir modification time
  * @param m Mailbox
  */
-void maildir_update_mtime(struct Mailbox *m)
+static void maildir_update_mtime(struct Mailbox *m)
 {
   char buf[PATH_MAX] = { 0 };
   struct stat st = { 0 };
@@ -574,6 +574,7 @@ cleanup:
   return rc;
 }
 
+#ifdef USE_HCACHE
 /**
  * maildir_hcache_keylen - Calculate the length of the Maildir path
  * @param fn File name
@@ -581,11 +582,12 @@ cleanup:
  *
  * @note This length excludes the flags, which will vary
  */
-size_t maildir_hcache_keylen(const char *fn)
+static size_t maildir_hcache_keylen(const char *fn)
 {
   const char *p = strrchr(fn, ':');
   return p ? (size_t) (p - fn) : mutt_str_len(fn);
 }
+#endif
 
 /**
  * maildir_delayed_parsing - This function does the second parsing pass
@@ -593,8 +595,8 @@ size_t maildir_hcache_keylen(const char *fn)
  * @param[out] mda Maildir array to parse
  * @param[in]  progress Progress bar
  */
-void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
-                             struct Progress *progress)
+static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
+                                    struct Progress *progress)
 {
   char fn[PATH_MAX] = { 0 };
 
@@ -721,7 +723,7 @@ static int maildir_read_dir(struct Mailbox *m, const char *subdir)
  *               but \<base filename\> may contain additional comma separated
  *               fields.
  */
-void maildir_canon_filename(struct Buffer *dest, const char *src)
+static void maildir_canon_filename(struct Buffer *dest, const char *src)
 {
   if (!dest || !src)
     return;
@@ -1074,7 +1076,7 @@ int maildir_check_empty(const char *path)
 /**
  * maildir_ac_owns_path - Check whether an Account own a Mailbox path - Implements MxOps::ac_owns_path() - @ingroup mx_ac_owns_path
  */
-bool maildir_ac_owns_path(struct Account *a, const char *path)
+static bool maildir_ac_owns_path(struct Account *a, const char *path)
 {
   return true;
 }
@@ -1082,7 +1084,7 @@ bool maildir_ac_owns_path(struct Account *a, const char *path)
 /**
  * maildir_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add() - @ingroup mx_ac_add
  */
-bool maildir_ac_add(struct Account *a, struct Mailbox *m)
+static bool maildir_ac_add(struct Account *a, struct Mailbox *m)
 {
   return true;
 }
@@ -1164,7 +1166,7 @@ static bool maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
  * already knew about.  We don't treat either subdirectory differently, as mail
  * could be copied directly into the cur directory from another agent.
  */
-enum MxStatus maildir_mbox_check(struct Mailbox *m)
+static enum MxStatus maildir_mbox_check(struct Mailbox *m)
 {
   struct stat st_new = { 0 }; /* status of the "new" subdirectory */
   struct stat st_cur = { 0 }; /* status of the "cur" subdirectory */
@@ -1370,7 +1372,7 @@ static enum MxStatus maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
  *
  * @note The flag retvals come from a call to a backend sync function
  */
-enum MxStatus maildir_mbox_sync(struct Mailbox *m)
+static enum MxStatus maildir_mbox_sync(struct Mailbox *m)
 {
   enum MxStatus check = maildir_mbox_check(m);
   if (check == MX_STATUS_ERROR)
@@ -1443,7 +1445,7 @@ err:
  * maildir_mbox_close - Close a Mailbox - Implements MxOps::mbox_close() - @ingroup mx_mbox_close
  * @retval MX_STATUS_OK Always
  */
-enum MxStatus maildir_mbox_close(struct Mailbox *m)
+static enum MxStatus maildir_mbox_close(struct Mailbox *m)
 {
   return MX_STATUS_OK;
 }
@@ -1558,7 +1560,7 @@ static int maildir_msg_commit(struct Mailbox *m, struct Message *msg)
  *
  * @note May also return EOF Failure, see errno
  */
-int maildir_msg_close(struct Mailbox *m, struct Message *msg)
+static int maildir_msg_close(struct Mailbox *m, struct Message *msg)
 {
   return mutt_file_fclose(&msg->fp);
 }
@@ -1583,7 +1585,7 @@ static int maildir_msg_save_hcache(struct Mailbox *m, struct Email *e)
 /**
  * maildir_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon() - @ingroup mx_path_canon
  */
-int maildir_path_canon(char *buf, size_t buflen)
+static int maildir_path_canon(char *buf, size_t buflen)
 {
   mutt_path_canon(buf, buflen, HomeDir, true);
   return 0;
@@ -1592,7 +1594,7 @@ int maildir_path_canon(char *buf, size_t buflen)
 /**
  * maildir_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
  */
-int maildir_path_parent(char *buf, size_t buflen)
+static int maildir_path_parent(char *buf, size_t buflen)
 {
   if (mutt_path_parent(buf))
     return 0;
@@ -1609,7 +1611,7 @@ int maildir_path_parent(char *buf, size_t buflen)
 /**
  * maildir_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty() - @ingroup mx_path_pretty
  */
-int maildir_path_pretty(char *buf, size_t buflen, const char *folder)
+static int maildir_path_pretty(char *buf, size_t buflen, const char *folder)
 {
   if (mutt_path_abbr_folder(buf, folder))
     return 0;

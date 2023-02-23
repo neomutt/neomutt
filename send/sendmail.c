@@ -57,7 +57,9 @@
 struct Mailbox;
 
 /* For execvp environment setting in send_msg() */
+#ifndef __USE_GNU
 extern char **environ;
+#endif
 
 SIG_ATOMIC_VOLATILE_T SigAlrm; ///< true after SIGALRM is received
 

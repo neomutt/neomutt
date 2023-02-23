@@ -90,7 +90,6 @@ void change_folder_string(struct Menu *menu, char *buf, size_t buflen, int *oldc
 int ci_previous_undeleted(struct Mailbox *m, int msgno, bool uncollapse);
 int ci_first_message(struct Mailbox *m);
 void resort_index(struct MailboxView *mv, struct Menu *menu);
-int mx_toggle_write(struct Mailbox *m);
 extern const struct Mapping IndexNewsHelp[];
 struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, int *oldcount, struct IndexSharedData *shared, bool read_only);
 struct Mailbox *get_current_mailbox(void);

@@ -23,7 +23,6 @@
 #ifndef MUTT_ENVELOPE_FUNCTIONS_H
 #define MUTT_ENVELOPE_FUNCTIONS_H
 
-struct MuttWindow;
 struct EnvelopeWindowData;
 
 /**
@@ -47,7 +46,6 @@ struct EnvelopeFunction
   envelope_function_t function; ///< Function to call
 };
 
-int env_function_dispatcher(struct MuttWindow *win, int op);
 void update_crypt_info(struct EnvelopeWindowData *wdata);
 
 extern struct EnvelopeFunction EnvelopeFunctions[];

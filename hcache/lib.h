@@ -70,6 +70,7 @@
 #define MUTT_HCACHE_LIB_H
 
 #include <stddef.h>
+#include <stdbool.h>
 #include <stdint.h>
 
 struct Buffer;

@@ -2781,7 +2781,7 @@ static int op_main_fetch_mail(struct IndexSharedData *shared,
  * @param checks Checks to perform, see #CheckFlags
  * @retval true The checks pass successfully
  */
-bool prereq(struct MailboxView *mv, struct Menu *menu, CheckFlags checks)
+static bool prereq(struct MailboxView *mv, struct Menu *menu, CheckFlags checks)
 {
   bool result = true;
 

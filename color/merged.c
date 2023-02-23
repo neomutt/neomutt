@@ -71,7 +71,7 @@ void merged_colors_clear(void)
  * @param attrs Attributes, e.g. A_UNDERLINE
  * @retval ptr Matching Merged colour
  */
-struct AttrColor *merged_colors_find(int fg, int bg, int attrs)
+static struct AttrColor *merged_colors_find(int fg, int bg, int attrs)
 {
   struct AttrColor *ac = NULL;
   TAILQ_FOREACH(ac, &MergedColors, entries)

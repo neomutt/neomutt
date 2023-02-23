@@ -133,7 +133,7 @@ static int menu_dialog_translate_op(int op)
 /**
  * cert_make_entry - Create a string to display in a Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
-void cert_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+static void cert_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
   struct CertMenuData *mdata = menu->mdata;
 

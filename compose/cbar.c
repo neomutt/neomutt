@@ -68,6 +68,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "cbar.h"
 #include "color/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
@@ -247,7 +248,7 @@ int cbar_config_observer(struct NotifyCallback *nc)
 /**
  * cbar_email_observer - Notification that the Email has changed - Implements ::observer_t - @ingroup observer_api
  */
-int cbar_email_observer(struct NotifyCallback *nc)
+static int cbar_email_observer(struct NotifyCallback *nc)
 {
   if (nc->event_type != NT_EMAIL)
     return 0;
@@ -264,7 +265,7 @@ int cbar_email_observer(struct NotifyCallback *nc)
 /**
  * cbar_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
-int cbar_window_observer(struct NotifyCallback *nc)
+static int cbar_window_observer(struct NotifyCallback *nc)
 {
   if (nc->event_type != NT_WINDOW)
     return 0;

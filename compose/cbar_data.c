@@ -30,9 +30,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "cbar_data.h"
-
-int cbar_color_observer(struct NotifyCallback *nc);
-int cbar_config_observer(struct NotifyCallback *nc);
+#include "cbar.h"
 
 /**
  * cbar_data_free - Free the private data attached to the MuttWindow - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free

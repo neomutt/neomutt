@@ -51,7 +51,7 @@ static inline bool ansi_is_end_char(char c)
  * @param str String to examine
  * @retval num Number of characters to skip over
  */
-int ansi_skip_sequence(const char *str)
+static int ansi_skip_sequence(const char *str)
 {
   if (!str || (str[0] == '\0'))
     return 0;

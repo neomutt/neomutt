@@ -24,7 +24,11 @@
 #define MUTT_COMPOSE_CBAR_H
 
 struct ComposeSharedData;
+struct NotifyCallback;
 
 struct MuttWindow *cbar_new(struct ComposeSharedData *shared);
+
+int cbar_color_observer(struct NotifyCallback *nc);
+int cbar_config_observer(struct NotifyCallback *nc);
 
 #endif /* MUTT_COMPOSE_CBAR_H */

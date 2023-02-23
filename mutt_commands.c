@@ -39,6 +39,7 @@
 #include "mutt_commands.h"
 #include "attach/lib.h"
 #include "color/lib.h"
+#include "alternates.h"
 #include "command_parse.h"
 #include "hook.h"
 #include "keymap.h"
@@ -143,7 +144,7 @@ void mutt_commands_init(void)
 /**
  * commands_cmp - Compare two commands by name - Implements ::sort_t - @ingroup sort_api
  */
-int commands_cmp(const void *a, const void *b)
+static int commands_cmp(const void *a, const void *b)
 {
   struct Command x = *(const struct Command *) a;
   struct Command y = *(const struct Command *) b;
