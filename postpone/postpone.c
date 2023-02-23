@@ -367,7 +367,6 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
 {
   struct Body *b = NULL;
   struct State s = { 0 };
-  SecurityFlags sec_type;
 
   s.fp_in = fp_body;
 
@@ -418,13 +417,19 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
       if (!s.fp_out)
         return -1;
 
-      if (((WithCrypto & APPLICATION_PGP) != 0) &&
-          ((sec_type = mutt_is_application_pgp(b)) & (SEC_ENCRYPT | SEC_SIGN)))
+      SecurityFlags sec_type = SEC_NO_FLAGS;
+      if (((WithCrypto & APPLICATION_PGP) != 0) && sec_type == SEC_NO_FLAGS)
+        sec_type = mutt_is_application_pgp(b);
+      if (((WithCrypto & APPLICATION_SMIME) != 0) && sec_type == SEC_NO_FLAGS)
+        sec_type = mutt_is_application_smime(b);
+      if (sec_type & (SEC_ENCRYPT | SEC_SIGN))
       {
         if (sec_type & SEC_ENCRYPT)
         {
-          if (!crypt_valid_passphrase(APPLICATION_PGP))
+          if (!crypt_valid_passphrase(sec_type))
             return -1;
+          if (sec_type & APPLICATION_SMIME)
+            crypt_smime_getkeys(e_new->env);
           mutt_message(_("Decrypting message..."));
         }
 
@@ -434,6 +439,7 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
           return -1;
         }
 
+        /* Is this the first body part? Then save the headers. */
         if ((b == body) && !protected_headers)
         {
           protected_headers = b->mime_headers;
@@ -443,34 +449,8 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
         e_new->security |= sec_type;
         b->type = TYPE_TEXT;
         mutt_str_replace(&b->subtype, "plain");
-        mutt_param_delete(&b->parameter, "x-action");
-      }
-      else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
-               ((sec_type = mutt_is_application_smime(b)) & (SEC_ENCRYPT | SEC_SIGN)))
-      {
-        if (sec_type & SEC_ENCRYPT)
-        {
-          if (!crypt_valid_passphrase(APPLICATION_SMIME))
-            return -1;
-          crypt_smime_getkeys(e_new->env);
-          mutt_message(_("Decrypting message..."));
-        }
-
-        if (mutt_body_handler(b, &s) < 0)
-        {
-          mutt_error(_("Decryption failed"));
-          return -1;
-        }
-
-        if ((b == body) && !protected_headers)
-        {
-          protected_headers = b->mime_headers;
-          b->mime_headers = NULL;
-        }
-
-        e_new->security |= sec_type;
-        b->type = TYPE_TEXT;
-        mutt_str_replace(&b->subtype, "plain");
+        if (sec_type & APPLICATION_PGP)
+          mutt_param_delete(&b->parameter, "x-action");
       }
       else
       {
