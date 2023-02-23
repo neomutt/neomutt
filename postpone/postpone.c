@@ -567,6 +567,31 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
 
     mutt_clear_error();
   }
+  else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
+      (sec_type = mutt_is_application_smime(e_new->body)))
+  {
+    e_new->security |= sec_type;
+    if (!crypt_valid_passphrase(sec_type))
+      goto bail;
+
+    mutt_message(_("Decrypting message..."));
+    if ((crypt_smime_decrypt_mime(fp, &fp_body, e_new->body, &b) == -1) || !b)
+    {
+      mutt_error(_("Could not decrypt S/MIME message"));
+      goto bail;
+    }
+
+    mutt_body_free(&e_new->body);
+    e_new->body = b;
+
+    if (b->mime_headers)
+    {
+      protected_headers = b->mime_headers;
+      b->mime_headers = NULL;
+    }
+
+    mutt_clear_error();
+  }
 
   /* remove a potential multipart/signed layer - useful when
    * resending messages */
