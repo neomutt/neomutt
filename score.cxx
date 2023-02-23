@@ -26,6 +26,8 @@
  * Routines for adding user scores to emails
  */
 
+extern "C" {
+
 #include "config.h"
 #include <stdbool.h>
 #include <stdlib.h>
@@ -41,6 +43,8 @@
 #include "mutt_thread.h"
 #include "options.h"
 #include "protos.h"
+
+}
 
 #include <string>
 #include <list>
