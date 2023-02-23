@@ -462,6 +462,12 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
           return -1;
         }
 
+        if ((b == body) && !protected_headers)
+        {
+          protected_headers = b->mime_headers;
+          b->mime_headers = NULL;
+        }
+
         e_new->security |= sec_type;
         b->type = TYPE_TEXT;
         mutt_str_replace(&b->subtype, "plain");
