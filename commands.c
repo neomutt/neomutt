@@ -96,6 +96,10 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   struct Buffer *buf = mutt_buffer_pool_get();
   struct Buffer *prompt = mutt_buffer_pool_get();
   struct Buffer *scratch = NULL;
+  struct Message *msg = NULL;
+
+  const enum QuadOption c_bounce = cs_subset_quad(NeoMutt->sub, "bounce");
+  const size_t width = msgwin_get_width();
 
   struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
   char *err = NULL;
@@ -148,7 +152,6 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
                      ngettext("Bounce message to %s?", "Bounce messages to %s?", msg_count),
                      mutt_buffer_string(buf));
 
-  const size_t width = msgwin_get_width();
   if (mutt_strwidth(mutt_buffer_string(scratch)) > (width - EXTRA_SPACE))
   {
     mutt_simple_format(prompt->data, prompt->dsize, 0, width - EXTRA_SPACE,
@@ -158,7 +161,6 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   else
     mutt_buffer_copy(prompt, scratch);
 
-  const enum QuadOption c_bounce = cs_subset_quad(NeoMutt->sub, "bounce");
   if (query_quadoption(c_bounce, mutt_buffer_string(prompt)) != MUTT_YES)
   {
     msgwin_clear_text();
@@ -168,7 +170,6 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
 
   msgwin_clear_text();
 
-  struct Message *msg = NULL;
   STAILQ_FOREACH(en, el, entries)
   {
     msg = mx_msg_open(m, en->email->msgno);
@@ -424,6 +425,10 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailList *el)
   if (!m || !el)
     return;
 
+  const bool c_pipe_decode = cs_subset_bool(NeoMutt->sub, "pipe_decode");
+  const bool c_pipe_split = cs_subset_bool(NeoMutt->sub, "pipe_split");
+  const char *const c_pipe_sep = cs_subset_string(NeoMutt->sub, "pipe_sep");
+
   struct Buffer *buf = mutt_buffer_pool_get();
 
   if (mutt_buffer_get_field(_("Pipe to command: "), buf, MUTT_COMP_FILE_SIMPLE,
@@ -436,9 +441,6 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailList *el)
     goto cleanup;
 
   mutt_buffer_expand_path(buf);
-  const bool c_pipe_decode = cs_subset_bool(NeoMutt->sub, "pipe_decode");
-  const bool c_pipe_split = cs_subset_bool(NeoMutt->sub, "pipe_split");
-  const char *const c_pipe_sep = cs_subset_string(NeoMutt->sub, "pipe_sep");
   pipe_message(m, el, mutt_buffer_string(buf), c_pipe_decode, false, c_pipe_split, c_pipe_sep);
 
 cleanup:
@@ -559,9 +561,9 @@ bool mutt_select_sort(bool reverse)
   if ((sort != SORT_THREADS) || (c_use_threads == UT_UNSET))
   {
     if ((sort != SORT_THREADS) && (c_sort & SORT_LAST))
-      sort |= SORT_LAST;
+      sort = (enum SortType)(sort | SORT_LAST);
     if (reverse)
-      sort |= SORT_REVERSE;
+      sort = (enum SortType)(sort |SORT_REVERSE);
 
     rc = cs_subset_str_native_set(NeoMutt->sub, "sort", sort, NULL);
   }
@@ -598,13 +600,16 @@ bool mutt_select_sort(bool reverse)
  */
 bool mutt_shell_escape(void)
 {
+#define DONE mutt_buffer_pool_release(&buf); return rc
+
+  const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
   bool rc = false;
   struct Buffer *buf = mutt_buffer_pool_get();
 
   if (mutt_buffer_get_field(_("Shell command: "), buf, MUTT_COMP_FILE_SIMPLE,
                             false, NULL, NULL, NULL) != 0)
   {
-    goto done;
+    DONE;
   }
 
   if (mutt_buffer_is_empty(buf))
@@ -615,7 +620,7 @@ bool mutt_shell_escape(void)
 
   if (mutt_buffer_is_empty(buf))
   {
-    goto done;
+    DONE;
   }
 
   msgwin_clear_text();
@@ -625,14 +630,12 @@ bool mutt_shell_escape(void)
   if (rc2 == -1)
     mutt_debug(LL_DEBUG1, "Error running \"%s\"\n", mutt_buffer_string(buf));
 
-  const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
   if ((rc2 != 0) || c_wait_key)
     mutt_any_key_to_continue(NULL);
 
   rc = true;
-done:
-  mutt_buffer_pool_release(&buf);
-  return rc;
+  DONE;
+#undef DONE
 }
 
 /**
@@ -640,6 +643,12 @@ done:
  */
 void mutt_enter_command(void)
 {
+
+#define DONE                      \
+  mutt_buffer_pool_release(&buf); \
+  mutt_buffer_pool_release(&err); \
+  return
+
   struct Buffer *buf = mutt_buffer_pool_get();
   struct Buffer *err = mutt_buffer_pool_get();
 
@@ -648,7 +657,7 @@ void mutt_enter_command(void)
   if ((mutt_buffer_get_field(":", buf, MUTT_COMP_COMMAND, false, NULL, NULL, NULL) != 0) ||
       mutt_buffer_is_empty(buf))
   {
-    goto done;
+    DONE;
   }
 
   /* check if buf is a valid icommand, else fall back quietly to parse_rc_lines */
@@ -683,10 +692,8 @@ void mutt_enter_command(void)
     // Running commands could cause anything to change, so let others know
     notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_COMMAND, NULL);
   }
-
-done:
-  mutt_buffer_pool_release(&buf);
-  mutt_buffer_pool_release(&err);
+  DONE;
+#undef DONE
 }
 
 /**
@@ -801,6 +808,43 @@ int mutt_save_message_ctx(struct Mailbox *m_src, struct Email *e, enum MessageSa
   return 0;
 }
 
+
+
+static void mutt_save_message_emit_error(int rc, int msg_count, enum MessageSaveOpt save_opt)
+{
+  if (rc == 0)
+    return;
+
+  switch (save_opt)
+  {
+    case SAVE_MOVE:
+      if (msg_count > 1)
+      {
+        // L10N: Message when an index tagged save operation fails for some reason
+        mutt_error(_("Error saving tagged messages"));
+      }
+      else
+      {
+        // L10N: Message when an index/pager save operation fails for some reason
+        mutt_error(_("Error saving message"));
+      }
+      break;
+    case SAVE_COPY:
+      if (msg_count > 1)
+      {
+        // L10N: Message when an index tagged copy operation fails for some reason
+        mutt_error(_("Error copying tagged messages"));
+      }
+      else
+      {
+        // L10N: Message when an index/pager copy operation fails for some reason
+        mutt_error(_("Error copying message"));
+      }
+      break;
+  }
+  return;
+}
+
 /**
  * mutt_save_message - Save an email
  * @param m                Mailbox
@@ -815,6 +859,11 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 {
   if (!el || STAILQ_EMPTY(el))
     return -1;
+
+#define RETURN                    \
+  mailbox_free(&m_save);          \
+  mutt_buffer_pool_release(&buf); \
+  return rc;
 
   int rc = -1;
   int tagged_progress_count = 0;
@@ -887,12 +936,12 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   if (mutt_buffer_enter_fname(prompt, buf, false, NULL, false, NULL, NULL,
                               MUTT_SEL_NO_FLAGS) == -1)
   {
-    goto cleanup;
+    RETURN;
   }
 
   size_t pathlen = mutt_buffer_len(buf);
   if (pathlen == 0)
-    goto cleanup;
+    RETURN;
 
   /* Trim any trailing '/' */
   if (buf->data[pathlen - 1] == '/')
@@ -911,13 +960,14 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 
   /* check to make sure that this file is really the one the user wants */
   if (mutt_save_confirm(mutt_buffer_string(buf), &st) != 0)
-    goto cleanup;
+    RETURN;
 
   if (is_passphrase_needed && (transform_opt != TRANSFORM_NONE) &&
       !crypt_valid_passphrase(security_flags))
   {
     rc = -1;
-    goto errcleanup;
+    mutt_save_message_emit_error(rc, msg_count, save_opt);
+    RETURN;
   }
 
   mutt_message(_("Copying to %s..."), mutt_buffer_string(buf));
@@ -933,13 +983,14 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
       case 0:
         mutt_clear_error();
         rc = 0;
-        goto cleanup;
+        RETURN;
       /* non-fatal error: continue to fetch/append */
       case 1:
         break;
       /* fatal error, abort */
       case -1:
-        goto errcleanup;
+        mutt_save_message_emit_error(rc, msg_count, save_opt);
+        RETURN;
     }
   }
 #endif
@@ -955,8 +1006,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   if (!mx_mbox_open(m_save, mbox_flags))
   {
     rc = -1;
-    mailbox_free(&m_save);
-    goto errcleanup;
+    mutt_save_message_emit_error(rc, msg_count, save_opt);
+    RETURN;
   }
   m_save->append = true;
 
@@ -979,7 +1030,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     {
       mx_mbox_close(m_save);
       m_save->append = old_append;
-      goto errcleanup;
+      mutt_save_message_emit_error(rc, msg_count, save_opt);
+      RETURN;
     }
 #ifdef USE_COMP_MBOX
     if (m_comp)
@@ -1038,7 +1090,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     {
       mx_mbox_close(m_save);
       m_save->append = old_append;
-      goto errcleanup;
+      mutt_save_message_emit_error(rc, msg_count, save_opt);
+      RETURN;
     }
   }
 
@@ -1054,43 +1107,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   mutt_clear_error();
   rc = 0;
 
-errcleanup:
-  if (rc != 0)
-  {
-    switch (save_opt)
-    {
-      case SAVE_MOVE:
-        if (msg_count > 1)
-        {
-          // L10N: Message when an index tagged save operation fails for some reason
-          mutt_error(_("Error saving tagged messages"));
-        }
-        else
-        {
-          // L10N: Message when an index/pager save operation fails for some reason
-          mutt_error(_("Error saving message"));
-        }
-        break;
-      case SAVE_COPY:
-        if (msg_count > 1)
-        {
-          // L10N: Message when an index tagged copy operation fails for some reason
-          mutt_error(_("Error copying tagged messages"));
-        }
-        else
-        {
-          // L10N: Message when an index/pager copy operation fails for some reason
-          mutt_error(_("Error copying message"));
-        }
-        break;
-    }
-  }
-
-  mailbox_free(&m_save);
-
-cleanup:
-  mutt_buffer_pool_release(&buf);
-  return rc;
+  RETURN;
+#undef RETURN
 }
 
 /**
