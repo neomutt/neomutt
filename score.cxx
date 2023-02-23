@@ -42,19 +42,26 @@
 #include "options.h"
 #include "protos.h"
 
+#include <string>
+#include <list>
+
 /**
  * struct Score - Scoring rule for email
  */
 struct Score
 {
-  char *str;
-  struct PatternList *pat;
-  int val;
-  bool exact; ///< if this rule matches, don't evaluate any more
-  struct Score *next;
+  Score(std::string str, struct PatternList *pat)
+    : str{ std::move(str) }
+    , pat{ pat }
+  {}
+
+  std::string str;
+  struct PatternList *pat = nullptr;
+  int val = 0;
+  bool exact = false; ///< if this rule matches, don't evaluate any more
 };
 
-static struct Score *ScoreList = NULL;
+static std::list<Score> ScoreList;
 
 /**
  * mutt_check_rescore - Do the emails need to have their scores recalculated?
@@ -86,8 +93,8 @@ void mutt_check_rescore(struct Mailbox *m)
 enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
                                     intptr_t data, struct Buffer *err)
 {
-  struct Score *ptr = NULL, *last = NULL;
-  char *pattern = NULL, *pc = NULL;
+  struct Score *ptr = NULL;
+  char *pc = NULL;
 
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
   if (!MoreArgs(s))
@@ -95,44 +102,31 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
     mutt_buffer_printf(err, _("%s: too few arguments"), "score");
     return MUTT_CMD_WARNING;
   }
-  pattern = mutt_buffer_strdup(buf);
+  std::string pattern{ mutt_buffer_string(buf) };
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
   if (MoreArgs(s))
   {
-    FREE(&pattern);
     mutt_buffer_printf(err, _("%s: too many arguments"), "score");
     return MUTT_CMD_WARNING;
   }
 
   /* look for an existing entry and update the value, else add it to the end
    * of the list */
-  for (ptr = ScoreList, last = NULL; ptr; last = ptr, ptr = ptr->next)
-    if (mutt_str_equal(pattern, ptr->str))
-      break;
-  if (!ptr)
+  const auto matchStr = [&pattern](const Score& score)
+  {
+    return score.str == pattern;
+  };
+  if (const auto it{ std::find_if(begin(ScoreList), end(ScoreList), matchStr) };
+      it == end(ScoreList))
   {
     struct Mailbox *m_cur = get_current_mailbox();
     struct Menu *menu = get_current_menu();
-    struct PatternList *pat = mutt_pattern_comp(m_cur, menu, pattern, MUTT_PC_NO_FLAGS, err);
+    struct PatternList *pat = mutt_pattern_comp(m_cur, menu, pattern.c_str(), MUTT_PC_NO_FLAGS, err);
     if (!pat)
     {
-      FREE(&pattern);
       return MUTT_CMD_ERROR;
     }
-    ptr = mutt_mem_calloc(1, sizeof(struct Score));
-    if (last)
-      last->next = ptr;
-    else
-      ScoreList = ptr;
-    ptr->pat = pat;
-    ptr->str = pattern;
-  }
-  else
-  {
-    /* 'buf' arg was cleared and 'pattern' holds the only reference;
-     * as here 'ptr' != NULL -> update the value only in which case
-     * ptr->str already has the string, so pattern should be freed.  */
-    FREE(&pattern);
+    ScoreList.emplace_back(pattern, pat);
   }
   pc = buf->data;
   if (*pc == '=')
@@ -142,7 +136,6 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
   }
   if (!mutt_str_atoi_full(pc, &ptr->val))
   {
-    FREE(&pattern);
     mutt_buffer_strcpy(err, _("Error: score: invalid number"));
     return MUTT_CMD_ERROR;
   }
@@ -158,20 +151,19 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
  */
 void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
 {
-  struct Score *tmp = NULL;
   struct PatternCache cache = { 0 };
 
   e->score = 0; /* in case of re-scoring */
-  for (tmp = ScoreList; tmp; tmp = tmp->next)
+  for (const auto& score : ScoreList)
   {
-    if (mutt_pattern_exec(SLIST_FIRST(tmp->pat), MUTT_MATCH_FULL_ADDRESS, NULL, e, &cache) > 0)
+    if (mutt_pattern_exec(SLIST_FIRST(score.pat), MUTT_MATCH_FULL_ADDRESS, NULL, e, &cache) > 0)
     {
-      if (tmp->exact || (tmp->val == 9999) || (tmp->val == -9999))
+      if (score.exact || (score.val == 9999) || (score.val == -9999))
       {
-        e->score = tmp->val;
+        e->score = score.val;
         break;
       }
-      e->score += tmp->val;
+      e->score += score.val;
     }
   }
   if (e->score < 0)
@@ -195,38 +187,32 @@ void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
 enum CommandResult mutt_parse_unscore(struct Buffer *buf, struct Buffer *s,
                                       intptr_t data, struct Buffer *err)
 {
-  struct Score *tmp = NULL, *last = NULL;
+  std::string key{ mutt_buffer_string(buf) };
 
   while (MoreArgs(s))
   {
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     if (mutt_str_equal("*", buf->data))
     {
-      for (tmp = ScoreList; tmp;)
+      for (auto& score: ScoreList)
       {
-        last = tmp;
-        tmp = tmp->next;
-        mutt_pattern_free(&last->pat);
-        FREE(&last);
+        mutt_pattern_free(&score.pat);
       }
-      ScoreList = NULL;
+      ScoreList.clear();
     }
     else
     {
-      for (tmp = ScoreList; tmp; last = tmp, tmp = tmp->next)
+      const auto matchStr = [&key](const Score& score)
       {
-        if (mutt_str_equal(buf->data, tmp->str))
-        {
-          if (last)
-            last->next = tmp->next;
-          else
-            ScoreList = tmp->next;
-          mutt_pattern_free(&tmp->pat);
-          FREE(&tmp);
-          /* there should only be one score per pattern, so we can stop here */
-          break;
-        }
+        return score.str == key;
+      };
+      if (const auto it{ std::find_if(begin(ScoreList), end(ScoreList), matchStr) };
+        it != end(ScoreList))
+      {
+        mutt_pattern_free(&it->pat);
+        ScoreList.erase(it);
       }
+      /* there should only be one score per pattern, so we can stop here */
     }
   }
   OptNeedRescore = true;

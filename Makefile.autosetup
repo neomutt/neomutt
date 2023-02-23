@@ -18,6 +18,7 @@ AR=		@AR@
 CC=		@CC@
 CPP=		@CPP@
 CFLAGS=		@CPPFLAGS@ @CFLAGS@ -I. -I@srcdir@ -Wall $(EXTRA_CFLAGS)
+CXXFLAGS=	@CPPFLAGS@ @CFLAGS@ @CXXFLAGS@ -I. -I@srcdir@ -Wall $(EXTRA_CXXFLAGS)
 LDFLAGS=	@LDFLAGS@ $(EXTRA_LDFLAGS)
 EXEEXT=		@EXEEXT@
 LIBS=		@LIBS@
@@ -828,6 +829,10 @@ all: $(BINFILES) $(LIBBINFILES) $(ALL_TARGETS)
 # compile + dependencies
 .c.o:
 	$(CC) $(CFLAGS) -MT $@ -MD -MP -MF $(@:.o=.Tpo) -c -o $@ $<
+	@mv $(@:.o=.Tpo) $(@:.o=.Po)
+
+.cxx.o:
+	$(CXX) $(CXXFLAGS) -MT $@ -MD -MP -MF $(@:.o=.Tpo) -c -o $@ $<
 	@mv $(@:.o=.Tpo) $(@:.o=.Po)
 
 $(ALLOBJS):

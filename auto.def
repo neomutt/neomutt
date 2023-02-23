@@ -303,6 +303,9 @@ if {1} {
   define-append CFLAGS_FOR_BUILD -std=c99
   define LDFLAGS_FOR_BUILD {}
 
+  # Then, require C++17
+  define-append CXXFLAGS -std=c++17
+
   # Check for tools and programs
   cc-check-tools ar ranlib strip
   cc-check-progs install
