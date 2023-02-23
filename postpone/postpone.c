@@ -513,7 +513,6 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   struct Body *b = NULL;
   FILE *fp_body = NULL;
   int rc = -1;
-  SecurityFlags sec_type = SEC_NO_FLAGS;
   struct Envelope *protected_headers = NULL;
   struct Buffer *file = NULL;
 
@@ -546,6 +545,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
     mutt_addrlist_clear(&e_new->env->mail_followup_to);
   }
 
+  SecurityFlags sec_type = SEC_NO_FLAGS;
   if (((WithCrypto & APPLICATION_PGP) != 0) && sec_type == SEC_NO_FLAGS)
     sec_type = mutt_is_multipart_encrypted(e_new->body);
   if (((WithCrypto & APPLICATION_SMIME) != 0) && sec_type == SEC_NO_FLAGS)
