@@ -961,13 +961,8 @@ int mutt_query_variables(struct ListHead *queries, bool show_docs)
     const char *myvar_value = myvar_get(np->data);
     if (myvar_value)
     {
-      pretty_var(myvar_value, &value);
-      /* style should match style of dump_config_neo() */
-      if (show_docs)
-        printf("# user-defined variable\n");
-      printf("set %s = %s\n", np->data, value.data);
-      if (show_docs)
-        printf("\n");
+      dump_myvar_neo(np->data, myvar_value,
+                     show_docs ? CS_DUMP_SHOW_DOCS : CS_DUMP_NO_FLAGS, stdout);
       continue;
     }
 
