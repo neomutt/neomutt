@@ -1127,6 +1127,7 @@ if {[get-define want-compile-commands]} {
 ###############################################################################
 # Coverage Testing
 if {[get-define want-coverage]} {
+  define ENABLE_UNIT_TESTS
   define ENABLE_COVERAGE
   define-append CFLAGS -fprofile-arcs -ftest-coverage
   define-append LDFLAGS -fprofile-arcs -ftest-coverage
