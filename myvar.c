@@ -171,3 +171,55 @@ void myvarlist_free(struct MyVarList *list)
     myvar_free(&myv);
   }
 }
+
+/**
+ * dump_myvar_neo - Dump a user defined variable "my_var" in style of NeoMutt
+ * @param name    name of the user-defined variable
+ * @param value   Current value of the variable
+ * @param flags   Flags, see #ConfigDumpFlags
+ * @param fp      File pointer to write to
+ */
+void dump_myvar_neo(const char *const name, const char *const value,
+                    ConfigDumpFlags flags, FILE *fp)
+{
+  struct Buffer pretty = mutt_buffer_make(256);
+  pretty_var(value, &pretty);
+  /* style should match style of dump_config_neo() */
+  if (flags & CS_DUMP_SHOW_DOCS)
+    printf("# user-defined variable\n");
+
+  bool show_name = !(flags & CS_DUMP_HIDE_NAME);
+  bool show_value = !(flags & CS_DUMP_HIDE_VALUE);
+
+  if (show_name && show_value)
+    fprintf(fp, "set ");
+  if (show_name)
+    fprintf(fp, "%s", name);
+  if (show_name && show_value)
+    fprintf(fp, " = ");
+  if (show_value)
+    fprintf(fp, "%s", pretty.data);
+  if (show_name || show_value)
+    fprintf(fp, "\n");
+
+  if (flags & CS_DUMP_SHOW_DEFAULTS)
+    fprintf(fp, "# string %s unset\n", name);
+
+  if (flags & CS_DUMP_SHOW_DOCS)
+    printf("\n");
+  mutt_buffer_dealloc(&pretty);
+}
+
+/**
+ * dump_myvar - Write all the user defined variables "my_var" to a file
+ * @param flags Flags, see #ConfigDumpFlags
+ * @param fp    File to write config to
+ */
+void dump_myvar(ConfigDumpFlags flags, FILE *fp)
+{
+  struct MyVar *myvar = NULL;
+  TAILQ_FOREACH(myvar, &MyVars, entries)
+  {
+    dump_myvar_neo(myvar->name, myvar->value, flags, fp);
+  }
+}

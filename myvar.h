@@ -24,6 +24,7 @@
 #define MUTT_MYVAR_H
 
 #include "mutt/lib.h"
+#include "config/dump.h"
 
 /**
  * struct MyVar - A user-set variable
@@ -44,5 +45,8 @@ void        myvar_set(const char *var, const char *val);
 void        myvar_append(const char *var, const char *val);
 
 void myvarlist_free(struct MyVarList *list);
+
+void dump_myvar_neo(const char *const name, const char *const value, ConfigDumpFlags flags, FILE *fp);
+void dump_myvar(ConfigDumpFlags flags, FILE *fp);
 
 #endif /* MUTT_MYVAR_H */

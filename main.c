@@ -854,6 +854,7 @@ main
     if (one_liner)
       cdflags |= CS_DUMP_SHOW_DOCS;
     dump_config(cs, cdflags, stdout);
+    dump_myvar(cdflags, stdout);
     goto main_ok; // TEST18: neomutt -D
   }
 
