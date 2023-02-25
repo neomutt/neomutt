@@ -367,7 +367,6 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
 {
   struct Body *b = NULL;
   struct State s = { 0 };
-  SecurityFlags sec_type;
 
   s.fp_in = fp_body;
 
@@ -418,13 +417,19 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
       if (!s.fp_out)
         return -1;
 
-      if (((WithCrypto & APPLICATION_PGP) != 0) &&
-          ((sec_type = mutt_is_application_pgp(b)) & (SEC_ENCRYPT | SEC_SIGN)))
+      SecurityFlags sec_type = SEC_NO_FLAGS;
+      if (((WithCrypto & APPLICATION_PGP) != 0) && sec_type == SEC_NO_FLAGS)
+        sec_type = mutt_is_application_pgp(b);
+      if (((WithCrypto & APPLICATION_SMIME) != 0) && sec_type == SEC_NO_FLAGS)
+        sec_type = mutt_is_application_smime(b);
+      if (sec_type & (SEC_ENCRYPT | SEC_SIGN))
       {
         if (sec_type & SEC_ENCRYPT)
         {
-          if (!crypt_valid_passphrase(APPLICATION_PGP))
+          if (!crypt_valid_passphrase(sec_type))
             return -1;
+          if (sec_type & APPLICATION_SMIME)
+            crypt_smime_getkeys(e_new->env);
           mutt_message(_("Decrypting message..."));
         }
 
@@ -434,6 +439,7 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
           return -1;
         }
 
+        /* Is this the first body part? Then save the headers. */
         if ((b == body) && !protected_headers)
         {
           protected_headers = b->mime_headers;
@@ -443,28 +449,8 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
         e_new->security |= sec_type;
         b->type = TYPE_TEXT;
         mutt_str_replace(&b->subtype, "plain");
-        mutt_param_delete(&b->parameter, "x-action");
-      }
-      else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
-               ((sec_type = mutt_is_application_smime(b)) & (SEC_ENCRYPT | SEC_SIGN)))
-      {
-        if (sec_type & SEC_ENCRYPT)
-        {
-          if (!crypt_valid_passphrase(APPLICATION_SMIME))
-            return -1;
-          crypt_smime_getkeys(e_new->env);
-          mutt_message(_("Decrypting message..."));
-        }
-
-        if (mutt_body_handler(b, &s) < 0)
-        {
-          mutt_error(_("Decryption failed"));
-          return -1;
-        }
-
-        e_new->security |= sec_type;
-        b->type = TYPE_TEXT;
-        mutt_str_replace(&b->subtype, "plain");
+        if (sec_type & APPLICATION_PGP)
+          mutt_param_delete(&b->parameter, "x-action");
       }
       else
       {
@@ -507,7 +493,6 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   struct Body *b = NULL;
   FILE *fp_body = NULL;
   int rc = -1;
-  SecurityFlags sec_type;
   struct Envelope *protected_headers = NULL;
   struct Buffer *file = NULL;
 
@@ -540,22 +525,31 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
     mutt_addrlist_clear(&e_new->env->mail_followup_to);
   }
 
-  /* decrypt pgp/mime encoded messages */
-
-  if (((WithCrypto & APPLICATION_PGP) != 0) &&
-      (sec_type = mutt_is_multipart_encrypted(e_new->body)))
+  SecurityFlags sec_type = SEC_NO_FLAGS;
+  if (((WithCrypto & APPLICATION_PGP) != 0) && sec_type == SEC_NO_FLAGS)
+    sec_type = mutt_is_multipart_encrypted(e_new->body);
+  if (((WithCrypto & APPLICATION_SMIME) != 0) && sec_type == SEC_NO_FLAGS)
+    sec_type = mutt_is_application_smime(e_new->body);
+  if (sec_type != SEC_NO_FLAGS)
   {
     e_new->security |= sec_type;
     if (!crypt_valid_passphrase(sec_type))
       goto bail;
 
     mutt_message(_("Decrypting message..."));
-    if ((crypt_pgp_decrypt_mime(fp, &fp_body, e_new->body, &b) == -1) || !b)
+    int ret = -1;
+    if (sec_type & APPLICATION_PGP)
+      ret = crypt_pgp_decrypt_mime(fp, &fp_body, e_new->body, &b);
+    else if (sec_type & APPLICATION_SMIME)
+      ret = crypt_smime_decrypt_mime(fp, &fp_body, e_new->body, &b);
+    if ((ret == -1) || !b)
     {
-      mutt_error(_("Could not decrypt PGP message"));
+      mutt_error(_("Could not decrypt postponed message"));
       goto bail;
     }
 
+    /* throw away the outer layer and keep only the (now decrypted) inner part
+     * with its headers. */
     mutt_body_free(&e_new->body);
     e_new->body = b;
 
