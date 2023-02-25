@@ -637,12 +637,18 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   /* "$mailcap_path" precedence: config file, environment, code */
   const char *env_mc = mutt_str_getenv("MAILCAPS");
   if (env_mc)
-    cs_str_string_set(cs, "mailcap_path", env_mc, NULL);
+  {
+    cs_str_initial_set(cs, "mailcap_path", env_mc, NULL);
+    cs_str_reset(cs, "mailcap_path", NULL);
+  }
 
   /* "$tmp_dir" precedence: config file, environment, code */
   const char *env_tmp = mutt_str_getenv("TMPDIR");
   if (env_tmp)
-    cs_str_string_set(cs, "tmp_dir", env_tmp, NULL);
+  {
+    cs_str_initial_set(cs, "tmp_dir", env_tmp, NULL);
+    cs_str_reset(cs, "tmp_dir", NULL);
+  }
 
   /* "$visual", "$editor" precedence: config file, environment, code */
   const char *env_ed = mutt_str_getenv("VISUAL");
@@ -665,7 +671,10 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
 #ifdef HAVE_GETSID
   /* Unset suspend by default if we're the session leader */
   if (getsid(0) == getpid())
-    cs_subset_str_native_set(NeoMutt->sub, "suspend", false, NULL);
+  {
+    cs_str_initial_set(cs, "suspend", "no", NULL);
+    cs_str_reset(cs, "suspend", NULL);
+  }
 #endif
 
   /* RFC2368, "4. Unsafe headers"
