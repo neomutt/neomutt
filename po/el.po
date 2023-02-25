@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-02-16 13:32+0000\n"
+"POT-Creation-Date: 2023-02-25 00:19+0000\n"
 "PO-Revision-Date: 2021-05-09 00:47GMT+3\n"
 "Last-Translator: Christos Margiolis <christos@margiolis.net>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -43,7 +43,7 @@ msgid "Address: "
 msgstr "Διεύθυνση: "
 
 #: alias/alias.c:453 commands.c:137 conn/raw.c:161 conn/raw.c:218
-#: envelope/functions.c:131 recvcmd.c:227 send/send.c:203
+#: envelope/functions.c:131 recvcmd.c:228 send/send.c:203
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "Λανθασμένη διεθνής διεύθυνση IDN: '%s'"
@@ -92,21 +92,21 @@ msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr "Προειδοποίηση: Λανθασμένη διεθνής διεύθυνση IDN '%s' στο ψευδώνυμο '%s'"
 
 #: alias/dlg_alias.c:101 alias/dlg_query.c:100 attach/dlg_attach.c:96
-#: autocrypt/dlg_autocrypt.c:89 browser/browser.c:111 browser/browser.c:124
+#: autocrypt/dlg_autocrypt.c:89 browser/browser.c:112 browser/browser.c:125
 #: conn/dlg_verifycert.c:69 history/dlg_history.c:77 ncrypt/dlg_gpgme.c:96
 #: ncrypt/dlg_pgp.c:96 ncrypt/dlg_smime.c:75 pager/dlg_pager.c:88
 #: pager/dlg_pager.c:99 pager/dlg_pager.c:109 pager/dlg_pager.c:125
-#: pattern/dlg_pattern.c:91 postpone/dlg_postpone.c:90
+#: pattern/dlg_pattern.c:91 postpone/dlg_postpone.c:91
 msgid "Exit"
 msgstr "Έξοδος"
 
 #: alias/dlg_alias.c:102 index/dlg_index.c:107 index/dlg_index.c:123
-#: pager/dlg_pager.c:113 pager/dlg_pager.c:130 postpone/dlg_postpone.c:91
+#: pager/dlg_pager.c:113 pager/dlg_pager.c:130 postpone/dlg_postpone.c:92
 msgid "Del"
 msgstr "Διαγραφή"
 
 #: alias/dlg_alias.c:103 index/dlg_index.c:108 index/dlg_index.c:124
-#: postpone/dlg_postpone.c:92
+#: postpone/dlg_postpone.c:93
 msgid "Undel"
 msgstr "Επαναφορά"
 
@@ -124,12 +124,12 @@ msgid "Select"
 msgstr "Επιλέξτε"
 
 #: alias/dlg_alias.c:107 alias/dlg_query.c:107 attach/dlg_attach.c:100
-#: autocrypt/dlg_autocrypt.c:108 browser/browser.c:115 browser/browser.c:130
+#: autocrypt/dlg_autocrypt.c:108 browser/browser.c:116 browser/browser.c:131
 #: compose/compose.c:106 compose/compose.c:121 conn/dlg_verifycert.c:70
 #: history/dlg_history.c:80 index/dlg_index.c:113 index/dlg_index.c:129
 #: ncrypt/dlg_gpgme.c:99 ncrypt/dlg_pgp.c:99 ncrypt/dlg_smime.c:77
 #: pager/dlg_pager.c:91 pager/dlg_pager.c:116 pager/dlg_pager.c:132
-#: pattern/dlg_pattern.c:93 postpone/dlg_postpone.c:93
+#: pattern/dlg_pattern.c:93 postpone/dlg_postpone.c:94
 msgid "Help"
 msgstr "Βοήθεια"
 
@@ -425,14 +425,14 @@ msgstr "Αδυναμία αποκρυπτογράφησης του κρυπτο�
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:75 main.c:925
+#: autocrypt/autocrypt.c:75 main.c:926
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "Το %s δεν υπάρχει. Δημιουργία;"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:929
+#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:930
 #: nntp/newsrc.c:1117
 #, c-format
 msgid "Can't create %s: %s"
@@ -678,65 +678,65 @@ msgstr "Η cache είναι απενεργοποιημένη, το $message_cach
 msgid "Message cache isn't a directory: %s"
 msgstr "Το μήνυμα cache δεν είναι κατάλογος: %s"
 
-#: browser/browser.c:112
+#: browser/browser.c:113
 msgid "Chdir"
 msgstr "Αλλαγή καταλόγου"
 
-#: browser/browser.c:113
+#: browser/browser.c:114
 msgid "Goto"
 msgstr "Πάνε σε"
 
-#: browser/browser.c:114 browser/browser.c:129
+#: browser/browser.c:115 browser/browser.c:130
 msgid "Mask"
 msgstr "Μάσκα"
 
-#: browser/browser.c:125
+#: browser/browser.c:126
 msgid "List"
 msgstr "Λίστα"
 
-#: browser/browser.c:126
+#: browser/browser.c:127
 msgid "Subscribe"
 msgstr "Εγγραφή"
 
-#: browser/browser.c:127
+#: browser/browser.c:128
 msgid "Unsubscribe"
 msgstr "Απεγγραφή"
 
-#: browser/browser.c:128 index/dlg_index.c:128
+#: browser/browser.c:129 index/dlg_index.c:128
 msgid "Catchup"
 msgstr ""
 
-#: browser/browser.c:609 browser/functions.c:387 browser/functions.c:751
+#: browser/browser.c:673 browser/functions.c:387 browser/functions.c:751
 #, c-format
 msgid "%s is not a directory"
 msgstr "Το %s δεν είναι κατάλογος"
 
-#: browser/browser.c:895
+#: browser/browser.c:959
 #, c-format
 msgid "Subscribed newsgroups"
 msgstr "Εγγεγραμένες ομάδεων ειδήσεων"
 
-#: browser/browser.c:899
+#: browser/browser.c:963
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr "Ομάδες ειδήσεων στον server [%s]"
 
-#: browser/browser.c:908
+#: browser/browser.c:972
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Γραμματοκιβώτια [%d]"
 
-#: browser/browser.c:921
+#: browser/browser.c:985
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Εγγεγραμμένα [%s], Μάσκα αρχείου: %s"
 
-#: browser/browser.c:927
+#: browser/browser.c:991
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Κατάλογος [%s], Μάσκα αρχείου: %s"
 
-#: browser/browser.c:990
+#: browser/browser.c:1054
 msgid "Can't attach a directory"
 msgstr "Αδυναμία προσάρτησης ενός κατάλογου"
 
@@ -1055,39 +1055,39 @@ msgstr "Απεγγραφή από %s"
 msgid "Could not unsubscribe from %s"
 msgstr "Δεν μπόρεσε να γίνει απεγγραφή από %s"
 
-#: commands.c:111 recvcmd.c:181 recvcmd.c:193
+#: commands.c:111 recvcmd.c:182 recvcmd.c:194
 msgid "Warning: message contains no From: header"
 msgstr "Προειδοποίηση: το μήνυμα δεν περίεχει From: κεφαλίδα"
 
-#: commands.c:117 recvcmd.c:204
+#: commands.c:117 recvcmd.c:205
 #, fuzzy
 msgid "Bounce message to: "
 msgstr "Διαβίβαση μηνύματος στον: "
 
-#: commands.c:119 recvcmd.c:206
+#: commands.c:119 recvcmd.c:207
 #, fuzzy
 msgid "Bounce tagged messages to: "
 msgstr "Διαβίβαση σημειωμένων μηνυμάτων στον: "
 
-#: commands.c:129 recvcmd.c:218
+#: commands.c:129 recvcmd.c:219
 msgid "Error parsing address"
 msgstr "Σφάλμα κατά την ανάλυση της διεύθυνσης"
 
-#: commands.c:148 recvcmd.c:238
+#: commands.c:148 recvcmd.c:239
 #, fuzzy, c-format
 msgid "Bounce message to %s?"
 msgid_plural "Bounce messages to %s?"
 msgstr[0] "Διαβίβαση μηνύματος στον %s?"
 msgstr[1] "Διαβίβαση μηνυμάτων στον %s?"
 
-#: commands.c:165 recvcmd.c:260
+#: commands.c:165 recvcmd.c:261
 #, fuzzy
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
 msgstr[0] "Το μήνυμα δεν διαβιβάστηκε"
 msgstr[1] "Τα μηνύματα δεν διαβιβάστηκαν"
 
-#: commands.c:190 recvcmd.c:287
+#: commands.c:190 recvcmd.c:288
 #, fuzzy
 msgid "Message bounced"
 msgid_plural "Messages bounced"
@@ -1393,7 +1393,7 @@ msgstr "Άνοιγμα γραμματοκιβωτίου για σύναψη μη
 msgid "Open newsgroup to attach message from"
 msgstr "Άνοιγμα ομάδας νέων για σύναψη μηνύματος από"
 
-#: compose/functions.c:753 main.c:1360
+#: compose/functions.c:753 main.c:1361
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Αδυναμία ανοίγματος του γραμματοκιβωτίου %s"
@@ -1518,7 +1518,7 @@ msgstr "Η τρέχουσα σύναψη θα μετατραπεί"
 msgid "Attachment is not 'multipart'"
 msgstr "Το συνημμένο είναι ήδη πρώτο"
 
-#: compose/functions.c:1637 send/send.c:2778
+#: compose/functions.c:1637 send/send.c:2781
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Λανθασμένη διεθνής διεύθυνση IDN στο '%s': '%s'"
@@ -1638,7 +1638,7 @@ msgstr "Μη έγκυρη quad τιμή: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Μη έγκυρη quad τιμή: %ld"
 
-#: config/set.c:104 init.c:931
+#: config/set.c:104 init.c:969
 #, c-format
 msgid "No such variable: %s"
 msgstr "Δεν υπάρχει η μεταβλητή: %s"
@@ -2034,14 +2034,14 @@ msgstr "Το tunnel για %s έπεστρεψε σφάλμα %d (%s)"
 msgid "%s isn't a regular file"
 msgstr "Το %s δεν είναι κανονικό αρχείο"
 
-#: copy.c:716
+#: copy.c:720
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
 msgstr[0] "Ο υπολογισμός μήκους ήταν λάθος για %ld byte"
 msgstr[1] "Ο υπολογισμός μήκους ήταν λάθος για %ld bytes"
 
-#: copy.c:798
+#: copy.c:802
 msgid "No decryption engine available for message"
 msgstr "Δεν υπάρχει διάθεσιμη μηχανή αποκρυπτογράφησης για το μήνυμα"
 
@@ -2684,7 +2684,7 @@ msgstr "Αυθεντικοποίηση (%s)..."
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:88 imap/auth_cram.c:179 imap/auth_gss.c:346
 #: imap/auth_oauth.c:105 imap/auth_sasl.c:254 nntp/nntp.c:660 pop/auth.c:289
-#: pop/auth.c:357 send/smtp.c:817 send/smtp.c:891 send/smtp.c:987
+#: pop/auth.c:357 send/smtp.c:817 send/smtp.c:891 send/smtp.c:995
 #, fuzzy, c-format
 msgid "%s authentication failed"
 msgstr "Αυθεντικοποίηση SASL απέτυχε"
@@ -2785,11 +2785,11 @@ msgstr "Απέτυχε η δημιουργία: %s"
 msgid "Closing connection to %s..."
 msgstr "Κλείσιμο σύνδεσης στο στο %s..."
 
-#: imap/imap.c:777 nntp/nntp.c:1787 pop/lib.c:332 send/smtp.c:1032
+#: imap/imap.c:777 nntp/nntp.c:1787 pop/lib.c:332 send/smtp.c:1040
 msgid "Secure connection with TLS?"
 msgstr "Προστατέψτε την σύνδεση με TLS;"
 
-#: imap/imap.c:793 nntp/nntp.c:1810 pop/lib.c:353 send/smtp.c:1049
+#: imap/imap.c:793 nntp/nntp.c:1810 pop/lib.c:353 send/smtp.c:1057
 msgid "Could not negotiate TLS connection"
 msgstr "Αδυναμία διαπραγμάτευσης σύνδεσης TLS"
 
@@ -3366,7 +3366,7 @@ msgstr "αδυναμία στον εντοπισμό του ονόματος χ�
 msgid "%s: unknown command"
 msgstr "%s: άγνωστη εντολή"
 
-#: init.c:938
+#: init.c:933
 #, c-format
 msgid "Config variable '%s' is deprecated"
 msgstr ""
@@ -3469,19 +3469,19 @@ msgstr "Αδυναμία αποστολής του μηνύματος."
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): αδυναμία ορισμού χρόνου στο αρχείο"
 
-#: maildir/maildir.c:680 maildir/mh.c:703
+#: maildir/maildir.c:682 maildir/mh.c:704
 #, fuzzy, c-format
 msgid "Scanning %s..."
 msgstr "Επιλογή %s..."
 
-#: maildir/maildir.c:701 maildir/mh.c:726 mbox/mbox.c:210 mbox/mbox.c:378
+#: maildir/maildir.c:703 maildir/mh.c:727 mbox/mbox.c:210 mbox/mbox.c:378
 #: mx.c:372
 #, c-format
 msgid "Reading %s..."
 msgstr "Ανάγνωση %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1390 maildir/mh.c:1054 mbox/mbox.c:1272 mx.c:480
+#: maildir/maildir.c:1392 maildir/mh.c:1055 mbox/mbox.c:1272 mx.c:480
 #: notmuch/notmuch.c:2220
 #, c-format
 msgid "Writing %s..."
@@ -3716,37 +3716,37 @@ msgstr "αδυναμία στον εντοπισμό του καταλόγου �
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Σφάλμα: '%s' είναι λανθασμένη διεθνής διεύθυνση IDN"
 
-#: main.c:980
+#: main.c:981
 msgid "Failed to parse mailto: link"
 msgstr ""
 
-#: main.c:993 main.c:1250 send/send.c:296 send/send.c:2768 send/send.c:2772
+#: main.c:994 main.c:1251 send/send.c:296 send/send.c:2771 send/send.c:2775
 msgid "No recipients specified"
 msgstr "Δεν έχουν οριστεί παραλήπτες"
 
-#: main.c:1022
+#: main.c:1023
 msgid "Can't use -E flag with stdin"
 msgstr ""
 
-#: main.c:1106
+#: main.c:1107
 #, fuzzy, c-format
 msgid "Can't parse message template: %s"
 msgstr "Αδυναμία πρόσβασης στο αρχείο μηνυμάτων: %s"
 
-#: main.c:1172 mutt_header.c:343
+#: main.c:1173 mutt_header.c:343
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: αδυναμία στην προσάρτηση του αρχείου"
 
-#: main.c:1264
+#: main.c:1265
 msgid "No mailbox with new mail"
 msgstr "Δεν υπάρχει νέα αλληλογραφία σε κανένα γραμματοκιβώτιο"
 
-#: main.c:1289
+#: main.c:1290
 msgid "No incoming mailboxes defined"
 msgstr "Δεν έχει οριστεί γραμματοκιβώτιο εισερχομένων"
 
-#: main.c:1341
+#: main.c:1342
 msgid "Mailbox is empty"
 msgstr "Το γραμματοκιβώτιο είναι άδειο"
 
@@ -4229,7 +4229,7 @@ msgstr "Κλήση του PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Το μήνυμα δεν μπορεί να σταλεί ως εσωτερικό κείμενο. Να χρησιμοποιηθεί PGP/MIME;"
 
-#: ncrypt/crypt.c:224 send/send.c:2746
+#: ncrypt/crypt.c:224 send/send.c:2749
 msgid "Mail not sent"
 msgstr "Το γράμμα δεν εστάλη"
 
@@ -4782,27 +4782,27 @@ msgstr "Κλήση του S/MIME..."
 msgid "Check key"
 msgstr "Ελέγξτε κλειδί "
 
-#: ncrypt/dlg_gpgme.c:696
+#: ncrypt/dlg_gpgme.c:708
 #, fuzzy
 msgid "All matching keys are marked expired/revoked"
 msgstr "Όλα τα κλειδιά που ταιριάζουν είναι ληγμένα, ακυρωμένα ή ανενεργά"
 
-#: ncrypt/dlg_gpgme.c:743
+#: ncrypt/dlg_gpgme.c:755
 #, fuzzy
 msgid "PGP and S/MIME keys matching"
 msgstr "Όμοια S/MIME κλειδιά \"%s\"."
 
-#: ncrypt/dlg_gpgme.c:745
+#: ncrypt/dlg_gpgme.c:757
 #, fuzzy
 msgid "PGP keys matching"
 msgstr "Όμοια PGP κλειδιά \"%s\"."
 
-#: ncrypt/dlg_gpgme.c:747
+#: ncrypt/dlg_gpgme.c:759
 #, fuzzy
 msgid "S/MIME keys matching"
 msgstr "Όμοια πιστοποιητικά S/MIME \"%s\"."
 
-#: ncrypt/dlg_gpgme.c:749
+#: ncrypt/dlg_gpgme.c:761
 #, fuzzy
 msgid "keys matching"
 msgstr "Όμοια PGP κλειδιά \"%s\"."
@@ -4810,13 +4810,13 @@ msgstr "Όμοια PGP κλειδιά \"%s\"."
 #. L10N: 1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>"
-#: ncrypt/dlg_gpgme.c:757
+#: ncrypt/dlg_gpgme.c:769
 #, c-format
 msgid "%s <%s>"
 msgstr ""
 
 #. L10N: e.g. 'S/MIME keys matching "Michael Elkins".'
-#: ncrypt/dlg_gpgme.c:762
+#: ncrypt/dlg_gpgme.c:774
 #, c-format
 msgid "%s \"%s\""
 msgstr ""
@@ -5375,7 +5375,7 @@ msgstr "Η σύνδεση με τον εξυπηρετητή έκλεισε"
 msgid "Server doesn't support reader mode"
 msgstr ""
 
-#: nntp/nntp.c:471 pop/auth.c:620 send/smtp.c:991
+#: nntp/nntp.c:471 pop/auth.c:620 send/smtp.c:999
 msgid "No authenticators available"
 msgstr "Δεν υπάρχει διαθέσιμη αυθεντικοποίηση."
 
@@ -6932,7 +6932,7 @@ msgstr ""
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:100 pattern/exec.c:1089
+#: pattern/exec.c:100 pattern/exec.c:1098
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "λάθος: άγνωστη διεργασία %d (ανέφερε αυτό το σφάλμα)"
@@ -6957,7 +6957,7 @@ msgstr "Αδυναμία ανοίγματος /dev/null"
 msgid "Error checking length of temporary file"
 msgstr "Σφάλμα. Διατήρηση προσωρινού αρχείου: %s"
 
-#: pattern/exec.c:886
+#: pattern/exec.c:885
 msgid "error: server custom search only supported with IMAP"
 msgstr ""
 
@@ -7059,168 +7059,174 @@ msgstr ""
 msgid "messages which contain PGP key"
 msgstr "Το μήνυμα ανεβλήθη."
 
-#. L10N: Pattern Completion Menu description for ~l
+#. L10N: Pattern Completion Menu description for ~K
 #: pattern/flags.c:98
+#, fuzzy
+msgid "messages whose BCC header matches EXPR"
+msgstr "επεξεργασία του μηνύματος με επικεφαλίδες"
+
+#. L10N: Pattern Completion Menu description for ~l
+#: pattern/flags.c:101
 msgid "messages addressed to known mailing lists"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~L
-#: pattern/flags.c:101
+#: pattern/flags.c:104
 msgid "messages whose From/Sender/To/CC matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~m
-#: pattern/flags.c:104
+#: pattern/flags.c:107
 msgid "messages whose number is in RANGE"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~M
-#: pattern/flags.c:107
+#: pattern/flags.c:110
 msgid "messages with a Content-Type matching EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~n
-#: pattern/flags.c:110
+#: pattern/flags.c:113
 msgid "messages whose score is in RANGE"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~N
-#: pattern/flags.c:113
+#: pattern/flags.c:116
 #, fuzzy
 msgid "new messages"
 msgstr "Δεν υπάρχουν νέα μηνύματα"
 
 #. L10N: Pattern Completion Menu description for ~O
-#: pattern/flags.c:116
+#: pattern/flags.c:119
 #, fuzzy
 msgid "old messages"
 msgstr "ταξινόμηση των μηνυμάτων"
 
 #. L10N: Pattern Completion Menu description for ~p
-#: pattern/flags.c:119
+#: pattern/flags.c:122
 msgid "messages addressed to you"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~P
-#: pattern/flags.c:122
+#: pattern/flags.c:125
 #, fuzzy
 msgid "messages from you"
 msgstr "Το μήνυμα ανεβλήθη."
 
 #. L10N: Pattern Completion Menu description for ~Q
-#: pattern/flags.c:125
+#: pattern/flags.c:128
 msgid "messages which have been replied to"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~r
-#: pattern/flags.c:128
+#: pattern/flags.c:131
 msgid "messages received in DATERANGE"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~R
-#: pattern/flags.c:131
+#: pattern/flags.c:134
 #, fuzzy
 msgid "already read messages"
 msgstr "Δεν υπάρχουν μη αναγνωσμένα μηνύματα"
 
 #. L10N: Pattern Completion Menu description for ~s
-#: pattern/flags.c:134
+#: pattern/flags.c:137
 msgid "messages whose Subject header matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~S
-#: pattern/flags.c:137
+#: pattern/flags.c:140
 #, fuzzy
 msgid "superseded messages"
 msgstr "Δεν υπάρχουν μη αναγνωσμένα μηνύματα"
 
 #. L10N: Pattern Completion Menu description for ~t
-#: pattern/flags.c:140
+#: pattern/flags.c:143
 msgid "messages whose To header matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~T
-#: pattern/flags.c:143
+#: pattern/flags.c:146
 #, fuzzy
 msgid "tagged messages"
 msgstr "Δεν υπάρχουν σημειωμένα μηνύματα"
 
 #. L10N: Pattern Completion Menu description for ~u
-#: pattern/flags.c:146
+#: pattern/flags.c:149
 #, fuzzy
 msgid "messages addressed to subscribed mailing lists"
 msgstr "απάντηση στην καθορισμένη λίστα αλληλογραφίας"
 
 #. L10N: Pattern Completion Menu description for ~U
-#: pattern/flags.c:149
+#: pattern/flags.c:152
 #, fuzzy
 msgid "unread messages"
 msgstr "Δεν υπάρχουν μη αναγνωσμένα μηνύματα"
 
 #. L10N: Pattern Completion Menu description for ~v
-#: pattern/flags.c:152
+#: pattern/flags.c:155
 #, fuzzy
 msgid "messages in collapsed threads"
 msgstr "Το τρέχον μήνυμα δεν είναι ορατό σε αυτή τη περιορισμένη όψη"
 
 #. L10N: Pattern Completion Menu description for ~V
-#: pattern/flags.c:155
+#: pattern/flags.c:158
 #, fuzzy
 msgid "cryptographically verified messages"
 msgstr "μετάβαση στο προηγούμενο νέο ή μη αναγνωσμένο μήνυμα"
 
 #. L10N: Pattern Completion Menu description for ~w
-#: pattern/flags.c:159
+#: pattern/flags.c:162
 #, fuzzy
 msgid "newsgroups matching EXPR"
 msgstr "Κανένα αρχείο δεν ταιριάζει με τη μάσκα αρχείου"
 
 #. L10N: Pattern Completion Menu description for ~x
-#: pattern/flags.c:163
+#: pattern/flags.c:166
 msgid "messages whose References header matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~X
-#: pattern/flags.c:166
+#: pattern/flags.c:169
 #, fuzzy
 msgid "messages with RANGE attachments"
 msgstr "εμφάνιση των προσαρτήσεων MIME"
 
 #. L10N: Pattern Completion Menu description for ~y
-#: pattern/flags.c:169
+#: pattern/flags.c:172
 msgid "messages whose X-Label header matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~Y
-#: pattern/flags.c:172
+#: pattern/flags.c:175
 msgid "messages whose tags match EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~z
-#: pattern/flags.c:175
+#: pattern/flags.c:178
 msgid "messages whose size is in RANGE"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~=
-#: pattern/flags.c:178
+#: pattern/flags.c:181
 #, fuzzy
 msgid "duplicated messages"
 msgstr "Δεν υπάρχουν αποκαταστημένα μηνύματα"
 
 #. L10N: Pattern Completion Menu description for ~$
-#: pattern/flags.c:181
+#: pattern/flags.c:184
 #, fuzzy
 msgid "unreferenced messages"
 msgstr "Δεν υπάρχουν μη αναγνωσμένα μηνύματα"
 
 #. L10N: Pattern Completion Menu description for ~#
-#: pattern/flags.c:184
+#: pattern/flags.c:187
 #, fuzzy
 msgid "broken threads"
 msgstr "Δεν υπάρχουν άλλες συζητήσεις"
 
 #. L10N: Pattern Completion Menu description for =/
-#: pattern/flags.c:187
+#: pattern/flags.c:190
 msgid "IMAP custom server-side search for STRING"
 msgstr ""
 
@@ -7362,7 +7368,7 @@ msgstr "Σημείωση %d διαγραφέντων μηνυμάτων..."
 msgid "Can't write message to temporary file"
 msgstr "Αδυναμία εγγραφής μηνύματος στο προσωρινό αρχείο"
 
-#: postpone/dlg_postpone.c:188
+#: postpone/dlg_postpone.c:210
 msgid "Postponed Messages"
 msgstr "Αναβληθέντα Μηνύματα"
 
@@ -7391,54 +7397,54 @@ msgstr "ναι"
 msgid "no"
 msgstr "όχι"
 
-#: recvcmd.c:74
+#: recvcmd.c:75
 msgid "You may only bounce message/rfc822 parts"
 msgstr "Μπορείτε να διαβιβάσετε μόνο μήνυμα/μέρη rfc822"
 
-#: recvcmd.c:289
+#: recvcmd.c:290
 #, fuzzy
 msgid "Error bouncing message"
 msgid_plural "Error bouncing messages"
 msgstr[0] "Σφάλμα κατά την μεταβίβαση του μηνύματος"
 msgstr[1] "Σφάλμα κατά την μεταβίβαση των μηνυμάτων"
 
-#: recvcmd.c:515
+#: recvcmd.c:519
 #, c-format
 msgid "Can't open temporary file %s"
 msgstr "Αδυναμία πρόσβασης στο προσωρινό αρχείο %s"
 
-#: recvcmd.c:547
+#: recvcmd.c:554
 msgid "Forward as attachments?"
 msgstr "Προώθηση σαν προσαρτήσεις;"
 
-#: recvcmd.c:562
+#: recvcmd.c:569
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr "Αδυναμία αποκωδικοποίησης όλων των σημειωμένων προσαρτήσεων. Προώθηση-MIME των άλλων;"
 
-#: recvcmd.c:692
+#: recvcmd.c:699
 msgid "Forward MIME encapsulated?"
 msgstr "Προώθηση ενσωματωμένου MIME;"
 
-#: recvcmd.c:701 recvcmd.c:1009
+#: recvcmd.c:708 recvcmd.c:1016
 #, c-format
 msgid "Can't create %s"
 msgstr "Αδυναμία δημιουργίας του %s"
 
-#: recvcmd.c:844
+#: recvcmd.c:851
 msgid "Can't find any tagged messages"
 msgstr "Αδυναμία εύρεσης σημειωμένων μηνυμάτων"
 
-#: recvcmd.c:880 send/send.c:1187
+#: recvcmd.c:887 send/send.c:1190
 msgid "No mailing lists found"
 msgstr "Δεν βρέθηκαν λίστες συζητήσεων"
 
-#: recvcmd.c:985
+#: recvcmd.c:992
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr "Αδυναμία αποκωδικοποίησης όλων των σημειωμένων προσαρτήσεων. MIME-encapsulate τις άλλες;"
 
 #. L10N: You will see this error message if you invoke <compose-to-sender>
 #. when you are on a normal attachment.
-#: recvcmd.c:1121
+#: recvcmd.c:1131
 #, fuzzy
 msgid "You may only compose to sender with message/rfc822 parts"
 msgstr "Μπορείτε να διαβιβάσετε μόνο μήνυμα/μέρη rfc822"
@@ -7483,37 +7489,37 @@ msgstr "Προώθηση σαν προσαρτήσεις;"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
-#: send/send.c:887
+#: send/send.c:890
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Απάντηση στο %s%s;"
 
-#: send/send.c:934
+#: send/send.c:937
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Συνέχεια στο %s%s;"
 
-#: send/send.c:1230
+#: send/send.c:1233
 msgid "Include message in reply?"
 msgstr "Συμπερίληψη του μηνύματος στην απάντηση;"
 
-#: send/send.c:1236
+#: send/send.c:1239
 msgid "Including quoted message..."
 msgstr "Συμπερίληψη καθορισμένου μηνύματος..."
 
-#: send/send.c:1242
+#: send/send.c:1245
 msgid "Could not include all requested messages"
 msgstr "Αδυναμία συμπερίληψης όλων των μηνυμάτων που ζητήθηκαν"
 
-#: send/send.c:1255
+#: send/send.c:1258
 msgid "Forward as attachment?"
 msgstr "Προώθηση σαν προσάρτηση;"
 
-#: send/send.c:1260
+#: send/send.c:1263
 msgid "Preparing forwarded message..."
 msgstr "Ετοιμασία προωθημένου μηνύματος ..."
 
-#: send/send.c:1773
+#: send/send.c:1776
 #, fuzzy
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
 msgstr "Το %c: δεν υποστηρίζεται σε αυτή την κατάσταση"
@@ -7523,12 +7529,12 @@ msgstr "Το %c: δεν υποστηρίζεται σε αυτή την κατά
 #. sending the mail too.
 #. %s is the full mailbox URL, including imap(s)://
 #.
-#: send/send.c:1779
+#: send/send.c:1782
 #, c-format
 msgid "Skipping Fcc to %s"
 msgstr "Αγνοείται το Fcc στο %s"
 
-#: send/send.c:1820 send/send.c:1830 send/send.c:1856
+#: send/send.c:1823 send/send.c:1833 send/send.c:1859
 #, fuzzy
 msgid "Save attachments in Fcc?"
 msgstr "παρουσίαση της προσάρτησης ως κείμενο"
@@ -7537,122 +7543,122 @@ msgstr "παρουσίαση της προσάρτησης ως κείμενο"
 #. (r)etry tries the same mailbox again.
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
-#: send/send.c:1879
+#: send/send.c:1882
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
-#: send/send.c:1883
+#: send/send.c:1886
 msgid "rms"
 msgstr ""
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
-#: send/send.c:1889
+#: send/send.c:1892
 #, fuzzy
 msgid "Fcc mailbox"
 msgstr "Κανένα γραμματοκιβώτιο.\n"
 
-#: send/send.c:1959
+#: send/send.c:1962
 msgid "Can't postpone.  $postponed is unset"
 msgstr "Δεν είναι δυνατή η αναβολή. Το $postponed δεν έχει τεθεί."
 
-#: send/send.c:1996 send/send.c:2013
+#: send/send.c:1999 send/send.c:2016
 msgid "Error encrypting message. Check your crypt settings."
 msgstr "Σφάλμα κατά την κρυπτογράφηση του μηνύματος. Ελέγξατε τις ρυθμίσεις crypto σας."
 
-#: send/send.c:2107
+#: send/send.c:2110
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr "Το μύνημα περιέχει κείμενο που ταιριάζει το \"$abort_noattach_regex\". Δεν εστάλει."
 
-#: send/send.c:2111
+#: send/send.c:2114
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "επεξεργασία της κωδικοποίησης-μεταφοράς της προσάρτησης"
 
-#: send/send.c:2167
+#: send/send.c:2170
 msgid "Recall postponed message?"
 msgstr "Ανάκληση αναβληθέντος μηνύματος;"
 
-#: send/send.c:2427
+#: send/send.c:2430
 msgid "Refusing to send an empty email"
 msgstr "Αδύνατον να σταλεί κενό email"
 
-#: send/send.c:2428
+#: send/send.c:2431
 msgid "Try: echo | neomutt -s 'subject' user@example.com"
 msgstr "Δοκιμάστε: echo | neomutt -s 'θέμα' user@example.com "
 
-#: send/send.c:2517
+#: send/send.c:2520
 msgid "Edit forwarded message?"
 msgstr "Επεξεργασία προωθημένου μηνύματος;"
 
-#: send/send.c:2560
+#: send/send.c:2563
 msgid "Abort unmodified message?"
 msgstr "Ματαίωση αποστολής μη τροποποιημένου μηνύματος;"
 
-#: send/send.c:2562
+#: send/send.c:2565
 msgid "Aborted unmodified message"
 msgstr "Ματαίωση αποστολής μη τροποποιημένου μηνύματος"
 
-#: send/send.c:2701
+#: send/send.c:2704
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "Δεν έχει ρυθμιστεί το παρασκήνιο crypto. Γίνεται απενεργοποίηση της ασφάλειας μηνυμάτων"
 
-#: send/send.c:2743
+#: send/send.c:2746
 #, fuzzy
 msgid "Article not posted"
 msgstr "Το γράμμα δεν εστάλη"
 
-#: send/send.c:2753
+#: send/send.c:2756
 msgid "Message postponed"
 msgstr "Το μήνυμα ανεβλήθη"
 
-#: send/send.c:2788
+#: send/send.c:2791
 msgid "No subject, abort sending?"
 msgstr "Δεν υπάρχει θέμα, ακύρωση αποστολής;"
 
-#: send/send.c:2792 send/send.c:2798
+#: send/send.c:2795 send/send.c:2801
 msgid "No subject specified"
 msgstr "Δεν καθορίστηκε θέμα"
 
-#: send/send.c:2804
+#: send/send.c:2807
 #, fuzzy
 msgid "No newsgroup specified"
 msgstr "Δεν καθορίστηκε θέμα"
 
-#: send/send.c:2866 send/smtp.c:248
+#: send/send.c:2869 send/smtp.c:248
 msgid "Sending message..."
 msgstr "Αποστολή μηνύματος..."
 
-#: send/send.c:2909
+#: send/send.c:2915
 msgid "Could not send the message"
 msgstr "Αδυναμία αποστολής του μηνύματος"
 
-#: send/send.c:2919
+#: send/send.c:2925
 msgid "Sending in background"
 msgstr "Αποστολή στο παρασκήνιο"
 
-#: send/send.c:2920
+#: send/send.c:2926
 msgid "Article posted"
 msgstr "Το άρθρο δημοσιεύτηκε"
 
-#: send/send.c:2921
+#: send/send.c:2927
 msgid "Mail sent"
 msgstr "Το γράμμα εστάλη"
 
-#: send/send.c:3000
+#: send/send.c:3006
 #, fuzzy
 msgid "No recipient specified"
 msgstr "Δεν έχουν οριστεί παραλήπτες"
 
-#: send/send.c:3045
+#: send/send.c:3051
 #, fuzzy
 msgid "No List-Subscribe header found"
 msgstr "Δε βρέθηκε"
 
-#: send/send.c:3074
+#: send/send.c:3080
 #, fuzzy
 msgid "No List-Unsubscribe header found"
 msgstr "Μοτίβο απεγγραφής: "
@@ -7667,21 +7673,21 @@ msgstr "Αδυναμία αποστολής του μηνύματος"
 msgid "Could not open %s"
 msgstr "Αδυναμία ανοίγματος του %s"
 
-#: send/sendlib.c:925
+#: send/sendlib.c:942
 #, c-format
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "Λανθασμένη διεθνής διεύθυνση IDN %s κατά την δημιουργία του πεδίου Επαναποστολή-Από"
 
-#: send/sendmail.c:329
+#: send/sendmail.c:331
 msgid "$sendmail must be set in order to send mail"
 msgstr "Το $sendmail πρέπει να έχει τεθεί για να σταλεί mail"
 
-#: send/sendmail.c:438
+#: send/sendmail.c:440
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "Σφάλμα κατά την αποστολή μηνύματος, τερματισμός θυγατρικής με %d (%s)"
 
-#: send/sendmail.c:450
+#: send/sendmail.c:452
 msgid "Output of the delivery process"
 msgstr "Έξοδος της διεργασίας αποστολής"
 
@@ -7700,27 +7706,23 @@ msgstr "Απέτυχε η συνεδρία SMTP: δεν μπορεί να ανο
 msgid "Invalid SMTP URL: %s"
 msgstr "Μη έγκυρο URL SMTP: %s"
 
-#: send/smtp.c:976
-msgid "SMTP authentication requires SASL"
-msgstr "Η αυθεντικοποίηση SMTP απαιτεί SASL"
-
-#: send/smtp.c:1064
+#: send/smtp.c:1072
 msgid "SMTP server does not support authentication"
 msgstr "Ο διακομιστής SMTP δεν υποστιρίζει την αυθεντικοποίηση"
 
-#: send/smtp.c:1111
+#: send/smtp.c:1119
 msgid "No from address given"
 msgstr "Δεν έχει δοθεί διεύθυνση προέλευσης."
 
-#: send/smtp.c:1178
+#: send/smtp.c:1186
 msgid "SMTP session failed: read error"
 msgstr "Απέτυχε η συνεδρία SMTP: σφάλμα read"
 
-#: send/smtp.c:1180
+#: send/smtp.c:1188
 msgid "SMTP session failed: write error"
 msgstr "Απέτυχε η συνεδρία SMTP: σφάλμα write"
 
-#: send/smtp.c:1182
+#: send/smtp.c:1190
 msgid "Invalid server response"
 msgstr "Μη έγκυρη απάντηση από τον διακομιστή"
 
@@ -7816,3 +7818,6 @@ msgstr "Προκαθορισμένοι παράμετροι:"
 
 #~ msgid "Exit NeoMutt?"
 #~ msgstr "Έξοδος από το NeoMutt;"
+
+#~ msgid "SMTP authentication requires SASL"
+#~ msgstr "Η αυθεντικοποίηση SMTP απαιτεί SASL"
