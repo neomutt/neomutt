@@ -1614,9 +1614,7 @@
 /*
 ** .pp
 ** When \fIset\fP, NeoMutt will skip the host name part of $$hostname variable
-** when adding the domain part to addresses.  This variable does not
-** affect the generation of Message-IDs, and it will not lead to the
-** cut-off of first-level domains.
+** when adding the domain part to addresses.
 */
 
 { "hidden_tags", DT_SLIST, "unread,draft,flagged,passed,replied,attachment,signed,encrypted" },
@@ -1721,8 +1719,7 @@
 ** .pp
 ** Specifies the fully-qualified hostname of the system NeoMutt is running on
 ** containing the host's name and the DNS domain it belongs to. It is used
-** as the domain part (after "@") for local email addresses as well as
-** Message-Id headers.
+** as the domain part (after "@") for local email addresses.
 ** .pp
 ** If not specified in a config file, then NeoMutt will try to determine the hostname itself.
 ** .pp
