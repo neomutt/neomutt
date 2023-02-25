@@ -39,6 +39,7 @@
 #include "mutt_thread.h"
 #include "mx.h"
 #include "options.h"
+#include "xdg.h"
 
 #define CONFIG_INIT_TYPE(CS, NAME)                                             \
   extern const struct ConfigSetType Cst##NAME;                                 \
@@ -593,6 +594,28 @@ static struct ConfigDef MainVars[] = {
   { "write_inc", DT_NUMBER|DT_NOT_NEGATIVE, 10, 0, NULL,
     "Update the progress bar after this many records written (0 to disable)"
   },
+  { "xdg_app_data_home", DT_PATH|DT_PATH_DIR, IP "./", 0, NULL,
+    "The application's XDG data home directory as configured by the environment"
+  },
+  { "xdg_app_config_home", DT_PATH|DT_PATH_DIR, IP "./", 0, NULL,
+    "The application's XDG config directory as configured by the environment"
+  },
+  { "xdg_app_state_home", DT_PATH|DT_PATH_DIR, IP "./", 0, NULL,
+    "The application's XDG state directory as configured by the environment"
+  },
+/* This has no official XDG name yet (as the spec of version 0.8 dated 8th May 2021)
+  { "xdg_app_bin_home", DT_PATH|DT_PATH_DIR, IP "./", 0, NULL,
+    "The application's XDG executable directory as configured by the environment"
+  },
+*/
+  { "xdg_app_cache_home", DT_PATH|DT_PATH_DIR, IP "./", 0, NULL,
+    "The application's XDG cache directory as configured by the environment"
+  },
+/* No named default directory
+  { "xdg_app_runtime_dir", DT_PATH|DT_PATH_DIR, IP "./", 0, NULL,
+    "The application's XDG runtime directory as configured by the environment"
+  },
+*/
 
   { "escape",                    DT_DEPRECATED|DT_STRING, 0, IP "2021-03-18" },
   { "ignore_linear_white_space", DT_DEPRECATED|DT_BOOL,   0, IP "2021-03-18" },
@@ -673,6 +696,39 @@ static bool config_init_main(struct ConfigSet *cs)
   rc |= cs_register_variables(cs, MainVarsIdn, 0);
 #endif
 
+  struct
+  {
+    enum XdgEnvVar xdg_constant;
+    const char *config_name;
+  } vars[] = {
+    { XDG_DATA_HOME, "xdg_app_data_home" },
+    { XDG_CONFIG_HOME, "xdg_app_config_home" },
+    { XDG_STATE_HOME, "xdg_app_state_home" },
+    /* This has no official XDG name yet (as the spec of version 0.8 dated 8th May 2021)
+    { XDG_BIN_HOME, "xdg_app_bin_home" },
+    */
+    { XDG_CACHE_HOME, "xdg_app_cache_home" },
+    /* No named default directory
+    { XDG_RUNTIME_DIR, "xdg_app_runtime_dir" },
+    */
+    { 0, NULL },
+  };
+  struct Buffer buf = mutt_buffer_make(256);
+
+  for (int i = 0; vars[i].config_name != NULL; ++i)
+  {
+    int ret_xdg = mutt_xdg_get_app_path(vars[i].xdg_constant, &buf);
+    if (ret_xdg >= 0)
+    {
+      int ret_set = cs_str_initial_set(cs, vars[i].config_name,
+                                       mutt_buffer_string(&buf), NULL);
+      rc = rc && (ret_set == CSR_SUCCESS);
+      int ret_reset = cs_str_reset(cs, vars[i].config_name, NULL);
+      rc = rc && (ret_reset == CSR_SUCCESS);
+    }
+    rc = rc && (ret_xdg >= 0);
+  }
+  mutt_buffer_dealloc(&buf);
   return rc;
 }
 

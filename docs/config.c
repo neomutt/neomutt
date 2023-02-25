@@ -5619,5 +5619,82 @@
 ** name of original article author) to article that followuped to newsgroup.
 */
 #endif
+
+{ "xdg_app_data_home", DT_PATH, "$XDG_DATA_HOME/neomutt" },
+/*
+** .pp
+** The family of $$xdg_FOO config variables is a group of convenience variables
+** to get access to value of XDG_FOO environment variable.  The covered XDG
+** variables are:
+** .dl
+** .dt \fBName\fP      .dd \fBDefault value\fP
+** .dt XDG_DATA_HOME   .dd ~/.local/share
+** .dt XDG_CONFIG_HOME .dd ~/.config
+** .dt XDG_STATE_HOME  .dd ~/.local/state
+** .dt XDG_CACHE_HOME  .dd ~/.cache
+** .de
+** They all work the same, in the following we use $$xdg_app_cache_home as
+** example.
+** .pp
+** $$xdg_app_cache_home (note the "app" in the name) expands to
+** "XDG_CACHE_HOME/neomutt" if the environment variable XDG_CACHE_HOME is set,
+** otherwise is expands to the default as defined in the XDG Base Directory
+** Specification (see list above), in the case of XDG_CACHE_HOME it expands to
+** "~/.cache/neomutt".
+** .pp
+** The purpose of this can best be seen on an example:
+** .ts
+** set header_cache = "$$XDG_CACHE_HOME/neomutt/headers"
+** .te
+** The above works as intended if the environment variable XDG_CACHE_HOME is
+** set.  However, if it is not then the header cache would be
+** "/neomutt/headercache" which was not intended.  Using the
+** $$xdg_app_cache_home variable like so
+** .ts
+** set header_cache = "$$xdg_app_cache_home/headers"
+** .te
+** avoids this problem and correctly assigns "~/.cache/neomutt/headers" in the
+** case that XDG_CACHE_HOME is not set.
+** .pp
+** Note: NeoMutt does not use these variables internally, they are solely to
+** help writing your config file and should be considered read-only.  Setting
+** them will have no effect on NeoMutt or the XDG environment variables.  If
+** you want to change the XDG environment variables you have to do that outside
+** of NeoMutt before you launch NeoMutt.
+*/
+
+{ "xdg_app_config_home", DT_PATH, "$XDG_CONFIG_HOME/neomutt" },
+/*
+** .pp
+** See $$xdg_app_data_home for the documentation.
+*/
+
+{ "xdg_app_state_home", DT_PATH, "$XDG_STATE_HOME/neomutt"},
+/*
+** .pp
+** See $$xdg_app_data_home for the documentation.
+*/
+
+// This has no official XDG name yet (as the spec of version 0.8 dated 8th May 2021)
+// TODO: When enabling, list it in the documentation of $xdg_app_data_home
+// { "xdg_app_bin_home", DT_PATH, "$XDG_BIN_HOME/neomutt" },
+// /*
+// ** .pp
+// ** See $$xdg_app_data_home for the documentation.
+// */
+
+{ "xdg_app_cache_home", DT_PATH, "$XDG_CACHE_HOME/neomutt"},
+/*
+** .pp
+** See $$xdg_app_data_home for the documentation.
+*/
+
+// No named default directory
+// TODO: When enabling, list it in the documentation of $xdg_app_data_home
+// { "xdg_app_runtime_dir", DT_PATH, "$XDG_RUNTIME_HOME/neomutt" },
+// /*
+// ** .pp
+// ** See $$xdg_app_data_home for the documentation.
+// */
 // clang-format on
 /*--*/
