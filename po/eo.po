@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.8.0\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-02-16 13:32+0000\n"
+"POT-Creation-Date: 2023-02-25 00:19+0000\n"
 "PO-Revision-Date: 2021-08-20 16:44+0100\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
@@ -31,7 +31,7 @@ msgid "Address: "
 msgstr "Adreso: "
 
 #: alias/alias.c:453 commands.c:137 conn/raw.c:161 conn/raw.c:218
-#: envelope/functions.c:131 recvcmd.c:227 send/send.c:203
+#: envelope/functions.c:131 recvcmd.c:228 send/send.c:203
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "Malbona IDN: '%s'"
@@ -82,21 +82,21 @@ msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr "Averto: Malbona IDN '%s' en adreso '%s'"
 
 #: alias/dlg_alias.c:101 alias/dlg_query.c:100 attach/dlg_attach.c:96
-#: autocrypt/dlg_autocrypt.c:89 browser/browser.c:111 browser/browser.c:124
+#: autocrypt/dlg_autocrypt.c:89 browser/browser.c:112 browser/browser.c:125
 #: conn/dlg_verifycert.c:69 history/dlg_history.c:77 ncrypt/dlg_gpgme.c:96
 #: ncrypt/dlg_pgp.c:96 ncrypt/dlg_smime.c:75 pager/dlg_pager.c:88
 #: pager/dlg_pager.c:99 pager/dlg_pager.c:109 pager/dlg_pager.c:125
-#: pattern/dlg_pattern.c:91 postpone/dlg_postpone.c:90
+#: pattern/dlg_pattern.c:91 postpone/dlg_postpone.c:91
 msgid "Exit"
 msgstr "Fino"
 
 #: alias/dlg_alias.c:102 index/dlg_index.c:107 index/dlg_index.c:123
-#: pager/dlg_pager.c:113 pager/dlg_pager.c:130 postpone/dlg_postpone.c:91
+#: pager/dlg_pager.c:113 pager/dlg_pager.c:130 postpone/dlg_postpone.c:92
 msgid "Del"
 msgstr "Forviŝi"
 
 #: alias/dlg_alias.c:103 index/dlg_index.c:108 index/dlg_index.c:124
-#: postpone/dlg_postpone.c:92
+#: postpone/dlg_postpone.c:93
 msgid "Undel"
 msgstr "Malforviŝi"
 
@@ -114,12 +114,12 @@ msgid "Select"
 msgstr "Elekto"
 
 #: alias/dlg_alias.c:107 alias/dlg_query.c:107 attach/dlg_attach.c:100
-#: autocrypt/dlg_autocrypt.c:108 browser/browser.c:115 browser/browser.c:130
+#: autocrypt/dlg_autocrypt.c:108 browser/browser.c:116 browser/browser.c:131
 #: compose/compose.c:106 compose/compose.c:121 conn/dlg_verifycert.c:70
 #: history/dlg_history.c:80 index/dlg_index.c:113 index/dlg_index.c:129
 #: ncrypt/dlg_gpgme.c:99 ncrypt/dlg_pgp.c:99 ncrypt/dlg_smime.c:77
 #: pager/dlg_pager.c:91 pager/dlg_pager.c:116 pager/dlg_pager.c:132
-#: pattern/dlg_pattern.c:93 postpone/dlg_postpone.c:93
+#: pattern/dlg_pattern.c:93 postpone/dlg_postpone.c:94
 msgid "Help"
 msgstr "Helpo"
 
@@ -413,14 +413,14 @@ msgstr "Ne eblas malĉifri ĉifritan mesaĝon"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:75 main.c:925
+#: autocrypt/autocrypt.c:75 main.c:926
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s ne ekzistas.  Ĉu krei ĝin?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:929
+#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:930
 #: nntp/newsrc.c:1117
 #, c-format
 msgid "Can't create %s: %s"
@@ -666,65 +666,65 @@ msgstr "%s ne estas dosierujo"
 msgid "Message cache isn't a directory: %s"
 msgstr "%s ne estas dosierujo"
 
-#: browser/browser.c:112
+#: browser/browser.c:113
 msgid "Chdir"
 msgstr "Listo"
 
-#: browser/browser.c:113
+#: browser/browser.c:114
 msgid "Goto"
 msgstr ""
 
-#: browser/browser.c:114 browser/browser.c:129
+#: browser/browser.c:115 browser/browser.c:130
 msgid "Mask"
 msgstr "Masko"
 
-#: browser/browser.c:125
+#: browser/browser.c:126
 msgid "List"
 msgstr ""
 
-#: browser/browser.c:126
+#: browser/browser.c:127
 msgid "Subscribe"
 msgstr "Aboni"
 
-#: browser/browser.c:127
+#: browser/browser.c:128
 msgid "Unsubscribe"
 msgstr "Malaboni"
 
-#: browser/browser.c:128 index/dlg_index.c:128
+#: browser/browser.c:129 index/dlg_index.c:128
 msgid "Catchup"
 msgstr ""
 
-#: browser/browser.c:609 browser/functions.c:387 browser/functions.c:751
+#: browser/browser.c:673 browser/functions.c:387 browser/functions.c:751
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s ne estas dosierujo"
 
-#: browser/browser.c:895
+#: browser/browser.c:959
 #, fuzzy, c-format
 msgid "Subscribed newsgroups"
 msgstr "Abonas %s"
 
-#: browser/browser.c:899
+#: browser/browser.c:963
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr ""
 
-#: browser/browser.c:908
+#: browser/browser.c:972
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Poŝtfakoj [%d]"
 
-#: browser/browser.c:921
+#: browser/browser.c:985
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Abonita [%s], Dosieromasko: %s"
 
-#: browser/browser.c:927
+#: browser/browser.c:991
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Dosierujo [%s], Dosieromasko: %s"
 
-#: browser/browser.c:990
+#: browser/browser.c:1054
 msgid "Can't attach a directory"
 msgstr "Ne eblas aldoni dosierujon"
 
@@ -1047,37 +1047,37 @@ msgstr "Malabonis %s"
 msgid "Could not unsubscribe from %s"
 msgstr "Malabonis %s"
 
-#: commands.c:111 recvcmd.c:181 recvcmd.c:193
+#: commands.c:111 recvcmd.c:182 recvcmd.c:194
 msgid "Warning: message contains no From: header"
 msgstr "Averto: mesaĝo malhavas 'From:'-ĉapaĵon"
 
-#: commands.c:117 recvcmd.c:204
+#: commands.c:117 recvcmd.c:205
 msgid "Bounce message to: "
 msgstr "Redirekti mesaĝon al: "
 
-#: commands.c:119 recvcmd.c:206
+#: commands.c:119 recvcmd.c:207
 msgid "Bounce tagged messages to: "
 msgstr "Redirekti markitajn mesaĝojn al: "
 
-#: commands.c:129 recvcmd.c:218
+#: commands.c:129 recvcmd.c:219
 msgid "Error parsing address"
 msgstr "Eraro dum analizo de adreso"
 
-#: commands.c:148 recvcmd.c:238
+#: commands.c:148 recvcmd.c:239
 #, fuzzy, c-format
 msgid "Bounce message to %s?"
 msgid_plural "Bounce messages to %s?"
 msgstr[0] "Redirekti mesaĝon al %s?"
 msgstr[1] "Redirekti mesaĝojn al %s?"
 
-#: commands.c:165 recvcmd.c:260
+#: commands.c:165 recvcmd.c:261
 #, fuzzy
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
 msgstr[0] "Mesaĝo ne redirektita"
 msgstr[1] "Mesaĝo ne redirektita"
 
-#: commands.c:190 recvcmd.c:287
+#: commands.c:190 recvcmd.c:288
 #, fuzzy
 msgid "Message bounced"
 msgid_plural "Messages bounced"
@@ -1400,7 +1400,7 @@ msgstr "Malfermu poŝtfakon por aldoni mesaĝon el ĝi"
 msgid "Open newsgroup to attach message from"
 msgstr "Malfermu poŝtfakon por aldoni mesaĝon el ĝi"
 
-#: compose/functions.c:753 main.c:1360
+#: compose/functions.c:753 main.c:1361
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Ne eblas malfermi poŝtfakon %s"
@@ -1527,7 +1527,7 @@ msgstr "Ĉi tiu parto estos konvertita"
 msgid "Attachment is not 'multipart'"
 msgstr "Parto skribita"
 
-#: compose/functions.c:1637 send/send.c:2778
+#: compose/functions.c:1637 send/send.c:2781
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Malbona IDN en '%s': '%s'"
@@ -1648,7 +1648,7 @@ msgstr "Nevalida relativa dato: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Nevalida valoro por opcio %s: \"%s\""
 
-#: config/set.c:104 init.c:931
+#: config/set.c:104 init.c:969
 #, c-format
 msgid "No such variable: %s"
 msgstr ""
@@ -2044,14 +2044,14 @@ msgstr "Tunelo al %s donis eraron %d (%s)"
 msgid "%s isn't a regular file"
 msgstr "%s ne estas normala dosiero"
 
-#: copy.c:716
+#: copy.c:720
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: copy.c:798
+#: copy.c:802
 msgid "No decryption engine available for message"
 msgstr "Nenia malĉifroproceduro estas disponata por mesaĝo"
 
@@ -2694,7 +2694,7 @@ msgstr "Rajtiĝas (%s)..."
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:88 imap/auth_cram.c:179 imap/auth_gss.c:346
 #: imap/auth_oauth.c:105 imap/auth_sasl.c:254 nntp/nntp.c:660 pop/auth.c:289
-#: pop/auth.c:357 send/smtp.c:817 send/smtp.c:891 send/smtp.c:987
+#: pop/auth.c:357 send/smtp.c:817 send/smtp.c:891 send/smtp.c:995
 #, c-format
 msgid "%s authentication failed"
 msgstr "%s-rajtiĝo malsukcesis"
@@ -2796,11 +2796,11 @@ msgstr "CREATE malsukcesis: %s"
 msgid "Closing connection to %s..."
 msgstr "Fermas la konekton al %s..."
 
-#: imap/imap.c:777 nntp/nntp.c:1787 pop/lib.c:332 send/smtp.c:1032
+#: imap/imap.c:777 nntp/nntp.c:1787 pop/lib.c:332 send/smtp.c:1040
 msgid "Secure connection with TLS?"
 msgstr "Ĉu sekura konekto per TLS?"
 
-#: imap/imap.c:793 nntp/nntp.c:1810 pop/lib.c:353 send/smtp.c:1049
+#: imap/imap.c:793 nntp/nntp.c:1810 pop/lib.c:353 send/smtp.c:1057
 msgid "Could not negotiate TLS connection"
 msgstr "Ne eblis negoci TLS-konekton"
 
@@ -3371,7 +3371,7 @@ msgstr "ne eblas eltrovi la komputilretnomo per 'uname()'"
 msgid "%s: unknown command"
 msgstr "%s: nekonata komando"
 
-#: init.c:938
+#: init.c:933
 #, c-format
 msgid "Config variable '%s' is deprecated"
 msgstr ""
@@ -3472,19 +3472,19 @@ msgstr "Ne eblis elbufrigi mesaĝon al disko"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): ne eblas ŝanĝi tempon de dosiero"
 
-#: maildir/maildir.c:680 maildir/mh.c:703
+#: maildir/maildir.c:682 maildir/mh.c:704
 #, c-format
 msgid "Scanning %s..."
 msgstr "Traserĉas %s..."
 
-#: maildir/maildir.c:701 maildir/mh.c:726 mbox/mbox.c:210 mbox/mbox.c:378
+#: maildir/maildir.c:703 maildir/mh.c:727 mbox/mbox.c:210 mbox/mbox.c:378
 #: mx.c:372
 #, c-format
 msgid "Reading %s..."
 msgstr "Legiĝas %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1390 maildir/mh.c:1054 mbox/mbox.c:1272 mx.c:480
+#: maildir/maildir.c:1392 maildir/mh.c:1055 mbox/mbox.c:1272 mx.c:480
 #: notmuch/notmuch.c:2220
 #, c-format
 msgid "Writing %s..."
@@ -3719,37 +3719,37 @@ msgstr "ne eblas eltrovi la hejmdosierujon"
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Eraro: valoro '%s' ne validas por '-d'"
 
-#: main.c:980
+#: main.c:981
 msgid "Failed to parse mailto: link"
 msgstr "Malsukcesis analizi 'mailto:'-ligon"
 
-#: main.c:993 main.c:1250 send/send.c:296 send/send.c:2768 send/send.c:2772
+#: main.c:994 main.c:1251 send/send.c:296 send/send.c:2771 send/send.c:2775
 msgid "No recipients specified"
 msgstr "Nenia ricevonto specifita"
 
-#: main.c:1022
+#: main.c:1023
 msgid "Can't use -E flag with stdin"
 msgstr "Ne eblas uzi opcio '-E' kun ĉefenigujo"
 
-#: main.c:1106
+#: main.c:1107
 #, fuzzy, c-format
 msgid "Can't parse message template: %s"
 msgstr "Ne eblas malfermi mesaĝodosieron: %s"
 
-#: main.c:1172 mutt_header.c:343
+#: main.c:1173 mutt_header.c:343
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: ne eblas aldoni dosieron"
 
-#: main.c:1264
+#: main.c:1265
 msgid "No mailbox with new mail"
 msgstr "Mankas poŝtfako kun nova poŝto"
 
-#: main.c:1289
+#: main.c:1290
 msgid "No incoming mailboxes defined"
 msgstr "Neniu enir-poŝtfako estas difinita"
 
-#: main.c:1341
+#: main.c:1342
 msgid "Mailbox is empty"
 msgstr "Poŝtfako estas malplena"
 
@@ -4226,7 +4226,7 @@ msgstr "Alvokas PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Ne eblas sendi mesaĝon entekste.  Ĉu refali al PGP/MIME?"
 
-#: ncrypt/crypt.c:224 send/send.c:2746
+#: ncrypt/crypt.c:224 send/send.c:2749
 msgid "Mail not sent"
 msgstr "Mesaĝo ne sendita"
 
@@ -4754,36 +4754,36 @@ msgstr "Alvokas S/MIME..."
 msgid "Check key"
 msgstr "Kontroli ŝlosilon"
 
-#: ncrypt/dlg_gpgme.c:696
+#: ncrypt/dlg_gpgme.c:708
 msgid "All matching keys are marked expired/revoked"
 msgstr "Ĉiuj kongruaj ŝlosiloj estas eksvalidiĝintaj/revokitaj"
 
-#: ncrypt/dlg_gpgme.c:743
+#: ncrypt/dlg_gpgme.c:755
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP- kaj S/MIME-ŝlosiloj kongruaj"
 
-#: ncrypt/dlg_gpgme.c:745
+#: ncrypt/dlg_gpgme.c:757
 msgid "PGP keys matching"
 msgstr "PGP-ŝlosiloj kongruaj"
 
-#: ncrypt/dlg_gpgme.c:747
+#: ncrypt/dlg_gpgme.c:759
 msgid "S/MIME keys matching"
 msgstr "S/MIME-ŝlosiloj kongruaj"
 
-#: ncrypt/dlg_gpgme.c:749
+#: ncrypt/dlg_gpgme.c:761
 msgid "keys matching"
 msgstr "ŝlosiloj kongruaj"
 
 #. L10N: 1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>"
-#: ncrypt/dlg_gpgme.c:757
+#: ncrypt/dlg_gpgme.c:769
 #, c-format
 msgid "%s <%s>"
 msgstr "%s <%s>"
 
 #. L10N: e.g. 'S/MIME keys matching "Michael Elkins".'
-#: ncrypt/dlg_gpgme.c:762
+#: ncrypt/dlg_gpgme.c:774
 #, c-format
 msgid "%s \"%s\""
 msgstr "%s \"%s\""
@@ -5318,7 +5318,7 @@ msgstr "Servilo fermis la konekton"
 msgid "Server doesn't support reader mode"
 msgstr "SMTP-servilo ne akceptas rajtiĝon"
 
-#: nntp/nntp.c:471 pop/auth.c:620 send/smtp.c:991
+#: nntp/nntp.c:471 pop/auth.c:620 send/smtp.c:999
 msgid "No authenticators available"
 msgstr "Nenia rajtiĝilo disponeblas"
 
@@ -6847,7 +6847,7 @@ msgstr ""
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:100 pattern/exec.c:1089
+#: pattern/exec.c:100 pattern/exec.c:1098
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "eraro: nekonata funkcio %d (raportu ĉi tiun cimon)"
@@ -6872,7 +6872,7 @@ msgstr "Ne eblas malfermi /dev/null"
 msgid "Error checking length of temporary file"
 msgstr "Eraro.  Konservas dumtempan dosieron: %s"
 
-#: pattern/exec.c:886
+#: pattern/exec.c:885
 msgid "error: server custom search only supported with IMAP"
 msgstr ""
 
@@ -6966,155 +6966,161 @@ msgstr ""
 msgid "messages which contain PGP key"
 msgstr "mesaĝoj, kiuj enhavas PGP-ŝlosilon"
 
-#. L10N: Pattern Completion Menu description for ~l
+#. L10N: Pattern Completion Menu description for ~K
 #: pattern/flags.c:98
+#, fuzzy
+msgid "messages whose BCC header matches EXPR"
+msgstr "mesaĝoj, kies Kopie-Al-kampo konformas al ESPR"
+
+#. L10N: Pattern Completion Menu description for ~l
+#: pattern/flags.c:101
 msgid "messages addressed to known mailing lists"
 msgstr "mesaĝoj adresitaj al konataj dissendolistoj"
 
 #. L10N: Pattern Completion Menu description for ~L
-#: pattern/flags.c:101
+#: pattern/flags.c:104
 msgid "messages whose From/Sender/To/CC matches EXPR"
 msgstr "mesaĝoj, kies De/Sendinto/Al/Kopie-Al-kampo konformas al ESPR"
 
 #. L10N: Pattern Completion Menu description for ~m
-#: pattern/flags.c:104
+#: pattern/flags.c:107
 msgid "messages whose number is in RANGE"
 msgstr "mesaĝoj, kies lininumero estas en GAMO"
 
 #. L10N: Pattern Completion Menu description for ~M
-#: pattern/flags.c:107
+#: pattern/flags.c:110
 msgid "messages with a Content-Type matching EXPR"
 msgstr "mesaĝoj kun Content-Type, kiu konformas al ESPR"
 
 #. L10N: Pattern Completion Menu description for ~n
-#: pattern/flags.c:110
+#: pattern/flags.c:113
 msgid "messages whose score is in RANGE"
 msgstr "mesaĝoj, kies poentaro estas en GAMO"
 
 #. L10N: Pattern Completion Menu description for ~N
-#: pattern/flags.c:113
+#: pattern/flags.c:116
 msgid "new messages"
 msgstr "novaj mesaĝoj"
 
 #. L10N: Pattern Completion Menu description for ~O
-#: pattern/flags.c:116
+#: pattern/flags.c:119
 msgid "old messages"
 msgstr "malnovaj mesaĝoj"
 
 #. L10N: Pattern Completion Menu description for ~p
-#: pattern/flags.c:119
+#: pattern/flags.c:122
 msgid "messages addressed to you"
 msgstr "mesaĝoj adresitaj al vi"
 
 #. L10N: Pattern Completion Menu description for ~P
-#: pattern/flags.c:122
+#: pattern/flags.c:125
 msgid "messages from you"
 msgstr "mesaĝoj de vi"
 
 #. L10N: Pattern Completion Menu description for ~Q
-#: pattern/flags.c:125
+#: pattern/flags.c:128
 msgid "messages which have been replied to"
 msgstr "mesaĝoj jam responditaj"
 
 #. L10N: Pattern Completion Menu description for ~r
-#: pattern/flags.c:128
+#: pattern/flags.c:131
 msgid "messages received in DATERANGE"
 msgstr "mesaĝoj ricevitaj en DATOGAMO"
 
 #. L10N: Pattern Completion Menu description for ~R
-#: pattern/flags.c:131
+#: pattern/flags.c:134
 msgid "already read messages"
 msgstr "jam legitaj mesaĝoj"
 
 #. L10N: Pattern Completion Menu description for ~s
-#: pattern/flags.c:134
+#: pattern/flags.c:137
 msgid "messages whose Subject header matches EXPR"
 msgstr "mesaĝoj, kies Temo-kampo konformas al ESPR"
 
 #. L10N: Pattern Completion Menu description for ~S
-#: pattern/flags.c:137
+#: pattern/flags.c:140
 msgid "superseded messages"
 msgstr "malaktualigitaj mesaĝoj"
 
 #. L10N: Pattern Completion Menu description for ~t
-#: pattern/flags.c:140
+#: pattern/flags.c:143
 msgid "messages whose To header matches EXPR"
 msgstr "mesaĝoj, kies Al-kampo konformas al ESPR"
 
 #. L10N: Pattern Completion Menu description for ~T
-#: pattern/flags.c:143
+#: pattern/flags.c:146
 msgid "tagged messages"
 msgstr "markitaj mesaĝoj"
 
 #. L10N: Pattern Completion Menu description for ~u
-#: pattern/flags.c:146
+#: pattern/flags.c:149
 msgid "messages addressed to subscribed mailing lists"
 msgstr "mesaĝoj adresitaj al abonitaj dissendolistoj"
 
 #. L10N: Pattern Completion Menu description for ~U
-#: pattern/flags.c:149
+#: pattern/flags.c:152
 msgid "unread messages"
 msgstr "nelegitaj mesaĝoj"
 
 #. L10N: Pattern Completion Menu description for ~v
-#: pattern/flags.c:152
+#: pattern/flags.c:155
 msgid "messages in collapsed threads"
 msgstr "mesaĝoj en kolapsigitaj fadenoj"
 
 #. L10N: Pattern Completion Menu description for ~V
-#: pattern/flags.c:155
+#: pattern/flags.c:158
 msgid "cryptographically verified messages"
 msgstr "kriptografie kontrolitaj mesaĝoj"
 
 #. L10N: Pattern Completion Menu description for ~w
-#: pattern/flags.c:159
+#: pattern/flags.c:162
 #, fuzzy
 msgid "newsgroups matching EXPR"
 msgstr "Neniu dosiero kongruas kun la dosieromasko"
 
 #. L10N: Pattern Completion Menu description for ~x
-#: pattern/flags.c:163
+#: pattern/flags.c:166
 msgid "messages whose References header matches EXPR"
 msgstr "mesaĝoj, kies Referencas-kampo konformas al ESPR"
 
 #. L10N: Pattern Completion Menu description for ~X
-#: pattern/flags.c:166
+#: pattern/flags.c:169
 msgid "messages with RANGE attachments"
 msgstr "mesaĝoj kun GAMO partoj"
 
 #. L10N: Pattern Completion Menu description for ~y
-#: pattern/flags.c:169
+#: pattern/flags.c:172
 msgid "messages whose X-Label header matches EXPR"
 msgstr "mesaĝoj, kies X-Label-kampo konformas al ESPR"
 
 #. L10N: Pattern Completion Menu description for ~Y
-#: pattern/flags.c:172
+#: pattern/flags.c:175
 msgid "messages whose tags match EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~z
-#: pattern/flags.c:175
+#: pattern/flags.c:178
 msgid "messages whose size is in RANGE"
 msgstr "mesaĝoj, kies grando estas en GAMO"
 
 #. L10N: Pattern Completion Menu description for ~=
-#: pattern/flags.c:178
+#: pattern/flags.c:181
 msgid "duplicated messages"
 msgstr "pluroblaj mesaĝoj"
 
 #. L10N: Pattern Completion Menu description for ~$
-#: pattern/flags.c:181
+#: pattern/flags.c:184
 msgid "unreferenced messages"
 msgstr "nereferencitaj mesaĝoj"
 
 #. L10N: Pattern Completion Menu description for ~#
-#: pattern/flags.c:184
+#: pattern/flags.c:187
 #, fuzzy
 msgid "broken threads"
 msgstr "Ne restas fadenoj"
 
 #. L10N: Pattern Completion Menu description for =/
-#: pattern/flags.c:187
+#: pattern/flags.c:190
 msgid "IMAP custom server-side search for STRING"
 msgstr ""
 
@@ -7253,7 +7259,7 @@ msgstr "Markas mesaĝojn kiel forviŝitajn..."
 msgid "Can't write message to temporary file"
 msgstr "Ne eblas skribi mesaĝon al dumtempa dosiero"
 
-#: postpone/dlg_postpone.c:188
+#: postpone/dlg_postpone.c:210
 msgid "Postponed Messages"
 msgstr "Prokrastitaj Mesaĝoj"
 
@@ -7281,54 +7287,54 @@ msgstr "jes"
 msgid "no"
 msgstr "ne"
 
-#: recvcmd.c:74
+#: recvcmd.c:75
 msgid "You may only bounce message/rfc822 parts"
 msgstr "Vi povas redirekti nur message/rfc822-partojn"
 
-#: recvcmd.c:289
+#: recvcmd.c:290
 #, fuzzy
 msgid "Error bouncing message"
 msgid_plural "Error bouncing messages"
 msgstr[0] "Eraro dum redirektado de mesaĝo"
 msgstr[1] "Eraro dum redirektado de mesaĝoj"
 
-#: recvcmd.c:515
+#: recvcmd.c:519
 #, c-format
 msgid "Can't open temporary file %s"
 msgstr "Ne eblas malfermi dumtempan dosieron %s"
 
-#: recvcmd.c:547
+#: recvcmd.c:554
 msgid "Forward as attachments?"
 msgstr "Ĉu plusendi kiel kunsendaĵojn?"
 
-#: recvcmd.c:562
+#: recvcmd.c:569
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr "Ne eblas malkodi ĉiujn markitajn partojn.  Ĉu MIME-plusendi la aliajn?"
 
-#: recvcmd.c:692
+#: recvcmd.c:699
 msgid "Forward MIME encapsulated?"
 msgstr "Ĉu plusendi MIME-pakita?"
 
-#: recvcmd.c:701 recvcmd.c:1009
+#: recvcmd.c:708 recvcmd.c:1016
 #, c-format
 msgid "Can't create %s"
 msgstr "Ne eblas krei %s"
 
-#: recvcmd.c:844
+#: recvcmd.c:851
 msgid "Can't find any tagged messages"
 msgstr "Ne eblas trovi markitajn mesaĝojn"
 
-#: recvcmd.c:880 send/send.c:1187
+#: recvcmd.c:887 send/send.c:1190
 msgid "No mailing lists found"
 msgstr "Neniu dissendolisto trovita"
 
-#: recvcmd.c:985
+#: recvcmd.c:992
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr "Ne eblas malkodi ĉiujn markitajn partojn.  Ĉu MIME-paki la aliajn?"
 
 #. L10N: You will see this error message if you invoke <compose-to-sender>
 #. when you are on a normal attachment.
-#: recvcmd.c:1121
+#: recvcmd.c:1131
 msgid "You may only compose to sender with message/rfc822 parts"
 msgstr "Eblas verki al sendinto nur ĉe message/rfc822-partoj"
 
@@ -7371,37 +7377,37 @@ msgstr "Ĉu plusendi kunsendaĵojn?"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
-#: send/send.c:887
+#: send/send.c:890
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Ĉu respondi al %s%s?"
 
-#: send/send.c:934
+#: send/send.c:937
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Ĉu respondi grupe al %s%s?"
 
-#: send/send.c:1230
+#: send/send.c:1233
 msgid "Include message in reply?"
 msgstr "Ĉu inkluzivi mesaĝon en respondo?"
 
-#: send/send.c:1236
+#: send/send.c:1239
 msgid "Including quoted message..."
 msgstr "Inkluzivas cititan mesaĝon..."
 
-#: send/send.c:1242
+#: send/send.c:1245
 msgid "Could not include all requested messages"
 msgstr "Ne eblis inkluzivi ĉiujn petitajn mesaĝojn"
 
-#: send/send.c:1255
+#: send/send.c:1258
 msgid "Forward as attachment?"
 msgstr "Ĉu plusendi kiel kunsendaĵon?"
 
-#: send/send.c:1260
+#: send/send.c:1263
 msgid "Preparing forwarded message..."
 msgstr "Pretigas plusenditan mesaĝon..."
 
-#: send/send.c:1773
+#: send/send.c:1776
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
 msgstr "Averto: Fcc al IMAP-poŝtfako ne funkcias en stapla reĝimo"
 
@@ -7410,12 +7416,12 @@ msgstr "Averto: Fcc al IMAP-poŝtfako ne funkcias en stapla reĝimo"
 #. sending the mail too.
 #. %s is the full mailbox URL, including imap(s)://
 #.
-#: send/send.c:1779
+#: send/send.c:1782
 #, c-format
 msgid "Skipping Fcc to %s"
 msgstr "Preterlasas Fcc al %s"
 
-#: send/send.c:1820 send/send.c:1830 send/send.c:1856
+#: send/send.c:1823 send/send.c:1833 send/send.c:1859
 msgid "Save attachments in Fcc?"
 msgstr "Ĉu konservi kunsendaĵojn en Fcc?"
 
@@ -7423,121 +7429,121 @@ msgstr "Ĉu konservi kunsendaĵojn en Fcc?"
 #. (r)etry tries the same mailbox again.
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
-#: send/send.c:1879
+#: send/send.c:1882
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
-#: send/send.c:1883
+#: send/send.c:1886
 msgid "rms"
 msgstr "rpn"
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
-#: send/send.c:1889
+#: send/send.c:1892
 msgid "Fcc mailbox"
 msgstr "Fcc-poŝtfako"
 
-#: send/send.c:1959
+#: send/send.c:1962
 msgid "Can't postpone.  $postponed is unset"
 msgstr ""
 
-#: send/send.c:1996 send/send.c:2013
+#: send/send.c:1999 send/send.c:2016
 msgid "Error encrypting message. Check your crypt settings."
 msgstr ""
 
-#: send/send.c:2107
+#: send/send.c:2110
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
-#: send/send.c:2111
+#: send/send.c:2114
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "redakti kodadon de parto"
 
-#: send/send.c:2167
+#: send/send.c:2170
 msgid "Recall postponed message?"
 msgstr "Ĉu revoki prokrastitan mesaĝon?"
 
-#: send/send.c:2427
+#: send/send.c:2430
 msgid "Refusing to send an empty email"
 msgstr ""
 
-#: send/send.c:2428
+#: send/send.c:2431
 msgid "Try: echo | neomutt -s 'subject' user@example.com"
 msgstr ""
 
-#: send/send.c:2517
+#: send/send.c:2520
 msgid "Edit forwarded message?"
 msgstr "Ĉu redakti plusendatan mesaĝon?"
 
-#: send/send.c:2560
+#: send/send.c:2563
 msgid "Abort unmodified message?"
 msgstr "Ĉu nuligi nemodifitan mesaĝon?"
 
-#: send/send.c:2562
+#: send/send.c:2565
 msgid "Aborted unmodified message"
 msgstr "Nemodifita mesaĝon nuligita"
 
-#: send/send.c:2701
+#: send/send.c:2704
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "Nenia kriptografia modulo estas difinita. Malaktivigas mesaĝosekurecon."
 
-#: send/send.c:2743
+#: send/send.c:2746
 #, fuzzy
 msgid "Article not posted"
 msgstr "Mesaĝo ne sendita"
 
-#: send/send.c:2753
+#: send/send.c:2756
 msgid "Message postponed"
 msgstr "Mesaĝo prokrastita"
 
-#: send/send.c:2788
+#: send/send.c:2791
 msgid "No subject, abort sending?"
 msgstr "Mankas temlinio; ĉu haltigi sendon?"
 
-#: send/send.c:2792 send/send.c:2798
+#: send/send.c:2795 send/send.c:2801
 msgid "No subject specified"
 msgstr "Temlinio ne specifita"
 
-#: send/send.c:2804
+#: send/send.c:2807
 #, fuzzy
 msgid "No newsgroup specified"
 msgstr "Temlinio ne specifita"
 
-#: send/send.c:2866 send/smtp.c:248
+#: send/send.c:2869 send/smtp.c:248
 msgid "Sending message..."
 msgstr "Sendas mesaĝon..."
 
-#: send/send.c:2909
+#: send/send.c:2915
 msgid "Could not send the message"
 msgstr "Ne eblis sendi la mesaĝon"
 
-#: send/send.c:2919
+#: send/send.c:2925
 msgid "Sending in background"
 msgstr "Sendas en fono"
 
-#: send/send.c:2920
+#: send/send.c:2926
 msgid "Article posted"
 msgstr ""
 
-#: send/send.c:2921
+#: send/send.c:2927
 msgid "Mail sent"
 msgstr "Mesaĝo sendita"
 
-#: send/send.c:3000
+#: send/send.c:3006
 #, fuzzy
 msgid "No recipient specified"
 msgstr "Nenia ricevonto specifita"
 
-#: send/send.c:3045
+#: send/send.c:3051
 #, fuzzy
 msgid "No List-Subscribe header found"
 msgstr "Neniu sekreta ŝlosilo trovita"
 
-#: send/send.c:3074
+#: send/send.c:3080
 #, fuzzy
 msgid "No List-Unsubscribe header found"
 msgstr "Malabonis %s"
@@ -7552,21 +7558,21 @@ msgstr "Ne eblis sendi la mesaĝon"
 msgid "Could not open %s"
 msgstr "Ne eblas malfermi %s"
 
-#: send/sendlib.c:925
+#: send/sendlib.c:942
 #, c-format
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "Malbona IDN %s dum kreado de resent-from"
 
-#: send/sendmail.c:329
+#: send/sendmail.c:331
 msgid "$sendmail must be set in order to send mail"
 msgstr "Necesas difini $sendmail por povi sendi retpoŝton"
 
-#: send/sendmail.c:438
+#: send/sendmail.c:440
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "Eraro dum sendado de mesaĝo; ido finis per %d (%s)"
 
-#: send/sendmail.c:450
+#: send/sendmail.c:452
 msgid "Output of the delivery process"
 msgstr "Eligo de la liverprocezo"
 
@@ -7585,27 +7591,23 @@ msgstr "SMTP-konekto malsukcesis: ne povis malfermi %s"
 msgid "Invalid SMTP URL: %s"
 msgstr "Nevalida SMTP-adreso: %s"
 
-#: send/smtp.c:976
-msgid "SMTP authentication requires SASL"
-msgstr "SMTP-rajtiĝo bezonas SASL"
-
-#: send/smtp.c:1064
+#: send/smtp.c:1072
 msgid "SMTP server does not support authentication"
 msgstr "SMTP-servilo ne akceptas rajtiĝon"
 
-#: send/smtp.c:1111
+#: send/smtp.c:1119
 msgid "No from address given"
 msgstr "Neniu 'de'-adreso indikatas"
 
-#: send/smtp.c:1178
+#: send/smtp.c:1186
 msgid "SMTP session failed: read error"
 msgstr "SMTP-konekto malsukcesis: legeraro"
 
-#: send/smtp.c:1180
+#: send/smtp.c:1188
 msgid "SMTP session failed: write error"
 msgstr "SMTP-konekto malsukcesis: skriberaro"
 
-#: send/smtp.c:1182
+#: send/smtp.c:1190
 msgid "Invalid server response"
 msgstr "Nevalida respondo de servilo"
 
@@ -7697,3 +7699,6 @@ msgstr "Parametroj de la tradukaĵo:"
 
 #~ msgid "Exit NeoMutt?"
 #~ msgstr "Ĉu eliri el NeoMutt?"
+
+#~ msgid "SMTP authentication requires SASL"
+#~ msgstr "SMTP-rajtiĝo bezonas SASL"

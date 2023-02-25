@@ -55,7 +55,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-02-16 13:32+0000\n"
+"POT-Creation-Date: 2023-02-25 00:19+0000\n"
 "PO-Revision-Date: 2019-05-15 01:16-0400\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -83,7 +83,7 @@ msgid "Address: "
 msgstr "Adreça: "
 
 #: alias/alias.c:453 commands.c:137 conn/raw.c:161 conn/raw.c:218
-#: envelope/functions.c:131 recvcmd.c:227 send/send.c:203
+#: envelope/functions.c:131 recvcmd.c:228 send/send.c:203
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "L’IDN no és vàlid: %s"
@@ -134,21 +134,21 @@ msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr "Avís: L’IDN de l’àlies «%2$s» no és vàlid: %1$s"
 
 #: alias/dlg_alias.c:101 alias/dlg_query.c:100 attach/dlg_attach.c:96
-#: autocrypt/dlg_autocrypt.c:89 browser/browser.c:111 browser/browser.c:124
+#: autocrypt/dlg_autocrypt.c:89 browser/browser.c:112 browser/browser.c:125
 #: conn/dlg_verifycert.c:69 history/dlg_history.c:77 ncrypt/dlg_gpgme.c:96
 #: ncrypt/dlg_pgp.c:96 ncrypt/dlg_smime.c:75 pager/dlg_pager.c:88
 #: pager/dlg_pager.c:99 pager/dlg_pager.c:109 pager/dlg_pager.c:125
-#: pattern/dlg_pattern.c:91 postpone/dlg_postpone.c:90
+#: pattern/dlg_pattern.c:91 postpone/dlg_postpone.c:91
 msgid "Exit"
 msgstr "Ix"
 
 #: alias/dlg_alias.c:102 index/dlg_index.c:107 index/dlg_index.c:123
-#: pager/dlg_pager.c:113 pager/dlg_pager.c:130 postpone/dlg_postpone.c:91
+#: pager/dlg_pager.c:113 pager/dlg_pager.c:130 postpone/dlg_postpone.c:92
 msgid "Del"
 msgstr "Esborra"
 
 #: alias/dlg_alias.c:103 index/dlg_index.c:108 index/dlg_index.c:124
-#: postpone/dlg_postpone.c:92
+#: postpone/dlg_postpone.c:93
 msgid "Undel"
 msgstr "Recupera"
 
@@ -166,12 +166,12 @@ msgid "Select"
 msgstr "Selecciona"
 
 #: alias/dlg_alias.c:107 alias/dlg_query.c:107 attach/dlg_attach.c:100
-#: autocrypt/dlg_autocrypt.c:108 browser/browser.c:115 browser/browser.c:130
+#: autocrypt/dlg_autocrypt.c:108 browser/browser.c:116 browser/browser.c:131
 #: compose/compose.c:106 compose/compose.c:121 conn/dlg_verifycert.c:70
 #: history/dlg_history.c:80 index/dlg_index.c:113 index/dlg_index.c:129
 #: ncrypt/dlg_gpgme.c:99 ncrypt/dlg_pgp.c:99 ncrypt/dlg_smime.c:77
 #: pager/dlg_pager.c:91 pager/dlg_pager.c:116 pager/dlg_pager.c:132
-#: pattern/dlg_pattern.c:93 postpone/dlg_postpone.c:93
+#: pattern/dlg_pattern.c:93 postpone/dlg_postpone.c:94
 msgid "Help"
 msgstr "Ajuda"
 
@@ -478,14 +478,14 @@ msgstr "No s’ha pogut desxifrar el missatge xifrat."
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:75 main.c:925
+#: autocrypt/autocrypt.c:75 main.c:926
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "«%s» no existeix.  Voleu crear-lo?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:929
+#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:930
 #: nntp/newsrc.c:1117
 #, c-format
 msgid "Can't create %s: %s"
@@ -732,67 +732,67 @@ msgstr "«%s» no és un directori"
 msgid "Message cache isn't a directory: %s"
 msgstr "«%s» no és un directori"
 
-#: browser/browser.c:112
+#: browser/browser.c:113
 msgid "Chdir"
 msgstr "Canvia de directori"
 
-#: browser/browser.c:113
+#: browser/browser.c:114
 msgid "Goto"
 msgstr ""
 
-#: browser/browser.c:114 browser/browser.c:129
+#: browser/browser.c:115 browser/browser.c:130
 msgid "Mask"
 msgstr "Màscara"
 
-#: browser/browser.c:125
+#: browser/browser.c:126
 msgid "List"
 msgstr ""
 
-#: browser/browser.c:126
+#: browser/browser.c:127
 msgid "Subscribe"
 msgstr "Subscriure"
 
-#: browser/browser.c:127
+#: browser/browser.c:128
 msgid "Unsubscribe"
 msgstr "Dessubscriure"
 
-#: browser/browser.c:128 index/dlg_index.c:128
+#: browser/browser.c:129 index/dlg_index.c:128
 msgid "Catchup"
 msgstr ""
 
-#: browser/browser.c:609 browser/functions.c:387 browser/functions.c:751
+#: browser/browser.c:673 browser/functions.c:387 browser/functions.c:751
 #, c-format
 msgid "%s is not a directory"
 msgstr "«%s» no és un directori"
 
-#: browser/browser.c:895
+#: browser/browser.c:959
 #, fuzzy, c-format
 msgid "Subscribed newsgroups"
 msgstr "S’ha subscrit a «%s»."
 
-#: browser/browser.c:899
+#: browser/browser.c:963
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr ""
 
 # ivb (2001/12/07)
 # ivb  Es refereix a les definides en «mailboxes».
-#: browser/browser.c:908
+#: browser/browser.c:972
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Bústies d’entrada [%d]"
 
-#: browser/browser.c:921
+#: browser/browser.c:985
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Subscrites [%s], màscara de fitxers: %s"
 
-#: browser/browser.c:927
+#: browser/browser.c:991
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Directori [%s], màscara de fitxers: %s"
 
-#: browser/browser.c:990
+#: browser/browser.c:1054
 msgid "Can't attach a directory"
 msgstr "No es pot adjuntar un directori."
 
@@ -1123,38 +1123,38 @@ msgstr "S’ha dessubscrit de «%s»."
 msgid "Could not unsubscribe from %s"
 msgstr "S’ha dessubscrit de «%s»."
 
-#: commands.c:111 recvcmd.c:181 recvcmd.c:193
+#: commands.c:111 recvcmd.c:182 recvcmd.c:194
 msgid "Warning: message contains no From: header"
 msgstr "Avís: El missatge no té capçalera «From:»."
 
-#: commands.c:117 recvcmd.c:204
+#: commands.c:117 recvcmd.c:205
 msgid "Bounce message to: "
 msgstr "Redirigeix el missatge a: "
 
-#: commands.c:119 recvcmd.c:206
+#: commands.c:119 recvcmd.c:207
 msgid "Bounce tagged messages to: "
 msgstr "Redirigeix els missatges marcats a: "
 
-#: commands.c:129 recvcmd.c:218
+#: commands.c:129 recvcmd.c:219
 msgid "Error parsing address"
 msgstr "Error en interpretar l’adreça."
 
 # ivb (2001/12/02)
 # ivb  El programa posa l’interrogant.
-#: commands.c:148 recvcmd.c:238
+#: commands.c:148 recvcmd.c:239
 #, fuzzy, c-format
 msgid "Bounce message to %s?"
 msgid_plural "Bounce messages to %s?"
 msgstr[0] "Voleu redirigir el missatge a «%s»"
 msgstr[1] "Voleu redirigir els missatges a «%s»"
 
-#: commands.c:165 recvcmd.c:260
+#: commands.c:165 recvcmd.c:261
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
 msgstr[0] "No s’ha redirigit el missatge"
 msgstr[1] "No s’ha redirigit el missatge"
 
-#: commands.c:190 recvcmd.c:287
+#: commands.c:190 recvcmd.c:288
 msgid "Message bounced"
 msgid_plural "Messages bounced"
 msgstr[0] "S’ha redirigit el missatge"
@@ -1487,7 +1487,7 @@ msgstr "Bústia a obrir per a adjuntar-ne missatges"
 msgid "Open newsgroup to attach message from"
 msgstr "Bústia a obrir per a adjuntar-ne missatges"
 
-#: compose/functions.c:753 main.c:1360
+#: compose/functions.c:753 main.c:1361
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "No s’ha pogut obrir la bústia «%s»."
@@ -1617,7 +1617,7 @@ msgid "Attachment is not 'multipart'"
 msgstr "S’ha desat l’adjunció"
 
 # El primer camp és una capçalera de correu.  ivb
-#: compose/functions.c:1637 send/send.c:2778
+#: compose/functions.c:1637 send/send.c:2781
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "L’IDN de «%s» no és vàlid: %s"
@@ -1741,7 +1741,7 @@ msgstr "La data relativa no és vàlida: %s"
 msgid "Invalid quad value: %ld"
 msgstr "El valor de l’opció «%s» no és vàlid: «%s»"
 
-#: config/set.c:104 init.c:931
+#: config/set.c:104 init.c:969
 #, c-format
 msgid "No such variable: %s"
 msgstr ""
@@ -2144,14 +2144,14 @@ msgstr "El túnel a «%s» ha tornat l’error %d: %s"
 msgid "%s isn't a regular file"
 msgstr "«%s» no és un fitxer ordinari"
 
-#: copy.c:716
+#: copy.c:720
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: copy.c:798
+#: copy.c:802
 msgid "No decryption engine available for message"
 msgstr "No hi ha cap mecanisme disponible per a desxifrar el missatge"
 
@@ -2825,7 +2825,7 @@ msgstr "S’està autenticant (%s)…"
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:88 imap/auth_cram.c:179 imap/auth_gss.c:346
 #: imap/auth_oauth.c:105 imap/auth_sasl.c:254 nntp/nntp.c:660 pop/auth.c:289
-#: pop/auth.c:357 send/smtp.c:817 send/smtp.c:891 send/smtp.c:987
+#: pop/auth.c:357 send/smtp.c:817 send/smtp.c:891 send/smtp.c:995
 #, c-format
 msgid "%s authentication failed"
 msgstr "L’autenticació %s ha fallat"
@@ -2927,11 +2927,11 @@ msgstr "L’ordre «CREATE» ha fallat: %s"
 msgid "Closing connection to %s..."
 msgstr "S’està tancant la connexió amb «%s»…"
 
-#: imap/imap.c:777 nntp/nntp.c:1787 pop/lib.c:332 send/smtp.c:1032
+#: imap/imap.c:777 nntp/nntp.c:1787 pop/lib.c:332 send/smtp.c:1040
 msgid "Secure connection with TLS?"
 msgstr "Voleu protegir la connexió emprant TLS?"
 
-#: imap/imap.c:793 nntp/nntp.c:1810 pop/lib.c:353 send/smtp.c:1049
+#: imap/imap.c:793 nntp/nntp.c:1810 pop/lib.c:353 send/smtp.c:1057
 msgid "Could not negotiate TLS connection"
 msgstr "No s’ha pogut negociar la connexió TLS."
 
@@ -3520,7 +3520,7 @@ msgstr "No s’ha pogut determinar el nom de l’estació amb uname()."
 msgid "%s: unknown command"
 msgstr "%s: L’ordre no és coneguda."
 
-#: init.c:938
+#: init.c:933
 #, c-format
 msgid "Config variable '%s' is deprecated"
 msgstr ""
@@ -3625,19 +3625,19 @@ msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): No s’ha pogut canviar la data del fitxer."
 
 # NeoMutt usa «scan» quan es refereix a llegir una bústia Maildir.  ivb
-#: maildir/maildir.c:680 maildir/mh.c:703
+#: maildir/maildir.c:682 maildir/mh.c:704
 #, c-format
 msgid "Scanning %s..."
 msgstr "S’està llegint «%s»…"
 
-#: maildir/maildir.c:701 maildir/mh.c:726 mbox/mbox.c:210 mbox/mbox.c:378
+#: maildir/maildir.c:703 maildir/mh.c:727 mbox/mbox.c:210 mbox/mbox.c:378
 #: mx.c:372
 #, c-format
 msgid "Reading %s..."
 msgstr "S’està llegint «%s»…"
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1390 maildir/mh.c:1054 mbox/mbox.c:1272 mx.c:480
+#: maildir/maildir.c:1392 maildir/mh.c:1055 mbox/mbox.c:1272 mx.c:480
 #: notmuch/notmuch.c:2220
 #, c-format
 msgid "Writing %s..."
@@ -3874,37 +3874,37 @@ msgid "Error: value '%s' is invalid for -d"
 msgstr "Error: L’argument de l’opció «-d» no és vàlid: %s"
 
 # Es refereix a l’esquema d’URL.  ivb
-#: main.c:980
+#: main.c:981
 msgid "Failed to parse mailto: link"
 msgstr "No s’ha pogut interpretar l’enllaç de tipus «mailto:»."
 
-#: main.c:993 main.c:1250 send/send.c:296 send/send.c:2768 send/send.c:2772
+#: main.c:994 main.c:1251 send/send.c:296 send/send.c:2771 send/send.c:2775
 msgid "No recipients specified"
 msgstr "No s’ha indicat cap destinatari"
 
-#: main.c:1022
+#: main.c:1023
 msgid "Can't use -E flag with stdin"
 msgstr "No es pot emprar l’opció «-E» amb l’entrada estàndard."
 
-#: main.c:1106
+#: main.c:1107
 #, fuzzy, c-format
 msgid "Can't parse message template: %s"
 msgstr "No s’ha pogut obrir el fitxer missatge: %s"
 
-#: main.c:1172 mutt_header.c:343
+#: main.c:1173 mutt_header.c:343
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: No s’ha pogut adjuntar el fitxer."
 
-#: main.c:1264
+#: main.c:1265
 msgid "No mailbox with new mail"
 msgstr "No hi ha cap bústia amb correu nou"
 
-#: main.c:1289
+#: main.c:1290
 msgid "No incoming mailboxes defined"
 msgstr "No s’ha definit cap bústia d’entrada"
 
-#: main.c:1341
+#: main.c:1342
 msgid "Mailbox is empty"
 msgstr "La bústia és buida"
 
@@ -4419,7 +4419,7 @@ msgstr "S’està invocant PGP…"
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "No s’ha pogut enviar el missatge en línia.  Emprar PGP/MIME?"
 
-#: ncrypt/crypt.c:224 send/send.c:2746
+#: ncrypt/crypt.c:224 send/send.c:2749
 msgid "Mail not sent"
 msgstr "No s’ha enviat el missatge"
 
@@ -4962,27 +4962,27 @@ msgstr "S’està invocant S/MIME…"
 msgid "Check key"
 msgstr "Comprova la clau"
 
-#: ncrypt/dlg_gpgme.c:696
+#: ncrypt/dlg_gpgme.c:708
 msgid "All matching keys are marked expired/revoked"
 msgstr "Totes les claus concordants estan marcades com a expirades o revocades"
 
 # Darrere va el patró corresponent.  ivb
-#: ncrypt/dlg_gpgme.c:743
+#: ncrypt/dlg_gpgme.c:755
 msgid "PGP and S/MIME keys matching"
 msgstr "Claus PGP i S/MIME que concordem amb"
 
 # Darrere va el patró corresponent.  ivb
-#: ncrypt/dlg_gpgme.c:745
+#: ncrypt/dlg_gpgme.c:757
 msgid "PGP keys matching"
 msgstr "Claus PGP que concordem amb"
 
 # Darrere va el patró corresponent.  ivb
-#: ncrypt/dlg_gpgme.c:747
+#: ncrypt/dlg_gpgme.c:759
 msgid "S/MIME keys matching"
 msgstr "Claus S/MIME que concorden amb"
 
 # Darrere va el patró corresponent.  ivb
-#: ncrypt/dlg_gpgme.c:749
+#: ncrypt/dlg_gpgme.c:761
 msgid "keys matching"
 msgstr "Claus que concordem amb"
 
@@ -4990,14 +4990,14 @@ msgstr "Claus que concordem amb"
 #. L10N: 1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>"
-#: ncrypt/dlg_gpgme.c:757
+#: ncrypt/dlg_gpgme.c:769
 #, c-format
 msgid "%s <%s>"
 msgstr "%s <%s>"
 
 # Nom i àlies?  ivb
 #. L10N: e.g. 'S/MIME keys matching "Michael Elkins".'
-#: ncrypt/dlg_gpgme.c:762
+#: ncrypt/dlg_gpgme.c:774
 #, c-format
 msgid "%s \"%s\""
 msgstr "%s «%s»"
@@ -5578,7 +5578,7 @@ msgstr "El servidor ha tancat la connexió."
 msgid "Server doesn't support reader mode"
 msgstr "El servidor SMTP no admet autenticació"
 
-#: nntp/nntp.c:471 pop/auth.c:620 send/smtp.c:991
+#: nntp/nntp.c:471 pop/auth.c:620 send/smtp.c:999
 msgid "No authenticators available"
 msgstr "No hi ha cap autenticador disponible."
 
@@ -7144,7 +7144,7 @@ msgstr ""
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:100 pattern/exec.c:1089
+#: pattern/exec.c:100 pattern/exec.c:1098
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "Error: L’operació %d no és coneguda (informeu d’aquest error)"
@@ -7169,7 +7169,7 @@ msgstr "No s’ha pogut obrir «/dev/null»."
 msgid "Error checking length of temporary file"
 msgstr "Error.  Es manté el fitxer temporal: %s"
 
-#: pattern/exec.c:886
+#: pattern/exec.c:885
 msgid "error: server custom search only supported with IMAP"
 msgstr ""
 
@@ -7264,157 +7264,162 @@ msgstr ""
 msgid "messages which contain PGP key"
 msgstr "missatges que contenen claus PGP"
 
-#. L10N: Pattern Completion Menu description for ~l
+#. L10N: Pattern Completion Menu description for ~K
 #: pattern/flags.c:98
+msgid "messages whose BCC header matches EXPR"
+msgstr "missatges amb capçaleres de còpia (Bcc) que concorden amb l’EXPRESSIÓ"
+
+#. L10N: Pattern Completion Menu description for ~l
+#: pattern/flags.c:101
 msgid "messages addressed to known mailing lists"
 msgstr "missatges adreçats a llistes de correu conegudes"
 
 #. L10N: Pattern Completion Menu description for ~L
-#: pattern/flags.c:101
+#: pattern/flags.c:104
 msgid "messages whose From/Sender/To/CC matches EXPR"
 msgstr "missatges amb capçaleres From/Sender/To/Cc que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~m
-#: pattern/flags.c:104
+#: pattern/flags.c:107
 msgid "messages whose number is in RANGE"
 msgstr "missatges amb números dins del RANG_NUM"
 
 #. L10N: Pattern Completion Menu description for ~M
-#: pattern/flags.c:107
+#: pattern/flags.c:110
 msgid "messages with a Content-Type matching EXPR"
 msgstr "missatges amb tipus (Content-Type) que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~n
-#: pattern/flags.c:110
+#: pattern/flags.c:113
 msgid "messages whose score is in RANGE"
 msgstr "missatges amb una puntuació dins del RANG_NUM"
 
 #. L10N: Pattern Completion Menu description for ~N
-#: pattern/flags.c:113
+#: pattern/flags.c:116
 msgid "new messages"
 msgstr "missatges nous"
 
 #. L10N: Pattern Completion Menu description for ~O
-#: pattern/flags.c:116
+#: pattern/flags.c:119
 msgid "old messages"
 msgstr "missatges vells"
 
 #. L10N: Pattern Completion Menu description for ~p
-#: pattern/flags.c:119
+#: pattern/flags.c:122
 msgid "messages addressed to you"
 msgstr "missatges adreçats a vós"
 
 #. L10N: Pattern Completion Menu description for ~P
-#: pattern/flags.c:122
+#: pattern/flags.c:125
 msgid "messages from you"
 msgstr "missatges enviats per vós"
 
 #. L10N: Pattern Completion Menu description for ~Q
-#: pattern/flags.c:125
+#: pattern/flags.c:128
 msgid "messages which have been replied to"
 msgstr "missatges que han estat resposts"
 
 #. L10N: Pattern Completion Menu description for ~r
-#: pattern/flags.c:128
+#: pattern/flags.c:131
 msgid "messages received in DATERANGE"
 msgstr "missatges rebuts durant el RANG_DATA"
 
 #. L10N: Pattern Completion Menu description for ~R
-#: pattern/flags.c:131
+#: pattern/flags.c:134
 msgid "already read messages"
 msgstr "missatges ja llegits"
 
 #. L10N: Pattern Completion Menu description for ~s
-#: pattern/flags.c:134
+#: pattern/flags.c:137
 msgid "messages whose Subject header matches EXPR"
 msgstr "missatges amb capçaleres d’assumpte (Subject) que concorden amb l’EXPRESSIÓ"
 
 # Empre aquest terme ja que Replaces i Supersedes tenen usos similars.  ivb
 # https://people.dsv.su.se/~jpalme/ietf/message-threading.pdf
 #. L10N: Pattern Completion Menu description for ~S
-#: pattern/flags.c:137
+#: pattern/flags.c:140
 msgid "superseded messages"
 msgstr "missatges reemplaçats"
 
 #. L10N: Pattern Completion Menu description for ~t
-#: pattern/flags.c:140
+#: pattern/flags.c:143
 msgid "messages whose To header matches EXPR"
 msgstr "missatges amb capçaleres de destinatari (To) que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~T
-#: pattern/flags.c:143
+#: pattern/flags.c:146
 msgid "tagged messages"
 msgstr "missatges marcats"
 
 #. L10N: Pattern Completion Menu description for ~u
-#: pattern/flags.c:146
+#: pattern/flags.c:149
 msgid "messages addressed to subscribed mailing lists"
 msgstr "missatges adreçats a llistes de correu subscrites"
 
 #. L10N: Pattern Completion Menu description for ~U
-#: pattern/flags.c:149
+#: pattern/flags.c:152
 msgid "unread messages"
 msgstr "missatges no llegits"
 
 #. L10N: Pattern Completion Menu description for ~v
-#: pattern/flags.c:152
+#: pattern/flags.c:155
 msgid "messages in collapsed threads"
 msgstr "missatges en fils plegats"
 
 #. L10N: Pattern Completion Menu description for ~V
-#: pattern/flags.c:155
+#: pattern/flags.c:158
 msgid "cryptographically verified messages"
 msgstr "missatges verificats criptogràficament"
 
 #. L10N: Pattern Completion Menu description for ~w
-#: pattern/flags.c:159
+#: pattern/flags.c:162
 #, fuzzy
 msgid "newsgroups matching EXPR"
 msgstr "No hi ha cap fitxer que concorde amb la màscara de fitxers."
 
 #. L10N: Pattern Completion Menu description for ~x
-#: pattern/flags.c:163
+#: pattern/flags.c:166
 msgid "messages whose References header matches EXPR"
 msgstr "missatges amb capçaleres de referències (References) que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~X
-#: pattern/flags.c:166
+#: pattern/flags.c:169
 msgid "messages with RANGE attachments"
 msgstr "missatges amb un nombre d’adjuncions dins del RANG_NUM"
 
 #. L10N: Pattern Completion Menu description for ~y
-#: pattern/flags.c:169
+#: pattern/flags.c:172
 msgid "messages whose X-Label header matches EXPR"
 msgstr "missatges amb capçaleres d’etiquetes (X-Label) que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~Y
-#: pattern/flags.c:172
+#: pattern/flags.c:175
 msgid "messages whose tags match EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~z
-#: pattern/flags.c:175
+#: pattern/flags.c:178
 msgid "messages whose size is in RANGE"
 msgstr "missatges amb una mida dins del RANG_NUM"
 
 #. L10N: Pattern Completion Menu description for ~=
-#: pattern/flags.c:178
+#: pattern/flags.c:181
 msgid "duplicated messages"
 msgstr "missatges duplicats"
 
 #. L10N: Pattern Completion Menu description for ~$
-#: pattern/flags.c:181
+#: pattern/flags.c:184
 msgid "unreferenced messages"
 msgstr "missatges no referits per d’altres"
 
 #. L10N: Pattern Completion Menu description for ~#
-#: pattern/flags.c:184
+#: pattern/flags.c:187
 #, fuzzy
 msgid "broken threads"
 msgstr "No hi ha més fils"
 
 #. L10N: Pattern Completion Menu description for =/
-#: pattern/flags.c:187
+#: pattern/flags.c:190
 msgid "IMAP custom server-side search for STRING"
 msgstr ""
 
@@ -7560,7 +7565,7 @@ msgstr "S’estan marcant els missatges per a esborrar…"
 msgid "Can't write message to temporary file"
 msgstr "No s’ha pogut escriure el missatge en un fitxer temporal."
 
-#: postpone/dlg_postpone.c:188
+#: postpone/dlg_postpone.c:210
 msgid "Postponed Messages"
 msgstr "Missatges posposats"
 
@@ -7588,60 +7593,60 @@ msgstr "sí"
 msgid "no"
 msgstr "no"
 
-#: recvcmd.c:74
+#: recvcmd.c:75
 msgid "You may only bounce message/rfc822 parts"
 msgstr "Només es poden redirigir parts de tipus «message/rfc822»"
 
-#: recvcmd.c:289
+#: recvcmd.c:290
 #, fuzzy
 msgid "Error bouncing message"
 msgid_plural "Error bouncing messages"
 msgstr[0] "Error en redirigir el missatge."
 msgstr[1] "Error en redirigir els missatges."
 
-#: recvcmd.c:515
+#: recvcmd.c:519
 #, c-format
 msgid "Can't open temporary file %s"
 msgstr "No s’ha pogut obrir el fitxer temporal «%s»"
 
-#: recvcmd.c:547
+#: recvcmd.c:554
 msgid "Forward as attachments?"
 msgstr "Voleu reenviar com a adjuncions?"
 
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
 # ivb  No s’han pogut descodificar totes les adjuncions marcades.  Voleu reenviar les altres emprant MIME?
-#: recvcmd.c:562
+#: recvcmd.c:569
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr "Reenviar amb MIME les adjuncions marcades no descodificables?"
 
-#: recvcmd.c:692
+#: recvcmd.c:699
 msgid "Forward MIME encapsulated?"
 msgstr "Voleu reenviar amb encapsulament MIME?"
 
-#: recvcmd.c:701 recvcmd.c:1009
+#: recvcmd.c:708 recvcmd.c:1016
 #, c-format
 msgid "Can't create %s"
 msgstr "No s’ha pogut crear «%s»"
 
-#: recvcmd.c:844
+#: recvcmd.c:851
 msgid "Can't find any tagged messages"
 msgstr "No s’ha trobat cap missatge marcat"
 
-#: recvcmd.c:880 send/send.c:1187
+#: recvcmd.c:887 send/send.c:1190
 msgid "No mailing lists found"
 msgstr "No s’ha trobat cap llista de correu."
 
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
 # ivb  No s’han pogut descodificar totes les adjuncions marcades.  Voleu encapsular la resta emprant MIME?
-#: recvcmd.c:985
+#: recvcmd.c:992
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr "Encapsular amb MIME les adjuncions marcades no descodificables?"
 
 #. L10N: You will see this error message if you invoke <compose-to-sender>
 #. when you are on a normal attachment.
-#: recvcmd.c:1121
+#: recvcmd.c:1131
 msgid "You may only compose to sender with message/rfc822 parts"
 msgstr "Només es pot redactar al remitent d’una part de tipus «message/rfc822»."
 
@@ -7687,39 +7692,39 @@ msgstr "Voleu reenviar també les adjuncions?"
 # ivb  El primer «%s» és una adreça de correu i el segon potser «,...».
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
-#: send/send.c:887
+#: send/send.c:890
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Voleu escriure una resposta a %s%s?"
 
 # ivb (2001/12/07)
 # ivb  El primer «%s» és una adreça de correu i el segon potser «,...».
-#: send/send.c:934
+#: send/send.c:937
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Voleu escriure un seguiment a %s%s?"
 
-#: send/send.c:1230
+#: send/send.c:1233
 msgid "Include message in reply?"
 msgstr "Voleu incloure el missatge a la resposta?"
 
-#: send/send.c:1236
+#: send/send.c:1239
 msgid "Including quoted message..."
 msgstr "S’hi està incloent el missatge citat…"
 
-#: send/send.c:1242
+#: send/send.c:1245
 msgid "Could not include all requested messages"
 msgstr "No s’han pogut incloure tots els missatges sol·licitats."
 
-#: send/send.c:1255
+#: send/send.c:1258
 msgid "Forward as attachment?"
 msgstr "Voleu reenviar com a adjunció?"
 
-#: send/send.c:1260
+#: send/send.c:1263
 msgid "Preparing forwarded message..."
 msgstr "S’està preparant el missatge a reenviar…"
 
-#: send/send.c:1773
+#: send/send.c:1776
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
 msgstr "Avís: No es permet la còpia a una bústia IMAP en el mode per lots"
 
@@ -7728,12 +7733,12 @@ msgstr "Avís: No es permet la còpia a una bústia IMAP en el mode per lots"
 #. sending the mail too.
 #. %s is the full mailbox URL, including imap(s)://
 #.
-#: send/send.c:1779
+#: send/send.c:1782
 #, c-format
 msgid "Skipping Fcc to %s"
 msgstr "No es desa còpia a la bústia «%s»"
 
-#: send/send.c:1820 send/send.c:1830 send/send.c:1856
+#: send/send.c:1823 send/send.c:1833 send/send.c:1859
 msgid "Save attachments in Fcc?"
 msgstr "Voleu desar les adjuncions a la bústia de còpia?"
 
@@ -7741,7 +7746,7 @@ msgstr "Voleu desar les adjuncions a la bústia de còpia?"
 #. (r)etry tries the same mailbox again.
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
-#: send/send.c:1879
+#: send/send.c:1882
 #, fuzzy
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr "La còpia a bústia ha fallat; (r)eintentar, (c)anviar de bústia, (s)altar? "
@@ -7749,116 +7754,116 @@ msgstr "La còpia a bústia ha fallat; (r)eintentar, (c)anviar de bústia, (s)al
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
-#: send/send.c:1883
+#: send/send.c:1886
 msgid "rms"
 msgstr "rcs"
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
-#: send/send.c:1889
+#: send/send.c:1892
 msgid "Fcc mailbox"
 msgstr "Còpia a bústia"
 
-#: send/send.c:1959
+#: send/send.c:1962
 msgid "Can't postpone.  $postponed is unset"
 msgstr ""
 
-#: send/send.c:1996 send/send.c:2013
+#: send/send.c:1999 send/send.c:2016
 msgid "Error encrypting message. Check your crypt settings."
 msgstr ""
 
-#: send/send.c:2107
+#: send/send.c:2110
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
-#: send/send.c:2111
+#: send/send.c:2114
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "Edita la codificació de transferència d’una adjunció."
 
-#: send/send.c:2167
+#: send/send.c:2170
 msgid "Recall postponed message?"
 msgstr "Voleu recuperar un missatge posposat?"
 
-#: send/send.c:2427
+#: send/send.c:2430
 msgid "Refusing to send an empty email"
 msgstr ""
 
-#: send/send.c:2428
+#: send/send.c:2431
 msgid "Try: echo | neomutt -s 'subject' user@example.com"
 msgstr ""
 
-#: send/send.c:2517
+#: send/send.c:2520
 msgid "Edit forwarded message?"
 msgstr "Voleu editar el missatge a reenviar?"
 
-#: send/send.c:2560
+#: send/send.c:2563
 msgid "Abort unmodified message?"
 msgstr "Voleu avortar el missatge no modificat?"
 
-#: send/send.c:2562
+#: send/send.c:2565
 msgid "Aborted unmodified message"
 msgstr "S’avorta el missatge no modificat"
 
 # ABREUJAT!  ivb
 # No heu configurat cap implementació criptogràfica.  S’inhabilita l’opció de seguretat del missatge.
-#: send/send.c:2701
+#: send/send.c:2704
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "Cal configurar implementació criptogràfica.  Es retira seguretat del missatge."
 
-#: send/send.c:2743
+#: send/send.c:2746
 #, fuzzy
 msgid "Article not posted"
 msgstr "No s’ha enviat el missatge"
 
-#: send/send.c:2753
+#: send/send.c:2756
 msgid "Message postponed"
 msgstr "S’ha posposat el missatge"
 
-#: send/send.c:2788
+#: send/send.c:2791
 msgid "No subject, abort sending?"
 msgstr "No hi ha assumpte; voleu avortar l’enviament?"
 
-#: send/send.c:2792 send/send.c:2798
+#: send/send.c:2795 send/send.c:2801
 msgid "No subject specified"
 msgstr "No s’ha indicat l’assumpte"
 
-#: send/send.c:2804
+#: send/send.c:2807
 #, fuzzy
 msgid "No newsgroup specified"
 msgstr "No s’ha indicat l’assumpte"
 
-#: send/send.c:2866 send/smtp.c:248
+#: send/send.c:2869 send/smtp.c:248
 msgid "Sending message..."
 msgstr "S’està enviant el missatge…"
 
-#: send/send.c:2909
+#: send/send.c:2915
 msgid "Could not send the message"
 msgstr "No s’ha pogut enviar el missatge"
 
-#: send/send.c:2919
+#: send/send.c:2925
 msgid "Sending in background"
 msgstr "S’està enviant en segon pla"
 
-#: send/send.c:2920
+#: send/send.c:2926
 msgid "Article posted"
 msgstr ""
 
-#: send/send.c:2921
+#: send/send.c:2927
 msgid "Mail sent"
 msgstr "S’ha enviat el missatge"
 
-#: send/send.c:3000
+#: send/send.c:3006
 #, fuzzy
 msgid "No recipient specified"
 msgstr "No s’ha indicat cap destinatari"
 
-#: send/send.c:3045
+#: send/send.c:3051
 #, fuzzy
 msgid "No List-Subscribe header found"
 msgstr "No s’ha trobat cap clau secreta"
 
-#: send/send.c:3074
+#: send/send.c:3080
 #, fuzzy
 msgid "No List-Unsubscribe header found"
 msgstr "S’ha dessubscrit de «%s»."
@@ -7873,24 +7878,24 @@ msgstr "No s’ha pogut enviar el missatge"
 msgid "Could not open %s"
 msgstr "No s’ha pogut obrir «%s»."
 
-#: send/sendlib.c:925
+#: send/sendlib.c:942
 #, c-format
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "En preparar «Resent-From»: L’IDN no és vàlid: %s"
 
-#: send/sendmail.c:329
+#: send/sendmail.c:331
 msgid "$sendmail must be set in order to send mail"
 msgstr "$sendmail ha d’estar establerta per a poder enviar correu"
 
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
 # ivb  Error en enviar el missatge, el procés fill ha exit amb codi %d (%s).
-#: send/sendmail.c:438
+#: send/sendmail.c:440
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "Error en enviament, el fill isqué amb codi %d (%s)"
 
-#: send/sendmail.c:450
+#: send/sendmail.c:452
 msgid "Output of the delivery process"
 msgstr "Eixida del procés de repartiment"
 
@@ -7909,27 +7914,23 @@ msgstr "La sessió SMTP fallat: no s’ha pogut obrir «%s»"
 msgid "Invalid SMTP URL: %s"
 msgstr "L’URL d’SMTP no és vàlid: %s"
 
-#: send/smtp.c:976
-msgid "SMTP authentication requires SASL"
-msgstr "L’autenticació SMTP necessita SASL"
-
-#: send/smtp.c:1064
+#: send/smtp.c:1072
 msgid "SMTP server does not support authentication"
 msgstr "El servidor SMTP no admet autenticació."
 
-#: send/smtp.c:1111
+#: send/smtp.c:1119
 msgid "No from address given"
 msgstr "No s’ha indicat el remitent (From)."
 
-#: send/smtp.c:1178
+#: send/smtp.c:1186
 msgid "SMTP session failed: read error"
 msgstr "La sessió SMTP ha fallat: error de lectura"
 
-#: send/smtp.c:1180
+#: send/smtp.c:1188
 msgid "SMTP session failed: write error"
 msgstr "La sessió SMTP ha fallat: error d’escriptura"
 
-#: send/smtp.c:1182
+#: send/smtp.c:1190
 msgid "Invalid server response"
 msgstr "La resposta del servidor no és vàlida."
 
@@ -8022,3 +8023,6 @@ msgstr "Opcions de compilació:"
 
 #~ msgid "Exit NeoMutt?"
 #~ msgstr "Voleu abandonar NeoMutt?"
+
+#~ msgid "SMTP authentication requires SASL"
+#~ msgstr "L’autenticació SMTP necessita SASL"

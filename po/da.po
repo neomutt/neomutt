@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-02-16 13:32+0000\n"
+"POT-Creation-Date: 2023-02-25 00:19+0000\n"
 "PO-Revision-Date: 2019-05-10 21:15+0200\n"
 "Last-Translator: Morten Bo Johansen <mbj@mbjnet.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -39,7 +39,7 @@ msgid "Address: "
 msgstr "Adresse: "
 
 #: alias/alias.c:453 commands.c:137 conn/raw.c:161 conn/raw.c:218
-#: envelope/functions.c:131 recvcmd.c:227 send/send.c:203
+#: envelope/functions.c:131 recvcmd.c:228 send/send.c:203
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "Forkert IDN: '%s'"
@@ -90,21 +90,21 @@ msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr "Advarsel: Forkert IDN '%s' i alias '%s'"
 
 #: alias/dlg_alias.c:101 alias/dlg_query.c:100 attach/dlg_attach.c:96
-#: autocrypt/dlg_autocrypt.c:89 browser/browser.c:111 browser/browser.c:124
+#: autocrypt/dlg_autocrypt.c:89 browser/browser.c:112 browser/browser.c:125
 #: conn/dlg_verifycert.c:69 history/dlg_history.c:77 ncrypt/dlg_gpgme.c:96
 #: ncrypt/dlg_pgp.c:96 ncrypt/dlg_smime.c:75 pager/dlg_pager.c:88
 #: pager/dlg_pager.c:99 pager/dlg_pager.c:109 pager/dlg_pager.c:125
-#: pattern/dlg_pattern.c:91 postpone/dlg_postpone.c:90
+#: pattern/dlg_pattern.c:91 postpone/dlg_postpone.c:91
 msgid "Exit"
 msgstr "Tilbage"
 
 #: alias/dlg_alias.c:102 index/dlg_index.c:107 index/dlg_index.c:123
-#: pager/dlg_pager.c:113 pager/dlg_pager.c:130 postpone/dlg_postpone.c:91
+#: pager/dlg_pager.c:113 pager/dlg_pager.c:130 postpone/dlg_postpone.c:92
 msgid "Del"
 msgstr "Slet"
 
 #: alias/dlg_alias.c:103 index/dlg_index.c:108 index/dlg_index.c:124
-#: postpone/dlg_postpone.c:92
+#: postpone/dlg_postpone.c:93
 msgid "Undel"
 msgstr "Behold"
 
@@ -122,12 +122,12 @@ msgid "Select"
 msgstr "Vælg"
 
 #: alias/dlg_alias.c:107 alias/dlg_query.c:107 attach/dlg_attach.c:100
-#: autocrypt/dlg_autocrypt.c:108 browser/browser.c:115 browser/browser.c:130
+#: autocrypt/dlg_autocrypt.c:108 browser/browser.c:116 browser/browser.c:131
 #: compose/compose.c:106 compose/compose.c:121 conn/dlg_verifycert.c:70
 #: history/dlg_history.c:80 index/dlg_index.c:113 index/dlg_index.c:129
 #: ncrypt/dlg_gpgme.c:99 ncrypt/dlg_pgp.c:99 ncrypt/dlg_smime.c:77
 #: pager/dlg_pager.c:91 pager/dlg_pager.c:116 pager/dlg_pager.c:132
-#: pattern/dlg_pattern.c:93 postpone/dlg_postpone.c:93
+#: pattern/dlg_pattern.c:93 postpone/dlg_postpone.c:94
 msgid "Help"
 msgstr "Hjælp"
 
@@ -421,14 +421,14 @@ msgstr "Kan ikke dekryptere krypteret brev"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:75 main.c:925
+#: autocrypt/autocrypt.c:75 main.c:926
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s findes ikke. Opret?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:929
+#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:930
 #: nntp/newsrc.c:1117
 #, c-format
 msgid "Can't create %s: %s"
@@ -675,67 +675,67 @@ msgstr "%s er ikke et filkatalog"
 msgid "Message cache isn't a directory: %s"
 msgstr "%s er ikke et filkatalog"
 
-#: browser/browser.c:112
+#: browser/browser.c:113
 msgid "Chdir"
 msgstr "Skift filkatalog"
 
-#: browser/browser.c:113
+#: browser/browser.c:114
 msgid "Goto"
 msgstr ""
 
-#: browser/browser.c:114 browser/browser.c:129
+#: browser/browser.c:115 browser/browser.c:130
 msgid "Mask"
 msgstr "Maske"
 
-#: browser/browser.c:125
+#: browser/browser.c:126
 msgid "List"
 msgstr ""
 
-#: browser/browser.c:126
+#: browser/browser.c:127
 #, fuzzy
 msgid "Subscribe"
 msgstr "Abonnerer på %s"
 
-#: browser/browser.c:127
+#: browser/browser.c:128
 #, fuzzy
 msgid "Unsubscribe"
 msgstr "Afmeldt fra %s"
 
-#: browser/browser.c:128 index/dlg_index.c:128
+#: browser/browser.c:129 index/dlg_index.c:128
 msgid "Catchup"
 msgstr ""
 
-#: browser/browser.c:609 browser/functions.c:387 browser/functions.c:751
+#: browser/browser.c:673 browser/functions.c:387 browser/functions.c:751
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s er ikke et filkatalog"
 
-#: browser/browser.c:895
+#: browser/browser.c:959
 #, fuzzy, c-format
 msgid "Subscribed newsgroups"
 msgstr "Abonnerer på %s"
 
-#: browser/browser.c:899
+#: browser/browser.c:963
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr ""
 
-#: browser/browser.c:908
+#: browser/browser.c:972
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Indbakker [%d]"
 
-#: browser/browser.c:921
+#: browser/browser.c:985
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Abonnementer [%s], filmaske: %s"
 
-#: browser/browser.c:927
+#: browser/browser.c:991
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Filkatalog [%s], filmaske: %s"
 
-#: browser/browser.c:990
+#: browser/browser.c:1054
 msgid "Can't attach a directory"
 msgstr "Kan ikke vedlægge et filkatalog"
 
@@ -1059,39 +1059,39 @@ msgstr "Afmeldt fra %s"
 msgid "Could not unsubscribe from %s"
 msgstr "Afmeldt fra %s"
 
-#: commands.c:111 recvcmd.c:181 recvcmd.c:193
+#: commands.c:111 recvcmd.c:182 recvcmd.c:194
 msgid "Warning: message contains no From: header"
 msgstr "Advarsel: brevet har ingen From:-header"
 
-#: commands.c:117 recvcmd.c:204
+#: commands.c:117 recvcmd.c:205
 #, fuzzy
 msgid "Bounce message to: "
 msgstr "Gensend brev til: "
 
-#: commands.c:119 recvcmd.c:206
+#: commands.c:119 recvcmd.c:207
 #, fuzzy
 msgid "Bounce tagged messages to: "
 msgstr "Gensend udvalgte breve til: "
 
-#: commands.c:129 recvcmd.c:218
+#: commands.c:129 recvcmd.c:219
 msgid "Error parsing address"
 msgstr "Ugyldig adresse"
 
-#: commands.c:148 recvcmd.c:238
+#: commands.c:148 recvcmd.c:239
 #, fuzzy, c-format
 msgid "Bounce message to %s?"
 msgid_plural "Bounce messages to %s?"
 msgstr[0] "Gensend brev til %s?"
 msgstr[1] "Gensend breve til %s?"
 
-#: commands.c:165 recvcmd.c:260
+#: commands.c:165 recvcmd.c:261
 #, fuzzy
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
 msgstr[0] "Brevet er ikke gensendt"
 msgstr[1] "Brevene er ikke gensendt"
 
-#: commands.c:190 recvcmd.c:287
+#: commands.c:190 recvcmd.c:288
 #, fuzzy
 msgid "Message bounced"
 msgid_plural "Messages bounced"
@@ -1422,7 +1422,7 @@ msgstr "Åbn brevbakken med brevet som skal vedlægges"
 msgid "Open newsgroup to attach message from"
 msgstr "Åbn brevbakken med brevet som skal vedlægges"
 
-#: compose/functions.c:753 main.c:1360
+#: compose/functions.c:753 main.c:1361
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Kan ikke åbne brevbakke %s"
@@ -1549,7 +1549,7 @@ msgstr "Den aktuelle del vil blive konverteret"
 msgid "Attachment is not 'multipart'"
 msgstr "Bilag gemt"
 
-#: compose/functions.c:1637 send/send.c:2778
+#: compose/functions.c:1637 send/send.c:2781
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Forkert IDN i '%s': '%s'"
@@ -1670,7 +1670,7 @@ msgstr "Ugyldig relativ dato: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Ugyldig værdi for tilvalget %s: \"%s\""
 
-#: config/set.c:104 init.c:931
+#: config/set.c:104 init.c:969
 #, c-format
 msgid "No such variable: %s"
 msgstr ""
@@ -2067,14 +2067,14 @@ msgstr "Tunnel til %s returnerede fejl %d (%s)"
 msgid "%s isn't a regular file"
 msgstr "%s er ikke en almindelig fil"
 
-#: copy.c:716
+#: copy.c:720
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: copy.c:798
+#: copy.c:802
 msgid "No decryption engine available for message"
 msgstr "Intet tilgængeligt dekrypteringsprogram til brev"
 
@@ -2718,7 +2718,7 @@ msgstr "Godkender (%s) ..."
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:88 imap/auth_cram.c:179 imap/auth_gss.c:346
 #: imap/auth_oauth.c:105 imap/auth_sasl.c:254 nntp/nntp.c:660 pop/auth.c:289
-#: pop/auth.c:357 send/smtp.c:817 send/smtp.c:891 send/smtp.c:987
+#: pop/auth.c:357 send/smtp.c:817 send/smtp.c:891 send/smtp.c:995
 #, fuzzy, c-format
 msgid "%s authentication failed"
 msgstr "SASL-godkendelse slog fejl"
@@ -2820,11 +2820,11 @@ msgstr "CREATE fejlede: %s"
 msgid "Closing connection to %s..."
 msgstr "Lukker forbindelsen til %s ..."
 
-#: imap/imap.c:777 nntp/nntp.c:1787 pop/lib.c:332 send/smtp.c:1032
+#: imap/imap.c:777 nntp/nntp.c:1787 pop/lib.c:332 send/smtp.c:1040
 msgid "Secure connection with TLS?"
 msgstr "Sikker forbindelse med TLS?"
 
-#: imap/imap.c:793 nntp/nntp.c:1810 pop/lib.c:353 send/smtp.c:1049
+#: imap/imap.c:793 nntp/nntp.c:1810 pop/lib.c:353 send/smtp.c:1057
 msgid "Could not negotiate TLS connection"
 msgstr "Kunne ikke opnå TLS-forbindelse"
 
@@ -3397,7 +3397,7 @@ msgstr "kan ikke bestemme nodenavn via uname()"
 msgid "%s: unknown command"
 msgstr "%s: Ukendt kommando"
 
-#: init.c:938
+#: init.c:933
 #, c-format
 msgid "Config variable '%s' is deprecated"
 msgstr ""
@@ -3499,19 +3499,19 @@ msgstr "Kunne ikke gemme brev på disken"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): kan ikke sætte tidsstempel på fil"
 
-#: maildir/maildir.c:680 maildir/mh.c:703
+#: maildir/maildir.c:682 maildir/mh.c:704
 #, c-format
 msgid "Scanning %s..."
 msgstr "Skanner %s ..."
 
-#: maildir/maildir.c:701 maildir/mh.c:726 mbox/mbox.c:210 mbox/mbox.c:378
+#: maildir/maildir.c:703 maildir/mh.c:727 mbox/mbox.c:210 mbox/mbox.c:378
 #: mx.c:372
 #, c-format
 msgid "Reading %s..."
 msgstr "Læser %s ..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1390 maildir/mh.c:1054 mbox/mbox.c:1272 mx.c:480
+#: maildir/maildir.c:1392 maildir/mh.c:1055 mbox/mbox.c:1272 mx.c:480
 #: notmuch/notmuch.c:2220
 #, c-format
 msgid "Writing %s..."
@@ -3746,37 +3746,37 @@ msgstr "kan ikke bestemme hjemmekatalog"
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Fejl: 'værdien \"%s\" er ugyldig til -d"
 
-#: main.c:980
+#: main.c:981
 msgid "Failed to parse mailto: link"
 msgstr "Kunne ikke fortolke mailto:-link"
 
-#: main.c:993 main.c:1250 send/send.c:296 send/send.c:2768 send/send.c:2772
+#: main.c:994 main.c:1251 send/send.c:296 send/send.c:2771 send/send.c:2775
 msgid "No recipients specified"
 msgstr "Ingen angivelse af modtagere"
 
-#: main.c:1022
+#: main.c:1023
 msgid "Can't use -E flag with stdin"
 msgstr "Kan ikke bruge tilvalget -E sammen med standardinddata"
 
-#: main.c:1106
+#: main.c:1107
 #, fuzzy, c-format
 msgid "Can't parse message template: %s"
 msgstr "Kan ikke åbne brev: %s"
 
-#: main.c:1172 mutt_header.c:343
+#: main.c:1173 mutt_header.c:343
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: kunne ikke vedlægge fil"
 
-#: main.c:1264
+#: main.c:1265
 msgid "No mailbox with new mail"
 msgstr "Ingen brevbakke med nye breve"
 
-#: main.c:1289
+#: main.c:1290
 msgid "No incoming mailboxes defined"
 msgstr "Ingen indbakker er defineret"
 
-#: main.c:1341
+#: main.c:1342
 msgid "Mailbox is empty"
 msgstr "Brevbakken er tom"
 
@@ -4252,7 +4252,7 @@ msgstr "Starter PGP ..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Brevet kan ikke sendes integreret. Brug PGP/MIME i stedet?"
 
-#: ncrypt/crypt.c:224 send/send.c:2746
+#: ncrypt/crypt.c:224 send/send.c:2749
 msgid "Mail not sent"
 msgstr "Brev ikke sendt"
 
@@ -4767,36 +4767,36 @@ msgstr "Starter S/MIME ..."
 msgid "Check key"
 msgstr "Undersøg nøgle"
 
-#: ncrypt/dlg_gpgme.c:696
+#: ncrypt/dlg_gpgme.c:708
 msgid "All matching keys are marked expired/revoked"
 msgstr "Alle matchende nøgler er markeret som udløbet/tilbagekaldt"
 
-#: ncrypt/dlg_gpgme.c:743
+#: ncrypt/dlg_gpgme.c:755
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP- og S/MIME-nøgler som matcher"
 
-#: ncrypt/dlg_gpgme.c:745
+#: ncrypt/dlg_gpgme.c:757
 msgid "PGP keys matching"
 msgstr "PGP-nøgler som matcher"
 
-#: ncrypt/dlg_gpgme.c:747
+#: ncrypt/dlg_gpgme.c:759
 msgid "S/MIME keys matching"
 msgstr "S/MIME-nøgler som matcher"
 
-#: ncrypt/dlg_gpgme.c:749
+#: ncrypt/dlg_gpgme.c:761
 msgid "keys matching"
 msgstr "nøgler som matcher"
 
 #. L10N: 1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>"
-#: ncrypt/dlg_gpgme.c:757
+#: ncrypt/dlg_gpgme.c:769
 #, c-format
 msgid "%s <%s>"
 msgstr "%s <%s>"
 
 #. L10N: e.g. 'S/MIME keys matching "Michael Elkins".'
-#: ncrypt/dlg_gpgme.c:762
+#: ncrypt/dlg_gpgme.c:774
 #, c-format
 msgid "%s \"%s\""
 msgstr "%s \"%s\""
@@ -5342,7 +5342,7 @@ msgstr "Serveren afbrød forbindelsen"
 msgid "Server doesn't support reader mode"
 msgstr "SMTP-server understøtter ikke godkendelse"
 
-#: nntp/nntp.c:471 pop/auth.c:620 send/smtp.c:991
+#: nntp/nntp.c:471 pop/auth.c:620 send/smtp.c:999
 msgid "No authenticators available"
 msgstr "Ingen godkendelsesmetode kan bruges"
 
@@ -6876,7 +6876,7 @@ msgstr ""
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:100 pattern/exec.c:1089
+#: pattern/exec.c:100 pattern/exec.c:1098
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "fejl: ukendt op %d (rapportér denne fejl)"
@@ -6901,7 +6901,7 @@ msgstr "Kan ikke åbne /dev/null"
 msgid "Error checking length of temporary file"
 msgstr "Fejl. Bevarer midlertidig fil: %s"
 
-#: pattern/exec.c:886
+#: pattern/exec.c:885
 msgid "error: server custom search only supported with IMAP"
 msgstr ""
 
@@ -7003,168 +7003,174 @@ msgstr ""
 msgid "messages which contain PGP key"
 msgstr "brevets genvejstast"
 
-#. L10N: Pattern Completion Menu description for ~l
+#. L10N: Pattern Completion Menu description for ~K
 #: pattern/flags.c:98
+#, fuzzy
+msgid "messages whose BCC header matches EXPR"
+msgstr "redigér brevet med brevhoved"
+
+#. L10N: Pattern Completion Menu description for ~l
+#: pattern/flags.c:101
 msgid "messages addressed to known mailing lists"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~L
-#: pattern/flags.c:101
+#: pattern/flags.c:104
 msgid "messages whose From/Sender/To/CC matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~m
-#: pattern/flags.c:104
+#: pattern/flags.c:107
 msgid "messages whose number is in RANGE"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~M
-#: pattern/flags.c:107
+#: pattern/flags.c:110
 msgid "messages with a Content-Type matching EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~n
-#: pattern/flags.c:110
+#: pattern/flags.c:113
 msgid "messages whose score is in RANGE"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~N
-#: pattern/flags.c:113
+#: pattern/flags.c:116
 #, fuzzy
 msgid "new messages"
 msgstr "Ingen nye breve"
 
 #. L10N: Pattern Completion Menu description for ~O
-#: pattern/flags.c:116
+#: pattern/flags.c:119
 #, fuzzy
 msgid "old messages"
 msgstr "sortér breve"
 
 #. L10N: Pattern Completion Menu description for ~p
-#: pattern/flags.c:119
+#: pattern/flags.c:122
 msgid "messages addressed to you"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~P
-#: pattern/flags.c:122
+#: pattern/flags.c:125
 #, fuzzy
 msgid "messages from you"
 msgstr "brevets genvejstast"
 
 #. L10N: Pattern Completion Menu description for ~Q
-#: pattern/flags.c:125
+#: pattern/flags.c:128
 msgid "messages which have been replied to"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~r
-#: pattern/flags.c:128
+#: pattern/flags.c:131
 msgid "messages received in DATERANGE"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~R
-#: pattern/flags.c:131
+#: pattern/flags.c:134
 #, fuzzy
 msgid "already read messages"
 msgstr "Ingen ulæste breve"
 
 #. L10N: Pattern Completion Menu description for ~s
-#: pattern/flags.c:134
+#: pattern/flags.c:137
 msgid "messages whose Subject header matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~S
-#: pattern/flags.c:137
+#: pattern/flags.c:140
 #, fuzzy
 msgid "superseded messages"
 msgstr "Ingen ulæste breve"
 
 #. L10N: Pattern Completion Menu description for ~t
-#: pattern/flags.c:140
+#: pattern/flags.c:143
 msgid "messages whose To header matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~T
-#: pattern/flags.c:143
+#: pattern/flags.c:146
 #, fuzzy
 msgid "tagged messages"
 msgstr "Ingen breve er udvalgt"
 
 #. L10N: Pattern Completion Menu description for ~u
-#: pattern/flags.c:146
+#: pattern/flags.c:149
 #, fuzzy
 msgid "messages addressed to subscribed mailing lists"
 msgstr "svar til en angivet postliste"
 
 #. L10N: Pattern Completion Menu description for ~U
-#: pattern/flags.c:149
+#: pattern/flags.c:152
 #, fuzzy
 msgid "unread messages"
 msgstr "Ingen ulæste breve"
 
 #. L10N: Pattern Completion Menu description for ~v
-#: pattern/flags.c:152
+#: pattern/flags.c:155
 #, fuzzy
 msgid "messages in collapsed threads"
 msgstr "Ingen nye breve i denne afgrænsede oversigt"
 
 #. L10N: Pattern Completion Menu description for ~V
-#: pattern/flags.c:155
+#: pattern/flags.c:158
 #, fuzzy
 msgid "cryptographically verified messages"
 msgstr "hop til forrige nye eller ulæste brev"
 
 #. L10N: Pattern Completion Menu description for ~w
-#: pattern/flags.c:159
+#: pattern/flags.c:162
 #, fuzzy
 msgid "newsgroups matching EXPR"
 msgstr "Ingen filer passer til filmasken"
 
 #. L10N: Pattern Completion Menu description for ~x
-#: pattern/flags.c:163
+#: pattern/flags.c:166
 msgid "messages whose References header matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~X
-#: pattern/flags.c:166
+#: pattern/flags.c:169
 #, fuzzy
 msgid "messages with RANGE attachments"
 msgstr "vis MIME-dele"
 
 #. L10N: Pattern Completion Menu description for ~y
-#: pattern/flags.c:169
+#: pattern/flags.c:172
 msgid "messages whose X-Label header matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~Y
-#: pattern/flags.c:172
+#: pattern/flags.c:175
 msgid "messages whose tags match EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~z
-#: pattern/flags.c:175
+#: pattern/flags.c:178
 msgid "messages whose size is in RANGE"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~=
-#: pattern/flags.c:178
+#: pattern/flags.c:181
 #, fuzzy
 msgid "duplicated messages"
 msgstr "Alle breve har slette-markering"
 
 #. L10N: Pattern Completion Menu description for ~$
-#: pattern/flags.c:181
+#: pattern/flags.c:184
 #, fuzzy
 msgid "unreferenced messages"
 msgstr "Ingen ulæste breve"
 
 #. L10N: Pattern Completion Menu description for ~#
-#: pattern/flags.c:184
+#: pattern/flags.c:187
 #, fuzzy
 msgid "broken threads"
 msgstr "Ikke flere tråde"
 
 #. L10N: Pattern Completion Menu description for =/
-#: pattern/flags.c:187
+#: pattern/flags.c:190
 msgid "IMAP custom server-side search for STRING"
 msgstr ""
 
@@ -7304,7 +7310,7 @@ msgstr "Giver breve slettemarkering ..."
 msgid "Can't write message to temporary file"
 msgstr "Kan ikke skrive brev til midlertidig fil"
 
-#: postpone/dlg_postpone.c:188
+#: postpone/dlg_postpone.c:210
 msgid "Postponed Messages"
 msgstr "Tilbageholdte breve"
 
@@ -7332,54 +7338,54 @@ msgstr "ja"
 msgid "no"
 msgstr "nej"
 
-#: recvcmd.c:74
+#: recvcmd.c:75
 msgid "You may only bounce message/rfc822 parts"
 msgstr "Du kan kun gensende message/rfc822-brevdele"
 
-#: recvcmd.c:289
+#: recvcmd.c:290
 #, fuzzy
 msgid "Error bouncing message"
 msgid_plural "Error bouncing messages"
 msgstr[0] "Fejl ved gensending af brev"
 msgstr[1] "Fejl ved gensending af breve"
 
-#: recvcmd.c:515
+#: recvcmd.c:519
 #, c-format
 msgid "Can't open temporary file %s"
 msgstr "Kan ikke åbne midlertidig fil %s"
 
-#: recvcmd.c:547
+#: recvcmd.c:554
 msgid "Forward as attachments?"
 msgstr "Videresend som bilag?"
 
-#: recvcmd.c:562
+#: recvcmd.c:569
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr "Kan ikke afkode alle udvalgte brevdele. MIME-videresend de øvrige?"
 
-#: recvcmd.c:692
+#: recvcmd.c:699
 msgid "Forward MIME encapsulated?"
 msgstr "Videresend MIME-indkapslet?"
 
-#: recvcmd.c:701 recvcmd.c:1009
+#: recvcmd.c:708 recvcmd.c:1016
 #, c-format
 msgid "Can't create %s"
 msgstr "Kan ikke oprette %s"
 
-#: recvcmd.c:844
+#: recvcmd.c:851
 msgid "Can't find any tagged messages"
 msgstr "Kan ikke finde nogen udvalgte breve"
 
-#: recvcmd.c:880 send/send.c:1187
+#: recvcmd.c:887 send/send.c:1190
 msgid "No mailing lists found"
 msgstr "Ingen postlister fundet"
 
-#: recvcmd.c:985
+#: recvcmd.c:992
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr "Kan ikke afkode alle udvalgte brevdele. MIME-indkapsl de øvrige?"
 
 #. L10N: You will see this error message if you invoke <compose-to-sender>
 #. when you are on a normal attachment.
-#: recvcmd.c:1121
+#: recvcmd.c:1131
 #, fuzzy
 msgid "You may only compose to sender with message/rfc822 parts"
 msgstr "Du kan kun gensende message/rfc822-brevdele"
@@ -7423,37 +7429,37 @@ msgstr "Videresend bilag?"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
-#: send/send.c:887
+#: send/send.c:890
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Svar til %s%s?"
 
-#: send/send.c:934
+#: send/send.c:937
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Opfølg til %s%s?"
 
-#: send/send.c:1230
+#: send/send.c:1233
 msgid "Include message in reply?"
 msgstr "Citér brevet i svar?"
 
-#: send/send.c:1236
+#: send/send.c:1239
 msgid "Including quoted message..."
 msgstr "Inkluderer citeret brev ..."
 
-#: send/send.c:1242
+#: send/send.c:1245
 msgid "Could not include all requested messages"
 msgstr "Kunne ikke citere alle ønskede breve"
 
-#: send/send.c:1255
+#: send/send.c:1258
 msgid "Forward as attachment?"
 msgstr "Videresend som bilag?"
 
-#: send/send.c:1260
+#: send/send.c:1263
 msgid "Preparing forwarded message..."
 msgstr "Forbereder brev til videresendelse ..."
 
-#: send/send.c:1773
+#: send/send.c:1776
 #, fuzzy
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
 msgstr "Fcc til en IMAP-brevbakke understøttes ikke i batch-tilstand"
@@ -7463,12 +7469,12 @@ msgstr "Fcc til en IMAP-brevbakke understøttes ikke i batch-tilstand"
 #. sending the mail too.
 #. %s is the full mailbox URL, including imap(s)://
 #.
-#: send/send.c:1779
+#: send/send.c:1782
 #, c-format
 msgid "Skipping Fcc to %s"
 msgstr ""
 
-#: send/send.c:1820 send/send.c:1830 send/send.c:1856
+#: send/send.c:1823 send/send.c:1833 send/send.c:1859
 msgid "Save attachments in Fcc?"
 msgstr "Gem bilag i Fcc?"
 
@@ -7476,121 +7482,121 @@ msgstr "Gem bilag i Fcc?"
 #. (r)etry tries the same mailbox again.
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
-#: send/send.c:1879
+#: send/send.c:1882
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr "Fcc fejlede. forsøg (i)gen, alternativ (b)revbakke, eller (a)fbryd? "
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
-#: send/send.c:1883
+#: send/send.c:1886
 msgid "rms"
 msgstr "iba"
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
-#: send/send.c:1889
+#: send/send.c:1892
 msgid "Fcc mailbox"
 msgstr "Fcc-brevbakke"
 
-#: send/send.c:1959
+#: send/send.c:1962
 msgid "Can't postpone.  $postponed is unset"
 msgstr "Kan ikke udsætte. Variablen $postponed er ikke sat"
 
-#: send/send.c:1996 send/send.c:2013
+#: send/send.c:1999 send/send.c:2016
 msgid "Error encrypting message. Check your crypt settings."
 msgstr ""
 
-#: send/send.c:2107
+#: send/send.c:2110
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
-#: send/send.c:2111
+#: send/send.c:2114
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "ret brevdelens indkodning"
 
-#: send/send.c:2167
+#: send/send.c:2170
 msgid "Recall postponed message?"
 msgstr "Genindlæs tilbageholdt brev?"
 
-#: send/send.c:2427
+#: send/send.c:2430
 msgid "Refusing to send an empty email"
 msgstr ""
 
-#: send/send.c:2428
+#: send/send.c:2431
 msgid "Try: echo | neomutt -s 'subject' user@example.com"
 msgstr ""
 
-#: send/send.c:2517
+#: send/send.c:2520
 msgid "Edit forwarded message?"
 msgstr "Redigér brev før videresendelse?"
 
-#: send/send.c:2560
+#: send/send.c:2563
 msgid "Abort unmodified message?"
 msgstr "Annullér uændret brev?"
 
-#: send/send.c:2562
+#: send/send.c:2565
 msgid "Aborted unmodified message"
 msgstr "Annullerede uændret brev"
 
-#: send/send.c:2701
+#: send/send.c:2704
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "Ingen krypteringsressource er konfigureret. Deaktiverer brevets sikkerhedsindstilling."
 
-#: send/send.c:2743
+#: send/send.c:2746
 #, fuzzy
 msgid "Article not posted"
 msgstr "Brev ikke sendt"
 
-#: send/send.c:2753
+#: send/send.c:2756
 msgid "Message postponed"
 msgstr "Brev tilbageholdt"
 
-#: send/send.c:2788
+#: send/send.c:2791
 msgid "No subject, abort sending?"
 msgstr "Intet emne, undlad at sende?"
 
-#: send/send.c:2792 send/send.c:2798
+#: send/send.c:2795 send/send.c:2801
 msgid "No subject specified"
 msgstr "Intet emne er angivet"
 
-#: send/send.c:2804
+#: send/send.c:2807
 #, fuzzy
 msgid "No newsgroup specified"
 msgstr "Intet emne er angivet"
 
-#: send/send.c:2866 send/smtp.c:248
+#: send/send.c:2869 send/smtp.c:248
 msgid "Sending message..."
 msgstr "Sender brev ..."
 
-#: send/send.c:2909
+#: send/send.c:2915
 msgid "Could not send the message"
 msgstr "Kunne ikke sende brevet"
 
-#: send/send.c:2919
+#: send/send.c:2925
 msgid "Sending in background"
 msgstr "Sender i baggrunden"
 
-#: send/send.c:2920
+#: send/send.c:2926
 msgid "Article posted"
 msgstr ""
 
-#: send/send.c:2921
+#: send/send.c:2927
 msgid "Mail sent"
 msgstr "Brev sendt"
 
-#: send/send.c:3000
+#: send/send.c:3006
 #, fuzzy
 msgid "No recipient specified"
 msgstr "Ingen angivelse af modtagere"
 
-#: send/send.c:3045
+#: send/send.c:3051
 #, fuzzy
 msgid "No List-Subscribe header found"
 msgstr "Ingen hemmelige nøgler fundet"
 
-#: send/send.c:3074
+#: send/send.c:3080
 #, fuzzy
 msgid "No List-Unsubscribe header found"
 msgstr "Afmeldt fra %s"
@@ -7605,21 +7611,21 @@ msgstr "Kunne ikke sende brevet"
 msgid "Could not open %s"
 msgstr "Kunne ikke åbne %s"
 
-#: send/sendlib.c:925
+#: send/sendlib.c:942
 #, c-format
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "Forkert IDN %s under forberedelse af af \"Resent-From\"-felt"
 
-#: send/sendmail.c:329
+#: send/sendmail.c:331
 msgid "$sendmail must be set in order to send mail"
 msgstr "$sendmail skal sættes for at sende post"
 
-#: send/sendmail.c:438
+#: send/sendmail.c:440
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "Fejl %d under afsendelse af brev (%s)"
 
-#: send/sendmail.c:450
+#: send/sendmail.c:452
 msgid "Output of the delivery process"
 msgstr "Uddata fra leveringsprocessen"
 
@@ -7638,28 +7644,23 @@ msgstr "SMTP-session fejlede: kunne ikke åbne %s"
 msgid "Invalid SMTP URL: %s"
 msgstr "Ugyldig SMTP-URL: %s"
 
-#: send/smtp.c:976
-#, fuzzy
-msgid "SMTP authentication requires SASL"
-msgstr "GSSAPI-godkendelse slog fejl"
-
-#: send/smtp.c:1064
+#: send/smtp.c:1072
 msgid "SMTP server does not support authentication"
 msgstr "SMTP-server understøtter ikke godkendelse"
 
-#: send/smtp.c:1111
+#: send/smtp.c:1119
 msgid "No from address given"
 msgstr "Afsenderadresse ikke anført"
 
-#: send/smtp.c:1178
+#: send/smtp.c:1186
 msgid "SMTP session failed: read error"
 msgstr "SMTP-session fejlede: læsningsfejl"
 
-#: send/smtp.c:1180
+#: send/smtp.c:1188
 msgid "SMTP session failed: write error"
 msgstr "SMTP-session fejlede: skrivningsfejl"
 
-#: send/smtp.c:1182
+#: send/smtp.c:1190
 msgid "Invalid server response"
 msgstr "Ugyldigt svar fra server"
 
@@ -7752,3 +7753,7 @@ msgstr "Tilvalg ved oversættelsen:"
 
 #~ msgid "Exit NeoMutt?"
 #~ msgstr "Afslut NeoMutt øjeblikkeligt?"
+
+#, fuzzy
+#~ msgid "SMTP authentication requires SASL"
+#~ msgstr "GSSAPI-godkendelse slog fejl"
