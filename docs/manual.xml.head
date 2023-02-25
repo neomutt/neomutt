@@ -18925,18 +18925,8 @@ set use_threads=threads sort=last-date sort_aux=date
       <sect2 id="security-leaks-mid">
         <title>Message-Id: headers</title>
         <para>
-          Message-Id: headers contain a local part that is to be created in
-          a unique fashion. In order to do so, NeoMutt will <quote>leak</quote>
-          some information to the outside world when sending messages: the
-          generation of this header includes a step counter which is increased
-          (and rotated) with every message sent. Other parts include the date,
-          time, PID of NeoMutt, and <link linkend="hostname">$hostname</link>.
-          In a longer running NeoMutt session, others can
-          make assumptions about your mailing habits
-          depending on the number of messages sent. If this is not desired, the
-          header can be manually provided using
-          <link linkend="edit-headers">$edit_headers</link> (though not
-          recommended).
+          Since 2023-02-18 NeoMutt generates random Message-Id: headers, which
+          do not leak any information beyond their randomness.
         </para>
       </sect2>
 
