@@ -62,6 +62,7 @@
 #include "myvar.h"
 #include "options.h"
 #include "protos.h"
+#include "xdg.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"
 #endif
@@ -684,18 +685,13 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
 
   if (STAILQ_EMPTY(&Muttrc))
   {
-    const char *xdg_cfg_home = mutt_str_getenv("XDG_CONFIG_HOME");
-
-    if (!xdg_cfg_home && HomeDir)
+    if (mutt_xdg_get_path(XDG_CONFIG_HOME, &buf) >= 0)
     {
-      mutt_buffer_printf(&buf, "%s/.config", HomeDir);
-      xdg_cfg_home = mutt_buffer_string(&buf);
-    }
-
-    char *config = find_cfg(HomeDir, xdg_cfg_home);
-    if (config)
-    {
-      mutt_list_insert_tail(&Muttrc, config);
+      char *config = find_cfg(HomeDir, mutt_buffer_string(&buf));
+      if (config)
+      {
+        mutt_list_insert_tail(&Muttrc, config);
+      }
     }
   }
   else

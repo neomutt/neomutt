@@ -28,21 +28,13 @@
 #include <stdbool.h>
 #include "mutt.h"
 #include "menu/lib.h"
+#include "xdg.h"
 
 struct Buffer;
 struct Email;
 struct EmailList;
 struct Mailbox;
 struct NotifyCallback;
-
-/**
- * enum XdgType - XDG variable types
- */
-enum XdgType
-{
-  XDG_CONFIG_HOME, ///< XDG home dir: ~/.config
-  XDG_CONFIG_DIRS, ///< XDG system dir: /etc/xdg
-};
 
 /**
  * enum EvMessage - Edit or View a message
@@ -57,7 +49,7 @@ int mutt_ev_message(struct Mailbox *m, struct EmailList *el, enum EvMessage acti
 
 int mutt_system(const char *cmd);
 
-int mutt_set_xdg_path(enum XdgType type, struct Buffer *buf);
+int mutt_set_xdg_path(enum XdgEnvVar type, struct Buffer *buf);
 void mutt_help(enum MenuType menu);
 void mutt_set_flag_update(struct Mailbox *m, struct Email *e, enum MessageType flag, bool bf, bool upd_mbox);
 #define mutt_set_flag(m, e, flag, bf) mutt_set_flag_update(m, e, flag, bf, true)

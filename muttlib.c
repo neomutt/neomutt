@@ -63,16 +63,6 @@
 #include "imap/lib.h"
 #endif
 
-static const char *xdg_env_vars[] = {
-  [XDG_CONFIG_HOME] = "XDG_CONFIG_HOME",
-  [XDG_CONFIG_DIRS] = "XDG_CONFIG_DIRS",
-};
-
-static const char *xdg_defaults[] = {
-  [XDG_CONFIG_HOME] = "~/.config",
-  [XDG_CONFIG_DIRS] = "/etc/xdg",
-};
-
 /**
  * mutt_adv_mktemp - Create a temporary file
  * @param buf Buffer for the name
@@ -1508,17 +1498,20 @@ void mutt_encode_path(struct Buffer *buf, const char *src)
  *
  * Process an XDG environment variable or its fallback.
  */
-int mutt_set_xdg_path(enum XdgType type, struct Buffer *buf)
+int mutt_set_xdg_path(enum XdgEnvVar type, struct Buffer *buf)
 {
-  const char *xdg_env = mutt_str_getenv(xdg_env_vars[type]);
-  char *xdg = xdg_env ? mutt_str_dup(xdg_env) : mutt_str_dup(xdg_defaults[type]);
+  int rc = mutt_xdg_get_app_path(type, buf);
+  if (rc < 0)
+    return 0;
+  char *xdg = mutt_str_dup(mutt_buffer_string(buf));
   char *x = xdg; /* mutt_str_sep() changes xdg, so free x instead later */
   char *token = NULL;
-  int rc = 0;
+  mutt_buffer_reset(buf);
+  rc = 0;
 
   while ((token = mutt_str_sep(&xdg, ":")))
   {
-    if (mutt_buffer_printf(buf, "%s/%s/neomuttrc", token, PACKAGE) < 0)
+    if (mutt_buffer_printf(buf, "%s/neomuttrc", token) < 0)
       continue;
     mutt_buffer_expand_path(buf);
     if (access(mutt_buffer_string(buf), F_OK) == 0)
@@ -1527,7 +1520,7 @@ int mutt_set_xdg_path(enum XdgType type, struct Buffer *buf)
       break;
     }
 
-    if (mutt_buffer_printf(buf, "%s/%s/Muttrc", token, PACKAGE) < 0)
+    if (mutt_buffer_printf(buf, "%s/Muttrc", token) < 0)
       continue;
     mutt_buffer_expand_path(buf);
     if (access(mutt_buffer_string(buf), F_OK) == 0)
