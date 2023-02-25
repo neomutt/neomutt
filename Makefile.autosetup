@@ -72,7 +72,7 @@ NEOMUTTOBJS=	alternates.o commands.o command_parse.o \
 		mutt_logging.o mutt_mailbox.o mutt_signal.o mutt_socket.o \
 		mutt_thread.o mx.o mview.o myvar.o opcodes.o recvcmd.o \
 		resize.o rfc3676.o score.o sort.o status.o subjectrx.o \
-		system.o version.o
+		system.o version.o xdg.o
 
 @if !HAVE_TIMEGM
 NEOMUTTOBJS+=	timegm.o
