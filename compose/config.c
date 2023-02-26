@@ -35,6 +35,9 @@
 #define ISPELL "ispell"
 #endif
 
+/**
+ * ComposeVars - Config definitions for compose
+ */
 static struct ConfigDef ComposeVars[] = {
   // clang-format off
   { "compose_format", DT_STRING|R_MENU, IP "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-", 0, NULL,

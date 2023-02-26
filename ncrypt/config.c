@@ -45,6 +45,9 @@ const struct Mapping SortKeyMethods[] = {
   // clang-format on
 };
 
+/**
+ * NcryptVars - Config definitions for the encryption library
+ */
 static struct ConfigDef NcryptVars[] = {
   // clang-format off
   { "crypt_confirm_hook", DT_BOOL, true, 0, NULL,
@@ -147,6 +150,9 @@ static struct ConfigDef NcryptVars[] = {
 };
 
 #if defined(CRYPT_BACKEND_GPGME)
+/**
+ * NcryptVarsGpgme - GPGME Config definitions for the encryption library
+ */
 static struct ConfigDef NcryptVarsGpgme[] = {
   // clang-format off
   { "crypt_use_gpgme", DT_BOOL, true, 0, NULL,
@@ -161,6 +167,9 @@ static struct ConfigDef NcryptVarsGpgme[] = {
 #endif
 
 #if defined(CRYPT_BACKEND_CLASSIC_PGP)
+/**
+ * NcryptVarsPgp - PGP Config definitions for the encryption library
+ */
 static struct ConfigDef NcryptVarsPgp[] = {
   // clang-format off
   { "pgp_check_exit", DT_BOOL, true, 0, NULL,
@@ -228,6 +237,9 @@ static struct ConfigDef NcryptVarsPgp[] = {
 #endif
 
 #if defined(CRYPT_BACKEND_CLASSIC_SMIME)
+/**
+ * NcryptVarsSmime - SMIME Config definitions for the encryption library
+ */
 static struct ConfigDef NcryptVarsSmime[] = {
   // clang-format off
   { "smime_ask_cert_label", DT_BOOL, true, 0, NULL,

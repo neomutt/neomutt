@@ -94,6 +94,9 @@ static int nm_query_window_timebase_validator(const struct ConfigSet *cs,
   return CSR_SUCCESS;
 }
 
+/**
+ * NotmuchVars - Config definitions for the Notmuch library
+ */
 static struct ConfigDef NotmuchVars[] = {
   // clang-format off
   { "nm_config_file", DT_PATH|DT_PATH_FILE, IP "auto", 0, NULL,

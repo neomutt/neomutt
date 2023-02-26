@@ -51,6 +51,9 @@ const struct Mapping SortSidebarMethods[] = {
   // clang-format on
 };
 
+/**
+ * SidebarVars - Config definitions for the sidebar
+ */
 static struct ConfigDef SidebarVars[] = {
   // clang-format off
   { "sidebar_component_depth", DT_NUMBER, 0, 0, NULL,

@@ -64,6 +64,9 @@ static int imap_auth_validator(const struct ConfigSet *cs, const struct ConfigDe
   return CSR_SUCCESS;
 }
 
+/**
+ * ImapVars - Config definitions for the IMAP library
+ */
 static struct ConfigDef ImapVars[] = {
   // clang-format off
   { "imap_check_subscribed", DT_BOOL, false, 0, NULL,
@@ -133,6 +136,9 @@ static struct ConfigDef ImapVars[] = {
 };
 
 #if defined(USE_ZLIB)
+/**
+ * ImapVarsZlib - Config definitions for IMAP compression
+ */
 static struct ConfigDef ImapVarsZlib[] = {
   // clang-format off
   { "imap_deflate", DT_BOOL, true, 0, NULL,

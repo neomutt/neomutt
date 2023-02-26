@@ -31,6 +31,9 @@
 #include <config/lib.h>
 #include <stdbool.h>
 
+/**
+ * NntpVars - Config definitions for the NNTP library
+ */
 static struct ConfigDef NntpVars[] = {
   // clang-format off
   { "catchup_newsgroup", DT_QUAD, MUTT_ASKYES, 0, NULL,

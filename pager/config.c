@@ -31,6 +31,9 @@
 #include <config/lib.h>
 #include <stdbool.h>
 
+/**
+ * PagerVars - Config definitions for the Pager
+ */
 static struct ConfigDef PagerVars[] = {
   // clang-format off
   { "allow_ansi", DT_BOOL, false, 0, NULL,

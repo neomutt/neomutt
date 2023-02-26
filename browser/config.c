@@ -33,6 +33,9 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 
+/**
+ * BrowserVars - Config definitions for the browser
+ */
 static struct ConfigDef BrowserVars[] = {
   // clang-format off
   { "browser_abbreviate_mailboxes", DT_BOOL, true, 0, NULL,

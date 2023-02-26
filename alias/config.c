@@ -33,7 +33,7 @@
 #include "mutt/lib.h"
 
 /**
- * struct SortAliasMethods - Sort methods for email aliases
+ * SortAliasMethods - Sort methods for email aliases
  */
 const struct Mapping SortAliasMethods[] = {
   // clang-format off
@@ -44,6 +44,9 @@ const struct Mapping SortAliasMethods[] = {
   // clang-format on
 };
 
+/**
+ * AliasVars - Config definitions for the alias library
+ */
 static struct ConfigDef AliasVars[] = {
   // clang-format off
   { "alias_file", DT_PATH|DT_PATH_FILE, IP "~/.neomuttrc", 0, NULL,

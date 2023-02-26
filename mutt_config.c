@@ -141,6 +141,9 @@ static int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *c
   return CSR_ERR_INVALID;
 }
 
+/**
+ * MainVars - General Config definitions for NeoMutt
+ */
 static struct ConfigDef MainVars[] = {
   // clang-format off
   { "abort_backspace", DT_BOOL, true, 0, NULL,
@@ -631,6 +634,9 @@ static struct ConfigDef MainVars[] = {
 #else
 #define MIXMASTER_DEFAULT ""
 #endif
+/**
+ * MainVarsMixmaster - Config definitions for the Mixmaster library
+ */
 static struct ConfigDef MainVarsMixmaster[] = {
   // clang-format off
   { "mix_entry_format", DT_STRING|DT_NOT_EMPTY, IP "%4n %c %-16s %a", 0, NULL,
@@ -645,6 +651,9 @@ static struct ConfigDef MainVarsMixmaster[] = {
 #endif
 
 #if defined(HAVE_LIBIDN)
+/**
+ * MainVarsIdn - IDN Config definitions for the Mixmaster library
+ */
 static struct ConfigDef MainVarsIdn[] = {
   // clang-format off
   { "idn_decode", DT_BOOL|R_MENU, true, 0, NULL,

@@ -62,6 +62,9 @@ static int pop_auth_validator(const struct ConfigSet *cs, const struct ConfigDef
   return CSR_SUCCESS;
 }
 
+/**
+ * PopVars - Config definitions for the POP library
+ */
 static struct ConfigDef PopVars[] = {
   // clang-format off
   { "pop_auth_try_all", DT_BOOL, true, 0, NULL,

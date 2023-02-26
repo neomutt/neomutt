@@ -104,6 +104,9 @@ static int simple_command_validator(const struct ConfigSet *cs, const struct Con
   return CSR_ERR_INVALID;
 }
 
+/**
+ * SendVars - Config definitions for the send library
+ */
 static struct ConfigDef SendVars[] = {
   // clang-format off
   { "abort_noattach", DT_QUAD, MUTT_NO, 0, NULL,
@@ -344,6 +347,9 @@ static struct ConfigDef SendVars[] = {
 };
 
 #if defined(USE_NNTP)
+/**
+ * SendVarsNntp - NNTP Config definitions for the send library
+ */
 static struct ConfigDef SendVarsNntp[] = {
   // clang-format off
   { "ask_followup_to", DT_BOOL, false, 0, NULL,
@@ -364,6 +370,9 @@ static struct ConfigDef SendVarsNntp[] = {
 #endif
 
 #if defined(USE_SMTP)
+/**
+ * SendVarsSmtp - SMTP Config definitions for the send library
+ */
 static struct ConfigDef SendVarsSmtp[] = {
   // clang-format off
   { "smtp_authenticators", DT_SLIST|SLIST_SEP_COLON, 0, 0, smtp_auth_validator,

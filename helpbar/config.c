@@ -31,6 +31,9 @@
 #include <stdbool.h>
 #include "config/lib.h"
 
+/**
+ * HelpbarVars - Config definitions for the Helpbar
+ */
 static struct ConfigDef HelpbarVars[] = {
   // clang-format off
   { "help", DT_BOOL, true, 0, NULL,

@@ -31,6 +31,9 @@
 #include <config/lib.h>
 #include <stdbool.h>
 
+/**
+ * ConnVars - Config definitions for the connection library
+ */
 static struct ConfigDef ConnVars[] = {
   // clang-format off
   { "account_command", DT_STRING|DT_COMMAND, 0, 0, NULL,
@@ -55,6 +58,9 @@ static struct ConfigDef ConnVars[] = {
 };
 
 #if defined(USE_SSL)
+/**
+ * ConnVarsSsl - General SSL Config definitions for the conn library
+ */
 static struct ConfigDef ConnVarsSsl[] = {
   // clang-format off
   { "certificate_file", DT_PATH|DT_PATH_FILE, IP "~/.mutt_certificates", 0, NULL,
@@ -99,6 +105,9 @@ static struct ConfigDef ConnVarsSsl[] = {
 #endif
 
 #if defined(USE_SSL_GNUTLS)
+/**
+ * ConnVarsGnutls - GnuTLS Config definitions for the connection library
+ */
 static struct ConfigDef ConnVarsGnutls[] = {
   // clang-format off
   { "ssl_ca_certificates_file", DT_PATH|DT_PATH_FILE, 0, 0, NULL,
@@ -113,6 +122,9 @@ static struct ConfigDef ConnVarsGnutls[] = {
 #endif
 
 #if defined(USE_SSL_OPENSSL)
+/**
+ * ConnVarsOpenssl - OpenSSL Config definitions for the connection library
+ */
 static struct ConfigDef ConnVarsOpenssl[] = {
   // clang-format off
   { "entropy_file", DT_PATH|DT_PATH_FILE, 0, 0, NULL,
@@ -131,6 +143,9 @@ static struct ConfigDef ConnVarsOpenssl[] = {
 #endif
 
 #if defined(HAVE_SSL_PARTIAL_CHAIN)
+/**
+ * ConnVarsPartial - SSL partial chains Config definitions for the connection library
+ */
 static struct ConfigDef ConnVarsPartial[] = {
   // clang-format off
   { "ssl_verify_partial_chains", DT_BOOL, false, 0, NULL,
@@ -142,6 +157,9 @@ static struct ConfigDef ConnVarsPartial[] = {
 #endif
 
 #if defined(HAVE_GETADDRINFO)
+/**
+ * ConnVarsGetaddr - GetAddrInfo Config definitions for the connection library
+ */
 static struct ConfigDef ConnVarsGetaddr[] = {
   // clang-format off
   { "use_ipv6", DT_BOOL, true, 0, NULL,

@@ -31,6 +31,9 @@
 #include <config/lib.h>
 #include <stdbool.h>
 
+/**
+ * MaildirVars - Config definitions for the Maildir library
+ */
 static struct ConfigDef MaildirVars[] = {
   // clang-format off
   { "check_new", DT_BOOL, true, 0, NULL,
@@ -59,6 +62,9 @@ static struct ConfigDef MaildirVars[] = {
 };
 
 #if defined(USE_HCACHE)
+/**
+ * MaildirVarsHcache - Config definitions for the Maildir header cache
+ */
 static struct ConfigDef MaildirVarsHcache[] = {
   // clang-format off
   { "maildir_header_cache_verify", DT_BOOL, true, 0, NULL,

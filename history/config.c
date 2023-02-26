@@ -31,6 +31,9 @@
 #include <config/lib.h>
 #include <stdbool.h>
 
+/**
+ * HistoryVars - Config definitions for the command history
+ */
 static struct ConfigDef HistoryVars[] = {
   // clang-format off
   { "history", DT_NUMBER|DT_NOT_NEGATIVE, 10, 0, NULL,

@@ -31,6 +31,9 @@
 #include <config/lib.h>
 #include <stdbool.h>
 
+/**
+ * MboxVars - Config definitions for the Mbox library
+ */
 static struct ConfigDef MboxVars[] = {
   // clang-format off
   { "check_mbox_size", DT_BOOL, false, 0, NULL,
