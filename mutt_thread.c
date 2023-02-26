@@ -570,7 +570,7 @@ static struct MuttThread *find_subject(struct Mailbox *m, struct MuttThread *cur
   if (!m)
     return NULL;
 
-  struct HashElem *ptr = NULL;
+  struct HashElem *he = NULL;
   struct MuttThread *tmp = NULL, *last = NULL;
   struct ListHead subjects = STAILQ_HEAD_INITIALIZER(subjects);
   time_t date = 0;
@@ -580,10 +580,10 @@ static struct MuttThread *find_subject(struct Mailbox *m, struct MuttThread *cur
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &subjects, entries)
   {
-    for (ptr = mutt_hash_find_bucket(m->subj_hash, np->data); ptr; ptr = ptr->next)
+    for (he = mutt_hash_find_bucket(m->subj_hash, np->data); he; he = he->next)
     {
       const bool c_thread_received = cs_subset_bool(NeoMutt->sub, "thread_received");
-      tmp = ((struct Email *) ptr->data)->thread;
+      tmp = ((struct Email *) he->data)->thread;
       if ((tmp != cur) &&                  /* don't match the same message */
           !tmp->fake_thread &&             /* don't match pseudo threads */
           tmp->message->subject_changed && /* only match interesting replies */

@@ -241,10 +241,10 @@ int mutt_command_complete(struct CompletionData *cd, char *buf, size_t buflen,
       memset(cd->completed, 0, sizeof(cd->completed));
 
       struct HashElem *he = NULL;
-      struct HashElem **list = get_elem_list(NeoMutt->sub->cs);
-      for (size_t i = 0; list[i]; i++)
+      struct HashElem **he_list = get_elem_list(NeoMutt->sub->cs);
+      for (size_t i = 0; he_list[i]; i++)
       {
-        he = list[i];
+        he = he_list[i];
         const int type = DTYPE(he->type);
 
         if ((type == DT_SYNONYM) || (type & DT_DEPRECATED))
@@ -252,7 +252,7 @@ int mutt_command_complete(struct CompletionData *cd, char *buf, size_t buflen,
 
         candidate(cd, cd->user_typed, he->key.strkey, cd->completed, sizeof(cd->completed));
       }
-      FREE(&list);
+      FREE(&he_list);
 
       TAILQ_FOREACH(myv, &MyVars, entries)
       {
@@ -363,15 +363,15 @@ int mutt_label_complete(struct CompletionData *cd, char *buf, size_t buflen, int
   /* first TAB. Collect all the matches */
   if (numtabs == 1)
   {
-    struct HashElem *entry = NULL;
+    struct HashElem *he = NULL;
     struct HashWalkState state = { 0 };
 
     cd->num_matched = 0;
     mutt_str_copy(cd->user_typed, buf, sizeof(cd->user_typed));
     memset(cd->match_list, 0, cd->match_list_len);
     memset(cd->completed, 0, sizeof(cd->completed));
-    while ((entry = mutt_hash_walk(m_cur->label_hash, &state)))
-      candidate(cd, cd->user_typed, entry->key.strkey, cd->completed, sizeof(cd->completed));
+    while ((he = mutt_hash_walk(m_cur->label_hash, &state)))
+      candidate(cd, cd->user_typed, he->key.strkey, cd->completed, sizeof(cd->completed));
     matches_ensure_morespace(cd, cd->num_matched);
     qsort(cd->match_list, cd->num_matched, sizeof(char *), (sort_t) mutt_istr_cmp);
     cd->match_list[cd->num_matched++] = cd->user_typed;

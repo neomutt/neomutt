@@ -98,20 +98,20 @@ static struct HashElem *create_synonym(const struct ConfigSet *cs,
     return NULL; /* LCOV_EXCL_LINE */
 
   const char *name = (const char *) cdef->initial;
-  struct HashElem *parent = cs_get_elem(cs, name);
-  if (!parent)
+  struct HashElem *he_parent = cs_get_elem(cs, name);
+  if (!he_parent)
   {
     mutt_buffer_printf(err, _("No such variable: %s"), name);
     return NULL;
   }
 
-  struct HashElem *child = mutt_hash_typed_insert(cs->hash, cdef->name,
-                                                  cdef->type, (void *) cdef);
-  if (!child)
+  struct HashElem *he_child = mutt_hash_typed_insert(cs->hash, cdef->name,
+                                                     cdef->type, (void *) cdef);
+  if (!he_child)
     return NULL; /* LCOV_EXCL_LINE */
 
-  cdef->var = (intptr_t) parent;
-  return child;
+  cdef->var = (intptr_t) he_parent;
+  return he_child;
 }
 
 /**
@@ -298,19 +298,19 @@ bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], 
 
 /**
  * cs_inherit_variable - Create in inherited config item
- * @param cs     Config items
- * @param parent HashElem of parent config item
- * @param name   Name of account-specific config item
+ * @param cs        Config items
+ * @param he_parent HashElem of parent config item
+ * @param name      Name of account-specific config item
  * @retval ptr New HashElem representing the inherited config item
  */
 struct HashElem *cs_inherit_variable(const struct ConfigSet *cs,
-                                     struct HashElem *parent, const char *name)
+                                     struct HashElem *he_parent, const char *name)
 {
-  if (!cs || !parent)
+  if (!cs || !he_parent)
     return NULL;
 
   struct Inheritance *i = mutt_mem_calloc(1, sizeof(*i));
-  i->parent = parent;
+  i->parent = he_parent;
   i->name = mutt_str_dup(name);
 
   struct HashElem *he = mutt_hash_typed_insert(cs->hash, i->name, DT_INHERITED, i);

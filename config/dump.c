@@ -169,8 +169,8 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
 
   struct HashElem *he = NULL;
 
-  struct HashElem **list = get_elem_list(cs);
-  if (!list)
+  struct HashElem **he_list = get_elem_list(cs);
+  if (!he_list)
     return false; /* LCOV_EXCL_LINE */
 
   bool result = true;
@@ -179,11 +179,11 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
   struct Buffer initial = mutt_buffer_make(256);
   struct Buffer tmp = mutt_buffer_make(256);
 
-  for (size_t i = 0; list[i]; i++)
+  for (size_t i = 0; he_list[i]; i++)
   {
     mutt_buffer_reset(&value);
     mutt_buffer_reset(&initial);
-    he = list[i];
+    he = he_list[i];
     const int type = DTYPE(he->type);
 
     if ((type == DT_SYNONYM) && !(flags & CS_DUMP_SHOW_SYNONYMS))
@@ -254,7 +254,7 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
     dump_config_neo(cs, he, &value, &initial, flags, fp);
   }
 
-  FREE(&list);
+  FREE(&he_list);
   mutt_buffer_dealloc(&value);
   mutt_buffer_dealloc(&initial);
   mutt_buffer_dealloc(&tmp);

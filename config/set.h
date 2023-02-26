@@ -271,7 +271,7 @@ const struct ConfigSetType *cs_get_type_def(const struct ConfigSet *cs, unsigned
 
 bool             cs_register_type     (struct ConfigSet *cs, const struct ConfigSetType *cst);
 bool             cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], uint32_t flags);
-struct HashElem *cs_inherit_variable  (const struct ConfigSet *cs, struct HashElem *parent, const char *name);
+struct HashElem *cs_inherit_variable  (const struct ConfigSet *cs, struct HashElem *he_parent, const char *name);
 void             cs_uninherit_variable(const struct ConfigSet *cs, const char *name);
 
 int      cs_he_initial_get         (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *result);

@@ -787,14 +787,14 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       {
         if (reset && mutt_str_equal(buf->data, "all"))
         {
-          struct HashElem **list = get_elem_list(NeoMutt->sub->cs);
-          if (!list)
+          struct HashElem **he_list = get_elem_list(NeoMutt->sub->cs);
+          if (!he_list)
             return MUTT_CMD_ERROR;
 
-          for (size_t i = 0; list[i]; i++)
-            cs_subset_he_reset(NeoMutt->sub, list[i], NULL);
+          for (size_t i = 0; he_list[i]; i++)
+            cs_subset_he_reset(NeoMutt->sub, he_list[i], NULL);
 
-          FREE(&list);
+          FREE(&he_list);
           break;
         }
         else

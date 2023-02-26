@@ -55,11 +55,11 @@
  */
 static void label_ref_dec(struct Mailbox *m, char *label)
 {
-  struct HashElem *elem = mutt_hash_find_elem(m->label_hash, label);
-  if (!elem)
+  struct HashElem *he = mutt_hash_find_elem(m->label_hash, label);
+  if (!he)
     return;
 
-  uintptr_t count = (uintptr_t) elem->data;
+  uintptr_t count = (uintptr_t) he->data;
   if (count <= 1)
   {
     mutt_hash_delete(m->label_hash, label, NULL);
@@ -67,7 +67,7 @@ static void label_ref_dec(struct Mailbox *m, char *label)
   }
 
   count--;
-  elem->data = (void *) count;
+  he->data = (void *) count;
 }
 
 /**
@@ -79,17 +79,17 @@ static void label_ref_inc(struct Mailbox *m, char *label)
 {
   uintptr_t count;
 
-  struct HashElem *elem = mutt_hash_find_elem(m->label_hash, label);
-  if (!elem)
+  struct HashElem *he = mutt_hash_find_elem(m->label_hash, label);
+  if (!he)
   {
     count = 1;
     mutt_hash_insert(m->label_hash, label, (void *) count);
     return;
   }
 
-  count = (uintptr_t) elem->data;
+  count = (uintptr_t) he->data;
   count++;
-  elem->data = (void *) count;
+  he->data = (void *) count;
 }
 
 /**

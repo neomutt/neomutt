@@ -227,24 +227,24 @@ static void union_hash_delete(struct HashTable *table, union HashKey key, const 
 
   size_t hash = table->gen_hash(key, table->num_elems);
   struct HashElem *he = table->table[hash];
-  struct HashElem **last = &table->table[hash];
+  struct HashElem **he_last = &table->table[hash];
 
   while (he)
   {
     if (((data == he->data) || !data) && (table->cmp_key(he->key, key) == 0))
     {
-      *last = he->next;
+      *he_last = he->next;
       if (table->hdata_free)
         table->hdata_free(he->type, he->data, table->hdata);
       if (table->strdup_keys)
         FREE(&he->key.strkey);
       FREE(&he);
 
-      he = *last;
+      he = *he_last;
     }
     else
     {
-      last = &he->next;
+      he_last = &he->next;
       he = he->next;
     }
   }
@@ -460,14 +460,14 @@ void mutt_hash_free(struct HashTable **ptr)
     return;
 
   struct HashTable *table = *ptr;
-  struct HashElem *elem = NULL, *tmp = NULL;
+  struct HashElem *he = NULL, *tmp = NULL;
 
   for (size_t i = 0; i < table->num_elems; i++)
   {
-    for (elem = table->table[i]; elem;)
+    for (he = table->table[i]; he;)
     {
-      tmp = elem;
-      elem = elem->next;
+      tmp = he;
+      he = he->next;
       if (table->hdata_free && tmp->data)
         table->hdata_free(tmp->type, tmp->data, table->hdata);
       if (table->strdup_keys)

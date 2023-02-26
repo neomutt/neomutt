@@ -77,7 +77,7 @@ struct HashElem **get_elem_list(struct ConfigSet *cs)
   if (!cs)
     return NULL;
 
-  struct HashElem **list = mutt_mem_calloc(1024, sizeof(struct HashElem *));
+  struct HashElem **he_list = mutt_mem_calloc(1024, sizeof(struct HashElem *));
   size_t index = 0;
 
   struct HashWalkState walk = { 0 };
@@ -85,14 +85,14 @@ struct HashElem **get_elem_list(struct ConfigSet *cs)
 
   while ((he = mutt_hash_walk(cs->hash, &walk)))
   {
-    list[index++] = he;
+    he_list[index++] = he;
     if (index == 1022)
       break; /* LCOV_EXCL_LINE */
   }
 
-  qsort(list, index, sizeof(struct HashElem *), elem_list_sort);
+  qsort(he_list, index, sizeof(struct HashElem *), elem_list_sort);
 
-  return list;
+  return he_list;
 }
 
 /**
@@ -115,16 +115,16 @@ void cs_subset_free(struct ConfigSubset **ptr)
 
     // We don't know if any config items have been set,
     // so search for anything with a matching scope.
-    struct HashElem **list = get_elem_list(sub->cs);
-    for (size_t i = 0; list[i]; i++)
+    struct HashElem **he_list = get_elem_list(sub->cs);
+    for (size_t i = 0; he_list[i]; i++)
     {
-      const char *item = list[i]->key.strkey;
+      const char *item = he_list[i]->key.strkey;
       if (mutt_str_startswith(item, scope) != 0)
       {
         cs_uninherit_variable(sub->cs, item);
       }
     }
-    FREE(&list);
+    FREE(&he_list);
   }
 
   notify_free(&sub->notify);

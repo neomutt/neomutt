@@ -150,11 +150,11 @@ static void init_history(struct History *h)
  */
 static int dup_hash_dec(struct HashTable *dup_hash, char *str)
 {
-  struct HashElem *elem = mutt_hash_find_elem(dup_hash, str);
-  if (!elem)
+  struct HashElem *he = mutt_hash_find_elem(dup_hash, str);
+  if (!he)
     return -1;
 
-  uintptr_t count = (uintptr_t) elem->data;
+  uintptr_t count = (uintptr_t) he->data;
   if (count <= 1)
   {
     mutt_hash_delete(dup_hash, str, NULL);
@@ -162,7 +162,7 @@ static int dup_hash_dec(struct HashTable *dup_hash, char *str)
   }
 
   count--;
-  elem->data = (void *) count;
+  he->data = (void *) count;
   return count;
 }
 
@@ -178,17 +178,17 @@ static int dup_hash_inc(struct HashTable *dup_hash, char *str)
 {
   uintptr_t count;
 
-  struct HashElem *elem = mutt_hash_find_elem(dup_hash, str);
-  if (!elem)
+  struct HashElem *he = mutt_hash_find_elem(dup_hash, str);
+  if (!he)
   {
     count = 1;
     mutt_hash_insert(dup_hash, str, (void *) count);
     return count;
   }
 
-  count = (uintptr_t) elem->data;
+  count = (uintptr_t) he->data;
   count++;
-  elem->data = (void *) count;
+  he->data = (void *) count;
   return count;
 }
 
