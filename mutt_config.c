@@ -164,7 +164,7 @@ static struct ConfigDef MainVars[] = {
   { "assumed_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
     "If a message is missing a character set, assume this character set"
   },
-  { "attach_format", DT_STRING|DT_NOT_EMPTY, IP "%u%D%I %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] ", 0, NULL,
+  { "attach_format", DT_STRING|DT_NOT_EMPTY, IP "%u%D%I %t%4n %T%d %> [%.7m/%.10M, %.6e%?C?, %C?, %s] ", 0, NULL,
     "printf-like format string for the attachment menu"
   },
   { "attach_save_dir", DT_PATH|DT_PATH_DIR, IP "./", 0, NULL,
