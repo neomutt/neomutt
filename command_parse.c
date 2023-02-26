@@ -828,7 +828,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       query = true;
       s->dptr++;
     }
-    else if (*s->dptr == '+' || *s->dptr == '-')
+    else if ((*s->dptr == '+') || (*s->dptr == '-'))
     {
       if (prefix)
       {

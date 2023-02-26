@@ -741,7 +741,7 @@ const char *mutt_fqdn(bool may_hide_host, const struct ConfigSubset *sub)
  *
  * @note The caller should free the string
  */
-static char *gen_msgid()
+static char *gen_msgid(void)
 {
   const int ID_LEFT_LEN = 50;
   const int ID_RIGHT_LEN = 12;
