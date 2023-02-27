@@ -152,8 +152,8 @@ void simple_color_reset(enum ColorId cid)
   color_debug(LL_DEBUG5, "NT_COLOR_RESET: %s\n", buf->data);
   mutt_buffer_pool_release(&buf);
 
+  attr_color_clear(ac);
+
   struct EventColor ev_c = { cid, ac };
   notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
-
-  attr_color_clear(ac);
 }

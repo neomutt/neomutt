@@ -108,9 +108,9 @@ static struct AttrColor *merged_colors_find(int fg, int bg, int attrs)
  */
 struct AttrColor *merged_color_overlay(struct AttrColor *base, struct AttrColor *over)
 {
-  if (!over || (!over->curses_color && (over->attrs == 0)))
+  if (!attr_color_is_set(over))
     return base;
-  if (!base || (!base->curses_color && (base->attrs == 0)))
+  if (!attr_color_is_set(base))
     return over;
 
   struct CursesColor *cc_base = base->curses_color;
