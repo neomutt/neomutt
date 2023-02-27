@@ -33,7 +33,7 @@ jobs:
           language: c++
 
       - name: Upload Crash
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1.2
         if: failure() && steps.build.outcome == 'success'
         with:
           name: ${{ matrix.sanitizer }}-artifacts

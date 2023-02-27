@@ -21,20 +21,20 @@ jobs:
         sudo apt install -y gettext
 
     - name: Checkout NeoMutt
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3.3.0
       with:
         repository: neomutt/neomutt
         path: neomutt
         fetch-depth: 3
 
     - name: Checkout Translate Scripts
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3.3.0
       with:
         repository: neomutt/action-translate
         path: scripts
 
     - name: Checkout Website
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3.3.0
       with:
         repository: neomutt/neomutt.github.io
         path: website

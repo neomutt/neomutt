@@ -28,20 +28,20 @@ jobs:
         git config --global user.name "Richard Russon (DEPLOY)"
 
     - name: Checkout NeoMutt
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3.3.0
       with:
         repository: neomutt/neomutt
         path: neomutt
         fetch-depth: 0
 
     - name: Checkout Doxygen Scripts
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3.3.0
       with:
         repository: neomutt/action-doxygen
         path: action-doxygen
 
     - name: Checkout Code Docs
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3.3.0
       with:
         repository: neomutt/code
         path: code

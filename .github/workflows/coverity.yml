@@ -24,7 +24,7 @@ jobs:
         [ -n "${{ secrets.COVERITY_SCAN_TOKEN }}" ]
 
     - name: Checkout Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3.3.0
 
     - name: Configure NeoMutt
       run: ./configure $OPTIONS
@@ -44,7 +44,7 @@ jobs:
         sed -i '/TOKEN=/d' cov-int/build-log.txt
 
     - name: Upload build log
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.2
       with:
         name: build-log
         path: cov-int/build-log.txt
