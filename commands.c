@@ -140,7 +140,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   }
 
   mutt_buffer_reset(buf);
-  mutt_addrlist_write(&al, buf->data, buf->dsize, true);
+  mutt_addrlist_write(&al, buf, true);
 
 #define EXTRA_SPACE (15 + 7 + 2)
   scratch = mutt_buffer_pool_get();
@@ -696,7 +696,6 @@ done:
 void mutt_display_address(struct Envelope *env)
 {
   const char *pfx = NULL;
-  char buf[128] = { 0 };
 
   struct AddressList *al = mutt_get_address(env, &pfx);
   if (!al)
@@ -706,9 +705,10 @@ void mutt_display_address(struct Envelope *env)
    * That is intentional, so the user has an opportunity to copy &
    * paste the on-the-wire form of the address to other, IDN-unable
    * software.  */
-  buf[0] = '\0';
-  mutt_addrlist_write(al, buf, sizeof(buf), false);
-  mutt_message("%s: %s", pfx, buf);
+  struct Buffer *buf = mutt_buffer_pool_get();
+  mutt_addrlist_write(al, buf, false);
+  mutt_message("%s: %s", pfx, mutt_buffer_string(buf));
+  mutt_buffer_pool_release(&buf);
 }
 
 /**

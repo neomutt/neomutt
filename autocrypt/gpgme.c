@@ -159,12 +159,12 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
   gpgme_ctx_t ctx = NULL;
   gpgme_genkey_result_t keyresult = NULL;
   gpgme_key_t primary_key = NULL;
-  char buf[1024] = { 0 };
+  struct Buffer *buf = mutt_buffer_pool_get();
 
   /* GPGME says addresses should not be in idna form */
   struct Address *copy = mutt_addr_copy(addr);
   mutt_addr_to_local(copy);
-  mutt_addr_write(buf, sizeof(buf), copy, false);
+  mutt_addr_write(buf, copy, false);
   mutt_addr_free(&copy);
 
   if (create_gpgme_context(&ctx))
@@ -175,7 +175,8 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
   mutt_message(_("Generating autocrypt key..."));
 
   /* Primary key */
-  gpgme_error_t err = gpgme_op_createkey(ctx, buf, "ed25519", 0, 0, NULL,
+  gpgme_error_t err = gpgme_op_createkey(ctx, mutt_buffer_string(buf),
+                                         "ed25519", 0, 0, NULL,
                                          GPGME_CREATE_NOPASSWD | GPGME_CREATE_FORCE |
                                              GPGME_CREATE_NOEXPIRE);
   if (err)
@@ -215,6 +216,7 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
 cleanup:
   gpgme_key_unref(primary_key);
   gpgme_release(ctx);
+  mutt_buffer_pool_release(&buf);
   return rc;
 }
 

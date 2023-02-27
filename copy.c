@@ -33,6 +33,7 @@
 #include <locale.h>
 #include <stdbool.h>
 #include <string.h>
+#include "mutt/buffer.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
@@ -1028,77 +1029,6 @@ static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, const c
 }
 
 /**
- * format_address_header - Write address headers to a buffer
- * @param[out] h  Array of header strings
- * @param[in]  al AddressList
- *
- * This function is the equivalent of mutt_addrlist_write_file(), but writes to
- * a buffer instead of writing to a stream.  mutt_addrlist_write_file could be
- * re-used if we wouldn't store all the decoded headers in a huge array, first.
- *
- * TODO fix that.
- */
-static void format_address_header(char **h, struct AddressList *al)
-{
-  char buf[8192] = { 0 };
-  char cbuf[256] = { 0 };
-  char c2buf[256];
-  char *p = NULL;
-  size_t linelen, buflen, plen;
-
-  linelen = mutt_str_len(*h);
-  plen = linelen;
-  buflen = linelen + 3;
-
-  mutt_mem_realloc(h, buflen);
-  struct Address *first = TAILQ_FIRST(al);
-  struct Address *a = NULL;
-  TAILQ_FOREACH(a, al, entries)
-  {
-    *buf = '\0';
-    *cbuf = '\0';
-    *c2buf = '\0';
-    const size_t l = mutt_addr_write(buf, sizeof(buf), a, false);
-
-    if (a != first && (linelen + l > 74))
-    {
-      strcpy(cbuf, "\n\t");
-      linelen = l + 8;
-    }
-    else
-    {
-      if (a->mailbox)
-      {
-        strcpy(cbuf, " ");
-        linelen++;
-      }
-      linelen += l;
-    }
-    if (!a->group && TAILQ_NEXT(a, entries) && TAILQ_NEXT(a, entries)->mailbox)
-    {
-      linelen++;
-      buflen++;
-      strcpy(c2buf, ",");
-    }
-
-    const size_t cbuflen = mutt_str_len(cbuf);
-    const size_t c2buflen = mutt_str_len(c2buf);
-    buflen += l + cbuflen + c2buflen;
-    mutt_mem_realloc(h, buflen);
-    p = *h;
-    strcat(p + plen, cbuf);
-    plen += cbuflen;
-    strcat(p + plen, buf);
-    plen += l;
-    strcat(p + plen, c2buf);
-    plen += c2buflen;
-  }
-
-  /* Space for this was allocated in the beginning of this function. */
-  strcat(p + plen, "\n");
-}
-
-/**
  * address_header_decode - Parse an email's headers
  * @param[out] h Array of header strings
  * @retval 0 Success
@@ -1187,9 +1117,11 @@ static int address_header_decode(char **h)
     *h = mutt_str_dup(s);
   else
   {
-    *h = mutt_mem_calloc(1, l + 2);
-    mutt_str_copy(*h, s, l + 1);
-    format_address_header(h, &al);
+    struct Buffer buf = { 0 };
+    (*h)[l - 1] = '\0';
+    mutt_addrlist_write_wrap(&al, &buf, *h);
+    mutt_buffer_addch(&buf, '\n');
+    *h = buf.data;
   }
 
   mutt_addrlist_clear(&al);

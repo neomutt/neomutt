@@ -232,7 +232,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
 
   mutt_buffer_reset(buf);
   mutt_buffer_alloc(buf, 8192);
-  mutt_addrlist_write(&al, buf->data, buf->dsize, true);
+  mutt_addrlist_write(&al, buf, true);
 
 #define EXTRA_SPACE (15 + 7 + 2)
   /* See commands.c.  */

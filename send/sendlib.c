@@ -868,8 +868,7 @@ static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
     char *msgid_str = gen_msgid();
     fprintf(fp_tmp, "Resent-Message-ID: %s\n", msgid_str);
     FREE(&msgid_str);
-    fputs("Resent-To: ", fp_tmp);
-    mutt_addrlist_write_file(to, fp_tmp, 11, false);
+    mutt_addrlist_write_file(to, fp_tmp, "Resent-To");
     mutt_copy_header(fp, e, fp_tmp, chflags, NULL, 0);
     fputc('\n', fp_tmp);
     mutt_file_copy_bytes(fp, fp_tmp, e->body->length);
@@ -915,10 +914,8 @@ int mutt_bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
     return -1;
 
   const char *fqdn = mutt_fqdn(true, sub);
-  char resent_from[256] = { 0 };
   char *err = NULL;
 
-  resent_from[0] = '\0';
   struct Address *from = mutt_default_from(sub);
   struct AddressList from_list = TAILQ_HEAD_INITIALIZER(from_list);
   mutt_addrlist_append(&from_list, from);
@@ -944,7 +941,8 @@ int mutt_bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
     mutt_addrlist_clear(&from_list);
     return -1;
   }
-  mutt_addrlist_write(&from_list, resent_from, sizeof(resent_from), false);
+  struct Buffer *resent_from = mutt_buffer_pool_get();
+  mutt_addrlist_write(&from_list, resent_from, false);
 
 #ifdef USE_NNTP
   OptNewsSend = false;
@@ -956,10 +954,11 @@ int mutt_bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
   struct AddressList resent_to = TAILQ_HEAD_INITIALIZER(resent_to);
   mutt_addrlist_copy(&resent_to, to, false);
   rfc2047_encode_addrlist(&resent_to, "Resent-To");
-  int rc = bounce_message(fp, m, e, &resent_to, resent_from, &from_list, sub);
+  int rc = bounce_message(fp, m, e, &resent_to, mutt_buffer_string(resent_from),
+                          &from_list, sub);
   mutt_addrlist_clear(&resent_to);
   mutt_addrlist_clear(&from_list);
-
+  mutt_buffer_pool_release(&resent_from);
   return rc;
 }
 

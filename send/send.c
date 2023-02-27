@@ -187,7 +187,7 @@ int mutt_edit_address(struct AddressList *al, const char *field, bool expand_ali
   {
     mutt_addrlist_to_local(al);
     mutt_buffer_reset(buf);
-    mutt_addrlist_write(al, buf->data, buf->dsize, false);
+    mutt_addrlist_write(al, buf, false);
     if (mutt_buffer_get_field(field, buf, MUTT_COMP_ALIAS, false, NULL, NULL, NULL) != 0)
     {
       rc = -1;

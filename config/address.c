@@ -115,27 +115,22 @@ static int address_string_set(const struct ConfigSet *cs, void *var, struct Conf
 static int address_string_get(const struct ConfigSet *cs, void *var,
                               const struct ConfigDef *cdef, struct Buffer *result)
 {
-  char tmp[8192] = { 0 };
-  const char *str = NULL;
-
   if (var)
   {
     struct Address *a = *(struct Address **) var;
     if (a)
     {
-      mutt_addr_write(tmp, sizeof(tmp), a, false);
-      str = tmp;
+      mutt_addr_write(result, a, false);
     }
   }
   else
   {
-    str = (char *) cdef->initial;
+    mutt_buffer_addstr(result, (char *) cdef->initial);
   }
 
-  if (!str)
+  if (mutt_buffer_is_empty(result))
     return CSR_SUCCESS | CSR_SUC_EMPTY; /* empty string */
 
-  mutt_buffer_addstr(result, str);
   return CSR_SUCCESS;
 }
 

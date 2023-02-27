@@ -35,18 +35,18 @@ void test_mutt_addr_write(void)
 
   {
     struct Address addr = { 0 };
-    mutt_addr_write(NULL, 32, &addr, false);
+    mutt_addr_write(NULL, &addr, false);
     TEST_CHECK_(1, "mutt_addr_write(NULL, 32, &addr, false)");
   }
 
   {
-    char buf[32] = { 0 };
-    mutt_addr_write(buf, sizeof(buf), NULL, false);
+    struct Buffer buf = { 0 };
+    mutt_addr_write(&buf, NULL, false);
     TEST_CHECK_(1, "mutt_addr_write(buf, sizeof(buf), NULL, false)");
   }
 
   { /* integration */
-    char buf[256] = { 0 };
+    struct Buffer *buf = mutt_buffer_pool_get();
     char per[64] = "bobby bob";
     char mbx[64] = "bob@bobsdomain";
 
@@ -58,11 +58,12 @@ void test_mutt_addr_write(void)
       .intl_checked = 0,
     };
 
-    size_t len = mutt_addr_write(buf, sizeof(buf), &addr, false);
+    size_t len = mutt_addr_write(buf, &addr, false);
 
     const char *expected = "bobby bob <bob@bobsdomain>";
 
-    TEST_CHECK_STR_EQ(expected, buf);
+    TEST_CHECK_STR_EQ(expected, mutt_buffer_string(buf));
     TEST_CHECK(len == strlen(expected));
+    mutt_buffer_pool_release(&buf);
   }
 }

@@ -62,6 +62,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "private.h"
+#include "mutt/buffer.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
@@ -209,25 +210,23 @@ static void init_header_padding(void)
 /**
  * calc_address - Calculate how many rows an AddressList will need
  * @param[in]  al    Address List
- * @param[out] slist String list
  * @param[in]  cols Screen columns available
  * @param[out] srows Rows needed
  * @retval num Rows needed
  *
  * @note Number of rows is capped at #MAX_ADDR_ROWS
  */
-static int calc_address(struct AddressList *al, struct ListHead *slist,
-                        short cols, short *srows)
+static int calc_address(struct AddressList *al, short cols, short *srows)
 {
-  mutt_list_free(slist);
-  mutt_addrlist_write_list(al, slist);
+  struct ListHead slist = STAILQ_HEAD_INITIALIZER(slist);
+  mutt_addrlist_write_list(al, &slist);
 
   int rows = 1;
   int addr_len;
   int width_left = cols;
   struct ListNode *next = NULL;
   struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, slist, entries)
+  STAILQ_FOREACH(np, &slist, entries)
   {
     next = STAILQ_NEXT(np, entries);
     addr_len = mutt_strwidth(np->data);
@@ -248,6 +247,8 @@ static int calc_address(struct AddressList *al, struct ListHead *slist,
     if (addr_len < width_left)
       width_left -= addr_len;
   }
+
+  mutt_list_free(&slist);
 
   *srows = MIN(rows, MAX_ADDR_ROWS);
   return *srows;
@@ -324,9 +325,9 @@ static int calc_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wdat
   else
 #endif
   {
-    rows += calc_address(&env->to, &wdata->to_list, cols, &wdata->to_rows);
-    rows += calc_address(&env->cc, &wdata->cc_list, cols, &wdata->cc_rows);
-    rows += calc_address(&env->bcc, &wdata->bcc_list, cols, &wdata->bcc_rows);
+    rows += calc_address(&env->to, cols, &wdata->to_rows);
+    rows += calc_address(&env->cc, cols, &wdata->cc_rows);
+    rows += calc_address(&env->bcc, cols, &wdata->bcc_rows);
   }
   rows += calc_security(e, &wdata->sec_rows, wdata->sub);
   const bool c_compose_show_user_headers = cs_subset_bool(wdata->sub, "compose_show_user_headers");
@@ -547,28 +548,45 @@ static int draw_envelope_addr(int field, struct AddressList *al,
   draw_header(win, row, field);
 
   struct ListHead list = STAILQ_HEAD_INITIALIZER(list);
-  int count = mutt_addrlist_write_list(al, &list);
+  int count = mutt_addrlist_count_recips(al);
 
   int lines_used = 1;
   int width_left = win->state.cols - MaxHeaderWidth;
   char more[32] = { 0 };
   int more_len = 0;
 
+  struct Buffer *buf = mutt_buffer_pool_get();
+  bool in_group = false;
   char *sep = NULL;
-  struct ListNode *next = NULL;
-  struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, &list, entries)
+  struct Address *addr = NULL;
+  TAILQ_FOREACH(addr, al, entries)
   {
-    next = STAILQ_NEXT(np, entries);
-    int addr_len = mutt_strwidth(np->data);
-    if (next)
+    struct Address *next = TAILQ_NEXT(addr, entries);
+
+    if (addr->group)
     {
-      sep = ", ";
-      addr_len += 2;
+      in_group = true;
     }
-    else
+
+    mutt_buffer_reset(buf);
+    mutt_addr_write(buf, addr, true);
+    size_t addr_len = mutt_buffer_len(buf);
+
+    sep = "";
+    if (!addr->group)
     {
-      sep = "";
+      // group terminator
+      if (in_group && next && !next->mailbox && !next->personal)
+      {
+        sep = ";";
+        addr_len += 1;
+        in_group = false;
+      }
+      else if (next)
+      {
+        sep = ", ";
+        addr_len += 2;
+      }
     }
 
     count--;
@@ -578,23 +596,23 @@ static int draw_envelope_addr(int field, struct AddressList *al,
     mutt_debug(LL_DEBUG3, "text: '%s'  len: %d\n", more, more_len);
 
     int reserve = ((count > 0) && (lines_used == max_lines)) ? more_len : 0;
-    mutt_debug(LL_DEBUG3, "processing: %s (al:%d, wl:%d, r:%d, lu:%d)\n",
-               np->data, addr_len, width_left, reserve, lines_used);
+    mutt_debug(LL_DEBUG3, "processing: %s (al:%d, wl:%d, r:%d, lu:%d)\n", buf,
+               addr_len, width_left, reserve, lines_used);
     if (addr_len >= (width_left - reserve))
     {
       mutt_debug(LL_DEBUG3, "not enough space\n");
       if (lines_used == max_lines)
       {
         mutt_debug(LL_DEBUG3, "no more lines\n");
-        mutt_debug(LL_DEBUG3, "truncating: %s\n", np->data);
-        mutt_paddstr(win, width_left, np->data);
+        mutt_debug(LL_DEBUG3, "truncating: %s\n", buf);
+        mutt_paddstr(win, width_left, mutt_buffer_string(buf));
         break;
       }
 
       if (width_left == (win->state.cols - MaxHeaderWidth))
       {
-        mutt_debug(LL_DEBUG3, "couldn't print: %s\n", np->data);
-        mutt_paddstr(win, width_left, np->data);
+        mutt_debug(LL_DEBUG3, "couldn't print: %s\n", buf);
+        mutt_paddstr(win, width_left, mutt_buffer_string(buf));
         break;
       }
 
@@ -609,8 +627,8 @@ static int draw_envelope_addr(int field, struct AddressList *al,
 
     if (addr_len < width_left)
     {
-      mutt_debug(LL_DEBUG3, "space for: %s\n", np->data);
-      mutt_window_addstr(win, np->data);
+      mutt_debug(LL_DEBUG3, "space for: %s\n", buf);
+      mutt_window_addstr(win, mutt_buffer_string(buf));
       mutt_window_addstr(win, sep);
       width_left -= addr_len;
     }
@@ -618,6 +636,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
     mutt_debug(LL_DEBUG3, "%ld lines remaining\n", max_lines - lines_used);
   }
   mutt_list_free(&list);
+  mutt_buffer_pool_release(&buf);
 
   if (count > 0)
   {

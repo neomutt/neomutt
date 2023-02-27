@@ -43,14 +43,16 @@ static struct ConfigDef Vars[] = {
 
 static void check_addrlist(struct AddressList *list, const char *const exp[], size_t num)
 {
-  char parsed[1024] = { 0 };
-  if (mutt_addrlist_write(list, parsed, sizeof(parsed), false) == 0)
+  struct Buffer *parsed = mutt_buffer_pool_get();
+  if (mutt_addrlist_write(list, parsed, false) == 0)
   {
     TEST_MSG("Expected: parsed %s (...)", exp[0]);
     TEST_MSG("Actual  : not parsed");
   }
 
-  char *pp = parsed;
+  char *pp = mutt_buffer_strdup(parsed);
+  char *orig = pp;
+  mutt_buffer_pool_release(&parsed);
   for (size_t i = 0; i < num; ++i)
   {
     char *tok = mutt_str_skip_whitespace(mutt_str_sep(&pp, ","));
@@ -60,6 +62,7 @@ static void check_addrlist(struct AddressList *list, const char *const exp[], si
       TEST_MSG("Actual  : %s", tok);
     }
   }
+  FREE(&orig);
 }
 
 void test_mutt_parse_mailto(void)

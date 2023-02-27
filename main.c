@@ -871,7 +871,10 @@ main
       {
         /* output in machine-readable form */
         mutt_addrlist_to_intl(al, NULL);
-        mutt_addrlist_write_file(al, stdout, 0, false);
+        struct Buffer *buf = mutt_buffer_pool_get();
+        mutt_addrlist_write(al, buf, false);
+        printf("%s\n", mutt_buffer_string(buf));
+        mutt_buffer_pool_release(&buf);
       }
       else
       {

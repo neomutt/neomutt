@@ -159,8 +159,12 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
   switch (op)
   {
     case 'a':
+    {
+      struct Buffer *tmpbuf = mutt_buffer_pool_get();
       tmp[0] = '<';
-      mutt_addrlist_write(&alias->addr, tmp + 1, sizeof(tmp) - 1, true);
+      mutt_addrlist_write(&alias->addr, tmpbuf, true);
+      mutt_str_copy(tmp + 1, mutt_buffer_string(tmpbuf), sizeof(tmp) - 1);
+      mutt_buffer_pool_release(&tmpbuf);
       const size_t len = strlen(tmp);
       if (len < (sizeof(tmp) - 1))
       {
@@ -169,6 +173,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
       }
       mutt_format_s(buf, buflen, prec, tmp);
       break;
+    }
     case 'c':
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
       snprintf(buf, buflen, fmt, av->num + 1);
@@ -464,7 +469,7 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
     {
       mutt_addrlist_to_local(&addr);
       mutt_buffer_reset(buf);
-      mutt_addrlist_write(&addr, buf->data, buf->dsize, false);
+      mutt_addrlist_write(&addr, buf, false);
       mutt_addrlist_clear(&addr);
       mutt_clear_error();
     }
@@ -483,36 +488,25 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
 
   mutt_buffer_reset(buf);
   mutt_buffer_alloc(buf, 8192);
-  size_t curpos = 0;
-
+  bool first = true;
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, &mdata.ava)
   {
     if (!avp->is_tagged)
       continue;
 
-    if (curpos == 0)
+    if (!first)
     {
-      struct AddressList al_copy = TAILQ_HEAD_INITIALIZER(al_copy);
-      if (alias_to_addrlist(&al_copy, avp->alias))
-      {
-        mutt_addrlist_to_local(&al_copy);
-        mutt_addrlist_write(&al_copy, buf->data, buf->dsize, false);
-        curpos = mutt_buffer_len(buf);
-        mutt_addrlist_clear(&al_copy);
-      }
+      mutt_buffer_addstr(buf, ", ");
     }
-    else if ((curpos + 2) < buf->dsize)
+
+    first = false;
+    struct AddressList al_copy = TAILQ_HEAD_INITIALIZER(al_copy);
+    if (alias_to_addrlist(&al_copy, avp->alias))
     {
-      struct AddressList al_copy = TAILQ_HEAD_INITIALIZER(al_copy);
-      if (alias_to_addrlist(&al_copy, avp->alias))
-      {
-        mutt_addrlist_to_local(&al_copy);
-        mutt_buffer_addstr(buf, ", ");
-        mutt_addrlist_write(&al_copy, buf->data + curpos + 2, buf->dsize - curpos - 2, false);
-        curpos = mutt_buffer_len(buf);
-        mutt_addrlist_clear(&al_copy);
-      }
+      mutt_addrlist_to_local(&al_copy);
+      mutt_addrlist_write(&al_copy, buf, false);
+      mutt_addrlist_clear(&al_copy);
     }
   }
 

@@ -114,7 +114,7 @@ static bool edit_address_list(enum HeaderField field, struct AddressList *al)
   mutt_buffer_alloc(new_list, 8192);
 
   mutt_addrlist_to_local(al);
-  mutt_addrlist_write(al, new_list->data, new_list->dsize, false);
+  mutt_addrlist_write(al, new_list, false);
   mutt_buffer_fix_dptr(new_list);
   mutt_buffer_copy(old_list, new_list);
   if (mutt_buffer_get_field(_(Prompts[field]), new_list, MUTT_COMP_ALIAS, false,

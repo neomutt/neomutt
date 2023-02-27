@@ -23,8 +23,42 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include "address/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
+#include "test_common.h"
+
+static struct ConfigDef Vars[] = {
+  // clang-format off
+  { "charset", DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, 0, 0, NULL, },
+  { "idn_decode", DT_BOOL,                               0, 0, NULL, },
+  { NULL },
+  // clang-format on
+};
 
 void test_mutt_addrlist_write_list(void)
 {
-  // size_t mutt_addrlist_write_list(const struct AddressList *al, struct ListHead *list);
+  {
+    NeoMutt = test_neomutt_create();
+    cs_register_variables(NeoMutt->sub->cs, Vars, 0);
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    const char in[] = "some-group: first@example.com,second@example.com; John Doe <john@doe.org>, \"Foo J. Bar\" <foo-j-bar@baz.com>";
+    mutt_addrlist_parse(&al, in);
+    struct ListHead l = STAILQ_HEAD_INITIALIZER(l);
+    const size_t written = mutt_addrlist_write_list(&al, &l);
+    TEST_CHECK(written == 5);
+
+    char out[1024] = { 0 };
+    size_t off = 0;
+    struct ListNode *ln = NULL;
+    STAILQ_FOREACH(ln, &l, entries)
+    {
+      off += snprintf(out + off, sizeof(out) - off, "|%s|", ln->data);
+    }
+    TEST_CHECK_STR_EQ("|some-group: ||first@example.com||second@example.com||John Doe <john@doe.org>||\"Foo J. Bar\" <foo-j-bar@baz.com>|",
+                      out);
+    mutt_addrlist_clear(&al);
+    mutt_list_free(&l);
+    test_neomutt_destroy(&NeoMutt);
+  }
 }

@@ -86,7 +86,7 @@ struct Address *mutt_addr_new        (void);
 bool            mutt_addr_to_intl    (struct Address *a);
 bool            mutt_addr_to_local   (struct Address *a);
 bool            mutt_addr_uses_unicode(const char *str);
-size_t          mutt_addr_write      (char *buf, size_t buflen, struct Address *addr, bool display);
+size_t          mutt_addr_write      (struct Buffer *buf, struct Address *addr, bool display);
 
 /* Functions that work on struct AddressList */
 void   mutt_addrlist_append      (struct AddressList *al, struct Address *a);
@@ -105,8 +105,9 @@ bool   mutt_addrlist_search      (const struct AddressList *haystack, const stru
 int    mutt_addrlist_to_intl     (struct AddressList *al, char **err);
 int    mutt_addrlist_to_local    (struct AddressList *al);
 bool   mutt_addrlist_uses_unicode(const struct AddressList *al);
-size_t mutt_addrlist_write       (const struct AddressList *al, char *buf, size_t buflen, bool display);
-void   mutt_addrlist_write_file  (const struct AddressList *addr, FILE *fp, int start_col, bool display);
+size_t mutt_addrlist_write       (const struct AddressList *al, struct Buffer *buf, bool display);
+size_t mutt_addrlist_write_wrap  (const struct AddressList *al, struct Buffer *buf, const char *header);
+void   mutt_addrlist_write_file  (const struct AddressList *al, FILE *fp,           const char *header);
 size_t mutt_addrlist_write_list  (const struct AddressList *al, struct ListHead *list);
 
 #endif /* MUTT_ADDRESS_ADDRESS_H */

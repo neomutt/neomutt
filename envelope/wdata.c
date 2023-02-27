@@ -38,13 +38,6 @@
  */
 void env_wdata_free(struct MuttWindow *win, void **ptr)
 {
-  struct EnvelopeWindowData *wdata = *ptr;
-
-  // Don't free email, env, fcc, sub -- we don't own them
-  mutt_list_free(&wdata->to_list);
-  mutt_list_free(&wdata->cc_list);
-  mutt_list_free(&wdata->bcc_list);
-
   FREE(ptr);
 }
 
@@ -55,10 +48,6 @@ void env_wdata_free(struct MuttWindow *win, void **ptr)
 struct EnvelopeWindowData *env_wdata_new(void)
 {
   struct EnvelopeWindowData *wdata = mutt_mem_calloc(1, sizeof(struct EnvelopeWindowData));
-
-  STAILQ_INIT(&wdata->to_list);
-  STAILQ_INIT(&wdata->cc_list);
-  STAILQ_INIT(&wdata->bcc_list);
 
 #ifdef USE_AUTOCRYPT
   wdata->autocrypt_rec = AUTOCRYPT_REC_OFF;

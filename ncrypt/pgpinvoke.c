@@ -434,7 +434,6 @@ void pgp_class_invoke_import(const char *fname)
  */
 void pgp_class_invoke_getkeys(struct Address *addr)
 {
-  char tmp[1024] = { 0 };
   char cmd[STR_COMMAND] = { 0 };
 
   char *personal = NULL;
@@ -449,10 +448,11 @@ void pgp_class_invoke_getkeys(struct Address *addr)
   personal = addr->personal;
   addr->personal = NULL;
 
-  *tmp = '\0';
+  struct Buffer *tmp = mutt_buffer_pool_get();
   mutt_addr_to_local(addr);
-  mutt_addr_write(tmp, sizeof(tmp), addr, false);
-  mutt_buffer_quote_filename(buf, tmp, true);
+  mutt_addr_write(tmp, addr, false);
+  mutt_buffer_quote_filename(buf, mutt_buffer_string(tmp), true);
+  mutt_buffer_pool_release(&tmp);
 
   addr->personal = personal;
 

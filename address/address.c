@@ -1014,7 +1014,6 @@ const char *mutt_addr_for_display(const struct Address *a)
 /**
  * mutt_addr_write - Write a single Address to a buffer
  * @param buf     Buffer for the Address
- * @param buflen  Length of the buffer
  * @param addr    Address to display
  * @param display This address will be displayed to the user
  * @retval num    Length of the string written to buf
@@ -1022,174 +1021,169 @@ const char *mutt_addr_for_display(const struct Address *a)
  * If 'display' is set, then it doesn't matter if the transformation isn't
  * reversible.
  */
-size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display)
+size_t mutt_addr_write(struct Buffer *buf, struct Address *addr, bool display)
 {
-  if (!buf || (buflen == 0) || !addr)
+  if (!buf || !addr || (!addr->personal && !addr->mailbox))
+  {
     return 0;
+  }
 
-  if (!addr->personal && !addr->mailbox)
-    return 0;
-
-  size_t len;
-  char *pbuf = buf;
-  char *pc = NULL;
-
-  buflen--; /* save room for the terminal nul */
+  const size_t initial_len = mutt_buffer_len(buf);
 
   if (addr->personal)
   {
     if (strpbrk(addr->personal, AddressSpecials))
     {
-      if (buflen == 0)
-        goto done;
-      *pbuf++ = '"';
-      buflen--;
-      for (pc = addr->personal; *pc && (buflen > 0); pc++)
+      mutt_buffer_addch(buf, '"');
+      for (const char *pc = addr->personal; *pc; pc++)
       {
         if ((*pc == '"') || (*pc == '\\'))
         {
-          *pbuf++ = '\\';
-          buflen--;
+          mutt_buffer_addch(buf, '\\');
         }
-        if (buflen == 0)
-          goto done;
-        *pbuf++ = *pc;
-        buflen--;
+        mutt_buffer_addch(buf, *pc);
       }
-      if (buflen == 0)
-        goto done;
-      *pbuf++ = '"';
-      buflen--;
+      mutt_buffer_addch(buf, '"');
     }
     else
     {
-      if (buflen == 0)
-        goto done;
-      len = mutt_str_copy(pbuf, addr->personal, buflen + 1);
-      pbuf += len;
-      buflen -= len;
+      mutt_buffer_addstr(buf, addr->personal);
     }
 
-    if (buflen == 0)
-      goto done;
-    *pbuf++ = ' ';
-    buflen--;
+    mutt_buffer_addch(buf, ' ');
   }
 
   if (addr->personal || (addr->mailbox && (*addr->mailbox == '@')))
   {
-    if (buflen == 0)
-      goto done;
-    *pbuf++ = '<';
-    buflen--;
+    mutt_buffer_addch(buf, '<');
   }
 
   if (addr->mailbox)
   {
-    if (buflen == 0)
-      goto done;
-    if (mutt_str_equal(addr->mailbox, "@"))
-    {
-      *pbuf = '\0';
-    }
-    else
+    if (!mutt_str_equal(addr->mailbox, "@"))
     {
       const char *a = display ? mutt_addr_for_display(addr) : addr->mailbox;
-      len = mutt_str_copy(pbuf, a, buflen + 1);
-      pbuf += len;
-      buflen -= len;
+      mutt_buffer_addstr(buf, a);
     }
 
     if (addr->personal || (addr->mailbox && (*addr->mailbox == '@')))
     {
-      if (buflen == 0)
-        goto done;
-      *pbuf++ = '>';
-      buflen--;
+      mutt_buffer_addch(buf, '>');
     }
 
     if (addr->group)
     {
-      if (buflen == 0)
-        goto done;
-      *pbuf++ = ':';
-      buflen--;
-      if (buflen == 0)
-        goto done;
-      *pbuf++ = ' ';
-      buflen--;
+      mutt_buffer_addstr(buf, ": ");
     }
   }
   else
   {
-    if (buflen == 0)
-      goto done;
-    *pbuf++ = ';';
+    mutt_buffer_addch(buf, ';');
   }
-done:
-  /* no need to check for length here since we already save space at the
-   * beginning of this routine */
-  *pbuf = '\0';
 
-  return pbuf - buf;
+  return mutt_buffer_len(buf) - initial_len;
 }
 
 /**
- * mutt_addrlist_write - Write an Address to a buffer
- * @param al      AddressList to display
- * @param buf     Buffer for the Address
- * @param buflen  Length of the buffer
- * @param display This address will be displayed to the user
- * @retval num    Length of the string written to buf
+ * addrlist_write - Write an AddressList to a buffer, optionally perform line wrapping and display conversion
+ * @param al        AddressList to display
+ * @param buf       Buffer for the Address
+ * @param display   True if these addresses will be displayed to the user
+ * @param header    Header name; if present, addresses we be written after ": "
+ * @param cols      Max columns at which to wrap, disabled if -1
+ * @retval num      Length of the string written to buf
  *
  * If 'display' is set, then it doesn't matter if the transformation isn't
  * reversible.
  *
- * @note It is assumed that `buf` is nul terminated!
  */
-size_t mutt_addrlist_write(const struct AddressList *al, char *buf, size_t buflen, bool display)
+size_t addrlist_write(const struct AddressList *al, struct Buffer *buf,
+                      bool display, const char *header, int cols)
 {
-  if (!buf || (buflen == 0) || !al)
+  if (!buf || !al || TAILQ_EMPTY(al))
     return 0;
 
-  size_t len = mutt_str_len(buf);
-  if (len >= buflen)
+  if (header)
   {
-    return 0;
+    mutt_buffer_printf(buf, "%s: ", header);
   }
 
-  char *pbuf = buf + len;
-  buflen -= len;
-
+  size_t cur_col = mutt_buffer_len(buf);
+  bool in_group = false;
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    if (len > 0)
+    struct Address *next = TAILQ_NEXT(a, entries);
+
+    if (a->group)
     {
-      if (buflen > 1)
-      {
-        *pbuf++ = ',';
-        buflen--;
-      }
-      if (buflen > 1)
-      {
-        *pbuf++ = ' ';
-        buflen--;
-      }
+      in_group = true;
     }
 
-    if (buflen == 1)
+    // wrap if needed
+    const size_t cur_len = mutt_buffer_len(buf);
+    cur_col += mutt_addr_write(buf, a, display);
+    if (cur_col > cols)
     {
-      break;
+      mutt_buffer_insert(buf, cur_len, "\n\t");
+      cur_col = 8;
     }
 
-    len = mutt_addr_write(pbuf, buflen, a, display);
-    pbuf += len;
-    buflen -= len;
+    if (!a->group)
+    {
+      // group terminator
+      if (in_group && !a->mailbox && !a->personal)
+      {
+        mutt_buffer_addch(buf, ';');
+        ++cur_col;
+        in_group = false;
+      }
+      if (next && (next->mailbox || next->personal))
+      {
+        mutt_buffer_addstr(buf, ", ");
+        cur_col += 2;
+      }
+      if (!next)
+      {
+        break;
+      }
+    }
   }
 
-  *pbuf = '\0';
-  return pbuf - buf;
+  return mutt_buffer_len(buf);
+}
+
+/**
+ * mutt_addrlist_write_wrap - Write an AddressList to a buffer, perform line wrapping
+ * @param al        AddressList to display
+ * @param buf       Buffer for the Address
+ * @param header    Header name; if present, addresses we be written after ": "
+ * @retval num      Length of the string written to buf
+ *
+ * If 'display' is set, then it doesn't matter if the transformation isn't
+ * reversible.
+ *
+ */
+size_t mutt_addrlist_write_wrap(const struct AddressList *al,
+                                struct Buffer *buf, const char *header)
+{
+  return addrlist_write(al, buf, false, header, 74);
+}
+
+/**
+ * mutt_addrlist_write - Write an Address to a buffer
+ * @param al        AddressList to display
+ * @param buf       Buffer for the Address
+ * @param display   This address will be displayed to the user
+ * @retval num      Length of the string written to buf
+ *
+ * If 'display' is set, then it doesn't matter if the transformation isn't
+ * reversible.
+ *
+ */
+size_t mutt_addrlist_write(const struct AddressList *al, struct Buffer *buf, bool display)
+{
+  return addrlist_write(al, buf, display, NULL, -1);
 }
 
 /**
@@ -1203,14 +1197,16 @@ size_t mutt_addrlist_write_list(const struct AddressList *al, struct ListHead *l
   if (!al || !list)
     return 0;
 
-  char addr[256] = { 0 };
   size_t count = 0;
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    if (mutt_addr_write(addr, sizeof(addr), a, true) != 0)
+    struct Buffer buf = { 0 };
+    mutt_addr_write(&buf, a, true);
+    if (!mutt_buffer_is_empty(&buf))
     {
-      mutt_list_insert_tail(list, strdup(addr));
+      /* We're taking the ownership of the buffer string here */
+      mutt_list_insert_tail(list, (char *) mutt_buffer_string(&buf));
       count++;
     }
   }
@@ -1222,48 +1218,17 @@ size_t mutt_addrlist_write_list(const struct AddressList *al, struct ListHead *l
  * mutt_addrlist_write_file - Wrapper for mutt_write_address()
  * @param al        Address list
  * @param fp        File to write to
- * @param start_col Starting column in the output line
- * @param display   True if these addresses will be displayed to the user
+ * @param header    Header name; if present, addresses we be written after ": "
  *
  * So we can handle very large recipient lists without needing a huge temporary
  * buffer in memory
  */
-void mutt_addrlist_write_file(const struct AddressList *al, FILE *fp, int start_col, bool display)
+void mutt_addrlist_write_file(const struct AddressList *al, FILE *fp, const char *header)
 {
-  char buf[1024] = { 0 };
-  int count = 0;
-  int linelen = start_col;
-
-  struct Address *a = NULL;
-  TAILQ_FOREACH(a, al, entries)
-  {
-    buf[0] = '\0';
-    size_t len = mutt_addr_write(buf, sizeof(buf), a, display);
-    if (len == 0)
-      continue;
-    if (count && (linelen + len > 74))
-    {
-      fputs("\n\t", fp);
-      linelen = len + 8; /* tab is usually about 8 spaces... */
-    }
-    else
-    {
-      if (count && a->mailbox)
-      {
-        fputc(' ', fp);
-        linelen++;
-      }
-      linelen += len;
-    }
-    fputs(buf, fp);
-    struct Address *next = TAILQ_NEXT(a, entries);
-    if (!a->group && next && next->mailbox)
-    {
-      linelen++;
-      fputc(',', fp);
-    }
-    count++;
-  }
+  struct Buffer *buf = mutt_buffer_pool_get();
+  mutt_addrlist_write_wrap(al, buf, header);
+  fputs(mutt_buffer_string(buf), fp);
+  mutt_buffer_pool_release(&buf);
   fputc('\n', fp);
 }
 
