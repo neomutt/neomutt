@@ -277,7 +277,8 @@ static struct AttrColor *calc_color(const struct Mailbox *m, bool current, bool 
     ac = simple_color_get(MT_COLOR_SIDEBAR_ORDINARY);
   }
 
-  ac = merged_color_overlay(simple_color_get(MT_COLOR_NORMAL), ac);
+  struct AttrColor *ac_bg = simple_color_get(MT_COLOR_NORMAL);
+  ac = merged_color_overlay(ac_bg, ac);
 
   if (current || highlight)
   {
@@ -836,7 +837,9 @@ static int draw_divider(struct SidebarWindowData *wdata, struct MuttWindow *win,
   const int width = wdata->divider_width;
   const char *const c_sidebar_divider_char = cs_subset_string(NeoMutt->sub, "sidebar_divider_char");
 
-  mutt_curses_set_normal_backed_color_by_id(MT_COLOR_SIDEBAR_DIVIDER);
+  struct AttrColor *ac = simple_color_get(MT_COLOR_NORMAL);
+  ac = merged_color_overlay(ac, simple_color_get(MT_COLOR_SIDEBAR_DIVIDER));
+  mutt_curses_set_color(ac);
 
   const bool c_sidebar_on_right = cs_subset_bool(NeoMutt->sub, "sidebar_on_right");
   const int col = c_sidebar_on_right ? 0 : (num_cols - width);
@@ -877,7 +880,8 @@ static void fill_empty_space(struct MuttWindow *win, int first_row,
                              int num_rows, int div_width, int num_cols)
 {
   /* Fill the remaining rows with blank space */
-  mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
+  struct AttrColor *ac = simple_color_get(MT_COLOR_NORMAL);
+  mutt_curses_set_color(ac);
 
   const bool c_sidebar_on_right = cs_subset_bool(NeoMutt->sub, "sidebar_on_right");
   if (!c_sidebar_on_right)
