@@ -56,6 +56,9 @@ size_t         mutt_buffer_addstr       (struct Buffer *buf, const char *s);
 size_t         mutt_buffer_addstr_n     (struct Buffer *buf, const char *s, size_t len);
 int            mutt_buffer_add_printf   (struct Buffer *buf, const char *fmt, ...);
 
+// Functions that INSERT into a Buffer
+size_t         mutt_buffer_insert       (struct Buffer *buf, size_t offset, const char *s);
+
 // Functions that OVERWRITE a Buffer
 size_t         mutt_buffer_concat_path  (struct Buffer *buf, const char *dir, const char *fname);
 size_t         mutt_buffer_concatn_path (struct Buffer *dst, const char *dir, size_t dirlen, const char *fname, size_t fnamelen);

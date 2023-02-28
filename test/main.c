@@ -101,6 +101,7 @@
   NEOMUTT_TEST_ITEM(test_mutt_buffer_dealloc)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_fix_dptr)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_init)                                     \
+  NEOMUTT_TEST_ITEM(test_mutt_buffer_insert)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_is_empty)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_len)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_make)                                     \

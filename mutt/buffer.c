@@ -253,6 +253,44 @@ size_t mutt_buffer_addch(struct Buffer *buf, char c)
 }
 
 /**
+ * mutt_buffer_insert - Add a string in the middle of a buffer
+ * @param buf    Buffer
+ * @param offset Position for the insertion
+ * @param s      String to insert
+ * @retval num Characters written
+ * @retval -1  Error
+ */
+size_t mutt_buffer_insert(struct Buffer *buf, size_t offset, const char *s)
+{
+  if (!buf || !s || (*s == '\0'))
+  {
+    return -1;
+  }
+
+  const size_t slen = mutt_str_len(s);
+  const size_t curlen = mutt_buffer_len(buf);
+  mutt_buffer_alloc(buf, curlen + slen + 1);
+
+  if (offset > curlen)
+  {
+    for (size_t i = curlen; i < offset; ++i)
+    {
+      mutt_buffer_addch(buf, ' ');
+    }
+    mutt_buffer_addstr(buf, s);
+  }
+  else
+  {
+    memmove(buf->data + offset + slen, buf->data + offset, curlen - offset);
+    memcpy(buf->data + offset, s, slen);
+    buf->data[curlen + slen] = '\0';
+    buf->dptr = buf->data + curlen + slen;
+  }
+
+  return mutt_buffer_len(buf) - curlen;
+}
+
+/**
  * mutt_buffer_is_empty - Is the Buffer empty?
  * @param buf Buffer to inspect
  * @retval true Buffer is empty

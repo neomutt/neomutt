@@ -68,6 +68,7 @@ BUFFER_OBJS	= test/buffer/mutt_buffer_add_printf.o \
 		  test/buffer/mutt_buffer_dealloc.o \
 		  test/buffer/mutt_buffer_fix_dptr.o \
 		  test/buffer/mutt_buffer_init.o \
+		  test/buffer/mutt_buffer_insert.o \
 		  test/buffer/mutt_buffer_is_empty.o \
 		  test/buffer/mutt_buffer_len.o \
 		  test/buffer/mutt_buffer_make.o \
