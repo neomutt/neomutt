@@ -185,7 +185,7 @@ static void set_timeout(int delay)
 }
 
 /**
- * mutt_getch_timeout - Get an event with a timeout 
+ * mutt_getch_timeout - Get an event with a timeout
  * @param delay Timeout delay in ms
  * @retval Same as mutt_get_ch
  *

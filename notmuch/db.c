@@ -77,7 +77,7 @@ const char *nm_db_get_filename(struct Mailbox *m)
 }
 
 /**
- * get_nm_config_file - Gets the configuration file 
+ * get_nm_config_file - Gets the configuration file
  * @retval ptr Config file path. Empty string if no config.
  * @retval NULL Config file path set to `auto`.
  */

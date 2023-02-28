@@ -283,7 +283,7 @@ $(PWD)/config:
 LIBCONN=	libconn.a
 LIBCONNOBJS=	conn/accountcmd.o conn/config.o conn/connaccount.o \
 		conn/getdomain.o conn/raw.o conn/sasl_plain.o conn/socket.o \
-		conn/tunnel.o 
+		conn/tunnel.o
 @if USE_SASL_GNU
 LIBCONNOBJS+=	conn/gsasl.o
 @endif

@@ -14456,20 +14456,20 @@ finish                                    <emphasis role="comment"># Finish read
               </row>
               <row>
                 <entry>
-                  <literal>status-color</literal>, 
+                  <literal>status-color</literal>,
                   <literal>imap</literal>
                 </entry>
                 <entry>Compiled-in feature</entry>
               </row>
               <row>
                 <entry>
-                <literal>pgp-menu</literal>, 
+                <literal>pgp-menu</literal>,
                 <literal>group-related</literal></entry>
                 <entry>Function</entry>
               </row>
               <row>
                 <entry>
-                <literal>index-format-hook</literal>, 
+                <literal>index-format-hook</literal>,
                 <literal>tag-transforms</literal></entry>
                 <entry>Command</entry>
               </row>
@@ -14481,13 +14481,13 @@ finish                                    <emphasis role="comment"># Finish read
               </row>
               <row>
                 <entry>
-                <literal>lmdb</literal>, 
+                <literal>lmdb</literal>,
                 <literal>tokyocabinet</literal></entry>
                 <entry>Store (database)</entry>
               </row>
               <row>
                 <entry>
-                <literal>HOME</literal>, 
+                <literal>HOME</literal>,
                 <literal>COLUMNS</literal></entry>
                 <entry>Environment variable</entry>
               </row>
