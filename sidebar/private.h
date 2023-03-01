@@ -55,7 +55,6 @@ enum DivType
 {
   SB_DIV_USER,  ///< User configured using $sidebar_divider_char
   SB_DIV_ASCII, ///< An ASCII vertical bar (pipe)
-  SB_DIV_UTF8,  ///< A unicode line-drawing character
 };
 
 /**

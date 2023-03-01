@@ -54,39 +54,24 @@ static bool calc_divider(struct SidebarWindowData *wdata)
 
   // Calculate the width of the delimiter in screen cells
   int width = mutt_strwidth(c_sidebar_divider_char);
-  if ((width < 1) && simple_color_is_set(MT_COLOR_SIDEBAR_BACKGROUND))
+  if (width < 1)
   {
     type = SB_DIV_ASCII;
     goto done;
   }
 
   const bool c_ascii_chars = cs_subset_bool(NeoMutt->sub, "ascii_chars");
-  if (c_ascii_chars)
+  if (c_ascii_chars || !CharsetIsUtf8)
   {
-    if (width < 1) // empty or bad
+    const size_t len = mutt_str_len(c_sidebar_divider_char);
+    for (size_t i = 0; i < len; i++)
     {
-      type = SB_DIV_ASCII;
-      width = 1;
-    }
-    else
-    {
-      for (size_t i = 0; i < width; i++)
+      if (c_sidebar_divider_char[i] & ~0x7F) // high-bit is set
       {
-        if (c_sidebar_divider_char[i] & ~0x7F) // high-bit is set
-        {
-          type = SB_DIV_ASCII;
-          width = 1;
-          break;
-        }
+        type = SB_DIV_ASCII;
+        width = 1;
+        break;
       }
-    }
-  }
-  else
-  {
-    if (width < 1) // empty or bad
-    {
-      type = SB_DIV_UTF8;
-      width = 1;
     }
   }
 
@@ -226,6 +211,7 @@ static int sb_color_observer(struct NotifyCallback *nc)
   {
     case MT_COLOR_INDICATOR:
     case MT_COLOR_NORMAL:
+    case MT_COLOR_SIDEBAR_BACKGROUND:
     case MT_COLOR_SIDEBAR_DIVIDER:
     case MT_COLOR_SIDEBAR_FLAGGED:
     case MT_COLOR_SIDEBAR_HIGHLIGHT:
@@ -234,15 +220,9 @@ static int sb_color_observer(struct NotifyCallback *nc)
     case MT_COLOR_SIDEBAR_ORDINARY:
     case MT_COLOR_SIDEBAR_SPOOLFILE:
     case MT_COLOR_SIDEBAR_UNREAD:
+    case MT_COLOR_MAX: // Sent on `uncolor *`
       win->actions |= WA_REPAINT;
       mutt_debug(LL_DEBUG5, "color done, request WA_REPAINT\n");
-      break;
-
-    case MT_COLOR_SIDEBAR_BACKGROUND:
-    case MT_COLOR_MAX: // Sent on `uncolor *`
-      calc_divider(win->wdata);
-      win->actions |= WA_RECALC;
-      mutt_debug(LL_DEBUG5, "color done, request WA_RECALC\n");
       break;
 
     default:
@@ -346,8 +326,8 @@ static int sb_config_observer(struct NotifyCallback *nc)
   {
     struct SidebarWindowData *wdata = sb_wdata_get(win);
     calc_divider(wdata);
-    win->actions |= WA_REPAINT;
-    mutt_debug(LL_DEBUG5, "config done, request WA_REPAINT\n");
+    win->actions |= WA_RECALC;
+    mutt_debug(LL_DEBUG5, "config done, request WA_RECALC\n");
     return 0;
   }
 
