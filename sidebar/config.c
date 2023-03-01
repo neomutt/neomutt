@@ -62,7 +62,7 @@ static struct ConfigDef SidebarVars[] = {
   { "sidebar_delim_chars", DT_STRING, IP "/.", 0, NULL,
     "(sidebar) Characters that separate nested folders"
   },
-  { "sidebar_divider_char", DT_STRING, 0, 0, NULL,
+  { "sidebar_divider_char", DT_STRING, IP "\342\224\202", 0, NULL, // Box Drawings Light Vertical, U+2502
     "(sidebar) Character to draw between the sidebar and index"
   },
   { "sidebar_folder_indent", DT_BOOL, false, 0, NULL,

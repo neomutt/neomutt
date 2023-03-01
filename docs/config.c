@@ -4193,15 +4193,18 @@
 ** \fBSee also:\fP $$sidebar_short_path, $$sidebar_folder_indent, $$sidebar_indent_string.
 */
 
-{ "sidebar_divider_char", DT_STRING, 0 },
+{ "sidebar_divider_char", DT_STRING, "|" },
 /*
+** .pp
+** The default is a Unicode vertical line.
 ** .pp
 ** This specifies the characters to be drawn between the sidebar (when
 ** visible) and the other NeoMutt panels. ASCII and Unicode line-drawing
 ** characters are supported.
 ** .pp
-** If the sidebar_background color is set, then the divider char can be set to
-** an empty string for extra space.
+** The divider char can be set to an empty string for some extra space.
+** If empty, setting the sidebar_background color may help distinguish the
+** sidebar from other panels.
 */
 
 { "sidebar_folder_indent", DT_BOOL, false },

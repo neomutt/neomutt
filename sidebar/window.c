@@ -853,18 +853,10 @@ static int draw_divider(struct SidebarWindowData *wdata, struct MuttWindow *win,
   {
     mutt_window_move(win, col, i);
 
-    switch (wdata->divider_type)
-    {
-      case SB_DIV_USER:
-        mutt_window_addstr(win, NONULL(c_sidebar_divider_char));
-        break;
-      case SB_DIV_ASCII:
-        mutt_window_addch(win, '|');
-        break;
-      case SB_DIV_UTF8:
-        mutt_window_addch(win, ACS_VLINE);
-        break;
-    }
+    if (wdata->divider_type == SB_DIV_USER)
+      mutt_window_addstr(win, NONULL(c_sidebar_divider_char));
+    else
+      mutt_window_addch(win, '|');
   }
 
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
