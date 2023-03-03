@@ -824,6 +824,7 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
   cs_subset_str_native_set(shared->sub, "sort", old_sort, NULL);
   cs_subset_str_native_set(shared->sub, "sort_aux", old_sort_aux, NULL);
   cs_subset_str_native_set(shared->sub, "use_threads", old_use_threads, NULL);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   if (added_attachment)
     mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
   return FR_SUCCESS;
@@ -1889,7 +1890,6 @@ static int op_exit(struct ComposeSharedData *shared, int op)
       {
         /* avoid freeing other attachments */
         shared->adata->actx->idx[i]->body->next = NULL;
-        /* See the comment in delete_attachment() */
         if (!shared->adata->actx->idx[i]->body->email)
           shared->adata->actx->idx[i]->body->parts = NULL;
         mutt_body_free(&shared->adata->actx->idx[i]->body);

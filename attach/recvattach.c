@@ -1150,35 +1150,25 @@ void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e,
     if (need_secured && !secured)
       mutt_error(_("Can't decrypt encrypted message"));
 
-    /* Strip out the top level multipart */
-    if ((m->type == TYPE_MULTIPART) && m->parts && !need_secured &&
-        ((parent_type == -1) && !mutt_istr_equal("alternative", m->subtype) &&
-         !mutt_istr_equal("multilingual", m->subtype)))
+    struct AttachPtr *ap = mutt_aptr_new();
+    mutt_actx_add_attach(actx, ap);
+
+    ap->body = m;
+    ap->fp = fp;
+    m->aptr = ap;
+    ap->parent_type = parent_type;
+    ap->level = level;
+    ap->decrypted = decrypted;
+
+    if (mutt_is_message_type(m->type, m->subtype))
     {
-      mutt_generate_recvattach_list(actx, e, m->parts, fp, m->type, level, decrypted);
+      mutt_generate_recvattach_list(actx, m->email, m->parts, fp, m->type,
+                                    level + 1, decrypted);
+      e->security |= m->email->security;
     }
     else
     {
-      struct AttachPtr *ap = mutt_aptr_new();
-      mutt_actx_add_attach(actx, ap);
-
-      ap->body = m;
-      ap->fp = fp;
-      m->aptr = ap;
-      ap->parent_type = parent_type;
-      ap->level = level;
-      ap->decrypted = decrypted;
-
-      if (m->type == TYPE_MULTIPART)
-      {
-        mutt_generate_recvattach_list(actx, e, m->parts, fp, m->type, level + 1, decrypted);
-      }
-      else if (mutt_is_message_type(m->type, m->subtype))
-      {
-        mutt_generate_recvattach_list(actx, m->email, m->parts, fp, m->type,
-                                      level + 1, decrypted);
-        e->security |= m->email->security;
-      }
+      mutt_generate_recvattach_list(actx, e, m->parts, fp, m->type, level + 1, decrypted);
     }
   }
 }
