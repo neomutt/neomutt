@@ -363,7 +363,8 @@ static void compose_attach_swap(struct Email *e, struct AttachCtx *actx, int fir
   idx[first] = saved;
 
   // if moved attachment is a group then move subparts too
-  if ((idx[first]->body->type == TYPE_MULTIPART) && (second < actx->idxlen - 1))
+  //if ((idx[first]->body->type == TYPE_MULTIPART) && (second < actx->idxlen - 1))
+  if (idx[first]->body->parts && (second < actx->idxlen - 1))
   {
     int i = second + 1;
     while (idx[i]->level > idx[first]->level)
@@ -1268,7 +1269,7 @@ static int op_attachment_move_down(struct ComposeSharedData *shared, int op)
   int finalidx = index + 1;
   if (nextidx < actx->idxlen - 1)
   {
-    if ((actx->idx[nextidx]->body->type == TYPE_MULTIPART) &&
+    if (actx->idx[nextidx]->body->parts &&
         (actx->idx[nextidx + 1]->level > actx->idx[nextidx]->level))
     {
       finalidx += attach_body_count(actx->idx[nextidx]->body->parts, true);
