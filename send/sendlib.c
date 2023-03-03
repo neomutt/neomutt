@@ -436,6 +436,16 @@ void mutt_update_encoding(struct Body *a, struct ConfigSubset *sub)
   a->content = info;
 }
 
+static void set_filename_recursive(struct Body *b, const char *const filename)
+{
+  for (; b; b = b->next)
+  {
+    b->filename = mutt_str_dup(filename);
+    b->unlink = false;
+    set_filename_recursive(b->parts, filename);
+  }
+}
+
 /**
  * mutt_make_message_attach - Create a message attachment
  * @param m          Mailbox
@@ -538,6 +548,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
 
   body->length = e->body->length;
   body->parts = mutt_rfc822_parse_message(fp, body);
+  set_filename_recursive(body->parts, body->filename);
   if (WithCrypto)
     body->email->security = pgp;
   mutt_update_encoding(body, sub);
