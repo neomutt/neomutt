@@ -226,9 +226,16 @@ static int delete_attachment(struct AttachCtx *actx, int aidx)
   {
     if (attach_body_parent(idx[0]->body, NULL, idx[aidx]->body, &bptr_parent))
     {
-      if (attach_body_count(bptr_parent->parts, false) < 3)
+      if ((bptr_parent->type == TYPE_MULTIPART) &&
+          attach_body_count(bptr_parent->parts, false) < 3)
       {
         mutt_error(_("Can't leave group with only one attachment"));
+        return -1;
+      }
+      if ((bptr_parent->type == TYPE_MESSAGE) &&
+          attach_body_count(bptr_parent->parts, false) < 2)
+      {
+        mutt_error(_("Can't leave message with no body attachment"));
         return -1;
       }
     }
@@ -247,8 +254,7 @@ static int delete_attachment(struct AttachCtx *actx, int aidx)
   int part_count = 1;
   if (aidx < (actx->idxlen - 1))
   {
-    if ((idx[aidx]->body->type == TYPE_MULTIPART) &&
-        (idx[aidx + 1]->level > idx[aidx]->level))
+    if (idx[aidx]->body->parts && (idx[aidx + 1]->level > idx[aidx]->level))
     {
       part_count += attach_body_count(idx[aidx]->body->parts, true);
     }
