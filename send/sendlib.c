@@ -536,14 +536,11 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
   fflush(fp);
   rewind(fp);
 
-  body->email = email_new();
-  body->email->offset = 0;
-  /* we don't need the user headers here */
-  body->email->env = mutt_rfc822_read_header(fp, body->email, false, false);
+  body->length = e->body->length;
+  body->parts = mutt_rfc822_parse_message(fp, body);
   if (WithCrypto)
     body->email->security = pgp;
   mutt_update_encoding(body, sub);
-  body->parts = body->email->body;
 
   mutt_file_fclose(&fp);
 
