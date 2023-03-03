@@ -205,11 +205,10 @@ static void gen_attach_list(struct AttachCtx *actx, struct Body *m, int parent_t
     m->aptr = ap;
     ap->parent_type = parent_type;
     ap->level = level;
-    if ((m->type == TYPE_MULTIPART) && m->parts &&
-        (!(WithCrypto & APPLICATION_PGP) || !mutt_is_multipart_encrypted(m)))
-    {
-      gen_attach_list(actx, m->parts, m->type, level + 1);
-    }
+    //if ((m->type == TYPE_MULTIPART) || mutt_is_message_type(m->type, m->subtype))
+    //{
+    gen_attach_list(actx, m->parts, m->type, level + 1);
+    //}
   }
 }
 

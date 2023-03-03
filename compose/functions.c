@@ -277,6 +277,22 @@ static int delete_attachment(struct AttachCtx *actx, int aidx)
  * @param actx Attachment context
  * @param ap   Attachment to add
  */
+static void gen_attach_list(struct AttachCtx *actx, struct Body *m, int parent_type, int level)
+{
+  for (; m; m = m->next)
+  {
+    struct AttachPtr *ap = mutt_aptr_new();
+    mutt_actx_add_attach(actx, ap);
+    ap->body = m;
+    m->aptr = ap;
+    ap->parent_type = parent_type;
+    ap->level = level;
+    //if ((m->type == TYPE_MULTIPART) || mutt_is_message_type(m->type, m->subtype))
+    //{
+    gen_attach_list(actx, m->parts, m->type, level + 1);
+    //}
+  }
+}
 static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachPtr *ap)
 {
   ap->level = 0;
@@ -291,6 +307,9 @@ static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachP
 
   ap->body->aptr = ap;
   mutt_actx_add_attach(actx, ap);
+  gen_attach_list(actx, ap->body->parts, ap->body->type, ap->level + 1);
+  //gen_attach_list(actx, ap->body, ap->body->type, ap->level + 1);
+
   update_menu(actx, menu, false);
   menu_set_index(menu, actx->vcount - 1);
 }
@@ -1879,14 +1898,10 @@ static int op_exit(struct ComposeSharedData *shared, int op)
 
     if (!(shared->flags & MUTT_COMPOSE_NOFREEHEADER))
     {
-      for (int i = 0; i < shared->adata->actx->idxlen; i++)
-      {
-        /* avoid freeing other attachments */
-        shared->adata->actx->idx[i]->body->next = NULL;
-        if (!shared->adata->actx->idx[i]->body->email)
-          shared->adata->actx->idx[i]->body->parts = NULL;
-        mutt_body_free(&shared->adata->actx->idx[i]->body);
-      }
+      /* Only delete the first attachment a0, all other attachments are either
+       * siblings (a0->next) or children (a0->parts) and those are deleted by
+       * mutt_body_free(). */
+      mutt_body_free(&shared->adata->actx->idx[0]->body);
     }
     shared->rc = -1;
     return FR_DONE;
