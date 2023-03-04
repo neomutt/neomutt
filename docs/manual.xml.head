@@ -5248,6 +5248,14 @@ folder-hook work "set sort=threads"
         If your terminal supports color, you can spice up NeoMutt by creating
         your own <link linkend="color-style">color scheme</link>.
       </para>
+      <note>
+        <para>
+          The config variable
+          <link linkend="color-directcolor">$color_directcolor</link> must be
+          set to its final value <emphasis>before</emphasis> using any
+          <literal>color</literal> command.
+        </para>
+      </note>
       <para>
         The types of objects that can be colored fall into two categories:
         <link linkend="color-simple">Simple Colors</link> such as the
@@ -5271,12 +5279,19 @@ folder-hook work "set sort=threads"
           </para>
         </note>
         <para>
-          Colors can be specified in two ways, using their name
-          such as <literal>green</literal>, <literal>blue</literal>,
-          or by their number in the palette,
+          Colors can be specified in up to three ways, using their name
+          such as <literal>green</literal>, <literal>blue</literal>;
+          by their number in the palette,
           such as <literal>color12</literal>, <literal>color207</literal>
           (the palette consists of the
-          <ulink url="https://web.archive.org/web/20190712111427/https://jonasjacek.github.io/colors/">256 Xterm colors</ulink>).
+          <ulink url="https://web.archive.org/web/20190712111427/https://jonasjacek.github.io/colors/">256 Xterm colors</ulink>);
+          or by using hexadecimal RGB codes <literal>#RRGGBB</literal>, where
+          <literal>RR</literal>, <literal>GG</literal>, <literal>BB</literal>
+          are the red, green, and blue components given as a hexadecimal number
+          between 00 and FF (=255), e.g. <literal>#00FFFF</literal> (bright
+          cyan) or <literal>#12af84</literal> (greenish).  The last syntax is
+          only accepted if <link linkend="color-directcolor">$color_directcolor</link>
+          is set.
         </para>
         <para>
           Named colours may also be prefixed by a <emphasis>modifier</emphasis>.
@@ -5381,6 +5396,38 @@ folder-hook work "set sort=threads"
 color error default red
 color error white   default
 </screen>
+        <para>
+          On startup NeoMutt tries to detect whether the terminal it is running
+          in supports directcolor (aka TrueColor aka 24-bit color).  If the
+          terminal does, NeoMutt enables the config variable
+          <link linkend="color-directcolor">$color_directcolor</link> otherwise
+          it disables it.  Furthermore, NeoMutt allows to use the RGB colors
+          syntax with the <literal>color</literal> command to colour elements
+          with 24-bit colors.
+        </para>
+        <para>
+          For the detection to work the
+          <emphasis>TERM</emphasis> environment variable must be set up
+          properly to advertise the terminals directcolor capability.
+          <emphasis>TERM</emphasis>-values which do that usually end in
+          <literal>-direct</literal>, e.g. <literal>xterm-direct</literal>.
+        </para>
+        <para>
+          If NeoMutt does not detect directcolor color support, but you are
+          sure your terminal supports it, you may try to explicitly set the
+          <emphasis>TERM</emphasis> environment variable by starting NeoMutt
+          from the terminal as follows:
+        </para>
+<screen>
+TERM=xterm-direct neomutt
+</screen>
+        <para>
+          If that still does not help, you can additionally force NeoMutt to
+          use directcolors by setting
+          <link linkend="color-directcolor">$color_directcolor</link>.
+          Setting this variable manually is strongly discouraged since it
+          usually leads to wrong colors.
+        </para>
       </sect2>
 
       <sect2 id="color-simple">
