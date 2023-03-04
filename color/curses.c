@@ -103,8 +103,13 @@ static int curses_color_init(int fg, int bg)
   if (bg == COLOR_DEFAULT)
     bg = COLOR_UNSET;
 
+#ifdef NEOMUTT_DIRECT_COLORS
+  int rc = init_extended_pair(index, fg, bg);
+  color_debug(LL_DEBUG5, "init_extended_pair(%d,%d,%d) -> %d\n", index, fg, bg, rc);
+#else
   int rc = init_pair(index, fg, bg);
   color_debug(LL_DEBUG5, "init_pair(%d,%d,%d) -> %d\n", index, fg, bg, rc);
+#endif
 
   return index;
 }
