@@ -175,7 +175,7 @@ const char *mutt_str_sysexit(int err_num)
 }
 
 /**
- * mutt_str_sep - Find first occurance of any of delim characters in *stringp
+ * mutt_str_sep - Find first occurrence of any of delim characters in *stringp
  * @param stringp Pointer to string to search for delim, updated with position of after delim if found else NULL
  * @param delim   String with characters to search for in *stringp
  * @retval ptr Input value of *stringp

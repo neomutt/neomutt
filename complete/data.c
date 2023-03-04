@@ -78,7 +78,7 @@ struct CompletionData *completion_data_new(void)
 }
 
 /**
- * completion_data_reset - Wipe the stored Comletion Data
+ * completion_data_reset - Wipe the stored Completion Data
  * @param cd Completion Data
  */
 void completion_data_reset(struct CompletionData *cd)

@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page menu_type Menu types
+ *
+ * Menu types
+ */
+
 #include "config.h"
 #include <stddef.h>
 #include "mutt/lib.h"

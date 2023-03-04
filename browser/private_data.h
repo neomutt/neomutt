@@ -42,7 +42,7 @@ struct BrowserPrivateData
   struct BrowserState state;      ///< State containing list of files/dir/mailboxes
   struct Menu *menu;              ///< Menu
   bool kill_prefix;               ///< Prefix is in use
-  bool multiple;                  ///< Allow mulitple selections
+  bool multiple;                  ///< Allow multiple selections
   bool folder;                    ///< Select folders
   char goto_swapper[PATH_MAX];    ///< Saved path after `<goto-folder>`
   struct Buffer *OldLastDir;      ///< Previous to last dir

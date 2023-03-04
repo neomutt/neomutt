@@ -21,7 +21,7 @@
  */
 
 /**
- * @page attach_attachments Attachment commmands
+ * @page attach_attachments Attachment commands
  *
  * Handle the attachments command
  */

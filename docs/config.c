@@ -4814,7 +4814,7 @@
 ** a synonym for "unsorted".
 ** .pp
 ** The values of "threads" and "reverse-threads" are legacy options,
-** which cause the value of \fC$$sort_aux\fP to also contol sorting
+** which cause the value of \fC$$sort_aux\fP to also control sorting
 ** between threads, and they may not be used with the "last-" prefix.
 ** The preferred way to enable a threaded view is via
 ** \fC$$use_threads\fP.  This variable can also be set via the

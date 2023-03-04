@@ -108,7 +108,7 @@ enum ImapAuthRes imap_auth_gsasl(struct ImapAccountData *adata, const char *meth
     }
     else
     {
-      // sasl error occured, send an abort string
+      // sasl error occurred, send an abort string
       mutt_debug(LL_DEBUG1, "gsasl_step64() failed (%d): %s\n", gsasl_rc,
                  gsasl_strerror(gsasl_rc));
       mutt_buffer_strcpy(output_buf, "*");

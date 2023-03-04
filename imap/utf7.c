@@ -26,7 +26,7 @@
  * Convert strings to/from utf7/utf8
  *
  * Modified UTF-7 is described in RFC 3501 section 5.1.3.
- * Regular UTF-7 is decribed in RFC 2152.
+ * Regular UTF-7 is described in RFC 2152.
  *
  * In modified UTF-7:
  *   - printable ascii 0x20-0x25 and 0x27-0x7e represents itself.

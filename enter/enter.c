@@ -421,7 +421,7 @@ size_t editor_buffer_get_cursor(struct EnterState *es)
 /**
  * editor_buffer_set_cursor - Set the position of the cursor
  * @param es  State of the Enter buffer
- * @param pos New postition for the cursor
+ * @param pos New position for the cursor
  */
 void editor_buffer_set_cursor(struct EnterState *es, size_t pos)
 {

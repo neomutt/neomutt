@@ -1,6 +1,6 @@
 /**
  * @file
- * Tagging suport
+ * Tagging support
  *
  * @authors
  * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,9 @@
  */
 
 /**
- * @page menu_tagging Tagging suport
+ * @page menu_tagging Tagging support
  *
- * Tagging suport
+ * Tagging support
  */
 
 #include "config.h"
