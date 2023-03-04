@@ -287,6 +287,11 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
       /* If we are running in direct color mode, we must convert the xterm
        * color numbers 0-255 to an RGB value. */
       *col = color_xterm256_to_24bit(*col);
+      /* FIXME: The color values 0 to 7 (both inclusive) are still occupied by
+       * the default terminal colours.  As a workaround we round them up to
+       * #000008 which is the blackest black we can produce. */
+      if (*col < 8)
+        *col = 8;
     }
 #endif
     color_debug(LL_DEBUG5, "colorNNN %d\n", *col);
@@ -314,6 +319,12 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
       buf_printf(err, _("%s: color not supported by term"), s);
       return MUTT_CMD_ERROR;
     }
+    /* FIXME: The color values 0 to 7 (both inclusive) are still occupied by
+     * the default terminal colours.  As a workaround we round them up to
+     * #000008 which is the blackest black we can produce. */
+    if (*col < 8)
+      *col = 8;
+
     color_debug(LL_DEBUG5, "#RRGGBB: %d\n", *col);
     return MUTT_CMD_SUCCESS;
   }
