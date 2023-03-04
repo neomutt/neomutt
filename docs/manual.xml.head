@@ -5266,6 +5266,8 @@ folder-hook work "set sort=threads"
           <para>
             Objects must be given <emphasis>both</emphasis> a foreground and
             background color (it is not possible to specify one or the other).
+            Note that <literal>default</literal> can be used as transparent
+            color (see below).
           </para>
         </note>
         <para>
@@ -5368,7 +5370,17 @@ folder-hook work "set sort=threads"
           If your terminal supports it, the special keyword
           <emphasis>default</emphasis> can be used as a transparent color. The
           value <emphasis>brightdefault</emphasis> is also valid.
+          In this case <emphasis>default</emphasis> can be used to only set the
+          foreground or background color.  The following sets the foreground
+          and background color individually: the first command leaves the
+          foreground untouched while the second one leaves the background
+          untouched:
         </para>
+<screen>
+<emphasis role="comment"># Make error messages white text on a red background</emphasis>
+color error default red
+color error white   default
+</screen>
       </sect2>
 
       <sect2 id="color-simple">
