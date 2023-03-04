@@ -33,6 +33,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
@@ -144,6 +145,31 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
       return MUTT_CMD_ERROR;
     }
     color_debug(LL_DEBUG5, "colorNNN %d\n", *col);
+    return MUTT_CMD_SUCCESS;
+  }
+
+  /* parse #RRGGBB colours */
+  if (s[0] == '#')
+  {
+#ifndef NEOMUTT_DIRECT_COLORS
+    buf_printf(err, _("Direct colors support not compiled in: %s"), s);
+    return MUTT_CMD_ERROR;
+#endif
+    const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
+    if (!c_color_directcolor)
+    {
+      buf_printf(err, _("Direct colors support disabled: %s"), s);
+      return MUTT_CMD_ERROR;
+    }
+    s++;
+    char *eptr = NULL;
+    *col = strtoul(s, &eptr, 16);
+    if ((*s == '\0') || (*eptr != '\0') || ((*col >= COLORS) && !OptNoCurses))
+    {
+      buf_printf(err, _("%s: color not supported by term"), s);
+      return MUTT_CMD_ERROR;
+    }
+    color_debug(LL_DEBUG5, "#RRGGBB: %d\n", *col);
     return MUTT_CMD_SUCCESS;
   }
 
