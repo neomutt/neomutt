@@ -577,6 +577,28 @@
 ** unread messages.
 */
 
+{ "color_directcolor", DT_BOOL, false },
+/*
+** .pp
+** When \fIset\fP, NeoMutt will use and allow 24bit colours (aka truecolor aka
+** directcolor).  For colours to work properly support from the terminal is
+** required as well as a properly set TERM environment variable advertising the
+** terminals directcolor capability, e.g. "TERM=xterm-direct".
+** .pp
+** NeoMutt tries to detect whether the terminal supports 24bit colours and
+** enables this variable if it does.  If this fails for some reason, you can
+** force 24bit colours by setting this variable manually.  You may also try to
+** force a certain TERM environment variable by starting NeoMutt from
+** a terminal as follows (this results in wrong colours if the terminal does
+** not implement directcolors):
+** .ts
+** TERM=xterm-direct neomutt
+** .te
+** .pp
+** Note: This variable must be set before using any `color` commands.
+** .pp
+*/
+
 { "compose_format", DT_STRING, "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-" },
 /*
 ** .pp

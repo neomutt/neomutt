@@ -191,6 +191,9 @@ static struct ConfigDef MainVars[] = {
   { "collapse_unread", DT_BOOL, true, 0, NULL,
     "Prevent the collapse of threads with unread emails"
   },
+  { "color_directcolor", DT_BOOL, false, 0, NULL,
+    "Use 24bit colors (aka truecolor aka directcolor)"
+  },
   { "config_charset", DT_STRING, 0, 0, charset_validator,
     "Character set that the config files are in"
   },
