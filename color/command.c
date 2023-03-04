@@ -128,10 +128,30 @@ const struct Mapping ComposeColorFields[] = {
 static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *attrs,
                                            bool is_fg, struct Buffer *err)
 {
-  char *eptr = NULL;
-  bool is_alert = false, is_bright = false, is_light = false;
   int clen;
 
+  mutt_debug(LL_DEBUG5, "Parsing color name: %s\n", s);
+
+  /* allow aliases for xterm color resources */
+  if ((clen = mutt_istr_startswith(s, "color")))
+  {
+    s += clen;
+    char *eptr = NULL;
+    *col = strtoul(s, &eptr, 10);
+    if ((*s == '\0') || (*eptr != '\0') || ((*col >= COLORS) && !OptNoCurses))
+    {
+      buf_printf(err, _("%s: color not supported by term"), s);
+      return MUTT_CMD_ERROR;
+    }
+    color_debug(LL_DEBUG5, "colorNNN %d\n", *col);
+    return MUTT_CMD_SUCCESS;
+  }
+
+  /* A named colour, e.g. 'brightred' */
+  /* prefixes bright, alert, light are only allowed for named colours */
+  bool is_alert = false;
+  bool is_bright = false;
+  bool is_light = false;
   if ((clen = mutt_istr_startswith(s, "bright")))
   {
     color_debug(LL_DEBUG5, "bright\n");
@@ -151,64 +171,58 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
     is_light = true;
     s += clen;
   }
+  if ((*col = mutt_map_get_value(s, ColorNames)) != -1)
+  {
+    const char *name = mutt_map_get_name(*col, ColorNames);
+    if (name)
+      color_debug(LL_DEBUG5, "color: %s\n", name);
 
-  /* allow aliases for xterm color resources */
-  if ((clen = mutt_istr_startswith(s, "color")))
-  {
-    s += clen;
-    *col = strtoul(s, &eptr, 10);
-    if ((*s == '\0') || (*eptr != '\0') || ((*col >= COLORS) && !OptNoCurses))
+    if (is_bright || is_light)
     {
-      buf_printf(err, _("%s: color not supported by term"), s);
-      return MUTT_CMD_ERROR;
-    }
-    color_debug(LL_DEBUG5, "colorNNN %d\n", *col);
-  }
-  else if ((*col = mutt_map_get_value(s, ColorNames)) == -1)
-  {
-    buf_printf(err, _("%s: no such color"), s);
-    return MUTT_CMD_WARNING;
-  }
-  const char *name = mutt_map_get_name(*col, ColorNames);
-  if (name)
-    color_debug(LL_DEBUG5, "color: %s\n", name);
-
-  if (is_bright || is_light)
-  {
-    if (is_alert)
-    {
-      *attrs |= A_BOLD;
-      *attrs |= A_BLINK;
-    }
-    else if (is_fg)
-    {
-      if ((COLORS >= 16) && is_light)
+      if (is_alert)
       {
-        if (*col <= 7)
+        *attrs |= A_BOLD;
+        *attrs |= A_BLINK;
+      }
+      else if (is_fg)
+      {
+        if ((COLORS >= 16) && is_light)
         {
-          /* Advance the color 0-7 by 8 to get the light version */
-          *col += 8;
+          if (*col <= 7)
+          {
+            /* Advance the color 0-7 by 8 to get the light version */
+            *col += 8;
+          }
+        }
+        else
+        {
+          *attrs |= A_BOLD;
         }
       }
       else
       {
-        *attrs |= A_BOLD;
-      }
-    }
-    else
-    {
-      if (COLORS >= 16)
-      {
-        if (*col <= 7)
+        if (COLORS >= 16)
         {
-          /* Advance the color 0-7 by 8 to get the light version */
-          *col += 8;
+          if (*col <= 7)
+          {
+            /* Advance the color 0-7 by 8 to get the light version */
+            *col += 8;
+          }
         }
       }
     }
+    return MUTT_CMD_SUCCESS;
   }
 
-  return MUTT_CMD_SUCCESS;
+  /* sanity check for the future */
+  if (is_bright || is_alert || is_light)
+  {
+    buf_printf(err, _("'bright', 'alert', 'light' are only allowed for named colors: %s"), s);
+    return MUTT_CMD_ERROR;
+  }
+
+  buf_printf(err, _("%s: no such color"), s);
+  return MUTT_CMD_WARNING;
 }
 
 /**
