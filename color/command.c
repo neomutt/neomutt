@@ -477,13 +477,13 @@ static enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
 {
   while (true)
   {
-    if (!MoreArgs(s))
+    if (!MoreArgsF(s, TOKEN_COMMENT))
     {
       buf_printf(err, _("%s: too few arguments"), "color");
       return MUTT_CMD_WARNING;
     }
 
-    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
+    parse_extract_token(buf, s, TOKEN_COMMENT);
 
     if (mutt_istr_equal("bold", buf->data))
     {
@@ -529,13 +529,13 @@ static enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
     }
   }
 
-  if (!MoreArgs(s))
+  if (!MoreArgsF(s, TOKEN_COMMENT))
   {
     buf_printf(err, _("%s: too few arguments"), "color");
     return MUTT_CMD_WARNING;
   }
 
-  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
+  parse_extract_token(buf, s, TOKEN_COMMENT);
 
   return parse_color_name(buf->data, bg, attrs, false, err);
 }
