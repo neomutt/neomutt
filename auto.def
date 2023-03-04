@@ -672,6 +672,12 @@ cc-with [list -libs -L$ncurses_prefix/$::libdir_tail] {
   foreach f {bkgrndset setcchar use_extended_names} {
     cc-check-function-in-lib $f $ncurses_lib
   }
+
+  set nc_maj [get-define-value $ncurses_prefix/include/ncurses.h NCURSES_VERSION_MAJOR]
+  set nc_min [get-define-value $ncurses_prefix/include/ncurses.h NCURSES_VERSION_MINOR]
+  if {$nc_maj ne {} && $nc_min ne {} && ($nc_maj > 6 || ($nc_maj == 6 && $nc_min >= 1))} {
+    define-append CFLAGS -DNEOMUTT_DIRECT_COLORS
+  }
 }
 
 # Locate the directory containing ncurses.h
