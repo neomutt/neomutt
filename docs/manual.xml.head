@@ -4566,6 +4566,229 @@ set alias_file=~/.mail_aliases
         </para>
       </sect2>
 
+      <sect2 id="unbind">
+        <title>Unbinding a Key Sequence</title>
+        <para>
+          To remove a binding of a key or key sequence
+          <literal>unbind</literal> can be used.  Its syntax is:
+        </para>
+        <cmdsynopsis>
+          <command>unbind</command>
+          <group choice="req">
+            <arg choice="plain">
+              <replaceable class="parameter">*</replaceable>
+            </arg>
+            <arg choice="plain">
+              <arg choice="plain">
+                <replaceable class="parameter">map</replaceable>
+              </arg>
+              <arg choice="opt" rep="repeat">
+                <replaceable class="parameter">,map</replaceable>
+              </arg>
+            </arg>
+          </group>
+          <group choice="opt">
+            <arg choice="plain">
+              <replaceable class="parameter">key</replaceable>
+            </arg>
+          </group>
+        </cmdsynopsis>
+        <para>
+          <emphasis>map</emphasis> specifies from which menus the key sequence
+          should be removed.  Multiple maps may be specified by separating them
+          with commas (no additional whitespace is allowed).  If
+          <literal>*</literal> is given, then the key sequence is removed from
+          all menus.  Valid menu names and their description are listed
+          <link linkend="maps">in the <literal>bind</literal> section</link>.
+        </para>
+        <para>
+          <emphasis>key</emphasis> is the key or key sequence to be unbound.
+          It may be omitted in which case all keybindings in the given menus
+          are removed.  To prevent NeoMutt from becoming unusable some fallback
+          key bindings are added afterwards.  The fallback keybindings added
+          depend on the menu, they are listed in <xref linkend="tab-fallback-key-bindings" />.
+        </para>
+        <table id="tab-fallback-key-bindings">
+          <title>Fallback key bindings</title>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Menu</entry>
+                <entry>Key</entry>
+                <entry>Bound Function</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>generic</entry>
+                <entry>&lt;enter&gt;</entry>
+                <entry><literal>&lt;select-entry&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>generic</entry>
+                <entry>&lt;return&gt;</entry>
+                <entry><literal>&lt;select-entry&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>generic</entry>
+                <entry>:</entry>
+                <entry><literal>&lt;enter-command&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>generic</entry>
+                <entry>?</entry>
+                <entry><literal>&lt;help&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>generic</entry>
+                <entry>q</entry>
+                <entry><literal>&lt;exit&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>alias</entry>
+                <entry>?</entry>
+                <entry><literal>&lt;help&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>alias</entry>
+                <entry>q</entry>
+                <entry><literal>&lt;exit&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>attach</entry>
+                <entry>?</entry>
+                <entry><literal>&lt;help&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>attach</entry>
+                <entry>q</entry>
+                <entry><literal>&lt;exit&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>browser</entry>
+                <entry>?</entry>
+                <entry><literal>&lt;help&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>browser</entry>
+                <entry>q</entry>
+                <entry><literal>&lt;exit&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>editor</entry>
+                <entry>&lt;backspace&gt;</entry>
+                <entry><literal>&lt;backspace&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>editor</entry>
+                <entry>\177</entry>
+                <entry><literal>&lt;backspace&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>index</entry>
+                <entry>&lt;enter&gt;</entry>
+                <entry><literal>&lt;display-message&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>index</entry>
+                <entry>&lt;return&gt;</entry>
+                <entry><literal>&lt;display-message&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>index</entry>
+                <entry>?</entry>
+                <entry><literal>&lt;help&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>index</entry>
+                <entry>q</entry>
+                <entry><literal>&lt;exit&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>compose</entry>
+                <entry>?</entry>
+                <entry><literal>&lt;help&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>compose</entry>
+                <entry>q</entry>
+                <entry><literal>&lt;exit&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>pager</entry>
+                <entry>?</entry>
+                <entry><literal>&lt;help&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>pager</entry>
+                <entry>q</entry>
+                <entry><literal>&lt;exit&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>pager</entry>
+                <entry>:</entry>
+                <entry><literal>&lt;enter-command&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>pgp</entry>
+                <entry>?</entry>
+                <entry><literal>&lt;help&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>pgp</entry>
+                <entry>q</entry>
+                <entry><literal>&lt;exit&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>smime</entry>
+                <entry>?</entry>
+                <entry><literal>&lt;help&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>smime</entry>
+                <entry>q</entry>
+                <entry><literal>&lt;exit&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>postpone</entry>
+                <entry>?</entry>
+                <entry><literal>&lt;help&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>postpone</entry>
+                <entry>q</entry>
+                <entry><literal>&lt;exit&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>query</entry>
+                <entry>?</entry>
+                <entry><literal>&lt;help&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>query</entry>
+                <entry>q</entry>
+                <entry><literal>&lt;exit&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>mix</entry>
+                <entry>?</entry>
+                <entry><literal>&lt;help&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>mix</entry>
+                <entry>q</entry>
+                <entry><literal>&lt;exit&gt;</literal></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>
+          A key binding can also be unbound by mapping it to the special
+          function <literal>&lt;noop&gt;</literal>.  It is, however,
+          recommended to use <literal>unbind</literal> instead.
+        </para>
+      </sect2>
+
       <sect2 id="crlf">
         <title>Enter versus Return</title>
         <para>
@@ -19734,7 +19957,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">function</replaceable>
             </arg>
             <command>
-              <link linkend="bind">unbind</link>
+              <link linkend="unbind">unbind</link>
             </command>
             <group choice="req">
               <arg choice="plain">
