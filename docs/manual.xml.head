@@ -4261,17 +4261,33 @@ set alias_file=~/.mail_aliases
       </para>
 
       <sect2 id="bind">
+        <title>Binding a Key Sequence to a Function</title>
+        <para>
+          The <literal>bind</literal> command allows to assign a new effect to
+          a key (e.g. <literal>a</literal>) or a keysequence
+          (e.g. <literal>gh</literal> – that is pressing <literal>g</literal>
+          followed by a press of <literal>h</literal>).  Its syntax is:
+        </para>
+        <cmdsynopsis>
+          <command>bind</command>
+          <arg choice="plain">
+            <replaceable class="parameter">map</replaceable>
+          </arg>
+          <arg choice="opt" rep="repeat">
+            <replaceable class="parameter">,map</replaceable>
+          </arg>
+          <arg choice="plain">
+            <replaceable class="parameter">key</replaceable>
+          </arg>
+          <arg choice="plain">
+            <replaceable class="parameter">function</replaceable>
+          </arg>
+        </cmdsynopsis>
         <para>
           <emphasis>map</emphasis> specifies in which menu the binding belongs.
           Multiple maps may be specified by separating them with commas (no
           additional whitespace is allowed). The currently defined maps are:
         </para>
-        <note>
-          <para>
-            Missing key sequence in unbind command means unibind all bindings in menus
-            given in <emphasis>map</emphasis>.
-          </para>
-        </note>
         <anchor id="maps" />
         <variablelist>
           <varlistentry>
@@ -4545,7 +4561,8 @@ set alias_file=~/.mail_aliases
         </para>
         <para>
           The special function <literal>&lt;noop&gt;</literal> unbinds the
-          specified key sequence.
+          specified key sequence.  It is recommended to use
+          <link linkend="unbind"><literal>unbind</literal></link> instead.
         </para>
       </sect2>
 
