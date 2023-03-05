@@ -4241,10 +4241,12 @@ set alias_file=~/.mail_aliases
             <replaceable class="parameter">*</replaceable>
           </arg>
           <arg choice="plain">
-            <replaceable class="parameter">map</replaceable>
-          </arg>
-          <arg choice="opt" rep="repeat">
-            <replaceable class="parameter">,map</replaceable>
+            <arg choice="plain">
+              <replaceable class="parameter">map</replaceable>
+            </arg>
+            <arg choice="opt" rep="repeat">
+              <replaceable class="parameter">,map</replaceable>
+            </arg>
           </arg>
         </group>
         <group choice="opt">
