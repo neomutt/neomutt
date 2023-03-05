@@ -4216,7 +4216,7 @@ set alias_file=~/.mail_aliases
       </para>
     </sect1>
 
-    <sect1 id="bind">
+    <sect1 id="key-bindings">
       <title>Changing the Default Key Bindings</title>
       <para>
         Usage:
@@ -4259,292 +4259,295 @@ set alias_file=~/.mail_aliases
         This command allows you to change the default key bindings (operation
         invoked when pressing a key).
       </para>
-      <para>
-        <emphasis>map</emphasis> specifies in which menu the binding belongs.
-        Multiple maps may be specified by separating them with commas (no
-        additional whitespace is allowed). The currently defined maps are:
-      </para>
-      <note>
-        <para>
-          Missing key sequence in unbind command means unibind all bindings in menus
-          given in <emphasis>map</emphasis>.
-        </para>
-      </note>
-      <anchor id="maps" />
-      <variablelist>
-        <varlistentry>
-          <term>generic</term>
-          <listitem>
-            <para>
-              This is not a real menu, but is used as a fallback for all of the
-              other menus except for the pager and editor modes. If a key is
-              not defined in another menu, NeoMutt will look for a binding to
-              use in this menu. This allows you to bind a key to a certain
-              function in multiple menus instead of having multiple
-              <command>bind</command> statements to accomplish the same task.
-            </para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>alias</term>
-          <listitem>
-            <para>
-              The alias menu is the list of your personal aliases as defined in
-              your <literal>.neomuttrc</literal>. It is the mapping from
-              a short alias name to the full email address(es) of the
-              recipient(s).
-            </para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>attach</term>
-          <listitem>
-            <para>
-              The attachment menu is used to access the attachments on received
-              messages.
-            </para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>browser</term>
-          <listitem>
-            <para>
-              The browser is used for both browsing the local directory
-              structure, and for listing all of your incoming mailboxes.
-            </para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>editor</term>
-          <listitem>
-            <para>
-              The editor is used to allow the user to enter a single line of
-              text, such as the <emphasis>To</emphasis> or
-              <emphasis>Subject</emphasis> prompts in the
-              <literal>compose</literal> menu.
-            </para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>index</term>
-          <listitem>
-            <para>
-              The index is the list of messages contained in a mailbox.
-            </para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>compose</term>
-          <listitem>
-            <para>
-              The compose menu is the screen used when sending a new message.
-            </para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>pager</term>
-          <listitem>
-            <para>
-              The pager is the mode used to display message/attachment data,
-              and help listings.
-            </para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>pgp</term>
-          <listitem>
-            <para>
-              The pgp menu is used to select the OpenPGP keys used to encrypt
-              outgoing messages.
-            </para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>smime</term>
-          <listitem>
-            <para>
-              The smime menu is used to select the OpenSSL certificates used to
-              encrypt outgoing messages.
-            </para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>postpone</term>
-          <listitem>
-            <para>
-              The postpone menu is similar to the index menu, except is used
-              when recalling a message the user was composing, but saved until
-              later.
-            </para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>query</term>
-          <listitem>
-            <para>
-              The query menu is the browser for results returned by
-              <link linkend="query-command">$query_command</link>.
-            </para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>mix</term>
-          <listitem>
-            <para>
-              The mixmaster screen is used to select remailer options for
-              outgoing messages (if NeoMutt is compiled with Mixmaster
-              support).
-            </para>
-          </listitem>
-        </varlistentry>
-      </variablelist>
-      <para>
-        <emphasis>key</emphasis> is the key (or key sequence) you wish to bind.
-        To specify a control character, use the sequence
-        <emphasis>\Cx</emphasis>, where <emphasis>x</emphasis> is the letter of
-        the control character (for example, to specify control-A use
-        <quote>\Ca</quote>). Note that the case of <emphasis>x</emphasis> as
-        well as <emphasis>\C</emphasis> is ignored, so that
-        <emphasis>\CA</emphasis>, <emphasis>\Ca</emphasis>,
-        <emphasis>\cA</emphasis> and <emphasis>\ca</emphasis> are all
-        equivalent. An alternative form is to specify the key as a three digit
-        octal number prefixed with a <quote>\</quote> (for example
-        <emphasis>\177</emphasis> is equivalent to <emphasis>\c?</emphasis>).
-        In addition, <emphasis>key</emphasis> may be a symbolic name as shown
-        in <xref linkend="tab-key-names" />.
-      </para>
 
-      <table id="tab-key-names">
-        <title>Symbolic key names</title>
-        <tgroup cols="2">
-          <thead>
-            <row>
-              <entry>Symbolic name</entry>
-              <entry>Meaning</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry>\t</entry>
-              <entry>tab</entry>
-            </row>
-            <row>
-              <entry>&lt;tab&gt;</entry>
-              <entry>tab</entry>
-            </row>
-            <row>
-              <entry>&lt;backtab&gt;</entry>
-              <entry>backtab / shift-tab</entry>
-            </row>
-            <row>
-              <entry>\r</entry>
-              <entry>carriage return</entry>
-            </row>
-            <row>
-              <entry>\n</entry>
-              <entry>newline</entry>
-            </row>
-            <row>
-              <entry>\e</entry>
-              <entry>escape/alt</entry>
-            </row>
-            <row>
-              <entry>&lt;esc&gt;</entry>
-              <entry>escape/alt</entry>
-            </row>
-            <row>
-              <entry>&lt;up&gt;</entry>
-              <entry>up arrow</entry>
-            </row>
-            <row>
-              <entry>&lt;down&gt;</entry>
-              <entry>down arrow</entry>
-            </row>
-            <row>
-              <entry>&lt;left&gt;</entry>
-              <entry>left arrow</entry>
-            </row>
-            <row>
-              <entry>&lt;right&gt;</entry>
-              <entry>right arrow</entry>
-            </row>
-            <row>
-              <entry>&lt;pageup&gt;</entry>
-              <entry>Page Up</entry>
-            </row>
-            <row>
-              <entry>&lt;pagedown&gt;</entry>
-              <entry>Page Down</entry>
-            </row>
-            <row>
-              <entry>&lt;backspace&gt;</entry>
-              <entry>Backspace</entry>
-            </row>
-            <row>
-              <entry>&lt;delete&gt;</entry>
-              <entry>Delete</entry>
-            </row>
-            <row>
-              <entry>&lt;insert&gt;</entry>
-              <entry>Insert</entry>
-            </row>
-            <row>
-              <entry>&lt;enter&gt;</entry>
-              <entry>Enter</entry>
-            </row>
-            <row>
-              <entry>&lt;return&gt;</entry>
-              <entry>Return</entry>
-            </row>
-            <row>
-              <entry>&lt;keypadenter&gt;</entry>
-              <entry>Enter key on numeric keypad</entry>
-            </row>
-            <row>
-              <entry>&lt;home&gt;</entry>
-              <entry>Home</entry>
-            </row>
-            <row>
-              <entry>&lt;end&gt;</entry>
-              <entry>End</entry>
-            </row>
-            <row>
-              <entry>&lt;space&gt;</entry>
-              <entry>Space bar</entry>
-            </row>
-            <row>
-              <entry>&lt;f1&gt;</entry>
-              <entry>function key 1</entry>
-            </row>
-            <row>
-              <entry>&lt;f10&gt;</entry>
-              <entry>function key 10</entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-      <para>
-        The <literal>&lt;what-key&gt;</literal> function can be used to explore
-        keycode and symbolic names for other keys on your keyboard. Executing
-        this function will display information about each key pressed, until
-        terminated by <literal>^G</literal>.
-      </para>
-      <para>
-        <emphasis>key</emphasis> does not need to be enclosed in quotes unless
-        it contains a space (<quote>&#160;</quote>) or semi-colon
-        (<quote>;</quote>).
-      </para>
-      <para>
-        <emphasis>function</emphasis> specifies which action to take when
-        <emphasis>key</emphasis> is pressed. For a complete list of functions,
-        see the <link linkend="functions">reference</link>. Note that the
-        <command>bind</command> expects <emphasis>function</emphasis> to be
-        specified without angle brackets.
-      </para>
-      <para>
-        The special function <literal>&lt;noop&gt;</literal> unbinds the
-        specified key sequence.
-      </para>
+      <sect2 id="bind">
+        <para>
+          <emphasis>map</emphasis> specifies in which menu the binding belongs.
+          Multiple maps may be specified by separating them with commas (no
+          additional whitespace is allowed). The currently defined maps are:
+        </para>
+        <note>
+          <para>
+            Missing key sequence in unbind command means unibind all bindings in menus
+            given in <emphasis>map</emphasis>.
+          </para>
+        </note>
+        <anchor id="maps" />
+        <variablelist>
+          <varlistentry>
+            <term>generic</term>
+            <listitem>
+              <para>
+                This is not a real menu, but is used as a fallback for all of the
+                other menus except for the pager and editor modes. If a key is
+                not defined in another menu, NeoMutt will look for a binding to
+                use in this menu. This allows you to bind a key to a certain
+                function in multiple menus instead of having multiple
+                <command>bind</command> statements to accomplish the same task.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>alias</term>
+            <listitem>
+              <para>
+                The alias menu is the list of your personal aliases as defined in
+                your <literal>.neomuttrc</literal>. It is the mapping from
+                a short alias name to the full email address(es) of the
+                recipient(s).
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>attach</term>
+            <listitem>
+              <para>
+                The attachment menu is used to access the attachments on received
+                messages.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>browser</term>
+            <listitem>
+              <para>
+                The browser is used for both browsing the local directory
+                structure, and for listing all of your incoming mailboxes.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>editor</term>
+            <listitem>
+              <para>
+                The editor is used to allow the user to enter a single line of
+                text, such as the <emphasis>To</emphasis> or
+                <emphasis>Subject</emphasis> prompts in the
+                <literal>compose</literal> menu.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>index</term>
+            <listitem>
+              <para>
+                The index is the list of messages contained in a mailbox.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>compose</term>
+            <listitem>
+              <para>
+                The compose menu is the screen used when sending a new message.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>pager</term>
+            <listitem>
+              <para>
+                The pager is the mode used to display message/attachment data,
+                and help listings.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>pgp</term>
+            <listitem>
+              <para>
+                The pgp menu is used to select the OpenPGP keys used to encrypt
+                outgoing messages.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>smime</term>
+            <listitem>
+              <para>
+                The smime menu is used to select the OpenSSL certificates used to
+                encrypt outgoing messages.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>postpone</term>
+            <listitem>
+              <para>
+                The postpone menu is similar to the index menu, except is used
+                when recalling a message the user was composing, but saved until
+                later.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>query</term>
+            <listitem>
+              <para>
+                The query menu is the browser for results returned by
+                <link linkend="query-command">$query_command</link>.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>mix</term>
+            <listitem>
+              <para>
+                The mixmaster screen is used to select remailer options for
+                outgoing messages (if NeoMutt is compiled with Mixmaster
+                support).
+              </para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <para>
+          <emphasis>key</emphasis> is the key (or key sequence) you wish to bind.
+          To specify a control character, use the sequence
+          <emphasis>\Cx</emphasis>, where <emphasis>x</emphasis> is the letter of
+          the control character (for example, to specify control-A use
+          <quote>\Ca</quote>). Note that the case of <emphasis>x</emphasis> as
+          well as <emphasis>\C</emphasis> is ignored, so that
+          <emphasis>\CA</emphasis>, <emphasis>\Ca</emphasis>,
+          <emphasis>\cA</emphasis> and <emphasis>\ca</emphasis> are all
+          equivalent. An alternative form is to specify the key as a three digit
+          octal number prefixed with a <quote>\</quote> (for example
+          <emphasis>\177</emphasis> is equivalent to <emphasis>\c?</emphasis>).
+          In addition, <emphasis>key</emphasis> may be a symbolic name as shown
+          in <xref linkend="tab-key-names" />.
+        </para>
+
+        <table id="tab-key-names">
+          <title>Symbolic key names</title>
+          <tgroup cols="2">
+            <thead>
+              <row>
+                <entry>Symbolic name</entry>
+                <entry>Meaning</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>\t</entry>
+                <entry>tab</entry>
+              </row>
+              <row>
+                <entry>&lt;tab&gt;</entry>
+                <entry>tab</entry>
+              </row>
+              <row>
+                <entry>&lt;backtab&gt;</entry>
+                <entry>backtab / shift-tab</entry>
+              </row>
+              <row>
+                <entry>\r</entry>
+                <entry>carriage return</entry>
+              </row>
+              <row>
+                <entry>\n</entry>
+                <entry>newline</entry>
+              </row>
+              <row>
+                <entry>\e</entry>
+                <entry>escape/alt</entry>
+              </row>
+              <row>
+                <entry>&lt;esc&gt;</entry>
+                <entry>escape/alt</entry>
+              </row>
+              <row>
+                <entry>&lt;up&gt;</entry>
+                <entry>up arrow</entry>
+              </row>
+              <row>
+                <entry>&lt;down&gt;</entry>
+                <entry>down arrow</entry>
+              </row>
+              <row>
+                <entry>&lt;left&gt;</entry>
+                <entry>left arrow</entry>
+              </row>
+              <row>
+                <entry>&lt;right&gt;</entry>
+                <entry>right arrow</entry>
+              </row>
+              <row>
+                <entry>&lt;pageup&gt;</entry>
+                <entry>Page Up</entry>
+              </row>
+              <row>
+                <entry>&lt;pagedown&gt;</entry>
+                <entry>Page Down</entry>
+              </row>
+              <row>
+                <entry>&lt;backspace&gt;</entry>
+                <entry>Backspace</entry>
+              </row>
+              <row>
+                <entry>&lt;delete&gt;</entry>
+                <entry>Delete</entry>
+              </row>
+              <row>
+                <entry>&lt;insert&gt;</entry>
+                <entry>Insert</entry>
+              </row>
+              <row>
+                <entry>&lt;enter&gt;</entry>
+                <entry>Enter</entry>
+              </row>
+              <row>
+                <entry>&lt;return&gt;</entry>
+                <entry>Return</entry>
+              </row>
+              <row>
+                <entry>&lt;keypadenter&gt;</entry>
+                <entry>Enter key on numeric keypad</entry>
+              </row>
+              <row>
+                <entry>&lt;home&gt;</entry>
+                <entry>Home</entry>
+              </row>
+              <row>
+                <entry>&lt;end&gt;</entry>
+                <entry>End</entry>
+              </row>
+              <row>
+                <entry>&lt;space&gt;</entry>
+                <entry>Space bar</entry>
+              </row>
+              <row>
+                <entry>&lt;f1&gt;</entry>
+                <entry>function key 1</entry>
+              </row>
+              <row>
+                <entry>&lt;f10&gt;</entry>
+                <entry>function key 10</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>
+          The <literal>&lt;what-key&gt;</literal> function can be used to explore
+          keycode and symbolic names for other keys on your keyboard. Executing
+          this function will display information about each key pressed, until
+          terminated by <literal>^G</literal>.
+        </para>
+        <para>
+          <emphasis>key</emphasis> does not need to be enclosed in quotes unless
+          it contains a space (<quote>&#160;</quote>) or semi-colon
+          (<quote>;</quote>).
+        </para>
+        <para>
+          <emphasis>function</emphasis> specifies which action to take when
+          <emphasis>key</emphasis> is pressed. For a complete list of functions,
+          see the <link linkend="functions">reference</link>. Note that the
+          <command>bind</command> expects <emphasis>function</emphasis> to be
+          specified without angle brackets.
+        </para>
+        <para>
+          The special function <literal>&lt;noop&gt;</literal> unbinds the
+          specified key sequence.
+        </para>
+      </sect2>
 
       <sect2 id="crlf">
         <title>Enter versus Return</title>
