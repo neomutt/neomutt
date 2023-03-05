@@ -19713,6 +19713,27 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <arg choice="plain">
               <replaceable class="parameter">function</replaceable>
             </arg>
+            <command>
+              <link linkend="bind">unbind</link>
+            </command>
+            <group choice="req">
+              <arg choice="plain">
+                <replaceable class="parameter">*</replaceable>
+              </arg>
+              <arg choice="plain">
+                <arg choice="plain">
+                  <replaceable class="parameter">map</replaceable>
+                </arg>
+                <arg choice="opt" rep="repeat">
+                  <replaceable class="parameter">,map</replaceable>
+                </arg>
+              </arg>
+            </group>
+            <group choice="opt">
+              <arg choice="plain">
+                <replaceable class="parameter">key</replaceable>
+              </arg>
+            </group>
           </cmdsynopsis>
         </listitem>
         <listitem>
