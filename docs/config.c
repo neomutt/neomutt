@@ -978,18 +978,19 @@
 { "default_hook", DT_STRING, "~f %s !~P | (~P ~C %s)" },
 /*
 ** .pp
-** This variable controls how "$message-hook", "$reply-hook", "$send-hook",
-** "$send2-hook", "$save-hook", and "$fcc-hook" will
-** be interpreted if they are specified with only a simple regex,
-** instead of a matching pattern.  The hooks are expanded when they are
-** declared, so a hook will be interpreted according to the value of this
-** variable at the time the hook is declared.
+** This variable controls how some hooks are interpreted if their pattern is a
+** plain string or a regex. i.e.  They don't contain a pattern, like \fC~f\fP
 ** .pp
-** The default value matches
-** if the message is either from a user matching the regular expression
-** given, or if it is from you (if the from address matches
-** "$alternates") and is to or cc'ed to a user matching the given
-** regular expression.
+** The hooks are: $fcc-hook, $fcc-save-hook, $index-format-hook, $message-hook,
+** $reply-hook, $save-hook, $send-hook and $send2-hook.
+** .pp
+** The hooks are expanded when they are declared, so a hook will be interpreted
+** according to the value of this variable at the time the hook is declared.
+** .pp
+** The default value matches if the message is either from a user matching the
+** regular expression given, or if it is from you (if the from address matches
+** "$alternates") and is to or cc'ed to a user matching the given regular
+** expression.
 */
 
 { "delete", DT_QUAD, MUTT_ASKYES },
@@ -4384,6 +4385,9 @@
 ** Specifies how NeoMutt should expand a simple search into a real search
 ** pattern.  A simple search is one that does not contain any of the "~" pattern
 ** operators.  See "$patterns" for more information on search patterns.
+** .pp
+** simple_search applies to several functions, e.g. \fC<delete-pattern>\fP,
+** \fC<limit>\fP, searching in the index, and all of the index colors.
 ** .pp
 ** For example, if you simply type "joe" at a search or limit prompt, NeoMutt
 ** will automatically expand it to the value specified by this variable by

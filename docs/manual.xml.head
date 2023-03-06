@@ -4066,7 +4066,7 @@ alternates -group me -group work address3
 </screen>
 
       <para>
-        would create a group named <quote>me</quote> which contains all your
+        would create a group named <quote>me</quote> which contains all three
         addresses and a group named <quote>work</quote> which contains only
         your work address <emphasis>address3</emphasis>. Besides many other
         possibilities, this could be used to automatically mark your own
@@ -6203,6 +6203,10 @@ my_hdr Organization: A Really Big Company, Anytown, USA
         according to <link linkend="index-format">$index_format</link>.
       </para>
       <para>
+        If the pattern is a plain string, or a regex, it will be expanded to a
+        pattern using <link linkend="default-hook">$default_hook</link>.
+      </para>
+      <para>
         <command>fcc-hook</command> is used to save outgoing mail in a mailbox
         other than <link linkend="record">$record</link>. NeoMutt searches the
         initial list of message recipients for the first matching
@@ -6283,6 +6287,10 @@ save-hook aol\\.com$ +spam
         used to match the message, see <xref linkend="pattern-hook" /> for
         details. <emphasis>command</emphasis> is executed when
         <emphasis>pattern</emphasis> matches.
+      </para>
+      <para>
+        If the pattern is a plain string, or a regex, it will be expanded to a
+        pattern using <link linkend="default-hook">$default_hook</link>.
       </para>
       <para>
         <command>reply-hook</command> is matched against the message you are
@@ -6372,6 +6380,10 @@ save-hook aol\\.com$ +spam
         specified in the <literal>.neomuttrc</literal>.
       </para>
       <para>
+        If the pattern is a plain string, or a regex, it will be expanded to a
+        pattern using <link linkend="default-hook">$default_hook</link>.
+      </para>
+      <para>
         See <xref linkend="pattern-hook" /> for information on the exact format
         of <emphasis>pattern</emphasis>.
       </para>
@@ -6442,6 +6454,10 @@ message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
         This command is used to inject format strings dynamically into <link
         linkend="index-format">$index_format</link> based on pattern matching
         against the current message.
+      </para>
+      <para>
+        If the pattern is a plain string, or a regex, it will be expanded to a
+        pattern using <link linkend="default-hook">$default_hook</link>.
       </para>
       <para>
         The <link linkend="index-format">$index_format</link> expando
@@ -7714,8 +7730,8 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
         convenience, we have included below a brief description of this syntax.
       </para>
       <para>
-        The search is case sensitive if the pattern contains at least one upper
-        case letter, and case insensitive otherwise.
+        The search is case sensitive if the regular expression contains at
+        least one upper case letter, and case insensitive otherwise.
       </para>
       <note>
         <para>
