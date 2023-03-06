@@ -129,10 +129,10 @@ receive mail; you can use regular expressions (\fIregex\fP) to specify
 alternate addresses. This affects NeoMutt's idea about messages from you, and
 messages addressed to you.
 .IP
-\fBunalternates\fP can be used to write exceptions to alternates patterns. To
-remove a regular expression from the alternates list, use the unalternates
-command with exactly the same \fIregex\fP or use \(lq\fB*\fP\(rq to remove all
-entries.
+\fBunalternates\fP can be used to write exceptions to alternates regular
+expression. To remove a regular expression from the alternates list, use the
+unalternates command with exactly the same \fIregex\fP or use \(lq\fB*\fP\(rq
+to remove all entries.
 .IP
 The optional \fB\-group\fP flag causes all of the subsequent regular expressions
 to be added to or removed from the \fIname\fPd group.
@@ -408,12 +408,12 @@ NeoMutt manual for information on the exact format of \fIpattern\fP.
 .
 .PP
 .nf
-\fBfolder-hook\fP [\fI-noregex\fP] \fIpattern\fP \fIcommand\fP
+\fBfolder-hook\fP [\fI-noregex\fP] \fIregex\fP \fIcommand\fP
 .fi
 .IP
-When NeoMutt enters a folder which matches \fIpattern\fP (or, when \fIpattern\fP is
-preceded by an exclamation mark, does not match \fIpattern\fP), the given
-\fIcommand\fP is executed. The \fI-noregex\fP switch controls whether \fIpattern\fP
+When NeoMutt enters a folder which matches \fIregex\fP (or, when \fIregex\fP is
+preceded by an exclamation mark, does not match \fIregex\fP), the given
+\fIcommand\fP is executed. The \fI-noregex\fP switch controls whether \fIregex\fP
 is matches as simple string equality or full regex match.
 .IP
 When several \fBfolder-hook\fPs match a given mail folder, they are executed in
@@ -421,8 +421,8 @@ the order given in the configuration file.
 .
 .PP
 .nf
-\fBgroup\fP [ \fB\-group\fP \fIname\fP ... ] { \fB\-rx\fP \fIexpr\fP ... | \fB\-addr\fP \fIaddress\fP ... }
-\fBungroup\fP [ \fB\-group\fP \fIname\fP ... ] { \fB*\fP | \fB\-rx\fP \fIexpr\fP ... | \fB\-addr\fP \fIaddress\fP ... }
+\fBgroup\fP [ \fB\-group\fP \fIname\fP ... ] { \fB\-rx\fP \fIregex\fP ... | \fB\-addr\fP \fIaddress\fP ... }
+\fBungroup\fP [ \fB\-group\fP \fIname\fP ... ] { \fB*\fP | \fB\-rx\fP \fIregex\fP ... | \fB\-addr\fP \fIaddress\fP ... }
 .fi
 .IP
 \fBgroup\fP is used to directly add either addresses or regular expressions to
@@ -492,14 +492,14 @@ the output of the command \(lq\fBneomutt\~\-v\fP\(rq (in the
 .
 .PP
 .nf
-\fBignore\fP \fIpattern\fP [ \fIpattern\fP ... ]
-\fBunignore\fP { \fB*\fP | \fIpattern\fP ... }
+\fBignore\fP \fIstring\fP [ \fIstring\fP ... ]
+\fBunignore\fP { \fB*\fP | \fIstring\fP ... }
 .fi
 .IP
 The \fBignore\fP command allows you to specify header fields which you don't
 normally want to see in the pager. You do not need to specify the full header
 field name. For example, \(lq\fBignore\fP content-\(rq will ignore all header
-fields that begin with the pattern \(lqcontent-\(rq, \(lq\fBignore\fP\~*\(rq
+fields that begin with the string \(lqcontent-\(rq, \(lq\fBignore\fP\~*\(rq
 will ignore all headers.
 .IP
 To remove a previously added token from the list, use the \fBunignore\fP
@@ -514,9 +514,9 @@ ignore list.
 \fBunsubscribe\fP [ \fB\-group\fP \fIname\fP ... ] { \fB*\fP | \fIregex\fP ... }
 .fi
 .IP
-NeoMutt maintains two lists of mailing list address patterns, a list of
-subscribed mailing lists, and a list of known mailing lists. All subscribed
-mailing lists are known. Patterns use regular expressions.
+NeoMutt maintains two lists of mailing list address regular expressions, a list
+of subscribed mailing lists, and a list of known mailing lists. All subscribed
+mailing lists are known.
 .IP
 The \fBlists\fP command adds a mailing list address to the list of known
 mailing lists. The \fBunlists\fP command removes a mailing list from the lists
@@ -590,13 +590,13 @@ Changes the current working directory.
 .
 .PP
 .nf
-\fBmbox-hook\fP [\fI-noregex\fP] \fIpattern\fP \fImailbox\fP
+\fBmbox-hook\fP [\fI-noregex\fP] \fIregex\fP \fImailbox\fP
 .fi
 .IP
-When NeoMutt changes to a mail folder which matches \fIpattern\fP, \fImailbox\fP
+When NeoMutt changes to a mail folder which matches \fIregex\fP, \fImailbox\fP
 will be used as the \(lqmbox\(rq folder, i.e. read messages will be moved to
 that folder when the mail folder is left. The \fI-noregex\fP switch controls
-whether \fIpattern\fP is matches as simple string equality or full regex match.
+whether \fIregex\fP is matches as simple string equality or full regex match.
 
 .IP
 Note that execution of \fBmbox-hook\fPs is dependent on the $move configuration
@@ -840,12 +840,12 @@ configuration file the hook is defined in.
 .
 .PP
 .nf
-\fBspam\fP \fIpattern\fP \fIformat\fP
-\fBnospam\fP { \fB*\fP | \fIpattern\fP }
+\fBspam\fP \fIregex\fP \fIformat\fP
+\fBnospam\fP { \fB*\fP | \fIregex\fP }
 .fi
 .IP
 NeoMutt has generalized support for external spam-scoring filters. By defining
-your spam \fIpattern\fPs with the \fBspam\fP and \fBnospam\fP commands, you can
+your spam \fIregex\fPs with the \fBspam\fP and \fBnospam\fP commands, you can
 limit, search, and sort your mail based on its spam attributes, as determined
 by the external filter. You also can display the spam attributes in your index
 display using the %H selector in the $index_format variable. (Tip: try
@@ -857,11 +857,11 @@ section \(lq\fBSpam Detection\fP\(rq in the NeoMutt manual.
 .
 .PP
 .nf
-\fBsubjectrx\fP \fIpattern\fP \fIreplacement\fP
-\fBunsubjectrx\fP { \fB*\fP | \fIpattern\fP }
+\fBsubjectrx\fP \fIregex\fP \fIreplacement\fP
+\fBunsubjectrx\fP { \fB*\fP | \fIregex\fP }
 .fi
 .IP
-The \fBsubjectrx\fP command specifies a regular expression \fIpattern\fP which,
+The \fBsubjectrx\fP command specifies a regular expression which,
 if detected in a message subject, causes the subject to be replaced with the
 \fIreplacement\fP value. The \fIreplacement\fP is subject to substitutions in
 the same way as for the \fBspam\fP command: %L for the text to the left of the
@@ -873,7 +873,7 @@ Note this well: the \fIreplacement\fP value replaces the entire subject, not
 just the match!
 .IP
 \fBunsubjectrx\fP removes a given \fBsubjectrx\fP from the substitution list.
-If \(lq\fB*\fP\(rq is used as the pattern, all substitutions will be removed.
+If \(lq\fB*\fP\(rq is used as the argument, all substitutions will be removed.
 .
 .PP
 .nf

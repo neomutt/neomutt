@@ -3997,11 +3997,11 @@ set imap_pass="`gpg --batch -q --decrypt ~/.neomutt/account.gpg`"
         <group choice="req">
           <arg choice="plain" rep="repeat">
             <option>-rx</option>
-            <replaceable class="parameter">expr</replaceable>
+            <replaceable class="parameter">regex</replaceable>
           </arg>
           <arg choice="plain" rep="repeat">
             <option>-addr</option>
-            <replaceable class="parameter">expr</replaceable>
+            <replaceable class="parameter">address</replaceable>
           </arg>
         </group>
         <command>ungroup</command>
@@ -4015,17 +4015,17 @@ set imap_pass="`gpg --batch -q --decrypt ~/.neomutt/account.gpg`"
           </arg>
           <arg choice="plain" rep="repeat">
             <option>-rx</option>
-            <replaceable class="parameter">expr</replaceable>
+            <replaceable class="parameter">regex</replaceable>
           </arg>
           <arg choice="plain" rep="repeat">
             <option>-addr</option>
-            <replaceable class="parameter">expr</replaceable>
+            <replaceable class="parameter">address</replaceable>
           </arg>
         </group>
       </cmdsynopsis>
       <para>
         NeoMutt supports grouping addresses logically into named groups. An
-        address or address pattern can appear in several groups at the same
+        address or regular expression can appear in several groups at the same
         time. These groups can be used in
         <link linkend="patterns">patterns</link> (for searching, limiting and
         tagging) and in hooks by using group patterns. This can be useful to
@@ -4066,7 +4066,7 @@ alternates -group me -group work address3
 </screen>
 
       <para>
-        would create a group named <quote>me</quote> which contains all your
+        would create a group named <quote>me</quote> which contains all three
         addresses and a group named <quote>work</quote> which contains only
         your work address <emphasis>address3</emphasis>. Besides many other
         possibilities, this could be used to automatically mark your own
@@ -4081,8 +4081,8 @@ alternates -group me -group work address3
         its contents. As soon as a group gets empty because all addresses and
         regular expressions have been removed, it'll internally be removed, too
         (i.e. there cannot be an empty group). When removing regular
-        expressions from a group, the pattern must be specified exactly as
-        given to the <command>group</command> command or
+        expressions from a group, the <emphasis>regex</emphasis> must be
+        specified exactly as given to the <command>group</command> command or
         <literal>-group</literal> argument.
       </para>
     </sect1>
@@ -4703,7 +4703,7 @@ bind index gg first-entry
           <replaceable class="parameter">-noregex</replaceable>
         </arg>
         <arg choice="plain">
-          <replaceable class="parameter">pattern</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">command</replaceable>
@@ -4714,8 +4714,8 @@ bind index gg first-entry
         reading. The <command>folder-hook</command> command provides a method
         by which you can execute any configuration command.
         The <emphasis>command</emphasis> is executed before loading any mailboxes
-        matching <emphasis>pattern</emphasis>. The <emphasis>-noregex</emphasis>
-        switch controls whether <emphasis>pattern</emphasis> is matched using
+        matching <emphasis>regex</emphasis>. The <emphasis>-noregex</emphasis>
+        switch controls whether <emphasis>regex</emphasis> is matched using
         a simple string comparison or a full regex match.
         If a mailbox matches multiple <command>folder-hook</command>s, they are
         executed in the order given in the <literal>.neomuttrc</literal>.
@@ -4729,10 +4729,10 @@ bind index gg first-entry
       <note>
         <para>
           If you use the <quote>!</quote> shortcut for
-          <link linkend="spool-file">$spool_file</link> at the beginning of the
-          pattern, you must place it inside of double or single quotes in order
-          to distinguish it from the logical <emphasis>not</emphasis> operator
-          for the expression.
+          <link linkend="spool-file">$spool_file</link> at the beginning of
+          <emphasis>regex</emphasis>, you must place it inside of double or
+          single quotes in order to distinguish it from the logical
+          <emphasis>not</emphasis> operator for the expression.
         </para>
       </note>
       <note>
@@ -4745,7 +4745,7 @@ bind index gg first-entry
         <para>
           However, the sorting method is not restored to its previous value
           when reading a different mailbox. To specify
-          a <emphasis>default</emphasis> command, use the pattern
+          a <emphasis>default</emphasis> command, use the regex
           <quote>.</quote> before other <command>folder-hook</command>s
           adjusting a value on a per-folder basis because
           <command>folder-hook</command>s are evaluated in the order given in
@@ -5662,10 +5662,10 @@ uncolor status *
         <cmdsynopsis>
           <command>ignore</command>
           <arg choice="plain">
-            <replaceable class="parameter">pattern</replaceable>
+            <replaceable class="parameter">string</replaceable>
           </arg>
           <arg choice="opt" rep="repeat">
-            <replaceable class="parameter">pattern</replaceable>
+            <replaceable class="parameter">string</replaceable>
           </arg>
           <command>unignore</command>
           <group choice="req">
@@ -5673,7 +5673,7 @@ uncolor status *
               <replaceable>*</replaceable>
             </arg>
             <arg choice="plain" rep="repeat">
-              <replaceable>pattern</replaceable>
+              <replaceable>string</replaceable>
             </arg>
           </group>
         </cmdsynopsis>
@@ -5686,13 +5686,13 @@ uncolor status *
         <para>
           You do not need to specify the full header field name. For example,
           <quote>ignore content-</quote> will ignore all header fields that
-          begin with the pattern <quote>content-</quote>.
+          begin with the string <quote>content-</quote>.
           <quote>ignore&#160;*</quote> will ignore all headers.
         </para>
         <para>
           To remove a previously added token from the list, use the
           <quote>unignore</quote> command. The <quote>unignore</quote> command
-          will make NeoMutt display headers with the given pattern. For
+          will make NeoMutt display headers matching the given string. For
           example, if you do <quote>ignore x-</quote> it is possible to
           <quote>unignore x-mailer</quote>.
         </para>
@@ -5827,10 +5827,10 @@ unignore posted-to:
       </para>
       <para>
         The <command>unalternates</command> command can be used to write
-        exceptions to <command>alternates</command> patterns. If an address
+        exceptions to <command>alternates</command> regex. If an address
         matches something in an <command>alternates</command> command, but you
         nonetheless do not think it is from you, you can list a more precise
-        pattern under an <command>unalternates</command> command.
+        regex under an <command>unalternates</command> command.
       </para>
       <para>
         To remove a regular expression from the <command>alternates</command>
@@ -5924,10 +5924,11 @@ unignore posted-to:
         </para>
       </note>
       <para>
-        More precisely, NeoMutt maintains lists of patterns for the addresses
-        of known and subscribed mailing lists. Every subscribed mailing list is
-        known. To mark a mailing list as known, use the <command>list</command>
-        command. To mark it as subscribed, use <command>subscribe</command>.
+        More precisely, NeoMutt maintains lists of regular expressions for the
+        addresses of known and subscribed mailing lists. Every subscribed
+        mailing list is known. To mark a mailing list as known, use the
+        <command>list</command> command. To mark it as subscribed, use
+        <command>subscribe</command>.
       </para>
       <para>
         You can use regular expressions with both commands. To mark all
@@ -5983,7 +5984,7 @@ unignore posted-to:
           <replaceable class="parameter">-noregex</replaceable>
         </arg>
         <arg choice="plain">
-          <replaceable class="parameter">pattern</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">mailbox</replaceable>
@@ -5992,11 +5993,11 @@ unignore posted-to:
       <para>
         This command is used to move read messages from a specified mailbox to
         a different mailbox automatically when you quit or change folders.
-        <emphasis>pattern</emphasis> is used to specifying the mailbox to
+        <emphasis>regex</emphasis> is used to specifying the mailbox to
         treat as a <quote>spool</quote> mailbox and <emphasis>mailbox</emphasis>
         specifies where mail should be saved when read.
         The <emphasis>-noregex</emphasis> switch controls whether
-        <emphasis>pattern</emphasis> is matched using a simple string
+        <emphasis>regex</emphasis> is matched using a simple string
         comparison or a full regex match.
       </para>
       <para>
@@ -6202,6 +6203,10 @@ my_hdr Organization: A Really Big Company, Anytown, USA
         according to <link linkend="index-format">$index_format</link>.
       </para>
       <para>
+        If the pattern is a plain string, or a regex, it will be expanded to a
+        pattern using <link linkend="default-hook">$default_hook</link>.
+      </para>
+      <para>
         <command>fcc-hook</command> is used to save outgoing mail in a mailbox
         other than <link linkend="record">$record</link>. NeoMutt searches the
         initial list of message recipients for the first matching
@@ -6282,6 +6287,10 @@ save-hook aol\\.com$ +spam
         used to match the message, see <xref linkend="pattern-hook" /> for
         details. <emphasis>command</emphasis> is executed when
         <emphasis>pattern</emphasis> matches.
+      </para>
+      <para>
+        If the pattern is a plain string, or a regex, it will be expanded to a
+        pattern using <link linkend="default-hook">$default_hook</link>.
       </para>
       <para>
         <command>reply-hook</command> is matched against the message you are
@@ -6371,6 +6380,10 @@ save-hook aol\\.com$ +spam
         specified in the <literal>.neomuttrc</literal>.
       </para>
       <para>
+        If the pattern is a plain string, or a regex, it will be expanded to a
+        pattern using <link linkend="default-hook">$default_hook</link>.
+      </para>
+      <para>
         See <xref linkend="pattern-hook" /> for information on the exact format
         of <emphasis>pattern</emphasis>.
       </para>
@@ -6441,6 +6454,10 @@ message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
         This command is used to inject format strings dynamically into <link
         linkend="index-format">$index_format</link> based on pattern matching
         against the current message.
+      </para>
+      <para>
+        If the pattern is a plain string, or a regex, it will be expanded to a
+        pattern using <link linkend="default-hook">$default_hook</link>.
       </para>
       <para>
         The <link linkend="index-format">$index_format</link> expando
@@ -6616,7 +6633,7 @@ folder-hook . 'push "&lt;enter-command&gt;score ~= 10&lt;enter&gt;"'
       <cmdsynopsis>
         <command>spam</command>
         <arg choice="plain">
-          <replaceable class="parameter">pattern</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">format</replaceable>
@@ -6627,13 +6644,13 @@ folder-hook . 'push "&lt;enter-command&gt;score ~= 10&lt;enter&gt;"'
             <replaceable class="parameter">*</replaceable>
           </arg>
           <arg choice="plain">
-            <replaceable class="parameter">pattern</replaceable>
+            <replaceable class="parameter">regex</replaceable>
           </arg>
         </group>
       </cmdsynopsis>
       <para>
         NeoMutt has generalized support for external spam-scoring filters. By
-        defining your spam patterns with the <command>spam</command> and
+        defining your spam regular expressions with the <command>spam</command> and
         <literal>nospam</literal> commands, you can <emphasis>limit</emphasis>,
         <emphasis>search</emphasis>, and <emphasis>sort</emphasis> your mail
         based on its spam attributes, as determined by the external filter. You
@@ -6654,16 +6671,16 @@ folder-hook . 'push "&lt;enter-command&gt;score ~= 10&lt;enter&gt;"'
         header cache files and turn the header cache back on.
       </para>
       <para>
-        Your first step is to define your external filter's spam patterns using
-        the <command>spam</command> command. <emphasis>pattern</emphasis>
+        Your first step is to define your external filter's spam headers using
+        the <command>spam</command> command. <emphasis>regex</emphasis>
         should be a regular expression that matches a header in a mail message.
         If any message in the mailbox matches this regular expression, it will
         receive a <quote>spam tag</quote> or <quote>spam attribute</quote>
-        (unless it also matches a <command>nospam</command> pattern – see
-        below.) The appearance of this attribute is entirely up to you, and is
-        governed by the <emphasis>format</emphasis> parameter.
+        (unless it also matches a <command>nospam</command> regular expression
+        – see below.) The appearance of this attribute is entirely up to you,
+        and is governed by the <emphasis>format</emphasis> parameter.
         <emphasis>format</emphasis> can be any static text, but it also can
-        include back-references from the <emphasis>pattern</emphasis>
+        include back-references from the <emphasis>regex</emphasis>
         expression. (A regular expression <quote>back-reference</quote> refers
         to a sub-expression contained within parentheses.)
         <literal>%1</literal> is replaced with the first back-reference in the
@@ -6678,9 +6695,9 @@ folder-hook . 'push "&lt;enter-command&gt;score ~= 10&lt;enter&gt;"'
       </para>
       <para>
         If you're using multiple spam filters, a message can have more than one
-        spam-related header. You can define <command>spam</command> patterns
+        spam-related header. You can define <command>spam</command> rules
         for each filter you use. If a message matches two or more of these
-        patterns, and the <link linkend="spam-separator">$spam_separator</link>
+        regular expressions, and the <link linkend="spam-separator">$spam_separator</link>
         variable is set to a string, then the message's spam tag will consist
         of all the <emphasis>format</emphasis> strings joined together, with
         the value of <link linkend="spam-separator">$spam_separator</link>
@@ -6711,7 +6728,7 @@ set spam_separator=", "
       </para>
       <para>
         If the <link linkend="spam-separator">$spam_separator</link> variable
-        is unset, then each spam pattern match supersedes the previous one.
+        is unset, then each spam rule match supersedes the previous one.
         Instead of getting joined <emphasis>format</emphasis> strings, you'll
         get only the last one to match.
       </para>
@@ -6737,7 +6754,7 @@ set spam_separator=", "
         will sort numerically first, and lexically only when two numbers are
         equal in value. (This is like UNIX's <literal>sort -n</literal>.)
         A message with no spam attributes at all – that is, one that didn't
-        match <emphasis>any</emphasis> of your <command>spam</command> patterns
+        match <emphasis>any</emphasis> of your <command>spam</command> rules
         – is sorted at lowest priority. Numbers are sorted next, beginning with
         0 and ranging upward. Finally, non-numeric strings are sorted, with
         <quote>a</quote> taking lower priority than <quote>z</quote>. Clearly,
@@ -6747,19 +6764,19 @@ set spam_separator=", "
       </para>
       <para>
         The <command>nospam</command> command can be used to write exceptions
-        to <command>spam</command> patterns. If a header pattern matches
+        to <command>spam</command> rules. If a header field matches
         something in a <command>spam</command> command, but you nonetheless do
-        not want it to receive a spam tag, you can list a more precise pattern
-        under a <command>nospam</command> command.
+        not want it to receive a spam tag, you can list a more precise regular
+        expression under a <command>nospam</command> command.
       </para>
       <para>
-        If the <emphasis>pattern</emphasis> given to <command>nospam</command>
-        is exactly the same as the <emphasis>pattern</emphasis> on an existing
-        <command>spam</command> list entry, the effect will be to remove the
-        entry from the spam list, instead of adding an exception. Likewise, if
-        the <emphasis>pattern</emphasis> for a <command>spam</command> command
-        matches an entry on the <command>nospam</command> list, that nospam
-        entry will be removed. If the <emphasis>pattern</emphasis> for
+        If the <emphasis>regex</emphasis> given to <command>nospam</command>
+        is exactly the same as the <emphasis>regex</emphasis> on an existing
+        <command>spam</command> rule entry, the effect will be to remove the
+        entry from the spam rules list, instead of adding an exception. Likewise, if
+        the <emphasis>regex</emphasis> for a <command>spam</command> command
+        matches an entry on the <command>nospam</command> rule list, that
+        nospam entry will be removed. If the <emphasis>regex</emphasis> for
         <command>nospam</command> is <quote>*</quote>,
         <emphasis>all entries on both lists</emphasis> will be removed. This
         might be the default action if you use <command>spam</command> and
@@ -7713,8 +7730,8 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
         convenience, we have included below a brief description of this syntax.
       </para>
       <para>
-        The search is case sensitive if the pattern contains at least one upper
-        case letter, and case insensitive otherwise.
+        The search is case sensitive if the regular expression contains at
+        least one upper case letter, and case insensitive otherwise.
       </para>
       <note>
         <para>
@@ -7742,6 +7759,22 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
         are regular expressions that match themselves. Any metacharacter with
         special meaning may be quoted by preceding it with a backslash.
       </para>
+      <para>
+        The following matches a literal dot <quote>.</quote> in an address:
+      </para>
+      <example id="ex-literal-dot-in-regex">
+        <title>Matching a literal dot</title>
+<screen>
+<emphasis role="comment"># no quotes</emphasis>
+alternates only\\.dot@example\\.org
+
+<emphasis role="comment"># single quotes</emphasis>
+lists 'only\.dot@example\.org'
+
+<emphasis role="comment"># Double quotes</emphasis>
+subscribe "only\\.dot@example\\.org"
+</screen>
+      </example>
       <para>
         The period <quote>.</quote> matches any single character. The caret
         <quote>^</quote> and the dollar sign <quote>$</quote> are
@@ -8660,6 +8693,22 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
           in the regular expression, you will need to use two backslashes
           instead (<quote>\\</quote>).
         </para>
+      <example id="ex-literal-dot-in-pattern">
+        <title>Using <literal>\s</literal> and matching a literal dot in patterns</title>
+<screen>
+<emphasis role="comment"># no quotes</emphasis>
+save-hook ~h\ list-id:\\\\s*&lt;only\\\\.dot&gt;    '=archive'
+save-hook ~hlist-id:\\\\s*&lt;only\\\\.dot-here&gt; '=archive'
+
+<emphasis role="comment"># single quotes</emphasis>
+save-hook '~h list-id:\\s&lt;only\\.dot&gt;'        '=archive'
+save-hook ~h'list-id:\\s*&lt;only\\.dot-here&gt;'   '=archive'
+
+<emphasis role="comment"># Double quotes</emphasis>
+save-hook "~h list-id:\\\\s&lt;only\\\\.dot&gt;"    '=archive'
+save-hook ~h"list-id:\\\\s*&lt;only\\\\.dot&gt;"    '=archive'
+</screen>
+      </example>
         <para>
           You can force NeoMutt to treat
           <emphasis>EXPR</emphasis> as a simple substring instead of a regular
@@ -9389,7 +9438,7 @@ Limit to messages matching: ~d 19950120-19951031
 
 <screen>
 send-hook . 'unmy_hdr From:'
-send-hook ~C'^b@b\.b$' my_hdr from: c@c.c
+send-hook ~C'^b@b\\.b$' my_hdr from: c@c.c
 </screen>
 
       </example>
@@ -9430,7 +9479,7 @@ send-hook ~C'^b@b\.b$' my_hdr from: c@c.c
         </para>
 
 <screen>
-send-hook '~t ^user@work\.com$' 'my_hdr From: John Smith &lt;user@host&gt;'
+send-hook '~t ^user@work\\.com$' 'my_hdr From: John Smith &lt;user@host&gt;'
 </screen>
 
         <para>
@@ -9469,10 +9518,10 @@ folder-hook ^/home/user/Mail/bar "set sort=threads"
 folder-hook (^/home/user/Mail/bar) "set sort=threads"
 <emphasis role="comment"># This will expand to the default save folder for the alias "imap.example.com", which</emphasis>
 <emphasis role="comment"># is probably not what you want:</emphasis>
-folder-hook @imap.example.com "set sort=threads"
+folder-hook @imap\\.example\\.com "set sort=threads"
 <emphasis role="comment"># A workaround is to use parenthesis or a backslash:</emphasis>
-folder-hook (@imap.example.com) "set sort=threads"
-folder-hook '\@imap.example.com' "set sort=threads"
+folder-hook (@imap\\.example\\.com) "set sort=threads"
+folder-hook '\@imap\.example\.com' "set sort=threads"
 </screen>
 
         <para>
@@ -9844,7 +9893,7 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
       <cmdsynopsis>
         <command>subjectrx</command>
         <arg choice="plain">
-          <replaceable class="parameter">pattern</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">replacement</replaceable>
@@ -9855,13 +9904,13 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
             <replaceable class="parameter">*</replaceable>
           </arg>
           <arg choice="plain">
-            <replaceable class="parameter">pattern</replaceable>
+            <replaceable class="parameter">regex</replaceable>
           </arg>
         </group>
       </cmdsynopsis>
       <para>
         <literal>subjectrx</literal> specifies a regular expression
-        <quote>pattern</quote> which, if detected in a message subject, causes
+        which, if detected in a message subject, causes
         the subject to be replaced with the <quote>replacement</quote> value.
         The replacement is subject to substitutions in the same way as for the
         <link linkend="spam">spam</link> command: <literal>%L</literal> for the
@@ -9877,7 +9926,7 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
       </para>
       <para>
         <literal>unsubjectrx</literal> removes a given subjectrx from the
-        substitution list. If <literal>*</literal> is used as the pattern, all
+        substitution list. If <literal>*</literal> is used as the argument, all
         substitutions will be removed.
       </para>
       <example id="ex-subjectrx">
@@ -19858,11 +19907,11 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <group choice="req">
               <arg choice="plain" rep="repeat">
                 <option>-rx</option>
-                <replaceable class="parameter">expr</replaceable>
+                <replaceable class="parameter">regex</replaceable>
               </arg>
               <arg choice="plain" rep="repeat">
                 <option>-addr</option>
-                <replaceable class="parameter">expr</replaceable>
+                <replaceable class="parameter">address</replaceable>
               </arg>
             </group>
             <command>
@@ -19878,11 +19927,11 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               </arg>
               <arg choice="plain" rep="repeat">
                 <option>-rx</option>
-                <replaceable class="parameter">expr</replaceable>
+                <replaceable class="parameter">regex</replaceable>
               </arg>
               <arg choice="plain" rep="repeat">
                 <option>-addr</option>
-                <replaceable class="parameter">expr</replaceable>
+                <replaceable class="parameter">address</replaceable>
               </arg>
             </group>
           </cmdsynopsis>
@@ -19942,10 +19991,10 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="ignore">ignore</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">pattern</replaceable>
+              <replaceable class="parameter">string</replaceable>
             </arg>
             <arg choice="opt" rep="repeat">
-              <replaceable class="parameter">pattern</replaceable>
+              <replaceable class="parameter">string</replaceable>
             </arg>
             <command>
               <link linkend="ignore">unignore</link>
@@ -19955,7 +20004,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable>*</replaceable>
               </arg>
               <arg choice="plain" rep="repeat">
-                <replaceable>pattern</replaceable>
+                <replaceable>string</replaceable>
               </arg>
             </group>
           </cmdsynopsis>
@@ -20127,6 +20176,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <command>
               <link linkend="mbox-hook">mbox-hook</link>
             </command>
+            <arg choice="opt">
+              <replaceable class="parameter">-noregex</replaceable>
+            </arg>
             <arg choice="plain">
               <replaceable class="parameter">regex</replaceable>
             </arg>
@@ -20482,7 +20534,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="spam">spam</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">pattern</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">format</replaceable>
@@ -20495,7 +20547,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable class="parameter">*</replaceable>
               </arg>
               <arg choice="plain">
-                <replaceable class="parameter">pattern</replaceable>
+                <replaceable class="parameter">regex</replaceable>
               </arg>
             </group>
           </cmdsynopsis>
@@ -20506,7 +20558,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="display-munging">subjectrx</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">pattern</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">replacement</replaceable>
@@ -20519,7 +20571,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable class="parameter">*</replaceable>
               </arg>
               <arg choice="plain">
-                <replaceable class="parameter">pattern</replaceable>
+                <replaceable class="parameter">regex</replaceable>
               </arg>
             </group>
           </cmdsynopsis>

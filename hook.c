@@ -236,9 +236,9 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   else if (c_default_hook && (~data & MUTT_GLOBAL_HOOK) &&
            !(data & (MUTT_ACCOUNT_HOOK)) && (!WithCrypto || !(data & MUTT_CRYPT_HOOK)))
   {
-    /* At this stage remain only message-hooks, reply-hooks, send-hooks,
-     * send2-hooks, save-hooks, and fcc-hooks: All those allowing full
-     * patterns. If given a simple regex, we expand $default_hook.  */
+    /* At this stage only these hooks remain:
+     * fcc-, fcc-save-, index-format-, message-, reply-, save-, send- and send2-hook
+     * If given a plain string, or regex, we expand it using $default_hook. */
     mutt_check_simple(pattern, c_default_hook);
   }
 
