@@ -2,7 +2,7 @@
 
 [![Stars](https://img.shields.io/github/stars/neomutt/neomutt.svg?style=social&label=Stars)](https://github.com/neomutt/neomutt "Give us a Star")
 [![Twitter](https://img.shields.io/twitter/follow/NeoMutt_Org.svg?style=social&label=Follow)](https://twitter.com/NeoMutt_Org "Follow us on Twitter")
-[![Contributors](https://img.shields.io/badge/Contributors-253-orange.svg)](https://github.com/neomutt/neomutt/blob/main/AUTHORS.md "All of NeoMutt's Contributors")
+[![Contributors](https://img.shields.io/badge/Contributors-256-orange.svg)](https://github.com/neomutt/neomutt/blob/main/AUTHORS.md "All of NeoMutt's Contributors")
 [![Release](https://img.shields.io/github/release/neomutt/neomutt.svg)](https://github.com/neomutt/neomutt/releases/latest "Latest Release Notes")
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://github.com/neomutt/neomutt/blob/main/LICENSE.md "Copyright Statement")
 [![Code build](https://github.com/neomutt/neomutt/actions/workflows/build-and-test.yml/badge.svg?branch=main&event=push)](https://github.com/neomutt/neomutt/actions/workflows/build-and-test.yml "Latest Automatic Code Build")
