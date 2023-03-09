@@ -3,7 +3,7 @@ root = true
 [*]
 end_of_line = lf
 insert_final_newline = true
-charset = utf8
+charset = utf-8
 trim_trailing_whitespace = false
 
 # those two settings may be overwritten below.
