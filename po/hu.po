@@ -7152,9 +7152,8 @@ msgid "Decrypting message..."
 msgstr "Üzenet dekódolása folyamatban..."
 
 #: postpone/postpone.c:547
-#, fuzzy
 msgid "Could not decrypt postponed message"
-msgstr "A PGP üzenetet nem tudtam dekódolni"
+msgstr "Elhalasztott levél dekódolása sikertelen"
 
 #: postpone/postpone.c:678 postpone/postpone.c:689
 msgid "No postponed messages"
