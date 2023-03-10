@@ -69,13 +69,14 @@ struct Command
 /* command registry functions */
 #define COMMANDS_REGISTER(cmds) commands_register(cmds, mutt_array_size(cmds))
 
-void            mutt_commands_init     (void);
-void            commands_register      (const struct Command *cmds, const size_t num_cmds);
-void            mutt_commands_free     (void);
-size_t          mutt_commands_array    (struct Command **first);
-struct Command *mutt_command_get       (const char *s);
+struct Command *command_get       (const char *s);
+
 #ifdef USE_LUA
-void            mutt_commands_apply    (void *data, void (*application)(void *, const struct Command *));
+void            commands_apply    (void *data, void (*application)(void *, const struct Command *));
 #endif
+size_t          commands_array    (struct Command **first);
+void            commands_free     (void);
+void            commands_init     (void);
+void            commands_register (const struct Command *cmds, const size_t num_cmds);
 
 #endif /* MUTT_CORE_COMMAND_H */

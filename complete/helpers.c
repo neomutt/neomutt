@@ -185,7 +185,7 @@ int mutt_command_complete(struct CompletionData *cd, char *buf, size_t buflen,
       memset(cd->completed, 0, sizeof(cd->completed));
 
       struct Command *c = NULL;
-      for (size_t num = 0, size = mutt_commands_array(&c); num < size; num++)
+      for (size_t num = 0, size = commands_array(&c); num < size; num++)
         candidate(cd, cd->user_typed, c[num].name, cd->completed, sizeof(cd->completed));
       matches_ensure_morespace(cd, cd->num_matched);
       cd->match_list[cd->num_matched++] = cd->user_typed;

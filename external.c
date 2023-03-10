@@ -76,9 +76,9 @@
 static struct Buffer LastSaveFolder = { 0 };
 
 /**
- * mutt_commands_cleanup - Clean up commands globals
+ * commands_cleanup - Clean up commands globals
  */
-void mutt_commands_cleanup(void)
+void commands_cleanup(void)
 {
   mutt_buffer_dealloc(&LastSaveFolder);
 }

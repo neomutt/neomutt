@@ -111,7 +111,7 @@ static int lua_mutt_call(lua_State *l)
     return -1;
   }
 
-  cmd = mutt_command_get(lua_tostring(l, 1));
+  cmd = command_get(lua_tostring(l, 1));
   if (!cmd)
   {
     luaL_error(l, "Error command %s not found.", lua_tostring(l, 1));
@@ -429,7 +429,7 @@ static void luaopen_mutt(lua_State *l)
 {
   luaL_requiref(l, "mutt", luaopen_mutt_decl, 1);
   (void) luaL_dostring(l, "mutt.command = {}");
-  mutt_commands_apply((void *) l, &lua_expose_command);
+  commands_apply((void *) l, &lua_expose_command);
 }
 
 /**

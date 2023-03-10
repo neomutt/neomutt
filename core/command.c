@@ -60,31 +60,31 @@ void commands_register(const struct Command *cmds, const size_t num_cmds)
 }
 
 /**
- * mutt_commands_free - Free Commands array
+ * commands_free - Free Commands array
  */
-void mutt_commands_free(void)
+void commands_free(void)
 {
   ARRAY_FREE(&commands);
 }
 
 /**
- * mutt_commands_array - Get Commands array
+ * commands_array - Get Commands array
  * @param first Set to first element of Commands array
  * @retval num Size of Commands array
  */
-size_t mutt_commands_array(struct Command **first)
+size_t commands_array(struct Command **first)
 {
   *first = ARRAY_FIRST(&commands);
   return ARRAY_SIZE(&commands);
 }
 
 /**
- * mutt_command_get - Get a Command by its name
+ * command_get - Get a Command by its name
  * @param s Command string to lookup
  * @retval ptr  Success, Command
  * @retval NULL Error, no such command
  */
-struct Command *mutt_command_get(const char *s)
+struct Command *command_get(const char *s)
 {
   struct Command *cmd = NULL;
   ARRAY_FOREACH(cmd, &commands)
@@ -97,13 +97,13 @@ struct Command *mutt_command_get(const char *s)
 
 #ifdef USE_LUA
 /**
- * mutt_commands_apply - Run a callback function on every Command
+ * commands_apply - Run a callback function on every Command
  * @param data        Data to pass to the callback function
  * @param application Callback function
  *
  * This is used by Lua to expose all of NeoMutt's Commands.
  */
-void mutt_commands_apply(void *data, void (*application)(void *, const struct Command *))
+void commands_apply(void *data, void (*application)(void *, const struct Command *))
 {
   struct Command *cmd = NULL;
   ARRAY_FOREACH(cmd, &commands)

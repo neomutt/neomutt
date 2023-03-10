@@ -128,9 +128,9 @@ static const struct Command mutt_commands[] = {
 };
 
 /**
- * mutt_commands_init - Initialize commands array and register default commands
+ * commands_init - Initialize commands array and register default commands
  */
-void mutt_commands_init(void)
+void commands_init(void)
 {
   COMMANDS_REGISTER(mutt_commands);
 }
