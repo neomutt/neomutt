@@ -52,7 +52,6 @@
 #include "command_parse.h"
 #include "hook.h"
 #include "keymap.h"
-#include "mutt_commands.h"
 #include "mutt_globals.h"
 #ifdef USE_LUA
 #include "mutt_lua.h"

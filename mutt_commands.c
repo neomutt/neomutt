@@ -28,8 +28,6 @@
  */
 
 #include "config.h"
-#include <stddef.h>
-#include <string.h>
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -129,93 +127,10 @@ static const struct Command mutt_commands[] = {
   // clang-format on
 };
 
-ARRAY_HEAD(CommandArray, struct Command);
-struct CommandArray commands = ARRAY_HEAD_INITIALIZER;
-
 /**
  * mutt_commands_init - Initialize commands array and register default commands
  */
 void mutt_commands_init(void)
 {
-  ARRAY_RESERVE(&commands, 100);
   COMMANDS_REGISTER(mutt_commands);
 }
-
-/**
- * commands_cmp - Compare two commands by name - Implements ::sort_t - @ingroup sort_api
- */
-static int commands_cmp(const void *a, const void *b)
-{
-  struct Command x = *(const struct Command *) a;
-  struct Command y = *(const struct Command *) b;
-
-  return strcmp(x.name, y.name);
-}
-
-/**
- * commands_register - Add commands to Commands array
- * @param cmds     Array of Commands
- * @param num_cmds Number of Commands in the Array
- */
-void commands_register(const struct Command *cmds, const size_t num_cmds)
-{
-  for (int i = 0; i < num_cmds; i++)
-  {
-    ARRAY_ADD(&commands, cmds[i]);
-  }
-  ARRAY_SORT(&commands, commands_cmp);
-}
-
-/**
- * mutt_commands_free - Free Commands array
- */
-void mutt_commands_free(void)
-{
-  ARRAY_FREE(&commands);
-}
-
-/**
- * mutt_commands_array - Get Commands array
- * @param first Set to first element of Commands array
- * @retval num Size of Commands array
- */
-size_t mutt_commands_array(struct Command **first)
-{
-  *first = ARRAY_FIRST(&commands);
-  return ARRAY_SIZE(&commands);
-}
-
-/**
- * mutt_command_get - Get a Command by its name
- * @param s Command string to lookup
- * @retval ptr  Success, Command
- * @retval NULL Error, no such command
- */
-struct Command *mutt_command_get(const char *s)
-{
-  struct Command *cmd = NULL;
-  ARRAY_FOREACH(cmd, &commands)
-  {
-    if (mutt_str_equal(s, cmd->name))
-      return cmd;
-  }
-  return NULL;
-}
-
-#ifdef USE_LUA
-/**
- * mutt_commands_apply - Run a callback function on every Command
- * @param data        Data to pass to the callback function
- * @param application Callback function
- *
- * This is used by Lua to expose all of NeoMutt's Commands.
- */
-void mutt_commands_apply(void *data, void (*application)(void *, const struct Command *))
-{
-  struct Command *cmd = NULL;
-  ARRAY_FOREACH(cmd, &commands)
-  {
-    application(data, cmd);
-  }
-}
-#endif

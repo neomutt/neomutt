@@ -23,9 +23,10 @@
 #ifndef MUTT_CORE_COMMAND_H
 #define MUTT_CORE_COMMAND_H
 
+#include "config.h"
+#include <stddef.h>
 #include <stdint.h>
-
-struct Buffer;
+#include "mutt/lib.h"
 
 /**
  * enum CommandResult - Error codes for command_t parse functions
@@ -64,5 +65,17 @@ struct Command
 
   intptr_t data; ///< Data or flags to pass to the command
 };
+
+/* command registry functions */
+#define COMMANDS_REGISTER(cmds) commands_register(cmds, mutt_array_size(cmds))
+
+void            mutt_commands_init     (void);
+void            commands_register      (const struct Command *cmds, const size_t num_cmds);
+void            mutt_commands_free     (void);
+size_t          mutt_commands_array    (struct Command **first);
+struct Command *mutt_command_get       (const char *s);
+#ifdef USE_LUA
+void            mutt_commands_apply    (void *data, void (*application)(void *, const struct Command *));
+#endif
 
 #endif /* MUTT_CORE_COMMAND_H */

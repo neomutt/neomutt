@@ -23,12 +23,6 @@
 #ifndef MUTT_MUTT_COMMANDS_H
 #define MUTT_MUTT_COMMANDS_H
 
-#include "config.h"
-#include <stddef.h>
-#include "mutt/lib.h"
-
-struct Command;
-
 /**
  * enum MuttSetCommand - Flags for parse_set()
  */
@@ -42,17 +36,5 @@ enum MuttSetCommand
 
 /* parameter to parse_mailboxes */
 #define MUTT_NAMED   (1 << 0)
-
-/* command registry functions */
-#define COMMANDS_REGISTER(cmds) commands_register(cmds, mutt_array_size(cmds))
-
-void            mutt_commands_init     (void);
-void            commands_register      (const struct Command *cmds, const size_t num_cmds);
-void            mutt_commands_free     (void);
-size_t          mutt_commands_array    (struct Command **first);
-struct Command *mutt_command_get       (const char *s);
-#ifdef USE_LUA
-void            mutt_commands_apply    (void *data, void (*application)(void *, const struct Command *));
-#endif
 
 #endif /* MUTT_MUTT_COMMANDS_H */

@@ -50,7 +50,6 @@
 #include "format_flags.h"
 #include "hdrline.h"
 #include "init.h"
-#include "mutt_commands.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
