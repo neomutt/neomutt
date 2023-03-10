@@ -47,7 +47,6 @@
 
 // clang-format off
 static enum CommandResult icmd_bind   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-static enum CommandResult icmd_set    (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 // clang-format on
 
 /**
@@ -59,7 +58,6 @@ static const struct ICommand ICommandList[] = {
   // clang-format off
   { "bind",     icmd_bind,     0 },
   { "macro",    icmd_bind,     1 },
-  { "set",      icmd_set,      0 },
   { NULL, NULL, 0 },
   // clang-format on
 };
@@ -300,49 +298,5 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
   pview.mode = PAGER_MODE_OTHER;
 
   mutt_do_pager(&pview, NULL);
-  return MUTT_CMD_SUCCESS;
-}
-
-/**
- * icmd_set - Parse 'set' command to display config - Implements ICommand::parse()
- */
-static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
-                                   intptr_t data, struct Buffer *err)
-{
-  const bool set = mutt_str_equal(s->data, "set");
-  const bool set_all = mutt_str_equal(s->data, "set all");
-
-  if (!set && !set_all)
-    return MUTT_CMD_ERROR;
-
-  char tempfile[PATH_MAX] = { 0 };
-  mutt_mktemp(tempfile, sizeof(tempfile));
-
-  FILE *fp_out = mutt_file_fopen(tempfile, "w");
-  if (!fp_out)
-  {
-    // L10N: '%s' is the file name of the temporary file
-    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
-    return MUTT_CMD_ERROR;
-  }
-
-  if (set_all)
-    dump_config(NeoMutt->sub->cs, CS_DUMP_NO_FLAGS, fp_out);
-  else
-    dump_config(NeoMutt->sub->cs, CS_DUMP_ONLY_CHANGED, fp_out);
-
-  mutt_file_fclose(&fp_out);
-
-  struct PagerData pdata = { 0 };
-  struct PagerView pview = { &pdata };
-
-  pdata.fname = tempfile;
-
-  pview.banner = "set";
-  pview.flags = MUTT_PAGER_NO_FLAGS;
-  pview.mode = PAGER_MODE_OTHER;
-
-  mutt_do_pager(&pview, NULL);
-
   return MUTT_CMD_SUCCESS;
 }

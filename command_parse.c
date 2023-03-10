@@ -719,6 +719,50 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
+ * set_dump - Parse 'set' command to display config - Implements Command::parse() - @ingroup command_parse
+ */
+static enum CommandResult set_dump(struct Buffer *buf, struct Buffer *s,
+                                   intptr_t data, struct Buffer *err)
+{
+  const bool set = mutt_str_equal(s->data, "set");
+  const bool set_all = mutt_str_equal(s->data, "set all");
+
+  if (!set && !set_all)
+    return MUTT_CMD_ERROR;
+
+  char tempfile[PATH_MAX] = { 0 };
+  mutt_mktemp(tempfile, sizeof(tempfile));
+
+  FILE *fp_out = mutt_file_fopen(tempfile, "w");
+  if (!fp_out)
+  {
+    // L10N: '%s' is the file name of the temporary file
+    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
+    return MUTT_CMD_ERROR;
+  }
+
+  if (set_all)
+    dump_config(NeoMutt->sub->cs, CS_DUMP_NO_FLAGS, fp_out);
+  else
+    dump_config(NeoMutt->sub->cs, CS_DUMP_ONLY_CHANGED, fp_out);
+
+  mutt_file_fclose(&fp_out);
+
+  struct PagerData pdata = { 0 };
+  struct PagerView pview = { &pdata };
+
+  pdata.fname = tempfile;
+
+  pview.banner = "set";
+  pview.flags = MUTT_PAGER_NO_FLAGS;
+  pview.mode = PAGER_MODE_OTHER;
+
+  mutt_do_pager(&pview, NULL);
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
  * parse_set - Parse the 'set' family of commands - Implements Command::parse() - @ingroup command_parse
  *
  * This is used by 'reset', 'set', 'toggle' and 'unset'.
@@ -728,6 +772,14 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
 {
   /* The order must match `enum MuttSetCommand` */
   static const char *set_commands[] = { "set", "toggle", "unset", "reset" };
+
+  if (StartupComplete)
+  {
+    if (set_dump(buf, s, data, err) == MUTT_CMD_SUCCESS)
+      return MUTT_CMD_SUCCESS;
+    if (!mutt_buffer_is_empty(err))
+      return MUTT_CMD_ERROR;
+  }
 
   int rc = 0;
 
