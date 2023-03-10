@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-02-25 00:19+0000\n"
+"POT-Creation-Date: 2023-03-10 10:58+0000\n"
 "PO-Revision-Date: 2007-11-07 10:39+1100\n"
 "Last-Translator: Ronny Haryanto <ronny@haryan.to>\n"
 "Language-Team: Indonesian <web@linux.or.id>\n"
@@ -132,11 +132,11 @@ msgstr "Pilih"
 msgid "Help"
 msgstr "Bantuan"
 
-#: alias/dlg_alias.c:314
+#: alias/dlg_alias.c:318
 msgid "You have no aliases"
 msgstr "Anda tidak punya kumpulan alias"
 
-#: alias/dlg_alias.c:319
+#: alias/dlg_alias.c:323
 msgid "Aliases"
 msgstr "Kumpulan alias"
 
@@ -156,20 +156,20 @@ msgstr "Buat Alias"
 msgid "Search"
 msgstr "Cari"
 
-#: alias/dlg_query.c:274
+#: alias/dlg_query.c:279
 msgid "Waiting for response..."
 msgstr "Menunggu respons..."
 
-#: alias/dlg_query.c:357
+#: alias/dlg_query.c:362
 #, fuzzy
 msgid "Query"
 msgstr "Query: "
 
-#: alias/dlg_query.c:449 alias/dlg_query.c:537
+#: alias/dlg_query.c:454 alias/dlg_query.c:531
 msgid "Query command not defined"
 msgstr "Perintah query tidak diketahui"
 
-#: alias/dlg_query.c:546 alias/functions.c:193 alias/functions.c:212
+#: alias/dlg_query.c:540 alias/functions.c:193 alias/functions.c:212
 msgid "Query: "
 msgstr "Query: "
 
@@ -289,8 +289,8 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "'compose' di file mailcap membutuhkan %%s"
 
 #: attach/mutt_attach.c:159 attach/mutt_attach.c:298 compmbox/compress.c:343
-#: compose/functions.c:1716 gui/curs_lib.c:320 index/dlg_index.c:1184
-#: index/dlg_index.c:1230 pager/dlg_pager.c:464 pager/do_pager.c:171
+#: compose/functions.c:1716 gui/curs_lib.c:320 index/dlg_index.c:1185
+#: index/dlg_index.c:1231 pager/dlg_pager.c:464 pager/do_pager.c:171
 #: pager/message.c:336 send/sendlib.c:572
 #, c-format
 msgid "Error running \"%s\""
@@ -421,14 +421,14 @@ msgstr "Tidak dapat men-decrypt surat ini"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:75 main.c:926
+#: autocrypt/autocrypt.c:75 main.c:929
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s tidak ada. Buat?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:930
+#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:933
 #: nntp/newsrc.c:1117
 #, c-format
 msgid "Can't create %s: %s"
@@ -628,7 +628,7 @@ msgstr ""
 
 #. L10N: GPGME was unable to generate a key for some reason.
 #. %s is the error message returned by GPGME.
-#: autocrypt/gpgme.c:185 autocrypt/gpgme.c:204
+#: autocrypt/gpgme.c:186 autocrypt/gpgme.c:205
 #, fuzzy, c-format
 msgid "Error creating autocrypt key: %s"
 msgstr "Error saat mengambil informasi tentang kunci: "
@@ -637,7 +637,7 @@ msgstr "Error saat mengambil informasi tentang kunci: "
 #. this is displayed if the key was revoked/expired/disabled/invalid
 #. or can't be used for both signing and encryption.
 #. %s is the key fingerprint.
-#: autocrypt/gpgme.c:251
+#: autocrypt/gpgme.c:253
 #, c-format
 msgid "The key %s is not usable for autocrypt"
 msgstr ""
@@ -645,19 +645,19 @@ msgstr ""
 #. L10N: During autocrypt account creation, this prompt asks the
 #. user whether they want to create a new GPG key for the account,
 #. or select an existing account from the keyring.
-#: autocrypt/gpgme.c:283
+#: autocrypt/gpgme.c:285
 msgid "(c)reate new, or (s)elect existing GPG key?"
 msgstr ""
 
 #. L10N: The letters corresponding to the
 #. "(c)reate new, or (s)elect existing GPG key?" prompt.
-#: autocrypt/gpgme.c:286
+#: autocrypt/gpgme.c:288
 msgid "cs"
 msgstr ""
 
 #. L10N: During autocrypt account creation, if selecting an existing key fails
 #. for some reason, we prompt to see if they want to create a key instead.
-#: autocrypt/gpgme.c:298
+#: autocrypt/gpgme.c:300
 msgid "Create a new GPG key for this account, instead?"
 msgstr ""
 
@@ -838,18 +838,18 @@ msgstr "Berlangganan ke %s..."
 msgid "Unsubscribe pattern: "
 msgstr "Berhenti langganan dari %s"
 
-#: color/command.c:155
+#: color/command.c:156
 #, c-format
 msgid "%s: color not supported by term"
 msgstr "%s: warna tidak didukung oleh term"
 
-#: color/command.c:162
+#: color/command.c:163
 #, c-format
 msgid "%s: no such color"
 msgstr "%s: tidak ada warna begitu"
 
-#: color/command.c:221 color/command.c:263 color/command.c:315
-#: color/command.c:387 color/command.c:542 command_parse.c:348
+#: color/command.c:222 color/command.c:264 color/command.c:316
+#: color/command.c:388 color/command.c:543 command_parse.c:348
 #: command_parse.c:370 command_parse.c:507 command_parse.c:524
 #: command_parse.c:1109 command_parse.c:1196 hook.c:101 hook.c:157 hook.c:166
 #: hook.c:180 hook.c:429 hook.c:445 keymap.c:1191 score.c:95 subjectrx.c:72
@@ -858,18 +858,18 @@ msgstr "%s: tidak ada warna begitu"
 msgid "%s: too few arguments"
 msgstr "%s: parameternya kurang"
 
-#: color/command.c:243
+#: color/command.c:244
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: tidak ada atribut begitu"
 
-#: color/command.c:373 color/command.c:396 color/command.c:407
-#: color/command.c:451
+#: color/command.c:374 color/command.c:397 color/command.c:408
+#: color/command.c:452
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: tidak ada objek begitu"
 
-#: color/command.c:574 color/command.c:633 command_parse.c:394
+#: color/command.c:575 color/command.c:634 command_parse.c:394
 #: command_parse.c:1386 command_parse.c:1722 hook.c:106 hook.c:187 hook.c:452
 #: keymap.c:1123 keymap.c:1296 keymap.c:1458 keymap.c:1539 mutt_lua.c:515
 #: score.c:103
@@ -877,11 +877,11 @@ msgstr "%s: tidak ada objek begitu"
 msgid "%s: too many arguments"
 msgstr "%s: parameternya terlalu banyak"
 
-#: color/command.c:592
+#: color/command.c:593
 msgid "default colors not supported"
 msgstr "warna default tidak didukung"
 
-#: color/command.c:623
+#: color/command.c:624
 #, fuzzy, c-format
 msgid "%s: invalid number: %s"
 msgstr "%d: bukan nomer surat yang betul.\n"
@@ -1422,7 +1422,7 @@ msgstr "Buka kotak surat untuk mengambil lampiran"
 msgid "Open newsgroup to attach message from"
 msgstr "Buka kotak surat untuk mengambil lampiran"
 
-#: compose/functions.c:753 main.c:1361
+#: compose/functions.c:753 main.c:1364
 #, fuzzy, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Tidak bisa mengunci kotak surat!"
@@ -1671,7 +1671,7 @@ msgstr "Bulan relatif tidak benar: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Tidak tanggal: %s"
 
-#: config/set.c:104 init.c:969
+#: config/set.c:104 init.c:978
 #, c-format
 msgid "No such variable: %s"
 msgstr ""
@@ -2076,13 +2076,13 @@ msgstr "Tunnel ke %s menghasilkan error %d (%s)"
 msgid "%s isn't a regular file"
 msgstr "%s bukan file biasa"
 
-#: copy.c:720
+#: copy.c:721
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
 msgstr[0] ""
 
-#: copy.c:802
+#: copy.c:803
 msgid "No decryption engine available for message"
 msgstr ""
 
@@ -2192,48 +2192,48 @@ msgid "PGP already selected. Clear and continue?"
 msgstr "PGP sudah dipilih. Bersihkan & lanjut?"
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:91
+#: envelope/window.c:92
 msgid "From: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:93 send/send.c:276
+#: envelope/window.c:94 send/send.c:276
 msgid "To: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:95 send/send.c:283
+#: envelope/window.c:96 send/send.c:283
 msgid "Cc: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:97 send/send.c:290
+#: envelope/window.c:98 send/send.c:290
 msgid "Bcc: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:99 send/send.c:336
+#: envelope/window.c:100 send/send.c:336
 msgid "Subject: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:101
+#: envelope/window.c:102
 #, fuzzy
 msgid "Reply-To: "
 msgstr "Balas"
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:103
+#: envelope/window.c:104
 msgid "Fcc: "
 msgstr ""
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
-#: envelope/window.c:106
+#: envelope/window.c:107
 msgid "Mix: "
 msgstr ""
 
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
-#: envelope/window.c:109
+#: envelope/window.c:110
 msgid "Security: "
 msgstr ""
 
@@ -2242,46 +2242,46 @@ msgstr ""
 #. other compose menu fields.  However, if possible, it should not be longer
 #. than the other compose menu fields.  Since it shares the row with "Encrypt
 #. with:", it should not be longer than 15-20 character cells.
-#: envelope/window.c:115 ncrypt/crypt_gpgme.c:3831 ncrypt/pgp.c:2000
+#: envelope/window.c:116 ncrypt/crypt_gpgme.c:3831 ncrypt/pgp.c:2000
 #: ncrypt/smime.c:2208
 msgid "Sign as: "
 msgstr "Tandatangani sebagai: "
 
 #. L10N: The compose menu autocrypt line
-#: envelope/window.c:118
+#: envelope/window.c:119
 msgid "Autocrypt: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:122
+#: envelope/window.c:123
 msgid "Newsgroups: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:124
+#: envelope/window.c:125
 #, fuzzy
 msgid "Followup-To: "
 msgstr "Balas ke %s%s?"
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:126
+#: envelope/window.c:127
 #, fuzzy
 msgid "X-Comment-To: "
 msgstr "edit kolom Reply-To"
 
-#: envelope/window.c:128
+#: envelope/window.c:129
 msgid "Headers: "
 msgstr ""
 
 #. L10N: Autocrypt recommendation flag: off.
 #. This is displayed when Autocrypt is turned off.
-#: envelope/window.c:135 envelope/window.c:480
+#: envelope/window.c:136 envelope/window.c:481
 msgid "Off"
 msgstr ""
 
 #. L10N: Autocrypt recommendation flag: no.
 #. This is displayed when Autocrypt cannot encrypt to the recipients.
-#: envelope/window.c:138
+#: envelope/window.c:139
 msgid "No"
 msgstr ""
 
@@ -2289,7 +2289,7 @@ msgstr ""
 #. This is displayed when Autocrypt believes encryption should not be used.
 #. This might occur if one of the recipient Autocrypt Keys has not been
 #. used recently, or if the only key available is a Gossip Header key.
-#: envelope/window.c:143
+#: envelope/window.c:144
 msgid "Discouraged"
 msgstr ""
 
@@ -2297,73 +2297,73 @@ msgstr ""
 #. This is displayed when Autocrypt believes encryption is possible, but
 #. leaves enabling it up to the sender.  Probably because "prefer encrypt"
 #. is not set in both the sender and recipient keys.
-#: envelope/window.c:148
+#: envelope/window.c:149
 msgid "Available"
 msgstr ""
 
 #. L10N: Autocrypt recommendation flag: yes.
 #. This is displayed when Autocrypt would normally enable encryption
 #. automatically.
-#: envelope/window.c:152
+#: envelope/window.c:153
 #, fuzzy
 msgid "Yes"
 msgstr "ya"
 
-#: envelope/window.c:403
+#: envelope/window.c:404
 msgid "Sign, Encrypt"
 msgstr "Tandatangan, Enkrip"
 
-#: envelope/window.c:408 envelope/window.c:475
+#: envelope/window.c:409 envelope/window.c:476
 msgid "Encrypt"
 msgstr "Enkrip"
 
-#: envelope/window.c:413
+#: envelope/window.c:414
 msgid "Sign"
 msgstr "Tandatangan"
 
-#: envelope/window.c:419
+#: envelope/window.c:420
 msgid "None"
 msgstr ""
 
-#: envelope/window.c:429
+#: envelope/window.c:430
 #, fuzzy
 msgid " (inline PGP)"
 msgstr " (inline)"
 
-#: envelope/window.c:431
+#: envelope/window.c:432
 msgid " (PGP/MIME)"
 msgstr " (PGP/MIME)"
 
-#: envelope/window.c:434
+#: envelope/window.c:435
 #, fuzzy
 msgid " (S/MIME)"
 msgstr " (PGP/MIME)"
 
-#: envelope/window.c:439
+#: envelope/window.c:440
 msgid " (OppEnc mode)"
 msgstr ""
 
-#: envelope/window.c:448 envelope/window.c:456
+#: envelope/window.c:449 envelope/window.c:457
 msgid "<default>"
 msgstr "<default>"
 
-#: envelope/window.c:463
+#: envelope/window.c:464
 msgid "Encrypt with: "
 msgstr "Enkrip dengan: "
 
 #. L10N: The autocrypt compose menu Recommendation field.
 #. Displays the output of the recommendation engine
 #. (Off, No, Discouraged, Available, Yes)
-#: envelope/window.c:486
+#: envelope/window.c:487
 #, fuzzy
 msgid "Recommendation: "
 msgstr "edit kolom Reply-To"
 
-#: envelope/window.c:510
+#: envelope/window.c:511
 msgid "<no chain defined>"
 msgstr ""
 
-#: envelope/window.c:577
+#: envelope/window.c:595
 #, c-format
 msgid "(+%d more)"
 msgid_plural "(+%d more)"
@@ -2965,7 +2965,7 @@ msgstr "Mengambil surat..."
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Index dari surat tidak benar. Cobalah membuka kembali kotak surat tsb."
 
-#: imap/msn.c:48 mutt/buffer.c:112 mutt/buffer.c:285 mutt/memory.c:58
+#: imap/msn.c:48 mutt/buffer.c:112 mutt/buffer.c:323 mutt/memory.c:58
 #: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1015 mx.c:1226
 msgid "Out of memory"
 msgstr "Buset, memory abis"
@@ -3011,36 +3011,36 @@ msgstr "Balas ke %s%s?"
 msgid "%s: Operation not permitted by ACL"
 msgstr "Tidak dapat %s: tidak diijinkan oleh ACL"
 
-#: index/dlg_index.c:746
+#: index/dlg_index.c:747
 msgid "Failed to create query, aborting"
 msgstr ""
 
-#: index/dlg_index.c:791 muttlib.c:1399 mx.c:221 mx.c:359
+#: index/dlg_index.c:792 muttlib.c:1399 mx.c:221 mx.c:359
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s bukan kotak surat"
 
-#: index/dlg_index.c:1164
+#: index/dlg_index.c:1165
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Kotak surat diobok-obok oleh program lain. Tanda-tanda surat mungkin tidak tepat."
 
-#: index/dlg_index.c:1173 pager/dlg_pager.c:438
+#: index/dlg_index.c:1174 pager/dlg_pager.c:438
 msgid "New mail in this mailbox"
 msgstr "Surat baru di kotak ini"
 
-#: index/dlg_index.c:1192
+#: index/dlg_index.c:1193
 msgid "Mailbox was externally modified"
 msgstr "Kotak surat diobok-obok oleh program lain"
 
-#: index/dlg_index.c:1303 index/functions.c:2793
+#: index/dlg_index.c:1304 index/functions.c:2793
 msgid "No mailbox is open"
 msgstr "Tidak ada kotak surat yang terbuka"
 
-#: index/dlg_index.c:1310
+#: index/dlg_index.c:1311
 msgid "No tagged messages"
 msgstr "Tidak ada surat yang ditandai"
 
-#: index/dlg_index.c:1314 index/functions.c:680
+#: index/dlg_index.c:1315 index/functions.c:680
 msgid "Nothing to do"
 msgstr "Gak ngapa-ngapain"
 
@@ -3415,12 +3415,12 @@ msgstr "Error di baris perintah: %s"
 msgid "unable to determine nodename via uname()"
 msgstr "tidak bisa menentukan username"
 
-#: init.c:878
+#: init.c:887
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: perintah tidak dikenali"
 
-#: init.c:933
+#: init.c:942
 #, c-format
 msgid "Config variable '%s' is deprecated"
 msgstr ""
@@ -3770,37 +3770,37 @@ msgstr "tidak bisa menentukan home direktori"
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Error: IDN '%s' tidak benar"
 
-#: main.c:981
+#: main.c:984
 msgid "Failed to parse mailto: link"
 msgstr ""
 
-#: main.c:994 main.c:1251 send/send.c:296 send/send.c:2771 send/send.c:2775
+#: main.c:997 main.c:1254 send/send.c:296 send/send.c:2771 send/send.c:2775
 msgid "No recipients specified"
 msgstr "Tidak ada penerima yang disebutkan"
 
-#: main.c:1023
+#: main.c:1026
 msgid "Can't use -E flag with stdin"
 msgstr ""
 
-#: main.c:1107
+#: main.c:1110
 #, fuzzy, c-format
 msgid "Can't parse message template: %s"
 msgstr "Tidak bisa membuka file surat: %s"
 
-#: main.c:1173 mutt_header.c:343
+#: main.c:1176 mutt_header.c:343
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: tidak bisa melampirkan file"
 
-#: main.c:1265
+#: main.c:1268
 msgid "No mailbox with new mail"
 msgstr "Tidak ada kotak surat dengan surat baru"
 
-#: main.c:1290
+#: main.c:1293
 msgid "No incoming mailboxes defined"
 msgstr "Tidak ada kotak surat incoming yang didefinisikan"
 
-#: main.c:1342
+#: main.c:1345
 msgid "Mailbox is empty"
 msgstr "Kotak surat kosong"
 
@@ -4642,7 +4642,7 @@ msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Akhir data yang dienkripsi dg PGP/MIME --]\n"
 
 #: ncrypt/crypt_gpgme.c:2724 ncrypt/pgp.c:672 ncrypt/pgp.c:725
-#: ncrypt/pgp.c:1297 postpone/postpone.c:555
+#: ncrypt/pgp.c:1297
 msgid "Could not decrypt PGP message"
 msgstr "Tidak bisa mendekripsi surat PGP"
 
@@ -5124,7 +5124,7 @@ msgstr ""
 "\n"
 
 #: ncrypt/pgp.c:1092 ncrypt/pgp.c:1114 ncrypt/smime.c:1954
-#: postpone/postpone.c:433 postpone/postpone.c:461
+#: postpone/postpone.c:438
 msgid "Decryption failed"
 msgstr "Dekripsi gagal"
 
@@ -7406,11 +7406,16 @@ msgstr "S/MIME header tidak betul"
 msgid "Illegal crypto header"
 msgstr "Header crypto tidak betul"
 
-#: postpone/postpone.c:428 postpone/postpone.c:456 postpone/postpone.c:552
+#: postpone/postpone.c:433 postpone/postpone.c:539
 msgid "Decrypting message..."
 msgstr "Mendekripsi surat..."
 
-#: postpone/postpone.c:684 postpone/postpone.c:695
+#: postpone/postpone.c:547
+#, fuzzy
+msgid "Could not decrypt postponed message"
+msgstr "Tidak bisa mendekripsi surat PGP"
+
+#: postpone/postpone.c:678 postpone/postpone.c:689
 msgid "No postponed messages"
 msgstr "Tidak ada surat yg ditunda"
 
@@ -7697,7 +7702,7 @@ msgstr "Tidak bisa mengirim surat"
 msgid "Could not open %s"
 msgstr "Tidak bisa membuka %s"
 
-#: send/sendlib.c:942
+#: send/sendlib.c:939
 #, c-format
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "IDN %s pada saat mempersiapkan resent-from tidak benar"

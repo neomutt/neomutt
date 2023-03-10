@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-02-25 00:19+0000\n"
+"POT-Creation-Date: 2023-03-10 10:58+0000\n"
 "PO-Revision-Date: 2016-11-23 21:20+0100\n"
 "Last-Translator: František Hájik <ferko.hajik@gmail.com>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -132,11 +132,11 @@ msgstr "Označiť"
 msgid "Help"
 msgstr "Nápoveda"
 
-#: alias/dlg_alias.c:314
+#: alias/dlg_alias.c:318
 msgid "You have no aliases"
 msgstr "Nemáte žiadne aliasy"
 
-#: alias/dlg_alias.c:319
+#: alias/dlg_alias.c:323
 msgid "Aliases"
 msgstr "Aliasy"
 
@@ -156,19 +156,19 @@ msgstr "Urobiť Alias"
 msgid "Search"
 msgstr "Hľadať"
 
-#: alias/dlg_query.c:274
+#: alias/dlg_query.c:279
 msgid "Waiting for response..."
 msgstr "Čakám na odpoveď…"
 
-#: alias/dlg_query.c:357
+#: alias/dlg_query.c:362
 msgid "Query"
 msgstr "Otázka"
 
-#: alias/dlg_query.c:449 alias/dlg_query.c:537
+#: alias/dlg_query.c:454 alias/dlg_query.c:531
 msgid "Query command not defined"
 msgstr "Príkaz dotazu nie je definovaný"
 
-#: alias/dlg_query.c:546 alias/functions.c:193 alias/functions.c:212
+#: alias/dlg_query.c:540 alias/functions.c:193 alias/functions.c:212
 msgid "Query: "
 msgstr "Otázka: "
 
@@ -287,8 +287,8 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Zostavovacia položka mailcap-u vyžaduje %%s"
 
 #: attach/mutt_attach.c:159 attach/mutt_attach.c:298 compmbox/compress.c:343
-#: compose/functions.c:1716 gui/curs_lib.c:320 index/dlg_index.c:1184
-#: index/dlg_index.c:1230 pager/dlg_pager.c:464 pager/do_pager.c:171
+#: compose/functions.c:1716 gui/curs_lib.c:320 index/dlg_index.c:1185
+#: index/dlg_index.c:1231 pager/dlg_pager.c:464 pager/do_pager.c:171
 #: pager/message.c:336 send/sendlib.c:572
 #, c-format
 msgid "Error running \"%s\""
@@ -423,14 +423,14 @@ msgstr "Nemožno dešifrovať zašifrovanú správu"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:75 main.c:926
+#: autocrypt/autocrypt.c:75 main.c:929
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s neexistuje. Vytvoriť?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:930
+#: autocrypt/autocrypt.c:82 bcache/bcache.c:229 hcache/hcache.c:235 main.c:933
 #: nntp/newsrc.c:1117
 #, c-format
 msgid "Can't create %s: %s"
@@ -627,7 +627,7 @@ msgstr "Vytvárám autocrypt kľúč…"
 
 #. L10N: GPGME was unable to generate a key for some reason.
 #. %s is the error message returned by GPGME.
-#: autocrypt/gpgme.c:185 autocrypt/gpgme.c:204
+#: autocrypt/gpgme.c:186 autocrypt/gpgme.c:205
 #, c-format
 msgid "Error creating autocrypt key: %s"
 msgstr "Chyba pri vytvárání autocrypt kľúča: %s"
@@ -636,7 +636,7 @@ msgstr "Chyba pri vytvárání autocrypt kľúča: %s"
 #. this is displayed if the key was revoked/expired/disabled/invalid
 #. or can't be used for both signing and encryption.
 #. %s is the key fingerprint.
-#: autocrypt/gpgme.c:251
+#: autocrypt/gpgme.c:253
 #, c-format
 msgid "The key %s is not usable for autocrypt"
 msgstr "Kľúč %s nie je použitelny pre autocrypt"
@@ -644,19 +644,19 @@ msgstr "Kľúč %s nie je použitelny pre autocrypt"
 #. L10N: During autocrypt account creation, this prompt asks the
 #. user whether they want to create a new GPG key for the account,
 #. or select an existing account from the keyring.
-#: autocrypt/gpgme.c:283
+#: autocrypt/gpgme.c:285
 msgid "(c)reate new, or (s)elect existing GPG key?"
 msgstr "vytovriť (n)ový, alebo vybrať (e)xistujúcí GPG kľúč?"
 
 #. L10N: The letters corresponding to the
 #. "(c)reate new, or (s)elect existing GPG key?" prompt.
-#: autocrypt/gpgme.c:286
+#: autocrypt/gpgme.c:288
 msgid "cs"
 msgstr "ne"
 
 #. L10N: During autocrypt account creation, if selecting an existing key fails
 #. for some reason, we prompt to see if they want to create a key instead.
-#: autocrypt/gpgme.c:298
+#: autocrypt/gpgme.c:300
 msgid "Create a new GPG key for this account, instead?"
 msgstr "Vytvoriť nový GPG kľúč pre tento účet?"
 
@@ -830,18 +830,18 @@ msgstr "Prihlásiť podľa vzoru: "
 msgid "Unsubscribe pattern: "
 msgstr "Odhlásiť podľa vzoru: "
 
-#: color/command.c:155
+#: color/command.c:156
 #, c-format
 msgid "%s: color not supported by term"
 msgstr "%s: terminál túto farbu nepodporuje"
 
-#: color/command.c:162
+#: color/command.c:163
 #, c-format
 msgid "%s: no such color"
 msgstr "%s: nenájdená farba"
 
-#: color/command.c:221 color/command.c:263 color/command.c:315
-#: color/command.c:387 color/command.c:542 command_parse.c:348
+#: color/command.c:222 color/command.c:264 color/command.c:316
+#: color/command.c:388 color/command.c:543 command_parse.c:348
 #: command_parse.c:370 command_parse.c:507 command_parse.c:524
 #: command_parse.c:1109 command_parse.c:1196 hook.c:101 hook.c:157 hook.c:166
 #: hook.c:180 hook.c:429 hook.c:445 keymap.c:1191 score.c:95 subjectrx.c:72
@@ -850,18 +850,18 @@ msgstr "%s: nenájdená farba"
 msgid "%s: too few arguments"
 msgstr "%s: príliš málo argumentov"
 
-#: color/command.c:243
+#: color/command.c:244
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: vlastnosť nenájdená"
 
-#: color/command.c:373 color/command.c:396 color/command.c:407
-#: color/command.c:451
+#: color/command.c:374 color/command.c:397 color/command.c:408
+#: color/command.c:452
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: nenájdený objekt"
 
-#: color/command.c:574 color/command.c:633 command_parse.c:394
+#: color/command.c:575 color/command.c:634 command_parse.c:394
 #: command_parse.c:1386 command_parse.c:1722 hook.c:106 hook.c:187 hook.c:452
 #: keymap.c:1123 keymap.c:1296 keymap.c:1458 keymap.c:1539 mutt_lua.c:515
 #: score.c:103
@@ -869,11 +869,11 @@ msgstr "%s: nenájdený objekt"
 msgid "%s: too many arguments"
 msgstr "%s: príliš veľa argumentov"
 
-#: color/command.c:592
+#: color/command.c:593
 msgid "default colors not supported"
 msgstr "štandardné farby nie sú podporované"
 
-#: color/command.c:623
+#: color/command.c:624
 #, c-format
 msgid "%s: invalid number: %s"
 msgstr "%s: neplatné číslo: %s"
@@ -1400,7 +1400,7 @@ msgstr "Otvor schránku, z ktorej sa bude pridávať správa"
 msgid "Open newsgroup to attach message from"
 msgstr "Otvor diskusnú skupinu, z ktorej sa bude pridávať správa"
 
-#: compose/functions.c:753 main.c:1361
+#: compose/functions.c:753 main.c:1364
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Nemožno otvoriť schránku %s"
@@ -1647,7 +1647,7 @@ msgstr "Neplatná hodnota prepínača: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Neplatná hodnota prepínača: %ld"
 
-#: config/set.c:104 init.c:969
+#: config/set.c:104 init.c:978
 #, c-format
 msgid "No such variable: %s"
 msgstr "Žiadna takáto premenná: %s"
@@ -2049,7 +2049,7 @@ msgstr "Tunel do %s vratil chybu %d (%s)"
 msgid "%s isn't a regular file"
 msgstr "%s nie je bežný súbor"
 
-#: copy.c:720
+#: copy.c:721
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
@@ -2057,7 +2057,7 @@ msgstr[0] "Vypočítaná dľžka nebola správná o %ld bajt"
 msgstr[1] "Vypočítaná dľžka nebola správná o %ld bajty"
 msgstr[2] "Vypočítaná dľžka nebola správná o %ld bajtov"
 
-#: copy.c:802
+#: copy.c:803
 msgid "No decryption engine available for message"
 msgstr "Pre správu nebol nájdený dešifrovací program"
 
@@ -2166,47 +2166,47 @@ msgid "PGP already selected. Clear and continue?"
 msgstr "PGP je už vybrané. Vyčistiť a pokračovať?"
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:91
+#: envelope/window.c:92
 msgid "From: "
 msgstr "Od: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:93 send/send.c:276
+#: envelope/window.c:94 send/send.c:276
 msgid "To: "
 msgstr "Komu: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:95 send/send.c:283
+#: envelope/window.c:96 send/send.c:283
 msgid "Cc: "
 msgstr "Kópia: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:97 send/send.c:290
+#: envelope/window.c:98 send/send.c:290
 msgid "Bcc: "
 msgstr "Utajená kópia: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:99 send/send.c:336
+#: envelope/window.c:100 send/send.c:336
 msgid "Subject: "
 msgstr "Predmet: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:101
+#: envelope/window.c:102
 msgid "Reply-To: "
 msgstr "Odpovedz: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:103
+#: envelope/window.c:104
 msgid "Fcc: "
 msgstr "Kopia do súboru: "
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
-#: envelope/window.c:106
+#: envelope/window.c:107
 msgid "Mix: "
 msgstr "Mix: "
 
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
-#: envelope/window.c:109
+#: envelope/window.c:110
 msgid "Security: "
 msgstr "Zabezpečenie: "
 
@@ -2215,47 +2215,47 @@ msgstr "Zabezpečenie: "
 #. other compose menu fields.  However, if possible, it should not be longer
 #. than the other compose menu fields.  Since it shares the row with "Encrypt
 #. with:", it should not be longer than 15-20 character cells.
-#: envelope/window.c:115 ncrypt/crypt_gpgme.c:3831 ncrypt/pgp.c:2000
+#: envelope/window.c:116 ncrypt/crypt_gpgme.c:3831 ncrypt/pgp.c:2000
 #: ncrypt/smime.c:2208
 msgid "Sign as: "
 msgstr "Podpíš ako: "
 
 #. L10N: The compose menu autocrypt line
-#: envelope/window.c:118
+#: envelope/window.c:119
 msgid "Autocrypt: "
 msgstr "Autocrypt"
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:122
+#: envelope/window.c:123
 #, fuzzy
 msgid "Newsgroups: "
 msgstr "Diskusné sk.: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:124
+#: envelope/window.c:125
 #, fuzzy
 msgid "Followup-To: "
 msgstr "Followup-To: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:126
+#: envelope/window.c:127
 #, fuzzy
 msgid "X-Comment-To: "
 msgstr "X-Comment-To: "
 
-#: envelope/window.c:128
+#: envelope/window.c:129
 msgid "Headers: "
 msgstr "Hlavičky: "
 
 #. L10N: Autocrypt recommendation flag: off.
 #. This is displayed when Autocrypt is turned off.
-#: envelope/window.c:135 envelope/window.c:480
+#: envelope/window.c:136 envelope/window.c:481
 msgid "Off"
 msgstr "Vypnuté"
 
 #. L10N: Autocrypt recommendation flag: no.
 #. This is displayed when Autocrypt cannot encrypt to the recipients.
-#: envelope/window.c:138
+#: envelope/window.c:139
 msgid "No"
 msgstr "Žiadne"
 
@@ -2263,7 +2263,7 @@ msgstr "Žiadne"
 #. This is displayed when Autocrypt believes encryption should not be used.
 #. This might occur if one of the recipient Autocrypt Keys has not been
 #. used recently, or if the only key available is a Gossip Header key.
-#: envelope/window.c:143
+#: envelope/window.c:144
 msgid "Discouraged"
 msgstr "Nedoporučené"
 
@@ -2271,69 +2271,69 @@ msgstr "Nedoporučené"
 #. This is displayed when Autocrypt believes encryption is possible, but
 #. leaves enabling it up to the sender.  Probably because "prefer encrypt"
 #. is not set in both the sender and recipient keys.
-#: envelope/window.c:148
+#: envelope/window.c:149
 msgid "Available"
 msgstr "K dispozícii"
 
 #. L10N: Autocrypt recommendation flag: yes.
 #. This is displayed when Autocrypt would normally enable encryption
 #. automatically.
-#: envelope/window.c:152
+#: envelope/window.c:153
 msgid "Yes"
 msgstr "Áno"
 
-#: envelope/window.c:403
+#: envelope/window.c:404
 msgid "Sign, Encrypt"
 msgstr "Podpíš, zašifruj"
 
-#: envelope/window.c:408 envelope/window.c:475
+#: envelope/window.c:409 envelope/window.c:476
 msgid "Encrypt"
 msgstr "Zašifruj"
 
-#: envelope/window.c:413
+#: envelope/window.c:414
 msgid "Sign"
 msgstr "Podpíš"
 
-#: envelope/window.c:419
+#: envelope/window.c:420
 msgid "None"
 msgstr "Žiadne"
 
-#: envelope/window.c:429
+#: envelope/window.c:430
 msgid " (inline PGP)"
 msgstr " (inline PGP)"
 
-#: envelope/window.c:431
+#: envelope/window.c:432
 msgid " (PGP/MIME)"
 msgstr " (PGP/MIME)"
 
-#: envelope/window.c:434
+#: envelope/window.c:435
 msgid " (S/MIME)"
 msgstr " (S/MIME)"
 
-#: envelope/window.c:439
+#: envelope/window.c:440
 msgid " (OppEnc mode)"
 msgstr " (príl. šifr.)"
 
-#: envelope/window.c:448 envelope/window.c:456
+#: envelope/window.c:449 envelope/window.c:457
 msgid "<default>"
 msgstr "<štd>"
 
-#: envelope/window.c:463
+#: envelope/window.c:464
 msgid "Encrypt with: "
 msgstr "Zašifruj s: "
 
 #. L10N: The autocrypt compose menu Recommendation field.
 #. Displays the output of the recommendation engine
 #. (Off, No, Discouraged, Available, Yes)
-#: envelope/window.c:486
+#: envelope/window.c:487
 msgid "Recommendation: "
 msgstr "Odporúčanie: "
 
-#: envelope/window.c:510
+#: envelope/window.c:511
 msgid "<no chain defined>"
 msgstr "<nie je definovaný žiadny reťazec>"
 
-#: envelope/window.c:577
+#: envelope/window.c:595
 #, c-format
 msgid "(+%d more)"
 msgid_plural "(+%d more)"
@@ -2938,7 +2938,7 @@ msgstr "Stahujem správu…"
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Index správ je chybný. Skúste schránku otvoriť znova."
 
-#: imap/msn.c:48 mutt/buffer.c:112 mutt/buffer.c:285 mutt/memory.c:58
+#: imap/msn.c:48 mutt/buffer.c:112 mutt/buffer.c:323 mutt/memory.c:58
 #: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1015 mx.c:1226
 msgid "Out of memory"
 msgstr "Nedostatok pamäte"
@@ -2983,36 +2983,36 @@ msgstr "Followup"
 msgid "%s: Operation not permitted by ACL"
 msgstr "%s: Operácia je v rozpore s ACL"
 
-#: index/dlg_index.c:746
+#: index/dlg_index.c:747
 msgid "Failed to create query, aborting"
 msgstr "Zlyhalo vytvorenie dotazu, prerušujem"
 
-#: index/dlg_index.c:791 muttlib.c:1399 mx.c:221 mx.c:359
+#: index/dlg_index.c:792 muttlib.c:1399 mx.c:221 mx.c:359
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s nie je schránka"
 
-#: index/dlg_index.c:1164
+#: index/dlg_index.c:1165
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Schránka bola zmenená zvonku.  Príznaky môžu byť nesprávne."
 
-#: index/dlg_index.c:1173 pager/dlg_pager.c:438
+#: index/dlg_index.c:1174 pager/dlg_pager.c:438
 msgid "New mail in this mailbox"
 msgstr "Nová pošta v tejto schránke"
 
-#: index/dlg_index.c:1192
+#: index/dlg_index.c:1193
 msgid "Mailbox was externally modified"
 msgstr "Schránka bola zmenená zvonku"
 
-#: index/dlg_index.c:1303 index/functions.c:2793
+#: index/dlg_index.c:1304 index/functions.c:2793
 msgid "No mailbox is open"
 msgstr "Žiadna schránka nie je otvorená"
 
-#: index/dlg_index.c:1310
+#: index/dlg_index.c:1311
 msgid "No tagged messages"
 msgstr "Žiadne označené správy"
 
-#: index/dlg_index.c:1314 index/functions.c:680
+#: index/dlg_index.c:1315 index/functions.c:680
 msgid "Nothing to do"
 msgstr "Nič na práci"
 
@@ -3372,12 +3372,12 @@ msgstr "Varovanie v príkazovom riadku: %s"
 msgid "unable to determine nodename via uname()"
 msgstr "meno stroje nie je možné určiť pomocou volanie uname()"
 
-#: init.c:878
+#: init.c:887
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: neznámy príkaz"
 
-#: init.c:933
+#: init.c:942
 #, fuzzy, c-format
 msgid "Config variable '%s' is deprecated"
 msgstr "Konfiguračná premenná '%s' je zastaraná"
@@ -3747,38 +3747,38 @@ msgstr "nemožno určiť domáci adresár"
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Chyba: hodnota „%s“ nie je platná pre -d"
 
-#: main.c:981
+#: main.c:984
 msgid "Failed to parse mailto: link"
 msgstr "Zlyhalo rozebrání mailto: odkazu"
 
-#: main.c:994 main.c:1251 send/send.c:296 send/send.c:2771 send/send.c:2775
+#: main.c:997 main.c:1254 send/send.c:296 send/send.c:2771 send/send.c:2775
 msgid "No recipients specified"
 msgstr "Neboli uvedení žiadni príjemcovia"
 
-#: main.c:1023
+#: main.c:1026
 msgid "Can't use -E flag with stdin"
 msgstr "Prepínač -E nemožno použiť so štandardným vstupom"
 
-#: main.c:1107
+#: main.c:1110
 #, c-format
 msgid "Can't parse message template: %s"
 msgstr "Nemožné rozebrať súbor se šablónou správy: %s"
 
-#: main.c:1173 mutt_header.c:343
+#: main.c:1176 mutt_header.c:343
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: súbor nemožno pripojiť"
 
-#: main.c:1265
+#: main.c:1268
 msgid "No mailbox with new mail"
 msgstr "Žiadna schránka s novými správami"
 
-#: main.c:1290
+#: main.c:1293
 #, fuzzy
 msgid "No incoming mailboxes defined"
 msgstr "Nie je definovaná žiadna schránka prijímajúci novú poštu"
 
-#: main.c:1342
+#: main.c:1345
 msgid "Mailbox is empty"
 msgstr "Schránka je prázdna"
 
@@ -4641,7 +4641,7 @@ msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Koniec dát šifrovaných pomocou PGP/MIME --]\n"
 
 #: ncrypt/crypt_gpgme.c:2724 ncrypt/pgp.c:672 ncrypt/pgp.c:725
-#: ncrypt/pgp.c:1297 postpone/postpone.c:555
+#: ncrypt/pgp.c:1297
 msgid "Could not decrypt PGP message"
 msgstr "Nemožno dešifrovať PGP správu"
 
@@ -5101,7 +5101,7 @@ msgstr ""
 "\n"
 
 #: ncrypt/pgp.c:1092 ncrypt/pgp.c:1114 ncrypt/smime.c:1954
-#: postpone/postpone.c:433 postpone/postpone.c:461
+#: postpone/postpone.c:438
 msgid "Decryption failed"
 msgstr "Dešifrovanie zlyhalo"
 
@@ -7323,11 +7323,16 @@ msgstr "Nedovolená S/MIME hlavička"
 msgid "Illegal crypto header"
 msgstr "Nedovolená šifrovací hlavička"
 
-#: postpone/postpone.c:428 postpone/postpone.c:456 postpone/postpone.c:552
+#: postpone/postpone.c:433 postpone/postpone.c:539
 msgid "Decrypting message..."
 msgstr "Dešifrujem správu…"
 
-#: postpone/postpone.c:684 postpone/postpone.c:695
+#: postpone/postpone.c:547
+#, fuzzy
+msgid "Could not decrypt postponed message"
+msgstr "Nemožno dešifrovať PGP správu"
+
+#: postpone/postpone.c:678 postpone/postpone.c:689
 msgid "No postponed messages"
 msgstr "Žiadne odložené správy"
 
@@ -7608,7 +7613,7 @@ msgstr "Nemožno náisť žiadny mime.types súbor"
 msgid "Could not open %s"
 msgstr "Nemožno otvoriť %s"
 
-#: send/sendlib.c:942
+#: send/sendlib.c:939
 #, c-format
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "Chybné IDN %s pri generování „resent-from“ (odeslané z)"
