@@ -65,7 +65,7 @@ default:	all
 NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	alternates.o command_parse.o conststrings.o copy.o editmsg.o \
 		enriched.o external.o flags.o functions.o git_ver.o handler.o \
-		hdrline.o help.o hook.o icommands.o init.o keymap.o mailcap.o \
+		hdrline.o help.o hook.o init.o keymap.o mailcap.o \
 		maillist.o main.o muttlib.o mutt_account.o mutt_body.o \
 		mutt_commands.o mutt_config.o mutt_header.o mutt_history.o \
 		mutt_logging.o mutt_mailbox.o mutt_signal.o mutt_socket.o \

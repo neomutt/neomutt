@@ -53,7 +53,6 @@
 #include "send/lib.h"
 #include "copy.h"
 #include "hook.h"
-#include "icommands.h"
 #include "init.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
@@ -651,32 +650,16 @@ void mutt_enter_command(void)
     goto done;
   }
 
-  /* check if buf is a valid icommand, else fall back quietly to parse_rc_lines */
-  enum CommandResult rc = mutt_parse_icommand(mutt_buffer_string(buf), err);
+  enum CommandResult rc = mutt_parse_rc_line(mutt_buffer_string(buf), err);
   if (!mutt_buffer_is_empty(err))
   {
-    /* since errbuf could potentially contain printf() sequences in it,
-     * we must call mutt_error() in this fashion so that vsprintf()
-     * doesn't expect more arguments that we passed */
-    if (rc == MUTT_CMD_ERROR)
+    if (rc == MUTT_CMD_SUCCESS) /* command succeeded with message */
+      mutt_message("%s", mutt_buffer_string(err));
+    else if (rc == MUTT_CMD_ERROR)
       mutt_error("%s", mutt_buffer_string(err));
-    else
+    else if (rc == MUTT_CMD_WARNING)
       mutt_warning("%s", mutt_buffer_string(err));
   }
-  else if (rc != MUTT_CMD_SUCCESS)
-  {
-    rc = mutt_parse_rc_line(mutt_buffer_string(buf), err);
-    if (!mutt_buffer_is_empty(err))
-    {
-      if (rc == MUTT_CMD_SUCCESS) /* command succeeded with message */
-        mutt_message("%s", mutt_buffer_string(err));
-      else if (rc == MUTT_CMD_ERROR)
-        mutt_error("%s", mutt_buffer_string(err));
-      else if (rc == MUTT_CMD_WARNING)
-        mutt_warning("%s", mutt_buffer_string(err));
-    }
-  }
-  /* else successful command */
 
   if (NeoMutt)
   {

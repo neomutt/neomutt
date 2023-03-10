@@ -78,7 +78,6 @@
  * | hdrline.c       | @subpage neo_hdrline       |
  * | help.c          | @subpage neo_help          |
  * | hook.c          | @subpage neo_hook          |
- * | icommands.c     | @subpage neo_icommands     |
  * | init.c          | @subpage neo_init          |
  * | keymap.c        | @subpage neo_keymap        |
  * | mailcap.c       | @subpage neo_mailcap       |

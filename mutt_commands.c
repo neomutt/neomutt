@@ -72,7 +72,7 @@ static const struct Command mutt_commands[] = {
   { "ignore",              parse_ignore,           0 },
   { "index-format-hook",   mutt_parse_idxfmt_hook, MUTT_IDXFMTHOOK },
   { "lists",               parse_lists,            0 },
-  { "macro",               mutt_parse_macro,       0 },
+  { "macro",               mutt_parse_macro,       1 },
   { "mailboxes",           parse_mailboxes,        0 },
   { "mailto_allow",        parse_stailq,           IP &MailToAllow },
   { "mbox-hook",           mutt_parse_hook,        MUTT_MBOX_HOOK },
