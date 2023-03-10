@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2023-03-10 10:58+0000\n"
-"PO-Revision-Date: 2022-10-21 23:00+0300\n"
+"PO-Revision-Date: 2023-03-10 23:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
 "Language: tr\n"
@@ -2658,9 +2658,8 @@ msgid "%s authentication failed"
 msgstr "%s kimlik doğrulaması başarısız"
 
 #: imap/auth_gsasl.c:147 pop/auth.c:135
-#, fuzzy
 msgid "SASL authentication failed"
-msgstr "Kimlik doğrulaması başarısız"
+msgstr "SASL kimlik doğrulaması başarısız"
 
 #: imap/auth_login.c:51
 msgid "LOGIN disabled on this server"
@@ -5964,9 +5963,8 @@ msgid "collapse/uncollapse current thread"
 msgstr "geçerli ilmeği aç/sar"
 
 #: opcodes.h:196
-#, fuzzy
 msgid "delete non-hidden messages matching a pattern"
-msgstr "eşleşen iletileri sil"
+msgstr "bir dizgiyle eşleşen gizli olmayan iletileri sil"
 
 #: opcodes.h:197
 msgid "retrieve mail from POP server"
@@ -6081,19 +6079,16 @@ msgid "save changes to mailbox"
 msgstr "posta kutusuna yapılan değişiklikleri kaydet"
 
 #: opcodes.h:225
-#, fuzzy
 msgid "tag non-hidden messages matching a pattern"
-msgstr "bir dizgi ile eşleşen iletileri imle"
+msgstr "bir dizgiyle eşleşen gizli olmayan iletileri etiketle"
 
 #: opcodes.h:226
-#, fuzzy
 msgid "undelete non-hidden messages matching a pattern"
-msgstr "bir dizgi ile eşleşen silinmiş iletileri kurtar"
+msgstr "bir dizgiyle eşleşen gizli olmayan iletileri kurtar"
 
 #: opcodes.h:227
-#, fuzzy
 msgid "untag non-hidden messages matching a pattern"
-msgstr "bir dizgi ile eşleşen iletilerdeki imi kaldır"
+msgstr "bir dizgiyle eşleşen gizli olmayan iletilerin etiketini kaldır"
 
 #: opcodes.h:228
 msgid "create a hotkey macro for the current message"
@@ -6863,9 +6858,8 @@ msgstr "PGP anahtarı içeren iletiler"
 
 #. L10N: Pattern Completion Menu description for ~K
 #: pattern/flags.c:98
-#, fuzzy
 msgid "messages whose BCC header matches EXPR"
-msgstr "kopya üstbilgisi İFADE ile eşleşen iletiler"
+msgstr "gizli kopya üstbilgisi İFADE ile eşleşen iletiler"
 
 #. L10N: Pattern Completion Menu description for ~l
 #: pattern/flags.c:101
@@ -7169,9 +7163,8 @@ msgid "Decrypting message..."
 msgstr "İleti şifresi çözülüyor..."
 
 #: postpone/postpone.c:547
-#, fuzzy
 msgid "Could not decrypt postponed message"
-msgstr "Şifrelenmiş PGP iletisi çözülemedi"
+msgstr "Ertelenen iletinin şifresi çözülemedi"
 
 #: postpone/postpone.c:678 postpone/postpone.c:689
 msgid "No postponed messages"
@@ -7588,9 +7581,3 @@ msgstr "Derleme seçenekleri:"
 #: version.c:511
 msgid "Devel options:"
 msgstr "Geliştirici seçenekleri:"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "NeoMutt'tan çıkılsın mı?"
-
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "SMTP kimlik doğrulaması SASL gerektiriyor"
