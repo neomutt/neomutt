@@ -7184,9 +7184,8 @@ msgid "Decrypting message..."
 msgstr "Iššifruoju laišką..."
 
 #: postpone/postpone.c:547
-#, fuzzy
 msgid "Could not decrypt postponed message"
-msgstr "Negalėjau iššifruoti PGP laiško"
+msgstr "Negalėjau iššifruoti atidėto laiško"
 
 #: postpone/postpone.c:678 postpone/postpone.c:689
 msgid "No postponed messages"
