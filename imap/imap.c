@@ -82,7 +82,7 @@ static const struct Command imap_commands[] = {
  */
 void imap_init(void)
 {
-  COMMANDS_REGISTER(imap_commands);
+  commands_register(imap_commands, mutt_array_size(imap_commands));
 }
 
 /**

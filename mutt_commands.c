@@ -28,6 +28,7 @@
  */
 
 #include "config.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -132,5 +133,5 @@ static const struct Command mutt_commands[] = {
  */
 void commands_init(void)
 {
-  COMMANDS_REGISTER(mutt_commands);
+  commands_register(mutt_commands, mutt_array_size(mutt_commands));
 }

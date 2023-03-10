@@ -68,7 +68,7 @@ static const struct Command comp_commands[] = {
  */
 void mutt_comp_init(void)
 {
-  COMMANDS_REGISTER(comp_commands);
+  commands_register(comp_commands, mutt_array_size(comp_commands));
 }
 
 /**

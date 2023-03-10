@@ -98,7 +98,7 @@ const int NmUrlProtocolLen = sizeof(NmUrlProtocol) - 1;
  */
 void nm_init(void)
 {
-  COMMANDS_REGISTER(nm_commands);
+  commands_register(nm_commands, mutt_array_size(nm_commands));
 }
 
 /**

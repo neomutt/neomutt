@@ -197,7 +197,7 @@ void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
  */
 void sb_init(void)
 {
-  COMMANDS_REGISTER(sb_commands);
+  commands_register(sb_commands, mutt_array_size(sb_commands));
 
   // Listen for dialog creation events
   notify_observer_add(AllDialogsWindow->notify, NT_WINDOW,

@@ -467,7 +467,7 @@ static bool lua_init(lua_State **l)
  */
 void mutt_lua_init(void)
 {
-  COMMANDS_REGISTER(LuaCommands);
+  commands_register(LuaCommands, mutt_array_size(LuaCommands));
 }
 
 /**
