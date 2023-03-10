@@ -37,7 +37,7 @@
 #include "lib.h"
 #include "index/lib.h"
 #include "pager/lib.h"
-#include "commands.h"
+#include "external.h"
 #include "keymap.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"

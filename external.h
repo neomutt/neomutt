@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMMANDS_H
-#define MUTT_COMMANDS_H
+#ifndef MUTT_EXTERNAL_H
+#define MUTT_EXTERNAL_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -64,4 +64,4 @@ int mutt_save_message_ctx(struct Mailbox *m_src, struct Email *e, enum MessageSa
 bool mutt_select_sort(bool reverse);
 bool mutt_shell_escape(void);
 
-#endif /* MUTT_COMMANDS_H */
+#endif /* MUTT_EXTERNAL_H */

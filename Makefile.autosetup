@@ -63,14 +63,13 @@ default:	all
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
-NEOMUTTOBJS=	alternates.o commands.o command_parse.o \
-		conststrings.o copy.o editmsg.o \
-		enriched.o flags.o functions.o git_ver.o handler.o \
+NEOMUTTOBJS=	alternates.o command_parse.o conststrings.o copy.o editmsg.o \
+		enriched.o external.o flags.o functions.o git_ver.o handler.o \
 		hdrline.o help.o hook.o icommands.o init.o keymap.o mailcap.o \
 		maillist.o main.o muttlib.o mutt_account.o mutt_body.o \
 		mutt_commands.o mutt_config.o mutt_header.o mutt_history.o \
 		mutt_logging.o mutt_mailbox.o mutt_signal.o mutt_socket.o \
-		mutt_thread.o mx.o mview.o myvar.o opcodes.o recvcmd.o \
+		mutt_thread.o mview.o mx.o myvar.o opcodes.o recvcmd.o \
 		resize.o rfc3676.o score.o sort.o status.o subjectrx.o \
 		system.o version.o
 

@@ -23,7 +23,7 @@
  */
 
 /**
- * @page neo_commands Manage where the email is piped to external commands
+ * @page neo_external Manage where the email is piped to external commands
  *
  * Manage where the email is piped to external commands
  */
@@ -43,7 +43,7 @@
 #include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "commands.h"
+#include "external.h"
 #include "attach/lib.h"
 #include "browser/lib.h"
 #include "enter/lib.h"

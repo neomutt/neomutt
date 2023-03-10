@@ -50,7 +50,7 @@
 #include "progress/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
-#include "commands.h"
+#include "external.h"
 #include "hook.h"
 #include "keymap.h"
 #include "mutt_header.h"

@@ -67,11 +67,11 @@
  * | File            | Description                |
  * | :-------------- | :------------------------- |
  * | alternates.c    | @subpage neo_alternates    |
- * | commands.c      | @subpage neo_commands      |
  * | command_parse.c | @subpage neo_command_parse |
  * | copy.c          | @subpage neo_copy          |
  * | editmsg.c       | @subpage neo_editmsg       |
  * | enriched.c      | @subpage neo_enriched      |
+ * | external.c      | @subpage neo_external      |
  * | flags.c         | @subpage neo_flags         |
  * | functions.c     | @subpage neo_functions     |
  * | handler.c       | @subpage neo_handler       |
@@ -168,7 +168,7 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "alternates.h"
-#include "commands.h"
+#include "external.h"
 #include "hook.h"
 #include "init.h"
 #include "keymap.h"

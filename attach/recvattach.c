@@ -47,7 +47,7 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "attach.h"
-#include "commands.h"
+#include "external.h"
 #include "handler.h"
 #include "hook.h"
 #include "mailcap.h"
