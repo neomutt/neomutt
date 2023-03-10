@@ -69,9 +69,6 @@ struct Command
 
 struct Command *command_get       (const char *s);
 
-#ifdef USE_LUA
-void            commands_apply    (void *data, void (*application)(void *, const struct Command *));
-#endif
 size_t          commands_array    (struct Command **first);
 void            commands_free     (void);
 void            commands_init     (void);

@@ -365,12 +365,11 @@ static int lua_mutt_error(lua_State *l)
 
 /**
  * lua_expose_command - Expose a NeoMutt command to the Lua interpreter
- * @param p   Lua state
+ * @param l   Lua state
  * @param cmd NeoMutt Command
  */
-static void lua_expose_command(void *p, const struct Command *cmd)
+static void lua_expose_command(lua_State *l, const struct Command *cmd)
 {
-  lua_State *l = (lua_State *) p;
   char buf[1024] = { 0 };
   snprintf(buf, sizeof(buf), "mutt.command.%s = function (...); mutt.call('%s', ...); end",
            cmd->name, cmd->name);
@@ -429,7 +428,12 @@ static void luaopen_mutt(lua_State *l)
 {
   luaL_requiref(l, "mutt", luaopen_mutt_decl, 1);
   (void) luaL_dostring(l, "mutt.command = {}");
-  commands_apply((void *) l, &lua_expose_command);
+
+  struct Command *c = NULL;
+  for (size_t i = 0, size = commands_array(&c); i < size; i++)
+  {
+    lua_expose_command(l, c);
+  }
 }
 
 /**

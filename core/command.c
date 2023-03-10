@@ -94,21 +94,3 @@ struct Command *command_get(const char *s)
   }
   return NULL;
 }
-
-#ifdef USE_LUA
-/**
- * commands_apply - Run a callback function on every Command
- * @param data        Data to pass to the callback function
- * @param application Callback function
- *
- * This is used by Lua to expose all of NeoMutt's Commands.
- */
-void commands_apply(void *data, void (*application)(void *, const struct Command *))
-{
-  struct Command *cmd = NULL;
-  ARRAY_FOREACH(cmd, &commands)
-  {
-    application(data, cmd);
-  }
-}
-#endif
