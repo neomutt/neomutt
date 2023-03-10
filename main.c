@@ -199,7 +199,7 @@
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
-#if defined(USE_DEBUG_NOTIFY) || defined(HAVE_LIBUNWIND)
+#if defined(USE_DEBUG_NOTIFY) || defined(HAVE_LIBUNWIND) || defined(USE_DEBUG_PARSE_TEST)
 #include "debug/lib.h"
 #endif
 

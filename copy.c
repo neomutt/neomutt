@@ -33,7 +33,6 @@
 #include <locale.h>
 #include <stdbool.h>
 #include <string.h>
-#include "mutt/buffer.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"

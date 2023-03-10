@@ -32,7 +32,6 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "mview.h"
 #include "imap/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"

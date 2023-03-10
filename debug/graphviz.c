@@ -1202,10 +1202,10 @@ void dot_addr_list(FILE *fp, const char *name, const struct AddressList *al,
   if (TAILQ_EMPTY(al))
     return;
 
-  char buf[1024] = { 0 };
-
-  mutt_addrlist_write(al, buf, sizeof(buf), true);
-  dot_type_string(fp, name, buf, false);
+  struct Buffer *buf = mutt_buffer_pool_get();
+  mutt_addrlist_write(al, buf, true);
+  dot_type_string(fp, name, mutt_buffer_string(buf), false);
+  mutt_buffer_pool_release(&buf);
 }
 
 void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links)

@@ -45,7 +45,11 @@ void dump_addr_list(char *buf, size_t buflen, const struct AddressList *al, cons
     return;
 
   buf[0] = '\0';
-  mutt_addrlist_write(al, buf, buflen, true);
+  struct Buffer *tmpbuf = mutt_buffer_pool_get();
+  mutt_addrlist_write(al, tmpbuf, true);
+  mutt_str_copy(buf, mutt_buffer_string(tmpbuf), buflen);
+  mutt_buffer_pool_release(&tmpbuf);
+
   mutt_debug(LL_DEBUG1, "\t%s: %s\n", name, buf);
 }
 

@@ -23,8 +23,9 @@
 #ifndef MUTT_MYVAR_H
 #define MUTT_MYVAR_H
 
+#include <stdio.h>
 #include "mutt/lib.h"
-#include "config/dump.h"
+#include "config/lib.h"
 
 /**
  * struct MyVar - A user-set variable

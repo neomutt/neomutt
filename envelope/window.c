@@ -62,7 +62,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "private.h"
-#include "mutt/buffer.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"

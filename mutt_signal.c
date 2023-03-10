@@ -38,7 +38,7 @@
 #include "attach/lib.h"
 #include "mutt_globals.h"
 #include "protos.h"
-#ifdef USE_DEBUG_GRAPHVIZ
+#if defined(USE_DEBUG_GRAPHVIZ) || defined(HAVE_LIBUNWIND)
 #include "debug/lib.h"
 #endif
 

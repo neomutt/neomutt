@@ -25,7 +25,6 @@
 
 #include <stdbool.h>
 #include "config.h"
-#include "mutt/lib.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif

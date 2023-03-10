@@ -313,7 +313,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   {
     /* Hooks not allowing full patterns: Check syntax of regex */
     rx = mutt_mem_calloc(1, sizeof(regex_t));
-    int rc2 = REG_COMP(rx, NONULL(mutt_buffer_string(pattern)),
+    int rc2 = REG_COMP(rx, mutt_buffer_string(pattern),
                        ((data & MUTT_CRYPT_HOOK) ? REG_ICASE : 0));
     if (rc2 != 0)
     {
