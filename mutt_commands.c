@@ -125,6 +125,7 @@ static const struct Command mutt_commands[] = {
   { "unsetenv",            parse_setenv,           MUTT_SET_UNSET },
   { "unsubjectrx",         parse_unsubjectrx_list, 0 },
   { "unsubscribe",         parse_unsubscribe,      0 },
+  { "version",             parse_version,          0 },
   // clang-format on
 };
 

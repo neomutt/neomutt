@@ -47,6 +47,7 @@
 #include "command_parse.h"
 #include "imap/lib.h"
 #include "menu/lib.h"
+#include "pager/lib.h"
 #include "store/lib.h"
 #include "init.h"
 #include "keymap.h"
@@ -1744,6 +1745,43 @@ enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
   return MUTT_CMD_WARNING;
 }
 #endif
+
+/**
+ * parse_version - Parse the 'version' command - Implements Command::parse() - @ingroup command_parse
+ */
+enum CommandResult parse_version(struct Buffer *buf, struct Buffer *s,
+                                 intptr_t data, struct Buffer *err)
+{
+  // silently ignore 'version' if it's in a config file
+  if (!StartupComplete)
+    return MUTT_CMD_SUCCESS;
+
+  char tempfile[PATH_MAX] = { 0 };
+  mutt_mktemp(tempfile, sizeof(tempfile));
+
+  FILE *fp_out = mutt_file_fopen(tempfile, "w");
+  if (!fp_out)
+  {
+    // L10N: '%s' is the file name of the temporary file
+    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
+    return MUTT_CMD_ERROR;
+  }
+
+  print_version(fp_out);
+  mutt_file_fclose(&fp_out);
+
+  struct PagerData pdata = { 0 };
+  struct PagerView pview = { &pdata };
+
+  pdata.fname = tempfile;
+
+  pview.banner = "version";
+  pview.flags = MUTT_PAGER_NO_FLAGS;
+  pview.mode = PAGER_MODE_OTHER;
+
+  mutt_do_pager(&pview, NULL);
+  return MUTT_CMD_SUCCESS;
+}
 
 /**
  * clear_source_stack - Free memory from the stack used for the source command

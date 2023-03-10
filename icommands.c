@@ -44,7 +44,6 @@
 #include "keymap.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "version.h"
 #ifdef USE_DEBUG_COLOR
 #include "gui/lib.h"
 #include "color/lib.h"
@@ -57,7 +56,6 @@ static enum CommandResult icmd_bind   (struct Buffer *buf, struct Buffer *s, int
 static enum CommandResult icmd_color  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 #endif
 static enum CommandResult icmd_set    (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 // clang-format on
 
 /**
@@ -73,7 +71,6 @@ static const struct ICommand ICommandList[] = {
 #endif
   { "macro",    icmd_bind,     1 },
   { "set",      icmd_set,      0 },
-  { "version",  icmd_version,  0 },
   { NULL, NULL, 0 },
   // clang-format on
 };
@@ -543,38 +540,5 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
 
   mutt_do_pager(&pview, NULL);
 
-  return MUTT_CMD_SUCCESS;
-}
-
-/**
- * icmd_version - Parse 'version' command - Implements ICommand::parse()
- */
-static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s,
-                                       intptr_t data, struct Buffer *err)
-{
-  char tempfile[PATH_MAX] = { 0 };
-  mutt_mktemp(tempfile, sizeof(tempfile));
-
-  FILE *fp_out = mutt_file_fopen(tempfile, "w");
-  if (!fp_out)
-  {
-    // L10N: '%s' is the file name of the temporary file
-    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
-    return MUTT_CMD_ERROR;
-  }
-
-  print_version(fp_out);
-  mutt_file_fclose(&fp_out);
-
-  struct PagerData pdata = { 0 };
-  struct PagerView pview = { &pdata };
-
-  pdata.fname = tempfile;
-
-  pview.banner = "version";
-  pview.flags = MUTT_PAGER_NO_FLAGS;
-  pview.mode = PAGER_MODE_OTHER;
-
-  mutt_do_pager(&pview, NULL);
   return MUTT_CMD_SUCCESS;
 }

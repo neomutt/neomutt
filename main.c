@@ -203,6 +203,8 @@
 #include "debug/lib.h"
 #endif
 
+bool StartupComplete = false; ///< When the config has been read
+
 // clang-format off
 typedef uint8_t CliFlags;         ///< Flags for command line options, e.g. #MUTT_CLI_IGNORE
 #define MUTT_CLI_NO_FLAGS      0  ///< No flags are set
@@ -940,6 +942,7 @@ main
   {
     goto main_ok; // TEST22: neomutt -B
   }
+  StartupComplete = true;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, main_hist_observer, NULL);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, main_log_observer, NULL);

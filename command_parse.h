@@ -63,6 +63,7 @@ enum CommandResult parse_unsubscribe     (struct Buffer *buf, struct Buffer *s, 
 #ifdef USE_IMAP
 enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 #endif
+enum CommandResult parse_version         (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
 enum CommandResult mutt_parse_rc_line_cwd(const char *line, char *cwd, struct Buffer *err);
 char *mutt_get_sourced_cwd(void);
