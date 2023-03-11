@@ -313,11 +313,11 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
             else
               mutt_path_tilde(buf->data, buf->dsize, HomeDir);
           }
-          else if (IS_MAILBOX(he))
+          else if (IS_MAILBOX(he->type))
           {
             mutt_buffer_expand_path(buf);
           }
-          else if (IS_COMMAND(he))
+          else if (IS_COMMAND(he->type))
           {
             struct Buffer scratch = mutt_buffer_make(1024);
             mutt_buffer_copy(&scratch, buf);

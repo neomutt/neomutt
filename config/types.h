@@ -53,9 +53,9 @@
 #define DT_PATH_DIR      (1 << 13) ///< Path is a directory
 #define DT_PATH_FILE     (1 << 14) ///< Path is a file
 
-#define IS_SENSITIVE(x) (((x).type & DT_SENSITIVE) == DT_SENSITIVE)
-#define IS_MAILBOX(x)   (((x)->type & (DT_STRING | DT_MAILBOX)) == (DT_STRING | DT_MAILBOX))
-#define IS_COMMAND(x)   (((x)->type & (DT_STRING | DT_COMMAND)) == (DT_STRING | DT_COMMAND))
+#define IS_SENSITIVE(type) (((type) & DT_SENSITIVE) == DT_SENSITIVE)
+#define IS_MAILBOX(type)   (((type) & (DT_STRING | DT_MAILBOX)) == (DT_STRING | DT_MAILBOX))
+#define IS_COMMAND(type)   (((type) & (DT_STRING | DT_COMMAND)) == (DT_STRING | DT_COMMAND))
 
 /* subtypes for... */
 #define DT_SUBTYPE_MASK  0x7FC0  ///< Mask for the Data Subtype
