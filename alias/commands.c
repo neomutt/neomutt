@@ -34,9 +34,9 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
+#include "commands.h"
 #include "lib.h"
 #include "alias.h"
-#include "command_parse.h"
 #include "init.h"
 #include "reverse.h"
 

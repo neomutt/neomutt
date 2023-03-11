@@ -66,11 +66,10 @@
 #include "maildir/lib.h"
 #include "progress/lib.h"
 #include "adata.h"
-#include "command_parse.h"
+#include "commands.h"
 #include "edata.h"
 #include "maildir/edata.h"
 #include "mdata.h"
-#include "mutt_commands.h"
 #include "mutt_globals.h"
 #include "mutt_thread.h"
 #include "mx.h"
@@ -83,7 +82,10 @@
 
 struct stat;
 
-static const struct Command nm_commands[] = {
+/**
+ * NmCommands - Notmuch Commands
+ */
+static const struct Command NmCommands[] = {
   // clang-format off
   { "unvirtual-mailboxes", parse_unmailboxes, 0 },
   { "virtual-mailboxes",   parse_mailboxes,   MUTT_NAMED },
@@ -98,7 +100,7 @@ const int NmUrlProtocolLen = sizeof(NmUrlProtocol) - 1;
  */
 void nm_init(void)
 {
-  COMMANDS_REGISTER(nm_commands);
+  commands_register(NmCommands, mutt_array_size(NmCommands));
 }
 
 /**

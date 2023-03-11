@@ -48,7 +48,6 @@
 #include "lib.h"
 #include "format_flags.h"
 #include "hook.h"
-#include "mutt_commands.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -56,7 +55,10 @@
 
 struct Email;
 
-static const struct Command comp_commands[] = {
+/**
+ * CompCommands - Compression Commands
+ */
+static const struct Command CompCommands[] = {
   // clang-format off
   { "append-hook", mutt_parse_hook, MUTT_APPEND_HOOK },
   { "close-hook",  mutt_parse_hook, MUTT_CLOSE_HOOK },
@@ -69,7 +71,7 @@ static const struct Command comp_commands[] = {
  */
 void mutt_comp_init(void)
 {
-  COMMANDS_REGISTER(comp_commands);
+  commands_register(CompCommands, mutt_array_size(CompCommands));
 }
 
 /**

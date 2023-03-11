@@ -48,7 +48,6 @@
 #include "mutt.h"
 #include "mutt_lua.h"
 #include "init.h"
-#include "mutt_commands.h"
 #include "muttlib.h"
 #include "myvar.h"
 
@@ -112,7 +111,7 @@ static int lua_mutt_call(lua_State *l)
     return -1;
   }
 
-  cmd = mutt_command_get(lua_tostring(l, 1));
+  cmd = command_get(lua_tostring(l, 1));
   if (!cmd)
   {
     luaL_error(l, "Error command %s not found.", lua_tostring(l, 1));
@@ -366,12 +365,11 @@ static int lua_mutt_error(lua_State *l)
 
 /**
  * lua_expose_command - Expose a NeoMutt command to the Lua interpreter
- * @param p   Lua state
+ * @param l   Lua state
  * @param cmd NeoMutt Command
  */
-static void lua_expose_command(void *p, const struct Command *cmd)
+static void lua_expose_command(lua_State *l, const struct Command *cmd)
 {
-  lua_State *l = (lua_State *) p;
   char buf[1024] = { 0 };
   snprintf(buf, sizeof(buf), "mutt.command.%s = function (...); mutt.call('%s', ...); end",
            cmd->name, cmd->name);
@@ -430,7 +428,12 @@ static void luaopen_mutt(lua_State *l)
 {
   luaL_requiref(l, "mutt", luaopen_mutt_decl, 1);
   (void) luaL_dostring(l, "mutt.command = {}");
-  mutt_commands_apply((void *) l, &lua_expose_command);
+
+  struct Command *c = NULL;
+  for (size_t i = 0, size = commands_array(&c); i < size; i++)
+  {
+    lua_expose_command(l, c);
+  }
 }
 
 /**
@@ -468,7 +471,7 @@ static bool lua_init(lua_State **l)
  */
 void mutt_lua_init(void)
 {
-  COMMANDS_REGISTER(LuaCommands);
+  commands_register(LuaCommands, mutt_array_size(LuaCommands));
 }
 
 /**

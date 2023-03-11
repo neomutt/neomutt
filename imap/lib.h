@@ -60,7 +60,7 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include "core/lib.h"
-#include "commands.h"
+#include "external.h"
 
 struct BrowserState;
 struct Buffer;

@@ -1,9 +1,10 @@
 /**
  * @file
- * Manage where the email is piped to external commands
+ * Functions to parse commands in a config file
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 1996-2002,2007,2010,2012-2013,2016 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2004 g10 Code GmbH
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,48 +21,48 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMMANDS_H
-#define MUTT_COMMANDS_H
+#ifndef MUTT_COMMAND_PARSE_H
+#define MUTT_COMMAND_PARSE_H
 
-#include <stdbool.h>
-#include <stdio.h>
+#include "config.h"
+#include <stdint.h>
+#include "core/lib.h"
 
-struct Body;
-struct Email;
-struct EmailList;
-struct Envelope;
-struct Mailbox;
+struct Buffer;
+struct GroupList;
 
 /**
- * enum MessageTransformOpt - Message transformation option
+ * enum MuttSetCommand - Flags for parse_set()
  */
-enum MessageTransformOpt
+enum MuttSetCommand
 {
-  TRANSFORM_NONE = 0,   ///< No transformation
-  TRANSFORM_DECRYPT,    ///< Decrypt message
-  TRANSFORM_DECODE,     ///< Decode message
+  MUTT_SET_SET,   ///< default is to set all vars
+  MUTT_SET_INV,   ///< default is to invert all vars
+  MUTT_SET_UNSET, ///< default is to unset all vars
+  MUTT_SET_RESET, ///< default is to reset all vars to default
 };
 
-/**
- * enum MessageSaveOpt - Message save option
- */
-enum MessageSaveOpt
-{
-  SAVE_COPY = 0,   ///< Copy message, making a duplicate in another mailbox
-  SAVE_MOVE,       ///< Move message to another mailbox, removing the original
-};
+/* parameter to parse_mailboxes */
+#define MUTT_NAMED   (1 << 0)
 
-void ci_bounce_message(struct Mailbox *m, struct EmailList *el);
-bool mutt_check_traditional_pgp(struct Mailbox *m, struct EmailList *el);
-void mutt_commands_cleanup(void);
-void mutt_display_address(struct Envelope *env);
-bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp);
-void mutt_enter_command(void);
-void mutt_pipe_message(struct Mailbox *m, struct EmailList *el);
-void mutt_print_message(struct Mailbox *m, struct EmailList *el);
-int  mutt_save_message(struct Mailbox *m, struct EmailList *el, enum MessageSaveOpt, enum MessageTransformOpt transform_opt);
-int mutt_save_message_ctx(struct Mailbox *m_src, struct Email *e, enum MessageSaveOpt save_opt, enum MessageTransformOpt transform_opt, struct Mailbox *m_dst);
-bool mutt_select_sort(bool reverse);
-bool mutt_shell_escape(void);
+enum CommandResult parse_mailboxes       (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult parse_my_hdr          (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult parse_subjectrx_list  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+#ifdef USE_IMAP
+enum CommandResult parse_subscribe_to    (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+#endif
+enum CommandResult parse_unalternates    (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult parse_unmailboxes     (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+#ifdef USE_IMAP
+enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+#endif
 
-#endif /* MUTT_COMMANDS_H */
+enum CommandResult mutt_parse_rc_line_cwd(const char *line, char *cwd, struct Buffer *err);
+char *mutt_get_sourced_cwd(void);
+
+int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s, struct Buffer *err);
+void clear_source_stack(void);
+int source_rc(const char *rcfile_path, struct Buffer *err);
+
+#endif /* MUTT_COMMAND_PARSE_H */

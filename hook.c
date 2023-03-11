@@ -46,11 +46,10 @@
 #include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "pattern/lib.h"
-#include "command_parse.h"
+#include "commands.h"
 #include "format_flags.h"
 #include "hdrline.h"
 #include "init.h"
-#include "mutt_commands.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -521,7 +520,7 @@ out:
 static HookFlags mutt_get_hook_type(const char *name)
 {
   struct Command *c = NULL;
-  for (size_t i = 0, size = mutt_commands_array(&c); i < size; i++)
+  for (size_t i = 0, size = commands_array(&c); i < size; i++)
   {
     if (((c[i].parse == mutt_parse_hook) || (c[i].parse == mutt_parse_idxfmt_hook)) &&
         mutt_istr_equal(c[i].name, name))
@@ -980,3 +979,39 @@ const char *mutt_idxfmt_hook(const char *name, struct Mailbox *m, struct Email *
 
   return fmtstring;
 }
+
+/**
+ * HookCommands - Hook Commands
+ */
+static const struct Command HookCommands[] = {
+  // clang-format off
+  { "account-hook",      mutt_parse_hook,               MUTT_ACCOUNT_HOOK },
+  { "charset-hook",      mutt_parse_charset_iconv_hook, MUTT_CHARSET_HOOK },
+  { "crypt-hook",        mutt_parse_hook,               MUTT_CRYPT_HOOK },
+  { "fcc-hook",          mutt_parse_hook,               MUTT_FCC_HOOK },
+  { "fcc-save-hook",     mutt_parse_hook,               MUTT_FCC_HOOK | MUTT_SAVE_HOOK },
+  { "folder-hook",       mutt_parse_hook,               MUTT_FOLDER_HOOK },
+  { "iconv-hook",        mutt_parse_charset_iconv_hook, MUTT_ICONV_HOOK },
+  { "index-format-hook", mutt_parse_idxfmt_hook,        MUTT_IDXFMTHOOK },
+  { "mbox-hook",         mutt_parse_hook,               MUTT_MBOX_HOOK },
+  { "message-hook",      mutt_parse_hook,               MUTT_MESSAGE_HOOK },
+  { "pgp-hook",          mutt_parse_hook,               MUTT_CRYPT_HOOK },
+  { "reply-hook",        mutt_parse_hook,               MUTT_REPLY_HOOK },
+  { "save-hook",         mutt_parse_hook,               MUTT_SAVE_HOOK },
+  { "send-hook",         mutt_parse_hook,               MUTT_SEND_HOOK },
+  { "send2-hook",        mutt_parse_hook,               MUTT_SEND2_HOOK },
+  { "shutdown-hook",     mutt_parse_hook,               MUTT_SHUTDOWN_HOOK | MUTT_GLOBAL_HOOK },
+  { "startup-hook",      mutt_parse_hook,               MUTT_STARTUP_HOOK | MUTT_GLOBAL_HOOK },
+  { "timeout-hook",      mutt_parse_hook,               MUTT_TIMEOUT_HOOK | MUTT_GLOBAL_HOOK },
+  { "unhook",            mutt_parse_unhook,             0 },
+  // clang-format on
+};
+
+/**
+ * hooks_init - Setup feature commands
+ */
+void hooks_init(void)
+{
+  commands_register(HookCommands, mutt_array_size(HookCommands));
+}
+

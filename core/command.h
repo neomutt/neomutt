@@ -23,6 +23,8 @@
 #ifndef MUTT_CORE_COMMAND_H
 #define MUTT_CORE_COMMAND_H
 
+#include "config.h"
+#include <stddef.h>
 #include <stdint.h>
 
 struct Buffer;
@@ -64,5 +66,12 @@ struct Command
 
   intptr_t data; ///< Data or flags to pass to the command
 };
+
+struct Command *command_get       (const char *s);
+
+size_t          commands_array    (struct Command **first);
+void            commands_free     (void);
+void            commands_init     (void);
+void            commands_register (const struct Command *cmds, const size_t num_cmds);
 
 #endif /* MUTT_CORE_COMMAND_H */

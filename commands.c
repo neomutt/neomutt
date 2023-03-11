@@ -1,11 +1,11 @@
 /**
  * @file
- * Manage where the email is piped to external commands
+ * Functions to parse commands in a config file
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2000-2004,2006 Thomas Roessler <roessler@does-not-exist.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 1996-2002,2007,2010,2012-2013,2016 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2020 R Primus <rprimus@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,17 +23,19 @@
  */
 
 /**
- * @page neo_commands Manage where the email is piped to external commands
+ * @page neo_commands Functions to parse commands in a config file
  *
- * Manage where the email is piped to external commands
+ * Functions to parse commands in a config file
  */
 
 #include "config.h"
 #include <assert.h>
+#include <errno.h>
+#include <inttypes.h> // IWYU pragma: keep
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <sys/stat.h>
+#include <string.h>
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
@@ -45,1214 +47,1878 @@
 #include "mutt.h"
 #include "commands.h"
 #include "attach/lib.h"
-#include "browser/lib.h"
-#include "enter/lib.h"
-#include "ncrypt/lib.h"
-#include "progress/lib.h"
-#include "question/lib.h"
-#include "send/lib.h"
-#include "copy.h"
-#include "hook.h"
-#include "icommands.h"
+#include "color/lib.h"
+#include "imap/lib.h"
+#include "menu/lib.h"
+#include "pager/lib.h"
+#include "store/lib.h"
+#include "alternates.h"
 #include "init.h"
-#include "mutt_logging.h"
-#include "mutt_mailbox.h"
-#include "mutt_thread.h"
+#include "keymap.h"
+#include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "myvar.h"
 #include "options.h"
-#include "protos.h"
-#ifdef USE_IMAP
-#include "imap/lib.h"
-#endif
-#ifdef USE_NOTMUCH
-#include "notmuch/lib.h"
+#include "score.h"
+#include "version.h"
+#ifdef USE_INOTIFY
+#include "monitor.h"
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
 
-/** The folder the user last saved to.  Used by ci_save_message() */
-static struct Buffer LastSaveFolder = { 0 };
+/* LIFO designed to contain the list of config files that have been sourced and
+ * avoid cyclic sourcing */
+static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
+
+#define MAX_ERRS 128
 
 /**
- * mutt_commands_cleanup - Clean up commands globals
+ * enum GroupState - Type of email address group
  */
-void mutt_commands_cleanup(void)
+enum GroupState
 {
-  mutt_buffer_dealloc(&LastSaveFolder);
+  GS_NONE, ///< Group is missing an argument
+  GS_RX,   ///< Entry is a regular expression
+  GS_ADDR, ///< Entry is an address
+};
+
+/**
+ * is_function - Is the argument a neomutt function?
+ * @param name  Command name to be searched for
+ * @retval true  Function found
+ * @retval false Function not found
+ */
+static bool is_function(const char *name)
+{
+  for (size_t i = 0; MenuNames[i].name; i++)
+  {
+    const struct MenuFuncOp *fns = km_get_table(MenuNames[i].value);
+    if (!fns)
+      continue;
+
+    for (int j = 0; fns[j].name; j++)
+      if (mutt_str_equal(name, fns[j].name))
+        return true;
+  }
+  return false;
 }
 
 /**
- * ci_bounce_message - Bounce an email
- * @param m  Mailbox
- * @param el List of Emails to bounce
- */
-void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
-{
-  if (!m || !el || STAILQ_EMPTY(el))
-    return;
-
-  struct Buffer *buf = mutt_buffer_pool_get();
-  struct Buffer *prompt = mutt_buffer_pool_get();
-  struct Buffer *scratch = NULL;
-
-  struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-  char *err = NULL;
-  int rc;
-  int msg_count = 0;
-
-  struct EmailNode *en = NULL;
-  STAILQ_FOREACH(en, el, entries)
-  {
-    /* RFC5322 mandates a From: header,
-     * so warn before bouncing messages without one */
-    if (TAILQ_EMPTY(&en->email->env->from))
-      mutt_error(_("Warning: message contains no From: header"));
-
-    msg_count++;
-  }
-
-  if (msg_count == 1)
-    mutt_buffer_strcpy(prompt, _("Bounce message to: "));
-  else
-    mutt_buffer_strcpy(prompt, _("Bounce tagged messages to: "));
-
-  rc = mutt_buffer_get_field(mutt_buffer_string(prompt), buf, MUTT_COMP_ALIAS,
-                             false, NULL, NULL, NULL);
-  if ((rc != 0) || mutt_buffer_is_empty(buf))
-    goto done;
-
-  mutt_addrlist_parse2(&al, mutt_buffer_string(buf));
-  if (TAILQ_EMPTY(&al))
-  {
-    mutt_error(_("Error parsing address"));
-    goto done;
-  }
-
-  mutt_expand_aliases(&al);
-
-  if (mutt_addrlist_to_intl(&al, &err) < 0)
-  {
-    mutt_error(_("Bad IDN: '%s'"), err);
-    FREE(&err);
-    goto done;
-  }
-
-  mutt_buffer_reset(buf);
-  mutt_addrlist_write(&al, buf, true);
-
-#define EXTRA_SPACE (15 + 7 + 2)
-  scratch = mutt_buffer_pool_get();
-  mutt_buffer_printf(scratch,
-                     ngettext("Bounce message to %s?", "Bounce messages to %s?", msg_count),
-                     mutt_buffer_string(buf));
-
-  const size_t width = msgwin_get_width();
-  if (mutt_strwidth(mutt_buffer_string(scratch)) > (width - EXTRA_SPACE))
-  {
-    mutt_simple_format(prompt->data, prompt->dsize, 0, width - EXTRA_SPACE,
-                       JUSTIFY_LEFT, 0, scratch->data, scratch->dsize, false);
-    mutt_buffer_addstr(prompt, "...?");
-  }
-  else
-    mutt_buffer_copy(prompt, scratch);
-
-  const enum QuadOption c_bounce = cs_subset_quad(NeoMutt->sub, "bounce");
-  if (query_quadoption(c_bounce, mutt_buffer_string(prompt)) != MUTT_YES)
-  {
-    msgwin_clear_text();
-    mutt_message(ngettext("Message not bounced", "Messages not bounced", msg_count));
-    goto done;
-  }
-
-  msgwin_clear_text();
-
-  struct Message *msg = NULL;
-  STAILQ_FOREACH(en, el, entries)
-  {
-    msg = mx_msg_open(m, en->email->msgno);
-    if (!msg)
-    {
-      rc = -1;
-      break;
-    }
-
-    rc = mutt_bounce_message(msg->fp, m, en->email, &al, NeoMutt->sub);
-    mx_msg_close(m, &msg);
-
-    if (rc < 0)
-      break;
-  }
-
-  /* If no error, or background, display message. */
-  if ((rc == 0) || (rc == S_BKG))
-    mutt_message(ngettext("Message bounced", "Messages bounced", msg_count));
-
-done:
-  mutt_addrlist_clear(&al);
-  mutt_buffer_pool_release(&buf);
-  mutt_buffer_pool_release(&prompt);
-  mutt_buffer_pool_release(&scratch);
-}
-
-/**
- * pipe_set_flags - Generate flags for copy header/message
- * @param[in]  decode  If true decode the message
- * @param[in]  print   If true, mark the message for printing
- * @param[out] cmflags Flags, see #CopyMessageFlags
- * @param[out] chflags Flags, see #CopyHeaderFlags
- */
-static void pipe_set_flags(bool decode, bool print, CopyMessageFlags *cmflags,
-                           CopyHeaderFlags *chflags)
-{
-  if (decode)
-  {
-    *chflags |= CH_DECODE | CH_REORDER;
-    *cmflags |= MUTT_CM_DECODE | MUTT_CM_CHARCONV;
-
-    const bool c_print_decode_weed = cs_subset_bool(NeoMutt->sub, "print_decode_weed");
-    const bool c_pipe_decode_weed = cs_subset_bool(NeoMutt->sub, "pipe_decode_weed");
-    if (print ? c_print_decode_weed : c_pipe_decode_weed)
-    {
-      *chflags |= CH_WEED;
-      *cmflags |= MUTT_CM_WEED;
-    }
-
-    /* Just as with copy-decode, we need to update the mime fields to avoid
-     * confusing programs that may process the email.  However, we don't want
-     * to force those fields to appear in printouts. */
-    if (!print)
-      *chflags |= CH_MIME | CH_TXTPLAIN;
-  }
-
-  if (print)
-    *cmflags |= MUTT_CM_PRINTING;
-}
-
-/**
- * pipe_msg - Pipe a message
- * @param m      Mailbox
- * @param e      Email to pipe
- * @param msg    Message
- * @param fp     File to write to
- * @param decode If true, decode the message
- * @param print  If true, message is for printing
- */
-static void pipe_msg(struct Mailbox *m, struct Email *e, struct Message *msg,
-                     FILE *fp, bool decode, bool print)
-{
-  CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
-  CopyHeaderFlags chflags = CH_FROM;
-
-  pipe_set_flags(decode, print, &cmflags, &chflags);
-
-  if ((WithCrypto != 0) && decode && e->security & SEC_ENCRYPT)
-  {
-    if (!crypt_valid_passphrase(e->security))
-      return;
-    endwin();
-  }
-
-  const bool own_msg = !msg;
-  if (own_msg)
-  {
-    msg = mx_msg_open(m, e->msgno);
-    if (!msg)
-    {
-      return;
-    }
-  }
-
-  if (decode)
-  {
-    mutt_parse_mime_message(e, msg->fp);
-  }
-
-  mutt_copy_message(fp, e, msg, cmflags, chflags, 0);
-
-  if (own_msg)
-  {
-    mx_msg_close(m, &msg);
-  }
-}
-
-/**
- * pipe_message - Pipe message to a command
- * @param m      Mailbox
- * @param el     List of Emails to pipe
- * @param cmd    Command to pipe to
- * @param decode Should the message be decrypted
- * @param print  True if this is a print job
- * @param split  Should a separator be sent between messages?
- * @param sep    Separator string
- * @retval  0 Success
- * @retval  1 Error
- *
- * The following code is shared between printing and piping.
- */
-static int pipe_message(struct Mailbox *m, struct EmailList *el, const char *cmd,
-                        bool decode, bool print, bool split, const char *sep)
-{
-  if (!m || !el)
-    return 1;
-
-  struct EmailNode *en = STAILQ_FIRST(el);
-  if (!en)
-    return 1;
-
-  int rc = 0;
-  pid_t pid;
-  FILE *fp_out = NULL;
-
-  if (!STAILQ_NEXT(en, entries))
-  {
-    /* handle a single message */
-    mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
-
-    struct Message *msg = mx_msg_open(m, en->email->msgno);
-    if (msg && (WithCrypto != 0) && decode)
-    {
-      mutt_parse_mime_message(en->email, msg->fp);
-      if ((en->email->security & SEC_ENCRYPT) &&
-          !crypt_valid_passphrase(en->email->security))
-      {
-        mx_msg_close(m, &msg);
-        return 1;
-      }
-    }
-    mutt_endwin();
-
-    pid = filter_create(cmd, &fp_out, NULL, NULL);
-    if (pid < 0)
-    {
-      mutt_perror(_("Can't create filter process"));
-      mx_msg_close(m, &msg);
-      return 1;
-    }
-
-    OptKeepQuiet = true;
-    pipe_msg(m, en->email, msg, fp_out, decode, print);
-    mx_msg_close(m, &msg);
-    mutt_file_fclose(&fp_out);
-    rc = filter_wait(pid);
-    OptKeepQuiet = false;
-  }
-  else
-  {
-    /* handle tagged messages */
-    if ((WithCrypto != 0) && decode)
-    {
-      STAILQ_FOREACH(en, el, entries)
-      {
-        struct Message *msg = mx_msg_open(m, en->email->msgno);
-        if (msg)
-        {
-          mutt_parse_mime_message(en->email, msg->fp);
-          mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
-          mx_msg_close(m, &msg);
-        }
-        if ((en->email->security & SEC_ENCRYPT) &&
-            !crypt_valid_passphrase(en->email->security))
-        {
-          return 1;
-        }
-      }
-    }
-
-    if (split)
-    {
-      STAILQ_FOREACH(en, el, entries)
-      {
-        mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
-        mutt_endwin();
-        pid = filter_create(cmd, &fp_out, NULL, NULL);
-        if (pid < 0)
-        {
-          mutt_perror(_("Can't create filter process"));
-          return 1;
-        }
-        OptKeepQuiet = true;
-        pipe_msg(m, en->email, NULL, fp_out, decode, print);
-        /* add the message separator */
-        if (sep)
-          fputs(sep, fp_out);
-        mutt_file_fclose(&fp_out);
-        if (filter_wait(pid) != 0)
-          rc = 1;
-        OptKeepQuiet = false;
-      }
-    }
-    else
-    {
-      mutt_endwin();
-      pid = filter_create(cmd, &fp_out, NULL, NULL);
-      if (pid < 0)
-      {
-        mutt_perror(_("Can't create filter process"));
-        return 1;
-      }
-      OptKeepQuiet = true;
-      STAILQ_FOREACH(en, el, entries)
-      {
-        mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
-        pipe_msg(m, en->email, NULL, fp_out, decode, print);
-        /* add the message separator */
-        if (sep)
-          fputs(sep, fp_out);
-      }
-      mutt_file_fclose(&fp_out);
-      if (filter_wait(pid) != 0)
-        rc = 1;
-      OptKeepQuiet = false;
-    }
-  }
-
-  const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
-  if ((rc != 0) || c_wait_key)
-    mutt_any_key_to_continue(NULL);
-  return rc;
-}
-
-/**
- * mutt_pipe_message - Pipe a message
- * @param m  Mailbox
- * @param el List of Emails to pipe
- */
-void mutt_pipe_message(struct Mailbox *m, struct EmailList *el)
-{
-  if (!m || !el)
-    return;
-
-  struct Buffer *buf = mutt_buffer_pool_get();
-
-  if (mutt_buffer_get_field(_("Pipe to command: "), buf, MUTT_COMP_FILE_SIMPLE,
-                            false, NULL, NULL, NULL) != 0)
-  {
-    goto cleanup;
-  }
-
-  if (mutt_buffer_len(buf) == 0)
-    goto cleanup;
-
-  mutt_buffer_expand_path(buf);
-  const bool c_pipe_decode = cs_subset_bool(NeoMutt->sub, "pipe_decode");
-  const bool c_pipe_split = cs_subset_bool(NeoMutt->sub, "pipe_split");
-  const char *const c_pipe_sep = cs_subset_string(NeoMutt->sub, "pipe_sep");
-  pipe_message(m, el, mutt_buffer_string(buf), c_pipe_decode, false, c_pipe_split, c_pipe_sep);
-
-cleanup:
-  mutt_buffer_pool_release(&buf);
-}
-
-/**
- * mutt_print_message - Print a message
- * @param m  Mailbox
- * @param el List of Emails to print
- */
-void mutt_print_message(struct Mailbox *m, struct EmailList *el)
-{
-  if (!m || !el)
-    return;
-
-  const enum QuadOption c_print = cs_subset_quad(NeoMutt->sub, "print");
-  const char *const c_print_command = cs_subset_string(NeoMutt->sub, "print_command");
-  if (c_print && !c_print_command)
-  {
-    mutt_message(_("No printing command has been defined"));
-    return;
-  }
-
-  int msg_count = 0;
-  struct EmailNode *en = NULL;
-  STAILQ_FOREACH(en, el, entries)
-  {
-    msg_count++;
-  }
-
-  if (query_quadoption(c_print, (msg_count == 1) ? _("Print message?") :
-                                                   _("Print tagged messages?")) != MUTT_YES)
-  {
-    return;
-  }
-
-  const bool c_print_decode = cs_subset_bool(NeoMutt->sub, "print_decode");
-  const bool c_print_split = cs_subset_bool(NeoMutt->sub, "print_split");
-  if (pipe_message(m, el, c_print_command, c_print_decode, true, c_print_split, "\f") == 0)
-    mutt_message(ngettext("Message printed", "Messages printed", msg_count));
-  else
-  {
-    mutt_message(ngettext("Message could not be printed",
-                          "Messages could not be printed", msg_count));
-  }
-}
-
-/**
- * mutt_select_sort - Ask the user for a sort method
- * @param reverse If true make it a reverse sort
- * @retval true The sort type changed
- */
-bool mutt_select_sort(bool reverse)
-{
-  enum SortType sort = SORT_DATE;
-
-  switch (mutt_multi_choice(
-      reverse ?
-          /* L10N: The highlighted letters must match the "Sort" options */
-          _("Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?") :
-          /* L10N: The highlighted letters must match the "Rev-Sort" options */
-          _("Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"),
-      /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
-      _("dfrsotuzcpl")))
-  {
-    case -1: /* abort - don't resort */
-      return false;
-
-    case 1: /* (d)ate */
-      sort = SORT_DATE;
-      break;
-
-    case 2: /* (f)rm */
-      sort = SORT_FROM;
-      break;
-
-    case 3: /* (r)ecv */
-      sort = SORT_RECEIVED;
-      break;
-
-    case 4: /* (s)ubj */
-      sort = SORT_SUBJECT;
-      break;
-
-    case 5: /* t(o) */
-      sort = SORT_TO;
-      break;
-
-    case 6: /* (t)hread */
-      sort = SORT_THREADS;
-      break;
-
-    case 7: /* (u)nsort */
-      sort = SORT_ORDER;
-      break;
-
-    case 8: /* si(z)e */
-      sort = SORT_SIZE;
-      break;
-
-    case 9: /* s(c)ore */
-      sort = SORT_SCORE;
-      break;
-
-    case 10: /* s(p)am */
-      sort = SORT_SPAM;
-      break;
-
-    case 11: /* (l)abel */
-      sort = SORT_LABEL;
-      break;
-  }
-
-  const unsigned char c_use_threads = cs_subset_enum(NeoMutt->sub, "use_threads");
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  int rc = CSR_ERR_CODE;
-  if ((sort != SORT_THREADS) || (c_use_threads == UT_UNSET))
-  {
-    if ((sort != SORT_THREADS) && (c_sort & SORT_LAST))
-      sort |= SORT_LAST;
-    if (reverse)
-      sort |= SORT_REVERSE;
-
-    rc = cs_subset_str_native_set(NeoMutt->sub, "sort", sort, NULL);
-  }
-  else
-  {
-    assert((c_sort & SORT_MASK) != SORT_THREADS); /* See index_config_observer() */
-    /* Preserve the value of $sort, and toggle whether we are threaded. */
-    switch (c_use_threads)
-    {
-      case UT_FLAT:
-        rc = cs_subset_str_native_set(NeoMutt->sub, "use_threads",
-                                      reverse ? UT_REVERSE : UT_THREADS, NULL);
-        break;
-      case UT_THREADS:
-        rc = cs_subset_str_native_set(NeoMutt->sub, "use_threads",
-                                      reverse ? UT_REVERSE : UT_FLAT, NULL);
-        break;
-      case UT_REVERSE:
-        rc = cs_subset_str_native_set(NeoMutt->sub, "use_threads",
-                                      reverse ? UT_FLAT : UT_THREADS, NULL);
-        break;
-      default:
-        assert(false);
-    }
-  }
-
-  return ((CSR_RESULT(rc) == CSR_SUCCESS) && !(rc & CSR_SUC_NO_CHANGE));
-}
-
-/**
- * mutt_shell_escape - Invoke a command in a subshell
- * @retval true A command was invoked (no matter what its result)
- * @retval false No command was invoked
- */
-bool mutt_shell_escape(void)
-{
-  bool rc = false;
-  struct Buffer *buf = mutt_buffer_pool_get();
-
-  if (mutt_buffer_get_field(_("Shell command: "), buf, MUTT_COMP_FILE_SIMPLE,
-                            false, NULL, NULL, NULL) != 0)
-  {
-    goto done;
-  }
-
-  if (mutt_buffer_is_empty(buf))
-  {
-    const char *const c_shell = cs_subset_string(NeoMutt->sub, "shell");
-    mutt_buffer_strcpy(buf, c_shell);
-  }
-
-  if (mutt_buffer_is_empty(buf))
-  {
-    goto done;
-  }
-
-  msgwin_clear_text();
-  mutt_endwin();
-  fflush(stdout);
-  int rc2 = mutt_system(mutt_buffer_string(buf));
-  if (rc2 == -1)
-    mutt_debug(LL_DEBUG1, "Error running \"%s\"\n", mutt_buffer_string(buf));
-
-  const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
-  if ((rc2 != 0) || c_wait_key)
-    mutt_any_key_to_continue(NULL);
-
-  rc = true;
-done:
-  mutt_buffer_pool_release(&buf);
-  return rc;
-}
-
-/**
- * mutt_enter_command - Enter a neomutt command
- */
-void mutt_enter_command(void)
-{
-  struct Buffer *buf = mutt_buffer_pool_get();
-  struct Buffer *err = mutt_buffer_pool_get();
-
-  window_redraw(NULL);
-  /* if enter is pressed after : with no command, just return */
-  if ((mutt_buffer_get_field(":", buf, MUTT_COMP_COMMAND, false, NULL, NULL, NULL) != 0) ||
-      mutt_buffer_is_empty(buf))
-  {
-    goto done;
-  }
-
-  /* check if buf is a valid icommand, else fall back quietly to parse_rc_lines */
-  enum CommandResult rc = mutt_parse_icommand(mutt_buffer_string(buf), err);
-  if (!mutt_buffer_is_empty(err))
-  {
-    /* since errbuf could potentially contain printf() sequences in it,
-     * we must call mutt_error() in this fashion so that vsprintf()
-     * doesn't expect more arguments that we passed */
-    if (rc == MUTT_CMD_ERROR)
-      mutt_error("%s", mutt_buffer_string(err));
-    else
-      mutt_warning("%s", mutt_buffer_string(err));
-  }
-  else if (rc != MUTT_CMD_SUCCESS)
-  {
-    rc = mutt_parse_rc_line(mutt_buffer_string(buf), err);
-    if (!mutt_buffer_is_empty(err))
-    {
-      if (rc == MUTT_CMD_SUCCESS) /* command succeeded with message */
-        mutt_message("%s", mutt_buffer_string(err));
-      else if (rc == MUTT_CMD_ERROR)
-        mutt_error("%s", mutt_buffer_string(err));
-      else if (rc == MUTT_CMD_WARNING)
-        mutt_warning("%s", mutt_buffer_string(err));
-    }
-  }
-  /* else successful command */
-
-  if (NeoMutt)
-  {
-    // Running commands could cause anything to change, so let others know
-    notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_COMMAND, NULL);
-  }
-
-done:
-  mutt_buffer_pool_release(&buf);
-  mutt_buffer_pool_release(&err);
-}
-
-/**
- * mutt_display_address - Display the address of a message
- * @param env Envelope containing address
- */
-void mutt_display_address(struct Envelope *env)
-{
-  const char *pfx = NULL;
-
-  struct AddressList *al = mutt_get_address(env, &pfx);
-  if (!al)
-    return;
-
-  /* Note: We don't convert IDNA to local representation this time.
-   * That is intentional, so the user has an opportunity to copy &
-   * paste the on-the-wire form of the address to other, IDN-unable
-   * software.  */
-  struct Buffer *buf = mutt_buffer_pool_get();
-  mutt_addrlist_write(al, buf, false);
-  mutt_message("%s: %s", pfx, mutt_buffer_string(buf));
-  mutt_buffer_pool_release(&buf);
-}
-
-/**
- * set_copy_flags - Set the flags for a message copy
- * @param[in]  e               Email
- * @param[in]  transform_opt   Transformation, e.g. #TRANSFORM_DECRYPT
- * @param[out] cmflags         Flags, see #CopyMessageFlags
- * @param[out] chflags         Flags, see #CopyHeaderFlags
- */
-static void set_copy_flags(struct Email *e, enum MessageTransformOpt transform_opt,
-                           CopyMessageFlags *cmflags, CopyHeaderFlags *chflags)
-{
-  *cmflags = MUTT_CM_NO_FLAGS;
-  *chflags = CH_UPDATE_LEN;
-
-  const bool need_decrypt = (transform_opt == TRANSFORM_DECRYPT) &&
-                            (e->security & SEC_ENCRYPT);
-  const bool want_pgp = (WithCrypto & APPLICATION_PGP);
-  const bool want_smime = (WithCrypto & APPLICATION_SMIME);
-  const bool is_pgp = mutt_is_application_pgp(e->body) & SEC_ENCRYPT;
-  const bool is_smime = mutt_is_application_smime(e->body) & SEC_ENCRYPT;
-
-  if (need_decrypt && want_pgp && mutt_is_multipart_encrypted(e->body))
-  {
-    *chflags = CH_NONEWLINE | CH_XMIT | CH_MIME;
-    *cmflags = MUTT_CM_DECODE_PGP;
-  }
-  else if (need_decrypt && want_pgp && is_pgp)
-  {
-    *chflags = CH_XMIT | CH_MIME | CH_TXTPLAIN;
-    *cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
-  }
-  else if (need_decrypt && want_smime && is_smime)
-  {
-    *chflags = CH_NONEWLINE | CH_XMIT | CH_MIME;
-    *cmflags = MUTT_CM_DECODE_SMIME;
-  }
-  else if (transform_opt == TRANSFORM_DECODE)
-  {
-    *chflags = CH_XMIT | CH_MIME | CH_TXTPLAIN | CH_DECODE; // then decode RFC2047
-    *cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
-    const bool c_copy_decode_weed = cs_subset_bool(NeoMutt->sub, "copy_decode_weed");
-    if (c_copy_decode_weed)
-    {
-      *chflags |= CH_WEED; // and respect $weed
-      *cmflags |= MUTT_CM_WEED;
-    }
-  }
-}
-
-/**
- * mutt_save_message_ctx - Save a message to a given mailbox
- * @param m_src            Mailbox to copy from
- * @param e                Email
- * @param save_opt         Copy or move, e.g. #SAVE_MOVE
- * @param transform_opt    Transformation, e.g. #TRANSFORM_DECRYPT
- * @param m_dst            Mailbox to save to
+ * parse_grouplist - Parse a group context
+ * @param gl   GroupList to add to
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param err  Buffer for error messages
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_save_message_ctx(struct Mailbox *m_src, struct Email *e, enum MessageSaveOpt save_opt,
-                          enum MessageTransformOpt transform_opt, struct Mailbox *m_dst)
+int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s,
+                    struct Buffer *err)
 {
-  CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
-  CopyHeaderFlags chflags = CH_NO_FLAGS;
-  int rc;
-
-  set_copy_flags(e, transform_opt, &cmflags, &chflags);
-
-  struct Message *msg = mx_msg_open(m_src, e->msgno);
-  if (msg && transform_opt != TRANSFORM_NONE)
+  while (mutt_istr_equal(buf->data, "-group"))
   {
-    mutt_parse_mime_message(e, msg->fp);
-  }
+    if (!MoreArgs(s))
+    {
+      mutt_buffer_strcpy(err, _("-group: no group name"));
+      return -1;
+    }
 
-  rc = mutt_append_message(m_dst, m_src, e, msg, cmflags, chflags);
-  mx_msg_close(m_src, &msg);
-  if (rc != 0)
-    return rc;
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
-  if (save_opt == SAVE_MOVE)
-  {
-    mutt_set_flag(m_src, e, MUTT_DELETE, true);
-    mutt_set_flag(m_src, e, MUTT_PURGE, true);
-    const bool c_delete_untag = cs_subset_bool(NeoMutt->sub, "delete_untag");
-    if (c_delete_untag)
-      mutt_set_flag(m_src, e, MUTT_TAG, false);
+    mutt_grouplist_add(gl, mutt_pattern_group(buf->data));
+
+    if (!MoreArgs(s))
+    {
+      mutt_buffer_strcpy(err, _("out of arguments"));
+      return -1;
+    }
+
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
   }
 
   return 0;
 }
 
 /**
- * mutt_save_message - Save an email
- * @param m                Mailbox
- * @param el               List of Emails to save
- * @param save_opt         Copy or move, e.g. #SAVE_MOVE
- * @param transform_opt    Transformation, e.g. #TRANSFORM_DECRYPT
- * @retval  0 Copy/save was successful
- * @retval -1 Error/abort
+ * mutt_parse_rc_line_cwd - Parse and run a muttrc line in a relative directory
+ * @param line   Line to be parsed
+ * @param cwd    File relative where to run the line
+ * @param err    Where to write error messages
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-int mutt_save_message(struct Mailbox *m, struct EmailList *el,
-                      enum MessageSaveOpt save_opt, enum MessageTransformOpt transform_opt)
+enum CommandResult mutt_parse_rc_line_cwd(const char *line, char *cwd, struct Buffer *err)
 {
-  if (!el || STAILQ_EMPTY(el))
+  mutt_list_insert_head(&MuttrcStack, mutt_str_dup(NONULL(cwd)));
+
+  enum CommandResult ret = mutt_parse_rc_line(line, err);
+
+  struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
+  STAILQ_REMOVE_HEAD(&MuttrcStack, entries);
+  FREE(&np->data);
+  FREE(&np);
+
+  return ret;
+}
+
+/**
+ * mutt_get_sourced_cwd - Get the current file path that is being parsed
+ * @retval ptr File path that is being parsed or cwd at runtime
+ *
+ * @note Caller is responsible for freeing returned string
+ */
+char *mutt_get_sourced_cwd(void)
+{
+  struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
+  if (np && np->data)
+    return mutt_str_dup(np->data);
+
+  // stack is empty, return our own dummy file relative to cwd
+  struct Buffer *cwd = mutt_buffer_pool_get();
+  mutt_path_getcwd(cwd);
+  mutt_buffer_addstr(cwd, "/dummy.rc");
+  char *ret = mutt_buffer_strdup(cwd);
+  mutt_buffer_pool_release(&cwd);
+  return ret;
+}
+
+/**
+ * source_rc - Read an initialization file
+ * @param rcfile_path Path to initialization file
+ * @param err         Buffer for error messages
+ * @retval <0 NeoMutt should pause to let the user know
+ */
+int source_rc(const char *rcfile_path, struct Buffer *err)
+{
+  int lineno = 0, rc = 0, warnings = 0;
+  enum CommandResult line_rc;
+  struct Buffer *token = NULL, *linebuf = NULL;
+  char *line = NULL;
+  char *currentline = NULL;
+  char rcfile[PATH_MAX] = { 0 };
+  size_t linelen = 0;
+  pid_t pid;
+
+  mutt_str_copy(rcfile, rcfile_path, sizeof(rcfile));
+
+  size_t rcfilelen = mutt_str_len(rcfile);
+  if (rcfilelen == 0)
     return -1;
 
-  int rc = -1;
-  int tagged_progress_count = 0;
-  unsigned int msg_count = 0;
-  struct Mailbox *m_save = NULL;
+  bool ispipe = rcfile[rcfilelen - 1] == '|';
 
-  struct Buffer *buf = mutt_buffer_pool_get();
-  struct stat st = { 0 };
-  struct EmailNode *en = NULL;
-
-  STAILQ_FOREACH(en, el, entries)
+  if (!ispipe)
   {
-    msg_count++;
-  }
-  en = STAILQ_FIRST(el);
+    struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
+    if (!mutt_path_to_absolute(rcfile, np ? NONULL(np->data) : ""))
+    {
+      mutt_error(_("Error: Can't build path of '%s'"), rcfile_path);
+      return -1;
+    }
 
-  const SecurityFlags security_flags = WithCrypto ? en->email->security : SEC_NO_FLAGS;
-  const bool is_passphrase_needed = security_flags & SEC_ENCRYPT;
-
-  const char *prompt = NULL;
-  const char *progress_msg = NULL;
-
-  // Set prompt and progress_msg
-  switch (save_opt)
-  {
-    case SAVE_COPY:
-      // L10N: Progress meter message when copying tagged messages
-      progress_msg = (msg_count > 1) ? _("Copying tagged messages...") : NULL;
-      switch (transform_opt)
+    STAILQ_FOREACH(np, &MuttrcStack, entries)
+    {
+      if (mutt_str_equal(np->data, rcfile))
       {
-        case TRANSFORM_NONE:
-          prompt = (msg_count > 1) ? _("Copy tagged to mailbox") : _("Copy to mailbox");
-          break;
-        case TRANSFORM_DECRYPT:
-          prompt = (msg_count > 1) ? _("Decrypt-copy tagged to mailbox") :
-                                     _("Decrypt-copy to mailbox");
-          break;
-        case TRANSFORM_DECODE:
-          prompt = (msg_count > 1) ? _("Decode-copy tagged to mailbox") :
-                                     _("Decode-copy to mailbox");
-          break;
+        break;
       }
-      break;
+    }
+    if (np)
+    {
+      mutt_error(_("Error: Cyclic sourcing of configuration file '%s'"), rcfile);
+      return -1;
+    }
 
-    case SAVE_MOVE:
-      // L10N: Progress meter message when saving tagged messages
-      progress_msg = (msg_count > 1) ? _("Saving tagged messages...") : NULL;
-      switch (transform_opt)
+    mutt_list_insert_head(&MuttrcStack, mutt_str_dup(rcfile));
+  }
+
+  mutt_debug(LL_DEBUG2, "Reading configuration file '%s'\n", rcfile);
+
+  FILE *fp = mutt_open_read(rcfile, &pid);
+  if (!fp)
+  {
+    mutt_buffer_printf(err, "%s: %s", rcfile, strerror(errno));
+    return -1;
+  }
+
+  token = mutt_buffer_pool_get();
+  linebuf = mutt_buffer_pool_get();
+
+  while ((line = mutt_file_read_line(line, &linelen, fp, &lineno, MUTT_RL_CONT)) != NULL)
+  {
+    const char *const c_config_charset = cs_subset_string(NeoMutt->sub, "config_charset");
+    const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
+    const bool conv = c_config_charset && c_charset;
+    if (conv)
+    {
+      currentline = mutt_str_dup(line);
+      if (!currentline)
+        continue;
+      mutt_ch_convert_string(&currentline, c_config_charset, c_charset, MUTT_ICONV_NO_FLAGS);
+    }
+    else
+      currentline = line;
+
+    mutt_buffer_strcpy(linebuf, currentline);
+
+    mutt_buffer_reset(err);
+    line_rc = mutt_parse_rc_buffer(linebuf, token, err);
+    if (line_rc == MUTT_CMD_ERROR)
+    {
+      mutt_error(_("Error in %s, line %d: %s"), rcfile, lineno, err->data);
+      if (--rc < -MAX_ERRS)
       {
-        case TRANSFORM_NONE:
-          prompt = (msg_count > 1) ? _("Save tagged to mailbox") : _("Save to mailbox");
-          break;
-        case TRANSFORM_DECRYPT:
-          prompt = (msg_count > 1) ? _("Decrypt-save tagged to mailbox") :
-                                     _("Decrypt-save to mailbox");
-          break;
-        case TRANSFORM_DECODE:
-          prompt = (msg_count > 1) ? _("Decode-save tagged to mailbox") :
-                                     _("Decode-save to mailbox");
-          break;
+        if (conv)
+          FREE(&currentline);
+        break;
       }
-      break;
+    }
+    else if (line_rc == MUTT_CMD_WARNING)
+    {
+      /* Warning */
+      mutt_warning(_("Warning in %s, line %d: %s"), rcfile, lineno, err->data);
+      warnings++;
+    }
+    else if (line_rc == MUTT_CMD_FINISH)
+    {
+      if (conv)
+        FREE(&currentline);
+      break; /* Found "finish" command */
+    }
+    else
+    {
+      if (rc < 0)
+        rc = -1;
+    }
+    if (conv)
+      FREE(&currentline);
   }
 
-  mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
-  mutt_default_save(buf->data, buf->dsize, en->email);
-  mutt_buffer_fix_dptr(buf);
-  mutt_buffer_pretty_mailbox(buf);
+  FREE(&line);
+  mutt_file_fclose(&fp);
+  if (pid != -1)
+    filter_wait(pid);
 
-  if (mutt_buffer_enter_fname(prompt, buf, false, NULL, false, NULL, NULL,
-                              MUTT_SEL_NO_FLAGS) == -1)
+  if (rc)
   {
-    goto cleanup;
-  }
-
-  size_t pathlen = mutt_buffer_len(buf);
-  if (pathlen == 0)
-    goto cleanup;
-
-  /* Trim any trailing '/' */
-  if (buf->data[pathlen - 1] == '/')
-    buf->data[pathlen - 1] = '\0';
-
-  /* This is an undocumented feature of ELM pointed out to me by Felix von
-   * Leitner <leitner@prz.fu-berlin.de> */
-  if (mutt_buffer_len(&LastSaveFolder) == 0)
-    mutt_buffer_alloc(&LastSaveFolder, PATH_MAX);
-  if (mutt_str_equal(mutt_buffer_string(buf), "."))
-    mutt_buffer_copy(buf, &LastSaveFolder);
-  else
-    mutt_buffer_strcpy(&LastSaveFolder, mutt_buffer_string(buf));
-
-  mutt_buffer_expand_path(buf);
-
-  /* check to make sure that this file is really the one the user wants */
-  if (mutt_save_confirm(mutt_buffer_string(buf), &st) != 0)
-    goto cleanup;
-
-  if (is_passphrase_needed && (transform_opt != TRANSFORM_NONE) &&
-      !crypt_valid_passphrase(security_flags))
-  {
+    /* the neomuttrc source keyword */
+    mutt_buffer_reset(err);
+    mutt_buffer_printf(err,
+                       (rc >= -MAX_ERRS) ?
+                           _("source: errors in %s") :
+                           _("source: reading aborted due to too many errors in %s"),
+                       rcfile);
     rc = -1;
-    goto errcleanup;
+  }
+  else
+  {
+    /* Don't alias errors with warnings */
+    if (warnings > 0)
+    {
+      mutt_buffer_printf(err, ngettext("source: %d warning in %s", "source: %d warnings in %s", warnings),
+                         warnings, rcfile);
+      rc = -2;
+    }
   }
 
-  mutt_message(_("Copying to %s..."), mutt_buffer_string(buf));
+  if (!ispipe && !STAILQ_EMPTY(&MuttrcStack))
+  {
+    struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
+    STAILQ_REMOVE_HEAD(&MuttrcStack, entries);
+    FREE(&np->data);
+    FREE(&np);
+  }
+
+  mutt_buffer_pool_release(&token);
+  mutt_buffer_pool_release(&linebuf);
+  return rc;
+}
+
+/**
+ * parse_cd - Parse the 'cd' command - Implements Command::parse() - @ingroup command_parse
+ */
+enum CommandResult parse_cd(struct Buffer *buf, struct Buffer *s, intptr_t data,
+                            struct Buffer *err)
+{
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+  mutt_buffer_expand_path(buf);
+  if (mutt_buffer_len(buf) == 0)
+  {
+    if (HomeDir)
+      mutt_buffer_strcpy(buf, HomeDir);
+    else
+    {
+      mutt_buffer_printf(err, _("%s: too few arguments"), "cd");
+      return MUTT_CMD_ERROR;
+    }
+  }
+
+  if (chdir(mutt_buffer_string(buf)) != 0)
+  {
+    mutt_buffer_printf(err, "cd: %s", strerror(errno));
+    return MUTT_CMD_ERROR;
+  }
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_echo - Parse the 'echo' command - Implements Command::parse() - @ingroup command_parse
+ */
+enum CommandResult parse_echo(struct Buffer *buf, struct Buffer *s,
+                              intptr_t data, struct Buffer *err)
+{
+  if (!MoreArgs(s))
+  {
+    mutt_buffer_printf(err, _("%s: too few arguments"), "echo");
+    return MUTT_CMD_WARNING;
+  }
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+  OptForceRefresh = true;
+  mutt_message("%s", buf->data);
+  OptForceRefresh = false;
+  mutt_sleep(0);
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_finish - Parse the 'finish' command - Implements Command::parse() - @ingroup command_parse
+ * @retval  #MUTT_CMD_FINISH Stop processing the current file
+ * @retval  #MUTT_CMD_WARNING Failed
+ *
+ * If the 'finish' command is found, we should stop reading the current file.
+ */
+enum CommandResult parse_finish(struct Buffer *buf, struct Buffer *s,
+                                intptr_t data, struct Buffer *err)
+{
+  if (MoreArgs(s))
+  {
+    mutt_buffer_printf(err, _("%s: too many arguments"), "finish");
+    return MUTT_CMD_WARNING;
+  }
+
+  return MUTT_CMD_FINISH;
+}
+
+/**
+ * parse_group - Parse the 'group' and 'ungroup' commands - Implements Command::parse() - @ingroup command_parse
+ */
+enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
+                               intptr_t data, struct Buffer *err)
+{
+  struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
+  enum GroupState state = GS_NONE;
+
+  do
+  {
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+    if (parse_grouplist(&gl, buf, s, err) == -1)
+      goto bail;
+
+    if ((data == MUTT_UNGROUP) && mutt_istr_equal(buf->data, "*"))
+    {
+      mutt_grouplist_clear(&gl);
+      goto out;
+    }
+
+    if (mutt_istr_equal(buf->data, "-rx"))
+      state = GS_RX;
+    else if (mutt_istr_equal(buf->data, "-addr"))
+      state = GS_ADDR;
+    else
+    {
+      switch (state)
+      {
+        case GS_NONE:
+          mutt_buffer_printf(err, _("%sgroup: missing -rx or -addr"),
+                             (data == MUTT_UNGROUP) ? "un" : "");
+          goto warn;
+
+        case GS_RX:
+          if ((data == MUTT_GROUP) &&
+              (mutt_grouplist_add_regex(&gl, buf->data, REG_ICASE, err) != 0))
+          {
+            goto bail;
+          }
+          else if ((data == MUTT_UNGROUP) &&
+                   (mutt_grouplist_remove_regex(&gl, buf->data) < 0))
+          {
+            goto bail;
+          }
+          break;
+
+        case GS_ADDR:
+        {
+          char *estr = NULL;
+          struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+          mutt_addrlist_parse2(&al, buf->data);
+          if (TAILQ_EMPTY(&al))
+            goto bail;
+          if (mutt_addrlist_to_intl(&al, &estr))
+          {
+            mutt_buffer_printf(err, _("%sgroup: warning: bad IDN '%s'"),
+                               (data == 1) ? "un" : "", estr);
+            mutt_addrlist_clear(&al);
+            FREE(&estr);
+            goto bail;
+          }
+          if (data == MUTT_GROUP)
+            mutt_grouplist_add_addrlist(&gl, &al);
+          else if (data == MUTT_UNGROUP)
+            mutt_grouplist_remove_addrlist(&gl, &al);
+          mutt_addrlist_clear(&al);
+          break;
+        }
+      }
+    }
+  } while (MoreArgs(s));
+
+out:
+  mutt_grouplist_destroy(&gl);
+  return MUTT_CMD_SUCCESS;
+
+bail:
+  mutt_grouplist_destroy(&gl);
+  return MUTT_CMD_ERROR;
+
+warn:
+  mutt_grouplist_destroy(&gl);
+  return MUTT_CMD_WARNING;
+}
+
+/**
+ * parse_ifdef - Parse the 'ifdef' and 'ifndef' commands - Implements Command::parse() - @ingroup command_parse
+ *
+ * The 'ifdef' command allows conditional elements in the config file.
+ * If a given variable, function, command or compile-time symbol exists, then
+ * read the rest of the line of config commands.
+ * e.g.
+ *      ifdef sidebar source ~/.neomutt/sidebar.rc
+ *
+ * If (data == 1) then it means use the 'ifndef' (if-not-defined) command.
+ * e.g.
+ *      ifndef imap finish
+ */
+enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
+                               intptr_t data, struct Buffer *err)
+{
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+
+  if (mutt_buffer_is_empty(buf))
+  {
+    mutt_buffer_printf(err, _("%s: too few arguments"), (data ? "ifndef" : "ifdef"));
+    return MUTT_CMD_WARNING;
+  }
+
+  // is the item defined as:
+  bool res = cs_subset_lookup(NeoMutt->sub, buf->data) // a variable?
+             || feature_enabled(buf->data)             // a compiled-in feature?
+             || is_function(buf->data)                 // a function?
+             || command_get(buf->data)                 // a command?
+             || myvar_get(buf->data)                   // a my_ variable?
+#ifdef USE_HCACHE
+             || store_is_valid_backend(buf->data) // a store? (database)
+#endif
+             || mutt_str_getenv(buf->data); // an environment variable?
+
+  if (!MoreArgs(s))
+  {
+    mutt_buffer_printf(err, _("%s: too few arguments"), (data ? "ifndef" : "ifdef"));
+    return MUTT_CMD_WARNING;
+  }
+  mutt_extract_token(buf, s, MUTT_TOKEN_SPACE);
+
+  /* ifdef KNOWN_SYMBOL or ifndef UNKNOWN_SYMBOL */
+  if ((res && (data == 0)) || (!res && (data == 1)))
+  {
+    enum CommandResult rc = mutt_parse_rc_line(buf->data, err);
+    if (rc == MUTT_CMD_ERROR)
+    {
+      mutt_error(_("Error: %s"), err->data);
+      return MUTT_CMD_ERROR;
+    }
+    return rc;
+  }
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_ignore - Parse the 'ignore' command - Implements Command::parse() - @ingroup command_parse
+ */
+enum CommandResult parse_ignore(struct Buffer *buf, struct Buffer *s,
+                                intptr_t data, struct Buffer *err)
+{
+  do
+  {
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+    remove_from_stailq(&UnIgnore, buf->data);
+    add_to_stailq(&Ignore, buf->data);
+  } while (MoreArgs(s));
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_lists - Parse the 'lists' command - Implements Command::parse() - @ingroup command_parse
+ */
+enum CommandResult parse_lists(struct Buffer *buf, struct Buffer *s,
+                               intptr_t data, struct Buffer *err)
+{
+  struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
+
+  do
+  {
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+
+    if (parse_grouplist(&gl, buf, s, err) == -1)
+      goto bail;
+
+    mutt_regexlist_remove(&UnMailLists, buf->data);
+
+    if (mutt_regexlist_add(&MailLists, buf->data, REG_ICASE, err) != 0)
+      goto bail;
+
+    if (mutt_grouplist_add_regex(&gl, buf->data, REG_ICASE, err) != 0)
+      goto bail;
+  } while (MoreArgs(s));
+
+  mutt_grouplist_destroy(&gl);
+  return MUTT_CMD_SUCCESS;
+
+bail:
+  mutt_grouplist_destroy(&gl);
+  return MUTT_CMD_ERROR;
+}
+
+/**
+ * parse_mailboxes - Parse the 'mailboxes' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * This is also used by 'virtual-mailboxes'.
+ */
+enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
+                                   intptr_t data, struct Buffer *err)
+{
+  while (MoreArgs(s))
+  {
+    struct Mailbox *m = mailbox_new();
+
+    if (data & MUTT_NAMED)
+    {
+      // This may be empty, e.g. `named-mailboxes "" +inbox`
+      mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+      m->name = mutt_buffer_strdup(buf);
+    }
+
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+    if (mutt_buffer_is_empty(buf))
+    {
+      /* Skip empty tokens. */
+      mailbox_free(&m);
+      continue;
+    }
+
+    mutt_buffer_strcpy(&m->pathbuf, buf->data);
+    const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+    /* int rc = */ mx_path_canon2(m, c_folder);
+
+    if (m->type <= MUTT_UNKNOWN)
+    {
+      mutt_error("Unknown Mailbox: %s", m->realpath);
+      mailbox_free(&m);
+      return MUTT_CMD_ERROR;
+    }
+
+    bool new_account = false;
+    struct Account *a = mx_ac_find(m);
+    if (!a)
+    {
+      a = account_new(NULL, NeoMutt->sub);
+      a->type = m->type;
+      new_account = true;
+    }
+
+    if (!new_account)
+    {
+      struct Mailbox *m_old = mx_mbox_find(a, m->realpath);
+      if (m_old)
+      {
+        if (!m_old->visible)
+        {
+          m_old->visible = true;
+          m_old->gen = mailbox_gen();
+        }
+
+        const bool rename = (data & MUTT_NAMED) && !mutt_str_equal(m_old->name, m->name);
+        if (rename)
+        {
+          mutt_str_replace(&m_old->name, m->name);
+        }
+
+        mailbox_free(&m);
+        continue;
+      }
+    }
+
+    if (!mx_ac_add(a, m))
+    {
+      mailbox_free(&m);
+      if (new_account)
+      {
+        cs_subset_free(&a->sub);
+        FREE(&a->name);
+        notify_free(&a->notify);
+        FREE(&a);
+      }
+      continue;
+    }
+    if (new_account)
+    {
+      neomutt_account_add(NeoMutt, a);
+    }
+
+    // this is finally a visible mailbox in the sidebar and mailboxes list
+    m->visible = true;
+
+#ifdef USE_INOTIFY
+    mutt_monitor_add(m);
+#endif
+  }
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_my_hdr - Parse the 'my_hdr' command - Implements Command::parse() - @ingroup command_parse
+ */
+enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
+                                intptr_t data, struct Buffer *err)
+{
+  mutt_extract_token(buf, s, MUTT_TOKEN_SPACE | MUTT_TOKEN_QUOTE);
+  char *p = strpbrk(buf->data, ": \t");
+  if (!p || (*p != ':'))
+  {
+    mutt_buffer_strcpy(err, _("invalid header field"));
+    return MUTT_CMD_WARNING;
+  }
+
+  struct EventHeader ev_h = { buf->data };
+  struct ListNode *n = header_find(&UserHeader, buf->data);
+
+  if (n)
+  {
+    header_update(n, buf->data);
+    mutt_debug(LL_NOTIFY, "NT_HEADER_CHANGE: %s\n", buf->data);
+    notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_CHANGE, &ev_h);
+  }
+  else
+  {
+    header_add(&UserHeader, buf->data);
+    mutt_debug(LL_NOTIFY, "NT_HEADER_ADD: %s\n", buf->data);
+    notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_ADD, &ev_h);
+  }
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * set_dump - Parse 'set' command to display config - Implements Command::parse() - @ingroup command_parse
+ */
+static enum CommandResult set_dump(struct Buffer *buf, struct Buffer *s,
+                                   intptr_t data, struct Buffer *err)
+{
+  const bool set = mutt_str_equal(s->data, "set");
+  const bool set_all = mutt_str_equal(s->data, "set all");
+
+  if (!set && !set_all)
+    return MUTT_CMD_ERROR;
+
+  char tempfile[PATH_MAX] = { 0 };
+  mutt_mktemp(tempfile, sizeof(tempfile));
+
+  FILE *fp_out = mutt_file_fopen(tempfile, "w");
+  if (!fp_out)
+  {
+    // L10N: '%s' is the file name of the temporary file
+    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
+    return MUTT_CMD_ERROR;
+  }
+
+  if (set_all)
+    dump_config(NeoMutt->sub->cs, CS_DUMP_NO_FLAGS, fp_out);
+  else
+    dump_config(NeoMutt->sub->cs, CS_DUMP_ONLY_CHANGED, fp_out);
+
+  mutt_file_fclose(&fp_out);
+
+  struct PagerData pdata = { 0 };
+  struct PagerView pview = { &pdata };
+
+  pdata.fname = tempfile;
+
+  pview.banner = "set";
+  pview.flags = MUTT_PAGER_NO_FLAGS;
+  pview.mode = PAGER_MODE_OTHER;
+
+  mutt_do_pager(&pview, NULL);
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_set - Parse the 'set' family of commands - Implements Command::parse() - @ingroup command_parse
+ *
+ * This is used by 'reset', 'set', 'toggle' and 'unset'.
+ */
+enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
+                             intptr_t data, struct Buffer *err)
+{
+  /* The order must match `enum MuttSetCommand` */
+  static const char *set_commands[] = { "set", "toggle", "unset", "reset" };
+
+  if (StartupComplete)
+  {
+    if (set_dump(buf, s, data, err) == MUTT_CMD_SUCCESS)
+      return MUTT_CMD_SUCCESS;
+    if (!mutt_buffer_is_empty(err))
+      return MUTT_CMD_ERROR;
+  }
+
+  int rc = 0;
+
+  while (MoreArgs(s))
+  {
+    bool prefix = false;
+    bool query = false;
+    bool inv = (data == MUTT_SET_INV);
+    bool reset = (data == MUTT_SET_RESET);
+    bool unset = (data == MUTT_SET_UNSET);
+
+    if (*s->dptr == '?')
+    {
+      prefix = true;
+      query = true;
+      s->dptr++;
+    }
+    else if (mutt_str_startswith(s->dptr, "no"))
+    {
+      prefix = true;
+      unset = !unset;
+      s->dptr += 2;
+    }
+    else if (mutt_str_startswith(s->dptr, "inv"))
+    {
+      prefix = true;
+      inv = !inv;
+      s->dptr += 3;
+    }
+    else if (*s->dptr == '&')
+    {
+      prefix = true;
+      reset = true;
+      s->dptr++;
+    }
+
+    if (prefix && (data != MUTT_SET_SET))
+    {
+      mutt_buffer_printf(err, _("Can't use 'inv', 'no', '&' or '?' with the '%s' command"),
+                         set_commands[data]);
+      return MUTT_CMD_WARNING;
+    }
+
+    /* get the variable name */
+    mutt_extract_token(buf, s, MUTT_TOKEN_EQUAL | MUTT_TOKEN_QUESTION | MUTT_TOKEN_PLUS | MUTT_TOKEN_MINUS);
+
+    bool bq = false;
+    bool equals = false;
+    bool increment = false;
+    bool decrement = false;
+
+    struct HashElem *he = NULL;
+    bool my = mutt_str_startswith(buf->data, "my_");
+    if (!my)
+    {
+      he = cs_subset_lookup(NeoMutt->sub, buf->data);
+      if (!he)
+      {
+        if (reset && mutt_str_equal(buf->data, "all"))
+        {
+          struct HashElem **he_list = get_elem_list(NeoMutt->sub->cs);
+          if (!he_list)
+            return MUTT_CMD_ERROR;
+
+          for (size_t i = 0; he_list[i]; i++)
+            cs_subset_he_reset(NeoMutt->sub, he_list[i], NULL);
+
+          FREE(&he_list);
+          break;
+        }
+        else
+        {
+          mutt_buffer_printf(err, _("%s: unknown variable"), buf->data);
+          return MUTT_CMD_ERROR;
+        }
+      }
+
+      // Use the correct name if a synonym is used
+      mutt_buffer_strcpy(buf, he->key.strkey);
+
+      bq = ((DTYPE(he->type) == DT_BOOL) || (DTYPE(he->type) == DT_QUAD));
+    }
+
+    if (*s->dptr == '?')
+    {
+      if (prefix)
+      {
+        mutt_buffer_printf(err, _("Can't use a prefix when querying a variable"));
+        return MUTT_CMD_WARNING;
+      }
+
+      if (reset || unset || inv)
+      {
+        mutt_buffer_printf(err, _("Can't query a variable with the '%s' command"),
+                           set_commands[data]);
+        return MUTT_CMD_WARNING;
+      }
+
+      query = true;
+      s->dptr++;
+    }
+    else if ((*s->dptr == '+') || (*s->dptr == '-'))
+    {
+      if (prefix)
+      {
+        mutt_buffer_printf(err, _("Can't use prefix when incrementing or decrementing a variable"));
+        return MUTT_CMD_WARNING;
+      }
+
+      if (reset || unset || inv)
+      {
+        mutt_buffer_printf(err, _("Can't set a variable with the '%s' command"),
+                           set_commands[data]);
+        return MUTT_CMD_WARNING;
+      }
+      if (*s->dptr == '+')
+        increment = true;
+      else
+        decrement = true;
+
+      if (my && decrement)
+      {
+        mutt_buffer_printf(err, _("Can't decrement a my_ variable"), set_commands[data]);
+        return MUTT_CMD_WARNING;
+      }
+      s->dptr++;
+      if (*s->dptr == '=')
+      {
+        equals = true;
+        s->dptr++;
+      }
+    }
+    else if (*s->dptr == '=')
+    {
+      if (prefix)
+      {
+        mutt_buffer_printf(err, _("Can't use prefix when setting a variable"));
+        return MUTT_CMD_WARNING;
+      }
+
+      if (reset || unset || inv)
+      {
+        mutt_buffer_printf(err, _("Can't set a variable with the '%s' command"),
+                           set_commands[data]);
+        return MUTT_CMD_WARNING;
+      }
+
+      equals = true;
+      s->dptr++;
+    }
+
+    if (!bq && (inv || (unset && prefix)))
+    {
+      if (data == MUTT_SET_SET)
+      {
+        mutt_buffer_printf(err, _("Prefixes 'no' and 'inv' may only be used with bool/quad variables"));
+      }
+      else
+      {
+        mutt_buffer_printf(err, _("Command '%s' can only be used with bool/quad variables"),
+                           set_commands[data]);
+      }
+      return MUTT_CMD_WARNING;
+    }
+
+    if (reset)
+    {
+      // mutt_buffer_printf(err, "ACT24 reset variable %s", buf->data);
+      if (he)
+      {
+        rc = cs_subset_he_reset(NeoMutt->sub, he, err);
+        if (CSR_RESULT(rc) != CSR_SUCCESS)
+          return MUTT_CMD_ERROR;
+      }
+      else
+      {
+        myvar_del(buf->data);
+      }
+      continue;
+    }
+
+    if ((data == MUTT_SET_SET) && !inv && !unset)
+    {
+      if (query)
+      {
+        // mutt_buffer_printf(err, "ACT08 query variable %s", buf->data);
+        if (he)
+        {
+          mutt_buffer_addstr(err, buf->data);
+          mutt_buffer_addch(err, '=');
+          mutt_buffer_reset(buf);
+          rc = cs_subset_he_string_get(NeoMutt->sub, he, buf);
+          if (CSR_RESULT(rc) != CSR_SUCCESS)
+          {
+            mutt_buffer_addstr(err, buf->data);
+            return MUTT_CMD_ERROR;
+          }
+          if (DTYPE(he->type) == DT_PATH)
+            mutt_pretty_mailbox(buf->data, buf->dsize);
+          pretty_var(buf->data, err);
+        }
+        else
+        {
+          const char *val = myvar_get(buf->data);
+          if (val)
+          {
+            mutt_buffer_addstr(err, buf->data);
+            mutt_buffer_addch(err, '=');
+            pretty_var(val, err);
+          }
+          else
+          {
+            mutt_buffer_printf(err, _("%s: unknown variable"), buf->data);
+            return MUTT_CMD_ERROR;
+          }
+        }
+        break;
+      }
+      else if (equals)
+      {
+        // mutt_buffer_printf(err, "ACT11 set variable %s to ", buf->data);
+        const char *name = NULL;
+        if (my)
+        {
+          name = mutt_str_dup(buf->data);
+        }
+        mutt_extract_token(buf, s, MUTT_TOKEN_BACKTICK_VARS);
+        if (my)
+        {
+          assert(!decrement);
+          if (increment)
+          {
+            myvar_append(name, buf->data);
+          }
+          else
+          {
+            myvar_set(name, buf->data);
+          }
+          FREE(&name);
+        }
+        else
+        {
+          if (DTYPE(he->type) == DT_PATH)
+          {
+            if (he->type & (DT_PATH_DIR | DT_PATH_FILE))
+              mutt_buffer_expand_path(buf);
+            else
+              mutt_path_tilde(buf->data, buf->dsize, HomeDir);
+          }
+          else if (IS_MAILBOX(he))
+          {
+            mutt_buffer_expand_path(buf);
+          }
+          else if (IS_COMMAND(he))
+          {
+            struct Buffer scratch = mutt_buffer_make(1024);
+            mutt_buffer_copy(&scratch, buf);
+
+            if (!mutt_str_equal(buf->data, "builtin"))
+            {
+              mutt_buffer_expand_path(&scratch);
+            }
+            mutt_buffer_reset(buf);
+            mutt_buffer_addstr(buf, mutt_buffer_string(&scratch));
+            mutt_buffer_dealloc(&scratch);
+          }
+          if (increment)
+          {
+            rc = cs_subset_he_string_plus_equals(NeoMutt->sub, he, buf->data, err);
+          }
+          else if (decrement)
+          {
+            rc = cs_subset_he_string_minus_equals(NeoMutt->sub, he, buf->data, err);
+          }
+          else
+          {
+            rc = cs_subset_he_string_set(NeoMutt->sub, he, buf->data, err);
+          }
+          if (CSR_RESULT(rc) != CSR_SUCCESS)
+            return MUTT_CMD_ERROR;
+        }
+        continue;
+      }
+      else
+      {
+        if (bq)
+        {
+          // mutt_buffer_printf(err, "ACT23 set variable %s to 'yes'", buf->data);
+          rc = cs_subset_he_native_set(NeoMutt->sub, he, true, err);
+          if (CSR_RESULT(rc) != CSR_SUCCESS)
+            return MUTT_CMD_ERROR;
+          continue;
+        }
+        else
+        {
+          // mutt_buffer_printf(err, "ACT10 query variable %s", buf->data);
+          if (he)
+          {
+            mutt_buffer_addstr(err, buf->data);
+            mutt_buffer_addch(err, '=');
+            mutt_buffer_reset(buf);
+            rc = cs_subset_he_string_get(NeoMutt->sub, he, buf);
+            if (CSR_RESULT(rc) != CSR_SUCCESS)
+            {
+              mutt_buffer_addstr(err, buf->data);
+              return MUTT_CMD_ERROR;
+            }
+            if (DTYPE(he->type) == DT_PATH)
+              mutt_pretty_mailbox(buf->data, buf->dsize);
+            pretty_var(buf->data, err);
+          }
+          else
+          {
+            const char *val = myvar_get(buf->data);
+            if (val)
+            {
+              mutt_buffer_addstr(err, buf->data);
+              mutt_buffer_addch(err, '=');
+              pretty_var(val, err);
+            }
+            else
+            {
+              mutt_buffer_printf(err, _("%s: unknown variable"), buf->data);
+              return MUTT_CMD_ERROR;
+            }
+          }
+          break;
+        }
+      }
+    }
+
+    if (my)
+    {
+      myvar_del(buf->data);
+    }
+    else if (bq)
+    {
+      if (inv)
+      {
+        // mutt_buffer_printf(err, "ACT25 TOGGLE bool/quad variable %s", buf->data);
+        if (DTYPE(he->type) == DT_BOOL)
+          bool_he_toggle(NeoMutt->sub, he, err);
+        else
+          quad_he_toggle(NeoMutt->sub, he, err);
+      }
+      else
+      {
+        // mutt_buffer_printf(err, "ACT26 UNSET bool/quad variable %s", buf->data);
+        rc = cs_subset_he_native_set(NeoMutt->sub, he, false, err);
+        if (CSR_RESULT(rc) != CSR_SUCCESS)
+          return MUTT_CMD_ERROR;
+      }
+      continue;
+    }
+    else
+    {
+      rc = cs_subset_he_string_set(NeoMutt->sub, he, NULL, err);
+      if (CSR_RESULT(rc) != CSR_SUCCESS)
+        return MUTT_CMD_ERROR;
+    }
+  }
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_setenv - Parse the 'setenv' and 'unsetenv' commands - Implements Command::parse() - @ingroup command_parse
+ */
+enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
+                                intptr_t data, struct Buffer *err)
+{
+  char **envp = mutt_envlist_getlist();
+
+  bool query = false;
+  bool prefix = false;
+  bool unset = (data == MUTT_SET_UNSET);
+
+  if (!MoreArgs(s))
+  {
+    mutt_buffer_printf(err, _("%s: too few arguments"), "setenv");
+    return MUTT_CMD_WARNING;
+  }
+
+  if (*s->dptr == '?')
+  {
+    query = true;
+    prefix = true;
+
+    if (unset)
+    {
+      mutt_buffer_printf(err, _("Can't query a variable with the '%s' command"), "unsetenv");
+      return MUTT_CMD_WARNING;
+    }
+
+    s->dptr++;
+  }
+
+  /* get variable name */
+  mutt_extract_token(buf, s, MUTT_TOKEN_EQUAL | MUTT_TOKEN_QUESTION);
+
+  if (*s->dptr == '?')
+  {
+    if (unset)
+    {
+      mutt_buffer_printf(err, _("Can't query a variable with the '%s' command"), "unsetenv");
+      return MUTT_CMD_WARNING;
+    }
+
+    if (prefix)
+    {
+      mutt_buffer_printf(err, _("Can't use a prefix when querying a variable"));
+      return MUTT_CMD_WARNING;
+    }
+
+    query = true;
+    s->dptr++;
+  }
+
+  if (query)
+  {
+    bool found = false;
+    while (envp && *envp)
+    {
+      /* This will display all matches for "^QUERY" */
+      if (mutt_str_startswith(*envp, buf->data))
+      {
+        if (!found)
+        {
+          mutt_endwin();
+          found = true;
+        }
+        puts(*envp);
+      }
+      envp++;
+    }
+
+    if (found)
+    {
+      mutt_any_key_to_continue(NULL);
+      return MUTT_CMD_SUCCESS;
+    }
+
+    mutt_buffer_printf(err, _("%s is unset"), buf->data);
+    return MUTT_CMD_WARNING;
+  }
+
+  if (unset)
+  {
+    if (!mutt_envlist_unset(buf->data))
+    {
+      mutt_buffer_printf(err, _("%s is unset"), buf->data);
+      return MUTT_CMD_WARNING;
+    }
+    return MUTT_CMD_SUCCESS;
+  }
+
+  /* set variable */
+
+  if (*s->dptr == '=')
+  {
+    s->dptr++;
+    SKIPWS(s->dptr);
+  }
+
+  if (!MoreArgs(s))
+  {
+    mutt_buffer_printf(err, _("%s: too few arguments"), "setenv");
+    return MUTT_CMD_WARNING;
+  }
+
+  char *name = mutt_str_dup(buf->data);
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+  mutt_envlist_set(name, buf->data, true);
+  FREE(&name);
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_source - Parse the 'source' command - Implements Command::parse() - @ingroup command_parse
+ */
+enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
+                                intptr_t data, struct Buffer *err)
+{
+  char path[PATH_MAX] = { 0 };
+
+  do
+  {
+    if (mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS) != 0)
+    {
+      mutt_buffer_printf(err, _("source: error at %s"), s->dptr);
+      return MUTT_CMD_ERROR;
+    }
+    mutt_str_copy(path, buf->data, sizeof(path));
+    mutt_expand_path(path, sizeof(path));
+
+    if (source_rc(path, err) < 0)
+    {
+      mutt_buffer_printf(err, _("source: file %s could not be sourced"), path);
+      return MUTT_CMD_ERROR;
+    }
+
+  } while (MoreArgs(s));
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_spam_list - Parse the 'spam' and 'nospam' commands - Implements Command::parse() - @ingroup command_parse
+ */
+enum CommandResult parse_spam_list(struct Buffer *buf, struct Buffer *s,
+                                   intptr_t data, struct Buffer *err)
+{
+  struct Buffer templ;
+
+  mutt_buffer_init(&templ);
+
+  /* Insist on at least one parameter */
+  if (!MoreArgs(s))
+  {
+    if (data == MUTT_SPAM)
+      mutt_buffer_strcpy(err, _("spam: no matching pattern"));
+    else
+      mutt_buffer_strcpy(err, _("nospam: no matching pattern"));
+    return MUTT_CMD_ERROR;
+  }
+
+  /* Extract the first token, a regex */
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+
+  /* data should be either MUTT_SPAM or MUTT_NOSPAM. MUTT_SPAM is for spam commands. */
+  if (data == MUTT_SPAM)
+  {
+    /* If there's a second parameter, it's a template for the spam tag. */
+    if (MoreArgs(s))
+    {
+      mutt_extract_token(&templ, s, MUTT_TOKEN_NO_FLAGS);
+
+      /* Add to the spam list. */
+      if (mutt_replacelist_add(&SpamList, buf->data, templ.data, err) != 0)
+      {
+        FREE(&templ.data);
+        return MUTT_CMD_ERROR;
+      }
+      FREE(&templ.data);
+    }
+    /* If not, try to remove from the nospam list. */
+    else
+    {
+      mutt_regexlist_remove(&NoSpamList, buf->data);
+    }
+
+    return MUTT_CMD_SUCCESS;
+  }
+  /* MUTT_NOSPAM is for nospam commands. */
+  else if (data == MUTT_NOSPAM)
+  {
+    /* nospam only ever has one parameter. */
+
+    /* "*" is a special case. */
+    if (mutt_str_equal(buf->data, "*"))
+    {
+      mutt_replacelist_free(&SpamList);
+      mutt_regexlist_free(&NoSpamList);
+      return MUTT_CMD_SUCCESS;
+    }
+
+    /* If it's on the spam list, just remove it. */
+    if (mutt_replacelist_remove(&SpamList, buf->data) != 0)
+      return MUTT_CMD_SUCCESS;
+
+    /* Otherwise, add it to the nospam list. */
+    if (mutt_regexlist_add(&NoSpamList, buf->data, REG_ICASE, err) != 0)
+      return MUTT_CMD_ERROR;
+
+    return MUTT_CMD_SUCCESS;
+  }
+
+  /* This should not happen. */
+  mutt_buffer_strcpy(err, "This is no good at all.");
+  return MUTT_CMD_ERROR;
+}
+
+/**
+ * parse_stailq - Parse a list command - Implements Command::parse() - @ingroup command_parse
+ *
+ * This is used by 'alternative_order', 'auto_view' and several others.
+ */
+enum CommandResult parse_stailq(struct Buffer *buf, struct Buffer *s,
+                                intptr_t data, struct Buffer *err)
+{
+  do
+  {
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+    add_to_stailq((struct ListHead *) data, buf->data);
+  } while (MoreArgs(s));
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_subscribe - Parse the 'subscribe' command - Implements Command::parse() - @ingroup command_parse
+ */
+enum CommandResult parse_subscribe(struct Buffer *buf, struct Buffer *s,
+                                   intptr_t data, struct Buffer *err)
+{
+  struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
+
+  do
+  {
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+
+    if (parse_grouplist(&gl, buf, s, err) == -1)
+      goto bail;
+
+    mutt_regexlist_remove(&UnMailLists, buf->data);
+    mutt_regexlist_remove(&UnSubscribedLists, buf->data);
+
+    if (mutt_regexlist_add(&MailLists, buf->data, REG_ICASE, err) != 0)
+      goto bail;
+    if (mutt_regexlist_add(&SubscribedLists, buf->data, REG_ICASE, err) != 0)
+      goto bail;
+    if (mutt_grouplist_add_regex(&gl, buf->data, REG_ICASE, err) != 0)
+      goto bail;
+  } while (MoreArgs(s));
+
+  mutt_grouplist_destroy(&gl);
+  return MUTT_CMD_SUCCESS;
+
+bail:
+  mutt_grouplist_destroy(&gl);
+  return MUTT_CMD_ERROR;
+}
 
 #ifdef USE_IMAP
-  enum MailboxType mailbox_type = imap_path_probe(mutt_buffer_string(buf), NULL);
-  if ((m->type == MUTT_IMAP) && (transform_opt == TRANSFORM_NONE) && (mailbox_type == MUTT_IMAP))
-  {
-    rc = imap_copy_messages(m, el, mutt_buffer_string(buf), save_opt);
-    switch (rc)
-    {
-      /* success */
-      case 0:
-        mutt_clear_error();
-        rc = 0;
-        goto cleanup;
-      /* non-fatal error: continue to fetch/append */
-      case 1:
-        break;
-      /* fatal error, abort */
-      case -1:
-        goto errcleanup;
-    }
-  }
-#endif
+/**
+ * parse_subscribe_to - Parse the 'subscribe-to' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * The 'subscribe-to' command allows to subscribe to an IMAP-Mailbox.
+ * Patterns are not supported.
+ * Use it as follows: subscribe-to =folder
+ */
+enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
+                                      intptr_t data, struct Buffer *err)
+{
+  if (!buf || !s || !err)
+    return MUTT_CMD_ERROR;
 
-  mutt_file_resolve_symlink(buf);
-  m_save = mx_path_resolve(mutt_buffer_string(buf));
-  bool old_append = m_save->append;
-  OpenMailboxFlags mbox_flags = MUTT_NEWFOLDER;
-  /* Display a tagged message progress counter, rather than (for
-   * IMAP) a per-message progress counter */
-  if (msg_count > 1)
-    mbox_flags |= MUTT_QUIET;
-  if (!mx_mbox_open(m_save, mbox_flags))
-  {
-    rc = -1;
-    mailbox_free(&m_save);
-    goto errcleanup;
-  }
-  m_save->append = true;
+  mutt_buffer_reset(err);
 
-#ifdef USE_COMP_MBOX
-  /* If we're saving to a compressed mailbox, the stats won't be updated
-   * until the next open.  Until then, improvise. */
-  struct Mailbox *m_comp = NULL;
-  if (m_save->compress_info)
+  if (MoreArgs(s))
   {
-    m_comp = mailbox_find(m_save->realpath);
-  }
-  /* We probably haven't been opened yet */
-  if (m_comp && (m_comp->msg_count == 0))
-    m_comp = NULL;
-#endif
-  if (msg_count == 1)
-  {
-    rc = mutt_save_message_ctx(m, en->email, save_opt, transform_opt, m_save);
-    if (rc != 0)
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+
+    if (MoreArgs(s))
     {
-      mx_mbox_close(m_save);
-      m_save->append = old_append;
-      goto errcleanup;
+      mutt_buffer_printf(err, _("%s: too many arguments"), "subscribe-to");
+      return MUTT_CMD_WARNING;
     }
-#ifdef USE_COMP_MBOX
-    if (m_comp)
+
+    if (buf->data && (*buf->data != '\0'))
     {
-      m_comp->msg_count++;
-      if (!en->email->read)
+      /* Expand and subscribe */
+      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), true) == 0)
       {
-        m_comp->msg_unread++;
-        if (!en->email->old)
-          m_comp->msg_new++;
+        mutt_message(_("Subscribed to %s"), buf->data);
+        return MUTT_CMD_SUCCESS;
       }
-      if (en->email->flagged)
-        m_comp->msg_flagged++;
+
+      mutt_buffer_printf(err, _("Could not subscribe to %s"), buf->data);
+      return MUTT_CMD_ERROR;
     }
+
+    mutt_debug(LL_DEBUG1, "Corrupted buffer");
+    return MUTT_CMD_ERROR;
+  }
+
+  mutt_buffer_addstr(err, _("No folder specified"));
+  return MUTT_CMD_WARNING;
+}
 #endif
+
+/**
+ * parse_tag_formats - Parse the 'tag-formats' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse config like: `tag-formats pgp GP`
+ *
+ * @note This maps format -> tag
+ */
+enum CommandResult parse_tag_formats(struct Buffer *buf, struct Buffer *s,
+                                     intptr_t data, struct Buffer *err)
+{
+  if (!s)
+    return MUTT_CMD_ERROR;
+
+  struct Buffer *tagbuf = mutt_buffer_pool_get();
+  struct Buffer *fmtbuf = mutt_buffer_pool_get();
+
+  while (MoreArgs(s))
+  {
+    mutt_extract_token(tagbuf, s, MUTT_TOKEN_NO_FLAGS);
+    const char *tag = mutt_buffer_string(tagbuf);
+    if (*tag == '\0')
+      continue;
+
+    mutt_extract_token(fmtbuf, s, MUTT_TOKEN_NO_FLAGS);
+    const char *fmt = mutt_buffer_string(fmtbuf);
+
+    /* avoid duplicates */
+    const char *tmp = mutt_hash_find(TagFormats, fmt);
+    if (tmp)
+    {
+      mutt_warning(_("tag format '%s' already registered as '%s'"), fmt, tmp);
+      continue;
+    }
+
+    mutt_hash_insert(TagFormats, fmt, mutt_str_dup(tag));
+  }
+
+  mutt_buffer_pool_release(&tagbuf);
+  mutt_buffer_pool_release(&fmtbuf);
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_tag_transforms - Parse the 'tag-transforms' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse config like: `tag-transforms pgp P`
+ *
+ * @note This maps tag -> transform
+ */
+enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
+                                        intptr_t data, struct Buffer *err)
+{
+  if (!s)
+    return MUTT_CMD_ERROR;
+
+  struct Buffer *tagbuf = mutt_buffer_pool_get();
+  struct Buffer *trnbuf = mutt_buffer_pool_get();
+
+  while (MoreArgs(s))
+  {
+    mutt_extract_token(tagbuf, s, MUTT_TOKEN_NO_FLAGS);
+    const char *tag = mutt_buffer_string(tagbuf);
+    if (*tag == '\0')
+      continue;
+
+    mutt_extract_token(trnbuf, s, MUTT_TOKEN_NO_FLAGS);
+    const char *trn = mutt_buffer_string(trnbuf);
+
+    /* avoid duplicates */
+    const char *tmp = mutt_hash_find(TagTransforms, tag);
+    if (tmp)
+    {
+      mutt_warning(_("tag transform '%s' already registered as '%s'"), tag, tmp);
+      continue;
+    }
+
+    mutt_hash_insert(TagTransforms, tag, mutt_str_dup(trn));
+  }
+
+  mutt_buffer_pool_release(&tagbuf);
+  mutt_buffer_pool_release(&trnbuf);
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_unignore - Parse the 'unignore' command - Implements Command::parse() - @ingroup command_parse
+ */
+enum CommandResult parse_unignore(struct Buffer *buf, struct Buffer *s,
+                                  intptr_t data, struct Buffer *err)
+{
+  do
+  {
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+
+    /* don't add "*" to the unignore list */
+    if (strcmp(buf->data, "*") != 0)
+      add_to_stailq(&UnIgnore, buf->data);
+
+    remove_from_stailq(&Ignore, buf->data);
+  } while (MoreArgs(s));
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_unlists - Parse the 'unlists' command - Implements Command::parse() - @ingroup command_parse
+ */
+enum CommandResult parse_unlists(struct Buffer *buf, struct Buffer *s,
+                                 intptr_t data, struct Buffer *err)
+{
+  mutt_hash_free(&AutoSubscribeCache);
+  do
+  {
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+    mutt_regexlist_remove(&SubscribedLists, buf->data);
+    mutt_regexlist_remove(&MailLists, buf->data);
+
+    if (!mutt_str_equal(buf->data, "*") &&
+        (mutt_regexlist_add(&UnMailLists, buf->data, REG_ICASE, err) != 0))
+    {
+      return MUTT_CMD_ERROR;
+    }
+  } while (MoreArgs(s));
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * do_unmailboxes - Remove a Mailbox from the Sidebar/notifications
+ * @param m Mailbox to `unmailboxes`
+ */
+static void do_unmailboxes(struct Mailbox *m)
+{
+#ifdef USE_INOTIFY
+  mutt_monitor_remove(m);
+#endif
+  m->visible = false;
+  m->gen = -1;
+  if (m->opened)
+  {
+    struct EventMailbox ev_m = { NULL };
+    mutt_debug(LL_NOTIFY, "NT_MAILBOX_CHANGE: NULL\n");
+    notify_send(NeoMutt->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
   }
   else
   {
-    rc = 0;
-
-#ifdef USE_NOTMUCH
-    if (m->type == MUTT_NOTMUCH)
-      nm_db_longrun_init(m, true);
-#endif
-    struct Progress *progress = progress_new(progress_msg, MUTT_PROGRESS_WRITE, msg_count);
-    STAILQ_FOREACH(en, el, entries)
-    {
-      progress_update(progress, ++tagged_progress_count, -1);
-      mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
-      rc = mutt_save_message_ctx(m, en->email, save_opt, transform_opt, m_save);
-      if (rc != 0)
-        break;
-#ifdef USE_COMP_MBOX
-      if (m_comp)
-      {
-        struct Email *e2 = en->email;
-        m_comp->msg_count++;
-        if (!e2->read)
-        {
-          m_comp->msg_unread++;
-          if (!e2->old)
-            m_comp->msg_new++;
-        }
-        if (e2->flagged)
-          m_comp->msg_flagged++;
-      }
-#endif
-    }
-    progress_free(&progress);
-
-#ifdef USE_NOTMUCH
-    if (m->type == MUTT_NOTMUCH)
-      nm_db_longrun_done(m);
-#endif
-    if (rc != 0)
-    {
-      mx_mbox_close(m_save);
-      m_save->append = old_append;
-      goto errcleanup;
-    }
+    account_mailbox_remove(m->account, m);
+    mailbox_free(&m);
   }
-
-  const bool need_mailbox_cleanup = ((m_save->type == MUTT_MBOX) ||
-                                     (m_save->type == MUTT_MMDF));
-
-  mx_mbox_close(m_save);
-  m_save->append = old_append;
-
-  if (need_mailbox_cleanup)
-    mutt_mailbox_cleanup(mutt_buffer_string(buf), &st);
-
-  mutt_clear_error();
-  rc = 0;
-
-errcleanup:
-  if (rc != 0)
-  {
-    switch (save_opt)
-    {
-      case SAVE_MOVE:
-        if (msg_count > 1)
-        {
-          // L10N: Message when an index tagged save operation fails for some reason
-          mutt_error(_("Error saving tagged messages"));
-        }
-        else
-        {
-          // L10N: Message when an index/pager save operation fails for some reason
-          mutt_error(_("Error saving message"));
-        }
-        break;
-      case SAVE_COPY:
-        if (msg_count > 1)
-        {
-          // L10N: Message when an index tagged copy operation fails for some reason
-          mutt_error(_("Error copying tagged messages"));
-        }
-        else
-        {
-          // L10N: Message when an index/pager copy operation fails for some reason
-          mutt_error(_("Error copying message"));
-        }
-        break;
-    }
-  }
-
-  mailbox_free(&m_save);
-
-cleanup:
-  mutt_buffer_pool_release(&buf);
-  return rc;
 }
 
 /**
- * mutt_edit_content_type - Edit the content type of an attachment
- * @param e  Email
- * @param b  Attachment
- * @param fp File handle to the attachment
- * @retval true A Any change is made
+ * do_unmailboxes_star - Remove all Mailboxes from the Sidebar/notifications
+ */
+static void do_unmailboxes_star(void)
+{
+  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
+  struct MailboxNode *np = NULL;
+  struct MailboxNode *nptmp = NULL;
+  STAILQ_FOREACH_SAFE(np, &ml, entries, nptmp)
+  {
+    do_unmailboxes(np->mailbox);
+  }
+  neomutt_mailboxlist_clear(&ml);
+}
+
+/**
+ * parse_unmailboxes - Parse the 'unmailboxes' command - Implements Command::parse() - @ingroup command_parse
  *
- * recvattach requires the return code to know when to regenerate the actx.
+ * This is also used by 'unvirtual-mailboxes'
  */
-bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
+enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
+                                     intptr_t data, struct Buffer *err)
 {
-  struct Buffer *buf = mutt_buffer_pool_get();
-  struct Buffer *charset = mutt_buffer_pool_get();
-  struct Buffer *obuf = mutt_buffer_pool_get();
-  struct Buffer *tmp = mutt_buffer_pool_get();
-
-  bool rc = false;
-  bool charset_changed = false;
-  bool type_changed = false;
-  bool structure_changed = false;
-
-  char *cp = mutt_param_get(&b->parameter, "charset");
-  mutt_buffer_strcpy(charset, cp);
-
-  mutt_buffer_printf(buf, "%s/%s", TYPE(b), b->subtype);
-  mutt_buffer_copy(obuf, buf);
-  if (!TAILQ_EMPTY(&b->parameter))
+  while (MoreArgs(s))
   {
-    struct Parameter *np = NULL;
-    TAILQ_FOREACH(np, &b->parameter, entries)
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+
+    if (mutt_str_equal(buf->data, "*"))
     {
-      mutt_addr_cat(tmp->data, tmp->dsize, np->value, MimeSpecials);
-      mutt_buffer_add_printf(buf, "; %s=%s", np->attribute, mutt_buffer_string(tmp));
+      do_unmailboxes_star();
+      return MUTT_CMD_SUCCESS;
+    }
+
+    mutt_buffer_expand_path(buf);
+
+    struct Account *a = NULL;
+    TAILQ_FOREACH(a, &NeoMutt->accounts, entries)
+    {
+      struct Mailbox *m = mx_mbox_find(a, mutt_buffer_string(buf));
+      if (m)
+      {
+        do_unmailboxes(m);
+        break;
+      }
     }
   }
-
-  if ((mutt_buffer_get_field("Content-Type: ", buf, MUTT_COMP_NO_FLAGS, false,
-                             NULL, NULL, NULL) != 0) ||
-      mutt_buffer_is_empty(buf))
-  {
-    goto done;
-  }
-
-  /* clean up previous junk */
-  mutt_param_free(&b->parameter);
-  FREE(&b->subtype);
-
-  mutt_parse_content_type(mutt_buffer_string(buf), b);
-
-  mutt_buffer_printf(tmp, "%s/%s", TYPE(b), NONULL(b->subtype));
-  type_changed = !mutt_istr_equal(mutt_buffer_string(tmp), mutt_buffer_string(obuf));
-  charset_changed = !mutt_istr_equal(mutt_buffer_string(charset),
-                                     mutt_param_get(&b->parameter, "charset"));
-
-  /* if in send mode, check for conversion - current setting is default. */
-
-  if (!e && (b->type == TYPE_TEXT) && charset_changed)
-  {
-    mutt_buffer_printf(tmp, _("Convert to %s upon sending?"),
-                       mutt_param_get(&b->parameter, "charset"));
-    enum QuadOption ans = mutt_yesorno(mutt_buffer_string(tmp), b->noconv ? MUTT_NO : MUTT_YES);
-    if (ans != MUTT_ABORT)
-      b->noconv = (ans == MUTT_NO);
-  }
-
-  /* inform the user */
-
-  mutt_buffer_printf(tmp, "%s/%s", TYPE(b), NONULL(b->subtype));
-  if (type_changed)
-    mutt_message(_("Content-Type changed to %s"), mutt_buffer_string(tmp));
-  if ((b->type == TYPE_TEXT) && charset_changed)
-  {
-    if (type_changed)
-      mutt_sleep(1);
-    mutt_message(b->noconv ? _("Character set changed to %s; not converting") :
-                             _("Character set changed to %s; converting"),
-                 mutt_param_get(&b->parameter, "charset"));
-  }
-
-  b->force_charset |= charset_changed;
-
-  if (!is_multipart(b) && b->parts)
-  {
-    structure_changed = true;
-    mutt_body_free(&b->parts);
-  }
-  if (!mutt_is_message_type(b->type, b->subtype) && b->email)
-  {
-    structure_changed = true;
-    b->email->body = NULL;
-    email_free(&b->email);
-  }
-
-  if (fp && !b->parts && (is_multipart(b) || mutt_is_message_type(b->type, b->subtype)))
-  {
-    structure_changed = true;
-    mutt_parse_part(fp, b);
-  }
-
-  if ((WithCrypto != 0) && e)
-  {
-    if (e->body == b)
-      e->security = SEC_NO_FLAGS;
-
-    e->security |= crypt_query(b);
-  }
-
-  rc = structure_changed | type_changed;
-
-done:
-  mutt_buffer_pool_release(&buf);
-  mutt_buffer_pool_release(&charset);
-  mutt_buffer_pool_release(&obuf);
-  mutt_buffer_pool_release(&tmp);
-  return rc;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
- * check_traditional_pgp - Check for an inline PGP content
- * @param m Mailbox
- * @param e Email to check
- * @retval true Message contains inline PGP content
+ * parse_unmy_hdr - Parse the 'unmy_hdr' command - Implements Command::parse() - @ingroup command_parse
  */
-static bool check_traditional_pgp(struct Mailbox *m, struct Email *e)
+enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
+                                  intptr_t data, struct Buffer *err)
 {
-  bool rc = false;
+  struct ListNode *np = NULL, *tmp = NULL;
+  size_t l;
 
-  e->security |= PGP_TRADITIONAL_CHECKED;
-
-  struct Message *msg = mx_msg_open(m, e->msgno);
-  if (msg)
+  do
   {
-    mutt_parse_mime_message(e, msg->fp);
-    if (crypt_pgp_check_traditional(msg->fp, e->body, false))
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+    if (mutt_str_equal("*", buf->data))
     {
-      e->security = crypt_query(e->body);
-      rc = true;
+      /* Clear all headers, send a notification for each header */
+      STAILQ_FOREACH(np, &UserHeader, entries)
+      {
+        mutt_debug(LL_NOTIFY, "NT_HEADER_DELETE: %s\n", np->data);
+        struct EventHeader ev_h = { np->data };
+        notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_DELETE, &ev_h);
+      }
+      mutt_list_free(&UserHeader);
+      continue;
     }
 
-    e->security |= PGP_TRADITIONAL_CHECKED;
-    mx_msg_close(m, &msg);
-  }
-  return rc;
+    l = mutt_str_len(buf->data);
+    if (buf->data[l - 1] == ':')
+      l--;
+
+    STAILQ_FOREACH_SAFE(np, &UserHeader, entries, tmp)
+    {
+      if (mutt_istrn_equal(buf->data, np->data, l) && (np->data[l] == ':'))
+      {
+        mutt_debug(LL_NOTIFY, "NT_HEADER_DELETE: %s\n", np->data);
+        struct EventHeader ev_h = { np->data };
+        notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_DELETE, &ev_h);
+
+        header_free(&UserHeader, np);
+      }
+    }
+  } while (MoreArgs(s));
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
- * mutt_check_traditional_pgp - Check if a message has inline PGP content
- * @param m  Mailbox
- * @param el List of Emails to check
- * @retval true Message contains inline PGP content
+ * parse_unstailq - Parse an unlist command - Implements Command::parse() - @ingroup command_parse
+ *
+ * This is used by 'unalternative_order', 'unauto_view' and several others.
  */
-bool mutt_check_traditional_pgp(struct Mailbox *m, struct EmailList *el)
+enum CommandResult parse_unstailq(struct Buffer *buf, struct Buffer *s,
+                                  intptr_t data, struct Buffer *err)
 {
-  bool rc = false;
-  struct EmailNode *en = NULL;
-  STAILQ_FOREACH(en, el, entries)
+  do
   {
-    if (!(en->email->security & PGP_TRADITIONAL_CHECKED))
-      rc = check_traditional_pgp(m, en->email) || rc;
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+    /* Check for deletion of entire list */
+    if (mutt_str_equal(buf->data, "*"))
+    {
+      mutt_list_free((struct ListHead *) data);
+      break;
+    }
+    remove_from_stailq((struct ListHead *) data, buf->data);
+  } while (MoreArgs(s));
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_unsubscribe - Parse the 'unsubscribe' command - Implements Command::parse() - @ingroup command_parse
+ */
+enum CommandResult parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
+                                     intptr_t data, struct Buffer *err)
+{
+  mutt_hash_free(&AutoSubscribeCache);
+  do
+  {
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+    mutt_regexlist_remove(&SubscribedLists, buf->data);
+
+    if (!mutt_str_equal(buf->data, "*") &&
+        (mutt_regexlist_add(&UnSubscribedLists, buf->data, REG_ICASE, err) != 0))
+    {
+      return MUTT_CMD_ERROR;
+    }
+  } while (MoreArgs(s));
+
+  return MUTT_CMD_SUCCESS;
+}
+
+#ifdef USE_IMAP
+/**
+ * parse_unsubscribe_from - Parse the 'unsubscribe-from' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * The 'unsubscribe-from' command allows to unsubscribe from an IMAP-Mailbox.
+ * Patterns are not supported.
+ * Use it as follows: unsubscribe-from =folder
+ */
+enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
+                                          intptr_t data, struct Buffer *err)
+{
+  if (!buf || !s || !err)
+    return MUTT_CMD_ERROR;
+
+  if (MoreArgs(s))
+  {
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+
+    if (MoreArgs(s))
+    {
+      mutt_buffer_printf(err, _("%s: too many arguments"), "unsubscribe-from");
+      return MUTT_CMD_WARNING;
+    }
+
+    if (buf->data && (*buf->data != '\0'))
+    {
+      /* Expand and subscribe */
+      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), false) == 0)
+      {
+        mutt_message(_("Unsubscribed from %s"), buf->data);
+        return MUTT_CMD_SUCCESS;
+      }
+
+      mutt_buffer_printf(err, _("Could not unsubscribe from %s"), buf->data);
+      return MUTT_CMD_ERROR;
+    }
+
+    mutt_debug(LL_DEBUG1, "Corrupted buffer");
+    return MUTT_CMD_ERROR;
   }
 
-  return rc;
+  mutt_buffer_addstr(err, _("No folder specified"));
+  return MUTT_CMD_WARNING;
+}
+#endif
+
+/**
+ * parse_version - Parse the 'version' command - Implements Command::parse() - @ingroup command_parse
+ */
+enum CommandResult parse_version(struct Buffer *buf, struct Buffer *s,
+                                 intptr_t data, struct Buffer *err)
+{
+  // silently ignore 'version' if it's in a config file
+  if (!StartupComplete)
+    return MUTT_CMD_SUCCESS;
+
+  char tempfile[PATH_MAX] = { 0 };
+  mutt_mktemp(tempfile, sizeof(tempfile));
+
+  FILE *fp_out = mutt_file_fopen(tempfile, "w");
+  if (!fp_out)
+  {
+    // L10N: '%s' is the file name of the temporary file
+    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
+    return MUTT_CMD_ERROR;
+  }
+
+  print_version(fp_out);
+  mutt_file_fclose(&fp_out);
+
+  struct PagerData pdata = { 0 };
+  struct PagerView pview = { &pdata };
+
+  pdata.fname = tempfile;
+
+  pview.banner = "version";
+  pview.flags = MUTT_PAGER_NO_FLAGS;
+  pview.mode = PAGER_MODE_OTHER;
+
+  mutt_do_pager(&pview, NULL);
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * clear_source_stack - Free memory from the stack used for the source command
+ */
+void clear_source_stack(void)
+{
+  mutt_list_free(&MuttrcStack);
+}
+
+/**
+ * MuttCommands - General NeoMutt Commands
+ */
+static const struct Command MuttCommands[] = {
+  // clang-format off
+  { "alias",               parse_alias,            0 },
+  { "alternates",          parse_alternates,       0 },
+  { "alternative_order",   parse_stailq,           IP &AlternativeOrderList },
+  { "attachments",         parse_attachments,      0 },
+  { "auto_view",           parse_stailq,           IP &AutoViewList },
+  { "bind",                mutt_parse_bind,        0 },
+  { "cd",                  parse_cd,               0 },
+  { "color",               mutt_parse_color,       0 },
+  { "echo",                parse_echo,             0 },
+  { "exec",                mutt_parse_exec,        0 },
+  { "finish",              parse_finish,           0 },
+  { "group",               parse_group,            MUTT_GROUP },
+  { "hdr_order",           parse_stailq,           IP &HeaderOrderList },
+  { "ifdef",               parse_ifdef,            0 },
+  { "ifndef",              parse_ifdef,            1 },
+  { "ignore",              parse_ignore,           0 },
+  { "lists",               parse_lists,            0 },
+  { "macro",               mutt_parse_macro,       1 },
+  { "mailboxes",           parse_mailboxes,        0 },
+  { "mailto_allow",        parse_stailq,           IP &MailToAllow },
+  { "mime_lookup",         parse_stailq,           IP &MimeLookupList },
+  { "mono",                mutt_parse_mono,        0 },
+  { "my_hdr",              parse_my_hdr,           0 },
+  { "named-mailboxes",     parse_mailboxes,        MUTT_NAMED },
+  { "nospam",              parse_spam_list,        MUTT_NOSPAM },
+  { "push",                mutt_parse_push,        0 },
+  { "reset",               parse_set,              MUTT_SET_RESET },
+  { "score",               mutt_parse_score,       0 },
+  { "set",                 parse_set,              MUTT_SET_SET },
+  { "setenv",              parse_setenv,           MUTT_SET_SET },
+  { "source",              parse_source,           0 },
+  { "spam",                parse_spam_list,        MUTT_SPAM },
+  { "subjectrx",           parse_subjectrx_list,   0 },
+  { "subscribe",           parse_subscribe,        0 },
+  { "tag-formats",         parse_tag_formats,      0 },
+  { "tag-transforms",      parse_tag_transforms,   0 },
+  { "toggle",              parse_set,              MUTT_SET_INV },
+  { "unalias",             parse_unalias,          0 },
+  { "unalternates",        parse_unalternates,     0 },
+  { "unalternative_order", parse_unstailq,         IP &AlternativeOrderList },
+  { "unattachments",       parse_unattachments,    0 },
+  { "unauto_view",         parse_unstailq,         IP &AutoViewList },
+  { "unbind",              mutt_parse_unbind,      MUTT_UNBIND },
+  { "uncolor",             mutt_parse_uncolor,     0 },
+  { "ungroup",             parse_group,            MUTT_UNGROUP },
+  { "unhdr_order",         parse_unstailq,         IP &HeaderOrderList },
+  { "unignore",            parse_unignore,         0 },
+  { "unlists",             parse_unlists,          0 },
+  { "unmacro",             mutt_parse_unbind,      MUTT_UNMACRO },
+  { "unmailboxes",         parse_unmailboxes,      0 },
+  { "unmailto_allow",      parse_unstailq,         IP &MailToAllow },
+  { "unmime_lookup",       parse_unstailq,         IP &MimeLookupList },
+  { "unmono",              mutt_parse_unmono,      0 },
+  { "unmy_hdr",            parse_unmy_hdr,         0 },
+  { "unscore",             mutt_parse_unscore,     0 },
+  { "unset",               parse_set,              MUTT_SET_UNSET },
+  { "unsetenv",            parse_setenv,           MUTT_SET_UNSET },
+  { "unsubjectrx",         parse_unsubjectrx_list, 0 },
+  { "unsubscribe",         parse_unsubscribe,      0 },
+  { "version",             parse_version,          0 },
+  // clang-format on
+};
+
+/**
+ * commands_init - Initialize commands array and register default commands
+ */
+void commands_init(void)
+{
+  commands_register(MuttCommands, mutt_array_size(MuttCommands));
 }

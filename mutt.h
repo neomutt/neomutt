@@ -27,6 +27,7 @@
 #include "config.h"
 #include <limits.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 /* On OS X 10.5.x, wide char functions are inlined by default breaking
  * --without-wc-funcs compilation
@@ -47,6 +48,8 @@
 #ifdef HAVE_FGETC_UNLOCKED
 #define fgetc fgetc_unlocked
 #endif
+
+extern bool StartupComplete;
 
 typedef uint16_t CompletionFlags;       ///< Flags for mutt_enter_string_full(), e.g. #MUTT_COMP_ALIAS
 #define MUTT_COMP_NO_FLAGS          0   ///< No flags are set

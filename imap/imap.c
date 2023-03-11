@@ -51,14 +51,13 @@
 #include "question/lib.h"
 #include "adata.h"
 #include "auth.h"
-#include "command_parse.h"
 #include "commands.h"
 #include "edata.h"
+#include "external.h"
 #include "hook.h"
 #include "init.h"
 #include "mdata.h"
 #include "msn.h"
-#include "mutt_commands.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "muttlib.h"
@@ -71,7 +70,10 @@
 struct Progress;
 struct stat;
 
-static const struct Command imap_commands[] = {
+/**
+ * ImapCommands - Imap Commands
+ */
+static const struct Command ImapCommands[] = {
   // clang-format off
   { "subscribe-to",     parse_subscribe_to,     0 },
   { "unsubscribe-from", parse_unsubscribe_from, 0 },
@@ -83,7 +85,7 @@ static const struct Command imap_commands[] = {
  */
 void imap_init(void)
 {
-  COMMANDS_REGISTER(imap_commands);
+  commands_register(ImapCommands, mutt_array_size(ImapCommands));
 }
 
 /**

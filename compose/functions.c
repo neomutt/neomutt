@@ -53,7 +53,7 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "attach_data.h"
-#include "commands.h"
+#include "external.h"
 #include "hook.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"

@@ -49,10 +49,9 @@
 #include "color/lib.h"
 #include "history/lib.h"
 #include "notmuch/lib.h"
-#include "command_parse.h"
+#include "commands.h"
 #include "hook.h"
 #include "keymap.h"
-#include "mutt_commands.h"
 #include "mutt_globals.h"
 #ifdef USE_LUA
 #include "mutt_lua.h"
@@ -560,7 +559,7 @@ void mutt_opts_free(void)
   mutt_keys_free();
 
   mutt_regexlist_free(&NoSpamList);
-  mutt_commands_free();
+  commands_free();
 }
 
 /**
@@ -580,7 +579,8 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
 
   mutt_grouplist_init();
   alias_init();
-  mutt_commands_init();
+  commands_init();
+  hooks_init();
 #ifdef USE_COMP_MBOX
   mutt_comp_init();
 #endif
@@ -867,7 +867,7 @@ enum CommandResult mutt_parse_rc_buffer(struct Buffer *line,
     mutt_extract_token(token, line, MUTT_TOKEN_NO_FLAGS);
 
     struct Command *cmd = NULL;
-    size_t size = mutt_commands_array(&cmd);
+    size_t size = commands_array(&cmd);
     size_t i;
     for (i = 0; i < size; i++)
     {

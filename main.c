@@ -68,17 +68,16 @@
  * | :-------------- | :------------------------- |
  * | alternates.c    | @subpage neo_alternates    |
  * | commands.c      | @subpage neo_commands      |
- * | command_parse.c | @subpage neo_command_parse |
  * | copy.c          | @subpage neo_copy          |
  * | editmsg.c       | @subpage neo_editmsg       |
  * | enriched.c      | @subpage neo_enriched      |
+ * | external.c      | @subpage neo_external      |
  * | flags.c         | @subpage neo_flags         |
  * | functions.c     | @subpage neo_functions     |
  * | handler.c       | @subpage neo_handler       |
  * | hdrline.c       | @subpage neo_hdrline       |
  * | help.c          | @subpage neo_help          |
  * | hook.c          | @subpage neo_hook          |
- * | icommands.c     | @subpage neo_icommands     |
  * | init.c          | @subpage neo_init          |
  * | keymap.c        | @subpage neo_keymap        |
  * | mailcap.c       | @subpage neo_mailcap       |
@@ -88,7 +87,6 @@
  * | muttlib.c       | @subpage neo_muttlib       |
  * | mutt_account.c  | @subpage neo_mutt_account  |
  * | mutt_body.c     | @subpage neo_mutt_body     |
- * | mutt_commands.c | @subpage neo_mutt_commands |
  * | mutt_config.c   | @subpage neo_mutt_config   |
  * | mutt_globals.h  | @subpage neo_mutt_globals  |
  * | mutt_header.c   | @subpage neo_mutt_header   |
@@ -168,7 +166,7 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "alternates.h"
-#include "commands.h"
+#include "external.h"
 #include "hook.h"
 #include "init.h"
 #include "keymap.h"
@@ -202,6 +200,8 @@
 #if defined(USE_DEBUG_NOTIFY) || defined(HAVE_LIBUNWIND) || defined(USE_DEBUG_PARSE_TEST)
 #include "debug/lib.h"
 #endif
+
+bool StartupComplete = false; ///< When the config has been read
 
 // clang-format off
 typedef uint8_t CliFlags;         ///< Flags for command line options, e.g. #MUTT_CLI_IGNORE
@@ -940,6 +940,7 @@ main
   {
     goto main_ok; // TEST22: neomutt -B
   }
+  StartupComplete = true;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, main_hist_observer, NULL);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, main_log_observer, NULL);
@@ -1415,7 +1416,7 @@ main_exit:
   mutt_buffer_pool_free();
   mutt_envlist_free();
   mutt_browser_cleanup();
-  mutt_commands_cleanup();
+  commands_cleanup();
   menu_cleanup();
   crypt_cleanup();
   mutt_opts_free();
