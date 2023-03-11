@@ -82,7 +82,10 @@
 
 struct stat;
 
-static const struct Command nm_commands[] = {
+/**
+ * NmCommands - Notmuch Commands
+ */
+static const struct Command NmCommands[] = {
   // clang-format off
   { "unvirtual-mailboxes", parse_unmailboxes, 0 },
   { "virtual-mailboxes",   parse_mailboxes,   MUTT_NAMED },
@@ -97,7 +100,7 @@ const int NmUrlProtocolLen = sizeof(NmUrlProtocol) - 1;
  */
 void nm_init(void)
 {
-  commands_register(nm_commands, mutt_array_size(nm_commands));
+  commands_register(NmCommands, mutt_array_size(NmCommands));
 }
 
 /**

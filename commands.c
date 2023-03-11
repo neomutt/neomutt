@@ -1847,7 +1847,10 @@ void clear_source_stack(void)
   mutt_list_free(&MuttrcStack);
 }
 
-static const struct Command mutt_commands[] = {
+/**
+ * MuttCommands - General NeoMutt Commands
+ */
+static const struct Command MuttCommands[] = {
   // clang-format off
   { "alias",               parse_alias,            0 },
   { "alternates",          parse_alternates,       0 },
@@ -1917,5 +1920,5 @@ static const struct Command mutt_commands[] = {
  */
 void commands_init(void)
 {
-  commands_register(mutt_commands, mutt_array_size(mutt_commands));
+  commands_register(MuttCommands, mutt_array_size(MuttCommands));
 }

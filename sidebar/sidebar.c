@@ -42,7 +42,10 @@
 
 struct ListHead SidebarPinned = STAILQ_HEAD_INITIALIZER(SidebarPinned); ///< List of mailboxes to always display in the sidebar
 
-static const struct Command sb_commands[] = {
+/**
+ * SbCommands - Sidebar Commands
+ */
+static const struct Command SbCommands[] = {
   // clang-format off
   { "sidebar_pin",   sb_parse_sidebar_pin,     0 },
   { "sidebar_unpin", sb_parse_sidebar_unpin,   0 },
@@ -197,7 +200,7 @@ void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
  */
 void sb_init(void)
 {
-  commands_register(sb_commands, mutt_array_size(sb_commands));
+  commands_register(SbCommands, mutt_array_size(SbCommands));
 
   // Listen for dialog creation events
   notify_observer_add(AllDialogsWindow->notify, NT_WINDOW,

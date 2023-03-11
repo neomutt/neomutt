@@ -70,7 +70,10 @@
 struct Progress;
 struct stat;
 
-static const struct Command imap_commands[] = {
+/**
+ * ImapCommands - Imap Commands
+ */
+static const struct Command ImapCommands[] = {
   // clang-format off
   { "subscribe-to",     parse_subscribe_to,     0 },
   { "unsubscribe-from", parse_unsubscribe_from, 0 },
@@ -82,7 +85,7 @@ static const struct Command imap_commands[] = {
  */
 void imap_init(void)
 {
-  commands_register(imap_commands, mutt_array_size(imap_commands));
+  commands_register(ImapCommands, mutt_array_size(ImapCommands));
 }
 
 /**

@@ -980,7 +980,10 @@ const char *mutt_idxfmt_hook(const char *name, struct Mailbox *m, struct Email *
   return fmtstring;
 }
 
-static const struct Command hook_commands[] = {
+/**
+ * HookCommands - Hook Commands
+ */
+static const struct Command HookCommands[] = {
   // clang-format off
   { "account-hook",      mutt_parse_hook,               MUTT_ACCOUNT_HOOK },
   { "charset-hook",      mutt_parse_charset_iconv_hook, MUTT_CHARSET_HOOK },
@@ -1009,6 +1012,6 @@ static const struct Command hook_commands[] = {
  */
 void hooks_init(void)
 {
-  commands_register(hook_commands, mutt_array_size(hook_commands));
+  commands_register(HookCommands, mutt_array_size(HookCommands));
 }
 
