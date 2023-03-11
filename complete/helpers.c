@@ -39,9 +39,9 @@
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "notmuch/lib.h"
+#include "commands.h"
 #include "functions.h"
 #include "keymap.h"
-#include "mutt_commands.h"
 #include "myvar.h"
 #include "sort.h"
 

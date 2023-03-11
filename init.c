@@ -49,7 +49,7 @@
 #include "color/lib.h"
 #include "history/lib.h"
 #include "notmuch/lib.h"
-#include "command_parse.h"
+#include "commands.h"
 #include "hook.h"
 #include "keymap.h"
 #include "mutt_globals.h"

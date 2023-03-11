@@ -51,7 +51,7 @@
 #include "question/lib.h"
 #include "adata.h"
 #include "auth.h"
-#include "command_parse.h"
+#include "commands.h"
 #include "edata.h"
 #include "external.h"
 #include "hook.h"

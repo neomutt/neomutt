@@ -67,7 +67,7 @@
  * | File            | Description                |
  * | :-------------- | :------------------------- |
  * | alternates.c    | @subpage neo_alternates    |
- * | command_parse.c | @subpage neo_command_parse |
+ * | commands.c      | @subpage neo_commands      |
  * | copy.c          | @subpage neo_copy          |
  * | editmsg.c       | @subpage neo_editmsg       |
  * | enriched.c      | @subpage neo_enriched      |
@@ -87,7 +87,6 @@
  * | muttlib.c       | @subpage neo_muttlib       |
  * | mutt_account.c  | @subpage neo_mutt_account  |
  * | mutt_body.c     | @subpage neo_mutt_body     |
- * | mutt_commands.c | @subpage neo_mutt_commands |
  * | mutt_config.c   | @subpage neo_mutt_config   |
  * | mutt_globals.h  | @subpage neo_mutt_globals  |
  * | mutt_header.c   | @subpage neo_mutt_header   |
