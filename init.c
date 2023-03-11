@@ -580,6 +580,7 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   mutt_grouplist_init();
   alias_init();
   commands_init();
+  hooks_init();
 #ifdef USE_COMP_MBOX
   mutt_comp_init();
 #endif
