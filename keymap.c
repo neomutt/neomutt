@@ -1500,10 +1500,13 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
 {
   if (StartupComplete)
   {
+    // Save and restore the offset in `s` because dump_bind_macro() might change it
+    char *dptr = s->dptr;
     if (dump_bind_macro(buf, s, data, err) == MUTT_CMD_SUCCESS)
       return MUTT_CMD_SUCCESS;
     if (!mutt_buffer_is_empty(err))
       return MUTT_CMD_ERROR;
+    s->dptr = dptr;
   }
 
   const struct MenuFuncOp *funcs = NULL;
@@ -1741,10 +1744,13 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
 {
   if (StartupComplete)
   {
+    // Save and restore the offset in `s` because dump_bind_macro() might change it
+    char *dptr = s->dptr;
     if (dump_bind_macro(buf, s, data, err) == MUTT_CMD_SUCCESS)
       return MUTT_CMD_SUCCESS;
     if (!mutt_buffer_is_empty(err))
       return MUTT_CMD_ERROR;
+    s->dptr = dptr;
   }
 
   enum MenuType mtypes[MenuNamesLen];

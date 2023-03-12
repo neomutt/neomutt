@@ -1014,4 +1014,3 @@ void hooks_init(void)
 {
   commands_register(HookCommands, mutt_array_size(HookCommands));
 }
-
