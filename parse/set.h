@@ -1,6 +1,6 @@
 /**
  * @file
- * Text parsing functions
+ * Parse the 'set' command
  *
  * @authors
  * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
@@ -20,21 +20,25 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef MUTT_PARSE_SET_H
+#define MUTT_PARSE_SET_H
+
+#include <stdint.h>
+#include "core/lib.h"
+
+struct Buffer;
+
 /**
- * @page lib_parse Text parsing functions
- *
- * | File                | Description                |
- * | :------------------ | :------------------------- |
- * | parse/extract.c     | @subpage parse_extract     |
- * | parse/set.c         | @subpage parse_set         |
+ * enum MuttSetCommand - Flags for parse_set()
  */
+enum MuttSetCommand
+{
+  MUTT_SET_SET,   ///< default is to set all vars
+  MUTT_SET_INV,   ///< default is to invert all vars
+  MUTT_SET_UNSET, ///< default is to unset all vars
+  MUTT_SET_RESET, ///< default is to reset all vars to default
+};
 
-#ifndef MUTT_PARSE_LIB_H
-#define MUTT_PARSE_LIB_H
+enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
-// IWYU pragma: begin_exports
-#include "extract.h"
-#include "set.h"
-// IWYU pragma: end_exports
-
-#endif /* MUTT_PARSE_LIB_H */
+#endif /* MUTT_PARSE_SET_H */
