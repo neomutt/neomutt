@@ -448,6 +448,9 @@
   NEOMUTT_TEST_ITEM(test_mutt_rfc822_parse_message)                            \
   NEOMUTT_TEST_ITEM(test_mutt_rfc822_read_header)                              \
   NEOMUTT_TEST_ITEM(test_mutt_rfc822_read_line)                                \
+  NEOMUTT_TEST_ITEM(test_parse_extract_token)                                  \
+  NEOMUTT_TEST_ITEM(test_parse_rc)                                             \
+  NEOMUTT_TEST_ITEM(test_parse_set)                                            \
                                                                                \
   /* path */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_path_abbr_folder)                                \
