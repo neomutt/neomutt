@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <pwd.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -44,11 +43,11 @@
 #include "alias/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "init.h"
 #include "color/lib.h"
 #include "history/lib.h"
 #include "notmuch/lib.h"
+#include "parse/lib.h"
 #include "commands.h"
 #include "hook.h"
 #include "keymap.h"
@@ -85,7 +84,7 @@ static int execute_commands(struct ListHead *p)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, p, entries)
   {
-    enum CommandResult rc2 = mutt_parse_rc_line(np->data, err);
+    enum CommandResult rc2 = parse_rc_line(np->data, err);
     if (rc2 == MUTT_CMD_ERROR)
       mutt_error(_("Error in command line: %s"), mutt_buffer_string(err));
     else if (rc2 == MUTT_CMD_WARNING)
@@ -258,257 +257,6 @@ static bool get_hostname(struct ConfigSet *cs)
   }
 
   return true;
-}
-
-/**
- * mutt_extract_token - Extract one token from a string
- * @param dest  Buffer for the result
- * @param tok   Buffer containing tokens
- * @param flags Flags, see #TokenFlags
- * @retval  0 Success
- * @retval -1 Error
- */
-int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags)
-{
-  if (!dest || !tok)
-    return -1;
-
-  char ch;
-  char qc = '\0'; /* quote char */
-  char *pc = NULL;
-
-  /* Some callers used to rely on the (bad) assumption that dest->data would be
-   * non-NULL after calling this function.  Perhaps I've missed a few cases, or
-   * a future caller might make the same mistake.  */
-  if (!dest->data)
-    mutt_buffer_alloc(dest, 256);
-
-  mutt_buffer_reset(dest);
-
-  SKIPWS(tok->dptr);
-  while ((ch = *tok->dptr))
-  {
-    if (qc == '\0')
-    {
-      if ((IS_SPACE(ch) && !(flags & MUTT_TOKEN_SPACE)) ||
-          ((ch == '#') && !(flags & MUTT_TOKEN_COMMENT)) ||
-          ((ch == '+') && (flags & MUTT_TOKEN_PLUS)) ||
-          ((ch == '-') && (flags & MUTT_TOKEN_MINUS)) ||
-          ((ch == '=') && (flags & MUTT_TOKEN_EQUAL)) ||
-          ((ch == '?') && (flags & MUTT_TOKEN_QUESTION)) ||
-          ((ch == ';') && !(flags & MUTT_TOKEN_SEMICOLON)) ||
-          ((flags & MUTT_TOKEN_PATTERN) && strchr("~%=!|", ch)))
-      {
-        break;
-      }
-    }
-
-    tok->dptr++;
-
-    if (ch == qc)
-      qc = 0; /* end of quote */
-    else if (!qc && ((ch == '\'') || (ch == '"')) && !(flags & MUTT_TOKEN_QUOTE))
-      qc = ch;
-    else if ((ch == '\\') && (qc != '\''))
-    {
-      if (tok->dptr[0] == '\0')
-        return -1; /* premature end of token */
-      switch (ch = *tok->dptr++)
-      {
-        case 'c':
-        case 'C':
-          if (tok->dptr[0] == '\0')
-            return -1; /* premature end of token */
-          mutt_buffer_addch(dest, (toupper((unsigned char) tok->dptr[0]) - '@') & 0x7f);
-          tok->dptr++;
-          break;
-        case 'e':
-          mutt_buffer_addch(dest, '\033'); // Escape
-          break;
-        case 'f':
-          mutt_buffer_addch(dest, '\f');
-          break;
-        case 'n':
-          mutt_buffer_addch(dest, '\n');
-          break;
-        case 'r':
-          mutt_buffer_addch(dest, '\r');
-          break;
-        case 't':
-          mutt_buffer_addch(dest, '\t');
-          break;
-        default:
-          if (isdigit((unsigned char) ch) && isdigit((unsigned char) tok->dptr[0]) &&
-              isdigit((unsigned char) tok->dptr[1]))
-          {
-            mutt_buffer_addch(dest, (ch << 6) + (tok->dptr[0] << 3) + tok->dptr[1] - 3504);
-            tok->dptr += 2;
-          }
-          else
-            mutt_buffer_addch(dest, ch);
-      }
-    }
-    else if ((ch == '^') && (flags & MUTT_TOKEN_CONDENSE))
-    {
-      if (tok->dptr[0] == '\0')
-        return -1; /* premature end of token */
-      ch = *tok->dptr++;
-      if (ch == '^')
-        mutt_buffer_addch(dest, ch);
-      else if (ch == '[')
-        mutt_buffer_addch(dest, '\033'); // Escape
-      else if (isalpha((unsigned char) ch))
-        mutt_buffer_addch(dest, toupper((unsigned char) ch) - '@');
-      else
-      {
-        mutt_buffer_addch(dest, '^');
-        mutt_buffer_addch(dest, ch);
-      }
-    }
-    else if ((ch == '`') && (!qc || (qc == '"')))
-    {
-      FILE *fp = NULL;
-      pid_t pid;
-
-      pc = tok->dptr;
-      do
-      {
-        pc = strpbrk(pc, "\\`");
-        if (pc)
-        {
-          /* skip any quoted chars */
-          if (*pc == '\\')
-            pc += 2;
-        }
-      } while (pc && (pc[0] != '`'));
-      if (!pc)
-      {
-        mutt_debug(LL_DEBUG1, "mismatched backticks\n");
-        return -1;
-      }
-      struct Buffer cmd;
-      mutt_buffer_init(&cmd);
-      *pc = '\0';
-      if (flags & MUTT_TOKEN_BACKTICK_VARS)
-      {
-        /* recursively extract tokens to interpolate variables */
-        mutt_extract_token(&cmd, tok,
-                           MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_COMMENT |
-                               MUTT_TOKEN_SEMICOLON | MUTT_TOKEN_NOSHELL);
-      }
-      else
-      {
-        cmd.data = mutt_str_dup(tok->dptr);
-      }
-      *pc = '`';
-      pid = filter_create(cmd.data, NULL, &fp, NULL);
-      if (pid < 0)
-      {
-        mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", cmd.data);
-        FREE(&cmd.data);
-        return -1;
-      }
-
-      tok->dptr = pc + 1;
-
-      /* read line */
-      struct Buffer expn = mutt_buffer_make(0);
-      expn.data = mutt_file_read_line(NULL, &expn.dsize, fp, NULL, MUTT_RL_NO_FLAGS);
-      mutt_file_fclose(&fp);
-      int rc = filter_wait(pid);
-      if (rc != 0)
-        mutt_debug(LL_DEBUG1, "backticks exited code %d for command: %s\n", rc,
-                   mutt_buffer_string(&cmd));
-      FREE(&cmd.data);
-
-      /* if we got output, make a new string consisting of the shell output
-       * plus whatever else was left on the original line */
-      /* BUT: If this is inside a quoted string, directly add output to
-       * the token */
-      if (expn.data)
-      {
-        if (qc)
-        {
-          mutt_buffer_addstr(dest, expn.data);
-        }
-        else
-        {
-          struct Buffer *copy = mutt_buffer_pool_get();
-          mutt_buffer_fix_dptr(&expn);
-          mutt_buffer_copy(copy, &expn);
-          mutt_buffer_addstr(copy, tok->dptr);
-          mutt_buffer_copy(tok, copy);
-          mutt_buffer_seek(tok, 0);
-          mutt_buffer_pool_release(&copy);
-        }
-        FREE(&expn.data);
-      }
-    }
-    else if ((ch == '$') && (!qc || (qc == '"')) &&
-             ((tok->dptr[0] == '{') || isalpha((unsigned char) tok->dptr[0])))
-    {
-      const char *env = NULL;
-      char *var = NULL;
-
-      if (tok->dptr[0] == '{')
-      {
-        pc = strchr(tok->dptr, '}');
-        if (pc)
-        {
-          var = mutt_strn_dup(tok->dptr + 1, pc - (tok->dptr + 1));
-          tok->dptr = pc + 1;
-
-          if ((flags & MUTT_TOKEN_NOSHELL))
-          {
-            mutt_buffer_addch(dest, ch);
-            mutt_buffer_addch(dest, '{');
-            mutt_buffer_addstr(dest, var);
-            mutt_buffer_addch(dest, '}');
-            FREE(&var);
-          }
-        }
-      }
-      else
-      {
-        for (pc = tok->dptr; isalnum((unsigned char) *pc) || (pc[0] == '_'); pc++)
-          ; // do nothing
-
-        var = mutt_strn_dup(tok->dptr, pc - tok->dptr);
-        tok->dptr = pc;
-      }
-      if (var)
-      {
-        struct Buffer result;
-        mutt_buffer_init(&result);
-        int rc = cs_subset_str_string_get(NeoMutt->sub, var, &result);
-
-        if (CSR_RESULT(rc) == CSR_SUCCESS)
-        {
-          mutt_buffer_addstr(dest, result.data);
-          FREE(&result.data);
-        }
-        else if ((env = myvar_get(var)))
-        {
-          mutt_buffer_addstr(dest, env);
-        }
-        else if (!(flags & MUTT_TOKEN_NOSHELL) && (env = mutt_str_getenv(var)))
-        {
-          mutt_buffer_addstr(dest, env);
-        }
-        else
-        {
-          mutt_buffer_addch(dest, ch);
-          mutt_buffer_addstr(dest, var);
-        }
-        FREE(&var);
-      }
-    }
-    else
-      mutt_buffer_addch(dest, ch);
-  }
-  mutt_buffer_addch(dest, 0); /* terminate the string */
-  SKIPWS(tok->dptr);
-  return 0;
 }
 
 /**
@@ -827,92 +575,6 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
 done:
   mutt_buffer_dealloc(&err);
   mutt_buffer_dealloc(&buf);
-  return rc;
-}
-
-/**
- * mutt_parse_rc_buffer - Parse a line of user config
- * @param line  config line to read
- * @param token scratch buffer to be used by parser
- * @param err   where to write error messages
- * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
- *
- * The reason for `token` is to avoid having to allocate and deallocate a lot
- * of memory if we are parsing many lines.  the caller can pass in the memory
- * to use, which avoids having to create new space for every call to this function.
- */
-enum CommandResult mutt_parse_rc_buffer(struct Buffer *line,
-                                        struct Buffer *token, struct Buffer *err)
-{
-  if (mutt_buffer_len(line) == 0)
-    return 0;
-
-  enum CommandResult rc = MUTT_CMD_SUCCESS;
-
-  mutt_buffer_reset(err);
-
-  /* Read from the beginning of line->data */
-  mutt_buffer_seek(line, 0);
-
-  SKIPWS(line->dptr);
-  while (*line->dptr)
-  {
-    if (*line->dptr == '#')
-      break; /* rest of line is a comment */
-    if (*line->dptr == ';')
-    {
-      line->dptr++;
-      continue;
-    }
-    mutt_extract_token(token, line, MUTT_TOKEN_NO_FLAGS);
-
-    struct Command *cmd = NULL;
-    size_t size = commands_array(&cmd);
-    size_t i;
-    for (i = 0; i < size; i++)
-    {
-      if (mutt_str_equal(token->data, cmd[i].name))
-      {
-        mutt_debug(LL_DEBUG1, "NT_COMMAND: %s\n", cmd[i].name);
-        rc = cmd[i].parse(token, line, cmd[i].data, err);
-        if ((rc == MUTT_CMD_WARNING) || (rc == MUTT_CMD_ERROR) || (rc == MUTT_CMD_FINISH))
-          goto finish; /* Propagate return code */
-
-        notify_send(NeoMutt->notify, NT_COMMAND, i, (void *) cmd);
-        break; /* Continue with next command */
-      }
-    }
-    if (i == size)
-    {
-      mutt_buffer_printf(err, _("%s: unknown command"), NONULL(token->data));
-      rc = MUTT_CMD_ERROR;
-      break; /* Ignore the rest of the line */
-    }
-  }
-finish:
-  return rc;
-}
-
-/**
- * mutt_parse_rc_line - Parse a line of user config
- * @param line Config line to read
- * @param err  Where to write error messages
- * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
- */
-enum CommandResult mutt_parse_rc_line(const char *line, struct Buffer *err)
-{
-  if (!line || (*line == '\0'))
-    return MUTT_CMD_ERROR;
-
-  struct Buffer *line_buffer = mutt_buffer_pool_get();
-  struct Buffer *token = mutt_buffer_pool_get();
-
-  mutt_buffer_strcpy(line_buffer, line);
-
-  enum CommandResult rc = mutt_parse_rc_buffer(line_buffer, token, err);
-
-  mutt_buffer_pool_release(&line_buffer);
-  mutt_buffer_pool_release(&token);
   return rc;
 }
 

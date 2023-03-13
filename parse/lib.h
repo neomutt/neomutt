@@ -1,10 +1,9 @@
 /**
  * @file
- * Config/command parsing
+ * Text parsing functions
  *
  * @authors
- * Copyright (C) 1996-2002,2007,2010,2012-2013,2016 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -21,17 +20,23 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_INIT_H
-#define MUTT_INIT_H
+/**
+ * @page lib_parse Text parsing functions
+ *
+ * | File                | Description                |
+ * | :------------------ | :------------------------- |
+ * | parse/extract.c     | @subpage parse_extract     |
+ * | parse/rc.c          | @subpage parse_rc          |
+ * | parse/set.c         | @subpage parse_set         |
+ */
 
-#include <stdbool.h>
+#ifndef MUTT_PARSE_LIB_H
+#define MUTT_PARSE_LIB_H
 
-struct ConfigSet;
-struct ListHead;
+// IWYU pragma: begin_exports
+#include "extract.h"
+#include "rc.h"
+#include "set.h"
+// IWYU pragma: end_exports
 
-void init_config         (struct ConfigSet *cs);
-int  mutt_init           (struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands);
-void mutt_opts_free      (void);
-int  mutt_query_variables(struct ListHead *queries, bool show_docs);
-
-#endif /* MUTT_INIT_H */
+#endif /* MUTT_PARSE_LIB_H */

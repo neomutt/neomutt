@@ -44,8 +44,8 @@
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
+#include "parse/lib.h"
 #include "functions.h"
-#include "init.h"
 #include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
@@ -1119,7 +1119,7 @@ void km_error_key(enum MenuType mtype)
 enum CommandResult mutt_parse_push(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
 {
-  mutt_extract_token(buf, s, MUTT_TOKEN_CONDENSE);
+  parse_extract_token(buf, s, TOKEN_CONDENSE);
   if (MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too many arguments"), "push");
@@ -1154,7 +1154,7 @@ static char *parse_keymap(enum MenuType *mtypes, struct Buffer *s, int max_menus
   mutt_buffer_init(&buf);
 
   /* menu name */
-  mutt_extract_token(&buf, s, MUTT_TOKEN_NO_FLAGS);
+  parse_extract_token(&buf, s, TOKEN_NO_FLAGS);
   char *p = buf.data;
   if (MoreArgs(s))
   {
@@ -1179,7 +1179,7 @@ static char *parse_keymap(enum MenuType *mtypes, struct Buffer *s, int max_menus
     }
     *num_menus = i;
     /* key sequence */
-    mutt_extract_token(&buf, s, MUTT_TOKEN_NO_FLAGS);
+    parse_extract_token(&buf, s, TOKEN_NO_FLAGS);
 
     if (buf.data[0] == '\0')
     {
@@ -1418,7 +1418,7 @@ static enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
   if (!MoreArgs(s))
     dump_all = true;
   else
-    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
   if (MoreArgs(s))
   {
@@ -1519,7 +1519,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
 
   /* function to execute */
-  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
   if (MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too many arguments"), "bind");
@@ -1663,7 +1663,7 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
   bool all_keys = false;
   char *key = NULL;
 
-  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
   if (mutt_str_equal(buf->data, "*"))
   {
     for (enum MenuType i = 0; i < MENU_MAX; i++)
@@ -1674,7 +1674,7 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
 
   if (MoreArgs(s))
   {
-    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     key = buf->data;
   }
   else
@@ -1761,7 +1761,7 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
   if (!key)
     return MUTT_CMD_ERROR;
 
-  mutt_extract_token(buf, s, MUTT_TOKEN_CONDENSE);
+  parse_extract_token(buf, s, TOKEN_CONDENSE);
   /* make sure the macro sequence is not an empty string */
   if (buf->data[0] == '\0')
   {
@@ -1772,7 +1772,7 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
     if (MoreArgs(s))
     {
       char *seq = mutt_str_dup(buf->data);
-      mutt_extract_token(buf, s, MUTT_TOKEN_CONDENSE);
+      parse_extract_token(buf, s, TOKEN_CONDENSE);
 
       if (MoreArgs(s))
       {
@@ -1841,7 +1841,7 @@ enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s,
 
   do
   {
-    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     function = buf->data;
 
     const enum MenuType mtype = menu_get_current_type();

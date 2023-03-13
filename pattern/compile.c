@@ -42,10 +42,9 @@
 #include "config/lib.h"
 #include "email/lib.h" // IWYU pragma: keep
 #include "core/lib.h"
-#include "mutt.h"
 #include "lib.h"
 #include "menu/lib.h"
-#include "init.h"
+#include "parse/lib.h"
 #include "mview.h"
 
 // clang-format off
@@ -83,7 +82,7 @@ static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
   struct Buffer *buf = mutt_buffer_pool_get();
   bool rc = false;
   char *pexpr = s->dptr;
-  if ((mutt_extract_token(buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0) || !buf->data)
+  if ((parse_extract_token(buf, s, TOKEN_PATTERN | TOKEN_COMMENT) != 0) || !buf->data)
   {
     mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
     goto out;
@@ -169,7 +168,7 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
   }
 
   char *pexpr = s->dptr;
-  if ((mutt_extract_token(tok_buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0) ||
+  if ((parse_extract_token(tok_buf, s, TOKEN_PATTERN | TOKEN_COMMENT) != 0) ||
       !tok_buf->data)
   {
     mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
@@ -981,7 +980,7 @@ static bool eat_date(struct Pattern *pat, PatternCompFlags flags,
   bool rc = false;
 
   char *pexpr = s->dptr;
-  if (mutt_extract_token(tmp, s, MUTT_TOKEN_COMMENT | MUTT_TOKEN_PATTERN) != 0)
+  if (parse_extract_token(tmp, s, TOKEN_COMMENT | TOKEN_PATTERN) != 0)
   {
     mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
     goto out;

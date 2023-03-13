@@ -52,6 +52,7 @@
 #include "enter/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
+#include "parse/lib.h"
 #include "pattern/lib.h"
 #include "postpone/lib.h"
 #include "question/lib.h"
@@ -749,7 +750,7 @@ static void mutt_make_greeting(struct Email *e, FILE *fp_out, struct ConfigSubse
   char buf[1024] = { 0 };
 
   mutt_expando_format(buf, sizeof(buf), 0, 0, c_greeting, greeting_format_str,
-                      (intptr_t) e, MUTT_TOKEN_NO_FLAGS);
+                      (intptr_t) e, TOKEN_NO_FLAGS);
 
   fputs(buf, fp_out);
   fputc('\n', fp_out);

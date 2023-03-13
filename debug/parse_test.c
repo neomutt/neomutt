@@ -31,7 +31,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "lib.h"
-#include "init.h"
+#include "parse/lib.h"
 
 /**
  * test_parse_set - Test the config parsing
@@ -84,7 +84,7 @@ void test_parse_set(void)
 
         snprintf(line, sizeof(line), tests[t], commands[c], vars[v]);
         printf("%-26s", line);
-        enum CommandResult rc = mutt_parse_rc_line(line, &err);
+        enum CommandResult rc = parse_rc_line(line, &err);
         printf("%2d %s\n", rc, err.data);
       }
       printf("\n");

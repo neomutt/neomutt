@@ -1,10 +1,9 @@
 /**
  * @file
- * Config/command parsing
+ * Test code for extracting tokens from strings
  *
  * @authors
- * Copyright (C) 1996-2002,2007,2010,2012-2013,2016 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -21,17 +20,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_INIT_H
-#define MUTT_INIT_H
+#define TEST_NO_MAIN
+#include "config.h"
+#include "acutest.h"
+#include <string.h>
+#include "mutt/lib.h"
+#include "core/lib.h"
+#include "parse/lib.h"
 
-#include <stdbool.h>
-
-struct ConfigSet;
-struct ListHead;
-
-void init_config         (struct ConfigSet *cs);
-int  mutt_init           (struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands);
-void mutt_opts_free      (void);
-int  mutt_query_variables(struct ListHead *queries, bool show_docs);
-
-#endif /* MUTT_INIT_H */
+void test_parse_extract_token(void)
+{
+  TEST_CASE("parse_extract_token");
+  int rc = parse_extract_token(NULL, NULL, TOKEN_NO_FLAGS);
+  TEST_CHECK(rc == -1);
+}

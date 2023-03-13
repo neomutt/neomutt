@@ -45,9 +45,8 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "mutt.h"
 #include "mutt_lua.h"
-#include "init.h"
+#include "parse/lib.h"
 #include "muttlib.h"
 #include "myvar.h"
 
@@ -316,7 +315,7 @@ static int lua_mutt_enter(lua_State *l)
   char *buf = mutt_str_dup(lua_tostring(l, -1));
   int rc = 0;
 
-  if (mutt_parse_rc_line(buf, err))
+  if (parse_rc_line(buf, err))
   {
     luaL_error(l, "NeoMutt error: %s", mutt_buffer_string(err));
     rc = -1;
@@ -508,7 +507,7 @@ enum CommandResult mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
 
   char path[PATH_MAX] = { 0 };
 
-  if (mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS) != 0)
+  if (parse_extract_token(buf, s, TOKEN_NO_FLAGS) != 0)
   {
     mutt_buffer_printf(err, _("source: error at %s"), s->dptr);
     return MUTT_CMD_ERROR;

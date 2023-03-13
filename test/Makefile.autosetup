@@ -408,7 +408,10 @@ PARSE_OBJS	= test/parse/mutt_auto_subscribe.o \
 		  test/parse/mutt_rfc822_parse_line.o \
 		  test/parse/mutt_rfc822_parse_message.o \
 		  test/parse/mutt_rfc822_read_header.o \
-		  test/parse/mutt_rfc822_read_line.o
+		  test/parse/mutt_rfc822_read_line.o \
+		  test/parse/parse_extract_token.o \
+		  test/parse/parse_rc.o \
+		  test/parse/parse_set.o
 
 PATH_OBJS	= test/path/mutt_path_abbr_folder.o \
 		  test/path/mutt_path_basename.o \
@@ -428,9 +431,8 @@ PATH_OBJS	= test/path/mutt_path_abbr_folder.o \
 
 PATTERN_OBJS	= pattern/pattern.o \
 		  test/pattern/comp.o \
-		  test/pattern/leak.o \
 		  test/pattern/dummy.o \
-		  test/pattern/extract.o
+		  test/pattern/leak.o
 
 POOL_OBJS	= test/pool/mutt_buffer_pool_free.o \
 		  test/pool/mutt_buffer_pool_get.o \
@@ -581,14 +583,14 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/atoi $(PWD)/test/attach $(PWD)/test/base64 \
 		  $(PWD)/test/body $(PWD)/test/buffer $(PWD)/test/charset \
 		  $(PWD)/test/compress $(PWD)/test/config $(PWD)/test/convert \
-		  $(PWD)/test/date $(PWD)/test/email $(PWD)/test/enter \
-		  $(PWD)/test/envelope $(PWD)/test/envlist $(PWD)/test/file \
-		  $(PWD)/test/filter $(PWD)/test/from $(PWD)/test/group \
-		  $(PWD)/test/gui $(PWD)/test/hash $(PWD)/test/history \
-		  $(PWD)/test/idna $(PWD)/test/list $(PWD)/test/logging \
-		  $(PWD)/test/mailbox $(PWD)/test/mapping $(PWD)/test/mbyte \
-		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/neo \
-		  $(PWD)/test/notify $(PWD)/test/notmuch \
+		  $(PWD)/test/core $(PWD)/test/date $(PWD)/test/email \
+		  $(PWD)/test/enter $(PWD)/test/envelope $(PWD)/test/envlist \
+		  $(PWD)/test/file $(PWD)/test/filter $(PWD)/test/from \
+		  $(PWD)/test/group $(PWD)/test/gui $(PWD)/test/hash \
+		  $(PWD)/test/history $(PWD)/test/idna $(PWD)/test/list \
+		  $(PWD)/test/logging $(PWD)/test/mailbox $(PWD)/test/mapping \
+		  $(PWD)/test/mbyte $(PWD)/test/md5 $(PWD)/test/memory \
+		  $(PWD)/test/neo $(PWD)/test/notify $(PWD)/test/notmuch \
 		  $(PWD)/test/parameter $(PWD)/test/parse $(PWD)/test/path \
 		  $(PWD)/test/pattern $(PWD)/test/pool $(PWD)/test/prex \
 		  $(PWD)/test/regex $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 \

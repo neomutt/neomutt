@@ -737,7 +737,7 @@
 2019-11-11  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - browser: fix directory view
-  - fix crash in mutt_extract_token()
+  - fix crash in parse_extract_token()
   - force a screen refresh
   - fix crash sending message from command line
   - notmuch: use nm_default_url if no mailbox data

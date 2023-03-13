@@ -40,16 +40,15 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
-#include "mutt.h"
 #include "hook.h"
 #include "attach/lib.h"
 #include "index/lib.h"
 #include "ncrypt/lib.h"
+#include "parse/lib.h"
 #include "pattern/lib.h"
 #include "commands.h"
 #include "format_flags.h"
 #include "hdrline.h"
-#include "init.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -88,8 +87,8 @@ enum CommandResult mutt_parse_charset_iconv_hook(struct Buffer *buf, struct Buff
   int rc = MUTT_CMD_ERROR;
   int retval = 0;
 
-  retval += mutt_extract_token(alias, s, MUTT_TOKEN_NO_FLAGS);
-  retval += mutt_extract_token(charset, s, MUTT_TOKEN_NO_FLAGS);
+  retval += parse_extract_token(alias, s, TOKEN_NO_FLAGS);
+  retval += parse_extract_token(charset, s, TOKEN_NO_FLAGS);
   if (retval != 0)
     goto done;
 
@@ -147,7 +146,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
       pat_not = true;
     }
 
-    mutt_extract_token(pattern, s, MUTT_TOKEN_NO_FLAGS);
+    parse_extract_token(pattern, s, TOKEN_NO_FLAGS);
     if (folder_or_mbox && mutt_str_equal(mutt_buffer_string(pattern), "-noregex"))
     {
       use_regex = false;
@@ -157,7 +156,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
         rc = MUTT_CMD_WARNING;
         goto cleanup;
       }
-      mutt_extract_token(pattern, s, MUTT_TOKEN_NO_FLAGS);
+      parse_extract_token(pattern, s, TOKEN_NO_FLAGS);
     }
 
     if (!MoreArgs(s))
@@ -168,11 +167,11 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     }
   }
 
-  mutt_extract_token(cmd, s,
-                     (data & (MUTT_FOLDER_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK |
-                              MUTT_ACCOUNT_HOOK | MUTT_REPLY_HOOK)) ?
-                         MUTT_TOKEN_SPACE :
-                         MUTT_TOKEN_NO_FLAGS);
+  parse_extract_token(cmd, s,
+                      (data & (MUTT_FOLDER_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK |
+                               MUTT_ACCOUNT_HOOK | MUTT_REPLY_HOOK)) ?
+                          TOKEN_SPACE :
+                          TOKEN_NO_FLAGS);
 
   if (mutt_buffer_is_empty(cmd))
   {
@@ -428,7 +427,7 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
     mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
     goto out;
   }
-  mutt_extract_token(name, s, MUTT_TOKEN_NO_FLAGS);
+  parse_extract_token(name, s, TOKEN_NO_FLAGS);
   struct HookList *hl = mutt_hash_find(IdxFmtHooks, mutt_buffer_string(name));
 
   if (*s->dptr == '!')
@@ -437,14 +436,14 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
     SKIPWS(s->dptr);
     pat_not = true;
   }
-  mutt_extract_token(pattern, s, MUTT_TOKEN_NO_FLAGS);
+  parse_extract_token(pattern, s, TOKEN_NO_FLAGS);
 
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
     goto out;
   }
-  mutt_extract_token(fmtstring, s, MUTT_TOKEN_NO_FLAGS);
+  parse_extract_token(fmtstring, s, TOKEN_NO_FLAGS);
 
   if (MoreArgs(s))
   {
@@ -539,10 +538,10 @@ enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
 {
   while (MoreArgs(s))
   {
-    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     if (mutt_str_equal("*", buf->data))
     {
-      if (current_hook_type != MUTT_TOKEN_NO_FLAGS)
+      if (current_hook_type != TOKEN_NO_FLAGS)
       {
         mutt_buffer_printf(err, "%s", _("unhook: Can't do unhook * from within a hook"));
         return MUTT_CMD_WARNING;
@@ -613,7 +612,7 @@ void mutt_folder_hook(const char *path, const char *desc)
     {
       mutt_debug(LL_DEBUG1, "folder-hook '%s' matches '%s'\n", hook->regex.pattern, match);
       mutt_debug(LL_DEBUG5, "    %s\n", hook->command);
-      if (mutt_parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
+      if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
       {
         mutt_error("%s", mutt_buffer_string(err));
         break;
@@ -672,7 +671,7 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
       if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
           hook->regex.pat_not)
       {
-        if (mutt_parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
+        if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
         {
           mutt_error("%s", mutt_buffer_string(err));
           current_hook_type = MUTT_HOOK_NO_FLAGS;
@@ -862,7 +861,7 @@ void mutt_account_hook(const char *url)
       mutt_debug(LL_DEBUG1, "account-hook '%s' matches '%s'\n", hook->regex.pattern, url);
       mutt_debug(LL_DEBUG5, "    %s\n", hook->command);
 
-      if (mutt_parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
+      if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
       {
         mutt_error("%s", mutt_buffer_string(err));
         mutt_buffer_pool_release(&err);
@@ -899,7 +898,7 @@ void mutt_timeout_hook(void)
     if (!(hook->command && (hook->type & MUTT_TIMEOUT_HOOK)))
       continue;
 
-    if (mutt_parse_rc_line_cwd(hook->command, hook->source_file, &err) == MUTT_CMD_ERROR)
+    if (parse_rc_line_cwd(hook->command, hook->source_file, &err) == MUTT_CMD_ERROR)
     {
       mutt_error("%s", err.data);
       mutt_buffer_reset(&err);
@@ -934,7 +933,7 @@ void mutt_startup_shutdown_hook(HookFlags type)
     if (!(hook->command && (hook->type & type)))
       continue;
 
-    if (mutt_parse_rc_line_cwd(hook->command, hook->source_file, &err) == MUTT_CMD_ERROR)
+    if (parse_rc_line_cwd(hook->command, hook->source_file, &err) == MUTT_CMD_ERROR)
     {
       mutt_error("%s", err.data);
       mutt_buffer_reset(&err);

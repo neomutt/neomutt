@@ -1,10 +1,9 @@
 /**
  * @file
- * Config/command parsing
+ * Parse the 'set' command
  *
  * @authors
- * Copyright (C) 1996-2002,2007,2010,2012-2013,2016 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -21,17 +20,25 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_INIT_H
-#define MUTT_INIT_H
+#ifndef MUTT_PARSE_SET_H
+#define MUTT_PARSE_SET_H
 
-#include <stdbool.h>
+#include <stdint.h>
+#include "core/lib.h"
 
-struct ConfigSet;
-struct ListHead;
+struct Buffer;
 
-void init_config         (struct ConfigSet *cs);
-int  mutt_init           (struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands);
-void mutt_opts_free      (void);
-int  mutt_query_variables(struct ListHead *queries, bool show_docs);
+/**
+ * enum MuttSetCommand - Flags for parse_set()
+ */
+enum MuttSetCommand
+{
+  MUTT_SET_SET,   ///< default is to set all vars
+  MUTT_SET_INV,   ///< default is to invert all vars
+  MUTT_SET_UNSET, ///< default is to unset all vars
+  MUTT_SET_RESET, ///< default is to reset all vars to default
+};
 
-#endif /* MUTT_INIT_H */
+enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+
+#endif /* MUTT_PARSE_SET_H */

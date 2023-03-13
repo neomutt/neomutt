@@ -672,6 +672,19 @@ $(PWD)/pager:
 	$(MKDIR_P) $(PWD)/pager
 
 ###############################################################################
+# libparse
+LIBPARSE=	libparse.a
+LIBPARSEOBJS=	parse/extract.o parse/rc.o parse/set.o
+CLEANFILES+=	$(LIBPARSE) $(LIBPARSEOBJS)
+ALLOBJS+=	$(LIBPARSEOBJS)
+
+$(LIBPARSE): $(PWD)/parse $(LIBPARSEOBJS)
+	$(AR) cr $@ $(LIBPARSEOBJS)
+	$(RANLIB) $@
+$(PWD)/parse:
+	$(MKDIR_P) $(PWD)/parse
+
+###############################################################################
 # libpattern
 LIBPATTERN=	libpattern.a
 LIBPATTERNOBJS=	pattern/compile.o pattern/config.o pattern/dlg_pattern.o \
@@ -841,8 +854,8 @@ MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) \
 		$(LIBHELPBAR) $(LIBMBOX) $(LIBNOTMUCH) $(LIBMAILDIR) \
 		$(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
 		$(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) \
-		$(LIBCORE) $(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) $(LIBDEBUG) \
-		$(LIBMUTT)
+		$(LIBCORE) $(LIBPARSE) $(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) \
+		$(LIBDEBUG) $(LIBMUTT)
 
 # neomutt
 $(NEOMUTT): $(GENERATED) $(NEOMUTTOBJS) $(MUTTLIBS)
