@@ -700,7 +700,7 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
   mutt_buffer_init(&err);
   err.dsize = 256;
   err.data = mutt_mem_malloc(err.dsize);
-  if (mutt_parse_rc_line(buf, &err))
+  if (parse_rc_line(buf, &err))
     mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", err.data);
   FREE(&err.data);
 }

@@ -1319,7 +1319,7 @@ int imap_subscribe(char *path, bool subscribe)
     err.data = mutt_mem_malloc(err.dsize);
     size_t len = snprintf(mbox, sizeof(mbox), "%smailboxes ", subscribe ? "" : "un");
     imap_quote_string(mbox + len, sizeof(mbox) - len, path, true);
-    if (mutt_parse_rc_line(mbox, &err))
+    if (parse_rc_line(mbox, &err))
       mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", err.data);
     FREE(&err.data);
   }

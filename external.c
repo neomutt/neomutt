@@ -650,7 +650,7 @@ void mutt_enter_command(void)
     goto done;
   }
 
-  enum CommandResult rc = mutt_parse_rc_line(mutt_buffer_string(buf), err);
+  enum CommandResult rc = parse_rc_line(mutt_buffer_string(buf), err);
   if (!mutt_buffer_is_empty(err))
   {
     if (rc == MUTT_CMD_SUCCESS) /* command succeeded with message */

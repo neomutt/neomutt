@@ -36,8 +36,8 @@ void                  init_config            (struct ConfigSet *cs);
 int                   mutt_extract_token     (struct Buffer *dest, struct Buffer *tok, TokenFlags flags);
 int                   mutt_init              (struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands);
 void                  mutt_opts_free         (void);
-enum CommandResult    mutt_parse_rc_buffer   (struct Buffer *line, struct Buffer *token, struct Buffer *err);
-enum CommandResult    mutt_parse_rc_line     (const char *line, struct Buffer *err);
+enum CommandResult    parse_rc_buffer   (struct Buffer *line, struct Buffer *token, struct Buffer *err);
+enum CommandResult    parse_rc_line     (const char *line, struct Buffer *err);
 int                   mutt_query_variables   (struct ListHead *queries, bool show_docs);
 
 #endif /* MUTT_INIT_H */

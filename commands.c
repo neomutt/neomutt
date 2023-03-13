@@ -143,17 +143,17 @@ int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * mutt_parse_rc_line_cwd - Parse and run a muttrc line in a relative directory
+ * parse_rc_line_cwd - Parse and run a muttrc line in a relative directory
  * @param line   Line to be parsed
  * @param cwd    File relative where to run the line
  * @param err    Where to write error messages
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-enum CommandResult mutt_parse_rc_line_cwd(const char *line, char *cwd, struct Buffer *err)
+enum CommandResult parse_rc_line_cwd(const char *line, char *cwd, struct Buffer *err)
 {
   mutt_list_insert_head(&MuttrcStack, mutt_str_dup(NONULL(cwd)));
 
-  enum CommandResult ret = mutt_parse_rc_line(line, err);
+  enum CommandResult ret = parse_rc_line(line, err);
 
   struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
   STAILQ_REMOVE_HEAD(&MuttrcStack, entries);
@@ -264,7 +264,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     mutt_buffer_strcpy(linebuf, currentline);
 
     mutt_buffer_reset(err);
-    line_rc = mutt_parse_rc_buffer(linebuf, token, err);
+    line_rc = parse_rc_buffer(linebuf, token, err);
     if (line_rc == MUTT_CMD_ERROR)
     {
       mutt_error(_("Error in %s, line %d: %s"), rcfile, lineno, err->data);
@@ -534,7 +534,7 @@ enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
   /* ifdef KNOWN_SYMBOL or ifndef UNKNOWN_SYMBOL */
   if ((res && (data == 0)) || (!res && (data == 1)))
   {
-    enum CommandResult rc = mutt_parse_rc_line(buf->data, err);
+    enum CommandResult rc = parse_rc_line(buf->data, err);
     if (rc == MUTT_CMD_ERROR)
     {
       mutt_error(_("Error: %s"), err->data);

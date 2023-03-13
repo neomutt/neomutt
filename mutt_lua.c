@@ -316,7 +316,7 @@ static int lua_mutt_enter(lua_State *l)
   char *buf = mutt_str_dup(lua_tostring(l, -1));
   int rc = 0;
 
-  if (mutt_parse_rc_line(buf, err))
+  if (parse_rc_line(buf, err))
   {
     luaL_error(l, "NeoMutt error: %s", mutt_buffer_string(err));
     rc = -1;

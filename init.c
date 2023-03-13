@@ -85,7 +85,7 @@ static int execute_commands(struct ListHead *p)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, p, entries)
   {
-    enum CommandResult rc2 = mutt_parse_rc_line(np->data, err);
+    enum CommandResult rc2 = parse_rc_line(np->data, err);
     if (rc2 == MUTT_CMD_ERROR)
       mutt_error(_("Error in command line: %s"), mutt_buffer_string(err));
     else if (rc2 == MUTT_CMD_WARNING)
@@ -830,7 +830,7 @@ done:
 }
 
 /**
- * mutt_parse_rc_buffer - Parse a line of user config
+ * parse_rc_buffer - Parse a line of user config
  * @param line  config line to read
  * @param token scratch buffer to be used by parser
  * @param err   where to write error messages
@@ -840,8 +840,8 @@ done:
  * of memory if we are parsing many lines.  the caller can pass in the memory
  * to use, which avoids having to create new space for every call to this function.
  */
-enum CommandResult mutt_parse_rc_buffer(struct Buffer *line,
-                                        struct Buffer *token, struct Buffer *err)
+enum CommandResult parse_rc_buffer(struct Buffer *line, struct Buffer *token,
+                                   struct Buffer *err)
 {
   if (mutt_buffer_len(line) == 0)
     return 0;
@@ -893,12 +893,12 @@ finish:
 }
 
 /**
- * mutt_parse_rc_line - Parse a line of user config
+ * parse_rc_line - Parse a line of user config
  * @param line Config line to read
  * @param err  Where to write error messages
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-enum CommandResult mutt_parse_rc_line(const char *line, struct Buffer *err)
+enum CommandResult parse_rc_line(const char *line, struct Buffer *err)
 {
   if (!line || (*line == '\0'))
     return MUTT_CMD_ERROR;
@@ -908,7 +908,7 @@ enum CommandResult mutt_parse_rc_line(const char *line, struct Buffer *err)
 
   mutt_buffer_strcpy(line_buffer, line);
 
-  enum CommandResult rc = mutt_parse_rc_buffer(line_buffer, token, err);
+  enum CommandResult rc = parse_rc_buffer(line_buffer, token, err);
 
   mutt_buffer_pool_release(&line_buffer);
   mutt_buffer_pool_release(&token);

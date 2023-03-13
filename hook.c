@@ -613,7 +613,7 @@ void mutt_folder_hook(const char *path, const char *desc)
     {
       mutt_debug(LL_DEBUG1, "folder-hook '%s' matches '%s'\n", hook->regex.pattern, match);
       mutt_debug(LL_DEBUG5, "    %s\n", hook->command);
-      if (mutt_parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
+      if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
       {
         mutt_error("%s", mutt_buffer_string(err));
         break;
@@ -672,7 +672,7 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
       if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
           hook->regex.pat_not)
       {
-        if (mutt_parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
+        if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
         {
           mutt_error("%s", mutt_buffer_string(err));
           current_hook_type = MUTT_HOOK_NO_FLAGS;
@@ -862,7 +862,7 @@ void mutt_account_hook(const char *url)
       mutt_debug(LL_DEBUG1, "account-hook '%s' matches '%s'\n", hook->regex.pattern, url);
       mutt_debug(LL_DEBUG5, "    %s\n", hook->command);
 
-      if (mutt_parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
+      if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
       {
         mutt_error("%s", mutt_buffer_string(err));
         mutt_buffer_pool_release(&err);
@@ -899,7 +899,7 @@ void mutt_timeout_hook(void)
     if (!(hook->command && (hook->type & MUTT_TIMEOUT_HOOK)))
       continue;
 
-    if (mutt_parse_rc_line_cwd(hook->command, hook->source_file, &err) == MUTT_CMD_ERROR)
+    if (parse_rc_line_cwd(hook->command, hook->source_file, &err) == MUTT_CMD_ERROR)
     {
       mutt_error("%s", err.data);
       mutt_buffer_reset(&err);
@@ -934,7 +934,7 @@ void mutt_startup_shutdown_hook(HookFlags type)
     if (!(hook->command && (hook->type & type)))
       continue;
 
-    if (mutt_parse_rc_line_cwd(hook->command, hook->source_file, &err) == MUTT_CMD_ERROR)
+    if (parse_rc_line_cwd(hook->command, hook->source_file, &err) == MUTT_CMD_ERROR)
     {
       mutt_error("%s", err.data);
       mutt_buffer_reset(&err);
