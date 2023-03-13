@@ -66,21 +66,6 @@ typedef uint16_t CompletionFlags;       ///< Flags for mutt_enter_string_full(),
 #define MUTT_COMP_PASS        (1 << 10) ///< Password mode (no echo)
 #define MUTT_COMP_UNBUFFERED  (1 << 11) ///< Ignore macro buffer
 
-typedef uint16_t TokenFlags;          ///< Flags for mutt_extract_token(), e.g. #TOKEN_EQUAL
-#define TOKEN_NO_FLAGS            0   ///< No flags are set
-#define TOKEN_EQUAL         (1 << 0)  ///< Treat '=' as a special
-#define TOKEN_CONDENSE      (1 << 1)  ///< ^(char) to control chars (macros)
-#define TOKEN_SPACE         (1 << 2)  ///< Don't treat whitespace as a term
-#define TOKEN_QUOTE         (1 << 3)  ///< Don't interpret quotes
-#define TOKEN_PATTERN       (1 << 4)  ///< ~%=!| are terms (for patterns)
-#define TOKEN_COMMENT       (1 << 5)  ///< Don't reap comments
-#define TOKEN_SEMICOLON     (1 << 6)  ///< Don't treat ; as special
-#define TOKEN_BACKTICK_VARS (1 << 7)  ///< Expand variables within backticks
-#define TOKEN_NOSHELL       (1 << 8)  ///< Don't expand environment variables
-#define TOKEN_QUESTION      (1 << 9)  ///< Treat '?' as a special
-#define TOKEN_PLUS          (1 << 10) ///< Treat '+' as a special
-#define TOKEN_MINUS         (1 << 11) ///< Treat '-' as a special
-
 /**
  * enum MessageType - To set flags or match patterns
  *

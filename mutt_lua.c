@@ -45,8 +45,8 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "mutt.h"
 #include "mutt_lua.h"
+#include "parse/lib.h"
 #include "init.h"
 #include "muttlib.h"
 #include "myvar.h"
@@ -508,7 +508,7 @@ enum CommandResult mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
 
   char path[PATH_MAX] = { 0 };
 
-  if (mutt_extract_token(buf, s, TOKEN_NO_FLAGS) != 0)
+  if (parse_extract_token(buf, s, TOKEN_NO_FLAGS) != 0)
   {
     mutt_buffer_printf(err, _("source: error at %s"), s->dptr);
     return MUTT_CMD_ERROR;

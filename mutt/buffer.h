@@ -37,8 +37,6 @@ struct Buffer
   size_t dsize; ///< Length of data
 };
 
-#define MoreArgs(buf) (*(buf)->dptr && (*(buf)->dptr != ';') && (*(buf)->dptr != '#'))
-
 void           mutt_buffer_alloc        (struct Buffer *buf, size_t size);
 void           mutt_buffer_dealloc      (struct Buffer *buf);
 void           mutt_buffer_fix_dptr     (struct Buffer *buf);

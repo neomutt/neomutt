@@ -36,8 +36,8 @@
 #include "mutt.h"
 #include "score.h"
 #include "index/lib.h"
+#include "parse/lib.h"
 #include "pattern/lib.h"
-#include "init.h"
 #include "mutt_thread.h"
 #include "options.h"
 #include "protos.h"
@@ -89,14 +89,14 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
   struct Score *ptr = NULL, *last = NULL;
   char *pattern = NULL, *pc = NULL;
 
-  mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), "score");
     return MUTT_CMD_WARNING;
   }
   pattern = mutt_buffer_strdup(buf);
-  mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
   if (MoreArgs(s))
   {
     FREE(&pattern);
@@ -199,7 +199,7 @@ enum CommandResult mutt_parse_unscore(struct Buffer *buf, struct Buffer *s,
 
   while (MoreArgs(s))
   {
-    mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     if (mutt_str_equal("*", buf->data))
     {
       for (tmp = ScoreList; tmp;)

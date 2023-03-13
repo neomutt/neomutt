@@ -34,10 +34,9 @@
 #include "address/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "mutt.h"
 #include "alternates.h"
+#include "parse/lib.h"
 #include "commands.h"
-#include "init.h"
 
 struct RegexList Alternates = STAILQ_HEAD_INITIALIZER(Alternates); ///< List of regexes to match the user's alternate email addresses
 struct RegexList UnAlternates = STAILQ_HEAD_INITIALIZER(UnAlternates); ///< List of regexes to exclude false matches in Alternates
@@ -93,7 +92,7 @@ enum CommandResult parse_alternates(struct Buffer *buf, struct Buffer *s,
 
   do
   {
-    mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
     if (parse_grouplist(&gl, buf, s, err) == -1)
       goto bail;
@@ -127,7 +126,7 @@ enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *s,
 {
   do
   {
-    mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     mutt_regexlist_remove(&Alternates, buf->data);
 
     if (!mutt_str_equal(buf->data, "*") &&

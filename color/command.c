@@ -35,10 +35,9 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "lib.h"
 #include "pager/lib.h"
-#include "init.h"
+#include "parse/lib.h"
 #include "options.h"
 #ifdef USE_DEBUG_COLOR
 #include <stdio.h>
@@ -231,7 +230,7 @@ static enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_WARNING;
   }
 
-  mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
   if (mutt_istr_equal("bold", buf->data))
     *attrs |= A_BOLD;
@@ -273,7 +272,7 @@ static enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_WARNING;
     }
 
-    mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
     if (mutt_istr_equal("bold", buf->data))
     {
@@ -325,7 +324,7 @@ static enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_WARNING;
   }
 
-  mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
   return parse_color_name(buf->data, bg, attrs, false, err);
 }
@@ -397,7 +396,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_WARNING;
     }
 
-    mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
     rc = mutt_map_get_value(buf->data, ComposeColorFields);
     if (rc == -1)
@@ -440,7 +439,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
 static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
                                         struct Buffer *err, bool uncolor)
 {
-  mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
   if (mutt_str_equal(buf->data, "*"))
   {
@@ -487,7 +486,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
     {
       color_debug(LL_DEBUG5, "do nothing\n");
       /* just eat the command, but don't do anything real about it */
-      mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+      parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     } while (MoreArgs(s));
 
     return MUTT_CMD_SUCCESS;
@@ -504,7 +503,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
   do
   {
-    mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     if (mutt_str_equal("*", buf->data))
     {
       if (regex_colors_parse_uncolor(cid, NULL, uncolor))
@@ -742,7 +741,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_WARNING;
   }
 
-  mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
   color_debug(LL_DEBUG5, "color: %s\n", mutt_buffer_string(buf));
 
   rc = parse_object(buf, s, &cid, &q_level, err);
@@ -760,7 +759,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     color_debug(LL_DEBUG5, "regex needed\n");
     if (MoreArgs(s))
     {
-      mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+      parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     }
     else
     {
@@ -811,12 +810,12 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
      * 0 arguments: sets the default status color (handled below by else part)
      * 1 argument : colorize pattern on match
      * 2 arguments: colorize nth submatch of pattern */
-    mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
     if (MoreArgs(s))
     {
       struct Buffer tmp = mutt_buffer_make(0);
-      mutt_extract_token(&tmp, s, TOKEN_NO_FLAGS);
+      parse_extract_token(&tmp, s, TOKEN_NO_FLAGS);
       if (!mutt_str_atoui_full(tmp.data, &match))
       {
         mutt_buffer_printf(err, _("%s: invalid number: %s"),

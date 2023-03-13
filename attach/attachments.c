@@ -36,10 +36,9 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "attachments.h"
 #include "ncrypt/lib.h"
-#include "init.h"
+#include "parse/lib.h"
 
 /**
  * struct AttachMatch - An attachment matching a regex for attachment counter
@@ -316,7 +315,7 @@ static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s
 
   do
   {
-    mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
     if (!buf->data || (*buf->data == '\0'))
       continue;
@@ -394,7 +393,7 @@ static enum CommandResult parse_unattach_list(struct Buffer *buf, struct Buffer 
 
   do
   {
-    mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     FREE(&tmp);
 
     if (mutt_istr_equal(buf->data, "any"))
@@ -470,7 +469,7 @@ static int print_attach_list(struct ListHead *h, const char op, const char *name
 enum CommandResult parse_attachments(struct Buffer *buf, struct Buffer *s,
                                      intptr_t data, struct Buffer *err)
 {
-  mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
   if (!buf->data || (*buf->data == '\0'))
   {
     mutt_buffer_strcpy(err, _("attachments: no disposition"));
@@ -533,7 +532,7 @@ enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer *s,
   char *p = NULL;
   struct ListHead *head = NULL;
 
-  mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
   if (!buf->data || (*buf->data == '\0'))
   {
     mutt_buffer_strcpy(err, _("unattachments: no disposition"));

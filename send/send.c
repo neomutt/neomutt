@@ -52,6 +52,7 @@
 #include "enter/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
+#include "parse/lib.h"
 #include "pattern/lib.h"
 #include "postpone/lib.h"
 #include "question/lib.h"

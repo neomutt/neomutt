@@ -26,14 +26,12 @@
 
 #include <stdbool.h>
 #include "core/lib.h"
-#include "mutt.h"
 
 struct Buffer;
 struct ConfigSet;
 struct ListHead;
 
 void                  init_config            (struct ConfigSet *cs);
-int                   mutt_extract_token     (struct Buffer *dest, struct Buffer *tok, TokenFlags flags);
 int                   mutt_init              (struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands);
 void                  mutt_opts_free         (void);
 enum CommandResult    parse_rc_buffer   (struct Buffer *line, struct Buffer *token, struct Buffer *err);

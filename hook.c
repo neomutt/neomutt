@@ -40,16 +40,15 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
-#include "mutt.h"
 #include "hook.h"
 #include "attach/lib.h"
 #include "index/lib.h"
 #include "ncrypt/lib.h"
+#include "parse/lib.h"
 #include "pattern/lib.h"
 #include "commands.h"
 #include "format_flags.h"
 #include "hdrline.h"
-#include "init.h"
 #include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -88,8 +87,8 @@ enum CommandResult mutt_parse_charset_iconv_hook(struct Buffer *buf, struct Buff
   int rc = MUTT_CMD_ERROR;
   int retval = 0;
 
-  retval += mutt_extract_token(alias, s, TOKEN_NO_FLAGS);
-  retval += mutt_extract_token(charset, s, TOKEN_NO_FLAGS);
+  retval += parse_extract_token(alias, s, TOKEN_NO_FLAGS);
+  retval += parse_extract_token(charset, s, TOKEN_NO_FLAGS);
   if (retval != 0)
     goto done;
 
@@ -147,7 +146,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
       pat_not = true;
     }
 
-    mutt_extract_token(pattern, s, TOKEN_NO_FLAGS);
+    parse_extract_token(pattern, s, TOKEN_NO_FLAGS);
     if (folder_or_mbox && mutt_str_equal(mutt_buffer_string(pattern), "-noregex"))
     {
       use_regex = false;
@@ -157,7 +156,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
         rc = MUTT_CMD_WARNING;
         goto cleanup;
       }
-      mutt_extract_token(pattern, s, TOKEN_NO_FLAGS);
+      parse_extract_token(pattern, s, TOKEN_NO_FLAGS);
     }
 
     if (!MoreArgs(s))
@@ -168,11 +167,11 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     }
   }
 
-  mutt_extract_token(cmd, s,
-                     (data & (MUTT_FOLDER_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK |
-                              MUTT_ACCOUNT_HOOK | MUTT_REPLY_HOOK)) ?
-                         TOKEN_SPACE :
-                         TOKEN_NO_FLAGS);
+  parse_extract_token(cmd, s,
+                      (data & (MUTT_FOLDER_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK |
+                               MUTT_ACCOUNT_HOOK | MUTT_REPLY_HOOK)) ?
+                          TOKEN_SPACE :
+                          TOKEN_NO_FLAGS);
 
   if (mutt_buffer_is_empty(cmd))
   {
@@ -428,7 +427,7 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
     mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
     goto out;
   }
-  mutt_extract_token(name, s, TOKEN_NO_FLAGS);
+  parse_extract_token(name, s, TOKEN_NO_FLAGS);
   struct HookList *hl = mutt_hash_find(IdxFmtHooks, mutt_buffer_string(name));
 
   if (*s->dptr == '!')
@@ -437,14 +436,14 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
     SKIPWS(s->dptr);
     pat_not = true;
   }
-  mutt_extract_token(pattern, s, TOKEN_NO_FLAGS);
+  parse_extract_token(pattern, s, TOKEN_NO_FLAGS);
 
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
     goto out;
   }
-  mutt_extract_token(fmtstring, s, TOKEN_NO_FLAGS);
+  parse_extract_token(fmtstring, s, TOKEN_NO_FLAGS);
 
   if (MoreArgs(s))
   {
@@ -539,7 +538,7 @@ enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
 {
   while (MoreArgs(s))
   {
-    mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
+    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     if (mutt_str_equal("*", buf->data))
     {
       if (current_hook_type != TOKEN_NO_FLAGS)

@@ -1,9 +1,9 @@
 /**
  * @file
- * Dummy code for working around build problems
+ * Text parser
  *
  * @authors
- * Copyright (C) 2018 Naveen Nathan <naveen@lastninja.net>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page parse_extract Text parser
+ *
+ * Text parser
+ */
+
 #include "config.h"
 #include <ctype.h>
 #include <stdio.h>
@@ -28,10 +34,18 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "mutt.h"
+#include "extract.h"
 #include "myvar.h"
 
-int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags)
+/**
+ * parse_extract_token - Extract one token from a string
+ * @param dest  Buffer for the result
+ * @param tok   Buffer containing tokens
+ * @param flags Flags, see #TokenFlags
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags)
 {
   if (!dest || !tok)
     return -1;
@@ -154,9 +168,9 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       if (flags & TOKEN_BACKTICK_VARS)
       {
         /* recursively extract tokens to interpolate variables */
-        mutt_extract_token(&cmd, tok,
-                           TOKEN_QUOTE | TOKEN_SPACE | TOKEN_COMMENT |
-                               TOKEN_SEMICOLON | TOKEN_NOSHELL);
+        parse_extract_token(&cmd, tok,
+                            TOKEN_QUOTE | TOKEN_SPACE | TOKEN_COMMENT |
+                                TOKEN_SEMICOLON | TOKEN_NOSHELL);
       }
       else
       {

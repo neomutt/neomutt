@@ -25,12 +25,14 @@
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |
+ * | parse/extract.c     | @subpage parse_extract     |
  */
 
 #ifndef MUTT_PARSE_LIB_H
 #define MUTT_PARSE_LIB_H
 
 // IWYU pragma: begin_exports
+#include "extract.h"
 // IWYU pragma: end_exports
 
 #endif /* MUTT_PARSE_LIB_H */

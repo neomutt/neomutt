@@ -428,9 +428,8 @@ PATH_OBJS	= test/path/mutt_path_abbr_folder.o \
 
 PATTERN_OBJS	= pattern/pattern.o \
 		  test/pattern/comp.o \
-		  test/pattern/leak.o \
 		  test/pattern/dummy.o \
-		  test/pattern/extract.o
+		  test/pattern/leak.o
 
 POOL_OBJS	= test/pool/mutt_buffer_pool_free.o \
 		  test/pool/mutt_buffer_pool_get.o \
