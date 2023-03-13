@@ -4149,7 +4149,7 @@ msgstr "Použijte „toggle-write“ pro zapnutí zápisu"
 #: mx.c:936
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
-msgstr "Schránka má vypnut zápis. %s"
+msgstr "Schránka má vypnutý zápis. %s"
 
 #: mx.c:1009
 msgid "Mailbox checkpointed"
@@ -7199,9 +7199,8 @@ msgid "Decrypting message..."
 msgstr "Dešifruji zprávu…"
 
 #: postpone/postpone.c:547
-#, fuzzy
 msgid "Could not decrypt postponed message"
-msgstr "PGP zprávu nelze dešifrovat"
+msgstr "Nelze rozšifrovat odloženou zprávu"
 
 #: postpone/postpone.c:678 postpone/postpone.c:689
 msgid "No postponed messages"
