@@ -25,8 +25,10 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
+#include "test_common.h"
 
 static struct Command mutt_commands[] = {
   // clang-format off
@@ -37,10 +39,104 @@ static struct Command mutt_commands[] = {
   // clang-format on
 };
 
+extern const struct Mapping MboxTypeMap[];
+extern struct EnumDef MboxTypeDef;
+
+/**
+ * SortMethods - Sort methods for '$sort' for the index
+ */
+const struct Mapping SortMethods[] = {
+  // clang-format off
+  { "date",    SORT_DATE },
+  { "from",    SORT_FROM },
+  { "label",   SORT_LABEL },
+  { "size",    SORT_SIZE },
+  { "spam",    SORT_SPAM },
+  { "subject", SORT_SUBJECT },
+  { "to",      SORT_TO },
+  { NULL, 0 },
+  // clang-format on
+};
+
+static struct ConfigDef Vars[] = {
+  // clang-format off
+  { "from",              DT_ADDRESS,                 0,                     0,               NULL, },
+  { "beep",              DT_BOOL,                    true,                  0,               NULL, },
+  { "ispell",            DT_STRING|DT_COMMAND,       IP "ispell",           0,               NULL, },
+  { "mbox_type",         DT_ENUM,                    MUTT_MBOX,             IP &MboxTypeDef, NULL, },
+  { "to_chars",          DT_MBTABLE|R_INDEX|R_PAGER, IP " +TCFLR",          0,               NULL, },
+  { "net_inc",           DT_NUMBER|DT_NOT_NEGATIVE,  10,                    0,               NULL, },
+  { "signature",         DT_PATH|DT_PATH_FILE,       IP "~/.signature",     0,               NULL, },
+  { "print",             DT_QUAD,                    MUTT_ASKNO,            0,               NULL, },
+  { "mask",              DT_REGEX|DT_REGEX_NOSUB,    IP "!^\\.[^.]",        0,               NULL, },
+  { "sort",              DT_SORT|DT_SORT_LAST,       SORT_DATE,             IP SortMethods,  NULL, },
+  { "attribution_intro", DT_STRING,                  IP "On %d, %n wrote:", 0,               NULL, },
+  { NULL },
+  // clang-format on
+};
+
 size_t commands_array(struct Command **first)
 {
   *first = mutt_commands;
   return mutt_array_size(mutt_commands);
+}
+
+static void test_parse_set(void)
+{
+  const char *vars[] = {
+    "from",              // ADDRESS
+    "beep",              // BOOL
+    "ispell",            // COMMAND
+    "mbox_type",         // ENUM
+    "to_chars",          // MBTABLE
+    "net_inc",           // NUMBER
+    "signature",         // PATH
+    "print",             // QUAD
+    "mask",              // REGEX
+    "sort",              // SORT
+    "attribution_intro", // STRING
+    "zzz",               // UNKNOWN
+  };
+
+  const char *commands[] = {
+    "set",
+    "toggle",
+    "reset",
+    "unset",
+  };
+
+  const char *tests[] = {
+    "%s %s",       "%s %s=42",  "%s %s?",     "%s ?%s",    "%s ?%s=42",
+    "%s ?%s?",     "%s no%s",   "%s no%s=42", "%s no%s?",  "%s inv%s",
+    "%s inv%s=42", "%s inv%s?", "%s &%s",     "%s &%s=42", "%s &%s?",
+  };
+
+  struct Buffer err = mutt_buffer_make(256);
+  char line[64];
+
+  for (size_t v = 0; v < mutt_array_size(vars); v++)
+  {
+    // printf("--------------------------------------------------------------------------------\n");
+    // printf("VARIABLE %s\n", vars[v]);
+    for (size_t c = 0; c < mutt_array_size(commands); c++)
+    {
+      // printf("----------------------------------------\n");
+      // printf("COMMAND %s\n", commands[c]);
+      for (size_t t = 0; t < mutt_array_size(tests); t++)
+      {
+        mutt_buffer_reset(&err);
+
+        snprintf(line, sizeof(line), tests[t], commands[c], vars[v]);
+        // printf("%-26s", line);
+        enum CommandResult rc = parse_rc_line(line, &err);
+        // printf("%2d %s\n", rc, err.data);
+      }
+      // printf("\n");
+    }
+    // printf("\n");
+  }
+
+  mutt_buffer_dealloc(&err);
 }
 
 void test_parse_rc(void)
@@ -54,4 +150,11 @@ void test_parse_rc(void)
   TEST_CASE("parse_rc_buffer");
   rc = parse_rc_buffer(NULL, NULL, NULL);
   TEST_CHECK(rc == MUTT_CMD_SUCCESS);
+
+  NeoMutt = test_neomutt_create();
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
+  cs_str_initial_set(NeoMutt->sub->cs, "from", "rich@flatcap.org", NULL);
+  cs_str_reset(NeoMutt->sub->cs, "from", NULL);
+  test_parse_set();
+  test_neomutt_destroy(&NeoMutt);
 }

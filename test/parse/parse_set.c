@@ -47,12 +47,12 @@ void myvar_set(const char *var, const char *val)
 enum CommandResult set_dump(struct Buffer *buf, struct Buffer *s, intptr_t data,
                             struct Buffer *err)
 {
-  return MUTT_CMD_SUCCESS;
+  return MUTT_CMD_ERROR;
 }
 
 void test_parse_set(void)
 {
   TEST_CASE("parse_set");
   enum CommandResult rc = parse_set(NULL, NULL, 0, NULL);
-  TEST_CHECK(rc == MUTT_CMD_SUCCESS);
+  TEST_CHECK(rc == MUTT_CMD_ERROR);
 }

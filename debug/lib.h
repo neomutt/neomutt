@@ -33,7 +33,6 @@
  * | debug/graphviz.c    | @subpage debug_graphviz    |
  * | debug/notify.c      | @subpage debug_notify      |
  * | debug/pager.c       | @subpage debug_pager       |
- * | debug/parse_test.c  | @subpage debug_parse       |
  * | debug/window.c      | @subpage debug_window      |
  */
 
@@ -95,9 +94,6 @@ const char *get_mailbox_type(enum MailboxType type);
 
 // Pager
 void dump_pager(struct PagerPrivateData *priv);
-
-// Parse Set
-void test_parse_set(void);
 
 // Window
 void debug_win_dump(void);

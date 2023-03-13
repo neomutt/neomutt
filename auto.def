@@ -126,7 +126,6 @@ set valid_options {
   debug-email=0             => "DEBUG: Enable Email dump"
   debug-graphviz=0          => "DEBUG: Enable Graphviz dump"
   debug-notify=0            => "DEBUG: Enable Notifications dump"
-  debug-parse-test=0        => "DEBUG: Enable 'neomutt -T' for config testing"
   debug-queue=0             => "DEBUG: Enable TAILQ debugging"
   debug-window=0            => "DEBUG: Enable windows dump"
 }
@@ -169,7 +168,7 @@ if {1} {
   # Keep sorted, please.
   foreach opt {
     asan autocrypt bdb compile-commands coverage debug-backtrace debug-color debug-email
-    debug-graphviz debug-notify debug-parse-test debug-queue debug-window doc
+    debug-graphviz debug-notify debug-queue debug-window doc
     everything fmemopen full-doc fuzzing gdbm gnutls gpgme gsasl gss homespool idn
     idn2 include-path-in-cflags inotify kyotocabinet lmdb locales-fix lua lz4
     mixmaster nls notmuch pcre2 pgp qdbm rocksdb sasl smime sqlite ssl
@@ -1057,11 +1056,6 @@ if {[get-define want-debug-graphviz]} {
 # Notifications dump
 if {[get-define want-debug-notify]} {
   define USE_DEBUG_NOTIFY 1
-}
-
-# Parse Test
-if {[get-define want-debug-parse-test]} {
-  define USE_DEBUG_PARSE_TEST 1
 }
 
 # TAILQ debugging

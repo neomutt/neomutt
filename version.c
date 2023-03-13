@@ -311,9 +311,6 @@ static struct CompileOptions debug_opts[] = {
 #ifdef USE_DEBUG_NOTIFY
   { "notify", 2 },
 #endif
-#ifdef USE_DEBUG_PARSE_TEST
-  { "parse-test", 2 },
-#endif
 #ifdef QUEUE_MACRO_DEBUG_TRACE
   { "queue", 2 },
 #endif

@@ -353,13 +353,10 @@ LIBDEBUGOBJS+=	debug/graphviz.o
 @if USE_DEBUG_NOTIFY
 LIBDEBUGOBJS+=	debug/notify.o
 @endif
-@if USE_DEBUG_PARSE_TEST
-LIBDEBUGOBJS+=	debug/parse_test.o
-@endif
 @if USE_DEBUG_WINDOW
 LIBDEBUGOBJS+=	debug/window.o
 @endif
-@if HAVE_LIBUNWIND || USE_DEBUG_COLOR || USE_DEBUG_EMAIL || USE_DEBUG_GRAPHVIZ || USE_DEBUG_NOTIFY || USE_DEBUG_PARSE_TEST || USE_DEBUG_WINDOW
+@if HAVE_LIBUNWIND || USE_DEBUG_COLOR || USE_DEBUG_EMAIL || USE_DEBUG_GRAPHVIZ || USE_DEBUG_NOTIFY || USE_DEBUG_WINDOW
 LIBDEBUGOBJS+=	debug/common.o
 LIBDEBUG=	libdebug.a
 CLEANFILES+=	$(LIBDEBUG) $(LIBDEBUGOBJS)
@@ -938,6 +935,7 @@ coverage: all test
 	  --directory enter \
 	  --directory mutt \
 	  --directory notmuch \
+	  --directory parse \
 	  --directory pattern \
 	  --directory store \
 	  --exclude '*/include/*'

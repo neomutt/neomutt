@@ -197,7 +197,7 @@
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
-#if defined(USE_DEBUG_NOTIFY) || defined(HAVE_LIBUNWIND) || defined(USE_DEBUG_PARSE_TEST)
+#if defined(USE_DEBUG_NOTIFY) || defined(HAVE_LIBUNWIND)
 #include "debug/lib.h"
 #endif
 
@@ -500,9 +500,6 @@ main
   bool hide_sensitive = false;
   bool batch_mode = false;
   bool edit_infile = false;
-#ifdef USE_DEBUG_PARSE_TEST
-  bool test_config = false;
-#endif
   int double_dash = argc, nargc = 1;
   int rc = 1;
   bool repeat_error = false;
@@ -628,11 +625,6 @@ main
         case 's':
           subject = optarg;
           break;
-#ifdef USE_DEBUG_PARSE_TEST
-        case 'T':
-          test_config = true;
-          break;
-#endif
         case 'v':
           version++;
           break;
@@ -695,17 +687,6 @@ main
 
   if (!get_user_info(cs))
     goto main_exit;
-
-#ifdef USE_DEBUG_PARSE_TEST
-  if (test_config)
-  {
-    cs_str_initial_set(cs, "from", "rich@flatcap.org", NULL);
-    cs_str_reset(cs, "from", NULL);
-    myvar_set("my_var", "foo");
-    test_parse_set();
-    goto main_ok;
-  }
-#endif
 
   reset_tilde(cs);
 

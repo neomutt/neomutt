@@ -54,6 +54,9 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
   /* The order must match `enum MuttSetCommand` */
   static const char *set_commands[] = { "set", "toggle", "unset", "reset" };
 
+  if (!buf || !s)
+    return MUTT_CMD_ERROR;
+
   if (StartupComplete)
   {
     if (set_dump(buf, s, data, err) == MUTT_CMD_SUCCESS)
