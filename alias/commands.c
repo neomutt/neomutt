@@ -59,7 +59,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   }
 
   /* name */
-  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+  mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
   mutt_debug(LL_DEBUG5, "First token is '%s'\n", buf->data);
   if (parse_grouplist(&gl, buf, s, err) == -1)
   {
@@ -68,7 +68,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   char *name = mutt_str_dup(buf->data);
 
   /* address list */
-  mutt_extract_token(buf, s, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_SEMICOLON);
+  mutt_extract_token(buf, s, TOKEN_QUOTE | TOKEN_SPACE | TOKEN_SEMICOLON);
   mutt_debug(LL_DEBUG5, "Second token is '%s'\n", buf->data);
   struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
   int parsed = mutt_addrlist_parse2(&al, buf->data);
@@ -163,7 +163,7 @@ enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
 {
   do
   {
-    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+    mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
 
     struct Alias *np = NULL;
     if (mutt_str_equal("*", buf->data))

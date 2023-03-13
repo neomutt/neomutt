@@ -73,7 +73,7 @@ static enum CommandResult parse_unreplace_list(struct Buffer *buf, struct Buffer
     return MUTT_CMD_WARNING;
   }
 
-  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+  mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
 
   /* "*" is a special case. */
   if (mutt_str_equal(buf->data, "*"))
@@ -100,7 +100,7 @@ static enum CommandResult parse_replace_list(struct Buffer *buf, struct Buffer *
     mutt_buffer_printf(err, _("%s: too few arguments"), "subjectrx");
     return MUTT_CMD_WARNING;
   }
-  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+  mutt_extract_token(buf, s, TOKEN_NO_FLAGS);
 
   /* Second token is a replacement template */
   if (!MoreArgs(s))
@@ -108,7 +108,7 @@ static enum CommandResult parse_replace_list(struct Buffer *buf, struct Buffer *
     mutt_buffer_printf(err, _("%s: too few arguments"), "subjectrx");
     return MUTT_CMD_WARNING;
   }
-  mutt_extract_token(&templ, s, MUTT_TOKEN_NO_FLAGS);
+  mutt_extract_token(&templ, s, TOKEN_NO_FLAGS);
 
   if (mutt_replacelist_add(list, buf->data, templ.data, err) != 0)
   {

@@ -842,7 +842,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         mutt_debug(LL_DEBUG3, "fmtpipe +++: %s\n", srcbuf.dptr);
         if (word.data)
           *word.data = '\0';
-        mutt_extract_token(&word, &srcbuf, MUTT_TOKEN_NO_FLAGS);
+        mutt_extract_token(&word, &srcbuf, TOKEN_NO_FLAGS);
         mutt_debug(LL_DEBUG3, "fmtpipe %2d: %s\n", i++, word.data);
         mutt_buffer_addch(&cmd, '\'');
         mutt_expando_format(tmp, sizeof(tmp), 0, cols, word.data, callback,

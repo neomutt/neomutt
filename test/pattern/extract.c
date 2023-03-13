@@ -53,14 +53,13 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
   {
     if (qc == '\0')
     {
-      if ((IS_SPACE(ch) && !(flags & MUTT_TOKEN_SPACE)) ||
-          ((ch == '#') && !(flags & MUTT_TOKEN_COMMENT)) ||
-          ((ch == '+') && (flags & MUTT_TOKEN_PLUS)) ||
-          ((ch == '-') && (flags & MUTT_TOKEN_MINUS)) ||
-          ((ch == '=') && (flags & MUTT_TOKEN_EQUAL)) ||
-          ((ch == '?') && (flags & MUTT_TOKEN_QUESTION)) ||
-          ((ch == ';') && !(flags & MUTT_TOKEN_SEMICOLON)) ||
-          ((flags & MUTT_TOKEN_PATTERN) && strchr("~%=!|", ch)))
+      if ((IS_SPACE(ch) && !(flags & TOKEN_SPACE)) ||
+          ((ch == '#') && !(flags & TOKEN_COMMENT)) ||
+          ((ch == '+') && (flags & TOKEN_PLUS)) || ((ch == '-') && (flags & TOKEN_MINUS)) ||
+          ((ch == '=') && (flags & TOKEN_EQUAL)) ||
+          ((ch == '?') && (flags & TOKEN_QUESTION)) ||
+          ((ch == ';') && !(flags & TOKEN_SEMICOLON)) ||
+          ((flags & TOKEN_PATTERN) && strchr("~%=!|", ch)))
       {
         break;
       }
@@ -70,7 +69,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
 
     if (ch == qc)
       qc = 0; /* end of quote */
-    else if (!qc && ((ch == '\'') || (ch == '"')) && !(flags & MUTT_TOKEN_QUOTE))
+    else if (!qc && ((ch == '\'') || (ch == '"')) && !(flags & TOKEN_QUOTE))
       qc = ch;
     else if ((ch == '\\') && (qc != '\''))
     {
@@ -111,7 +110,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
             mutt_buffer_addch(dest, ch);
       }
     }
-    else if ((ch == '^') && (flags & MUTT_TOKEN_CONDENSE))
+    else if ((ch == '^') && (flags & TOKEN_CONDENSE))
     {
       if (tok->dptr[0] == '\0')
         return -1; /* premature end of token */
@@ -152,12 +151,12 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       struct Buffer cmd;
       mutt_buffer_init(&cmd);
       *pc = '\0';
-      if (flags & MUTT_TOKEN_BACKTICK_VARS)
+      if (flags & TOKEN_BACKTICK_VARS)
       {
         /* recursively extract tokens to interpolate variables */
         mutt_extract_token(&cmd, tok,
-                           MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_COMMENT |
-                               MUTT_TOKEN_SEMICOLON | MUTT_TOKEN_NOSHELL);
+                           TOKEN_QUOTE | TOKEN_SPACE | TOKEN_COMMENT |
+                               TOKEN_SEMICOLON | TOKEN_NOSHELL);
       }
       else
       {
@@ -221,7 +220,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
           var = mutt_strn_dup(tok->dptr + 1, pc - (tok->dptr + 1));
           tok->dptr = pc + 1;
 
-          if ((flags & MUTT_TOKEN_NOSHELL))
+          if ((flags & TOKEN_NOSHELL))
           {
             mutt_buffer_addch(dest, ch);
             mutt_buffer_addch(dest, '{');
@@ -254,7 +253,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
         {
           mutt_buffer_addstr(dest, env);
         }
-        else if (!(flags & MUTT_TOKEN_NOSHELL) && (env = mutt_str_getenv(var)))
+        else if (!(flags & TOKEN_NOSHELL) && (env = mutt_str_getenv(var)))
         {
           mutt_buffer_addstr(dest, env);
         }
