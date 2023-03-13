@@ -20,6 +20,927 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#: alias/dlg_alias.c:104 alias/dlg_query.c:104
+msgid "Sort"
+msgstr "Organização"
+
+#: alias/dlg_alias.c:105 alias/dlg_query.c:105
+msgid "Rev-Sort"
+msgstr "Organização Rev."
+
+#. L10N: The highlighted letters must match the "Sort" options
+#: alias/functions.c:270
+msgid "Rev-Sort (a)lias, a(d)dress or (u)nsorted?"
+msgstr "Organização Rev. por (a)pelido, (e)nderesso, (n)ão organizado"
+
+#. L10N: The highlighted letters must match the "Rev-Sort" options
+#: alias/functions.c:272
+msgid "Sort (a)lias, a(d)dress or (u)nsorted?"
+msgstr "Organização por (a)pelido, (e)nderesso, (n)ão organizado"
+
+#. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
+#: alias/functions.c:274
+msgid "adu"
+msgstr "aen"
+
+#. L10N: Error displayed if the user tries to force sending an Autocrypt
+#. email when the account does not exist or is not enabled.
+#. %s is the From email address used to look up the Autocrypt account.
+#.
+#: autocrypt/autocrypt.c:613
+#, c-format
+msgid "Autocrypt is not enabled for %s"
+msgstr "Autocrypt não esta habilitado para %s"
+
+#: color/curses.c:93
+#, c-format
+msgid "Too many colors: %d / %d"
+msgstr "Muitas cores: %d / %d"
+
+#: command_parse.c:768
+#, c-format
+msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
+msgstr "Não é possível usar 'inv, 'no', '&' ou '?' com o comando '%s'"
+
+#: command_parse.c:817 command_parse.c:1140
+msgid "Can't use a prefix when querying a variable"
+msgstr "Não é possível usar um prefixo quando consultando uma variável"
+
+#: command_parse.c:823 command_parse.c:1120 command_parse.c:1134
+#, c-format
+msgid "Can't query a variable with the '%s' command"
+msgstr "Não é possível consultar uma variável com o comando '%s'"
+
+#: command_parse.c:835
+msgid "Can't use prefix when incrementing or decrementing a variable"
+msgstr "Não é possível usar um prefixo quando incrementando ou diminuindo uma variável"
+
+#: command_parse.c:841 command_parse.c:872
+#, c-format
+msgid "Can't set a variable with the '%s' command"
+msgstr "Não é possível definir uma variável com o comando '%s'"
+
+#: command_parse.c:852
+msgid "Can't decrement a my_ variable"
+msgstr "Não é possível diminuir uma variável my_"
+
+#: command_parse.c:866
+msgid "Can't use prefix when setting a variable"
+msgstr "Não é possível usar um prefixo quando definindo uma variável"
+
+#: command_parse.c:885
+msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
+msgstr "Os prefixos 'no' e 'inv' só podem ser usando com variáveis do tipo bool/quad"
+
+#: command_parse.c:889
+#, c-format
+msgid "Command '%s' can only be used with bool/quad variables"
+msgstr "O comando '%s' só pode ser usado com variáveis do tipo bool/quad"
+
+#: command_parse.c:1442
+#, c-format
+msgid "tag format '%s' already registered as '%s'"
+msgstr "formato de tag '%s' já está registrado como '%s'"
+
+#: command_parse.c:1484
+#, c-format
+msgid "tag transform '%s' already registered as '%s'"
+msgstr "transformação de tag '%s' já está registrado como '%s'"
+
+#: compose/functions.c:392 compose/functions.c:406
+msgid "Attachments to be grouped must have the same parent"
+msgstr "Anexos agrupados devem ter o mesmo parente"
+
+#: compose/functions.c:908
+msgid "Content-ID can only contain the characters: -.0-9@A-Z_a-z"
+msgstr "Content-ID só pode ter os caracteres: -.0-9@A-Z_a-z"
+
+#: compose/functions.c:1234 compose/functions.c:1287
+msgid "Attachment can't be moved out of group"
+msgstr "Anexos não podem ser movidos para fora do grupo"
+
+#: config/number.c:62 config/number.c:172 config/number.c:211
+#, c-format
+msgid "Number is too big: %s"
+msgstr "Numero muito grande: %s"
+
+#: config/set.c:104 init.c:978
+#, c-format
+msgid "No such variable: %s"
+msgstr "Variável indefinida: %s"
+
+#. L10N: e.g. Type 'boolean' doesn't support operation '+='
+#: config/set.c:895 config/set.c:978
+#, c-format
+msgid "Type '%s' doesn't support operation '%s'"
+msgstr "Tipo '%s' não suporta operação '%s'"
+
+#: conn/accountcmd.c:79
+#, c-format
+msgid "Line is malformed: expected <key: val>, got <%s>"
+msgstr "Linha malformada: esperado <chave: valor>, obteve <%s>"
+
+#: conn/accountcmd.c:119
+#, c-format
+msgid "Unhandled key in line <%s: %s>"
+msgstr "Tecla não tratada na linha <%s:%s>"
+
+#: conn/connaccount.c:241
+#, c-format
+msgid "OAUTH token is too big: %ld"
+msgstr "token OAUTH muito grande: %ld"
+
+#: enter/window.c:55
+msgid "Complete"
+msgstr "Completo"
+
+#: enter/window.c:56
+msgid "Hist Up"
+msgstr "Hist Cima"
+
+#: enter/window.c:57
+msgid "Hist Down"
+msgstr "Hist Baixo"
+
+#: enter/window.c:59
+msgid "Begin Line"
+msgstr "Começo de Linha"
+
+#: enter/window.c:60
+msgid "End Line"
+msgstr "Fim de Linha"
+
+#: enter/window.c:61
+msgid "Kill Line"
+msgstr "Deletar Linha"
+
+#: enter/window.c:62
+msgid "Kill Word"
+msgstr "Deletar Palavra"
+
+#: envelope/window.c:129
+msgid "Headers: "
+msgstr "Cabeçalhos: "
+
+#: envelope/window.c:595
+#, c-format
+msgid "(+%d more)"
+msgid_plural "(+%d more)"
+msgstr[0] "(+%d a mais)"
+msgstr[1] "(+%d a mais)"
+
+#: hcache/config.c:95
+#, c-format
+msgid "Set option %s before setting %s"
+msgstr "Defina a opção %s antes de definir %s"
+
+#: imap/config.c:59 pop/config.c:57 send/config.c:78
+#, c-format
+msgid "Option %s: %s is not a valid authenticator"
+msgstr "Opção %s: %s não é um autenticador valido"
+
+#: index/index.c:97
+msgid "Changing threaded display should prefer $use_threads over $sort"
+msgstr "Ao mudar o display de thread, deve-se preferir $use_threads a $sort"
+
+#: init.c:942
+#, c-format
+msgid "Config variable '%s' is deprecated"
+msgstr "Variável de config. '%s' está descontinuada"
+
+#: keymap.c:864
+msgid "Abort key is not set, defaulting to Ctrl-G"
+msgstr "Tecla de cancelamento não está definida, padronizando para Ctrl-G"
+
+#: keymap.c:870
+#, c-format
+msgid "Specified abort key sequence (%s) will be truncated to first key"
+msgstr "Sequencia de tecla de cancelamento especificada (%s) sera truncada para a primeira tecla"
+
+#: main.c:296
+msgid "  -D -O         Like -D, but show one-liner documentation"
+msgstr "  -D -O         Assim como -D, mas mostra documentação de uma linha"
+
+#: mutt_thread.c:120
+#, c-format
+msgid "Cannot use 'last-' prefix with 'threads' for %s"
+msgstr "Não é possível usar o prefixo 'last-' com 'threads' para %s"
+
+#: notmuch/config.c:60
+#, c-format
+msgid "nm_default_url must be: notmuch://<absolute path> . Current: %s"
+msgstr "nm_default_url deve ser: notmuch://<caminho absoluto> . Atual: %s"
+
+#: notmuch/notmuch.c:2300
+#, c-format
+msgid "Unable to sync %d message due to external mailbox modification"
+msgid_plural "Unable to sync %d messages due to external mailbox modification"
+msgstr[0] "Não é possível sincronizar %d mensagem devido a modificações externas de caixa"
+msgstr[1] "Não é possível sincronizar %d mensagens devido a modificações externas de caixa"
+
+#: opcodes.h:65
+msgid "ungroup 'multipart' attachment"
+msgstr "desagrupar anexo 'multiparte'"
+
+#. L10N: Displayed if <skip-headers> is invoked in the pager, but
+#. there is no text past the headers.
+#. (I don't think this is actually possible in Mutt's code, but
+#. display some kind of message in case it somehow occurs.)
+#: pager/functions.c:569
+msgid "No text past headers"
+msgstr "Nenhum texto após cabeçalhos"
+
+#. L10N: Pattern completion menu title
+#: pattern/dlg_pattern.c:189
+msgid "Patterns"
+msgstr "Padrões"
+
+#. L10N:
+#. Pattern Completion Menu argument type: a regular expression
+#.
+#: pattern/dlg_pattern.c:205
+msgid "EXPR"
+msgstr "EXPR"
+
+#. L10N:
+#. Pattern Completion Menu argument type: a numeric range.
+#. Used by ~m, ~n, ~X, ~z.
+#.
+#: pattern/dlg_pattern.c:213
+msgid "RANGE"
+msgstr "ALCANCE"
+
+#. L10N:
+#. Pattern Completion Menu argument type: a date range
+#. Used by ~d, ~r.
+#.
+#: pattern/dlg_pattern.c:220
+msgid "DATERANGE"
+msgstr "ALCANCEDATA"
+
+#. L10N:
+#. Pattern Completion Menu argument type: a query
+#. Used by ~I.
+#.
+#: pattern/dlg_pattern.c:227
+msgid "QUERY"
+msgstr "CONSULTA"
+
+#. L10N:
+#. Pattern Completion Menu argument type: a nested pattern.
+#. Used by ~(), ~<(), ~>().
+#.
+#: pattern/dlg_pattern.c:245
+msgid "PATTERN"
+msgstr "PADRÃO"
+
+#. L10N: Pattern Completion Menu description for ~()
+#: pattern/dlg_pattern.c:252
+msgid "messages in threads containing messages matching PATTERN"
+msgstr "mensagens em thread contendo mensagens coincidindo com PADRÃO"
+
+#. L10N: Pattern Completion Menu description for ~<()
+#: pattern/dlg_pattern.c:260
+msgid "messages whose immediate parent matches PATTERN"
+msgstr "mensagens que o parente imediato coincide com PADRÃO"
+
+#. L10N: Pattern Completion Menu description for ~>()
+#: pattern/dlg_pattern.c:268
+msgid "messages having an immediate child matching PATTERN"
+msgstr "mensagens com um descendente imediato coincidindo com PADRÃO"
+
+#. L10N: One of the crypt pattern operators: ~g, ~G, ~k, ~V
+#. was invoked when NeoMutt was compiled without crypto support.
+#. %c is the pattern character, i.e. "g".
+#: pattern/exec.c:94
+#, c-format
+msgid "Pattern operator '~%c' is disabled"
+msgstr "Operado de padrão '~%c' está desabilitado"
+
+#. L10N: Pattern Completion Menu description for ~b
+#: pattern/flags.c:47
+msgid "messages whose body matches EXPR"
+msgstr "mensagens quais o corpo coincide com EXPR"
+
+#. L10N: Pattern Completion Menu description for ~B
+#: pattern/flags.c:50
+msgid "messages whose body or headers match EXPR"
+msgstr "mensagens quais o corpo ou cabeçalhos coincide com EXPR"
+
+#. L10N: Pattern Completion Menu description for ~c
+#: pattern/flags.c:53
+msgid "messages whose CC header matches EXPR"
+msgstr "mensagens quais o cabeçalho CC coincide com EXPR"
+
+#. L10N: Pattern Completion Menu description for ~C
+#: pattern/flags.c:56
+msgid "messages whose recipient matches EXPR"
+msgstr "mensagens quais o recipiente coincide com EXPR"
+
+#. L10N: Pattern Completion Menu description for ~d
+#: pattern/flags.c:59
+msgid "messages sent in DATERANGE"
+msgstr "mensagens enviadas em ALCANCEDATA"
+
+#. L10N: Pattern Completion Menu description for ~e
+#: pattern/flags.c:65
+msgid "messages whose Sender header matches EXPR"
+msgstr "mensagens quais o cabeçalho Remetente coincide com EXPR"
+
+#. L10N: Pattern Completion Menu description for ~f
+#: pattern/flags.c:71
+msgid "messages whose From header matches EXPR"
+msgstr "mensagens quais o cabeçalho De coincide com EXPR"
+
+#. L10N: Pattern Completion Menu description for ~h
+#: pattern/flags.c:83
+msgid "messages whose header matches EXPR"
+msgstr "mensagens quais o cabeçalho coincide com EXPR"
+
+#. L10N: Pattern Completion Menu description for ~H
+#: pattern/flags.c:86
+msgid "messages whose spam tag matches EXPR"
+msgstr "mensagens quais a tag de spam coincide com EXPR"
+
+#. L10N: Pattern Completion Menu description for ~I
+#: pattern/flags.c:92
+msgid "messages whose Message-ID is included in the results returned from an external search program"
+msgstr "mensagens quais Message-ID é incluído nos resultados retornados de um programa de procura externo"
+
+#. L10N: Pattern Completion Menu description for ~l
+#: pattern/flags.c:101
+msgid "messages addressed to known mailing lists"
+msgstr "mensagens dirigidas a uma lista de email conhecida"
+
+#. L10N: Pattern Completion Menu description for ~L
+#: pattern/flags.c:104
+msgid "messages whose From/Sender/To/CC matches EXPR"
+msgstr "mensagens quais De/Remetente/Para/CC coincide EXPR"
+
+#. L10N: Pattern Completion Menu description for ~m
+#: pattern/flags.c:107
+msgid "messages whose number is in RANGE"
+msgstr "mensagens quais o número está em ALCANCE"
+
+#. L10N: Pattern Completion Menu description for ~M
+#: pattern/flags.c:110
+msgid "messages with a Content-Type matching EXPR"
+msgstr "mensagens com um Content-Type coincidindo com EXPR"
+
+#. L10N: Pattern Completion Menu description for ~n
+#: pattern/flags.c:113
+msgid "messages whose score is in RANGE"
+msgstr "mensagens quais pontos está em ALCANCE"
+
+#. L10N: Pattern Completion Menu description for ~p
+#: pattern/flags.c:122
+msgid "messages addressed to you"
+msgstr "mensagens dirigidas a você"
+
+#. L10N: Pattern Completion Menu description for ~Q
+#: pattern/flags.c:128
+msgid "messages which have been replied to"
+msgstr "mensagens com repostas"
+
+#. L10N: Pattern Completion Menu description for ~r
+#: pattern/flags.c:131
+msgid "messages received in DATERANGE"
+msgstr "mensagens recebidas em ALCANCEDATA"
+
+#. L10N: Pattern Completion Menu description for ~s
+#: pattern/flags.c:137
+msgid "messages whose Subject header matches EXPR"
+msgstr "mensagens quais o cabeçalho Assunto coincide com EXPR"
+
+#. L10N: Pattern Completion Menu description for ~t
+#: pattern/flags.c:143
+msgid "messages whose To header matches EXPR"
+msgstr "mensagens quais o cabeçalho Para coincide com EXPR"
+
+#. L10N: Pattern Completion Menu description for ~x
+#: pattern/flags.c:166
+msgid "messages whose References header matches EXPR"
+msgstr "mensagens quais o cabeçalho Referencias coincide com EXPR"
+
+#. L10N: Pattern Completion Menu description for ~y
+#: pattern/flags.c:172
+msgid "messages whose X-Label header matches EXPR"
+msgstr "mensagens quais o cabeçalho X-Label coincide com EXPR"
+
+#. L10N: Pattern Completion Menu description for ~Y
+#: pattern/flags.c:175
+msgid "messages whose tags match EXPR"
+msgstr "mensagens quais tags coincidem com EXPR"
+
+#. L10N: Pattern Completion Menu description for ~z
+#: pattern/flags.c:178
+msgid "messages whose size is in RANGE"
+msgstr "mensagens quais tamanho está em ALCANCE"
+
+#. L10N: Pattern Completion Menu description for =/
+#: pattern/flags.c:190
+msgid "IMAP custom server-side search for STRING"
+msgstr "Pesquisa customizada IMAP server-side por STRING"
+
+#. L10N: This applies to the "$sendmail" and "$inews" config variables.
+#: send/config.c:102
+#, c-format
+msgid "Option %s must not contain shell metacharacters: %c"
+msgstr "Opção %s não deve conter meta caracteres da shell: %c"
+
+#. L10N: Printed after the "Fcc to an IMAP mailbox is not supported" message.
+#. To make it clearer that the message doesn't mean NeoMutt is aborting
+#. sending the mail too.
+#. %s is the full mailbox URL, including imap(s)://
+#.
+#: send/send.c:1782
+#, c-format
+msgid "Skipping Fcc to %s"
+msgstr "Pulando Fcc para %s"
+
+#: send/send.c:1999 send/send.c:2016
+msgid "Error encrypting message. Check your crypt settings."
+msgstr "Erro encriptando mensagem. Verifique suas configurações de criptografia"
+
+#: send/send.c:2430
+msgid "Refusing to send an empty email"
+msgstr "Recusando a enviar um email vazio"
+
+#: send/send.c:2431
+msgid "Try: echo | neomutt -s 'subject' user@example.com"
+msgstr "Tente: echo | neomutt -s 'assunto' user@example.com"
+
+#: alias/alias.c:473
+msgid "Comment: "
+msgstr "Comentário: "
+
+#: alias/commands.c:77
+#, c-format
+msgid "Warning: Bad address '%s' in alias '%s'"
+msgstr "Aviso: Endereço '%s' inválido no apelido '%s'"
+
+#: alias/dlg_query.c:362
+msgid "Query"
+msgstr "Consulta: "
+
+#: alias/functions.c:171
+msgid "Limit to addresses matching: "
+msgstr "Limitar a endereços que coincidem com: "
+
+#. L10N: Error displayed if the user tries to force sending an Autocrypt
+#. email when the engine is not available.
+#: autocrypt/autocrypt.c:585 autocrypt/autocrypt.c:594
+#: autocrypt/autocrypt.c:601
+msgid "Autocrypt is not available"
+msgstr "Autocrypt não está disponível"
+
+#: bcache/bcache.c:75
+#, c-format
+msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
+msgstr "Cachê desabilitado, $message_cache_dir não é um diretório: %s"
+
+#. L10N: Progress meter message when copying tagged messages
+#: commands.c:845
+msgid "Copying tagged messages..."
+msgstr "Copiando mensagens marcadas..."
+
+#. L10N: Progress meter message when saving tagged messages
+#: commands.c:864
+msgid "Saving tagged messages..."
+msgstr "Salvando mensagens marcadas..."
+
+#. L10N: Message when an index tagged save operation fails for some reason
+#: commands.c:1066
+msgid "Error saving tagged messages"
+msgstr "Erro salvando mensagens marcadas"
+
+#. L10N: Message when an index/pager save operation fails for some reason
+#: commands.c:1071
+msgid "Error saving message"
+msgstr "Erro salvando mensagem"
+
+#. L10N: Message when an index tagged copy operation fails for some reason
+#: commands.c:1078
+msgid "Error copying tagged messages"
+msgstr "Erro copiando mensagens marcadas"
+
+#. L10N: Message when an index/pager copy operation fails for some reason
+#: commands.c:1083
+msgid "Error copying message"
+msgstr "Erro ao replicar mensagem"
+
+#: compose/functions.c:232 compose/functions.c:424
+msgid "Can't leave group with only one attachment"
+msgstr "Você não pode remover o único anexo"
+
+#: compose/functions.c:1089
+msgid "Can't filter multipart attachments"
+msgstr "Somente a deleção de anexos multiparte é suportada"
+
+#: compose/functions.c:1124
+msgid "Can't get multipart attachments"
+msgstr "Somente a deleção de anexos multiparte é suportada"
+
+#: compose/functions.c:1189
+msgid "Grouping 'related' requires at least 2 tagged messages"
+msgstr "Agrupar mensagens 'relacionadas' requer pelo menos 2 mensagens marcadas"
+
+#: compose/functions.c:1400
+msgid "Can't print multipart attachments"
+msgstr "Não é possível imprimir anexos multiparte"
+
+#: compose/functions.c:1450
+msgid "Can't save multipart attachments"
+msgstr "Não é possível salvar anexos multiparte"
+
+#: compose/functions.c:1521
+msgid "Attachment is not 'multipart'"
+msgstr "Anexo não é multiparte"
+
+#: compose/functions.c:1670
+msgid "Can't edit multipart attachments"
+msgstr "Não é possível editar anexos multiparte"
+
+#: compose/functions.c:1751
+msgid "Can't rename multipart attachments"
+msgstr "Somente a deleção de anexos multiparte é suportada"
+
+#: config/bool.c:75
+#, c-format
+msgid "Invalid boolean value: %s"
+msgstr "Valor booleano inválido: %s"
+
+#: config/bool.c:130
+#, c-format
+msgid "Invalid boolean value: %ld"
+msgstr "Valor booleano inválido: %ld"
+
+#: config/enum.c:58
+#, c-format
+msgid "Invalid enum value: %s"
+msgstr "Valor enum inválido: %s"
+
+#: config/enum.c:132
+#, c-format
+msgid "Invalid enum value: %ld"
+msgstr "Valor enum inválido: %ld"
+
+#: config/long.c:48 config/number.c:49 config/path.c:94 config/path.c:167
+#: config/sort.c:55 config/string.c:66 config/string.c:140
+#, c-format
+msgid "Option %s may not be empty"
+msgstr "Opção %s não pode estar vazia"
+
+#: config/long.c:55 config/long.c:151 config/long.c:187
+#, c-format
+msgid "Invalid long: %s"
+msgstr "Valor longo inválido: %s"
+
+#: config/long.c:61 config/long.c:113 config/long.c:158 config/long.c:194
+#: config/number.c:68 config/number.c:127 config/number.c:178
+#: config/number.c:217
+#, c-format
+msgid "Option %s may not be negative"
+msgstr "Opção %s não pode ser negativa"
+
+#: config/number.c:56 config/number.c:165 config/number.c:204
+#, c-format
+msgid "Invalid number: %s"
+msgstr "Número inválido: %s"
+
+#: config/number.c:121
+#, c-format
+msgid "Invalid number: %ld"
+msgstr "Número inválido: %ld"
+
+#: config/quad.c:74
+#, c-format
+msgid "Invalid quad value: %s"
+msgstr "Valor quad inválido: %s"
+
+#: config/quad.c:132
+#, c-format
+msgid "Invalid quad value: %ld"
+msgstr "Valor quad inválido: %ld"
+
+#: config/set.c:136 config/set.c:826
+#, c-format
+msgid "Variable '%s' has an invalid type %d"
+msgstr "Variável '%s' possui um tipo inválido %d"
+
+#: config/set.c:401 config/set.c:467 config/set.c:528 config/set.c:604
+#: config/set.c:670 config/set.c:746 config/set.c:926 config/set.c:1009
+#, c-format
+msgid "Unknown variable '%s'"
+msgstr "Variável desconhecida '%s'"
+
+#: config/sort.c:85
+#, c-format
+msgid "Invalid sort name: %s"
+msgstr "Nome ordem invalido: %s"
+
+#: config/sort.c:161
+#, c-format
+msgid "Invalid sort type: %ld"
+msgstr "Tipo de ordem invalido: %ld"
+
+#: conn/accountcmd.c:140
+msgid "Unable to run account command"
+msgstr "Incapaz de executar comando de conta"
+
+#: enter/window.c:58
+msgid "Hist Search"
+msgstr "Busca na hist"
+
+#: imap/auth_gsasl.c:147 pop/auth.c:135
+msgid "SASL authentication failed"
+msgstr "Autenticação SASL falhou."
+
+#: imap/command.c:1172
+#, c-format
+msgid "IMAP command failed: %s"
+msgstr "Comando IMAP falhou: %s"
+
+#. L10N: After opening an IMAP mailbox using QRESYNC, Mutt performs a quick
+#. sanity check.  If that fails, Mutt reopens the mailbox using a normal
+#. download.
+#: imap/message.c:1054
+msgid "QRESYNC failed.  Reopening mailbox."
+msgstr "QRESYNC falhou. Reabrindo a caixa de mensagens"
+
+#: keymap.c:1647
+#, c-format
+msgid "Enter keys (%s to abort): "
+msgstr "Entre teclas (%s para cancelar): "
+
+#. L10N:
+#. Mutt is trying to look up a mailcap value, but $mailcap_path is empty.
+#. We added a reference to the MAILCAPS environment variable as a hint too.
+#.
+#. Because the variable is automatically populated by Mutt, this
+#. should only occur if the user deliberately runs in their shell:
+#. export MAILCAPS=
+#.
+#. or deliberately runs inside Mutt or their .muttrc:
+#. set mailcap_path=""
+#. -or-
+#. unset mailcap_path
+#.
+#: mailcap.c:497
+msgid "Neither mailcap_path nor MAILCAPS specified"
+msgstr "Nem mailcap_path, nem MAILCAPS especificado"
+
+#: main.c:314
+msgid ""
+"  -Q <variable> Query a configuration variable and print its value to stdout\n"
+"                (after the config has been read and any commands executed)\n"
+"                Add -O for one-liner documentation"
+msgstr ""
+"  -Q <variável> Consulta uma variável e imprime o valor para stdout\n"
+"                (depois que a config foi lida e comandos executados)\n"
+"                Adicione -O para documentação de uma linha"
+
+#: mutt/file.c:715
+#, c-format
+msgid "Failed to seek file: %s"
+msgstr "Falha em procurar no arquivo: %s"
+
+#. L10N: Displayed if appending to $trash fails when syncing or closing a mailbox
+#: mx.c:587
+msgid "Unable to append to trash folder"
+msgstr "Incapaz de adicionar a pasta de lixo"
+
+#: mx.c:1353
+#, c-format
+msgid "Can't open %s: it is a pipe"
+msgstr "Não é possível %s: é um pipe"
+
+#. L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
+#. They should not be translated.
+#: notmuch/config.c:89 notmuch/notmuch.c:309
+msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
+msgstr "Valor nm_query_window_timebase inválido (valores aceitos são: hour, day, week, month ou year)"
+
+#: opcodes.h:43
+msgid "edit the 'Content-ID' of the attachment"
+msgstr "edita valor de 'Content-ID' do anexo"
+
+#: opcodes.h:53
+msgid "group tagged attachments as 'multipart/related'"
+msgstr "anexos agrupados marcados como 'multiparte/relacionado'"
+
+#: opcodes.h:69
+msgid "view attachment in pager using copiousoutput mailcap"
+msgstr "visualizar anexo usando no pager usando copiosoutput mailcap"
+
+#: opcodes.h:85
+msgid "open the aliases dialog"
+msgstr "abrir dialogo de apelidos"
+
+#: opcodes.h:140
+msgid "delete chars from cursor to beginning the line"
+msgstr "apaga os caracteres a partir do cursor até o começo da linha"
+
+#: opcodes.h:182
+msgid "subscribe to a mailing list"
+msgstr "inscrever a uma lista de email"
+
+#: opcodes.h:183
+msgid "unsubscribe from a mailing list"
+msgstr "desinscrever a uma lista de email"
+
+#: opcodes.h:196
+msgid "delete non-hidden messages matching a pattern"
+msgstr "apaga mensagens não-escondidas que coincidem com um padrão"
+
+#: opcodes.h:225
+msgid "tag non-hidden messages matching a pattern"
+msgstr "marca mensagens não-escondidas que coincidem com um padrão"
+
+#: opcodes.h:226
+msgid "undelete non-hidden messages matching a pattern"
+msgstr "restaura mensagens não-escondidas que coincidem com um padrão"
+
+#: opcodes.h:227
+msgid "untag non-hidden messages matching a pattern"
+msgstr "desmarca mensagens não-escondidas que coincidem com um padrão"
+
+#: opcodes.h:235
+msgid "jump to first line after headers"
+msgstr "pula para a primeira linha depois dos cabeçalhos"
+
+#: opcodes.h:327
+msgid "resets virtual folder time window to the present"
+msgstr "desloca janela de tempo da pasta virtual para frente"
+
+#: opcodes.h:341
+msgid "move the highlight to the first mailbox"
+msgstr "move a mensagem destacada para a primeira caixa de mensagens"
+
+#: opcodes.h:342
+msgid "move the highlight to the last mailbox"
+msgstr "move a mensagem destacada para a última caixa de mensagens"
+
+#: pattern/exec.c:209
+msgid "Error checking length of temporary file"
+msgstr "Erro verificando o tamanho do arquivo temporário"
+
+#. L10N: Pattern Completion Menu description for ~A
+#: pattern/flags.c:44
+msgid "all messages"
+msgstr "todas mensagens"
+
+#. L10N: Pattern Completion Menu description for ~D
+#: pattern/flags.c:62
+msgid "deleted messages"
+msgstr "mensagens deletadas"
+
+#. L10N: Pattern Completion Menu description for ~E
+#: pattern/flags.c:68
+msgid "expired messages"
+msgstr "mensagens expiradas"
+
+#. L10N: Pattern Completion Menu description for ~F
+#: pattern/flags.c:74
+msgid "flagged messages"
+msgstr "mensagens marcadas"
+
+#. L10N: Pattern Completion Menu description for ~g
+#: pattern/flags.c:77
+msgid "cryptographically signed messages"
+msgstr "mensagens assinadas criptograficamentes"
+
+#. L10N: Pattern Completion Menu description for ~G
+#: pattern/flags.c:80
+msgid "cryptographically encrypted messages"
+msgstr "mensagens encriptadas criptograficamentes"
+
+#. L10N: Pattern Completion Menu description for ~i
+#: pattern/flags.c:89
+msgid "messages whose Message-ID matches EXPR"
+msgstr "mensagens quais Message-ID coincide com EXPR"
+
+#. L10N: Pattern Completion Menu description for ~k
+#: pattern/flags.c:95
+msgid "messages which contain PGP key"
+msgstr "mensagens que contem chave PGP"
+
+#. L10N: Pattern Completion Menu description for ~K
+#: pattern/flags.c:98
+msgid "messages whose BCC header matches EXPR"
+msgstr "mensagens quais o cabeçalho BCC coincide EXPR"
+
+#. L10N: Pattern Completion Menu description for ~N
+#: pattern/flags.c:116
+msgid "new messages"
+msgstr "novas mensagens"
+
+#. L10N: Pattern Completion Menu description for ~O
+#: pattern/flags.c:119
+msgid "old messages"
+msgstr "mensagens velhas"
+
+#. L10N: Pattern Completion Menu description for ~P
+#: pattern/flags.c:125
+msgid "messages from you"
+msgstr "mensagens suas"
+
+#. L10N: Pattern Completion Menu description for ~R
+#: pattern/flags.c:134
+msgid "already read messages"
+msgstr "mensagens lidas"
+
+#. L10N: Pattern Completion Menu description for ~S
+#: pattern/flags.c:140
+msgid "superseded messages"
+msgstr "mensagens suplantadas"
+
+#. L10N: Pattern Completion Menu description for ~T
+#: pattern/flags.c:146
+msgid "tagged messages"
+msgstr "mensagens marcadas"
+
+#. L10N: Pattern Completion Menu description for ~u
+#: pattern/flags.c:149
+msgid "messages addressed to subscribed mailing lists"
+msgstr "mensagens direcionadas a listas de email inscritas"
+
+#. L10N: Pattern Completion Menu description for ~U
+#: pattern/flags.c:152
+msgid "unread messages"
+msgstr "mensagens não lidas"
+
+#. L10N: Pattern Completion Menu description for ~v
+#: pattern/flags.c:155
+msgid "messages in collapsed threads"
+msgstr "mensagens em thread colapsada"
+
+#. L10N: Pattern Completion Menu description for ~V
+#: pattern/flags.c:158
+msgid "cryptographically verified messages"
+msgstr "mensagens criptograficamente verificadas"
+
+#. L10N: Pattern Completion Menu description for ~w
+#: pattern/flags.c:162
+msgid "newsgroups matching EXPR"
+msgstr "grupos de notícias coincide com EXPR"
+
+#. L10N: Pattern Completion Menu description for ~X
+#: pattern/flags.c:169
+msgid "messages with RANGE attachments"
+msgstr "mensagens com ALCANCE anexos"
+
+#. L10N: Pattern Completion Menu description for ~=
+#: pattern/flags.c:181
+msgid "duplicated messages"
+msgstr "mensagens duplicadas"
+
+#. L10N: Pattern Completion Menu description for ~$
+#: pattern/flags.c:184
+msgid "unreferenced messages"
+msgstr "mensagens não-referenciadas"
+
+#. L10N: Pattern Completion Menu description for ~#
+#: pattern/flags.c:187
+msgid "broken threads"
+msgstr "threads quebradas"
+
+#: postpone/postpone.c:547
+msgid "Could not decrypt postponed message"
+msgstr "Não foi possível descriptografar mensagem adiada"
+
+#: send/send.c:1776
+msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
+msgstr "Aviso: Fcc para uma caixa de mensagens IMAP não é suportado em modo batch"
+
+#: send/send.c:3006
+msgid "No recipient specified"
+msgstr "Nenhum destinatário especificado"
+
+#: send/send.c:3051
+msgid "No List-Subscribe header found"
+msgstr "Nenhum cabeçalho List-Subscribe encontrado"
+
+#: send/send.c:3080
+msgid "No List-Unsubscribe header found"
+msgstr "Nenhum cabeçalho List-Unsubscribe encontrado"
+
+#: version.c:109
+msgid ""
+"Copyright (C) 1996-2022 Michael R. Elkins and others.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
+"NeoMutt is free software, and you are welcome to redistribute it\n"
+"under certain conditions; type 'neomutt -vv' for details.\n"
+msgstr ""
+"Copyright (C) 1996-2020 Michael R. Elkins e outros.\n"
+"NeoMutt vem ABSOLUTAMENTE SEM GARANTIAS; para mais detalhes digite 'neomutt -vv'.\n"
+"NeoMutt é um programa livre, e você é encorajado a redistribuí-lo\n"
+"sob certas condições; digite 'neomutt -vv' para os detalhes.\n"
+
+#: version.c:511
+msgid "Devel options:"
+msgstr "Opções de desenvolvimento:"
+
 #. L10N: prompt to add a new alias
 #: alias/alias.c:399
 msgid "Alias as: "
@@ -47,11 +968,6 @@ msgstr "IDN inválido: '%s'"
 msgid "Personal name: "
 msgstr "Nome:"
 
-#: alias/alias.c:473
-#, fuzzy
-msgid "Comment: "
-msgstr "X-Comment-To: "
-
 #: alias/alias.c:485 alias/alias.c:490
 msgid "Accept?"
 msgstr "Aceita?"
@@ -77,11 +993,6 @@ msgstr "Apelido adicionado"
 msgid "alias: no address"
 msgstr "apelido: sem endereço"
 
-#: alias/commands.c:77
-#, fuzzy, c-format
-msgid "Warning: Bad address '%s' in alias '%s'"
-msgstr "Aviso: IDN '%s' inválida no contato '%s'"
-
 #: alias/commands.c:86
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'"
@@ -105,14 +1016,6 @@ msgstr "Apagar"
 #: postpone/dlg_postpone.c:93
 msgid "Undel"
 msgstr "Restaurar"
-
-#: alias/dlg_alias.c:104 alias/dlg_query.c:104
-msgid "Sort"
-msgstr ""
-
-#: alias/dlg_alias.c:105 alias/dlg_query.c:105
-msgid "Rev-Sort"
-msgstr ""
 
 #: alias/dlg_alias.c:106 history/dlg_history.c:78 ncrypt/dlg_gpgme.c:97
 #: ncrypt/dlg_pgp.c:97 ncrypt/dlg_smime.c:76 pattern/dlg_pattern.c:92
@@ -157,11 +1060,6 @@ msgstr "Busca"
 msgid "Waiting for response..."
 msgstr "Agurdando pela resposta..."
 
-#: alias/dlg_query.c:362
-#, fuzzy
-msgid "Query"
-msgstr "Consulta: "
-
 #: alias/dlg_query.c:454 alias/dlg_query.c:531
 msgid "Query command not defined"
 msgstr "Comando de consulta não definido"
@@ -169,26 +1067,6 @@ msgstr "Comando de consulta não definido"
 #: alias/dlg_query.c:540 alias/functions.c:193 alias/functions.c:212
 msgid "Query: "
 msgstr "Consulta: "
-
-#: alias/functions.c:171
-#, fuzzy
-msgid "Limit to addresses matching: "
-msgstr "Limitar a mensagens que casem com: "
-
-#. L10N: The highlighted letters must match the "Sort" options
-#: alias/functions.c:270
-msgid "Rev-Sort (a)lias, a(d)dress or (u)nsorted?"
-msgstr ""
-
-#. L10N: The highlighted letters must match the "Rev-Sort" options
-#: alias/functions.c:272
-msgid "Sort (a)lias, a(d)dress or (u)nsorted?"
-msgstr ""
-
-#. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: alias/functions.c:274
-msgid "adu"
-msgstr ""
 
 #. L10N: ask for a limit to apply
 #: alias/gui.c:81 index/functions.c:1583
@@ -479,23 +1357,6 @@ msgstr "Sucesso ao criar conta de auto-criptografia "
 msgid "Autocrypt account creation aborted"
 msgstr "Criação de conta de auto-criptografia cancelada"
 
-#. L10N: Error displayed if the user tries to force sending an Autocrypt
-#. email when the engine is not available.
-#: autocrypt/autocrypt.c:585 autocrypt/autocrypt.c:594
-#: autocrypt/autocrypt.c:601
-#, fuzzy
-msgid "Autocrypt is not available"
-msgstr "A mensagem pai não está disponível"
-
-#. L10N: Error displayed if the user tries to force sending an Autocrypt
-#. email when the account does not exist or is not enabled.
-#. %s is the From email address used to look up the Autocrypt account.
-#.
-#: autocrypt/autocrypt.c:613
-#, c-format
-msgid "Autocrypt is not enabled for %s"
-msgstr ""
-
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
 #. The message is printed and they are returned to the compose menu.
@@ -660,11 +1521,6 @@ msgstr "Criar uma nova chave GPG para esta conta, alternativamente?"
 #: autocrypt/schema.c:125
 msgid "Autocrypt database version is too new"
 msgstr "Versão do banco de dados de auto-criptografia recente demais"
-
-#: bcache/bcache.c:75
-#, fuzzy, c-format
-msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
-msgstr "Cachê de mensagens não é um diretório: %s"
 
 #: bcache/bcache.c:221
 #, c-format
@@ -871,11 +1727,6 @@ msgstr "cores pré-definidas não suportadas"
 msgid "%s: invalid number: %s"
 msgstr "%s: número inválido: %s"
 
-#: color/curses.c:93
-#, c-format
-msgid "Too many colors: %d / %d"
-msgstr ""
-
 #: color/quoted.c:108
 #, c-format
 msgid "Maximum quoting level is %d"
@@ -945,50 +1796,10 @@ msgstr "Erro: %s"
 msgid "invalid header field"
 msgstr "campo de cabeçalho inválido"
 
-#: command_parse.c:768
-#, c-format
-msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
-msgstr ""
-
 #: command_parse.c:802 command_parse.c:942 command_parse.c:1052
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: variável desconhecida"
-
-#: command_parse.c:817 command_parse.c:1140
-msgid "Can't use a prefix when querying a variable"
-msgstr ""
-
-#: command_parse.c:823 command_parse.c:1120 command_parse.c:1134
-#, c-format
-msgid "Can't query a variable with the '%s' command"
-msgstr ""
-
-#: command_parse.c:835
-msgid "Can't use prefix when incrementing or decrementing a variable"
-msgstr ""
-
-#: command_parse.c:841 command_parse.c:872
-#, c-format
-msgid "Can't set a variable with the '%s' command"
-msgstr ""
-
-#: command_parse.c:852
-msgid "Can't decrement a my_ variable"
-msgstr ""
-
-#: command_parse.c:866
-msgid "Can't use prefix when setting a variable"
-msgstr ""
-
-#: command_parse.c:885
-msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
-msgstr ""
-
-#: command_parse.c:889
-#, c-format
-msgid "Command '%s' can only be used with bool/quad variables"
-msgstr ""
 
 #: command_parse.c:1172 command_parse.c:1180
 #, c-format
@@ -1026,16 +1837,6 @@ msgstr "Incapaz de inscrever em %s"
 #: command_parse.c:1407 command_parse.c:1743
 msgid "No folder specified"
 msgstr "Nenhuma pasta especificada"
-
-#: command_parse.c:1442
-#, c-format
-msgid "tag format '%s' already registered as '%s'"
-msgstr ""
-
-#: command_parse.c:1484
-#, c-format
-msgid "tag transform '%s' already registered as '%s'"
-msgstr ""
 
 #: command_parse.c:1731 imap/imap.c:1328
 #, c-format
@@ -1133,12 +1934,6 @@ msgstr "dfrsotuzcpl"
 msgid "Shell command: "
 msgstr "Comando do shell: "
 
-#. L10N: Progress meter message when copying tagged messages
-#: commands.c:845
-#, fuzzy
-msgid "Copying tagged messages..."
-msgstr "Copiando %d mensagem para %s..."
-
 #: commands.c:849
 msgid "Copy tagged to mailbox"
 msgstr "Copiar mensagens marcadas para caixa"
@@ -1162,12 +1957,6 @@ msgstr "Decodificar-copiar mensagens marcadas para caixa"
 #: commands.c:857
 msgid "Decode-copy to mailbox"
 msgstr "Decodificar-copiar mensagem para caixa"
-
-#. L10N: Progress meter message when saving tagged messages
-#: commands.c:864
-#, fuzzy
-msgid "Saving tagged messages..."
-msgstr "Imprimir mensagens marcadas?"
 
 #: commands.c:868
 msgid "Save tagged to mailbox"
@@ -1197,30 +1986,6 @@ msgstr "Decodificar-salvar mensagem na caixa"
 #, c-format
 msgid "Copying to %s..."
 msgstr "Copiando para %s..."
-
-#. L10N: Message when an index tagged save operation fails for some reason
-#: commands.c:1066
-#, fuzzy
-msgid "Error saving tagged messages"
-msgstr "Imprimir mensagens marcadas?"
-
-#. L10N: Message when an index/pager save operation fails for some reason
-#: commands.c:1071
-#, fuzzy
-msgid "Error saving message"
-msgstr "Erro ao enviar mensagem"
-
-#. L10N: Message when an index tagged copy operation fails for some reason
-#: commands.c:1078
-#, fuzzy
-msgid "Error copying tagged messages"
-msgstr "Copiando %d mensagem para %s..."
-
-#. L10N: Message when an index/pager copy operation fails for some reason
-#: commands.c:1083
-#, fuzzy
-msgid "Error copying message"
-msgstr "Erro ao replicar mensagem"
 
 #: commands.c:1154
 #, c-format
@@ -1359,15 +2124,6 @@ msgstr "O anexo #%d foi modificado. Atualizar a codificação para %s?"
 msgid "You may not delete the only attachment"
 msgstr "Você não pode remover o único anexo"
 
-#: compose/functions.c:232 compose/functions.c:424
-#, fuzzy
-msgid "Can't leave group with only one attachment"
-msgstr "Você não pode remover o único anexo"
-
-#: compose/functions.c:392 compose/functions.c:406
-msgid "Attachments to be grouped must have the same parent"
-msgstr ""
-
 #: compose/functions.c:613
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
@@ -1404,10 +2160,6 @@ msgstr "Marque as mensagens que você quer anexar"
 msgid "Unable to attach"
 msgstr "Não foi possível anexar"
 
-#: compose/functions.c:908
-msgid "Content-ID can only contain the characters: -.0-9@A-Z_a-z"
-msgstr ""
-
 #: compose/functions.c:988
 msgid "Invalid encoding"
 msgstr "Codificação inválida"
@@ -1415,16 +2167,6 @@ msgstr "Codificação inválida"
 #: compose/functions.c:1026
 msgid "Empty 'Content-Language'"
 msgstr "'Content-Language' vazio"
-
-#: compose/functions.c:1089
-#, fuzzy
-msgid "Can't filter multipart attachments"
-msgstr "Somente a deleção de anexos multiparte é suportada"
-
-#: compose/functions.c:1124
-#, fuzzy
-msgid "Can't get multipart attachments"
-msgstr "Somente a deleção de anexos multiparte é suportada"
 
 #: compose/functions.c:1146
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
@@ -1442,18 +2184,9 @@ msgstr "Nem todos os ítens possuem 'Content-Language' configurado. Continuar?"
 msgid "Not sending this message"
 msgstr "Mensagem não enviada"
 
-#: compose/functions.c:1189
-#, fuzzy
-msgid "Grouping 'related' requires at least 2 tagged messages"
-msgstr "Alternativas para grupo requerem ao menos 2 mensagens rotuladas"
-
 #: compose/functions.c:1228 compose/functions.c:1247
 msgid "Attachment is already at bottom"
 msgstr "Anexo já é o último da lista"
-
-#: compose/functions.c:1234 compose/functions.c:1287
-msgid "Attachment can't be moved out of group"
-msgstr ""
 
 #: compose/functions.c:1282
 msgid "Attachment is already at top"
@@ -1481,19 +2214,9 @@ msgstr "Não é possível criar o arquivo %s"
 msgid "What we have here is a failure to make an attachment"
 msgstr "O que temos aqui é uma falha ao criar um anexo"
 
-#: compose/functions.c:1400
-#, fuzzy
-msgid "Can't print multipart attachments"
-msgstr "Imprimir anexo marcado?"
-
 #: compose/functions.c:1425
 msgid "Send attachment with name: "
 msgstr "Enviar anexo com o nome: "
-
-#: compose/functions.c:1450
-#, fuzzy
-msgid "Can't save multipart attachments"
-msgstr "Somente a deleção de anexos multiparte é suportada"
 
 #: compose/functions.c:1485
 msgid "Recoding only affects text attachments"
@@ -1507,25 +2230,10 @@ msgstr "O anexo atual não será convertido"
 msgid "The current attachment will be converted"
 msgstr "O anexo atual será convertido"
 
-#: compose/functions.c:1521
-#, fuzzy
-msgid "Attachment is not 'multipart'"
-msgstr "Anexo já é o primeiro da lista"
-
 #: compose/functions.c:1637 send/send.c:2781
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "IDN inválida em '%s': '%s'"
-
-#: compose/functions.c:1670
-#, fuzzy
-msgid "Can't edit multipart attachments"
-msgstr "Somente a deleção de anexos multiparte é suportada"
-
-#: compose/functions.c:1751
-#, fuzzy
-msgid "Can't rename multipart attachments"
-msgstr "Somente a deleção de anexos multiparte é suportada"
 
 #: compose/functions.c:1757
 msgid "Rename to: "
@@ -1559,16 +2267,6 @@ msgstr "Mensgem gravada"
 msgid "Save (postpone) draft message?"
 msgstr "Salvar (adiar) mensagem não terminada?"
 
-#: config/bool.c:75
-#, fuzzy, c-format
-msgid "Invalid boolean value: %s"
-msgstr "Data relativa inválida: %s"
-
-#: config/bool.c:130
-#, fuzzy, c-format
-msgid "Invalid boolean value: %ld"
-msgstr "Data relativa inválida: %s"
-
 #: config/charset.c:50
 msgid "'charset' must contain exactly one character set name"
 msgstr "'charset' deve conter apenas um nome de conjunto de caracteres"
@@ -1578,106 +2276,6 @@ msgstr "'charset' deve conter apenas um nome de conjunto de caracteres"
 #, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Valor inválido para opção %s: %s"
-
-#: config/enum.c:58
-#, fuzzy, c-format
-msgid "Invalid enum value: %s"
-msgstr "%s: número inválido: %s"
-
-#: config/enum.c:132
-#, fuzzy, c-format
-msgid "Invalid enum value: %ld"
-msgstr "Valor inválido para opção %s: %ld"
-
-#: config/long.c:48 config/number.c:49 config/path.c:94 config/path.c:167
-#: config/sort.c:55 config/string.c:66 config/string.c:140
-#, fuzzy, c-format
-msgid "Option %s may not be empty"
-msgstr "Opção %s não pode ser alterada no paginador"
-
-#: config/long.c:55 config/long.c:151 config/long.c:187
-#, fuzzy, c-format
-msgid "Invalid long: %s"
-msgstr "Mês inválido: %s"
-
-#: config/long.c:61 config/long.c:113 config/long.c:158 config/long.c:194
-#: config/number.c:68 config/number.c:127 config/number.c:178
-#: config/number.c:217
-#, fuzzy, c-format
-msgid "Option %s may not be negative"
-msgstr "Opção %s não pode ser alterada no paginador"
-
-#: config/number.c:56 config/number.c:165 config/number.c:204
-#, fuzzy, c-format
-msgid "Invalid number: %s"
-msgstr "%s: número inválido: %s"
-
-#: config/number.c:62 config/number.c:172 config/number.c:211
-#, c-format
-msgid "Number is too big: %s"
-msgstr ""
-
-#: config/number.c:121
-#, fuzzy, c-format
-msgid "Invalid number: %ld"
-msgstr "%s: número inválido: %s"
-
-#: config/quad.c:74
-#, fuzzy, c-format
-msgid "Invalid quad value: %s"
-msgstr "Data relativa inválida: %s"
-
-#: config/quad.c:132
-#, fuzzy, c-format
-msgid "Invalid quad value: %ld"
-msgstr "Valor inválido para opção %s: %ld"
-
-#: config/set.c:104 init.c:978
-#, c-format
-msgid "No such variable: %s"
-msgstr ""
-
-#: config/set.c:136 config/set.c:826
-#, fuzzy, c-format
-msgid "Variable '%s' has an invalid type %d"
-msgstr "Erro: valor '%s' é inválido para -d"
-
-#: config/set.c:401 config/set.c:467 config/set.c:528 config/set.c:604
-#: config/set.c:670 config/set.c:746 config/set.c:926 config/set.c:1009
-#, fuzzy, c-format
-msgid "Unknown variable '%s'"
-msgstr "%s: variável desconhecida"
-
-#. L10N: e.g. Type 'boolean' doesn't support operation '+='
-#: config/set.c:895 config/set.c:978
-#, c-format
-msgid "Type '%s' doesn't support operation '%s'"
-msgstr ""
-
-#: config/sort.c:85
-#, fuzzy, c-format
-msgid "Invalid sort name: %s"
-msgstr "Data relativa inválida: %s"
-
-#: config/sort.c:161
-#, fuzzy, c-format
-msgid "Invalid sort type: %ld"
-msgstr "Data relativa inválida: %s"
-
-#: conn/accountcmd.c:79
-#, c-format
-msgid "Line is malformed: expected <key: val>, got <%s>"
-msgstr ""
-
-#: conn/accountcmd.c:119
-#, c-format
-msgid "Unhandled key in line <%s: %s>"
-msgstr ""
-
-#: conn/accountcmd.c:140
-#, fuzzy
-msgid "Unable to run account command"
-msgstr "Incapaz de executar comando de atualização"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:78
@@ -1705,11 +2303,6 @@ msgstr "Incapaz de executar comando de atualização"
 #: conn/connaccount.c:234
 msgid "Command returned empty string"
 msgstr "Comando respondeu com mensagem vazia"
-
-#: conn/connaccount.c:241
-#, c-format
-msgid "OAUTH token is too big: %ld"
-msgstr ""
 
 #: conn/dlg_verifycert.c:202
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
@@ -2081,39 +2674,6 @@ msgstr "Não é possível anexar à pasta: %s"
 msgid "multipart message has no boundary parameter"
 msgstr "mensagem multiparte não tem um parâmetro de fronteiras"
 
-#: enter/window.c:55
-msgid "Complete"
-msgstr ""
-
-#: enter/window.c:56
-msgid "Hist Up"
-msgstr ""
-
-#: enter/window.c:57
-msgid "Hist Down"
-msgstr ""
-
-#: enter/window.c:58
-#, fuzzy
-msgid "Hist Search"
-msgstr "Busca"
-
-#: enter/window.c:59
-msgid "Begin Line"
-msgstr ""
-
-#: enter/window.c:60
-msgid "End Line"
-msgstr ""
-
-#: enter/window.c:61
-msgid "Kill Line"
-msgstr ""
-
-#: enter/window.c:62
-msgid "Kill Word"
-msgstr ""
-
 #. L10N: The compose menu autocrypt prompt.
 #. (e)ncrypt enables encryption via autocrypt.
 #. (c)lear sets cleartext.
@@ -2219,10 +2779,6 @@ msgstr "Followup-To"
 msgid "X-Comment-To: "
 msgstr "X-Comment-To: "
 
-#: envelope/window.c:129
-msgid "Headers: "
-msgstr ""
-
 #. L10N: Autocrypt recommendation flag: off.
 #. This is displayed when Autocrypt is turned off.
 #: envelope/window.c:136 envelope/window.c:481
@@ -2308,13 +2864,6 @@ msgstr "Recomendação: "
 #: envelope/window.c:511
 msgid "<no chain defined>"
 msgstr "<cadeia indefinida>"
-
-#: envelope/window.c:595
-#, c-format
-msgid "(+%d more)"
-msgid_plural "(+%d more)"
-msgstr[0] ""
-msgstr[1] ""
 
 #: flags.c:386 index/functions.c:800 index/functions.c:903
 #: index/functions.c:919 index/functions.c:1054 mutt_thread.c:1257
@@ -2543,11 +3092,6 @@ msgstr "[-- Isto é um anexo --]\n"
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- %s/%s não é suportado --]\n"
 
-#: hcache/config.c:95
-#, c-format
-msgid "Set option %s before setting %s"
-msgstr ""
-
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
@@ -2676,11 +3220,6 @@ msgstr "Autenticando (%s)..."
 msgid "%s authentication failed"
 msgstr "Autenticação %s falhou"
 
-#: imap/auth_gsasl.c:147 pop/auth.c:135
-#, fuzzy
-msgid "SASL authentication failed"
-msgstr "Autenticação falhou."
-
 #: imap/auth_login.c:51
 msgid "LOGIN disabled on this server"
 msgstr "LOGIN desabilitado neste servidor"
@@ -2743,20 +3282,10 @@ msgstr "Caixa de mensagens renomeada"
 msgid "Mailbox %s@%s closed"
 msgstr "Caixa de mensagens %s@%s fechada"
 
-#: imap/command.c:1172
-#, fuzzy, c-format
-msgid "IMAP command failed: %s"
-msgstr "Comando de compressão falhou: %s"
-
 #: imap/command.c:1272 imap/command.c:1393
 #, c-format
 msgid "Connection to %s timed out"
 msgstr "Conexão com %s expirou"
-
-#: imap/config.c:59 pop/config.c:57 send/config.c:78
-#, c-format
-msgid "Option %s: %s is not a valid authenticator"
-msgstr ""
 
 #: imap/imap.c:105
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
@@ -2871,14 +3400,6 @@ msgstr "Analisando cache..."
 #: imap/message.c:910
 msgid "Fetching flag updates..."
 msgstr "Baixando mudanças nas sinalizações..."
-
-#. L10N: After opening an IMAP mailbox using QRESYNC, Mutt performs a quick
-#. sanity check.  If that fails, Mutt reopens the mailbox using a normal
-#. download.
-#: imap/message.c:1054
-#, fuzzy
-msgid "QRESYNC failed.  Reopening mailbox."
-msgstr "Não foi possível reabrir a caixa de mensagens"
 
 #: imap/message.c:1122
 msgid "Unable to fetch headers from this IMAP server version"
@@ -3309,10 +3830,6 @@ msgstr "Não há mensagens"
 msgid "No visible messages"
 msgstr "Nenhuma mensagem visível"
 
-#: index/index.c:97
-msgid "Changing threaded display should prefer $use_threads over $sort"
-msgstr ""
-
 #: init.c:91
 #, c-format
 msgid "Error in command line: %s"
@@ -3332,11 +3849,6 @@ msgstr "não foi possível determinar nodename via uname()"
 msgid "%s: unknown command"
 msgstr "%s: comando desconhecido"
 
-#: init.c:942
-#, c-format
-msgid "Config variable '%s' is deprecated"
-msgstr ""
-
 #: keymap.c:404
 #, c-format
 msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
@@ -3345,15 +3857,6 @@ msgstr "Associação '%s' irá apelidar '%s'  Antes, tente: 'bind %s %s noop' ht
 #: keymap.c:774
 msgid "Macro loop detected"
 msgstr "Laço de macro detectado"
-
-#: keymap.c:864
-msgid "Abort key is not set, defaulting to Ctrl-G"
-msgstr ""
-
-#: keymap.c:870
-#, c-format
-msgid "Specified abort key sequence (%s) will be truncated to first key"
-msgstr ""
 
 #: keymap.c:1071 keymap.c:1106
 msgid "Key is not bound"
@@ -3387,11 +3890,6 @@ msgstr "exec: sem argumentos"
 msgid "%s: no such function"
 msgstr "%s: não existe tal função"
 
-#: keymap.c:1647
-#, fuzzy, c-format
-msgid "Enter keys (%s to abort): "
-msgstr "Entre com as teclas (^G para cancelar): "
-
 #: keymap.c:1655
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
@@ -3401,24 +3899,6 @@ msgstr "Char = %s, Octal = %o, Decimal = %d"
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Entrada mal formatada para o tipo %s em \"%s\" linha %d"
-
-#. L10N:
-#. Mutt is trying to look up a mailcap value, but $mailcap_path is empty.
-#. We added a reference to the MAILCAPS environment variable as a hint too.
-#.
-#. Because the variable is automatically populated by Mutt, this
-#. should only occur if the user deliberately runs in their shell:
-#. export MAILCAPS=
-#.
-#. or deliberately runs inside Mutt or their .muttrc:
-#. set mailcap_path=""
-#. -or-
-#. unset mailcap_path
-#.
-#: mailcap.c:497
-#, fuzzy
-msgid "Neither mailcap_path nor MAILCAPS specified"
-msgstr "Nenhum caminho de mailcap especificado"
 
 #: mailcap.c:521
 #, c-format
@@ -3563,10 +4043,6 @@ msgstr "  -c <endereço> Especifica endereço destinatório em cópia (CC)"
 msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
 msgstr "  -D            Imprime todas variáveis de configuração como pares 'nome=valor'"
 
-#: main.c:296
-msgid "  -D -O         Like -D, but show one-liner documentation"
-msgstr ""
-
 #: main.c:297
 msgid "  -D -S         Like -D, but hide the value of sensitive variables"
 msgstr "  -D -S         Mesmo que -D, mas oculta conteúdo de variáveis sensíveis"
@@ -3632,14 +4108,6 @@ msgstr "  -n            Não usa o arquivo de configuração do sistema"
 #: main.c:313
 msgid "  -p            Resume a prior postponed message, if any"
 msgstr "  -p            Retoma uma mensagem adiada, se existir"
-
-#: main.c:314
-#, fuzzy
-msgid ""
-"  -Q <variable> Query a configuration variable and print its value to stdout\n"
-"                (after the config has been read and any commands executed)\n"
-"                Add -O for one-liner documentation"
-msgstr "  -Q <variável> Consulta e imprime uma variável de configuração"
 
 #: main.c:317
 msgid "  -R            Open mailbox in read-only mode"
@@ -3887,11 +4355,6 @@ msgstr "A sequência de reenviadores já está vazia"
 msgid "Error: %s can't be used as the final remailer of a chain"
 msgstr "Erro: %s não pode ser usado como reenviador final de uma sequência"
 
-#: mutt/file.c:715
-#, fuzzy, c-format
-msgid "Failed to seek file: %s"
-msgstr "Falha ao renomear arquivo"
-
 #: mutt/file.c:1277
 msgid "Timeout exceeded while attempting fcntl lock"
 msgstr "Limite de tempo excedido durante uma tentativa de trava com fcntl"
@@ -3991,11 +4454,6 @@ msgstr "Nova mensagem em "
 msgid "SSL is unavailable, can't connect to %s"
 msgstr "SSL indisponível, incapaz de connectar a %s"
 
-#: mutt_thread.c:120
-#, c-format
-msgid "Cannot use 'last-' prefix with 'threads' for %s"
-msgstr ""
-
 #: mutt_thread.c:1344
 msgid "Parent message is not available"
 msgstr "A mensagem pai não está disponível"
@@ -4074,12 +4532,6 @@ msgstr[1] "mensagens não apagadas"
 msgid "Can't open trash folder"
 msgstr "Incapaz de acessar lixeira"
 
-#. L10N: Displayed if appending to $trash fails when syncing or closing a mailbox
-#: mx.c:587
-#, fuzzy
-msgid "Unable to append to trash folder"
-msgstr "Incapaz de abrir o arquivo temporário"
-
 #: mx.c:646
 msgid "Mark all articles read?"
 msgstr "Marcar todos artigos como lidos?"
@@ -4136,11 +4588,6 @@ msgstr "A caixa está marcada como não gravável. %s"
 #: mx.c:1009
 msgid "Mailbox checkpointed"
 msgstr "Ponto de controle feito para caixa de mensagens"
-
-#: mx.c:1353
-#, fuzzy, c-format
-msgid "Can't open %s: it is a pipe"
-msgstr "Não é possível abrir o arquivo de mensagens: %s"
 
 #: mx.c:1855
 msgid "Can't toggle write on a readonly mailbox"
@@ -5347,18 +5794,6 @@ msgstr "Grupo de notícias %s não encontrado no servidor"
 msgid "Newsgroup %s has been removed from the server"
 msgstr "Grupo de notícias %s foi removido do servidor"
 
-#: notmuch/config.c:60
-#, c-format
-msgid "nm_default_url must be: notmuch://<absolute path> . Current: %s"
-msgstr ""
-
-#. L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
-#. They should not be translated.
-#: notmuch/config.c:89 notmuch/notmuch.c:309
-#, fuzzy
-msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
-msgstr "Valor nm_query_window_timebase inválido (valores aceitos são: hour, day, week, month ou year)"
-
 #: notmuch/db.c:157
 #, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
@@ -5396,13 +5831,6 @@ msgstr "Não há mais mensagens nessa thread"
 msgid "failed to parse limit: %s"
 msgstr "falhou ao interpretar limite: %s"
 
-#: notmuch/notmuch.c:2300
-#, c-format
-msgid "Unable to sync %d message due to external mailbox modification"
-msgid_plural "Unable to sync %d messages due to external mailbox modification"
-msgstr[0] ""
-msgstr[1] ""
-
 #: notmuch/notmuch.c:2364
 msgid "Can't write to virtual folder"
 msgstr "Incapaz de gravar na pasta virtual"
@@ -5431,11 +5859,6 @@ msgstr "alterna exibição de sub-partes"
 #: opcodes.h:41 opcodes.h:42 opcodes.h:115
 msgid "delete the current entry"
 msgstr "apaga a entrada atual"
-
-#: opcodes.h:43
-#, fuzzy
-msgid "edit the 'Content-ID' of the attachment"
-msgstr "edita valor de 'Content-Language:' do anexo"
 
 #: opcodes.h:44
 msgid "edit attachment description"
@@ -5472,11 +5895,6 @@ msgstr "agrupamento de anexos rotulado como 'multipart/alternative'"
 #: opcodes.h:52
 msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr "agrupamento de anexos rotulado como 'multipart/multilingual'"
-
-#: opcodes.h:53
-#, fuzzy
-msgid "group tagged attachments as 'multipart/related'"
-msgstr "agrupamento de anexos rotulado como 'multipart/alternative'"
 
 #: opcodes.h:54
 msgid "move an attachment down in the attachment list"
@@ -5522,10 +5940,6 @@ msgstr "troca entre apagar o arquivo após enviá-lo ou não"
 msgid "undelete the current entry"
 msgstr "restaura a entrada atual"
 
-#: opcodes.h:65
-msgid "ungroup 'multipart' attachment"
-msgstr ""
-
 #: opcodes.h:66
 msgid "update an attachment's encoding info"
 msgstr "atualiza a informação de codificação de um anexo"
@@ -5536,11 +5950,6 @@ msgstr "vê anexo usando sua entrada no mailcap se necessário"
 
 #: opcodes.h:68
 msgid "force viewing of attachment using mailcap"
-msgstr "forçar a visualizaçãdo do anexo usando o mailcap"
-
-#: opcodes.h:69
-#, fuzzy
-msgid "view attachment in pager using copiousoutput mailcap"
 msgstr "forçar a visualizaçãdo do anexo usando o mailcap"
 
 #: opcodes.h:70
@@ -5570,11 +5979,6 @@ msgstr "alternar status da flag \"prefer-encypt\" (preferir criptografia)"
 #: opcodes.h:79
 msgid "show autocrypt compose menu options"
 msgstr "mostrar opções de auto-criptografia no menu redigir"
-
-#: opcodes.h:85
-#, fuzzy
-msgid "open the aliases dialog"
-msgstr "Você está na última mensagem"
 
 #: opcodes.h:86
 msgid "move to the bottom of the page"
@@ -5788,11 +6192,6 @@ msgstr "apaga os caracteres a partir do cursor até o final da linha"
 msgid "delete chars from the cursor to the end of the word"
 msgstr "apaga caracteres a partir do cursor até o final da palavra"
 
-#: opcodes.h:140
-#, fuzzy
-msgid "delete chars from cursor to beginning the line"
-msgstr "apaga os caracteres a partir do cursor até o final da linha"
-
 #: opcodes.h:141
 msgid "delete all chars on the line"
 msgstr "apaga todos os caracteres na linha"
@@ -5922,16 +6321,6 @@ msgstr "restringe exibição para thread atual"
 msgid "reply to specified mailing list"
 msgstr "responde à lista de email especificada"
 
-#: opcodes.h:182
-#, fuzzy
-msgid "subscribe to a mailing list"
-msgstr "responde à lista de email especificada"
-
-#: opcodes.h:183
-#, fuzzy
-msgid "unsubscribe from a mailing list"
-msgstr "Desinscrito de %s"
-
 #: opcodes.h:184
 msgid "load list of all newsgroups from NNTP server"
 msgstr "carrega lista de todos os grupos de notícias de um servidor NNTP"
@@ -5979,11 +6368,6 @@ msgstr "abre/fecha todas as discussões"
 #: opcodes.h:195
 msgid "collapse/uncollapse current thread"
 msgstr "abre/fecha a discussão atual"
-
-#: opcodes.h:196
-#, fuzzy
-msgid "delete non-hidden messages matching a pattern"
-msgstr "apaga mensagens que casem com um padrão"
 
 #: opcodes.h:197
 msgid "retrieve mail from POP server"
@@ -6097,21 +6481,6 @@ msgstr "mostra o padrão limitante atualmente ativado"
 msgid "save changes to mailbox"
 msgstr "salva as mudanças à caixa"
 
-#: opcodes.h:225
-#, fuzzy
-msgid "tag non-hidden messages matching a pattern"
-msgstr "marca mensagens que casem com um padrão"
-
-#: opcodes.h:226
-#, fuzzy
-msgid "undelete non-hidden messages matching a pattern"
-msgstr "restaura mensagens que casem com um padrão"
-
-#: opcodes.h:227
-#, fuzzy
-msgid "untag non-hidden messages matching a pattern"
-msgstr "desmarca mensagens que casem com um padrão"
-
 #: opcodes.h:228
 msgid "create a hotkey macro for the current message"
 msgstr "cria atalho de macro para mensagem atual"
@@ -6139,11 +6508,6 @@ msgstr "pula para o fim da mensagem"
 #: opcodes.h:234
 msgid "toggle display of quoted text"
 msgstr "troca entre mostrar texto citado ou não"
-
-#: opcodes.h:235
-#, fuzzy
-msgid "jump to first line after headers"
-msgstr "pula para a próxima discussão"
 
 #: opcodes.h:236
 msgid "skip beyond quoted text"
@@ -6441,11 +6805,6 @@ msgstr "desloca janela de tempo da pasta virtual para trás"
 msgid "shifts virtual folder time window forwards"
 msgstr "desloca janela de tempo da pasta virtual para frente"
 
-#: opcodes.h:327
-#, fuzzy
-msgid "resets virtual folder time window to the present"
-msgstr "desloca janela de tempo da pasta virtual para frente"
-
 #: opcodes.h:333
 msgid "attach a PGP public key"
 msgstr "anexa uma chave pública do PGP"
@@ -6469,16 +6828,6 @@ msgstr "verifica uma chave pública do PGP"
 #: opcodes.h:338
 msgid "view the key's user id"
 msgstr "vê a identificação de usuário da chave"
-
-#: opcodes.h:341
-#, fuzzy
-msgid "move the highlight to the first mailbox"
-msgstr "destaca próxima caixa de mensagens"
-
-#: opcodes.h:342
-#, fuzzy
-msgid "move the highlight to the last mailbox"
-msgstr "destaca próxima caixa de mensagens"
 
 #: opcodes.h:343
 msgid "move the highlight to next mailbox"
@@ -6551,14 +6900,6 @@ msgstr "O fim da mensagem está sendo mostrado"
 #: pager/functions.c:685
 msgid "Top of message is shown"
 msgstr "O início da mensagem está sendo mostrado"
-
-#. L10N: Displayed if <skip-headers> is invoked in the pager, but
-#. there is no text past the headers.
-#. (I don't think this is actually possible in Mutt's code, but
-#. display some kind of message in case it somehow occurs.)
-#: pager/functions.c:569
-msgid "No text past headers"
-msgstr ""
 
 #: pager/functions.c:628 pager/functions.c:668
 msgid "No more unquoted text after quoted text"
@@ -6698,73 +7039,6 @@ msgstr "%c: não há suporte neste modo"
 msgid "missing parameter"
 msgstr "faltam parâmetros"
 
-#. L10N: Pattern completion menu title
-#: pattern/dlg_pattern.c:189
-msgid "Patterns"
-msgstr ""
-
-#. L10N:
-#. Pattern Completion Menu argument type: a regular expression
-#.
-#: pattern/dlg_pattern.c:205
-msgid "EXPR"
-msgstr ""
-
-#. L10N:
-#. Pattern Completion Menu argument type: a numeric range.
-#. Used by ~m, ~n, ~X, ~z.
-#.
-#: pattern/dlg_pattern.c:213
-msgid "RANGE"
-msgstr ""
-
-#. L10N:
-#. Pattern Completion Menu argument type: a date range
-#. Used by ~d, ~r.
-#.
-#: pattern/dlg_pattern.c:220
-msgid "DATERANGE"
-msgstr ""
-
-#. L10N:
-#. Pattern Completion Menu argument type: a query
-#. Used by ~I.
-#.
-#: pattern/dlg_pattern.c:227
-msgid "QUERY"
-msgstr ""
-
-#. L10N:
-#. Pattern Completion Menu argument type: a nested pattern.
-#. Used by ~(), ~<(), ~>().
-#.
-#: pattern/dlg_pattern.c:245
-msgid "PATTERN"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~()
-#: pattern/dlg_pattern.c:252
-msgid "messages in threads containing messages matching PATTERN"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~<()
-#: pattern/dlg_pattern.c:260
-msgid "messages whose immediate parent matches PATTERN"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~>()
-#: pattern/dlg_pattern.c:268
-msgid "messages having an immediate child matching PATTERN"
-msgstr ""
-
-#. L10N: One of the crypt pattern operators: ~g, ~G, ~k, ~V
-#. was invoked when NeoMutt was compiled without crypto support.
-#. %c is the pattern character, i.e. "g".
-#: pattern/exec.c:94
-#, c-format
-msgid "Pattern operator '~%c' is disabled"
-msgstr ""
-
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
 #: pattern/exec.c:100 pattern/exec.c:1098
@@ -6784,283 +7058,9 @@ msgstr "Erro ao abrir novamente o fluxo para memória"
 msgid "Error opening /dev/null"
 msgstr "Erro ao abrir /dev/null"
 
-#: pattern/exec.c:209
-#, fuzzy
-msgid "Error checking length of temporary file"
-msgstr "Erro. Preservando o arquivo temporário: %s"
-
 #: pattern/exec.c:885
 msgid "error: server custom search only supported with IMAP"
 msgstr "erro: busca personalizada no servidor somente suportada com IMAP"
-
-#. L10N: Pattern Completion Menu description for ~A
-#: pattern/flags.c:44
-#, fuzzy
-msgid "all messages"
-msgstr "ordena mensagens"
-
-#. L10N: Pattern Completion Menu description for ~b
-#: pattern/flags.c:47
-msgid "messages whose body matches EXPR"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~B
-#: pattern/flags.c:50
-msgid "messages whose body or headers match EXPR"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~c
-#: pattern/flags.c:53
-msgid "messages whose CC header matches EXPR"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~C
-#: pattern/flags.c:56
-msgid "messages whose recipient matches EXPR"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~d
-#: pattern/flags.c:59
-msgid "messages sent in DATERANGE"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~D
-#: pattern/flags.c:62
-#, fuzzy
-msgid "deleted messages"
-msgstr "Nenhuma mensagem não removida"
-
-#. L10N: Pattern Completion Menu description for ~e
-#: pattern/flags.c:65
-msgid "messages whose Sender header matches EXPR"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~E
-#: pattern/flags.c:68
-#, fuzzy
-msgid "expired messages"
-msgstr "Não há mensagens não lidas"
-
-#. L10N: Pattern Completion Menu description for ~f
-#: pattern/flags.c:71
-msgid "messages whose From header matches EXPR"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~F
-#: pattern/flags.c:74
-#, fuzzy
-msgid "flagged messages"
-msgstr "Nenhuma mensagem marcada"
-
-#. L10N: Pattern Completion Menu description for ~g
-#: pattern/flags.c:77
-#, fuzzy
-msgid "cryptographically signed messages"
-msgstr "edita uma mensagem adiada"
-
-#. L10N: Pattern Completion Menu description for ~G
-#: pattern/flags.c:80
-#, fuzzy
-msgid "cryptographically encrypted messages"
-msgstr "Incapaz de desencriptar mensagem encriptada"
-
-#. L10N: Pattern Completion Menu description for ~h
-#: pattern/flags.c:83
-msgid "messages whose header matches EXPR"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~H
-#: pattern/flags.c:86
-msgid "messages whose spam tag matches EXPR"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~i
-#: pattern/flags.c:89
-#, fuzzy
-msgid "messages whose Message-ID matches EXPR"
-msgstr "obtem mensagem com Message-Id"
-
-#. L10N: Pattern Completion Menu description for ~I
-#: pattern/flags.c:92
-msgid "messages whose Message-ID is included in the results returned from an external search program"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~k
-#: pattern/flags.c:95
-#, fuzzy
-msgid "messages which contain PGP key"
-msgstr "descrição do atalho"
-
-#. L10N: Pattern Completion Menu description for ~K
-#: pattern/flags.c:98
-#, fuzzy
-msgid "messages whose BCC header matches EXPR"
-msgstr "obtem mensagem com Message-Id"
-
-#. L10N: Pattern Completion Menu description for ~l
-#: pattern/flags.c:101
-msgid "messages addressed to known mailing lists"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~L
-#: pattern/flags.c:104
-msgid "messages whose From/Sender/To/CC matches EXPR"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~m
-#: pattern/flags.c:107
-msgid "messages whose number is in RANGE"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~M
-#: pattern/flags.c:110
-msgid "messages with a Content-Type matching EXPR"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~n
-#: pattern/flags.c:113
-msgid "messages whose score is in RANGE"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~N
-#: pattern/flags.c:116
-#, fuzzy
-msgid "new messages"
-msgstr "Não há mensagens novas"
-
-#. L10N: Pattern Completion Menu description for ~O
-#: pattern/flags.c:119
-#, fuzzy
-msgid "old messages"
-msgstr "ordena mensagens"
-
-#. L10N: Pattern Completion Menu description for ~p
-#: pattern/flags.c:122
-msgid "messages addressed to you"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~P
-#: pattern/flags.c:125
-#, fuzzy
-msgid "messages from you"
-msgstr "descrição do atalho"
-
-#. L10N: Pattern Completion Menu description for ~Q
-#: pattern/flags.c:128
-msgid "messages which have been replied to"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~r
-#: pattern/flags.c:131
-msgid "messages received in DATERANGE"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~R
-#: pattern/flags.c:134
-#, fuzzy
-msgid "already read messages"
-msgstr "Não há mensagens não lidas"
-
-#. L10N: Pattern Completion Menu description for ~s
-#: pattern/flags.c:137
-msgid "messages whose Subject header matches EXPR"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~S
-#: pattern/flags.c:140
-#, fuzzy
-msgid "superseded messages"
-msgstr "Não há mensagens não lidas"
-
-#. L10N: Pattern Completion Menu description for ~t
-#: pattern/flags.c:143
-msgid "messages whose To header matches EXPR"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~T
-#: pattern/flags.c:146
-#, fuzzy
-msgid "tagged messages"
-msgstr "Nenhuma mensagem marcada"
-
-#. L10N: Pattern Completion Menu description for ~u
-#: pattern/flags.c:149
-#, fuzzy
-msgid "messages addressed to subscribed mailing lists"
-msgstr "responde à lista de email especificada"
-
-#. L10N: Pattern Completion Menu description for ~U
-#: pattern/flags.c:152
-#, fuzzy
-msgid "unread messages"
-msgstr "Não há mensagens não lidas"
-
-#. L10N: Pattern Completion Menu description for ~v
-#: pattern/flags.c:155
-#, fuzzy
-msgid "messages in collapsed threads"
-msgstr "Não há mais mensagens nessa thread"
-
-#. L10N: Pattern Completion Menu description for ~V
-#: pattern/flags.c:158
-#, fuzzy
-msgid "cryptographically verified messages"
-msgstr "alterna exibição de mensagens lidas"
-
-#. L10N: Pattern Completion Menu description for ~w
-#: pattern/flags.c:162
-#, fuzzy
-msgid "newsgroups matching EXPR"
-msgstr "Nenhum grupo de notícias coincide com a máscara"
-
-#. L10N: Pattern Completion Menu description for ~x
-#: pattern/flags.c:166
-msgid "messages whose References header matches EXPR"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~X
-#: pattern/flags.c:169
-#, fuzzy
-msgid "messages with RANGE attachments"
-msgstr "mostra anexos MIME"
-
-#. L10N: Pattern Completion Menu description for ~y
-#: pattern/flags.c:172
-msgid "messages whose X-Label header matches EXPR"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~Y
-#: pattern/flags.c:175
-msgid "messages whose tags match EXPR"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~z
-#: pattern/flags.c:178
-msgid "messages whose size is in RANGE"
-msgstr ""
-
-#. L10N: Pattern Completion Menu description for ~=
-#: pattern/flags.c:181
-#, fuzzy
-msgid "duplicated messages"
-msgstr "Nenhuma mensagem não removida"
-
-#. L10N: Pattern Completion Menu description for ~$
-#: pattern/flags.c:184
-#, fuzzy
-msgid "unreferenced messages"
-msgstr "Não há mensagens não lidas"
-
-#. L10N: Pattern Completion Menu description for ~#
-#: pattern/flags.c:187
-#, fuzzy
-msgid "broken threads"
-msgstr "Nenhuma discussão restante"
-
-#. L10N: Pattern Completion Menu description for =/
-#: pattern/flags.c:190
-msgid "IMAP custom server-side search for STRING"
-msgstr ""
 
 #: pattern/pattern.c:261 pattern/pattern.c:367 pattern/pattern.c:533
 #: pattern/pattern.c:694
@@ -7213,11 +7213,6 @@ msgstr "Cabeçalho cripto ilegal"
 msgid "Decrypting message..."
 msgstr "Desencriptando mensagem..."
 
-#: postpone/postpone.c:547
-#, fuzzy
-msgid "Could not decrypt postponed message"
-msgstr "Incapaz de decriptar mensagem PGP"
-
 #: postpone/postpone.c:678 postpone/postpone.c:689
 msgid "No postponed messages"
 msgstr "Nenhuma mensagem adiada"
@@ -7297,12 +7292,6 @@ msgstr "Nenhum parâmetro de fronteira encontrado [relate este erro]"
 msgid "%s no longer exists"
 msgstr "%s não mais existe"
 
-#. L10N: This applies to the "$sendmail" and "$inews" config variables.
-#: send/config.c:102
-#, c-format
-msgid "Option %s must not contain shell metacharacters: %c"
-msgstr ""
-
 #: send/send.c:339
 msgid "No subject, abort?"
 msgstr "Sem assunto, cancelar?"
@@ -7353,21 +7342,6 @@ msgstr "Encaminar como anexo?"
 msgid "Preparing forwarded message..."
 msgstr "Preparando mensagem encaminhada..."
 
-#: send/send.c:1776
-#, fuzzy
-msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
-msgstr "Não há suporte par Fcc para uma caixa IMAP em modo lote"
-
-#. L10N: Printed after the "Fcc to an IMAP mailbox is not supported" message.
-#. To make it clearer that the message doesn't mean NeoMutt is aborting
-#. sending the mail too.
-#. %s is the full mailbox URL, including imap(s)://
-#.
-#: send/send.c:1782
-#, c-format
-msgid "Skipping Fcc to %s"
-msgstr ""
-
 #: send/send.c:1823 send/send.c:1833 send/send.c:1859
 msgid "Save attachments in Fcc?"
 msgstr "Salvar anexos em Fcc?"
@@ -7397,10 +7371,6 @@ msgstr "Caixa para Fcc"
 msgid "Can't postpone.  $postponed is unset"
 msgstr "Incapaz de adiar mensagem.  $postponed desconfigurado"
 
-#: send/send.c:1999 send/send.c:2016
-msgid "Error encrypting message. Check your crypt settings."
-msgstr ""
-
 #: send/send.c:2110
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr "Mensagem contém texto coincidindo com \"$abort_noattach_regex\". Envio cancelado."
@@ -7412,14 +7382,6 @@ msgstr "Sem anexos, cancelar envio?"
 #: send/send.c:2170
 msgid "Recall postponed message?"
 msgstr "Editar mensagem adiada?"
-
-#: send/send.c:2430
-msgid "Refusing to send an empty email"
-msgstr ""
-
-#: send/send.c:2431
-msgid "Try: echo | neomutt -s 'subject' user@example.com"
-msgstr ""
 
 #: send/send.c:2520
 msgid "Edit forwarded message?"
@@ -7476,21 +7438,6 @@ msgstr "Artigo postado"
 #: send/send.c:2927
 msgid "Mail sent"
 msgstr "Mensagem enviada"
-
-#: send/send.c:3006
-#, fuzzy
-msgid "No recipient specified"
-msgstr "Nenhum destinatário foi especificado"
-
-#: send/send.c:3051
-#, fuzzy
-msgid "No List-Subscribe header found"
-msgstr "Nenhuma chave secreta encontrada"
-
-#: send/send.c:3080
-#, fuzzy
-msgid "No List-Unsubscribe header found"
-msgstr "Padrão para desinscrição: "
 
 #: send/sendlib.c:172
 msgid "Could not find any mime.types file"
@@ -7616,19 +7563,6 @@ msgstr ""
 "    https://github.com/neomutt/neomutt/issues\n"
 "ou envie um email para: <neomutt-devel@neomutt.org>\n"
 
-#: version.c:109
-#, fuzzy
-msgid ""
-"Copyright (C) 1996-2022 Michael R. Elkins and others.\n"
-"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
-"NeoMutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type 'neomutt -vv' for details.\n"
-msgstr ""
-"Copyright (C) 1996-2020 Michael R. Elkins e outros.\n"
-"NeoMutt vem ABSOLUTAMENTE SEM GARANTIAS; para mais detalhes digite 'neomutt -vv'.\n"
-"NeoMutt é um programa livre, e você é encorajado a redistribuí-lo\n"
-"sob certas condições; digite 'neomutt -vv' para os detalhes.\n"
-
 #: version.c:503
 msgid "Default options:"
 msgstr "Opções pré-definidas:"
@@ -7636,11 +7570,6 @@ msgstr "Opções pré-definidas:"
 #: version.c:506
 msgid "Compile options:"
 msgstr "Opções de compilação:"
-
-#: version.c:511
-#, fuzzy
-msgid "Devel options:"
-msgstr "Opções pré-definidas:"
 
 #~ msgid "Exit NeoMutt?"
 #~ msgstr "Sair do NeoMutt?"
