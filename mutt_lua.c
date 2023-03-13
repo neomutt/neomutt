@@ -47,7 +47,6 @@
 #include "core/lib.h"
 #include "mutt_lua.h"
 #include "parse/lib.h"
-#include "init.h"
 #include "muttlib.h"
 #include "myvar.h"
 

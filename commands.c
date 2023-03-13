@@ -53,7 +53,6 @@
 #include "parse/lib.h"
 #include "store/lib.h"
 #include "alternates.h"
-#include "init.h"
 #include "keymap.h"
 #include "mutt_globals.h"
 #include "muttlib.h"

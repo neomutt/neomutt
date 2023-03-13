@@ -26,6 +26,7 @@
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | parse/extract.c     | @subpage parse_extract     |
+ * | parse/rc.c          | @subpage parse_rc          |
  * | parse/set.c         | @subpage parse_set         |
  */
 
@@ -34,6 +35,7 @@
 
 // IWYU pragma: begin_exports
 #include "extract.h"
+#include "rc.h"
 #include "set.h"
 // IWYU pragma: end_exports
 
