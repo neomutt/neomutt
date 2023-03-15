@@ -40,9 +40,9 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "attach.h"
+#include "globals.h" // IWYU pragma: keep
 #include "mutt_attach.h"
 #include "opcodes.h"
-#include "options.h"
 #include "private_data.h"
 #include "recvattach.h"
 #include "recvcmd.h"

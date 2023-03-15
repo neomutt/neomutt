@@ -38,8 +38,8 @@
 #include "index/lib.h"
 #include "parse/lib.h"
 #include "pattern/lib.h"
+#include "globals.h" // IWYU pragma: keep
 #include "mutt_thread.h"
-#include "options.h"
 #include "protos.h"
 
 /**

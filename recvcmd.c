@@ -47,12 +47,12 @@
 #include "send/lib.h"
 #include "copy.h"
 #include "format_flags.h"
+#include "globals.h" // IWYU pragma: keep
 #include "handler.h"
 #include "hdrline.h"
 #include "mutt_body.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "options.h"
 #include "protos.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

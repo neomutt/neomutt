@@ -34,7 +34,7 @@
 #include "body.h"
 #include "lib.h"
 #include "ncrypt/lib.h"
-#include "mutt_globals.h"
+#include "globals.h"
 #include "muttlib.h"
 
 /**

@@ -37,7 +37,7 @@
 #include "core/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
-#include "options.h"
+#include "globals.h"
 
 /**
  * create_gpgme_context - Create a GPGME context

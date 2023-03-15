@@ -39,10 +39,10 @@
 #include "core/lib.h"
 #include "alias/lib.h"
 #include "sort.h"
+#include "globals.h" // IWYU pragma: keep
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "mx.h"
-#include "options.h"
 #include "score.h"
 #ifdef USE_NNTP
 #include "nntp/lib.h"

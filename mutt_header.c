@@ -45,8 +45,8 @@
 #include "ncrypt/lib.h"
 #include "postpone/lib.h"
 #include "send/lib.h"
+#include "globals.h" // IWYU pragma: keep
 #include "muttlib.h"
-#include "options.h"
 
 /**
  * label_ref_dec - Decrease the refcount of a label

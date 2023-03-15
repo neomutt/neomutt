@@ -44,10 +44,10 @@
 #include "pager/lib.h"
 #include "question/lib.h"
 #include "crypt_gpgme.h"
+#include "globals.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "options.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

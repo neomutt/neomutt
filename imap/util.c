@@ -52,11 +52,10 @@
 #include "question/lib.h"
 #include "adata.h"
 #include "edata.h"
+#include "globals.h" // IWYU pragma: keep
 #include "mdata.h"
 #include "msn.h"
 #include "mutt_account.h"
-#include "mutt_globals.h"
-#include "options.h"
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
 #endif

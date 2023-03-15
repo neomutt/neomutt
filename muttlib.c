@@ -55,8 +55,8 @@
 #include "parse/lib.h"
 #include "question/lib.h"
 #include "format_flags.h"
+#include "globals.h" // IWYU pragma: keep
 #include "hook.h"
-#include "mutt_globals.h"
 #include "mx.h"
 #include "protos.h"
 #ifdef USE_IMAP

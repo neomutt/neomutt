@@ -48,8 +48,8 @@
 #include "pattern/lib.h"
 #include "commands.h"
 #include "format_flags.h"
+#include "globals.h" // IWYU pragma: keep
 #include "hdrline.h"
-#include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
 #ifdef USE_COMP_MBOX

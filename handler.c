@@ -47,13 +47,12 @@
 #include "pager/lib.h"
 #include "copy.h"
 #include "enriched.h"
+#include "globals.h" // IWYU pragma: keep
 #include "keymap.h"
 #include "mailcap.h"
-#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "options.h"
 #include "rfc3676.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

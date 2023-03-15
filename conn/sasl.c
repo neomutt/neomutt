@@ -53,7 +53,7 @@
 #include "sasl.h"
 #include "lib.h"
 #include "enter/lib.h"
-#include "options.h"
+#include "globals.h"
 
 /**
  * struct SaslSockData - SASL authentication API - @extends Connection

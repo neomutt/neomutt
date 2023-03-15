@@ -47,17 +47,15 @@
 #include "lib.h"
 #include "progress/lib.h"
 #include "question/lib.h"
+#include "globals.h" // IWYU pragma: keep
 #include "mutt_account.h"
-#include "mutt_globals.h"
 #include "mutt_socket.h"
 #ifdef USE_SASL_GNU
 #include <gsasl.h>
-#include "options.h"
 #endif
 #ifdef USE_SASL_CYRUS
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
-#include "options.h"
 #endif
 
 #define smtp_success(x) ((x) / 100 == 2)

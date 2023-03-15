@@ -39,7 +39,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "send/lib.h"
-#include "options.h"
+#include "globals.h" // IWYU pragma: keep
 #include "protos.h"
 
 /**

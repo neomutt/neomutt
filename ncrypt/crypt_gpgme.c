@@ -59,11 +59,11 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "crypt.h"
+#include "globals.h" // IWYU pragma: keep
 #include "handler.h"
 #include "hook.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "options.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif

@@ -36,8 +36,8 @@
 #include "config/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
+#include "globals.h"
 #include "keymap.h"
-#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "opcodes.h"
 #ifdef HAVE_SYS_PARAM_H

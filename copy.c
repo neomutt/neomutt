@@ -45,9 +45,9 @@
 #include "ncrypt/lib.h"
 #include "send/lib.h"
 #include "format_flags.h"
+#include "globals.h" // IWYU pragma: keep
 #include "handler.h"
 #include "hdrline.h"
-#include "mutt_globals.h"
 #include "mx.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"

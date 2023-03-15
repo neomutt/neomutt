@@ -64,13 +64,13 @@ default:	all
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	alternates.o commands.o conststrings.o copy.o editmsg.o \
-		enriched.o external.o flags.o functions.o git_ver.o handler.o \
-		hdrline.o help.o hook.o init.o keymap.o mailcap.o maillist.o \
-		main.o muttlib.o mutt_account.o mutt_body.o mutt_config.o \
-		mutt_header.o mutt_history.o mutt_logging.o mutt_mailbox.o \
-		mutt_signal.o mutt_socket.o mutt_thread.o mview.o mx.o myvar.o \
-		opcodes.o recvcmd.o resize.o rfc3676.o score.o sort.o status.o \
-		subjectrx.o system.o version.o
+		enriched.o external.o flags.o functions.o git_ver.o globals.o \
+		handler.o hdrline.o help.o hook.o init.o keymap.o mailcap.o \
+		maillist.o main.o muttlib.o mutt_account.o mutt_body.o \
+		mutt_config.o mutt_header.o mutt_history.o mutt_logging.o \
+		mutt_mailbox.o mutt_signal.o mutt_socket.o mutt_thread.o \
+		mview.o mx.o myvar.o opcodes.o recvcmd.o resize.o rfc3676.o \
+		score.o sort.o status.o subjectrx.o system.o version.o
 
 @if !HAVE_TIMEGM
 NEOMUTTOBJS+=	timegm.o

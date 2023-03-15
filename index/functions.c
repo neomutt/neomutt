@@ -51,6 +51,7 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "external.h"
+#include "globals.h" // IWYU pragma: keep
 #include "hook.h"
 #include "keymap.h"
 #include "mutt_header.h"
@@ -60,7 +61,6 @@
 #include "mview.h"
 #include "mx.h"
 #include "opcodes.h"
-#include "options.h"
 #include "private_data.h"
 #include "protos.h"
 #include "shared_data.h"

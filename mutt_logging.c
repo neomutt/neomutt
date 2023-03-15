@@ -40,9 +40,8 @@
 #include "gui/lib.h"
 #include "mutt_logging.h"
 #include "color/lib.h"
-#include "mutt_globals.h"
+#include "globals.h"
 #include "muttlib.h"
-#include "options.h"
 
 uint64_t LastError = 0; ///< Time of the last error message (in milliseconds since the Unix epoch)
 

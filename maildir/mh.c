@@ -53,9 +53,9 @@
 #include "copy.h"
 #include "edata.h"
 #include "errno.h"
+#include "globals.h" // IWYU pragma: keep
 #include "mdata.h"
 #include "mdemail.h"
-#include "mutt_globals.h"
 #include "mx.h"
 #include "sequence.h"
 #ifdef USE_INOTIFY

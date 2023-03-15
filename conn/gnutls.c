@@ -40,8 +40,8 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "lib.h"
+#include "globals.h"
 #include "muttlib.h"
-#include "options.h"
 #include "ssl.h"
 
 // clang-format off

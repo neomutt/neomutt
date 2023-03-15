@@ -36,8 +36,8 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "globals.h"
 #include "mutt_logging.h"
-#include "options.h"
 #include "window.h"
 
 struct Progress;

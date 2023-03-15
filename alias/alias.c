@@ -50,8 +50,8 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "alternates.h"
+#include "globals.h" // IWYU pragma: keep
 #include "maillist.h"
-#include "mutt_globals.h"
 #include "muttlib.h"
 #include "reverse.h"
 

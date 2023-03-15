@@ -53,7 +53,7 @@
 #include "email/lib.h"
 #include "autocrypt/lib.h"
 #include "crypt_gpgme.h"
-#include "options.h"
+#include "globals.h" // IWYU pragma: keep
 #else
 struct Envelope;
 #endif

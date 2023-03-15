@@ -33,9 +33,8 @@
 #include "config/lib.h"
 #include "mutt_window.h"
 #include "curs_lib.h"
+#include "globals.h"
 #include "mutt_curses.h"
-#include "mutt_globals.h"
-#include "options.h"
 #include "reflow.h"
 #include "rootwin.h"
 #ifdef USE_DEBUG_WINDOW

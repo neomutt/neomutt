@@ -38,8 +38,7 @@
 #include "connaccount.h"
 #include "enter/lib.h"
 #include "accountcmd.h"
-#include "mutt_globals.h"
-#include "options.h"
+#include "globals.h"
 
 /**
  * mutt_account_getuser - Retrieve username into ConnAccount, if necessary

@@ -31,8 +31,8 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "lib.h"
+#include "globals.h"
 #include "muttlib.h"
-#include "options.h"
 
 /**
  * browser_compare_subject - Compare the subject of two browser entries - Implements ::sort_t - @ingroup sort_api

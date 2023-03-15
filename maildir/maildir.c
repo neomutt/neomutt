@@ -53,9 +53,9 @@
 #include "progress/lib.h"
 #include "copy.h"
 #include "edata.h"
+#include "globals.h" // IWYU pragma: keep
 #include "mdata.h"
 #include "mdemail.h"
-#include "mutt_globals.h"
 #include "mx.h"
 #ifdef USE_INOTIFY
 #include "monitor.h"

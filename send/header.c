@@ -36,8 +36,7 @@
 #include "email/lib.h"
 #include "gui/lib.h"
 #include "header.h"
-#include "mutt_globals.h"
-#include "options.h"
+#include "globals.h" // IWYU pragma: keep
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif

@@ -53,13 +53,13 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "copy.h"
+#include "globals.h" // IWYU pragma: keep
 #include "hook.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "options.h"
 #include "protos.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"

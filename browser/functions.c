@@ -45,12 +45,11 @@
 #include "menu/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
-#include "mutt_globals.h"
+#include "globals.h" // IWYU pragma: keep
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "opcodes.h"
-#include "options.h"
 #include "private_data.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"

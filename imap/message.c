@@ -53,9 +53,9 @@
 #include "adata.h"
 #include "edata.h"
 #include "external.h"
+#include "globals.h" // IWYU pragma: keep
 #include "mdata.h"
 #include "msn.h"
-#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "mx.h"

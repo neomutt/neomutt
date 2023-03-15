@@ -44,8 +44,8 @@
 #include "lib.h"
 #include "pager/lib.h"
 #include "format_flags.h"
+#include "globals.h"
 #include "muttlib.h"
-#include "options.h"
 #ifdef USE_NNTP
 #include "nntp/lib.h"
 #endif

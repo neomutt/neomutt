@@ -49,16 +49,15 @@
 #include "notmuch/lib.h"
 #include "parse/lib.h"
 #include "commands.h"
+#include "globals.h" // IWYU pragma: keep
 #include "hook.h"
 #include "keymap.h"
-#include "mutt_globals.h"
 #ifdef USE_LUA
 #include "mutt_lua.h"
 #endif
 #include "menu/lib.h"
 #include "muttlib.h"
 #include "myvar.h"
-#include "options.h"
 #include "protos.h"
 #ifdef USE_SIDEBAR
 #include "sidebar/lib.h"

@@ -74,6 +74,7 @@
  * | external.c      | @subpage neo_external      |
  * | flags.c         | @subpage neo_flags         |
  * | functions.c     | @subpage neo_functions     |
+ * | globals.c       | @subpage neo_globals       |
  * | handler.c       | @subpage neo_handler       |
  * | hdrline.c       | @subpage neo_hdrline       |
  * | help.c          | @subpage neo_help          |
@@ -88,7 +89,6 @@
  * | mutt_account.c  | @subpage neo_mutt_account  |
  * | mutt_body.c     | @subpage neo_mutt_body     |
  * | mutt_config.c   | @subpage neo_mutt_config   |
- * | mutt_globals.h  | @subpage neo_mutt_globals  |
  * | mutt_header.c   | @subpage neo_mutt_header   |
  * | mutt_history.c  | @subpage neo_mutt_history  |
  * | mutt_logging.c  | @subpage neo_mutt_logging  |
@@ -97,11 +97,10 @@
  * | mutt_signal.c   | @subpage neo_mutt_signal   |
  * | mutt_socket.c   | @subpage neo_mutt_socket   |
  * | mutt_thread.c   | @subpage neo_mutt_thread   |
- * | mx.c            | @subpage neo_mx            |
  * | mview.c         | @subpage neo_mview         |
+ * | mx.c            | @subpage neo_mx            |
  * | myvar.c         | @subpage neo_myvar         |
  * | opcodes.c       | @subpage neo_opcode        |
- * | options.h       | @subpage neo_options       |
  * | recvcmd.c       | @subpage neo_recvcmd       |
  * | resize.c        | @subpage neo_resize        |
  * | rfc3676.c       | @subpage neo_rfc3676       |
@@ -133,7 +132,6 @@
  * Command line processing
  */
 
-#define MAIN_C 1
 #define GNULIB_defined_setlocale
 
 #include "config.h"
@@ -167,17 +165,16 @@
 #include "send/lib.h"
 #include "alternates.h"
 #include "external.h"
+#include "globals.h" // IWYU pragma: keep
 #include "hook.h"
 #include "init.h"
 #include "keymap.h"
-#include "mutt_globals.h"
 #include "mutt_history.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "myvar.h"
-#include "options.h"
 #include "protos.h"
 #include "subjectrx.h"
 #include "version.h"

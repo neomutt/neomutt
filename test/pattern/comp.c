@@ -21,7 +21,6 @@
  */
 
 #define TEST_NO_MAIN
-#define MAIN_C 1
 #include "config.h"
 #include "acutest.h"
 #include <stdbool.h>
@@ -29,7 +28,7 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "pattern/lib.h"
-#include "mutt_globals.h"
+#include "globals.h"
 
 bool ResumeEditedDraftFiles;
 

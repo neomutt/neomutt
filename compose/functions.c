@@ -54,6 +54,7 @@
 #include "send/lib.h"
 #include "attach_data.h"
 #include "external.h"
+#include "globals.h" // IWYU pragma: keep
 #include "hook.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
@@ -61,7 +62,6 @@
 #include "mview.h"
 #include "mx.h"
 #include "opcodes.h"
-#include "options.h"
 #include "protos.h"
 #include "rfc3676.h"
 #include "shared_data.h"

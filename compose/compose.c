@@ -83,11 +83,11 @@
 #include "attach_data.h"
 #include "cbar.h"
 #include "functions.h"
+#include "globals.h" // IWYU pragma: keep
 #include "hook.h"
 #include "keymap.h"
 #include "mutt_logging.h"
 #include "opcodes.h"
-#include "options.h"
 #include "shared_data.h"
 
 /// Help Bar for the Compose dialog

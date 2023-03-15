@@ -47,8 +47,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
-#include "mutt_globals.h"
-#include "options.h"
+#include "globals.h"
 #ifdef HAVE_LIBIDN
 #include "address/lib.h"
 #endif

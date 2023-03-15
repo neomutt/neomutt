@@ -34,8 +34,8 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "data.h"
+#include "globals.h"
 #include "muttlib.h"
-#include "options.h"
 #include "protos.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"

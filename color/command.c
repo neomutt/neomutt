@@ -38,7 +38,7 @@
 #include "lib.h"
 #include "pager/lib.h"
 #include "parse/lib.h"
-#include "options.h"
+#include "globals.h"
 #ifdef USE_DEBUG_COLOR
 #include <stdio.h>
 #include "mutt.h"

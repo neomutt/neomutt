@@ -43,12 +43,11 @@
 #include "enter/lib.h"
 #include "menu/lib.h"
 #include "progress/lib.h"
-#include "mutt_globals.h"
+#include "globals.h" // IWYU pragma: keep
 #include "mutt_logging.h"
 #include "mview.h"
 #include "mx.h"
 #include "opcodes.h"
-#include "options.h"
 #include "protos.h"
 #ifndef USE_FMEMOPEN
 #include <sys/stat.h>

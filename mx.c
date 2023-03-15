@@ -51,15 +51,14 @@
 #include "question/lib.h"
 #include "copy.h"
 #include "external.h"
+#include "globals.h" // IWYU pragma: keep
 #include "hook.h"
 #include "keymap.h"
-#include "mutt_globals.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "options.h"
 #include "protos.h"
 #ifdef USE_COMP_MBOX
 #include "compmbox/lib.h"

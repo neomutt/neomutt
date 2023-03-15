@@ -56,7 +56,7 @@
 #include "mutt_logging.h"
 #include "ssl.h"
 #ifdef HAVE_RAND_EGD
-#include "mutt_globals.h"
+#include "globals.h"
 #endif
 
 /* LibreSSL defines OPENSSL_VERSION_NUMBER but sets it to 0x20000000L.

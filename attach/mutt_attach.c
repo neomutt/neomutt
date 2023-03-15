@@ -49,9 +49,9 @@
 #include "send/lib.h"
 #include "cid.h"
 #include "copy.h"
+#include "globals.h" // IWYU pragma: keep
 #include "handler.h"
 #include "mailcap.h"
-#include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "protos.h"

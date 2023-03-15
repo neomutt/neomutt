@@ -47,15 +47,14 @@
 #include "color/lib.h"
 #include "enter/lib.h"
 #include "question/lib.h"
+#include "globals.h"
 #include "keymap.h"
 #include "msgwin.h"
 #include "mutt_curses.h"
-#include "mutt_globals.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "mutt_window.h"
 #include "opcodes.h"
-#include "options.h"
 #include "protos.h"
 #ifdef HAVE_ISWBLANK
 #include <wctype.h>

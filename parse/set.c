@@ -39,7 +39,7 @@
 #include "set.h"
 #include "commands.h"
 #include "extract.h"
-#include "mutt_globals.h"
+#include "globals.h"
 #include "muttlib.h"
 #include "myvar.h"
 

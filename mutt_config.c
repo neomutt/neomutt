@@ -34,11 +34,11 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "globals.h"
 #include "init.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "mx.h"
-#include "options.h"
 
 #define CONFIG_INIT_TYPE(CS, NAME)                                             \
   extern const struct ConfigSetType Cst##NAME;                                 \

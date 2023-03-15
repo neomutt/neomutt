@@ -53,12 +53,11 @@
 #include "parse/lib.h"
 #include "store/lib.h"
 #include "alternates.h"
+#include "globals.h" // IWYU pragma: keep
 #include "keymap.h"
-#include "mutt_globals.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "myvar.h"
-#include "options.h"
 #include "score.h"
 #include "version.h"
 #ifdef USE_INOTIFY

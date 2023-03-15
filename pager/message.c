@@ -45,12 +45,12 @@
 #include "question/lib.h"
 #include "copy.h"
 #include "format_flags.h"
+#include "globals.h" // IWYU pragma: keep
 #include "hdrline.h"
 #include "hook.h"
 #include "keymap.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "options.h"
 #include "protos.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"

@@ -38,8 +38,8 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "mutt_thread.h"
+#include "globals.h" // IWYU pragma: keep
 #include "mx.h"
-#include "options.h"
 #include "protos.h"
 #include "sort.h"
 

@@ -48,12 +48,11 @@
 #include "convert/lib.h"
 #include "ncrypt/lib.h"
 #include "copy.h"
+#include "globals.h" // IWYU pragma: keep
 #include "handler.h"
-#include "mutt_globals.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "options.h"
 
 /**
  * mutt_lookup_mime_type - Find the MIME type for an attachment

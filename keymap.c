@@ -46,11 +46,10 @@
 #include "pager/lib.h"
 #include "parse/lib.h"
 #include "functions.h"
-#include "mutt_globals.h"
+#include "globals.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "options.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"
 #endif

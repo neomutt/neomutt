@@ -128,7 +128,8 @@ static void test_parse_set(void)
 
         snprintf(line, sizeof(line), tests[t], commands[c], vars[v]);
         // printf("%-26s", line);
-        enum CommandResult rc = parse_rc_line(line, &err);
+        // enum CommandResult rc =
+          parse_rc_line(line, &err);
         // printf("%2d %s\n", rc, err.data);
       }
       // printf("\n");

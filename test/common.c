@@ -37,6 +37,10 @@ struct PagerView;
 
 bool StartupComplete = true;
 
+char *HomeDir = NULL;
+int SigInt = 0;
+int SigWinch = 0;
+
 #define TEST_DIR "NEOMUTT_TEST_DIR"
 
 #define CONFIG_INIT_TYPE(CS, NAME)                                             \
