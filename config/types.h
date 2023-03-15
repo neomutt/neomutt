@@ -58,7 +58,7 @@
 #define IS_COMMAND(x)   (((x)->type & (DT_STRING | DT_COMMAND)) == (DT_STRING | DT_COMMAND))
 
 /* subtypes for... */
-#define DT_SUBTYPE_MASK  0x0FE0  ///< Mask for the Data Subtype
+#define DT_SUBTYPE_MASK  0x7FC0  ///< Mask for the Data Subtype
 
 typedef uint32_t ConfigRedrawFlags; ///< Flags for redraw/resort, e.g. #R_INDEX
 #define R_REDRAW_NO_FLAGS        0  ///< No refresh/resort flags
@@ -67,13 +67,12 @@ typedef uint32_t ConfigRedrawFlags; ///< Flags for redraw/resort, e.g. #R_INDEX
 #define R_RESORT_SUB      (1 << 19) ///< Resort subthreads
 #define R_RESORT_INIT     (1 << 20) ///< Resort from scratch
 
-#define R_REDRAW_MASK  0x07FE0000   ///< Mask for the Redraw Flags
+#define R_REDRAW_MASK  0x01E0000    ///< Mask for the Redraw Flags
 
 /* Private config item flags */
-#define DT_DEPRECATED   (1 << 27)  ///< Config item shouldn't be used any more
-#define DT_INHERITED    (1 << 28)  ///< Config item is inherited
-#define DT_INITIAL_SET  (1 << 29)  ///< Config item must have its initial value freed
-#define DT_DISABLED     (1 << 30)  ///< Config item is disabled
-// #define DT_MY_CONFIG    (1U << 31) ///< Config item is a "my_" variable
+#define DT_DEPRECATED     (1 << 27)  ///< Config item shouldn't be used any more
+#define DT_INHERITED      (1 << 28)  ///< Config item is inherited
+#define DT_INITIAL_SET    (1 << 29)  ///< Config item must have its initial value freed
+#define DT_DISABLED       (1 << 30)  ///< Config item is disabled
 
 #endif /* MUTT_CONFIG_TYPES_H */
