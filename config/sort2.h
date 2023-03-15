@@ -25,11 +25,7 @@
 
 #include "mutt/lib.h"
 
-extern const struct Mapping SortAliasMethods[];
-extern const struct Mapping SortBrowserMethods[];
-extern const struct Mapping SortKeyMethods[];
 extern const struct Mapping SortMethods[];
-extern const struct Mapping SortSidebarMethods[];
 
 /* ... DT_SORT */
 #define DT_SORT_LAST    0x0800 ///< Sort flag for -last prefix

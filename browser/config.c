@@ -34,6 +34,23 @@
 #include "mutt/lib.h"
 
 /**
+ * SortBrowserMethods - Sort methods for the folder/dir browser
+ */
+const struct Mapping SortBrowserMethods[] = {
+  // clang-format off
+  { "alpha",    SORT_SUBJECT },
+  { "count",    SORT_COUNT },
+  { "date",     SORT_DATE },
+  { "desc",     SORT_DESC },
+  { "new",      SORT_UNREAD },
+  { "unread",   SORT_UNREAD },
+  { "size",     SORT_SIZE },
+  { "unsorted", SORT_ORDER },
+  { NULL, 0 },
+  // clang-format on
+};
+
+/**
  * BrowserVars - Config definitions for the browser
  */
 static struct ConfigDef BrowserVars[] = {

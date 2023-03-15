@@ -93,23 +93,6 @@ const struct Mapping SortMethods[] = {
 };
 
 /**
- * SortBrowserMethods - Sort methods for the folder/dir browser
- */
-const struct Mapping SortBrowserMethods[] = {
-  // clang-format off
-  { "alpha",    SORT_SUBJECT },
-  { "count",    SORT_COUNT },
-  { "date",     SORT_DATE },
-  { "desc",     SORT_DESC },
-  { "new",      SORT_UNREAD },
-  { "unread",   SORT_UNREAD },
-  { "size",     SORT_SIZE },
-  { "unsorted", SORT_ORDER },
-  { NULL, 0 },
-  // clang-format on
-};
-
-/**
  * multipart_validator - Validate the "show_multipart_alternative" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
 static int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
