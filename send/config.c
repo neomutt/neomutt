@@ -274,10 +274,10 @@ static struct ConfigDef SendVars[] = {
   { "resume_draft_files", DT_BOOL, false, 0, NULL,
     "Process draft files like postponed messages"
   },
-  { "reverse_name", DT_BOOL|R_INDEX|R_PAGER, false, 0, NULL,
+  { "reverse_name", DT_BOOL|R_INDEX, false, 0, NULL,
     "Set the 'From' from the address the email was sent to"
   },
-  { "reverse_real_name", DT_BOOL|R_INDEX|R_PAGER, true, 0, NULL,
+  { "reverse_real_name", DT_BOOL|R_INDEX, true, 0, NULL,
     "Set the 'From' from the full 'To' address the email was sent to"
   },
   { "sendmail", DT_STRING|DT_COMMAND, IP SENDMAIL " -oem -oi", 0, simple_command_validator,
@@ -307,7 +307,7 @@ static struct ConfigDef SendVars[] = {
   { "user_agent", DT_BOOL, false, 0, NULL,
     "Add a 'User-Agent' header to outgoing mail"
   },
-  { "wrap_headers", DT_NUMBER|DT_NOT_NEGATIVE|R_PAGER, 78, 0, wrapheaders_validator,
+  { "wrap_headers", DT_NUMBER|DT_NOT_NEGATIVE, 78, 0, wrapheaders_validator,
     "Width to wrap headers in outgoing messages"
   },
   { "write_bcc", DT_BOOL, false, 0, NULL,

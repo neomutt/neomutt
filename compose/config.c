@@ -40,7 +40,7 @@
  */
 static struct ConfigDef ComposeVars[] = {
   // clang-format off
-  { "compose_format", DT_STRING|R_MENU, IP "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-", 0, NULL,
+  { "compose_format", DT_STRING, IP "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-", 0, NULL,
     "printf-like format string for the Compose panel's status bar"
   },
   { "compose_show_user_headers", DT_BOOL, true, 0, NULL,

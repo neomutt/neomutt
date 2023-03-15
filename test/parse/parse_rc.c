@@ -64,7 +64,7 @@ static struct ConfigDef Vars[] = {
   { "beep",              DT_BOOL,                    true,                  0,               NULL, },
   { "ispell",            DT_STRING|DT_COMMAND,       IP "ispell",           0,               NULL, },
   { "mbox_type",         DT_ENUM,                    MUTT_MBOX,             IP &MboxTypeDef, NULL, },
-  { "to_chars",          DT_MBTABLE|R_INDEX|R_PAGER, IP " +TCFLR",          0,               NULL, },
+  { "to_chars",          DT_MBTABLE|R_INDEX,         IP " +TCFLR",          0,               NULL, },
   { "net_inc",           DT_NUMBER|DT_NOT_NEGATIVE,  10,                    0,               NULL, },
   { "signature",         DT_PATH|DT_PATH_FILE,       IP "~/.signature",     0,               NULL, },
   { "print",             DT_QUAD,                    MUTT_ASKNO,            0,               NULL, },
