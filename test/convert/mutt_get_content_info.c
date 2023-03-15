@@ -26,6 +26,7 @@
 #include "acutest.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -55,17 +56,21 @@ void test_mutt_get_content_info(void)
 {
   // struct Content *mutt_get_content_info(const char *fname, struct Body *b, struct ConfigSubset *sub);
 
-  char *fname = malloc(L_tmpnam);
-  TEST_CHECK(tmpnam(fname) != NULL);
-  TEST_MSG("unable to generate temp file name");
+  const char *text = "file\ncontent";
+  const char *tmpdir = mutt_str_getenv("TMPDIR");
+  if (!tmpdir)
+    tmpdir = "/tmp";
 
-  FILE *file = fopen(fname, "w");
-  TEST_CHECK(file != NULL);
+  char fname[PATH_MAX] = { 0 };
+  snprintf(fname, sizeof(fname), "%s/mutt-test-file-XXXXXX", tmpdir);
+
+  int fd = mkstemp(fname);
+  TEST_CHECK(fd != -1);
   TEST_MSG("unable to open temp file for writing");
 
-  TEST_CHECK(fprintf(file, "file\ncontent") > 0);
+  TEST_CHECK(write(fd, text, strlen(text)) > 0);
   TEST_MSG("unable to write to temp file: %s", fname);
-  fclose(file);
+  close(fd);
 
   NeoMutt = test_neomutt_create();
   struct ConfigSubset *sub = NeoMutt->sub;
@@ -101,6 +106,5 @@ void test_mutt_get_content_info(void)
 
   mutt_body_free(&body);
   cs_free(&cs);
-  FREE(&fname);
   FREE(&content);
 }
