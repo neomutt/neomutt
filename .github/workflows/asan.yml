@@ -20,10 +20,10 @@ jobs:
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v3.3.0
+      uses: actions/checkout@v3.4.0
 
     - name: Checkout Test Files
-      uses: actions/checkout@v3.3.0
+      uses: actions/checkout@v3.4.0
       with:
         repository: neomutt/neomutt-test-files
         path: test-files
