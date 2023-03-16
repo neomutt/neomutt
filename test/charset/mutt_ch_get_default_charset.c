@@ -38,13 +38,13 @@ static struct ConfigDef Vars[] = {
 
 void test_mutt_ch_get_default_charset(void)
 {
-  // char *mutt_ch_get_default_charset(void);
+  // const char *mutt_ch_get_default_charset(const struct Slist *const assumed_charset);
 
   {
     NeoMutt = test_neomutt_create();
     TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
 
-    char *cs = mutt_ch_get_default_charset();
+    const char *cs = mutt_ch_get_default_charset(NULL);
     TEST_CHECK(strlen(cs) != 0);
 
     test_neomutt_destroy(&NeoMutt);

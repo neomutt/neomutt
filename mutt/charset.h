@@ -77,13 +77,13 @@ int              mutt_ch_check(const char *s, size_t slen, const char *from, con
 bool             mutt_ch_check_charset(const char *cs, bool strict);
 char *           mutt_ch_choose(const char *fromcode, const struct Slist *charsets, const char *u, size_t ulen, char **d, size_t *dlen);
 bool             mutt_ch_chscmp(const char *cs1, const char *cs2);
-int              mutt_ch_convert_nonmime_string(char **ps);
+int              mutt_ch_convert_nonmime_string(const struct Slist *const assumed_charset, const char *charset, char **ps);
 int              mutt_ch_convert_string(char **ps, const char *from, const char *to, uint8_t flags);
 int              mutt_ch_fgetconv(struct FgetConv *fc);
 void             mutt_ch_fgetconv_close(struct FgetConv **fc);
 struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *to, uint8_t flags);
 char *           mutt_ch_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc);
-char *           mutt_ch_get_default_charset(void);
+const char *     mutt_ch_get_default_charset(const struct Slist *const assumed_charset);
 char *           mutt_ch_get_langinfo_charset(void);
 size_t           mutt_ch_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft, const char **inrepls, const char *outrepl, int *iconverrno);
 const char *     mutt_ch_iconv_lookup(const char *chs);

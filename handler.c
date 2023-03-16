@@ -1886,7 +1886,7 @@ void mutt_decode_attachment(struct Body *b, struct State *state)
       const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
       charset = mutt_param_get(&b->parameter, "charset");
       if (!charset && c_assumed_charset)
-        charset = mutt_ch_get_default_charset();
+        charset = mutt_ch_get_default_charset(c_assumed_charset);
     }
     const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
     if (charset && c_charset)
