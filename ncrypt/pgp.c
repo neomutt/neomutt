@@ -797,8 +797,8 @@ static bool pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 
   tempfile = mutt_buffer_pool_get();
   mutt_buffer_mktemp(tempfile);
-  if (mutt_decode_save_attachment(fp, b, mutt_buffer_string(tempfile), 0,
-                                  MUTT_SAVE_NO_FLAGS) != 0)
+  if (mutt_decode_save_attachment(fp, b, mutt_buffer_string(tempfile),
+                                  STATE_NO_FLAGS, MUTT_SAVE_NO_FLAGS) != 0)
   {
     unlink(mutt_buffer_string(tempfile));
     goto cleanup;

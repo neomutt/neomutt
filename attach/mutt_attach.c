@@ -1022,13 +1022,13 @@ int mutt_save_attachment(FILE *fp, struct Body *m, const char *path,
  * @param fp         File to read from (OPTIONAL)
  * @param m          Attachment
  * @param path       Path to save the Attachment to
- * @param displaying Flags, e.g. #STATE_DISPLAY
+ * @param flags      Flags, e.g. #STATE_DISPLAY
  * @param opt        Save option, see #SaveAttach
  * @retval 0  Success
  * @retval -1 Error
  */
 int mutt_decode_save_attachment(FILE *fp, struct Body *m, const char *path,
-                                int displaying, enum SaveAttach opt)
+                                StateFlags flags, enum SaveAttach opt)
 {
   struct State state = { 0 };
   unsigned int saved_encoding = 0;
@@ -1036,7 +1036,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, const char *path,
   struct Email *e_saved = NULL;
   int rc = 0;
 
-  state.flags = displaying;
+  state.flags = flags;
 
   if (opt == MUTT_SAVE_APPEND)
     state.fp_out = fopen(path, "a");
