@@ -38,6 +38,7 @@ typedef uint16_t StateFlags;          ///< Flags for State->flags, e.g. #STATE_D
 #define STATE_REPLYING       (1 << 6) ///< Are we replying?
 #define STATE_FIRSTDONE      (1 << 7) ///< The first attachment has been done
 #define STATE_DISPLAY_ATTACH (1 << 8) ///< We are displaying an attachment
+#define STATE_PAGER          (1 << 9) ///< Output will be displayed in the Pager
 
 /**
  * struct State - Keep track when processing files

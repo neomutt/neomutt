@@ -27,6 +27,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include "mutt/lib.h"
 
 struct AttachCtx;
 struct Body;

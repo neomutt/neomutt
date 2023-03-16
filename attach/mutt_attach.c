@@ -649,9 +649,13 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     }
     else
     {
+      StateFlags flags = STATE_DISPLAY | STATE_DISPLAY_ATTACH;
+      const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
+      if (!c_pager || mutt_str_equal(c_pager, "builtin"))
+        flags |= STATE_PAGER;
+
       /* Use built-in handler */
-      if (mutt_decode_save_attachment(fp, a, mutt_buffer_string(pagerfile),
-                                      STATE_DISPLAY | STATE_DISPLAY_ATTACH, MUTT_SAVE_NO_FLAGS))
+      if (mutt_decode_save_attachment(fp, a, mutt_buffer_string(pagerfile), flags, MUTT_SAVE_NO_FLAGS))
       {
         goto return_error;
       }
