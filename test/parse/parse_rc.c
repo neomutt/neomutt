@@ -116,25 +116,18 @@ static void test_parse_set(void)
 
   for (size_t v = 0; v < mutt_array_size(vars); v++)
   {
-    // printf("--------------------------------------------------------------------------------\n");
-    // printf("VARIABLE %s\n", vars[v]);
     for (size_t c = 0; c < mutt_array_size(commands); c++)
     {
-      // printf("----------------------------------------\n");
-      // printf("COMMAND %s\n", commands[c]);
+      TEST_CASE_("%s %s", commands[c], vars[v]);
       for (size_t t = 0; t < mutt_array_size(tests); t++)
       {
         mutt_buffer_reset(&err);
 
         snprintf(line, sizeof(line), tests[t], commands[c], vars[v]);
-        // printf("%-26s", line);
         // enum CommandResult rc =
-          parse_rc_line(line, &err);
-        // printf("%2d %s\n", rc, err.data);
+        parse_rc_line(line, &err);
       }
-      // printf("\n");
     }
-    // printf("\n");
   }
 
   mutt_buffer_dealloc(&err);
