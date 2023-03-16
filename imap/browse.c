@@ -134,17 +134,17 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
  * browse_add_list_result - Add entries to the folder browser
  * @param adata    Imap Account data
  * @param cmd      Command string from server
- * @param state    Browser state to add to
+ * @param bstate   Browser state to add to
  * @param isparent Is this a shortcut for the parent directory?
  * @retval  0 Success
  * @retval -1 Failure
  */
 static int browse_add_list_result(struct ImapAccountData *adata, const char *cmd,
-                                  struct BrowserState *state, bool isparent)
+                                  struct BrowserState *bstate, bool isparent)
 {
   struct ImapList list = { 0 };
   int rc;
-  struct Url *url = url_parse(state->folder);
+  struct Url *url = url_parse(bstate->folder);
 
   imap_cmd_start(adata, cmd);
   adata->cmdresult = &list;
@@ -160,7 +160,7 @@ static int browse_add_list_result(struct ImapAccountData *adata, const char *cmd
         list.noselect = true;
       /* prune current folder from output */
       if (isparent || !mutt_str_startswith(url->path, list.name))
-        add_folder(list.delim, list.name, list.noselect, list.noinferiors, state, isparent);
+        add_folder(list.delim, list.name, list.noselect, list.noinferiors, bstate, isparent);
     }
   } while (rc == IMAP_RES_CONTINUE);
   adata->cmdresult = NULL;

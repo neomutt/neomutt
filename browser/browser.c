@@ -868,8 +868,8 @@ static int select_file_search(struct Menu *menu, regex_t *rx, int line)
  */
 static void folder_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
-  struct BrowserState *state = menu->mdata;
-  struct BrowserStateEntry *entry = &state->entry;
+  struct BrowserState *bstate = menu->mdata;
+  struct BrowserStateEntry *entry = &bstate->entry;
   struct Folder folder = {
     .ff = ARRAY_GET(entry, line),
     .num = line,
@@ -885,7 +885,7 @@ static void folder_make_entry(struct Menu *menu, char *buf, size_t buflen, int l
   }
   else
 #endif
-      if (state->is_mailbox_list)
+      if (bstate->is_mailbox_list)
   {
     const char *const c_mailbox_folder_format = cs_subset_string(NeoMutt->sub, "mailbox_folder_format");
     mutt_expando_format(buf, buflen, 0, menu->win->state.cols,

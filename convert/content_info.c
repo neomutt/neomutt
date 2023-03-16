@@ -181,7 +181,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
                                       struct ConfigSubset *sub)
 {
   struct Content *info = NULL;
-  struct ContentState state = { 0 };
+  struct ContentState cstate = { 0 };
   FILE *fp = NULL;
   char *fromcode = NULL;
   char *tocode = NULL;
@@ -255,8 +255,8 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
 
   rewind(fp);
   while ((r = fread(buf, 1, sizeof(buf), fp)))
-    mutt_update_content_info(info, &state, buf, r);
-  mutt_update_content_info(info, &state, 0, 0);
+    mutt_update_content_info(info, &cstate, buf, r);
+  mutt_update_content_info(info, &cstate, 0, 0);
 
   mutt_file_fclose(&fp);
 

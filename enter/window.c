@@ -193,7 +193,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
   int rc = 0;
   int col = 0;
 
-  struct EnterState *state = enter_state_new();
+  struct EnterState *es = enter_state_new();
 
   const struct Mapping *old_help = win->help_data;
   int old_menu = win->help_menu;
@@ -225,12 +225,12 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
 
     // clang-format off
     struct EnterWindowData wdata = { buf->data, buf->dsize, col, complete,
-      multiple, m, files, numfiles, state, ENTER_REDRAW_NONE,
+      multiple, m, files, numfiles, es, ENTER_REDRAW_NONE,
       (complete & MUTT_COMP_PASS), true, 0, NULL, 0, &mbstate, 0, false, NULL };
     // clang-format on
     win->wdata = &wdata;
 
-    if (state->wbuf[0] == L'\0')
+    if (es->wbuf[0] == L'\0')
     {
       /* Initialise wbuf from buf */
       wdata.state->wbuflen = 0;
@@ -380,7 +380,7 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
   else
     mutt_buffer_reset(buf);
 
-  enter_state_free(&state);
+  enter_state_free(&es);
 
   OptIgnoreMacroEvents = old_oime;
   return rc;

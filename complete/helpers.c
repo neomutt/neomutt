@@ -364,13 +364,13 @@ int mutt_label_complete(struct CompletionData *cd, char *buf, size_t buflen, int
   if (numtabs == 1)
   {
     struct HashElem *he = NULL;
-    struct HashWalkState state = { 0 };
+    struct HashWalkState hws = { 0 };
 
     cd->num_matched = 0;
     mutt_str_copy(cd->user_typed, buf, sizeof(cd->user_typed));
     memset(cd->match_list, 0, cd->match_list_len);
     memset(cd->completed, 0, sizeof(cd->completed));
-    while ((he = mutt_hash_walk(m_cur->label_hash, &state)))
+    while ((he = mutt_hash_walk(m_cur->label_hash, &hws)))
       candidate(cd, cd->user_typed, he->key.strkey, cd->completed, sizeof(cd->completed));
     matches_ensure_morespace(cd, cd->num_matched);
     qsort(cd->match_list, cd->num_matched, sizeof(char *), (sort_t) mutt_istr_cmp);
