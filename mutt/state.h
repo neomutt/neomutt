@@ -51,18 +51,18 @@ struct State
   int        wraplen; ///< Width to wrap lines to (when flags & #MUTT_DISPLAY)
 };
 
-#define state_set_prefix(state) ((state)->flags |= MUTT_PENDINGPREFIX)
+#define state_set_prefix(state)   ((state)->flags |= MUTT_PENDINGPREFIX)
 #define state_reset_prefix(state) ((state)->flags &= ~MUTT_PENDINGPREFIX)
 #define state_puts(STATE, STR) fputs(STR, (STATE)->fp_out)
 #define state_putc(STATE, STR) fputc(STR, (STATE)->fp_out)
 
-void state_attach_puts          (struct State *s, const char *t);
-void state_mark_attach          (struct State *s);
-void state_mark_protected_header(struct State *s);
-void state_prefix_put           (struct State *s, const char *buf, size_t buflen);
-void state_prefix_putc          (struct State *s, char c);
-int  state_printf               (struct State *s, const char *fmt, ...);
-int  state_putws                (struct State *s, const wchar_t *ws);
+void state_attach_puts          (struct State *state, const char *t);
+void state_mark_attach          (struct State *state);
+void state_mark_protected_header(struct State *state);
+void state_prefix_put           (struct State *state, const char *buf, size_t buflen);
+void state_prefix_putc          (struct State *state, char c);
+int  state_printf               (struct State *state, const char *fmt, ...);
+int  state_putws                (struct State *state, const wchar_t *ws);
 
 const char *state_attachment_marker(void);
 const char *state_protected_header_marker(void);

@@ -873,14 +873,14 @@ static int get_micalg(gpgme_ctx_t ctx, int use_smime, char *buf, size_t buflen)
 
 /**
  * print_time - Print the date/time according to the locale
- * @param t Timestamp
- * @param s State to write to
+ * @param t     Timestamp
+ * @param state State to write to
  */
-static void print_time(time_t t, struct State *s)
+static void print_time(time_t t, struct State *state)
 {
   char p[256] = { 0 };
   mutt_date_localtime_format(p, sizeof(p), nl_langinfo(D_T_FMT), t);
-  state_puts(s, p);
+  state_puts(state, p);
 }
 
 /**
@@ -1108,18 +1108,18 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
 /**
  * show_sig_summary - Show a signature summary
  * @param sum Flags, e.g. GPGME_SIGSUM_KEY_REVOKED
- * @param ctx GPGME handle
- * @param key Set of keys
- * @param idx Index into key set
- * @param s   State to use
- * @param sig GPGME signature
+ * @param ctx   GPGME handle
+ * @param key   Set of keys
+ * @param idx   Index into key set
+ * @param state State to use
+ * @param sig   GPGME signature
  * @retval 0 Success
  * @retval 1 There is a severe warning
  *
  * Display the common attributes of the signature summary SUM.
  */
 static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
-                            int idx, struct State *s, gpgme_signature_t sig)
+                            int idx, struct State *state, gpgme_signature_t sig)
 {
   if (!key)
     return 1;
@@ -1128,7 +1128,7 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
 
   if ((sum & GPGME_SIGSUM_KEY_REVOKED))
   {
-    state_puts(s, _("Warning: One of the keys has been revoked\n"));
+    state_puts(state, _("Warning: One of the keys has been revoked\n"));
     severe = true;
   }
 
@@ -1137,13 +1137,13 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
     time_t at = key->subkeys->expires ? key->subkeys->expires : 0;
     if (at)
     {
-      state_puts(s, _("Warning: The key used to create the signature expired at: "));
-      print_time(at, s);
-      state_puts(s, "\n");
+      state_puts(state, _("Warning: The key used to create the signature expired at: "));
+      print_time(at, state);
+      state_puts(state, "\n");
     }
     else
     {
-      state_puts(s, _("Warning: At least one certification key has expired\n"));
+      state_puts(state, _("Warning: At least one certification key has expired\n"));
     }
   }
 
@@ -1157,30 +1157,30 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
     for (sig2 = result->signatures, i = 0; sig2 && (i < idx); sig2 = sig2->next, i++)
       ; // do nothing
 
-    state_puts(s, _("Warning: The signature expired at: "));
-    print_time(sig2 ? sig2->exp_timestamp : 0, s);
-    state_puts(s, "\n");
+    state_puts(state, _("Warning: The signature expired at: "));
+    print_time(sig2 ? sig2->exp_timestamp : 0, state);
+    state_puts(state, "\n");
   }
 
   if ((sum & GPGME_SIGSUM_KEY_MISSING))
   {
-    state_puts(s, _("Can't verify due to a missing key or certificate\n"));
+    state_puts(state, _("Can't verify due to a missing key or certificate\n"));
   }
 
   if ((sum & GPGME_SIGSUM_CRL_MISSING))
   {
-    state_puts(s, _("The CRL is not available\n"));
+    state_puts(state, _("The CRL is not available\n"));
     severe = true;
   }
 
   if ((sum & GPGME_SIGSUM_CRL_TOO_OLD))
   {
-    state_puts(s, _("Available CRL is too old\n"));
+    state_puts(state, _("Available CRL is too old\n"));
     severe = true;
   }
 
   if ((sum & GPGME_SIGSUM_BAD_POLICY))
-    state_puts(s, _("A policy requirement was not met\n"));
+    state_puts(state, _("A policy requirement was not met\n"));
 
   if ((sum & GPGME_SIGSUM_SYS_ERROR))
   {
@@ -1189,7 +1189,7 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
     gpgme_signature_t sig2 = NULL;
     unsigned int i;
 
-    state_puts(s, _("A system error occurred"));
+    state_puts(state, _("A system error occurred"));
 
     /* Try to figure out some more detailed system error information. */
     result = gpgme_op_verify_result(ctx);
@@ -1204,17 +1204,17 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
 
     if (t0 || t1)
     {
-      state_puts(s, ": ");
+      state_puts(state, ": ");
       if (t0)
-        state_puts(s, t0);
+        state_puts(state, t0);
       if (t1 && !(t0 && (strcmp(t0, t1) == 0)))
       {
         if (t0)
-          state_puts(s, ",");
-        state_puts(s, t1);
+          state_puts(state, ",");
+        state_puts(state, t1);
       }
     }
-    state_puts(s, "\n");
+    state_puts(state, "\n");
   }
 
   const bool c_crypt_use_pka = cs_subset_bool(NeoMutt->sub, "crypt_use_pka");
@@ -1222,15 +1222,15 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
   {
     if ((sig->pka_trust == 1) && sig->pka_address)
     {
-      state_puts(s, _("WARNING: PKA entry does not match signer's address: "));
-      state_puts(s, sig->pka_address);
-      state_puts(s, "\n");
+      state_puts(state, _("WARNING: PKA entry does not match signer's address: "));
+      state_puts(state, sig->pka_address);
+      state_puts(state, "\n");
     }
     else if ((sig->pka_trust == 2) && sig->pka_address)
     {
-      state_puts(s, _("PKA verified signer's address is: "));
-      state_puts(s, sig->pka_address);
-      state_puts(s, "\n");
+      state_puts(state, _("PKA verified signer's address is: "));
+      state_puts(state, sig->pka_address);
+      state_puts(state, "\n");
     }
   }
 
@@ -1293,11 +1293,11 @@ static void show_fingerprint(gpgme_key_t key, struct State *state)
 
 /**
  * show_one_sig_validity - Show the validity of a key used for one signature
- * @param ctx GPGME handle
- * @param idx Index of signature to check
- * @param s   State to use
+ * @param ctx   GPGME handle
+ * @param idx   Index of signature to check
+ * @param state State to use
  */
-static void show_one_sig_validity(gpgme_ctx_t ctx, int idx, struct State *s)
+static void show_one_sig_validity(gpgme_ctx_t ctx, int idx, struct State *state)
 {
   gpgme_signature_t sig = NULL;
   const char *txt = NULL;
@@ -1326,23 +1326,23 @@ static void show_one_sig_validity(gpgme_ctx_t ctx, int idx, struct State *s)
       break;
   }
   if (txt)
-    state_puts(s, txt);
+    state_puts(state, txt);
 }
 
 /**
  * print_smime_keyinfo - Print key info about an SMIME key
- * @param msg Prefix message to write
- * @param sig GPGME signature
- * @param key GPGME key
- * @param s   State to write to
+ * @param msg   Prefix message to write
+ * @param sig   GPGME signature
+ * @param key   GPGME key
+ * @param state State to write to
  */
 static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
-                                gpgme_key_t key, struct State *s)
+                                gpgme_key_t key, struct State *state)
 {
   int msgwid;
 
-  state_puts(s, msg);
-  state_puts(s, " ");
+  state_puts(state, msg);
+  state_puts(state, " ");
   /* key is NULL when not present in the user's keyring */
   if (key)
   {
@@ -1357,11 +1357,11 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
         if (msgwid < 0)
           msgwid = 0;
         for (int i = 0; i < msgwid; i++)
-          state_puts(s, " ");
-        state_puts(s, _("aka: "));
+          state_puts(state, " ");
+        state_puts(state, _("aka: "));
       }
-      state_puts(s, uids->uid);
-      state_puts(s, "\n");
+      state_puts(state, uids->uid);
+      state_puts(state, "\n");
 
       aka = true;
     }
@@ -1370,16 +1370,16 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
   {
     if (sig->fpr)
     {
-      state_puts(s, _("KeyID "));
-      state_puts(s, sig->fpr);
+      state_puts(state, _("KeyID "));
+      state_puts(state, sig->fpr);
     }
     else
     {
       /* L10N: You will see this message in place of "KeyID "
          if the S/MIME key has no ID. This is quite an error. */
-      state_puts(s, _("no signature fingerprint available"));
+      state_puts(state, _("no signature fingerprint available"));
     }
-    state_puts(s, "\n");
+    state_puts(state, "\n");
   }
 
   /* timestamp is 0 when verification failed.
@@ -1390,18 +1390,18 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
     if (msgwid < 0)
       msgwid = 0;
     for (int i = 0; i < msgwid; i++)
-      state_puts(s, " ");
-    state_puts(s, _("created: "));
-    print_time(sig->timestamp, s);
-    state_puts(s, "\n");
+      state_puts(state, " ");
+    state_puts(state, _("created: "));
+    print_time(sig->timestamp, state);
+    state_puts(state, "\n");
   }
 }
 
 /**
  * show_one_sig_status - Show information about one signature
- * @param ctx GPGME handle of a successful verification
- * @param idx Index
- * @param s   State to use
+ * @param ctx   GPGME handle of a successful verification
+ * @param idx   Index
+ * @param state State to use
  * @retval  0 Normal procession
  * @retval  1 A bad signature
  * @retval  2 A signature with a warning
@@ -1409,7 +1409,7 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
  *
  * The index should start at 0 and increment for each call/signature.
  */
-static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
+static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *state)
 {
   const char *fpr = NULL;
   gpgme_key_t key = NULL;
@@ -1461,52 +1461,52 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
       /* pubkey not present */
     }
 
-    if (!s || !s->fp_out || !(s->flags & MUTT_DISPLAY))
+    if (!state || !state->fp_out || !(state->flags & MUTT_DISPLAY))
       ; /* No state information so no way to print anything. */
     else if (err != 0)
     {
       char buf[1024] = { 0 };
       snprintf(buf, sizeof(buf), _("Error getting key information for KeyID %s: %s\n"),
                fpr, gpgme_strerror(err));
-      state_puts(s, buf);
+      state_puts(state, buf);
       anybad = true;
     }
     else if ((sum & GPGME_SIGSUM_GREEN))
     {
-      print_smime_keyinfo(_("Good signature from:"), sig, key, s);
-      if (show_sig_summary(sum, ctx, key, idx, s, sig))
+      print_smime_keyinfo(_("Good signature from:"), sig, key, state);
+      if (show_sig_summary(sum, ctx, key, idx, state, sig))
         anywarn = true;
-      show_one_sig_validity(ctx, idx, s);
+      show_one_sig_validity(ctx, idx, state);
     }
     else if ((sum & GPGME_SIGSUM_RED))
     {
-      print_smime_keyinfo(_("*BAD* signature from:"), sig, key, s);
-      show_sig_summary(sum, ctx, key, idx, s, sig);
+      print_smime_keyinfo(_("*BAD* signature from:"), sig, key, state);
+      show_sig_summary(sum, ctx, key, idx, state, sig);
     }
     else if (!anybad && key && (key->protocol == GPGME_PROTOCOL_OpenPGP))
     { /* We can't decide (yellow) but this is a PGP key with a good
            signature, so we display what a PGP user expects: The name,
            fingerprint and the key validity (which is neither fully or
            ultimate). */
-      print_smime_keyinfo(_("Good signature from:"), sig, key, s);
-      show_one_sig_validity(ctx, idx, s);
-      show_fingerprint(key, s);
-      if (show_sig_summary(sum, ctx, key, idx, s, sig))
+      print_smime_keyinfo(_("Good signature from:"), sig, key, state);
+      show_one_sig_validity(ctx, idx, state);
+      show_fingerprint(key, state);
+      if (show_sig_summary(sum, ctx, key, idx, state, sig))
         anywarn = true;
     }
     else /* can't decide (yellow) */
     {
-      print_smime_keyinfo(_("Problem signature from:"), sig, key, s);
+      print_smime_keyinfo(_("Problem signature from:"), sig, key, state);
       /* 0 indicates no expiration */
       if (sig->exp_timestamp)
       {
         /* L10N: This is trying to match the width of the
            "Problem signature from:" translation just above. */
-        state_puts(s, _("               expires: "));
-        print_time(sig->exp_timestamp, s);
-        state_puts(s, "\n");
+        state_puts(state, _("               expires: "));
+        print_time(sig->exp_timestamp, state);
+        state_puts(state, "\n");
       }
-      show_sig_summary(sum, ctx, key, idx, s, sig);
+      show_sig_summary(sum, ctx, key, idx, state, sig);
       anywarn = true;
     }
 
@@ -1520,7 +1520,7 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
 /**
  * verify_one - Do the actual verification step
  * @param sigbdy   Mime part containing signature
- * @param s        State to read from
+ * @param state    State to read from
  * @param tempfile Temporary file to read
  * @param is_smime Is the key S/MIME?
  * @retval  0 Success
@@ -1530,14 +1530,16 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
  *
  * With is_smime set to true we assume S/MIME.
  */
-static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile, bool is_smime)
+static int verify_one(struct Body *sigbdy, struct State *state,
+                      const char *tempfile, bool is_smime)
 {
   int badsig = -1;
   int anywarn = 0;
   gpgme_ctx_t ctx = NULL;
   gpgme_data_t message = NULL;
 
-  gpgme_data_t signature = file_to_data_object(s->fp_in, sigbdy->offset, sigbdy->length);
+  gpgme_data_t signature = file_to_data_object(state->fp_in, sigbdy->offset,
+                                               sigbdy->length);
   if (!signature)
     return -1;
 
@@ -1557,7 +1559,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
 
   /* Note: We don't need a current time output because GPGME avoids
    * such an attack by separating the meta information from the data. */
-  state_attach_puts(s, _("[-- Begin signature information --]\n"));
+  state_attach_puts(state, _("[-- Begin signature information --]\n"));
 
   err = gpgme_op_verify(ctx, signature, message, NULL);
   gpgme_data_release(message);
@@ -1570,7 +1572,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
 
     snprintf(buf, sizeof(buf) - 1, _("Error: verification failed: %s\n"),
              gpgme_strerror(err));
-    state_puts(s, buf);
+    state_puts(state, buf);
   }
   else
   { /* Verification succeeded, see what the result is. */
@@ -1587,7 +1589,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
     {
       bool anybad = false;
       int res;
-      for (int idx = 0; (res = show_one_sig_status(ctx, idx, s)) != -1; idx++)
+      for (int idx = 0; (res = show_one_sig_status(ctx, idx, state)) != -1; idx++)
       {
         if (res == 1)
           anybad = true;
@@ -1620,7 +1622,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
           char buf[128] = { 0 };
           snprintf(buf, sizeof(buf),
                    _("*** Begin Notation (signature by: %s) ***\n"), sig->fpr);
-          state_puts(s, buf);
+          state_puts(state, buf);
           for (notation = sig->notations; notation; notation = notation->next)
           {
             if (is_pka_notation(notation))
@@ -1628,17 +1630,17 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
 
             if (notation->name)
             {
-              state_puts(s, notation->name);
-              state_puts(s, "=");
+              state_puts(state, notation->name);
+              state_puts(state, "=");
             }
             if (notation->value)
             {
-              state_puts(s, notation->value);
+              state_puts(state, notation->value);
               if (!(*notation->value && (notation->value[strlen(notation->value) - 1] == '\n')))
-                state_puts(s, "\n");
+                state_puts(state, "\n");
             }
           }
-          state_puts(s, _("*** End Notation ***\n"));
+          state_puts(state, _("*** End Notation ***\n"));
         }
       }
     }
@@ -1646,7 +1648,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
 
   gpgme_release(ctx);
 
-  state_attach_puts(s, _("[-- End signature information --]\n\n"));
+  state_attach_puts(state, _("[-- End signature information --]\n\n"));
   mutt_debug(LL_DEBUG1, "returning %d\n", badsig);
 
   return badsig ? 1 : anywarn ? 2 : 0;
@@ -1655,24 +1657,24 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
 /**
  * pgp_gpgme_verify_one - Implements CryptModuleSpecs::verify_one() - @ingroup crypto_verify_one
  */
-int pgp_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
+int pgp_gpgme_verify_one(struct Body *sigbdy, struct State *state, const char *tempfile)
 {
-  return verify_one(sigbdy, s, tempfile, false);
+  return verify_one(sigbdy, state, tempfile, false);
 }
 
 /**
  * smime_gpgme_verify_one - Implements CryptModuleSpecs::verify_one() - @ingroup crypto_verify_one
  */
-int smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
+int smime_gpgme_verify_one(struct Body *sigbdy, struct State *state, const char *tempfile)
 {
-  return verify_one(sigbdy, s, tempfile, true);
+  return verify_one(sigbdy, state, tempfile, true);
 }
 
 /**
  * decrypt_part - Decrypt a PGP or SMIME message
  * @param[in]  a           Body of message
- * @param[in]  s           State to use
- * @param[in]  fp_out       File to write to
+ * @param[in]  state       State to use
+ * @param[in]  fp_out      File to write to
  * @param[in]  is_smime    True if an SMIME message
  * @param[out] r_is_signed Flag, R_IS_SIGNED (PGP only)
  * @retval ptr Newly allocated Body
@@ -1681,10 +1683,10 @@ int smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tem
  * encrypted and signed message, for S/MIME it returns true when it is not a
  * encrypted but a signed message.
  */
-static struct Body *decrypt_part(struct Body *a, struct State *s, FILE *fp_out,
-                                 bool is_smime, int *r_is_signed)
+static struct Body *decrypt_part(struct Body *a, struct State *state,
+                                 FILE *fp_out, bool is_smime, int *r_is_signed)
 {
-  if (!a || !s || !fp_out)
+  if (!a || !state || !fp_out)
     return NULL;
 
   struct Body *tattach = NULL;
@@ -1704,7 +1706,7 @@ restart:
   if (a->length < 0)
     return NULL;
   /* Make a data object from the body, create context etc. */
-  ciphertext = file_to_data_object(s->fp_in, a->offset, a->length);
+  ciphertext = file_to_data_object(state->fp_in, a->offset, a->length);
   if (!ciphertext)
     goto cleanup;
   plaintext = create_gpgme_data();
@@ -1758,13 +1760,13 @@ restart:
       }
     }
     redraw_if_needed(ctx);
-    if ((s->flags & MUTT_DISPLAY))
+    if ((state->flags & MUTT_DISPLAY))
     {
       char buf[200] = { 0 };
 
       snprintf(buf, sizeof(buf) - 1,
                _("[-- Error: decryption failed: %s --]\n\n"), gpgme_strerror(err));
-      state_attach_puts(s, buf);
+      state_attach_puts(state, buf);
     }
     goto cleanup;
   }
@@ -1787,11 +1789,11 @@ restart:
     if (r_is_signed)
       *r_is_signed = -1; /* A signature exists. */
 
-    if ((s->flags & MUTT_DISPLAY))
+    if ((state->flags & MUTT_DISPLAY))
     {
-      state_attach_puts(s, _("[-- Begin signature information --]\n"));
+      state_attach_puts(state, _("[-- Begin signature information --]\n"));
     }
-    for (idx = 0; (res = show_one_sig_status(ctx, idx, s)) != -1; idx++)
+    for (idx = 0; (res = show_one_sig_status(ctx, idx, state)) != -1; idx++)
     {
       if (res == 1)
         anybad = 1;
@@ -1801,9 +1803,9 @@ restart:
     if (!anybad && idx && r_is_signed && *r_is_signed)
       *r_is_signed = anywarn ? 2 : 1; /* Good signature. */
 
-    if ((s->flags & MUTT_DISPLAY))
+    if ((state->flags & MUTT_DISPLAY))
     {
-      state_attach_puts(s, _("[-- End signature information --]\n\n"));
+      state_attach_puts(state, _("[-- End signature information --]\n\n"));
     }
   }
   gpgme_release(ctx);
@@ -1841,7 +1843,7 @@ cleanup:
  */
 int pgp_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
 {
-  struct State s = { 0 };
+  struct State state = { 0 };
   struct Body *first_part = b;
   int is_signed = 0;
   bool need_decode = false;
@@ -1868,7 +1870,7 @@ int pgp_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
   else
     return -1;
 
-  s.fp_in = fp_in;
+  state.fp_in = fp_in;
 
   if (need_decode)
   {
@@ -1882,21 +1884,21 @@ int pgp_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
       return -1;
     }
 
-    if (!mutt_file_seek(s.fp_in, b->offset, SEEK_SET))
+    if (!mutt_file_seek(state.fp_in, b->offset, SEEK_SET))
     {
       rc = -1;
       goto bail;
     }
-    s.fp_out = fp_decoded;
+    state.fp_out = fp_decoded;
 
-    mutt_decode_attachment(b, &s);
+    mutt_decode_attachment(b, &state);
 
     fflush(fp_decoded);
     b->length = ftello(fp_decoded);
     b->offset = 0;
     rewind(fp_decoded);
-    s.fp_in = fp_decoded;
-    s.fp_out = 0;
+    state.fp_in = fp_decoded;
+    state.fp_out = 0;
   }
 
   *fp_out = mutt_file_mkstemp();
@@ -1907,7 +1909,7 @@ int pgp_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
     goto bail;
   }
 
-  *cur = decrypt_part(b, &s, *fp_out, false, &is_signed);
+  *cur = decrypt_part(b, &state, *fp_out, false, &is_signed);
   if (*cur)
   {
     rewind(*fp_out);
@@ -1936,7 +1938,7 @@ bail:
  */
 int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
 {
-  struct State s = { 0 };
+  struct State state = { 0 };
   int is_signed;
   LOFF_T saved_b_offset;
   size_t saved_b_length;
@@ -1953,8 +1955,8 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
    * do it here. */
   saved_b_offset = b->offset;
   saved_b_length = b->length;
-  s.fp_in = fp_in;
-  if (!mutt_file_seek(s.fp_in, b->offset, SEEK_SET))
+  state.fp_in = fp_in;
+  if (!mutt_file_seek(state.fp_in, b->offset, SEEK_SET))
   {
     return -1;
   }
@@ -1965,16 +1967,16 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
     return -1;
   }
 
-  s.fp_out = fp_tmp;
-  mutt_decode_attachment(b, &s);
+  state.fp_out = fp_tmp;
+  mutt_decode_attachment(b, &state);
   fflush(fp_tmp);
-  b->length = ftello(s.fp_out);
+  b->length = ftello(state.fp_out);
   b->offset = 0;
   rewind(fp_tmp);
 
-  memset(&s, 0, sizeof(s));
-  s.fp_in = fp_tmp;
-  s.fp_out = 0;
+  memset(&state, 0, sizeof(state));
+  state.fp_in = fp_tmp;
+  state.fp_out = 0;
   *fp_out = mutt_file_mkstemp();
   if (!*fp_out)
   {
@@ -1982,7 +1984,7 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
     return -1;
   }
 
-  *cur = decrypt_part(b, &s, *fp_out, true, &is_signed);
+  *cur = decrypt_part(b, &state, *fp_out, true, &is_signed);
   if (*cur)
     (*cur)->goodsig = is_signed > 0;
   b->length = saved_b_length;
@@ -2002,9 +2004,9 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
 
     saved_b_offset = bb->offset;
     saved_b_length = bb->length;
-    memset(&s, 0, sizeof(s));
-    s.fp_in = *fp_out;
-    if (!mutt_file_seek(s.fp_in, bb->offset, SEEK_SET))
+    memset(&state, 0, sizeof(state));
+    state.fp_in = *fp_out;
+    if (!mutt_file_seek(state.fp_in, bb->offset, SEEK_SET))
     {
       return -1;
     }
@@ -2015,17 +2017,17 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
       return -1;
     }
 
-    s.fp_out = fp_tmp2;
-    mutt_decode_attachment(bb, &s);
+    state.fp_out = fp_tmp2;
+    mutt_decode_attachment(bb, &state);
     fflush(fp_tmp2);
-    bb->length = ftello(s.fp_out);
+    bb->length = ftello(state.fp_out);
     bb->offset = 0;
     rewind(fp_tmp2);
     mutt_file_fclose(fp_out);
 
-    memset(&s, 0, sizeof(s));
-    s.fp_in = fp_tmp2;
-    s.fp_out = 0;
+    memset(&state, 0, sizeof(state));
+    state.fp_in = fp_tmp2;
+    state.fp_out = 0;
     *fp_out = mutt_file_mkstemp();
     if (!*fp_out)
     {
@@ -2033,7 +2035,7 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
       return -1;
     }
 
-    struct Body *b_tmp = decrypt_part(bb, &s, *fp_out, true, &is_signed);
+    struct Body *b_tmp = decrypt_part(bb, &state, *fp_out, true, &is_signed);
     if (b_tmp)
       b_tmp->goodsig = is_signed > 0;
     bb->length = saved_b_length;
@@ -2342,7 +2344,7 @@ leave:
 /**
  * copy_clearsigned - Copy a clearsigned message
  * @param data    GPGME data object
- * @param s       State to use
+ * @param state   State to use
  * @param charset Charset of message
  *
  * strip the signature and PGP's dash-escaping.
@@ -2354,7 +2356,7 @@ leave:
  * (Note that we aren't worse than Outlook & Cie in this, and also note that we
  * can successfully handle anything produced by any existing versions of neomutt.)
  */
-static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
+static void copy_clearsigned(gpgme_data_t data, struct State *state, char *charset)
 {
   char buf[8192] = { 0 };
   bool complete, armor_header;
@@ -2381,7 +2383,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
     if (!complete)
     {
       if (!armor_header)
-        state_puts(s, buf);
+        state_puts(state, buf);
       continue;
     }
 
@@ -2395,13 +2397,13 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
       continue;
     }
 
-    if (s->prefix)
-      state_puts(s, s->prefix);
+    if (state->prefix)
+      state_puts(state, state->prefix);
 
     if ((buf[0] == '-') && (buf[1] == ' '))
-      state_puts(s, buf + 2);
+      state_puts(state, buf + 2);
     else
-      state_puts(s, buf);
+      state_puts(state, buf);
   }
 
   mutt_ch_fgetconv_close(&fc);
@@ -2411,7 +2413,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
 /**
  * pgp_gpgme_application_handler - Implements CryptModuleSpecs::application_handler() - @ingroup crypto_application_handler
  */
-int pgp_gpgme_application_handler(struct Body *m, struct State *s)
+int pgp_gpgme_application_handler(struct Body *m, struct State *state)
 {
   int needpass = -1;
   bool pgp_keyblock = false;
@@ -2436,7 +2438,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
   if (!mutt_body_get_charset(m, body_charset, sizeof(body_charset)))
     mutt_str_copy(body_charset, "iso-8859-1", sizeof(body_charset));
 
-  if (!mutt_file_seek(s->fp_in, m->offset, SEEK_SET))
+  if (!mutt_file_seek(state->fp_in, m->offset, SEEK_SET))
   {
     return -1;
   }
@@ -2444,10 +2446,10 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 
   for (bytes = m->length; bytes > 0;)
   {
-    if (!fgets(buf, sizeof(buf), s->fp_in))
+    if (!fgets(buf, sizeof(buf), state->fp_in))
       break;
 
-    LOFF_T offset = ftello(s->fp_in);
+    LOFF_T offset = ftello(state->fp_in);
     bytes -= (offset - last_pos); /* don't rely on mutt_str_len(buf) */
     last_pos = offset;
 
@@ -2471,22 +2473,22 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       else
       {
         /* XXX we may wish to recode here */
-        if (s->prefix)
-          state_puts(s, s->prefix);
-        state_puts(s, buf);
+        if (state->prefix)
+          state_puts(state, state->prefix);
+        state_puts(state, buf);
         continue;
       }
 
-      have_any_sigs = (have_any_sigs || (clearsign && (s->flags & MUTT_VERIFY)));
+      have_any_sigs = (have_any_sigs || (clearsign && (state->flags & MUTT_VERIFY)));
 
       /* Copy PGP material to an data container */
-      armored_data = file_to_data_object(s->fp_in, m->offset, m->length);
+      armored_data = file_to_data_object(state->fp_in, m->offset, m->length);
       /* Invoke PGP if needed */
       if (pgp_keyblock)
       {
         pgp_gpgme_extract_keys(armored_data, &fp_out);
       }
-      else if (!clearsign || (s->flags & MUTT_VERIFY))
+      else if (!clearsign || (state->flags & MUTT_VERIFY))
       {
         gpgme_data_t plaintext = create_gpgme_data();
         gpgme_ctx_t ctx = create_gpgme_context(false);
@@ -2514,7 +2516,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 
           snprintf(errbuf, sizeof(errbuf) - 1,
                    _("Error: decryption/verification failed: %s\n"), gpgme_strerror(err));
-          state_puts(s, errbuf);
+          state_puts(state, errbuf);
         }
         else
         {
@@ -2534,14 +2536,14 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 
           have_any_sigs = false;
           maybe_goodsig = false;
-          if ((s->flags & MUTT_DISPLAY) && sig_stat)
+          if ((state->flags & MUTT_DISPLAY) && sig_stat)
           {
             int res, idx;
             bool anybad = false;
 
-            state_attach_puts(s, _("[-- Begin signature information --]\n"));
+            state_attach_puts(state, _("[-- Begin signature information --]\n"));
             have_any_sigs = true;
-            for (idx = 0; (res = show_one_sig_status(ctx, idx, s)) != -1; idx++)
+            for (idx = 0; (res = show_one_sig_status(ctx, idx, state)) != -1; idx++)
             {
               if (res == 1)
                 anybad = true;
@@ -2549,7 +2551,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
             if (!anybad && idx)
               maybe_goodsig = true;
 
-            state_attach_puts(s, _("[-- End signature information --]\n\n"));
+            state_attach_puts(state, _("[-- End signature information --]\n\n"));
           }
 
           tmpfname = data_object_to_tempfile(plaintext, &fp_out);
@@ -2561,7 +2563,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
           else
           {
             mutt_file_fclose(&fp_out);
-            state_puts(s, _("Error: copy data failed\n"));
+            state_puts(state, _("Error: copy data failed\n"));
           }
         }
         gpgme_data_release(plaintext);
@@ -2571,19 +2573,19 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       /* Now, copy cleartext to the screen.  NOTE - we expect that PGP
        * outputs utf-8 cleartext.  This may not always be true, but it
        * seems to be a reasonable guess.  */
-      if (s->flags & MUTT_DISPLAY)
+      if (state->flags & MUTT_DISPLAY)
       {
         if (needpass)
-          state_attach_puts(s, _("[-- BEGIN PGP MESSAGE --]\n\n"));
+          state_attach_puts(state, _("[-- BEGIN PGP MESSAGE --]\n\n"));
         else if (pgp_keyblock)
-          state_attach_puts(s, _("[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"));
+          state_attach_puts(state, _("[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"));
         else
-          state_attach_puts(s, _("[-- BEGIN PGP SIGNED MESSAGE --]\n\n"));
+          state_attach_puts(state, _("[-- BEGIN PGP SIGNED MESSAGE --]\n\n"));
       }
 
       if (clearsign)
       {
-        copy_clearsigned(armored_data, s, body_charset);
+        copy_clearsigned(armored_data, state, body_charset);
       }
       else if (fp_out)
       {
@@ -2594,22 +2596,22 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
                                                     MUTT_ICONV_NO_FLAGS);
         while ((c = mutt_ch_fgetconv(fc)) != EOF)
         {
-          state_putc(s, c);
-          if ((c == '\n') && s->prefix)
-            state_puts(s, s->prefix);
+          state_putc(state, c);
+          if ((c == '\n') && state->prefix)
+            state_puts(state, state->prefix);
         }
         mutt_ch_fgetconv_close(&fc);
       }
 
-      if (s->flags & MUTT_DISPLAY)
+      if (state->flags & MUTT_DISPLAY)
       {
-        state_putc(s, '\n');
+        state_putc(state, '\n');
         if (needpass)
-          state_attach_puts(s, _("[-- END PGP MESSAGE --]\n"));
+          state_attach_puts(state, _("[-- END PGP MESSAGE --]\n"));
         else if (pgp_keyblock)
-          state_attach_puts(s, _("[-- END PGP PUBLIC KEY BLOCK --]\n"));
+          state_attach_puts(state, _("[-- END PGP PUBLIC KEY BLOCK --]\n"));
         else
-          state_attach_puts(s, _("[-- END PGP SIGNED MESSAGE --]\n"));
+          state_attach_puts(state, _("[-- END PGP SIGNED MESSAGE --]\n"));
       }
 
       gpgme_data_release(armored_data);
@@ -2619,9 +2621,9 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
     {
       /* A traditional PGP part may mix signed and unsigned content */
       /* XXX we may wish to recode here */
-      if (s->prefix)
-        state_puts(s, s->prefix);
-      state_puts(s, buf);
+      if (state->prefix)
+        state_puts(state, state->prefix);
+      state_puts(state, buf);
     }
   }
 
@@ -2629,7 +2631,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 
   if (needpass == -1)
   {
-    state_attach_puts(s, _("[-- Error: could not find beginning of PGP message --]\n\n"));
+    state_attach_puts(state, _("[-- Error: could not find beginning of PGP message --]\n\n"));
     return 1;
   }
   mutt_debug(LL_DEBUG2, "Leaving handler\n");
@@ -2643,7 +2645,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
  * This handler is passed the application/octet-stream directly.
  * The caller must propagate a->goodsig to its parent.
  */
-int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
+int pgp_gpgme_encrypted_handler(struct Body *a, struct State *state)
 {
   int is_signed;
   int rc = 0;
@@ -2654,24 +2656,24 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
   if (!fp_out)
   {
     mutt_perror(_("Can't create temporary file"));
-    if (s->flags & MUTT_DISPLAY)
+    if (state->flags & MUTT_DISPLAY)
     {
-      state_attach_puts(s, _("[-- Error: could not create temporary file --]\n"));
+      state_attach_puts(state, _("[-- Error: could not create temporary file --]\n"));
     }
     return -1;
   }
 
-  struct Body *tattach = decrypt_part(a, s, fp_out, false, &is_signed);
+  struct Body *tattach = decrypt_part(a, state, fp_out, false, &is_signed);
   if (tattach)
   {
     tattach->goodsig = is_signed > 0;
 
-    if (s->flags & MUTT_DISPLAY)
+    if (state->flags & MUTT_DISPLAY)
     {
-      state_attach_puts(s, is_signed ?
-                               _("[-- The following data is PGP/MIME signed and encrypted --]\n\n") :
-                               _("[-- The following data is PGP/MIME encrypted --]\n\n"));
-      mutt_protected_headers_handler(tattach, s);
+      state_attach_puts(state, is_signed ?
+                                   _("[-- The following data is PGP/MIME signed and encrypted --]\n\n") :
+                                   _("[-- The following data is PGP/MIME encrypted --]\n\n"));
+      mutt_protected_headers_handler(tattach, state);
     }
 
     /* Store any protected headers in the parent so they can be
@@ -2683,10 +2685,10 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
     tattach->mime_headers = NULL;
 
     {
-      FILE *fp_save = s->fp_in;
-      s->fp_in = fp_out;
-      rc = mutt_body_handler(tattach, s);
-      s->fp_in = fp_save;
+      FILE *fp_save = state->fp_in;
+      state->fp_in = fp_out;
+      rc = mutt_body_handler(tattach, state);
+      state->fp_in = fp_save;
     }
 
     /* Embedded multipart signed protected headers override the
@@ -2705,11 +2707,12 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
     if (mutt_is_multipart_signed(tattach) && !tattach->next)
       a->goodsig |= tattach->goodsig;
 
-    if (s->flags & MUTT_DISPLAY)
+    if (state->flags & MUTT_DISPLAY)
     {
-      state_puts(s, "\n");
-      state_attach_puts(s, is_signed ? _("[-- End of PGP/MIME signed and encrypted data --]\n") :
-                                       _("[-- End of PGP/MIME encrypted data --]\n"));
+      state_puts(state, "\n");
+      state_attach_puts(state, is_signed ?
+                                   _("[-- End of PGP/MIME signed and encrypted data --]\n") :
+                                   _("[-- End of PGP/MIME encrypted data --]\n"));
     }
 
     mutt_body_free(&tattach);
@@ -2735,7 +2738,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
 /**
  * smime_gpgme_application_handler - Implements CryptModuleSpecs::application_handler() - @ingroup crypto_application_handler
  */
-int smime_gpgme_application_handler(struct Body *a, struct State *s)
+int smime_gpgme_application_handler(struct Body *a, struct State *state)
 {
   int is_signed = 0;
   int rc = 0;
@@ -2749,24 +2752,24 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
   if (!fp_out)
   {
     mutt_perror(_("Can't create temporary file"));
-    if (s->flags & MUTT_DISPLAY)
+    if (state->flags & MUTT_DISPLAY)
     {
-      state_attach_puts(s, _("[-- Error: could not create temporary file --]\n"));
+      state_attach_puts(state, _("[-- Error: could not create temporary file --]\n"));
     }
     return -1;
   }
 
-  struct Body *tattach = decrypt_part(a, s, fp_out, true, &is_signed);
+  struct Body *tattach = decrypt_part(a, state, fp_out, true, &is_signed);
   if (tattach)
   {
     tattach->goodsig = is_signed > 0;
 
-    if (s->flags & MUTT_DISPLAY)
+    if (state->flags & MUTT_DISPLAY)
     {
-      state_attach_puts(s, is_signed ?
-                               _("[-- The following data is S/MIME signed --]\n\n") :
-                               _("[-- The following data is S/MIME encrypted --]\n\n"));
-      mutt_protected_headers_handler(tattach, s);
+      state_attach_puts(state, is_signed ?
+                                   _("[-- The following data is S/MIME signed --]\n\n") :
+                                   _("[-- The following data is S/MIME encrypted --]\n\n"));
+      mutt_protected_headers_handler(tattach, state);
     }
 
     /* Store any protected headers in the parent so they can be
@@ -2778,10 +2781,10 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
     tattach->mime_headers = NULL;
 
     {
-      FILE *fp_save = s->fp_in;
-      s->fp_in = fp_out;
-      rc = mutt_body_handler(tattach, s);
-      s->fp_in = fp_save;
+      FILE *fp_save = state->fp_in;
+      state->fp_in = fp_out;
+      rc = mutt_body_handler(tattach, state);
+      state->fp_in = fp_save;
     }
 
     /* Embedded multipart signed protected headers override the
@@ -2808,11 +2811,11 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
       a->warnsig = tattach->warnsig;
     }
 
-    if (s->flags & MUTT_DISPLAY)
+    if (state->flags & MUTT_DISPLAY)
     {
-      state_puts(s, "\n");
-      state_attach_puts(s, is_signed ? _("[-- End of S/MIME signed data --]\n") :
-                                       _("[-- End of S/MIME encrypted data --]\n"));
+      state_puts(state, "\n");
+      state_attach_puts(state, is_signed ? _("[-- End of S/MIME signed data --]\n") :
+                                           _("[-- End of S/MIME encrypted data --]\n"));
     }
 
     mutt_body_free(&tattach);

@@ -70,34 +70,34 @@
  *
  * Prototype for a function to handle MIME parts
  *
- * @param b Body of the email
- * @param s State of text being processed
+ * @param b     Body of the email
+ * @param state State of text being processed
  * @retval 0 Success
  * @retval -1 Error
  */
-typedef int (*handler_t)(struct Body *b, struct State *s);
+typedef int (*handler_t)(struct Body *b, struct State *state);
 
 /**
  * print_part_line - Print a separator for the Mime part
- * @param s State of text being processed
- * @param b Body of the email
- * @param n Part number for multipart emails (0 otherwise)
+ * @param state State of text being processed
+ * @param b     Body of the email
+ * @param n     Part number for multipart emails (0 otherwise)
  */
-static void print_part_line(struct State *s, struct Body *b, int n)
+static void print_part_line(struct State *state, struct Body *b, int n)
 {
   char length[5] = { 0 };
   mutt_str_pretty_size(length, sizeof(length), b->length);
-  state_mark_attach(s);
+  state_mark_attach(state);
   char *charset = mutt_param_get(&b->parameter, "charset");
   if (n == 0)
   {
-    state_printf(s, _("[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
+    state_printf(state, _("[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
                  TYPE(b), b->subtype, charset ? "; charset=" : "",
                  charset ? charset : "", ENCODING(b->encoding), length);
   }
   else
   {
-    state_printf(s, _("[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
+    state_printf(state, _("[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
                  n, TYPE(b), b->subtype, charset ? "; charset=" : "",
                  charset ? charset : "", ENCODING(b->encoding), length);
   }
@@ -105,12 +105,12 @@ static void print_part_line(struct State *s, struct Body *b, int n)
 
 /**
  * convert_to_state - Convert text and write it to a file
- * @param cd   Iconv conversion descriptor
- * @param bufi Buffer with text to convert
- * @param l    Length of buffer
- * @param s    State to write to
+ * @param cd     Iconv conversion descriptor
+ * @param bufi   Buffer with text to convert
+ * @param l      Length of buffer
+ * @param state  State to write to
  */
-static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
+static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *state)
 {
   char bufo[BUFO_SIZE] = { 0 };
   const char *ib = NULL;
@@ -125,14 +125,14 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
       obl = sizeof(bufo);
       iconv(cd, NULL, NULL, &ob, &obl);
       if (ob != bufo)
-        state_prefix_put(s, bufo, ob - bufo);
+        state_prefix_put(state, bufo, ob - bufo);
     }
     return;
   }
 
   if (cd == (iconv_t) (-1))
   {
-    state_prefix_put(s, bufi, *l);
+    state_prefix_put(state, bufi, *l);
     *l = 0;
     return;
   }
@@ -146,7 +146,7 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
     mutt_ch_iconv(cd, &ib, &ibl, &ob, &obl, 0, "?", NULL);
     if (ob == bufo)
       break;
-    state_prefix_put(s, bufo, ob - bufo);
+    state_prefix_put(state, bufo, ob - bufo);
   }
   memmove(bufi, ib, ibl);
   *l = ibl;
@@ -154,47 +154,47 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
 
 /**
  * decode_xbit - Decode xbit-encoded text
- * @param s      State to work with
+ * @param state  State to work with
  * @param len    Length of text to decode
  * @param istext Mime part is plain text
  * @param cd     Iconv conversion descriptor
  */
-static void decode_xbit(struct State *s, long len, bool istext, iconv_t cd)
+static void decode_xbit(struct State *state, long len, bool istext, iconv_t cd)
 {
   if (!istext)
   {
-    mutt_file_copy_bytes(s->fp_in, s->fp_out, len);
+    mutt_file_copy_bytes(state->fp_in, state->fp_out, len);
     return;
   }
 
-  state_set_prefix(s);
+  state_set_prefix(state);
 
   int c;
   char bufi[BUFI_SIZE] = { 0 };
   size_t l = 0;
-  while (((c = fgetc(s->fp_in)) != EOF) && len--)
+  while (((c = fgetc(state->fp_in)) != EOF) && len--)
   {
     if ((c == '\r') && len)
     {
-      const int ch = fgetc(s->fp_in);
+      const int ch = fgetc(state->fp_in);
       if (ch == '\n')
       {
         c = ch;
         len--;
       }
       else
-        ungetc(ch, s->fp_in);
+        ungetc(ch, state->fp_in);
     }
 
     bufi[l++] = c;
     if (l == sizeof(bufi))
-      convert_to_state(cd, bufi, &l, s);
+      convert_to_state(cd, bufi, &l, state);
   }
 
-  convert_to_state(cd, bufi, &l, s);
-  convert_to_state(cd, 0, 0, s);
+  convert_to_state(cd, bufi, &l, state);
+  convert_to_state(cd, 0, 0, state);
 
-  state_reset_prefix(s);
+  state_reset_prefix(state);
 }
 
 /**
@@ -273,7 +273,7 @@ static void qp_decode_line(char *dest, char *src, size_t *l, int last)
 
 /**
  * decode_quoted - Decode an attachment encoded with quoted-printable
- * @param s      State to work with
+ * @param state  State to work with
  * @param len    Length of text to decode
  * @param istext Mime part is plain text
  * @param cd     Iconv conversion descriptor
@@ -296,7 +296,7 @@ static void qp_decode_line(char *dest, char *src, size_t *l, int last)
  * Just to make sure that I didn't make some off-by-one error above, we just
  * use 512 for the target buffer's size.
  */
-static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
+static void decode_quoted(struct State *state, long len, bool istext, iconv_t cd)
 {
   char line[256] = { 0 };
   char decline[512] = { 0 };
@@ -304,7 +304,7 @@ static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
   size_t l3;
 
   if (istext)
-    state_set_prefix(s);
+    state_set_prefix(state);
 
   while (len > 0)
   {
@@ -313,7 +313,7 @@ static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
      * really shouldn't happen according the MIME spec, since Q-P encoded
      * lines are at most 76 characters, but we should be liberal about what
      * we accept.  */
-    if (!fgets(line, MIN((ssize_t) sizeof(line), len + 1), s->fp_in))
+    if (!fgets(line, MIN((ssize_t) sizeof(line), len + 1), state->fp_in))
       break;
 
     size_t linelen = strlen(line);
@@ -334,11 +334,11 @@ static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
     /* decode and do character set conversion */
     qp_decode_line(decline + l, line, &l3, last);
     l += l3;
-    convert_to_state(cd, decline, &l, s);
+    convert_to_state(cd, decline, &l, state);
   }
 
-  convert_to_state(cd, 0, 0, s);
-  state_reset_prefix(s);
+  convert_to_state(cd, 0, 0, state);
+  state_reset_prefix(state);
 }
 
 /**
@@ -355,12 +355,12 @@ static unsigned char decode_byte(char ch)
 
 /**
  * decode_uuencoded - Decode uuencoded text
- * @param s      State to work with
+ * @param state      State to work with
  * @param len    Length of text to decode
  * @param istext Mime part is plain text
  * @param cd     Iconv conversion descriptor
  */
-static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
+static void decode_uuencoded(struct State *state, long len, bool istext, iconv_t cd)
 {
   char tmps[128] = { 0 };
   char *pt = NULL;
@@ -368,11 +368,11 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
   size_t k = 0;
 
   if (istext)
-    state_set_prefix(s);
+    state_set_prefix(state);
 
   while (len > 0)
   {
-    if (!fgets(tmps, sizeof(tmps), s->fp_in))
+    if (!fgets(tmps, sizeof(tmps), state->fp_in))
       goto cleanup;
     len -= mutt_str_len(tmps);
     if (mutt_str_startswith(tmps, "begin "))
@@ -380,7 +380,7 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
   }
   while (len > 0)
   {
-    if (!fgets(tmps, sizeof(tmps), s->fp_in))
+    if (!fgets(tmps, sizeof(tmps), state->fp_in))
       goto cleanup;
     len -= mutt_str_len(tmps);
     if (mutt_str_startswith(tmps, "end"))
@@ -400,16 +400,16 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
         if (c == linelen)
           break;
       }
-      convert_to_state(cd, bufi, &k, s);
+      convert_to_state(cd, bufi, &k, state);
       pt++;
     }
   }
 
 cleanup:
-  convert_to_state(cd, bufi, &k, s);
-  convert_to_state(cd, 0, 0, s);
+  convert_to_state(cd, bufi, &k, state);
+  convert_to_state(cd, 0, 0, state);
 
-  state_reset_prefix(s);
+  state_reset_prefix(state);
 }
 
 /**
@@ -519,7 +519,7 @@ static bool is_autoview(struct Body *b)
 /**
  * autoview_handler - Handler for autoviewable attachments - Implements ::handler_t - @ingroup handler_api
  */
-static int autoview_handler(struct Body *a, struct State *s)
+static int autoview_handler(struct Body *a, struct State *state)
 {
   struct MailcapEntry *entry = mailcap_entry_new();
   char buf[1024] = { 0 };
@@ -548,10 +548,10 @@ static int autoview_handler(struct Body *a, struct State *s)
     /* mailcap_expand_command returns 0 if the file is required */
     bool piped = mailcap_expand_command(a, mutt_buffer_string(tempfile), type, cmd);
 
-    if (s->flags & MUTT_DISPLAY)
+    if (state->flags & MUTT_DISPLAY)
     {
-      state_mark_attach(s);
-      state_printf(s, _("[-- Autoview using %s --]\n"), mutt_buffer_string(cmd));
+      state_mark_attach(state);
+      state_printf(state, _("[-- Autoview using %s --]\n"), mutt_buffer_string(cmd));
       mutt_message(_("Invoking autoview command: %s"), mutt_buffer_string(cmd));
     }
 
@@ -564,7 +564,7 @@ static int autoview_handler(struct Body *a, struct State *s)
       goto cleanup;
     }
 
-    mutt_file_copy_bytes(s->fp_in, fp_in, a->length);
+    mutt_file_copy_bytes(state->fp_in, fp_in, a->length);
 
     if (piped)
     {
@@ -583,16 +583,16 @@ static int autoview_handler(struct Body *a, struct State *s)
     if (pid < 0)
     {
       mutt_perror(_("Can't create filter"));
-      if (s->flags & MUTT_DISPLAY)
+      if (state->flags & MUTT_DISPLAY)
       {
-        state_mark_attach(s);
-        state_printf(s, _("[-- Can't run %s. --]\n"), mutt_buffer_string(cmd));
+        state_mark_attach(state);
+        state_printf(state, _("[-- Can't run %s. --]\n"), mutt_buffer_string(cmd));
       }
       rc = -1;
       goto bail;
     }
 
-    if (s->prefix)
+    if (state->prefix)
     {
       /* Remove ansi and formatting from autoview output in replies only.  The
        * user may want to see the formatting in the pager, but it shouldn't be
@@ -601,43 +601,45 @@ static int autoview_handler(struct Body *a, struct State *s)
       while (fgets(buf, sizeof(buf), fp_out))
       {
         mutt_buffer_strip_formatting(stripped, buf, false);
-        state_puts(s, s->prefix);
-        state_puts(s, mutt_buffer_string(stripped));
+        state_puts(state, state->prefix);
+        state_puts(state, mutt_buffer_string(stripped));
       }
       mutt_buffer_pool_release(&stripped);
 
       /* check for data on stderr */
       if (fgets(buf, sizeof(buf), fp_err))
       {
-        if (s->flags & MUTT_DISPLAY)
+        if (state->flags & MUTT_DISPLAY)
         {
-          state_mark_attach(s);
-          state_printf(s, _("[-- Autoview stderr of %s --]\n"), mutt_buffer_string(cmd));
+          state_mark_attach(state);
+          state_printf(state, _("[-- Autoview stderr of %s --]\n"),
+                       mutt_buffer_string(cmd));
         }
 
-        state_puts(s, s->prefix);
-        state_puts(s, buf);
+        state_puts(state, state->prefix);
+        state_puts(state, buf);
         while (fgets(buf, sizeof(buf), fp_err))
         {
-          state_puts(s, s->prefix);
-          state_puts(s, buf);
+          state_puts(state, state->prefix);
+          state_puts(state, buf);
         }
       }
     }
     else
     {
-      mutt_file_copy_stream(fp_out, s->fp_out);
+      mutt_file_copy_stream(fp_out, state->fp_out);
       /* Check for stderr messages */
       if (fgets(buf, sizeof(buf), fp_err))
       {
-        if (s->flags & MUTT_DISPLAY)
+        if (state->flags & MUTT_DISPLAY)
         {
-          state_mark_attach(s);
-          state_printf(s, _("[-- Autoview stderr of %s --]\n"), mutt_buffer_string(cmd));
+          state_mark_attach(state);
+          state_printf(state, _("[-- Autoview stderr of %s --]\n"),
+                       mutt_buffer_string(cmd));
         }
 
-        state_puts(s, buf);
-        mutt_file_copy_stream(fp_err, s->fp_out);
+        state_puts(state, buf);
+        mutt_file_copy_stream(fp_err, state->fp_out);
       }
     }
 
@@ -651,7 +653,7 @@ static int autoview_handler(struct Body *a, struct State *s)
     else
       mutt_file_unlink(mutt_buffer_string(tempfile));
 
-    if (s->flags & MUTT_DISPLAY)
+    if (state->flags & MUTT_DISPLAY)
       mutt_clear_error();
   }
 
@@ -672,12 +674,12 @@ cleanup:
  * all trailing spaces to improve interoperability; if $text_flowed is unset,
  * simply verbatim copy input.
  */
-static int text_plain_handler(struct Body *b, struct State *s)
+static int text_plain_handler(struct Body *b, struct State *state)
 {
   char *buf = NULL;
   size_t sz = 0;
 
-  while ((buf = mutt_file_read_line(buf, &sz, s->fp_in, NULL, MUTT_RL_NO_FLAGS)))
+  while ((buf = mutt_file_read_line(buf, &sz, state->fp_in, NULL, MUTT_RL_NO_FLAGS)))
   {
     const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");
     if (!mutt_str_equal(buf, "-- ") && c_text_flowed)
@@ -686,10 +688,10 @@ static int text_plain_handler(struct Body *b, struct State *s)
       while ((len > 0) && (buf[len - 1] == ' '))
         buf[--len] = '\0';
     }
-    if (s->prefix)
-      state_puts(s, s->prefix);
-    state_puts(s, buf);
-    state_putc(s, '\n');
+    if (state->prefix)
+      state_puts(state, state->prefix);
+    state_puts(state, buf);
+    state_putc(state, '\n');
   }
 
   FREE(&buf);
@@ -699,13 +701,13 @@ static int text_plain_handler(struct Body *b, struct State *s)
 /**
  * message_handler - Handler for message/rfc822 body parts - Implements ::handler_t - @ingroup handler_api
  */
-static int message_handler(struct Body *a, struct State *s)
+static int message_handler(struct Body *a, struct State *state)
 {
   struct Body *b = NULL;
   LOFF_T off_start;
   int rc = 0;
 
-  off_start = ftello(s->fp_in);
+  off_start = ftello(state->fp_in);
   if (off_start < 0)
     return -1;
 
@@ -713,8 +715,8 @@ static int message_handler(struct Body *a, struct State *s)
       (a->encoding == ENC_UUENCODED))
   {
     b = mutt_body_new();
-    b->length = mutt_file_get_size_fp(s->fp_in);
-    b->parts = mutt_rfc822_parse_message(s->fp_in, b);
+    b->length = mutt_file_get_size_fp(state->fp_in);
+    b->parts = mutt_rfc822_parse_message(state->fp_in, b);
   }
   else
     b = a;
@@ -723,20 +725,22 @@ static int message_handler(struct Body *a, struct State *s)
   {
     CopyHeaderFlags chflags = CH_DECODE | CH_FROM;
     const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
-    if ((s->flags & MUTT_WEED) || ((s->flags & (MUTT_DISPLAY | MUTT_PRINTING)) && c_weed))
+    if ((state->flags & MUTT_WEED) ||
+        ((state->flags & (MUTT_DISPLAY | MUTT_PRINTING)) && c_weed))
       chflags |= CH_WEED | CH_REORDER;
-    if (s->prefix)
+    if (state->prefix)
       chflags |= CH_PREFIX;
-    if (s->flags & MUTT_DISPLAY)
+    if (state->flags & MUTT_DISPLAY)
       chflags |= CH_DISPLAY;
 
-    mutt_copy_hdr(s->fp_in, s->fp_out, off_start, b->parts->offset, chflags, s->prefix, 0);
+    mutt_copy_hdr(state->fp_in, state->fp_out, off_start, b->parts->offset,
+                  chflags, state->prefix, 0);
 
-    if (s->prefix)
-      state_puts(s, s->prefix);
-    state_putc(s, '\n');
+    if (state->prefix)
+      state_puts(state, state->prefix);
+    state_putc(state, '\n');
 
-    rc = mutt_body_handler(b->parts, s);
+    rc = mutt_body_handler(b->parts, state);
   }
 
   if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
@@ -751,7 +755,7 @@ static int message_handler(struct Body *a, struct State *s)
 /**
  * external_body_handler - Handler for external-body emails - Implements ::handler_t - @ingroup handler_api
  */
-static int external_body_handler(struct Body *b, struct State *s)
+static int external_body_handler(struct Body *b, struct State *state)
 {
   const char *str = NULL;
   char strbuf[1024] = { 0 };
@@ -759,10 +763,10 @@ static int external_body_handler(struct Body *b, struct State *s)
   const char *access_type = mutt_param_get(&b->parameter, "access-type");
   if (!access_type)
   {
-    if (s->flags & MUTT_DISPLAY)
+    if (state->flags & MUTT_DISPLAY)
     {
-      state_mark_attach(s);
-      state_puts(s, _("[-- Error: message/external-body has no access-type parameter --]\n"));
+      state_mark_attach(state);
+      state_puts(state, _("[-- Error: message/external-body has no access-type parameter --]\n"));
       return 0;
     }
     else
@@ -779,7 +783,7 @@ static int external_body_handler(struct Body *b, struct State *s)
   const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
   if (mutt_istr_equal(access_type, "x-mutt-deleted"))
   {
-    if (s->flags & (MUTT_DISPLAY | MUTT_PRINTING))
+    if (state->flags & (MUTT_DISPLAY | MUTT_PRINTING))
     {
       char pretty_size[10] = { 0 };
       char *length = mutt_param_get(&b->parameter, "length");
@@ -857,24 +861,24 @@ static int external_body_handler(struct Body *b, struct State *s)
 
       snprintf(strbuf, sizeof(strbuf), str, TYPE(b->parts), b->parts->subtype,
                pretty_size, expiration);
-      state_attach_puts(s, strbuf);
+      state_attach_puts(state, strbuf);
       if (b->parts->filename)
       {
-        state_mark_attach(s);
-        state_printf(s, _("[-- name: %s --]\n"), b->parts->filename);
+        state_mark_attach(state);
+        state_printf(state, _("[-- name: %s --]\n"), b->parts->filename);
       }
 
       CopyHeaderFlags chflags = CH_DECODE;
       if (c_weed)
         chflags |= CH_WEED | CH_REORDER;
 
-      mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
-                    chflags, NULL, 0);
+      mutt_copy_hdr(state->fp_in, state->fp_out, ftello(state->fp_in),
+                    b->parts->offset, chflags, NULL, 0);
     }
   }
   else if (expiration && (expire < mutt_date_now()))
   {
-    if (s->flags & MUTT_DISPLAY)
+    if (state->flags & MUTT_DISPLAY)
     {
       /* L10N: If the translation of this string is a multi line string, then
          each line should start with "[-- " and end with " --]".
@@ -882,19 +886,19 @@ static int external_body_handler(struct Body *b, struct State *s)
       snprintf(strbuf, sizeof(strbuf),
                _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated external source has --]\n[-- expired. --]\n"),
                TYPE(b->parts), b->parts->subtype);
-      state_attach_puts(s, strbuf);
+      state_attach_puts(state, strbuf);
 
       CopyHeaderFlags chflags = CH_DECODE | CH_DISPLAY;
       if (c_weed)
         chflags |= CH_WEED | CH_REORDER;
 
-      mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
-                    chflags, NULL, 0);
+      mutt_copy_hdr(state->fp_in, state->fp_out, ftello(state->fp_in),
+                    b->parts->offset, chflags, NULL, 0);
     }
   }
   else
   {
-    if (s->flags & MUTT_DISPLAY)
+    if (state->flags & MUTT_DISPLAY)
     {
       /* L10N: If the translation of this string is a multi line string, then
          each line should start with "[-- " and end with " --]".
@@ -904,14 +908,14 @@ static int external_body_handler(struct Body *b, struct State *s)
       snprintf(strbuf, sizeof(strbuf),
                _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated access-type %s is unsupported --]\n"),
                TYPE(b->parts), b->parts->subtype, access_type);
-      state_attach_puts(s, strbuf);
+      state_attach_puts(state, strbuf);
 
       CopyHeaderFlags chflags = CH_DECODE | CH_DISPLAY;
       if (c_weed)
         chflags |= CH_WEED | CH_REORDER;
 
-      mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
-                    chflags, NULL, 0);
+      mutt_copy_hdr(state->fp_in, state->fp_out, ftello(state->fp_in),
+                    b->parts->offset, chflags, NULL, 0);
     }
   }
 
@@ -921,7 +925,7 @@ static int external_body_handler(struct Body *b, struct State *s)
 /**
  * alternative_handler - Handler for multipart alternative emails - Implements ::handler_t - @ingroup handler_api
  */
-static int alternative_handler(struct Body *a, struct State *s)
+static int alternative_handler(struct Body *a, struct State *state)
 {
   struct Body *const head = a;
   struct Body *choice = NULL;
@@ -934,8 +938,8 @@ static int alternative_handler(struct Body *a, struct State *s)
   {
     mustfree = true;
     b = mutt_body_new();
-    b->length = mutt_file_get_size_fp(s->fp_in);
-    b->parts = mutt_parse_multipart(s->fp_in, mutt_param_get(&a->parameter, "boundary"),
+    b->length = mutt_file_get_size_fp(state->fp_in);
+    b->parts = mutt_parse_multipart(state->fp_in, mutt_param_get(&a->parameter, "boundary"),
                                     b->length, mutt_istr_equal("digest", a->subtype));
   }
   else
@@ -1049,18 +1053,18 @@ static int alternative_handler(struct Body *a, struct State *s)
   if (choice)
   {
     const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
-    if (s->flags & MUTT_DISPLAY && !c_weed &&
-        mutt_file_seek(s->fp_in, choice->hdr_offset, SEEK_SET))
+    if (state->flags & MUTT_DISPLAY && !c_weed &&
+        mutt_file_seek(state->fp_in, choice->hdr_offset, SEEK_SET))
     {
-      mutt_file_copy_bytes(s->fp_in, s->fp_out, choice->offset - choice->hdr_offset);
+      mutt_file_copy_bytes(state->fp_in, state->fp_out, choice->offset - choice->hdr_offset);
     }
 
     const char *const c_show_multipart_alternative = cs_subset_string(NeoMutt->sub, "show_multipart_alternative");
     if (mutt_str_equal("info", c_show_multipart_alternative))
     {
-      print_part_line(s, choice, 0);
+      print_part_line(state, choice, 0);
     }
-    mutt_body_handler(choice, s);
+    mutt_body_handler(choice, state);
 
     /* Let it flow back to the main part */
     head->nowrap = choice->nowrap;
@@ -1079,19 +1083,19 @@ static int alternative_handler(struct Body *a, struct State *s)
         {
           count += 1;
           if (count == 1)
-            state_putc(s, '\n');
+            state_putc(state, '\n');
 
-          print_part_line(s, b, count);
+          print_part_line(state, b, count);
         }
         b = b->next;
       }
     }
   }
-  else if (s->flags & MUTT_DISPLAY)
+  else if (state->flags & MUTT_DISPLAY)
   {
     /* didn't find anything that we could display! */
-    state_mark_attach(s);
-    state_puts(s, _("[-- Error:  Could not display any parts of Multipart/Alternative --]\n"));
+    state_mark_attach(state);
+    state_puts(state, _("[-- Error:  Could not display any parts of Multipart/Alternative --]\n"));
     rc = -1;
   }
 
@@ -1105,7 +1109,7 @@ static int alternative_handler(struct Body *a, struct State *s)
  * multilingual_handler - Handler for multi-lingual emails - Implements ::handler_t - @ingroup handler_api
  * @retval 0 Always
  */
-static int multilingual_handler(struct Body *a, struct State *s)
+static int multilingual_handler(struct Body *a, struct State *state)
 {
   struct Body *b = NULL;
   bool mustfree = false;
@@ -1117,8 +1121,8 @@ static int multilingual_handler(struct Body *a, struct State *s)
   {
     mustfree = true;
     b = mutt_body_new();
-    b->length = mutt_file_get_size_fp(s->fp_in);
-    b->parts = mutt_parse_multipart(s->fp_in, mutt_param_get(&a->parameter, "boundary"),
+    b->length = mutt_file_get_size_fp(state->fp_in);
+    b->parts = mutt_parse_multipart(state->fp_in, mutt_param_get(&a->parameter, "boundary"),
                                     b->length, mutt_istr_equal("digest", a->subtype));
   }
   else
@@ -1189,13 +1193,13 @@ static int multilingual_handler(struct Body *a, struct State *s)
   }
 
   if (choice)
-    mutt_body_handler(choice, s);
+    mutt_body_handler(choice, state);
   else
   {
     if (zxx_part)
-      mutt_body_handler(zxx_part, s);
+      mutt_body_handler(zxx_part, state);
     else
-      mutt_body_handler(first_part, s);
+      mutt_body_handler(first_part, state);
   }
 
   if (mustfree)
@@ -1207,7 +1211,7 @@ static int multilingual_handler(struct Body *a, struct State *s)
 /**
  * multipart_handler - Handler for multipart emails - Implements ::handler_t - @ingroup handler_api
  */
-static int multipart_handler(struct Body *a, struct State *s)
+static int multipart_handler(struct Body *a, struct State *state)
 {
   struct Body *b = NULL, *p = NULL;
   int count;
@@ -1217,8 +1221,8 @@ static int multipart_handler(struct Body *a, struct State *s)
       (a->encoding == ENC_UUENCODED))
   {
     b = mutt_body_new();
-    b->length = mutt_file_get_size_fp(s->fp_in);
-    b->parts = mutt_parse_multipart(s->fp_in, mutt_param_get(&a->parameter, "boundary"),
+    b->length = mutt_file_get_size_fp(state->fp_in);
+    b->parts = mutt_parse_multipart(state->fp_in, mutt_param_get(&a->parameter, "boundary"),
                                     b->length, mutt_istr_equal("digest", a->subtype));
   }
   else
@@ -1226,33 +1230,33 @@ static int multipart_handler(struct Body *a, struct State *s)
 
   for (p = b->parts, count = 1; p; p = p->next, count++)
   {
-    if (s->flags & MUTT_DISPLAY)
+    if (state->flags & MUTT_DISPLAY)
     {
-      state_mark_attach(s);
+      state_mark_attach(state);
       if (p->description || p->filename || p->form_name)
       {
         /* L10N: %s is the attachment description, filename or form_name. */
-        state_printf(s, _("[-- Attachment #%d: %s --]\n"), count,
+        state_printf(state, _("[-- Attachment #%d: %s --]\n"), count,
                      p->description ? p->description :
                      p->filename    ? p->filename :
                                       p->form_name);
       }
       else
-        state_printf(s, _("[-- Attachment #%d --]\n"), count);
-      print_part_line(s, p, 0);
+        state_printf(state, _("[-- Attachment #%d --]\n"), count);
+      print_part_line(state, p, 0);
       const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
       if (c_weed)
       {
-        state_putc(s, '\n');
+        state_putc(state, '\n');
       }
-      else if (mutt_file_seek(s->fp_in, p->hdr_offset, SEEK_SET))
+      else if (mutt_file_seek(state->fp_in, p->hdr_offset, SEEK_SET))
       {
-        mutt_file_copy_bytes(s->fp_in, s->fp_out, p->offset - p->hdr_offset);
+        mutt_file_copy_bytes(state->fp_in, state->fp_out, p->offset - p->hdr_offset);
       }
     }
 
-    rc = mutt_body_handler(p, s);
-    state_putc(s, '\n');
+    rc = mutt_body_handler(p, state);
+    state_putc(state, '\n');
 
     if (rc != 0)
     {
@@ -1262,7 +1266,7 @@ static int multipart_handler(struct Body *a, struct State *s)
     }
 
     const bool c_include_only_first = cs_subset_bool(NeoMutt->sub, "include_only_first");
-    if ((s->flags & MUTT_REPLYING) && c_include_only_first && (s->flags & MUTT_FIRSTDONE))
+    if ((state->flags & MUTT_REPLYING) && c_include_only_first && (state->flags & MUTT_FIRSTDONE))
     {
       break;
     }
@@ -1283,13 +1287,13 @@ static int multipart_handler(struct Body *a, struct State *s)
 /**
  * run_decode_and_handler - Run an appropriate decoder for an email
  * @param b         Body of the email
- * @param s         State to work with
+ * @param state         State to work with
  * @param handler   Callback function to process the content - Implements ::handler_t
  * @param plaintext Is the content in plain text
  * @retval 0 Success
  * @retval -1 Error
  */
-static int run_decode_and_handler(struct Body *b, struct State *s,
+static int run_decode_and_handler(struct Body *b, struct State *state,
                                   handler_t handler, bool plaintext)
 {
   char *save_prefix = NULL;
@@ -1302,7 +1306,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
   struct Buffer *tempfile = NULL;
 #endif
 
-  if (!mutt_file_seek(s->fp_in, b->offset, SEEK_SET))
+  if (!mutt_file_seek(state->fp_in, b->offset, SEEK_SET))
   {
     return -1;
   }
@@ -1321,10 +1325,10 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
     if (!plaintext)
     {
       /* decode to a tempfile, saving the original destination */
-      fp = s->fp_out;
+      fp = state->fp_out;
 #ifdef USE_FMEMOPEN
-      s->fp_out = open_memstream(&temp, &tempsize);
-      if (!s->fp_out)
+      state->fp_out = open_memstream(&temp, &tempsize);
+      if (!state->fp_out)
       {
         mutt_error(_("Unable to open 'memory stream'"));
         mutt_debug(LL_DEBUG1, "Can't open 'memory stream'\n");
@@ -1333,8 +1337,8 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
 #else
       tempfile = mutt_buffer_pool_get();
       mutt_buffer_mktemp(tempfile);
-      s->fp_out = mutt_file_fopen(mutt_buffer_string(tempfile), "w");
-      if (!s->fp_out)
+      state->fp_out = mutt_file_fopen(mutt_buffer_string(tempfile), "w");
+      if (!state->fp_out)
       {
         mutt_error(_("Unable to open temporary file"));
         mutt_debug(LL_DEBUG1, "Can't open %s\n", mutt_buffer_string(tempfile));
@@ -1349,53 +1353,53 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
 
       /* if we are decoding binary bodies, we don't want to prefix each
        * line with the prefix or else the data will get corrupted.  */
-      save_prefix = s->prefix;
-      s->prefix = NULL;
+      save_prefix = state->prefix;
+      state->prefix = NULL;
 
       decode = 1;
     }
     else
       b->type = TYPE_TEXT;
 
-    mutt_decode_attachment(b, s);
+    mutt_decode_attachment(b, state);
 
     if (decode)
     {
-      b->length = ftello(s->fp_out);
+      b->length = ftello(state->fp_out);
       b->offset = 0;
 #ifdef USE_FMEMOPEN
-      /* When running under torify, mutt_file_fclose(&s->fp_out) does not seem to
+      /* When running under torify, mutt_file_fclose(&state->fp_out) does not seem to
        * update tempsize. On the other hand, fflush does.  See
        * https://github.com/neomutt/neomutt/issues/440 */
-      fflush(s->fp_out);
+      fflush(state->fp_out);
 #endif
-      mutt_file_fclose(&s->fp_out);
+      mutt_file_fclose(&state->fp_out);
 
       /* restore final destination and substitute the tempfile for input */
-      s->fp_out = fp;
-      fp = s->fp_in;
+      state->fp_out = fp;
+      fp = state->fp_in;
 #ifdef USE_FMEMOPEN
       if (tempsize)
       {
-        s->fp_in = fmemopen(temp, tempsize, "r");
+        state->fp_in = fmemopen(temp, tempsize, "r");
       }
       else
       { /* fmemopen can't handle zero-length buffers */
-        s->fp_in = mutt_file_fopen("/dev/null", "r");
+        state->fp_in = mutt_file_fopen("/dev/null", "r");
       }
-      if (!s->fp_in)
+      if (!state->fp_in)
       {
         mutt_perror(_("failed to re-open 'memory stream'"));
         FREE(&temp);
         return -1;
       }
 #else
-      s->fp_in = fopen(mutt_buffer_string(tempfile), "r");
+      state->fp_in = fopen(mutt_buffer_string(tempfile), "r");
       unlink(mutt_buffer_string(tempfile));
       mutt_buffer_pool_release(&tempfile);
 #endif
       /* restore the prefix */
-      s->prefix = save_prefix;
+      state->prefix = save_prefix;
     }
 
     b->type = orig_type;
@@ -1404,7 +1408,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
   /* process the (decoded) body part */
   if (handler)
   {
-    rc = handler(b, s);
+    rc = handler(b, state);
     if (rc != 0)
     {
       mutt_debug(LL_DEBUG1, "Failed on attachment of type %s/%s\n", TYPE(b),
@@ -1417,11 +1421,11 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       b->offset = tmpoffset;
 
       /* restore the original source stream */
-      mutt_file_fclose(&s->fp_in);
-      s->fp_in = fp;
+      mutt_file_fclose(&state->fp_in);
+      state->fp_in = fp;
     }
   }
-  s->flags |= MUTT_FIRSTDONE;
+  state->flags |= MUTT_FIRSTDONE;
 #ifdef USE_FMEMOPEN
   FREE(&temp);
 #endif
@@ -1432,7 +1436,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
 /**
  * valid_pgp_encrypted_handler - Handler for valid pgp-encrypted emails - Implements ::handler_t - @ingroup handler_api
  */
-static int valid_pgp_encrypted_handler(struct Body *b, struct State *s)
+static int valid_pgp_encrypted_handler(struct Body *b, struct State *state)
 {
   struct Body *octetstream = b->parts->next;
 
@@ -1443,9 +1447,9 @@ static int valid_pgp_encrypted_handler(struct Body *b, struct State *s)
   int rc;
   /* Some clients improperly encode the octetstream part. */
   if (octetstream->encoding != ENC_7BIT)
-    rc = run_decode_and_handler(octetstream, s, crypt_pgp_encrypted_handler, 0);
+    rc = run_decode_and_handler(octetstream, state, crypt_pgp_encrypted_handler, 0);
   else
-    rc = crypt_pgp_encrypted_handler(octetstream, s);
+    rc = crypt_pgp_encrypted_handler(octetstream, state);
   b->goodsig |= octetstream->goodsig;
 
   /* Relocate protected headers onto the multipart/encrypted part */
@@ -1461,7 +1465,7 @@ static int valid_pgp_encrypted_handler(struct Body *b, struct State *s)
 /**
  * malformed_pgp_encrypted_handler - Handler for invalid pgp-encrypted emails - Implements ::handler_t - @ingroup handler_api
  */
-static int malformed_pgp_encrypted_handler(struct Body *b, struct State *s)
+static int malformed_pgp_encrypted_handler(struct Body *b, struct State *state)
 {
   struct Body *octetstream = b->parts->next->next;
 
@@ -1470,7 +1474,7 @@ static int malformed_pgp_encrypted_handler(struct Body *b, struct State *s)
   mutt_env_free(&octetstream->mime_headers);
 
   /* exchange encodes the octet-stream, so re-run it through the decoder */
-  int rc = run_decode_and_handler(octetstream, s, crypt_pgp_encrypted_handler, false);
+  int rc = run_decode_and_handler(octetstream, state, crypt_pgp_encrypted_handler, false);
   b->goodsig |= octetstream->goodsig;
 #ifdef USE_AUTOCRYPT
   b->is_autocrypt |= octetstream->is_autocrypt;
@@ -1488,12 +1492,12 @@ static int malformed_pgp_encrypted_handler(struct Body *b, struct State *s)
 
 /**
  * mutt_decode_base64 - Decode base64-encoded text
- * @param s      State to work with
+ * @param state      State to work with
  * @param len    Length of text to decode
  * @param istext Mime part is plain text
  * @param cd     Iconv conversion descriptor
  */
-void mutt_decode_base64(struct State *s, size_t len, bool istext, iconv_t cd)
+void mutt_decode_base64(struct State *state, size_t len, bool istext, iconv_t cd)
 {
   char buf[5] = { 0 };
   int ch, i;
@@ -1504,13 +1508,13 @@ void mutt_decode_base64(struct State *s, size_t len, bool istext, iconv_t cd)
   buf[4] = '\0';
 
   if (istext)
-    state_set_prefix(s);
+    state_set_prefix(state);
 
   while (len > 0)
   {
     for (i = 0; (i < 4) && (len > 0); len--)
     {
-      ch = fgetc(s->fp_in);
+      ch = fgetc(state->fp_in);
       if (ch == EOF)
         break;
       if ((ch >= 0) && (ch < 128) && ((base64val(ch) != -1) || (ch == '=')))
@@ -1573,28 +1577,28 @@ void mutt_decode_base64(struct State *s, size_t len, bool istext, iconv_t cd)
       bufi[l++] = ch;
 
     if ((l + 8) >= sizeof(bufi))
-      convert_to_state(cd, bufi, &l, s);
+      convert_to_state(cd, bufi, &l, state);
   }
 
   if (cr)
     bufi[l++] = '\r';
 
-  convert_to_state(cd, bufi, &l, s);
-  convert_to_state(cd, 0, 0, s);
+  convert_to_state(cd, bufi, &l, state);
+  convert_to_state(cd, 0, 0, state);
 
-  state_reset_prefix(s);
+  state_reset_prefix(state);
 }
 
 /**
  * mutt_body_handler - Handler for the Body of an email
  * @param b Body of the email
- * @param s State to work with
+ * @param state State to work with
  * @retval 0 Success
  * @retval -1 Error
  */
-int mutt_body_handler(struct Body *b, struct State *s)
+int mutt_body_handler(struct Body *b, struct State *state)
 {
-  if (!b || !s)
+  if (!b || !state)
     return -1;
 
   bool plaintext = false;
@@ -1603,7 +1607,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
   int rc = 0;
   static unsigned short recurse_level = 0;
 
-  const int oflags = s->flags;
+  const int oflags = state->flags;
   const bool is_attachment_display = (oflags & MUTT_DISPLAY_ATTACH);
 
   if (recurse_level >= MUTT_MIME_MAX_DEPTH)
@@ -1618,7 +1622,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
   if (is_autoview(b))
   {
     handler = autoview_handler;
-    s->flags &= ~MUTT_CHARCONV;
+    state->flags &= ~MUTT_CHARCONV;
   }
   else if (b->type == TYPE_TEXT)
   {
@@ -1673,7 +1677,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
     {
       if (!mutt_param_get(&b->parameter, "protocol"))
         mutt_error(_("Error: multipart/signed has no protocol"));
-      else if (s->flags & MUTT_VERIFY)
+      else if (state->flags & MUTT_VERIFY)
         handler = mutt_signed_handler;
     }
     else if (mutt_is_valid_multipart_pgp_encrypted(b))
@@ -1723,17 +1727,17 @@ int mutt_body_handler(struct Body *b, struct State *s)
     /* Prevent encrypted attachments from being included in replies
      * unless $include_encrypted is set. */
     const bool c_include_encrypted = cs_subset_bool(NeoMutt->sub, "include_encrypted");
-    if ((s->flags & MUTT_REPLYING) && (s->flags & MUTT_FIRSTDONE) &&
+    if ((state->flags & MUTT_REPLYING) && (state->flags & MUTT_FIRSTDONE) &&
         encrypted_handler && !c_include_encrypted)
     {
       goto cleanup;
     }
 
-    rc = run_decode_and_handler(b, s, handler, plaintext);
+    rc = run_decode_and_handler(b, state, handler, plaintext);
   }
   /* print hint to use attachment menu for disposition == attachment
    * if we're not already being called from there */
-  else if (s->flags & MUTT_DISPLAY)
+  else if (state->flags & MUTT_DISPLAY)
   {
     const bool c_honor_disposition = cs_subset_bool(NeoMutt->sub, "honor_disposition");
     struct Buffer msg = mutt_buffer_make(256);
@@ -1784,14 +1788,14 @@ int mutt_body_handler(struct Body *b, struct State *s)
         mutt_buffer_printf(&msg, _("[-- %s/%s is unsupported --]\n"), TYPE(b), b->subtype);
       }
     }
-    state_mark_attach(s);
-    state_printf(s, "%s", mutt_buffer_string(&msg));
+    state_mark_attach(state);
+    state_printf(state, "%s", mutt_buffer_string(&msg));
     mutt_buffer_dealloc(&msg);
   }
 
 cleanup:
   recurse_level--;
-  s->flags = oflags | (s->flags & MUTT_FIRSTDONE);
+  state->flags = oflags | (state->flags & MUTT_FIRSTDONE);
   if (rc != 0)
   {
     mutt_debug(LL_DEBUG1, "Bailing on attachment of type %s/%s\n", TYPE(b),
@@ -1860,19 +1864,19 @@ bool mutt_can_decode(struct Body *b)
 /**
  * mutt_decode_attachment - Decode an email's attachment
  * @param b Body of the email
- * @param s State of text being processed
+ * @param state State of text being processed
  */
-void mutt_decode_attachment(struct Body *b, struct State *s)
+void mutt_decode_attachment(struct Body *b, struct State *state)
 {
   int istext = mutt_is_text_part(b) && (b->disposition == DISP_INLINE);
   iconv_t cd = (iconv_t) (-1);
 
-  if (!mutt_file_seek(s->fp_in, b->offset, SEEK_SET))
+  if (!mutt_file_seek(state->fp_in, b->offset, SEEK_SET))
   {
     return;
   }
 
-  if (istext && (b->charset || (s->flags & MUTT_CHARCONV)))
+  if (istext && (b->charset || (state->flags & MUTT_CHARCONV)))
   {
     const char *charset = b->charset;
     if (!charset)
@@ -1890,25 +1894,25 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
   switch (b->encoding)
   {
     case ENC_QUOTED_PRINTABLE:
-      decode_quoted(s, b->length,
+      decode_quoted(state, b->length,
                     istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
                                mutt_is_application_pgp(b)),
                     cd);
       break;
     case ENC_BASE64:
-      mutt_decode_base64(s, b->length,
+      mutt_decode_base64(state, b->length,
                          istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
                                     mutt_is_application_pgp(b)),
                          cd);
       break;
     case ENC_UUENCODED:
-      decode_uuencoded(s, b->length,
+      decode_uuencoded(state, b->length,
                        istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
                                   mutt_is_application_pgp(b)),
                        cd);
       break;
     default:
-      decode_xbit(s, b->length,
+      decode_xbit(state, b->length,
                   istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
                              mutt_is_application_pgp(b)),
                   cd);

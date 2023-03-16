@@ -1725,7 +1725,7 @@ static pid_t smime_invoke_decrypt(FILE **fp_smime_in, FILE **fp_smime_out,
 /**
  * smime_class_verify_one - Implements CryptModuleSpecs::verify_one() - @ingroup crypto_verify_one
  */
-int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
+int smime_class_verify_one(struct Body *sigbdy, struct State *state, const char *tempfile)
 {
   FILE *fp = NULL, *fp_smime_out = NULL, *fp_smime_err = NULL;
   pid_t pid;
@@ -1740,9 +1740,9 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
   mutt_buffer_printf(signedfile, "%s.sig", tempfile);
 
   /* decode to a tempfile, saving the original destination */
-  fp = s->fp_out;
-  s->fp_out = mutt_file_fopen(mutt_buffer_string(signedfile), "w");
-  if (!s->fp_out)
+  fp = state->fp_out;
+  state->fp_out = mutt_file_fopen(mutt_buffer_string(signedfile), "w");
+  if (!state->fp_out)
   {
     mutt_perror(mutt_buffer_string(signedfile));
     goto cleanup;
@@ -1754,22 +1754,22 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
 
   /* if we are decoding binary bodies, we don't want to prefix each
    * line with the prefix or else the data will get corrupted.  */
-  char *save_prefix = s->prefix;
-  s->prefix = NULL;
+  char *save_prefix = state->prefix;
+  state->prefix = NULL;
 
-  mutt_decode_attachment(sigbdy, s);
+  mutt_decode_attachment(sigbdy, state);
 
-  sigbdy->length = ftello(s->fp_out);
+  sigbdy->length = ftello(state->fp_out);
   sigbdy->offset = 0;
-  mutt_file_fclose(&s->fp_out);
+  mutt_file_fclose(&state->fp_out);
 
   /* restore final destination and substitute the tempfile for input */
-  s->fp_out = fp;
-  fp = s->fp_in;
-  s->fp_in = fopen(mutt_buffer_string(signedfile), "r");
+  state->fp_out = fp;
+  fp = state->fp_in;
+  state->fp_in = fopen(mutt_buffer_string(signedfile), "r");
 
   /* restore the prefix */
-  s->prefix = save_prefix;
+  state->prefix = save_prefix;
 
   sigbdy->type = orig_type;
 
@@ -1780,7 +1780,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
     goto cleanup;
   }
 
-  crypt_current_time(s, "OpenSSL");
+  crypt_current_time(state, "OpenSSL");
 
   pid = smime_invoke_verify(NULL, &fp_smime_out, NULL, -1, -1, fileno(fp_smime_err),
                             tempfile, mutt_buffer_string(signedfile), 0);
@@ -1809,10 +1809,10 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
 
   fflush(fp_smime_err);
   rewind(fp_smime_err);
-  mutt_file_copy_stream(fp_smime_err, s->fp_out);
+  mutt_file_copy_stream(fp_smime_err, state->fp_out);
   mutt_file_fclose(&fp_smime_err);
 
-  state_attach_puts(s, _("[-- End of OpenSSL output --]\n\n"));
+  state_attach_puts(state, _("[-- End of OpenSSL output --]\n\n"));
 
   mutt_file_unlink(mutt_buffer_string(signedfile));
 
@@ -1820,8 +1820,8 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
   sigbdy->offset = tmpoffset;
 
   /* restore the original source stream */
-  mutt_file_fclose(&s->fp_in);
-  s->fp_in = fp;
+  mutt_file_fclose(&state->fp_in);
+  state->fp_in = fp;
 
 cleanup:
   mutt_buffer_pool_release(&signedfile);
@@ -1831,13 +1831,13 @@ cleanup:
 /**
  * smime_handle_entity - Handle type application/pkcs7-mime
  * @param m           Body to handle
- * @param s           State to use
+ * @param state       State to use
  * @param fp_out_file File for the result
  * @retval ptr Body for parsed MIME part
  *
  * This can either be a signed or an encrypted message.
  */
-static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *fp_out_file)
+static struct Body *smime_handle_entity(struct Body *m, struct State *state, FILE *fp_out_file)
 {
   struct Buffer tmpfname = mutt_buffer_make(0);
   FILE *fp_smime_out = NULL, *fp_smime_in = NULL, *fp_smime_err = NULL;
@@ -1872,12 +1872,12 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
     goto cleanup;
   }
 
-  if (!mutt_file_seek(s->fp_in, m->offset, SEEK_SET))
+  if (!mutt_file_seek(state->fp_in, m->offset, SEEK_SET))
   {
     goto cleanup;
   }
 
-  mutt_file_copy_bytes(s->fp_in, fp_tmp, m->length);
+  mutt_file_copy_bytes(state->fp_in, fp_tmp, m->length);
 
   fflush(fp_tmp);
   mutt_file_fclose(&fp_tmp);
@@ -1888,9 +1888,9 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
                                    mutt_buffer_string(&tmpfname))) == -1))
   {
     mutt_file_unlink(mutt_buffer_string(&tmpfname));
-    if (s->flags & MUTT_DISPLAY)
+    if (state->flags & MUTT_DISPLAY)
     {
-      state_attach_puts(s, _("[-- Error: unable to create OpenSSL subprocess --]\n"));
+      state_attach_puts(state, _("[-- Error: unable to create OpenSSL subprocess --]\n"));
     }
     goto cleanup;
   }
@@ -1900,9 +1900,9 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
                                        mutt_buffer_string(&tmpfname), SEC_SIGNOPAQUE)) == -1))
   {
     mutt_file_unlink(mutt_buffer_string(&tmpfname));
-    if (s->flags & MUTT_DISPLAY)
+    if (state->flags & MUTT_DISPLAY)
     {
-      state_attach_puts(s, _("[-- Error: unable to create OpenSSL subprocess --]\n"));
+      state_attach_puts(state, _("[-- Error: unable to create OpenSSL subprocess --]\n"));
     }
     goto cleanup;
   }
@@ -1920,7 +1920,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
   filter_wait(pid);
   mutt_file_unlink(mutt_buffer_string(&tmpfname));
 
-  if (s->flags & MUTT_DISPLAY)
+  if (state->flags & MUTT_DISPLAY)
   {
     fflush(fp_smime_err);
     rewind(fp_smime_err);
@@ -1930,17 +1930,17 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
     {
       ungetc(c, fp_smime_err);
 
-      crypt_current_time(s, "OpenSSL");
-      mutt_file_copy_stream(fp_smime_err, s->fp_out);
-      state_attach_puts(s, _("[-- End of OpenSSL output --]\n\n"));
+      crypt_current_time(state, "OpenSSL");
+      mutt_file_copy_stream(fp_smime_err, state->fp_out);
+      state_attach_puts(state, _("[-- End of OpenSSL output --]\n\n"));
     }
 
     if (type & SEC_ENCRYPT)
     {
-      state_attach_puts(s, _("[-- The following data is S/MIME encrypted --]\n"));
+      state_attach_puts(state, _("[-- The following data is S/MIME encrypted --]\n"));
     }
     else
-      state_attach_puts(s, _("[-- The following data is S/MIME signed --]\n"));
+      state_attach_puts(state, _("[-- The following data is S/MIME signed --]\n"));
   }
 
   fflush(fp_smime_out);
@@ -1994,8 +1994,8 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
 
     mutt_parse_part(fp_out, p);
 
-    if (s->flags & MUTT_DISPLAY)
-      mutt_protected_headers_handler(p, s);
+    if (state->flags & MUTT_DISPLAY)
+      mutt_protected_headers_handler(p, state);
 
     /* Store any protected headers in the parent so they can be
      * accessed for index updates after the handler recursion is done.
@@ -2005,13 +2005,13 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
     m->mime_headers = p->mime_headers;
     p->mime_headers = NULL;
 
-    if (s->fp_out)
+    if (state->fp_out)
     {
       rewind(fp_out);
-      FILE *fp_tmp_buffer = s->fp_in;
-      s->fp_in = fp_out;
-      mutt_body_handler(p, s);
-      s->fp_in = fp_tmp_buffer;
+      FILE *fp_tmp_buffer = state->fp_in;
+      state->fp_in = fp_out;
+      mutt_body_handler(p, state);
+      state->fp_in = fp_tmp_buffer;
     }
 
     /* Embedded multipart signed protected headers override the
@@ -2034,12 +2034,12 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
   }
   fp_out = NULL;
 
-  if (s->flags & MUTT_DISPLAY)
+  if (state->flags & MUTT_DISPLAY)
   {
     if (type & SEC_ENCRYPT)
-      state_attach_puts(s, _("\n[-- End of S/MIME encrypted data. --]\n"));
+      state_attach_puts(state, _("\n[-- End of S/MIME encrypted data. --]\n"));
     else
-      state_attach_puts(s, _("\n[-- End of S/MIME signed data. --]\n"));
+      state_attach_puts(state, _("\n[-- End of S/MIME signed data. --]\n"));
   }
 
   if (type & SEC_SIGNOPAQUE)
@@ -2074,7 +2074,7 @@ cleanup:
  */
 int smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
 {
-  struct State s = { 0 };
+  struct State state = { 0 };
   LOFF_T tmpoffset = b->offset;
   size_t tmplength = b->length;
   int rc = -1;
@@ -2085,8 +2085,8 @@ int smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
   if (b->parts)
     return -1;
 
-  s.fp_in = fp_in;
-  if (!mutt_file_seek(s.fp_in, b->offset, SEEK_SET))
+  state.fp_in = fp_in;
+  if (!mutt_file_seek(state.fp_in, b->offset, SEEK_SET))
   {
     return -1;
   }
@@ -2098,14 +2098,14 @@ int smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
     return -1;
   }
 
-  s.fp_out = fp_tmp;
-  mutt_decode_attachment(b, &s);
+  state.fp_out = fp_tmp;
+  mutt_decode_attachment(b, &state);
   fflush(fp_tmp);
-  b->length = ftello(s.fp_out);
+  b->length = ftello(state.fp_out);
   b->offset = 0;
   rewind(fp_tmp);
-  s.fp_in = fp_tmp;
-  s.fp_out = 0;
+  state.fp_in = fp_tmp;
+  state.fp_out = 0;
 
   *fp_out = mutt_file_mkstemp();
   if (!*fp_out)
@@ -2114,7 +2114,7 @@ int smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
     goto bail;
   }
 
-  *cur = smime_handle_entity(b, &s, *fp_out);
+  *cur = smime_handle_entity(b, &state, *fp_out);
   if (!*cur)
     goto bail;
 
@@ -2135,14 +2135,14 @@ bail:
 /**
  * smime_class_application_handler - Implements CryptModuleSpecs::application_handler() - @ingroup crypto_application_handler
  */
-int smime_class_application_handler(struct Body *m, struct State *s)
+int smime_class_application_handler(struct Body *m, struct State *state)
 {
   int rc = -1;
 
   /* clear out any mime headers before the handler, so they can't be spoofed. */
   mutt_env_free(&m->mime_headers);
 
-  struct Body *tattach = smime_handle_entity(m, s, NULL);
+  struct Body *tattach = smime_handle_entity(m, state, NULL);
   if (tattach)
   {
     rc = 0;

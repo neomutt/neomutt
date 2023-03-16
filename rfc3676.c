@@ -74,7 +74,7 @@ static int get_quote_level(const char *line)
 
 /**
  * space_quotes - Should we add spaces between quote levels
- * @param s State to use
+ * @param state State to use
  * @retval true Spaces should be added
  *
  * Determines whether to add spacing between/after each quote level:
@@ -82,12 +82,12 @@ static int get_quote_level(const char *line)
  * becomes
  * `   > > > foo`
  */
-static int space_quotes(struct State *s)
+static int space_quotes(struct State *state)
 {
   /* Allow quote spacing in the pager even for `$text_flowed`,
    * but obviously not when replying.  */
   const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");
-  if (c_text_flowed && (s->flags & MUTT_REPLYING))
+  if (c_text_flowed && (state->flags & MUTT_REPLYING))
     return 0;
 
   const bool c_reflow_space_quotes = cs_subset_bool(NeoMutt->sub, "reflow_space_quotes");
@@ -96,8 +96,8 @@ static int space_quotes(struct State *s)
 
 /**
  * add_quote_suffix - Should we add a trailing space to quotes
- * @param s  State to use
- * @param ql Quote level
+ * @param state State to use
+ * @param ql    Quote level
  * @retval true Spaces should be added
  *
  * Determines whether to add a trailing space to quotes:
@@ -105,20 +105,20 @@ static int space_quotes(struct State *s)
  * as opposed to
  * `   >>>foo`
  */
-static bool add_quote_suffix(struct State *s, int ql)
+static bool add_quote_suffix(struct State *state, int ql)
 {
-  if (s->flags & MUTT_REPLYING)
+  if (state->flags & MUTT_REPLYING)
     return false;
 
-  if (space_quotes(s))
+  if (space_quotes(state))
     return false;
 
-  if (!ql && !s->prefix)
+  if (!ql && !state->prefix)
     return false;
 
   /* The prefix will add its own space */
   const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");
-  if (!c_text_flowed && !ql && s->prefix)
+  if (!c_text_flowed && !ql && state->prefix)
     return false;
 
   return true;
@@ -127,15 +127,15 @@ static bool add_quote_suffix(struct State *s, int ql)
 /**
  * print_indent - Print indented text
  * @param ql         Quote level
- * @param s          State to work with
+ * @param state      State to work with
  * @param add_suffix If true, write a trailing space character
  * @retval num Number of characters written
  */
-static size_t print_indent(int ql, struct State *s, int add_suffix)
+static size_t print_indent(int ql, struct State *state, int add_suffix)
 {
   size_t wid = 0;
 
-  if (s->prefix)
+  if (state->prefix)
   {
     /* use given prefix only for format=fixed replies to format=flowed,
      * for format=flowed replies to format=flowed, use '>' indentation */
@@ -144,20 +144,20 @@ static size_t print_indent(int ql, struct State *s, int add_suffix)
       ql++;
     else
     {
-      state_puts(s, s->prefix);
-      wid = mutt_strwidth(s->prefix);
+      state_puts(state, state->prefix);
+      wid = mutt_strwidth(state->prefix);
     }
   }
   for (int i = 0; i < ql; i++)
   {
-    state_putc(s, '>');
-    if (space_quotes(s))
-      state_putc(s, ' ');
+    state_putc(state, '>');
+    if (space_quotes(state))
+      state_putc(state, ' ');
   }
   if (add_suffix)
-    state_putc(s, ' ');
+    state_putc(state, ' ');
 
-  if (space_quotes(s))
+  if (space_quotes(state))
     ql *= 2;
 
   return ql + add_suffix + wid;
@@ -165,14 +165,14 @@ static size_t print_indent(int ql, struct State *s, int add_suffix)
 
 /**
  * flush_par - Write out the paragraph
- * @param s   State to work with
- * @param fst The state of the flowed text
+ * @param state State to work with
+ * @param fst   State of the flowed text
  */
-static void flush_par(struct State *s, struct FlowedState *fst)
+static void flush_par(struct State *state, struct FlowedState *fst)
 {
   if (fst->width > 0)
   {
-    state_putc(s, '\n');
+    state_putc(state, '\n');
     fst->width = 0;
   }
   fst->spaces = 0;
@@ -180,20 +180,20 @@ static void flush_par(struct State *s, struct FlowedState *fst)
 
 /**
  * quote_width - Calculate the paragraph width based upon the quote level
- * @param s  State to use
- * @param ql Quote level
+ * @param state State to use
+ * @param ql    Quote level
  * @retval num Paragraph width
  *
  * The start of a quoted line will be ">>> ", so we need to subtract the space
  * required for the prefix from the terminal width.
  */
-static int quote_width(struct State *s, int ql)
+static int quote_width(struct State *state, int ql)
 {
-  const int screen_width = (s->flags & MUTT_DISPLAY) ? s->wraplen : 80;
+  const int screen_width = (state->flags & MUTT_DISPLAY) ? state->wraplen : 80;
   const short c_reflow_wrap = cs_subset_number(NeoMutt->sub, "reflow_wrap");
   int width = mutt_window_wrap_cols(screen_width, c_reflow_wrap);
   const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");
-  if (c_text_flowed && (s->flags & MUTT_REPLYING))
+  if (c_text_flowed && (state->flags & MUTT_REPLYING))
   {
     /* When replying, force a wrap at FLOWED_MAX to comply with RFC3676
      * guidelines */
@@ -202,10 +202,10 @@ static int quote_width(struct State *s, int ql)
     ql++; /* When replying, we will add an additional quote level */
   }
   /* adjust the paragraph width subtracting the number of prefix chars */
-  width -= space_quotes(s) ? ql * 2 : ql;
+  width -= space_quotes(state) ? ql * 2 : ql;
   /* When displaying (not replying), there may be a space between the prefix
    * string and the paragraph */
-  if (add_quote_suffix(s, ql))
+  if (add_quote_suffix(state, ql))
     width--;
   /* failsafe for really long quotes */
   if (width <= 0)
@@ -215,13 +215,13 @@ static int quote_width(struct State *s, int ql)
 
 /**
  * print_flowed_line - Print a format-flowed line
- * @param line Text to print
- * @param s    State to work with
- * @param ql   Quote level
- * @param fst  The state of the flowed text
- * @param term If true, terminate with a new line
+ * @param line  Text to print
+ * @param state State to work with
+ * @param ql    Quote level
+ * @param fst   State of the flowed text
+ * @param term  If true, terminate with a new line
  */
-static void print_flowed_line(char *line, struct State *s, int ql,
+static void print_flowed_line(char *line, struct State *state, int ql,
                               struct FlowedState *fst, bool term)
 {
   size_t width, w, words = 0;
@@ -231,13 +231,13 @@ static void print_flowed_line(char *line, struct State *s, int ql,
   if (!line || (*line == '\0'))
   {
     /* flush current paragraph (if any) first */
-    flush_par(s, fst);
-    print_indent(ql, s, 0);
-    state_putc(s, '\n');
+    flush_par(state, fst);
+    print_indent(ql, state, 0);
+    state_putc(state, '\n');
     return;
   }
 
-  width = quote_width(s, ql);
+  width = quote_width(state, ql);
   last = line[mutt_str_len(line) - 1];
 
   mutt_debug(LL_DEBUG5, "f=f: line [%s], width = %ld, spaces = %lu\n", line,
@@ -273,39 +273,40 @@ static void print_flowed_line(char *line, struct State *s, int ql,
       const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");
       if (c_text_flowed)
         for (; fst->spaces; fst->spaces--)
-          state_putc(s, ' ');
-      state_putc(s, '\n');
+          state_putc(state, ' ');
+      state_putc(state, '\n');
       fst->width = 0;
       fst->spaces = 0;
       words = 0;
     }
 
     if (!words && !fst->width)
-      fst->width = print_indent(ql, s, add_quote_suffix(s, ql));
+      fst->width = print_indent(ql, state, add_quote_suffix(state, ql));
     fst->width += w + fst->spaces;
     for (; fst->spaces; fst->spaces--)
-      state_putc(s, ' ');
-    state_puts(s, p);
+      state_putc(state, ' ');
+    state_puts(state, p);
     words++;
   }
 
   if (term)
-    flush_par(s, fst);
+    flush_par(state, fst);
 }
 
 /**
  * print_fixed_line - Print a fixed format line
- * @param line Text to print
- * @param s    State to work with
- * @param ql   Quote level
- * @param fst  The state of the flowed text
+ * @param line  Text to print
+ * @param state State to work with
+ * @param ql    Quote level
+ * @param fst   State of the flowed text
  */
-static void print_fixed_line(const char *line, struct State *s, int ql, struct FlowedState *fst)
+static void print_fixed_line(const char *line, struct State *state, int ql,
+                             struct FlowedState *fst)
 {
-  print_indent(ql, s, add_quote_suffix(s, ql));
+  print_indent(ql, state, add_quote_suffix(state, ql));
   if (line && *line)
-    state_puts(s, line);
-  state_putc(s, '\n');
+    state_puts(state, line);
+  state_putc(state, '\n');
 
   fst->width = 0;
   fst->spaces = 0;
@@ -315,7 +316,7 @@ static void print_fixed_line(const char *line, struct State *s, int ql, struct F
  * rfc3676_handler - Body handler implementing RFC3676 for format=flowed - Implements ::handler_t - @ingroup handler_api
  * @retval 0 Always
  */
-int rfc3676_handler(struct Body *a, struct State *s)
+int rfc3676_handler(struct Body *a, struct State *state)
 {
   char *buf = NULL;
   unsigned int quotelevel = 0;
@@ -334,7 +335,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
 
   mutt_debug(LL_DEBUG3, "f=f: DelSp: %s\n", delsp ? "yes" : "no");
 
-  while ((buf = mutt_file_read_line(buf, &sz, s->fp_in, NULL, MUTT_RL_NO_FLAGS)))
+  while ((buf = mutt_file_read_line(buf, &sz, state->fp_in, NULL, MUTT_RL_NO_FLAGS)))
   {
     const size_t buf_len = mutt_str_len(buf);
     const unsigned int newql = get_quote_level(buf);
@@ -342,7 +343,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
     /* end flowed paragraph (if we're within one) if quoting level
      * changes (should not but can happen, see RFC3676, sec. 4.5.) */
     if (newql != quotelevel)
-      flush_par(s, &fst);
+      flush_par(state, &fst);
 
     quotelevel = newql;
     int buf_off = newql;
@@ -363,8 +364,8 @@ int rfc3676_handler(struct Body *a, struct State *s)
     if ((fixed && ((fst.width == 0) || (buf_len == 0))) || sigsep)
     {
       /* if we're within a flowed paragraph, terminate it */
-      flush_par(s, &fst);
-      print_fixed_line(buf + buf_off, s, quotelevel, &fst);
+      flush_par(state, &fst);
+      print_fixed_line(buf + buf_off, state, quotelevel, &fst);
       continue;
     }
 
@@ -372,10 +373,10 @@ int rfc3676_handler(struct Body *a, struct State *s)
     if (delsp && !fixed)
       buf[buf_len - 1] = '\0';
 
-    print_flowed_line(buf + buf_off, s, quotelevel, &fst, fixed);
+    print_flowed_line(buf + buf_off, state, quotelevel, &fst, fixed);
   }
 
-  flush_par(s, &fst);
+  flush_par(state, &fst);
 
   FREE(&buf);
   return 0;

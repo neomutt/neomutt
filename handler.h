@@ -29,10 +29,10 @@
 struct Body;
 struct State;
 
-int  mutt_body_handler(struct Body *b, struct State *s);
-bool mutt_can_decode(struct Body *b);
+int  mutt_body_handler        (struct Body *b, struct State *state);
+bool mutt_can_decode          (struct Body *b);
+void mutt_decode_attachment   (struct Body *b, struct State *state);
+void mutt_decode_base64       (struct State *state, size_t len, bool istext, iconv_t cd);
 bool mutt_prefer_as_attachment(struct Body *b);
-void mutt_decode_attachment(struct Body *b, struct State *s);
-void mutt_decode_base64(struct State *s, size_t len, bool istext, iconv_t cd);
 
 #endif /* MUTT_HANDLER_H */
