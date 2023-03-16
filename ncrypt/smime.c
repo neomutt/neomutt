@@ -1888,7 +1888,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *state, FIL
                                    mutt_buffer_string(&tmpfname))) == -1))
   {
     mutt_file_unlink(mutt_buffer_string(&tmpfname));
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
     {
       state_attach_puts(state, _("[-- Error: unable to create OpenSSL subprocess --]\n"));
     }
@@ -1900,7 +1900,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *state, FIL
                                        mutt_buffer_string(&tmpfname), SEC_SIGNOPAQUE)) == -1))
   {
     mutt_file_unlink(mutt_buffer_string(&tmpfname));
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
     {
       state_attach_puts(state, _("[-- Error: unable to create OpenSSL subprocess --]\n"));
     }
@@ -1920,7 +1920,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *state, FIL
   filter_wait(pid);
   mutt_file_unlink(mutt_buffer_string(&tmpfname));
 
-  if (state->flags & MUTT_DISPLAY)
+  if (state->flags & STATE_DISPLAY)
   {
     fflush(fp_smime_err);
     rewind(fp_smime_err);
@@ -1994,7 +1994,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *state, FIL
 
     mutt_parse_part(fp_out, p);
 
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
       mutt_protected_headers_handler(p, state);
 
     /* Store any protected headers in the parent so they can be
@@ -2034,7 +2034,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *state, FIL
   }
   fp_out = NULL;
 
-  if (state->flags & MUTT_DISPLAY)
+  if (state->flags & STATE_DISPLAY)
   {
     if (type & SEC_ENCRYPT)
       state_attach_puts(state, _("\n[-- End of S/MIME encrypted data. --]\n"));

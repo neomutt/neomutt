@@ -1097,7 +1097,7 @@ int mutt_protected_headers_handler(struct Body *b, struct State *state)
   {
     if (b->mime_headers->subject)
     {
-      const bool display = (state->flags & MUTT_DISPLAY);
+      const bool display = (state->flags & STATE_DISPLAY);
 
       const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
       if (display && c_weed && mutt_matches_ignore("subject"))
@@ -1179,7 +1179,7 @@ int mutt_signed_handler(struct Body *b, struct State *state)
     return mutt_body_handler(b, state);
   }
 
-  if (state->flags & MUTT_DISPLAY)
+  if (state->flags & STATE_DISPLAY)
   {
     crypt_fetch_signatures(&signatures, b->next, &sigcnt);
 
@@ -1239,7 +1239,7 @@ int mutt_signed_handler(struct Body *b, struct State *state)
 
   rc = mutt_body_handler(b, state);
 
-  if ((state->flags & MUTT_DISPLAY) && (sigcnt != 0))
+  if ((state->flags & STATE_DISPLAY) && (sigcnt != 0))
     state_attach_puts(state, _("\n[-- End of signed data --]\n"));
 
   return rc;

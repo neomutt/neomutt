@@ -548,7 +548,7 @@ static int autoview_handler(struct Body *a, struct State *state)
     /* mailcap_expand_command returns 0 if the file is required */
     bool piped = mailcap_expand_command(a, mutt_buffer_string(tempfile), type, cmd);
 
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
     {
       state_mark_attach(state);
       state_printf(state, _("[-- Autoview using %s --]\n"), mutt_buffer_string(cmd));
@@ -583,7 +583,7 @@ static int autoview_handler(struct Body *a, struct State *state)
     if (pid < 0)
     {
       mutt_perror(_("Can't create filter"));
-      if (state->flags & MUTT_DISPLAY)
+      if (state->flags & STATE_DISPLAY)
       {
         state_mark_attach(state);
         state_printf(state, _("[-- Can't run %s. --]\n"), mutt_buffer_string(cmd));
@@ -609,7 +609,7 @@ static int autoview_handler(struct Body *a, struct State *state)
       /* check for data on stderr */
       if (fgets(buf, sizeof(buf), fp_err))
       {
-        if (state->flags & MUTT_DISPLAY)
+        if (state->flags & STATE_DISPLAY)
         {
           state_mark_attach(state);
           state_printf(state, _("[-- Autoview stderr of %s --]\n"),
@@ -631,7 +631,7 @@ static int autoview_handler(struct Body *a, struct State *state)
       /* Check for stderr messages */
       if (fgets(buf, sizeof(buf), fp_err))
       {
-        if (state->flags & MUTT_DISPLAY)
+        if (state->flags & STATE_DISPLAY)
         {
           state_mark_attach(state);
           state_printf(state, _("[-- Autoview stderr of %s --]\n"),
@@ -653,7 +653,7 @@ static int autoview_handler(struct Body *a, struct State *state)
     else
       mutt_file_unlink(mutt_buffer_string(tempfile));
 
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
       mutt_clear_error();
   }
 
@@ -725,12 +725,14 @@ static int message_handler(struct Body *a, struct State *state)
   {
     CopyHeaderFlags chflags = CH_DECODE | CH_FROM;
     const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
-    if ((state->flags & MUTT_WEED) ||
-        ((state->flags & (MUTT_DISPLAY | MUTT_PRINTING)) && c_weed))
+    if ((state->flags & STATE_WEED) ||
+        ((state->flags & (STATE_DISPLAY | STATE_PRINTING)) && c_weed))
+    {
       chflags |= CH_WEED | CH_REORDER;
+    }
     if (state->prefix)
       chflags |= CH_PREFIX;
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
       chflags |= CH_DISPLAY;
 
     mutt_copy_hdr(state->fp_in, state->fp_out, off_start, b->parts->offset,
@@ -763,7 +765,7 @@ static int external_body_handler(struct Body *b, struct State *state)
   const char *access_type = mutt_param_get(&b->parameter, "access-type");
   if (!access_type)
   {
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
     {
       state_mark_attach(state);
       state_puts(state, _("[-- Error: message/external-body has no access-type parameter --]\n"));
@@ -783,7 +785,7 @@ static int external_body_handler(struct Body *b, struct State *state)
   const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
   if (mutt_istr_equal(access_type, "x-mutt-deleted"))
   {
-    if (state->flags & (MUTT_DISPLAY | MUTT_PRINTING))
+    if (state->flags & (STATE_DISPLAY | STATE_PRINTING))
     {
       char pretty_size[10] = { 0 };
       char *length = mutt_param_get(&b->parameter, "length");
@@ -878,7 +880,7 @@ static int external_body_handler(struct Body *b, struct State *state)
   }
   else if (expiration && (expire < mutt_date_now()))
   {
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
     {
       /* L10N: If the translation of this string is a multi line string, then
          each line should start with "[-- " and end with " --]".
@@ -898,7 +900,7 @@ static int external_body_handler(struct Body *b, struct State *state)
   }
   else
   {
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
     {
       /* L10N: If the translation of this string is a multi line string, then
          each line should start with "[-- " and end with " --]".
@@ -1053,7 +1055,7 @@ static int alternative_handler(struct Body *a, struct State *state)
   if (choice)
   {
     const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
-    if (state->flags & MUTT_DISPLAY && !c_weed &&
+    if (state->flags & STATE_DISPLAY && !c_weed &&
         mutt_file_seek(state->fp_in, choice->hdr_offset, SEEK_SET))
     {
       mutt_file_copy_bytes(state->fp_in, state->fp_out, choice->offset - choice->hdr_offset);
@@ -1091,7 +1093,7 @@ static int alternative_handler(struct Body *a, struct State *state)
       }
     }
   }
-  else if (state->flags & MUTT_DISPLAY)
+  else if (state->flags & STATE_DISPLAY)
   {
     /* didn't find anything that we could display! */
     state_mark_attach(state);
@@ -1230,7 +1232,7 @@ static int multipart_handler(struct Body *a, struct State *state)
 
   for (p = b->parts, count = 1; p; p = p->next, count++)
   {
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
     {
       state_mark_attach(state);
       if (p->description || p->filename || p->form_name)
@@ -1266,7 +1268,7 @@ static int multipart_handler(struct Body *a, struct State *state)
     }
 
     const bool c_include_only_first = cs_subset_bool(NeoMutt->sub, "include_only_first");
-    if ((state->flags & MUTT_REPLYING) && c_include_only_first && (state->flags & MUTT_FIRSTDONE))
+    if ((state->flags & STATE_REPLYING) && c_include_only_first && (state->flags & STATE_FIRSTDONE))
     {
       break;
     }
@@ -1425,7 +1427,7 @@ static int run_decode_and_handler(struct Body *b, struct State *state,
       state->fp_in = fp;
     }
   }
-  state->flags |= MUTT_FIRSTDONE;
+  state->flags |= STATE_FIRSTDONE;
 #ifdef USE_FMEMOPEN
   FREE(&temp);
 #endif
@@ -1608,7 +1610,7 @@ int mutt_body_handler(struct Body *b, struct State *state)
   static unsigned short recurse_level = 0;
 
   const int oflags = state->flags;
-  const bool is_attachment_display = (oflags & MUTT_DISPLAY_ATTACH);
+  const bool is_attachment_display = (oflags & STATE_DISPLAY_ATTACH);
 
   if (recurse_level >= MUTT_MIME_MAX_DEPTH)
   {
@@ -1622,7 +1624,7 @@ int mutt_body_handler(struct Body *b, struct State *state)
   if (is_autoview(b))
   {
     handler = autoview_handler;
-    state->flags &= ~MUTT_CHARCONV;
+    state->flags &= ~STATE_CHARCONV;
   }
   else if (b->type == TYPE_TEXT)
   {
@@ -1677,7 +1679,7 @@ int mutt_body_handler(struct Body *b, struct State *state)
     {
       if (!mutt_param_get(&b->parameter, "protocol"))
         mutt_error(_("Error: multipart/signed has no protocol"));
-      else if (state->flags & MUTT_VERIFY)
+      else if (state->flags & STATE_VERIFY)
         handler = mutt_signed_handler;
     }
     else if (mutt_is_valid_multipart_pgp_encrypted(b))
@@ -1727,7 +1729,7 @@ int mutt_body_handler(struct Body *b, struct State *state)
     /* Prevent encrypted attachments from being included in replies
      * unless $include_encrypted is set. */
     const bool c_include_encrypted = cs_subset_bool(NeoMutt->sub, "include_encrypted");
-    if ((state->flags & MUTT_REPLYING) && (state->flags & MUTT_FIRSTDONE) &&
+    if ((state->flags & STATE_REPLYING) && (state->flags & STATE_FIRSTDONE) &&
         encrypted_handler && !c_include_encrypted)
     {
       goto cleanup;
@@ -1737,7 +1739,7 @@ int mutt_body_handler(struct Body *b, struct State *state)
   }
   /* print hint to use attachment menu for disposition == attachment
    * if we're not already being called from there */
-  else if (state->flags & MUTT_DISPLAY)
+  else if (state->flags & STATE_DISPLAY)
   {
     const bool c_honor_disposition = cs_subset_bool(NeoMutt->sub, "honor_disposition");
     struct Buffer msg = mutt_buffer_make(256);
@@ -1795,7 +1797,7 @@ int mutt_body_handler(struct Body *b, struct State *state)
 
 cleanup:
   recurse_level--;
-  state->flags = oflags | (state->flags & MUTT_FIRSTDONE);
+  state->flags = oflags | (state->flags & STATE_FIRSTDONE);
   if (rc != 0)
   {
     mutt_debug(LL_DEBUG1, "Bailing on attachment of type %s/%s\n", TYPE(b),
@@ -1876,7 +1878,7 @@ void mutt_decode_attachment(struct Body *b, struct State *state)
     return;
   }
 
-  if (istext && (b->charset || (state->flags & MUTT_CHARCONV)))
+  if (istext && (b->charset || (state->flags & STATE_CHARCONV)))
   {
     const char *charset = b->charset;
     if (!charset)

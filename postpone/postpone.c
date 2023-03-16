@@ -405,7 +405,7 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
         }
         else
         {
-          state.flags |= MUTT_CHARCONV;
+          state.flags |= STATE_CHARCONV;
           b->noconv = false;
         }
 

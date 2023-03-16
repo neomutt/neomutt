@@ -305,7 +305,7 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *enriched)
   }
   else
   {
-    if (enriched->state->flags & MUTT_DISPLAY)
+    if (enriched->state->flags & STATE_DISPLAY)
     {
       if (enriched->tag_level[RICH_BOLD])
       {
@@ -397,7 +397,7 @@ static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *enriche
     {
       if (enriched->tag_level[j]) /* make sure not to go negative */
         enriched->tag_level[j]--;
-      if ((enriched->state->flags & MUTT_DISPLAY) && (j == RICH_PARAM) &&
+      if ((enriched->state->flags & STATE_DISPLAY) && (j == RICH_PARAM) &&
           enriched->tag_level[RICH_COLOR])
       {
         enriched->param[enriched->param_used] = (wchar_t) '\0';
@@ -434,7 +434,7 @@ static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *enriche
           enriched_puts("\033[37m", enriched); // Escape
         }
       }
-      if ((enriched->state->flags & MUTT_DISPLAY) && (j == RICH_COLOR))
+      if ((enriched->state->flags & STATE_DISPLAY) && (j == RICH_COLOR))
       {
         enriched_puts("\033[0m", enriched); // Escape
       }
@@ -479,7 +479,7 @@ int text_enriched_handler(struct Body *a, struct State *state)
 
   enriched.state = state;
   enriched.wrap_margin = ((state->wraplen > 4) &&
-                          ((state->flags & MUTT_DISPLAY) || (state->wraplen < 76))) ?
+                          ((state->flags & STATE_DISPLAY) || (state->wraplen < 76))) ?
                              state->wraplen - 4 :
                              72;
   enriched.line_max = enriched.wrap_margin * 4;

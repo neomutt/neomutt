@@ -708,7 +708,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
   buf = mutt_buffer_pool_get();
   /* perform charset conversion on text attachments when piping */
-  state.flags = MUTT_CHARCONV;
+  state.flags = STATE_CHARCONV;
 
   if (mutt_buffer_get_field((filter ? _("Filter through: ") : _("Pipe to: ")), buf,
                             MUTT_COMP_FILE_SIMPLE, false, NULL, NULL, NULL) != 0)
@@ -818,7 +818,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
           mutt_buffer_mktemp(newfile);
           if (mutt_decode_save_attachment(fp, top, mutt_buffer_string(newfile),
-                                          MUTT_PRINTING, MUTT_SAVE_NO_FLAGS) == 0)
+                                          STATE_PRINTING, MUTT_SAVE_NO_FLAGS) == 0)
           {
             if (!state->fp_out)
             {

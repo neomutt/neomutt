@@ -578,10 +578,10 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   struct State state = { 0 };
   if (c_forward_quote)
     state.prefix = prefix;
-  state.flags = MUTT_CHARCONV;
+  state.flags = STATE_CHARCONV;
   const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
   if (c_weed)
-    state.flags |= MUTT_WEED;
+    state.flags |= STATE_WEED;
   state.fp_out = fp_tmp;
 
   /* where do we append new MIME parts? */
@@ -1054,11 +1054,11 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
     }
 
     state.prefix = prefix;
-    state.flags = MUTT_CHARCONV;
+    state.flags = STATE_CHARCONV;
 
     const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
     if (c_weed)
-      state.flags |= MUTT_WEED;
+      state.flags |= STATE_WEED;
 
     const bool c_header = cs_subset_bool(NeoMutt->sub, "header");
     if (c_header)

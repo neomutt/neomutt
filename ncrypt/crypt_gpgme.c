@@ -1461,7 +1461,7 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *state)
       /* pubkey not present */
     }
 
-    if (!state || !state->fp_out || !(state->flags & MUTT_DISPLAY))
+    if (!state || !state->fp_out || !(state->flags & STATE_DISPLAY))
       ; /* No state information so no way to print anything. */
     else if (err != 0)
     {
@@ -1760,7 +1760,7 @@ restart:
       }
     }
     redraw_if_needed(ctx);
-    if ((state->flags & MUTT_DISPLAY))
+    if ((state->flags & STATE_DISPLAY))
     {
       char buf[200] = { 0 };
 
@@ -1789,7 +1789,7 @@ restart:
     if (r_is_signed)
       *r_is_signed = -1; /* A signature exists. */
 
-    if ((state->flags & MUTT_DISPLAY))
+    if ((state->flags & STATE_DISPLAY))
     {
       state_attach_puts(state, _("[-- Begin signature information --]\n"));
     }
@@ -1803,7 +1803,7 @@ restart:
     if (!anybad && idx && r_is_signed && *r_is_signed)
       *r_is_signed = anywarn ? 2 : 1; /* Good signature. */
 
-    if ((state->flags & MUTT_DISPLAY))
+    if ((state->flags & STATE_DISPLAY))
     {
       state_attach_puts(state, _("[-- End signature information --]\n\n"));
     }
@@ -2479,7 +2479,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *state)
         continue;
       }
 
-      have_any_sigs = (have_any_sigs || (clearsign && (state->flags & MUTT_VERIFY)));
+      have_any_sigs = (have_any_sigs || (clearsign && (state->flags & STATE_VERIFY)));
 
       /* Copy PGP material to an data container */
       armored_data = file_to_data_object(state->fp_in, m->offset, m->length);
@@ -2488,7 +2488,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *state)
       {
         pgp_gpgme_extract_keys(armored_data, &fp_out);
       }
-      else if (!clearsign || (state->flags & MUTT_VERIFY))
+      else if (!clearsign || (state->flags & STATE_VERIFY))
       {
         gpgme_data_t plaintext = create_gpgme_data();
         gpgme_ctx_t ctx = create_gpgme_context(false);
@@ -2536,7 +2536,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *state)
 
           have_any_sigs = false;
           maybe_goodsig = false;
-          if ((state->flags & MUTT_DISPLAY) && sig_stat)
+          if ((state->flags & STATE_DISPLAY) && sig_stat)
           {
             int res, idx;
             bool anybad = false;
@@ -2573,7 +2573,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *state)
       /* Now, copy cleartext to the screen.  NOTE - we expect that PGP
        * outputs utf-8 cleartext.  This may not always be true, but it
        * seems to be a reasonable guess.  */
-      if (state->flags & MUTT_DISPLAY)
+      if (state->flags & STATE_DISPLAY)
       {
         if (needpass)
           state_attach_puts(state, _("[-- BEGIN PGP MESSAGE --]\n\n"));
@@ -2603,7 +2603,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *state)
         mutt_ch_fgetconv_close(&fc);
       }
 
-      if (state->flags & MUTT_DISPLAY)
+      if (state->flags & STATE_DISPLAY)
       {
         state_putc(state, '\n');
         if (needpass)
@@ -2656,7 +2656,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *state)
   if (!fp_out)
   {
     mutt_perror(_("Can't create temporary file"));
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
     {
       state_attach_puts(state, _("[-- Error: could not create temporary file --]\n"));
     }
@@ -2668,7 +2668,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *state)
   {
     tattach->goodsig = is_signed > 0;
 
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
     {
       state_attach_puts(state, is_signed ?
                                    _("[-- The following data is PGP/MIME signed and encrypted --]\n\n") :
@@ -2707,7 +2707,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *state)
     if (mutt_is_multipart_signed(tattach) && !tattach->next)
       a->goodsig |= tattach->goodsig;
 
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
     {
       state_puts(state, "\n");
       state_attach_puts(state, is_signed ?
@@ -2752,7 +2752,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *state)
   if (!fp_out)
   {
     mutt_perror(_("Can't create temporary file"));
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
     {
       state_attach_puts(state, _("[-- Error: could not create temporary file --]\n"));
     }
@@ -2764,7 +2764,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *state)
   {
     tattach->goodsig = is_signed > 0;
 
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
     {
       state_attach_puts(state, is_signed ?
                                    _("[-- The following data is S/MIME signed --]\n\n") :
@@ -2811,7 +2811,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *state)
       a->warnsig = tattach->warnsig;
     }
 
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
     {
       state_puts(state, "\n");
       state_attach_puts(state, is_signed ? _("[-- End of S/MIME signed data --]\n") :

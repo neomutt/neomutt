@@ -132,7 +132,7 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
     /* decode the header / body */
     struct State state = { 0 };
     state.fp_in = msg->fp;
-    state.flags = MUTT_CHARCONV;
+    state.flags = STATE_CHARCONV;
 #ifdef USE_FMEMOPEN
     state.fp_out = open_memstream(&temp, &tempsize);
     if (!state.fp_out)

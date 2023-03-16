@@ -760,20 +760,20 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
       state.prefix = prefix;
     if (cmflags & MUTT_CM_DISPLAY)
     {
-      state.flags |= MUTT_DISPLAY;
+      state.flags |= STATE_DISPLAY;
       state.wraplen = wraplen;
     }
     if (cmflags & MUTT_CM_PRINTING)
-      state.flags |= MUTT_PRINTING;
+      state.flags |= STATE_PRINTING;
     if (cmflags & MUTT_CM_WEED)
-      state.flags |= MUTT_WEED;
+      state.flags |= STATE_WEED;
     if (cmflags & MUTT_CM_CHARCONV)
-      state.flags |= MUTT_CHARCONV;
+      state.flags |= STATE_CHARCONV;
     if (cmflags & MUTT_CM_REPLYING)
-      state.flags |= MUTT_REPLYING;
+      state.flags |= STATE_REPLYING;
 
     if ((WithCrypto != 0) && cmflags & MUTT_CM_VERIFY)
-      state.flags |= MUTT_VERIFY;
+      state.flags |= STATE_VERIFY;
 
     rc = mutt_body_handler(body, &state);
   }

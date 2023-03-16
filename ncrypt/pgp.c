@@ -529,7 +529,7 @@ int pgp_class_application_handler(struct Body *m, struct State *state)
         continue;
       }
 
-      have_any_sigs = have_any_sigs || (clearsign && (state->flags & MUTT_VERIFY));
+      have_any_sigs = have_any_sigs || (clearsign && (state->flags & STATE_VERIFY));
 
       /* Copy PGP material to temporary file */
       mutt_buffer_mktemp(tmpfname);
@@ -574,7 +574,7 @@ int pgp_class_application_handler(struct Body *m, struct State *state)
       fflush(fp_tmp);
 
       /* Invoke PGP if needed */
-      if (!clearsign || (state->flags & MUTT_VERIFY))
+      if (!clearsign || (state->flags & STATE_VERIFY))
       {
         fp_pgp_out = mutt_file_mkstemp();
         if (!fp_pgp_out)
@@ -630,7 +630,7 @@ int pgp_class_application_handler(struct Body *m, struct State *state)
               mutt_file_fclose(&fp_pgp_out);
           }
 
-          if (state->flags & MUTT_DISPLAY)
+          if (state->flags & STATE_DISPLAY)
           {
             rewind(fp_pgp_err);
             crypt_current_time(state, "PGP");
@@ -667,7 +667,7 @@ int pgp_class_application_handler(struct Body *m, struct State *state)
           pgp_class_void_passphrase();
         }
 
-        if ((could_not_decrypt || (decrypt_okay_rc <= -3)) && !(state->flags & MUTT_DISPLAY))
+        if ((could_not_decrypt || (decrypt_okay_rc <= -3)) && !(state->flags & STATE_DISPLAY))
         {
           mutt_error(_("Could not decrypt PGP message"));
           goto out;
@@ -675,7 +675,7 @@ int pgp_class_application_handler(struct Body *m, struct State *state)
       }
 
       /* Now, copy cleartext to the screen.  */
-      if (state->flags & MUTT_DISPLAY)
+      if (state->flags & STATE_DISPLAY)
       {
         if (needpass)
           state_attach_puts(state, _("[-- BEGIN PGP MESSAGE --]\n\n"));
@@ -715,7 +715,7 @@ int pgp_class_application_handler(struct Body *m, struct State *state)
       mutt_file_fclose(&fp_pgp_out);
       mutt_file_fclose(&fp_pgp_err);
 
-      if (state->flags & MUTT_DISPLAY)
+      if (state->flags & STATE_DISPLAY)
       {
         state_putc(state, '\n');
         if (needpass)
@@ -1052,7 +1052,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *state,
   {
     mutt_file_fclose(&fp_pgp_err);
     unlink(mutt_buffer_string(pgptmpfile));
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
     {
       state_attach_puts(state, _("[-- Error: could not create a PGP subprocess --]\n\n"));
     }
@@ -1095,7 +1095,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *state,
     goto cleanup;
   }
 
-  if (state->flags & MUTT_DISPLAY)
+  if (state->flags & STATE_DISPLAY)
   {
     rewind(fp_pgp_err);
     if ((pgp_copy_checksig(fp_pgp_err, state->fp_out) == 0) && !rv)
@@ -1234,20 +1234,20 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *state)
   if (!fp_out)
   {
     mutt_perror(_("Can't create temporary file"));
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
     {
       state_attach_puts(state, _("[-- Error: could not create temporary file --]\n"));
     }
     return -1;
   }
 
-  if (state->flags & MUTT_DISPLAY)
+  if (state->flags & STATE_DISPLAY)
     crypt_current_time(state, "PGP");
 
   tattach = pgp_decrypt_part(a, state, fp_out, a);
   if (tattach)
   {
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
     {
       state_attach_puts(state, _("[-- The following data is PGP/MIME encrypted --]\n\n"));
       mutt_protected_headers_handler(tattach, state);
@@ -1282,7 +1282,7 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *state)
     if (mutt_is_multipart_signed(tattach) && !tattach->next)
       a->goodsig |= tattach->goodsig;
 
-    if (state->flags & MUTT_DISPLAY)
+    if (state->flags & STATE_DISPLAY)
     {
       state_puts(state, "\n");
       state_attach_puts(state, _("[-- End of PGP/MIME encrypted data --]\n"));

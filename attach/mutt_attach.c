@@ -628,7 +628,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
           goto return_error;
         }
         state.fp_in = fp;
-        state.flags = MUTT_CHARCONV;
+        state.flags = STATE_CHARCONV;
         mutt_decode_attachment(a, &state);
         if (mutt_file_fclose(&state.fp_out) == EOF)
         {
@@ -651,7 +651,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     {
       /* Use built-in handler */
       if (mutt_decode_save_attachment(fp, a, mutt_buffer_string(pagerfile),
-                                      MUTT_DISPLAY | MUTT_DISPLAY_ATTACH, MUTT_SAVE_NO_FLAGS))
+                                      STATE_DISPLAY | STATE_DISPLAY_ATTACH, MUTT_SAVE_NO_FLAGS))
       {
         goto return_error;
       }
@@ -770,7 +770,7 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
     struct State state = { 0 };
 
     /* perform charset conversion on text attachments when piping */
-    state.flags = MUTT_CHARCONV;
+    state.flags = STATE_CHARCONV;
 
     if (is_flowed)
     {
@@ -1022,7 +1022,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, const char *path,
  * @param fp         File to read from (OPTIONAL)
  * @param m          Attachment
  * @param path       Path to save the Attachment to
- * @param displaying Flags, e.g. #MUTT_DISPLAY
+ * @param displaying Flags, e.g. #STATE_DISPLAY
  * @param opt        Save option, see #SaveAttach
  * @retval 0  Success
  * @retval -1 Error
@@ -1083,12 +1083,12 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, const char *path,
     mutt_parse_part(state.fp_in, m);
 
     if (m->noconv || is_multipart(m))
-      state.flags |= MUTT_CHARCONV;
+      state.flags |= STATE_CHARCONV;
   }
   else
   {
     state.fp_in = fp;
-    state.flags |= MUTT_CHARCONV;
+    state.flags |= STATE_CHARCONV;
   }
 
   mutt_body_handler(m, &state);
@@ -1230,7 +1230,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
 
     mutt_buffer_mktemp(newfile);
     if (mutt_decode_save_attachment(fp, a, mutt_buffer_string(newfile),
-                                    MUTT_PRINTING, MUTT_SAVE_NO_FLAGS) == 0)
+                                    STATE_PRINTING, MUTT_SAVE_NO_FLAGS) == 0)
     {
       unlink_newfile = true;
       mutt_debug(LL_DEBUG2, "successfully decoded %s type attachment to %s\n",

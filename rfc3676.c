@@ -87,7 +87,7 @@ static int space_quotes(struct State *state)
   /* Allow quote spacing in the pager even for `$text_flowed`,
    * but obviously not when replying.  */
   const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");
-  if (c_text_flowed && (state->flags & MUTT_REPLYING))
+  if (c_text_flowed && (state->flags & STATE_REPLYING))
     return 0;
 
   const bool c_reflow_space_quotes = cs_subset_bool(NeoMutt->sub, "reflow_space_quotes");
@@ -107,7 +107,7 @@ static int space_quotes(struct State *state)
  */
 static bool add_quote_suffix(struct State *state, int ql)
 {
-  if (state->flags & MUTT_REPLYING)
+  if (state->flags & STATE_REPLYING)
     return false;
 
   if (space_quotes(state))
@@ -189,11 +189,11 @@ static void flush_par(struct State *state, struct FlowedState *fst)
  */
 static int quote_width(struct State *state, int ql)
 {
-  const int screen_width = (state->flags & MUTT_DISPLAY) ? state->wraplen : 80;
+  const int screen_width = (state->flags & STATE_DISPLAY) ? state->wraplen : 80;
   const short c_reflow_wrap = cs_subset_number(NeoMutt->sub, "reflow_wrap");
   int width = mutt_window_wrap_cols(screen_width, c_reflow_wrap);
   const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");
-  if (c_text_flowed && (state->flags & MUTT_REPLYING))
+  if (c_text_flowed && (state->flags & STATE_REPLYING))
   {
     /* When replying, force a wrap at FLOWED_MAX to comply with RFC3676
      * guidelines */
