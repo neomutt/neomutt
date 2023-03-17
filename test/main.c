@@ -165,6 +165,11 @@
   NEOMUTT_TEST_ITEM(test_mutt_update_content_info)                             \
   NEOMUTT_TEST_ITEM(test_mutt_get_content_info)                                \
                                                                                \
+  /* core */                                                                   \
+  NEOMUTT_TEST_ITEM(test_mutt_buffer_mktemp_full)                              \
+  NEOMUTT_TEST_ITEM(test_mutt_file_mkstemp_full)                               \
+  NEOMUTT_TEST_ITEM(test_mutt_mktemp_full)                                     \
+                                                                               \
   /* date */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_date_add_timeout)                                \
   NEOMUTT_TEST_ITEM(test_mutt_date_check_month)                                \
@@ -253,7 +258,6 @@
   NEOMUTT_TEST_ITEM(test_mutt_file_lock)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_file_map_lines)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_file_mkdir)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_file_mkstemp_full)                               \
   NEOMUTT_TEST_ITEM(test_mutt_file_open)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_file_quote_filename)                             \
   NEOMUTT_TEST_ITEM(test_mutt_file_read_keyword)                               \

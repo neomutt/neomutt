@@ -48,7 +48,6 @@
 #include "functions.h"
 #include "globals.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
 #include "opcodes.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"

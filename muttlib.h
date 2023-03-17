@@ -39,7 +39,6 @@ struct passwd;
 struct stat;
 
 void        mutt_adv_mktemp(struct Buffer *buf);
-void        mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
 void        mutt_buffer_expand_path(struct Buffer *buf);
 void        mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex);
 void        mutt_buffer_pretty_mailbox(struct Buffer *s);
@@ -55,7 +54,6 @@ void        mutt_get_parent_path(const char *path, char *buf, size_t buflen);
 int         mutt_inbox_cmp(const char *a, const char *b);
 bool        mutt_is_text_part(struct Body *b);
 const char *mutt_make_version(void);
-void        mutt_mktemp_full(char *s, size_t slen, const char *prefix, const char *suffix, const char *src, int line);
 bool        mutt_needs_mailcap(struct Body *m);
 FILE *      mutt_open_read(const char *path, pid_t *thepid);
 void        mutt_pretty_mailbox(char *buf, size_t buflen);
@@ -67,11 +65,5 @@ void        mutt_str_pretty_size(char *buf, size_t buflen, size_t num);
 
 void add_to_stailq     (struct ListHead *head, const char *str);
 void remove_from_stailq(struct ListHead *head, const char *str);
-
-#define mutt_mktemp(buf, buflen)                         mutt_mktemp_pfx_sfx(buf, buflen, "neomutt", NULL)
-#define mutt_mktemp_pfx_sfx(buf, buflen, prefix, suffix) mutt_mktemp_full(buf, buflen, prefix, suffix, __FILE__, __LINE__)
-
-#define mutt_buffer_mktemp(buf)                         mutt_buffer_mktemp_pfx_sfx(buf, "neomutt", NULL)
-#define mutt_buffer_mktemp_pfx_sfx(buf, prefix, suffix) mutt_buffer_mktemp_full(buf, prefix, suffix, __FILE__, __LINE__)
 
 #endif /* MUTT_MUTTLIB_H */

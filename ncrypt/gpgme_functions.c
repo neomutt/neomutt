@@ -46,7 +46,6 @@
 #include "crypt_gpgme.h"
 #include "globals.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
 #include "opcodes.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

@@ -31,6 +31,7 @@
  * | core/dispatcher.c   | @subpage core_dispatcher   |
  * | core/mailbox.c      | @subpage core_mailbox      |
  * | core/neomutt.c      | @subpage core_neomutt      |
+ * | core/tmp.c          | @subpage core_tmp          |
  */
 
 #ifndef MUTT_CORE_LIB_H
@@ -43,6 +44,7 @@
 #include "mailbox.h"
 #include "mxapi.h"
 #include "neomutt.h"
+#include "tmp.h"
 // IWYU pragma: end_exports
 
 #endif /* MUTT_CORE_LIB_H */

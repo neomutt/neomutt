@@ -57,7 +57,6 @@
 #include "mdata.h"
 #include "msn.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
 #include "mx.h"
 #include "protos.h"
 #ifdef ENABLE_NLS

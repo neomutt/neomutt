@@ -50,7 +50,6 @@
 #include "globals.h" // IWYU pragma: keep
 #include "gnupgparse.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
 #include "pgpinvoke.h"
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgp.h"

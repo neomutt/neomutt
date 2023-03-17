@@ -49,7 +49,6 @@
 #include "hdrline.h"
 #include "hook.h"
 #include "keymap.h"
-#include "muttlib.h"
 #include "mx.h"
 #include "protos.h"
 #ifdef USE_AUTOCRYPT

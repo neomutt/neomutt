@@ -118,8 +118,6 @@ bool        mutt_file_iter_line(struct MuttFileIter *iter, FILE *fp, ReadLineFla
 int         mutt_file_lock(int fd, bool excl, bool timeout);
 bool        mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp, ReadLineFlags flags);
 int         mutt_file_mkdir(const char *path, mode_t mode);
-FILE *      mutt_file_mkstemp_full(const char *file, int line, const char *func);
-#define     mutt_file_mkstemp() mutt_file_mkstemp_full(__FILE__, __LINE__, __func__)
 int         mutt_file_open(const char *path, uint32_t flags);
 DIR *       mutt_file_opendir(const char *path, enum MuttOpenDirMode mode);
 size_t      mutt_file_quote_filename(const char *filename, char *buf, size_t buflen);

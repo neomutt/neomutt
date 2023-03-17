@@ -40,7 +40,6 @@
 #include "question/lib.h"
 #include "globals.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
 #include "opcodes.h"
 #include "pgp.h"
 #include "pgpinvoke.h"

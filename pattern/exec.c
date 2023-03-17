@@ -51,7 +51,6 @@
 #include "copy.h"
 #include "handler.h"
 #include "maillist.h"
-#include "muttlib.h"
 #include "mx.h"
 #ifndef USE_FMEMOPEN
 #include <sys/stat.h>
