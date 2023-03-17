@@ -44,6 +44,13 @@ char *ShortHostname = "example";
 
 #define TEST_DIR "NEOMUTT_TEST_DIR"
 
+static struct ConfigDef Vars[] = {
+  // clang-format off
+  { "tmp_dir", DT_PATH|DT_PATH_DIR|DT_NOT_EMPTY, IP TMPDIR, 0, NULL, },
+  { NULL },
+  // clang-format on
+};
+
 #define CONFIG_INIT_TYPE(CS, NAME)                                             \
   extern const struct ConfigSetType Cst##NAME;                                 \
   cs_register_type(CS, &Cst##NAME)
@@ -127,6 +134,7 @@ struct NeoMutt *test_neomutt_create(void)
 
   struct NeoMutt *n = neomutt_new(cs);
 
+  cs_register_variables(cs, Vars, DT_NO_FLAGS);
   return n;
 }
 
