@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for parsing the 'set' command
+ * Common test code for parsing
  *
  * @authors
  * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
@@ -20,23 +20,14 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define TEST_NO_MAIN
+#ifndef TEST_PARSE_COMMON_H
+#define TEST_PARSE_COMMON_H
+
 #include "config.h"
-#include "acutest.h"
-#include <string.h>
-#include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
-#include "parse/lib.h"
 
-enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
-{
-  return MUTT_CMD_ERROR;
-}
+extern struct Command mutt_commands[];
 
-void test_parse_set(void)
-{
-  TEST_CASE("parse_set");
-  enum CommandResult rc = parse_set(NULL, NULL, 0, NULL);
-  TEST_CHECK(rc == MUTT_CMD_ERROR);
-}
+size_t commands_array(struct Command **first);
+
+#endif /* TEST_PARSE_COMMON_H */

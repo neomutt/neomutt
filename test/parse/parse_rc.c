@@ -28,16 +28,8 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
+#include "common.h"
 #include "test_common.h"
-
-static struct Command mutt_commands[] = {
-  // clang-format off
-  { "reset",  parse_set, MUTT_SET_RESET },
-  { "set",    parse_set, MUTT_SET_SET },
-  { "toggle", parse_set, MUTT_SET_INV },
-  { "unset",  parse_set, MUTT_SET_UNSET },
-  // clang-format on
-};
 
 extern const struct Mapping MboxTypeMap[];
 extern struct EnumDef MboxTypeDef;
@@ -74,12 +66,6 @@ static struct ConfigDef Vars[] = {
   { NULL },
   // clang-format on
 };
-
-size_t commands_array(struct Command **first)
-{
-  *first = mutt_commands;
-  return mutt_array_size(mutt_commands);
-}
 
 static void test_parse_set(void)
 {

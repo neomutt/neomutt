@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for parsing the 'set' command
+ * Common test code for parsing
  *
  * @authors
  * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
@@ -20,23 +20,38 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define TEST_NO_MAIN
 #include "config.h"
-#include "acutest.h"
-#include <string.h>
-#include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
 
-enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
+struct Command mutt_commands[] = {
+  // clang-format off
+  { "reset",  parse_set, MUTT_SET_RESET },
+  { "set",    parse_set, MUTT_SET_SET },
+  { "toggle", parse_set, MUTT_SET_INV },
+  { "unset",  parse_set, MUTT_SET_UNSET },
+  // clang-format on
+};
+
+size_t commands_array(struct Command **first)
 {
-  return MUTT_CMD_ERROR;
+  *first = mutt_commands;
+  return mutt_array_size(mutt_commands);
 }
 
-void test_parse_set(void)
+void mutt_buffer_expand_path(struct Buffer *buf)
 {
-  TEST_CASE("parse_set");
-  enum CommandResult rc = parse_set(NULL, NULL, 0, NULL);
-  TEST_CHECK(rc == MUTT_CMD_ERROR);
+  mutt_buffer_insert(buf, 0, "expanded");
+}
+
+void myvar_append(const char *var, const char *val)
+{
+}
+
+void myvar_del(const char *var)
+{
+}
+
+void myvar_set(const char *var, const char *val)
+{
 }
