@@ -753,29 +753,29 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
   if (cmflags & MUTT_CM_DECODE)
   {
     /* now make a text/plain version of the message */
-    struct State s = { 0 };
-    s.fp_in = fp_in;
-    s.fp_out = fp_out;
+    struct State state = { 0 };
+    state.fp_in = fp_in;
+    state.fp_out = fp_out;
     if (cmflags & MUTT_CM_PREFIX)
-      s.prefix = prefix;
+      state.prefix = prefix;
     if (cmflags & MUTT_CM_DISPLAY)
     {
-      s.flags |= MUTT_DISPLAY;
-      s.wraplen = wraplen;
+      state.flags |= STATE_DISPLAY;
+      state.wraplen = wraplen;
     }
     if (cmflags & MUTT_CM_PRINTING)
-      s.flags |= MUTT_PRINTING;
+      state.flags |= STATE_PRINTING;
     if (cmflags & MUTT_CM_WEED)
-      s.flags |= MUTT_WEED;
+      state.flags |= STATE_WEED;
     if (cmflags & MUTT_CM_CHARCONV)
-      s.flags |= MUTT_CHARCONV;
+      state.flags |= STATE_CHARCONV;
     if (cmflags & MUTT_CM_REPLYING)
-      s.flags |= MUTT_REPLYING;
+      state.flags |= STATE_REPLYING;
 
     if ((WithCrypto != 0) && cmflags & MUTT_CM_VERIFY)
-      s.flags |= MUTT_VERIFY;
+      state.flags |= STATE_VERIFY;
 
-    rc = mutt_body_handler(body, &s);
+    rc = mutt_body_handler(body, &state);
   }
   else if ((WithCrypto != 0) && (cmflags & MUTT_CM_DECODE_CRYPT) && (e->security & SEC_ENCRYPT))
   {

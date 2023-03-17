@@ -73,7 +73,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode, str
 
 void mutt_check_lookup_list(struct Body *b, char *type, size_t len);
 int mutt_compose_attachment(struct Body *a);
-int mutt_decode_save_attachment(FILE *fp, struct Body *m, const char *path, int displaying, enum SaveAttach opt);
+int mutt_decode_save_attachment(FILE *fp, struct Body *m, const char *path, StateFlags flags, enum SaveAttach opt);
 bool mutt_edit_attachment(struct Body *a);
 int mutt_get_tmp_attachment(struct Body *a);
 int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile);

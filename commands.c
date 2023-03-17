@@ -408,7 +408,7 @@ enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
                                intptr_t data, struct Buffer *err)
 {
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
-  enum GroupState state = GS_NONE;
+  enum GroupState gstate = GS_NONE;
 
   do
   {
@@ -423,12 +423,12 @@ enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
     }
 
     if (mutt_istr_equal(buf->data, "-rx"))
-      state = GS_RX;
+      gstate = GS_RX;
     else if (mutt_istr_equal(buf->data, "-addr"))
-      state = GS_ADDR;
+      gstate = GS_ADDR;
     else
     {
-      switch (state)
+      switch (gstate)
       {
         case GS_NONE:
           mutt_buffer_printf(err, _("%sgroup: missing -rx or -addr"),

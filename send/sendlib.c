@@ -189,7 +189,7 @@ bye:
 static void transform_to_7bit(struct Body *a, FILE *fp_in, struct ConfigSubset *sub)
 {
   struct Buffer *buf = NULL;
-  struct State s = { 0 };
+  struct State state = { 0 };
   struct stat st = { 0 };
 
   for (; a; a = a->next)
@@ -212,16 +212,16 @@ static void transform_to_7bit(struct Body *a, FILE *fp_in, struct ConfigSubset *
        * restrict the lifetime of the buffer tightly */
       buf = mutt_buffer_pool_get();
       mutt_buffer_mktemp(buf);
-      s.fp_out = mutt_file_fopen(mutt_buffer_string(buf), "w");
-      if (!s.fp_out)
+      state.fp_out = mutt_file_fopen(mutt_buffer_string(buf), "w");
+      if (!state.fp_out)
       {
         mutt_perror("fopen");
         mutt_buffer_pool_release(&buf);
         return;
       }
-      s.fp_in = fp_in;
-      mutt_decode_attachment(a, &s);
-      mutt_file_fclose(&s.fp_out);
+      state.fp_in = fp_in;
+      mutt_decode_attachment(a, &state);
+      mutt_file_fclose(&state.fp_out);
       FREE(&a->d_filename);
       a->d_filename = a->filename;
       a->filename = mutt_buffer_strdup(buf);

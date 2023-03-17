@@ -31,11 +31,11 @@ struct Body;
 struct Email;
 struct State;
 
-int rfc3676_handler(struct Body *a, struct State *s);
-bool mutt_rfc3676_is_format_flowed(struct Body *b);
-void mutt_rfc3676_space_stuff (struct Email *e);
-void mutt_rfc3676_space_unstuff (struct Email *e);
+int  rfc3676_handler                      (struct Body *a, struct State *state);
+bool mutt_rfc3676_is_format_flowed        (struct Body *b);
+void mutt_rfc3676_space_stuff             (struct Email *e);
+void mutt_rfc3676_space_unstuff           (struct Email *e);
 void mutt_rfc3676_space_unstuff_attachment(struct Body *b, const char *filename);
-void mutt_rfc3676_space_stuff_attachment(struct Body *b, const char *filename);
+void mutt_rfc3676_space_stuff_attachment  (struct Body *b, const char *filename);
 
 #endif /* MUTT_RFC3676_H */

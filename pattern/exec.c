@@ -130,19 +130,19 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
   if (c_thorough_search)
   {
     /* decode the header / body */
-    struct State s = { 0 };
-    s.fp_in = msg->fp;
-    s.flags = MUTT_CHARCONV;
+    struct State state = { 0 };
+    state.fp_in = msg->fp;
+    state.flags = STATE_CHARCONV;
 #ifdef USE_FMEMOPEN
-    s.fp_out = open_memstream(&temp, &tempsize);
-    if (!s.fp_out)
+    state.fp_out = open_memstream(&temp, &tempsize);
+    if (!state.fp_out)
     {
       mutt_perror(_("Error opening 'memory stream'"));
       return false;
     }
 #else
-    s.fp_out = mutt_file_mkstemp();
-    if (!s.fp_out)
+    state.fp_out = mutt_file_mkstemp();
+    if (!state.fp_out)
     {
       mutt_perror(_("Can't create temporary file"));
       return false;
@@ -151,7 +151,7 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
 
     if (needs_head)
     {
-      mutt_copy_header(msg->fp, e, s.fp_out, CH_FROM | CH_DECODE, NULL, 0);
+      mutt_copy_header(msg->fp, e, state.fp_out, CH_FROM | CH_DECODE, NULL, 0);
     }
 
     if (needs_body)
@@ -161,9 +161,9 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
       if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT) &&
           !crypt_valid_passphrase(e->security))
       {
-        if (s.fp_out)
+        if (state.fp_out)
         {
-          mutt_file_fclose(&s.fp_out);
+          mutt_file_fclose(&state.fp_out);
 #ifdef USE_FMEMOPEN
           FREE(&temp);
 #endif
@@ -175,11 +175,11 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
       {
         return false;
       }
-      mutt_body_handler(e->body, &s);
+      mutt_body_handler(e->body, &state);
     }
 
 #ifdef USE_FMEMOPEN
-    mutt_file_fclose(&s.fp_out);
+    mutt_file_fclose(&state.fp_out);
     len = tempsize;
 
     if (tempsize != 0)
@@ -202,7 +202,7 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
       }
     }
 #else
-    fp = s.fp_out;
+    fp = state.fp_out;
     fflush(fp);
     if (!mutt_file_seek(fp, 0, SEEK_SET) || fstat(fileno(fp), &st))
     {

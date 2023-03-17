@@ -27,17 +27,17 @@
 #include <stdio.h>
 #include <wchar.h>
 
-typedef uint16_t StateFlags;         ///< Flags for State->flags, e.g. #MUTT_DISPLAY
-#define MUTT_STATE_NO_FLAGS       0  ///< No flags are set
-#define MUTT_DISPLAY        (1 << 0) ///< Output is displayed to the user
-#define MUTT_VERIFY         (1 << 1) ///< Perform signature verification
-#define MUTT_PENDINGPREFIX  (1 << 2) ///< Prefix to write, but character must follow
-#define MUTT_WEED           (1 << 3) ///< Weed headers even when not in display mode
-#define MUTT_CHARCONV       (1 << 4) ///< Do character set conversions
-#define MUTT_PRINTING       (1 << 5) ///< Are we printing? - MUTT_DISPLAY "light"
-#define MUTT_REPLYING       (1 << 6) ///< Are we replying?
-#define MUTT_FIRSTDONE      (1 << 7) ///< The first attachment has been done
-#define MUTT_DISPLAY_ATTACH (1 << 8) ///< We are displaying an attachment
+typedef uint16_t StateFlags;          ///< Flags for State->flags, e.g. #STATE_DISPLAY
+#define STATE_NO_FLAGS             0  ///< No flags are set
+#define STATE_DISPLAY        (1 << 0) ///< Output is displayed to the user
+#define STATE_VERIFY         (1 << 1) ///< Perform signature verification
+#define STATE_PENDINGPREFIX  (1 << 2) ///< Prefix to write, but character must follow
+#define STATE_WEED           (1 << 3) ///< Weed headers even when not in display mode
+#define STATE_CHARCONV       (1 << 4) ///< Do character set conversions
+#define STATE_PRINTING       (1 << 5) ///< Are we printing? - STATE_DISPLAY "light"
+#define STATE_REPLYING       (1 << 6) ///< Are we replying?
+#define STATE_FIRSTDONE      (1 << 7) ///< The first attachment has been done
+#define STATE_DISPLAY_ATTACH (1 << 8) ///< We are displaying an attachment
 
 /**
  * struct State - Keep track when processing files
@@ -47,22 +47,22 @@ struct State
   FILE      *fp_in;   ///< File to read from
   FILE      *fp_out;  ///< File to write to
   char      *prefix;  ///< String to add to the beginning of each output line
-  StateFlags flags;   ///< Flags, e.g. #MUTT_DISPLAY
-  int        wraplen; ///< Width to wrap lines to (when flags & #MUTT_DISPLAY)
+  StateFlags flags;   ///< Flags, e.g. #STATE_DISPLAY
+  int        wraplen; ///< Width to wrap lines to (when flags & #STATE_DISPLAY)
 };
 
-#define state_set_prefix(state) ((state)->flags |= MUTT_PENDINGPREFIX)
-#define state_reset_prefix(state) ((state)->flags &= ~MUTT_PENDINGPREFIX)
+#define state_set_prefix(state)   ((state)->flags |= STATE_PENDINGPREFIX)
+#define state_reset_prefix(state) ((state)->flags &= ~STATE_PENDINGPREFIX)
 #define state_puts(STATE, STR) fputs(STR, (STATE)->fp_out)
 #define state_putc(STATE, STR) fputc(STR, (STATE)->fp_out)
 
-void state_attach_puts          (struct State *s, const char *t);
-void state_mark_attach          (struct State *s);
-void state_mark_protected_header(struct State *s);
-void state_prefix_put           (struct State *s, const char *buf, size_t buflen);
-void state_prefix_putc          (struct State *s, char c);
-int  state_printf               (struct State *s, const char *fmt, ...);
-int  state_putws                (struct State *s, const wchar_t *ws);
+void state_attach_puts          (struct State *state, const char *t);
+void state_mark_attach          (struct State *state);
+void state_mark_protected_header(struct State *state);
+void state_prefix_put           (struct State *state, const char *buf, size_t buflen);
+void state_prefix_putc          (struct State *state, char c);
+int  state_printf               (struct State *state, const char *fmt, ...);
+int  state_putws                (struct State *state, const wchar_t *ws);
 
 const char *state_attachment_marker(void);
 const char *state_protected_header_marker(void);

@@ -107,7 +107,7 @@ static void window_notify(struct MuttWindow *win)
     return;
 
   const struct WindowState *old = &win->old;
-  const struct WindowState *state = &win->state;
+  const struct WindowState *wstate = &win->state;
   WindowNotifyFlags flags = WN_NO_FLAGS;
 
   const bool was_visible = window_was_visible(win);
@@ -115,17 +115,17 @@ static void window_notify(struct MuttWindow *win)
   if (was_visible != is_visible)
     flags |= is_visible ? WN_VISIBLE : WN_HIDDEN;
 
-  if ((state->row_offset != old->row_offset) || (state->col_offset != old->col_offset))
+  if ((wstate->row_offset != old->row_offset) || (wstate->col_offset != old->col_offset))
     flags |= WN_MOVED;
 
-  if (state->rows > old->rows)
+  if (wstate->rows > old->rows)
     flags |= WN_TALLER;
-  else if (state->rows < old->rows)
+  else if (wstate->rows < old->rows)
     flags |= WN_SHORTER;
 
-  if (state->cols > old->cols)
+  if (wstate->cols > old->cols)
     flags |= WN_WIDER;
-  else if (state->cols < old->cols)
+  else if (wstate->cols < old->cols)
     flags |= WN_NARROWER;
 
   if (flags == WN_NO_FLAGS)

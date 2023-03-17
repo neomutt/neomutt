@@ -366,9 +366,9 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
                                             struct Envelope *protected_headers)
 {
   struct Body *b = NULL;
-  struct State s = { 0 };
+  struct State state = { 0 };
 
-  s.fp_in = fp_body;
+  state.fp_in = fp_body;
 
   for (b = body; b; b = b->next)
   {
@@ -395,7 +395,7 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
 
       /* set up state flags */
 
-      s.flags = 0;
+      state.flags = 0;
 
       if (b->type == TYPE_TEXT)
       {
@@ -405,7 +405,7 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
         }
         else
         {
-          s.flags |= MUTT_CHARCONV;
+          state.flags |= STATE_CHARCONV;
           b->noconv = false;
         }
 
@@ -413,8 +413,8 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
       }
 
       mutt_adv_mktemp(file);
-      s.fp_out = mutt_file_fopen(mutt_buffer_string(file), "w");
-      if (!s.fp_out)
+      state.fp_out = mutt_file_fopen(mutt_buffer_string(file), "w");
+      if (!state.fp_out)
         return -1;
 
       SecurityFlags sec_type = SEC_NO_FLAGS;
@@ -433,7 +433,7 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
           mutt_message(_("Decrypting message..."));
         }
 
-        if (mutt_body_handler(b, &s) < 0)
+        if (mutt_body_handler(b, &state) < 0)
         {
           mutt_error(_("Decryption failed"));
           return -1;
@@ -454,10 +454,10 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
       }
       else
       {
-        mutt_decode_attachment(b, &s);
+        mutt_decode_attachment(b, &state);
       }
 
-      if (mutt_file_fclose(&s.fp_out) != 0)
+      if (mutt_file_fclose(&state.fp_out) != 0)
         return -1;
 
       mutt_str_replace(&b->filename, mutt_buffer_string(file));

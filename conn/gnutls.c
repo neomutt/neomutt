@@ -79,7 +79,7 @@ static int protocol_priority[] = { GNUTLS_TLS1_2, GNUTLS_TLS1_1, GNUTLS_TLS1,
  */
 struct TlsSockData
 {
-  gnutls_session_t state;
+  gnutls_session_t session;
   gnutls_certificate_credentials_t xcred;
 };
 
@@ -612,7 +612,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
 static int tls_check_certificate(struct Connection *conn)
 {
   struct TlsSockData *data = conn->sockdata;
-  gnutls_session_t state = data->state;
+  gnutls_session_t session = data->session;
   const gnutls_datum_t *cert_list = NULL;
   unsigned int cert_list_size = 0;
   gnutls_certificate_status_t certstat;
@@ -625,10 +625,10 @@ static int tls_check_certificate(struct Connection *conn)
    * If it returns 0, certstat will be set with failure codes for the first
    * cert in the chain(from CA to host) with an error.
    */
-  if (tls_verify_peers(state, &certstat) != 0)
+  if (tls_verify_peers(session, &certstat) != 0)
     return 0;
 
-  cert_list = gnutls_certificate_get_peers(state, &cert_list_size);
+  cert_list = gnutls_certificate_get_peers(session, &cert_list_size);
   if (!cert_list)
   {
     mutt_error(_("Unable to get certificate from peer"));
@@ -673,7 +673,7 @@ static int tls_check_certificate(struct Connection *conn)
       if (rcsettrust != 1)
         mutt_debug(LL_DEBUG1, "error trusting certificate %d: %d\n", i, rcsettrust);
 
-      if (tls_verify_peers(state, &certstat) != 0)
+      if (tls_verify_peers(session, &certstat) != 0)
         return 0;
 
       /* If the cert chain now verifies, and all lower certs already
@@ -702,7 +702,7 @@ static void tls_get_client_cert(struct Connection *conn)
   int rc;
 
   /* get our cert CN if we have one */
-  const gnutls_datum_t *crtdata = gnutls_certificate_get_ours(data->state);
+  const gnutls_datum_t *crtdata = gnutls_certificate_get_ours(data->session);
   if (!crtdata)
     return;
 
@@ -798,7 +798,7 @@ static int tls_set_priority(struct TlsSockData *data)
     goto cleanup;
   }
 
-  int err = gnutls_priority_set_direct(data->state, mutt_buffer_string(priority), NULL);
+  int err = gnutls_priority_set_direct(data->session, mutt_buffer_string(priority), NULL);
   if (err < 0)
   {
     mutt_error("gnutls_priority_set_direct(%s): %s",
@@ -852,8 +852,8 @@ static int tls_set_priority(struct TlsSockData *data)
 
   /* We use default priorities (see gnutls documentation),
    * except for protocol version */
-  gnutls_set_default_priority(data->state);
-  gnutls_protocol_set_priority(data->state, protocol_priority);
+  gnutls_set_default_priority(data->session);
+  gnutls_protocol_set_priority(data->session, protocol_priority);
   return 0;
 }
 #endif
@@ -864,7 +864,7 @@ static int tls_set_priority(struct TlsSockData *data)
  * @retval  0 Success
  * @retval -1 Error
  *
- * After TLS state has been initialized, attempt to negotiate TLS over the
+ * After TLS session has been initialized, attempt to negotiate TLS over the
  * wire, including certificate checks.
  */
 static int tls_negotiate(struct Connection *conn)
@@ -904,7 +904,7 @@ static int tls_negotiate(struct Connection *conn)
   gnutls_certificate_set_verify_flags(data->xcred, GNUTLS_VERIFY_DISABLE_TIME_CHECKS);
 #endif
 
-  err = gnutls_init(&data->state, GNUTLS_CLIENT);
+  err = gnutls_init(&data->session, GNUTLS_CLIENT);
   if (err)
   {
     mutt_error("gnutls_init: %s", gnutls_strerror(err));
@@ -912,9 +912,9 @@ static int tls_negotiate(struct Connection *conn)
   }
 
   /* set socket */
-  gnutls_transport_set_ptr(data->state, (gnutls_transport_ptr_t) (long) conn->fd);
+  gnutls_transport_set_ptr(data->session, (gnutls_transport_ptr_t) (long) conn->fd);
 
-  if (gnutls_server_name_set(data->state, GNUTLS_NAME_DNS, conn->account.host,
+  if (gnutls_server_name_set(data->session, GNUTLS_NAME_DNS, conn->account.host,
                              mutt_str_len(conn->account.host)))
   {
     mutt_error(_("Warning: unable to set TLS SNI host name"));
@@ -928,14 +928,14 @@ static int tls_negotiate(struct Connection *conn)
   const short c_ssl_min_dh_prime_bits = cs_subset_number(NeoMutt->sub, "ssl_min_dh_prime_bits");
   if (c_ssl_min_dh_prime_bits > 0)
   {
-    gnutls_dh_set_prime_bits(data->state, c_ssl_min_dh_prime_bits);
+    gnutls_dh_set_prime_bits(data->session, c_ssl_min_dh_prime_bits);
   }
 
-  gnutls_credentials_set(data->state, GNUTLS_CRD_CERTIFICATE, data->xcred);
+  gnutls_credentials_set(data->session, GNUTLS_CRD_CERTIFICATE, data->xcred);
 
   do
   {
-    err = gnutls_handshake(data->state);
+    err = gnutls_handshake(data->session);
   } while ((err == GNUTLS_E_AGAIN) || (err == GNUTLS_E_INTERRUPTED));
 
   if (err < 0)
@@ -943,7 +943,7 @@ static int tls_negotiate(struct Connection *conn)
     if (err == GNUTLS_E_FATAL_ALERT_RECEIVED)
     {
       mutt_error("gnutls_handshake: %s(%s)", gnutls_strerror(err),
-                 gnutls_alert_get_name(gnutls_alert_get(data->state)));
+                 gnutls_alert_get_name(gnutls_alert_get(data->session)));
     }
     else
     {
@@ -957,17 +957,17 @@ static int tls_negotiate(struct Connection *conn)
 
   /* set Security Strength Factor (SSF) for SASL */
   /* NB: gnutls_cipher_get_key_size() returns key length in bytes */
-  conn->ssf = gnutls_cipher_get_key_size(gnutls_cipher_get(data->state)) * 8;
+  conn->ssf = gnutls_cipher_get_key_size(gnutls_cipher_get(data->session)) * 8;
 
   tls_get_client_cert(conn);
 
   if (!OptNoCurses)
   {
     mutt_message(_("SSL/TLS connection using %s (%s/%s/%s)"),
-                 gnutls_protocol_get_name(gnutls_protocol_get_version(data->state)),
-                 gnutls_kx_get_name(gnutls_kx_get(data->state)),
-                 gnutls_cipher_get_name(gnutls_cipher_get(data->state)),
-                 gnutls_mac_get_name(gnutls_mac_get(data->state)));
+                 gnutls_protocol_get_name(gnutls_protocol_get_version(data->session)),
+                 gnutls_kx_get_name(gnutls_kx_get(data->session)),
+                 gnutls_cipher_get_name(gnutls_cipher_get(data->session)),
+                 gnutls_mac_get_name(gnutls_mac_get(data->session)));
     mutt_sleep(0);
   }
 
@@ -975,7 +975,7 @@ static int tls_negotiate(struct Connection *conn)
 
 fail:
   gnutls_certificate_free_credentials(data->xcred);
-  gnutls_deinit(data->state);
+  gnutls_deinit(data->session);
   FREE(&conn->sockdata);
   return -1;
 }
@@ -989,7 +989,7 @@ static int tls_socket_poll(struct Connection *conn, time_t wait_secs)
   if (!data)
     return -1;
 
-  if (gnutls_record_check_pending(data->state))
+  if (gnutls_record_check_pending(data->session))
     return 1;
 
   return raw_socket_poll(conn, wait_secs);
@@ -1010,10 +1010,10 @@ static int tls_socket_close(struct Connection *conn)
      * It is not required for the initiator of the close to wait for the
      * responding close_notify alert before closing the read side of the
      * connection.  */
-    gnutls_bye(data->state, GNUTLS_SHUT_WR);
+    gnutls_bye(data->session, GNUTLS_SHUT_WR);
 
     gnutls_certificate_free_credentials(data->xcred);
-    gnutls_deinit(data->state);
+    gnutls_deinit(data->session);
     FREE(&conn->sockdata);
   }
 
@@ -1052,7 +1052,7 @@ static int tls_socket_read(struct Connection *conn, char *buf, size_t count)
   int rc;
   do
   {
-    rc = gnutls_record_recv(data->state, buf, count);
+    rc = gnutls_record_recv(data->session, buf, count);
   } while ((rc == GNUTLS_E_AGAIN) || (rc == GNUTLS_E_INTERRUPTED));
 
   if (rc < 0)
@@ -1083,7 +1083,7 @@ static int tls_socket_write(struct Connection *conn, const char *buf, size_t cou
     int rc;
     do
     {
-      rc = gnutls_record_send(data->state, buf + sent, count - sent);
+      rc = gnutls_record_send(data->session, buf + sent, count - sent);
     } while ((rc == GNUTLS_E_AGAIN) || (rc == GNUTLS_E_INTERRUPTED));
 
     if (rc < 0)

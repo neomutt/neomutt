@@ -575,14 +575,14 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
 
   /* initialize a state structure */
 
-  struct State st = { 0 };
+  struct State state = { 0 };
   if (c_forward_quote)
-    st.prefix = prefix;
-  st.flags = MUTT_CHARCONV;
+    state.prefix = prefix;
+  state.flags = STATE_CHARCONV;
   const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
   if (c_weed)
-    st.flags |= MUTT_WEED;
-  st.fp_out = fp_tmp;
+    state.flags |= STATE_WEED;
+  state.fp_out = fp_tmp;
 
   /* where do we append new MIME parts? */
   struct Body **last = &e_tmp->body;
@@ -593,9 +593,9 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
 
     if (!mime_fwd_all && mutt_can_decode(cur))
     {
-      st.fp_in = fp;
-      mutt_body_handler(cur, &st);
-      state_putc(&st, '\n');
+      state.fp_in = fp;
+      mutt_body_handler(cur, &state);
+      state_putc(&state, '\n');
     }
     else
     {
@@ -613,9 +613,9 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
       {
         if (actx->idx[i]->body->tagged && mutt_can_decode(actx->idx[i]->body))
         {
-          st.fp_in = actx->idx[i]->fp;
-          mutt_body_handler(actx->idx[i]->body, &st);
-          state_putc(&st, '\n');
+          state.fp_in = actx->idx[i]->fp;
+          mutt_body_handler(actx->idx[i]->body, &state);
+          state_putc(&state, '\n');
         }
       }
     }
@@ -1034,9 +1034,9 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
   {
     mutt_make_attribution_intro(e_parent, fp_tmp, NeoMutt->sub);
 
-    struct State st;
-    memset(&st, 0, sizeof(struct State));
-    st.fp_out = fp_tmp;
+    struct State state;
+    memset(&state, 0, sizeof(struct State));
+    state.fp_out = fp_tmp;
 
     const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");
     if (c_text_flowed)
@@ -1053,12 +1053,12 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
       setlocale(LC_TIME, "");
     }
 
-    st.prefix = prefix;
-    st.flags = MUTT_CHARCONV;
+    state.prefix = prefix;
+    state.flags = STATE_CHARCONV;
 
     const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
     if (c_weed)
-      st.flags |= MUTT_WEED;
+      state.flags |= STATE_WEED;
 
     const bool c_header = cs_subset_bool(NeoMutt->sub, "header");
     if (c_header)
@@ -1068,9 +1068,9 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
     {
       if (mutt_can_decode(e_cur))
       {
-        st.fp_in = fp;
-        mutt_body_handler(e_cur, &st);
-        state_putc(&st, '\n');
+        state.fp_in = fp;
+        mutt_body_handler(e_cur, &state);
+        state_putc(&state, '\n');
       }
       else
         mutt_body_copy(fp, &e_tmp->body, e_cur);
@@ -1081,9 +1081,9 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
       {
         if (actx->idx[i]->body->tagged && mutt_can_decode(actx->idx[i]->body))
         {
-          st.fp_in = actx->idx[i]->fp;
-          mutt_body_handler(actx->idx[i]->body, &st);
-          state_putc(&st, '\n');
+          state.fp_in = actx->idx[i]->fp;
+          mutt_body_handler(actx->idx[i]->body, &state);
+          state_putc(&state, '\n');
         }
       }
     }

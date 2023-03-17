@@ -110,118 +110,118 @@ struct EnrichedState
   size_t param_len;
   int tag_level[RICH_MAX];
   int wrap_margin;
-  struct State *s;
+  struct State *state;
 };
 
 /**
  * enriched_wrap - Wrap enriched text
- * @param stte State of enriched text
+ * @param enriched State of enriched text
  */
-static void enriched_wrap(struct EnrichedState *stte)
+static void enriched_wrap(struct EnrichedState *enriched)
 {
-  if (!stte)
+  if (!enriched)
     return;
 
   int x;
 
-  if (stte->line_len)
+  if (enriched->line_len)
   {
-    if (stte->tag_level[RICH_CENTER] || stte->tag_level[RICH_FLUSHRIGHT])
+    if (enriched->tag_level[RICH_CENTER] || enriched->tag_level[RICH_FLUSHRIGHT])
     {
       /* Strip trailing white space */
-      size_t y = stte->line_used - 1;
+      size_t y = enriched->line_used - 1;
 
-      while (y && iswspace(stte->line[y]))
+      while (y && iswspace(enriched->line[y]))
       {
-        stte->line[y] = (wchar_t) '\0';
+        enriched->line[y] = (wchar_t) '\0';
         y--;
-        stte->line_used--;
-        stte->line_len--;
+        enriched->line_used--;
+        enriched->line_len--;
       }
-      if (stte->tag_level[RICH_CENTER])
+      if (enriched->tag_level[RICH_CENTER])
       {
         /* Strip leading whitespace */
         y = 0;
 
-        while (stte->line[y] && iswspace(stte->line[y]))
+        while (enriched->line[y] && iswspace(enriched->line[y]))
           y++;
         if (y)
         {
-          for (size_t z = y; z <= stte->line_used; z++)
+          for (size_t z = y; z <= enriched->line_used; z++)
           {
-            stte->line[z - y] = stte->line[z];
+            enriched->line[z - y] = enriched->line[z];
           }
 
-          stte->line_len -= y;
-          stte->line_used -= y;
+          enriched->line_len -= y;
+          enriched->line_used -= y;
         }
       }
     }
 
-    const int extra = stte->wrap_margin - stte->line_len - stte->indent_len -
-                      (stte->tag_level[RICH_INDENT_RIGHT] * INDENT_SIZE);
+    const int extra = enriched->wrap_margin - enriched->line_len - enriched->indent_len -
+                      (enriched->tag_level[RICH_INDENT_RIGHT] * INDENT_SIZE);
     if (extra > 0)
     {
-      if (stte->tag_level[RICH_CENTER])
+      if (enriched->tag_level[RICH_CENTER])
       {
         x = extra / 2;
         while (x)
         {
-          state_putc(stte->s, ' ');
+          state_putc(enriched->state, ' ');
           x--;
         }
       }
-      else if (stte->tag_level[RICH_FLUSHRIGHT])
+      else if (enriched->tag_level[RICH_FLUSHRIGHT])
       {
         x = extra - 1;
         while (x)
         {
-          state_putc(stte->s, ' ');
+          state_putc(enriched->state, ' ');
           x--;
         }
       }
     }
-    state_putws(stte->s, (const wchar_t *) stte->line);
+    state_putws(enriched->state, (const wchar_t *) enriched->line);
   }
 
-  state_putc(stte->s, '\n');
-  stte->line[0] = (wchar_t) '\0';
-  stte->line_len = 0;
-  stte->line_used = 0;
-  stte->indent_len = 0;
-  if (stte->s->prefix)
+  state_putc(enriched->state, '\n');
+  enriched->line[0] = (wchar_t) '\0';
+  enriched->line_len = 0;
+  enriched->line_used = 0;
+  enriched->indent_len = 0;
+  if (enriched->state->prefix)
   {
-    state_puts(stte->s, stte->s->prefix);
-    stte->indent_len += mutt_str_len(stte->s->prefix);
+    state_puts(enriched->state, enriched->state->prefix);
+    enriched->indent_len += mutt_str_len(enriched->state->prefix);
   }
 
-  if (stte->tag_level[RICH_EXCERPT])
+  if (enriched->tag_level[RICH_EXCERPT])
   {
-    x = stte->tag_level[RICH_EXCERPT];
+    x = enriched->tag_level[RICH_EXCERPT];
     while (x)
     {
-      if (stte->s->prefix)
+      if (enriched->state->prefix)
       {
-        state_puts(stte->s, stte->s->prefix);
-        stte->indent_len += mutt_str_len(stte->s->prefix);
+        state_puts(enriched->state, enriched->state->prefix);
+        enriched->indent_len += mutt_str_len(enriched->state->prefix);
       }
       else
       {
-        state_puts(stte->s, "> ");
-        stte->indent_len += mutt_str_len("> ");
+        state_puts(enriched->state, "> ");
+        enriched->indent_len += mutt_str_len("> ");
       }
       x--;
     }
   }
   else
-    stte->indent_len = 0;
-  if (stte->tag_level[RICH_INDENT])
+    enriched->indent_len = 0;
+  if (enriched->tag_level[RICH_INDENT])
   {
-    x = stte->tag_level[RICH_INDENT] * INDENT_SIZE;
-    stte->indent_len += x;
+    x = enriched->tag_level[RICH_INDENT] * INDENT_SIZE;
+    enriched->indent_len += x;
     while (x)
     {
-      state_putc(stte->s, ' ');
+      state_putc(enriched->state, ' ');
       x--;
     }
   }
@@ -229,147 +229,148 @@ static void enriched_wrap(struct EnrichedState *stte)
 
 /**
  * enriched_flush - Write enriched text to the State
- * @param stte State of Enriched text
- * @param wrap true if the text should be wrapped
+ * @param enriched State of Enriched text
+ * @param wrap     true if the text should be wrapped
  */
-static void enriched_flush(struct EnrichedState *stte, bool wrap)
+static void enriched_flush(struct EnrichedState *enriched, bool wrap)
 {
-  if (!stte || !stte->buffer)
+  if (!enriched || !enriched->buffer)
     return;
 
-  if (!stte->tag_level[RICH_NOFILL] &&
-      ((stte->line_len + stte->word_len) >
-       (stte->wrap_margin - (stte->tag_level[RICH_INDENT_RIGHT] * INDENT_SIZE) - stte->indent_len)))
+  if (!enriched->tag_level[RICH_NOFILL] &&
+      ((enriched->line_len + enriched->word_len) >
+       (enriched->wrap_margin - (enriched->tag_level[RICH_INDENT_RIGHT] * INDENT_SIZE) -
+        enriched->indent_len)))
   {
-    enriched_wrap(stte);
+    enriched_wrap(enriched);
   }
 
-  if (stte->buf_used)
+  if (enriched->buf_used)
   {
-    stte->buffer[stte->buf_used] = (wchar_t) '\0';
-    stte->line_used += stte->buf_used;
-    if (stte->line_used > stte->line_max)
+    enriched->buffer[enriched->buf_used] = (wchar_t) '\0';
+    enriched->line_used += enriched->buf_used;
+    if (enriched->line_used > enriched->line_max)
     {
-      stte->line_max = stte->line_used;
-      mutt_mem_realloc(&stte->line, (stte->line_max + 1) * sizeof(wchar_t));
+      enriched->line_max = enriched->line_used;
+      mutt_mem_realloc(&enriched->line, (enriched->line_max + 1) * sizeof(wchar_t));
     }
-    wcscat(stte->line, stte->buffer);
-    stte->line_len += stte->word_len;
-    stte->word_len = 0;
-    stte->buf_used = 0;
+    wcscat(enriched->line, enriched->buffer);
+    enriched->line_len += enriched->word_len;
+    enriched->word_len = 0;
+    enriched->buf_used = 0;
   }
   if (wrap)
-    enriched_wrap(stte);
-  fflush(stte->s->fp_out);
+    enriched_wrap(enriched);
+  fflush(enriched->state->fp_out);
 }
 
 /**
  * enriched_putwc - Write one wide character to the state
  * @param c    Character to write
- * @param stte State of Enriched text
+ * @param enriched State of Enriched text
  */
-static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
+static void enriched_putwc(wchar_t c, struct EnrichedState *enriched)
 {
-  if (!stte)
+  if (!enriched)
     return;
 
-  if (stte->tag_level[RICH_PARAM])
+  if (enriched->tag_level[RICH_PARAM])
   {
-    if (stte->tag_level[RICH_COLOR])
+    if (enriched->tag_level[RICH_COLOR])
     {
-      if (stte->param_used + 1 >= stte->param_len)
-        mutt_mem_realloc(&stte->param, (stte->param_len += 256) * sizeof(wchar_t));
+      if (enriched->param_used + 1 >= enriched->param_len)
+        mutt_mem_realloc(&enriched->param, (enriched->param_len += 256) * sizeof(wchar_t));
 
-      stte->param[stte->param_used++] = c;
+      enriched->param[enriched->param_used++] = c;
     }
     return; /* nothing to do */
   }
 
   /* see if more space is needed (plus extra for possible rich characters) */
-  if ((stte->buf_len < (stte->buf_used + 3)) || !stte->buffer)
+  if ((enriched->buf_len < (enriched->buf_used + 3)) || !enriched->buffer)
   {
-    stte->buf_len += 1024;
-    mutt_mem_realloc(&stte->buffer, (stte->buf_len + 1) * sizeof(wchar_t));
+    enriched->buf_len += 1024;
+    mutt_mem_realloc(&enriched->buffer, (enriched->buf_len + 1) * sizeof(wchar_t));
   }
 
-  if ((!stte->tag_level[RICH_NOFILL] && iswspace(c)) || (c == (wchar_t) '\0'))
+  if ((!enriched->tag_level[RICH_NOFILL] && iswspace(c)) || (c == (wchar_t) '\0'))
   {
     if (c == (wchar_t) '\t')
-      stte->word_len += 8 - (stte->line_len + stte->word_len) % 8;
+      enriched->word_len += 8 - (enriched->line_len + enriched->word_len) % 8;
     else
-      stte->word_len++;
+      enriched->word_len++;
 
-    stte->buffer[stte->buf_used++] = c;
-    enriched_flush(stte, false);
+    enriched->buffer[enriched->buf_used++] = c;
+    enriched_flush(enriched, false);
   }
   else
   {
-    if (stte->s->flags & MUTT_DISPLAY)
+    if (enriched->state->flags & STATE_DISPLAY)
     {
-      if (stte->tag_level[RICH_BOLD])
+      if (enriched->tag_level[RICH_BOLD])
       {
-        stte->buffer[stte->buf_used++] = c;
-        stte->buffer[stte->buf_used++] = (wchar_t) '\010'; // Ctrl-H (backspace)
-        stte->buffer[stte->buf_used++] = c;
+        enriched->buffer[enriched->buf_used++] = c;
+        enriched->buffer[enriched->buf_used++] = (wchar_t) '\010'; // Ctrl-H (backspace)
+        enriched->buffer[enriched->buf_used++] = c;
       }
-      else if (stte->tag_level[RICH_UNDERLINE])
+      else if (enriched->tag_level[RICH_UNDERLINE])
       {
-        stte->buffer[stte->buf_used++] = '_';
-        stte->buffer[stte->buf_used++] = (wchar_t) '\010'; // Ctrl-H (backspace)
-        stte->buffer[stte->buf_used++] = c;
+        enriched->buffer[enriched->buf_used++] = '_';
+        enriched->buffer[enriched->buf_used++] = (wchar_t) '\010'; // Ctrl-H (backspace)
+        enriched->buffer[enriched->buf_used++] = c;
       }
-      else if (stte->tag_level[RICH_ITALIC])
+      else if (enriched->tag_level[RICH_ITALIC])
       {
-        stte->buffer[stte->buf_used++] = c;
-        stte->buffer[stte->buf_used++] = (wchar_t) '\010'; // Ctrl-H (backspace)
-        stte->buffer[stte->buf_used++] = '_';
+        enriched->buffer[enriched->buf_used++] = c;
+        enriched->buffer[enriched->buf_used++] = (wchar_t) '\010'; // Ctrl-H (backspace)
+        enriched->buffer[enriched->buf_used++] = '_';
       }
       else
       {
-        stte->buffer[stte->buf_used++] = c;
+        enriched->buffer[enriched->buf_used++] = c;
       }
     }
     else
     {
-      stte->buffer[stte->buf_used++] = c;
+      enriched->buffer[enriched->buf_used++] = c;
     }
-    stte->word_len++;
+    enriched->word_len++;
   }
 }
 
 /**
  * enriched_puts - Write an enriched text string to the State
- * @param s    String to write
- * @param stte State of Enriched text
+ * @param s        String to write
+ * @param enriched State of Enriched text
  */
-static void enriched_puts(const char *s, struct EnrichedState *stte)
+static void enriched_puts(const char *s, struct EnrichedState *enriched)
 {
-  if (!stte)
+  if (!enriched)
     return;
 
   const char *c = NULL;
 
-  if ((stte->buf_len < (stte->buf_used + mutt_str_len(s))) || !stte->buffer)
+  if ((enriched->buf_len < (enriched->buf_used + mutt_str_len(s))) || !enriched->buffer)
   {
-    stte->buf_len += 1024;
-    mutt_mem_realloc(&stte->buffer, (stte->buf_len + 1) * sizeof(wchar_t));
+    enriched->buf_len += 1024;
+    mutt_mem_realloc(&enriched->buffer, (enriched->buf_len + 1) * sizeof(wchar_t));
   }
   c = s;
   while (*c)
   {
-    stte->buffer[stte->buf_used++] = (wchar_t) *c;
+    enriched->buffer[enriched->buf_used++] = (wchar_t) *c;
     c++;
   }
 }
 
 /**
  * enriched_set_flags - Set flags on the enriched text state
- * @param tag  Tag to set
- * @param stte State of Enriched text
+ * @param tag      Tag to set
+ * @param enriched State of Enriched text
  */
-static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *stte)
+static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *enriched)
 {
-  if (!stte)
+  if (!enriched)
     return;
 
   const wchar_t *tagptr = tag;
@@ -390,65 +391,66 @@ static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *stte)
   if (j != -1)
   {
     if ((j == RICH_CENTER) || (j == RICH_FLUSHLEFT) || (j == RICH_FLUSHRIGHT))
-      enriched_flush(stte, true);
+      enriched_flush(enriched, true);
 
     if (*tag == (wchar_t) '/')
     {
-      if (stte->tag_level[j]) /* make sure not to go negative */
-        stte->tag_level[j]--;
-      if ((stte->s->flags & MUTT_DISPLAY) && (j == RICH_PARAM) && stte->tag_level[RICH_COLOR])
+      if (enriched->tag_level[j]) /* make sure not to go negative */
+        enriched->tag_level[j]--;
+      if ((enriched->state->flags & STATE_DISPLAY) && (j == RICH_PARAM) &&
+          enriched->tag_level[RICH_COLOR])
       {
-        stte->param[stte->param_used] = (wchar_t) '\0';
-        if (wcscasecmp(L"black", stte->param) == 0)
+        enriched->param[enriched->param_used] = (wchar_t) '\0';
+        if (wcscasecmp(L"black", enriched->param) == 0)
         {
-          enriched_puts("\033[30m", stte); // Escape
+          enriched_puts("\033[30m", enriched); // Escape
         }
-        else if (wcscasecmp(L"red", stte->param) == 0)
+        else if (wcscasecmp(L"red", enriched->param) == 0)
         {
-          enriched_puts("\033[31m", stte); // Escape
+          enriched_puts("\033[31m", enriched); // Escape
         }
-        else if (wcscasecmp(L"green", stte->param) == 0)
+        else if (wcscasecmp(L"green", enriched->param) == 0)
         {
-          enriched_puts("\033[32m", stte); // Escape
+          enriched_puts("\033[32m", enriched); // Escape
         }
-        else if (wcscasecmp(L"yellow", stte->param) == 0)
+        else if (wcscasecmp(L"yellow", enriched->param) == 0)
         {
-          enriched_puts("\033[33m", stte); // Escape
+          enriched_puts("\033[33m", enriched); // Escape
         }
-        else if (wcscasecmp(L"blue", stte->param) == 0)
+        else if (wcscasecmp(L"blue", enriched->param) == 0)
         {
-          enriched_puts("\033[34m", stte); // Escape
+          enriched_puts("\033[34m", enriched); // Escape
         }
-        else if (wcscasecmp(L"magenta", stte->param) == 0)
+        else if (wcscasecmp(L"magenta", enriched->param) == 0)
         {
-          enriched_puts("\033[35m", stte); // Escape
+          enriched_puts("\033[35m", enriched); // Escape
         }
-        else if (wcscasecmp(L"cyan", stte->param) == 0)
+        else if (wcscasecmp(L"cyan", enriched->param) == 0)
         {
-          enriched_puts("\033[36m", stte); // Escape
+          enriched_puts("\033[36m", enriched); // Escape
         }
-        else if (wcscasecmp(L"white", stte->param) == 0)
+        else if (wcscasecmp(L"white", enriched->param) == 0)
         {
-          enriched_puts("\033[37m", stte); // Escape
+          enriched_puts("\033[37m", enriched); // Escape
         }
       }
-      if ((stte->s->flags & MUTT_DISPLAY) && (j == RICH_COLOR))
+      if ((enriched->state->flags & STATE_DISPLAY) && (j == RICH_COLOR))
       {
-        enriched_puts("\033[0m", stte); // Escape
+        enriched_puts("\033[0m", enriched); // Escape
       }
 
       /* flush parameter buffer when closing the tag */
       if (j == RICH_PARAM)
       {
-        stte->param_used = 0;
-        stte->param[0] = (wchar_t) '\0';
+        enriched->param_used = 0;
+        enriched->param[0] = (wchar_t) '\0';
       }
     }
     else
-      stte->tag_level[j]++;
+      enriched->tag_level[j]++;
 
     if (j == RICH_EXCERPT)
-      enriched_flush(stte, true);
+      enriched_flush(enriched, true);
   }
 }
 
@@ -456,7 +458,7 @@ static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *stte)
  * text_enriched_handler - Handler for enriched text - Implements ::handler_t - @ingroup handler_api
  * @retval 0 Always
  */
-int text_enriched_handler(struct Body *a, struct State *s)
+int text_enriched_handler(struct Body *a, struct State *state)
 {
   enum
   {
@@ -467,78 +469,79 @@ int text_enriched_handler(struct Body *a, struct State *s)
     NEWLINE,
     ST_EOF,
     DONE
-  } state = TEXT;
+  } text_state = TEXT;
 
   long bytes = a->length;
-  struct EnrichedState stte = { 0 };
+  struct EnrichedState enriched = { 0 };
   wint_t wc = 0;
   int tag_len = 0;
   wchar_t tag[1024 + 1];
 
-  stte.s = s;
-  stte.wrap_margin = ((s->wraplen > 4) && ((s->flags & MUTT_DISPLAY) || (s->wraplen < 76))) ?
-                         s->wraplen - 4 :
-                         72;
-  stte.line_max = stte.wrap_margin * 4;
-  stte.line = mutt_mem_calloc((stte.line_max + 1), sizeof(wchar_t));
-  stte.param = mutt_mem_calloc(256, sizeof(wchar_t));
+  enriched.state = state;
+  enriched.wrap_margin = ((state->wraplen > 4) &&
+                          ((state->flags & STATE_DISPLAY) || (state->wraplen < 76))) ?
+                             state->wraplen - 4 :
+                             72;
+  enriched.line_max = enriched.wrap_margin * 4;
+  enriched.line = mutt_mem_calloc((enriched.line_max + 1), sizeof(wchar_t));
+  enriched.param = mutt_mem_calloc(256, sizeof(wchar_t));
 
-  stte.param_len = 256;
-  stte.param_used = 0;
+  enriched.param_len = 256;
+  enriched.param_used = 0;
 
-  if (s->prefix)
+  if (state->prefix)
   {
-    state_puts(s, s->prefix);
-    stte.indent_len += mutt_str_len(s->prefix);
+    state_puts(state, state->prefix);
+    enriched.indent_len += mutt_str_len(state->prefix);
   }
 
-  while (state != DONE)
+  while (text_state != DONE)
   {
-    if (state != ST_EOF)
+    if (text_state != ST_EOF)
     {
-      if (!bytes || ((wc = fgetwc(s->fp_in)) == WEOF))
-        state = ST_EOF;
+      if (!bytes || ((wc = fgetwc(state->fp_in)) == WEOF))
+        text_state = ST_EOF;
       else
         bytes--;
     }
 
-    switch (state)
+    switch (text_state)
     {
       case TEXT:
         switch (wc)
         {
           case '<':
-            state = LANGLE;
+            text_state = LANGLE;
             break;
 
           case '\n':
-            if (stte.tag_level[RICH_NOFILL])
+            if (enriched.tag_level[RICH_NOFILL])
             {
-              enriched_flush(&stte, true);
+              enriched_flush(&enriched, true);
             }
             else
             {
-              enriched_putwc((wchar_t) ' ', &stte);
-              state = NEWLINE;
+              enriched_putwc((wchar_t) ' ', &enriched);
+              text_state = NEWLINE;
             }
             break;
 
           default:
-            enriched_putwc(wc, &stte);
+            enriched_putwc(wc, &enriched);
         }
         break;
 
       case LANGLE:
         if (wc == (wchar_t) '<')
         {
-          enriched_putwc(wc, &stte);
-          state = TEXT;
+          enriched_putwc(wc, &enriched);
+          text_state = TEXT;
           break;
         }
         else
         {
           tag_len = 0;
-          state = TAG;
+          text_state = TAG;
         }
       /* Yes, (it wasn't a <<, so this char is first in TAG) */
       /* fallthrough */
@@ -546,35 +549,35 @@ int text_enriched_handler(struct Body *a, struct State *s)
         if (wc == (wchar_t) '>')
         {
           tag[tag_len] = (wchar_t) '\0';
-          enriched_set_flags(tag, &stte);
-          state = TEXT;
+          enriched_set_flags(tag, &enriched);
+          text_state = TEXT;
         }
         else if (tag_len < 1024) /* ignore overly long tags */
           tag[tag_len++] = wc;
         else
-          state = BOGUS_TAG;
+          text_state = BOGUS_TAG;
         break;
 
       case BOGUS_TAG:
         if (wc == (wchar_t) '>')
-          state = TEXT;
+          text_state = TEXT;
         break;
 
       case NEWLINE:
         if (wc == (wchar_t) '\n')
-          enriched_flush(&stte, true);
+          enriched_flush(&enriched, true);
         else
         {
-          ungetwc(wc, s->fp_in);
+          ungetwc(wc, state->fp_in);
           bytes++;
-          state = TEXT;
+          text_state = TEXT;
         }
         break;
 
       case ST_EOF:
-        enriched_putwc((wchar_t) '\0', &stte);
-        enriched_flush(&stte, true);
-        state = DONE;
+        enriched_putwc((wchar_t) '\0', &enriched);
+        enriched_flush(&enriched, true);
+        text_state = DONE;
         break;
 
       default:
@@ -583,11 +586,11 @@ int text_enriched_handler(struct Body *a, struct State *s)
     }
   }
 
-  state_putc(s, '\n'); /* add a final newline */
+  state_putc(state, '\n'); /* add a final newline */
 
-  FREE(&(stte.buffer));
-  FREE(&(stte.line));
-  FREE(&(stte.param));
+  FREE(&(enriched.buffer));
+  FREE(&(enriched.line));
+  FREE(&(enriched.param));
 
   return 0;
 }

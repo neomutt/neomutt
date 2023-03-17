@@ -62,12 +62,12 @@
 
 /**
  * crypt_current_time - Print the current time
- * @param s        State to use
+ * @param state    State to use
  * @param app_name App name, e.g. "PGP"
  *
  * print the current time to avoid spoofing of the signature output
  */
-void crypt_current_time(struct State *s, const char *app_name)
+void crypt_current_time(struct State *state, const char *app_name)
 {
   char p[256], tmp[256];
 
@@ -83,7 +83,7 @@ void crypt_current_time(struct State *s, const char *app_name)
     *p = '\0';
 
   snprintf(tmp, sizeof(tmp), _("[-- %s output follows%s --]\n"), NONULL(app_name), p);
-  state_attach_puts(s, tmp);
+  state_attach_puts(state, tmp);
 }
 
 /**
@@ -735,14 +735,14 @@ SecurityFlags crypt_query(struct Body *b)
 /**
  * crypt_write_signed - Write the message body/part
  * @param a        Body to write
- * @param s        State to use
+ * @param state    State to use
  * @param tempfile File to write to
  * @retval  0 Success
  * @retval -1 Error
  *
- * Body/part A described by state S to the given TEMPFILE.
+ * Body/part A described by state state to the given TEMPFILE.
  */
-int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
+int crypt_write_signed(struct Body *a, struct State *state, const char *tempfile)
 {
   if (!WithCrypto)
     return -1;
@@ -754,7 +754,7 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
     return -1;
   }
 
-  if (!mutt_file_seek(s->fp_in, a->hdr_offset, SEEK_SET))
+  if (!mutt_file_seek(state->fp_in, a->hdr_offset, SEEK_SET))
   {
     mutt_file_fclose(&fp);
     return -1;
@@ -763,7 +763,7 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
   bool hadcr = false;
   while (bytes > 0)
   {
-    const int c = fgetc(s->fp_in);
+    const int c = fgetc(state->fp_in);
     if (c == EOF)
       break;
 
@@ -1090,26 +1090,27 @@ bool mutt_should_hide_protected_subject(struct Email *e)
 /**
  * mutt_protected_headers_handler - Process a protected header - Implements ::handler_t - @ingroup handler_api
  */
-int mutt_protected_headers_handler(struct Body *b, struct State *s)
+int mutt_protected_headers_handler(struct Body *b, struct State *state)
 {
   const bool c_crypt_protected_headers_read = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
   if (c_crypt_protected_headers_read && b->mime_headers)
   {
     if (b->mime_headers->subject)
     {
-      const bool display = (s->flags & MUTT_DISPLAY);
+      const bool display = (state->flags & STATE_DISPLAY);
 
       const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
       if (display && c_weed && mutt_matches_ignore("subject"))
         return 0;
 
-      state_mark_protected_header(s);
+      state_mark_protected_header(state);
       const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
-      int wraplen = display ? mutt_window_wrap_cols(s->wraplen, c_wrap) : 0;
+      int wraplen = display ? mutt_window_wrap_cols(state->wraplen, c_wrap) : 0;
 
-      mutt_write_one_header(s->fp_out, "Subject", b->mime_headers->subject, s->prefix,
-                            wraplen, display ? CH_DISPLAY : CH_NO_FLAGS, NeoMutt->sub);
-      state_puts(s, "\n");
+      mutt_write_one_header(state->fp_out, "Subject", b->mime_headers->subject,
+                            state->prefix, wraplen,
+                            display ? CH_DISPLAY : CH_NO_FLAGS, NeoMutt->sub);
+      state_puts(state, "\n");
     }
   }
 
@@ -1119,7 +1120,7 @@ int mutt_protected_headers_handler(struct Body *b, struct State *s)
 /**
  * mutt_signed_handler - Verify a "multipart/signed" body - Implements ::handler_t - @ingroup handler_api
  */
-int mutt_signed_handler(struct Body *b, struct State *s)
+int mutt_signed_handler(struct Body *b, struct State *state)
 {
   if (!WithCrypto)
     return -1;
@@ -1136,9 +1137,9 @@ int mutt_signed_handler(struct Body *b, struct State *s)
   if (signed_type == SEC_NO_FLAGS)
   {
     /* A null protocol value is already checked for in mutt_body_handler() */
-    state_printf(s, _("[-- Error: Unknown multipart/signed protocol %s --]\n\n"),
+    state_printf(state, _("[-- Error: Unknown multipart/signed protocol %s --]\n\n"),
                  mutt_param_get(&top->parameter, "protocol"));
-    return mutt_body_handler(b, s);
+    return mutt_body_handler(b, state);
   }
 
   if (!(b && b->next))
@@ -1174,11 +1175,11 @@ int mutt_signed_handler(struct Body *b, struct State *s)
   }
   if (inconsistent)
   {
-    state_attach_puts(s, _("[-- Error: Missing or bad-format multipart/signed signature --]\n\n"));
-    return mutt_body_handler(b, s);
+    state_attach_puts(state, _("[-- Error: Missing or bad-format multipart/signed signature --]\n\n"));
+    return mutt_body_handler(b, state);
   }
 
-  if (s->flags & MUTT_DISPLAY)
+  if (state->flags & STATE_DISPLAY)
   {
     crypt_fetch_signatures(&signatures, b->next, &sigcnt);
 
@@ -1187,7 +1188,7 @@ int mutt_signed_handler(struct Body *b, struct State *s)
       tempfile = mutt_buffer_pool_get();
       mutt_buffer_mktemp(tempfile);
       bool goodsig = true;
-      if (crypt_write_signed(b, s, mutt_buffer_string(tempfile)) == 0)
+      if (crypt_write_signed(b, state, mutt_buffer_string(tempfile)) == 0)
       {
         for (int i = 0; i < sigcnt; i++)
         {
@@ -1195,7 +1196,7 @@ int mutt_signed_handler(struct Body *b, struct State *s)
               (signatures[i]->type == TYPE_APPLICATION) &&
               mutt_istr_equal(signatures[i]->subtype, "pgp-signature"))
           {
-            if (crypt_pgp_verify_one(signatures[i], s, mutt_buffer_string(tempfile)) != 0)
+            if (crypt_pgp_verify_one(signatures[i], state, mutt_buffer_string(tempfile)) != 0)
               goodsig = false;
 
             continue;
@@ -1206,13 +1207,13 @@ int mutt_signed_handler(struct Body *b, struct State *s)
               (mutt_istr_equal(signatures[i]->subtype, "x-pkcs7-signature") ||
                mutt_istr_equal(signatures[i]->subtype, "pkcs7-signature")))
           {
-            if (crypt_smime_verify_one(signatures[i], s, mutt_buffer_string(tempfile)) != 0)
+            if (crypt_smime_verify_one(signatures[i], state, mutt_buffer_string(tempfile)) != 0)
               goodsig = false;
 
             continue;
           }
 
-          state_printf(s, _("[-- Warning: We can't verify %s/%s signatures. --]\n\n"),
+          state_printf(state, _("[-- Warning: We can't verify %s/%s signatures. --]\n\n"),
                        TYPE(signatures[i]), signatures[i]->subtype);
         }
       }
@@ -1224,22 +1225,22 @@ int mutt_signed_handler(struct Body *b, struct State *s)
       top->badsig = !goodsig;
 
       /* Now display the signed body */
-      state_attach_puts(s, _("[-- The following data is signed --]\n\n"));
+      state_attach_puts(state, _("[-- The following data is signed --]\n\n"));
 
-      mutt_protected_headers_handler(b, s);
+      mutt_protected_headers_handler(b, state);
 
       FREE(&signatures);
     }
     else
     {
-      state_attach_puts(s, _("[-- Warning: Can't find any signatures. --]\n\n"));
+      state_attach_puts(state, _("[-- Warning: Can't find any signatures. --]\n\n"));
     }
   }
 
-  rc = mutt_body_handler(b, s);
+  rc = mutt_body_handler(b, state);
 
-  if ((s->flags & MUTT_DISPLAY) && (sigcnt != 0))
-    state_attach_puts(s, _("\n[-- End of signed data --]\n"));
+  if ((state->flags & STATE_DISPLAY) && (sigcnt != 0))
+    state_attach_puts(state, _("\n[-- End of signed data --]\n"));
 
   return rc;
 }

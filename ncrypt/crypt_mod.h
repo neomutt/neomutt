@@ -103,24 +103,24 @@ struct CryptModuleSpecs
    * @ingroup crypto_api
    *
    * application_handler - Manage the MIME type "application/pgp" or "application/smime"
-   * @param m Body of the email
-   * @param s State of text being processed
+   * @param m     Body of the email
+   * @param state State of text being processed
    * @retval 0 Success
    * @retval -1 Error
    */
-  int (*application_handler)(struct Body *m, struct State *s);
+  int (*application_handler)(struct Body *m, struct State *state);
 
   /**
    * @defgroup crypto_encrypted_handler encrypted_handler()
    * @ingroup crypto_api
    *
    * encrypted_handler - Manage a PGP or S/MIME encrypted MIME part
-   * @param m Body of the email
-   * @param s State of text being processed
+   * @param m     Body of the email
+   * @param state State of text being processed
    * @retval 0 Success
    * @retval -1 Error
    */
-  int (*encrypted_handler)(struct Body *m, struct State *s);
+  int (*encrypted_handler)(struct Body *m, struct State *state);
 
   /**
    * @defgroup crypto_find_keys find_keys()
@@ -155,12 +155,12 @@ struct CryptModuleSpecs
    *
    * verify_one - Check a signed MIME part against a signature
    * @param sigbdy Body of the signed mail
-   * @param s      State of text being processed
+   * @param state  State of text being processed
    * @param tempf  File containing the key
    * @retval  0 Success
    * @retval -1 Error
    */
-  int (*verify_one)(struct Body *sigbdy, struct State *s, const char *tempf);
+  int (*verify_one)(struct Body *sigbdy, struct State *state, const char *tempf);
 
   /**
    * @defgroup crypto_send_menu send_menu()

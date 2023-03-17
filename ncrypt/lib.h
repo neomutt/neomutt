@@ -142,52 +142,52 @@ typedef uint16_t KeyFlags;                  ///< Flags describing PGP/SMIME keys
 #define KEYFLAG_ABILITIES (KEYFLAG_CANSIGN | KEYFLAG_CANENCRYPT | KEYFLAG_PREFER_ENCRYPTION | KEYFLAG_PREFER_SIGNING)
 
 /* crypt.c */
-void         crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailList *el);
-void         crypt_forget_passphrase(void);
-int          crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode);
-void         crypt_opportunistic_encrypt(struct Email *e);
-SecurityFlags crypt_query(struct Body *b);
-bool         crypt_valid_passphrase(SecurityFlags flags);
-SecurityFlags mutt_is_application_pgp(struct Body *b);
-SecurityFlags mutt_is_application_smime(struct Body *b);
+void          crypt_extract_keys_from_messages         (struct Mailbox *m, struct EmailList *el);
+void          crypt_forget_passphrase                  (void);
+int           crypt_get_keys                           (struct Email *e, char **keylist, bool oppenc_mode);
+void          crypt_opportunistic_encrypt              (struct Email *e);
+SecurityFlags crypt_query                              (struct Body *b);
+bool          crypt_valid_passphrase                   (SecurityFlags flags);
+SecurityFlags mutt_is_application_pgp                  (struct Body *b);
+SecurityFlags mutt_is_application_smime                (struct Body *b);
 SecurityFlags mutt_is_malformed_multipart_pgp_encrypted(struct Body *b);
-SecurityFlags mutt_is_multipart_encrypted(struct Body *b);
-SecurityFlags mutt_is_multipart_signed(struct Body *b);
-int          mutt_is_valid_multipart_pgp_encrypted(struct Body *b);
-int          mutt_protect(struct Email *e, char *keylist, bool postpone);
-int          mutt_protected_headers_handler(struct Body *b, struct State *s);
-bool         mutt_should_hide_protected_subject(struct Email *e);
-int          mutt_signed_handler(struct Body *b, struct State *s);
+SecurityFlags mutt_is_multipart_encrypted              (struct Body *b);
+SecurityFlags mutt_is_multipart_signed                 (struct Body *b);
+int           mutt_is_valid_multipart_pgp_encrypted    (struct Body *b);
+int           mutt_protected_headers_handler           (struct Body *b, struct State *state);
+int           mutt_protect                             (struct Email *e, char *keylist, bool postpone);
+bool          mutt_should_hide_protected_subject       (struct Email *e);
+int           mutt_signed_handler                      (struct Body *b, struct State *state);
 
 /* cryptglue.c */
-void         crypt_cleanup(void);
-bool         crypt_has_module_backend(SecurityFlags type);
-void         crypt_init(void);
-void         crypt_invoke_message(SecurityFlags type);
-int          crypt_pgp_application_handler(struct Body *m, struct State *s);
-bool         crypt_pgp_check_traditional(FILE *fp, struct Body *b, bool just_one);
-int          crypt_pgp_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
-int          crypt_pgp_encrypted_handler(struct Body *a, struct State *s);
-void         crypt_pgp_extract_key_from_attachment(FILE *fp, struct Body *top);
-void         crypt_pgp_invoke_getkeys(struct Address *addr);
-struct Body *crypt_pgp_make_key_attachment(void);
-SecurityFlags crypt_pgp_send_menu(struct Email *e);
-int          crypt_smime_application_handler(struct Body *m, struct State *s);
-int          crypt_smime_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
-void         crypt_smime_getkeys(struct Envelope *env);
-SecurityFlags crypt_smime_send_menu(struct Email *e);
-int          crypt_smime_verify_sender(struct Email *e, struct Message *msg);
+void          crypt_cleanup                            (void);
+bool          crypt_has_module_backend                 (SecurityFlags type);
+void          crypt_init                               (void);
+void          crypt_invoke_message                     (SecurityFlags type);
+int           crypt_pgp_application_handler            (struct Body *m, struct State *state);
+bool          crypt_pgp_check_traditional              (FILE *fp, struct Body *b, bool just_one);
+int           crypt_pgp_decrypt_mime                   (FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
+int           crypt_pgp_encrypted_handler              (struct Body *a, struct State *state);
+void          crypt_pgp_extract_key_from_attachment    (FILE *fp, struct Body *top);
+void          crypt_pgp_invoke_getkeys                 (struct Address *addr);
+struct Body * crypt_pgp_make_key_attachment            (void);
+SecurityFlags crypt_pgp_send_menu                      (struct Email *e);
+int           crypt_smime_application_handler          (struct Body *m, struct State *state);
+int           crypt_smime_decrypt_mime                 (FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
+void          crypt_smime_getkeys                      (struct Envelope *env);
+SecurityFlags crypt_smime_send_menu                    (struct Email *e);
+int           crypt_smime_verify_sender                (struct Email *e, struct Message *msg);
 
 /* crypt_mod.c */
-void crypto_module_free(void);
+void          crypto_module_free                       (void);
 
 #ifdef CRYPT_BACKEND_GPGME
 /* crypt_gpgme.c */
-void         pgp_gpgme_init(void);
+void          pgp_gpgme_init                           (void);
 #ifdef USE_AUTOCRYPT
-int          mutt_gpgme_select_secret_key (struct Buffer *keyid);
+int          mutt_gpgme_select_secret_key              (struct Buffer *keyid);
 #endif
-const char  *mutt_gpgme_print_version(void);
+const char  * mutt_gpgme_print_version                 (void);
 #endif
 
 #endif /* MUTT_NCRYPT_LIB_H */

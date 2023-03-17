@@ -51,40 +51,40 @@
 
 /**
  * replace_part - Search and replace on a buffer
- * @param state Current state of the input buffer
+ * @param es    Current state of the input buffer
  * @param from  Starting point for the replacement
  * @param buf   Replacement string
  */
-static void replace_part(struct EnterState *state, size_t from, const char *buf)
+static void replace_part(struct EnterState *es, size_t from, const char *buf)
 {
   /* Save the suffix */
-  size_t savelen = state->lastchar - state->curpos;
+  size_t savelen = es->lastchar - es->curpos;
   wchar_t *savebuf = NULL;
 
   if (savelen)
   {
     savebuf = mutt_mem_calloc(savelen, sizeof(wchar_t));
-    memcpy(savebuf, state->wbuf + state->curpos, savelen * sizeof(wchar_t));
+    memcpy(savebuf, es->wbuf + es->curpos, savelen * sizeof(wchar_t));
   }
 
   /* Convert to wide characters */
-  state->curpos = mutt_mb_mbstowcs(&state->wbuf, &state->wbuflen, from, buf);
+  es->curpos = mutt_mb_mbstowcs(&es->wbuf, &es->wbuflen, from, buf);
 
   if (savelen)
   {
     /* Make space for suffix */
-    if (state->curpos + savelen > state->wbuflen)
+    if (es->curpos + savelen > es->wbuflen)
     {
-      state->wbuflen = state->curpos + savelen;
-      mutt_mem_realloc(&state->wbuf, state->wbuflen * sizeof(wchar_t));
+      es->wbuflen = es->curpos + savelen;
+      mutt_mem_realloc(&es->wbuf, es->wbuflen * sizeof(wchar_t));
     }
 
     /* Restore suffix */
-    memcpy(state->wbuf + state->curpos, savebuf, savelen * sizeof(wchar_t));
+    memcpy(es->wbuf + es->curpos, savebuf, savelen * sizeof(wchar_t));
     FREE(&savebuf);
   }
 
-  state->lastchar = state->curpos + savelen;
+  es->lastchar = es->curpos + savelen;
 }
 
 // -----------------------------------------------------------------------------

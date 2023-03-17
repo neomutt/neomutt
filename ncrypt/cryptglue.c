@@ -234,10 +234,10 @@ int crypt_pgp_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
 /**
  * crypt_pgp_application_handler - Wrapper for CryptModuleSpecs::application_handler() - Implements ::handler_t - @ingroup handler_api
  */
-int crypt_pgp_application_handler(struct Body *b, struct State *s)
+int crypt_pgp_application_handler(struct Body *b, struct State *state)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, application_handler))
-    return CRYPT_MOD_CALL(PGP, application_handler)(b, s);
+    return CRYPT_MOD_CALL(PGP, application_handler)(b, state);
 
   return -1;
 }
@@ -245,14 +245,14 @@ int crypt_pgp_application_handler(struct Body *b, struct State *s)
 /**
  * crypt_pgp_encrypted_handler - Wrapper for CryptModuleSpecs::encrypted_handler() - Implements ::handler_t - @ingroup handler_api
  */
-int crypt_pgp_encrypted_handler(struct Body *b, struct State *s)
+int crypt_pgp_encrypted_handler(struct Body *b, struct State *state)
 {
 #ifdef USE_AUTOCRYPT
   const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
   if (c_autocrypt)
   {
     OptAutocryptGpgme = true;
-    int result = pgp_gpgme_encrypted_handler(b, s);
+    int result = pgp_gpgme_encrypted_handler(b, state);
     OptAutocryptGpgme = false;
     if (result == 0)
     {
@@ -263,7 +263,7 @@ int crypt_pgp_encrypted_handler(struct Body *b, struct State *s)
 #endif
 
   if (CRYPT_MOD_CALL_CHECK(PGP, encrypted_handler))
-    return CRYPT_MOD_CALL(PGP, encrypted_handler)(b, s);
+    return CRYPT_MOD_CALL(PGP, encrypted_handler)(b, state);
 
   return -1;
 }
@@ -370,10 +370,10 @@ void crypt_pgp_invoke_import(const char *fname)
 /**
  * crypt_pgp_verify_one - Wrapper for CryptModuleSpecs::verify_one()
  */
-int crypt_pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempf)
+int crypt_pgp_verify_one(struct Body *sigbdy, struct State *state, const char *tempf)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, verify_one))
-    return CRYPT_MOD_CALL(PGP, verify_one)(sigbdy, s, tempf);
+    return CRYPT_MOD_CALL(PGP, verify_one)(sigbdy, state, tempf);
 
   return -1;
 }
@@ -441,10 +441,10 @@ int crypt_smime_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
 /**
  * crypt_smime_application_handler - Wrapper for CryptModuleSpecs::application_handler() - Implements ::handler_t - @ingroup handler_api
  */
-int crypt_smime_application_handler(struct Body *b, struct State *s)
+int crypt_smime_application_handler(struct Body *b, struct State *state)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, application_handler))
-    return CRYPT_MOD_CALL(SMIME, application_handler)(b, s);
+    return CRYPT_MOD_CALL(SMIME, application_handler)(b, state);
 
   return -1;
 }
@@ -514,10 +514,10 @@ void crypt_smime_invoke_import(const char *infile, const char *mailbox)
 /**
  * crypt_smime_verify_one - Wrapper for CryptModuleSpecs::verify_one()
  */
-int crypt_smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempf)
+int crypt_smime_verify_one(struct Body *sigbdy, struct State *state, const char *tempf)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, verify_one))
-    return CRYPT_MOD_CALL(SMIME, verify_one)(sigbdy, s, tempf);
+    return CRYPT_MOD_CALL(SMIME, verify_one)(sigbdy, state, tempf);
 
   return -1;
 }
