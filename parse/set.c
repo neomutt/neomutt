@@ -235,6 +235,20 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_WARNING;
     }
 
+    // sanity checks for the above
+    // Each of inv, unset reset, query, equals implies that the others are not set.
+    // If none of them are set, then we are dealing with a "set foo" command.
+    // clang-format off
+    assert(!inv    || !(       unset || reset || query || equals          ));
+    assert(!unset  || !(inv ||          reset || query || equals          ));
+    assert(!reset  || !(inv || unset ||          query || equals          ));
+    assert(!query  || !(inv || unset || reset ||          equals          ));
+    assert(!equals || !(inv || unset || reset || query ||           prefix));
+    // clang-format on
+    assert(!(increment && decrement)); // only one of increment or decrement is set
+    assert(!(increment || decrement) || equals); // increment/decrement implies equals
+    assert(!inv || bq); // inv (aka toggle) implies bool or quad
+
     if (reset)
     {
       // mutt_buffer_printf(err, "ACT24 reset variable %s", buf->data);
