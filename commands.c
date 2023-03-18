@@ -725,17 +725,17 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * set_dump - Parse 'set' command to display config - Implements Command::parse() - @ingroup command_parse
+ * set_dump - Dump list of config variables into a file/pager.
+ *
+ * @param flags what configs to dump: see #ConfigDumpFlags
+ * @param err buffer for error message
+ * @return see #CommandResult
+ *
+ * FIXME: Move me into parse/set.c.  Note: this function currently depends on
+ * pager, which is the reason it is not included in the parse library.
  */
-enum CommandResult set_dump(struct Buffer *buf, struct Buffer *s, intptr_t data,
-                            struct Buffer *err)
+enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
 {
-  const bool set = mutt_str_equal(s->data, "set");
-  const bool set_all = mutt_str_equal(s->data, "set all");
-
-  if (!set && !set_all)
-    return MUTT_CMD_ERROR;
-
   char tempfile[PATH_MAX] = { 0 };
   mutt_mktemp(tempfile, sizeof(tempfile));
 
@@ -747,10 +747,7 @@ enum CommandResult set_dump(struct Buffer *buf, struct Buffer *s, intptr_t data,
     return MUTT_CMD_ERROR;
   }
 
-  if (set_all)
-    dump_config(NeoMutt->sub->cs, CS_DUMP_NO_FLAGS, fp_out);
-  else
-    dump_config(NeoMutt->sub->cs, CS_DUMP_ONLY_CHANGED, fp_out);
+  dump_config(NeoMutt->sub->cs, flags, fp_out);
 
   mutt_file_fclose(&fp_out);
 

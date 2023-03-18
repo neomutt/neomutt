@@ -362,6 +362,27 @@ static enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer 
 static enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
 {
   assert(name);
+  // In the interactive case (outside of the initial parsing of neomuttrc) we
+  // support additional syntax: "set" (no arguments) and "set all".
+  // If not in interactive mode, we recognise them but do nothing.
+
+  // Handle "set" (no arguments), i.e. show list of changed variables.
+  if (mutt_buffer_is_empty(name))
+  {
+    if (StartupComplete)
+      return set_dump(CS_DUMP_ONLY_CHANGED, err);
+    else
+      return MUTT_CMD_SUCCESS;
+  }
+  // Handle special "set all" syntax
+  if (mutt_str_equal(name->data, "all"))
+  {
+    if (StartupComplete)
+      return set_dump(CS_DUMP_NO_FLAGS, err);
+    else
+      return MUTT_CMD_SUCCESS;
+  }
+
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   struct Buffer *buf = mutt_buffer_pool_get();
   if (he)
@@ -414,15 +435,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
   if (!buf || !s)
     return MUTT_CMD_ERROR;
 
-  if (StartupComplete)
-  {
-    if (set_dump(buf, s, data, err) == MUTT_CMD_SUCCESS)
-      return MUTT_CMD_SUCCESS;
-    if (!mutt_buffer_is_empty(err))
-      return MUTT_CMD_ERROR;
-  }
-
-  while (MoreArgs(s))
+  do
   {
     bool prefix = false;
     bool query = false;
@@ -462,7 +475,8 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_WARNING;
     }
 
-    /* get the variable name */
+    // get the variable name.  Note that buf might be empty if no additional
+    // argument was given.
     int ret = parse_extract_token(buf, s, TOKEN_EQUAL | TOKEN_QUESTION | TOKEN_PLUS | TOKEN_MINUS);
     if (ret == -1)
       return MUTT_CMD_ERROR;
@@ -633,7 +647,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     // the current variable failed.
     if (rc != MUTT_CMD_SUCCESS)
       return rc;
-  }
+  } while (MoreArgs(s));
 
   return MUTT_CMD_SUCCESS;
 }
