@@ -195,6 +195,12 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
         equals = true;
         s->dptr++;
       }
+      else
+      {
+        mutt_buffer_printf(err, _("'+' and '-' must be followed by '='"),
+                           set_commands[data]);
+        return MUTT_CMD_WARNING;
+      }
     }
     else if (*s->dptr == '=')
     {
