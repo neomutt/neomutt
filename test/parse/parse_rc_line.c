@@ -38,6 +38,8 @@ static struct ConfigDef ConfigVars[] = {
   { "Guava",      DT_PATH|DT_PATH_FILE, IP "guava",      0, NULL, },
   { NULL },
 };
+static struct ConfigDef MyVarDef =
+  { "my_var",     DT_MYVAR,        IP NULL,         0, NULL, };
 // clang-format on
 
 /**
@@ -203,6 +205,35 @@ static bool test_set(struct Buffer *err)
     }
   }
 
+  // set on my_var succeeds even if not existent.
+  {
+    int grc = cs_str_delete(NeoMutt->sub->cs, "my_var", err);
+    // return value grc is irrelevant.
+
+    mutt_buffer_reset(err);
+    enum CommandResult rc = parse_rc_line("set my_var = newbar", err);
+    if (!TEST_CHECK(rc == MUTT_CMD_SUCCESS))
+    {
+      TEST_MSG("Expected %d, but got %d; err is: '%s'\n", MUTT_CMD_SUCCESS, rc,
+               mutt_buffer_string(err));
+      return false;
+    }
+
+    // Check effect
+    mutt_buffer_reset(err);
+    grc = cs_str_string_get(NeoMutt->sub->cs, "my_var", err);
+    if (!TEST_CHECK(CSR_RESULT(grc) == CSR_SUCCESS))
+    {
+      TEST_MSG("Failed to get %s: %s\n", "my_var", mutt_buffer_string(err));
+      return false;
+    }
+    if (!TEST_CHECK(mutt_str_equal(err->data, "newbar")))
+    {
+      TEST_MSG("Variable not set %s: %s\n", "my_var", mutt_buffer_string(err));
+      return false;
+    }
+  }
+
   // set fails on unknown variable
   {
     mutt_buffer_reset(err);
@@ -313,6 +344,43 @@ static bool test_unset(struct Buffer *err)
     }
   }
 
+  // unset on my_var deletes it
+  {
+    // Delete any trace of my_var if existent
+    cs_str_delete(NeoMutt->sub->cs, "my_var", err); // return value is irrelevant.
+    mutt_buffer_reset(err);
+    if (!TEST_CHECK(cs_register_variable(NeoMutt->sub->cs, &MyVarDef, err) != NULL))
+    {
+      TEST_MSG("Failed to register my_var config variable: %s", mutt_buffer_string(err));
+      return false;
+    }
+    mutt_buffer_reset(err);
+    int grc = cs_str_string_set(NeoMutt->sub->cs, "my_var", "foo", err);
+    if (!TEST_CHECK(CSR_RESULT(grc) == CSR_SUCCESS))
+    {
+      TEST_MSG("Failed to set dummy value for %s: %s\n", "my_var", mutt_buffer_string(err));
+      return false;
+    }
+
+    mutt_buffer_reset(err);
+    enum CommandResult rc = parse_rc_line("unset my_var", err);
+    if (!TEST_CHECK(rc == MUTT_CMD_SUCCESS))
+    {
+      TEST_MSG("Expected %d, but got %d; err is: '%s'\n", MUTT_CMD_SUCCESS, rc,
+               mutt_buffer_string(err));
+      return false;
+    }
+
+    // Check effect
+    mutt_buffer_reset(err);
+    grc = cs_str_string_get(NeoMutt->sub->cs, "my_var", err);
+    if (!TEST_CHECK(CSR_RESULT(grc) == CSR_ERR_UNKNOWN))
+    {
+      TEST_MSG("my_var was not an unknown config variable: %s\n", mutt_buffer_string(err));
+      return false;
+    }
+  }
+
   // unset fails on unknown variable
   {
     mutt_buffer_reset(err);
@@ -387,6 +455,113 @@ static bool test_reset(struct Buffer *err)
         }
         mutt_buffer_pool_release(&buf);
       }
+    }
+  }
+
+  // reset on my_var deletes it
+  {
+    // Delete any trace of my_var if existent
+    cs_str_delete(NeoMutt->sub->cs, "my_var", err); // return value is irrelevant.
+    mutt_buffer_reset(err);
+    if (!TEST_CHECK(cs_register_variable(NeoMutt->sub->cs, &MyVarDef, err) != NULL))
+    {
+      TEST_MSG("Failed to register my_var config variable: %s", mutt_buffer_string(err));
+      return false;
+    }
+    mutt_buffer_reset(err);
+    int grc = cs_str_string_set(NeoMutt->sub->cs, "my_var", "foo", err);
+    if (!TEST_CHECK(CSR_RESULT(grc) == CSR_SUCCESS))
+    {
+      TEST_MSG("Failed to set dummy value for %s: %s\n", "my_var", mutt_buffer_string(err));
+      return false;
+    }
+
+    mutt_buffer_reset(err);
+    enum CommandResult rc = parse_rc_line("reset my_var", err);
+    if (!TEST_CHECK(rc == MUTT_CMD_SUCCESS))
+    {
+      TEST_MSG("Expected %d, but got %d; err is: '%s'\n", MUTT_CMD_SUCCESS, rc,
+               mutt_buffer_string(err));
+      return false;
+    }
+
+    // Check effect
+    mutt_buffer_reset(err);
+    grc = cs_str_string_get(NeoMutt->sub->cs, "my_var", err);
+    if (!TEST_CHECK(CSR_RESULT(grc) == CSR_ERR_UNKNOWN))
+    {
+      TEST_MSG("my_var was not an unknown config variable: %s\n", mutt_buffer_string(err));
+      return false;
+    }
+  }
+
+  // "reset all" resets all and also my_var
+  {
+    if (!TEST_CHECK(set_empty_values()))
+    {
+      TEST_MSG("setup failed");
+      return false;
+    }
+    // Delete any trace of my_var if existent
+    cs_str_delete(NeoMutt->sub->cs, "my_var", err); // return value is irrelevant.
+    mutt_buffer_reset(err);
+    if (!TEST_CHECK(cs_register_variable(NeoMutt->sub->cs, &MyVarDef, err) != NULL))
+    {
+      TEST_MSG("Failed to register my_var config variable: %s", mutt_buffer_string(err));
+      return false;
+    }
+    mutt_buffer_reset(err);
+    int grc = cs_str_string_set(NeoMutt->sub->cs, "my_var", "foo", err);
+    if (!TEST_CHECK(CSR_RESULT(grc) == CSR_SUCCESS))
+    {
+      TEST_MSG("Failed to set dummy value for %s: %s\n", "my_var", mutt_buffer_string(err));
+      return false;
+    }
+
+    mutt_buffer_reset(err);
+    enum CommandResult rc = parse_rc_line("reset all", err);
+    if (!TEST_CHECK(rc == MUTT_CMD_SUCCESS))
+    {
+      TEST_MSG("Expected %d, but got %d; err is: '%s'\n", MUTT_CMD_SUCCESS, rc,
+               mutt_buffer_string(err));
+      return false;
+    }
+
+    // Check effect
+    for (int v = 0; v < mutt_array_size(ConfigVars) - 1; v++)
+    {
+      mutt_buffer_reset(err);
+      grc = cs_str_string_get(NeoMutt->sub->cs, ConfigVars[v].name, err);
+      if (!TEST_CHECK(CSR_RESULT(grc) == CSR_SUCCESS))
+      {
+        TEST_MSG("Failed to get %s: %s\n", ConfigVars[v].name, mutt_buffer_string(err));
+        return false;
+      }
+      struct Buffer *buf = mutt_buffer_pool_get();
+      grc = cs_str_initial_get(NeoMutt->sub->cs, ConfigVars[v].name, buf);
+      if (!TEST_CHECK(CSR_RESULT(grc) == CSR_SUCCESS))
+      {
+        TEST_MSG("Failed to get %s: %s\n", ConfigVars[v].name, mutt_buffer_string(buf));
+        mutt_buffer_pool_release(&buf);
+        return false;
+      }
+      if (!TEST_CHECK(mutt_str_equal(err->data, buf->data)))
+      {
+        TEST_MSG("Variable not reset %s: %s != %s\n", ConfigVars[v].name,
+                 mutt_buffer_string(err), mutt_buffer_string(buf));
+        mutt_buffer_pool_release(&buf);
+        return false;
+      }
+      mutt_buffer_pool_release(&buf);
+    }
+
+    mutt_buffer_reset(err);
+    grc = cs_str_string_get(NeoMutt->sub->cs, "my_var", err);
+    if (!TEST_CHECK(CSR_RESULT(grc) == CSR_ERR_UNKNOWN))
+    {
+      TEST_MSG("my_var was not an unknown config variable: expected = %d, got = %d, err = %s\n",
+               CSR_ERR_UNKNOWN, CSR_RESULT(grc), mutt_buffer_string(err));
+      return false;
     }
   }
 
@@ -514,17 +689,28 @@ static bool test_query(struct Buffer *err)
         TEST_MSG("setup failed");
         return false;
       }
+      // Delete any trace of my_var if existent
+      cs_str_delete(NeoMutt->sub->cs, "my_var", err); // return value is irrelevant.
+      mutt_buffer_reset(err);
+      if (!TEST_CHECK(cs_register_variable(NeoMutt->sub->cs, &MyVarDef, err) != NULL))
+      {
+        TEST_MSG("Failed to register my_var config variable: %s", mutt_buffer_string(err));
+        return false;
+      }
+      mutt_buffer_reset(err);
+      int grc = cs_str_string_set(NeoMutt->sub->cs, "my_var", "foo", err);
+      if (!TEST_CHECK(CSR_RESULT(grc) == CSR_SUCCESS))
+      {
+        TEST_MSG("Failed to set dummy value for %s: %s\n", "my_var",
+                 mutt_buffer_string(err));
+        return false;
+      }
+
       const char *vars[] = {
-        "Apple",
-        "Banana",
-        "Cherry",
-        "Damson",
+        "Apple", "Banana", "Cherry", "Damson", "my_var",
       };
       const char *expected[] = {
-        "yes",
-        "ask-yes",
-        "555",
-        "damson",
+        "yes", "ask-yes", "555", "damson", "foo",
       };
       for (int v = 0; v < mutt_array_size(vars); v++)
       {
@@ -558,14 +744,22 @@ static bool test_query(struct Buffer *err)
       TEST_MSG("setup failed");
       return false;
     }
+    int grc = cs_str_string_set(NeoMutt->sub->cs, "my_var", "foo", err);
+    if (!TEST_CHECK(CSR_RESULT(grc) == CSR_SUCCESS))
+    {
+      TEST_MSG("Failed to set dummy value for %s: %s\n", "my_var", mutt_buffer_string(err));
+      return false;
+    }
 
     const char *vars[] = {
       "Cherry",
       "Damson",
+      "my_var",
     };
     const char *expected[] = {
       "555",
       "damson",
+      "foo",
     };
     for (int v = 0; v < mutt_array_size(vars); v++)
     {
@@ -598,6 +792,7 @@ static bool test_query(struct Buffer *err)
  * Test the set command of the forms:
  *
  * * set foo += bar
+ * * set foo += bar (my_var)
  */
 static bool test_increment(struct Buffer *err)
 {
@@ -606,20 +801,29 @@ static bool test_increment(struct Buffer *err)
     TEST_MSG("setup failed");
     return false;
   }
+  int grc = cs_str_string_set(NeoMutt->sub->cs, "my_var", "foo", err);
+  if (!TEST_CHECK(CSR_RESULT(grc) == CSR_SUCCESS))
+  {
+    TEST_MSG("Failed to set dummy value for %s: %s\n", "my_var", mutt_buffer_string(err));
+    return false;
+  }
 
   // increment number
   {
     const char *vars[] = {
       "Cherry",
       "Damson",
+      "my_var",
     };
     const char *increment[] = {
       "100",
       "smell",
+      "bar",
     };
     const char *expected[] = {
       "655",
       "damsonsmell",
+      "foobar",
     };
     for (int v = 0; v < mutt_array_size(vars); v++)
     {
@@ -636,7 +840,7 @@ static bool test_increment(struct Buffer *err)
 
       // Check effect
       mutt_buffer_reset(err);
-      int grc = cs_str_string_get(NeoMutt->sub->cs, vars[v], err);
+      grc = cs_str_string_get(NeoMutt->sub->cs, vars[v], err);
       if (!TEST_CHECK(CSR_RESULT(grc) == CSR_SUCCESS))
       {
         TEST_MSG("Failed to get %s: %s\n", vars[v], mutt_buffer_string(err));

@@ -147,6 +147,7 @@
   NEOMUTT_TEST_ITEM(test_config_initial)                                       \
   NEOMUTT_TEST_ITEM(test_config_long)                                          \
   NEOMUTT_TEST_ITEM(test_config_mbtable)                                       \
+  NEOMUTT_TEST_ITEM(test_config_myvar)                                         \
   NEOMUTT_TEST_ITEM(test_config_number)                                        \
   NEOMUTT_TEST_ITEM(test_config_path)                                          \
   NEOMUTT_TEST_ITEM(test_config_quad)                                          \
