@@ -463,7 +463,9 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     }
 
     /* get the variable name */
-    parse_extract_token(buf, s, TOKEN_EQUAL | TOKEN_QUESTION | TOKEN_PLUS | TOKEN_MINUS);
+    int ret = parse_extract_token(buf, s, TOKEN_EQUAL | TOKEN_QUESTION | TOKEN_PLUS | TOKEN_MINUS);
+    if (ret == -1)
+      return MUTT_CMD_ERROR;
 
     bool bool_or_quad = false;
     bool equals = false;
