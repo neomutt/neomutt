@@ -115,40 +115,6 @@ static struct HashElem *create_synonym(const struct ConfigSet *cs,
 }
 
 /**
- * reg_one_var - Register one config item
- * @param cs   Config items
- * @param cdef Variable definition
- * @param err  Buffer for error messages
- * @retval ptr New HashElem representing the config item
- */
-static struct HashElem *reg_one_var(const struct ConfigSet *cs,
-                                    struct ConfigDef *cdef, struct Buffer *err)
-{
-  if (!cs || !cdef)
-    return NULL; /* LCOV_EXCL_LINE */
-
-  if (DTYPE(cdef->type) == DT_SYNONYM)
-    return create_synonym(cs, cdef, err);
-
-  const struct ConfigSetType *cst = cs_get_type_def(cs, cdef->type);
-  if (!cst)
-  {
-    mutt_buffer_printf(err, _("Variable '%s' has an invalid type %d"),
-                       cdef->name, cdef->type);
-    return NULL;
-  }
-
-  struct HashElem *he = mutt_hash_typed_insert(cs->hash, cdef->name, cdef->type, cdef);
-  if (!he)
-    return NULL; /* LCOV_EXCL_LINE */
-
-  if (cst->reset)
-    cst->reset(cs, &cdef->var, cdef, err);
-
-  return he;
-}
-
-/**
  * cs_new - Create a new Config Set
  * @param size Number of expected config items
  * @retval ptr New ConfigSet object
@@ -267,6 +233,40 @@ bool cs_register_type(struct ConfigSet *cs, const struct ConfigSetType *cst)
 }
 
 /**
+ * cs_register_variable - Register one config item
+ * @param cs   Config items
+ * @param cdef Variable definition
+ * @param err  Buffer for error messages
+ * @retval ptr New HashElem representing the config item
+ */
+struct HashElem *cs_register_variable(const struct ConfigSet *cs,
+                                      struct ConfigDef *cdef, struct Buffer *err)
+{
+  if (!cs || !cdef)
+    return NULL; /* LCOV_EXCL_LINE */
+
+  if (DTYPE(cdef->type) == DT_SYNONYM)
+    return create_synonym(cs, cdef, err);
+
+  const struct ConfigSetType *cst = cs_get_type_def(cs, cdef->type);
+  if (!cst)
+  {
+    mutt_buffer_printf(err, _("Variable '%s' has an invalid type %d"),
+                       cdef->name, cdef->type);
+    return NULL;
+  }
+
+  struct HashElem *he = mutt_hash_typed_insert(cs->hash, cdef->name, cdef->type, cdef);
+  if (!he)
+    return NULL; /* LCOV_EXCL_LINE */
+
+  if (cst->reset)
+    cst->reset(cs, &cdef->var, cdef, err);
+
+  return he;
+}
+
+/**
  * cs_register_variables - Register a set of config items
  * @param cs    Config items
  * @param vars  Variable definition
@@ -285,7 +285,7 @@ bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], 
   for (size_t i = 0; vars[i].name; i++)
   {
     vars[i].type |= flags;
-    if (!reg_one_var(cs, &vars[i], &err))
+    if (!cs_register_variable(cs, &vars[i], &err))
     {
       mutt_debug(LL_DEBUG1, "%s\n", mutt_buffer_string(&err));
       rc = false;
