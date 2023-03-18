@@ -48,7 +48,6 @@
 #include "mutt_lua.h"
 #include "parse/lib.h"
 #include "muttlib.h"
-#include "myvar.h"
 
 /// Global Lua State
 lua_State *LuaState = NULL;
@@ -158,30 +157,37 @@ static int lua_mutt_set(lua_State *l)
   const char *param = lua_tostring(l, -2);
   mutt_debug(LL_DEBUG2, " * lua_mutt_set(%s)\n", param);
 
-  if (mutt_str_startswith(param, "my_"))
-  {
-    const char *val = lua_tostring(l, -1);
-    myvar_set(param, val);
-    return 0;
-  }
-
+  struct Buffer err = mutt_buffer_make(256);
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, param);
   if (!he)
   {
-    luaL_error(l, "NeoMutt parameter not found %s", param);
-    return -1;
+    // In case it is a my_var, we have to create it
+    if (mutt_str_startswith(param, "my_"))
+    {
+      struct ConfigDef my_cdef = { 0 };
+      my_cdef.name = param;
+      my_cdef.type = DT_MYVAR;
+      he = cs_create_variable(NeoMutt->sub->cs, &my_cdef, &err);
+      if (!he)
+        return -1;
+    }
+    else
+    {
+      luaL_error(l, "NeoMutt parameter not found %s", param);
+      return -1;
+    }
   }
 
   struct ConfigDef *cdef = he->data;
 
   int rc = 0;
-  struct Buffer err = mutt_buffer_make(256);
 
   switch (DTYPE(cdef->type))
   {
     case DT_ADDRESS:
     case DT_ENUM:
     case DT_MBTABLE:
+    case DT_MYVAR:
     case DT_PATH:
     case DT_REGEX:
     case DT_SLIST:
@@ -239,19 +245,6 @@ static int lua_mutt_get(lua_State *l)
   const char *param = lua_tostring(l, -1);
   mutt_debug(LL_DEBUG2, " * lua_mutt_get(%s)\n", param);
 
-  if (mutt_str_startswith(param, "my_"))
-  {
-    const char *mv = myvar_get(param);
-    if (!mv)
-    {
-      luaL_error(l, "NeoMutt parameter not found %s", param);
-      return -1;
-    }
-
-    lua_pushstring(l, mv);
-    return 1;
-  }
-
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, param);
   if (!he)
   {
@@ -267,6 +260,7 @@ static int lua_mutt_get(lua_State *l)
     case DT_ADDRESS:
     case DT_ENUM:
     case DT_MBTABLE:
+    case DT_MYVAR:
     case DT_REGEX:
     case DT_SLIST:
     case DT_SORT:
