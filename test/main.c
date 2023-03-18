@@ -437,6 +437,7 @@
   NEOMUTT_TEST_ITEM(test_mutt_param_set)                                       \
                                                                                \
   /* parse */                                                                  \
+  NEOMUTT_TEST_ITEM(test_command_set)                                          \
   NEOMUTT_TEST_ITEM(test_mutt_auto_subscribe)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_check_encoding)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_check_mime_type)                                 \
