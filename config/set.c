@@ -81,6 +81,12 @@ static void cs_hashelem_free(int type, void *obj, intptr_t data)
     /* If we allocated the initial value, clean it up */
     if (cdef->type & DT_INITIAL_SET)
       FREE(&cdef->initial);
+    if (cdef->type & DT_FREE_CONFIGDEF)
+    {
+      FREE(&cdef->name);
+      FREE(&cdef->docs);
+      FREE(&cdef);
+    }
   }
 }
 
@@ -238,6 +244,8 @@ bool cs_register_type(struct ConfigSet *cs, const struct ConfigSetType *cst)
  * @param cdef Variable definition
  * @param err  Buffer for error messages
  * @retval ptr New HashElem representing the config item
+ *
+ * Similar to cs_create_variable() but assumes that cdef lives indefinitely.
  */
 struct HashElem *cs_register_variable(const struct ConfigSet *cs,
                                       struct ConfigDef *cdef, struct Buffer *err)
@@ -294,6 +302,43 @@ bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], 
 
   mutt_buffer_dealloc(&err);
   return rc;
+}
+
+/**
+ * cs_create_variable - Create and register one config item
+ * @param cs   Config items
+ * @param cdef Variable definition
+ * @param err  Buffer for error messages
+ * @retval ptr New HashElem representing the config item
+ *
+ * Similar to cs_register_variable() but copies the ConfigDef first.  Allowing
+ * the caller to free it and its parts afterwards.
+ *
+ * This function does not know anything about how the internal representation
+ * of the type must be handled.  Thus, the fields 'initial', 'data', 'var' must
+ * be copyable.  If they need allocation, then the caller must set them after
+ * the variable is created, e.g. with cs_he_initial_set(), cs_he_native_set.
+ */
+struct HashElem *cs_create_variable(const struct ConfigSet *cs,
+                                    struct ConfigDef *cdef, struct Buffer *err)
+{
+  struct ConfigDef *cdef_copy = mutt_mem_calloc(1, sizeof(struct ConfigDef));
+  cdef_copy->name = mutt_str_dup(cdef->name);
+  cdef_copy->type = cdef->type | DT_FREE_CONFIGDEF;
+  cdef_copy->initial = cdef->initial;
+  cdef_copy->data = cdef->data;
+  cdef_copy->validator = cdef->validator;
+  cdef_copy->docs = mutt_str_dup(cdef->name);
+  cdef_copy->var = cdef->var;
+
+  struct HashElem *he = cs_register_variable(cs, cdef_copy, err);
+  if (!he)
+  {
+    FREE(&cdef_copy->name);
+    FREE(&cdef_copy->docs);
+    FREE(&cdef_copy);
+  }
+  return he;
 }
 
 /**
