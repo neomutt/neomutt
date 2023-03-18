@@ -104,21 +104,32 @@ static enum CommandResult command_set_set(struct Buffer *name,
 {
   assert(name);
   assert(value);
-  const bool my = mutt_str_startswith(name->data, "my_");
-
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
-  if (!he && !my)
+  if (!he)
   {
-    mutt_buffer_printf(err, _("%s: unknown variable"), name->data);
-    return MUTT_CMD_ERROR;
+    // In case it is a my_var, we have to create it
+    if (mutt_str_startswith(name->data, "my_"))
+    {
+      struct ConfigDef my_cdef = { 0 };
+      my_cdef.name = name->data;
+      my_cdef.type = DT_MYVAR;
+      he = cs_create_variable(NeoMutt->sub->cs, &my_cdef, err);
+      if (!he)
+        return MUTT_CMD_ERROR;
+    }
+    else
+    {
+      mutt_buffer_printf(err, _("%s: unknown variable"), name->data);
+      return MUTT_CMD_ERROR;
+    }
   }
 
   int rc = CSR_ERR_CODE;
 
-  if (my)
+  if (DTYPE(he->type) == DT_MYVAR)
   {
-    myvar_set(name->data, value->data);
-    rc = CSR_SUCCESS;
+    // my variables do not expand their value
+    rc = cs_subset_he_string_set(NeoMutt->sub, he, value->data, err);
   }
   else
   {
@@ -148,21 +159,32 @@ static enum CommandResult command_set_increment(struct Buffer *name,
 {
   assert(name);
   assert(value);
-  const bool my = mutt_str_startswith(name->data, "my_");
-
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
-  if (!he && !my)
+  if (!he)
   {
-    mutt_buffer_printf(err, _("%s: unknown variable"), name->data);
-    return MUTT_CMD_ERROR;
+    // In case it is a my_var, we have to create it
+    if (mutt_str_startswith(name->data, "my_"))
+    {
+      struct ConfigDef my_cdef = { 0 };
+      my_cdef.name = name->data;
+      my_cdef.type = DT_MYVAR;
+      he = cs_create_variable(NeoMutt->sub->cs, &my_cdef, err);
+      if (!he)
+        return MUTT_CMD_ERROR;
+    }
+    else
+    {
+      mutt_buffer_printf(err, _("%s: unknown variable"), name->data);
+      return MUTT_CMD_ERROR;
+    }
   }
 
   int rc = CSR_ERR_CODE;
 
-  if (my)
+  if (DTYPE(he->type) == DT_MYVAR)
   {
-    myvar_append(name->data, value->data);
-    rc = CSR_SUCCESS;
+    // my variables do not expand their value
+    rc = cs_subset_he_string_plus_equals(NeoMutt->sub, he, value->data, err);
   }
   else
   {
@@ -192,8 +214,6 @@ static enum CommandResult command_set_decrement(struct Buffer *name,
 {
   assert(name);
   assert(value);
-  const bool my = mutt_str_startswith(name->data, "my_");
-
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   if (!he)
   {
@@ -201,18 +221,8 @@ static enum CommandResult command_set_decrement(struct Buffer *name,
     return MUTT_CMD_ERROR;
   }
 
-  int rc = CSR_ERR_CODE;
-
-  if (my)
-  {
-    mutt_buffer_printf(err, _("Can't decrement a my_ variable"));
-    return MUTT_CMD_WARNING;
-  }
-  else
-  {
-    command_set_expand_value(he->type, value);
-    rc = cs_subset_he_string_minus_equals(NeoMutt->sub, he, value->data, err);
-  }
+  command_set_expand_value(he->type, value);
+  int rc = cs_subset_he_string_minus_equals(NeoMutt->sub, he, value->data, err);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
     return MUTT_CMD_ERROR;
 
@@ -232,21 +242,16 @@ static enum CommandResult command_set_decrement(struct Buffer *name,
 static enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *err)
 {
   assert(name);
-  const bool my = mutt_str_startswith(name->data, "my_");
-
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
-  if (!he && !my)
+  if (!he)
   {
     mutt_buffer_printf(err, _("%s: unknown variable"), name->data);
     return MUTT_CMD_ERROR;
   }
 
   int rc = CSR_ERR_CODE;
-  if (my)
-  {
-    myvar_del(name->data);
-    rc = CSR_SUCCESS;
-  }
+  if (DTYPE(he->type) == DT_MYVAR)
+    rc = cs_subset_he_delete(NeoMutt->sub, he, err);
   else if ((DTYPE(he->type) == DT_BOOL) || (DTYPE(he->type) == DT_QUAD))
   {
     rc = cs_subset_he_native_set(NeoMutt->sub, he, false, err);
@@ -274,8 +279,6 @@ static enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *
 static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *err)
 {
   assert(name);
-  const bool my = mutt_str_startswith(name->data, "my_");
-
   // Handle special "reset all" syntax
   if (mutt_str_equal(name->data, "all"))
   {
@@ -291,18 +294,15 @@ static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *
   }
 
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
-  if (!he && !my)
+  if (!he)
   {
     mutt_buffer_printf(err, _("%s: unknown variable"), name->data);
     return MUTT_CMD_ERROR;
   }
 
   int rc = CSR_ERR_CODE;
-  if (my)
-  {
-    myvar_del(name->data);
-    rc = CSR_SUCCESS;
-  }
+  if (DTYPE(he->type) == DT_MYVAR)
+    rc = cs_subset_he_delete(NeoMutt->sub, he, err);
   else
   {
     rc = cs_subset_he_reset(NeoMutt->sub, he, err);
