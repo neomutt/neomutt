@@ -41,7 +41,6 @@
 #include "extract.h"
 #include "globals.h"
 #include "muttlib.h"
-#include "myvar.h"
 
 /**
  * command_set_expand_value - Expand special characters

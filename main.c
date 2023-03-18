@@ -99,7 +99,6 @@
  * | mutt_thread.c   | @subpage neo_mutt_thread   |
  * | mview.c         | @subpage neo_mview         |
  * | mx.c            | @subpage neo_mx            |
- * | myvar.c         | @subpage neo_myvar         |
  * | opcodes.c       | @subpage neo_opcode        |
  * | recvcmd.c       | @subpage neo_recvcmd       |
  * | resize.c        | @subpage neo_resize        |
@@ -174,7 +173,6 @@
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "myvar.h"
 #include "protos.h"
 #include "subjectrx.h"
 #include "version.h"
@@ -832,7 +830,6 @@ main
     if (one_liner)
       cdflags |= CS_DUMP_SHOW_DOCS;
     dump_config(cs, cdflags, stdout);
-    dump_myvar(cdflags, stdout);
     goto main_ok; // TEST18: neomutt -D
   }
 
@@ -1404,7 +1401,6 @@ main_exit:
   attach_free();
   alternates_free();
   mutt_keys_free();
-  myvarlist_free(&MyVars);
   mutt_prex_free();
   neomutt_free(&NeoMutt);
   cs_free(&cs);
