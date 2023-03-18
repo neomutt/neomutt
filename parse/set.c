@@ -389,40 +389,28 @@ static enum CommandResult command_set_query(struct Buffer *name, struct Buffer *
   }
 
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
-  struct Buffer *buf = mutt_buffer_pool_get();
-  if (he)
+  if (!he)
   {
-    mutt_buffer_addstr(err, name->data);
-    mutt_buffer_addch(err, '=');
-    mutt_buffer_reset(buf);
-    int rc = cs_subset_he_string_get(NeoMutt->sub, he, buf);
-    if (CSR_RESULT(rc) != CSR_SUCCESS)
-    {
-      mutt_buffer_addstr(err, buf->data);
-      mutt_buffer_pool_release(&buf);
-      return MUTT_CMD_ERROR;
-    }
-    if (DTYPE(he->type) == DT_PATH)
-      mutt_pretty_mailbox(buf->data, buf->dsize);
-    pretty_var(buf->data, err);
+    mutt_buffer_printf(err, _("%s: unknown variable"), name->data);
+    return MUTT_CMD_ERROR;
   }
-  else
+
+  mutt_buffer_addstr(err, name->data);
+  mutt_buffer_addch(err, '=');
+  struct Buffer *value = mutt_buffer_pool_get();
+  int rc = cs_subset_he_string_get(NeoMutt->sub, he, value);
+  if (CSR_RESULT(rc) != CSR_SUCCESS)
   {
-    const char *val = myvar_get(name->data);
-    if (val)
-    {
-      mutt_buffer_addstr(err, name->data);
-      mutt_buffer_addch(err, '=');
-      pretty_var(val, err);
-    }
-    else
-    {
-      mutt_buffer_printf(err, _("%s: unknown variable"), name->data);
-      mutt_buffer_pool_release(&buf);
-      return MUTT_CMD_ERROR;
-    }
+    mutt_buffer_reset(err);
+    mutt_buffer_addstr(err, value->data);
+    mutt_buffer_pool_release(&value);
+    return MUTT_CMD_ERROR;
   }
-  mutt_buffer_pool_release(&buf);
+  if (DTYPE(he->type) == DT_PATH)
+    mutt_pretty_mailbox(value->data, value->dsize);
+  pretty_var(value->data, err);
+  mutt_buffer_pool_release(&value);
+
   return MUTT_CMD_SUCCESS;
 }
 
