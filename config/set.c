@@ -1012,3 +1012,41 @@ int cs_str_string_minus_equals(const struct ConfigSet *cs, const char *name,
 
   return cs_he_string_minus_equals(cs, he, value, err);
 }
+
+/**
+ * cs_he_delete - Delete config item from a config set
+ * @param cs    Config items
+ * @param he    HashElem representing config item
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_he_delete(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *err)
+{
+  if (!cs || !he)
+    return CSR_ERR_CODE;
+
+  mutt_hash_delete(cs->hash, he->key.strkey, he->data);
+  return CSR_SUCCESS;
+}
+
+/**
+ * cs_str_delete - Delete config item from a config set
+ * @param cs    Config items
+ * @param name  Name of config item
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_str_delete(const struct ConfigSet *cs, const char *name, struct Buffer *err)
+{
+  if (!cs || !name)
+    return CSR_ERR_CODE;
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  if (!he)
+  {
+    mutt_buffer_printf(err, _("Unknown variable '%s'"), name);
+    return CSR_ERR_UNKNOWN;
+  }
+
+  return cs_he_delete(cs, he, err);
+}

@@ -275,6 +275,7 @@ int      cs_he_string_get          (const struct ConfigSet *cs, struct HashElem 
 int      cs_he_string_minus_equals (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
 int      cs_he_string_plus_equals  (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
 int      cs_he_string_set          (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
+int      cs_he_delete              (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *err);
 
 int      cs_str_initial_get        (const struct ConfigSet *cs, const char *name,                       struct Buffer *result);
 int      cs_str_initial_set        (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
@@ -285,5 +286,6 @@ int      cs_str_string_get         (const struct ConfigSet *cs, const char *name
 int      cs_str_string_minus_equals(const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
 int      cs_str_string_plus_equals (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
 int      cs_str_string_set         (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
+int      cs_str_delete             (const struct ConfigSet *cs, const char *name,                       struct Buffer *err);
 
 #endif /* MUTT_CONFIG_SET_H */
