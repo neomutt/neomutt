@@ -287,7 +287,12 @@ static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *
       return MUTT_CMD_ERROR;
 
     for (size_t i = 0; he_list[i]; i++)
-      cs_subset_he_reset(NeoMutt->sub, he_list[i], NULL);
+    {
+      if (DTYPE(he_list[i]->type) == DT_MYVAR)
+        cs_subset_he_delete(NeoMutt->sub, he_list[i], err);
+      else
+        cs_subset_he_reset(NeoMutt->sub, he_list[i], NULL);
+    }
 
     FREE(&he_list);
     return MUTT_CMD_SUCCESS;
