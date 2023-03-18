@@ -354,6 +354,10 @@ struct HashElem *cs_inherit_variable(const struct ConfigSet *cs,
   if (!cs || !he_parent)
     return NULL;
 
+  /* MyVars cannot be inherited, as they might get deleted */
+  if (DTYPE(he_parent->type) == DT_MYVAR)
+    return NULL;
+
   struct Inheritance *i = mutt_mem_calloc(1, sizeof(*i));
   i->parent = he_parent;
   i->name = mutt_str_dup(name);
