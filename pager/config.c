@@ -30,6 +30,7 @@
 #include <stddef.h>
 #include <config/lib.h>
 #include <stdbool.h>
+#include "mutt/lib.h"
 
 /**
  * PagerVars - Config definitions for the Pager
@@ -44,6 +45,9 @@ static struct ConfigDef PagerVars[] = {
   },
   { "header_color_partial", DT_BOOL, false, 0, NULL,
     "Only colour the part of the header matching the regex"
+  },
+  { "pager", DT_STRING|DT_COMMAND, IP "builtin", 0, NULL,
+    "External command for viewing messages, or 'builtin' to use NeoMutt's"
   },
   { "pager_context", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
     "Number of lines of overlap when changing pages in the pager"
@@ -87,6 +91,23 @@ static struct ConfigDef PagerVars[] = {
   { NULL },
   // clang-format on
 };
+
+/**
+ * pager_get_pager - Get the value of $pager
+ * @param sub Config Subset
+ * @retval str  External command to use
+ * @retval NULL The internal pager will be used
+ *
+ * @note If $pager has the magic value of "builtin", NULL will be returned
+ */
+const char *pager_get_pager(struct ConfigSubset *sub)
+{
+  const char *c_pager = cs_subset_string(sub, "pager");
+  if (!c_pager || mutt_str_equal(c_pager, "builtin"))
+    return NULL;
+
+  return c_pager;
+}
 
 /**
  * config_init_pager - Register pager config variables - Implements ::module_init_config_t - @ingroup cfg_module_api

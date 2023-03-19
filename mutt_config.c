@@ -372,9 +372,6 @@ static struct ConfigDef MainVars[] = {
   { "new_mail_command", DT_STRING|DT_COMMAND, 0, 0, NULL,
     "External command to run when new mail arrives"
   },
-  { "pager", DT_STRING|DT_COMMAND, IP "builtin", 0, NULL,
-    "External command for viewing messages, or 'builtin' to use NeoMutt's"
-  },
   { "pipe_decode", DT_BOOL, false, 0, NULL,
     "Decode the message when piping it"
   },

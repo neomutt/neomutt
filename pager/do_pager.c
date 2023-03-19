@@ -155,12 +155,8 @@ int mutt_do_pager(struct PagerView *pview, struct Email *e)
 
   int rc;
 
-  const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
-  if (!c_pager || mutt_str_equal(c_pager, "builtin"))
-  {
-    rc = mutt_pager(pview);
-  }
-  else
+  const char *const c_pager = pager_get_pager(NeoMutt->sub);
+  if (c_pager)
   {
     struct Buffer *cmd = mutt_buffer_pool_get();
 
@@ -177,6 +173,10 @@ int mutt_do_pager(struct PagerView *pview, struct Email *e)
     }
     mutt_file_unlink(pview->pdata->fname);
     mutt_buffer_pool_release(&cmd);
+  }
+  else
+  {
+    rc = mutt_pager(pview);
   }
 
   dialog_pop();
