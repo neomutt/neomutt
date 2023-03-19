@@ -124,9 +124,8 @@ struct MxOps
    * @retval true  Account handles path
    * @retval false Account does not handle path
    *
-   * **Contract**
-   * - @a a    is not NULL
-   * - @a path is not NULL
+   * @pre a    is not NULL
+   * @pre path is not NULL
    */
   bool (*ac_owns_path)(struct Account *a, const char *path);
 
@@ -140,9 +139,8 @@ struct MxOps
    * @retval true  Success
    * @retval false Error
    *
-   * **Contract**
-   * - @a a is not NULL
-   * - @a m is not NULL
+   * @pre a is not NULL
+   * @pre m is not NULL
    */
   bool (*ac_add)(struct Account *a, struct Mailbox *m);
 
@@ -154,8 +152,7 @@ struct MxOps
    * @param m Mailbox to open
    * @retval enum #MxOpenReturns
    *
-   * **Contract**
-   * - @a m is not NULL
+   * @pre m is not NULL
    */
   enum MxOpenReturns (*mbox_open)(struct Mailbox *m);
 
@@ -169,8 +166,7 @@ struct MxOps
    * @retval true Success
    * @retval false Failure
    *
-   * **Contract**
-   * - @a m is not NULL
+   * @pre m is not NULL
    */
   bool (*mbox_open_append)(struct Mailbox *m, OpenMailboxFlags flags);
 
@@ -182,8 +178,7 @@ struct MxOps
    * @param m Mailbox
    * @retval enum #MxStatus
    *
-   * **Contract**
-   * - @a m is not NULL
+   * @pre m is not NULL
    */
   enum MxStatus (*mbox_check)(struct Mailbox *m);
 
@@ -196,8 +191,7 @@ struct MxOps
    * @param flags Function flags
    * @retval enum #MxStatus
    *
-   * **Contract**
-   * - @a m is not NULL
+   * @pre m is not NULL
    */
   enum MxStatus (*mbox_check_stats)(struct Mailbox *m, CheckStatsFlags flags);
 
@@ -209,8 +203,7 @@ struct MxOps
    * @param m Mailbox to sync
    * @retval enum #MxStatus
    *
-   * **Contract**
-   * - @a m is not NULL
+   * @pre m is not NULL
    */
   enum MxStatus (*mbox_sync)(struct Mailbox *m);
 
@@ -222,8 +215,7 @@ struct MxOps
    * @param m Mailbox to close
    * @retval enum #MxStatus
    *
-   * **Contract**
-   * - @a m is not NULL
+   * @pre m is not NULL
    */
   enum MxStatus (*mbox_close)(struct Mailbox *m);
 
@@ -238,10 +230,9 @@ struct MxOps
    * @retval true Success
    * @retval false Error
    *
-   * **Contract**
-   * - @a m   is not NULL
-   * - @a msg is not NULL
-   * - 0 <= @a msgno < msg->msg_count
+   * @pre m   is not NULL
+   * @pre msg is not NULL
+   * @pre 0 <= msgno < msg->msg_count
    */
   bool (*msg_open)(struct Mailbox *m, struct Message *msg, int msgno);
 
@@ -256,9 +247,8 @@ struct MxOps
    * @retval true Success
    * @retval false Failure
    *
-   * **Contract**
-   * - @a m   is not NULL
-   * - @a msg is not NULL
+   * @pre m   is not NULL
+   * @pre msg is not NULL
    */
   bool (*msg_open_new)(struct Mailbox *m, struct Message *msg, const struct Email *e);
 
@@ -272,9 +262,8 @@ struct MxOps
    * @retval  0 Success
    * @retval -1 Failure
    *
-   * **Contract**
-   * - @a m   is not NULL
-   * - @a msg is not NULL
+   * @pre m   is not NULL
+   * @pre msg is not NULL
    */
   int (*msg_commit)      (struct Mailbox *m, struct Message *msg);
 
@@ -288,9 +277,8 @@ struct MxOps
    * @retval  0 Success
    * @retval -1 Failure
    *
-   * **Contract**
-   * - @a m   is not NULL
-   * - @a msg is not NULL
+   * @pre m   is not NULL
+   * @pre msg is not NULL
    */
   int (*msg_close)       (struct Mailbox *m, struct Message *msg);
 
@@ -302,8 +290,7 @@ struct MxOps
    * @param m Mailbox
    * @retval num Bytes of padding
    *
-   * **Contract**
-   * - @a m is not NULL
+   * @pre m is not NULL
    */
   int (*msg_padding_size)(struct Mailbox *m);
 
@@ -317,9 +304,8 @@ struct MxOps
    * @retval  0 Success
    * @retval -1 Failure
    *
-   * **Contract**
-   * - @a m is not NULL
-   * - @a e is not NULL
+   * @pre m is not NULL
+   * @pre e is not NULL
    */
   int (*msg_save_hcache) (struct Mailbox *m, struct Email *e);
 
@@ -335,9 +321,8 @@ struct MxOps
    * @retval  0 No valid user input
    * @retval  1 Buf set
    *
-   * **Contract**
-   * - @a m   is not NULL
-   * - @a buf is not NULL
+   * @pre m   is not NULL
+   * @pre buf is not NULL
    */
   int (*tags_edit)       (struct Mailbox *m, const char *tags, struct Buffer *buf);
 
@@ -352,10 +337,9 @@ struct MxOps
    * @retval  0 Success
    * @retval -1 Failure
    *
-   * **Contract**
-   * - @a m   is not NULL
-   * - @a e   is not NULL
-   * - @a buf is not NULL
+   * @pre m   is not NULL
+   * @pre e   is not NULL
+   * @pre buf is not NULL
    */
   int (*tags_commit)     (struct Mailbox *m, struct Email *e, const char *buf);
 
@@ -368,8 +352,7 @@ struct MxOps
    * @param st   stat buffer (for local filesystems)
    * @retval num Type, e.g. #MUTT_IMAP
    *
-   * **Contract**
-   * - @a path is not NULL
+   * @pre path is not NULL
    */
   enum MailboxType (*path_probe)(const char *path, const struct stat *st);
 
@@ -383,8 +366,7 @@ struct MxOps
    * @retval  0 Success
    * @retval -1 Failure
    *
-   * **Contract**
-   * - @a buf is not NULL
+   * @pre buf is not NULL
    */
   int (*path_canon)      (char *buf, size_t buflen);
 
@@ -399,8 +381,7 @@ struct MxOps
    * @retval  0 Success
    * @retval -1 Failure
    *
-   * **Contract**
-   * - @a buf is not NULL
+   * @pre buf is not NULL
    */
   int (*path_pretty)     (char *buf, size_t buflen, const char *folder);
 
@@ -414,8 +395,7 @@ struct MxOps
    * @retval  0 Success
    * @retval -1 Failure
    *
-   * **Contract**
-   * - @a buf is not NULL
+   * @pre buf is not NULL
    */
   int (*path_parent)     (char *buf, size_t buflen);
 
@@ -429,8 +409,7 @@ struct MxOps
    * @retval 0 Mailbox contains mail
    * @retval -1 Error
    *
-   * **Contract**
-   * - @a path is not NULL and not empty
+   * @pre path is not NULL and not empty
    */
   int (*path_is_empty)     (const char *path);
 };

@@ -277,7 +277,8 @@ static struct EmailGarbageCollector
 /**
  * mailbox_gc_add - Add an Email to the garbage-collection set
  * @param e Email
- * @pre e != NULL
+ *
+ * @pre e is not NULL
  */
 void mailbox_gc_add(struct Email *e)
 {

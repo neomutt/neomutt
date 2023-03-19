@@ -152,10 +152,9 @@ struct MuttWindow
    * @param win Window
    * @param ptr Window data to free
    *
-   * **Contract**
-   * - @a win  is not NULL
-   * - @a ptr  is not NULL
-   * - @a *ptr is not NULL
+   * @pre win  is not NULL
+   * @pre ptr  is not NULL
+   * @pre *ptr is not NULL
    */
   void (*wdata_free)(struct MuttWindow *win, void **ptr);
 

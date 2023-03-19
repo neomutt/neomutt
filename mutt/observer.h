@@ -48,9 +48,8 @@ struct NotifyCallback
  * @retval  0 Success
  * @retval -1 Error
  *
- * **Contract**
- * - @a nc          is not NULL
- * - @a nc->current is not NULL
+ * @pre nc          is not NULL
+ * @pre nc->current is not NULL
  */
 typedef int (*observer_t)(struct NotifyCallback *nc);
 

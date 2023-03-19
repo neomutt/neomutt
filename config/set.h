@@ -111,9 +111,8 @@ struct ConfigSetType
    *
    * If var is NULL, then the config item's initial value will be set.
    *
-   * **Contract**
-   * - @a cs   is not NULL
-   * - @a cdef is not NULL
+   * @pre cs   is not NULL
+   * @pre cdef is not NULL
    */
   int (*string_set)(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef, const char *value, struct Buffer *err);
 
@@ -130,10 +129,9 @@ struct ConfigSetType
    *
    * If var is NULL, then the config item's initial value will be returned.
    *
-   * **Contract**
-   * - @a cs     is not NULL
-   * - @a cdef   is not NULL
-   * - @a result is not NULL
+   * @pre cs     is not NULL
+   * @pre cdef   is not NULL
+   * @pre result is not NULL
    */
   int (*string_get)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *result);
 
@@ -149,10 +147,9 @@ struct ConfigSetType
    * @param err   Buffer for error messages (may be NULL)
    * @retval num Result, e.g. #CSR_SUCCESS
    *
-   * **Contract**
-   * - @a cs   is not NULL
-   * - @a var  is not NULL
-   * - @a cdef is not NULL
+   * @pre cs   is not NULL
+   * @pre var  is not NULL
+   * @pre cdef is not NULL
    */
   int (*native_set)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 
@@ -168,10 +165,9 @@ struct ConfigSetType
    * @retval intptr_t Config item string
    * @retval INT_MIN  Error
    *
-   * **Contract**
-   * - @a cs   is not NULL
-   * - @a var  is not NULL
-   * - @a cdef is not NULL
+   * @pre cs   is not NULL
+   * @pre var  is not NULL
+   * @pre cdef is not NULL
    */
   intptr_t (*native_get)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *err);
 
@@ -187,10 +183,9 @@ struct ConfigSetType
    * @param err   Buffer for error messages (may be NULL)
    * @retval num Result, e.g. #CSR_SUCCESS
    *
-   * **Contract**
-   * - @a cs   is not NULL
-   * - @a var  is not NULL
-   * - @a cdef is not NULL
+   * @pre cs   is not NULL
+   * @pre var  is not NULL
+   * @pre cdef is not NULL
    */
   int (*string_plus_equals)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, const char *value, struct Buffer *err);
 
@@ -206,10 +201,9 @@ struct ConfigSetType
    * @param err   Buffer for error messages (may be NULL)
    * @retval num Result, e.g. #CSR_SUCCESS
    *
-   * **Contract**
-   * - @a cs   is not NULL
-   * - @a var  is not NULL
-   * - @a cdef is not NULL
+   * @pre cs   is not NULL
+   * @pre var  is not NULL
+   * @pre cdef is not NULL
    */
   int (*string_minus_equals)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, const char *value, struct Buffer *err);
 
@@ -224,10 +218,9 @@ struct ConfigSetType
    * @param err  Buffer for error messages (may be NULL)
    * @retval num Result, e.g. #CSR_SUCCESS
    *
-   * **Contract**
-   * - @a cs   is not NULL
-   * - @a var  is not NULL
-   * - @a cdef is not NULL
+   * @pre cs   is not NULL
+   * @pre var  is not NULL
+   * @pre cdef is not NULL
    */
   int (*reset)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *err);
 
@@ -240,10 +233,9 @@ struct ConfigSetType
    * @param var  Variable to destroy
    * @param cdef Variable definition
    *
-   * **Contract**
-   * - @a cs   is not NULL
-   * - @a var  is not NULL
-   * - @a cdef is not NULL
+   * @pre cs   is not NULL
+   * @pre var  is not NULL
+   * @pre cdef is not NULL
    */
   void (*destroy)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef);
 };
