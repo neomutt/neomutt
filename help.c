@@ -244,10 +244,10 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2,
     col = pad(fp, mutt_strwidth(t1), col_a);
   }
 
-  const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
+  const char *const c_pager = pager_get_pager(NeoMutt->sub);
   if (ismacro > 0)
   {
-    if (!c_pager || mutt_str_equal(c_pager, "builtin"))
+    if (!c_pager)
       fputs("_\010", fp); // Ctrl-H (backspace)
     fputs("M ", fp);
     col += 2;
@@ -287,17 +287,17 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2,
 
       if (*t3)
       {
-        if (mutt_str_equal(c_pager, "builtin"))
+        if (c_pager)
+        {
+          fputc('\n', fp);
+          n = 0;
+        }
+        else
         {
           n += col - wraplen;
           const bool c_markers = cs_subset_bool(NeoMutt->sub, "markers");
           if (c_markers)
             n++;
-        }
-        else
-        {
-          fputc('\n', fp);
-          n = 0;
         }
         col = pad(fp, n, col_b);
       }

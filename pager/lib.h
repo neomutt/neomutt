@@ -50,6 +50,7 @@
 
 struct Email;
 struct IndexSharedData;
+struct ConfigSubset;
 struct Mailbox;
 struct MuttWindow;
 struct PagerPrivateData;
@@ -200,6 +201,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct IndexSharedData *s
 int external_pager(struct Mailbox *m, struct Email *e, const char *command);
 void pager_queue_redraw(struct PagerPrivateData *priv, PagerRedrawFlags redraw);
 bool mutt_is_quote_line(char *buf, regmatch_t *pmatch);
+const char *const pager_get_pager(struct ConfigSubset *sub);
 
 void mutt_clear_pager_position(void);
 
