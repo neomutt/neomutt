@@ -101,9 +101,9 @@ bool degenerate_tests(struct ConfigSet *cs)
     return false;
   if (!TEST_CHECK(cs_register_type(cs, NULL) == false))
     return false;
-  if (!TEST_CHECK(cs_register_variables(cs, NULL, 0) == false))
+  if (!TEST_CHECK(cs_register_variables(cs, NULL, DT_NO_FLAGS) == false))
     return false;
-  if (!TEST_CHECK(cs_register_variables(NULL, Vars, 0) == false))
+  if (!TEST_CHECK(cs_register_variables(NULL, Vars, DT_NO_FLAGS) == false))
     return false;
 
   if (!TEST_CHECK(cs_str_native_get(NULL, "apple", NULL) == INT_MIN))
@@ -295,7 +295,7 @@ void test_config_set(void)
   cs_register_type(cs, &CstBool);
   cs_register_type(cs, &CstBool); /* second one should fail */
 
-  if (TEST_CHECK(!cs_register_variables(cs, Vars, 0)))
+  if (TEST_CHECK(!cs_register_variables(cs, Vars, DT_NO_FLAGS)))
   {
     TEST_MSG("Expected error\n");
   }

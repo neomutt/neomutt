@@ -303,18 +303,18 @@ static struct ConfigDef NcryptVarsSmime[] = {
  */
 bool config_init_ncrypt(struct ConfigSet *cs)
 {
-  bool rc = cs_register_variables(cs, NcryptVars, 0);
+  bool rc = cs_register_variables(cs, NcryptVars, DT_NO_FLAGS);
 
 #if defined(CRYPT_BACKEND_GPGME)
-  rc |= cs_register_variables(cs, NcryptVarsGpgme, 0);
+  rc |= cs_register_variables(cs, NcryptVarsGpgme, DT_NO_FLAGS);
 #endif
 
 #if defined(CRYPT_BACKEND_CLASSIC_PGP)
-  rc |= cs_register_variables(cs, NcryptVarsPgp, 0);
+  rc |= cs_register_variables(cs, NcryptVarsPgp, DT_NO_FLAGS);
 #endif
 
 #if defined(CRYPT_BACKEND_CLASSIC_SMIME)
-  rc |= cs_register_variables(cs, NcryptVarsSmime, 0);
+  rc |= cs_register_variables(cs, NcryptVarsSmime, DT_NO_FLAGS);
 #endif
 
   return rc;

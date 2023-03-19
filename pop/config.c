@@ -108,5 +108,5 @@ static struct ConfigDef PopVars[] = {
  */
 bool config_init_pop(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, PopVars, 0);
+  return cs_register_variables(cs, PopVars, DT_NO_FLAGS);
 }

@@ -54,5 +54,5 @@ static struct ConfigDef PatternVars[] = {
  */
 bool config_init_pattern(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, PatternVars, 0);
+  return cs_register_variables(cs, PatternVars, DT_NO_FLAGS);
 }

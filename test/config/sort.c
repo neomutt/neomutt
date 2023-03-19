@@ -760,7 +760,7 @@ void test_config_sort(void)
   struct ConfigSet *cs = sub->cs;
 
   dont_fail = true;
-  if (!TEST_CHECK(cs_register_variables(cs, Vars, 0)))
+  if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
     return;
   dont_fail = false;
 
@@ -769,7 +769,7 @@ void test_config_sort(void)
   set_list(cs);
 
   /* Register a broken variable separately */
-  if (!cs_register_variables(cs, Vars2, 0))
+  if (!cs_register_variables(cs, Vars2, DT_NO_FLAGS))
     return;
 
   struct Buffer *err = mutt_buffer_pool_get();

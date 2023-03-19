@@ -48,5 +48,5 @@ static struct ConfigDef MboxVars[] = {
  */
 bool config_init_mbox(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, MboxVars, 0);
+  return cs_register_variables(cs, MboxVars, DT_NO_FLAGS);
 }

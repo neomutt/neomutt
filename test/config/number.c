@@ -918,7 +918,7 @@ void test_config_number(void)
   struct ConfigSet *cs = sub->cs;
 
   dont_fail = true;
-  if (!cs_register_variables(cs, Vars, 0))
+  if (!cs_register_variables(cs, Vars, DT_NO_FLAGS))
     return;
   dont_fail = false;
 

@@ -47,7 +47,7 @@ void test_config_variable(void)
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
 
-  if (!TEST_CHECK(cs_register_variables(cs, Vars, 0)))
+  if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
     return;
 
   struct Buffer *err = mutt_buffer_pool_get();

@@ -42,7 +42,7 @@ void test_mutt_ch_get_default_charset(void)
 
   {
     NeoMutt = test_neomutt_create();
-    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
+    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
 
     char *cs = mutt_ch_get_default_charset();
     TEST_CHECK(strlen(cs) != 0);

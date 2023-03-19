@@ -54,5 +54,5 @@ static struct ConfigDef MenuVars[] = {
  */
 bool config_init_menu(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, MenuVars, 0);
+  return cs_register_variables(cs, MenuVars, DT_NO_FLAGS);
 }

@@ -400,14 +400,14 @@ static struct ConfigDef SendVarsSmtp[] = {
  */
 bool config_init_send(struct ConfigSet *cs)
 {
-  bool rc = cs_register_variables(cs, SendVars, 0);
+  bool rc = cs_register_variables(cs, SendVars, DT_NO_FLAGS);
 
 #if defined(USE_NNTP)
-  rc |= cs_register_variables(cs, SendVarsNntp, 0);
+  rc |= cs_register_variables(cs, SendVarsNntp, DT_NO_FLAGS);
 #endif
 
 #if defined(USE_SMTP)
-  rc |= cs_register_variables(cs, SendVarsSmtp, 0);
+  rc |= cs_register_variables(cs, SendVarsSmtp, DT_NO_FLAGS);
 #endif
 
   return rc;

@@ -67,5 +67,5 @@ static struct ConfigDef ComposeVars[] = {
  */
 bool config_init_compose(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, ComposeVars, 0);
+  return cs_register_variables(cs, ComposeVars, DT_NO_FLAGS);
 }

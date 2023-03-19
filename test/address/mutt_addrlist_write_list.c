@@ -40,7 +40,7 @@ void test_mutt_addrlist_write_list(void)
 {
   {
     NeoMutt = test_neomutt_create();
-    cs_register_variables(NeoMutt->sub->cs, Vars, 0);
+    cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS);
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
     const char in[] = "some-group: first@example.com,second@example.com; John Doe <john@doe.org>, \"Foo J. Bar\" <foo-j-bar@baz.com>";
     mutt_addrlist_parse(&al, in);

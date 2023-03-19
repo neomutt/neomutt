@@ -60,5 +60,5 @@ static struct ConfigDef IndexVars[] = {
  */
 bool config_init_index(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, IndexVars, 0);
+  return cs_register_variables(cs, IndexVars, DT_NO_FLAGS);
 }

@@ -80,10 +80,10 @@ static struct ConfigDef MaildirVarsHcache[] = {
  */
 bool config_init_maildir(struct ConfigSet *cs)
 {
-  bool rc = cs_register_variables(cs, MaildirVars, 0);
+  bool rc = cs_register_variables(cs, MaildirVars, DT_NO_FLAGS);
 
 #if defined(USE_HCACHE)
-  rc |= cs_register_variables(cs, MaildirVarsHcache, 0);
+  rc |= cs_register_variables(cs, MaildirVarsHcache, DT_NO_FLAGS);
 #endif
 
   return rc;

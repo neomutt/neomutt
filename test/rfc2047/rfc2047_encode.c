@@ -45,7 +45,7 @@ void test_rfc2047_encode(void)
   // void rfc2047_encode(char **pd, const char *specials, int col, const struct Slist *charsets);
 
   NeoMutt = test_neomutt_create();
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
 
   {
     struct Slist *charsets = slist_parse("apple", SLIST_SEP_COLON);

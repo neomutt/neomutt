@@ -66,7 +66,7 @@ void test_mutt_addrlist_to_intl(void)
                        { .local = "test@வலைப்பூ.com", .intl = "test@xn--xlcawl2e7azb.com" } };
 
     NeoMutt = test_neomutt_create();
-    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
+    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
 
     cs_subset_str_string_set(NeoMutt->sub, "charset", "utf-8", NULL);
 #ifdef HAVE_LIBIDN

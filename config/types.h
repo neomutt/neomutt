@@ -43,6 +43,8 @@
 
 #define DTYPE(x) ((x) & 0x1F)  ///< Mask for the Data Type
 
+#define DT_NO_FLAGS            0   ///< No flags are set
+
 #define DT_NOT_EMPTY     (1 << 6)  ///< Empty strings are not allowed
 #define DT_NOT_NEGATIVE  (1 << 7)  ///< Negative numbers are not allowed
 #define DT_MAILBOX       (1 << 8)  ///< Don't perform path expansions

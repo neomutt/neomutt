@@ -107,5 +107,5 @@ static struct ConfigDef SidebarVars[] = {
  */
 bool config_init_sidebar(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, SidebarVars, 0);
+  return cs_register_variables(cs, SidebarVars, DT_NO_FLAGS);
 }

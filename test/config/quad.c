@@ -729,7 +729,7 @@ void test_config_quad(void)
   struct ConfigSet *cs = sub->cs;
 
   dont_fail = true;
-  if (!TEST_CHECK(cs_register_variables(cs, Vars, 0)))
+  if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
     return;
   dont_fail = false;
 

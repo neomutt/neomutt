@@ -1133,7 +1133,7 @@ bool slist_test_separator(struct ConfigDef vars[], struct Buffer *err)
   mutt_buffer_reset(err);
 
   cs_register_type(cs, &CstSlist);
-  if (!TEST_CHECK(cs_register_variables(cs, vars, 0)))
+  if (!TEST_CHECK(cs_register_variables(cs, vars, DT_NO_FLAGS)))
     return false;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
@@ -1172,7 +1172,7 @@ void test_config_slist(void)
   struct ConfigSet *cs = sub->cs;
 
   dont_fail = true;
-  if (!TEST_CHECK(cs_register_variables(cs, VarsOther, 0)))
+  if (!TEST_CHECK(cs_register_variables(cs, VarsOther, DT_NO_FLAGS)))
     return;
   dont_fail = false;
 
