@@ -28,8 +28,8 @@
 extern const struct Mapping SortMethods[];
 
 /* ... DT_SORT */
-#define DT_SORT_LAST    0x0800 ///< Sort flag for -last prefix
-#define DT_SORT_REVERSE 0x1000 ///< Sort flag for -reverse prefix
+#define DT_SORT_LAST    (1 << 11) ///< Sort flag for -last prefix
+#define DT_SORT_REVERSE (1 << 12) ///< Sort flag for -reverse prefix
 
 /**
  * enum SortType - Methods for sorting
