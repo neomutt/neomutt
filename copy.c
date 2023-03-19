@@ -43,6 +43,7 @@
 #include "copy.h"
 #include "index/lib.h"
 #include "ncrypt/lib.h"
+#include "pager/lib.h"
 #include "send/lib.h"
 #include "format_flags.h"
 #include "globals.h" // IWYU pragma: keep
@@ -766,8 +767,8 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
     {
       state.flags |= STATE_DISPLAY;
       state.wraplen = wraplen;
-      const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
-      if (!c_pager || mutt_str_equal(c_pager, "builtin"))
+      const char *const c_pager = pager_get_pager(NeoMutt->sub);
+      if (!c_pager)
         state.flags |= STATE_PAGER;
     }
     if (cmflags & MUTT_CM_PRINTING)
