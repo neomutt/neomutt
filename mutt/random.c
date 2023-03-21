@@ -103,10 +103,13 @@ static int mutt_randbuf(void *buf, size_t buflen)
  */
 void mutt_rand_base32(char *buf, size_t buflen)
 {
+  if (!buf || (buflen == 0))
+    return;
+
   uint8_t *p = (uint8_t *) buf;
 
   if (mutt_randbuf(p, buflen) < 0)
-    mutt_exit(1);
+    mutt_exit(1); // LCOV_EXCL_LINE
   for (size_t pos = 0; pos < buflen; pos++)
     p[pos] = Base32[p[pos] % 32];
 }
@@ -120,7 +123,7 @@ uint32_t mutt_rand32(void)
   uint32_t num = 0;
 
   if (mutt_randbuf(&num, sizeof(num)) < 0)
-    mutt_exit(1);
+    mutt_exit(1); // LCOV_EXCL_LINE
   return num;
 }
 
@@ -133,6 +136,6 @@ uint64_t mutt_rand64(void)
   uint64_t num = 0;
 
   if (mutt_randbuf(&num, sizeof(num)) < 0)
-    mutt_exit(1);
+    mutt_exit(1); // LCOV_EXCL_LINE
   return num;
 }
