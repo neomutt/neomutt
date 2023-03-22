@@ -8,13 +8,13 @@
   - #3421 - enter: add function kill-whole-line
   - #3414 - account command: add macOS keychain sample provider
   - #3430 - account command: add GPG+JSON sample provider
-  - #3474 - expose italics attribute for color scheme
+  - #3474 - expose italics attribute for colour scheme
   - #3471 - allow `source` in hooks to point to relative paths
   - #3506 - resolve alternates when subscribing/unsubscribing
   - #3492 - notmuch: allow specifying configuration file
   - #3547 - notmuch: allow usage of notmuch profiles
   - #3524 - add GNU SASL support for authentication (`--gsasl` configure option)
-  - #3548 - extend color objects to support patterns
+  - #3548 - extend colour objects to support patterns
   - #3586 - detect and fixup maildirs with missing "new" and "tmp" directories
   - #3634 - generate standard MIME types as application/pkcs7-* instead of legacy application/x-pkcs7-*
   - #3639 - compose: add Smime: pseudo header
@@ -68,7 +68,7 @@
     `post_indent_string` to `attribution_trailer`
   - config variables are now properly spelled with underscores between names,
     e.g., `implicit_autoview` -> `implicit_auto_view`, `message_cachedir` ->
-    `message_cache_dir`; the old names were kept as synonzms
+    `message_cache_dir`; the old names were kept as synonyms
 * Translations
   - 100% Czech
   - 100% German
