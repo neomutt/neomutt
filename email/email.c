@@ -77,7 +77,7 @@ void email_free(struct Email **ptr)
  */
 struct Email *email_new(void)
 {
-  static size_t sequence = 1;
+  static size_t sequence = 0;
 
   struct Email *e = mutt_mem_calloc(1, sizeof(struct Email));
 #ifdef MIXMASTER
