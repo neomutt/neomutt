@@ -762,6 +762,9 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
     {
       state.flags |= STATE_DISPLAY;
       state.wraplen = wraplen;
+      const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
+      if (!c_pager || mutt_str_equal(c_pager, "builtin"))
+        state.flags |= STATE_PAGER;
     }
     if (cmflags & MUTT_CM_PRINTING)
       state.flags |= STATE_PRINTING;

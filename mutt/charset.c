@@ -35,8 +35,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "config/lib.h"
-#include "core/lib.h"
 #include "charset.h"
 #include "lib.h"
 #include "memory.h"
@@ -297,14 +295,17 @@ static const char *lookup_charset(enum LookupType type, const char *cs)
 
 /**
  * mutt_ch_convert_nonmime_string - Try to convert a string using a list of character sets
- * @param[in,out] ps String to be converted
+ * @param[in]     assumed_charset From $assumed_charset
+ * @param[in]     charset         From $charset
+ * @param[in,out] ps              String to be converted
  * @retval 0  Success
  * @retval -1 Error
  *
  * Work through `$assumed_charset` looking for a character set conversion that
  * works.  Failing that, try mutt_ch_get_default_charset().
  */
-int mutt_ch_convert_nonmime_string(char **ps)
+int mutt_ch_convert_nonmime_string(const struct Slist *const assumed_charset,
+                                   const char *charset, char **ps)
 {
   if (!ps)
     return -1;
@@ -314,17 +315,15 @@ int mutt_ch_convert_nonmime_string(char **ps)
   if (ulen == 0)
     return 0;
 
-  const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
-  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
   const struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, &c_assumed_charset->head, entries)
+  STAILQ_FOREACH(np, &assumed_charset->head, entries)
   {
     char const *c = np->data;
     size_t n = mutt_str_len(c);
     char *fromcode = mutt_mem_malloc(n + 1);
     mutt_str_copy(fromcode, c, n + 1);
     char *s = mutt_strn_dup(u, ulen);
-    int m = mutt_ch_convert_string(&s, fromcode, c_charset, MUTT_ICONV_NO_FLAGS);
+    int m = mutt_ch_convert_string(&s, fromcode, charset, MUTT_ICONV_NO_FLAGS);
     FREE(&fromcode);
     if (m == 0)
     {
@@ -334,8 +333,8 @@ int mutt_ch_convert_nonmime_string(char **ps)
     }
     FREE(&s);
   }
-  mutt_ch_convert_string(ps, (const char *) mutt_ch_get_default_charset(),
-                         c_charset, MUTT_ICONV_HOOK_FROM);
+  mutt_ch_convert_string(ps, mutt_ch_get_default_charset(assumed_charset),
+                         charset, MUTT_ICONV_HOOK_FROM);
   return -1;
 }
 
@@ -432,18 +431,18 @@ bool mutt_ch_chscmp(const char *cs1, const char *cs2)
 
 /**
  * mutt_ch_get_default_charset - Get the default character set
+ * @param assumed_charset From $assumed_charset
  * @retval ptr Name of the default character set
  *
  * @warning This returns a pointer to a static buffer.  Do not free it.
  */
-char *mutt_ch_get_default_charset(void)
+const char *mutt_ch_get_default_charset(const struct Slist *const assumed_charset)
 {
   static char fcharset[128];
   const char *c = NULL;
-  const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
 
-  if (c_assumed_charset && (c_assumed_charset->count > 0))
-    c = STAILQ_FIRST(&c_assumed_charset->head)->data;
+  if (assumed_charset && (assumed_charset->count > 0))
+    c = STAILQ_FIRST(&assumed_charset->head)->data;
   else
     c = "us-ascii";
 

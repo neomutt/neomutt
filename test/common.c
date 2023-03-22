@@ -40,8 +40,16 @@ bool StartupComplete = true;
 char *HomeDir = NULL;
 int SigInt = 0;
 int SigWinch = 0;
+char *ShortHostname = "example";
 
 #define TEST_DIR "NEOMUTT_TEST_DIR"
+
+static struct ConfigDef Vars[] = {
+  // clang-format off
+  { "tmp_dir", DT_PATH|DT_PATH_DIR|DT_NOT_EMPTY, IP TMPDIR, 0, NULL, },
+  { NULL },
+  // clang-format on
+};
 
 #define CONFIG_INIT_TYPE(CS, NAME)                                             \
   extern const struct ConfigSetType Cst##NAME;                                 \
@@ -126,6 +134,7 @@ struct NeoMutt *test_neomutt_create(void)
 
   struct NeoMutt *n = neomutt_new(cs);
 
+  cs_register_variables(cs, Vars, DT_NO_FLAGS);
   return n;
 }
 
@@ -161,11 +170,6 @@ struct Mailbox *get_current_mailbox(void)
 struct Menu *get_current_menu(void)
 {
   return NULL;
-}
-
-void mutt_mktemp_full(char *buf, size_t buflen, const char *prefix,
-                      const char *suffix, const char *src, int line)
-{
 }
 
 int mutt_do_pager(struct PagerView *pview, struct Email *e)

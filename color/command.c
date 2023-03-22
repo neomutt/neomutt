@@ -42,7 +42,6 @@
 #ifdef USE_DEBUG_COLOR
 #include <stdio.h>
 #include "mutt.h"
-#include "muttlib.h"
 #include "pager/private_data.h"
 #endif
 

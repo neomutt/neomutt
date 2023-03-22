@@ -63,7 +63,6 @@
 #include "handler.h"
 #include "hook.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif

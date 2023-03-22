@@ -513,8 +513,9 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
     }
     else
     {
+      const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
       mutt_param_set(&ct->parameter, "charset",
-                     (const char *) mutt_ch_get_default_charset());
+                     mutt_ch_get_default_charset(c_assumed_charset));
     }
   }
 }

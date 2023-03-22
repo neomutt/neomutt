@@ -56,7 +56,6 @@
 #include "mutt_header.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
-#include "muttlib.h"
 #include "mx.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

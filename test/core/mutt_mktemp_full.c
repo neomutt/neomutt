@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_file_mkstemp_full()
+ * Test code for mutt_mktemp_full()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,31 +29,15 @@
 #include "core/lib.h"
 #include "test_common.h"
 
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "tmp_dir", DT_PATH|DT_PATH_DIR|DT_NOT_EMPTY, IP TMPDIR, 0, NULL, },
-  { "tmpdir", DT_SYNONYM, IP "tmp_dir", IP "2023-01-25" },
-  { NULL },
-  // clang-format on
-};
-
-void test_mutt_file_mkstemp_full(void)
+void test_mutt_mktemp_full(void)
 {
-  // FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func);
+  // void mutt_mktemp_full(char *buf, size_t buflen, const char *prefix, const char *suffix, const char *src, int line);
 
   NeoMutt = test_neomutt_create();
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, 0));
 
   {
-    FILE *fp = NULL;
-    TEST_CHECK((fp = mutt_file_mkstemp_full(NULL, 0, "apple")) != NULL);
-    fclose(fp);
-  }
-
-  {
-    FILE *fp = NULL;
-    TEST_CHECK((fp = mutt_file_mkstemp_full("apple", 0, NULL)) != NULL);
-    fclose(fp);
+    char buf[256] = { 0 };
+    mutt_mktemp_full(buf, sizeof(buf), NULL, NULL, __FILE__, __LINE__);
   }
 
   test_neomutt_destroy(&NeoMutt);

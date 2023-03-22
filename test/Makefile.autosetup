@@ -140,6 +140,10 @@ CONVERT_OBJS	= test/convert/mutt_update_content_info.o \
 		  test/convert/mutt_convert_file_to.o \
 		  test/convert/mutt_convert_file_from_to.o
 
+CORE_OBJS	= test/core/mutt_buffer_mktemp_full.o \
+		  test/core/mutt_file_mkstemp_full.o \
+		  test/core/mutt_mktemp_full.o
+
 DATE_OBJS	= test/date/mutt_date_add_timeout.o \
 		  test/date/mutt_date_check_month.o \
 		  test/date/mutt_date_now.o \
@@ -224,7 +228,6 @@ FILE_OBJS	= test/file/common.o \
 		  test/file/mutt_file_lock.o \
 		  test/file/mutt_file_map_lines.o \
 		  test/file/mutt_file_mkdir.o \
-		  test/file/mutt_file_mkstemp_full.o \
 		  test/file/mutt_file_open.o \
 		  test/file/mutt_file_quote_filename.o \
 		  test/file/mutt_file_read_keyword.o \
@@ -612,6 +615,7 @@ TEST_OBJS	= test/main.o test/common.o \
 		  $(COMPRESS_OBJS) \
 		  $(CONFIG_OBJS) \
 		  $(CONVERT_OBJS) \
+		  $(CORE_OBJS) \
 		  $(DATE_OBJS) \
 		  $(EMAIL_OBJS) \
 		  $(ENTER_OBJS) \

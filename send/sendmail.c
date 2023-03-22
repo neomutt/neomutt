@@ -40,6 +40,7 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
+#include "core/tmp.h"
 #include "gui/lib.h"
 #include "lib.h"
 #include "pager/lib.h"

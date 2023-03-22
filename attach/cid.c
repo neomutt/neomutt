@@ -32,11 +32,11 @@
 #include <stdio.h>
 #include <string.h>
 #include "email/lib.h"
+#include "core/tmp.h"
 #include "cid.h"
 #include "attach.h"
 #include "mailcap.h"
 #include "mutt_attach.h"
-#include "muttlib.h"
 
 /**
  * cid_map_free - Free a CidMap

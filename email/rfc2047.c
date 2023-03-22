@@ -694,7 +694,8 @@ void rfc2047_decode(char **pd)
         if (c_assumed_charset)
         {
           char *conv = mutt_strn_dup(s, holelen);
-          mutt_ch_convert_nonmime_string(&conv);
+          const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
+          mutt_ch_convert_nonmime_string(c_assumed_charset, c_charset, &conv);
           mutt_buffer_addstr(&buf, conv);
           FREE(&conv);
         }

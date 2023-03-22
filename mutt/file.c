@@ -39,8 +39,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <utime.h>
-#include "config/lib.h"
-#include "core/lib.h"
 #include "file.h"
 #include "buffer.h"
 #include "date.h"
@@ -986,41 +984,6 @@ int mutt_file_mkdir(const char *path, mode_t mode)
     return -1;
 
   return 0;
-}
-
-/**
- * mutt_file_mkstemp_full - Create temporary file safely
- * @param file Source file of caller
- * @param line Source line number of caller
- * @param func Function name of caller
- * @retval ptr  FILE handle
- * @retval NULL Error, see errno
- *
- * Create and immediately unlink a temp file using mkstemp().
- */
-FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func)
-{
-  char name[PATH_MAX] = { 0 };
-
-  const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, "tmp_dir");
-  int n = snprintf(name, sizeof(name), "%s/neomutt-XXXXXX", NONULL(c_tmp_dir));
-  if (n < 0)
-    return NULL;
-
-  int fd = mkstemp(name);
-  if (fd == -1)
-    return NULL;
-
-  FILE *fp = fdopen(fd, "w+");
-
-  if ((unlink(name) != 0) && (errno != ENOENT))
-  {
-    mutt_file_fclose(&fp);
-    return NULL;
-  }
-
-  MuttLogger(0, file, line, func, 1, "created temp file '%s'\n", name);
-  return fp;
 }
 
 /**

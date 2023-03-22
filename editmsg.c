@@ -40,7 +40,6 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "copy.h"
-#include "muttlib.h"
 #include "mx.h"
 #include "protos.h"
 

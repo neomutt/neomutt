@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_ch_get_default_charset()
+ * Test code for mutt_buffer_mktemp_full()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,30 +23,23 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <string.h>
+#include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "test_common.h"
 
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "assumed_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY, 0, 0, NULL, },
-  { NULL },
-  // clang-format on
-};
-
-void test_mutt_ch_get_default_charset(void)
+void test_mutt_buffer_mktemp_full(void)
 {
-  // const char *mutt_ch_get_default_charset(const struct Slist *const assumed_charset);
+  // void mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
+
+  NeoMutt = test_neomutt_create();
 
   {
-    NeoMutt = test_neomutt_create();
-    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
-
-    const char *cs = mutt_ch_get_default_charset(NULL);
-    TEST_CHECK(strlen(cs) != 0);
-
-    test_neomutt_destroy(&NeoMutt);
+    struct Buffer buf = mutt_buffer_make(1024);
+    mutt_buffer_mktemp_full(&buf, NULL, NULL, __FILE__, __LINE__);
+    mutt_buffer_dealloc(&buf);
   }
+
+  test_neomutt_destroy(&NeoMutt);
 }

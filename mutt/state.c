@@ -32,8 +32,6 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <wchar.h>
-#include "config/lib.h"
-#include "core/lib.h"
 #include "state.h"
 #include "date.h"
 #include "random.h"
@@ -74,8 +72,8 @@ void state_mark_attach(struct State *state)
 {
   if (!state || !state->fp_out)
     return;
-  const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
-  if ((state->flags & STATE_DISPLAY) && (!c_pager || mutt_str_equal(c_pager, "builtin")))
+
+  if ((state->flags & (STATE_DISPLAY | STATE_PAGER)) == (STATE_DISPLAY | STATE_PAGER))
   {
     state_puts(state, state_attachment_marker());
   }
@@ -87,8 +85,10 @@ void state_mark_attach(struct State *state)
  */
 void state_mark_protected_header(struct State *state)
 {
-  const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
-  if ((state->flags & STATE_DISPLAY) && (!c_pager || mutt_str_equal(c_pager, "builtin")))
+  if (!state || !state->fp_out)
+    return;
+
+  if ((state->flags & (STATE_DISPLAY | STATE_PAGER)) == (STATE_DISPLAY | STATE_PAGER))
   {
     state_puts(state, state_protected_header_marker());
   }

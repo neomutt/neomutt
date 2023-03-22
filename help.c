@@ -41,7 +41,6 @@
 #include "pager/lib.h"
 #include "functions.h"
 #include "keymap.h"
-#include "muttlib.h"
 #include "opcodes.h"
 #include "protos.h"
 

@@ -54,7 +54,6 @@
 #include "cryptglue.h"
 #include "globals.h" // IWYU pragma: keep
 #include "handler.h"
-#include "muttlib.h"
 #include "mx.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
