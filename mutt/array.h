@@ -275,7 +275,7 @@
  * @param fn   Sort function, see ::sort_t
  */
 #define ARRAY_SORT(head, fn)                                                   \
-  qsort((head)->entries, ARRAY_SIZE(head), ARRAY_ELEM_SIZE(head), (fn))
+  ((head)->entries && (qsort((head)->entries, ARRAY_SIZE(head), ARRAY_ELEM_SIZE(head), (fn)), true))
 
 /******************************************************************************
  * Internal APIs
