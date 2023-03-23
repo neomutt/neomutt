@@ -336,7 +336,18 @@ void test_mutt_array_api(void)
 
   /* Sorting */
   {
-    ARRAY_SORT(&d, gt);
+    struct Dummies empty = ARRAY_HEAD_INITIALIZER;
+    if (!TEST_CHECK(!ARRAY_SORT(&empty, gt)))
+    {
+      TEST_MSG("Expected: false");
+      TEST_MSG("Actual  : true");
+    }
+
+    if (!TEST_CHECK(ARRAY_SORT(&d, gt)))
+    {
+      TEST_MSG("Expected: true");
+      TEST_MSG("Actual  : false");
+    }
     struct Dummy *elem = NULL;
     ARRAY_FOREACH_FROM(elem, &d, 1)
     {
