@@ -200,7 +200,9 @@ int mutt_autocrypt_account_init(bool prompt)
       done = false;
     }
     else
+    {
       done = true;
+    }
   } while (!done);
 
   addr = TAILQ_FIRST(&al);

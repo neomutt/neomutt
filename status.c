@@ -168,7 +168,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         mutt_pretty_mailbox(tmp, sizeof(tmp));
       }
       else
+      {
         mutt_str_copy(tmp, _("(no mailbox)"), sizeof(tmp));
+      }
 
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, tmp);

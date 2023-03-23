@@ -208,5 +208,7 @@ void state_prefix_put(struct State *state, const char *buf, size_t buflen)
       state_prefix_putc(state, *buf++);
   }
   else
+  {
     fwrite(buf, buflen, 1, state->fp_out);
+  }
 }

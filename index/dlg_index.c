@@ -787,7 +787,9 @@ void change_folder_string(struct Menu *menu, char *buf, size_t buflen, int *oldc
       change_folder_mailbox(menu, m, oldcount, shared, read_only);
     }
     else
+    {
       mutt_error(_("%s is not a mailbox"), buf);
+    }
     return;
   }
 
@@ -826,7 +828,9 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
   {
     flags |= MUTT_FORMAT_TREE; /* display the thread tree */
     if (e->display_subject)
+    {
       flags |= MUTT_FORMAT_FORCESUBJ;
+    }
     else
     {
       const bool reverse = c_threads == UT_REVERSE;
@@ -839,7 +843,9 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
           edgemsgno = m->v2r[menu->top + menu->page_len - 1];
       }
       else
+      {
         edgemsgno = m->v2r[menu->top];
+      }
 
       for (tmp = e->thread->parent; tmp; tmp = tmp->parent)
       {
@@ -865,7 +871,9 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 
           /* ...but if a previous sibling is available, don't force it */
           if (reverse ? (tmp->message->msgno > edgemsgno) : (tmp->message->msgno < edgemsgno))
+          {
             break;
+          }
           else if (tmp->message->vnum >= 0)
           {
             flags &= ~MUTT_FORMAT_FORCESUBJ;
@@ -1231,7 +1239,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         }
       }
       else
+      {
         priv->do_mailbox_notify = true;
+      }
     }
 
     window_redraw(NULL);
@@ -1306,7 +1316,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       if (shared->mailbox->msg_tagged == 0)
       {
         if (op == OP_TAG_PREFIX)
+        {
           mutt_error(_("No tagged messages"));
+        }
         else if (op == OP_TAG_PREFIX_COND)
         {
           mutt_flush_macro_to_endcond();

@@ -121,7 +121,9 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
             tok->dptr += 2;
           }
           else
+          {
             mutt_buffer_addch(dest, ch);
+          }
       }
     }
     else if ((ch == '^') && (flags & TOKEN_CONDENSE))
@@ -280,7 +282,9 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
       }
     }
     else
+    {
       mutt_buffer_addch(dest, ch);
+    }
   }
   mutt_buffer_addch(dest, 0); /* terminate the string */
   SKIPWS(tok->dptr);

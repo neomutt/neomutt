@@ -177,7 +177,9 @@ int mutt_file_fsync_close(FILE **fp)
     errno = save_errno;
   }
   else
+  {
     rc = mutt_file_fclose(fp);
+  }
 
   return rc;
 }
@@ -650,7 +652,9 @@ FILE *mutt_file_fopen(const char *path, const char *mode)
     return fdopen(fd, mode);
   }
   else
+  {
     return fopen(path, mode);
+  }
 }
 
 /**
@@ -887,7 +891,9 @@ size_t mutt_file_quote_filename(const char *filename, char *buf, size_t buflen)
       buf[j++] = '\'';
     }
     else
+    {
       buf[j++] = filename[i];
+    }
   }
 
   buf[j++] = '\'';
@@ -921,7 +927,9 @@ void mutt_buffer_quote_filename(struct Buffer *buf, const char *filename, bool a
       mutt_buffer_addch(buf, '\'');
     }
     else
+    {
       mutt_buffer_addch(buf, *filename);
+    }
   }
 
   if (add_outer)

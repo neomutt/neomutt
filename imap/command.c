@@ -456,7 +456,9 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
       while (*s && (*s != ')'))
         s++;
       if (*s == ')')
+      {
         s++;
+      }
       else
       {
         mutt_debug(LL_DEBUG1, "Unterminated FLAGS response: %s\n", s);
@@ -495,7 +497,9 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
       while (*s && (*s != ')'))
         s++;
       if (*s == ')')
+      {
         s++;
+      }
       else
       {
         mutt_debug(LL_DEBUG1, "Unterminated MODSEQ response: %s\n", s);
@@ -903,10 +907,14 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
       new_mail = (mdata->recent > 0);
     }
     else
+    {
       new_mail = (mdata->unseen > 0);
+    }
   }
   else
+  {
     new_mail = (mdata->unseen > 0);
+  }
 
   m->has_new = new_mail;
   m->msg_count = mdata->messages;
@@ -1173,14 +1181,18 @@ int imap_cmd_step(struct ImapAccountData *adata)
         }
       }
       else
+      {
         stillrunning++;
+      }
     }
 
     c = (c + 1) % adata->cmdslots;
   } while (c != adata->nextcmd);
 
   if (stillrunning)
+  {
     rc = IMAP_RES_CONTINUE;
+  }
   else
   {
     mutt_debug(LL_DEBUG3, "IMAP queue drained\n");

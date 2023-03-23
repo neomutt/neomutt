@@ -405,7 +405,9 @@ static int complete_hosts(char *buf, size_t buflen)
       rc = 0;
     }
     else
+    {
       longest_common_prefix(buf, mailbox_path(np->mailbox), matchlen, buflen);
+    }
   }
   neomutt_mailboxlist_clear(&ml);
 
@@ -431,7 +433,9 @@ static int complete_hosts(char *buf, size_t buflen)
         rc = 0;
       }
       else
+      {
         longest_common_prefix(buf, urlstr, matchlen, buflen);
+      }
     }
   }
 #endif
@@ -630,7 +634,9 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
       continue;
     }
     else
+    {
       r = false;
+    }
 
     fputc(c, fp);
 
@@ -775,7 +781,9 @@ int imap_open_connection(struct ImapAccountData *adata)
 
       const enum QuadOption c_ssl_starttls = cs_subset_quad(NeoMutt->sub, "ssl_starttls");
       if (c_ssl_force_tls)
+      {
         ans = MUTT_YES;
+      }
       else if ((ans = query_quadoption(c_ssl_starttls, _("Secure connection with TLS?"))) == MUTT_ABORT)
       {
         goto bail;
@@ -1074,7 +1082,9 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
     mutt_buffer_addstr(cmd, " -FLAGS.SILENT (");
   }
   else
+  {
     mutt_buffer_addstr(cmd, " FLAGS.SILENT (");
+  }
 
   mutt_buffer_addstr(cmd, flags);
   mutt_buffer_addstr(cmd, ")");
@@ -1686,7 +1696,9 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
       }
     }
     else
+    {
       mutt_error(_("Error saving flags"));
+    }
     return -1;
   }
 
@@ -1869,7 +1881,9 @@ int imap_login(struct ImapAccountData *adata)
       }
     }
     else
+    {
       mutt_account_unsetpass(&adata->conn->account);
+    }
   }
   if (adata->state == IMAP_AUTHENTICATED)
   {
@@ -2080,7 +2094,9 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
   if (c_debug_level > LL_DEBUG2)
   {
     if (STAILQ_EMPTY(&mdata->flags))
+    {
       mutt_debug(LL_DEBUG3, "No folder flags found\n");
+    }
     else
     {
       struct ListNode *np = NULL;

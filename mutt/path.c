@@ -545,7 +545,9 @@ char *mutt_path_escape(const char *src)
         destsize += 4;
       }
       else
+      {
         break;
+      }
     }
   }
   *destp = '\0';

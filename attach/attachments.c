@@ -268,7 +268,9 @@ int mutt_count_body_parts(const struct Mailbox *m, struct Email *e, FILE *fp)
     e->attach_total = count_body_parts(e->body);
   }
   else
+  {
     e->attach_total = 0;
+  }
 
   e->attach_valid = true;
 

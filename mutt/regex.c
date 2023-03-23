@@ -337,7 +337,9 @@ int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
       }
     }
     else
+    {
       p++;
+    }
   }
 
   if (np->nmatch > np->regex->regex->re_nsub)
@@ -444,7 +446,9 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
             }
           }
           else
+          {
             dst[tlen++] = *p++;
+          }
         }
       }
       dst[tlen] = '\0';

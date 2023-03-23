@@ -172,7 +172,9 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
               tail = t;
             }
             else
+            {
               tail = "";
+            }
           }
           else
           {
@@ -295,7 +297,9 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
       mutt_buffer_printf(tmp, "%s%s", mutt_buffer_string(q), tail);
     }
     else
+    {
       mutt_buffer_printf(tmp, "%s%s", mutt_buffer_string(p), tail);
+    }
 
     mutt_buffer_copy(buf, tmp);
   } while (recurse);
@@ -688,7 +692,9 @@ void mutt_buffer_save_path(struct Buffer *dest, const struct Address *a)
     mutt_str_lower(dest->data);
   }
   else
+  {
     mutt_buffer_reset(dest);
+  }
 }
 
 /**
@@ -800,7 +806,9 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
             mutt_buffer_addstr(&cmd, "'\"'\"'");
           }
           else
+          {
             mutt_buffer_addch(&cmd, *p);
+          }
         }
         mutt_buffer_addch(&cmd, '\'');
         mutt_buffer_addch(&cmd, ' ');
@@ -1066,7 +1074,9 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
             /* try to consume as many columns as we can, if we don't have
              * memory for that, use as much memory as possible */
             if (wlen + (pad * pl) + len > buflen)
+            {
               pad = (buflen > (wlen + len)) ? ((buflen - wlen - len) / pl) : 0;
+            }
             else
             {
               /* Add pre-spacing to make multi-column pad characters and
@@ -1514,7 +1524,9 @@ void mutt_get_parent_path(const char *path, char *buf, size_t buflen)
       ; // do nothing
 
     if (n > 0)
+    {
       buf[n] = '\0';
+    }
     else
     {
       buf[0] = '/';
@@ -1687,7 +1699,9 @@ void add_to_stailq(struct ListHead *head, const char *str)
 void remove_from_stailq(struct ListHead *head, const char *str)
 {
   if (mutt_str_equal("*", str))
+  {
     mutt_list_free(head); /* "unCMD *" means delete all current entries */
+  }
   else
   {
     struct ListNode *np = NULL, *tmp = NULL;

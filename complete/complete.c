@@ -93,7 +93,9 @@ int mutt_complete(struct CompletionData *cd, char *buf, size_t buflen)
     mutt_buffer_concat_path(imap_path, p, buf + 1);
   }
   else
+  {
     mutt_buffer_strcpy(imap_path, buf);
+  }
 
   if (imap_path_probe(mutt_buffer_string(imap_path), NULL) == MUTT_IMAP)
   {
@@ -128,7 +130,9 @@ int mutt_complete(struct CompletionData *cd, char *buf, size_t buflen)
       mutt_buffer_strcpy(filepart, p + 1);
     }
     else
+    {
       mutt_buffer_strcpy(filepart, buf + 1);
+    }
     dir = mutt_file_opendir(mutt_buffer_string(exp_dirpart), MUTT_OPENDIR_NONE);
   }
   else
@@ -235,7 +239,9 @@ int mutt_complete(struct CompletionData *cd, char *buf, size_t buflen)
     mutt_str_copy(buf + strlen(buf), mutt_buffer_string(filepart), buflen - strlen(buf));
   }
   else
+  {
     mutt_str_copy(buf, mutt_buffer_string(filepart), buflen);
+  }
 
 cleanup:
   mutt_buffer_pool_release(&dirpart);

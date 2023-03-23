@@ -214,7 +214,9 @@ static void enriched_wrap(struct EnrichedState *enriched)
     }
   }
   else
+  {
     enriched->indent_len = 0;
+  }
   if (enriched->tag_level[RICH_INDENT])
   {
     x = enriched->tag_level[RICH_INDENT] * INDENT_SIZE;
@@ -447,7 +449,9 @@ static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *enriche
       }
     }
     else
+    {
       enriched->tag_level[j]++;
+    }
 
     if (j == RICH_EXCERPT)
       enriched_flush(enriched, true);
@@ -565,7 +569,9 @@ int text_enriched_handler(struct Body *a, struct State *state)
 
       case NEWLINE:
         if (wc == (wchar_t) '\n')
+        {
           enriched_flush(&enriched, true);
+        }
         else
         {
           ungetwc(wc, state->fp_in);

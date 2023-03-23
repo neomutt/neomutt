@@ -172,7 +172,9 @@ int mutt_do_pager(struct PagerView *pview, struct Email *e)
       rc = -1;
     }
     else
+    {
       rc = 0;
+    }
     mutt_file_unlink(pview->pdata->fname);
     mutt_buffer_pool_release(&cmd);
   }

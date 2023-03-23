@@ -669,7 +669,9 @@ static void mh_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
 #endif
       }
       else
+      {
         email_free(&md->email);
+      }
     }
   }
 #ifdef USE_HCACHE

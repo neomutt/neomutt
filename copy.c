@@ -650,7 +650,9 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
   {
     const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");
     if (c_text_flowed)
+    {
       mutt_str_copy(prefix, ">", sizeof(prefix));
+    }
     else
     {
       const char *const c_attribution_locale = cs_subset_string(NeoMutt->sub, "attribution_locale");
@@ -666,7 +668,9 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
   if ((cmflags & MUTT_CM_NOHEADER) == 0)
   {
     if (cmflags & MUTT_CM_PREFIX)
+    {
       chflags |= CH_PREFIX;
+    }
     else if (e->attach_del && (chflags & CH_UPDATE_LEN))
     {
       int new_lines;
@@ -1116,7 +1120,9 @@ static int address_header_decode(char **h)
   /* angle brackets for return path are mandated by RFC5322,
    * so leave Return-Path as-is */
   if (rp)
+  {
     *h = mutt_str_dup(s);
+  }
   else
   {
     struct Buffer buf = { 0 };

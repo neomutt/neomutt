@@ -236,7 +236,9 @@ static int op_attachment_delete(struct AttachPrivateData *priv, int op)
         menu_set_index(priv->menu, index);
       }
       else
+      {
         menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+      }
     }
     else
     {
@@ -331,7 +333,9 @@ static int op_attachment_undelete(struct AttachPrivateData *priv, int op)
       menu_set_index(priv->menu, index);
     }
     else
+    {
       menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+    }
   }
   else
   {

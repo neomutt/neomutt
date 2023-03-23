@@ -660,7 +660,9 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
       (c_sidebar_sort_method != wdata->previous_sort))
   {
     if (wdata->opn_index >= 0)
+    {
       wdata->hil_index = wdata->opn_index;
+    }
     else
     {
       wdata->hil_index = 0;

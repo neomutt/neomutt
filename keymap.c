@@ -657,7 +657,9 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
     if (c_imap_keepalive)
     {
       if (c_imap_keepalive >= i)
+      {
         imap_keepalive();
+      }
       else
       {
         while (c_imap_keepalive && (c_imap_keepalive < i))
@@ -838,7 +840,9 @@ static const char *km_keyname(int c)
       buf[2] = '\0';
     }
     else
+    {
       snprintf(buf, sizeof(buf), "\\%d%d%d", c >> 6, (c >> 3) & 7, c & 7);
+    }
   }
   else if ((c >= KEY_F0) && (c < KEY_F(256))) /* this maximum is just a guess */
     sprintf(buf, "<F%d>", c - KEY_F0);
@@ -1616,7 +1620,9 @@ static void *parse_menu(bool *menus, char *s, struct Buffer *err)
       break;
     }
     else
+    {
       menus[value] = true;
+    }
   }
 
   FREE(&menu_names_dup);
@@ -1668,7 +1674,9 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
       menu_matches[i] = true;
   }
   else
+  {
     parse_menu(menu_matches, buf->data, err);
+  }
 
   if (MoreArgs(s))
   {
@@ -1676,7 +1684,9 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
     key = buf->data;
   }
   else
+  {
     all_keys = true;
+  }
 
   if (MoreArgs(s))
   {

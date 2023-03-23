@@ -314,7 +314,9 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
       return nntp_connect_error(adata);
     }
     if (!mutt_str_startswith(buf, "215"))
+    {
       adata->overview_fmt = mutt_str_dup(OverviewFmt);
+    }
     else
     {
       bool cont = false;
@@ -443,7 +445,9 @@ static int nntp_auth(struct NntpAccountData *adata)
     /* get list of authenticators */
     const char *const c_nntp_authenticators = cs_subset_string(NeoMutt->sub, "nntp_authenticators");
     if (c_nntp_authenticators)
+    {
       mutt_str_copy(authenticators, c_nntp_authenticators, sizeof(authenticators));
+    }
     else if (adata->hasCAPABILITIES)
     {
       mutt_str_copy(authenticators, adata->authenticators, sizeof(authenticators));
@@ -590,7 +594,9 @@ static int nntp_auth(struct NntpAccountData *adata)
                        method, client_len ? " sasl_data" : "");
           }
           else
+          {
             mutt_debug(MUTT_SOCK_LOG_CMD, "%d> sasl_data\n", conn->fd);
+          }
           client_len = 0;
           if ((mutt_socket_send_d(conn, buf, MUTT_SOCK_LOG_FULL) < 0) ||
               (mutt_socket_readln_d(inbuf, sizeof(inbuf), conn, MUTT_SOCK_LOG_FULL) < 0))
@@ -614,7 +620,9 @@ static int nntp_auth(struct NntpAccountData *adata)
             break;
           }
           else
+          {
             nntp_log_binbuf(buf, len, "SASL", MUTT_SOCK_LOG_FULL);
+          }
 
           while (true)
           {
@@ -671,7 +679,9 @@ static int nntp_auth(struct NntpAccountData *adata)
     mutt_error(_("Server closed connection"));
   }
   else
+  {
     mutt_socket_close(conn);
+  }
   return -1;
 }
 
@@ -698,7 +708,9 @@ static int nntp_query(struct NntpMboxData *mdata, char *line, size_t linelen)
       int rc = 0;
 
       if (*line)
+      {
         rc = mutt_socket_send(adata->conn, line);
+      }
       else if (mdata->group)
       {
         snprintf(buf, sizeof(buf), "GROUP %s\r\n", mdata->group);
@@ -814,7 +826,9 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
       mutt_str_copy(line + off, p, sizeof(buf));
 
       if (chunk >= sizeof(buf))
+      {
         off += strlen(p);
+      }
       else
       {
         if (msg)
@@ -855,7 +869,9 @@ static int fetch_description(char *line, void *data)
     desc += strspn(desc, " \t");
   }
   else
+  {
     desc = strchr(line, '\0');
+  }
 
   struct NntpMboxData *mdata = mutt_hash_find(adata->groups_hash, line);
   if (mdata && !mutt_str_equal(desc, mdata->desc))
@@ -1117,7 +1133,9 @@ static int parse_overview_line(char *line, void *data)
     e->edata_free = nntp_edata_free;
     nntp_edata_get(e)->article_num = anum;
     if (fc->restore)
+    {
       e->changed = true;
+    }
     else
     {
       nntp_article_status(m, e, NULL, anum);
@@ -1128,7 +1146,9 @@ static int parse_overview_line(char *line, void *data)
       mdata->last_loaded = anum;
   }
   else
+  {
     email_free(&e);
+  }
 
   /* progress */
   if (m->verbose)
@@ -1342,7 +1362,9 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
     e->edata_free = nntp_edata_free;
     nntp_edata_get(e)->article_num = current;
     if (restore)
+    {
       e->changed = true;
+    }
     else
     {
       nntp_article_status(m, e, NULL, nntp_edata_get(e)->article_num);
@@ -1726,7 +1748,9 @@ int nntp_open_connection(struct NntpAccountData *adata)
     return nntp_connect_error(adata);
 
   if (mutt_str_startswith(buf, "200"))
+  {
     posting = true;
+  }
   else if (!mutt_str_startswith(buf, "201"))
   {
     mutt_socket_close(conn);
@@ -1878,7 +1902,9 @@ int nntp_post(struct Mailbox *m, const char *msg)
   char buf[1024] = { 0 };
 
   if (m && (m->type == MUTT_NNTP))
+  {
     mdata = m->mdata;
+  }
   else
   {
     const char *const c_news_server = cs_subset_string(NeoMutt->sub, "news_server");
@@ -2170,7 +2196,9 @@ int nntp_check_msgid(struct Mailbox *m, const char *msgid)
 
   /* get article number */
   if (e->env->xref)
+  {
     nntp_parse_xref(m, e);
+  }
   else
   {
     snprintf(buf, sizeof(buf), "STAT %s\r\n", msgid);
@@ -2232,7 +2260,9 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
     if (rc > 0)
     {
       if (!mutt_str_startswith(buf, "500"))
+      {
         mutt_error("XPAT: %s", buf);
+      }
       else
       {
         mutt_error(_("Unable to find child articles because server does not support XPAT command"));
@@ -2637,7 +2667,9 @@ static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
                      nntp_edata_get(e)->article_num ? article : e->env->message_id);
         }
         else
+        {
           mutt_error("ARTICLE: %s", buf);
+        }
       }
       return false;
     }

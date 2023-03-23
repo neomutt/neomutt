@@ -385,7 +385,9 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
     mutt_debug(LL_DEBUG2, "nm: query (windowed) '%s'\n", mdata->db_query);
   }
   else
+  {
     mutt_debug(LL_DEBUG2, "nm: query '%s'\n", mdata->db_query);
+  }
 
   return mdata->db_query;
 }
@@ -1209,7 +1211,9 @@ static int rename_maildir_filename(const char *old, char *buf, size_t buflen, st
     p++;
   }
   else
+  {
     p = folder;
+  }
 
   mutt_str_copy(filename, p, sizeof(filename));
 
@@ -1783,7 +1787,9 @@ static enum MxStatus nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   STAILQ_FOREACH(item, &url->query_strings, entries)
   {
     if (item->value && (strcmp(item->name, "query") == 0))
+    {
       db_query = item->value;
+    }
     else if (item->value && (strcmp(item->name, "limit") == 0))
     {
       // Try to parse the limit
@@ -2248,7 +2254,9 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
       mutt_debug(LL_DEBUG2, "nm: fixing obsolete path '%s'\n", old_file);
     }
     else
+    {
       email_get_fullpath(e, old_file, sizeof(old_file));
+    }
 
     mutt_buffer_strcpy(&m->pathbuf, edata->folder);
     m->type = edata->type;

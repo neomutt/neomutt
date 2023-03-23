@@ -161,7 +161,9 @@ int mutt_mb_width(const char *str, int col, bool display)
         nl = 1;
     }
     else
+    {
       l = 1;
+    }
     w += l;
     p++;
   }

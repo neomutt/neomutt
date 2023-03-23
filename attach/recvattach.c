@@ -99,7 +99,9 @@ static void mutt_update_v2r(struct AttachCtx *actx)
       } while ((rindex < actx->idxlen) && (actx->idx[rindex]->level > curlevel));
     }
     else
+    {
       rindex++;
+    }
   }
 
   actx->vcount = vindex;
@@ -130,7 +132,9 @@ void mutt_update_tree(struct AttachCtx *actx)
         *s++ = MUTT_TREE_RARROW;
       }
       else
+      {
         s = buf;
+      }
       *s = '\0';
     }
 
@@ -140,7 +144,9 @@ void mutt_update_tree(struct AttachCtx *actx)
         mutt_str_replace(&actx->idx[rindex]->tree, buf);
     }
     else
+    {
       actx->idx[rindex]->tree = mutt_str_dup(buf);
+    }
 
     if (((2 * (actx->idx[rindex]->level + 2)) < sizeof(buf)) &&
         actx->idx[rindex]->level)
@@ -170,7 +176,9 @@ static void prepend_savedir(struct Buffer *buf)
       mutt_buffer_addch(tmp, '/');
   }
   else
+  {
     mutt_buffer_addstr(tmp, "./");
+  }
 
   mutt_buffer_addstr(tmp, mutt_buffer_string(buf));
   mutt_buffer_copy(buf, tmp);
@@ -277,7 +285,9 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
       mutt_buffer_concat_path(buf, *directory, mutt_path_basename(body->filename));
     }
     else
+    {
       mutt_buffer_strcpy(buf, body->filename);
+    }
   }
   else if (has_a_message(body))
   {
@@ -322,7 +332,9 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
       rc = mutt_check_overwrite(body->filename, mutt_buffer_string(buf), tfile,
                                 &opt, directory);
       if (rc == -1)
+      {
         goto cleanup;
+      }
       else if (rc == 1)
       {
         prompt = _("Save to file: ");
@@ -543,7 +555,9 @@ static void query_pipe_attachment(const char *command, FILE *fp, struct Body *bo
     mutt_mktemp(tfile, sizeof(tfile));
   }
   else
+  {
     tfile[0] = '\0';
+  }
 
   if (mutt_pipe_attachment(fp, body, command, tfile))
   {
@@ -615,7 +629,9 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
       mutt_file_fclose(&fp_unstuff);
     }
     else
+    {
       mutt_decode_attachment(b, state);
+    }
   }
   else
   {
@@ -630,7 +646,9 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
       infile = mutt_buffer_string(unstuff_tempfile);
     }
     else
+    {
       infile = b->filename;
+    }
 
     fp_in = fopen(infile, "r");
     if (!fp_in)
@@ -733,7 +751,9 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
       mutt_any_key_to_continue(NULL);
   }
   else
+  {
     pipe_attachment_list(mutt_buffer_string(buf), actx, fp, tag, top, filter, &state);
+  }
 
 cleanup:
   mutt_buffer_pool_release(&buf);
@@ -841,7 +861,9 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
         }
       }
       else
+      {
         mutt_print_attachment(fp, top);
+      }
     }
     if (!tag)
       break;
@@ -969,7 +991,9 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
           op = OP_ATTACHMENT_VIEW;
         }
         else
+        {
           op = OP_NULL;
+        }
         break;
       }
 
@@ -983,7 +1007,9 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
           op = OP_ATTACHMENT_VIEW;
         }
         else
+        {
           op = OP_NULL;
+        }
         break;
       }
 
@@ -1144,7 +1170,9 @@ void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e,
       ap->decrypted = decrypted;
 
       if (m->type == TYPE_MULTIPART)
+      {
         mutt_generate_recvattach_list(actx, e, m->parts, fp, m->type, level + 1, decrypted);
+      }
       else if (mutt_is_message_type(m->type, m->subtype))
       {
         mutt_generate_recvattach_list(actx, m->email, m->parts, fp, m->type,

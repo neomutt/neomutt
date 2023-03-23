@@ -114,7 +114,9 @@ static size_t q_encoder(char *str, const char *buf, size_t buflen, const char *t
   {
     unsigned char c = *buf++;
     if (c == ' ')
+    {
       *str++ = '_';
+    }
     else if ((c >= 0x7f) || (c < 0x20) || (c == '_') || strchr(MimeSpecials, c))
     {
       *str++ = '=';
@@ -251,7 +253,9 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
     return 0;
   }
   else
+  {
     return dlen;
+  }
 }
 
 /**
@@ -480,7 +484,9 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
   {
     tocode1 = mutt_ch_choose(icode, charsets, u, ulen, 0, 0);
     if (tocode1)
+    {
       tocode = tocode1;
+    }
     else
     {
       rc = 2;

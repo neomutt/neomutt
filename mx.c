@@ -243,7 +243,9 @@ static bool mx_open_mailbox_append(struct Mailbox *m, OpenMailboxFlags flags)
         }
       }
       else
+      {
         return false;
+      }
     }
 
     m->mx_ops = mx_get_ops(m->type);
@@ -756,7 +758,9 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
           emaillist_add_email(&el, e);
         }
         else
+        {
           e->tagged = false;
+        }
       }
 
       i = imap_copy_messages(m, &el, mutt_buffer_string(mbox), SAVE_MOVE);
@@ -867,7 +871,9 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
                    m->msg_count - m->msg_deleted, read_msgs, m->msg_deleted);
     }
     else
+    {
       mutt_message(_("%d kept, %d deleted"), m->msg_count - m->msg_deleted, m->msg_deleted);
+    }
   }
 
   const bool c_save_empty = cs_subset_bool(NeoMutt->sub, "save_empty");
@@ -1112,7 +1118,9 @@ struct Message *mx_msg_open_new(struct Mailbox *m, const struct Email *e, MsgOpe
     }
   }
   else
+  {
     FREE(&msg);
+  }
 
   return msg;
 }

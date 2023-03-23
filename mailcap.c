@@ -141,7 +141,9 @@ int mailcap_expand_command(struct Body *a, const char *filename,
         cptr++;
     }
     else
+    {
       mutt_buffer_addch(buf, *cptr++);
+    }
   }
   mutt_buffer_copy(command, buf);
 

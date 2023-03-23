@@ -139,7 +139,9 @@ static int mbox_lock_mailbox(struct Mailbox *m, bool excl, bool retry)
 
   int rc = mutt_file_lock(fileno(adata->fp), excl, retry);
   if (rc == 0)
+  {
     adata->locked = true;
+  }
   else if (retry && !excl)
   {
     m->readonly = true;
@@ -278,10 +280,14 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
           }
         }
         else
+        {
           e->body->length = -1;
+        }
       }
       else
+      {
         e->body->length = -1;
+      }
 
       if (e->body->length < 0)
       {
@@ -486,7 +492,9 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
       lines = 0;
     }
     else
+    {
       lines++;
+    }
 
     loc = ftello(adata->fp);
   }
@@ -1114,7 +1122,9 @@ static enum MxStatus mbox_mbox_check(struct Mailbox *m)
           return MX_STATUS_NEW_MAIL; /* signal that new mail arrived */
         }
         else
+        {
           modified = true;
+        }
       }
       else
       {
@@ -1123,7 +1133,9 @@ static enum MxStatus mbox_mbox_check(struct Mailbox *m)
       }
     }
     else
+    {
       modified = true;
+    }
   }
 
   if (modified)
@@ -1789,7 +1801,9 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 
   const bool c_check_mbox_size = cs_subset_bool(NeoMutt->sub, "check_mbox_size");
   if (c_check_mbox_size)
+  {
     new_or_changed = (st.st_size > m->size);
+  }
   else
   {
     new_or_changed =

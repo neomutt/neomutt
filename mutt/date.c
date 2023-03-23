@@ -348,7 +348,9 @@ void mutt_date_normalize_time(struct tm *tm)
   while (tm->tm_mday <= 0)
   {
     if (tm->tm_mon)
+    {
       tm->tm_mon--;
+    }
     else
     {
       tm->tm_mon = 11;
@@ -360,7 +362,9 @@ void mutt_date_normalize_time(struct tm *tm)
   {
     tm->tm_mday -= DaysPerMonth[tm->tm_mon] + leap;
     if (tm->tm_mon < 11)
+    {
       tm->tm_mon++;
+    }
     else
     {
       tm->tm_mon = 0;

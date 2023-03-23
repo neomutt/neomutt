@@ -169,7 +169,9 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
           mutt_format_s(buf, buflen, prec, charset);
         }
         else
+        {
           mutt_format_s(buf, buflen, prec, "");
+        }
       }
       else if (!mutt_is_text_part(aptr->body) ||
                !mutt_body_get_charset(aptr->body, charset, sizeof(charset)))
@@ -253,7 +255,9 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
           mutt_buffer_pool_release(&path);
         }
         else
+        {
           mutt_format_s(buf, buflen, prec, NONULL(aptr->body->filename));
+        }
       }
       else if (!aptr->body->filename)
         optional = false;
@@ -276,7 +280,9 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       char ch;
 
       if (aptr->body->disposition < sizeof(dispchar))
+      {
         ch = dispchar[aptr->body->disposition];
+      }
       else
       {
         mutt_debug(LL_DEBUG1, "ERROR: invalid content-disposition %d\n",
@@ -304,7 +310,9 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       break;
     case 'Q':
       if (optional)
+      {
         optional = aptr->body->attach_qualifies;
+      }
       else
       {
         snprintf(fmt, sizeof(fmt), "%%%sc", prec);
@@ -319,7 +327,9 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
         l = mutt_file_get_size(aptr->body->filename);
       }
       else
+      {
         l = aptr->body->length;
+      }
 
       if (!optional)
       {
@@ -352,7 +362,9 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       break;
     case 'X':
       if (optional)
+      {
         optional = ((aptr->body->attach_count + aptr->body->attach_qualifies) != 0);
+      }
       else
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);

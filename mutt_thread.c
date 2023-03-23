@@ -207,7 +207,9 @@ static void linearize_tree(struct ThreadsContext *tctx)
     array += reverse ? -1 : 1;
 
     if (tree->child)
+    {
       tree = tree->child;
+    }
     else
     {
       while (tree)
@@ -218,7 +220,9 @@ static void linearize_tree(struct ThreadsContext *tctx)
           break;
         }
         else
+        {
           tree = tree->parent;
+        }
       }
     }
   }
@@ -279,7 +283,9 @@ static void calculate_visibility(struct MuttThread *tree, int *max_depth)
             break;
           }
           else
+          {
             tmp->subtree_visible = 1;
+          }
         }
       }
       else
@@ -430,7 +436,9 @@ void mutt_draw_tree(struct ThreadsContext *tctx)
                         (1 + depth - start_depth) * width + 2);
         }
         else
+        {
           mutt_str_copy(new_tree, arrow, ((size_t) depth * width) + 2);
+        }
         tree->message->tree = new_tree;
       }
     }
@@ -981,7 +989,9 @@ static void check_subjects(struct Mailbox *m, bool init)
     }
 
     if (!tmp)
+    {
       e->subject_changed = true;
+    }
     else if (e->env->real_subj && tmp->message->env->real_subj)
     {
       e->subject_changed = !mutt_str_equal(e->env->real_subj, tmp->message->env->real_subj);
@@ -1153,7 +1163,9 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
         /* look at the beginning of in-reply-to: */
         ref = STAILQ_FIRST(&e->env->in_reply_to);
         if (ref)
+        {
           using_refs = 1;
+        }
         else
         {
           ref = STAILQ_FIRST(&e->env->references);
@@ -1168,7 +1180,9 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
          * the second reference (since at least eudora puts the most
          * recent reference in in-reply-to and the rest in references) */
         if (STAILQ_EMPTY(&e->env->references))
+        {
           ref = STAILQ_NEXT(ref, entries);
+        }
         else
         {
           if (!mutt_str_equal(ref->data, STAILQ_FIRST(&e->env->references)->data))
@@ -1180,7 +1194,9 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
         }
       }
       else
+      {
         ref = STAILQ_NEXT(ref, entries); /* go on with references */
+      }
 
       if (!ref)
         break;
@@ -1630,7 +1646,9 @@ int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, enum MessageInTh
   }
 
   if (threaded == UT_REVERSE)
+  {
     rc = threads[0]->message->msgno - (threads[1] ? threads[1]->message->msgno : -1);
+  }
   else
   {
     rc = (threads[1] ? threads[1]->message->msgno : m->msg_count) -

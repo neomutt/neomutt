@@ -795,10 +795,14 @@ void mutt_select_fcc(struct Buffer *path, struct Email *e)
         mutt_buffer_strcpy(path, c_record);
     }
     else
+    {
       mutt_buffer_strcpy(path, c_record);
+    }
   }
   else
+  {
     mutt_buffer_fix_dptr(path);
+  }
 
   mutt_buffer_pretty_mailbox(path);
 }

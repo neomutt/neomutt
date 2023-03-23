@@ -421,7 +421,9 @@ static void process_user_header(struct Envelope *env)
         env->message_id = tmp;
       }
       else
+      {
         FREE(&tmp);
+      }
     }
     else if (!mutt_istr_startswith(uh->data, "to:") &&
              !mutt_istr_startswith(uh->data, "cc:") &&
@@ -705,7 +707,9 @@ static const char *greeting_format_str(char *buf, size_t buflen, size_t col, int
           *p = '\0';
       }
       else
+      {
         buf2[0] = '\0';
+      }
       mutt_format_s(buf, buflen, prec, buf2);
       break;
 
@@ -1127,7 +1131,9 @@ static void make_reference_headers(struct EmailList *el, struct Envelope *env,
     }
   }
   else
+  {
     mutt_add_to_reference_headers(env, en->email->env, sub);
+  }
 
   /* if there's more than entry in In-Reply-To (i.e. message has multiple
    * parents), don't generate a References: header as it's discouraged by
@@ -1308,7 +1314,9 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
       }
     }
     else
+    {
       return -1;
+    }
   }
   /* if (WithCrypto && (flags & SEND_KEY)) */
   else if (((WithCrypto & APPLICATION_PGP) != 0) && (flags & SEND_KEY))
@@ -2567,7 +2575,9 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
         }
       }
       else
+      {
         mutt_perror(e_templ->body->filename);
+      }
     }
   }
 

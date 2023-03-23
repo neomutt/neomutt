@@ -257,7 +257,9 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
       mutt_ch_convert_string(&currentline, c_config_charset, c_charset, MUTT_ICONV_NO_FLAGS);
     }
     else
+    {
       currentline = line;
+    }
 
     mutt_buffer_strcpy(linebuf, currentline);
 
@@ -345,7 +347,9 @@ enum CommandResult parse_cd(struct Buffer *buf, struct Buffer *s, intptr_t data,
   if (mutt_buffer_len(buf) == 0)
   {
     if (HomeDir)
+    {
       mutt_buffer_strcpy(buf, HomeDir);
+    }
     else
     {
       mutt_buffer_printf(err, _("%s: too few arguments"), "cd");

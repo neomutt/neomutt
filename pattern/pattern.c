@@ -119,7 +119,9 @@ void mutt_check_simple(struct Buffer *buf, const char *simple)
   for (const char *p = mutt_buffer_string(buf); p && (p[0] != '\0'); p++)
   {
     if ((p[0] == '\\') && (p[1] != '\0'))
+    {
       p++;
+    }
     else if ((p[0] == '~') || (p[0] == '=') || (p[0] == '%'))
     {
       do_simple = false;
@@ -577,7 +579,9 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
     {
       i = 0;
       if (c_wrap_search)
+      {
         msg = _("Search wrapped to top");
+      }
       else
       {
         mutt_message(_("Search hit bottom without finding match"));
@@ -588,7 +592,9 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
     {
       i = m->vcount - 1;
       if (c_wrap_search)
+      {
         msg = _("Search wrapped to bottom");
+      }
       else
       {
         mutt_message(_("Search hit top without finding match"));
@@ -737,7 +743,9 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
     {
       i = 0;
       if (c_wrap_search)
+      {
         msg = _("Search wrapped to top");
+      }
       else
       {
         mutt_message(_("Search hit bottom without finding match"));
@@ -748,7 +756,9 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
     {
       i = ARRAY_SIZE(ava) - 1;
       if (c_wrap_search)
+      {
         msg = _("Search wrapped to bottom");
+      }
       else
       {
         mutt_message(_("Search hit top without finding match"));

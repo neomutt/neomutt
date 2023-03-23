@@ -153,7 +153,9 @@ void mh_seq_add_one(struct Mailbox *m, int n, bool unseen, bool flagged, bool re
         replied_done = true;
       }
       else
+      {
         fprintf(fp_new, "%s\n", buf);
+      }
     }
   }
   mutt_file_fclose(&fp_old);

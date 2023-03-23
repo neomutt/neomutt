@@ -294,7 +294,9 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
       n = 5;
     }
     else
+    {
       goto bail;
+    }
 
     u8++;
     u8len--;

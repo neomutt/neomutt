@@ -275,7 +275,9 @@ static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
     {
       /* take care of trailing whitespace */
       if (linelen < 74)
+      {
         sprintf(line + linelen - 1, "=%2.2X", (unsigned char) line[linelen - 1]);
+      }
       else
       {
         savechar = line[linelen - 1];
@@ -287,7 +289,9 @@ static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
       }
     }
     else
+    {
       line[linelen] = 0;
+    }
     fputs(line, fp_out);
   }
 }
@@ -366,7 +370,9 @@ int mutt_write_mime_body(struct Body *a, FILE *fp, struct ConfigSubset *sub)
                                MUTT_ICONV_NO_FLAGS);
   }
   else
+  {
     fc = mutt_ch_fgetconv_open(fp_in, 0, 0, MUTT_ICONV_NO_FLAGS);
+  }
 
   mutt_sig_allow_interrupt(true);
   if (a->encoding == ENC_QUOTED_PRINTABLE)

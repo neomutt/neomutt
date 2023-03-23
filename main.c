@@ -966,7 +966,9 @@ main
         }
       }
       else
+      {
         mutt_addrlist_parse(&e->env->to, argv[i]);
+      }
     }
 
     const bool c_auto_edit = cs_subset_bool(NeoMutt->sub, "auto_edit");

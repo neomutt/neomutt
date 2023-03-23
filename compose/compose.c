@@ -240,7 +240,9 @@ void update_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
       menu_set_index(menu, menu->max - 1);
   }
   else
+  {
     menu_set_index(menu, 0);
+  }
 
   menu_queue_redraw(menu, MENU_REDRAW_INDEX);
 }

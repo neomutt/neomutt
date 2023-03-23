@@ -1274,15 +1274,21 @@ int smime_class_verify_sender(struct Email *e, struct Message *msg)
           mutt_any_key_to_continue(NULL);
       }
       else
+      {
         rc = 0;
+      }
       mutt_file_unlink(certfile);
       FREE(&certfile);
     }
     else
+    {
       mutt_any_key_to_continue(_("no certfile"));
+    }
   }
   else
+  {
     mutt_any_key_to_continue(_("no mbox"));
+  }
 
   mutt_file_unlink(mutt_buffer_string(tempfname));
 
@@ -1790,7 +1796,9 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *state, const char 
     mutt_file_fclose(&fp_smime_out);
 
     if (filter_wait(pid))
+    {
       badsig = -1;
+    }
     else
     {
       char *line = NULL;
@@ -1940,7 +1948,9 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *state, FIL
       state_attach_puts(state, _("[-- The following data is S/MIME encrypted --]\n"));
     }
     else
+    {
       state_attach_puts(state, _("[-- The following data is S/MIME signed --]\n"));
+    }
   }
 
   fflush(fp_smime_out);
@@ -1958,7 +1968,9 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *state, FIL
   }
 
   if (fp_out_file)
+  {
     fp_out = fp_out_file;
+  }
   else
   {
     fp_out = mutt_file_mkstemp();

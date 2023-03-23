@@ -105,7 +105,9 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
     char c = ch;
     size_t k = mbrtowc(&wc, &c, 1, wdata->mbstate);
     if (k == (size_t) (-2))
+    {
       return false;
+    }
     else if ((k != 0) && (k != 1))
     {
       memset(wdata->mbstate, 0, sizeof(*wdata->mbstate));

@@ -336,7 +336,9 @@ static int user_is_recipient(struct Email *e)
     e->recip_valid = true;
 
     if (mutt_addr_is_user(TAILQ_FIRST(&env->from)))
+    {
       e->recipient = 4;
+    }
     else if (user_in_addr(&env->to))
     {
       if (TAILQ_NEXT(TAILQ_FIRST(&env->to), entries) || !TAILQ_EMPTY(&env->cc))
@@ -501,7 +503,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, mutt_addr_for_display(from));
       }
       else
+      {
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, "");
+      }
       add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
 
@@ -538,7 +542,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           mutt_str_copy(buf, mailbox_path(m), buflen);
       }
       else
+      {
         mutt_str_copy(buf, "(null)", buflen);
+      }
       mutt_str_copy(tmp, buf, sizeof(tmp));
       mutt_format_s(buf, buflen, prec, tmp);
       break;
@@ -678,7 +684,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           cp++;
         }
         else
+        {
           do_locales = true;
+        }
 
         size_t len = buflen - 1;
         while ((len > 0) &&
@@ -698,7 +706,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                 len -= 5;
               }
               else
+              {
                 break; /* not enough space left */
+              }
             }
             else
             {
@@ -709,7 +719,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                 len -= 2;
               }
               else
+              {
                 break; /* not enough space */
+              }
             }
             cp++;
           }
@@ -889,7 +901,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         }
       }
       else
+      {
         have_tags = false;
+      }
 
       if (optional)
         optional = have_tags;
@@ -938,7 +952,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         snprintf(buf, buflen, fmt, m->msg_count);
       }
       else
+      {
         mutt_str_copy(buf, "(null)", buflen);
+      }
       break;
 
     case 'n':
@@ -1054,7 +1070,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           mutt_format_s_tree(buf, buflen, prec, tmp);
         }
         else
+        {
           mutt_format_s_tree(buf, buflen, prec, e->tree);
+        }
       }
       else
       {
@@ -1125,7 +1143,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           *p = '\0';
       }
       else
+      {
         tmp[0] = '\0';
+      }
       mutt_format_s(buf, buflen, prec, tmp);
       break;
 
@@ -1140,7 +1160,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           *tmp = '\0';
       }
       else
+      {
         mutt_format_s(tmp, sizeof(tmp), prec, mutt_get_name(from));
+      }
       p = strpbrk(tmp, " %@");
       if (p)
         *p = '\0';
@@ -1215,7 +1237,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           label = false;
       }
       else
+      {
         label = false;
+      }
 
       if (optional)
         optional = label;
@@ -1273,7 +1297,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           ch = get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_CONTAINS_KEY);
         }
         else
+        {
           ch = get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_NO_CRYPTO);
+        }
 
         snprintf(tmp, sizeof(tmp), "%s", ch);
         src++;

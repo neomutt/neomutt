@@ -273,7 +273,9 @@ static void print_enriched_string(struct MuttWindow *win, int index,
       n -= k;
     }
     else
+    {
       break;
+    }
   }
 }
 

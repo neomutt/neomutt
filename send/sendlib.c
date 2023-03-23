@@ -257,7 +257,9 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp, struct ConfigSubset *sub)
   struct stat st = { 0 };
 
   if (!a->filename && fp)
+  {
     fp_in = fp;
+  }
   else if (!a->filename || !(fp_in = fopen(a->filename, "r")))
   {
     mutt_error(_("Could not open %s"), a->filename ? a->filename : "(null)");
@@ -371,7 +373,9 @@ static void set_encoding(struct Body *b, struct Content *info, struct ConfigSubs
         mutt_message_to_7bit(b, NULL, sub);
     }
     else
+    {
       b->encoding = ENC_7BIT;
+    }
   }
   else if ((b->type == TYPE_APPLICATION) && mutt_istr_equal(b->subtype, "pgp-keys"))
   {
@@ -970,7 +974,9 @@ static void set_noconv_flags(struct Body *b, bool flag)
   for (; b; b = b->next)
   {
     if ((b->type == TYPE_MESSAGE) || (b->type == TYPE_MULTIPART))
+    {
       set_noconv_flags(b->parts, flag);
+    }
     else if ((b->type == TYPE_TEXT) && b->noconv)
     {
       if (flag)

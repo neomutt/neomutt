@@ -513,7 +513,9 @@ static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t count)
     rc = olen;
   }
   else
+  {
     rc = sasldata->read(conn, buf, count);
+  }
 
 out:
   conn->sockdata = sasldata;
@@ -624,7 +626,9 @@ int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
       mutt_debug(LL_DEBUG2, "SASL failed to parse local IP address\n");
   }
   else
+  {
     mutt_debug(LL_DEBUG2, "SASL failed to get local IP address\n");
+  }
 
   size = sizeof(remote);
   if (getpeername(conn->fd, (struct sockaddr *) &remote, &size) == 0)
@@ -635,7 +639,9 @@ int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
       mutt_debug(LL_DEBUG2, "SASL failed to parse remote IP address\n");
   }
   else
+  {
     mutt_debug(LL_DEBUG2, "SASL failed to get remote IP address\n");
+  }
 
   mutt_debug(LL_DEBUG2, "SASL local ip: %s, remote ip:%s\n", NONULL(plp), NONULL(prp));
 

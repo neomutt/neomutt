@@ -873,7 +873,9 @@ struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *t
     fc->inrepls = mutt_ch_is_utf8(to) ? repls : repls + 1;
   }
   else
+  {
     fc = mutt_mem_malloc(sizeof(struct FgetConvNot));
+  }
   fc->fp = fp;
   fc->cd = cd;
   return fc;
@@ -1070,7 +1072,9 @@ char *mutt_ch_choose(const char *fromcode, const struct Slist *charsets,
         e = s;
       }
       else
+      {
         FREE(&s);
+      }
       elen = slen;
     }
     else

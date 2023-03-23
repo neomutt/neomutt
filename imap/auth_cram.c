@@ -64,7 +64,9 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
     secret_len = MD5_DIGEST_LEN;
   }
   else
+  {
     mutt_str_copy((char *) secret, password, sizeof(secret));
+  }
 
   memcpy(ipad, secret, secret_len);
   memcpy(opad, secret, secret_len);

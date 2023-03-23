@@ -174,7 +174,9 @@ void update_crypt_info(struct EnvelopeWindowData *wdata)
           e->security &= ~(SEC_INLINE | APPLICATION_SMIME);
         }
         else
+        {
           e->security &= ~SEC_AUTOCRYPT;
+        }
       }
     }
   }

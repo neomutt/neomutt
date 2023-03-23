@@ -140,7 +140,9 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
     cnt += (lines[line_num].syntax)[0].last;
   }
   else
+  {
     m = line_num;
+  }
   if (flags & MUTT_PAGER_LOGS)
   {
     def_color = *(lines[line_num].syntax[0].attr_color);
@@ -332,7 +334,9 @@ bool mutt_is_quote_line(char *line, regmatch_t *pmatch)
       }
     }
     else
+    {
       is_quote = true;
+    }
   }
 
   return is_quote;
@@ -464,7 +468,9 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
     lines[line_num].cid = MT_COLOR_QUOTED;
   }
   else
+  {
     lines[line_num].cid = MT_COLOR_NORMAL;
+  }
 
   /* body patterns */
   if ((lines[line_num].cid == MT_COLOR_NORMAL) || (lines[line_num].cid == MT_COLOR_QUOTED) ||
@@ -644,7 +650,9 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
           null_rx = false;
         }
         else
+        {
           null_rx = true; /* empty regex; don't add it, but keep looking */
+        }
       }
 
       if (null_rx)
@@ -684,7 +692,9 @@ void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src, bool str
     if ((s[0] == '\010') && (s > src))
     {
       if (s[1] == '_') /* underline */
+      {
         s += 2;
+      }
       else if (s[1] && mutt_buffer_len(dest)) /* bold or overstrike */
       {
         dest->dptr--;
@@ -709,7 +719,9 @@ void mutt_buffer_strip_formatting(struct Buffer *dest, const char *src, bool str
         ; /* skip pseudo-ANSI sequence */
     }
     else
+    {
       mutt_buffer_addch(dest, *s++);
+    }
   }
 }
 
@@ -1234,7 +1246,9 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   {
     m = (cur_line->cont_line) ? (cur_line->syntax)[0].first : line_num;
     if ((*lines)[m].cid == MT_COLOR_HEADER)
+    {
       def_color = ((*lines)[m].syntax)[0].attr_color;
+    }
     else
     {
       def_color = simple_color_get((*lines)[m].cid);

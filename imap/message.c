@@ -273,7 +273,9 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
 
   /* wrap up, or note bad flags response */
   if (*s == ')')
+  {
     s++;
+  }
   else
   {
     mutt_debug(LL_DEBUG1, "Unterminated FLAGS response: %s\n", s);
@@ -367,7 +369,9 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       while (*s && (*s != ')'))
         s++;
       if (*s == ')')
+      {
         s++;
+      }
       else
       {
         mutt_debug(LL_DEBUG1, "Unterminated MODSEQ response: %s\n", s);
@@ -1483,7 +1487,9 @@ retry:
                             sizeof(mdata->modseq));
     }
     else
+    {
       mutt_hcache_delete_record(mdata->hcache, "/MODSEQ", 7);
+    }
 
     if (has_qresync)
       imap_hcache_store_uid_seqset(mdata);

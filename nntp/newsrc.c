@@ -478,7 +478,9 @@ int nntp_newsrc_update(struct NntpAccountData *adata)
       if (j)
         buf[off++] = ',';
       if (mdata->newsrc_ent[j].first == mdata->newsrc_ent[j].last)
+      {
         snprintf(buf + off, buflen - off, ANUM, mdata->newsrc_ent[j].first);
+      }
       else if (mdata->newsrc_ent[j].first < mdata->newsrc_ent[j].last)
       {
         snprintf(buf + off, buflen - off, ANUM "-" ANUM,
@@ -534,7 +536,9 @@ static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *cac, cons
     FREE(&url.path);
   }
   else
+  {
     mutt_str_copy(file, src ? src : "", sizeof(file));
+  }
 
   const char *const c_news_cache_dir = cs_subset_path(NeoMutt->sub, "news_cache_dir");
   snprintf(dst, dstlen, "%s/%s", c_news_cache_dir, file);

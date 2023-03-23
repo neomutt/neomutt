@@ -107,7 +107,9 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
   if ((rc != SASL_OK) && (rc != SASL_CONTINUE))
   {
     if (method)
+    {
       mutt_debug(LL_DEBUG2, "%s unavailable\n", method);
+    }
     else
     {
       mutt_debug(LL_DEBUG1, "Failure starting authentication exchange. No shared mechanisms?\n");
@@ -190,7 +192,9 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
       } while (rc == SASL_INTERACT);
     }
     else
+    {
       client_start = false;
+    }
 
     /* send out response, or line break if none needed */
     if (olen)

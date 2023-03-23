@@ -82,7 +82,9 @@ static const char *parse_comment(const char *s, char *comment, size_t *commentle
   while (*s && level)
   {
     if (*s == '(')
+    {
       level++;
+    }
     else if (*s == ')')
     {
       if (--level == 0)
@@ -218,7 +220,9 @@ static const char *parse_mailboxdomain(const char *s, const char *nonspecial,
       ps = next_token(s, comment, commentlen, commentmax);
     }
     else
+    {
       ps = next_token(s, mailbox, mailboxlen, mailboxmax);
+    }
     if (!ps)
       return NULL;
     s = ps;
@@ -633,7 +637,9 @@ int mutt_addrlist_parse2(struct AddressList *al, const char *s)
     FREE(&copy);
   }
   else
+  {
     parsed = mutt_addrlist_parse(al, s);
+  }
 
   return parsed;
 }
@@ -705,7 +711,9 @@ void mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *spec
     mutt_str_copy(buf, tmp, buflen);
   }
   else
+  {
     mutt_str_copy(buf, value, buflen);
+  }
 }
 
 /**

@@ -1575,7 +1575,9 @@ static int op_main_show_limit(struct IndexSharedData *shared,
                               struct IndexPrivateData *priv, int op)
 {
   if (!mview_has_limit(shared->mailboxview))
+  {
     mutt_message(_("No limit pattern is in effect"));
+  }
   else
   {
     char buf2[256];
@@ -2375,7 +2377,9 @@ static int op_get_children(struct IndexSharedData *shared,
     /* if the root message was retrieved, move to it */
     struct Email *e = mutt_hash_find(shared->mailbox->id_hash, buf);
     if (e)
+    {
       menu_set_index(priv->menu, e->vnum);
+    }
     else
     {
       /* try to restore old position */
@@ -2585,7 +2589,9 @@ static int op_post(struct IndexSharedData *shared, struct IndexPrivateData *priv
       return FR_ERROR;
     }
     if (op == OP_POST)
+    {
       mutt_send_message(SEND_NEWS, NULL, NULL, shared->mailbox, NULL, shared->sub);
+    }
     else
     {
       struct EmailList el = STAILQ_HEAD_INITIALIZER(el);

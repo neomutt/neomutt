@@ -769,7 +769,9 @@ int crypt_write_signed(struct Body *a, struct State *state, const char *tempfile
     bytes--;
 
     if (c == '\r')
+    {
       hadcr = true;
+    }
     else
     {
       if ((c == '\n') && !hadcr)
@@ -1056,7 +1058,9 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
   for (; a; a = a->next)
   {
     if (a->type == TYPE_MULTIPART)
+    {
       crypt_fetch_signatures(signatures, a->parts, n);
+    }
     else
     {
       if ((*n % 5) == 0)
@@ -1142,7 +1146,9 @@ int mutt_signed_handler(struct Body *b, struct State *state)
   }
 
   if (!(b && b->next))
+  {
     inconsistent = true;
+  }
   else
   {
     switch (signed_type)

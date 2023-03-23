@@ -347,7 +347,9 @@ int external_pager(struct Mailbox *m, struct Email *e, const char *command)
     rc = km_dokey(MENU_PAGER);
   }
   else
+  {
     rc = 0;
+  }
 
 cleanup:
   mx_msg_close(m, &msg);

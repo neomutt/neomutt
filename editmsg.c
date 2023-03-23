@@ -206,7 +206,9 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
       cf = CH_FROM | CH_FORCE_FROM;
   }
   else
+  {
     of = MUTT_ADD_FROM;
+  }
 
   /* XXX - we have to play games with the message flags to avoid
    * problematic behavior with maildir folders.  */

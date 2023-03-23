@@ -88,7 +88,9 @@ static int mdb_get_r_txn(struct StoreLmdbCtx *ctx)
     rc = mdb_txn_begin(ctx->env, NULL, MDB_RDONLY, &ctx->txn);
 
   if (rc == MDB_SUCCESS)
+  {
     ctx->txn_mode = TXN_READ;
+  }
   else
   {
     mutt_debug(LL_DEBUG2, "%s: %s\n",

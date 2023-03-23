@@ -268,7 +268,9 @@ static int pgp_copy_checksig(FILE *fp_in, FILE *fp_out)
         rc = 0;
       }
       else
+      {
         mutt_debug(LL_DEBUG2, "\"%s\" doesn't match regex\n", line);
+      }
 
       if (mutt_strn_equal(line, "[GNUPG:] ", 9))
         continue;
@@ -316,7 +318,9 @@ static int pgp_check_pgp_decryption_okay_regex(FILE *fp_in)
         break;
       }
       else
+      {
         mutt_debug(LL_DEBUG2, "\"%s\" doesn't match regex\n", line);
+      }
     }
     FREE(&line);
   }
@@ -508,7 +512,9 @@ int pgp_class_application_handler(struct Body *m, struct State *state)
       decrypt_okay_rc = 0;
 
       if (mutt_str_startswith(buf + plen, "MESSAGE-----\n"))
+      {
         needpass = 1;
+      }
       else if (mutt_str_startswith(buf + plen, "SIGNED MESSAGE-----\n"))
       {
         clearsign = true;
@@ -721,7 +727,9 @@ int pgp_class_application_handler(struct Body *m, struct State *state)
         {
           state_attach_puts(state, _("[-- END PGP MESSAGE --]\n"));
           if (could_not_decrypt || (decrypt_okay_rc <= -3))
+          {
             mutt_error(_("Could not decrypt PGP message"));
+          }
           else if (decrypt_okay_rc < 0)
           {
             /* L10N: You will see this error message if (1) you are decrypting
@@ -730,7 +738,9 @@ int pgp_class_application_handler(struct Body *m, struct State *state)
             mutt_error(_("PGP message is not encrypted"));
           }
           else
+          {
             mutt_message(_("PGP message successfully decrypted"));
+          }
         }
         else if (pgp_keyblock)
           state_attach_puts(state, _("[-- END PGP PUBLIC KEY BLOCK --]\n"));
@@ -856,7 +866,9 @@ bool pgp_class_check_traditional(FILE *fp, struct Body *b, bool just_one)
   for (; b; b = b->next)
   {
     if (!just_one && is_multipart(b))
+    {
       rc = pgp_class_check_traditional(fp, b->parts, false) || rc;
+    }
     else if (b->type == TYPE_TEXT)
     {
       r = mutt_is_application_pgp(b);
@@ -1163,7 +1175,9 @@ int pgp_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
     need_decode = true;
   }
   else
+  {
     return -1;
+  }
 
   state.fp_in = fp_in;
 

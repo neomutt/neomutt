@@ -660,7 +660,9 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
                             NULL, 0, CH_NO_FLAGS, sub);
     }
     else
+    {
       mutt_write_one_header(fp, "Subject", env->subject, NULL, 0, CH_NO_FLAGS, sub);
+    }
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
     fputs("Subject:\n", fp);

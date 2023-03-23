@@ -124,7 +124,9 @@ static void mutt_poll_fd_add(int fd, short events)
     PollFds[i].events = events;
   }
   else
+  {
     PollFds[i].events |= events;
+  }
 }
 
 /**

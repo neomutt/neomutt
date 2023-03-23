@@ -608,7 +608,9 @@ void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
   {
     const char *const c_imap_delim_chars = cs_subset_string(NeoMutt->sub, "imap_delim_chars");
     if (hlen == 0)
+    {
       home_match = true;
+    }
     else if (c_imap_delim_chars)
     {
       for (delim = c_imap_delim_chars; *delim != '\0'; delim++)
@@ -722,7 +724,9 @@ void imap_cachepath(char delim, const char *mailbox, struct Buffer *dest)
         mutt_buffer_addch(dest, '_');
     }
     else
+    {
       mutt_buffer_addch(dest, *p);
+    }
     p++;
   }
 }
@@ -1124,7 +1128,9 @@ int mutt_seqset_iterator_next(struct SeqsetIterator *iter, unsigned int *next)
         return -1;
     }
     else
+    {
       iter->range_end = iter->range_cur;
+    }
 
     iter->down = (iter->range_end < iter->range_cur);
     iter->in_range = 1;

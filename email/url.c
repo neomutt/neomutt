@@ -204,7 +204,9 @@ int url_pct_decode(char *s)
         s += 2;
       }
       else
+      {
         return -1;
+      }
     }
     else
       *d++ = *s;

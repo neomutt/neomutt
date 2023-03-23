@@ -397,7 +397,9 @@ int mutt_pager(struct PagerView *pview)
       }
     }
     else
+    {
       mutt_window_move(priv->pview->win_pbar, priv->pview->win_pager->state.cols - 1, 0);
+    }
 
     // force redraw of the screen at every iteration of the event loop
     mutt_refresh();

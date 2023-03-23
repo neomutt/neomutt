@@ -155,7 +155,9 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
     mutt_buffer_addstr(prompt, "...?");
   }
   else
+  {
     mutt_buffer_copy(prompt, scratch);
+  }
 
   const enum QuadOption c_bounce = cs_subset_quad(NeoMutt->sub, "bounce");
   if (query_quadoption(c_bounce, mutt_buffer_string(prompt)) != MUTT_YES)
@@ -478,7 +480,9 @@ void mutt_print_message(struct Mailbox *m, struct EmailList *el)
   const bool c_print_decode = cs_subset_bool(NeoMutt->sub, "print_decode");
   const bool c_print_split = cs_subset_bool(NeoMutt->sub, "print_split");
   if (pipe_message(m, el, c_print_command, c_print_decode, true, c_print_split, "\f") == 0)
+  {
     mutt_message(ngettext("Message printed", "Messages printed", msg_count));
+  }
   else
   {
     mutt_message(ngettext("Message could not be printed",

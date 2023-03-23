@@ -450,7 +450,9 @@ static const char *pgp_entry_format_str(char *buf, size_t buflen, size_t col, in
             len -= 2;
           }
           else
+          {
             break; /* not enough space */
+          }
           cp++;
         }
         else

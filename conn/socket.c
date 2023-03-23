@@ -216,7 +216,9 @@ int mutt_socket_readchar(struct Connection *conn, char *c)
   if (conn->bufpos >= conn->available)
   {
     if (conn->fd >= 0)
+    {
       conn->available = conn->read(conn, conn->inbuf, sizeof(conn->inbuf));
+    }
     else
     {
       mutt_debug(LL_DEBUG1, "attempt to read from closed connection\n");

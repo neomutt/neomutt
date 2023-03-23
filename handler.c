@@ -183,7 +183,9 @@ static void decode_xbit(struct State *state, long len, bool istext, iconv_t cd)
         len--;
       }
       else
+      {
         ungetc(ch, state->fp_in);
+      }
     }
 
     bufi[l++] = c;
@@ -719,7 +721,9 @@ static int message_handler(struct Body *a, struct State *state)
     b->parts = mutt_rfc822_parse_message(state->fp_in, b);
   }
   else
+  {
     b = a;
+  }
 
   if (b->parts)
   {
@@ -772,7 +776,9 @@ static int external_body_handler(struct Body *b, struct State *state)
       return 0;
     }
     else
+    {
       return -1;
+    }
   }
 
   const char *expiration = mutt_param_get(&b->parameter, "expiration");
@@ -945,7 +951,9 @@ static int alternative_handler(struct Body *a, struct State *state)
                                     b->length, mutt_istr_equal("digest", a->subtype));
   }
   else
+  {
     b = a;
+  }
 
   a = b;
 
@@ -1128,7 +1136,9 @@ static int multilingual_handler(struct Body *a, struct State *state)
                                     b->length, mutt_istr_equal("digest", a->subtype));
   }
   else
+  {
     b = a;
+  }
 
   a = b;
 
@@ -1195,7 +1205,9 @@ static int multilingual_handler(struct Body *a, struct State *state)
   }
 
   if (choice)
+  {
     mutt_body_handler(choice, state);
+  }
   else
   {
     if (zxx_part)
@@ -1228,7 +1240,9 @@ static int multipart_handler(struct Body *a, struct State *state)
                                     b->length, mutt_istr_equal("digest", a->subtype));
   }
   else
+  {
     b = a;
+  }
 
   for (p = b->parts, count = 1; p; p = p->next, count++)
   {
@@ -1244,7 +1258,9 @@ static int multipart_handler(struct Body *a, struct State *state)
                                       p->form_name);
       }
       else
+      {
         state_printf(state, _("[-- Attachment #%d --]\n"), count);
+      }
       print_part_line(state, p, 0);
       const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
       if (c_weed)
@@ -1361,7 +1377,9 @@ static int run_decode_and_handler(struct Body *b, struct State *state,
       decode = 1;
     }
     else
+    {
       b->type = TYPE_TEXT;
+    }
 
     mutt_decode_attachment(b, state);
 

@@ -701,7 +701,9 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
   }
   w = ((int) buflen < min_width) ? buflen : min_width;
   if (w <= 0)
+  {
     *p = '\0';
+  }
   else if (justify == JUSTIFY_RIGHT) /* right justify */
   {
     p[w] = '\0';

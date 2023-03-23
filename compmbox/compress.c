@@ -107,7 +107,9 @@ static bool lock_realpath(struct Mailbox *m, bool excl)
 
   int r = mutt_file_lock(fileno(ci->fp_lock), excl, true);
   if (r == 0)
+  {
     ci->locked = true;
+  }
   else if (excl)
   {
     mutt_file_fclose(&ci->fp_lock);
@@ -710,7 +712,9 @@ static enum MxStatus comp_mbox_close(struct Mailbox *m)
       mutt_error(_("Error. Preserving temporary file: %s"), mailbox_path(m));
     }
     else
+    {
       remove(mailbox_path(m));
+    }
 
     unlock_realpath(m);
   }

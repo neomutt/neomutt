@@ -392,7 +392,9 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
           if (flags == MUTT_PDR_NO_FLAGS)
           { /* nothing yet and no offset parsed => absolute date? */
             if (!get_date(pc, max, err))
+            {
               flags |= (MUTT_PDR_ABSOLUTE | MUTT_PDR_ERRORDONE); /* done bad */
+            }
             else
             {
               /* reestablish initial base minimum if not specified */
@@ -402,7 +404,9 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
             }
           }
           else
+          {
             flags |= MUTT_PDR_ERRORDONE;
+          }
         }
         else
         {
@@ -421,7 +425,9 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
       { /* enlarge plus range */
         pt = get_offset(max, pc, 1);
         if (pc == pt)
+        {
           flags |= MUTT_PDR_ERRORDONE;
+        }
         else
         {
           pc = pt;
@@ -433,7 +439,9 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
       { /* enlarge window in both directions */
         pt = get_offset(min, pc, -1);
         if (pc == pt)
+        {
           flags |= MUTT_PDR_ERRORDONE;
+        }
         else
         {
           pc = get_offset(max, pc, 1);
@@ -649,7 +657,9 @@ static bool eat_range(struct Pattern *pat, PatternCompFlags flags,
       pat->min = strtol(s->dptr + 1, &tmp, 0) + 1; /* exclusive range */
     }
     else
+    {
       pat->min = strtol(s->dptr, &tmp, 0);
+    }
     if (toupper((unsigned char) *tmp) == 'K') /* is there a prefix? */
     {
       pat->min *= 1024;
@@ -698,7 +708,9 @@ static bool eat_range(struct Pattern *pat, PatternCompFlags flags,
       (pat->max)--;
   }
   else
+  {
     pat->max = MUTT_MAXRANGE;
+  }
 
   if (skip_quote && (*tmp == '"'))
     tmp++;
@@ -1019,7 +1031,9 @@ static /* const */ char *find_matching_paren(/* const */ char *s)
   for (; *s; s++)
   {
     if (*s == '(')
+    {
       level++;
+    }
     else if (*s == ')')
     {
       level--;

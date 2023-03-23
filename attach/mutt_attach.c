@@ -96,7 +96,9 @@ int mutt_get_tmp_attachment(struct Body *a)
     }
   }
   else
+  {
     mutt_perror(fp_in ? mutt_buffer_string(tmpfile) : a->filename);
+  }
 
   mutt_file_fclose(&fp_in);
   mutt_file_fclose(&fp_out);
@@ -142,7 +144,9 @@ int mutt_compose_attachment(struct Body *a)
         mutt_buffer_strcpy(newfile, a->filename);
       }
       else
+      {
         unlink_newfile = true;
+      }
 
       if (mailcap_expand_command(a, mutt_buffer_string(newfile), type, cmd))
       {
@@ -282,7 +286,9 @@ bool mutt_edit_attachment(struct Body *a)
         mutt_buffer_strcpy(newfile, a->filename);
       }
       else
+      {
         unlink_newfile = true;
+      }
 
       if (mailcap_expand_command(a, mutt_buffer_string(newfile), type, cmd))
       {
@@ -462,7 +468,9 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
         use_mailcap = false;
       }
       else
+      {
         goto return_error;
+      }
     }
   }
 
@@ -522,7 +530,9 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
       mutt_adv_mktemp(pagerfile);
     }
     else
+    {
       mutt_buffer_mktemp(pagerfile);
+    }
   }
 
   if (use_mailcap)
@@ -695,7 +705,9 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     unlink_pagerfile = false;
   }
   else
+  {
     rc = 0;
+  }
 
 return_error:
 
@@ -827,7 +839,9 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
       infile = mutt_buffer_string(unstuff_tempfile);
     }
     else
+    {
       infile = b->filename;
+    }
 
     fp_in = fopen(infile, "r");
     if (!fp_in)

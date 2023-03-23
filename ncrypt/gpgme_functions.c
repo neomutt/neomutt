@@ -224,7 +224,9 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
           n++;
         }
         else
+        {
           return NULL; /* invalid escape sequence */
+        }
       }
       else if (*s == '\"')
         return NULL; /* invalid encoding */
@@ -234,7 +236,9 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
         break;
       }
       else
+      {
         n++;
+      }
     }
 
     p = mutt_mem_malloc(n + 1);
@@ -348,7 +352,9 @@ static void parse_and_print_user_id(FILE *fp, const char *userid)
   {
     struct DnArray *dn = parse_dn(userid);
     if (!dn)
+    {
       fputs(_("[Can't display this user ID (invalid DN)]"), fp);
+    }
     else
     {
       print_dn_parts(fp, dn);

@@ -332,7 +332,9 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
     goto cleanup;
   }
   else
+  {
     goto bail;
+  }
 
 err_abort_cmd:
   mutt_socket_send(adata->conn, "*\r\n");

@@ -462,7 +462,9 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
         *l = pgp_copy_uids(mainkey->address, k);
       }
       else
+      {
         mainkey = k;
+      }
     }
   }
 

@@ -244,7 +244,9 @@ void mutt_window_clrtoeol(struct MuttWindow *win)
     return;
 
   if ((win->state.col_offset + win->state.cols) == COLS)
+  {
     clrtoeol();
+  }
   else
   {
     int row = 0;

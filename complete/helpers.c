@@ -86,7 +86,9 @@ static bool candidate(struct CompletionData *cd, char *user, const char *src,
   matches_ensure_morespace(cd, cd->num_matched);
   cd->match_list[cd->num_matched++] = src;
   if (dest[0] == '\0')
+  {
     mutt_str_copy(dest, src, dlen);
+  }
   else
   {
     int l;
@@ -202,7 +204,9 @@ int mutt_command_complete(struct CompletionData *cd, char *buf, size_t buflen,
     /* cd->num_matched will _always_ be at least 1 since the initial
      * user-typed string is always stored */
     if ((numtabs == 1) && (cd->num_matched == 2))
+    {
       snprintf(cd->completed, sizeof(cd->completed), "%s", cd->match_list[0]);
+    }
     else if ((numtabs > 1) && (cd->num_matched > 2))
     {
       /* cycle through all the matches */
@@ -273,7 +277,9 @@ int mutt_command_complete(struct CompletionData *cd, char *buf, size_t buflen,
     /* cd->num_matched will _always_ be at least 1 since the initial
      * user-typed string is always stored */
     if ((numtabs == 1) && (cd->num_matched == 2))
+    {
       snprintf(cd->completed, sizeof(cd->completed), "%s", cd->match_list[0]);
+    }
     else if ((numtabs > 1) && (cd->num_matched > 2))
     {
       /* cycle through all the matches */
@@ -323,7 +329,9 @@ int mutt_command_complete(struct CompletionData *cd, char *buf, size_t buflen,
     /* cd->num_matched will _always_ be at least 1 since the initial
      * user-typed string is always stored */
     if ((numtabs == 1) && (cd->num_matched == 2))
+    {
       snprintf(cd->completed, sizeof(cd->completed), "%s", cd->match_list[0]);
+    }
     else if ((numtabs > 1) && (cd->num_matched > 2))
     {
       /* cycle through all the matches */
@@ -334,7 +342,9 @@ int mutt_command_complete(struct CompletionData *cd, char *buf, size_t buflen,
     strncpy(pt, cd->completed, buf + buflen - pt - spaces);
   }
   else
+  {
     return 0;
+  }
 
   return 1;
 }
@@ -388,7 +398,9 @@ int mutt_label_complete(struct CompletionData *cd, char *buf, size_t buflen, int
   /* cd->num_matched will _always_ be at least 1 since the initial
    * user-typed string is always stored */
   if ((numtabs == 1) && (cd->num_matched == 2))
+  {
     snprintf(cd->completed, sizeof(cd->completed), "%s", cd->match_list[0]);
+  }
   else if ((numtabs > 1) && (cd->num_matched > 2))
   {
     /* cycle through all the matches */
@@ -445,7 +457,9 @@ bool mutt_nm_query_complete(struct CompletionData *cd, char *buf, size_t buflen,
     /* cd->num_matched will _always_ be at least 1 since the initial
      * user-typed string is always stored */
     if ((numtabs == 1) && (cd->num_matched == 2))
+    {
       snprintf(cd->completed, sizeof(cd->completed), "%s", cd->match_list[0]);
+    }
     else if ((numtabs > 1) && (cd->num_matched > 2))
     {
       /* cycle through all the matches */
@@ -457,7 +471,9 @@ bool mutt_nm_query_complete(struct CompletionData *cd, char *buf, size_t buflen,
     strncpy(pt, cd->completed, buf + buflen - pt - spaces);
   }
   else
+  {
     return false;
+  }
 
   return true;
 }
@@ -508,7 +524,9 @@ bool mutt_nm_tag_complete(struct CompletionData *cd, char *buf, size_t buflen, i
   /* cd->num_matched will _always_ be at least 1 since the initial
    * user-typed string is always stored */
   if ((numtabs == 1) && (cd->num_matched == 2))
+  {
     snprintf(cd->completed, sizeof(cd->completed), "%s", cd->match_list[0]);
+  }
   else if ((numtabs > 1) && (cd->num_matched > 2))
   {
     /* cycle through all the matches */

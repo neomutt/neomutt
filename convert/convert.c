@@ -81,7 +81,9 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
   STAILQ_FOREACH(np, &tocodes->head, entries)
   {
     if (!mutt_istr_equal(np->data, "utf-8"))
+    {
       cd[ni] = mutt_ch_iconv_open(np->data, "utf-8", MUTT_ICONV_NO_FLAGS);
+    }
     else
     {
       /* Special case for conversion to UTF-8 */

@@ -196,7 +196,9 @@ int raw_socket_open(struct Connection *conn)
         break;
       }
       else
+      {
         close(fd);
+      }
     }
   }
 
@@ -256,7 +258,9 @@ int raw_socket_open(struct Connection *conn)
         break;
       }
       else
+      {
         close(fd);
+      }
     }
   }
 #endif

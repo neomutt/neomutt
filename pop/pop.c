@@ -1075,7 +1075,9 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   /* Update the header information.  Previously, we only downloaded a
    * portion of the headers, those required for the main display.  */
   if (bcache)
+  {
     mutt_bcache_commit(adata->bcache, cache_id(edata->uid));
+  }
   else
   {
     cache->index = e->index;

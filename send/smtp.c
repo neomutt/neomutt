@@ -152,7 +152,9 @@ static int smtp_get_resp(struct SmtpAccountData *adata)
     size_t plen;
 
     if (mutt_istr_startswith(s, "8BITMIME"))
+    {
       adata->capabilities |= SMTP_CAP_EIGHTBITMIME;
+    }
     else if ((plen = mutt_istr_startswith(s, "AUTH ")))
     {
       adata->capabilities |= SMTP_CAP_AUTH;
@@ -365,7 +367,9 @@ static int smtp_fill_account(struct SmtpAccountData *adata, struct ConnAccount *
   if (cac->port == 0)
   {
     if (cac->flags & MUTT_ACCT_SSL)
+    {
       cac->port = SMTPS_PORT;
+    }
     else
     {
       static unsigned short SmtpPort = 0;

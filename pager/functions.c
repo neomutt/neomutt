@@ -176,7 +176,9 @@ static int op_pager_half_up(struct IndexSharedData *shared,
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
   }
   else
+  {
     mutt_message(_("Top of message is shown"));
+  }
   return FR_SUCCESS;
 }
 
