@@ -407,8 +407,8 @@ static int op_display_message(struct IndexSharedData *shared,
   const int index = menu_get_index(priv->menu);
   index_shared_data_set_email(shared, mutt_get_virt_email(shared->mailbox, index));
 
-  const char *const c_pager = pager_get_pager(NeoMutt->sub);
-  if (c_pager)
+  const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
+  if (c_pager && !mutt_str_equal(c_pager, "builtin"))
   {
     op = external_pager(shared->mailbox, shared->email, c_pager);
   }

@@ -650,8 +650,8 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     else
     {
       StateFlags flags = STATE_DISPLAY | STATE_DISPLAY_ATTACH;
-      const char *const c_pager = pager_get_pager(NeoMutt->sub);
-      if (!c_pager)
+      const char *const c_pager = cs_subset_string(NeoMutt->sub, "pager");
+      if (!c_pager || mutt_str_equal(c_pager, "builtin"))
         flags |= STATE_PAGER;
 
       /* Use built-in handler */
