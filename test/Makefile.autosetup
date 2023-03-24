@@ -415,6 +415,7 @@ PARSE_OBJS	= test/parse/common.o \
 		  test/parse/mutt_rfc822_read_line.o \
 		  test/parse/parse_extract_token.o \
 		  test/parse/parse_rc.o \
+		  test/parse/parse_rc_line.o \
 		  test/parse/parse_set.o
 
 PATH_OBJS	= test/path/mutt_path_abbr_folder.o \

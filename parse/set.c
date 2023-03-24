@@ -44,6 +44,384 @@
 #include "myvar.h"
 
 /**
+ * command_set_expand_value - Expand special characters
+ * @param         type  Type of the value, see note below
+ * @param[in,out] value Buffer containing the value, will also contain the final result
+ *
+ * @pre value is not NULL
+ *
+ * Expand any special characters in paths, mailboxes or commands.
+ * e.g. `~` ($HOME), `+` ($folder)
+ *
+ * The type influences which expansions are done.
+ *
+ * @note The type must be the full HashElem.type, not the sanitized DTYPE(HashElem.type)
+ * @note The value is expanded in-place
+ */
+static void command_set_expand_value(uint32_t type, struct Buffer *value)
+{
+  assert(value);
+  if (DTYPE(type) == DT_PATH)
+  {
+    if (type & (DT_PATH_DIR | DT_PATH_FILE))
+      mutt_buffer_expand_path(value);
+    else
+      mutt_path_tilde(value->data, value->dsize, HomeDir);
+  }
+  else if (IS_MAILBOX(type))
+  {
+    mutt_buffer_expand_path(value);
+  }
+  else if (IS_COMMAND(type))
+  {
+    struct Buffer scratch = mutt_buffer_make(1024);
+    mutt_buffer_copy(&scratch, value);
+
+    if (!mutt_str_equal(value->data, "builtin"))
+    {
+      mutt_buffer_expand_path(&scratch);
+    }
+    mutt_buffer_reset(value);
+    mutt_buffer_addstr(value, mutt_buffer_string(&scratch));
+    mutt_buffer_dealloc(&scratch);
+  }
+}
+
+/**
+ * command_set_set - Set a variable to the given value
+ * @param[in]  name  Name of the config; must not be NULL
+ * @param[in]  value Value the config should be set to
+ * @param[out] err   Buffer for error messages
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
+ *
+ * @pre name is not NULL
+ * @pre value is not NULL
+ *
+ * This implements "set foo = bar" command where "bar" is present.
+ */
+static enum CommandResult command_set_set(struct Buffer *name,
+                                          struct Buffer *value, struct Buffer *err)
+{
+  assert(name);
+  assert(value);
+  const bool my = mutt_str_startswith(name->data, "my_");
+
+  struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
+  if (!he && !my)
+  {
+    mutt_buffer_printf(err, _("%s: unknown variable"), name->data);
+    return MUTT_CMD_ERROR;
+  }
+
+  int rc = CSR_ERR_CODE;
+
+  if (my)
+  {
+    myvar_set(name->data, value->data);
+    rc = CSR_SUCCESS;
+  }
+  else
+  {
+    command_set_expand_value(he->type, value);
+    rc = cs_subset_he_string_set(NeoMutt->sub, he, value->data, err);
+  }
+  if (CSR_RESULT(rc) != CSR_SUCCESS)
+    return MUTT_CMD_ERROR;
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * command_set_increment - Increment a variable by a value
+ * @param[in]  name  Name of the config; must not be NULL
+ * @param[in]  value Value the config should be incremented by
+ * @param[out] err   Buffer for error messages
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
+ *
+ * @pre name is not NULL
+ * @pre value is not NULL
+ *
+ * This implements "set foo += bar" command where "bar" is present.
+ */
+static enum CommandResult command_set_increment(struct Buffer *name,
+                                                struct Buffer *value, struct Buffer *err)
+{
+  assert(name);
+  assert(value);
+  const bool my = mutt_str_startswith(name->data, "my_");
+
+  struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
+  if (!he && !my)
+  {
+    mutt_buffer_printf(err, _("%s: unknown variable"), name->data);
+    return MUTT_CMD_ERROR;
+  }
+
+  int rc = CSR_ERR_CODE;
+
+  if (my)
+  {
+    myvar_append(name->data, value->data);
+    rc = CSR_SUCCESS;
+  }
+  else
+  {
+    command_set_expand_value(he->type, value);
+    rc = cs_subset_he_string_plus_equals(NeoMutt->sub, he, value->data, err);
+  }
+  if (CSR_RESULT(rc) != CSR_SUCCESS)
+    return MUTT_CMD_ERROR;
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * command_set_decrement - Decrement a variable by a value
+ * @param[in]  name  Name of the config; must not be NULL
+ * @param[in]  value Value the config should be decremented by
+ * @param[out] err   Buffer for error messages
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
+ *
+ * @pre name is not NULL
+ * @pre value is not NULL
+ *
+ * This implements "set foo -= bar" command where "bar" is present.
+ */
+static enum CommandResult command_set_decrement(struct Buffer *name,
+                                                struct Buffer *value, struct Buffer *err)
+{
+  assert(name);
+  assert(value);
+  const bool my = mutt_str_startswith(name->data, "my_");
+
+  struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
+  if (!he)
+  {
+    mutt_buffer_printf(err, _("%s: unknown variable"), name->data);
+    return MUTT_CMD_ERROR;
+  }
+
+  int rc = CSR_ERR_CODE;
+
+  if (my)
+  {
+    mutt_buffer_printf(err, _("Can't decrement a my_ variable"));
+    return MUTT_CMD_WARNING;
+  }
+  else
+  {
+    command_set_expand_value(he->type, value);
+    rc = cs_subset_he_string_minus_equals(NeoMutt->sub, he, value->data, err);
+  }
+  if (CSR_RESULT(rc) != CSR_SUCCESS)
+    return MUTT_CMD_ERROR;
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * command_set_unset - Unset a variable
+ * @param[in]  name Name of the config variable to be unset
+ * @param[out] err  Buffer for error messages
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
+ *
+ * @pre name is not NULL
+ *
+ * This implements "unset foo"
+ */
+static enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *err)
+{
+  assert(name);
+  const bool my = mutt_str_startswith(name->data, "my_");
+
+  struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
+  if (!he && !my)
+  {
+    mutt_buffer_printf(err, _("%s: unknown variable"), name->data);
+    return MUTT_CMD_ERROR;
+  }
+
+  int rc = CSR_ERR_CODE;
+  if (my)
+  {
+    myvar_del(name->data);
+    rc = CSR_SUCCESS;
+  }
+  else if ((DTYPE(he->type) == DT_BOOL) || (DTYPE(he->type) == DT_QUAD))
+  {
+    rc = cs_subset_he_native_set(NeoMutt->sub, he, false, err);
+  }
+  else
+  {
+    rc = cs_subset_he_string_set(NeoMutt->sub, he, NULL, err);
+  }
+  if (CSR_RESULT(rc) != CSR_SUCCESS)
+    return MUTT_CMD_ERROR;
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * command_set_reset - Reset a variable
+ * @param[in]  name Name of the config variable to be reset
+ * @param[out] err  Buffer for error messages
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
+ *
+ * @pre name is not NULL
+ *
+ * This implements "reset foo" (foo being any config variable) and "reset all".
+ */
+static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *err)
+{
+  assert(name);
+  const bool my = mutt_str_startswith(name->data, "my_");
+
+  // Handle special "reset all" syntax
+  if (mutt_str_equal(name->data, "all"))
+  {
+    struct HashElem **he_list = get_elem_list(NeoMutt->sub->cs);
+    if (!he_list)
+      return MUTT_CMD_ERROR;
+
+    for (size_t i = 0; he_list[i]; i++)
+      cs_subset_he_reset(NeoMutt->sub, he_list[i], NULL);
+
+    FREE(&he_list);
+    return MUTT_CMD_SUCCESS;
+  }
+
+  struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
+  if (!he && !my)
+  {
+    mutt_buffer_printf(err, _("%s: unknown variable"), name->data);
+    return MUTT_CMD_ERROR;
+  }
+
+  int rc = CSR_ERR_CODE;
+  if (my)
+  {
+    myvar_del(name->data);
+    rc = CSR_SUCCESS;
+  }
+  else
+  {
+    rc = cs_subset_he_reset(NeoMutt->sub, he, err);
+  }
+  if (CSR_RESULT(rc) != CSR_SUCCESS)
+    return MUTT_CMD_ERROR;
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * command_set_toggle - Toggle a boolean or quad variable
+ * @param[in]  name Name of the config variable to be toggled
+ * @param[out] err  Buffer for error messages
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
+ *
+ * @pre name is not NULL
+ *
+ * This implements "toggle foo".
+ */
+static enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer *err)
+{
+  assert(name);
+  struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
+  if (!he)
+  {
+    mutt_buffer_printf(err, _("%s: unknown variable"), name->data);
+    return MUTT_CMD_ERROR;
+  }
+
+  if (DTYPE(he->type) == DT_BOOL)
+  {
+    bool_he_toggle(NeoMutt->sub, he, err);
+  }
+  else if (DTYPE(he->type) == DT_QUAD)
+  {
+    quad_he_toggle(NeoMutt->sub, he, err);
+  }
+  else
+  {
+    mutt_buffer_printf(err, _("Command 'toggle' can only be used with bool/quad variables"));
+    return MUTT_CMD_ERROR;
+  }
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * command_set_query - Query a variable
+ * @param[in]  name Name of the config variable to queried
+ * @param[out] err  Buffer where the pretty printed result will be written to.  On failure contains the error message.
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
+ *
+ * @pre name is not NULL
+ *
+ * This implements "set foo?".  The buffer err will contain something like "set foo = bar".
+ */
+static enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
+{
+  assert(name);
+  // In the interactive case (outside of the initial parsing of neomuttrc) we
+  // support additional syntax: "set" (no arguments) and "set all".
+  // If not in interactive mode, we recognise them but do nothing.
+
+  // Handle "set" (no arguments), i.e. show list of changed variables.
+  if (mutt_buffer_is_empty(name))
+  {
+    if (StartupComplete)
+      return set_dump(CS_DUMP_ONLY_CHANGED, err);
+    else
+      return MUTT_CMD_SUCCESS;
+  }
+  // Handle special "set all" syntax
+  if (mutt_str_equal(name->data, "all"))
+  {
+    if (StartupComplete)
+      return set_dump(CS_DUMP_NO_FLAGS, err);
+    else
+      return MUTT_CMD_SUCCESS;
+  }
+
+  struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
+  struct Buffer *buf = mutt_buffer_pool_get();
+  if (he)
+  {
+    mutt_buffer_addstr(err, name->data);
+    mutt_buffer_addch(err, '=');
+    mutt_buffer_reset(buf);
+    int rc = cs_subset_he_string_get(NeoMutt->sub, he, buf);
+    if (CSR_RESULT(rc) != CSR_SUCCESS)
+    {
+      mutt_buffer_addstr(err, buf->data);
+      mutt_buffer_pool_release(&buf);
+      return MUTT_CMD_ERROR;
+    }
+    if (DTYPE(he->type) == DT_PATH)
+      mutt_pretty_mailbox(buf->data, buf->dsize);
+    pretty_var(buf->data, err);
+  }
+  else
+  {
+    const char *val = myvar_get(name->data);
+    if (val)
+    {
+      mutt_buffer_addstr(err, name->data);
+      mutt_buffer_addch(err, '=');
+      pretty_var(val, err);
+    }
+    else
+    {
+      mutt_buffer_printf(err, _("%s: unknown variable"), name->data);
+      mutt_buffer_pool_release(&buf);
+      return MUTT_CMD_ERROR;
+    }
+  }
+  mutt_buffer_pool_release(&buf);
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
  * parse_set - Parse the 'set' family of commands - Implements Command::parse() - @ingroup command_parse
  *
  * This is used by 'reset', 'set', 'toggle' and 'unset'.
@@ -57,17 +435,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
   if (!buf || !s)
     return MUTT_CMD_ERROR;
 
-  if (StartupComplete)
-  {
-    if (set_dump(buf, s, data, err) == MUTT_CMD_SUCCESS)
-      return MUTT_CMD_SUCCESS;
-    if (!mutt_buffer_is_empty(err))
-      return MUTT_CMD_ERROR;
-  }
-
-  int rc = 0;
-
-  while (MoreArgs(s))
+  do
   {
     bool prefix = false;
     bool query = false;
@@ -107,44 +475,23 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_WARNING;
     }
 
-    /* get the variable name */
-    parse_extract_token(buf, s, TOKEN_EQUAL | TOKEN_QUESTION | TOKEN_PLUS | TOKEN_MINUS);
+    // get the variable name.  Note that buf might be empty if no additional
+    // argument was given.
+    int ret = parse_extract_token(buf, s, TOKEN_EQUAL | TOKEN_QUESTION | TOKEN_PLUS | TOKEN_MINUS);
+    if (ret == -1)
+      return MUTT_CMD_ERROR;
 
-    bool bq = false;
+    bool bool_or_quad = false;
     bool equals = false;
     bool increment = false;
     bool decrement = false;
 
-    struct HashElem *he = NULL;
-    bool my = mutt_str_startswith(buf->data, "my_");
-    if (!my)
+    struct HashElem *he = cs_subset_lookup(NeoMutt->sub, buf->data);
+    if (he)
     {
-      he = cs_subset_lookup(NeoMutt->sub, buf->data);
-      if (!he)
-      {
-        if (reset && mutt_str_equal(buf->data, "all"))
-        {
-          struct HashElem **he_list = get_elem_list(NeoMutt->sub->cs);
-          if (!he_list)
-            return MUTT_CMD_ERROR;
-
-          for (size_t i = 0; he_list[i]; i++)
-            cs_subset_he_reset(NeoMutt->sub, he_list[i], NULL);
-
-          FREE(&he_list);
-          break;
-        }
-        else
-        {
-          mutt_buffer_printf(err, _("%s: unknown variable"), buf->data);
-          return MUTT_CMD_ERROR;
-        }
-      }
-
       // Use the correct name if a synonym is used
       mutt_buffer_strcpy(buf, he->key.strkey);
-
-      bq = ((DTYPE(he->type) == DT_BOOL) || (DTYPE(he->type) == DT_QUAD));
+      bool_or_quad = ((DTYPE(he->type) == DT_BOOL) || (DTYPE(he->type) == DT_QUAD));
     }
 
     if (*s->dptr == '?')
@@ -184,16 +531,17 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       else
         decrement = true;
 
-      if (my && decrement)
-      {
-        mutt_buffer_printf(err, _("Can't decrement a my_ variable"), set_commands[data]);
-        return MUTT_CMD_WARNING;
-      }
       s->dptr++;
       if (*s->dptr == '=')
       {
         equals = true;
         s->dptr++;
+      }
+      else
+      {
+        mutt_buffer_printf(err, _("'+' and '-' must be followed by '='"),
+                           set_commands[data]);
+        return MUTT_CMD_WARNING;
       }
     }
     else if (*s->dptr == '=')
@@ -215,7 +563,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       s->dptr++;
     }
 
-    if (!bq && (inv || (unset && prefix)))
+    if (!bool_or_quad && (inv || (unset && prefix)))
     {
       if (data == MUTT_SET_SET)
       {
@@ -229,202 +577,77 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_WARNING;
     }
 
-    if (reset)
-    {
-      // mutt_buffer_printf(err, "ACT24 reset variable %s", buf->data);
-      if (he)
-      {
-        rc = cs_subset_he_reset(NeoMutt->sub, he, err);
-        if (CSR_RESULT(rc) != CSR_SUCCESS)
-          return MUTT_CMD_ERROR;
-      }
-      else
-      {
-        myvar_del(buf->data);
-      }
-      continue;
-    }
+    // sanity checks for the above
+    // Each of inv, unset reset, query, equals implies that the others are not set.
+    // If none of them are set, then we are dealing with a "set foo" command.
+    // clang-format off
+    assert(!inv    || !(       unset || reset || query || equals          ));
+    assert(!unset  || !(inv ||          reset || query || equals          ));
+    assert(!reset  || !(inv || unset ||          query || equals          ));
+    assert(!query  || !(inv || unset || reset ||          equals          ));
+    assert(!equals || !(inv || unset || reset || query ||           prefix));
+    // clang-format on
+    assert(!(increment && decrement)); // only one of increment or decrement is set
+    assert(!(increment || decrement) || equals); // increment/decrement implies equals
+    assert(!inv || bool_or_quad); // inv (aka toggle) implies bool or quad
 
-    if ((data == MUTT_SET_SET) && !inv && !unset)
+    enum CommandResult rc = MUTT_CMD_ERROR;
+    if (query)
     {
-      if (query)
-      {
-        // mutt_buffer_printf(err, "ACT08 query variable %s", buf->data);
-        if (he)
-        {
-          mutt_buffer_addstr(err, buf->data);
-          mutt_buffer_addch(err, '=');
-          mutt_buffer_reset(buf);
-          rc = cs_subset_he_string_get(NeoMutt->sub, he, buf);
-          if (CSR_RESULT(rc) != CSR_SUCCESS)
-          {
-            mutt_buffer_addstr(err, buf->data);
-            return MUTT_CMD_ERROR;
-          }
-          if (DTYPE(he->type) == DT_PATH)
-            mutt_pretty_mailbox(buf->data, buf->dsize);
-          pretty_var(buf->data, err);
-        }
-        else
-        {
-          const char *val = myvar_get(buf->data);
-          if (val)
-          {
-            mutt_buffer_addstr(err, buf->data);
-            mutt_buffer_addch(err, '=');
-            pretty_var(val, err);
-          }
-          else
-          {
-            mutt_buffer_printf(err, _("%s: unknown variable"), buf->data);
-            return MUTT_CMD_ERROR;
-          }
-        }
-        break;
-      }
-      else if (equals)
-      {
-        // mutt_buffer_printf(err, "ACT11 set variable %s to ", buf->data);
-        const char *name = NULL;
-        if (my)
-        {
-          name = mutt_str_dup(buf->data);
-        }
-        parse_extract_token(buf, s, TOKEN_BACKTICK_VARS);
-        if (my)
-        {
-          assert(!decrement);
-          if (increment)
-          {
-            myvar_append(name, buf->data);
-          }
-          else
-          {
-            myvar_set(name, buf->data);
-          }
-          FREE(&name);
-        }
-        else
-        {
-          if (DTYPE(he->type) == DT_PATH)
-          {
-            if (he->type & (DT_PATH_DIR | DT_PATH_FILE))
-              mutt_buffer_expand_path(buf);
-            else
-              mutt_path_tilde(buf->data, buf->dsize, HomeDir);
-          }
-          else if (IS_MAILBOX(he->type))
-          {
-            mutt_buffer_expand_path(buf);
-          }
-          else if (IS_COMMAND(he->type))
-          {
-            struct Buffer scratch = mutt_buffer_make(1024);
-            mutt_buffer_copy(&scratch, buf);
-
-            if (!mutt_str_equal(buf->data, "builtin"))
-            {
-              mutt_buffer_expand_path(&scratch);
-            }
-            mutt_buffer_reset(buf);
-            mutt_buffer_addstr(buf, mutt_buffer_string(&scratch));
-            mutt_buffer_dealloc(&scratch);
-          }
-          if (increment)
-          {
-            rc = cs_subset_he_string_plus_equals(NeoMutt->sub, he, buf->data, err);
-          }
-          else if (decrement)
-          {
-            rc = cs_subset_he_string_minus_equals(NeoMutt->sub, he, buf->data, err);
-          }
-          else
-          {
-            rc = cs_subset_he_string_set(NeoMutt->sub, he, buf->data, err);
-          }
-          if (CSR_RESULT(rc) != CSR_SUCCESS)
-            return MUTT_CMD_ERROR;
-        }
-        continue;
-      }
-      else
-      {
-        if (bq)
-        {
-          // mutt_buffer_printf(err, "ACT23 set variable %s to 'yes'", buf->data);
-          rc = cs_subset_he_native_set(NeoMutt->sub, he, true, err);
-          if (CSR_RESULT(rc) != CSR_SUCCESS)
-            return MUTT_CMD_ERROR;
-          continue;
-        }
-        else
-        {
-          // mutt_buffer_printf(err, "ACT10 query variable %s", buf->data);
-          if (he)
-          {
-            mutt_buffer_addstr(err, buf->data);
-            mutt_buffer_addch(err, '=');
-            mutt_buffer_reset(buf);
-            rc = cs_subset_he_string_get(NeoMutt->sub, he, buf);
-            if (CSR_RESULT(rc) != CSR_SUCCESS)
-            {
-              mutt_buffer_addstr(err, buf->data);
-              return MUTT_CMD_ERROR;
-            }
-            if (DTYPE(he->type) == DT_PATH)
-              mutt_pretty_mailbox(buf->data, buf->dsize);
-            pretty_var(buf->data, err);
-          }
-          else
-          {
-            const char *val = myvar_get(buf->data);
-            if (val)
-            {
-              mutt_buffer_addstr(err, buf->data);
-              mutt_buffer_addch(err, '=');
-              pretty_var(val, err);
-            }
-            else
-            {
-              mutt_buffer_printf(err, _("%s: unknown variable"), buf->data);
-              return MUTT_CMD_ERROR;
-            }
-          }
-          break;
-        }
-      }
+      rc = command_set_query(buf, err);
+      return rc; // We can only do one query even if multiple config names are given
     }
-
-    if (my)
+    else if (reset)
     {
-      myvar_del(buf->data);
+      rc = command_set_reset(buf, err);
     }
-    else if (bq)
+    else if (unset)
     {
-      if (inv)
-      {
-        // mutt_buffer_printf(err, "ACT25 TOGGLE bool/quad variable %s", buf->data);
-        if (DTYPE(he->type) == DT_BOOL)
-          bool_he_toggle(NeoMutt->sub, he, err);
-        else
-          quad_he_toggle(NeoMutt->sub, he, err);
-      }
+      rc = command_set_unset(buf, err);
+    }
+    else if (inv)
+    {
+      rc = command_set_toggle(buf, err);
+    }
+    else if (equals)
+    {
+      // These three cases all need a value, since 'increment'/'decrement'
+      // implies 'equals', we can group them in this single case guarded by
+      // 'equals'.
+      struct Buffer *value = mutt_buffer_pool_get();
+      parse_extract_token(value, s, TOKEN_BACKTICK_VARS);
+      if (increment)
+        rc = command_set_increment(buf, value, err);
+      else if (decrement)
+        rc = command_set_decrement(buf, value, err);
+      else if (equals) // must come after increment/decrement
+        rc = command_set_set(buf, value, err);
       else
-      {
-        // mutt_buffer_printf(err, "ACT26 UNSET bool/quad variable %s", buf->data);
-        rc = cs_subset_he_native_set(NeoMutt->sub, he, false, err);
-        if (CSR_RESULT(rc) != CSR_SUCCESS)
-          return MUTT_CMD_ERROR;
-      }
-      continue;
+        assert(false);
+      mutt_buffer_pool_release(&value);
     }
     else
     {
-      rc = cs_subset_he_string_set(NeoMutt->sub, he, NULL, err);
-      if (CSR_RESULT(rc) != CSR_SUCCESS)
-        return MUTT_CMD_ERROR;
+      // This is the "set foo" case which has different meanings depending on
+      // the type of the config variable
+      if (bool_or_quad)
+      {
+        struct Buffer *yes = mutt_buffer_pool_get();
+        mutt_buffer_addstr(yes, "yes");
+        rc = command_set_set(buf, yes, err);
+        mutt_buffer_pool_release(&yes);
+      }
+      else
+      {
+        rc = command_set_query(buf, err);
+        return rc; // We can only do one query even if multiple config names are given
+      }
     }
-  }
+    // Short circuit (i.e. skipping further config variable names) if the action on
+    // the current variable failed.
+    if (rc != MUTT_CMD_SUCCESS)
+      return rc;
+  } while (MoreArgs(s));
 
   return MUTT_CMD_SUCCESS;
 }
