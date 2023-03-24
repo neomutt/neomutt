@@ -28,7 +28,6 @@
 
 #include "config.h"
 #include <stdio.h>
-#include <string.h>
 #include "mutt/lib.h"
 #include "lib.h"
 
@@ -86,7 +85,7 @@ const struct ComprOps *compress_get_ops(const char *compr)
 
   for (; *ops; ops++)
   {
-    if (strcmp(compr, (*ops)->name) == 0)
+    if (mutt_str_equal(compr, (*ops)->name))
       break;
   }
 

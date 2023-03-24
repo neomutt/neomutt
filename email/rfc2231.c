@@ -147,7 +147,7 @@ static void list_insert(struct Rfc2231Parameter **list, struct Rfc2231Parameter 
 
   while (p)
   {
-    const int c = strcmp(par->attribute, p->attribute);
+    const int c = mutt_str_cmp(par->attribute, p->attribute);
     if ((c < 0) || ((c == 0) && (par->index <= p->index)))
       break;
 
@@ -213,7 +213,7 @@ static void join_continuations(struct ParameterList *pl, struct Rfc2231Parameter
       par = q;
       if (par)
         valp = par->value;
-    } while (par && (strcmp(par->attribute, attribute) == 0));
+    } while (par && (mutt_str_equal(par->attribute, attribute)));
 
     const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
     if (encoded)

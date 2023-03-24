@@ -1162,7 +1162,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
         char *group = de->d_name;
 
         char *p = group + strlen(group) - 7;
-        if ((strlen(group) < 8) || (strcmp(p, ".hcache") != 0))
+        if ((strlen(group) < 8) || !mutt_str_equal(p, ".hcache"))
           continue;
         *p = '\0';
         struct NntpMboxData *mdata = mutt_hash_find(adata->groups_hash, group);

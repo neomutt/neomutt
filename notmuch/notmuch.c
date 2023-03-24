@@ -280,8 +280,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
   const char *const c_nm_query_window_or_terms = cs_subset_string(NeoMutt->sub, "nm_query_window_or_terms");
 
   /* if the query has changed, reset the window position */
-  if (!c_nm_query_window_current_search ||
-      (strcmp(query, c_nm_query_window_current_search) != 0))
+  if (!c_nm_query_window_current_search || !mutt_str_equal(query, c_nm_query_window_current_search))
   {
     query_window_reset();
   }
@@ -351,16 +350,16 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
     if (!item->value || !item->name)
       continue;
 
-    if (strcmp(item->name, "limit") == 0)
+    if (mutt_str_equal(item->name, "limit"))
     {
       if (!mutt_str_atoi_full(item->value, &mdata->db_limit))
       {
         mutt_error(_("failed to parse notmuch limit: %s"), item->value);
       }
     }
-    else if (strcmp(item->name, "type") == 0)
+    else if (mutt_str_equal(item->name, "type"))
       mdata->query_type = nm_string_to_query_type(item->value);
-    else if (strcmp(item->name, "query") == 0)
+    else if (mutt_str_equal(item->name, "query"))
       mutt_str_replace(&mdata->db_query, item->value);
   }
 
@@ -484,7 +483,7 @@ static int update_email_tags(struct Email *e, notmuch_message_t *msg)
 
   old_tags = driver_tags_get(&e->tags);
 
-  if (new_tags && old_tags && (strcmp(old_tags, new_tags) == 0))
+  if (new_tags && old_tags && (mutt_str_equal(old_tags, new_tags)))
   {
     FREE(&old_tags);
     FREE(&new_tags);
@@ -1163,21 +1162,21 @@ static int update_email_flags(struct Mailbox *m, struct Email *e, const char *ta
     if (tag[0] == '-')
     {
       tag++;
-      if (strcmp(tag, c_nm_unread_tag) == 0)
+      if (mutt_str_equal(tag, c_nm_unread_tag))
         mutt_set_flag(m, e, MUTT_READ, true);
-      else if (strcmp(tag, c_nm_replied_tag) == 0)
+      else if (mutt_str_equal(tag, c_nm_replied_tag))
         mutt_set_flag(m, e, MUTT_REPLIED, false);
-      else if (strcmp(tag, c_nm_flagged_tag) == 0)
+      else if (mutt_str_equal(tag, c_nm_flagged_tag))
         mutt_set_flag(m, e, MUTT_FLAG, false);
     }
     else
     {
       tag = (tag[0] == '+') ? tag + 1 : tag;
-      if (strcmp(tag, c_nm_unread_tag) == 0)
+      if (mutt_str_equal(tag, c_nm_unread_tag))
         mutt_set_flag(m, e, MUTT_READ, false);
-      else if (strcmp(tag, c_nm_replied_tag) == 0)
+      else if (mutt_str_equal(tag, c_nm_replied_tag))
         mutt_set_flag(m, e, MUTT_REPLIED, true);
-      else if (strcmp(tag, c_nm_flagged_tag) == 0)
+      else if (mutt_str_equal(tag, c_nm_flagged_tag))
         mutt_set_flag(m, e, MUTT_FLAG, true);
     }
   }
@@ -1233,7 +1232,7 @@ static int rename_maildir_filename(const char *old, char *buf, size_t buflen, st
   snprintf(buf, buflen, "%s/%s/%s%s", folder,
            (e->read || e->old) ? "cur" : "new", filename, suffix);
 
-  if (strcmp(old, buf) == 0)
+  if (mutt_str_equal(old, buf))
     return 1;
 
   if (rename(old, buf) != 0)
@@ -1368,7 +1367,7 @@ static int rename_filename(struct Mailbox *m, const char *old_file,
         const char *path = notmuch_filenames_get(ls);
         char newpath[PATH_MAX] = { 0 };
 
-        if (strcmp(new_file, path) == 0)
+        if (mutt_str_equal(new_file, path))
           continue;
 
         mutt_debug(LL_DEBUG2, "nm: rename: syncing duplicate: %s\n", path);
@@ -1786,11 +1785,11 @@ static enum MxStatus nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 
   STAILQ_FOREACH(item, &url->query_strings, entries)
   {
-    if (item->value && (strcmp(item->name, "query") == 0))
+    if (item->value && (mutt_str_equal(item->name, "query")))
     {
       db_query = item->value;
     }
-    else if (item->value && (strcmp(item->name, "limit") == 0))
+    else if (item->value && (mutt_str_equal(item->name, "limit")))
     {
       // Try to parse the limit
       if (!mutt_str_atoi_full(item->value, &limit))
@@ -2294,7 +2293,7 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
     if (!e->deleted)
       email_get_fullpath(e, new_file, sizeof(new_file));
 
-    if (e->deleted || (strcmp(old_file, new_file) != 0))
+    if (e->deleted || !mutt_str_equal(old_file, new_file))
     {
       if (e->deleted && (remove_filename(m, old_file) == 0))
         changed = true;

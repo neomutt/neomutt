@@ -210,8 +210,8 @@ static bool tls_check_stored_hostname(const gnutls_datum_t *cert, const char *ho
       regmatch_t *mhash = &match[PREX_GNUTLS_CERT_HOST_HASH_MATCH_HASH];
       linestr[mutt_regmatch_end(mhost)] = '\0';
       linestr[mutt_regmatch_end(mhash)] = '\0';
-      if ((strcmp(linestr + mutt_regmatch_start(mhost), hostname) == 0) &&
-          (strcmp(linestr + mutt_regmatch_start(mhash), buf) == 0))
+      if ((mutt_str_equal(linestr + mutt_regmatch_start(mhost), hostname)) &&
+          (mutt_str_equal(linestr + mutt_regmatch_start(mhash), buf)))
       {
         FREE(&linestr);
         mutt_file_fclose(&fp);

@@ -29,7 +29,6 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include <string.h>
 #include "mutt/lib.h"
 #include "lib.h"
 
@@ -114,7 +113,7 @@ const struct StoreOps *store_get_backend_ops(const char *str)
   }
 
   for (; *ops; ops++)
-    if (strcmp(str, (*ops)->name) == 0)
+    if (mutt_str_equal(str, (*ops)->name))
       break;
 
   return *ops;

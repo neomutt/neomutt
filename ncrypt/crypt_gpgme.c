@@ -1210,7 +1210,7 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
       state_puts(state, ": ");
       if (t0)
         state_puts(state, t0);
-      if (t1 && !(t0 && (strcmp(t0, t1) == 0)))
+      if (t1 && !(t0 && (mutt_str_equal(t0, t1))))
       {
         if (t0)
           state_puts(state, ",");

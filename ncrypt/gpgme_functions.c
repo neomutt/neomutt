@@ -109,7 +109,7 @@ static bool print_dn_part(FILE *fp, struct DnArray *dn, const char *key)
 
   for (; dn->key; dn++)
   {
-    if (strcmp(dn->key, key) == 0)
+    if (mutt_str_equal(dn->key, key))
     {
       if (any)
         fputs(" + ", fp);
@@ -145,7 +145,7 @@ static void print_dn_parts(FILE *fp, struct DnArray *dn)
     int i;
     for (i = 0; stdpart[i]; i++)
     {
-      if (strcmp(dn->key, stdpart[i]) == 0)
+      if (mutt_str_equal(dn->key, stdpart[i]))
         break;
     }
     if (!stdpart[i])
@@ -642,7 +642,7 @@ static void verify_key(struct CryptKeyInfo *key)
 
   k = key->kobj;
   gpgme_key_ref(k);
-  while ((s = k->chain_id) && k->subkeys && (strcmp(s, k->subkeys->fpr) != 0))
+  while ((s = k->chain_id) && k->subkeys && !mutt_str_equal(s, k->subkeys->fpr))
   {
     putc('\n', fp);
     err = gpgme_op_keylist_start(listctx, s, 0);

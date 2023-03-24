@@ -261,7 +261,7 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 
 #ifdef USE_HCACHE
   /* keep hcache file if hcache == bcache */
-  if (strcmp(HC_FNAME "." HC_FEXT, id) == 0)
+  if (mutt_str_equal(HC_FNAME "." HC_FEXT, id))
     return 0;
 #endif
 

@@ -1177,7 +1177,7 @@ static enum CommandResult parse_unignore(struct Buffer *buf, struct Buffer *s,
     parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
     /* don't add "*" to the unignore list */
-    if (strcmp(buf->data, "*") != 0)
+    if (!mutt_str_equal(buf->data, "*"))
       add_to_stailq(&UnIgnore, buf->data);
 
     remove_from_stailq(&Ignore, buf->data);

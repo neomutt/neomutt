@@ -31,7 +31,6 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdlib.h>
-#include <string.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
@@ -232,7 +231,7 @@ static int compare_spam(const struct Email *a, const struct Email *b, bool rever
   /* value for that spam attribute. In this case, compare lexically. */
   if ((aptr == a->env->spam.data) || (bptr == b->env->spam.data))
   {
-    result = strcmp(aptr, bptr);
+    result = mutt_str_cmp(aptr, bptr);
     return reverse ? -result : result;
   }
 
@@ -240,7 +239,7 @@ static int compare_spam(const struct Email *a, const struct Email *b, bool rever
   /* are equal, then we first fall back upon string comparison, then  */
   /* upon auxiliary sort.                                             */
   if (result == 0)
-    result = strcmp(aptr, bptr);
+    result = mutt_str_cmp(aptr, bptr);
   return reverse ? -result : result;
 }
 

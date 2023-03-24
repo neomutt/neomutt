@@ -314,7 +314,7 @@ void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
     goto cleanup;
   }
   size_t len = mutt_buffer_len(mbox);
-  if ((len > 3) && (strcmp(mutt_buffer_string(mbox) + len - 3, "/..") == 0))
+  if ((len > 3) && (mutt_str_equal(mutt_buffer_string(mbox) + len - 3, "/..")))
     goto cleanup;
 
   struct Url url = { 0 };
@@ -1048,7 +1048,7 @@ bool imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *
   if ((a1->port != 0) && (a2->port != 0) && (a1->port != a2->port))
     return false;
   if (a1->flags & a2->flags & MUTT_ACCT_USER)
-    return strcmp(a1->user, a2->user) == 0;
+    return mutt_str_equal(a1->user, a2->user);
 
   const char *user = NONULL(Username);
 
@@ -1057,9 +1057,9 @@ bool imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *
     user = c_imap_user;
 
   if (a1->flags & MUTT_ACCT_USER)
-    return strcmp(a1->user, user) == 0;
+    return mutt_str_equal(a1->user, user);
   if (a2->flags & MUTT_ACCT_USER)
-    return strcmp(a2->user, user) == 0;
+    return mutt_str_equal(a2->user, user);
 
   return true;
 }

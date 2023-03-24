@@ -356,7 +356,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
           char *colon = strchr(adata->overview_fmt + b, ':');
           if (!colon)
             adata->overview_fmt[off++] = ':';
-          else if (strcmp(colon + 1, "full") != 0)
+          else if (!mutt_str_equal(colon + 1, "full"))
             off = colon + 1 - adata->overview_fmt;
           if (strcasecmp(adata->overview_fmt + b, "Bytes:") == 0)
           {
@@ -498,7 +498,7 @@ static int nntp_auth(struct NntpAccountData *adata)
       mutt_debug(LL_DEBUG1, "trying method %s\n", method);
 
       /* AUTHINFO USER authentication */
-      if (strcmp(method, "USER") == 0)
+      if (mutt_str_equal(method, "USER"))
       {
         // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
         mutt_message(_("Authenticating (%s)..."), method);
@@ -611,7 +611,7 @@ static int nntp_auth(struct NntpAccountData *adata)
           inbuf[3] = '\0';
           mutt_debug(MUTT_SOCK_LOG_FULL, "%d< %s sasl_data\n", conn->fd, inbuf);
 
-          if (strcmp("=", inbuf + 4) == 0)
+          if (mutt_str_equal("=", inbuf + 4))
             len = 0;
           else if (sasl_decode64(inbuf + 4, strlen(inbuf + 4), buf,
                                  sizeof(buf) - 1, &len) != SASL_OK)

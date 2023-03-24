@@ -477,7 +477,7 @@ int mutt_file_rmtree(const char *path)
 
   while ((de = readdir(dir)))
   {
-    if ((strcmp(".", de->d_name) == 0) || (strcmp("..", de->d_name) == 0))
+    if ((mutt_str_equal(".", de->d_name)) || (mutt_str_equal("..", de->d_name)))
       continue;
 
     mutt_buffer_printf(&cur, "%s/%s", path, de->d_name);

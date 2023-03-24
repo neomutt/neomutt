@@ -31,7 +31,6 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdio.h>
-#include <string.h>
 #include "mutt/lib.h"
 #include "query.h"
 
@@ -149,9 +148,9 @@ enum NmQueryType nm_string_to_query_type_mapper(const char *str)
  */
 bool nm_query_window_check_timebase(const char *timebase)
 {
-  if ((strcmp(timebase, "hour") == 0) || (strcmp(timebase, "day") == 0) ||
-      (strcmp(timebase, "week") == 0) || (strcmp(timebase, "month") == 0) ||
-      (strcmp(timebase, "year") == 0))
+  if ((mutt_str_equal(timebase, "hour")) || (mutt_str_equal(timebase, "day")) ||
+      (mutt_str_equal(timebase, "week")) ||
+      (mutt_str_equal(timebase, "month")) || (mutt_str_equal(timebase, "year")))
   {
     return true;
   }

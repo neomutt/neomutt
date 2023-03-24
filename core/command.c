@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <string.h>
 #include "mutt/lib.h"
 #include "command.h"
 
@@ -42,7 +41,7 @@ static int commands_cmp(const void *a, const void *b)
   struct Command x = *(const struct Command *) a;
   struct Command y = *(const struct Command *) b;
 
-  return strcmp(x.name, y.name);
+  return mutt_str_cmp(x.name, y.name);
 }
 
 /**
