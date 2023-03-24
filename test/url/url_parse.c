@@ -216,7 +216,7 @@ void check_query_string(const char *exp, const struct UrlQueryList *act)
     next = strchr(exp, '|');
     mutt_str_copy(tmp, exp, next - exp + 1);
     exp = next + 1;
-    if (!TEST_CHECK(strcmp(tmp, np->name) == 0))
+    if (!TEST_CHECK(mutt_str_equal(tmp, np->name)))
     {
       TEST_MSG("Expected: <%s>", tmp);
       TEST_MSG("Actual  : <%s>", np->name);
@@ -225,7 +225,7 @@ void check_query_string(const char *exp, const struct UrlQueryList *act)
     next = strchr(exp, '|');
     mutt_str_copy(tmp, exp, next - exp + 1);
     exp = next + 1;
-    if (!TEST_CHECK(strcmp(tmp, np->value) == 0))
+    if (!TEST_CHECK(mutt_str_equal(tmp, np->value)))
     {
       TEST_MSG("Expected: <%s>", tmp);
       TEST_MSG("Actual  : <%s>", np->value);

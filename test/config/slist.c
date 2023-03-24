@@ -602,7 +602,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(strcmp(mutt_buffer_string(err), init) == 0))
+  if (!TEST_CHECK(mutt_str_equal(mutt_buffer_string(err), init)))
     return false;
 
   mutt_buffer_reset(err);

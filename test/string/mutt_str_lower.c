@@ -37,18 +37,18 @@ void test_mutt_str_lower(void)
   {
     char buf[64] = "";
     mutt_str_lower(buf);
-    TEST_CHECK(strcmp(buf, "") == 0);
+    TEST_CHECK(mutt_str_equal(buf, ""));
   }
 
   {
     char buf[64] = "apple";
     mutt_str_lower(buf);
-    TEST_CHECK(strcmp(buf, "apple") == 0);
+    TEST_CHECK(mutt_str_equal(buf, "apple"));
   }
 
   {
     char buf[64] = "aPPLe";
     mutt_str_lower(buf);
-    TEST_CHECK(strcmp(buf, "apple") == 0);
+    TEST_CHECK(mutt_str_equal(buf, "apple"));
   }
 }

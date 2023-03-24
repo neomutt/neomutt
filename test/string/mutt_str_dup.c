@@ -43,7 +43,7 @@ void test_mutt_str_dup(void)
     char *result = mutt_str_dup(str);
     TEST_CHECK(result != NULL);
     TEST_CHECK(result != str);
-    TEST_CHECK(strcmp(result, str) == 0);
+    TEST_CHECK(mutt_str_equal(result, str));
     FREE(&result);
   }
 }

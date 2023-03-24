@@ -38,8 +38,8 @@ void test_email_header_update(void)
 
   {
     struct ListNode *got = header_update(n, new_value);
-    TEST_CHECK(got == n);                          /* returns updated node */
-    TEST_CHECK(strcmp(got->data, new_value) == 0); /* node updated to new value */
+    TEST_CHECK(got == n);                             /* returns updated node */
+    TEST_CHECK(mutt_str_equal(got->data, new_value)); /* node updated to new value */
   }
   FREE(&n->data);
   FREE(&n);

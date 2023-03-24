@@ -50,7 +50,7 @@ void test_mutt_b64_encode(void)
       TEST_MSG("Expected: %zu", sizeof(encoded) - 1);
       TEST_MSG("Actual  : %zu", len);
     }
-    if (!TEST_CHECK(strcmp(buffer, encoded) == 0))
+    if (!TEST_CHECK(mutt_str_equal(buffer, encoded)))
     {
       TEST_MSG("Expected: %zu", encoded);
       TEST_MSG("Actual  : %zu", buffer);

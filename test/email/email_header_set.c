@@ -38,15 +38,15 @@ void test_email_header_set(void)
   {
     /* Set value for first time */
     struct ListNode *got = header_set(&hdrlist, starting_value);
-    TEST_CHECK(strcmp(got->data, starting_value) == 0); /* value set */
+    TEST_CHECK(mutt_str_equal(got->data, starting_value)); /* value set */
     TEST_CHECK(got == STAILQ_FIRST(&hdrlist)); /* header was added to list */
   }
 
   {
     /* Update value */
     struct ListNode *got = header_set(&hdrlist, updated_value);
-    TEST_CHECK(strcmp(got->data, updated_value) == 0); /* value set*/
-    TEST_CHECK(got == STAILQ_FIRST(&hdrlist));         /* no new header added*/
+    TEST_CHECK(mutt_str_equal(got->data, updated_value)); /* value set*/
+    TEST_CHECK(got == STAILQ_FIRST(&hdrlist)); /* no new header added*/
   }
   mutt_list_free(&hdrlist);
 }

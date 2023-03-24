@@ -86,7 +86,7 @@ void test_mutt_istr_remall(void)
       TEST_CASE(buf);
 
       mutt_istr_remall(buf, remove);
-      TEST_CHECK(strcmp(buf, t->expected) == 0);
+      TEST_CHECK(mutt_str_equal(buf, t->expected));
     }
   }
 }

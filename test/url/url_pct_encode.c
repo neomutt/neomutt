@@ -44,7 +44,7 @@ void test_url_pct_encode(void)
   {
     char buf[32] = { 0 };
     url_pct_encode(buf, sizeof(buf), "Hello world");
-    if (!TEST_CHECK(strcmp(buf, "Hello%20world") == 0))
+    if (!TEST_CHECK(mutt_str_equal(buf, "Hello%20world")))
     {
       TEST_MSG("Expected: %s", "Hello%20world");
       TEST_MSG("Actual  : %s", buf);

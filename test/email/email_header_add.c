@@ -36,7 +36,7 @@ void test_email_header_add(void)
 
   {
     struct ListNode *n = header_add(&hdrlist, header);
-    TEST_CHECK(strcmp(n->data, header) == 0);       /* header stored in node */
+    TEST_CHECK(mutt_str_equal(n->data, header));    /* header stored in node */
     TEST_CHECK(n == header_find(&hdrlist, header)); /* node added to list */
   }
   mutt_list_free(&hdrlist);

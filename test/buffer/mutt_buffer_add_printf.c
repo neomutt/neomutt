@@ -54,7 +54,7 @@ void test_mutt_buffer_add_printf(void)
     const char *str = "apple";
     struct Buffer buf = mutt_buffer_make(0);
     TEST_CHECK(mutt_buffer_add_printf(&buf, str) == 5);
-    TEST_CHECK(strcmp(mutt_buffer_string(&buf), str) == 0);
+    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), str));
     mutt_buffer_dealloc(&buf);
   }
 
@@ -63,7 +63,7 @@ void test_mutt_buffer_add_printf(void)
     const char *str = "apple banana cherry damson elderberry fig guava hawthorn ilama jackfruit kumquat lemon mango nectarine olive papaya quince raspberry strawberry tangerine ugli vanilla wolfberry xigua yew ziziphus";
     struct Buffer buf = mutt_buffer_make(0);
     TEST_CHECK(mutt_buffer_add_printf(&buf, str) == 195);
-    TEST_CHECK(strcmp(mutt_buffer_string(&buf), str) == 0);
+    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), str));
     mutt_buffer_dealloc(&buf);
   }
 
@@ -73,7 +73,7 @@ void test_mutt_buffer_add_printf(void)
     const char *result = "app 1234567 3.1416";
     struct Buffer buf = mutt_buffer_make(0);
     TEST_CHECK(mutt_buffer_add_printf(&buf, "%.3s %ld %3.4f", str, 1234567, 3.141592654) == 18);
-    TEST_CHECK(strcmp(mutt_buffer_string(&buf), result) == 0);
+    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), result));
     mutt_buffer_dealloc(&buf);
   }
 
@@ -85,7 +85,7 @@ void test_mutt_buffer_add_printf(void)
     struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_addstr(&buf, str);
     TEST_CHECK(mutt_buffer_add_printf(&buf, "") == 0);
-    TEST_CHECK(strcmp(mutt_buffer_string(&buf), str) == 0);
+    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), str));
     mutt_buffer_dealloc(&buf);
   }
 
@@ -96,7 +96,7 @@ void test_mutt_buffer_add_printf(void)
     struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_addstr(&buf, "test");
     TEST_CHECK(mutt_buffer_add_printf(&buf, str) == 5);
-    TEST_CHECK(strcmp(mutt_buffer_string(&buf), result) == 0);
+    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), result));
     mutt_buffer_dealloc(&buf);
   }
 
@@ -107,7 +107,7 @@ void test_mutt_buffer_add_printf(void)
     struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_addstr(&buf, "test");
     TEST_CHECK(mutt_buffer_add_printf(&buf, str) == 195);
-    TEST_CHECK(strcmp(mutt_buffer_string(&buf), result) == 0);
+    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), result));
     mutt_buffer_dealloc(&buf);
   }
 
@@ -118,7 +118,7 @@ void test_mutt_buffer_add_printf(void)
     struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_addstr(&buf, "test");
     TEST_CHECK(mutt_buffer_add_printf(&buf, "%.3s %ld %3.4f", str, 1234567, 3.141592654) == 18);
-    TEST_CHECK(strcmp(mutt_buffer_string(&buf), result) == 0);
+    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), result));
     mutt_buffer_dealloc(&buf);
   }
 }

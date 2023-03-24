@@ -57,7 +57,7 @@ void test_mutt_file_iter_line(void)
         TEST_MSG("Expected: true");
         TEST_MSG("Actual: false");
       }
-      if (!TEST_CHECK(strcmp(iter.line, file_lines[i]) == 0))
+      if (!TEST_CHECK(mutt_str_equal(iter.line, file_lines[i])))
       {
         TEST_MSG("Expected: %s", file_lines[i]);
         TEST_MSG("Actual: %s", iter.line);

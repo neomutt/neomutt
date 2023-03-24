@@ -42,7 +42,7 @@ void test_mutt_str_getenv(void)
     TEST_CASE(name);
 
     const char *result = mutt_str_getenv(name);
-    TEST_CHECK(strcmp(result, value) == 0);
+    TEST_CHECK(mutt_str_equal(result, value));
     unsetenv(name);
   }
 

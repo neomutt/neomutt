@@ -69,7 +69,7 @@ void test_mutt_str_append_item(void)
       char *str = t->first ? strdup(t->first) : NULL;
       TEST_CASE_("\"%s\", \"%s\", '%c'", NONULL(t->first), t->second, t->sep);
       mutt_str_append_item(&str, t->second, t->sep);
-      TEST_CHECK(strcmp(str, t->result) == 0);
+      TEST_CHECK(mutt_str_equal(str, t->result));
       FREE(&str);
     }
   }

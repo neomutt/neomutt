@@ -50,8 +50,8 @@ void test_mutt_date_localtime_format(void)
     const char *format = "%Y-%m-%d %H:%M:%S %z";
     TEST_CHECK(mutt_date_localtime_format(buf, sizeof(buf), format, t) > 0);
     TEST_MSG(buf);
-    bool result = (strcmp(buf, "2000-06-25 12:00:00 +0100") == 0) || // Expected result...
-                  (strcmp(buf, "2000-06-25 11:00:00 +0000") == 0); // but Travis seems to have locale problems
+    bool result = (mutt_str_equal(buf, "2000-06-25 12:00:00 +0100")) || // Expected result...
+                  (mutt_str_equal(buf, "2000-06-25 11:00:00 +0000")); // but Travis seems to have locale problems
     TEST_CHECK(result == true);
   }
 }

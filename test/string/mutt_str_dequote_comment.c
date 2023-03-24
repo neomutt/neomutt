@@ -40,7 +40,7 @@ void test_mutt_str_dequote_comment(void)
     char *dequote = strdup(str);
     mutt_str_dequote_comment(dequote);
     TEST_CHECK_(1, "mutt_str_dequote_comment(dequote)");
-    TEST_CHECK(strcmp(dequote, str) == 0);
+    TEST_CHECK(mutt_str_equal(dequote, str));
     FREE(&dequote);
   }
 
@@ -50,7 +50,7 @@ void test_mutt_str_dequote_comment(void)
     char *dequote = strdup(str);
     mutt_str_dequote_comment(dequote);
     TEST_CHECK_(1, "mutt_str_dequote_comment(dequote)");
-    TEST_CHECK(strcmp(dequote, expected) == 0);
+    TEST_CHECK(mutt_str_equal(dequote, expected));
     FREE(&dequote);
   }
 
@@ -60,7 +60,7 @@ void test_mutt_str_dequote_comment(void)
     char *dequote = strdup(str);
     mutt_str_dequote_comment(dequote);
     TEST_CHECK_(1, "mutt_str_dequote_comment(dequote)");
-    TEST_CHECK(strcmp(dequote, expected) == 0);
+    TEST_CHECK(mutt_str_equal(dequote, expected));
     FREE(&dequote);
   }
 
@@ -70,7 +70,7 @@ void test_mutt_str_dequote_comment(void)
     char *dequote = strdup(str);
     mutt_str_dequote_comment(dequote);
     TEST_CHECK_(1, "mutt_str_dequote_comment(dequote)");
-    TEST_CHECK(strcmp(dequote, expected) == 0);
+    TEST_CHECK(mutt_str_equal(dequote, expected));
     FREE(&dequote);
   }
 }

@@ -39,7 +39,7 @@ bool map_dummy(char *line, int line_num, void *user_data)
 static bool mapping_func(char *line, int line_num, void *user_data)
 {
   const int *p_last_line_num = (const int *) (user_data);
-  if (!TEST_CHECK(strcmp(line, file_lines[line_num - 1]) == 0))
+  if (!TEST_CHECK(mutt_str_equal(line, file_lines[line_num - 1])))
   {
     TEST_MSG("Expected: %s", file_lines[line_num - 1]);
     TEST_MSG("Actual: %s", line);

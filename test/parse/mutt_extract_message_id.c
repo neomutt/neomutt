@@ -33,7 +33,7 @@
 
 int cmp(const void *a, const void *b)
 {
-  return strcmp(a, *(char **) b);
+  return mutt_str_cmp(a, *(char **) b);
 }
 
 struct TestData

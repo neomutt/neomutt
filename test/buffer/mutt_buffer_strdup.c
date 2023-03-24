@@ -46,7 +46,7 @@ void test_mutt_buffer_strdup(void)
     result = mutt_buffer_strdup(&buf);
 
     TEST_CHECK(result != NULL);
-    TEST_CHECK(strcmp(result, src) == 0);
+    TEST_CHECK(mutt_str_equal(result, src));
 
     FREE(&result);
 

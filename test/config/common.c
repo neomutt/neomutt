@@ -113,7 +113,7 @@ int sort_list_cb(const void *a, const void *b)
 {
   const char *stra = *(char const *const *) a;
   const char *strb = *(char const *const *) b;
-  return strcmp(stra, strb);
+  return mutt_str_cmp(stra, strb);
 }
 
 void cs_dump_set(const struct ConfigSet *cs)

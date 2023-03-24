@@ -41,7 +41,7 @@ void test_mutt_strn_dup(void)
   {
     char *ptr = mutt_strn_dup(str, 7);
     TEST_CHECK(ptr != NULL);
-    TEST_CHECK(strcmp(ptr, "apple b") == 0);
+    TEST_CHECK(mutt_str_equal(ptr, "apple b"));
     TEST_MSG(ptr);
     FREE(&ptr);
   }
@@ -49,7 +49,7 @@ void test_mutt_strn_dup(void)
   {
     char *ptr = mutt_strn_dup(str + 3, 4);
     TEST_CHECK(ptr != NULL);
-    TEST_CHECK(strcmp(ptr, "le b") == 0);
+    TEST_CHECK(mutt_str_equal(ptr, "le b"));
     TEST_MSG(ptr);
     FREE(&ptr);
   }
@@ -57,7 +57,7 @@ void test_mutt_strn_dup(void)
   {
     char *ptr = mutt_strn_dup(str + 3, 61);
     TEST_CHECK(ptr != NULL);
-    TEST_CHECK(strcmp(ptr, "le banana") == 0);
+    TEST_CHECK(mutt_str_equal(ptr, "le banana"));
     TEST_MSG(ptr);
     FREE(&ptr);
   }
@@ -65,7 +65,7 @@ void test_mutt_strn_dup(void)
   {
     char *ptr = mutt_strn_dup(str + 3, 0);
     TEST_CHECK(ptr != NULL);
-    TEST_CHECK(strcmp(ptr, "") == 0);
+    TEST_CHECK(mutt_str_equal(ptr, ""));
     TEST_MSG(ptr);
     FREE(&ptr);
   }

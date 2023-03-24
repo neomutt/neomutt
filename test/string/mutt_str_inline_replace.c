@@ -75,9 +75,9 @@ void test_mutt_str_inline_replace(void)
       bool result = mutt_str_inline_replace(buf, sizeof(buf), t->replace_len, t->replace);
       TEST_CHECK(result == t->success);
       if (result)
-        TEST_CHECK(strcmp(buf, t->expected) == 0);
+        TEST_CHECK(mutt_str_equal(buf, t->expected));
       else
-        TEST_CHECK(strcmp(buf, t->initial) == 0);
+        TEST_CHECK(mutt_str_equal(buf, t->initial));
     }
   }
 }

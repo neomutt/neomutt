@@ -52,7 +52,7 @@ void test_mutt_str_replace(void)
     mutt_str_replace(&ptr, str);
     TEST_CHECK(ptr != NULL);
     TEST_CHECK(ptr != str);
-    TEST_CHECK(strcmp(ptr, str) == 0);
+    TEST_CHECK(mutt_str_equal(ptr, str));
     FREE(&ptr);
   }
 
@@ -62,7 +62,7 @@ void test_mutt_str_replace(void)
     mutt_str_replace(&ptr, str);
     TEST_CHECK(ptr != NULL);
     TEST_CHECK(ptr != str);
-    TEST_CHECK(strcmp(ptr, str) == 0);
+    TEST_CHECK(mutt_str_equal(ptr, str));
     FREE(&ptr);
   }
 

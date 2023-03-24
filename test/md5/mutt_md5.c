@@ -47,7 +47,7 @@ void test_mutt_md5(void)
       char digest[33];
       mutt_md5(md5_test_data[i].text, buf);
       mutt_md5_toascii(buf, digest);
-      if (!TEST_CHECK(strcmp(md5_test_data[i].hash, digest) == 0))
+      if (!TEST_CHECK(mutt_str_equal(md5_test_data[i].hash, digest)))
       {
         TEST_MSG("Iteration: %zu", i);
         TEST_MSG("Expected : %s", md5_test_data[i].hash);

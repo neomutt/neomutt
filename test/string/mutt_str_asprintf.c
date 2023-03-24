@@ -51,7 +51,7 @@ void test_mutt_str_asprintf(void)
     const char *str = "apple";
     char *result = NULL;
     TEST_CHECK(mutt_str_asprintf(&result, str) == 5);
-    TEST_CHECK(strcmp(result, str) == 0);
+    TEST_CHECK(mutt_str_equal(result, str));
     FREE(&result);
   }
 
@@ -62,7 +62,7 @@ void test_mutt_str_asprintf(void)
                       "strawberry tangerine ugli vanilla wolfberry xigua yew ziziphus";
     char *result = NULL;
     TEST_CHECK(mutt_str_asprintf(&result, str) == 195);
-    TEST_CHECK(strcmp(result, str) == 0);
+    TEST_CHECK(mutt_str_equal(result, str));
     FREE(&result);
   }
 
@@ -72,7 +72,7 @@ void test_mutt_str_asprintf(void)
     const char *expected = "app 1234567 3.1416";
     char *result = NULL;
     TEST_CHECK(mutt_str_asprintf(&result, "%.3s %ld %3.4f", str, 1234567, 3.141592654) == 18);
-    TEST_CHECK(strcmp(result, expected) == 0);
+    TEST_CHECK(mutt_str_equal(result, expected));
     FREE(&result);
   }
 }

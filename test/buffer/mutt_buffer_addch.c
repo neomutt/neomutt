@@ -37,7 +37,7 @@ void test_mutt_buffer_addch(void)
   {
     struct Buffer buf = mutt_buffer_make(0);
     TEST_CHECK(mutt_buffer_addch(&buf, 'a') == 1);
-    TEST_CHECK(strcmp(mutt_buffer_string(&buf), "a") == 0);
+    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), "a"));
     mutt_buffer_dealloc(&buf);
   }
 
@@ -45,7 +45,7 @@ void test_mutt_buffer_addch(void)
     struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_addstr(&buf, "test");
     TEST_CHECK(mutt_buffer_addch(&buf, 'a') == 1);
-    TEST_CHECK(strcmp(mutt_buffer_string(&buf), "testa") == 0);
+    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), "testa"));
     mutt_buffer_dealloc(&buf);
   }
 }

@@ -64,7 +64,7 @@ void test_mutt_buffer_concat_path(void)
         mutt_buffer_concat_path(&buf, concat_test[i][0], concat_test[i][1]);
         if (concat_test[i][2])
         {
-          TEST_CHECK(strcmp(mutt_buffer_string(&buf), concat_test[i][2]) == 0);
+          TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), concat_test[i][2]));
         }
         else
         {
@@ -83,11 +83,11 @@ void test_mutt_buffer_concat_path(void)
         mutt_buffer_concat_path(&buf, concat_test[i][0], concat_test[i][1]);
         if (concat_test[i][2])
         {
-          TEST_CHECK(strcmp(mutt_buffer_string(&buf), concat_test[i][2]) == 0);
+          TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), concat_test[i][2]));
         }
         else
         {
-          TEST_CHECK(strcmp(mutt_buffer_string(&buf), str) == 0);
+          TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), str));
         }
         mutt_buffer_dealloc(&buf);
       }

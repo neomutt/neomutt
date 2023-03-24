@@ -37,7 +37,7 @@ void test_mutt_str_cat(void)
   {
     char buf[64] = { 0 };
     TEST_CHECK(mutt_str_cat(buf, 0, "apple") == buf);
-    TEST_CHECK(strcmp(buf, "") == 0);
+    TEST_CHECK(mutt_str_equal(buf, ""));
   }
 
   {
@@ -48,24 +48,24 @@ void test_mutt_str_cat(void)
   {
     char buf[32] = { 0 };
     TEST_CHECK(mutt_str_cat(buf, sizeof(buf), "") == buf);
-    TEST_CHECK(strcmp(buf, "") == 0);
+    TEST_CHECK(mutt_str_equal(buf, ""));
   }
 
   {
     char buf[32] = { 0 };
     TEST_CHECK(mutt_str_cat(buf, sizeof(buf), "banana") == buf);
-    TEST_CHECK(strcmp(buf, "banana") == 0);
+    TEST_CHECK(mutt_str_equal(buf, "banana"));
   }
 
   {
     char buf[32] = "apple";
     TEST_CHECK(mutt_str_cat(buf, sizeof(buf), "") == buf);
-    TEST_CHECK(strcmp(buf, "apple") == 0);
+    TEST_CHECK(mutt_str_equal(buf, "apple"));
   }
 
   {
     char buf[32] = "apple";
     TEST_CHECK(mutt_str_cat(buf, sizeof(buf), "banana") == buf);
-    TEST_CHECK(strcmp(buf, "applebanana") == 0);
+    TEST_CHECK(mutt_str_equal(buf, "applebanana"));
   }
 }

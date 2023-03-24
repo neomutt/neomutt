@@ -56,18 +56,18 @@ void test_mutt_strn_copy(void)
   {
     char buf[32] = { 0 };
     TEST_CHECK(mutt_strn_copy(buf, str + 3, 0, sizeof(buf)) == buf);
-    TEST_CHECK(strcmp(buf, "") == 0);
+    TEST_CHECK(mutt_str_equal(buf, ""));
   }
 
   {
     char buf[32] = { 0 };
     TEST_CHECK(mutt_strn_copy(buf, str + 3, 4, sizeof(buf)) == buf);
-    TEST_CHECK(strcmp(buf, "le b") == 0);
+    TEST_CHECK(mutt_str_equal(buf, "le b"));
   }
 
   {
     char buf[32] = { 0 };
     TEST_CHECK(mutt_strn_copy(buf, str + 3, 61, sizeof(buf)) == buf);
-    TEST_CHECK(strcmp(buf, "le banana") == 0);
+    TEST_CHECK(mutt_str_equal(buf, "le banana"));
   }
 }
