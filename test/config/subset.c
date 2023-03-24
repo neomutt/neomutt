@@ -283,6 +283,39 @@ void test_config_subset(void)
     return;
   }
 
+  rc = cs_subset_he_delete(NULL, NULL, err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
+  // Deleting in sub_m should not delete in sub_a or cs
+  mutt_buffer_reset(err);
+  rc = cs_subset_str_delete(sub_m, name, err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("cs_subset_str_delete failed\n");
+    return;
+  }
+
+  he = cs_subset_lookup(sub_m, name);
+  if (!TEST_CHECK(he == NULL))
+  {
+    TEST_MSG("cs_subset_lookup succeeded\n");
+    return;
+  }
+
+  he = cs_subset_lookup(sub_a, name);
+  if (!TEST_CHECK(he != NULL))
+  {
+    TEST_MSG("cs_subset_lookup failed\n");
+    return;
+  }
+
+  he = cs_subset_lookup(NeoMutt->sub, name);
+  if (!TEST_CHECK(he != NULL))
+  {
+    TEST_MSG("cs_subset_lookup failed\n");
+    return;
+  }
+
   cs_subset_free(&sub_m);
   cs_subset_free(&sub_a);
 
