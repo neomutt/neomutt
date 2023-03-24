@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3.4.0
+        uses: actions/checkout@v3.5.0
 
       - name: Configure Neomutt
         run: ./configure --disable-doc $CONFIGURE_OPTIONS
