@@ -76,6 +76,7 @@ const char *nm_db_get_filename(struct Mailbox *m)
   return db_filename;
 }
 
+#if LIBNOTMUCH_CHECK_VERSION(5, 4, 0)
 /**
  * get_nm_config_file - Gets the configuration file
  * @retval ptr Config file path. Empty string if no config.
@@ -98,6 +99,7 @@ static const char *get_nm_config_file(void)
 
   return config_to_use;
 }
+#endif
 
 /**
  * nm_db_do_open - Open a Notmuch database
