@@ -10,7 +10,7 @@ install-data:
 		$(INSTALL) -d -m 755 $(DESTDIR)$(datadir)/$$d || exit 1; \
 		for f in $$(find $(SRCDIR)/data/$$d -maxdepth 1 -type f); do \
 			echo "Installing $$f"; \
-			$(INSTALL) -m 644 $$f $(DESTDIR)$(datadir)/$$d || exit 1; \
+			$(INSTALL_DATA) $$f $(DESTDIR)$(datadir)/$$d || exit 1; \
 		done \
 	done
 	# Install mime.types
