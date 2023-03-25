@@ -406,8 +406,8 @@ static void delete_idxfmt_hooks(void)
 /**
  * mutt_parse_idxfmt_hook - Parse the 'index-format-hook' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
-                                          intptr_t data, struct Buffer *err)
+static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
+                                                 intptr_t data, struct Buffer *err)
 {
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
@@ -533,8 +533,8 @@ static HookFlags mutt_get_hook_type(const char *name)
 /**
  * mutt_parse_unhook - Parse the 'unhook' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
-                                     intptr_t data, struct Buffer *err)
+static enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
+                                            intptr_t data, struct Buffer *err)
 {
   while (MoreArgs(s))
   {

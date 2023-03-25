@@ -1105,8 +1105,8 @@ size_t mutt_addr_write(struct Buffer *buf, struct Address *addr, bool display)
  * reversible.
  *
  */
-size_t addrlist_write(const struct AddressList *al, struct Buffer *buf,
-                      bool display, const char *header, int cols)
+static size_t addrlist_write(const struct AddressList *al, struct Buffer *buf,
+                             bool display, const char *header, int cols)
 {
   if (!buf || !al || TAILQ_EMPTY(al))
     return 0;

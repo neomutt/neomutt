@@ -339,8 +339,8 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
 /**
  * parse_cd - Parse the 'cd' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_cd(struct Buffer *buf, struct Buffer *s, intptr_t data,
-                            struct Buffer *err)
+static enum CommandResult parse_cd(struct Buffer *buf, struct Buffer *s,
+                                   intptr_t data, struct Buffer *err)
 {
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
   mutt_buffer_expand_path(buf);
@@ -369,8 +369,8 @@ enum CommandResult parse_cd(struct Buffer *buf, struct Buffer *s, intptr_t data,
 /**
  * parse_echo - Parse the 'echo' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_echo(struct Buffer *buf, struct Buffer *s,
-                              intptr_t data, struct Buffer *err)
+static enum CommandResult parse_echo(struct Buffer *buf, struct Buffer *s,
+                                     intptr_t data, struct Buffer *err)
 {
   if (!MoreArgs(s))
   {
@@ -393,8 +393,8 @@ enum CommandResult parse_echo(struct Buffer *buf, struct Buffer *s,
  *
  * If the 'finish' command is found, we should stop reading the current file.
  */
-enum CommandResult parse_finish(struct Buffer *buf, struct Buffer *s,
-                                intptr_t data, struct Buffer *err)
+static enum CommandResult parse_finish(struct Buffer *buf, struct Buffer *s,
+                                       intptr_t data, struct Buffer *err)
 {
   if (MoreArgs(s))
   {
@@ -408,8 +408,8 @@ enum CommandResult parse_finish(struct Buffer *buf, struct Buffer *s,
 /**
  * parse_group - Parse the 'group' and 'ungroup' commands - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
-                               intptr_t data, struct Buffer *err)
+static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
+                                      intptr_t data, struct Buffer *err)
 {
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
   enum GroupState gstate = GS_NONE;
@@ -504,8 +504,8 @@ warn:
  * e.g.
  *      ifndef imap finish
  */
-enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
-                               intptr_t data, struct Buffer *err)
+static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
+                                      intptr_t data, struct Buffer *err)
 {
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
@@ -550,8 +550,8 @@ enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
 /**
  * parse_ignore - Parse the 'ignore' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_ignore(struct Buffer *buf, struct Buffer *s,
-                                intptr_t data, struct Buffer *err)
+static enum CommandResult parse_ignore(struct Buffer *buf, struct Buffer *s,
+                                       intptr_t data, struct Buffer *err)
 {
   do
   {
@@ -566,8 +566,8 @@ enum CommandResult parse_ignore(struct Buffer *buf, struct Buffer *s,
 /**
  * parse_lists - Parse the 'lists' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_lists(struct Buffer *buf, struct Buffer *s,
-                               intptr_t data, struct Buffer *err)
+static enum CommandResult parse_lists(struct Buffer *buf, struct Buffer *s,
+                                      intptr_t data, struct Buffer *err)
 {
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
 
@@ -768,8 +768,8 @@ enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
 /**
  * parse_setenv - Parse the 'setenv' and 'unsetenv' commands - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
-                                intptr_t data, struct Buffer *err)
+static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
+                                       intptr_t data, struct Buffer *err)
 {
   char **envp = mutt_envlist_getlist();
 
@@ -881,8 +881,8 @@ enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 /**
  * parse_source - Parse the 'source' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
-                                intptr_t data, struct Buffer *err)
+static enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
+                                       intptr_t data, struct Buffer *err)
 {
   char path[PATH_MAX] = { 0 };
 
@@ -910,8 +910,8 @@ enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
 /**
  * parse_spam_list - Parse the 'spam' and 'nospam' commands - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_spam_list(struct Buffer *buf, struct Buffer *s,
-                                   intptr_t data, struct Buffer *err)
+static enum CommandResult parse_spam_list(struct Buffer *buf, struct Buffer *s,
+                                          intptr_t data, struct Buffer *err)
 {
   struct Buffer templ;
 
@@ -988,8 +988,8 @@ enum CommandResult parse_spam_list(struct Buffer *buf, struct Buffer *s,
  *
  * This is used by 'alternative_order', 'auto_view' and several others.
  */
-enum CommandResult parse_stailq(struct Buffer *buf, struct Buffer *s,
-                                intptr_t data, struct Buffer *err)
+static enum CommandResult parse_stailq(struct Buffer *buf, struct Buffer *s,
+                                       intptr_t data, struct Buffer *err)
 {
   do
   {
@@ -1003,8 +1003,8 @@ enum CommandResult parse_stailq(struct Buffer *buf, struct Buffer *s,
 /**
  * parse_subscribe - Parse the 'subscribe' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_subscribe(struct Buffer *buf, struct Buffer *s,
-                                   intptr_t data, struct Buffer *err)
+static enum CommandResult parse_subscribe(struct Buffer *buf, struct Buffer *s,
+                                          intptr_t data, struct Buffer *err)
 {
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
 
@@ -1089,8 +1089,8 @@ enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
  *
  * @note This maps format -> tag
  */
-enum CommandResult parse_tag_formats(struct Buffer *buf, struct Buffer *s,
-                                     intptr_t data, struct Buffer *err)
+static enum CommandResult parse_tag_formats(struct Buffer *buf, struct Buffer *s,
+                                            intptr_t data, struct Buffer *err)
 {
   if (!s)
     return MUTT_CMD_ERROR;
@@ -1131,8 +1131,8 @@ enum CommandResult parse_tag_formats(struct Buffer *buf, struct Buffer *s,
  *
  * @note This maps tag -> transform
  */
-enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
-                                        intptr_t data, struct Buffer *err)
+static enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
+                                               intptr_t data, struct Buffer *err)
 {
   if (!s)
     return MUTT_CMD_ERROR;
@@ -1169,8 +1169,8 @@ enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
 /**
  * parse_unignore - Parse the 'unignore' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unignore(struct Buffer *buf, struct Buffer *s,
-                                  intptr_t data, struct Buffer *err)
+static enum CommandResult parse_unignore(struct Buffer *buf, struct Buffer *s,
+                                         intptr_t data, struct Buffer *err)
 {
   do
   {
@@ -1189,8 +1189,8 @@ enum CommandResult parse_unignore(struct Buffer *buf, struct Buffer *s,
 /**
  * parse_unlists - Parse the 'unlists' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unlists(struct Buffer *buf, struct Buffer *s,
-                                 intptr_t data, struct Buffer *err)
+static enum CommandResult parse_unlists(struct Buffer *buf, struct Buffer *s,
+                                        intptr_t data, struct Buffer *err)
 {
   mutt_hash_free(&AutoSubscribeCache);
   do
@@ -1286,8 +1286,8 @@ enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
 /**
  * parse_unmy_hdr - Parse the 'unmy_hdr' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
-                                  intptr_t data, struct Buffer *err)
+static enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
+                                         intptr_t data, struct Buffer *err)
 {
   struct ListNode *np = NULL, *tmp = NULL;
   size_t l;
@@ -1332,8 +1332,8 @@ enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
  *
  * This is used by 'unalternative_order', 'unauto_view' and several others.
  */
-enum CommandResult parse_unstailq(struct Buffer *buf, struct Buffer *s,
-                                  intptr_t data, struct Buffer *err)
+static enum CommandResult parse_unstailq(struct Buffer *buf, struct Buffer *s,
+                                         intptr_t data, struct Buffer *err)
 {
   do
   {
@@ -1353,8 +1353,8 @@ enum CommandResult parse_unstailq(struct Buffer *buf, struct Buffer *s,
 /**
  * parse_unsubscribe - Parse the 'unsubscribe' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
-                                     intptr_t data, struct Buffer *err)
+static enum CommandResult parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
+                                            intptr_t data, struct Buffer *err)
 {
   mutt_hash_free(&AutoSubscribeCache);
   do
@@ -1421,8 +1421,8 @@ enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
 /**
  * parse_version - Parse the 'version' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_version(struct Buffer *buf, struct Buffer *s,
-                                 intptr_t data, struct Buffer *err)
+static enum CommandResult parse_version(struct Buffer *buf, struct Buffer *s,
+                                        intptr_t data, struct Buffer *err)
 {
   // silently ignore 'version' if it's in a config file
   if (!StartupComplete)
