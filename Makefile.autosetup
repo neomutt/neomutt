@@ -28,6 +28,7 @@ RANLIB=		@RANLIB@
 SRCDIR=		@srcdir@
 INSTALL=	@INSTALL@ -c
 INSTALL_DATA=	@INSTALL@ -m 644
+INSTALL_DIR=	@INSTALL@ -d -m 755
 MKDIR_P=	mkdir -p
 RM=		rm -fr
 DEPFILES=	$(ALLOBJS:.o=.Po)
@@ -865,11 +866,11 @@ clean: $(CLEAN_TARGETS)
 # install
 install: all $(INSTALL_TARGETS)
 	# Install binaries
-	$(MKDIR_P) $(DESTDIR)$(bindir)
+	$(INSTALL_DIR) $(DESTDIR)$(bindir)
 	for f in $(BINFILES); do \
 		$(INSTALL) $$f $(DESTDIR)$(bindir)/`basename $$f` || exit 1; \
 	done
-	$(MKDIR_P) $(DESTDIR)$(libexecdir)/$(PACKAGE)
+	$(INSTALL_DIR) $(DESTDIR)$(libexecdir)/$(PACKAGE)
 	for f in $(LIBBINFILES); do \
 		$(INSTALL) $$f $(DESTDIR)$(libexecdir)/$(PACKAGE)/`basename $$f` || exit 1; \
 	done

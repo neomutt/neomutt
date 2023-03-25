@@ -6,7 +6,7 @@ clean-contrib:
 install-contrib:
 	for d in $(CONTRIB_DIRS); do \
 		echo "Creating directory $(DESTDIR)$(datadir)/$$d"; \
-		$(INSTALL) -d -m 755 $(DESTDIR)$(datadir)/$$d || exit 1; \
+		$(INSTALL_DIR) $(DESTDIR)$(datadir)/$$d || exit 1; \
 		for f in $$(find $(SRCDIR)/contrib/$$d -type f); do \
 			echo "Installing $$f"; \
 			$(INSTALL_DATA) $$f $(DESTDIR)$(datadir)/$$d || exit 1; \

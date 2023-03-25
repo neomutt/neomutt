@@ -79,16 +79,16 @@ docs/manual.xml:	docs/makedoc$(EXEEXT) $(SRCDIR)/docs/gen-map-doc \
 	) > $@
 
 install-docs: all-docs
-	$(MKDIR_P) $(DESTDIR)$(mandir)/man1
-	$(MKDIR_P) $(DESTDIR)$(mandir)/man5
-	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
+	$(INSTALL_DIR) $(DESTDIR)$(mandir)/man1
+	$(INSTALL_DIR) $(DESTDIR)$(mandir)/man5
+	$(INSTALL_DIR) $(DESTDIR)$(sysconfdir)
 	$(INSTALL_DATA) docs/neomutt.1 $(DESTDIR)$(mandir)/man1/neomutt.1
 	$(INSTALL_DATA) docs/neomuttrc.5 $(DESTDIR)$(mandir)/man5/neomuttrc.5
 	$(INSTALL_DATA) $(SRCDIR)/docs/smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys_$(PACKAGE).1
 	$(INSTALL_DATA) $(SRCDIR)/docs/pgpewrap.1 $(DESTDIR)$(mandir)/man1/pgpewrap_$(PACKAGE).1
 	$(INSTALL_DATA) $(SRCDIR)/docs/mbox.5 $(DESTDIR)$(mandir)/man5/mbox_$(PACKAGE).5
 	$(INSTALL_DATA) $(SRCDIR)/docs/mmdf.5 $(DESTDIR)$(mandir)/man5/mmdf_$(PACKAGE).5
-	$(MKDIR_P) $(DESTDIR)$(docdir)
+	$(INSTALL_DIR) $(DESTDIR)$(docdir)
 	for f in $(srcdir_DOCFILES); do \
 		$(INSTALL_DATA) $$f $(DESTDIR)$(docdir) || exit 1; \
 	done
@@ -146,7 +146,7 @@ clean-docs:
 	$(RM) docs/neomuttrc docs/makedoc$(EXEEXT)
 
 install-docs: all-docs
-	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
+	$(INSTALL_DIR) $(DESTDIR)$(sysconfdir)
 	$(INSTALL_DATA) docs/neomuttrc $(DESTDIR)$(sysconfdir)/neomuttrc
 
 uninstall-docs:

@@ -7,7 +7,7 @@ clean-data:
 install-data:
 	for d in $(DATA_DIRS); do \
 		echo "Creating directory $(DESTDIR)$(datadir)/$$d"; \
-		$(INSTALL) -d -m 755 $(DESTDIR)$(datadir)/$$d || exit 1; \
+		$(INSTALL_DIR) $(DESTDIR)$(datadir)/$$d || exit 1; \
 		for f in $$(find $(SRCDIR)/data/$$d -maxdepth 1 -type f); do \
 			echo "Installing $$f"; \
 			$(INSTALL_DATA) $$f $(DESTDIR)$(datadir)/$$d || exit 1; \
