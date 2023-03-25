@@ -431,7 +431,7 @@ static void luaopen_mutt(lua_State *l)
   struct Command *c = NULL;
   for (size_t i = 0, size = commands_array(&c); i < size; i++)
   {
-    lua_expose_command(l, c);
+    lua_expose_command(l, &c[i]);
   }
 }
 
