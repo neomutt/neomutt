@@ -126,6 +126,9 @@ static struct ConfigDef ImapVars[] = {
   { "imap_qresync", DT_BOOL, false, 0, NULL,
     "(imap) Enable the QRESYNC extension"
   },
+  { "imap_send_id", DT_BOOL, false, 0, NULL,
+    "(imap) Send ID command when logging in"
+  },
   { "imap_user", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
     "(imap) Username for the IMAP server"
   },

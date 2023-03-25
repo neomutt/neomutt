@@ -1902,6 +1902,14 @@ int imap_login(struct ImapAccountData *adata)
     }
 #endif
 
+    /* enable RFC2971, if the server supports that */
+    const bool c_imap_send_id = cs_subset_bool(NeoMutt->sub, "imap_send_id");
+    if (c_imap_send_id && (adata->capabilities & IMAP_CAP_ID))
+    {
+      imap_exec(adata, "ID (\"name\" \"NeoMutt\" \"version\" \"" PACKAGE_VERSION "\")",
+                IMAP_CMD_QUEUE);
+    }
+
     /* enable RFC6855, if the server supports that */
     const bool c_imap_rfc5161 = cs_subset_bool(NeoMutt->sub, "imap_rfc5161");
     if (c_imap_rfc5161 && (adata->capabilities & IMAP_CAP_ENABLE))

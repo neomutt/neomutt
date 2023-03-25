@@ -1990,6 +1990,14 @@
 ** .pp
 ** This variable defaults to your user name on the local machine.
 */
+
+{ "imap_send_id", DT_BOOL, false },
+/*
+** .pp
+** When \fIset\fP, NeoMutt will send an IMAP ID command (RFC2971) to the
+** server when logging in if advertised by the server. This command provides
+** information about the IMAP client, such as "NeoMutt" and the current version.
+*/
 #endif
 
 { "implicit_auto_view", DT_BOOL, false },

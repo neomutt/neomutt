@@ -81,6 +81,7 @@ static const char *const Capabilities[] = {
   "LIST-EXTENDED",
   "COMPRESS=DEFLATE",
   "X-GM-EXT-1",
+  "ID",
   NULL,
 };
 
