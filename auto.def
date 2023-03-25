@@ -547,12 +547,9 @@ if {[get-define want-sasl]} {
     define USE_SASL_CYRUS
     define-feature SASL
   } else {
-    foreach sasl_lib {sasl2 sasl} {
-      if {[check-inc-and-lib sasl [opt-val with-sasl $prefix] \
-                             sasl/sasl.h sasl_encode64 $sasl_lib]} {
-        define USE_SASL_CYRUS
-        break
-      }
+    if {[check-inc-and-lib sasl [opt-val with-sasl $prefix] \
+                           sasl/sasl.h sasl_encode64 sasl2]} {
+      define USE_SASL_CYRUS
     }
     if {![get-define USE_SASL_CYRUS]} {
       user-error "Unable to find SASL"
