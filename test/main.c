@@ -21,8 +21,10 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+void test_init(void);
+void test_fini(void);
+
 #include "config.h"
-#include "test_common.h"
 #define TEST_INIT test_init()
 #define TEST_FINI test_fini()
 #include "acutest.h"
