@@ -543,9 +543,13 @@ if {[get-define want-gsasl]} {
 ###############################################################################
 # SASL
 if {[get-define want-sasl]} {
-  pkgconf true libsasl2
+  if {[pkgconf false libsasl2]} {
+    define-feature SASL
+  } elseif {![check-inc-and-lib sasl [opt-val with-sasl $prefix] \
+                                sasl/sasl.h sasl_encode64 sasl2]} {
+    user-error "Unable to find SASL"
+  }
   define USE_SASL_CYRUS
-  define-feature SASL
 }
 
 ###############################################################################
