@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_buf_concat_path(void)
 {
@@ -64,7 +65,7 @@ void test_buf_concat_path(void)
         buf_concat_path(&buf, concat_test[i][0], concat_test[i][1]);
         if (concat_test[i][2])
         {
-          TEST_CHECK(mutt_str_equal(buf_string(&buf), concat_test[i][2]));
+          TEST_CHECK_STR_EQ(buf_string(&buf), concat_test[i][2]);
         }
         else
         {
@@ -83,11 +84,11 @@ void test_buf_concat_path(void)
         buf_concat_path(&buf, concat_test[i][0], concat_test[i][1]);
         if (concat_test[i][2])
         {
-          TEST_CHECK(mutt_str_equal(buf_string(&buf), concat_test[i][2]));
+          TEST_CHECK_STR_EQ(buf_string(&buf), concat_test[i][2]);
         }
         else
         {
-          TEST_CHECK(mutt_str_equal(buf_string(&buf), str));
+          TEST_CHECK_STR_EQ(buf_string(&buf), str);
         }
         buf_dealloc(&buf);
       }

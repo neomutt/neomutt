@@ -26,6 +26,7 @@
 #include <string.h>
 #include <time.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_date_make_tls(void)
 {
@@ -39,6 +40,6 @@ void test_mutt_date_make_tls(void)
     char buf[64] = { 0 };
     time_t t = 961930800;
     TEST_CHECK(mutt_date_make_tls(buf, sizeof(buf), t) > 0);
-    TEST_CHECK(mutt_str_equal(buf, "Sun, 25 Jun 2000 11:00:00 UTC"));
+    TEST_CHECK_STR_EQ(buf, "Sun, 25 Jun 2000 11:00:00 UTC");
   }
 }

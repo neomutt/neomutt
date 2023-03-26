@@ -26,6 +26,7 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
+#include "test_common.h"
 
 void test_email_header_add(void)
 {
@@ -36,7 +37,7 @@ void test_email_header_add(void)
 
   {
     struct ListNode *n = header_add(&hdrlist, header);
-    TEST_CHECK(mutt_str_equal(n->data, header));    /* header stored in node */
+    TEST_CHECK_STR_EQ(n->data, header);             /* header stored in node */
     TEST_CHECK(n == header_find(&hdrlist, header)); /* node added to list */
   }
   mutt_list_free(&hdrlist);

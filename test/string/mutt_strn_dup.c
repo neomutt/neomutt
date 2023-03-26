@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_strn_dup(void)
 {
@@ -41,7 +42,7 @@ void test_mutt_strn_dup(void)
   {
     char *ptr = mutt_strn_dup(str, 7);
     TEST_CHECK(ptr != NULL);
-    TEST_CHECK(mutt_str_equal(ptr, "apple b"));
+    TEST_CHECK_STR_EQ(ptr, "apple b");
     TEST_MSG(ptr);
     FREE(&ptr);
   }
@@ -49,7 +50,7 @@ void test_mutt_strn_dup(void)
   {
     char *ptr = mutt_strn_dup(str + 3, 4);
     TEST_CHECK(ptr != NULL);
-    TEST_CHECK(mutt_str_equal(ptr, "le b"));
+    TEST_CHECK_STR_EQ(ptr, "le b");
     TEST_MSG(ptr);
     FREE(&ptr);
   }
@@ -57,7 +58,7 @@ void test_mutt_strn_dup(void)
   {
     char *ptr = mutt_strn_dup(str + 3, 61);
     TEST_CHECK(ptr != NULL);
-    TEST_CHECK(mutt_str_equal(ptr, "le banana"));
+    TEST_CHECK_STR_EQ(ptr, "le banana");
     TEST_MSG(ptr);
     FREE(&ptr);
   }
@@ -65,7 +66,7 @@ void test_mutt_strn_dup(void)
   {
     char *ptr = mutt_strn_dup(str + 3, 0);
     TEST_CHECK(ptr != NULL);
-    TEST_CHECK(mutt_str_equal(ptr, ""));
+    TEST_CHECK_STR_EQ(ptr, "");
     TEST_MSG(ptr);
     FREE(&ptr);
   }

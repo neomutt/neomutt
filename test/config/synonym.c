@@ -70,7 +70,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   const char *VarApple = cs_subset_string(sub, "Apple");
-  if (!TEST_CHECK(mutt_str_equal(VarApple, value)))
+  if (!TEST_CHECK_STR_EQ(VarApple, value))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
@@ -116,7 +116,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   const char *VarElderberry = cs_subset_string(sub, "Elderberry");
-  if (!TEST_CHECK(mutt_str_equal(VarElderberry, value)))
+  if (!TEST_CHECK_STR_EQ(VarElderberry, value))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
@@ -139,7 +139,7 @@ static bool test_native_get(struct ConfigSubset *sub, struct Buffer *err)
   buf_reset(err);
   intptr_t value = cs_str_native_get(cs, name, err);
   const char *VarGuava = cs_subset_string(sub, "Guava");
-  if (!TEST_CHECK(mutt_str_equal(VarGuava, (const char *) value)))
+  if (!TEST_CHECK_STR_EQ(VarGuava, (const char *) value))
   {
     TEST_MSG("Get failed: %s\n", buf_string(err));
     return false;
@@ -173,7 +173,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   VarIlama = cs_subset_string(sub, "Ilama");
-  if (!TEST_CHECK(mutt_str_equal(VarIlama, "iguana")))
+  if (!TEST_CHECK_STR_EQ(VarIlama, "iguana"))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;

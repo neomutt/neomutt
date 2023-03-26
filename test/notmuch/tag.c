@@ -26,6 +26,7 @@
 #include "mutt/lib.h"
 #include "notmuch/tag.h" // IWYU pragma: keep
 #include "notmuch/lib.h"
+#include "test_common.h"
 
 void test_nm_tag_string_to_tags(void)
 {
@@ -35,8 +36,8 @@ void test_nm_tag_string_to_tags(void)
     const char *input = "inbox,archive";
     struct TagArray output = nm_tag_str_to_tags(input);
 
-    TEST_CHECK(mutt_str_equal("inbox", *ARRAY_GET(&output.tags, 0)));
-    TEST_CHECK(mutt_str_equal("archive", *ARRAY_GET(&output.tags, 1)));
+    TEST_CHECK_STR_EQ("inbox", *ARRAY_GET(&output.tags, 0));
+    TEST_CHECK_STR_EQ("archive", *ARRAY_GET(&output.tags, 1));
 
     nm_tag_array_free(&output);
   }
@@ -45,8 +46,8 @@ void test_nm_tag_string_to_tags(void)
     const char *input = "inbox archive";
     struct TagArray output = nm_tag_str_to_tags(input);
 
-    TEST_CHECK(mutt_str_equal("inbox", *ARRAY_GET(&output.tags, 0)));
-    TEST_CHECK(mutt_str_equal("archive", *ARRAY_GET(&output.tags, 1)));
+    TEST_CHECK_STR_EQ("inbox", *ARRAY_GET(&output.tags, 0));
+    TEST_CHECK_STR_EQ("archive", *ARRAY_GET(&output.tags, 1));
 
     nm_tag_array_free(&output);
   }
@@ -55,9 +56,9 @@ void test_nm_tag_string_to_tags(void)
     const char *input = "inbox archive,sent";
     struct TagArray output = nm_tag_str_to_tags(input);
 
-    TEST_CHECK(mutt_str_equal("inbox", *ARRAY_GET(&output.tags, 0)));
-    TEST_CHECK(mutt_str_equal("archive", *ARRAY_GET(&output.tags, 1)));
-    TEST_CHECK(mutt_str_equal("sent", *ARRAY_GET(&output.tags, 2)));
+    TEST_CHECK_STR_EQ("inbox", *ARRAY_GET(&output.tags, 0));
+    TEST_CHECK_STR_EQ("archive", *ARRAY_GET(&output.tags, 1));
+    TEST_CHECK_STR_EQ("sent", *ARRAY_GET(&output.tags, 2));
 
     nm_tag_array_free(&output);
   }

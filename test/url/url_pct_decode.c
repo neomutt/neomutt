@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "email/lib.h"
+#include "test_common.h"
 
 void test_url_pct_decode(void)
 {
@@ -37,10 +38,6 @@ void test_url_pct_decode(void)
   {
     char s[] = "Hello%20world";
     TEST_CHECK(url_pct_decode(s) == 0);
-    if (!TEST_CHECK(mutt_str_equal(s, "Hello world")))
-    {
-      TEST_MSG("Expected: %s", "Hello world");
-      TEST_MSG("Actual  : %s", s);
-    }
+    TEST_CHECK_STR_EQ(s, "Hello world");
   }
 }

@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 static const char clear[] = "Hello";
 static const char encoded[] = "SGVsbG8=";
@@ -50,11 +51,7 @@ void test_mutt_b64_encode(void)
       TEST_MSG("Expected: %zu", sizeof(encoded) - 1);
       TEST_MSG("Actual  : %zu", len);
     }
-    if (!TEST_CHECK(mutt_str_equal(buffer, encoded)))
-    {
-      TEST_MSG("Expected: %zu", encoded);
-      TEST_MSG("Actual  : %zu", buffer);
-    }
+    TEST_CHECK_STR_EQ(buffer, encoded);
   }
 
   {

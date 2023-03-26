@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_str_getenv(void)
 {
@@ -42,7 +43,7 @@ void test_mutt_str_getenv(void)
     TEST_CASE(name);
 
     const char *result = mutt_str_getenv(name);
-    TEST_CHECK(mutt_str_equal(result, value));
+    TEST_CHECK_STR_EQ(result, value);
     unsetenv(name);
   }
 

@@ -29,6 +29,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "common.h" // IWYU pragma: keep
+#include "test_common.h"
 
 // clang-format off
 static struct Mapping MboxTypeMap[] = {
@@ -114,7 +115,7 @@ bool test_pretty_var(void)
       return false;
     }
 
-    if (!TEST_CHECK(mutt_str_equal("\"apple\"", buf_string(&buf))))
+    if (!TEST_CHECK_STR_EQ("\"apple\"", buf_string(&buf)))
     {
       buf_dealloc(&buf);
       return false;
@@ -151,7 +152,7 @@ bool test_escape_string(void)
       return false;
     }
 
-    if (!TEST_CHECK(mutt_str_equal(buf_string(&buf), after)))
+    if (!TEST_CHECK_STR_EQ(buf_string(&buf), after))
     {
       buf_dealloc(&buf);
       return false;

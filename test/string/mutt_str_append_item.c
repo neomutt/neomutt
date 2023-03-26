@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 struct AppendTest
 {
@@ -69,7 +70,7 @@ void test_mutt_str_append_item(void)
       char *str = t->first ? strdup(t->first) : NULL;
       TEST_CASE_("\"%s\", \"%s\", '%c'", NONULL(t->first), t->second, t->sep);
       mutt_str_append_item(&str, t->second, t->sep);
-      TEST_CHECK(mutt_str_equal(str, t->result));
+      TEST_CHECK_STR_EQ(str, t->result);
       FREE(&str);
     }
   }

@@ -27,6 +27,7 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "common.h"
+#include "test_common.h"
 
 void test_buf_quote_filename(void)
 {
@@ -53,12 +54,7 @@ void test_buf_quote_filename(void)
   {
     TEST_CASE(tests[i].first);
     buf_quote_filename(&result, tests[i].first, (i % 2));
-    if (!TEST_CHECK(mutt_str_equal(buf_string(&result), tests[i].second)))
-    {
-      TEST_MSG("Original: %s", tests[i].first);
-      TEST_MSG("Expected: %s", tests[i].second);
-      TEST_MSG("Actual:   %s", buf_string(&result));
-    }
+    TEST_CHECK_STR_EQ(buf_string(&result), tests[i].second);
   }
 
   buf_dealloc(&result);

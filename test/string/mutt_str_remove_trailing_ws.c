@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 struct TrailTest
 {
@@ -75,7 +76,7 @@ void test_mutt_str_remove_trailing_ws(void)
       TEST_CASE_("'%s'", buf);
 
       mutt_str_remove_trailing_ws(buf);
-      TEST_CHECK(mutt_str_equal(buf, t->expected));
+      TEST_CHECK_STR_EQ(buf, t->expected);
     }
   }
 }

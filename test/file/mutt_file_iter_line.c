@@ -28,6 +28,7 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "common.h"
+#include "test_common.h"
 
 void test_mutt_file_iter_line(void)
 {
@@ -57,11 +58,7 @@ void test_mutt_file_iter_line(void)
         TEST_MSG("Expected: true");
         TEST_MSG("Actual: false");
       }
-      if (!TEST_CHECK(mutt_str_equal(iter.line, file_lines[i])))
-      {
-        TEST_MSG("Expected: %s", file_lines[i]);
-        TEST_MSG("Actual: %s", iter.line);
-      }
+      TEST_CHECK_STR_EQ(iter.line, file_lines[i]);
       if (!TEST_CHECK(iter.line_num == (i + 1)))
       {
         TEST_MSG("Expected: %d", i + 1);

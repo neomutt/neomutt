@@ -48,7 +48,7 @@ bool test_store_degenerate(const struct StoreOps *sops, const char *name)
   if (!sops)
     return false;
 
-  if (!TEST_CHECK(mutt_str_equal(sops->name, name)))
+  if (!TEST_CHECK_STR_EQ(sops->name, name))
     return false;
 
   if (!TEST_CHECK(sops->open(NULL) == NULL))

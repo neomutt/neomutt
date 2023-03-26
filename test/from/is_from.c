@@ -27,6 +27,7 @@
 #include <time.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
+#include "test_common.h"
 
 struct IsFromTest
 {
@@ -129,11 +130,7 @@ void test_is_from(void)
     if (!valid)
       continue;
 
-    if (!TEST_CHECK(mutt_str_equal(t->path, path)))
-    {
-      TEST_MSG("Expected: %s", t->path);
-      TEST_MSG("Actual  : %s", path);
-    }
+    TEST_CHECK_STR_EQ(t->path, path);
 
     if (!TEST_CHECK(t->epoch == epoch))
     {

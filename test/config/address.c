@@ -71,13 +71,13 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   const char *apple_orig = "apple@example.com";
   const char *banana_orig = "banana@example.com";
 
-  if (!TEST_CHECK(mutt_str_equal(VarApple->mailbox, apple_orig)))
+  if (!TEST_CHECK_STR_EQ(VarApple->mailbox, apple_orig))
   {
     TEST_MSG("Error: initial values were wrong\n");
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(VarBanana->mailbox, banana_orig)))
+  if (!TEST_CHECK_STR_EQ(VarBanana->mailbox, banana_orig))
   {
     TEST_MSG("Error: initial values were wrong\n");
     return false;
@@ -101,7 +101,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(buf_string(value), apple_orig)))
+  if (!TEST_CHECK_STR_EQ(buf_string(value), apple_orig))
   {
     TEST_MSG("Apple's initial value is wrong: '%s'\n", buf_string(value));
     return false;
@@ -117,7 +117,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(buf_string(value), banana_orig)))
+  if (!TEST_CHECK_STR_EQ(buf_string(value), banana_orig))
   {
     TEST_MSG("Banana's initial value is wrong: '%s'\n", buf_string(value));
     return false;
@@ -181,7 +181,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
     VarDamson = cs_subset_address(sub, "Damson");
     addr = VarDamson ? VarDamson->mailbox : NULL;
-    if (!TEST_CHECK(mutt_str_equal(addr, valid[i])))
+    if (!TEST_CHECK_STR_EQ(addr, valid[i]))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
@@ -202,7 +202,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
     const struct Address *VarElderberry = cs_subset_address(sub, "Elderberry");
     addr = VarElderberry ? VarElderberry->mailbox : NULL;
-    if (!TEST_CHECK(mutt_str_equal(addr, valid[i])))
+    if (!TEST_CHECK_STR_EQ(addr, valid[i]))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
@@ -284,7 +284,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
 
   const struct Address *VarIlama = cs_subset_address(sub, "Ilama");
   addr = VarIlama ? VarIlama->mailbox : NULL;
-  if (!TEST_CHECK(mutt_str_equal(addr, a->mailbox)))
+  if (!TEST_CHECK_STR_EQ(addr, a->mailbox))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     goto tbns_out;
@@ -371,7 +371,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
 
   VarLemon = cs_subset_address(sub, "Lemon");
   addr = VarLemon ? VarLemon->mailbox : NULL;
-  if (!TEST_CHECK(mutt_str_equal(addr, "lemon@example.com")))
+  if (!TEST_CHECK_STR_EQ(addr, "lemon@example.com"))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
@@ -404,7 +404,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   VarMango = cs_subset_address(sub, "Mango");
-  if (!TEST_CHECK(mutt_str_equal(VarMango->mailbox, "john@example.com")))
+  if (!TEST_CHECK_STR_EQ(VarMango->mailbox, "john@example.com"))
   {
     TEST_MSG("Value of %s changed\n", name);
     return false;

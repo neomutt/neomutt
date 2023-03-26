@@ -26,6 +26,7 @@
 #include <string.h>
 #include <wchar.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_mb_wcstombs(void)
 {
@@ -71,7 +72,7 @@ void test_mutt_mb_wcstombs(void)
       size_t len = wcslen(test[i].src);
       mutt_mb_wcstombs(buf, sizeof(buf), test[i].src, len);
 
-      TEST_CHECK(mutt_str_equal(buf, test[i].expected));
+      TEST_CHECK_STR_EQ(buf, test[i].expected);
     }
   }
 }

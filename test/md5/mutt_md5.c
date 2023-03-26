@@ -26,6 +26,7 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "common.h"
+#include "test_common.h"
 
 void test_mutt_md5(void)
 {
@@ -47,12 +48,7 @@ void test_mutt_md5(void)
       char digest[33];
       mutt_md5(md5_test_data[i].text, buf);
       mutt_md5_toascii(buf, digest);
-      if (!TEST_CHECK(mutt_str_equal(md5_test_data[i].hash, digest)))
-      {
-        TEST_MSG("Iteration: %zu", i);
-        TEST_MSG("Expected : %s", md5_test_data[i].hash);
-        TEST_MSG("Actual   : %s", digest);
-      }
+      TEST_CHECK_STR_EQ(md5_test_data[i].hash, digest);
     }
   }
 }

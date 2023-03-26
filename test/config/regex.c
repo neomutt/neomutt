@@ -68,13 +68,13 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   TEST_MSG("Apple = %s\n", VarApple->pattern);
   TEST_MSG("Banana = %s\n", VarBanana->pattern);
 
-  if (!TEST_CHECK(mutt_str_equal(VarApple->pattern, "apple.*")))
+  if (!TEST_CHECK_STR_EQ(VarApple->pattern, "apple.*"))
   {
     TEST_MSG("Error: initial values were wrong\n");
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(VarBanana->pattern, "banana.*")))
+  if (!TEST_CHECK_STR_EQ(VarBanana->pattern, "banana.*"))
   {
     TEST_MSG("Error: initial values were wrong\n");
     return false;
@@ -98,7 +98,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(buf_string(value), "apple.*")))
+  if (!TEST_CHECK_STR_EQ(buf_string(value), "apple.*"))
   {
     TEST_MSG("Apple's initial value is wrong: '%s'\n", buf_string(value));
     return false;
@@ -115,7 +115,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(buf_string(value), "banana.*")))
+  if (!TEST_CHECK_STR_EQ(buf_string(value), "banana.*"))
   {
     TEST_MSG("Banana's initial value is wrong: %s\n", buf_string(value));
     return false;
@@ -186,7 +186,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
     const struct Regex *VarDamson = cs_subset_regex(sub, "Damson");
     regex = VarDamson ? VarDamson->pattern : NULL;
-    if (!TEST_CHECK(mutt_str_equal(regex, valid[i])))
+    if (!TEST_CHECK_STR_EQ(regex, valid[i]))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
@@ -213,7 +213,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
     const struct Regex *VarElderberry = cs_subset_regex(sub, "Elderberry");
     regex = VarElderberry ? VarElderberry->pattern : NULL;
-    if (!TEST_CHECK(mutt_str_equal(regex, valid[i])))
+    if (!TEST_CHECK_STR_EQ(regex, valid[i]))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
@@ -314,7 +314,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
 
   const struct Regex *VarIlama = cs_subset_regex(sub, "Ilama");
   regex = VarIlama ? VarIlama->pattern : NULL;
-  if (!TEST_CHECK(mutt_str_equal(regex, r->pattern)))
+  if (!TEST_CHECK_STR_EQ(regex, r->pattern))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     goto tns_out;
@@ -436,7 +436,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
 
   VarMango = cs_subset_regex(sub, "Mango");
   regex = VarMango ? VarMango->pattern : NULL;
-  if (!TEST_CHECK(mutt_str_equal(regex, "mango.*")))
+  if (!TEST_CHECK_STR_EQ(regex, "mango.*"))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
@@ -480,7 +480,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   VarOlive = cs_subset_regex(sub, "Olive");
-  if (!TEST_CHECK(mutt_str_equal(VarOlive->pattern, "hel*o")))
+  if (!TEST_CHECK_STR_EQ(VarOlive->pattern, "hel*o"))
   {
     TEST_MSG("Value of %s changed\n", name);
     return false;

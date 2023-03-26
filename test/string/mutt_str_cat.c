@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_str_cat(void)
 {
@@ -37,7 +38,7 @@ void test_mutt_str_cat(void)
   {
     char buf[64] = { 0 };
     TEST_CHECK(mutt_str_cat(buf, 0, "apple") == buf);
-    TEST_CHECK(mutt_str_equal(buf, ""));
+    TEST_CHECK_STR_EQ(buf, "");
   }
 
   {
@@ -48,24 +49,24 @@ void test_mutt_str_cat(void)
   {
     char buf[32] = { 0 };
     TEST_CHECK(mutt_str_cat(buf, sizeof(buf), "") == buf);
-    TEST_CHECK(mutt_str_equal(buf, ""));
+    TEST_CHECK_STR_EQ(buf, "");
   }
 
   {
     char buf[32] = { 0 };
     TEST_CHECK(mutt_str_cat(buf, sizeof(buf), "banana") == buf);
-    TEST_CHECK(mutt_str_equal(buf, "banana"));
+    TEST_CHECK_STR_EQ(buf, "banana");
   }
 
   {
     char buf[32] = "apple";
     TEST_CHECK(mutt_str_cat(buf, sizeof(buf), "") == buf);
-    TEST_CHECK(mutt_str_equal(buf, "apple"));
+    TEST_CHECK_STR_EQ(buf, "apple");
   }
 
   {
     char buf[32] = "apple";
     TEST_CHECK(mutt_str_cat(buf, sizeof(buf), "banana") == buf);
-    TEST_CHECK(mutt_str_equal(buf, "applebanana"));
+    TEST_CHECK_STR_EQ(buf, "applebanana");
   }
 }

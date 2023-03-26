@@ -68,13 +68,13 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   TEST_MSG("Apple = %s\n", VarApple);
   TEST_MSG("Banana = %s\n", VarBanana);
 
-  if (!TEST_CHECK(mutt_str_equal(VarApple, "apple")))
+  if (!TEST_CHECK_STR_EQ(VarApple, "apple"))
   {
     TEST_MSG("Error: initial values were wrong\n");
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(VarBanana, "banana")))
+  if (!TEST_CHECK_STR_EQ(VarBanana, "banana"))
   {
     TEST_MSG("Error: initial values were wrong\n");
     return false;
@@ -99,7 +99,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   VarApple = cs_subset_path(sub, "Apple");
-  if (!TEST_CHECK(mutt_str_equal(buf_string(value), "apple")))
+  if (!TEST_CHECK_STR_EQ(buf_string(value), "apple"))
   {
     TEST_MSG("Apple's initial value is wrong: '%s'\n", buf_string(value));
     return false;
@@ -116,7 +116,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   VarBanana = cs_subset_path(sub, "Banana");
-  if (!TEST_CHECK(mutt_str_equal(buf_string(value), "banana")))
+  if (!TEST_CHECK_STR_EQ(buf_string(value), "banana"))
   {
     TEST_MSG("Banana's initial value is wrong: '%s'\n", buf_string(value));
     return false;
@@ -191,7 +191,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     }
 
     const char *VarDamson = cs_subset_path(sub, "Damson");
-    if (!TEST_CHECK(mutt_str_equal(VarDamson, valid[i])))
+    if (!TEST_CHECK_STR_EQ(VarDamson, valid[i]))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
@@ -232,7 +232,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     }
 
     const char *VarElderberry = cs_subset_path(sub, "Elderberry");
-    if (!TEST_CHECK(mutt_str_equal(VarElderberry, valid[i])))
+    if (!TEST_CHECK_STR_EQ(VarElderberry, valid[i]))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
@@ -316,7 +316,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
     }
 
     const char *VarJackfruit = cs_subset_path(sub, "Jackfruit");
-    if (!TEST_CHECK(mutt_str_equal(VarJackfruit, valid[i])))
+    if (!TEST_CHECK_STR_EQ(VarJackfruit, valid[i]))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
@@ -357,7 +357,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
     }
 
     const char *VarKumquat = cs_subset_path(sub, "Kumquat");
-    if (!TEST_CHECK(mutt_str_equal(VarKumquat, valid[i])))
+    if (!TEST_CHECK_STR_EQ(VarKumquat, valid[i]))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
@@ -382,7 +382,7 @@ static bool test_native_get(struct ConfigSubset *sub, struct Buffer *err)
   const char *VarMango = cs_subset_path(sub, "Mango");
   buf_reset(err);
   intptr_t value = cs_str_native_get(cs, name, err);
-  if (!TEST_CHECK(mutt_str_equal(VarMango, (char *) value)))
+  if (!TEST_CHECK_STR_EQ(VarMango, (char *) value))
   {
     TEST_MSG("Get failed: %s\n", buf_string(err));
     return false;
@@ -417,7 +417,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   VarNectarine = cs_subset_path(sub, "Nectarine");
-  if (!TEST_CHECK(mutt_str_equal(VarNectarine, "nectarine")))
+  if (!TEST_CHECK_STR_EQ(VarNectarine, "nectarine"))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
@@ -457,7 +457,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   VarOlive = cs_subset_path(sub, "Olive");
-  if (!TEST_CHECK(mutt_str_equal(VarOlive, "hello")))
+  if (!TEST_CHECK_STR_EQ(VarOlive, "hello"))
   {
     TEST_MSG("Value of %s changed\n", name);
     return false;

@@ -29,6 +29,7 @@
 #include "mutt/lib.h"
 #include "pattern/lib.h"
 #include "globals.h"
+#include "test_common.h"
 
 bool ResumeEditedDraftFiles;
 
@@ -186,11 +187,7 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "empty pattern";
-    if (!TEST_CHECK(mutt_str_equal(err.data, msg)))
-    {
-      TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
-    }
+    TEST_CHECK_STR_EQ(err.data, msg);
   }
 
   { /* invalid */
@@ -206,11 +203,7 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "error in pattern at: x";
-    if (!TEST_CHECK(mutt_str_equal(err.data, msg)))
-    {
-      TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
-    }
+    TEST_CHECK_STR_EQ(err.data, msg);
   }
 
   { /* missing parameter */
@@ -226,11 +219,7 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "missing parameter";
-    if (!TEST_CHECK(mutt_str_equal(err.data, msg)))
-    {
-      TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
-    }
+    TEST_CHECK_STR_EQ(err.data, msg);
   }
 
   { /* error in pattern */
@@ -246,11 +235,7 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "error in pattern at: | =s foo";
-    if (!TEST_CHECK(mutt_str_equal(err.data, msg)))
-    {
-      TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
-    }
+    TEST_CHECK_STR_EQ(err.data, msg);
   }
 
   {
@@ -289,11 +274,7 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(mutt_str_equal(err.data, msg)))
-    {
-      TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
-    }
+    TEST_CHECK_STR_EQ(err.data, msg);
 
     mutt_pattern_free(&pat);
   }
@@ -335,11 +316,7 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(mutt_str_equal(err.data, msg)))
-    {
-      TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
-    }
+    TEST_CHECK_STR_EQ(err.data, msg);
 
     mutt_pattern_free(&pat);
   }
@@ -412,11 +389,7 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(mutt_str_equal(err.data, msg)))
-    {
-      TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
-    }
+    TEST_CHECK_STR_EQ(err.data, msg);
 
     mutt_pattern_free(&pat);
   }
@@ -489,11 +462,7 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(mutt_str_equal(err.data, msg)))
-    {
-      TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
-    }
+    TEST_CHECK_STR_EQ(err.data, msg);
 
     mutt_pattern_free(&pat);
   }
@@ -566,11 +535,7 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(mutt_str_equal(err.data, msg)))
-    {
-      TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
-    }
+    TEST_CHECK_STR_EQ(err.data, msg);
 
     mutt_pattern_free(&pat);
   }
@@ -656,11 +621,7 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(mutt_str_equal(err.data, msg)))
-    {
-      TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
-    }
+    TEST_CHECK_STR_EQ(err.data, msg);
 
     mutt_pattern_free(&pat);
   }
@@ -761,11 +722,7 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(mutt_str_equal(err.data, msg)))
-    {
-      TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
-    }
+    TEST_CHECK_STR_EQ(err.data, msg);
 
     mutt_pattern_free(&pat);
   }

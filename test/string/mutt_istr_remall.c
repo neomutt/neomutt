@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 struct RemallTest
 {
@@ -86,7 +87,7 @@ void test_mutt_istr_remall(void)
       TEST_CASE(buf);
 
       mutt_istr_remall(buf, remove);
-      TEST_CHECK(mutt_str_equal(buf, t->expected));
+      TEST_CHECK_STR_EQ(buf, t->expected);
     }
   }
 }

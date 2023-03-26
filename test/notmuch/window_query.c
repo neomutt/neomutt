@@ -27,6 +27,7 @@
 #include "mutt/lib.h"
 #include "notmuch/lib.h"
 #include "notmuch/query.h" // IWYU pragma: keep
+#include "test_common.h"
 
 struct TestCase
 {
@@ -86,7 +87,6 @@ void test_nm_windowed_query_from_query(void)
                                                            t->timebase, t->or_terms);
 
     TEST_CHECK(rc == NM_WINDOW_QUERY_SUCCESS);
-    TEST_CHECK_(mutt_str_equal(buf, t->expected),
-                "expected \"%s\" got \"%s\" instead.", t->expected, buf);
+    TEST_CHECK_STR_EQ(buf, t->expected);
   }
 }

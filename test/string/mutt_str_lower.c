@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_str_lower(void)
 {
@@ -37,18 +38,18 @@ void test_mutt_str_lower(void)
   {
     char buf[64] = "";
     mutt_str_lower(buf);
-    TEST_CHECK(mutt_str_equal(buf, ""));
+    TEST_CHECK_STR_EQ(buf, "");
   }
 
   {
     char buf[64] = "apple";
     mutt_str_lower(buf);
-    TEST_CHECK(mutt_str_equal(buf, "apple"));
+    TEST_CHECK_STR_EQ(buf, "apple");
   }
 
   {
     char buf[64] = "aPPLe";
     mutt_str_lower(buf);
-    TEST_CHECK(mutt_str_equal(buf, "apple"));
+    TEST_CHECK_STR_EQ(buf, "apple");
   }
 }

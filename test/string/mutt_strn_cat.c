@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_strn_cat(void)
 {
@@ -53,37 +54,37 @@ void test_mutt_strn_cat(void)
   {
     char buf[32] = { 0 };
     TEST_CHECK(mutt_strn_cat(buf, sizeof(buf), "", 1) == buf);
-    TEST_CHECK(mutt_str_equal(buf, ""));
+    TEST_CHECK_STR_EQ(buf, "");
   }
 
   {
     char buf[32] = { 0 };
     TEST_CHECK(mutt_strn_cat(buf, sizeof(buf), "banana", 6) == buf);
-    TEST_CHECK(mutt_str_equal(buf, "banana"));
+    TEST_CHECK_STR_EQ(buf, "banana");
   }
 
   {
     char buf[32] = { 0 };
     TEST_CHECK(mutt_strn_cat(buf, sizeof(buf), "banana", 3) == buf);
-    TEST_CHECK(mutt_str_equal(buf, "ban"));
+    TEST_CHECK_STR_EQ(buf, "ban");
   }
 
   {
     char buf[32] = "apple";
     TEST_CHECK(mutt_strn_cat(buf, sizeof(buf), "", 1) == buf);
-    TEST_CHECK(mutt_str_equal(buf, "apple"));
+    TEST_CHECK_STR_EQ(buf, "apple");
   }
 
   {
     char buf[32] = "apple";
     TEST_CHECK(mutt_strn_cat(buf, sizeof(buf), "banana", 6) == buf);
-    TEST_CHECK(mutt_str_equal(buf, "applebanana"));
+    TEST_CHECK_STR_EQ(buf, "applebanana");
   }
 
   {
     char buf[32] = "apple";
     TEST_CHECK(mutt_strn_cat(buf, sizeof(buf), "banana", 3) == buf);
-    TEST_CHECK(mutt_str_equal(buf, "appleban"));
+    TEST_CHECK_STR_EQ(buf, "appleban");
   }
 
   // Buffer too small
@@ -91,12 +92,12 @@ void test_mutt_strn_cat(void)
   {
     char buf[6] = { 0 };
     TEST_CHECK(mutt_strn_cat(buf, sizeof(buf), "banana", 6) == buf);
-    TEST_CHECK(mutt_str_equal(buf, "banan"));
+    TEST_CHECK_STR_EQ(buf, "banan");
   }
 
   {
     char buf[8] = "apple";
     TEST_CHECK(mutt_strn_cat(buf, sizeof(buf), "banana", 6) == buf);
-    TEST_CHECK(mutt_str_equal(buf, "appleba"));
+    TEST_CHECK_STR_EQ(buf, "appleba");
   }
 }

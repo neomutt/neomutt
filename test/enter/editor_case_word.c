@@ -28,6 +28,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "enter/lib.h"
+#include "test_common.h"
 
 void test_editor_case_word(void)
 {
@@ -55,7 +56,7 @@ void test_editor_case_word(void)
 
     char buf[64];
     mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
-    TEST_CHECK(mutt_str_equal(buf, "Test string"));
+    TEST_CHECK_STR_EQ(buf, "Test string");
     enter_state_free(&es);
   }
 
@@ -71,7 +72,7 @@ void test_editor_case_word(void)
 
     char buf[64];
     mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
-    TEST_CHECK(mutt_str_equal(buf, "Test string"));
+    TEST_CHECK_STR_EQ(buf, "Test string");
     enter_state_free(&es);
   }
 
@@ -87,7 +88,7 @@ void test_editor_case_word(void)
 
     char buf[64];
     mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
-    TEST_CHECK(mutt_str_equal(buf, "TEST string"));
+    TEST_CHECK_STR_EQ(buf, "TEST string");
     enter_state_free(&es);
   }
 
@@ -104,7 +105,7 @@ void test_editor_case_word(void)
 
     char buf[64];
     mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
-    TEST_CHECK(mutt_str_equal(buf, "test stRING"));
+    TEST_CHECK_STR_EQ(buf, "test stRING");
     enter_state_free(&es);
   }
 
@@ -121,7 +122,7 @@ void test_editor_case_word(void)
 
     char buf[64];
     mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
-    TEST_CHECK(mutt_str_equal(buf, "test     STRING    "));
+    TEST_CHECK_STR_EQ(buf, "test     STRING    ");
     enter_state_free(&es);
   }
 
@@ -137,7 +138,7 @@ void test_editor_case_word(void)
 
     char buf[64];
     mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
-    TEST_CHECK(mutt_str_equal(buf, "TEST string"));
+    TEST_CHECK_STR_EQ(buf, "TEST string");
     enter_state_free(&es);
   }
 
@@ -153,7 +154,7 @@ void test_editor_case_word(void)
 
     char buf[64];
     mutt_mb_wcstombs(buf, sizeof(buf), es->wbuf, es->lastchar);
-    TEST_CHECK(mutt_str_equal(buf, "test STRING"));
+    TEST_CHECK_STR_EQ(buf, "test STRING");
     enter_state_free(&es);
   }
 }

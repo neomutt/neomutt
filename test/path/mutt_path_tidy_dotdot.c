@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_path_tidy_dotdot(void)
 {
@@ -85,12 +86,7 @@ void test_mutt_path_tidy_dotdot(void)
 
       mutt_str_copy(buf, tests[i][0], sizeof(buf));
       mutt_path_tidy_dotdot(buf);
-      if (!TEST_CHECK(mutt_str_equal(buf, tests[i][1])))
-      {
-        TEST_MSG("Input:    %s", tests[i][0]);
-        TEST_MSG("Expected: %s", tests[i][1]);
-        TEST_MSG("Actual:   %s", buf);
-      }
+      TEST_CHECK_STR_EQ(buf, tests[i][1]);
     }
   }
 }

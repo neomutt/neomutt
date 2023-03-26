@@ -95,7 +95,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(buf_string(value), "-42")))
+  if (!TEST_CHECK_STR_EQ(buf_string(value), "-42"))
   {
     TEST_MSG("Apple's initial value is wrong: '%s'\n", buf_string(value));
     return false;
@@ -112,7 +112,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(buf_string(value), "99")))
+  if (!TEST_CHECK_STR_EQ(buf_string(value), "99"))
   {
     TEST_MSG("Banana's initial value is wrong: '%s'\n", buf_string(value));
     return false;

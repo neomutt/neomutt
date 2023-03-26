@@ -31,6 +31,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "common.h" // IWYU pragma: keep
+#include "test_common.h"
 
 // clang-format off
 static struct ConfigDef Vars[] = {
@@ -136,11 +137,8 @@ void test_config_subset(void)
   expected = "142";
   rc = cs_subset_he_string_get(NeoMutt->sub, he, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS) ||
-      !TEST_CHECK(mutt_str_equal(buf_string(err), expected)))
+      !TEST_CHECK_STR_EQ(buf_string(err), expected))
   {
-    TEST_MSG("cs_subset_he_string_get failed\n");
-    TEST_MSG("Expected: %s", expected);
-    TEST_MSG("Actual  : %s", buf_string(err));
     return;
   }
 
@@ -156,11 +154,8 @@ void test_config_subset(void)
   expected = "142";
   rc = cs_subset_str_string_get(NeoMutt->sub, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS) ||
-      !TEST_CHECK(mutt_str_equal(buf_string(err), expected)))
+      !TEST_CHECK_STR_EQ(buf_string(err), expected))
   {
-    TEST_MSG("cs_subset_str_string_get failed\n");
-    TEST_MSG("Expected: %s", expected);
-    TEST_MSG("Actual  : %s", buf_string(err));
     return;
   }
 

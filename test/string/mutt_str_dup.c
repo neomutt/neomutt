@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_str_dup(void)
 {
@@ -43,7 +44,7 @@ void test_mutt_str_dup(void)
     char *result = mutt_str_dup(str);
     TEST_CHECK(result != NULL);
     TEST_CHECK(result != str);
-    TEST_CHECK(mutt_str_equal(result, str));
+    TEST_CHECK_STR_EQ(result, str);
     FREE(&result);
   }
 }

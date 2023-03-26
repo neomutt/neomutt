@@ -28,6 +28,7 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
+#include "test_common.h"
 
 struct UrlTest
 {
@@ -216,20 +217,12 @@ void check_query_string(const char *exp, const struct UrlQueryList *act)
     next = strchr(exp, '|');
     mutt_str_copy(tmp, exp, next - exp + 1);
     exp = next + 1;
-    if (!TEST_CHECK(mutt_str_equal(tmp, np->name)))
-    {
-      TEST_MSG("Expected: <%s>", tmp);
-      TEST_MSG("Actual  : <%s>", np->name);
-    }
+    TEST_CHECK_STR_EQ(tmp, np->name);
 
     next = strchr(exp, '|');
     mutt_str_copy(tmp, exp, next - exp + 1);
     exp = next + 1;
-    if (!TEST_CHECK(mutt_str_equal(tmp, np->value)))
-    {
-      TEST_MSG("Expected: <%s>", tmp);
-      TEST_MSG("Actual  : <%s>", np->value);
-    }
+    TEST_CHECK_STR_EQ(tmp, np->value);
 
     np = STAILQ_NEXT(np, entries);
   }
@@ -268,31 +261,15 @@ void test_url_parse(void)
         TEST_MSG("Expected: %d", test[i].url.scheme);
         TEST_MSG("Actual  : %d", url->scheme);
       }
-      if (!TEST_CHECK(mutt_str_equal(test[i].url.user, url->user)))
-      {
-        TEST_MSG("Expected: %s", test[i].url.user);
-        TEST_MSG("Actual  : %s", url->user);
-      }
-      if (!TEST_CHECK(mutt_str_equal(test[i].url.pass, url->pass)))
-      {
-        TEST_MSG("Expected: %s", test[i].url.pass);
-        TEST_MSG("Actual  : %s", url->pass);
-      }
-      if (!TEST_CHECK(mutt_str_equal(test[i].url.host, url->host)))
-      {
-        TEST_MSG("Expected: %s", test[i].url.host);
-        TEST_MSG("Actual  : %s", url->host);
-      }
+      TEST_CHECK_STR_EQ(test[i].url.user, url->user);
+      TEST_CHECK_STR_EQ(test[i].url.pass, url->pass);
+      TEST_CHECK_STR_EQ(test[i].url.host, url->host);
       if (!TEST_CHECK(test[i].url.port == url->port))
       {
         TEST_MSG("Expected: %hu", test[i].url.port);
         TEST_MSG("Actual  : %hu", url->port);
       }
-      if (!TEST_CHECK(mutt_str_equal(test[i].url.path, url->path)))
-      {
-        TEST_MSG("Expected: %s", test[i].url.path);
-        TEST_MSG("Actual  : %s", url->path);
-      }
+      TEST_CHECK_STR_EQ(test[i].url.path, url->path);
       check_query_string(test[i].qs_elem, &url->query_strings);
 
       url_free(&url);

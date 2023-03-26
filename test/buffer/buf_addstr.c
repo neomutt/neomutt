@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_buf_addstr(void)
 {
@@ -42,7 +43,7 @@ void test_buf_addstr(void)
   {
     struct Buffer buf = buf_make(0);
     TEST_CHECK(buf_addstr(&buf, "apple") == 5);
-    TEST_CHECK(mutt_str_equal(buf_string(&buf), "apple"));
+    TEST_CHECK_STR_EQ(buf_string(&buf), "apple");
     buf_dealloc(&buf);
   }
 
@@ -50,7 +51,7 @@ void test_buf_addstr(void)
     struct Buffer buf = buf_make(0);
     buf_addstr(&buf, "test");
     TEST_CHECK(buf_addstr(&buf, "apple") == 5);
-    TEST_CHECK(mutt_str_equal(buf_string(&buf), "testapple"));
+    TEST_CHECK_STR_EQ(buf_string(&buf), "testapple");
     buf_dealloc(&buf);
   }
 }

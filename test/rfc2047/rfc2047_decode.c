@@ -54,23 +54,13 @@ void test_rfc2047_decode(void)
       /* decode the original string */
       char *s = mutt_str_dup(rfc2047_test_data[i].original);
       rfc2047_decode(&s);
-      if (!TEST_CHECK(mutt_str_equal(s, rfc2047_test_data[i].decoded)))
-      {
-        TEST_MSG("Iteration: %zu", i);
-        TEST_MSG("Expected : %s", rfc2047_test_data[i].decoded);
-        TEST_MSG("Actual   : %s", s);
-      }
+      TEST_CHECK_STR_EQ(s, rfc2047_test_data[i].decoded);
       FREE(&s);
 
       /* decode the encoded result */
       s = mutt_str_dup(rfc2047_test_data[i].encoded);
       rfc2047_decode(&s);
-      if (!TEST_CHECK(mutt_str_equal(s, rfc2047_test_data[i].decoded)))
-      {
-        TEST_MSG("Iteration: %zu", i);
-        TEST_MSG("Expected : %s", rfc2047_test_data[i].decoded);
-        TEST_MSG("Actual   : %s", s);
-      }
+      TEST_CHECK_STR_EQ(s, rfc2047_test_data[i].decoded);
       FREE(&s);
     }
   }

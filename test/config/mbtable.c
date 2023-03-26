@@ -66,13 +66,13 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   TEST_MSG("Apple = %s\n", VarApple->orig_str);
   TEST_MSG("Banana = %s\n", VarBanana->orig_str);
 
-  if (!TEST_CHECK(mutt_str_equal(VarApple->orig_str, "apple")))
+  if (!TEST_CHECK_STR_EQ(VarApple->orig_str, "apple"))
   {
     TEST_MSG("Error: initial values were wrong\n");
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(VarBanana->orig_str, "banana")))
+  if (!TEST_CHECK_STR_EQ(VarBanana->orig_str, "banana"))
   {
     TEST_MSG("Error: initial values were wrong\n");
     return false;
@@ -96,7 +96,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(buf_string(value), "apple")))
+  if (!TEST_CHECK_STR_EQ(buf_string(value), "apple"))
   {
     TEST_MSG("Apple's initial value is wrong: '%s'\n", buf_string(value));
     return false;
@@ -113,7 +113,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(buf_string(value), "banana")))
+  if (!TEST_CHECK_STR_EQ(buf_string(value), "banana"))
   {
     TEST_MSG("Banana's initial value is wrong: %s\n", buf_string(value));
     return false;
@@ -183,7 +183,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
     struct MbTable *VarDamson = cs_subset_mbtable(sub, "Damson");
     mb = VarDamson ? VarDamson->orig_str : NULL;
-    if (!TEST_CHECK(mutt_str_equal(mb, valid[i])))
+    if (!TEST_CHECK_STR_EQ(mb, valid[i]))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
@@ -210,7 +210,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
     struct MbTable *VarElderberry = cs_subset_mbtable(sub, "Elderberry");
     const char *orig_str = VarElderberry ? VarElderberry->orig_str : NULL;
-    if (!TEST_CHECK(mutt_str_equal(orig_str, valid[i])))
+    if (!TEST_CHECK_STR_EQ(orig_str, valid[i]))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
@@ -300,7 +300,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
 
   struct MbTable *VarIlama = cs_subset_mbtable(sub, "Ilama");
   mb = VarIlama ? VarIlama->orig_str : NULL;
-  if (!TEST_CHECK(mutt_str_equal(mb, t->orig_str)))
+  if (!TEST_CHECK_STR_EQ(mb, t->orig_str))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     goto tns_out;
@@ -388,7 +388,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
 
   VarLemon = cs_subset_mbtable(sub, "Lemon");
   mb = VarLemon ? VarLemon->orig_str : NULL;
-  if (!TEST_CHECK(mutt_str_equal(mb, "lemon")))
+  if (!TEST_CHECK_STR_EQ(mb, "lemon"))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
@@ -421,7 +421,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   VarMango = cs_subset_mbtable(sub, "Mango");
-  if (!TEST_CHECK(mutt_str_equal(VarMango->orig_str, "hello")))
+  if (!TEST_CHECK_STR_EQ(VarMango->orig_str, "hello"))
   {
     TEST_MSG("Value of %s changed\n", name);
     return false;

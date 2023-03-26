@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_buf_printf(void)
 {
@@ -54,7 +55,7 @@ void test_buf_printf(void)
     const char *str = "apple";
     struct Buffer buf = buf_make(0);
     TEST_CHECK(buf_printf(&buf, str) == 5);
-    TEST_CHECK(mutt_str_equal(buf_string(&buf), str));
+    TEST_CHECK_STR_EQ(buf_string(&buf), str);
     buf_dealloc(&buf);
   }
 
@@ -64,7 +65,7 @@ void test_buf_printf(void)
     const char *result = "app 1234567 3.1416";
     struct Buffer buf = buf_make(0);
     TEST_CHECK(buf_printf(&buf, "%.3s %ld %3.4f", str, 1234567, 3.141592654) == 18);
-    TEST_CHECK(mutt_str_equal(buf_string(&buf), result));
+    TEST_CHECK_STR_EQ(buf_string(&buf), result);
     buf_dealloc(&buf);
   }
 
@@ -76,7 +77,7 @@ void test_buf_printf(void)
     struct Buffer buf = buf_make(0);
     buf_addstr(&buf, str);
     TEST_CHECK(buf_printf(&buf, "") == 0);
-    TEST_CHECK(mutt_str_equal(buf_string(&buf), ""));
+    TEST_CHECK_STR_EQ(buf_string(&buf), "");
     buf_dealloc(&buf);
   }
 
@@ -86,7 +87,7 @@ void test_buf_printf(void)
     struct Buffer buf = buf_make(0);
     buf_addstr(&buf, "test");
     TEST_CHECK(buf_printf(&buf, str) == 5);
-    TEST_CHECK(mutt_str_equal(buf_string(&buf), str));
+    TEST_CHECK_STR_EQ(buf_string(&buf), str);
     buf_dealloc(&buf);
   }
 
@@ -96,11 +97,7 @@ void test_buf_printf(void)
     struct Buffer buf = buf_make(0);
     buf_addstr(&buf, "test");
     TEST_CHECK(buf_printf(&buf, str) == 195);
-    if (!TEST_CHECK(mutt_str_equal(buf_string(&buf), str)))
-    {
-      TEST_MSG("Expected: %s", str);
-      TEST_MSG("Actual  : %s", buf_string(&buf));
-    }
+    TEST_CHECK_STR_EQ(buf_string(&buf), str);
     buf_dealloc(&buf);
   }
 
@@ -111,7 +108,7 @@ void test_buf_printf(void)
     struct Buffer buf = buf_make(0);
     buf_addstr(&buf, "test");
     TEST_CHECK(buf_printf(&buf, "%.3s %ld %3.4f", str, 1234567, 3.141592654) == 18);
-    TEST_CHECK(mutt_str_equal(buf_string(&buf), result));
+    TEST_CHECK_STR_EQ(buf_string(&buf), result);
     buf_dealloc(&buf);
   }
 }

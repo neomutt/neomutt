@@ -596,7 +596,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(buf_string(err), init)))
+  if (!TEST_CHECK_STR_EQ(buf_string(err), init))
     return false;
 
   buf_reset(err);
@@ -682,12 +682,8 @@ static bool test_plus_equals(struct ConfigSubset *sub, struct Buffer *err)
       return false;
     }
 
-    if (!TEST_CHECK(mutt_str_equal(PlusTests[i][2], buf_string(err))))
-    {
-      TEST_MSG("Expected: %s\n", PlusTests[i][2]);
-      TEST_MSG("Actual  : %s\n", buf_string(err));
+    if (!TEST_CHECK_STR_EQ(PlusTests[i][2], buf_string(err)))
       return false;
-    }
   }
 
   // Test a failing validator
@@ -761,12 +757,8 @@ static bool test_minus_equals(struct ConfigSubset *sub, struct Buffer *err)
       return false;
     }
 
-    if (!TEST_CHECK(mutt_str_equal(MinusTests[i][2], buf_string(err))))
-    {
-      TEST_MSG("Expected: %s\n", MinusTests[i][2]);
-      TEST_MSG("Actual  : %s\n", buf_string(err));
+    if (!TEST_CHECK_STR_EQ(MinusTests[i][2], buf_string(err)))
       return false;
-    }
   }
 
   // Test a failing validator
@@ -814,7 +806,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
 
   VarLemon = cs_subset_slist(sub, "Lemon");
   item = STAILQ_FIRST(&VarLemon->head)->data;
-  if (!TEST_CHECK(mutt_str_equal(item, "lemon")))
+  if (!TEST_CHECK_STR_EQ(item, "lemon"))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
@@ -850,7 +842,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
 
   VarMango = cs_subset_slist(sub, "Mango");
   item = STAILQ_FIRST(&VarMango->head)->data;
-  if (!TEST_CHECK(mutt_str_equal(item, "banana")))
+  if (!TEST_CHECK_STR_EQ(item, "banana"))
   {
     TEST_MSG("Value of %s changed\n", name);
     return false;

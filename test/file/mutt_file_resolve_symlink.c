@@ -55,12 +55,7 @@ void test_mutt_file_resolve_symlink(void)
 
     TEST_CASE(first);
     mutt_file_resolve_symlink(&result);
-    if (!TEST_CHECK(mutt_str_equal(buf_string(&result), second)))
-    {
-      TEST_MSG("Original: %s", NONULL(tests[i].first));
-      TEST_MSG("Expected: %s", second);
-      TEST_MSG("Actual:   %s", buf_string(&result));
-    }
+    TEST_CHECK_STR_EQ(buf_string(&result), second);
   }
 
   buf_dealloc(&result);

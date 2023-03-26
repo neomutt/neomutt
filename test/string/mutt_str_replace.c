@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_str_replace(void)
 {
@@ -52,7 +53,7 @@ void test_mutt_str_replace(void)
     mutt_str_replace(&ptr, str);
     TEST_CHECK(ptr != NULL);
     TEST_CHECK(ptr != str);
-    TEST_CHECK(mutt_str_equal(ptr, str));
+    TEST_CHECK_STR_EQ(ptr, str);
     FREE(&ptr);
   }
 
@@ -62,7 +63,7 @@ void test_mutt_str_replace(void)
     mutt_str_replace(&ptr, str);
     TEST_CHECK(ptr != NULL);
     TEST_CHECK(ptr != str);
-    TEST_CHECK(mutt_str_equal(ptr, str));
+    TEST_CHECK_STR_EQ(ptr, str);
     FREE(&ptr);
   }
 

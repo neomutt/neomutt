@@ -26,6 +26,7 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "common.h"
+#include "test_common.h"
 
 void test_mutt_file_quote_filename(void)
 {
@@ -55,14 +56,7 @@ void test_mutt_file_quote_filename(void)
     TEST_CASE(tests[i].first);
     memset(buf, 0, sizeof(buf));
     rc = mutt_file_quote_filename(tests[i].first, buf, sizeof(buf));
-    if (!TEST_CHECK(rc == tests[i].retval) ||
-        !TEST_CHECK(mutt_str_equal(buf, tests[i].second)))
-    {
-      TEST_MSG("Expected: %d", tests[i].retval);
-      TEST_MSG("Actual:   %d", rc);
-      TEST_MSG("Original: %s", tests[i].first);
-      TEST_MSG("Expected: %s", tests[i].second);
-      TEST_MSG("Actual:   %s", buf);
-    }
+    TEST_CHECK(rc == tests[i].retval);
+    TEST_CHECK_STR_EQ(buf, tests[i].second);
   }
 }

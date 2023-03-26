@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_strn_copy(void)
 {
@@ -56,18 +57,18 @@ void test_mutt_strn_copy(void)
   {
     char buf[32] = { 0 };
     TEST_CHECK(mutt_strn_copy(buf, str + 3, 0, sizeof(buf)) == buf);
-    TEST_CHECK(mutt_str_equal(buf, ""));
+    TEST_CHECK_STR_EQ(buf, "");
   }
 
   {
     char buf[32] = { 0 };
     TEST_CHECK(mutt_strn_copy(buf, str + 3, 4, sizeof(buf)) == buf);
-    TEST_CHECK(mutt_str_equal(buf, "le b"));
+    TEST_CHECK_STR_EQ(buf, "le b");
   }
 
   {
     char buf[32] = { 0 };
     TEST_CHECK(mutt_strn_copy(buf, str + 3, 61, sizeof(buf)) == buf);
-    TEST_CHECK(mutt_str_equal(buf, "le banana"));
+    TEST_CHECK_STR_EQ(buf, "le banana");
   }
 }

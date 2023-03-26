@@ -26,6 +26,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 struct InlineReplaceTest
 {
@@ -75,9 +76,9 @@ void test_mutt_str_inline_replace(void)
       bool result = mutt_str_inline_replace(buf, sizeof(buf), t->replace_len, t->replace);
       TEST_CHECK(result == t->success);
       if (result)
-        TEST_CHECK(mutt_str_equal(buf, t->expected));
+        TEST_CHECK_STR_EQ(buf, t->expected);
       else
-        TEST_CHECK(mutt_str_equal(buf, t->initial));
+        TEST_CHECK_STR_EQ(buf, t->initial);
     }
   }
 }

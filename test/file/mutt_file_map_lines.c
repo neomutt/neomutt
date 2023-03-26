@@ -28,6 +28,7 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "common.h"
+#include "test_common.h"
 
 #define BOOLIFY(x) ((x) ? "true" : "false")
 
@@ -39,11 +40,7 @@ bool map_dummy(char *line, int line_num, void *user_data)
 static bool mapping_func(char *line, int line_num, void *user_data)
 {
   const int *p_last_line_num = (const int *) (user_data);
-  if (!TEST_CHECK(mutt_str_equal(line, file_lines[line_num - 1])))
-  {
-    TEST_MSG("Expected: %s", file_lines[line_num - 1]);
-    TEST_MSG("Actual: %s", line);
-  }
+  TEST_CHECK_STR_EQ(line, file_lines[line_num - 1]);
   return (line_num < *p_last_line_num);
 }
 

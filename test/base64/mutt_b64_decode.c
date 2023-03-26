@@ -51,11 +51,7 @@ void test_mutt_b64_decode(void)
       TEST_MSG("Actual  : %zu", len);
     }
     buffer[len] = '\0';
-    if (!TEST_CHECK(mutt_str_equal(buffer, clear)))
-    {
-      TEST_MSG("Expected: %s", clear);
-      TEST_MSG("Actual  : %s", buffer);
-    }
+    TEST_CHECK_STR_EQ(buffer, clear);
   }
 
   {

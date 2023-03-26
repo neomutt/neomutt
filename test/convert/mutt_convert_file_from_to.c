@@ -28,6 +28,7 @@
 #include "email/lib.h"
 #include "convert/lib.h"
 #include "convert_common.h"
+#include "test_common.h"
 
 void test_mutt_convert_file_from_to(void)
 {
@@ -46,9 +47,9 @@ void test_mutt_convert_file_from_to(void)
     char *tocode = NULL;
     mutt_convert_file_from_to(fp, fromcodes, tocodes, &fromcode, &tocode, &info);
 
-    TEST_CHECK(mutt_str_equal(fromcode, "us-ascii"));
+    TEST_CHECK_STR_EQ(fromcode, "us-ascii");
     TEST_MSG("Check failed: %s == us-ascii", fromcode);
-    TEST_CHECK(mutt_str_equal(tocode, "utf-8"));
+    TEST_CHECK_STR_EQ(tocode, "utf-8");
     TEST_MSG("Check failed: %s == utf-8", tocode);
 
     slist_free(&fromcodes);
@@ -72,9 +73,9 @@ void test_mutt_convert_file_from_to(void)
 
     mutt_convert_file_from_to(fp, fromcodes, tocodes, &fromcode, &tocode, &info);
 
-    TEST_CHECK(mutt_str_equal(fromcode, "utf-8"));
+    TEST_CHECK_STR_EQ(fromcode, "utf-8");
     TEST_MSG("Check failed: %s == us-ascii", fromcode);
-    TEST_CHECK(mutt_str_equal(tocode, "iso-8859-2"));
+    TEST_CHECK_STR_EQ(tocode, "iso-8859-2");
     TEST_MSG("Check failed: %s == utf-8", tocode);
 
     slist_free(&fromcodes);

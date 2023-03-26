@@ -27,6 +27,7 @@
 #include "mutt/lib.h"
 #include "notmuch/lib.h"
 #include "notmuch/query.h" // IWYU pragma: keep
+#include "test_common.h"
 
 struct NmParseTypeTest
 {
@@ -106,10 +107,10 @@ void test_nm_string_to_query_type_mapper(void)
 void test_nm_query_type_to_string(void)
 {
   {
-    TEST_CHECK(mutt_str_equal(nm_query_type_to_string(NM_QUERY_TYPE_THREADS), "threads"));
+    TEST_CHECK_STR_EQ(nm_query_type_to_string(NM_QUERY_TYPE_THREADS), "threads");
   }
 
   {
-    TEST_CHECK(mutt_str_equal(nm_query_type_to_string(NM_QUERY_TYPE_MESGS), "messages"));
+    TEST_CHECK_STR_EQ(nm_query_type_to_string(NM_QUERY_TYPE_MESGS), "messages");
   }
 }

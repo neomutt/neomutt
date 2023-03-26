@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_str_copy(void)
 {
@@ -60,11 +61,7 @@ void test_mutt_str_copy(void)
       TEST_MSG("Expected: %zu", sizeof(trial) - 1);
       TEST_MSG("Actual  : %zu", len);
     }
-    if (!TEST_CHECK(mutt_str_equal(dst, trial)))
-    {
-      TEST_MSG("Expected: %s", trial);
-      TEST_MSG("Actual  : %s", dst);
-    }
+    TEST_CHECK_STR_EQ(dst, trial);
   }
 
   { /* too long */

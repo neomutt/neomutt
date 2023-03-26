@@ -169,7 +169,7 @@ static bool test_set(struct Buffer *err)
           TEST_MSG("Failed to get %s: %s\n", boolish[v], buf_string(err));
           return false;
         }
-        if (!TEST_CHECK(mutt_str_equal(err->data, "yes")))
+        if (!TEST_CHECK_STR_EQ(err->data, "yes"))
         {
           TEST_MSG("Variable not set %s: %s\n", boolish[v], buf_string(err));
           return false;
@@ -197,7 +197,7 @@ static bool test_set(struct Buffer *err)
       TEST_MSG("Failed to get %s: %s\n", "Damson", buf_string(err));
       return false;
     }
-    if (!TEST_CHECK(mutt_str_equal(err->data, "newfoo")))
+    if (!TEST_CHECK_STR_EQ(err->data, "newfoo"))
     {
       TEST_MSG("Variable not set %s: %s\n", "Damson", buf_string(err));
       return false;
@@ -296,7 +296,7 @@ static bool test_unset(struct Buffer *err)
           TEST_MSG("Failed to get %s: %s\n", boolish[v], buf_string(err));
           return false;
         }
-        if (!TEST_CHECK(mutt_str_equal(err->data, "no")))
+        if (!TEST_CHECK_STR_EQ(err->data, "no"))
         {
           TEST_MSG("Variable not unset %s: %s\n", boolish[v], buf_string(err));
           return false;
@@ -336,7 +336,7 @@ static bool test_unset(struct Buffer *err)
       TEST_MSG("Failed to get %s: %s\n", "Damson", buf_string(err));
       return false;
     }
-    if (!TEST_CHECK(mutt_str_equal(err->data, "")))
+    if (!TEST_CHECK_STR_EQ(err->data, ""))
     {
       TEST_MSG("Variable not unset %s: %s\n", "Damson", buf_string(err));
       return false;
@@ -445,7 +445,7 @@ static bool test_reset(struct Buffer *err)
           buf_pool_release(&buf);
           return false;
         }
-        if (!TEST_CHECK(mutt_str_equal(err->data, buf->data)))
+        if (!TEST_CHECK_STR_EQ(err->data, buf->data))
         {
           TEST_MSG("Variable not reset %s: %s != %s\n", ConfigVars[v].name,
                    buf_string(err), buf_string(buf));
@@ -624,7 +624,7 @@ static bool test_toggle(struct Buffer *err)
             TEST_MSG("Failed to get %s: %s\n", boolish[v], buf_string(err));
             return false;
           }
-          if (!TEST_CHECK(mutt_str_equal(err->data, expected1[v])))
+          if (!TEST_CHECK_STR_EQ(err->data, expected1[v]))
           {
             TEST_MSG("Variable %s not toggled off: got = %s, expected = %s\n",
                      boolish[v], err->data, expected1[v], buf_string(err));
@@ -653,7 +653,7 @@ static bool test_toggle(struct Buffer *err)
             TEST_MSG("Failed to get %s: %s\n", boolish[v], buf_string(err));
             return false;
           }
-          if (!TEST_CHECK(mutt_str_equal(err->data, expected2[v])))
+          if (!TEST_CHECK_STR_EQ(err->data, expected2[v]))
           {
             TEST_MSG("Variable %s not toggled on: got = %s, expected = %s\n",
                      boolish[v], err->data, expected2[v], buf_string(err));
@@ -725,7 +725,7 @@ static bool test_query(struct Buffer *err)
 
         // Check effect
         snprintf(line, sizeof(line), "%s=\"%s\"", vars[v], expected[v]);
-        if (!TEST_CHECK(mutt_str_equal(err->data, line)))
+        if (!TEST_CHECK_STR_EQ(err->data, line))
         {
           TEST_MSG("Variable query failed for %s: got = %s, expected = %s\n",
                    vars[v], buf_string(err), line);
@@ -774,7 +774,7 @@ static bool test_query(struct Buffer *err)
 
       // Check effect
       snprintf(line, sizeof(line), "%s=\"%s\"", vars[v], expected[v]);
-      if (!TEST_CHECK(mutt_str_equal(err->data, line)))
+      if (!TEST_CHECK_STR_EQ(err->data, line))
       {
         TEST_MSG("Variable query failed for %s: got = %s, expected = %s\n",
                  vars[v], buf_string(err), line);
@@ -844,7 +844,7 @@ static bool test_increment(struct Buffer *err)
         TEST_MSG("Failed to get %s: %s\n", vars[v], buf_string(err));
         return false;
       }
-      if (!TEST_CHECK(mutt_str_equal(err->data, expected[v])))
+      if (!TEST_CHECK_STR_EQ(err->data, expected[v]))
       {
         TEST_MSG("Variable not incremented %s: got = %s, expected = %s\n",
                  vars[v], buf_string(err), expected[v]);
@@ -901,7 +901,7 @@ static bool test_decrement(struct Buffer *err)
         TEST_MSG("Failed to get %s: %s\n", vars[v], buf_string(err));
         return false;
       }
-      if (!TEST_CHECK(mutt_str_equal(err->data, expected[v])))
+      if (!TEST_CHECK_STR_EQ(err->data, expected[v]))
       {
         TEST_MSG("Variable not decremented %s: got = %s, expected = %s\n",
                  vars[v], buf_string(err), expected[v]);
@@ -993,7 +993,7 @@ static bool test_path_expanding(struct Buffer *err)
         TEST_MSG("Failed to get %s: %s\n", pathlike[v], buf_string(err));
         return false;
       }
-      if (!TEST_CHECK(mutt_str_equal(err->data, expected[v])))
+      if (!TEST_CHECK_STR_EQ(err->data, expected[v]))
       {
         TEST_MSG("Variable not incremented %s: got = %s, expected = %s\n",
                  pathlike[v], buf_string(err), expected[v]);

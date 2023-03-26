@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_buf_substrcpy(void)
 {
@@ -43,7 +44,7 @@ void test_buf_substrcpy(void)
     size_t len = buf_substrcpy(&buf, src + 9, src + 18);
 
     TEST_CHECK(len == 9);
-    TEST_CHECK(mutt_str_equal(buf_string(&buf), result));
+    TEST_CHECK_STR_EQ(buf_string(&buf), result);
 
     buf_dealloc(&buf);
   }

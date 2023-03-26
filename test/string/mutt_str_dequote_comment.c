@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_str_dequote_comment(void)
 {
@@ -40,7 +41,7 @@ void test_mutt_str_dequote_comment(void)
     char *dequote = strdup(str);
     mutt_str_dequote_comment(dequote);
     TEST_CHECK_(1, "mutt_str_dequote_comment(dequote)");
-    TEST_CHECK(mutt_str_equal(dequote, str));
+    TEST_CHECK_STR_EQ(dequote, str);
     FREE(&dequote);
   }
 
@@ -50,7 +51,7 @@ void test_mutt_str_dequote_comment(void)
     char *dequote = strdup(str);
     mutt_str_dequote_comment(dequote);
     TEST_CHECK_(1, "mutt_str_dequote_comment(dequote)");
-    TEST_CHECK(mutt_str_equal(dequote, expected));
+    TEST_CHECK_STR_EQ(dequote, expected);
     FREE(&dequote);
   }
 
@@ -60,7 +61,7 @@ void test_mutt_str_dequote_comment(void)
     char *dequote = strdup(str);
     mutt_str_dequote_comment(dequote);
     TEST_CHECK_(1, "mutt_str_dequote_comment(dequote)");
-    TEST_CHECK(mutt_str_equal(dequote, expected));
+    TEST_CHECK_STR_EQ(dequote, expected);
     FREE(&dequote);
   }
 
@@ -70,7 +71,7 @@ void test_mutt_str_dequote_comment(void)
     char *dequote = strdup(str);
     mutt_str_dequote_comment(dequote);
     TEST_CHECK_(1, "mutt_str_dequote_comment(dequote)");
-    TEST_CHECK(mutt_str_equal(dequote, expected));
+    TEST_CHECK_STR_EQ(dequote, expected);
     FREE(&dequote);
   }
 }

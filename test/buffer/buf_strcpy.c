@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_buf_strcpy(void)
 {
@@ -47,7 +48,7 @@ void test_buf_strcpy(void)
     TEST_CASE("Empty");
     struct Buffer buf = buf_make(0);
     buf_strcpy(&buf, "");
-    TEST_CHECK(mutt_str_equal(buf_string(&buf), ""));
+    TEST_CHECK_STR_EQ(buf_string(&buf), "");
     buf_dealloc(&buf);
   }
 
@@ -56,7 +57,7 @@ void test_buf_strcpy(void)
     const char *str = "test";
     struct Buffer buf = buf_make(0);
     buf_strcpy(&buf, str);
-    TEST_CHECK(mutt_str_equal(buf_string(&buf), str));
+    TEST_CHECK_STR_EQ(buf_string(&buf), str);
     buf_dealloc(&buf);
   }
 
@@ -67,7 +68,7 @@ void test_buf_strcpy(void)
     struct Buffer buf = buf_make(0);
     buf_addstr(&buf, "test");
     buf_strcpy(&buf, "");
-    TEST_CHECK(mutt_str_equal(buf_string(&buf), ""));
+    TEST_CHECK_STR_EQ(buf_string(&buf), "");
     buf_dealloc(&buf);
   }
 
@@ -77,7 +78,7 @@ void test_buf_strcpy(void)
     struct Buffer buf = buf_make(0);
     buf_addstr(&buf, "test");
     buf_strcpy(&buf, str);
-    TEST_CHECK(mutt_str_equal(buf_string(&buf), str));
+    TEST_CHECK_STR_EQ(buf_string(&buf), str);
     buf_dealloc(&buf);
   }
 }

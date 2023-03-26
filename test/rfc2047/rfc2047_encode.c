@@ -66,12 +66,7 @@ void test_rfc2047_encode(void)
       /* encode the expected result */
       char *s = mutt_str_dup(rfc2047_test_data[i].decoded);
       rfc2047_encode(&s, NULL, 0, charsets);
-      if (!TEST_CHECK(mutt_str_equal(s, rfc2047_test_data[i].encoded)))
-      {
-        TEST_MSG("Iteration: %zu", i);
-        TEST_MSG("Expected : %s", rfc2047_test_data[i].encoded);
-        TEST_MSG("Actual   : %s", s);
-      }
+      TEST_CHECK_STR_EQ(s, rfc2047_test_data[i].encoded);
       FREE(&s);
     }
     slist_free(&charsets);

@@ -97,7 +97,7 @@ void test_config_variable(void)
 
   buf_reset(err);
   intptr_t value = cs_he_native_get(cs, he, err);
-  if (!TEST_CHECK(mutt_str_equal((const char *) value, "bar")))
+  if (!TEST_CHECK_STR_EQ((const char *) value, "bar"))
   {
     TEST_MSG("Error: %s\n", buf_string(err));
     return;
