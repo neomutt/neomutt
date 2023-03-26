@@ -79,24 +79,24 @@ docs/manual.xml:	docs/makedoc$(EXEEXT) $(SRCDIR)/docs/gen-map-doc \
 	) > $@
 
 install-docs: all-docs
-	$(MKDIR_P) $(DESTDIR)$(mandir)/man1
-	$(MKDIR_P) $(DESTDIR)$(mandir)/man5
-	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
-	$(INSTALL) -m 644 docs/neomutt.1 $(DESTDIR)$(mandir)/man1/neomutt.1
-	$(INSTALL) -m 644 docs/neomuttrc.5 $(DESTDIR)$(mandir)/man5/neomuttrc.5
-	$(INSTALL) -m 644 $(SRCDIR)/docs/smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys_$(PACKAGE).1
-	$(INSTALL) -m 644 $(SRCDIR)/docs/pgpewrap.1 $(DESTDIR)$(mandir)/man1/pgpewrap_$(PACKAGE).1
-	$(INSTALL) -m 644 $(SRCDIR)/docs/mbox.5 $(DESTDIR)$(mandir)/man5/mbox_$(PACKAGE).5
-	$(INSTALL) -m 644 $(SRCDIR)/docs/mmdf.5 $(DESTDIR)$(mandir)/man5/mmdf_$(PACKAGE).5
-	$(MKDIR_P) $(DESTDIR)$(docdir)
+	$(INSTALL_DIR) $(DESTDIR)$(mandir)/man1
+	$(INSTALL_DIR) $(DESTDIR)$(mandir)/man5
+	$(INSTALL_DIR) $(DESTDIR)$(sysconfdir)
+	$(INSTALL_DATA) docs/neomutt.1 $(DESTDIR)$(mandir)/man1/neomutt.1
+	$(INSTALL_DATA) docs/neomuttrc.5 $(DESTDIR)$(mandir)/man5/neomuttrc.5
+	$(INSTALL_DATA) $(SRCDIR)/docs/smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys_$(PACKAGE).1
+	$(INSTALL_DATA) $(SRCDIR)/docs/pgpewrap.1 $(DESTDIR)$(mandir)/man1/pgpewrap_$(PACKAGE).1
+	$(INSTALL_DATA) $(SRCDIR)/docs/mbox.5 $(DESTDIR)$(mandir)/man5/mbox_$(PACKAGE).5
+	$(INSTALL_DATA) $(SRCDIR)/docs/mmdf.5 $(DESTDIR)$(mandir)/man5/mmdf_$(PACKAGE).5
+	$(INSTALL_DIR) $(DESTDIR)$(docdir)
 	for f in $(srcdir_DOCFILES); do \
-		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir) || exit 1; \
+		$(INSTALL_DATA) $$f $(DESTDIR)$(docdir) || exit 1; \
 	done
-	[ -s docs/manual.txt ] && $(INSTALL) -m 644 docs/manual.txt $(DESTDIR)$(docdir) || true
+	[ -s docs/manual.txt ] && $(INSTALL_DATA) docs/manual.txt $(DESTDIR)$(docdir) || true
 	for f in $(HTML_DOCFILES); do \
-		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir) || exit 1; \
+		$(INSTALL_DATA) $$f $(DESTDIR)$(docdir) || exit 1; \
 	done
-	$(INSTALL) -m 644 docs/neomuttrc $(DESTDIR)$(sysconfdir)/neomuttrc
+	$(INSTALL_DATA) docs/neomuttrc $(DESTDIR)$(sysconfdir)/neomuttrc
 
 uninstall-docs:
 	for f in neomutt.1 smime_keys_$(PACKAGE).1 pgpewrap_$(PACKAGE).1; do \
@@ -146,8 +146,8 @@ clean-docs:
 	$(RM) docs/neomuttrc docs/makedoc$(EXEEXT)
 
 install-docs: all-docs
-	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
-	$(INSTALL) -m 644 docs/neomuttrc $(DESTDIR)$(sysconfdir)/neomuttrc
+	$(INSTALL_DIR) $(DESTDIR)$(sysconfdir)
+	$(INSTALL_DATA) docs/neomuttrc $(DESTDIR)$(sysconfdir)/neomuttrc
 
 uninstall-docs:
 	$(RM) $(DESTDIR)$(sysconfdir)/neomuttrc
