@@ -3,7 +3,7 @@ CONTRIB_DIRS=	oauth2 vim-keys
 all-contrib:
 clean-contrib:
 
-install-contrib:
+install-contrib: $(DESTDIR)$(datadir)
 	for d in $(CONTRIB_DIRS); do \
 		echo "Creating directory $(DESTDIR)$(datadir)/$$d"; \
 		$(INSTALL_DIR) $(DESTDIR)$(datadir)/$$d || exit 1; \

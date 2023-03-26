@@ -4,7 +4,10 @@ all-data:
 
 clean-data:
 
-install-data:
+$(DESTDIR)$(datadir):
+	$(INSTALL_DIR) $(DESTDIR)$(datadir)
+
+install-data: $(DESTDIR)$(datadir)
 	for d in $(DATA_DIRS); do \
 		echo "Creating directory $(DESTDIR)$(datadir)/$$d"; \
 		$(INSTALL_DIR) $(DESTDIR)$(datadir)/$$d || exit 1; \
