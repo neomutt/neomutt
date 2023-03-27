@@ -2106,11 +2106,9 @@ parsemsg:
   }
 
   e->lines = 0;
-  fgets(buf, sizeof(buf), msg->fp);
-  while (!feof(msg->fp))
+  while (fgets(buf, sizeof(buf), msg->fp) && !feof(msg->fp))
   {
     e->lines++;
-    fgets(buf, sizeof(buf), msg->fp);
   }
 
   e->body->length = ftell(msg->fp) - e->body->offset;
