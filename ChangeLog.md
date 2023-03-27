@@ -1,7 +1,7 @@
 2023-03-22  Richard Russon  \<rich@flatcap.org\>
 * Features
   - #3372 - use DT_SLIST for charset variables
-  - #3383 - support viewing html with embedded images, #3383
+  - #3383 - support viewing html with embedded images
   - #3408 - account command, see the [feature page](https://neomutt.org/feature/account-cmd)
   - #3411 - check that `sendmail` and `inews` don't contain shell meta characters
   - #3412 - browser: add mailbox_folder_format config variable
