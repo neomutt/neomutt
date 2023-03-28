@@ -401,15 +401,13 @@ static void squash_index_panel(struct Mailbox *m, struct MuttWindow *win_index,
                                struct MuttWindow *win_pager)
 {
   const short c_pager_index_lines = cs_subset_number(NeoMutt->sub, "pager_index_lines");
-
-  const int index_space = MIN(c_pager_index_lines, m->vcount);
-  if (index_space > 0)
+  if (c_pager_index_lines > 0)
   {
     win_index->size = MUTT_WIN_SIZE_FIXED;
-    win_index->req_rows = index_space;
+    win_index->req_rows = c_pager_index_lines;
     win_index->parent->size = MUTT_WIN_SIZE_MINIMISE;
   }
-  window_set_visible(win_index->parent, (index_space > 0));
+  window_set_visible(win_index->parent, (c_pager_index_lines > 0));
 
   window_set_visible(win_pager->parent, true);
 

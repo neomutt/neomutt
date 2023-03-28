@@ -95,9 +95,7 @@ static int config_pager_index_lines(struct MuttWindow *win)
 
   if (c_pager_index_lines > 0)
   {
-    struct IndexSharedData *shared = dlg->wdata;
-    int vcount = shared->mailbox ? shared->mailbox->vcount : 0;
-    win_index->req_rows = MIN(c_pager_index_lines, vcount);
+    win_index->req_rows = c_pager_index_lines;
     win_index->size = MUTT_WIN_SIZE_FIXED;
 
     panel_index->size = MUTT_WIN_SIZE_MINIMISE;
