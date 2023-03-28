@@ -37,34 +37,46 @@ struct Buffer
   size_t dsize; ///< Length of data
 };
 
-void           buf_alloc        (struct Buffer *buf, size_t size);
-void           buf_dealloc      (struct Buffer *buf);
-void           buf_fix_dptr     (struct Buffer *buf);
-struct Buffer *buf_init         (struct Buffer *buf);
-bool           buf_is_empty     (const struct Buffer *buf);
-size_t         buf_len          (const struct Buffer *buf);
-struct Buffer  buf_make         (size_t size);
-void           buf_reset        (struct Buffer *buf);
-char *         buf_strdup       (const struct Buffer *buf);
-void           buf_seek         (struct Buffer *buf, size_t offset);
+struct Buffer *buf_new             (const char *str);
+void           buf_free            (struct Buffer **ptr);
+void           buf_alloc           (struct Buffer *buf, size_t size);
+void           buf_dealloc         (struct Buffer *buf);
+void           buf_fix_dptr        (struct Buffer *buf);
+struct Buffer *buf_init            (struct Buffer *buf);
+bool           buf_is_empty        (const struct Buffer *buf);
+size_t         buf_len             (const struct Buffer *buf);
+struct Buffer  buf_make            (size_t size);
+void           buf_reset           (struct Buffer *buf);
+char *         buf_strdup          (const struct Buffer *buf);
+struct Buffer *buf_dup             (const struct Buffer *buf);
+void           buf_seek            (struct Buffer *buf, size_t offset);
+const char*    buf_find_string     (struct Buffer *buf, const char *s);
+const char*    buf_find_char       (struct Buffer *buf, const char c);
+char           buf_at              (struct Buffer *buf, size_t offset);
+bool           buf_str_equal       (struct Buffer *a, struct Buffer *b);
+bool           buf_istr_equal      (struct Buffer *a, struct Buffer *b);
+int            buf_coll            (struct Buffer *a, struct Buffer *b);
 
 // Functions that APPEND to a Buffer
-size_t         buf_addch        (struct Buffer *buf, char c);
-size_t         buf_addstr       (struct Buffer *buf, const char *s);
-size_t         buf_addstr_n     (struct Buffer *buf, const char *s, size_t len);
-int            buf_add_printf   (struct Buffer *buf, const char *fmt, ...);
+size_t         buf_addch           (struct Buffer *buf, char c);
+size_t         buf_addstr          (struct Buffer *buf, const char *s);
+size_t         buf_addstr_n        (struct Buffer *buf, const char *s, size_t len);
+int            buf_add_printf      (struct Buffer *buf, const char *fmt, ...);
 
 // Functions that INSERT into a Buffer
-size_t         buf_insert       (struct Buffer *buf, size_t offset, const char *s);
+size_t         buf_insert          (struct Buffer *buf, size_t offset, const char *s);
 
 // Functions that OVERWRITE a Buffer
-size_t         buf_concat_path  (struct Buffer *buf, const char *dir, const char *fname);
-size_t         buf_concatn_path (struct Buffer *dst, const char *dir, size_t dirlen, const char *fname, size_t fnamelen);
-size_t         buf_copy         (struct Buffer *dst, const struct Buffer *src);
-int            buf_printf       (struct Buffer *buf, const char *fmt, ...);
-size_t         buf_strcpy       (struct Buffer *buf, const char *s);
-size_t         buf_strcpy_n     (struct Buffer *buf, const char *s, size_t len);
-size_t         buf_substrcpy    (struct Buffer *buf, const char *beg, const char *end);
+size_t         buf_concat_path     (struct Buffer *buf, const char *dir, const char *fname);
+size_t         buf_concatn_path    (struct Buffer *dst, const char *dir, size_t dirlen, const char *fname, size_t fnamelen);
+size_t         buf_copy            (struct Buffer *dst, const struct Buffer *src);
+int            buf_printf          (struct Buffer *buf, const char *fmt, ...);
+size_t         buf_strcpy          (struct Buffer *buf, const char *s);
+size_t         buf_strcpy_n        (struct Buffer *buf, const char *s, size_t len);
+size_t         buf_substrcpy       (struct Buffer *buf, const char *beg, const char *end);
+void           buf_dequote_comment (struct Buffer *buf);
+void           buf_lower           (struct Buffer *buf);
+void           buf_upper           (struct Buffer *buf);
 
 /**
  * buf_string - Convert a buffer to a const char * "string"
