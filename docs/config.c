@@ -2895,8 +2895,7 @@
 ** giving the reader the context of a few messages before and after the
 ** message.  This is useful, for example, to determine how many messages
 ** remain to be read in the current thread.  A value of 0 results in no index
-** being shown.  If the number of messages in the current folder is less than
-** $$pager_index_lines, then the index will only use as many lines as it needs.
+** being shown.
 */
 
 { "pager_read_delay", DT_NUMBER, 0 },
