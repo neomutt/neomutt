@@ -430,12 +430,8 @@ void buf_dequote_comment(struct Buffer *buf)
   if (!buf)
     return;
 
-  char *tmp = buf_strdup(buf);
-
-  mutt_str_dequote_comment(tmp);
-
-  buf_strcpy(buf, tmp);
-  FREE(&tmp);
+  mutt_str_dequote_comment(buf->data);
+  buf_fix_dptr(buf);
 }
 
 /**

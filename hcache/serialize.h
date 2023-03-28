@@ -42,9 +42,9 @@ unsigned char *serial_dump_address  (struct AddressList *al,     unsigned char *
 unsigned char *serial_dump_body     (struct Body *c,             unsigned char *d, int *off, bool convert);
 unsigned char *serial_dump_tags     (const struct TagList *tags, unsigned char *d, int *off);
 unsigned char *serial_dump_buffer   (struct Buffer *buf,         unsigned char *d, int *off, bool convert);
-unsigned char *serial_dump_char     (char *c,                    unsigned char *d, int *off, bool convert);
-unsigned char *serial_dump_char_size(char *c, ssize_t size,      unsigned char *d, int *off, bool convert);
-unsigned char *serial_dump_envelope (struct Envelope *env,         unsigned char *d, int *off, bool convert);
+unsigned char *serial_dump_char     (const char *c,              unsigned char *d, int *off, bool convert);
+unsigned char *serial_dump_char_size(const char *c, ssize_t size,unsigned char *d, int *off, bool convert);
+unsigned char *serial_dump_envelope (struct Envelope *env,       unsigned char *d, int *off, bool convert);
 unsigned char *serial_dump_int      (unsigned int i,             unsigned char *d, int *off);
 unsigned char *serial_dump_uint32_t (uint32_t s,                 unsigned char *d, int *off);
 unsigned char *serial_dump_parameter(struct ParameterList *pl,   unsigned char *d, int *off, bool convert);

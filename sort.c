@@ -145,9 +145,9 @@ const char *mutt_get_name(const struct Address *a)
   {
     const bool c_reverse_alias = cs_subset_bool(NeoMutt->sub, "reverse_alias");
     if (c_reverse_alias && (ali = alias_reverse_lookup(a)) && ali->personal)
-      return ali->personal;
+      return buf_string(ali->personal);
     if (a->personal)
-      return a->personal;
+      return buf_string(a->personal);
     if (a->mailbox)
       return mutt_addr_for_display(a);
   }

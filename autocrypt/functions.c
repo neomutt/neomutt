@@ -96,7 +96,7 @@ static int op_autocrypt_delete_acct(struct AutocryptData *ad, int op)
   char msg[128] = { 0 };
   snprintf(msg, sizeof(msg),
            // L10N: Confirmation message when deleting an autocrypt account
-           _("Really delete account \"%s\"?"), entry->addr->mailbox);
+           _("Really delete account \"%s\"?"), buf_string(entry->addr->mailbox));
   if (mutt_yesorno(msg, MUTT_NO) != MUTT_YES)
     return FR_NO_ACTION;
 

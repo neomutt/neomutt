@@ -100,7 +100,7 @@ static int alias_sort_address(const void *a, const void *b)
     if (addr_a && addr_a->personal)
     {
       if (addr_b && addr_b->personal)
-        r = mutt_str_coll(addr_a->personal, addr_b->personal);
+        r = buf_coll(addr_a->personal, addr_b->personal);
       else
         r = 1;
     }
@@ -110,7 +110,7 @@ static int alias_sort_address(const void *a, const void *b)
     }
     else if (addr_a && addr_b)
     {
-      r = mutt_str_coll(addr_a->mailbox, addr_b->mailbox);
+      r = buf_coll(addr_a->mailbox, addr_b->mailbox);
     }
     else
     {

@@ -210,9 +210,14 @@ static int smtp_rcpt_to(struct SmtpAccountData *adata, const struct AddressList 
     }
     char buf[1024] = { 0 };
     if ((adata->capabilities & SMTP_CAP_DSN) && c_dsn_notify)
-      snprintf(buf, sizeof(buf), "RCPT TO:<%s> NOTIFY=%s\r\n", a->mailbox, c_dsn_notify);
+    {
+      snprintf(buf, sizeof(buf), "RCPT TO:<%s> NOTIFY=%s\r\n",
+               buf_string(a->mailbox), c_dsn_notify);
+    }
     else
-      snprintf(buf, sizeof(buf), "RCPT TO:<%s>\r\n", a->mailbox);
+    {
+      snprintf(buf, sizeof(buf), "RCPT TO:<%s>\r\n", buf_string(a->mailbox));
+    }
     if (mutt_socket_send(adata->conn, buf) == -1)
       return SMTP_ERR_WRITE;
     int rc = smtp_get_resp(adata);
@@ -1122,11 +1127,11 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
    * but this condition is most likely arrived at accidentally */
   if (c_envelope_from_address)
   {
-    envfrom = c_envelope_from_address->mailbox;
+    envfrom = buf_string(c_envelope_from_address->mailbox);
   }
   else if (from && !TAILQ_EMPTY(from))
   {
-    envfrom = TAILQ_FIRST(from)->mailbox;
+    envfrom = buf_string(TAILQ_FIRST(from)->mailbox);
   }
   else
   {

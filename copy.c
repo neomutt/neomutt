@@ -1125,7 +1125,7 @@ static int address_header_decode(char **h)
   {
     if (a->personal)
     {
-      mutt_str_dequote_comment(a->personal);
+      buf_dequote_comment(a->personal);
     }
   }
 

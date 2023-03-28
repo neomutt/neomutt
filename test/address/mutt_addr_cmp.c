@@ -42,20 +42,26 @@ void test_mutt_addr_cmp(void)
   }
 
   {
-    struct Address a1 = { .mailbox = "test@example.com" };
-    struct Address a2 = { .mailbox = "test@example.com" };
+    struct Address a1 = { .mailbox = buf_new("test@example.com") };
+    struct Address a2 = { .mailbox = buf_new("test@example.com") };
     TEST_CHECK(mutt_addr_cmp(&a1, &a2));
+    buf_free(&a1.mailbox);
+    buf_free(&a2.mailbox);
   }
 
   {
-    struct Address a1 = { .mailbox = "test@example.com" };
-    struct Address a2 = { .mailbox = "TEST@example.COM" };
+    struct Address a1 = { .mailbox = buf_new("test@example.com") };
+    struct Address a2 = { .mailbox = buf_new("TEST@example.COM") };
     TEST_CHECK(mutt_addr_cmp(&a1, &a2));
+    buf_free(&a1.mailbox);
+    buf_free(&a2.mailbox);
   }
 
   {
-    struct Address a1 = { .mailbox = "test@example.com" };
-    struct Address a2 = { .mailbox = "test@example.com.org" };
+    struct Address a1 = { .mailbox = buf_new("test@example.com") };
+    struct Address a2 = { .mailbox = buf_new("test@example.com.org") };
     TEST_CHECK(!mutt_addr_cmp(&a1, &a2));
+    buf_free(&a1.mailbox);
+    buf_free(&a2.mailbox);
   }
 }

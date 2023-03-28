@@ -165,7 +165,7 @@ void mutt_autocrypt_db_close(void)
 void mutt_autocrypt_db_normalize_addr(struct Address *a)
 {
   mutt_addr_to_local(a);
-  mutt_str_lower(a->mailbox);
+  buf_lower(a->mailbox);
   mutt_addr_to_intl(a);
 }
 
@@ -180,7 +180,7 @@ void mutt_autocrypt_db_normalize_addrlist(struct AddressList *al)
   struct Address *np = NULL;
   TAILQ_FOREACH(np, al, entries)
   {
-    mutt_str_lower(np->mailbox);
+    buf_lower(np->mailbox);
   }
 
   mutt_addrlist_to_intl(al, NULL);
@@ -208,7 +208,7 @@ static struct Address *copy_normalize_addr(struct Address *addr)
    * because of requirements in autocrypt.c */
 
   struct Address *norm_addr = mutt_addr_new();
-  norm_addr->mailbox = mutt_str_dup(addr->mailbox);
+  buf_copy(norm_addr->mailbox, addr->mailbox);
   norm_addr->is_intl = addr->is_intl;
   norm_addr->intl_checked = addr->intl_checked;
 
@@ -284,8 +284,11 @@ int mutt_autocrypt_db_account_get(struct Address *addr, struct AutocryptAccount 
     }
   }
 
-  if (sqlite3_bind_text(AccountGetStmt, 1, norm_addr->mailbox, -1, SQLITE_STATIC) != SQLITE_OK)
+  if (sqlite3_bind_text(AccountGetStmt, 1, buf_string(norm_addr->mailbox), -1,
+                        SQLITE_STATIC) != SQLITE_OK)
+  {
     goto cleanup;
+  }
 
   int result = sqlite3_step(AccountGetStmt);
   if (result != SQLITE_ROW)
@@ -342,8 +345,11 @@ int mutt_autocrypt_db_account_insert(struct Address *addr, const char *keyid,
     }
   }
 
-  if (sqlite3_bind_text(AccountInsertStmt, 1, norm_addr->mailbox, -1, SQLITE_STATIC) != SQLITE_OK)
+  if (sqlite3_bind_text(AccountInsertStmt, 1, buf_string(norm_addr->mailbox),
+                        -1, SQLITE_STATIC) != SQLITE_OK)
+  {
     goto cleanup;
+  }
   if (sqlite3_bind_text(AccountInsertStmt, 2, keyid, -1, SQLITE_STATIC) != SQLITE_OK)
     goto cleanup;
   if (sqlite3_bind_text(AccountInsertStmt, 3, keydata, -1, SQLITE_STATIC) != SQLITE_OK)
@@ -575,8 +581,11 @@ int mutt_autocrypt_db_peer_get(struct Address *addr, struct AutocryptPeer **peer
     }
   }
 
-  if (sqlite3_bind_text(PeerGetStmt, 1, norm_addr->mailbox, -1, SQLITE_STATIC) != SQLITE_OK)
+  if (sqlite3_bind_text(PeerGetStmt, 1, buf_string(norm_addr->mailbox), -1,
+                        SQLITE_STATIC) != SQLITE_OK)
+  {
     goto cleanup;
+  }
 
   int result = sqlite3_step(PeerGetStmt);
   if (result != SQLITE_ROW)
@@ -639,8 +648,11 @@ int mutt_autocrypt_db_peer_insert(struct Address *addr, struct AutocryptPeer *pe
     }
   }
 
-  if (sqlite3_bind_text(PeerInsertStmt, 1, norm_addr->mailbox, -1, SQLITE_STATIC) != SQLITE_OK)
+  if (sqlite3_bind_text(PeerInsertStmt, 1, buf_string(norm_addr->mailbox), -1,
+                        SQLITE_STATIC) != SQLITE_OK)
+  {
     goto cleanup;
+  }
   if (sqlite3_bind_int64(PeerInsertStmt, 2, peer->last_seen) != SQLITE_OK)
     goto cleanup;
   if (sqlite3_bind_int64(PeerInsertStmt, 3, peer->autocrypt_timestamp) != SQLITE_OK)
@@ -782,8 +794,11 @@ int mutt_autocrypt_db_peer_history_insert(struct Address *addr,
     }
   }
 
-  if (sqlite3_bind_text(PeerHistoryInsertStmt, 1, norm_addr->mailbox, -1, SQLITE_STATIC) != SQLITE_OK)
+  if (sqlite3_bind_text(PeerHistoryInsertStmt, 1, buf_string(norm_addr->mailbox),
+                        -1, SQLITE_STATIC) != SQLITE_OK)
+  {
     goto cleanup;
+  }
   if (sqlite3_bind_text(PeerHistoryInsertStmt, 2, peerhist->email_msgid, -1,
                         SQLITE_STATIC) != SQLITE_OK)
   {
@@ -862,8 +877,8 @@ int mutt_autocrypt_db_gossip_history_insert(struct Address *addr,
     }
   }
 
-  if (sqlite3_bind_text(GossipHistoryInsertStmt, 1, norm_addr->mailbox, -1,
-                        SQLITE_STATIC) != SQLITE_OK)
+  if (sqlite3_bind_text(GossipHistoryInsertStmt, 1, buf_string(norm_addr->mailbox),
+                        -1, SQLITE_STATIC) != SQLITE_OK)
   {
     goto cleanup;
   }

@@ -298,7 +298,7 @@ int mutt_grouplist_remove_addrlist(struct GroupList *gl, struct AddressList *al)
     struct Address *a = NULL;
     TAILQ_FOREACH(a, al, entries)
     {
-      mutt_addrlist_remove(&gnp->group->al, a->mailbox);
+      mutt_addrlist_remove(&gnp->group->al, buf_string(a->mailbox));
     }
     if (empty_group(gnp->group))
     {
@@ -377,7 +377,7 @@ bool mutt_group_match(struct Group *g, const char *s)
   struct Address *a = NULL;
   TAILQ_FOREACH(a, &g->al, entries)
   {
-    if (a->mailbox && mutt_istr_equal(s, a->mailbox))
+    if (a->mailbox && mutt_istr_equal(s, buf_string(a->mailbox)))
       return true;
   }
 

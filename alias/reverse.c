@@ -72,7 +72,7 @@ void alias_reverse_add(struct Alias *alias)
   TAILQ_FOREACH(addr, &alias->addr, entries)
   {
     if (!addr->group && addr->mailbox)
-      mutt_hash_insert(ReverseAliases, addr->mailbox, addr);
+      mutt_hash_insert(ReverseAliases, buf_string(addr->mailbox), addr);
   }
 }
 
@@ -93,7 +93,7 @@ void alias_reverse_delete(struct Alias *alias)
   TAILQ_FOREACH(addr, &alias->addr, entries)
   {
     if (!addr->group && addr->mailbox)
-      mutt_hash_delete(ReverseAliases, addr->mailbox, addr);
+      mutt_hash_delete(ReverseAliases, buf_string(addr->mailbox), addr);
   }
 }
 
@@ -107,5 +107,5 @@ struct Address *alias_reverse_lookup(const struct Address *addr)
   if (!addr || !addr->mailbox)
     return NULL;
 
-  return mutt_hash_find(ReverseAliases, addr->mailbox);
+  return mutt_hash_find(ReverseAliases, buf_string(addr->mailbox));
 }

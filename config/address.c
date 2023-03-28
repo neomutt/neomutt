@@ -145,8 +145,8 @@ static struct Address *address_dup(struct Address *addr)
     return NULL; /* LCOV_EXCL_LINE */
 
   struct Address *a = mutt_mem_calloc(1, sizeof(*a));
-  a->personal = mutt_str_dup(addr->personal);
-  a->mailbox = mutt_str_dup(addr->mailbox);
+  a->personal = buf_dup(addr->personal);
+  a->mailbox = buf_dup(addr->mailbox);
   return a;
 }
 
@@ -232,7 +232,7 @@ static int address_reset(const struct ConfigSet *cs, void *var,
 struct Address *address_new(const char *addr)
 {
   struct Address *a = mutt_mem_calloc(1, sizeof(*a));
-  a->mailbox = mutt_str_dup(addr);
+  a->mailbox = buf_new(addr);
   return a;
 }
 
@@ -245,11 +245,7 @@ void address_free(struct Address **ptr)
   if (!ptr || !*ptr)
     return;
 
-  struct Address *addr = *ptr;
-  FREE(&addr->personal);
-  FREE(&addr->mailbox);
-
-  FREE(ptr);
+  mutt_addr_free(ptr);
 }
 
 /**

@@ -123,10 +123,10 @@ void serial_restore_uint32_t(uint32_t *s, const unsigned char *d, int *off)
  * @param[in]     convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
-unsigned char *serial_dump_char_size(char *c, ssize_t size, unsigned char *d,
-                                     int *off, bool convert)
+unsigned char *serial_dump_char_size(const char *c, ssize_t size,
+                                     unsigned char *d, int *off, bool convert)
 {
-  char *p = c;
+  char *p = NULL;
 
   if (!c)
   {
@@ -146,10 +146,10 @@ unsigned char *serial_dump_char_size(char *c, ssize_t size, unsigned char *d,
 
   d = serial_dump_int(size, d, off);
   lazy_realloc(&d, *off + size);
-  memcpy(d + *off, p, size);
+  memcpy(d + *off, p ? p : c, size);
   *off += size;
 
-  if (p != c)
+  if (p)
     FREE(&p);
 
   return d;
@@ -163,7 +163,7 @@ unsigned char *serial_dump_char_size(char *c, ssize_t size, unsigned char *d,
  * @param[in]     convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
-unsigned char *serial_dump_char(char *c, unsigned char *d, int *off, bool convert)
+unsigned char *serial_dump_char(const char *c, unsigned char *d, int *off, bool convert)
 {
   return serial_dump_char_size(c, mutt_str_len(c) + 1, d, off, convert);
 }
@@ -223,8 +223,8 @@ unsigned char *serial_dump_address(struct AddressList *al, unsigned char *d,
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    d = serial_dump_char(a->personal, d, off, convert);
-    d = serial_dump_char(a->mailbox, d, off, false);
+    d = serial_dump_buffer(a->personal, d, off, convert);
+    d = serial_dump_buffer(a->mailbox, d, off, convert);
     d = serial_dump_int(a->group, d, off);
     counter++;
   }
@@ -252,8 +252,11 @@ void serial_restore_address(struct AddressList *al, const unsigned char *d,
   while (counter)
   {
     struct Address *a = mutt_addr_new();
-    serial_restore_char(&a->personal, d, off, convert);
-    serial_restore_char(&a->mailbox, d, off, false);
+    a->personal = buf_new(NULL);
+    a->mailbox = buf_new(NULL);
+    serial_restore_buffer(a->personal, d, off, convert);
+    serial_restore_buffer(a->mailbox, d, off, false);
+
     serial_restore_int(&g, d, off);
     a->group = !!g;
     mutt_addrlist_append(al, a);

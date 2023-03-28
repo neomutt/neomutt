@@ -771,7 +771,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
     /* L10N: 1$s is one of the previous four entries.
        %2$s is an address.
        e.g. "S/MIME keys matching <me@mutt.org>" */
-    snprintf(buf, sizeof(buf), _("%s <%s>"), ts, p->mailbox);
+    snprintf(buf, sizeof(buf), _("%s <%s>"), ts, buf_string(p->mailbox));
   }
   else
   {

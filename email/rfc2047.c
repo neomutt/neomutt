@@ -752,6 +752,9 @@ void rfc2047_decode(char **pd)
  * rfc2047_encode_addrlist - Encode any RFC2047 headers, where required, in an Address list
  * @param al   AddressList
  * @param tag  Header tag (used for wrapping calculation)
+ *
+ * @note rfc2047_encode() may realloc the data pointer it's given,
+ *       so work on a copy to avoid breaking the Buffer
  */
 void rfc2047_encode_addrlist(struct AddressList *al, const char *tag)
 {
@@ -760,19 +763,33 @@ void rfc2047_encode_addrlist(struct AddressList *al, const char *tag)
 
   int col = tag ? strlen(tag) + 2 : 32;
   struct Address *a = NULL;
+  char *data = NULL;
   const struct Slist *const c_send_charset = cs_subset_slist(NeoMutt->sub, "send_charset");
   TAILQ_FOREACH(a, al, entries)
   {
     if (a->personal)
-      rfc2047_encode(&a->personal, AddressSpecials, col, c_send_charset);
+    {
+      data = buf_strdup(a->personal);
+      rfc2047_encode(&data, AddressSpecials, col, c_send_charset);
+      buf_strcpy(a->personal, data);
+      FREE(&data);
+    }
     else if (a->group && a->mailbox)
-      rfc2047_encode(&a->mailbox, AddressSpecials, col, c_send_charset);
+    {
+      data = buf_strdup(a->mailbox);
+      rfc2047_encode(&data, AddressSpecials, col, c_send_charset);
+      buf_strcpy(a->mailbox, data);
+      FREE(&data);
+    }
   }
 }
 
 /**
  * rfc2047_decode_addrlist - Decode any RFC2047 headers in an Address list
  * @param al AddressList
+ *
+ * @note rfc2047_decode() may realloc the data pointer it's given,
+ *       so work on a copy to avoid breaking the Buffer
  */
 void rfc2047_decode_addrlist(struct AddressList *al)
 {
@@ -781,15 +798,22 @@ void rfc2047_decode_addrlist(struct AddressList *al)
 
   const bool assumed = !slist_is_empty(cc_assumed_charset());
   struct Address *a = NULL;
+  char *data = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    if (a->personal && ((strstr(a->personal, "=?")) || assumed))
+    if (a->personal && ((buf_find_string(a->personal, "=?")) || assumed))
     {
-      rfc2047_decode(&a->personal);
+      data = buf_strdup(a->personal);
+      rfc2047_decode(&data);
+      buf_strcpy(a->personal, data);
+      FREE(&data);
     }
-    else if (a->group && a->mailbox && strstr(a->mailbox, "=?"))
+    else if (a->group && a->mailbox && buf_find_string(a->mailbox, "=?"))
     {
-      rfc2047_decode(&a->mailbox);
+      data = buf_strdup(a->mailbox);
+      rfc2047_decode(&data);
+      buf_strcpy(a->mailbox, data);
+      FREE(&data);
     }
   }
 }

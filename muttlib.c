@@ -669,7 +669,7 @@ void mutt_save_path(char *buf, size_t buflen, const struct Address *addr)
 {
   if (addr && addr->mailbox)
   {
-    mutt_str_copy(buf, addr->mailbox, buflen);
+    mutt_str_copy(buf, buf_string(addr->mailbox), buflen);
     const bool c_save_address = cs_subset_bool(NeoMutt->sub, "save_address");
     if (!c_save_address)
     {
@@ -694,7 +694,7 @@ void buf_save_path(struct Buffer *dest, const struct Address *a)
 {
   if (a && a->mailbox)
   {
-    buf_strcpy(dest, a->mailbox);
+    buf_copy(dest, a->mailbox);
     const bool c_save_address = cs_subset_bool(NeoMutt->sub, "save_address");
     if (!c_save_address)
     {

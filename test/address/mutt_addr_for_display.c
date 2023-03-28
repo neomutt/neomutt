@@ -51,8 +51,8 @@ void test_mutt_addr_for_display(void)
     char mbx[64] = "bob@bobsdomain";
 
     struct Address addr = {
-      .personal = per,
-      .mailbox = mbx,
+      .personal = buf_new(per),
+      .mailbox = buf_new(mbx),
       .group = 0,
       .is_intl = 0,
       .intl_checked = 0,
@@ -64,5 +64,8 @@ void test_mutt_addr_for_display(void)
     const char *actual = mutt_addr_for_display(&addr);
 
     TEST_CHECK_STR_EQ(actual, expected);
+
+    buf_free(&addr.personal);
+    buf_free(&addr.mailbox);
   }
 }

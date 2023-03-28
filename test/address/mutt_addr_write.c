@@ -51,8 +51,8 @@ void test_mutt_addr_write(void)
     char mbx[64] = "bob@bobsdomain";
 
     struct Address addr = {
-      .personal = per,
-      .mailbox = mbx,
+      .personal = buf_new(per),
+      .mailbox = buf_new(mbx),
       .group = 0,
       .is_intl = 0,
       .intl_checked = 0,
@@ -64,6 +64,8 @@ void test_mutt_addr_write(void)
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
     TEST_CHECK(len == strlen(expected));
+    buf_free(&addr.personal);
+    buf_free(&addr.mailbox);
     buf_pool_release(&buf);
   }
 }
