@@ -633,10 +633,10 @@ static bool match_mime_content_type(const struct Pattern *pat, struct Email *e, 
  */
 static bool match_update_dynamic_date(struct Pattern *pat)
 {
-  struct Buffer *err = mutt_buffer_pool_get();
+  struct Buffer *err = buf_pool_get();
 
   bool rc = eval_date_minmax(pat, pat->p.str, err);
-  mutt_buffer_pool_release(&err);
+  buf_pool_release(&err);
 
   return rc;
 }
@@ -691,13 +691,13 @@ static int msg_search_sendmode(struct Email *e, struct Pattern *pat)
 
   if ((pat->op == MUTT_PAT_HEADER) || (pat->op == MUTT_PAT_WHOLE_MSG))
   {
-    struct Buffer *tempfile = mutt_buffer_pool_get();
-    mutt_buffer_mktemp(tempfile);
-    fp = mutt_file_fopen(mutt_buffer_string(tempfile), "w+");
+    struct Buffer *tempfile = buf_pool_get();
+    buf_mktemp(tempfile);
+    fp = mutt_file_fopen(buf_string(tempfile), "w+");
     if (!fp)
     {
-      mutt_perror(mutt_buffer_string(tempfile));
-      mutt_buffer_pool_release(&tempfile);
+      mutt_perror(buf_string(tempfile));
+      buf_pool_release(&tempfile);
       return 0;
     }
 
@@ -718,8 +718,8 @@ static int msg_search_sendmode(struct Email *e, struct Pattern *pat)
 
     FREE(&buf);
     mutt_file_fclose(&fp);
-    unlink(mutt_buffer_string(tempfile));
-    mutt_buffer_pool_release(&tempfile);
+    unlink(buf_string(tempfile));
+    buf_pool_release(&tempfile);
 
     if (match)
       return match;

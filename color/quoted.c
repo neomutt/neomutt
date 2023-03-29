@@ -105,7 +105,7 @@ bool quoted_colors_parse_color(enum ColorId cid, uint32_t fg, uint32_t bg,
   color_debug(LL_DEBUG5, "quoted %d\n", q_level);
   if (q_level >= COLOR_QUOTES_MAX)
   {
-    mutt_buffer_printf(err, _("Maximum quoting level is %d"), COLOR_QUOTES_MAX - 1);
+    buf_printf(err, _("Maximum quoting level is %d"), COLOR_QUOTES_MAX - 1);
     return false;
   }
 
@@ -128,10 +128,10 @@ bool quoted_colors_parse_color(enum ColorId cid, uint32_t fg, uint32_t bg,
   else
     quoted_color_dump(ac, q_level, "QuotedColors new: ");
 
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
   get_colorid_name(cid, buf);
   color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
 
   if (q_level == 0)
   {

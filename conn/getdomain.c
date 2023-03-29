@@ -132,7 +132,7 @@ int getdnsdomainname(struct Buffer *result)
   struct addrinfo *lookup_result = NULL;
   struct addrinfo hints;
 
-  mutt_buffer_reset(result);
+  buf_reset(result);
   memset(&hints, 0, sizeof(struct addrinfo));
   hints.ai_flags = AI_CANONNAME;
   hints.ai_family = AF_UNSPEC;
@@ -148,7 +148,7 @@ int getdnsdomainname(struct Buffer *result)
     const char *hostname = strchr(lookup_result->ai_canonname, '.');
     if (hostname && hostname[1] != '\0')
     {
-      mutt_buffer_strcpy(result, ++hostname);
+      buf_strcpy(result, ++hostname);
       rc = 0;
     }
   }

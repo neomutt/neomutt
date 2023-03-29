@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_buffer_addstr()
+ * Test code for buf_pool_free()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -23,34 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <string.h>
-#include "mutt/lib.h"
 
-void test_mutt_buffer_addstr(void)
+void test_buf_pool_free(void)
 {
-  // size_t mutt_buffer_addstr(struct Buffer *buf, const char *s);
-
-  {
-    TEST_CHECK(mutt_buffer_addstr(NULL, "apple") == 0);
-  }
-
-  {
-    struct Buffer buf = mutt_buffer_make(0);
-    TEST_CHECK(mutt_buffer_addstr(&buf, NULL) == 0);
-  }
-
-  {
-    struct Buffer buf = mutt_buffer_make(0);
-    TEST_CHECK(mutt_buffer_addstr(&buf, "apple") == 5);
-    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), "apple"));
-    mutt_buffer_dealloc(&buf);
-  }
-
-  {
-    struct Buffer buf = mutt_buffer_make(0);
-    mutt_buffer_addstr(&buf, "test");
-    TEST_CHECK(mutt_buffer_addstr(&buf, "apple") == 5);
-    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), "testapple"));
-    mutt_buffer_dealloc(&buf);
-  }
+  // void buf_pool_free(void);
 }

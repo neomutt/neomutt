@@ -32,7 +32,7 @@
  */
 struct BrowserPrivateData
 {
-  // Parameters passed to mutt_buffer_select_file()
+  // Parameters passed to buf_select_file()
   struct Buffer *file;            ///< Buffer for the result
   struct Mailbox *mailbox;        ///< Mailbox
   char ***files;                  ///< Array of selected files

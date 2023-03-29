@@ -254,19 +254,19 @@ bool creation_and_deletion_tests(struct ConfigSet *cs, struct Buffer *err)
   };
 
   {
-    mutt_buffer_reset(err);
+    buf_reset(err);
     struct HashElem *cherry = cs_register_variable(cs, &cherryDef, err);
     if (!TEST_CHECK(cherry != NULL))
     {
-      TEST_MSG("Variable registration failed: %s\n", mutt_buffer_string(err));
+      TEST_MSG("Variable registration failed: %s\n", buf_string(err));
       return false;
     }
 
-    mutt_buffer_reset(err);
+    buf_reset(err);
     struct HashElem *damson = cs_register_variable(cs, &damsonDef, err);
     if (!TEST_CHECK(damson != NULL))
     {
-      TEST_MSG("Variable registration failed: %s\n", mutt_buffer_string(err));
+      TEST_MSG("Variable registration failed: %s\n", buf_string(err));
       return false;
     }
   }
@@ -286,10 +286,10 @@ bool creation_and_deletion_tests(struct ConfigSet *cs, struct Buffer *err)
   /* Dynamically created variables */
   {
     struct HashElem *cherry = cs_get_elem(cs, "Cherry");
-    mutt_buffer_reset(err);
+    buf_reset(err);
     if (!TEST_CHECK(cs_he_delete(cs, cherry, err) == CSR_SUCCESS))
     {
-      TEST_MSG("HashElem deletion failed: %s\n", mutt_buffer_string(err));
+      TEST_MSG("HashElem deletion failed: %s\n", buf_string(err));
       return false;
     }
     cherry = cs_get_elem(cs, "Cherry");
@@ -299,10 +299,10 @@ bool creation_and_deletion_tests(struct ConfigSet *cs, struct Buffer *err)
       return false;
     }
 
-    mutt_buffer_reset(err);
+    buf_reset(err);
     if (!TEST_CHECK(cs_str_delete(cs, "Damson", err) == CSR_SUCCESS))
     {
-      TEST_MSG("String deletion failed: %s\n", mutt_buffer_string(err));
+      TEST_MSG("String deletion failed: %s\n", buf_string(err));
       return false;
     }
     struct HashElem *damson = cs_get_elem(cs, "Damson");
@@ -317,17 +317,17 @@ bool creation_and_deletion_tests(struct ConfigSet *cs, struct Buffer *err)
   if (!TEST_CHECK(cs_str_delete(cs, "does-not-exist", err) == CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Deletion of non-existent variable succeeded but should have failed: %s\n",
-             mutt_buffer_string(err));
+             buf_string(err));
     return false;
   }
 
   /* Delete a variable from a global ConfigDef struct */
   {
     struct HashElem *banana = cs_get_elem(cs, "Banana");
-    mutt_buffer_reset(err);
+    buf_reset(err);
     if (!TEST_CHECK(cs_he_delete(cs, banana, NULL) == CSR_SUCCESS))
     {
-      TEST_MSG("HashElem deletion failed: %s\n", mutt_buffer_string(err));
+      TEST_MSG("HashElem deletion failed: %s\n", buf_string(err));
       return false;
     }
     struct HashElem *banana_after = cs_get_elem(cs, "Banana");
@@ -345,7 +345,7 @@ void test_config_set(void)
 {
   log_line(__func__);
 
-  struct Buffer *err = mutt_buffer_pool_get();
+  struct Buffer *err = buf_pool_get();
 
   struct ConfigSet *cs = cs_new(30);
   if (!TEST_CHECK(cs != NULL))
@@ -492,6 +492,6 @@ void test_config_set(void)
 
   test_neomutt_destroy();
   cs_free(&cs);
-  mutt_buffer_pool_release(&err);
+  buf_pool_release(&err);
   log_line(__func__);
 }

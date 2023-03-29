@@ -32,13 +32,13 @@ void test_mutt_grouplist_add_regex(void)
   // int mutt_grouplist_add_regex(struct GroupList *gl, const char *s, uint16_t flags, struct Buffer *err);
 
   {
-    struct Buffer err = mutt_buffer_make(0);
+    struct Buffer err = buf_make(0);
     TEST_CHECK(mutt_grouplist_add_regex(NULL, "apple", 0, &err) == -1);
   }
 
   {
     struct GroupList head = { 0 };
-    struct Buffer err = mutt_buffer_make(0);
+    struct Buffer err = buf_make(0);
     TEST_CHECK(mutt_grouplist_add_regex(&head, NULL, 0, &err) == -1);
   }
 

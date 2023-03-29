@@ -285,7 +285,7 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
  */
 static void pop_hcache_namer(const char *path, struct Buffer *dest)
 {
-  mutt_buffer_printf(dest, "%s." HC_FEXT, path);
+  buf_printf(dest, "%s." HC_FEXT, path);
 }
 
 /**
@@ -756,7 +756,7 @@ static enum MxOpenReturns pop_mbox_open(struct Mailbox *m)
   url.path = NULL;
   url_tostring(&url, buf, sizeof(buf), U_NO_FLAGS);
 
-  mutt_buffer_strcpy(&m->pathbuf, buf);
+  buf_strcpy(&m->pathbuf, buf);
   mutt_str_replace(&m->realpath, mailbox_path(m));
 
   struct PopAccountData *adata = m->account->adata;
@@ -1013,7 +1013,7 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     }
   }
 
-  path = mutt_buffer_pool_get();
+  path = buf_pool_get();
 
   while (true)
   {
@@ -1033,11 +1033,11 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     {
       /* no */
       bcache = false;
-      mutt_buffer_mktemp(path);
-      msg->fp = mutt_file_fopen(mutt_buffer_string(path), "w+");
+      buf_mktemp(path);
+      msg->fp = mutt_file_fopen(buf_string(path), "w+");
       if (!msg->fp)
       {
-        mutt_perror(mutt_buffer_string(path));
+        mutt_perror(buf_string(path));
         goto cleanup;
       }
     }
@@ -1058,7 +1058,7 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
      * the file in bcache or from POP's own cache since the next iteration
      * of the loop will re-attempt to put() the message */
     if (!bcache)
-      unlink(mutt_buffer_string(path));
+      unlink(buf_string(path));
 
     if (rc == -2)
     {
@@ -1082,7 +1082,7 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   else
   {
     cache->index = e->index;
-    cache->path = mutt_buffer_strdup(path);
+    cache->path = buf_strdup(path);
   }
   rewind(msg->fp);
 
@@ -1121,7 +1121,7 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   success = true;
 
 cleanup:
-  mutt_buffer_pool_release(&path);
+  buf_pool_release(&path);
   return success;
 }
 

@@ -193,7 +193,7 @@ static int regex_string_get(const struct ConfigSet *cs, void *var,
   if (!str)
     return CSR_SUCCESS | CSR_SUC_EMPTY; /* empty string */
 
-  mutt_buffer_addstr(result, str);
+  buf_addstr(result, str);
   return CSR_SUCCESS;
 }
 

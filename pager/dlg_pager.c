@@ -417,7 +417,7 @@ int mutt_pager(struct PagerView *pview)
       enum MxStatus check = mx_mbox_check(shared->mailbox);
       if (check == MX_STATUS_ERROR)
       {
-        if (!shared->mailbox || mutt_buffer_is_empty(&shared->mailbox->pathbuf))
+        if (!shared->mailbox || buf_is_empty(&shared->mailbox->pathbuf))
         {
           /* fatal error occurred */
           pager_queue_redraw(priv, PAGER_REDRAW_PAGER);

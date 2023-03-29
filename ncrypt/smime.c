@@ -87,9 +87,9 @@ static struct Buffer SmimeIntermediateToUse = { 0 };
  */
 void smime_init(void)
 {
-  mutt_buffer_alloc(&SmimeKeyToUse, 256);
-  mutt_buffer_alloc(&SmimeCertToUse, 256);
-  mutt_buffer_alloc(&SmimeIntermediateToUse, 256);
+  buf_alloc(&SmimeKeyToUse, 256);
+  buf_alloc(&SmimeCertToUse, 256);
+  buf_alloc(&SmimeIntermediateToUse, 256);
 }
 
 /**
@@ -97,9 +97,9 @@ void smime_init(void)
  */
 void smime_cleanup(void)
 {
-  mutt_buffer_dealloc(&SmimeKeyToUse);
-  mutt_buffer_dealloc(&SmimeCertToUse);
-  mutt_buffer_dealloc(&SmimeIntermediateToUse);
+  buf_dealloc(&SmimeKeyToUse);
+  buf_dealloc(&SmimeCertToUse);
+  buf_dealloc(&SmimeIntermediateToUse);
 }
 
 /**
@@ -176,12 +176,12 @@ bool smime_class_valid_passphrase(void)
 
   smime_class_void_passphrase();
 
-  struct Buffer *buf = mutt_buffer_pool_get();
-  const int rc = mutt_buffer_get_field(_("Enter S/MIME passphrase:"), buf,
-                                       MUTT_COMP_PASS | MUTT_COMP_UNBUFFERED,
-                                       false, NULL, NULL, NULL);
-  mutt_str_copy(SmimePass, mutt_buffer_string(buf), sizeof(SmimePass));
-  mutt_buffer_pool_release(&buf);
+  struct Buffer *buf = buf_pool_get();
+  const int rc = buf_get_field(_("Enter S/MIME passphrase:"), buf,
+                               MUTT_COMP_PASS | MUTT_COMP_UNBUFFERED, false,
+                               NULL, NULL, NULL);
+  mutt_str_copy(SmimePass, buf_string(buf), sizeof(SmimePass));
+  buf_pool_release(&buf);
 
   if (rc == 0)
   {
@@ -232,26 +232,26 @@ static const char *smime_command_format_str(char *buf, size_t buflen, size_t col
       const char *const c_smime_ca_location = cs_subset_path(NeoMutt->sub, "smime_ca_location");
       if (!optional)
       {
-        struct Buffer *path = mutt_buffer_pool_get();
-        struct Buffer *buf1 = mutt_buffer_pool_get();
-        struct Buffer *buf2 = mutt_buffer_pool_get();
+        struct Buffer *path = buf_pool_get();
+        struct Buffer *buf1 = buf_pool_get();
+        struct Buffer *buf2 = buf_pool_get();
         struct stat st = { 0 };
 
-        mutt_buffer_strcpy(path, c_smime_ca_location);
-        mutt_buffer_expand_path(path);
-        mutt_buffer_quote_filename(buf1, mutt_buffer_string(path), true);
+        buf_strcpy(path, c_smime_ca_location);
+        buf_expand_path(path);
+        buf_quote_filename(buf1, buf_string(path), true);
 
-        if ((stat(mutt_buffer_string(path), &st) != 0) || !S_ISDIR(st.st_mode))
-          mutt_buffer_printf(buf2, "-CAfile %s", mutt_buffer_string(buf1));
+        if ((stat(buf_string(path), &st) != 0) || !S_ISDIR(st.st_mode))
+          buf_printf(buf2, "-CAfile %s", buf_string(buf1));
         else
-          mutt_buffer_printf(buf2, "-CApath %s", mutt_buffer_string(buf1));
+          buf_printf(buf2, "-CApath %s", buf_string(buf1));
 
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, mutt_buffer_string(buf2));
+        snprintf(buf, buflen, fmt, buf_string(buf2));
 
-        mutt_buffer_pool_release(&path);
-        mutt_buffer_pool_release(&buf1);
-        mutt_buffer_pool_release(&buf2);
+        buf_pool_release(&path);
+        buf_pool_release(&buf1);
+        buf_pool_release(&buf2);
       }
       else if (!c_smime_ca_location)
         optional = false;
@@ -522,20 +522,20 @@ static struct SmimeKey *smime_get_candidates(const char *search, bool only_publi
   struct SmimeKey *key = NULL, *results = NULL;
   struct SmimeKey **results_end = &results;
 
-  struct Buffer *index_file = mutt_buffer_pool_get();
+  struct Buffer *index_file = buf_pool_get();
   const char *const c_smime_certificates = cs_subset_path(NeoMutt->sub, "smime_certificates");
   const char *const c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
-  mutt_buffer_printf(index_file, "%s/.index",
-                     only_public_key ? NONULL(c_smime_certificates) : NONULL(c_smime_keys));
+  buf_printf(index_file, "%s/.index",
+             only_public_key ? NONULL(c_smime_certificates) : NONULL(c_smime_keys));
 
-  FILE *fp = mutt_file_fopen(mutt_buffer_string(index_file), "r");
+  FILE *fp = mutt_file_fopen(buf_string(index_file), "r");
   if (!fp)
   {
-    mutt_perror(mutt_buffer_string(index_file));
-    mutt_buffer_pool_release(&index_file);
+    mutt_perror(buf_string(index_file));
+    buf_pool_release(&index_file);
     return NULL;
   }
-  mutt_buffer_pool_release(&index_file);
+  buf_pool_release(&index_file);
 
   while (fgets(buf, sizeof(buf), fp))
   {
@@ -720,7 +720,7 @@ static struct SmimeKey *smime_get_key_by_str(const char *str, KeyFlags abilities
 static struct SmimeKey *smime_ask_for_key(char *prompt, KeyFlags abilities, bool only_public_key)
 {
   struct SmimeKey *key = NULL;
-  struct Buffer *resp = mutt_buffer_pool_get();
+  struct Buffer *resp = buf_pool_get();
 
   if (!prompt)
     prompt = _("Enter keyID: ");
@@ -729,21 +729,21 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, KeyFlags abilities, bool
 
   while (true)
   {
-    mutt_buffer_reset(resp);
-    if (mutt_buffer_get_field(prompt, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
+    buf_reset(resp);
+    if (buf_get_field(prompt, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
     {
       goto done;
     }
 
-    key = smime_get_key_by_str(mutt_buffer_string(resp), abilities, only_public_key);
+    key = smime_get_key_by_str(buf_string(resp), abilities, only_public_key);
     if (key)
       goto done;
 
-    mutt_error(_("No matching keys found for \"%s\""), mutt_buffer_string(resp));
+    mutt_error(_("No matching keys found for \"%s\""), buf_string(resp));
   }
 
 done:
-  mutt_buffer_pool_release(&resp);
+  buf_pool_release(&resp);
   return key;
 }
 
@@ -774,13 +774,13 @@ static void getkeys(char *mailbox)
   k = key ? key->hash : NONULL(c_smime_default_key);
 
   /* if the key is different from last time */
-  if ((mutt_buffer_len(&SmimeKeyToUse) <= smime_keys_len) ||
+  if ((buf_len(&SmimeKeyToUse) <= smime_keys_len) ||
       !mutt_istr_equal(k, SmimeKeyToUse.data + smime_keys_len + 1))
   {
     smime_class_void_passphrase();
-    mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(c_smime_keys), k);
+    buf_printf(&SmimeKeyToUse, "%s/%s", NONULL(c_smime_keys), k);
     const char *const c_smime_certificates = cs_subset_path(NeoMutt->sub, "smime_certificates");
-    mutt_buffer_printf(&SmimeCertToUse, "%s/%s", NONULL(c_smime_certificates), k);
+    buf_printf(&SmimeCertToUse, "%s/%s", NONULL(c_smime_certificates), k);
   }
 
   smime_key_free(&key);
@@ -796,10 +796,9 @@ void smime_class_getkeys(struct Envelope *env)
   if (c_smime_decrypt_use_default_key && c_smime_default_key)
   {
     const char *const c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
-    mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(c_smime_keys), c_smime_default_key);
+    buf_printf(&SmimeKeyToUse, "%s/%s", NONULL(c_smime_keys), c_smime_default_key);
     const char *const c_smime_certificates = cs_subset_path(NeoMutt->sub, "smime_certificates");
-    mutt_buffer_printf(&SmimeCertToUse, "%s/%s", NONULL(c_smime_certificates),
-                       c_smime_default_key);
+    buf_printf(&SmimeCertToUse, "%s/%s", NONULL(c_smime_certificates), c_smime_default_key);
     return;
   }
 
@@ -981,8 +980,8 @@ static char *smime_extract_certificate(const char *infile)
   pid_t pid;
   int empty;
 
-  struct Buffer *pk7out = mutt_buffer_pool_get();
-  struct Buffer *certfile = mutt_buffer_pool_get();
+  struct Buffer *pk7out = buf_pool_get();
+  struct Buffer *certfile = buf_pool_get();
 
   fp_err = mutt_file_mkstemp();
   if (!fp_err)
@@ -991,11 +990,11 @@ static char *smime_extract_certificate(const char *infile)
     goto cleanup;
   }
 
-  mutt_buffer_mktemp(pk7out);
-  fp_out = mutt_file_fopen(mutt_buffer_string(pk7out), "w+");
+  buf_mktemp(pk7out);
+  fp_out = mutt_file_fopen(buf_string(pk7out), "w+");
   if (!fp_out)
   {
-    mutt_perror(mutt_buffer_string(pk7out));
+    mutt_perror(buf_string(pk7out));
     goto cleanup;
   }
 
@@ -1019,36 +1018,36 @@ static char *smime_extract_certificate(const char *infile)
   empty = (fgetc(fp_out) == EOF);
   if (empty)
   {
-    mutt_perror(mutt_buffer_string(pk7out));
+    mutt_perror(buf_string(pk7out));
     mutt_file_copy_stream(fp_err, stdout);
     goto cleanup;
   }
   mutt_file_fclose(&fp_out);
 
-  mutt_buffer_mktemp(certfile);
-  fp_cert = mutt_file_fopen(mutt_buffer_string(certfile), "w+");
+  buf_mktemp(certfile);
+  fp_cert = mutt_file_fopen(buf_string(certfile), "w+");
   if (!fp_cert)
   {
-    mutt_perror(mutt_buffer_string(certfile));
-    mutt_file_unlink(mutt_buffer_string(pk7out));
+    mutt_perror(buf_string(certfile));
+    mutt_file_unlink(buf_string(pk7out));
     goto cleanup;
   }
 
   // Step 2: Extract the certificates from a PKCS#7 structure.
   const char *const c_smime_get_cert_command = cs_subset_string(NeoMutt->sub, "smime_get_cert_command");
   pid = smime_invoke(NULL, NULL, NULL, -1, fileno(fp_cert), fileno(fp_err),
-                     mutt_buffer_string(pk7out), NULL, NULL, NULL, NULL, NULL,
-                     NULL, c_smime_get_cert_command);
+                     buf_string(pk7out), NULL, NULL, NULL, NULL, NULL, NULL,
+                     c_smime_get_cert_command);
   if (pid == -1)
   {
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess"));
-    mutt_file_unlink(mutt_buffer_string(pk7out));
+    mutt_file_unlink(buf_string(pk7out));
     goto cleanup;
   }
 
   filter_wait(pid);
 
-  mutt_file_unlink(mutt_buffer_string(pk7out));
+  mutt_file_unlink(buf_string(pk7out));
 
   fflush(fp_cert);
   rewind(fp_cert);
@@ -1063,22 +1062,22 @@ static char *smime_extract_certificate(const char *infile)
 
   mutt_file_fclose(&fp_cert);
 
-  retval = mutt_buffer_strdup(certfile);
+  retval = buf_strdup(certfile);
 
 cleanup:
   mutt_file_fclose(&fp_err);
   if (fp_out)
   {
     mutt_file_fclose(&fp_out);
-    mutt_file_unlink(mutt_buffer_string(pk7out));
+    mutt_file_unlink(buf_string(pk7out));
   }
   if (fp_cert)
   {
     mutt_file_fclose(&fp_cert);
-    mutt_file_unlink(mutt_buffer_string(certfile));
+    mutt_file_unlink(buf_string(certfile));
   }
-  mutt_buffer_pool_release(&pk7out);
-  mutt_buffer_pool_release(&certfile);
+  buf_pool_release(&pk7out);
+  buf_pool_release(&certfile);
   return retval;
 }
 
@@ -1101,22 +1100,21 @@ static char *smime_extract_signer_certificate(const char *infile)
     return NULL;
   }
 
-  certfile = mutt_buffer_pool_get();
-  mutt_buffer_mktemp(certfile);
-  FILE *fp_out = mutt_file_fopen(mutt_buffer_string(certfile), "w+");
+  certfile = buf_pool_get();
+  buf_mktemp(certfile);
+  FILE *fp_out = mutt_file_fopen(buf_string(certfile), "w+");
   if (!fp_out)
   {
     mutt_file_fclose(&fp_err);
-    mutt_perror(mutt_buffer_string(certfile));
+    mutt_perror(buf_string(certfile));
     goto cleanup;
   }
 
   /* Extract signer's certificate
    */
   const char *const c_smime_get_signer_cert_command = cs_subset_string(NeoMutt->sub, "smime_get_signer_cert_command");
-  pid = smime_invoke(NULL, NULL, NULL, -1, -1, fileno(fp_err), infile, NULL,
-                     NULL, NULL, NULL, mutt_buffer_string(certfile), NULL,
-                     c_smime_get_signer_cert_command);
+  pid = smime_invoke(NULL, NULL, NULL, -1, -1, fileno(fp_err), infile, NULL, NULL, NULL,
+                     NULL, buf_string(certfile), NULL, c_smime_get_signer_cert_command);
   if (pid == -1)
   {
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess"));
@@ -1139,16 +1137,16 @@ static char *smime_extract_signer_certificate(const char *infile)
   }
 
   mutt_file_fclose(&fp_out);
-  cert = mutt_buffer_strdup(certfile);
+  cert = buf_strdup(certfile);
 
 cleanup:
   mutt_file_fclose(&fp_err);
   if (fp_out)
   {
     mutt_file_fclose(&fp_out);
-    mutt_file_unlink(mutt_buffer_string(certfile));
+    mutt_file_unlink(buf_string(certfile));
   }
-  mutt_buffer_pool_release(&certfile);
+  buf_pool_release(&certfile);
   return cert;
 }
 
@@ -1174,13 +1172,13 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
     goto done;
   }
 
-  buf = mutt_buffer_pool_get();
+  buf = buf_pool_get();
   const bool c_smime_ask_cert_label = cs_subset_bool(NeoMutt->sub, "smime_ask_cert_label");
   if (c_smime_ask_cert_label)
   {
-    if ((mutt_buffer_get_field(_("Label for certificate: "), buf,
-                               MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0) ||
-        mutt_buffer_is_empty(buf))
+    if ((buf_get_field(_("Label for certificate: "), buf, MUTT_COMP_NO_FLAGS,
+                       false, NULL, NULL, NULL) != 0) ||
+        buf_is_empty(buf))
     {
       goto done;
     }
@@ -1202,7 +1200,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
       mutt_message(_("Error: unable to create OpenSSL subprocess"));
       goto done;
     }
-    fputs(mutt_buffer_string(buf), fp_smime_in);
+    fputs(buf_string(buf), fp_smime_in);
     fputc('\n', fp_smime_in);
     mutt_file_fclose(&fp_smime_in);
 
@@ -1223,7 +1221,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
 done:
   mutt_file_fclose(&fp_out);
   mutt_file_fclose(&fp_err);
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
 }
 
 /**
@@ -1234,12 +1232,12 @@ int smime_class_verify_sender(struct Email *e, struct Message *msg)
   char *mbox = NULL, *certfile = NULL;
   int rc = 1;
 
-  struct Buffer *tempfname = mutt_buffer_pool_get();
-  mutt_buffer_mktemp(tempfname);
-  FILE *fp_out = mutt_file_fopen(mutt_buffer_string(tempfname), "w");
+  struct Buffer *tempfname = buf_pool_get();
+  buf_mktemp(tempfname);
+  FILE *fp_out = mutt_file_fopen(buf_string(tempfname), "w");
   if (!fp_out)
   {
-    mutt_perror(mutt_buffer_string(tempfname));
+    mutt_perror(buf_string(tempfname));
     goto cleanup;
   }
 
@@ -1264,10 +1262,10 @@ int smime_class_verify_sender(struct Email *e, struct Message *msg)
 
   if (mbox)
   {
-    certfile = smime_extract_signer_certificate(mutt_buffer_string(tempfname));
+    certfile = smime_extract_signer_certificate(buf_string(tempfname));
     if (certfile)
     {
-      mutt_file_unlink(mutt_buffer_string(tempfname));
+      mutt_file_unlink(buf_string(tempfname));
       if (smime_handle_cert_email(certfile, mbox, false, NULL, NULL))
       {
         if (isendwin())
@@ -1290,10 +1288,10 @@ int smime_class_verify_sender(struct Email *e, struct Message *msg)
     mutt_any_key_to_continue(_("no mbox"));
   }
 
-  mutt_file_unlink(mutt_buffer_string(tempfname));
+  mutt_file_unlink(buf_string(tempfname));
 
 cleanup:
-  mutt_buffer_pool_release(&tempfname);
+  buf_pool_release(&tempfname);
   return rc;
 }
 
@@ -1346,11 +1344,10 @@ static pid_t smime_invoke_sign(FILE **fp_smime_in, FILE **fp_smime_out,
 {
   const char *const c_smime_sign_digest_alg = cs_subset_string(NeoMutt->sub, "smime_sign_digest_alg");
   const char *const c_smime_sign_command = cs_subset_string(NeoMutt->sub, "smime_sign_command");
-  return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd,
-                      fp_smime_outfd, fp_smime_errfd, fname, NULL, NULL,
-                      c_smime_sign_digest_alg, mutt_buffer_string(&SmimeKeyToUse),
-                      mutt_buffer_string(&SmimeCertToUse),
-                      mutt_buffer_string(&SmimeIntermediateToUse), c_smime_sign_command);
+  return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd, fp_smime_outfd,
+                      fp_smime_errfd, fname, NULL, NULL, c_smime_sign_digest_alg,
+                      buf_string(&SmimeKeyToUse), buf_string(&SmimeCertToUse),
+                      buf_string(&SmimeIntermediateToUse), c_smime_sign_command);
 }
 
 /**
@@ -1365,14 +1362,14 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
   int err = 0, empty, off;
   pid_t pid;
 
-  struct Buffer *tempfile = mutt_buffer_pool_get();
-  struct Buffer *smime_infile = mutt_buffer_pool_get();
+  struct Buffer *tempfile = buf_pool_get();
+  struct Buffer *smime_infile = buf_pool_get();
 
-  mutt_buffer_mktemp(tempfile);
-  fp_out = mutt_file_fopen(mutt_buffer_string(tempfile), "w+");
+  buf_mktemp(tempfile);
+  fp_out = mutt_file_fopen(buf_string(tempfile), "w+");
   if (!fp_out)
   {
-    mutt_perror(mutt_buffer_string(tempfile));
+    mutt_perror(buf_string(tempfile));
     goto cleanup;
   }
 
@@ -1383,11 +1380,11 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
     goto cleanup;
   }
 
-  mutt_buffer_mktemp(smime_infile);
-  fp_tmp = mutt_file_fopen(mutt_buffer_string(smime_infile), "w+");
+  buf_mktemp(smime_infile);
+  fp_tmp = mutt_file_fopen(buf_string(smime_infile), "w+");
   if (!fp_tmp)
   {
-    mutt_perror(mutt_buffer_string(smime_infile));
+    mutt_perror(buf_string(smime_infile));
     goto cleanup;
   }
 
@@ -1415,18 +1412,17 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
   mutt_file_fclose(&fp_tmp);
 
   pid = smime_invoke_encrypt(&fp_smime_in, NULL, NULL, -1, fileno(fp_out),
-                             fileno(fp_smime_err),
-                             mutt_buffer_string(smime_infile), certfile);
+                             fileno(fp_smime_err), buf_string(smime_infile), certfile);
   if (pid == -1)
   {
-    mutt_file_unlink(mutt_buffer_string(smime_infile));
+    mutt_file_unlink(buf_string(smime_infile));
     goto cleanup;
   }
 
   mutt_file_fclose(&fp_smime_in);
 
   filter_wait(pid);
-  mutt_file_unlink(mutt_buffer_string(smime_infile));
+  mutt_file_unlink(buf_string(smime_infile));
 
   fflush(fp_out);
   rewind(fp_out);
@@ -1451,7 +1447,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
     /* fatal error while trying to encrypt message */
     if (err == 0)
       mutt_any_key_to_continue(_("No output from OpenSSL..."));
-    mutt_file_unlink(mutt_buffer_string(tempfile));
+    mutt_file_unlink(buf_string(tempfile));
     goto cleanup;
   }
 
@@ -1464,7 +1460,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
   t->use_disp = true;
   t->disposition = DISP_ATTACH;
   t->d_filename = mutt_str_dup("smime.p7m");
-  t->filename = mutt_buffer_strdup(tempfile);
+  t->filename = buf_strdup(tempfile);
   t->unlink = true; /* delete after sending the message */
   t->parts = NULL;
   t->next = NULL;
@@ -1473,16 +1469,16 @@ cleanup:
   if (fp_out)
   {
     mutt_file_fclose(&fp_out);
-    mutt_file_unlink(mutt_buffer_string(tempfile));
+    mutt_file_unlink(buf_string(tempfile));
   }
   mutt_file_fclose(&fp_smime_err);
   if (fp_tmp)
   {
     mutt_file_fclose(&fp_tmp);
-    mutt_file_unlink(mutt_buffer_string(smime_infile));
+    mutt_file_unlink(buf_string(smime_infile));
   }
-  mutt_buffer_pool_release(&tempfile);
-  mutt_buffer_pool_release(&smime_infile);
+  buf_pool_release(&tempfile);
+  buf_pool_release(&smime_infile);
 
   return t;
 }
@@ -1545,22 +1541,22 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
 
   crypt_convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
 
-  filetosign = mutt_buffer_pool_get();
-  signedfile = mutt_buffer_pool_get();
+  filetosign = buf_pool_get();
+  signedfile = buf_pool_get();
 
-  mutt_buffer_mktemp(filetosign);
-  fp_sign = mutt_file_fopen(mutt_buffer_string(filetosign), "w+");
+  buf_mktemp(filetosign);
+  fp_sign = mutt_file_fopen(buf_string(filetosign), "w+");
   if (!fp_sign)
   {
-    mutt_perror(mutt_buffer_string(filetosign));
+    mutt_perror(buf_string(filetosign));
     goto cleanup;
   }
 
-  mutt_buffer_mktemp(signedfile);
-  fp_smime_out = mutt_file_fopen(mutt_buffer_string(signedfile), "w+");
+  buf_mktemp(signedfile);
+  fp_smime_out = mutt_file_fopen(buf_string(signedfile), "w+");
   if (!fp_smime_out)
   {
-    mutt_perror(mutt_buffer_string(signedfile));
+    mutt_perror(buf_string(signedfile));
     goto cleanup;
   }
 
@@ -1571,8 +1567,8 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
 
   const char *const c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
   const char *const c_smime_certificates = cs_subset_path(NeoMutt->sub, "smime_certificates");
-  mutt_buffer_printf(&SmimeKeyToUse, "%s/%s", NONULL(c_smime_keys), signas);
-  mutt_buffer_printf(&SmimeCertToUse, "%s/%s", NONULL(c_smime_certificates), signas);
+  buf_printf(&SmimeKeyToUse, "%s/%s", NONULL(c_smime_keys), signas);
+  buf_printf(&SmimeCertToUse, "%s/%s", NONULL(c_smime_certificates), signas);
 
   struct SmimeKey *signas_key = smime_get_key_by_hash(signas, 1);
   if (!signas_key || mutt_str_equal("?", signas_key->issuer))
@@ -1580,17 +1576,16 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   else
     intermediates = signas_key->issuer;
 
-  mutt_buffer_printf(&SmimeIntermediateToUse, "%s/%s",
-                     NONULL(c_smime_certificates), intermediates);
+  buf_printf(&SmimeIntermediateToUse, "%s/%s", NONULL(c_smime_certificates), intermediates);
 
   smime_key_free(&signas_key);
 
   pid = smime_invoke_sign(&fp_smime_in, NULL, &fp_smime_err, -1,
-                          fileno(fp_smime_out), -1, mutt_buffer_string(filetosign));
+                          fileno(fp_smime_out), -1, buf_string(filetosign));
   if (pid == -1)
   {
     mutt_perror(_("Can't open OpenSSL subprocess"));
-    mutt_file_unlink(mutt_buffer_string(filetosign));
+    mutt_file_unlink(buf_string(filetosign));
     goto cleanup;
   }
   fputs(SmimePass, fp_smime_in);
@@ -1615,7 +1610,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   empty = (fgetc(fp_smime_out) == EOF);
   mutt_file_fclose(&fp_smime_out);
 
-  mutt_file_unlink(mutt_buffer_string(filetosign));
+  mutt_file_unlink(buf_string(filetosign));
 
   if (err)
     mutt_any_key_to_continue(NULL);
@@ -1623,7 +1618,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   if (empty)
   {
     mutt_any_key_to_continue(_("No output from OpenSSL..."));
-    mutt_file_unlink(mutt_buffer_string(signedfile));
+    mutt_file_unlink(buf_string(signedfile));
     goto cleanup; /* fatal error while signing */
   }
 
@@ -1650,7 +1645,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   t = t->parts->next;
   t->type = TYPE_APPLICATION;
   t->subtype = mutt_str_dup("pkcs7-signature");
-  t->filename = mutt_buffer_strdup(signedfile);
+  t->filename = buf_strdup(signedfile);
   t->d_filename = mutt_str_dup("smime.p7s");
   t->use_disp = true;
   t->disposition = DISP_ATTACH;
@@ -1661,15 +1656,15 @@ cleanup:
   if (fp_sign)
   {
     mutt_file_fclose(&fp_sign);
-    mutt_file_unlink(mutt_buffer_string(filetosign));
+    mutt_file_unlink(buf_string(filetosign));
   }
   if (fp_smime_out)
   {
     mutt_file_fclose(&fp_smime_out);
-    mutt_file_unlink(mutt_buffer_string(signedfile));
+    mutt_file_unlink(buf_string(signedfile));
   }
-  mutt_buffer_pool_release(&filetosign);
-  mutt_buffer_pool_release(&signedfile);
+  buf_pool_release(&filetosign);
+  buf_pool_release(&signedfile);
   return retval;
 }
 
@@ -1724,8 +1719,8 @@ static pid_t smime_invoke_decrypt(FILE **fp_smime_in, FILE **fp_smime_out,
   const char *const c_smime_decrypt_command = cs_subset_string(NeoMutt->sub, "smime_decrypt_command");
   return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd,
                       fp_smime_outfd, fp_smime_errfd, fname, NULL, NULL, NULL,
-                      mutt_buffer_string(&SmimeKeyToUse),
-                      mutt_buffer_string(&SmimeCertToUse), NULL, c_smime_decrypt_command);
+                      buf_string(&SmimeKeyToUse), buf_string(&SmimeCertToUse),
+                      NULL, c_smime_decrypt_command);
 }
 
 /**
@@ -1741,16 +1736,16 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *state, const char 
   size_t tmplength = 0;
   int orig_type = sigbdy->type;
 
-  struct Buffer *signedfile = mutt_buffer_pool_get();
+  struct Buffer *signedfile = buf_pool_get();
 
-  mutt_buffer_printf(signedfile, "%s.sig", tempfile);
+  buf_printf(signedfile, "%s.sig", tempfile);
 
   /* decode to a tempfile, saving the original destination */
   fp = state->fp_out;
-  state->fp_out = mutt_file_fopen(mutt_buffer_string(signedfile), "w");
+  state->fp_out = mutt_file_fopen(buf_string(signedfile), "w");
   if (!state->fp_out)
   {
-    mutt_perror(mutt_buffer_string(signedfile));
+    mutt_perror(buf_string(signedfile));
     goto cleanup;
   }
   /* decoding the attachment changes the size and offset, so save a copy
@@ -1772,7 +1767,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *state, const char 
   /* restore final destination and substitute the tempfile for input */
   state->fp_out = fp;
   fp = state->fp_in;
-  state->fp_in = fopen(mutt_buffer_string(signedfile), "r");
+  state->fp_in = fopen(buf_string(signedfile), "r");
 
   /* restore the prefix */
   state->prefix = save_prefix;
@@ -1789,7 +1784,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *state, const char 
   crypt_current_time(state, "OpenSSL");
 
   pid = smime_invoke_verify(NULL, &fp_smime_out, NULL, -1, -1, fileno(fp_smime_err),
-                            tempfile, mutt_buffer_string(signedfile), 0);
+                            tempfile, buf_string(signedfile), 0);
   if (pid != -1)
   {
     fflush(fp_smime_out);
@@ -1822,7 +1817,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *state, const char 
 
   state_attach_puts(state, _("[-- End of OpenSSL output --]\n\n"));
 
-  mutt_file_unlink(mutt_buffer_string(signedfile));
+  mutt_file_unlink(buf_string(signedfile));
 
   sigbdy->length = tmplength;
   sigbdy->offset = tmpoffset;
@@ -1832,7 +1827,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *state, const char 
   state->fp_in = fp;
 
 cleanup:
-  mutt_buffer_pool_release(&signedfile);
+  buf_pool_release(&signedfile);
   return badsig;
 }
 
@@ -1847,7 +1842,7 @@ cleanup:
  */
 static struct Body *smime_handle_entity(struct Body *m, struct State *state, FILE *fp_out_file)
 {
-  struct Buffer tmpfname = mutt_buffer_make(0);
+  struct Buffer tmpfname = buf_make(0);
   FILE *fp_smime_out = NULL, *fp_smime_in = NULL, *fp_smime_err = NULL;
   FILE *fp_tmp = NULL, *fp_out = NULL;
   struct Body *p = NULL;
@@ -1872,11 +1867,11 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *state, FIL
     goto cleanup;
   }
 
-  mutt_buffer_mktemp(&tmpfname);
-  fp_tmp = mutt_file_fopen(mutt_buffer_string(&tmpfname), "w+");
+  buf_mktemp(&tmpfname);
+  fp_tmp = mutt_file_fopen(buf_string(&tmpfname), "w+");
   if (!fp_tmp)
   {
-    mutt_perror(mutt_buffer_string(&tmpfname));
+    mutt_perror(buf_string(&tmpfname));
     goto cleanup;
   }
 
@@ -1891,11 +1886,10 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *state, FIL
   mutt_file_fclose(&fp_tmp);
 
   if ((type & SEC_ENCRYPT) &&
-      ((pid = smime_invoke_decrypt(&fp_smime_in, NULL, NULL, -1,
-                                   fileno(fp_smime_out), fileno(fp_smime_err),
-                                   mutt_buffer_string(&tmpfname))) == -1))
+      ((pid = smime_invoke_decrypt(&fp_smime_in, NULL, NULL, -1, fileno(fp_smime_out),
+                                   fileno(fp_smime_err), buf_string(&tmpfname))) == -1))
   {
-    mutt_file_unlink(mutt_buffer_string(&tmpfname));
+    mutt_file_unlink(buf_string(&tmpfname));
     if (state->flags & STATE_DISPLAY)
     {
       state_attach_puts(state, _("[-- Error: unable to create OpenSSL subprocess --]\n"));
@@ -1905,9 +1899,9 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *state, FIL
   else if ((type & SEC_SIGNOPAQUE) &&
            ((pid = smime_invoke_verify(&fp_smime_in, NULL, NULL, -1,
                                        fileno(fp_smime_out), fileno(fp_smime_err), NULL,
-                                       mutt_buffer_string(&tmpfname), SEC_SIGNOPAQUE)) == -1))
+                                       buf_string(&tmpfname), SEC_SIGNOPAQUE)) == -1))
   {
-    mutt_file_unlink(mutt_buffer_string(&tmpfname));
+    mutt_file_unlink(buf_string(&tmpfname));
     if (state->flags & STATE_DISPLAY)
     {
       state_attach_puts(state, _("[-- Error: unable to create OpenSSL subprocess --]\n"));
@@ -1926,7 +1920,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *state, FIL
   mutt_file_fclose(&fp_smime_in);
 
   filter_wait(pid);
-  mutt_file_unlink(mutt_buffer_string(&tmpfname));
+  mutt_file_unlink(buf_string(&tmpfname));
 
   if (state->flags & STATE_DISPLAY)
   {
@@ -2042,7 +2036,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *state, FIL
   if (!fp_out_file)
   {
     mutt_file_fclose(&fp_out);
-    mutt_file_unlink(mutt_buffer_string(&tmpfname));
+    mutt_file_unlink(buf_string(&tmpfname));
   }
   fp_out = NULL;
 
@@ -2077,7 +2071,7 @@ cleanup:
   mutt_file_fclose(&fp_smime_err);
   mutt_file_fclose(&fp_tmp);
   mutt_file_fclose(&fp_out);
-  mutt_buffer_dealloc(&tmpfname);
+  buf_dealloc(&tmpfname);
   return p;
 }
 
@@ -2271,7 +2265,7 @@ SecurityFlags smime_class_send_menu(struct Email *e)
         e->security |= SEC_ENCRYPT;
         do
         {
-          struct Buffer errmsg = mutt_buffer_make(0);
+          struct Buffer errmsg = buf_make(0);
           int rc = CSR_SUCCESS;
           switch (mutt_multi_choice(_("Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"),
                                     // L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
@@ -2343,10 +2337,10 @@ SecurityFlags smime_class_send_menu(struct Email *e)
               break;
           }
 
-          if ((CSR_RESULT(rc) != CSR_SUCCESS) && !mutt_buffer_is_empty(&errmsg))
-            mutt_error("%s", mutt_buffer_string(&errmsg));
+          if ((CSR_RESULT(rc) != CSR_SUCCESS) && !buf_is_empty(&errmsg))
+            mutt_error("%s", buf_string(&errmsg));
 
-          mutt_buffer_dealloc(&errmsg);
+          buf_dealloc(&errmsg);
         } while (choice == -1);
         break;
       }

@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_buffer_is_empty()
+ * Test code for buf_addch()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -23,26 +23,29 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
+#include <string.h>
 #include "mutt/lib.h"
 
-void test_mutt_buffer_is_empty(void)
+void test_buf_addch(void)
 {
-  // bool mutt_buffer_is_empty(const struct Buffer *buf);
+  // size_t buf_addch(struct Buffer *buf, char c);
 
   {
-    TEST_CHECK(mutt_buffer_is_empty(NULL));
+    TEST_CHECK(buf_addch(NULL, 'a') == 0);
   }
 
   {
-    struct Buffer buf = mutt_buffer_make(0);
-    TEST_CHECK(mutt_buffer_is_empty(&buf));
+    struct Buffer buf = buf_make(0);
+    TEST_CHECK(buf_addch(&buf, 'a') == 1);
+    TEST_CHECK(mutt_str_equal(buf_string(&buf), "a"));
+    buf_dealloc(&buf);
   }
 
   {
-    struct Buffer buf = mutt_buffer_make(0);
-    mutt_buffer_addstr(&buf, "test");
-    TEST_CHECK(!mutt_buffer_is_empty(&buf));
-    mutt_buffer_dealloc(&buf);
+    struct Buffer buf = buf_make(0);
+    buf_addstr(&buf, "test");
+    TEST_CHECK(buf_addch(&buf, 'a') == 1);
+    TEST_CHECK(mutt_str_equal(buf_string(&buf), "testa"));
+    buf_dealloc(&buf);
   }
 }

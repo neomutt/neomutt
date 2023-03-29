@@ -43,7 +43,7 @@ void test_config_account(void)
 {
   log_line(__func__);
 
-  struct Buffer *err = mutt_buffer_pool_get();
+  struct Buffer *err = buf_pool_get();
 
   int rc = 0;
   test_neomutt_create();
@@ -85,7 +85,7 @@ void test_config_account(void)
   struct HashElem *he2 = cs_subset_create_inheritance(a->sub, "Apple");
   if (!he1 || !he2 || (he1 != he2))
   {
-    TEST_MSG("%s\n", mutt_buffer_string(err));
+    TEST_MSG("%s\n", buf_string(err));
     return;
   }
 
@@ -109,12 +109,12 @@ void test_config_account(void)
     return;
 
   he = cs_subset_lookup(a->sub, "Apple");
-  mutt_buffer_reset(err);
+  buf_reset(err);
 
   rc = cs_subset_he_native_set(NULL, he, 33, err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error: %s\n", mutt_buffer_string(err));
+    TEST_MSG("Expected error: %s\n", buf_string(err));
   }
   else
   {
@@ -125,7 +125,7 @@ void test_config_account(void)
   rc = cs_subset_he_native_set(a->sub, NULL, 33, err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error: %s\n", mutt_buffer_string(err));
+    TEST_MSG("Expected error: %s\n", buf_string(err));
   }
   else
   {
@@ -136,46 +136,46 @@ void test_config_account(void)
   rc = cs_subset_he_native_set(a->sub, he, 33, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", mutt_buffer_string(err));
+    TEST_MSG("%s\n", buf_string(err));
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   rc = cs_subset_he_string_get(a->sub, he, err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s = %s\n", he->key.strkey, mutt_buffer_string(err));
+    TEST_MSG("%s = %s\n", he->key.strkey, buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", mutt_buffer_string(err));
+    TEST_MSG("%s\n", buf_string(err));
   }
 
   he = cs_subset_lookup(a->sub, "Cherry");
-  mutt_buffer_reset(err);
+  buf_reset(err);
   rc = cs_subset_he_string_get(a->sub, he, err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s = %s\n", he->key.strkey, mutt_buffer_string(err));
+    TEST_MSG("%s = %s\n", he->key.strkey, buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", mutt_buffer_string(err));
+    TEST_MSG("%s\n", buf_string(err));
   }
 
   const char *name = "fruit:Apple";
-  mutt_buffer_reset(err);
+  buf_reset(err);
   rc = cs_str_string_get(cs, name, err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s = '%s'\n", name, mutt_buffer_string(err));
+    TEST_MSG("%s = '%s'\n", name, buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", mutt_buffer_string(err));
+    TEST_MSG("%s\n", buf_string(err));
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   rc = cs_str_native_set(cs, name, 42, err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
@@ -183,7 +183,7 @@ void test_config_account(void)
   }
   else
   {
-    TEST_MSG("%s\n", mutt_buffer_string(err));
+    TEST_MSG("%s\n", buf_string(err));
     return;
   }
 
@@ -191,7 +191,7 @@ void test_config_account(void)
   if (!TEST_CHECK(he != NULL))
     return;
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   rc = cs_str_initial_set(cs, name, "42", err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
@@ -203,15 +203,15 @@ void test_config_account(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   rc = cs_str_initial_get(cs, name, err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Initial %s\n", mutt_buffer_string(err));
+    TEST_MSG("Initial %s\n", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", mutt_buffer_string(err));
+    TEST_MSG("%s\n", buf_string(err));
     return;
   }
 
@@ -220,7 +220,7 @@ void test_config_account(void)
   if (!TEST_CHECK(he != NULL))
     return;
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   rc = cs_he_native_set(cs, he, 42, err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
@@ -228,7 +228,7 @@ void test_config_account(void)
   }
   else
   {
-    TEST_MSG("%s\n", mutt_buffer_string(err));
+    TEST_MSG("%s\n", buf_string(err));
     return;
   }
 
@@ -236,7 +236,7 @@ void test_config_account(void)
 
   account_free(&a);
   cs_subset_free(&sub);
-  mutt_buffer_pool_release(&err);
+  buf_pool_release(&err);
   test_neomutt_destroy();
   log_line(__func__);
 }

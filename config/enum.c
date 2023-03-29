@@ -55,7 +55,7 @@ static int enum_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   int num = mutt_map_get_value(value, ed->lookup);
   if (num < 0)
   {
-    mutt_buffer_printf(err, _("Invalid enum value: %s"), value);
+    buf_printf(err, _("Invalid enum value: %s"), value);
     return (CSR_ERR_INVALID | CSR_INV_TYPE);
   }
 
@@ -109,7 +109,7 @@ static int enum_string_get(const struct ConfigSet *cs, void *var,
     return (CSR_ERR_INVALID | CSR_INV_TYPE);
   }
 
-  mutt_buffer_addstr(result, name);
+  buf_addstr(result, name);
   return CSR_SUCCESS;
 }
 
@@ -129,7 +129,7 @@ static int enum_native_set(const struct ConfigSet *cs, void *var,
   const char *name = mutt_map_get_name(value, ed->lookup);
   if (!name)
   {
-    mutt_buffer_printf(err, _("Invalid enum value: %ld"), value);
+    buf_printf(err, _("Invalid enum value: %ld"), value);
     return (CSR_ERR_INVALID | CSR_INV_TYPE);
   }
 

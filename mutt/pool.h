@@ -25,8 +25,8 @@
 
 struct Buffer;
 
-void           mutt_buffer_pool_free    (void);
-struct Buffer *mutt_buffer_pool_get     (void);
-void           mutt_buffer_pool_release (struct Buffer **pbuf);
+void           buf_pool_free    (void);
+struct Buffer *buf_pool_get     (void);
+void           buf_pool_release (struct Buffer **pbuf);
 
 #endif /* MUTT_LIB_POOL_H */

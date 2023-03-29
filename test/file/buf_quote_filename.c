@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_buffer_quote_filename()
+ * Test code for buf_quote_filename()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -28,9 +28,9 @@
 #include "mutt/lib.h"
 #include "common.h"
 
-void test_mutt_buffer_quote_filename(void)
+void test_buf_quote_filename(void)
 {
-  // void mutt_buffer_quote_filename(struct Buffer *buf, const char *filename, bool add_outer)
+  // void buf_quote_filename(struct Buffer *buf, const char *filename, bool add_outer)
 
   // clang-format off
   static struct TestValue tests[] = {
@@ -44,22 +44,22 @@ void test_mutt_buffer_quote_filename(void)
   // clang-format on
 
   {
-    mutt_buffer_quote_filename(NULL, NULL, false);
-    TEST_CHECK_(1, "mutt_buffer_quote_filename(NULL, NULL, false)");
+    buf_quote_filename(NULL, NULL, false);
+    TEST_CHECK_(1, "buf_quote_filename(NULL, NULL, false)");
   }
 
-  struct Buffer result = mutt_buffer_make(256);
+  struct Buffer result = buf_make(256);
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
     TEST_CASE(tests[i].first);
-    mutt_buffer_quote_filename(&result, tests[i].first, (i % 2));
-    if (!TEST_CHECK(mutt_str_equal(mutt_buffer_string(&result), tests[i].second)))
+    buf_quote_filename(&result, tests[i].first, (i % 2));
+    if (!TEST_CHECK(mutt_str_equal(buf_string(&result), tests[i].second)))
     {
       TEST_MSG("Original: %s", tests[i].first);
       TEST_MSG("Expected: %s", tests[i].second);
-      TEST_MSG("Actual:   %s", mutt_buffer_string(&result));
+      TEST_MSG("Actual:   %s", buf_string(&result));
     }
   }
 
-  mutt_buffer_dealloc(&result);
+  buf_dealloc(&result);
 }

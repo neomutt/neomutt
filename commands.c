@@ -119,7 +119,7 @@ int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s,
   {
     if (!MoreArgs(s))
     {
-      mutt_buffer_strcpy(err, _("-group: no group name"));
+      buf_strcpy(err, _("-group: no group name"));
       return -1;
     }
 
@@ -129,7 +129,7 @@ int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s,
 
     if (!MoreArgs(s))
     {
-      mutt_buffer_strcpy(err, _("out of arguments"));
+      buf_strcpy(err, _("out of arguments"));
       return -1;
     }
 
@@ -173,11 +173,11 @@ char *mutt_get_sourced_cwd(void)
     return mutt_str_dup(np->data);
 
   // stack is empty, return our own dummy file relative to cwd
-  struct Buffer *cwd = mutt_buffer_pool_get();
+  struct Buffer *cwd = buf_pool_get();
   mutt_path_getcwd(cwd);
-  mutt_buffer_addstr(cwd, "/dummy.rc");
-  char *ret = mutt_buffer_strdup(cwd);
-  mutt_buffer_pool_release(&cwd);
+  buf_addstr(cwd, "/dummy.rc");
+  char *ret = buf_strdup(cwd);
+  buf_pool_release(&cwd);
   return ret;
 }
 
@@ -236,12 +236,12 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
   FILE *fp = mutt_open_read(rcfile, &pid);
   if (!fp)
   {
-    mutt_buffer_printf(err, "%s: %s", rcfile, strerror(errno));
+    buf_printf(err, "%s: %s", rcfile, strerror(errno));
     return -1;
   }
 
-  token = mutt_buffer_pool_get();
-  linebuf = mutt_buffer_pool_get();
+  token = buf_pool_get();
+  linebuf = buf_pool_get();
 
   while ((line = mutt_file_read_line(line, &linelen, fp, &lineno, MUTT_RL_CONT)) != NULL)
   {
@@ -260,9 +260,9 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
       currentline = line;
     }
 
-    mutt_buffer_strcpy(linebuf, currentline);
+    buf_strcpy(linebuf, currentline);
 
-    mutt_buffer_reset(err);
+    buf_reset(err);
     line_rc = parse_rc_buffer(linebuf, token, err);
     if (line_rc == MUTT_CMD_ERROR)
     {
@@ -303,12 +303,9 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
   if (rc)
   {
     /* the neomuttrc source keyword */
-    mutt_buffer_reset(err);
-    mutt_buffer_printf(err,
-                       (rc >= -MAX_ERRS) ?
-                           _("source: errors in %s") :
-                           _("source: reading aborted due to too many errors in %s"),
-                       rcfile);
+    buf_reset(err);
+    buf_printf(err, (rc >= -MAX_ERRS) ? _("source: errors in %s") : _("source: reading aborted due to too many errors in %s"),
+               rcfile);
     rc = -1;
   }
   else
@@ -316,8 +313,8 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     /* Don't alias errors with warnings */
     if (warnings > 0)
     {
-      mutt_buffer_printf(err, ngettext("source: %d warning in %s", "source: %d warnings in %s", warnings),
-                         warnings, rcfile);
+      buf_printf(err, ngettext("source: %d warning in %s", "source: %d warnings in %s", warnings),
+                 warnings, rcfile);
       rc = -2;
     }
   }
@@ -330,8 +327,8 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     FREE(&np);
   }
 
-  mutt_buffer_pool_release(&token);
-  mutt_buffer_pool_release(&linebuf);
+  buf_pool_release(&token);
+  buf_pool_release(&linebuf);
   return rc;
 }
 
@@ -342,23 +339,23 @@ static enum CommandResult parse_cd(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
 {
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-  mutt_buffer_expand_path(buf);
-  if (mutt_buffer_len(buf) == 0)
+  buf_expand_path(buf);
+  if (buf_len(buf) == 0)
   {
     if (HomeDir)
     {
-      mutt_buffer_strcpy(buf, HomeDir);
+      buf_strcpy(buf, HomeDir);
     }
     else
     {
-      mutt_buffer_printf(err, _("%s: too few arguments"), "cd");
+      buf_printf(err, _("%s: too few arguments"), "cd");
       return MUTT_CMD_ERROR;
     }
   }
 
-  if (chdir(mutt_buffer_string(buf)) != 0)
+  if (chdir(buf_string(buf)) != 0)
   {
-    mutt_buffer_printf(err, "cd: %s", strerror(errno));
+    buf_printf(err, "cd: %s", strerror(errno));
     return MUTT_CMD_ERROR;
   }
 
@@ -373,7 +370,7 @@ static enum CommandResult parse_echo(struct Buffer *buf, struct Buffer *s,
 {
   if (!MoreArgs(s))
   {
-    mutt_buffer_printf(err, _("%s: too few arguments"), "echo");
+    buf_printf(err, _("%s: too few arguments"), "echo");
     return MUTT_CMD_WARNING;
   }
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
@@ -397,7 +394,7 @@ static enum CommandResult parse_finish(struct Buffer *buf, struct Buffer *s,
 {
   if (MoreArgs(s))
   {
-    mutt_buffer_printf(err, _("%s: too many arguments"), "finish");
+    buf_printf(err, _("%s: too many arguments"), "finish");
     return MUTT_CMD_WARNING;
   }
 
@@ -434,8 +431,8 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
       switch (gstate)
       {
         case GS_NONE:
-          mutt_buffer_printf(err, _("%sgroup: missing -rx or -addr"),
-                             (data == MUTT_UNGROUP) ? "un" : "");
+          buf_printf(err, _("%sgroup: missing -rx or -addr"),
+                     (data == MUTT_UNGROUP) ? "un" : "");
           goto warn;
 
         case GS_RX:
@@ -460,8 +457,8 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
             goto bail;
           if (mutt_addrlist_to_intl(&al, &estr))
           {
-            mutt_buffer_printf(err, _("%sgroup: warning: bad IDN '%s'"),
-                               (data == 1) ? "un" : "", estr);
+            buf_printf(err, _("%sgroup: warning: bad IDN '%s'"),
+                       (data == 1) ? "un" : "", estr);
             mutt_addrlist_clear(&al);
             FREE(&estr);
             goto bail;
@@ -508,9 +505,9 @@ static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
 {
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
-  if (mutt_buffer_is_empty(buf))
+  if (buf_is_empty(buf))
   {
-    mutt_buffer_printf(err, _("%s: too few arguments"), (data ? "ifndef" : "ifdef"));
+    buf_printf(err, _("%s: too few arguments"), (data ? "ifndef" : "ifdef"));
     return MUTT_CMD_WARNING;
   }
 
@@ -526,7 +523,7 @@ static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
 
   if (!MoreArgs(s))
   {
-    mutt_buffer_printf(err, _("%s: too few arguments"), (data ? "ifndef" : "ifdef"));
+    buf_printf(err, _("%s: too few arguments"), (data ? "ifndef" : "ifdef"));
     return MUTT_CMD_WARNING;
   }
   parse_extract_token(buf, s, TOKEN_SPACE);
@@ -609,18 +606,18 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     {
       // This may be empty, e.g. `named-mailboxes "" +inbox`
       parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-      m->name = mutt_buffer_strdup(buf);
+      m->name = buf_strdup(buf);
     }
 
     parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-    if (mutt_buffer_is_empty(buf))
+    if (buf_is_empty(buf))
     {
       /* Skip empty tokens. */
       mailbox_free(&m);
       continue;
     }
 
-    mutt_buffer_strcpy(&m->pathbuf, buf->data);
+    buf_strcpy(&m->pathbuf, buf->data);
     const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
     /* int rc = */ mx_path_canon2(m, c_folder);
 
@@ -699,7 +696,7 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
   char *p = strpbrk(buf->data, ": \t");
   if (!p || (*p != ':'))
   {
-    mutt_buffer_strcpy(err, _("invalid header field"));
+    buf_strcpy(err, _("invalid header field"));
     return MUTT_CMD_WARNING;
   }
 
@@ -741,7 +738,7 @@ enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
   if (!fp_out)
   {
     // L10N: '%s' is the file name of the temporary file
-    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
+    buf_printf(err, _("Could not create temporary file %s"), tempfile);
     return MUTT_CMD_ERROR;
   }
 
@@ -777,7 +774,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 
   if (!MoreArgs(s))
   {
-    mutt_buffer_printf(err, _("%s: too few arguments"), "setenv");
+    buf_printf(err, _("%s: too few arguments"), "setenv");
     return MUTT_CMD_WARNING;
   }
 
@@ -788,7 +785,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 
     if (unset)
     {
-      mutt_buffer_printf(err, _("Can't query a variable with the '%s' command"), "unsetenv");
+      buf_printf(err, _("Can't query a variable with the '%s' command"), "unsetenv");
       return MUTT_CMD_WARNING;
     }
 
@@ -802,13 +799,13 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
   {
     if (unset)
     {
-      mutt_buffer_printf(err, _("Can't query a variable with the '%s' command"), "unsetenv");
+      buf_printf(err, _("Can't query a variable with the '%s' command"), "unsetenv");
       return MUTT_CMD_WARNING;
     }
 
     if (prefix)
     {
-      mutt_buffer_printf(err, _("Can't use a prefix when querying a variable"));
+      buf_printf(err, _("Can't use a prefix when querying a variable"));
       return MUTT_CMD_WARNING;
     }
 
@@ -840,7 +837,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_SUCCESS;
     }
 
-    mutt_buffer_printf(err, _("%s is unset"), buf->data);
+    buf_printf(err, _("%s is unset"), buf->data);
     return MUTT_CMD_WARNING;
   }
 
@@ -848,7 +845,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
   {
     if (!mutt_envlist_unset(buf->data))
     {
-      mutt_buffer_printf(err, _("%s is unset"), buf->data);
+      buf_printf(err, _("%s is unset"), buf->data);
       return MUTT_CMD_WARNING;
     }
     return MUTT_CMD_SUCCESS;
@@ -864,7 +861,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 
   if (!MoreArgs(s))
   {
-    mutt_buffer_printf(err, _("%s: too few arguments"), "setenv");
+    buf_printf(err, _("%s: too few arguments"), "setenv");
     return MUTT_CMD_WARNING;
   }
 
@@ -888,7 +885,7 @@ static enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
   {
     if (parse_extract_token(buf, s, TOKEN_NO_FLAGS) != 0)
     {
-      mutt_buffer_printf(err, _("source: error at %s"), s->dptr);
+      buf_printf(err, _("source: error at %s"), s->dptr);
       return MUTT_CMD_ERROR;
     }
     mutt_str_copy(path, buf->data, sizeof(path));
@@ -896,7 +893,7 @@ static enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
 
     if (source_rc(path, err) < 0)
     {
-      mutt_buffer_printf(err, _("source: file %s could not be sourced"), path);
+      buf_printf(err, _("source: file %s could not be sourced"), path);
       return MUTT_CMD_ERROR;
     }
 
@@ -913,15 +910,15 @@ static enum CommandResult parse_spam_list(struct Buffer *buf, struct Buffer *s,
 {
   struct Buffer templ;
 
-  mutt_buffer_init(&templ);
+  buf_init(&templ);
 
   /* Insist on at least one parameter */
   if (!MoreArgs(s))
   {
     if (data == MUTT_SPAM)
-      mutt_buffer_strcpy(err, _("spam: no matching pattern"));
+      buf_strcpy(err, _("spam: no matching pattern"));
     else
-      mutt_buffer_strcpy(err, _("nospam: no matching pattern"));
+      buf_strcpy(err, _("nospam: no matching pattern"));
     return MUTT_CMD_ERROR;
   }
 
@@ -977,7 +974,7 @@ static enum CommandResult parse_spam_list(struct Buffer *buf, struct Buffer *s,
   }
 
   /* This should not happen. */
-  mutt_buffer_strcpy(err, "This is no good at all.");
+  buf_strcpy(err, "This is no good at all.");
   return MUTT_CMD_ERROR;
 }
 
@@ -1046,7 +1043,7 @@ enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
   if (!buf || !s || !err)
     return MUTT_CMD_ERROR;
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
 
   if (MoreArgs(s))
   {
@@ -1054,7 +1051,7 @@ enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
 
     if (MoreArgs(s))
     {
-      mutt_buffer_printf(err, _("%s: too many arguments"), "subscribe-to");
+      buf_printf(err, _("%s: too many arguments"), "subscribe-to");
       return MUTT_CMD_WARNING;
     }
 
@@ -1067,7 +1064,7 @@ enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
         return MUTT_CMD_SUCCESS;
       }
 
-      mutt_buffer_printf(err, _("Could not subscribe to %s"), buf->data);
+      buf_printf(err, _("Could not subscribe to %s"), buf->data);
       return MUTT_CMD_ERROR;
     }
 
@@ -1075,7 +1072,7 @@ enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
   }
 
-  mutt_buffer_addstr(err, _("No folder specified"));
+  buf_addstr(err, _("No folder specified"));
   return MUTT_CMD_WARNING;
 }
 #endif
@@ -1093,18 +1090,18 @@ static enum CommandResult parse_tag_formats(struct Buffer *buf, struct Buffer *s
   if (!s)
     return MUTT_CMD_ERROR;
 
-  struct Buffer *tagbuf = mutt_buffer_pool_get();
-  struct Buffer *fmtbuf = mutt_buffer_pool_get();
+  struct Buffer *tagbuf = buf_pool_get();
+  struct Buffer *fmtbuf = buf_pool_get();
 
   while (MoreArgs(s))
   {
     parse_extract_token(tagbuf, s, TOKEN_NO_FLAGS);
-    const char *tag = mutt_buffer_string(tagbuf);
+    const char *tag = buf_string(tagbuf);
     if (*tag == '\0')
       continue;
 
     parse_extract_token(fmtbuf, s, TOKEN_NO_FLAGS);
-    const char *fmt = mutt_buffer_string(fmtbuf);
+    const char *fmt = buf_string(fmtbuf);
 
     /* avoid duplicates */
     const char *tmp = mutt_hash_find(TagFormats, fmt);
@@ -1117,8 +1114,8 @@ static enum CommandResult parse_tag_formats(struct Buffer *buf, struct Buffer *s
     mutt_hash_insert(TagFormats, fmt, mutt_str_dup(tag));
   }
 
-  mutt_buffer_pool_release(&tagbuf);
-  mutt_buffer_pool_release(&fmtbuf);
+  buf_pool_release(&tagbuf);
+  buf_pool_release(&fmtbuf);
   return MUTT_CMD_SUCCESS;
 }
 
@@ -1135,18 +1132,18 @@ static enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer
   if (!s)
     return MUTT_CMD_ERROR;
 
-  struct Buffer *tagbuf = mutt_buffer_pool_get();
-  struct Buffer *trnbuf = mutt_buffer_pool_get();
+  struct Buffer *tagbuf = buf_pool_get();
+  struct Buffer *trnbuf = buf_pool_get();
 
   while (MoreArgs(s))
   {
     parse_extract_token(tagbuf, s, TOKEN_NO_FLAGS);
-    const char *tag = mutt_buffer_string(tagbuf);
+    const char *tag = buf_string(tagbuf);
     if (*tag == '\0')
       continue;
 
     parse_extract_token(trnbuf, s, TOKEN_NO_FLAGS);
-    const char *trn = mutt_buffer_string(trnbuf);
+    const char *trn = buf_string(trnbuf);
 
     /* avoid duplicates */
     const char *tmp = mutt_hash_find(TagTransforms, tag);
@@ -1159,8 +1156,8 @@ static enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer
     mutt_hash_insert(TagTransforms, tag, mutt_str_dup(trn));
   }
 
-  mutt_buffer_pool_release(&tagbuf);
-  mutt_buffer_pool_release(&trnbuf);
+  buf_pool_release(&tagbuf);
+  buf_pool_release(&trnbuf);
   return MUTT_CMD_SUCCESS;
 }
 
@@ -1265,12 +1262,12 @@ enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_SUCCESS;
     }
 
-    mutt_buffer_expand_path(buf);
+    buf_expand_path(buf);
 
     struct Account *a = NULL;
     TAILQ_FOREACH(a, &NeoMutt->accounts, entries)
     {
-      struct Mailbox *m = mx_mbox_find(a, mutt_buffer_string(buf));
+      struct Mailbox *m = mx_mbox_find(a, buf_string(buf));
       if (m)
       {
         do_unmailboxes(m);
@@ -1390,7 +1387,7 @@ enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
 
     if (MoreArgs(s))
     {
-      mutt_buffer_printf(err, _("%s: too many arguments"), "unsubscribe-from");
+      buf_printf(err, _("%s: too many arguments"), "unsubscribe-from");
       return MUTT_CMD_WARNING;
     }
 
@@ -1403,7 +1400,7 @@ enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
         return MUTT_CMD_SUCCESS;
       }
 
-      mutt_buffer_printf(err, _("Could not unsubscribe from %s"), buf->data);
+      buf_printf(err, _("Could not unsubscribe from %s"), buf->data);
       return MUTT_CMD_ERROR;
     }
 
@@ -1411,7 +1408,7 @@ enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
   }
 
-  mutt_buffer_addstr(err, _("No folder specified"));
+  buf_addstr(err, _("No folder specified"));
   return MUTT_CMD_WARNING;
 }
 #endif
@@ -1433,7 +1430,7 @@ static enum CommandResult parse_version(struct Buffer *buf, struct Buffer *s,
   if (!fp_out)
   {
     // L10N: '%s' is the file name of the temporary file
-    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
+    buf_printf(err, _("Could not create temporary file %s"), tempfile);
     return MUTT_CMD_ERROR;
   }
 

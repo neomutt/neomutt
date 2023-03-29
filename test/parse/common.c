@@ -39,9 +39,9 @@ size_t commands_array(struct Command **first)
   return mutt_array_size(mutt_commands);
 }
 
-void mutt_buffer_expand_path(struct Buffer *buf)
+void buf_expand_path(struct Buffer *buf)
 {
-  mutt_buffer_insert(buf, 0, "expanded");
+  buf_insert(buf, 0, "expanded");
 }
 
 void myvar_append(const char *var, const char *val)

@@ -607,7 +607,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
     return;
 
   /* keepalive failure in mutt_enter_fname may kill connection. */
-  if (shared->mailbox && (mutt_buffer_is_empty(&shared->mailbox->pathbuf)))
+  if (shared->mailbox && (buf_is_empty(&shared->mailbox->pathbuf)))
   {
     mview_free(&shared->mailboxview);
     mailbox_free(&shared->mailbox);
@@ -1139,7 +1139,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
       if (check == MX_STATUS_ERROR)
       {
-        if (mutt_buffer_is_empty(&shared->mailbox->pathbuf))
+        if (buf_is_empty(&shared->mailbox->pathbuf))
         {
           /* fatal error occurred */
           mview_free(&shared->mailboxview);

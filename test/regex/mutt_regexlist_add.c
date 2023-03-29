@@ -31,13 +31,13 @@ void test_mutt_regexlist_add(void)
   // int mutt_regexlist_add(struct RegexList *rl, const char *str, uint16_t flags, struct Buffer *err);
 
   {
-    struct Buffer buf = mutt_buffer_make(0);
+    struct Buffer buf = buf_make(0);
     TEST_CHECK(mutt_regexlist_add(NULL, "apple", 0, &buf) == 0);
   }
 
   {
     struct RegexList regexlist = { 0 };
-    struct Buffer buf = mutt_buffer_make(0);
+    struct Buffer buf = buf_make(0);
     TEST_CHECK(mutt_regexlist_add(&regexlist, NULL, 0, &buf) == 0);
   }
 

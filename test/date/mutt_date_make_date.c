@@ -40,11 +40,11 @@ void test_mutt_date_make_date(void)
     }
 
     {
-      struct Buffer buf = mutt_buffer_make(32);
+      struct Buffer buf = buf_make(32);
       mutt_date_make_date(&buf, local);
-      TEST_CHECK(mutt_buffer_len(&buf) != 0);
+      TEST_CHECK(buf_len(&buf) != 0);
       TEST_MSG("%s", buf);
-      mutt_buffer_dealloc(&buf);
+      buf_dealloc(&buf);
     }
     local = !local;
   } while (!local); // test the same with local == false

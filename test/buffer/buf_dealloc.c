@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_buffer_concatn_path()
+ * Test code for buf_dealloc()
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -23,29 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
-#include "mutt/lib.h"
 
-void test_mutt_buffer_concatn_path(void)
+void test_buf_dealloc(void)
 {
-  // size_t mutt_buffer_concatn_path(struct Buffer *buf, const char *dir, size_t dirlen, const char *fname, size_t fnamelen);
-
-  {
-    TEST_CHECK(mutt_buffer_concatn_path(NULL, NULL, 0, NULL, 0) == 0);
-  }
-
-  {
-    struct Buffer buf = mutt_buffer_make(0);
-
-    const char *dir = "/home/jim/work";
-    const char *file = "file.txt";
-    const char *result = "/home/jim/file";
-
-    size_t len = mutt_buffer_concatn_path(&buf, dir, 9, file, 4);
-
-    TEST_CHECK(len == 14);
-    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), result));
-
-    mutt_buffer_dealloc(&buf);
-  }
+  // void buf_dealloc(struct Buffer *buf);
 }

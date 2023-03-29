@@ -46,22 +46,22 @@ void test_mutt_file_resolve_symlink(void)
   char first[256] = { 0 };
   char second[256] = { 0 };
 
-  struct Buffer result = mutt_buffer_make(256);
+  struct Buffer result = buf_make(256);
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
     test_gen_path(first, sizeof(first), tests[i].first);
     test_gen_path(second, sizeof(second), tests[i].second);
-    mutt_buffer_strcpy(&result, first);
+    buf_strcpy(&result, first);
 
     TEST_CASE(first);
     mutt_file_resolve_symlink(&result);
-    if (!TEST_CHECK(mutt_str_equal(mutt_buffer_string(&result), second)))
+    if (!TEST_CHECK(mutt_str_equal(buf_string(&result), second)))
     {
       TEST_MSG("Original: %s", NONULL(tests[i].first));
       TEST_MSG("Expected: %s", second);
-      TEST_MSG("Actual:   %s", mutt_buffer_string(&result));
+      TEST_MSG("Actual:   %s", buf_string(&result));
     }
   }
 
-  mutt_buffer_dealloc(&result);
+  buf_dealloc(&result);
 }

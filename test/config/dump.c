@@ -96,7 +96,7 @@ bool test_pretty_var(void)
   // size_t pretty_var(const char *str, struct Buffer *buf);
 
   {
-    struct Buffer buf = mutt_buffer_make(0);
+    struct Buffer buf = buf_make(0);
     if (!TEST_CHECK(pretty_var(NULL, &buf) == 0))
       return false;
   }
@@ -107,20 +107,20 @@ bool test_pretty_var(void)
   }
 
   {
-    struct Buffer buf = mutt_buffer_make(64);
+    struct Buffer buf = buf_make(64);
     if (!TEST_CHECK(pretty_var("apple", &buf) > 0))
     {
-      mutt_buffer_dealloc(&buf);
+      buf_dealloc(&buf);
       return false;
     }
 
-    if (!TEST_CHECK(mutt_str_equal("\"apple\"", mutt_buffer_string(&buf))))
+    if (!TEST_CHECK(mutt_str_equal("\"apple\"", buf_string(&buf))))
     {
-      mutt_buffer_dealloc(&buf);
+      buf_dealloc(&buf);
       return false;
     }
 
-    mutt_buffer_dealloc(&buf);
+    buf_dealloc(&buf);
   }
 
   return true;
@@ -136,7 +136,7 @@ bool test_escape_string(void)
   }
 
   {
-    struct Buffer buf = mutt_buffer_make(0);
+    struct Buffer buf = buf_make(0);
     if (!TEST_CHECK(escape_string(&buf, NULL) == 0))
       return false;
   }
@@ -144,20 +144,20 @@ bool test_escape_string(void)
   {
     const char *before = "apple\nbanana\rcherry\tdam\007son\\endive\"fig'grape";
     const char *after = "apple\\nbanana\\rcherry\\tdam\\gson\\\\endive\\\"fig'grape";
-    struct Buffer buf = mutt_buffer_make(256);
+    struct Buffer buf = buf_make(256);
     if (!TEST_CHECK(escape_string(&buf, before) > 0))
     {
-      mutt_buffer_dealloc(&buf);
+      buf_dealloc(&buf);
       return false;
     }
 
-    if (!TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), after)))
+    if (!TEST_CHECK(mutt_str_equal(buf_string(&buf), after)))
     {
-      mutt_buffer_dealloc(&buf);
+      buf_dealloc(&buf);
       return false;
     }
 
-    mutt_buffer_dealloc(&buf);
+    buf_dealloc(&buf);
   }
 
   return true;
@@ -246,10 +246,10 @@ bool test_dump_config_neo(void)
 
     struct HashElem *he = cs_get_elem(cs, "Banana");
 
-    struct Buffer buf_val = mutt_buffer_make(0);
-    mutt_buffer_addstr(&buf_val, "yes");
-    struct Buffer buf_init = mutt_buffer_make(0);
-    mutt_buffer_addstr(&buf_init, "yes");
+    struct Buffer buf_val = buf_make(0);
+    buf_addstr(&buf_val, "yes");
+    struct Buffer buf_init = buf_make(0);
+    buf_addstr(&buf_init, "yes");
 
     FILE *fp = fopen("/dev/null", "w");
     if (!fp)
@@ -284,8 +284,8 @@ bool test_dump_config_neo(void)
     TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp)");
 
     fclose(fp);
-    mutt_buffer_dealloc(&buf_val);
-    mutt_buffer_dealloc(&buf_init);
+    buf_dealloc(&buf_val);
+    buf_dealloc(&buf_init);
     cs_free(&cs);
   }
 

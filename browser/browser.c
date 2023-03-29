@@ -33,7 +33,7 @@
  *
  * | Name           | Type           | See Also                  |
  * | :------------- | :------------- | :------------------------ |
- * | Browser Dialog | WT_DLG_BROWSER | mutt_buffer_select_file() |
+ * | Browser Dialog | WT_DLG_BROWSER | buf_select_file() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -146,8 +146,8 @@ static void init_lastdir(void)
   static bool done = false;
   if (!done)
   {
-    mutt_buffer_alloc(&LastDir, PATH_MAX);
-    mutt_buffer_alloc(&LastDirBackup, PATH_MAX);
+    buf_alloc(&LastDir, PATH_MAX);
+    buf_alloc(&LastDirBackup, PATH_MAX);
     done = true;
   }
 }
@@ -157,8 +157,8 @@ static void init_lastdir(void)
  */
 void mutt_browser_cleanup(void)
 {
-  mutt_buffer_dealloc(&LastDir);
-  mutt_buffer_dealloc(&LastDirBackup);
+  buf_dealloc(&LastDir);
+  buf_dealloc(&LastDirBackup);
 }
 
 /**
@@ -173,13 +173,13 @@ bool link_is_dir(const char *folder, const char *path)
   struct stat st = { 0 };
   bool retval = false;
 
-  struct Buffer *fullpath = mutt_buffer_pool_get();
-  mutt_buffer_concat_path(fullpath, folder, path);
+  struct Buffer *fullpath = buf_pool_get();
+  buf_concat_path(fullpath, folder, path);
 
-  if (stat(mutt_buffer_string(fullpath), &st) == 0)
+  if (stat(buf_string(fullpath), &st) == 0)
     retval = S_ISDIR(st.st_mode);
 
-  mutt_buffer_pool_release(&fullpath);
+  buf_pool_release(&fullpath);
 
   return retval;
 }
@@ -620,7 +620,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
                       const char *dirname, const char *prefix)
 {
   int rc = -1;
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
 #ifdef USE_NNTP
   if (OptNews)
   {
@@ -702,8 +702,8 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
         continue;
       }
 
-      mutt_buffer_concat_path(buf, dirname, de->d_name);
-      if (lstat(mutt_buffer_string(buf), &st) == -1)
+      buf_concat_path(buf, dirname, de->d_name);
+      if (lstat(buf_string(buf), &st) == -1)
         continue;
 
       /* No size for directories or symlinks */
@@ -715,7 +715,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
       struct MailboxNode *np = NULL;
       STAILQ_FOREACH(np, &ml, entries)
       {
-        if (mutt_str_equal(mutt_buffer_string(buf), mailbox_path(np->mailbox)))
+        if (mutt_str_equal(buf_string(buf), mailbox_path(np->mailbox)))
           break;
       }
 
@@ -732,7 +732,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
   browser_sort(state);
   rc = 0;
 ed_out:
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   return rc;
 }
 
@@ -775,8 +775,8 @@ int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState 
 
     if (TAILQ_EMPTY(&NeoMutt->accounts))
       return -1;
-    mailbox = mutt_buffer_pool_get();
-    md = mutt_buffer_pool_get();
+    mailbox = buf_pool_get();
+    md = buf_pool_get();
 
     mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_NO_FLAGS);
 
@@ -794,16 +794,16 @@ int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState 
         np->mailbox->msg_unread = m->msg_unread;
       }
 
-      mutt_buffer_strcpy(mailbox, mailbox_path(np->mailbox));
+      buf_strcpy(mailbox, mailbox_path(np->mailbox));
       const bool c_browser_abbreviate_mailboxes = cs_subset_bool(NeoMutt->sub, "browser_abbreviate_mailboxes");
       if (c_browser_abbreviate_mailboxes)
-        mutt_buffer_pretty_mailbox(mailbox);
+        buf_pretty_mailbox(mailbox);
 
       switch (np->mailbox->type)
       {
         case MUTT_IMAP:
         case MUTT_POP:
-          browser_add_folder(menu, state, mutt_buffer_string(mailbox),
+          browser_add_folder(menu, state, buf_string(mailbox),
                              np->mailbox->name, NULL, np->mailbox, NULL);
           continue;
         case MUTT_NOTMUCH:
@@ -825,25 +825,25 @@ int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState 
       {
         struct stat st2 = { 0 };
 
-        mutt_buffer_printf(md, "%s/new", mailbox_path(np->mailbox));
-        if (stat(mutt_buffer_string(md), &st) < 0)
+        buf_printf(md, "%s/new", mailbox_path(np->mailbox));
+        if (stat(buf_string(md), &st) < 0)
           st.st_mtime = 0;
-        mutt_buffer_printf(md, "%s/cur", mailbox_path(np->mailbox));
-        if (stat(mutt_buffer_string(md), &st2) < 0)
+        buf_printf(md, "%s/cur", mailbox_path(np->mailbox));
+        if (stat(buf_string(md), &st2) < 0)
           st2.st_mtime = 0;
         if (st2.st_mtime > st.st_mtime)
           st.st_mtime = st2.st_mtime;
       }
 
-      browser_add_folder(menu, state, mutt_buffer_string(mailbox),
-                         np->mailbox->name, &st, np->mailbox, NULL);
+      browser_add_folder(menu, state, buf_string(mailbox), np->mailbox->name,
+                         &st, np->mailbox, NULL);
     }
     neomutt_mailboxlist_clear(&ml);
   }
   browser_sort(state);
 
-  mutt_buffer_pool_release(&mailbox);
-  mutt_buffer_pool_release(&md);
+  buf_pool_release(&mailbox);
+  buf_pool_release(&md);
   return 0;
 }
 
@@ -973,24 +973,24 @@ void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
     }
     else
     {
-      struct Buffer *path = mutt_buffer_pool_get();
-      mutt_buffer_copy(path, &LastDir);
-      mutt_buffer_pretty_mailbox(path);
+      struct Buffer *path = buf_pool_get();
+      buf_copy(path, &LastDir);
+      buf_pretty_mailbox(path);
       const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
 #ifdef USE_IMAP
       const bool c_imap_list_subscribed = cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
       if (state->imap_browse && c_imap_list_subscribed)
       {
         snprintf(title, sizeof(title), _("Subscribed [%s], File mask: %s"),
-                 mutt_buffer_string(path), NONULL(c_mask ? c_mask->pattern : NULL));
+                 buf_string(path), NONULL(c_mask ? c_mask->pattern : NULL));
       }
       else
 #endif
       {
         snprintf(title, sizeof(title), _("Directory [%s], File mask: %s"),
-                 mutt_buffer_string(path), NONULL(c_mask ? c_mask->pattern : NULL));
+                 buf_string(path), NONULL(c_mask ? c_mask->pattern : NULL));
       }
-      mutt_buffer_pool_release(&path);
+      buf_pool_release(&path);
     }
   }
   sbar_set_title(sbar, title);
@@ -999,20 +999,20 @@ void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
    * The goal is to highlight the good directory if LastDir is the parent dir
    * of LastDirBackup (this occurs mostly when one hit "../"). It should also work
    * properly when the user is in examine_mailboxes-mode.  */
-  if (mutt_str_startswith(mutt_buffer_string(&LastDirBackup), mutt_buffer_string(&LastDir)))
+  if (mutt_str_startswith(buf_string(&LastDirBackup), buf_string(&LastDir)))
   {
     char target_dir[PATH_MAX] = { 0 };
 
 #ifdef USE_IMAP
     /* Check what kind of dir LastDirBackup is. */
-    if (imap_path_probe(mutt_buffer_string(&LastDirBackup), NULL) == MUTT_IMAP)
+    if (imap_path_probe(buf_string(&LastDirBackup), NULL) == MUTT_IMAP)
     {
-      mutt_str_copy(target_dir, mutt_buffer_string(&LastDirBackup), sizeof(target_dir));
+      mutt_str_copy(target_dir, buf_string(&LastDirBackup), sizeof(target_dir));
       imap_clean_path(target_dir, sizeof(target_dir));
     }
     else
 #endif
-      mutt_str_copy(target_dir, strrchr(mutt_buffer_string(&LastDirBackup), '/') + 1,
+      mutt_str_copy(target_dir, strrchr(buf_string(&LastDirBackup), '/') + 1,
                     sizeof(target_dir));
 
     /* If we get here, it means that LastDir is the parent directory of
@@ -1048,7 +1048,7 @@ static int file_tag(struct Menu *menu, int sel, int act)
   struct BrowserStateEntry *entry = menu->mdata;
   struct FolderFile *ff = ARRAY_GET(entry, sel);
   if (S_ISDIR(ff->mode) ||
-      (S_ISLNK(ff->mode) && link_is_dir(mutt_buffer_string(&LastDir), ff->name)))
+      (S_ISLNK(ff->mode) && link_is_dir(buf_string(&LastDir), ff->name)))
   {
     mutt_error(_("Can't attach a directory"));
     return 0;
@@ -1133,24 +1133,24 @@ void mutt_browser_select_dir(const char *f)
 {
   init_lastdir();
 
-  mutt_buffer_strcpy(&LastDirBackup, f);
+  buf_strcpy(&LastDirBackup, f);
 
   /* Method that will fetch the parent path depending on the type of the path. */
   char buf[PATH_MAX] = { 0 };
-  mutt_get_parent_path(mutt_buffer_string(&LastDirBackup), buf, sizeof(buf));
-  mutt_buffer_strcpy(&LastDir, buf);
+  mutt_get_parent_path(buf_string(&LastDirBackup), buf, sizeof(buf));
+  buf_strcpy(&LastDir, buf);
 }
 
 /**
- * mutt_buffer_select_file - Let the user select a file
+ * buf_select_file - Let the user select a file
  * @param[in]  file     Buffer for the result
  * @param[in]  flags    Flags, see #SelectFileFlags
  * @param[in]  m        Mailbox
  * @param[out] files    Array of selected files
  * @param[out] numfiles Number of selected files
  */
-void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
-                             struct Mailbox *m, char ***files, int *numfiles)
+void buf_select_file(struct Buffer *file, SelectFileFlags flags,
+                     struct Mailbox *m, char ***files, int *numfiles)
 {
   struct BrowserPrivateData *priv = browser_private_data_new();
   priv->file = file;
@@ -1169,7 +1169,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 #ifdef USE_NNTP
   if (OptNews)
   {
-    if (mutt_buffer_is_empty(file))
+    if (buf_is_empty(file))
     {
       struct NntpAccountData *adata = CurrentNewsSrv;
 
@@ -1187,22 +1187,22 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
     }
     else
     {
-      mutt_buffer_copy(priv->prefix, file);
+      buf_copy(priv->prefix, file);
     }
   }
   else
 #endif
-      if (!mutt_buffer_is_empty(file))
+      if (!buf_is_empty(file))
   {
-    mutt_buffer_expand_path(file);
+    buf_expand_path(file);
 #ifdef USE_IMAP
-    if (imap_path_probe(mutt_buffer_string(file), NULL) == MUTT_IMAP)
+    if (imap_path_probe(buf_string(file), NULL) == MUTT_IMAP)
     {
       init_state(&priv->state, NULL);
       priv->state.imap_browse = true;
-      if (imap_browse(mutt_buffer_string(file), &priv->state) == 0)
+      if (imap_browse(buf_string(file), &priv->state) == 0)
       {
-        mutt_buffer_strcpy(&LastDir, priv->state.folder);
+        buf_strcpy(&LastDir, priv->state.folder);
         browser_sort(&priv->state);
       }
     }
@@ -1210,37 +1210,36 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
     {
 #endif
       int i;
-      for (i = mutt_buffer_len(file) - 1;
-           (i > 0) && ((mutt_buffer_string(file))[i] != '/'); i--)
+      for (i = buf_len(file) - 1; (i > 0) && ((buf_string(file))[i] != '/'); i--)
       {
         ; // do nothing
       }
 
       if (i > 0)
       {
-        if ((mutt_buffer_string(file))[0] == '/')
+        if ((buf_string(file))[0] == '/')
         {
-          mutt_buffer_strcpy_n(&LastDir, mutt_buffer_string(file), i);
+          buf_strcpy_n(&LastDir, buf_string(file), i);
         }
         else
         {
           mutt_path_getcwd(&LastDir);
-          mutt_buffer_addch(&LastDir, '/');
-          mutt_buffer_addstr_n(&LastDir, mutt_buffer_string(file), i);
+          buf_addch(&LastDir, '/');
+          buf_addstr_n(&LastDir, buf_string(file), i);
         }
       }
       else
       {
-        if ((mutt_buffer_string(file))[0] == '/')
-          mutt_buffer_strcpy(&LastDir, "/");
+        if ((buf_string(file))[0] == '/')
+          buf_strcpy(&LastDir, "/");
         else
           mutt_path_getcwd(&LastDir);
       }
 
-      if ((i <= 0) && (mutt_buffer_string(file)[0] != '/'))
-        mutt_buffer_copy(priv->prefix, file);
+      if ((i <= 0) && (buf_string(file)[0] != '/'))
+        buf_copy(priv->prefix, file);
       else
-        mutt_buffer_strcpy(priv->prefix, mutt_buffer_string(file) + i + 1);
+        buf_strcpy(priv->prefix, buf_string(file) + i + 1);
       priv->kill_prefix = true;
 #ifdef USE_IMAP
     }
@@ -1285,7 +1284,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
        * meaning only with sort methods SUBJECT/DESC for now.  */
       if (CurrentFolder)
       {
-        if (mutt_buffer_is_empty(&LastDir))
+        if (buf_is_empty(&LastDir))
         {
           /* If browsing in "local"-mode, than we chose to define LastDir to
            * MailDir */
@@ -1300,7 +1299,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
               const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
               const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
               if (c_folder)
-                mutt_buffer_strcpy(&LastDir, c_folder);
+                buf_strcpy(&LastDir, c_folder);
               else if (c_spool_file)
                 mutt_browser_select_dir(c_spool_file);
               break;
@@ -1310,7 +1309,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
               break;
           }
         }
-        else if (!mutt_str_equal(CurrentFolder, mutt_buffer_string(&LastDirBackup)))
+        else if (!mutt_str_equal(CurrentFolder, buf_string(&LastDirBackup)))
         {
           mutt_browser_select_dir(CurrentFolder);
         }
@@ -1318,31 +1317,31 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
       /* When browser tracking feature is disabled, clear LastDirBackup */
       if (!browser_track)
-        mutt_buffer_reset(&LastDirBackup);
+        buf_reset(&LastDirBackup);
     }
 
 #ifdef USE_IMAP
     if (!priv->state.is_mailbox_list &&
-        (imap_path_probe(mutt_buffer_string(&LastDir), NULL) == MUTT_IMAP))
+        (imap_path_probe(buf_string(&LastDir), NULL) == MUTT_IMAP))
     {
       init_state(&priv->state, NULL);
       priv->state.imap_browse = true;
-      imap_browse(mutt_buffer_string(&LastDir), &priv->state);
+      imap_browse(buf_string(&LastDir), &priv->state);
       browser_sort(&priv->state);
     }
     else
 #endif
     {
-      size_t i = mutt_buffer_len(&LastDir);
-      while ((i > 0) && (mutt_buffer_string(&LastDir)[--i] == '/'))
+      size_t i = buf_len(&LastDir);
+      while ((i > 0) && (buf_string(&LastDir)[--i] == '/'))
         LastDir.data[i] = '\0';
-      mutt_buffer_fix_dptr(&LastDir);
-      if (mutt_buffer_is_empty(&LastDir))
+      buf_fix_dptr(&LastDir);
+      if (buf_is_empty(&LastDir))
         mutt_path_getcwd(&LastDir);
     }
   }
 
-  mutt_buffer_reset(file);
+  buf_reset(file);
 
   const struct Mapping *help_data = NULL;
 #ifdef USE_NNTP
@@ -1380,8 +1379,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 #endif
   {
     // examine_directory() calls browser_add_folder() which needs the menu
-    if (examine_directory(m, priv->menu, &priv->state, mutt_buffer_string(&LastDir),
-                          mutt_buffer_string(priv->prefix)) == -1)
+    if (examine_directory(m, priv->menu, &priv->state, buf_string(&LastDir),
+                          buf_string(priv->prefix)) == -1)
     {
       goto bail;
     }
@@ -1436,11 +1435,11 @@ bail:
 void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
                       struct Mailbox *m, char ***files, int *numfiles)
 {
-  struct Buffer *f_buf = mutt_buffer_pool_get();
+  struct Buffer *f_buf = buf_pool_get();
 
-  mutt_buffer_strcpy(f_buf, NONULL(file));
-  mutt_buffer_select_file(f_buf, flags, m, files, numfiles);
-  mutt_str_copy(file, mutt_buffer_string(f_buf), filelen);
+  buf_strcpy(f_buf, NONULL(file));
+  buf_select_file(f_buf, flags, m, files, numfiles);
+  mutt_str_copy(file, buf_string(f_buf), filelen);
 
-  mutt_buffer_pool_release(&f_buf);
+  buf_pool_release(&f_buf);
 }

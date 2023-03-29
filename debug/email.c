@@ -45,10 +45,10 @@ void dump_addr_list(char *buf, size_t buflen, const struct AddressList *al, cons
     return;
 
   buf[0] = '\0';
-  struct Buffer *tmpbuf = mutt_buffer_pool_get();
+  struct Buffer *tmpbuf = buf_pool_get();
   mutt_addrlist_write(al, tmpbuf, true);
-  mutt_str_copy(buf, mutt_buffer_string(tmpbuf), buflen);
-  mutt_buffer_pool_release(&tmpbuf);
+  mutt_str_copy(buf, buf_string(tmpbuf), buflen);
+  buf_pool_release(&tmpbuf);
 
   mutt_debug(LL_DEBUG1, "\t%s: %s\n", name, buf);
 }
@@ -60,18 +60,18 @@ void dump_list_head(const struct ListHead *list, const char *name)
   if (STAILQ_EMPTY(list))
     return;
 
-  struct Buffer buf = mutt_buffer_make(256);
+  struct Buffer buf = buf_make(256);
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, list, entries)
   {
-    if (!mutt_buffer_is_empty(&buf))
-      mutt_buffer_addch(&buf, ',');
-    mutt_buffer_addstr(&buf, np->data);
+    if (!buf_is_empty(&buf))
+      buf_addch(&buf, ',');
+    buf_addstr(&buf, np->data);
   }
 
-  mutt_debug(LL_DEBUG1, "\t%s: %s\n", name, mutt_buffer_string(&buf));
-  mutt_buffer_dealloc(&buf);
+  mutt_debug(LL_DEBUG1, "\t%s: %s\n", name, buf_string(&buf));
+  buf_dealloc(&buf);
 }
 
 void dump_envelope(const struct Envelope *env)
@@ -84,7 +84,7 @@ void dump_envelope(const struct Envelope *env)
     return;
   }
 
-  struct Buffer buf = mutt_buffer_make(256);
+  struct Buffer buf = buf_make(256);
   char arr[1024];
 
 #define ADD_FLAG(F) add_flag(&buf, (env->changed & F), #F)
@@ -94,7 +94,7 @@ void dump_envelope(const struct Envelope *env)
   ADD_FLAG(MUTT_ENV_CHANGED_SUBJECT);
 #undef ADD_FLAG
   mutt_debug(LL_DEBUG1, "\tchanged: %s\n",
-             mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_buffer_string(&buf));
+             buf_is_empty(&buf) ? "[NONE]" : buf_string(&buf));
 
 #define ADDR_LIST(AL) dump_addr_list(arr, sizeof(arr), &env->AL, #AL)
   ADDR_LIST(return_path);
@@ -134,8 +134,8 @@ void dump_envelope(const struct Envelope *env)
   dump_list_head(&env->in_reply_to, "in_reply_to");
   dump_list_head(&env->userhdrs, "userhdrs");
 
-  if (!mutt_buffer_is_empty(&env->spam))
-    mutt_debug(LL_DEBUG1, "\tspam: %s\n", mutt_buffer_string(&env->spam));
+  if (!buf_is_empty(&env->spam))
+    mutt_debug(LL_DEBUG1, "\tspam: %s\n", buf_string(&env->spam));
 
 #ifdef USE_AUTOCRYPT
   if (env->autocrypt)
@@ -144,7 +144,7 @@ void dump_envelope(const struct Envelope *env)
     mutt_debug(LL_DEBUG1, "\tautocrypt_gossip: %p\n", (void *) env->autocrypt_gossip);
 #endif
 
-  mutt_buffer_dealloc(&buf);
+  buf_dealloc(&buf);
 }
 
 void dump_email(const struct Email *e)
@@ -157,7 +157,7 @@ void dump_email(const struct Email *e)
     return;
   }
 
-  struct Buffer buf = mutt_buffer_make(256);
+  struct Buffer buf = buf_make(256);
   char arr[256];
 
   mutt_debug(LL_DEBUG1, "\tpath: %s\n", e->path);
@@ -188,11 +188,10 @@ void dump_email(const struct Email *e)
   ADD_FLAG(trash);
   ADD_FLAG(visible);
 #undef ADD_FLAG
-  mutt_debug(LL_DEBUG1, "\tFlags: %s\n",
-             mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_buffer_string(&buf));
+  mutt_debug(LL_DEBUG1, "\tFlags: %s\n", buf_is_empty(&buf) ? "[NONE]" : buf_string(&buf));
 
 #define ADD_FLAG(F) add_flag(&buf, (e->security & F), #F)
-  mutt_buffer_reset(&buf);
+  buf_reset(&buf);
   ADD_FLAG(SEC_ENCRYPT);
   ADD_FLAG(SEC_SIGN);
   ADD_FLAG(SEC_GOODSIGN);
@@ -209,7 +208,7 @@ void dump_email(const struct Email *e)
   ADD_FLAG(PGP_TRADITIONAL_CHECKED);
 #undef ADD_FLAG
   mutt_debug(LL_DEBUG1, "\tSecurity: %s\n",
-             mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_buffer_string(&buf));
+             buf_is_empty(&buf) ? "[NONE]" : buf_string(&buf));
 
   mutt_date_make_tls(arr, sizeof(arr), e->date_sent);
   mutt_debug(LL_DEBUG1, "\tSent: %s (%c%02u%02u)\n", arr,
@@ -218,7 +217,7 @@ void dump_email(const struct Email *e)
   mutt_date_make_tls(arr, sizeof(arr), e->received);
   mutt_debug(LL_DEBUG1, "\tRecv: %s\n", arr);
 
-  mutt_buffer_dealloc(&buf);
+  buf_dealloc(&buf);
 
   mutt_debug(LL_DEBUG1, "\tnum_hidden: %ld\n", e->num_hidden);
   mutt_debug(LL_DEBUG1, "\trecipient: %d\n", e->recipient);
@@ -238,7 +237,7 @@ void dump_email(const struct Email *e)
   // struct TagList tags
 
   // void *edata
-  mutt_buffer_dealloc(&buf);
+  buf_dealloc(&buf);
 }
 
 void dump_param_list(const struct ParameterList *pl)
@@ -274,7 +273,7 @@ void dump_body(const struct Body *body)
     return;
   }
 
-  struct Buffer buf = mutt_buffer_make(256);
+  struct Buffer buf = buf_make(256);
   char arr[256];
 
 #define ADD_FLAG(F) add_flag(&buf, body->F, #F)
@@ -292,8 +291,7 @@ void dump_body(const struct Body *body)
   ADD_FLAG(use_disp);
   ADD_FLAG(warnsig);
 #undef ADD_FLAG
-  mutt_debug(LL_DEBUG1, "\tFlags: %s\n",
-             mutt_buffer_is_empty(&buf) ? "[NONE]" : mutt_buffer_string(&buf));
+  mutt_debug(LL_DEBUG1, "\tFlags: %s\n", buf_is_empty(&buf) ? "[NONE]" : buf_string(&buf));
 
 #define OPT_STRING(S)                                                          \
   if (body->S)                                                                 \
@@ -345,7 +343,7 @@ void dump_body(const struct Body *body)
   }
   if (body->next || body->parts)
     mutt_debug(LL_DEBUG1, "--------------------------\n");
-  mutt_buffer_dealloc(&buf);
+  buf_dealloc(&buf);
 }
 
 void dump_attach(const struct AttachPtr *att)
@@ -358,7 +356,7 @@ void dump_attach(const struct AttachPtr *att)
     return;
   }
 
-  struct Buffer buf = mutt_buffer_make(256);
+  struct Buffer buf = buf_make(256);
 
 #define ADD_FLAG(F) add_flag(&buf, att->F, #F)
   ADD_FLAG(unowned);
@@ -373,7 +371,7 @@ void dump_attach(const struct AttachPtr *att)
   mutt_debug(LL_DEBUG1, "\tnum: %d\n", att->num);
 
   // struct Body *content; ///< Attachment
-  mutt_buffer_dealloc(&buf);
+  buf_dealloc(&buf);
 }
 
 char body_name(const struct Body *b)
@@ -404,15 +402,15 @@ void dump_body_next(struct Buffer *buf, const struct Body *b)
   if (!b)
     return;
 
-  mutt_buffer_addstr(buf, "<");
+  buf_addstr(buf, "<");
   for (; b; b = b->next)
   {
-    mutt_buffer_add_printf(buf, "%c", body_name(b));
+    buf_add_printf(buf, "%c", body_name(b));
     dump_body_next(buf, b->parts);
     if (b->next)
-      mutt_buffer_addch(buf, ',');
+      buf_addch(buf, ',');
   }
-  mutt_buffer_addstr(buf, ">");
+  buf_addstr(buf, ">");
 }
 
 void dump_body_one_line(const struct Body *b)
@@ -420,10 +418,10 @@ void dump_body_one_line(const struct Body *b)
   if (!b)
     return;
 
-  struct Buffer *buf = mutt_buffer_pool_get();
-  mutt_buffer_addstr(buf, "Body layout: ");
+  struct Buffer *buf = buf_pool_get();
+  buf_addstr(buf, "Body layout: ");
   dump_body_next(buf, b);
 
-  mutt_message(mutt_buffer_string(buf));
-  mutt_buffer_pool_release(&buf);
+  mutt_message(buf_string(buf));
+  buf_pool_release(&buf);
 }

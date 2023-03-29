@@ -141,7 +141,7 @@ void        mutt_file_unlink_empty(const char *path);
 int         mutt_file_unlock(int fd);
 void        mutt_file_resolve_symlink(struct Buffer *buf);
 
-void        mutt_buffer_quote_filename(struct Buffer *buf, const char *filename, bool add_outer);
-void        mutt_buffer_file_expand_fmt_quote(struct Buffer *dest, const char *fmt, const char *src);
+void        buf_quote_filename(struct Buffer *buf, const char *filename, bool add_outer);
+void        buf_file_expand_fmt_quote(struct Buffer *dest, const char *fmt, const char *src);
 
 #endif /* MUTT_LIB_FILE_H */

@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_buffer_addch()
+ * Test code for buf_mktemp_full()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,29 +23,23 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <string.h>
+#include <stdio.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
+#include "test_common.h"
 
-void test_mutt_buffer_addch(void)
+void test_buf_mktemp_full(void)
 {
-  // size_t mutt_buffer_addch(struct Buffer *buf, char c);
+  // void buf_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
+
+  test_neomutt_create();
 
   {
-    TEST_CHECK(mutt_buffer_addch(NULL, 'a') == 0);
+    struct Buffer buf = buf_make(1024);
+    buf_mktemp_full(&buf, NULL, NULL, __FILE__, __LINE__);
+    buf_dealloc(&buf);
   }
 
-  {
-    struct Buffer buf = mutt_buffer_make(0);
-    TEST_CHECK(mutt_buffer_addch(&buf, 'a') == 1);
-    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), "a"));
-    mutt_buffer_dealloc(&buf);
-  }
-
-  {
-    struct Buffer buf = mutt_buffer_make(0);
-    mutt_buffer_addstr(&buf, "test");
-    TEST_CHECK(mutt_buffer_addch(&buf, 'a') == 1);
-    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), "testa"));
-    mutt_buffer_dealloc(&buf);
-  }
+  test_neomutt_destroy();
 }

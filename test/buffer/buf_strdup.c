@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_buffer_init()
+ * Test code for buf_strdup()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,19 +23,33 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
+#include <string.h>
 #include "mutt/lib.h"
 
-void test_mutt_buffer_init(void)
+void test_buf_strdup(void)
 {
-  // struct Buffer *mutt_buffer_init(struct Buffer *buf);
+  // char *buf_strdup(struct Buffer *buf);
 
   {
-    TEST_CHECK(!mutt_buffer_init(NULL));
+    char *str = buf_strdup(NULL);
+    TEST_CHECK(str == NULL);
   }
 
   {
-    struct Buffer buf = mutt_buffer_make(0);
-    TEST_CHECK(mutt_buffer_init(&buf) != NULL);
+    char *src = "abcdefghij";
+    char *result = NULL;
+
+    struct Buffer buf = buf_make(32);
+
+    buf_strcpy(&buf, src);
+
+    result = buf_strdup(&buf);
+
+    TEST_CHECK(result != NULL);
+    TEST_CHECK(mutt_str_equal(result, src));
+
+    FREE(&result);
+
+    buf_dealloc(&buf);
   }
 }

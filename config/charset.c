@@ -47,7 +47,7 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
   if ((cdef->type & DT_CHARSET_SINGLE) && strchr(str, ':'))
   {
-    mutt_buffer_printf(err, _("'charset' must contain exactly one character set name"));
+    buf_printf(err, _("'charset' must contain exactly one character set name"));
     return CSR_ERR_INVALID;
   }
 
@@ -63,7 +63,7 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
     if (!mutt_ch_check_charset(p, strict))
     {
       rc = CSR_ERR_INVALID;
-      mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, p);
+      buf_printf(err, _("Invalid value for option %s: %s"), cdef->name, p);
       break;
     }
   }
@@ -94,7 +94,7 @@ int charset_slist_validator(const struct ConfigSet *cs, const struct ConfigDef *
     if (!mutt_ch_check_charset(charset, strict))
     {
       rc = CSR_ERR_INVALID;
-      mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, charset);
+      buf_printf(err, _("Invalid value for option %s: %s"), cdef->name, charset);
       break;
     }
   }

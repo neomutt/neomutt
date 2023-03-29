@@ -56,8 +56,8 @@ static short MailboxNotify = 0; ///< # of unnotified new boxes
 static bool is_same_mailbox(struct Mailbox *m1, struct Mailbox *m2,
                             struct stat *st1, struct stat *st2)
 {
-  if (!m1 || mutt_buffer_is_empty(&m1->pathbuf) || !m2 ||
-      mutt_buffer_is_empty(&m2->pathbuf) || (m1->type != m2->type))
+  if (!m1 || buf_is_empty(&m1->pathbuf) || !m2 || buf_is_empty(&m2->pathbuf) ||
+      (m1->type != m2->type))
   {
     return false;
   }
@@ -136,7 +136,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       default:; /* do nothing */
     }
   }
-  else if (c_check_mbox_size && m_cur && mutt_buffer_is_empty(&m_cur->pathbuf))
+  else if (c_check_mbox_size && m_cur && buf_is_empty(&m_cur->pathbuf))
     m_check->size = (off_t) st.st_size; /* update the size of current folder */
 
   if (!m_check->has_new)
@@ -248,7 +248,7 @@ bool mutt_mailbox_list(void)
 
   int have_unnotified = MailboxNotify;
 
-  struct Buffer *path = mutt_buffer_pool_get();
+  struct Buffer *path = buf_pool_get();
 
   mailboxlist[0] = '\0';
   pos += strlen(strncat(mailboxlist, _("New mail in "), sizeof(mailboxlist) - 1 - pos));
@@ -261,11 +261,11 @@ bool mutt_mailbox_list(void)
     if (!np->mailbox->has_new || (have_unnotified && np->mailbox->notified))
       continue;
 
-    mutt_buffer_strcpy(path, mailbox_path(np->mailbox));
-    mutt_buffer_pretty_mailbox(path);
+    buf_strcpy(path, mailbox_path(np->mailbox));
+    buf_pretty_mailbox(path);
 
     const size_t width = msgwin_get_width();
-    if (!first && (width >= 7) && ((pos + mutt_buffer_len(path)) >= (width - 7)))
+    if (!first && (width >= 7) && ((pos + buf_len(path)) >= (width - 7)))
     {
       break;
     }
@@ -280,8 +280,7 @@ bool mutt_mailbox_list(void)
       np->mailbox->notified = true;
       MailboxNotify--;
     }
-    pos += strlen(strncat(mailboxlist + pos, mutt_buffer_string(path),
-                          sizeof(mailboxlist) - 1 - pos));
+    pos += strlen(strncat(mailboxlist + pos, buf_string(path), sizeof(mailboxlist) - 1 - pos));
     first = 0;
   }
   neomutt_mailboxlist_clear(&ml);
@@ -291,7 +290,7 @@ bool mutt_mailbox_list(void)
     strncat(mailboxlist + pos, ", ...", sizeof(mailboxlist) - 1 - pos);
   }
 
-  mutt_buffer_pool_release(&path);
+  buf_pool_release(&path);
 
   if (!first)
   {
@@ -346,18 +345,18 @@ static struct Mailbox *find_next_mailbox(struct Buffer *s, bool find_new)
       if (find_new && np->mailbox->type == MUTT_NOTMUCH)
         continue;
 
-      mutt_buffer_expand_path(&np->mailbox->pathbuf);
+      buf_expand_path(&np->mailbox->pathbuf);
       struct Mailbox *m_cur = np->mailbox;
 
       if ((found || (pass > 0)) && (find_new ? m_cur->has_new : m_cur->msg_unread > 0))
       {
-        mutt_buffer_strcpy(s, mailbox_path(np->mailbox));
-        mutt_buffer_pretty_mailbox(s);
+        buf_strcpy(s, mailbox_path(np->mailbox));
+        buf_pretty_mailbox(s);
         struct Mailbox *m_result = np->mailbox;
         neomutt_mailboxlist_clear(&ml);
         return m_result;
       }
-      if (mutt_str_equal(mutt_buffer_string(s), mailbox_path(np->mailbox)))
+      if (mutt_str_equal(buf_string(s), mailbox_path(np->mailbox)))
         found = true;
     }
     neomutt_mailboxlist_clear(&ml);
@@ -377,7 +376,7 @@ static struct Mailbox *find_next_mailbox(struct Buffer *s, bool find_new)
  */
 struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
 {
-  mutt_buffer_expand_path(s);
+  buf_expand_path(s);
 
   if (mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_NO_FLAGS) > 0)
   {
@@ -388,7 +387,7 @@ struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
     mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_FORCE); /* mailbox was wrong - resync things */
   }
 
-  mutt_buffer_reset(s); // no folders with new mail
+  buf_reset(s); // no folders with new mail
   return NULL;
 }
 
@@ -403,13 +402,13 @@ struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
  */
 struct Mailbox *mutt_mailbox_next_unread(struct Mailbox *m_cur, struct Buffer *s)
 {
-  mutt_buffer_expand_path(s);
+  buf_expand_path(s);
 
   struct Mailbox *m_res = find_next_mailbox(s, false);
   if (m_res)
     return m_res;
 
-  mutt_buffer_reset(s); // no folders with new mail
+  buf_reset(s); // no folders with new mail
   return NULL;
 }
 

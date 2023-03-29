@@ -161,10 +161,10 @@ static int setup_paths(struct Mailbox *m)
   mutt_str_replace(&m->realpath, mailbox_path(m));
 
   /* We will uncompress to TMPDIR */
-  struct Buffer *buf = mutt_buffer_pool_get();
-  mutt_buffer_mktemp(buf);
-  mutt_buffer_copy(&m->pathbuf, buf);
-  mutt_buffer_pool_release(&buf);
+  struct Buffer *buf = buf_pool_get();
+  buf_mktemp(buf);
+  buf_copy(&m->pathbuf, buf);
+  buf_pool_release(&buf);
 
   FILE *fp = mutt_file_fopen(mailbox_path(m), "w");
   if (!fp)
@@ -264,23 +264,23 @@ static const char *compress_format_str(char *buf, size_t buflen, size_t col, int
   /* NOTE the compressed file config vars expect %f and %t to be
    * surrounded by '' (unlike other NeoMutt config vars, which add the
    * outer quotes for the user).  This is why we use the
-   * mutt_buffer_quote_filename() form with add_outer of false. */
-  struct Buffer *quoted = mutt_buffer_pool_get();
+   * buf_quote_filename() form with add_outer of false. */
+  struct Buffer *quoted = buf_pool_get();
   switch (op)
   {
     case 'f':
       /* Compressed file */
-      mutt_buffer_quote_filename(quoted, m->realpath, false);
-      snprintf(buf, buflen, "%s", mutt_buffer_string(quoted));
+      buf_quote_filename(quoted, m->realpath, false);
+      snprintf(buf, buflen, "%s", buf_string(quoted));
       break;
     case 't':
       /* Plaintext, temporary file */
-      mutt_buffer_quote_filename(quoted, mailbox_path(m), false);
-      snprintf(buf, buflen, "%s", mutt_buffer_string(quoted));
+      buf_quote_filename(quoted, mailbox_path(m), false);
+      snprintf(buf, buflen, "%s", buf_string(quoted));
       break;
   }
 
-  mutt_buffer_pool_release(&quoted);
+  buf_pool_release(&quoted);
   return src;
 }
 

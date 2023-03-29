@@ -115,7 +115,7 @@ done:
 
 void test_fini(void)
 {
-  mutt_buffer_pool_free();
+  buf_pool_free();
 }
 
 bool test_neomutt_create(void)

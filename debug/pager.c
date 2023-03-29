@@ -61,7 +61,7 @@ void dump_line(int i, struct Line *line)
   // mutt_debug(LL_DEBUG1, "\toffset: %ld\n", line->offset);
   if ((line->cid > 0) && (line->cid != MT_COLOR_NORMAL))
   {
-    struct Buffer *buf = mutt_buffer_pool_get();
+    struct Buffer *buf = buf_pool_get();
     get_colorid_name(line->cid, buf);
 
     const char *swatch = "";
@@ -72,9 +72,8 @@ void dump_line(int i, struct Line *line)
       swatch = color_debug_log_color(cc->fg, cc->bg);
     }
 
-    mutt_debug(LL_DEBUG1, "\tcolor: %d %s (%s)\n", line->cid, swatch,
-               mutt_buffer_string(buf));
-    mutt_buffer_pool_release(&buf);
+    mutt_debug(LL_DEBUG1, "\tcolor: %d %s (%s)\n", line->cid, swatch, buf_string(buf));
+    buf_pool_release(&buf);
   }
   if (line->cont_line)
   {

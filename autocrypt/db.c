@@ -88,18 +88,17 @@ int mutt_autocrypt_db_init(bool can_create)
   if (!c_autocrypt || !c_autocrypt_dir)
     return -1;
 
-  struct Buffer *db_path = mutt_buffer_pool_get();
-  mutt_buffer_concat_path(db_path, c_autocrypt_dir, "autocrypt.db");
+  struct Buffer *db_path = buf_pool_get();
+  buf_concat_path(db_path, c_autocrypt_dir, "autocrypt.db");
 
   struct stat st = { 0 };
-  if (stat(mutt_buffer_string(db_path), &st) == 0)
+  if (stat(buf_string(db_path), &st) == 0)
   {
-    if (sqlite3_open_v2(mutt_buffer_string(db_path), &AutocryptDB,
-                        SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK)
+    if (sqlite3_open_v2(buf_string(db_path), &AutocryptDB, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK)
     {
       /* L10N: Error message if autocrypt couldn't open the SQLite database
          for some reason.  The %s is the full path of the database file.  */
-      mutt_error(_("Unable to open autocrypt database %s"), mutt_buffer_string(db_path));
+      mutt_error(_("Unable to open autocrypt database %s"), buf_string(db_path));
       goto cleanup;
     }
 
@@ -110,7 +109,7 @@ int mutt_autocrypt_db_init(bool can_create)
   {
     if (!can_create)
       goto cleanup;
-    if (autocrypt_db_create(mutt_buffer_string(db_path)))
+    if (autocrypt_db_create(buf_string(db_path)))
       goto cleanup;
     /* Don't abort the whole init process because account creation failed */
     mutt_autocrypt_account_init(true);
@@ -120,7 +119,7 @@ int mutt_autocrypt_db_init(bool can_create)
   rc = 0;
 
 cleanup:
-  mutt_buffer_pool_release(&db_path);
+  buf_pool_release(&db_path);
   return rc;
 }
 

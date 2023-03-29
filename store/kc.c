@@ -48,20 +48,20 @@ static void *store_kyotocabinet_open(const char *path)
   if (!db)
     return NULL;
 
-  struct Buffer kcdbpath = mutt_buffer_make(1024);
+  struct Buffer kcdbpath = buf_make(1024);
 
-  mutt_buffer_printf(&kcdbpath, "%s#type=kct#opts=l#rcomp=lex", path);
+  buf_printf(&kcdbpath, "%s#type=kct#opts=l#rcomp=lex", path);
 
-  if (!kcdbopen(db, mutt_buffer_string(&kcdbpath), KCOWRITER | KCOCREATE))
+  if (!kcdbopen(db, buf_string(&kcdbpath), KCOWRITER | KCOCREATE))
   {
     int ecode = kcdbecode(db);
     mutt_debug(LL_DEBUG2, "kcdbopen failed for %s: %s (ecode %d)\n",
-               mutt_buffer_string(&kcdbpath), kcdbemsg(db), ecode);
+               buf_string(&kcdbpath), kcdbemsg(db), ecode);
     kcdbdel(db);
     db = NULL;
   }
 
-  mutt_buffer_dealloc(&kcdbpath);
+  buf_dealloc(&kcdbpath);
   return db;
 }
 

@@ -124,14 +124,14 @@ static int op_verify_key(struct PgpData *pd, int op)
     return FR_ERROR;
   }
   struct Buffer *tempfile = NULL;
-  tempfile = mutt_buffer_pool_get();
-  mutt_buffer_mktemp(tempfile);
-  FILE *fp_tmp = mutt_file_fopen(mutt_buffer_string(tempfile), "w");
+  tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
+  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
   if (!fp_tmp)
   {
     mutt_perror(_("Can't create temporary file"));
     mutt_file_fclose(&fp_null);
-    mutt_buffer_pool_release(&tempfile);
+    buf_pool_release(&tempfile);
     return FR_ERROR;
   }
 
@@ -148,7 +148,7 @@ static int op_verify_key(struct PgpData *pd, int op)
   if (pid == -1)
   {
     mutt_perror(_("Can't create filter"));
-    unlink(mutt_buffer_string(tempfile));
+    unlink(buf_string(tempfile));
     mutt_file_fclose(&fp_tmp);
     mutt_file_fclose(&fp_null);
   }
@@ -164,14 +164,14 @@ static int op_verify_key(struct PgpData *pd, int op)
   struct PagerData pdata = { 0 };
   struct PagerView pview = { &pdata };
 
-  pdata.fname = mutt_buffer_string(tempfile);
+  pdata.fname = buf_string(tempfile);
 
   pview.banner = title;
   pview.flags = MUTT_PAGER_NO_FLAGS;
   pview.mode = PAGER_MODE_OTHER;
 
   mutt_do_pager(&pview, NULL);
-  mutt_buffer_pool_release(&tempfile);
+  buf_pool_release(&tempfile);
   menu_queue_redraw(pd->menu, MENU_REDRAW_FULL);
   return FR_SUCCESS;
 }

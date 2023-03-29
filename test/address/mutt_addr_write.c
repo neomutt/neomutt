@@ -46,7 +46,7 @@ void test_mutt_addr_write(void)
   }
 
   { /* integration */
-    struct Buffer *buf = mutt_buffer_pool_get();
+    struct Buffer *buf = buf_pool_get();
     char per[64] = "bobby bob";
     char mbx[64] = "bob@bobsdomain";
 
@@ -62,8 +62,8 @@ void test_mutt_addr_write(void)
 
     const char *expected = "bobby bob <bob@bobsdomain>";
 
-    TEST_CHECK_STR_EQ(expected, mutt_buffer_string(buf));
+    TEST_CHECK_STR_EQ(expected, buf_string(buf));
     TEST_CHECK(len == strlen(expected));
-    mutt_buffer_pool_release(&buf);
+    buf_pool_release(&buf);
   }
 }

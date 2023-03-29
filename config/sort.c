@@ -52,7 +52,7 @@ static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 
   if (!value || (value[0] == '\0'))
   {
-    mutt_buffer_printf(err, _("Option %s may not be empty"), cdef->name);
+    buf_printf(err, _("Option %s may not be empty"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
@@ -82,7 +82,7 @@ static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 
   if (id < 0)
   {
-    mutt_buffer_printf(err, _("Invalid sort name: %s"), value);
+    buf_printf(err, _("Invalid sort name: %s"), value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
@@ -125,9 +125,9 @@ static int sort_string_get(const struct ConfigSet *cs, void *var,
     sort = (int) cdef->initial;
 
   if (sort & SORT_REVERSE)
-    mutt_buffer_addstr(result, PREFIX_REVERSE);
+    buf_addstr(result, PREFIX_REVERSE);
   if (sort & SORT_LAST)
-    mutt_buffer_addstr(result, PREFIX_LAST);
+    buf_addstr(result, PREFIX_LAST);
 
   sort &= SORT_MASK;
 
@@ -142,7 +142,7 @@ static int sort_string_get(const struct ConfigSet *cs, void *var,
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
-  mutt_buffer_addstr(result, str);
+  buf_addstr(result, str);
   return CSR_SUCCESS;
 }
 
@@ -158,7 +158,7 @@ static int sort_native_set(const struct ConfigSet *cs, void *var,
 
   if (!str)
   {
-    mutt_buffer_printf(err, _("Invalid sort type: %ld"), value);
+    buf_printf(err, _("Invalid sort type: %ld"), value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 

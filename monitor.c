@@ -235,7 +235,7 @@ static void monitor_info_init(struct MonitorInfo *info)
  */
 static void monitor_info_free(struct MonitorInfo *info)
 {
-  mutt_buffer_dealloc(&info->path_buf);
+  buf_dealloc(&info->path_buf);
 }
 
 /**
@@ -366,8 +366,8 @@ static enum ResolveResult monitor_resolve(struct MonitorInfo *info, struct Mailb
   }
   if (fmt)
   {
-    mutt_buffer_printf(&info->path_buf, fmt, info->path);
-    info->path = mutt_buffer_string(&info->path_buf);
+    buf_printf(&info->path_buf, fmt, info->path);
+    info->path = buf_string(&info->path_buf);
   }
   if (stat(info->path, &st) != 0)
     return RESOLVE_RES_FAIL_STAT;

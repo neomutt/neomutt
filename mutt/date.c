@@ -402,9 +402,9 @@ void mutt_date_make_date(struct Buffer *buf, bool local)
 
   tz /= 60;
 
-  mutt_buffer_add_printf(buf, "%s, %d %s %d %02d:%02d:%02d %+03d%02d", Weekdays[tm.tm_wday],
-                         tm.tm_mday, Months[tm.tm_mon], tm.tm_year + 1900,
-                         tm.tm_hour, tm.tm_min, tm.tm_sec, tz / 60, abs(tz) % 60);
+  buf_add_printf(buf, "%s, %d %s %d %02d:%02d:%02d %+03d%02d", Weekdays[tm.tm_wday],
+                 tm.tm_mday, Months[tm.tm_mon], tm.tm_year + 1900, tm.tm_hour,
+                 tm.tm_min, tm.tm_sec, tz / 60, abs(tz) % 60);
 }
 
 /**

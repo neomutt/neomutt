@@ -1918,7 +1918,7 @@
   - refactor: create a generic base64 encode/decode
   - debug: remove dprint in favor of mutt_debug (#375)
   - Fix dubious use macro for _() / gettext() (#376)
-  - Use mutt_buffer_init instead of memset
+  - Use buf_init instead of memset
   - Make the heap method and datatype a plain list
   - Reverts making AliasFile into a list_t (#379)
   - Turn mutt_new_* macros into inline functions

@@ -57,27 +57,27 @@ BODY_OBJS	= test/body/mutt_body_cmp_strict.o \
 		  test/body/mutt_body_free.o \
 		  test/body/mutt_body_new.o
 
-BUFFER_OBJS	= test/buffer/mutt_buffer_add_printf.o \
-		  test/buffer/mutt_buffer_addch.o \
-		  test/buffer/mutt_buffer_addstr.o \
-		  test/buffer/mutt_buffer_addstr_n.o \
-		  test/buffer/mutt_buffer_alloc.o \
-		  test/buffer/mutt_buffer_concat_path.o \
-		  test/buffer/mutt_buffer_concatn_path.o \
-		  test/buffer/mutt_buffer_copy.o \
-		  test/buffer/mutt_buffer_dealloc.o \
-		  test/buffer/mutt_buffer_fix_dptr.o \
-		  test/buffer/mutt_buffer_init.o \
-		  test/buffer/mutt_buffer_insert.o \
-		  test/buffer/mutt_buffer_is_empty.o \
-		  test/buffer/mutt_buffer_len.o \
-		  test/buffer/mutt_buffer_make.o \
-		  test/buffer/mutt_buffer_printf.o \
-		  test/buffer/mutt_buffer_reset.o \
-		  test/buffer/mutt_buffer_strcpy.o \
-		  test/buffer/mutt_buffer_strcpy_n.o \
-		  test/buffer/mutt_buffer_strdup.o \
-		  test/buffer/mutt_buffer_substrcpy.o
+BUFFER_OBJS	= test/buffer/buf_add_printf.o \
+		  test/buffer/buf_addch.o \
+		  test/buffer/buf_addstr.o \
+		  test/buffer/buf_addstr_n.o \
+		  test/buffer/buf_alloc.o \
+		  test/buffer/buf_concat_path.o \
+		  test/buffer/buf_concatn_path.o \
+		  test/buffer/buf_copy.o \
+		  test/buffer/buf_dealloc.o \
+		  test/buffer/buf_fix_dptr.o \
+		  test/buffer/buf_init.o \
+		  test/buffer/buf_insert.o \
+		  test/buffer/buf_is_empty.o \
+		  test/buffer/buf_len.o \
+		  test/buffer/buf_make.o \
+		  test/buffer/buf_printf.o \
+		  test/buffer/buf_reset.o \
+		  test/buffer/buf_strcpy.o \
+		  test/buffer/buf_strcpy_n.o \
+		  test/buffer/buf_strdup.o \
+		  test/buffer/buf_substrcpy.o
 
 CHARSET_OBJS	= test/charset/mutt_ch_canonical_charset.o \
 		  test/charset/mutt_ch_charset_lookup.o \
@@ -141,7 +141,7 @@ CONVERT_OBJS	= test/convert/mutt_update_content_info.o \
 		  test/convert/mutt_convert_file_to.o \
 		  test/convert/mutt_convert_file_from_to.o
 
-CORE_OBJS	= test/core/mutt_buffer_mktemp_full.o \
+CORE_OBJS	= test/core/buf_mktemp_full.o \
 		  test/core/mutt_file_mkstemp_full.o \
 		  test/core/mutt_mktemp_full.o
 
@@ -208,8 +208,8 @@ ENVLIST_OBJS	= test/envlist/mutt_envlist_free.o \
 		  test/envlist/mutt_envlist_unset.o
 
 FILE_OBJS	= test/file/common.o \
-		  test/file/mutt_buffer_file_expand_fmt_quote.o \
-		  test/file/mutt_buffer_quote_filename.o \
+		  test/file/buf_file_expand_fmt_quote.o \
+		  test/file/buf_quote_filename.o \
 		  test/file/mutt_file_check_empty.o \
 		  test/file/mutt_file_chmod.o \
 		  test/file/mutt_file_chmod_add.o \
@@ -440,9 +440,9 @@ PATTERN_OBJS	= pattern/pattern.o \
 		  test/pattern/dummy.o \
 		  test/pattern/leak.o
 
-POOL_OBJS	= test/pool/mutt_buffer_pool_free.o \
-		  test/pool/mutt_buffer_pool_get.o \
-		  test/pool/mutt_buffer_pool_release.o
+POOL_OBJS	= test/pool/buf_pool_free.o \
+		  test/pool/buf_pool_get.o \
+		  test/pool/buf_pool_release.o
 
 PREX_OBJS	= test/prex/mutt_prex_capture.o \
 		  test/prex/mutt_prex_free.o

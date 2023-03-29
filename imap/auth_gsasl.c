@@ -64,8 +64,8 @@ enum ImapAuthRes imap_auth_gsasl(struct ImapAccountData *adata, const char *meth
 
   mutt_message(_("Authenticating (%s)..."), chosen_mech);
 
-  output_buf = mutt_buffer_pool_get();
-  mutt_buffer_printf(output_buf, "AUTHENTICATE %s", chosen_mech);
+  output_buf = buf_pool_get();
+  buf_printf(output_buf, "AUTHENTICATE %s", chosen_mech);
   if (adata->capabilities & IMAP_CAP_SASL_IR)
   {
     char *gsasl_step_output = NULL;
@@ -78,11 +78,11 @@ enum ImapAuthRes imap_auth_gsasl(struct ImapAccountData *adata, const char *meth
       goto bail;
     }
 
-    mutt_buffer_addch(output_buf, ' ');
-    mutt_buffer_addstr(output_buf, gsasl_step_output);
+    buf_addch(output_buf, ' ');
+    buf_addstr(output_buf, gsasl_step_output);
     gsasl_free(gsasl_step_output);
   }
-  imap_cmd_start(adata, mutt_buffer_string(output_buf));
+  imap_cmd_start(adata, buf_string(output_buf));
 
   do
   {
@@ -103,7 +103,7 @@ enum ImapAuthRes imap_auth_gsasl(struct ImapAccountData *adata, const char *meth
     gsasl_rc = gsasl_step64(gsasl_session, imap_step_output, &gsasl_step_output);
     if ((gsasl_rc == GSASL_NEEDS_MORE) || (gsasl_rc == GSASL_OK))
     {
-      mutt_buffer_strcpy(output_buf, gsasl_step_output);
+      buf_strcpy(output_buf, gsasl_step_output);
       gsasl_free(gsasl_step_output);
     }
     else
@@ -111,11 +111,11 @@ enum ImapAuthRes imap_auth_gsasl(struct ImapAccountData *adata, const char *meth
       // sasl error occurred, send an abort string
       mutt_debug(LL_DEBUG1, "gsasl_step64() failed (%d): %s\n", gsasl_rc,
                  gsasl_strerror(gsasl_rc));
-      mutt_buffer_strcpy(output_buf, "*");
+      buf_strcpy(output_buf, "*");
     }
 
-    mutt_buffer_addstr(output_buf, "\r\n");
-    mutt_socket_send(adata->conn, mutt_buffer_string(output_buf));
+    buf_addstr(output_buf, "\r\n");
+    mutt_socket_send(adata->conn, buf_string(output_buf));
   } while ((gsasl_rc == GSASL_NEEDS_MORE) || (gsasl_rc == GSASL_OK));
 
   if (imap_step_rc != IMAP_RES_OK)
@@ -138,7 +138,7 @@ enum ImapAuthRes imap_auth_gsasl(struct ImapAccountData *adata, const char *meth
     rc = IMAP_AUTH_SUCCESS;
 
 bail:
-  mutt_buffer_pool_release(&output_buf);
+  buf_pool_release(&output_buf);
   mutt_gsasl_client_finish(&gsasl_session);
 
   if (rc == IMAP_AUTH_FAILURE)

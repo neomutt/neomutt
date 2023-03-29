@@ -51,8 +51,8 @@ static int wrapheaders_validator(const struct ConfigSet *cs, const struct Config
     return CSR_SUCCESS;
 
   // L10N: This applies to the "$wrap_headers" config variable.
-  mutt_buffer_printf(err, _("Option %s must be between %d and %d inclusive"),
-                     cdef->name, min_length, max_length);
+  buf_printf(err, _("Option %s must be between %d and %d inclusive"),
+             cdef->name, min_length, max_length);
   return CSR_ERR_INVALID;
 }
 
@@ -75,8 +75,7 @@ static int smtp_auth_validator(const struct ConfigSet *cs, const struct ConfigDe
     if (sasl_auth_validator(np->data))
       continue;
 #endif
-    mutt_buffer_printf(err, _("Option %s: %s is not a valid authenticator"),
-                       cdef->name, np->data);
+    buf_printf(err, _("Option %s: %s is not a valid authenticator"), cdef->name, np->data);
     return CSR_ERR_INVALID;
   }
 
@@ -99,8 +98,7 @@ static int simple_command_validator(const struct ConfigSet *cs, const struct Con
     return CSR_SUCCESS;
 
   // L10N: This applies to the "$sendmail" and "$inews" config variables.
-  mutt_buffer_printf(err, _("Option %s must not contain shell metacharacters: %c"),
-                     cdef->name, c);
+  buf_printf(err, _("Option %s must not contain shell metacharacters: %c"), cdef->name, c);
   return CSR_ERR_INVALID;
 }
 

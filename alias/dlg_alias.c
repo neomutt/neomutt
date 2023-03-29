@@ -148,10 +148,10 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
       break;
     case 'r':
     {
-      struct Buffer *tmpbuf = mutt_buffer_pool_get();
+      struct Buffer *tmpbuf = buf_pool_get();
       mutt_addrlist_write(&alias->addr, tmpbuf, true);
-      mutt_str_copy(tmp, mutt_buffer_string(tmpbuf), sizeof(tmp));
-      mutt_buffer_pool_release(&tmpbuf);
+      mutt_str_copy(tmp, buf_string(tmpbuf), sizeof(tmp));
+      buf_pool_release(&tmpbuf);
       mutt_format_s(buf, buflen, prec, tmp);
       break;
     }
@@ -467,7 +467,7 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
   buf[0] = '\0';
 
   // Extract the selected aliases
-  struct Buffer *tmpbuf = mutt_buffer_pool_get();
+  struct Buffer *tmpbuf = buf_pool_get();
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, &mdata.ava)
   {
@@ -476,8 +476,8 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
 
     mutt_addrlist_write(&avp->alias->addr, tmpbuf, true);
   }
-  mutt_str_copy(buf, mutt_buffer_string(tmpbuf), buflen);
-  mutt_buffer_pool_release(&tmpbuf);
+  mutt_str_copy(buf, buf_string(tmpbuf), buflen);
+  buf_pool_release(&tmpbuf);
 
 done:
   // Process any deleted aliases

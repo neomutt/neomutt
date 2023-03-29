@@ -554,7 +554,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
   char more[32] = { 0 };
   int more_len = 0;
 
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
   bool in_group = false;
   char *sep = NULL;
   struct Address *addr = NULL;
@@ -567,9 +567,9 @@ static int draw_envelope_addr(int field, struct AddressList *al,
       in_group = true;
     }
 
-    mutt_buffer_reset(buf);
+    buf_reset(buf);
     mutt_addr_write(buf, addr, true);
-    size_t addr_len = mutt_buffer_len(buf);
+    size_t addr_len = buf_len(buf);
 
     sep = "";
     if (!addr->group)
@@ -604,14 +604,14 @@ static int draw_envelope_addr(int field, struct AddressList *al,
       {
         mutt_debug(LL_DEBUG3, "no more lines\n");
         mutt_debug(LL_DEBUG3, "truncating: %s\n", buf);
-        mutt_paddstr(win, width_left, mutt_buffer_string(buf));
+        mutt_paddstr(win, width_left, buf_string(buf));
         break;
       }
 
       if (width_left == (win->state.cols - MaxHeaderWidth))
       {
         mutt_debug(LL_DEBUG3, "couldn't print: %s\n", buf);
-        mutt_paddstr(win, width_left, mutt_buffer_string(buf));
+        mutt_paddstr(win, width_left, buf_string(buf));
         break;
       }
 
@@ -627,7 +627,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
     if (addr_len < width_left)
     {
       mutt_debug(LL_DEBUG3, "space for: %s\n", buf);
-      mutt_window_addstr(win, mutt_buffer_string(buf));
+      mutt_window_addstr(win, buf_string(buf));
       mutt_window_addstr(win, sep);
       width_left -= addr_len;
     }
@@ -635,7 +635,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
     mutt_debug(LL_DEBUG3, "%ld lines remaining\n", max_lines - lines_used);
   }
   mutt_list_free(&list);
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
 
   if (count > 0)
   {
@@ -712,7 +712,7 @@ static int draw_envelope_user_hdrs(struct MuttWindow *win,
 static void draw_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wdata)
 {
   struct Email *e = wdata->email;
-  const char *fcc = mutt_buffer_string(wdata->fcc);
+  const char *fcc = buf_string(wdata->fcc);
   const int cols = win->state.cols - MaxHeaderWidth;
 
   mutt_window_clear(win);

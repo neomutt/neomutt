@@ -37,37 +37,37 @@ struct Buffer
   size_t dsize; ///< Length of data
 };
 
-void           mutt_buffer_alloc        (struct Buffer *buf, size_t size);
-void           mutt_buffer_dealloc      (struct Buffer *buf);
-void           mutt_buffer_fix_dptr     (struct Buffer *buf);
-struct Buffer *mutt_buffer_init         (struct Buffer *buf);
-bool           mutt_buffer_is_empty     (const struct Buffer *buf);
-size_t         mutt_buffer_len          (const struct Buffer *buf);
-struct Buffer  mutt_buffer_make         (size_t size);
-void           mutt_buffer_reset        (struct Buffer *buf);
-char *         mutt_buffer_strdup       (const struct Buffer *buf);
-void           mutt_buffer_seek         (struct Buffer *buf, size_t offset);
+void           buf_alloc        (struct Buffer *buf, size_t size);
+void           buf_dealloc      (struct Buffer *buf);
+void           buf_fix_dptr     (struct Buffer *buf);
+struct Buffer *buf_init         (struct Buffer *buf);
+bool           buf_is_empty     (const struct Buffer *buf);
+size_t         buf_len          (const struct Buffer *buf);
+struct Buffer  buf_make         (size_t size);
+void           buf_reset        (struct Buffer *buf);
+char *         buf_strdup       (const struct Buffer *buf);
+void           buf_seek         (struct Buffer *buf, size_t offset);
 
 // Functions that APPEND to a Buffer
-size_t         mutt_buffer_addch        (struct Buffer *buf, char c);
-size_t         mutt_buffer_addstr       (struct Buffer *buf, const char *s);
-size_t         mutt_buffer_addstr_n     (struct Buffer *buf, const char *s, size_t len);
-int            mutt_buffer_add_printf   (struct Buffer *buf, const char *fmt, ...);
+size_t         buf_addch        (struct Buffer *buf, char c);
+size_t         buf_addstr       (struct Buffer *buf, const char *s);
+size_t         buf_addstr_n     (struct Buffer *buf, const char *s, size_t len);
+int            buf_add_printf   (struct Buffer *buf, const char *fmt, ...);
 
 // Functions that INSERT into a Buffer
-size_t         mutt_buffer_insert       (struct Buffer *buf, size_t offset, const char *s);
+size_t         buf_insert       (struct Buffer *buf, size_t offset, const char *s);
 
 // Functions that OVERWRITE a Buffer
-size_t         mutt_buffer_concat_path  (struct Buffer *buf, const char *dir, const char *fname);
-size_t         mutt_buffer_concatn_path (struct Buffer *dst, const char *dir, size_t dirlen, const char *fname, size_t fnamelen);
-size_t         mutt_buffer_copy         (struct Buffer *dst, const struct Buffer *src);
-int            mutt_buffer_printf       (struct Buffer *buf, const char *fmt, ...);
-size_t         mutt_buffer_strcpy       (struct Buffer *buf, const char *s);
-size_t         mutt_buffer_strcpy_n     (struct Buffer *buf, const char *s, size_t len);
-size_t         mutt_buffer_substrcpy    (struct Buffer *buf, const char *beg, const char *end);
+size_t         buf_concat_path  (struct Buffer *buf, const char *dir, const char *fname);
+size_t         buf_concatn_path (struct Buffer *dst, const char *dir, size_t dirlen, const char *fname, size_t fnamelen);
+size_t         buf_copy         (struct Buffer *dst, const struct Buffer *src);
+int            buf_printf       (struct Buffer *buf, const char *fmt, ...);
+size_t         buf_strcpy       (struct Buffer *buf, const char *s);
+size_t         buf_strcpy_n     (struct Buffer *buf, const char *s, size_t len);
+size_t         buf_substrcpy    (struct Buffer *buf, const char *beg, const char *end);
 
 /**
- * mutt_buffer_string - Convert a buffer to a const char * "string"
+ * buf_string - Convert a buffer to a const char * "string"
  * @param buf Buffer to that is to be converted
  * @retval ptr String inside the Buffer
  *
@@ -75,7 +75,7 @@ size_t         mutt_buffer_substrcpy    (struct Buffer *buf, const char *beg, co
  *
  * @note Returns an empty string if Buffer isn't initialised
  */
-static inline const char *mutt_buffer_string(const struct Buffer *buf)
+static inline const char *buf_string(const struct Buffer *buf)
 {
   if (!buf || !buf->data)
     return "";

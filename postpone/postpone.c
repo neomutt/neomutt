@@ -131,18 +131,17 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
   if (S_ISDIR(st.st_mode))
   {
     /* if we have a maildir mailbox, we need to stat the "new" dir */
-    struct Buffer *buf = mutt_buffer_pool_get();
+    struct Buffer *buf = buf_pool_get();
 
-    mutt_buffer_printf(buf, "%s/new", c_postponed);
-    if ((access(mutt_buffer_string(buf), F_OK) == 0) &&
-        (stat(mutt_buffer_string(buf), &st) == -1))
+    buf_printf(buf, "%s/new", c_postponed);
+    if ((access(buf_string(buf), F_OK) == 0) && (stat(buf_string(buf), &st) == -1))
     {
       PostCount = 0;
       LastModify = 0;
-      mutt_buffer_pool_release(&buf);
+      buf_pool_release(&buf);
       return 0;
     }
-    mutt_buffer_pool_release(&buf);
+    buf_pool_release(&buf);
   }
 
   if (LastModify < st.st_mtime)
@@ -326,14 +325,14 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
   /* the cryptalg field must not be empty */
   if (((WithCrypto & APPLICATION_SMIME) != 0) && *smime_cryptalg)
   {
-    struct Buffer errmsg = mutt_buffer_make(0);
+    struct Buffer errmsg = buf_make(0);
     int rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
                                       smime_cryptalg, &errmsg);
 
-    if ((CSR_RESULT(rc) != CSR_SUCCESS) && !mutt_buffer_is_empty(&errmsg))
-      mutt_error("%s", mutt_buffer_string(&errmsg));
+    if ((CSR_RESULT(rc) != CSR_SUCCESS) && !buf_is_empty(&errmsg))
+      mutt_error("%s", buf_string(&errmsg));
 
-    mutt_buffer_dealloc(&errmsg);
+    buf_dealloc(&errmsg);
   }
 
   /* Set {Smime,Pgp}SignAs, if desired. */
@@ -383,10 +382,10 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
     }
     else
     {
-      mutt_buffer_reset(file);
+      buf_reset(file);
       if (b->filename)
       {
-        mutt_buffer_strcpy(file, b->filename);
+        buf_strcpy(file, b->filename);
         b->d_filename = mutt_str_dup(b->filename);
       }
       else
@@ -415,7 +414,7 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
       }
 
       mutt_adv_mktemp(file);
-      state.fp_out = mutt_file_fopen(mutt_buffer_string(file), "w");
+      state.fp_out = mutt_file_fopen(buf_string(file), "w");
       if (!state.fp_out)
         return -1;
 
@@ -462,7 +461,7 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
       if (mutt_file_fclose(&state.fp_out) != 0)
         return -1;
 
-      mutt_str_replace(&b->filename, mutt_buffer_string(file));
+      mutt_str_replace(&b->filename, buf_string(file));
       b->unlink = true;
 
       mutt_stamp_attachment(b);
@@ -593,7 +592,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   if ((e_new->body->type == TYPE_MULTIPART) && mutt_istr_equal(e_new->body->subtype, "mixed"))
     e_new->body = mutt_remove_multipart(e_new->body);
 
-  file = mutt_buffer_pool_get();
+  file = buf_pool_get();
 
   /* create temporary files for all attachments */
   if (create_tmp_files_for_attachments(fp_body, file, e_new, e_new->body, protected_headers) < 0)
@@ -635,7 +634,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
 bail:
 
   /* that's it. */
-  mutt_buffer_pool_release(&file);
+  buf_pool_release(&file);
   if (fp_body != fp)
     mutt_file_fclose(&fp_body);
   if (msg)
@@ -752,8 +751,8 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
              (plen = mutt_istr_startswith(np->data, "Mutt-Fcc:")))
     {
       p = mutt_str_skip_email_wsp(np->data + plen);
-      mutt_buffer_strcpy(fcc, p);
-      mutt_buffer_pretty_mailbox(fcc);
+      buf_strcpy(fcc, p);
+      buf_pretty_mailbox(fcc);
 
       /* note that mutt-fcc was present.  we do this because we want to add a
        * default fcc if the header was missing, but preserve the request of the

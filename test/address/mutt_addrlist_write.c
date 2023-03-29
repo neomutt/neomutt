@@ -50,10 +50,10 @@ void test_mutt_addrlist_write(void)
     int parsed = mutt_addrlist_parse(&al, in);
     TEST_CHECK(parsed == 3);
 
-    struct Buffer *buf = mutt_buffer_pool_get();
+    struct Buffer *buf = buf_pool_get();
     mutt_addrlist_write(&al, buf, false);
-    TEST_CHECK_STR_EQ(in, mutt_buffer_string(buf));
-    mutt_buffer_pool_release(&buf);
+    TEST_CHECK_STR_EQ(in, buf_string(buf));
+    buf_pool_release(&buf);
     mutt_addrlist_clear(&al);
   }
 
@@ -62,10 +62,10 @@ void test_mutt_addrlist_write(void)
     const char in[] = "some-group: first@example.com, second@example.com;, John Doe <john@doe.org>, \"Foo J. Bar\" <foo-j-bar@baz.com>";
     int parsed = mutt_addrlist_parse(&al, in);
     TEST_CHECK(parsed == 4);
-    struct Buffer *buf = mutt_buffer_pool_get();
+    struct Buffer *buf = buf_pool_get();
     mutt_addrlist_write(&al, buf, false);
-    TEST_CHECK_STR_EQ(in, mutt_buffer_string(buf));
-    mutt_buffer_pool_release(&buf);
+    TEST_CHECK_STR_EQ(in, buf_string(buf));
+    buf_pool_release(&buf);
     mutt_addrlist_clear(&al);
   }
 
@@ -74,11 +74,11 @@ void test_mutt_addrlist_write(void)
     const char in[] = "undisclosaed-recipients:;";
     int parsed = mutt_addrlist_parse(&al, in);
     TEST_CHECK(parsed == 0);
-    struct Buffer *buf = mutt_buffer_pool_get();
+    struct Buffer *buf = buf_pool_get();
     mutt_addrlist_write(&al, buf, false);
     // We always add a space after the colon. No big deal
-    TEST_CHECK_STR_EQ("undisclosaed-recipients: ;", mutt_buffer_string(buf));
-    mutt_buffer_pool_release(&buf);
+    TEST_CHECK_STR_EQ("undisclosaed-recipients: ;", buf_string(buf));
+    buf_pool_release(&buf);
     mutt_addrlist_clear(&al);
   }
 }

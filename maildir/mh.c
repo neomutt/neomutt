@@ -506,10 +506,10 @@ static int mh_parse_dir(struct Mailbox *m, struct MdEmailArray *mda, struct Prog
   struct MdEmail *entry = NULL;
   struct Email *e = NULL;
 
-  struct Buffer *buf = mutt_buffer_pool_get();
-  mutt_buffer_strcpy(buf, mailbox_path(m));
+  struct Buffer *buf = buf_pool_get();
+  buf_strcpy(buf, mailbox_path(m));
 
-  DIR *dir = mutt_file_opendir(mutt_buffer_string(buf), MUTT_OPENDIR_NONE);
+  DIR *dir = mutt_file_opendir(buf_string(buf), MUTT_OPENDIR_NONE);
   if (!dir)
   {
     rc = -1;
@@ -547,7 +547,7 @@ static int mh_parse_dir(struct Mailbox *m, struct MdEmailArray *mda, struct Prog
   }
 
 cleanup:
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
 
   return rc;
 }

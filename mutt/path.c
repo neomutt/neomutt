@@ -565,17 +565,17 @@ const char *mutt_path_getcwd(struct Buffer *cwd)
   if (!cwd)
     return NULL;
 
-  mutt_buffer_alloc(cwd, PATH_MAX);
+  buf_alloc(cwd, PATH_MAX);
   char *retval = getcwd(cwd->data, cwd->dsize);
   while (!retval && (errno == ERANGE))
   {
-    mutt_buffer_alloc(cwd, cwd->dsize + 256);
+    buf_alloc(cwd, cwd->dsize + 256);
     retval = getcwd(cwd->data, cwd->dsize);
   }
   if (retval)
-    mutt_buffer_fix_dptr(cwd);
+    buf_fix_dptr(cwd);
   else
-    mutt_buffer_reset(cwd);
+    buf_reset(cwd);
 
   return retval;
 }

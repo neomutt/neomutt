@@ -633,7 +633,7 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
   enum QuadOption move_messages = MUTT_NO;
   enum QuadOption purge = MUTT_YES;
   struct Buffer *mbox = NULL;
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
 
 #ifdef USE_NNTP
   if ((m->msg_unread != 0) && (m->type == MUTT_NNTP))
@@ -674,32 +674,30 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
   if ((read_msgs != 0) && (c_move != MUTT_NO))
   {
     bool is_spool;
-    mbox = mutt_buffer_pool_get();
+    mbox = buf_pool_get();
 
     char *p = mutt_find_hook(MUTT_MBOX_HOOK, mailbox_path(m));
     if (p)
     {
       is_spool = true;
-      mutt_buffer_strcpy(mbox, p);
+      buf_strcpy(mbox, p);
     }
     else
     {
       const char *const c_mbox = cs_subset_string(NeoMutt->sub, "mbox");
-      mutt_buffer_strcpy(mbox, c_mbox);
-      is_spool = mutt_is_spool(mailbox_path(m)) &&
-                 !mutt_is_spool(mutt_buffer_string(mbox));
+      buf_strcpy(mbox, c_mbox);
+      is_spool = mutt_is_spool(mailbox_path(m)) && !mutt_is_spool(buf_string(mbox));
     }
 
-    if (is_spool && !mutt_buffer_is_empty(mbox))
+    if (is_spool && !buf_is_empty(mbox))
     {
-      mutt_buffer_expand_path(mbox);
-      mutt_buffer_printf(buf,
-                         /* L10N: The first argument is the number of read messages to be
+      buf_expand_path(mbox);
+      buf_printf(buf,
+                 /* L10N: The first argument is the number of read messages to be
                             moved, the second argument is the target mailbox. */
-                         ngettext("Move %d read message to %s?",
-                                  "Move %d read messages to %s?", read_msgs),
-                         read_msgs, mutt_buffer_string(mbox));
-      move_messages = query_quadoption(c_move, mutt_buffer_string(buf));
+                 ngettext("Move %d read message to %s?", "Move %d read messages to %s?", read_msgs),
+                 read_msgs, buf_string(mbox));
+      move_messages = query_quadoption(c_move, buf_string(buf));
       if (move_messages == MUTT_ABORT)
         goto cleanup;
     }
@@ -710,12 +708,10 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
   const bool c_maildir_trash = cs_subset_bool(NeoMutt->sub, "maildir_trash");
   if ((m->msg_deleted != 0) && !((m->type == MUTT_MAILDIR) && c_maildir_trash))
   {
-    mutt_buffer_printf(buf,
-                       ngettext("Purge %d deleted message?",
-                                "Purge %d deleted messages?", m->msg_deleted),
-                       m->msg_deleted);
+    buf_printf(buf, ngettext("Purge %d deleted message?", "Purge %d deleted messages?", m->msg_deleted),
+               m->msg_deleted);
     const enum QuadOption c_delete = cs_subset_quad(NeoMutt->sub, "delete");
-    purge = query_quadoption(c_delete, mutt_buffer_string(buf));
+    purge = query_quadoption(c_delete, buf_string(buf));
     if (purge == MUTT_ABORT)
       goto cleanup;
   }
@@ -736,13 +732,13 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
   if (move_messages)
   {
     if (m->verbose)
-      mutt_message(_("Moving read messages to %s..."), mutt_buffer_string(mbox));
+      mutt_message(_("Moving read messages to %s..."), buf_string(mbox));
 
 #ifdef USE_IMAP
     /* try to use server-side copy first */
     i = 1;
 
-    if ((m->type == MUTT_IMAP) && (imap_path_probe(mutt_buffer_string(mbox), NULL) == MUTT_IMAP))
+    if ((m->type == MUTT_IMAP) && (imap_path_probe(buf_string(mbox), NULL) == MUTT_IMAP))
     {
       /* add messages for moving, and clear old tags, if any */
       struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -763,7 +759,7 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
         }
       }
 
-      i = imap_copy_messages(m, &el, mutt_buffer_string(mbox), SAVE_MOVE);
+      i = imap_copy_messages(m, &el, buf_string(mbox), SAVE_MOVE);
       emaillist_clear(&el);
     }
 
@@ -774,7 +770,7 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
     else /* use regular append-copy mode */
 #endif
     {
-      struct Mailbox *m_read = mx_path_resolve(mutt_buffer_string(mbox));
+      struct Mailbox *m_read = mx_path_resolve(buf_string(mbox));
       if (!mx_mbox_open(m_read, MUTT_APPEND))
       {
         mailbox_free(&m_read);
@@ -909,8 +905,8 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
   rc = MX_STATUS_OK;
 
 cleanup:
-  mutt_buffer_pool_release(&mbox);
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&mbox);
+  buf_pool_release(&buf);
   return rc;
 }
 
@@ -1500,7 +1496,7 @@ int mx_path_canon2(struct Mailbox *m, const char *folder)
   if (rc >= 0)
   {
     m->mx_ops = mx_get_ops(m->type);
-    mutt_buffer_strcpy(&m->pathbuf, m->realpath);
+    buf_strcpy(&m->pathbuf, m->realpath);
   }
 
   return rc;
@@ -1691,7 +1687,7 @@ struct Mailbox *mx_path_resolve(const char *path)
     return m;
 
   m = mailbox_new();
-  mutt_buffer_strcpy(&m->pathbuf, path);
+  buf_strcpy(&m->pathbuf, path);
   const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
   mx_path_canon2(m, c_folder);
 

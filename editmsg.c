@@ -60,18 +60,18 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   struct stat st = { 0 };
   bool old_append = m->append;
 
-  struct Buffer *fname = mutt_buffer_pool_get();
-  mutt_buffer_mktemp(fname);
+  struct Buffer *fname = buf_pool_get();
+  buf_mktemp(fname);
 
   // Temporarily force $mbox_type to be MUTT_MBOX
   const unsigned char c_mbox_type = cs_subset_enum(NeoMutt->sub, "mbox_type");
   cs_subset_str_native_set(NeoMutt->sub, "mbox_type", MUTT_MBOX, NULL);
 
-  struct Mailbox *m_fname = mx_path_resolve(mutt_buffer_string(fname));
+  struct Mailbox *m_fname = mx_path_resolve(buf_string(fname));
   if (!mx_mbox_open(m_fname, MUTT_NEWFOLDER))
   {
     mutt_error(_("could not create temporary folder: %s"), strerror(errno));
-    mutt_buffer_pool_release(&fname);
+    buf_pool_release(&fname);
     mailbox_free(&m_fname);
     return -1;
   }
@@ -94,10 +94,10 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     goto bail;
   }
 
-  rc = stat(mutt_buffer_string(fname), &st);
+  rc = stat(buf_string(fname), &st);
   if (rc == -1)
   {
-    mutt_error(_("Can't stat %s: %s"), mutt_buffer_string(fname), strerror(errno));
+    mutt_error(_("Can't stat %s: %s"), buf_string(fname), strerror(errno));
     goto bail;
   }
 
@@ -106,7 +106,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
    * the message separator, and not the body of the message.  If we fail to
    * remove it, the message will grow by one line each time the user edits
    * the message.  */
-  if ((st.st_size != 0) && (truncate(mutt_buffer_string(fname), st.st_size - 1) == -1))
+  if ((st.st_size != 0) && (truncate(buf_string(fname), st.st_size - 1) == -1))
   {
     rc = -1;
     mutt_error(_("could not truncate temporary mail folder: %s"), strerror(errno));
@@ -116,41 +116,40 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   if (action == EVM_VIEW)
   {
     /* remove write permissions */
-    rc = mutt_file_chmod_rm_stat(mutt_buffer_string(fname),
-                                 S_IWUSR | S_IWGRP | S_IWOTH, &st);
+    rc = mutt_file_chmod_rm_stat(buf_string(fname), S_IWUSR | S_IWGRP | S_IWOTH, &st);
     if (rc == -1)
     {
       mutt_debug(LL_DEBUG1, "Could not remove write permissions of %s: %s",
-                 mutt_buffer_string(fname), strerror(errno));
+                 buf_string(fname), strerror(errno));
       /* Do not bail out here as we are checking afterwards if we should adopt
        * changes of the temporary file. */
     }
   }
 
   /* re-stat after the truncate, to avoid false "modified" bugs */
-  rc = stat(mutt_buffer_string(fname), &st);
+  rc = stat(buf_string(fname), &st);
   if (rc == -1)
   {
-    mutt_error(_("Can't stat %s: %s"), mutt_buffer_string(fname), strerror(errno));
+    mutt_error(_("Can't stat %s: %s"), buf_string(fname), strerror(errno));
     goto bail;
   }
 
   /* Do not reuse the stat st here as it is outdated. */
-  time_t mtime = mutt_file_decrease_mtime(mutt_buffer_string(fname), NULL);
+  time_t mtime = mutt_file_decrease_mtime(buf_string(fname), NULL);
   if (mtime == (time_t) -1)
   {
     rc = -1;
-    mutt_perror(mutt_buffer_string(fname));
+    mutt_perror(buf_string(fname));
     goto bail;
   }
 
   const char *const c_editor = cs_subset_string(NeoMutt->sub, "editor");
-  mutt_edit_file(NONULL(c_editor), mutt_buffer_string(fname));
+  mutt_edit_file(NONULL(c_editor), buf_string(fname));
 
-  rc = stat(mutt_buffer_string(fname), &st);
+  rc = stat(buf_string(fname), &st);
   if (rc == -1)
   {
-    mutt_error(_("Can't stat %s: %s"), mutt_buffer_string(fname), strerror(errno));
+    mutt_error(_("Can't stat %s: %s"), buf_string(fname), strerror(errno));
     goto bail;
   }
 
@@ -182,7 +181,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     goto bail;
   }
 
-  fp = fopen(mutt_buffer_string(fname), "r");
+  fp = fopen(buf_string(fname), "r");
   if (!fp)
   {
     rc = -1;
@@ -245,7 +244,7 @@ bail:
   mutt_file_fclose(&fp);
 
   if (rc >= 0)
-    unlink(mutt_buffer_string(fname));
+    unlink(buf_string(fname));
 
   if (rc == 0)
   {
@@ -258,11 +257,11 @@ bail:
       mutt_set_flag(m, e, MUTT_TAG, false);
   }
   else if (rc == -1)
-    mutt_message(_("Error. Preserving temporary file: %s"), mutt_buffer_string(fname));
+    mutt_message(_("Error. Preserving temporary file: %s"), buf_string(fname));
 
   m->append = old_append;
 
-  mutt_buffer_pool_release(&fname);
+  buf_pool_release(&fname);
   return rc;
 }
 

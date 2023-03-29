@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_buffer_addstr_n()
+ * Test code for buf_addstr_n()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,17 +26,17 @@
 #include <string.h>
 #include "mutt/lib.h"
 
-void test_mutt_buffer_addstr_n(void)
+void test_buf_addstr_n(void)
 {
-  // size_t mutt_buffer_addstr_n(struct Buffer *buf, const char *s, size_t len);
+  // size_t buf_addstr_n(struct Buffer *buf, const char *s, size_t len);
 
   {
-    TEST_CHECK(mutt_buffer_addstr_n(NULL, "apple", 10) == 0);
+    TEST_CHECK(buf_addstr_n(NULL, "apple", 10) == 0);
   }
 
   {
-    struct Buffer buf = mutt_buffer_make(0);
-    TEST_CHECK(mutt_buffer_addstr_n(&buf, NULL, 10) == 0);
+    struct Buffer buf = buf_make(0);
+    TEST_CHECK(buf_addstr_n(&buf, NULL, 10) == 0);
   }
 
   TEST_CASE("Adding to an empty Buffer");
@@ -49,11 +49,11 @@ void test_mutt_buffer_addstr_n(void)
     for (size_t i = 0; i < mutt_array_size(sizes); i++)
     {
       TEST_CASE_("%ld", sizes[i]);
-      struct Buffer buf = mutt_buffer_make(0);
-      TEST_CHECK(mutt_buffer_addstr_n(&buf, str, sizes[i]) == sizes[i]);
-      TEST_CHECK(strlen(mutt_buffer_string(&buf)) == MIN(len, sizes[i]));
-      TEST_CHECK(mutt_strn_equal(mutt_buffer_string(&buf), str, sizes[i]));
-      mutt_buffer_dealloc(&buf);
+      struct Buffer buf = buf_make(0);
+      TEST_CHECK(buf_addstr_n(&buf, str, sizes[i]) == sizes[i]);
+      TEST_CHECK(strlen(buf_string(&buf)) == MIN(len, sizes[i]));
+      TEST_CHECK(mutt_strn_equal(buf_string(&buf), str, sizes[i]));
+      buf_dealloc(&buf);
     }
   }
 
@@ -70,12 +70,12 @@ void test_mutt_buffer_addstr_n(void)
     for (size_t i = 0; i < mutt_array_size(sizes); i++)
     {
       TEST_CASE_("%ld", sizes[i]);
-      struct Buffer buf = mutt_buffer_make(0);
-      mutt_buffer_addstr(&buf, base);
-      TEST_CHECK(mutt_buffer_addstr_n(&buf, str, sizes[i]) == sizes[i]);
-      TEST_CHECK(strlen(mutt_buffer_string(&buf)) == (base_len + MIN(len, sizes[i])));
-      TEST_CHECK(mutt_strn_equal(mutt_buffer_string(&buf), combined, base_len + sizes[i]));
-      mutt_buffer_dealloc(&buf);
+      struct Buffer buf = buf_make(0);
+      buf_addstr(&buf, base);
+      TEST_CHECK(buf_addstr_n(&buf, str, sizes[i]) == sizes[i]);
+      TEST_CHECK(strlen(buf_string(&buf)) == (base_len + MIN(len, sizes[i])));
+      TEST_CHECK(mutt_strn_equal(buf_string(&buf), combined, base_len + sizes[i]));
+      buf_dealloc(&buf);
     }
   }
 }

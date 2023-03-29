@@ -208,7 +208,7 @@ const char *mailbox_get_type_name(enum MailboxType type);
  */
 static inline const char *mailbox_path(const struct Mailbox *m) // LCOV_EXCL_LINE
 {
-  return mutt_buffer_string(&m->pathbuf); // LCOV_EXCL_LINE
+  return buf_string(&m->pathbuf); // LCOV_EXCL_LINE
 }
 
 #endif /* MUTT_CORE_MAILBOX_H */

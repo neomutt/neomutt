@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_buffer_substrcpy()
+ * Test code for buf_reset()
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,25 +26,26 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 
-void test_mutt_buffer_substrcpy(void)
+void test_buf_reset(void)
 {
-  // size_t mutt_buffer_substrcpy(struct Buffer *buf, const char *beg, const char *end);
+  // void buf_reset(struct Buffer *buf);
 
   {
-    TEST_CHECK(mutt_buffer_substrcpy(NULL, NULL, NULL) == 0);
+    buf_reset(NULL);
+    TEST_CHECK_(1, "buf_reset(NULL)");
   }
 
   {
-    char *src = "abcdefghijklmnopqrstuvwxyz";
-    char *result = "jklmnopqr";
+    struct Buffer buf = buf_make(0);
+    buf_reset(&buf);
+    TEST_CHECK_(1, "buf_reset(buf)");
+  }
 
-    struct Buffer buf = mutt_buffer_make(32);
-
-    size_t len = mutt_buffer_substrcpy(&buf, src + 9, src + 18);
-
-    TEST_CHECK(len == 9);
-    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), result));
-
-    mutt_buffer_dealloc(&buf);
+  {
+    struct Buffer buf = buf_make(0);
+    buf_addstr(&buf, "test");
+    buf_reset(&buf);
+    TEST_CHECK_(1, "buf_reset(buf)");
+    buf_dealloc(&buf);
   }
 }

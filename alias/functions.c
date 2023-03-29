@@ -190,9 +190,8 @@ static int op_main_limit(struct AliasMenuData *mdata, int op)
 static int op_query(struct AliasMenuData *mdata, int op)
 {
   struct Buffer *buf = mdata->query;
-  if ((mutt_buffer_get_field(_("Query: "), buf, MUTT_COMP_NO_FLAGS, false, NULL,
-                             NULL, NULL) != 0) ||
-      mutt_buffer_is_empty(buf))
+  if ((buf_get_field(_("Query: "), buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0) ||
+      buf_is_empty(buf))
   {
     return FR_NO_ACTION;
   }
@@ -206,10 +205,10 @@ static int op_query(struct AliasMenuData *mdata, int op)
   struct Menu *menu = mdata->menu;
   struct AliasList al = TAILQ_HEAD_INITIALIZER(al);
 
-  query_run(mutt_buffer_string(buf), true, &al, mdata->sub);
+  query_run(buf_string(buf), true, &al, mdata->sub);
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
   char title[256] = { 0 };
-  snprintf(title, sizeof(title), "%s%s", _("Query: "), mutt_buffer_string(buf));
+  snprintf(title, sizeof(title), "%s%s", _("Query: "), buf_string(buf));
   sbar_set_title(mdata->sbar, title);
 
   if (TAILQ_EMPTY(&al))

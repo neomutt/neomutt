@@ -54,21 +54,21 @@ size_t escape_string(struct Buffer *buf, const char *src)
     switch (*src)
     {
       case '\007':
-        len += mutt_buffer_addstr(buf, "\\g");
+        len += buf_addstr(buf, "\\g");
         break;
       case '\n':
-        len += mutt_buffer_addstr(buf, "\\n");
+        len += buf_addstr(buf, "\\n");
         break;
       case '\r':
-        len += mutt_buffer_addstr(buf, "\\r");
+        len += buf_addstr(buf, "\\r");
         break;
       case '\t':
-        len += mutt_buffer_addstr(buf, "\\t");
+        len += buf_addstr(buf, "\\t");
         break;
       default:
         if ((*src == '\\') || (*src == '"'))
-          len += mutt_buffer_addch(buf, '\\');
-        len += mutt_buffer_addch(buf, src[0]);
+          len += buf_addch(buf, '\\');
+        len += buf_addch(buf, src[0]);
     }
   }
   return len;
@@ -87,9 +87,9 @@ size_t pretty_var(const char *str, struct Buffer *buf)
 
   int len = 0;
 
-  len += mutt_buffer_addch(buf, '"');
+  len += buf_addch(buf, '"');
   len += escape_string(buf, str);
-  len += mutt_buffer_addch(buf, '"');
+  len += buf_addch(buf, '"');
 
   return len;
 }
@@ -175,14 +175,14 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
 
   bool result = true;
 
-  struct Buffer value = mutt_buffer_make(256);
-  struct Buffer initial = mutt_buffer_make(256);
-  struct Buffer tmp = mutt_buffer_make(256);
+  struct Buffer value = buf_make(256);
+  struct Buffer initial = buf_make(256);
+  struct Buffer tmp = buf_make(256);
 
   for (size_t i = 0; he_list[i]; i++)
   {
-    mutt_buffer_reset(&value);
-    mutt_buffer_reset(&initial);
+    buf_reset(&value);
+    buf_reset(&initial);
     he = he_list[i];
     const int type = DTYPE(he->type);
 
@@ -210,10 +210,10 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
 
         const struct ConfigDef *cdef = he->data;
         if ((type == DT_STRING) && IS_SENSITIVE(cdef->type) &&
-            (flags & CS_DUMP_HIDE_SENSITIVE) && !mutt_buffer_is_empty(&value))
+            (flags & CS_DUMP_HIDE_SENSITIVE) && !buf_is_empty(&value))
         {
-          mutt_buffer_reset(&value);
-          mutt_buffer_addstr(&value, "***");
+          buf_reset(&value);
+          buf_addstr(&value, "***");
         }
 
         if (((type == DT_PATH) || IS_MAILBOX(he->type)) && (value.data[0] == '/'))
@@ -222,9 +222,9 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
             (type != DT_QUAD) && !(flags & CS_DUMP_NO_ESCAPING))
         {
-          mutt_buffer_reset(&tmp);
+          buf_reset(&tmp);
           pretty_var(value.data, &tmp);
-          mutt_buffer_strcpy(&value, tmp.data);
+          buf_strcpy(&value, tmp.data);
         }
       }
 
@@ -244,9 +244,9 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
             (type != DT_QUAD) && !(flags & CS_DUMP_NO_ESCAPING))
         {
-          mutt_buffer_reset(&tmp);
+          buf_reset(&tmp);
           pretty_var(initial.data, &tmp);
-          mutt_buffer_strcpy(&initial, tmp.data);
+          buf_strcpy(&initial, tmp.data);
         }
       }
     }
@@ -255,9 +255,9 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
   }
 
   FREE(&he_list);
-  mutt_buffer_dealloc(&value);
-  mutt_buffer_dealloc(&initial);
-  mutt_buffer_dealloc(&tmp);
+  buf_dealloc(&value);
+  buf_dealloc(&initial);
+  buf_dealloc(&tmp);
 
   return result;
 }

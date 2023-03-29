@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_buffer_concat_path()
+ * Test code for buf_concat_path()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,13 +26,13 @@
 #include <string.h>
 #include "mutt/lib.h"
 
-void test_mutt_buffer_concat_path(void)
+void test_buf_concat_path(void)
 {
-  // void mutt_buffer_concat_path(struct Buffer *buf, const char *dir, const char *fname);
+  // void buf_concat_path(struct Buffer *buf, const char *dir, const char *fname);
 
   {
-    mutt_buffer_concat_path(NULL, "apple", "banana");
-    TEST_CHECK_(1, "mutt_buffer_concat_path(NULL, \"apple\", \"banana\")");
+    buf_concat_path(NULL, "apple", "banana");
+    TEST_CHECK_(1, "buf_concat_path(NULL, \"apple\", \"banana\")");
   }
 
   // clang-format off
@@ -60,36 +60,36 @@ void test_mutt_buffer_concat_path(void)
       TEST_CASE_("DIR: '%s'  FILE: '%s'", NONULL(concat_test[i][0]),
                  NONULL(concat_test[i][1]));
       {
-        struct Buffer buf = mutt_buffer_make(0);
-        mutt_buffer_concat_path(&buf, concat_test[i][0], concat_test[i][1]);
+        struct Buffer buf = buf_make(0);
+        buf_concat_path(&buf, concat_test[i][0], concat_test[i][1]);
         if (concat_test[i][2])
         {
-          TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), concat_test[i][2]));
+          TEST_CHECK(mutt_str_equal(buf_string(&buf), concat_test[i][2]));
         }
         else
         {
-          if (!TEST_CHECK(strlen(mutt_buffer_string(&buf)) == 0))
+          if (!TEST_CHECK(strlen(buf_string(&buf)) == 0))
           {
-            TEST_MSG("len = %ld", strlen(mutt_buffer_string(&buf)));
+            TEST_MSG("len = %ld", strlen(buf_string(&buf)));
           }
         }
-        mutt_buffer_dealloc(&buf);
+        buf_dealloc(&buf);
       }
 
       {
         const char *str = "test";
-        struct Buffer buf = mutt_buffer_make(0);
-        mutt_buffer_addstr(&buf, str);
-        mutt_buffer_concat_path(&buf, concat_test[i][0], concat_test[i][1]);
+        struct Buffer buf = buf_make(0);
+        buf_addstr(&buf, str);
+        buf_concat_path(&buf, concat_test[i][0], concat_test[i][1]);
         if (concat_test[i][2])
         {
-          TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), concat_test[i][2]));
+          TEST_CHECK(mutt_str_equal(buf_string(&buf), concat_test[i][2]));
         }
         else
         {
-          TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), str));
+          TEST_CHECK(mutt_str_equal(buf_string(&buf), str));
         }
-        mutt_buffer_dealloc(&buf);
+        buf_dealloc(&buf);
       }
     }
   }

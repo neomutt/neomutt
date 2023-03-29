@@ -172,7 +172,7 @@ static int mbtable_string_get(const struct ConfigSet *cs, void *var,
     str = (char *) cdef->initial;
   }
 
-  mutt_buffer_addstr(result, str);
+  buf_addstr(result, str);
   return CSR_SUCCESS;
 }
 

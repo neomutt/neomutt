@@ -87,19 +87,19 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, struct 
     return -1;
   }
 
-  struct Buffer *path = mutt_buffer_pool_get();
-  struct Buffer *dst = mutt_buffer_pool_get();
+  struct Buffer *path = buf_pool_get();
+  struct Buffer *dst = buf_pool_get();
   mutt_encode_path(path, NONULL(mailbox));
 
-  mutt_buffer_printf(dst, "%s/%s%s", c_message_cache_dir, host, mutt_buffer_string(path));
+  buf_printf(dst, "%s/%s%s", c_message_cache_dir, host, buf_string(path));
   if (*(dst->dptr - 1) != '/')
-    mutt_buffer_addch(dst, '/');
+    buf_addch(dst, '/');
 
-  mutt_debug(LL_DEBUG3, "path: '%s'\n", mutt_buffer_string(dst));
-  bcache->path = mutt_buffer_strdup(dst);
+  mutt_debug(LL_DEBUG3, "path: '%s'\n", buf_string(dst));
+  bcache->path = buf_strdup(dst);
 
-  mutt_buffer_pool_release(&path);
-  mutt_buffer_pool_release(&dst);
+  buf_pool_release(&path);
+  buf_pool_release(&dst);
   return 0;
 }
 
@@ -116,18 +116,17 @@ static int mutt_bcache_move(struct BodyCache *bcache, const char *id, const char
   if (!bcache || !id || (*id == '\0') || !newid || (*newid == '\0'))
     return -1;
 
-  struct Buffer *path = mutt_buffer_pool_get();
-  struct Buffer *newpath = mutt_buffer_pool_get();
+  struct Buffer *path = buf_pool_get();
+  struct Buffer *newpath = buf_pool_get();
 
-  mutt_buffer_printf(path, "%s%s", bcache->path, id);
-  mutt_buffer_printf(newpath, "%s%s", bcache->path, newid);
+  buf_printf(path, "%s%s", bcache->path, id);
+  buf_printf(newpath, "%s%s", bcache->path, newid);
 
-  mutt_debug(LL_DEBUG3, "bcache: mv: '%s' '%s'\n", mutt_buffer_string(path),
-             mutt_buffer_string(newpath));
+  mutt_debug(LL_DEBUG3, "bcache: mv: '%s' '%s'\n", buf_string(path), buf_string(newpath));
 
-  int rc = rename(mutt_buffer_string(path), mutt_buffer_string(newpath));
-  mutt_buffer_pool_release(&path);
-  mutt_buffer_pool_release(&newpath);
+  int rc = rename(buf_string(path), buf_string(newpath));
+  buf_pool_release(&path);
+  buf_pool_release(&newpath);
   return rc;
 }
 
@@ -182,16 +181,15 @@ FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id)
   if (!id || (*id == '\0') || !bcache)
     return NULL;
 
-  struct Buffer *path = mutt_buffer_pool_get();
-  mutt_buffer_addstr(path, bcache->path);
-  mutt_buffer_addstr(path, id);
+  struct Buffer *path = buf_pool_get();
+  buf_addstr(path, bcache->path);
+  buf_addstr(path, id);
 
-  FILE *fp = mutt_file_fopen(mutt_buffer_string(path), "r");
+  FILE *fp = mutt_file_fopen(buf_string(path), "r");
 
-  mutt_debug(LL_DEBUG3, "bcache: get: '%s': %s\n", mutt_buffer_string(path),
-             fp ? "yes" : "no");
+  mutt_debug(LL_DEBUG3, "bcache: get: '%s': %s\n", buf_string(path), fp ? "yes" : "no");
 
-  mutt_buffer_pool_release(&path);
+  buf_pool_release(&path);
   return fp;
 }
 
@@ -210,8 +208,8 @@ FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
   if (!id || (*id == '\0') || !bcache)
     return NULL;
 
-  struct Buffer *path = mutt_buffer_pool_get();
-  mutt_buffer_printf(path, "%s%s%s", bcache->path, id, ".tmp");
+  struct Buffer *path = buf_pool_get();
+  buf_printf(path, "%s%s%s", bcache->path, id, ".tmp");
 
   struct stat st = { 0 };
   if (stat(bcache->path, &st) == 0)
@@ -231,10 +229,10 @@ FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
     }
   }
 
-  mutt_debug(LL_DEBUG3, "bcache: put: '%s'\n", mutt_buffer_string(path));
+  mutt_debug(LL_DEBUG3, "bcache: put: '%s'\n", buf_string(path));
 
-  FILE *fp = mutt_file_fopen(mutt_buffer_string(path), "w+");
-  mutt_buffer_pool_release(&path);
+  FILE *fp = mutt_file_fopen(buf_string(path), "w+");
+  buf_pool_release(&path);
   return fp;
 }
 
@@ -247,11 +245,11 @@ FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
  */
 int mutt_bcache_commit(struct BodyCache *bcache, const char *id)
 {
-  struct Buffer *tmpid = mutt_buffer_pool_get();
-  mutt_buffer_printf(tmpid, "%s.tmp", id);
+  struct Buffer *tmpid = buf_pool_get();
+  buf_printf(tmpid, "%s.tmp", id);
 
-  int rc = mutt_bcache_move(bcache, mutt_buffer_string(tmpid), id);
-  mutt_buffer_pool_release(&tmpid);
+  int rc = mutt_bcache_move(bcache, buf_string(tmpid), id);
+  buf_pool_release(&tmpid);
   return rc;
 }
 
@@ -267,14 +265,14 @@ int mutt_bcache_del(struct BodyCache *bcache, const char *id)
   if (!id || (*id == '\0') || !bcache)
     return -1;
 
-  struct Buffer *path = mutt_buffer_pool_get();
-  mutt_buffer_addstr(path, bcache->path);
-  mutt_buffer_addstr(path, id);
+  struct Buffer *path = buf_pool_get();
+  buf_addstr(path, bcache->path);
+  buf_addstr(path, id);
 
-  mutt_debug(LL_DEBUG3, "bcache: del: '%s'\n", mutt_buffer_string(path));
+  mutt_debug(LL_DEBUG3, "bcache: del: '%s'\n", buf_string(path));
 
-  int rc = unlink(mutt_buffer_string(path));
-  mutt_buffer_pool_release(&path);
+  int rc = unlink(buf_string(path));
+  buf_pool_release(&path);
   return rc;
 }
 
@@ -290,21 +288,21 @@ int mutt_bcache_exists(struct BodyCache *bcache, const char *id)
   if (!id || (*id == '\0') || !bcache)
     return -1;
 
-  struct Buffer *path = mutt_buffer_pool_get();
-  mutt_buffer_addstr(path, bcache->path);
-  mutt_buffer_addstr(path, id);
+  struct Buffer *path = buf_pool_get();
+  buf_addstr(path, bcache->path);
+  buf_addstr(path, id);
 
   int rc = 0;
   struct stat st = { 0 };
-  if (stat(mutt_buffer_string(path), &st) < 0)
+  if (stat(buf_string(path), &st) < 0)
     rc = -1;
   else
     rc = (S_ISREG(st.st_mode) && (st.st_size != 0)) ? 0 : -1;
 
-  mutt_debug(LL_DEBUG3, "bcache: exists: '%s': %s\n", mutt_buffer_string(path),
+  mutt_debug(LL_DEBUG3, "bcache: exists: '%s': %s\n", buf_string(path),
              (rc == 0) ? "yes" : "no");
 
-  mutt_buffer_pool_release(&path);
+  buf_pool_release(&path);
   return rc;
 }
 

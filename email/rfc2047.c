@@ -345,9 +345,9 @@ static void finalize_chunk(struct Buffer *res, struct Buffer *buf, char *charset
   mutt_ch_convert_string(&buf->data, charset, c_charset, MUTT_ICONV_HOOK_FROM);
   charset[charsetlen] = end;
   mutt_mb_filter_unprintable(&buf->data);
-  mutt_buffer_addstr(res, buf->data);
+  buf_addstr(res, buf->data);
   FREE(&buf->data);
-  mutt_buffer_init(buf);
+  buf_init(buf);
 }
 
 /**
@@ -366,25 +366,25 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
 
   if (enc == ENC_QUOTED_PRINTABLE)
   {
-    struct Buffer buf = mutt_buffer_make(0);
+    struct Buffer buf = buf_make(0);
     for (; it < end; it++)
     {
       if (*it == '_')
       {
-        mutt_buffer_addch(&buf, ' ');
+        buf_addch(&buf, ' ');
       }
       else if ((it[0] == '=') && (!(it[1] & ~127) && (hexval(it[1]) != -1)) &&
                (!(it[2] & ~127) && (hexval(it[2]) != -1)))
       {
-        mutt_buffer_addch(&buf, (hexval(it[1]) << 4) | hexval(it[2]));
+        buf_addch(&buf, (hexval(it[1]) << 4) | hexval(it[2]));
         it += 2;
       }
       else
       {
-        mutt_buffer_addch(&buf, *it);
+        buf_addch(&buf, *it);
       }
     }
-    mutt_buffer_addch(&buf, '\0');
+    buf_addch(&buf, '\0');
     return buf.data;
   }
   else if (enc == ENC_BASE64)
@@ -654,21 +654,21 @@ void rfc2047_decode(char **pd)
   if (!pd || !*pd)
     return;
 
-  struct Buffer buf = mutt_buffer_make(0); /* Output buffer            */
-  char *s = *pd;            /* Read pointer                           */
-  char *beg = NULL;         /* Begin of encoded word                  */
-  enum ContentEncoding enc; /* ENC_BASE64 or ENC_QUOTED_PRINTABLE     */
-  char *charset = NULL;     /* Which charset                          */
-  size_t charsetlen;        /* Length of the charset                  */
-  char *text = NULL;        /* Encoded text                           */
-  size_t textlen;           /* Length of encoded text                 */
+  struct Buffer buf = buf_make(0); /* Output buffer            */
+  char *s = *pd;                   /* Read pointer                           */
+  char *beg = NULL;                /* Begin of encoded word                  */
+  enum ContentEncoding enc;        /* ENC_BASE64 or ENC_QUOTED_PRINTABLE     */
+  char *charset = NULL;            /* Which charset                          */
+  size_t charsetlen;               /* Length of the charset                  */
+  char *text = NULL;               /* Encoded text                           */
+  size_t textlen;                  /* Length of encoded text                 */
 
   /* Keep some state in case the next decoded word is using the same charset
    * and it happens to be split in the middle of a multibyte character.
    * See https://github.com/neomutt/neomutt/issues/1015 */
-  struct Buffer prev = mutt_buffer_make(0); /* Previously decoded word  */
-  char *prev_charset = NULL;  /* Previously used charset                */
-  size_t prev_charsetlen = 0; /* Length of the previously used charset  */
+  struct Buffer prev = buf_make(0); /* Previously decoded word  */
+  char *prev_charset = NULL;        /* Previously used charset                */
+  size_t prev_charsetlen = 0;       /* Length of the previously used charset  */
 
   while (*s)
   {
@@ -686,7 +686,7 @@ void rfc2047_decode(char **pd)
       }
 
       /* If we have some previously decoded text, add it now */
-      if (!mutt_buffer_is_empty(&prev))
+      if (!buf_is_empty(&prev))
       {
         finalize_chunk(&buf, &prev, prev_charset, prev_charsetlen);
       }
@@ -699,12 +699,12 @@ void rfc2047_decode(char **pd)
           char *conv = mutt_strn_dup(s, holelen);
           const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
           mutt_ch_convert_nonmime_string(c_assumed_charset, c_charset, &conv);
-          mutt_buffer_addstr(&buf, conv);
+          buf_addstr(&buf, conv);
           FREE(&conv);
         }
         else
         {
-          mutt_buffer_addstr_n(&buf, s, holelen);
+          buf_addstr_n(&buf, s, holelen);
         }
       }
       s += holelen;
@@ -716,7 +716,7 @@ void rfc2047_decode(char **pd)
       char *decoded = decode_word(text, textlen, enc);
       if (!decoded)
       {
-        mutt_buffer_dealloc(&buf);
+        buf_dealloc(&buf);
         return;
       }
       if (prev.data && ((prev_charsetlen != charsetlen) ||
@@ -727,7 +727,7 @@ void rfc2047_decode(char **pd)
         finalize_chunk(&buf, &prev, prev_charset, prev_charsetlen);
       }
 
-      mutt_buffer_addstr(&prev, decoded);
+      buf_addstr(&prev, decoded);
       FREE(&decoded);
       prev_charset = charset;
       prev_charsetlen = charsetlen;
@@ -741,7 +741,7 @@ void rfc2047_decode(char **pd)
     finalize_chunk(&buf, &prev, prev_charset, prev_charsetlen);
   }
 
-  mutt_buffer_addch(&buf, '\0');
+  buf_addch(&buf, '\0');
   FREE(pd);
   *pd = buf.data;
 }

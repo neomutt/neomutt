@@ -125,11 +125,11 @@ static int slist_string_get(const struct ConfigSet *cs, void *var,
   }
   else
   {
-    mutt_buffer_addstr(result, (char *) cdef->initial);
+    buf_addstr(result, (char *) cdef->initial);
   }
 
   int rc = CSR_SUCCESS;
-  if (mutt_buffer_is_empty(result))
+  if (buf_is_empty(result))
     rc |= CSR_SUC_EMPTY;
 
   return rc;

@@ -158,13 +158,13 @@ int mutt_do_pager(struct PagerView *pview, struct Email *e)
   const char *const c_pager = pager_get_pager(NeoMutt->sub);
   if (c_pager)
   {
-    struct Buffer *cmd = mutt_buffer_pool_get();
+    struct Buffer *cmd = buf_pool_get();
 
     mutt_endwin();
-    mutt_buffer_file_expand_fmt_quote(cmd, c_pager, pview->pdata->fname);
-    if (mutt_system(mutt_buffer_string(cmd)) == -1)
+    buf_file_expand_fmt_quote(cmd, c_pager, pview->pdata->fname);
+    if (mutt_system(buf_string(cmd)) == -1)
     {
-      mutt_error(_("Error running \"%s\""), mutt_buffer_string(cmd));
+      mutt_error(_("Error running \"%s\""), buf_string(cmd));
       rc = -1;
     }
     else
@@ -172,7 +172,7 @@ int mutt_do_pager(struct PagerView *pview, struct Email *e)
       rc = 0;
     }
     mutt_file_unlink(pview->pdata->fname);
-    mutt_buffer_pool_release(&cmd);
+    buf_pool_release(&cmd);
   }
   else
   {

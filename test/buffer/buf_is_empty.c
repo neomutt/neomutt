@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_buffer_strdup()
+ * Test code for buf_is_empty()
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,33 +23,26 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <string.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 
-void test_mutt_buffer_strdup(void)
+void test_buf_is_empty(void)
 {
-  // char *mutt_buffer_strdup(struct Buffer *buf);
+  // bool buf_is_empty(const struct Buffer *buf);
 
   {
-    char *str = mutt_buffer_strdup(NULL);
-    TEST_CHECK(str == NULL);
+    TEST_CHECK(buf_is_empty(NULL));
   }
 
   {
-    char *src = "abcdefghij";
-    char *result = NULL;
+    struct Buffer buf = buf_make(0);
+    TEST_CHECK(buf_is_empty(&buf));
+  }
 
-    struct Buffer buf = mutt_buffer_make(32);
-
-    mutt_buffer_strcpy(&buf, src);
-
-    result = mutt_buffer_strdup(&buf);
-
-    TEST_CHECK(result != NULL);
-    TEST_CHECK(mutt_str_equal(result, src));
-
-    FREE(&result);
-
-    mutt_buffer_dealloc(&buf);
+  {
+    struct Buffer buf = buf_make(0);
+    buf_addstr(&buf, "test");
+    TEST_CHECK(!buf_is_empty(&buf));
+    buf_dealloc(&buf);
   }
 }

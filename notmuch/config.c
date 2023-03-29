@@ -57,8 +57,7 @@ static int nm_default_url_validator(const struct ConfigSet *cs, const struct Con
   const char *url = (const char *) value;
   if (!is_valid_notmuch_url(url))
   {
-    mutt_buffer_printf(err, _("nm_default_url must be: notmuch://<absolute path> . Current: %s"),
-                       url);
+    buf_printf(err, _("nm_default_url must be: notmuch://<absolute path> . Current: %s"), url);
     return CSR_ERR_INVALID;
   }
 #endif
@@ -83,7 +82,7 @@ static int nm_query_window_timebase_validator(const struct ConfigSet *cs,
   const char *timebase = (const char *) value;
   if (!nm_query_window_check_timebase(timebase))
   {
-    mutt_buffer_printf(
+    buf_printf(
         // L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
         //       They should not be translated.
         err, _("Invalid nm_query_window_timebase value (valid values are: "

@@ -85,12 +85,11 @@ static struct BodyCache *msg_cache_open(struct Mailbox *m)
   if (mdata->bcache)
     return mdata->bcache;
 
-  struct Buffer *mailbox = mutt_buffer_pool_get();
+  struct Buffer *mailbox = buf_pool_get();
   imap_cachepath(adata->delim, mdata->name, mailbox);
 
-  struct BodyCache *bc = mutt_bcache_open(&adata->conn->account,
-                                          mutt_buffer_string(mailbox));
-  mutt_buffer_pool_release(&mailbox);
+  struct BodyCache *bc = mutt_bcache_open(&adata->conn->account, buf_string(mailbox));
+  buf_pool_release(&mailbox);
 
   return bc;
 }
@@ -546,7 +545,7 @@ static unsigned int imap_fetch_msn_seqset(struct Buffer *buf, struct ImapAccount
   unsigned int range_end = 0;
   unsigned int msn_count = 0;
 
-  mutt_buffer_reset(buf);
+  buf_reset(buf);
   if (msn_end < msn_begin)
     return 0;
 
@@ -560,7 +559,7 @@ static unsigned int imap_fetch_msn_seqset(struct Buffer *buf, struct ImapAccount
       *fetch_msn_end = msn_end;
     else
       *fetch_msn_end = msn_begin + max_headers_per_fetch - 1;
-    mutt_buffer_printf(buf, "%u:%u", msn_begin, *fetch_msn_end);
+    buf_printf(buf, "%u:%u", msn_begin, *fetch_msn_end);
     return (*fetch_msn_end - msn_begin + 1);
   }
 
@@ -590,15 +589,15 @@ static unsigned int imap_fetch_msn_seqset(struct Buffer *buf, struct ImapAccount
       if (first_chunk)
         first_chunk = false;
       else
-        mutt_buffer_addch(buf, ',');
+        buf_addch(buf, ',');
 
       if (state == 1)
-        mutt_buffer_add_printf(buf, "%u", range_begin);
+        buf_add_printf(buf, "%u", range_begin);
       else if (state == 2)
-        mutt_buffer_add_printf(buf, "%u:%u", range_begin, range_end);
+        buf_add_printf(buf, "%u:%u", range_begin, range_end);
       state = 0;
 
-      if ((mutt_buffer_len(buf) > 500) || (msn_count >= max_headers_per_fetch))
+      if ((buf_len(buf) > 500) || (msn_count >= max_headers_per_fetch))
         break;
     }
   }
@@ -1095,30 +1094,30 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   if (!adata || (adata->mailbox != m))
     return -1;
 
-  struct Buffer *hdr_list = mutt_buffer_pool_get();
-  mutt_buffer_strcpy(hdr_list, want_headers);
+  struct Buffer *hdr_list = buf_pool_get();
+  buf_strcpy(hdr_list, want_headers);
   const char *const c_imap_headers = cs_subset_string(NeoMutt->sub, "imap_headers");
   if (c_imap_headers)
   {
-    mutt_buffer_addch(hdr_list, ' ');
-    mutt_buffer_addstr(hdr_list, c_imap_headers);
+    buf_addch(hdr_list, ' ');
+    buf_addstr(hdr_list, c_imap_headers);
   }
 #ifdef USE_AUTOCRYPT
   const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
   if (c_autocrypt)
   {
-    mutt_buffer_addch(hdr_list, ' ');
-    mutt_buffer_addstr(hdr_list, "AUTOCRYPT");
+    buf_addch(hdr_list, ' ');
+    buf_addstr(hdr_list, "AUTOCRYPT");
   }
 #endif
 
   if (adata->capabilities & IMAP_CAP_IMAP4REV1)
   {
-    mutt_str_asprintf(&hdrreq, "BODY.PEEK[HEADER.FIELDS (%s)]", mutt_buffer_string(hdr_list));
+    mutt_str_asprintf(&hdrreq, "BODY.PEEK[HEADER.FIELDS (%s)]", buf_string(hdr_list));
   }
   else if (adata->capabilities & IMAP_CAP_IMAP4)
   {
-    mutt_str_asprintf(&hdrreq, "RFC822.HEADER.LINES (%s)", mutt_buffer_string(hdr_list));
+    mutt_str_asprintf(&hdrreq, "RFC822.HEADER.LINES (%s)", buf_string(hdr_list));
   }
   else
   { /* Unable to fetch headers for lower versions */
@@ -1126,27 +1125,27 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
     goto bail;
   }
 
-  mutt_buffer_pool_release(&hdr_list);
+  buf_pool_release(&hdr_list);
 
   /* instead of downloading all headers and then parsing them, we parse them
    * as they come in. */
-  tempfile = mutt_buffer_pool_get();
-  mutt_buffer_mktemp(tempfile);
-  fp = mutt_file_fopen(mutt_buffer_string(tempfile), "w+");
+  tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
+  fp = mutt_file_fopen(buf_string(tempfile), "w+");
   if (!fp)
   {
-    mutt_error(_("Could not create temporary file %s"), mutt_buffer_string(tempfile));
+    mutt_error(_("Could not create temporary file %s"), buf_string(tempfile));
     goto bail;
   }
-  unlink(mutt_buffer_string(tempfile));
-  mutt_buffer_pool_release(&tempfile);
+  unlink(buf_string(tempfile));
+  buf_pool_release(&tempfile);
 
   if (m->verbose)
   {
     progress = progress_new(_("Fetching message headers..."), MUTT_PROGRESS_READ, msn_end);
   }
 
-  buf = mutt_buffer_pool_get();
+  buf = buf_pool_get();
 
   /* NOTE:
    *   The (fetch_msn_end < msn_end) used to be important to prevent
@@ -1164,7 +1163,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   {
     char *cmd = NULL;
     mutt_str_asprintf(&cmd, "FETCH %s (UID FLAGS INTERNALDATE RFC822.SIZE %s)",
-                      mutt_buffer_string(buf), hdrreq);
+                      buf_string(buf), hdrreq);
     imap_cmd_start(adata, cmd);
     FREE(&cmd);
 
@@ -1303,9 +1302,9 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   retval = 0;
 
 bail:
-  mutt_buffer_pool_release(&hdr_list);
-  mutt_buffer_pool_release(&buf);
-  mutt_buffer_pool_release(&tempfile);
+  buf_pool_release(&hdr_list);
+  buf_pool_release(&buf);
+  buf_pool_release(&tempfile);
   mutt_file_fclose(&fp);
   FREE(&hdrreq);
   imap_edata_free((void **) &edata);
@@ -1703,8 +1702,8 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el,
   /* loop in case of TRYCREATE */
   do
   {
-    mutt_buffer_init(&sync_cmd);
-    mutt_buffer_init(&cmd);
+    buf_init(&sync_cmd);
+    buf_init(&cmd);
 
     if (!single) /* copy tagged messages */
     {
@@ -1751,7 +1750,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el,
     else
     {
       mutt_message(_("Copying message %d to %s..."), en->email->index + 1, mbox);
-      mutt_buffer_add_printf(&cmd, "UID COPY %u %s", imap_edata_get(en->email)->uid, mmbox);
+      buf_add_printf(&cmd, "UID COPY %u %s", imap_edata_get(en->email)->uid, mmbox);
 
       if (en->email->active && en->email->changed)
       {
@@ -1980,11 +1979,11 @@ bool imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   msg->fp = msg_cache_put(m, e);
   if (!msg->fp)
   {
-    struct Buffer *path = mutt_buffer_pool_get();
-    mutt_buffer_mktemp(path);
-    msg->fp = mutt_file_fopen(mutt_buffer_string(path), "w+");
-    unlink(mutt_buffer_string(path));
-    mutt_buffer_pool_release(&path);
+    struct Buffer *path = buf_pool_get();
+    buf_mktemp(path);
+    msg->fp = mutt_file_fopen(buf_string(path), "w+");
+    unlink(buf_string(path));
+    buf_pool_release(&path);
 
     if (!msg->fp)
       return false;

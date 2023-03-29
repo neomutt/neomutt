@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_buffer_alloc()
+ * Test code for buf_alloc()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,20 +26,20 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 
-void test_mutt_buffer_alloc(void)
+void test_buf_alloc(void)
 {
-  // void mutt_buffer_alloc(struct Buffer *buf, size_t new_size);
+  // void buf_alloc(struct Buffer *buf, size_t new_size);
 
   {
-    mutt_buffer_alloc(NULL, 10);
-    TEST_CHECK_(1, "mutt_buffer_alloc(NULL, 10)");
+    buf_alloc(NULL, 10);
+    TEST_CHECK_(1, "buf_alloc(NULL, 10)");
   }
 
   {
-    struct Buffer buf = mutt_buffer_make(0);
-    mutt_buffer_alloc(&buf, 10);
-    TEST_CHECK_(1, "mutt_buffer_alloc(buf, 10)");
-    mutt_buffer_dealloc(&buf);
+    struct Buffer buf = buf_make(0);
+    buf_alloc(&buf, 10);
+    TEST_CHECK_(1, "buf_alloc(buf, 10)");
+    buf_dealloc(&buf);
   }
 
   {
@@ -53,16 +53,16 @@ void test_mutt_buffer_alloc(void)
 
     for (size_t i = 0; i < mutt_array_size(sizes); i++)
     {
-      struct Buffer buf = mutt_buffer_make(0);
-      mutt_buffer_alloc(&buf, orig_size);
+      struct Buffer buf = buf_make(0);
+      buf_alloc(&buf, orig_size);
       TEST_CASE_("%d", sizes[i][0]);
-      mutt_buffer_alloc(&buf, sizes[i][0]);
+      buf_alloc(&buf, sizes[i][0]);
       if (!TEST_CHECK(buf.dsize == sizes[i][1]))
       {
         TEST_MSG("Expected: %ld", sizes[i][1]);
         TEST_MSG("Actual  : %ld", buf.dsize);
       }
-      mutt_buffer_dealloc(&buf);
+      buf_dealloc(&buf);
     }
   }
 }

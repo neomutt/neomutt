@@ -104,10 +104,10 @@ static int send_msg(const char *path, struct SendmailArgs *args,
 
   if ((wait_time >= 0) && tempfile)
   {
-    struct Buffer *tmp = mutt_buffer_pool_get();
-    mutt_buffer_mktemp(tmp);
-    *tempfile = mutt_buffer_strdup(tmp);
-    mutt_buffer_pool_release(&tmp);
+    struct Buffer *tmp = buf_pool_get();
+    buf_mktemp(tmp);
+    *tempfile = buf_strdup(tmp);
+    buf_pool_release(&tmp);
   }
 
   pid_t pid = fork();

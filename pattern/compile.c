@@ -79,17 +79,17 @@ enum EatRangeError
 static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
                       struct Buffer *s, struct Buffer *err)
 {
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
   bool rc = false;
   char *pexpr = s->dptr;
   if ((parse_extract_token(buf, s, TOKEN_PATTERN | TOKEN_COMMENT) != 0) || !buf->data)
   {
-    mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
+    buf_printf(err, _("Error in expression: %s"), pexpr);
     goto out;
   }
   if (buf->data[0] == '\0')
   {
-    mutt_buffer_printf(err, "%s", _("Empty expression"));
+    buf_printf(err, "%s", _("Empty expression"));
     goto out;
   }
 
@@ -114,7 +114,7 @@ static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
     {
       char errmsg[256] = { 0 };
       regerror(rc2, pat->p.regex, errmsg, sizeof(errmsg));
-      mutt_buffer_printf(err, "'%s': %s", buf->data, errmsg);
+      buf_printf(err, "'%s': %s", buf->data, errmsg);
       FREE(&pat->p.regex);
       goto out;
     }
@@ -123,7 +123,7 @@ static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
   rc = true;
 
 out:
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   return rc;
 }
 
@@ -154,8 +154,8 @@ static bool add_query_msgid(char *line, int line_num, void *user_data)
 static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
                       struct Buffer *s, struct Buffer *err, struct Mailbox *m)
 {
-  struct Buffer *cmd_buf = mutt_buffer_pool_get();
-  struct Buffer *tok_buf = mutt_buffer_pool_get();
+  struct Buffer *cmd_buf = buf_pool_get();
+  struct Buffer *tok_buf = buf_pool_get();
   bool rc = false;
 
   FILE *fp = NULL;
@@ -163,7 +163,7 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
   const char *const c_external_search_command = cs_subset_string(NeoMutt->sub, "external_search_command");
   if (!c_external_search_command)
   {
-    mutt_buffer_printf(err, "%s", _("No search command defined"));
+    buf_printf(err, "%s", _("No search command defined"));
     goto out;
   }
 
@@ -171,32 +171,32 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
   if ((parse_extract_token(tok_buf, s, TOKEN_PATTERN | TOKEN_COMMENT) != 0) ||
       !tok_buf->data)
   {
-    mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
+    buf_printf(err, _("Error in expression: %s"), pexpr);
     goto out;
   }
   if (*tok_buf->data == '\0')
   {
-    mutt_buffer_printf(err, "%s", _("Empty expression"));
+    buf_printf(err, "%s", _("Empty expression"));
     goto out;
   }
 
-  mutt_buffer_addstr(cmd_buf, c_external_search_command);
-  mutt_buffer_addch(cmd_buf, ' ');
+  buf_addstr(cmd_buf, c_external_search_command);
+  buf_addch(cmd_buf, ' ');
 
   if (m)
   {
     char *escaped_folder = mutt_path_escape(mailbox_path(m));
     mutt_debug(LL_DEBUG2, "escaped folder path: %s\n", escaped_folder);
-    mutt_buffer_addch(cmd_buf, '\'');
-    mutt_buffer_addstr(cmd_buf, escaped_folder);
-    mutt_buffer_addch(cmd_buf, '\'');
+    buf_addch(cmd_buf, '\'');
+    buf_addstr(cmd_buf, escaped_folder);
+    buf_addch(cmd_buf, '\'');
   }
   else
   {
-    mutt_buffer_addch(cmd_buf, '/');
+    buf_addch(cmd_buf, '/');
   }
-  mutt_buffer_addch(cmd_buf, ' ');
-  mutt_buffer_addstr(cmd_buf, tok_buf->data);
+  buf_addch(cmd_buf, ' ');
+  buf_addstr(cmd_buf, tok_buf->data);
 
   mutt_message(_("Running search command: %s ..."), cmd_buf->data);
   pat->is_multi = true;
@@ -204,7 +204,7 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
   pid_t pid = filter_create(cmd_buf->data, NULL, &fp, NULL);
   if (pid < 0)
   {
-    mutt_buffer_printf(err, "unable to fork command: %s\n", cmd_buf->data);
+    buf_printf(err, "unable to fork command: %s\n", cmd_buf->data);
     goto out;
   }
 
@@ -215,8 +215,8 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
   rc = true;
 
 out:
-  mutt_buffer_pool_release(&cmd_buf);
-  mutt_buffer_pool_release(&tok_buf);
+  buf_pool_release(&cmd_buf);
+  buf_pool_release(&tok_buf);
   return rc;
 }
 
@@ -316,12 +316,12 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
 
     if ((t->tm_mday < 1) || (t->tm_mday > 31))
     {
-      mutt_buffer_printf(err, _("Invalid day of month: %s"), s);
+      buf_printf(err, _("Invalid day of month: %s"), s);
       return NULL;
     }
     if ((t->tm_mon < 0) || (t->tm_mon > 11))
     {
-      mutt_buffer_printf(err, _("Invalid month: %s"), s);
+      buf_printf(err, _("Invalid month: %s"), s);
       return NULL;
     }
 
@@ -331,7 +331,7 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
   t->tm_mday = strtol(s, &p, 10);
   if ((t->tm_mday < 1) || (t->tm_mday > 31))
   {
-    mutt_buffer_printf(err, _("Invalid day of month: %s"), s);
+    buf_printf(err, _("Invalid day of month: %s"), s);
     return NULL;
   }
   if (*p != '/')
@@ -345,7 +345,7 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
   t->tm_mon = strtol(p, &p, 10) - 1;
   if ((t->tm_mon < 0) || (t->tm_mon > 11))
   {
-    mutt_buffer_printf(err, _("Invalid month: %s"), p);
+    buf_printf(err, _("Invalid month: %s"), p);
     return NULL;
   }
   if (*p != '/')
@@ -456,7 +456,7 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
   }
   if ((flags & MUTT_PDR_ERROR) && !(flags & MUTT_PDR_ABSOLUTE))
   { /* get_date has its own error message, don't overwrite it here */
-    mutt_buffer_printf(err, _("Invalid relative date: %s"), pc - 1);
+    buf_printf(err, _("Invalid relative date: %s"), pc - 1);
   }
   return (flags & MUTT_PDR_ERROR) ? NULL : pc;
 }
@@ -770,7 +770,7 @@ static bool is_menu_available(struct Buffer *s, regmatch_t pmatch[], int kind,
     return true;
 
   /* Nope. */
-  mutt_buffer_strcpy(err, _("No current message"));
+  buf_strcpy(err, _("No current message"));
   return false;
 }
 
@@ -911,7 +911,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
   {
     if (!m || !menu)
     {
-      mutt_buffer_strcpy(err, _("No current message"));
+      buf_strcpy(err, _("No current message"));
       return RANGE_E_MVIEW;
     }
     struct Email *e = mutt_get_virt_email(m, menu_get_index(menu));
@@ -947,7 +947,7 @@ static bool eat_message_range(struct Pattern *pat, PatternCompFlags flags,
   if (!m || !menu)
   {
     // We need these for pretty much anything
-    mutt_buffer_strcpy(err, _("No Context"));
+    buf_strcpy(err, _("No Context"));
     return false;
   }
 
@@ -988,19 +988,19 @@ static bool eat_message_range(struct Pattern *pat, PatternCompFlags flags,
 static bool eat_date(struct Pattern *pat, PatternCompFlags flags,
                      struct Buffer *s, struct Buffer *err)
 {
-  struct Buffer *tmp = mutt_buffer_pool_get();
+  struct Buffer *tmp = buf_pool_get();
   bool rc = false;
 
   char *pexpr = s->dptr;
   if (parse_extract_token(tmp, s, TOKEN_COMMENT | TOKEN_PATTERN) != 0)
   {
-    mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
+    buf_printf(err, _("Error in expression: %s"), pexpr);
     goto out;
   }
 
-  if (mutt_buffer_is_empty(tmp))
+  if (buf_is_empty(tmp))
   {
-    mutt_buffer_printf(err, "%s", _("Empty expression"));
+    buf_printf(err, "%s", _("Empty expression"));
     goto out;
   }
 
@@ -1013,7 +1013,7 @@ static bool eat_date(struct Pattern *pat, PatternCompFlags flags,
   rc = eval_date_minmax(pat, tmp->data, err);
 
 out:
-  mutt_buffer_pool_release(&tmp);
+  buf_pool_release(&tmp);
   return rc;
 }
 
@@ -1188,11 +1188,11 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
 
   if (!s || (s[0] == '\0'))
   {
-    mutt_buffer_strcpy(err, _("empty pattern"));
+    buf_strcpy(err, _("empty pattern"));
     return NULL;
   }
 
-  mutt_buffer_init(&ps);
+  buf_init(&ps);
   ps.dptr = (char *) s;
   ps.dsize = mutt_str_len(s);
 
@@ -1218,7 +1218,7 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
         {
           if (!curlist)
           {
-            mutt_buffer_printf(err, _("error in pattern at: %s"), ps.dptr);
+            buf_printf(err, _("error in pattern at: %s"), ps.dptr);
             return NULL;
           }
 
@@ -1244,7 +1244,7 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
       {
         if (ps.dptr[1] == '\0')
         {
-          mutt_buffer_printf(err, _("missing pattern: %s"), ps.dptr);
+          buf_printf(err, _("missing pattern: %s"), ps.dptr);
           goto cleanup;
         }
         short thread_op = 0;
@@ -1262,7 +1262,7 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
           p = find_matching_paren(ps.dptr + 1);
           if (p[0] != ')')
           {
-            mutt_buffer_printf(err, _("mismatched parentheses: %s"), ps.dptr);
+            buf_printf(err, _("mismatched parentheses: %s"), ps.dptr);
             goto cleanup;
           }
           struct Pattern *leaf = attach_new_leaf(&curlist);
@@ -1297,12 +1297,12 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
         entry = lookup_tag(ps.dptr[1]);
         if (!entry)
         {
-          mutt_buffer_printf(err, _("%c: invalid pattern modifier"), *ps.dptr);
+          buf_printf(err, _("%c: invalid pattern modifier"), *ps.dptr);
           goto cleanup;
         }
         if (entry->flags && ((flags & entry->flags) == 0))
         {
-          mutt_buffer_printf(err, _("%c: not supported in this mode"), *ps.dptr);
+          buf_printf(err, _("%c: not supported in this mode"), *ps.dptr);
           goto cleanup;
         }
 
@@ -1325,7 +1325,7 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
         {
           if (ps.dptr[0] == '\0')
           {
-            mutt_buffer_printf(err, "%s", _("missing parameter"));
+            buf_printf(err, "%s", _("missing parameter"));
             goto cleanup;
           }
           switch (entry->eat_arg)
@@ -1363,7 +1363,7 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
         p = find_matching_paren(ps.dptr + 1);
         if (p[0] != ')')
         {
-          mutt_buffer_printf(err, _("mismatched parentheses: %s"), ps.dptr);
+          buf_printf(err, _("mismatched parentheses: %s"), ps.dptr);
           goto cleanup;
         }
         /* compile the sub-expression */
@@ -1394,14 +1394,14 @@ struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, cons
       }
 
       default:
-        mutt_buffer_printf(err, _("error in pattern at: %s"), ps.dptr);
+        buf_printf(err, _("error in pattern at: %s"), ps.dptr);
         goto cleanup;
     }
   }
 
   if (!curlist)
   {
-    mutt_buffer_strcpy(err, _("empty pattern"));
+    buf_strcpy(err, _("empty pattern"));
     return NULL;
   }
 

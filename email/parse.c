@@ -114,18 +114,18 @@ static void parse_parameters(struct ParameterList *pl, const char *s, bool allow
   size_t i;
   const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
 
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
   /* allow_value_spaces, especially with autocrypt keydata, can result
    * in quite large parameter values.  avoid frequent reallocs by
    * pre-sizing */
   if (allow_value_spaces)
-    mutt_buffer_alloc(buf, mutt_str_len(s));
+    buf_alloc(buf, mutt_str_len(s));
 
   mutt_debug(LL_DEBUG2, "'%s'\n", s);
 
   while (*s)
   {
-    mutt_buffer_reset(buf);
+    buf_reset(buf);
 
     p = strpbrk(s, "=;");
     if (!p)
@@ -184,12 +184,12 @@ static void parse_parameters(struct ParameterList *pl, const char *s, bool allow
               {
                 s++;
                 /* Quote the next character */
-                mutt_buffer_addch(buf, *s);
+                buf_addch(buf, *s);
               }
             }
             else
             {
-              mutt_buffer_addch(buf, *s);
+              buf_addch(buf, *s);
             }
           }
           if (*s)
@@ -198,7 +198,7 @@ static void parse_parameters(struct ParameterList *pl, const char *s, bool allow
         else
         {
           for (; *s && *s != ' ' && *s != ';'; s++)
-            mutt_buffer_addch(buf, *s);
+            buf_addch(buf, *s);
         }
 
         p = s;
@@ -207,7 +207,7 @@ static void parse_parameters(struct ParameterList *pl, const char *s, bool allow
       /* if the attribute token was missing, 'new' will be NULL */
       if (pnew)
       {
-        pnew->value = mutt_buffer_strdup(buf);
+        pnew->value = buf_strdup(buf);
 
         mutt_debug(LL_DEBUG2, "parse_parameter: '%s' = '%s'\n",
                    pnew->attribute ? pnew->attribute : "", pnew->value ? pnew->value : "");
@@ -236,7 +236,7 @@ static void parse_parameters(struct ParameterList *pl, const char *s, bool allow
 bail:
 
   rfc2231_decode_parameters(pl);
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
 }
 
 /**
@@ -1222,35 +1222,35 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
       if (!mutt_regexlist_match(&NoSpamList, line))
       {
         /* if spam tag already exists, figure out how to amend it */
-        if ((!mutt_buffer_is_empty(&env->spam)) && (*buf != '\0'))
+        if ((!buf_is_empty(&env->spam)) && (*buf != '\0'))
         {
           /* If `$spam_separator` defined, append with separator */
           const char *const c_spam_separator = cs_subset_string(NeoMutt->sub, "spam_separator");
           if (c_spam_separator)
           {
-            mutt_buffer_addstr(&env->spam, c_spam_separator);
-            mutt_buffer_addstr(&env->spam, buf);
+            buf_addstr(&env->spam, c_spam_separator);
+            buf_addstr(&env->spam, buf);
           }
           else /* overwrite */
           {
-            mutt_buffer_reset(&env->spam);
-            mutt_buffer_addstr(&env->spam, buf);
+            buf_reset(&env->spam);
+            buf_addstr(&env->spam, buf);
           }
         }
 
         /* spam tag is new, and match expr is non-empty; copy */
-        else if (mutt_buffer_is_empty(&env->spam) && (*buf != '\0'))
+        else if (buf_is_empty(&env->spam) && (*buf != '\0'))
         {
-          mutt_buffer_addstr(&env->spam, buf);
+          buf_addstr(&env->spam, buf);
         }
 
         /* match expr is empty; plug in null string if no existing tag */
-        else if (mutt_buffer_is_empty(&env->spam))
+        else if (buf_is_empty(&env->spam))
         {
-          mutt_buffer_addstr(&env->spam, "");
+          buf_addstr(&env->spam, "");
         }
 
-        if (!mutt_buffer_is_empty(&env->spam))
+        if (!buf_is_empty(&env->spam))
           mutt_debug(LL_DEBUG5, "spam = %s\n", env->spam.data);
       }
     }

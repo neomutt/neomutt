@@ -361,8 +361,8 @@ size_t rfc2231_encode_string(struct ParameterList *head, const char *attribute, 
   char *cur = NULL, *charset = NULL, *src_value = NULL;
   struct Parameter *current = NULL;
 
-  struct Buffer *cur_attribute = mutt_buffer_pool_get();
-  struct Buffer *cur_value = mutt_buffer_pool_get();
+  struct Buffer *cur_attribute = buf_pool_get();
+  struct Buffer *cur_value = buf_pool_get();
 
   // Perform charset conversion
   for (cur = value; *cur; cur++)
@@ -442,8 +442,8 @@ size_t rfc2231_encode_string(struct ParameterList *head, const char *attribute, 
   cur = src_value;
   if (encode)
   {
-    mutt_buffer_printf(cur_value, "%s''", charset);
-    cur_value_len = mutt_buffer_len(cur_value);
+    buf_printf(cur_value, "%s''", charset);
+    cur_value_len = buf_len(cur_value);
   }
 
   while (*cur)
@@ -452,11 +452,11 @@ size_t rfc2231_encode_string(struct ParameterList *head, const char *attribute, 
     TAILQ_INSERT_TAIL(head, current, entries);
     count++;
 
-    mutt_buffer_strcpy(cur_attribute, attribute);
+    buf_strcpy(cur_attribute, attribute);
     if (split)
-      mutt_buffer_add_printf(cur_attribute, "*%d", continuation_number++);
+      buf_add_printf(cur_attribute, "*%d", continuation_number++);
     if (encode)
-      mutt_buffer_addch(cur_attribute, '*');
+      buf_addch(cur_attribute, '*');
 
     while (*cur && (!split || (cur_value_len < max_value_len)))
     {
@@ -465,18 +465,18 @@ size_t rfc2231_encode_string(struct ParameterList *head, const char *attribute, 
         if ((*cur < 0x20) || (*cur >= 0x7f) || strchr(MimeSpecials, *cur) ||
             strchr("*'%", *cur))
         {
-          mutt_buffer_add_printf(cur_value, "%%%02X", (unsigned char) *cur);
+          buf_add_printf(cur_value, "%%%02X", (unsigned char) *cur);
           cur_value_len += 3;
         }
         else
         {
-          mutt_buffer_addch(cur_value, *cur);
+          buf_addch(cur_value, *cur);
           cur_value_len++;
         }
       }
       else
       {
-        mutt_buffer_addch(cur_value, *cur);
+        buf_addch(cur_value, *cur);
         cur_value_len++;
         if ((*cur == '\\') || (*cur == '"'))
           cur_value_len++;
@@ -485,15 +485,15 @@ size_t rfc2231_encode_string(struct ParameterList *head, const char *attribute, 
       cur++;
     }
 
-    current->attribute = mutt_buffer_strdup(cur_attribute);
-    current->value = mutt_buffer_strdup(cur_value);
+    current->attribute = buf_strdup(cur_attribute);
+    current->value = buf_strdup(cur_value);
 
-    mutt_buffer_reset(cur_value);
+    buf_reset(cur_value);
     cur_value_len = 0;
   }
 
-  mutt_buffer_pool_release(&cur_attribute);
-  mutt_buffer_pool_release(&cur_value);
+  buf_pool_release(&cur_attribute);
+  buf_pool_release(&cur_value);
 
   FREE(&charset);
   if (free_src_value)

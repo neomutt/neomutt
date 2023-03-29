@@ -46,19 +46,19 @@ static void make_cmd(struct Buffer *buf, const struct ConnAccount *cac, const ch
 {
   assert(buf && cac);
 
-  mutt_buffer_addstr(buf, cmd);
-  mutt_buffer_add_printf(buf, " --hostname %s", cac->host);
+  buf_addstr(buf, cmd);
+  buf_add_printf(buf, " --hostname %s", cac->host);
   if (cac->flags & MUTT_ACCT_USER)
   {
-    mutt_buffer_add_printf(buf, " --username %s", cac->user);
+    buf_add_printf(buf, " --username %s", cac->user);
   }
 
   static const char *types[] = { "", "imap", "pop", "smtp", "nntp" };
   assert(sizeof(types) / sizeof(*types) == MUTT_ACCT_TYPE_MAX);
   if (cac->type != MUTT_ACCT_TYPE_NONE)
   {
-    mutt_buffer_add_printf(buf, " --type %s%c", types[cac->type],
-                           (cac->flags & MUTT_ACCT_SSL) ? 's' : '\0');
+    buf_add_printf(buf, " --type %s%c", types[cac->type],
+                   (cac->flags & MUTT_ACCT_SSL) ? 's' : '\0');
   }
 }
 
@@ -134,7 +134,7 @@ static MuttAccountFlags call_cmd(struct ConnAccount *cac, const struct Buffer *c
   MuttAccountFlags rc = MUTT_ACCT_NO_FLAGS;
 
   FILE *fp = NULL;
-  pid_t pid = filter_create(mutt_buffer_string(cmd), NULL, &fp, NULL);
+  pid_t pid = filter_create(buf_string(cmd), NULL, &fp, NULL);
   if (pid < 0)
   {
     mutt_perror(_("Unable to run account command"));
@@ -174,12 +174,12 @@ MuttAccountFlags mutt_account_call_external_cmd(struct ConnAccount *cac)
   }
 
   MuttAccountFlags rc = MUTT_ACCT_NO_FLAGS;
-  struct Buffer *cmd_buf = mutt_buffer_pool_get();
+  struct Buffer *cmd_buf = buf_pool_get();
 
   make_cmd(cmd_buf, cac, c_account_command);
   rc = call_cmd(cac, cmd_buf);
   cac->flags |= rc;
 
-  mutt_buffer_pool_release(&cmd_buf);
+  buf_pool_release(&cmd_buf);
   return rc;
 }

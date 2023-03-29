@@ -210,13 +210,13 @@ static void transform_to_7bit(struct Body *a, FILE *fp_in, struct ConfigSubset *
 
       /* Because of the potential recursion in message types, we
        * restrict the lifetime of the buffer tightly */
-      buf = mutt_buffer_pool_get();
-      mutt_buffer_mktemp(buf);
-      state.fp_out = mutt_file_fopen(mutt_buffer_string(buf), "w");
+      buf = buf_pool_get();
+      buf_mktemp(buf);
+      state.fp_out = mutt_file_fopen(buf_string(buf), "w");
       if (!state.fp_out)
       {
         mutt_perror("fopen");
-        mutt_buffer_pool_release(&buf);
+        buf_pool_release(&buf);
         return;
       }
       state.fp_in = fp_in;
@@ -224,8 +224,8 @@ static void transform_to_7bit(struct Body *a, FILE *fp_in, struct ConfigSubset *
       mutt_file_fclose(&state.fp_out);
       FREE(&a->d_filename);
       a->d_filename = a->filename;
-      a->filename = mutt_buffer_strdup(buf);
-      mutt_buffer_pool_release(&buf);
+      a->filename = buf_strdup(buf);
+      buf_pool_release(&buf);
       a->unlink = true;
       if (stat(a->filename, &st) == -1)
       {
@@ -251,7 +251,7 @@ static void transform_to_7bit(struct Body *a, FILE *fp_in, struct ConfigSubset *
  */
 void mutt_message_to_7bit(struct Body *a, FILE *fp, struct ConfigSubset *sub)
 {
-  struct Buffer temp = mutt_buffer_make(0);
+  struct Buffer temp = buf_make(0);
   FILE *fp_in = NULL;
   FILE *fp_out = NULL;
   struct stat st = { 0 };
@@ -278,8 +278,8 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp, struct ConfigSubset *sub)
   }
 
   /* Avoid buffer pool due to recursion */
-  mutt_buffer_mktemp(&temp);
-  fp_out = mutt_file_fopen(mutt_buffer_string(&temp), "w+");
+  buf_mktemp(&temp);
+  fp_out = mutt_file_fopen(buf_string(&temp), "w+");
   if (!fp_out)
   {
     mutt_perror("fopen");
@@ -311,7 +311,7 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp, struct ConfigSubset *sub)
   a->d_filename = a->filename;
   if (a->filename && a->unlink)
     unlink(a->filename);
-  a->filename = mutt_buffer_strdup(&temp);
+  a->filename = buf_strdup(&temp);
   a->unlink = true;
   if (stat(a->filename, &st) == -1)
   {
@@ -329,10 +329,10 @@ cleanup:
   if (fp_out)
   {
     mutt_file_fclose(&fp_out);
-    mutt_file_unlink(mutt_buffer_string(&temp));
+    mutt_file_unlink(buf_string(&temp));
   }
 
-  mutt_buffer_dealloc(&temp);
+  buf_dealloc(&temp);
 }
 
 /**
@@ -463,25 +463,25 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
     }
   }
 
-  struct Buffer *buf = mutt_buffer_pool_get();
-  mutt_buffer_mktemp(buf);
-  fp = mutt_file_fopen(mutt_buffer_string(buf), "w+");
+  struct Buffer *buf = buf_pool_get();
+  buf_mktemp(buf);
+  fp = mutt_file_fopen(buf_string(buf), "w+");
   if (!fp)
   {
-    mutt_buffer_pool_release(&buf);
+    buf_pool_release(&buf);
     return NULL;
   }
 
   body = mutt_body_new();
   body->type = TYPE_MESSAGE;
   body->subtype = mutt_str_dup("rfc822");
-  body->filename = mutt_str_dup(mutt_buffer_string(buf));
+  body->filename = mutt_str_dup(buf_string(buf));
   body->unlink = true;
   body->use_disp = false;
   body->disposition = DISP_INLINE;
   body->noconv = true;
 
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
 
   struct Message *msg = mx_msg_open(m, e->msgno);
   if (!msg)
@@ -562,20 +562,20 @@ static void run_mime_type_query(struct Body *att, struct ConfigSubset *sub)
   char *buf = NULL;
   size_t buflen;
   pid_t pid;
-  struct Buffer *cmd = mutt_buffer_pool_get();
+  struct Buffer *cmd = buf_pool_get();
 
   const char *const c_mime_type_query_command = cs_subset_string(sub, "mime_type_query_command");
 
-  mutt_buffer_file_expand_fmt_quote(cmd, c_mime_type_query_command, att->filename);
+  buf_file_expand_fmt_quote(cmd, c_mime_type_query_command, att->filename);
 
-  pid = filter_create(mutt_buffer_string(cmd), NULL, &fp, &fp_err);
+  pid = filter_create(buf_string(cmd), NULL, &fp, &fp_err);
   if (pid < 0)
   {
-    mutt_error(_("Error running \"%s\""), mutt_buffer_string(cmd));
-    mutt_buffer_pool_release(&cmd);
+    mutt_error(_("Error running \"%s\""), buf_string(cmd));
+    buf_pool_release(&cmd);
     return;
   }
-  mutt_buffer_pool_release(&cmd);
+  buf_pool_release(&cmd);
 
   buf = mutt_file_read_line(buf, &buflen, fp, NULL, MUTT_RL_NO_FLAGS);
   if (buf)
@@ -844,9 +844,9 @@ static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
 
   int rc = 0;
 
-  struct Buffer *tempfile = mutt_buffer_pool_get();
-  mutt_buffer_mktemp(tempfile);
-  FILE *fp_tmp = mutt_file_fopen(mutt_buffer_string(tempfile), "w");
+  struct Buffer *tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
+  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
   if (fp_tmp)
   {
     CopyHeaderFlags chflags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
@@ -862,10 +862,10 @@ static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
     }
     fprintf(fp_tmp, "Resent-From: %s\n", resent_from);
 
-    struct Buffer *date = mutt_buffer_pool_get();
+    struct Buffer *date = buf_pool_get();
     mutt_date_make_date(date, cs_subset_bool(sub, "local_date_header"));
-    fprintf(fp_tmp, "Resent-Date: %s\n", mutt_buffer_string(date));
-    mutt_buffer_pool_release(&date);
+    fprintf(fp_tmp, "Resent-Date: %s\n", buf_string(date));
+    buf_pool_release(&date);
 
     char *msgid_str = gen_msgid();
     fprintf(fp_tmp, "Resent-Message-ID: %s\n", msgid_str);
@@ -876,26 +876,26 @@ static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
     mutt_file_copy_bytes(fp, fp_tmp, e->body->length);
     if (mutt_file_fclose(&fp_tmp) != 0)
     {
-      mutt_perror(mutt_buffer_string(tempfile));
-      unlink(mutt_buffer_string(tempfile));
+      mutt_perror(buf_string(tempfile));
+      unlink(buf_string(tempfile));
       return -1;
     }
 #ifdef USE_SMTP
     const char *const c_smtp_url = cs_subset_string(sub, "smtp_url");
     if (c_smtp_url)
     {
-      rc = mutt_smtp_send(env_from, to, NULL, NULL, mutt_buffer_string(tempfile),
+      rc = mutt_smtp_send(env_from, to, NULL, NULL, buf_string(tempfile),
                           (e->body->encoding == ENC_8BIT), sub);
     }
     else
 #endif
     {
-      rc = mutt_invoke_sendmail(m, env_from, to, NULL, NULL, mutt_buffer_string(tempfile),
+      rc = mutt_invoke_sendmail(m, env_from, to, NULL, NULL, buf_string(tempfile),
                                 (e->body->encoding == ENC_8BIT), sub);
     }
   }
 
-  mutt_buffer_pool_release(&tempfile);
+  buf_pool_release(&tempfile);
   return rc;
 }
 
@@ -943,7 +943,7 @@ int mutt_bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
     mutt_addrlist_clear(&from_list);
     return -1;
   }
-  struct Buffer *resent_from = mutt_buffer_pool_get();
+  struct Buffer *resent_from = buf_pool_get();
   mutt_addrlist_write(&from_list, resent_from, false);
 
 #ifdef USE_NNTP
@@ -956,11 +956,10 @@ int mutt_bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
   struct AddressList resent_to = TAILQ_HEAD_INITIALIZER(resent_to);
   mutt_addrlist_copy(&resent_to, to, false);
   rfc2047_encode_addrlist(&resent_to, "Resent-To");
-  int rc = bounce_message(fp, m, e, &resent_to, mutt_buffer_string(resent_from),
-                          &from_list, sub);
+  int rc = bounce_message(fp, m, e, &resent_to, buf_string(resent_from), &from_list, sub);
   mutt_addrlist_clear(&resent_to);
   mutt_addrlist_clear(&from_list);
-  mutt_buffer_pool_release(&resent_from);
+  buf_pool_release(&resent_from);
   return rc;
 }
 
@@ -1076,12 +1075,12 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
    * the message body begins with "From " */
   if ((m_fcc->type == MUTT_MMDF) || (m_fcc->type == MUTT_MBOX))
   {
-    tempfile = mutt_buffer_pool_get();
-    mutt_buffer_mktemp(tempfile);
-    fp_tmp = mutt_file_fopen(mutt_buffer_string(tempfile), "w+");
+    tempfile = buf_pool_get();
+    buf_mktemp(tempfile);
+    fp_tmp = mutt_file_fopen(buf_string(tempfile), "w+");
     if (!fp_tmp)
     {
-      mutt_perror(mutt_buffer_string(tempfile));
+      mutt_perror(buf_string(tempfile));
       mx_mbox_close(m_fcc);
       goto done;
     }
@@ -1214,9 +1213,9 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
     fflush(fp_tmp);
     if (ferror(fp_tmp))
     {
-      mutt_debug(LL_DEBUG1, "%s: write failed\n", mutt_buffer_string(tempfile));
+      mutt_debug(LL_DEBUG1, "%s: write failed\n", buf_string(tempfile));
       mutt_file_fclose(&fp_tmp);
-      unlink(mutt_buffer_string(tempfile));
+      unlink(buf_string(tempfile));
       mx_msg_commit(m_fcc, msg); /* XXX really? */
       mx_msg_close(m_fcc, &msg);
       mx_mbox_close(m_fcc);
@@ -1240,7 +1239,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
     /* if there was an error, leave the temp version */
     if (rc >= 0)
     {
-      unlink(mutt_buffer_string(tempfile));
+      unlink(buf_string(tempfile));
       rc = 0;
     }
   }
@@ -1278,9 +1277,9 @@ done:
   if (fp_tmp)
   {
     mutt_file_fclose(&fp_tmp);
-    unlink(mutt_buffer_string(tempfile));
+    unlink(buf_string(tempfile));
   }
-  mutt_buffer_pool_release(&tempfile);
+  buf_pool_release(&tempfile);
 
   return rc;
 }

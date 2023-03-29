@@ -108,7 +108,7 @@ static bool compile_search_children(const struct ImapAccountData *adata,
   if (clauses == 0)
     return true;
 
-  mutt_buffer_addch(buf, '(');
+  buf_addch(buf, '(');
 
   struct Pattern *c;
   SLIST_FOREACH(c, pat->child, entries)
@@ -117,18 +117,18 @@ static bool compile_search_children(const struct ImapAccountData *adata,
       continue;
 
     if ((pat->op == MUTT_PAT_OR) && (clauses > 1))
-      mutt_buffer_addstr(buf, "OR ");
+      buf_addstr(buf, "OR ");
 
     if (!compile_search(adata, c, buf))
       return false;
 
     if (clauses > 1)
-      mutt_buffer_addch(buf, ' ');
+      buf_addch(buf, ' ');
 
     clauses--;
   }
 
-  mutt_buffer_addch(buf, ')');
+  buf_addch(buf, ')');
   return true;
 }
 
@@ -149,7 +149,7 @@ static bool compile_search_self(const struct ImapAccountData *adata,
   switch (pat->op)
   {
     case MUTT_PAT_HEADER:
-      mutt_buffer_addstr(buf, "HEADER ");
+      buf_addstr(buf, "HEADER ");
 
       /* extract header name */
       delim = strchr(pat->p.str, ':');
@@ -160,25 +160,25 @@ static bool compile_search_self(const struct ImapAccountData *adata,
       }
       *delim = '\0';
       imap_quote_string(term, sizeof(term), pat->p.str, false);
-      mutt_buffer_addstr(buf, term);
-      mutt_buffer_addch(buf, ' ');
+      buf_addstr(buf, term);
+      buf_addch(buf, ' ');
 
       /* and field */
       *delim = ':';
       delim++;
       SKIPWS(delim);
       imap_quote_string(term, sizeof(term), delim, false);
-      mutt_buffer_addstr(buf, term);
+      buf_addstr(buf, term);
       break;
     case MUTT_PAT_BODY:
-      mutt_buffer_addstr(buf, "BODY ");
+      buf_addstr(buf, "BODY ");
       imap_quote_string(term, sizeof(term), pat->p.str, false);
-      mutt_buffer_addstr(buf, term);
+      buf_addstr(buf, term);
       break;
     case MUTT_PAT_WHOLE_MSG:
-      mutt_buffer_addstr(buf, "TEXT ");
+      buf_addstr(buf, "TEXT ");
       imap_quote_string(term, sizeof(term), pat->p.str, false);
-      mutt_buffer_addstr(buf, term);
+      buf_addstr(buf, term);
       break;
     case MUTT_PAT_SERVERSEARCH:
       if (!(adata->capabilities & IMAP_CAP_X_GM_EXT_1))
@@ -186,9 +186,9 @@ static bool compile_search_self(const struct ImapAccountData *adata,
         mutt_error(_("Server-side custom search not supported: %s"), pat->p.str);
         return false;
       }
-      mutt_buffer_addstr(buf, "X-GM-RAW ");
+      buf_addstr(buf, "X-GM-RAW ");
       imap_quote_string(term, sizeof(term), pat->p.str, false);
-      mutt_buffer_addstr(buf, term);
+      buf_addstr(buf, term);
       break;
   }
   return true;
@@ -213,7 +213,7 @@ static bool compile_search(const struct ImapAccountData *adata,
     return true;
 
   if (pat->pat_not)
-    mutt_buffer_addstr(buf, "NOT ");
+    buf_addstr(buf, "NOT ");
 
   return pat->child ? compile_search_children(adata, pat, buf) :
                       compile_search_self(adata, pat, buf);
@@ -240,8 +240,8 @@ bool imap_search(struct Mailbox *m, const struct PatternList *pat)
     return true;
 
   struct Buffer buf;
-  mutt_buffer_init(&buf);
-  mutt_buffer_addstr(&buf, "UID SEARCH ");
+  buf_init(&buf);
+  buf_addstr(&buf, "UID SEARCH ");
 
   struct ImapAccountData *adata = imap_adata_get(m);
   const bool ok = compile_search(adata, SLIST_FIRST(pat), &buf) &&

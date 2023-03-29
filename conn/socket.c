@@ -343,7 +343,7 @@ int mutt_socket_buffer_readln_d(struct Buffer *buf, struct Connection *conn, int
   char ch;
   bool has_cr = false;
 
-  mutt_buffer_reset(buf);
+  buf_reset(buf);
 
   while (true)
   {
@@ -355,16 +355,16 @@ int mutt_socket_buffer_readln_d(struct Buffer *buf, struct Connection *conn, int
 
     if (has_cr)
     {
-      mutt_buffer_addch(buf, '\r');
+      buf_addch(buf, '\r');
       has_cr = false;
     }
 
     if (ch == '\r')
       has_cr = true;
     else
-      mutt_buffer_addch(buf, ch);
+      buf_addch(buf, ch);
   }
 
-  mutt_debug(dbg, "%d< %s\n", conn->fd, mutt_buffer_string(buf));
+  mutt_debug(dbg, "%d< %s\n", conn->fd, buf_string(buf));
   return 0;
 }

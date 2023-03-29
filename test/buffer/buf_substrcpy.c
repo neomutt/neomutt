@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_buffer_pool_release()
+ * Test code for buf_substrcpy()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,18 +26,25 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 
-void test_mutt_buffer_pool_release(void)
+void test_buf_substrcpy(void)
 {
-  // void mutt_buffer_pool_release(struct Buffer **pbuf);
+  // size_t buf_substrcpy(struct Buffer *buf, const char *beg, const char *end);
 
   {
-    mutt_buffer_pool_release(NULL);
-    TEST_CHECK_(1, "mutt_buffer_pool_release(NULL)");
+    TEST_CHECK(buf_substrcpy(NULL, NULL, NULL) == 0);
   }
 
   {
-    struct Buffer *buf = NULL;
-    mutt_buffer_pool_release(&buf);
-    TEST_CHECK_(1, "mutt_buffer_pool_release(&buf)");
+    char *src = "abcdefghijklmnopqrstuvwxyz";
+    char *result = "jklmnopqr";
+
+    struct Buffer buf = buf_make(32);
+
+    size_t len = buf_substrcpy(&buf, src + 9, src + 18);
+
+    TEST_CHECK(len == 9);
+    TEST_CHECK(mutt_str_equal(buf_string(&buf), result));
+
+    buf_dealloc(&buf);
   }
 }

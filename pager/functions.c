@@ -307,19 +307,17 @@ static int op_pager_search(struct IndexSharedData *shared,
   struct PagerView *pview = priv->pview;
 
   int rc = FR_NO_ACTION;
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
 
-  mutt_buffer_strcpy(buf, priv->search_str);
-  if (mutt_buffer_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
-                                _("Search for: ") :
-                                _("Reverse search for: "),
-                            buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false,
-                            NULL, NULL, NULL) != 0)
+  buf_strcpy(buf, priv->search_str);
+  if (buf_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") :
+                                                                    _("Reverse search for: "),
+                    buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL, NULL) != 0)
   {
     goto done;
   }
 
-  if (mutt_str_equal(mutt_buffer_string(buf), priv->search_str))
+  if (mutt_str_equal(buf_string(buf), priv->search_str))
   {
     if (priv->search_compiled)
     {
@@ -334,10 +332,10 @@ static int op_pager_search(struct IndexSharedData *shared,
     }
   }
 
-  if (mutt_buffer_is_empty(buf))
+  if (buf_is_empty(buf))
     goto done;
 
-  mutt_str_copy(priv->search_str, mutt_buffer_string(buf), sizeof(priv->search_str));
+  mutt_str_copy(priv->search_str, buf_string(buf), sizeof(priv->search_str));
 
   /* leave search_back alone if op == OP_SEARCH_NEXT */
   if (op == OP_SEARCH)
@@ -360,7 +358,7 @@ static int op_pager_search(struct IndexSharedData *shared,
   if (err != 0)
   {
     regerror(err, &priv->search_re, buf->data, buf->dsize);
-    mutt_error("%s", mutt_buffer_string(buf));
+    mutt_error("%s", buf_string(buf));
     for (size_t i = 0; i < priv->lines_max; i++)
     {
       /* cleanup */
@@ -441,7 +439,7 @@ static int op_pager_search(struct IndexSharedData *shared,
   rc = FR_SUCCESS;
 
 done:
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   return rc;
 }
 

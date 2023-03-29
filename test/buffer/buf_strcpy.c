@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_buffer_strcpy()
+ * Test code for buf_strcpy()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,58 +26,58 @@
 #include <string.h>
 #include "mutt/lib.h"
 
-void test_mutt_buffer_strcpy(void)
+void test_buf_strcpy(void)
 {
-  // void mutt_buffer_strcpy(struct Buffer *buf, const char *s);
+  // void buf_strcpy(struct Buffer *buf, const char *s);
 
   {
-    mutt_buffer_strcpy(NULL, "apple");
-    TEST_CHECK_(1, "mutt_buffer_strcpy(NULL, \"apple\")");
+    buf_strcpy(NULL, "apple");
+    TEST_CHECK_(1, "buf_strcpy(NULL, \"apple\")");
   }
 
   {
-    struct Buffer buf = mutt_buffer_make(0);
-    mutt_buffer_strcpy(&buf, NULL);
-    TEST_CHECK_(1, "mutt_buffer_strcpy(&buf, NULL)");
+    struct Buffer buf = buf_make(0);
+    buf_strcpy(&buf, NULL);
+    TEST_CHECK_(1, "buf_strcpy(&buf, NULL)");
   }
 
   TEST_CASE("Copy to an empty Buffer");
 
   {
     TEST_CASE("Empty");
-    struct Buffer buf = mutt_buffer_make(0);
-    mutt_buffer_strcpy(&buf, "");
-    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), ""));
-    mutt_buffer_dealloc(&buf);
+    struct Buffer buf = buf_make(0);
+    buf_strcpy(&buf, "");
+    TEST_CHECK(mutt_str_equal(buf_string(&buf), ""));
+    buf_dealloc(&buf);
   }
 
   {
     TEST_CASE("String");
     const char *str = "test";
-    struct Buffer buf = mutt_buffer_make(0);
-    mutt_buffer_strcpy(&buf, str);
-    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), str));
-    mutt_buffer_dealloc(&buf);
+    struct Buffer buf = buf_make(0);
+    buf_strcpy(&buf, str);
+    TEST_CHECK(mutt_str_equal(buf_string(&buf), str));
+    buf_dealloc(&buf);
   }
 
   TEST_CASE("Overwrite a non-empty Buffer");
 
   {
     TEST_CASE("Empty");
-    struct Buffer buf = mutt_buffer_make(0);
-    mutt_buffer_addstr(&buf, "test");
-    mutt_buffer_strcpy(&buf, "");
-    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), ""));
-    mutt_buffer_dealloc(&buf);
+    struct Buffer buf = buf_make(0);
+    buf_addstr(&buf, "test");
+    buf_strcpy(&buf, "");
+    TEST_CHECK(mutt_str_equal(buf_string(&buf), ""));
+    buf_dealloc(&buf);
   }
 
   {
     TEST_CASE("String");
     const char *str = "apple";
-    struct Buffer buf = mutt_buffer_make(0);
-    mutt_buffer_addstr(&buf, "test");
-    mutt_buffer_strcpy(&buf, str);
-    TEST_CHECK(mutt_str_equal(mutt_buffer_string(&buf), str));
-    mutt_buffer_dealloc(&buf);
+    struct Buffer buf = buf_make(0);
+    buf_addstr(&buf, "test");
+    buf_strcpy(&buf, str);
+    TEST_CHECK(mutt_str_equal(buf_string(&buf), str));
+    buf_dealloc(&buf);
   }
 }

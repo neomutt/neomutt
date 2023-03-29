@@ -36,16 +36,16 @@
 
 static void check_addrlist(struct AddressList *list, const char *const exp[], size_t num)
 {
-  struct Buffer *parsed = mutt_buffer_pool_get();
+  struct Buffer *parsed = buf_pool_get();
   if (mutt_addrlist_write(list, parsed, false) == 0)
   {
     TEST_MSG("Expected: parsed %s (...)", exp[0]);
     TEST_MSG("Actual  : not parsed");
   }
 
-  char *pp = mutt_buffer_strdup(parsed);
+  char *pp = buf_strdup(parsed);
   char *orig = pp;
-  mutt_buffer_pool_release(&parsed);
+  buf_pool_release(&parsed);
   for (size_t i = 0; i < num; ++i)
   {
     char *tok = mutt_str_skip_whitespace(mutt_str_sep(&pp, ","));

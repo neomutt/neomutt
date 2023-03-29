@@ -46,26 +46,26 @@ static int number_string_set(const struct ConfigSet *cs, void *var, struct Confi
 {
   if (!value || (value[0] == '\0'))
   {
-    mutt_buffer_printf(err, _("Option %s may not be empty"), cdef->name);
+    buf_printf(err, _("Option %s may not be empty"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   int num = 0;
   if (!mutt_str_atoi_full(value, &num))
   {
-    mutt_buffer_printf(err, _("Invalid number: %s"), value);
+    buf_printf(err, _("Invalid number: %s"), value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if ((num < SHRT_MIN) || (num > SHRT_MAX))
   {
-    mutt_buffer_printf(err, _("Number is too big: %s"), value);
+    buf_printf(err, _("Number is too big: %s"), value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if ((num < 0) && (cdef->type & DT_NOT_NEGATIVE))
   {
-    mutt_buffer_printf(err, _("Option %s may not be negative"), cdef->name);
+    buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
@@ -105,7 +105,7 @@ static int number_string_get(const struct ConfigSet *cs, void *var,
   else
     value = (int) cdef->initial;
 
-  mutt_buffer_printf(result, "%d", value);
+  buf_printf(result, "%d", value);
   return CSR_SUCCESS;
 }
 
@@ -118,13 +118,13 @@ static int number_native_set(const struct ConfigSet *cs, void *var,
 {
   if ((value < SHRT_MIN) || (value > SHRT_MAX))
   {
-    mutt_buffer_printf(err, _("Invalid number: %ld"), value);
+    buf_printf(err, _("Invalid number: %ld"), value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if ((value < 0) && (cdef->type & DT_NOT_NEGATIVE))
   {
-    mutt_buffer_printf(err, _("Option %s may not be negative"), cdef->name);
+    buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
@@ -162,20 +162,20 @@ static int number_string_plus_equals(const struct ConfigSet *cs, void *var,
   int num = 0;
   if (!mutt_str_atoi_full(value, &num))
   {
-    mutt_buffer_printf(err, _("Invalid number: %s"), NONULL(value));
+    buf_printf(err, _("Invalid number: %s"), NONULL(value));
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   int result = *((short *) var) + num;
   if ((result < SHRT_MIN) || (result > SHRT_MAX))
   {
-    mutt_buffer_printf(err, _("Number is too big: %s"), value);
+    buf_printf(err, _("Number is too big: %s"), value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if ((result < 0) && (cdef->type & DT_NOT_NEGATIVE))
   {
-    mutt_buffer_printf(err, _("Option %s may not be negative"), cdef->name);
+    buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
@@ -201,20 +201,20 @@ static int number_string_minus_equals(const struct ConfigSet *cs, void *var,
   int num = 0;
   if (!mutt_str_atoi(value, &num))
   {
-    mutt_buffer_printf(err, _("Invalid number: %s"), NONULL(value));
+    buf_printf(err, _("Invalid number: %s"), NONULL(value));
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   int result = *((short *) var) - num;
   if ((result < SHRT_MIN) || (result > SHRT_MAX))
   {
-    mutt_buffer_printf(err, _("Number is too big: %s"), value);
+    buf_printf(err, _("Number is too big: %s"), value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if ((result < 0) && (cdef->type & DT_NOT_NEGATIVE))
   {
-    mutt_buffer_printf(err, _("Option %s may not be negative"), cdef->name);
+    buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 

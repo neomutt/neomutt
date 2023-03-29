@@ -32,7 +32,7 @@ void test_url_tobuffer(void)
   // int url_tobuffer(struct Url *url, struct Buffer *buf, uint8_t flags);
 
   {
-    struct Buffer buf = mutt_buffer_make(0);
+    struct Buffer buf = buf_make(0);
     TEST_CHECK(url_tobuffer(NULL, &buf, U_NO_FLAGS) != 0);
   }
 

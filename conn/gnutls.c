@@ -750,43 +750,43 @@ static int tls_set_priority(struct TlsSockData *data)
   size_t nproto = 5;
   int rv = -1;
 
-  struct Buffer *priority = mutt_buffer_pool_get();
+  struct Buffer *priority = buf_pool_get();
 
   const char *const c_ssl_ciphers = cs_subset_string(NeoMutt->sub, "ssl_ciphers");
   if (c_ssl_ciphers)
-    mutt_buffer_strcpy(priority, c_ssl_ciphers);
+    buf_strcpy(priority, c_ssl_ciphers);
   else
-    mutt_buffer_strcpy(priority, "NORMAL");
+    buf_strcpy(priority, "NORMAL");
 
   const bool c_ssl_use_tlsv1_3 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_3");
   if (!c_ssl_use_tlsv1_3)
   {
     nproto--;
-    mutt_buffer_addstr(priority, ":-VERS-TLS1.3");
+    buf_addstr(priority, ":-VERS-TLS1.3");
   }
   const bool c_ssl_use_tlsv1_2 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_2");
   if (!c_ssl_use_tlsv1_2)
   {
     nproto--;
-    mutt_buffer_addstr(priority, ":-VERS-TLS1.2");
+    buf_addstr(priority, ":-VERS-TLS1.2");
   }
   const bool c_ssl_use_tlsv1_1 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_1");
   if (!c_ssl_use_tlsv1_1)
   {
     nproto--;
-    mutt_buffer_addstr(priority, ":-VERS-TLS1.1");
+    buf_addstr(priority, ":-VERS-TLS1.1");
   }
   const bool c_ssl_use_tlsv1 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1");
   if (!c_ssl_use_tlsv1)
   {
     nproto--;
-    mutt_buffer_addstr(priority, ":-VERS-TLS1.0");
+    buf_addstr(priority, ":-VERS-TLS1.0");
   }
   const bool c_ssl_use_sslv3 = cs_subset_bool(NeoMutt->sub, "ssl_use_sslv3");
   if (!c_ssl_use_sslv3)
   {
     nproto--;
-    mutt_buffer_addstr(priority, ":-VERS-SSL3.0");
+    buf_addstr(priority, ":-VERS-SSL3.0");
   }
 
   if (nproto == 0)
@@ -795,18 +795,18 @@ static int tls_set_priority(struct TlsSockData *data)
     goto cleanup;
   }
 
-  int err = gnutls_priority_set_direct(data->session, mutt_buffer_string(priority), NULL);
+  int err = gnutls_priority_set_direct(data->session, buf_string(priority), NULL);
   if (err < 0)
   {
-    mutt_error("gnutls_priority_set_direct(%s): %s",
-               mutt_buffer_string(priority), gnutls_strerror(err));
+    mutt_error("gnutls_priority_set_direct(%s): %s", buf_string(priority),
+               gnutls_strerror(err));
     goto cleanup;
   }
 
   rv = 0;
 
 cleanup:
-  mutt_buffer_pool_release(&priority);
+  buf_pool_release(&priority);
   return rv;
 }
 

@@ -45,20 +45,20 @@ static int long_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 {
   if (!value || (value[0] == '\0'))
   {
-    mutt_buffer_printf(err, _("Option %s may not be empty"), cdef->name);
+    buf_printf(err, _("Option %s may not be empty"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   long num = 0;
   if (!mutt_str_atol_full(value, &num))
   {
-    mutt_buffer_printf(err, _("Invalid long: %s"), value);
+    buf_printf(err, _("Invalid long: %s"), value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if ((num < 0) && (cdef->type & DT_NOT_NEGATIVE))
   {
-    mutt_buffer_printf(err, _("Option %s may not be negative"), cdef->name);
+    buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
@@ -98,7 +98,7 @@ static int long_string_get(const struct ConfigSet *cs, void *var,
   else
     value = (int) cdef->initial;
 
-  mutt_buffer_printf(result, "%d", value);
+  buf_printf(result, "%d", value);
   return CSR_SUCCESS;
 }
 
@@ -110,7 +110,7 @@ static int long_native_set(const struct ConfigSet *cs, void *var,
 {
   if ((value < 0) && (cdef->type & DT_NOT_NEGATIVE))
   {
-    mutt_buffer_printf(err, _("Option %s may not be negative"), cdef->name);
+    buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
@@ -148,14 +148,14 @@ static int long_string_plus_equals(const struct ConfigSet *cs, void *var,
   long num = 0;
   if (!mutt_str_atol_full(value, &num))
   {
-    mutt_buffer_printf(err, _("Invalid long: %s"), NONULL(value));
+    buf_printf(err, _("Invalid long: %s"), NONULL(value));
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   long result = *((long *) var) + num;
   if ((result < 0) && (cdef->type & DT_NOT_NEGATIVE))
   {
-    mutt_buffer_printf(err, _("Option %s may not be negative"), cdef->name);
+    buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
@@ -184,14 +184,14 @@ static int long_string_minus_equals(const struct ConfigSet *cs, void *var,
   long num = 0;
   if (!mutt_str_atol_full(value, &num))
   {
-    mutt_buffer_printf(err, _("Invalid long: %s"), NONULL(value));
+    buf_printf(err, _("Invalid long: %s"), NONULL(value));
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   long result = *((long *) var) - num;
   if ((result < 0) && (cdef->type & DT_NOT_NEGATIVE))
   {
-    mutt_buffer_printf(err, _("Option %s may not be negative"), cdef->name);
+    buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 

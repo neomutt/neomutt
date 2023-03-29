@@ -526,8 +526,8 @@ static int autoview_handler(struct Body *a, struct State *state)
   struct MailcapEntry *entry = mailcap_entry_new();
   char buf[1024] = { 0 };
   char type[256] = { 0 };
-  struct Buffer *cmd = mutt_buffer_pool_get();
-  struct Buffer *tempfile = mutt_buffer_pool_get();
+  struct Buffer *cmd = buf_pool_get();
+  struct Buffer *tempfile = buf_pool_get();
   char *fname = NULL;
   FILE *fp_in = NULL;
   FILE *fp_out = NULL;
@@ -545,19 +545,19 @@ static int autoview_handler(struct Body *a, struct State *state)
 
   if (entry->command)
   {
-    mutt_buffer_strcpy(cmd, entry->command);
+    buf_strcpy(cmd, entry->command);
 
     /* mailcap_expand_command returns 0 if the file is required */
-    bool piped = mailcap_expand_command(a, mutt_buffer_string(tempfile), type, cmd);
+    bool piped = mailcap_expand_command(a, buf_string(tempfile), type, cmd);
 
     if (state->flags & STATE_DISPLAY)
     {
       state_mark_attach(state);
-      state_printf(state, _("[-- Autoview using %s --]\n"), mutt_buffer_string(cmd));
-      mutt_message(_("Invoking autoview command: %s"), mutt_buffer_string(cmd));
+      state_printf(state, _("[-- Autoview using %s --]\n"), buf_string(cmd));
+      mutt_message(_("Invoking autoview command: %s"), buf_string(cmd));
     }
 
-    fp_in = mutt_file_fopen(mutt_buffer_string(tempfile), "w+");
+    fp_in = mutt_file_fopen(buf_string(tempfile), "w+");
     if (!fp_in)
     {
       mutt_perror("fopen");
@@ -570,16 +570,16 @@ static int autoview_handler(struct Body *a, struct State *state)
 
     if (piped)
     {
-      unlink(mutt_buffer_string(tempfile));
+      unlink(buf_string(tempfile));
       fflush(fp_in);
       rewind(fp_in);
-      pid = filter_create_fd(mutt_buffer_string(cmd), NULL, &fp_out, &fp_err,
+      pid = filter_create_fd(buf_string(cmd), NULL, &fp_out, &fp_err,
                              fileno(fp_in), -1, -1);
     }
     else
     {
       mutt_file_fclose(&fp_in);
-      pid = filter_create(mutt_buffer_string(cmd), NULL, &fp_out, &fp_err);
+      pid = filter_create(buf_string(cmd), NULL, &fp_out, &fp_err);
     }
 
     if (pid < 0)
@@ -588,7 +588,7 @@ static int autoview_handler(struct Body *a, struct State *state)
       if (state->flags & STATE_DISPLAY)
       {
         state_mark_attach(state);
-        state_printf(state, _("[-- Can't run %s. --]\n"), mutt_buffer_string(cmd));
+        state_printf(state, _("[-- Can't run %s. --]\n"), buf_string(cmd));
       }
       rc = -1;
       goto bail;
@@ -599,14 +599,14 @@ static int autoview_handler(struct Body *a, struct State *state)
       /* Remove ansi and formatting from autoview output in replies only.  The
        * user may want to see the formatting in the pager, but it shouldn't be
        * in their quoted reply text too.  */
-      struct Buffer *stripped = mutt_buffer_pool_get();
+      struct Buffer *stripped = buf_pool_get();
       while (fgets(buf, sizeof(buf), fp_out))
       {
-        mutt_buffer_strip_formatting(stripped, buf, false);
+        buf_strip_formatting(stripped, buf, false);
         state_puts(state, state->prefix);
-        state_puts(state, mutt_buffer_string(stripped));
+        state_puts(state, buf_string(stripped));
       }
-      mutt_buffer_pool_release(&stripped);
+      buf_pool_release(&stripped);
 
       /* check for data on stderr */
       if (fgets(buf, sizeof(buf), fp_err))
@@ -614,8 +614,7 @@ static int autoview_handler(struct Body *a, struct State *state)
         if (state->flags & STATE_DISPLAY)
         {
           state_mark_attach(state);
-          state_printf(state, _("[-- Autoview stderr of %s --]\n"),
-                       mutt_buffer_string(cmd));
+          state_printf(state, _("[-- Autoview stderr of %s --]\n"), buf_string(cmd));
         }
 
         state_puts(state, state->prefix);
@@ -636,8 +635,7 @@ static int autoview_handler(struct Body *a, struct State *state)
         if (state->flags & STATE_DISPLAY)
         {
           state_mark_attach(state);
-          state_printf(state, _("[-- Autoview stderr of %s --]\n"),
-                       mutt_buffer_string(cmd));
+          state_printf(state, _("[-- Autoview stderr of %s --]\n"), buf_string(cmd));
         }
 
         state_puts(state, buf);
@@ -653,7 +651,7 @@ static int autoview_handler(struct Body *a, struct State *state)
     if (piped)
       mutt_file_fclose(&fp_in);
     else
-      mutt_file_unlink(mutt_buffer_string(tempfile));
+      mutt_file_unlink(buf_string(tempfile));
 
     if (state->flags & STATE_DISPLAY)
       mutt_clear_error();
@@ -662,8 +660,8 @@ static int autoview_handler(struct Body *a, struct State *state)
 cleanup:
   mailcap_entry_free(&entry);
 
-  mutt_buffer_pool_release(&cmd);
-  mutt_buffer_pool_release(&tempfile);
+  buf_pool_release(&cmd);
+  buf_pool_release(&tempfile);
 
   return rc;
 }
@@ -1165,11 +1163,11 @@ static int multilingual_handler(struct Body *a, struct State *state)
   const struct Slist *c_preferred_languages = cs_subset_slist(NeoMutt->sub, "preferred_languages");
   if (c_preferred_languages)
   {
-    struct Buffer *langs = mutt_buffer_pool_get();
+    struct Buffer *langs = buf_pool_get();
     cs_subset_str_string_get(NeoMutt->sub, "preferred_languages", langs);
     mutt_debug(LL_DEBUG2, "RFC8255 >> preferred_languages set in config to '%s'\n",
-               mutt_buffer_string(langs));
-    mutt_buffer_pool_release(&langs);
+               buf_string(langs));
+    buf_pool_release(&langs);
 
     STAILQ_FOREACH(np, &c_preferred_languages->head, entries)
     {
@@ -1353,14 +1351,14 @@ static int run_decode_and_handler(struct Body *b, struct State *state,
         return -1;
       }
 #else
-      tempfile = mutt_buffer_pool_get();
-      mutt_buffer_mktemp(tempfile);
-      state->fp_out = mutt_file_fopen(mutt_buffer_string(tempfile), "w");
+      tempfile = buf_pool_get();
+      buf_mktemp(tempfile);
+      state->fp_out = mutt_file_fopen(buf_string(tempfile), "w");
       if (!state->fp_out)
       {
         mutt_error(_("Unable to open temporary file"));
-        mutt_debug(LL_DEBUG1, "Can't open %s\n", mutt_buffer_string(tempfile));
-        mutt_buffer_pool_release(&tempfile);
+        mutt_debug(LL_DEBUG1, "Can't open %s\n", buf_string(tempfile));
+        buf_pool_release(&tempfile);
         return -1;
       }
 #endif
@@ -1414,9 +1412,9 @@ static int run_decode_and_handler(struct Body *b, struct State *state,
         return -1;
       }
 #else
-      state->fp_in = fopen(mutt_buffer_string(tempfile), "r");
-      unlink(mutt_buffer_string(tempfile));
-      mutt_buffer_pool_release(&tempfile);
+      state->fp_in = fopen(buf_string(tempfile), "r");
+      unlink(buf_string(tempfile));
+      buf_pool_release(&tempfile);
 #endif
       /* restore the prefix */
       state->prefix = save_prefix;
@@ -1760,7 +1758,7 @@ int mutt_body_handler(struct Body *b, struct State *state)
   else if (state->flags & STATE_DISPLAY)
   {
     const bool c_honor_disposition = cs_subset_bool(NeoMutt->sub, "honor_disposition");
-    struct Buffer msg = mutt_buffer_make(256);
+    struct Buffer msg = buf_make(256);
 
     if (!is_attachment_display)
     {
@@ -1771,28 +1769,28 @@ int mutt_body_handler(struct Body *b, struct State *state)
         if (c_honor_disposition && (b->disposition == DISP_ATTACH))
         {
           /* L10N: %s expands to a keystroke/key binding, e.g. 'v'.  */
-          mutt_buffer_printf(&msg, _("[-- This is an attachment (use '%s' to view this part) --]\n"),
-                             keystroke);
+          buf_printf(&msg, _("[-- This is an attachment (use '%s' to view this part) --]\n"),
+                     keystroke);
         }
         else
         {
           /* L10N: %s/%s is a MIME type, e.g. "text/plain".
              The last %s expands to a keystroke/key binding, e.g. 'v'. */
-          mutt_buffer_printf(&msg, _("[-- %s/%s is unsupported (use '%s' to view this part) --]\n"),
-                             TYPE(b), b->subtype, keystroke);
+          buf_printf(&msg, _("[-- %s/%s is unsupported (use '%s' to view this part) --]\n"),
+                     TYPE(b), b->subtype, keystroke);
         }
       }
       else
       {
         if (c_honor_disposition && (b->disposition == DISP_ATTACH))
         {
-          mutt_buffer_strcpy(&msg, _("[-- This is an attachment (need 'view-attachments' bound to key) --]\n"));
+          buf_strcpy(&msg, _("[-- This is an attachment (need 'view-attachments' bound to key) --]\n"));
         }
         else
         {
           /* L10N: %s/%s is a MIME type, e.g. "text/plain". */
-          mutt_buffer_printf(&msg, _("[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"),
-                             TYPE(b), b->subtype);
+          buf_printf(&msg, _("[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"),
+                     TYPE(b), b->subtype);
         }
       }
     }
@@ -1800,17 +1798,17 @@ int mutt_body_handler(struct Body *b, struct State *state)
     {
       if (c_honor_disposition && (b->disposition == DISP_ATTACH))
       {
-        mutt_buffer_strcpy(&msg, _("[-- This is an attachment --]\n"));
+        buf_strcpy(&msg, _("[-- This is an attachment --]\n"));
       }
       else
       {
         /* L10N: %s/%s is a MIME type, e.g. "text/plain". */
-        mutt_buffer_printf(&msg, _("[-- %s/%s is unsupported --]\n"), TYPE(b), b->subtype);
+        buf_printf(&msg, _("[-- %s/%s is unsupported --]\n"), TYPE(b), b->subtype);
       }
     }
     state_mark_attach(state);
-    state_printf(state, "%s", mutt_buffer_string(&msg));
-    mutt_buffer_dealloc(&msg);
+    state_printf(state, "%s", buf_string(&msg));
+    buf_dealloc(&msg);
   }
 
 cleanup:

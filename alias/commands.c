@@ -53,7 +53,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
 
   if (!MoreArgs(s))
   {
-    mutt_buffer_strcpy(err, _("alias: no address"));
+    buf_strcpy(err, _("alias: no address"));
     return MUTT_CMD_WARNING;
   }
 
@@ -73,7 +73,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   int parsed = mutt_addrlist_parse2(&al, buf->data);
   if (parsed == 0)
   {
-    mutt_buffer_printf(err, _("Warning: Bad address '%s' in alias '%s'"), buf->data, name);
+    buf_printf(err, _("Warning: Bad address '%s' in alias '%s'"), buf->data, name);
     FREE(&name);
     goto bail;
   }
@@ -82,7 +82,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   char *estr = NULL;
   if (mutt_addrlist_to_intl(&al, &estr))
   {
-    mutt_buffer_printf(err, _("Warning: Bad IDN '%s' in alias '%s'"), estr, name);
+    buf_printf(err, _("Warning: Bad IDN '%s' in alias '%s'"), estr, name);
     FREE(&name);
     FREE(&estr);
     goto bail;

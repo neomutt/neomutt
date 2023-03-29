@@ -126,20 +126,19 @@ struct RemailerArray remailer_get_hosts(void)
   if (fd_null == -1)
     return ra;
 
-  struct Buffer *cmd = mutt_buffer_pool_get();
-  mutt_buffer_printf(cmd, "%s -T", c_mixmaster);
+  struct Buffer *cmd = buf_pool_get();
+  buf_printf(cmd, "%s -T", c_mixmaster);
 
-  pid_t mm_pid = filter_create_fd(mutt_buffer_string(cmd), NULL, &fp, NULL,
-                                  fd_null, -1, fd_null);
+  pid_t mm_pid = filter_create_fd(buf_string(cmd), NULL, &fp, NULL, fd_null, -1, fd_null);
   window_invalidate_all();
   if (mm_pid == -1)
   {
-    mutt_buffer_pool_release(&cmd);
+    buf_pool_release(&cmd);
     close(fd_null);
     return ra;
   }
 
-  mutt_buffer_pool_release(&cmd);
+  buf_pool_release(&cmd);
 
   /* first, generate the "random" remailer */
 

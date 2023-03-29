@@ -267,12 +267,12 @@ static void imap_msn_index_to_uid_seqset(struct Buffer *buf, struct ImapMboxData
       if (first)
         first = 0;
       else
-        mutt_buffer_addch(buf, ',');
+        buf_addch(buf, ',');
 
       if (state == 1)
-        mutt_buffer_add_printf(buf, "%u", range_begin);
+        buf_add_printf(buf, "%u", range_begin);
       else if (state == 2)
-        mutt_buffer_add_printf(buf, "%u:%u", range_begin, range_end);
+        buf_add_printf(buf, "%u:%u", range_begin, range_end);
 
       state = 1;
       range_begin = cur_uid;
@@ -285,7 +285,7 @@ static void imap_msn_index_to_uid_seqset(struct Buffer *buf, struct ImapMboxData
  */
 static void imap_hcache_namer(const char *path, struct Buffer *dest)
 {
-  mutt_buffer_printf(dest, "%s.hcache", path);
+  buf_printf(dest, "%s.hcache", path);
 }
 
 /**
@@ -302,19 +302,18 @@ void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
     return;
 
   struct HeaderCache *hc = NULL;
-  struct Buffer *mbox = mutt_buffer_pool_get();
-  struct Buffer *cachepath = mutt_buffer_pool_get();
+  struct Buffer *mbox = buf_pool_get();
+  struct Buffer *cachepath = buf_pool_get();
 
   imap_cachepath(adata->delim, mdata->name, mbox);
 
-  if (strstr(mutt_buffer_string(mbox), "/../") ||
-      mutt_str_equal(mutt_buffer_string(mbox), "..") ||
-      mutt_strn_equal(mutt_buffer_string(mbox), "../", 3))
+  if (strstr(buf_string(mbox), "/../") || mutt_str_equal(buf_string(mbox), "..") ||
+      mutt_strn_equal(buf_string(mbox), "../", 3))
   {
     goto cleanup;
   }
-  size_t len = mutt_buffer_len(mbox);
-  if ((len > 3) && (mutt_str_equal(mutt_buffer_string(mbox) + len - 3, "/..")))
+  size_t len = buf_len(mbox);
+  if ((len > 3) && (mutt_str_equal(buf_string(mbox) + len - 3, "/..")))
     goto cleanup;
 
   struct Url url = { 0 };
@@ -323,11 +322,11 @@ void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
   url_tobuffer(&url, cachepath, U_PATH);
 
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
-  hc = mutt_hcache_open(c_header_cache, mutt_buffer_string(cachepath), imap_hcache_namer);
+  hc = mutt_hcache_open(c_header_cache, buf_string(cachepath), imap_hcache_namer);
 
 cleanup:
-  mutt_buffer_pool_release(&mbox);
-  mutt_buffer_pool_release(&cachepath);
+  buf_pool_release(&mbox);
+  buf_pool_release(&cachepath);
   mdata->hcache = hc;
 }
 
@@ -417,13 +416,13 @@ int imap_hcache_store_uid_seqset(struct ImapMboxData *mdata)
     return -1;
 
   /* The seqset is likely large.  Preallocate to reduce reallocs */
-  struct Buffer buf = mutt_buffer_make(8192);
+  struct Buffer buf = buf_make(8192);
   imap_msn_index_to_uid_seqset(&buf, mdata);
 
   int rc = mutt_hcache_store_raw(mdata->hcache, "/UIDSEQSET", 10, buf.data,
-                                 mutt_buffer_len(&buf) + 1);
+                                 buf_len(&buf) + 1);
   mutt_debug(LL_DEBUG3, "Stored /UIDSEQSET %s\n", buf.data);
-  mutt_buffer_dealloc(&buf);
+  buf_dealloc(&buf);
   return rc;
 }
 
@@ -710,7 +709,7 @@ char *imap_fix_path(char delim, const char *mailbox, char *path, size_t plen)
 void imap_cachepath(char delim, const char *mailbox, struct Buffer *dest)
 {
   const char *p = mailbox;
-  mutt_buffer_reset(dest);
+  buf_reset(dest);
   if (!p)
     return;
 
@@ -718,14 +717,14 @@ void imap_cachepath(char delim, const char *mailbox, struct Buffer *dest)
   {
     if (p[0] == delim)
     {
-      mutt_buffer_addch(dest, '/');
+      buf_addch(dest, '/');
       /* simple way to avoid collisions with UIDs */
       if ((p[1] >= '0') && (p[1] <= '9'))
-        mutt_buffer_addch(dest, '_');
+        buf_addch(dest, '_');
     }
     else
     {
-      mutt_buffer_addch(dest, *p);
+      buf_addch(dest, *p);
     }
     p++;
   }

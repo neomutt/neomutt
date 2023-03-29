@@ -68,20 +68,20 @@ int mailcap_expand_command(struct Body *a, const char *filename,
                            const char *type, struct Buffer *command)
 {
   int needspipe = true;
-  struct Buffer *buf = mutt_buffer_pool_get();
-  struct Buffer *quoted = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
+  struct Buffer *quoted = buf_pool_get();
   struct Buffer *param = NULL;
   struct Buffer *type2 = NULL;
 
   const bool c_mailcap_sanitize = cs_subset_bool(NeoMutt->sub, "mailcap_sanitize");
-  const char *cptr = mutt_buffer_string(command);
+  const char *cptr = buf_string(command);
   while (*cptr)
   {
     if (*cptr == '\\')
     {
       cptr++;
       if (*cptr)
-        mutt_buffer_addch(buf, *cptr++);
+        buf_addch(buf, *cptr++);
     }
     else if (*cptr == '%')
     {
@@ -91,50 +91,50 @@ int mailcap_expand_command(struct Body *a, const char *filename,
         const char *pvalue2 = NULL;
 
         if (param)
-          mutt_buffer_reset(param);
+          buf_reset(param);
         else
-          param = mutt_buffer_pool_get();
+          param = buf_pool_get();
 
         /* Copy parameter name into param buffer */
         cptr++;
         while (*cptr && (*cptr != '}'))
-          mutt_buffer_addch(param, *cptr++);
+          buf_addch(param, *cptr++);
 
         /* In send mode, use the current charset, since the message hasn't
          * been converted yet.   If noconv is set, then we assume the
          * charset parameter has the correct value instead. */
-        if (mutt_istr_equal(mutt_buffer_string(param), "charset") && a->charset && !a->noconv)
+        if (mutt_istr_equal(buf_string(param), "charset") && a->charset && !a->noconv)
           pvalue2 = a->charset;
         else
-          pvalue2 = mutt_param_get(&a->parameter, mutt_buffer_string(param));
+          pvalue2 = mutt_param_get(&a->parameter, buf_string(param));
 
         /* Now copy the parameter value into param buffer */
         if (c_mailcap_sanitize)
-          mutt_buffer_sanitize_filename(param, NONULL(pvalue2), false);
+          buf_sanitize_filename(param, NONULL(pvalue2), false);
         else
-          mutt_buffer_strcpy(param, NONULL(pvalue2));
+          buf_strcpy(param, NONULL(pvalue2));
 
-        mutt_buffer_quote_filename(quoted, mutt_buffer_string(param), true);
-        mutt_buffer_addstr(buf, mutt_buffer_string(quoted));
+        buf_quote_filename(quoted, buf_string(param), true);
+        buf_addstr(buf, buf_string(quoted));
       }
       else if ((*cptr == 's') && filename)
       {
-        mutt_buffer_quote_filename(quoted, filename, true);
-        mutt_buffer_addstr(buf, mutt_buffer_string(quoted));
+        buf_quote_filename(quoted, filename, true);
+        buf_addstr(buf, buf_string(quoted));
         needspipe = false;
       }
       else if (*cptr == 't')
       {
         if (!type2)
         {
-          type2 = mutt_buffer_pool_get();
+          type2 = buf_pool_get();
           if (c_mailcap_sanitize)
-            mutt_buffer_sanitize_filename(type2, type, false);
+            buf_sanitize_filename(type2, type, false);
           else
-            mutt_buffer_strcpy(type2, type);
+            buf_strcpy(type2, type);
         }
-        mutt_buffer_quote_filename(quoted, mutt_buffer_string(type2), true);
-        mutt_buffer_addstr(buf, mutt_buffer_string(quoted));
+        buf_quote_filename(quoted, buf_string(type2), true);
+        buf_addstr(buf, buf_string(quoted));
       }
 
       if (*cptr)
@@ -142,15 +142,15 @@ int mailcap_expand_command(struct Body *a, const char *filename,
     }
     else
     {
-      mutt_buffer_addch(buf, *cptr++);
+      buf_addch(buf, *cptr++);
     }
   }
-  mutt_buffer_copy(command, buf);
+  buf_copy(command, buf);
 
-  mutt_buffer_pool_release(&buf);
-  mutt_buffer_pool_release(&quoted);
-  mutt_buffer_pool_release(&param);
-  mutt_buffer_pool_release(&type2);
+  buf_pool_release(&buf);
+  buf_pool_release(&quoted);
+  buf_pool_release(&param);
+  buf_pool_release(&type2);
 
   return needspipe;
 }
@@ -353,23 +353,23 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
 
           if (get_field_text(field + plen, &test_command, type, filename, line) && test_command)
           {
-            struct Buffer *command = mutt_buffer_pool_get();
-            struct Buffer *afilename = mutt_buffer_pool_get();
-            mutt_buffer_strcpy(command, test_command);
+            struct Buffer *command = buf_pool_get();
+            struct Buffer *afilename = buf_pool_get();
+            buf_strcpy(command, test_command);
             const bool c_mailcap_sanitize = cs_subset_bool(NeoMutt->sub, "mailcap_sanitize");
             if (c_mailcap_sanitize)
-              mutt_buffer_sanitize_filename(afilename, NONULL(a->filename), true);
+              buf_sanitize_filename(afilename, NONULL(a->filename), true);
             else
-              mutt_buffer_strcpy(afilename, NONULL(a->filename));
-            mailcap_expand_command(a, mutt_buffer_string(afilename), type, command);
-            if (mutt_system(mutt_buffer_string(command)))
+              buf_strcpy(afilename, NONULL(a->filename));
+            mailcap_expand_command(a, buf_string(afilename), type, command);
+            if (mutt_system(buf_string(command)))
             {
               /* a non-zero exit code means test failed */
               found = false;
             }
             FREE(&test_command);
-            mutt_buffer_pool_release(&command);
-            mutt_buffer_pool_release(&afilename);
+            buf_pool_release(&command);
+            buf_pool_release(&afilename);
           }
         }
         else if (mutt_istr_startswith(field, "x-neomutt-keep"))
@@ -502,22 +502,22 @@ bool mailcap_lookup(struct Body *a, char *type, size_t typelen,
 
   mutt_check_lookup_list(a, type, typelen);
 
-  struct Buffer *path = mutt_buffer_pool_get();
+  struct Buffer *path = buf_pool_get();
   bool found = false;
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &c_mailcap_path->head, entries)
   {
-    mutt_buffer_strcpy(path, np->data);
-    mutt_buffer_expand_path(path);
+    buf_strcpy(path, np->data);
+    buf_expand_path(path);
 
-    mutt_debug(LL_DEBUG2, "Checking mailcap file: %s\n", mutt_buffer_string(path));
-    found = rfc1524_mailcap_parse(a, mutt_buffer_string(path), type, entry, opt);
+    mutt_debug(LL_DEBUG2, "Checking mailcap file: %s\n", buf_string(path));
+    found = rfc1524_mailcap_parse(a, buf_string(path), type, entry, opt);
     if (found)
       break;
   }
 
-  mutt_buffer_pool_release(&path);
+  buf_pool_release(&path);
 
   if (entry && !found)
     mutt_error(_("mailcap entry for type %s not found"), type);
@@ -548,7 +548,7 @@ void mailcap_expand_filename(const char *nametemplate, const char *oldfile,
   char *s = NULL;
   bool lmatch = false, rmatch = false;
 
-  mutt_buffer_reset(newfile);
+  buf_reset(newfile);
 
   /* first, ignore leading path components */
 
@@ -561,7 +561,7 @@ void mailcap_expand_filename(const char *nametemplate, const char *oldfile,
   if (!nametemplate)
   {
     if (oldfile)
-      mutt_buffer_strcpy(newfile, oldfile);
+      buf_strcpy(newfile, oldfile);
   }
   else if (!oldfile)
   {
@@ -621,23 +621,22 @@ void mailcap_expand_filename(const char *nametemplate, const char *oldfile,
       if (k >= i + 2)
         rmatch = false;
 
-      struct Buffer *left = mutt_buffer_pool_get();
-      struct Buffer *right = mutt_buffer_pool_get();
+      struct Buffer *left = buf_pool_get();
+      struct Buffer *right = buf_pool_get();
 
       if (!lmatch)
-        mutt_buffer_strcpy_n(left, nametemplate, i);
+        buf_strcpy_n(left, nametemplate, i);
       if (!rmatch)
-        mutt_buffer_strcpy(right, nametemplate + i + 2);
-      mutt_buffer_printf(newfile, "%s%s%s", mutt_buffer_string(left), oldfile,
-                         mutt_buffer_string(right));
+        buf_strcpy(right, nametemplate + i + 2);
+      buf_printf(newfile, "%s%s%s", buf_string(left), oldfile, buf_string(right));
 
-      mutt_buffer_pool_release(&left);
-      mutt_buffer_pool_release(&right);
+      buf_pool_release(&left);
+      buf_pool_release(&right);
     }
     else
     {
       /* no "%s" in the name template. */
-      mutt_buffer_strcpy(newfile, nametemplate);
+      buf_strcpy(newfile, nametemplate);
     }
   }
 

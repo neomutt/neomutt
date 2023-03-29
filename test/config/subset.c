@@ -83,8 +83,8 @@ void test_config_subset(void)
     return;
   }
 
-  struct Buffer *err = mutt_buffer_pool_get();
-  mutt_buffer_reset(err);
+  struct Buffer *err = buf_pool_get();
+  buf_reset(err);
   rc = cs_subset_he_native_get(NULL, NULL, err);
   if (!TEST_CHECK(rc == INT_MIN))
   {
@@ -92,7 +92,7 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   value = cs_subset_he_native_get(NeoMutt->sub, he, err);
   if (!TEST_CHECK(value != INT_MIN))
   {
@@ -100,7 +100,7 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   value = cs_subset_str_native_get(NeoMutt->sub, name, err);
   if (!TEST_CHECK(value != INT_MIN))
   {
@@ -108,7 +108,7 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   rc = cs_subset_he_native_set(NULL, NULL, value + 100, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
@@ -116,7 +116,7 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   rc = cs_subset_he_native_set(NeoMutt->sub, he, value + 100, err);
   if (!TEST_CHECK(value != INT_MIN))
   {
@@ -124,7 +124,7 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   rc = cs_subset_str_native_set(NeoMutt->sub, name, value + 100, err);
   if (!TEST_CHECK(value != INT_MIN))
   {
@@ -132,19 +132,19 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   expected = "142";
   rc = cs_subset_he_string_get(NeoMutt->sub, he, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS) ||
-      !TEST_CHECK(mutt_str_equal(mutt_buffer_string(err), expected)))
+      !TEST_CHECK(mutt_str_equal(buf_string(err), expected)))
   {
     TEST_MSG("cs_subset_he_string_get failed\n");
     TEST_MSG("Expected: %s", expected);
-    TEST_MSG("Actual  : %s", mutt_buffer_string(err));
+    TEST_MSG("Actual  : %s", buf_string(err));
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   rc = cs_subset_str_string_get(NULL, NULL, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
@@ -152,19 +152,19 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   expected = "142";
   rc = cs_subset_str_string_get(NeoMutt->sub, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS) ||
-      !TEST_CHECK(mutt_str_equal(mutt_buffer_string(err), expected)))
+      !TEST_CHECK(mutt_str_equal(buf_string(err), expected)))
   {
     TEST_MSG("cs_subset_str_string_get failed\n");
     TEST_MSG("Expected: %s", expected);
-    TEST_MSG("Actual  : %s", mutt_buffer_string(err));
+    TEST_MSG("Actual  : %s", buf_string(err));
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   expected = "142";
   rc = cs_subset_he_string_set(NULL, NULL, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
@@ -173,7 +173,7 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   expected = "678";
   rc = cs_subset_he_string_set(NeoMutt->sub, he, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
@@ -182,7 +182,7 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   expected = "678";
   rc = cs_subset_str_string_set(NeoMutt->sub, name, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
@@ -191,7 +191,7 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   expected = "142";
   rc = cs_subset_he_string_plus_equals(NULL, NULL, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
@@ -200,7 +200,7 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   expected = "678";
   rc = cs_subset_he_string_plus_equals(NeoMutt->sub, he, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
@@ -209,7 +209,7 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   expected = "678";
   rc = cs_subset_str_string_plus_equals(NeoMutt->sub, name, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
@@ -218,7 +218,7 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   expected = "142";
   rc = cs_subset_he_string_minus_equals(NULL, NULL, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
@@ -227,7 +227,7 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   expected = "678";
   rc = cs_subset_he_string_minus_equals(NeoMutt->sub, he, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
@@ -236,7 +236,7 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   expected = "678";
   rc = cs_subset_str_string_minus_equals(NeoMutt->sub, name, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
@@ -245,7 +245,7 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   rc = cs_subset_he_reset(NULL, NULL, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
@@ -253,7 +253,7 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   rc = cs_subset_he_reset(NeoMutt->sub, he, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
@@ -261,7 +261,7 @@ void test_config_subset(void)
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   rc = cs_subset_str_reset(NeoMutt->sub, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
@@ -287,7 +287,7 @@ void test_config_subset(void)
   TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
 
   // Deleting in sub_m should not delete in sub_a or cs
-  mutt_buffer_reset(err);
+  buf_reset(err);
   rc = cs_subset_str_delete(sub_m, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
@@ -321,6 +321,6 @@ void test_config_subset(void)
 
   neomutt_free(&NeoMutt);
   cs_free(&cs);
-  mutt_buffer_pool_release(&err);
+  buf_pool_release(&err);
   log_line(__func__);
 }

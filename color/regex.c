@@ -275,14 +275,14 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
     rcol = regex_color_new();
     if (is_index)
     {
-      struct Buffer *buf = mutt_buffer_pool_get();
-      mutt_buffer_strcpy(buf, s);
+      struct Buffer *buf = buf_pool_get();
+      buf_strcpy(buf, s);
       const char *const c_simple_search = cs_subset_string(NeoMutt->sub, "simple_search");
       mutt_check_simple(buf, NONULL(c_simple_search));
       struct Mailbox *m_cur = get_current_mailbox();
       struct Menu *menu = get_current_menu();
       rcol->color_pattern = mutt_pattern_comp(m_cur, menu, buf->data, MUTT_PC_FULL_MSG, err);
-      mutt_buffer_pool_release(&buf);
+      buf_pool_release(&buf);
       if (!rcol->color_pattern)
       {
         regex_color_free(rcl, &rcol);
@@ -381,10 +381,10 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat, uint32_t f
 
   *rc = add_pattern(rcl, pat, sensitive, fg, bg, attrs, err, is_index, 0);
 
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
   get_colorid_name(cid, buf);
   color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
 
   if (!is_index) // else it will be logged in add_pattern()
   {
@@ -417,10 +417,10 @@ int regex_colors_parse_status_list(enum ColorId cid, const char *pat, uint32_t f
   if (rc != MUTT_CMD_SUCCESS)
     return rc;
 
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
   get_colorid_name(cid, buf);
   color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
 
   struct EventColor ev_c = { cid, NULL };
   notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);

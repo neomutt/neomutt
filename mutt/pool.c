@@ -47,7 +47,7 @@ static struct Buffer **BufferPool = NULL;
 static struct Buffer *buffer_new(void)
 {
   struct Buffer *buf = mutt_mem_malloc(sizeof(struct Buffer));
-  mutt_buffer_init(buf);
+  buf_init(buf);
   return buf;
 }
 
@@ -60,7 +60,7 @@ static void buffer_free(struct Buffer **p)
   if (!p || !*p)
     return;
 
-  mutt_buffer_dealloc(*p);
+  buf_dealloc(*p);
   FREE(p);
 }
 
@@ -76,15 +76,15 @@ static void increase_buffer_pool(void)
   while (BufferPoolCount < BufferPoolIncrement)
   {
     struct Buffer *newbuf = buffer_new();
-    mutt_buffer_alloc(newbuf, BufferPoolInitialBufferSize);
+    buf_alloc(newbuf, BufferPoolInitialBufferSize);
     BufferPool[BufferPoolCount++] = newbuf;
   }
 }
 
 /**
- * mutt_buffer_pool_free - Release the Buffer pool
+ * buf_pool_free - Release the Buffer pool
  */
-void mutt_buffer_pool_free(void)
+void buf_pool_free(void)
 {
   mutt_debug(LL_DEBUG1, "%zu of %zu returned to pool\n", BufferPoolCount, BufferPoolLen);
 
@@ -95,10 +95,10 @@ void mutt_buffer_pool_free(void)
 }
 
 /**
- * mutt_buffer_pool_get - Get a Buffer from the pool
+ * buf_pool_get - Get a Buffer from the pool
  * @retval ptr Buffer
  */
-struct Buffer *mutt_buffer_pool_get(void)
+struct Buffer *buf_pool_get(void)
 {
   if (BufferPoolCount == 0)
     increase_buffer_pool();
@@ -106,10 +106,10 @@ struct Buffer *mutt_buffer_pool_get(void)
 }
 
 /**
- * mutt_buffer_pool_release - Free a Buffer from the pool
+ * buf_pool_release - Free a Buffer from the pool
  * @param[out] pbuf Buffer to free
  */
-void mutt_buffer_pool_release(struct Buffer **pbuf)
+void buf_pool_release(struct Buffer **pbuf)
 {
   if (!pbuf || !*pbuf)
     return;
@@ -128,7 +128,7 @@ void mutt_buffer_pool_release(struct Buffer **pbuf)
     buf->dsize = BufferPoolInitialBufferSize;
     mutt_mem_realloc(&buf->data, buf->dsize);
   }
-  mutt_buffer_reset(buf);
+  buf_reset(buf);
   BufferPool[BufferPoolCount++] = buf;
 
   *pbuf = NULL;

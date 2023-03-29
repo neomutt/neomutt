@@ -199,12 +199,12 @@ int mutt_log_set_file(const char *file)
   const char *const c_debug_file = cs_subset_path(NeoMutt->sub, "debug_file");
   if (!mutt_str_equal(CurrentFile, c_debug_file))
   {
-    struct Buffer *expanded = mutt_buffer_pool_get();
-    mutt_buffer_addstr(expanded, c_debug_file);
-    mutt_buffer_expand_path(expanded);
+    struct Buffer *expanded = buf_pool_get();
+    buf_addstr(expanded, c_debug_file);
+    buf_expand_path(expanded);
 
-    const char *name = mutt_file_rotate(mutt_buffer_string(expanded), NumOfLogs);
-    mutt_buffer_pool_release(&expanded);
+    const char *name = mutt_file_rotate(buf_string(expanded), NumOfLogs);
+    buf_pool_release(&expanded);
     if (!name)
       return -1;
 
@@ -274,7 +274,7 @@ int level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 {
   if ((value < 0) || (value >= LL_MAX))
   {
-    mutt_buffer_printf(err, _("Invalid value for option %s: %ld"), cdef->name, value);
+    buf_printf(err, _("Invalid value for option %s: %ld"), cdef->name, value);
     return CSR_ERR_INVALID;
   }
 

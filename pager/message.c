@@ -224,8 +224,8 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile,
   }
 
   FILE *fp_filter_out = NULL;
-  mutt_buffer_mktemp(tempfile);
-  FILE *fp_out = mutt_file_fopen(mutt_buffer_string(tempfile), "w");
+  buf_mktemp(tempfile);
+  FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w");
   if (!fp_out)
   {
     mutt_error(_("Could not create temporary file"));
@@ -243,7 +243,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile,
     {
       mutt_error(_("Can't create display filter"));
       mutt_file_fclose(&fp_filter_out);
-      unlink(mutt_buffer_string(tempfile));
+      unlink(buf_string(tempfile));
       goto cleanup;
     }
   }
@@ -271,7 +271,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile,
       filter_wait(filterpid);
       mutt_file_fclose(&fp_filter_out);
     }
-    mutt_file_unlink(mutt_buffer_string(tempfile));
+    mutt_file_unlink(buf_string(tempfile));
     goto cleanup;
   }
 
@@ -319,7 +319,7 @@ int external_pager(struct Mailbox *m, struct Email *e, const char *command)
   mutt_make_string(buf, sizeof(buf), screen_width, NONULL(c_pager_format), m,
                    -1, e, MUTT_FORMAT_NO_FLAGS, _(ExtPagerProgress));
 
-  struct Buffer *tempfile = mutt_buffer_pool_get();
+  struct Buffer *tempfile = buf_pool_get();
 
   CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
   int rc = email_to_file(msg, tempfile, m, e, buf, screen_width, &cmflags);
@@ -328,13 +328,13 @@ int external_pager(struct Mailbox *m, struct Email *e, const char *command)
 
   mutt_endwin();
 
-  struct Buffer *cmd = mutt_buffer_pool_get();
-  mutt_buffer_printf(cmd, "%s %s", command, mutt_buffer_string(tempfile));
-  int r = mutt_system(mutt_buffer_string(cmd));
+  struct Buffer *cmd = buf_pool_get();
+  buf_printf(cmd, "%s %s", command, buf_string(tempfile));
+  int r = mutt_system(buf_string(cmd));
   if (r == -1)
-    mutt_error(_("Error running \"%s\""), mutt_buffer_string(cmd));
-  unlink(mutt_buffer_string(tempfile));
-  mutt_buffer_pool_release(&cmd);
+    mutt_error(_("Error running \"%s\""), buf_string(cmd));
+  unlink(buf_string(tempfile));
+  buf_pool_release(&cmd);
 
   if (!OptNoCurses)
     keypad(stdscr, true);
@@ -353,7 +353,7 @@ int external_pager(struct Mailbox *m, struct Email *e, const char *command)
 
 cleanup:
   mx_msg_close(m, &msg);
-  mutt_buffer_pool_release(&tempfile);
+  buf_pool_release(&tempfile);
   return rc;
 }
 
@@ -452,7 +452,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct IndexSharedData *s
   struct MuttWindow *dlg = dialog_find(win_index);
   struct MuttWindow *win_pager = window_find_child(dlg, WT_CUSTOM);
   struct MuttWindow *win_pbar = window_find_child(dlg, WT_STATUS_BAR);
-  struct Buffer *tempfile = mutt_buffer_pool_get();
+  struct Buffer *tempfile = buf_pool_get();
   struct Message *msg = NULL;
 
   squash_index_panel(shared->mailbox, win_index, win_pager);
@@ -466,7 +466,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct IndexSharedData *s
 
     CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
 
-    mutt_buffer_reset(tempfile);
+    buf_reset(tempfile);
     // win_pager might not be visible and have a size yet, so use win_index
     rc = email_to_file(msg, tempfile, shared->mailbox, shared->email, NULL,
                        win_index->state.cols, &cmflags);
@@ -480,7 +480,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct IndexSharedData *s
     struct PagerView pview = { &pdata };
 
     pdata.fp = msg->fp;
-    pdata.fname = mutt_buffer_string(tempfile);
+    pdata.fname = buf_string(tempfile);
 
     pview.mode = PAGER_MODE_EMAIL;
     pview.banner = NULL;
@@ -497,6 +497,6 @@ int mutt_display_message(struct MuttWindow *win_index, struct IndexSharedData *s
   expand_index_panel(win_index, win_pager);
 
   mx_msg_close(shared->mailbox, &msg);
-  mutt_buffer_pool_release(&tempfile);
+  buf_pool_release(&tempfile);
   return rc;
 }

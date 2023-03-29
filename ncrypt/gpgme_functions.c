@@ -626,9 +626,9 @@ static void verify_key(struct CryptKeyInfo *key)
   gpgme_key_t k = NULL;
   int maxdepth = 100;
 
-  struct Buffer tempfile = mutt_buffer_make(PATH_MAX);
-  mutt_buffer_mktemp(&tempfile);
-  FILE *fp = mutt_file_fopen(mutt_buffer_string(&tempfile), "w");
+  struct Buffer tempfile = buf_make(PATH_MAX);
+  buf_mktemp(&tempfile);
+  FILE *fp = mutt_file_fopen(buf_string(&tempfile), "w");
   if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));
@@ -677,7 +677,7 @@ leave:
   struct PagerData pdata = { 0 };
   struct PagerView pview = { &pdata };
 
-  pdata.fname = mutt_buffer_string(&tempfile);
+  pdata.fname = buf_string(&tempfile);
 
   pview.banner = title;
   pview.flags = MUTT_PAGER_NO_FLAGS;
@@ -686,7 +686,7 @@ leave:
   mutt_do_pager(&pview, NULL);
 
 cleanup:
-  mutt_buffer_dealloc(&tempfile);
+  buf_dealloc(&tempfile);
 }
 
 /**

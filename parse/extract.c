@@ -57,9 +57,9 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
    * non-NULL after calling this function.  Perhaps I've missed a few cases, or
    * a future caller might make the same mistake.  */
   if (!dest->data)
-    mutt_buffer_alloc(dest, 256);
+    buf_alloc(dest, 256);
 
-  mutt_buffer_reset(dest);
+  buf_reset(dest);
 
   SKIPWS(tok->dptr);
   while ((ch = *tok->dptr))
@@ -94,34 +94,34 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
         case 'C':
           if (tok->dptr[0] == '\0')
             return -1; /* premature end of token */
-          mutt_buffer_addch(dest, (toupper((unsigned char) tok->dptr[0]) - '@') & 0x7f);
+          buf_addch(dest, (toupper((unsigned char) tok->dptr[0]) - '@') & 0x7f);
           tok->dptr++;
           break;
         case 'e':
-          mutt_buffer_addch(dest, '\033'); // Escape
+          buf_addch(dest, '\033'); // Escape
           break;
         case 'f':
-          mutt_buffer_addch(dest, '\f');
+          buf_addch(dest, '\f');
           break;
         case 'n':
-          mutt_buffer_addch(dest, '\n');
+          buf_addch(dest, '\n');
           break;
         case 'r':
-          mutt_buffer_addch(dest, '\r');
+          buf_addch(dest, '\r');
           break;
         case 't':
-          mutt_buffer_addch(dest, '\t');
+          buf_addch(dest, '\t');
           break;
         default:
           if (isdigit((unsigned char) ch) && isdigit((unsigned char) tok->dptr[0]) &&
               isdigit((unsigned char) tok->dptr[1]))
           {
-            mutt_buffer_addch(dest, (ch << 6) + (tok->dptr[0] << 3) + tok->dptr[1] - 3504);
+            buf_addch(dest, (ch << 6) + (tok->dptr[0] << 3) + tok->dptr[1] - 3504);
             tok->dptr += 2;
           }
           else
           {
-            mutt_buffer_addch(dest, ch);
+            buf_addch(dest, ch);
           }
       }
     }
@@ -131,15 +131,15 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
         return -1; /* premature end of token */
       ch = *tok->dptr++;
       if (ch == '^')
-        mutt_buffer_addch(dest, ch);
+        buf_addch(dest, ch);
       else if (ch == '[')
-        mutt_buffer_addch(dest, '\033'); // Escape
+        buf_addch(dest, '\033'); // Escape
       else if (isalpha((unsigned char) ch))
-        mutt_buffer_addch(dest, toupper((unsigned char) ch) - '@');
+        buf_addch(dest, toupper((unsigned char) ch) - '@');
       else
       {
-        mutt_buffer_addch(dest, '^');
-        mutt_buffer_addch(dest, ch);
+        buf_addch(dest, '^');
+        buf_addch(dest, ch);
       }
     }
     else if ((ch == '`') && (!qc || (qc == '"')))
@@ -164,7 +164,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
         return -1;
       }
       struct Buffer cmd;
-      mutt_buffer_init(&cmd);
+      buf_init(&cmd);
       *pc = '\0';
       if (flags & TOKEN_BACKTICK_VARS)
       {
@@ -189,13 +189,13 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
       tok->dptr = pc + 1;
 
       /* read line */
-      struct Buffer expn = mutt_buffer_make(0);
+      struct Buffer expn = buf_make(0);
       expn.data = mutt_file_read_line(NULL, &expn.dsize, fp, NULL, MUTT_RL_NO_FLAGS);
       mutt_file_fclose(&fp);
       int rc = filter_wait(pid);
       if (rc != 0)
         mutt_debug(LL_DEBUG1, "backticks exited code %d for command: %s\n", rc,
-                   mutt_buffer_string(&cmd));
+                   buf_string(&cmd));
       FREE(&cmd.data);
 
       /* if we got output, make a new string consisting of the shell output
@@ -206,17 +206,17 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
       {
         if (qc)
         {
-          mutt_buffer_addstr(dest, expn.data);
+          buf_addstr(dest, expn.data);
         }
         else
         {
-          struct Buffer *copy = mutt_buffer_pool_get();
-          mutt_buffer_fix_dptr(&expn);
-          mutt_buffer_copy(copy, &expn);
-          mutt_buffer_addstr(copy, tok->dptr);
-          mutt_buffer_copy(tok, copy);
-          mutt_buffer_seek(tok, 0);
-          mutt_buffer_pool_release(&copy);
+          struct Buffer *copy = buf_pool_get();
+          buf_fix_dptr(&expn);
+          buf_copy(copy, &expn);
+          buf_addstr(copy, tok->dptr);
+          buf_copy(tok, copy);
+          buf_seek(tok, 0);
+          buf_pool_release(&copy);
         }
         FREE(&expn.data);
       }
@@ -237,10 +237,10 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
 
           if ((flags & TOKEN_NOSHELL))
           {
-            mutt_buffer_addch(dest, ch);
-            mutt_buffer_addch(dest, '{');
-            mutt_buffer_addstr(dest, var);
-            mutt_buffer_addch(dest, '}');
+            buf_addch(dest, ch);
+            buf_addch(dest, '{');
+            buf_addstr(dest, var);
+            buf_addch(dest, '}');
             FREE(&var);
           }
         }
@@ -256,32 +256,32 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
       if (var)
       {
         struct Buffer result;
-        mutt_buffer_init(&result);
+        buf_init(&result);
         int rc = cs_subset_str_string_get(NeoMutt->sub, var, &result);
 
         if (CSR_RESULT(rc) == CSR_SUCCESS)
         {
-          mutt_buffer_addstr(dest, result.data);
+          buf_addstr(dest, result.data);
           FREE(&result.data);
         }
         else if (!(flags & TOKEN_NOSHELL) && (env = mutt_str_getenv(var)))
         {
-          mutt_buffer_addstr(dest, env);
+          buf_addstr(dest, env);
         }
         else
         {
-          mutt_buffer_addch(dest, ch);
-          mutt_buffer_addstr(dest, var);
+          buf_addch(dest, ch);
+          buf_addstr(dest, var);
         }
         FREE(&var);
       }
     }
     else
     {
-      mutt_buffer_addch(dest, ch);
+      buf_addch(dest, ch);
     }
   }
-  mutt_buffer_addch(dest, 0); /* terminate the string */
+  buf_addch(dest, 0); /* terminate the string */
   SKIPWS(tok->dptr);
   return 0;
 }

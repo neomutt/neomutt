@@ -97,7 +97,7 @@ static void test_parse_set(void)
     "%s inv%s=42", "%s inv%s?", "%s &%s",     "%s &%s=42", "%s &%s?",
   };
 
-  struct Buffer err = mutt_buffer_make(256);
+  struct Buffer err = buf_make(256);
   char line[64];
 
   for (size_t v = 0; v < mutt_array_size(vars); v++)
@@ -107,7 +107,7 @@ static void test_parse_set(void)
       TEST_CASE_("%s %s", commands[c], vars[v]);
       for (size_t t = 0; t < mutt_array_size(tests); t++)
       {
-        mutt_buffer_reset(&err);
+        buf_reset(&err);
 
         snprintf(line, sizeof(line), tests[t], commands[c], vars[v]);
         // enum CommandResult rc =
@@ -116,7 +116,7 @@ static void test_parse_set(void)
     }
   }
 
-  mutt_buffer_dealloc(&err);
+  buf_dealloc(&err);
 }
 
 void test_parse_rc(void)

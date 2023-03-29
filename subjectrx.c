@@ -68,7 +68,7 @@ static enum CommandResult parse_unreplace_list(struct Buffer *buf, struct Buffer
   /* First token is a regex. */
   if (!MoreArgs(s))
   {
-    mutt_buffer_printf(err, _("%s: too few arguments"), "unsubjectrx");
+    buf_printf(err, _("%s: too few arguments"), "unsubjectrx");
     return MUTT_CMD_WARNING;
   }
 
@@ -91,12 +91,12 @@ static enum CommandResult parse_unreplace_list(struct Buffer *buf, struct Buffer
 static enum CommandResult parse_replace_list(struct Buffer *buf, struct Buffer *s,
                                              struct ReplaceList *list, struct Buffer *err)
 {
-  struct Buffer templ = mutt_buffer_make(0);
+  struct Buffer templ = buf_make(0);
 
   /* First token is a regex. */
   if (!MoreArgs(s))
   {
-    mutt_buffer_printf(err, _("%s: too few arguments"), "subjectrx");
+    buf_printf(err, _("%s: too few arguments"), "subjectrx");
     return MUTT_CMD_WARNING;
   }
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
@@ -104,7 +104,7 @@ static enum CommandResult parse_replace_list(struct Buffer *buf, struct Buffer *
   /* Second token is a replacement template */
   if (!MoreArgs(s))
   {
-    mutt_buffer_printf(err, _("%s: too few arguments"), "subjectrx");
+    buf_printf(err, _("%s: too few arguments"), "subjectrx");
     return MUTT_CMD_WARNING;
   }
   parse_extract_token(&templ, s, TOKEN_NO_FLAGS);

@@ -54,7 +54,7 @@ static bool test_set_initial(struct ConfigSubset *sub, struct Buffer *err)
   const char *aval = "pie";
   int rc = cs_he_initial_set(cs, he_a, aval, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
-    TEST_MSG("Expected error: %s\n", mutt_buffer_string(err));
+    TEST_MSG("Expected error: %s\n", buf_string(err));
 
   name = "Banana";
   struct HashElem *he_b = cs_get_elem(cs, name);
@@ -104,14 +104,14 @@ void test_config_initial(void)
 
   set_list(cs);
 
-  struct Buffer *err = mutt_buffer_pool_get();
+  struct Buffer *err = buf_pool_get();
   if (!TEST_CHECK(test_set_initial(sub, err)))
   {
     test_neomutt_destroy();
-    mutt_buffer_pool_release(&err);
+    buf_pool_release(&err);
     return;
   }
 
   test_neomutt_destroy();
-  mutt_buffer_pool_release(&err);
+  buf_pool_release(&err);
 }

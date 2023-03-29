@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_buffer_insert()
+ * Test code for buf_insert()
  *
  * @authors
  * Copyright (C) 2023 Pietro Cerutti <gahr@gahr.ch>
@@ -35,20 +35,20 @@ struct InsertTest
   const char *result;
 };
 
-void test_mutt_buffer_insert(void)
+void test_buf_insert(void)
 {
   // Degenerate tests
   {
-    TEST_CHECK(mutt_buffer_insert(NULL, 0, NULL) == -1);
+    TEST_CHECK(buf_insert(NULL, 0, NULL) == -1);
   }
 
   {
     struct Buffer buf = { 0 };
-    TEST_CHECK(mutt_buffer_insert(&buf, 0, NULL) == -1);
+    TEST_CHECK(buf_insert(&buf, 0, NULL) == -1);
   }
 
   {
-    TEST_CHECK(mutt_buffer_insert(NULL, 0, "something") == -1);
+    TEST_CHECK(buf_insert(NULL, 0, "something") == -1);
   }
 
   static const struct InsertTest tests[] = {
@@ -95,25 +95,25 @@ void test_mutt_buffer_insert(void)
     for (size_t i = 0; tests[i].result; i++)
     {
       TEST_CASE_("%d", i);
-      struct Buffer *buf = mutt_buffer_pool_get();
-      mutt_buffer_addstr(buf, tests[i].orig);
-      mutt_buffer_insert(buf, tests[i].position, tests[i].insert);
-      TEST_CHECK_STR_EQ(tests[i].result, mutt_buffer_string(buf));
-      mutt_buffer_pool_release(&buf);
+      struct Buffer *buf = buf_pool_get();
+      buf_addstr(buf, tests[i].orig);
+      buf_insert(buf, tests[i].position, tests[i].insert);
+      TEST_CHECK_STR_EQ(tests[i].result, buf_string(buf));
+      buf_pool_release(&buf);
     }
   }
 
   {
     // Insertion that triggers a realloc
-    struct Buffer *buf = mutt_buffer_pool_get();
+    struct Buffer *buf = buf_pool_get();
     const size_t len = buf->dsize;
     for (size_t i = 0; i < len - 2; ++i)
     {
-      mutt_buffer_addch(buf, 'A');
+      buf_addch(buf, 'A');
     }
     TEST_CHECK(buf->dsize == len);
-    mutt_buffer_insert(buf, len / 2, "CDEFG");
+    buf_insert(buf, len / 2, "CDEFG");
     TEST_CHECK(buf->dsize != len);
-    mutt_buffer_pool_release(&buf);
+    buf_pool_release(&buf);
   }
 }

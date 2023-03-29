@@ -129,7 +129,7 @@ void mutt_env_free(struct Envelope **ptr)
   FREE(&env->x_comment_to);
 #endif
 
-  mutt_buffer_dealloc(&env->spam);
+  buf_dealloc(&env->spam);
 
   mutt_list_free(&env->references);
   mutt_list_free(&env->in_reply_to);
@@ -191,10 +191,10 @@ void mutt_env_merge(struct Envelope *base, struct Envelope **extra)
   }
 
 #define MOVE_BUFFER(member)                                                    \
-  if (mutt_buffer_is_empty(&base->member))                                     \
+  if (buf_is_empty(&base->member))                                             \
   {                                                                            \
     memcpy(&base->member, &(*extra)->member, sizeof(struct Buffer));           \
-    mutt_buffer_init(&(*extra)->member);                                       \
+    buf_init(&(*extra)->member);                                               \
   }
 
   MOVE_ADDRESSLIST(return_path);
@@ -237,7 +237,7 @@ void mutt_env_merge(struct Envelope *base, struct Envelope **extra)
   }
   /* spam and user headers should never be hashed, and the new envelope may
    * have better values. Use new versions regardless. */
-  mutt_buffer_dealloc(&base->spam);
+  buf_dealloc(&base->spam);
   mutt_list_free(&base->userhdrs);
   MOVE_BUFFER(spam);
   MOVE_STAILQ(userhdrs);

@@ -159,7 +159,7 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
   gpgme_ctx_t ctx = NULL;
   gpgme_genkey_result_t keyresult = NULL;
   gpgme_key_t primary_key = NULL;
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
 
   /* GPGME says addresses should not be in idna form */
   struct Address *copy = mutt_addr_copy(addr);
@@ -175,8 +175,7 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
   mutt_message(_("Generating autocrypt key..."));
 
   /* Primary key */
-  gpgme_error_t err = gpgme_op_createkey(ctx, mutt_buffer_string(buf),
-                                         "ed25519", 0, 0, NULL,
+  gpgme_error_t err = gpgme_op_createkey(ctx, buf_string(buf), "ed25519", 0, 0, NULL,
                                          GPGME_CREATE_NOPASSWD | GPGME_CREATE_FORCE |
                                              GPGME_CREATE_NOEXPIRE);
   if (err)
@@ -189,11 +188,11 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
   keyresult = gpgme_op_genkey_result(ctx);
   if (!keyresult->fpr)
     goto cleanup;
-  mutt_buffer_strcpy(keyid, keyresult->fpr);
-  mutt_debug(LL_DEBUG1, "Generated key with id %s\n", mutt_buffer_string(keyid));
+  buf_strcpy(keyid, keyresult->fpr);
+  mutt_debug(LL_DEBUG1, "Generated key with id %s\n", buf_string(keyid));
 
   /* Get gpgme_key_t to create the secondary key and export keydata */
-  err = gpgme_get_key(ctx, mutt_buffer_string(keyid), &primary_key, 0);
+  err = gpgme_get_key(ctx, buf_string(keyid), &primary_key, 0);
   if (err)
     goto cleanup;
 
@@ -209,14 +208,14 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
   /* get keydata */
   if (export_keydata(ctx, primary_key, keydata))
     goto cleanup;
-  mutt_debug(LL_DEBUG1, "key has keydata *%s*\n", mutt_buffer_string(keydata));
+  mutt_debug(LL_DEBUG1, "key has keydata *%s*\n", buf_string(keydata));
 
   rc = 0;
 
 cleanup:
   gpgme_key_unref(primary_key);
   gpgme_release(ctx);
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   return rc;
 }
 
@@ -240,7 +239,7 @@ int mutt_autocrypt_gpgme_select_key(struct Buffer *keyid, struct Buffer *keydata
   if (create_gpgme_context(&ctx))
     goto cleanup;
 
-  if (gpgme_get_key(ctx, mutt_buffer_string(keyid), &key, 0))
+  if (gpgme_get_key(ctx, buf_string(keyid), &key, 0))
     goto cleanup;
 
   if (key->revoked || key->expired || key->disabled || key->invalid ||
@@ -250,7 +249,7 @@ int mutt_autocrypt_gpgme_select_key(struct Buffer *keyid, struct Buffer *keydata
        this is displayed if the key was revoked/expired/disabled/invalid
        or can't be used for both signing and encryption.
        %s is the key fingerprint.  */
-    mutt_error(_("The key %s is not usable for autocrypt"), mutt_buffer_string(keyid));
+    mutt_error(_("The key %s is not usable for autocrypt"), buf_string(keyid));
     goto cleanup;
   }
 
@@ -324,12 +323,11 @@ int mutt_autocrypt_gpgme_import_key(const char *keydata, struct Buffer *keyid)
   if (create_gpgme_context(&ctx))
     goto cleanup;
 
-  struct Buffer *raw_keydata = mutt_buffer_pool_get();
+  struct Buffer *raw_keydata = buf_pool_get();
   if (!mutt_b64_buffer_decode(raw_keydata, keydata))
     goto cleanup;
 
-  if (gpgme_data_new_from_mem(&dh, mutt_buffer_string(raw_keydata),
-                              mutt_buffer_len(raw_keydata), 0))
+  if (gpgme_data_new_from_mem(&dh, buf_string(raw_keydata), buf_len(raw_keydata), 0))
   {
     goto cleanup;
   }
@@ -340,14 +338,14 @@ int mutt_autocrypt_gpgme_import_key(const char *keydata, struct Buffer *keyid)
   gpgme_import_result_t result = gpgme_op_import_result(ctx);
   if (!result->imports || !result->imports->fpr)
     goto cleanup;
-  mutt_buffer_strcpy(keyid, result->imports->fpr);
+  buf_strcpy(keyid, result->imports->fpr);
 
   rc = 0;
 
 cleanup:
   gpgme_data_release(dh);
   gpgme_release(ctx);
-  mutt_buffer_pool_release(&raw_keydata);
+  buf_pool_release(&raw_keydata);
   return rc;
 }
 

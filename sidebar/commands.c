@@ -40,15 +40,15 @@
 enum CommandResult sb_parse_sidebar_pin(struct Buffer *buf, struct Buffer *s,
                                         intptr_t data, struct Buffer *err)
 {
-  struct Buffer *path = mutt_buffer_pool_get();
+  struct Buffer *path = buf_pool_get();
 
   do
   {
     parse_extract_token(path, s, TOKEN_BACKTICK_VARS);
-    mutt_buffer_expand_path(path);
-    add_to_stailq(&SidebarPinned, mutt_buffer_string(path));
+    buf_expand_path(path);
+    add_to_stailq(&SidebarPinned, buf_string(path));
   } while (MoreArgs(s));
-  mutt_buffer_pool_release(&path);
+  buf_pool_release(&path);
 
   return MUTT_CMD_SUCCESS;
 }
@@ -59,21 +59,21 @@ enum CommandResult sb_parse_sidebar_pin(struct Buffer *buf, struct Buffer *s,
 enum CommandResult sb_parse_sidebar_unpin(struct Buffer *buf, struct Buffer *s,
                                           intptr_t data, struct Buffer *err)
 {
-  struct Buffer *path = mutt_buffer_pool_get();
+  struct Buffer *path = buf_pool_get();
 
   do
   {
     parse_extract_token(path, s, TOKEN_BACKTICK_VARS);
     /* Check for deletion of entire list */
-    if (mutt_str_equal(mutt_buffer_string(path), "*"))
+    if (mutt_str_equal(buf_string(path), "*"))
     {
       mutt_list_free(&SidebarPinned);
       break;
     }
-    mutt_buffer_expand_path(path);
-    remove_from_stailq(&SidebarPinned, mutt_buffer_string(path));
+    buf_expand_path(path);
+    remove_from_stailq(&SidebarPinned, buf_string(path));
   } while (MoreArgs(s));
-  mutt_buffer_pool_release(&path);
+  buf_pool_release(&path);
 
   return MUTT_CMD_SUCCESS;
 }

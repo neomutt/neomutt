@@ -39,9 +39,9 @@ void add_flag(struct Buffer *buf, bool is_set, const char *name)
 
   if (is_set)
   {
-    if (!mutt_buffer_is_empty(buf))
-      mutt_buffer_addch(buf, ',');
-    mutt_buffer_addstr(buf, name);
+    if (!buf_is_empty(buf))
+      buf_addch(buf, ',');
+    buf_addstr(buf, name);
   }
 }
 

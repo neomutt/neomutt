@@ -50,20 +50,20 @@ void test_config_variable(void)
   if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
     return;
 
-  struct Buffer *err = mutt_buffer_pool_get();
+  struct Buffer *err = buf_pool_get();
   const char *name = "Apple";
   int result = cs_str_string_set(cs, name, "world", err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
+    TEST_MSG("Error: %s\n", buf_string(err));
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   result = cs_str_reset(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
+    TEST_MSG("Error: %s\n", buf_string(err));
     return;
   }
 
@@ -71,35 +71,35 @@ void test_config_variable(void)
   if (!TEST_CHECK(he != NULL))
     return;
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   result = cs_he_string_get(cs, he, err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
+    TEST_MSG("Error: %s\n", buf_string(err));
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   result = cs_he_native_set(cs, he, IP "foo", err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
+    TEST_MSG("Error: %s\n", buf_string(err));
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   result = cs_str_native_set(cs, name, IP "bar", err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
+    TEST_MSG("Error: %s\n", buf_string(err));
     return;
   }
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
   intptr_t value = cs_he_native_get(cs, he, err);
   if (!TEST_CHECK(mutt_str_equal((const char *) value, "bar")))
   {
-    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
+    TEST_MSG("Error: %s\n", buf_string(err));
     return;
   }
 
@@ -111,18 +111,18 @@ void test_config_variable(void)
   result = cs_he_string_plus_equals(cs, he, "23", err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
+    TEST_MSG("Error: %s\n", buf_string(err));
     return;
   }
 
   result = cs_he_string_minus_equals(cs, he, "56", err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", mutt_buffer_string(err));
+    TEST_MSG("Error: %s\n", buf_string(err));
     return;
   }
 
-  mutt_buffer_pool_release(&err);
+  buf_pool_release(&err);
   test_neomutt_destroy();
   log_line(__func__);
 }

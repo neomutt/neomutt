@@ -206,8 +206,8 @@ static int compare_spam(const struct Email *a, const struct Email *b, bool rever
 
   /* Firstly, require spam attributes for both msgs */
   /* to compare. Determine which msgs have one.     */
-  ahas = a->env && !mutt_buffer_is_empty(&a->env->spam);
-  bhas = b->env && !mutt_buffer_is_empty(&b->env->spam);
+  ahas = a->env && !buf_is_empty(&a->env->spam);
+  bhas = b->env && !buf_is_empty(&b->env->spam);
 
   /* If one msg has spam attr but other does not, sort the one with first. */
   if (ahas && !bhas)

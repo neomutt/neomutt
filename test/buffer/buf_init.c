@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_buffer_reset()
+ * Test code for buf_init()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,26 +26,16 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 
-void test_mutt_buffer_reset(void)
+void test_buf_init(void)
 {
-  // void mutt_buffer_reset(struct Buffer *buf);
+  // struct Buffer *buf_init(struct Buffer *buf);
 
   {
-    mutt_buffer_reset(NULL);
-    TEST_CHECK_(1, "mutt_buffer_reset(NULL)");
+    TEST_CHECK(!buf_init(NULL));
   }
 
   {
-    struct Buffer buf = mutt_buffer_make(0);
-    mutt_buffer_reset(&buf);
-    TEST_CHECK_(1, "mutt_buffer_reset(buf)");
-  }
-
-  {
-    struct Buffer buf = mutt_buffer_make(0);
-    mutt_buffer_addstr(&buf, "test");
-    mutt_buffer_reset(&buf);
-    TEST_CHECK_(1, "mutt_buffer_reset(buf)");
-    mutt_buffer_dealloc(&buf);
+    struct Buffer buf = buf_make(0);
+    TEST_CHECK(buf_init(&buf) != NULL);
   }
 }

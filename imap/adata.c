@@ -45,7 +45,7 @@ void imap_adata_free(void **ptr)
   struct ImapAccountData *adata = *ptr;
 
   FREE(&adata->capstr);
-  mutt_buffer_dealloc(&adata->cmdbuf);
+  buf_dealloc(&adata->cmdbuf);
   FREE(&adata->buf);
   FREE(&adata->cmds);
 

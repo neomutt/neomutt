@@ -432,7 +432,7 @@ int mutt_mb_filter_unprintable(char **s)
   mbstate_t mbstate1 = { 0 };
   mbstate_t mbstate2 = { 0 };
 
-  struct Buffer buf = mutt_buffer_make(0);
+  struct Buffer buf = buf_make(0);
   for (; (k = mbrtowc(&wc, p, MB_LEN_MAX, &mbstate1)); p += k)
   {
     if ((k == (size_t) -1) || (k == (size_t) -2))
@@ -447,7 +447,7 @@ int mutt_mb_filter_unprintable(char **s)
       continue;
     k2 = wcrtomb(scratch, wc, &mbstate2);
     scratch[k2] = '\0';
-    mutt_buffer_addstr(&buf, scratch);
+    buf_addstr(&buf, scratch);
   }
   FREE(s);
   *s = buf.data ? buf.data : mutt_mem_calloc(1, 1);

@@ -107,7 +107,7 @@ static struct HashElem *create_synonym(const struct ConfigSet *cs,
   struct HashElem *he_parent = cs_get_elem(cs, name);
   if (!he_parent)
   {
-    mutt_buffer_printf(err, _("No such variable: %s"), name);
+    buf_printf(err, _("No such variable: %s"), name);
     return NULL;
   }
 
@@ -259,8 +259,7 @@ struct HashElem *cs_register_variable(const struct ConfigSet *cs,
   const struct ConfigSetType *cst = cs_get_type_def(cs, cdef->type);
   if (!cst)
   {
-    mutt_buffer_printf(err, _("Variable '%s' has an invalid type %d"),
-                       cdef->name, cdef->type);
+    buf_printf(err, _("Variable '%s' has an invalid type %d"), cdef->name, cdef->type);
     return NULL;
   }
 
@@ -286,7 +285,7 @@ bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], 
   if (!cs || !vars)
     return false;
 
-  struct Buffer err = mutt_buffer_make(0);
+  struct Buffer err = buf_make(0);
 
   bool rc = true;
 
@@ -295,12 +294,12 @@ bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], 
     vars[i].type |= flags;
     if (!cs_register_variable(cs, &vars[i], &err))
     {
-      mutt_debug(LL_DEBUG1, "%s\n", mutt_buffer_string(&err));
+      mutt_debug(LL_DEBUG1, "%s\n", buf_string(&err));
       rc = false;
     }
   }
 
-  mutt_buffer_dealloc(&err);
+  buf_dealloc(&err);
   return rc;
 }
 
@@ -447,7 +446,7 @@ int cs_str_reset(const struct ConfigSet *cs, const char *name, struct Buffer *er
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    mutt_buffer_printf(err, _("Unknown variable '%s'"), name);
+    buf_printf(err, _("Unknown variable '%s'"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -513,7 +512,7 @@ int cs_str_initial_set(const struct ConfigSet *cs, const char *name,
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    mutt_buffer_printf(err, _("Unknown variable '%s'"), name);
+    buf_printf(err, _("Unknown variable '%s'"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -574,7 +573,7 @@ int cs_str_initial_get(const struct ConfigSet *cs, const char *name, struct Buff
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    mutt_buffer_printf(result, _("Unknown variable '%s'"), name);
+    buf_printf(result, _("Unknown variable '%s'"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -650,7 +649,7 @@ int cs_str_string_set(const struct ConfigSet *cs, const char *name,
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    mutt_buffer_printf(err, _("Unknown variable '%s'"), name);
+    buf_printf(err, _("Unknown variable '%s'"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -716,7 +715,7 @@ int cs_str_string_get(const struct ConfigSet *cs, const char *name, struct Buffe
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    mutt_buffer_printf(result, _("Unknown variable '%s'"), name);
+    buf_printf(result, _("Unknown variable '%s'"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -792,7 +791,7 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    mutt_buffer_printf(err, _("Unknown variable '%s'"), name);
+    buf_printf(err, _("Unknown variable '%s'"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -872,7 +871,7 @@ intptr_t cs_he_native_get(const struct ConfigSet *cs, struct HashElem *he, struc
 
   if (!cst)
   {
-    mutt_buffer_printf(err, _("Variable '%s' has an invalid type %d"), cdef->name, he->type);
+    buf_printf(err, _("Variable '%s' has an invalid type %d"), cdef->name, he->type);
     return INT_MIN;
   }
 
@@ -941,7 +940,7 @@ int cs_he_string_plus_equals(const struct ConfigSet *cs, struct HashElem *he,
   if (!cst->string_plus_equals)
   {
     // L10N: e.g. Type 'boolean' doesn't support operation '+='
-    mutt_buffer_printf(err, _("Type '%s' doesn't support operation '%s'"), cst->name, "+=");
+    buf_printf(err, _("Type '%s' doesn't support operation '%s'"), cst->name, "+=");
     return CSR_ERR_INVALID | CSV_INV_NOT_IMPL;
   }
 
@@ -972,7 +971,7 @@ int cs_str_string_plus_equals(const struct ConfigSet *cs, const char *name,
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    mutt_buffer_printf(err, _("Unknown variable '%s'"), name);
+    buf_printf(err, _("Unknown variable '%s'"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -1024,7 +1023,7 @@ int cs_he_string_minus_equals(const struct ConfigSet *cs, struct HashElem *he,
   if (!cst->string_minus_equals)
   {
     // L10N: e.g. Type 'boolean' doesn't support operation '+='
-    mutt_buffer_printf(err, _("Type '%s' doesn't support operation '%s'"), cst->name, "-=");
+    buf_printf(err, _("Type '%s' doesn't support operation '%s'"), cst->name, "-=");
     return CSR_ERR_INVALID | CSV_INV_NOT_IMPL;
   }
 
@@ -1055,7 +1054,7 @@ int cs_str_string_minus_equals(const struct ConfigSet *cs, const char *name,
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    mutt_buffer_printf(err, _("Unknown variable '%s'"), name);
+    buf_printf(err, _("Unknown variable '%s'"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -1093,7 +1092,7 @@ int cs_str_delete(const struct ConfigSet *cs, const char *name, struct Buffer *e
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    mutt_buffer_printf(err, _("Unknown variable '%s'"), name);
+    buf_printf(err, _("Unknown variable '%s'"), name);
     return CSR_ERR_UNKNOWN;
   }
 

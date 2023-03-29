@@ -51,7 +51,7 @@ static int hcache_validator(const struct ConfigSet *cs, const struct ConfigDef *
   if (store_is_valid_backend(str))
     return CSR_SUCCESS;
 
-  mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
+  buf_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
   return CSR_ERR_INVALID;
 #else
   return CSR_SUCCESS;
@@ -75,7 +75,7 @@ static int compress_method_validator(const struct ConfigSet *cs,
   if (compress_get_ops(str))
     return CSR_SUCCESS;
 
-  mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
+  buf_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
   return CSR_ERR_INVALID;
 #else
   return CSR_SUCCESS;
@@ -92,16 +92,16 @@ static int compress_level_validator(const struct ConfigSet *cs, const struct Con
   const char *const c_header_cache_compress_method = cs_subset_string(NeoMutt->sub, "header_cache_compress_method");
   if (!c_header_cache_compress_method)
   {
-    mutt_buffer_printf(err, _("Set option %s before setting %s"),
-                       "header_cache_compress_method", cdef->name);
+    buf_printf(err, _("Set option %s before setting %s"),
+               "header_cache_compress_method", cdef->name);
     return CSR_ERR_INVALID;
   }
 
   const struct ComprOps *cops = compress_get_ops(c_header_cache_compress_method);
   if (!cops)
   {
-    mutt_buffer_printf(err, _("Invalid value for option %s: %s"),
-                       "header_cache_compress_method", c_header_cache_compress_method);
+    buf_printf(err, _("Invalid value for option %s: %s"),
+               "header_cache_compress_method", c_header_cache_compress_method);
     return CSR_ERR_INVALID;
   }
 
@@ -109,8 +109,8 @@ static int compress_level_validator(const struct ConfigSet *cs, const struct Con
   {
     // L10N: This applies to the "$header_cache_compress_level" config variable.
     //       It shows the minimum and maximum values, e.g. 'between 1 and 22'
-    mutt_buffer_printf(err, _("Option %s must be between %d and %d inclusive"),
-                       cdef->name, cops->min_level, cops->max_level);
+    buf_printf(err, _("Option %s must be between %d and %d inclusive"),
+               cdef->name, cops->min_level, cops->max_level);
     return CSR_ERR_INVALID;
   }
 #endif

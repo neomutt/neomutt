@@ -27,15 +27,15 @@
 
 struct Buffer;
 
-void  mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
+void  buf_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
 FILE *mutt_file_mkstemp_full (const char *file, int line, const char *func);
 void  mutt_mktemp_full       (char *s, size_t slen, const char *prefix, const char *suffix, const char *src, int line);
 
 #define mutt_mktemp(buf, buflen)                         mutt_mktemp_pfx_sfx(buf, buflen, "neomutt", NULL)
 #define mutt_mktemp_pfx_sfx(buf, buflen, prefix, suffix) mutt_mktemp_full(buf, buflen, prefix, suffix, __FILE__, __LINE__)
 
-#define mutt_buffer_mktemp(buf)                         mutt_buffer_mktemp_pfx_sfx(buf, "neomutt", NULL)
-#define mutt_buffer_mktemp_pfx_sfx(buf, prefix, suffix) mutt_buffer_mktemp_full(buf, prefix, suffix, __FILE__, __LINE__)
+#define buf_mktemp(buf)                         buf_mktemp_pfx_sfx(buf, "neomutt", NULL)
+#define buf_mktemp_pfx_sfx(buf, prefix, suffix) buf_mktemp_full(buf, prefix, suffix, __FILE__, __LINE__)
 
 #define mutt_file_mkstemp() mutt_file_mkstemp_full(__FILE__, __LINE__, __func__)
 

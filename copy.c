@@ -679,18 +679,17 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
       LOFF_T new_length = body->length;
       struct Buffer *quoted_date = NULL;
 
-      quoted_date = mutt_buffer_pool_get();
-      mutt_buffer_addch(quoted_date, '"');
+      quoted_date = buf_pool_get();
+      buf_addch(quoted_date, '"');
       mutt_date_make_date(quoted_date, cs_subset_bool(NeoMutt->sub, "local_date_header"));
-      mutt_buffer_addch(quoted_date, '"');
+      buf_addch(quoted_date, '"');
 
       /* Count the number of lines and bytes to be deleted */
       if (!mutt_file_seek(fp_in, body->offset, SEEK_SET))
       {
         goto attach_del_cleanup;
       }
-      const int del = count_delete_lines(fp_in, body, &new_length,
-                                         mutt_buffer_len(quoted_date));
+      const int del = count_delete_lines(fp_in, body, &new_length, buf_len(quoted_date));
       if (del == -1)
       {
         goto attach_del_cleanup;
@@ -714,10 +713,10 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
       /* Copy the body */
       if (!mutt_file_seek(fp_in, body->offset, SEEK_SET))
         goto attach_del_cleanup;
-      if (copy_delete_attach(body, fp_in, fp_out, mutt_buffer_string(quoted_date)))
+      if (copy_delete_attach(body, fp_in, fp_out, buf_string(quoted_date)))
         goto attach_del_cleanup;
 
-      mutt_buffer_pool_release(&quoted_date);
+      buf_pool_release(&quoted_date);
 
       LOFF_T fail = ((ftello(fp_out) - new_offset) - new_length);
       if (fail)
@@ -742,7 +741,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
       rc_attach_del = 0;
 
     attach_del_cleanup:
-      mutt_buffer_pool_release(&quoted_date);
+      buf_pool_release(&quoted_date);
       return rc_attach_del;
     }
 
@@ -1129,7 +1128,7 @@ static int address_header_decode(char **h)
     struct Buffer buf = { 0 };
     (*h)[l - 1] = '\0';
     mutt_addrlist_write_wrap(&al, &buf, *h);
-    mutt_buffer_addch(&buf, '\n');
+    buf_addch(&buf, '\n');
     *h = buf.data;
   }
 

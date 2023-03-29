@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_buffer_file_expand_fmt_quote()
+ * Test code for buf_fix_dptr()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -23,30 +23,30 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
+#include <string.h>
 #include "mutt/lib.h"
 
-void test_mutt_buffer_file_expand_fmt_quote(void)
+void test_buf_fix_dptr(void)
 {
-  // void mutt_buffer_file_expand_fmt_quote(struct Buffer *dest, const char *fmt, const char *src);
+  // void buf_fix_dptr(struct Buffer *buf);
 
   {
-    mutt_buffer_file_expand_fmt_quote(NULL, "apple", "banana");
-    TEST_CHECK_(1, "mutt_buffer_file_expand_fmt_quote(NULL, \"apple\", \"banana\")");
+    buf_fix_dptr(NULL);
+    TEST_CHECK_(1, "buf_fix_dptr(NULL)");
   }
 
   {
-    struct Buffer buf = mutt_buffer_make(0);
-    mutt_buffer_file_expand_fmt_quote(&buf, NULL, "banana");
-    TEST_CHECK_(1, "mutt_buffer_file_expand_fmt_quote(&buf, NULL, \"banana\")");
+    struct Buffer buf = buf_make(0);
+    buf_fix_dptr(&buf);
+    TEST_CHECK(buf_is_empty(&buf));
   }
 
   {
-    struct Buffer buf = mutt_buffer_make(32);
-    mutt_buffer_file_expand_fmt_quote(&buf, "apple", NULL);
-    TEST_CHECK_(1, "mutt_buffer_file_expand_fmt_quote(&buf, \"apple\", NULL)");
-    mutt_buffer_dealloc(&buf);
+    const char *str = "a quick brown fox";
+    struct Buffer buf = buf_make(0);
+    buf_addstr(&buf, str);
+    buf_fix_dptr(&buf);
+    TEST_CHECK(buf_len(&buf) == (strlen(str)));
+    buf_dealloc(&buf);
   }
-
-  mutt_buffer_pool_free();
 }

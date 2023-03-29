@@ -388,8 +388,8 @@ void mutt_help(enum MenuType menu)
   FILE *fp = NULL;
 
   /* We don't use the buffer pool because of the extended lifetime of t */
-  struct Buffer t = mutt_buffer_make(PATH_MAX);
-  mutt_buffer_mktemp(&t);
+  struct Buffer t = buf_make(PATH_MAX);
+  buf_mktemp(&t);
 
   const struct MenuFuncOp *funcs = km_get_table(menu);
   const char *desc = mutt_map_get_name(menu, MenuNames);
@@ -404,10 +404,10 @@ void mutt_help(enum MenuType menu)
 
   do
   {
-    fp = mutt_file_fopen(mutt_buffer_string(&t), "w");
+    fp = mutt_file_fopen(buf_string(&t), "w");
     if (!fp)
     {
-      mutt_perror(mutt_buffer_string(&t));
+      mutt_perror(buf_string(&t));
       goto cleanup;
     }
 
@@ -428,10 +428,10 @@ void mutt_help(enum MenuType menu)
     mutt_file_fclose(&fp);
 
     snprintf(banner, sizeof(banner), _("Help for %s"), desc);
-    pdata.fname = mutt_buffer_string(&t);
+    pdata.fname = buf_string(&t);
     pview.banner = banner;
   } while (mutt_do_pager(&pview, NULL) == OP_REFORMAT_WINCH);
 
 cleanup:
-  mutt_buffer_dealloc(&t);
+  buf_dealloc(&t);
 }

@@ -117,7 +117,7 @@ int sort_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 {
   if (((value & SORT_MASK) == SORT_THREADS) && (value & SORT_LAST))
   {
-    mutt_buffer_printf(err, _("Cannot use 'last-' prefix with 'threads' for %s"), cdef->name);
+    buf_printf(err, _("Cannot use 'last-' prefix with 'threads' for %s"), cdef->name);
     return CSR_ERR_INVALID;
   }
   return CSR_SUCCESS;

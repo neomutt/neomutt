@@ -188,13 +188,13 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
   // L10N: Pattern completion menu title
   sbar_set_title(sbar, _("Patterns"));
 
-  entrybuf = mutt_buffer_pool_get();
+  entrybuf = buf_pool_get();
   while (Flags[i].tag)
   {
     entries[i].num = i + 1;
 
-    mutt_buffer_printf(entrybuf, "~%c", (char) Flags[i].tag);
-    entries[i].tag = mutt_str_dup(mutt_buffer_string(entrybuf));
+    buf_printf(entrybuf, "~%c", (char) Flags[i].tag);
+    entries[i].tag = mutt_str_dup(buf_string(entrybuf));
 
     switch (Flags[i].eat_arg)
     {
@@ -202,7 +202,7 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
         /* L10N:
            Pattern Completion Menu argument type: a regular expression
         */
-        mutt_buffer_add_printf(entrybuf, " %s", _("EXPR"));
+        buf_add_printf(entrybuf, " %s", _("EXPR"));
         break;
       case EAT_RANGE:
       case EAT_MESSAGE_RANGE:
@@ -210,26 +210,26 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
            Pattern Completion Menu argument type: a numeric range.
            Used by ~m, ~n, ~X, ~z.
         */
-        mutt_buffer_add_printf(entrybuf, " %s", _("RANGE"));
+        buf_add_printf(entrybuf, " %s", _("RANGE"));
         break;
       case EAT_DATE:
         /* L10N:
            Pattern Completion Menu argument type: a date range
            Used by ~d, ~r.
         */
-        mutt_buffer_add_printf(entrybuf, " %s", _("DATERANGE"));
+        buf_add_printf(entrybuf, " %s", _("DATERANGE"));
         break;
       case EAT_QUERY:
         /* L10N:
            Pattern Completion Menu argument type: a query
            Used by ~I.
         */
-        mutt_buffer_add_printf(entrybuf, " %s", _("QUERY"));
+        buf_add_printf(entrybuf, " %s", _("QUERY"));
         break;
       default:
         break;
     }
-    entries[i].expr = mutt_str_dup(mutt_buffer_string(entrybuf));
+    entries[i].expr = mutt_str_dup(buf_string(entrybuf));
     entries[i].desc = mutt_str_dup(_(Flags[i].desc));
 
     i++;
@@ -246,28 +246,28 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
 
   entries[i].num = i + 1;
   entries[i].tag = mutt_str_dup("~()");
-  mutt_buffer_printf(entrybuf, "~(%s)", patternstr);
-  entries[i].expr = mutt_str_dup(mutt_buffer_string(entrybuf));
+  buf_printf(entrybuf, "~(%s)", patternstr);
+  entries[i].expr = mutt_str_dup(buf_string(entrybuf));
   // L10N: Pattern Completion Menu description for ~()
   entries[i].desc = mutt_str_dup(_("messages in threads containing messages matching PATTERN"));
   i++;
 
   entries[i].num = i + 1;
   entries[i].tag = mutt_str_dup("~<()");
-  mutt_buffer_printf(entrybuf, "~<(%s)", patternstr);
-  entries[i].expr = mutt_str_dup(mutt_buffer_string(entrybuf));
+  buf_printf(entrybuf, "~<(%s)", patternstr);
+  entries[i].expr = mutt_str_dup(buf_string(entrybuf));
   // L10N: Pattern Completion Menu description for ~<()
   entries[i].desc = mutt_str_dup(_("messages whose immediate parent matches PATTERN"));
   i++;
 
   entries[i].num = i + 1;
   entries[i].tag = mutt_str_dup("~>()");
-  mutt_buffer_printf(entrybuf, "~>(%s)", patternstr);
-  entries[i].expr = mutt_str_dup(mutt_buffer_string(entrybuf));
+  buf_printf(entrybuf, "~>(%s)", patternstr);
+  entries[i].expr = mutt_str_dup(buf_string(entrybuf));
   // L10N: Pattern Completion Menu description for ~>()
   entries[i].desc = mutt_str_dup(_("messages having an immediate child matching PATTERN"));
 
-  mutt_buffer_pool_release(&entrybuf);
+  buf_pool_release(&entrybuf);
 
   return menu;
 }

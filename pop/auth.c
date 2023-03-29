@@ -58,8 +58,7 @@ static enum PopAuthRes pop_auth_gsasl(struct PopAccountData *adata, const char *
   int rc = POP_A_FAILURE;
   int gsasl_rc = GSASL_OK;
 
-  const char *chosen_mech = mutt_gsasl_get_mech(method,
-                                                mutt_buffer_string(&adata->auth_list));
+  const char *chosen_mech = mutt_gsasl_get_mech(method, buf_string(&adata->auth_list));
   if (!chosen_mech)
   {
     mutt_debug(LL_DEBUG2, "returned no usable mech\n");
@@ -76,13 +75,13 @@ static enum PopAuthRes pop_auth_gsasl(struct PopAccountData *adata, const char *
 
   mutt_message(_("Authenticating (%s)..."), chosen_mech);
 
-  output_buf = mutt_buffer_pool_get();
-  input_buf = mutt_buffer_pool_get();
-  mutt_buffer_printf(output_buf, "AUTH %s\r\n", chosen_mech);
+  output_buf = buf_pool_get();
+  input_buf = buf_pool_get();
+  buf_printf(output_buf, "AUTH %s\r\n", chosen_mech);
 
   do
   {
-    if (mutt_socket_send(adata->conn, mutt_buffer_string(output_buf)) < 0)
+    if (mutt_socket_send(adata->conn, buf_string(output_buf)) < 0)
     {
       adata->status = POP_DISCONNECTED;
       rc = POP_A_SOCKET;
@@ -96,16 +95,16 @@ static enum PopAuthRes pop_auth_gsasl(struct PopAccountData *adata, const char *
       goto fail;
     }
 
-    if (!mutt_strn_equal(mutt_buffer_string(input_buf), "+ ", 2))
+    if (!mutt_strn_equal(buf_string(input_buf), "+ ", 2))
       break;
 
-    const char *pop_auth_data = mutt_buffer_string(input_buf) + 2;
+    const char *pop_auth_data = buf_string(input_buf) + 2;
     char *gsasl_step_output = NULL;
     gsasl_rc = gsasl_step64(gsasl_session, pop_auth_data, &gsasl_step_output);
     if ((gsasl_rc == GSASL_NEEDS_MORE) || (gsasl_rc == GSASL_OK))
     {
-      mutt_buffer_strcpy(output_buf, gsasl_step_output);
-      mutt_buffer_addstr(output_buf, "\r\n");
+      buf_strcpy(output_buf, gsasl_step_output);
+      buf_addstr(output_buf, "\r\n");
       gsasl_free(gsasl_step_output);
     }
     else
@@ -115,18 +114,18 @@ static enum PopAuthRes pop_auth_gsasl(struct PopAccountData *adata, const char *
     }
   } while ((gsasl_rc == GSASL_NEEDS_MORE) || (gsasl_rc == GSASL_OK));
 
-  if (mutt_strn_equal(mutt_buffer_string(input_buf), "+ ", 2))
+  if (mutt_strn_equal(buf_string(input_buf), "+ ", 2))
   {
     mutt_socket_send(adata->conn, "*\r\n");
     goto fail;
   }
 
-  if (mutt_strn_equal(mutt_buffer_string(input_buf), "+OK", 3) && (gsasl_rc == GSASL_OK))
+  if (mutt_strn_equal(buf_string(input_buf), "+OK", 3) && (gsasl_rc == GSASL_OK))
     rc = POP_A_SUCCESS;
 
 fail:
-  mutt_buffer_pool_release(&input_buf);
-  mutt_buffer_pool_release(&output_buf);
+  buf_pool_release(&input_buf);
+  buf_pool_release(&output_buf);
   mutt_gsasl_client_finish(&gsasl_session);
 
   if (rc == POP_A_FAILURE)

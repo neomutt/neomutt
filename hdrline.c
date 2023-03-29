@@ -785,10 +785,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'f':
     {
-      struct Buffer *tmpbuf = mutt_buffer_pool_get();
+      struct Buffer *tmpbuf = buf_pool_get();
       mutt_addrlist_write(&e->env->from, tmpbuf, true);
-      mutt_str_copy(tmp, mutt_buffer_string(tmpbuf), sizeof(tmp));
-      mutt_buffer_pool_release(&tmpbuf);
+      mutt_str_copy(tmp, buf_string(tmpbuf), sizeof(tmp));
+      buf_pool_release(&tmpbuf);
       mutt_format_s(buf, buflen, prec, tmp);
       break;
     }
@@ -868,9 +868,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'H':
       /* (Hormel) spam score */
       if (optional)
-        optional = !mutt_buffer_is_empty(&e->env->spam);
+        optional = !buf_is_empty(&e->env->spam);
 
-      mutt_format_s(buf, buflen, prec, mutt_buffer_string(&e->env->spam));
+      mutt_format_s(buf, buflen, prec, buf_string(&e->env->spam));
       break;
 
     case 'i':
@@ -1029,10 +1029,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'r':
     {
-      struct Buffer *tmpbuf = mutt_buffer_pool_get();
+      struct Buffer *tmpbuf = buf_pool_get();
       mutt_addrlist_write(&e->env->to, tmpbuf, true);
-      mutt_str_copy(tmp, mutt_buffer_string(tmpbuf), sizeof(tmp));
-      mutt_buffer_pool_release(&tmpbuf);
+      mutt_str_copy(tmp, buf_string(tmpbuf), sizeof(tmp));
+      buf_pool_release(&tmpbuf);
       if (optional && (tmp[0] == '\0'))
         optional = false;
       mutt_format_s(buf, buflen, prec, tmp);
@@ -1041,10 +1041,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'R':
     {
-      struct Buffer *tmpbuf = mutt_buffer_pool_get();
+      struct Buffer *tmpbuf = buf_pool_get();
       mutt_addrlist_write(&e->env->cc, tmpbuf, true);
-      mutt_str_copy(tmp, mutt_buffer_string(tmpbuf), sizeof(tmp));
-      mutt_buffer_pool_release(&tmpbuf);
+      mutt_str_copy(tmp, buf_string(tmpbuf), sizeof(tmp));
+      buf_pool_release(&tmpbuf);
       if (optional && (tmp[0] == '\0'))
         optional = false;
       mutt_format_s(buf, buflen, prec, tmp);

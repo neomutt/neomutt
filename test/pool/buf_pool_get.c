@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_buffer_mktemp_full()
+ * Test code for buf_pool_get()
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,23 +23,17 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stdio.h>
+#include <stddef.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
-#include "core/lib.h"
-#include "test_common.h"
 
-void test_mutt_buffer_mktemp_full(void)
+void test_buf_pool_get(void)
 {
-  // void mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
-
-  test_neomutt_create();
+  // struct Buffer *buf_pool_get(void);
 
   {
-    struct Buffer buf = mutt_buffer_make(1024);
-    mutt_buffer_mktemp_full(&buf, NULL, NULL, __FILE__, __LINE__);
-    mutt_buffer_dealloc(&buf);
+    struct Buffer *buf = buf_pool_get();
+    TEST_CHECK(buf != NULL);
+    buf_pool_release(&buf);
+    buf_pool_free();
   }
-
-  test_neomutt_destroy();
 }

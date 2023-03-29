@@ -92,15 +92,15 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
   if (!MoreArgs(s))
   {
-    mutt_buffer_printf(err, _("%s: too few arguments"), "score");
+    buf_printf(err, _("%s: too few arguments"), "score");
     return MUTT_CMD_WARNING;
   }
-  pattern = mutt_buffer_strdup(buf);
+  pattern = buf_strdup(buf);
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
   if (MoreArgs(s))
   {
     FREE(&pattern);
-    mutt_buffer_printf(err, _("%s: too many arguments"), "score");
+    buf_printf(err, _("%s: too many arguments"), "score");
     return MUTT_CMD_WARNING;
   }
 
@@ -143,7 +143,7 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
   if (!mutt_str_atoi_full(pc, &ptr->val))
   {
     FREE(&pattern);
-    mutt_buffer_strcpy(err, _("Error: score: invalid number"));
+    buf_strcpy(err, _("Error: score: invalid number"));
     return MUTT_CMD_ERROR;
   }
   OptNeedRescore = true;

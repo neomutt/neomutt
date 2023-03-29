@@ -576,10 +576,10 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
        (mode == MUTT_WRITE_HEADER_POSTPONE)) &&
       !privacy)
   {
-    struct Buffer *date = mutt_buffer_pool_get();
+    struct Buffer *date = buf_pool_get();
     mutt_date_make_date(date, cs_subset_bool(sub, "local_date_header"));
-    fprintf(fp, "Date: %s\n", mutt_buffer_string(date));
-    mutt_buffer_pool_release(&date);
+    fprintf(fp, "Date: %s\n", buf_string(date));
+    buf_pool_release(&date);
   }
 
   /* UseFrom is not consulted here so that we can still write a From:

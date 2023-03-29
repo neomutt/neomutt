@@ -2257,7 +2257,7 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
       email_get_fullpath(e, old_file, sizeof(old_file));
     }
 
-    mutt_buffer_strcpy(&m->pathbuf, edata->folder);
+    buf_strcpy(&m->pathbuf, edata->folder);
     m->type = edata->type;
 
     bool ok = maildir_sync_mailbox_message(m, i, h);
@@ -2272,7 +2272,7 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
 
         sync_email_path_with_nm(e, msg);
 
-        mutt_buffer_strcpy(&m->pathbuf, edata->folder);
+        buf_strcpy(&m->pathbuf, edata->folder);
         m->type = edata->type;
         ok = maildir_sync_mailbox_message(m, i, h);
         m->type = MUTT_NOTMUCH;
@@ -2281,7 +2281,7 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
       m->type = edata->type;
     }
 
-    mutt_buffer_strcpy(&m->pathbuf, url);
+    buf_strcpy(&m->pathbuf, url);
     m->type = MUTT_NOTMUCH;
 
     if (!ok)
@@ -2312,7 +2312,7 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
                mh_sync_errors);
   }
 
-  mutt_buffer_strcpy(&m->pathbuf, url);
+  buf_strcpy(&m->pathbuf, url);
   m->type = MUTT_NOTMUCH;
 
   nm_db_release(m);
@@ -2388,9 +2388,8 @@ static int nm_msg_close(struct Mailbox *m, struct Message *msg)
  */
 static int nm_tags_edit(struct Mailbox *m, const char *tags, struct Buffer *buf)
 {
-  mutt_buffer_reset(buf);
-  if (mutt_buffer_get_field("Add/remove labels: ", buf, MUTT_COMP_NM_TAG, false,
-                            NULL, NULL, NULL) != 0)
+  buf_reset(buf);
+  if (buf_get_field("Add/remove labels: ", buf, MUTT_COMP_NM_TAG, false, NULL, NULL, NULL) != 0)
   {
     return -1;
   }

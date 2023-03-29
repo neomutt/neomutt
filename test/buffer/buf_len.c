@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_buffer_pool_free()
+ * Test code for buf_len()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -23,8 +23,26 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stddef.h>
+#include "mutt/lib.h"
 
-void test_mutt_buffer_pool_free(void)
+void test_buf_len(void)
 {
-  // void mutt_buffer_pool_free(void);
+  // size_t buf_len(const struct Buffer *buf);
+
+  {
+    TEST_CHECK(buf_len(NULL) == 0);
+  }
+
+  {
+    struct Buffer buf = buf_make(0);
+    TEST_CHECK(buf_len(&buf) == 0);
+  }
+
+  {
+    struct Buffer buf = buf_make(0);
+    buf_addstr(&buf, "test");
+    TEST_CHECK(buf_len(&buf) != 0);
+    buf_dealloc(&buf);
+  }
 }

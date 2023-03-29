@@ -56,7 +56,7 @@ enum WindowType
   WT_DLG_ALIAS,       ///< Alias Dialog,       dlg_select_alias()
   WT_DLG_ATTACH,      ///< Attach Dialog,      dlg_select_attachment()
   WT_DLG_AUTOCRYPT,   ///< Autocrypt Dialog,   dlg_select_autocrypt_account()
-  WT_DLG_BROWSER,     ///< Browser Dialog,     mutt_buffer_select_file()
+  WT_DLG_BROWSER,     ///< Browser Dialog,     buf_select_file()
   WT_DLG_CERTIFICATE, ///< Certificate Dialog, dlg_verify_certificate()
   WT_DLG_COMPOSE,     ///< Compose Dialog,     mutt_compose_menu()
   WT_DLG_CRYPT_GPGME, ///< Crypt-GPGME Dialog, dlg_select_gpgme_key()
@@ -261,8 +261,7 @@ int mutt_system(const char *cmd)
   return 0;
 }
 
-void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
-                             char ***files, int *numfiles)
+void buf_select_file(struct Buffer *file, SelectFileFlags flags, char ***files, int *numfiles)
 {
 }
 

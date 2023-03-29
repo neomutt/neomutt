@@ -106,22 +106,21 @@ static void autocrypt_compose_menu(struct Email *e, const struct ConfigSubset *s
  */
 static bool edit_address_list(enum HeaderField field, struct AddressList *al)
 {
-  struct Buffer *old_list = mutt_buffer_pool_get();
-  struct Buffer *new_list = mutt_buffer_pool_get();
+  struct Buffer *old_list = buf_pool_get();
+  struct Buffer *new_list = buf_pool_get();
 
   /* need to be large for alias expansion */
-  mutt_buffer_alloc(old_list, 8192);
-  mutt_buffer_alloc(new_list, 8192);
+  buf_alloc(old_list, 8192);
+  buf_alloc(new_list, 8192);
 
   mutt_addrlist_to_local(al);
   mutt_addrlist_write(al, new_list, false);
-  mutt_buffer_fix_dptr(new_list);
-  mutt_buffer_copy(old_list, new_list);
-  if (mutt_buffer_get_field(_(Prompts[field]), new_list, MUTT_COMP_ALIAS, false,
-                            NULL, NULL, NULL) == 0)
+  buf_fix_dptr(new_list);
+  buf_copy(old_list, new_list);
+  if (buf_get_field(_(Prompts[field]), new_list, MUTT_COMP_ALIAS, false, NULL, NULL, NULL) == 0)
   {
     mutt_addrlist_clear(al);
-    mutt_addrlist_parse2(al, mutt_buffer_string(new_list));
+    mutt_addrlist_parse2(al, buf_string(new_list));
     mutt_expand_aliases(al);
   }
 
@@ -133,9 +132,9 @@ static bool edit_address_list(enum HeaderField field, struct AddressList *al)
     FREE(&err);
   }
 
-  const bool rc = !mutt_str_equal(mutt_buffer_string(new_list), mutt_buffer_string(old_list));
-  mutt_buffer_pool_release(&old_list);
-  mutt_buffer_pool_release(&new_list);
+  const bool rc = !mutt_str_equal(buf_string(new_list), buf_string(old_list));
+  buf_pool_release(&old_list);
+  buf_pool_release(&new_list);
   return rc;
 }
 
@@ -225,11 +224,11 @@ static int op_envelope_edit_cc(struct EnvelopeWindowData *wdata, int op)
 static int op_envelope_edit_fcc(struct EnvelopeWindowData *wdata, int op)
 {
   int rc = FR_NO_ACTION;
-  struct Buffer *fname = mutt_buffer_pool_get();
-  mutt_buffer_copy(fname, wdata->fcc);
+  struct Buffer *fname = buf_pool_get();
+  buf_copy(fname, wdata->fcc);
 
-  if (mutt_buffer_get_field(Prompts[HDR_FCC], fname, MUTT_COMP_FILE | MUTT_COMP_CLEAR,
-                            false, NULL, NULL, NULL) != 0)
+  if (buf_get_field(Prompts[HDR_FCC], fname, MUTT_COMP_FILE | MUTT_COMP_CLEAR,
+                    false, NULL, NULL, NULL) != 0)
   {
     goto done; // aborted
   }
@@ -237,13 +236,13 @@ static int op_envelope_edit_fcc(struct EnvelopeWindowData *wdata, int op)
   if (mutt_str_equal(wdata->fcc->data, fname->data))
     goto done; // no change
 
-  mutt_buffer_copy(wdata->fcc, fname);
-  mutt_buffer_pretty_mailbox(wdata->fcc);
+  buf_copy(wdata->fcc, fname);
+  buf_pretty_mailbox(wdata->fcc);
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_FCC);
   rc = FR_SUCCESS;
 
 done:
-  mutt_buffer_pool_release(&fname);
+  buf_pool_release(&fname);
   return rc;
 }
 
@@ -278,24 +277,24 @@ static int op_envelope_edit_reply_to(struct EnvelopeWindowData *wdata, int op)
 static int op_envelope_edit_subject(struct EnvelopeWindowData *wdata, int op)
 {
   int rc = FR_NO_ACTION;
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
 
-  mutt_buffer_strcpy(buf, wdata->email->env->subject);
-  if (mutt_buffer_get_field(Prompts[HDR_SUBJECT], buf, MUTT_COMP_NO_FLAGS,
-                            false, NULL, NULL, NULL) != 0)
+  buf_strcpy(buf, wdata->email->env->subject);
+  if (buf_get_field(Prompts[HDR_SUBJECT], buf, MUTT_COMP_NO_FLAGS, false, NULL,
+                    NULL, NULL) != 0)
   {
     goto done; // aborted
   }
 
-  if (mutt_str_equal(wdata->email->env->subject, mutt_buffer_string(buf)))
+  if (mutt_str_equal(wdata->email->env->subject, buf_string(buf)))
     goto done; // no change
 
-  mutt_str_replace(&wdata->email->env->subject, mutt_buffer_string(buf));
+  mutt_str_replace(&wdata->email->env->subject, buf_string(buf));
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_SUBJECT);
   rc = FR_SUCCESS;
 
 done:
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   return rc;
 }
 
@@ -442,18 +441,18 @@ static int op_envelope_edit_followup_to(struct EnvelopeWindowData *wdata, int op
     return FR_NO_ACTION;
 
   int rc = FR_NO_ACTION;
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
 
-  mutt_buffer_strcpy(buf, wdata->email->env->followup_to);
-  if (mutt_buffer_get_field(Prompts[HDR_FOLLOWUPTO], buf, MUTT_COMP_NO_FLAGS,
-                            false, NULL, NULL, NULL) == 0)
+  buf_strcpy(buf, wdata->email->env->followup_to);
+  if (buf_get_field(Prompts[HDR_FOLLOWUPTO], buf, MUTT_COMP_NO_FLAGS, false,
+                    NULL, NULL, NULL) == 0)
   {
-    mutt_str_replace(&wdata->email->env->followup_to, mutt_buffer_string(buf));
+    mutt_str_replace(&wdata->email->env->followup_to, buf_string(buf));
     mutt_env_notify_send(wdata->email, NT_ENVELOPE_FOLLOWUP_TO);
     rc = FR_SUCCESS;
   }
 
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   return rc;
 }
 
@@ -466,18 +465,18 @@ static int op_envelope_edit_newsgroups(struct EnvelopeWindowData *wdata, int op)
     return FR_NO_ACTION;
 
   int rc = FR_NO_ACTION;
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
 
-  mutt_buffer_strcpy(buf, wdata->email->env->newsgroups);
-  if (mutt_buffer_get_field(Prompts[HDR_NEWSGROUPS], buf, MUTT_COMP_NO_FLAGS,
-                            false, NULL, NULL, NULL) == 0)
+  buf_strcpy(buf, wdata->email->env->newsgroups);
+  if (buf_get_field(Prompts[HDR_NEWSGROUPS], buf, MUTT_COMP_NO_FLAGS, false,
+                    NULL, NULL, NULL) == 0)
   {
-    mutt_str_replace(&wdata->email->env->newsgroups, mutt_buffer_string(buf));
+    mutt_str_replace(&wdata->email->env->newsgroups, buf_string(buf));
     mutt_env_notify_send(wdata->email, NT_ENVELOPE_NEWSGROUPS);
     rc = FR_SUCCESS;
   }
 
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   return rc;
 }
 
@@ -491,18 +490,18 @@ static int op_envelope_edit_x_comment_to(struct EnvelopeWindowData *wdata, int o
     return FR_NO_ACTION;
 
   int rc = FR_NO_ACTION;
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
 
-  mutt_buffer_strcpy(buf, wdata->email->env->x_comment_to);
-  if (mutt_buffer_get_field(Prompts[HDR_XCOMMENTTO], buf, MUTT_COMP_NO_FLAGS,
-                            false, NULL, NULL, NULL) == 0)
+  buf_strcpy(buf, wdata->email->env->x_comment_to);
+  if (buf_get_field(Prompts[HDR_XCOMMENTTO], buf, MUTT_COMP_NO_FLAGS, false,
+                    NULL, NULL, NULL) == 0)
   {
-    mutt_str_replace(&wdata->email->env->x_comment_to, mutt_buffer_string(buf));
+    mutt_str_replace(&wdata->email->env->x_comment_to, buf_string(buf));
     mutt_env_notify_send(wdata->email, NT_ENVELOPE_X_COMMENT_TO);
     rc = FR_SUCCESS;
   }
 
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   return rc;
 }
 #endif

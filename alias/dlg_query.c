@@ -160,11 +160,11 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
   {
     case 'a':
     {
-      struct Buffer *tmpbuf = mutt_buffer_pool_get();
+      struct Buffer *tmpbuf = buf_pool_get();
       tmp[0] = '<';
       mutt_addrlist_write(&alias->addr, tmpbuf, true);
-      mutt_str_copy(tmp + 1, mutt_buffer_string(tmpbuf), sizeof(tmp) - 1);
-      mutt_buffer_pool_release(&tmpbuf);
+      mutt_str_copy(tmp + 1, buf_string(tmpbuf), sizeof(tmp) - 1);
+      buf_pool_release(&tmpbuf);
       const size_t len = strlen(tmp);
       if (len < (sizeof(tmp) - 1))
       {
@@ -261,19 +261,19 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
   char *msg = NULL;
   size_t msglen = 0;
   char *p = NULL;
-  struct Buffer *cmd = mutt_buffer_pool_get();
+  struct Buffer *cmd = buf_pool_get();
 
   const char *const c_query_command = cs_subset_string(sub, "query_command");
-  mutt_buffer_file_expand_fmt_quote(cmd, c_query_command, s);
+  buf_file_expand_fmt_quote(cmd, c_query_command, s);
 
-  pid_t pid = filter_create(mutt_buffer_string(cmd), NULL, &fp, NULL);
+  pid_t pid = filter_create(buf_string(cmd), NULL, &fp, NULL);
   if (pid < 0)
   {
-    mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", mutt_buffer_string(cmd));
-    mutt_buffer_pool_release(&cmd);
+    mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", buf_string(cmd));
+    buf_pool_release(&cmd);
     return -1;
   }
-  mutt_buffer_pool_release(&cmd);
+  buf_pool_release(&cmd);
 
   if (verbose)
     mutt_message(_("Waiting for response..."));
@@ -388,7 +388,7 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
  */
 static bool dlg_select_query(struct Buffer *buf, struct AliasMenuData *mdata)
 {
-  struct MuttWindow *dlg = query_dialog_new(mdata, mutt_buffer_string(buf));
+  struct MuttWindow *dlg = query_dialog_new(mdata, buf_string(buf));
   struct Menu *menu = dlg->wdata;
   struct MuttWindow *win_sbar = window_find_child(dlg, WT_STATUS_BAR);
   struct MuttWindow *win_menu = window_find_child(dlg, WT_MENU);
@@ -455,7 +455,7 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
     goto done;
   }
 
-  query_run(mutt_buffer_string(buf), true, &al, sub);
+  query_run(buf_string(buf), true, &al, sub);
   if (TAILQ_EMPTY(&al))
     goto done;
 
@@ -468,7 +468,7 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
     if (alias_to_addrlist(&addr, a_first))
     {
       mutt_addrlist_to_local(&addr);
-      mutt_buffer_reset(buf);
+      buf_reset(buf);
       mutt_addrlist_write(&addr, buf, false);
       mutt_addrlist_clear(&addr);
       mutt_clear_error();
@@ -486,8 +486,8 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
   if (!dlg_select_query(buf, &mdata))
     goto done;
 
-  mutt_buffer_reset(buf);
-  mutt_buffer_alloc(buf, 8192);
+  buf_reset(buf);
+  buf_alloc(buf, 8192);
   bool first = true;
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, &mdata.ava)
@@ -497,7 +497,7 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
 
     if (!first)
     {
-      mutt_buffer_addstr(buf, ", ");
+      buf_addstr(buf, ", ");
     }
 
     first = false;
@@ -536,15 +536,14 @@ void query_index(struct Mailbox *m, struct ConfigSubset *sub)
   struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
   mdata.al = &al;
 
-  struct Buffer *buf = mutt_buffer_pool_get();
-  if ((mutt_buffer_get_field(_("Query: "), buf, MUTT_COMP_NO_FLAGS, false, NULL,
-                             NULL, NULL) != 0) ||
-      mutt_buffer_is_empty(buf))
+  struct Buffer *buf = buf_pool_get();
+  if ((buf_get_field(_("Query: "), buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0) ||
+      buf_is_empty(buf))
   {
     goto done;
   }
 
-  query_run(mutt_buffer_string(buf), false, &al, sub);
+  query_run(buf_string(buf), false, &al, sub);
   if (TAILQ_EMPTY(&al))
     goto done;
 
@@ -582,5 +581,5 @@ done:
   FREE(&mdata.title);
   FREE(&mdata.limit);
   aliaslist_free(&al);
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
 }

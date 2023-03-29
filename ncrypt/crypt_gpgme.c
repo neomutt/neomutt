@@ -417,12 +417,12 @@ static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
   int err = 0;
   gpgme_data_t data = NULL;
 
-  struct Buffer *tempfile = mutt_buffer_pool_get();
-  mutt_buffer_mktemp(tempfile);
-  FILE *fp_tmp = mutt_file_fopen(mutt_buffer_string(tempfile), "w+");
+  struct Buffer *tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
+  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w+");
   if (!fp_tmp)
   {
-    mutt_perror(mutt_buffer_string(tempfile));
+    mutt_perror(buf_string(tempfile));
     goto cleanup;
   }
 
@@ -463,7 +463,7 @@ static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
   else
   {
     mutt_file_fclose(&fp_tmp);
-    err = gpgme_data_new_from_file(&data, mutt_buffer_string(tempfile), 1);
+    err = gpgme_data_new_from_file(&data, buf_string(tempfile), 1);
     if (err != 0)
     {
       mutt_error(_("error allocating data object: %s"), gpgme_strerror(err));
@@ -472,10 +472,10 @@ static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
       /* fall through to unlink the tempfile */
     }
   }
-  unlink(mutt_buffer_string(tempfile));
+  unlink(buf_string(tempfile));
 
 cleanup:
-  mutt_buffer_pool_release(&tempfile);
+  buf_pool_release(&tempfile);
   return data;
 }
 
@@ -558,11 +558,11 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
 {
   ssize_t nread = 0;
   char *rv = NULL;
-  struct Buffer *tempf = mutt_buffer_pool_get();
+  struct Buffer *tempf = buf_pool_get();
 
-  mutt_buffer_mktemp(tempf);
+  buf_mktemp(tempf);
 
-  FILE *fp = mutt_file_fopen(mutt_buffer_string(tempf), "w+");
+  FILE *fp = mutt_file_fopen(buf_string(tempf), "w+");
   if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));
@@ -578,9 +578,9 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
     {
       if (fwrite(buf, nread, 1, fp) != 1)
       {
-        mutt_perror(mutt_buffer_string(tempf));
+        mutt_perror(buf_string(tempf));
         mutt_file_fclose(&fp);
-        unlink(mutt_buffer_string(tempf));
+        unlink(buf_string(tempf));
         goto cleanup;
       }
     }
@@ -592,16 +592,16 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
   if (nread == -1)
   {
     mutt_error(_("error reading data object: %s"), gpgme_strerror(err));
-    unlink(mutt_buffer_string(tempf));
+    unlink(buf_string(tempf));
     mutt_file_fclose(&fp);
     goto cleanup;
   }
   if (fp_ret)
     *fp_ret = fp;
-  rv = mutt_buffer_strdup(tempf);
+  rv = buf_strdup(tempf);
 
 cleanup:
-  mutt_buffer_pool_release(&tempf);
+  buf_pool_release(&tempf);
   return rv;
 }
 
@@ -625,16 +625,16 @@ static void create_recipient_string(const char *keylist, struct Buffer *recpstri
       if (n == 0)
       {
         if (!use_smime)
-          mutt_buffer_addstr(recpstring, "--\n");
+          buf_addstr(recpstring, "--\n");
       }
       else
       {
-        mutt_buffer_addch(recpstring, '\n');
+        buf_addch(recpstring, '\n');
       }
       n++;
 
       while ((*s != '\0') && (*s != ' '))
-        mutt_buffer_addch(recpstring, *s++);
+        buf_addch(recpstring, *s++);
     }
   } while (*s != '\0');
 }
@@ -777,11 +777,11 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool us
   gpgme_data_t ciphertext = NULL;
   char *outfile = NULL;
 
-  struct Buffer *recpstring = mutt_buffer_pool_get();
+  struct Buffer *recpstring = buf_pool_get();
   create_recipient_string(keylist, recpstring, use_smime);
-  if (mutt_buffer_is_empty(recpstring))
+  if (buf_is_empty(recpstring))
   {
-    mutt_buffer_pool_release(&recpstring);
+    buf_pool_release(&recpstring);
     return NULL;
   }
 
@@ -804,12 +804,12 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool us
         goto cleanup;
     }
 
-    err = gpgme_op_encrypt_sign_ext(ctx, NULL, mutt_buffer_string(recpstring),
+    err = gpgme_op_encrypt_sign_ext(ctx, NULL, buf_string(recpstring),
                                     GPGME_ENCRYPT_ALWAYS_TRUST, plaintext, ciphertext);
   }
   else
   {
-    err = gpgme_op_encrypt_ext(ctx, NULL, mutt_buffer_string(recpstring),
+    err = gpgme_op_encrypt_ext(ctx, NULL, buf_string(recpstring),
                                GPGME_ENCRYPT_ALWAYS_TRUST, plaintext, ciphertext);
   }
 
@@ -823,7 +823,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool us
   outfile = data_object_to_tempfile(ciphertext, NULL);
 
 cleanup:
-  mutt_buffer_pool_release(&recpstring);
+  buf_pool_release(&recpstring);
   gpgme_release(ctx);
   gpgme_data_release(ciphertext);
   return outfile;
@@ -2177,19 +2177,19 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
   if (b->type != TYPE_TEXT)
     return 0;
 
-  struct Buffer *tempfile = mutt_buffer_pool_get();
-  mutt_buffer_mktemp(tempfile);
-  if (mutt_decode_save_attachment(fp, b, mutt_buffer_string(tempfile),
-                                  STATE_NO_FLAGS, MUTT_SAVE_NO_FLAGS) != 0)
+  struct Buffer *tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
+  if (mutt_decode_save_attachment(fp, b, buf_string(tempfile), STATE_NO_FLAGS,
+                                  MUTT_SAVE_NO_FLAGS) != 0)
   {
-    unlink(mutt_buffer_string(tempfile));
+    unlink(buf_string(tempfile));
     goto cleanup;
   }
 
-  FILE *fp_tmp = fopen(mutt_buffer_string(tempfile), "r");
+  FILE *fp_tmp = fopen(buf_string(tempfile), "r");
   if (!fp_tmp)
   {
-    unlink(mutt_buffer_string(tempfile));
+    unlink(buf_string(tempfile));
     goto cleanup;
   }
 
@@ -2211,7 +2211,7 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
     }
   }
   mutt_file_fclose(&fp_tmp);
-  unlink(mutt_buffer_string(tempfile));
+  unlink(buf_string(tempfile));
 
   if (!enc && !sgn)
     goto cleanup;
@@ -2224,7 +2224,7 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
   rc = true;
 
 cleanup:
-  mutt_buffer_pool_release(&tempfile);
+  buf_pool_release(&tempfile);
   return rc;
 }
 
@@ -3354,7 +3354,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
 {
   struct CryptKeyInfo *key = NULL;
   struct CryptCache *l = NULL;
-  struct Buffer *resp = mutt_buffer_pool_get();
+  struct Buffer *resp = buf_pool_get();
 
   mutt_clear_error();
 
@@ -3364,7 +3364,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
     {
       if (mutt_istr_equal(whatfor, l->what))
       {
-        mutt_buffer_strcpy(resp, l->dflt);
+        buf_strcpy(resp, l->dflt);
         break;
       }
     }
@@ -3372,8 +3372,8 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
 
   while (true)
   {
-    mutt_buffer_reset(resp);
-    if (mutt_buffer_get_field(tag, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
+    buf_reset(resp);
+    if (buf_get_field(tag, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
     {
       goto done;
     }
@@ -3382,7 +3382,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
     {
       if (l)
       {
-        mutt_str_replace(&l->dflt, mutt_buffer_string(resp));
+        mutt_str_replace(&l->dflt, buf_string(resp));
       }
       else
       {
@@ -3390,19 +3390,19 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
         l->next = IdDefaults;
         IdDefaults = l;
         l->what = mutt_str_dup(whatfor);
-        l->dflt = mutt_buffer_strdup(resp);
+        l->dflt = buf_strdup(resp);
       }
     }
 
-    key = crypt_getkeybystr(mutt_buffer_string(resp), abilities, app, forced_valid);
+    key = crypt_getkeybystr(buf_string(resp), abilities, app, forced_valid);
     if (key)
       goto done;
 
-    mutt_error(_("No matching keys found for \"%s\""), mutt_buffer_string(resp));
+    mutt_error(_("No matching keys found for \"%s\""), buf_string(resp));
   }
 
 done:
-  mutt_buffer_pool_release(&resp);
+  buf_pool_release(&resp);
   return key;
 }
 
@@ -3632,7 +3632,7 @@ int mutt_gpgme_select_secret_key(struct Buffer *keyid)
   choice = dlg_select_gpgme_key(results, NULL, "*", APPLICATION_PGP, NULL);
   if (!(choice && choice->kobj && choice->kobj->subkeys && choice->kobj->subkeys->fpr))
     goto cleanup;
-  mutt_buffer_strcpy(keyid, choice->kobj->subkeys->fpr);
+  buf_strcpy(keyid, choice->kobj->subkeys->fpr);
 
   rc = 0;
 

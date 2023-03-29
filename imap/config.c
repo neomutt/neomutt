@@ -56,8 +56,7 @@ static int imap_auth_validator(const struct ConfigSet *cs, const struct ConfigDe
     if (sasl_auth_validator(np->data))
       continue;
 #endif
-    mutt_buffer_printf(err, _("Option %s: %s is not a valid authenticator"),
-                       cdef->name, np->data);
+    buf_printf(err, _("Option %s: %s is not a valid authenticator"), cdef->name, np->data);
     return CSR_ERR_INVALID;
   }
 

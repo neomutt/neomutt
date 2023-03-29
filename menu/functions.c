@@ -60,24 +60,22 @@ static int search(struct Menu *menu, int op)
   int wrap = 0;
   int search_dir;
   regex_t re = { 0 };
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
 
   char *search_buf = ((menu->type < MENU_MAX)) ? SearchBuffers[menu->type] : NULL;
 
   if (!(search_buf && *search_buf) || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
-    mutt_buffer_strcpy(buf, search_buf && (search_buf[0] != '\0') ? search_buf : "");
-    if ((mutt_buffer_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
-                                   _("Search for: ") :
-                                   _("Reverse search for: "),
-                               buf, MUTT_COMP_CLEAR, false, NULL, NULL, NULL) != 0) ||
-        mutt_buffer_is_empty(buf))
+    buf_strcpy(buf, search_buf && (search_buf[0] != '\0') ? search_buf : "");
+    if ((buf_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
+                       buf, MUTT_COMP_CLEAR, false, NULL, NULL, NULL) != 0) ||
+        buf_is_empty(buf))
     {
       goto done;
     }
     if (menu->type < MENU_MAX)
     {
-      mutt_str_replace(&SearchBuffers[menu->type], mutt_buffer_string(buf));
+      mutt_str_replace(&SearchBuffers[menu->type], buf_string(buf));
       search_buf = SearchBuffers[menu->type];
     }
     menu->search_dir = ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
@@ -98,7 +96,7 @@ static int search(struct Menu *menu, int op)
   if (rc != 0)
   {
     regerror(rc, &re, buf->data, buf->dsize);
-    mutt_error("%s", mutt_buffer_string(buf));
+    mutt_error("%s", buf_string(buf));
     rc = -1;
     goto done;
   }
@@ -129,7 +127,7 @@ search_next:
   rc = -1;
 
 done:
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   return rc;
 }
 
@@ -252,13 +250,12 @@ static int op_jump(struct Menu *menu, int op)
     mutt_unget_ch('0' + digit);
   }
 
-  struct Buffer *buf = mutt_buffer_pool_get();
-  if ((mutt_buffer_get_field(_("Jump to: "), buf, MUTT_COMP_NO_FLAGS, false,
-                             NULL, NULL, NULL) == 0) &&
-      !mutt_buffer_is_empty(buf))
+  struct Buffer *buf = buf_pool_get();
+  if ((buf_get_field(_("Jump to: "), buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) == 0) &&
+      !buf_is_empty(buf))
   {
     int n = 0;
-    if (mutt_str_atoi_full(mutt_buffer_string(buf), &n) && (n > 0) && (n < (menu->max + 1)))
+    if (mutt_str_atoi_full(buf_string(buf), &n) && (n > 0) && (n < (menu->max + 1)))
     {
       menu_set_index(menu, n - 1); // msg numbers are 0-based
     }
@@ -268,7 +265,7 @@ static int op_jump(struct Menu *menu, int op)
     }
   }
 
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   return FR_SUCCESS;
 }
 

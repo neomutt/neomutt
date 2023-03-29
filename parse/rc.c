@@ -50,15 +50,15 @@
 enum CommandResult parse_rc_buffer(struct Buffer *line, struct Buffer *token,
                                    struct Buffer *err)
 {
-  if (mutt_buffer_len(line) == 0)
+  if (buf_len(line) == 0)
     return 0;
 
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 
-  mutt_buffer_reset(err);
+  buf_reset(err);
 
   /* Read from the beginning of line->data */
-  mutt_buffer_seek(line, 0);
+  buf_seek(line, 0);
 
   SKIPWS(line->dptr);
   while (*line->dptr)
@@ -90,7 +90,7 @@ enum CommandResult parse_rc_buffer(struct Buffer *line, struct Buffer *token,
     }
     if (i == size)
     {
-      mutt_buffer_printf(err, _("%s: unknown command"), NONULL(token->data));
+      buf_printf(err, _("%s: unknown command"), NONULL(token->data));
       rc = MUTT_CMD_ERROR;
       break; /* Ignore the rest of the line */
     }
@@ -110,14 +110,14 @@ enum CommandResult parse_rc_line(const char *line, struct Buffer *err)
   if (!line || (*line == '\0'))
     return MUTT_CMD_ERROR;
 
-  struct Buffer *line_buffer = mutt_buffer_pool_get();
-  struct Buffer *token = mutt_buffer_pool_get();
+  struct Buffer *line_buffer = buf_pool_get();
+  struct Buffer *token = buf_pool_get();
 
-  mutt_buffer_strcpy(line_buffer, line);
+  buf_strcpy(line_buffer, line);
 
   enum CommandResult rc = parse_rc_buffer(line_buffer, token, err);
 
-  mutt_buffer_pool_release(&line_buffer);
-  mutt_buffer_pool_release(&token);
+  buf_pool_release(&line_buffer);
+  buf_pool_release(&token);
   return rc;
 }

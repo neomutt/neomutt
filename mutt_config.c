@@ -106,7 +106,7 @@ static int multipart_validator(const struct ConfigSet *cs, const struct ConfigDe
   if (mutt_str_equal(str, "inline") || mutt_str_equal(str, "info"))
     return CSR_SUCCESS;
 
-  mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
+  buf_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
   return CSR_ERR_INVALID;
 }
 
@@ -119,8 +119,7 @@ static int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *c
   if (!OptAttachMsg)
     return CSR_SUCCESS;
 
-  mutt_buffer_printf(err, _("Option %s may not be set when in attach-message mode"),
-                     cdef->name);
+  buf_printf(err, _("Option %s may not be set when in attach-message mode"), cdef->name);
   return CSR_ERR_INVALID;
 }
 

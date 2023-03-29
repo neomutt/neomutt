@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_buffer_fix_dptr()
+ * Test code for buf_addstr()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,27 +26,31 @@
 #include <string.h>
 #include "mutt/lib.h"
 
-void test_mutt_buffer_fix_dptr(void)
+void test_buf_addstr(void)
 {
-  // void mutt_buffer_fix_dptr(struct Buffer *buf);
+  // size_t buf_addstr(struct Buffer *buf, const char *s);
 
   {
-    mutt_buffer_fix_dptr(NULL);
-    TEST_CHECK_(1, "mutt_buffer_fix_dptr(NULL)");
+    TEST_CHECK(buf_addstr(NULL, "apple") == 0);
   }
 
   {
-    struct Buffer buf = mutt_buffer_make(0);
-    mutt_buffer_fix_dptr(&buf);
-    TEST_CHECK(mutt_buffer_is_empty(&buf));
+    struct Buffer buf = buf_make(0);
+    TEST_CHECK(buf_addstr(&buf, NULL) == 0);
   }
 
   {
-    const char *str = "a quick brown fox";
-    struct Buffer buf = mutt_buffer_make(0);
-    mutt_buffer_addstr(&buf, str);
-    mutt_buffer_fix_dptr(&buf);
-    TEST_CHECK(mutt_buffer_len(&buf) == (strlen(str)));
-    mutt_buffer_dealloc(&buf);
+    struct Buffer buf = buf_make(0);
+    TEST_CHECK(buf_addstr(&buf, "apple") == 5);
+    TEST_CHECK(mutt_str_equal(buf_string(&buf), "apple"));
+    buf_dealloc(&buf);
+  }
+
+  {
+    struct Buffer buf = buf_make(0);
+    buf_addstr(&buf, "test");
+    TEST_CHECK(buf_addstr(&buf, "apple") == 5);
+    TEST_CHECK(mutt_str_equal(buf_string(&buf), "testapple"));
+    buf_dealloc(&buf);
   }
 }

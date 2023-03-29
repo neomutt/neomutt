@@ -77,11 +77,10 @@ int mutt_account_getuser(struct ConnAccount *cac)
     snprintf(prompt, sizeof(prompt), _("Username at %s: "), cac->host);
     mutt_str_copy(cac->user, Username, sizeof(cac->user));
 
-    struct Buffer *buf = mutt_buffer_pool_get();
-    const int rc = mutt_buffer_get_field(prompt, buf, MUTT_COMP_UNBUFFERED,
-                                         false, NULL, NULL, NULL);
-    mutt_str_copy(cac->user, mutt_buffer_string(buf), sizeof(cac->user));
-    mutt_buffer_pool_release(&buf);
+    struct Buffer *buf = buf_pool_get();
+    const int rc = buf_get_field(prompt, buf, MUTT_COMP_UNBUFFERED, false, NULL, NULL, NULL);
+    mutt_str_copy(cac->user, buf_string(buf), sizeof(cac->user));
+    buf_pool_release(&buf);
     if (rc != 0)
       return -1;
   }
@@ -156,11 +155,11 @@ int mutt_account_getpass(struct ConnAccount *cac)
              (cac->flags & MUTT_ACCT_LOGIN) ? cac->login : cac->user, cac->host);
     cac->pass[0] = '\0';
 
-    struct Buffer *buf = mutt_buffer_pool_get();
-    const int rc = mutt_buffer_get_field(prompt, buf, MUTT_COMP_PASS | MUTT_COMP_UNBUFFERED,
-                                         false, NULL, NULL, NULL);
-    mutt_str_copy(cac->pass, mutt_buffer_string(buf), sizeof(cac->pass));
-    mutt_buffer_pool_release(&buf);
+    struct Buffer *buf = buf_pool_get();
+    const int rc = buf_get_field(prompt, buf, MUTT_COMP_PASS | MUTT_COMP_UNBUFFERED,
+                                 false, NULL, NULL, NULL);
+    mutt_str_copy(cac->pass, buf_string(buf), sizeof(cac->pass));
+    buf_pool_release(&buf);
     if (rc != 0)
       return -1;
   }

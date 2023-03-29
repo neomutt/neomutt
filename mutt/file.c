@@ -92,8 +92,8 @@ static int mkwrapdir(const char *path, struct Buffer *newfile, struct Buffer *ne
   const char *basename = NULL;
   int rc = 0;
 
-  struct Buffer parent = mutt_buffer_make(PATH_MAX);
-  mutt_buffer_strcpy(&parent, NONULL(path));
+  struct Buffer parent = buf_make(PATH_MAX);
+  buf_strcpy(&parent, NONULL(path));
 
   char *p = strrchr(parent.data, '/');
   if (p)
@@ -103,11 +103,11 @@ static int mkwrapdir(const char *path, struct Buffer *newfile, struct Buffer *ne
   }
   else
   {
-    mutt_buffer_strcpy(&parent, ".");
+    buf_strcpy(&parent, ".");
     basename = path;
   }
 
-  mutt_buffer_printf(newdir, "%s/%s", mutt_buffer_string(&parent), ".muttXXXXXX");
+  buf_printf(newdir, "%s/%s", buf_string(&parent), ".muttXXXXXX");
   if (!mkdtemp(newdir->data))
   {
     mutt_debug(LL_DEBUG1, "mkdtemp() failed\n");
@@ -115,10 +115,10 @@ static int mkwrapdir(const char *path, struct Buffer *newfile, struct Buffer *ne
     goto cleanup;
   }
 
-  mutt_buffer_printf(newfile, "%s/%s", newdir->data, NONULL(basename));
+  buf_printf(newfile, "%s/%s", newdir->data, NONULL(basename));
 
 cleanup:
-  mutt_buffer_dealloc(&parent);
+  buf_dealloc(&parent);
   return rc;
 }
 
@@ -302,23 +302,23 @@ int mutt_file_symlink(const char *oldpath, const char *newpath)
   }
   else
   {
-    struct Buffer abs_oldpath = mutt_buffer_make(PATH_MAX);
+    struct Buffer abs_oldpath = buf_make(PATH_MAX);
 
     if (!mutt_path_getcwd(&abs_oldpath))
     {
-      mutt_buffer_dealloc(&abs_oldpath);
+      buf_dealloc(&abs_oldpath);
       return -1;
     }
 
-    mutt_buffer_addch(&abs_oldpath, '/');
-    mutt_buffer_addstr(&abs_oldpath, oldpath);
-    if (symlink(mutt_buffer_string(&abs_oldpath), newpath) == -1)
+    buf_addch(&abs_oldpath, '/');
+    buf_addstr(&abs_oldpath, oldpath);
+    if (symlink(buf_string(&abs_oldpath), newpath) == -1)
     {
-      mutt_buffer_dealloc(&abs_oldpath);
+      buf_dealloc(&abs_oldpath);
       return -1;
     }
 
-    mutt_buffer_dealloc(&abs_oldpath);
+    buf_dealloc(&abs_oldpath);
   }
 
   if ((stat(oldpath, &st_old) == -1) || (stat(newpath, &st_new) == -1) ||
@@ -473,32 +473,32 @@ int mutt_file_rmtree(const char *path)
 
   /* We avoid using the buffer pool for this function, because it
    * invokes recursively to an unknown depth. */
-  struct Buffer cur = mutt_buffer_make(PATH_MAX);
+  struct Buffer cur = buf_make(PATH_MAX);
 
   while ((de = readdir(dir)))
   {
     if ((mutt_str_equal(".", de->d_name)) || (mutt_str_equal("..", de->d_name)))
       continue;
 
-    mutt_buffer_printf(&cur, "%s/%s", path, de->d_name);
+    buf_printf(&cur, "%s/%s", path, de->d_name);
     /* XXX make nonrecursive version */
 
-    if (stat(mutt_buffer_string(&cur), &st) == -1)
+    if (stat(buf_string(&cur), &st) == -1)
     {
       rc = 1;
       continue;
     }
 
     if (S_ISDIR(st.st_mode))
-      rc |= mutt_file_rmtree(mutt_buffer_string(&cur));
+      rc |= mutt_file_rmtree(buf_string(&cur));
     else
-      rc |= unlink(mutt_buffer_string(&cur));
+      rc |= unlink(buf_string(&cur));
   }
   closedir(dir);
 
   rc |= rmdir(path);
 
-  mutt_buffer_dealloc(&cur);
+  buf_dealloc(&cur);
   return rc;
 }
 
@@ -520,20 +520,20 @@ const char *mutt_file_rotate(const char *path, int count)
   if (!path)
     return NULL;
 
-  struct Buffer *old_file = mutt_buffer_pool_get();
-  struct Buffer *new_file = mutt_buffer_pool_get();
+  struct Buffer *old_file = buf_pool_get();
+  struct Buffer *new_file = buf_pool_get();
 
   /* rotate the old debug logs */
   for (count -= 2; count >= 0; count--)
   {
-    mutt_buffer_printf(old_file, "%s%d", path, count);
-    mutt_buffer_printf(new_file, "%s%d", path, count + 1);
-    (void) rename(mutt_buffer_string(old_file), mutt_buffer_string(new_file));
+    buf_printf(old_file, "%s%d", path, count);
+    buf_printf(new_file, "%s%d", path, count + 1);
+    (void) rename(buf_string(old_file), buf_string(new_file));
   }
 
-  path = mutt_buffer_strdup(old_file);
-  mutt_buffer_pool_release(&old_file);
-  mutt_buffer_pool_release(&new_file);
+  path = buf_strdup(old_file);
+  buf_pool_release(&old_file);
+  buf_pool_release(&new_file);
 
   return path;
 }
@@ -551,13 +551,13 @@ int mutt_file_open(const char *path, uint32_t flags)
     return -1;
 
   int fd;
-  struct Buffer safe_file = mutt_buffer_make(0);
-  struct Buffer safe_dir = mutt_buffer_make(0);
+  struct Buffer safe_file = buf_make(0);
+  struct Buffer safe_dir = buf_make(0);
 
   if (flags & O_EXCL)
   {
-    mutt_buffer_alloc(&safe_file, PATH_MAX);
-    mutt_buffer_alloc(&safe_dir, PATH_MAX);
+    buf_alloc(&safe_file, PATH_MAX);
+    buf_alloc(&safe_dir, PATH_MAX);
 
     if (mkwrapdir(path, &safe_file, &safe_dir) == -1)
     {
@@ -565,17 +565,16 @@ int mutt_file_open(const char *path, uint32_t flags)
       goto cleanup;
     }
 
-    fd = open(mutt_buffer_string(&safe_file), flags, 0600);
+    fd = open(buf_string(&safe_file), flags, 0600);
     if (fd < 0)
     {
-      rmdir(mutt_buffer_string(&safe_dir));
+      rmdir(buf_string(&safe_dir));
       goto cleanup;
     }
 
     /* NFS and I believe cygwin do not handle movement of open files well */
     close(fd);
-    if (put_file_in_place(path, mutt_buffer_string(&safe_file),
-                          mutt_buffer_string(&safe_dir)) == -1)
+    if (put_file_in_place(path, buf_string(&safe_file), buf_string(&safe_dir)) == -1)
     {
       fd = -1;
       goto cleanup;
@@ -598,8 +597,8 @@ int mutt_file_open(const char *path, uint32_t flags)
   }
 
 cleanup:
-  mutt_buffer_dealloc(&safe_file);
-  mutt_buffer_dealloc(&safe_dir);
+  buf_dealloc(&safe_file);
+  buf_dealloc(&safe_dir);
 
   return fd;
 }
@@ -686,12 +685,12 @@ int mutt_file_sanitize_regex(struct Buffer *dest, const char *src)
   if (!dest || !src)
     return -1;
 
-  mutt_buffer_reset(dest);
+  buf_reset(dest);
   while (*src != '\0')
   {
     if (strchr(RxSpecialChars, *src))
-      mutt_buffer_addch(dest, '\\');
-    mutt_buffer_addch(dest, *src++);
+      buf_addch(dest, '\\');
+    buf_addch(dest, *src++);
   }
 
   return 0;
@@ -903,37 +902,37 @@ size_t mutt_file_quote_filename(const char *filename, char *buf, size_t buflen)
 }
 
 /**
- * mutt_buffer_quote_filename - Quote a filename to survive the shell's quoting rules
+ * buf_quote_filename - Quote a filename to survive the shell's quoting rules
  * @param buf       Buffer for the result
  * @param filename  String to convert
  * @param add_outer If true, add 'single quotes' around the result
  */
-void mutt_buffer_quote_filename(struct Buffer *buf, const char *filename, bool add_outer)
+void buf_quote_filename(struct Buffer *buf, const char *filename, bool add_outer)
 {
   if (!buf || !filename)
     return;
 
-  mutt_buffer_reset(buf);
+  buf_reset(buf);
   if (add_outer)
-    mutt_buffer_addch(buf, '\'');
+    buf_addch(buf, '\'');
 
   for (; *filename != '\0'; filename++)
   {
     if ((*filename == '\'') || (*filename == '`'))
     {
-      mutt_buffer_addch(buf, '\'');
-      mutt_buffer_addch(buf, '\\');
-      mutt_buffer_addch(buf, *filename);
-      mutt_buffer_addch(buf, '\'');
+      buf_addch(buf, '\'');
+      buf_addch(buf, '\\');
+      buf_addch(buf, *filename);
+      buf_addch(buf, '\'');
     }
     else
     {
-      mutt_buffer_addch(buf, *filename);
+      buf_addch(buf, *filename);
     }
   }
 
   if (add_outer)
-    mutt_buffer_addch(buf, '\'');
+    buf_addch(buf, '\'');
 }
 
 /**
@@ -1465,20 +1464,20 @@ int mutt_file_check_empty(const char *path)
 }
 
 /**
- * mutt_buffer_file_expand_fmt_quote - Replace `%s` in a string with a filename
+ * buf_file_expand_fmt_quote - Replace `%s` in a string with a filename
  * @param dest    Buffer for the result
  * @param fmt     printf-like format string
  * @param src     Filename to substitute
  *
  * This function also quotes the file to prevent shell problems.
  */
-void mutt_buffer_file_expand_fmt_quote(struct Buffer *dest, const char *fmt, const char *src)
+void buf_file_expand_fmt_quote(struct Buffer *dest, const char *fmt, const char *src)
 {
-  struct Buffer tmp = mutt_buffer_make(PATH_MAX);
+  struct Buffer tmp = buf_make(PATH_MAX);
 
-  mutt_buffer_quote_filename(&tmp, src, true);
-  mutt_file_expand_fmt(dest, fmt, mutt_buffer_string(&tmp));
-  mutt_buffer_dealloc(&tmp);
+  buf_quote_filename(&tmp, src, true);
+  mutt_file_expand_fmt(dest, fmt, buf_string(&tmp));
+  buf_dealloc(&tmp);
 }
 
 /**
@@ -1495,7 +1494,7 @@ void mutt_file_expand_fmt(struct Buffer *dest, const char *fmt, const char *src)
   const char *p = NULL;
   bool found = false;
 
-  mutt_buffer_reset(dest);
+  buf_reset(dest);
 
   for (p = fmt; *p; p++)
   {
@@ -1504,28 +1503,28 @@ void mutt_file_expand_fmt(struct Buffer *dest, const char *fmt, const char *src)
       switch (p[1])
       {
         case '%':
-          mutt_buffer_addch(dest, *p++);
+          buf_addch(dest, *p++);
           break;
         case 's':
           found = true;
-          mutt_buffer_addstr(dest, src);
+          buf_addstr(dest, src);
           p++;
           break;
         default:
-          mutt_buffer_addch(dest, *p);
+          buf_addch(dest, *p);
           break;
       }
     }
     else
     {
-      mutt_buffer_addch(dest, *p);
+      buf_addch(dest, *p);
     }
   }
 
   if (!found)
   {
-    mutt_buffer_addch(dest, ' ');
-    mutt_buffer_addstr(dest, src);
+    buf_addch(dest, ' ');
+    buf_addstr(dest, src);
   }
 }
 
@@ -1678,13 +1677,13 @@ int mutt_file_stat_compare(struct stat *st1, enum MuttStatType st1_type,
 void mutt_file_resolve_symlink(struct Buffer *buf)
 {
   struct stat st = { 0 };
-  int rc = lstat(mutt_buffer_string(buf), &st);
+  int rc = lstat(buf_string(buf), &st);
   if ((rc != -1) && S_ISLNK(st.st_mode))
   {
     char path[PATH_MAX] = { 0 };
-    if (realpath(mutt_buffer_string(buf), path))
+    if (realpath(buf_string(buf), path))
     {
-      mutt_buffer_strcpy(buf, path);
+      buf_strcpy(buf, path);
     }
   }
 }

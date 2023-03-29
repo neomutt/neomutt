@@ -242,11 +242,11 @@ static int complete_alias_query(struct EnterWindowData *wdata)
 
   mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf + i,
                    wdata->state->curpos - i);
-  struct Buffer *tmp = mutt_buffer_pool_get();
-  mutt_buffer_strcpy(tmp, wdata->buf);
+  struct Buffer *tmp = buf_pool_get();
+  buf_strcpy(tmp, wdata->buf);
   query_complete(tmp, NeoMutt->sub);
-  mutt_str_copy(wdata->buf, mutt_buffer_string(tmp), wdata->buflen);
-  mutt_buffer_pool_release(&tmp);
+  mutt_str_copy(wdata->buf, buf_string(tmp), wdata->buflen);
+  buf_pool_release(&tmp);
   replace_part(wdata->state, i, wdata->buf);
 
   return FR_CONTINUE;
@@ -465,11 +465,11 @@ static int op_editor_mailbox_cycle(struct EnterWindowData *wdata, int op)
     wdata->first = true; /* clear input if user types a real key later */
     mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
 
-    struct Buffer *pool = mutt_buffer_pool_get();
-    mutt_buffer_addstr(pool, wdata->buf);
+    struct Buffer *pool = buf_pool_get();
+    buf_addstr(pool, wdata->buf);
     mutt_mailbox_next(wdata->m, pool);
-    mutt_str_copy(wdata->buf, mutt_buffer_string(pool), wdata->buflen);
-    mutt_buffer_pool_release(&pool);
+    mutt_str_copy(wdata->buf, buf_string(pool), wdata->buflen);
+    buf_pool_release(&pool);
 
     wdata->state->curpos = wdata->state->lastchar =
         mutt_mb_mbstowcs(&wdata->state->wbuf, &wdata->state->wbuflen, 0, wdata->buf);

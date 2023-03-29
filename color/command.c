@@ -159,14 +159,14 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
     *col = strtoul(s, &eptr, 10);
     if ((*s == '\0') || (*eptr != '\0') || ((*col >= COLORS) && !OptNoCurses))
     {
-      mutt_buffer_printf(err, _("%s: color not supported by term"), s);
+      buf_printf(err, _("%s: color not supported by term"), s);
       return MUTT_CMD_ERROR;
     }
     color_debug(LL_DEBUG5, "colorNNN %d\n", *col);
   }
   else if ((*col = mutt_map_get_value(s, ColorNames)) == -1)
   {
-    mutt_buffer_printf(err, _("%s: no such color"), s);
+    buf_printf(err, _("%s: no such color"), s);
     return MUTT_CMD_WARNING;
   }
   const char *name = mutt_map_get_name(*col, ColorNames);
@@ -225,7 +225,7 @@ static enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
 
   if (!MoreArgs(s))
   {
-    mutt_buffer_printf(err, _("%s: too few arguments"), "mono");
+    buf_printf(err, _("%s: too few arguments"), "mono");
     return MUTT_CMD_WARNING;
   }
 
@@ -247,7 +247,7 @@ static enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
     *attrs |= A_UNDERLINE;
   else
   {
-    mutt_buffer_printf(err, _("%s: no such attribute"), buf->data);
+    buf_printf(err, _("%s: no such attribute"), buf->data);
     return MUTT_CMD_WARNING;
   }
 
@@ -267,7 +267,7 @@ static enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
   {
     if (!MoreArgs(s))
     {
-      mutt_buffer_printf(err, _("%s: too few arguments"), "color");
+      buf_printf(err, _("%s: too few arguments"), "color");
       return MUTT_CMD_WARNING;
     }
 
@@ -319,7 +319,7 @@ static enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
 
   if (!MoreArgs(s))
   {
-    mutt_buffer_printf(err, _("%s: too few arguments"), "color");
+    buf_printf(err, _("%s: too few arguments"), "color");
     return MUTT_CMD_WARNING;
   }
 
@@ -342,16 +342,16 @@ void get_colorid_name(unsigned int cid, struct Buffer *buf)
     name = mutt_map_get_name(cid, ComposeColorFields);
     if (name)
     {
-      mutt_buffer_printf(buf, "compose %s", name);
+      buf_printf(buf, "compose %s", name);
       return;
     }
   }
 
   name = mutt_map_get_name(cid, ColorFields);
   if (name)
-    mutt_buffer_printf(buf, "%s", name);
+    buf_printf(buf, "%s", name);
   else
-    mutt_buffer_printf(buf, "UNKNOWN %d", cid);
+    buf_printf(buf, "UNKNOWN %d", cid);
 }
 
 /**
@@ -377,7 +377,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
     {
       if (!mutt_str_atoi_full(buf->data + 6, &val) || (val > COLOR_QUOTES_MAX))
       {
-        mutt_buffer_printf(err, _("%s: no such object"), buf->data);
+        buf_printf(err, _("%s: no such object"), buf->data);
         return MUTT_CMD_WARNING;
       }
     }
@@ -391,7 +391,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
   {
     if (!MoreArgs(s))
     {
-      mutt_buffer_printf(err, _("%s: too few arguments"), "color");
+      buf_printf(err, _("%s: too few arguments"), "color");
       return MUTT_CMD_WARNING;
     }
 
@@ -400,7 +400,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
     rc = mutt_map_get_value(buf->data, ComposeColorFields);
     if (rc == -1)
     {
-      mutt_buffer_printf(err, _("%s: no such object"), buf->data);
+      buf_printf(err, _("%s: no such object"), buf->data);
       return MUTT_CMD_WARNING;
     }
 
@@ -411,7 +411,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
   rc = mutt_map_get_value(buf->data, ColorFields);
   if (rc == -1)
   {
-    mutt_buffer_printf(err, _("%s: no such object"), buf->data);
+    buf_printf(err, _("%s: no such object"), buf->data);
     return MUTT_CMD_WARNING;
   }
   else
@@ -448,14 +448,14 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
   unsigned int cid = MT_COLOR_NONE;
   int ql = 0;
-  color_debug(LL_DEBUG5, "uncolor: %s\n", mutt_buffer_string(buf));
+  color_debug(LL_DEBUG5, "uncolor: %s\n", buf_string(buf));
   enum CommandResult rc = parse_object(buf, s, &cid, &ql, err);
   if (rc != MUTT_CMD_SUCCESS)
     return rc;
 
   if (cid == -1)
   {
-    mutt_buffer_printf(err, _("%s: no such object"), buf->data);
+    buf_printf(err, _("%s: no such object"), buf->data);
     return MUTT_CMD_ERROR;
   }
 
@@ -533,7 +533,7 @@ static enum CommandResult color_dump(struct Buffer *buf, struct Buffer *s,
 
   FILE *fp_out = NULL;
   char tempfile[PATH_MAX] = { 0 };
-  struct Buffer filebuf = mutt_buffer_make(4096);
+  struct Buffer filebuf = buf_make(4096);
   char color_fg[32] = { 0 };
   char color_bg[32] = { 0 };
 
@@ -542,13 +542,13 @@ static enum CommandResult color_dump(struct Buffer *buf, struct Buffer *s,
   if (!fp_out)
   {
     // L10N: '%s' is the file name of the temporary file
-    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
-    mutt_buffer_dealloc(&filebuf);
+    buf_printf(err, _("Could not create temporary file %s"), tempfile);
+    buf_dealloc(&filebuf);
     return MUTT_CMD_ERROR;
   }
 
-  mutt_buffer_addstr(&filebuf, "# All Colours\n\n");
-  mutt_buffer_addstr(&filebuf, "# Simple Colours\n");
+  buf_addstr(&filebuf, "# All Colours\n\n");
+  buf_addstr(&filebuf, "# Simple Colours\n");
   for (enum ColorId cid = MT_COLOR_NONE + 1; cid < MT_COLOR_MAX; cid++)
   {
     struct AttrColor *ac = simple_color_get(cid);
@@ -564,15 +564,15 @@ static enum CommandResult color_dump(struct Buffer *buf, struct Buffer *s,
       continue;
 
     const char *swatch = color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs);
-    mutt_buffer_add_printf(&filebuf, "color %-18s %-30s %-8s %-8s # %s\n", name,
-                           color_debug_log_attrs_list(ac->attrs),
-                           color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
-                           color_debug_log_name(color_bg, sizeof(color_bg), cc->bg), swatch);
+    buf_add_printf(&filebuf, "color %-18s %-30s %-8s %-8s # %s\n", name,
+                   color_debug_log_attrs_list(ac->attrs),
+                   color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
+                   color_debug_log_name(color_bg, sizeof(color_bg), cc->bg), swatch);
   }
 
   if (NumQuotedColors > 0)
   {
-    mutt_buffer_addstr(&filebuf, "\n# Quoted Colours\n");
+    buf_addstr(&filebuf, "\n# Quoted Colours\n");
     for (int i = 0; i < NumQuotedColors; i++)
     {
       struct AttrColor *ac = quoted_colors_get(i);
@@ -584,11 +584,10 @@ static enum CommandResult color_dump(struct Buffer *buf, struct Buffer *s,
         continue;
 
       const char *swatch = color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs);
-      mutt_buffer_add_printf(&filebuf, "color quoted%d %-30s %-8s %-8s # %s\n",
-                             i, color_debug_log_attrs_list(ac->attrs),
-                             color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
-                             color_debug_log_name(color_bg, sizeof(color_bg), cc->bg),
-                             swatch);
+      buf_add_printf(&filebuf, "color quoted%d %-30s %-8s %-8s # %s\n", i,
+                     color_debug_log_attrs_list(ac->attrs),
+                     color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
+                     color_debug_log_name(color_bg, sizeof(color_bg), cc->bg), swatch);
     }
   }
 
@@ -622,7 +621,7 @@ static enum CommandResult color_dump(struct Buffer *buf, struct Buffer *s,
       if (!name)
         continue;
 
-      mutt_buffer_add_printf(&filebuf, "\n# Regex Colour %s\n", name);
+      buf_add_printf(&filebuf, "\n# Regex Colour %s\n", name);
 
       struct RegexColor *rc = NULL;
       STAILQ_FOREACH(rc, rcl, entries)
@@ -633,11 +632,11 @@ static enum CommandResult color_dump(struct Buffer *buf, struct Buffer *s,
           continue;
 
         const char *swatch = color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs);
-        mutt_buffer_add_printf(&filebuf, "color %-14s %-30s %-8s %-8s %-30s # %s\n",
-                               name, color_debug_log_attrs_list(ac->attrs),
-                               color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
-                               color_debug_log_name(color_bg, sizeof(color_bg), cc->bg),
-                               rc->pattern, swatch);
+        buf_add_printf(&filebuf, "color %-14s %-30s %-8s %-8s %-30s # %s\n",
+                       name, color_debug_log_attrs_list(ac->attrs),
+                       color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
+                       color_debug_log_name(color_bg, sizeof(color_bg), cc->bg),
+                       rc->pattern, swatch);
       }
     }
   }
@@ -645,7 +644,7 @@ static enum CommandResult color_dump(struct Buffer *buf, struct Buffer *s,
 #ifdef USE_DEBUG_COLOR
   if (!TAILQ_EMPTY(&MergedColors))
   {
-    mutt_buffer_addstr(&filebuf, "\n# Merged Colours\n");
+    buf_addstr(&filebuf, "\n# Merged Colours\n");
     struct AttrColor *ac = NULL;
     TAILQ_FOREACH(ac, &MergedColors, entries)
     {
@@ -654,11 +653,10 @@ static enum CommandResult color_dump(struct Buffer *buf, struct Buffer *s,
         continue;
 
       const char *swatch = color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs);
-      mutt_buffer_add_printf(&filebuf, "# %-30s %-8s %-8s # %s\n",
-                             color_debug_log_attrs_list(ac->attrs),
-                             color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
-                             color_debug_log_name(color_bg, sizeof(color_bg), cc->bg),
-                             swatch);
+      buf_add_printf(&filebuf, "# %-30s %-8s %-8s # %s\n",
+                     color_debug_log_attrs_list(ac->attrs),
+                     color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
+                     color_debug_log_name(color_bg, sizeof(color_bg), cc->bg), swatch);
     }
   }
 
@@ -668,7 +666,7 @@ static enum CommandResult color_dump(struct Buffer *buf, struct Buffer *s,
     struct PagerPrivateData *priv = win->parent->wdata;
     if (priv && !TAILQ_EMPTY(&priv->ansi_list))
     {
-      mutt_buffer_addstr(&filebuf, "\n# Ansi Colours\n");
+      buf_addstr(&filebuf, "\n# Ansi Colours\n");
       struct AttrColor *ac = NULL;
       TAILQ_FOREACH(ac, &priv->ansi_list, entries)
       {
@@ -677,11 +675,10 @@ static enum CommandResult color_dump(struct Buffer *buf, struct Buffer *s,
           continue;
 
         const char *swatch = color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs);
-        mutt_buffer_add_printf(&filebuf, "# %-30s %-8s %-8s # %s\n",
-                               color_debug_log_attrs_list(ac->attrs),
-                               color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
-                               color_debug_log_name(color_bg, sizeof(color_bg), cc->bg),
-                               swatch);
+        buf_add_printf(&filebuf, "# %-30s %-8s %-8s # %s\n",
+                       color_debug_log_attrs_list(ac->attrs),
+                       color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
+                       color_debug_log_name(color_bg, sizeof(color_bg), cc->bg), swatch);
       }
     }
   }
@@ -690,7 +687,7 @@ static enum CommandResult color_dump(struct Buffer *buf, struct Buffer *s,
   fputs(filebuf.data, fp_out);
 
   mutt_file_fclose(&fp_out);
-  mutt_buffer_dealloc(&filebuf);
+  buf_dealloc(&filebuf);
 
   struct PagerData pdata = { 0 };
   struct PagerView pview = { &pdata };
@@ -736,12 +733,12 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
       return color_dump(buf, s, 0, err);
 #endif
 
-    mutt_buffer_printf(err, _("%s: too few arguments"), "color");
+    buf_printf(err, _("%s: too few arguments"), "color");
     return MUTT_CMD_WARNING;
   }
 
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-  color_debug(LL_DEBUG5, "color: %s\n", mutt_buffer_string(buf));
+  color_debug(LL_DEBUG5, "color: %s\n", buf_string(buf));
 
   rc = parse_object(buf, s, &cid, &q_level, err);
   if (rc != MUTT_CMD_SUCCESS)
@@ -762,13 +759,13 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     }
     else
     {
-      mutt_buffer_strcpy(buf, ".*");
+      buf_strcpy(buf, ".*");
     }
   }
 
   if (MoreArgs(s) && (cid != MT_COLOR_STATUS))
   {
-    mutt_buffer_printf(err, _("%s: too many arguments"), color ? "color" : "mono");
+    buf_printf(err, _("%s: too many arguments"), color ? "color" : "mono");
     return MUTT_CMD_WARNING;
   }
 
@@ -786,7 +783,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
       ((fg == COLOR_DEFAULT) || (bg == COLOR_DEFAULT) || (cid == MT_COLOR_TREE)) &&
       (use_default_colors() != OK))
   {
-    mutt_buffer_strcpy(err, _("default colors not supported"));
+    buf_strcpy(err, _("default colors not supported"));
     return MUTT_CMD_ERROR;
   }
 
@@ -813,21 +810,20 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
 
     if (MoreArgs(s))
     {
-      struct Buffer tmp = mutt_buffer_make(0);
+      struct Buffer tmp = buf_make(0);
       parse_extract_token(&tmp, s, TOKEN_NO_FLAGS);
       if (!mutt_str_atoui_full(tmp.data, &match))
       {
-        mutt_buffer_printf(err, _("%s: invalid number: %s"),
-                           color ? "color" : "mono", tmp.data);
-        mutt_buffer_dealloc(&tmp);
+        buf_printf(err, _("%s: invalid number: %s"), color ? "color" : "mono", tmp.data);
+        buf_dealloc(&tmp);
         return MUTT_CMD_WARNING;
       }
-      mutt_buffer_dealloc(&tmp);
+      buf_dealloc(&tmp);
     }
 
     if (MoreArgs(s))
     {
-      mutt_buffer_printf(err, _("%s: too many arguments"), color ? "color" : "mono");
+      buf_printf(err, _("%s: too many arguments"), color ? "color" : "mono");
       return MUTT_CMD_WARNING;
     }
 
@@ -865,7 +861,7 @@ enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s,
     *s->dptr = '\0'; /* fake that we're done parsing */
     return MUTT_CMD_SUCCESS;
   }
-  color_debug(LL_DEBUG5, "parse: %s\n", mutt_buffer_string(buf));
+  color_debug(LL_DEBUG5, "parse: %s\n", buf_string(buf));
   enum CommandResult rc = parse_uncolor(buf, s, err, true);
   // simple_colors_dump(false);
   curses_colors_dump();
@@ -890,7 +886,7 @@ enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s,
 {
   bool dry_run = OptNoCurses;
 
-  color_debug(LL_DEBUG5, "parse: %s\n", mutt_buffer_string(buf));
+  color_debug(LL_DEBUG5, "parse: %s\n", buf_string(buf));
   enum CommandResult rc = parse_color(buf, s, err, parse_color_pair, dry_run, true);
   // simple_colors_dump(false);
   curses_colors_dump();

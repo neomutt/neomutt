@@ -153,35 +153,34 @@ static int check_attachments(struct AttachCtx *actx, struct ConfigSubset *sub)
     if (stat(actx->idx[i]->body->filename, &st) != 0)
     {
       if (!pretty)
-        pretty = mutt_buffer_pool_get();
-      mutt_buffer_strcpy(pretty, actx->idx[i]->body->filename);
-      mutt_buffer_pretty_mailbox(pretty);
+        pretty = buf_pool_get();
+      buf_strcpy(pretty, actx->idx[i]->body->filename);
+      buf_pretty_mailbox(pretty);
       /* L10N: This message is displayed in the compose menu when an attachment
          doesn't stat.  %d is the attachment number and %s is the attachment
          filename.  The filename is located last to avoid a long path hiding
          the error message.  */
-      mutt_error(_("Attachment #%d no longer exists: %s"), i + 1,
-                 mutt_buffer_string(pretty));
+      mutt_error(_("Attachment #%d no longer exists: %s"), i + 1, buf_string(pretty));
       goto cleanup;
     }
 
     if (actx->idx[i]->body->stamp < st.st_mtime)
     {
       if (!pretty)
-        pretty = mutt_buffer_pool_get();
-      mutt_buffer_strcpy(pretty, actx->idx[i]->body->filename);
-      mutt_buffer_pretty_mailbox(pretty);
+        pretty = buf_pool_get();
+      buf_strcpy(pretty, actx->idx[i]->body->filename);
+      buf_pretty_mailbox(pretty);
 
       if (!msg)
-        msg = mutt_buffer_pool_get();
+        msg = buf_pool_get();
       /* L10N: This message is displayed in the compose menu when an attachment
          is modified behind the scenes.  %d is the attachment number and %s is
          the attachment filename.  The filename is located last to avoid a long
          path hiding the prompt question.  */
-      mutt_buffer_printf(msg, _("Attachment #%d modified. Update encoding for %s?"),
-                         i + 1, mutt_buffer_string(pretty));
+      buf_printf(msg, _("Attachment #%d modified. Update encoding for %s?"),
+                 i + 1, buf_string(pretty));
 
-      enum QuadOption ans = mutt_yesorno(mutt_buffer_string(msg), MUTT_YES);
+      enum QuadOption ans = mutt_yesorno(buf_string(msg), MUTT_YES);
       if (ans == MUTT_YES)
         mutt_update_encoding(actx->idx[i]->body, sub);
       else if (ans == MUTT_ABORT)
@@ -192,8 +191,8 @@ static int check_attachments(struct AttachCtx *actx, struct ConfigSubset *sub)
   rc = 0;
 
 cleanup:
-  mutt_buffer_pool_release(&pretty);
-  mutt_buffer_pool_release(&msg);
+  buf_pool_release(&pretty);
+  buf_pool_release(&msg);
   return rc;
 }
 
@@ -593,16 +592,16 @@ static int op_attachment_attach_file(struct ComposeSharedData *shared, int op)
   int numfiles = 0;
   char **files = NULL;
 
-  struct Buffer *fname = mutt_buffer_pool_get();
-  if ((mutt_buffer_enter_fname(prompt, fname, false, NULL, true, &files,
-                               &numfiles, MUTT_SEL_MULTI) == -1) ||
-      mutt_buffer_is_empty(fname))
+  struct Buffer *fname = buf_pool_get();
+  if ((buf_enter_fname(prompt, fname, false, NULL, true, &files, &numfiles,
+                       MUTT_SEL_MULTI) == -1) ||
+      buf_is_empty(fname))
   {
     for (int i = 0; i < numfiles; i++)
       FREE(&files[i]);
 
     FREE(&files);
-    mutt_buffer_pool_release(&fname);
+    buf_pool_release(&fname);
     return FR_NO_ACTION;
   }
 
@@ -637,7 +636,7 @@ static int op_attachment_attach_file(struct ComposeSharedData *shared, int op)
   }
 
   FREE(&files);
-  mutt_buffer_pool_release(&fname);
+  buf_pool_release(&fname);
 
   if (!error)
     mutt_clear_error();
@@ -698,23 +697,23 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
   }
 #endif
 
-  struct Buffer *fname = mutt_buffer_pool_get();
+  struct Buffer *fname = buf_pool_get();
   if (shared->mailbox)
   {
 #ifdef USE_NNTP
     if ((op == OP_ATTACHMENT_ATTACH_MESSAGE) ^ (shared->mailbox->type == MUTT_NNTP))
 #endif
     {
-      mutt_buffer_strcpy(fname, mailbox_path(shared->mailbox));
-      mutt_buffer_pretty_mailbox(fname);
+      buf_strcpy(fname, mailbox_path(shared->mailbox));
+      buf_pretty_mailbox(fname);
     }
   }
 
-  if ((mutt_buffer_enter_fname(prompt, fname, true, shared->mailbox, false,
-                               NULL, NULL, MUTT_SEL_NO_FLAGS) == -1) ||
-      mutt_buffer_is_empty(fname))
+  if ((buf_enter_fname(prompt, fname, true, shared->mailbox, false, NULL, NULL,
+                       MUTT_SEL_NO_FLAGS) == -1) ||
+      buf_is_empty(fname))
   {
-    mutt_buffer_pool_release(&fname);
+    buf_pool_release(&fname);
     return FR_NO_ACTION;
   }
 
@@ -723,40 +722,40 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
     nntp_expand_path(fname->data, fname->dsize, &CurrentNewsSrv->conn->account);
   else
 #endif
-    mutt_buffer_expand_path(fname);
+    buf_expand_path(fname);
 #ifdef USE_IMAP
-  if (imap_path_probe(mutt_buffer_string(fname), NULL) != MUTT_IMAP)
+  if (imap_path_probe(buf_string(fname), NULL) != MUTT_IMAP)
 #endif
 #ifdef USE_POP
-    if (pop_path_probe(mutt_buffer_string(fname), NULL) != MUTT_POP)
+    if (pop_path_probe(buf_string(fname), NULL) != MUTT_POP)
 #endif
 #ifdef USE_NNTP
-      if (!OptNews && (nntp_path_probe(mutt_buffer_string(fname), NULL) != MUTT_NNTP))
+      if (!OptNews && (nntp_path_probe(buf_string(fname), NULL) != MUTT_NNTP))
 #endif
-        if (mx_path_probe(mutt_buffer_string(fname)) != MUTT_NOTMUCH)
+        if (mx_path_probe(buf_string(fname)) != MUTT_NOTMUCH)
         {
           /* check to make sure the file exists and is readable */
-          if (access(mutt_buffer_string(fname), R_OK) == -1)
+          if (access(buf_string(fname), R_OK) == -1)
           {
-            mutt_perror(mutt_buffer_string(fname));
-            mutt_buffer_pool_release(&fname);
+            mutt_perror(buf_string(fname));
+            buf_pool_release(&fname);
             return FR_ERROR;
           }
         }
 
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
 
-  struct Mailbox *m_attach = mx_path_resolve(mutt_buffer_string(fname));
+  struct Mailbox *m_attach = mx_path_resolve(buf_string(fname));
   const bool old_readonly = m_attach->readonly;
   if (!mx_mbox_open(m_attach, MUTT_READONLY))
   {
-    mutt_error(_("Unable to open mailbox %s"), mutt_buffer_string(fname));
+    mutt_error(_("Unable to open mailbox %s"), buf_string(fname));
     mx_fastclose_mailbox(m_attach, false);
     m_attach = NULL;
-    mutt_buffer_pool_release(&fname);
+    buf_pool_release(&fname);
     return FR_ERROR;
   }
-  mutt_buffer_pool_release(&fname);
+  buf_pool_release(&fname);
 
   if (m_attach->msg_count == 0)
   {
@@ -875,30 +874,29 @@ static int op_attachment_edit_content_id(struct ComposeSharedData *shared, int o
     return FR_NO_ACTION;
 
   int rc = FR_NO_ACTION;
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
   struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
                                                  shared->adata->menu);
 
   char *id = mutt_param_get(&cur_att->body->parameter, "content-id");
   if (id)
   {
-    mutt_buffer_strcpy(buf, id);
+    buf_strcpy(buf, id);
   }
   else
   {
     id = gen_cid();
-    mutt_buffer_strcpy(buf, id);
+    buf_strcpy(buf, id);
     FREE(&id);
   }
 
-  if (mutt_buffer_get_field("Content-ID: ", buf, MUTT_COMP_NO_FLAGS, false,
-                            NULL, NULL, NULL) == 0)
+  if (buf_get_field("Content-ID: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) == 0)
   {
-    if (!mutt_str_equal(id, mutt_buffer_string(buf)))
+    if (!mutt_str_equal(id, buf_string(buf)))
     {
-      if (check_cid(mutt_buffer_string(buf)))
+      if (check_cid(buf_string(buf)))
       {
-        mutt_param_set(&cur_att->body->parameter, "content-id", mutt_buffer_string(buf));
+        mutt_param_set(&cur_att->body->parameter, "content-id", buf_string(buf));
         menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
         notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
         mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
@@ -912,7 +910,7 @@ static int op_attachment_edit_content_id(struct ComposeSharedData *shared, int o
     }
   }
 
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
 
   if (rc != FR_ERROR)
     mutt_clear_error();
@@ -929,26 +927,25 @@ static int op_attachment_edit_description(struct ComposeSharedData *shared, int 
     return FR_NO_ACTION;
 
   int rc = FR_NO_ACTION;
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
 
   struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
                                                  shared->adata->menu);
-  mutt_buffer_strcpy(buf, cur_att->body->description);
+  buf_strcpy(buf, cur_att->body->description);
 
   /* header names should not be translated */
-  if (mutt_buffer_get_field("Description: ", buf, MUTT_COMP_NO_FLAGS, false,
-                            NULL, NULL, NULL) == 0)
+  if (buf_get_field("Description: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) == 0)
   {
-    if (!mutt_str_equal(cur_att->body->description, mutt_buffer_string(buf)))
+    if (!mutt_str_equal(cur_att->body->description, buf_string(buf)))
     {
-      mutt_str_replace(&cur_att->body->description, mutt_buffer_string(buf));
+      mutt_str_replace(&cur_att->body->description, buf_string(buf));
       menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
       mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
       rc = FR_SUCCESS;
     }
   }
 
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   return rc;
 }
 
@@ -961,17 +958,17 @@ static int op_attachment_edit_encoding(struct ComposeSharedData *shared, int op)
     return FR_NO_ACTION;
 
   int rc = FR_NO_ACTION;
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
 
   struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
                                                  shared->adata->menu);
-  mutt_buffer_strcpy(buf, ENCODING(cur_att->body->encoding));
+  buf_strcpy(buf, ENCODING(cur_att->body->encoding));
 
-  if ((mutt_buffer_get_field("Content-Transfer-Encoding: ", buf,
-                             MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) == 0) &&
-      !mutt_buffer_is_empty(buf))
+  if ((buf_get_field("Content-Transfer-Encoding: ", buf, MUTT_COMP_NO_FLAGS,
+                     false, NULL, NULL, NULL) == 0) &&
+      !buf_is_empty(buf))
   {
-    int enc = mutt_check_encoding(mutt_buffer_string(buf));
+    int enc = mutt_check_encoding(buf_string(buf));
     if ((enc != ENC_OTHER) && (enc != ENC_UUENCODED))
     {
       if (enc != cur_att->body->encoding)
@@ -991,7 +988,7 @@ static int op_attachment_edit_encoding(struct ComposeSharedData *shared, int op)
     }
   }
 
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   return rc;
 }
 
@@ -1004,17 +1001,17 @@ static int op_attachment_edit_language(struct ComposeSharedData *shared, int op)
     return FR_NO_ACTION;
 
   int rc = FR_NO_ACTION;
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
   struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
                                                  shared->adata->menu);
 
-  mutt_buffer_strcpy(buf, cur_att->body->language);
-  if (mutt_buffer_get_field("Content-Language: ", buf, MUTT_COMP_NO_FLAGS,
-                            false, NULL, NULL, NULL) == 0)
+  buf_strcpy(buf, cur_att->body->language);
+  if (buf_get_field("Content-Language: ", buf, MUTT_COMP_NO_FLAGS, false, NULL,
+                    NULL, NULL) == 0)
   {
-    if (!mutt_str_equal(cur_att->body->language, mutt_buffer_string(buf)))
+    if (!mutt_str_equal(cur_att->body->language, buf_string(buf)))
     {
-      mutt_str_replace(&cur_att->body->language, mutt_buffer_string(buf));
+      mutt_str_replace(&cur_att->body->language, buf_string(buf));
       menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
       notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
       mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
@@ -1028,7 +1025,7 @@ static int op_attachment_edit_language(struct ComposeSharedData *shared, int op)
     rc = FR_ERROR;
   }
 
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   return rc;
 }
 
@@ -1307,53 +1304,51 @@ static int op_attachment_move_up(struct ComposeSharedData *shared, int op)
 static int op_attachment_new_mime(struct ComposeSharedData *shared, int op)
 {
   int rc = FR_NO_ACTION;
-  struct Buffer *fname = mutt_buffer_pool_get();
+  struct Buffer *fname = buf_pool_get();
   struct Buffer *type = NULL;
   struct AttachPtr *ap = NULL;
 
-  if ((mutt_buffer_get_field(_("New file: "), fname, MUTT_COMP_FILE, false,
-                             NULL, NULL, NULL) != 0) ||
-      mutt_buffer_is_empty(fname))
+  if ((buf_get_field(_("New file: "), fname, MUTT_COMP_FILE, false, NULL, NULL, NULL) != 0) ||
+      buf_is_empty(fname))
   {
     goto done;
   }
-  mutt_buffer_expand_path(fname);
+  buf_expand_path(fname);
 
   /* Call to lookup_mime_type () ?  maybe later */
-  type = mutt_buffer_pool_get();
-  if ((mutt_buffer_get_field("Content-Type: ", type, MUTT_COMP_NO_FLAGS, false,
-                             NULL, NULL, NULL) != 0) ||
-      mutt_buffer_is_empty(type))
+  type = buf_pool_get();
+  if ((buf_get_field("Content-Type: ", type, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0) ||
+      buf_is_empty(type))
   {
     goto done;
   }
 
   rc = FR_ERROR;
-  char *p = strchr(mutt_buffer_string(type), '/');
+  char *p = strchr(buf_string(type), '/');
   if (!p)
   {
     mutt_error(_("Content-Type is of the form base/sub"));
     goto done;
   }
   *p++ = 0;
-  enum ContentType itype = mutt_check_mime_type(mutt_buffer_string(type));
+  enum ContentType itype = mutt_check_mime_type(buf_string(type));
   if (itype == TYPE_OTHER)
   {
-    mutt_error(_("Unknown Content-Type %s"), mutt_buffer_string(type));
+    mutt_error(_("Unknown Content-Type %s"), buf_string(type));
     goto done;
   }
 
   ap = mutt_aptr_new();
   /* Touch the file */
-  FILE *fp = mutt_file_fopen(mutt_buffer_string(fname), "w");
+  FILE *fp = mutt_file_fopen(buf_string(fname), "w");
   if (!fp)
   {
-    mutt_error(_("Can't create file %s"), mutt_buffer_string(fname));
+    mutt_error(_("Can't create file %s"), buf_string(fname));
     goto done;
   }
   mutt_file_fclose(&fp);
 
-  ap->body = mutt_make_file_attach(mutt_buffer_string(fname), shared->sub);
+  ap->body = mutt_make_file_attach(buf_string(fname), shared->sub);
   if (!ap->body)
   {
     mutt_error(_("What we have here is a failure to make an attachment"));
@@ -1380,8 +1375,8 @@ static int op_attachment_new_mime(struct ComposeSharedData *shared, int op)
 
 done:
   mutt_aptr_free(&ap);
-  mutt_buffer_pool_release(&type);
-  mutt_buffer_pool_release(&fname);
+  buf_pool_release(&type);
+  buf_pool_release(&fname);
   return rc;
 }
 
@@ -1421,17 +1416,17 @@ static int op_attachment_rename_attachment(struct ComposeSharedData *shared, int
     src = cur_att->body->d_filename;
   else
     src = cur_att->body->filename;
-  struct Buffer *fname = mutt_buffer_pool_get();
-  mutt_buffer_strcpy(fname, mutt_path_basename(NONULL(src)));
-  int rc = mutt_buffer_get_field(_("Send attachment with name: "), fname,
-                                 MUTT_COMP_FILE, false, NULL, NULL, NULL);
+  struct Buffer *fname = buf_pool_get();
+  buf_strcpy(fname, mutt_path_basename(NONULL(src)));
+  int rc = buf_get_field(_("Send attachment with name: "), fname,
+                         MUTT_COMP_FILE, false, NULL, NULL, NULL);
   if (rc == 0)
   {
     // It's valid to set an empty string here, to erase what was set
-    mutt_str_replace(&cur_att->body->d_filename, mutt_buffer_string(fname));
+    mutt_str_replace(&cur_att->body->d_filename, buf_string(fname));
     menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
   }
-  mutt_buffer_pool_release(&fname);
+  buf_pool_release(&fname);
   return FR_SUCCESS;
 }
 
@@ -1752,37 +1747,36 @@ static int op_compose_rename_file(struct ComposeSharedData *shared, int op)
     mutt_error(_("Can't rename multipart attachments"));
     return FR_ERROR;
   }
-  struct Buffer *fname = mutt_buffer_pool_get();
-  mutt_buffer_strcpy(fname, cur_att->body->filename);
-  mutt_buffer_pretty_mailbox(fname);
-  if ((mutt_buffer_get_field(_("Rename to: "), fname, MUTT_COMP_FILE, false,
-                             NULL, NULL, NULL) == 0) &&
-      !mutt_buffer_is_empty(fname))
+  struct Buffer *fname = buf_pool_get();
+  buf_strcpy(fname, cur_att->body->filename);
+  buf_pretty_mailbox(fname);
+  if ((buf_get_field(_("Rename to: "), fname, MUTT_COMP_FILE, false, NULL, NULL, NULL) == 0) &&
+      !buf_is_empty(fname))
   {
     struct stat st = { 0 };
     if (stat(cur_att->body->filename, &st) == -1)
     {
       /* L10N: "stat" is a system call. Do "man 2 stat" for more information. */
-      mutt_error(_("Can't stat %s: %s"), mutt_buffer_string(fname), strerror(errno));
-      mutt_buffer_pool_release(&fname);
+      mutt_error(_("Can't stat %s: %s"), buf_string(fname), strerror(errno));
+      buf_pool_release(&fname);
       return FR_ERROR;
     }
 
-    mutt_buffer_expand_path(fname);
-    if (mutt_file_rename(cur_att->body->filename, mutt_buffer_string(fname)))
+    buf_expand_path(fname);
+    if (mutt_file_rename(cur_att->body->filename, buf_string(fname)))
     {
-      mutt_buffer_pool_release(&fname);
+      buf_pool_release(&fname);
       return FR_ERROR;
     }
 
-    mutt_str_replace(&cur_att->body->filename, mutt_buffer_string(fname));
+    mutt_str_replace(&cur_att->body->filename, buf_string(fname));
     menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
 
     if (cur_att->body->stamp >= st.st_mtime)
       mutt_stamp_attachment(cur_att->body);
     mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
   }
-  mutt_buffer_pool_release(&fname);
+  buf_pool_release(&fname);
   return FR_SUCCESS;
 }
 
@@ -1804,14 +1798,14 @@ static int op_compose_send_message(struct ComposeSharedData *shared, int op)
     return FR_NO_ACTION;
 #endif
 
-  if (!shared->fcc_set && !mutt_buffer_is_empty(shared->fcc))
+  if (!shared->fcc_set && !buf_is_empty(shared->fcc))
   {
     const enum QuadOption c_copy = cs_subset_quad(shared->sub, "copy");
     enum QuadOption ans = query_quadoption(c_copy, _("Save a copy of this message?"));
     if (ans == MUTT_ABORT)
       return FR_NO_ACTION;
     else if (ans == MUTT_NO)
-      mutt_buffer_reset(shared->fcc);
+      buf_reset(shared->fcc);
   }
 
   shared->rc = 0;
@@ -1824,32 +1818,32 @@ static int op_compose_send_message(struct ComposeSharedData *shared, int op)
 static int op_compose_write_message(struct ComposeSharedData *shared, int op)
 {
   int rc = FR_NO_ACTION;
-  struct Buffer *fname = mutt_buffer_pool_get();
+  struct Buffer *fname = buf_pool_get();
   if (shared->mailbox)
   {
-    mutt_buffer_strcpy(fname, mailbox_path(shared->mailbox));
-    mutt_buffer_pretty_mailbox(fname);
+    buf_strcpy(fname, mailbox_path(shared->mailbox));
+    buf_pretty_mailbox(fname);
   }
   if (shared->adata->actx->idxlen)
     shared->email->body = shared->adata->actx->idx[0]->body;
-  if ((mutt_buffer_enter_fname(_("Write message to mailbox"), fname, true,
-                               shared->mailbox, false, NULL, NULL, MUTT_SEL_NO_FLAGS) != -1) &&
-      !mutt_buffer_is_empty(fname))
+  if ((buf_enter_fname(_("Write message to mailbox"), fname, true, shared->mailbox,
+                       false, NULL, NULL, MUTT_SEL_NO_FLAGS) != -1) &&
+      !buf_is_empty(fname))
   {
-    mutt_message(_("Writing message to %s ..."), mutt_buffer_string(fname));
-    mutt_buffer_expand_path(fname);
+    mutt_message(_("Writing message to %s ..."), buf_string(fname));
+    buf_expand_path(fname);
 
     if (shared->email->body->next)
       shared->email->body = mutt_make_multipart(shared->email->body);
 
-    if (mutt_write_fcc(mutt_buffer_string(fname), shared->email, NULL, false,
-                       NULL, NULL, shared->sub) == 0)
+    if (mutt_write_fcc(buf_string(fname), shared->email, NULL, false, NULL,
+                       NULL, shared->sub) == 0)
       mutt_message(_("Message written"));
 
     shared->email->body = mutt_remove_multipart(shared->email->body);
     rc = FR_SUCCESS;
   }
-  mutt_buffer_pool_release(&fname);
+  buf_pool_release(&fname);
   return rc;
 }
 

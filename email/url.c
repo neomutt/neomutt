@@ -359,49 +359,49 @@ int url_tobuffer(struct Url *url, struct Buffer *buf, uint8_t flags)
   if (url->scheme == U_UNKNOWN)
     return -1;
 
-  mutt_buffer_printf(buf, "%s:", mutt_map_get_name(url->scheme, UrlMap));
+  buf_printf(buf, "%s:", mutt_map_get_name(url->scheme, UrlMap));
 
   if (url->host)
   {
     if (!(flags & U_PATH))
-      mutt_buffer_addstr(buf, "//");
+      buf_addstr(buf, "//");
 
     if (url->user && (url->user[0] || !(flags & U_PATH)))
     {
       char str[256] = { 0 };
       url_pct_encode(str, sizeof(str), url->user);
-      mutt_buffer_add_printf(buf, "%s@", str);
+      buf_add_printf(buf, "%s@", str);
     }
 
     if (strchr(url->host, ':'))
-      mutt_buffer_add_printf(buf, "[%s]", url->host);
+      buf_add_printf(buf, "[%s]", url->host);
     else
-      mutt_buffer_add_printf(buf, "%s", url->host);
+      buf_add_printf(buf, "%s", url->host);
 
     if (url->port)
-      mutt_buffer_add_printf(buf, ":%hu/", url->port);
+      buf_add_printf(buf, ":%hu/", url->port);
     else
-      mutt_buffer_addstr(buf, "/");
+      buf_addstr(buf, "/");
   }
 
   if (url->path)
-    mutt_buffer_addstr(buf, url->path);
+    buf_addstr(buf, url->path);
 
   if (STAILQ_FIRST(&url->query_strings))
   {
-    mutt_buffer_addstr(buf, "?");
+    buf_addstr(buf, "?");
 
     char str[256] = { 0 };
     struct UrlQuery *np = NULL;
     STAILQ_FOREACH(np, &url->query_strings, entries)
     {
       url_pct_encode(str, sizeof(str), np->name);
-      mutt_buffer_addstr(buf, str);
-      mutt_buffer_addstr(buf, "=");
+      buf_addstr(buf, str);
+      buf_addstr(buf, "=");
       url_pct_encode(str, sizeof(str), np->value);
-      mutt_buffer_addstr(buf, str);
+      buf_addstr(buf, str);
       if (STAILQ_NEXT(np, entries))
-        mutt_buffer_addstr(buf, "&");
+        buf_addstr(buf, "&");
     }
   }
 
@@ -422,13 +422,13 @@ int url_tostring(struct Url *url, char *dest, size_t len, uint8_t flags)
   if (!url || !dest)
     return -1;
 
-  struct Buffer *dest_buf = mutt_buffer_pool_get();
+  struct Buffer *dest_buf = buf_pool_get();
 
   int retval = url_tobuffer(url, dest_buf, flags);
   if (retval == 0)
-    mutt_str_copy(dest, mutt_buffer_string(dest_buf), len);
+    mutt_str_copy(dest, buf_string(dest_buf), len);
 
-  mutt_buffer_pool_release(&dest_buf);
+  buf_pool_release(&dest_buf);
 
   return retval;
 }

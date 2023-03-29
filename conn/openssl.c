@@ -555,7 +555,7 @@ static int ssl_init(void)
   if (RAND_status() != 1)
   {
     /* load entropy from files */
-    struct Buffer *path = mutt_buffer_pool_get();
+    struct Buffer *path = buf_pool_get();
     const char *const c_entropy_file = cs_subset_path(NeoMutt->sub, "entropy_file");
     add_entropy(c_entropy_file);
     add_entropy(RAND_file_name(path->data, path->dsize));
@@ -563,14 +563,14 @@ static int ssl_init(void)
 /* load entropy from egd sockets */
 #ifdef HAVE_RAND_EGD
     add_entropy(mutt_str_getenv("EGDSOCKET"));
-    mutt_buffer_printf(path, "%s/.entropy", NONULL(HomeDir));
-    add_entropy(mutt_buffer_string(path));
+    buf_printf(path, "%s/.entropy", NONULL(HomeDir));
+    add_entropy(buf_string(path));
     add_entropy(TMPDIR "/entropy");
 #endif
 
     /* shuffle $RANDFILE (or ~/.rnd if unset) */
     RAND_write_file(RAND_file_name(path->data, path->dsize));
-    mutt_buffer_pool_release(&path);
+    buf_pool_release(&path);
 
     mutt_clear_error();
     if (RAND_status() != 1)

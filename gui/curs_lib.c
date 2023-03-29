@@ -310,20 +310,20 @@ struct KeyEvent mutt_getch(void)
  */
 void mutt_edit_file(const char *editor, const char *file)
 {
-  struct Buffer *cmd = mutt_buffer_pool_get();
+  struct Buffer *cmd = buf_pool_get();
 
   mutt_endwin();
-  mutt_buffer_file_expand_fmt_quote(cmd, editor, file);
-  if (mutt_system(mutt_buffer_string(cmd)) != 0)
+  buf_file_expand_fmt_quote(cmd, editor, file);
+  if (mutt_system(buf_string(cmd)) != 0)
   {
-    mutt_error(_("Error running \"%s\""), mutt_buffer_string(cmd));
+    mutt_error(_("Error running \"%s\""), buf_string(cmd));
   }
   /* the terminal may have been resized while the editor owned it */
   mutt_resize_screen();
   keypad(stdscr, true);
   clearok(stdscr, true);
 
-  mutt_buffer_pool_release(&cmd);
+  buf_pool_release(&cmd);
 }
 
 /**
@@ -429,7 +429,7 @@ int mutt_any_key_to_continue(const char *s)
 }
 
 /**
- * mutt_buffer_enter_fname - Ask the user to select a file
+ * buf_enter_fname - Ask the user to select a file
  * @param[in]  prompt   Prompt
  * @param[in]  fname    Buffer for the result
  * @param[in]  mailbox  If true, select mailboxes
@@ -441,9 +441,9 @@ int mutt_any_key_to_continue(const char *s)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
-                            bool mailbox, struct Mailbox *m, bool multiple,
-                            char ***files, int *numfiles, SelectFileFlags flags)
+int buf_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
+                    struct Mailbox *m, bool multiple, char ***files,
+                    int *numfiles, SelectFileFlags flags)
 {
   struct MuttWindow *win = msgwin_get_window();
   if (!win)
@@ -456,8 +456,8 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
   mutt_window_mvaddstr(win, 0, 0, prompt);
   mutt_window_addstr(win, _(" ('?' for list): "));
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
-  if (!mutt_buffer_is_empty(fname))
-    mutt_window_addstr(win, mutt_buffer_string(fname));
+  if (!buf_is_empty(fname))
+    mutt_window_addstr(win, buf_string(fname));
   mutt_window_clrtoeol(win);
   mutt_refresh();
 
@@ -479,7 +479,7 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
   }
   else if (ch.ch == '?')
   {
-    mutt_buffer_reset(fname);
+    buf_reset(fname);
 
     if (flags == MUTT_SEL_NO_FLAGS)
       flags = MUTT_SEL_FOLDER;
@@ -487,7 +487,7 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
       flags |= MUTT_SEL_MULTI;
     if (mailbox)
       flags |= MUTT_SEL_MAILBOX;
-    mutt_buffer_select_file(fname, flags, m, files, numfiles);
+    buf_select_file(fname, flags, m, files, numfiles);
   }
   else
   {
@@ -499,11 +499,11 @@ int mutt_buffer_enter_fname(const char *prompt, struct Buffer *fname,
     else
       mutt_unget_op(ch.op);
 
-    mutt_buffer_alloc(fname, 1024);
-    if (mutt_buffer_get_field(pc, fname, (mailbox ? MUTT_COMP_FILE_MBOX : MUTT_COMP_FILE) | MUTT_COMP_CLEAR,
-                              multiple, m, files, numfiles) != 0)
+    buf_alloc(fname, 1024);
+    if (buf_get_field(pc, fname, (mailbox ? MUTT_COMP_FILE_MBOX : MUTT_COMP_FILE) | MUTT_COMP_CLEAR,
+                      multiple, m, files, numfiles) != 0)
     {
-      mutt_buffer_reset(fname);
+      buf_reset(fname);
     }
     FREE(&pc);
   }

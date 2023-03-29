@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_buffer_pool_get()
+ * Test code for buf_pool_release()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,14 +26,18 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 
-void test_mutt_buffer_pool_get(void)
+void test_buf_pool_release(void)
 {
-  // struct Buffer *mutt_buffer_pool_get(void);
+  // void buf_pool_release(struct Buffer **pbuf);
 
   {
-    struct Buffer *buf = mutt_buffer_pool_get();
-    TEST_CHECK(buf != NULL);
-    mutt_buffer_pool_release(&buf);
-    mutt_buffer_pool_free();
+    buf_pool_release(NULL);
+    TEST_CHECK_(1, "buf_pool_release(NULL)");
+  }
+
+  {
+    struct Buffer *buf = NULL;
+    buf_pool_release(&buf);
+    TEST_CHECK_(1, "buf_pool_release(&buf)");
   }
 }

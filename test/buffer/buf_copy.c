@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_buffer_dealloc()
+ * Test code for buf_copy()
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -23,8 +23,45 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stddef.h>
+#include <stdbool.h>
+#include "mutt/lib.h"
 
-void test_mutt_buffer_dealloc(void)
+void test_buf_copy(void)
 {
-  // void mutt_buffer_dealloc(struct Buffer *buf);
+  // size_t buf_copy(struct Buffer *dst, const struct Buffer *src);
+
+  {
+    TEST_CHECK(buf_copy(NULL, NULL) == 0);
+  }
+
+  {
+    struct Buffer buf1 = buf_make(0);
+    struct Buffer buf2 = buf_make(0);
+
+    size_t len = buf_copy(&buf2, &buf1);
+
+    TEST_CHECK(len == 0);
+    TEST_CHECK(buf_is_empty(&buf2) == true);
+
+    buf_dealloc(&buf1);
+    buf_dealloc(&buf2);
+  }
+
+  {
+    char *src = "abcdefghij";
+
+    struct Buffer buf1 = buf_make(32);
+    struct Buffer buf2 = buf_make(0);
+
+    buf_strcpy(&buf1, src);
+
+    size_t len = buf_copy(&buf2, &buf1);
+
+    TEST_CHECK(len == 10);
+    TEST_CHECK(mutt_str_equal(buf_string(&buf1), buf_string(&buf2)));
+
+    buf_dealloc(&buf1);
+    buf_dealloc(&buf2);
+  }
 }

@@ -310,16 +310,16 @@ int slist_to_buffer(const struct Slist *list, struct Buffer *buf)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &list->head, entries)
   {
-    mutt_buffer_addstr(buf, np->data);
+    buf_addstr(buf, np->data);
     if (STAILQ_NEXT(np, entries))
     {
       const int sep = (list->flags & SLIST_SEP_MASK);
       if (sep == SLIST_SEP_COMMA)
-        mutt_buffer_addch(buf, ',');
+        buf_addch(buf, ',');
       else if (sep == SLIST_SEP_COLON)
-        mutt_buffer_addch(buf, ':');
+        buf_addch(buf, ':');
       else
-        mutt_buffer_addch(buf, ' ');
+        buf_addch(buf, ' ');
     }
   }
 

@@ -470,13 +470,12 @@ static int smtp_code(const char *str, size_t len, int *n)
 static int smtp_get_auth_response(struct Connection *conn, struct Buffer *input_buf,
                                   int *smtp_rc, struct Buffer *response_buf)
 {
-  mutt_buffer_reset(response_buf);
+  buf_reset(response_buf);
   do
   {
     if (mutt_socket_buffer_readln(input_buf, conn) < 0)
       return -1;
-    if (!smtp_code(mutt_buffer_string(input_buf),
-                   mutt_buffer_len(input_buf) + 1 /* number of bytes */, smtp_rc))
+    if (!smtp_code(buf_string(input_buf), buf_len(input_buf) + 1 /* number of bytes */, smtp_rc))
     {
       return -1;
     }
@@ -484,13 +483,13 @@ static int smtp_get_auth_response(struct Connection *conn, struct Buffer *input_
     if (*smtp_rc != SMTP_READY)
       break;
 
-    const char *smtp_response = mutt_buffer_string(input_buf) + 3;
+    const char *smtp_response = buf_string(input_buf) + 3;
     if (*smtp_response)
     {
       smtp_response++;
-      mutt_buffer_addstr(response_buf, smtp_response);
+      buf_addstr(response_buf, smtp_response);
     }
-  } while (mutt_buffer_string(input_buf)[3] == '-');
+  } while (buf_string(input_buf)[3] == '-');
 
   return 0;
 }
@@ -526,11 +525,11 @@ static int smtp_auth_gsasl(struct SmtpAccountData *adata, const char *mechlist)
   if (!OptNoCurses)
     mutt_message(_("Authenticating (%s)..."), chosen_mech);
 
-  input_buf = mutt_buffer_pool_get();
-  output_buf = mutt_buffer_pool_get();
-  smtp_response_buf = mutt_buffer_pool_get();
+  input_buf = buf_pool_get();
+  output_buf = buf_pool_get();
+  smtp_response_buf = buf_pool_get();
 
-  mutt_buffer_printf(output_buf, "AUTH %s", chosen_mech);
+  buf_printf(output_buf, "AUTH %s", chosen_mech);
 
   /* Work around broken SMTP servers. See Debian #1010658.
    * The msmtp source also forces IR for PLAIN because the author
@@ -546,16 +545,16 @@ static int smtp_auth_gsasl(struct SmtpAccountData *adata, const char *mechlist)
       goto fail;
     }
 
-    mutt_buffer_addch(output_buf, ' ');
-    mutt_buffer_addstr(output_buf, gsasl_step_output);
+    buf_addch(output_buf, ' ');
+    buf_addstr(output_buf, gsasl_step_output);
     gsasl_free(gsasl_step_output);
   }
 
-  mutt_buffer_addstr(output_buf, "\r\n");
+  buf_addstr(output_buf, "\r\n");
 
   do
   {
-    if (mutt_socket_send(adata->conn, mutt_buffer_string(output_buf)) < 0)
+    if (mutt_socket_send(adata->conn, buf_string(output_buf)) < 0)
       goto fail;
 
     if (smtp_get_auth_response(adata->conn, input_buf, &smtp_rc, smtp_response_buf) < 0)
@@ -565,12 +564,11 @@ static int smtp_auth_gsasl(struct SmtpAccountData *adata, const char *mechlist)
       break;
 
     char *gsasl_step_output = NULL;
-    gsasl_rc = gsasl_step64(gsasl_session, mutt_buffer_string(smtp_response_buf),
-                            &gsasl_step_output);
+    gsasl_rc = gsasl_step64(gsasl_session, buf_string(smtp_response_buf), &gsasl_step_output);
     if ((gsasl_rc == GSASL_NEEDS_MORE) || (gsasl_rc == GSASL_OK))
     {
-      mutt_buffer_strcpy(output_buf, gsasl_step_output);
-      mutt_buffer_addstr(output_buf, "\r\n");
+      buf_strcpy(output_buf, gsasl_step_output);
+      buf_addstr(output_buf, "\r\n");
       gsasl_free(gsasl_step_output);
     }
     else
@@ -590,9 +588,9 @@ static int smtp_auth_gsasl(struct SmtpAccountData *adata, const char *mechlist)
     rc = SMTP_AUTH_SUCCESS;
 
 fail:
-  mutt_buffer_pool_release(&input_buf);
-  mutt_buffer_pool_release(&output_buf);
-  mutt_buffer_pool_release(&smtp_response_buf);
+  buf_pool_release(&input_buf);
+  buf_pool_release(&output_buf);
+  buf_pool_release(&smtp_response_buf);
   mutt_gsasl_client_finish(&gsasl_session);
 
   if (rc == SMTP_AUTH_FAIL)

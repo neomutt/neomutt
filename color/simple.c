@@ -126,10 +126,10 @@ struct AttrColor *simple_color_set(enum ColorId cid, int fg, int bg, int attrs)
   ac->curses_color = cc;
   ac->attrs = attrs;
 
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
   get_colorid_name(cid, buf);
   color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
 
   struct EventColor ev_c = { cid, NULL };
   notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
@@ -147,10 +147,10 @@ void simple_color_reset(enum ColorId cid)
   if (!ac)
     return;
 
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
   get_colorid_name(cid, buf);
   color_debug(LL_DEBUG5, "NT_COLOR_RESET: %s\n", buf->data);
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
 
   attr_color_clear(ac);
 

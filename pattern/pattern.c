@@ -96,15 +96,15 @@ static char LastSearchExpn[1024] = { 0 }; ///< expanded version of LastSearch
  */
 static void quote_simple(const char *str, struct Buffer *buf)
 {
-  mutt_buffer_reset(buf);
-  mutt_buffer_addch(buf, '"');
+  buf_reset(buf);
+  buf_addch(buf, '"');
   while (*str)
   {
     if ((*str == '\\') || (*str == '"'))
-      mutt_buffer_addch(buf, '\\');
-    mutt_buffer_addch(buf, *str++);
+      buf_addch(buf, '\\');
+    buf_addch(buf, *str++);
   }
-  mutt_buffer_addch(buf, '"');
+  buf_addch(buf, '"');
 }
 
 /**
@@ -116,7 +116,7 @@ void mutt_check_simple(struct Buffer *buf, const char *simple)
 {
   bool do_simple = true;
 
-  for (const char *p = mutt_buffer_string(buf); p && (p[0] != '\0'); p++)
+  for (const char *p = buf_string(buf); p && (p[0] != '\0'); p++)
   {
     if ((p[0] == '\\') && (p[1] != '\0'))
     {
@@ -135,34 +135,33 @@ void mutt_check_simple(struct Buffer *buf, const char *simple)
   if (do_simple) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
-    if (mutt_istr_equal("all", mutt_buffer_string(buf)) ||
-        mutt_str_equal("^", mutt_buffer_string(buf)) ||
-        mutt_str_equal(".", mutt_buffer_string(buf))) /* ~A is more efficient */
+    if (mutt_istr_equal("all", buf_string(buf)) || mutt_str_equal("^", buf_string(buf)) ||
+        mutt_str_equal(".", buf_string(buf))) /* ~A is more efficient */
     {
-      mutt_buffer_strcpy(buf, "~A");
+      buf_strcpy(buf, "~A");
     }
-    else if (mutt_istr_equal("del", mutt_buffer_string(buf)))
-      mutt_buffer_strcpy(buf, "~D");
-    else if (mutt_istr_equal("flag", mutt_buffer_string(buf)))
-      mutt_buffer_strcpy(buf, "~F");
-    else if (mutt_istr_equal("new", mutt_buffer_string(buf)))
-      mutt_buffer_strcpy(buf, "~N");
-    else if (mutt_istr_equal("old", mutt_buffer_string(buf)))
-      mutt_buffer_strcpy(buf, "~O");
-    else if (mutt_istr_equal("repl", mutt_buffer_string(buf)))
-      mutt_buffer_strcpy(buf, "~Q");
-    else if (mutt_istr_equal("read", mutt_buffer_string(buf)))
-      mutt_buffer_strcpy(buf, "~R");
-    else if (mutt_istr_equal("tag", mutt_buffer_string(buf)))
-      mutt_buffer_strcpy(buf, "~T");
-    else if (mutt_istr_equal("unread", mutt_buffer_string(buf)))
-      mutt_buffer_strcpy(buf, "~U");
+    else if (mutt_istr_equal("del", buf_string(buf)))
+      buf_strcpy(buf, "~D");
+    else if (mutt_istr_equal("flag", buf_string(buf)))
+      buf_strcpy(buf, "~F");
+    else if (mutt_istr_equal("new", buf_string(buf)))
+      buf_strcpy(buf, "~N");
+    else if (mutt_istr_equal("old", buf_string(buf)))
+      buf_strcpy(buf, "~O");
+    else if (mutt_istr_equal("repl", buf_string(buf)))
+      buf_strcpy(buf, "~Q");
+    else if (mutt_istr_equal("read", buf_string(buf)))
+      buf_strcpy(buf, "~R");
+    else if (mutt_istr_equal("tag", buf_string(buf)))
+      buf_strcpy(buf, "~T");
+    else if (mutt_istr_equal("unread", buf_string(buf)))
+      buf_strcpy(buf, "~U");
     else
     {
-      struct Buffer *tmp = mutt_buffer_pool_get();
-      quote_simple(mutt_buffer_string(buf), tmp);
-      mutt_file_expand_fmt(buf, simple, mutt_buffer_string(tmp));
-      mutt_buffer_pool_release(&tmp);
+      struct Buffer *tmp = buf_pool_get();
+      quote_simple(buf_string(buf), tmp);
+      mutt_file_expand_fmt(buf, simple, buf_string(tmp));
+      buf_pool_release(&tmp);
     }
   }
 }
@@ -245,16 +244,16 @@ int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Me
 {
   int rc = -1;
   struct Progress *progress = NULL;
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
 
-  mutt_buffer_strcpy(buf, mdata->limit);
+  buf_strcpy(buf, mdata->limit);
   if (prompt)
   {
-    if ((mutt_buffer_get_field(prompt, buf, MUTT_COMP_PATTERN | MUTT_COMP_CLEAR,
-                               false, NULL, NULL, NULL) != 0) ||
-        mutt_buffer_is_empty(buf))
+    if ((buf_get_field(prompt, buf, MUTT_COMP_PATTERN | MUTT_COMP_CLEAR, false,
+                       NULL, NULL, NULL) != 0) ||
+        buf_is_empty(buf))
     {
-      mutt_buffer_pool_release(&buf);
+      buf_pool_release(&buf);
       return -1;
     }
   }
@@ -263,7 +262,7 @@ int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Me
 
   bool match_all = false;
   struct PatternList *pat = NULL;
-  char *simple = mutt_buffer_strdup(buf);
+  char *simple = buf_strdup(buf);
   if (simple)
   {
     mutt_check_simple(buf, MUTT_ALIAS_SIMPLESEARCH);
@@ -272,12 +271,12 @@ int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Me
       pbuf++;
     match_all = mutt_str_equal(pbuf, "~A");
 
-    struct Buffer err = mutt_buffer_make(0);
+    struct Buffer err = buf_make(0);
     pat = mutt_pattern_comp(NULL, menu, buf->data, MUTT_PC_FULL_MSG, &err);
     if (!pat)
     {
-      mutt_error("%s", mutt_buffer_string(&err));
-      mutt_buffer_dealloc(&err);
+      mutt_error("%s", buf_string(&err));
+      buf_dealloc(&err);
       goto bail;
     }
   }
@@ -326,7 +325,7 @@ int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Me
   rc = 0;
 
 bail:
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   FREE(&simple);
   mutt_pattern_free(&pat);
 
@@ -351,23 +350,23 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
   struct Buffer *err = NULL;
   int rc = -1;
   struct Progress *progress = NULL;
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
 
-  mutt_buffer_strcpy(buf, NONULL(mv->pattern));
+  buf_strcpy(buf, NONULL(mv->pattern));
   if (prompt || (op != MUTT_LIMIT))
   {
-    if ((mutt_buffer_get_field(prompt, buf, MUTT_COMP_PATTERN | MUTT_COMP_CLEAR,
-                               false, NULL, NULL, NULL) != 0) ||
-        mutt_buffer_is_empty(buf))
+    if ((buf_get_field(prompt, buf, MUTT_COMP_PATTERN | MUTT_COMP_CLEAR, false,
+                       NULL, NULL, NULL) != 0) ||
+        buf_is_empty(buf))
     {
-      mutt_buffer_pool_release(&buf);
+      buf_pool_release(&buf);
       return -1;
     }
   }
 
   mutt_message(_("Compiling search pattern..."));
 
-  char *simple = mutt_buffer_strdup(buf);
+  char *simple = buf_strdup(buf);
   const char *const c_simple_search = cs_subset_string(NeoMutt->sub, "simple_search");
   mutt_check_simple(buf, NONULL(c_simple_search));
   const char *pbuf = buf->data;
@@ -375,11 +374,11 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
     pbuf++;
   const bool match_all = mutt_str_equal(pbuf, "~A");
 
-  err = mutt_buffer_pool_get();
+  err = buf_pool_get();
   struct PatternList *pat = mutt_pattern_comp(m, mv->menu, buf->data, MUTT_PC_FULL_MSG, err);
   if (!pat)
   {
-    mutt_error("%s", mutt_buffer_string(err));
+    mutt_error("%s", buf_string(err));
     goto bail;
   }
 
@@ -475,8 +474,8 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
   rc = 0;
 
 bail:
-  mutt_buffer_pool_release(&buf);
-  mutt_buffer_pool_release(&err);
+  buf_pool_release(&buf);
+  buf_pool_release(&err);
   FREE(&simple);
   mutt_pattern_free(&pat);
 
@@ -500,14 +499,11 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
 
   if ((*LastSearch == '\0') || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
-    buf = mutt_buffer_pool_get();
-    mutt_buffer_strcpy(buf, (LastSearch[0] != '\0') ? LastSearch : "");
-    if ((mutt_buffer_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
-                                   _("Search for: ") :
-                                   _("Reverse search for: "),
-                               buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false,
-                               NULL, NULL, NULL) != 0) ||
-        mutt_buffer_is_empty(buf))
+    buf = buf_pool_get();
+    buf_strcpy(buf, (LastSearch[0] != '\0') ? LastSearch : "");
+    if ((buf_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
+                       buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL, NULL) != 0) ||
+        buf_is_empty(buf))
     {
       goto done;
     }
@@ -519,18 +515,18 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
 
     /* compare the *expanded* version of the search pattern in case
      * $simple_search has changed while we were searching */
-    struct Buffer *tmp = mutt_buffer_pool_get();
-    mutt_buffer_copy(tmp, buf);
+    struct Buffer *tmp = buf_pool_get();
+    buf_copy(tmp, buf);
     const char *const c_simple_search = cs_subset_string(NeoMutt->sub, "simple_search");
     mutt_check_simple(tmp, NONULL(c_simple_search));
 
-    if (!SearchPattern || !mutt_str_equal(mutt_buffer_string(tmp), LastSearchExpn))
+    if (!SearchPattern || !mutt_str_equal(buf_string(tmp), LastSearchExpn))
     {
       struct Buffer err;
-      mutt_buffer_init(&err);
+      buf_init(&err);
       OptSearchInvalid = true;
-      mutt_str_copy(LastSearch, mutt_buffer_string(buf), sizeof(LastSearch));
-      mutt_str_copy(LastSearchExpn, mutt_buffer_string(tmp), sizeof(LastSearchExpn));
+      mutt_str_copy(LastSearch, buf_string(buf), sizeof(LastSearch));
+      mutt_str_copy(LastSearchExpn, buf_string(tmp), sizeof(LastSearchExpn));
       mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&SearchPattern);
       err.dsize = 256;
@@ -538,8 +534,8 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
       SearchPattern = mutt_pattern_comp(m, menu, tmp->data, MUTT_PC_FULL_MSG, &err);
       if (!SearchPattern)
       {
-        mutt_buffer_pool_release(&buf);
-        mutt_buffer_pool_release(&tmp);
+        buf_pool_release(&buf);
+        buf_pool_release(&tmp);
         mutt_error("%s", err.data);
         FREE(&err.data);
         LastSearch[0] = '\0';
@@ -550,7 +546,7 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
       mutt_clear_error();
     }
 
-    mutt_buffer_pool_release(&tmp);
+    buf_pool_release(&tmp);
   }
 
   if (OptSearchInvalid)
@@ -644,7 +640,7 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
   mutt_error(_("Not found"));
 done:
   progress_free(&progress);
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   return rc;
 }
 
@@ -666,14 +662,11 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
 
   if ((*LastSearch == '\0') || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
-    buf = mutt_buffer_pool_get();
-    mutt_buffer_strcpy(buf, (LastSearch[0] != '\0') ? LastSearch : "");
-    if ((mutt_buffer_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
-                                   _("Search for: ") :
-                                   _("Reverse search for: "),
-                               buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false,
-                               NULL, NULL, NULL) != 0) ||
-        mutt_buffer_is_empty(buf))
+    buf = buf_pool_get();
+    buf_strcpy(buf, (LastSearch[0] != '\0') ? LastSearch : "");
+    if ((buf_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
+                       buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL, NULL) != 0) ||
+        buf_is_empty(buf))
     {
       goto done;
     }
@@ -685,17 +678,17 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
 
     /* compare the *expanded* version of the search pattern in case
      * $simple_search has changed while we were searching */
-    struct Buffer *tmp = mutt_buffer_pool_get();
-    mutt_buffer_copy(tmp, buf);
+    struct Buffer *tmp = buf_pool_get();
+    buf_copy(tmp, buf);
     mutt_check_simple(tmp, MUTT_ALIAS_SIMPLESEARCH);
 
-    if (!SearchPattern || !mutt_str_equal(mutt_buffer_string(tmp), LastSearchExpn))
+    if (!SearchPattern || !mutt_str_equal(buf_string(tmp), LastSearchExpn))
     {
       struct Buffer err;
-      mutt_buffer_init(&err);
+      buf_init(&err);
       OptSearchInvalid = true;
-      mutt_str_copy(LastSearch, mutt_buffer_string(buf), sizeof(LastSearch));
-      mutt_str_copy(LastSearchExpn, mutt_buffer_string(tmp), sizeof(LastSearchExpn));
+      mutt_str_copy(LastSearch, buf_string(buf), sizeof(LastSearch));
+      mutt_str_copy(LastSearchExpn, buf_string(tmp), sizeof(LastSearchExpn));
       mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&SearchPattern);
       err.dsize = 256;
@@ -703,7 +696,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
       SearchPattern = mutt_pattern_comp(NULL, menu, tmp->data, MUTT_PC_FULL_MSG, &err);
       if (!SearchPattern)
       {
-        mutt_buffer_pool_release(&tmp);
+        buf_pool_release(&tmp);
         mutt_error("%s", err.data);
         FREE(&err.data);
         LastSearch[0] = '\0';
@@ -714,7 +707,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
       mutt_clear_error();
     }
 
-    mutt_buffer_pool_release(&tmp);
+    buf_pool_release(&tmp);
   }
 
   if (OptSearchInvalid)
@@ -808,6 +801,6 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
   mutt_error(_("Not found"));
 done:
   progress_free(&progress);
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   return rc;
 }

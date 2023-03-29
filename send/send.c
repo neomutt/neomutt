@@ -99,11 +99,11 @@ static void append_signature(FILE *fp, struct ConfigSubset *sub)
     return;
 
   // If the user hasn't set $signature, don't warn them if it doesn't exist
-  struct Buffer *def_sig = mutt_buffer_pool_get();
+  struct Buffer *def_sig = buf_pool_get();
   cs_str_initial_get(sub->cs, "signature", def_sig);
   mutt_path_canon(def_sig->data, def_sig->dsize, HomeDir, false);
-  bool notify_missing = !mutt_str_equal(c_signature, mutt_buffer_string(def_sig));
-  mutt_buffer_pool_release(&def_sig);
+  bool notify_missing = !mutt_str_equal(c_signature, buf_string(def_sig));
+  buf_pool_release(&def_sig);
 
   pid_t pid = 0;
   FILE *fp_tmp = mutt_open_read(c_signature, &pid);
@@ -178,23 +178,23 @@ static void add_mailing_lists(struct AddressList *out, const struct AddressList 
 int mutt_edit_address(struct AddressList *al, const char *field, bool expand_aliases)
 {
   int rc = 0;
-  struct Buffer *buf = mutt_buffer_pool_get();
-  mutt_buffer_alloc(buf, 8192);
+  struct Buffer *buf = buf_pool_get();
+  buf_alloc(buf, 8192);
   char *err = NULL;
   int idna_ok = 0;
 
   do
   {
     mutt_addrlist_to_local(al);
-    mutt_buffer_reset(buf);
+    buf_reset(buf);
     mutt_addrlist_write(al, buf, false);
-    if (mutt_buffer_get_field(field, buf, MUTT_COMP_ALIAS, false, NULL, NULL, NULL) != 0)
+    if (buf_get_field(field, buf, MUTT_COMP_ALIAS, false, NULL, NULL, NULL) != 0)
     {
       rc = -1;
       goto done;
     }
     mutt_addrlist_clear(al);
-    mutt_addrlist_parse2(al, mutt_buffer_string(buf));
+    mutt_addrlist_parse2(al, buf_string(buf));
     if (expand_aliases)
       mutt_expand_aliases(al);
     idna_ok = mutt_addrlist_to_intl(al, &err);
@@ -206,7 +206,7 @@ int mutt_edit_address(struct AddressList *al, const char *field, bool expand_ali
   } while (idna_ok != 0);
 
 done:
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   return rc;
 }
 
@@ -221,51 +221,49 @@ done:
 static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubset *sub)
 {
   int rc = -1;
-  struct Buffer *buf = mutt_buffer_pool_get();
-  mutt_buffer_alloc(buf, 8192);
+  struct Buffer *buf = buf_pool_get();
+  buf_alloc(buf, 8192);
 
 #ifdef USE_NNTP
   if (OptNewsSend)
   {
     if (en->newsgroups)
-      mutt_buffer_strcpy(buf, en->newsgroups);
+      buf_strcpy(buf, en->newsgroups);
     else
-      mutt_buffer_reset(buf);
+      buf_reset(buf);
 
-    if (mutt_buffer_get_field("Newsgroups: ", buf, MUTT_COMP_NO_FLAGS, false,
-                              NULL, NULL, NULL) != 0)
+    if (buf_get_field("Newsgroups: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
     {
       goto done;
     }
-    mutt_str_replace(&en->newsgroups, mutt_buffer_string(buf));
+    mutt_str_replace(&en->newsgroups, buf_string(buf));
 
     if (en->followup_to)
-      mutt_buffer_strcpy(buf, en->followup_to);
+      buf_strcpy(buf, en->followup_to);
     else
-      mutt_buffer_reset(buf);
+      buf_reset(buf);
 
     const bool c_ask_followup_to = cs_subset_bool(sub, "ask_followup_to");
-    if (c_ask_followup_to && (mutt_buffer_get_field("Followup-To: ", buf, MUTT_COMP_NO_FLAGS,
-                                                    false, NULL, NULL, NULL) != 0))
+    if (c_ask_followup_to && (buf_get_field("Followup-To: ", buf, MUTT_COMP_NO_FLAGS,
+                                            false, NULL, NULL, NULL) != 0))
     {
       goto done;
     }
-    mutt_str_replace(&en->followup_to, mutt_buffer_string(buf));
+    mutt_str_replace(&en->followup_to, buf_string(buf));
 
     if (en->x_comment_to)
-      mutt_buffer_strcpy(buf, en->x_comment_to);
+      buf_strcpy(buf, en->x_comment_to);
     else
-      mutt_buffer_reset(buf);
+      buf_reset(buf);
 
     const bool c_x_comment_to = cs_subset_bool(sub, "x_comment_to");
     const bool c_ask_x_comment_to = cs_subset_bool(sub, "ask_x_comment_to");
     if (c_x_comment_to && c_ask_x_comment_to &&
-        (mutt_buffer_get_field("X-Comment-To: ", buf, MUTT_COMP_NO_FLAGS, false,
-                               NULL, NULL, NULL) != 0))
+        (buf_get_field("X-Comment-To: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0))
     {
       goto done;
     }
-    mutt_str_replace(&en->x_comment_to, mutt_buffer_string(buf));
+    mutt_str_replace(&en->x_comment_to, buf_string(buf));
   }
   else
 #endif
@@ -313,13 +311,13 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
       rc = 0;
       goto done;
     }
-    mutt_buffer_strcpy(buf, en->subject);
+    buf_strcpy(buf, en->subject);
   }
   else
   {
     const char *p = NULL;
 
-    mutt_buffer_reset(buf);
+    buf_reset(buf);
     struct ListNode *uh = NULL;
     STAILQ_FOREACH(uh, &UserHeader, entries)
     {
@@ -327,25 +325,24 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
       if (plen)
       {
         p = mutt_str_skip_email_wsp(uh->data + plen);
-        mutt_buffer_strcpy(buf, p);
+        buf_strcpy(buf, p);
       }
     }
   }
 
   const enum QuadOption c_abort_nosubject = cs_subset_quad(sub, "abort_nosubject");
-  if ((mutt_buffer_get_field(_("Subject: "), buf, MUTT_COMP_NO_FLAGS, false,
-                             NULL, NULL, NULL) != 0) ||
-      (mutt_buffer_is_empty(buf) &&
+  if ((buf_get_field(_("Subject: "), buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0) ||
+      (buf_is_empty(buf) &&
        (query_quadoption(c_abort_nosubject, _("No subject, abort?")) != MUTT_NO)))
   {
     mutt_message(_("No subject, aborting"));
     goto done;
   }
-  mutt_str_replace(&en->subject, mutt_buffer_string(buf));
+  mutt_str_replace(&en->subject, buf_string(buf));
   rc = 0;
 
 done:
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   return rc;
 }
 
@@ -1506,9 +1503,9 @@ static int invoke_mta(struct Mailbox *m, struct Email *e, struct ConfigSubset *s
   int rc = -1;
 
   /* Write out the message in MIME form. */
-  tempfile = mutt_buffer_pool_get();
-  mutt_buffer_mktemp(tempfile);
-  FILE *fp_tmp = mutt_file_fopen(mutt_buffer_string(tempfile), "w");
+  tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
+  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
   if (!fp_tmp)
     goto cleanup;
 
@@ -1538,15 +1535,15 @@ static int invoke_mta(struct Mailbox *m, struct Email *e, struct ConfigSubset *s
 
   if (mutt_file_fclose(&fp_tmp) != 0)
   {
-    mutt_perror(mutt_buffer_string(tempfile));
-    unlink(mutt_buffer_string(tempfile));
+    mutt_perror(buf_string(tempfile));
+    unlink(buf_string(tempfile));
     goto cleanup;
   }
 
 #ifdef MIXMASTER
   if (!STAILQ_EMPTY(&e->chain))
   {
-    rc = mix_send_message(&e->chain, mutt_buffer_string(tempfile));
+    rc = mix_send_message(&e->chain, buf_string(tempfile));
     goto cleanup;
   }
 #endif
@@ -1560,23 +1557,21 @@ static int invoke_mta(struct Mailbox *m, struct Email *e, struct ConfigSubset *s
   if (c_smtp_url)
   {
     rc = mutt_smtp_send(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
-                        mutt_buffer_string(tempfile),
-                        (e->body->encoding == ENC_8BIT), sub);
+                        buf_string(tempfile), (e->body->encoding == ENC_8BIT), sub);
     goto cleanup;
   }
 #endif
 
 sendmail:
-  rc = mutt_invoke_sendmail(m, &e->env->from, &e->env->to, &e->env->cc,
-                            &e->env->bcc, mutt_buffer_string(tempfile),
-                            (e->body->encoding == ENC_8BIT), sub);
+  rc = mutt_invoke_sendmail(m, &e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
+                            buf_string(tempfile), (e->body->encoding == ENC_8BIT), sub);
 cleanup:
   if (fp_tmp)
   {
     mutt_file_fclose(&fp_tmp);
-    unlink(mutt_buffer_string(tempfile));
+    unlink(buf_string(tempfile));
   }
-  mutt_buffer_pool_release(&tempfile);
+  buf_pool_release(&tempfile);
   return rc;
 }
 
@@ -1766,7 +1761,7 @@ static int save_fcc(struct Mailbox *m, struct Email *e, struct Buffer *fcc,
   int rc = 0;
   struct Body *save_content = NULL;
 
-  mutt_buffer_expand_path(fcc);
+  buf_expand_path(fcc);
 
   /* Don't save a copy when we are in batch-mode, and the FCC
    * folder is on an IMAP server: This would involve possibly lots
@@ -1777,8 +1772,8 @@ static int save_fcc(struct Mailbox *m, struct Email *e, struct Buffer *fcc,
    * I'd like to think a bit more about this before including it.  */
 
 #ifdef USE_IMAP
-  if ((flags & SEND_BATCH) && !mutt_buffer_is_empty(fcc) &&
-      (imap_path_probe(mutt_buffer_string(fcc), NULL) == MUTT_IMAP))
+  if ((flags & SEND_BATCH) && !buf_is_empty(fcc) &&
+      (imap_path_probe(buf_string(fcc), NULL) == MUTT_IMAP))
   {
     mutt_error(_("Warning: Fcc to an IMAP mailbox is not supported in batch mode"));
     /* L10N: Printed after the "Fcc to an IMAP mailbox is not supported" message.
@@ -1786,13 +1781,13 @@ static int save_fcc(struct Mailbox *m, struct Email *e, struct Buffer *fcc,
        sending the mail too.
        %s is the full mailbox URL, including imap(s)://
     */
-    mutt_error(_("Skipping Fcc to %s"), mutt_buffer_string(fcc));
-    mutt_buffer_reset(fcc);
+    mutt_error(_("Skipping Fcc to %s"), buf_string(fcc));
+    buf_reset(fcc);
     return rc;
   }
 #endif
 
-  if (mutt_buffer_is_empty(fcc) || mutt_str_equal("/dev/null", mutt_buffer_string(fcc)))
+  if (buf_is_empty(fcc) || mutt_str_equal("/dev/null", buf_string(fcc)))
     return rc;
 
   struct Body *tmpbody = e->body;
@@ -1876,8 +1871,7 @@ full_fcc:
      * the From_ line contains the current time instead of when the
      * message was first postponed.  */
     e->received = mutt_date_now();
-    rc = mutt_write_multiple_fcc(mutt_buffer_string(fcc), e, NULL, false, NULL,
-                                 finalpath, sub);
+    rc = mutt_write_multiple_fcc(buf_string(fcc), e, NULL, false, NULL, finalpath, sub);
     while (rc && !(flags & SEND_BATCH))
     {
       mutt_clear_error();
@@ -1896,9 +1890,9 @@ full_fcc:
         case 2: /* alternate (m)ailbox */
           /* L10N: This is the prompt to enter an "alternate (m)ailbox" when the
              initial Fcc fails.  */
-          rc = mutt_buffer_enter_fname(_("Fcc mailbox"), fcc, true, m, false,
-                                       NULL, NULL, MUTT_SEL_NO_FLAGS);
-          if ((rc == -1) || mutt_buffer_is_empty(fcc))
+          rc = buf_enter_fname(_("Fcc mailbox"), fcc, true, m, false, NULL,
+                               NULL, MUTT_SEL_NO_FLAGS);
+          if ((rc == -1) || buf_is_empty(fcc))
           {
             rc = 0;
             break;
@@ -1906,8 +1900,7 @@ full_fcc:
           /* fall through */
 
         case 1: /* (r)etry */
-          rc = mutt_write_multiple_fcc(mutt_buffer_string(fcc), e, NULL, false,
-                                       NULL, finalpath, sub);
+          rc = mutt_write_multiple_fcc(buf_string(fcc), e, NULL, false, NULL, finalpath, sub);
           break;
 
         case -1: /* abort */
@@ -2136,7 +2129,7 @@ static bool abort_for_missing_attachments(const struct Body *b, struct ConfigSub
 int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile,
                       struct Mailbox *m, struct EmailList *el, struct ConfigSubset *sub)
 {
-  struct Buffer fcc = mutt_buffer_make(0); /* where to copy this message */
+  struct Buffer fcc = buf_make(0); /* where to copy this message */
   FILE *fp_tmp = NULL;
   struct Body *pbody = NULL;
   int i;
@@ -2184,7 +2177,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
   /* Allocate the buffer due to the long lifetime, but
    * pre-resize it to ensure there are no NULL data field issues */
-  mutt_buffer_alloc(&fcc, 1024);
+  buf_alloc(&fcc, 1024);
 
   if (flags & SEND_POSTPONED)
   {
@@ -2719,7 +2712,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
   const enum QuadOption c_copy = cs_subset_quad(sub, "copy");
 
-  if (mutt_buffer_is_empty(&fcc) && !(flags & SEND_POSTPONED_FCC) &&
+  if (buf_is_empty(&fcc) && !(flags & SEND_POSTPONED_FCC) &&
       (!(flags & SEND_BATCH) || (c_copy & 0x1)))
   {
     /* set the default FCC */
@@ -2743,7 +2736,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   {
   main_loop:
 
-    mutt_buffer_pretty_mailbox(&fcc);
+    buf_pretty_mailbox(&fcc);
     i = mutt_compose_menu(e_templ, &fcc,
                           ((flags & SEND_NO_FREE_HEADER) ? MUTT_COMPOSE_NOFREEHEADER : 0),
                           sub);
@@ -2760,7 +2753,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     }
     else if (i == 1)
     {
-      if (postpone_message(e_templ, e_cur, mutt_buffer_string(&fcc), flags, sub) != 0)
+      if (postpone_message(e_templ, e_cur, buf_string(&fcc), flags, sub) != 0)
         goto main_loop;
       mutt_message(_("Message postponed"));
       rc = 1;
@@ -2964,7 +2957,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   rc = 0;
 
 cleanup:
-  mutt_buffer_dealloc(&fcc);
+  buf_dealloc(&fcc);
 
   if (flags & SEND_POSTPONED)
   {

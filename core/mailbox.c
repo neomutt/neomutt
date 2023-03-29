@@ -69,7 +69,7 @@ struct Mailbox *mailbox_new(void)
 {
   struct Mailbox *m = mutt_mem_calloc(1, sizeof(struct Mailbox));
 
-  mutt_buffer_init(&m->pathbuf);
+  buf_init(&m->pathbuf);
   m->notify = notify_new();
 
   m->email_max = 25;
@@ -95,7 +95,7 @@ void mailbox_free(struct Mailbox **ptr)
 
   mutt_debug(LL_DEBUG3, "%sfreeing %s mailbox %s with refcount %d\n",
              do_free ? "" : "not ", m->visible ? "visible" : "invisible",
-             mutt_buffer_string(&m->pathbuf), m->opened);
+             buf_string(&m->pathbuf), m->opened);
 
   if (!do_free)
   {
@@ -116,7 +116,7 @@ void mailbox_free(struct Mailbox **ptr)
   if (m->mdata_free && m->mdata)
     m->mdata_free(&m->mdata);
 
-  mutt_buffer_dealloc(&m->pathbuf);
+  buf_dealloc(&m->pathbuf);
   cs_subset_free(&m->sub);
   FREE(&m->name);
   FREE(&m->realpath);

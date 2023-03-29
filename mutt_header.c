@@ -128,18 +128,18 @@ int mutt_label_message(struct Mailbox *m, struct EmailList *el)
     return 0;
 
   int changed = 0;
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
 
   struct EmailNode *en = STAILQ_FIRST(el);
   if (!STAILQ_NEXT(en, entries))
   {
     // If there's only one email, use its label as a template
     if (en->email->env->x_label)
-      mutt_buffer_strcpy(buf, en->email->env->x_label);
+      buf_strcpy(buf, en->email->env->x_label);
   }
 
-  if (mutt_buffer_get_field("Label: ", buf, MUTT_COMP_LABEL /* | MUTT_COMP_CLEAR */,
-                            false, NULL, NULL, NULL) != 0)
+  if (buf_get_field("Label: ", buf, MUTT_COMP_LABEL /* | MUTT_COMP_CLEAR */,
+                    false, NULL, NULL, NULL) != 0)
   {
     goto done;
   }
@@ -159,7 +159,7 @@ int mutt_label_message(struct Mailbox *m, struct EmailList *el)
   }
 
 done:
-  mutt_buffer_pool_release(&buf);
+  buf_pool_release(&buf);
   return changed;
 }
 
@@ -173,12 +173,12 @@ done:
 void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
                        struct Buffer *fcc)
 {
-  struct Buffer *path = mutt_buffer_pool_get();
-  mutt_buffer_mktemp(path);
-  FILE *fp_out = mutt_file_fopen(mutt_buffer_string(path), "w");
+  struct Buffer *path = buf_pool_get();
+  buf_mktemp(path);
+  FILE *fp_out = mutt_file_fopen(buf_string(path), "w");
   if (!fp_out)
   {
-    mutt_perror(mutt_buffer_string(path));
+    mutt_perror(buf_string(path));
     goto cleanup;
   }
 
@@ -202,25 +202,25 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   mutt_file_fclose(&fp_out);
 
   struct stat st = { 0 };
-  if (stat(mutt_buffer_string(path), &st) == -1)
+  if (stat(buf_string(path), &st) == -1)
   {
-    mutt_perror(mutt_buffer_string(path));
+    mutt_perror(buf_string(path));
     goto cleanup;
   }
 
-  time_t mtime = mutt_file_decrease_mtime(mutt_buffer_string(path), &st);
+  time_t mtime = mutt_file_decrease_mtime(buf_string(path), &st);
   if (mtime == (time_t) -1)
   {
-    mutt_perror(mutt_buffer_string(path));
+    mutt_perror(buf_string(path));
     goto cleanup;
   }
 
-  mutt_edit_file(editor, mutt_buffer_string(path));
-  if ((stat(mutt_buffer_string(path), &st) != 0) || (mtime == st.st_mtime))
+  mutt_edit_file(editor, buf_string(path));
+  if ((stat(buf_string(path), &st) != 0) || (mtime == st.st_mtime))
   {
     mutt_debug(LL_DEBUG1, "temp file was not modified\n");
     /* the file has not changed! */
-    mutt_file_unlink(mutt_buffer_string(path));
+    mutt_file_unlink(buf_string(path));
     goto cleanup;
   }
 
@@ -228,10 +228,10 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   mutt_list_free(&e->env->userhdrs);
 
   /* Read the temp file back in */
-  fp_in = fopen(mutt_buffer_string(path), "r");
+  fp_in = fopen(buf_string(path), "r");
   if (!fp_in)
   {
-    mutt_perror(mutt_buffer_string(path));
+    mutt_perror(buf_string(path));
     goto cleanup;
   }
 
@@ -252,7 +252,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
     fwrite(buf, 1, bytes_read, fp_out);
   mutt_file_fclose(&fp_out);
   mutt_file_fclose(&fp_in);
-  mutt_file_unlink(mutt_buffer_string(path));
+  mutt_file_unlink(buf_string(path));
 
   /* in case the user modifies/removes the In-Reply-To header with
    * $edit_headers set, we remove References: as they're likely invalid;
@@ -298,8 +298,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
       const char *p = mutt_str_skip_email_wsp(np->data + plen);
       if (*p)
       {
-        mutt_buffer_strcpy(fcc, p);
-        mutt_buffer_pretty_mailbox(fcc);
+        buf_strcpy(fcc, p);
+        buf_pretty_mailbox(fcc);
       }
       keep = false;
     }
@@ -314,7 +314,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
       const char *p = mutt_str_skip_email_wsp(np->data + plen);
       if (*p)
       {
-        mutt_buffer_reset(path);
+        buf_reset(path);
         for (; (p[0] != '\0') && (p[0] != ' ') && (p[0] != '\t'); p++)
         {
           if (p[0] == '\\')
@@ -323,12 +323,12 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
               break;
             p++;
           }
-          mutt_buffer_addch(path, *p);
+          buf_addch(path, *p);
         }
         p = mutt_str_skip_email_wsp(p);
 
-        mutt_buffer_expand_path(path);
-        body2 = mutt_make_file_attach(mutt_buffer_string(path), NeoMutt->sub);
+        buf_expand_path(path);
+        body2 = mutt_make_file_attach(buf_string(path), NeoMutt->sub);
         if (body2)
         {
           body2->description = mutt_str_dup(p);
@@ -339,8 +339,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
         }
         else
         {
-          mutt_buffer_pretty_mailbox(path);
-          mutt_error(_("%s: unable to attach file"), mutt_buffer_string(path));
+          buf_pretty_mailbox(path);
+          mutt_error(_("%s: unable to attach file"), buf_string(path));
         }
       }
       keep = false;
@@ -403,7 +403,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   }
 
 cleanup:
-  mutt_buffer_pool_release(&path);
+  buf_pool_release(&path);
 }
 
 /**

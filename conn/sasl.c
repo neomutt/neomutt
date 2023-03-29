@@ -701,28 +701,28 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
 {
   int rc = SASL_OK;
   char prompt[128] = { 0 };
-  struct Buffer *resp = mutt_buffer_pool_get();
+  struct Buffer *resp = buf_pool_get();
 
   while (interaction->id != SASL_CB_LIST_END)
   {
     mutt_debug(LL_DEBUG2, "filling in SASL interaction %ld\n", interaction->id);
 
     snprintf(prompt, sizeof(prompt), "%s: ", interaction->prompt);
-    mutt_buffer_reset(resp);
+    buf_reset(resp);
 
-    if (OptNoCurses || (mutt_buffer_get_field(prompt, resp, MUTT_COMP_NO_FLAGS,
-                                              false, NULL, NULL, NULL) != 0))
+    if (OptNoCurses ||
+        (buf_get_field(prompt, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0))
     {
       rc = SASL_FAIL;
       break;
     }
 
-    interaction->len = mutt_buffer_len(resp) + 1;
-    interaction->result = mutt_buffer_strdup(resp);
+    interaction->len = buf_len(resp) + 1;
+    interaction->result = buf_strdup(resp);
     interaction++;
   }
 
-  mutt_buffer_pool_release(&resp);
+  buf_pool_release(&resp);
   return rc;
 }
 

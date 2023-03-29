@@ -43,9 +43,9 @@ int validator_fail(const struct ConfigSet *cs, const struct ConfigDef *cdef,
     return CSR_SUCCESS;
 
   if (value > 1000000)
-    mutt_buffer_printf(result, "%s: %s, (ptr)", __func__, cdef->name);
+    buf_printf(result, "%s: %s, (ptr)", __func__, cdef->name);
   else
-    mutt_buffer_printf(result, "%s: %s, %ld", __func__, cdef->name, value);
+    buf_printf(result, "%s: %s, %ld", __func__, cdef->name, value);
   return CSR_ERR_INVALID;
 }
 
@@ -53,9 +53,9 @@ int validator_warn(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                    intptr_t value, struct Buffer *result)
 {
   if (value > 1000000)
-    mutt_buffer_printf(result, "%s: %s, (ptr)", __func__, cdef->name);
+    buf_printf(result, "%s: %s, (ptr)", __func__, cdef->name);
   else
-    mutt_buffer_printf(result, "%s: %s, %ld", __func__, cdef->name, value);
+    buf_printf(result, "%s: %s, %ld", __func__, cdef->name, value);
   return CSR_SUCCESS | CSR_SUC_WARNING;
 }
 
@@ -63,9 +63,9 @@ int validator_succeed(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                       intptr_t value, struct Buffer *result)
 {
   if (value > 1000000)
-    mutt_buffer_printf(result, "%s: %s, (ptr)", __func__, cdef->name);
+    buf_printf(result, "%s: %s, (ptr)", __func__, cdef->name);
   else
-    mutt_buffer_printf(result, "%s: %s, %ld", __func__, cdef->name, value);
+    buf_printf(result, "%s: %s, %ld", __func__, cdef->name, value);
   return CSR_SUCCESS;
 }
 
@@ -87,18 +87,18 @@ int log_observer(struct NotifyCallback *nc)
 
   struct EventConfig *ec = nc->event_data;
 
-  struct Buffer *result = mutt_buffer_pool_get();
+  struct Buffer *result = buf_pool_get();
 
   const char *events[] = { "set", "reset", "initial-set" };
 
-  mutt_buffer_reset(result);
+  buf_reset(result);
 
   cs_he_string_get(ec->sub->cs, ec->he, result);
 
   TEST_MSG("Event: %s has been %s to '%s'\n", ec->name,
-           events[nc->event_subtype - 1], mutt_buffer_string(result));
+           events[nc->event_subtype - 1], buf_string(result));
 
-  mutt_buffer_pool_release(&result);
+  buf_pool_release(&result);
   return true;
 }
 
@@ -125,7 +125,7 @@ void cs_dump_set(const struct ConfigSet *cs)
   struct HashWalkState state;
   memset(&state, 0, sizeof(state));
 
-  struct Buffer *result = mutt_buffer_pool_get();
+  struct Buffer *result = buf_pool_get();
 
   char tmp[128];
   char *list[26] = { 0 };
@@ -159,15 +159,14 @@ void cs_dump_set(const struct ConfigSet *cs)
       continue;
     }
 
-    mutt_buffer_reset(result);
+    buf_reset(result);
     struct ConfigDef *cdef = he->data;
 
     int rc = cst->string_get(cs, &cdef->var, cdef, result);
     if (CSR_RESULT(rc) == CSR_SUCCESS)
-      snprintf(tmp, sizeof(tmp), "%s %s = %s", cst->name, name, mutt_buffer_string(result));
+      snprintf(tmp, sizeof(tmp), "%s %s = %s", cst->name, name, buf_string(result));
     else
-      snprintf(tmp, sizeof(tmp), "%s %s: ERROR: %s", cst->name, name,
-               mutt_buffer_string(result));
+      snprintf(tmp, sizeof(tmp), "%s %s: ERROR: %s", cst->name, name, buf_string(result));
     list[index] = mutt_str_dup(tmp);
     index++;
   }
@@ -179,5 +178,5 @@ void cs_dump_set(const struct ConfigSet *cs)
     FREE(&list[i]);
   }
 
-  mutt_buffer_pool_release(&result);
+  buf_pool_release(&result);
 }

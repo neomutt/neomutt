@@ -39,10 +39,10 @@ static struct ConfigDef Vars[] = {
 
 static void test_one_leak(const char *pattern)
 {
-  struct Buffer *err = mutt_buffer_pool_get();
+  struct Buffer *err = buf_pool_get();
   struct PatternList *p = mutt_pattern_comp(NULL, NULL, pattern, 0, err);
   mutt_pattern_free(&p);
-  mutt_buffer_pool_release(&err);
+  buf_pool_release(&err);
 }
 
 void test_mutt_pattern_leak(void)

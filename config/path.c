@@ -91,7 +91,7 @@ static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 
   if (!value && (cdef->type & DT_NOT_EMPTY))
   {
-    mutt_buffer_printf(err, _("Option %s may not be empty"), cdef->name);
+    buf_printf(err, _("Option %s may not be empty"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
@@ -146,7 +146,7 @@ static int path_string_get(const struct ConfigSet *cs, void *var,
   if (!str)
     return CSR_SUCCESS | CSR_SUC_EMPTY; /* empty path */
 
-  mutt_buffer_addstr(result, str);
+  buf_addstr(result, str);
   return CSR_SUCCESS;
 }
 
@@ -164,7 +164,7 @@ static int path_native_set(const struct ConfigSet *cs, void *var,
 
   if ((value == 0) && (cdef->type & DT_NOT_EMPTY))
   {
-    mutt_buffer_printf(err, _("Option %s may not be empty"), cdef->name);
+    buf_printf(err, _("Option %s may not be empty"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 

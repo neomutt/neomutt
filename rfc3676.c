@@ -419,14 +419,14 @@ static void rfc3676_space_stuff(const char *filename, bool unstuff)
   char *buf = NULL;
   size_t blen = 0;
 
-  struct Buffer *tmpfile = mutt_buffer_pool_get();
+  struct Buffer *tmpfile = buf_pool_get();
 
   FILE *fp_in = mutt_file_fopen(filename, "r");
   if (!fp_in)
     goto bail;
 
-  mutt_buffer_mktemp(tmpfile);
-  fp_out = mutt_file_fopen(mutt_buffer_string(tmpfile), "w+");
+  buf_mktemp(tmpfile);
+  fp_out = mutt_file_fopen(buf_string(tmpfile), "w+");
   if (!fp_out)
     goto bail;
 
@@ -450,9 +450,9 @@ static void rfc3676_space_stuff(const char *filename, bool unstuff)
   FREE(&buf);
   mutt_file_fclose(&fp_in);
   mutt_file_fclose(&fp_out);
-  mutt_file_set_mtime(filename, mutt_buffer_string(tmpfile));
+  mutt_file_set_mtime(filename, buf_string(tmpfile));
 
-  fp_in = mutt_file_fopen(mutt_buffer_string(tmpfile), "r");
+  fp_in = mutt_file_fopen(buf_string(tmpfile), "r");
   if (!fp_in)
     goto bail;
 
@@ -463,13 +463,13 @@ static void rfc3676_space_stuff(const char *filename, bool unstuff)
   }
 
   mutt_file_copy_stream(fp_in, fp_out);
-  mutt_file_set_mtime(mutt_buffer_string(tmpfile), filename);
-  unlink(mutt_buffer_string(tmpfile));
+  mutt_file_set_mtime(buf_string(tmpfile), filename);
+  unlink(buf_string(tmpfile));
 
 bail:
   mutt_file_fclose(&fp_in);
   mutt_file_fclose(&fp_out);
-  mutt_buffer_pool_release(&tmpfile);
+  buf_pool_release(&tmpfile);
 }
 
 /**

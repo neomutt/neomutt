@@ -1066,34 +1066,34 @@ size_t mutt_addr_write(struct Buffer *buf, struct Address *addr, bool display)
     return 0;
   }
 
-  const size_t initial_len = mutt_buffer_len(buf);
+  const size_t initial_len = buf_len(buf);
 
   if (addr->personal)
   {
     if (strpbrk(addr->personal, AddressSpecials))
     {
-      mutt_buffer_addch(buf, '"');
+      buf_addch(buf, '"');
       for (const char *pc = addr->personal; *pc; pc++)
       {
         if ((*pc == '"') || (*pc == '\\'))
         {
-          mutt_buffer_addch(buf, '\\');
+          buf_addch(buf, '\\');
         }
-        mutt_buffer_addch(buf, *pc);
+        buf_addch(buf, *pc);
       }
-      mutt_buffer_addch(buf, '"');
+      buf_addch(buf, '"');
     }
     else
     {
-      mutt_buffer_addstr(buf, addr->personal);
+      buf_addstr(buf, addr->personal);
     }
 
-    mutt_buffer_addch(buf, ' ');
+    buf_addch(buf, ' ');
   }
 
   if (addr->personal || (addr->mailbox && (*addr->mailbox == '@')))
   {
-    mutt_buffer_addch(buf, '<');
+    buf_addch(buf, '<');
   }
 
   if (addr->mailbox)
@@ -1101,25 +1101,25 @@ size_t mutt_addr_write(struct Buffer *buf, struct Address *addr, bool display)
     if (!mutt_str_equal(addr->mailbox, "@"))
     {
       const char *a = display ? mutt_addr_for_display(addr) : addr->mailbox;
-      mutt_buffer_addstr(buf, a);
+      buf_addstr(buf, a);
     }
 
     if (addr->personal || (addr->mailbox && (*addr->mailbox == '@')))
     {
-      mutt_buffer_addch(buf, '>');
+      buf_addch(buf, '>');
     }
 
     if (addr->group)
     {
-      mutt_buffer_addstr(buf, ": ");
+      buf_addstr(buf, ": ");
     }
   }
   else
   {
-    mutt_buffer_addch(buf, ';');
+    buf_addch(buf, ';');
   }
 
-  return mutt_buffer_len(buf) - initial_len;
+  return buf_len(buf) - initial_len;
 }
 
 /**
@@ -1143,10 +1143,10 @@ static size_t addrlist_write(const struct AddressList *al, struct Buffer *buf,
 
   if (header)
   {
-    mutt_buffer_printf(buf, "%s: ", header);
+    buf_printf(buf, "%s: ", header);
   }
 
-  size_t cur_col = mutt_buffer_len(buf);
+  size_t cur_col = buf_len(buf);
   bool in_group = false;
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
@@ -1159,11 +1159,11 @@ static size_t addrlist_write(const struct AddressList *al, struct Buffer *buf,
     }
 
     // wrap if needed
-    const size_t cur_len = mutt_buffer_len(buf);
+    const size_t cur_len = buf_len(buf);
     cur_col += mutt_addr_write(buf, a, display);
     if (cur_col > cols)
     {
-      mutt_buffer_insert(buf, cur_len, "\n\t");
+      buf_insert(buf, cur_len, "\n\t");
       cur_col = 8;
     }
 
@@ -1172,13 +1172,13 @@ static size_t addrlist_write(const struct AddressList *al, struct Buffer *buf,
       // group terminator
       if (in_group && !a->mailbox && !a->personal)
       {
-        mutt_buffer_addch(buf, ';');
+        buf_addch(buf, ';');
         ++cur_col;
         in_group = false;
       }
       if (next && (next->mailbox || next->personal))
       {
-        mutt_buffer_addstr(buf, ", ");
+        buf_addstr(buf, ", ");
         cur_col += 2;
       }
       if (!next)
@@ -1188,7 +1188,7 @@ static size_t addrlist_write(const struct AddressList *al, struct Buffer *buf,
     }
   }
 
-  return mutt_buffer_len(buf);
+  return buf_len(buf);
 }
 
 /**
@@ -1241,10 +1241,10 @@ size_t mutt_addrlist_write_list(const struct AddressList *al, struct ListHead *l
   {
     struct Buffer buf = { 0 };
     mutt_addr_write(&buf, a, true);
-    if (!mutt_buffer_is_empty(&buf))
+    if (!buf_is_empty(&buf))
     {
       /* We're taking the ownership of the buffer string here */
-      mutt_list_insert_tail(list, (char *) mutt_buffer_string(&buf));
+      mutt_list_insert_tail(list, (char *) buf_string(&buf));
       count++;
     }
   }
@@ -1263,10 +1263,10 @@ size_t mutt_addrlist_write_list(const struct AddressList *al, struct ListHead *l
  */
 void mutt_addrlist_write_file(const struct AddressList *al, FILE *fp, const char *header)
 {
-  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *buf = buf_pool_get();
   mutt_addrlist_write_wrap(al, buf, header);
-  fputs(mutt_buffer_string(buf), fp);
-  mutt_buffer_pool_release(&buf);
+  fputs(buf_string(buf), fp);
+  buf_pool_release(&buf);
   fputc('\n', fp);
 }
 

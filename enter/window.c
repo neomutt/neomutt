@@ -166,7 +166,7 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
 }
 
 /**
- * mutt_buffer_get_field - Ask the user for a string
+ * buf_get_field - Ask the user for a string
  * @param[in]  field    Prompt
  * @param[in]  buf      Buffer for the result
  * @param[in]  complete Flags, see #CompletionFlags
@@ -177,8 +177,8 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
  * @retval 0  Selection made
  * @retval -1 Aborted
  */
-int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags complete,
-                          bool multiple, struct Mailbox *m, char ***files, int *numfiles)
+int buf_get_field(const char *field, struct Buffer *buf, CompletionFlags complete,
+                  bool multiple, struct Mailbox *m, char ***files, int *numfiles)
 {
   struct MuttWindow *win = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                                            MUTT_WIN_SIZE_UNLIMITED, 1);
@@ -378,9 +378,9 @@ int mutt_buffer_get_field(const char *field, struct Buffer *buf, CompletionFlags
   mutt_window_free(&win);
 
   if (rc == 0)
-    mutt_buffer_fix_dptr(buf);
+    buf_fix_dptr(buf);
   else
-    mutt_buffer_reset(buf);
+    buf_reset(buf);
 
   enter_state_free(&es);
 

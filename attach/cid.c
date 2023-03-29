@@ -108,8 +108,8 @@ static void cid_save_attachment(struct Body *body, struct CidMapList *cid_map_li
   if (!id)
     return;
 
-  struct Buffer *tmpfile = mutt_buffer_pool_get();
-  struct Buffer *cid = mutt_buffer_pool_get();
+  struct Buffer *tmpfile = buf_pool_get();
+  struct Buffer *cid = buf_pool_get();
   bool has_tempfile = false;
   FILE *fp = NULL;
 
@@ -123,23 +123,23 @@ static void cid_save_attachment(struct Body *body, struct CidMapList *cid_map_li
   FREE(&fname);
 
   /* save attachment */
-  if (mutt_save_attachment(fp, body, mutt_buffer_string(tmpfile), 0, NULL) == -1)
+  if (mutt_save_attachment(fp, body, buf_string(tmpfile), 0, NULL) == -1)
     goto bail;
   has_tempfile = true;
   mutt_debug(LL_DEBUG2, "attachment with \"Content-ID: %s\" saved to file \"%s\"\n",
-             id, mutt_buffer_string(tmpfile));
+             id, buf_string(tmpfile));
 
   /* add Content-ID to filename mapping to list */
-  mutt_buffer_printf(cid, "cid:%s", id);
-  struct CidMap *cid_map = cid_map_new(mutt_buffer_string(cid), mutt_buffer_string(tmpfile));
+  buf_printf(cid, "cid:%s", id);
+  struct CidMap *cid_map = cid_map_new(buf_string(cid), buf_string(tmpfile));
   STAILQ_INSERT_TAIL(cid_map_list, cid_map, entries);
 
 bail:
 
-  if ((fp && !mutt_buffer_is_empty(tmpfile)) || has_tempfile)
-    mutt_add_temp_attachment(mutt_buffer_string(tmpfile));
-  mutt_buffer_pool_release(&tmpfile);
-  mutt_buffer_pool_release(&cid);
+  if ((fp && !buf_is_empty(tmpfile)) || has_tempfile)
+    mutt_add_temp_attachment(buf_string(tmpfile));
+  buf_pool_release(&tmpfile);
+  buf_pool_release(&cid);
 }
 
 /**
@@ -179,22 +179,21 @@ void cid_to_filename(struct Buffer *filename, const struct CidMapList *cid_map_l
   size_t blen = 0;
   struct CidMap *cid_map = NULL;
 
-  struct Buffer *tmpfile = mutt_buffer_pool_get();
-  struct Buffer *tmpbuf = mutt_buffer_pool_get();
+  struct Buffer *tmpfile = buf_pool_get();
+  struct Buffer *tmpbuf = buf_pool_get();
 
-  FILE *fp_in = mutt_file_fopen(mutt_buffer_string(filename), "r");
+  FILE *fp_in = mutt_file_fopen(buf_string(filename), "r");
   if (!fp_in)
     goto bail;
 
   /* ensure tmpfile has the same file extension as filename otherwise an
    * HTML file may be opened as plain text by the viewer */
-  const char *suffix = mutt_strn_rfind(mutt_buffer_string(filename),
-                                       mutt_buffer_len(filename), ".");
+  const char *suffix = mutt_strn_rfind(buf_string(filename), buf_len(filename), ".");
   if (suffix && *(suffix++))
-    mutt_buffer_mktemp_pfx_sfx(tmpfile, "neomutt", suffix);
+    buf_mktemp_pfx_sfx(tmpfile, "neomutt", suffix);
   else
-    mutt_buffer_mktemp(tmpfile);
-  fp_out = mutt_file_fopen(mutt_buffer_string(tmpfile), "w+");
+    buf_mktemp(tmpfile);
+  fp_out = mutt_file_fopen(buf_string(tmpfile), "w+");
   if (!fp_out)
     goto bail;
 
@@ -209,7 +208,7 @@ void cid_to_filename(struct Buffer *filename, const struct CidMapList *cid_map_l
 
     /* copy buf to searchbuf because we need to edit multiple times */
     searchbuf = mutt_str_dup(buf);
-    mutt_buffer_reset(tmpbuf);
+    buf_reset(tmpbuf);
 
     /* loop through Content-ID to filename mappings and do search and replace */
     STAILQ_FOREACH(cid_map, cid_map_list, entries)
@@ -217,16 +216,16 @@ void cid_to_filename(struct Buffer *filename, const struct CidMapList *cid_map_l
       pbuf = searchbuf;
       while ((cid = strstr(pbuf, cid_map->cid)) != NULL)
       {
-        mutt_buffer_addstr_n(tmpbuf, pbuf, cid - pbuf);
-        mutt_buffer_addstr(tmpbuf, cid_map->fname);
+        buf_addstr_n(tmpbuf, pbuf, cid - pbuf);
+        buf_addstr(tmpbuf, cid_map->fname);
         pbuf = cid + mutt_str_len(cid_map->cid);
         mutt_debug(LL_DEBUG2, "replaced \"%s\" with \"%s\" in file \"%s\"\n",
-                   cid_map->cid, cid_map->fname, mutt_buffer_string(filename));
+                   cid_map->cid, cid_map->fname, buf_string(filename));
       }
-      mutt_buffer_addstr(tmpbuf, pbuf);
+      buf_addstr(tmpbuf, pbuf);
       FREE(&searchbuf);
-      searchbuf = mutt_buffer_strdup(tmpbuf);
-      mutt_buffer_reset(tmpbuf);
+      searchbuf = buf_strdup(tmpbuf);
+      buf_reset(tmpbuf);
     }
 
     /* write edited line to output file */
@@ -235,17 +234,17 @@ void cid_to_filename(struct Buffer *filename, const struct CidMapList *cid_map_l
     FREE(&searchbuf);
   }
 
-  mutt_file_set_mtime(mutt_buffer_string(filename), mutt_buffer_string(tmpfile));
+  mutt_file_set_mtime(buf_string(filename), buf_string(tmpfile));
 
   /* add filename to TempAtachmentsList so it doesn't get left lying around */
-  mutt_add_temp_attachment(mutt_buffer_string(filename));
+  mutt_add_temp_attachment(buf_string(filename));
   /* update filename to point to new file */
-  mutt_buffer_copy(filename, tmpfile);
+  buf_copy(filename, tmpfile);
 
 bail:
   FREE(&buf);
   mutt_file_fclose(&fp_in);
   mutt_file_fclose(&fp_out);
-  mutt_buffer_pool_release(&tmpfile);
-  mutt_buffer_pool_release(&tmpbuf);
+  buf_pool_release(&tmpfile);
+  buf_pool_release(&tmpbuf);
 }

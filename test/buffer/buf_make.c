@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_regex_new()
+ * Test code for buf_make()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,21 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
-#include "mutt/lib.h"
 
-void test_mutt_regex_new(void)
+void test_buf_make(void)
 {
-  // struct Regex *mutt_regex_new(const char *str, uint32_t flags, struct Buffer *err);
-
-  {
-    struct Buffer buf = buf_make(0);
-    TEST_CHECK(!mutt_regex_new(NULL, 0, &buf));
-  }
-
-  {
-    struct Regex *regex = NULL;
-    TEST_CHECK((regex = mutt_regex_new("apple", 0, NULL)) != NULL);
-    mutt_regex_free(&regex);
-  }
+  // struct Buffer buf_make(size_t size);
 }
