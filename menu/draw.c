@@ -56,14 +56,14 @@ static struct AttrColor *get_color(int index, unsigned char *s)
 {
   const int type = *s;
   struct RegexColorList *rcl = regex_colors_get_list(type);
-  if (rcl == NULL)
+  struct Mailbox *m_cur = get_current_mailbox();
+  struct Email *e = mutt_get_virt_email(m_cur, index);
+  if ((rcl == NULL) || (e == NULL))
   {
     return simple_color_get(type);
   }
 
   struct RegexColor *np = NULL;
-  struct Mailbox *m_cur = get_current_mailbox();
-  struct Email *e = mutt_get_virt_email(m_cur, index);
 
   if (type == MT_COLOR_INDEX_TAG)
   {
