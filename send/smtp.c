@@ -42,6 +42,7 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "conn/lib.h"
 #include "smtp.h"
 #include "lib.h"
@@ -718,13 +719,17 @@ fail:
 /**
  * smtp_auth_oauth_xoauth2 - Authenticate an SMTP connection using OAUTHBEARER/XOAUTH2
  * @param adata   SMTP Account data
- * @param method  Authentication method (not used)
+ * @param method  Authentication method
  * @param xoauth2 Use XOAUTH2 token (if true), OAUTHBEARER token otherwise
  * @retval num Result, e.g. #SMTP_AUTH_SUCCESS
  */
 static int smtp_auth_oauth_xoauth2(struct SmtpAccountData *adata, const char *method, bool xoauth2)
 {
-  (void) method; // This is OAUTHBEARER
+  /* If they did not explicitly request or configure oauth then fail quietly */
+  const char *const c_smtp_oauth_refresh_command = cs_subset_string(NeoMutt->sub, "smtp_oauth_refresh_command");
+  if (!method && !c_smtp_oauth_refresh_command)
+    return SMTP_AUTH_UNAVAIL;
+
   const char *authtype = xoauth2 ? "XOAUTH2" : "OAUTHBEARER";
 
   // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
