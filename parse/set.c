@@ -343,7 +343,7 @@ static enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer 
   }
   else
   {
-    mutt_buffer_printf(err, _("Command 'toggle' can only be used with bool/quad variables"));
+    mutt_buffer_printf(err, _("Command '%s' can only be used with bool/quad variables"), "toggle");
     return MUTT_CMD_ERROR;
   }
   return MUTT_CMD_SUCCESS;

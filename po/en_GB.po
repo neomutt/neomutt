@@ -6586,6 +6586,10 @@ msgstr "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
 msgid "Command '%s' can only be used with bool/quad variables"
 msgstr "Command '%s' can only be used with bool/quad variables"
 
+#: parse/set.c:542
+msgid "'+' and '-' must be followed by '='"
+msgstr "'+' and '-' must be followed by '='"
+
 #: pattern/compile.c:87 pattern/compile.c:174 pattern/compile.c:985
 #, c-format
 msgid "Error in expression: %s"
