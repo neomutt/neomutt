@@ -53,7 +53,8 @@ jobs:
         ls -l coverage.info
 
     - name: Coveralls
-      uses: coverallsapp/github-action@master
+      uses: coverallsapp/github-action@v2
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: coverage.info
+        file: coverage.info
+        format: lcov
