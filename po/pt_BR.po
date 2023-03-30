@@ -6578,7 +6578,7 @@ msgstr "Não é possível definir uma variável com o comando '%s'"
 
 #: parse/set.c:542
 msgid "'+' and '-' must be followed by '='"
-msgstr ""
+msgstr "'+' e '-' devem ser seguidos por '='"
 
 #: parse/set.c:551
 msgid "Can't use prefix when setting a variable"
