@@ -48,5 +48,6 @@ int           mutt_num_postponed        (struct Mailbox *m, bool force);
 SecurityFlags mutt_parse_crypt_hdr      (const char *p, bool set_empty_signas, SecurityFlags crypt_app);
 int           mutt_prepare_template     (FILE *fp, struct Mailbox *m, struct Email *e_new, struct Email *e, bool resend);
 void          mutt_update_num_postponed (void);
+struct Mailbox *postponed_get_mailbox   (struct MuttWindow *dlg);
 
 #endif /* MUTT_POSTPONE_LIB_H */
