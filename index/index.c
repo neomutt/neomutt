@@ -76,6 +76,7 @@
 #include "attach/lib.h"
 #include "color/lib.h"
 #include "menu/lib.h"
+#include "postpone/lib.h"
 #include "alternates.h"
 #include "globals.h" // IWYU pragma: keep
 #include "mutt_thread.h"
@@ -628,6 +629,12 @@ struct Mailbox *get_current_mailbox(void)
     {
       struct IndexSharedData *shared = win->wdata;
       return shared->mailbox;
+    }
+
+    win = window_find_child(np, WT_DLG_POSTPONE);
+    if (win)
+    {
+      return postponed_get_mailbox(win);
     }
   }
 
