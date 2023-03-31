@@ -59,8 +59,8 @@ struct NntpAccountData
   unsigned int groups_num;
   unsigned int groups_max;
   void **groups_list;
-  struct HashTable *groups_hash;
-  struct Connection *conn; ///< Connection to NNTP Server
+  struct HashTable *groups_hash; ///< Hash Table: "newsgroup" -> NntpMboxData
+  struct Connection *conn;       ///< Connection to NNTP Server
 };
 
 void                    nntp_adata_free(void **ptr);

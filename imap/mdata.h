@@ -55,9 +55,9 @@ struct ImapMboxData
   unsigned int unseen;
 
   // Cached data used only when the mailbox is opened
-  struct HashTable *uid_hash;
+  struct HashTable *uid_hash;          ///< Hash Table: "uid" -> Email
   ARRAY_HEAD(MSN, struct Email *) msn; ///< look up headers by (MSN-1)
-  struct BodyCache *bcache; ///< Email body cache
+  struct BodyCache *bcache;            ///< Email body cache
 
   struct HeaderCache *hcache; ///< Email header cache
 };

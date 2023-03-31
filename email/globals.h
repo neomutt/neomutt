@@ -32,7 +32,7 @@ extern struct RegexList NoSpamList;         ///< List of regexes to identify non
 extern struct ReplaceList SpamList;         ///< List of regexes and patterns to match spam emails
 extern struct ListHead UnIgnore;            ///< List of header patterns to unignore (see)
 extern struct ListHead MailToAllow;         ///< List of permitted fields in a mailto: url
-extern struct HashTable *AutoSubscribeCache;///< Hash Table of auto-subscribed mailing lists
+extern struct HashTable *AutoSubscribeCache;///< Hash Table: "mailto:" -> AutoSubscribeCache
 extern struct RegexList UnSubscribedLists;  ///< List of regexes to exclude false matches in SubscribedLists
 extern struct RegexList MailLists;          ///< List of regexes to match mailing lists
 extern struct RegexList UnMailLists;        ///< List of regexes to exclude false matches in MailLists

@@ -400,7 +400,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
           if (e->body->length < 0)
             e->body->length = 0;
         }
-        if (!e->lines)
+        if (e->lines == 0)
           e->lines = lines ? lines - 1 : 0;
       }
 
@@ -513,7 +513,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
         e->body->length = 0;
     }
 
-    if (!e->lines)
+    if (e->lines == 0)
       e->lines = lines ? lines - 1 : 0;
   }
 

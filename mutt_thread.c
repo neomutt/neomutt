@@ -50,7 +50,7 @@ struct ThreadsContext
 {
   struct Mailbox *mailbox; ///< Current mailbox
   struct MuttThread *tree; ///< Top of thread tree
-  struct HashTable *hash;  ///< Hash table for threads
+  struct HashTable *hash;  ///< Hash Table: "message-id" -> MuttThread
   short c_sort;            ///< Last sort method
   short c_sort_aux;        ///< Last sort_aux method
 };

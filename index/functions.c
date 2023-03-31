@@ -968,7 +968,7 @@ static int op_main_delete_pattern(struct IndexSharedData *shared,
 }
 
 /**
- * op_main_limit - Limit view to current thread - Implements ::index_function_t - @ingroup index_function_api
+ * op_main_limit - Limit view to a pattern/thread - Implements ::index_function_t - @ingroup index_function_api
  *
  * This function handles:
  * - OP_LIMIT_CURRENT_THREAD

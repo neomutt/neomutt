@@ -250,7 +250,7 @@ struct ConfigSetType
  */
 struct ConfigSet
 {
-  struct HashTable *hash;         ///< HashTable storing the config items
+  struct HashTable *hash;         ///< Hash Table: "$name" -> ConfigDef
   struct ConfigSetType types[18]; ///< All the defined config types
 };
 

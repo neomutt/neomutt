@@ -923,7 +923,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_SIZE);
-        snprintf(buf + colorlen, buflen - colorlen, fmt, (int) e->lines);
+        snprintf(buf + colorlen, buflen - colorlen, fmt, e->lines);
         add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       }
       else if (e->lines <= 0)
