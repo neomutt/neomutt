@@ -6609,7 +6609,7 @@ msgstr "Negalima nustatyti kintamojo reikšmės su komanda '%s'"
 
 #: parse/set.c:542
 msgid "'+' and '-' must be followed by '='"
-msgstr ""
+msgstr "Po '+' arba '-' turi būti '='"
 
 #: parse/set.c:551
 msgid "Can't use prefix when setting a variable"
