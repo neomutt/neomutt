@@ -30,7 +30,7 @@ jobs:
         run: ./configure --disable-doc $CONFIGURE_OPTIONS
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2.2.5
+        uses: github/codeql-action/init@v2
         with:
           languages: cpp
           config-file: ./.github/codeql.yml
@@ -40,6 +40,6 @@ jobs:
         run: make -j 2 -s
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2.2.5
+        uses: github/codeql-action/analyze@v2
         with:
           category: "/language:cpp"
