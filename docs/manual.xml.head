@@ -3468,29 +3468,36 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
       </para>
 
       <para>
-        OpenPGP and S/MIME are enabled in one of two ways: <quote>classic
-        mode</quote> or GPGME.  The former invokes external programs to perform
-        the various operations; it is better tested and more flexible, but
-        requires some configuration.  The latter uses the GnuPG project's GPGME
-        library.
-      </para>
-
-      <para>
-        To enable <quote>classic mode</quote>, ensure GPGME is disabled.
+        The recommended way to enable OpenPGP and S/MIME is to use GPGME.
+        This library is integrated into NeoMutt and can perform all the common
+        crypto functions the user will need.
       </para>
 
 <screen>
-unset crypt_use_gpgme
-source /usr/local/share/doc/neomutt/samples/gpg.rc
-source /usr/local/share/doc/neomutt/samples/smime.rc
+<emphasis role="comment"># Enable GPGME</emphasis>
+set crypt_use_gpgme
 </screen>
 
       <para>
-        To use GPGME instead, simply ensure the option is enabled in your .muttrc:
+        If you have complex crypto needs, then you can enable the
+        <quote>classic mode</quote> by disabling GPGME and setting all
+        <literal>pgp_command_*</literal> and <literal>smime_command_*</literal>
+        config variables.
+      </para>
+
+      <para>
+        For example config, see: <literal>gpg.rc</literal> and
+        <literal>smime.rc</literal> in the
+        <ulink url="https://github.com/neomutt/neomutt-contrib/">Contrib repository</ulink>.
       </para>
 
 <screen>
-set crypt_use_gpgme
+<emphasis role="comment"># Use manual crypto functions</emphasis>
+unset crypt_use_gpgme
+set pgp_clear_sign_command = "..."
+...
+set smime_decrypt_command = "..."
+...
 </screen>
 
       <sect2 id="enc-pgp">
