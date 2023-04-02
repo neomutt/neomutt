@@ -18825,9 +18825,8 @@ set use_threads=threads sort=last-date sort_aux=date
         </para>
         <para>
           It is highly recommended that NeoMutt be configured
-          <literal>--with-idn</literal> or
-          <literal>--with-idn2</literal> so that Autocrypt can properly
-          deal with international domain names.
+          <literal>--with-idn2</literal> (enabled by default) 
+          so that Autocrypt can properly deal with international domain names.
         </para>
         <para>
           While NeoMutt uses GPGME for Autocrypt, normal keyring operations
