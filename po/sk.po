@@ -6609,7 +6609,7 @@ msgstr "Nelze nastaviť premennú príkazom „%s“"
 
 #: parse/set.c:542
 msgid "'+' and '-' must be followed by '='"
-msgstr ""
+msgstr "za '+' a '-' musí nasledovať '='"
 
 #: parse/set.c:551
 msgid "Can't use prefix when setting a variable"
