@@ -41,6 +41,7 @@
 struct Buffer;
 struct Email;
 struct Mailbox;
+struct MuttWindow;
 
 struct Email *dlg_select_postponed_email(struct Mailbox *m);
 int           mutt_get_postponed        (struct Mailbox *m_cur, struct Email *hdr, struct Email **cur, struct Buffer *fcc);
