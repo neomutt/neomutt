@@ -780,10 +780,11 @@ void rfc2047_decode_addrlist(struct AddressList *al)
   if (!al)
     return;
 
+  const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
+
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
     if (a->personal && ((strstr(a->personal, "=?")) || c_assumed_charset))
     {
       rfc2047_decode(&a->personal);
