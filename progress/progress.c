@@ -75,7 +75,10 @@ bool progress_update(struct Progress *progress, size_t pos, int percent)
   // Decloak an opaque pointer
   struct MuttWindow *win = (struct MuttWindow *) progress;
   const bool updated = progress_window_update(win, pos, percent);
-  window_redraw(win);
+  if (updated)
+  {
+    window_redraw(win);
+  }
   return updated;
 }
 
