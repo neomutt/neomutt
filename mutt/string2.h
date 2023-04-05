@@ -62,7 +62,6 @@ const char *mutt_str_find_word(const char *src);
 const char *mutt_str_getenv(const char *name);
 bool        mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *rstr);
 bool        mutt_str_is_ascii(const char *str, size_t len);
-bool        mutt_str_is_email_wsp(char c);
 size_t      mutt_str_len(const char *a);
 char *      mutt_str_lower(char *str);
 size_t      mutt_str_lws_len(const char *s, size_t n);
@@ -102,5 +101,15 @@ size_t      mutt_istr_startswith(const char *str, const char *prefix);
 int         mutt_istrn_cmp(const char *a, const char *b, size_t num);
 bool        mutt_istrn_equal(const char *a, const char *b, size_t num);
 const char *mutt_istrn_rfind(const char *haystack, size_t haystack_length, const char *needle);
+
+/**
+ * mutt_str_is_email_wsp - Is this a whitespace character (for an email header)
+ * @param c Character to test
+ * @retval true It is whitespace
+ */
+static inline bool mutt_str_is_email_wsp(char c)
+{
+  return (c == ' ') || (c == '\t') || (c == '\r') || (c == '\n');
+}
 
 #endif /* MUTT_LIB_STRING2_H */
