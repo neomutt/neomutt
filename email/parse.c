@@ -1073,35 +1073,40 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, const char *na
 /**
  * mutt_rfc822_read_line - Read a header line from a file
  * @param fp      File to read from
- * @param line    Buffer to store the result
- * @param linelen Length of buffer
- * @retval ptr Line read from file
+ * @param out     Buffer to store the result
+ * @retval num Number of bytes read from fp
  *
  * Reads an arbitrarily long header field, and looks ahead for continuation
- * lines.  "line" must point to a dynamically allocated string; it is
- * increased if more space is required to fit the whole line.
+ * lines.
  */
-char *mutt_rfc822_read_line(FILE *fp, char *line, size_t *linelen)
+size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *out)
 {
-  if (!fp || !line || !linelen)
-    return NULL;
+  if (!fp || !out)
+    return 0;
 
+  buf_seek(out, 0);
+
+  size_t linelen = 1024;
+  char *line = mutt_mem_malloc(linelen);
   char *buf = line;
   int ch;
   size_t offset = 0;
+  size_t read = 0;
 
   while (true)
   {
-    if (!fgets(buf, *linelen - offset, fp) || /* end of file or */
-        (IS_SPACE(*line) && !offset))         /* end of headers */
+    if (!fgets(buf, linelen - offset, fp) || /* end of file or */
+        (IS_SPACE(*line) && !offset))        /* end of headers */
     {
-      *line = '\0';
-      return line;
+      return 0;
     }
 
     const size_t len = mutt_str_len(buf);
     if (len == 0)
-      return line;
+    {
+      return read;
+    }
+    read += len;
 
     buf += len - 1;
     if (*buf == '\n')
@@ -1118,25 +1123,31 @@ char *mutt_rfc822_read_line(FILE *fp, char *line, size_t *linelen)
       if ((ch != ' ') && (ch != '\t'))
       {
         ungetc(ch, fp);
-        return line; /* next line is a separate header field or EOH */
+        buf_addstr(out, line);
+        FREE(&line);
+        return read; /* next line is a separate header field or EOH */
       }
+      ++read;
 
       /* eat tabs and spaces from the beginning of the continuation line */
       while (((ch = fgetc(fp)) == ' ') || (ch == '\t'))
-        ; // do nothing
+      {
+        ++read;
+      }
 
       ungetc(ch, fp);
+      --read;
       *++buf = ' '; /* string is still terminated because we removed
                        at least one whitespace char above */
     }
 
     buf++;
     offset = buf - line;
-    if (*linelen < (offset + 256))
+    if (linelen < (offset + 256))
     {
       /* grow the buffer */
-      *linelen += 256;
-      mutt_mem_realloc(&line, *linelen);
+      linelen += 256;
+      mutt_mem_realloc(&line, linelen);
       buf = line + offset;
     }
   }
@@ -1164,9 +1175,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
   struct Envelope *env = mutt_env_new();
   char *p = NULL;
   LOFF_T loc;
-  size_t linelen = 1024;
-  char *line = mutt_mem_malloc(linelen);
-  char buf[linelen + 1];
+  struct Buffer *line = buf_pool_get();
 
   if (e)
   {
@@ -1187,21 +1196,23 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
 
   while ((loc = ftello(fp)) != -1)
   {
-    line = mutt_rfc822_read_line(fp, line, &linelen);
-    if (*line == '\0')
+    if ((mutt_rfc822_read_line(fp, line) == 0) || (buf_len(line) == 0))
+    {
       break;
-    p = strpbrk(line, ": \t");
+    }
+    const char *lines = buf_string(line);
+    p = strpbrk(lines, ": \t");
     if (!p || (*p != ':'))
     {
       char return_path[1024] = { 0 };
       time_t t = 0;
 
       /* some bogus MTAs will quote the original "From " line */
-      if (mutt_str_startswith(line, ">From "))
+      if (mutt_str_startswith(lines, ">From "))
       {
         continue; /* just ignore */
       }
-      else if (is_from(line, return_path, sizeof(return_path), &t))
+      else if (is_from(lines, return_path, sizeof(return_path), &t))
       {
         /* MH sometimes has the From_ line in the middle of the header! */
         if (e && (e->received == 0))
@@ -1213,11 +1224,10 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
       break; /* end of header */
     }
 
-    *buf = '\0';
-
-    if (mutt_replacelist_match(&SpamList, buf, sizeof(buf), line))
+    char buf[1024] = { 0 };
+    if (mutt_replacelist_match(&SpamList, buf, sizeof(buf), lines))
     {
-      if (!mutt_regexlist_match(&NoSpamList, line))
+      if (!mutt_regexlist_match(&NoSpamList, lines))
       {
         /* if spam tag already exists, figure out how to amend it */
         if ((!buf_is_empty(&env->spam)) && (*buf != '\0'))
@@ -1258,10 +1268,10 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
     if (*p == '\0')
       continue; /* skip empty header fields */
 
-    mutt_rfc822_parse_line(env, e, line, p, user_hdrs, weed, true);
+    mutt_rfc822_parse_line(env, e, lines, p, user_hdrs, weed, true);
   }
 
-  FREE(&line);
+  buf_pool_release(&line);
 
   if (e)
   {
@@ -1328,8 +1338,7 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
   struct Body *p = mutt_body_new();
   struct Envelope *env = mutt_env_new();
   char *c = NULL;
-  size_t linelen = 1024;
-  char *line = mutt_mem_malloc(linelen);
+  struct Buffer *buf = buf_pool_get();
   bool matched = false;
 
   p->hdr_offset = ftello(fp);
@@ -1338,8 +1347,9 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
   p->type = digest ? TYPE_MESSAGE : TYPE_TEXT;
   p->disposition = DISP_INLINE;
 
-  while (*(line = mutt_rfc822_read_line(fp, line, &linelen)) != 0)
+  while (mutt_rfc822_read_line(fp, buf) != 0)
   {
+    const char *line = buf_string(buf);
     /* Find the value of the current header */
     c = strchr(line, ':');
     if (c)
@@ -1422,7 +1432,7 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
   else if ((p->type == TYPE_MESSAGE) && !p->subtype)
     p->subtype = mutt_str_dup("rfc822");
 
-  FREE(&line);
+  buf_pool_release(&buf);
 
   if (matched)
   {

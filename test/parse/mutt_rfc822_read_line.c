@@ -31,18 +31,12 @@ void test_mutt_rfc822_read_line(void)
   // char *mutt_rfc822_read_line(FILE *fp, char *line, size_t *linelen);
 
   {
-    size_t linelen = 0;
-    TEST_CHECK(!mutt_rfc822_read_line(NULL, "apple", &linelen));
+    struct Buffer buf = { 0 };
+    TEST_CHECK(mutt_rfc822_read_line(NULL, &buf) == 0);
   }
 
   {
     FILE fp = { 0 };
-    size_t linelen = 0;
-    TEST_CHECK(!mutt_rfc822_read_line(&fp, NULL, &linelen));
-  }
-
-  {
-    FILE fp = { 0 };
-    TEST_CHECK(!mutt_rfc822_read_line(&fp, "apple", NULL));
+    TEST_CHECK(mutt_rfc822_read_line(&fp, NULL) == 0);
   }
 }

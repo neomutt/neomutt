@@ -237,29 +237,44 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
     }
   }
 
-  size_t blen = 256;
-  char *buf = mutt_mem_malloc(blen);
-
   /* search the file "fp" */
-  while (len > 0)
+  if (pat->op == MUTT_PAT_HEADER)
   {
-    if (pat->op == MUTT_PAT_HEADER)
+    struct Buffer *buf = buf_pool_get();
+    while (len > 0)
     {
-      buf = mutt_rfc822_read_line(fp, buf, &blen);
-      if (*buf == '\0')
+      if (mutt_rfc822_read_line(fp, buf) == 0)
+      {
         break;
+      }
+      len -= buf_len(buf);
+      if (patmatch(pat, buf_string(buf)))
+      {
+        match = true;
+        break;
+      }
     }
-    else if (!fgets(buf, blen - 1, fp))
-      break; /* don't loop forever */
-    if (patmatch(pat, buf))
-    {
-      match = true;
-      break;
-    }
-    len -= mutt_str_len(buf);
+    buf_pool_release(&buf);
   }
-
-  FREE(&buf);
+  else
+  {
+    size_t blen = 256;
+    char *buf = mutt_mem_malloc(blen);
+    while (len > 0)
+    {
+      if (!fgets(buf, blen - 1, fp))
+      {
+        break; /* don't loop forever */
+      }
+      len -= mutt_str_len(buf);
+      if (patmatch(pat, buf))
+      {
+        match = true;
+        break;
+      }
+    }
+    FREE(&buf);
+  }
 
   if (c_thorough_search)
     mutt_file_fclose(&fp);
