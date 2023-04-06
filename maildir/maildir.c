@@ -603,6 +603,7 @@ static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
 #ifdef USE_HCACHE
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
   struct HeaderCache *hc = mutt_hcache_open(c_header_cache, mailbox_path(m), NULL);
+  const bool c_maildir_header_cache_verify = cs_subset_bool(NeoMutt->sub, "maildir_header_cache_verify");
 #endif
 
   struct MdEmail *md = NULL;
@@ -621,15 +622,20 @@ static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
 #ifdef USE_HCACHE
     struct stat st_lastchanged = { 0 };
     int rc = 0;
-    const bool c_maildir_header_cache_verify = cs_subset_bool(NeoMutt->sub, "maildir_header_cache_verify");
-    if (c_maildir_header_cache_verify)
-    {
-      rc = stat(fn, &st_lastchanged);
-    }
 
     const char *key = md->email->path + 3;
     size_t keylen = maildir_hcache_keylen(key);
-    struct HCacheEntry hce = mutt_hcache_fetch(hc, key, keylen, 0);
+    struct HCacheEntry hce = { 0 };
+
+    if (hc)
+    {
+      hce = mutt_hcache_fetch(hc, key, keylen, 0);
+    }
+
+    if (hce.email && c_maildir_header_cache_verify)
+    {
+      rc = stat(fn, &st_lastchanged);
+    }
 
     if (hce.email && (rc == 0) && (st_lastchanged.st_mtime <= hce.uidvalidity))
     {

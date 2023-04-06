@@ -340,10 +340,13 @@ static char *get_foldername(const char *folder)
  */
 static void *fetch_raw(struct HeaderCache *hc, const char *key, size_t keylen, size_t *dlen)
 {
+  if (!hc)
+    return NULL;
+
   const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
   const struct StoreOps *ops = store_get_backend_ops(c_header_cache_backend);
 
-  if (!hc || !ops)
+  if (!ops)
     return NULL;
 
   struct Buffer path = mutt_buffer_make(1024);
