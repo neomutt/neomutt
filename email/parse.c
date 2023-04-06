@@ -1167,7 +1167,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
 
   struct Envelope *env = mutt_env_new();
   char *p = NULL;
-  LOFF_T loc;
+  LOFF_T loc = e ? e->offset : ftello(fp);
   struct Buffer *line = buf_pool_get();
 
   if (e)
@@ -1187,12 +1187,15 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
     }
   }
 
-  while ((loc = ftello(fp)) != -1)
+  while (true)
   {
-    if (mutt_rfc822_read_line(fp, line) == 0)
+    LOFF_T line_start_loc = loc;
+    size_t len = mutt_rfc822_read_line(fp, line);
+    if (len == 0)
     {
       break;
     }
+    loc += len;
     const char *lines = buf_string(line);
     p = strpbrk(lines, ": \t");
     if (!p || (*p != ':'))
@@ -1213,7 +1216,10 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
         continue;
       }
 
-      (void) mutt_file_seek(fp, loc, SEEK_SET);
+      /* We need to seek back to the start of the body. Note that we
+       * keep track of loc ourselves, since calling ftello() incurs
+       * a syscall, which can be expensive to do for every single line */
+      (void) mutt_file_seek(fp, line_start_loc, SEEK_SET);
       break; /* end of header */
     }
 
