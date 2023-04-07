@@ -1259,7 +1259,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
        * only to help readability of the code.  */
       bool browser_track = false;
 
-      const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+      const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
       switch (c_sort_browser & SORT_MASK)
       {
         case SORT_DESC:

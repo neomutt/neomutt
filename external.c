@@ -557,7 +557,7 @@ bool mutt_select_sort(bool reverse)
   }
 
   const unsigned char c_use_threads = cs_subset_enum(NeoMutt->sub, "use_threads");
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   int rc = CSR_ERR_CODE;
   if ((sort != SORT_THREADS) || (c_use_threads == UT_UNSET))
   {

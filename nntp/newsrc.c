@@ -306,7 +306,7 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
   bool series;
   unsigned int entries;
 
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   if (c_sort != SORT_ORDER)
   {
     cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);

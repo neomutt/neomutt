@@ -555,7 +555,7 @@ static int reopen_mailbox(struct Mailbox *m)
   m->verbose = false;
 
   /* our heuristics require the old mailbox to be unsorted */
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   if (c_sort != SORT_ORDER)
   {
     cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
@@ -1186,7 +1186,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   enum MxStatus rc = MX_STATUS_ERROR;
 
   /* sort message by their position in the mailbox on disk */
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   const unsigned char c_use_threads = cs_subset_enum(NeoMutt->sub, "use_threads");
   if (c_sort != SORT_ORDER)
   {

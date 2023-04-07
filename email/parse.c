@@ -112,8 +112,7 @@ static void parse_parameters(struct ParameterList *pl, const char *s, bool allow
   struct Parameter *pnew = NULL;
   const char *p = NULL;
   size_t i;
-  const struct Slist *const c_assumed_charset =
-    cs_subset_slist(NeoMutt->sub, "assumed_charset");
+  const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
 
   struct Buffer *buf = mutt_buffer_pool_get();
   /* allow_value_spaces, especially with autocrypt keydata, can result

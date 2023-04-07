@@ -46,7 +46,7 @@ static int browser_compare_subject(const void *a, const void *b)
   int r = mutt_inbox_cmp(pa->name, pb->name);
   if (r == 0)
     r = mutt_str_coll(pa->name, pb->name);
-  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
   return (c_sort_browser & SORT_REVERSE) ? -r : r;
 }
 
@@ -60,7 +60,7 @@ static int browser_compare_order(const void *a, const void *b)
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
 
-  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
   return ((c_sort_browser & SORT_REVERSE) ? -1 : 1) * (pa->gen - pb->gen);
 }
 
@@ -74,7 +74,7 @@ static int browser_compare_desc(const void *a, const void *b)
 
   int r = mutt_str_coll(pa->desc, pb->desc);
 
-  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
   return (c_sort_browser & SORT_REVERSE) ? -r : r;
 }
 
@@ -88,7 +88,7 @@ static int browser_compare_date(const void *a, const void *b)
 
   int r = pa->mtime - pb->mtime;
 
-  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
   return (c_sort_browser & SORT_REVERSE) ? -r : r;
 }
 
@@ -102,7 +102,7 @@ static int browser_compare_size(const void *a, const void *b)
 
   int r = pa->size - pb->size;
 
-  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
   return (c_sort_browser & SORT_REVERSE) ? -r : r;
 }
 
@@ -122,7 +122,7 @@ static int browser_compare_count(const void *a, const void *b)
   else
     r = 1;
 
-  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
   return (c_sort_browser & SORT_REVERSE) ? -r : r;
 }
 
@@ -142,7 +142,7 @@ static int browser_compare_count_new(const void *a, const void *b)
   else
     r = 1;
 
-  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
   return (c_sort_browser & SORT_REVERSE) ? -r : r;
 }
 
@@ -163,7 +163,7 @@ static int browser_compare(const void *a, const void *b)
   if ((mutt_str_coll(pb->desc, "../") == 0) || (mutt_str_coll(pb->desc, "..") == 0))
     return 1;
 
-  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
   switch (c_sort_browser & SORT_MASK)
   {
     case SORT_COUNT:
@@ -193,7 +193,7 @@ static int browser_compare(const void *a, const void *b)
  */
 void browser_sort(struct BrowserState *state)
 {
-  const short c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
   switch (c_sort_browser & SORT_MASK)
   {
 #ifdef USE_NNTP

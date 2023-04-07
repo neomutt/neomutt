@@ -345,7 +345,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     case 's':
     {
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+      const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
       snprintf(buf, buflen, fmt, get_sort_str(tmp, sizeof(tmp), c_sort));
       break;
     }
@@ -353,7 +353,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     case 'S':
     {
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      const short c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
+      const enum SortType c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
       snprintf(buf, buflen, fmt, get_sort_str(tmp, sizeof(tmp), c_sort_aux));
       break;
     }

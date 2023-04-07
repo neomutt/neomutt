@@ -109,7 +109,7 @@ static void sort_use_threads_warn(void)
  */
 static int config_sort(const struct ConfigSubset *sub)
 {
-  const short c_sort = cs_subset_sort(sub, "sort");
+  const enum SortType c_sort = cs_subset_sort(sub, "sort");
   const unsigned char c_use_threads = cs_subset_enum(sub, "use_threads");
 
   if (((c_sort & SORT_MASK) != SORT_THREADS) || (c_use_threads == UT_UNSET))
@@ -142,7 +142,7 @@ static int config_sort(const struct ConfigSubset *sub)
      * direction. Adjust $sort based on $sort_aux, and the 2nd-level
      * observer for $sort will be a no-op.
      */
-    short c_sort_aux = cs_subset_sort(sub, "sort_aux");
+    enum SortType c_sort_aux = cs_subset_sort(sub, "sort_aux");
     c_sort_aux ^= (c_sort & SORT_REVERSE);
     rc = cs_subset_str_native_set(sub, "sort", c_sort_aux, NULL);
   }
@@ -157,7 +157,7 @@ static int config_sort(const struct ConfigSubset *sub)
  */
 static int config_use_threads(const struct ConfigSubset *sub)
 {
-  const short c_sort = cs_subset_sort(sub, "sort");
+  const enum SortType c_sort = cs_subset_sort(sub, "sort");
   const unsigned char c_use_threads = cs_subset_enum(sub, "use_threads");
 
   if (((c_sort & SORT_MASK) != SORT_THREADS) || (c_use_threads == UT_UNSET))
@@ -170,7 +170,7 @@ static int config_use_threads(const struct ConfigSubset *sub)
    * aren't setting $sort to threads, the 2nd-level observer will be a
    * no-op.
    */
-  const short c_sort_aux = cs_subset_sort(sub, "sort_aux");
+  const enum SortType c_sort_aux = cs_subset_sort(sub, "sort_aux");
   int rc = cs_subset_str_native_set(sub, "sort", c_sort_aux, NULL);
   return (CSR_RESULT(rc) == CSR_SUCCESS) ? 0 : -1;
 }

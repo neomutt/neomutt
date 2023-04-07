@@ -212,7 +212,7 @@ struct Email *dlg_select_postponed_email(struct Mailbox *m)
   /* The postponed mailbox is setup to have sorting disabled, but the global
    * `$sort` variable may indicate something different.   Sorting has to be
    * disabled while the postpone menu is being displayed. */
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
 
   // ---------------------------------------------------------------------------

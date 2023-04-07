@@ -48,11 +48,11 @@
  */
 struct ThreadsContext
 {
-  struct Mailbox *mailbox; ///< Current mailbox
-  struct MuttThread *tree; ///< Top of thread tree
-  struct HashTable *hash;  ///< Hash Table: "message-id" -> MuttThread
-  short c_sort;            ///< Last sort method
-  short c_sort_aux;        ///< Last sort_aux method
+  struct Mailbox *mailbox;  ///< Current mailbox
+  struct MuttThread *tree;  ///< Top of thread tree
+  struct HashTable *hash;   ///< Hash Table: "message-id" -> MuttThread
+  enum SortType c_sort;     ///< Last sort method
+  enum SortType c_sort_aux; ///< Last sort_aux method
 };
 
 /**
@@ -89,7 +89,7 @@ struct EnumDef UseThreadsTypeDef = {
 enum UseThreads mutt_thread_style(void)
 {
   const unsigned char c_use_threads = cs_subset_enum(NeoMutt->sub, "use_threads");
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   if (c_use_threads > UT_FLAT)
     return c_use_threads;
   if ((c_sort & SORT_MASK) != SORT_THREADS)
@@ -784,8 +784,8 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
    * resorting, so we sort backwards and then put them back
    * in reverse order so they're forwards */
   const bool reverse = (mutt_thread_style() == UT_REVERSE);
-  short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  short c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
+  enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  enum SortType c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
   if ((c_sort & SORT_MASK) == SORT_THREADS)
   {
     assert(!(c_sort & SORT_REVERSE) != reverse);
@@ -794,7 +794,7 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
   }
   c_sort ^= SORT_REVERSE;
   c_sort_aux ^= SORT_REVERSE;
-  if (init || tctx->c_sort != c_sort || tctx->c_sort_aux != c_sort_aux)
+  if (init || (tctx->c_sort != c_sort) || (tctx->c_sort_aux != c_sort_aux))
   {
     tctx->c_sort = c_sort;
     tctx->c_sort_aux = c_sort_aux;

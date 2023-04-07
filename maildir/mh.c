@@ -678,7 +678,7 @@ static void mh_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
   mutt_hcache_close(hc);
 #endif
 
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   if (m && mda && (ARRAY_SIZE(mda) > 0) && (c_sort == SORT_ORDER))
   {
     mutt_debug(LL_DEBUG3, "maildir: sorting %s into natural order\n", mailbox_path(m));

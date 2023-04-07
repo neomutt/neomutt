@@ -954,7 +954,7 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
   /* We make a copy of the headers just in case resorting doesn't give
    exactly the original order (duplicate messages?), because other parts of
    the mv are tied to the header order. This may be overkill. */
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   if (c_sort != SORT_ORDER)
   {
     emails = m->emails;
@@ -1652,7 +1652,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 #endif
 
   /* presort here to avoid doing 10 resorts in imap_exec_msgset */
-  const short c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   if (c_sort != SORT_ORDER)
   {
     emails = m->emails;

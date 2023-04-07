@@ -329,7 +329,7 @@ int ci_first_message(struct Mailbox *m)
    * message is first.  Otherwise, the latest message is first if exactly
    * one of `$use_threads` and `$sort` are reverse.
    */
-  short c_sort = cs_subset_sort(m->sub, "sort");
+  enum SortType c_sort = cs_subset_sort(m->sub, "sort");
   if ((c_sort & SORT_MASK) == SORT_THREADS)
     c_sort = cs_subset_sort(m->sub, "sort_aux");
   bool reverse = false;
