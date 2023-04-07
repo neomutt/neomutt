@@ -570,20 +570,6 @@ void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check
 }
 
 /**
- * mutt_update_index - Update the index
- * @param menu      Current Menu
- * @param mv       Mailbox
- * @param check     Flags, e.g. #MX_STATUS_REOPENED
- * @param oldcount  How many items are currently in the index
- * @param shared    Shared Index data
- */
-void mutt_update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check,
-                       int oldcount, struct IndexSharedData *shared)
-{
-  update_index(menu, mv, check, oldcount, shared);
-}
-
-/**
  * index_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t - @ingroup observer_api
  *
  * If a Mailbox is closed, then set a pointer to NULL.

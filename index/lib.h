@@ -78,7 +78,6 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line);
 void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, size_t buflen);
 struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m);
 void mutt_set_header_color(struct Mailbox *m, struct Email *e);
-void mutt_update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check, int oldcount, struct IndexSharedData *shared);
 struct MuttWindow *index_pager_init(void);
 int mutt_dlgindex_observer(struct NotifyCallback *nc);
 bool check_acl(struct Mailbox *m, AclFlags acl, const char *msg);
