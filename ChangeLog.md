@@ -1,3 +1,37 @@
+2023-04-07  Richard Russon  \<rich@flatcap.org\>
+* Features
+  - #3769 - imap : support IMAP4 ID extension (RFC2971)
+  - #3753 - parse: query all changed (`set`) / all (`set all`) config variables
+* Bug Fixes
+  - #3785 - lua: fix command registration
+  - #3793 - postpone: use colours from the right mailbox
+  - #3794 - smtp: ignore oauth if it isn't configured and not requested
+* Config
+  - #3779 - New: `imap_send_id` - Send IMAP ID command when logging in
+* Translations
+  - 100% :czech_republic: Czech
+  - 100% :de: German
+  - 100% :hungary: Hungarian
+  - 100% :lithuania: Lithuanian
+  - 100% :brazil: Portuguese (Brazil)
+  - 100% :serbia: Serbian
+  - 100% :slovakia: Slovak
+  - 99% :poland: Polish
+* Docs
+  - Recommend GPGME
+* Code
+  - #3767 - libmutt: eliminate use of config variables
+  - #3774 - fix ubsan warning
+  - #3802 - mutt: optimize and inline mutt_str_is_email_wsp()
+  - #3803 - progress: update ncurses only when there is actual progress
+  - #3801 - email: Read assumed_charset outside loops
+  - #3805 - hcache: do less work when not in use
+  - #3777 - pager: add helper for getting $pager
+  - #3797 - hcache: remove spurious +1 from Buffer serialization.
+* Build
+  - #3787 - fix race condition in `make install`
+  - #3780 - fallback to detect SASL manually if pkg-config fails, e.g., homebew
+
 2023-03-22  Richard Russon  \<rich@flatcap.org\>
 * Features
   - #3372 - use DT_SLIST for charset variables
