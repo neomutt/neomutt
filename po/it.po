@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-03-30 17:08+0100\n"
+"POT-Creation-Date: 2023-04-07 13:27+0100\n"
 "PO-Revision-Date: 2012-05-25 22:14+0200\n"
 "Last-Translator: Marco Paolone <marcopaolone@gmail.com>\n"
 "Language-Team: none\n"
@@ -290,7 +290,7 @@ msgstr "La voce compose di mailcap richiede %%s"
 
 #: attach/mutt_attach.c:163 attach/mutt_attach.c:304 compmbox/compress.c:347
 #: compose/functions.c:1716 gui/curs_lib.c:319 index/dlg_index.c:1191
-#: index/dlg_index.c:1237 pager/dlg_pager.c:465 pager/do_pager.c:171
+#: index/dlg_index.c:1237 pager/dlg_pager.c:465 pager/do_pager.c:167
 #: pager/message.c:335 send/sendlib.c:574
 #, c-format
 msgid "Error running \"%s\""
@@ -1834,14 +1834,14 @@ msgstr "Il tunnel verso %s ha restituito l'errore %d (%s)"
 msgid "%s isn't a regular file"
 msgstr "%s non è un file regolare"
 
-#: copy.c:724
+#: copy.c:725
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: copy.c:809
+#: copy.c:810
 msgid "No decryption engine available for message"
 msgstr ""
 
@@ -2673,7 +2673,7 @@ msgstr "Non ci sono autenticatori disponibili."
 #: imap/auth_anon.c:55 imap/auth_cram.c:107 imap/auth_gsasl.c:65
 #: imap/auth_gss.c:167 imap/auth_oauth.c:72 imap/auth_sasl.c:124
 #: nntp/nntp.c:504 nntp/nntp.c:569 pop/auth.c:77 pop/auth.c:191 pop/auth.c:336
-#: pop/auth.c:431 send/smtp.c:526 send/smtp.c:643 send/smtp.c:731
+#: pop/auth.c:431 send/smtp.c:527 send/smtp.c:644 send/smtp.c:736
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Autenticazione in corso (%s)..."
@@ -2681,7 +2681,7 @@ msgstr "Autenticazione in corso (%s)..."
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:88 imap/auth_cram.c:181 imap/auth_gss.c:348
 #: imap/auth_oauth.c:105 imap/auth_sasl.c:258 nntp/nntp.c:668 pop/auth.c:289
-#: pop/auth.c:357 send/smtp.c:819 send/smtp.c:893 send/smtp.c:997
+#: pop/auth.c:357 send/smtp.c:824 send/smtp.c:898 send/smtp.c:1002
 #, fuzzy, c-format
 msgid "%s authentication failed"
 msgstr "Autenticazione SASL fallita"
@@ -2784,11 +2784,11 @@ msgstr "CREATE fallito: %s"
 msgid "Closing connection to %s..."
 msgstr "Chiusura della connessione a %s..."
 
-#: imap/imap.c:787 nntp/nntp.c:1811 pop/lib.c:332 send/smtp.c:1042
+#: imap/imap.c:787 nntp/nntp.c:1811 pop/lib.c:332 send/smtp.c:1047
 msgid "Secure connection with TLS?"
 msgstr "Vuoi usare TLS per rendere sicura la connessione?"
 
-#: imap/imap.c:803 nntp/nntp.c:1834 pop/lib.c:353 send/smtp.c:1059
+#: imap/imap.c:803 nntp/nntp.c:1834 pop/lib.c:353 send/smtp.c:1064
 msgid "Could not negotiate TLS connection"
 msgstr "Impossibile negoziare la connessione TLS"
 
@@ -2922,7 +2922,7 @@ msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "L'indice dei messaggi non è corretto; provare a riaprire la mailbox."
 
 #: imap/msn.c:48 mutt/buffer.c:112 mutt/buffer.c:323 mutt/memory.c:58
-#: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1015 mx.c:1233
+#: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1005 mx.c:1233
 msgid "Out of memory"
 msgstr "Memoria esaurita"
 
@@ -3354,7 +3354,7 @@ msgstr "Non ci sono messaggi"
 msgid "No visible messages"
 msgstr "Non ci sono messaggi visibili"
 
-#: index/index.c:97
+#: index/index.c:98
 msgid "Changing threaded display should prefer $use_threads over $sort"
 msgstr ""
 
@@ -3493,19 +3493,19 @@ msgstr "Impossibile salvare il messaggio su disco"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message():·impossibile impostare l'orario del file"
 
-#: maildir/maildir.c:684 maildir/mh.c:706
+#: maildir/maildir.c:690 maildir/mh.c:706
 #, c-format
 msgid "Scanning %s..."
 msgstr "Scansione di %s..."
 
-#: maildir/maildir.c:705 maildir/mh.c:729 mbox/mbox.c:212 mbox/mbox.c:384
+#: maildir/maildir.c:711 maildir/mh.c:729 mbox/mbox.c:212 mbox/mbox.c:384
 #: mx.c:373
 #, c-format
 msgid "Reading %s..."
 msgstr "Lettura di %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1394 maildir/mh.c:1057 mbox/mbox.c:1284 mx.c:481
+#: maildir/maildir.c:1400 maildir/mh.c:1057 mbox/mbox.c:1284 mx.c:481
 #: notmuch/notmuch.c:2227
 #, c-format
 msgid "Writing %s..."
@@ -5377,7 +5377,7 @@ msgstr "Il server ha chiuso la connessione"
 msgid "Server doesn't support reader mode"
 msgstr "Il server SMTP non supporta l'autenticazione"
 
-#: nntp/nntp.c:475 pop/auth.c:620 send/smtp.c:1001
+#: nntp/nntp.c:475 pop/auth.c:620 send/smtp.c:1006
 msgid "No authenticators available"
 msgstr "Non ci sono autenticatori disponibili."
 
@@ -7673,7 +7673,7 @@ msgstr "Non è stato specificato un oggetto"
 msgid "No newsgroup specified"
 msgstr "Non è stato specificato un oggetto"
 
-#: send/send.c:2879 send/smtp.c:248
+#: send/send.c:2879 send/smtp.c:249
 msgid "Sending message..."
 msgstr "Invio il messaggio..."
 
@@ -7736,38 +7736,38 @@ msgstr "Errore nell'invio del messaggio, il figlio è uscito con %d (%s)"
 msgid "Output of the delivery process"
 msgstr "Output del processo di consegna"
 
-#: send/smtp.c:179
+#: send/smtp.c:180
 #, c-format
 msgid "SMTP session failed: %s"
 msgstr "Sessione SMTP fallita: %s"
 
-#: send/smtp.c:238
+#: send/smtp.c:239
 #, c-format
 msgid "SMTP session failed: unable to open %s"
 msgstr "Sessione SMTP fallita: impossibile aprire %s"
 
-#: send/smtp.c:360
+#: send/smtp.c:361
 #, c-format
 msgid "Invalid SMTP URL: %s"
 msgstr "URL del server SMTP non valido: %s"
 
-#: send/smtp.c:1074
+#: send/smtp.c:1079
 msgid "SMTP server does not support authentication"
 msgstr "Il server SMTP non supporta l'autenticazione"
 
-#: send/smtp.c:1121
+#: send/smtp.c:1126
 msgid "No from address given"
 msgstr "Nessun indirizzo \"from\" fornito"
 
-#: send/smtp.c:1188
+#: send/smtp.c:1193
 msgid "SMTP session failed: read error"
 msgstr "Sessione SMTP fallita: errore di lettura"
 
-#: send/smtp.c:1190
+#: send/smtp.c:1195
 msgid "SMTP session failed: write error"
 msgstr "Sessione SMTP fallita: errore di scrittura"
 
-#: send/smtp.c:1192
+#: send/smtp.c:1197
 msgid "Invalid server response"
 msgstr "Risposta del server non valida"
 

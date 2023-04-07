@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt 20210205\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-03-30 17:08+0100\n"
-"PO-Revision-Date: 2023-03-10 18:40+0100\n"
+"POT-Creation-Date: 2023-04-07 13:27+0100\n"
+"PO-Revision-Date: 2023-03-30 18:30+0200\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: poe 1.5.2-6-gad484cc\n"
+"X-Generator: poe 1.5.3-1-gf338f17\n"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:399
@@ -281,7 +281,7 @@ msgstr "Compose ставка mailcap-а захтева %%s"
 
 #: attach/mutt_attach.c:163 attach/mutt_attach.c:304 compmbox/compress.c:347
 #: compose/functions.c:1716 gui/curs_lib.c:319 index/dlg_index.c:1191
-#: index/dlg_index.c:1237 pager/dlg_pager.c:465 pager/do_pager.c:171
+#: index/dlg_index.c:1237 pager/dlg_pager.c:465 pager/do_pager.c:167
 #: pager/message.c:335 send/sendlib.c:574
 #, c-format
 msgid "Error running \"%s\""
@@ -1792,7 +1792,7 @@ msgstr "Тунел ка %s је вратио грешку %d (%s)"
 msgid "%s isn't a regular file"
 msgstr "%s није обична датотека"
 
-#: copy.c:724
+#: copy.c:725
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
@@ -1800,7 +1800,7 @@ msgstr[0] "Рачунање дужине је погрешно за %ld бајт
 msgstr[1] "Рачунање дужине је погрешно за %ld бајта"
 msgstr[2] "Рачунање дужине је погрешно за %ld бајтова"
 
-#: copy.c:809
+#: copy.c:810
 msgid "No decryption engine available for message"
 msgstr "Ниједан погон за дешифровање није доступан"
 
@@ -2601,7 +2601,7 @@ msgstr "Нема доступних аутентификатора или су �
 #: imap/auth_anon.c:55 imap/auth_cram.c:107 imap/auth_gsasl.c:65
 #: imap/auth_gss.c:167 imap/auth_oauth.c:72 imap/auth_sasl.c:124
 #: nntp/nntp.c:504 nntp/nntp.c:569 pop/auth.c:77 pop/auth.c:191 pop/auth.c:336
-#: pop/auth.c:431 send/smtp.c:526 send/smtp.c:643 send/smtp.c:731
+#: pop/auth.c:431 send/smtp.c:527 send/smtp.c:644 send/smtp.c:736
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Аутентификовање (%s)..."
@@ -2609,7 +2609,7 @@ msgstr "Аутентификовање (%s)..."
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:88 imap/auth_cram.c:181 imap/auth_gss.c:348
 #: imap/auth_oauth.c:105 imap/auth_sasl.c:258 nntp/nntp.c:668 pop/auth.c:289
-#: pop/auth.c:357 send/smtp.c:819 send/smtp.c:893 send/smtp.c:997
+#: pop/auth.c:357 send/smtp.c:824 send/smtp.c:898 send/smtp.c:1002
 #, c-format
 msgid "%s authentication failed"
 msgstr "%s аутентификација је неуспешна"
@@ -2709,11 +2709,11 @@ msgstr "CREATE није успео: %s"
 msgid "Closing connection to %s..."
 msgstr "Затварање повезивања са %s..."
 
-#: imap/imap.c:787 nntp/nntp.c:1811 pop/lib.c:332 send/smtp.c:1042
+#: imap/imap.c:787 nntp/nntp.c:1811 pop/lib.c:332 send/smtp.c:1047
 msgid "Secure connection with TLS?"
 msgstr "Безбедно повезивање преко TLS-а?"
 
-#: imap/imap.c:803 nntp/nntp.c:1834 pop/lib.c:353 send/smtp.c:1059
+#: imap/imap.c:803 nntp/nntp.c:1834 pop/lib.c:353 send/smtp.c:1064
 msgid "Could not negotiate TLS connection"
 msgstr "Не може се успоставити TLS повезивање"
 
@@ -2845,7 +2845,7 @@ msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Индекс порука није исправан. Покушајте да поново отворите сандуче."
 
 #: imap/msn.c:48 mutt/buffer.c:112 mutt/buffer.c:323 mutt/memory.c:58
-#: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1015 mx.c:1233
+#: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1005 mx.c:1233
 msgid "Out of memory"
 msgstr "Нема меморије"
 
@@ -3249,7 +3249,7 @@ msgstr "Нема порука"
 msgid "No visible messages"
 msgstr "Нема видљивих порука"
 
-#: index/index.c:97
+#: index/index.c:98
 msgid "Changing threaded display should prefer $use_threads over $sort"
 msgstr "Измена приказа са нитима би требало да преферира $use_threads уместо $sort"
 
@@ -3385,19 +3385,19 @@ msgstr "Неуспешно чување поруке на диск"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): не може се поставити време датотеке"
 
-#: maildir/maildir.c:684 maildir/mh.c:706
+#: maildir/maildir.c:690 maildir/mh.c:706
 #, c-format
 msgid "Scanning %s..."
 msgstr "Скенирање %s..."
 
-#: maildir/maildir.c:705 maildir/mh.c:729 mbox/mbox.c:212 mbox/mbox.c:384
+#: maildir/maildir.c:711 maildir/mh.c:729 mbox/mbox.c:212 mbox/mbox.c:384
 #: mx.c:373
 #, c-format
 msgid "Reading %s..."
 msgstr "Читање %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1394 maildir/mh.c:1057 mbox/mbox.c:1284 mx.c:481
+#: maildir/maildir.c:1400 maildir/mh.c:1057 mbox/mbox.c:1284 mx.c:481
 #: notmuch/notmuch.c:2227
 #, c-format
 msgid "Writing %s..."
@@ -5245,7 +5245,7 @@ msgstr "Сервер је затворио повезивање"
 msgid "Server doesn't support reader mode"
 msgstr "Сервер не подржава режим читача"
 
-#: nntp/nntp.c:475 pop/auth.c:620 send/smtp.c:1001
+#: nntp/nntp.c:475 pop/auth.c:620 send/smtp.c:1006
 msgid "No authenticators available"
 msgstr "Нема доступних аутентификатора"
 
@@ -6614,7 +6614,7 @@ msgstr "Не може се поставити променљива наредб�
 
 #: parse/set.c:542
 msgid "'+' and '-' must be followed by '='"
-msgstr ""
+msgstr "после „+“ и „-“ мора следити „=“"
 
 #: parse/set.c:551
 msgid "Can't use prefix when setting a variable"
@@ -7430,7 +7430,7 @@ msgstr "Није задата тема"
 msgid "No newsgroup specified"
 msgstr "Није задата њузгрупа"
 
-#: send/send.c:2879 send/smtp.c:248
+#: send/send.c:2879 send/smtp.c:249
 msgid "Sending message..."
 msgstr "Слање поруке..."
 
@@ -7489,38 +7489,38 @@ msgstr "Грешка приликом слања поруке, подређен�
 msgid "Output of the delivery process"
 msgstr "Излаз процеса за испоручивање"
 
-#: send/smtp.c:179
+#: send/smtp.c:180
 #, c-format
 msgid "SMTP session failed: %s"
 msgstr "Неуспешна SMTP сесија: %s"
 
-#: send/smtp.c:238
+#: send/smtp.c:239
 #, c-format
 msgid "SMTP session failed: unable to open %s"
 msgstr "Неуспешна SMTP сесија: не може се отворити %s"
 
-#: send/smtp.c:360
+#: send/smtp.c:361
 #, c-format
 msgid "Invalid SMTP URL: %s"
 msgstr "Неисправан SMTP УРЛ: %s"
 
-#: send/smtp.c:1074
+#: send/smtp.c:1079
 msgid "SMTP server does not support authentication"
 msgstr "SMTP сервер не подржава аутентификацију"
 
-#: send/smtp.c:1121
+#: send/smtp.c:1126
 msgid "No from address given"
 msgstr "Није задата адреса пошиљаоца"
 
-#: send/smtp.c:1188
+#: send/smtp.c:1193
 msgid "SMTP session failed: read error"
 msgstr "Неуспешна SMTP сесија: грешка приликом читања"
 
-#: send/smtp.c:1190
+#: send/smtp.c:1195
 msgid "SMTP session failed: write error"
 msgstr "Неуспешна SMTP сесија: грешка приликом писања"
 
-#: send/smtp.c:1192
+#: send/smtp.c:1197
 msgid "Invalid server response"
 msgstr "Погрешан одговор сервера"
 

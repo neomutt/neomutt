@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-03-30 17:08+0100\n"
+"POT-Creation-Date: 2023-04-07 13:27+0100\n"
 "PO-Revision-Date: 2019-11-12 11:18+0100\n"
 "Last-Translator: Marcin Rajner <marcin.rajner@pw.edu.pl>\n"
 "Language-Team: none\n"
@@ -170,9 +170,8 @@ msgid "Query: "
 msgstr "Pytanie:"
 
 #: alias/functions.c:171
-#, fuzzy
 msgid "Limit to addresses matching: "
-msgstr "Ogranicz do pasujących listów: "
+msgstr "Ogranicz do pasujących adresów: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:270
@@ -283,7 +282,7 @@ msgstr "Pole \"compose\" w pliku 'mailcap' wymaga %%s"
 
 #: attach/mutt_attach.c:163 attach/mutt_attach.c:304 compmbox/compress.c:347
 #: compose/functions.c:1716 gui/curs_lib.c:319 index/dlg_index.c:1191
-#: index/dlg_index.c:1237 pager/dlg_pager.c:465 pager/do_pager.c:171
+#: index/dlg_index.c:1237 pager/dlg_pager.c:465 pager/do_pager.c:167
 #: pager/message.c:335 send/sendlib.c:574
 #, c-format
 msgid "Error running \"%s\""
@@ -1135,9 +1134,8 @@ msgid "You may not delete the only attachment"
 msgstr "Nie możesz usunąć jedynego załącznika"
 
 #: compose/functions.c:232 compose/functions.c:424
-#, fuzzy
 msgid "Can't leave group with only one attachment"
-msgstr "Nie możesz usunąć jedynego załącznika"
+msgstr "Nie można pozostawić grupy z tylko jednym załącznikiem"
 
 #: compose/functions.c:392 compose/functions.c:406
 msgid "Attachments to be grouped must have the same parent"
@@ -1193,14 +1191,12 @@ msgid "Empty 'Content-Language'"
 msgstr "Pusty 'Content-Language'"
 
 #: compose/functions.c:1089
-#, fuzzy
 msgid "Can't filter multipart attachments"
 msgstr "Możliwe jest jedynie usuwanie załączników multipart"
 
 #: compose/functions.c:1124
-#, fuzzy
 msgid "Can't get multipart attachments"
-msgstr "Możliwe jest jedynie usuwanie załączników multipart"
+msgstr "Nie można wziąć kopii załącznika multipart"
 
 #: compose/functions.c:1146
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
@@ -1219,7 +1215,6 @@ msgid "Not sending this message"
 msgstr "Błąd podczas wysyłania listu"
 
 #: compose/functions.c:1189
-#, fuzzy
 msgid "Grouping 'related' requires at least 2 tagged messages"
 msgstr "Grupowanie jako alternatywy wymaga przynajmniej dwóch zaznaczonych wiadomości"
 
@@ -1258,18 +1253,16 @@ msgid "What we have here is a failure to make an attachment"
 msgstr "Mamy tu błąd tworzenia załącznika"
 
 #: compose/functions.c:1400
-#, fuzzy
 msgid "Can't print multipart attachments"
-msgstr "Wydrukować %d zaznaczony załącznik?"
+msgstr "Nie można drukować załączników multipart"
 
 #: compose/functions.c:1425
 msgid "Send attachment with name: "
 msgstr "Wyślij załącznik o nazwie: "
 
 #: compose/functions.c:1450
-#, fuzzy
 msgid "Can't save multipart attachments"
-msgstr "Możliwe jest jedynie usuwanie załączników multipart"
+msgstr "Nie można zapisać załączników multipart"
 
 #: compose/functions.c:1485
 msgid "Recoding only affects text attachments"
@@ -1284,9 +1277,8 @@ msgid "The current attachment will be converted"
 msgstr "Bieżący załacznik zostanie przekonwertowany"
 
 #: compose/functions.c:1521
-#, fuzzy
 msgid "Attachment is not 'multipart'"
-msgstr "Załącznik jest już na samej górze"
+msgstr "Załącznik nie jest typu multipart"
 
 #: compose/functions.c:1637 send/send.c:2791
 #, c-format
@@ -1294,14 +1286,12 @@ msgid "Bad IDN in '%s': '%s'"
 msgstr "Błędny IDN w '%s': '%s'"
 
 #: compose/functions.c:1670
-#, fuzzy
 msgid "Can't edit multipart attachments"
-msgstr "Możliwe jest jedynie usuwanie załączników multipart"
+msgstr "Nie można edytować załączników multipart"
 
 #: compose/functions.c:1751
-#, fuzzy
 msgid "Can't rename multipart attachments"
-msgstr "Możliwe jest jedynie usuwanie załączników multipart"
+msgstr "Nie można zmienić nazwy załączników multipart"
 
 #: compose/functions.c:1757
 msgid "Rename to: "
@@ -1451,9 +1441,8 @@ msgid "Unhandled key in line <%s: %s>"
 msgstr "Nieobsłużony klucz w linii: <%s: %s>"
 
 #: conn/accountcmd.c:140
-#, fuzzy
 msgid "Unable to run account command"
-msgstr "Nie udało się wykonać komendy odświeżania"
+msgstr "Nie udało się wykonać komendy konta"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:77
@@ -1804,7 +1793,7 @@ msgstr "Zestawianie tunelu: %s zwrócił błąd %d (%s)"
 msgid "%s isn't a regular file"
 msgstr "%s nie jest zwykłym plikiem"
 
-#: copy.c:724
+#: copy.c:725
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
@@ -1812,7 +1801,7 @@ msgstr[0] "Obliczenie długości pomyliło się o %ld bajt"
 msgstr[1] "Obliczenie długości pomyliło się o %ld bajty"
 msgstr[2] "Obliczenie długości pomyliło się o %ld bajtów"
 
-#: copy.c:809
+#: copy.c:810
 msgid "No decryption engine available for message"
 msgstr "Nieznany sposób odszyfrowania tej wiadomości"
 
@@ -1997,7 +1986,7 @@ msgstr ""
 
 #: envelope/window.c:128
 msgid "Headers: "
-msgstr ""
+msgstr "Nagłówki: "
 
 #. L10N: Autocrypt recommendation flag: off.
 #. This is displayed when Autocrypt is turned off.
@@ -2613,7 +2602,7 @@ msgstr "Żadna z metod uwierzytelniania nie jest dostępna albo złe uwierzyteln
 #: imap/auth_anon.c:55 imap/auth_cram.c:107 imap/auth_gsasl.c:65
 #: imap/auth_gss.c:167 imap/auth_oauth.c:72 imap/auth_sasl.c:124
 #: nntp/nntp.c:504 nntp/nntp.c:569 pop/auth.c:77 pop/auth.c:191 pop/auth.c:336
-#: pop/auth.c:431 send/smtp.c:526 send/smtp.c:643 send/smtp.c:731
+#: pop/auth.c:431 send/smtp.c:527 send/smtp.c:644 send/smtp.c:736
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Uwierzytelnianie (%s)..."
@@ -2621,15 +2610,14 @@ msgstr "Uwierzytelnianie (%s)..."
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:88 imap/auth_cram.c:181 imap/auth_gss.c:348
 #: imap/auth_oauth.c:105 imap/auth_sasl.c:258 nntp/nntp.c:668 pop/auth.c:289
-#: pop/auth.c:357 send/smtp.c:819 send/smtp.c:893 send/smtp.c:997
+#: pop/auth.c:357 send/smtp.c:824 send/smtp.c:898 send/smtp.c:1002
 #, c-format
 msgid "%s authentication failed"
 msgstr "%s uwierzytelnianie nie powiodło się"
 
 #: imap/auth_gsasl.c:147 pop/auth.c:135
-#, fuzzy
 msgid "SASL authentication failed"
-msgstr "Uwierzytelnianie nie powiodło się"
+msgstr "Uwierzytelnianie SASL nie powiodło się"
 
 #: imap/auth_login.c:51
 msgid "LOGIN disabled on this server"
@@ -2722,11 +2710,11 @@ msgstr "CREATE nie powiodło się: %s"
 msgid "Closing connection to %s..."
 msgstr "Zamykanie połączenia do %s..."
 
-#: imap/imap.c:787 nntp/nntp.c:1811 pop/lib.c:332 send/smtp.c:1042
+#: imap/imap.c:787 nntp/nntp.c:1811 pop/lib.c:332 send/smtp.c:1047
 msgid "Secure connection with TLS?"
 msgstr "Połączyć używając TLS?"
 
-#: imap/imap.c:803 nntp/nntp.c:1834 pop/lib.c:353 send/smtp.c:1059
+#: imap/imap.c:803 nntp/nntp.c:1834 pop/lib.c:353 send/smtp.c:1064
 msgid "Could not negotiate TLS connection"
 msgstr "Połączenie TLS nie zostało wynegocjowane"
 
@@ -2858,7 +2846,7 @@ msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Błędny indeks listów. Spróbuj ponownie otworzyć skrzynkę."
 
 #: imap/msn.c:48 mutt/buffer.c:112 mutt/buffer.c:323 mutt/memory.c:58
-#: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1015 mx.c:1233
+#: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1005 mx.c:1233
 msgid "Out of memory"
 msgstr "Brak pamięci"
 
@@ -3262,7 +3250,7 @@ msgstr "Brak listów"
 msgid "No visible messages"
 msgstr "Brak widocznych listów"
 
-#: index/index.c:97
+#: index/index.c:98
 msgid "Changing threaded display should prefer $use_threads over $sort"
 msgstr "Zmienianie wyświetlania wątkowego woli $use_threads od $sort"
 
@@ -3398,19 +3386,19 @@ msgstr "Nie można skopiować wiadomości na dysk"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): nie można nadać plikowi daty"
 
-#: maildir/maildir.c:684 maildir/mh.c:706
+#: maildir/maildir.c:690 maildir/mh.c:706
 #, c-format
 msgid "Scanning %s..."
 msgstr "Sprawdzanie %s..."
 
-#: maildir/maildir.c:705 maildir/mh.c:729 mbox/mbox.c:212 mbox/mbox.c:384
+#: maildir/maildir.c:711 maildir/mh.c:729 mbox/mbox.c:212 mbox/mbox.c:384
 #: mx.c:373
 #, c-format
 msgid "Reading %s..."
 msgstr "Czytanie %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1394 maildir/mh.c:1057 mbox/mbox.c:1284 mx.c:481
+#: maildir/maildir.c:1400 maildir/mh.c:1057 mbox/mbox.c:1284 mx.c:481
 #: notmuch/notmuch.c:2227
 #, c-format
 msgid "Writing %s..."
@@ -3667,7 +3655,7 @@ msgstr "Błąd: wartość '%s' jest błędna dla -d"
 
 #: main.c:963
 msgid "Failed to parse mailto: link"
-msgstr ""
+msgstr "Nie udało się zinterpretować łącza mailto:"
 
 #: main.c:978 main.c:1235 send/send.c:296 send/send.c:2781 send/send.c:2785
 msgid "No recipients specified"
@@ -3859,9 +3847,9 @@ msgid "Error: %s can't be used as the final remailer of a chain"
 msgstr "Błąd: nie można użyć %s jako finalnego remailera łańcucha"
 
 #: mutt/file.c:717
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to seek file: %s"
-msgstr "Zmiana nazwy pliku nie powiodła się"
+msgstr "Nie udało się przewinąć pliku: %s"
 
 #: mutt/file.c:1248
 msgid "Timeout exceeded while attempting fcntl lock"
@@ -3908,12 +3896,12 @@ msgstr ""
 #: mutt/random.c:83
 #, c-format
 msgid "open /dev/urandom: %s"
-msgstr ""
+msgstr "otwarcie /dev/urandom: %s"
 
 #: mutt/random.c:90
 #, c-format
 msgid "read /dev/urandom: %s"
-msgstr ""
+msgstr "czytanie /dev/urandom: %s"
 
 #: mutt/regex.c:276
 #, c-format
@@ -4048,9 +4036,8 @@ msgstr "Nie można otworzyć folderu trash"
 
 #. L10N: Displayed if appending to $trash fails when syncing or closing a mailbox
 #: mx.c:588
-#, fuzzy
 msgid "Unable to append to trash folder"
-msgstr "Nie można otworzyć pliku tymczasowego"
+msgstr "Nie można dopisać do folderu trash"
 
 #: mx.c:647
 msgid "Mark all articles read?"
@@ -4260,7 +4247,7 @@ msgstr "Błąd przeszukania obiektu danych: %s"
 
 #: ncrypt/crypt_gpgme.c:534
 msgid "[tempfile]"
-msgstr ""
+msgstr "[plik tymczasowy]"
 
 #: ncrypt/crypt_gpgme.c:540 ncrypt/crypt_gpgme.c:594
 #, c-format
@@ -4374,7 +4361,7 @@ msgstr "Identyfikator klucza "
 #. if the S/MIME key has no ID. This is quite an error.
 #: ncrypt/crypt_gpgme.c:1383
 msgid "no signature fingerprint available"
-msgstr ""
+msgstr "nie ma identifikatoru klucza"
 
 #: ncrypt/crypt_gpgme.c:1392 ncrypt/crypt_gpgme.c:1397
 msgid "created: "
@@ -5253,7 +5240,7 @@ msgstr "Serwer zamknął połączenie"
 msgid "Server doesn't support reader mode"
 msgstr "Serwer nie wspiera trybu czytania"
 
-#: nntp/nntp.c:475 pop/auth.c:620 send/smtp.c:1001
+#: nntp/nntp.c:475 pop/auth.c:620 send/smtp.c:1006
 msgid "No authenticators available"
 msgstr "Żadna z metod uwierzytelniania nie jest dostępna"
 
@@ -5387,7 +5374,7 @@ msgstr "Nie można dopisać do wirtualnej skrzynki"
 #: notmuch/query.c:115
 #, c-format
 msgid "failed to parse notmuch query type: %s"
-msgstr ""
+msgstr "nie udało się zinterpretować typu zapytania notmuch: %s"
 
 #: opcodes.h:37
 msgid "attach files to this message"
@@ -5410,9 +5397,8 @@ msgid "delete the current entry"
 msgstr "usuń bieżący list"
 
 #: opcodes.h:43
-#, fuzzy
 msgid "edit the 'Content-ID' of the attachment"
-msgstr "edytuj 'Content-Language' pliku załącznika"
+msgstr "edytuj 'Content-ID' pliku załącznika"
 
 #: opcodes.h:44
 msgid "edit attachment description"
@@ -5451,9 +5437,8 @@ msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr "zgrupuj zaznaczone załączniki jako wielojęzyczne ('multipart/multilingual')"
 
 #: opcodes.h:53
-#, fuzzy
 msgid "group tagged attachments as 'multipart/related'"
-msgstr "zgrupuj zaznaczone załączniki jako alternatywy ('multipart/alternative')"
+msgstr "zgrupuj zaznaczone załączniki jako powiązane ('multipart/related')"
 
 #: opcodes.h:54
 msgid "move an attachment down in the attachment list"
@@ -5501,7 +5486,7 @@ msgstr "odtwórz bieżącą pozycję listy"
 
 #: opcodes.h:65
 msgid "ungroup 'multipart' attachment"
-msgstr ""
+msgstr "rozgrupuj załącznik multipart"
 
 #: opcodes.h:66
 msgid "update an attachment's encoding info"
@@ -5525,11 +5510,11 @@ msgstr "obejrzyj załącznik jako tekst"
 
 #: opcodes.h:74
 msgid "manage autocrypt accounts"
-msgstr ""
+msgstr "zarządzaj kontami autocrypt"
 
 #: opcodes.h:75
 msgid "create a new autocrypt account"
-msgstr ""
+msgstr "stwórz nowe konto autocrypt"
 
 #: opcodes.h:76
 msgid "delete the current account"
@@ -5537,20 +5522,19 @@ msgstr "usuń bieżące konto"
 
 #: opcodes.h:77
 msgid "toggle the current account active/inactive"
-msgstr ""
+msgstr "przełącz aktywność obecnego konta"
 
 #: opcodes.h:78
 msgid "toggle the current account prefer-encrypt flag"
-msgstr ""
+msgstr "przełącz flagę 'preferuje szyfrowanie' obecnego konta"
 
 #: opcodes.h:79
 msgid "show autocrypt compose menu options"
-msgstr ""
+msgstr "pokaż opcje autocrypt dla menu tworzenia"
 
 #: opcodes.h:85
-#, fuzzy
 msgid "open the aliases dialog"
-msgstr "To jest ostatni list"
+msgstr "otwórz okno z aliasami"
 
 #: opcodes.h:86
 msgid "move to the bottom of the page"
@@ -5765,9 +5749,8 @@ msgid "delete chars from the cursor to the end of the word"
 msgstr "usuń znaki począwszy od kursora aż do końca słowa"
 
 #: opcodes.h:140
-#, fuzzy
 msgid "delete chars from cursor to beginning the line"
-msgstr "usuń znaki począwszy od kursora aż do końca linii"
+msgstr "usuń znaki począwszy od kursora aż do początka linii"
 
 #: opcodes.h:141
 msgid "delete all chars on the line"
@@ -5955,9 +5938,8 @@ msgid "collapse/uncollapse current thread"
 msgstr "zwiń/rozwiń bieżący wątek"
 
 #: opcodes.h:196
-#, fuzzy
 msgid "delete non-hidden messages matching a pattern"
-msgstr "usuń listy pasujące do wzorca"
+msgstr "usuń nieschowane listy pasujące do wzorca"
 
 #: opcodes.h:197
 msgid "retrieve mail from POP server"
@@ -6072,19 +6054,16 @@ msgid "save changes to mailbox"
 msgstr "zapisz zmiany do skrzynki"
 
 #: opcodes.h:225
-#, fuzzy
 msgid "tag non-hidden messages matching a pattern"
-msgstr "zaznacz listy pasujące do wzorca"
+msgstr "zaznacz nieschowane listy pasujące do wzorca"
 
 #: opcodes.h:226
-#, fuzzy
 msgid "undelete non-hidden messages matching a pattern"
-msgstr "odtwórz listy pasujące do wzorca"
+msgstr "odtwórz nieschowane listy pasujące do wzorca"
 
 #: opcodes.h:227
-#, fuzzy
 msgid "untag non-hidden messages matching a pattern"
-msgstr "odznacz listy pasujące do wzorca"
+msgstr "odznacz nieschowane listy pasujące do wzorca"
 
 #: opcodes.h:228
 msgid "create a hotkey macro for the current message"
@@ -6528,7 +6507,7 @@ msgstr "Pokazany jest początek listu"
 #. display some kind of message in case it somehow occurs.)
 #: pager/functions.c:571
 msgid "No text past headers"
-msgstr ""
+msgstr "Nie ma treści po nagłówkach"
 
 #: pager/functions.c:630 pager/functions.c:670
 msgid "No more unquoted text after quoted text"
@@ -6546,7 +6525,7 @@ msgstr "Pomoc jest właśnie wyświetlana"
 #. L10N: Status bar message: all the emails are visible in the index
 #: pager/message.c:58 pager/pbar.c:120 status.c:294
 msgid "all"
-msgstr ""
+msgstr "wszystko"
 
 #: pager/message.c:205
 msgid "Verify signature?"
@@ -6592,7 +6571,7 @@ msgstr "Podpis PGP NIE może zostać zweryfikowany"
 #. L10N: Status bar message: the end of the list emails is visible in the index
 #: pager/pbar.c:122 status.c:292
 msgid "end"
-msgstr ""
+msgstr "koniec"
 
 #: parse/rc.c:94
 #, c-format
@@ -6630,7 +6609,7 @@ msgstr "Nie można przypisać do zmiennej poleceniem '%s'"
 
 #: parse/set.c:542
 msgid "'+' and '-' must be followed by '='"
-msgstr ""
+msgstr "po '+' i '-' musi nasąpić '='"
 
 #: parse/set.c:551
 msgid "Can't use prefix when setting a variable"
@@ -6717,14 +6696,14 @@ msgstr "brakujący parametr"
 #. L10N: Pattern completion menu title
 #: pattern/dlg_pattern.c:189
 msgid "Patterns"
-msgstr ""
+msgstr "Wzorce"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a regular expression
 #.
 #: pattern/dlg_pattern.c:205
 msgid "EXPR"
-msgstr ""
+msgstr "WYRAŻENIE"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a numeric range.
@@ -6732,7 +6711,7 @@ msgstr ""
 #.
 #: pattern/dlg_pattern.c:213
 msgid "RANGE"
-msgstr ""
+msgstr "ZAKRES"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a date range
@@ -6740,7 +6719,7 @@ msgstr ""
 #.
 #: pattern/dlg_pattern.c:220
 msgid "DATERANGE"
-msgstr ""
+msgstr "ZAKRES-DAT"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a query
@@ -6748,7 +6727,7 @@ msgstr ""
 #.
 #: pattern/dlg_pattern.c:227
 msgid "QUERY"
-msgstr ""
+msgstr "PYTANIE"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a nested pattern.
@@ -6756,22 +6735,22 @@ msgstr ""
 #.
 #: pattern/dlg_pattern.c:245
 msgid "PATTERN"
-msgstr ""
+msgstr "WZORZEC"
 
 #. L10N: Pattern Completion Menu description for ~()
 #: pattern/dlg_pattern.c:252
 msgid "messages in threads containing messages matching PATTERN"
-msgstr ""
+msgstr "wiadomości w wątkach zawierających wiadomości pasujące do WZORCA"
 
 #. L10N: Pattern Completion Menu description for ~<()
 #: pattern/dlg_pattern.c:260
 msgid "messages whose immediate parent matches PATTERN"
-msgstr ""
+msgstr "wiadomości których bezpośredni rodzic pasuje do WZORCA"
 
 #. L10N: Pattern Completion Menu description for ~>()
 #: pattern/dlg_pattern.c:268
 msgid "messages having an immediate child matching PATTERN"
-msgstr ""
+msgstr "wiadomości których bezpośrednie dziecko pasuje do WZORCA"
 
 #. L10N: One of the crypt pattern operators: ~g, ~G, ~k, ~V
 #. was invoked when NeoMutt was compiled without crypto support.
@@ -6779,7 +6758,7 @@ msgstr ""
 #: pattern/exec.c:93
 #, c-format
 msgid "Pattern operator '~%c' is disabled"
-msgstr ""
+msgstr "Operator wzorca '~%c' jest niedostępny"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
@@ -6801,9 +6780,8 @@ msgid "Error opening /dev/null"
 msgstr "Nie można otworzyć /dev/null"
 
 #: pattern/exec.c:208
-#, fuzzy
 msgid "Error checking length of temporary file"
-msgstr "Błąd. Zachowano plik tymczasowy: %s"
+msgstr "Błąd sprawdzania rozmiaru pliku tymczasowego"
 
 #: pattern/exec.c:884
 msgid "error: server custom search only supported with IMAP"
@@ -6817,27 +6795,27 @@ msgstr "wszystkie wiadomości"
 #. L10N: Pattern Completion Menu description for ~b
 #: pattern/flags.c:47
 msgid "messages whose body matches EXPR"
-msgstr ""
+msgstr "wiadomości których treść pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~B
 #: pattern/flags.c:50
 msgid "messages whose body or headers match EXPR"
-msgstr ""
+msgstr "wiadomości których treść lub nagłówek pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~c
 #: pattern/flags.c:53
 msgid "messages whose CC header matches EXPR"
-msgstr ""
+msgstr "wiadomości których nagłówek Kopia pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~C
 #: pattern/flags.c:56
 msgid "messages whose recipient matches EXPR"
-msgstr ""
+msgstr "wiadomości których odbiorca pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~d
 #: pattern/flags.c:59
 msgid "messages sent in DATERANGE"
-msgstr ""
+msgstr "wiadomości wysłane w ZAKRES-DAT"
 
 #. L10N: Pattern Completion Menu description for ~D
 #: pattern/flags.c:62
@@ -6847,7 +6825,7 @@ msgstr "usunięte wiadomości"
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:65
 msgid "messages whose Sender header matches EXPR"
-msgstr ""
+msgstr "wiadomości których nagłówek Nadawca pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:68
@@ -6857,7 +6835,7 @@ msgstr "przeterminowane wiadomości"
 #. L10N: Pattern Completion Menu description for ~f
 #: pattern/flags.c:71
 msgid "messages whose From header matches EXPR"
-msgstr ""
+msgstr "wiadomości których nagłówek Od pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:74
@@ -6877,22 +6855,22 @@ msgstr "wiadomości saszyfrowane kryptograficznie"
 #. L10N: Pattern Completion Menu description for ~h
 #: pattern/flags.c:83
 msgid "messages whose header matches EXPR"
-msgstr ""
+msgstr "wiadomości których nagłówek pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~H
 #: pattern/flags.c:86
 msgid "messages whose spam tag matches EXPR"
-msgstr ""
+msgstr "wiadmości których oznaczenie spamowe pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:89
 msgid "messages whose Message-ID matches EXPR"
-msgstr ""
+msgstr "wiadmości których nagłówek Message-ID pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:92
 msgid "messages whose Message-ID is included in the results returned from an external search program"
-msgstr ""
+msgstr "wiadmości których nagłówek Message-ID znajduje się w wynikach z zewnętrzego programu-szukajki"
 
 #. L10N: Pattern Completion Menu description for ~k
 #: pattern/flags.c:95
@@ -6902,32 +6880,32 @@ msgstr "wiadomości zawierające klucz PGP"
 #. L10N: Pattern Completion Menu description for ~K
 #: pattern/flags.c:98
 msgid "messages whose BCC header matches EXPR"
-msgstr ""
+msgstr "wiadomości których Ukryta kopia pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~l
 #: pattern/flags.c:101
 msgid "messages addressed to known mailing lists"
-msgstr ""
+msgstr "wiadomości zaadresowane do znanych list pocztowych"
 
 #. L10N: Pattern Completion Menu description for ~L
 #: pattern/flags.c:104
 msgid "messages whose From/Sender/To/CC matches EXPR"
-msgstr ""
+msgstr "wiadomości z Od/Nadawca/Do/Kopia pasującymi do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~m
 #: pattern/flags.c:107
 msgid "messages whose number is in RANGE"
-msgstr ""
+msgstr "wiadomości których numer jest w ZAKRESIE"
 
 #. L10N: Pattern Completion Menu description for ~M
 #: pattern/flags.c:110
 msgid "messages with a Content-Type matching EXPR"
-msgstr ""
+msgstr "wiadomości z typem \"Content-Type\" pasującym do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~n
 #: pattern/flags.c:113
 msgid "messages whose score is in RANGE"
-msgstr ""
+msgstr "wiadomości z wynikiem w ZAKRESIE"
 
 #. L10N: Pattern Completion Menu description for ~N
 #: pattern/flags.c:116
@@ -6957,7 +6935,7 @@ msgstr "wiadomości odpowiedziane na"
 #. L10N: Pattern Completion Menu description for ~r
 #: pattern/flags.c:131
 msgid "messages received in DATERANGE"
-msgstr ""
+msgstr "wiadomości odebrane w ZAKRES-DAT"
 
 #. L10N: Pattern Completion Menu description for ~R
 #: pattern/flags.c:134
@@ -6967,7 +6945,7 @@ msgstr "wiadomości już przeczytane"
 #. L10N: Pattern Completion Menu description for ~s
 #: pattern/flags.c:137
 msgid "messages whose Subject header matches EXPR"
-msgstr ""
+msgstr "wiadomości których nagłówek Temat pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~S
 #: pattern/flags.c:140
@@ -6977,7 +6955,7 @@ msgstr ""
 #. L10N: Pattern Completion Menu description for ~t
 #: pattern/flags.c:143
 msgid "messages whose To header matches EXPR"
-msgstr ""
+msgstr "wiadomości których nagłówek Do pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~T
 #: pattern/flags.c:146
@@ -6987,7 +6965,7 @@ msgstr "oznaczone wiadomości"
 #. L10N: Pattern Completion Menu description for ~u
 #: pattern/flags.c:149
 msgid "messages addressed to subscribed mailing lists"
-msgstr ""
+msgstr "wiadomości zaadresowane do zasubskrybowanych list pocztowych"
 
 #. L10N: Pattern Completion Menu description for ~U
 #: pattern/flags.c:152
@@ -6997,7 +6975,7 @@ msgstr "nieprzeczytane wiadomości"
 #. L10N: Pattern Completion Menu description for ~v
 #: pattern/flags.c:155
 msgid "messages in collapsed threads"
-msgstr ""
+msgstr "wiadomości w zwiniętych wątkach"
 
 #. L10N: Pattern Completion Menu description for ~V
 #: pattern/flags.c:158
@@ -7007,7 +6985,7 @@ msgstr "wiadomości zweryfikowane kryptograficznie"
 #. L10N: Pattern Completion Menu description for ~w
 #: pattern/flags.c:162
 msgid "newsgroups matching EXPR"
-msgstr ""
+msgstr "grupy dyskusyjne pasujące do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:166
@@ -7022,17 +7000,17 @@ msgstr ""
 #. L10N: Pattern Completion Menu description for ~y
 #: pattern/flags.c:172
 msgid "messages whose X-Label header matches EXPR"
-msgstr ""
+msgstr "wiadomości których nagłówek X-Label pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~Y
 #: pattern/flags.c:175
 msgid "messages whose tags match EXPR"
-msgstr ""
+msgstr "wiadomości których tagi pasują do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~z
 #: pattern/flags.c:178
 msgid "messages whose size is in RANGE"
-msgstr ""
+msgstr "wiadomości z rozmiarem w ZAKRESIE"
 
 #. L10N: Pattern Completion Menu description for ~=
 #: pattern/flags.c:181
@@ -7047,12 +7025,12 @@ msgstr ""
 #. L10N: Pattern Completion Menu description for ~#
 #: pattern/flags.c:187
 msgid "broken threads"
-msgstr ""
+msgstr "rozłączone wątki"
 
 #. L10N: Pattern Completion Menu description for =/
 #: pattern/flags.c:190
 msgid "IMAP custom server-side search for STRING"
-msgstr ""
+msgstr "Wyszukiwanie użytkownika po stronie serwera IMAP"
 
 #: pattern/pattern.c:262 pattern/pattern.c:368 pattern/pattern.c:534
 #: pattern/pattern.c:699
@@ -7209,9 +7187,8 @@ msgid "Decrypting message..."
 msgstr "Odszyfrowywanie listu..."
 
 #: postpone/postpone.c:549
-#, fuzzy
 msgid "Could not decrypt postponed message"
-msgstr "Odszyfrowanie listu PGP nie powiodło się"
+msgstr "Nie udało się odszyfrowanie odłożonego listu"
 
 #: postpone/postpone.c:680 postpone/postpone.c:691
 msgid "No postponed messages"
@@ -7293,7 +7270,7 @@ msgstr "%s już nie istnieje"
 #: send/config.c:102
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
-msgstr ""
+msgstr "Opcla %s nie może zawierać znaków specjalnych powłoki: %c"
 
 #: send/send.c:339
 msgid "No subject, abort?"
@@ -7448,7 +7425,7 @@ msgstr "Brak tematu"
 msgid "No newsgroup specified"
 msgstr "Nie wybrano grupy dyskusyjnej"
 
-#: send/send.c:2879 send/smtp.c:248
+#: send/send.c:2879 send/smtp.c:249
 msgid "Sending message..."
 msgstr "Wysyłanie listu..."
 
@@ -7507,38 +7484,38 @@ msgstr "Błąd podczas wysyłania listu, proces potomny zwrócił %d (%s)"
 msgid "Output of the delivery process"
 msgstr "Wynik procesu dostarczania"
 
-#: send/smtp.c:179
+#: send/smtp.c:180
 #, c-format
 msgid "SMTP session failed: %s"
 msgstr "Sesja SMTP nie powiodła się: %s"
 
-#: send/smtp.c:238
+#: send/smtp.c:239
 #, c-format
 msgid "SMTP session failed: unable to open %s"
 msgstr "Sesja SMTP nie powiodła się: nie można otworzyć %s"
 
-#: send/smtp.c:360
+#: send/smtp.c:361
 #, c-format
 msgid "Invalid SMTP URL: %s"
 msgstr "Błędny URL SMTP: %s"
 
-#: send/smtp.c:1074
+#: send/smtp.c:1079
 msgid "SMTP server does not support authentication"
 msgstr "Serwer SMTP nie wspiera uwierzytelniania"
 
-#: send/smtp.c:1121
+#: send/smtp.c:1126
 msgid "No from address given"
 msgstr "Nie podano adresu źródłowego"
 
-#: send/smtp.c:1188
+#: send/smtp.c:1193
 msgid "SMTP session failed: read error"
 msgstr "Sesja SMTP nie powiodła się: błąd odczytu"
 
-#: send/smtp.c:1190
+#: send/smtp.c:1195
 msgid "SMTP session failed: write error"
 msgstr "Sesja SMTP nie powiodła się: błąd zapisu"
 
-#: send/smtp.c:1192
+#: send/smtp.c:1197
 msgid "Invalid server response"
 msgstr "Nieprawidłowa odpowiedź serwera"
 
@@ -7601,17 +7578,16 @@ msgid ""
 msgstr ""
 
 #: version.c:109
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2022 Michael R. Elkins and others.\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2020 Michael R. Elkins i inni.\n"
+"Copyright (C) 1996-2022 Michael R. Elkins i inni.\n"
 "Program nie jest objęty ŻADNĄ gwarancją; szczegóły poznasz pisząc 'neomutt -vv'.\n"
-"NeoMutt jest darmowym oprogramowaniem, zapraszamy \n"
-"do jego redystrybucji pod pewnymi warunkami, szczegóły poznasz pisząc 'neomutt -vv'.\n"
+"NeoMutt jest wolnym oprogramowaniem, zapraszamy do jego redystrybucji\n"
+"pod pewnymi warunkami, szczegóły poznasz pisząc 'neomutt -vv'.\n"
 
 #: version.c:500
 msgid "Default options:"
@@ -7622,9 +7598,8 @@ msgid "Compile options:"
 msgstr "Parametry kompilacji:"
 
 #: version.c:508
-#, fuzzy
 msgid "Devel options:"
-msgstr "Domyślne opcje:"
+msgstr "Opcje debugowania:"
 
 #~ msgid "Exit NeoMutt?"
 #~ msgstr "Wyjść z NeoMutta?"
