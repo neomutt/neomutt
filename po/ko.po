@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-03-30 17:08+0100\n"
+"POT-Creation-Date: 2023-04-07 13:27+0100\n"
 "PO-Revision-Date: 2004-03-03 10:25+900\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
@@ -293,7 +293,7 @@ msgstr "Mailcap 작성 항목은 %%s가 필요함"
 
 #: attach/mutt_attach.c:163 attach/mutt_attach.c:304 compmbox/compress.c:347
 #: compose/functions.c:1716 gui/curs_lib.c:319 index/dlg_index.c:1191
-#: index/dlg_index.c:1237 pager/dlg_pager.c:465 pager/do_pager.c:171
+#: index/dlg_index.c:1237 pager/dlg_pager.c:465 pager/do_pager.c:167
 #: pager/message.c:335 send/sendlib.c:574
 #, c-format
 msgid "Error running \"%s\""
@@ -1846,13 +1846,13 @@ msgstr ""
 msgid "%s isn't a regular file"
 msgstr "%s는 올바른 파일이 아님"
 
-#: copy.c:724
+#: copy.c:725
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
 msgstr[0] ""
 
-#: copy.c:809
+#: copy.c:810
 msgid "No decryption engine available for message"
 msgstr ""
 
@@ -2675,7 +2675,7 @@ msgstr "인증자가 없음."
 #: imap/auth_anon.c:55 imap/auth_cram.c:107 imap/auth_gsasl.c:65
 #: imap/auth_gss.c:167 imap/auth_oauth.c:72 imap/auth_sasl.c:124
 #: nntp/nntp.c:504 nntp/nntp.c:569 pop/auth.c:77 pop/auth.c:191 pop/auth.c:336
-#: pop/auth.c:431 send/smtp.c:526 send/smtp.c:643 send/smtp.c:731
+#: pop/auth.c:431 send/smtp.c:527 send/smtp.c:644 send/smtp.c:736
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "인증 중 (%s)..."
@@ -2683,7 +2683,7 @@ msgstr "인증 중 (%s)..."
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:88 imap/auth_cram.c:181 imap/auth_gss.c:348
 #: imap/auth_oauth.c:105 imap/auth_sasl.c:258 nntp/nntp.c:668 pop/auth.c:289
-#: pop/auth.c:357 send/smtp.c:819 send/smtp.c:893 send/smtp.c:997
+#: pop/auth.c:357 send/smtp.c:824 send/smtp.c:898 send/smtp.c:1002
 #, fuzzy, c-format
 msgid "%s authentication failed"
 msgstr "SASL 인증에 실패함"
@@ -2787,11 +2787,11 @@ msgstr "SSL 실패: %s"
 msgid "Closing connection to %s..."
 msgstr "%s와의 연결을 닫는중..."
 
-#: imap/imap.c:787 nntp/nntp.c:1811 pop/lib.c:332 send/smtp.c:1042
+#: imap/imap.c:787 nntp/nntp.c:1811 pop/lib.c:332 send/smtp.c:1047
 msgid "Secure connection with TLS?"
 msgstr "TLS를 사용하여 연결 할까요?"
 
-#: imap/imap.c:803 nntp/nntp.c:1834 pop/lib.c:353 send/smtp.c:1059
+#: imap/imap.c:803 nntp/nntp.c:1834 pop/lib.c:353 send/smtp.c:1064
 msgid "Could not negotiate TLS connection"
 msgstr "TLS 연결 할수 없음"
 
@@ -2925,7 +2925,7 @@ msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "잘못된 메일 인덱스. 메일함 열기 재시도."
 
 #: imap/msn.c:48 mutt/buffer.c:112 mutt/buffer.c:323 mutt/memory.c:58
-#: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1015 mx.c:1233
+#: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1005 mx.c:1233
 msgid "Out of memory"
 msgstr "메모리 부족"
 
@@ -3354,7 +3354,7 @@ msgstr "메일이 없음"
 msgid "No visible messages"
 msgstr "메일 없음"
 
-#: index/index.c:97
+#: index/index.c:98
 msgid "Changing threaded display should prefer $use_threads over $sort"
 msgstr ""
 
@@ -3494,19 +3494,19 @@ msgstr "메일을 보낼 수 없음."
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): 파일 시간을 설정할 수 없음"
 
-#: maildir/maildir.c:684 maildir/mh.c:706
+#: maildir/maildir.c:690 maildir/mh.c:706
 #, fuzzy, c-format
 msgid "Scanning %s..."
 msgstr "%s 선택 중..."
 
-#: maildir/maildir.c:705 maildir/mh.c:729 mbox/mbox.c:212 mbox/mbox.c:384
+#: maildir/maildir.c:711 maildir/mh.c:729 mbox/mbox.c:212 mbox/mbox.c:384
 #: mx.c:373
 #, c-format
 msgid "Reading %s..."
 msgstr "%s 읽는 중..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1394 maildir/mh.c:1057 mbox/mbox.c:1284 mx.c:481
+#: maildir/maildir.c:1400 maildir/mh.c:1057 mbox/mbox.c:1284 mx.c:481
 #: notmuch/notmuch.c:2227
 #, c-format
 msgid "Writing %s..."
@@ -5400,7 +5400,7 @@ msgstr "서버와 연결이 끊어짐"
 msgid "Server doesn't support reader mode"
 msgstr ""
 
-#: nntp/nntp.c:475 pop/auth.c:620 send/smtp.c:1001
+#: nntp/nntp.c:475 pop/auth.c:620 send/smtp.c:1006
 msgid "No authenticators available"
 msgstr "인증자가 없음."
 
@@ -7700,7 +7700,7 @@ msgstr "제목이 지정되지 않음"
 msgid "No newsgroup specified"
 msgstr "제목이 지정되지 않음"
 
-#: send/send.c:2879 send/smtp.c:248
+#: send/send.c:2879 send/smtp.c:249
 msgid "Sending message..."
 msgstr "메일 보내는 중..."
 
@@ -7763,38 +7763,38 @@ msgstr "메일을 보내는 중 오류 %d (%s)"
 msgid "Output of the delivery process"
 msgstr "배달 프로세스의 출력"
 
-#: send/smtp.c:179
+#: send/smtp.c:180
 #, fuzzy, c-format
 msgid "SMTP session failed: %s"
 msgstr "SSL 실패: %s"
 
-#: send/smtp.c:238
+#: send/smtp.c:239
 #, fuzzy, c-format
 msgid "SMTP session failed: unable to open %s"
 msgstr "SSL 실패: %s"
 
-#: send/smtp.c:360
+#: send/smtp.c:361
 #, fuzzy, c-format
 msgid "Invalid SMTP URL: %s"
 msgstr "무효   "
 
-#: send/smtp.c:1074
+#: send/smtp.c:1079
 msgid "SMTP server does not support authentication"
 msgstr ""
 
-#: send/smtp.c:1121
+#: send/smtp.c:1126
 msgid "No from address given"
 msgstr ""
 
-#: send/smtp.c:1188
+#: send/smtp.c:1193
 msgid "SMTP session failed: read error"
 msgstr ""
 
-#: send/smtp.c:1190
+#: send/smtp.c:1195
 msgid "SMTP session failed: write error"
 msgstr ""
 
-#: send/smtp.c:1192
+#: send/smtp.c:1197
 msgid "Invalid server response"
 msgstr ""
 

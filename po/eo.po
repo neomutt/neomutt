@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.8.0\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-03-30 17:08+0100\n"
+"POT-Creation-Date: 2023-04-07 13:27+0100\n"
 "PO-Revision-Date: 2021-08-20 16:44+0100\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
@@ -280,7 +280,7 @@ msgstr "\"compose\" en Mailcap-dosiero postulas %%s"
 
 #: attach/mutt_attach.c:163 attach/mutt_attach.c:304 compmbox/compress.c:347
 #: compose/functions.c:1716 gui/curs_lib.c:319 index/dlg_index.c:1191
-#: index/dlg_index.c:1237 pager/dlg_pager.c:465 pager/do_pager.c:171
+#: index/dlg_index.c:1237 pager/dlg_pager.c:465 pager/do_pager.c:167
 #: pager/message.c:335 send/sendlib.c:574
 #, c-format
 msgid "Error running \"%s\""
@@ -1808,14 +1808,14 @@ msgstr "Tunelo al %s donis eraron %d (%s)"
 msgid "%s isn't a regular file"
 msgstr "%s ne estas normala dosiero"
 
-#: copy.c:724
+#: copy.c:725
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: copy.c:809
+#: copy.c:810
 msgid "No decryption engine available for message"
 msgstr "Nenia malĉifroproceduro estas disponata por mesaĝo"
 
@@ -2630,7 +2630,7 @@ msgstr "Nenia rajtiĝilo disponeblas"
 #: imap/auth_anon.c:55 imap/auth_cram.c:107 imap/auth_gsasl.c:65
 #: imap/auth_gss.c:167 imap/auth_oauth.c:72 imap/auth_sasl.c:124
 #: nntp/nntp.c:504 nntp/nntp.c:569 pop/auth.c:77 pop/auth.c:191 pop/auth.c:336
-#: pop/auth.c:431 send/smtp.c:526 send/smtp.c:643 send/smtp.c:731
+#: pop/auth.c:431 send/smtp.c:527 send/smtp.c:644 send/smtp.c:736
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Rajtiĝas (%s)..."
@@ -2638,7 +2638,7 @@ msgstr "Rajtiĝas (%s)..."
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:88 imap/auth_cram.c:181 imap/auth_gss.c:348
 #: imap/auth_oauth.c:105 imap/auth_sasl.c:258 nntp/nntp.c:668 pop/auth.c:289
-#: pop/auth.c:357 send/smtp.c:819 send/smtp.c:893 send/smtp.c:997
+#: pop/auth.c:357 send/smtp.c:824 send/smtp.c:898 send/smtp.c:1002
 #, c-format
 msgid "%s authentication failed"
 msgstr "%s-rajtiĝo malsukcesis"
@@ -2740,11 +2740,11 @@ msgstr "CREATE malsukcesis: %s"
 msgid "Closing connection to %s..."
 msgstr "Fermas la konekton al %s..."
 
-#: imap/imap.c:787 nntp/nntp.c:1811 pop/lib.c:332 send/smtp.c:1042
+#: imap/imap.c:787 nntp/nntp.c:1811 pop/lib.c:332 send/smtp.c:1047
 msgid "Secure connection with TLS?"
 msgstr "Ĉu sekura konekto per TLS?"
 
-#: imap/imap.c:803 nntp/nntp.c:1834 pop/lib.c:353 send/smtp.c:1059
+#: imap/imap.c:803 nntp/nntp.c:1834 pop/lib.c:353 send/smtp.c:1064
 msgid "Could not negotiate TLS connection"
 msgstr "Ne eblis negoci TLS-konekton"
 
@@ -2875,7 +2875,7 @@ msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "La mesaĝindekso estas malĝusta.  Provu remalfermi la poŝtfakon."
 
 #: imap/msn.c:48 mutt/buffer.c:112 mutt/buffer.c:323 mutt/memory.c:58
-#: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1015 mx.c:1233
+#: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1005 mx.c:1233
 msgid "Out of memory"
 msgstr "Mankas sufiĉa memoro"
 
@@ -3292,7 +3292,7 @@ msgstr "Ne estas mesaĝoj"
 msgid "No visible messages"
 msgstr "Malestas videblaj mesaĝoj"
 
-#: index/index.c:97
+#: index/index.c:98
 msgid "Changing threaded display should prefer $use_threads over $sort"
 msgstr ""
 
@@ -3429,19 +3429,19 @@ msgstr "Ne eblis elbufrigi mesaĝon al disko"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): ne eblas ŝanĝi tempon de dosiero"
 
-#: maildir/maildir.c:684 maildir/mh.c:706
+#: maildir/maildir.c:690 maildir/mh.c:706
 #, c-format
 msgid "Scanning %s..."
 msgstr "Traserĉas %s..."
 
-#: maildir/maildir.c:705 maildir/mh.c:729 mbox/mbox.c:212 mbox/mbox.c:384
+#: maildir/maildir.c:711 maildir/mh.c:729 mbox/mbox.c:212 mbox/mbox.c:384
 #: mx.c:373
 #, c-format
 msgid "Reading %s..."
 msgstr "Legiĝas %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1394 maildir/mh.c:1057 mbox/mbox.c:1284 mx.c:481
+#: maildir/maildir.c:1400 maildir/mh.c:1057 mbox/mbox.c:1284 mx.c:481
 #: notmuch/notmuch.c:2227
 #, c-format
 msgid "Writing %s..."
@@ -5275,7 +5275,7 @@ msgstr "Servilo fermis la konekton"
 msgid "Server doesn't support reader mode"
 msgstr "SMTP-servilo ne akceptas rajtiĝon"
 
-#: nntp/nntp.c:475 pop/auth.c:620 send/smtp.c:1001
+#: nntp/nntp.c:475 pop/auth.c:620 send/smtp.c:1006
 msgid "No authenticators available"
 msgstr "Nenia rajtiĝilo disponeblas"
 
@@ -7521,7 +7521,7 @@ msgstr "Temlinio ne specifita"
 msgid "No newsgroup specified"
 msgstr "Temlinio ne specifita"
 
-#: send/send.c:2879 send/smtp.c:248
+#: send/send.c:2879 send/smtp.c:249
 msgid "Sending message..."
 msgstr "Sendas mesaĝon..."
 
@@ -7584,38 +7584,38 @@ msgstr "Eraro dum sendado de mesaĝo; ido finis per %d (%s)"
 msgid "Output of the delivery process"
 msgstr "Eligo de la liverprocezo"
 
-#: send/smtp.c:179
+#: send/smtp.c:180
 #, c-format
 msgid "SMTP session failed: %s"
 msgstr "SMTP-konekto malsukcesis: %s"
 
-#: send/smtp.c:238
+#: send/smtp.c:239
 #, c-format
 msgid "SMTP session failed: unable to open %s"
 msgstr "SMTP-konekto malsukcesis: ne povis malfermi %s"
 
-#: send/smtp.c:360
+#: send/smtp.c:361
 #, c-format
 msgid "Invalid SMTP URL: %s"
 msgstr "Nevalida SMTP-adreso: %s"
 
-#: send/smtp.c:1074
+#: send/smtp.c:1079
 msgid "SMTP server does not support authentication"
 msgstr "SMTP-servilo ne akceptas rajtiĝon"
 
-#: send/smtp.c:1121
+#: send/smtp.c:1126
 msgid "No from address given"
 msgstr "Neniu 'de'-adreso indikatas"
 
-#: send/smtp.c:1188
+#: send/smtp.c:1193
 msgid "SMTP session failed: read error"
 msgstr "SMTP-konekto malsukcesis: legeraro"
 
-#: send/smtp.c:1190
+#: send/smtp.c:1195
 msgid "SMTP session failed: write error"
 msgstr "SMTP-konekto malsukcesis: skriberaro"
 
-#: send/smtp.c:1192
+#: send/smtp.c:1197
 msgid "Invalid server response"
 msgstr "Nevalida respondo de servilo"
 

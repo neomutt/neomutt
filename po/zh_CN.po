@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2021-02-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-03-30 17:08+0100\n"
+"POT-Creation-Date: 2023-04-07 13:27+0100\n"
 "PO-Revision-Date: 2022-04-23 12:04+0000\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
@@ -287,7 +287,7 @@ msgstr "Mailcap 撰写条目需要 %%s"
 
 #: attach/mutt_attach.c:163 attach/mutt_attach.c:304 compmbox/compress.c:347
 #: compose/functions.c:1716 gui/curs_lib.c:319 index/dlg_index.c:1191
-#: index/dlg_index.c:1237 pager/dlg_pager.c:465 pager/do_pager.c:171
+#: index/dlg_index.c:1237 pager/dlg_pager.c:465 pager/do_pager.c:167
 #: pager/message.c:335 send/sendlib.c:574
 #, c-format
 msgid "Error running \"%s\""
@@ -1791,13 +1791,13 @@ msgstr "通过隧道连接 %s 时返回错误 %d (%s)"
 msgid "%s isn't a regular file"
 msgstr "%s 不是常规文件"
 
-#: copy.c:724
+#: copy.c:725
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
 msgstr[0] "长度计算错误，偏差 %ld 字节"
 
-#: copy.c:809
+#: copy.c:810
 msgid "No decryption engine available for message"
 msgstr "对于信件没有解密引擎"
 
@@ -2579,7 +2579,7 @@ msgstr "无可用认证方式或错误的凭据"
 #: imap/auth_anon.c:55 imap/auth_cram.c:107 imap/auth_gsasl.c:65
 #: imap/auth_gss.c:167 imap/auth_oauth.c:72 imap/auth_sasl.c:124
 #: nntp/nntp.c:504 nntp/nntp.c:569 pop/auth.c:77 pop/auth.c:191 pop/auth.c:336
-#: pop/auth.c:431 send/smtp.c:526 send/smtp.c:643 send/smtp.c:731
+#: pop/auth.c:431 send/smtp.c:527 send/smtp.c:644 send/smtp.c:736
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "认证中 (%s)..."
@@ -2587,7 +2587,7 @@ msgstr "认证中 (%s)..."
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:88 imap/auth_cram.c:181 imap/auth_gss.c:348
 #: imap/auth_oauth.c:105 imap/auth_sasl.c:258 nntp/nntp.c:668 pop/auth.c:289
-#: pop/auth.c:357 send/smtp.c:819 send/smtp.c:893 send/smtp.c:997
+#: pop/auth.c:357 send/smtp.c:824 send/smtp.c:898 send/smtp.c:1002
 #, c-format
 msgid "%s authentication failed"
 msgstr "%s 认证失败"
@@ -2688,11 +2688,11 @@ msgstr "CREATE(创建)失败：%s"
 msgid "Closing connection to %s..."
 msgstr "正在关闭到 %s 的连接..."
 
-#: imap/imap.c:787 nntp/nntp.c:1811 pop/lib.c:332 send/smtp.c:1042
+#: imap/imap.c:787 nntp/nntp.c:1811 pop/lib.c:332 send/smtp.c:1047
 msgid "Secure connection with TLS?"
 msgstr "使用 TLS 安全连接？"
 
-#: imap/imap.c:803 nntp/nntp.c:1834 pop/lib.c:353 send/smtp.c:1059
+#: imap/imap.c:803 nntp/nntp.c:1834 pop/lib.c:353 send/smtp.c:1064
 msgid "Could not negotiate TLS connection"
 msgstr "无法协商 TLS 连接"
 
@@ -2818,7 +2818,7 @@ msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "信件索引不正确。请尝试重新打开信箱"
 
 #: imap/msn.c:48 mutt/buffer.c:112 mutt/buffer.c:323 mutt/memory.c:58
-#: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1015 mx.c:1233
+#: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1005 mx.c:1233
 msgid "Out of memory"
 msgstr "内存不足"
 
@@ -3220,7 +3220,7 @@ msgstr "没有信件"
 msgid "No visible messages"
 msgstr "无可见信件"
 
-#: index/index.c:97
+#: index/index.c:98
 msgid "Changing threaded display should prefer $use_threads over $sort"
 msgstr "建议使用 $use_threads 而不是 $sort 控制信件线索的展示"
 
@@ -3356,19 +3356,19 @@ msgstr "无法将信件导出到硬盘"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message()：无法给文件设置时间"
 
-#: maildir/maildir.c:684 maildir/mh.c:706
+#: maildir/maildir.c:690 maildir/mh.c:706
 #, c-format
 msgid "Scanning %s..."
 msgstr "正在扫描 %s..."
 
-#: maildir/maildir.c:705 maildir/mh.c:729 mbox/mbox.c:212 mbox/mbox.c:384
+#: maildir/maildir.c:711 maildir/mh.c:729 mbox/mbox.c:212 mbox/mbox.c:384
 #: mx.c:373
 #, c-format
 msgid "Reading %s..."
 msgstr "正在读取 %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1394 maildir/mh.c:1057 mbox/mbox.c:1284 mx.c:481
+#: maildir/maildir.c:1400 maildir/mh.c:1057 mbox/mbox.c:1284 mx.c:481
 #: notmuch/notmuch.c:2227
 #, c-format
 msgid "Writing %s..."
@@ -5195,7 +5195,7 @@ msgstr "服务器关闭了连接"
 msgid "Server doesn't support reader mode"
 msgstr "服务器不支持阅读模式"
 
-#: nntp/nntp.c:475 pop/auth.c:620 send/smtp.c:1001
+#: nntp/nntp.c:475 pop/auth.c:620 send/smtp.c:1006
 msgid "No authenticators available"
 msgstr "无可用认证方式"
 
@@ -7378,7 +7378,7 @@ msgstr "没有指定主题"
 msgid "No newsgroup specified"
 msgstr "没有指定新闻组"
 
-#: send/send.c:2879 send/smtp.c:248
+#: send/send.c:2879 send/smtp.c:249
 msgid "Sending message..."
 msgstr "正在发送信件..."
 
@@ -7437,38 +7437,38 @@ msgstr "发送信件出错，子进程已退出 %d (%s)"
 msgid "Output of the delivery process"
 msgstr "投递进程的输出"
 
-#: send/smtp.c:179
+#: send/smtp.c:180
 #, c-format
 msgid "SMTP session failed: %s"
 msgstr "SMTP 会话失败：%s"
 
-#: send/smtp.c:238
+#: send/smtp.c:239
 #, c-format
 msgid "SMTP session failed: unable to open %s"
 msgstr "SMTP 会话失败：无法打开 %s"
 
-#: send/smtp.c:360
+#: send/smtp.c:361
 #, c-format
 msgid "Invalid SMTP URL: %s"
 msgstr "无效的 SMTP 链接(URL)：%s"
 
-#: send/smtp.c:1074
+#: send/smtp.c:1079
 msgid "SMTP server does not support authentication"
 msgstr "SMTP 服务器不支持认证"
 
-#: send/smtp.c:1121
+#: send/smtp.c:1126
 msgid "No from address given"
 msgstr "没有给出发信地址"
 
-#: send/smtp.c:1188
+#: send/smtp.c:1193
 msgid "SMTP session failed: read error"
 msgstr "SMTP 会话失败：读错误"
 
-#: send/smtp.c:1190
+#: send/smtp.c:1195
 msgid "SMTP session failed: write error"
 msgstr "SMTP 会话失败：写错误"
 
-#: send/smtp.c:1192
+#: send/smtp.c:1197
 msgid "Invalid server response"
 msgstr "无效的服务器回应"
 
