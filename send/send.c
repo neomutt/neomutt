@@ -1732,9 +1732,8 @@ static bool search_attach_keyword(char *filename, struct ConfigSubset *sub)
 
   char *inputline = mutt_mem_malloc(1024);
   bool found = false;
-  while (!feof(fp_att))
+  while (!feof(fp_att) && fgets(inputline, 1024, fp_att))
   {
-    fgets(inputline, 1024, fp_att);
     if (!mutt_is_quote_line(inputline, NULL) &&
         mutt_regex_match(c_abort_noattach_regex, inputline))
     {
