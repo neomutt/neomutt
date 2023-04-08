@@ -151,6 +151,12 @@ static int op_browser_subscribe(struct BrowserPrivateData *priv, int op)
 #ifdef USE_IMAP
   else
   {
+    if (ARRAY_EMPTY(&priv->state.entry))
+    {
+      mutt_error(_("There are no mailboxes"));
+      return FR_ERROR;
+    }
+
     char tmp2[256];
     int index = menu_get_index(priv->menu);
     struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
