@@ -169,7 +169,8 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
       while (!feof(fp))
       {
         e->body->length--;
-        fgets(buf, sizeof(buf), fp);
+        if(!fgets(buf, sizeof(buf), fp))
+          break;
       }
       break;
     }
