@@ -768,6 +768,16 @@ void rfc2047_encode_addrlist(struct AddressList *al, const char *tag)
   }
 }
 
+static int config_changed_observer(struct NotifyCallback *nc)
+{
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+  bool *has_cached_ptr = nc->global_data;
+  *has_cached_ptr = false;
+  notify_observer_remove(NeoMutt->notify, config_changed_observer, has_cached_ptr);
+  return 0;
+}
+
 /**
  * rfc2047_decode_addrlist - Decode any RFC2047 headers in an Address list
  * @param al AddressList
@@ -777,7 +787,16 @@ void rfc2047_decode_addrlist(struct AddressList *al)
   if (!al)
     return;
 
-  const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
+  static const struct Slist *c_assumed_charset = NULL;
+  static bool has_cached_assumed_charset = false;
+
+  if (!has_cached_assumed_charset)
+  {
+    c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
+    notify_observer_add(NeoMutt->notify, NT_CONFIG, config_changed_observer,
+                        &has_cached_assumed_charset);
+    has_cached_assumed_charset = true;
+  }
 
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
