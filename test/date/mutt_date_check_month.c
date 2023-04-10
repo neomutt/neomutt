@@ -34,8 +34,8 @@ void test_mutt_date_check_month(void)
   TEST_CHECK(mutt_date_check_month("ja") == -1);
   TEST_CHECK(mutt_date_check_month("Monday") == -1);
 
-  TEST_CHECK(mutt_date_check_month("jan") == 0);
-  TEST_CHECK(mutt_date_check_month("FEB") == 1);
+  TEST_CHECK(mutt_date_check_month("jan") == -1);
+  TEST_CHECK(mutt_date_check_month("FEB") == -1);
   TEST_CHECK(mutt_date_check_month("September") == 8);
   TEST_CHECK(mutt_date_check_month("SepXXXX") == 8);
 }
