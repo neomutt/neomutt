@@ -27,14 +27,17 @@
  */
 
 #include "config.h"
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/time.h>
 #include <time.h>
 #include "date.h"
 #include "buffer.h"
+#include "eqi.h"
 #include "logging2.h"
 #include "memory.h"
 #include "prex.h"
@@ -409,7 +412,7 @@ void mutt_date_make_date(struct Buffer *buf, bool local)
 
 /**
  * mutt_date_check_month - Is the string a valid month name
- * @param s String to check
+ * @param s String to check (must be at least 3 bytes long)
  * @retval num Index into Months array (0-based)
  * @retval -1  Error
  *
@@ -418,9 +421,20 @@ void mutt_date_make_date(struct Buffer *buf, bool local)
  */
 int mutt_date_check_month(const char *s)
 {
+  if (!s)
+    return -1;
+
+  char buf[4] = { 0 };
+  memcpy(buf, s, 3);
+  uint32_t sv;
+  memcpy(&sv, buf, sizeof(sv));
   for (int i = 0; i < mutt_array_size(Months); i++)
-    if (mutt_istr_startswith(s, Months[i]))
+  {
+    uint32_t mv;
+    memcpy(&mv, Months[i], sizeof(mv));
+    if (sv == mv)
       return i;
+  }
 
   return -1; /* error */
 }
@@ -448,6 +462,217 @@ uint64_t mutt_date_now_ms(void)
 }
 
 /**
+ * parse_small_uint - Parse a positive integer of at most 5 digits
+ * @param[in]  str String to parse
+ * @param[in]  end End of the string
+ * @param[out] val Value
+ * @retval num Number of chars parsed
+ *
+ * Leaves val untouched if the given string does not start with an integer;
+ * ignores junk after it or any digits beyond the first five (this is so
+ * that the function can never overflow, yet check if the integer is
+ * larger than the maximum 4 digits supported in a year).
+ * and does not support negative numbers. Empty strings are parsed as zero.
+ */
+static int parse_small_uint(const char *str, const char *end, int *val)
+{
+  const char *ptr = str;
+  int v = 0;
+  while ((ptr < end) && (ptr < (str + 5)) && (*ptr >= '0') && (*ptr <= '9'))
+  {
+    v = (v * 10) + (*ptr - '0');
+    ++ptr;
+  }
+  *val = v;
+  return ptr - str;
+}
+
+/**
+ * mutt_date_parse_rfc5322_strict - Parse a date string in RFC822 format
+ * @param[in]  s      String to parse
+ * @param[out] tz_out Timezone info (OPTIONAL)
+ * @retval num Unix time in seconds
+ *
+ * Parse a date string in RFC822 format, without any comments or extra
+ * whitespace (except a comment at the very end, since that is very common for
+ * time zones).
+ *
+ * This is a fairly straightforward implementation in the hope of extracting
+ * the valid cases quickly, i.e., without having to resort to a regex.
+ * The hard cases are left to a regex implementation further down in
+ * mutt_date_parse_date() (which calls us).
+ *
+ * Spec: https://tools.ietf.org/html/rfc5322#section-3.3
+ */
+static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
+{
+  size_t len = strlen(s);
+
+  /* Skip over the weekday, if any. */
+  if ((len >= 5) && (s[4] == ' ') &&
+      (eqi4(s, "Mon,") || eqi4(s, "Tue,") || eqi4(s, "Wed,") ||
+       eqi4(s, "Thu,") || eqi4(s, "Fri,") || eqi4(s, "Sat,") || eqi4(s, "Sun,")))
+  {
+    s += 5;
+    len -= 5;
+  }
+
+  while ((len > 0) && (*s == ' '))
+  {
+    ++s;
+    --len;
+  }
+
+  if ((len == 0) || (*s < '0') || (*s > '9'))
+    return -1;
+
+  struct tm tm = { 0 };
+
+  /* Day */
+  int mday_len = parse_small_uint(s, s + len, &tm.tm_mday);
+  if ((mday_len == 0) || (mday_len > 2) || (tm.tm_mday > 31))
+    return -1;
+  s += mday_len;
+  len -= mday_len;
+
+  if ((len == 0) || (*s != ' '))
+    return -1;
+  ++s;
+  --len;
+
+  /* Month */
+  if (len < 3)
+    return -1;
+  tm.tm_mon = mutt_date_check_month(s);
+  if (tm.tm_mon == -1)
+    return -1;
+  s += 3;
+  len -= 3;
+
+  if ((len == 0) || (*s != ' '))
+    return -1;
+  ++s;
+  --len;
+
+  /* Year */
+  int year_len = parse_small_uint(s, s + len, &tm.tm_year);
+  if ((year_len != 2) && (year_len != 4))
+    return -1;
+  if (tm.tm_year < 50)
+    tm.tm_year += 100;
+  else if (tm.tm_year >= 1900)
+    tm.tm_year -= 1900;
+  s += year_len;
+  len -= year_len;
+
+  if ((len == 0) || (*s != ' '))
+    return -1;
+  ++s;
+  --len;
+
+  /* Hour */
+  if ((len < 3) || (s[0] < '0') || (s[0] > '2') || (s[1] < '0') ||
+      (s[1] > '9') || (s[2] != ':'))
+  {
+    return -1;
+  }
+  tm.tm_hour = ((s[0] - '0') * 10) + (s[1] - '0');
+  if (tm.tm_hour > 23)
+    return -1;
+  s += 3;
+  len -= 3;
+
+  /* Minute */
+  if ((len < 2) || (s[0] < '0') || (s[0] > '5') || (s[1] < '0') || (s[1] > '9'))
+    return -1;
+  tm.tm_min = ((s[0] - '0') * 10) + (s[1] - '0');
+  if (tm.tm_min > 59)
+    return -1;
+  s += 2;
+  len -= 2;
+
+  /* Second (optional) */
+  if ((len > 0) && (s[0] == ':'))
+  {
+    ++s;
+    --len;
+    if ((len < 2) || (s[0] < '0') || (s[0] > '5') || (s[1] < '0') || (s[1] > '9'))
+      return -1;
+    tm.tm_sec = ((s[0] - '0') * 10) + (s[1] - '0');
+    if (tm.tm_sec > 60)
+      return -1;
+    s += 2;
+    len -= 2;
+  }
+
+  while ((len > 0) && (*s == ' '))
+  {
+    ++s;
+    --len;
+  }
+
+  /* Strip optional time zone comment and white space from the end
+   * (this is the only one that is very common) */
+  while ((len > 0) && (s[len - 1] == ' '))
+    --len;
+  if ((len >= 2) && (s[len - 1] == ')'))
+  {
+    for (int i = len - 1; i-- > 0;)
+    {
+      if (s[i] == '(')
+      {
+        len = i;
+        break;
+      }
+      if (!isalpha(s[i]) && (s[i] != ' '))
+        return -1; /* give up more complex comment parsing */
+    }
+  }
+  while ((len > 0) && (s[len - 1] == ' '))
+    --len;
+
+  /* Time zone (optional) */
+  int zhours = 0;
+  int zminutes = 0;
+  bool zoccident = false;
+  if (len > 0)
+  {
+    if ((len == 5) && ((s[0] == '+') || (s[0] == '-')) && (s[1] >= '0') &&
+        (s[1] <= '9') && (s[2] >= '0') && (s[2] <= '9') && (s[3] >= '0') &&
+        (s[3] <= '9') && (s[4] >= '0') && (s[4] <= '9'))
+    {
+      zoccident = (s[0] == '-');
+      zhours = ((s[1] - '0') * 10) + (s[2] - '0');
+      zminutes = ((s[3] - '0') * 10) + (s[4] - '0');
+    }
+    else
+    {
+      for (int i = 0; i < len; ++i)
+      {
+        if (!isalpha(s[i]))
+          return -1;
+      }
+      const struct Tz *tz = find_tz(s, len);
+      if (tz)
+      {
+        zhours = tz->zhours;
+        zminutes = tz->zminutes;
+        zoccident = tz->zoccident;
+      }
+    }
+  }
+
+  if (tz_out)
+  {
+    tz_out->zhours = zhours;
+    tz_out->zminutes = zminutes;
+    tz_out->zoccident = zoccident;
+  }
+
+  return add_tz_offset(mutt_date_make_time(&tm, false), zoccident, zhours, zminutes);
+}
+
+/**
  * mutt_date_parse_date - Parse a date string in RFC822 format
  * @param[in]  s      String to parse
  * @param[out] tz_out Pointer to timezone (optional)
@@ -463,32 +688,29 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
   if (!s)
     return -1;
 
-  bool lax = false;
+  const time_t strict_t = mutt_date_parse_rfc5322_strict(s, tz_out);
+  if (strict_t != -1)
+    return strict_t;
 
-  const regmatch_t *match = mutt_prex_capture(PREX_RFC5322_DATE, s);
+  const regmatch_t *match = mutt_prex_capture(PREX_RFC5322_DATE_LAX, s);
   if (!match)
   {
-    match = mutt_prex_capture(PREX_RFC5322_DATE_LAX, s);
-    if (!match)
-    {
-      mutt_debug(LL_DEBUG1, "Could not parse date: <%s>\n", s);
-      return -1;
-    }
-    lax = true;
-    mutt_debug(LL_DEBUG2, "Fallback regex for date: <%s>\n", s);
+    mutt_debug(LL_DEBUG1, "Could not parse date: <%s>\n", s);
+    return -1;
   }
+  mutt_debug(LL_DEBUG2, "Fallback regex for date: <%s>\n", s);
 
   struct tm tm = { 0 };
 
   // clang-format off
-  const regmatch_t *mday    = &match[lax ? PREX_RFC5322_DATE_LAX_MATCH_DAY    : PREX_RFC5322_DATE_MATCH_DAY];
-  const regmatch_t *mmonth  = &match[lax ? PREX_RFC5322_DATE_LAX_MATCH_MONTH  : PREX_RFC5322_DATE_MATCH_MONTH];
-  const regmatch_t *myear   = &match[lax ? PREX_RFC5322_DATE_LAX_MATCH_YEAR   : PREX_RFC5322_DATE_MATCH_YEAR];
-  const regmatch_t *mhour   = &match[lax ? PREX_RFC5322_DATE_LAX_MATCH_HOUR   : PREX_RFC5322_DATE_MATCH_HOUR];
-  const regmatch_t *mminute = &match[lax ? PREX_RFC5322_DATE_LAX_MATCH_MINUTE : PREX_RFC5322_DATE_MATCH_MINUTE];
-  const regmatch_t *msecond = &match[lax ? PREX_RFC5322_DATE_LAX_MATCH_SECOND : PREX_RFC5322_DATE_MATCH_SECOND];
-  const regmatch_t *mtz     = &match[lax ? PREX_RFC5322_DATE_LAX_MATCH_TZ     : PREX_RFC5322_DATE_MATCH_TZ];
-  const regmatch_t *mtzobs  = &match[lax ? PREX_RFC5322_DATE_LAX_MATCH_TZ_OBS : PREX_RFC5322_DATE_MATCH_TZ_OBS];
+  const regmatch_t *mday    = &match[PREX_RFC5322_DATE_LAX_MATCH_DAY];
+  const regmatch_t *mmonth  = &match[PREX_RFC5322_DATE_LAX_MATCH_MONTH];
+  const regmatch_t *myear   = &match[PREX_RFC5322_DATE_LAX_MATCH_YEAR];
+  const regmatch_t *mhour   = &match[PREX_RFC5322_DATE_LAX_MATCH_HOUR];
+  const regmatch_t *mminute = &match[PREX_RFC5322_DATE_LAX_MATCH_MINUTE];
+  const regmatch_t *msecond = &match[PREX_RFC5322_DATE_LAX_MATCH_SECOND];
+  const regmatch_t *mtz     = &match[PREX_RFC5322_DATE_LAX_MATCH_TZ];
+  const regmatch_t *mtzobs  = &match[PREX_RFC5322_DATE_LAX_MATCH_TZ_OBS];
   // clang-format on
 
   /* Day */

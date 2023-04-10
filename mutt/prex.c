@@ -159,25 +159,6 @@ static struct PrexStorage *prex(enum Prex which)
       "^\\#H ([[:alnum:]_\\.-]+) ([[:alnum:]]{4}( [[:alnum:]]{4}){7})[ \t]*$"
     },
     {
-      PREX_RFC5322_DATE,
-      PREX_RFC5322_DATE_MATCH_MAX,
-      /* Spec: https://tools.ietf.org/html/rfc5322#section-3.3 */
-      "^"
-        "(" PREX_DOW ", )?"       // Day of week
-        " *"
-        "([[:digit:]]{1,2}) "     // Day
-        PREX_MONTH                // Month
-        " ([[:digit:]]{2,4}) "    // Year
-        "([[:digit:]]{2})"        // Hour
-        ":([[:digit:]]{2})"       // Minute
-        "(:([[:digit:]]{2}))?"    // Second
-        " *"
-        "("
-        "([+-][[:digit:]]{4})|"   // TZ
-        "([[:alpha:]]+)"          // Obsolete TZ
-        ")"
-    },
-    {
       PREX_RFC5322_DATE_LAX,
       PREX_RFC5322_DATE_LAX_MATCH_MAX,
       /* Spec: https://tools.ietf.org/html/rfc5322#section-3.3 */
