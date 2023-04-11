@@ -243,6 +243,103 @@ bool invalid_tests(struct ConfigSet *cs)
   return true;
 }
 
+bool creation_and_deletion_tests(struct ConfigSet *cs, struct Buffer *err)
+{
+  struct ConfigDef cherryDef = {
+    "Cherry", DT_BOOL, 1, 0, NULL,
+  };
+  struct ConfigDef damsonDef = {
+    "Damson", DT_BOOL, 1, 0, NULL,
+  };
+
+  {
+    mutt_buffer_reset(err);
+    struct HashElem *cherry = cs_register_variable(cs, &cherryDef, err);
+    if (!TEST_CHECK(cherry != NULL))
+    {
+      TEST_MSG("Variable registration failed: %s\n", mutt_buffer_string(err));
+      return false;
+    }
+
+    mutt_buffer_reset(err);
+    struct HashElem *damson = cs_register_variable(cs, &damsonDef, err);
+    if (!TEST_CHECK(damson != NULL))
+    {
+      TEST_MSG("Variable registration failed: %s\n", mutt_buffer_string(err));
+      return false;
+    }
+  }
+
+  {
+    struct ConfigDef my_cdef = { 0 };
+    struct HashElem *he = cs_create_variable(NULL, &my_cdef, err);
+    TEST_CHECK(he == NULL);
+
+    int rc = cs_he_delete(NULL, NULL, err);
+    TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
+    rc = cs_str_delete(NULL, NULL, err);
+    TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+  }
+
+  /* Dynamically created variables */
+  {
+    struct HashElem *cherry = cs_get_elem(cs, "Cherry");
+    mutt_buffer_reset(err);
+    if (!TEST_CHECK(cs_he_delete(cs, cherry, err) == CSR_SUCCESS))
+    {
+      TEST_MSG("HashElem deletion failed: %s\n", mutt_buffer_string(err));
+      return false;
+    }
+    cherry = cs_get_elem(cs, "Cherry");
+    if (!TEST_CHECK(cherry == NULL))
+    {
+      TEST_MSG("Cherry not deleted.\n");
+      return false;
+    }
+
+    mutt_buffer_reset(err);
+    if (!TEST_CHECK(cs_str_delete(cs, "Damson", err) == CSR_SUCCESS))
+    {
+      TEST_MSG("String deletion failed: %s\n", mutt_buffer_string(err));
+      return false;
+    }
+    struct HashElem *damson = cs_get_elem(cs, "Damson");
+    if (!TEST_CHECK(damson == NULL))
+    {
+      TEST_MSG("Damson not deleted.\n");
+      return false;
+    }
+  }
+
+  /* Delete unknown variable must fail */
+  if (!TEST_CHECK(cs_str_delete(cs, "does-not-exist", err) == CSR_ERR_UNKNOWN))
+  {
+    TEST_MSG("Deletion of non-existent variable succeeded but should have failed: %s\n",
+             mutt_buffer_string(err));
+    return false;
+  }
+
+  /* Delete a variable from a global ConfigDef struct */
+  {
+    struct HashElem *banana = cs_get_elem(cs, "Banana");
+    mutt_buffer_reset(err);
+    if (!TEST_CHECK(cs_he_delete(cs, banana, NULL) == CSR_SUCCESS))
+    {
+      TEST_MSG("HashElem deletion failed: %s\n", mutt_buffer_string(err));
+      return false;
+    }
+    struct HashElem *banana_after = cs_get_elem(cs, "Banana");
+    if (!TEST_CHECK(banana_after == NULL))
+    {
+      TEST_MSG("Banana not deleted.\n");
+      return false;
+    }
+  }
+
+  return true;
+}
+
 void test_config_set(void)
 {
   log_line(__func__);
@@ -386,6 +483,10 @@ void test_config_set(void)
 
   const struct ConfigSetType *cst = cs_get_type_def(cs, 15);
   if (!TEST_CHECK(!cst))
+    return;
+
+  /* Test deleting elements.  This deletes Banana from cs! */
+  if (!creation_and_deletion_tests(cs, err))
     return;
 
   neomutt_free(&NeoMutt);

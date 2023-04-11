@@ -262,7 +262,9 @@ struct HashElem *           cs_get_elem    (const struct ConfigSet *cs, const ch
 const struct ConfigSetType *cs_get_type_def(const struct ConfigSet *cs, unsigned int type);
 
 bool             cs_register_type     (struct ConfigSet *cs, const struct ConfigSetType *cst);
+struct HashElem *cs_register_variable (const struct ConfigSet *cs, struct ConfigDef *cdef, struct Buffer *err);
 bool             cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], uint32_t flags);
+struct HashElem *cs_create_variable   (const struct ConfigSet *cs, struct ConfigDef *cdef, struct Buffer *err);
 struct HashElem *cs_inherit_variable  (const struct ConfigSet *cs, struct HashElem *he_parent, const char *name);
 void             cs_uninherit_variable(const struct ConfigSet *cs, const char *name);
 
@@ -275,6 +277,7 @@ int      cs_he_string_get          (const struct ConfigSet *cs, struct HashElem 
 int      cs_he_string_minus_equals (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
 int      cs_he_string_plus_equals  (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
 int      cs_he_string_set          (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
+int      cs_he_delete              (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *err);
 
 int      cs_str_initial_get        (const struct ConfigSet *cs, const char *name,                       struct Buffer *result);
 int      cs_str_initial_set        (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
@@ -285,5 +288,6 @@ int      cs_str_string_get         (const struct ConfigSet *cs, const char *name
 int      cs_str_string_minus_equals(const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
 int      cs_str_string_plus_equals (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
 int      cs_str_string_set         (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
+int      cs_str_delete             (const struct ConfigSet *cs, const char *name,                       struct Buffer *err);
 
 #endif /* MUTT_CONFIG_SET_H */

@@ -61,6 +61,7 @@ enum NotifyConfig
 {
   NT_CONFIG_SET = 1,     ///< Config item has been set
   NT_CONFIG_RESET,       ///< Config item has been reset to initial, or parent, value
+  NT_CONFIG_DELETED,     ///< Config item has been deleted
 };
 
 /**
@@ -87,6 +88,7 @@ int      cs_subset_he_string_get          (const struct ConfigSubset *sub, struc
 int      cs_subset_he_string_minus_equals (const struct ConfigSubset *sub, struct HashElem *he, const char *value, struct Buffer *err);
 int      cs_subset_he_string_plus_equals  (const struct ConfigSubset *sub, struct HashElem *he, const char *value, struct Buffer *err);
 int      cs_subset_he_string_set          (const struct ConfigSubset *sub, struct HashElem *he, const char *value, struct Buffer *err);
+int      cs_subset_he_delete              (const struct ConfigSubset *sub, struct HashElem *he,                    struct Buffer *err);
 
 intptr_t cs_subset_str_native_get         (const struct ConfigSubset *sub, const char *name,                       struct Buffer *err);
 int      cs_subset_str_native_set         (const struct ConfigSubset *sub, const char *name,    intptr_t value,    struct Buffer *err);
@@ -95,6 +97,7 @@ int      cs_subset_str_string_get         (const struct ConfigSubset *sub, const
 int      cs_subset_str_string_minus_equals(const struct ConfigSubset *sub, const char *name,    const char *value, struct Buffer *err);
 int      cs_subset_str_string_plus_equals (const struct ConfigSubset *sub, const char *name,    const char *value, struct Buffer *err);
 int      cs_subset_str_string_set         (const struct ConfigSubset *sub, const char *name,    const char *value, struct Buffer *err);
+int      cs_subset_str_delete             (const struct ConfigSubset *sub, const char *name,                       struct Buffer *err);
 
 int               elem_list_sort(const void *a, const void *b);
 struct HashElem **get_elem_list(struct ConfigSet *cs);

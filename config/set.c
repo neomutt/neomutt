@@ -81,6 +81,12 @@ static void cs_hashelem_free(int type, void *obj, intptr_t data)
     /* If we allocated the initial value, clean it up */
     if (cdef->type & DT_INITIAL_SET)
       FREE(&cdef->initial);
+    if (cdef->type & DT_FREE_CONFIGDEF)
+    {
+      FREE(&cdef->name);
+      FREE(&cdef->docs);
+      FREE(&cdef);
+    }
   }
 }
 
@@ -112,40 +118,6 @@ static struct HashElem *create_synonym(const struct ConfigSet *cs,
 
   cdef->var = (intptr_t) he_parent;
   return he_child;
-}
-
-/**
- * reg_one_var - Register one config item
- * @param cs   Config items
- * @param cdef Variable definition
- * @param err  Buffer for error messages
- * @retval ptr New HashElem representing the config item
- */
-static struct HashElem *reg_one_var(const struct ConfigSet *cs,
-                                    struct ConfigDef *cdef, struct Buffer *err)
-{
-  if (!cs || !cdef)
-    return NULL; /* LCOV_EXCL_LINE */
-
-  if (DTYPE(cdef->type) == DT_SYNONYM)
-    return create_synonym(cs, cdef, err);
-
-  const struct ConfigSetType *cst = cs_get_type_def(cs, cdef->type);
-  if (!cst)
-  {
-    mutt_buffer_printf(err, _("Variable '%s' has an invalid type %d"),
-                       cdef->name, cdef->type);
-    return NULL;
-  }
-
-  struct HashElem *he = mutt_hash_typed_insert(cs->hash, cdef->name, cdef->type, cdef);
-  if (!he)
-    return NULL; /* LCOV_EXCL_LINE */
-
-  if (cst->reset)
-    cst->reset(cs, &cdef->var, cdef, err);
-
-  return he;
 }
 
 /**
@@ -267,6 +239,42 @@ bool cs_register_type(struct ConfigSet *cs, const struct ConfigSetType *cst)
 }
 
 /**
+ * cs_register_variable - Register one config item
+ * @param cs   Config items
+ * @param cdef Variable definition
+ * @param err  Buffer for error messages
+ * @retval ptr New HashElem representing the config item
+ *
+ * Similar to cs_create_variable() but assumes that cdef lives indefinitely.
+ */
+struct HashElem *cs_register_variable(const struct ConfigSet *cs,
+                                      struct ConfigDef *cdef, struct Buffer *err)
+{
+  if (!cs || !cdef)
+    return NULL; /* LCOV_EXCL_LINE */
+
+  if (DTYPE(cdef->type) == DT_SYNONYM)
+    return create_synonym(cs, cdef, err);
+
+  const struct ConfigSetType *cst = cs_get_type_def(cs, cdef->type);
+  if (!cst)
+  {
+    mutt_buffer_printf(err, _("Variable '%s' has an invalid type %d"),
+                       cdef->name, cdef->type);
+    return NULL;
+  }
+
+  struct HashElem *he = mutt_hash_typed_insert(cs->hash, cdef->name, cdef->type, cdef);
+  if (!he)
+    return NULL; /* LCOV_EXCL_LINE */
+
+  if (cst->reset)
+    cst->reset(cs, &cdef->var, cdef, err);
+
+  return he;
+}
+
+/**
  * cs_register_variables - Register a set of config items
  * @param cs    Config items
  * @param vars  Variable definition
@@ -285,7 +293,7 @@ bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], 
   for (size_t i = 0; vars[i].name; i++)
   {
     vars[i].type |= flags;
-    if (!reg_one_var(cs, &vars[i], &err))
+    if (!cs_register_variable(cs, &vars[i], &err))
     {
       mutt_debug(LL_DEBUG1, "%s\n", mutt_buffer_string(&err));
       rc = false;
@@ -294,6 +302,43 @@ bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], 
 
   mutt_buffer_dealloc(&err);
   return rc;
+}
+
+/**
+ * cs_create_variable - Create and register one config item
+ * @param cs   Config items
+ * @param cdef Variable definition
+ * @param err  Buffer for error messages
+ * @retval ptr New HashElem representing the config item
+ *
+ * Similar to cs_register_variable() but copies the ConfigDef first.  Allowing
+ * the caller to free it and its parts afterwards.
+ *
+ * This function does not know anything about how the internal representation
+ * of the type must be handled.  Thus, the fields 'initial', 'data', 'var' must
+ * be copyable.  If they need allocation, then the caller must set them after
+ * the variable is created, e.g. with cs_he_initial_set(), cs_he_native_set.
+ */
+struct HashElem *cs_create_variable(const struct ConfigSet *cs,
+                                    struct ConfigDef *cdef, struct Buffer *err)
+{
+  struct ConfigDef *cdef_copy = mutt_mem_calloc(1, sizeof(struct ConfigDef));
+  cdef_copy->name = mutt_str_dup(cdef->name);
+  cdef_copy->type = cdef->type | DT_FREE_CONFIGDEF;
+  cdef_copy->initial = cdef->initial;
+  cdef_copy->data = cdef->data;
+  cdef_copy->validator = cdef->validator;
+  cdef_copy->docs = mutt_str_dup(cdef->name);
+  cdef_copy->var = cdef->var;
+
+  struct HashElem *he = cs_register_variable(cs, cdef_copy, err);
+  if (!he)
+  {
+    FREE(&cdef_copy->name);
+    FREE(&cdef_copy->docs);
+    FREE(&cdef_copy);
+  }
+  return he;
 }
 
 /**
@@ -1011,4 +1056,42 @@ int cs_str_string_minus_equals(const struct ConfigSet *cs, const char *name,
   }
 
   return cs_he_string_minus_equals(cs, he, value, err);
+}
+
+/**
+ * cs_he_delete - Delete config item from a config set
+ * @param cs    Config items
+ * @param he    HashElem representing config item
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_he_delete(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *err)
+{
+  if (!cs || !he)
+    return CSR_ERR_CODE;
+
+  mutt_hash_delete(cs->hash, he->key.strkey, he->data);
+  return CSR_SUCCESS;
+}
+
+/**
+ * cs_str_delete - Delete config item from a config set
+ * @param cs    Config items
+ * @param name  Name of config item
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_str_delete(const struct ConfigSet *cs, const char *name, struct Buffer *err)
+{
+  if (!cs || !name)
+    return CSR_ERR_CODE;
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  if (!he)
+  {
+    mutt_buffer_printf(err, _("Unknown variable '%s'"), name);
+    return CSR_ERR_UNKNOWN;
+  }
+
+  return cs_he_delete(cs, he, err);
 }
