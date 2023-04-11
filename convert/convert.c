@@ -185,11 +185,6 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
     }
   }
 
-  for (int i = 0; i < ncodes; i++)
-    if (cd[i] != (iconv_t) (-1))
-      iconv_close(cd[i]);
-
-  iconv_close(cd1);
   FREE(&cd);
   FREE(&infos);
   FREE(&score);

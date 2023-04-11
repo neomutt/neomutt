@@ -206,11 +206,9 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
         (iconv(cd, NULL, NULL, &ob, &obl) == (size_t) (-1)))
     {
       assert(errno == E2BIG);
-      iconv_close(cd);
       assert(ib > d);
       return ((ib - d) == dlen) ? dlen : ib - d + 1;
     }
-    iconv_close(cd);
   }
   else
   {
@@ -288,7 +286,6 @@ static size_t encode_block(char *str, char *buf, size_t buflen, const char *from
   const size_t n1 = iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl);
   const size_t n2 = iconv(cd, NULL, NULL, &ob, &obl);
   assert(n1 != (size_t) (-1) && n2 != (size_t) (-1));
-  iconv_close(cd);
   return (*encoder)(str, tmp, ob - tmp, tocode);
 }
 

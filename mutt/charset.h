@@ -91,6 +91,7 @@ iconv_t          mutt_ch_iconv_open(const char *tocode, const char *fromcode, ui
 bool             mutt_ch_lookup_add(enum LookupType type, const char *pat, const char *replace, struct Buffer *err);
 void             mutt_ch_lookup_remove(void);
 void             mutt_ch_set_charset(const char *charset);
+void             mutt_ch_cache_cleanup(void);
 
 #define mutt_ch_is_utf8(str)     mutt_ch_chscmp(str, "utf-8")
 #define mutt_ch_is_us_ascii(str) mutt_ch_chscmp(str, "us-ascii")

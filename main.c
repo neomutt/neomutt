@@ -1396,6 +1396,7 @@ main_exit:
   commands_cleanup();
   menu_cleanup();
   crypt_cleanup();
+  mutt_ch_cache_cleanup();
   mutt_opts_free();
   subjrx_free();
   attach_free();

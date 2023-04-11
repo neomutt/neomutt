@@ -115,7 +115,6 @@ static void fix_uid(char *uid)
         memcpy(uid, buf, n);
     }
     FREE(&buf);
-    iconv_close(cd);
   }
 }
 
