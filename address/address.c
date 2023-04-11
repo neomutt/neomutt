@@ -39,13 +39,42 @@
 /**
  * AddressSpecials - Characters with special meaning for email addresses
  */
-const char AddressSpecials[] = "@.,:;<>[]\\\"()";
+const char AddressSpecials[] = "\"(),.:;<>@[\\]";
 
 /**
  * is_special - Is this character special to an email address?
  * @param ch Character
+ * @param mask Bitmask of characters 32-95 that are special (others are always zero)
+ *
+ * Character bitmasks
+ *
+ * The four bitmasks below are used for matching characters at speed,
+ * instead of using `strchr(3)`.
+ *
+ * To generate them, consider the value of each character, e.g. `,` == 44.
+ * Now set the 44th bit of a `unsigned long long` (presumed to be 64 bits),
+ * i.e., 1ULL << 44. Repeat for each character.
+ *
+ * To test a character, say `(` (40), we check if the 40th bit is set in the mask.
+ *
+ * The characters we want to test, AddressSpecials, range in value between
+ * 34 and 93 (inclusive). This is too large for an integer type, so we subtract
+ * 32 to bring the values down to 2 to 61.
  */
-#define is_special(ch) strchr(AddressSpecials, ch)
+#define is_special(ch, mask)                                                   \
+  ((ch) >= 32 && (ch) < 96 && ((mask >> ((ch) -32)) & 1))
+
+/** #AddressSpecials, for is_special() */
+#define ADDRESS_SPECIAL_MASK 0x380000015c005304ULL
+
+/** #AddressSpecials except " ( . \ */
+#define USER_SPECIAL_MASK 0x280000015c001200ULL
+
+/** #AddressSpecials except ( . [ \ ] */
+#define DOMAIN_SPECIAL_MASK 0x000000015c001204ULL
+
+/** #AddressSpecials except ( , . [ \ ] */
+#define ROUTE_SPECIAL_MASK 0x000000015c000204ULL
 
 /**
  * AddressError - An out-of-band error code
@@ -156,7 +185,7 @@ static const char *next_token(const char *s, char *token, size_t *tokenlen, size
     return parse_comment(s + 1, token, tokenlen, tokenmax);
   if (*s == '"')
     return parse_quote(s + 1, token, tokenlen, tokenmax);
-  if (*s && is_special(*s))
+  if (*s && is_special(*s, ADDRESS_SPECIAL_MASK))
   {
     if (*tokenlen < tokenmax)
       token[(*tokenlen)++] = *s;
@@ -164,7 +193,7 @@ static const char *next_token(const char *s, char *token, size_t *tokenlen, size
   }
   while (*s)
   {
-    if (mutt_str_is_email_wsp(*s) || is_special(*s))
+    if (mutt_str_is_email_wsp(*s) || is_special(*s, ADDRESS_SPECIAL_MASK))
       break;
     if (*tokenlen < tokenmax)
       token[(*tokenlen)++] = *s;
@@ -176,7 +205,7 @@ static const char *next_token(const char *s, char *token, size_t *tokenlen, size
 /**
  * parse_mailboxdomain - Extract part of an email address (and a comment)
  * @param[in]  s          String to parse
- * @param[in]  nonspecial Specific characters that are valid
+ * @param[in]  special_mask Characters that are special (see is_special())
  * @param[out] mailbox    Buffer for email address
  * @param[out] mailboxlen Length of saved email address
  * @param[in]  mailboxmax Length of mailbox buffer
@@ -197,7 +226,7 @@ static const char *next_token(const char *s, char *token, size_t *tokenlen, size
  * The first call will return "john.doe" with optional comment, "comment".
  * The second call will return "example.com" with optional comment, "comment".
  */
-static const char *parse_mailboxdomain(const char *s, const char *nonspecial,
+static const char *parse_mailboxdomain(const char *s, uint64_t special_mask,
                                        char *mailbox, size_t *mailboxlen,
                                        size_t mailboxmax, char *comment,
                                        size_t *commentlen, size_t commentmax)
@@ -210,7 +239,7 @@ static const char *parse_mailboxdomain(const char *s, const char *nonspecial,
     if ((*s == '\0'))
       return s;
 
-    if (!strchr(nonspecial, *s) && is_special(*s))
+    if (is_special(*s, special_mask))
       return s;
 
     if (*s == '(')
@@ -248,8 +277,8 @@ static const char *parse_address(const char *s, char *token, size_t *tokenlen,
                                  size_t tokenmax, char *comment, size_t *commentlen,
                                  size_t commentmax, struct Address *addr)
 {
-  s = parse_mailboxdomain(s, ".\"(\\", token, tokenlen, tokenmax, comment,
-                          commentlen, commentmax);
+  s = parse_mailboxdomain(s, USER_SPECIAL_MASK, token, tokenlen, tokenmax,
+                          comment, commentlen, commentmax);
   if (!s)
     return NULL;
 
@@ -257,8 +286,8 @@ static const char *parse_address(const char *s, char *token, size_t *tokenlen,
   {
     if (*tokenlen < tokenmax)
       token[(*tokenlen)++] = '@';
-    s = parse_mailboxdomain(s + 1, ".([]\\", token, tokenlen, tokenmax, comment,
-                            commentlen, commentmax);
+    s = parse_mailboxdomain(s + 1, DOMAIN_SPECIAL_MASK, token, tokenlen,
+                            tokenmax, comment, commentlen, commentmax);
     if (!s)
       return NULL;
   }
@@ -299,7 +328,7 @@ static const char *parse_route_addr(const char *s, char *comment, size_t *commen
     {
       if (tokenlen < (sizeof(token) - 1))
         token[tokenlen++] = '@';
-      s = parse_mailboxdomain(s + 1, ",.\\[](", token, &tokenlen,
+      s = parse_mailboxdomain(s + 1, ROUTE_SPECIAL_MASK, token, &tokenlen,
                               sizeof(token) - 1, comment, commentlen, commentmax);
     }
     if (!s || (*s != ':'))
