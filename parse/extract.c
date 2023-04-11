@@ -35,7 +35,6 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "extract.h"
-#include "myvar.h"
 
 /**
  * parse_extract_token - Extract one token from a string
@@ -264,10 +263,6 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
         {
           mutt_buffer_addstr(dest, result.data);
           FREE(&result.data);
-        }
-        else if ((env = myvar_get(var)))
-        {
-          mutt_buffer_addstr(dest, env);
         }
         else if (!(flags & TOKEN_NOSHELL) && (env = mutt_str_getenv(var)))
         {

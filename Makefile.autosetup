@@ -70,7 +70,7 @@ NEOMUTTOBJS=	alternates.o commands.o conststrings.o copy.o editmsg.o \
 		maillist.o main.o muttlib.o mutt_account.o mutt_body.o \
 		mutt_config.o mutt_header.o mutt_history.o mutt_logging.o \
 		mutt_mailbox.o mutt_signal.o mutt_socket.o mutt_thread.o \
-		mview.o mx.o myvar.o opcodes.o recvcmd.o resize.o rfc3676.o \
+		mview.o mx.o opcodes.o recvcmd.o resize.o rfc3676.o \
 		score.o sort.o status.o subjectrx.o system.o version.o
 
 @if !HAVE_TIMEGM
@@ -265,9 +265,9 @@ $(PWD)/compress:
 LIBCONFIG=	libconfig.a
 LIBCONFIGOBJS=	config/address.o config/bool.o config/charset.o config/dump.o \
 		config/enum.o config/helpers.o config/long.o config/mbtable.o \
-		config/number.o config/path.o config/quad.o config/regex.o \
-		config/set.o config/slist.o config/sort.o config/string.o \
-		config/subset.o
+		config/myvar.o config/number.o config/path.o config/quad.o \
+		config/regex.o config/set.o config/slist.o config/sort.o \
+		config/string.o config/subset.o
 CLEANFILES+=	$(LIBCONFIG) $(LIBCONFIGOBJS)
 ALLOBJS+=	$(LIBCONFIGOBJS)
 

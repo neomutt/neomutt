@@ -35,7 +35,6 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "extract.h"
-#include "myvar.h"
 
 /**
  * parse_rc_buffer - Parse a line of user config

@@ -42,7 +42,6 @@
 #include "commands.h"
 #include "functions.h"
 #include "keymap.h"
-#include "myvar.h"
 #include "sort.h"
 
 /**
@@ -167,7 +166,6 @@ int mutt_command_complete(struct CompletionData *cd, char *buf, size_t buflen,
 {
   char *pt = buf;
   int spaces; /* keep track of the number of leading spaces on the line */
-  struct MyVar *myv = NULL;
 
   SKIPWS(buf);
   spaces = buf - pt;
@@ -258,10 +256,6 @@ int mutt_command_complete(struct CompletionData *cd, char *buf, size_t buflen,
       }
       FREE(&he_list);
 
-      TAILQ_FOREACH(myv, &MyVars, entries)
-      {
-        candidate(cd, cd->user_typed, myv->name, cd->completed, sizeof(cd->completed));
-      }
       matches_ensure_morespace(cd, cd->num_matched);
       cd->match_list[cd->num_matched++] = cd->user_typed;
 
@@ -569,7 +563,6 @@ int mutt_var_value_complete(struct CompletionData *cd, char *buf, size_t buflen,
 
   if (mutt_str_startswith(buf, "set"))
   {
-    const char *myvarval = NULL;
     char var[256] = { 0 };
     mutt_str_copy(var, pt, sizeof(var));
     /* ignore the trailing '=' when comparing */
@@ -582,15 +575,6 @@ int mutt_var_value_complete(struct CompletionData *cd, char *buf, size_t buflen,
     struct HashElem *he = cs_subset_lookup(NeoMutt->sub, var);
     if (!he)
     {
-      myvarval = myvar_get(var);
-      if (myvarval)
-      {
-        struct Buffer pretty = mutt_buffer_make(256);
-        pretty_var(myvarval, &pretty);
-        snprintf(pt, buflen - (pt - buf), "%s=%s", var, pretty.data);
-        mutt_buffer_dealloc(&pretty);
-        return 1;
-      }
       return 0; /* no such variable. */
     }
     else

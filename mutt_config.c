@@ -678,6 +678,7 @@ static void init_types(struct ConfigSet *cs)
   CONFIG_INIT_TYPE(cs, Enum);
   CONFIG_INIT_TYPE(cs, Long);
   CONFIG_INIT_TYPE(cs, Mbtable);
+  CONFIG_INIT_TYPE(cs, MyVar);
   CONFIG_INIT_TYPE(cs, Number);
   CONFIG_INIT_TYPE(cs, Path);
   CONFIG_INIT_TYPE(cs, Quad);
