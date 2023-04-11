@@ -208,6 +208,7 @@ Rubén Llorente,
 [Ryan Kavanagh](https://github.com/ryanakca "ryanakca"),
 [ryt](https://github.com/0x747972 "0x747972"),
 [Santiago Torres](https://github.com/santiagotorres "santiagotorres"),
+[Sebastian Crane](https://github.com/seabass-labrax "seabass-labrax")
 [Scott Kostyshak](https://github.com/scottkosty "scottkosty"),
 [Sebastian Stark](https://github.com/sstark "sstark"),
 [Serge Gebhardt](https://github.com/sgeb "sgeb"),
