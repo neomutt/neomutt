@@ -169,7 +169,8 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
       while (!feof(fp))
       {
         e->body->length--;
-        fgets(buf, sizeof(buf), fp);
+        if(!fgets(buf, sizeof(buf), fp))
+          break;
       }
       break;
     }
@@ -1103,11 +1104,9 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   e->edata_free = pop_edata_free;
 
   e->lines = 0;
-  fgets(buf, sizeof(buf), msg->fp);
-  while (!feof(msg->fp))
+  while (fgets(buf, sizeof(buf), msg->fp) && !feof(msg->fp))
   {
     m->emails[msgno]->lines++;
-    fgets(buf, sizeof(buf), msg->fp);
   }
 
   e->body->length = ftello(msg->fp) - e->body->offset;
