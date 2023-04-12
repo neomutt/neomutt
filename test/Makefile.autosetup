@@ -658,7 +658,6 @@ TEST_OBJS	= test/main.o test/common.o \
 		  $(TAGS_OBJS) \
 		  $(THREAD_OBJS) \
 		  $(URL_OBJS)
-ALLOBJS+=   $(TEST_OBJS)
 
 CFLAGS	+= -I$(SRCDIR)/test
 
@@ -674,7 +673,7 @@ $(BUILD_DIRS):
 $(TEST_BINARY): $(BUILD_DIRS) $(MUTTLIBS) $(TEST_OBJS)
 	$(CC) -o $@ $(TEST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
-all-test: $(TEST_BINARY)
+all-test:
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po)

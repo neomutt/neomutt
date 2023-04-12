@@ -20,7 +20,7 @@ define PACKAGE_VERSION  "20230407"
 define BUGS_ADDRESS     "neomutt-devel@neomutt.org"
 
 # Subdirectories that contain additional Makefile.autosetup files
-set subdirs {po data docs contrib}
+set subdirs {po data docs contrib test}
 ###############################################################################
 
 ###############################################################################
@@ -112,7 +112,6 @@ set valid_options {
   asan=0                    => "Enable the Address Sanitizer"
   ubsan=0                   => "Enable the Undefined Behaviour Sanitizer"
   coverage=0                => "Enable Coverage Testing"
-  testing=0                 => "Enable Unit Testing"
   fuzzing                   => "Enable Fuzz Testing"
   compile-commands          => "Generate compile_commands.json (requires clang)"
 # Enable all options
@@ -132,6 +131,7 @@ set deprecated_options  {
   idn:
   with-idn:=
   pkgconf:=
+  testing:=
   with-slang:
   with-ui:=
   with-gpgme:
@@ -172,7 +172,7 @@ if {1} {
     everything fmemopen full-doc fuzzing gdbm gnutls gpgme gsasl gss homespool
     idn2 include-path-in-cflags inotify kyotocabinet lmdb locales-fix lua lz4
     mixmaster nls notmuch pcre2 pgp qdbm rocksdb sasl smime sqlite ssl
-    testing tdb tokyocabinet ubsan zlib zstd
+    tdb tokyocabinet ubsan zlib zstd
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -561,13 +561,6 @@ if {[get-define want-sasl]} {
     user-error "Unable to find SASL"
   }
   define USE_SASL_CYRUS
-}
-
-###############################################################################
-# Unit Testing
-if {[get-define want-testing]} {
-  define ENABLE_UNIT_TESTS
-  lappend subdirs test
 }
 
 ###############################################################################
@@ -1115,8 +1108,6 @@ if {[get-define want-compile-commands]} {
 ###############################################################################
 # Coverage Testing
 if {[get-define want-coverage]} {
-  define ENABLE_UNIT_TESTS
-  lappend subdirs test
   define ENABLE_COVERAGE
   define-append CFLAGS -fprofile-arcs -ftest-coverage
   define-append LDFLAGS -fprofile-arcs -ftest-coverage
