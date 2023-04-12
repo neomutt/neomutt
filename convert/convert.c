@@ -67,7 +67,7 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
   size_t rc;
 
   const iconv_t cd1 = mutt_ch_iconv_open("utf-8", fromcode, MUTT_ICONV_NO_FLAGS);
-  if (cd1 == (iconv_t) (-1))
+  if (!iconv_t_valid(cd1))
     return -1;
 
   int ncodes = tocodes->count;
@@ -87,7 +87,7 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
     else
     {
       /* Special case for conversion to UTF-8 */
-      cd[ni] = (iconv_t) (-1);
+      cd[ni] = ICONV_T_INVALID;
       score[ni] = (size_t) (-1);
     }
     ni += 1;
@@ -118,7 +118,7 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
     /* Convert from UTF-8 */
     for (int i = 0; i < ncodes; i++)
     {
-      if ((cd[i] != (iconv_t) (-1)) && (score[i] != (size_t) (-1)))
+      if (iconv_t_valid(cd[i]) && (score[i] != (size_t) (-1)))
       {
         const char *ub = bufu;
         size_t ubl = ubl1;
@@ -136,7 +136,7 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
           mutt_update_content_info(&infos[i], &states[i], bufo, ob - bufo);
         }
       }
-      else if ((cd[i] == (iconv_t) (-1)) && (score[i] == (size_t) (-1)))
+      else if (!iconv_t_valid(cd[i]) && (score[i] == (size_t) (-1)))
       {
         /* Special case for conversion to UTF-8 */
         mutt_update_content_info(&infos[i], &states[i], bufu, ubl1);
@@ -161,14 +161,14 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
     rc = (size_t) (-1);
     for (int i = 0; i < ncodes; i++)
     {
-      if ((cd[i] == (iconv_t) (-1)) && (score[i] == (size_t) (-1)))
+      if (!iconv_t_valid(cd[i]) && (score[i] == (size_t) (-1)))
       {
         /* Special case for conversion to UTF-8 */
         *tocode = i;
         rc = 0;
         break;
       }
-      else if ((cd[i] == (iconv_t) (-1)) || (score[i] == (size_t) (-1)))
+      else if (!iconv_t_valid(cd[i]) || (score[i] == (size_t) (-1)))
         continue;
       else if ((rc == (size_t) (-1)) || (score[i] < rc))
       {

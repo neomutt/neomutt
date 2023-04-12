@@ -79,7 +79,7 @@ static char *chs = NULL;
 static void fix_uid(char *uid)
 {
   char *s = NULL, *d = NULL;
-  iconv_t cd;
+  iconv_t cd = ICONV_T_INVALID;
 
   for (s = uid, d = uid; *s;)
   {
@@ -94,7 +94,7 @@ static void fix_uid(char *uid)
   }
   *d = '\0';
 
-  if (chs && ((cd = mutt_ch_iconv_open(chs, "utf-8", MUTT_ICONV_NO_FLAGS)) != (iconv_t) -1))
+  if (chs && iconv_t_valid(cd = mutt_ch_iconv_open(chs, "utf-8", MUTT_ICONV_NO_FLAGS)))
   {
     int n = s - uid + 1; /* chars available in original buffer */
 

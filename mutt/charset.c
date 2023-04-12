@@ -604,7 +604,7 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, uint8_t fla
   }
 
   /* check if we have this pair cached already */
-  iconv_t cd = (iconv_t) -1;
+  iconv_t cd = ICONV_T_INVALID;
   for (int i = 0; i < IconvCacheUsed; ++i)
   {
     if (strcmp(tocode1, IconvCache[i].tocode1) == 0 &&
@@ -626,7 +626,7 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, uint8_t fla
     }
   }
 
-  if (cd == (iconv_t) -1) /* not found in cache */
+  if (!iconv_t_valid(cd)) /* not found in cache */
   {
     /* always apply iconv-hooks to suit system's iconv tastes */
     tocode2 = mutt_ch_iconv_lookup(tocode1);
@@ -788,7 +788,7 @@ int mutt_ch_check(const char *s, size_t slen, const char *from, const char *to)
 
   int rc = 0;
   iconv_t cd = mutt_ch_iconv_open(to, from, MUTT_ICONV_NO_FLAGS);
-  if (cd == (iconv_t) -1)
+  if (!iconv_t_valid(cd))
     return -1;
 
   size_t outlen = MB_LEN_MAX * slen;
@@ -833,7 +833,7 @@ int mutt_ch_convert_string(char **ps, const char *from, const char *to, uint8_t 
   int rc = 0;
 
   iconv_t cd = mutt_ch_iconv_open(to, from, flags);
-  if (cd == (iconv_t) -1)
+  if (!iconv_t_valid(cd))
     return -1;
 
   const char **inrepls = NULL;
@@ -900,7 +900,7 @@ bool mutt_ch_check_charset(const char *cs, bool strict)
   }
 
   iconv_t cd = mutt_ch_iconv_open(cs, cs, MUTT_ICONV_NO_FLAGS);
-  if (cd != (iconv_t) (-1))
+  if (iconv_t_valid(cd))
   {
     return true;
   }
@@ -921,12 +921,12 @@ bool mutt_ch_check_charset(const char *cs, bool strict)
 struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *to, uint8_t flags)
 {
   struct FgetConv *fc = NULL;
-  iconv_t cd = (iconv_t) -1;
+  iconv_t cd = ICONV_T_INVALID;
 
   if (from && to)
     cd = mutt_ch_iconv_open(to, from, flags);
 
-  if (cd != (iconv_t) -1)
+  if (iconv_t_valid(cd))
   {
     static const char *repls[] = { "\357\277\275", "?", 0 };
 
@@ -972,7 +972,7 @@ int mutt_ch_fgetconv(struct FgetConv *fc)
 {
   if (!fc)
     return EOF;
-  if (fc->cd == (iconv_t) -1)
+  if (!iconv_t_valid(fc->cd))
     return fgetc(fc->fp);
   if (!fc->p)
     return EOF;

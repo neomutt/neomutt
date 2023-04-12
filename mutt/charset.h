@@ -40,7 +40,7 @@ extern wchar_t ReplacementChar;
 struct FgetConv
 {
   FILE *fp;
-  iconv_t cd;
+  iconv_t cd; ///< iconv conversion descriptor
   char bufi[512];
   char bufo[512];
   char *p;
@@ -56,7 +56,7 @@ struct FgetConv
 struct FgetConvNot
 {
   FILE *fp;
-  iconv_t cd;
+  iconv_t cd; ///< iconv conversion descriptor
 };
 
 /**
@@ -95,5 +95,21 @@ void             mutt_ch_cache_cleanup(void);
 
 #define mutt_ch_is_utf8(str)     mutt_ch_chscmp(str, "utf-8")
 #define mutt_ch_is_us_ascii(str) mutt_ch_chscmp(str, "us-ascii")
+
+/// Error value for iconv functions
+#define ICONV_T_INVALID ((iconv_t) -1)
+
+/// Error value for iconv()
+#define ICONV_ERROR ((size_t) -1)
+
+/**
+ * iconv_t_valid - Is the conversion descriptor valid?
+ * @param cd Conversion descriptor to test
+ * @retval true It's valid
+ */
+static inline bool iconv_t_valid(const iconv_t cd)
+{
+  return cd != ICONV_T_INVALID;
+}
 
 #endif /* MUTT_LIB_CHARSET_H */
