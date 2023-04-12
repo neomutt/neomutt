@@ -663,22 +663,8 @@ CFLAGS	+= -I$(SRCDIR)/test
 
 TEST_BINARY = test/neomutt-test$(EXEEXT)
 
-pre-req:
-	@if ! test -n "$(NEOMUTT_TEST_DIR)"; then \
-		echo "Environment variable NEOMUTT_TEST_DIR isn't set."; \
-		echo "The test files and instructions can be found here:"; \
-		echo "    https://github.com/neomutt/neomutt-test-files"; \
-		false; \
-	fi
-	@if ! test -f "$(NEOMUTT_TEST_DIR)/setup.sh"; then \
-		echo "The test files don't exist in NEOMUTT_TEST_DIR."; \
-		echo "Instructions can be found here:"; \
-		echo "    https://github.com/neomutt/neomutt-test-files"; \
-		false; \
-	fi
-
 .PHONY: test
-test: $(TEST_BINARY) pre-req
+test: $(TEST_BINARY)
 	$(TEST_BINARY)
 
 $(BUILD_DIRS):
