@@ -36,6 +36,7 @@
  * | mutt/charset.c   | @subpage mutt_charset   |
  * | mutt/date.c      | @subpage mutt_date      |
  * | mutt/envlist.c   | @subpage mutt_envlist   |
+ * | mutt/eqi.h       | @subpage mutt_eqi       |
  * | mutt/exit.c      | @subpage mutt_exit      |
  * | mutt/file.c      | @subpage mutt_file      |
  * | mutt/filter.c    | @subpage mutt_filter    |
@@ -75,6 +76,7 @@
 #include "charset.h"
 #include "date.h"
 #include "envlist.h"
+#include "eqi.h"
 #include "exit.h"
 #include "file.h"
 #include "filter.h"
