@@ -62,12 +62,12 @@
 #include "imap/lib.h"
 #endif
 
-static const char *xdg_env_vars[] = {
+static const char *XdgEnvVars[] = {
   [XDG_CONFIG_HOME] = "XDG_CONFIG_HOME",
   [XDG_CONFIG_DIRS] = "XDG_CONFIG_DIRS",
 };
 
-static const char *xdg_defaults[] = {
+static const char *XdgDefaults[] = {
   [XDG_CONFIG_HOME] = "~/.config",
   [XDG_CONFIG_DIRS] = "/etc/xdg",
 };
@@ -1462,8 +1462,8 @@ void mutt_encode_path(struct Buffer *buf, const char *src)
  */
 int mutt_set_xdg_path(enum XdgType type, struct Buffer *buf)
 {
-  const char *xdg_env = mutt_str_getenv(xdg_env_vars[type]);
-  char *xdg = xdg_env ? mutt_str_dup(xdg_env) : mutt_str_dup(xdg_defaults[type]);
+  const char *xdg_env = mutt_str_getenv(XdgEnvVars[type]);
+  char *xdg = xdg_env ? mutt_str_dup(xdg_env) : mutt_str_dup(XdgDefaults[type]);
   char *x = xdg; /* mutt_str_sep() changes xdg, so free x instead later */
   char *token = NULL;
   int rc = 0;
@@ -1612,7 +1612,7 @@ void mutt_buffer_sanitize_filename(struct Buffer *buf, const char *path, short s
 
   for (; *path; path++)
   {
-    if ((slash && (*path == '/')) || !strchr(filename_safe_chars, *path))
+    if ((slash && (*path == '/')) || !strchr(FilenameSafeChars, *path))
       mutt_buffer_addch(buf, '_');
     else
       mutt_buffer_addch(buf, *path);

@@ -35,9 +35,9 @@
 #include "alias.h"
 #include "gui.h"
 
-#define RSORT(num) ((sort_alias & SORT_REVERSE) ? -num : num)
+#define RSORT(num) ((SortAlias & SORT_REVERSE) ? -num : num)
 
-static short sort_alias = 0;
+static short SortAlias = 0;
 
 /**
  * alias_sort_name - Compare two Aliases by their short names - Implements ::sort_t - @ingroup sort_api
@@ -158,8 +158,8 @@ void alias_array_sort(struct AliasViewArray *ava, const struct ConfigSubset *sub
   if (!ava || ARRAY_EMPTY(ava))
     return;
 
-  sort_alias = cs_subset_sort(sub, "sort_alias");
-  ARRAY_SORT(ava, alias_get_sort_function(sort_alias));
+  SortAlias = cs_subset_sort(sub, "sort_alias");
+  ARRAY_SORT(ava, alias_get_sort_function(SortAlias));
 
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, ava)

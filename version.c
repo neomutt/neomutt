@@ -123,7 +123,7 @@ struct CompileOptions
 
 /* These are sorted by the display string */
 
-static struct CompileOptions comp_opts_default[] = {
+static struct CompileOptions CompOptsDefault[] = {
   { "attach_headers_color", 1 },
   { "compose_to_sender", 1 },
   { "compress", 1 },
@@ -157,7 +157,7 @@ static struct CompileOptions comp_opts_default[] = {
   { NULL, 0 },
 };
 
-static struct CompileOptions comp_opts[] = {
+static struct CompileOptions CompOpts[] = {
 #ifdef USE_AUTOCRYPT
   { "autocrypt", 1 },
 #else
@@ -292,7 +292,7 @@ static struct CompileOptions comp_opts[] = {
   { NULL, 0 },
 };
 
-static struct CompileOptions debug_opts[] = {
+static struct CompileOptions DebugOpts[] = {
 #ifdef USE_ASAN
   { "asan", 2 },
 #endif
@@ -498,15 +498,15 @@ bool print_version(FILE *fp)
   fprintf(fp, "\nCompilation CFLAGS: %s\n", (char *) cc_cflags);
 
   fprintf(fp, "\n%s\n", _("Default options:"));
-  print_compile_options(comp_opts_default, fp);
+  print_compile_options(CompOptsDefault, fp);
 
   fprintf(fp, "\n%s\n", _("Compile options:"));
-  print_compile_options(comp_opts, fp);
+  print_compile_options(CompOpts, fp);
 
-  if (debug_opts[0].name)
+  if (DebugOpts[0].name)
   {
     fprintf(fp, "\n%s\n", _("Devel options:"));
-    print_compile_options(debug_opts, fp);
+    print_compile_options(DebugOpts, fp);
   }
 
   fprintf(fp, "\n");
@@ -558,7 +558,7 @@ bool print_copyright(void)
  *
  * Many of the larger features of neomutt can be disabled at compile time.
  * They define a symbol and use ifdef's around their code.
- * The symbols are mirrored in "CompileOptions comp_opts[]" in this
+ * The symbols are mirrored in "CompileOptions CompOpts[]" in this
  * file.
  *
  * This function checks if one of these symbols is present in the code.
@@ -569,18 +569,18 @@ bool feature_enabled(const char *name)
 {
   if (!name)
     return false;
-  for (int i = 0; comp_opts_default[i].name; i++)
+  for (int i = 0; CompOptsDefault[i].name; i++)
   {
-    if (mutt_str_equal(name, comp_opts_default[i].name))
+    if (mutt_str_equal(name, CompOptsDefault[i].name))
     {
       return true;
     }
   }
-  for (int i = 0; comp_opts[i].name; i++)
+  for (int i = 0; CompOpts[i].name; i++)
   {
-    if (mutt_str_equal(name, comp_opts[i].name))
+    if (mutt_str_equal(name, CompOpts[i].name))
     {
-      return comp_opts[i].enabled;
+      return CompOpts[i].enabled;
     }
   }
   return false;

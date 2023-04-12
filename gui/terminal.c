@@ -41,8 +41,8 @@
 bool TsSupported; ///< Terminal Setting is supported
 
 /* de facto standard escapes for tsl/fsl */
-static const char *tsl = "\033]0;"; // Escape
-static const char *fsl = "\007";    // Ctrl-G (BEL)
+static const char *TSL = "\033]0;"; // Escape
+static const char *FSL = "\007";    // Ctrl-G (BEL)
 
 /**
  * mutt_ts_capability - Check terminal capabilities
@@ -63,11 +63,11 @@ bool mutt_ts_capability(void)
   if (tcaps && (tcaps != (char *) -1) && *tcaps)
   {
     /* update the static definitions of tsl/fsl from terminfo */
-    tsl = tcaps;
+    TSL = tcaps;
 
     tcaps = tigetstr("fsl");
     if (tcaps && (tcaps != (char *) -1) && *tcaps)
-      fsl = tcaps;
+      FSL = tcaps;
 
     return true;
   }
@@ -103,7 +103,7 @@ void mutt_ts_status(char *str)
   if (!str || (*str == '\0'))
     return;
 
-  fprintf(stderr, "%s%s%s", tsl, str, fsl);
+  fprintf(stderr, "%s%s%s", TSL, str, FSL);
 }
 
 /**

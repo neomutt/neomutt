@@ -57,8 +57,6 @@
 #define CERTERR_OTHER        (1 << 7)
 // clang-format on
 
-const int dialog_row_len = 128;
-
 #define CERT_SEP "-----BEGIN"
 
 #ifndef HAVE_GNUTLS_PRIORITY_SET_DIRECT
@@ -70,8 +68,7 @@ const int dialog_row_len = 128;
  * 3.4 (2015-04).  TLS 1.3 support wasn't added until version 3.6.5.
  * Therefore, no attempt is made to support $ssl_use_tlsv1_3 in this code.
  */
-static int protocol_priority[] = { GNUTLS_TLS1_2, GNUTLS_TLS1_1, GNUTLS_TLS1,
-                                   GNUTLS_SSL3, 0 };
+static int ProtocolPriority[] = { GNUTLS_TLS1_2, GNUTLS_TLS1_1, GNUTLS_TLS1, GNUTLS_SSL3, 0 };
 #endif
 
 /**
@@ -826,17 +823,17 @@ static int tls_set_priority(struct TlsSockData *data)
 
   const bool c_ssl_use_tlsv1_2 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_2");
   if (c_ssl_use_tlsv1_2)
-    protocol_priority[nproto++] = GNUTLS_TLS1_2;
+    ProtocolPriority[nproto++] = GNUTLS_TLS1_2;
   const bool c_ssl_use_tlsv1_1 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_1");
   if (c_ssl_use_tlsv1_1)
-    protocol_priority[nproto++] = GNUTLS_TLS1_1;
+    ProtocolPriority[nproto++] = GNUTLS_TLS1_1;
   const bool c_ssl_use_tlsv1 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1");
   if (c_ssl_use_tlsv1)
-    protocol_priority[nproto++] = GNUTLS_TLS1;
+    ProtocolPriority[nproto++] = GNUTLS_TLS1;
   const bool c_ssl_use_sslv3 = cs_subset_bool(NeoMutt->sub, "ssl_use_sslv3");
   if (c_ssl_use_sslv3)
-    protocol_priority[nproto++] = GNUTLS_SSL3;
-  protocol_priority[nproto] = 0;
+    ProtocolPriority[nproto++] = GNUTLS_SSL3;
+  ProtocolPriority[nproto] = 0;
 
   if (nproto == 0)
   {
@@ -853,7 +850,7 @@ static int tls_set_priority(struct TlsSockData *data)
   /* We use default priorities (see gnutls documentation),
    * except for protocol version */
   gnutls_set_default_priority(data->session);
-  gnutls_protocol_set_priority(data->session, protocol_priority);
+  gnutls_protocol_set_priority(data->session, ProtocolPriority);
   return 0;
 }
 #endif

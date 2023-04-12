@@ -60,7 +60,7 @@
 #error "No hcache backend defined"
 #endif
 
-static unsigned int hcachever = 0x0;
+static unsigned int HcacheVer = 0x0;
 
 /**
  * header_size - Compute the size of the header with uuid validity and crc
@@ -383,7 +383,7 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
   struct HeaderCache *hc = mutt_mem_calloc(1, sizeof(struct HeaderCache));
 
   /* Calculate the current hcache version from dynamic configuration */
-  if (hcachever == 0x0)
+  if (HcacheVer == 0x0)
   {
     union
     {
@@ -392,12 +392,12 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
     } digest;
     struct Md5Ctx md5ctx;
 
-    hcachever = HCACHEVER;
+    HcacheVer = HCACHEVER;
 
     mutt_md5_init_ctx(&md5ctx);
 
     /* Seed with the compiled-in header structure hash */
-    mutt_md5_process_bytes(&hcachever, sizeof(hcachever), &md5ctx);
+    mutt_md5_process_bytes(&HcacheVer, sizeof(HcacheVer), &md5ctx);
 
     /* Mix in user's spam list */
     struct Replace *sp = NULL;
@@ -416,7 +416,7 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
 
     /* Get a hash and take its bytes as an (unsigned int) hash version */
     mutt_md5_finish_ctx(&md5ctx, digest.charval);
-    hcachever = digest.intval;
+    HcacheVer = digest.intval;
   }
 
   const struct ComprOps *cops = NULL;
@@ -440,7 +440,7 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
 #endif
 
   hc->folder = get_foldername(folder);
-  hc->crc = hcachever;
+  hc->crc = HcacheVer;
 
   if (!path || (path[0] == '\0'))
   {

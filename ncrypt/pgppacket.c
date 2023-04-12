@@ -35,8 +35,8 @@
 
 #define CHUNK_SIZE 1024 ///< Amount of data to read at once
 
-static unsigned char *pbuf = NULL; ///< Cached PGP data packet
-static size_t plen = 0;            ///< Length of cached packet
+static unsigned char *PacketBuf = NULL; ///< Cached PGP data packet
+static size_t PacketBufLen = 0;         ///< Length of cached packet
 
 /**
  * read_material - Read PGP data into a buffer
@@ -46,25 +46,25 @@ static size_t plen = 0;            ///< Length of cached packet
  * @retval  0 Success
  * @retval -1 Failure (see errno)
  *
- * This function uses a cache to store the data: #pbuf, #plen.
+ * This function uses a cache to store the data: #PacketBuf, #PacketBufLen.
  */
 static int read_material(size_t material, size_t *used, FILE *fp)
 {
-  if (*used + material >= plen)
+  if (*used + material >= PacketBufLen)
   {
     size_t nplen = *used + material + CHUNK_SIZE;
 
-    unsigned char *p = realloc(pbuf, nplen);
+    unsigned char *p = realloc(PacketBuf, nplen);
     if (!p)
     {
       perror("realloc");
       return -1;
     }
-    plen = nplen;
-    pbuf = p;
+    PacketBufLen = nplen;
+    PacketBuf = p;
   }
 
-  if (fread(pbuf + *used, 1, material, fp) < material)
+  if (fread(PacketBuf + *used, 1, material, fp) < material)
   {
     perror("fread");
     return -1;
@@ -80,7 +80,7 @@ static int read_material(size_t material, size_t *used, FILE *fp)
  * @param[out] len Number of bytes read
  * @retval ptr PGP data packet
  *
- * This function uses a cache to store the data: #pbuf, #plen.
+ * This function uses a cache to store the data: #PacketBuf, #PacketBufLen.
  */
 unsigned char *pgp_read_packet(FILE *fp, size_t *len)
 {
@@ -94,10 +94,10 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
   if (startpos < 0)
     return NULL;
 
-  if (plen == 0)
+  if (PacketBufLen == 0)
   {
-    plen = CHUNK_SIZE;
-    pbuf = mutt_mem_malloc(plen);
+    PacketBufLen = CHUNK_SIZE;
+    PacketBuf = mutt_mem_malloc(PacketBufLen);
   }
 
   if (fread(&ctb, 1, 1, fp) < 1)
@@ -115,7 +115,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
   if (ctb & 0x40) /* handle PGP 5.0 packets. */
   {
     bool partial = false;
-    pbuf[0] = ctb;
+    PacketBuf[0] = ctb;
     used++;
 
     do
@@ -172,7 +172,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
   /* Old-Style PGP */
   {
     int bytes = 0;
-    pbuf[0] = 0x80 | ((ctb >> 2) & 0x0f);
+    PacketBuf[0] = 0x80 | ((ctb >> 2) & 0x0f);
     used++;
 
     switch (ctb & 0x03)
@@ -224,7 +224,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
   if (len)
     *len = used;
 
-  return pbuf;
+  return PacketBuf;
 
 bail:
 
@@ -235,10 +235,10 @@ bail:
 /**
  * pgp_release_packet - Free the cached PGP packet
  *
- * Free the data stored in #pbuf.
+ * Free the data stored in #PacketBuf.
  */
 void pgp_release_packet(void)
 {
-  plen = 0;
-  FREE(&pbuf);
+  PacketBufLen = 0;
+  FREE(&PacketBuf);
 }

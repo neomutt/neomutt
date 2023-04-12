@@ -31,7 +31,7 @@
 #include "command.h"
 
 ARRAY_HEAD(CommandArray, struct Command);
-struct CommandArray commands = ARRAY_HEAD_INITIALIZER;
+struct CommandArray Commands = ARRAY_HEAD_INITIALIZER;
 
 /**
  * commands_cmp - Compare two commands by name - Implements ::sort_t - @ingroup sort_api
@@ -53,9 +53,9 @@ void commands_register(const struct Command *cmds, const size_t num_cmds)
 {
   for (int i = 0; i < num_cmds; i++)
   {
-    ARRAY_ADD(&commands, cmds[i]);
+    ARRAY_ADD(&Commands, cmds[i]);
   }
-  ARRAY_SORT(&commands, commands_cmp);
+  ARRAY_SORT(&Commands, commands_cmp);
 }
 
 /**
@@ -63,7 +63,7 @@ void commands_register(const struct Command *cmds, const size_t num_cmds)
  */
 void commands_free(void)
 {
-  ARRAY_FREE(&commands);
+  ARRAY_FREE(&Commands);
 }
 
 /**
@@ -73,8 +73,8 @@ void commands_free(void)
  */
 size_t commands_array(struct Command **first)
 {
-  *first = ARRAY_FIRST(&commands);
-  return ARRAY_SIZE(&commands);
+  *first = ARRAY_FIRST(&Commands);
+  return ARRAY_SIZE(&Commands);
 }
 
 /**
@@ -86,7 +86,7 @@ size_t commands_array(struct Command **first)
 struct Command *command_get(const char *s)
 {
   struct Command *cmd = NULL;
-  ARRAY_FOREACH(cmd, &commands)
+  ARRAY_FOREACH(cmd, &Commands)
   {
     if (mutt_str_equal(s, cmd->name))
       return cmd;

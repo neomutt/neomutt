@@ -53,9 +53,9 @@
 #endif
 
 /* these characters must be escaped in regular expressions */
-static const char rx_special_chars[] = "^.[$()|*+?{\\";
+static const char RxSpecialChars[] = "^.[$()|*+?{\\";
 
-const char filename_safe_chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+@{}._-:%/";
+const char FilenameSafeChars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+@{}._-:%/";
 
 #define MAX_LOCK_ATTEMPTS 5
 
@@ -669,7 +669,7 @@ void mutt_file_sanitize_filename(char *path, bool slash)
 
   for (; *path; path++)
   {
-    if ((slash && (*path == '/')) || !strchr(filename_safe_chars, *path))
+    if ((slash && (*path == '/')) || !strchr(FilenameSafeChars, *path))
       *path = '_';
   }
 }
@@ -689,7 +689,7 @@ int mutt_file_sanitize_regex(struct Buffer *dest, const char *src)
   mutt_buffer_reset(dest);
   while (*src != '\0')
   {
-    if (strchr(rx_special_chars, *src))
+    if (strchr(RxSpecialChars, *src))
       mutt_buffer_addch(dest, '\\');
     mutt_buffer_addch(dest, *src++);
   }

@@ -40,9 +40,9 @@
 #include <sys/random.h>
 #endif
 
-static FILE *fp_random = NULL;
+static FILE *FpRandom = NULL;
 
-static const unsigned char base32[] = "abcdefghijklmnopqrstuvwxyz234567";
+static const unsigned char Base32[] = "abcdefghijklmnopqrstuvwxyz234567";
 
 /**
  * mutt_randbuf - Fill a buffer with randomness
@@ -75,17 +75,17 @@ static int mutt_randbuf(void *buf, size_t buflen)
 #endif
   /* let's try urandom in case we're on an old kernel, or the user has
    * configured selinux, seccomp or something to not allow getrandom */
-  if (!fp_random)
+  if (!FpRandom)
   {
-    fp_random = fopen("/dev/urandom", "rb");
-    if (!fp_random)
+    FpRandom = fopen("/dev/urandom", "rb");
+    if (!FpRandom)
     {
       mutt_error(_("open /dev/urandom: %s"), strerror(errno));
       return -1;
     }
-    setbuf(fp_random, NULL);
+    setbuf(FpRandom, NULL);
   }
-  if (fread(buf, 1, buflen, fp_random) != buflen)
+  if (fread(buf, 1, buflen, FpRandom) != buflen)
   {
     mutt_error(_("read /dev/urandom: %s"), strerror(errno));
     return -1;
@@ -106,7 +106,7 @@ void mutt_rand_base32(char *buf, size_t buflen)
   if (mutt_randbuf(p, buflen) < 0)
     mutt_exit(1);
   for (size_t pos = 0; pos < buflen; pos++)
-    p[pos] = base32[p[pos] % 32];
+    p[pos] = Base32[p[pos] % 32];
 }
 
 /**

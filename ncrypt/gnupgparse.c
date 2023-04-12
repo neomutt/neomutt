@@ -70,7 +70,7 @@
  *   - signature class
  */
 
-static char *chs = NULL;
+static char *Charset = NULL;
 
 /**
  * fix_uid - Decode backslash-escaped user ids (in place)
@@ -94,7 +94,7 @@ static void fix_uid(char *uid)
   }
   *d = '\0';
 
-  if (chs && iconv_t_valid(cd = mutt_ch_iconv_open(chs, "utf-8", MUTT_ICONV_NO_FLAGS)))
+  if (Charset && iconv_t_valid(cd = mutt_ch_iconv_open(Charset, "utf-8", MUTT_ICONV_NO_FLAGS)))
   {
     int n = s - uid + 1; /* chars available in original buffer */
 
@@ -424,7 +424,7 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
     return NULL;
 
   const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-  mutt_str_replace(&chs, c_charset);
+  mutt_str_replace(&Charset, c_charset);
 
   pid = pgp_invoke_list_keys(NULL, &fp, NULL, -1, -1, fd_null, keyring, hints);
   if (pid == -1)

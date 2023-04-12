@@ -121,7 +121,7 @@ static const char *const SaslAuthenticators[] = {
 
 static sasl_callback_t MuttSaslCallbacks[5];
 
-static sasl_secret_t *secret_ptr = NULL;
+static sasl_secret_t *SecretPtr = NULL;
 
 /**
  * sasl_auth_validator - Validate an auth method against Cyrus SASL methods
@@ -368,10 +368,10 @@ static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secr
 
   len = strlen(cac->pass);
 
-  mutt_mem_realloc(&secret_ptr, sizeof(sasl_secret_t) + len);
-  memcpy((char *) secret_ptr->data, cac->pass, (size_t) len);
-  secret_ptr->len = len;
-  *psecret = secret_ptr;
+  mutt_mem_realloc(&SecretPtr, sizeof(sasl_secret_t) + len);
+  memcpy((char *) SecretPtr->data, cac->pass, (size_t) len);
+  SecretPtr->len = len;
+  *psecret = SecretPtr;
 
   return SASL_OK;
 }

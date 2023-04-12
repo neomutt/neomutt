@@ -35,7 +35,7 @@
 
 // #define DEBUG_SHOW_SERIALISE
 
-static struct MuttWindow *win_focus = NULL;
+static struct MuttWindow *WinFocus = NULL;
 
 static const char *win_size(const struct MuttWindow *win)
 {
@@ -65,7 +65,7 @@ static void win_dump(struct MuttWindow *win, int indent)
              (win->orient == MUTT_WIN_ORIENT_VERTICAL) ? 'V' : 'H',
              mutt_window_win_name(win), win->state.cols, win->state.rows,
              visible ? "" : "\033[0m",
-             (win == win_focus) ? " <-- \033[1;31mFOCUS\033[0m" : "");
+             (win == WinFocus) ? " <-- \033[1;31mFOCUS\033[0m" : "");
 
   struct MuttWindow *np = NULL;
   TAILQ_FOREACH(np, &win->children, entries)
@@ -94,7 +94,7 @@ static void win_serialise(struct MuttWindow *win, struct Buffer *buf)
 
 void debug_win_dump(void)
 {
-  win_focus = window_get_focus();
+  WinFocus = window_get_focus();
   mutt_debug(LL_DEBUG1, "\n");
   win_dump(RootWindow, 0);
   mutt_debug(LL_DEBUG1, "\n");
@@ -104,5 +104,5 @@ void debug_win_dump(void)
   mutt_debug(LL_DEBUG1, "%s\n", mutt_buffer_string(&buf));
   mutt_buffer_dealloc(&buf);
 #endif
-  win_focus = NULL;
+  WinFocus = NULL;
 }

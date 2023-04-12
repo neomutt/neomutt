@@ -44,9 +44,9 @@ typedef int (*qsort_compar_t)(const void *a, const void *b);
 #if !defined(HAVE_QSORT_S) && !defined(HAVE_QSORT_R)
 #include <assert.h>
 /// Original comparator in fallback implementation
-static qsort_r_compar_t global_compar = NULL;
+static qsort_r_compar_t GlobalCompar = NULL;
 /// Original opaque data in fallback implementation
-static void *global_data = NULL;
+static void *GlobalData = NULL;
 
 /**
  * relay_compar - Shim to pass context through to real comparator
@@ -58,7 +58,7 @@ static void *global_data = NULL;
  */
 static int relay_compar(const void *a, const void *b)
 {
-  return global_compar(a, b, global_data);
+  return GlobalCompar(a, b, GlobalData);
 }
 #endif
 
@@ -83,11 +83,11 @@ void mutt_qsort_r(void *base, size_t nmemb, size_t size, qsort_r_compar_t compar
   qsort_r(base, nmemb, size, compar, arg);
 #else
   /* This fallback is not re-entrant. */
-  assert((global_compar == NULL) && (global_data == NULL));
-  global_compar = compar;
-  global_data = arg;
+  assert((GlobalCompar == NULL) && (GlobalData == NULL));
+  GlobalCompar = compar;
+  GlobalData = arg;
   qsort(base, nmemb, size, relay_compar);
-  global_compar = NULL;
-  global_data = NULL;
+  GlobalCompar = NULL;
+  GlobalData = NULL;
 #endif
 }

@@ -46,7 +46,7 @@
  * override pre-defined headers NeoMutt would emit. Keep the array sorted and
  * in sync with the enum.
  */
-static const char *const userhdrs_override_headers[] = {
+static const char *const UserhdrsOverrideHeaders[] = {
   "content-type:",
   "user-agent:",
 };
@@ -66,7 +66,7 @@ enum UserHdrsOverrideIdx
 struct UserHdrsOverride
 {
   /// Which email headers have been overridden
-  bool is_overridden[mutt_array_size(userhdrs_override_headers)];
+  bool is_overridden[mutt_array_size(UserhdrsOverrideHeaders)];
 };
 
 /**
@@ -261,9 +261,9 @@ static char *unfold_header(char *s)
 }
 
 /**
- * userhdrs_override_cmp - Compare a user-defined header with an element of the userhdrs_override_headers list
+ * userhdrs_override_cmp - Compare a user-defined header with an element of the UserhdrsOverrideHeaders list
  * @param a Pointer to the string containing the user-defined header
- * @param b Pointer to an element of the userhdrs_override_headers list
+ * @param b Pointer to an element of the UserhdrsOverrideHeaders list
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
@@ -379,12 +379,12 @@ static struct UserHdrsOverride write_userhdrs(FILE *fp, const struct ListHead *u
 
     /* check whether the current user-header is an override */
     size_t cur_override = (size_t) -1;
-    const char *const *idx = bsearch(tmp->data, userhdrs_override_headers,
-                                     mutt_array_size(userhdrs_override_headers),
+    const char *const *idx = bsearch(tmp->data, UserhdrsOverrideHeaders,
+                                     mutt_array_size(UserhdrsOverrideHeaders),
                                      sizeof(char *), userhdrs_override_cmp);
     if (idx != NULL)
     {
-      cur_override = idx - userhdrs_override_headers;
+      cur_override = idx - UserhdrsOverrideHeaders;
       overrides.is_overridden[cur_override] = true;
     }
 

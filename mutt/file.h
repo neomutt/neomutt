@@ -32,7 +32,7 @@
 
 struct Buffer;
 struct stat;
-extern const char filename_safe_chars[];
+extern const char FilenameSafeChars[];
 
 /* Flags for mutt_file_read_line() */
 typedef uint8_t ReadLineFlags;             ///< Flags for mutt_file_read_line(), e.g. #MUTT_RL_CONT

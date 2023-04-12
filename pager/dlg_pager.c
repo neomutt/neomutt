@@ -76,8 +76,8 @@ struct Resize
   bool search_back;
 };
 
-int braille_row = -1;
-int braille_col = -1;
+int BrailleRow = -1;
+int BrailleCol = -1;
 
 static struct Resize *Resize = NULL;
 
@@ -390,10 +390,10 @@ int mutt_pager(struct PagerView *pview)
     const bool c_braille_friendly = cs_subset_bool(NeoMutt->sub, "braille_friendly");
     if (c_braille_friendly)
     {
-      if (braille_row != -1)
+      if (BrailleRow != -1)
       {
-        mutt_window_move(priv->pview->win_pager, braille_col, braille_row + 1);
-        braille_row = -1;
+        mutt_window_move(priv->pview->win_pager, BrailleCol, BrailleRow + 1);
+        BrailleRow = -1;
       }
     }
     else

@@ -36,7 +36,7 @@
 #include "muttlib.h"
 
 /// An extra parameter to control sort order
-static bool sb_sort_reverse = false;
+static bool SbSortReverse = false;
 
 /**
  * sb_sort_count - Sort Sidebar entries by count - Implements ::sort_t - @ingroup sort_api
@@ -54,7 +54,7 @@ static int sb_sort_count(const void *a, const void *b)
   else
     rc = (m2->msg_count - m1->msg_count);
 
-  if (sb_sort_reverse)
+  if (SbSortReverse)
     rc = -rc;
   return rc;
 }
@@ -71,7 +71,7 @@ static int sb_sort_desc(const void *a, const void *b)
 
   int rc = mutt_str_cmp(m1->name, m2->name);
 
-  if (sb_sort_reverse)
+  if (SbSortReverse)
     rc = -rc;
   return rc;
 }
@@ -92,7 +92,7 @@ static int sb_sort_flagged(const void *a, const void *b)
   else
     rc = (m2->msg_flagged - m1->msg_flagged);
 
-  if (sb_sort_reverse)
+  if (SbSortReverse)
     rc = -rc;
   return rc;
 }
@@ -112,7 +112,7 @@ static int sb_sort_path(const void *a, const void *b)
   if (rc == 0)
     rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
 
-  if (sb_sort_reverse)
+  if (SbSortReverse)
     rc = -rc;
   return rc;
 }
@@ -133,7 +133,7 @@ static int sb_sort_unread(const void *a, const void *b)
   else
     rc = (m2->msg_unread - m1->msg_unread);
 
-  if (sb_sort_reverse)
+  if (SbSortReverse)
     rc = -rc;
   return rc;
 }
@@ -148,7 +148,7 @@ static int sb_sort_order(const void *a, const void *b)
   const struct Mailbox *m1 = sbe1->mailbox;
   const struct Mailbox *m2 = sbe2->mailbox;
 
-  return (sb_sort_reverse ? -1 : 1) * (m1->gen - m2->gen);
+  return (SbSortReverse ? -1 : 1) * (m1->gen - m2->gen);
 }
 
 /**
@@ -201,6 +201,6 @@ void sb_sort_entries(struct SidebarWindowData *wdata, enum SortType sort)
       break;
   }
 
-  sb_sort_reverse = (sort & SORT_REVERSE);
+  SbSortReverse = (sort & SORT_REVERSE);
   ARRAY_SORT(&wdata->entries, fn);
 }

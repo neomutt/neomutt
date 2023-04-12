@@ -43,9 +43,9 @@ static struct sigaction SysOldQuit;
 static bool SignalsBlocked;
 static bool SysSignalsBlocked;
 
-static sig_handler_t sig_handler = mutt_sig_empty_handler;
-static sig_handler_t exit_handler = mutt_sig_exit_handler;
-static sig_handler_t segv_handler = mutt_sig_exit_handler;
+static sig_handler_t SigHandler = mutt_sig_empty_handler;
+static sig_handler_t ExitHandler = mutt_sig_exit_handler;
+static sig_handler_t SegvHandler = mutt_sig_exit_handler;
 
 /**
  * mutt_sig_empty_handler - Dummy signal handler
@@ -88,13 +88,13 @@ void mutt_sig_exit_handler(int sig)
 void mutt_sig_init(sig_handler_t sig_fn, sig_handler_t exit_fn, sig_handler_t segv_fn)
 {
   if (sig_fn)
-    sig_handler = sig_fn;
+    SigHandler = sig_fn;
 
   if (exit_fn)
-    exit_handler = exit_fn;
+    ExitHandler = exit_fn;
 
   if (segv_fn)
-    segv_handler = segv_fn;
+    SegvHandler = segv_fn;
 
   struct sigaction act;
 
@@ -103,10 +103,10 @@ void mutt_sig_init(sig_handler_t sig_fn, sig_handler_t exit_fn, sig_handler_t se
   act.sa_handler = SIG_IGN;
   sigaction(SIGPIPE, &act, NULL);
 
-  act.sa_handler = segv_handler;
+  act.sa_handler = SegvHandler;
   sigaction(SIGSEGV, &act, NULL);
 
-  act.sa_handler = exit_handler;
+  act.sa_handler = ExitHandler;
   sigaction(SIGTERM, &act, NULL);
   sigaction(SIGHUP, &act, NULL);
   sigaction(SIGQUIT, &act, NULL);
@@ -114,7 +114,7 @@ void mutt_sig_init(sig_handler_t sig_fn, sig_handler_t exit_fn, sig_handler_t se
   /* we want to avoid race conditions */
   sigaddset(&act.sa_mask, SIGTSTP);
 
-  act.sa_handler = sig_handler;
+  act.sa_handler = SigHandler;
 
   /* we want SIGALRM to abort the current syscall, so we do this before
    * setting the SA_RESTART flag below.  currently this is only used to
@@ -240,7 +240,7 @@ void mutt_sig_allow_interrupt(bool allow)
   struct sigaction sa;
 
   memset(&sa, 0, sizeof(sa));
-  sa.sa_handler = sig_handler;
+  sa.sa_handler = SigHandler;
 #ifdef SA_RESTART
   if (!allow)
     sa.sa_flags |= SA_RESTART;

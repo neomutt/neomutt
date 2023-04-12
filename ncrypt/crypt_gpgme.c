@@ -86,9 +86,9 @@ struct CryptCache
   struct CryptCache *next;
 };
 
-static struct CryptCache *id_defaults = NULL;
-static gpgme_key_t signature_key = NULL;
-static char *current_sender = NULL;
+static struct CryptCache *IdDefaults = NULL;
+static gpgme_key_t SignatureKey = NULL;
+static char *CurrentSender = NULL;
 
 #define PKA_NOTATION_NAME "pka-address@gnupg.org"
 
@@ -751,7 +751,7 @@ static int set_signer(gpgme_ctx_t ctx, const struct AddressList *al, bool for_sm
  */
 static gpgme_error_t set_pka_sig_notation(gpgme_ctx_t ctx)
 {
-  gpgme_error_t err = gpgme_sig_notation_add(ctx, PKA_NOTATION_NAME, current_sender, 0);
+  gpgme_error_t err = gpgme_sig_notation_add(ctx, PKA_NOTATION_NAME, CurrentSender, 0);
   if (err)
   {
     mutt_error(_("error setting PKA signature notation: %s"), gpgme_strerror(err));
@@ -1433,10 +1433,10 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *state)
     if (!sig)
       return -1; /* Signature not found.  */
 
-    if (signature_key)
+    if (SignatureKey)
     {
-      gpgme_key_unref(signature_key);
-      signature_key = NULL;
+      gpgme_key_unref(SignatureKey);
+      SignatureKey = NULL;
     }
 
     fpr = sig->fpr;
@@ -1450,8 +1450,8 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *state)
       err = gpgme_get_key(ctx, fpr, &key, 0); /* secret key?  */
       if (err == 0)
       {
-        if (!signature_key)
-          signature_key = key;
+        if (!SignatureKey)
+          SignatureKey = key;
       }
       else
       {
@@ -1515,7 +1515,7 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *state)
       anywarn = true;
     }
 
-    if (key != signature_key)
+    if (key != SignatureKey)
       gpgme_key_unref(key);
   }
 
@@ -1583,10 +1583,10 @@ static int verify_one(struct Body *sigbdy, struct State *state,
   { /* Verification succeeded, see what the result is. */
     gpgme_verify_result_t verify_result = NULL;
 
-    if (signature_key)
+    if (SignatureKey)
     {
-      gpgme_key_unref(signature_key);
-      signature_key = NULL;
+      gpgme_key_unref(SignatureKey);
+      SignatureKey = NULL;
     }
 
     verify_result = gpgme_op_verify_result(ctx);
@@ -3360,7 +3360,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
 
   if (whatfor)
   {
-    for (l = id_defaults; l; l = l->next)
+    for (l = IdDefaults; l; l = l->next)
     {
       if (mutt_istr_equal(whatfor, l->what))
       {
@@ -3387,8 +3387,8 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
       else
       {
         l = mutt_mem_malloc(sizeof(struct CryptCache));
-        l->next = id_defaults;
-        id_defaults = l;
+        l->next = IdDefaults;
+        IdDefaults = l;
         l->what = mutt_str_dup(whatfor);
         l->dflt = mutt_buffer_strdup(resp);
       }
@@ -3965,9 +3965,9 @@ static bool verify_sender(struct Email *e)
 
   if (sender)
   {
-    if (signature_key)
+    if (SignatureKey)
     {
-      gpgme_key_t key = signature_key;
+      gpgme_key_t key = SignatureKey;
       gpgme_user_id_t uid = NULL;
       int sender_length = strlen(sender->mailbox);
       for (uid = key->uids; uid && rc; uid = uid->next)
@@ -4014,10 +4014,10 @@ static bool verify_sender(struct Email *e)
     mutt_any_key_to_continue(_("Failed to figure out sender"));
   }
 
-  if (signature_key)
+  if (SignatureKey)
   {
-    gpgme_key_unref(signature_key);
-    signature_key = NULL;
+    gpgme_key_unref(SignatureKey);
+    SignatureKey = NULL;
   }
 
   return rc;
@@ -4037,8 +4037,8 @@ int smime_gpgme_verify_sender(struct Email *e, struct Message *msg)
 void pgp_gpgme_set_sender(const char *sender)
 {
   mutt_debug(LL_DEBUG2, "setting to: %s\n", sender);
-  FREE(&current_sender);
-  current_sender = mutt_str_dup(sender);
+  FREE(&CurrentSender);
+  CurrentSender = mutt_str_dup(sender);
 }
 
 /**

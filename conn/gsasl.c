@@ -35,7 +35,7 @@
 #include "gsasl2.h"
 #include "mutt_account.h"
 
-static Gsasl *mutt_gsasl_ctx = NULL;
+static Gsasl *MuttGsaslCtx = NULL;
 
 /**
  * mutt_gsasl_callback - Callback to retrieve authname or user from ConnAccount
@@ -125,19 +125,19 @@ static int mutt_gsasl_callback(Gsasl *ctx, Gsasl_session *sctx, Gsasl_property p
  */
 static bool mutt_gsasl_init(void)
 {
-  if (mutt_gsasl_ctx)
+  if (MuttGsaslCtx)
     return true;
 
-  int rc = gsasl_init(&mutt_gsasl_ctx);
+  int rc = gsasl_init(&MuttGsaslCtx);
   if (rc != GSASL_OK)
   {
-    mutt_gsasl_ctx = NULL;
+    MuttGsaslCtx = NULL;
     mutt_debug(LL_DEBUG1, "libgsasl initialisation failed (%d): %s.\n", rc,
                gsasl_strerror(rc));
     return false;
   }
 
-  gsasl_callback_set(mutt_gsasl_ctx, mutt_gsasl_callback);
+  gsasl_callback_set(MuttGsaslCtx, mutt_gsasl_callback);
   return true;
 }
 
@@ -146,11 +146,11 @@ static bool mutt_gsasl_init(void)
  */
 void mutt_gsasl_done(void)
 {
-  if (!mutt_gsasl_ctx)
+  if (!MuttGsaslCtx)
     return;
 
-  gsasl_done(mutt_gsasl_ctx);
-  mutt_gsasl_ctx = NULL;
+  gsasl_done(MuttGsaslCtx);
+  MuttGsaslCtx = NULL;
 }
 
 /**
@@ -176,9 +176,9 @@ const char *mutt_gsasl_get_mech(const char *requested_mech, const char *server_m
 
   const char *sel_mech = NULL;
   if (uc_requested_mech)
-    sel_mech = gsasl_client_suggest_mechanism(mutt_gsasl_ctx, uc_requested_mech);
+    sel_mech = gsasl_client_suggest_mechanism(MuttGsaslCtx, uc_requested_mech);
   else
-    sel_mech = gsasl_client_suggest_mechanism(mutt_gsasl_ctx, uc_server_mechlist);
+    sel_mech = gsasl_client_suggest_mechanism(MuttGsaslCtx, uc_server_mechlist);
 
   FREE(&uc_requested_mech);
   FREE(&uc_server_mechlist);
@@ -199,7 +199,7 @@ int mutt_gsasl_client_new(struct Connection *conn, const char *mech, Gsasl_sessi
   if (!mutt_gsasl_init())
     return -1;
 
-  int rc = gsasl_client_start(mutt_gsasl_ctx, mech, sctx);
+  int rc = gsasl_client_start(MuttGsaslCtx, mech, sctx);
   if (rc != GSASL_OK)
   {
     *sctx = NULL;

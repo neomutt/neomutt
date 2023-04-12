@@ -73,7 +73,7 @@ TAILQ_HEAD(HookList, Hook);
 static struct HookList Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 
 static struct HashTable *IdxFmtHooks = NULL;
-static HookFlags current_hook_type = MUTT_HOOK_NO_FLAGS;
+static HookFlags CurrentHookType = MUTT_HOOK_NO_FLAGS;
 
 /**
  * mutt_parse_charset_iconv_hook - Parse 'charset-hook' and 'iconv-hook' commands - Implements Command::parse() - @ingroup command_parse
@@ -541,7 +541,7 @@ static enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s
     parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     if (mutt_str_equal("*", buf->data))
     {
-      if (current_hook_type != TOKEN_NO_FLAGS)
+      if (CurrentHookType != TOKEN_NO_FLAGS)
       {
         mutt_buffer_printf(err, "%s", _("unhook: Can't do unhook * from within a hook"));
         return MUTT_CMD_WARNING;
@@ -564,7 +564,7 @@ static enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s
         mutt_ch_lookup_remove();
         return MUTT_CMD_SUCCESS;
       }
-      if (current_hook_type == type)
+      if (CurrentHookType == type)
       {
         mutt_buffer_printf(err, _("unhook: Can't delete a %s from within a %s"),
                            buf->data, buf->data);
@@ -592,7 +592,7 @@ void mutt_folder_hook(const char *path, const char *desc)
   struct Hook *hook = NULL;
   struct Buffer *err = mutt_buffer_pool_get();
 
-  current_hook_type = MUTT_FOLDER_HOOK;
+  CurrentHookType = MUTT_FOLDER_HOOK;
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
@@ -621,7 +621,7 @@ void mutt_folder_hook(const char *path, const char *desc)
   }
   mutt_buffer_pool_release(&err);
 
-  current_hook_type = MUTT_HOOK_NO_FLAGS;
+  CurrentHookType = MUTT_HOOK_NO_FLAGS;
 }
 
 /**
@@ -659,7 +659,7 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
   struct PatternCache cache = { 0 };
   struct Buffer *err = mutt_buffer_pool_get();
 
-  current_hook_type = type;
+  CurrentHookType = type;
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
@@ -674,7 +674,7 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
         if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
         {
           mutt_error("%s", mutt_buffer_string(err));
-          current_hook_type = MUTT_HOOK_NO_FLAGS;
+          CurrentHookType = MUTT_HOOK_NO_FLAGS;
           mutt_buffer_pool_release(&err);
 
           return;
@@ -687,7 +687,7 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
   }
   mutt_buffer_pool_release(&err);
 
-  current_hook_type = MUTT_HOOK_NO_FLAGS;
+  CurrentHookType = MUTT_HOOK_NO_FLAGS;
 }
 
 /**
@@ -962,7 +962,7 @@ const char *mutt_idxfmt_hook(const char *name, struct Mailbox *m, struct Email *
   if (!hl)
     return NULL;
 
-  current_hook_type = MUTT_IDXFMTHOOK;
+  CurrentHookType = MUTT_IDXFMTHOOK;
 
   struct PatternCache cache = { 0 };
   const char *fmtstring = NULL;
@@ -978,7 +978,7 @@ const char *mutt_idxfmt_hook(const char *name, struct Mailbox *m, struct Email *
     }
   }
 
-  current_hook_type = MUTT_HOOK_NO_FLAGS;
+  CurrentHookType = MUTT_HOOK_NO_FLAGS;
 
   return fmtstring;
 }

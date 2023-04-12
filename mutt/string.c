@@ -109,7 +109,7 @@ struct SysExits
   const char *err_str; ///< Human-readable string for error
 };
 
-static const struct SysExits sysexits[] = {
+static const struct SysExits SysExits[] = {
 #ifdef EX_USAGE
   { 0xff & EX_USAGE, "Bad usage." },
 #endif
@@ -165,10 +165,10 @@ static const struct SysExits sysexits[] = {
  */
 const char *mutt_str_sysexit(int err_num)
 {
-  for (size_t i = 0; i < mutt_array_size(sysexits); i++)
+  for (size_t i = 0; i < mutt_array_size(SysExits); i++)
   {
-    if (err_num == sysexits[i].err_num)
-      return sysexits[i].err_str;
+    if (err_num == SysExits[i].err_num)
+      return SysExits[i].err_str;
   }
 
   return NULL;

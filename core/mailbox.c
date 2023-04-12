@@ -272,7 +272,7 @@ static struct EmailGarbageCollector
 {
   struct Email *arr[10]; ///< Array of Emails to be deleted
   size_t idx;            ///< Current position
-} gc = { 0 };
+} GC = { 0 };
 
 /**
  * mailbox_gc_add - Add an Email to the garbage-collection set
@@ -283,12 +283,12 @@ static struct EmailGarbageCollector
 void mailbox_gc_add(struct Email *e)
 {
   assert(e);
-  if (gc.idx == mutt_array_size(gc.arr))
+  if (GC.idx == mutt_array_size(GC.arr))
   {
     mailbox_gc_run();
   }
-  gc.arr[gc.idx] = e;
-  gc.idx++;
+  GC.arr[GC.idx] = e;
+  GC.idx++;
 }
 
 /**
@@ -296,11 +296,11 @@ void mailbox_gc_add(struct Email *e)
  */
 void mailbox_gc_run(void)
 {
-  for (size_t i = 0; i < gc.idx; i++)
+  for (size_t i = 0; i < GC.idx; i++)
   {
-    email_free(&gc.arr[i]);
+    email_free(&GC.arr[i]);
   }
-  gc.idx = 0;
+  GC.idx = 0;
 }
 
 /**

@@ -66,7 +66,7 @@ struct PgpCache
   struct PgpCache *next; ///< Linked list
 };
 
-static struct PgpCache *id_defaults = NULL;
+static struct PgpCache *IdDefaults = NULL;
 
 // clang-format off
 typedef uint8_t PgpKeyValidFlags; ///< Flags for valid Pgp Key fields, e.g. #PGP_KV_VALID
@@ -186,7 +186,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, KeyFlags abilities,
 
   if (whatfor)
   {
-    for (l = id_defaults; l; l = l->next)
+    for (l = IdDefaults; l; l = l->next)
     {
       if (mutt_istr_equal(whatfor, l->what))
       {
@@ -213,8 +213,8 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, KeyFlags abilities,
       else
       {
         l = mutt_mem_malloc(sizeof(struct PgpCache));
-        l->next = id_defaults;
-        id_defaults = l;
+        l->next = IdDefaults;
+        IdDefaults = l;
         l->what = mutt_str_dup(whatfor);
         l->dflt = mutt_buffer_strdup(resp);
       }
