@@ -71,7 +71,7 @@
 #include <libintl.h>
 #endif
 
-/** The folder the user last saved to.  Used by ci_save_message() */
+/// The folder the user last saved to.  Used by ci_save_message()
 static struct Buffer LastSaveFolder = { 0 };
 
 /**

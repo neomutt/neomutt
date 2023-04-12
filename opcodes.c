@@ -32,6 +32,8 @@
 
 #define DEFINE_HELP_MESSAGE(opcode, op_string) { #opcode, op_string },
 
+/// Lookup table mapping an opcode to its name and description
+/// e.g. `OpStrings[OP_EDIT_LABEL] = { "OP_EDIT_LABEL", "edit an email's label" }`
 const char *OpStrings[][2] = {
   OPS(DEFINE_HELP_MESSAGE){ NULL, NULL },
 };

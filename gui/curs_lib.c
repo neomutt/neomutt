@@ -68,11 +68,11 @@
 
 ARRAY_HEAD(KeyEventArray, struct KeyEvent);
 
-/* These are used for macros and exec/push commands.
+/** These are used for macros and exec/push commands.
  * They can be temporarily ignored by setting OptIgnoreMacroEvents */
 static struct KeyEventArray MacroEvents = ARRAY_HEAD_INITIALIZER;
 
-/* These are used in all other "normal" situations, and are not
+/** These are used in all other "normal" situations, and are not
  * ignored when setting OptIgnoreMacroEvents */
 static struct KeyEventArray UngetKeyEvents = ARRAY_HEAD_INITIALIZER;
 
@@ -120,6 +120,8 @@ static void array_to_endcond(struct KeyEventArray *a)
   }
 }
 
+/// Timeout for getting a character from the user.
+/// @sa set_timeout()
 int MuttGetchTimeout = -1;
 
 /**

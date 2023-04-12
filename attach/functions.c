@@ -47,7 +47,9 @@
 #include "recvattach.h"
 #include "recvcmd.h"
 
+/// Error message for unavailable functions
 static const char *Not_available_in_this_menu = N_("Not available in this menu");
+/// Error message for unavailable functions in attach mode
 static const char *Function_not_permitted_in_attach_message_mode = N_(
     "Function not permitted in attach-message mode");
 

@@ -35,6 +35,7 @@
 #include "gsasl2.h"
 #include "mutt_account.h"
 
+/// Global GNU SASL handle
 static Gsasl *MuttGsaslCtx = NULL;
 
 /**

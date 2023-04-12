@@ -52,9 +52,10 @@
 #include <sys/file.h>
 #endif
 
-/* these characters must be escaped in regular expressions */
+/// These characters must be escaped in regular expressions
 static const char RxSpecialChars[] = "^.[$()|*+?{\\";
 
+/// Set of characters that are safe to use in filenames
 const char FilenameSafeChars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+@{}._-:%/";
 
 #define MAX_LOCK_ATTEMPTS 5

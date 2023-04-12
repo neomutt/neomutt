@@ -42,6 +42,7 @@
 #include "debug/lib.h"
 #endif
 
+/// Ncurses function isendwin() has been called
 static int IsEndwin = 0;
 
 /**

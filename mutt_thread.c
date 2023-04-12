@@ -71,6 +71,7 @@ static const struct Mapping UseThreadsMethods[] = {
   // clang-format on
 };
 
+/// Data for the $use_threads enumeration
 struct EnumDef UseThreadsTypeDef = {
   "use_threads_type",
   4,

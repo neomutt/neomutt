@@ -72,6 +72,7 @@ struct Lookup
 };
 TAILQ_HEAD(LookupList, Lookup);
 
+/// Lookup table of preferred character set names
 static struct LookupList Lookups = TAILQ_HEAD_INITIALIZER(Lookups);
 
 /**

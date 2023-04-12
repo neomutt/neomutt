@@ -55,7 +55,9 @@
 #include "imap/lib.h"
 #endif
 
+/// Number of postponed (draft) emails
 short PostCount = 0;
+/// When true, force a recount of the postponed (draft) emails
 static bool UpdateNumPostponed = false;
 
 /**

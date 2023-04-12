@@ -92,7 +92,9 @@ static const struct Command NmCommands[] = {
   // clang-format on
 };
 
+/// Protocol string for Notmuch URLs
 const char NmUrlProtocol[] = "notmuch://";
+/// Length of #NmUrlProtocol string
 const int NmUrlProtocolLen = sizeof(NmUrlProtocol) - 1;
 
 /**

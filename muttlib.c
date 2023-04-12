@@ -62,11 +62,13 @@
 #include "imap/lib.h"
 #endif
 
+/// Accepted XDG environment variables
 static const char *XdgEnvVars[] = {
   [XDG_CONFIG_HOME] = "XDG_CONFIG_HOME",
   [XDG_CONFIG_DIRS] = "XDG_CONFIG_DIRS",
 };
 
+/// XDG default locations
 static const char *XdgDefaults[] = {
   [XDG_CONFIG_HOME] = "~/.config",
   [XDG_CONFIG_DIRS] = "/etc/xdg",

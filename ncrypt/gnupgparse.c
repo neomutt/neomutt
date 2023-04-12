@@ -70,6 +70,7 @@
  *   - signature class
  */
 
+/// Cached copy of $charset
 static char *Charset = NULL;
 
 /**

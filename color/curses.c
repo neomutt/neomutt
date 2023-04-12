@@ -34,7 +34,7 @@
 #include "lib.h"
 
 struct CursesColorList CursesColors; ///< List of all Curses colours
-int NumCursesColors;
+int NumCursesColors; ///< Number of ncurses colours left to allocate
 
 /**
  * curses_colors_init - Initialise the Curses colours

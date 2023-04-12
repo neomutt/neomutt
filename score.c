@@ -50,10 +50,11 @@ struct Score
   char *str;
   struct PatternList *pat;
   int val;
-  bool exact; ///< if this rule matches, don't evaluate any more
-  struct Score *next;
+  bool exact;         ///< If this rule matches, don't evaluate any more
+  struct Score *next; ///< Linked list
 };
 
+/// Linked list of email scoring rules
 static struct Score *ScoreList = NULL;
 
 /**

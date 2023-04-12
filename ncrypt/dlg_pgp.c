@@ -110,6 +110,7 @@ struct PgpEntry
   struct PgpUid *uid;
 };
 
+/// Characters used to show the trust level for PGP keys
 static const char TrustFlags[] = "?- +";
 
 /**

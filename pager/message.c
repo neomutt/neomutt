@@ -55,6 +55,7 @@
 #include "autocrypt/lib.h"
 #endif
 
+/// Status bar message when entire message is visible in the Pager
 static const char *ExtPagerProgress = N_("all");
 
 /**

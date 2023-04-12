@@ -31,6 +31,7 @@
 #include "command.h"
 
 ARRAY_HEAD(CommandArray, struct Command);
+/// All the registered commands, e.g. alias, sidebar_pin
 struct CommandArray Commands = ARRAY_HEAD_INITIALIZER;
 
 /**

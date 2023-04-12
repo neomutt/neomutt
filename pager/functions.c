@@ -49,6 +49,7 @@
 #include "private_data.h"
 #include "protos.h"
 
+/// Error message for unavailable functions
 static const char *Not_available_in_this_menu = N_("Not available in this menu");
 
 static int op_pager_search_next(struct IndexSharedData *shared,

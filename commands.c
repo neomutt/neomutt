@@ -66,8 +66,8 @@
 #include <libintl.h>
 #endif
 
-/* LIFO designed to contain the list of config files that have been sourced and
- * avoid cyclic sourcing */
+/// LIFO designed to contain the list of config files that have been sourced and
+/// avoid cyclic sourcing.
 static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
 
 #define MAX_ERRS 128

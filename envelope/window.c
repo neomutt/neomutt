@@ -83,9 +83,12 @@
 /// Maximum number of rows to use for the Headers: field
 #define MAX_USER_HDR_ROWS 5
 
-int HeaderPadding[HDR_ATTACH_TITLE] = { 0 };
-int MaxHeaderWidth = 0;
+/// Number of padding spaces needed after each of the strings in #Prompts after translation
+static int HeaderPadding[HDR_ATTACH_TITLE] = { 0 };
+/// Widest of the #Prompts strings after translation
+static int MaxHeaderWidth = 0;
 
+/// Names of header fields used in the envelope, e.g. From:, To:
 const char *const Prompts[] = {
   /* L10N: Compose menu field.  May not want to translate. */
   N_("From: "),
@@ -129,6 +132,7 @@ const char *const Prompts[] = {
 };
 
 #ifdef USE_AUTOCRYPT
+/// Autocrypt "recommendation" strings
 static const char *const AutocryptRecUiFlags[] = {
   /* L10N: Autocrypt recommendation flag: off.
      This is displayed when Autocrypt is turned off. */

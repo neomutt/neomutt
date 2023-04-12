@@ -37,6 +37,7 @@
 
 #define RSORT(num) ((SortAlias & SORT_REVERSE) ? -num : num)
 
+/// Current value of $sort_alias used by the sorting functions
 static short SortAlias = 0;
 
 /**

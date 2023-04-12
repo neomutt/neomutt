@@ -34,6 +34,7 @@
 #include "inheritance.h"
 #include "types.h"
 
+/// All the registered config types, e.g. String, Number
 struct ConfigSetType RegisteredTypes[18] = {
   { 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL },
 };

@@ -46,15 +46,22 @@
 #include <fcntl.h>
 #endif
 
+/// Set to true when a monitored file has changed
 bool MonitorFilesChanged = false;
+/// Set to true when the current mailbox has changed
 bool MonitorContextChanged = false;
 
+/// Inotify file descriptor
 static int INotifyFd = -1;
+/// Linked list of monitored Mailboxes
 static struct Monitor *Monitor = NULL;
+/// Number of used entries in the #PollFds array
 static size_t PollFdsCount = 0;
+/// Size of #PollFds array
 static size_t PollFdsLen = 0;
+/// Array of monitored file descriptors
 static struct pollfd *PollFds = NULL;
-
+/// Monitor file descriptor of the current mailbox
 static int MonitorContextDescriptor = -1;
 
 #define INOTIFY_MASK_DIR (IN_MOVED_TO | IN_ATTRIB | IN_CLOSE_WRITE | IN_ISDIR)

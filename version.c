@@ -64,11 +64,13 @@ const char *mutt_make_version(void);
 const char *store_backend_list(void);
 const char *store_compress_list(void);
 
+/// CLI: Width to wrap version info
 const int SCREEN_WIDTH = 80;
 
 extern unsigned char cc_cflags[];
 extern unsigned char configure_options[];
 
+/// CLI Version: Authors' copyrights
 static const char *Copyright =
     "Copyright (C) 1996-2020 Michael R. Elkins <me@mutt.org>\n"
     "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -81,9 +83,11 @@ static const char *Copyright =
     "Copyright (C) 2014-2020 Kevin J. McCarthy <kevin@8t8.us>\n"
     "Copyright (C) 2015-2022 Richard Russon <rich@flatcap.org>\n";
 
+/// CLI Version: Thanks
 static const char *Thanks = N_("Many others not mentioned here contributed code, fixes,\n"
                                "and suggestions.\n");
 
+/// CLI Version: License
 static const char *License = N_(
     "    This program is free software; you can redistribute it and/or modify\n"
     "    it under the terms of the GNU General Public License as published by\n"
@@ -99,12 +103,14 @@ static const char *License = N_(
     "    along with this program; if not, write to the Free Software\n"
     "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n");
 
+/// CLI Version: How to reach the NeoMutt Team
 static const char *ReachingUs = N_("To learn more about NeoMutt, visit: https://neomutt.org\n"
                                    "If you find a bug in NeoMutt, please raise an issue at:\n"
                                    "    https://github.com/neomutt/neomutt/issues\n"
                                    "or send an email to: <neomutt-devel@neomutt.org>\n");
 
 // clang-format off
+/// CLI Version: Warranty notice
 static const char *Notice =
     N_("Copyright (C) 1996-2022 Michael R. Elkins and others.\n"
        "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
@@ -123,6 +129,7 @@ struct CompileOptions
 
 /* These are sorted by the display string */
 
+/// Default options strings for `neomutt -v` output
 static struct CompileOptions CompOptsDefault[] = {
   { "attach_headers_color", 1 },
   { "compose_to_sender", 1 },
@@ -157,6 +164,7 @@ static struct CompileOptions CompOptsDefault[] = {
   { NULL, 0 },
 };
 
+/// Compile options strings for `neomutt -v` output
 static struct CompileOptions CompOpts[] = {
 #ifdef USE_AUTOCRYPT
   { "autocrypt", 1 },
@@ -292,6 +300,7 @@ static struct CompileOptions CompOpts[] = {
   { NULL, 0 },
 };
 
+/// Debug options strings for `neomutt -v` output
 static struct CompileOptions DebugOpts[] = {
 #ifdef USE_ASAN
   { "asan", 2 },

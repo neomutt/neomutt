@@ -65,7 +65,9 @@
 #include "pgplib.h"
 #endif
 
+/// Cached PGP Passphrase
 char PgpPass[1024];
+/// Unix time when #PgpPass expires
 time_t PgpExptime = 0; /* when does the cached passphrase expire? */
 
 /**

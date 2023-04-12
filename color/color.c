@@ -35,6 +35,7 @@
 #include "gui/lib.h"
 #include "lib.h"
 
+/// Mapping between a colour name and an ncurses colour
 const struct Mapping ColorNames[] = {
   // clang-format off
   { "black",   COLOR_BLACK },

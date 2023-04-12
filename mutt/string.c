@@ -109,6 +109,7 @@ struct SysExits
   const char *err_str; ///< Human-readable string for error
 };
 
+/// Lookup table of error messages
 static const struct SysExits SysExits[] = {
 #ifdef EX_USAGE
   { 0xff & EX_USAGE, "Bad usage." },

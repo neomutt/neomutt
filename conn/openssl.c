@@ -76,15 +76,14 @@
 #define SSL_has_pending SSL_pending
 #endif
 
-/* index for storing hostname as application specific data in SSL structure */
+/// index for storing hostname as application specific data in SSL structure
 static int HostExDataIndex = -1;
 
-/* Index for storing the "skip mode" state in SSL structure.  When the
- * user skips a certificate in the chain, the stored value will be
- * non-null. */
+/** Index for storing the "skip mode" state in SSL structure.  When the user
+ * skips a certificate in the chain, the stored value will be non-null. */
 static int SkipModeExDataIndex = -1;
 
-/* keep a handle on accepted certificates in case we want to
+/** Keep a handle on accepted certificates in case we want to
  * open up another connection to the same server in this session */
 static STACK_OF(X509) *SslSessionCerts = NULL;
 

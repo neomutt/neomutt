@@ -76,9 +76,12 @@ struct Resize
   bool search_back;
 };
 
+/// Braille display: row to leave the cursor
 int BrailleRow = -1;
+/// Braille display: column to leave the cursor
 int BrailleCol = -1;
 
+/// Data to keep track of screen resizes
 static struct Resize *Resize = NULL;
 
 /// Help Bar for the Pager's Help Page

@@ -60,6 +60,7 @@
 #error "No hcache backend defined"
 #endif
 
+/// Header Cache version
 static unsigned int HcacheVer = 0x0;
 
 /**

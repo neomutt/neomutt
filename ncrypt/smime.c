@@ -75,11 +75,16 @@ struct SmimeCommandContext
   const char *intermediates; ///< %i
 };
 
+/// Cached Smime Passphrase
 char SmimePass[256];
+/// Unix time when #SmimePass expires
 time_t SmimeExpTime = 0; /* when does the cached passphrase expire? */
 
+/// Smime key to use
 static struct Buffer SmimeKeyToUse = { 0 };
+/// Smime certificate to use
 static struct Buffer SmimeCertToUse = { 0 };
+/// Smime intermediate certificate to use
 static struct Buffer SmimeIntermediateToUse = { 0 };
 
 /**

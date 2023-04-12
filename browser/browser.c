@@ -133,7 +133,9 @@ static const struct Mapping FolderNewsHelp[] = {
 };
 #endif
 
+/// Browser: previous selected directory
 struct Buffer LastDir = { 0 };
+/// Browser: backup copy of the current directory
 struct Buffer LastDirBackup = { 0 };
 
 /**

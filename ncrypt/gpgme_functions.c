@@ -51,8 +51,10 @@
 #include <libintl.h>
 #endif
 
+/// Number of padding spaces needed after each of the strings in #KeyInfoPrompts after translation
 int KeyInfoPadding[KIP_MAX] = { 0 };
 
+/// Names of header fields used in the pgp key display, e.g. Name:, Fingerprint:
 static const char *const KeyInfoPrompts[] = {
   /* L10N: The following are the headers for the "verify key" output from the
      GPGME key selection menu (bound to "c" in the key selection menu).

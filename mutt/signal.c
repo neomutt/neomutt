@@ -36,15 +36,29 @@
 #include "message.h"
 #include "signal2.h"
 
+/// A set of signals used by mutt_sig_block(), mutt_sig_unblock()
 static sigset_t Sigset;
+/// A set of signals used by mutt_sig_block_system(), mutt_sig_unblock_system()
 static sigset_t SigsetSys;
+
+/// Backup of SIGINT handler, when mutt_sig_block_system() is called
 static struct sigaction SysOldInt;
+/// Backup of SIGQUIT handler, when mutt_sig_block_system() is called
 static struct sigaction SysOldQuit;
+
+/// true when signals are blocked, e.g. SIGTERM, SIGHUP
+/// @sa mutt_sig_block(), mutt_sig_unblock()
 static bool SignalsBlocked;
+
+/// true when system signals are blocked, e.g. SIGINT, SIGQUIT
+/// @sa mutt_sig_block_system(), mutt_sig_unblock_system()
 static bool SysSignalsBlocked;
 
+/// Function to handle other signals, e.g. SIGINT (2)
 static sig_handler_t SigHandler = mutt_sig_empty_handler;
+/// Function to handle SIGTERM (15), SIGHUP (1), SIGQUIT (3) signals
 static sig_handler_t ExitHandler = mutt_sig_exit_handler;
+/// Function to handle SIGSEGV (11) signals
 static sig_handler_t SegvHandler = mutt_sig_exit_handler;
 
 /**

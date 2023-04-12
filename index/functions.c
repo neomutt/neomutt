@@ -85,6 +85,7 @@
 #include <libintl.h>
 #endif
 
+/// Error message for unavailable functions
 static const char *Not_available_in_this_menu = N_("Not available in this menu");
 
 /**

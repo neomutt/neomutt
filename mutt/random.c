@@ -40,8 +40,10 @@
 #include <sys/random.h>
 #endif
 
+/// FILE pointer of the random source
 static FILE *FpRandom = NULL;
 
+/// Base 32 alphabet
 static const unsigned char Base32[] = "abcdefghijklmnopqrstuvwxyz234567";
 
 /**

@@ -26,16 +26,15 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 
-/* Global variables */
-extern struct ListHead Ignore;              ///< List of header patterns to ignore
-extern struct RegexList NoSpamList;         ///< List of regexes to identify non-spam emails
-extern struct ReplaceList SpamList;         ///< List of regexes and patterns to match spam emails
-extern struct ListHead UnIgnore;            ///< List of header patterns to unignore (see)
-extern struct ListHead MailToAllow;         ///< List of permitted fields in a mailto: url
-extern struct HashTable *AutoSubscribeCache;///< Hash Table: "mailto:" -> AutoSubscribeCache
-extern struct RegexList UnSubscribedLists;  ///< List of regexes to exclude false matches in SubscribedLists
-extern struct RegexList MailLists;          ///< List of regexes to match mailing lists
-extern struct RegexList UnMailLists;        ///< List of regexes to exclude false matches in MailLists
-extern struct RegexList SubscribedLists;    ///< List of regexes to match subscribed mailing lists
+extern struct HashTable  *AutoSubscribeCache;
+extern struct ListHead    Ignore;
+extern struct RegexList   MailLists;
+extern struct ListHead    MailToAllow;
+extern struct RegexList   NoSpamList;
+extern struct ReplaceList SpamList;
+extern struct RegexList   SubscribedLists;
+extern struct ListHead    UnIgnore;
+extern struct RegexList   UnMailLists;
+extern struct RegexList   UnSubscribedLists;
 
 #endif /* MUTT_EMAIL_GLOBALS_H */

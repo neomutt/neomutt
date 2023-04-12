@@ -86,8 +86,11 @@ struct CryptCache
   struct CryptCache *next;
 };
 
+/// Cache of GPGME keys
 static struct CryptCache *IdDefaults = NULL;
+/// PGP Key to sign with
 static gpgme_key_t SignatureKey = NULL;
+/// Email address of the sender
 static char *CurrentSender = NULL;
 
 #define PKA_NOTATION_NAME "pka-address@gnupg.org"

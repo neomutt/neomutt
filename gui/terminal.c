@@ -41,8 +41,10 @@
 bool TsSupported; ///< Terminal Setting is supported
 
 /* de facto standard escapes for tsl/fsl */
+/// TSL: to_status_line - Sent before the terminal title
 static const char *TSL = "\033]0;"; // Escape
-static const char *FSL = "\007";    // Ctrl-G (BEL)
+/// FSL: from_status_line - Sent after the terminal title
+static const char *FSL = "\007"; // Ctrl-G (BEL)
 
 /**
  * mutt_ts_capability - Check terminal capabilities

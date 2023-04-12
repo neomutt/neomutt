@@ -40,6 +40,7 @@
 #include "message.h"
 #include "string2.h"
 
+/// When increasing the size of a Buffer, add this much extra space
 static const int BufferStepSize = 128;
 
 /**

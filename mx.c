@@ -84,6 +84,7 @@
 #include <xlocale.h>
 #endif
 
+/// Lookup table of mailbox types
 static const struct Mapping MboxTypeMap[] = {
   // clang-format off
   { "mbox",    MUTT_MBOX,    },
@@ -94,6 +95,7 @@ static const struct Mapping MboxTypeMap[] = {
   // clang-format on
 };
 
+/// Data for the $mbox_type enumeration
 struct EnumDef MboxTypeDef = {
   "mbox_type",
   4,

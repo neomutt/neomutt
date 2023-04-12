@@ -35,6 +35,11 @@
 #include "group.h"
 #include "address.h"
 
+/**
+ * Groups - Hash Table: "group-name" -> Group
+ *
+ * A set of all the Address Groups.
+ */
 static struct HashTable *Groups = NULL;
 
 /**

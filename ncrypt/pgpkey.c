@@ -66,6 +66,7 @@ struct PgpCache
   struct PgpCache *next; ///< Linked list
 };
 
+/// Cache of GPGME keys
 static struct PgpCache *IdDefaults = NULL;
 
 // clang-format off

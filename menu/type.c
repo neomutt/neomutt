@@ -62,4 +62,5 @@ const struct Mapping MenuNames[] = {
   // clang-format on
 };
 
+/// Number of entries in the #MenuNames array
 const int MenuNamesLen = mutt_array_size(MenuNames) - 1;

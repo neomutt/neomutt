@@ -123,6 +123,7 @@ static struct Mapping KeyNames[] = {
 
 keycode_t AbortKey; ///< code of key to abort prompts, normally Ctrl-G
 
+/// Array of key mappings, one for each #MenuType
 struct KeymapList Keymaps[MENU_MAX];
 
 /**
@@ -134,6 +135,9 @@ struct Extkey
   const char *sym;  ///< Curses key name
 };
 
+/**
+ * ExtKeys - Mapping between NeoMutt and Curses key names
+ */
 static const struct Extkey ExtKeys[] = {
   { "<c-up>", "kUP5" },
   { "<s-up>", "kUP" },

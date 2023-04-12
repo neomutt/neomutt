@@ -41,7 +41,7 @@
 #define SWAP(n) (n)
 #endif
 
-/* This array contains the bytes used to pad the buffer to the next
+/** This array contains the bytes used to pad the buffer to the next
  * 64-byte boundary.  (RFC1321, 3.1: Step 1)  */
 static const unsigned char fillbuf[64] = { 0x80, 0 /* , 0, 0, ... */ };
 

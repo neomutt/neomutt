@@ -35,8 +35,9 @@
 #include "subjectrx.h"
 #include "parse/lib.h"
 
+/// List of subjectrx rules for modifying the Subject:
 static struct ReplaceList SubjectRegexList = STAILQ_HEAD_INITIALIZER(SubjectRegexList);
-static struct Notify *SubjRxNotify = NULL;
+static struct Notify *SubjRxNotify = NULL; ///< Notifications: #NotifySubjRx
 
 /**
  * subjrx_free - Free the Subject Regex List

@@ -94,7 +94,10 @@ struct History
 
 /* global vars used for the string-history routines */
 
+/// Command histories, one for each #HistoryClass
 static struct History Histories[HC_MAX];
+/// The previous number of history entries to save
+/// @sa $history
 static int OldSize = 0;
 
 /**

@@ -71,6 +71,7 @@ struct Etags
   int index;               ///< Index number
 };
 
+/// EnrichedTags - Lookup table of tags allowed in enriched text
 static const struct Etags EnrichedTags[] = {
   // clang-format off
   { L"param",       RICH_PARAM        },

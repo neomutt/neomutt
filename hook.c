@@ -70,9 +70,13 @@ struct Hook
 };
 TAILQ_HEAD(HookList, Hook);
 
+/// All simple hooks, e.g. MUTT_FOLDER_HOOK
 static struct HookList Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 
+/// All Index Format hooks
 static struct HashTable *IdxFmtHooks = NULL;
+
+/// The type of the hook currently being executed, e.g. #MUTT_SAVE_HOOK
 static HookFlags CurrentHookType = MUTT_HOOK_NO_FLAGS;
 
 /**

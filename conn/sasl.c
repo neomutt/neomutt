@@ -119,8 +119,10 @@ static const char *const SaslAuthenticators[] = {
  * plus two bytes for the ';' and trailing \0 */
 #define IP_PORT_BUFLEN (NI_MAXHOST + NI_MAXSERV)
 
+/// SASL callback functions, e.g. mutt_sasl_cb_authname(), mutt_sasl_cb_pass()
 static sasl_callback_t MuttSaslCallbacks[5];
 
+/// SASL secret, to store the password
 static sasl_secret_t *SecretPtr = NULL;
 
 /**

@@ -42,6 +42,7 @@ struct CryptModule
 };
 STAILQ_HEAD(CryptModuleList, CryptModule);
 
+/// Linked list of crypto modules, e.g. #CryptModSmimeClassic, #CryptModPgpGpgme
 static struct CryptModuleList CryptModules = STAILQ_HEAD_INITIALIZER(CryptModules);
 
 /**

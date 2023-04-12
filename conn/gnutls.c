@@ -60,7 +60,7 @@
 #define CERT_SEP "-----BEGIN"
 
 #ifndef HAVE_GNUTLS_PRIORITY_SET_DIRECT
-/* This array needs to be large enough to hold all the possible values support
+/** This array needs to be large enough to hold all the possible values support
  * by NeoMutt.  The initialized values are just placeholders--the array gets
  * overwrriten in tls_negotiate() depending on the $ssl_use_* options.
  *

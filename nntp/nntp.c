@@ -74,8 +74,10 @@
 
 struct stat;
 
-struct NntpAccountData *CurrentNewsSrv;
+/// Current news server
+struct NntpAccountData *CurrentNewsSrv = NULL;
 
+/// Fields to get from server, if it supports the LIST OVERVIEW.FMT feature
 const char *OverviewFmt = "Subject:\0"
                           "From:\0"
                           "Date:\0"

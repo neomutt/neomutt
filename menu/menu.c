@@ -38,6 +38,7 @@
 
 struct ConfigSubset;
 
+/// Previous search string, one for each #MenuType
 char *SearchBuffers[MENU_MAX];
 
 /**
