@@ -31,20 +31,11 @@
 #include "common.h"
 #include "test_common.h"
 
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "assumed_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY, 0,          0, NULL, },
-  { "charset",         DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE,   IP "utf-8", 0, NULL, },
-  { NULL },
-  // clang-format on
-};
-
 void test_rfc2047_decode(void)
 {
   // void rfc2047_decode(char **pd);
 
   test_neomutt_create();
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
 
   {
     rfc2047_decode(NULL);

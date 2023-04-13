@@ -29,20 +29,12 @@
 #include "core/lib.h"
 #include "test_common.h"
 
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "assumed_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY, 0, 0, NULL, },
-  { NULL },
-  // clang-format on
-};
-
 void test_mutt_ch_get_default_charset(void)
 {
   // const char *mutt_ch_get_default_charset(const struct Slist *const assumed_charset);
 
   {
     test_neomutt_create();
-    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
 
     const char *cs = mutt_ch_get_default_charset(NULL);
     TEST_CHECK(strlen(cs) != 0);

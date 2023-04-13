@@ -49,17 +49,9 @@ struct TestData
   { "foo bar <foo.bar> boo bar", "<foo.bar>", 17 },
 };
 
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "assumed_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY, 0, 0, NULL, },
-  { NULL },
-  // clang-format on
-};
-
 void test_mutt_extract_message_id(void)
 {
   test_neomutt_create();
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
 
   for (size_t i = 0; i < mutt_array_size(test); i++)
   {

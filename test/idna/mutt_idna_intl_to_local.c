@@ -33,9 +33,8 @@
 #ifdef HAVE_LIBIDN
 static struct ConfigDef Vars[] = {
   // clang-format off
-  { "charset",    DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, 0,    0, NULL, },
-  { "idn_decode", DT_BOOL,                                  true, 0, NULL, },
-  { "idn_encode", DT_BOOL,                                  true, 0, NULL, },
+  { "idn_decode", DT_BOOL, true, 0, NULL, },
+  { "idn_encode", DT_BOOL, true, 0, NULL, },
   { NULL },
   // clang-format on
 };
@@ -50,11 +49,15 @@ void test_mutt_idna_intl_to_local(void)
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
 
   {
-    TEST_CHECK(!mutt_idna_intl_to_local(NULL, "banana", MI_NO_FLAGS));
+    const char *addr = mutt_idna_intl_to_local(NULL, "banana", MI_NO_FLAGS);
+    TEST_CHECK(addr != NULL);
+    FREE(&addr);
   }
 
   {
-    TEST_CHECK(!mutt_idna_intl_to_local("apple", NULL, MI_NO_FLAGS));
+    const char *addr = mutt_idna_intl_to_local("apple", NULL, MI_NO_FLAGS);
+    TEST_CHECK(addr != NULL);
+    FREE(&addr);
   }
 
   test_neomutt_destroy();
