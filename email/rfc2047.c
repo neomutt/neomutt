@@ -693,12 +693,11 @@ void rfc2047_decode(char **pd)
 
       /* Add non-encoded part */
       {
-        const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
-        if (c_assumed_charset)
+        if (!slist_is_empty(CachedAssumedCharset))
         {
           char *conv = mutt_strn_dup(s, holelen);
           const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-          mutt_ch_convert_nonmime_string(c_assumed_charset, c_charset, &conv);
+          mutt_ch_convert_nonmime_string(CachedAssumedCharset, c_charset, &conv);
           buf_addstr(&buf, conv);
           FREE(&conv);
         }
@@ -777,17 +776,17 @@ void rfc2047_decode_addrlist(struct AddressList *al)
   if (!al)
     return;
 
-  const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
-
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    if (a->personal && ((strstr(a->personal, "=?")) || c_assumed_charset))
+    if (a->personal && ((strstr(a->personal, "=?")) || !slist_is_empty(CachedAssumedCharset)))
     {
       rfc2047_decode(&a->personal);
     }
     else if (a->group && a->mailbox && strstr(a->mailbox, "=?"))
+    {
       rfc2047_decode(&a->mailbox);
+    }
   }
 }
 

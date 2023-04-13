@@ -265,15 +265,14 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
        * Internet Gateways.  So we actually decode it.  */
 
       const bool c_rfc2047_parameters = cs_subset_bool(NeoMutt->sub, "rfc2047_parameters");
-      const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
       if (c_rfc2047_parameters && np->value && strstr(np->value, "=?"))
       {
         rfc2047_decode(&np->value);
       }
-      else if (c_assumed_charset)
+      else if (!slist_is_empty(CachedAssumedCharset))
       {
         const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-        mutt_ch_convert_nonmime_string(c_assumed_charset, c_charset, &np->value);
+        mutt_ch_convert_nonmime_string(CachedAssumedCharset, c_charset, &np->value);
       }
     }
     /* Single value with encoding:
