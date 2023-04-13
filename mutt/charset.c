@@ -40,7 +40,6 @@
 #include "memory.h"
 #include "queue.h"
 #include "regex3.h"
-#include "string2.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

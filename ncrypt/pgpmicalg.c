@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <iconv.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
