@@ -738,9 +738,8 @@ msgid "No newsgroups match the mask"
 msgstr "Ingen nyhetsgrupper stemmer overens med filmasken"
 
 #: browser/functions.c:156
-#, fuzzy
 msgid "There are no mailboxes"
-msgstr "Det er ingen meldinger"
+msgstr "Det er ingen e-postbokser"
 
 #: browser/functions.c:205 browser/functions.c:550 browser/functions.c:609
 msgid "No files match the file mask"
@@ -7501,7 +7500,6 @@ msgstr ""
 "og forslag.\n"
 
 #: version.c:88
-#, fuzzy
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
@@ -7517,19 +7515,19 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
-"    This program is free software; you can redistribute it and/or modify\n"
-"    it under the terms of the GNU General Public License as published by\n"
-"    the Free Software Foundation; either version 2 of the License, or\n"
-"    (at your option) any later version.\n"
-"\n"
-"    This program is distributed in the hope that it will be useful,\n"
-"    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"    GNU General Public License for more details.\n"
-"\n"
-"    You should have received a copy of the GNU General Public License\n"
-"    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
+"    Dette er fri programvare. Du kan vidareformidla og/eller endra henne under\n"
+"    vilkåra i GNU General Public-lisensen, utgjeven av Free Software\n"
+"    Foundation, anten versjon 2 av lisensen, eller, om du vil, ei seinare\n"
+"    utgåve.\n"
+"    \n"
+"    Dette programmet er formidla i von om at det kan vera brukande, men UTAN\n"
+"    NOKON GARANTI; ikkje ein gong med tanke på om programmet er eigna for sal\n"
+"    eller brukande til eitkvart føremål. Sjå GNU General Public-lisensen\n"
+"    for fleire detaljar.\n"
+"    \n"
+"    Det skal fylgja med ei utgåve av GNU General Public-lisensen saman\n"
+"    med programmet. Viss ikkje, kan du kontakta Free Software Foundation Inc.,\n"
+"    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 
 #: version.c:102
 msgid ""
