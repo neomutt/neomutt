@@ -1437,8 +1437,7 @@ const char *mutt_make_version(void)
 void mutt_encode_path(struct Buffer *buf, const char *src)
 {
   char *p = mutt_str_dup(src);
-  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-  int rc = mutt_ch_convert_string(&p, c_charset, "us-ascii", MUTT_ICONV_NO_FLAGS);
+  int rc = mutt_ch_convert_string(&p, CachedCharset, "us-ascii", MUTT_ICONV_NO_FLAGS);
   size_t len = buf_strcpy(buf, (rc == 0) ? NONULL(p) : NONULL(src));
 
   /* convert the path to POSIX "Portable Filename Character Set" */

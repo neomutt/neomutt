@@ -341,8 +341,7 @@ static void finalize_chunk(struct Buffer *res, struct Buffer *buf, char *charset
     return;
   char end = charset[charsetlen];
   charset[charsetlen] = '\0';
-  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-  mutt_ch_convert_string(&buf->data, charset, c_charset, MUTT_ICONV_HOOK_FROM);
+  mutt_ch_convert_string(&buf->data, charset, CachedCharset, MUTT_ICONV_HOOK_FROM);
   charset[charsetlen] = end;
   mutt_mb_filter_unprintable(&buf->data);
   buf_addstr(res, buf->data);
@@ -621,8 +620,7 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
  */
 void rfc2047_encode(char **pd, const char *specials, int col, const struct Slist *charsets)
 {
-  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-  if (!c_charset || !pd || !*pd)
+  if (!CachedCharset || !pd || !*pd)
     return;
 
   struct Slist *fallback = NULL;
@@ -634,7 +632,7 @@ void rfc2047_encode(char **pd, const char *specials, int col, const struct Slist
 
   char *e = NULL;
   size_t elen = 0;
-  encode(*pd, strlen(*pd), col, c_charset, charsets, &e, &elen, specials);
+  encode(*pd, strlen(*pd), col, CachedCharset, charsets, &e, &elen, specials);
 
   slist_free(&fallback);
   FREE(pd);
@@ -696,8 +694,7 @@ void rfc2047_decode(char **pd)
         if (!slist_is_empty(CachedAssumedCharset))
         {
           char *conv = mutt_strn_dup(s, holelen);
-          const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-          mutt_ch_convert_nonmime_string(CachedAssumedCharset, c_charset, &conv);
+          mutt_ch_convert_nonmime_string(CachedAssumedCharset, CachedCharset, &conv);
           buf_addstr(&buf, conv);
           FREE(&conv);
         }

@@ -1903,9 +1903,8 @@ void mutt_decode_attachment(struct Body *b, struct State *state)
       if (!charset && !slist_is_empty(CachedAssumedCharset))
         charset = mutt_ch_get_default_charset(CachedAssumedCharset);
     }
-    const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-    if (charset && c_charset)
-      cd = mutt_ch_iconv_open(c_charset, charset, MUTT_ICONV_HOOK_FROM);
+    if (charset && CachedCharset)
+      cd = mutt_ch_iconv_open(CachedCharset, charset, MUTT_ICONV_HOOK_FROM);
   }
 
   switch (b->encoding)

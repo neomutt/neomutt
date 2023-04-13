@@ -87,8 +87,7 @@ static void print_utf8(FILE *fp, const char *buf, size_t len)
 
   /* fromcode "utf-8" is sure, so we don't want
    * charset-hook corrections: flags must be 0.  */
-  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-  mutt_ch_convert_string(&tstr, "utf-8", c_charset, MUTT_ICONV_NO_FLAGS);
+  mutt_ch_convert_string(&tstr, "utf-8", CachedCharset, MUTT_ICONV_NO_FLAGS);
   fputs(tstr, fp);
   FREE(&tstr);
 }
