@@ -33,8 +33,8 @@ void test_mutt_hist_prev(void)
 {
   // char *mutt_hist_prev(enum HistoryClass hclass);
 
-  // NeoMutt = test_neomutt_create();
+  // test_neomutt_create();
   // config_init_history(NeoMutt->sub->cs);
 
-  // test_neomutt_destroy(&NeoMutt);
+  // test_neomutt_destroy();
 }

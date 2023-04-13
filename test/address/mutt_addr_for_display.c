@@ -59,7 +59,7 @@ void test_mutt_addr_for_display(void)
       .intl_checked = 0,
     };
 
-    NeoMutt = test_neomutt_create();
+    test_neomutt_create();
     TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
 
     const char *expected = "bob@bobsdomain";
@@ -67,6 +67,6 @@ void test_mutt_addr_for_display(void)
 
     TEST_CHECK_STR_EQ(expected, actual);
 
-    test_neomutt_destroy(&NeoMutt);
+    test_neomutt_destroy();
   }
 }

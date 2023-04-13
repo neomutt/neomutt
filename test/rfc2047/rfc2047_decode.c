@@ -43,7 +43,7 @@ void test_rfc2047_decode(void)
 {
   // void rfc2047_decode(char **pd);
 
-  NeoMutt = test_neomutt_create();
+  test_neomutt_create();
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
 
   {
@@ -84,5 +84,5 @@ void test_rfc2047_decode(void)
     }
   }
 
-  test_neomutt_destroy(&NeoMutt);
+  test_neomutt_destroy();
 }

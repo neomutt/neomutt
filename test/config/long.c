@@ -828,7 +828,7 @@ ti_out:
 
 void test_config_long(void)
 {
-  NeoMutt = test_neomutt_create();
+  test_neomutt_create();
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
 
@@ -854,5 +854,5 @@ void test_config_long(void)
   TEST_CHECK(test_inherit(cs, err));
   mutt_buffer_pool_release(&err);
 
-  test_neomutt_destroy(&NeoMutt);
+  test_neomutt_destroy();
 }

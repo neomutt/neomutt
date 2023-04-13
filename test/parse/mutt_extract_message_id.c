@@ -58,7 +58,7 @@ static struct ConfigDef Vars[] = {
 
 void test_mutt_extract_message_id(void)
 {
-  NeoMutt = test_neomutt_create();
+  test_neomutt_create();
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
 
   for (size_t i = 0; i < mutt_array_size(test); i++)
@@ -94,5 +94,5 @@ void test_mutt_extract_message_id(void)
       FREE(&tmp);
     }
   }
-  test_neomutt_destroy(&NeoMutt);
+  test_neomutt_destroy();
 }

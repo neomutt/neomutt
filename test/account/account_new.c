@@ -45,7 +45,7 @@ void test_account_new(void)
   }
 
   {
-    NeoMutt = test_neomutt_create();
+    test_neomutt_create();
     TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
 
     struct ConfigSubset *sub = cs_subset_new("account", NULL, NULL);
@@ -54,6 +54,6 @@ void test_account_new(void)
 
     account_free(&a);
     cs_subset_free(&sub);
-    test_neomutt_destroy(&NeoMutt);
+    test_neomutt_destroy();
   }
 }

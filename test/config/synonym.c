@@ -188,7 +188,7 @@ void test_config_synonym(void)
 {
   log_line(__func__);
 
-  NeoMutt = test_neomutt_create();
+  test_neomutt_create();
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
 
@@ -215,5 +215,5 @@ void test_config_synonym(void)
   TEST_CHECK(test_reset(sub, err));
   mutt_buffer_pool_release(&err);
 
-  test_neomutt_destroy(&NeoMutt);
+  test_neomutt_destroy();
 }

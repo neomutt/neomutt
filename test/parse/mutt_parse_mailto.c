@@ -69,7 +69,7 @@ void test_mutt_parse_mailto(void)
 {
   // int mutt_parse_mailto(struct Envelope *e, char **body, const char *src);
 
-  NeoMutt = test_neomutt_create();
+  test_neomutt_create();
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
 
   mutt_list_insert_head(&MailToAllow, "cc");
@@ -119,5 +119,5 @@ void test_mutt_parse_mailto(void)
     mutt_env_free(&env);
   }
 
-  test_neomutt_destroy(&NeoMutt);
+  test_neomutt_destroy();
 }

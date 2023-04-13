@@ -46,7 +46,7 @@ void test_mutt_idna_intl_to_local(void)
   // char *mutt_idna_intl_to_local(const char *user, const char *domain, uint8_t flags);
 
 #ifdef HAVE_LIBIDN
-  NeoMutt = test_neomutt_create();
+  test_neomutt_create();
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
 
   {
@@ -57,6 +57,6 @@ void test_mutt_idna_intl_to_local(void)
     TEST_CHECK(!mutt_idna_intl_to_local("apple", NULL, MI_NO_FLAGS));
   }
 
-  test_neomutt_destroy(&NeoMutt);
+  test_neomutt_destroy();
 #endif
 }

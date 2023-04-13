@@ -33,7 +33,7 @@ void test_mutt_file_mkstemp_full(void)
 {
   // FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func);
 
-  NeoMutt = test_neomutt_create();
+  test_neomutt_create();
 
   {
     FILE *fp = NULL;
@@ -47,5 +47,5 @@ void test_mutt_file_mkstemp_full(void)
     fclose(fp);
   }
 
-  test_neomutt_destroy(&NeoMutt);
+  test_neomutt_destroy();
 }

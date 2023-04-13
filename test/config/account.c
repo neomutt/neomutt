@@ -46,7 +46,7 @@ void test_config_account(void)
   struct Buffer *err = mutt_buffer_pool_get();
 
   int rc = 0;
-  NeoMutt = test_neomutt_create();
+  test_neomutt_create();
   struct ConfigSet *cs = NeoMutt->sub->cs;
 
   if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
@@ -237,6 +237,6 @@ void test_config_account(void)
   account_free(&a);
   cs_subset_free(&sub);
   mutt_buffer_pool_release(&err);
-  test_neomutt_destroy(&NeoMutt);
+  test_neomutt_destroy();
   log_line(__func__);
 }

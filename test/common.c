@@ -116,7 +116,7 @@ void test_fini(void)
   mutt_buffer_pool_free();
 }
 
-struct NeoMutt *test_neomutt_create(void)
+bool test_neomutt_create(void)
 {
   struct ConfigSet *cs = cs_new(50);
   CONFIG_INIT_TYPE(cs, Address);
@@ -133,18 +133,18 @@ struct NeoMutt *test_neomutt_create(void)
   CONFIG_INIT_TYPE(cs, Sort);
   CONFIG_INIT_TYPE(cs, String);
 
-  struct NeoMutt *n = neomutt_new(cs);
+  NeoMutt = neomutt_new(cs);
+  TEST_CHECK(NeoMutt != NULL);
 
-  cs_register_variables(cs, Vars, DT_NO_FLAGS);
-  return n;
+  TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS));
+
+  return NeoMutt;
 }
 
-void test_neomutt_destroy(struct NeoMutt **ptr)
+void test_neomutt_destroy(void)
 {
-  struct NeoMutt *n = *ptr;
-
-  struct ConfigSet *cs = n->sub->cs;
-  neomutt_free(ptr);
+  struct ConfigSet *cs = NeoMutt->sub->cs;
+  neomutt_free(&NeoMutt);
   cs_free(&cs);
 }
 
