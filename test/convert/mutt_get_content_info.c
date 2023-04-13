@@ -36,18 +36,8 @@
 
 static struct ConfigDef CharsetVars[] = {
   // clang-format off
-  { "assumed_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
-    "If a message is missing a character set, assume this character set"
-  },
-  { "charset", DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, 0, 0, charset_validator,
-    "Default character set for displaying text on screen"
-  },
-  { "config_charset", DT_STRING, 0, 0, charset_validator,
-    "Character set that the config files are in"
-  },
-  { "send_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY|DT_CHARSET_STRICT, IP "us-ascii:iso-8859-1:utf-8", 0, charset_slist_validator,
-    "Character sets for outgoing mail"
-  },
+  { "config_charset", DT_STRING, 0, 0, charset_validator, },
+  { "send_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY|DT_CHARSET_STRICT, IP "us-ascii:iso-8859-1:utf-8", 0, charset_slist_validator, },
   { NULL },
   // clang-format on
 };
@@ -72,7 +62,7 @@ void test_mutt_get_content_info(void)
   TEST_MSG("unable to write to temp file: %s", fname);
   close(fd);
 
-  NeoMutt = test_neomutt_create();
+  test_neomutt_create();
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
   cs_register_variables(cs, CharsetVars, DT_NO_FLAGS);

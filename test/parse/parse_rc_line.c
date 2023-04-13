@@ -1010,7 +1010,7 @@ static bool test_path_expanding(struct Buffer *err)
 
 void test_command_set(void)
 {
-  NeoMutt = test_neomutt_create();
+  test_neomutt_create();
 
   if (!TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, ConfigVars, 0)))
   {
@@ -1030,5 +1030,5 @@ void test_command_set(void)
   TEST_CHECK(test_path_expanding(err));
   mutt_buffer_pool_release(&err);
 
-  test_neomutt_destroy(&NeoMutt);
+  test_neomutt_destroy();
 }

@@ -33,12 +33,12 @@ void test_mutt_mktemp_full(void)
 {
   // void mutt_mktemp_full(char *buf, size_t buflen, const char *prefix, const char *suffix, const char *src, int line);
 
-  NeoMutt = test_neomutt_create();
+  test_neomutt_create();
 
   {
     char buf[256] = { 0 };
     mutt_mktemp_full(buf, sizeof(buf), NULL, NULL, __FILE__, __LINE__);
   }
 
-  test_neomutt_destroy(&NeoMutt);
+  test_neomutt_destroy();
 }

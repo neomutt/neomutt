@@ -31,6 +31,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "common.h" // IWYU pragma: keep
+#include "test_common.h"
 
 // clang-format off
 static struct ConfigDef Vars[] = {
@@ -350,7 +351,7 @@ void test_config_set(void)
   if (!TEST_CHECK(cs != NULL))
     return;
 
-  NeoMutt = neomutt_new(cs);
+  test_neomutt_create();
 
   const struct ConfigSetType CstDummy = {
     DT_STRING, "dummy", NULL, NULL, NULL, NULL, NULL, NULL,
@@ -489,7 +490,7 @@ void test_config_set(void)
   if (!creation_and_deletion_tests(cs, err))
     return;
 
-  neomutt_free(&NeoMutt);
+  test_neomutt_destroy();
   cs_free(&cs);
   mutt_buffer_pool_release(&err);
   log_line(__func__);

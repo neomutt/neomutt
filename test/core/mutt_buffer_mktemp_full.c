@@ -33,7 +33,7 @@ void test_mutt_buffer_mktemp_full(void)
 {
   // void mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
 
-  NeoMutt = test_neomutt_create();
+  test_neomutt_create();
 
   {
     struct Buffer buf = mutt_buffer_make(1024);
@@ -41,5 +41,5 @@ void test_mutt_buffer_mktemp_full(void)
     mutt_buffer_dealloc(&buf);
   }
 
-  test_neomutt_destroy(&NeoMutt);
+  test_neomutt_destroy();
 }

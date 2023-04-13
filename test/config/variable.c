@@ -43,7 +43,7 @@ void test_config_variable(void)
 {
   log_line(__func__);
 
-  NeoMutt = test_neomutt_create();
+  test_neomutt_create();
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
 
@@ -123,6 +123,6 @@ void test_config_variable(void)
   }
 
   mutt_buffer_pool_release(&err);
-  test_neomutt_destroy(&NeoMutt);
+  test_neomutt_destroy();
   log_line(__func__);
 }

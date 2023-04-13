@@ -33,8 +33,8 @@ void test_gen_path(char *buf, size_t buflen, const char *fmt);
 void test_init(void);
 void test_fini(void);
 
-struct NeoMutt *test_neomutt_create(void);
-void            test_neomutt_destroy(struct NeoMutt **ptr);
+bool test_neomutt_create (void);
+void test_neomutt_destroy(void);
 
 #define TEST_CHECK_STR_EQ(expected, actual)                                    \
   do                                                                           \
