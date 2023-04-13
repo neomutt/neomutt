@@ -983,7 +983,19 @@ static bool test_charset_validator(struct ConfigSubset *sub, struct Buffer *err)
 
   const char *name = "Wolfberry";
   buf_reset(err);
-  int rc = cs_str_string_set(cs, name, "utf-8", err);
+  int rc = cs_str_string_set(cs, name, "", err);
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("%s\n", buf_string(err));
+  }
+  else
+  {
+    TEST_MSG("%s\n", buf_string(err));
+    goto tv_out;
+  }
+
+  buf_reset(err);
+  rc = cs_str_string_set(cs, name, "utf-8", err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", buf_string(err));

@@ -141,6 +141,7 @@
   NEOMUTT_TEST_ITEM(test_config_account)                                       \
   NEOMUTT_TEST_ITEM(test_config_address)                                       \
   NEOMUTT_TEST_ITEM(test_config_bool)                                          \
+  NEOMUTT_TEST_ITEM(test_config_cache)                                         \
   NEOMUTT_TEST_ITEM(test_config_dump)                                          \
   NEOMUTT_TEST_ITEM(test_config_enum)                                          \
   NEOMUTT_TEST_ITEM(test_config_helpers)                                       \
