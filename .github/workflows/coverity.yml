@@ -14,7 +14,7 @@ jobs:
 
     env:
       TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
-      OPTIONS: --autocrypt --bdb --disable-doc --disable-idn --fmemopen --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --mixmaster --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
+      OPTIONS: --autocrypt --bdb --disable-doc --fmemopen --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --mixmaster --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
       COV_TOOLS: cov-tools
       COV_RESULTS: cov-int
 
@@ -24,7 +24,7 @@ jobs:
         [ -n "${{ secrets.COVERITY_SCAN_TOKEN }}" ]
 
     - name: Checkout Code
-      uses: actions/checkout@v3.5.0
+      uses: actions/checkout@v3
 
     - name: Configure NeoMutt
       run: ./configure $OPTIONS
@@ -44,7 +44,7 @@ jobs:
         sed -i '/TOKEN=/d' cov-int/build-log.txt
 
     - name: Upload build log
-      uses: actions/upload-artifact@v3.1.2
+      uses: actions/upload-artifact@v3
       with:
         name: build-log
         path: cov-int/build-log.txt

@@ -14,7 +14,7 @@ jobs:
     continue-on-error: true
 
     env:
-      CONFIGURE_OPTIONS: --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --testing --tokyocabinet --with-lock=fcntl --zlib --zstd
+      CONFIGURE_OPTIONS: --autocrypt --bdb --full-doc --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
 
     strategy:
       # Limit jobs to one at a time so that ccache really helps later builds
@@ -49,10 +49,10 @@ jobs:
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v3.5.0
+      uses: actions/checkout@v3
 
     - name: Checkout Test Files
-      uses: actions/checkout@v3.5.0
+      uses: actions/checkout@v3
       with:
         repository: neomutt/neomutt-test-files
         path: test-files
@@ -63,10 +63,10 @@ jobs:
         ./setup.sh
 
     - name: Compilation Cache
-      uses: hendrikmuhs/ccache-action@v1.2.8
+      uses: hendrikmuhs/ccache-action@v1
 
     - name: Configure Neomutt
-      run: ./configure --disable-doc --testing ${{ matrix.cfg.options }}
+      run: ./configure --disable-doc ${{ matrix.cfg.options }}
 
     - name: Build Neomutt
       run: |

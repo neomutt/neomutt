@@ -16,14 +16,14 @@ jobs:
 
     env:
       ASAN_OPTIONS: detect_leaks=1:color=never:log_path=asan:print_legend=false:print_summary=false
-      CONFIGURE_OPTIONS: --asan --autocrypt --bdb --disable-idn --full-doc --gdbm --gnutls --gpgme --gss --idn2 --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --testing --tokyocabinet --with-lock=fcntl --zlib --zstd
+      CONFIGURE_OPTIONS: --asan --autocrypt --bdb --full-doc --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v3.5.0
+      uses: actions/checkout@v3
 
     - name: Checkout Test Files
-      uses: actions/checkout@v3.5.0
+      uses: actions/checkout@v3
       with:
         repository: neomutt/neomutt-test-files
         path: test-files
@@ -34,7 +34,7 @@ jobs:
         ./setup.sh
 
     - name: Compilation Cache
-      uses: hendrikmuhs/ccache-action@v1.2.8
+      uses: hendrikmuhs/ccache-action@v1
 
     - name: Configure Neomutt
       run: ./configure $CONFIGURE_OPTIONS
@@ -49,7 +49,7 @@ jobs:
         make test
 
     - name: Upload ASAN Log
-      uses: actions/upload-artifact@v3.1.2
+      uses: actions/upload-artifact@v3
       if: failure()
       with:
         name: asan-log
