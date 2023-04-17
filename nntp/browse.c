@@ -73,7 +73,7 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
         char *desc = mutt_str_dup(folder->ff->nd->desc);
         const char *const c_newsgroups_charset = cs_subset_string(NeoMutt->sub, "newsgroups_charset");
         if (c_newsgroups_charset)
-          mutt_ch_convert_string(&desc, c_newsgroups_charset, CachedCharset, MUTT_ICONV_HOOK_FROM);
+          mutt_ch_convert_string(&desc, c_newsgroups_charset, cc_charset(), MUTT_ICONV_HOOK_FROM);
         mutt_mb_filter_unprintable(&desc);
 
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);

@@ -218,7 +218,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
   {
     const struct Slist *const c_attach_charset = cs_subset_slist(sub, "attach_charset");
     const struct Slist *const c_send_charset = cs_subset_slist(sub, "send_charset");
-    struct Slist *c_charset_slist = slist_parse(CachedCharset, SLIST_SEP_COLON);
+    struct Slist *c_charset_slist = slist_parse(cc_charset(), SLIST_SEP_COLON);
 
     const struct Slist *fchs = b->use_disp ?
                                    (c_attach_charset ? c_attach_charset : c_charset_slist) :
@@ -226,7 +226,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
 
     struct Slist *chs = slist_parse(mutt_param_get(&b->parameter, "charset"), SLIST_SEP_COLON);
 
-    if (CachedCharset && (chs || c_send_charset) &&
+    if (cc_charset() && (chs || c_send_charset) &&
         (mutt_convert_file_from_to(fp, fchs, chs ? chs : c_send_charset,
                                    &fromcode, &tocode, info) != (size_t) (-1)))
     {
@@ -260,8 +260,8 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
   {
     mutt_param_set(&b->parameter, "charset",
                    (!info->hibin ? "us-ascii" :
-                    CachedCharset && !mutt_ch_is_us_ascii(CachedCharset) ? CachedCharset :
-                                                                           "unknown-8bit"));
+                    cc_charset() && !mutt_ch_is_us_ascii(cc_charset()) ? cc_charset() :
+                                                                         "unknown-8bit"));
   }
 
   return info;

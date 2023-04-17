@@ -921,8 +921,6 @@ main
   notify_observer_add(NeoMutt->notify, NT_CONFIG, main_log_observer, NULL);
   notify_observer_add(NeoMutt->notify, NT_CONFIG, main_config_observer, NULL);
 
-  charset_cache_setup();
-
   if (sendflags & SEND_POSTPONED)
   {
     if (!OptNoCurses)
@@ -1405,7 +1403,6 @@ main_exit:
   alternates_free();
   mutt_keys_free();
   mutt_prex_free();
-  charset_cache_free();
   neomutt_free(&NeoMutt);
   cs_free(&cs);
   log_queue_flush(log_disp_terminal);

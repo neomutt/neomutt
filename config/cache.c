@@ -33,9 +33,9 @@
 #include "lib.h"
 
 /// Cached value of $assumed_charset
-const struct Slist *CachedAssumedCharset = NULL;
+static const struct Slist *CachedAssumedCharset = NULL;
 /// Cached value of $charset
-const char *CachedCharset = NULL;
+static const char *CachedCharset = NULL;
 
 /**
  * cc_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
@@ -66,23 +66,48 @@ static int cc_config_observer(struct NotifyCallback *nc)
 /**
  * charset_cache_setup - Setup a cache of some charset config variables
  */
-void charset_cache_setup(void)
+static void charset_cache_setup(void)
 {
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, cc_config_observer, NULL);
+  static bool init = false;
+  if (init)
+    return;
 
-  CachedAssumedCharset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
-  CachedCharset = cs_subset_string(NeoMutt->sub, "charset");
+  notify_observer_add(NeoMutt->notify, NT_CONFIG, cc_config_observer, NULL);
+  init = true;
 }
 
 /**
- * charset_cache_free - Cleanup the cache of charset config variables
+ * cc_assumed_charset - Get the cached value of $assumed_charset
+ * @retval ptr Value of $assumed_charset
  */
-void charset_cache_free(void)
+const struct Slist *cc_assumed_charset(void)
 {
-  if (NeoMutt)
-    notify_observer_remove(NeoMutt->notify, cc_config_observer, NULL);
+  static bool init = false;
 
-  // Don't free them, the config system owns the data
-  CachedAssumedCharset = NULL;
-  CachedCharset = NULL;
+  if (!init)
+  {
+    charset_cache_setup();
+    CachedAssumedCharset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
+    init = true;
+  }
+
+  return CachedAssumedCharset;
+}
+
+/**
+ * cc_charset - Get the cached value of $charset
+ * @retval ptr Value of $charset
+ */
+const char *cc_charset(void)
+{
+  static bool init = false;
+
+  if (!init)
+  {
+    charset_cache_setup();
+    CachedCharset = cs_subset_string(NeoMutt->sub, "charset");
+    init = true;
+  }
+
+  return CachedCharset;
 }

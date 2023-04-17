@@ -341,7 +341,7 @@ static void finalize_chunk(struct Buffer *res, struct Buffer *buf, char *charset
     return;
   char end = charset[charsetlen];
   charset[charsetlen] = '\0';
-  mutt_ch_convert_string(&buf->data, charset, CachedCharset, MUTT_ICONV_HOOK_FROM);
+  mutt_ch_convert_string(&buf->data, charset, cc_charset(), MUTT_ICONV_HOOK_FROM);
   charset[charsetlen] = end;
   mutt_mb_filter_unprintable(&buf->data);
   buf_addstr(res, buf->data);
@@ -620,7 +620,7 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
  */
 void rfc2047_encode(char **pd, const char *specials, int col, const struct Slist *charsets)
 {
-  if (!CachedCharset || !pd || !*pd)
+  if (!cc_charset() || !pd || !*pd)
     return;
 
   struct Slist *fallback = NULL;
@@ -632,7 +632,7 @@ void rfc2047_encode(char **pd, const char *specials, int col, const struct Slist
 
   char *e = NULL;
   size_t elen = 0;
-  encode(*pd, strlen(*pd), col, CachedCharset, charsets, &e, &elen, specials);
+  encode(*pd, strlen(*pd), col, cc_charset(), charsets, &e, &elen, specials);
 
   slist_free(&fallback);
   FREE(pd);
@@ -691,10 +691,10 @@ void rfc2047_decode(char **pd)
 
       /* Add non-encoded part */
       {
-        if (!slist_is_empty(CachedAssumedCharset))
+        if (!slist_is_empty(cc_assumed_charset()))
         {
           char *conv = mutt_strn_dup(s, holelen);
-          mutt_ch_convert_nonmime_string(CachedAssumedCharset, CachedCharset, &conv);
+          mutt_ch_convert_nonmime_string(cc_assumed_charset(), cc_charset(), &conv);
           buf_addstr(&buf, conv);
           FREE(&conv);
         }
@@ -776,7 +776,8 @@ void rfc2047_decode_addrlist(struct AddressList *al)
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    if (a->personal && ((strstr(a->personal, "=?")) || !slist_is_empty(CachedAssumedCharset)))
+    if (a->personal &&
+        ((strstr(a->personal, "=?")) || !slist_is_empty(cc_assumed_charset())))
     {
       rfc2047_decode(&a->personal);
     }

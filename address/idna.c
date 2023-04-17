@@ -137,10 +137,10 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, uint8_t flag
 #endif
 
   /* we don't want charset-hook effects, so we set flags to 0 */
-  if (mutt_ch_convert_string(&local_user, "utf-8", CachedCharset, MUTT_ICONV_NO_FLAGS) != 0)
+  if (mutt_ch_convert_string(&local_user, "utf-8", cc_charset(), MUTT_ICONV_NO_FLAGS) != 0)
     goto cleanup;
 
-  if (mutt_ch_convert_string(&local_domain, "utf-8", CachedCharset, MUTT_ICONV_NO_FLAGS) != 0)
+  if (mutt_ch_convert_string(&local_domain, "utf-8", cc_charset(), MUTT_ICONV_NO_FLAGS) != 0)
     goto cleanup;
 
   /* make sure that we can convert back and come out with the same
@@ -149,7 +149,7 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, uint8_t flag
   {
     reversed_user = mutt_str_dup(local_user);
 
-    if (mutt_ch_convert_string(&reversed_user, CachedCharset, "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
+    if (mutt_ch_convert_string(&reversed_user, cc_charset(), "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
     {
       mutt_debug(LL_DEBUG1, "Not reversible. Charset conv to utf-8 failed for user = '%s'\n",
                  reversed_user);
@@ -165,8 +165,7 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, uint8_t flag
 
     reversed_domain = mutt_str_dup(local_domain);
 
-    if (mutt_ch_convert_string(&reversed_domain, CachedCharset, "utf-8",
-                               MUTT_ICONV_NO_FLAGS) != 0)
+    if (mutt_ch_convert_string(&reversed_domain, cc_charset(), "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
     {
       mutt_debug(LL_DEBUG1, "Not reversible. Charset conv to utf-8 failed for domain = '%s'\n",
                  reversed_domain);
@@ -234,10 +233,10 @@ char *mutt_idna_local_to_intl(const char *user, const char *domain)
   char *intl_domain = mutt_str_dup(domain);
 
   /* we don't want charset-hook effects, so we set flags to 0 */
-  if (mutt_ch_convert_string(&intl_user, CachedCharset, "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
+  if (mutt_ch_convert_string(&intl_user, cc_charset(), "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
     goto cleanup;
 
-  if (mutt_ch_convert_string(&intl_domain, CachedCharset, "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
+  if (mutt_ch_convert_string(&intl_domain, cc_charset(), "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
     goto cleanup;
 
 #ifdef HAVE_LIBIDN

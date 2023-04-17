@@ -390,15 +390,15 @@ bail:
  */
 void imap_utf_encode(bool unicode, char **s)
 {
-  if (!CachedCharset || !s || !*s)
+  if (!cc_charset() || !s || !*s)
     return;
 
-  if (unicode && mutt_ch_is_utf8(CachedCharset))
+  if (unicode && mutt_ch_is_utf8(cc_charset()))
   {
     return;
   }
 
-  if (mutt_ch_convert_string(s, CachedCharset, "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
+  if (mutt_ch_convert_string(s, cc_charset(), "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
   {
     FREE(s);
     return;
@@ -419,10 +419,10 @@ void imap_utf_encode(bool unicode, char **s)
  */
 void imap_utf_decode(bool unicode, char **s)
 {
-  if (!CachedCharset || !s || !*s)
+  if (!cc_charset() || !s || !*s)
     return;
 
-  if (unicode && mutt_ch_is_utf8(CachedCharset))
+  if (unicode && mutt_ch_is_utf8(cc_charset()))
   {
     return;
   }
@@ -434,7 +434,7 @@ void imap_utf_decode(bool unicode, char **s)
     *s = utf8;
   }
 
-  if (mutt_ch_convert_string(s, "utf-8", CachedCharset, MUTT_ICONV_NO_FLAGS) != 0)
+  if (mutt_ch_convert_string(s, "utf-8", cc_charset(), MUTT_ICONV_NO_FLAGS) != 0)
   {
     FREE(s);
   }

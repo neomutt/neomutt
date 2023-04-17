@@ -139,14 +139,12 @@ bool test_neomutt_create(void)
   TEST_CHECK(NeoMutt != NULL);
 
   TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS));
-  charset_cache_setup();
 
   return NeoMutt;
 }
 
 void test_neomutt_destroy(void)
 {
-  charset_cache_free();
   struct ConfigSet *cs = NeoMutt->sub->cs;
   neomutt_free(&NeoMutt);
   cs_free(&cs);

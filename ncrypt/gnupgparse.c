@@ -423,7 +423,7 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
   if (fd_null == -1)
     return NULL;
 
-  mutt_str_replace(&Charset, CachedCharset);
+  mutt_str_replace(&Charset, cc_charset());
 
   pid = pgp_invoke_list_keys(NULL, &fp, NULL, -1, -1, fd_null, keyring, hints);
   if (pid == -1)

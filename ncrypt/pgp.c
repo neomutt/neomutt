@@ -426,7 +426,7 @@ static void pgp_copy_clearsigned(FILE *fp_in, struct State *state, char *charset
   /* fromcode comes from the MIME Content-Type charset label. It might
    * be a wrong label, so we want the ability to do corrections via
    * charset-hooks. Therefore we set flags to MUTT_ICONV_HOOK_FROM.  */
-  struct FgetConv *fc = mutt_ch_fgetconv_open(fp_in, charset, CachedCharset, MUTT_ICONV_HOOK_FROM);
+  struct FgetConv *fc = mutt_ch_fgetconv_open(fp_in, charset, cc_charset(), MUTT_ICONV_HOOK_FROM);
 
   for (complete = true, armor_header = true;
        mutt_ch_fgetconvs(buf, sizeof(buf), fc); complete = (strchr(buf, '\n')))
@@ -701,11 +701,11 @@ int pgp_class_application_handler(struct Body *m, struct State *state)
         char *expected_charset = (gpgcharset && *gpgcharset) ? gpgcharset : "utf-8";
 
         mutt_debug(LL_DEBUG3, "pgp: recoding inline from [%s] to [%s]\n",
-                   expected_charset, CachedCharset);
+                   expected_charset, cc_charset());
 
         rewind(fp_pgp_out);
         state_set_prefix(state);
-        fc = mutt_ch_fgetconv_open(fp_pgp_out, expected_charset, CachedCharset,
+        fc = mutt_ch_fgetconv_open(fp_pgp_out, expected_charset, cc_charset(),
                                    MUTT_ICONV_HOOK_FROM);
         while ((ch = mutt_ch_fgetconv(fc)) != EOF)
           state_prefix_putc(state, ch);
@@ -1755,7 +1755,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
   if (a->noconv)
     from_charset = body_charset;
   else
-    from_charset = CachedCharset;
+    from_charset = cc_charset();
 
   if (!mutt_ch_is_us_ascii(body_charset))
   {

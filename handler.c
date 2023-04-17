@@ -1900,11 +1900,11 @@ void mutt_decode_attachment(struct Body *b, struct State *state)
     if (!charset)
     {
       charset = mutt_param_get(&b->parameter, "charset");
-      if (!charset && !slist_is_empty(CachedAssumedCharset))
-        charset = mutt_ch_get_default_charset(CachedAssumedCharset);
+      if (!charset && !slist_is_empty(cc_assumed_charset()))
+        charset = mutt_ch_get_default_charset(cc_assumed_charset());
     }
-    if (charset && CachedCharset)
-      cd = mutt_ch_iconv_open(CachedCharset, charset, MUTT_ICONV_HOOK_FROM);
+    if (charset && cc_charset())
+      cd = mutt_ch_iconv_open(cc_charset(), charset, MUTT_ICONV_HOOK_FROM);
   }
 
   switch (b->encoding)

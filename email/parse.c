@@ -164,7 +164,7 @@ static void parse_parameters(struct ParameterList *pl, const char *s, bool allow
           s++;
           for (; *s; s++)
           {
-            if (!slist_is_empty(CachedAssumedCharset))
+            if (!slist_is_empty(cc_assumed_charset()))
             {
               // As iso-2022-* has a character of '"' with non-ascii state, ignore it
               if (*s == 0x1b)
@@ -516,7 +516,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
     else
     {
       mutt_param_set(&ct->parameter, "charset",
-                     mutt_ch_get_default_charset(CachedAssumedCharset));
+                     mutt_ch_get_default_charset(cc_assumed_charset()));
     }
   }
 }

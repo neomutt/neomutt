@@ -217,7 +217,7 @@ static void join_continuations(struct ParameterList *pl, struct Rfc2231Parameter
 
     if (encoded)
     {
-      mutt_ch_convert_string(&value, charset, CachedCharset, MUTT_ICONV_HOOK_FROM);
+      mutt_ch_convert_string(&value, charset, cc_charset(), MUTT_ICONV_HOOK_FROM);
       mutt_mb_filter_unprintable(&value);
     }
 
@@ -268,9 +268,9 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
       {
         rfc2047_decode(&np->value);
       }
-      else if (!slist_is_empty(CachedAssumedCharset))
+      else if (!slist_is_empty(cc_assumed_charset()))
       {
-        mutt_ch_convert_nonmime_string(CachedAssumedCharset, CachedCharset, &np->value);
+        mutt_ch_convert_nonmime_string(cc_assumed_charset(), cc_charset(), &np->value);
       }
     }
     /* Single value with encoding:
@@ -282,7 +282,7 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
 
       s = get_charset(np->value, charset, sizeof(charset));
       decode_one(np->value, s);
-      mutt_ch_convert_string(&np->value, charset, CachedCharset, MUTT_ICONV_HOOK_FROM);
+      mutt_ch_convert_string(&np->value, charset, cc_charset(), MUTT_ICONV_HOOK_FROM);
       mutt_mb_filter_unprintable(&np->value);
       dirty = true;
     }
@@ -373,15 +373,15 @@ size_t rfc2231_encode_string(struct ParameterList *head, const char *attribute, 
   if (encode)
   {
     const struct Slist *const c_send_charset = cs_subset_slist(NeoMutt->sub, "send_charset");
-    if (CachedCharset && c_send_charset)
+    if (cc_charset() && c_send_charset)
     {
-      charset = mutt_ch_choose(CachedCharset, c_send_charset, value,
+      charset = mutt_ch_choose(cc_charset(), c_send_charset, value,
                                mutt_str_len(value), &src_value, NULL);
     }
     if (src_value)
       free_src_value = true;
     if (!charset)
-      charset = mutt_str_dup(CachedCharset ? CachedCharset : "unknown-8bit");
+      charset = mutt_str_dup(cc_charset() ? cc_charset() : "unknown-8bit");
   }
   if (!src_value)
     src_value = value;

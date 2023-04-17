@@ -23,10 +23,7 @@
 #ifndef MUTT_CONFIG_CACHE_H
 #define MUTT_CONFIG_CACHE_H
 
-extern const struct Slist *CachedAssumedCharset;
-extern const char *CachedCharset;
-
-void charset_cache_setup(void);
-void charset_cache_free (void);
+const struct Slist *cc_assumed_charset(void);
+const char *        cc_charset        (void);
 
 #endif /* MUTT_CONFIG_CACHE_H */
