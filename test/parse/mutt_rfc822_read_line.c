@@ -28,7 +28,7 @@
 
 void test_mutt_rfc822_read_line(void)
 {
-  // char *mutt_rfc822_read_line(FILE *fp, char *line, size_t *linelen);
+  // size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *buf);
 
   {
     struct Buffer buf = { 0 };

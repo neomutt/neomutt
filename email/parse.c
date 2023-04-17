@@ -1095,13 +1095,17 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *out)
 
   while (true)
   {
-    if (!fgets(buf, linelen - offset, fp) || /* end of file or */
-        (IS_SPACE(*line) && !offset))        /* end of headers */
+    if (!fgets(buf, linelen - offset, fp))
     {
       return 0;
     }
 
     const size_t len = mutt_str_len(buf);
+    if ((IS_SPACE(*line) && !offset))
+    {
+      return len;
+    }
+
     if (len == 0)
     {
       return read;
@@ -1196,7 +1200,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
 
   while ((loc = ftello(fp)) != -1)
   {
-    if ((mutt_rfc822_read_line(fp, line) == 0) || (buf_len(line) == 0))
+    if (mutt_rfc822_read_line(fp, line) == 0)
     {
       break;
     }
