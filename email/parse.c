@@ -1097,18 +1097,20 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *out)
   {
     if (!fgets(buf, linelen - offset, fp))
     {
-      return 0;
+      read = 0;
+      goto done;
     }
 
     const size_t len = mutt_str_len(buf);
     if ((IS_SPACE(*line) && !offset))
     {
-      return len;
+      read = len;
+      goto done;
     }
 
     if (len == 0)
     {
-      return read;
+      goto done;
     }
     read += len;
 
@@ -1128,8 +1130,7 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *out)
       {
         ungetc(ch, fp);
         buf_addstr(out, line);
-        FREE(&line);
-        return read; /* next line is a separate header field or EOH */
+        goto done; /* next line is a separate header field or EOH */
       }
       ++read;
 
@@ -1155,7 +1156,10 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *out)
       buf = line + offset;
     }
   }
-  /* not reached */
+
+done:
+  FREE(&line);
+  return read;
 }
 
 /**
