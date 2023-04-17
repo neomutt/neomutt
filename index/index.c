@@ -198,6 +198,7 @@ static int config_reply_regex(struct Mailbox *m)
 
   regmatch_t pmatch[1];
 
+  const struct Regex *c_reply_regex = cs_subset_regex(NeoMutt->sub, "reply_regex");
   for (int i = 0; i < m->msg_count; i++)
   {
     struct Email *e = m->emails[i];
@@ -207,7 +208,6 @@ static int config_reply_regex(struct Mailbox *m)
     if (!env || !env->subject)
       continue;
 
-    const struct Regex *c_reply_regex = cs_subset_regex(NeoMutt->sub, "reply_regex");
     if (mutt_regex_capture(c_reply_regex, env->subject, 1, pmatch))
     {
       env->real_subj = env->subject + pmatch[0].rm_eo;

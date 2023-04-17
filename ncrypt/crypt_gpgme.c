@@ -3432,6 +3432,7 @@ static char *find_keys(const struct AddressList *addrlist, unsigned int app, boo
   struct AddressList hookal = TAILQ_HEAD_INITIALIZER(hookal);
 
   struct Address *a = NULL;
+  const bool c_crypt_confirm_hook = cs_subset_bool(NeoMutt->sub, "crypt_confirm_hook");
   TAILQ_FOREACH(a, addrlist, entries)
   {
     key_selected = false;
@@ -3447,7 +3448,6 @@ static char *find_keys(const struct AddressList *addrlist, unsigned int app, boo
       {
         keyid = crypt_hook->data;
         enum QuadOption ans = MUTT_YES;
-        const bool c_crypt_confirm_hook = cs_subset_bool(NeoMutt->sub, "crypt_confirm_hook");
         if (!oppenc_mode && c_crypt_confirm_hook)
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyid, p->mailbox);

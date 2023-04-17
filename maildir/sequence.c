@@ -389,15 +389,15 @@ int mh_seq_read(struct MhSequences *mhs, const char *path)
   if (!fp)
     return 0; /* yes, ask callers to silently ignore the error */
 
+  const char *const c_mh_seq_unseen = cs_subset_string(NeoMutt->sub, "mh_seq_unseen");
+  const char *const c_mh_seq_flagged = cs_subset_string(NeoMutt->sub, "mh_seq_flagged");
+  const char *const c_mh_seq_replied = cs_subset_string(NeoMutt->sub, "mh_seq_replied");
   while ((buf = mutt_file_read_line(buf, &sz, fp, NULL, MUTT_RL_NO_FLAGS)))
   {
     char *t = strtok(buf, " \t:");
     if (!t)
       continue;
 
-    const char *const c_mh_seq_unseen = cs_subset_string(NeoMutt->sub, "mh_seq_unseen");
-    const char *const c_mh_seq_flagged = cs_subset_string(NeoMutt->sub, "mh_seq_flagged");
-    const char *const c_mh_seq_replied = cs_subset_string(NeoMutt->sub, "mh_seq_replied");
     if (mutt_str_equal(t, c_mh_seq_unseen))
       flags = MH_SEQ_UNSEEN;
     else if (mutt_str_equal(t, c_mh_seq_flagged))

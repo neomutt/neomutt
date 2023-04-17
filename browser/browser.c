@@ -628,6 +628,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
 
     init_state(state, menu);
 
+    const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
     for (unsigned int i = 0; i < adata->groups_num; i++)
     {
       struct NntpMboxData *mdata = adata->groups_list[i];
@@ -635,7 +636,6 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
         continue;
       if (prefix && *prefix && !mutt_str_startswith(mdata->group, prefix))
         continue;
-      const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
       if (!mutt_regex_match(c_mask, mdata->group))
       {
         continue;
@@ -687,6 +687,8 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
 
     struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
     neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
+
+    const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
     while ((de = readdir(dir)))
     {
       if (mutt_str_equal(de->d_name, "."))
@@ -696,7 +698,6 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
       {
         continue;
       }
-      const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
       if (!mutt_regex_match(c_mask, de->d_name))
       {
         continue;
@@ -757,9 +758,9 @@ int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState 
 
     init_state(state, menu);
 
+    const bool c_show_only_unread = cs_subset_bool(NeoMutt->sub, "show_only_unread");
     for (unsigned int i = 0; i < adata->groups_num; i++)
     {
-      const bool c_show_only_unread = cs_subset_bool(NeoMutt->sub, "show_only_unread");
       struct NntpMboxData *mdata = adata->groups_list[i];
       if (mdata && (mdata->has_new_mail ||
                     (mdata->subscribed && (mdata->unread || !c_show_only_unread))))
@@ -783,6 +784,8 @@ int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState 
     struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
     neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
     struct MailboxNode *np = NULL;
+    const bool c_browser_abbreviate_mailboxes = cs_subset_bool(NeoMutt->sub, "browser_abbreviate_mailboxes");
+
     STAILQ_FOREACH(np, &ml, entries)
     {
       if (!np->mailbox)
@@ -795,7 +798,6 @@ int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState 
       }
 
       buf_strcpy(mailbox, mailbox_path(np->mailbox));
-      const bool c_browser_abbreviate_mailboxes = cs_subset_bool(NeoMutt->sub, "browser_abbreviate_mailboxes");
       if (c_browser_abbreviate_mailboxes)
         buf_pretty_mailbox(mailbox);
 

@@ -679,9 +679,9 @@ static int text_plain_handler(struct Body *b, struct State *state)
   char *buf = NULL;
   size_t sz = 0;
 
+  const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");
   while ((buf = mutt_file_read_line(buf, &sz, state->fp_in, NULL, MUTT_RL_NO_FLAGS)))
   {
-    const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");
     if (!mutt_str_equal(buf, "-- ") && c_text_flowed)
     {
       size_t len = mutt_str_len(buf);
@@ -1242,6 +1242,9 @@ static int multipart_handler(struct Body *a, struct State *state)
     b = a;
   }
 
+  const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
+  const bool c_include_only_first = cs_subset_bool(NeoMutt->sub, "include_only_first");
+
   for (p = b->parts, count = 1; p; p = p->next, count++)
   {
     if (state->flags & STATE_DISPLAY)
@@ -1260,7 +1263,6 @@ static int multipart_handler(struct Body *a, struct State *state)
         state_printf(state, _("[-- Attachment #%d --]\n"), count);
       }
       print_part_line(state, p, 0);
-      const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
       if (c_weed)
       {
         state_putc(state, '\n');
@@ -1281,7 +1283,6 @@ static int multipart_handler(struct Body *a, struct State *state)
                  TYPE(p), NONULL(p->subtype));
     }
 
-    const bool c_include_only_first = cs_subset_bool(NeoMutt->sub, "include_only_first");
     if ((state->flags & STATE_REPLYING) && c_include_only_first && (state->flags & STATE_FIRSTDONE))
     {
       break;

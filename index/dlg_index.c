@@ -1087,13 +1087,11 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   mutt_monitor_add(NULL);
 #endif
 
+  const bool c_collapse_all = cs_subset_bool(shared->sub, "collapse_all");
+  if (mutt_using_threads() && c_collapse_all)
   {
-    const bool c_collapse_all = cs_subset_bool(shared->sub, "collapse_all");
-    if (mutt_using_threads() && c_collapse_all)
-    {
-      collapse_all(shared->mailboxview, priv->menu, 0);
-      menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-    }
+    collapse_all(shared->mailboxview, priv->menu, 0);
+    menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
   }
 
   int rc = 0;

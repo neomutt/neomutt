@@ -1426,13 +1426,13 @@ static enum MxStatus maildir_mbox_sync(struct Mailbox *m)
 
   if (m->msg_deleted)
   {
+    const bool c_maildir_trash = cs_subset_bool(NeoMutt->sub, "maildir_trash");
     for (int i = 0, j = 0; i < m->msg_count; i++)
     {
       struct Email *e = m->emails[i];
       if (!e)
         break;
 
-      const bool c_maildir_trash = cs_subset_bool(NeoMutt->sub, "maildir_trash");
       if (!e->deleted || c_maildir_trash)
         e->index = j++;
     }

@@ -579,6 +579,7 @@ static int inline_forward_attachments(struct Mailbox *m, struct Email *e,
   mutt_generate_recvattach_list(actx, actx->email, actx->email->body,
                                 actx->fp_root, -1, 0, 0);
 
+  const enum QuadOption c_forward_attachments = cs_subset_quad(sub, "forward_attachments");
   for (i = 0; i < actx->idxlen; i++)
   {
     body = actx->idx[i]->body;
@@ -591,7 +592,6 @@ static int inline_forward_attachments(struct Mailbox *m, struct Email *e,
       /* Ask the quadoption only once */
       if (*forwardq == MUTT_ABORT)
       {
-        const enum QuadOption c_forward_attachments = cs_subset_quad(sub, "forward_attachments");
         *forwardq = query_quadoption(c_forward_attachments,
                                      /* L10N: This is the prompt for $forward_attachments.
                                         When inline forwarding ($mime_forward answered "no"), this prompts
@@ -1583,11 +1583,11 @@ cleanup:
  */
 void mutt_encode_descriptions(struct Body *b, bool recurse, struct ConfigSubset *sub)
 {
+  const struct Slist *const c_send_charset = cs_subset_slist(sub, "send_charset");
   for (struct Body *t = b; t; t = t->next)
   {
     if (t->description)
     {
-      const struct Slist *const c_send_charset = cs_subset_slist(sub, "send_charset");
       rfc2047_encode(&t->description, NULL, sizeof("Content-Description:"), c_send_charset);
     }
     if (recurse && t->parts)

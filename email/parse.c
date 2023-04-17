@@ -122,6 +122,7 @@ static void parse_parameters(struct ParameterList *pl, const char *s, bool allow
 
   mutt_debug(LL_DEBUG2, "'%s'\n", s);
 
+  const bool assumed = !slist_is_empty(cc_assumed_charset());
   while (*s)
   {
     buf_reset(buf);
@@ -164,7 +165,7 @@ static void parse_parameters(struct ParameterList *pl, const char *s, bool allow
           s++;
           for (; *s; s++)
           {
-            if (!slist_is_empty(cc_assumed_charset()))
+            if (assumed)
             {
               // As iso-2022-* has a character of '"' with non-ascii state, ignore it
               if (*s == 0x1b)

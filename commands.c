@@ -243,16 +243,17 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
   token = buf_pool_get();
   linebuf = buf_pool_get();
 
+  const char *const c_config_charset = cs_subset_string(NeoMutt->sub, "config_charset");
+  const char *const c_charset = cc_charset();
   while ((line = mutt_file_read_line(line, &linelen, fp, &lineno, MUTT_RL_CONT)) != NULL)
   {
-    const char *const c_config_charset = cs_subset_string(NeoMutt->sub, "config_charset");
-    const bool conv = c_config_charset && cc_charset();
+    const bool conv = c_config_charset && c_charset;
     if (conv)
     {
       currentline = mutt_str_dup(line);
       if (!currentline)
         continue;
-      mutt_ch_convert_string(&currentline, c_config_charset, cc_charset(), MUTT_ICONV_NO_FLAGS);
+      mutt_ch_convert_string(&currentline, c_config_charset, c_charset, MUTT_ICONV_NO_FLAGS);
     }
     else
     {
@@ -597,6 +598,7 @@ bail:
 enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
 {
+  const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
   while (MoreArgs(s))
   {
     struct Mailbox *m = mailbox_new();
@@ -617,7 +619,6 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     }
 
     buf_strcpy(&m->pathbuf, buf->data);
-    const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
     /* int rc = */ mx_path_canon2(m, c_folder);
 
     if (m->type <= MUTT_UNKNOWN)

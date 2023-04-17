@@ -686,6 +686,7 @@ static void pipe_attachment_list(const char *command, struct AttachCtx *actx,
                                  FILE *fp, bool tag, struct Body *top,
                                  bool filter, struct State *state)
 {
+  const bool c_attach_split = cs_subset_bool(NeoMutt->sub, "attach_split");
   for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
     if (tag)
@@ -695,7 +696,6 @@ static void pipe_attachment_list(const char *command, struct AttachCtx *actx,
     }
     if (!tag || top->tagged)
     {
-      const bool c_attach_split = cs_subset_bool(NeoMutt->sub, "attach_split");
       if (!filter && !c_attach_split)
         pipe_attachment(fp, top, state);
       else
@@ -810,6 +810,9 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 {
   char type[256] = { 0 };
 
+  const bool c_attach_split = cs_subset_bool(NeoMutt->sub, "attach_split");
+  const char *const c_attach_sep = cs_subset_string(NeoMutt->sub, "attach_sep");
+
   for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
     if (tag)
@@ -820,7 +823,6 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
     if (!tag || top->tagged)
     {
       snprintf(type, sizeof(type), "%s/%s", TYPE(top), top->subtype);
-      const bool c_attach_split = cs_subset_bool(NeoMutt->sub, "attach_split");
       if (!c_attach_split && !mailcap_lookup(top, type, sizeof(type), NULL, MUTT_MC_PRINT))
       {
         if (mutt_istr_equal("text/plain", top->subtype) ||
@@ -850,7 +852,6 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
             {
               mutt_file_copy_stream(fp_in, state->fp_out);
               mutt_file_fclose(&fp_in);
-              const char *const c_attach_sep = cs_subset_string(NeoMutt->sub, "attach_sep");
               if (c_attach_sep)
                 state_puts(state, c_attach_sep);
             }

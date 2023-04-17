@@ -689,9 +689,9 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   keymax = 0;
   i = 0;
   struct CryptKeyInfo **key_table = NULL;
+  const bool c_pgp_show_unusable = cs_subset_bool(NeoMutt->sub, "pgp_show_unusable");
   for (struct CryptKeyInfo *k = keys; k; k = k->next)
   {
-    const bool c_pgp_show_unusable = cs_subset_bool(NeoMutt->sub, "pgp_show_unusable");
     if (!c_pgp_show_unusable && (k->flags & KEYFLAG_CANTUSE))
     {
       unusable = true;

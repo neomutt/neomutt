@@ -390,15 +390,19 @@ bail:
  */
 void imap_utf_encode(bool unicode, char **s)
 {
-  if (!cc_charset() || !s || !*s)
+  if (!s || !*s)
     return;
 
-  if (unicode && mutt_ch_is_utf8(cc_charset()))
+  const char *c_charset = cc_charset();
+  if (!c_charset)
+    return;
+
+  if (unicode && mutt_ch_is_utf8(c_charset))
   {
     return;
   }
 
-  if (mutt_ch_convert_string(s, cc_charset(), "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
+  if (mutt_ch_convert_string(s, c_charset, "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
   {
     FREE(s);
     return;
@@ -419,10 +423,14 @@ void imap_utf_encode(bool unicode, char **s)
  */
 void imap_utf_decode(bool unicode, char **s)
 {
-  if (!cc_charset() || !s || !*s)
+  if (!s || !*s)
     return;
 
-  if (unicode && mutt_ch_is_utf8(cc_charset()))
+  const char *c_charset = cc_charset();
+  if (!c_charset)
+    return;
+
+  if (unicode && mutt_ch_is_utf8(c_charset))
   {
     return;
   }
@@ -434,7 +442,7 @@ void imap_utf_decode(bool unicode, char **s)
     *s = utf8;
   }
 
-  if (mutt_ch_convert_string(s, "utf-8", cc_charset(), MUTT_ICONV_NO_FLAGS) != 0)
+  if (mutt_ch_convert_string(s, "utf-8", c_charset, MUTT_ICONV_NO_FLAGS) != 0)
   {
     FREE(s);
   }

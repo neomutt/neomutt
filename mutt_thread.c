@@ -404,13 +404,13 @@ void mutt_draw_tree(struct ThreadsContext *tctx)
   calculate_visibility(tree, &max_depth);
   pfx = mutt_mem_malloc((width * max_depth) + 2);
   arrow = mutt_mem_malloc((width * max_depth) + 2);
+  const bool c_hide_limited = cs_subset_bool(NeoMutt->sub, "hide_limited");
+  const bool c_hide_missing = cs_subset_bool(NeoMutt->sub, "hide_missing");
   while (tree)
   {
     if (depth != 0)
     {
       myarrow = arrow + (depth - start_depth - ((start_depth != 0) ? 0 : 1)) * width;
-      const bool c_hide_limited = cs_subset_bool(NeoMutt->sub, "hide_limited");
-      const bool c_hide_missing = cs_subset_bool(NeoMutt->sub, "hide_missing");
       if (start_depth == depth)
         myarrow[0] = nextdisp ? MUTT_TREE_LTEE : corner;
       else if (parent->message && !c_hide_limited)
@@ -524,6 +524,8 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
   time_t thisdate;
   int rc = 0;
 
+  const bool c_thread_received = cs_subset_bool(NeoMutt->sub, "thread_received");
+  const bool c_sort_re = cs_subset_bool(NeoMutt->sub, "sort_re");
   while (true)
   {
     while (!cur->message)
@@ -531,14 +533,12 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
 
     if (dateptr)
     {
-      const bool c_thread_received = cs_subset_bool(NeoMutt->sub, "thread_received");
       thisdate = c_thread_received ? cur->message->received : cur->message->date_sent;
       if ((*dateptr == 0) || (thisdate < *dateptr))
         *dateptr = thisdate;
     }
 
     env = cur->message->env;
-    const bool c_sort_re = cs_subset_bool(NeoMutt->sub, "sort_re");
     if (env->real_subj && ((env->real_subj != env->subject) || !c_sort_re))
     {
       struct ListNode *np = NULL;
@@ -586,11 +586,11 @@ static struct MuttThread *find_subject(struct Mailbox *m, struct MuttThread *cur
   make_subject_list(&subjects, cur, &date);
 
   struct ListNode *np = NULL;
+  const bool c_thread_received = cs_subset_bool(NeoMutt->sub, "thread_received");
   STAILQ_FOREACH(np, &subjects, entries)
   {
     for (he = mutt_hash_find_bucket(m->subj_hash, np->data); he; he = he->next)
     {
-      const bool c_thread_received = cs_subset_bool(NeoMutt->sub, "thread_received");
       tmp = ((struct Email *) he->data)->thread;
       if ((tmp != cur) &&                  /* don't match the same message */
           !tmp->fake_thread &&             /* don't match pseudo threads */

@@ -433,6 +433,7 @@ static int nntp_auth(struct NntpAccountData *adata)
   char *method = NULL, *a = NULL, *p = NULL;
   unsigned char flags = conn->account.flags;
 
+  const char *const c_nntp_authenticators = cs_subset_string(NeoMutt->sub, "nntp_authenticators");
   while (true)
   {
     /* get login and password */
@@ -443,7 +444,6 @@ static int nntp_auth(struct NntpAccountData *adata)
     }
 
     /* get list of authenticators */
-    const char *const c_nntp_authenticators = cs_subset_string(NeoMutt->sub, "nntp_authenticators");
     if (c_nntp_authenticators)
     {
       mutt_str_copy(authenticators, c_nntp_authenticators, sizeof(authenticators));

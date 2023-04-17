@@ -566,11 +566,11 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
 
   progress = progress_new(_("Searching..."), MUTT_PROGRESS_READ, m->vcount);
 
+  const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
   for (int i = cur + incr, j = 0; j != m->vcount; j++)
   {
     const char *msg = NULL;
     progress_update(progress, j, -1);
-    const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
     if (i > m->vcount - 1)
     {
       i = 0;
@@ -727,11 +727,11 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
 
   progress = progress_new(_("Searching..."), MUTT_PROGRESS_READ, ARRAY_SIZE(ava));
 
+  const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
   for (int i = cur + incr, j = 0; j != ARRAY_SIZE(ava); j++)
   {
     const char *msg = NULL;
     progress_update(progress, j, -1);
-    const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
     if (i > ARRAY_SIZE(ava) - 1)
     {
       i = 0;

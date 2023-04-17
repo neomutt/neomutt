@@ -440,7 +440,9 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
       wraplen = c_wrap_headers;
   }
   else if (wraplen <= 0)
+  {
     wraplen = 78;
+  }
 
   const size_t vlen = mutt_str_len(v);
   if (tag)

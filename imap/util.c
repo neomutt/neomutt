@@ -678,9 +678,9 @@ void imap_error(const char *where, const char *msg)
 char *imap_fix_path(char delim, const char *mailbox, char *path, size_t plen)
 {
   int i = 0;
+  const char *const c_imap_delim_chars = cs_subset_string(NeoMutt->sub, "imap_delim_chars");
   for (; mailbox && *mailbox && (i < plen - 1); i++)
   {
-    const char *const c_imap_delim_chars = cs_subset_string(NeoMutt->sub, "imap_delim_chars");
     if (*mailbox == delim || (!delim && strchr(NONULL(c_imap_delim_chars), *mailbox)))
     {
       delim = *mailbox;
@@ -941,6 +941,7 @@ void imap_keepalive(void)
 {
   time_t now = mutt_date_now();
   struct Account *np = NULL;
+  const short c_imap_keepalive = cs_subset_number(NeoMutt->sub, "imap_keepalive");
   TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {
     if (np->type != MUTT_IMAP)
@@ -950,7 +951,6 @@ void imap_keepalive(void)
     if (!adata || !adata->mailbox)
       continue;
 
-    const short c_imap_keepalive = cs_subset_number(NeoMutt->sub, "imap_keepalive");
     if ((adata->state >= IMAP_AUTHENTICATED) && (now >= (adata->lastread + c_imap_keepalive)))
       imap_check_mailbox(adata->mailbox, true);
   }

@@ -214,11 +214,12 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
 
   info = mutt_mem_calloc(1, sizeof(struct Content));
 
+  const char *const c_charset = cc_charset();
   if (b && (b->type == TYPE_TEXT) && (!b->noconv && !b->force_charset))
   {
     const struct Slist *const c_attach_charset = cs_subset_slist(sub, "attach_charset");
     const struct Slist *const c_send_charset = cs_subset_slist(sub, "send_charset");
-    struct Slist *c_charset_slist = slist_parse(cc_charset(), SLIST_SEP_COLON);
+    struct Slist *c_charset_slist = slist_parse(c_charset, SLIST_SEP_COLON);
 
     const struct Slist *fchs = b->use_disp ?
                                    (c_attach_charset ? c_attach_charset : c_charset_slist) :
@@ -226,7 +227,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
 
     struct Slist *chs = slist_parse(mutt_param_get(&b->parameter, "charset"), SLIST_SEP_COLON);
 
-    if (cc_charset() && (chs || c_send_charset) &&
+    if (c_charset && (chs || c_send_charset) &&
         (mutt_convert_file_from_to(fp, fchs, chs ? chs : c_send_charset,
                                    &fromcode, &tocode, info) != (size_t) (-1)))
     {
@@ -259,9 +260,9 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
   if (b && (b->type == TYPE_TEXT) && (!b->noconv && !b->force_charset))
   {
     mutt_param_set(&b->parameter, "charset",
-                   (!info->hibin ? "us-ascii" :
-                    cc_charset() && !mutt_ch_is_us_ascii(cc_charset()) ? cc_charset() :
-                                                                         "unknown-8bit"));
+                   (!info->hibin                                 ? "us-ascii" :
+                    c_charset && !mutt_ch_is_us_ascii(c_charset) ? c_charset :
+                                                                   "unknown-8bit"));
   }
 
   return info;

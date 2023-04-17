@@ -526,10 +526,10 @@ char *mutt_hist_next(enum HistoryClass hclass)
     return ""; /* disabled */
 
   int next = h->cur;
+  const short c_history = cs_subset_number(NeoMutt->sub, "history");
   do
   {
     next++;
-    const short c_history = cs_subset_number(NeoMutt->sub, "history");
     if (next > c_history)
       next = 0;
     if (next == h->last)
@@ -554,10 +554,10 @@ char *mutt_hist_prev(enum HistoryClass hclass)
     return ""; /* disabled */
 
   int prev = h->cur;
+  const short c_history = cs_subset_number(NeoMutt->sub, "history");
   do
   {
     prev--;
-    const short c_history = cs_subset_number(NeoMutt->sub, "history");
     if (prev < 0)
       prev = c_history;
     if (prev == h->last)
@@ -603,6 +603,7 @@ void mutt_hist_read_file(void)
   if (!fp)
     return;
 
+  const char *const c_charset = cc_charset();
   while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_RL_NO_FLAGS)))
   {
     read = 0;
@@ -619,7 +620,7 @@ void mutt_hist_read_file(void)
     p = mutt_str_dup(linebuf + read);
     if (p)
     {
-      mutt_ch_convert_string(&p, "utf-8", cc_charset(), MUTT_ICONV_NO_FLAGS);
+      mutt_ch_convert_string(&p, "utf-8", c_charset, MUTT_ICONV_NO_FLAGS);
       mutt_hist_add(hclass, p, false);
       FREE(&p);
     }

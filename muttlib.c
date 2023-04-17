@@ -666,7 +666,9 @@ void mutt_save_path(char *buf, size_t buflen, const struct Address *addr)
     mutt_str_lower(buf);
   }
   else
+  {
     *buf = '\0';
+  }
 }
 
 /**
@@ -1504,9 +1506,13 @@ void mutt_get_parent_path(const char *path, char *buf, size_t buflen)
 
   const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
   if (mb_type == MUTT_IMAP)
+  {
     imap_get_parent_path(path, buf, buflen);
+  }
   else if (mb_type == MUTT_NOTMUCH)
+  {
     mutt_str_copy(buf, c_folder, buflen);
+  }
   else
   {
     mutt_str_copy(buf, path, buflen);

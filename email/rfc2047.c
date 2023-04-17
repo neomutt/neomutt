@@ -620,7 +620,11 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
  */
 void rfc2047_encode(char **pd, const char *specials, int col, const struct Slist *charsets)
 {
-  if (!cc_charset() || !pd || !*pd)
+  if (!pd || !*pd)
+    return;
+
+  const char *const c_charset = cc_charset();
+  if (!c_charset)
     return;
 
   struct Slist *fallback = NULL;
@@ -632,7 +636,7 @@ void rfc2047_encode(char **pd, const char *specials, int col, const struct Slist
 
   char *e = NULL;
   size_t elen = 0;
-  encode(*pd, strlen(*pd), col, cc_charset(), charsets, &e, &elen, specials);
+  encode(*pd, strlen(*pd), col, c_charset, charsets, &e, &elen, specials);
 
   slist_free(&fallback);
   FREE(pd);
@@ -668,6 +672,8 @@ void rfc2047_decode(char **pd)
   char *prev_charset = NULL;        /* Previously used charset                */
   size_t prev_charsetlen = 0;       /* Length of the previously used charset  */
 
+  const struct Slist *c_assumed_charset = cc_assumed_charset();
+  const char *c_charset = cc_charset();
   while (*s)
   {
     beg = parse_encoded_word(s, &enc, &charset, &charsetlen, &text, &textlen);
@@ -690,18 +696,16 @@ void rfc2047_decode(char **pd)
       }
 
       /* Add non-encoded part */
+      if (!slist_is_empty(c_assumed_charset))
       {
-        if (!slist_is_empty(cc_assumed_charset()))
-        {
-          char *conv = mutt_strn_dup(s, holelen);
-          mutt_ch_convert_nonmime_string(cc_assumed_charset(), cc_charset(), &conv);
-          buf_addstr(&buf, conv);
-          FREE(&conv);
-        }
-        else
-        {
-          buf_addstr_n(&buf, s, holelen);
-        }
+        char *conv = mutt_strn_dup(s, holelen);
+        mutt_ch_convert_nonmime_string(c_assumed_charset, c_charset, &conv);
+        buf_addstr(&buf, conv);
+        FREE(&conv);
+      }
+      else
+      {
+        buf_addstr_n(&buf, s, holelen);
       }
       s += holelen;
     }
@@ -754,9 +758,9 @@ void rfc2047_encode_addrlist(struct AddressList *al, const char *tag)
 
   int col = tag ? strlen(tag) + 2 : 32;
   struct Address *a = NULL;
+  const struct Slist *const c_send_charset = cs_subset_slist(NeoMutt->sub, "send_charset");
   TAILQ_FOREACH(a, al, entries)
   {
-    const struct Slist *const c_send_charset = cs_subset_slist(NeoMutt->sub, "send_charset");
     if (a->personal)
       rfc2047_encode(&a->personal, AddressSpecials, col, c_send_charset);
     else if (a->group && a->mailbox)
@@ -773,11 +777,11 @@ void rfc2047_decode_addrlist(struct AddressList *al)
   if (!al)
     return;
 
+  const bool assumed = !slist_is_empty(cc_assumed_charset());
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    if (a->personal &&
-        ((strstr(a->personal, "=?")) || !slist_is_empty(cc_assumed_charset())))
+    if (a->personal && ((strstr(a->personal, "=?")) || assumed))
     {
       rfc2047_decode(&a->personal);
     }

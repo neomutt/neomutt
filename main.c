@@ -1093,11 +1093,11 @@ main
 
         /* Scan for neomutt header to set `$resume_draft_files` */
         struct ListNode *np = NULL, *tmp = NULL;
+        const bool c_resume_edited_draft_files = cs_subset_bool(NeoMutt->sub, "resume_edited_draft_files");
         STAILQ_FOREACH_SAFE(np, &e->env->userhdrs, entries, tmp)
         {
           if (mutt_istr_startswith(np->data, "X-Mutt-Resume-Draft:"))
           {
-            const bool c_resume_edited_draft_files = cs_subset_bool(NeoMutt->sub, "resume_edited_draft_files");
             if (c_resume_edited_draft_files)
               cs_str_native_set(cs, "resume_draft_files", true, NULL);
 

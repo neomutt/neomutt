@@ -648,9 +648,9 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
   const short c_imap_keepalive = cs_subset_number(NeoMutt->sub, "imap_keepalive");
 #endif
 
+  const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
   while (true)
   {
-    const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
     int i = (c_timeout > 0) ? c_timeout : 60;
 #ifdef USE_IMAP
     /* keepalive may need to run more frequently than `$timeout` allows */

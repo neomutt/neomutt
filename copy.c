@@ -367,6 +367,8 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
   /* Now output the headers in order */
   bool error = false;
   char **hp = NULL;
+  const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
+
   ARRAY_FOREACH(hp, &headers)
   {
     if (!error && hp && *hp)
@@ -376,7 +378,6 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       if (chflags & (CH_DECODE | CH_PREFIX))
       {
         const char *pre = (chflags & CH_PREFIX) ? prefix : NULL;
-        const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
         wraplen = mutt_window_wrap_cols(wraplen, c_wrap);
 
         if (mutt_write_one_header(fp_out, 0, *hp, pre, wraplen, chflags, NeoMutt->sub) == -1)
@@ -436,7 +437,8 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     fputs("MIME-Version: 1.0\n", fp_out);
     fputs("Content-Transfer-Encoding: 8bit\n", fp_out);
     fputs("Content-Type: text/plain; charset=", fp_out);
-    mutt_ch_canonical_charset(chsbuf, sizeof(chsbuf), cc_charset() ? cc_charset() : "us-ascii");
+    const char *const c_charset = cc_charset();
+    mutt_ch_canonical_charset(chsbuf, sizeof(chsbuf), c_charset ? c_charset : "us-ascii");
     mutt_addr_cat(buf, sizeof(buf), chsbuf, MimeSpecials);
     fputs(buf, fp_out);
     fputc('\n', fp_out);
