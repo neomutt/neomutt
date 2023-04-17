@@ -189,14 +189,13 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
 static void recode_buf(char *buf, size_t buflen)
 {
   const char *const c_config_charset = cs_subset_string(NeoMutt->sub, "config_charset");
-  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-  if (!c_config_charset || !c_charset)
+  if (!c_config_charset || !cc_charset())
     return;
 
   char *s = mutt_str_dup(buf);
   if (!s)
     return;
-  if (mutt_ch_convert_string(&s, c_charset, c_config_charset, MUTT_ICONV_NO_FLAGS) == 0)
+  if (mutt_ch_convert_string(&s, cc_charset(), c_config_charset, MUTT_ICONV_NO_FLAGS) == 0)
     mutt_str_copy(buf, s, buflen);
   FREE(&s);
 }

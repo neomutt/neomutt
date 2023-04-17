@@ -319,8 +319,7 @@ static void save_history(enum HistoryClass hclass, const char *str)
     return;
 
   tmp = mutt_str_dup(str);
-  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-  mutt_ch_convert_string(&tmp, c_charset, "utf-8", MUTT_ICONV_NO_FLAGS);
+  mutt_ch_convert_string(&tmp, cc_charset(), "utf-8", MUTT_ICONV_NO_FLAGS);
 
   /* Format of a history item (1 line): "<histclass>:<string>|".
    * We add a '|' in order to avoid lines ending with '\'. */
@@ -620,8 +619,7 @@ void mutt_hist_read_file(void)
     p = mutt_str_dup(linebuf + read);
     if (p)
     {
-      const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-      mutt_ch_convert_string(&p, "utf-8", c_charset, MUTT_ICONV_NO_FLAGS);
+      mutt_ch_convert_string(&p, "utf-8", cc_charset(), MUTT_ICONV_NO_FLAGS);
       mutt_hist_add(hclass, p, false);
       FREE(&p);
     }

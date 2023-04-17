@@ -215,10 +215,9 @@ static void join_continuations(struct ParameterList *pl, struct Rfc2231Parameter
         valp = par->value;
     } while (par && (mutt_str_equal(par->attribute, attribute)));
 
-    const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
     if (encoded)
     {
-      mutt_ch_convert_string(&value, charset, c_charset, MUTT_ICONV_HOOK_FROM);
+      mutt_ch_convert_string(&value, charset, cc_charset(), MUTT_ICONV_HOOK_FROM);
       mutt_mb_filter_unprintable(&value);
     }
 
@@ -265,15 +264,13 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
        * Internet Gateways.  So we actually decode it.  */
 
       const bool c_rfc2047_parameters = cs_subset_bool(NeoMutt->sub, "rfc2047_parameters");
-      const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
       if (c_rfc2047_parameters && np->value && strstr(np->value, "=?"))
       {
         rfc2047_decode(&np->value);
       }
-      else if (c_assumed_charset)
+      else if (!slist_is_empty(cc_assumed_charset()))
       {
-        const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-        mutt_ch_convert_nonmime_string(c_assumed_charset, c_charset, &np->value);
+        mutt_ch_convert_nonmime_string(cc_assumed_charset(), cc_charset(), &np->value);
       }
     }
     /* Single value with encoding:
@@ -285,8 +282,7 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
 
       s = get_charset(np->value, charset, sizeof(charset));
       decode_one(np->value, s);
-      const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-      mutt_ch_convert_string(&np->value, charset, c_charset, MUTT_ICONV_HOOK_FROM);
+      mutt_ch_convert_string(&np->value, charset, cc_charset(), MUTT_ICONV_HOOK_FROM);
       mutt_mb_filter_unprintable(&np->value);
       dirty = true;
     }
@@ -376,17 +372,16 @@ size_t rfc2231_encode_string(struct ParameterList *head, const char *attribute, 
 
   if (encode)
   {
-    const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
     const struct Slist *const c_send_charset = cs_subset_slist(NeoMutt->sub, "send_charset");
-    if (c_charset && c_send_charset)
+    if (cc_charset() && c_send_charset)
     {
-      charset = mutt_ch_choose(c_charset, c_send_charset, value,
+      charset = mutt_ch_choose(cc_charset(), c_send_charset, value,
                                mutt_str_len(value), &src_value, NULL);
     }
     if (src_value)
       free_src_value = true;
     if (!charset)
-      charset = mutt_str_dup(c_charset ? c_charset : "unknown-8bit");
+      charset = mutt_str_dup(cc_charset() ? cc_charset() : "unknown-8bit");
   }
   if (!src_value)
     src_value = value;

@@ -1899,14 +1899,12 @@ void mutt_decode_attachment(struct Body *b, struct State *state)
     const char *charset = b->charset;
     if (!charset)
     {
-      const struct Slist *const c_assumed_charset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
       charset = mutt_param_get(&b->parameter, "charset");
-      if (!charset && c_assumed_charset)
-        charset = mutt_ch_get_default_charset(c_assumed_charset);
+      if (!charset && !slist_is_empty(cc_assumed_charset()))
+        charset = mutt_ch_get_default_charset(cc_assumed_charset());
     }
-    const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-    if (charset && c_charset)
-      cd = mutt_ch_iconv_open(c_charset, charset, MUTT_ICONV_HOOK_FROM);
+    if (charset && cc_charset())
+      cd = mutt_ch_iconv_open(cc_charset(), charset, MUTT_ICONV_HOOK_FROM);
   }
 
   switch (b->encoding)

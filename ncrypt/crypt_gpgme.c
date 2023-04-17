@@ -2385,8 +2385,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *state, char *chars
   /* fromcode comes from the MIME Content-Type charset label. It might
    * be a wrong label, so we want the ability to do corrections via
    * charset-hooks. Therefore we set flags to MUTT_ICONV_HOOK_FROM.  */
-  const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-  struct FgetConv *fc = mutt_ch_fgetconv_open(fp, charset, c_charset, MUTT_ICONV_HOOK_FROM);
+  struct FgetConv *fc = mutt_ch_fgetconv_open(fp, charset, cc_charset(), MUTT_ICONV_HOOK_FROM);
 
   for (complete = true, armor_header = true;
        mutt_ch_fgetconvs(buf, sizeof(buf), fc); complete = (strchr(buf, '\n')))
@@ -2606,8 +2605,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *state)
       {
         int c;
         rewind(fp_out);
-        const char *const c_charset = cs_subset_string(NeoMutt->sub, "charset");
-        struct FgetConv *fc = mutt_ch_fgetconv_open(fp_out, "utf-8", c_charset,
+        struct FgetConv *fc = mutt_ch_fgetconv_open(fp_out, "utf-8", cc_charset(),
                                                     MUTT_ICONV_NO_FLAGS);
         while ((c = mutt_ch_fgetconv(fc)) != EOF)
         {

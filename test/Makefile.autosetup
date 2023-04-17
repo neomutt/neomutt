@@ -116,6 +116,7 @@ COMPRESS_OBJS	+= test/compress/zstd.o
 CONFIG_OBJS	= test/config/account.o \
 		  test/config/address.o \
 		  test/config/bool.o \
+		  test/config/cache.o \
 		  test/config/common.o \
 		  test/config/dump.o \
 		  test/config/enum.o \
