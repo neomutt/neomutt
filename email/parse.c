@@ -1141,7 +1141,6 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *out)
       }
 
       ungetc(ch, fp);
-      --read;
       *++buf = ' '; /* string is still terminated because we removed
                        at least one whitespace char above */
     }
