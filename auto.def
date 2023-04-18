@@ -1179,16 +1179,13 @@ if {[get-define CCACHE] ne {none}} {
 
 ###############################################################################
 # Generate targets and Makefile variables for subdirectories
-set vpath "\$(SRCDIR)"
+define VPATH "\$(SRCDIR)"
 foreach dir $subdirs {
-  append vpath ":\$(SRCDIR)/$dir"
   define-append ALL_TARGETS all-$dir
   define-append CLEAN_TARGETS clean-$dir
   define-append INSTALL_TARGETS install-$dir
   define-append UNINSTALL_TARGETS uninstall-$dir
-  define-append VPATH
 }
-define VPATH $vpath
 
 ###############################################################################
 # Define package timestamp (UTC) based on PACKAGE_VERSION for:
