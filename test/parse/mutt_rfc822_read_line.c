@@ -78,10 +78,18 @@ void test_mutt_rfc822_read_line(void)
     char input[] = "Head1: val1.1\n  val1.2\nHead2: val2.1\n val2.2\n";
     FILE *fp = fmemopen(input, sizeof(input), "r");
     struct Buffer *buf = buf_pool_get();
-    mutt_rfc822_read_line(fp, buf);
+
+    const size_t after1 = mutt_rfc822_read_line(fp, buf);
     TEST_CHECK_STR_EQ("Head1: val1.1 val1.2", buf_string(buf));
+
     mutt_rfc822_read_line(fp, buf);
     TEST_CHECK_STR_EQ("Head2: val2.1 val2.2", buf_string(buf));
+
+    fseek(fp, after1, SEEK_SET);
+    buf_reset(buf);
+    mutt_rfc822_read_line(fp, buf);
+    TEST_CHECK_STR_EQ("Head2: val2.1 val2.2", buf_string(buf));
+
     buf_pool_release(&buf);
     fclose(fp);
   }
