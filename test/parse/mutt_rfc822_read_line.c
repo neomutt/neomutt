@@ -34,9 +34,29 @@ static struct Rfc822ReadLineTestData
   size_t      read;
 } test_data[] = {
   {
-    "Subject: long\r\n  subject\r\n\r\n", 
+    "Subject: basic stuff\n",
+    "Subject: basic stuff",
+    21
+  },
+  {
+    "Subject: basic stuff\n\n  ",
+    "Subject: basic stuff",
+    21
+  },
+  {
+    "Subject: long\n subject\n", 
     "Subject: long subject",
-    26
+    23
+  },
+  {
+    "Subject: long\n      subject\n", 
+    "Subject: long subject",
+    28
+  },
+  {
+    "Subject: one\nAnother: two\n", 
+    "Subject: one",
+    13
   }
 };
 
@@ -54,6 +74,18 @@ void test_mutt_rfc822_read_line(void)
     TEST_CHECK(mutt_rfc822_read_line(&fp, NULL) == 0);
   }
 
+  {
+    char input[] = "Head1: val1.1\n  val1.2\nHead2: val2.1\n val2.2\n";
+    FILE *fp = fmemopen(input, sizeof(input), "r");
+    struct Buffer *buf = buf_pool_get();
+    mutt_rfc822_read_line(fp, buf);
+    TEST_CHECK_STR_EQ("Head1: val1.1 val1.2", buf_string(buf));
+    mutt_rfc822_read_line(fp, buf);
+    TEST_CHECK_STR_EQ("Head2: val2.1 val2.2", buf_string(buf));
+    buf_pool_release(&buf);
+    fclose(fp);
+  }
+
   for (size_t i = 0; i < mutt_array_size(test_data); ++i)
   {
     FILE *fp = fmemopen(test_data[i].input, strlen(test_data[i].input), "r");
@@ -62,11 +94,13 @@ void test_mutt_rfc822_read_line(void)
     long off = ftell(fp);
     if (!TEST_CHECK(read == test_data[i].read))
     {
+      TEST_MSG("Input   : %s" , test_data[i].input);
       TEST_MSG("Expected: %zu", test_data[i].read);
       TEST_MSG("Actual  : %zu", read);
     }
     if (!TEST_CHECK(read == off))
     {
+      TEST_MSG("Input   : %s" , test_data[i].input);
       TEST_MSG("Expected: %ld", off);
       TEST_MSG("Actual  : %zu", read);
     }
