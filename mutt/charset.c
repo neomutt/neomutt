@@ -603,16 +603,12 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, uint8_t fla
   }
 
   /* check if we have this pair cached already */
-  iconv_t cd = ICONV_T_INVALID;
   for (int i = 0; i < IconvCacheUsed; ++i)
   {
     if (strcmp(tocode1, IconvCache[i].tocode1) == 0 &&
         strcmp(fromcode1, IconvCache[i].fromcode1) == 0)
     {
-      cd = IconvCache[i].cd;
-
-      /* reset state */
-      iconv(cd, NULL, NULL, NULL, NULL);
+      iconv_t cd = IconvCache[i].cd;
 
       /* make room for this one at the top */
       struct IconvCacheEntry top = IconvCache[i];
@@ -621,46 +617,50 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, uint8_t fla
         IconvCache[j + 1] = IconvCache[j];
       }
       IconvCache[0] = top;
-      break;
+
+      if (iconv_t_valid(cd))
+      {
+        /* reset state */
+        iconv(cd, NULL, NULL, NULL, NULL);
+      }
+      return cd;
     }
   }
 
-  if (!iconv_t_valid(cd)) /* not found in cache */
+  /* not found in cache */
+  /* always apply iconv-hooks to suit system's iconv tastes */
+  tocode2 = mutt_ch_iconv_lookup(tocode1);
+  tocode2 = tocode2 ? tocode2 : tocode1;
+  fromcode2 = mutt_ch_iconv_lookup(fromcode1);
+  fromcode2 = fromcode2 ? fromcode2 : fromcode1;
+
+  /* call system iconv with names it appreciates */
+  iconv_t cd = iconv_open(tocode2, fromcode2);
+
+  if (IconvCacheUsed == ICONV_CACHE_SIZE)
   {
-    /* always apply iconv-hooks to suit system's iconv tastes */
-    tocode2 = mutt_ch_iconv_lookup(tocode1);
-    tocode2 = tocode2 ? tocode2 : tocode1;
-    fromcode2 = mutt_ch_iconv_lookup(fromcode1);
-    fromcode2 = fromcode2 ? fromcode2 : fromcode1;
-
-    /* call system iconv with names it appreciates */
-    cd = iconv_open(tocode2, fromcode2);
-
-    if (IconvCacheUsed == ICONV_CACHE_SIZE)
-    {
-      mutt_debug(LL_DEBUG2, "iconv: dropping %s -> %s from the cache\n",
-                 IconvCache[IconvCacheUsed - 1].fromcode1,
-                 IconvCache[IconvCacheUsed - 1].tocode1);
-      /* get rid of the oldest entry */
-      FREE(&IconvCache[IconvCacheUsed - 1].fromcode1);
-      FREE(&IconvCache[IconvCacheUsed - 1].tocode1);
-      iconv_close(IconvCache[IconvCacheUsed - 1].cd);
-      --IconvCacheUsed;
-    }
-
-    /* make room for this one at the top */
-    for (int j = IconvCacheUsed; j-- > 0;)
-    {
-      IconvCache[j + 1] = IconvCache[j];
-    }
-
-    ++IconvCacheUsed;
-
-    mutt_debug(LL_DEBUG2, "iconv: adding %s -> %s to the cache\n", fromcode1, tocode1);
-    IconvCache[0].fromcode1 = strdup(fromcode1);
-    IconvCache[0].tocode1 = strdup(tocode1);
-    IconvCache[0].cd = cd;
+    mutt_debug(LL_DEBUG2, "iconv: dropping %s -> %s from the cache\n",
+               IconvCache[IconvCacheUsed - 1].fromcode1,
+               IconvCache[IconvCacheUsed - 1].tocode1);
+    /* get rid of the oldest entry */
+    FREE(&IconvCache[IconvCacheUsed - 1].fromcode1);
+    FREE(&IconvCache[IconvCacheUsed - 1].tocode1);
+    iconv_close(IconvCache[IconvCacheUsed - 1].cd);
+    --IconvCacheUsed;
   }
+
+  /* make room for this one at the top */
+  for (int j = IconvCacheUsed; j-- > 0;)
+  {
+    IconvCache[j + 1] = IconvCache[j];
+  }
+
+  ++IconvCacheUsed;
+
+  mutt_debug(LL_DEBUG2, "iconv: adding %s -> %s to the cache\n", fromcode1, tocode1);
+  IconvCache[0].fromcode1 = strdup(fromcode1);
+  IconvCache[0].tocode1 = strdup(tocode1);
+  IconvCache[0].cd = cd;
 
   return cd;
 }
