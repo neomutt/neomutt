@@ -1073,64 +1073,59 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, const char *na
 /**
  * mutt_rfc822_read_line - Read a header line from a file
  * @param fp      File to read from
- * @param out     Buffer to store the result
+ * @param buf     Buffer to store the result
  * @retval num Number of bytes read from fp
  *
  * Reads an arbitrarily long header field, and looks ahead for continuation
  * lines.
  */
-size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *out)
+size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *buf)
 {
-  if (!fp || !out)
+  if (!fp || !buf)
     return 0;
 
-  buf_seek(out, 0);
-
-  size_t linelen = 1024;
-  char *line = mutt_mem_malloc(linelen);
-  char *buf = line;
-  int ch;
-  size_t offset = 0;
   size_t read = 0;
+  char line[1024] = { 0 }; /* RFC2822 specifies a maximum line length of 998 */
 
+  buf_seek(buf, 0);
   while (true)
   {
-    if (!fgets(buf, linelen - offset, fp))
+    if (!fgets(line, sizeof(line), fp))
     {
-      read = 0;
-      goto done;
+      return 0;
     }
 
-    const size_t len = mutt_str_len(buf);
-    if ((IS_SPACE(*line) && !offset))
+    const size_t linelen = mutt_str_len(line);
+    if (linelen == 0)
     {
-      read = len;
-      goto done;
+      break;
     }
 
-    if (len == 0)
+    if (IS_SPACE(line[0]) && buf_is_empty(buf))
     {
-      goto done;
+      read = linelen;
+      break;
     }
-    read += len;
 
-    buf += len - 1;
-    if (*buf == '\n')
+    read += linelen;
+
+    size_t off = linelen - 1;
+    if (line[off] == '\n')
     {
-      /* we did get a full line. remove trailing space */
-      while (IS_SPACE(*buf))
+      /* We did get a full line: remove trailing space */
+      do
       {
-        *buf-- = '\0'; /* we can't come beyond line's beginning because
-                        * it begins with a non-space */
-      }
+        line[off] = '\0';
+      } while (off && IS_SPACE(line[--off]));
 
       /* check to see if the next line is a continuation line */
-      ch = fgetc(fp);
+      char ch = fgetc(fp);
       if ((ch != ' ') && (ch != '\t'))
       {
+        /* next line is a separate header field or EOH */
         ungetc(ch, fp);
-        buf_addstr(out, line);
-        goto done; /* next line is a separate header field or EOH */
+        buf_addstr(buf, line);
+        break;
       }
       ++read;
 
@@ -1141,23 +1136,13 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *out)
       }
 
       ungetc(ch, fp);
-      *++buf = ' '; /* string is still terminated because we removed
-                       at least one whitespace char above */
+      line[off + 1] = ' '; /* string is still terminated because we removed
+                              at least one whitespace char above */
     }
 
-    buf++;
-    offset = buf - line;
-    if (linelen < (offset + 256))
-    {
-      /* grow the buffer */
-      linelen += 256;
-      mutt_mem_realloc(&line, linelen);
-      buf = line + offset;
-    }
+    buf_addstr(buf, line);
   }
 
-done:
-  FREE(&line);
   return read;
 }
 
