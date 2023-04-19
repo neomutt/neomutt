@@ -3124,7 +3124,7 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
         </para>
         <para>
           Finally, the validity field (<quote>%t</quote>) indicates how
-          well-certified a user-id is.  It's values depend on the backend used.
+          well-certified a user-id is.  Its values depend on the backend used.
           Note that S/MIME (which uses X509 certificates) has no concept of
           validity, so this field simply shows <literal>x</literal>.
           The possible values listed in <xref linkend="tab-pgp-menuvalidity" />.
@@ -3163,7 +3163,7 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
               <row>
                 <entry>+</entry>
                 <entry>f</entry>
-                <entry>indicates fully validity (fully trusted)</entry>
+                <entry>indicates full validity (fully trusted)</entry>
               </row>
               <row>
                 <entry>N/A</entry>
@@ -3189,14 +3189,14 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
             <literal>format=flowed</literal>-style messages (or
             <literal>f=f</literal> for short) are <literal>text/plain</literal>
             messages that consist of paragraphs which a receiver's mail client
-            may reformat to its own needs which mostly means to customize line
+            may reformat to its own needs, which mostly means to customize line
             lengths regardless of what the sender sent. Technically this is
             achieved by letting lines of a <quote>flowable</quote> paragraph
             end in spaces except for the last line.
           </para>
           <para>
-            While for text-mode clients like NeoMutt it's the best way to
-            assume only a standard 80x25 character cell terminal, it may be
+            While for text-mode clients like NeoMutt it's best to
+            assume only a standard 80x24 character cell terminal, it may be
             desired to let the receiver decide completely how to view
             a message.
           </para>
@@ -3212,8 +3212,8 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
           </para>
           <para>
             After editing, NeoMutt properly space-stuffs the message.
-            <emphasis>Space-stuffing</emphasis> is required by RFC3676 defining
-            <literal>format=flowed</literal> and means to prepend a space to:
+            <emphasis>Space-stuffing</emphasis> is required by RFC3676, defining
+            <literal>format=flowed</literal>, and means to prepend a space to:
           </para>
           <itemizedlist>
             <listitem>
@@ -3230,7 +3230,7 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
             <listitem>
               <para>
                 all lines starting with
-                <quote><literal>&gt;</literal></quote> which is not intended to
+                <quote><literal>&gt;</literal></quote>, which is not intended to
                 be a quote character
               </para>
             </listitem>
