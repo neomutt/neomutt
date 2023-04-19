@@ -42,8 +42,9 @@ struct Notify;
  */
 static const struct Mapping ConfigEventNames[] = {
   // clang-format off
-  { "NT_CONFIG_SET",   NT_CONFIG_SET   },
-  { "NT_CONFIG_RESET", NT_CONFIG_RESET },
+  { "NT_CONFIG_SET",     NT_CONFIG_SET     },
+  { "NT_CONFIG_RESET",   NT_CONFIG_RESET   },
+  { "NT_CONFIG_DELETED", NT_CONFIG_DELETED },
   { NULL, 0 },
   // clang-format on
 };
@@ -107,6 +108,10 @@ void cs_subset_free(struct ConfigSubset **ptr)
     return;
 
   struct ConfigSubset *sub = *ptr;
+
+  struct EventConfig ev_c = { sub, NULL, NULL };
+  mutt_debug(LL_NOTIFY, "NT_CONFIG_DELETED: ALL\n");
+  notify_send(sub->notify, NT_CONFIG, NT_CONFIG_DELETED, &ev_c);
 
   if (sub->cs && sub->name)
   {
@@ -501,11 +506,17 @@ int cs_subset_he_delete(const struct ConfigSubset *sub, struct HashElem *he, str
   if (!sub)
     return CSR_ERR_CODE;
 
+  const char *name = mutt_str_dup(he->key.strkey);
   int rc = cs_he_delete(sub->cs, he, err);
 
   if (CSR_RESULT(rc) == CSR_SUCCESS)
-    cs_subset_notify_observers(sub, NULL, NT_CONFIG_DELETED);
+  {
+    struct EventConfig ev_c = { sub, name, NULL };
+    mutt_debug(LL_NOTIFY, "NT_CONFIG_DELETED: %s\n", name);
+    notify_send(sub->notify, NT_CONFIG, NT_CONFIG_DELETED, &ev_c);
+  }
 
+  FREE(&name);
   return rc;
 }
 

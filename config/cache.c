@@ -32,10 +32,16 @@
 #include "core/lib.h"
 #include "lib.h"
 
+/// Is the cache enabled?
+static bool CacheActive = false;
 /// Cached value of $assumed_charset
 static const struct Slist *CachedAssumedCharset = NULL;
+/// Is $assumed_charset active?
+static bool CacheActiveAssumedCharset = false;
 /// Cached value of $charset
 static const char *CachedCharset = NULL;
+/// Is $charset active?
+static bool CacheActiveCharset = false;
 
 /**
  * cc_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
@@ -48,6 +54,18 @@ static int cc_config_observer(struct NotifyCallback *nc)
     return -1; // LCOV_EXCL_LINE
 
   struct EventConfig *ev_c = nc->event_data;
+
+  if ((nc->event_subtype == NT_CONFIG_DELETED) && !ev_c->name)
+  {
+    // Shutdown
+    CacheActive = false;
+    CacheActiveAssumedCharset = false;
+    CacheActiveCharset = false;
+    CachedAssumedCharset = NULL;
+    CachedCharset = NULL;
+
+    return 0;
+  }
 
   if (mutt_str_equal(ev_c->name, "assumed_charset"))
   {
@@ -68,12 +86,11 @@ static int cc_config_observer(struct NotifyCallback *nc)
  */
 static void charset_cache_setup(void)
 {
-  static bool init = false;
-  if (init)
+  if (CacheActive)
     return;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, cc_config_observer, NULL);
-  init = true;
+  CacheActive = true;
 }
 
 /**
@@ -82,13 +99,11 @@ static void charset_cache_setup(void)
  */
 const struct Slist *cc_assumed_charset(void)
 {
-  static bool init = false;
-
-  if (!init)
+  if (!CacheActiveAssumedCharset)
   {
     charset_cache_setup();
     CachedAssumedCharset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
-    init = true;
+    CacheActiveAssumedCharset = true;
   }
 
   return CachedAssumedCharset;
@@ -100,13 +115,11 @@ const struct Slist *cc_assumed_charset(void)
  */
 const char *cc_charset(void)
 {
-  static bool init = false;
-
-  if (!init)
+  if (!CacheActiveCharset)
   {
     charset_cache_setup();
     CachedCharset = cs_subset_string(NeoMutt->sub, "charset");
-    init = true;
+    CacheActiveCharset = true;
   }
 
   return CachedCharset;
