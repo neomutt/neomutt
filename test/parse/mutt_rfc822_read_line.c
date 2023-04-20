@@ -54,7 +54,7 @@ static struct Rfc822ReadLineTestData
     /*
      1234567890123\456789012\3
      */
-    "Subject: long\n subject\n", 
+    "Subject: long\n subject\n",
     "Subject: long subject",
     23
   },
@@ -62,7 +62,7 @@ static struct Rfc822ReadLineTestData
     /*
      1234567890123 45678901234567\8
      */
-    "Subject: long\n      subject\n", 
+    "Subject: long\n      subject\n",
     "Subject: long subject",
     28
   },
@@ -70,7 +70,7 @@ static struct Rfc822ReadLineTestData
     /*
      123456789012\3
      */
-    "Subject: one\nAnother: two\n", 
+    "Subject: one\nAnother: two\n",
     "Subject: one",
     13
   },
@@ -78,7 +78,7 @@ static struct Rfc822ReadLineTestData
     /*
      1234567890123456\7
      */
-    "Subject: one    \n", 
+    "Subject: one    \n",
     "Subject: one",
     17
   },
