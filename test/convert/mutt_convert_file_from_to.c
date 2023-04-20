@@ -54,6 +54,7 @@ void test_mutt_convert_file_from_to(void)
     slist_free(&fromcodes);
     slist_free(&tocodes);
     FREE(&tocode);
+    fclose(fp);
   }
 
   {
@@ -79,5 +80,6 @@ void test_mutt_convert_file_from_to(void)
     slist_free(&fromcodes);
     slist_free(&tocodes);
     FREE(&tocode);
+    fclose(fp);
   }
 }

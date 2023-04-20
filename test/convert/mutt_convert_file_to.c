@@ -31,7 +31,7 @@
 
 void test_mutt_convert_file_to(void)
 {
-  // static size_t convert_file_to(FILE *fp, const char *fromcode, struct Slist const *const tocodes,                               int *tocode, struct Content *info)
+  // static size_t convert_file_to(FILE *fp, const char *fromcode, struct Slist const *const tocodes, int *tocode, struct Content *info)
 
   {
     /* Conversion from us-ascii to UTF-8. */
@@ -72,6 +72,7 @@ void test_mutt_convert_file_to(void)
     TEST_MSG("Check failed: %d == 1", info.cr);
 
     slist_free(&tocodes);
+    fclose(fp);
   }
 
   {
@@ -89,6 +90,7 @@ void test_mutt_convert_file_to(void)
     TEST_MSG("Check failed: %d == -1", rc);
 
     slist_free(&tocodes);
+    fclose(fp);
   }
 
   {
@@ -106,6 +108,7 @@ void test_mutt_convert_file_to(void)
     TEST_MSG("Check failed: %d == -1", rc);
 
     slist_free(&tocodes);
+    fclose(fp);
   }
 
   {
@@ -126,6 +129,7 @@ void test_mutt_convert_file_to(void)
     TEST_MSG("Check failed: %d == 0", tocode);
 
     slist_free(&tocodes);
+    fclose(fp);
   }
 
   {
@@ -172,5 +176,6 @@ void test_mutt_convert_file_to(void)
     TEST_MSG("Check failed: %d == 1", info.cr);
 
     slist_free(&tocodes);
+    fclose(fp);
   }
 }
