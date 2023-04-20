@@ -28,6 +28,7 @@
 
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 /**
  * struct Buffer - String manipulation buffer
@@ -67,6 +68,7 @@ size_t         buf_addstr          (struct Buffer *buf, const char *s);
 size_t         buf_addstr_n        (struct Buffer *buf, const char *s, size_t len);
 int            buf_add_printf      (struct Buffer *buf, const char *fmt, ...)
                                     __attribute__((__format__(__printf__, 2, 3)));
+size_t         buf_gets            (struct Buffer *buf, FILE *fp);
 void           buf_join_str        (struct Buffer *str, const char *item, char sep);
 
 // Functions that INSERT into a Buffer
