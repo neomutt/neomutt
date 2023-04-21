@@ -263,7 +263,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
   }
   mutt_debug(LL_DEBUG2, "Credential exchange complete\n");
 
-  /* first octet is security levels supported. We want NONE */
+  /* first byte is security levels supported. We want NONE */
   server_conf_flags = ((char *) send_token.value)[0];
   if (!(((char *) send_token.value)[0] & GSS_AUTH_P_NONE))
   {

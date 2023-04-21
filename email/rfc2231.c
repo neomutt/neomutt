@@ -296,7 +296,7 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
       s[0] = '\0';
       s++; /* let s point to the first character of index. */
       for (t = s; (t[0] != '\0') && isdigit((unsigned char) t[0]); t++)
-        ; // do nothing
+        ;  // do nothing
 
       encoded = (t[0] == '*');
       t[0] = '\0';

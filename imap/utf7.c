@@ -30,7 +30,7 @@
  *
  * In modified UTF-7:
  *   - printable ascii 0x20-0x25 and 0x27-0x7e represents itself.
- *   - "&" (0x26) is represented by the two-octet sequence "&-"
+ *   - "&" (0x26) is represented by the two-byte sequence "&-"
  *   - other values use the UTF-16 representation of the code point
  *     and encode it using a modified version of BASE64.
  *   - BASE64 mode is enabled by "&" and disabled by "-".

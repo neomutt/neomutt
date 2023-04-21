@@ -61,9 +61,9 @@ struct TagArray nm_tag_str_to_tags(const char *tag_str)
     if (!tag && isspace(*p))
       continue;
     if (!tag)
-      tag = p; /* begin of the tag */
+      tag = p;     /* begin of the tag */
     if ((p[0] == ',') || (p[0] == ' '))
-      end = p; /* terminate the tag */
+      end = p;     /* terminate the tag */
     else if (p[1] == '\0')
       end = p + 1; /* end of optstr */
     if (!tag || !end)

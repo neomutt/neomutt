@@ -357,19 +357,19 @@ static void print_compile_options(struct CompileOptions *co, FILE *fp)
     const char *fmt = "?%s ";
     switch (co[i].enabled)
     {
-      case 0: // Disabled
+      case 0:                            // Disabled
         if (tty)
           fmt = "\033[1;31m-%s\033[0m "; // Escape, red
         else
           fmt = "-%s ";
         break;
-      case 1: // Enabled
+      case 1:                            // Enabled
         if (tty)
           fmt = "\033[1;32m+%s\033[0m "; // Escape, green
         else
           fmt = "+%s ";
         break;
-      case 2: // Devel only
+      case 2:                           // Devel only
         if (tty)
           fmt = "\033[1;36m%s\033[0m "; // Escape, cyan
         else

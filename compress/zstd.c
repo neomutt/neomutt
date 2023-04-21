@@ -42,8 +42,8 @@
  */
 struct ComprZstdCtx
 {
-  void *buf;   ///< Temporary buffer
-  short level; ///< Compression Level to be used
+  void *buf;       ///< Temporary buffer
+  short level;     ///< Compression Level to be used
 
   ZSTD_CCtx *cctx; ///< Compression context
   ZSTD_DCtx *dctx; ///< Decompression context

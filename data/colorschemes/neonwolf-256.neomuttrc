@@ -108,7 +108,7 @@ color body          brightcolor39   color233        "([a-z][a-z0-9+-]*://(((([a-
 color body          brightcolor39   color233        "((@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]),)*@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]):)?[0-9a-z_.+%$-]+@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\])"
 
 # simplified regex for URL & email
-#color body		magenta		default	"(ftp|https?|gopher|news|telnet|finger)://[^ \"\t\r\n]+"
-#color body		magenta		default	"[-a-z_0-9.]+@[-a-z_0-9.]+"
+#color body             magenta         default "(ftp|https?|gopher|news|telnet|finger)://[^ \"\t\r\n]+"
+#color body             magenta         default "[-a-z_0-9.]+@[-a-z_0-9.]+"
 
 # vi: ft=muttrc ts=4 sw=4 sts=4 et

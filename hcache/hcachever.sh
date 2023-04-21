@@ -78,7 +78,7 @@ md5prog () {
       ;;
   esac
 
-  echo $prog
+  echo "$prog"
 }
 
 DEST="$1"

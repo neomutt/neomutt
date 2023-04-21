@@ -69,7 +69,7 @@ struct SaslSockData
   unsigned int blen; ///< Size of the read buffer
   unsigned int bpos; ///< Current read position
 
-  void *sockdata; ///< Underlying socket data
+  void *sockdata;    ///< Underlying socket data
 
   /**
    * open - Open a socket Connection - Implements Connection::open() - @ingroup connection_open

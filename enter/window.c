@@ -100,7 +100,7 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
   if (ch & ~0xff)
     return false;
 
-  /* gather the octets into a wide character */
+  /* gather the bytes into a wide character */
   {
     char c = ch;
     size_t k = mbrtowc(&wc, &c, 1, wdata->mbstate);

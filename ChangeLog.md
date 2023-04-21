@@ -78,15 +78,15 @@
   - #3572 - fix hostname detection for hostname ending with a "."
   - #3596 - fix truncated SMTP lines in case of very long lines
   - #3600 - use `smime_sign_as` instead of `pgp_sign_as` when signing S/MIME messages
-  - #3697 - set `smime_sign_as` instead of `smime_default_key` when signing 
+  - #3697 - set `smime_sign_as` instead of `smime_default_key` when signing
   - #3609 - fix wrong message being marked as read with `$pager_read_delay = 1`
   - #3653 - fix negative new-mail count on maildir
-  - #3656 - skip zero width non-joiner character in the pager 
+  - #3656 - skip zero width non-joiner character in the pager
   - #3664 - handle text/vcard as not being an attachment, same as for text/x-vcard
   - #3666 - fix `hdr_order` not sorting last header correctly
   - #3673 - make exiting via SIGINT more graceful
   - #3700 - fix `unhook index-format-hook`
-  - #3709 - send: delete signature when sending fails #3709 
+  - #3709 - send: delete signature when sending fails #3709
   - #3727 - SMTP: try all available methods even if SASL is not compiled in
   - #3730 - fix decryption issue when postponing S/MIME encrypted mails
   - avoid unnecessary refreshes
@@ -97,7 +97,7 @@
   - #3629 - skip line rest of line after a warning
   - #3670 - `vfolder_format` is now deprecated, use `folder_format`
   - #3702 - rename `connect_timeout` to `socket_timeout`
-  - #3697 - `pgp_entry_format`: add %i expand for the key fingerprint 
+  - #3697 - `pgp_entry_format`: add %i expand for the key fingerprint
   - #3724 - rename `attribution` to `attribution_intro` and
     `post_indent_string` to `attribution_trailer`
   - config variables are now properly spelled with underscores between names,

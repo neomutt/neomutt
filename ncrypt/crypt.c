@@ -1303,9 +1303,9 @@ const char *crypt_get_fingerprint_or_id(const char *p, const char **pphint,
     {
       isid = 0; /* not an ID */
       if ((c == ' ') && ((hexdigits % 4) == 0))
-        ; /* skip blank before or after 4 hex digits */
+        ;       /* skip blank before or after 4 hex digits */
       else
-        break; /* any other character or position */
+        break;  /* any other character or position */
     }
   } while (c);
 

@@ -2920,7 +2920,7 @@ static char *list_to_pattern(struct ListHead *list)
     }
     n++; /* delimiter or end of string */
   }
-  n++; /* make sure to allocate at least one byte */
+  n++;   /* make sure to allocate at least one byte */
   p = mutt_mem_calloc(1, n);
   pattern = p;
   STAILQ_FOREACH(np, list, entries)
@@ -3188,7 +3188,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
 
     this_key_has_strong = false; /* strong and valid match */
     this_key_has_addr_match = false;
-    match = false; /* any match */
+    match = false;               /* any match */
 
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
     mutt_addrlist_parse(&alist, k->uid);

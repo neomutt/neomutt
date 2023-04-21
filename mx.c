@@ -763,11 +763,11 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
       emaillist_clear(&el);
     }
 
-    if (i == 0) /* success */
+    if (i == 0)       /* success */
       mutt_clear_error();
     else if (i == -1) /* horrible error, bail */
       goto cleanup;
-    else /* use regular append-copy mode */
+    else              /* use regular append-copy mode */
 #endif
     {
       struct Mailbox *m_read = mx_path_resolve(buf_string(mbox));

@@ -35,13 +35,13 @@
 bool ErrorBufMessage; ///< true if the last message was an error
 char ErrorBuf[256];   ///< Copy of the last error message
 
-char *HomeDir;       ///< User's home directory
-char *ShortHostname; ///< Short version of the hostname
+char *HomeDir;        ///< User's home directory
+char *ShortHostname;  ///< Short version of the hostname
 
-char *Username; ///< User's login name
+char *Username;       ///< User's login name
 
-char *CurrentFolder; ///< Currently selected mailbox
-char *LastFolder;    ///< Previously selected mailbox
+char *CurrentFolder;  ///< Currently selected mailbox
+char *LastFolder;     ///< Previously selected mailbox
 
 /* Lists of strings */
 // clang-format off
@@ -58,7 +58,7 @@ struct ListHead UserHeader           = STAILQ_HEAD_INITIALIZER(UserHeader);     
 SIG_ATOMIC_VOLATILE_T SigInt;   ///< true after SIGINT is received
 SIG_ATOMIC_VOLATILE_T SigWinch; ///< true after SIGWINCH is received
 
-enum MenuType CurrentMenu; ///< Current Menu, e.g. #MENU_PAGER
+enum MenuType CurrentMenu;      ///< Current Menu, e.g. #MENU_PAGER
 
 /* pseudo options */
 // clang-format off

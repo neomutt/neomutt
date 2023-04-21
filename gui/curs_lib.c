@@ -418,7 +418,7 @@ int mutt_any_key_to_continue(const char *s)
 
   char buf[64] = { 0 };
   while (read(fd, buf, sizeof(buf)) > 0)
-    ; // Mop up any remaining chars
+    ;                           // Mop up any remaining chars
 
   tcsetattr(fd, TCSANOW, &old); // Restore the previous tty settings
   close(fd);

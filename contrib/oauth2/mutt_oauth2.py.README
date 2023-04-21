@@ -226,13 +226,13 @@ disposable token storage file, as well as "--authorize", for example
 using this naming scheme:
 
  mutt_oauth2.py userid@myschool.edu.tokens \
-	--verbose \
-	--authorize \
-	--provider [google|microsoft] \
-	--encryption-pipe "gpg --encrypt --recipient <gpg-recipient@email.com>" \
-	--cloud-id <id> \
-	--cloud-secret <id> \
-	--authflow [authcode|localhostauthcode|devicecode]
+        --verbose \
+        --authorize \
+        --provider [google|microsoft] \
+        --encryption-pipe "gpg --encrypt --recipient <gpg-recipient@email.com>" \
+        --cloud-id <id> \
+        --cloud-secret <id> \
+        --authflow [authcode|localhostauthcode|devicecode]
 
 
 The script will ask questions and provide some instructions. For the
@@ -294,10 +294,10 @@ mutt. Your .muttrc would look something like:
  set smtp_url="smtp://${imap_user}@smtp.office365.com:587/"
  set imap_authenticators="oauthbearer:xoauth2"
  set imap_oauth_refresh_command="/path/to/script/mutt_oauth2.py \
-	${imap_user}.tokens \
-	--provider ${provider} \
-	--client_id ${client_id} \
-	--client_secret ${client_id}"
+        ${imap_user}.tokens \
+        --provider ${provider} \
+        --client_id ${client_id} \
+        --client_secret ${client_id}"
 
  set smtp_authenticators=${imap_authenticators}
  set smtp_oauth_refresh_command=${imap_oauth_refresh_command}
