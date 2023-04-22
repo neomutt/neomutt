@@ -4,7 +4,7 @@ docs/makedoc$(EXEEXT): $(SRCDIR)/docs/makedoc.c
 	$(CC_FOR_BUILD) -I. $(CFLAGS_FOR_BUILD) $(LDFLAGS_FOR_BUILD) \
 	    -o $@ $(SRCDIR)/docs/makedoc.c
 
-docs/neomuttrc: docs/makedoc$(EXEEXT) $(SRCDIR)/docs/neomuttrc.head \
+docs/neomuttrc: docs docs/makedoc$(EXEEXT) $(SRCDIR)/docs/neomuttrc.head \
 		$(SRCDIR)/docs/config.c
 	sed -e 's,@docdir@,$(docdir),' $(SRCDIR)/docs/neomuttrc.head \
 	    > docs/neomuttrc
@@ -32,11 +32,11 @@ srcdir_DOCFILES = $(SRCDIR)/docs/smime-notes.txt $(SRCDIR)/ChangeLog.md \
 all-docs:	docs $(CHUNKED_DOCFILES) docs/index.html docs/manual.txt \
 		docs/manual.html docs/neomuttrc docs/neomutt.1 docs/neomuttrc.5
 
-docs/manual.html:	docs/manual.xml $(SRCDIR)/docs/html.xsl \
+docs/manual.html:	docs docs/manual.xml $(SRCDIR)/docs/html.xsl \
 			$(SRCDIR)/docs/neomutt.css $(SRCDIR)/docs/neomutt.xsl
 	xsltproc --nonet -o $@ $(SRCDIR)/docs/html.xsl docs/manual.xml
 
-docs/manual.txt: docs/manual.html
+docs/manual.txt: docs docs/manual.html
 	-LC_ALL=C w3m -dump -O UTF8 docs/manual.html > $@ || \
 	LC_ALL=C lynx -localhost -dump -nolist -nonumbers -with_backspaces \
 		-display_charset=us-ascii docs/manual.html > $@ || \
@@ -45,11 +45,11 @@ docs/manual.txt: docs/manual.html
 
 $(CHUNKED_DOCFILES): docs/index.html
 
-docs/index.html: $(SRCDIR)/docs/chunk.xsl $(SRCDIR)/docs/neomutt.xsl \
+docs/index.html: docs $(SRCDIR)/docs/chunk.xsl $(SRCDIR)/docs/neomutt.xsl \
 		$(SRCDIR)/docs/neomutt.css docs/manual.xml
 	xsltproc --nonet -o docs/ $(SRCDIR)/docs/chunk.xsl docs/manual.xml > /dev/null 2>&1
 
-docs/neomuttrc.5:	docs/makedoc$(EXEEXT) $(SRCDIR)/docs/config.c \
+docs/neomuttrc.5:	docs docs/makedoc$(EXEEXT) $(SRCDIR)/docs/config.c \
 		$(SRCDIR)/docs/neomuttrc.man.head $(SRCDIR)/docs/neomuttrc.man.tail
 	( sed -e "/^\.TH/s|@MAN_DATE@|$(PACKAGE_DATE)|" \
 	    $(SRCDIR)/docs/neomuttrc.man.head && \
@@ -67,7 +67,7 @@ docs/neomutt.1:
 	    $(SRCDIR)/docs/neomutt.man \
 	) > $@
 
-docs/manual.xml:	docs/makedoc$(EXEEXT) $(SRCDIR)/docs/gen-map-doc \
+docs/manual.xml:	docs docs/makedoc$(EXEEXT) $(SRCDIR)/docs/gen-map-doc \
 		$(SRCDIR)/docs/manual.xml.head $(SRCDIR)/docs/manual.xml.tail\
 		$(SRCDIR)/functions.c $(SRCDIR)/docs/config.c $(SRCDIR)/opcodes.h
 	( sed -e "s/@VERSION@/$(PACKAGE_DATE)/; s!/usr/libexec!$(libexecdir)!g" \
@@ -117,7 +117,7 @@ clean-docs:
 	    docs/makedoc.Po docs/manual.txt docs/manual.xml \
 	    docs/neomuttrc
 
-validate-docs: docs/manual.xml
+validate-docs: docs docs/manual.xml
 	xmllint --noout --noblanks --postvalid docs/manual.xml
 
 spellcheck-docs:
@@ -128,7 +128,7 @@ spellcheck-docs:
 	-aspell -d american --mode=ccpp --encoding=utf-8 -p \
 	    docs/neomutt.pwl check docs/config.c
 
-sortcheck-docs: docs/manual.xml
+sortcheck-docs: docs docs/manual.xml
 	sed -n -e '1,/^<sect1 id="variables">/d' \
 	    -e '1,/^<sect1 id="functions">/s/<sect2 id="\([^"]*\)">/\1/p' \
 	    < docs/manual.xml > docs/vars.tmp.1
