@@ -45,22 +45,36 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1
 
     - name: Configure Neomutt
-      run: ./configure --full-doc ${{ matrix.cfg.options }}
+      run: |
+        mkdir build-${{ matrix.cfg.name }}
+        cd build-${{ matrix.cfg.name }}
+        ../configure --full-doc ${{ matrix.cfg.options }}
 
     - name: Build Neomutt
-      run: make -j 2 neomutt
+      run: |
+        cd build-${{ matrix.cfg.name }}
+        make -j 2 neomutt
 
     - name: Neomutt Version
-      run: ./neomutt -v
+      run: |
+        cd build-${{ matrix.cfg.name }}
+        ./neomutt -v
 
     - name: Test Docs
-      run: make validate-docs
+      run: |
+        cd build-${{ matrix.cfg.name }}
+        pwd
+        ls -C
+        make validate-docs
 
     - name: Build Tests
-      run: make -j 2 test/neomutt-test
+      run: |
+        cd build-${{ matrix.cfg.name }}
+        make -j 2 test/neomutt-test
 
     - name: Run Tests
       run: |
+        cd build-${{ matrix.cfg.name }}
         export NEOMUTT_TEST_DIR=$GITHUB_WORKSPACE/test-files
         make test
 
