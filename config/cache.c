@@ -54,6 +54,8 @@ static int cc_config_observer(struct NotifyCallback *nc)
     return -1; // LCOV_EXCL_LINE
 
   struct EventConfig *ev_c = nc->event_data;
+  if (!ev_c->name || !ev_c->he)
+    return 0;
 
   if ((nc->event_subtype == NT_CONFIG_DELETED) && !ev_c->name)
   {

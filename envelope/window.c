@@ -843,6 +843,9 @@ static int env_config_observer(struct NotifyCallback *nc)
     return -1;
 
   struct EventConfig *ev_c = nc->event_data;
+  if (!ev_c->name)
+    return 0;
+
   struct MuttWindow *win_env = nc->global_data;
 
   switch (ev_c->name[0])

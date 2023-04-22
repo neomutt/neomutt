@@ -197,6 +197,8 @@ static int ibar_config_observer(struct NotifyCallback *nc)
     return -1;
 
   struct EventConfig *ev_c = nc->event_data;
+  if (!ev_c->name)
+    return 0;
   if ((ev_c->name[0] != 's') && (ev_c->name[0] != 't'))
     return 0;
 

@@ -326,6 +326,9 @@ static int index_config_observer(struct NotifyCallback *nc)
     return -1;
 
   struct EventConfig *ev_c = nc->event_data;
+  if (!ev_c->name || !ev_c->he)
+    return 0;
+
   struct MuttWindow *win = nc->global_data;
 
   const struct ConfigDef *cdef = ev_c->he->data;
