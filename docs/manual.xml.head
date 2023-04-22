@@ -13004,7 +13004,7 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
           Also, because these config variables are not account-specific, they
           have been the cause of a proliferation of ways to mimic per-account
           setups using a combination of convoluted hooks and macros to modify
-          them on on folder change or on a keypress.
+          them on folder change or on a keypress.
         </para>
 
         <para>
@@ -14729,7 +14729,7 @@ set header_cache_compress_method = ""
         <title>Introduction</title>
         <para>
           The <quote>ifdef</quote> feature introduces three new commands to
-          NeoMutt and allow you to share one config file between versions of
+          NeoMutt and allows you to share one config file between versions of
           NeoMutt that may have different features compiled in.
         </para>
 
@@ -16235,7 +16235,7 @@ bind index \CG get-message
       <sect2 id="custom-tags-intro">
           <title>Introduction</title>
           <para>
-            Some backends allow to index and tags mail without storing the tags
+            Some backends allow to index and tag mail without storing the tags
             within the mail envelope. Two backends are currently implementing
             this feature. Notmuch handles them natively and IMAP stores them in
             custom IMAP keywords.
