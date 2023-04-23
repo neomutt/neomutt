@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include "pool.h"
 #include "buffer.h"
-#include "logging.h"
+#include "logging2.h"
 #include "memory.h"
 
 static size_t BufferPoolCount = 0;

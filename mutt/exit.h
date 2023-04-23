@@ -20,9 +20,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_EXIT_H
-#define MUTT_LIB_EXIT_H
+#ifndef MUTT_MUTT_EXIT_H
+#define MUTT_MUTT_EXIT_H
 
 void mutt_exit(int code);
 
-#endif /* MUTT_LIB_EXIT_H */
+#endif /* MUTT_MUTT_EXIT_H */

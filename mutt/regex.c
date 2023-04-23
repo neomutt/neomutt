@@ -37,7 +37,7 @@
 #include <string.h>
 #include "atoi.h"
 #include "buffer.h"
-#include "logging.h"
+#include "logging2.h"
 #include "mbyte.h"
 #include "memory.h"
 #include "message.h"

@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_CONN_GSASL_H
-#define MUTT_CONN_GSASL_H
+#ifndef MUTT_CONN_GSASL2_H
+#define MUTT_CONN_GSASL2_H
 
 #include <gsasl.h>
 
@@ -32,4 +32,4 @@ int         mutt_gsasl_client_new   (struct Connection *conn, const char *mech, 
 void        mutt_gsasl_done         (void);
 const char *mutt_gsasl_get_mech     (const char *requested_mech, const char *server_mechlist);
 
-#endif /* MUTT_CONN_GSASL_H */
+#endif /* MUTT_CONN_GSASL2_H */

@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEST_REGEX_H
-#define _TEST_REGEX_H
+#ifndef TEST_CONFIG_REGEX3_H
+#define TEST_CONFIG_REGEX3_H
 
 #include <stdbool.h>
 
 void config_regex(void);
 
-#endif /* _TEST_REGEX_H */
+#endif /* TEST_CONFIG_REGEX3_H */

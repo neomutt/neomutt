@@ -33,7 +33,7 @@
 #include <stdlib.h>
 #include "memory.h"
 #include "exit.h"
-#include "logging.h"
+#include "logging2.h"
 #include "message.h"
 
 /**

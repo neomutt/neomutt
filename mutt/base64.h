@@ -18,8 +18,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_BASE64_H
-#define MUTT_LIB_BASE64_H
+#ifndef MUTT_MUTT_BASE64_H
+#define MUTT_MUTT_BASE64_H
 
 #include <stdio.h>
 
@@ -35,4 +35,4 @@ size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen);
 int    mutt_b64_buffer_decode(struct Buffer *buf, const char *in);
 size_t mutt_b64_buffer_encode(struct Buffer *buf, const char *in, size_t len);
 
-#endif /* MUTT_LIB_BASE64_H */
+#endif /* MUTT_MUTT_BASE64_H */

@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_RANDOM_H
-#define MUTT_LIB_RANDOM_H
+#ifndef MUTT_MUTT_RANDOM_H
+#define MUTT_MUTT_RANDOM_H
 
 #include <stddef.h>
 #include <stdint.h>
@@ -30,4 +30,4 @@ uint32_t mutt_rand32(void);
 uint64_t mutt_rand64(void);
 void     mutt_rand_base32(char *buf, size_t buflen);
 
-#endif /* MUTT_LIB_RANDOM_H */
+#endif /* MUTT_MUTT_RANDOM_H */

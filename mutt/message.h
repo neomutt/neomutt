@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_MESSAGE_H
-#define MUTT_LIB_MESSAGE_H
+#ifndef MUTT_MUTT_MESSAGE_H
+#define MUTT_MUTT_MESSAGE_H
 
 #ifdef ENABLE_NLS
 #include <libintl.h>
@@ -37,4 +37,4 @@
 #define ngettext(x, xs, n) (((n) == 1) ? (x) : (xs))
 #endif
 
-#endif /* MUTT_LIB_MESSAGE_H */
+#endif /* MUTT_MUTT_MESSAGE_H */

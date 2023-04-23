@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_NOTIFY_TYPE_H
-#define MUTT_LIB_NOTIFY_TYPE_H
+#ifndef MUTT_MUTT_NOTIFY_TYPE_H
+#define MUTT_MUTT_NOTIFY_TYPE_H
 
 /**
  * enum NotifyType - Notification Types
@@ -55,4 +55,4 @@ enum NotifyType
   NT_WINDOW,    ///< MuttWindow has changed,        #NotifyWindow,    #EventWindow
 };
 
-#endif /* MUTT_LIB_NOTIFY_TYPE_H */
+#endif /* MUTT_MUTT_NOTIFY_TYPE_H */

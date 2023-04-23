@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEST_NUMBER_H
-#define _TEST_NUMBER_H
+#ifndef TEST_CONFIG_NUMBER_H
+#define TEST_CONFIG_NUMBER_H
 
 #include <stdbool.h>
 
 void config_number(void);
 
-#endif /* _TEST_NUMBER_H */
+#endif /* TEST_CONFIG_NUMBER_H */

@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_QSORT_R_H
-#define MUTT_LIB_QSORT_R_H
+#ifndef MUTT_MUTT_QSORT_R_H
+#define MUTT_MUTT_QSORT_R_H
 
 #include <stddef.h>
 
@@ -38,4 +38,4 @@ typedef int (*qsort_r_compar_t)(const void *a, const void *b, void *arg);
 
 void mutt_qsort_r(void *base, size_t nmemb, size_t size, qsort_r_compar_t compar, void *arg);
 
-#endif /* MUTT_LIB_QSORT_R_H */
+#endif /* MUTT_MUTT_QSORT_R_H */

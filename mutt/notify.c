@@ -30,7 +30,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "notify.h"
-#include "logging.h"
+#include "logging2.h"
 #include "memory.h"
 #include "queue.h"
 

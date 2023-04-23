@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_CHARSET_H
-#define MUTT_LIB_CHARSET_H
+#ifndef MUTT_MUTT_CHARSET_H
+#define MUTT_MUTT_CHARSET_H
 
 #include <iconv.h>
 #include <stdbool.h>
@@ -112,4 +112,4 @@ static inline bool iconv_t_valid(const iconv_t cd)
   return cd != ICONV_T_INVALID;
 }
 
-#endif /* MUTT_LIB_CHARSET_H */
+#endif /* MUTT_MUTT_CHARSET_H */

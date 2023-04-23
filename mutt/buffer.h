@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_BUFFER_H
-#define MUTT_LIB_BUFFER_H
+#ifndef MUTT_MUTT_BUFFER_H
+#define MUTT_MUTT_BUFFER_H
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -83,4 +83,4 @@ static inline const char *buf_string(const struct Buffer *buf)
   return buf->data;
 }
 
-#endif /* MUTT_LIB_BUFFER_H */
+#endif /* MUTT_MUTT_BUFFER_H */

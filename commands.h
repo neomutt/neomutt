@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMMAND_PARSE_H
-#define MUTT_COMMAND_PARSE_H
+#ifndef MUTT_COMMANDS_H
+#define MUTT_COMMANDS_H
 
 #include "config.h"
 #include <stdint.h>
@@ -57,4 +57,4 @@ int source_rc(const char *rcfile_path, struct Buffer *err);
 
 enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err);
 
-#endif /* MUTT_COMMAND_PARSE_H */
+#endif /* MUTT_COMMANDS_H */

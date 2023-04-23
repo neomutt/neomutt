@@ -35,7 +35,7 @@
 #include <string.h>
 #include "buffer.h"
 #include "exit.h"
-#include "logging.h"
+#include "logging2.h"
 #include "memory.h"
 #include "message.h"
 #include "string2.h"

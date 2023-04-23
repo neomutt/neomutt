@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_FILE_H
-#define MUTT_LIB_FILE_H
+#ifndef MUTT_MUTT_FILE_H
+#define MUTT_MUTT_FILE_H
 
 #include "config.h"
 #include <dirent.h>
@@ -144,4 +144,4 @@ void        mutt_file_resolve_symlink(struct Buffer *buf);
 void        buf_quote_filename(struct Buffer *buf, const char *filename, bool add_outer);
 void        buf_file_expand_fmt_quote(struct Buffer *dest, const char *fmt, const char *src);
 
-#endif /* MUTT_LIB_FILE_H */
+#endif /* MUTT_MUTT_FILE_H */

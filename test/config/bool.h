@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEST_BOOL_H
-#define _TEST_BOOL_H
+#ifndef TEST_CONFIG_BOOL_H
+#define TEST_CONFIG_BOOL_H
 
 #include <stdbool.h>
 
 void config_bool(void);
 
-#endif /* _TEST_BOOL_H */
+#endif /* TEST_CONFIG_BOOL_H */

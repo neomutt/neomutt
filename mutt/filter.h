@@ -18,8 +18,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_FILTER_H
-#define MUTT_LIB_FILTER_H
+#ifndef MUTT_MUTT_FILTER_H
+#define MUTT_MUTT_FILTER_H
 
 #include <stdio.h>
 #include <unistd.h>
@@ -30,4 +30,4 @@ pid_t filter_create   (const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_e
 pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_err, int fdin, int fdout, int fderr);
 int   filter_wait     (pid_t pid);
 
-#endif /* MUTT_LIB_FILTER_H */
+#endif /* MUTT_MUTT_FILTER_H */

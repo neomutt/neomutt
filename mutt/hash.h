@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_HASH_H
-#define MUTT_LIB_HASH_H
+#ifndef MUTT_MUTT_HASH_H
+#define MUTT_MUTT_HASH_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -135,4 +135,4 @@ struct HashWalkState
 
 struct HashElem *mutt_hash_walk(const struct HashTable *table, struct HashWalkState *state);
 
-#endif /* MUTT_LIB_HASH_H */
+#endif /* MUTT_MUTT_HASH_H */

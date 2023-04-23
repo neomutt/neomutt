@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEST_SORT_H
-#define _TEST_SORT_H
+#ifndef TEST_CONFIG_SORT_H
+#define TEST_CONFIG_SORT_H
 
 #include <stdbool.h>
 
 void config_sort(void);
 
-#endif /* _TEST_SORT_H */
+#endif /* TEST_CONFIG_SORT_H */

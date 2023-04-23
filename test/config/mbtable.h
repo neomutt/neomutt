@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEST_MBTABLE_H
-#define _TEST_MBTABLE_H
+#ifndef TEST_CONFIG_MBTABLE_H
+#define TEST_CONFIG_MBTABLE_H
 
 #include <stdbool.h>
 
 void config_mbtable(void);
 
-#endif /* _TEST_MBTABLE_H */
+#endif /* TEST_CONFIG_MBTABLE_H */

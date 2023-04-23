@@ -31,7 +31,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "prex.h"
-#include "logging.h"
+#include "logging2.h"
 #include "memory.h"
 
 #ifdef HAVE_PCRE2

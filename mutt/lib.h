@@ -80,7 +80,7 @@
 #include "filter.h"
 #include "hash.h"
 #include "list.h"
-#include "logging.h"
+#include "logging2.h"
 #include "mapping.h"
 #include "mbyte.h"
 #include "md5.h"

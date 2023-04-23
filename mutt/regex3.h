@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_REGEX3_H
-#define MUTT_LIB_REGEX3_H
+#ifndef MUTT_MUTT_REGEX3_H
+#define MUTT_MUTT_REGEX3_H
 
 #include "config.h"
 #include <regex.h>
@@ -134,4 +134,4 @@ int             mutt_replacelist_remove(struct ReplaceList *rl, const char *pat)
 bool mutt_regex_match  (const struct Regex *regex, const char *str);
 bool mutt_regex_capture(const struct Regex *regex, const char *str, size_t num, regmatch_t matches[]);
 
-#endif /* MUTT_LIB_REGEX3_H */
+#endif /* MUTT_MUTT_REGEX3_H */

@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_SMIME_FUNCTIONS_H
-#define MUTT_SMIME_FUNCTIONS_H
+#ifndef MUTT_NCRYPT_SMIME_FUNCTIONS_H
+#define MUTT_NCRYPT_SMIME_FUNCTIONS_H
 
 #include <stdbool.h>
 
@@ -63,4 +63,4 @@ extern struct SmimeFunction SmimeFunctions[];
 
 int smime_function_dispatcher(struct MuttWindow *win, int op);
 
-#endif /* MUTT_SMIME_FUNCTIONS_H */
+#endif /* MUTT_NCRYPT_SMIME_FUNCTIONS_H */

@@ -42,7 +42,7 @@
 #include "file.h"
 #include "buffer.h"
 #include "date.h"
-#include "logging.h"
+#include "logging2.h"
 #include "memory.h"
 #include "message.h"
 #include "path.h"

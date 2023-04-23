@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEST_INITIAL_H
-#define _TEST_INITIAL_H
+#ifndef TEST_CONFIG_INITIAL_H
+#define TEST_CONFIG_INITIAL_H
 
 #include <stdbool.h>
 
 void config_initial(void);
 
-#endif /* _TEST_INITIAL_H */
+#endif /* TEST_CONFIG_INITIAL_H */

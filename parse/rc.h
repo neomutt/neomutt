@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PARSE_RC_H
-#define PARSE_RC_H
+#ifndef MUTT_PARSE_RC_H
+#define MUTT_PARSE_RC_H
 
 #include "core/lib.h"
 
@@ -30,4 +30,4 @@ struct Buffer;
 enum CommandResult parse_rc_buffer(struct Buffer *line, struct Buffer *token, struct Buffer *err);
 enum CommandResult parse_rc_line  (const char *line, struct Buffer *err);
 
-#endif /* PARSE_RC_H */
+#endif /* MUTT_PARSE_RC_H */

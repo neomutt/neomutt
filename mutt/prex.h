@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_PREX_H
-#define MUTT_LIB_PREX_H
+#ifndef MUTT_MUTT_PREX_H
+#define MUTT_MUTT_PREX_H
 
 #include "regex3.h"
 
@@ -252,4 +252,4 @@ enum PrexAccountCmd
 regmatch_t *mutt_prex_capture(enum Prex which, const char *str);
 void mutt_prex_free(void);
 
-#endif /* MUTT_LIB_PREX_H */
+#endif /* MUTT_MUTT_PREX_H */

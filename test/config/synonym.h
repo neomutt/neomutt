@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEST_SYNONYM_H
-#define _TEST_SYNONYM_H
+#ifndef TEST_CONFIG_SYNONYM_H
+#define TEST_CONFIG_SYNONYM_H
 
 #include <stdbool.h>
 
 void config_synonym(void);
 
-#endif /* _TEST_SYNONYM_H */
+#endif /* TEST_CONFIG_SYNONYM_H */

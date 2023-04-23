@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_PROGRESS_WINDOW
-#define MUTT_PROGRESS_WINDOW
+#ifndef MUTT_PROGRESS_WINDOW_H
+#define MUTT_PROGRESS_WINDOW_H
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -31,4 +31,4 @@ struct MuttWindow;
 struct MuttWindow *progress_window_new(const char *msg, size_t size, size_t size_inc, size_t time_inc, bool is_bytes);
 bool               progress_window_update(struct MuttWindow *win, size_t pos, int percent);
 
-#endif /* MUTT_PROGRESS_WINDOW */
+#endif /* MUTT_PROGRESS_WINDOW_H */

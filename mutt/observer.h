@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_OBSERVER_H
-#define MUTT_LIB_OBSERVER_H
+#ifndef MUTT_MUTT_OBSERVER_H
+#define MUTT_MUTT_OBSERVER_H
 
 #include <stdbool.h>
 #include "notify_type.h"
@@ -73,4 +73,4 @@ struct ObserverNode
 };
 STAILQ_HEAD(ObserverList, ObserverNode);
 
-#endif /* MUTT_LIB_OBSERVER_H */
+#endif /* MUTT_MUTT_OBSERVER_H */

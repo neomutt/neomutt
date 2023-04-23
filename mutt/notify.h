@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_NOTIFY_H
-#define MUTT_LIB_NOTIFY_H
+#ifndef MUTT_MUTT_NOTIFY_H
+#define MUTT_MUTT_NOTIFY_H
 
 #include <stdbool.h>
 #include "notify_type.h"
@@ -38,4 +38,4 @@ bool notify_observer_add(struct Notify *notify, enum NotifyType type, observer_t
 bool notify_observer_remove(struct Notify *notify, const observer_t callback, const void *global_data);
 void notify_observer_remove_all(struct Notify *notify);
 
-#endif /* MUTT_LIB_NOTIFY_H */
+#endif /* MUTT_MUTT_NOTIFY_H */

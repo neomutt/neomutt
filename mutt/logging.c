@@ -34,7 +34,7 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-#include "logging.h"
+#include "logging2.h"
 #include "date.h"
 #include "file.h"
 #include "memory.h"

@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEST_SLIST_H
-#define _TEST_SLIST_H
+#ifndef TEST_CONFIG_SLIST_H
+#define TEST_CONFIG_SLIST_H
 
 #include <stdbool.h>
 
 void config_slist(void);
 
-#endif /* _TEST_SLIST_H */
+#endif /* TEST_CONFIG_SLIST_H */

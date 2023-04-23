@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TEST_CONVERT_COMMON_H
-#define TEST_CONVERT_COMMON_H
+#ifndef TEST_CONVERT_CONVERT_COMMON_H
+#define TEST_CONVERT_CONVERT_COMMON_H
 
 #include <stdbool.h>
 #include "email/lib.h"
@@ -40,4 +40,4 @@ struct Content static const initial_info = {
   .cr = false,
 };
 
-#endif /* TEST_CONVERT_COMMON_H */
+#endif /* TEST_CONVERT_CONVERT_COMMON_H */

@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COLOR_CURSES_H
-#define MUTT_COLOR_CURSES_H
+#ifndef MUTT_COLOR_CURSES2_H
+#define MUTT_COLOR_CURSES2_H
 
 #include "config.h"
 #include <stdint.h>
@@ -57,4 +57,4 @@ struct CursesColor *curses_color_new (int fg, int bg);
 void                curses_colors_init(void);
 struct CursesColor *curses_colors_find (int fg, int bg);
 
-#endif /* MUTT_COLOR_CURSES_H */
+#endif /* MUTT_COLOR_CURSES2_H */

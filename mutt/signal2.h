@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_SIGNAL2_H
-#define MUTT_LIB_SIGNAL2_H
+#ifndef MUTT_MUTT_SIGNAL2_H
+#define MUTT_MUTT_SIGNAL2_H
 
 #include <stdbool.h>
 
@@ -43,4 +43,4 @@ void mutt_sig_init(sig_handler_t sig_fn, sig_handler_t exit_fn, sig_handler_t se
 void mutt_sig_unblock(void);
 void mutt_sig_unblock_system(bool restore);
 
-#endif /* MUTT_LIB_SIGNAL2_H */
+#endif /* MUTT_MUTT_SIGNAL2_H */

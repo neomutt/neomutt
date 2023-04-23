@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_POOL_H
-#define MUTT_LIB_POOL_H
+#ifndef MUTT_MUTT_POOL_H
+#define MUTT_MUTT_POOL_H
 
 struct Buffer;
 
@@ -29,4 +29,4 @@ void           buf_pool_free    (void);
 struct Buffer *buf_pool_get     (void);
 void           buf_pool_release (struct Buffer **pbuf);
 
-#endif /* MUTT_LIB_POOL_H */
+#endif /* MUTT_MUTT_POOL_H */

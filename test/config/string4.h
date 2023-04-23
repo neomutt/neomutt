@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEST_STRING_H
-#define _TEST_STRING_H
+#ifndef TEST_CONFIG_STRING4_H
+#define TEST_CONFIG_STRING4_H
 
 #include <stdbool.h>
 
 void config_string(void);
 
-#endif /* _TEST_STRING_H */
+#endif /* TEST_CONFIG_STRING4_H */

@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEST_ADDRESS_H
-#define _TEST_ADDRESS_H
+#ifndef TEST_CONFIG_ADDRESS_H
+#define TEST_CONFIG_ADDRESS_H
 
 #include <stdbool.h>
 
 void config_address(void);
 
-#endif /* _TEST_ADDRESS_H */
+#endif /* TEST_CONFIG_ADDRESS_H */

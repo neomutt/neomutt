@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEST_ACCOUNT_H
-#define _TEST_ACCOUNT_H
+#ifndef TEST_CONFIG_ACCOUNT2_H
+#define TEST_CONFIG_ACCOUNT2_H
 
 #include <stdbool.h>
 
 void config_account(void);
 
-#endif /* _TEST_ACCOUNT_H */
+#endif /* TEST_CONFIG_ACCOUNT2_H */

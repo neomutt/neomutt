@@ -35,7 +35,7 @@
 #include <time.h>
 #include "date.h"
 #include "buffer.h"
-#include "logging.h"
+#include "logging2.h"
 #include "memory.h"
 #include "prex.h"
 #include "regex3.h"

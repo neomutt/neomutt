@@ -38,7 +38,7 @@
 #include <unistd.h>
 #include "path.h"
 #include "buffer.h"
-#include "logging.h"
+#include "logging2.h"
 #include "memory.h"
 #include "message.h"
 #include "string2.h"

@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_LIST_H
-#define MUTT_LIB_LIST_H
+#ifndef MUTT_MUTT_LIST_H
+#define MUTT_MUTT_LIST_H
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -58,4 +58,4 @@ struct ListNode *mutt_list_insert_tail(struct ListHead *h, char *s);
 bool             mutt_list_match(const char *s, struct ListHead *h);
 size_t           mutt_list_str_split(struct ListHead *head, const char *src, char sep);
 
-#endif /* MUTT_LIB_LIST_H */
+#endif /* MUTT_MUTT_LIST_H */

@@ -34,7 +34,7 @@
 #include <string.h>
 #include "random.h"
 #include "exit.h"
-#include "logging.h"
+#include "logging2.h"
 #include "message.h"
 #ifdef HAVE_SYS_RANDOM_H
 #include <sys/random.h>

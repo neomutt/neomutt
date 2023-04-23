@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_PATH_H
-#define MUTT_LIB_PATH_H
+#ifndef MUTT_MUTT_PATH_H
+#define MUTT_MUTT_PATH_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -44,4 +44,4 @@ bool        mutt_path_tidy_slash(char *buf, bool is_dir);
 bool        mutt_path_tilde(char *buf, size_t buflen, const char *homedir);
 bool        mutt_path_to_absolute(char *path, const char *reference);
 
-#endif /* MUTT_LIB_PATH_H */
+#endif /* MUTT_MUTT_PATH_H */

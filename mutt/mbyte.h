@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_MBYTE_H
-#define MUTT_LIB_MBYTE_H
+#ifndef MUTT_MUTT_MBYTE_H
+#define MUTT_MUTT_MBYTE_H
 
 #include "config.h"
 #include <ctype.h>
@@ -52,4 +52,4 @@ int    mutt_mb_wcwidth(wchar_t wc);
 int    mutt_mb_width(const char *str, int col, bool display);
 size_t mutt_mb_width_ceiling(const wchar_t *s, size_t n, int w1);
 
-#endif /* MUTT_LIB_MBYTE_H */
+#endif /* MUTT_MUTT_MBYTE_H */

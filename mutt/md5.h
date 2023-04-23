@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_MD5_H
-#define MUTT_LIB_MD5_H
+#ifndef MUTT_MUTT_MD5_H
+#define MUTT_MUTT_MD5_H
 
 #include <stdint.h>
 #include <stdio.h>
@@ -53,4 +53,4 @@ void  mutt_md5_process(const char *str, struct Md5Ctx *md5ctx);
 void  mutt_md5_process_bytes(const void *buf, size_t buflen, struct Md5Ctx *md5ctx);
 void  mutt_md5_toascii(const void *digest, char *resbuf);
 
-#endif /* MUTT_LIB_MD5_H */
+#endif /* MUTT_MUTT_MD5_H */

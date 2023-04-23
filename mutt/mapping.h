@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_MAPPING_H
-#define MUTT_LIB_MAPPING_H
+#ifndef MUTT_MUTT_MAPPING_H
+#define MUTT_MUTT_MAPPING_H
 
 #include <stddef.h>
 
@@ -38,4 +38,4 @@ const char *mutt_map_get_name(int val, const struct Mapping *map);
 int         mutt_map_get_value(const char *name, const struct Mapping *map);
 int         mutt_map_get_value_n(const char *name, size_t len, const struct Mapping *map);
 
-#endif /* MUTT_LIB_MAPPING_H */
+#endif /* MUTT_MUTT_MAPPING_H */

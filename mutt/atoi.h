@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LIB_ATOI_H
-#define MUTT_LIB_ATOI_H
+#ifndef MUTT_MUTT_ATOI_H
+#define MUTT_MUTT_ATOI_H
 
 #include <stdbool.h>
 
@@ -48,4 +48,4 @@ make_str_ato_wrappers(ul,  unsigned long)
 make_str_ato_wrappers(ull, unsigned long long)
 make_str_ato_wrappers(us,  unsigned short)
 
-#endif /* MUTT_LIB_ATOI_H */
+#endif /* MUTT_MUTT_ATOI_H */
