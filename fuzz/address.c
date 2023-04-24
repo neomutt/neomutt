@@ -16,7 +16,17 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
   NeoMutt = neomutt_new(cs);
   init_config(cs);
   OptNoCurses = true;
-  FILE *fp = fmemopen((void *) data, size, "r");
+  char file[] = "/tmp/mutt-fuzz";
+  FILE *fp = fopen(file, "wb");
+  if (!fp)
+    return -1;
+
+  fwrite(data, 1, size, fp);
+  fclose(fp);
+  fp = fopen(file, "rb");
+  if (!fp)
+    return -1;
+
   struct Email *e = email_new();
   struct Envelope *env = mutt_rfc822_read_header(fp, e, 0, 0);
   mutt_parse_part(fp, e->body);
