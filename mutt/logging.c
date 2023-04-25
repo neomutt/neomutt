@@ -34,9 +34,9 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-#include "logging2.h"
 #include "date.h"
 #include "file.h"
+#include "logging2.h"
 #include "memory.h"
 #include "message.h"
 #include "queue.h"

@@ -43,8 +43,8 @@
 
 /**
  * lazy_realloc - Reallocate some memory
- * @param ptr Pointer to resize
- * @param size Minimum size
+ * @param[in] ptr Pointer to resize
+ * @param[in] size Minimum size
  *
  * The minimum size is 4KiB to avoid repeated resizing.
  */
@@ -60,9 +60,9 @@ void lazy_realloc(void *ptr, size_t size)
 
 /**
  * serial_dump_int - Pack an integer into a binary blob
- * @param i   Integer to save
- * @param d   Binary blob to add to
- * @param off Offset into the blob
+ * @param[in]     i   Integer to save
+ * @param[in]     d   Binary blob to add to
+ * @param[in,out] off Offset into the blob
  * @retval ptr End of the newly packed binary
  */
 unsigned char *serial_dump_int(unsigned int i, unsigned char *d, int *off)
@@ -76,9 +76,9 @@ unsigned char *serial_dump_int(unsigned int i, unsigned char *d, int *off)
 
 /**
  * serial_dump_uint32_t - Pack a uint32_t into a binary blob
- * @param s   uint32_t to save
- * @param d   Binary blob to add to
- * @param off Offset into the blob
+ * @param[in]     s   uint32_t to save
+ * @param[in]     d   Binary blob to add to
+ * @param[in,out] off Offset into the blob
  * @retval ptr End of the newly packed binary
  */
 unsigned char *serial_dump_uint32_t(uint32_t s, unsigned char *d, int *off)
@@ -92,9 +92,9 @@ unsigned char *serial_dump_uint32_t(uint32_t s, unsigned char *d, int *off)
 
 /**
  * serial_restore_int - Unpack an integer from a binary blob
- * @param i   Integer to write to
- * @param d   Binary blob to read from
- * @param off Offset into the blob
+ * @param[in]     i   Integer to write to
+ * @param[in]     d   Binary blob to read from
+ * @param[in,out] off Offset into the blob
  */
 void serial_restore_int(unsigned int *i, const unsigned char *d, int *off)
 {
@@ -104,9 +104,9 @@ void serial_restore_int(unsigned int *i, const unsigned char *d, int *off)
 
 /**
  * serial_restore_uint32_t - Unpack an uint32_t from a binary blob
- * @param s   uint32_t to write to
- * @param d   Binary blob to read from
- * @param off Offset into the blob
+ * @param[in]     s   uint32_t to write to
+ * @param[in]     d   Binary blob to read from
+ * @param[in,out] off Offset into the blob
  */
 void serial_restore_uint32_t(uint32_t *s, const unsigned char *d, int *off)
 {
@@ -116,11 +116,11 @@ void serial_restore_uint32_t(uint32_t *s, const unsigned char *d, int *off)
 
 /**
  * serial_dump_char_size - Pack a fixed-length string into a binary blob
- * @param c       String to pack
- * @param d       Binary blob to add to
- * @param size    Size of the string
- * @param off     Offset into the blob
- * @param convert If true, the strings will be converted to utf-8
+ * @param[in]     c       String to pack
+ * @param[in]     d       Binary blob to add to
+ * @param[in]     size    Size of the string
+ * @param[in,out] off     Offset into the blob
+ * @param[in]     convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
 unsigned char *serial_dump_char_size(char *c, ssize_t size, unsigned char *d,
@@ -157,10 +157,10 @@ unsigned char *serial_dump_char_size(char *c, ssize_t size, unsigned char *d,
 
 /**
  * serial_dump_char - Pack a variable-length string into a binary blob
- * @param c       String to pack
- * @param d       Binary blob to add to
- * @param off     Offset into the blob
- * @param convert If true, the strings will be converted to utf-8
+ * @param[in]     c       String to pack
+ * @param[in]     d       Binary blob to add to
+ * @param[in,out] off     Offset into the blob
+ * @param[in]     convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
 unsigned char *serial_dump_char(char *c, unsigned char *d, int *off, bool convert)
@@ -170,14 +170,14 @@ unsigned char *serial_dump_char(char *c, unsigned char *d, int *off, bool conver
 
 /**
  * serial_restore_char - Unpack a variable-length string from a binary blob
- * @param[out] c       Store the unpacked string here
- * @param[in]  d       Binary blob to read from
- * @param[out] off     Offset into the blob
- * @param[in]  convert If true, the strings will be converted to utf-8
+ * @param[out]    c       Store the unpacked string here
+ * @param[in]     d       Binary blob to read from
+ * @param[in,out] off     Offset into the blob
+ * @param[in]     convert If true, the strings will be converted to utf-8
  */
 void serial_restore_char(char **c, const unsigned char *d, int *off, bool convert)
 {
-  unsigned int size;
+  unsigned int size = 0;
   serial_restore_int(&size, d, off);
 
   if (size == 0)
@@ -206,10 +206,10 @@ void serial_restore_char(char **c, const unsigned char *d, int *off, bool conver
 
 /**
  * serial_dump_address - Pack an Address into a binary blob
- * @param al      AddressList to pack
- * @param d       Binary blob to add to
- * @param off     Offset into the blob
- * @param convert If true, the strings will be converted to utf-8
+ * @param[in]     al      AddressList to pack
+ * @param[in]     d       Binary blob to add to
+ * @param[in,out] off     Offset into the blob
+ * @param[in]     convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
 unsigned char *serial_dump_address(struct AddressList *al, unsigned char *d,
@@ -236,10 +236,10 @@ unsigned char *serial_dump_address(struct AddressList *al, unsigned char *d,
 
 /**
  * serial_restore_address - Unpack an Address from a binary blob
- * @param[out] al      Store the unpacked AddressList here
- * @param[in]  d       Binary blob to read from
- * @param[out] off     Offset into the blob
- * @param[in]  convert If true, the strings will be converted from utf-8
+ * @param[out]    al      Store the unpacked AddressList here
+ * @param[in]     d       Binary blob to read from
+ * @param[in,out] off     Offset into the blob
+ * @param[in]     convert If true, the strings will be converted from utf-8
  */
 void serial_restore_address(struct AddressList *al, const unsigned char *d,
                             int *off, bool convert)
@@ -263,10 +263,10 @@ void serial_restore_address(struct AddressList *al, const unsigned char *d,
 
 /**
  * serial_dump_stailq - Pack a STAILQ into a binary blob
- * @param l       List to read from
- * @param d       Binary blob to add to
- * @param off     Offset into the blob
- * @param convert If true, the strings will be converted to utf-8
+ * @param[in]     l       List to read from
+ * @param[in]     d       Binary blob to add to
+ * @param[in,out] off     Offset into the blob
+ * @param[in]     convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
 unsigned char *serial_dump_stailq(struct ListHead *l, unsigned char *d, int *off, bool convert)
@@ -290,14 +290,14 @@ unsigned char *serial_dump_stailq(struct ListHead *l, unsigned char *d, int *off
 
 /**
  * serial_restore_stailq - Unpack a STAILQ from a binary blob
- * @param l       List to add to
- * @param d       Binary blob to read from
- * @param off     Offset into the blob
- * @param convert If true, the strings will be converted from utf-8
+ * @param[in]     l       List to add to
+ * @param[in]     d       Binary blob to read from
+ * @param[in,out] off     Offset into the blob
+ * @param[in]     convert If true, the strings will be converted from utf-8
  */
 void serial_restore_stailq(struct ListHead *l, const unsigned char *d, int *off, bool convert)
 {
-  unsigned int counter;
+  unsigned int counter = 0;
 
   serial_restore_int(&counter, d, off);
 
@@ -312,10 +312,10 @@ void serial_restore_stailq(struct ListHead *l, const unsigned char *d, int *off,
 
 /**
  * serial_dump_buffer - Pack a Buffer into a binary blob
- * @param buf     Buffer to pack
- * @param d       Binary blob to add to
- * @param off     Offset into the blob
- * @param convert If true, the strings will be converted to utf-8
+ * @param[in]     buf     Buffer to pack
+ * @param[in]     d       Binary blob to add to
+ * @param[in,out] off     Offset into the blob
+ * @param[in]     convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
 unsigned char *serial_dump_buffer(struct Buffer *buf, unsigned char *d, int *off, bool convert)
@@ -337,17 +337,17 @@ unsigned char *serial_dump_buffer(struct Buffer *buf, unsigned char *d, int *off
 
 /**
  * serial_restore_buffer - Unpack a Buffer from a binary blob
- * @param[out] buf     Store the unpacked Buffer here
- * @param[in]  d       Binary blob to read from
- * @param[out] off     Offset into the blob
- * @param[in]  convert If true, the strings will be converted from utf-8
+ * @param[out]    buf     Store the unpacked Buffer here
+ * @param[in]     d       Binary blob to read from
+ * @param[in,out] off     Offset into the blob
+ * @param[in]     convert If true, the strings will be converted from utf-8
  */
 void serial_restore_buffer(struct Buffer *buf, const unsigned char *d, int *off, bool convert)
 {
-  unsigned int used;
-  unsigned int offset;
+  unsigned int used = 0;
+  unsigned int offset = 0;
   serial_restore_int(&used, d, off);
-  if (!used)
+  if (used == 0)
   {
     return;
   }
@@ -361,10 +361,10 @@ void serial_restore_buffer(struct Buffer *buf, const unsigned char *d, int *off,
 
 /**
  * serial_dump_parameter - Pack a Parameter into a binary blob
- * @param pl      Parameter to pack
- * @param d       Binary blob to add to
- * @param off     Offset into the blob
- * @param convert If true, the strings will be converted to utf-8
+ * @param[in]     pl      Parameter to pack
+ * @param[in]     d       Binary blob to add to
+ * @param[in,out] off     Offset into the blob
+ * @param[in]     convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
 unsigned char *serial_dump_parameter(struct ParameterList *pl, unsigned char *d,
@@ -390,15 +390,15 @@ unsigned char *serial_dump_parameter(struct ParameterList *pl, unsigned char *d,
 
 /**
  * serial_restore_parameter - Unpack a Parameter from a binary blob
- * @param pl      Store the unpacked Parameter here
- * @param d       Binary blob to read from
- * @param off     Offset into the blob
- * @param convert If true, the strings will be converted from utf-8
+ * @param[in]     pl      Store the unpacked Parameter here
+ * @param[in]     d       Binary blob to read from
+ * @param[in,out] off     Offset into the blob
+ * @param[in]     convert If true, the strings will be converted from utf-8
  */
 void serial_restore_parameter(struct ParameterList *pl, const unsigned char *d,
                               int *off, bool convert)
 {
-  unsigned int counter;
+  unsigned int counter = 0;
 
   serial_restore_int(&counter, d, off);
 
@@ -415,10 +415,10 @@ void serial_restore_parameter(struct ParameterList *pl, const unsigned char *d,
 
 /**
  * serial_dump_body - Pack an Body into a binary blob
- * @param c       Body to pack
- * @param d       Binary blob to add to
- * @param off     Offset into the blob
- * @param convert If true, the strings will be converted to utf-8
+ * @param[in]     c       Body to pack
+ * @param[in]     d       Binary blob to add to
+ * @param[in,out] off     Offset into the blob
+ * @param[in]     convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
 unsigned char *serial_dump_body(struct Body *c, unsigned char *d, int *off, bool convert)
@@ -456,10 +456,10 @@ unsigned char *serial_dump_body(struct Body *c, unsigned char *d, int *off, bool
 
 /**
  * serial_restore_body - Unpack a Body from a binary blob
- * @param c       Store the unpacked Body here
- * @param d       Binary blob to read from
- * @param off     Offset into the blob
- * @param convert If true, the strings will be converted from utf-8
+ * @param[in]     c       Store the unpacked Body here
+ * @param[in]     d       Binary blob to read from
+ * @param[in,out] off     Offset into the blob
+ * @param[in]     convert If true, the strings will be converted from utf-8
  */
 void serial_restore_body(struct Body *c, const unsigned char *d, int *off, bool convert)
 {
@@ -481,10 +481,10 @@ void serial_restore_body(struct Body *c, const unsigned char *d, int *off, bool 
 
 /**
  * serial_dump_envelope - Pack an Envelope into a binary blob
- * @param env     Envelope to pack
- * @param d       Binary blob to add to
- * @param off     Offset into the blob
- * @param convert If true, the strings will be converted to utf-8
+ * @param[in]     env     Envelope to pack
+ * @param[in]     d       Binary blob to add to
+ * @param[in,out] off     Offset into the blob
+ * @param[in]     convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
 unsigned char *serial_dump_envelope(struct Envelope *env, unsigned char *d,
@@ -532,14 +532,14 @@ unsigned char *serial_dump_envelope(struct Envelope *env, unsigned char *d,
 
 /**
  * serial_restore_envelope - Unpack an Envelope from a binary blob
- * @param env     Store the unpacked Envelope here
- * @param d       Binary blob to read from
- * @param off     Offset into the blob
- * @param convert If true, the strings will be converted from utf-8
+ * @param[in]     env     Store the unpacked Envelope here
+ * @param[in]     d       Binary blob to read from
+ * @param[in,out] off     Offset into the blob
+ * @param[in]     convert If true, the strings will be converted from utf-8
  */
 void serial_restore_envelope(struct Envelope *env, const unsigned char *d, int *off, bool convert)
 {
-  int real_subj_off;
+  int real_subj_off = 0;
 
   serial_restore_address(&env->return_path, d, off, convert);
   serial_restore_address(&env->from, d, off, convert);
@@ -588,9 +588,9 @@ void serial_restore_envelope(struct Envelope *env, const unsigned char *d, int *
 
 /**
  * serial_dump_tags - Pack a TagList into a binary blob
- * @param tags    TagList to pack
- * @param d       Binary blob to add to
- * @param off     Offset into the blob
+ * @param[in]     tags TagList to pack
+ * @param[in]     d    Binary blob to add to
+ * @param[in,out] off  Offset into the blob
  * @retval ptr End of the newly packed binary
  */
 unsigned char *serial_dump_tags(const struct TagList *tags, unsigned char *d, int *off)
@@ -614,9 +614,9 @@ unsigned char *serial_dump_tags(const struct TagList *tags, unsigned char *d, in
 
 /**
  * serial_restore_tags - Unpack a TagList from a binary blob
- * @param tags    TagList to unpack
- * @param d       Binary blob to add to
- * @param off     Offset into the blob
+ * @param[in]     tags TagList to unpack
+ * @param[in]     d    Binary blob to add to
+ * @param[in,out] off  Offset into the blob
  */
 void serial_restore_tags(struct TagList *tags, const unsigned char *d, int *off)
 {
