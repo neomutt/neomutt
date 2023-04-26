@@ -346,6 +346,30 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   nm_init();
 #endif
 
+#ifdef NEOMUTT_DIRECT_COLORS
+  /* Test if we run in a terminal which supports direct colours.
+   *
+   * The user/terminal can indicate their capability independent of the
+   * terminfo file by setting the COLORTERM environment variable to "truecolor"
+   * or "24bit" (case sensitive).
+   *
+   * Note: This is to test is less about whether the terminal understands
+   * direct color commands but more about whether ncurses believes it can send
+   * them to the terminal, e.g. ncurses ignores COLORTERM.
+   */
+  if (COLORS == 16777216) // 2^24
+  {
+    /* Ncurses believes the Terminal supports it check the environment variable
+     * to respect the user's choice */
+    const char *env_colorterm = mutt_str_getenv("COLORTERM");
+    if (env_colorterm && (mutt_str_equal(env_colorterm, "truecolor") ||
+                          mutt_str_equal(env_colorterm, "24bit")))
+    {
+      cs_subset_str_native_set(NeoMutt->sub, "color_directcolor", true, NULL);
+    }
+  }
+#endif
+
   /* "$spool_file" precedence: config file, environment */
   const char *p = mutt_str_getenv("MAIL");
   if (!p)

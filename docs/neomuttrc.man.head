@@ -336,6 +336,7 @@ Valid colors include:
 .BR magenta ", "
 .BR cyan ", "
 .BR white ", "
+.BR #\fIRRGGBB\fP ", "
 .BR color\fIN\fP "."
 .IP
 Valid attributes include:
