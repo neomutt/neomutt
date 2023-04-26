@@ -37,6 +37,10 @@
 #include <curses.h>
 #endif
 
+#if ((NCURSES_VERSION_MAJOR > 6) || ((NCURSES_VERSION_MAJOR == 6) && (NCURSES_VERSION_MINOR >= 1)))
+#define NEOMUTT_DIRECT_COLORS
+#endif
+
 #define ctrl(ch) ((ch) - '@')
 
 #ifdef KEY_ENTER
