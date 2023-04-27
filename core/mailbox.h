@@ -95,8 +95,8 @@ struct Mailbox
 
   struct Email **emails;              ///< Array of Emails
   int email_max;                      ///< Size of `emails` array
-  int *v2r;                           ///< Mapping from virtual to real msgno
-  int vcount;                         ///< The number of virtual messages
+  struct Email **v2r;                 ///< Array of visible Emails
+  int vcount;                         ///< The number of visible Emails
 
   bool notified;                      ///< User has been notified
   enum MailboxType type;              ///< Mailbox type
