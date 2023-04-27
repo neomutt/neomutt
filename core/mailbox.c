@@ -33,6 +33,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "mailbox.h"
+#include "eview.h"
 #include "neomutt.h"
 
 /// Lookups for Mailbox types
@@ -112,6 +113,9 @@ void mailbox_free(struct Mailbox **ptr)
   mutt_debug(LL_NOTIFY, "NT_EMAIL_DELETE_ALL\n");
   struct EventEmail ev_e = { 0, NULL };
   notify_send(m->notify, NT_EMAIL, NT_EMAIL_DELETE_ALL, &ev_e);
+
+  for (size_t i = 0; i < m->vcount; i++)
+    eview_free(&m->v2r[i]);
 
   for (size_t i = 0; i < m->email_max; i++)
     email_free(&m->emails[i]);

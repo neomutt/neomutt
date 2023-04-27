@@ -420,7 +420,8 @@ void mutt_sort_headers(struct MailboxView *mv, bool init)
     if ((e_cur->vnum != -1) || (e_cur->collapsed && e_cur->visible))
     {
       e_cur->vnum = m->vcount;
-      m->v2r[m->vcount] = e_cur;
+      eview_free(&m->v2r[m->vcount]);
+      m->v2r[m->vcount] = eview_new(e_cur);
       m->vcount++;
     }
     e_cur->msgno = i;

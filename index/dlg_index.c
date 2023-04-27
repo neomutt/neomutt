@@ -498,23 +498,25 @@ static void update_index_unthreaded(struct MailboxView *mv, enum MxStatus check)
    * they will be visible in the limited view */
   if (mview_has_limit(mv))
   {
-    int padding = mx_msg_padding_size(mv->mailbox);
-    mv->mailbox->vcount = mv->vsize = 0;
-    for (int i = 0; i < mv->mailbox->msg_count; i++)
+    struct Mailbox *m = mv->mailbox;
+    int padding = mx_msg_padding_size(m);
+    m->vcount = mv->vsize = 0;
+    for (int i = 0; i < m->msg_count; i++)
     {
-      struct Email *e = mv->mailbox->emails[i];
+      struct Email *e = m->emails[i];
       if (!e)
         break;
 
       if ((e->limit_visited && e->visible) ||
           mutt_pattern_exec(SLIST_FIRST(mv->limit_pattern),
-                            MUTT_MATCH_FULL_ADDRESS, mv->mailbox, e, NULL))
+                            MUTT_MATCH_FULL_ADDRESS, m, e, NULL))
       {
-        ASSERT(mv->mailbox->vcount < mv->mailbox->msg_count);
-        e->vnum = mv->mailbox->vcount;
-        mv->mailbox->v2r[mv->mailbox->vcount] = e;
+        ASSERT(m->vcount < m->msg_count);
+        e->vnum = m->vcount;
+        eview_free(&m->v2r[m->vcount]);
+        m->v2r[m->vcount] = eview_new(e);
         e->visible = true;
-        mv->mailbox->vcount++;
+        m->vcount++;
         struct Body *b = e->body;
         mv->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
@@ -830,13 +832,13 @@ int index_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *b
       if (reverse)
       {
         if (menu->top + menu->page_len > menu->max)
-          edgemsgno = m->v2r[menu->max - 1]->msgno;
+          edgemsgno = m->v2r[menu->max - 1]->email->msgno;
         else
-          edgemsgno = m->v2r[menu->top + menu->page_len - 1]->msgno;
+          edgemsgno = m->v2r[menu->top + menu->page_len - 1]->email->msgno;
       }
       else
       {
-        edgemsgno = m->v2r[menu->top]->msgno;
+        edgemsgno = m->v2r[menu->top]->email->msgno;
       }
 
       for (tmp = e->thread->parent; tmp; tmp = tmp->parent)
