@@ -74,7 +74,7 @@ struct Mailbox *mailbox_new(void)
 
   m->email_max = 25;
   m->emails = MUTT_MEM_CALLOC(m->email_max, struct Email *);
-  m->v2r = MUTT_MEM_CALLOC(m->email_max, int);
+  m->v2r = MUTT_MEM_CALLOC(m->email_max, struct Email *);
   m->gen = mailbox_gen();
   m->notify_user = true;
   m->poll_new_mail = true;
