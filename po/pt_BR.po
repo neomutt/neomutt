@@ -66,7 +66,7 @@ msgstr "Erro ao ler o arquivo de contatos"
 
 #: alias/alias.c:557
 msgid "Trouble adding alias"
-msgstr "Erro ao acidionar contato"
+msgstr "Erro ao adicionar contato"
 
 #: alias/alias.c:559
 msgid "Alias added"
@@ -154,7 +154,7 @@ msgstr "Busca"
 
 #: alias/dlg_query.c:279
 msgid "Waiting for response..."
-msgstr "Agurdando pela resposta..."
+msgstr "Aguardando pela resposta..."
 
 #: alias/dlg_query.c:362
 msgid "Query"
@@ -175,12 +175,12 @@ msgstr "Limitar a endereços que coincidem com: "
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:270
 msgid "Rev-Sort (a)lias, a(d)dress or (u)nsorted?"
-msgstr "Organização Rev. por (a)pelido, (e)nderesso, (n)ão organizado"
+msgstr "Organização Rev. por (a)pelido, (e)ndereço, (n)ão organizado"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: alias/functions.c:272
 msgid "Sort (a)lias, a(d)dress or (u)nsorted?"
-msgstr "Organização por (a)pelido, (e)nderesso, (n)ão organizado"
+msgstr "Organização por (a)pelido, (e)ndereço, (n)ão organizado"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/functions.c:274
@@ -268,7 +268,7 @@ msgstr "Somente a deleção de anexos multiparte é suportada"
 
 #: attach/functions.c:573 index/functions.c:2581
 msgid "Reply by mail as poster prefers?"
-msgstr "Responder mensagem de acordo com a preferencia do rementente?"
+msgstr "Responder mensagem de acordo com a preferência do rementente?"
 
 #: attach/mutt_attach.c:142 attach/mutt_attach.c:284
 msgid "Can't match 'nametemplate', continue?"
@@ -432,7 +432,7 @@ msgstr "Não foi possível criar %s: %s"
 #. with this message.
 #: autocrypt/autocrypt.c:166
 msgid "Create an initial autocrypt account?"
-msgstr "Criar uma onta inicial de auto-criptografia"
+msgstr "Criar uma conta inicial de auto-criptografia"
 
 #. L10N: Autocrypt is asking for the email address to use for the
 #. autocrypt account.  This will generate a key and add a record
@@ -446,7 +446,7 @@ msgstr "Endereço (email) de conta de auto-criptografia"
 #. nothing, or more than one address for some reason.
 #: autocrypt/autocrypt.c:199
 msgid "Please enter a single email address"
-msgstr "Por favor, insira um único email address"
+msgstr "Por favor, insira um único endereço de email"
 
 #. L10N: When creating an autocrypt account, this message will be displayed
 #. if there is already an account in the database with the email address
@@ -481,7 +481,7 @@ msgstr "Criação de conta de auto-criptografia cancelada"
 #: autocrypt/autocrypt.c:587 autocrypt/autocrypt.c:596
 #: autocrypt/autocrypt.c:603
 msgid "Autocrypt is not available"
-msgstr "Autocrypt não está disponível"
+msgstr "Auto-criptografia não está disponível"
 
 #. L10N: Error displayed if the user tries to force sending an Autocrypt
 #. email when the account does not exist or is not enabled.
@@ -490,7 +490,7 @@ msgstr "Autocrypt não está disponível"
 #: autocrypt/autocrypt.c:615
 #, c-format
 msgid "Autocrypt is not enabled for %s"
-msgstr "Autocrypt não esta habilitado para %s"
+msgstr "Auto-criptografia não esta habilitado para %s"
 
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
@@ -628,7 +628,7 @@ msgstr "Erro ao criar chave de auto-criptografia: %s"
 #: autocrypt/gpgme.c:253
 #, c-format
 msgid "The key %s is not usable for autocrypt"
-msgstr "A chave %s não utilizável para auto-criptografia"
+msgstr "A chave %s não é utilizável para auto-criptografia"
 
 #. L10N: During autocrypt account creation, this prompt asks the
 #. user whether they want to create a new GPG key for the account,
@@ -660,12 +660,12 @@ msgstr "Versão do banco de dados de auto-criptografia recente demais"
 #: bcache/bcache.c:75
 #, c-format
 msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
-msgstr "Cachê desabilitado, $message_cache_dir não é um diretório: %s"
+msgstr "Cache desabilitado, $message_cache_dir não é um diretório: %s"
 
 #: bcache/bcache.c:221
 #, c-format
 msgid "Message cache isn't a directory: %s"
-msgstr "Cachê de mensagens não é um diretório: %s"
+msgstr "Cache de mensagens não é um diretório: %s"
 
 #: browser/browser.c:112
 msgid "Chdir"
@@ -968,7 +968,7 @@ msgstr "%s não está atribuída"
 #: commands.c:891 mutt_lua.c:506
 #, c-format
 msgid "source: error at %s"
-msgstr "source: erro em %s"
+msgstr "fonte: erro em %s"
 
 #: commands.c:899
 #, c-format
@@ -1319,7 +1319,7 @@ msgstr "Gravando mensagem em %s..."
 
 #: compose/functions.c:1847
 msgid "Message written"
-msgstr "Mensgem gravada"
+msgstr "Mensagem gravada"
 
 #: compose/functions.c:1880
 msgid "Save (postpone) draft message?"
@@ -1381,7 +1381,7 @@ msgstr "Número inválido: %s"
 #: config/number.c:62 config/number.c:172 config/number.c:211
 #, c-format
 msgid "Number is too big: %s"
-msgstr "Numero muito grande: %s"
+msgstr "Número muito grande: %s"
 
 #: config/number.c:121
 #, c-format
@@ -1424,12 +1424,12 @@ msgstr "Tipo '%s' não suporta operação '%s'"
 #: config/sort.c:85
 #, c-format
 msgid "Invalid sort name: %s"
-msgstr "Nome ordem invalido: %s"
+msgstr "Nome ordem inválido: %s"
 
 #: config/sort.c:161
 #, c-format
 msgid "Invalid sort type: %ld"
-msgstr "Tipo de ordem invalido: %ld"
+msgstr "Tipo de ordem inválido: %ld"
 
 #: conn/accountcmd.c:79
 #, c-format
@@ -1462,7 +1462,7 @@ msgstr "Senha para %s@%s: "
 #. your $*_oauth_refresh_command's are defined."
 #: conn/connaccount.c:210
 msgid "No OAUTH refresh command defined"
-msgstr "Comando de atualizaçao OAUTH não definido"
+msgstr "Comando de atualização OAUTH não definido"
 
 #: conn/connaccount.c:218
 msgid "Unable to run refresh command"
@@ -1604,7 +1604,7 @@ msgstr "AVISO: signatário do certificado do servidor não é CA"
 
 #: conn/gnutls.c:554
 msgid "Warning: Server certificate was signed using an insecure algorithm"
-msgstr "Aviso: o certificado do servidor foi assindado com algoritmo inseguro"
+msgstr "Aviso: o certificado do servidor foi assinado com algoritmo inseguro"
 
 #: conn/gnutls.c:558 conn/openssl.c:933
 #, c-format
@@ -1625,7 +1625,7 @@ msgstr "Todos protocolos disponíveis para TLS/SSL estão desativados"
 
 #: conn/gnutls.c:847
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
-msgstr "Algorithms criptográficos selecionados via $ssl_ciphers não são suportados"
+msgstr "Algorítmos criptográficos selecionados via $ssl_ciphers não são suportados"
 
 #. L10N: This is a warning when trying to set the host name for
 #. TLS Server Name Indication (SNI).  This allows the server to present
@@ -1684,7 +1684,7 @@ msgstr "não pude obter o nome comum certificado "
 #: conn/openssl.c:802
 #, c-format
 msgid "certificate owner does not match hostname %s"
-msgstr "titular certificado não coincide hostname %s"
+msgstr "titular do certificado não coincide com o hostname %s"
 
 #: conn/openssl.c:1070
 #, c-format
@@ -1803,7 +1803,7 @@ msgstr[1] "Cálculo de comprimento estava errado por %ld bytes"
 
 #: copy.c:810
 msgid "No decryption engine available for message"
-msgstr "Não há mecanismo disponível para decriptar a mensagem"
+msgstr "Não há mecanismo disponível para desencriptar a mensagem"
 
 #: editmsg.c:73
 #, c-format
@@ -1903,7 +1903,7 @@ msgstr "S/MIME já selecionado. Remover e continuar?"
 
 #: envelope/functions.c:367
 msgid "No S/MIME backend configured"
-msgstr "Nenum sistema S/MIME configurado"
+msgstr "Nenhum sistema S/MIME configurado"
 
 #: envelope/functions.c:375
 msgid "PGP already selected. Clear and continue?"
@@ -2233,17 +2233,17 @@ msgstr "Copiando para %s..."
 #. L10N: Message when an index tagged save operation fails for some reason
 #: external.c:1053
 msgid "Error saving tagged messages"
-msgstr "Erro salvando mensagens marcadas"
+msgstr "Erro ao salvar mensagens marcadas"
 
 #. L10N: Message when an index/pager save operation fails for some reason
 #: external.c:1058
 msgid "Error saving message"
-msgstr "Erro salvando mensagem"
+msgstr "Erro ao salvar mensagem"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
 #: external.c:1065
 msgid "Error copying tagged messages"
-msgstr "Erro copiando mensagens marcadas"
+msgstr "Erro ao copiar mensagens marcadas"
 
 #. L10N: Message when an index/pager copy operation fails for some reason
 #: external.c:1070
@@ -2710,7 +2710,7 @@ msgstr "Incapaz de negociar conexão TLS"
 
 #: imap/imap.c:818 imap/imap.c:835 pop/lib.c:370
 msgid "Encrypted connection unavailable"
-msgstr "Connexão encriptada indisponível"
+msgstr "Conexão encriptada indisponível"
 
 #: imap/imap.c:1311
 #, c-format
@@ -3021,11 +3021,11 @@ msgstr "Nenhuma thread vinculada"
 
 #: index/functions.c:1103 mx.c:1295 mx.c:1315
 msgid "Folder doesn't support tagging, aborting"
-msgstr "Pasta não tem suporte a tags, cancelado"
+msgstr "Pasta não tem suporte a tags, cancelando"
 
 #: index/functions.c:1124
 msgid "No tag specified, aborting"
-msgstr "Nenhuma marcação, cancelado"
+msgstr "Nenhuma marcação, cancelando"
 
 #: index/functions.c:1134
 msgid "Update tags..."
@@ -3033,7 +3033,7 @@ msgstr "Atualizando marcas..."
 
 #: index/functions.c:1175
 msgid "Failed to modify tags, aborting"
-msgstr "Falha ao modificar marcas, cancelado"
+msgstr "Falha ao modificar marcas, cancelando"
 
 #: index/functions.c:1289
 msgid "No new messages in this limited view"
@@ -3206,7 +3206,7 @@ msgstr "Não é permitido postar neste grupo, pode ser moderado. Continuar?"
 
 #: index/functions.c:2623
 msgid "No virtual folder and no Message-Id, aborting"
-msgstr "Sem pasta virtual e sem ID de mensagem, cancelado"
+msgstr "Sem pasta virtual e sem ID de mensagem, cancelando"
 
 #: index/functions.c:2644
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
@@ -3214,11 +3214,11 @@ msgstr "Não foi possível encontrar a mensagem no banco de dados do notmuch. Te
 
 #: index/functions.c:2653
 msgid "Failed to read thread, aborting"
-msgstr "Falha ao accessar thread, cancelado"
+msgstr "Falha ao accessar thread, cancelando"
 
 #: index/functions.c:2692
 msgid "No query, aborting"
-msgstr "Nenhuma consulta, cancelado"
+msgstr "Nenhuma consulta, cancelando"
 
 #: index/functions.c:2735
 msgid "Windowed queries disabled"
@@ -3275,7 +3275,7 @@ msgstr "Tecla de cancelamento não está definida, padronizando para Ctrl-G"
 #: keymap.c:874
 #, c-format
 msgid "Specified abort key sequence (%s) will be truncated to first key"
-msgstr "Sequencia de tecla de cancelamento especificada (%s) sera truncada para a primeira tecla"
+msgstr "Sequência de tecla de cancelamento especificada (%s) será truncada para a primeira tecla"
 
 #: keymap.c:1075 keymap.c:1110
 msgid "Key is not bound"
@@ -3316,7 +3316,7 @@ msgstr "%s: sem macros para este menu"
 
 #: keymap.c:1776
 msgid "macro: empty key sequence"
-msgstr "macro: seqüência de teclas vazia"
+msgstr "macro: sequência de teclas vazia"
 
 #: keymap.c:1846
 msgid "exec: no arguments"
@@ -3401,7 +3401,7 @@ msgid ""
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 msgstr ""
-"  neomutt [-Enx] [-e <comando>] [-F <config] [-H <rascunho>] [-i <incluso>]\n"
+"  neomutt [-Enx] [-e <comando>] [-F <config>] [-H <rascunho>] [-i <incluso>]\n"
 "          [-b <endereço>] [-c <endereço>] [-s <assunto>] [-a <arquivo> [...] --]\n"
 "          <endereço> [...]"
 
@@ -3410,7 +3410,7 @@ msgid ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 msgstr ""
-"  neomutt [-nx] [-e <command>] [-F <config>] [-b <endereço>] [-c <endereço>]\n"
+"  neomutt [-nx] [-e <comando>] [-F <config>] [-b <endereço>] [-c <endereço>]\n"
 "          [-s <assunto>] [-a <arquivo> [...] --] <endereço> [...] < mensagem"
 
 #: main.c:267
@@ -3431,7 +3431,7 @@ msgstr "  neomutt [-n] [-e <comando>] [-F <config>] -D [-S] [-O]"
 
 #: main.c:271
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
-msgstr "  neomutt [-n] [-e <comando>] [-F <config>] -d <nivel> -l <arquivo>"
+msgstr "  neomutt [-n] [-e <comando>] [-F <config>] -d <nível> -l <arquivo>"
 
 #: main.c:272
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
@@ -4305,7 +4305,7 @@ msgstr "Ocorreu um erro de sistema"
 
 #: ncrypt/crypt_gpgme.c:1228
 msgid "WARNING: PKA entry does not match signer's address: "
-msgstr "AVISO: registro PKA não coincide endereço do signatário: "
+msgstr "AVISO: registro PKA não coincide com o endereço do signatário: "
 
 #: ncrypt/crypt_gpgme.c:1234
 msgid "PKA verified signer's address is: "
@@ -4403,7 +4403,7 @@ msgid ""
 "[-- Error: decryption failed: %s --]\n"
 "\n"
 msgstr ""
-"[-- Erro: decriptação falhou: %s --]\n"
+"[-- Erro: desencriptação falhou: %s --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2287
@@ -4414,12 +4414,12 @@ msgstr "Erro ao importar chave: %s"
 #: ncrypt/crypt_gpgme.c:2533
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
-msgstr "Erro: decriptação/verificação falhou: %s\n"
+msgstr "Erro: desencriptação/verificação falhou: %s\n"
 
 #: ncrypt/crypt_gpgme.c:2540 ncrypt/crypt_gpgme.c:2734 ncrypt/pgp.c:742
 #: ncrypt/pgp.c:1306
 msgid "PGP message successfully decrypted"
-msgstr "Mensagem PGP decriptada com sucesso"
+msgstr "Mensagem PGP desencriptada com sucesso"
 
 #: ncrypt/crypt_gpgme.c:2581
 msgid "Error: copy data failed\n"
@@ -4494,7 +4494,7 @@ msgstr "[-- Fim dos dados encriptados com PGP/MIME --]\n"
 #: ncrypt/crypt_gpgme.c:2742 ncrypt/pgp.c:677 ncrypt/pgp.c:731
 #: ncrypt/pgp.c:1310
 msgid "Could not decrypt PGP message"
-msgstr "Incapaz de decriptar mensagem PGP"
+msgstr "Incapaz de desencriptar mensagem PGP"
 
 #: ncrypt/crypt_gpgme.c:2785
 msgid ""
@@ -5218,7 +5218,7 @@ msgstr "Servidor não oferece suporte a modo leitura"
 
 #: nntp/nntp.c:475 pop/auth.c:620 send/smtp.c:1006
 msgid "No authenticators available"
-msgstr "Nenum autenticador disponível."
+msgstr "Nenhum autenticador disponível."
 
 #: nntp/nntp.c:732
 #, c-format
@@ -5385,7 +5385,7 @@ msgstr "edita o código de transferência do anexo"
 
 #: opcodes.h:46
 msgid "edit the 'Content-Language' of the attachment"
-msgstr "edita valor de 'Content-Language:' do anexo"
+msgstr "edita o valor de 'Content-Language:' do anexo"
 
 #: opcodes.h:47
 msgid "edit attachment using mailcap entry"
@@ -5505,7 +5505,7 @@ msgstr "alternar status da flag \"prefer-encypt\" (preferir criptografia)"
 
 #: opcodes.h:79
 msgid "show autocrypt compose menu options"
-msgstr "mostrar opções de auto-criptografia no menu redigir"
+msgstr "mostrar opções de auto-criptografia no menu"
 
 #: opcodes.h:85
 msgid "open the aliases dialog"
@@ -5561,7 +5561,7 @@ msgstr "verifica se há novas mensagens na caixa"
 
 #: opcodes.h:98
 msgid "calculate message statistics for all mailboxes"
-msgstr "calcula estatisticas de mensagens para todas as caixas"
+msgstr "calcula estatistícas de mensagens para todas as caixas"
 
 #: opcodes.h:99
 msgid "edit the file to be attached"
@@ -5665,7 +5665,7 @@ msgstr "move o cursor um caractere para a esquerda"
 
 #: opcodes.h:125
 msgid "move the cursor to the beginning of the word"
-msgstr "move cursor para início da palavra"
+msgstr "move o cursor para o início da palavra"
 
 #: opcodes.h:126
 msgid "jump to the beginning of the line"
@@ -5701,7 +5701,7 @@ msgstr "move o cursor um caractere para a direita"
 
 #: opcodes.h:134
 msgid "move the cursor to the end of the word"
-msgstr "move cursor para o fim da palavra"
+msgstr "move o cursor para o fim da palavra"
 
 #: opcodes.h:135
 msgid "scroll down through the history list"
@@ -6740,11 +6740,11 @@ msgstr "erro: operação %d desconhecida (relate este erro)"
 
 #: pattern/exec.c:139
 msgid "Error opening 'memory stream'"
-msgstr "Erro ao abrir o fluxo para memória"
+msgstr "Erro ao abrir o 'fluxo para memória'"
 
 #: pattern/exec.c:189
 msgid "Error re-opening 'memory stream'"
-msgstr "Erro ao abrir novamente o fluxo para memória"
+msgstr "Erro ao abrir novamente o 'fluxo para memória'"
 
 #: pattern/exec.c:199
 msgid "Error opening /dev/null"
@@ -6752,7 +6752,7 @@ msgstr "Erro ao abrir /dev/null"
 
 #: pattern/exec.c:208
 msgid "Error checking length of temporary file"
-msgstr "Erro verificando o tamanho do arquivo temporário"
+msgstr "Erro ao verificar o tamanho do arquivo temporário"
 
 #: pattern/exec.c:884
 msgid "error: server custom search only supported with IMAP"
@@ -6766,22 +6766,22 @@ msgstr "todas mensagens"
 #. L10N: Pattern Completion Menu description for ~b
 #: pattern/flags.c:47
 msgid "messages whose body matches EXPR"
-msgstr "mensagens quais o corpo coincide com EXPR"
+msgstr "mensagens cujo o corpo coincide com EXPR"
 
 #. L10N: Pattern Completion Menu description for ~B
 #: pattern/flags.c:50
 msgid "messages whose body or headers match EXPR"
-msgstr "mensagens quais o corpo ou cabeçalhos coincide com EXPR"
+msgstr "mensagens cujo o corpo ou cabeçalhos coincide com EXPR"
 
 #. L10N: Pattern Completion Menu description for ~c
 #: pattern/flags.c:53
 msgid "messages whose CC header matches EXPR"
-msgstr "mensagens quais o cabeçalho CC coincide com EXPR"
+msgstr "mensagens cujo o cabeçalho CC coincide com EXPR"
 
 #. L10N: Pattern Completion Menu description for ~C
 #: pattern/flags.c:56
 msgid "messages whose recipient matches EXPR"
-msgstr "mensagens quais o recipiente coincide com EXPR"
+msgstr "mensagens cujo o recipiente coincide com EXPR"
 
 #. L10N: Pattern Completion Menu description for ~d
 #: pattern/flags.c:59
@@ -6796,7 +6796,7 @@ msgstr "mensagens deletadas"
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:65
 msgid "messages whose Sender header matches EXPR"
-msgstr "mensagens quais o cabeçalho Remetente coincide com EXPR"
+msgstr "mensagens cujo o cabeçalho Remetente coincide com EXPR"
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:68
@@ -6806,7 +6806,7 @@ msgstr "mensagens expiradas"
 #. L10N: Pattern Completion Menu description for ~f
 #: pattern/flags.c:71
 msgid "messages whose From header matches EXPR"
-msgstr "mensagens quais o cabeçalho De coincide com EXPR"
+msgstr "mensagens cujo o cabeçalho De coincide com EXPR"
 
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:74
@@ -6816,32 +6816,32 @@ msgstr "mensagens marcadas"
 #. L10N: Pattern Completion Menu description for ~g
 #: pattern/flags.c:77
 msgid "cryptographically signed messages"
-msgstr "mensagens assinadas criptograficamentes"
+msgstr "mensagens assinadas criptograficamente"
 
 #. L10N: Pattern Completion Menu description for ~G
 #: pattern/flags.c:80
 msgid "cryptographically encrypted messages"
-msgstr "mensagens encriptadas criptograficamentes"
+msgstr "mensagens encriptadas criptograficamente"
 
 #. L10N: Pattern Completion Menu description for ~h
 #: pattern/flags.c:83
 msgid "messages whose header matches EXPR"
-msgstr "mensagens quais o cabeçalho coincide com EXPR"
+msgstr "mensagens cujo o cabeçalho coincide com EXPR"
 
 #. L10N: Pattern Completion Menu description for ~H
 #: pattern/flags.c:86
 msgid "messages whose spam tag matches EXPR"
-msgstr "mensagens quais a tag de spam coincide com EXPR"
+msgstr "mensagens cujo a tag de spam coincide com EXPR"
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:89
 msgid "messages whose Message-ID matches EXPR"
-msgstr "mensagens quais Message-ID coincide com EXPR"
+msgstr "mensagens cujo o Message-ID coincide com EXPR"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:92
 msgid "messages whose Message-ID is included in the results returned from an external search program"
-msgstr "mensagens quais Message-ID é incluído nos resultados retornados de um programa de procura externo"
+msgstr "mensagens cujo o Message-ID é incluído nos resultados retornados de um programa de procura externo"
 
 #. L10N: Pattern Completion Menu description for ~k
 #: pattern/flags.c:95
@@ -6851,7 +6851,7 @@ msgstr "mensagens que contem chave PGP"
 #. L10N: Pattern Completion Menu description for ~K
 #: pattern/flags.c:98
 msgid "messages whose BCC header matches EXPR"
-msgstr "mensagens quais o cabeçalho BCC coincide EXPR"
+msgstr "mensagens cujo o cabeçalho BCC coincide EXPR"
 
 #. L10N: Pattern Completion Menu description for ~l
 #: pattern/flags.c:101
@@ -6861,12 +6861,12 @@ msgstr "mensagens dirigidas a uma lista de email conhecida"
 #. L10N: Pattern Completion Menu description for ~L
 #: pattern/flags.c:104
 msgid "messages whose From/Sender/To/CC matches EXPR"
-msgstr "mensagens quais De/Remetente/Para/CC coincide EXPR"
+msgstr "mensagens cujo De/Remetente/Para/CC coincide EXPR"
 
 #. L10N: Pattern Completion Menu description for ~m
 #: pattern/flags.c:107
 msgid "messages whose number is in RANGE"
-msgstr "mensagens quais o número está em ALCANCE"
+msgstr "mensagens cujo o número está em ALCANCE"
 
 #. L10N: Pattern Completion Menu description for ~M
 #: pattern/flags.c:110
@@ -6876,7 +6876,7 @@ msgstr "mensagens com um Content-Type coincidindo com EXPR"
 #. L10N: Pattern Completion Menu description for ~n
 #: pattern/flags.c:113
 msgid "messages whose score is in RANGE"
-msgstr "mensagens quais pontos está em ALCANCE"
+msgstr "mensagens cujo pontos está em ALCANCE"
 
 #. L10N: Pattern Completion Menu description for ~N
 #: pattern/flags.c:116
@@ -6916,7 +6916,7 @@ msgstr "mensagens lidas"
 #. L10N: Pattern Completion Menu description for ~s
 #: pattern/flags.c:137
 msgid "messages whose Subject header matches EXPR"
-msgstr "mensagens quais o cabeçalho Assunto coincide com EXPR"
+msgstr "mensagens cujo o cabeçalho Assunto coincide com EXPR"
 
 #. L10N: Pattern Completion Menu description for ~S
 #: pattern/flags.c:140
@@ -6926,7 +6926,7 @@ msgstr "mensagens suplantadas"
 #. L10N: Pattern Completion Menu description for ~t
 #: pattern/flags.c:143
 msgid "messages whose To header matches EXPR"
-msgstr "mensagens quais o cabeçalho Para coincide com EXPR"
+msgstr "mensagens cujo o cabeçalho Para coincide com EXPR"
 
 #. L10N: Pattern Completion Menu description for ~T
 #: pattern/flags.c:146
@@ -6936,7 +6936,7 @@ msgstr "mensagens marcadas"
 #. L10N: Pattern Completion Menu description for ~u
 #: pattern/flags.c:149
 msgid "messages addressed to subscribed mailing lists"
-msgstr "mensagens direcionadas a listas de email inscritas"
+msgstr "mensagens direcionadas as listas de email inscritas"
 
 #. L10N: Pattern Completion Menu description for ~U
 #: pattern/flags.c:152
@@ -6961,7 +6961,7 @@ msgstr "grupos de notícias coincide com EXPR"
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:166
 msgid "messages whose References header matches EXPR"
-msgstr "mensagens quais o cabeçalho Referencias coincide com EXPR"
+msgstr "mensagens cujo o cabeçalho Referencias coincide com EXPR"
 
 #. L10N: Pattern Completion Menu description for ~X
 #: pattern/flags.c:169
@@ -6971,17 +6971,17 @@ msgstr "mensagens com ALCANCE anexos"
 #. L10N: Pattern Completion Menu description for ~y
 #: pattern/flags.c:172
 msgid "messages whose X-Label header matches EXPR"
-msgstr "mensagens quais o cabeçalho X-Label coincide com EXPR"
+msgstr "mensagens cujo o cabeçalho X-Label coincide com EXPR"
 
 #. L10N: Pattern Completion Menu description for ~Y
 #: pattern/flags.c:175
 msgid "messages whose tags match EXPR"
-msgstr "mensagens quais tags coincidem com EXPR"
+msgstr "mensagens cujo as tags coincidem com EXPR"
 
 #. L10N: Pattern Completion Menu description for ~z
 #: pattern/flags.c:178
 msgid "messages whose size is in RANGE"
-msgstr "mensagens quais tamanho está em ALCANCE"
+msgstr "mensagens cujo o tamanho está em ALCANCE"
 
 #. L10N: Pattern Completion Menu description for ~=
 #: pattern/flags.c:181
@@ -7249,7 +7249,7 @@ msgstr "Sem assunto, cancelar?"
 
 #: send/send.c:341
 msgid "No subject, aborting"
-msgstr "Sem assunto, cancelado"
+msgstr "Sem assunto, cancelando"
 
 #. L10N: This is the prompt for $forward_attachments.
 #. When inline forwarding ($mime_forward answered "no"), this prompts
