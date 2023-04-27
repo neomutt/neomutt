@@ -177,7 +177,7 @@ void mview_update(struct MailboxView *mv)
     }
     else
     {
-      m->v2r[m->vcount] = msgno;
+      m->v2r[m->vcount] = e;
       e->vnum = m->vcount++;
     }
     e->msgno = msgno;
@@ -267,7 +267,7 @@ static void update_tables(struct MailboxView *mv)
       m->emails[j]->msgno = j;
       if (m->emails[j]->vnum != -1)
       {
-        m->v2r[m->vcount] = j;
+        m->v2r[m->vcount] = m->emails[j];
         m->emails[j]->vnum = m->vcount++;
         struct Body *b = m->emails[j]->body;
         mv->vsize += b->length + b->offset - b->hdr_offset + padding;
@@ -423,11 +423,7 @@ struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum)
   if ((vnum < 0) || (vnum >= m->vcount))
     return NULL;
 
-  int inum = m->v2r[vnum];
-  if ((inum < 0) || (inum >= m->msg_count))
-    return NULL;
-
-  return m->emails[inum];
+  return m->v2r[vnum];
 }
 
 /**
@@ -510,7 +506,7 @@ bool mutt_limit_current_thread(struct MailboxView *mv, struct Email *e)
 
       e->vnum = m->vcount;
       e->visible = true;
-      m->v2r[m->vcount] = i;
+      m->v2r[m->vcount] = e;
       m->vcount++;
       mv->vsize += (body->length + body->offset - body->hdr_offset);
     }

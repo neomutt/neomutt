@@ -359,7 +359,7 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
       {
         e->vnum = m->vcount;
         e->visible = true;
-        m->v2r[m->vcount] = i;
+        m->v2r[m->vcount] = e;
         m->vcount++;
         struct Body *b = e->body;
         mv->vsize += b->length + b->offset - b->hdr_offset + padding;

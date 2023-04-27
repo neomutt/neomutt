@@ -1421,7 +1421,7 @@ off_t mutt_set_vnum(struct Mailbox *m)
     if (e->vnum >= 0)
     {
       e->vnum = m->vcount;
-      m->v2r[m->vcount] = i;
+      m->v2r[m->vcount] = e;
       m->vcount++;
       vsize += e->body->length + e->body->offset - e->body->hdr_offset + padding;
     }

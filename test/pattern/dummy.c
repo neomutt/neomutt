@@ -211,11 +211,7 @@ struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum)
   if ((vnum < 0) || (vnum >= m->vcount))
     return NULL;
 
-  int inum = m->v2r[vnum];
-  if ((inum < 0) || (inum >= m->msg_count))
-    return NULL;
-
-  return m->emails[inum];
+  return m->v2r[vnum];
 }
 
 int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach,
