@@ -31,6 +31,7 @@
  * | core/command.c      | @subpage core_command      |
  * | core/config_cache.c | @subpage core_config_cache |
  * | core/dispatcher.c   | @subpage core_dispatcher   |
+ * | core/eview.c        | @subpage core_eview        |
  * | core/mailbox.c      | @subpage core_mailbox      |
  * | core/message.c      | @subpage core_message      |
  * | core/neomutt.c      | @subpage core_neomutt      |
@@ -45,6 +46,7 @@
 #include "command.h"
 #include "config_cache.h"
 #include "dispatcher.h"
+#include "eview.h"
 #include "mailbox.h"
 #include "message.h"
 #include "mxapi.h"
