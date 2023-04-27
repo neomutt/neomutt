@@ -331,7 +331,7 @@ $(PWD)/convert:
 # libcore
 LIBCORE=	libcore.a
 LIBCOREOBJS=	core/account.o core/command.o core/config_cache.o \
-		core/dispatcher.o core/mailbox.o core/message.o core/neomutt.o \
+		core/dispatcher.o core/eview.o core/mailbox.o core/message.o core/neomutt.o \
 		core/tmp.o
 CLEANFILES+=	$(LIBCORE) $(LIBCOREOBJS)
 ALLOBJS+=	$(LIBCOREOBJS)
