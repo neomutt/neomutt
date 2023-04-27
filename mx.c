@@ -1236,7 +1236,7 @@ void mx_alloc_memory(struct Mailbox *m, int req_size)
   for (int i = m->email_max; i < req_size; i++)
   {
     m->emails[i] = NULL;
-    m->v2r[i] = -1;
+    m->v2r[i] = NULL;
   }
 
   m->email_max = req_size;

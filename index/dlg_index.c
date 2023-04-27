@@ -512,7 +512,7 @@ static void update_index_unthreaded(struct MailboxView *mv, enum MxStatus check)
       {
         ASSERT(mv->mailbox->vcount < mv->mailbox->msg_count);
         e->vnum = mv->mailbox->vcount;
-        mv->mailbox->v2r[mv->mailbox->vcount] = i;
+        mv->mailbox->v2r[mv->mailbox->vcount] = e;
         e->visible = true;
         mv->mailbox->vcount++;
         struct Body *b = e->body;
@@ -830,13 +830,13 @@ int index_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *b
       if (reverse)
       {
         if (menu->top + menu->page_len > menu->max)
-          edgemsgno = m->v2r[menu->max - 1];
+          edgemsgno = m->v2r[menu->max - 1]->msgno;
         else
-          edgemsgno = m->v2r[menu->top + menu->page_len - 1];
+          edgemsgno = m->v2r[menu->top + menu->page_len - 1]->msgno;
       }
       else
       {
-        edgemsgno = m->v2r[menu->top];
+        edgemsgno = m->v2r[menu->top]->msgno;
       }
 
       for (tmp = e->thread->parent; tmp; tmp = tmp->parent)
