@@ -958,12 +958,15 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
   if (c_sort != SORT_ORDER)
   {
     emails = m->emails;
-    // We overcommit here, just in case new mail arrives whilst we're sync-ing
-    m->emails = mutt_mem_malloc(m->email_max * sizeof(struct Email *));
-    memcpy(m->emails, emails, m->email_max * sizeof(struct Email *));
+    if (m->msg_count != 0)
+    {
+      // We overcommit here, just in case new mail arrives whilst we're sync-ing
+      m->emails = mutt_mem_malloc(m->email_max * sizeof(struct Email *));
+      memcpy(m->emails, emails, m->email_max * sizeof(struct Email *));
 
-    cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
-    qsort(m->emails, m->msg_count, sizeof(struct Email *), compare_uid);
+      cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
+      qsort(m->emails, m->msg_count, sizeof(struct Email *), compare_uid);
+    }
   }
 
   pos = 0;
@@ -1656,11 +1659,14 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   if (c_sort != SORT_ORDER)
   {
     emails = m->emails;
-    m->emails = mutt_mem_malloc(m->msg_count * sizeof(struct Email *));
-    memcpy(m->emails, emails, m->msg_count * sizeof(struct Email *));
+    if (m->msg_count != 0)
+    {
+      m->emails = mutt_mem_malloc(m->msg_count * sizeof(struct Email *));
+      memcpy(m->emails, emails, m->msg_count * sizeof(struct Email *));
 
-    cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
-    qsort(m->emails, m->msg_count, sizeof(struct Email *), compare_uid);
+      cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
+      qsort(m->emails, m->msg_count, sizeof(struct Email *), compare_uid);
+    }
   }
 
   rc = sync_helper(m, MUTT_ACL_DELETE, MUTT_DELETED, "\\Deleted");
