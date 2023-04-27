@@ -143,7 +143,7 @@ struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum)
   if ((vnum < 0) || (vnum >= m->vcount))
     return NULL;
 
-  return m->v2r[vnum];
+  return m->v2r[vnum]->email;
 }
 
 void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src,
