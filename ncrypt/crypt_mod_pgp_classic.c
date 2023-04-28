@@ -39,7 +39,7 @@
 /**
  * CryptModPgpClassic - CLI PGP - Implements ::CryptModuleSpecs
  */
-struct CryptModuleSpecs CryptModPgpClassic = {
+const struct CryptModuleSpecs CryptModPgpClassic = {
   // clang-format off
   APPLICATION_PGP,
 

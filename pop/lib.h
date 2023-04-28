@@ -42,7 +42,7 @@
 
 struct stat;
 
-extern struct MxOps MxPopOps;
+extern const struct MxOps MxPopOps;
 
 void pop_fetch_mail(void);
 enum MailboxType pop_path_probe(const char *path, const struct stat *st);

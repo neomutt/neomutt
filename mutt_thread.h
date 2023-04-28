@@ -87,7 +87,7 @@ enum UseThreads
   UT_REVERSE,   ///< Reverse threading (subthreads above root)
 };
 
-extern struct EnumDef UseThreadsTypeDef;
+extern const struct EnumDef UseThreadsTypeDef;
 
 int mutt_traverse_thread(struct Email *e, MuttThreadFlags flag);
 #define mutt_collapse_thread(e)         mutt_traverse_thread(e, MUTT_THREAD_COLLAPSE)

@@ -59,8 +59,6 @@ struct SmimeFunction
   smime_function_t function; ///< Function to call
 };
 
-extern struct SmimeFunction SmimeFunctions[];
-
 int smime_function_dispatcher(struct MuttWindow *win, int op);
 
 #endif /* MUTT_NCRYPT_SMIME_FUNCTIONS_H */

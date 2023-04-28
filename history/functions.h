@@ -63,8 +63,6 @@ struct HistoryFunction
   history_function_t function; ///< Function to call
 };
 
-extern struct HistoryFunction HistoryFunctions[];
-
 int history_function_dispatcher(struct MuttWindow *win, int op);
 
 #endif /* MUTT_HISTORY_FUNCTIONS_H */

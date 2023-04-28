@@ -43,24 +43,7 @@ struct Address
 };
 TAILQ_HEAD(AddressList, Address);
 
-/**
- * enum AddressError - Possible values for AddressError
- */
-enum AddressError
-{
-  ADDR_ERR_MEMORY = 1,     ///< Out of memory
-  ADDR_ERR_MISMATCH_PAREN, ///< Mismatched parentheses
-  ADDR_ERR_MISMATCH_QUOTE, ///< Mismatches quotes
-  ADDR_ERR_BAD_ROUTE,      ///< Bad route
-  ADDR_ERR_BAD_ROUTE_ADDR, ///< Bad route address
-  ADDR_ERR_BAD_ADDR_SPEC,  ///< Bad address specifier
-};
-
-extern int AddressError;
-extern const char *const AddressErrors[];
 extern const char AddressSpecials[];
-
-#define address_error(num) AddressErrors[num]
 
 /**
  * @defgroup addr_predicate_api Address Predicate API

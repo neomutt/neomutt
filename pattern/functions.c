@@ -64,7 +64,7 @@ static int op_generic_select_entry(struct PatternData *pd, int op)
 /**
  * PatternFunctions - All the NeoMutt functions that the Pattern supports
  */
-struct PatternFunction PatternFunctions[] = {
+static const struct PatternFunction PatternFunctions[] = {
   // clang-format off
   { OP_EXIT,                   op_exit },
   { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },

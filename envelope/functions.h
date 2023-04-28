@@ -48,6 +48,4 @@ struct EnvelopeFunction
 
 void update_crypt_info(struct EnvelopeWindowData *wdata);
 
-extern struct EnvelopeFunction EnvelopeFunctions[];
-
 #endif /* MUTT_ENVELOPE_FUNCTIONS_H */

@@ -55,6 +55,4 @@ struct PagerFunction
 int pager_function_dispatcher(struct MuttWindow *win, int op);
 bool jump_to_bottom(struct PagerPrivateData *priv, struct PagerView *pview);
 
-extern struct PagerFunction PagerFunctions[];
-
 #endif /* MUTT_PAGER_FUNCTIONS_H */

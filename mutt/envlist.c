@@ -33,7 +33,7 @@
 #include "memory.h"
 #include "string2.h"
 
-char **EnvList = NULL; ///< Private copy of the environment variables
+static char **EnvList = NULL; ///< Private copy of the environment variables
 
 /**
  * mutt_envlist_free - Free the private copy of the environment

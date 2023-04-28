@@ -666,7 +666,7 @@ static int op_editor_transpose_chars(struct EnterWindowData *wdata, int op)
 /**
  * EnterFunctions - All the NeoMutt functions that Enter supports
  */
-struct EnterFunction EnterFunctions[] = {
+static const struct EnterFunction EnterFunctions[] = {
   // clang-format off
   { OP_EDITOR_BACKSPACE,          op_editor_backspace },
   { OP_EDITOR_BACKWARD_CHAR,      op_editor_backward_char },

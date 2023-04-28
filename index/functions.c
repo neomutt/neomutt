@@ -2831,55 +2831,9 @@ static bool prereq(struct MailboxView *mv, struct Menu *menu, CheckFlags checks)
 }
 
 /**
- * index_function_dispatcher - Perform an Index function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
- */
-int index_function_dispatcher(struct MuttWindow *win, int op)
-{
-  if (!win)
-  {
-    mutt_error(_(Not_available_in_this_menu));
-    return FR_ERROR;
-  }
-
-  struct IndexPrivateData *priv = win->parent->wdata;
-  if (!priv)
-    return FR_ERROR;
-
-  struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg || !dlg->wdata)
-    return FR_ERROR;
-
-  struct IndexSharedData *shared = dlg->wdata;
-
-  int rc = FR_UNKNOWN;
-  for (size_t i = 0; IndexFunctions[i].op != OP_NULL; i++)
-  {
-    const struct IndexFunction *fn = &IndexFunctions[i];
-    if (fn->op == op)
-    {
-      if (!prereq(shared->mailboxview, priv->menu, fn->flags))
-      {
-        rc = FR_ERROR;
-        break;
-      }
-      rc = fn->function(shared, priv, op);
-      break;
-    }
-  }
-
-  if (rc == FR_UNKNOWN) // Not our function
-    return rc;
-
-  const char *result = dispacher_get_retval_name(rc);
-  mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
-
-  return rc;
-}
-
-/**
  * IndexFunctions - All the NeoMutt functions that the Index supports
  */
-struct IndexFunction IndexFunctions[] = {
+static const struct IndexFunction IndexFunctions[] = {
   // clang-format off
   { OP_ALIAS_DIALOG,                        op_alias_dialog,                      CHECK_NO_FLAGS },
   { OP_ATTACHMENT_EDIT_TYPE,                op_attachment_edit_type,              CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
@@ -3025,3 +2979,49 @@ struct IndexFunction IndexFunctions[] = {
   { 0, NULL, CHECK_NO_FLAGS },
   // clang-format on
 };
+
+/**
+ * index_function_dispatcher - Perform an Index function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
+ */
+int index_function_dispatcher(struct MuttWindow *win, int op)
+{
+  if (!win)
+  {
+    mutt_error(_(Not_available_in_this_menu));
+    return FR_ERROR;
+  }
+
+  struct IndexPrivateData *priv = win->parent->wdata;
+  if (!priv)
+    return FR_ERROR;
+
+  struct MuttWindow *dlg = dialog_find(win);
+  if (!dlg || !dlg->wdata)
+    return FR_ERROR;
+
+  struct IndexSharedData *shared = dlg->wdata;
+
+  int rc = FR_UNKNOWN;
+  for (size_t i = 0; IndexFunctions[i].op != OP_NULL; i++)
+  {
+    const struct IndexFunction *fn = &IndexFunctions[i];
+    if (fn->op == op)
+    {
+      if (!prereq(shared->mailboxview, priv->menu, fn->flags))
+      {
+        rc = FR_ERROR;
+        break;
+      }
+      rc = fn->function(shared, priv, op);
+      break;
+    }
+  }
+
+  if (rc == FR_UNKNOWN) // Not our function
+    return rc;
+
+  const char *result = dispacher_get_retval_name(rc);
+  mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
+
+  return rc;
+}

@@ -34,7 +34,7 @@
 #include "lib.h"
 #include "alias.h"
 
-static struct HashTable *ReverseAliases; ///< Hash Table of aliases (email address -> alias)
+static struct HashTable *ReverseAliases = NULL; ///< Hash Table of aliases (email address -> alias)
 
 /**
  * alias_reverse_init - Set up the Reverse Alias Hash Table

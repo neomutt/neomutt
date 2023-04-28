@@ -756,7 +756,7 @@ static int op_view_attachments(struct IndexSharedData *shared,
 /**
  * PagerFunctions - All the NeoMutt functions that the Pager supports
  */
-struct PagerFunction PagerFunctions[] = {
+static const struct PagerFunction PagerFunctions[] = {
   // clang-format off
   { OP_EXIT,                   op_exit },
   { OP_HALF_DOWN,              op_pager_half_down },

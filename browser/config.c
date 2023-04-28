@@ -36,7 +36,7 @@
 /**
  * SortBrowserMethods - Sort methods for the folder/dir browser
  */
-const struct Mapping SortBrowserMethods[] = {
+static const struct Mapping SortBrowserMethods[] = {
   // clang-format off
   { "alpha",    SORT_SUBJECT },
   { "count",    SORT_COUNT },

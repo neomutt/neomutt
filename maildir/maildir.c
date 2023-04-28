@@ -1653,7 +1653,7 @@ static enum MailboxType maildir_path_probe(const char *path, const struct stat *
 /**
  * MxMaildirOps - Maildir Mailbox - Implements ::MxOps - @ingroup mx_api
  */
-struct MxOps MxMaildirOps = {
+const struct MxOps MxMaildirOps = {
   // clang-format off
   .type            = MUTT_MAILDIR,
   .name             = "maildir",

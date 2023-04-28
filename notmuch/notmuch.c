@@ -2477,7 +2477,7 @@ static int nm_path_parent(char *buf, size_t buflen)
 /**
  * MxNotmuchOps - Notmuch Mailbox - Implements ::MxOps - @ingroup mx_api
  */
-struct MxOps MxNotmuchOps = {
+const struct MxOps MxNotmuchOps = {
   // clang-format off
   .type            = MUTT_NOTMUCH,
   .name             = "notmuch",

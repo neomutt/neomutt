@@ -35,7 +35,7 @@
 /**
  * SortSidebarMethods - Sort methods for the sidebar
  */
-const struct Mapping SortSidebarMethods[] = {
+static const struct Mapping SortSidebarMethods[] = {
   // clang-format off
   { "path",          SORT_PATH },
   { "alpha",         SORT_PATH },

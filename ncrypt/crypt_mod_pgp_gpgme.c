@@ -55,7 +55,7 @@ static bool pgp_gpgme_valid_passphrase(void)
 /**
  * CryptModPgpGpgme - GPGME PGP - Implements ::CryptModuleSpecs
  */
-struct CryptModuleSpecs CryptModPgpGpgme = {
+const struct CryptModuleSpecs CryptModPgpGpgme = {
   // clang-format off
   APPLICATION_PGP,
 

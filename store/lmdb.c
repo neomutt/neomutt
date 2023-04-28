@@ -41,10 +41,10 @@
  * The file is mmap(2)'d into memory. */
 #if (UINTPTR_MAX == 0xffffffff)
 /// Maximum LMDB database size: 32-bit, limit to 2GiB
-const size_t LMDB_DB_SIZE = 2147483648;
+static const size_t LMDB_DB_SIZE = 2147483648;
 #elif (UINTPTR_MAX == 0xffffffffffffffff)
 /// Maximum LMDB database size: 64 bit, limit to 100GiB
-const size_t LMDB_DB_SIZE = 107374182400;
+static const size_t LMDB_DB_SIZE = 107374182400;
 #else
 #error
 #endif

@@ -1081,7 +1081,7 @@ static int op_toggle_mailboxes(struct BrowserPrivateData *priv, int op)
 /**
  * BrowserFunctions - All the NeoMutt functions that the Browser supports
  */
-struct BrowserFunction BrowserFunctions[] = {
+static const struct BrowserFunction BrowserFunctions[] = {
   // clang-format off
   { OP_BROWSER_GOTO_FOLDER,  op_toggle_mailboxes },
   { OP_BROWSER_NEW_FILE,     op_browser_new_file },

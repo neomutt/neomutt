@@ -78,14 +78,14 @@ struct stat;
 struct NntpAccountData *CurrentNewsSrv = NULL;
 
 /// Fields to get from server, if it supports the LIST OVERVIEW.FMT feature
-const char *OverviewFmt = "Subject:\0"
-                          "From:\0"
-                          "Date:\0"
-                          "Message-ID:\0"
-                          "References:\0"
-                          "Content-Length:\0"
-                          "Lines:\0"
-                          "\0";
+static const char *OverviewFmt = "Subject:\0"
+                                 "From:\0"
+                                 "Date:\0"
+                                 "Message-ID:\0"
+                                 "References:\0"
+                                 "Content-Length:\0"
+                                 "Lines:\0"
+                                 "\0";
 
 /**
  * struct FetchCtx - Keep track when getting data from a server
@@ -2772,7 +2772,7 @@ static int nntp_path_parent(char *buf, size_t buflen)
 /**
  * MxNntpOps - NNTP Mailbox - Implements ::MxOps - @ingroup mx_api
  */
-struct MxOps MxNntpOps = {
+const struct MxOps MxNntpOps = {
   // clang-format off
   .type            = MUTT_NNTP,
   .name             = "nntp",

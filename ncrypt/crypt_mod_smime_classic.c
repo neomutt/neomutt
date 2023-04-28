@@ -53,7 +53,7 @@ static void smime_class_cleanup(void)
 /**
  * CryptModSmimeClassic - CLI SMIME - Implements ::CryptModuleSpecs
  */
-struct CryptModuleSpecs CryptModSmimeClassic = {
+const struct CryptModuleSpecs CryptModSmimeClassic = {
   // clang-format off
   APPLICATION_SMIME,
 

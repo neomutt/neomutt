@@ -35,7 +35,7 @@
 /**
  * SortAliasMethods - Sort methods for email aliases
  */
-const struct Mapping SortAliasMethods[] = {
+static const struct Mapping SortAliasMethods[] = {
   // clang-format off
   { "address",  SORT_ADDRESS },
   { "alias",    SORT_ALIAS },

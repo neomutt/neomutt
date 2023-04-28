@@ -55,7 +55,7 @@ static bool smime_gpgme_valid_passphrase(void)
 /**
  * CryptModSmimeGpgme - GPGME SMIME - Implements ::CryptModuleSpecs
  */
-struct CryptModuleSpecs CryptModSmimeGpgme = {
+const struct CryptModuleSpecs CryptModSmimeGpgme = {
   // clang-format off
   APPLICATION_SMIME,
 

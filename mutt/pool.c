@@ -38,9 +38,9 @@ static size_t BufferPoolCount = 0;
 /// Total size of the pool
 static size_t BufferPoolLen = 0;
 /// Amount to increase the size of the pool
-static size_t BufferPoolIncrement = 20;
+static const size_t BufferPoolIncrement = 20;
 /// Minimum size for a buffer
-static size_t BufferPoolInitialBufferSize = 1024;
+static const size_t BufferPoolInitialBufferSize = 1024;
 /// A pool of buffers
 static struct Buffer **BufferPool = NULL;
 

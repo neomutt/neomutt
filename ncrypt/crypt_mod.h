@@ -306,7 +306,7 @@ struct CryptModuleSpecs
 };
 
 /* High Level crypto module interface */
-void crypto_module_register(struct CryptModuleSpecs *specs);
-struct CryptModuleSpecs *crypto_module_lookup(int identifier);
+void crypto_module_register(const struct CryptModuleSpecs *specs);
+const struct CryptModuleSpecs *crypto_module_lookup(int identifier);
 
 #endif /* MUTT_NCRYPT_CRYPT_MOD_H */

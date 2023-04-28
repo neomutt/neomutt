@@ -1912,7 +1912,7 @@ static int op_forget_passphrase(struct ComposeSharedData *shared, int op)
 /**
  * ComposeFunctions - All the NeoMutt functions that the Compose supports
  */
-struct ComposeFunction ComposeFunctions[] = {
+static const struct ComposeFunction ComposeFunctions[] = {
   // clang-format off
   { OP_ATTACHMENT_ATTACH_FILE,            op_attachment_attach_file },
   { OP_ATTACHMENT_ATTACH_KEY,             op_attachment_attach_key },

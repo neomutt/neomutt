@@ -85,7 +85,7 @@ enum MailboxType imap_path_probe(const char *path, const struct stat *st);
 int imap_path_canon(char *buf, size_t buflen);
 void imap_notify_delete_email(struct Mailbox *m, struct Email *e);
 
-extern struct MxOps MxImapOps;
+extern const struct MxOps MxImapOps;
 
 /* browse.c */
 int imap_browse(const char *path, struct BrowserState *state);

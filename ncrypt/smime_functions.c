@@ -93,7 +93,7 @@ static int op_generic_select_entry(struct SmimeData *sd, int op)
 /**
  * SmimeFunctions - All the NeoMutt functions that the Smime supports
  */
-struct SmimeFunction SmimeFunctions[] = {
+static const struct SmimeFunction SmimeFunctions[] = {
   // clang-format off
   { OP_EXIT,                   op_exit },
   { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },

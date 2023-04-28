@@ -55,8 +55,8 @@ struct MboxAccountData
   bool append : 1; ///< mailbox is opened in append mode
 };
 
-extern struct MxOps MxMboxOps;
-extern struct MxOps MxMmdfOps;
+extern const struct MxOps MxMboxOps;
+extern const struct MxOps MxMmdfOps;
 
 #define MMDF_SEP "\001\001\001\001\n"
 

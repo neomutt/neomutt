@@ -43,10 +43,10 @@
 #include "globals.h"
 #include "muttlib.h"
 
-uint64_t LastError = 0; ///< Time of the last error message (in milliseconds since the Unix epoch)
+static uint64_t LastError = 0; ///< Time of the last error message (in milliseconds since the Unix epoch)
 
-char *CurrentFile = NULL; ///< The previous log file name
-const int NumOfLogs = 5;  ///< How many log files to rotate
+static char *CurrentFile = NULL; ///< The previous log file name
+static const int NumOfLogs = 5;  ///< How many log files to rotate
 
 #define S_TO_MS 1000L
 

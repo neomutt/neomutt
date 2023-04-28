@@ -62,16 +62,16 @@ struct Address;
 struct AddressList;
 
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
-extern struct CryptModuleSpecs CryptModPgpClassic;
+extern const struct CryptModuleSpecs CryptModPgpClassic;
 #endif
 
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
-extern struct CryptModuleSpecs CryptModSmimeClassic;
+extern const struct CryptModuleSpecs CryptModSmimeClassic;
 #endif
 
 #ifdef CRYPT_BACKEND_GPGME
-extern struct CryptModuleSpecs CryptModPgpGpgme;
-extern struct CryptModuleSpecs CryptModSmimeGpgme;
+extern const struct CryptModuleSpecs CryptModPgpGpgme;
+extern const struct CryptModuleSpecs CryptModSmimeGpgme;
 #endif
 
 /* If the crypto module identifier by IDENTIFIER has been registered,

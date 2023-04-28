@@ -32,8 +32,8 @@
 #include <stdbool.h>
 
 // clang-format off
-char *AutocryptSignAs;     ///< Autocrypt Key id to sign as
-char *AutocryptDefaultKey; ///< Autocrypt default key id (used for postponing messages)
+char *AutocryptSignAs = NULL;     ///< Autocrypt Key id to sign as
+char *AutocryptDefaultKey = NULL; ///< Autocrypt default key id (used for postponing messages)
 // clang-format on
 
 /**

@@ -31,7 +31,7 @@
 #include "core/lib.h"
 #include "lib.h"
 
-struct Notify *ColorsNotify; ///< Notifications: #ColorId, #EventColor
+struct Notify *ColorsNotify = NULL; ///< Notifications: #ColorId, #EventColor
 
 /**
  * color_notify_init - Initialise the Colour notification

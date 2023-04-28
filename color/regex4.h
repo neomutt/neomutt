@@ -52,10 +52,16 @@ extern struct RegexColorList AttachList;
 extern struct RegexColorList BodyList;
 extern struct RegexColorList HeaderList;
 extern struct RegexColorList IndexAuthorList;
+extern struct RegexColorList IndexCollapsedList;
+extern struct RegexColorList IndexDateList;
 extern struct RegexColorList IndexFlagsList;
+extern struct RegexColorList IndexLabelList;
 extern struct RegexColorList IndexList;
+extern struct RegexColorList IndexNumberList;
+extern struct RegexColorList IndexSizeList;
 extern struct RegexColorList IndexSubjectList;
 extern struct RegexColorList IndexTagList;
+extern struct RegexColorList IndexTagsList;
 extern struct RegexColorList StatusList;
 #endif
 

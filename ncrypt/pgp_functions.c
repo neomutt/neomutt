@@ -192,7 +192,7 @@ static int op_view_id(struct PgpData *pd, int op)
 /**
  * PgpFunctions - All the NeoMutt functions that the Pgp supports
  */
-struct PgpFunction PgpFunctions[] = {
+static const struct PgpFunction PgpFunctions[] = {
   // clang-format off
   { OP_EXIT,                   op_exit },
   { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },

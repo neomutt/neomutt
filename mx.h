@@ -34,9 +34,7 @@
 struct Buffer;
 struct Email;
 
-extern const struct MxOps *mx_ops[];
-
-extern struct EnumDef MboxTypeDef;
+extern const struct EnumDef MboxTypeDef;
 
 typedef uint8_t MsgOpenFlags;      ///< Flags for mx_msg_open_new(), e.g. #MUTT_ADD_FROM
 #define MUTT_MSG_NO_FLAGS       0  ///< No flags are set

@@ -524,7 +524,7 @@ static int op_compose_mix(struct EnvelopeWindowData *wdata, int op)
 /**
  * EnvelopeFunctions - All the NeoMutt functions that the Envelope supports
  */
-struct EnvelopeFunction EnvelopeFunctions[] = {
+static const struct EnvelopeFunction EnvelopeFunctions[] = {
 // clang-format off
 #ifdef USE_AUTOCRYPT
   { OP_COMPOSE_AUTOCRYPT_MENU,            op_compose_autocrypt_menu },

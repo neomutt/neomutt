@@ -940,7 +940,7 @@ static int comp_path_parent(char *buf, size_t buflen)
  * Compress only uses open, close and check.
  * The message functions are delegated to mbox.
  */
-struct MxOps MxCompOps = {
+const struct MxOps MxCompOps = {
   // clang-format off
   .type            = MUTT_COMPRESSED,
   .name             = "compressed",

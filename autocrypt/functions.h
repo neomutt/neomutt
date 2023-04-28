@@ -57,8 +57,6 @@ struct AutocryptFunction
   autocrypt_function_t function; ///< Function to call
 };
 
-extern struct AutocryptFunction AutocryptFunctions[];
-
 int autocrypt_function_dispatcher(struct MuttWindow *win, int op);
 
 #endif /* MUTT_AUTOCRYPT_FUNCTIONS_H */

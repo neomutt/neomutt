@@ -1254,7 +1254,7 @@ static enum MailboxType mh_path_probe(const char *path, const struct stat *st)
 /**
  * MxMhOps - MH Mailbox - Implements ::MxOps - @ingroup mx_api
  */
-struct MxOps MxMhOps = {
+const struct MxOps MxMhOps = {
   // clang-format off
   .type            = MUTT_MH,
   .name             = "mh",

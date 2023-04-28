@@ -803,7 +803,7 @@ static int op_view_id(struct GpgmeData *gd, int op)
 /**
  * GpgmeFunctions - All the NeoMutt functions that the Gpgme supports
  */
-struct GpgmeFunction GpgmeFunctions[] = {
+static const struct GpgmeFunction GpgmeFunctions[] = {
   // clang-format off
   { OP_EXIT,                   op_exit },
   { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },

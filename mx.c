@@ -96,7 +96,7 @@ static const struct Mapping MboxTypeMap[] = {
 };
 
 /// Data for the $mbox_type enumeration
-struct EnumDef MboxTypeDef = {
+const struct EnumDef MboxTypeDef = {
   "mbox_type",
   4,
   (struct Mapping *) &MboxTypeMap,
@@ -105,7 +105,7 @@ struct EnumDef MboxTypeDef = {
 /**
  * MxOps - All the Mailbox backends
  */
-const struct MxOps *MxOps[] = {
+static const struct MxOps *MxOps[] = {
 /* These mailboxes can be recognised by their Url scheme */
 #ifdef USE_IMAP
   &MxImapOps,

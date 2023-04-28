@@ -305,7 +305,7 @@ static int op_sort(struct AliasMenuData *mdata, int op)
 /**
  * AliasFunctions - All the NeoMutt functions that the Alias supports
  */
-struct AliasFunction AliasFunctions[] = {
+static const struct AliasFunction AliasFunctions[] = {
   // clang-format off
   { OP_CREATE_ALIAS,           op_create_alias },
   { OP_DELETE,                 op_delete },

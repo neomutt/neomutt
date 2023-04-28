@@ -46,8 +46,6 @@ struct BrowserFunction
   browser_function_t function; ///< Function to call
 };
 
-extern struct BrowserFunction BrowserFunctions[];
-
 int browser_function_dispatcher(struct MuttWindow *win_browser, int op);
 
 #endif //MUTT_BROWSER_FUNCTIONS_H

@@ -48,8 +48,6 @@ struct EnterFunction
   enter_function_t function; ///< Function to call
 };
 
-extern struct EnterFunction EnterFunctions[];
-
 int enter_function_dispatcher(struct MuttWindow *win, int op);
 bool self_insert(struct EnterWindowData *wdata, int ch);
 
