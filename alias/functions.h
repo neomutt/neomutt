@@ -54,8 +54,6 @@ struct AliasFunction
   alias_function_t function; ///< Function to call
 };
 
-extern struct AliasFunction AliasFunctions[];
-
 void alias_array_sort(struct AliasViewArray *ava, const struct ConfigSubset *sub);
 int alias_function_dispatcher(struct MuttWindow *win, int op);
 bool alias_to_addrlist(struct AddressList *al, struct Alias *alias);

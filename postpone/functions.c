@@ -109,7 +109,7 @@ static int op_search(struct PostponeData *pd, int op)
 /**
  * PostponeFunctions - All the NeoMutt functions that the Postpone supports
  */
-struct PostponeFunction PostponeFunctions[] = {
+static const struct PostponeFunction PostponeFunctions[] = {
   // clang-format off
   { OP_DELETE,                 op_delete },
   { OP_EXIT,                   op_exit },

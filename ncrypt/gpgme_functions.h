@@ -60,8 +60,6 @@ struct GpgmeFunction
   gpgme_function_t function; ///< Function to call
 };
 
-extern struct GpgmeFunction GpgmeFunctions[];
-
 int gpgme_function_dispatcher(struct MuttWindow *win, int op);
 
 #endif /* MUTT_NCRYPT_GPGME_FUNCTIONS_H */

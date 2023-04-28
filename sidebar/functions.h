@@ -46,6 +46,4 @@ struct SidebarFunction
   sidebar_function_t function; ///< Function to call
 };
 
-extern struct SidebarFunction SidebarFunctions[];
-
 #endif /* MUTT_SIDEBAR_FUNCTIONS_H */

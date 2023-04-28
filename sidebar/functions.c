@@ -352,7 +352,7 @@ static int op_sidebar_toggle_virtual(struct SidebarWindowData *wdata, int op)
 /**
  * SidebarFunctions - All the NeoMutt functions that the Sidebar supports
  */
-struct SidebarFunction SidebarFunctions[] = {
+static const struct SidebarFunction SidebarFunctions[] = {
   // clang-format off
   { OP_SIDEBAR_FIRST,          op_sidebar_first },
   { OP_SIDEBAR_LAST,           op_sidebar_last },

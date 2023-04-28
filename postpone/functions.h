@@ -59,8 +59,6 @@ struct PostponeFunction
   postpone_function_t function; ///< Function to call
 };
 
-extern struct PostponeFunction PostponeFunctions[];
-
 int postpone_function_dispatcher(struct MuttWindow *win, int op);
 
 #endif /* MUTT_POSTPONE_FUNCTIONS_H */

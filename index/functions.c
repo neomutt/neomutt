@@ -2833,7 +2833,7 @@ static bool prereq(struct MailboxView *mv, struct Menu *menu, CheckFlags checks)
 /**
  * IndexFunctions - All the NeoMutt functions that the Index supports
  */
-struct IndexFunction IndexFunctions[] = {
+static const struct IndexFunction IndexFunctions[] = {
   // clang-format off
   { OP_ALIAS_DIALOG,                        op_alias_dialog,                      CHECK_NO_FLAGS },
   { OP_ATTACHMENT_EDIT_TYPE,                op_attachment_edit_type,              CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },

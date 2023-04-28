@@ -62,7 +62,7 @@ static int op_generic_select_entry(struct HistoryData *hd, int op)
 /**
  * HistoryFunctions - All the NeoMutt functions that the History supports
  */
-struct HistoryFunction HistoryFunctions[] = {
+static const struct HistoryFunction HistoryFunctions[] = {
   // clang-format off
   { OP_EXIT,                   op_exit },
   { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },

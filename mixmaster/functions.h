@@ -49,6 +49,4 @@ struct MixmasterFunction
 
 int mix_function_dispatcher(struct MuttWindow *win, int op);
 
-extern struct MixmasterFunction MixmasterFunctions[];
-
 #endif /* MUTT_MIXMASTER_FUNCTIONS_H */

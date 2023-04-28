@@ -152,7 +152,7 @@ static int op_exit(struct AutocryptData *ad, int op)
 /**
  * AutocryptFunctions - All the NeoMutt functions that the Autocrypt supports
  */
-struct AutocryptFunction AutocryptFunctions[] = {
+static const struct AutocryptFunction AutocryptFunctions[] = {
   // clang-format off
   { OP_AUTOCRYPT_CREATE_ACCT,   op_autocrypt_create_acct },
   { OP_AUTOCRYPT_DELETE_ACCT,   op_autocrypt_delete_acct },

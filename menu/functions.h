@@ -46,6 +46,4 @@ struct MenuFunction
   menu_function_t function; ///< Function to call
 };
 
-extern struct MenuFunction MenuFunctions[];
-
 #endif /* MUTT_MENU_FUNCTIONS_H */

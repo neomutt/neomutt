@@ -274,7 +274,7 @@ static int op_jump(struct Menu *menu, int op)
 /**
  * MenuFunctions - All the NeoMutt functions that the Menu supports
  */
-struct MenuFunction MenuFunctions[] = {
+static const struct MenuFunction MenuFunctions[] = {
   // clang-format off
   { OP_BOTTOM_PAGE,            menu_movement },
   { OP_CURRENT_BOTTOM,         menu_movement },

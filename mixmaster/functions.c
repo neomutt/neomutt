@@ -120,7 +120,7 @@ static int op_mix_use(struct MixmasterPrivateData *priv, int op)
 /**
  * MixmasterFunctions - All the NeoMutt functions that the Mixmaster supports
  */
-struct MixmasterFunction MixmasterFunctions[] = {
+static const struct MixmasterFunction MixmasterFunctions[] = {
   // clang-format off
   { OP_EXIT,                 op_exit           },
   { OP_GENERIC_SELECT_ENTRY, op_mix_append     },

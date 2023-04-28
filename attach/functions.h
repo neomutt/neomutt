@@ -49,6 +49,4 @@ struct AttachFunction
 
 int attach_function_dispatcher(struct MuttWindow *win, int op);
 
-extern struct AttachFunction AttachFunctions[];
-
 #endif /* MUTT_ATTACH_FUNCTIONS_H */

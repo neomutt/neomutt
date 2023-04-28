@@ -143,7 +143,7 @@ static int op_what_key(int op)
 /**
  * GlobalFunctions - All the NeoMutt functions that the Global supports
  */
-struct GlobalFunction GlobalFunctions[] = {
+static const struct GlobalFunction GlobalFunctions[] = {
   // clang-format off
   { OP_CHECK_STATS,           op_check_stats },
   { OP_ENTER_COMMAND,         op_enter_command },

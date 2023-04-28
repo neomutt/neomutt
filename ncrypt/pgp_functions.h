@@ -59,8 +59,6 @@ struct PgpFunction
   pgp_function_t function; ///< Function to call
 };
 
-extern struct PgpFunction PgpFunctions[];
-
 int pgp_function_dispatcher(struct MuttWindow *win, int op);
 
 #endif /* MUTT_NCRYPT_PGP_FUNCTIONS_H */

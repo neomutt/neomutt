@@ -61,8 +61,6 @@ struct PatternFunction
   pattern_function_t function; ///< Function to call
 };
 
-extern struct PatternFunction PatternFunctions[];
-
 int pattern_function_dispatcher(struct MuttWindow *win, int op);
 
 #endif /* MUTT_PATTERN_FUNCTIONS_H */

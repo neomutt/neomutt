@@ -603,7 +603,7 @@ static int op_forward_to_group(struct AttachPrivateData *priv, int op)
 /**
  * AttachFunctions - All the NeoMutt functions that the Attach supports
  */
-struct AttachFunction AttachFunctions[] = {
+static const struct AttachFunction AttachFunctions[] = {
   // clang-format off
   { OP_ATTACHMENT_COLLAPSE,         op_attachment_collapse },
   { OP_ATTACHMENT_DELETE,           op_attachment_delete },
