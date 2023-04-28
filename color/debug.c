@@ -383,10 +383,16 @@ void regex_colors_dump_all(void)
   regex_color_list_dump("BodyList", &BodyList);
   regex_color_list_dump("HeaderList", &HeaderList);
   regex_color_list_dump("IndexAuthorList", &IndexAuthorList);
+  regex_color_list_dump("IndexCollapsedList", &IndexCollapsedList);
+  regex_color_list_dump("IndexDateList", &IndexDateList);
   regex_color_list_dump("IndexFlagsList", &IndexFlagsList);
+  regex_color_list_dump("IndexLabelList", &IndexLabelList);
   regex_color_list_dump("IndexList", &IndexList);
+  regex_color_list_dump("IndexNumberList", &IndexNumberList);
+  regex_color_list_dump("IndexSizeList", &IndexSizeList);
   regex_color_list_dump("IndexSubjectList", &IndexSubjectList);
   regex_color_list_dump("IndexTagList", &IndexTagList);
+  regex_color_list_dump("IndexTagsList", &IndexTagsList);
   regex_color_list_dump("StatusList", &StatusList);
 }
 
