@@ -78,25 +78,6 @@ const char AddressSpecials[] = "\"(),.:;<>@[\\]";
 #define ROUTE_SPECIAL_MASK 0x000000015c000204ULL
 
 /**
- * AddressError - An out-of-band error code
- *
- * Many of the Address functions set this variable on error.
- * Its values are defined in #AddressError.
- * Text for the errors can be looked up using #AddressErrors.
- */
-int AddressError = 0;
-
-/**
- * AddressErrors - Messages for the error codes in #AddressError
- *
- * These must defined in the same order as enum AddressError.
- */
-const char *const AddressErrors[] = {
-  "out of memory",   "mismatched parentheses", "mismatched quotes",
-  "bad route in <>", "bad address in <>",      "bad address spec",
-};
-
-/**
  * parse_comment - Extract a comment (parenthesised string)
  * @param[in]  s          String, just after the opening parenthesis
  * @param[out] comment    Buffer to store parenthesised string
@@ -134,7 +115,6 @@ static const char *parse_comment(const char *s, char *comment, size_t *commentle
   }
   if (level != 0)
   {
-    AddressError = ADDR_ERR_MISMATCH_PAREN;
     return NULL;
   }
   return s;
@@ -168,7 +148,6 @@ static const char *parse_quote(const char *s, char *token, size_t *tokenlen, siz
     (*tokenlen)++;
     s++;
   }
-  AddressError = ADDR_ERR_MISMATCH_QUOTE;
   return NULL;
 }
 
@@ -334,7 +313,6 @@ static const char *parse_route_addr(const char *s, char *comment, size_t *commen
     }
     if (!s || (*s != ':'))
     {
-      AddressError = ADDR_ERR_BAD_ROUTE;
       return NULL; /* invalid route */
     }
 
@@ -350,7 +328,6 @@ static const char *parse_route_addr(const char *s, char *comment, size_t *commen
 
   if (*s != '>')
   {
-    AddressError = ADDR_ERR_BAD_ROUTE_ADDR;
     return NULL;
   }
 
@@ -380,7 +357,6 @@ static const char *parse_addr_spec(const char *s, char *comment, size_t *comment
                     commentmax, addr);
   if (s && *s && (*s != ',') && (*s != ';'))
   {
-    AddressError = ADDR_ERR_BAD_ADDR_SPEC;
     return NULL;
   }
   return s;
@@ -497,7 +473,6 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
   int parsed = 0;
   char comment[1024], phrase[1024];
   size_t phraselen = 0, commentlen = 0;
-  AddressError = 0;
 
   bool ws_pending = mutt_str_is_email_wsp(*s);
 
