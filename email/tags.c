@@ -35,8 +35,8 @@
 #include "core/lib.h"
 #include "tags.h"
 
-struct HashTable *TagTransforms; ///< Hash Table: "inbox" -> "i" - Alternative tag names
-struct HashTable *TagFormats; ///< Hash Table: "inbox" -> "GI" - Tag format strings
+struct HashTable *TagTransforms = NULL; ///< Hash Table: "inbox" -> "i" - Alternative tag names
+struct HashTable *TagFormats = NULL; ///< Hash Table: "inbox" -> "GI" - Tag format strings
 
 /**
  * driver_tags_getter - Get transformed tags

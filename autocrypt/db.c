@@ -39,15 +39,15 @@
 #include "lib.h"
 
 // Prepared SQL statements
-static sqlite3_stmt *AccountGetStmt;    ///< Get the matching autocrypt accounts
-static sqlite3_stmt *AccountInsertStmt; ///< Insert a new autocrypt account
-static sqlite3_stmt *AccountUpdateStmt; ///< Update an autocrypt account
-static sqlite3_stmt *AccountDeleteStmt; ///< Delete an autocrypt account
-static sqlite3_stmt *PeerGetStmt;       ///< Get the matching peer addresses
-static sqlite3_stmt *PeerInsertStmt;    ///< Insert a new peer address
-static sqlite3_stmt *PeerUpdateStmt;    ///< Update a peer address
-static sqlite3_stmt *PeerHistoryInsertStmt;   ///< Add to the peer history
-static sqlite3_stmt *GossipHistoryInsertStmt; ///< Add to the gossip history
+static sqlite3_stmt *AccountGetStmt = NULL; ///< Get the matching autocrypt accounts
+static sqlite3_stmt *AccountInsertStmt = NULL; ///< Insert a new autocrypt account
+static sqlite3_stmt *AccountUpdateStmt = NULL; ///< Update an autocrypt account
+static sqlite3_stmt *AccountDeleteStmt = NULL; ///< Delete an autocrypt account
+static sqlite3_stmt *PeerGetStmt = NULL;    ///< Get the matching peer addresses
+static sqlite3_stmt *PeerInsertStmt = NULL; ///< Insert a new peer address
+static sqlite3_stmt *PeerUpdateStmt = NULL; ///< Update a peer address
+static sqlite3_stmt *PeerHistoryInsertStmt = NULL; ///< Add to the peer history
+static sqlite3_stmt *GossipHistoryInsertStmt = NULL; ///< Add to the gossip history
 
 /// Handle to the open Autocrypt database
 sqlite3 *AutocryptDB = NULL;

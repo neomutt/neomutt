@@ -34,7 +34,7 @@
 #include "account.h"
 #include "mailbox.h"
 
-struct NeoMutt *NeoMutt; ///< Global NeoMutt object
+struct NeoMutt *NeoMutt = NULL; ///< Global NeoMutt object
 
 /**
  * neomutt_new - Create the main NeoMutt object
