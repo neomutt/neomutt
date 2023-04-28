@@ -34,11 +34,6 @@
 #include "inheritance.h"
 #include "types.h"
 
-/// All the registered config types, e.g. String, Number
-struct ConfigSetType RegisteredTypes[18] = {
-  { 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL },
-};
-
 /**
  * cs_hashelem_free - Callback function for the Hash Table - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
  * @param type Object type, e.g. #DT_STRING
