@@ -105,7 +105,7 @@ struct EnumDef MboxTypeDef = {
 /**
  * MxOps - All the Mailbox backends
  */
-const struct MxOps *MxOps[] = {
+static const struct MxOps *MxOps[] = {
 /* These mailboxes can be recognised by their Url scheme */
 #ifdef USE_IMAP
   &MxImapOps,

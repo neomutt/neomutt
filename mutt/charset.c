@@ -111,7 +111,7 @@ struct MimeNames
  * @note It includes only the subset of character sets for which a preferred
  * MIME name is given.
  */
-const struct MimeNames PreferredMimeNames[] = {
+static const struct MimeNames PreferredMimeNames[] = {
   // clang-format off
   { "ansi_x3.4-1968",        "us-ascii"      },
   { "iso-ir-6",              "us-ascii"      },

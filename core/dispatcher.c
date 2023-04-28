@@ -32,7 +32,7 @@
 #include "dispatcher.h"
 
 /// Lookup for function results
-const struct Mapping RetvalNames[] = {
+static const struct Mapping RetvalNames[] = {
   // clang-format off
   { "continue",  FR_CONTINUE },
   { "done",      FR_DONE },

@@ -50,7 +50,7 @@
 #include "muttlib.h"
 
 /// Global Lua State
-lua_State *LuaState = NULL;
+static lua_State *LuaState = NULL;
 
 /**
  * LuaCommands - List of NeoMutt commands to register

@@ -66,9 +66,9 @@
 #endif
 
 /// Cached PGP Passphrase
-char PgpPass[1024];
+static char PgpPass[1024];
 /// Unix time when #PgpPass expires
-time_t PgpExptime = 0; /* when does the cached passphrase expire? */
+static time_t PgpExptime = 0; /* when does the cached passphrase expire? */
 
 /**
  * pgp_class_void_passphrase - Implements CryptModuleSpecs::void_passphrase() - @ingroup crypto_void_passphrase

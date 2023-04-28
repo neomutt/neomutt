@@ -51,10 +51,10 @@ struct AttachMatch
   regex_t minor_regex;        ///< Minor mime type regex
 };
 
-struct ListHead AttachAllow = STAILQ_HEAD_INITIALIZER(AttachAllow); ///< List of attachment types to be counted
-struct ListHead AttachExclude = STAILQ_HEAD_INITIALIZER(AttachExclude); ///< List of attachment types to be ignored
-struct ListHead InlineAllow = STAILQ_HEAD_INITIALIZER(InlineAllow); ///< List of inline types to counted
-struct ListHead InlineExclude = STAILQ_HEAD_INITIALIZER(InlineExclude); ///< List of inline types to ignore
+static struct ListHead AttachAllow = STAILQ_HEAD_INITIALIZER(AttachAllow); ///< List of attachment types to be counted
+static struct ListHead AttachExclude = STAILQ_HEAD_INITIALIZER(AttachExclude); ///< List of attachment types to be ignored
+static struct ListHead InlineAllow = STAILQ_HEAD_INITIALIZER(InlineAllow); ///< List of inline types to counted
+static struct ListHead InlineExclude = STAILQ_HEAD_INITIALIZER(InlineExclude); ///< List of inline types to ignore
 static struct Notify *AttachmentsNotify = NULL; ///< Notifications: #NotifyAttach
 
 /**

@@ -65,7 +65,7 @@ const char *store_backend_list(void);
 const char *store_compress_list(void);
 
 /// CLI: Width to wrap version info
-const int SCREEN_WIDTH = 80;
+static const int SCREEN_WIDTH = 80;
 
 extern unsigned char cc_cflags[];
 extern unsigned char configure_options[];

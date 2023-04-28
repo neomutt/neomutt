@@ -35,7 +35,7 @@
 /**
  * SortKeyMethods - Sort methods for encryption keys
  */
-const struct Mapping SortKeyMethods[] = {
+static const struct Mapping SortKeyMethods[] = {
   // clang-format off
   { "address", SORT_ADDRESS },
   { "date",    SORT_DATE },

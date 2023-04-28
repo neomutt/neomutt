@@ -63,7 +63,7 @@ struct Mailbox;
 extern char **environ;
 #endif
 
-SIG_ATOMIC_VOLATILE_T SigAlrm; ///< true after SIGALRM is received
+static SIG_ATOMIC_VOLATILE_T SigAlrm; ///< true after SIGALRM is received
 
 ARRAY_HEAD(SendmailArgs, const char *);
 

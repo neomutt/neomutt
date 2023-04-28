@@ -32,7 +32,7 @@
 
 ARRAY_HEAD(CommandArray, struct Command);
 /// All the registered commands, e.g. alias, sidebar_pin
-struct CommandArray Commands = ARRAY_HEAD_INITIALIZER;
+static struct CommandArray Commands = ARRAY_HEAD_INITIALIZER;
 
 /**
  * commands_cmp - Compare two commands by name - Implements ::sort_t - @ingroup sort_api

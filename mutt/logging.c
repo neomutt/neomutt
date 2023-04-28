@@ -42,7 +42,7 @@
 #include "queue.h"
 #include "string2.h"
 
-const char *LevelAbbr = "PEWM12345N"; ///< Abbreviations of logging level names
+static const char *LevelAbbr = "PEWM12345N"; ///< Abbreviations of logging level names
 
 /**
  * MuttLogger - The log dispatcher - @ingroup logging_api
@@ -51,18 +51,18 @@ const char *LevelAbbr = "PEWM12345N"; ///< Abbreviations of logging level names
  */
 log_dispatcher_t MuttLogger = log_disp_terminal;
 
-FILE *LogFileFP = NULL;      ///< Log file handle
-char *LogFileName = NULL;    ///< Log file name
-int LogFileLevel = 0;        ///< Log file level
-char *LogFileVersion = NULL; ///< Program version
+static FILE *LogFileFP = NULL;      ///< Log file handle
+static char *LogFileName = NULL;    ///< Log file name
+static int LogFileLevel = 0;        ///< Log file level
+static char *LogFileVersion = NULL; ///< Program version
 
 /**
  * LogQueue - In-memory list of log lines
  */
 static struct LogLineList LogQueue = STAILQ_HEAD_INITIALIZER(LogQueue);
 
-int LogQueueCount = 0; ///< Number of entries currently in the log queue
-int LogQueueMax = 0;   ///< Maximum number of entries in the log queue
+static int LogQueueCount = 0; ///< Number of entries currently in the log queue
+static int LogQueueMax = 0;   ///< Maximum number of entries in the log queue
 
 /**
  * timestamp - Create a YYYY-MM-DD HH:MM:SS timestamp
