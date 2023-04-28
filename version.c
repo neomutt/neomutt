@@ -130,7 +130,7 @@ struct CompileOptions
 /* These are sorted by the display string */
 
 /// Default options strings for `neomutt -v` output
-static struct CompileOptions CompOptsDefault[] = {
+static const struct CompileOptions CompOptsDefault[] = {
   { "attach_headers_color", 1 },
   { "compose_to_sender", 1 },
   { "compress", 1 },
@@ -165,7 +165,7 @@ static struct CompileOptions CompOptsDefault[] = {
 };
 
 /// Compile options strings for `neomutt -v` output
-static struct CompileOptions CompOpts[] = {
+static const struct CompileOptions CompOpts[] = {
 #ifdef USE_AUTOCRYPT
   { "autocrypt", 1 },
 #else
@@ -301,7 +301,7 @@ static struct CompileOptions CompOpts[] = {
 };
 
 /// Debug options strings for `neomutt -v` output
-static struct CompileOptions DebugOpts[] = {
+static const struct CompileOptions DebugOpts[] = {
 #ifdef USE_ASAN
   { "asan", 2 },
 #endif
@@ -345,7 +345,7 @@ static struct CompileOptions DebugOpts[] = {
  * The output is of the form: "+enabled_feature -disabled_feature" and is
  * wrapped to SCREEN_WIDTH characters.
  */
-static void print_compile_options(struct CompileOptions *co, FILE *fp)
+static void print_compile_options(const struct CompileOptions *co, FILE *fp)
 {
   if (!co || !fp)
     return;

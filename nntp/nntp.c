@@ -2772,7 +2772,7 @@ static int nntp_path_parent(char *buf, size_t buflen)
 /**
  * MxNntpOps - NNTP Mailbox - Implements ::MxOps - @ingroup mx_api
  */
-struct MxOps MxNntpOps = {
+const struct MxOps MxNntpOps = {
   // clang-format off
   .type            = MUTT_NNTP,
   .name             = "nntp",

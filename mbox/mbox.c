@@ -1853,7 +1853,7 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 /**
  * MxMboxOps - Mbox Mailbox - Implements ::MxOps - @ingroup mx_api
  */
-struct MxOps MxMboxOps = {
+const struct MxOps MxMboxOps = {
   // clang-format off
   .type            = MUTT_MBOX,
   .name             = "mbox",
@@ -1885,7 +1885,7 @@ struct MxOps MxMboxOps = {
 /**
  * MxMmdfOps - MMDF Mailbox - Implements ::MxOps - @ingroup mx_api
  */
-struct MxOps MxMmdfOps = {
+const struct MxOps MxMmdfOps = {
   // clang-format off
   .type            = MUTT_MMDF,
   .name             = "mmdf",

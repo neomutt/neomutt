@@ -47,8 +47,8 @@
 struct Email;
 struct HeaderCache;
 
-extern struct MxOps MxMaildirOps;
-extern struct MxOps MxMhOps;
+extern const struct MxOps MxMaildirOps;
+extern const struct MxOps MxMhOps;
 
 int           maildir_check_empty      (const char *path);
 void          maildir_gen_flags        (char *dest, size_t destlen, struct Email *e);

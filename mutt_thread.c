@@ -72,7 +72,7 @@ static const struct Mapping UseThreadsMethods[] = {
 };
 
 /// Data for the $use_threads enumeration
-struct EnumDef UseThreadsTypeDef = {
+const struct EnumDef UseThreadsTypeDef = {
   "use_threads_type",
   4,
   (struct Mapping *) &UseThreadsMethods,

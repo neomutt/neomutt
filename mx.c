@@ -96,7 +96,7 @@ static const struct Mapping MboxTypeMap[] = {
 };
 
 /// Data for the $mbox_type enumeration
-struct EnumDef MboxTypeDef = {
+const struct EnumDef MboxTypeDef = {
   "mbox_type",
   4,
   (struct Mapping *) &MboxTypeMap,

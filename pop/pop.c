@@ -1195,7 +1195,7 @@ static int pop_path_parent(char *buf, size_t buflen)
 /**
  * MxPopOps - POP Mailbox - Implements ::MxOps - @ingroup mx_api
  */
-struct MxOps MxPopOps = {
+const struct MxOps MxPopOps = {
   // clang-format off
   .type            = MUTT_POP,
   .name             = "pop",

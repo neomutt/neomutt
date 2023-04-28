@@ -2514,7 +2514,7 @@ static int imap_path_is_empty(const char *path)
 /**
  * MxImapOps - IMAP Mailbox - Implements ::MxOps - @ingroup mx_api
  */
-struct MxOps MxImapOps = {
+const struct MxOps MxImapOps = {
   // clang-format off
   .type            = MUTT_IMAP,
   .name             = "imap",

@@ -47,7 +47,7 @@
 struct Email;
 struct stat;
 
-extern struct MxOps MxNotmuchOps;
+extern const struct MxOps MxNotmuchOps;
 
 void  nm_init                    (void);
 void  nm_db_debug_check          (struct Mailbox *m);

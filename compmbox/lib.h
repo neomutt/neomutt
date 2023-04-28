@@ -59,6 +59,6 @@ bool mutt_comp_can_append(struct Mailbox *m);
 bool mutt_comp_can_read(const char *path);
 int  mutt_comp_valid_command(const char *cmd);
 
-extern struct MxOps MxCompOps;
+extern const struct MxOps MxCompOps;
 
 #endif /* MUTT_COMPMBOX_LIB_H */
