@@ -606,7 +606,6 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_insert_message)                                       \
   NEOMUTT_TEST_ITEM(test_is_descendant)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_break_thread)                                    \
-  NEOMUTT_TEST_ITEM(test_thread_hash_destructor)                               \
   NEOMUTT_TEST_ITEM(test_unlink_message)                                       \
                                                                                \
   /* url */                                                                    \

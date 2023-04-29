@@ -581,7 +581,6 @@ THREAD_OBJS	= test/thread/clean_references.o \
 		  test/thread/insert_message.o \
 		  test/thread/is_descendant.o \
 		  test/thread/mutt_break_thread.o \
-		  test/thread/thread_hash_destructor.o \
 		  test/thread/unlink_message.o
 
 URL_OBJS	= test/url/url_check_scheme.o \

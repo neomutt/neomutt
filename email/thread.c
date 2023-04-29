@@ -114,14 +114,6 @@ void insert_message(struct MuttThread **add, struct MuttThread *parent, struct M
 }
 
 /**
- * thread_hash_destructor - Hash Destructor callback - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
- */
-void thread_hash_destructor(int type, void *obj, intptr_t data)
-{
-  FREE(&obj);
-}
-
-/**
  * find_virtual - Find an email with a Virtual message number
  * @param cur     Thread to search
  * @param reverse If true, reverse the direction of the search

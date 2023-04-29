@@ -1005,6 +1005,14 @@ static void check_subjects(struct Mailbox *m, bool init)
 }
 
 /**
+ * thread_hash_destructor - Hash Destructor callback - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
+ */
+static void thread_hash_destructor(int type, void *obj, intptr_t data)
+{
+  FREE(&obj);
+}
+
+/**
  * mutt_sort_threads - Sort email threads
  * @param tctx Threading context
  * @param init If true, rebuild the thread
