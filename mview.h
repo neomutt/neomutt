@@ -82,4 +82,6 @@ struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum);
 
 int  el_add_tagged(struct EmailList *el, struct MailboxView *mv, struct Email *e, bool use_tagged);
 
+bool mutt_limit_current_thread(struct MailboxView *mv, struct Email *e);
+
 #endif /* MUTT_MVIEW_H */

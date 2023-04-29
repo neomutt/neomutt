@@ -193,6 +193,4 @@ int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Me
 int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op);
 int mutt_search_alias_command(struct Menu *menu, int cur, int op);
 
-bool mutt_limit_current_thread(struct MailboxView *mv, struct Email *e);
-
 #endif /* MUTT_PATTERN_LIB_H */
