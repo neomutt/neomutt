@@ -686,7 +686,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
   if (mx_mbox_open(m, flags))
   {
     struct MailboxView *mv = mview_new(m);
-    index_shared_data_set_context(shared, mv);
+    index_shared_data_set_mview(shared, mv);
 
     menu->max = m->msg_count;
     menu_set_index(menu, ci_first_message(shared->mailbox));
@@ -696,7 +696,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
   }
   else
   {
-    index_shared_data_set_context(shared, NULL);
+    index_shared_data_set_mview(shared, NULL);
     menu_set_index(menu, 0);
   }
 
@@ -1053,7 +1053,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   index_adjust_sort_threads(NeoMutt->sub);
 
   struct IndexSharedData *shared = dlg->wdata;
-  index_shared_data_set_context(shared, mview_new(m_init));
+  index_shared_data_set_mview(shared, mview_new(m_init));
 
   struct MuttWindow *panel_index = window_find_child(dlg, WT_INDEX);
 

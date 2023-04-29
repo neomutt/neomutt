@@ -36,9 +36,9 @@
 #include "mview.h"
 
 /**
- * index_shared_context_observer - Notification that the MailboxView has changed - Implements ::observer_t - @ingroup observer_api
+ * index_shared_mview_observer - Notification that the MailboxView has changed - Implements ::observer_t - @ingroup observer_api
  */
-static int index_shared_context_observer(struct NotifyCallback *nc)
+static int index_shared_mview_observer(struct NotifyCallback *nc)
 {
   if (nc->event_type != NT_MVIEW)
     return 0;
@@ -150,11 +150,11 @@ static int index_shared_email_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_shared_data_set_context - Set the MailboxView for the Index and friends
+ * index_shared_data_set_mview - Set the MailboxView for the Index and friends
  * @param shared Shared Index data
  * @param mv     Mailbox View, may be NULL
  */
-void index_shared_data_set_context(struct IndexSharedData *shared, struct MailboxView *mv)
+void index_shared_data_set_mview(struct IndexSharedData *shared, struct MailboxView *mv)
 {
   if (!shared)
     return;
@@ -165,13 +165,13 @@ void index_shared_data_set_context(struct IndexSharedData *shared, struct Mailbo
   {
     if (shared->mailboxview)
       notify_observer_remove(shared->mailboxview->notify,
-                             index_shared_context_observer, shared);
+                             index_shared_mview_observer, shared);
 
     shared->mailboxview = mv;
     subtype |= NT_INDEX_MVIEW;
 
     if (mv)
-      notify_observer_add(mv->notify, NT_MVIEW, index_shared_context_observer, shared);
+      notify_observer_add(mv->notify, NT_MVIEW, index_shared_mview_observer, shared);
   }
 
   struct Mailbox *m = mview_mailbox(mv);
@@ -284,7 +284,7 @@ void index_shared_data_free(struct MuttWindow *win, void **ptr)
   if (shared->account)
     notify_observer_remove(shared->account->notify, index_shared_account_observer, shared);
   if (shared->mailboxview)
-    notify_observer_remove(shared->mailboxview->notify, index_shared_context_observer, shared);
+    notify_observer_remove(shared->mailboxview->notify, index_shared_mview_observer, shared);
   if (shared->mailbox)
     notify_observer_remove(shared->mailbox->notify, index_shared_mailbox_observer, shared);
   if (shared->email)

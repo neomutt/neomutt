@@ -223,7 +223,7 @@ static int ibar_config_observer(struct NotifyCallback *nc)
  * This function receives two sorts of notification:
  * - NT_INDEX:
  *   User has changed to a different Mailbox/Email
- * - NT_CONTEXT/NT_ACCOUNT/NT_MAILBOX/NT_EMAIL:
+ * - NT_ACCOUNT/NT_MVIEW/NT_MAILBOX/NT_EMAIL:
  *   The state of an object has changed
  */
 static int ibar_index_observer(struct NotifyCallback *nc)
