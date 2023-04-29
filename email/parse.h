@@ -29,8 +29,9 @@
 #include "mime.h"
 
 struct Body;
-struct Envelope;
+struct Buffer;
 struct Email;
+struct Envelope;
 
 void             mutt_auto_subscribe      (const char *mailto);
 int              mutt_check_encoding      (const char *c);
