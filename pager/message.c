@@ -184,7 +184,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile,
   char columns[16] = { 0 };
   // win_pager might not be visible and have a size yet, so use win_index
   snprintf(columns, sizeof(columns), "%d", wrap_len);
-  envlist_set("COLUMNS", columns, true);
+  envlist_set(&EnvList, "COLUMNS", columns, true);
 
   /* see if crypto is needed for this message.  if so, we should exit curses */
   if ((WithCrypto != 0) && e->security)
@@ -296,7 +296,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile,
   }
 
 cleanup:
-  envlist_unset("COLUMNS");
+  envlist_unset(&EnvList, "COLUMNS");
   return rc;
 }
 

@@ -235,7 +235,6 @@ void test_fini(void);
                                                                                \
   /* envlist */                                                                \
   NEOMUTT_TEST_ITEM(test_envlist_free)                                         \
-  NEOMUTT_TEST_ITEM(test_envlist_getlist)                                      \
   NEOMUTT_TEST_ITEM(test_envlist_init)                                         \
   NEOMUTT_TEST_ITEM(test_envlist_set)                                          \
   NEOMUTT_TEST_ITEM(test_envlist_unset)                                        \

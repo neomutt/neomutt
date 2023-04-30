@@ -3,7 +3,7 @@
  * Private copy of the environment variables
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,50 +29,52 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 #include "envlist.h"
 #include "memory.h"
 #include "string2.h"
 
-static char **EnvList = NULL; ///< Private copy of the environment variables
-
 /**
  * envlist_free - Free the private copy of the environment
+ * @param envp Environment to free
  */
-void envlist_free(void)
+void envlist_free(char ***envp)
 {
-  if (!EnvList)
+  if (!envp || !*envp)
     return;
 
-  for (char **p = EnvList; p && *p; p++)
+  for (char **p = *envp; p && *p; p++)
     FREE(p);
 
-  FREE(&EnvList);
+  FREE(envp);
 }
 
 /**
  * envlist_init - Create a copy of the environment
- * @param envp Environment variables
+ * @param envp Environment to copy
+ * @retval ptr Copy of the environment
  */
-void envlist_init(char *envp[])
+char **envlist_init(char **envp)
 {
-  if (EnvList)
-    envlist_free();
-
   if (!envp)
-    return;
+    return NULL;
 
-  char **src = NULL, **dst = NULL;
+  char **src = NULL;
+  char **dst = NULL;
   int count = 0;
   for (src = envp; src && *src; src++)
     count++;
 
-  EnvList = mutt_mem_calloc(count + 1, sizeof(char *));
-  for (src = envp, dst = EnvList; src && *src; src++, dst++)
+  char **env_copy = mutt_mem_calloc(count + 1, sizeof(char *));
+  for (src = envp, dst = env_copy; src && *src; src++, dst++)
     *dst = mutt_str_dup(*src);
+
+  return env_copy;
 }
 
 /**
  * envlist_set - Set an environment variable
+ * @param envp      Environment to modify
  * @param name      Name of the variable
  * @param value     New value
  * @param overwrite Should the variable be overwritten?
@@ -82,91 +84,76 @@ void envlist_init(char *envp[])
  * It's broken out because some other parts of neomutt (filter.c) need to
  * set/overwrite environment variables in EnvList before calling exec().
  */
-bool envlist_set(const char *name, const char *value, bool overwrite)
+bool envlist_set(char ***envp, const char *name, const char *value, bool overwrite)
 {
-  if (!name)
+  if (!envp || !*envp || !name || (name[0] == '\0'))
     return false;
 
-  char **envp = EnvList;
-  char work[1024] = { 0 };
-
-  /* Look for current slot to overwrite */
+  // Find a matching entry
   int count = 0;
-  while (envp && *envp)
+  int match = -1;
+  char *str = NULL;
+  for (; (str = (*envp)[count]); count++)
   {
-    size_t len = mutt_str_startswith(*envp, name);
-    if ((len != 0) && ((*envp)[len] == '='))
+    size_t len = mutt_str_startswith(str, name);
+    if ((len != 0) && (str[len] == '='))
     {
       if (!overwrite)
         return false;
+      match = count;
       break;
     }
-    envp++;
-    count++;
   }
 
-  /* Format var=value string */
+  // Format var=value string
+  char work[1024] = { 0 };
   snprintf(work, sizeof(work), "%s=%s", name, NONULL(value));
 
-  if (envp && *envp)
+  if (match >= 0)
   {
-    /* slot found, overwrite */
-    mutt_str_replace(envp, work);
+    // match found, overwrite
+    mutt_str_replace(&(*envp)[match], work);
   }
   else
   {
-    /* not found, add new slot */
-    mutt_mem_realloc(&EnvList, sizeof(char *) * (count + 2));
-    EnvList[count] = mutt_str_dup(work);
-    EnvList[count + 1] = NULL;
+    // not found, add a new entry
+    mutt_mem_realloc(envp, (count + 2) * sizeof(char *));
+    (*envp)[count] = mutt_str_dup(work);
+    (*envp)[count + 1] = NULL;
   }
+
   return true;
 }
 
 /**
  * envlist_unset - Unset an environment variable
+ * @param envp Environment to modify
  * @param name Variable to unset
  * @retval true  Success: Variable unset
  * @retval false Error: Variable doesn't exist
  */
-bool envlist_unset(const char *name)
+bool envlist_unset(char ***envp, const char *name)
 {
-  if (!name || (name[0] == '\0'))
+  if (!envp || !*envp || !name || (name[0] == '\0'))
     return false;
 
-  char **envp = EnvList;
-
   int count = 0;
-  while (envp && *envp)
+  for (; (*envp)[count]; count++)
+    ; // do nothing
+
+  char *str = NULL;
+  for (int match = 0; (str = (*envp)[match]); match++)
   {
-    size_t len = mutt_str_startswith(*envp, name);
-    if ((len != 0) && ((*envp)[len] == '='))
+    size_t len = mutt_str_startswith(str, name);
+    if ((len != 0) && (str[len] == '='))
     {
-      FREE(envp);
-      /* shuffle down */
-      char **save = envp++;
-      while (*envp)
-      {
-        *save++ = *envp++;
-        count++;
-      }
-      *save = NULL;
-      mutt_mem_realloc(&EnvList, sizeof(char *) * (count + 1));
+      FREE(&(*envp)[match]);
+      // Move down the later entries
+      memmove(&(*envp)[match], &(*envp)[match + 1], (count - match) * sizeof(char *));
+      // Shrink the array
+      mutt_mem_realloc(envp, count * sizeof(char *));
       return true;
     }
-    envp++;
-    count++;
   }
   return false;
-}
-
-/**
- * envlist_getlist - Get the private environment
- * @retval ptr Array of strings
- *
- * @note The caller must not free the strings
- */
-char **envlist_getlist(void)
-{
-  return EnvList;
 }

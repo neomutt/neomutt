@@ -516,7 +516,7 @@ main
 
   umask(077);
 
-  envlist_init(envp);
+  EnvList = envlist_init(envp);
   for (optind = 1; optind < double_dash;)
   {
     /* We're getopt'ing POSIXLY, so we'll be here every time getopt()
@@ -1391,7 +1391,7 @@ main_exit:
   crypto_module_free();
   rootwin_free();
   buf_pool_free();
-  envlist_free();
+  envlist_free(&EnvList);
   mutt_browser_cleanup();
   commands_cleanup();
   menu_cleanup();

@@ -451,7 +451,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
 
   char columns[16] = { 0 };
   snprintf(columns, sizeof(columns), "%d", win->state.cols);
-  envlist_set("COLUMNS", columns, true);
+  envlist_set(&EnvList, "COLUMNS", columns, true);
 
   if (use_mailcap)
   {
@@ -728,7 +728,7 @@ return_error:
   buf_pool_release(&tmpfile);
   buf_pool_release(&pagerfile);
   buf_pool_release(&cmd);
-  envlist_unset("COLUMNS");
+  envlist_unset(&EnvList, "COLUMNS");
 
   return rc;
 }

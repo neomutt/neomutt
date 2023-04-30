@@ -203,7 +203,6 @@ ENVELOPE_OBJS	= test/envelope/mutt_env_cmp_strict.o \
 		  test/envelope/mutt_env_to_local.o
 
 ENVLIST_OBJS	= test/envlist/envlist_free.o \
-		  test/envlist/envlist_getlist.o \
 		  test/envlist/envlist_init.o \
 		  test/envlist/envlist_set.o \
 		  test/envlist/envlist_unset.o

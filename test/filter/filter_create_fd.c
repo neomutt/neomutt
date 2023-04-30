@@ -26,6 +26,8 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 
+char **EnvList = NULL;
+
 void test_filter_create_fd(void)
 {
   // pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_err, int fdin, int fdout, int fderr)

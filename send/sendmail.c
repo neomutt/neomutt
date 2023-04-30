@@ -168,7 +168,7 @@ static int send_msg(const char *path, struct SendmailArgs *args,
       }
 
       /* execvpe is a glibc extension, so just manually set environ */
-      environ = envlist_getlist();
+      environ = EnvList;
       execvp(path, (char **) args->entries);
       _exit(S_ERR);
     }

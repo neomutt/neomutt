@@ -766,7 +766,7 @@ enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
 static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
                                        intptr_t data, struct Buffer *err)
 {
-  char **envp = envlist_getlist();
+  char **envp = EnvList;
 
   bool query = false;
   bool prefix = false;
@@ -843,7 +843,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 
   if (unset)
   {
-    if (!envlist_unset(buf->data))
+    if (!envlist_unset(&EnvList, buf->data))
     {
       buf_printf(err, _("%s is unset"), buf->data);
       return MUTT_CMD_WARNING;
@@ -867,7 +867,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 
   char *name = mutt_str_dup(buf->data);
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-  envlist_set(name, buf->data, true);
+  envlist_set(&EnvList, name, buf->data, true);
   FREE(&name);
 
   return MUTT_CMD_SUCCESS;

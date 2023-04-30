@@ -87,3 +87,5 @@ bool OptSearchInvalid;      ///< (pseudo) used to invalidate the search pattern
 bool OptSearchReverse;      ///< (pseudo) used by ci_search_command
 bool OptSortSubthreads;     ///< (pseudo) used when $sort_aux changes
 // clang-format on
+
+char **EnvList = NULL; ///< Private copy of the environment variables

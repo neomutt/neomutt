@@ -3,7 +3,7 @@
  * Private copy of the environment variables
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,10 +25,9 @@
 
 #include <stdbool.h>
 
-void   envlist_free(void);
-char **envlist_getlist(void);
-void   envlist_init(char *envp[]);
-bool   envlist_set(const char *name, const char *value, bool overwrite);
-bool   envlist_unset(const char *name);
+void   envlist_free (char ***envp);
+char **envlist_init (char  **envp);
+bool   envlist_set  (char ***envp, const char *name, const char *value, bool overwrite);
+bool   envlist_unset(char ***envp, const char *name);
 
 #endif /* MUTT_ENVLIST_H */
