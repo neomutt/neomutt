@@ -88,7 +88,7 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
     {
       /* Special case for conversion to UTF-8 */
       cd[ni] = ICONV_T_INVALID;
-      score[ni] = (size_t) (-1);
+      score[ni] = ICONV_ILLEGAL_SEQ;
     }
     ni += 1;
   }
@@ -106,11 +106,11 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
     char *ob = bufu;
     size_t obl = sizeof(bufu);
     n = iconv(cd1, (ICONV_CONST char **) ((ibl != 0) ? &ib : 0), &ibl, &ob, &obl);
-    /* assert(n == (size_t)(-1) || !n); */
-    if ((n == (size_t) (-1)) && (((errno != EINVAL) && (errno != E2BIG)) || (ib == bufi)))
+    /* assert(n == ICONV_ILLEGAL_SEQ || !n); */
+    if ((n == ICONV_ILLEGAL_SEQ) && (((errno != EINVAL) && (errno != E2BIG)) || (ib == bufi)))
     {
-      /* assert(errno == EILSEQ || (errno == EINVAL && ib == bufi && ibl < sizeof(bufi))); */
-      rc = (size_t) (-1);
+      /* assert((errno == EILSEQ) || ((errno == EINVAL) && (ib == bufi) && (ibl < sizeof(bufi)))); */
+      rc = ICONV_ILLEGAL_SEQ;
       break;
     }
     const size_t ubl1 = ob - bufu;
@@ -118,17 +118,17 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
     /* Convert from UTF-8 */
     for (int i = 0; i < ncodes; i++)
     {
-      if (iconv_t_valid(cd[i]) && (score[i] != (size_t) (-1)))
+      if (iconv_t_valid(cd[i]) && (score[i] != ICONV_ILLEGAL_SEQ))
       {
         const char *ub = bufu;
         size_t ubl = ubl1;
         ob = bufo;
         obl = sizeof(bufo);
         n = iconv(cd[i], (ICONV_CONST char **) ((ibl || ubl) ? &ub : 0), &ubl, &ob, &obl);
-        if (n == (size_t) (-1))
+        if (n == ICONV_ILLEGAL_SEQ)
         {
-          /* assert(errno == E2BIG || (BUGGY_ICONV && (errno == EILSEQ || errno == ENOENT))); */
-          score[i] = (size_t) (-1);
+          /* assert((errno == E2BIG) || (BUGGY_ICONV && ((errno == EILSEQ) || (errno == ENOENT)))); */
+          score[i] = ICONV_ILLEGAL_SEQ;
         }
         else
         {
@@ -136,7 +136,7 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
           mutt_update_content_info(&infos[i], &states[i], bufo, ob - bufo);
         }
       }
-      else if (!iconv_t_valid(cd[i]) && (score[i] == (size_t) (-1)))
+      else if (!iconv_t_valid(cd[i]) && (score[i] == ICONV_ILLEGAL_SEQ))
       {
         /* Special case for conversion to UTF-8 */
         mutt_update_content_info(&infos[i], &states[i], bufu, ubl1);
@@ -158,19 +158,19 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
   if (rc == 0)
   {
     /* Find best score */
-    rc = (size_t) (-1);
+    rc = ICONV_ILLEGAL_SEQ;
     for (int i = 0; i < ncodes; i++)
     {
-      if (!iconv_t_valid(cd[i]) && (score[i] == (size_t) (-1)))
+      if (!iconv_t_valid(cd[i]) && (score[i] == ICONV_ILLEGAL_SEQ))
       {
         /* Special case for conversion to UTF-8 */
         *tocode = i;
         rc = 0;
         break;
       }
-      else if (!iconv_t_valid(cd[i]) || (score[i] == (size_t) (-1)))
+      else if (!iconv_t_valid(cd[i]) || (score[i] == ICONV_ILLEGAL_SEQ))
         continue;
-      else if ((rc == (size_t) (-1)) || (score[i] < rc))
+      else if ((rc == ICONV_ILLEGAL_SEQ) || (score[i] < rc))
       {
         *tocode = i;
         rc = score[i];
@@ -178,7 +178,7 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
           break;
       }
     }
-    if (rc != (size_t) (-1))
+    if (rc != ICONV_ILLEGAL_SEQ)
     {
       memcpy(info, &infos[*tocode], sizeof(struct Content));
       mutt_update_content_info(info, &states[*tocode], 0, 0); /* EOF */
@@ -201,8 +201,8 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
  * @param[out] fromcode  From charset selected
  * @param[out] tocode    To charset selected
  * @param[out] info      Info about the file
- * @retval num Characters converted
- * @retval -1  Error (as a size_t)
+ * @retval num               Characters converted
+ * @retval ICONV_ILLEGAL_SEQ Error (as a size_t)
  *
  * Find the first of the fromcodes that gives a valid conversion and the best
  * charset conversion of the file into one of the tocodes. If successful, set
@@ -228,14 +228,14 @@ size_t mutt_convert_file_from_to(FILE *fp, const struct Slist *fromcodes,
     tcode[cn++] = mutt_str_dup(np->data);
   }
 
-  rc = (size_t) (-1);
+  rc = ICONV_ILLEGAL_SEQ;
   np = NULL;
   cn = 0;
   STAILQ_FOREACH(np, &fromcodes->head, entries)
   {
     /* Try each fromcode in turn */
     rc = mutt_convert_file_to(fp, np->data, tocodes, &cn, info);
-    if (rc != (size_t) (-1))
+    if (rc != ICONV_ILLEGAL_SEQ)
     {
       *fromcode = np->data;
       *tocode = tcode[cn];

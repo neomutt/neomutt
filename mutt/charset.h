@@ -99,8 +99,10 @@ void             mutt_ch_cache_cleanup(void);
 /// Error value for iconv functions
 #define ICONV_T_INVALID ((iconv_t) -1)
 
-/// Error value for iconv()
-#define ICONV_ERROR ((size_t) -1)
+/// Error value for iconv() - Illegal sequence
+#define ICONV_ILLEGAL_SEQ ((size_t) -1)
+/// Error value for iconv() - Buffer too small
+#define ICONV_BUF_TOO_SMALL ((size_t) -2)
 
 /**
  * iconv_t_valid - Is the conversion descriptor valid?

@@ -64,7 +64,7 @@ int mutt_mb_charlen(const char *s, int *width)
   k = mbrtowc(&wc, s, n, &mbstate);
   if (width)
     *width = wcwidth(wc);
-  return ((k == (size_t) (-1)) || (k == (size_t) (-2))) ? -1 : k;
+  return ((k == ICONV_ILLEGAL_SEQ) || (k == ICONV_BUF_TOO_SMALL)) ? -1 : k;
 }
 
 /**
@@ -246,7 +246,7 @@ void mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen)
   for (; slen && (dlen >= MB_LEN_MAX); dest += k, dlen -= k, src++, slen--)
   {
     k = wcrtomb(dest, *src, &mbstate);
-    if (k == (size_t) (-1))
+    if (k == ICONV_ILLEGAL_SEQ)
       break;
   }
 
@@ -265,7 +265,7 @@ void mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen)
     for (; slen && p - buf < dlen; p += k, src++, slen--)
     {
       k = wcrtomb(p, *src, &mbstate);
-      if (k == (size_t) (-1))
+      if (k == ICONV_ILLEGAL_SEQ)
         break;
     }
     p += wcrtomb(p, 0, &mbstate);
@@ -306,7 +306,7 @@ size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, const char 
   {
     memset(&mbstate, 0, sizeof(mbstate));
     for (; (k = mbrtowc(&wc, buf, MB_LEN_MAX, &mbstate)) &&
-           k != (size_t) (-1) && k != (size_t) (-2);
+           (k != ICONV_ILLEGAL_SEQ) && (k != ICONV_BUF_TOO_SMALL);
          buf += k)
     {
       if (i >= wbuflen)
@@ -316,7 +316,7 @@ size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, const char 
       }
       wbuf[i++] = wc;
     }
-    if ((*buf != '\0') && ((k == (size_t) -1) || (k == (size_t) -2)))
+    if ((*buf != '\0') && ((k == ICONV_ILLEGAL_SEQ) || (k == ICONV_BUF_TOO_SMALL)))
     {
       if (i >= wbuflen)
       {
@@ -367,9 +367,9 @@ bool mutt_mb_is_lower(const char *s)
 
   for (; (l = mbrtowc(&wc, s, MB_CUR_MAX, &mbstate)) != 0; s += l)
   {
-    if (l == (size_t) -2)
+    if (l == ICONV_BUF_TOO_SMALL)
       continue; /* shift sequences */
-    if (l == (size_t) -1)
+    if (l == ICONV_ILLEGAL_SEQ)
       return false;
     if (iswalpha((wint_t) wc) && iswupper((wint_t) wc))
       return false;
@@ -435,7 +435,7 @@ int mutt_mb_filter_unprintable(char **s)
   struct Buffer buf = buf_make(0);
   for (; (k = mbrtowc(&wc, p, MB_LEN_MAX, &mbstate1)); p += k)
   {
-    if ((k == (size_t) -1) || (k == (size_t) -2))
+    if ((k == ICONV_ILLEGAL_SEQ) || (k == ICONV_BUF_TOO_SMALL))
     {
       k = 1;
       memset(&mbstate1, 0, sizeof(mbstate1));
