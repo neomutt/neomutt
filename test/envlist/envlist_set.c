@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_envlist_init()
+ * Test code for envlist_set()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -24,14 +24,20 @@
 #include "config.h"
 #include "acutest.h"
 #include <stddef.h>
+#include <stdbool.h>
 #include "mutt/lib.h"
 
-void test_mutt_envlist_init(void)
+void test_envlist_set(void)
 {
-  // void mutt_envlist_init(char *envp[]);
+  // bool envlist_set(const char *name, const char *value, bool overwrite);
 
   {
-    mutt_envlist_init(NULL);
-    TEST_CHECK_(1, "mutt_envlist_init(NULL)");
+    TEST_CHECK(!envlist_set(NULL, "banana", false));
   }
+
+  {
+    TEST_CHECK(envlist_set("apple", NULL, false));
+  }
+
+  envlist_free();
 }

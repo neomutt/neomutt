@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_envlist_unset()
+ * Test code for envlist_free()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -23,14 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
-#include "mutt/lib.h"
 
-void test_mutt_envlist_unset(void)
+void test_envlist_free(void)
 {
-  // bool mutt_envlist_unset(const char *name);
-
-  {
-    TEST_CHECK(!mutt_envlist_unset(NULL));
-  }
+  // void envlist_free(void);
 }

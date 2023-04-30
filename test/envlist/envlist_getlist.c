@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_envlist_getlist()
+ * Test code for envlist_getlist()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,12 +26,12 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 
-void test_mutt_envlist_getlist(void)
+void test_envlist_getlist(void)
 {
-  // char **mutt_envlist_getlist(void);
+  // char **envlist_getlist(void);
 
   {
-    char **env = mutt_envlist_getlist();
+    char **env = envlist_getlist();
     TEST_CHECK(env == NULL);
   }
 }

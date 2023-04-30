@@ -36,9 +36,9 @@
 static char **EnvList = NULL; ///< Private copy of the environment variables
 
 /**
- * mutt_envlist_free - Free the private copy of the environment
+ * envlist_free - Free the private copy of the environment
  */
-void mutt_envlist_free(void)
+void envlist_free(void)
 {
   if (!EnvList)
     return;
@@ -50,13 +50,13 @@ void mutt_envlist_free(void)
 }
 
 /**
- * mutt_envlist_init - Create a copy of the environment
+ * envlist_init - Create a copy of the environment
  * @param envp Environment variables
  */
-void mutt_envlist_init(char *envp[])
+void envlist_init(char *envp[])
 {
   if (EnvList)
-    mutt_envlist_free();
+    envlist_free();
 
   if (!envp)
     return;
@@ -72,7 +72,7 @@ void mutt_envlist_init(char *envp[])
 }
 
 /**
- * mutt_envlist_set - Set an environment variable
+ * envlist_set - Set an environment variable
  * @param name      Name of the variable
  * @param value     New value
  * @param overwrite Should the variable be overwritten?
@@ -82,7 +82,7 @@ void mutt_envlist_init(char *envp[])
  * It's broken out because some other parts of neomutt (filter.c) need to
  * set/overwrite environment variables in EnvList before calling exec().
  */
-bool mutt_envlist_set(const char *name, const char *value, bool overwrite)
+bool envlist_set(const char *name, const char *value, bool overwrite)
 {
   if (!name)
     return false;
@@ -124,12 +124,12 @@ bool mutt_envlist_set(const char *name, const char *value, bool overwrite)
 }
 
 /**
- * mutt_envlist_unset - Unset an environment variable
+ * envlist_unset - Unset an environment variable
  * @param name Variable to unset
  * @retval true  Success: Variable unset
  * @retval false Error: Variable doesn't exist
  */
-bool mutt_envlist_unset(const char *name)
+bool envlist_unset(const char *name)
 {
   if (!name || (name[0] == '\0'))
     return false;
@@ -161,12 +161,12 @@ bool mutt_envlist_unset(const char *name)
 }
 
 /**
- * mutt_envlist_getlist - Get the private environment
+ * envlist_getlist - Get the private environment
  * @retval ptr Array of strings
  *
  * @note The caller must not free the strings
  */
-char **mutt_envlist_getlist(void)
+char **envlist_getlist(void)
 {
   return EnvList;
 }

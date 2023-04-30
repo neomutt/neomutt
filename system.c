@@ -86,7 +86,7 @@ int mutt_system(const char *cmd)
     sigaction(SIGTSTP, &act, NULL);
     sigaction(SIGCONT, &act, NULL);
 
-    execle(EXEC_SHELL, "sh", "-c", cmd, NULL, mutt_envlist_getlist());
+    execle(EXEC_SHELL, "sh", "-c", cmd, NULL, envlist_getlist());
     _exit(127); /* execl error */
   }
   else if (pid != -1)

@@ -202,11 +202,11 @@ ENVELOPE_OBJS	= test/envelope/mutt_env_cmp_strict.o \
 		  test/envelope/mutt_env_to_intl.o \
 		  test/envelope/mutt_env_to_local.o
 
-ENVLIST_OBJS	= test/envlist/mutt_envlist_free.o \
-		  test/envlist/mutt_envlist_getlist.o \
-		  test/envlist/mutt_envlist_init.o \
-		  test/envlist/mutt_envlist_set.o \
-		  test/envlist/mutt_envlist_unset.o
+ENVLIST_OBJS	= test/envlist/envlist_free.o \
+		  test/envlist/envlist_getlist.o \
+		  test/envlist/envlist_init.o \
+		  test/envlist/envlist_set.o \
+		  test/envlist/envlist_unset.o
 
 FILE_OBJS	= test/file/common.o \
 		  test/file/buf_file_expand_fmt_quote.o \
