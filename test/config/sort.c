@@ -769,7 +769,7 @@ void test_config_sort(void)
   set_list(cs);
 
   /* Register a broken variable separately */
-  if (!cs_register_variables(cs, Vars2, DT_NO_FLAGS))
+  if (!TEST_CHECK(cs_register_variables(cs, Vars2, DT_NO_FLAGS)))
     return;
 
   struct Buffer *err = buf_pool_get();

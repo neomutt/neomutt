@@ -1009,7 +1009,7 @@ void test_command_set(void)
 {
   test_neomutt_create();
 
-  if (!TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, ConfigVars, 0)))
+  if (!TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, ConfigVars, DT_NO_FLAGS)))
   {
     TEST_MSG("Failed to register config variables\n");
     return;

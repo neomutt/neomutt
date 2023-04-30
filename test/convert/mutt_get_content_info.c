@@ -65,7 +65,7 @@ void test_mutt_get_content_info(void)
   test_neomutt_create();
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
-  cs_register_variables(cs, CharsetVars, DT_NO_FLAGS);
+  TEST_CHECK(cs_register_variables(cs, CharsetVars, DT_NO_FLAGS));
 
   struct Body *body = mutt_body_new();
   struct Content *content = mutt_get_content_info(fname, body, sub);
