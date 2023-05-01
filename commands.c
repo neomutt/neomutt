@@ -34,6 +34,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include "mutt/lib.h"
@@ -761,6 +762,19 @@ enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
 }
 
 /**
+ * envlist_sort - Sort two environment strings
+ * @param a First string
+ * @param b Second string
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
+static int envlist_sort(const void *a, const void *b)
+{
+  return strcmp(*(const char **) a, *(const char **) b);
+}
+
+/**
  * parse_setenv - Parse the 'setenv' and 'unsetenv' commands - Implements Command::parse() - @ingroup command_parse
  */
 static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
@@ -774,8 +788,45 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 
   if (!MoreArgs(s))
   {
-    buf_printf(err, _("%s: too few arguments"), "setenv");
-    return MUTT_CMD_WARNING;
+    if (!StartupComplete)
+    {
+      buf_printf(err, _("%s: too few arguments"), "setenv");
+      return MUTT_CMD_WARNING;
+    }
+
+    char tempfile[PATH_MAX] = { 0 };
+    mutt_mktemp(tempfile, sizeof(tempfile));
+
+    FILE *fp_out = mutt_file_fopen(tempfile, "w");
+    if (!fp_out)
+    {
+      // L10N: '%s' is the file name of the temporary file
+      buf_printf(err, _("Could not create temporary file %s"), tempfile);
+      return MUTT_CMD_ERROR;
+    }
+
+    int count = 0;
+    for (char **env = EnvList; *env; env++)
+      count++;
+
+    qsort(EnvList, count, sizeof(char *), envlist_sort);
+
+    for (char **env = EnvList; *env; env++)
+      fprintf(fp_out, "%s\n", *env);
+
+    mutt_file_fclose(&fp_out);
+
+    struct PagerData pdata = { 0 };
+    struct PagerView pview = { &pdata };
+
+    pdata.fname = tempfile;
+
+    pview.banner = "setenv";
+    pview.flags = MUTT_PAGER_NO_FLAGS;
+    pview.mode = PAGER_MODE_OTHER;
+
+    mutt_do_pager(&pview, NULL);
+    return MUTT_CMD_SUCCESS;
   }
 
   if (*s->dptr == '?')

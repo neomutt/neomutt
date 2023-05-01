@@ -9852,18 +9852,27 @@ folder-hook '\@imap\.example\.com' "set sort=threads"
       <para>
         You can alter the environment that NeoMutt passes on to its child
         processes using the <quote>setenv</quote> and <quote>unsetenv</quote>
-        operators. (N.B. These follow NeoMutt-style syntax, not shell-style!)
-        You can also query current environment values by prefixing
-        a <quote>?</quote> character.
+        commands. You can also query current environment values by adding a
+        <quote>?</quote> character.
       </para>
+
+      <note>
+        <para>
+          These follow NeoMutt-style syntax, not shell-style!
+        </para>
+      </note>
 
 <screen>
 setenv TERM vt100
 setenv ORGANIZATION "The NeoMutt Development Team"
 unsetenv DISPLAY
-setenv ?LESS
+setenv LESS?
 </screen>
 
+      <para>
+        Running <command>setenv</command> with no parameters will show a list of
+        all the environment variables.
+      </para>
     </sect1>
 
     <sect1 id="query">
