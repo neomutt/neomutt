@@ -143,6 +143,10 @@ static int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool
       ansi->attrs |= A_REVERSE;
       pos += 2;
     }
+    else if ((buf[pos] == '0') && isdigit(buf[pos + 1]))
+    {
+      pos++; // Skip the leading zero
+    }
     else if ((buf[pos] == '0') && ansi_is_end_char(buf[pos + 1]))
     {
       ansi->fg = COLOR_DEFAULT;
