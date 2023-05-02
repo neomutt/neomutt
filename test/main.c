@@ -239,6 +239,9 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_envlist_set)                                          \
   NEOMUTT_TEST_ITEM(test_envlist_unset)                                        \
                                                                                \
+  /* eqi */                                                                    \
+  NEOMUTT_TEST_ITEM(test_eqi)                                                  \
+                                                                               \
   /* file */                                                                   \
   NEOMUTT_TEST_ITEM(test_buf_file_expand_fmt_quote)                            \
   NEOMUTT_TEST_ITEM(test_buf_quote_filename)                                   \

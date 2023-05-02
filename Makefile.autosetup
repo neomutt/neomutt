@@ -939,6 +939,7 @@ coverage: all test
 	  --directory parse \
 	  --directory pattern \
 	  --directory store \
+	  --directory test/eqi \
 	  --exclude '*/include/*'
 	-genhtml --output-directory coverage --frames coverage.info
 	lcov --list coverage.info

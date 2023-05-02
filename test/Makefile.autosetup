@@ -207,6 +207,8 @@ ENVLIST_OBJS	= test/envlist/envlist_free.o \
 		  test/envlist/envlist_set.o \
 		  test/envlist/envlist_unset.o
 
+EQI_OBJS	= test/eqi/eqi.o
+
 FILE_OBJS	= test/file/common.o \
 		  test/file/buf_file_expand_fmt_quote.o \
 		  test/file/buf_quote_filename.o \
@@ -591,6 +593,7 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/compress $(PWD)/test/config $(PWD)/test/convert \
 		  $(PWD)/test/core $(PWD)/test/date $(PWD)/test/email \
 		  $(PWD)/test/enter $(PWD)/test/envelope $(PWD)/test/envlist \
+		  $(PWD)/test/eqi \
 		  $(PWD)/test/file $(PWD)/test/filter $(PWD)/test/from \
 		  $(PWD)/test/group $(PWD)/test/gui $(PWD)/test/hash \
 		  $(PWD)/test/history $(PWD)/test/idna $(PWD)/test/list \
@@ -623,6 +626,7 @@ TEST_OBJS	= test/main.o test/common.o \
 		  $(ENTER_OBJS) \
 		  $(ENVELOPE_OBJS) \
 		  $(ENVLIST_OBJS) \
+		  $(EQI_OBJS) \
 		  $(FILE_OBJS) \
 		  $(FILTER_OBJS) \
 		  $(FROM_OBJS) \
