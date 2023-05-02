@@ -1285,7 +1285,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
       else if (src[0] == 'c') /* crypto */
       {
-        const char *ch = "";
+        const char *ch = NULL;
         if ((WithCrypto != 0) && (e->security & SEC_GOODSIGN))
           ch = get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_GOOD_SIGN);
         else if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))
@@ -1306,7 +1306,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
       else if (src[0] == 't') /* tagged, flagged, recipient */
       {
-        const char *ch = "";
+        const char *ch = NULL;
         if (e->tagged)
           ch = get_nth_wchar(c_flag_chars, FLAG_CHAR_TAGGED);
         else if (e->flagged)
@@ -1349,7 +1349,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
 
       /* Marked for deletion; deleted attachments; crypto */
-      const char *second = "";
+      const char *second = NULL;
       if (e->deleted)
         second = get_nth_wchar(c_flag_chars, FLAG_CHAR_DELETED);
       else if (e->attach_del)
@@ -1366,7 +1366,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         second = get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_NO_CRYPTO);
 
       /* Tagged, flagged and recipient flag */
-      const char *third = "";
+      const char *third = NULL;
       if (e->tagged)
         third = get_nth_wchar(c_flag_chars, FLAG_CHAR_TAGGED);
       else if (e->flagged)

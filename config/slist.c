@@ -83,7 +83,7 @@ static int slist_string_set(const struct ConfigSet *cs, void *var, struct Config
       if (CSR_RESULT(rc) != CSR_SUCCESS)
       {
         slist_free(&list);
-        return (rc | CSR_INV_VALIDATOR);
+        return rc | CSR_INV_VALIDATOR;
       }
     }
 
@@ -119,7 +119,7 @@ static int slist_string_get(const struct ConfigSet *cs, void *var,
   {
     struct Slist *list = *(struct Slist **) var;
     if (!list)
-      return (CSR_SUCCESS | CSR_SUC_EMPTY); /* empty string */
+      return CSR_SUCCESS | CSR_SUC_EMPTY; /* empty string */
 
     slist_to_buffer(list, result);
   }
@@ -151,7 +151,7 @@ static int slist_native_set(const struct ConfigSet *cs, void *var,
     rc = cdef->validator(cs, cdef, value, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
   }
 
   slist_free(var);
@@ -194,11 +194,11 @@ static int slist_string_plus_equals(const struct ConfigSet *cs, void *var,
 
   /* Store empty strings as NULL */
   if (value && (value[0] == '\0'))
-    return rc |= CSR_SUC_NO_CHANGE;
+    return rc | CSR_SUC_NO_CHANGE;
 
   struct Slist *orig = *(struct Slist **) var;
   if (slist_is_member(orig, value))
-    return rc |= CSR_SUC_NO_CHANGE;
+    return rc | CSR_SUC_NO_CHANGE;
 
   struct Slist *copy = slist_dup(orig);
   if (!copy)
@@ -212,7 +212,7 @@ static int slist_string_plus_equals(const struct ConfigSet *cs, void *var,
     if (CSR_RESULT(rc) != CSR_SUCCESS)
     {
       slist_free(&copy);
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
     }
   }
 
@@ -236,11 +236,11 @@ static int slist_string_minus_equals(const struct ConfigSet *cs, void *var,
 
   /* Store empty strings as NULL */
   if (value && (value[0] == '\0'))
-    return rc |= CSR_SUC_NO_CHANGE;
+    return rc | CSR_SUC_NO_CHANGE;
 
   struct Slist *orig = *(struct Slist **) var;
   if (!slist_is_member(orig, value))
-    return rc |= CSR_SUC_NO_CHANGE;
+    return rc | CSR_SUC_NO_CHANGE;
 
   struct Slist *copy = slist_dup(orig);
   slist_remove_string(copy, value);
@@ -251,7 +251,7 @@ static int slist_string_minus_equals(const struct ConfigSet *cs, void *var,
     if (CSR_RESULT(rc) != CSR_SUCCESS)
     {
       slist_free(&copy);
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
     }
   }
 
@@ -285,7 +285,7 @@ static int slist_reset(const struct ConfigSet *cs, void *var,
     if (CSR_RESULT(rc) != CSR_SUCCESS)
     {
       slist_destroy(cs, &list, cdef);
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
     }
   }
 

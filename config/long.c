@@ -224,7 +224,7 @@ static int long_reset(const struct ConfigSet *cs, void *var,
     int rc = cdef->validator(cs, cdef, cdef->initial, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
   }
 
   *(long *) var = cdef->initial;

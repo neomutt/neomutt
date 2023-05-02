@@ -189,7 +189,7 @@ static int quad_reset(const struct ConfigSet *cs, void *var,
  */
 static int quad_toggle(int opt)
 {
-  return opt ^= 1;
+  return opt ^ 1;
 }
 
 /**
