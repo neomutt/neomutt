@@ -62,6 +62,16 @@ static const char *get_test_dir(void)
   return mutt_str_getenv(TEST_DIR);
 }
 
+static void init_tmp_dir(struct NeoMutt *n)
+{
+  char buf[PATH_MAX] = { 0 };
+
+  snprintf(buf, sizeof(buf), "%s/tmp", mutt_str_getenv(TEST_DIR));
+
+  cs_str_initial_set(n->sub->cs, "tmp_dir", buf, NULL);
+  cs_str_reset(n->sub->cs, "tmp_dir", NULL);
+}
+
 void test_gen_path(char *buf, size_t buflen, const char *fmt)
 {
   snprintf(buf, buflen, NONULL(fmt), NONULL(get_test_dir()));
@@ -139,6 +149,8 @@ bool test_neomutt_create(void)
   TEST_CHECK(NeoMutt != NULL);
 
   TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS));
+
+  init_tmp_dir(NeoMutt);
 
   return NeoMutt;
 }

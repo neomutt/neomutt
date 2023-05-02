@@ -46,23 +46,21 @@ void test_mutt_get_content_info(void)
 {
   // struct Content *mutt_get_content_info(const char *fname, struct Body *b, struct ConfigSubset *sub);
 
-  const char *text = "file\ncontent";
-  const char *tmpdir = mutt_str_getenv("TMPDIR");
-  if (!tmpdir)
-    tmpdir = "/tmp";
-
-  char fname[PATH_MAX] = { 0 };
-  snprintf(fname, sizeof(fname), "%s/mutt-test-file-XXXXXX", tmpdir);
-
-  int fd = mkstemp(fname);
-  TEST_CHECK(fd != -1);
-  TEST_MSG("unable to open temp file for writing");
-
-  TEST_CHECK(write(fd, text, strlen(text)) > 0);
-  TEST_MSG("unable to write to temp file: %s", fname);
-  close(fd);
+  static const char *text = "file\ncontent";
 
   test_neomutt_create();
+
+  char fname[PATH_MAX] = { 0 };
+  mutt_mktemp(fname, sizeof(fname));
+
+  FILE *fp = fopen(fname, "w");
+  TEST_CHECK(fp != NULL);
+  TEST_MSG("unable to open temp file for writing");
+
+  TEST_CHECK(fwrite(text, strlen(text), 1, fp) > 0);
+  TEST_MSG("unable to write to temp file: %s", fname);
+  fclose(fp);
+
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
   TEST_CHECK(cs_register_variables(cs, CharsetVars, DT_NO_FLAGS));
@@ -95,6 +93,6 @@ void test_mutt_get_content_info(void)
   TEST_MSG("Check failed: %d == 0", content->cr);
 
   mutt_body_free(&body);
-  cs_free(&cs);
   FREE(&content);
+  test_neomutt_destroy();
 }
