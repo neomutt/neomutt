@@ -696,7 +696,7 @@ size_t mutt_ch_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft,
   {
     errno = 0;
     const size_t ret1 = iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl);
-    if (ret1 != (size_t) -1)
+    if (ret1 != ICONV_ILLEGAL_SEQ)
       rc += ret1;
     if (iconverrno)
       *iconverrno = errno;
@@ -796,7 +796,7 @@ int mutt_ch_check(const char *s, size_t slen, const char *from, const char *to)
   char *saved_out = out;
 
   const size_t convlen = iconv(cd, (ICONV_CONST char **) &s, &slen, &out, &outlen);
-  if (convlen == (size_t) -1)
+  if (convlen == ICONV_ILLEGAL_SEQ)
     rc = errno;
 
   FREE(&saved_out);

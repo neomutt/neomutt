@@ -118,30 +118,9 @@ static int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool
 
   while (pos < seq_len)
   {
-    if ((buf[pos] == '1') && ansi_is_end_char(buf[pos + 1]))
+    if ((buf[pos] == '0') && isdigit(buf[pos + 1]))
     {
-      ansi->attrs |= A_BOLD;
-      pos += 2;
-    }
-    else if ((buf[pos] == '3') && ansi_is_end_char(buf[pos + 1]))
-    {
-      ansi->attrs |= A_ITALIC;
-      pos += 2;
-    }
-    else if ((buf[pos] == '4') && ansi_is_end_char(buf[pos + 1]))
-    {
-      ansi->attrs |= A_UNDERLINE;
-      pos += 2;
-    }
-    else if ((buf[pos] == '5') && ansi_is_end_char(buf[pos + 1]))
-    {
-      ansi->attrs |= A_BLINK;
-      pos += 2;
-    }
-    else if ((buf[pos] == '7') && ansi_is_end_char(buf[pos + 1]))
-    {
-      ansi->attrs |= A_REVERSE;
-      pos += 2;
+      pos++; // Skip the leading zero
     }
     else if ((buf[pos] == '0') && ansi_is_end_char(buf[pos + 1]))
     {
@@ -149,6 +128,16 @@ static int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool
       ansi->bg = COLOR_DEFAULT;
       ansi->attrs = 0;
       ansi->attr_color = NULL;
+      pos += 2;
+    }
+    else if ((buf[pos] == '1') && ansi_is_end_char(buf[pos + 1]))
+    {
+      ansi->attrs |= A_BOLD;
+      pos += 2;
+    }
+    else if ((buf[pos] == '3') && ansi_is_end_char(buf[pos + 1]))
+    {
+      ansi->attrs |= A_ITALIC;
       pos += 2;
     }
     else if (buf[pos] == '3')
@@ -195,6 +184,11 @@ static int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool
         pos += ansi_skip_sequence(buf + pos);
       }
     }
+    else if ((buf[pos] == '4') && ansi_is_end_char(buf[pos + 1]))
+    {
+      ansi->attrs |= A_UNDERLINE;
+      pos += 2;
+    }
     else if (buf[pos] == '4')
     {
       // 40-47 basic bg
@@ -238,6 +232,16 @@ static int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool
         ansi->bg = COLOR_DEFAULT;
         pos += 2;
       }
+    }
+    else if ((buf[pos] == '5') && ansi_is_end_char(buf[pos + 1]))
+    {
+      ansi->attrs |= A_BLINK;
+      pos += 2;
+    }
+    else if ((buf[pos] == '7') && ansi_is_end_char(buf[pos + 1]))
+    {
+      ansi->attrs |= A_REVERSE;
+      pos += 2;
     }
     else
     {

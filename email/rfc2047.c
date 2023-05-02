@@ -202,8 +202,8 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
     ibl = dlen;
     ob = buf;
     obl = sizeof(buf) - strlen(tocode);
-    if ((iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl) == ICONV_ERROR) ||
-        (iconv(cd, NULL, NULL, &ob, &obl) == ICONV_ERROR))
+    if ((iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl) == ICONV_ILLEGAL_SEQ) ||
+        (iconv(cd, NULL, NULL, &ob, &obl) == ICONV_ILLEGAL_SEQ))
     {
       assert(errno == E2BIG);
       assert(ib > d);
@@ -285,7 +285,7 @@ static size_t encode_block(char *str, char *buf, size_t buflen, const char *from
   size_t obl = sizeof(tmp) - strlen(tocode);
   const size_t n1 = iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl);
   const size_t n2 = iconv(cd, NULL, NULL, &ob, &obl);
-  assert(n1 != (size_t) (-1) && n2 != (size_t) (-1));
+  assert((n1 != ICONV_ILLEGAL_SEQ) && (n2 != ICONV_ILLEGAL_SEQ));
   return (*encoder)(str, tmp, ob - tmp, tocode);
 }
 

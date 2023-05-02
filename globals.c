@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include <signal.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include "mutt/lib.h"

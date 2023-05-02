@@ -92,11 +92,11 @@ static int print_macro(FILE *fp, int maxwidth, const char **macro)
 
   for (; len && (k = mbrtowc(&wc, *macro, len, &mbstate1)); *macro += k, len -= k)
   {
-    if ((k == (size_t) (-1)) || (k == (size_t) (-2)))
+    if ((k == ICONV_ILLEGAL_SEQ) || (k == ICONV_BUF_TOO_SMALL))
     {
-      if (k == (size_t) (-1))
+      if (k == ICONV_ILLEGAL_SEQ)
         memset(&mbstate1, 0, sizeof(mbstate1));
-      k = (k == (size_t) (-1)) ? 1 : len;
+      k = (k == ICONV_ILLEGAL_SEQ) ? 1 : len;
       wc = ReplacementChar;
     }
     /* glibc-2.1.3's wcwidth() returns 1 for unprintable chars! */
@@ -109,8 +109,8 @@ static int print_macro(FILE *fp, int maxwidth, const char **macro)
       {
         char buf[MB_LEN_MAX * 2];
         size_t n1, n2;
-        if (((n1 = wcrtomb(buf, wc, &mbstate2)) != (size_t) (-1)) &&
-            ((n2 = wcrtomb(buf + n1, 0, &mbstate2)) != (size_t) (-1)))
+        if (((n1 = wcrtomb(buf, wc, &mbstate2)) != ICONV_ILLEGAL_SEQ) &&
+            ((n2 = wcrtomb(buf + n1, 0, &mbstate2)) != ICONV_ILLEGAL_SEQ))
         {
           fputs(buf, fp);
         }
@@ -165,11 +165,11 @@ static int get_wrapped_width(const char *t, size_t wid)
   {
     if (*s == ' ')
       m = n;
-    if ((k == (size_t) (-1)) || (k == (size_t) (-2)))
+    if ((k == ICONV_ILLEGAL_SEQ) || (k == ICONV_BUF_TOO_SMALL))
     {
-      if (k == (size_t) (-1))
+      if (k == ICONV_ILLEGAL_SEQ)
         memset(&mbstate, 0, sizeof(mbstate));
-      k = (k == (size_t) (-1)) ? 1 : len;
+      k = (k == ICONV_ILLEGAL_SEQ) ? 1 : len;
       wc = ReplacementChar;
     }
     if (!IsWPrint(wc))

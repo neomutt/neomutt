@@ -834,9 +834,9 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
       break;
 
     k = mbrtowc(&wc, (char *) buf + ch, cnt - ch, &mbstate);
-    if ((k == (size_t) (-2)) || (k == (size_t) (-1)))
+    if ((k == ICONV_BUF_TOO_SMALL) || (k == ICONV_ILLEGAL_SEQ))
     {
-      if (k == (size_t) (-1))
+      if (k == ICONV_ILLEGAL_SEQ)
         memset(&mbstate, 0, sizeof(mbstate));
       mutt_debug(LL_DEBUG1, "mbrtowc returned %lu; errno = %d\n", k, errno);
       if ((col + 4) > wrap_cols)
@@ -872,12 +872,16 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
       wchar_t wc1 = 0;
       mbstate_t mbstate1 = mbstate;
       size_t k1 = mbrtowc(&wc1, (char *) buf + ch + k, cnt - ch - k, &mbstate1);
-      while ((k1 != (size_t) (-2)) && (k1 != (size_t) (-1)) && (k1 > 0) && (wc1 == '\b'))
+      while ((k1 != ICONV_BUF_TOO_SMALL) && (k1 != ICONV_ILLEGAL_SEQ) &&
+             (k1 > 0) && (wc1 == '\b'))
       {
         const size_t k2 = mbrtowc(&wc1, (char *) buf + ch + k + k1,
                                   cnt - ch - k - k1, &mbstate1);
-        if ((k2 == (size_t) (-2)) || (k2 == (size_t) (-1)) || (k2 == 0) || (!IsWPrint(wc1)))
+        if ((k2 == ICONV_BUF_TOO_SMALL) || (k2 == ICONV_ILLEGAL_SEQ) ||
+            (k2 == 0) || (!IsWPrint(wc1)))
+        {
           break;
+        }
 
         if (wc == wc1)
         {

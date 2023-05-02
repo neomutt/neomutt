@@ -51,7 +51,7 @@ void test_config_subset(void)
 
   struct ConfigSet *cs = cs_new(30);
   cs_register_type(cs, &CstNumber);
-  if (!cs_register_variables(cs, Vars, DT_NO_FLAGS))
+  if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
     return;
 
   NeoMutt = neomutt_new(cs);

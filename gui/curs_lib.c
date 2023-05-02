@@ -610,8 +610,8 @@ int mutt_addwch(struct MuttWindow *win, wchar_t wc)
   mbstate_t mbstate = { 0 };
   size_t n1, n2;
 
-  if (((n1 = wcrtomb(buf, wc, &mbstate)) == (size_t) (-1)) ||
-      ((n2 = wcrtomb(buf + n1, 0, &mbstate)) == (size_t) (-1)))
+  if (((n1 = wcrtomb(buf, wc, &mbstate)) == ICONV_ILLEGAL_SEQ) ||
+      ((n2 = wcrtomb(buf + n1, 0, &mbstate)) == ICONV_ILLEGAL_SEQ))
   {
     return -1; /* ERR */
   }
@@ -653,12 +653,12 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
   char *p = buf;
   for (; n && (k = mbrtowc(&wc, s, n, &mbstate1)); s += k, n -= k)
   {
-    if ((k == (size_t) (-1)) || (k == (size_t) (-2)))
+    if ((k == ICONV_ILLEGAL_SEQ) || (k == ICONV_BUF_TOO_SMALL))
     {
-      if ((k == (size_t) (-1)) && (errno == EILSEQ))
+      if ((k == ICONV_ILLEGAL_SEQ) && (errno == EILSEQ))
         memset(&mbstate1, 0, sizeof(mbstate1));
 
-      k = (k == (size_t) (-1)) ? 1 : n;
+      k = (k == ICONV_ILLEGAL_SEQ) ? 1 : n;
       wc = ReplacementChar;
     }
     if (escaped)
@@ -691,7 +691,7 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
       if (w > max_width)
         continue;
       size_t k2 = wcrtomb(scratch, wc, &mbstate2);
-      if ((k2 == (size_t) -1) || (k2 > buflen))
+      if ((k2 == ICONV_ILLEGAL_SEQ) || (k2 > buflen))
         continue;
 
       min_width -= w;
@@ -825,11 +825,11 @@ void mutt_paddstr(struct MuttWindow *win, int n, const char *s)
 
   for (; len && (k = mbrtowc(&wc, s, len, &mbstate)); s += k, len -= k)
   {
-    if ((k == (size_t) (-1)) || (k == (size_t) (-2)))
+    if ((k == ICONV_ILLEGAL_SEQ) || (k == ICONV_BUF_TOO_SMALL))
     {
-      if (k == (size_t) (-1))
+      if (k == ICONV_ILLEGAL_SEQ)
         memset(&mbstate, 0, sizeof(mbstate));
-      k = (k == (size_t) (-1)) ? 1 : len;
+      k = (k == ICONV_ILLEGAL_SEQ) ? 1 : len;
       wc = ReplacementChar;
     }
     if (!IsWPrint(wc))
@@ -872,11 +872,11 @@ size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *wi
 
   for (w = 0; n && (cl = mbrtowc(&wc, src, n, &mbstate)); src += cl, n -= cl)
   {
-    if ((cl == (size_t) (-1)) || (cl == (size_t) (-2)))
+    if ((cl == ICONV_ILLEGAL_SEQ) || (cl == ICONV_BUF_TOO_SMALL))
     {
-      if (cl == (size_t) (-1))
+      if (cl == ICONV_ILLEGAL_SEQ)
         memset(&mbstate, 0, sizeof(mbstate));
-      cl = (cl == (size_t) (-1)) ? 1 : n;
+      cl = (cl == ICONV_ILLEGAL_SEQ) ? 1 : n;
       wc = ReplacementChar;
     }
     cw = wcwidth(wc);
@@ -939,11 +939,11 @@ size_t mutt_strnwidth(const char *s, size_t n)
       continue;
     }
 
-    if ((k == (size_t) (-1)) || (k == (size_t) (-2)))
+    if ((k == ICONV_ILLEGAL_SEQ) || (k == ICONV_BUF_TOO_SMALL))
     {
-      if (k == (size_t) (-1))
+      if (k == ICONV_ILLEGAL_SEQ)
         memset(&mbstate, 0, sizeof(mbstate));
-      k = (k == (size_t) (-1)) ? 1 : n;
+      k = (k == ICONV_ILLEGAL_SEQ) ? 1 : n;
       wc = ReplacementChar;
     }
     if (!IsWPrint(wc))
