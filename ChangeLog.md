@@ -1770,7 +1770,7 @@
   - Change OpenSSL to use SHA-256 for cert comparison
   - Fix conststrings type mismatches
   - Pass envlist to filter children too
-  - Fix mutt_envlist_set() for the case that envlist is null
+  - Fix envlist_set() for the case that envlist is null
   - Fix setenv overwriting to not truncate the envlist
   - Fix (un)sidebar_pin to expand paths
   - Fix mutt_refresh() pausing during macro events
@@ -1807,7 +1807,7 @@
   - Change OpenSSL to use SHA-256 for cert comparison
   - Fix conststrings type mismatches
   - Pass envlist to filter children too
-  - Fix mutt_envlist_set() for the case that envlist is null
+  - Fix envlist_set() for the case that envlist is null
   - Fix setenv overwriting to not truncate the envlist
   - Fix mutt_refresh() pausing during macro events
   - Add a menu stack to track current and past menus

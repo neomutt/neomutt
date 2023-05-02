@@ -234,11 +234,10 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_env_to_local)                                    \
                                                                                \
   /* envlist */                                                                \
-  NEOMUTT_TEST_ITEM(test_mutt_envlist_free)                                    \
-  NEOMUTT_TEST_ITEM(test_mutt_envlist_getlist)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_envlist_init)                                    \
-  NEOMUTT_TEST_ITEM(test_mutt_envlist_set)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_envlist_unset)                                   \
+  NEOMUTT_TEST_ITEM(test_envlist_free)                                         \
+  NEOMUTT_TEST_ITEM(test_envlist_init)                                         \
+  NEOMUTT_TEST_ITEM(test_envlist_set)                                          \
+  NEOMUTT_TEST_ITEM(test_envlist_unset)                                        \
                                                                                \
   /* file */                                                                   \
   NEOMUTT_TEST_ITEM(test_buf_file_expand_fmt_quote)                            \

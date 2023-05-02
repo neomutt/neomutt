@@ -82,4 +82,6 @@ extern bool OptSearchInvalid;       ///< (pseudo) used to invalidate the search 
 extern bool OptSearchReverse;       ///< (pseudo) used by ci_search_command
 extern bool OptSortSubthreads;      ///< (pseudo) used when $sort_aux changes
 
+extern char **EnvList;              ///< Private copy of the environment variables
+
 #endif /* MUTT_GLOBALS_H */

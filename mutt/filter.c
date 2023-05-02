@@ -32,7 +32,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include "filter.h"
-#include "envlist.h"
+#include "globals.h"
 #include "signal2.h"
 
 /**
@@ -146,7 +146,7 @@ pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out,
       close(fderr);
     }
 
-    execle(EXEC_SHELL, "sh", "-c", cmd, NULL, mutt_envlist_getlist());
+    execle(EXEC_SHELL, "sh", "-c", cmd, NULL, EnvList);
     _exit(127);
   }
   else if (pid == -1)

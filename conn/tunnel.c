@@ -40,6 +40,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "lib.h"
+#include "globals.h"
 
 /**
  * struct TunnelSockData - A network tunnel (pair of sockets)
@@ -101,7 +102,7 @@ static int tunnel_socket_open(struct Connection *conn)
     /* Don't let the subprocess think it can use the controlling tty */
     setsid();
 
-    execle(EXEC_SHELL, "sh", "-c", c_tunnel, NULL, mutt_envlist_getlist());
+    execle(EXEC_SHELL, "sh", "-c", c_tunnel, NULL, EnvList);
     _exit(127);
   }
   mutt_sig_unblock_system(true);

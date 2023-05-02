@@ -33,6 +33,7 @@
 #include <sys/wait.h> // IWYU pragma: keep
 #include <unistd.h>
 #include "mutt/lib.h"
+#include "globals.h"
 #include "protos.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"
@@ -86,7 +87,7 @@ int mutt_system(const char *cmd)
     sigaction(SIGTSTP, &act, NULL);
     sigaction(SIGCONT, &act, NULL);
 
-    execle(EXEC_SHELL, "sh", "-c", cmd, NULL, mutt_envlist_getlist());
+    execle(EXEC_SHELL, "sh", "-c", cmd, NULL, EnvList);
     _exit(127); /* execl error */
   }
   else if (pid != -1)
