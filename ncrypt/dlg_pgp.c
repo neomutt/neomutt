@@ -648,7 +648,9 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
       f = pgp_compare_trust_qsort;
       break;
   }
-  qsort(key_table, i, sizeof(struct PgpUid *), f);
+
+  if (key_table)
+    qsort(key_table, i, sizeof(struct PgpUid *), f);
 
   struct MuttWindow *dlg = simple_dialog_new(MENU_PGP, WT_DLG_PGP, PgpHelp);
 

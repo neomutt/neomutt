@@ -730,7 +730,9 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
       f = crypt_compare_trust_qsort;
       break;
   }
-  qsort(key_table, i, sizeof(struct CryptKeyInfo *), f);
+
+  if (key_table)
+    qsort(key_table, i, sizeof(struct CryptKeyInfo *), f);
 
   if (app & APPLICATION_PGP)
     menu_to_use = MENU_KEY_SELECT_PGP;
