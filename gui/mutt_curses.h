@@ -37,7 +37,9 @@
 #include <curses.h>
 #endif
 
-#if ((NCURSES_VERSION_MAJOR > 6) || ((NCURSES_VERSION_MAJOR == 6) && (NCURSES_VERSION_MINOR >= 1)))
+#if (((NCURSES_VERSION_MAJOR > 6) ||                                           \
+      ((NCURSES_VERSION_MAJOR == 6) && (NCURSES_VERSION_MINOR >= 1))) &&       \
+     defined(NCURSES_EXT_COLORS))
 #define NEOMUTT_DIRECT_COLORS
 #endif
 
