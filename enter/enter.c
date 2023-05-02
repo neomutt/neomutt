@@ -422,16 +422,21 @@ size_t editor_buffer_get_cursor(struct EnterState *es)
  * editor_buffer_set_cursor - Set the position of the cursor
  * @param es  State of the Enter buffer
  * @param pos New position for the cursor
+ * @retval num Position of cursor
+ *
+ * @note If the cursor is positioned beyond the end of the buffer,
+ *       it will be set to the last character
  */
-void editor_buffer_set_cursor(struct EnterState *es, size_t pos)
+size_t editor_buffer_set_cursor(struct EnterState *es, size_t pos)
 {
   if (!es)
-    return;
+    return 0;
 
   if (pos >= es->lastchar)
-    return;
+    pos = es->lastchar;
 
   es->curpos = pos;
+  return pos;
 }
 
 /**
@@ -443,6 +448,9 @@ void editor_buffer_set_cursor(struct EnterState *es, size_t pos)
 int editor_buffer_set(struct EnterState *es, const char *str)
 
 {
+  if (!es)
+    return 0;
+
   es->wbuflen = 0;
   es->lastchar = mutt_mb_mbstowcs(&es->wbuf, &es->wbuflen, 0, str);
   es->curpos = es->lastchar;

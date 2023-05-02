@@ -182,6 +182,11 @@ ENTER_OBJS	= test/enter/editor_backspace.o \
 		  test/enter/editor_backward_char.o \
 		  test/enter/editor_backward_word.o \
 		  test/enter/editor_bol.o \
+		  test/enter/editor_buffer_get_cursor.o \
+		  test/enter/editor_buffer_get_lastchar.o \
+		  test/enter/editor_buffer_is_empty.o \
+		  test/enter/editor_buffer_set.o \
+		  test/enter/editor_buffer_set_cursor.o \
 		  test/enter/editor_case_word.o \
 		  test/enter/editor_delete_char.o \
 		  test/enter/editor_eol.o \

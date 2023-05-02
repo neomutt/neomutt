@@ -58,6 +58,6 @@ size_t editor_buffer_get_cursor  (struct EnterState *es);
 size_t editor_buffer_get_lastchar(struct EnterState *es);
 bool   editor_buffer_is_empty    (struct EnterState *es);
 int    editor_buffer_set         (struct EnterState *es, const char *str);
-void   editor_buffer_set_cursor  (struct EnterState *es, size_t pos);
+size_t editor_buffer_set_cursor  (struct EnterState *es, size_t pos);
 
 #endif /* MUTT_ENTER_ENTER_H */

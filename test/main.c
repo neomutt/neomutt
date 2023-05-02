@@ -212,6 +212,11 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_editor_backward_char)                                 \
   NEOMUTT_TEST_ITEM(test_editor_backward_word)                                 \
   NEOMUTT_TEST_ITEM(test_editor_bol)                                           \
+  NEOMUTT_TEST_ITEM(test_editor_buffer_get_cursor)                             \
+  NEOMUTT_TEST_ITEM(test_editor_buffer_get_lastchar)                           \
+  NEOMUTT_TEST_ITEM(test_editor_buffer_is_empty)                               \
+  NEOMUTT_TEST_ITEM(test_editor_buffer_set)                                    \
+  NEOMUTT_TEST_ITEM(test_editor_buffer_set_cursor)                             \
   NEOMUTT_TEST_ITEM(test_editor_case_word)                                     \
   NEOMUTT_TEST_ITEM(test_editor_delete_char)                                   \
   NEOMUTT_TEST_ITEM(test_editor_eol)                                           \
