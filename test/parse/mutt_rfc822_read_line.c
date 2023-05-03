@@ -135,7 +135,7 @@ void test_mutt_rfc822_read_line(void)
 
   for (size_t i = 0; i < mutt_array_size(test_data); ++i)
   {
-    FILE *fp = fmemopen(test_data[i].input, strlen(test_data[i].input), "r");
+    FILE *fp = fmemopen(test_data[i].input, strlen(test_data[i].input) + 1, "r");
     struct Buffer *buf = buf_pool_get();
     const size_t read = mutt_rfc822_read_line(fp, buf);
     long off = ftell(fp);
