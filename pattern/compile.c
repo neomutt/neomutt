@@ -798,6 +798,8 @@ static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group,
     case RANGE_K_REL:
     {
       struct Email *e = mutt_get_virt_email(m, menu_get_index(menu));
+      if (!e)
+        return num;
       return num + EMSG(e);
     }
     case RANGE_K_LT:
@@ -842,6 +844,8 @@ static int scan_range_slot(struct Buffer *s, regmatch_t pmatch[], int grp,
     case RANGE_DOT:
     {
       struct Email *e = mutt_get_virt_email(m, menu_get_index(menu));
+      if (!e)
+        return 1;
       return EMSG(e);
     }
     case RANGE_LT:

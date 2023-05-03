@@ -599,6 +599,9 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
     }
 
     struct Email *e = mutt_get_virt_email(m, i);
+    if (!e)
+      goto done;
+
     if (e->searched)
     {
       /* if we've already evaluated this message, use the cached value */

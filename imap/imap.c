@@ -522,6 +522,8 @@ int imap_delete_mailbox(struct Mailbox *m, char *path)
   char buf[PATH_MAX + 7];
   char mbox[PATH_MAX] = { 0 };
   struct Url *url = url_parse(path);
+  if (!url)
+    return -1;
 
   struct ImapAccountData *adata = imap_adata_get(m);
   imap_munge_mbox_name(adata->unicode, mbox, sizeof(mbox), url->path);
@@ -1811,6 +1813,8 @@ static bool imap_ac_add(struct Account *a, struct Mailbox *m)
   if (!m->mdata)
   {
     struct Url *url = url_parse(mailbox_path(m));
+    if (!url)
+      return false;
     struct ImapMboxData *mdata = imap_mdata_new(adata, url->path);
 
     /* fixup path and realpath, mainly to replace / by /INBOX */

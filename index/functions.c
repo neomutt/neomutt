@@ -2646,6 +2646,9 @@ static int op_main_entire_thread(struct IndexSharedData *shared,
   priv->oldcount = shared->mailbox->msg_count;
   int index = menu_get_index(priv->menu);
   struct Email *e_oldcur = mutt_get_virt_email(shared->mailbox, index);
+  if (!e_oldcur)
+    return FR_ERROR;
+
   if (nm_read_entire_thread(shared->mailbox, e_oldcur) < 0)
   {
     mutt_message(_("Failed to read thread, aborting"));

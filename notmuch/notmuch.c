@@ -1682,6 +1682,9 @@ void nm_query_window_reset(void)
 bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
 {
   struct NmMboxData *mdata = nm_mdata_get(m);
+  if (!mdata)
+    return false;
+
   notmuch_database_t *db = nm_db_get(m, false);
   char *orig_str = get_query_string(mdata, true);
 

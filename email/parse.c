@@ -1593,6 +1593,8 @@ static struct Body *parse_multipart(FILE *fp, const char *boundary,
       else if (buf[2 + blen] == '\0')
       {
         new_body = mutt_read_mime_header(fp, digest);
+        if (!new_body)
+          break;
 
 #ifdef SUN_ATTACHMENT
         if (mutt_param_get(&new_body->parameter, "content-lines"))
