@@ -390,6 +390,7 @@ int mutt_thread_set_flag(struct Mailbox *m, struct Email *e,
   if (!subthread)
     while (cur->parent)
       cur = cur->parent;
+
   start = cur;
 
   if (cur->message && (cur != e->thread))
@@ -405,9 +406,13 @@ int mutt_thread_set_flag(struct Mailbox *m, struct Email *e,
       mutt_set_flag(m, cur->message, flag, bf);
 
     if (cur->child)
+    {
       cur = cur->child;
+    }
     else if (cur->next)
+    {
       cur = cur->next;
+    }
     else
     {
       while (!cur->next)

@@ -560,7 +560,9 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
     {
       struct passwd *pw = getpwuid(getuid());
       if (pw)
+      {
         c_real_name = mutt_gecos_name(name, sizeof(name), pw);
+      }
     }
     cs_str_initial_set(cs, "real_name", c_real_name, NULL);
     cs_str_reset(cs, "real_name", NULL);

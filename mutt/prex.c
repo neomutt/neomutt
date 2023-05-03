@@ -267,7 +267,7 @@ static struct PrexStorage *prex(enum Prex which)
     h->mdata = pcre2_match_data_create_from_pattern(h->re, NULL);
     uint32_t ccount = 0;
     pcre2_pattern_info(h->re, PCRE2_INFO_CAPTURECOUNT, &ccount);
-    assert(ccount + 1 == h->nmatches && "Number of matches do not match (...)");
+    assert(((ccount + 1) == h->nmatches) && "Number of matches do not match (...)");
     h->matches = mutt_mem_calloc(h->nmatches, sizeof(*h->matches));
 #else
     h->re = mutt_mem_calloc(1, sizeof(*h->re));

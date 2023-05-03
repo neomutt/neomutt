@@ -658,7 +658,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
     int i = (c_timeout > 0) ? c_timeout : 60;
 #ifdef USE_IMAP
     /* keepalive may need to run more frequently than `$timeout` allows */
-    if (c_imap_keepalive)
+    if (c_imap_keepalive != 0)
     {
       if (c_imap_keepalive >= i)
       {
@@ -666,7 +666,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
       }
       else
       {
-        while (c_imap_keepalive && (c_imap_keepalive < i))
+        while (c_imap_keepalive < i)
         {
           tmp = mutt_getch_timeout(c_imap_keepalive * 1000);
           /* If a timeout was not received, or the window was resized, exit the

@@ -611,10 +611,8 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
         rc = command_set_increment(buf, value, err);
       else if (decrement)
         rc = command_set_decrement(buf, value, err);
-      else if (equals) // must come after increment/decrement
-        rc = command_set_set(buf, value, err);
       else
-        assert(false);
+        rc = command_set_set(buf, value, err);
       buf_pool_release(&value);
     }
     else

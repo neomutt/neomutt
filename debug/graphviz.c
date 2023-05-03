@@ -787,11 +787,8 @@ void dot_account_pop(FILE *fp, struct PopAccountData *adata, struct ListHead *li
   // dot_ptr(fp, "conn", adata->conn, "#ff8080");
   dot_object_footer(fp);
 
-  if (adata->conn)
-  {
-    dot_connection(fp, adata->conn, links);
-    dot_add_link(links, adata, adata->conn, "PopAccountData->conn", false, NULL);
-  }
+  dot_connection(fp, adata->conn, links);
+  dot_add_link(links, adata, adata->conn, "PopAccountData->conn", false, NULL);
 }
 #endif
 
@@ -1468,7 +1465,7 @@ void dot_array_actx_idx(FILE *fp, struct AttachPtr **idx, short idxlen,
   char arr[32];
   for (size_t i = 0; i < idxmax; i++)
   {
-    snprintf(arr, sizeof(arr), "idx[%ld]", i);
+    snprintf(arr, sizeof(arr), "idx[%zu]", i);
     dot_ptr(fp, arr, idx[i], "#3bcbc4");
   }
 
@@ -1490,7 +1487,7 @@ void dot_array_actx_v2r(FILE *fp, short *v2r, short vcount, struct ListHead *lin
   char arr[32];
   for (size_t i = 0; i < vcount; i++)
   {
-    snprintf(arr, sizeof(arr), "v2r[%ld]", i);
+    snprintf(arr, sizeof(arr), "v2r[%zu]", i);
     dot_type_number(fp, arr, v2r[i]);
   }
 
@@ -1508,7 +1505,7 @@ void dot_array_actx_fp_idx(FILE *fp, FILE **fp_idx, short fp_len, short fp_max,
   char arr[32];
   for (size_t i = 0; i < fp_max; i++)
   {
-    snprintf(arr, sizeof(arr), "fp_idx[%ld]", i);
+    snprintf(arr, sizeof(arr), "fp_idx[%zu]", i);
     dot_type_file(fp, arr, fp_idx[i]);
   }
 
@@ -1526,7 +1523,7 @@ void dot_array_actx_body_idx(FILE *fp, struct Body **body_idx, short body_len,
   char arr[32];
   for (size_t i = 0; i < body_max; i++)
   {
-    snprintf(arr, sizeof(arr), "body_idx[%ld]", i);
+    snprintf(arr, sizeof(arr), "body_idx[%zu]", i);
     dot_ptr(fp, arr, body_idx[i], "#2020ff");
   }
 

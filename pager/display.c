@@ -312,7 +312,7 @@ bool mutt_is_quote_line(char *line, regmatch_t *pmatch)
 {
   bool is_quote = false;
   const struct Regex *c_smileys = cs_subset_regex(NeoMutt->sub, "smileys");
-  regmatch_t pmatch_internal[1], smatch[1];
+  regmatch_t pmatch_internal[1];
 
   if (!pmatch)
     pmatch = pmatch_internal;
@@ -320,6 +320,7 @@ bool mutt_is_quote_line(char *line, regmatch_t *pmatch)
   const struct Regex *c_quote_regex = cs_subset_regex(NeoMutt->sub, "quote_regex");
   if (mutt_regex_capture(c_quote_regex, line, 1, pmatch))
   {
+    regmatch_t smatch[1];
     if (mutt_regex_capture(c_smileys, line, 1, smatch))
     {
       if (smatch[0].rm_so > 0)

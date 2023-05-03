@@ -58,7 +58,7 @@ static int cc_config_observer(struct NotifyCallback *nc)
   if (!ev_c->name || !ev_c->he)
     return 0;
 
-  if ((nc->event_subtype == NT_CONFIG_DELETED) && !ev_c->name)
+  if (nc->event_subtype == NT_CONFIG_DELETED)
   {
     // Shutdown
     CacheActive = false;

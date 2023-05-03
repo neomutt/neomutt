@@ -247,9 +247,13 @@ static void qstyle_insert(struct QuoteStyle *quote_list,
       q_list->attr_color = quoted_colors_get(q_list->quote_n);
     }
     if (q_list->down)
+    {
       q_list = q_list->down;
+    }
     else if (q_list->next)
+    {
       q_list = q_list->next;
+    }
     else
     {
       while (!q_list->next)

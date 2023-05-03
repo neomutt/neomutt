@@ -584,7 +584,7 @@ static int index_mailbox_observer(struct NotifyCallback *nc)
     return 0;
 
   struct Mailbox **ptr = nc->global_data;
-  if (!ptr || !*ptr)
+  if (!*ptr)
     return 0;
 
   *ptr = NULL;

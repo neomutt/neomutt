@@ -153,7 +153,6 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
   struct AliasView *av = (struct AliasView *) data;
   struct Alias *alias = av->alias;
   char fmt[128] = { 0 };
-  char tmp[256] = { 0 };
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
@@ -161,6 +160,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
     case 'a':
     {
       struct Buffer *tmpbuf = buf_pool_get();
+      char tmp[256] = { 0 };
       tmp[0] = '<';
       mutt_addrlist_write(&alias->addr, tmpbuf, true);
       mutt_str_copy(tmp + 1, buf_string(tmpbuf), sizeof(tmp) - 1);
