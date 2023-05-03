@@ -646,7 +646,10 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, uint8_t fla
     /* get rid of the oldest entry */
     FREE(&IconvCache[IconvCacheUsed - 1].fromcode1);
     FREE(&IconvCache[IconvCacheUsed - 1].tocode1);
-    iconv_close(IconvCache[IconvCacheUsed - 1].cd);
+    if (iconv_t_valid(IconvCache[IconvCacheUsed - 1].cd))
+    {
+      iconv_close(IconvCache[IconvCacheUsed - 1].cd);
+    }
     --IconvCacheUsed;
   }
 
@@ -1169,7 +1172,10 @@ void mutt_ch_cache_cleanup(void)
   {
     FREE(&IconvCache[i].fromcode1);
     FREE(&IconvCache[i].tocode1);
-    iconv_close(IconvCache[i].cd);
+    if (iconv_t_valid(IconvCache[i].cd))
+    {
+      iconv_close(IconvCache[i].cd);
+    }
   }
   IconvCacheUsed = 0;
 }
