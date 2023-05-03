@@ -1403,6 +1403,7 @@ main_exit:
   alternates_free();
   mutt_keys_free();
   mutt_prex_free();
+  config_cache_free();
   neomutt_free(&NeoMutt);
   cs_free(&cs);
   log_queue_flush(log_disp_terminal);

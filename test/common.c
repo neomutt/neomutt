@@ -161,6 +161,7 @@ done:
 
 void test_fini(void)
 {
+  config_cache_free();
   test_neomutt_destroy();
   buf_pool_free();
 }

@@ -37,12 +37,8 @@
 static bool CacheActive = false;
 /// Cached value of $assumed_charset
 static const struct Slist *CachedAssumedCharset = NULL;
-/// Is $assumed_charset active?
-static bool CacheActiveAssumedCharset = false;
 /// Cached value of $charset
 static const char *CachedCharset = NULL;
-/// Is $charset active?
-static bool CacheActiveCharset = false;
 
 /**
  * cc_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
@@ -57,18 +53,6 @@ static int cc_config_observer(struct NotifyCallback *nc)
   struct EventConfig *ev_c = nc->event_data;
   if (!ev_c->name || !ev_c->he)
     return 0;
-
-  if (nc->event_subtype == NT_CONFIG_DELETED)
-  {
-    // Shutdown
-    CacheActive = false;
-    CacheActiveAssumedCharset = false;
-    CacheActiveCharset = false;
-    CachedAssumedCharset = NULL;
-    CachedCharset = NULL;
-
-    return 0;
-  }
 
   if (mutt_str_equal(ev_c->name, "assumed_charset"))
   {
@@ -93,6 +77,10 @@ static void charset_cache_setup(void)
     return;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, cc_config_observer, NULL);
+
+  CachedAssumedCharset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
+  CachedCharset = cs_subset_string(NeoMutt->sub, "charset");
+
   CacheActive = true;
 }
 
@@ -102,11 +90,10 @@ static void charset_cache_setup(void)
  */
 const struct Slist *cc_assumed_charset(void)
 {
-  if (!CacheActiveAssumedCharset)
+  if (!CacheActive)
   {
     charset_cache_setup();
     CachedAssumedCharset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
-    CacheActiveAssumedCharset = true;
   }
 
   return CachedAssumedCharset;
@@ -118,12 +105,25 @@ const struct Slist *cc_assumed_charset(void)
  */
 const char *cc_charset(void)
 {
-  if (!CacheActiveCharset)
+  if (!CacheActive)
   {
     charset_cache_setup();
     CachedCharset = cs_subset_string(NeoMutt->sub, "charset");
-    CacheActiveCharset = true;
   }
 
   return CachedCharset;
+}
+
+/**
+ * config_cache_free - Cleanup the cache of charset config variables
+ */
+void config_cache_free(void)
+{
+  if (NeoMutt)
+    notify_observer_remove(NeoMutt->notify, cc_config_observer, NULL);
+
+  // Don't free them, the config system owns the data
+  CachedAssumedCharset = NULL;
+  CachedCharset = NULL;
+  CacheActive = false;
 }

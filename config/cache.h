@@ -26,4 +26,6 @@
 const struct Slist *cc_assumed_charset(void);
 const char *        cc_charset        (void);
 
+void config_cache_free(void);
+
 #endif /* MUTT_CONFIG_CACHE_H */
