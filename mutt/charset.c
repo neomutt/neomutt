@@ -1172,7 +1172,10 @@ void mutt_ch_cache_cleanup(void)
   {
     FREE(&IconvCache[i].fromcode1);
     FREE(&IconvCache[i].tocode1);
-    iconv_close(IconvCache[i].cd);
+    if (iconv_t_valid(IconvCache[i].cd))
+    {
+      iconv_close(IconvCache[i].cd);
+    }
   }
   IconvCacheUsed = 0;
 }
