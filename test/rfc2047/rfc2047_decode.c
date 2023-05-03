@@ -35,8 +35,6 @@ void test_rfc2047_decode(void)
 {
   // void rfc2047_decode(char **pd);
 
-  test_neomutt_create();
-
   {
     rfc2047_decode(NULL);
     TEST_CHECK_(1, "rfc2047_decode(NULL)");
@@ -64,6 +62,4 @@ void test_rfc2047_decode(void)
       FREE(&s);
     }
   }
-
-  test_neomutt_destroy();
 }

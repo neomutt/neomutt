@@ -44,28 +44,22 @@ void test_account_mailbox_add(void)
     TEST_CHECK(account_mailbox_add(NULL, NULL) == false);
   }
 
-  {
-    test_neomutt_create();
-    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
 
+  {
     struct ConfigSubset *sub = cs_subset_new("account", NULL, NULL);
-    struct Account *a = account_new("dummy", sub);
+    struct Account *a = account_new("apple", sub);
     TEST_CHECK(a != NULL);
 
     TEST_CHECK(account_mailbox_add(a, NULL) == false);
 
     account_free(&a);
     cs_subset_free(&sub);
-
-    test_neomutt_destroy();
   }
 
   {
-    test_neomutt_create();
-    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
-
     struct ConfigSubset *sub = cs_subset_new("account", NULL, NULL);
-    struct Account *a = account_new("dummy", sub);
+    struct Account *a = account_new("banana", sub);
     TEST_CHECK(a != NULL);
 
     struct Mailbox *m = mailbox_new();
@@ -74,6 +68,5 @@ void test_account_mailbox_add(void)
 
     account_free(&a);
     cs_subset_free(&sub);
-    test_neomutt_destroy();
   }
 }

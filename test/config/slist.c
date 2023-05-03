@@ -1124,7 +1124,6 @@ bool slist_test_separator(struct ConfigDef vars[], struct Buffer *err)
 {
   log_line(__func__);
 
-  test_neomutt_create();
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
 
@@ -1145,7 +1144,14 @@ bool slist_test_separator(struct ConfigDef vars[], struct Buffer *err)
   if (!test_string_get(sub, err))
     return false;
 
-  test_neomutt_destroy();
+  cs_str_delete(cs, "Apple", NULL);
+  cs_str_delete(cs, "Banana", NULL);
+  cs_str_delete(cs, "Cherry", NULL);
+  cs_str_delete(cs, "Damson", NULL);
+  cs_str_delete(cs, "Elderberry", NULL);
+  cs_str_delete(cs, "Fig", NULL);
+  cs_str_delete(cs, "Guava", NULL);
+  cs_str_delete(cs, "Hawthorn", NULL);
   return true;
 }
 
@@ -1165,7 +1171,6 @@ void test_config_slist(void)
   TEST_CHECK(slist_test_separator(VarsComma, err));
   TEST_CHECK(slist_test_separator(VarsSpace, err));
 
-  test_neomutt_create();
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
 
@@ -1186,6 +1191,5 @@ void test_config_slist(void)
   TEST_CHECK(test_inherit(cs, err));
   buf_pool_release(&err);
 
-  test_neomutt_destroy();
   log_line(__func__);
 }

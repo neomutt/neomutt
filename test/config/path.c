@@ -645,7 +645,6 @@ ti_out:
 
 void test_config_path(void)
 {
-  test_neomutt_create();
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
 
@@ -668,6 +667,4 @@ void test_config_path(void)
   TEST_CHECK(test_validator(sub, err));
   TEST_CHECK(test_inherit(cs, err));
   buf_pool_release(&err);
-
-  test_neomutt_destroy();
 }

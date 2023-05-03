@@ -93,7 +93,6 @@ void test_config_initial(void)
 {
   log_line(__func__);
 
-  test_neomutt_create();
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
 
@@ -107,11 +106,9 @@ void test_config_initial(void)
   struct Buffer *err = buf_pool_get();
   if (!TEST_CHECK(test_set_initial(sub, err)))
   {
-    test_neomutt_destroy();
     buf_pool_release(&err);
     return;
   }
 
-  test_neomutt_destroy();
   buf_pool_release(&err);
 }

@@ -90,7 +90,6 @@ static struct ConfigDef Vars[] = {
 
 void test_config_helpers(void)
 {
-  test_neomutt_create();
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
 
   struct ConfigSubset *sub = NeoMutt->sub;
@@ -107,6 +106,4 @@ void test_config_helpers(void)
   TEST_CHECK(cs_subset_slist(sub, "Olive") != NULL);
   TEST_CHECK(cs_subset_sort(sub, "Mango") == 1);
   TEST_CHECK_STR_EQ(cs_subset_string(sub, "Nectarine"), "nectarine");
-
-  test_neomutt_destroy();
 }

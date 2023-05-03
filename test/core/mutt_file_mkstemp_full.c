@@ -33,8 +33,6 @@ void test_mutt_file_mkstemp_full(void)
 {
   // FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func);
 
-  test_neomutt_create();
-
   {
     FILE *fp = NULL;
     TEST_CHECK((fp = mutt_file_mkstemp_full(NULL, 0, "apple")) != NULL);
@@ -46,6 +44,4 @@ void test_mutt_file_mkstemp_full(void)
     TEST_CHECK((fp = mutt_file_mkstemp_full("apple", 0, NULL)) != NULL);
     fclose(fp);
   }
-
-  test_neomutt_destroy();
 }

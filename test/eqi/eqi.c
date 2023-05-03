@@ -92,5 +92,4 @@ void test_eqi(void)
   TEST_CHECK(eqi17("abcdefghijklmnopq", "abcdefghijklmnopq"));
   TEST_CHECK(eqi17("AbCdeFGHijKLmNoPq", "abcdefghijklmnopq"));
   TEST_CHECK(!eqi17("djeigwdjsdjfsdfjj", "abcdefghijklmnopq"));
-
 }

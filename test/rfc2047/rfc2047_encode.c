@@ -36,8 +36,6 @@ void test_rfc2047_encode(void)
 {
   // void rfc2047_encode(char **pd, const char *specials, int col, const struct Slist *charsets);
 
-  test_neomutt_create();
-
   {
     struct Slist *charsets = slist_parse("apple", SLIST_SEP_COLON);
     rfc2047_encode(NULL, AddressSpecials, 0, charsets);
@@ -71,6 +69,4 @@ void test_rfc2047_encode(void)
     }
     slist_free(&charsets);
   }
-
-  test_neomutt_destroy();
 }

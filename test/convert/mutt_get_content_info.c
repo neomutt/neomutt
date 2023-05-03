@@ -48,8 +48,6 @@ void test_mutt_get_content_info(void)
 
   static const char *text = "file\ncontent";
 
-  test_neomutt_create();
-
   char fname[PATH_MAX] = { 0 };
   mutt_mktemp(fname, sizeof(fname));
 
@@ -94,5 +92,4 @@ void test_mutt_get_content_info(void)
 
   mutt_body_free(&body);
   FREE(&content);
-  test_neomutt_destroy();
 }

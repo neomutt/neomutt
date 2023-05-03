@@ -131,10 +131,8 @@ void test_parse_rc(void)
   rc = parse_rc_buffer(NULL, NULL, NULL);
   TEST_CHECK(rc == MUTT_CMD_SUCCESS);
 
-  test_neomutt_create();
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
   cs_str_initial_set(NeoMutt->sub->cs, "from", "rich@flatcap.org", NULL);
   cs_str_reset(NeoMutt->sub->cs, "from", NULL);
   test_parse_set();
-  test_neomutt_destroy();
 }
