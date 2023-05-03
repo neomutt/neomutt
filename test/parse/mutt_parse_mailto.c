@@ -58,8 +58,6 @@ void test_mutt_parse_mailto(void)
 {
   // int mutt_parse_mailto(struct Envelope *e, char **body, const char *src);
 
-  test_neomutt_create();
-
   mutt_list_insert_head(&MailToAllow, "cc");
   mutt_list_insert_head(&MailToAllow, "body");
 
@@ -102,6 +100,4 @@ void test_mutt_parse_mailto(void)
     FREE(&parsed_body);
     mutt_env_free(&env);
   }
-
-  test_neomutt_destroy();
 }

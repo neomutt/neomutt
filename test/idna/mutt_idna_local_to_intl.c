@@ -45,7 +45,6 @@ void test_mutt_idna_local_to_intl(void)
   // char * mutt_idna_local_to_intl(const char *user, const char *domain);
 
 #ifdef HAVE_LIBIDN
-  test_neomutt_create();
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
 
   {
@@ -59,7 +58,5 @@ void test_mutt_idna_local_to_intl(void)
     TEST_CHECK(addr != NULL);
     FREE(&addr);
   }
-
-  test_neomutt_destroy();
 #endif
 }

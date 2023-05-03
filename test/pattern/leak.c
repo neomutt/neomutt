@@ -48,7 +48,6 @@ static void test_one_leak(const char *pattern)
 void test_mutt_pattern_leak(void)
 {
   MuttLogger = log_disp_null;
-  test_neomutt_create();
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
 
   test_one_leak("~E ~F | ~D");
@@ -122,6 +121,4 @@ void test_mutt_pattern_leak(void)
   test_one_leak("~d 01/00/2020");
   test_one_leak("~d 20210009");
   test_one_leak("~d 20210300");
-
-  test_neomutt_destroy();
 }

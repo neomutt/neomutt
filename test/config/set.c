@@ -351,8 +351,6 @@ void test_config_set(void)
   if (!TEST_CHECK(cs != NULL))
     return;
 
-  test_neomutt_create();
-
   const struct ConfigSetType CstDummy = {
     DT_STRING, "dummy", NULL, NULL, NULL, NULL, NULL, NULL,
   };
@@ -490,7 +488,6 @@ void test_config_set(void)
   if (!creation_and_deletion_tests(cs, err))
     return;
 
-  test_neomutt_destroy();
   cs_free(&cs);
   buf_pool_release(&err);
   log_line(__func__);

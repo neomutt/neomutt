@@ -54,11 +54,11 @@ void test_config_subset(void)
   if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
     return;
 
-  NeoMutt = neomutt_new(cs);
+  struct NeoMutt *n = neomutt_new(cs);
 
   cs_subset_free(NULL);
 
-  struct ConfigSubset *sub_a = cs_subset_new("account", NeoMutt->sub, NeoMutt->notify);
+  struct ConfigSubset *sub_a = cs_subset_new("account", n->sub, n->notify);
   sub_a->cs = cs;
   struct ConfigSubset *sub_m = cs_subset_new("mailbox", sub_a, sub_a->notify);
   sub_m->cs = cs;
@@ -77,7 +77,7 @@ void test_config_subset(void)
     return;
   }
 
-  he = cs_subset_lookup(NeoMutt->sub, name);
+  he = cs_subset_lookup(n->sub, name);
   if (!TEST_CHECK(he != NULL))
   {
     TEST_MSG("cs_subset_lookup failed\n");
@@ -94,7 +94,7 @@ void test_config_subset(void)
   }
 
   buf_reset(err);
-  value = cs_subset_he_native_get(NeoMutt->sub, he, err);
+  value = cs_subset_he_native_get(n->sub, he, err);
   if (!TEST_CHECK(value != INT_MIN))
   {
     TEST_MSG("cs_subset_he_native_get failed\n");
@@ -102,7 +102,7 @@ void test_config_subset(void)
   }
 
   buf_reset(err);
-  value = cs_subset_str_native_get(NeoMutt->sub, name, err);
+  value = cs_subset_str_native_get(n->sub, name, err);
   if (!TEST_CHECK(value != INT_MIN))
   {
     TEST_MSG("cs_subset_str_native_get failed\n");
@@ -118,7 +118,7 @@ void test_config_subset(void)
   }
 
   buf_reset(err);
-  rc = cs_subset_he_native_set(NeoMutt->sub, he, value + 100, err);
+  rc = cs_subset_he_native_set(n->sub, he, value + 100, err);
   if (!TEST_CHECK(value != INT_MIN))
   {
     TEST_MSG("cs_subset_he_native_set failed\n");
@@ -126,7 +126,7 @@ void test_config_subset(void)
   }
 
   buf_reset(err);
-  rc = cs_subset_str_native_set(NeoMutt->sub, name, value + 100, err);
+  rc = cs_subset_str_native_set(n->sub, name, value + 100, err);
   if (!TEST_CHECK(value != INT_MIN))
   {
     TEST_MSG("cs_subset_str_native_set failed\n");
@@ -135,7 +135,7 @@ void test_config_subset(void)
 
   buf_reset(err);
   expected = "142";
-  rc = cs_subset_he_string_get(NeoMutt->sub, he, err);
+  rc = cs_subset_he_string_get(n->sub, he, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS) ||
       !TEST_CHECK_STR_EQ(buf_string(err), expected))
   {
@@ -152,7 +152,7 @@ void test_config_subset(void)
 
   buf_reset(err);
   expected = "142";
-  rc = cs_subset_str_string_get(NeoMutt->sub, name, err);
+  rc = cs_subset_str_string_get(n->sub, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS) ||
       !TEST_CHECK_STR_EQ(buf_string(err), expected))
   {
@@ -170,7 +170,7 @@ void test_config_subset(void)
 
   buf_reset(err);
   expected = "678";
-  rc = cs_subset_he_string_set(NeoMutt->sub, he, expected, err);
+  rc = cs_subset_he_string_set(n->sub, he, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_he_string_set failed\n");
@@ -179,7 +179,7 @@ void test_config_subset(void)
 
   buf_reset(err);
   expected = "678";
-  rc = cs_subset_str_string_set(NeoMutt->sub, name, expected, err);
+  rc = cs_subset_str_string_set(n->sub, name, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_str_string_set failed\n");
@@ -197,7 +197,7 @@ void test_config_subset(void)
 
   buf_reset(err);
   expected = "678";
-  rc = cs_subset_he_string_plus_equals(NeoMutt->sub, he, expected, err);
+  rc = cs_subset_he_string_plus_equals(n->sub, he, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_he_string_plus_equals failed\n");
@@ -206,7 +206,7 @@ void test_config_subset(void)
 
   buf_reset(err);
   expected = "678";
-  rc = cs_subset_str_string_plus_equals(NeoMutt->sub, name, expected, err);
+  rc = cs_subset_str_string_plus_equals(n->sub, name, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_str_string_plus_equals failed\n");
@@ -224,7 +224,7 @@ void test_config_subset(void)
 
   buf_reset(err);
   expected = "678";
-  rc = cs_subset_he_string_minus_equals(NeoMutt->sub, he, expected, err);
+  rc = cs_subset_he_string_minus_equals(n->sub, he, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_he_string_minus_equals failed\n");
@@ -233,7 +233,7 @@ void test_config_subset(void)
 
   buf_reset(err);
   expected = "678";
-  rc = cs_subset_str_string_minus_equals(NeoMutt->sub, name, expected, err);
+  rc = cs_subset_str_string_minus_equals(n->sub, name, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_str_string_minus_equals failed\n");
@@ -249,7 +249,7 @@ void test_config_subset(void)
   }
 
   buf_reset(err);
-  rc = cs_subset_he_reset(NeoMutt->sub, he, err);
+  rc = cs_subset_he_reset(n->sub, he, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_he_reset failed\n");
@@ -257,7 +257,7 @@ void test_config_subset(void)
   }
 
   buf_reset(err);
-  rc = cs_subset_str_reset(NeoMutt->sub, name, err);
+  rc = cs_subset_str_reset(n->sub, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_str_reset failed\n");
@@ -304,7 +304,7 @@ void test_config_subset(void)
     return;
   }
 
-  he = cs_subset_lookup(NeoMutt->sub, name);
+  he = cs_subset_lookup(n->sub, name);
   if (!TEST_CHECK(he != NULL))
   {
     TEST_MSG("cs_subset_lookup failed\n");
@@ -314,7 +314,7 @@ void test_config_subset(void)
   cs_subset_free(&sub_m);
   cs_subset_free(&sub_a);
 
-  neomutt_free(&NeoMutt);
+  neomutt_free(&n);
   cs_free(&cs);
   buf_pool_release(&err);
   log_line(__func__);

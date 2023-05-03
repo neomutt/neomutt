@@ -38,7 +38,6 @@ static struct ConfigDef Vars[] = {
 void test_mutt_addrlist_write_list(void)
 {
   {
-    test_neomutt_create();
     TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
     const char in[] = "some-group: first@example.com,second@example.com; John Doe <john@doe.org>, \"Foo J. Bar\" <foo-j-bar@baz.com>";
@@ -58,6 +57,5 @@ void test_mutt_addrlist_write_list(void)
                       out);
     mutt_addrlist_clear(&al);
     mutt_list_free(&l);
-    test_neomutt_destroy();
   }
 }

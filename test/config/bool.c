@@ -788,7 +788,6 @@ static bool test_toggle(struct ConfigSubset *sub, struct Buffer *err)
 
 void test_config_bool(void)
 {
-  test_neomutt_create();
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
 
@@ -812,6 +811,4 @@ void test_config_bool(void)
   TEST_CHECK(test_inherit(cs, err));
   TEST_CHECK(test_toggle(sub, err));
   buf_pool_release(&err);
-
-  test_neomutt_destroy();
 }

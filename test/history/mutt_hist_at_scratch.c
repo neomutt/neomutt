@@ -33,8 +33,5 @@ void test_mutt_hist_at_scratch(void)
 {
   // bool mutt_hist_at_scratch(enum HistoryClass hclass);
 
-  // test_neomutt_create();
   // config_init_history(NeoMutt->sub->cs);
-
-  // test_neomutt_destroy();
 }

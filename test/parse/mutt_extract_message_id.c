@@ -51,8 +51,6 @@ struct TestData
 
 void test_mutt_extract_message_id(void)
 {
-  test_neomutt_create();
-
   for (size_t i = 0; i < mutt_array_size(test); i++)
   {
     size_t len = 0;
@@ -86,5 +84,4 @@ void test_mutt_extract_message_id(void)
       FREE(&tmp);
     }
   }
-  test_neomutt_destroy();
 }

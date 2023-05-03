@@ -1007,8 +1007,6 @@ static bool test_path_expanding(struct Buffer *err)
 
 void test_command_set(void)
 {
-  test_neomutt_create();
-
   if (!TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, ConfigVars, DT_NO_FLAGS)))
   {
     TEST_MSG("Failed to register config variables\n");
@@ -1026,6 +1024,4 @@ void test_command_set(void)
   TEST_CHECK(test_invalid_syntax(err));
   TEST_CHECK(test_path_expanding(err));
   buf_pool_release(&err);
-
-  test_neomutt_destroy();
 }

@@ -37,7 +37,6 @@ void test_config_cache(void)
 {
   log_line(__func__);
 
-  test_neomutt_create();
   struct ConfigSubset *sub = NeoMutt->sub;
 
   {
@@ -50,6 +49,5 @@ void test_config_cache(void)
     TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
   }
 
-  test_neomutt_destroy();
   log_line(__func__);
 }
