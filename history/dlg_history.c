@@ -96,11 +96,9 @@ static const char *history_format_str(char *buf, size_t buflen, size_t col, int 
 {
   char *match = (char *) data;
 
-  switch (op)
+  if (op == 's')
   {
-    case 's':
-      mutt_format_s(buf, buflen, prec, match);
-      break;
+    mutt_format_s(buf, buflen, prec, match);
   }
 
   return src;

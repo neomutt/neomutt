@@ -216,8 +216,8 @@ static int op_pager_next_line(struct IndexSharedData *shared,
     priv->top_line++;
     if (priv->hide_quoted)
     {
-      while ((priv->lines[priv->top_line].cid == MT_COLOR_QUOTED) &&
-             (priv->top_line < priv->lines_used))
+      while ((priv->top_line < priv->lines_used) &&
+             (priv->lines[priv->top_line].cid == MT_COLOR_QUOTED))
       {
         priv->top_line++;
       }

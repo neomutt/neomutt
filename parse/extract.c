@@ -66,16 +66,22 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
   {
     if (qc == '\0')
     {
-      if ((IS_SPACE(ch) && !(flags & TOKEN_SPACE)) ||
-          ((ch == '#') && !(flags & TOKEN_COMMENT)) ||
-          ((ch == '+') && (flags & TOKEN_PLUS)) || ((ch == '-') && (flags & TOKEN_MINUS)) ||
-          ((ch == '=') && (flags & TOKEN_EQUAL)) ||
-          ((ch == '?') && (flags & TOKEN_QUESTION)) ||
-          ((ch == ';') && !(flags & TOKEN_SEMICOLON)) ||
-          ((flags & TOKEN_PATTERN) && strchr("~%=!|", ch)))
-      {
+      if (IS_SPACE(ch) && !(flags & TOKEN_SPACE))
         break;
-      }
+      if ((ch == '#') && !(flags & TOKEN_COMMENT))
+        break;
+      if ((ch == '+') && (flags & TOKEN_PLUS))
+        break;
+      if ((ch == '-') && (flags & TOKEN_MINUS))
+        break;
+      if ((ch == '=') && (flags & TOKEN_EQUAL))
+        break;
+      if ((ch == '?') && (flags & TOKEN_QUESTION))
+        break;
+      if ((ch == ';') && !(flags & TOKEN_SEMICOLON))
+        break;
+      if ((flags & TOKEN_PATTERN) && strchr("~%=!|", ch))
+        break;
     }
 
     tok->dptr++;
