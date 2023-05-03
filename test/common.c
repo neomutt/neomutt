@@ -23,6 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <limits.h>
 #include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
