@@ -2036,12 +2036,8 @@ bool imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
             imap_error("imap_msg_open()", buf);
             goto bail;
           }
-          // struct Progress *progress = output_progress ?
-          //                                 progress_new(_("Fetching message..."),
-          //                                              MUTT_PROGRESS_NET, bytes) :
-          //                                 NULL;
+
           const int res = imap_read_literal(msg->fp, adata, bytes, NULL);
-          // progress_free(&progress);
           if (res < 0)
           {
             goto bail;

@@ -48,7 +48,6 @@ static const unsigned char fillbuf[64] = { 0x80, 0 /* , 0, 0, ... */ };
 /* These are the four functions used in the four steps of the MD5 algorithm
  * and defined in the RFC1321.  The first function is a little bit optimized
  * (as found in Colin Plumbs public domain implementation). */
-/* #define FF(b, c, d) ((b & c) | (~b & d)) */
 #define FF(b, c, d) (d ^ (b & (c ^ d)))
 #define FG(b, c, d) FF(d, b, c)
 #define FH(b, c, d) (b ^ c ^ d)

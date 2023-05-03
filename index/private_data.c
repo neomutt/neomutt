@@ -38,8 +38,6 @@ void index_private_data_free(struct MuttWindow *win, void **ptr)
   if (!ptr || !*ptr)
     return;
 
-  // struct IndexPrivateData *priv = *ptr;
-
   FREE(ptr);
 }
 

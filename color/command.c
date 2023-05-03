@@ -1075,7 +1075,6 @@ enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s,
   }
   color_debug(LL_DEBUG5, "parse: %s\n", buf_string(buf));
   enum CommandResult rc = parse_uncolor(buf, s, err, true);
-  // simple_colors_dump(false);
   curses_colors_dump();
   return rc;
 }
@@ -1100,7 +1099,6 @@ enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s,
 
   color_debug(LL_DEBUG5, "parse: %s\n", buf_string(buf));
   enum CommandResult rc = parse_color(buf, s, err, parse_color_pair, dry_run, true);
-  // simple_colors_dump(false);
   curses_colors_dump();
   return rc;
 }

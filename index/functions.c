@@ -1548,7 +1548,6 @@ static int op_main_root_message(struct IndexSharedData *shared,
 static int op_main_set_flag(struct IndexSharedData *shared,
                             struct IndexPrivateData *priv, int op)
 {
-  /* check_acl(MUTT_ACL_WRITE); */
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   el_add_tagged(&el, shared->mailboxview, shared->email, priv->tag);
 

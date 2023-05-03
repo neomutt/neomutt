@@ -37,7 +37,6 @@
  */
 void nntp_edata_free(void **ptr)
 {
-  // struct NntpEmailData *edata = *ptr;
   FREE(ptr);
 }
 

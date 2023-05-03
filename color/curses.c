@@ -96,8 +96,6 @@ static int curses_color_init(int fg, int bg)
     return 0;
   }
 
-  // const char *color = color_debug_log_color(fg, bg);
-  // printf("%s\n", color);
   if (fg == COLOR_DEFAULT)
     fg = COLOR_UNSET;
   if (bg == COLOR_DEFAULT)
@@ -129,7 +127,6 @@ void curses_color_free(struct CursesColor **ptr)
     cc->ref_count--;
     curses_color_dump(cc, "CursesColor rc--: ");
     *ptr = NULL;
-    // curses_colors_dump();
     return;
   }
 
@@ -137,7 +134,6 @@ void curses_color_free(struct CursesColor **ptr)
   TAILQ_REMOVE(&CursesColors, cc, entries);
   NumCursesColors--;
   color_debug(LL_DEBUG5, "CursesColors: %d\n", NumCursesColors);
-  // curses_colors_dump();
   FREE(ptr);
 }
 

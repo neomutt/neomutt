@@ -212,8 +212,6 @@ static int pager_repaint(struct MuttWindow *win)
         mutt_window_move(priv->pview->win_pager, 0, priv->win_height);
       }
     } while (priv->force_redraw);
-    // curses_colors_dump();
-    // attr_color_list_dump(&priv->ansi_list, "All AnsiColors");
 
     const bool c_tilde = cs_subset_bool(NeoMutt->sub, "tilde");
     mutt_curses_set_normal_backed_color_by_id(MT_COLOR_TILDE);
@@ -261,17 +259,8 @@ static int pager_color_observer(struct NotifyCallback *nc)
     for (size_t i = 0; i < priv->lines_max; i++)
     {
       FREE(&(priv->lines[i].syntax));
-      // if (priv->search_compiled && priv->lines[i].search)
-      //   FREE(&(priv->lines[i].search));
-      // priv->lines[i].syntax_arr_size = 0;
     }
     priv->lines_used = 0;
-
-    // if (priv->search_compiled)
-    // {
-    //   regfree(&priv->search_re);
-    //   priv->search_compiled = false;
-    // }
   }
 
   mutt_debug(LL_DEBUG5, "color done\n");

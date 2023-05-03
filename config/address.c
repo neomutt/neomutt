@@ -232,7 +232,6 @@ static int address_reset(const struct ConfigSet *cs, void *var,
 struct Address *address_new(const char *addr)
 {
   struct Address *a = mutt_mem_calloc(1, sizeof(*a));
-  // a->personal = mutt_str_dup(addr);
   a->mailbox = mutt_str_dup(addr);
   return a;
 }

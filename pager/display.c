@@ -911,7 +911,6 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
     {
       resolve_color(win, *lines, line_num, vch, flags, special, ansi);
       last_special = special;
-      // memset(ansi, 0, sizeof(*ansi));
     }
 
     /* no-break space, narrow no-break space */

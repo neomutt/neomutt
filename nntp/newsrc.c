@@ -1080,7 +1080,6 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
   }
 
   /* news server already exists */
-  // adata = conn->data;
   if (adata)
   {
     if (adata->status == NNTP_BYE)

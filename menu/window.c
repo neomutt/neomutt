@@ -82,8 +82,6 @@ static int menu_recalc(struct MuttWindow *win)
   if (win->type != WT_MENU)
     return 0;
 
-  // struct Menu *menu = win->wdata;
-
   win->actions |= WA_REPAINT;
   mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
   return 0;

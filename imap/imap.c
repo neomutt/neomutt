@@ -386,7 +386,6 @@ static size_t longest_common_prefix(char *dest, const char *src, size_t start, s
  */
 static int complete_hosts(char *buf, size_t buflen)
 {
-  // struct Connection *conn = NULL;
   int rc = -1;
   size_t matchlen;
 
