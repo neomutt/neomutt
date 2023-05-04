@@ -296,7 +296,10 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       else
       {
         int count = (100 * (menu->top + menu->page_len)) / menu->max;
-        snprintf(tmp, sizeof(tmp), "%d%%", count);
+        /* L10N: Status bar, percentage of way through index.
+           `%d` is the number, `%%` is the percent symbol.
+           They may be reordered, or space inserted, if you wish. */
+        snprintf(tmp, sizeof(tmp), _("%d%%"), count);
         cp = tmp;
       }
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
