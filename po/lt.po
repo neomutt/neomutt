@@ -741,9 +741,8 @@ msgid "No newsgroups match the mask"
 msgstr "Nė viena naujienų grupė neatitinka kaukės"
 
 #: browser/functions.c:157
-#, fuzzy
 msgid "There are no mailboxes"
-msgstr "Ten nėra laiškų"
+msgstr "Nėra pašto dėžučių"
 
 #: browser/functions.c:206 browser/functions.c:547 browser/functions.c:606
 msgid "No files match the file mask"
@@ -835,17 +834,17 @@ msgstr "%s: spalva nepalaikoma terminalo"
 #: color/command.c:305
 #, c-format
 msgid "Direct colors support not compiled in: %s"
-msgstr ""
+msgstr "Tiesioginių spalvų palaikymas neįjungtas kompiliavimo metu: %s"
 
 #: color/command.c:311
-#, fuzzy, c-format
+#, c-format
 msgid "Direct colors support disabled: %s"
-msgstr "įprastos spalvos nepalaikomos"
+msgstr "Tiesioginių spalvų palaikymas išjungtas: %s"
 
 #: color/command.c:418
 #, c-format
 msgid "'bright', 'alert', 'light' are only allowed for named colors: %s"
-msgstr ""
+msgstr "'bright', 'alert', 'light' yra leidžiami tik vardinėms spalvoms: %s"
 
 #: color/command.c:422
 #, c-format
@@ -3847,7 +3846,7 @@ msgstr "<atsitiktinis>"
 #: mixmaster/win_chain.c:65
 #, c-format
 msgid "-- Remailer chain [Length: %d]"
-msgstr ""
+msgstr "-- Persiuntėjų grandinė [ilgis: %d]"
 
 #: mixmaster/win_chain.c:295
 msgid "You already have the last chain element selected"
