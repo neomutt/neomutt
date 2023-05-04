@@ -7732,3 +7732,46 @@ msgstr "Parametroj de la tradukaĵo:"
 
 #~ msgid "SMTP authentication requires SASL"
 #~ msgstr "SMTP-rajtiĝo bezonas SASL"
+
+#: pager/message.c:59 pager/pbar.c:123 status.c:294
+#. L10N: Pager position percentage.
+#. `%ld` is the number, `%%` is the percent symbol.
+#. They may be reordered, or space inserted, if you wish.
+#: pager/pbar.c:117
+#, fuzzy, c-format
+msgid "%ld%%"
+msgstr "%ld%%"
+
+#: pager/pbar.c:125 status.c:292
+#. L10N: Progress bar: `%s` loading text, `%zu` item count,
+#. `%d` percentage, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:168
+#, fuzzy, c-format
+msgid "%s %zu (%d%%)"
+msgstr "%s %zu (%d%%)"
+
+#. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
+#. `%d` is the number, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:178
+#, fuzzy, c-format
+msgid "%s %s/%s (%d%%)"
+msgstr "%s %s/%s (%d%%)"
+
+#. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
+#. `%d` is the number, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:186
+#, fuzzy, c-format
+msgid "%s %zu/%zu (%d%%)"
+msgstr "%s %zu/%zu (%d%%)"
+
+#. L10N: Status bar, percentage of way through index.
+#. `%d` is the number, `%%` is the percent symbol.
+#. They may be reordered, or space inserted, if you wish.
+#: status.c:302
+#, fuzzy, c-format
+msgid "%d%%"
+msgstr "%d%%"
+
