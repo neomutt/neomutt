@@ -145,6 +145,8 @@ static int browse_add_list_result(struct ImapAccountData *adata, const char *cmd
   struct ImapList list = { 0 };
   int rc;
   struct Url *url = url_parse(bstate->folder);
+  if (!url)
+    return -1;
 
   imap_cmd_start(adata, cmd);
   adata->cmdresult = &list;

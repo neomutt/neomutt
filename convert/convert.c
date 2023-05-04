@@ -106,10 +106,8 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
     char *ob = bufu;
     size_t obl = sizeof(bufu);
     n = iconv(cd1, (ICONV_CONST char **) ((ibl != 0) ? &ib : 0), &ibl, &ob, &obl);
-    /* assert(n == ICONV_ILLEGAL_SEQ || !n); */
     if ((n == ICONV_ILLEGAL_SEQ) && (((errno != EINVAL) && (errno != E2BIG)) || (ib == bufi)))
     {
-      /* assert((errno == EILSEQ) || ((errno == EINVAL) && (ib == bufi) && (ibl < sizeof(bufi)))); */
       rc = ICONV_ILLEGAL_SEQ;
       break;
     }
@@ -127,7 +125,6 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
         n = iconv(cd[i], (ICONV_CONST char **) ((ibl || ubl) ? &ub : 0), &ubl, &ob, &obl);
         if (n == ICONV_ILLEGAL_SEQ)
         {
-          /* assert((errno == E2BIG) || (BUGGY_ICONV && ((errno == EILSEQ) || (errno == ENOENT)))); */
           score[i] = ICONV_ILLEGAL_SEQ;
         }
         else

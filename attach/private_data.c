@@ -40,8 +40,6 @@ void attach_private_data_free(struct Menu *menu, void **ptr)
   if (!ptr || !*ptr)
     return;
 
-  // struct AttachPrivateData *priv = *ptr;
-
   FREE(ptr);
 }
 

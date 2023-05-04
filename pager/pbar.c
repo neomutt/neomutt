@@ -152,7 +152,6 @@ static int pbar_recalc(struct MuttWindow *win)
 static int pbar_repaint(struct MuttWindow *win)
 {
   struct PBarPrivateData *pbar_data = win->wdata;
-  // struct IndexSharedData *shared = pbar_data->shared;
 
   mutt_window_move(win, 0, 0);
   mutt_curses_set_normal_backed_color_by_id(MT_COLOR_STATUS);

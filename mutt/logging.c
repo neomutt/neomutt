@@ -470,8 +470,6 @@ int log_disp_terminal(time_t stamp, const char *file, int line,
         colour = 33;
         break;
       case LL_MESSAGE:
-        // colour = 36;
-        break;
       default:
         break;
     }

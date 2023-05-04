@@ -325,11 +325,6 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
       pbody = tmp_pbody;
       tmp_pgp_pbody = tmp_pbody;
     }
-
-    if ((WithCrypto != 0) && (security & APPLICATION_SMIME) && (security & APPLICATION_PGP))
-    {
-      /* here comes the draft ;-) */
-    }
   }
 
   if (security & (SEC_ENCRYPT | SEC_AUTOCRYPT))

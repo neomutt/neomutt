@@ -404,7 +404,7 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
      * the range from 0 to 15.  These must not be converted.
      */
     const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
-    if (c_color_directcolor && (0 <= *col) && (*col < 16))
+    if (c_color_directcolor && (*col < 16))
     {
       *col = color_xterm256_to_24bit(*col);
     }
@@ -1075,7 +1075,6 @@ enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s,
   }
   color_debug(LL_DEBUG5, "parse: %s\n", buf_string(buf));
   enum CommandResult rc = parse_uncolor(buf, s, err, true);
-  // simple_colors_dump(false);
   curses_colors_dump();
   return rc;
 }
@@ -1100,7 +1099,6 @@ enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s,
 
   color_debug(LL_DEBUG5, "parse: %s\n", buf_string(buf));
   enum CommandResult rc = parse_color(buf, s, err, parse_color_pair, dry_run, true);
-  // simple_colors_dump(false);
   curses_colors_dump();
   return rc;
 }

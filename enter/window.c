@@ -182,8 +182,6 @@ int buf_get_field(const char *field, struct Buffer *buf, CompletionFlags complet
 {
   struct MuttWindow *win = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                                            MUTT_WIN_SIZE_UNLIMITED, 1);
-  // win->recalc = enter_window_recalc;
-  // win->repaint = enter_window_repaint;
   win->actions |= WA_RECALC;
 
   msgcont_push_window(win);

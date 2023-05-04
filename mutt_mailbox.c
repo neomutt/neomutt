@@ -276,7 +276,6 @@ bool mutt_mailbox_list(void)
     /* Prepend an asterisk to mailboxes not already notified */
     if (!np->mailbox->notified)
     {
-      /* pos += strlen (strncat(mailboxlist + pos, "*", sizeof(mailboxlist)-1-pos)); */
       np->mailbox->notified = true;
       MailboxNotify--;
     }

@@ -1334,21 +1334,21 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
       new_offset[i - first].body = ftello(fp) - m->emails[i]->body->length + offset;
       mutt_body_free(&m->emails[i]->body->parts);
 
-      switch (m->type)
+      if (m->type == MUTT_MMDF)
       {
-        case MUTT_MMDF:
-          if (fputs(MMDF_SEP, fp) == EOF)
-          {
-            mutt_perror(buf_string(tempfile));
-            goto bail;
-          }
-          break;
-        default:
-          if (fputs("\n", fp) == EOF)
-          {
-            mutt_perror(buf_string(tempfile));
-            goto bail;
-          }
+        if (fputs(MMDF_SEP, fp) == EOF)
+        {
+          mutt_perror(buf_string(tempfile));
+          goto bail;
+        }
+      }
+      else
+      {
+        if (fputs("\n", fp) == EOF)
+        {
+          mutt_perror(buf_string(tempfile));
+          goto bail;
+        }
       }
     }
   }

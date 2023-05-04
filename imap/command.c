@@ -552,7 +552,7 @@ static void cmd_parse_capability(struct ImapAccountData *adata, char *s)
     for (size_t i = 0; Capabilities[i]; i++)
     {
       size_t len = mutt_istr_startswith(s, Capabilities[i]);
-      if (len != 0 && ((s[len] == '\0') || IS_SPACE(s[len])))
+      if (len != 0 && ((s[len] == '\0') || isspace(s[len])))
       {
         adata->capabilities |= (1 << i);
         mutt_debug(LL_DEBUG3, " Found capability \"%s\": %lu\n", Capabilities[i], i);

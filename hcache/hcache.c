@@ -291,6 +291,8 @@ static void hcache_per_folder(struct Buffer *hcpath, const char *path,
 
     const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
     const struct StoreOps *ops = store_get_backend_ops(c_header_cache_backend);
+    if (!ops)
+      return;
 
 #ifdef USE_HCACHE_COMPRESSION
     const char *const c_header_cache_compress_method = cs_subset_string(NeoMutt->sub, "header_cache_compress_method");
@@ -697,6 +699,8 @@ int mutt_hcache_delete_record(struct HeaderCache *hc, const char *key, size_t ke
 
   const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
   const struct StoreOps *ops = store_get_backend_ops(c_header_cache_backend);
+  if (!ops)
+    return -1;
 
   struct Buffer path = buf_make(1024);
 

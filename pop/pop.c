@@ -548,7 +548,6 @@ void pop_fetch_mail(void)
 
   if (pop_open_connection(adata) < 0)
   {
-    //XXX mutt_socket_free(adata->conn);
     pop_adata_free((void **) &adata);
     return;
   }
@@ -958,7 +957,6 @@ static enum MxStatus pop_mbox_close(struct Mailbox *m)
   if (adata->status != POP_NONE)
   {
     mutt_socket_close(adata->conn);
-    // FREE(&adata->conn);
   }
 
   adata->status = POP_NONE;

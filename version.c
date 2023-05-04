@@ -58,9 +58,7 @@
 #include <pcre2.h>
 #endif
 
-/* #include "muttlib.h" */
 const char *mutt_make_version(void);
-/* #include "store/lib.h" */
 const char *store_backend_list(void);
 const char *store_compress_list(void);
 

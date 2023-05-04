@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <ctype.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
@@ -71,7 +72,7 @@ static int check_sig(const char *s, struct Line *info, int offset)
     /* check for a blank line */
     while (*s)
     {
-      if (!IS_SPACE(*s))
+      if (!isspace(*s))
         return 0;
       s++;
     }
@@ -911,7 +912,6 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
     {
       resolve_color(win, *lines, line_num, vch, flags, special, ansi);
       last_special = special;
-      // memset(ansi, 0, sizeof(*ansi));
     }
 
     /* no-break space, narrow no-break space */
@@ -1189,7 +1189,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   if (c_smart_wrap)
   {
     if ((cnt < b_read) && (ch != -1) &&
-        !simple_color_is_header(cur_line->cid) && !IS_SPACE(buf[cnt]))
+        !simple_color_is_header(cur_line->cid) && !isspace(buf[cnt]))
     {
       buf_ptr = buf + ch;
       /* skip trailing blanks */

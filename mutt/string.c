@@ -639,7 +639,7 @@ void mutt_str_remove_trailing_ws(char *s)
   if (!s)
     return;
 
-  for (char *p = s + mutt_str_len(s) - 1; (p >= s) && IS_SPACE(*p); p--)
+  for (char *p = s + mutt_str_len(s) - 1; (p >= s) && isspace(*p); p--)
     *p = '\0';
 }
 
@@ -827,7 +827,7 @@ const char *mutt_str_next_word(const char *s)
   if (!s)
     return NULL;
 
-  while (*s && !IS_SPACE(*s))
+  while (*s && !isspace(*s))
     s++;
   SKIPWS(s);
   return s;

@@ -32,6 +32,7 @@
  */
 
 #include "config.h"
+#include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -143,7 +144,7 @@ static char *get_flags(struct ListHead *hflags, char *s)
     s++;
     SKIPWS(s);
     const char *flag_word = s;
-    while (*s && (*s != ')') && !IS_SPACE(*s))
+    while (*s && (*s != ')') && !isspace(*s))
       s++;
     const char ctmp = *s;
     *s = '\0';
@@ -386,7 +387,6 @@ static size_t longest_common_prefix(char *dest, const char *src, size_t start, s
  */
 static int complete_hosts(char *buf, size_t buflen)
 {
-  // struct Connection *conn = NULL;
   int rc = -1;
   size_t matchlen;
 
@@ -523,6 +523,8 @@ int imap_delete_mailbox(struct Mailbox *m, char *path)
   char buf[PATH_MAX + 7];
   char mbox[PATH_MAX] = { 0 };
   struct Url *url = url_parse(path);
+  if (!url)
+    return -1;
 
   struct ImapAccountData *adata = imap_adata_get(m);
   imap_munge_mbox_name(adata->unicode, mbox, sizeof(mbox), url->path);
@@ -1812,6 +1814,8 @@ static bool imap_ac_add(struct Account *a, struct Mailbox *m)
   if (!m->mdata)
   {
     struct Url *url = url_parse(mailbox_path(m));
+    if (!url)
+      return false;
     struct ImapMboxData *mdata = imap_mdata_new(adata, url->path);
 
     /* fixup path and realpath, mainly to replace / by /INBOX */

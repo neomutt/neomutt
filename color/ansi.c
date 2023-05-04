@@ -320,7 +320,6 @@ int ansi_color_parse(const char *str, struct AnsiColor *ansi,
 
   while ((seq_len = ansi_color_parse_single(str + total_len, ansi, dry_run)) != 0)
   {
-    // color_debug(LL_DEBUG5, "seq_len = %d\n", seq_len);
     total_len += seq_len;
   }
 

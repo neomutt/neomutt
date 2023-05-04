@@ -371,11 +371,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
   struct CryptEntry *entry = (struct CryptEntry *) data;
   struct CryptKeyInfo *key = entry->key;
 
-  /*    if (isupper ((unsigned char) op)) */
-  /*      key = pkey; */
-
-  KeyFlags kflags = (key->flags /* | (pkey->flags & KEYFLAG_RESTRICTIONS)
-                                 | uid->flags */);
+  KeyFlags kflags = (key->flags);
 
   switch (tolower(op))
   {
