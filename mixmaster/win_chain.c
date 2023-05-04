@@ -62,7 +62,7 @@
 static void cbar_update(struct ChainData *cd)
 {
   char buf[1024] = { 0 };
-  snprintf(buf, sizeof(buf), "-- Remailer chain [Length: %d]", cd->chain_len);
+  snprintf(buf, sizeof(buf), _("-- Remailer chain [Length: %d]"), cd->chain_len);
   sbar_set_title(cd->win_cbar, buf);
 }
 
