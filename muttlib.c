@@ -712,7 +712,7 @@ void mutt_safe_path(struct Buffer *dest, const struct Address *a)
 {
   buf_save_path(dest, a);
   for (char *p = dest->data; *p; p++)
-    if ((*p == '/') || IS_SPACE(*p) || !IsPrint((unsigned char) *p))
+    if ((*p == '/') || isspace(*p) || !IsPrint((unsigned char) *p))
       *p = '_';
 }
 

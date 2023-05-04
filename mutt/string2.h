@@ -35,7 +35,6 @@
 #define STR_COMMAND 8192  ///< Enough space for a long command line
 
 #define NONULL(x) ((x) ? (x) : "")
-#define IS_SPACE(ch) isspace((unsigned char) ch)
 
 /* Exit values */
 #define S_ERR 127

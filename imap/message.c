@@ -252,7 +252,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
       char *flag_word = s;
       bool is_system_keyword = mutt_istr_startswith(s, "\\");
 
-      while (*s && !IS_SPACE(*s) && (*s != ')'))
+      while (*s && !isspace(*s) && (*s != ')'))
         s++;
 
       ctmp = *s;

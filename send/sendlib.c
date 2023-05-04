@@ -29,6 +29,7 @@
  */
 
 #include "config.h"
+#include <ctype.h>
 #include <inttypes.h> // IWYU pragma: keep
 #include <limits.h>
 #include <stdbool.h>
@@ -144,7 +145,7 @@ enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
             }
             *p++ = 0;
 
-            for (q = p; *q && !IS_SPACE(*q); q++)
+            for (q = p; *q && !isspace(*q); q++)
               ; // do nothing
 
             mutt_strn_copy(subtype, p, q - p, sizeof(subtype));

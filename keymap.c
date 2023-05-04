@@ -257,7 +257,7 @@ static int parse_keycode(const char *s)
   char *end_char = NULL;
   long int result = strtol(s + 1, &end_char, 8);
   /* allow trailing whitespace, eg.  < 1001 > */
-  while (IS_SPACE(*end_char))
+  while (isspace(*end_char))
     end_char++;
   /* negative keycodes don't make sense, also detect overflow */
   if ((*end_char != '>') || (result < 0) || (result == LONG_MAX))

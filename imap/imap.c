@@ -32,6 +32,7 @@
  */
 
 #include "config.h"
+#include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -143,7 +144,7 @@ static char *get_flags(struct ListHead *hflags, char *s)
     s++;
     SKIPWS(s);
     const char *flag_word = s;
-    while (*s && (*s != ')') && !IS_SPACE(*s))
+    while (*s && (*s != ')') && !isspace(*s))
       s++;
     const char ctmp = *s;
     *s = '\0';

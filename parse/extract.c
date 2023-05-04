@@ -66,7 +66,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
   {
     if (qc == '\0')
     {
-      if (IS_SPACE(ch) && !(flags & TOKEN_SPACE))
+      if (isspace(ch) && !(flags & TOKEN_SPACE))
         break;
       if ((ch == '#') && !(flags & TOKEN_COMMENT))
         break;

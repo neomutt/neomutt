@@ -328,7 +328,7 @@ static void decode_quoted(struct State *state, long len, bool istext, iconv_t cd
     /* chop trailing whitespace if we got the full line */
     if (last == '\n')
     {
-      while ((linelen > 0) && IS_SPACE(line[linelen - 1]))
+      while ((linelen > 0) && isspace(line[linelen - 1]))
         linelen--;
       line[linelen] = '\0';
     }

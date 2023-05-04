@@ -28,6 +28,7 @@
  */
 
 #include "config.h"
+#include <ctype.h>
 #include <string.h>
 #include <time.h>
 #include "mutt/lib.h"
@@ -434,7 +435,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
   if (pc)
   {
     *pc++ = 0;
-    while (*pc && IS_SPACE(*pc))
+    while (*pc && isspace(*pc))
       pc++;
     parse_parameters(&ct->parameter, pc, false);
 
@@ -458,7 +459,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
   if (subtype)
   {
     *subtype++ = '\0';
-    for (pc = subtype; *pc && !IS_SPACE(*pc) && (*pc != ';'); pc++)
+    for (pc = subtype; *pc && !isspace(*pc) && (*pc != ';'); pc++)
       ; // do nothing
 
     *pc = '\0';
@@ -1101,7 +1102,7 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *buf)
       break;
     }
 
-    if (IS_SPACE(line[0]) && buf_is_empty(buf))
+    if (isspace(line[0]) && buf_is_empty(buf))
     {
       read = linelen;
       break;
@@ -1116,7 +1117,7 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *buf)
       do
       {
         line[off] = '\0';
-      } while (off && IS_SPACE(line[--off]));
+      } while (off && isspace(line[--off]));
 
       /* check to see if the next line is a continuation line */
       char ch = fgetc(fp);
@@ -1580,7 +1581,7 @@ static struct Body *parse_multipart(FILE *fp, const char *boundary,
       if (len > 0)
       {
         /* Remove any trailing whitespace, up to the length of the boundary */
-        for (size_t i = len - 1; IS_SPACE(buf[i]) && (i >= (blen + 2)); i--)
+        for (size_t i = len - 1; isspace(buf[i]) && (i >= (blen + 2)); i--)
           buf[i] = '\0';
       }
 

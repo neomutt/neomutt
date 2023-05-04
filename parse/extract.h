@@ -31,7 +31,7 @@ struct Buffer;
 
 /* The same conditions as in mutt_extract_token() */
 #define MoreArgsF(buf, flags) (*(buf)->dptr && \
-    (!IS_SPACE(*(buf)->dptr) || ((flags) & TOKEN_SPACE)) && \
+    (!isspace(*(buf)->dptr) || ((flags) & TOKEN_SPACE)) && \
     ((*(buf)->dptr != '#') ||  ((flags) & TOKEN_COMMENT)) && \
     ((*(buf)->dptr != '+') || !((flags) & TOKEN_PLUS)) && \
     ((*(buf)->dptr != '-') || !((flags) & TOKEN_MINUS)) && \
