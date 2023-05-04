@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2023-04-07\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2023-05-04 13:53+0100\n"
-"PO-Revision-Date: 2023-03-10 23:00+0300\n"
+"PO-Revision-Date: 2023-05-05 02:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
 "Language: tr\n"
@@ -740,9 +740,8 @@ msgid "No newsgroups match the mask"
 msgstr "Hiçbir haber grubu maske ile eşleşmiyor"
 
 #: browser/functions.c:157
-#, fuzzy
 msgid "There are no mailboxes"
-msgstr "İleti yok"
+msgstr "Posta kutusu yok"
 
 #: browser/functions.c:206 browser/functions.c:547 browser/functions.c:606
 msgid "No files match the file mask"
@@ -834,17 +833,17 @@ msgstr "%s: Renk uçbirim tarafından desteklenmiyor"
 #: color/command.c:305
 #, c-format
 msgid "Direct colors support not compiled in: %s"
-msgstr ""
+msgstr "Doğrudan renkler desteği derlenmemiş: %s"
 
 #: color/command.c:311
-#, fuzzy, c-format
+#, c-format
 msgid "Direct colors support disabled: %s"
-msgstr "öntanımlı renkler desteklenmiyor"
+msgstr "Doğrudan renkler desteği devre dışı: %s"
 
 #: color/command.c:418
 #, c-format
 msgid "'bright', 'alert', 'light' are only allowed for named colors: %s"
-msgstr ""
+msgstr "'bright', 'alert', 'light'; yalnızca adlı renklerle desteklenir: %s"
 
 #: color/command.c:422
 #, c-format
@@ -3834,7 +3833,7 @@ msgstr "<rastgele>"
 #: mixmaster/win_chain.c:65
 #, c-format
 msgid "-- Remailer chain [Length: %d]"
-msgstr ""
+msgstr "-- Yeniden postalayıcı zinciri [Uzunluk: %d]"
 
 #: mixmaster/win_chain.c:295
 msgid "You already have the last chain element selected"
@@ -6613,7 +6612,7 @@ msgstr "'%s' komutuyla bir değişken ayarlanamaz"
 
 #: parse/set.c:534
 msgid "'+' and '-' must be followed by '='"
-msgstr ""
+msgstr "'+' ve '-' sonrası '=' gelmelidir"
 
 #: parse/set.c:542
 msgid "Can't use prefix when setting a variable"
@@ -7606,6 +7605,3 @@ msgstr "Derleme seçenekleri:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Geliştirici seçenekleri:"
-
-#~ msgid "Can't decrement a my_ variable"
-#~ msgstr "Bir my_ değişkeni azaltılamaz"
