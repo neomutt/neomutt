@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-04-07\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-05-04 13:53+0100\n"
+"POT-Creation-Date: 2023-05-05 13:42+0100\n"
 "PO-Revision-Date: 2023-05-05 11:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
@@ -6530,7 +6530,7 @@ msgstr "Şu an yardım gösteriliyor"
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
-#: pager/message.c:59 pager/pbar.c:120 status.c:294
+#: pager/message.c:59 pager/pbar.c:123 status.c:294
 msgid "all"
 msgstr "tümü"
 
@@ -6574,9 +6574,17 @@ msgstr "PGP imzası başarıyla doğrulandı"
 msgid "PGP signature could NOT be verified"
 msgstr "PGP imzası doğrulanamadı"
 
+#. L10N: Pager position percentage.
+#. `%ld` is the number, `%%` is the percent symbol.
+#. They may be reordered, or space inserted, if you wish.
+#: pager/pbar.c:117
+#, c-format
+msgid "%ld%%"
+msgstr "%%%ld"
+
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
-#: pager/pbar.c:122 status.c:292
+#: pager/pbar.c:125 status.c:292
 msgid "end"
 msgstr "son"
 
@@ -7194,6 +7202,30 @@ msgstr "Ertelenen iletinin şifresi çözülemedi"
 msgid "No postponed messages"
 msgstr "Ertelenen ileti yok"
 
+#. L10N: Progress bar: `%s` loading text, `%zu` item count,
+#. `%d` percentage, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:168
+#, c-format
+msgid "%s %zu (%d%%)"
+msgstr "%s %zu (%%%d)"
+
+#. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
+#. `%d` is the number, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:178
+#, c-format
+msgid "%s %s/%s (%d%%)"
+msgstr "%s %s/%s (%%%d)"
+
+#. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
+#. `%d` is the number, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:186
+#, c-format
+msgid "%s %zu/%zu (%d%%)"
+msgstr "%s %zu/%zu (%%%d)"
+
 #: question/question.c:208
 msgid "yes"
 msgstr "evet"
@@ -7530,6 +7562,14 @@ msgstr "Posta kutusu sıralanıyor..."
 msgid "(no mailbox)"
 msgstr "(posta kutusu yok)"
 
+#. L10N: Status bar, percentage of way through index.
+#. `%d` is the number, `%%` is the percent symbol.
+#. They may be reordered, or space inserted, if you wish.
+#: status.c:302
+#, c-format
+msgid "%d%%"
+msgstr "%%%d"
+
 #: version.c:85
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
@@ -7605,43 +7645,3 @@ msgstr "Derleme seçenekleri:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Geliştirici seçenekleri:"
-
-#. L10N: Pager position percentage.
-#. `%ld` is the number, `%%` is the percent symbol.
-#. They may be reordered, or space inserted, if you wish.
-#: pager/message.c:59 pager/pbar.c:123 status.c:294 pager/pbar.c:117
-#, c-format
-msgid "%ld%%"
-msgstr "%%%ld"
-
-#. L10N: Progress bar: `%s` loading text, `%zu` item count,
-#. `%d` percentage, `%%` is the percent symbol.
-#. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: pager/pbar.c:125 status.c:292 progress/window.c:168
-#, c-format
-msgid "%s %zu (%d%%)"
-msgstr "%s %zu (%%%d)"
-
-#. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
-#. `%d` is the number, `%%` is the percent symbol.
-#. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:178
-#, c-format
-msgid "%s %s/%s (%d%%)"
-msgstr "%s %s/%s (%%%d)"
-
-#. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
-#. `%d` is the number, `%%` is the percent symbol.
-#. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:186
-#, c-format
-msgid "%s %zu/%zu (%d%%)"
-msgstr "%s %zu/%zu (%%%d)"
-
-#. L10N: Status bar, percentage of way through index.
-#. `%d` is the number, `%%` is the percent symbol.
-#. They may be reordered, or space inserted, if you wish.
-#: status.c:302
-#, c-format
-msgid "%d%%"
-msgstr "%%%d"
